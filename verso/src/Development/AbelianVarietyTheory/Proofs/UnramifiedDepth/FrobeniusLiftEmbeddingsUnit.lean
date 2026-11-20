@@ -12,7 +12,7 @@ open NumberField Formalism.IncomingBounds Formalism.L2.FormalSeriesBounds Formal
 namespace GlobalTheory.TeichSeq
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih => rw [Nat.cast_succ, ← add_assoc, h, ih, ← pow_mul, pow_succ]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem frob_iter {O k : Type} [CommRing O] [CommRing k] {d : ℕ} (l : ℕ)
     (φ : ZMod d → (O →+* k)) (h : ∀ a x, φ (a + 1) x = φ a x ^ l) (a : ZMod d) (x : O) (n : ℕ) :
@@ -22,21 +22,21 @@ theorem frob_iter {O k : Type} [CommRing O] [CommRing k] {d : ℕ} (l : ℕ)
   | succ n ih => rw [Nat.cast_succ, ← add_assoc, h, ih, ← pow_mul, pow_succ]
 
 /- English proof (translation)
-Establish `hq : 1 < l ^ d` using `Nat.one_lt_pow (NeZero.ne d) hl`. Establish `hper : ∀ x, φ 0 x ^ l ^ d = φ 0 x` using `fun x => by`. Rewrite using `[← frob_iter l φ h]`. Simplify using the standard rewrite rules. Establish `hval : ∀ a x, φ a x = φ 0 x ^ l ^ a.val` using `fun a x => by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[← frob_iter l φ h]`. Simplify using the standard rewrite rules. Establish `hfin : ((φ 0).range : Set k).Finite`. Establish `hne : (Polynomial.X ^ l ^ d - Polynomial.X : Polynomial k) ≠ 0` using `(Polynomial.monic_X_pow_sub (by`. Rewrite using `[Polynomial.degree_X]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hq)).ne_zero` after adjusting the coercions. Use `(Polynomial.finite_setOf_isRoot hne).subset ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨x, rfl⟩`. Simplify using `[hper]`. Use `haveI : Finite (φ 0).range := hfin`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨g, hg⟩` from `IsCyclic.exists_monoid_generator (α := ((φ 0).range)ˣ)`. Take `⟨x, hx⟩` from `(g : (φ 0).range).2`. Establish `hx0 : φ 0 x ≠ 0`. Rewrite using `[hx]`. Introduce `h0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction.
 
-Conclude with `g.ne_zero (Subtype.ext h0)`. Use `⟨x, fun a => by rw [hval]; exact pow_ne_zero _ hx0, fun a a' haa => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hne`. Take `⟨y, hy⟩` from `hs a a' hne`. Apply `hy` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Simplify using `only at haa`. Rewrite `haa`, the goal using `[hval a, hval a']`. Distinguish the cases in `hy0 : φ 0 y = 0`. Rewrite using `[hy0, zero_pow (by positivity), zero_pow (by positivity)]`. Establish `hu : IsUnit (⟨φ 0 y, y, rfl⟩ : (φ 0).range)` using `((Finite.isField_of_domain _).mul_inv_cancel (fun h0 => hy0 (congrArg Subtype.val h0))).elim fun b hb => IsUnit.of_mul_eq_one b hb`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨u, hu⟩` from `hu`. Take `⟨m, hm⟩` from `hg u`. Establish `: φ 0 y = φ 0 x ^ m`. Rewrite using `[hx]`. Use `congrArg (fun t : ((φ 0).range)ˣ => ((t : (φ 0).range) : k)) hm` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [hu] at this`. Simplify using `using this.symm`. Rewrite using `[this, ← pow_mul, ← pow_mul, mul_comm m, mul_comm m, pow_mul, pow_mul, haa]`.
+A detailed English derivation is pending.
 -/
 theorem exists_separating {O k : Type} [CommRing O] [CommRing k] [IsDomain k] {d : ℕ} [NeZero d]
     (l : ℕ) (hl : 1 < l) (φ : ZMod d → (O →+* k)) (h : ∀ a x, φ (a + 1) x = φ a x ^ l)
@@ -82,9 +82,9 @@ theorem exists_separating {O k : Type} [CommRing O] [CommRing k] [IsDomain k] {d
     rw [this, ← pow_mul, ← pow_mul, mul_comm m, mul_comm m, pow_mul, pow_mul, haa]
 
 /- English proof (translation)
-Use `first`. Consider the case `(rename_i h_2 h_3 h_4 h_5; revert R k h_2 h_3 h_4 h_5 π N hN u w hu hw h; exact @_root_.GlobalTheory.RootsOfUnityInjective.eq_of_map_eq_of_pow_eq_one)`. Consider the case `exact @_root_.GlobalTheory.RootsOfUnityInjective.eq_of_map_eq_of_pow_eq_one`. Consider the case `exact _root_.GlobalTheory.RootsOfUnityInjective.eq_of_map_eq_of_pow_eq_one`. Consider the case `(apply _root_.GlobalTheory.RootsOfUnityInjective.eq_of_map_eq_of_pow_eq_one <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply _root_.GlobalTheory.RootsOfUnityInjective.eq_of_map_eq_of_pow_eq_one <;> assumption)`. Consider the case `(intros; apply @_root_.GlobalTheory.RootsOfUnityInjective.eq_of_map_eq_of_pow_eq_one <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.RootsOfUnityInjective.eq_of_map_eq_of_pow_eq_one ..)`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem root_eq {R k : Type} [CommRing R] [IsDomain R] [CommRing k] [IsDomain k] (π : R →+* k)
     {N : ℕ} (hN : (N : k) ≠ 0) {u w : R} (hu : u ^ N = 1) (hw : w ^ N = 1) (h : π u = π w) :
@@ -133,11 +133,11 @@ instance : (maxId V).IsPrime where
     exact absurd h (not_lt.2 (add_nonpos h1 h2))
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hx`. Establish `h1 : V.v x ≠ ⊤`. Introduce `ht`. Use `V.v.map_mul x x⁻¹` as an intermediate fact. Rewrite `this` using `[mul_inv_cancel₀ hx, V.v.map_one, ht, top_add]`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `WithTop.zero_ne_top this`. Take `⟨t, ht⟩` from `WithTop.ne_top_iff_exists.1 h1`. Take `⟨n, hn⟩` from `exists_nat_gt t`. Use `h n` as an intermediate fact. Unfold `VF.Ge at this`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[← ht, WithTop.coe_le_coe]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_ge {x : C} (h : ∀ n : ℕ, V.Ge n x) : x = 0 := by
   by_contra hx
@@ -154,7 +154,7 @@ theorem eq_zero_of_ge {x : C} (h : ∀ n : ℕ, V.Ge n x) : x = 0 := by
   linarith
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simpa using VF.Ge.one`. Consider the case `succ n ih => rw [pow_succ]`. Use `push_cast`. Conclude with `ih.mul VF.ge_l`.
+Proceed by induction. Treat this case separately. Treat this case separately. Move the embeddings inside the algebraic operations. A detailed English derivation is pending.
 -/
 theorem ge_l_pow (n : ℕ) : V.Ge n ((V.l : C) ^ n) := by
   induction n with
@@ -162,7 +162,7 @@ theorem ge_l_pow (n : ℕ) : V.Ge n ((V.l : C) ^ n) := by
   | succ n ih => rw [pow_succ]; push_cast; exact ih.mul VF.ge_l
 
 /- English proof (translation)
-Rewrite using `[← (Commute.all u w).geom_sum₂_mul m]`. Conclude with `VF.Ge.mul_int (VF.Ge.sum fun i _ => (hu.pow _).mul_int (hw.pow _)) h`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ge_pow_sub {u w : C} (hu : V.Ge 0 u) (hw : V.Ge 0 w) {t : ℝ} (h : V.Ge t (u - w)) (m : ℕ) :
     V.Ge t (u ^ m - w ^ m) := by
@@ -170,7 +170,7 @@ theorem ge_pow_sub {u w : C} (hu : V.Ge 0 u) (hw : V.Ge 0 w) {t : ℝ} (h : V.Ge
   exact VF.Ge.mul_int (VF.Ge.sum fun i _ => (hu.pow _).mul_int (hw.pow _)) h
 
 /- English proof (translation)
-The claim follows from `lt_of_lt_of_le (by exact_mod_cast (zero_lt_one : (0 : ℝ) < 1)) h`.
+A detailed English derivation is pending.
 -/
 theorem mm_of_ge_one {x : C} (h : V.Ge 1 x) : V.MM x :=
   lt_of_lt_of_le (by exact_mod_cast (zero_lt_one : (0 : ℝ) < 1)) h
@@ -182,45 +182,41 @@ namespace GlobalTheory
 open TeichSeq in
 
 /- English proof (translation)
-Introduce `C _ _ V hcomp O _ d _ em hint hfrob hsep ⟨ε, ⟨y0, hε2⟩, hε1, hεP⟩`. Establish `hl : 1 < V.l` using `V.l_prime.one_lt`. Set `π : intRing V →+* intRing V ⧸ maxId V` to `Ideal.Quotient.mk _`. Set `e : ZMod d → (O →+* intRing V)` to `fun a => (em a).codRestrict (intRing V) (hint a)`. Set `φ : ZMod d → (O →+* intRing V ⧸ maxId V)` to `fun a => π.comp (e a)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hπ : ∀ u w : intRing V, π u = π w ↔ V.MM ((u : C) - w)` using `fun u w => Ideal.Quotient.eq`. Establish `hφ : ∀ a x, φ (a + 1) x = φ a x ^ V.l` using `fun a x => by show π (e (a + 1) x) = π (e a x) ^ V.l`. Rewrite using `[← map_pow, hπ]`. Conclude with `hfrob a x`. Establish `hs : ∀ a a', a ≠ a' → ∃ x, φ a x ≠ φ a' x` using `fun a a' haa => by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨x, hx⟩` from `hsep a a' haa`. Use `⟨x, fun h => ?_⟩` and prove the remaining obligations. Establish `: 0 < V.v (em a x - em a' x)` using `(hπ (e a x) (e a' x)).1 h`. Rewrite `this` using `[hx]`. Conclude with `lt_irrefl _ this`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨x, hx0, hxinj⟩` from `exists_separating V.l hl φ hφ hs`. Use `set q := V.l ^ d with hqdef`. Establish `hq : 1 < q` using `Nat.one_lt_pow (NeZero.ne d) hl`. Establish `hper : ∀ a y, φ a y ^ q = φ a y` using `fun a y => by`. Rewrite using `[← frob_iter V.l φ hφ]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Establish `hφε : ∀ a, φ a ε = 1` using `fun a => (hπ (e a ε) 1).2 (hε1 a)`. Establish `hεpow : ∀ n, (V.l : O) ∣ ε ^ (n + 1) - ε` using `fun n => by`. Proceed by induction on `n with`. Consider the case `zero => simp`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Consider the case `succ n ih`. Establish `: ε ^ (n + 1 + 1) - ε = (ε ^ (n + 1) - ε) * ε + (ε * ε - ε)` using `by ring`. Rewrite using `[this]`. Conclude with `dvd_add (ih.mul_right _) ⟨y0, hε2⟩`. Establish `hz : (V.l : O) ∣ (ε * x) ^ q - ε * x`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : (V.l : O) ∣ ε * (x ^ q - x)`. Use `hεP _ fun a => ?_` and prove the remaining obligations. Use `(hπ (e a (x ^ q)) (e a x)).1 (by show φ a (x ^ q) = φ a x` as an intermediate fact. Rewrite using `[map_pow, hper])`. Rewrite using `[map_sub]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `this`. Establish `h2` using `hεpow (q - 1)`. Rewrite `h2` using `[Nat.sub_add_cancel hq.le]`. Establish `: (ε * x) ^ q - ε * x = (ε ^ q - ε) * x ^ q + ε * (x ^ q - x)` using `by ring`. Rewrite using `[this]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `dvd_add (h2.mul_right _) h1`. Set `s : ℕ → O` to `fun n => (ε * x) ^ q ^ n`. Establish `hsS : ∀ n, s (n + 1) = s n ^ q` using `fun n => by show (ε * x) ^ q ^ (n + 1) = ((ε * x) ^ q ^ n) ^ q`. Rewrite using `[pow_succ q n, pow_mul (ε * x)]`. Establish `hsd : ∀ n, ∃ y, s (n + 1) - s n = (V.l : O) ^ n * y` using `fun n => by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1` using `dvd_sub_pow_of_dvd_sub hz (d * n)`. Establish `h2 : n ≤ d * n + 1` using `(Nat.le_mul_of_pos_left n (Nat.pos_of_ne_zero (NeZero.ne d))).trans (Nat.le_succ _)`. Establish `h3` using `(pow_dvd_pow (V.l : O) h2).trans h1`. Rewrite `h3` using `[pow_mul, ← hqdef, ← pow_mul, ← pow_succ']`. Conclude with `h3`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hlim : ∀ a, ∃ z, ∀ n : ℕ, V.Ge n (z - em a (s n))` using `fun a => by`. Use `hcomp (fun n => em a (s n)) fun n => ?_` and prove the remaining obligations. Take `⟨y, hy⟩` from `hsd n`. Use `show V.Ge n (em a (s (n + 1)) - em a (s n))`. Rewrite using `[← map_sub, hy, map_mul, map_pow, map_natCast, mul_comm]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `(hint a y).mul_int (ge_l_pow V n)`. Use `choose ζ hζ using hlim`. Establish `hζint : ∀ a, V.Ge 0 (ζ a)` using `fun a => by`. Use `(hζ a 0).add (by simpa using hint a (s 0))` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `Z : ZMod d → intRing V` to `fun a => ⟨ζ a, hζint a⟩`. Establish `hZ : ∀ a, π (Z a) = φ a x` using `fun a => by`. Establish `h1 : π (Z a) = φ a (s 1)` using `(hπ (Z a) (e a (s 1))).2 (mm_of_ge_one V (by have := hζ a 1; rw [Nat.cast_one] at this; exact this))`. Rewrite using `[h1, hsS, map_pow, hper]`. Simplify using `[s, hφε]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hζq : ∀ a, ζ a ^ q = ζ a` using `fun a => by`. Rewrite using `[← sub_eq_zero]`. Use `eq_zero_of_ge V fun n => ?_` and prove the remaining obligations. Establish `h1` using `ge_pow_sub V (hζint a) (hint a (s n)) (hζ a n) q`. Establish `h2` using `(hζ a (n + 1)).mono (w' := n) (by push_cast; linarith)`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h2` using `[hsS, map_pow]`. Use `h1.sub h2` as an intermediate fact. Simplify using `using this`. Establish `hζN : ∀ a, ζ a ^ (q - 1) = 1` using `fun a => by`. Establish `h0 : ζ a ≠ 0` using `fun h => hx0 a (by`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← hZ, show Z a = 0 from Subtype.ext h, map_zero])`. Apply `mul_right_cancel₀ h0` to reduce the goal to its premises. Rewrite using `[← pow_succ, Nat.sub_add_cancel hq.le, hζq, one_mul]`. Establish `hl0 : (V.l : intRing V ⧸ maxId V) = 0`. Rewrite using `[← map_natCast π, ← map_zero π, hπ]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `using mm_of_ge_one V VF.ge_l`. Establish `hN : ((q - 1 : ℕ) : intRing V ⧸ maxId V) ≠ 0`. Rewrite using `[Nat.cast_sub hq.le, hqdef, Nat.cast_pow, hl0, zero_pow (NeZero.ne d)]`. Simplify using the standard rewrite rules. Use `⟨q - 1, ζ, s, ?_, hζN, ?_, ?_, hsd, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `le_antisymm (not_lt.1 fun h => hN ?_) (VF.ge_natCast (V := V) (q - 1))` and prove the remaining obligations. Rewrite using `[← map_natCast π, ← map_zero π, hπ]`. Simplify `h` using `[VF.MM]`. Introduce `a a' h`. Apply `hxinj` to reduce the goal to its premises.
-
-Use `show φ a x = φ a' x`. Rewrite using `[← hZ, ← hZ, show Z a = Z a' from Subtype.ext h]`. Introduce `a`. Establish `hZN : ∀ a, Z a ^ (q - 1) = 1` using `fun a => Subtype.ext (hζN a)`. Use `root_eq π hN (hZN (a + 1)) (u := Z (a + 1)) (w := Z a ^ V.l) (by rw [← pow_mul, mul_comm, pow_mul, hZN, one_pow]) (by rw [map_pow, hZ, hZ, hφ])` as an intermediate fact.
-
-Conclude with `congrArg Subtype.val this`. Introduce `a K`. Conclude with `⟨K, fun n hn => (hζ a n).mono (by exact_mod_cast hn)⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_teichmueller_sequence : ∀ (C : Type) [Field C] [CharZero C] (V : VF C), (∀ s : ℕ → C, (∀ n : ℕ, V.Ge n (s (n + 1) - s n)) → ∃ x, ∀ n : ℕ, V.Ge n (x - s n)) → ∀ (O : Type) [CommRing O] (d : ℕ) [NeZero d] (em : ZMod d → (O →+* C)), (∀ a x, V.Ge 0 (em a x)) → (∀ a x, V.MM (em (a + 1) x - em a x ^ V.l)) → (∀ a a' : ZMod d, a ≠ a' → ∃ x, V.v (em a x - em a' x) = 0) → (∃ ε : O, (∃ y, ε * ε - ε = (V.l : O) * y) ∧ (∀ a, V.MM (em a ε - 1)) ∧ ∀ x : O, (∀ a, V.MM (em a x)) → ∃ y, ε * x = (V.l : O) * y) → ∃ (N : ℕ) (ζ : ZMod d → C) (s : ℕ → O), V.v (N : C) = 0 ∧ (∀ a, ζ a ^ N = 1) ∧ Function.Injective ζ ∧ (∀ a, ζ (a + 1) = ζ a ^ V.l) ∧ (∀ n, ∃ y, s (n + 1) - s n = (V.l : O) ^ n * y) ∧ ∀ (a : ZMod d) (K : ℕ), ∃ n0, ∀ n ≥ n0, V.Ge K (ζ a - em a (s n)) := by
   intro C _ _ V hcomp O _ d _ em hint hfrob hsep ⟨ε, ⟨y0, hε2⟩, hε1, hεP⟩

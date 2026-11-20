@@ -11,36 +11,34 @@ namespace GlobalTheory.CompanionTheory.SegLayers
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Introduce `a b h` and use `Fin.ext ((IrrGL.nu_natCast_inj (x := Δ.first) Δ.d_pos).1 h)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem term_injective (Δ : Segment k) : Function.Injective Δ.term := fun a b h =>
   Fin.ext ((IrrGL.nu_natCast_inj (x := Δ.first) Δ.d_pos).1 h)
 
 /- English proof (translation)
-The claim follows from `Multiset.Nodup.map (term_injective Δ) Finset.univ.nodup`.
+A detailed English derivation is pending.
 -/
 theorem ms_nodup (Δ : Segment k) : Δ.ms.Nodup :=
   Multiset.Nodup.map (term_injective Δ) Finset.univ.nodup
 
 /- English proof (translation)
-Rewrite using `[Segment.carrier, ← Set.image_univ, Set.ncard_image_of_injective _ (term_injective Δ)]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem ncard_carrier (Δ : Segment k) : Δ.carrier.ncard = Δ.len := by
   rw [Segment.carrier, ← Set.image_univ, Set.ncard_image_of_injective _ (term_injective Δ)]
   simp
 
 /- English proof (translation)
-The claim follows from `(Multiset.le_iff_subset (ms_nodup Δ)).2 fun _ hx => h _ (Segment.mem_ms.1 hx)`.
+A detailed English derivation is pending.
 -/
 theorem ms_le {Δ : Segment k} {s : Multiset (IrrGL k)} (h : ∀ x ∈ Δ.carrier, x ∈ s) : Δ.ms ≤ s :=
   (Multiset.le_iff_subset (ms_nodup Δ)).2 fun _ hx => h _ (Segment.mem_ms.1 hx)
 
 /- English proof (translation)
-Set `P : ℕ → Prop` to `fun l => ∃ D : Segment k, (∀ x ∈ D.carrier, x ∈ s) ∧ D.len = l`. Establish `hb : ∀ D : Segment k, (∀ x ∈ D.carrier, x ∈ s) → D.len ≤ Multiset.card s` using `fun D hD => by`. Rewrite using `[← Segment.card_ms]`. Conclude with `Multiset.card_le_card (ms_le hD)`. Establish `h1 : P 1` using `⟨Segment.single y hc, fun x hx => by`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hx` using `[Segment.carrier_single]`. Conclude with `hx ▸ hy, rfl⟩`. Establish `h1' : 1 ≤ Multiset.card s`. Take `⟨D, hD, e⟩` from `h1`. Conclude with `e ▸ hb D hD`.
-
-Take `⟨Γ, hΓ, e⟩` from `Nat.findGreatest_spec h1' h1`. Conclude with `⟨Γ, hΓ, fun D hD => e ▸ Nat.le_findGreatest (hb D hD) ⟨D, hD, rfl⟩⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_longest {s : Multiset (IrrGL k)} {y : IrrGL k} (hy : y ∈ s) (hc : y.IsCusp) :
     ∃ Γ : Segment k, (∀ x ∈ Γ.carrier, x ∈ s) ∧
@@ -60,9 +58,9 @@ theorem exists_longest {s : Multiset (IrrGL k)} {y : IrrGL k} (hy : y ∈ s) (hc
   exact ⟨Γ, hΓ, fun D hD => e ▸ Nat.le_findGreatest (hb D hD) ⟨D, hD, rfl⟩⟩
 
 /- English proof (translation)
-Introduce and unpack `⟨⟨U, hU⟩, -, h2⟩`. Establish `h3 : U.len ≤ Γ.len` using `hm U fun x hx => by`. Rewrite `hx` using `[hU]`. Conclude with `hx.elim (hΓ x) (hD x)`. Establish `h4 : Γ.carrier ⊂ U.carrier`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hU]`. Conclude with `⟨Set.subset_union_left, fun h => h2 (Set.subset_union_right.trans h)⟩`. Establish `h5` using `Set.ncard_lt_ncard h4 (Set.finite_range U.term)`. Rewrite `h5` using `[ncard_carrier, ncard_carrier]`. Use linear arithmetic over natural numbers and integers.
+Supply the required witnesses or components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem not_linked_of_longest {s : Multiset (IrrGL k)} {Γ D : Segment k} (hΓ : ∀ x ∈ Γ.carrier, x ∈ s)
     (hm : ∀ D : Segment k, (∀ x ∈ D.carrier, x ∈ s) → D.len ≤ Γ.len) (hD : ∀ x ∈ D.carrier, x ∈ s) :
@@ -79,17 +77,15 @@ theorem not_linked_of_longest {s : Multiset (IrrGL k)} {Γ D : Segment k} (hΓ :
   omega
 
 /- English proof (translation)
-Proceed by induction on `n using Nat.strong_induction_on with`. Consider the case `_ n ih`. Introduce `s hn hs`. Break down `Multiset.empty_or_exists_mem s with rfl | ⟨y, hy⟩` into its components or cases. Conclude with `⟨0, by simp, by simp⟩`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components.
 
-Take `⟨Γ, hΓ, hm⟩` from `exists_longest hy (hs y hy)`. Establish `hle` using `ms_le hΓ`. Establish `hsub : ∀ x ∈ s - Γ.ms, x ∈ s` using `fun x hx => Multiset.mem_of_le (Multiset.sub_le_self _ _) hx`. Establish `hcard : Multiset.card (s - Γ.ms) < n`. Establish `h1` using `Multiset.card_sub hle`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `Multiset.card_le_card hle`. Establish `h3` using `Γ.len_pos`. Rewrite `h1`, `h2` using `[Segment.card_ms]`. Use linear arithmetic over natural numbers and integers. Take `⟨m, hu, hb⟩` from `ih _ hcard _ rfl fun x hx => hs x (hsub x hx)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result.
 
-Establish `hin : ∀ D ∈ m, ∀ x ∈ D.carrier, x ∈ s` using `fun D hD x hx => hsub x (hb ▸ Multiset.mem_bind.2 ⟨D, hD, Segment.mem_ms.2 hx⟩)`. Establish `hΓD : ∀ D ∈ m, ¬ Γ.Linked D` using `fun D hD => not_linked_of_longest hΓ hm (hin D hD)`. Use `⟨Γ ::ₘ m, fun D hD D' hD' => ?_, ?_⟩` and prove the remaining obligations. Apply the tactic sequence `rcases Multiset.mem_cons.1 hD with e | e₁ <;> rcases Multiset.mem_cons.1 hD' with e' | e₂`. Rewrite using `[e, e']`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Segment.not_linked_self _`. Rewrite using `[e]`. Conclude with `hΓD _ e₂`. Rewrite using `[e']`. Conclude with `fun h => hΓD _ e₁ h.symm`.
-
-Conclude with `hu _ e₁ _ e₂`. Rewrite using `[Multiset.cons_bind, hb]`. Conclude with `add_tsub_cancel_of_le hle`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_unlinked (n : ℕ) : ∀ s : Multiset (IrrGL k), Multiset.card s = n → (∀ y ∈ s, y.IsCusp) →
     ∃ m : Multiset (Segment k), (∀ D ∈ m, ∀ D' ∈ m, ¬ D.Linked D') ∧ m.bind Segment.ms = s := by
@@ -125,9 +121,9 @@ theorem exists_unlinked (n : ℕ) : ∀ s : Multiset (IrrGL k), Multiset.card s 
       exact add_tsub_cancel_of_le hle
 
 /- English proof (translation)
-Introduce `s hs`. Take `⟨m, hu, hb⟩` from `exists_unlinked _ s rfl hs`. Establish `hmem : ∀ i : Fin m.toList.length, m.toList.get i ∈ m` using `fun i => Multiset.mem_toList.1 (List.get_mem _ _)`. Use `⟨m.toList.length, m.toList.get, fun i j _ => hu _ (hmem i) _ (hmem j), ?_⟩` and prove the remaining obligations. Establish `h1 : (Finset.univ.val.map m.toList.get : Multiset (Segment k)) = m`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[Fin.univ_val_map, List.ofFn_get, Multiset.coe_toList]`. Use `conv_rhs => rw [← hb, ← h1]`. Simplify using `[Multiset.bind, Multiset.map_map, Function.comp_def]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem unlinkedLayers (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] :
     UnlinkedLayers k := by

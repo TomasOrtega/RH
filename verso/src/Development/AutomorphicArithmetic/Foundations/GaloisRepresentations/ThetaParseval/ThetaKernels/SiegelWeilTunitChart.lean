@@ -17,15 +17,15 @@ attribute [-instance] CStarMatrix.instHMulOfFintypeOfMulOfAddCommMonoid
 open PositivityTheory.SiegelWeilFormula.TBij PositivityTheory.SiegelWeilFormula.TBij.Adp
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 /- English proof (translation)
-Establish `hD` using `d.ok.dbl`. Set `τ : d.κ ≃ _root_.PositivityTheory.SiegelWeilFormula.TBij_k.Adp.Ix d` to `Fintype.equivOfCardEq (_root_.PositivityTheory.SiegelWeilFormula.TBij_k.Adp.card_ix d)`. Take `⟨a, ha, hact⟩` from `exists_symp d.dd.e (_root_.PositivityTheory.SiegelWeilFormula.TBij_k.Adp.c0 d τ) (fun w w' => by rw [_root_.PositivityTheory.SiegelWeilFormula.TBij_k.Adp.symplecticForm_coordinates, _root_.PositivityTheory.SiegelWeilFormula.TBij_k.Adp.sy_eq]) (by`. Introduce and unpack `w ⟨y, z, h⟩`. Take `⟨x, hx⟩` from `rat_surj d.bs d.dd.e (fun x => hD.rat x) y z`.
+Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Take `rfl : w = incM F x` from `d.dd.e.injective (h.trans hx.symm)`. Conclude with `_root_.PositivityTheory.SiegelWeilFormula.TBij_k.Adp.coordinates_rational d τ x)`. Use `set J := jj d.κ F with hJ`. Use `set b := -(J * aᵀ * J) with hb`. Establish `hba : b * a = 1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hb, Matrix.neg_mul, Matrix.mul_assoc, Matrix.mul_assoc, ← Matrix.mul_assoc aᵀ, ha, jj_mul_jj, neg_neg]`. Establish `hab : a * b = 1` using `mul_eq_one_comm.1 hba`. Establish `hinv : ∀ w, act (b.map (algebraMap F (AF F))) (_root_.PositivityTheory.SiegelWeilFormula.TBij_k.Adp.c0 d τ w) = d.dd.e w` using `fun w => by`. Rewrite using `[hact w, ← act_mul, ← Matrix.map_mul, hba, Matrix.map_one _ (map_zero _) (map_one _), act_one']`. Establish `hright : ∀ u, _root_.PositivityTheory.SiegelWeilFormula.TBij_k.Adp.c0 d τ (d.dd.e.symm (act (b.map (algebraMap F (AF F))) u)) = u` using `fun u => by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hact, LinearEquiv.apply_symm_apply, ← act_mul, ← Matrix.map_mul, hab, Matrix.map_one _ (map_zero _) (map_one _), act_one']`. Set `e' : Matrix (Fin d.m) (Fin d.n ⊕ Fin d.n) (AE F E) ≃ₗ[AF F] (d.κ → AF F) × (d.κ → AF F)` to `{ _root_.PositivityTheory.SiegelWeilFormula.TBij_k.Adp.c0 d τ with invFun := fun u => d.dd.e.symm (act (b.map (algebraMap F (AF F))) u) left_inv := fun w => by show d.dd.e.symm (act (b.map (algebraMap F (AF F))) (_root_.PositivityTheory.SiegelWeilFormula.TBij_k.Adp.c0 d τ w)) = w`. Rewrite using `[hinv, LinearEquiv.symm_apply_apply]`. Use `right_inv := hright }`. Use `⟨τ, ⟨e', fun w w' => ?_⟩, fun x => ?_, fun w => rfl⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Rewrite using `[d.dd.form] show om (d.dd.e w) (d.dd.e w') = om (_root_.PositivityTheory.SiegelWeilFormula.TBij_k.Adp.c0 d τ w) (_root_.PositivityTheory.SiegelWeilFormula.TBij_k.Adp.c0 d τ w')`. Rewrite using `[_root_.PositivityTheory.SiegelWeilFormula.TBij_k.Adp.symplecticForm_coordinates, _root_.PositivityTheory.SiegelWeilFormula.TBij_k.Adp.sy_eq]`. Take `⟨y, z, h⟩` from `_root_.PositivityTheory.SiegelWeilFormula.TBij_k.Adp.coordinates_rational d τ x`. Conclude with `⟨y, z, h⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_chart_k (d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ) : ∃ (τ : d.κ ≃ _root_.PositivityTheory.SiegelWeilFormula.TBij_k.Adp.Ix d)
     (d' : Darboux (symp (R := AF F) (cA σ) (-1) (incM F d.A.J) (dbl (incM F d.Y.J))) d.κ),
@@ -62,21 +62,21 @@ theorem exists_chart_k (d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ) :
   · obtain ⟨y, z, h⟩ := _root_.PositivityTheory.SiegelWeilFormula.TBij_k.Adp.coordinates_rational d τ x
     exact ⟨y, z, h⟩
 /- English proof (translation)
-Establish `hψ : IsStd d.B.ψ` using `d.ok.good.std`. Take `⟨τ, d', hrat, he'⟩` from `_root_.PositivityTheory.SiegelWeilFormula.Tunit.exists_chart_k d`. Take `⟨S0, S0', hS⟩` from `GlobalTheory.T.darbouxCoordinateChange_realised_with_double F E σ d.ok.good.cm d.B.ψ hψ (Fin d.m) (Fin d.n ⊕ Fin d.n) d.κ d.κ _ d.dd d' (by exact d.ok.dbl.rat) hrat`. Establish `hop` using `hS.1`. Establish `hs : (fun w => d'.e (d.dd.e.symm w)) = fun w => _root_.PositivityTheory.SiegelWeilFormula.TBij_k.Adp.c0 d τ (d.dd.e.symm w)` using `funext fun w => he' _`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hop` using `[hs]`. Establish `rhoS : ∀ w, ∀ φ ∈ schA F d.κ, S0 (d.dd.rho d.B.ψ w φ) = schr d.B.ψ (_root_.PositivityTheory.SiegelWeilFormula.TBij_k.Adp.c0 d τ w) (S0 φ)`. Introduce `w φ hφ`. Simplify using `only [Darboux.rho]`. Rewrite using `[hop.Heisenberg₂ _ _ hφ, LinearEquiv.symm_apply_apply]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `rhoS' : ∀ w, ∀ φ ∈ schA F d.κ, S0' (schr d.B.ψ (_root_.PositivityTheory.SiegelWeilFormula.TBij_k.Adp.c0 d τ w) φ) = d.dd.rho d.B.ψ w (S0' φ)`. Introduce `w φ hφ`. Establish `h1` using `rhoS w (S0' φ) (hop.pres' φ hφ)`. Rewrite `h1` using `[hop.right φ hφ]`. Establish `hm : d.dd.rho d.B.ψ w (S0' φ) ∈ schA F d.κ` using `GlobalTheory.HeisSchA.schr_mem_schA d.B.ψ hψ _ _ (hop.pres' φ hφ)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← h1, hop.left _ hm]`. Use `set l' : ((d.κ → AF F) → ℂ) →ₗ[ℂ] ℂ := d.l ∘ₗ S0' with hl'`. Establish `hadm : l' ∈ (adeleClass F).adm d.κ` using `hop.adm' d.l d.ok.dbl.adm`. Establish `hinv : ∀ (y : d.κ → AF F), ∀ φ ∈ schA F d.κ, l' (fun x => d.B.ψ (x ⬝ᵥ y) * φ x) = l' φ`. Introduce `y φ hφ`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨w, hw⟩ : ∃ w, _root_.PositivityTheory.SiegelWeilFormula.TBij_k.Adp.c0 d τ w = (0, y)` from `⟨d'.e.symm (0, y), by rw [← he', LinearEquiv.apply_symm_apply]⟩`. Take `⟨Z, rfl⟩` from `_root_.PositivityTheory.SiegelWeilFormula.TBij_k.Adp.coordinates_fst_eq_zero d τ w (by rw [hw])`. Establish `e1 : (fun x => d.B.ψ (x ⬝ᵥ y) * φ x) = schr d.B.ψ (_root_.PositivityTheory.SiegelWeilFormula.TBij_k.Adp.c0 d τ (Z * (_root_.PositivityTheory.SiegelWeilFormula.TBij_k.Adp.dg d)ᵀ)) φ`. Rewrite using `[hw]`. Use function extensionality and compare the values at `x`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using `[schr]`. Rewrite using `[e1, hl', LinearMap.comp_apply, rhoS' _ φ hφ, LinearMap.comp_apply]`. Conclude with `d.ok.dbl.kill Z _ (hop.pres' φ hφ)`. Take `⟨c, hc⟩` from `GlobalTheory.T.character_invariant_adelic_form_eq_mul_eval_zero F d.B.ψ hψ d.κ l' hadm hinv`. Use `⟨τ, S0, S0', c, hop, fun Φ hΦ X => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hΨ : d.dd.rho d.B.ψ (X * (incM F d.b.1.toCols₂)ᵀ) Φ ∈ schA F d.κ` using `GlobalTheory.HeisSchA.schr_mem_schA d.B.ψ hψ _ _ hΦ`. Establish `e0 : _root_.PositivityTheory.SiegelWeilFormula.TBij_k.Adp.c0 d τ (X * (incM F d.b.1.toCols₂)ᵀ) = (fun k => d.crd X (τ k), 0)` using `_root_.PositivityTheory.SiegelWeilFormula.TBij_k.Adp.coordinates_frame d τ X`. Establish `e1 : d.T Φ X = l' (S0 (d.dd.rho d.B.ψ (X * (incM F d.b.1.toCols₂)ᵀ) Φ))`. Rewrite using `[hl', LinearMap.comp_apply, hop.left _ hΨ]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[e1, hc _ (hop.pres _ hΨ), rhoS _ _ hΦ, e0]`. Simplify using `[schr]`.
+A detailed English derivation is pending.
 -/
 theorem T_chart_k (d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ) : ∃ (τ : d.κ ≃ _root_.PositivityTheory.SiegelWeilFormula.TBij_k.Adp.Ix d) (S0 : ((d.κ → AF F) → ℂ) →ₗ[ℂ] ((d.κ → AF F) → ℂ))
     (S0' : ((d.κ → AF F) → ℂ) →ₗ[ℂ] ((d.κ → AF F) → ℂ)) (C : ℂ),

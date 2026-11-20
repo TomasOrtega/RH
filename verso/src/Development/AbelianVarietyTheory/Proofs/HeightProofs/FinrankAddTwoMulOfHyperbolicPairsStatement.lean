@@ -3,7 +3,7 @@ import Development.AbelianVarietyTheory.Proofs.HeightProofs.FinrankAddTwoMulOfHy
 import Mathlib
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.finrank_add_two_mul_of_hyperbolic_pairs` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FHeightProofs%2FFinrankAddTwoMulOfHyperbolicPairs.lean&line=5#L5)
 -/

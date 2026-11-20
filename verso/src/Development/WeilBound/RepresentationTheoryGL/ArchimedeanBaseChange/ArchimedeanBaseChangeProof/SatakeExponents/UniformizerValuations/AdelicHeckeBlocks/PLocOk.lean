@@ -22,36 +22,36 @@ section Gen
 variable {G : Type} [Group G] [TopologicalSpace G] {K : Subgroup G}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨HasCompactSupport.zero, fun _ _ _ => ⟨rfl, rfl⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem hk_zero (K : Subgroup G) : IsHecke K (0 : G → ℂ) := ⟨HasCompactSupport.zero, fun _ _ _ => ⟨rfl, rfl⟩⟩
 
 /- English proof (translation)
-The claim follows from `hk_zero K`.
+A detailed English derivation is pending.
 -/
 theorem hk_zero' (K : Subgroup G) : IsHecke K (fun _ : G => (0 : ℂ)) := hk_zero K
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hf.1.add hg.1, fun k hk x => ⟨by simp only [Pi.add_apply, (hf.2 k hk x).1, (hg.2 k hk x).1], by simp only [Pi.add_apply, (hf.2 k hk x).2, (hg.2 k hk x).2]⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem hk_add {f g : G → ℂ} (hf : IsHecke K f) (hg : IsHecke K g) : IsHecke K (f + g) :=
   ⟨hf.1.add hg.1, fun k hk x => ⟨by simp only [Pi.add_apply, (hf.2 k hk x).1, (hg.2 k hk x).1],
     by simp only [Pi.add_apply, (hf.2 k hk x).2, (hg.2 k hk x).2]⟩⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hf.1.mono fun y hy h0 => hy (by simp [h0]), fun k hk x => ⟨by simp only [(hf.2 k hk x).1], by simp only [(hf.2 k hk x).2]⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem hk_cmul (c : ℂ) {f : G → ℂ} (hf : IsHecke K f) : IsHecke K (fun y => c * f y) :=
   ⟨hf.1.mono fun y hy h0 => hy (by simp [h0]), fun k hk x => ⟨by simp only [(hf.2 k hk x).1],
     by simp only [(hf.2 k hk x).2]⟩⟩
 
 /- English proof (translation)
-The claim follows from `hk_cmul c hf`.
+A detailed English derivation is pending.
 -/
 theorem hk_smul (c : ℂ) {f : G → ℂ} (hf : IsHecke K f) : IsHecke K (c • f) := hk_cmul c hf
 
 /- English proof (translation)
-Use `Finset.sum_induction F (IsHecke K) (fun f g hf hg => hk_add hf hg) (hk_zero K) h` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `y`. Rewrite using `[Finset.sum_apply]`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 -/
 theorem hk_sum {α : Type*} (s : Finset α) (F : α → G → ℂ) (h : ∀ x ∈ s, IsHecke K (F x)) :
     IsHecke K (fun y => ∑ x ∈ s, F x y) := by
@@ -61,14 +61,14 @@ theorem hk_sum {α : Type*} (s : Finset α) (F : α → G → ℂ) (h : ∀ x �
   rw [Finset.sum_apply]
 
 /- English proof (translation)
-The claim follows from `hk_sum c.support (fun x => F x (c x)) fun x _ => h x (c x)`.
+A detailed English derivation is pending.
 -/
 theorem hk_fsum {α : Type*} (c : α →₀ ℂ) (F : α → ℂ → G → ℂ) (h : ∀ x t, IsHecke K (F x t)) :
     IsHecke K (fun y => c.sum fun x t => F x t y) :=
   hk_sum c.support (fun x => F x (c x)) fun x _ => h x (c x)
 
 /- English proof (translation)
-Distinguish the cases in `hp : p`. Simplify `hg hp` using `only [dif_pos hp]`. Simplify `hk_zero' K` using `only [dif_neg hp]`.
+Consider separately whether the proposition holds or fails. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem hk_dite {p : Prop} [Decidable p] {g : p → G → ℂ} (hg : ∀ h, IsHecke K (g h)) :
     IsHecke K (fun y => if h : p then g h y else 0) := by
@@ -77,7 +77,7 @@ theorem hk_dite {p : Prop} [Decidable p] {g : p → G → ℂ} (hg : ∀ h, IsHe
   · simpa only [dif_neg hp] using hk_zero' K
 
 /- English proof (translation)
-Take `⟨S, hS⟩` from `hf`. Use `HasCompactSupport.intro (K := ⋃ s ∈ S, (fun p : G × G => p.1 * s * p.2) '' ((K : Set G) ×ˢ (K : Set G))) (S.isCompact_biUnion fun s _ => (hK.prod hK).image (by fun_prop)) fun g hg => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `h0`. Take `⟨s, hs, a, b, rfl⟩` from `hS g h0`. Conclude with `hg (Set.mem_biUnion hs ⟨((a : G), (b : G)), ⟨a.2, b.2⟩, rfl⟩)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem hcs_of_fin [IsTopologicalGroup G] [T2Space G] (hK : IsCompact (K : Set G)) {f : G → ℂ}
     (hf : FinDosetSupp K f) : HasCompactSupport f := by
@@ -95,20 +95,20 @@ section Levels
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.CompanionTheory.IwLevels.KGL_eq_KO]`. Conclude with `GlobalTheory.SplitFlip.isOpen_KO`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isOpen_KGL (w : Pl E) (a : ℕ) : IsOpen (GlobalTheory.LFun.KGL w a : Set (GLw a w)) := by
   rw [GlobalTheory.CompanionTheory.IwLevels.KGL_eq_KO]
   exact GlobalTheory.SplitFlip.isOpen_KO
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.CompanionTheory.IwLevels.isCompact_KGL w a`.
+A detailed English derivation is pending.
 -/
 theorem isCompact_KGL (w : Pl E) (a : ℕ) : IsCompact (GlobalTheory.LFun.KGL w a : Set (GLw a w)) :=
   GlobalTheory.CompanionTheory.IwLevels.isCompact_KGL w a
 
 /- English proof (translation)
-Unfold `thL`. Use `split_ifs`. Conclude with `hk`. Conclude with `GlobalTheory.CompanionTheory.IwFacts.thetaGL_mem_KGL w a hk`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem thL_KGL (a : ℕ) (w : Pl E) (k : GLw a w) (hk : k ∈ GlobalTheory.LFun.KGL w a) : thL a w k ∈ GlobalTheory.LFun.KGL w a := by
   unfold thL
@@ -117,7 +117,7 @@ theorem thL_KGL (a : ℕ) (w : Pl E) (k : GLw a w) (hk : k ∈ GlobalTheory.LFun
   · exact GlobalTheory.CompanionTheory.IwFacts.thetaGL_mem_KGL w a hk
 
 /- English proof (translation)
-Unfold `thL`. Use `split_ifs`. Conclude with `hk`. Conclude with `GlobalTheory.CompanionTheory.IwFacts.thetaGL_mem_iwGL w a hk`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem thL_iw (a : ℕ) (w : Pl E) (k : GLw a w) (hk : k ∈ iwGL a w) : thL a w k ∈ iwGL a w := by
   unfold thL
@@ -126,19 +126,19 @@ theorem thL_iw (a : ℕ) (w : Pl E) (k : GLw a w) (hk : k ∈ iwGL a w) : thL a 
   · exact GlobalTheory.CompanionTheory.IwFacts.thetaGL_mem_iwGL w a hk
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨isOpen_KGL w a, le_rfl, thL_KGL a w⟩`.
+Supply the required witnesses or components.
 -/
 theorem lev_K (a : ℕ) (w : Pl E) : IsLevel (thL a w) (GlobalTheory.LFun.KGL w a) (GlobalTheory.LFun.KGL w a) :=
   ⟨isOpen_KGL w a, le_rfl, thL_KGL a w⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨GlobalTheory.SmGL.IwahoriOnto.isOpen_iwahori _ _, GlobalTheory.CompanionTheory.IwLevels.iwGL_le_KGL w a, thL_iw a w⟩`.
+Supply the required witnesses or components.
 -/
 theorem lev_iw (a : ℕ) (w : Pl E) : IsLevel (thL a w) (GlobalTheory.LFun.KGL w a) (iwGL a w) :=
   ⟨GlobalTheory.SmGL.IwahoriOnto.isOpen_iwahori _ _, GlobalTheory.CompanionTheory.IwLevels.iwGL_le_KGL w a, thL_iw a w⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨by rw [Subgroup.coe_prod]; exact h₁.1.prod h₂.1, Subgroup.prod_mono h₁.2.1 h₂.2.1⟩`.
+Supply the required witnesses or components.
 -/
 theorem prod_open_le {a b : ℕ} {w : Pl E} {K₁ : Subgroup (GLw a w)} {K₂ : Subgroup (GLw b w)}
     (h₁ : IsLevel (thL a w) (GlobalTheory.LFun.KGL w a) K₁) (h₂ : IsLevel (thL b w) (GlobalTheory.LFun.KGL w b) K₂) :
@@ -146,7 +146,7 @@ theorem prod_open_le {a b : ℕ} {w : Pl E} {K₁ : Subgroup (GLw a w)} {K₂ : 
   ⟨by rw [Subgroup.coe_prod]; exact h₁.1.prod h₂.1, Subgroup.prod_mono h₁.2.1 h₂.2.1⟩
 
 /- English proof (translation)
-Unfold `idem`. Rewrite using `[Subgroup.relIndex_self, Nat.cast_one]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem idempotent_maximal_pair_indicator (a b : ℕ) (w : Pl E) :
     idem (K2 a b w) = ((K2 a b w : Subgroup (GLw a w × GLw b w)) : Set (GLw a w × GLw b w)).indicator 1 := by
@@ -159,7 +159,7 @@ abbrev IsLv {a b : ℕ} {w : Pl E} (L : Subgroup (GLw a w × GLw b w)) : Prop :=
     IsLevel (thL b w) (GlobalTheory.LFun.KGL w b) K₂ ∧ L = K₁.prod K₂
 
 /- English proof (translation)
-Take `⟨K₁, K₂, h₁, h₂, rfl⟩` from `he`. Conclude with `(h1 E a b w _ (prod_open_le h₁ h₂).1 (prod_open_le h₁ h₂).2).1`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem idem_of_lv (h1 : IdemAlg) {a b : ℕ} {w : Pl E} {L : Subgroup (GLw a w × GLw b w)} (he : IsLv L) :
     IsHecke L (idem L) := by
@@ -167,20 +167,18 @@ theorem idem_of_lv (h1 : IdemAlg) {a b : ℕ} {w : Pl E} {L : Subgroup (GLw a w 
   exact (h1 E a b w _ (prod_open_le h₁ h₂).1 (prod_open_le h₁ h₂).2).1
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨_, _, lev_K a w, lev_K b w, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem maximal_pair_is_level (a b : ℕ) (w : Pl E) : IsLv (K2 a b w) := ⟨_, _, lev_K a w, lev_K b w, rfl⟩
 
 /- English proof (translation)
-Use `choose L hL hH using hloc`. Use `choose K₁ K₂ h₁ h₂ he using hL`. Set `K₁' : ∀ w : Pl E, Subgroup (GLw a w)` to `fun w => if w ∈ Q then K₁ w else GlobalTheory.LFun.KGL w a`. Set `K₂' : ∀ w : Pl E, Subgroup (GLw b w)` to `fun w => if w ∈ Q then K₂ w else GlobalTheory.LFun.KGL w b`. Establish `hcof : ∀ p : Pl E → Prop, (∀ w ∉ Q, p w) → ∀ᶠ w in Filter.cofinite, p w` using `fun p hp => Filter.eventually_cofinite.2 (Q.finite_toSet.subset fun w hw => Classical.by_contradiction fun h => hw (hp w h))`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Unfold `IsTestP GlobalTheory.BCT.IsLevelFam GlobalTheory.BCT.IsTest`. Use `⟨K₁', K₂', ⟨fun w => ?_, hcof _ fun w hw => if_neg hw⟩, ⟨fun w => ?_, hcof _ fun w hw => if_neg hw⟩, fun w => ?_, hcof _ fun w hw => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hw : w ∈ Q`. Rewrite using `[show K₁' w = K₁ w from if_pos hw]`. Conclude with `h₁ w`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[show K₁' w = _ from if_neg hw]`. Conclude with `lev_K a w`. Distinguish the cases in `hw : w ∈ Q`. Rewrite using `[show K₂' w = K₂ w from if_pos hw]`. Conclude with `h₂ w`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[show K₂' w = _ from if_neg hw]`. Conclude with `lev_K b w`. Use `show IsHecke ((K₁' w).prod (K₂' w)) (φ w)`. Distinguish the cases in `hw : w ∈ Q`. Rewrite using `[show K₁' w = K₁ w from if_pos hw, show K₂' w = K₂ w from if_pos hw, ← he w]`.
-
-Conclude with `hH w`. Rewrite using `[show K₁' w = _ from if_neg hw, show K₂' w = _ from if_neg hw, hout w hw]`. Conclude with `idem_of_lv h1 (maximal_pair_is_level a b w)`. Rewrite using `[hout w hw, idempotent_maximal_pair_indicator]`.
+A detailed English derivation is pending.
 -/
 theorem isTestFunction_of (h1 : IdemAlg) {a b : ℕ} (φ : ∀ w : Pl E, GLw a w × GLw b w → ℂ) (Q : Finset (Pl E))
     (hloc : ∀ w, ∃ L : Subgroup (GLw a w × GLw b w), IsLv L ∧ IsHecke L (φ w))
@@ -214,23 +212,23 @@ section Place
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.BorelApproximation.dcos_left t k g hk`.
+A detailed English derivation is pending.
 -/
 theorem dcos_left {m : ℕ} {w : Pl E} (t k g : GLw m w) (hk : k ∈ iwGL m w) :
     dcos m w t (k * g) = dcos m w t g :=
   _root_.UpperTheory.Reformulated.B.BorelApproximation.dcos_left t k g hk
 
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.H23.dcos_right t k g hk`.
+A detailed English derivation is pending.
 -/
 theorem dcos_right {m : ℕ} {w : Pl E} (t k g : GLw m w) (hk : k ∈ iwGL m w) :
     dcos m w t (g * k) = dcos m w t g :=
   _root_.UpperTheory.Reformulated.B.H23.dcos_right t k g hk
 
 /- English proof (translation)
-Use `⟨HasCompactSupport.intro ((GlobalTheory.CompanionTheory.IwFacts.isCompact_support_dcos w a (tdiag ϖ x)).prod (GlobalTheory.CompanionTheory.IwFacts.isCompact_support_dcos w b (tdiag ϖ y))) fun m hm => ?_, fun k hk g => ?_⟩` and prove the remaining obligations. Simplify using `only [Set.mem_prod, Set.mem_setOf_eq, not_and_or, not_not] at hm`. Apply the tactic sequence `rcases hm with h | h <;> simp [dc2, h]`. Take `⟨hk1, hk2⟩` from `Subgroup.mem_prod.1 hk`. Simplify using `only [dc2, Prod.fst_mul, Prod.snd_mul]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Conclude with `⟨by rw [dcos_left _ _ _ hk1, dcos_left _ _ _ hk2], by rw [dcos_right _ _ _ hk1, dcos_right _ _ _ hk2]⟩`.
+Supply the required witnesses or components.
 -/
 theorem isHecke_iwahori_pair_double_coset {a b : ℕ} (w : Pl E) (ϖ : (w.adicCompletion E)ˣ) (x : Fin a → ℤ) (y : Fin b → ℤ) :
     IsHecke (I2 a b w) (dc2 w ϖ x y) := by
@@ -243,7 +241,7 @@ theorem isHecke_iwahori_pair_double_coset {a b : ℕ} (w : Pl E) (ϖ : (w.adicCo
     exact ⟨by rw [dcos_left _ _ _ hk1, dcos_left _ _ _ hk2], by rw [dcos_right _ _ _ hk1, dcos_right _ _ _ hk2]⟩
 
 /- English proof (translation)
-Establish `h0 : Valued.v x ≠ 0` using `by rw [hx]; exact one_ne_zero`. Unfold `ordL`. Rewrite using `[dif_neg h0]`. Establish `: WithZero.unzero h0 = 1` using `WithZero.coe_inj.1 (by rw [WithZero.coe_unzero, hx]; rfl)`. Rewrite using `[this]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -256,9 +254,9 @@ theorem ordL_of_v_one {w : Pl E} (x : w.adicCompletion E) (hx : Valued.v x = 1) 
   rfl
 
 /- English proof (translation)
-Unfold `ordL at h`. Distinguish the cases in `h0 : Valued.v x = 0`. Rewrite using `[dif_pos h0] at h; exact absurd h (by norm_num)`. Rewrite using `[dif_neg h0] at h show Valued.v x = _`. Rewrite using `[← WithZero.coe_unzero h0]`.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Establish `: Multiplicative.toAdd (WithZero.unzero h0) = -1` using `by omega`. Rewrite using `[← this]`. Both sides reduce to the same expression.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem unifV {w : Pl E} (x : w.adicCompletion E) (h : ordL x = 1) : IsUnifV E w x := by
   unfold ordL at h
@@ -273,7 +271,7 @@ theorem unifV {w : Pl E} (x : w.adicCompletion E) (h : ordL x = 1) : IsUnifV E w
     rfl
 
 /- English proof (translation)
-The claim follows from `hμ _ (ordL_of_v_one _ (GlobalTheory.BCT.AbsHalfInv.v_det_KGL hk))`.
+A detailed English derivation is pending.
 -/
 theorem mu_det {w : Pl E} (μ : (w.adicCompletion E)ˣ →* ℂˣ)
     (hμ : ∀ u : (w.adicCompletion E)ˣ, ordL (u : w.adicCompletion E) = 0 → μ u = 1) {m : ℕ} (k : GLw m w)
@@ -281,7 +279,7 @@ theorem mu_det {w : Pl E} (μ : (w.adicCompletion E)ˣ →* ℂˣ)
   hμ _ (ordL_of_v_one _ (GlobalTheory.BCT.AbsHalfInv.v_det_KGL hk))
 
 /- English proof (translation)
-Rewrite using `[← map_mul]`. Use `congr 1`. Simplify using `only [Prod.fst_mul, Prod.snd_mul, map_mul, mul_pow]`. The two sides agree by associativity and commutativity.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. The two sides agree by associativity and commutativity.
 -/
 theorem mu_left {a b : ℕ} {w : Pl E} (μ : (w.adicCompletion E)ˣ →* ℂˣ) (k m : GLw a w × GLw b w) :
     μ ((-1) ^ (a * b) * GeneralLinearGroup.det (k * m).1 ^ b * GeneralLinearGroup.det (k * m).2 ^ a) =
@@ -293,7 +291,7 @@ theorem mu_left {a b : ℕ} {w : Pl E} (μ : (w.adicCompletion E)ˣ →* ℂˣ) 
   ac_rfl
 
 /- English proof (translation)
-Rewrite using `[← map_mul]`. Use `congr 1`. Simplify using `only [Prod.fst_mul, Prod.snd_mul, map_mul, mul_pow]`. The two sides agree by associativity and commutativity.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. The two sides agree by associativity and commutativity.
 -/
 theorem mu_right {a b : ℕ} {w : Pl E} (μ : (w.adicCompletion E)ˣ →* ℂˣ) (k m : GLw a w × GLw b w) :
     μ ((-1) ^ (a * b) * GeneralLinearGroup.det (m * k).1 ^ b * GeneralLinearGroup.det (m * k).2 ^ a) =
@@ -305,9 +303,9 @@ theorem mu_right {a b : ℕ} {w : Pl E} (μ : (w.adicCompletion E)ˣ →* ℂˣ)
   ac_rfl
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `Subgroup.mem_prod.1 hk`. Take `⟨e1, f1⟩` from `GlobalTheory.AdelicU.mem_GLint_iff.1 h1`. Take `⟨e2, f2⟩` from `GlobalTheory.AdelicU.mem_GLint_iff.1 h2`. Use `GlobalTheory.AdelicU.mem_GLint_iff.2 ⟨fun i j => ?_, fun i j => ?_⟩` and prove the remaining obligations. Conclude with `GlobalTheory.BCT.CtLevel.blockDiagonalMatrixOfAddEq_entries_mem_subring _ hh _ _ e1 e2 i j`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← map_inv]`. Conclude with `GlobalTheory.BCT.CtLevel.blockDiagonalMatrixOfAddEq_entries_mem_subring _ hh _ _ f1 f2 i j`.
+A detailed English derivation is pending.
 -/
 theorem dgM_KGL {a b m : ℕ} (hh : a + b = m) (w : Pl E) (k : GLw a w × GLw b w) (hk : k ∈ K2 a b w) :
     GlobalTheory.BCT.CtLevel.dgM hh w k ∈ GlobalTheory.LFun.KGL w m := by
@@ -320,7 +318,7 @@ theorem dgM_KGL {a b m : ℕ} (hh : a + b = m) (w : Pl E) (k : GLw a w × GLw b 
     exact GlobalTheory.BCT.CtLevel.blockDiagonalMatrixOfAddEq_entries_mem_subring _ hh _ _ f1 f2 i j
 
 /- English proof (translation)
-Use `show blk hh w k 0 ∈ GlobalTheory.LFun.KGL w m`. Rewrite using `[GlobalTheory.CompanionTheory.GL3BlockMatrixLocal.blk_zero_eq]`. Conclude with `dgM_KGL hh w k hk`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem maximal_pair_mem_levi {a b m : ℕ} (hh : a + b = m) (w : Pl E) (k : GLw a w × GLw b w) (hk : k ∈ K2 a b w) :
     k ∈ leviOf hh w (GlobalTheory.LFun.KGL w m) := by
@@ -335,9 +333,7 @@ section Data
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ} (d : LocData E n) {a : ℕ}
 
 /- English proof (translation)
-Unfold `LocData.lev`. Use `split_ifs with h1 h2`. Conclude with `⟨_, _, lev_iw a w, lev_iw (n - a) w, rfl⟩`. Take `⟨L₁, L₂, hL, hL₁, hL₂⟩` from `hd.L a ha w h2`. Conclude with `⟨L₁, L₂, hL₁, hL₂, hL⟩`.
-
-Conclude with `maximal_pair_is_level a (n - a) w`.
+Replace the relevant objects with their definitions. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem lev_lv (hd : d.Ok) (ha : a ≤ n) (w : Pl E) : IsLv (d.lev a w) := by
   unfold LocData.lev
@@ -348,7 +344,7 @@ theorem lev_lv (hd : d.Ok) (ha : a ≤ n) (w : Pl E) : IsLv (d.lev a w) := by
   · exact maximal_pair_is_level a (n - a) w
 
 /- English proof (translation)
-Unfold `LocData.lev₂`. Use `split_ifs with h2`. Take `⟨L₁, L₂, hL, hL₁, hL₂⟩` from `hd.L a ha w h2`. Conclude with `⟨L₁, L₂, hL₁, hL₂, hL⟩`. Conclude with `maximal_pair_is_level a (n - a) w`.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem lev₂_lv (hd : d.Ok) (ha : a ≤ n) (w : Pl E) : IsLv (d.lev₂ a w) := by
   unfold LocData.lev₂
@@ -358,57 +354,57 @@ theorem lev₂_lv (hd : d.Ok) (ha : a ≤ n) (w : Pl E) : IsLv (d.lev₂ a w) :=
   · exact maximal_pair_is_level a (n - a) w
 
 /- English proof (translation)
-Unfold `LocData.lev`. Rewrite using `[if_pos h]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem level_eq_iwahori_pair_at_bad_places {w : Pl E} (h : w ∈ d.T) : d.lev a w = I2 a (n - a) w := by
   unfold LocData.lev; rw [if_pos h]
 
 /- English proof (translation)
-Unfold `LocData.lev`. Rewrite using `[if_neg hT, if_pos h]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem lev_S {w : Pl E} (hT : w ∉ d.T) (h : w ∈ d.S₀ ∪ d.Bad) : d.lev a w = d.L a w := by
   unfold LocData.lev; rw [if_neg hT, if_pos h]
 
 /- English proof (translation)
-Unfold `LocData.lev`. Rewrite using `[if_neg hT, if_neg h]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem lev_out {w : Pl E} (hT : w ∉ d.T) (h : w ∉ d.S₀ ∪ d.Bad) : d.lev a w = K2 a (n - a) w := by
   unfold LocData.lev; rw [if_neg hT, if_neg h]
 
 /- English proof (translation)
-Unfold `LocData.lev₂`. Rewrite using `[if_neg h]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem lev₂_out {w : Pl E} (h : w ∉ d.S₀ ∪ d.Bad) : d.lev₂ a w = K2 a (n - a) w := by
   unfold LocData.lev₂; rw [if_neg h]
 
 /- English proof (translation)
-Simplify using `only [Finset.mem_union, not_or] at hw ⊢`. The claim follows by propositional logic.
+Simplify using the standard rewrite rules. The claim follows by propositional logic.
 -/
 theorem out3 {w : Pl E} (hw : w ∉ d.T ∪ d.S₀ ∪ d.Bad) : w ∉ d.T ∧ w ∉ d.S₀ ∪ d.Bad := by
   simp only [Finset.mem_union, not_or] at hw ⊢
   tauto
 
 /- English proof (translation)
-Introduce `w hw` and use `by simp only [LocData.P, Finset.mem_union] at hw ⊢ tauto`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem wirtinger_sub : d.P ⊆ d.T ∪ d.S₀ ∪ d.Bad := fun w hw => by
   simp only [LocData.P, Finset.mem_union] at hw ⊢
   tauto
 
 /- English proof (translation)
-The claim follows from `idem_of_lv h1 (lev_lv d hd ha w)`.
+A detailed English derivation is pending.
 -/
 theorem idemH (h1 : IdemAlg) (hd : d.Ok) (ha : a ≤ n) (w : Pl E) : IsHecke (d.lev a w) (idem (d.lev a w)) :=
   idem_of_lv h1 (lev_lv d hd ha w)
 
 /- English proof (translation)
-The claim follows from `idem_of_lv h1 (lev₂_lv d hd ha w)`.
+A detailed English derivation is pending.
 -/
 theorem idemH₂ (h1 : IdemAlg) (hd : d.Ok) (ha : a ≤ n) (w : Pl E) : IsHecke (d.lev₂ a w) (idem (d.lev₂ a w)) :=
   idem_of_lv h1 (lev₂_lv d hd ha w)
 
 /- English proof (translation)
-Unfold `LocData.diag`. Use `split_ifs`. Conclude with `hf x`. Conclude with `hk_zero K`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem diagH {w : Pl E} {K : Subgroup (GLw a w × GLw (n - a) w)} (f : d.kap w → LF a (n - a) w)
     (hf : ∀ z, IsHecke K (f z)) (x y : d.kap w) : IsHecke K (d.diag f x y) := by
@@ -418,9 +414,7 @@ theorem diagH {w : Pl E} {K : Subgroup (GLw a w × GLw (n - a) w)} (f : d.kap w 
   · exact hk_zero K
 
 /- English proof (translation)
-Use `⟨fun x y => isTestFunction_of h1 _ Q (fun w => ⟨_, lev_lv d hd ha w, ?_⟩) fun w hw => ?_, isTestFunction_of h1 _ Q (fun w => ⟨_, lev₂_lv d hd ha w, ht w⟩) hto⟩` and prove the remaining obligations. Unfold `LM.ent split_ifs with h`. Conclude with `hm w h _ _`. Conclude with `hs w h`. Unfold `LM.ent`.
-
-Rewrite using `[dif_neg fun h => hw (hQ h)]`. Conclude with `hso w hw`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lm_ok (h1 : IdemAlg) (hd : d.Ok) (ha : a ≤ n) (L : LM d.kap a (n - a)) (Q : Finset (Pl E)) (hQ : d.P ⊆ Q)
     (hm : ∀ w ∈ d.P, ∀ x y, IsHecke (d.lev a w) (L.m w x y))
@@ -439,7 +433,7 @@ theorem lm_ok (h1 : IdemAlg) (hd : d.Ok) (ha : a ≤ n) (L : LM d.kap a (n - a))
     exact hso w hw
 
 /- English proof (translation)
-Take `⟨p, hp⟩` from `x`. Establish `e : d.idx w = {∅} ×ˢ d.X w` using `by unfold LocData.idx; rw [if_neg hT, if_pos hS]`. Rewrite `hp` using `[e]`. Conclude with `(Finset.mem_product.1 hp).2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kap_X {w : Pl E} (hT : w ∉ d.T) (hS : w ∈ d.S₀) (x : d.kap w) : x.1.2 ∈ d.X w := by
   obtain ⟨p, hp⟩ := x
@@ -448,9 +442,9 @@ theorem kap_X {w : Pl E} (hT : w ∉ d.T) (hS : w ∈ d.S₀) (x : d.kap w) : x.
   exact (Finset.mem_product.1 hp).2
 
 /- English proof (translation)
-Distinguish the cases in `hT : w ∈ d.T`. Conclude with `⟨⟨(∅, 1), by unfold LocData.idx; rw [if_pos hT]; simp⟩⟩`. Distinguish the cases in `hS : w ∈ d.S₀`. Take `⟨x, ⟨hx, -⟩, -⟩` from `(hd.K' w hS).2.2.2.2.1 1 (one_mem _)`. Conclude with `⟨⟨(∅, x), by unfold LocData.idx; rw [if_neg hT, if_pos hS]; simp [hx]⟩⟩`.
+Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨⟨(∅, 1), by unfold LocData.idx; rw [if_neg hT, if_neg hS]; simp⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem kap_ne (hd : d.Ok) (w : Pl E) : Nonempty (d.kap w) := by
   by_cases hT : w ∈ d.T
@@ -461,7 +455,7 @@ theorem kap_ne (hd : d.Ok) (w : Pl E) : Nonempty (d.kap w) := by
     · exact ⟨⟨(∅, 1), by unfold LocData.idx; rw [if_neg hT, if_neg hS]; simp⟩⟩
 
 /- English proof (translation)
-Unfold `LocData.qT`. Conclude with `hk_dite fun h => hk_fsum _ _ fun x t => hk_cmul _ (isHecke_iwahori_pair_double_coset _ _ _ _)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem qT_H (w : Pl E) (s : Finset (Fin (n / 2))) : IsHecke (I2 a (n - a) w) (d.qT a w s) := by
   unfold LocData.qT
@@ -474,11 +468,11 @@ section Ops
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ} (d : LocData E n) {a : ℕ}
 
 /- English proof (translation)
-Take `⟨hO, hle, hN, hX, hU, hHk⟩` from `hd.K' w hw`. Take `⟨c1, -, -, -⟩` from `h2 E n a (n - a) (Nat.add_sub_of_le ha) w (d.K' w) hO hle hN (d.X w) hX hU`. Take `⟨-, hcs, hbi⟩` from `c1 (d.e w) hHk x hx y hy`. Establish `hLS` using `hd.LS a ha w hw`. Establish `h1L` using `(hLS 1 (one_mem _)).1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨hcs.mono fun m hm h0 => hm ?_, fun k hk g => ?_⟩` and prove the remaining obligations. Simplify using `only [LocData.mac, phiMu, h0, mul_zero]`. Take `⟨hkl, hkμ⟩` from `hLS k hk`. Establish `e1` using `hbi k hkl 1 h1L g`. Establish `e2` using `hbi 1 h1L k hkl g`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `e1` using `[mul_one]`. Rewrite `e2` using `[one_mul]`. Prove the components needed by the constructor for the conclusion. Simplify using `only [LocData.mac, phiMu, e1, mu_left, hkμ, one_mul]`. Simplify using `only [LocData.mac, phiMu, e2, mu_right, hkμ, one_mul]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Prove the components needed by the constructor for the conclusion. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem mac_H (h2 : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E], LocOpUniformizer E) (hd : d.Ok) (ha : a ≤ n)
     {w : Pl E} (hw : w ∈ d.S₀) {x y : GLw n w} (hx : x ∈ d.X w) (hy : y ∈ d.X w) :
@@ -500,19 +494,19 @@ theorem mac_H (h2 : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E], LocO
     · simp only [LocData.mac, phiMu, e2, mu_right, hkμ, one_mul]
 
 /- English proof (translation)
-Take `⟨hs, -, -, -, hμ⟩` from `hg`. Establish `hϖ : IsUnifV E w (d.ϖ w : w.adicCompletion E)` using `unifV _ hu`. Establish `hT` using `GlobalTheory.LFun.Tj_mem_hecke (n := n) hϖ j`. Set `F : GLw n w → ℂ` to `fun y => Tj ℂ n (Ov E w) (d.ϖ w : w.adicCompletion E) j ((toSub (UL n w) y : UL n w) : GLw n w)`. Establish `hF : F = Tj ℂ n (Ov E w) (d.ϖ w : w.adicCompletion E) j`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `y`. Establish `hy : y ∈ UL n w` using `by unfold UL; rw [if_pos hs]; exact Subgroup.mem_top y`. Simplify using `only [F, toSub, dif_pos hy]`. Establish `hHk : IsHk (GlobalTheory.LFun.KGL w n) F`. Rewrite using `[hF]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨isOpen_KGL w n, isCompact_KGL w n, hcs_of_fin (isCompact_KGL w n) hT.2, fun k₁ hk₁ k₂ hk₂ g => hT.1 ⟨k₁, hk₁⟩ ⟨k₂, hk₂⟩ g⟩`. Take `⟨c1, c2, -, -⟩` from `h2 E n a (n - a) (Nat.add_sub_of_le ha) w (GlobalTheory.LFun.KGL w n) (isOpen_KGL w n) le_rfl (fun k hk k' hk' => mul_mem (mul_mem hk hk') (inv_mem hk)) {1} (by simp) (fun k hk => ⟨1, ⟨Finset.mem_singleton_self 1, by simpa using hk⟩, fun z hz => Finset.mem_singleton.1 hz.1⟩)`. Take `⟨-, hcs, hbi⟩` from `c1 F hHk 1 (Finset.mem_singleton_self 1) 1 (Finset.mem_singleton_self 1)`. Establish `hct : ∀ m, ct (Nat.add_sub_of_le ha) w F m = phi3 (Nat.add_sub_of_le ha) w F 1 1 m` using `fun m => by`. Simplify using `using c2 F hHk m`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hval : ∀ m, d.hc a ha w j m = (d.sgn a w)⁻¹ * ((d.μ w ((-1) ^ (a * (n - a)) * GeneralLinearGroup.det m.1 ^ (n - a) * GeneralLinearGroup.det m.2 ^ a) : ℂ) * phi3 (Nat.add_sub_of_le ha) w F 1 1 m)` using `fun m => by`. Rewrite using `[← hct]`. Both sides reduce to the same expression. Establish `hμK : ∀ k ∈ K2 a (n - a) w, d.μ w (GeneralLinearGroup.det k.1 ^ (n - a) * GeneralLinearGroup.det k.2 ^ a) = 1` using `fun k hk => by`. Take `⟨k1, k2⟩` from `Subgroup.mem_prod.1 hk`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[map_mul, map_pow, map_pow, mu_det _ hμ _ k1, mu_det _ hμ _ k2, one_pow, one_pow, one_mul]`. Establish `h1l` using `maximal_pair_mem_levi (Nat.add_sub_of_le ha) w 1 (one_mem _)`. Use `⟨hcs.mono fun m hm h0 => hm ?_, fun k hk g => ?_⟩` and prove the remaining obligations. Rewrite using `[hval, h0, mul_zero, mul_zero]`. Establish `e1` using `hbi k (maximal_pair_mem_levi _ w k hk) 1 h1l g`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e2` using `hbi 1 h1l k (maximal_pair_mem_levi _ w k hk) g`. Rewrite `e1` using `[mul_one]`. Rewrite `e2` using `[one_mul]`. Prove the components needed by the constructor for the conclusion. Rewrite using `[hval, hval, mu_left, hμK k hk, one_mul, e1]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hval, hval, mu_right, hμK k hk, one_mul, e2]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem hc_H (h2 : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E], LocOpUniformizer E) {w : Pl E} (hg : d.Good w)
     (hu : ordL (d.ϖ w : w.adicCompletion E) = 1) (ha : a ≤ n) (j : ℕ) :
@@ -562,7 +556,7 @@ section Fam
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ} (d : LocData E n) {a : ℕ}
 
 /- English proof (translation)
-The claim follows from `lm_ok d h1 hd ha _ _ (wirtinger_sub d) (fun w _ x y => diagH d _ (fun _ => idemH d h1 hd ha w) x y) (fun w _ => idemH d h1 hd ha w) (fun w => idemH₂ d h1 hd ha w) (fun w hw => by show idem (d.lev a w) = _; rw [lev_out d (out3 d hw).1 (out3 d hw).2]) (fun w hw => by show idem (d.l …`.
+A detailed English derivation is pending.
 -/
 theorem eL_ok (h1 : IdemAlg) (hd : d.Ok) (ha : a ≤ n) : (d.eL a).Ok d.P :=
   lm_ok d h1 hd ha _ _ (wirtinger_sub d) (fun w _ x y => diagH d _ (fun _ => idemH d h1 hd ha w) x y)
@@ -571,9 +565,9 @@ theorem eL_ok (h1 : IdemAlg) (hd : d.Ok) (ha : a ≤ n) : (d.eL a).Ok d.P :=
     (fun w hw => by show idem (d.lev₂ a w) = _; rw [lev₂_out d (out3 d hw).2])
 
 /- English proof (translation)
-Use `lm_ok d h1 hd ha _ _ (wirtinger_sub d) (fun w hw x y => ?_) (fun w _ => idemH d h1 hd ha w) (fun w => idemH₂ d h1 hd ha w) (fun w hw => by show idem (d.lev a w) = _; rw [lev_out d (out3 d hw).1 (out3 d hw).2]) (fun w hw => by show idem (d.lev₂ a w) = _; rw [lev₂_out d (out3 d hw) …` and prove the remaining obligations. Use `show IsHecke _ (if w ∈ d.T then d.diag (fun x => d.qT a w x.1.1) x y else d.mac a ha w (d.e w) x.1.2 y.1.2)`. Use `split_ifs with hT`. Rewrite using `[level_eq_iwahori_pair_at_bad_places d hT]`. Conclude with `diagH d _ (fun z => qT_H d w z.1.1) x y`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. The claim follows by propositional logic.
 
-Establish `hS : w ∈ d.S₀`. Simplify using `only [LocData.P, Finset.mem_union] at hw`. The claim follows by propositional logic. Rewrite using `[lev_S d hT (Finset.mem_union_left _ hS)]`. Conclude with `mac_H d h2 hd ha hS (kap_X d hT hS x) (kap_X d hT hS y)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem betaL_ok (h1 : IdemAlg) (h2 : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E], LocOpUniformizer E)
     (hd : d.Ok) (ha : a ≤ n) : (d.betaL a ha).Ok d.P := by
@@ -592,11 +586,9 @@ theorem betaL_ok (h1 : IdemAlg) (h2 : ∀ (E : Type) [Field E] [NumberField E] [
     exact mac_H d h2 hd ha hS (kap_X d hT hS x) (kap_X d hT hS y)
 
 /- English proof (translation)
-Use `lm_ok d h1 hd ha _ _ (wirtinger_sub d) (fun w hw x y => ?_) (fun w hw => ?_) (fun w => idemH₂ d h1 hd ha w) (fun w hw => ?_) (fun w hw => by show idem (d.lev₂ a w) = _; rw [lev₂_out d (out3 d hw).2])` and prove the remaining obligations. Use `show IsHecke _ (d.diag (fun _ => if w ∈ d.T then idem (d.lev a w) else d.sgn a w • idem (d.lev a w)) x y)`. Use `diagH d _ (fun _ => ?_) x y` and prove the remaining obligations. Use `split_ifs`. Conclude with `idemH d h1 hd ha w`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hk_smul _ (idemH d h1 hd ha w)`. Use `show IsHecke _ (if w ∈ d.Bad then d.fix a w else idem (d.lev a w)) split_ifs with hB`. Establish `hT : w ∉ d.T` using `fun h => hw (by simp [LocData.P, h])`. Rewrite using `[lev_S d hT (Finset.mem_union_right _ hB)]`. Conclude with `hd.fix a ha w hB`.
-
-Conclude with `idemH d h1 hd ha w`. Establish `hB : w ∉ d.Bad` using `fun h => hw (by simp [h]) show (if w ∈ d.Bad then d.fix a w else idem (d.lev a w)) = _`. Rewrite using `[if_neg hB, lev_out d (out3 d hw).1 (out3 d hw).2]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fixL_ok (h1 : IdemAlg) (hd : d.Ok) (ha : a ≤ n) : (d.fixL a).Ok d.P := by
   refine lm_ok d h1 hd ha _ _ (wirtinger_sub d) (fun w hw x y => ?_) (fun w hw => ?_)
@@ -618,17 +610,15 @@ theorem fixL_ok (h1 : IdemAlg) (hd : d.Ok) (ha : a ≤ n) : (d.fixL a).Ok d.P :=
     rw [if_neg hB, lev_out d (out3 d hw).1 (out3 d hw).2]
 
 /- English proof (translation)
-Establish `hH` using `hc_H d h2 hg (hd.unif w₀) ha j`. Take `⟨-, hT0, hS0, hB0, -⟩` from `hg`. Establish `hSB0 : w₀ ∉ d.S₀ ∪ d.Bad` using `by simp [Finset.mem_union, hS0, hB0]`. Establish `hl : d.lev a w₀ = K2 a (n - a) w₀` using `lev_out d hT0 hSB0`. Establish `hl₂ : d.lev₂ a w₀ = K2 a (n - a) w₀` using `lev₂_out d hSB0`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hQ : d.P ⊆ insert w₀ (d.T ∪ d.S₀ ∪ d.Bad)` using `fun w hw => Finset.mem_insert_of_mem (wirtinger_sub d hw)`. Establish `hout : ∀ w ∉ insert w₀ (d.T ∪ d.S₀ ∪ d.Bad), w ≠ w₀ ∧ w ∉ d.T ∪ d.S₀ ∪ d.Bad` using `fun w hw => ⟨fun h => hw (h ▸ Finset.mem_insert_self _ _), fun h => hw (Finset.mem_insert_of_mem h)⟩`. Consider the cases of `intersection_update_fsHerm_neg_one`. Use `lm_ok d h1 hd ha _ _ hQ (fun w _ x y => diagH d _ (fun _ => idemH d h1 hd ha w) x y) (fun w _ => ?_) (fun w => idemH₂ d h1 hd ha w) (fun w hw => ?_) (fun w hw => by show idem (d.lev₂ a w) = _; rw [lev₂_out d (out3 d (hout w hw).2).2])` and prove the remaining obligations. Use `show IsHecke _ (Function.update (fun w => idem (d.lev a w)) w₀ (d.hc a ha w₀ j) w)`.
+Establish an intermediate fact. Establish an intermediate fact. Split into cases according to the possible forms of the given data. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `h : w = w₀`. Substitute `h` using the available equality. Rewrite using `[Function.update_self, hl]`. Conclude with `hH`. Rewrite using `[Function.update_of_ne h]`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `idemH d h1 hd ha w`. Use `show Function.update (fun w => idem (d.lev a w)) w₀ (d.hc a ha w₀ j) w = _`. Rewrite using `[Function.update_of_ne (hout w hw).1, lev_out d (out3 d (hout w hw).2).1 (out3 d (hout w hw).2).2]`. Use `lm_ok d h1 hd ha _ _ hQ (fun w _ x y => diagH d _ (fun _ => idemH d h1 hd ha w) x y) (fun w _ => idemH d h1 hd ha w) (fun w => ?_) (fun w hw => by show idem (d.lev a w) = _; rw [lev_out d (out3 d (hout w hw).2).1 (out3 d (hout w hw).2).2]) (fun w hw => ?_)` and prove the remaining obligations. Use `show IsHecke _ (Function.update (fun w => idem (d.lev₂ a w)) w₀ (d.hc a ha w₀ j) w)`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `h : w = w₀`. Substitute `h` using the available equality. Rewrite using `[Function.update_self, hl₂]`. Conclude with `hH`. Rewrite using `[Function.update_of_ne h]`.
-
-Conclude with `idemH₂ d h1 hd ha w`. Use `show Function.update (fun w => idem (d.lev₂ a w)) w₀ (d.hc a ha w₀ j) w = _`. Rewrite using `[Function.update_of_ne (hout w hw).1, lev₂_out d (out3 d (hout w hw).2).2]`.
+A detailed English derivation is pending.
 -/
 theorem hL_ok (h1 : IdemAlg) (h2 : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E], LocOpUniformizer E)
     (hd : d.Ok) (ha : a ≤ n) {w₀ : Pl E} (hg : d.Good w₀) (j : ℕ) (intersection_update_fsHerm_neg_one : Bool) :
@@ -669,7 +659,7 @@ end PositivityTheory.Rg.BcB.F.LocOk
 namespace PositivityTheory.Rg.BcB.F
 
 /- English proof (translation)
-Introduce `E _ _ _ n d hd a ha`. Use `⟨LocOk.kap_ne d hd, LocOk.betaL_ok d h1 h2 hd ha, LocOk.fixL_ok d h1 hd ha, fun L hL => ?_⟩` and prove the remaining obligations. Break down `hL with rfl | ⟨w, j, intersection_update_fsHerm_neg_one, hg, rfl⟩` into its components or cases. Conclude with `LocOk.eL_ok d h1 hd ha`. Conclude with `LocOk.hL_ok d h1 h2 hd ha hg j intersection_update_fsHerm_neg_one`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem locOk (h1 : IdemAlg) (h2 : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E], LocOpUniformizer E) : LocOk := by
   intro E _ _ _ n d hd a ha

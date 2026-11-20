@@ -10,7 +10,7 @@ namespace ReciprocityTheory.ChartRestriction.DS.TRGap
 variable {n : ℕ}
 
 /- English proof (translation)
-Use `(fockBasis n).ext fun t => ?_` and prove the remaining obligations. Simplify using `only [LinearMap.comp_apply, lf_num_basis, LinearMap.smul_apply, Module.Basis.coord_apply, smul_eq_mul]`. Distinguish the cases in `h : t = s`. Apply the tactic sequence `subst h split_ifs <;> simp`. Apply the tactic sequence `split_ifs <;> simp [Module.Basis.repr_self, h]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem gc_coord_num (x : Fin n × Fin n) (s : Finset (Fin (n * n))) :
     (fockBasis n).coord s ∘ₗ (cpFock x.1 x.2 ∘ₗ cmFock x.1 x.2) =
@@ -23,9 +23,9 @@ theorem gc_coord_num (x : Fin n × Fin n) (s : Finset (Fin (n * n))) :
   · split_ifs <;> simp [Module.Basis.repr_self, h]
 
 /- English proof (translation)
-Introduce `m hm`. Assume the negation of the conclusion as `hnot`. Take `⟨x, rfl⟩` from `finProdFinEquiv.surjective m`. Establish `hx : ¬ (ε x.1 = true ∧ ε x.2 = false)` using `fun h => hnot ((lf_mem_phys ε x.1 x.2).2 h)`. Establish `h0 : cmFock x.1 x.2 f = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [physFock, Submodule.mem_iInf, LinearMap.mem_ker] at hf`. Conclude with `hf x.1 x.2 hx`. Establish `h` using `LinearMap.congr_fun (gc_coord_num x s) f`. Simplify using `only [LinearMap.comp_apply, h0, map_zero, if_pos hm, one_smul] at h`. Conclude with `hs h.symm`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem gc_support_phys {ε : Fin n → Bool} {f : Fock n} (hf : f ∈ physFock ε) {s : Finset (Fin (n * n))}
     (hs : (fockBasis n).coord s f ≠ 0) : s ⊆ lfPhysModes ε := by
@@ -45,9 +45,9 @@ def gcPh (ε : Fin n → Bool) (s : Finset (Fin (n * n))) : Finset (Fin n × Fin
     ((lowerWedgeAlt ε).1 \ s).image fun k => ((finProdFinEquiv.symm k).2, (finProdFinEquiv.symm k).1)
 
 /- English proof (translation)
-Rewrite using `[Finset.disjoint_left]`. Introduce `x hx1 hx2`. Take `⟨k, hk, rfl⟩` from `Finset.mem_image.1 hx1`. Take `⟨k', hk', he⟩` from `Finset.mem_image.1 hx2`. Establish `hp` using `hs (Finset.mem_sdiff.1 hk).1`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hp'` using `(lowerWedgeAlt ε).2 (Finset.mem_sdiff.1 hk').1`. Simplify using `only [lfPhysModes, mem_filter, mem_univ, true_and] at hp hp'`. Establish `e : (finProdFinEquiv.symm k').2 = (finProdFinEquiv.symm k).1` using `congrArg Prod.fst he`. Rewrite `hp'` using `[e, hp.1]`. Conclude with `Bool.noConfusion hp'.2`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gc_disj (ε : Fin n → Bool) {s : Finset (Fin (n * n))} (hs : s ⊆ lfPhysModes ε) :
     Disjoint ((s \ (lowerWedgeAlt ε).1).image finProdFinEquiv.symm)
@@ -64,15 +64,15 @@ theorem gc_disj (ε : Fin n → Bool) {s : Finset (Fin (n * n))} (hs : s ⊆ lfP
   exact Bool.noConfusion hp'.2
 
 /- English proof (translation)
-Introduce `x hx`. Break down `Finset.mem_union.1 hx with h | h` into its components or cases. Take `⟨k, hk, rfl⟩` from `Finset.mem_image.1 h`. Take `⟨hks, hk0⟩` from `Finset.mem_sdiff.1 hk`. Establish `hp` using `hs hks`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨y, rfl⟩` from `finProdFinEquiv.surjective k`. Rewrite `hk0` using `[mem_lowerWedge_iff]`. Simplify using `only [lfPhysModes, mem_filter, mem_univ, true_and, Equiv.symm_apply_apply] at hp ⊢`. Establish `hne : y.1 ≠ y.2` using `fun he => by`. Establish `h1` using `hp.1`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1` using `[he, hp.2]`. Conclude with `Bool.noConfusion h1`. Use `⟨lt_of_le_of_ne (not_lt.1 fun h' => hk0 ⟨hp.1, hp.2, h'⟩) hne, ?_⟩` and prove the remaining obligations. Rewrite using `[hp.1, hp.2]`. Simplify using the standard rewrite rules.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Take `⟨k, hk, rfl⟩` from `Finset.mem_image.1 h`. Take `⟨y, rfl⟩` from `finProdFinEquiv.surjective k`. Establish `hk0` using `(Finset.mem_sdiff.1 hk).1`. Rewrite `hk0` using `[mem_lowerWedge_iff]`. Simplify using `only [Equiv.symm_apply_apply]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨hk0.2.2, ?_⟩` and prove the remaining obligations. Rewrite using `[hk0.1, hk0.2.1]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem gc_isPosNC (ε : Fin n → Bool) {s : Finset (Fin (n * n))} (hs : s ⊆ lfPhysModes ε) :
     IsPosNC ε (gcPh ε s) := by
@@ -101,11 +101,11 @@ theorem gc_isPosNC (ε : Fin n → Bool) {s : Finset (Fin (n * n))} (hs : s ⊆ 
     simp
 
 /- English proof (translation)
-Unfold `phSum gcPh`. Rewrite using `[Finset.sum_union (gc_disj ε hs), Finset.sum_image (fun a _ b _ h => finProdFinEquiv.symm.injective h), Finset.sum_image (fun a _ b _ h => finProdFinEquiv.symm.injective (Prod.ext (congrArg Prod.snd h) (congrArg Prod.fst h))), sub_eq_add_neg, ← Finset.sum_neg_distrib]`. Use `congr 1`. Use `Finset.sum_congr rfl fun k hk => ?_` and prove the remaining obligations. Establish `hp` using `hs (Finset.mem_sdiff.1 hk).1`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `only [lfPhysModes, mem_filter, mem_univ, true_and] at hp`. Simplify using `only [modeWt, if_pos hp]`. Use `Finset.sum_congr rfl fun k hk => ?_` and prove the remaining obligations. Establish `hp` using `(lowerWedgeAlt ε).2 (Finset.mem_sdiff.1 hk).1`. Simplify using `only [lfPhysModes, mem_filter, mem_univ, true_and] at hp`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [modeWt, if_pos hp, root, neg_sub]`.
+Simplify using the standard rewrite rules.
 -/
 theorem gc_phSum (ε : Fin n → Bool) {s : Finset (Fin (n * n))} (hs : s ⊆ lfPhysModes ε) :
     phSum (gcPh ε s) = ∑ k ∈ s \ (lowerWedgeAlt ε).1, modeWt ε (finProdFinEquiv.symm k) -
@@ -126,15 +126,15 @@ theorem gc_phSum (ε : Fin n → Bool) {s : Finset (Fin (n * n))} (hs : s ⊆ lf
     simp only [modeWt, if_pos hp, root, neg_sub]
 
 /- English proof (translation)
-The claim follows from `(coord_wt_eq ε (lowerWedge_weight ε) (by simp)).symm`.
+A detailed English derivation is pending.
 -/
 theorem fockWeight_wedge_lowerModes (ε : Fin n → Bool) : fockWt ε (lowerWedgeAlt ε).1 = rhoHol ε - rhoN ε :=
   (coord_wt_eq ε (lowerWedge_weight ε) (by simp)).symm
 
 /- English proof (translation)
-Rewrite using `[gc_phSum ε hs, ← fockWeight_wedge_lowerModes]`. Unfold `fockWt`. Establish `e1` using `Finset.sum_sdiff (f := fun k => modeWt ε (finProdFinEquiv.symm k)) (Finset.inter_subset_left : s ∩ (lowerWedgeAlt ε).1 ⊆ s)`. Establish `e2` using `Finset.sum_sdiff (f := fun k => modeWt ε (finProdFinEquiv.symm k)) (Finset.inter_subset_right : s ∩ (lowerWedgeAlt ε).1 ⊆ (lowerWedgeAlt ε).1)`. Establish `d1 : s \ (s ∩ (lowerWedgeAlt ε).1) = s \ (lowerWedgeAlt ε).1` using `by ext; simp only [Finset.mem_sdiff, Finset.mem_inter]; tauto`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `d2 : (lowerWedgeAlt ε).1 \ (s ∩ (lowerWedgeAlt ε).1) = (lowerWedgeAlt ε).1 \ s` using `by ext; simp only [Finset.mem_sdiff, Finset.mem_inter]; tauto`. Rewrite `e1` using `[d1]`. Rewrite `e2` using `[d2]`. Rewrite using `[← e1, ← e2]`. Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem gc_wt_eq (ε : Fin n → Bool) {s : Finset (Fin (n * n))} (hs : s ⊆ lfPhysModes ε) :
     fockWt ε s = rhoHol ε - rhoN ε + phSum (gcPh ε s) := by
@@ -154,7 +154,7 @@ theorem gc_wt_eq (ε : Fin n → Bool) {s : Finset (Fin (n * n))} (hs : s ⊆ lf
   abel
 
 /- English proof (translation)
-Unfold `gcPh at h`. Rewrite `h` using `[Finset.union_eq_empty, Finset.image_eq_empty, Finset.image_eq_empty, Finset.sdiff_eq_empty_iff_subset, Finset.sdiff_eq_empty_iff_subset]`. Conclude with `Finset.Subset.antisymm h.1 h.2`.
+Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gc_Ph_empty {ε : Fin n → Bool} {s : Finset (Fin (n * n))} (h : gcPh ε s = ∅) : s = (lowerWedgeAlt ε).1 := by
   unfold gcPh at h
@@ -163,9 +163,9 @@ theorem gc_Ph_empty {ε : Fin n → Bool} {s : Finset (Fin (n * n))} (h : gcPh �
   exact Finset.Subset.antisymm h.1 h.2
 
 /- English proof (translation)
-Unfold `fockWt`. Simplify using `only [Finset.sum_apply]`. Rewrite using `[Finset.sum_comm, Finset.card_eq_sum_ones, Nat.cast_sum, Nat.cast_one]`. Use `Finset.sum_congr rfl fun k hk => ?_` and prove the remaining obligations. Establish `hp` using `hs hk`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take `⟨y, rfl⟩` from `finProdFinEquiv.surjective k`. Establish `hp'` using `(lf_mem_phys ε y.1 y.2).1 hp`. Simplify using `only [Equiv.symm_apply_apply, modeWt, if_pos hp', root, Pi.sub_apply, Finset.sum_sub_distrib]`. Simplify using `[plusIdx, Pi.single_apply, hp'.1, hp'.2]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem gc_plus_sum {ε : Fin n → Bool} {s : Finset (Fin (n * n))} (hs : s ⊆ lfPhysModes ε) :
     ∑ a ∈ plusIdx ε, fockWt ε s a = (s.card : ℝ) := by

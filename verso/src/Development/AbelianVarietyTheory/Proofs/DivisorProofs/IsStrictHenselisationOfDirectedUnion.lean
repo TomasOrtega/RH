@@ -7,15 +7,13 @@ namespace GlobalTheory.StrictHensUnion
 open CategoryTheory Limits in
 
 /- English proof (translation)
-Introduce `R S _ _ _ ι _ _ _ D hmono hcov hD`. Establish `hp : RingHom.toMorphismProperty @RingHom.Etale ≤ MorphismProperty.isFinitelyPresentable.{0} CommRingCat.{0}`. Introduce `X Y f hf`. Use `CommRingCat.isFinitelyPresentable_hom f ?_` and prove the remaining obligations. Use `letI := f.hom.toAlgebra`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Equip the data with the indicated structure.
 
-Use `haveI : Algebra.Etale X Y := hf`. Conclude with `RingHom.finitePresentation_algebraMap.2 inferInstance`. Unfold `GlobalTheory.IndefiniteRowSideFullHecke.ProjectiveSpaceOverSpec.IsIndEtale`. Rewrite using `[← MorphismProperty.ind_ind hp]`. Use `haveI : IsFiltered ι := inferInstance`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `F : ι ⥤ CommRingCat.{0}` to `{ obj := fun i => CommRingCat.of (D i) map := fun {i j} h => CommRingCat.ofHom (Subalgebra.inclusion (hmono (leOfHom h))).toRingHom map_id := fun _ => rfl map_comp := fun _ _ => rfl }`. Set `t : (Functor.const ι).obj (CommRingCat.of R) ⟶ F` to `{ app := fun i => CommRingCat.ofHom (algebraMap R (D i)), naturality := fun _ _ _ => rfl }`. Set `s : F ⟶ (Functor.const ι).obj (CommRingCat.of S)` to `{ app := fun i => CommRingCat.ofHom (D i).val.toRingHom, naturality := fun _ _ _ => rfl }`. Use `⟨ι, inferInstance, inferInstance, F, t, s, ?_, fun i => ⟨hD i, rfl⟩⟩` and prove the remaining obligations. Use `haveI : ReflectsColimit F (forget CommRingCat.{0}) := reflectsColimit_of_reflectsIsomorphisms _ _`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use `isColimitOfReflects (forget CommRingCat.{0}) ?_` and prove the remaining obligations. Use `Types.FilteredColimit.isColimitOf' _ _ (fun x => ?_) (fun i x y hxy => ?_)` and prove the remaining obligations. Take `⟨i, hi⟩` from `hcov x`. Conclude with `⟨i, ⟨x, hi⟩, rfl⟩`. Establish `: x = y` using `Subtype.ext hxy`.
-
-Conclude with `⟨i, 𝟙 i, by rw [this]⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem indEtale_of_directed_union : ∀ (R S : Type) [CommRing R] [CommRing S] [Algebra R S] (ι : Type) [Preorder ι] [IsDirected ι (· ≤ ·)] [Nonempty ι] (D : ι → Subalgebra R S), Monotone D → (∀ s : S, ∃ i, s ∈ D i) → (∀ i, GlobalTheory.IndefiniteRowSideFullHecke.ProjectiveSpaceOverSpec.IsIndEtale (algebraMap R (D i))) → GlobalTheory.IndefiniteRowSideFullHecke.ProjectiveSpaceOverSpec.IsIndEtale (algebraMap R S) := by
   intro R S _ _ _ ι _ _ _ D hmono hcov hD
@@ -54,7 +52,7 @@ def DivIdx {A : Type} [CommRing A] (M : Submonoid A) : Type := M
 def DivIdx.el {A : Type} [CommRing A] {M : Submonoid A} (x : DivIdx M) : A := ((show M from x) : A)
 
 /- English proof (translation)
-The claim follows from `(show M from x).2`.
+A detailed English derivation is pending.
 -/
 theorem DivIdx.el_mem {A : Type} [CommRing A] {M : Submonoid A} (x : DivIdx M) : x.el ∈ M :=
   (show M from x).2
@@ -74,37 +72,33 @@ instance DivIdx.instNonempty {A : Type} [CommRing A] (M : Submonoid A) : Nonempt
 open CategoryTheory Limits in
 
 /- English proof (translation)
-Introduce `R A _ _ _ _ M`. Use `haveI : IsFiltered (DivIdx M) := inferInstance`. Establish `hunit : ∀ {x y : DivIdx M}, x ≤ y → IsUnit (algebraMap A (Localization.Away y.el) x.el)`. Introduce `x y h`. Take `⟨c, hc⟩` from `h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hy` using `IsLocalization.Away.algebraMap_isUnit (S := Localization.Away y.el) y.el`. Establish `he : algebraMap A (Localization.Away y.el) y.el = algebraMap A (Localization.Away y.el) x.el * algebraMap A (Localization.Away y.el) c`. Rewrite using `[← map_mul, ← hc]`. Conclude with `isUnit_of_mul_isUnit_left (he ▸ hy)`. Establish `hM : ∀ x : DivIdx M, IsUnit (algebraMap A (Localization M) x.el)` using `fun x => IsLocalization.map_units (Localization M) (⟨x.el, x.el_mem⟩ : M)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the claim to the hypotheses of an applicable result.
 
-Set `F : DivIdx M ⥤ CommRingCat.{0}` to `{ obj := fun x => CommRingCat.of (Localization.Away x.el) map := fun {x y} h => CommRingCat.ofHom (IsLocalization.Away.lift x.el (hunit (leOfHom h))) map_id := fun x => by ext1`. Apply `IsLocalization.ringHom_ext (Submonoid.powers x.el)` to reduce the goal to its premises. Use extensionality with `a`. Simplify using `[IsLocalization.Away.lift_comp]`. Use `map_comp := fun {x y z} f g => by ext1`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Apply `IsLocalization.ringHom_ext (Submonoid.powers x.el)` to reduce the goal to its premises. Use extensionality with `a`. Simplify using `[IsLocalization.Away.lift, IsLocalization.lift_eq] }`. Set `t : (Functor.const (DivIdx M)).obj (CommRingCat.of R) ⟶ F` to `{ app := fun x => CommRingCat.ofHom (algebraMap R (Localization.Away x.el)) naturality := fun x y h => by`. Use extensionality with `r`.
+Introduce a local definition for the expression. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `[F, IsScalarTower.algebraMap_apply R A (Localization.Away x.el), IsScalarTower.algebraMap_apply R A (Localization.Away y.el), IsLocalization.Away.lift, IsLocalization.lift_eq] }`. Set `s : F ⟶ (Functor.const (DivIdx M)).obj (CommRingCat.of (Localization M))` to `{ app := fun x => CommRingCat.ofHom (IsLocalization.Away.lift x.el (hM x)) naturality := fun x y h => by ext1`. Apply `IsLocalization.ringHom_ext (Submonoid.powers x.el)` to reduce the goal to its premises. Use extensionality with `a`. Simplify using `[F, IsLocalization.Away.lift, IsLocalization.lift_eq] }`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨DivIdx M, inferInstance, inferInstance, F, t, s, ?_, fun x => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Use `haveI : ReflectsColimit F (forget CommRingCat.{0}) := reflectsColimit_of_reflectsIsomorphisms _ _`. Use `isColimitOfReflects (forget CommRingCat.{0}) ?_` and prove the remaining obligations. Use `Types.FilteredColimit.isColimitOf' _ _ (fun z => ?_) (fun x u v huv => ?_)` and prove the remaining obligations. Take `⟨⟨a, m⟩, hz⟩` from `IsLocalization.mk'_surjective M (show Localization M from z)`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Set `mi : DivIdx M` to `(show DivIdx M from m)`. Establish `hmi : mi.el = (m : A)` using `rfl`. Use `⟨mi, (algebraMap A (Localization.Away mi.el) a * IsLocalization.Away.invSelf (S := Localization.Away mi.el) mi.el : Localization.Away mi.el), ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(show Localization M from z) = IsLocalization.Away.lift mi.el (hM mi) (algebraMap A (Localization.Away mi.el) a * IsLocalization.Away.invSelf mi.el)`. Establish `h1 : ∀ b : A, IsLocalization.Away.lift mi.el (hM mi) (algebraMap A (Localization.Away mi.el) b) = algebraMap A (Localization M) b`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Introduce `b`. Simplify using `[IsLocalization.Away.lift, IsLocalization.lift_eq]`. Rewrite using `[← hz, IsLocalization.mk'_eq_iff_eq_mul, ← hmi, ← h1 mi.el, ← h1 a, ← map_mul, mul_assoc, mul_comm (IsLocalization.Away.invSelf mi.el), IsLocalization.Away.mul_invSelf, mul_one]`. Set `u' : Localization.Away x.el` to `u`. Set `v' : Localization.Away x.el` to `v`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Set `φx : Localization.Away x.el →+* Localization M` to `IsLocalization.Away.lift x.el (hM x)`. Establish `huv' : φx (u' - v') = 0`. Rewrite using `[map_sub]`. Conclude with `sub_eq_zero.2 huv`. Take `⟨⟨a, p⟩, hw0⟩` from `IsLocalization.mk'_surjective (Submonoid.powers x.el) (u' - v')`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hw : IsLocalization.mk' (Localization.Away x.el) a p = u' - v'` using `hw0`. Establish `ha : algebraMap A (Localization M) a = 0`. Establish `h2` using `IsLocalization.mk'_spec (Localization.Away x.el) a p`. Establish `h3` using `congrArg φx h2`. Rewrite `h3` using `[map_mul, hw, huv', zero_mul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[h3]`. Simplify using `[φx, IsLocalization.Away.lift, IsLocalization.lift_eq]`. Take `⟨m, hm⟩` from `(IsLocalization.map_eq_zero_iff M (Localization M) a).1 ha`. Set `k : DivIdx M` to `(show DivIdx M from ((show M from x) * m))`. Establish `hk : k.el = x.el * (m : A)` using `rfl`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hxk : x ≤ k` using `⟨(m : A), hk⟩`. Use `⟨k, homOfLE hxk, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `IsLocalization.Away.lift x.el (hunit hxk) u' = IsLocalization.Away.lift x.el (hunit hxk) v'`. Rewrite using `[← sub_eq_zero, ← map_sub, ← hw]`. Establish `hmk : IsUnit (algebraMap A (Localization.Away k.el) (m : A))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `hy` using `IsLocalization.Away.algebraMap_isUnit (S := Localization.Away k.el) k.el`. Rewrite `hy` using `[hk, map_mul]`. Conclude with `isUnit_of_mul_isUnit_right hy`. Establish `hak : algebraMap A (Localization.Away k.el) a = 0`. Apply `(hmk.mul_right_eq_zero).1` to reduce the goal to its premises.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← map_mul, hm, map_zero]`. Establish `hpk : IsUnit (IsLocalization.Away.lift x.el (hunit hxk) (algebraMap A (Localization.Away x.el) (p : A)))`. Take `⟨n, hn⟩` from `p.2`. Rewrite using `[← hn, map_pow, map_pow]`. Conclude with `((IsLocalization.Away.algebraMap_isUnit x.el).map _).pow n`.
-
-Apply `(hpk.mul_left_eq_zero).1` to reduce the goal to its premises. Rewrite using `[← map_mul, IsLocalization.mk'_spec]`. Simplify using `[IsLocalization.Away.lift, IsLocalization.lift_eq, hak]`. Use `haveI : Algebra.Etale A (Localization.Away x.el) := Algebra.Etale.of_isLocalizationAway x.el haveI : Algebra.Etale R (Localization.Away x.el) := Algebra.Etale.comp R A _`. Express the relevant statement in the definitionally equal form `RingHom.Etale (algebraMap R (Localization.Away x.el))`.
-
-Conclude with `RingHom.etale_algebraMap.2 inferInstance`. Use extensionality with `r`. Simplify using `[t, s, IsScalarTower.algebraMap_apply R A (Localization.Away x.el), IsScalarTower.algebraMap_apply R A (Localization M), IsLocalization.Away.lift]`. Conclude with `IsLocalization.lift_eq _ _`.
+Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem indEtale_localization_of_etale : ∀ (R A : Type) [CommRing R] [CommRing A] [Algebra R A] [Algebra.Etale R A] (M : Submonoid A), GlobalTheory.IndefiniteRowSideFullHecke.ProjectiveSpaceOverSpec.IsIndEtale (algebraMap R (Localization M)) := by
   intro R A _ _ _ _ M
@@ -215,11 +209,9 @@ theorem indEtale_localization_of_etale : ∀ (R A : Type) [CommRing R] [CommRing
 open CategoryTheory in
 
 /- English proof (translation)
-Introduce `R L S _ _ _ _ _ _ _ N _ hR`. Use `haveI : IsLocalization (Algebra.algebraMapSubmonoid S N) S := by`. Use `IsLocalization.self ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨n, hn, rfl⟩`. Rewrite using `[IsScalarTower.algebraMap_apply R L S]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(IsLocalization.map_units L (⟨n, hn⟩ : N)).map (algebraMap L S)`. Use `haveI : Algebra.IsPushout R S L S := Algebra.isPushout_of_isLocalization N L S S`. Use `haveI : Algebra.IsPushout R L S S := this.symm`. Establish `sq` using `CommRingCat.isPushout_of_isPushout R L S S`. Establish `: (RingHom.toMorphismProperty @RingHom.Etale).IsStableUnderCobaseChange` using `RingHom.isStableUnderCobaseChange_toMorphismProperty_iff.2 RingHom.Etale.isStableUnderBaseChange`.
-
-Conclude with `MorphismProperty.of_isPushout (P := MorphismProperty.ind.{0} (RingHom.toMorphismProperty @RingHom.Etale)) sq hR`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem indEtale_over_localization : ∀ (R L S : Type) [CommRing R] [CommRing L] [CommRing S] [Algebra R L] [Algebra R S] [Algebra L S] [IsScalarTower R L S] (N : Submonoid R) [IsLocalization N L], GlobalTheory.IndefiniteRowSideFullHecke.ProjectiveSpaceOverSpec.IsIndEtale (algebraMap R S) → GlobalTheory.IndefiniteRowSideFullHecke.ProjectiveSpaceOverSpec.IsIndEtale (algebraMap L S) := by
   intro R L S _ _ _ _ _ _ _ N _ hR
@@ -236,7 +228,7 @@ theorem indEtale_over_localization : ∀ (R L S : Type) [CommRing R] [CommRing L
   exact MorphismProperty.of_isPushout (P := MorphismProperty.ind.{0} (RingHom.toMorphismProperty @RingHom.Etale)) sq hR
 
 /- English proof (translation)
-Establish `: (RingHom.toMorphismProperty @RingHom.Etale).RespectsIso` using `RingHom.toMorphismProperty_respectsIso_iff.mp RingHom.Etale.respectsIso`. Establish `h2` using `CategoryTheory.MorphismProperty.RespectsIso.postcomp (CategoryTheory.MorphismProperty.ind.{0} (RingHom.toMorphismProperty @RingHom.Etale)) (e.toRingEquiv.toCommRingCatIso.hom) (CommRingCat.ofHom (algebraMap R A)) h`. Unfold `GlobalTheory.IndefiniteRowSideFullHecke.ProjectiveSpaceOverSpec.IsIndEtale`. Use `h2 using 1` and compare the differences between its conclusion and the goal. Use extensionality with `x`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components.
 
 Simplify using the standard rewrite rules.
 -/
@@ -252,17 +244,15 @@ theorem indEtale_of_algEquiv {R A B : Type} [CommRing R] [CommRing A] [CommRing 
   simp
 
 /- English proof (translation)
-Introduce `T O _ _ _ _ _ _ _ _ _ hS`. Take `⟨ι, _, _, _, Si, hmono, hcov, hA⟩` from `hS`. Use `set P : Ideal (Polynomial T) := (maximalIdeal O).comap (algebraMap (Polynomial T) O) with hP`. Use `haveI hPp : P.IsPrime := Ideal.comap_isPrime _ _`. Establish `hu : ∀ y : P.primeCompl, IsUnit (algebraMap (Polynomial T) O y)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `y`. Use `y.2` as an intermediate fact. Assume the negation of the conclusion as `hy`. Conclude with `this ((IsLocalRing.mem_maximalIdeal _).2 hy)`. Set `φ : Localization.AtPrime P →+* O` to `IsLocalization.lift hu`.
+Assume the negation of the conclusion and derive a contradiction. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hφ : φ.comp (algebraMap (Polynomial T) _) = algebraMap (Polynomial T) O` using `IsLocalization.lift_comp hu`. Use `⟨P, hPp, φ, hφ, inferInstance, inferInstance, ?_, ?_⟩` and prove the remaining obligations. Use `⟨fun x hx => ?_⟩` and prove the remaining obligations. Take `⟨⟨a, s⟩, rfl⟩` from `IsLocalization.mk'_surjective P.primeCompl x`. Rewrite using `[IsLocalization.AtPrime.isUnit_mk'_iff]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `ha`. Establish `h1 : algebraMap (Polynomial T) O a = algebraMap (Polynomial T) O s * φ (IsLocalization.mk' _ a s)` using `(IsLocalization.lift_mk'_spec _ _ _ _).1 rfl`. Establish `h2 : IsUnit (algebraMap (Polynomial T) O a)`. Rewrite using `[h1]`. Conclude with `(hu s).mul hx`.
+Rewrite the conclusion using the stated equalities. Equip the data with the indicated structure. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `(IsLocalRing.mem_maximalIdeal _).1 ha h2`. Use `letI : Algebra (Localization.AtPrime P) O := φ.toAlgebra haveI : IsScalarTower (Polynomial T) (Localization.AtPrime P) O := IsScalarTower.of_algebraMap_eq fun x => (congrArg (fun f => f x) hφ).symm`. Establish `hR : GlobalTheory.IndefiniteRowSideFullHecke.ProjectiveSpaceOverSpec.IsIndEtale (algebraMap (Polynomial T) O)`. Use `indEtale_of_directed_union (Polynomial T) O ι Si hmono hcov fun i => ?_` and prove the remaining obligations. Take `⟨A, _, _, _, q, _, ⟨e⟩⟩` from `hA i`.
-
-Conclude with `indEtale_of_algEquiv e (indEtale_localization_of_etale (Polynomial T) A q.primeCompl)`. Conclude with `indEtale_over_localization (Polynomial T) (Localization.AtPrime P) O P.primeCompl hR`.
+A detailed English derivation is pending.
 -/
 theorem isStrictHenselisation_of_directed_union : ∀ (T O : Type) [CommRing T] [IsDomain T] [IsLocalRing T] [CommRing O] [Algebra T O]
     [Algebra (Polynomial T) O] [IsScalarTower T (Polynomial T) O] [HenselianLocalRing O]

@@ -11,7 +11,7 @@ namespace GlobalTheory.BCT.CtLevel
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Conclude with `hu (by simp [hint, hc])`.
+Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem exists_ne_zero_of_hint_ne_zero {H : Type} [Group H] (K : Subgroup H) (u : H → ℂ) (hu : hint K u ≠ 0) :
     ∃ x, u x ≠ 0 := by
@@ -20,7 +20,7 @@ theorem exists_ne_zero_of_hint_ne_zero {H : Type} [Group H] (K : Subgroup H) (u 
   exact hu (by simp [hint, hc])
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Conclude with `hu (by simp [avg, hc])`.
+Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem exists_ne_zero_of_avg_ne_zero {H : Type} [Group H] (u : H → ℂ) (hu : avg u ≠ 0) : ∃ x, u x ≠ 0 := by
   by_contra hc
@@ -28,9 +28,9 @@ theorem exists_ne_zero_of_avg_ne_zero {H : Type} [Group H] (u : H → ℂ) (hu :
   exact hu (by simp [avg, hc])
 
 /- English proof (translation)
-Use `inv_eq_of_mul_eq_one_right (Units.ext ?_)` and prove the remaining obligations. Rewrite using `[Units.val_mul, blk_val, blk_val, Units.val_one, reindex_apply, reindex_apply, submatrix_mul_equiv, fromBlocks_multiply]`. Establish `e1 : m.1.val * (m.1⁻¹).val = 1` using `Units.mul_inv _`. Establish `e2 : m.2.val * (m.2⁻¹).val = 1` using `Units.mul_inv _`. Simplify using `only [Prod.fst_inv, Prod.snd_inv, Matrix.mul_zero, add_zero, Matrix.zero_mul, zero_add]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[e1, e2, ← Matrix.mul_assoc, e1, Matrix.one_mul, Matrix.mul_assoc m.1.val, add_comm]`. Simplify using `[fromBlocks_one]`. Conclude with `submatrix_one_equiv (blkEq h).symm`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem blk_inv {n a b : ℕ} (h : a + b = n) (w : Pl E) (m : GLw a w × GLw b w)
     (X : Matrix (Fin a) (Fin b) (w.adicCompletion E)) :
@@ -60,21 +60,21 @@ def blkBR {R : Type} {a b n : ℕ} (h : a + b = n) (g : Matrix (Fin n) (Fin n) R
   (reindex (blkEq h).symm (blkEq h).symm g).toBlocks₂₂
 
 /- English proof (translation)
-Rewrite using `[blkTL, blk_val, ← reindex_symm, Equiv.symm_apply_apply, toBlocks_fromBlocks₁₁]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem blkTL_blk {n a b : ℕ} (h : a + b = n) (w : Pl E) (m : GLw a w × GLw b w)
     (X : Matrix (Fin a) (Fin b) (w.adicCompletion E)) : blkTL h (blk h w m X).val = m.1.val := by
   rw [blkTL, blk_val, ← reindex_symm, Equiv.symm_apply_apply, toBlocks_fromBlocks₁₁]
 
 /- English proof (translation)
-Rewrite using `[blkBR, blk_val, ← reindex_symm, Equiv.symm_apply_apply, toBlocks_fromBlocks₂₂]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem blkBR_blk {n a b : ℕ} (h : a + b = n) (w : Pl E) (m : GLw a w × GLw b w)
     (X : Matrix (Fin a) (Fin b) (w.adicCompletion E)) : blkBR h (blk h w m X).val = m.2.val := by
   rw [blkBR, blk_val, ← reindex_symm, Equiv.symm_apply_apply, toBlocks_fromBlocks₂₂]
 
 /- English proof (translation)
-Use `continuous_pi fun i => continuous_pi fun j => ?_` and prove the remaining obligations. Simplify using `only [blkTL, toBlocks₁₁, reindex_apply, submatrix_apply, of_apply]`. Conclude with `(continuous_apply _).comp (continuous_apply _)`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem continuous_blkTL {R : Type} [TopologicalSpace R] {a b n : ℕ} (h : a + b = n) :
     Continuous (blkTL (R := R) h) := by
@@ -83,7 +83,7 @@ theorem continuous_blkTL {R : Type} [TopologicalSpace R] {a b n : ℕ} (h : a + 
   exact (continuous_apply _).comp (continuous_apply _)
 
 /- English proof (translation)
-Use `continuous_pi fun i => continuous_pi fun j => ?_` and prove the remaining obligations. Simplify using `only [blkBR, toBlocks₂₂, reindex_apply, submatrix_apply, of_apply]`. Conclude with `(continuous_apply _).comp (continuous_apply _)`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem continuous_blkBR {R : Type} [TopologicalSpace R] {a b n : ℕ} (h : a + b = n) :
     Continuous (blkBR (R := R) h) := by
@@ -92,21 +92,19 @@ theorem continuous_blkBR {R : Type} [TopologicalSpace R] {a b n : ℕ} (h : a + 
   exact (continuous_apply _).comp (continuous_apply _)
 
 /- English proof (translation)
-Introduce `E _ _ _ a b n h w μ f hw hf`. Establish `hUL : ∀ y : GLw n w, y ∈ UL n w` using `fun y => by rw [UL, if_pos hw]; trivial`. Use `set S : Set (GLw n w) := Subtype.val '' tsupport f with hSdef`. Establish `hS : IsCompact S` using `hf.image continuous_subtype_val`. Establish `hK` using `(GlobalTheory.LFun.SatCompare.isOpen_isCompact_KGL w n).2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set C : Set (GLw n w) := (GlobalTheory.LFun.KGL w n : Set (GLw n w)) * S * (GlobalTheory.LFun.KGL w n : Set (GLw n w)) with hCdef`. Establish `hC : IsCompact C` using `(hK.mul hS).mul hK`. Establish `hmem : ∀ m, ctMu h w μ f m ≠ 0 → ∃ X, blk h w m X ∈ C`. Introduce `m hm`. Establish `h1` using `right_ne_zero_of_mul (right_ne_zero_of_mul hm)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨X, hX⟩` from `exists_ne_zero_of_hint_ne_zero _ _ h1`. Take `⟨k, hk⟩` from `exists_ne_zero_of_avg_ne_zero _ hX`. Use `⟨Multiplicative.toAdd X, ?_⟩` and prove the remaining obligations. Use `set y := (k : GLw n w)⁻¹ * blk h w m (Multiplicative.toAdd X) * k with hy`. Establish `hyS : y ∈ S`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `⟨⟨y, hUL y⟩, subset_tsupport _ ?_, rfl⟩` and prove the remaining obligations. Establish `: toSub (UL n w) y = ⟨y, hUL y⟩` using `by rw [toSub, dif_pos (hUL y)]`. Simplify `hk` using `[this]`. Establish `e : blk h w m (Multiplicative.toAdd X) = (k : GLw n w) * y * (k : GLw n w)⁻¹`. Rewrite using `[hy]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `group`. Rewrite using `[e]`. Conclude with `Set.mul_mem_mul (Set.mul_mem_mul k.2 hyS) (inv_mem k.2)`. Set `ψ : GLw n w → ((Matrix (Fin a) (Fin a) (w.adicCompletion E) × (Matrix (Fin a) (Fin a) (w.adicCompletion E))ᵐᵒᵖ) × (Matrix (Fin b) (Fin b) (w.adicCompletion E) × (Matrix (Fin b) (Fin b) (w.adicCompletion E))ᵐᵒᵖ))` to `fun g => ((blkTL h g.val, MulOpposite.op (blkTL h (g⁻¹).val)), (blkBR h g.val, MulOpposite.op (blkBR h (g⁻¹).val)))`. Establish `hψ : Continuous ψ`.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `((((continuous_blkTL h).comp Units.continuous_val).prodMk (MulOpposite.continuous_op.comp ((continuous_blkTL h).comp Units.continuous_coe_inv))).prodMk (((continuous_blkBR h).comp Units.continuous_val).prodMk (MulOpposite.continuous_op.comp ((continuous_blkBR h).comp Units.contin …` and prove the remaining obligations. Set `ι : GLw a w × GLw b w → _` to `Prod.map (Units.embedProduct (Matrix (Fin a) (Fin a) (w.adicCompletion E))) (Units.embedProduct (Matrix (Fin b) (Fin b) (w.adicCompletion E)))`. Establish `hι : Topology.IsClosedEmbedding ι` using `Units.isClosedEmbedding_embedProduct.prodMap Units.isClosedEmbedding_embedProduct`. Establish `hιψ : ∀ m X, ι m = ψ (blk h w m X)`. Introduce `m X`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Simplify using `only [ι, ψ, Prod.map, Units.embedProduct_apply, blk_inv, blkTL_blk, blkBR_blk, Prod.fst_inv, Prod.snd_inv]`. Establish `hT : IsCompact (ψ '' C)` using `hC.image hψ`. Use `HasCompactSupport.intro' (hι.isCompact_preimage hT) (hT.isClosed.preimage hι.continuous) ?_` and prove the remaining obligations. Introduce `m hm`. Assume the negation of the conclusion as `hne`.
-
-Take `⟨X, hX⟩` from `hmem m hne`. Conclude with `hm ⟨blk h w m X, hX, (hιψ m X).symm⟩`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem hasCompactSupport_ctMu_split : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (a b n : ℕ) (h : a + b = n) (w : Pl E)
     (μ : (w.adicCompletion E)ˣ →* ℂˣ) (f : UL n w → ℂ), IsSplitAt w → HasCompactSupport f →

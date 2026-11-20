@@ -9,17 +9,17 @@ open HeckeCharacterZeroLocus.SiegelWeilU GlobalTheory.CompanionTheory.SW GlobalT
 open scoped TensorProduct ENNReal NNReal Matrix
 
 /- English proof (translation)
-Introduce `R _ _ hR x`. Take `⟨htr, -, -, -, -, -, hval, U, -, hq⟩` from `hR`. Set `h : R ≃ₜ R` to `{ toFun := fun y => y * (x : R) invFun := fun y => y * ((x⁻¹ : Rˣ) : R) left_inv := fun y => by simp [mul_assoc] right_inv := fun y => by simp [mul_assoc] continuous_toFun := continuous_id.mul continuous_const continuous_invFun := continuous_id.mul continuous_const }`. Set `f : U → R` to `fun u => (((u : Rˣ) ^ 2 : Rˣ) : R) * (x : R)`. Establish `hf : IsOpenEmbedding f` using `h.isOpenEmbedding.comp (hval.comp hq)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hf1 : f 1 = (x : R)` using `by simp [f]`. Set `a : R → Rˣ` to `fun y => if y ∈ Set.range f then ((Function.invFun f y : U) : Rˣ) else 1`. Establish `haf : ∀ u : U, a (f u) = (u : Rˣ)`. Introduce `u`. Establish `: Function.invFun f (f u) = u` using `Function.leftInverse_invFun hf.injective u`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `only [a, Set.mem_range_self, if_true, this]`. Use `⟨Set.range f, a, hf.isOpen_range, ⟨1, hf1⟩, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨u, rfl⟩`. Apply `ContinuousAt.continuousWithinAt` to reduce the goal to its premises. Rewrite using `[← hf.continuousAt_iff]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `: a ∘ f = fun u : U => (u : Rˣ)` using `funext haf`. Rewrite using `[this]`. Conclude with `continuous_subtype_val.continuousAt`. Introduce `y hy`. Simplify using `only [a, if_neg hy]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ ⟨u, rfl⟩`. Rewrite using `[haf]`. Simplify using `[f]`. Use `haf 1` as an intermediate fact. Rewrite `this` using `[hf1]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using this`.
+A detailed English derivation is pending.
 -/
 theorem exists_sqrt_near_unit : ∀ (R : Type) [CommRing R] [TopologicalSpace R], IsLocR R → ∀ x : Rˣ,
     ∃ (B₀ : Set R) (a : R → Rˣ), IsOpen B₀ ∧ (x : R) ∈ B₀ ∧ ContinuousOn a B₀ ∧

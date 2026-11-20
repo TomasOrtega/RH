@@ -6,21 +6,21 @@ namespace EvenCubicNorm
 open Finset
 
 /- English proof (translation)
-Establish `hext : ∀ g : X →+ G, (∀ i, g (b i) = 0) → ∀ a, g a = 0`. Introduce `g hg a`. Establish `: g.toIntLinearMap = 0` using `b.ext (fun i => by simpa using hg i)`. Simplify using `using LinearMap.congr_fun this a`. Establish `h0 : f 0 = 0` using `by simpa using hcub 0 0 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Set `B : X → X →+ G` to `fun c => { toFun := fun a => f (a + c) - f a - f c map_zero' := by simp [h0] map_add' := by`. Introduce `a a'`. Establish `h` using `hcub a a' c`. Establish `e : f (a + a' + c) - f (a + a') - f c - (f (a + c) - f a - f c + (f (a' + c) - f a' - f c)) = (f (a + a' + c) + f a + f a' + f c) - (f (a + a') + f (a + c) + f (a' + c))` using `by abel`. Rewrite using `[← sub_eq_zero, e, h, sub_self] }`.
+Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hBapp : ∀ c a, B c a = f (a + c) - f a - f c` using `fun _ _ => rfl`. Establish `hdiag : ∀ i, B (b i) (b i) = 0`. Introduce `i`. Establish `h` using `(B (b i)).map_add (b i) (-(b i))`. Rewrite `h` using `[add_neg_cancel, map_zero, hBapp (b i) (-(b i)), neg_add_cancel, hev, h0, h1]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `using h.symm`. Establish `hA : ∀ j a, B (b j) a = 0`. Introduce `j`. Apply `hext` to reduce the goal to its premises. Introduce `i`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Conclude with `hdiag i`. Rewrite using `[hBapp, h2 i j hij, h1, h1]`. Simplify using the standard rewrite rules.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hAll : ∀ a c, B c a = 0`. Introduce `a c`. Establish `h` using `hext (B a) (fun j => by rw [hBapp, add_comm (b j) a, ← hA j a, hBapp]; abel) c`. Rewrite `h`, the goal using `[hBapp]`. Rewrite `h` using `[add_comm c a]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← h]`. Normalize the expressions using the abelian group laws. Set `F : X →+ G` to `{ toFun := f map_zero' := h0 map_add' := by`. Introduce `a c`. Establish `h` using `hAll a c`.
+Normalize the expressions using the abelian group laws. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[hBapp, sub_sub, sub_eq_zero]`. Conclude with `h }`. Introduce `a`. Conclude with `hext F h1 a`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_even_cubic {ι X G : Type*} [AddCommGroup X] [AddCommGroup G]
     (b : Module.Basis ι ℤ X) (f : X → G) (hev : ∀ a, f (-a) = f a)
@@ -77,16 +77,16 @@ variable {M : Type*} [CommGroup M] {ι : Type*} [Fintype ι]
 def prodPow (z : ι → ι → M) (e : ι → ι → ℤ) : M := ∏ i, ∏ j, z i j ^ e i j
 
 /- English proof (translation)
-Simplify using `only [prodPow, zpow_add, Finset.prod_mul_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem prodPow_add (z : ι → ι → M) (e e' : ι → ι → ℤ) :
     prodPow z e * prodPow z e' = prodPow z (fun i j => e i j + e' i j) := by
   simp only [prodPow, zpow_add, Finset.prod_mul_distrib]
 
 /- English proof (translation)
-Unfold `prodPow`. Rewrite using `[Finset.prod_eq_single k, Finset.prod_eq_single l]`. Simplify using the standard rewrite rules. Introduce `j _ hj`. Simplify using `[hj]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Introduce `i _ hi`. Apply `Finset.prod_eq_one` to reduce the goal to its premises. Introduce `j _`. Simplify using `[hi]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
 Simplify using the standard rewrite rules.
 -/
@@ -105,7 +105,7 @@ theorem prodPow_single [DecidableEq ι] (z : ι → ι → M) (k l : ι) :
 end Quadratic
 
 /- English proof (translation)
-Apply the tactic sequence `by_cases hik : i = k <;> by_cases hil : i = l <;> by_cases hjk : j = k <;> by_cases hjl : j = l <;>`. Simplify the hypotheses and the goal together.
+Apply the first step, then apply the next step to every resulting obligation. Simplify the hypotheses and the goal together.
 -/
 theorem indicator_sum_mul {ι : Type*} [DecidableEq ι] (i j k l : ι) (hkl : k ≠ l) :
     (((if i = k then 1 else 0) + (if i = l then 1 else 0)) * ((if j = k then 1 else 0) + (if j = l then 1 else 0)) : ℤ) =
@@ -115,51 +115,49 @@ theorem indicator_sum_mul {ι : Type*} [DecidableEq ι] (i j k l : ι) (hkl : k 
     simp_all
 
 /- English proof (translation)
-Use `set K := FractionRing R`. Set `φ : Rˣ →* Kˣ` to `Units.map (algebraMap R K).toMonoidHom`. Establish `hφ : ∀ u : Rˣ, ((φ u : Kˣ) : K) = algebraMap R K (u : R)` using `fun u => rfl`. Set `H : Subgroup Kˣ` to `φ.range`. Set `ψ : Kˣ → Additive (Kˣ ⧸ H)` to `fun x => Additive.ofMul (QuotientGroup.mk x)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `ψmul : ∀ x y, ψ (x * y) = ψ x + ψ y` using `fun x y => rfl`. Establish `ψφ : ∀ x u, ψ (x * φ u) = ψ x`. Introduce `x u`. Rewrite using `[ψmul]`. Establish `: ψ (φ u) = 0` using `by show Additive.ofMul (QuotientGroup.mk (φ u) : Kˣ ⧸ H) = 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[(QuotientGroup.eq_one_iff (φ u)).mpr (MonoidHom.mem_range.mpr ⟨u, rfl⟩)]`. Both sides reduce to the same expression. Rewrite using `[this, add_zero]`. Establish `ψeq : ∀ x y, ψ x = ψ y → ∃ u : Rˣ, y = x * φ u`. Introduce `x y h`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h' : (QuotientGroup.mk x : Kˣ ⧸ H) = QuotientGroup.mk y` using `h`. Take `⟨u, hu⟩` from `QuotientGroup.eq.mp h'`. Conclude with `⟨u, by rw [hu]; group⟩`. Set `b` to `(Module.Free.chooseBasis ℤ X).reindex (Fintype.equivFin _)`. Use `set r := Fintype.card (Module.Free.ChooseBasisIndex ℤ X)`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `n : Fin r → X → ℤ` to `fun i a => b.repr a i`. Set `z : Fin r → Fin r → Kˣ` to `fun i j => if i = j then κ₀ (b i) else if i < j then κ₀ (b i + b j) * (κ₀ (b i))⁻¹ * (κ₀ (b j))⁻¹ else 1`. Set `E : X → Fin r → Fin r → ℤ` to `fun a i j => n i a * n j a`. Set `κ : X → Kˣ` to `fun a => prodPow z (E a)`. Establish `hκ : ∀ a, κ a = prodPow z (E a)` using `fun _ => rfl`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `κev : ∀ a, κ (-a) = κ a`. Introduce `a`. Simplify using `only [hκ]`. Use `congr 1`. Use function extensionality and compare the values at `i j`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[E, n]`. Establish `κcub : ∀ a a' c, κ (a + a' + c) * κ a * κ a' * κ c = κ (a + a') * κ (a + c) * κ (a' + c)`. Introduce `a a' c`. Simplify using `only [hκ, prodPow_add]`. Use `congr 1`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `i j`. Simplify using `only [E, n, map_add, Finsupp.add_apply]`. Expand and normalize the polynomial expressions, which then agree. Establish `nb : ∀ i k, n i (b k) = if i = k then 1 else 0`. Introduce `i k`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[n, Finsupp.single_apply, eq_comm]`. Establish `κb : ∀ k, κ (b k) = κ₀ (b k)`. Introduce `k`. Establish `: E (b k) = fun i j => if i = k ∧ j = k then 1 else 0`. Apply the tactic sequence `funext i j; simp only [E, nb]; split_ifs <;> simp_all`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hκ, this, prodPow_single]`. Simplify using `[z]`. Establish `κbb : ∀ k l, k < l → κ (b k + b l) = κ₀ (b k + b l)`. Introduce `k l hkl`. Establish `hne : k ≠ l` using `ne_of_lt hkl`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hsplit : prodPow z (E (b k + b l)) = prodPow z (fun i j => if i = k ∧ j = k then 1 else 0) * prodPow z (fun i j => if i = l ∧ j = l then 1 else 0) * prodPow z (fun i j => if i = k ∧ j = l then 1 else 0) * prodPow z (fun i j => if i = l ∧ j = k then 1 else 0)`. Simplify using `only [prodPow_add]`. Use `congr 1`. Use function extensionality and compare the values at `i j`. Simplify using `only [E, n, map_add, Finsupp.add_apply]`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `nb i k`. Establish `h2` using `nb i l`. Establish `h3` using `nb j k`. Establish `h4` using `nb j l`. Simplify using `only [n] at h1 h2 h3 h4`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1, h2, h3, h4]`. Conclude with `indicator_sum_mul i j k l hne`. Rewrite using `[hκ, hsplit, prodPow_single, prodPow_single, prodPow_single, prodPow_single]`. Establish `hzk : z k k = κ₀ (b k)` using `by simp only [z]; exact if_pos trivial`. Establish `hzl : z l l = κ₀ (b l)` using `by simp only [z]; exact if_pos trivial`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hzkl : z k l = κ₀ (b k + b l) * (κ₀ (b k))⁻¹ * (κ₀ (b l))⁻¹`. Simplify using `only [z]`. Rewrite using `[if_neg hne, if_pos hkl]`. Establish `hzlk : z l k = 1` using `by simp only [z]; rw [if_neg hne.symm, if_neg (not_lt_of_gt hkl)]`. Rewrite using `[hzk, hzl, hzkl, hzlk, mul_one, mul_comm (κ₀ (b k) * κ₀ (b l)), mul_assoc, mul_assoc, ← mul_assoc (κ₀ (b k))⁻¹, ← mul_inv, inv_mul_cancel, mul_one]`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `κbb' : ∀ k l, k ≠ l → κ (b k + b l) = κ₀ (b k + b l)`. Introduce `k l hkl`. Break down `lt_or_gt_of_ne hkl with h | h` into its components or cases. Conclude with `κbb k l h`. Rewrite using `[add_comm]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `κbb l k h`. Establish `κ₀ev : ∀ a, ψ (κ₀ (-a)) = ψ (κ₀ a)`. Introduce `a`. Take `⟨u, hu⟩` from `hev a`. Establish `: κ₀ (-a) = κ₀ a * φ u` using `Units.ext (by rw [Units.val_mul, hφ]; exact hu)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[this, ψφ]`. Establish `κ₀cub : ∀ a a' c, ψ (κ₀ (a + a' + c)) + ψ (κ₀ a) + ψ (κ₀ a') + ψ (κ₀ c) = ψ (κ₀ (a + a')) + ψ (κ₀ (a + c)) + ψ (κ₀ (a' + c))`. Introduce `a a' c`. Take `⟨u, hu⟩` from `hcub a a' c`. Establish `: κ₀ (a + a' + c) * κ₀ a * κ₀ a' * κ₀ c = κ₀ (a + a') * κ₀ (a + c) * κ₀ (a' + c) * φ u` using `Units.ext (by rw [Units.val_mul _ (φ u), hφ]; exact hu)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `h` using `congrArg ψ this`. Rewrite `h` using `[ψφ]`. Simplify `h` using `only [ψmul]`. Set `f : X → Additive (Kˣ ⧸ H)` to `fun a => ψ (κ (a)) - ψ (κ₀ a)`. Establish `hf : ∀ a, f a = 0`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `EvenCubicNorm.eq_zero_of_even_cubic b f ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `a`. Simplify using `only [f]`. Rewrite using `[κev, κ₀ev]`. Introduce `a a' c`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h1` using `κ₀cub a a' c`. Establish `h2` using `congrArg ψ (κcub a a' c)`. Simplify using `only [ψmul] at h2`. Simplify using `only [f]`. Establish `e : ψ (κ (a + a' + c)) - ψ (κ₀ (a + a' + c)) + (ψ (κ a) - ψ (κ₀ a)) + (ψ (κ a') - ψ (κ₀ a')) + (ψ (κ c) - ψ (κ₀ c)) - (ψ (κ (a + a')) - ψ (κ₀ (a + a')) + (ψ (κ (a + c)) - ψ (κ₀ (a + c))) + (ψ (κ (a' + c)) - ψ (κ₀ (a' + c)))) = (ψ (κ (a + a' + c)) + ψ (κ a) + ψ (κ a') + ψ (κ c) - …` using `by abel`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← sub_eq_zero, e, h1, h2, sub_self, sub_self, sub_self]`. Introduce `i`. Simplify using `only [f]`. Rewrite using `[κb, sub_self]`. Introduce `i j hij`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [f]`. Rewrite using `[κbb' i j hij, sub_self]`. Use `⟨κ, κev, κcub, fun a => ?_⟩` and prove the remaining obligations. Establish `h` using `hf a`. Simplify using `only [f, sub_eq_zero] at h`.
-
-Take `⟨u, hu⟩` from `ψeq _ _ h.symm`. Conclude with `⟨u, by rw [hu, Units.val_mul, hφ]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_even_cubic_unit_multiple (R : Type) [CommRing R] [IsDomain R] (X : Type) [AddCommGroup X]
     [Module.Free ℤ X] [Module.Finite ℤ X] (κ₀ : X → (FractionRing R)ˣ)

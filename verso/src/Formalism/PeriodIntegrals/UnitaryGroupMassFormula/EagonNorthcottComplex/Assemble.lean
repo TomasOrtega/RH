@@ -12,7 +12,7 @@ section Nat
 variable {R : Type u} [CommRing R] {D : ℕ} (x : Fin D → R)
 
 /- English proof (translation)
-Simplify using `[lin]`.
+Simplify using the standard rewrite rules.
 -/
 lemma ev_lin (c : Fin D → ℤ) : eval x (lin (X : Fin D → MvPolynomial (Fin D) R) c) = lin x c := by
   simp [lin]

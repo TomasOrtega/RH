@@ -8,7 +8,7 @@ import Development.AbelianVarietyTheory.Proofs.SatakeParameters.InvMemDoubleCose
 open Formalism.UG Matrix
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.torus_mem_normal` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FSatakeParameters%2FUniformizerPowerTorusMemNormalUnitarySubgroup.lean&line=178#L178)
 -/

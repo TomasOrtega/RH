@@ -8,7 +8,7 @@ open scoped Matrix
 namespace GlobalTheory.Ord2
 
 /- English proof (translation)
-Introduce `hL l _ Ω _ _ _ e S A W hN hD`. Assume the negation of the conclusion as `hW`. Take `⟨c, hc, hm⟩` from `GlobalTheory.T.exists_dualSelmer_classes_unbounded_order hL l Ω e S A W hN hW`. Conclude with `GlobalTheory.T.dualSelmer_unbounded_order_nonzero_ordinaryClass hL l Ω e S A W hN c hc hm hD`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem grZero_of_grZero_dual1 : GlobalTheory.Mem.LiteralAutomorphy.LitCoh → ∀ (l : ℕ) [Fact l.Prime] (Ω : Type) [Field Ω]
     [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (e : ℕ) (S : Finset Pl) (A : ValuationSubring Ω) (W : R2 Ω l),

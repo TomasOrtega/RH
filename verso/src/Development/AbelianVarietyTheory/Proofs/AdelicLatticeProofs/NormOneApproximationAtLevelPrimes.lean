@@ -9,15 +9,13 @@ open scoped TensorProduct Matrix
 namespace GlobalTheory.UnRep.NormOne
 
 /- English proof (translation)
-Introduce `M`. Proceed by induction on `M using Nat.strong_induction_on with`. Consider the case `_ M ih`. Introduce `hM`. Distinguish the cases in `h : M.Coprime N`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Conclude with `⟨1, M, 0, by simp, by simp, h⟩`. Take `⟨M', hM'⟩` from `Nat.gcd_dvd_left M N`. Establish `hg : 0 < Nat.gcd M N` using `Nat.gcd_pos_of_pos_left N hM`. Establish `hg1 : Nat.gcd M N ≠ 1` using `h`. Establish `hpos : 0 < M'`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Break down `Nat.eq_zero_or_pos M' with h0 | h0` into its components or cases. Rewrite `hM'` using `[h0, mul_zero]`. Use linear arithmetic over natural numbers and integers. Conclude with `h0`. Establish `hlt : M' < M`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : 2 ≤ Nat.gcd M N` using `by omega`. Use the polynomial consequences of the given equalities and inequalities. Take `⟨D₁, D₂, k, h1, h2, h3⟩` from `ih M' hlt hpos`. Use `⟨Nat.gcd M N * D₁, D₂, k + 1, by rw [mul_assoc, ← h1]; exact hM', ?_, h3⟩` and prove the remaining obligations. Rewrite using `[pow_succ']`.
-
-Conclude with `Nat.mul_dvd_mul (Nat.gcd_dvd_right M N) h2`.
+Use the polynomial consequences of the given equalities and inequalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma exists_split (N : ℕ) : ∀ M : ℕ, 0 < M → ∃ D₁ D₂ k : ℕ, M = D₁ * D₂ ∧ D₁ ∣ N ^ k ∧ D₂.Coprime N := by
   intro M
@@ -44,7 +42,7 @@ lemma exists_split (N : ℕ) : ∀ M : ℕ, 0 < M → ∃ D₁ D₂ k : ℕ, M =
 variable {E : Type} [Field E] [NumberField E]
 
 /- English proof (translation)
-Use `⟨Ideal.absNorm (Ideal.span {α}), Nat.pos_of_ne_zero ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Ne, Ideal.absNorm_eq_zero_iff, Ideal.span_singleton_eq_bot]`. Conclude with `h`. Conclude with `Ideal.mem_span_singleton.mp (Ideal.absNorm_mem _)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma exists_nat_multiple (α : 𝓞 E) (h : α ≠ 0) : ∃ n : ℕ, 0 < n ∧ ∃ γ : 𝓞 E, (n : 𝓞 E) = α * γ := by
   refine ⟨Ideal.absNorm (Ideal.span {α}), Nat.pos_of_ne_zero ?_, ?_⟩
@@ -52,7 +50,7 @@ lemma exists_nat_multiple (α : 𝓞 E) (h : α ≠ 0) : ∃ n : ℕ, 0 < n ∧ 
   · exact Ideal.mem_span_singleton.mp (Ideal.absNorm_mem _)
 
 /- English proof (translation)
-Introduce `h`. Establish `hu : IsUnit (N : 𝓞 E)` using `IsUnit.of_mul_eq_one (-z) (by linear_combination -h)`. Establish `h2` using `hu.map (Algebra.norm ℤ)`. Establish `h3 : (N : 𝓞 E) = algebraMap ℤ (𝓞 E) (N : ℤ)` using `by simp`. Rewrite `h2` using `[h3, Algebra.norm_algebraMap, isUnit_pow_iff (Module.finrank_pos (R := ℤ) (M := 𝓞 E)).ne', Int.isUnit_iff]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
 Use linear arithmetic over natural numbers and integers.
 -/
@@ -66,13 +64,13 @@ lemma one_add_ne_zero (N : ℕ) (hN : N ≠ 1) (z : 𝓞 E) : 1 + (N : 𝓞 E) *
   omega
 
 /- English proof (translation)
-Use `set I : Ideal (𝓞 E) := Ideal.span {1 + (N : 𝓞 E) * z} with hI`. Establish `hb : I ≠ ⊥` using `by rw [hI, Ne, Ideal.span_singleton_eq_bot]; exact hw`. Establish `: Finite (𝓞 E ⧸ I)` using `Ideal.finiteQuotientOfFreeOfNeBot I hb`. Establish `h0 : Ideal.Quotient.mk I (1 + (N : 𝓞 E) * z) = 0` using `Ideal.Quotient.eq_zero_iff_mem.mpr (Ideal.mem_span_singleton_self _)`. Establish `hu : IsUnit (Ideal.Quotient.mk I (N : 𝓞 E))` using `IsUnit.of_mul_eq_one (Ideal.Quotient.mk I (-z)) (by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h0` using `[map_add, map_one, map_mul]`. Rewrite using `[map_neg]`. Take the linear combination `-h0)`. Take `⟨v, hv⟩` from `hu`. Take `⟨k, hk, hvk⟩` from `isOfFinOrder_iff_pow_eq_one.mp (isOfFinOrder_of_finite v)`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h1 : 1 ≤ N ^ k` using `Nat.one_le_pow _ _ hN`. Use `⟨N ^ k - 1, ?_, ?_⟩` and prove the remaining obligations. Establish `: (N ^ k - 1).Coprime (N ^ k)`. Use `(Nat.coprime_self_sub_left h1).mpr (Nat.coprime_one_left _)` as an intermediate fact. Conclude with `this`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(Nat.coprime_pow_right_iff hk _ _).mp this`. Apply `Ideal.mem_span_singleton.mp` to reduce the goal to its premises. Rewrite using `[← hI, ← Ideal.Quotient.eq_zero_iff_mem, Nat.cast_sub h1, Nat.cast_pow, Nat.cast_one, map_sub, map_pow, ← hv, ← Units.val_pow_eq_pow_val, hvk]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma exists_coprime_multiple (N : ℕ) (hN : 0 < N) (z : 𝓞 E) (hw : 1 + (N : 𝓞 E) * z ≠ 0) :
     ∃ t : ℕ, t.Coprime N ∧ ∃ γ : 𝓞 E, (t : 𝓞 E) = (1 + (N : 𝓞 E) * z) * γ := by
@@ -99,7 +97,7 @@ lemma exists_coprime_multiple (N : ℕ) (hN : 0 < N) (z : 𝓞 E) (hw : 1 + (N :
     simp
 
 /- English proof (translation)
-Establish `h1 : P.valuation E (algebraMap (𝓞 E) E d) ≤ 1` using `P.valuation_le_one d`. Establish `h2 : ¬ P.valuation E (algebraMap (𝓞 E) E d) < 1`. Rewrite using `[HeightOneSpectrum.valuation_lt_one_iff_mem]`. Conclude with `hd`. Conclude with `le_antisymm h1 (not_lt.mp h2)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma val_eq_one (P : HeightOneSpectrum (𝓞 E)) (d : 𝓞 E) (hd : d ∉ P.asIdeal) :
     P.valuation E (d : E) = 1 := by
@@ -109,7 +107,7 @@ lemma val_eq_one (P : HeightOneSpectrum (𝓞 E)) (d : 𝓞 E) (hd : d ∉ P.asI
   exact le_antisymm h1 (not_lt.mp h2)
 
 /- English proof (translation)
-Rewrite `hy` using `[← h, map_mul, val_eq_one P d hd, mul_one]`. Conclude with `hy`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 lemma val_le_of_mul (P : HeightOneSpectrum (𝓞 E)) (x y : E) (d : 𝓞 E) (hd : d ∉ P.asIdeal)
     (h : x * d = y) (hy : P.valuation E y ≤ 1) : P.valuation E x ≤ 1 := by
@@ -117,9 +115,9 @@ lemma val_le_of_mul (P : HeightOneSpectrum (𝓞 E)) (x y : E) (d : 𝓞 E) (hd 
   exact hy
 
 /- English proof (translation)
-Establish `hD0 : (D : E) ≠ 0`. Introduce `h`. Establish `: D = 0` using `by exact_mod_cast h`. Apply `hD` to reduce the goal to its premises. Simplify using `[this]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Use `val_le_of_mul P _ (y - 1) (D : 𝓞 E) hD (by simp [hD0]) ?_` and prove the remaining obligations. Conclude with `Valuation.map_sub_le _ hy.le (by simp)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 lemma val_le_of_unit (P : HeightOneSpectrum (𝓞 E)) (y : E) (D : ℕ) (hD : (D : 𝓞 E) ∉ P.asIdeal)
     (hy : P.valuation E y = 1) : P.valuation E ((y - 1) / D) ≤ 1 := by
@@ -131,19 +129,17 @@ lemma val_le_of_unit (P : HeightOneSpectrum (𝓞 E)) (y : E) (D : ℕ) (hD : (D
   exact Valuation.map_sub_le _ hy.le (by simp)
 
 /- English proof (translation)
-Establish `hP` using `P.isPrime`. Establish `hM' : (D : 𝓞 E) * n = D₁ * D₂` using `by exact_mod_cast hM`. Establish `hD₁ : (D₁ : 𝓞 E) ∉ P.asIdeal`. Introduce `h`. Take `⟨e, he⟩` from `h1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Apply `hN` to reduce the goal to its premises. Apply `hP.mem_of_pow_mem k` to reduce the goal to its premises. Establish `: (N : 𝓞 E) ^ k = D₁ * e` using `by exact_mod_cast he`. Rewrite using `[this]`. Conclude with `Ideal.mul_mem_right _ _ h`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hD₂ : (D₂ : 𝓞 E) ∈ P.asIdeal`. Establish `: (D₁ : 𝓞 E) * D₂ ∈ P.asIdeal` using `hM' ▸ Ideal.mul_mem_right _ _ hD`. Conclude with `(hP.mem_or_mem this).resolve_left hD₁`. Establish `hβ : p * D₂ * β + b ∉ P.asIdeal`. Introduce `h`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `hP.ne_top` to reduce the goal to its premises. Rewrite using `[Ideal.eq_top_iff_one]`. Establish `: (1 : 𝓞 E) = (p * D₂ * β + b) + D₂ * (p * (1 - β))` using `by linear_combination -hab`. Rewrite using `[this]`. Conclude with `add_mem h (Ideal.mul_mem_right _ _ hD₂)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hβ0 : ((p * D₂ * β + b : 𝓞 E) : E) ≠ 0`. Introduce `h`. Apply `hβ` to reduce the goal to its premises. Establish `: (p * D₂ * β + b : 𝓞 E) = 0` using `by exact_mod_cast h`. Rewrite using `[this]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `zero_mem _`. Establish `hDE : (D : E) ≠ 0` using `by exact_mod_cast hD0.ne'`. Establish `hME : (D : E) * n = D₁ * D₂` using `by exact_mod_cast hM`. Use `val_le_of_mul P _ ((n * p * (α - β) : 𝓞 E) : E) (D₁ * (p * D₂ * β + b)) (fun h => (hP.mem_or_mem h).elim hD₁ hβ) ?_ (P.valuation_le_one _)` and prove the remaining obligations. Rewrite `hβ0` using `[RingOfIntegers.coe_eq_algebraMap]`.
-
-Simplify using `only [RingOfIntegers.coe_eq_algebraMap, map_mul, map_add, map_sub, map_natCast] at hβ0 ⊢`. Clear the denominators using the available nonvanishing facts. Take the linear combination `(-(algebraMap (𝓞 E) E p) * (algebraMap (𝓞 E) E α - algebraMap (𝓞 E) E β)) * hME`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 lemma val_le_of_cong (P : HeightOneSpectrum (𝓞 E)) (N D D₁ D₂ k n : ℕ) (hD0 : 0 < D)
     (hM : D * n = D₁ * D₂) (h1 : D₁ ∣ N ^ k) (hN : (N : 𝓞 E) ∉ P.asIdeal) (hD : (D : 𝓞 E) ∈ P.asIdeal)
@@ -186,27 +182,25 @@ variable {F : Type} [Field F] [Algebra F E]
 
 omit [NumberField E] in
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨⟨c x, (RingOfIntegers.isIntegral_coe x).map (c : E →+* E).toIntAlgHom⟩, rfl⟩`.
+Supply the required witnesses or components.
 -/
 lemma exists_conj (c : E ≃ₐ[F] E) (x : 𝓞 E) : ∃ y : 𝓞 E, (y : E) = c x :=
   ⟨⟨c x, (RingOfIntegers.isIntegral_coe x).map (c : E →+* E).toIntAlgHom⟩, rfl⟩
 
 /- English proof (translation)
-Establish `h0 : ∃ x : E, x ≠ 0 ∧ u * c x = x`. Establish `key : ∀ θ : E, u * c (θ + u * c θ) = θ + u * c θ`. Introduce `θ`. Rewrite using `[map_add, map_mul, hc]`. Take the linear combination `θ * hu`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Distinguish the cases in `h : 1 + u * c 1 = 0`. Establish `: ∃ θ, c θ ≠ θ`. Assume the negation of the conclusion as `hh`. Use `push Not at hh`. Conclude with `hc1 (AlgEquiv.ext hh)`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨θ, hθ⟩` from `this`. Use `⟨_, ?_, key θ⟩` and prove the remaining obligations. Rewrite `h` using `[map_one]`. Introduce `h2`. Apply `hθ` to reduce the goal to its premises.
+Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Take a linear combination of the given relations to obtain the conclusion. Supply the required witnesses or components.
 
-Take the linear combination `c θ * h - h2`. Conclude with `⟨_, h, key 1⟩`. Take `⟨x, hx, hux⟩` from `h0`. Take `⟨p, q, hq, hpq⟩` from `IsFractionRing.div_surjective (A := 𝓞 E) x`. Take `⟨q', hq'⟩` from `exists_conj c q`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hq0 : (q : E) ≠ 0`. Use `nonZeroDivisors.ne_zero hq` as an intermediate fact. Conclude with `this` after adjusting the coercions. Establish `hp : (p : E) = x * q`. Rewrite using `[← hpq]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Conclude with `(div_mul_cancel₀ _ hq0).symm`. Establish `e : ((p * q' : 𝓞 E) : E) = x * q * c q`. Rewrite using `[← hp, ← hq']`. Both sides reduce to the same expression. Use `⟨p * q', ?_, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `h`. Rewrite `e` using `[h]`. Establish `hcq : c q ≠ 0` using `by simpa using hq0`. Conclude with `mul_ne_zero (mul_ne_zero hx hq0) hcq (e.symm.trans rfl)`. Rewrite using `[e, map_mul, map_mul, hc]`.
-
-Take the linear combination `(c q * q) * hux`.
+Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 lemma hilbert90_matrix_subalgebra_norm_one (c : E ≃ₐ[F] E) (hc : ∀ x, c (c x) = x) (hc1 : c ≠ 1) (u : E) (hu : u * c u = 1) :
     ∃ α : 𝓞 E, α ≠ 0 ∧ u * c α = α := by
@@ -250,37 +244,33 @@ end GlobalTheory.UnRep.NormOne
 open GlobalTheory.UnRep.NormOne in
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ c hc hc1 u N D hu hN hD`. Distinguish the cases in `hN1 : N = 1`. Substitute `hN1` using the available equality. Use `⟨1, by simp, ⟨0, by simp, 0, by simp⟩, 1, ⟨one_ne_zero, fun P hP h => Or.inr (by simpa using h)⟩, ⟨0, by simp⟩, 0, by simp⟩` and prove the remaining obligations. Take `⟨α, hα, huα⟩` from `hilbert90_matrix_subalgebra_norm_one c hc hc1 u hu`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨β, hβc⟩` from `exists_conj c α`. Establish `hαE : (α : E) ≠ 0` using `by exact_mod_cast hα`. Establish `hβE : (β : E) ≠ 0` using `by rw [hβc]; simpa using hαE`. Establish `hβ : β ≠ 0` using `by intro h; apply hβE; rw [h]; rfl`. Take `⟨n₁, hn₁, γ₁, hγ₁⟩` from `exists_nat_multiple α hα`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨n₂, hn₂, γ₂, hγ₂⟩` from `exists_nat_multiple β hβ`. Take `⟨D₁, D₂, k, hM, h1, h2⟩` from `exists_split N (D * (n₁ * n₂)) (by positivity)`. Establish `hco : D₂.Coprime (D₁ * N)` using `Nat.Coprime.mul_right (Nat.Coprime.coprime_dvd_right h1 (Nat.Coprime.pow_right k h2)) h2`. Take `⟨p, q, hpq⟩` from `Nat.isCoprime_iff_coprime.mpr hco`. Establish `hpq' : (p : 𝓞 E) * D₂ + q * (D₁ * N) = 1` using `by exact_mod_cast congrArg (Int.cast : ℤ → 𝓞 E) hpq`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hM' : (D : 𝓞 E) * (α * γ₁ * (β * γ₂)) = D₁ * D₂`. Rewrite using `[← hγ₁, ← hγ₂]`. Conclude with `hM` after adjusting the coercions. Use `set b : 𝓞 E := q * (D₁ * N) with hb`. Use `set α' : 𝓞 E := p * D₂ * α + b with hα'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `set β' : 𝓞 E := p * D₂ * β + b with hβ'`. Establish `hcα' : c α' = β'`. Simplify using `only [hα', hβ', hb, RingOfIntegers.coe_eq_algebraMap, map_mul, map_add, map_natCast, map_intCast] at hβc ⊢`. Rewrite using `[hβc]`. Establish `hcβ' : c β' = α'` using `by rw [← hcα', hc]`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `set z : 𝓞 E := -2 * q * D₁ + q * D₁ * b + p * q * (D * α * γ₁ * γ₂) with hz`. Establish `hw` using `one_add_ne_zero N hN1 z`. Take `⟨t, ht, γ, hγ⟩` from `exists_coprime_multiple N hN z hw`. Establish `e1 : p * D₂ * β' = β * (1 + N * z)`. Rewrite using `[hβ', hz, hb]`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Take the linear combination `(β * (p * D₂ + 1 - q * (D₁ * N))) * hpq' - (p * q * N : 𝓞 E) * hM'`. Establish `hβ'0 : β' ≠ 0`. Introduce `h`. Rewrite `e1` using `[h, mul_zero]`. Conclude with `mul_ne_zero hβ hw e1.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact.
 
-Establish `hβ'E : (β' : E) ≠ 0` using `by exact_mod_cast hβ'0`. Establish `hα'E : (α' : E) ≠ 0` using `by rw [← hcβ']; simpa using hβ'E`. Establish `hu' : (α' : E) / β' * c ((α' : E) / β') = 1`. Rewrite using `[map_div₀, hcα', hcβ']`. Clear the denominators using the available nonvanishing facts.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `hDE : (D : E) ≠ 0` using `by exact_mod_cast hD.ne'`. Use `⟨(α' : E) / β', hu', ⟨t, ht, γ * p * q * N * γ₁ * γ₂ * (β - α), ?_⟩, ?_⟩` and prove the remaining obligations. Establish `hu2 : u = (α : E) / β` using `by rw [eq_div_iff hβE, hβc, huα]`. Establish `e2 : (t : 𝓞 E) * (α' * β - β' * α) = D * (γ * p * q * N * γ₁ * γ₂ * (β - α)) * (β' * α)`. Apply `mul_left_cancel₀ hβ` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `e3 : α' * β - β' * α = b * (β - α)` using `by rw [hα', hβ']; ring`. Rewrite using `[e3, hγ, hb]`. Take the linear combination `(-(γ * q * D₁ * N * (β - α))) * e1 - (γ * p * q * N * (β - α) * β') * hM'`. Generalize the expression as in `γ * p * q * N * γ₁ * γ₂ * (β - α) = g at e2 ⊢`. Establish `e4` using `congrArg (algebraMap (𝓞 E) E) e2`.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Simplify using `only [map_mul, map_sub, map_natCast] at e4`. Rewrite using `[hu2]`. Clear the denominators using the available nonvanishing facts. Simplify using `only [RingOfIntegers.coe_eq_algebraMap] at e4 ⊢`. Take the linear combination `e4`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Establish `hM2 : D * (n₁ * n₂) = D₁ * D₂` using `hM`. Take `⟨s, hs0, hsP, hs⟩` from `GlobalTheory.UnRep.exists_denominator_primes_prescribed E (fun P => Moved c P ∨ (N : 𝓞 E) ∈ P) Bool (fun i => if i then ((α' : E) / β' - 1) / D else (((α' : E) / β')⁻¹ - 1) / D) (by`. Introduce `i P hQ`. Rewrite `hQ` using `[not_or]`. Establish `hv` using `GlobalTheory.UnRep.valuation_eq_one_of_norm_one_of_not_moved F E c hc _ P hu' hQ.1`.
+Split into cases according to the possible forms of the given data. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Split into cases according to the possible forms of the given data. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `hDP : (D : 𝓞 E) ∈ P.asIdeal`. Consider the cases of `i`. Simplify using `only [Bool.false_eq_true, if_false, inv_div]`. Conclude with `val_le_of_cong P N D D₁ D₂ k _ hD hM2 h1 hQ.2 hDP β α p b hpq'`. Simplify using `only [if_true]`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Conclude with `val_le_of_cong P N D D₁ D₂ k _ hD hM2 h1 hQ.2 hDP α β p b hpq'`. Consider the cases of `i`. Simplify using `only [Bool.false_eq_true, if_false]`. Conclude with `val_le_of_unit P _ D hDP (by rw [map_inv₀, hv, inv_one])`. Simplify using `only [if_true]`.
-
-Conclude with `val_le_of_unit P _ D hDP hv)`. Take `⟨b₁, hb₁⟩` from `hs true`. Take `⟨b₂, hb₂⟩` from `hs false`. Simplify using `only [if_true] at hb₁`. Simplify using `only [Bool.false_eq_true, if_false] at hb₂`.
-
-Use `⟨s, ⟨hs0, hsP⟩, ⟨b₁, ?_⟩, b₂, ?_⟩` and prove the remaining obligations. Rewrite using `[← hb₁, mul_left_comm, mul_div_cancel₀ _ hDE]`. Rewrite using `[← hb₂, mul_left_comm, mul_div_cancel₀ _ hDE]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.UnRep.normOne_approx : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (c : E ≃ₐ[F] E), (∀ x, c (c x) = x) → c ≠ 1 → ∀ (u : E) (N D : ℕ), u * c u = 1 → 0 < N → 0 < D → ∃ u' : E, u' * c u' = 1 ∧ (∃ t : ℕ, t.Coprime N ∧ ∃ b : 𝓞 E, (t : E) * (u' / u - 1) = (D : E) * (b : E)) ∧ ∃ s : 𝓞 E, SplitOr c N s ∧ (∃ b : 𝓞 E, (s : E) * (u' - 1) = (D : E) * (b : E)) ∧ ∃ b : 𝓞 E, (s : E) * (u'⁻¹ - 1) = (D : E) * (b : E) := by
   intro F E _ _ _ _ _ c hc hc1 u N D hu hN hD

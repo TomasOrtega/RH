@@ -24,7 +24,7 @@ theorem compAt_eq_map {m k : ℕ} (θ : InfFam D) (τ : D.what₂.Tau) (X : Mx D
     compAt θ τ X = X.map (cf θ τ) := rfl
 
 /- English proof (translation)
-Rewrite using `[compAt_eq_map, compAt_eq_map, compAt_eq_map]`. Conclude with `Matrix.map_mul`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem compAt_mulM {m k l : ℕ} (θ : InfFam D) (τ : D.what₂.Tau) (X : Mx D m k) (Y : Mx D k l) :
     compAt θ τ (X * Y) = compAt θ τ X * compAt θ τ Y := by
@@ -32,14 +32,14 @@ theorem compAt_mulM {m k l : ℕ} (θ : InfFam D) (τ : D.what₂.Tau) (X : Mx D
   exact Matrix.map_mul
 
 /- English proof (translation)
-Rewrite using `[compAt_eq_map]`. Conclude with `Matrix.map_one (cf θ τ) (map_zero _) (map_one _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem compAt_one (θ : InfFam D) (τ : D.what₂.Tau) : compAt θ τ (1 : Mx D n n) = 1 := by
   rw [compAt_eq_map]
   exact Matrix.map_one (cf θ τ) (map_zero _) (map_one _)
 
 /- English proof (translation)
-Rewrite using `[compAt_eq_map, compAt_eq_map, compAt_eq_map]`. Conclude with `Matrix.map_add (cf θ τ) (map_add (cf θ τ)) X Y`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem compAt_add {m k : ℕ} (θ : InfFam D) (τ : D.what₂.Tau) (X Y : Mx D m k) :
     compAt θ τ (X + Y) = compAt θ τ X + compAt θ τ Y := by
@@ -47,9 +47,9 @@ theorem compAt_add {m k : ℕ} (θ : InfFam D) (τ : D.what₂.Tau) (X Y : Mx D 
   exact Matrix.map_add (cf θ τ) (map_add (cf θ τ)) X Y
 
 /- English proof (translation)
-Take `⟨-, -, -, -, hext⟩` from `h`. Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Use `sub_eq_zero.mp (hext _ ?_ fun τ => ?_)` and prove the remaining obligations. Rewrite using `[map_sub, sub_eq_zero]`. Conclude with `congrFun (congrFun hf i) j`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_sub, map_sub, sub_eq_zero]`. Conclude with `congrFun (congrFun (hc τ) i) j`.
+A detailed English derivation is pending.
 -/
 theorem ext_mx {m k : ℕ} {θ : InfFam D} {σ : (D.what₂.Tau → ℂ) →+ AE D} (h : GlobalTheory.FockCompare.Chart θ σ) {X Y : Mx D m k}
     (hf : X.map (finPart D) = Y.map (finPart D)) (hc : ∀ τ, compAt θ τ X = compAt θ τ Y) : X = Y := by
@@ -65,7 +65,7 @@ def baseColumnsAt (σ : (D.what₂.Tau → ℂ) →+ AE D) (τ : D.what₂.Tau) 
   1 + atT σ τ (M - 1)
 
 /- English proof (translation)
-Use `show compAt θ τ (1 + atT σ τ (M - 1)) = M`. Rewrite using `[compAt_add, compAt_one, compAt_atT h]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem component_adelic_point_matrix {θ : InfFam D} {σ : (D.what₂.Tau → ℂ) →+ AE D} (h : GlobalTheory.FockCompare.Chart θ σ) (τ : D.what₂.Tau)
     (M : Matrix (Fin n) (Fin n) ℂ) : compAt θ τ (baseColumnsAt σ τ M) = M := by
@@ -74,7 +74,7 @@ theorem component_adelic_point_matrix {θ : InfFam D} {σ : (D.what₂.Tau → �
   abel
 
 /- English proof (translation)
-Use `show compAt θ τ' (1 + atT σ τ (M - 1)) = 1`. Rewrite using `[compAt_add, compAt_one, compAt_atT_ne h hne, add_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem component_adelic_point_ne {θ : InfFam D} {σ : (D.what₂.Tau → ℂ) →+ AE D} (h : GlobalTheory.FockCompare.Chart θ σ) {τ τ' : D.what₂.Tau}
     (hne : τ' ≠ τ) (M : Matrix (Fin n) (Fin n) ℂ) : compAt θ τ' (baseColumnsAt σ τ M) = 1 := by
@@ -82,7 +82,7 @@ theorem component_adelic_point_ne {θ : InfFam D} {σ : (D.what₂.Tau → ℂ) 
   rw [compAt_add, compAt_one, compAt_atT_ne h hne, add_zero]
 
 /- English proof (translation)
-Use `show (1 + atT σ τ (M - 1)).map (finPart D) = 1`. Rewrite using `[Matrix.map_add (finPart D) (map_add (finPart D)), Matrix.map_one (finPart D) (map_zero _) (map_one _), show (atT σ τ (M - 1)).map (finPart D) = 0 from Matrix.ext fun i j => finPart_atT h τ (M - 1) i j, add_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finite_part_adelic_point_matrix {θ : InfFam D} {σ : (D.what₂.Tau → ℂ) →+ AE D} (h : GlobalTheory.FockCompare.Chart θ σ) (τ : D.what₂.Tau)
     (M : Matrix (Fin n) (Fin n) ℂ) : (baseColumnsAt σ τ M).map (finPart D) = 1 := by
@@ -91,7 +91,7 @@ theorem finite_part_adelic_point_matrix {θ : InfFam D} {σ : (D.what₂.Tau →
     show (atT σ τ (M - 1)).map (finPart D) = 0 from Matrix.ext fun i j => finPart_atT h τ (M - 1) i j, add_zero]
 
 /- English proof (translation)
-Conclude with `Matrix.ext fun i j => finPart_atT h τ M i j`.
+A detailed English derivation is pending.
 -/
 theorem finPart_atT_map {m k : ℕ} {θ : InfFam D} {σ : (D.what₂.Tau → ℂ) →+ AE D} (h : GlobalTheory.FockCompare.Chart θ σ)
     (τ : D.what₂.Tau) (M : Matrix (Fin m) (Fin k) ℂ) : (atT σ τ M).map (finPart D) = 0 := by

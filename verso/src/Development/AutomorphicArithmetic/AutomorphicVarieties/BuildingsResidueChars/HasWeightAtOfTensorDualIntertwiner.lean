@@ -12,15 +12,15 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 set_option synthInstance.maxHeartbeats 200000
 
 /- English proof (translation)
-Introduce `E _ _ _ n hn I _ φ hφ lam σ Φ hΦ hσ heq y`. Take `⟨F, hF0, hF⟩` from `UpperTheory.exists_factor_dual_embedding_of_ne_zero_tensor I (fun i => nablaSq ℂ n (lam i)) _ Φ hΦ y`. Take `⟨e, he⟩` from `(GlobalTheory.T.unitaryIrrep_comp_conj_iso_dual n hn (lam y)).symm.trans (GlobalTheory.T.iso_unitaryIrrep_conj_dual n (lam y))`. Take `⟨u, hu⟩` from `GlobalTheory.EmbUnitary.exists_equiv_unitaryGroup E n (φ y)`. Use `⟨GlobalTheory.DefU.isIrreducible_sqRep n _, (Φ ∘ₗ F) ∘ₗ e.toLinearMap, fun h0 => hF0 ?_, fun v => hσ _, fun x v => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `m`. Take `⟨v, rfl⟩` from `e.surjective m`. Conclude with `LinearMap.congr_fun h0 v`. Establish `hx : x.1 ∈ infU E n` using `GlobalTheory.DefU.embU_le_infU _ x.2`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hT : ∀ i, i ≠ y → GlobalTheory.Branching.sqRep ℂ n (lam i) (cEmb (φ i) x.1⁻¹) = LinearMap.id`. Introduce `i hi`. Establish `h1` using `(Subgroup.mem_inf.1 x.2).2`. Rewrite `h1` using `[Subgroup.mem_iInf]`. Establish `h2` using `h1 (φ i)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[Subgroup.mem_iInf]`. Establish `h3 : cEmb (φ i) x.1 = 1` using `h2 fun h => hi (hφ h)`. Rewrite using `[map_inv, h3, inv_one, map_one]`. Both sides reduce to the same expression. Express the relevant statement in the definitionally equal form `Φ (F (e (GlobalTheory.Branching.sqRep ℂ n (lam y).dual (cEmb (φ y) x.1) v))) = RU E n x.1 (Φ (F (e v)))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[heq _ _ hx, hF _ hT, map_inv, ← hu x]`. Use `congr 2`. Rewrite using `[← map_inv]`. Conclude with `he (u x) v`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.hasWeightAt_of_tensor_dual_intertwiner :
     ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (n : ℕ), 1 ≤ n → ∀ (I : Type) [Finite I] (φ : I → E →+* ℂ), (Function.Injective fun i => InfinitePlace.mk (φ i)) → ∀ (lam : I → DomWeight n) (σ : Submodule ℂ (UA E n → ℂ)) (Φ : Module.Dual ℂ (⨂[ℂ] i, nablaSq ℂ n (lam i)) →ₗ[ℂ] (UA E n → ℂ)), Φ ≠ 0 → (∀ ℓ, Φ ℓ ∈ σ) → (∀ ℓ, ∀ x ∈ infU E n, RU E n x (Φ ℓ) = Φ (ℓ ∘ₗ PiTensorProduct.map fun i => GlobalTheory.Branching.sqRep ℂ n (lam i) (cEmb (φ i) x⁻¹))) → ∀ i, HasWeightAt σ (φ i) (lam i).dual := by

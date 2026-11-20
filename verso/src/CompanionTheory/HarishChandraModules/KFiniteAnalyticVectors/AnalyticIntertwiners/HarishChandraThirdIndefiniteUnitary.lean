@@ -5,13 +5,13 @@ import Development.WeilBound.HeckeVectors.SmoothVectors.SobolevApproximation.PCD
 namespace CompanionTheory.D.gk.HC
 
 /- English proof (translation)
-The claim follows from `harish_chandra_first_clause (fun _ _ _ _ _ _ _ hσ _ => kfinDense_UJC hσ) hS hW hI hA harish_chandra_descent`.
+A detailed English derivation is pending.
 -/
 theorem clause1_of (hS : KFSm) (hW : IntWts) (hI : UIrr) (hA : UAdm) : Clause1 :=
   harish_chandra_first_clause (fun _ _ _ _ _ _ _ hσ _ => kfinDense_UJC hσ) hS hW hI hA harish_chandra_descent
 
 /- English proof (translation)
-The claim follows from `harish_chandra_third_clause fun _ _ _ πU => kfinDense_coverC (fun _ _ _ _ _ _ _ hσ => kfinDense_UJC hσ) πU`.
+A detailed English derivation is pending.
 -/
 theorem harishChandraThird_indefiniteUnitary : Clause3 :=
   harish_chandra_third_clause fun _ _ _ πU => kfinDense_coverC (fun _ _ _ _ _ _ _ hσ => kfinDense_UJC hσ) πU

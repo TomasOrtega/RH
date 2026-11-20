@@ -23,12 +23,12 @@ Both sides reduce to the same expression.
 theorem toA_fromA (a : Comb.ASeg (CuspT k)) : toA (fromA a) = a := rfl
 
 /- English proof (translation)
-The claim follows from `Segment.ext_first rfl rfl`.
+A detailed English derivation is pending.
 -/
 theorem fromA_toA (Δ : Segment k) : fromA (toA Δ) = Δ := Segment.ext_first rfl rfl
 
 /- English proof (translation)
-Rewrite using `[← ZcWords.image_carrier, ← ZcWords.image_carrier]`. Conclude with `Set.image_mono h`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem carrier_subset_of_image {Δ Δ' : Segment k} (h : (toA Δ).carrier sNu ⊆ (toA Δ').carrier sNu) :
     Δ.carrier ⊆ Δ'.carrier := by
@@ -36,7 +36,7 @@ theorem carrier_subset_of_image {Δ Δ' : Segment k} (h : (toA Δ).carrier sNu �
   exact Set.image_mono h
 
 /- English proof (translation)
-Take `⟨⟨⟨Γ, hΓ⟩, h1, h2⟩, j, hj, hs⟩` from `h`. Use `⟨⟨⟨toA Γ, ?_⟩, fun e => h1 (carrier_subset_of_image e), fun e => h2 (carrier_subset_of_image e)⟩, j, hj, Subtype.ext ?_⟩` and prove the remaining obligations. Apply `Set.image_injective.2 (Subtype.val_injective (p := fun x : IrrGL k => x.IsCusp))` to reduce the goal to its premises. Rewrite using `[Set.image_union, ZcWords.image_carrier, ZcWords.image_carrier, ZcWords.image_carrier, hΓ]`. Conclude with `hs.trans (ZcWords.val_sNu_iterate (toA Δ).start j).symm`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem aPrecedes_of_precedes {Δ Δ' : Segment k} (h : Δ.Precedes Δ') : Comb.APrecedes sNu (toA Δ) (toA Δ') := by
   obtain ⟨⟨⟨Γ, hΓ⟩, h1, h2⟩, j, hj, hs⟩ := h
@@ -47,16 +47,14 @@ theorem aPrecedes_of_precedes {Δ Δ' : Segment k} (h : Δ.Precedes Δ') : Comb.
   · exact hs.trans (ZcWords.val_sNu_iterate (toA Δ).start j).symm
 
 /- English proof (translation)
-Rewrite using `[List.map_map]`. Conclude with `List.map_id'' toA_fromA L`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_toA_map_fromA (L : List (Comb.ASeg (CuspT k))) : (L.map fromA).map toA = L := by
   rw [List.map_map]
   exact List.map_id'' toA_fromA L
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Rewrite using `[Fin.univ_val_map, List.ofFn_get, ← Multiset.map_coe, hL, Multiset.map_map]`. Conclude with `(Multiset.map_congr rfl fun Δ _ => fromA_toA Δ).trans (Multiset.map_id' 𝔪)`. Introduce `i j hij hp`. Rewrite `hO` using `[Comb.AOrdered, ← map_toA_map_fromA L, List.pairwise_map]`.
-
-Conclude with `List.pairwise_iff_get.1 hO i j hij (aPrecedes_of_precedes hp)`.
+Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isOrderedForm_get {L : List (Comb.ASeg (CuspT k))} {𝔪 : Multiset (Segment k)}
     (hL : (L : Multiset (Comb.ASeg (CuspT k))) = 𝔪.map toA) (hO : Comb.AOrdered sNu L) :
@@ -69,14 +67,14 @@ theorem isOrderedForm_get {L : List (Comb.ASeg (CuspT k))} {𝔪 : Multiset (Seg
     exact List.pairwise_iff_get.1 hO i j hij (aPrecedes_of_precedes hp)
 
 /- English proof (translation)
-Rewrite using `[ZcWords.wtW_eq, List.ofFn_get, map_toA_map_fromA]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem wtW_get (L : List (Comb.ASeg (CuspT k))) :
     wtW (L.map fromA).get = (Comb.wt sNu L).map Subtype.val := by
   rw [ZcWords.wtW_eq, List.ofFn_get, map_toA_map_fromA]
 
 /- English proof (translation)
-Introduce `k _ _ _ _ _ 𝔪 𝔫`. Take `⟨L₁, L₂, L, h1, h2, h3, o1, o2, o3, hI⟩` from `GlobalTheory.CompanionTheory.SegOrder.exists_common_ordered_form (sNu (k := k)) ZcWords.sNu_injective ZcWords.sNu_aperiodic (𝔪.map toA) (𝔫.map toA)`. Use `⟨_, _, _, (L₁.map fromA).get, (L₂.map fromA).get, (L.map fromA).get, isOrderedForm_get h1 o1, isOrderedForm_get h2 o2, isOrderedForm_get (by rw [h3, Multiset.map_add]) o3, ?_⟩` and prove the remaining obligations. Rewrite using `[wtW_get, wtW_get, wtW_get]`. Conclude with `ZcWords.interleave_map _ hI`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_common_orderedForm : ∀ {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] (hA : GlobalTheory.Published.IrreducibleAdmissibleGL), ∀ (𝔪 𝔫 : Multiset (Segment k)),

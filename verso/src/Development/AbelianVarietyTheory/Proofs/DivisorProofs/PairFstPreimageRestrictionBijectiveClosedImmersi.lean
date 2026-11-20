@@ -11,7 +11,7 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.AbCoh
 
 /- English proof (translation)
-Take `⟨V, hV, hzV, hVO⟩` from `TopologicalSpace.Opens.isBasis_iff_nbhd.1 Z.isBasis_affineOpens hz`. Conclude with `⟨⟨V, hV⟩, hzV, hVO⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private theorem exAff (Z : Scheme.{0}) {O : Z.Opens} {z : Z} (hz : z ∈ O) :
     ∃ V : Z.affineOpens, z ∈ V.1 ∧ V.1 ≤ O := by
@@ -19,17 +19,17 @@ private theorem exAff (Z : Scheme.{0}) {O : Z.Opens} {z : Z} (hz : z ∈ O) :
   exact ⟨⟨V, hV⟩, hzV, hVO⟩
 
 /- English proof (translation)
-Introduce `R' _ X Y Y' ψ χ _ q'`. Establish `hG : Monotone (fun p : Pair ψ ↦ preU χ p.1.1)` using `fun _ _ h ↦ preU_mono χ (Pair.le_fst h)`. Establish `hF : pairFst ψ ⋙ preAff χ = hG.functor.op` using `rfl`. Establish `key` using `GlobalTheory.T.structureSheafCohomology_basis_bijective R' Y' q' (Pair ψ) (fun p ↦ preU χ p.1.1) hG ?cov ?dir`. Rewrite using `[hF]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `key`. Use `case cov =>`. Introduce `U x hx`. Take `⟨t, ht, hte⟩` from `χ.isClosedEmbedding.isInducing.isOpen_iff.1 U.1.2`. Establish `hxt : χ x ∈ (⟨t, ht⟩ : Y.Opens)` using `by show χ x ∈ t`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Set.mem_preimage, hte]`. Conclude with `hx`. Take `⟨W, hW, -⟩` from `exAff X (show ψ (χ x) ∈ (⊤ : X.Opens) from trivial)`. Take `⟨V, hV, hVle⟩` from `exAff Y (show χ x ∈ (⟨t, ht⟩ : Y.Opens) ⊓ ψ ⁻¹ᵁ W.1 from ⟨hxt, hW⟩)`. Use `⟨⟨(V, W), fun y hy ↦ (hVle hy).2⟩, hV, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `y hy`. Establish `: χ y ∈ t` using `(hVle hy).1`. Rewrite `this` using `[← Set.mem_preimage, hte]`. Conclude with `this`. Use `case dir =>`.
+Rewrite the indicated hypotheses using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `a b x ha hb`. Establish `hya : ψ (χ x) ∈ a.1.2.1` using `a.2 ha`. Establish `hyb : ψ (χ x) ∈ b.1.2.1` using `b.2 hb`. Take `⟨W, hW, hWle⟩` from `exAff X (show ψ (χ x) ∈ a.1.2.1 ⊓ b.1.2.1 from ⟨hya, hyb⟩)`. Take `⟨V, hV, hVle⟩` from `exAff Y (show χ x ∈ (a.1.1.1 ⊓ b.1.1.1) ⊓ ψ ⁻¹ᵁ W.1 from ⟨⟨ha, hb⟩, hW⟩)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Use `⟨⟨(V, W), fun y hy ↦ (hVle hy).2⟩, ?_, ?_, hV⟩` and prove the remaining obligations. Conclude with `⟨fun y hy ↦ (hVle hy).1.1, fun y hy ↦ (hWle hy).1⟩`. Conclude with `⟨fun y hy ↦ (hVle hy).1.2, fun y hy ↦ (hWle hy).2⟩`.
+A detailed English derivation is pending.
 -/
 theorem pair_pre_bijective : ∀ (R' : Type) [CommRing R'] (X Y Y' : Scheme.{0}) (ψ : Y ⟶ X) (χ : Y' ⟶ Y) [IsClosedImmersion χ] (q' : Y' ⟶ Sp R'), Function.Bijective (CoefMap.restrict (OAff q') (pairFst ψ ⋙ preAff χ)).pull1 ∧ Function.Bijective (CoefMap.restrict (OAff q') (pairFst ψ ⋙ preAff χ)).pull2 ∧ (CohomZeroIsConstants (OAff q') → CohomZeroIsConstants (pairFst ψ ⋙ OPre χ q')) := by
   intro R' _ X Y Y' ψ χ _ q'

@@ -29,9 +29,9 @@ variable {G M : Type} [Group G] [AddCommGroup M] [Module ℂ M] {m : ℕ}
   {ρ : Representation ℂ G M} {ρF : Representation ℂ G (Fin m → M)}
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hF i u hu`. Rewrite using `[← h, hF u hu]`. Introduce `hF u hu`. Use function extensionality and compare the values at `i`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[h, hF i u hu]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem fixd_pi (h : ∀ g F i, ρF g F i = ρ g (F i)) (K : Subgroup G) (F : Fin m → M) :
     F ∈ fixd ρF K ↔ ∀ i, F i ∈ fixd ρ K := by
@@ -43,9 +43,9 @@ private theorem fixd_pi (h : ∀ g F i, ρF g F i = ρ g (F i)) (K : Subgroup G)
     rw [h, hF i u hu]
 
 /- English proof (translation)
-Simplify using `only [Module.End.mem_eigenspace_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `hF i`. Rewrite using `[← h, hF]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Introduce `hF`. Use function extensionality and compare the values at `i`. Rewrite using `[h, hF i]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem eig_pi (h : ∀ g F i, ρF g F i = ρ g (F i)) (g : G) (a : ℂ) (F : Fin m → M) :
     F ∈ Module.End.eigenspace (ρF g) a ↔ ∀ i, F i ∈ Module.End.eigenspace (ρ g) a := by
@@ -60,13 +60,13 @@ private theorem eig_pi (h : ∀ g F i, ρF g F i = ρ g (F i)) (g : G) (a : ℂ)
     rfl
 
 /- English proof (translation)
-Establish `hp : ∀ (k : ℕ) (F : Fin m → M) i, ((T' - a • 1) ^ k) F i = ((T - a • 1) ^ k) (F i)`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => intro F i`. Both sides reduce to the same expression.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Both sides reduce to the same expression.
 
-Consider the case `succ k ih`. Introduce `F i`. Rewrite using `[pow_succ', pow_succ', Module.End.mul_apply, Module.End.mul_apply]`. Simplify using `only [LinearMap.sub_apply, LinearMap.smul_apply, Module.End.one_apply, Pi.sub_apply, Pi.smul_apply, h, ih]`. Simplify using `only [Module.End.mem_maxGenEigenspace]`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨k, hk⟩ i`. Conclude with `⟨k, by rw [← hp, hk]; rfl⟩`. Introduce `hF choose k hk using hF`. Use `⟨Finset.univ.sup k, funext fun i => ?_⟩` and prove the remaining obligations.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hp]`. Conclude with `Module.End.pow_map_zero_of_le (Finset.le_sup (Finset.mem_univ i)) (hk i)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem gen_pi {T : Module.End ℂ M} {T' : Module.End ℂ (Fin m → M)} (h : ∀ F i, T' F i = T (F i)) (a : ℂ)
     (F : Fin m → M) : F ∈ T'.maxGenEigenspace a ↔ ∀ i, F i ∈ T.maxGenEigenspace a := by
@@ -89,11 +89,9 @@ private theorem gen_pi {T : Module.End ℂ M} {T' : Module.End ℂ (Fin m → M)
     exact Module.End.pow_map_zero_of_le (Finset.le_sup (Finset.mem_univ i)) (hk i)
 
 /- English proof (translation)
-Use `haveI : Nonempty (Fin m) := ⟨i⟩`. Set `c : Module.End ℂ M →+ Module.End ℂ (Fin m → M)` to `{ toFun := fun T => LinearMap.compLeft T (Fin m) map_zero' := by ext; simp map_add' := fun _ _ => by ext; simp }`. Establish `hc : Function.Injective c` using `fun T T' e => LinearMap.ext fun x => by`. Use `congrFun (LinearMap.congr_fun e fun _ => x) i` as an intermediate fact. Conclude with `this`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hg : ∀ g, ρF g = c (ρ g)` using `fun g => LinearMap.ext fun F => funext fun i => h g F i`. Establish `: I.uOp ρF a = c (I.uOp ρ a)`. Unfold `Iwa.uOp`. Rewrite using `[AddMonoidHom.map_finsum_of_injective c hc]`. Conclude with `finsum_congr fun q => hg _`.
-
-Rewrite using `[this]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 private theorem uOp_pi (I : Iwa G) (h : ∀ g F i, ρF g F i = ρ g (F i)) (a : G) (F : Fin m → M) (i : Fin m) :
     I.uOp ρF a F i = I.uOp ρ a (F i) := by
@@ -114,9 +112,9 @@ private theorem uOp_pi (I : Iwa G) (h : ∀ g F i, ρF g F i = ρ g (F i)) (a : 
   rfl
 
 /- English proof (translation)
-Simplify using `only [eigL, Submodule.mem_inf, Submodule.mem_iInf, fixd_pi h, eig_pi h, gen_pi (uOp_pi _ h _)]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨⟨h1, h2⟩, h3⟩, h4⟩ i`. Conclude with `⟨⟨⟨h1 i, h2 i⟩, fun v j y => h3 v j y i⟩, fun v j => h4 v j i⟩`. Introduce `hF`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `⟨⟨⟨fun i => (hF i).1.1.1, fun i => (hF i).1.1.2⟩, fun v j y i => (hF i).1.2 v j y⟩, fun v j i => (hF i).2 v j⟩`.
+Supply the required witnesses or components.
 -/
 private theorem eigL_pi {L : Type} [Field L] [NumberField L] {n : ℕ} {V : Type} [Fintype V] (S : V → Plc L) {W : Type}
     [AddCommGroup W] [Module ℂ W] {ρ : Representation ℂ (GV n S) W} {ρF : Representation ℂ (GV n S) (Fin m → W)}
@@ -136,21 +134,19 @@ section Grp
 variable {Ga Gp A B W : Type} [Group Ga] [Group Gp] [Group A] [Group B] [AddCommGroup W] [Module ℂ W]
 
 /- English proof (translation)
-Establish `hsub : ∀ p ∈ K₁.prod K₂, ∃ u ∈ U, (u : Ga) = sec p` using `fun p hp => by`. Take `⟨u, hu, e⟩` from `(hU (sec p)).2 ⟨1, one_mem _, p, hp, (mul_one _).symm⟩`. Conclude with `⟨u, hu, e⟩`. Prove the components needed by the constructor for the conclusion. Introduce `hF`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1 : ∀ u ∈ U, (tk u : A) = 1 → ∀ i g, F i (g * ((u : Ga), 1)) = F i g` using `fun u hu e i g => by`. Establish `e' : tk u = 1` using `Subtype.ext e`. Use `hF u hu i g` as an intermediate fact. Rewrite `this` using `[e', map_one]`. Simplify `this` using `[Matrix.one_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Use `⟨fun k hk i g => ?_, fun k i g => ?_, fun k hk i g => ?_⟩` and prove the remaining obligations. Take `⟨u, hu, e⟩` from `(hU k).2 ⟨k, hk, 1, one_mem _, by simp⟩`. Establish `e' : (u : Ga) = k` using `e`. Rewrite using `[← e']`. Conclude with `h1 u hu (ht u k hk 1 (one_mem _) (by simp [e'])) i g`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hp : ((k : A), (1 : B)) ∈ K₁.prod K₂` using `⟨k.2, one_mem _⟩`. Take `⟨u, hu, e⟩` from `hsub _ hp`. Establish `e' : tk u = k` using `Subtype.ext (ht u 1 (one_mem _) _ hp (by rw [e, mul_one]))`. Use `hF u hu i g` as an intermediate fact. Rewrite `this` using `[e', e]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `hp : ((1 : A), k) ∈ K₁.prod K₂` using `⟨one_mem _, hk⟩`. Take `⟨u, hu, e⟩` from `hsub _ hp`. Rewrite using `[← e]`. Conclude with `h1 u hu (ht u 1 (one_mem _) _ hp (by rw [e, mul_one])) i g`. Introduce and unpack `⟨a, b, c⟩ u hu i g`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨k, hk, p, hp, e⟩` from `(hU u).1 ⟨u, hu, rfl⟩`. Establish `e1 : tk u = ⟨p.1, hp.1⟩` using `Subtype.ext (ht u k hk p hp e)`. Establish `e2 : sec p = sec (1, p.2) * sec (p.1, 1)`. Rewrite using `[← map_mul]`. Use `congr 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Prod.ext (by simp) (by simp)`. Establish `e3 : ∀ j, F j (g * ((u : Ga), 1)) = F j ((g * (sec (1, p.2), 1)) * (sec (p.1, 1), 1))` using `fun j => by`. Establish `: g * ((u : Ga), (1 : Gp)) = ((g * (sec (1, p.2), 1)) * (sec (p.1, 1), 1)) * (k, 1)`. Rewrite using `[e, e2]`. Conclude with `Prod.ext (by simp [mul_assoc]) (by simp)`.
-
-Rewrite using `[this, a k hk]`. Simplify using `only [e3, e1]`. Rewrite using `[b ⟨p.1, hp.1⟩ i (g * (sec (1, p.2), 1))]`. Conclude with `c _ hp.2 i g`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem lvl_iff {m : ℕ} (Ub : Subgroup Ga) (U : Subgroup Ub) (KS : Subgroup Ga) (K₁ : Subgroup A) (K₂ : Subgroup B)
     (sec : A × B →* Ga) (tk : Ub →* K₁) (τ : K₁ →* GL (Fin m) ℂ)
@@ -214,7 +210,7 @@ private def kS : Subgroup (UA L n) :=
     ⨅ (v : Plc (Lp L)) (_ : v ∈ s.S), (cLoc (s.w v)).ker
 
 /- English proof (translation)
-Simplify using `only [kS, Subgroup.mem_inf, Subgroup.mem_iInf, Subgroup.mem_comap, MonoidHom.mem_ker, and_assoc]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem mem_kS {n : ℕ} {s : HidaSetting l L Ω} {k : UA L n} : k ∈ kS n s ↔ k ∈ GlobalTheory.UnitaryBC.finU L n ∧
     (∀ u : Plc L, u.under (𝓞 (Lp L)) ∉ s.S → cLoc u k ∈ KO (u.adicCompletion L) (Fin n)) ∧
@@ -222,7 +218,7 @@ private theorem mem_kS {n : ℕ} {s : HidaSetting l L Ω} {k : UA L n} : k ∈ k
   simp only [kS, Subgroup.mem_inf, Subgroup.mem_iInf, Subgroup.mem_comap, MonoidHom.mem_ker, and_assoc]
 
 /- English proof (translation)
-Distinguish the cases in `h : u.under (𝓞 (Lp L)) = w.under (𝓞 (Lp L))`. Conclude with `Or.inl (GlobalTheory.DefU.LocRet.localProj_unitaryAdelicLocalRetractionEnd_of_under_eq h x)`. Conclude with `Or.inr (GlobalTheory.DefU.LocRet.localProj_unitaryAdelicLocalRetractionEnd_of_under_ne h x)`.
+Consider separately whether the proposition holds or fails. Prove the first alternative. Prove the second alternative.
 -/
 private theorem local_retraction_cases {n : ℕ} (w u : Plc L) (x : UA L n) :
     cLoc u (GlobalTheory.DefU.LocRet.ret0 w n x) = cLoc u x ∨ cLoc u (GlobalTheory.DefU.LocRet.ret0 w n x) = 1 := by
@@ -231,9 +227,7 @@ private theorem local_retraction_cases {n : ℕ} (w u : Plc L) (x : UA L n) :
   · exact Or.inr (GlobalTheory.DefU.LocRet.localProj_unitaryAdelicLocalRetractionEnd_of_under_ne h x)
 
 /- English proof (translation)
-Take `⟨-, h2, h3⟩` from `mem_kS.1 hk`. Use `mem_kS.2 ⟨(Subgroup.mem_inf.1 (GlobalTheory.DefU.LocRet.unitaryAdelicLocalRetractionEnd_mem_localPoints k)).1, fun u hu => ?_, fun v hv => ?_⟩` and prove the remaining obligations. Apply the tactic sequence `rcases local_retraction_cases w u k with h | h <;> rw [h]`. Conclude with `h2 u hu`. Conclude with `one_mem _`.
-
-Conclude with `(local_retraction_cases w _ k).elim (fun h => h.trans (h3 v hv)) id`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 private theorem retraction_mem_level {n : ℕ} {s : HidaSetting l L Ω} (w : Plc L) {k : UA L n} (hk : k ∈ kS n s) :
     GlobalTheory.DefU.LocRet.ret0 w n k ∈ kS n s := by
@@ -245,15 +239,15 @@ private theorem retraction_mem_level {n : ℕ} {s : HidaSetting l L Ω} (w : Plc
   · exact (local_retraction_cases w _ k).elim (fun h => h.trans (h3 v hv)) id
 
 /- English proof (translation)
-Take `⟨hund, hspl⟩` from `UpperTheory.under_chosen_place_and_isSplitAt_of_decomp_le l L Ω s`. Establish `hsplit : ∀ w : Plc L, w.under (𝓞 (Lp L)) ∈ s.S → IsSplitAt w` using `fun w hw => hspl w (V.split _ (hV ▸ hw))`. Establish `hKO : ∀ u : Plc L, KO (u.adicCompletion L) (Fin n) = GlobalTheory.LFun.KGL u n` using `fun u => GlobalTheory.SmGL.SphCompletion.KO_completion u n`. Establish `hT : ((fun w : Plc L => w.under (𝓞 (Lp L))) ⁻¹' s.S).Finite`. Use `(hV ▸ V.fin : s.S.Finite).preimage' fun v _ => ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `v.isMaximal` as an intermediate fact. Use `((IsDedekindDomain.primesOver_finite v.asIdeal (𝓞 L)).preimage (f := fun w : Plc L => w.asIdeal) (fun a _ b _ h => HeightOneSpectrum.ext h)).subset ?_` and prove the remaining obligations. Introduce and unpack `w rfl`. Conclude with `⟨w.isPrime, ⟨rfl⟩⟩`. Use `UpperTheory.exists_fixed_vector_of_local_fixed_vectors L n σ hσ (kS n s) (fun k hk => (mem_kS.1 hk).1) (fun w k hk => retraction_mem_level w hk) _ hT (fun k hk u hu => hKO u ▸ (mem_kS.1 hk).2.1 u hu) fun w => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Distinguish the cases in `hw : w.under (𝓞 (Lp L)) ∈ s.S`. Take `⟨φ, hφ, h0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hσ.ne_bot`. Use `⟨φ, hφ, h0, fun k hk hl => ?_⟩` and prove the remaining obligations. Establish `hu : (s.w (w.under (𝓞 (Lp L)))).under (𝓞 (Lp L)) = w.under (𝓞 (Lp L))` using `hund _`. Establish `hl' : k ∈ locU n (s.w (w.under (𝓞 (Lp L))))`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `locU at hl ⊢`. Rewrite using `[hu]`. Conclude with `hl`. Establish `h2 : k = 1` using `congrArg Subtype.val (GlobalTheory.SplitPts.eq_one_of_cLoc (hsplit _ (hu.symm ▸ hw)) ⟨k, hl'⟩ ((mem_kS.1 hk).2.2 _ hw))`. Rewrite using `[h2, map_one]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Take `⟨φ, h1, h2, h3⟩` from `hun w hw`. Conclude with `⟨φ, h1, h2, fun k hk hl => h3 k hl (hKO w ▸ (mem_kS.1 hk).2.1 w hw)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem kS_vec {n : ℕ} {s : HidaSetting l L Ω} (V : s.Lev) (hV : V.S' = s.S) {σ : Submodule ℂ (UA L n → ℂ)} (hσ : IsAutRepU σ)
     (hun : ∀ w : Plc L, w.under (𝓞 (Lp L)) ∉ s.S → IsUnramU σ w) :
@@ -287,20 +281,18 @@ private theorem kS_vec {n : ℕ} {s : HidaSetting l L Ω} (V : s.Lev) (hV : V.S'
     exact ⟨φ, h1, h2, fun k hk hl => h3 k hl (hKO w ▸ (mem_kS.1 hk).2.1 w hw)⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun u => congrFun (congrArg Prod.fst hk) u, congrArg Prod.snd hk⟩`.
+Supply the required witnesses or components.
 -/
 private theorem toGS_cmp {n : ℕ} {s : HidaSetting l L Ω} {k : Ga l L n} (hk : toGS n s k = 1) :
     (∀ u : s.St, cmp n (s.w u) k = 1) ∧ cmp n (s.w s.v0) k = 1 :=
   ⟨fun u => congrFun (congrArg Prod.fst hk) u, congrArg Prod.snd hk⟩
 
 /- English proof (translation)
-Take `⟨hk1, hk2⟩` from `Subgroup.mem_inf.1 hk`. Take `⟨c1, c2⟩` from `toGS_cmp (MonoidHom.mem_ker.1 hk1)`. Establish `hw` using `(UpperTheory.under_chosen_place_and_isSplitAt_of_decomp_le l L Ω s).1`. Establish `hc : ∀ v : Plc L, ((l : ℕ) : 𝓞 (Lp L)) ∉ (v.under (𝓞 (Lp L))).asIdeal → cLoc v x = cmp n v k` using `fun v hv => by`. Rewrite using `[← h1, UpperTheory.V.Hi.Pu.cmp_of (fun h => hv ((UpperTheory.V.Hi.Pu.l_iff v).2 h))]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `mem_kS.2 ⟨hx, fun u hu => ?_, fun v hv => ?_⟩` and prove the remaining obligations. Rewrite using `[hc u fun h => hu (Or.inl h)]`. Conclude with `Subgroup.mem_iInf.1 (Subgroup.mem_iInf.1 hk2 u) hu`. Distinguish the cases in `h : ((l : ℕ) : 𝓞 (Lp L)) ∈ v.asIdeal`. Conclude with `h2 ⟨v, h⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite using `[hc _ (by rwa [hw])]`. Break down `hv with h' | h' | h'` into its components or cases. Conclude with `absurd h' h`. Conclude with `c1 ⟨v, h'⟩`. Rewrite using `[h']`.
-
-Conclude with `c2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem KS_lift {n : ℕ} {s : HidaSetting l L Ω} (V : s.Lev) {k : Ga l L n} (hk : k ∈ KS n s) {x : UA L n}
     (hx : x ∈ GlobalTheory.UnitaryBC.finU L n) (h1 : (away l L n).rangeRestrict x = k)
@@ -332,21 +324,19 @@ private def tl (ι : Qbar l ≃+* ℂ) (e : (Fin d → ℂ) ≃ₗ[ℂ] ⨂[ℂ]
   map_smul' a F := funext fun g => by simp [toForm]
 
 /- English proof (translation)
-Take `⟨φ, hφ, hφ0, hφK⟩` from `kS_vec (n := n) V hV hσ hun`. Take `⟨hfin, hbij⟩` from `UpperTheory.placeEmbeddings_bijective_infinitePlaces l L Ω s V ι`. Establish `hcomm : ∀ x ∈ infU L n, ∀ k ∈ GlobalTheory.UnitaryBC.finU L n, ∀ ψ, RU L n k (RU L n x ψ) = RU L n x (RU L n k ψ)` using `fun x hx k hk ψ => by rw [GlobalTheory.DefU.RU_RU, GlobalTheory.DefU.RU_RU, GlobalTheory.DefU.fin_mul_inf hk hx]`. Set `M : Submodule ℂ (UA L n → ℂ)` to `σ ⊓ fixd (RU L n) (kS n s)`. Set `N : Submodule ℂ (Fin 1 → UA L n → ℂ)` to `M.comap (LinearMap.proj 0)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hN0 : N ≠ ⊥` using `(Submodule.ne_bot_iff _).2 ⟨fun _ => φ, ⟨hφ, hφK⟩, fun h => hφ0 (congrFun h 0)⟩`. Establish `hNσ : ∀ F ∈ N, ∀ k, F k ∈ σ` using `fun F hF k => by`. Rewrite using `[Subsingleton.elim k 0]`. Conclude with `hF.1`. Establish `hNs : ∀ x ∈ infU L n, ∀ F ∈ N, (fun k => RU L n x (F k)) ∈ N` using `fun x hx F hF => ⟨hσ.stable _ _ hF.1, fun k hk => by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : RU L n k (F 0) = F 0` using `hF.2 k hk`. Express the relevant statement in the definitionally equal form `RU L n k (RU L n x (F 0)) = RU L n x (F 0)`. Rewrite using `[hcomm x hx k (mem_kS.1 hk).1, h2]⟩`. Take `⟨Φ, hΦ0, hΦN, hΦ⟩` from `UpperTheory.exists_tensor_dual_embedding_of_hasWeightAt L n hn _ _ hbij (fun x => lam x.res) σ hσ hwt 1 N hN0 hNσ hNs`. Take `⟨f1, -, -, f4, f5⟩` from `formU l L Ω s n hn V Q c m τ₀ ι lam d e ξ hb _ fun _ => rfl`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Set `A : Submodule ℂ (Ga l L n × GV n (fun v : V.frame.Vl => s.w v.1) → Fin d → ℂ)` to `(hset Q τ₀).X.AF ξ`. Take `⟨F, hFA, hF'⟩ : ∃ F : Ga l L n × GV n (fun v : V.frame.Vl => s.w v.1) → Fin d → ℂ, F ∈ A ∧ ∀ ℓ, toForm ι e F ℓ = Φ ℓ 0` from `f5 ((LinearMap.proj 0 : (Fin 1 → UA L n → ℂ) →ₗ[ℂ] (UA L n → ℂ)) ∘ₗ Φ) (fun ℓ => hσ.aut _ (hΦN ℓ).1) fun ℓ x hx => hΦ ℓ x hx 0`. Use `(Submodule.ne_bot_iff _).2 ⟨F, ⟨⟨hFA, Submodule.subset_span fun ℓ => ?_⟩, fun k hk => ?_⟩, fun h => hΦ0 ?_⟩` and prove the remaining obligations. Rewrite using `[hF']`. Conclude with `(hΦN ℓ).1`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨x, hx⟩` from `f4 (k, 1)`. Establish `hx1 : (away l L n).rangeRestrict (x : UA L n) = k` using `congrArg Prod.fst hx`. Establish `hx2 : ∀ v : V.frame.Vl, cLoc (s.w v.1) (x : UA L n) = 1` using `congrFun (congrArg Prod.snd hx)`. Establish `hxK` using `KS_lift V hk x.2 hx1 hx2`. Establish `hJ : UpperTheory.V.Hi.Pu.JU V (x : UA L n) = (k, 1)` using `hx`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hmem : (fun g => F (g * (k, 1))) ∈ A` using `UpperTheory.V.Hi.Pu.AF_tr _ hFA _`. Use `sub_eq_zero.1 (f1 _ (A.sub_mem hmem hFA) fun ℓ => ?_)` and prove the remaining obligations. Establish `e3` using `UpperTheory.V.Hi.Pu.RU_fin ι e F ℓ x.2`. Rewrite `e3` using `[hJ, hF']`. Establish `e4 : toForm ι e (fun g => F (g * (k, 1))) ℓ = Φ ℓ 0` using `e3.symm.trans ((hΦN ℓ).2 _ hxK)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e5 : tl ι e ℓ ((fun g => F (g * (k, 1))) - F) = 0`. Rewrite using `[map_sub]`. Express the relevant statement in the definitionally equal form `toForm ι e (fun g => F (g * (k, 1))) ℓ - toForm ι e F ℓ = 0`. Rewrite using `[e4, hF', sub_self]`. Conclude with `e5`.
-
-Use `LinearMap.ext fun ℓ => funext fun i => ?_` and prove the remaining obligations. Rewrite using `[Subsingleton.elim i 0, ← hF', h]`. Conclude with `(tl ι e ℓ).map_zero`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem vs_ne (hn : 1 ≤ n) (hV : V.S' = s.S) (Q : QData V) {c : Coef l} (ι : Qbar l ≃+* ℂ) {m : ℕ}
     (τ₀ : KT n (wt s) →* GL (Fin m) c.O)
@@ -403,11 +393,11 @@ end U
 section U2
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h u hu i g`. Establish `h1` using `congrFun (h u hu) i`. Rewrite `h1` using `[UpperTheory.V.Hi.Pu.raF_eq]`. Establish `h2` using `congrFun h1 g`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Simplify `h2` using `only [Finset.sum_apply, Pi.smul_apply]`. Introduce `h u hu`. Use function extensionality and compare the values at `i`. Rewrite using `[UpperTheory.V.Hi.Pu.raF_eq]`. Use function extensionality and compare the values at `g`.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify `h u hu i g` using `only [Finset.sum_apply, Pi.smul_apply]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem fix_iff {Γ Ga Gp : Type} [Group Γ] [Group Ga] [Group Gp] (X : Frame Γ Ga Gp) {d m : ℕ}
     (τ : X.Ub →* GL (Fin m) ℂ) (U : Subgroup X.Ub) (F : Fin m → X.Fn ℂ d) :
@@ -426,9 +416,9 @@ private theorem fix_iff {Γ Ga Gp : Type} [Group Γ] [Group Ga] [Group Gp] (X : 
     simpa only [Finset.sum_apply, Pi.smul_apply] using h u hu i g
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `e g`. Simplify `congrFun e g` using `only [Finset.sum_apply, Pi.smul_apply]`. Introduce `e`. Use function extensionality and compare the values at `g`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify `e g` using `only [Finset.sum_apply, Pi.smul_apply]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem sum_fun {X W : Type} [AddCommGroup W] [Module ℂ W] {m : ℕ} (c : Fin m → ℂ) (f : Fin m → X → W) (h : X → W) :
     ∑ j, c j • f j = h ↔ ∀ g, ∑ j, c j • f j g = h g := by
@@ -443,7 +433,7 @@ variable {l : ℕ} [Fact l.Prime] {L Ω : Type} [Field L] [NumberField L] [IsCMF
   {n : ℕ} {s : HidaSetting l L Ω}
 
 /- English proof (translation)
-Unfold `secS`. Rewrite using `[dif_pos hb]`. Conclude with `(MulEquiv.ofBijective _ hb).apply_symm_apply p`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem toGS_sec (hb : Function.Bijective ((toGS n s).comp (GaS n s).subtype)) (p : GS n s) :
     toGS n s (secS n s p) = p := by
@@ -452,7 +442,7 @@ private theorem toGS_sec (hb : Function.Bijective ((toGS n s).comp (GaS n s).sub
   exact (MulEquiv.ofBijective _ hb).apply_symm_apply p
 
 /- English proof (translation)
-Take `⟨c1, -⟩` from `toGS_cmp (MonoidHom.mem_ker.1 (Subgroup.mem_inf.1 hk).1)`. Use function extensionality and compare the values at `a`. Establish `h1 : cmp n (s.w a) (secS n s p) = p.1 a` using `congrFun (congrArg Prod.fst (toGS_sec hb p)) a`. Express the relevant statement in the definitionally equal form `cmp n (s.w a) (u : Ga l L n) = _`. Rewrite using `[e, map_mul, c1, mul_one, h1]`.
+Extract witnesses or component facts from the available result. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 private theorem toKT_eq (hb : Function.Bijective ((toGS n s).comp (GaS n s).subtype)) (u : Ub n s) {k : Ga l L n} (hk : k ∈ KS n s)
     {p : GS n s} (e : (u : Ga l L n) = secS n s p * k) : (toKT n s u : GV n (wt s)) = p.1 := by
@@ -465,11 +455,11 @@ private theorem toKT_eq (hb : Function.Bijective ((toGS n s).comp (GaS n s).subt
 variable {V : s.Lev} {lam : Wt L l n} {d : ℕ}
 
 /- English proof (translation)
-Take `⟨hb, -, h3⟩` from `hS l L Ω s n hn V hV`. Establish `lvl` using `lvl_iff (Gp := GV n (fun v : V.frame.Vl => s.w v.1)) (Ub n s) (UQ n Q) (KS n s) (KT n (wt s)) (Kc _ n 1) (secS n s) (toKT n s) ((Matrix.GeneralLinearGroup.map (ι.toRingHom.comp (algebraMap c.O (Qbar l)))).comp τ₀) (h3 Q) (fun u k hk p _ e => toKT_eq hb u hk e) F`. Use `(UpperTheory.V.Hi.Pu.mem_Y Q τ₀ ι e).trans ?_` and prove the remaining obligations. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨hA, hfix⟩, hσ'⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Take `⟨a, b, c'⟩` from `lvl.1 ((fix_iff _ _ _ F).1 hfix)`. Conclude with `⟨⟨fun k i => (sum_fun _ _ _).2 (b k i), fun k hk i => funext (c' k hk i)⟩, fun i => ⟨⟨hA i trivial, Submodule.subset_span fun ℓ => hσ' i ℓ⟩, fun k hk => funext (a k hk i)⟩⟩`. Introduce and unpack `⟨⟨b1, b2⟩, hv⟩`. Use `⟨⟨fun i _ => (hv i).1.1, (fix_iff _ _ _ F).2 (lvl.2 ⟨fun k hk i g => congrFun ((hv i).2 k hk) g, fun k i => (sum_fun _ _ _).1 (b1 k i), fun k hk i g => congrFun (b2 k hk i) g⟩)⟩, fun i ℓ => ?_⟩` and prove the remaining obligations. Establish `h' : Submodule.span ℂ {F' : Ga l L n × GV n (fun v : V.frame.Vl => s.w v.1) → Fin d → ℂ | ∀ ℓ, toForm ι e F' ℓ ∈ σ} ≤ σ.comap (tl ι e ℓ)` using `Submodule.span_le.2 fun F' hF' => hF' ℓ`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `h' (hv i).1.2`.
+A detailed English derivation is pending.
 -/
 private theorem y_iff (hS : SecS) (hn : 1 ≤ n) (hV : V.S' = s.S) (Q : QData V) {c : Coef l} (ι : Qbar l ≃+* ℂ) {m : ℕ}
     (τ₀ : KT n (wt s) →* GL (Fin m) c.O)
@@ -497,11 +487,11 @@ private theorem y_iff (hS : SecS) (hn : 1 ≤ n) (hV : V.S' = s.S) (Q : QData V)
     exact h' (hv i).1.2
 
 /- English proof (translation)
-Establish `hrp : ∀ (g : GV n (fun v : V.frame.Vl => s.w v.1)) (F : Fin m → Ga l L n × GV n (fun v : V.frame.Vl => s.w v.1) → Fin d → ℂ) i, (hset Q τ₀).X.rpF ℂ d m g F i = (actS n V d).comp (MonoidHom.inl _ _) g (F i)` using `fun g F i => by`. Establish `h1 : (secS n s) 1 = 1` using `map_one _`. Express the relevant statement in the definitionally equal form `rtr ℂ _ _ (1, g) (F i) = rtr ℂ _ _ (secS n s 1, g) (F i)`. Rewrite using `[h1]`. Substitute `hR` using the available equality.
+Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Substitute using the available equality.
 
-Use extensionality with `F`. Establish `h1` using `y_iff hS hn hV Q ι τ₀ e ξ σ F`. Establish `h2` using `eigL_pi (fun v : V.frame.Vl => s.w v.1) hrp b φ μ F`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, z⟩`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Take `⟨y1, y2⟩` from `h1.1 y`. Conclude with `⟨y1, fun i _ => ⟨y2 i, h2.1 z i⟩⟩`. Introduce and unpack `⟨y, z⟩`. Conclude with `⟨h1.2 ⟨y, fun i => (z i trivial).1⟩, h2.2 fun i => (z i trivial).2⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 private theorem part_eq (hS : SecS) (hn : 1 ≤ n) (hV : V.S' = s.S) (Q : QData V) {c : Coef l} (ι : Qbar l ≃+* ℂ) {m : ℕ}
     (τ₀ : KT n (wt s) →* GL (Fin m) c.O)
@@ -530,7 +520,7 @@ private theorem part_eq (hS : SecS) (hn : 1 ≤ n) (hV : V.S' = s.S) (Q : QData 
     exact ⟨h1.2 ⟨y, fun i => (z i trivial).1⟩, h2.2 fun i => (z i trivial).2⟩
 
 /- English proof (translation)
-The claim follows from `h ▸ hB`.
+A detailed English derivation is pending.
 -/
 private theorem rank_of {M : Type} [AddCommGroup M] [Module ℂ M] {A B : Submodule ℂ M} (h : A = B) {r : Cardinal}
     (hB : Module.rank ℂ B = r) : Module.rank ℂ A = r := h ▸ hB

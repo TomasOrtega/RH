@@ -5,29 +5,29 @@ open Matrix
 namespace GlobalTheory.BesselChar
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨T, hT, e⟩, h2⟩ i set φ := Pi.evalRingHom (fun _ => S) i`. Use `⟨⟨T.map φ, fun j l hjl => by simp [Matrix.map_apply, hT j l hjl], ?_⟩, fun y hy => ?_⟩` and prove the remaining obligations. Use `congrArg (fun X => X.map φ) e` as an intermediate fact. Simplify `this` using `only [Matrix.map_mul, Matrix.map_add _ (map_add φ)]`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Set `y' : Fin n → ι → S` to `fun k => Pi.single i (y k)`. Establish `hy' : K *ᵥ y' = 0`. Use function extensionality and compare the values at `j i'`. Distinguish the cases in `hi : i' = i`. Substitute `hi` using the available equality.
+Introduce a local definition for the expression. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Establish `h1` using `congr_fun (mulVec_map φ K y') j`. Establish `h0 : (fun k => φ (y' k)) = y`. Use function extensionality and compare the values at `k`. Simplify using `[φ, y']`. Rewrite `h1` using `[h0, hy]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify `h1.symm` using `[φ]`. Use `show (∑ k, K j k * y' k) i' = 0`. Rewrite using `[Finset.sum_apply]`. Use `Finset.sum_eq_zero fun k _ => ?_` and prove the remaining obligations. Simplify using `[y', Pi.single_apply, hi]`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Take `⟨a, ha⟩` from `h2 y' hy'`. Use `⟨fun l => φ (a l), ?_⟩` and prove the remaining obligations. Establish `h0 : (fun k => φ (y' k)) = y`. Use function extensionality and compare the values at `k`. Simplify using `[φ, y']`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h1` using `mulVec_map φ M y'`. Establish `h3` using `mulVec_map φ E a`. Rewrite `h1` using `[h0]`. Rewrite using `[h1, h3, ha]`. Use function extensionality and compare the values at `k`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using `only [Pi.add_apply, map_add]`. Rewrite using `[show φ (y' k) = y k from congr_fun h0 k]`. Introduce `h choose hc hv using h choose T hT e using hc`. Use `⟨⟨Matrix.of fun j l i => T i j l, fun j l hjl => by funext i; exact hT i j l hjl, ?_⟩, fun y hy => ?_⟩` and prove the remaining obligations. Use extensionality with `k l i`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Establish `h1` using `congr_fun (congr_fun (e i) k) l`. Establish `hT' : (Matrix.of fun j l i => T i j l).map (Pi.evalRingHom (fun _ => S) i) = T i`. Use extensionality with `j l`. Both sides reduce to the same expression. Establish `h2 : ((M * E).map (Pi.evalRingHom (fun _ => S) i)) k l = ((E + E * Matrix.of fun j l i => T i j l).map (Pi.evalRingHom (fun _ => S) i)) k l`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.map_mul, Matrix.map_add _ (map_add _), Matrix.map_mul, hT']`. Conclude with `h1`. Simplify using `using h2`. Establish `hyi : ∀ i, K.map (Pi.evalRingHom (fun _ => S) i) *ᵥ (fun k => y k i) = 0`. Introduce `i`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `mulVec_map (Pi.evalRingHom (fun _ => S) i) K y` as an intermediate fact. Use `this.trans ?_` and prove the remaining obligations. Rewrite using `[hy]`. Both sides reduce to the same expression. Use `choose a ha using fun i => hv i _ (hyi i)`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Use `⟨fun l i => a i l, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `k i`. Establish `h1` using `congr_fun (mulVec_map (Pi.evalRingHom (fun _ => S) i) M y) k`. Establish `h3` using `congr_fun (mulVec_map (Pi.evalRingHom (fun _ => S) i) E (fun l i => a i l)) k`. Establish `h4` using `congr_fun (ha i) k`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Simplify using `only [Pi.evalRingHom_apply] at h1 h3`. Use `show (M *ᵥ y) k i = y k i + (E *ᵥ fun l i => a i l) k i`. Rewrite using `[← h1, ← h3, h4]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem unip_pi_iff {ι S : Type} [Fintype ι] [DecidableEq ι] [CommRing S] {n ρ : ℕ}
     (E : Matrix (Fin n) (Fin ρ) (ι → S)) (K : Matrix (Fin ρ) (Fin n) (ι → S))

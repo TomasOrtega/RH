@@ -17,9 +17,9 @@ def actP (g h : Matrix ι ι ℂ) (z : (ι × A) ⊕ (ι × B) → ℂ) : (ι ×
   Sum.elim (fun x => ∑ j, g x.1 j * z (Sum.inl (j, x.2))) (fun y => ∑ j, h y.1 j * z (Sum.inr (j, y.2)))
 
 /- English proof (translation)
-Proceed by induction on `p using MvPolynomial.induction_on with`. Consider the case `C a => simp [sub]`. Consider the case `add p q hp hq => rw [map_add, map_add, map_add, hp, hq]`. Consider the case `mul_X p s hp`. Rewrite using `[map_mul, map_mul, map_mul, hp]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Break down `s with x | y` into its components or cases. Simplify using `[sub, actP, map_sum]`. Simplify using `[sub, actP, map_sum]`.
+Reduce the equality to equality of the corresponding arguments. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem eval_sub (g h : Matrix ι ι ℂ) (z : (ι × A) ⊕ (ι × B) → ℂ) (p : PV ι A B) :
     eval z (sub g h p) = eval (actP g h z) p := by
@@ -34,9 +34,9 @@ theorem eval_sub (g h : Matrix ι ι ℂ) (z : (ι × A) ⊕ (ι × B) → ℂ) 
     · simp [sub, actP, map_sum]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `s`. Break down `s with x | y` into its components or cases. Simplify using `only [actP, Sum.elim_inl, Matrix.mul_apply, Finset.mul_sum, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun l _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Apply function extensionality and compare values at an arbitrary argument. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Expand and normalize the polynomial expressions, which then agree. Simplify using `only [actP, Sum.elim_inr, Matrix.mul_apply, Finset.mul_sum, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun l _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem actP_actP (g h g' h' : Matrix ι ι ℂ) (z : (ι × A) ⊕ (ι × B) → ℂ) :
     actP g h (actP g' h' z) = actP (g * g') (h * h') z := by
@@ -52,25 +52,21 @@ theorem actP_actP (g h g' h' : Matrix ι ι ℂ) (z : (ι × A) ⊕ (ι × B) �
     ring
 
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.TotalDegreeLinear.main g h p`.
+A detailed English derivation is pending.
 -/
 theorem totalDegree_sub_le (g h : Matrix ι ι ℂ) (p : PV ι A B) : (sub g h p).totalDegree ≤ p.totalDegree :=
   _root_.UpperTheory.Reformulated.B.TotalDegreeLinear.main g h p
 
 /- English proof (translation)
-Proceed by induction on `p using MvPolynomial.induction_on with`. Consider the case `C a => intro m`. Simplify using `only [sub, aeval_C, algebraMap_eq]`. Conclude with `continuous_const`. Consider the case `add p q hp hq => intro m`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_add, coeff_add]`. Conclude with `(hp m).add (hq m)`. Consider the case `mul_X p s hp`. Introduce `m`. Break down `s with x | y` into its components or cases.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e : ∀ k, coeff m (sub (g k) (h k) (p * X (Sum.inl x))) = ∑ j, g k x.1 j * coeff m (sub (g k) (h k) p * X (Sum.inl (j, x.2)))`. Introduce `k`. Simplify using `only [map_mul, sub, aeval_X, Sum.elim_inl, Finset.mul_sum, coeff_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[mul_left_comm, coeff_C_mul]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [e, coeff_mul_X']`. Use `continuous_finsetSum _ fun j _ => ?_` and prove the remaining obligations. Use `(((continuous_apply j).comp ((continuous_apply x.1).comp hg))).mul ?_` and prove the remaining obligations. Use `split_ifs`. Conclude with `hp _`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `continuous_const`. Establish `e : ∀ k, coeff m (sub (g k) (h k) (p * X (Sum.inr y))) = ∑ j, h k y.1 j * coeff m (sub (g k) (h k) p * X (Sum.inr (j, y.2)))`. Introduce `k`. Simplify using `only [map_mul, sub, aeval_X, Sum.elim_inr, Finset.mul_sum, coeff_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
-
-Rewrite using `[mul_left_comm, coeff_C_mul]`. Simplify using `only [e, coeff_mul_X']`. Use `continuous_finsetSum _ fun j _ => ?_` and prove the remaining obligations. Use `(((continuous_apply j).comp ((continuous_apply y.1).comp hh))).mul ?_` and prove the remaining obligations. Use `split_ifs`.
-
-Conclude with `hp _`. Conclude with `continuous_const`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuous_coeff_sub {K : Type} [TopologicalSpace K] (g h : K → Matrix ι ι ℂ) (hg : Continuous g)
     (hh : Continuous h) (p : PV ι A B) : ∀ m, Continuous fun k => coeff m (sub (g k) (h k) p) := by
@@ -111,7 +107,7 @@ end
 abbrev εT (N : ℕ) : Fin N → Bool := fun _ => true
 
 /- English proof (translation)
-The claim follows from `(Units.continuous_val.comp continuous_subtype_val).comp continuous_subtype_val`.
+A detailed English derivation is pending.
 -/
 theorem continuous_toMK (N : ℕ) : Continuous fun k : Formalism.REAL.KG (εT N) => Formalism.REAL.toMK k :=
   (Units.continuous_val.comp continuous_subtype_val).comp continuous_subtype_val
@@ -123,14 +119,14 @@ theorem toMK_mul (N : ℕ) (k k' : Formalism.REAL.KG (εT N)) :
     Formalism.REAL.toMK (k * k') = Formalism.REAL.toMK k * Formalism.REAL.toMK k' := rfl
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[Matrix.mul_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem map_star_mul {N : ℕ} (a b : Matrix (Fin N) (Fin N) ℂ) : (a * b).map star = a.map star * b.map star := by
   ext i j
   simp [Matrix.mul_apply]
 
 /- English proof (translation)
-Establish `hJ : Formalism.REAL.Jm (εT N) = 1`. Simplify using `[Formalism.REAL.Jm, εT, Matrix.diagonal_one]`. Establish `: u ∈ Formalism.REAL.Kset (εT N)` using `⟨hu, by rw [hJ, Matrix.mul_one, Matrix.one_mul]⟩`. Rewrite `this` using `[← Formalism.REAL.range_toMK]`. Conclude with `this`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_toMK (N : ℕ) (u : Matrix (Fin N) (Fin N) ℂ) (hu : u ∈ Matrix.unitaryGroup (Fin N) ℂ) :
     ∃ k : Formalism.REAL.KG (εT N), Formalism.REAL.toMK k = u := by
@@ -141,7 +137,7 @@ theorem exists_toMK (N : ℕ) (u : Matrix (Fin N) (Fin N) ℂ) (hu : u ∈ Matri
   exact this
 
 /- English proof (translation)
-The claim follows from `(Formalism.REAL.isClosedEmbeddingMatrix N (εT N)).1.isEmbedding.comp Topology.IsEmbedding.subtypeVal`.
+A detailed English derivation is pending.
 -/
 theorem isEmbedding_toMK (N : ℕ) : Topology.IsEmbedding (fun k : Formalism.REAL.KG (εT N) => Formalism.REAL.toMK k) :=
   (Formalism.REAL.isClosedEmbeddingMatrix N (εT N)).1.isEmbedding.comp Topology.IsEmbedding.subtypeVal
@@ -152,7 +148,7 @@ instance instSCKG (N : ℕ) : SecondCountableTopology (Formalism.REAL.KG (εT N)
   exact (isEmbedding_toMK N).isInducing.secondCountableTopology
 
 /- English proof (translation)
-Use `Measure.haarMeasure_self (G := Formalism.REAL.KG (εT N)) (K₀ := ⊤)` as an intermediate fact. Rewrite `this` using `[TopologicalSpace.PositiveCompacts.coe_top]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem muK_univ (N : ℕ) : Formalism.REAL.muK (εT N) Set.univ = 1 := by
   have := Measure.haarMeasure_self (G := Formalism.REAL.KG (εT N)) (K₀ := ⊤)
@@ -160,7 +156,7 @@ theorem muK_univ (N : ℕ) : Formalism.REAL.muK (εT N) Set.univ = 1 := by
   exact this
 
 /- English proof (translation)
-Establish `: (Measure.map (fun x => x * g) (Formalism.REAL.muK (εT N))).IsHaarMeasure` using `Measure.isHaarMeasure_map_mul_right (Formalism.REAL.muK (εT N)) g`. Establish `h` using `Measure.haarMeasure_unique (Measure.map (fun x => x * g) (Formalism.REAL.muK (εT N))) ⊤`. Rewrite using `[h, TopologicalSpace.PositiveCompacts.coe_top, Measure.map_apply (measurable_mul_const g) MeasurableSet.univ, Set.preimage_univ, muK_univ, one_smul]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem map_mul_right_muK (N : ℕ) (g : Formalism.REAL.KG (εT N)) :
     Measure.map (fun x => x * g) (Formalism.REAL.muK (εT N)) = Formalism.REAL.muK (εT N) := by
@@ -177,21 +173,19 @@ end AvgPf
 
 open AvgPf in
 /- English proof (translation)
-Introduce `N A B _ _ p`. Use `set μ := Formalism.REAL.muK (εT N)`. Set `F : Formalism.REAL.KG (εT N) → PV (Fin N) A B` to `fun k => sub (Formalism.REAL.toMK k) ((Formalism.REAL.toMK k).map star) p`. Use `set d := p.totalDegree`. Set `S : Finset ((Fin N × A) ⊕ (Fin N × B) →₀ ℕ)` to `((Finset.univ : Finset ((Fin N × A) ⊕ (Fin N × B) → Fin (d + 1))).image (fun f => Finsupp.equivFunOnFinite.symm (fun s => (f s : ℕ)))).filter (fun m => (m.sum fun _ e => e) ≤ d)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hsupp : ∀ k, (F k).support ⊆ S`. Introduce `k m hm`. Establish `hdeg : (m.sum fun _ e => e) ≤ d` using `(le_totalDegree hm).trans (totalDegree_sub_le _ _ _)`. Use `Finset.mem_filter.2 ⟨Finset.mem_image.2 ⟨fun s => ⟨m s, Nat.lt_succ_of_le ?_⟩, Finset.mem_univ _, ?_⟩, hdeg⟩` and prove the remaining obligations. Conclude with `(Finsupp.le_degree ..).trans hdeg`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use extensionality with `s`. Simplify using the standard rewrite rules. Establish `hcont : ∀ m, Continuous fun k => coeff m (F k)` using `fun m => continuous_coeff_sub _ _ (continuous_toMK N) (continuous_pi fun i => continuous_pi fun j => continuous_star.comp ((continuous_apply j).comp ((continuous_apply i).comp (continuous_toMK N)))) p m`. Establish `hint : ∀ m, Integrable (fun k => coeff m (F k)) μ` using `fun m => integrableOn_univ.1 ((hcont m).continuousOn.integrableOn_compact isCompact_univ)`. Set `P : PV (Fin N) A B` to `∑ m ∈ S, monomial m (∫ k, coeff m (F k) ∂μ)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hF : ∀ k, F k = ∑ m ∈ S, monomial m (coeff m (F k))`. Introduce `k`. Use `conv_lhs => rw [(F k).as_sum]`. Conclude with `Finset.sum_subset (hsupp k) fun m _ hm => by rw [notMem_support_iff.1 hm, monomial_zero]`. Establish `heval : ∀ z, eval z P = ∫ k, eval z (F k) ∂μ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Introduce `z`. Establish `e : ∀ k, eval z (F k) = ∑ m ∈ S, coeff m (F k) * (m.prod fun n e => z n ^ e)`. Introduce `k`. Use `conv_lhs => rw [hF k]`. Simplify using `only [map_sum, eval_monomial]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[integral_congr_ae (Filter.Eventually.of_forall e), integral_finsetSum _ (fun m _ => (hint m).mul_const _)]`. Simplify using `only [P, map_sum, eval_monomial, integral_mul_const]`. Use `⟨P, ?_, ?_, heval⟩` and prove the remaining obligations. Introduce `u hu`. Take `⟨ku, hku⟩` from `exists_toMK N u hu`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `MvPolynomial.funext fun z => ?_` and prove the remaining obligations. Rewrite using `[AvgPf.eval_sub, heval, heval]`. Establish `e2 : ∀ k, eval (actP u (u.map star) z) (F k) = eval z (F (k * ku))`. Introduce `k`. Simplify using `only [F]`.
-
-Rewrite using `[AvgPf.eval_sub, actP_actP, ← AvgPf.eval_sub, toMK_mul, hku, map_star_mul]`. Simplify using `only [e2]`. Conclude with `integral_mul_right_eq_self (fun k => eval z (F k)) ku`. Use `totalDegree_finsetSum_le fun m hm => (totalDegree_monomial_le _ _).trans ?_` and prove the remaining obligations. Conclude with `(Finset.mem_filter.1 hm).2`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem avg : Avg := by
   classical

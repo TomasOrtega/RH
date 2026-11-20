@@ -8,23 +8,23 @@ open scoped ENNReal
 namespace GlobalTheory.DefinitePacking
 
 /- English proof (translation)
-Proceed by induction on `s with`. Consider the case `zero`. Introduce `W hW`. Establish `: W = ⊥` using `Submodule.finrank_eq_zero.mp (Nat.le_zero.mp hW)`. Substitute `this` using the available equality.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Substitute using the available equality.
 
-Use `⟨fun _ => 0, fun _ => 0, fun x hx => ?_⟩` and prove the remaining obligations. Rewrite `hx` using `[Submodule.mem_bot]`. Simplify using `[hx]`. Consider the case `succ n ih`. Introduce `W hW`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `h0 : W = ⊥`. Substitute `h0` using the available equality. Use `⟨fun _ => 0, fun _ => 0, fun x hx => ?_⟩` and prove the remaining obligations. Rewrite `hx` using `[Submodule.mem_bot]`. Simplify using `[hx]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Take `⟨e, heW, he⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot h0`. Establish `hee` using `ha e he`. Establish `hlt : W ⊓ LinearMap.ker (h e) < W`. Use `lt_of_le_of_ne inf_le_left fun hc => ?_` and prove the remaining obligations. Establish `: e ∈ W ⊓ LinearMap.ker (h e)` using `by rw [hc]; exact heW`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `hee this.2`. Establish `hr` using `Submodule.finrank_lt_finrank_of_lt hlt`. Take `⟨f, e', hf⟩` from `ih (W ⊓ LinearMap.ker (h e)) (by omega)`. Set `g : V →ₗ[K] K` to `(h e e)⁻¹ • h e`. Set `P : V →ₗ[K] V` to `LinearMap.id - g.smulRight e`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨Fin.cons g (fun i => f i ∘ₗ P), Fin.cons e e', fun x hx => ?_⟩` and prove the remaining obligations. Establish `hP : P x = x - g x • e` using `rfl`. Establish `hg : g x * h e e = h e x`. Simplify using `only [g, LinearMap.smul_apply, smul_eq_mul]`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact.
 
-Establish `hk : h e (P x) = 0`. Rewrite using `[hP, map_sub, map_smul, smul_eq_mul, hg, sub_self]`. Establish `hk' : h (P x) e = 0`. Rewrite using `[← hs.eq e (P x), hk, map_zero]`. Establish `hmem : P x ∈ W ⊓ LinearMap.ker (h e)` using `⟨by rw [hP]; exact W.sub_mem hx (W.smul_mem _ heW), hk⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hx' : x = P x + g x • e` using `by rw [hP]; abel`. Rewrite using `[Fin.sum_univ_succ]`. Simplify using `only [Fin.cons_zero, Fin.cons_succ, LinearMap.comp_apply]`. Rewrite using `[← hf _ hmem]`. Generalize the expression as in `P x = y at *`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable.
 
-Generalize the expression as in `g x = c at *`. Rewrite using `[hx']`. Simplify using `only [map_add, LinearMap.add_apply, map_smul, LinearMap.map_smulₛₗ, LinearMap.smul_apply, smul_eq_mul, hk, hk', starRingEnd_apply]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem exists_diag {K V : Type} [Field K] [StarRing K] [AddCommGroup V] [Module K V]
     [FiniteDimensional K V] (h : V →ₗ⋆[K] V →ₗ[K] K) (hs : h.IsSymm)
@@ -79,23 +79,21 @@ theorem exists_diag {K V : Type} [Field K] [StarRing K] [AddCommGroup V] [Module
     ring
 
 /- English proof (translation)
-Take `⟨a, d, hd, rfl⟩` from `IsFractionRing.div_surjective (A := 𝓞 K) c`. Establish `hd0 : d ≠ 0` using `nonZeroDivisors.ne_zero hd`. Establish `hdK : algebraMap (𝓞 K) K d ≠ 0` using `by simpa using hd0`. Establish `ha0 : a ≠ 0` using `by rintro rfl; simp at hc`. Establish `hle : Ideal.span {a} * J ≤ Ideal.span {d}`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Ideal.span_singleton_mul_le_iff]`. Introduce `z hz`. Take `⟨o, ho⟩` from `h z hz`. Rewrite using `[Ideal.mem_span_singleton']`. Use `⟨o, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Apply `IsFractionRing.injective (𝓞 K) K` to reduce the goal to its premises. Rewrite using `[map_mul, map_mul]`. Express the relevant statement in the definitionally equal form `(o : K) * _ = _ * (z : K)`. Rewrite using `[ho]`. Clear the denominators using the available nonvanishing facts.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Establish `hdvd` using `Ideal.absNorm_dvd_absNorm_of_le hle`. Establish `hne : Ideal.absNorm (Ideal.span {a} * J) ≠ 0`. Rewrite using `[Ne, Ideal.absNorm_eq_zero_iff]`. Conclude with `mul_ne_zero (by simpa using ha0) hJ`. Establish `hl` using `Nat.le_of_dvd (Nat.pos_of_ne_zero hne) hdvd`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hl` using `[map_mul, Ideal.absNorm_span_singleton, Ideal.absNorm_span_singleton]`. Establish `hl' : (((Algebra.norm ℤ d).natAbs : ℕ) : ℝ) ≤ (((Algebra.norm ℤ a).natAbs : ℕ) : ℝ) * (Ideal.absNorm J : ℝ)`. Conclude with `hl` after adjusting the coercions. Establish `key : ∀ z : 𝓞 K, (((Algebra.norm ℤ z).natAbs : ℕ) : ℝ) = |((Algebra.norm ℚ (z : K) : ℚ) : ℝ)|`. Introduce `z`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[← Algebra.coe_norm_int, Nat.cast_natAbs]`. Use `push_cast`. Both sides reduce to the same expression. Rewrite `hl'` using `[key, key]`. Establish `hdn : (0 : ℝ) < |((Algebra.norm ℚ (d : K) : ℚ) : ℝ)|`.
+Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[abs_pos]`. Conclude with `(Algebra.norm_ne_zero_iff.mpr hdK)` after adjusting the coercions. Establish `hm : Algebra.norm ℚ (algebraMap (𝓞 K) K a / algebraMap (𝓞 K) K d) * Algebra.norm ℚ (d : K) = Algebra.norm ℚ (a : K)`. Rewrite using `[← map_mul]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `div_mul_cancel₀ _ hdK`. Rewrite `hl'` using `[← hm]`. Move the coercions through the operations in `at hl'`. Rewrite `hl'` using `[abs_mul]`. Use `le_of_mul_le_mul_right ?_ hdn` and prove the remaining obligations.
-
-Combine the linear equalities and inequalities to obtain the conclusion.
+Reduce the conclusion to the remaining proof obligations. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem one_le_norm_mul_absNorm {K : Type} [Field K] [NumberField K] (c : K) (hc : c ≠ 0)
     (J : Ideal (𝓞 K)) (hJ : J ≠ ⊥) (h : ∀ a ∈ J, ∃ o : 𝓞 K, (o : K) = c * a) :
@@ -144,7 +142,7 @@ theorem one_le_norm_mul_absNorm {K : Type} [Field K] [NumberField K] (c : K) (hc
   linarith
 
 /- English proof (translation)
-Rewrite using `[Ideal.absNorm_apply, Ideal.absNorm_apply, Submodule.cardQuot_apply, Submodule.cardQuot_apply]`. Conclude with `(Nat.card_congr (Ideal.quotientEquiv I _ e rfl).toEquiv).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem absNorm_map_equiv {K : Type} [Field K] [NumberField K] (e : 𝓞 K ≃+* 𝓞 K)
     (I : Ideal (𝓞 K)) : Ideal.absNorm (I.map (e : 𝓞 K →+* 𝓞 K)) = Ideal.absNorm I := by
@@ -152,15 +150,15 @@ theorem absNorm_map_equiv {K : Type} [Field K] [NumberField K] (e : 𝓞 K ≃+*
   exact (Nat.card_congr (Ideal.quotientEquiv I _ e rfl).toEquiv).symm
 
 /- English proof (translation)
-Set `e : 𝓞 K ≃+* 𝓞 K` to `RingOfIntegers.mapRingEquiv (starRingAut : K ≃+* K)`. Establish `he : ∀ a : 𝓞 K, (e a : K) = star (a : K)` using `fun a => rfl`. Establish `hN` using `absNorm_map_equiv e I`. Establish `h1 : I.map (e : 𝓞 K →+* 𝓞 K) ≠ ⊥`. Rewrite using `[Ne, ← Ideal.absNorm_eq_zero_iff, hN, Ideal.absNorm_eq_zero_iff]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hI`. Use `one_le_norm_mul_absNorm c hc (I.map (e : 𝓞 K →+* 𝓞 K) * I) (mul_ne_zero h1 hI) (by` as an intermediate fact. Introduce `a ha`. Use `Submodule.mul_induction_on ha ?_ ?_` and prove the remaining obligations. Introduce `m hm n hn`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨m', hm', rfl⟩` from `(Ideal.mem_map_iff_of_surjective (e : 𝓞 K →+* 𝓞 K) e.surjective).mp hm`. Take `⟨o, ho⟩` from `h m' hm' n hn`. Use `⟨o, ?_⟩` and prove the remaining obligations. Rewrite using `[ho, ← he]`. Simplify using the standard rewrite rules.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `x y ⟨o, ho⟩ ⟨o', ho'⟩`. Use `⟨o + o', ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `algebraMap _ K (o + o') = c * algebraMap _ K (x + y)`. Rewrite using `[map_add, map_add, mul_add]`. Conclude with `congrArg₂ (· + ·) ho ho')`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Rewrite `this` using `[map_mul, hN]`. Move the coercions through the operations in `at this`. Rewrite using `[sq]`. Conclude with `this`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem one_le_norm_mul_absNorm_sq {K : Type} [Field K] [NumberField K] [StarRing K] (c : K)
     (hc : c ≠ 0) (I : Ideal (𝓞 K)) (hI : I ≠ ⊥)
@@ -192,35 +190,33 @@ theorem one_le_norm_mul_absNorm_sq {K : Type} [Field K] [NumberField K] [StarRin
   exact this
 
 /- English proof (translation)
-Introduce `K V _ _ _ _ _ _ _ _ h ι _ τ S I s ρ hs hτ hN hpos hne hrk hI hint hρ`. Take `⟨v₀⟩` from `hne`. Establish `ha : ∀ x : V, x ≠ 0 → h x x ≠ 0`. Introduce `x hx h0`. Use `hpos v₀ x hx` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `[h0] at this`. Establish `hnn : ∀ v x, 0 ≤ (τ v (h x x)).re`. Introduce `v x`. Distinguish the cases in `hx : x = 0`. Simplify using `[hx]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Conclude with `(hpos v x hx).le`. Establish `hreal : ∀ v x, τ v (h x x) = ((τ v (h x x)).re : ℂ)`. Introduce `v x`. Establish `h1 : star (h x x) = h x x` using `hs.eq x x`. Establish `h2` using `hτ v (h x x)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[h1]`. Conclude with `(Complex.conj_eq_iff_re.mp h2.symm).symm`. Take `⟨f, e, hf⟩` from `exists_diag h hs ha s (Submodule.span K (S : Set V)) hrk.le`. Set `Φ : V →+ (ι → EuclideanSpace ℂ (Fin s))` to `{ toFun := fun x v => WithLp.toLp 2 fun i => τ v (f i x) * (Real.sqrt (τ v (h (e i) (e i))).re : ℂ) map_zero' := by ext v i; simp map_add' := by intro x y; ext v i; simp [add_mul] }`. Establish `hΦ : ∀ x ∈ S, ∀ v, ‖Φ x v‖ ^ 2 = (τ v (h x x)).re`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `x hx v`. Rewrite using `[EuclideanSpace.norm_sq_eq, hf x (Submodule.subset_span hx), map_sum, Complex.re_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `‖τ v (f i x) * (Real.sqrt (τ v (h (e i) (e i))).re : ℂ)‖ ^ 2 = _`. Rewrite using `[norm_mul, mul_pow, Complex.norm_real, Real.norm_eq_abs, sq_abs, Real.sq_sqrt (hnn _ _), map_mul, map_mul, hτ, ← Complex.normSq_eq_conj_mul_self, Complex.re_ofReal_mul, Complex.normSq_eq_norm_sq]`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hinj : Set.InjOn Φ S`. Introduce `x hx y hy hxy`. Assume the negation of the conclusion as `hne`. Establish `h1` using `hpos v₀ (x - y) (sub_ne_zero.mpr hne)`. Rewrite `h1` using `[← hΦ _ (S.sub_mem hx hy), map_sub, hxy]`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `at h1`. Establish `hIpos : (0 : ℝ) < (Ideal.absNorm I : ℝ)`. Establish `: Ideal.absNorm I ≠ 0` using `by rw [Ne, Ideal.absNorm_eq_zero_iff]; exact hI`. Check the signs of the components of the expression. Establish `hlow : ∀ x ∈ S, x ≠ 0 → (Ideal.absNorm I : ℝ)⁻¹ ≤ ∏ v, (τ v (h x x)).re`.
+Establish an intermediate fact. Check the signs of the components of the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `x hx hx0`. Establish `h1` using `one_le_norm_mul_absNorm_sq (h x x) (ha x hx0) I hI (by`. Introduce `a ha b hb`. Take `⟨o, ho⟩` from `hint _ (Submodule.smul_mem_smul ha hx) _ (Submodule.smul_mem_smul hb hx)`. Use `⟨o, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[ho, ← algebraMap_smul K a x, ← algebraMap_smul K b x]`. Simplify using `only [map_smul, LinearMap.map_smulₛₗ, LinearMap.smul_apply, smul_eq_mul, starRingEnd_apply]`. Express the relevant statement in the definitionally equal form `(b : K) * (star (a : K) * h x x) = _`. Use the proof step `ring)`. Establish `h2 : |((Algebra.norm ℚ (h x x) : ℚ) : ℝ)| = (∏ v, (τ v (h x x)).re) ^ 2`.
+Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hN, ← Finset.prod_pow]`. Use `Finset.prod_congr rfl fun v _ => ?_` and prove the remaining obligations. Rewrite using `[hreal v x, Complex.norm_real, Complex.ofReal_re, Real.norm_eq_abs, sq_abs]`. Establish `h3 : 0 ≤ ∏ v, (τ v (h x x)).re` using `Finset.prod_nonneg fun v _ => hnn v x`. Rewrite `h1` using `[h2, ← mul_pow]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `h4 : 1 ≤ (∏ v, (τ v (h x x)).re) * (Ideal.absNorm I : ℝ)` using `(one_le_sq_iff₀ (by positivity)).mp h1`. Rewrite using `[inv_eq_one_div, div_le_iff₀ hIpos]`. Conclude with `h4`. Take `⟨hfin, hcard⟩` from `Formalism.HermitianLatticeCounting.Final.LatticeSumBounds.boxCount ι s (S.toAddSubgroup.map Φ) (Ideal.absNorm I : ℝ)⁻¹ (fun v => Real.sqrt (ρ v)) (inv_pos.mpr hIpos) (fun v => Real.sqrt_pos.mpr (hρ v)) (by`. Introduce and unpack `_ ⟨x, hx, rfl⟩ hx0`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `hx0' : x ≠ 0` using `by rintro rfl; exact hx0 (map_zero Φ)`. Rewrite using `[Finset.prod_congr rfl fun v _ => hΦ x hx v]`. Conclude with `hlow x hx hx0')`. Establish `hset : {x | x ∈ S.toAddSubgroup.map Φ ∧ ∀ v, ‖x v‖ ≤ Real.sqrt (ρ v)} = Φ '' {x | x ∈ S ∧ ∀ v, (τ v (h x x)).re ≤ ρ v}`. Use extensionality with `y`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨x, hx, rfl⟩, hy⟩`. Use `⟨x, ⟨hx, fun v => ?_⟩, rfl⟩` and prove the remaining obligations. Rewrite using `[← hΦ x hx v]`. Conclude with `(Real.le_sqrt (norm_nonneg _) (hρ v).le).mp (hy v)`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce and unpack `⟨x, ⟨hx, hy⟩, rfl⟩`. Use `⟨⟨x, hx, rfl⟩, fun v => ?_⟩` and prove the remaining obligations. Apply `Real.le_sqrt_of_sq_le` to reduce the goal to its premises. Rewrite using `[hΦ x hx v]`. Conclude with `hy v`.
-
-Establish `hinj' : Set.InjOn Φ {x | x ∈ S ∧ ∀ v, (τ v (h x x)).re ≤ ρ v}` using `hinj.mono fun x hx => hx.1`. Rewrite `hfin`, `hcard` using `[hset]`. Use `⟨Set.Finite.of_finite_image hfin hinj', ?_⟩` and prove the remaining obligations. Rewrite `hcard` using `[hinj'.ncard_image, Finset.prod_congr rfl fun v _ => Real.sq_sqrt (hρ v).le, div_inv_eq_mul, mul_comm (∏ v, ρ v)]`. Conclude with `hcard`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dualPack : ∀ (K V : Type) [Field K] [NumberField K] [StarRing K] [AddCommGroup V] [Module K V] [FiniteDimensional K V] [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] (h : V →ₗ⋆[K] V →ₗ[K] K) (ι : Type) [Fintype ι] (τ : ι → (K →+* ℂ)) (S : Submodule (𝓞 K) V) (I : Ideal (𝓞 K)) (s : ℕ) (ρ : ι → ℝ), h.IsSymm → (∀ v a, τ v (star a) = starRingEnd ℂ (τ v a)) → (∀ a : K, ∏ v, ‖τ v a‖ ^ 2 = |((Algebra.norm ℚ a : ℚ) : ℝ)|) → (∀ v, ∀ x : V, x ≠ 0 → 0 < (τ v (h x x)).re) → Nonempty ι → finrank K (Submodule.span K (S : Set V)) = s → I ≠ ⊥ → (∀ x ∈ I • S, ∀ y ∈ I • S, ∃ o : 𝓞 K, (o : K) = h x y) → (∀ v, 0 < ρ v) → {x | x ∈ S ∧ ∀ v, (τ v (h x x)).re ≤ ρ v}.Finite ∧ ({x | x ∈ S ∧ ∀ v, (τ v (h x x)).re ≤ ρ v}.ncard : ℝ) ≤ 9 ^ (s * Fintype.card ι) * (max 1 ((Ideal.absNorm I : ℝ) * ∏ v, ρ v)) ^ s := by
   intro K V _ _ _ _ _ _ _ _ h ι _ τ S I s ρ hs hτ hN hpos hne hrk hI hint hρ

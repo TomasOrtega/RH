@@ -20,26 +20,26 @@ open GlobalTheory.PullHermitian
 variable {X Y : Scheme.{0}}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h _ hp => Set.mem_iInter.1 (h hp) PUnit.unit, fun h _ hp => Set.mem_iInter.2 fun _ => h hp⟩`.
+Supply the required witnesses or components.
 -/
 lemma chart_pull_iff' (x : Sp ℂ ⟶ X) (L : LB Y) (f : X ⟶ Y) (j : PUnit → L.ι) :
     ⊤ ≤ x ⁻¹ᵁ (L.pull f).U j ↔ ⊤ ≤ (x ≫ f) ⁻¹ᵁ L.U (j PUnit.unit) :=
   ⟨fun h _ hp => Set.mem_iInter.1 (h hp) PUnit.unit, fun h _ hp => Set.mem_iInter.2 fun _ => h hp⟩
 
 /- English proof (translation)
-The claim follows from `h.trans (fun _ hp => And.left hp)`.
+A detailed English derivation is pending.
 -/
 lemma le_left' {x : Sp ℂ ⟶ X} {U V : X.Opens} (h : ⊤ ≤ x ⁻¹ᵁ (U ⊓ V)) : ⊤ ≤ x ⁻¹ᵁ U :=
   h.trans (fun _ hp => And.left hp)
 
 /- English proof (translation)
-The claim follows from `h.trans (fun _ hp => And.right hp)`.
+A detailed English derivation is pending.
 -/
 lemma le_right' {x : Sp ℂ ⟶ X} {U V : X.Opens} (h : ⊤ ≤ x ⁻¹ᵁ (U ⊓ V)) : ⊤ ≤ x ⁻¹ᵁ V :=
   h.trans (fun _ hp => And.right hp)
 
 /- English proof (translation)
-Establish `hi` using `(chart_pull_iff' x L f i).1 (le_left' h)`. Establish `hj` using `(chart_pull_iff' x L f j).1 (le_right' h)`. Rewrite using `[valAt'_eq_unitVal x h, valAt'_eq_unitVal _ (inf_of _ hi hj)]`. Use `unitVal_linComb x L f 1 (i PUnit.unit) (j PUnit.unit) h (inf_of _ hi hj)` as an intermediate fact. Conclude with `congrArg Units.val (this.trans (zpow_one _))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 lemma valAt'_pull_g' (x : Sp ℂ ⟶ X) (L : LB Y) (f : X ⟶ Y) (i j : PUnit → L.ι)
     (h : ⊤ ≤ x ⁻¹ᵁ ((L.pull f).U i ⊓ (L.pull f).U j)) :
@@ -53,11 +53,11 @@ lemma valAt'_pull_g' (x : Sp ℂ ⟶ X) (L : LB Y) (f : X ⟶ Y) (i j : PUnit �
   exact congrArg Units.val (this.trans (zpow_one _))
 
 /- English proof (translation)
-Introduce `A B _ _ φ L g u' ex Λ Hm χ' hadd honto hker hdisc hfull hhol hφ hΛ hAH`. Establish `keyl : ∀ z, (ex z).left ≫ φ.left = (u'.ex z).left` using `fun z => by rw [← Over.comp_left, hφ]`. Establish `hch : ∀ (j : (L.pull φ.left).ι) z, (⊤ ≤ (ex z).left ⁻¹ᵁ (L.pull φ.left).U j ↔ ⊤ ≤ (u'.ex z).left ⁻¹ᵁ L.U (j PUnit.unit))` using `fun j z => (chart_pull_iff' _ L _ j).trans (iff_of_eq (by rw [keyl z]))`. Set `u : HolUnif A (L.pull φ.left) g` to `⟨ex, hadd, honto, Λ, hker, hdisc, hfull, hhol, fun j z => u'.fr (j PUnit.unit) z, fun j => (u'.fr_hol (j PUnit.unit)).mono (fun z hz => (hch j z).1 hz), fun j z hz => u'.fr_ne _ _ ((hch j z).1 hz), fun i j z h => by`. Establish `hi` using `(hch i z).1 (le_left' h)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hj` using `(hch j z).1 (le_right' h)`. Use `show u'.fr (i PUnit.unit) z = _ * u'.fr (j PUnit.unit) z`. Rewrite using `[valAt'_pull_g' _ L _ i j h, keyl z]`. Conclude with `u'.fr_compat _ _ _ (inf_of _ hi hj)⟩`. Use `⟨u, fun l => χ' ⟨l.1, hΛ l.2⟩, fun w => Iff.rfl, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨h1, h2, h3, h4⟩` from `hAH`. Conclude with `⟨h1, h2, fun l => h3 _, fun l i z hz => h4 ⟨l.1, hΛ l.2⟩ (i PUnit.unit) z ((hch i z).1 hz)⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_holUnif_pull_hom : ∀ (A B : Over (Sp ℂ)) [GrpObj A] [GrpObj B] (φ : A ⟶ B) (L : LB B.left) (g : ℕ) (u' : HolUnif B L g)
     (ex : (Fin g → ℂ) → (𝟙_ (Over (Sp ℂ)) ⟶ A)) (Λ : Submodule ℤ (Fin g → ℂ)) (Hm : Matrix (Fin g) (Fin g) ℂ)

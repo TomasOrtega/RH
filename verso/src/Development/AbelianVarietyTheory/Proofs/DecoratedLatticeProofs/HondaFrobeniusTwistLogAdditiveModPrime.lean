@@ -11,7 +11,7 @@ namespace GlobalTheory.Honda
 open Formalism.L2.Th1.C
 
 /- English proof (translation)
-Proceed by induction on `i generalizing x with`. Consider the case `zero => simp`. Consider the case `succ k ih`. Rewrite using `[pow_succ]`. Conclude with `(ih (σ x)).trans (hσ x)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem twistLog_norm_iterate {K : Type} [NormedField K] (σ : K →+* K) (hσ : ∀ x : K, ‖σ x‖ = ‖x‖) (i : ℕ)
     (x : K) : ‖(σ ^ i) x‖ = ‖x‖ := by
@@ -22,39 +22,33 @@ theorem twistLog_norm_iterate {K : Type} [NormedField K] (σ : K →+* K) (hσ :
     exact (ih (σ x)).trans (hσ x)
 
 /- English proof (translation)
-Introduce `K _ _ _ l σ hU f e hf i hi m`. Establish `hU'` using `hU`. Take `⟨hlp, -, hl1, -, hσn, -⟩` from `hU`. Take `⟨hlog, hd, hint⟩` from `hf`. Establish `hlog0` using `hlog`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨h0, h1, h0', hfe, hef⟩` from `hlog`. Establish `hn : l ^ i ≠ 0` using `pow_ne_zero _ hlp.ne_zero`. Establish `hτ : ∀ x : K, ‖(σ ^ i) x‖ = ‖x‖` using `twistLog_norm_iterate σ hσn i`. Use `set g := PowerSeries.map (σ ^ i) f with hg`. Use `set e' := PowerSeries.map (σ ^ i) e with he'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hXm : MvPowerSeries.map (σ ^ i) (PowerSeries.X : K⟦X⟧) = PowerSeries.X` using `PowerSeries.map_X _`. Establish `hg0 : PowerSeries.constantCoeff g = 0`. Rewrite using `[← PowerSeries.coeff_zero_eq_constantCoeff_apply, hg, PowerSeries.coeff_map, PowerSeries.coeff_zero_eq_constantCoeff_apply, h0, map_zero]`. Establish `he0 : PowerSeries.constantCoeff e' = 0`. Rewrite using `[← PowerSeries.coeff_zero_eq_constantCoeff_apply, he', PowerSeries.coeff_map, PowerSeries.coeff_zero_eq_constantCoeff_apply, h0', map_zero]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hlog' : IsLogPair g e'`. Use `⟨hg0, ?_, he0, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hg, PowerSeries.coeff_map, h1, map_one]`. Use `congrArg (MvPowerSeries.map (σ ^ i)) hfe` as an intermediate fact. Rewrite `this` using `[PowerSeries.map_subst (PowerSeries.HasSubst.of_constantCoeff_zero' h0), hXm]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this`. Use `congrArg (MvPowerSeries.map (σ ^ i)) hef` as an intermediate fact. Rewrite `this` using `[PowerSeries.map_subst (PowerSeries.HasSubst.of_constantCoeff_zero' h0'), hXm]`. Conclude with `this`. Establish `hd' : CoefLe 1 (d⁄dX K g)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `k`. Rewrite using `[PowerSeries.coeff_derivative, hg, PowerSeries.coeff_map]`. Establish `hk : (σ ^ i) ((PowerSeries.coeff (k + 1)) f) * ((k : K) + 1) = (σ ^ i) ((PowerSeries.coeff (k + 1)) f * ((k : K) + 1))`. Rewrite using `[map_mul, map_add, map_one, map_natCast]`. Rewrite using `[hk, hτ, ← PowerSeries.coeff_derivative]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hd k`. Use `set X0 : MvPowerSeries (Fin 2) K := MvPowerSeries.X 0 with hX0`. Use `set X1 : MvPowerSeries (Fin 2) K := MvPowerSeries.X 1 with hX1`. Establish `hX00 : MvPowerSeries.constantCoeff X0 = 0` using `by simp [X0]`. Establish `hX10 : MvPowerSeries.constantCoeff X1 = 0` using `by simp [X1]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `set F := fadd f e X0 X1 with hF`. Establish `hF0 : MvPowerSeries.constantCoeff F = 0` using `Pts.constantCoeff_fadd hlog0 hX00 hX10`. Establish `hFint : ∀ m, ‖MvPowerSeries.coeff m F‖ ≤ 1` using `fun m => hint m`. Establish `hAB` using `GlobalTheory.T.pow_prime_pow_sub_frobeniusTwist_norm_le K l σ hU' (Fin 2) F hFint i hn`. Use `set A := F ^ l ^ i with hA`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `set B := MvPowerSeries.expand (l ^ i) hn (MvPowerSeries.map (σ ^ i) F) with hB`. Establish `hA0 : MvPowerSeries.constantCoeff A = 0`. Rewrite using `[hA, map_pow, hF0, zero_pow hn]`. Establish `hB0 : MvPowerSeries.constantCoeff B = 0`. Simplify using `[hB, hF0]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hA1 : ∀ m, ‖MvPowerSeries.coeff m A‖ ≤ 1` using `fun m => IntegralMvPolynomialLemmas.intMv_pow hint (l ^ i) m`. Establish `hB1 : ∀ m, ‖MvPowerSeries.coeff m B‖ ≤ 1`. Introduce `m`. Establish `hb : MvPowerSeries.coeff m B = MvPowerSeries.coeff m A + -(MvPowerSeries.coeff m (A - B))`. Rewrite using `[map_sub]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hb]`. Use `(IsUltrametricDist.norm_add_le_max _ _).trans ?_` and prove the remaining obligations. Rewrite using `[norm_neg]`. Conclude with `max_le (hA1 m) ((hAB m).trans hl1.le)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `key` using `GlobalTheory.T.subst_congr_mod_prime_of_integral_derivative K l hlp hl1 g hd' (Fin 2) A B hA0 hB0 hA1 hB1 hAB m`. Establish `hsX : ∀ a : MvPowerSeries (Fin 2) K, MvPowerSeries.constantCoeff a = 0 → PowerSeries.subst a (frobOp σ l i f) = PowerSeries.subst (a ^ l ^ i) g`. Introduce `a ha`. Establish `has` using `PowerSeries.HasSubst.of_constantCoeff_zero ha`. Unfold `frobOp`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[PowerSeries.subst_comp_subst_apply (PowerSeries.HasSubst.X_pow hn) has, PowerSeries.subst_pow has, PowerSeries.subst_X has]`. Establish `hs0 : MvPowerSeries.constantCoeff (PowerSeries.subst X0 g + PowerSeries.subst X1 g) = 0`. Rewrite using `[map_add, PowerSeries.constantCoeff_subst_eq_zero hX00 _ hg0, PowerSeries.constantCoeff_subst_eq_zero hX10 _ hg0, add_zero]`. Establish `hs0f : MvPowerSeries.constantCoeff (PowerSeries.subst X0 f + PowerSeries.subst X1 f) = 0`. Rewrite using `[map_add, PowerSeries.constantCoeff_subst_eq_zero hX00 _ h0, PowerSeries.constantCoeff_subst_eq_zero hX10 _ h0, add_zero]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `hmapF : MvPowerSeries.map (σ ^ i) F = PowerSeries.subst (PowerSeries.subst X0 g + PowerSeries.subst X1 g) e'`. Rewrite using `[hF]`. Unfold `fadd`. Rewrite using `[PowerSeries.map_subst (PowerSeries.HasSubst.of_constantCoeff_zero hs0f), map_add, PowerSeries.map_subst (PowerSeries.HasSubst.X 0), PowerSeries.map_subst (PowerSeries.HasSubst.X 1), hX0, hX1, MvPowerSeries.map_X, MvPowerSeries.map_X]`. Establish `hBf : B = fadd g e' (X0 ^ l ^ i) (X1 ^ l ^ i)`.
-
-Rewrite using `[hB, hmapF, PowerSeries.expand_subst (l ^ i) hn (PowerSeries.HasSubst.of_constantCoeff_zero hs0), map_add, PowerSeries.expand_subst (l ^ i) hn (PowerSeries.HasSubst.X 0), PowerSeries.expand_subst (l ^ i) hn (PowerSeries.HasSubst.X 1), hX0, hX1, MvPowerSeries.expand_X, MvPowerSeri …`. Both sides reduce to the same expression. Establish `hBeq : PowerSeries.subst B g = PowerSeries.subst (X0 ^ l ^ i) g + PowerSeries.subst (X1 ^ l ^ i) g`. Rewrite using `[hBf]`. Conclude with `Pts.l_fadd hlog' (by rw [map_pow, hX00, zero_pow hn]) (by rw [map_pow, hX10, zero_pow hn])`.
-
-Establish `hbe : be0 f e (frobOp σ l i f) X0 X1 = PowerSeries.subst A g - PowerSeries.subst B g`. Unfold `be0`. Rewrite using `[← hF, hsX F hF0, hsX X0 hX00, hsX X1 hX10, hBeq]`. Normalize the expressions using the abelian group laws. Rewrite using `[hbe]`.
-
-Conclude with `key`.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem twistLog_additive_mod : ∀ (K : Type) [NormedField K] [IsUltrametricDist K] [CharZero K] (l : ℕ) (σ : K →+* K),
     Unr K l σ → ∀ (f e : K⟦X⟧), IntLog f e → ∀ (i : ℕ), 0 < i → ∀ m,

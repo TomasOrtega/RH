@@ -13,9 +13,9 @@ namespace GlobalTheory.CompactHowe.Lift
 open MvPolynomial
 
 /- English proof (translation)
-Establish `key : (MvPolynomial.map (starRingEnd ℂ)).comp (subst2 A B).toRingHom = (subst2 (A.map star) (B.map star)).toRingHom.comp (MvPolynomial.map (starRingEnd ℂ))`. Use `MvPolynomial.ringHom_ext (fun c => ?_) (fun p => ?_)` and prove the remaining obligations. Simplify using the standard rewrite rules. Simplify using `only [RingHom.comp_apply, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, map_X, subst2_X, map_sum, map_mul, map_C, Matrix.map_apply]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Conclude with `congrArg (fun f => f P) key`.
+A detailed English derivation is pending.
 -/
 theorem map_star_subst2 {N n : ℕ} (A : Matrix (Fin N) (Fin N) ℂ) (B : Matrix (Fin n) (Fin n) ℂ)
     (P : MvPolynomial (Fin N × Fin n) ℂ) :
@@ -31,7 +31,7 @@ theorem map_star_subst2 {N n : ℕ} (A : Matrix (Fin N) (Fin N) ℂ) (B : Matrix
   exact congrArg (fun f => f P) key
 
 /- English proof (translation)
-Rewrite using `[MvPolynomial.map_map]`. Establish `: (starRingEnd ℂ).comp (starRingEnd ℂ) = RingHom.id ℂ` using `RingHom.ext fun z => by simp`. Rewrite using `[this, MvPolynomial.map_id]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem map_star_map_star_poly {N n : ℕ} (P : MvPolynomial (Fin N × Fin n) ℂ) :
     MvPolynomial.map (starRingEnd ℂ) (MvPolynomial.map (starRingEnd ℂ) P) = P := by
@@ -40,7 +40,7 @@ theorem map_star_map_star_poly {N n : ℕ} (P : MvPolynomial (Fin N × Fin n) �
   rw [this, MvPolynomial.map_id]
 
 /- English proof (translation)
-Rewrite using `[MvPolynomial.smul_eq_C_mul, MvPolynomial.smul_eq_C_mul, map_mul, map_C]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem map_star_smul {N n : ℕ} (c : ℂ) (P : MvPolynomial (Fin N × Fin n) ℂ) :
     MvPolynomial.map (starRingEnd ℂ) (c • P) = star c • MvPolynomial.map (starRingEnd ℂ) P := by
@@ -54,17 +54,17 @@ namespace GlobalTheory.CompactHowe
 open Contraction Lift
 
 /- English proof (translation)
-Introduce `N n hn ν x₁ x₃ Λ Λ' H _ _ _ σ H' _ _ _ σ' hν hν0 hΛ hΛ' hσ hK hσ' hK'`. Take `⟨hτ, hτK⟩` from `GlobalTheory.T.detTwistedConjugate_isKTypeOf_reversed n Λ 0 H σ hσ hK`. Take `⟨hτ', hτK'⟩` from `GlobalTheory.T.detTwistedConjugate_isKTypeOf_reversed N Λ' 0 H' σ' hσ' hK'`. Take `⟨I₀, hI₀0, hI₀⟩` from `GlobalTheory.T.exists_local_howe_contraction_compact_unitary N n hn ν x₁ x₃ (fun a => ((0 : ℤ) : ℝ) - Λ (Fin.rev a)) (fun b => ((0 : ℤ) : ℝ) - Λ' (Fin.rev b)) H (fun g => g.det ^ (0 : ℤ) • σ (g.map star)) H' (fun g => g.det ^ (0 : ℤ) • σ' (g.map star)) hν hν0 (fun a => by simp on …`. Set `cj : MvPolynomial (Fin N × Fin n) ℂ →+* MvPolynomial (Fin N × Fin n) ℂ` to `MvPolynomial.map (starRingEnd ℂ)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Use `⟨{ toFun := fun P => LinearMap.adjoint (I₀ (cj P)), map_add' := fun P Q => by simp only [map_add] map_smul' := fun c P => by` and prove the remaining obligations. Simplify using `only [cj, map_star_smul, map_smul, LinearEquiv.map_smulₛₗ, RingHom.id_apply]`. Simplify using `}, fun h0 => hI₀0 ?_, fun h hh g hg P v => ?_⟩`. Use `LinearMap.ext fun P => ?_` and prove the remaining obligations. Use `congrArg (fun f => f (cj P)) h0` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `only [LinearMap.coe_mk, AddHom.coe_mk, LinearMap.zero_apply, cj, map_star_map_star_poly] at this`. Simplify using `using this`. Establish `hQ : cj ((h.det ^ x₁ * g.det ^ x₃) • subst2 h (g⁻¹)ᵀ P) = ((h.map star).det ^ x₁ * (g.map star).det ^ x₃) • subst2 (h.map star) ((g.map star)⁻¹)ᵀ (cj P)`. Simplify using `only [cj]`. Rewrite using `[map_star_smul, map_star_subst2, Contraction.inv_transpose hg, Contraction.inv_transpose (map_star_mem hg)]`.
+Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Contraction.det_map_star, star_mul', star_zpow₀]`. Establish `key` using `hI₀ (h.map star) (map_star_mem hh) (g.map star) (map_star_mem hg) (cj P)`. Simplify using `only [zpow_zero, one_smul, map_star_map_star] at key`. Use `show LinearMap.adjoint (I₀ (cj _)) (σ g v) = σ' h (LinearMap.adjoint (I₀ (cj P)) v)`. Rewrite using `[hQ]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `ext_inner_left ℂ fun w => ?_` and prove the remaining obligations. Choose the witnesses or unpack the hypotheses as in `⟨u, rfl⟩ : ∃ u, σ' h u = w := by`. Use `⟨σ' hᴴ w, ?_⟩` and prove the remaining obligations. Use `hσ'.1.2 h hh _ (conjTranspose_mem hh)` as an intermediate fact. Rewrite `this` using `[mul_eq_one_comm.1 ((mem_iff h).1 hh), hσ'.1.1]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using (congrArg (fun f => f w) this).symm`. Establish `iso1 : ∀ a b : H, inner ℂ (σ g a) (σ g b) = inner ℂ a b` using `fun a b => (LinearIsometry.mk (σ g : H →ₗ[ℂ] H) (hσ.2.1 g hg)).inner_map_map a b`. Establish `iso2 : ∀ a b : H', inner ℂ (σ' h a) (σ' h b) = inner ℂ a b` using `fun a b => (LinearIsometry.mk (σ' h : H' →ₗ[ℂ] H') (hσ'.2.1 h hh)).inner_map_map a b`. Rewrite using `[LinearMap.adjoint_inner_right, key u, iso1, iso2, LinearMap.adjoint_inner_right]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_local_lift : ∀ (N n : ℕ) (hn : n ≤ N) (ν : Fin N → ℕ) (x₁ x₃ : ℤ) (Λ : Fin n → ℝ) (Λ' : Fin N → ℝ) (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H] [FiniteDimensional ℂ H] (σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)) (H' : Type) [NormedAddCommGroup H'] [InnerProductSpace ℂ H'] [FiniteDimensional ℂ H'] (σ' : Matrix (Fin N) (Fin N) ℂ → (H' →L[ℂ] H')), Antitone ν → (∀ b : Fin N, n ≤ (b : ℕ) → ν b = 0) → (∀ a, Λ a = -(x₃ : ℝ) + ν (Fin.castLE hn a)) → (∀ b, Λ' b = (x₁ : ℝ) + ν b) → Formalism.MainNotions.S.IsURepOn (Formalism.MainNotions.S.UJset (Formalism.MainNotions.S.allPos n)) σ → Formalism.MainNotions.S.IsKTypeOf (Formalism.MainNotions.S.allPos n) σ Λ ⊤ → Formalism.MainNotions.S.IsURepOn (Formalism.MainNotions.S.UJset (Formalism.MainNotions.S.allPos N)) σ' → Formalism.MainNotions.S.IsKTypeOf (Formalism.MainNotions.S.allPos N) σ' Λ' ⊤ → ∃ I : MvPolynomial (Fin N × Fin n) ℂ →ₗ[ℂ] H →ₗ[ℂ] H', I ≠ 0 ∧ ∀ h ∈ Formalism.MainNotions.S.UJset (Formalism.MainNotions.S.allPos N), ∀ g ∈ Formalism.MainNotions.S.UJset (Formalism.MainNotions.S.allPos n), ∀ P v, I ((h.det ^ x₁ * g.det ^ x₃) • GlobalTheory.CompactHowe.subst2 h (g⁻¹)ᵀ P) (σ g v) = σ' h (I P v) := by
   intro N n hn ν x₁ x₃ Λ Λ' H _ _ _ σ H' _ _ _ σ' hν hν0 hΛ hΛ' hσ hK hσ' hK'

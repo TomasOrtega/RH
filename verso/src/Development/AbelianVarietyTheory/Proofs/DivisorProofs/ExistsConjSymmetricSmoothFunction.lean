@@ -14,14 +14,14 @@ open scoped ContDiff
 namespace GlobalTheory.Mean4O.ConjSmooth
 
 /- English proof (translation)
-Rewrite using `[← Spec.map_comp, ← Spec.map_id]`. Conclude with `congrArg Spec.map (CommRingCat.hom_ext (RingHom.ext fun a => by simp))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem spMap_conj_conj : spMap (starRingEnd ℂ) ≫ spMap (starRingEnd ℂ) = 𝟙 (Sp ℂ) := by
   rw [← Spec.map_comp, ← Spec.map_id]
   exact congrArg Spec.map (CommRingCat.hom_ext (RingHom.ext fun a => by simp))
 
 /- English proof (translation)
-Use `(contDiff_piLp 2).2 fun a => ?_` and prove the remaining obligations. Conclude with `Complex.conjCLE.contDiff.comp ((contDiff_piLp 2).1 contDiff_id a)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem contDiff_conjCoord (d : ℕ) : ContDiff ℝ ∞ (GlobalTheory.ConjChart.conjCoord d) := by
   refine (contDiff_piLp 2).2 fun a => ?_
@@ -30,9 +30,9 @@ theorem contDiff_conjCoord (d : ℕ) : ContDiff ℝ ∞ (GlobalTheory.ConjChart.
 variable {F : Type} [Field F] [NumberField F] {Y : Var F} {e : ℕ} {M : Man e} (I : ManIs M Y)
 
 /- English proof (translation)
-Set `R : AnRead Y.str (I.ε b) e` to `{ ι := Fin (M.A b).n chart := fun j => (I.alg b j).choose cover := fun y => by`. Take `⟨j, hj⟩` from `(M.A b).cover ((I.pt b).symm y)`. Use `⟨j, ?_⟩` and prove the remaining obligations. Rewrite `hj` using `[(I.alg b j).choose_spec]`. Simplify using `using hj }`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Use `AnRead.SmoothOn.chart (R := R) (fun j => ?_) isOpen_univ c` and prove the remaining obligations. Establish `h1` using `hg j`. Rewrite `h1` using `[(I.alg b j).choose_spec]`. Use `(AlgChart.contDiffOn_finChart_iff _ _ _ _).1 ?_` and prove the remaining obligations. Simplify `h1` using `[Function.comp_def]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem contDiffOn_chart {b : Fin (M.n + 1)} {g : M.X b → ℝ} (hg : (M.A b).Smooth g) (c : AlgChart Y.str (I.ε b) e) :
     ContDiffOn ℝ ∞ ((g ∘ (I.pt b).symm) ∘ c.e.symm) (c.e.target ∩ c.e.symm ⁻¹' Set.univ) := by
@@ -54,11 +54,11 @@ def conjVal (f : M.Fun) (a' b : Fin (M.n + 1)) (h : I.ε b = (starRingEnd ℂ).c
   f b ((I.pt b).symm (GlobalTheory.ConjChart.conjPts Y.str h (I.pt a' x')))
 
 /- English proof (translation)
-Introduce `j`. Take `⟨c', hc'⟩` from `I.alg a' j`. Establish `key` using `contDiffOn_chart I (hf b) (GlobalTheory.ConjChart.conjChart h c')`. Establish `hcc : ContDiffOn ℝ ∞ ((f b ∘ (I.pt b).symm ∘ GlobalTheory.ConjChart.conjPts Y.str h) ∘ c'.e.symm) (c'.e.target ∩ c'.e.symm ⁻¹' Set.univ)`. Use `key.comp (contDiff_conjCoord e).contDiffOn (s := c'.e.target ∩ c'.e.symm ⁻¹' Set.univ) (fun v hv => ⟨by show (GlobalTheory.ConjChart.conjCoord e).symm (GlobalTheory.ConjChart.conjCoord e v) ∈ c'.e.target` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Homeomorph.symm_apply_apply]`. Conclude with `hv.1, trivial⟩)`. Use `this.congr fun v _ => ?_` and prove the remaining obligations. Use `show f b ((I.pt b).symm (GlobalTheory.ConjChart.conjPts Y.str h (c'.e.symm v))) = f b ((I.pt b).symm ((GlobalTheory.ConjChart.conjPts Y.str h).symm.symm (c'.e.symm ((GlobalTheory.ConjChart.conjCoord e).symm (GlobalTheory.ConjChart.conjCoord e v)))))`. Rewrite using `[Homeomorph.symm_apply_apply, Homeomorph.symm_symm]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hc']`. Use `(AlgChart.contDiffOn_finChart_iff c' ∞ Set.univ (f b ∘ (I.pt b).symm ∘ GlobalTheory.ConjChart.conjPts Y.str h)).2 hcc` as an intermediate fact. Simplify `this` using `[conjVal, Function.comp_def]`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem smooth_conjVal (f : M.Fun) (hf : M.Smooth f) (a' b : Fin (M.n + 1))
     (h : I.ε b = (starRingEnd ℂ).comp (I.ε a')) : (M.A a').Smooth (conjVal I f a' b h) := by
@@ -82,13 +82,13 @@ theorem smooth_conjVal (f : M.Fun) (hf : M.Smooth f) (a' b : Fin (M.n + 1))
   simpa [conjVal, Function.comp_def] using this
 
 /- English proof (translation)
-Establish `h1` using `(I.pt a' x').2`. Establish `h2` using `(I.pt a x).2`. Express the relevant statement in the definitionally equal form `(I.pt a' x').1 ≫ Y.str = spMap (I.ε a') at h1`. Express the relevant statement in the definitionally equal form `(I.pt a x).1 ≫ Y.str = spMap (I.ε a) at h2`. Rewrite `h1` using `[hx, Category.assoc, h2, spMap, spMap, spMap, ← Spec.map_comp, ← CommRingCat.ofHom_comp]`.
+Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h4 : (starRingEnd ℂ).comp (I.ε a) = I.ε a'`. Use `congrArg CommRingCat.Hom.hom (Spec.map_injective h1)` as an intermediate fact. Simplify using `using this`. Establish `hε : I.ε b = I.ε a`. Rewrite using `[h, ← h4]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `RingHom.ext fun z => by simp`. Take `rfl : b = a` from `I.ε.injective hε`. Unfold `conjVal`. Use `congr 1`. Rewrite using `[Homeomorph.symm_apply_eq]`.
+Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Use `show spMap (starRingEnd ℂ) ≫ (I.pt a' x').1 = (I.pt b x).1`. Rewrite using `[hx, ← Category.assoc, spMap_conj_conj, Category.id_comp]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conjVal_eq (f : M.Fun) {a a' : Fin (M.n + 1)} {x : M.X a} {x' : M.X a'}
     (hx : (I.pt a' x').1 = spMap (starRingEnd ℂ) ≫ (I.pt a x).1) (b : Fin (M.n + 1))
@@ -113,7 +113,7 @@ theorem conjVal_eq (f : M.Fun) {a a' : Fin (M.n + 1)} {x : M.X a} {x' : M.X a'}
   rw [hx, ← Category.assoc, spMap_conj_conj, Category.id_comp]
 
 /- English proof (translation)
-Introduce `F _ _ Y e M I f hf`. Establish `hb (a' : Fin (M.n + 1)) : I.ε (I.ε.symm ((starRingEnd ℂ).comp (I.ε a'))) = (starRingEnd ℂ).comp (I.ε a')` using `I.ε.apply_symm_apply _`. Conclude with `⟨fun a' => conjVal I f a' _ (hb a'), fun a' => smooth_conjVal I f hf a' _ _, fun a a' x x' hx => conjVal_eq I f hx _ _⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem exists_smooth_conj : ∀ (F : Type) [Field F] [NumberField F] (Y : Var F) (e : ℕ) (M : Man e) (I : ManIs M Y)
     (f : M.Fun), M.Smooth f → ∃ f' : M.Fun, M.Smooth f' ∧

@@ -20,7 +20,7 @@ section
 variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F]
 
 /- English proof (translation)
-Establish `h10 : u.val 1 0 = 0` using `hu.1 (show (0 : Fin 2) < 1 by decide)`. Establish `h11 : u.val 1 1 = 1` using `hu.2 1`. Simplify using `[Units.val_mul, Matrix.mul_apply, Fin.sum_univ_two, h10, h11]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem lower_entry {u : GL (Fin 2) F} (hu : u ∈ Iwasawa.unipotent F 2) (g : GL (Fin 2) F) (j : Fin 2) :
     (u * g).val 1 j = g.val 1 j := by
@@ -29,7 +29,7 @@ theorem lower_entry {u : GL (Fin 2) F} (hu : u ∈ Iwasawa.unipotent F 2) (g : G
   simp [Units.val_mul, Matrix.mul_apply, Fin.sum_univ_two, h10, h11]
 
 /- English proof (translation)
-Establish `h00 : u.val 0 0 = 1` using `hu.2 0`. Simplify using `[Units.val_mul, Matrix.mul_apply, Fin.sum_univ_two, h00]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem upper_entry {u : GL (Fin 2) F} (hu : u ∈ Iwasawa.unipotent F 2) (g : GL (Fin 2) F) (j : Fin 2) :
     (u * g).val 0 j = g.val 0 j + u.val 0 1 * g.val 1 j := by
@@ -37,7 +37,7 @@ theorem upper_entry {u : GL (Fin 2) F} (hu : u ∈ Iwasawa.unipotent F 2) (g : G
   simp [Units.val_mul, Matrix.mul_apply, Fin.sum_univ_two, h00]
 
 /- English proof (translation)
-Establish `h10 : u.val 1 0 = 0` using `hu.1 (show (0 : Fin 2) < 1 by decide)`. Establish `h00 : u.val 0 0 = 1` using `hu.2 0`. Establish `h11 : u.val 1 1 = 1` using `hu.2 1`. Rewrite using `[Units.val_mul, Matrix.det_mul, Matrix.det_fin_two (u.val), h00, h11, h10]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem det_mul_unipotent {u : GL (Fin 2) F} (hu : u ∈ Iwasawa.unipotent F 2) (g : GL (Fin 2) F) :
     ((u * g).val).det = (g.val).det := by
@@ -48,7 +48,7 @@ theorem det_mul_unipotent {u : GL (Fin 2) F} (hu : u ∈ Iwasawa.unipotent F 2) 
   ring
 
 /- English proof (translation)
-Unfold `mRow`. Apply the tactic sequence `simp only [lower_entry hu]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem mRow_unipotent_mul {u : GL (Fin 2) F} (hu : u ∈ Iwasawa.unipotent F 2) (g : GL (Fin 2) F) :
     mRow (u * g) = mRow g := by
@@ -56,11 +56,11 @@ theorem mRow_unipotent_mul {u : GL (Fin 2) F} (hu : u ∈ Iwasawa.unipotent F 2)
   simp only [lower_entry hu]
 
 /- English proof (translation)
-Establish `hm` using `GlobalTheory.CompanionTheory.SphTheta.RowIwasawa.mRow_ne_zero g`. Unfold `xRow`. Apply the tactic sequence `simp only [lower_entry hu, upper_entry hu]`. Distinguish the cases in `h : modulus (g.val 1 0) < modulus (g.val 1 1)`. Establish `hd : g.val 1 1 ≠ 0`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Establish `: mRow g = g.val 1 1` using `by simp [mRow, h]`. Conclude with `this ▸ hm`. Rewrite using `[if_pos h, if_pos h]`. Clear the denominators using the available nonvanishing facts. Establish `hc : g.val 1 0 ≠ 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: mRow g = g.val 1 0` using `by simp [mRow, h]`. Conclude with `this ▸ hm`. Rewrite using `[if_neg h, if_neg h]`. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem xRow_unipotent_mul {u : GL (Fin 2) F} (hu : u ∈ Iwasawa.unipotent F 2) (g : GL (Fin 2) F) :
     xRow (u * g) = xRow g + u.val 0 1 := by
@@ -82,11 +82,11 @@ theorem xRow_unipotent_mul {u : GL (Fin 2) F} (hu : u ∈ Iwasawa.unipotent F 2)
 end
 
 /- English proof (translation)
-Introduce `F _ _ _ _ _ _ _ E _ _ _ _ _ _ _ _ h2 _ _ χ η σ c hχ hc hη hform u g hu`. Use `haveI : Fact (Module.finrank F E = 2) := ⟨h2⟩`. Use `haveI : FiniteDimensional F E := Module.finite_of_finrank_pos (by omega)`. Use `haveI : Algebra.IsSeparable F E := inferInstance`. Establish `hdet` using `det_mul_unipotent hu g`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Distinguish the cases in `hg : ∃ t : Eˣ, Algebra.norm F (t : E) = (g.val).det`. Take `⟨t, ht⟩` from `hg`. Rewrite using `[InertAsm.Wc_eq hc hform (u * g) t (ht.trans hdet.symm), InertAsm.Wc_eq hc hform g t ht]`. Unfold `InertAsm.val`. Rewrite using `[hdet, mRow_unipotent_mul hu g, xRow_unipotent_mul hu g, AddChar.map_add_eq_mul, Circle.coe_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hg' : ¬ ∃ t : Eˣ, Algebra.norm F (t : E) = ((u * g).val).det`. Rewrite using `[hdet]`. Conclude with `hg`. Rewrite using `[GL2LocalData.Wc, GL2LocalData.Wc, dif_neg hg, dif_neg hg', mul_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Wc_unipotent_mul : ∀ (F : Type) [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] [MeasurableSpace F] [BorelSpace F] [CharZero F] (E : Type) [Field E] [ValuativeRel E] [TopologicalSpace E] [IsNonarchimedeanLocalField E] [MeasurableSpace E] [BorelSpace E] [Algebra F E] [ValuativeExtension F E], Module.finrank F E = 2 → Continuous (algebraMap F E) → GroundTheory.LocalField.ord (algebraMap F E (unifUnit F : F)) = 1 → ∀ (χ : AddChar F Circle) (η : Fˣ →* ℂˣ) (σ : E ≃ₐ[F] E) (c : Eˣ →* ℂˣ), Ad3.IsStd χ → IsUnramifiedChar c → ((∀ a, ((η a : ℂˣ) : ℂ) = GL2LocalData.nsg E (a : F)) ∧ IsUnramifiedChar η ∧ η * η = 1 ∧ GL2LocalData.nsg E (-1 : F) = 1) → (∀ (g : GL (Fin 2) F) (t : Eˣ), Algebra.norm F (t : E) = (g.val).det → GL2LocalData.rW χ σ (selfDualMeasure (GL2LocalData.chE E χ)) 1 (g.val 0 0 / (g.val).det) (g.val 0 1) (g.val 1 0 / (g.val).det) (g.val 1 1) (fun x => intInd (x * (t : E))) 1 = (((modulus (mRow g) : ℝ)⁻¹ : ℝ) : ℂ) * GL2LocalData.nsg E (mRow g) * (χ (xRow g) : ℂ) * intInd ((t : E) * algebraMap F E (mRow g)⁻¹)) → ∀ (u g : GL (Fin 2) F), u ∈ Iwasawa.unipotent F 2 → GL2LocalData.Wc χ σ (selfDualMeasure (GL2LocalData.chE E χ)) 1 c intInd (u * g) = (χ (u.val 0 1) : ℂ) * GL2LocalData.Wc χ σ (selfDualMeasure (GL2LocalData.chE E χ)) 1 c intInd g := by
   intro F _ _ _ _ _ _ _ E _ _ _ _ _ _ _ _ h2 _ _ χ η σ c hχ hc hη hform u g hu

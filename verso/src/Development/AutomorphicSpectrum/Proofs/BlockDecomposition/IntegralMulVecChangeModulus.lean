@@ -10,7 +10,7 @@ open scoped TensorProduct
 namespace GlobalTheory.CompanionTheory.BZPhiPG.Scale
 
 /- English proof (translation)
-Introduce `k _ _ _ _ n W _ _ w F l c`. Conclude with `smInt_mulVec k n W w F l c`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem smInt_subst : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (n : ℕ) (W : Type) [AddCommGroup W] [Module ℂ W] (w : GL (Fin n) k) (F : (Fin n → k) → W),
     IsLocallyConstant F → HasCompactSupport F →

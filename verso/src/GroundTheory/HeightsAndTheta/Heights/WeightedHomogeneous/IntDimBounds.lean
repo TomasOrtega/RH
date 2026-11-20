@@ -13,11 +13,11 @@ open scoped TensorProduct
 noncomputable section
 
 /- English proof (translation)
-Rewrite using `[isJacobsonRing_iff_prime_eq]`. Introduce `P hP`. Distinguish the cases in `hb : P = ⊥`. Substitute `hb` using the available equality. Use `le_antisymm (fun n hn => ?_) Ideal.le_jacobson` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `hn` using `[Ideal.mem_jacobson_bot]`. Establish `h` using `hn n`. Rewrite `h` using `[Int.isUnit_iff]`. Rewrite using `[Ideal.mem_bot]`. Break down `h with h | h` into its components or cases.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `mul_self_eq_zero.mp (by linarith)`. Use polynomial arithmetic with `[mul_self_nonneg n]`. Use `haveI := hP haveI : P.IsMaximal := IsPrime.to_maximal_ideal hb`. Conclude with `Ideal.jacobson_eq_self_of_isMaximal`.
+Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem isJacobsonRing_int : IsJacobsonRing ℤ := by
   rw [isJacobsonRing_iff_prime_eq]
@@ -37,13 +37,13 @@ theorem isJacobsonRing_int : IsJacobsonRing ℤ := by
     exact Ideal.jacobson_eq_self_of_isMaximal
 
 /- English proof (translation)
-Set `P0 : PrimeSpectrum B` to `⟨⊥, Ideal.isPrime_bot⟩`. Establish `hco : Order.coheight P0 ≤ n + 1`. Rewrite using `[Order.coheight_eq_iSup_gt_coheight]`. Use `iSup₂_le fun Q hQ => ?_` and prove the remaining obligations. Establish `hQ0 : Q.asIdeal ≠ ⊥`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Introduce `h0`. Establish `: Q = P0` using `PrimeSpectrum.ext h0`. Rewrite `hQ` using `[this]`. Conclude with `lt_irrefl _ hQ`. Establish `h1` using `h Q.asIdeal Q.isPrime hQ0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[← GroundTheory.Arith.Abelian.Jacobian.coheight_eq_ringKrullDim_quotient]`. Establish `h2 : Order.coheight Q ≤ n` using `by exact_mod_cast h1`. Conclude with `add_le_add h2 le_rfl`. Use `show Order.krullDim (PrimeSpectrum B) ≤ _`. Rewrite using `[Order.krullDim_eq_iSup_coheight_of_nonempty]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Use `WithBot.coe_le_coe.mpr (iSup_le fun Q => ?_)` and prove the remaining obligations. Establish `hle : P0 ≤ Q`. Express the relevant statement in the definitionally equal form `(⊥ : Ideal B) ≤ Q.asIdeal`. Conclude with `bot_le`. Conclude with `(Order.coheight_anti hle).trans hco`.
+A detailed English derivation is pending.
 -/
 theorem ringKrullDim_le_add_one_of_quotient_le {B : Type} [CommRing B] [IsDomain B] (n : ℕ∞)
     (h : ∀ Q : Ideal B, Q.IsPrime → Q ≠ ⊥ → ringKrullDim (B ⧸ Q) ≤ n) :
@@ -70,21 +70,17 @@ theorem ringKrullDim_le_add_one_of_quotient_le {B : Type} [CommRing B] [IsDomain
   exact (Order.coheight_anti hle).trans hco
 
 /- English proof (translation)
-Proceed by induction on `t using Nat.strong_induction_on with`. Consider the case `_ t ih`. Introduce `B _ _ _ _ hinj ht`. Establish `hfin : trdeg ℤ B < ℵ₀` using `by rw [ht]; exact Cardinal.natCast_lt_aleph0`. Establish `key` using `ringKrullDim_le_add_one_of_quotient_le (B := B) (t : ℕ∞) (fun Q hQ hQ0 => by haveI := hQ haveI : Algebra.FiniteType ℤ (B ⧸ Q) := .of_surjective (Ideal.Quotient.mkₐ ℤ Q) (Ideal.Quotient.mkₐ_surjective ℤ Q)`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Distinguish the cases in `hc : Function.Injective (algebraMap ℤ (B ⧸ Q))`. Establish `hlt` using `trdeg_lt_of_surjective_of_ker_ne_bot (Ideal.Quotient.mkₐ ℤ Q) (Ideal.Quotient.mkₐ_surjective ℤ Q) (fun h => hQ0 (by rw [← Ideal.mk_ker (I := Q)]; exact h)) hc hfin`. Take `⟨t', ht'⟩` from `Cardinal.lt_aleph0.mp (hlt.trans hfin)`. Rewrite `hlt` using `[ht, ht']`. Establish `hlt' : t' < t` using `by exact_mod_cast hlt`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `(ih t' hlt' (B ⧸ Q) hc ht').trans ?_` and prove the remaining obligations. Conclude with `(show t' + 1 ≤ t by omega)` after adjusting the coercions. Establish `hp0 : ringChar (B ⧸ Q) ≠ 0`. Introduce `h0`. Establish `hc0` using `ringChar.charP (B ⧸ Q)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hc0` using `[h0]`. Use `haveI : CharZero (B ⧸ Q) := (CharP.charP_zero_iff_charZero _).mp hc0`. Apply `hc` to reduce the goal to its premises. Establish `e : algebraMap ℤ (B ⧸ Q) = Int.castRingHom (B ⧸ Q)` using `RingHom.ext_int _ _`. Rewrite using `[e]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Equip the data with the indicated structure.
 
-Conclude with `Int.cast_injective`. Use `haveI : CharP (B ⧸ Q) (ringChar (B ⧸ Q)) := ringChar.charP _`. Establish `hpp : (ringChar (B ⧸ Q)).Prime` using `(CharP.char_is_prime_or_zero (B ⧸ Q) (ringChar (B ⧸ Q))).resolve_right hp0`. Use `haveI : Fact (ringChar (B ⧸ Q)).Prime := ⟨hpp⟩`. Use `letI := ZMod.algebra (B ⧸ Q) (ringChar (B ⧸ Q))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `haveI := IsScalarTower.of_algebraMap_eq' (RingHom.ext_int (algebraMap ℤ (B ⧸ Q)) ((algebraMap (ZMod (ringChar (B ⧸ Q))) (B ⧸ Q)).comp (algebraMap ℤ (ZMod (ringChar (B ⧸ Q))))))`. Use `haveI : Algebra.FiniteType (ZMod (ringChar (B ⧸ Q))) (B ⧸ Q) := Algebra.FiniteType.of_restrictScalars_finiteType ℤ _ _`. Establish `hle` using `trdeg_zmod_quotient_le hinj (ringChar (B ⧸ Q)) Q`. Rewrite `hle` using `[ht]`. Take `⟨s, hs⟩` from `Cardinal.lt_aleph0.mp (hle.trans_lt Cardinal.natCast_lt_aleph0)`.
-
-Rewrite `hle` using `[hs]`. Establish `hst : s ≤ t` using `by exact_mod_cast hle`. Rewrite using `[GroundTheory.Arith.Abelian.Jacobian.ringKrullDim_eq_trdeg (ZMod (ringChar (B ⧸ Q))), hs, Cardinal.toENat_nat]`. Conclude with `hst)` after adjusting the coercions. Use `key.trans (le_of_eq ?_)` and prove the remaining obligations.
-
-Use `push_cast`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem ringKrullDim_le_trdeg_add_one_int (t : ℕ) : ∀ (B : Type) [CommRing B] [IsDomain B]
     [Algebra ℤ B] [Algebra.FiniteType ℤ B], Function.Injective (algebraMap ℤ B) →
@@ -137,25 +133,19 @@ theorem ringKrullDim_le_trdeg_add_one_int (t : ℕ) : ∀ (B : Type) [CommRing B
   rfl
 
 /- English proof (translation)
-Use `letI : Algebra B (ℚ ⊗[ℤ] B) := Algebra.TensorProduct.rightAlgebra`. Set `M` to `Algebra.algebraMapSubmonoid B (nonZeroDivisors ℤ)`. Establish `hM : M ≤ nonZeroDivisors B`. Introduce and unpack `_ ⟨n, hn, rfl⟩`. Apply `mem_nonZeroDivisors_of_ne_zero` to reduce the goal to its premises.
+Equip the data with the indicated structure. Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `h`. Conclude with `nonZeroDivisors.ne_zero hn (hinj (h.trans (map_zero _).symm))`. Use `haveI : IsLocalization M (ℚ ⊗[ℤ] B) := IsLocalization.tensorRight _ _`. Use `haveI : IsDomain (ℚ ⊗[ℤ] B) := IsLocalization.isDomain_of_le_nonZeroDivisors _ hM`. Establish `hBL : Function.Injective (algebraMap B (ℚ ⊗[ℤ] B))` using `IsLocalization.injective _ hM`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `haveI : FaithfulSMul B (ℚ ⊗[ℤ] B) := (faithfulSMul_iff_algebraMap_injective _ _).2 hBL`. Use `haveI : FaithfulSMul ℤ B := (faithfulSMul_iff_algebraMap_injective _ _).2 hinj`. Use `haveI : FaithfulSMul ℤ ℚ := (faithfulSMul_iff_algebraMap_injective _ _).2 (algebraMap ℤ ℚ).injective_int`. Use `haveI : FaithfulSMul ℚ (ℚ ⊗[ℤ] B) := (faithfulSMul_iff_algebraMap_injective _ _).2 (algebraMap ℚ (ℚ ⊗[ℤ] B)).injective`. Use `haveI := IsScalarTower.of_algebraMap_eq' (RingHom.ext_int (algebraMap ℤ (ℚ ⊗[ℤ] B)) ((algebraMap B (ℚ ⊗[ℤ] B)).comp (algebraMap ℤ B)))`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI := IsScalarTower.of_algebraMap_eq' (RingHom.ext_int (algebraMap ℤ (ℚ ⊗[ℤ] B)) ((algebraMap ℚ (ℚ ⊗[ℤ] B)).comp (algebraMap ℤ ℚ)))`. Use `haveI : Algebra.IsAlgebraic B (ℚ ⊗[ℤ] B) := IsLocalization.isAlgebraic _ M`. Use `haveI : Algebra.IsAlgebraic ℤ ℚ := IsLocalization.isAlgebraic ℚ (nonZeroDivisors ℤ)`. Establish `h1` using `trdeg_add_eq ℤ B (A := ℚ ⊗[ℤ] B)`. Establish `h2` using `trdeg_add_eq ℤ ℚ (A := ℚ ⊗[ℤ] B)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite `h1` using `[trdeg_eq_zero (R := B) (A := ℚ ⊗[ℤ] B), add_zero]`. Rewrite `h2` using `[trdeg_eq_zero (R := ℤ) (A := ℚ), zero_add]`. Establish `htL : trdeg ℚ (ℚ ⊗[ℤ] B) = t` using `by rw [h2, ← h1, ht]`. Take `⟨m, hm⟩` from `Ideal.exists_maximal (ℚ ⊗[ℤ] B)`. Establish `hmh : m.height = t` using `ReciprocityTheory.CA.height_eq_of_isMaximal_of_trdeg_eq_field (K := ℚ) t htL m`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `hPh : (m.under B).height = t` using `(IsLocalization.height_under M m).trans hmh`. Establish `hdisj : Disjoint (M : Set B) (m.under B)` using `(IsLocalization.disjoint_under_iff M _ m).2 hm.ne_top`. Establish `hnm : ¬ (m.under B).IsMaximal`. Introduce `hPm`. Use `letI := Ideal.Quotient.field (m.under B)`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `haveI : IsJacobsonRing ℤ := isJacobsonRing_int`. Use `haveI : Algebra.FiniteType ℤ (B ⧸ m.under B) := .of_surjective (Ideal.Quotient.mkₐ ℤ _) (Ideal.Quotient.mkₐ_surjective ℤ _)`. Use `haveI := finite_of_finite_type_of_isJacobsonRing ℤ (B ⧸ m.under B)`. Use `haveI : Algebra.IsIntegral ℤ (B ⧸ m.under B) := Algebra.IsIntegral.of_finite ℤ _`. Apply `Int.not_isField` to reduce the goal to its premises.
-
-Use `isField_of_isIntegral_of_isField ?_ (Field.toIsField (B ⧸ m.under B))` and prove the remaining obligations. Establish `e : algebraMap ℤ (B ⧸ m.under B) = (Ideal.Quotient.mk _).comp (algebraMap ℤ B)` using `RingHom.ext_int _ _`. Rewrite using `[e, injective_iff_map_eq_zero]`. Introduce `n hn`. Assume the negation of the conclusion as `hn0`.
-
-Rewrite `hn` using `[RingHom.comp_apply, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `Set.disjoint_left.mp hdisj ⟨n, mem_nonZeroDivisors_of_ne_zero hn0, rfl⟩ hn`. Take `⟨N, hN, hPN⟩` from `(m.under B).exists_le_maximal (Ideal.IsPrime.ne_top inferInstance)`. Establish `hlt : m.under B < N` using `lt_of_le_of_ne hPN (fun h => hnm (h ▸ hN))`. Establish `hh` using `Ideal.height_add_one_le_of_lt_of_isPrime hlt`.
-
-Rewrite `hh` using `[hPh]`. Combine the equalities or inequalities in the displayed calculation. Conclude with `hh` after adjusting the coercions. Use `_ ≤ ringKrullDim B := Ideal.height_le_ringKrullDim_of_isPrime`.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem le_ringKrullDim_int (B : Type) [CommRing B] [IsDomain B] [Algebra.FiniteType ℤ B]
     (hinj : Function.Injective (algebraMap ℤ B)) (t : ℕ) (ht : trdeg ℤ B = t) :

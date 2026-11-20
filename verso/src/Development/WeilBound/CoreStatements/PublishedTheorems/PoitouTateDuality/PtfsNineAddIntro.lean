@@ -4,7 +4,7 @@ import Development.WeilBound.CoreStatements.PublishedTheorems.PoitouTateDuality.
 namespace PositivityTheory.Lit1.PTN
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨AddCommGrpCat.of B0, AddCommGrpCat.of B1, AddCommGrpCat.of B2, AddCommGrpCat.of B3, AddCommGrpCat.of B4, AddCommGrpCat.of B5, AddCommGrpCat.of B6, AddCommGrpCat.of B7, AddCommGrpCat.of BetaSesquilinearity, g0, g1, g2, g3, g4, g5, g6, g7, e0, e1, e2, e3, e4, e5, e6, e7, e8, ε, h0 …`.
+Supply the required witnesses or components.
 -/
 theorem nineAdd_intro {N : ℕ} {A0 A1 A2 A3 A4 A5 A6 A7 A8 : Type} [AddCommGroup A0] [Module (ZMod N) A0] [AddCommGroup A1] [Module (ZMod N) A1] [AddCommGroup A2] [Module (ZMod N) A2] [AddCommGroup A3] [Module (ZMod N) A3] [AddCommGroup A4] [Module (ZMod N) A4] [AddCommGroup A5] [Module (ZMod N) A5] [AddCommGroup A6] [Module (ZMod N) A6] [AddCommGroup A7] [Module (ZMod N) A7] [AddCommGroup A8] [Module (ZMod N) A8]
     {f0 : A0 →ₗ[ZMod N] A1} {f1 : A1 →ₗ[ZMod N] A2} {f3 : A3 →ₗ[ZMod N] A4}

@@ -10,51 +10,43 @@ open Matrix GlobalTheory.KZ GlobalTheory.KZ.ES
 namespace GlobalTheory.KZ.ES
 
 /- English proof (translation)
-Introduce `Ω _ _ _ ε X V`. Use `open GaussDom in`. Use `haveI : (RingHom.ker (redA V X.exp)).IsPrime := RingHom.ker_isPrime _`. Take `⟨W, hA, hinv, hlt⟩` from `ReciprocityTheory.ChartRestriction.G.AR.Up.NOrd.exists_val_of_prime (GaussDom.intA V X.exp) (RingHom.ker (GaussDom.redA V X.exp))`. Establish `hker : ∀ x : GaussDom.intA V X.exp, x ∈ RingHom.ker (GaussDom.redA V X.exp) ↔ ∀ r, (X.exp x).coeff r ∈ V.nonunits` using `fun x => (RingHom.mem_ker).trans (GaussDom.redA_eq_zero V X.exp x)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hone : ∀ x : GaussDom.intA V X.exp, x ∉ RingHom.ker (GaussDom.redA V X.exp) → W.valuation (x : X.K) = 1`. Introduce `x hx`. Establish `hx0 : (x : X.K) ≠ 0`. Introduce `h0`. Apply `hx` to reduce the goal to its premises.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: x = 0` using `Subtype.ext h0`. Rewrite using `[this]`. Conclude with `Ideal.zero_mem _`. Establish `h1` using `(W.valuation_le_one_iff _).2 (hA x)`. Establish `h2` using `(W.valuation_le_one_iff _).2 (hinv x hx)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h2` using `[map_inv₀]`. Establish `hv0 : W.valuation (x : X.K) ≠ 0` using `by simpa using hx0`. Conclude with `le_antisymm h1 ((inv_le_one₀ (zero_lt_iff.2 hv0)).1 h2)`. Establish `hj3 : ∀ r, (X.exp X.jK).coeff r ∈ V` using `fun r => by`. Take `⟨n, hn⟩` from `X.j_exp.2.2 r`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hn]`. Conclude with `intCast_mem V n`. Establish `hj1 : (X.exp X.jK).coeff (-1) = 1` using `X.j_exp.1`. Establish `hj2 : ∀ r : ℚ, r < -1 → (X.exp X.jK).coeff r = 0` using `X.j_exp.2.1`. Use `⟨W, ⟨?_, ?_, ?_⟩, ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `f hf`. Conclude with `hA ⟨f, (GaussDom.mem_intA V X.exp f).2 hf⟩`. Introduce `f hf`. Establish `hfi : f ∈ GaussDom.intA V X.exp` using `(GaussDom.mem_intA V X.exp f).2 (fun r => V.valuation_le_one_iff _ |>.1 (le_of_lt ((ValuationSubring.mem_nonunits_iff _).1 (hf r))))`. Conclude with `hlt ⟨f, hfi⟩ ((hker _).2 hf)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `f ⟨hf, r, hr⟩`. Apply `hone ⟨f, (GaussDom.mem_intA V X.exp f).2 hf⟩` to reduce the goal to its premises. Introduce `hk`. Use `(hker _).1 hk r` as an intermediate fact. Rewrite `this` using `[ValuationSubring.mem_nonunits_iff]`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `absurd hr (ne_of_lt this)`. Introduce `a`. Prove the components needed by the constructor for the conclusion. Introduce `ha`. Assume the negation of the conclusion as `hnot`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `ha0 : a ≠ 0` using `fun h => hnot (h ▸ V.zero_mem)`. Establish `hinvV : a⁻¹ ∈ V` using `(V.mem_or_inv_mem a).resolve_left hnot`. Establish `hnu : a⁻¹ ∈ V.nonunits`. Rewrite using `[ValuationSubring.mem_nonunits_iff]`. Use `lt_of_le_of_ne ((V.valuation_le_one_iff _).2 hinvV) ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `h1`. Apply `hnot` to reduce the goal to its premises. Rewrite `h1` using `[map_inv₀, inv_eq_one]`. Conclude with `(V.valuation_le_one_iff a).1 (le_of_eq h1)`. Establish `hm : algebraMap Ω X.K a⁻¹ ∈ GaussDom.intA V X.exp` using `GaussDom.const_mem V X.exp _ hinvV`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hk : (⟨_, hm⟩ : GaussDom.intA V X.exp) ∈ RingHom.ker (GaussDom.redA V X.exp)`. Rewrite using `[hker]`. Introduce `r`. Use `show (X.exp (algebraMap Ω X.K a⁻¹)).coeff r ∈ V.nonunits`. Rewrite using `[GaussDom.coeff_const]`.
+Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Assume the hypotheses and unpack their components. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `split_ifs`. Conclude with `hnu`. Conclude with `GaussDom.zero_mem_nonunits V`. Establish `h3 : W.valuation (algebraMap Ω X.K a⁻¹) < 1` using `hlt _ hk`. Establish `h4` using `(W.valuation_le_one_iff _).2 ha`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Establish `h5 : W.valuation (algebraMap Ω X.K a) * W.valuation (algebraMap Ω X.K a⁻¹) = 1`. Rewrite using `[← map_mul, ← map_mul, mul_inv_cancel₀ ha0, map_one, map_one]`. Establish `h6 : W.valuation (algebraMap Ω X.K a) * W.valuation (algebraMap Ω X.K a⁻¹) ≤ 1 * W.valuation (algebraMap Ω X.K a⁻¹)` using `by gcongr`. Rewrite `h6` using `[h5, one_mul]`. Conclude with `absurd (lt_of_le_of_lt h6 h3) (lt_irrefl 1)`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `ha`. Conclude with `hA ⟨_, GaussDom.const_mem V X.exp a ha⟩`. Introduce and unpack `P hP ⟨i0, hne, hi0, hi0'⟩`. Establish `hjA : X.jK ∈ GaussDom.intA V X.exp` using `(GaussDom.mem_intA V X.exp X.jK).2 hj3`. Take `⟨P', hP'⟩ : ∃ P' : Polynomial V, P'.map V.subtype = P` from `(Polynomial.lifts_iff_coeff_lifts P).2 (fun n => ⟨⟨_, hP n⟩, rfl⟩)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Set `ι : V →+* GaussDom.intA V X.exp` to `((algebraMap Ω X.K).comp V.subtype).codRestrict (GaussDom.intA V X.exp) (fun v => GaussDom.const_mem V X.exp v v.2)`. Establish `hx : Polynomial.aeval X.jK P = (GaussDom.intA V X.exp).subtype (P'.eval₂ ι ⟨X.jK, hjA⟩)`. Rewrite using `[Polynomial.hom_eval₂, ← hP', Polynomial.aeval_def, Polynomial.eval₂_map]`. Both sides reduce to the same expression. Rewrite using `[hx]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Assume the negation of the conclusion and derive a contradiction.
 
-Apply `hone` to reduce the goal to its premises. Introduce `hk`. Rewrite `hk` using `[RingHom.mem_ker, Polynomial.hom_eval₂]`. Establish `hc : (GaussDom.redA V X.exp).comp ι = (algebraMap (IsLocalRing.ResidueField V) (HahnSeries ℚ (IsLocalRing.ResidueField V))).comp (IsLocalRing.residue V)`. Apply `RingHom.ext` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `v`. Conclude with `GaussDom.redA_const V X.exp v`. Rewrite `hk` using `[hc, ← Polynomial.eval₂_map, ← Polynomial.aeval_def]`. Use `set J := GaussDom.redA V X.exp ⟨X.jK, hjA⟩ with hJdef`. Establish `hJ : J.orderTop = ((-1 : ℚ) : WithTop ℚ)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Apply `HahnSeries.orderTop_eq_of_le` to reduce the goal to its premises. Rewrite using `[HahnSeries.mem_support, hJdef, GaussDom.redA_coeff]`. Establish `h1 : (⟨(X.exp X.jK).coeff (-1), (GaussDom.mem_intA V X.exp X.jK).1 hjA (-1)⟩ : V) = 1` using `Subtype.ext hj1`. Rewrite using `[h1, map_one]`. Conclude with `one_ne_zero`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Introduce `g hg`. Rewrite `hg` using `[HahnSeries.mem_support, hJdef, GaussDom.redA_coeff]`. Assume the negation of the conclusion as `hlt'`. Apply `hg` to reduce the goal to its premises. Establish `h0 : (⟨(X.exp X.jK).coeff g, (GaussDom.mem_intA V X.exp X.jK).1 hjA g⟩ : V) = 0` using `Subtype.ext (hj2 g (lt_of_not_ge hlt'))`.
-
-Rewrite using `[h0, map_zero]`. Establish `hQ : P'.map (IsLocalRing.residue V) ≠ 0`. Introduce `h0`. Establish `hc0` using `congrArg (fun Q => Q.coeff i0) h0`. Simplify using `only [Polynomial.coeff_map, Polynomial.coeff_zero] at hc0`.
-
-Establish `hPi : ((P'.coeff i0 : V) : Ω) = P.coeff i0`. Rewrite using `[← hP', Polynomial.coeff_map]`. Both sides reduce to the same expression. Establish `hu : IsUnit (P'.coeff i0)`. Use `isUnit_iff_exists_inv.2 ⟨⟨(P.coeff i0)⁻¹, hi0'⟩, Subtype.ext ?_⟩` and prove the remaining obligations.
-
-Use `show ((P'.coeff i0 : V) : Ω) * (P.coeff i0)⁻¹ = 1`. Rewrite using `[hPi, mul_inv_cancel₀ hne]`. Rewrite `hc0` using `[IsLocalRing.residue_eq_zero_iff, IsLocalRing.mem_maximalIdeal]`. Conclude with `hc0 hu`. Establish `hot` using `GaussDom.orderTop_aeval J hJ _ _ hQ rfl`.
-
-Rewrite `hot` using `[hk, HahnSeries.orderTop_zero]`. Conclude with `WithTop.top_ne_coe hot`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_dom_gauss : ∀ {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (ε : Ω →+* ℂ) (X : Tower Ω ε),
     ∀ V : ValuationSubring Ω, ∃ W : ValuationSubring X.K, Dom X V W ∧ Gauss X.jK V W := by

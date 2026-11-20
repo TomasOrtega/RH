@@ -43,7 +43,7 @@ def trS (M : Submodule R (N → C)) (e : N ≃+ N') : Submodule R (N' → C) :=
   M.map (tr e : (N → C) ≃ₗ[R] (N' → C)).toLinearMap
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨f, hf, rfl⟩`. Simplify `hf` using `[tr]`. Introduce `h`. Conclude with `⟨_, h, by ext y; simp [tr]⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem mem_trS (M : Submodule R (N → C)) (e : N ≃+ N') (g : N' → C) :
     g ∈ trS M e ↔ (fun x => g (e x)) ∈ M := by
@@ -54,9 +54,9 @@ theorem mem_trS (M : Submodule R (N → C)) (e : N ≃+ N') (g : N' → C) :
     exact ⟨_, h, by ext y; simp [tr]⟩
 
 /- English proof (translation)
-Use extensionality with `g`. Rewrite using `[mem_trS]`. Prove the components needed by the constructor for the conclusion. Introduce `h y`. Simplify using `using h (e.symm y)`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce `h x`. Conclude with `h (e x)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem trS_intFun (e : N ≃+ N') : trS (intFun (C := C) R N) e = intFun R N' := by
   ext g
@@ -68,9 +68,9 @@ theorem trS_intFun (e : N ≃+ N') : trS (intFun (C := C) R N) e = intFun R N' :
     exact h (e x)
 
 /- English proof (translation)
-Use extensionality with `g`. Rewrite using `[mem_trS]`. Prove the components needed by the constructor for the conclusion. Introduce `h x y`. Simplify using `using h (e.symm x) (e.symm y)`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce `h x y`. Simplify using `using h (e x) (e y)`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem trS_addFun (q : ℕ) (e : N ≃+ N') : trS (addFun (C := C) R q N) e = addFun R q N' := by
   ext g
@@ -82,9 +82,9 @@ theorem trS_addFun (q : ℕ) (e : N ≃+ N') : trS (addFun (C := C) R q N) e = a
     simpa using h (e x) (e y)
 
 /- English proof (translation)
-Use extensionality with `g`. Rewrite using `[mem_trS]`. Simplify using `only [pFun, Submodule.mem_pi, Set.mem_univ, true_imp_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `h y`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `using h (e.symm y)`. Introduce `h x`. Conclude with `h (e x)`.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem trS_pFun (q : ℕ) (e : N ≃+ N') : trS (pFun (C := C) R q N) e = pFun R q N' := by
   ext g
@@ -97,7 +97,7 @@ theorem trS_pFun (q : ℕ) (e : N ≃+ N') : trS (pFun (C := C) R q N) e = pFun 
     exact h (e x)
 
 /- English proof (translation)
-Use extensionality with `g`. Simplify using `only [Submodule.mem_inf, mem_trS]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem trS_inf (M M' : Submodule R (N → C)) (e : N ≃+ N') :
     trS (M ⊓ M') e = trS M e ⊓ trS M' e := by
@@ -105,14 +105,14 @@ theorem trS_inf (M M' : Submodule R (N → C)) (e : N ≃+ N') :
   simp only [Submodule.mem_inf, mem_trS]
 
 /- English proof (translation)
-Simplify using `only [trS, Submodule.map_sup]`.
+Simplify using the standard rewrite rules.
 -/
 theorem trS_sup (M M' : Submodule R (N → C)) (e : N ≃+ N') :
     trS (M ⊔ M') e = trS M e ⊔ trS M' e := by
   simp only [trS, Submodule.map_sup]
 
 /- English proof (translation)
-Use extensionality with `g`. Simplify using `only [augIdeal, Submodule.mem_inf, mem_trS, LinearMap.mem_ker, LinearMap.proj_apply, map_zero]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem trS_augIdeal (M : Submodule R (N → C)) (e : N ≃+ N') :
     trS (augIdeal M) e = augIdeal (trS M e) := by
@@ -121,9 +121,9 @@ theorem trS_augIdeal (M : Submodule R (N → C)) (e : N ≃+ N') :
     map_zero]
 
 /- English proof (translation)
-Simplify using `only [trS, sqIdeal, Submodule.map_span]`. Use `congr 1`. Use extensionality with `h`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨_, ⟨f, hf, f', hf', rfl⟩, rfl⟩`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨_, Submodule.mem_map_of_mem hf, _, Submodule.mem_map_of_mem hf', by ext y; simp [tr]⟩`. Introduce and unpack `⟨_, ⟨a, ha, rfl⟩, _, ⟨b, hb, rfl⟩, rfl⟩`. Conclude with `⟨a * b, ⟨a, ha, b, hb, rfl⟩, by ext y; simp [tr]⟩`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem trS_sqIdeal (I : Submodule R (N → C)) (e : N ≃+ N') :
     trS (sqIdeal I) e = sqIdeal (trS I e) := by
@@ -154,7 +154,7 @@ def subquotEquiv {V V' : Type} [AddCommGroup V] [AddCommGroup V'] [Module R V] [
     exact ⟨⟨x', hx'⟩, hxB, rfl⟩
 
 /- English proof (translation)
-Take `⟨m, d, ⟨f⟩, hd⟩` from `h`. Conclude with `⟨m, d, ⟨E.symm.trans f⟩, hd⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem hasLen_of_equiv {v : Valuation C NNReal} {X Y : Type} [AddCommGroup X] [Module R X]
     [AddCommGroup Y] [Module R Y] (E : X ≃ₗ[R] Y) {c : NNReal} (h : HasLen v R X c) :
@@ -165,9 +165,9 @@ theorem hasLen_of_equiv {v : Valuation C NNReal} {X Y : Type} [AddCommGroup X] [
 variable [Fintype N] [DecidableEq N] [Fintype N'] [DecidableEq N']
 
 /- English proof (translation)
-Simplify using `only [trS, Submodule.map_span]`. Use `congr 1`. Use extensionality with `h`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨_, ⟨j, rfl⟩, rfl⟩`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨e j, by ext y; simp [tr]⟩`. Introduce and unpack `⟨j, rfl⟩`. Conclude with `⟨_, ⟨e.symm j, rfl⟩, by ext y; simp [tr]⟩`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem trS_cols (B : Matrix N N C) (e : N ≃+ N') :
     trS (Submodule.span R (Set.range fun j x => B x j)) e =
@@ -182,7 +182,7 @@ theorem trS_cols (B : Matrix N N C) (e : N ≃+ N') :
     exact ⟨_, ⟨e.symm j, rfl⟩, by ext y; simp [tr]⟩
 
 /- English proof (translation)
-Take `⟨B, hB, rfl⟩` from `h`. Use `⟨B.submatrix e.symm e.symm, ?_, trS_cols B e⟩` and prove the remaining obligations. Rewrite using `[show (B.submatrix e.symm e.symm) = B.submatrix e.symm.toEquiv e.symm.toEquiv from rfl, Matrix.det_submatrix_equiv_self]`. Conclude with `hB`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isLat_trS {M : Submodule R (N → C)} (e : N ≃+ N') (h : IsLat R M) :
     IsLat R (trS M e) := by
@@ -193,7 +193,7 @@ theorem isLat_trS {M : Submodule R (N → C)} (e : N ≃+ N') (h : IsLat R M) :
   exact hB
 
 /- English proof (translation)
-Take `⟨B, rfl, hB⟩` from `h`. Use `⟨B.submatrix e.symm e.symm, trS_cols B e, ?_⟩` and prove the remaining obligations. Rewrite using `[show (B.submatrix e.symm e.symm) = B.submatrix e.symm.toEquiv e.symm.toEquiv from rfl, Matrix.det_submatrix_equiv_self]`. Conclude with `hB`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasColen_trS {v : Valuation C NNReal} {M : Submodule R (N → C)} (e : N ≃+ N') {c : NNReal}
     (h : HasColen R v M c) : HasColen R v (trS M e) c := by
@@ -204,11 +204,9 @@ theorem hasColen_trS {v : Valuation C NNReal} {M : Submodule R (N → C)} (e : N
   exact hB
 
 /- English proof (translation)
-Take `⟨cA, cN, cO, h1, h2, h3, h4, h5⟩` from `h`. Establish `hcard : Fintype.card N = Fintype.card N'` using `Fintype.card_congr e.toEquiv`. Use `⟨cA, cN, cO, ?_, hasColen_trS e h2, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `hasLen_of_equiv (subquotEquiv (tr e) _ _ _ _ ?_ ?_) h1` and prove the remaining obligations. Conclude with `(trS_inf _ _ e).trans (by rw [trS_intFun, trS_addFun]; rfl)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(trS_sup _ _ e).trans (by`. Rewrite using `[trS_pFun, show afFun q M = M ⊓ addFun R q N from rfl, trS_inf, trS_addFun]`. Use the proof step `rfl)`. Use `hasLen_of_equiv (subquotEquiv (tr e) _ _ _ _ ?_ ?_) h3` and prove the remaining obligations. Conclude with `trS_augIdeal M e`.
-
-Conclude with `(trS_sqIdeal _ e).trans (by rw [trS_augIdeal])`. Rewrite using `[← hcard]`. Conclude with `h4`. Rewrite using `[← hcard]`. Conclude with `h5`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isTight_trS {v : Valuation C NNReal} {q : ℕ} {M : Submodule R (N → C)} (e : N ≃+ N')
     (h : IsTight v q M) : IsTight v q (trS M e) := by
@@ -226,19 +224,17 @@ theorem isTight_trS {v : Valuation C NNReal} {q : ℕ} {M : Submodule R (N → C
   · rw [← hcard]; exact h5
 
 /- English proof (translation)
-Use `⟨⟨trS AA.carrier e, isLat_trS e AA.lat, ?_, ?_, ?_, ?_, ?_⟩, rfl⟩` and prove the remaining obligations. Rewrite using `[← trS_intFun e]`. Conclude with `Submodule.map_mono AA.le_int`. Rewrite using `[mem_trS]`. Conclude with `AA.one_mem`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Introduce `f g hf hg`. Rewrite `*` using `[mem_trS]`. Conclude with `AA.mul_mem _ _ hf hg`. Introduce `f hf`. Rewrite `hf` using `[mem_trS]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h` using `AA.comul _ hf`. Establish `key : ∀ F ∈ tensorSpan R AA.carrier, (fun q : N' × N' => F (e.symm q.1, e.symm q.2)) ∈ tensorSpan R (trS AA.carrier e)`. Introduce `F hF`. Proceed by induction on `hF using Submodule.span_induction with`. Consider the case `mem F hF`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨g, hg, h, hh, rfl⟩` from `hF`. Use `Submodule.subset_span ⟨fun y => g (e.symm y), ?_, fun y => h (e.symm y), ?_, rfl⟩` and prove the remaining obligations. Rewrite using `[mem_trS]`. Simplify using `using hg`. Rewrite using `[mem_trS]`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Treat this case separately.
 
-Simplify using `using hh`. Consider the case `zero => exact Submodule.zero_mem _`. Consider the case `add F G _ _ hF hG => exact Submodule.add_mem _ hF hG`. Consider the case `smul c F _ hF => exact Submodule.smul_mem _ c hF`. Use `key _ h` as an intermediate fact.
+Treat this case separately. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use `this using 1` and compare the differences between its conclusion and the goal. Use extensionality with `q`. Simplify using `[addPull, LinearMap.funLeft]`. Introduce `f hf`. Rewrite `*` using `[mem_trS]`.
-
-Simplify using `using AA.antipode _ hf`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem hopf_trS (AA : HopfOrder (C := C) R N) (e : N ≃+ N') :
     ∃ AA' : HopfOrder (C := C) R N', AA'.carrier = trS AA.carrier e := by
@@ -283,9 +279,9 @@ def charLat (R : Type) [CommRing R] [Algebra R C] (N : Type) [AddCommGroup N] :
   Submodule.span R (Set.range fun (ψ : AddChar N C) (x : N) => ψ x)
 
 /- English proof (translation)
-Simplify using `only [trS, charLat, Submodule.map_span]`. Use `congr 1`. Use extensionality with `h`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨_, ⟨ψ, rfl⟩, rfl⟩`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨ψ.compAddMonoidHom e.symm.toAddMonoidHom, by ext y; simp [tr]⟩`. Introduce and unpack `⟨ψ, rfl⟩`. Conclude with `⟨_, ⟨ψ.compAddMonoidHom e.toAddMonoidHom, rfl⟩, by ext y; simp [tr]⟩`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem trS_charLat {N N' : Type} [AddCommGroup N] [AddCommGroup N'] (e : N ≃+ N') :
     trS (charLat (C := C) R N) e = charLat R N' := by
@@ -299,25 +295,25 @@ theorem trS_charLat {N N' : Type} [AddCommGroup N] [AddCommGroup N'] (e : N ≃+
     exact ⟨_, ⟨ψ.compAddMonoidHom e.toAddMonoidHom, rfl⟩, by ext y; simp [tr]⟩
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨ψ, rfl⟩`. Use `Submodule.subset_span ⟨_, Submodule.subset_span ⟨ψ.compAddMonoidHom (AddMonoidHom.inl N₁ N₂), rfl⟩, _, Submodule.subset_span ⟨ψ.compAddMonoidHom (AddMonoidHom.inr N₁ N₂), rfl⟩, ?_⟩` and prove the remaining obligations. Use extensionality with `z`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Simplify using `only [AddChar.compAddMonoidHom_apply, AddMonoidHom.inl_apply, AddMonoidHom.inr_apply, ← AddChar.map_add_eq_mul]`. Simplify using the standard rewrite rules. Establish `key : ∀ g ∈ charLat (C` using `C) R N₁, ∀ h ∈ charLat (C := C) R N₂, (fun z : N₁ × N₂ => g z.1 * h z.2) ∈ charLat (C := C) R (N₁ × N₂) := by`. Introduce `g hg h hh`. Proceed by induction on `hg using Submodule.span_induction with`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `mem g hg`. Take `⟨ψ₁, rfl⟩` from `hg`. Proceed by induction on `hh using Submodule.span_induction with`. Consider the case `mem h hh`. Take `⟨ψ₂, rfl⟩` from `hh`.
+Treat this case separately. Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Use `Submodule.subset_span ⟨⟨fun z => ψ₁ z.1 * ψ₂ z.2, by simp, ?_⟩, rfl⟩` and prove the remaining obligations. Introduce `a b`. Simplify using `only [Prod.fst_add, Prod.snd_add, AddChar.map_add_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Consider the case `zero`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Treat this case separately.
 
-Use `Submodule.zero_mem (charLat (C := C) R (N₁ × N₂)) using 1` and compare the differences between its conclusion and the goal. Use extensionality with `z`. Simplify using the standard rewrite rules. Consider the case `add a b _ _ ha hb`. Use `Submodule.add_mem _ ha hb using 1` and compare the differences between its conclusion and the goal.
+Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Treat this case separately. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use extensionality with `z`. Simplify using `[mul_add]`. Consider the case `smul c a _ ha`. Use `Submodule.smul_mem _ c ha using 1` and compare the differences between its conclusion and the goal. Use extensionality with `z`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Treat this case separately. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components.
 
-Simplify using `[Algebra.smul_def]`. Expand and normalize the polynomial expressions, which then agree. Consider the case `zero`. Use `Submodule.zero_mem (charLat (C := C) R (N₁ × N₂)) using 1` and compare the differences between its conclusion and the goal. Use extensionality with `z`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Treat this case separately. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components.
 
-Simplify using the standard rewrite rules. Consider the case `add a b _ _ ha hb`. Use `Submodule.add_mem _ ha hb using 1` and compare the differences between its conclusion and the goal. Use extensionality with `z`. Simplify using `[add_mul]`.
+Simplify using the standard rewrite rules. Treat this case separately. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Consider the case `smul c a _ ha`. Use `Submodule.smul_mem _ c ha using 1` and compare the differences between its conclusion and the goal. Use extensionality with `z`. Simplify using `[Algebra.smul_def]`. Expand and normalize the polynomial expressions, which then agree.
+Treat this case separately. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨g, hg, h, hh, rfl⟩`. Conclude with `key g hg h hh`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem charLat_prod (N₁ N₂ : Type) [AddCommGroup N₁] [AddCommGroup N₂] :
     charLat (C := C) R (N₁ × N₂) = tens (charLat R N₁) (charLat R N₂) := by
@@ -367,15 +363,15 @@ theorem charLat_prod (N₁ N₂ : Type) [AddCommGroup N₁] [AddCommGroup N₂] 
     exact key g hg h hh
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Introduce `f hf choose r hr using hf`. Establish `hδ : ∀ {X : Type} [DecidableEq X] (a : X), (fun x => if x = a then (1 : C) else 0) ∈ intFun (C` using `C) R X := by`. Introduce `X _ a x`. Distinguish the cases in `h : x = a`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Conclude with `⟨1, by simp [h]⟩`. Conclude with `⟨0, by simp [h]⟩`. Establish `hf' : f = ∑ z : N₁ × N₂, r z • (fun w : N₁ × N₂ => (if w.1 = z.1 then (1 : C) else 0) * (if w.2 = z.2 then (1 : C) else 0))`. Use extensionality with `w`. Rewrite using `[Finset.sum_apply, Finset.sum_eq_single w]`.
+Supply the required witnesses or components. Supply the required witnesses or components. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[Algebra.smul_def, hr]`. Introduce `z _ hz`. Establish `: ¬ (w.1 = z.1 ∧ w.2 = z.2)` using `fun h => hz (Prod.ext h.1.symm h.2.symm)`. Distinguish the cases in `h1 : w.1 = z.1`. Establish `h2 : ¬ w.2 = z.2` using `fun h2 => this ⟨h1, h2⟩`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Simplify using `[h2]`. Simplify using `[h1]`. Simplify using the standard rewrite rules. Rewrite using `[hf']`. Conclude with `Submodule.sum_mem _ fun z _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨_, hδ z.1, _, hδ z.2, rfl⟩)`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨g, hg, h, hh, rfl⟩ z`. Take `⟨a, ha⟩` from `hg z.1`. Take `⟨b, hb⟩` from `hh z.2`. Conclude with `⟨a * b, by simp [ha, hb]⟩`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem intFun_prod (N₁ N₂ : Type) [Fintype N₁] [DecidableEq N₁] [Fintype N₂] [DecidableEq N₂] :
     intFun (C := C) R (N₁ × N₂) = tens (intFun R N₁) (intFun R N₂) := by
@@ -412,11 +408,11 @@ theorem intFun_prod (N₁ N₂ : Type) [Fintype N₁] [DecidableEq N₁] [Fintyp
 variable {Z : Type} [AddCommGroup Z] [Fintype Z] [DecidableEq Z] [Subsingleton Z]
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Introduce `f hf`. Take `⟨r, hr⟩` from `hf 0`. Establish `: f = r • (fun x => (1 : Matrix Z Z C) x 0)`. Use extensionality with `x`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `hx : x = 0` using `Subsingleton.elim _ _`. Substitute `hx` using the available equality. Simplify using `[Algebra.smul_def, hr]`. Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨0, rfl⟩)`.
+Establish an intermediate fact. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨j, rfl⟩ x`. Take `rfl : x = j` from `Subsingleton.elim _ _`. Conclude with `⟨1, by simp⟩`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem intFun_eq_cols :
     intFun (C := C) R Z = Submodule.span R (Set.range fun j x => (1 : Matrix Z Z C) x j) := by
@@ -436,11 +432,11 @@ theorem intFun_eq_cols :
     exact ⟨1, by simp⟩
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨ψ, rfl⟩ x`. Conclude with `⟨1, by simp [Subsingleton.elim x 0]⟩`. Introduce `f hf`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨r, hr⟩` from `hf 0`. Establish `: f = r • (fun x => (0 : AddChar Z C) x)`. Use extensionality with `x`. Simplify using `[Subsingleton.elim x 0, Algebra.smul_def, hr]`. Rewrite using `[this]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨0, rfl⟩)`.
+A detailed English derivation is pending.
 -/
 theorem charLat_trivial : charLat (C := C) R Z = intFun R Z := by
   apply le_antisymm
@@ -456,11 +452,11 @@ theorem charLat_trivial : charLat (C := C) R Z = intFun R Z := by
     exact Submodule.smul_mem _ _ (Submodule.subset_span ⟨0, rfl⟩)
 
 /- English proof (translation)
-Use `⟨⟨intFun R Z, ⟨1, by simp, intFun_eq_cols⟩, le_rfl, fun _ => ⟨1, by simp⟩, ?_, ?_, ?_⟩, rfl⟩` and prove the remaining obligations. Introduce `f g hf hg x`. Take `⟨a, ha⟩` from `hf x`. Take `⟨b, hb⟩` from `hg x`. Conclude with `⟨a * b, by simp [ha, hb]⟩`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Introduce `f hf`. Take `⟨r, hr⟩` from `hf 0`. Establish `: addPull R Z f = r • (fun q : Z × Z => (1 : Z → C) q.1 * (1 : Z → C) q.2)`. Use extensionality with `q`. Simplify using `[addPull, LinearMap.funLeft, Subsingleton.elim (q.1 + q.2) 0, Algebra.smul_def, hr]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨1, fun _ => ⟨1, by simp⟩, 1, fun _ => ⟨1, by simp⟩, rfl⟩)`. Introduce `f hf x`. Conclude with `hf (-x)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem hopf_trivial : ∃ AA : HopfOrder (C := C) R Z, AA.carrier = intFun R Z := by
   refine ⟨⟨intFun R Z, ⟨1, by simp, intFun_eq_cols⟩, le_rfl, fun _ => ⟨1, by simp⟩, ?_, ?_, ?_⟩, rfl⟩
@@ -480,13 +476,11 @@ theorem hopf_trivial : ∃ AA : HopfOrder (C := C) R Z, AA.carrier = intFun R Z 
     exact hf (-x)
 
 /- English proof (translation)
-Establish `hzero : ∀ (X : Type) [AddCommGroup X] [Module R X] [Subsingleton X], HasLen v R X 1` using `fun X _ _ _ => ⟨0, Fin.elim0, ⟨LinearEquiv.ofSubsingleton _ _⟩, by simp⟩`. Establish `h1 : Subsingleton (AFQuot q (intFun (C` using `C) R Z)) := by`. Use `Submodule.Quotient.subsingleton_iff.2 (eq_top_iff.2 ?_)` and prove the remaining obligations. Introduce and unpack `⟨f, hf⟩ -`. Conclude with `Submodule.mem_sup_left ⟨hf.1, hf.2⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `h2 : Subsingleton (OmAA (intFun (C` using `C) R Z)) := by`. Use `Submodule.Quotient.subsingleton_iff.2 (eq_top_iff.2 ?_)` and prove the remaining obligations. Introduce and unpack `⟨f, hf⟩ -`. Establish `: f = 0`. Use extensionality with `x`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Establish `hx : x = 0` using `Subsingleton.elim _ _`. Substitute `hx` using the available equality. Conclude with `hf.2`. Substitute `this` using the available equality. Conclude with `Submodule.zero_mem _`.
-
-Use `⟨1, 1, 1, hzero _, ⟨1, intFun_eq_cols, by simp⟩, hzero _, by simp, by simp⟩` and prove the remaining obligations.
+Substitute using the available equality. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isTight_trivial (v : Valuation C NNReal) (q : ℕ) : IsTight v q (intFun (C := C) R Z) := by
   have hzero : ∀ (X : Type) [AddCommGroup X] [Module R X] [Subsingleton X], HasLen v R X 1 :=
@@ -520,7 +514,7 @@ def Good (N : Type) [AddCommGroup N] [Fintype N] [DecidableEq N] (M : Submodule 
 variable {p v}
 
 /- English proof (translation)
-Take `⟨⟨A₁, rfl⟩, f₁, t₁⟩` from `g₁`. Take `⟨⟨A₂, rfl⟩, f₂, t₂⟩` from `g₂`. Take `⟨AA, hAA, -⟩` from `GlobalTheory.T.tensor_product_hopf_orders p C v R hv hp N₁ N₂ A₁ A₂`. Conclude with `⟨⟨AA, hAA⟩, (GlobalTheory.CompanionTheory.Ar.GR.abFactor_prod_retract p C v R hv hp).1 _ _ _ _ f₁ f₂, GlobalTheory.T.tensor_product_tight_hopf_orders p C v R hv hp N₁ N₂ A₁ A₂ k₁ k₂ t₁ t₂⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem good_tens (hv : v.Integers R) (hp : v (p : C) < 1)
     {N₁ N₂ : Type} [AddCommGroup N₁] [Fintype N₁] [DecidableEq N₁]
@@ -535,9 +529,9 @@ theorem good_tens (hv : v.Integers R) (hp : v (p : C) < 1)
     GlobalTheory.T.tensor_product_tight_hopf_orders p C v R hv hp N₁ N₂ A₁ A₂ k₁ k₂ t₁ t₂⟩
 
 /- English proof (translation)
-Take `⟨⟨AA, rfl⟩, f, t⟩` from `g`. Use `⟨hopf_trS AA e, ?_, isTight_trS e t⟩` and prove the remaining obligations. Establish `h` using `(GlobalTheory.CompanionTheory.Ar.GR.abFactor_prod_retract p C v R hv hp).2 N' N AA.carrier e.symm.toAddMonoidHom e.toAddMonoidHom (fun x => by simp) (fun g hg => by simpa using hg) f`. Establish `hm : (tr e : (N → C) ≃ₗ[R] (N' → C)).toLinearMap = LinearMap.funLeft R C (e.symm.toAddMonoidHom : N' → N)` using `LinearMap.ext fun f => funext fun y => rfl`. Rewrite using `[trS, hm]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h`.
+A detailed English derivation is pending.
 -/
 theorem good_trS (hv : v.Integers R) (hp : v (p : C) < 1)
     {N N' : Type} [AddCommGroup N] [Fintype N] [DecidableEq N]
@@ -554,7 +548,7 @@ theorem good_trS (hv : v.Integers R) (hp : v (p : C) < 1)
   exact h
 
 /- English proof (translation)
-Use `⟨A, gA, L, ab, lb, am, T, N, inferInstance, pt, hpt, AddMonoidHom.id N, AddMonoidHom.id N, fun _ => rfl, fun g hg => hg, ?_⟩` and prove the remaining obligations. Establish `hm : LinearMap.funLeft R C ((AddMonoidHom.id N : N →+ N) : N → N) = LinearMap.id` using `LinearMap.ext fun f => rfl`. Rewrite using `[hm, Submodule.map_id]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem isAbFactor_self {A : Over (Spec (CommRingCat.of R))} (gA : GrpObj A) (L : LB A.left)
     (ab : IsAbelianScheme A) (lb : L.IsLB) (am : Out.RelAmple A L) (T : TorsRep A p)
@@ -567,11 +561,11 @@ theorem isAbFactor_self {A : Over (Spec (CommRingCat.of R))} (gA : GrpObj A) (L 
   rw [hm, Submodule.map_id]
 
 /- English proof (translation)
-Take `⟨A, gA, L, ab, lb, am, T, pt, hpt, hE⟩` from `hOC p C v R hv hp hc`. Take `⟨⟨Ae, ce, -, te, -⟩, ⟨Am, cm, -, -, tm, -⟩⟩` from `GlobalTheory.T.hopf_orders_of_zmod_p_extremes p C v R hv hp`. Establish `cm' : Am.carrier = charLat (C` using `C) R (ZMod p) := cm`. Take `⟨AA, hAA, hl, hr, hsl, hsr, -⟩` from `GlobalTheory.T.tensor_product_hopf_orders p C v R hv hp (ZMod p) (ZMod p) Am Ae`. Establish `hf : IsAbFactor p AA.carrier`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[hAA, cm, ce, ← hE]`. Conclude with `isAbFactor_self gA L ab lb am T hpt`. Establish `f₁` using `(GlobalTheory.CompanionTheory.Ar.GR.abFactor_prod_retract p C v R hv hp).2 (ZMod p) (ZMod p × ZMod p) AA.carrier (AddMonoidHom.inl _ _) (AddMonoidHom.fst _ _) (fun _ => rfl) hsl hf`. Establish `f₂` using `(GlobalTheory.CompanionTheory.Ar.GR.abFactor_prod_retract p C v R hv hp).2 (ZMod p) (ZMod p × ZMod p) AA.carrier (AddMonoidHom.inr _ _) (AddMonoidHom.snd _ _) (fun _ => rfl) hsr hf`. Rewrite `f₁` using `[hl]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `f₂` using `[hr]`. Conclude with `⟨⟨⟨Am, cm'⟩, cm' ▸ f₁, cm' ▸ tm⟩, ⟨⟨Ae, ce⟩, ce ▸ f₂, ce ▸ te⟩⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem good_zmod (hv : v.Integers R) (hp : v (p : C) < 1)
     (hc : IsAdicComplete (Ideal.span {(p : R)}) R) (hOC : OrdinaryCurveStatement) :
@@ -592,15 +586,15 @@ theorem good_zmod (hv : v.Integers R) (hp : v (p : C) < 1)
   exact ⟨⟨⟨Am, cm'⟩, cm' ▸ f₁, cm' ▸ tm⟩, ⟨⟨Ae, ce⟩, ce ▸ f₂, ce ▸ te⟩⟩
 
 /- English proof (translation)
-Use `⟨hopf_trivial, ?_, isTight_trivial v p⟩` and prove the remaining obligations. Take `⟨⟨AA, hAA⟩, f, -⟩` from `(good_zmod hv hp hc hOC).1`. Rewrite `f` using `[← hAA]`. Establish `h` using `(GlobalTheory.CompanionTheory.Ar.GR.abFactor_prod_retract p C v R hv hp).2 Z (ZMod p) AA.carrier 0 0 (fun _ => Subsingleton.elim _ _) ?_ f`. Use `h using 1` and compare the differences between its conclusion and the goal.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Apply `le_antisymm` to reduce the goal to its premises. Introduce `g hg`. Take `⟨r, hr⟩` from `hg 0`. Use `⟨r • 1, AA.carrier.smul_mem _ AA.one_mem, ?_⟩` and prove the remaining obligations. Use extensionality with `x`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Simplify using `[LinearMap.funLeft, Subsingleton.elim x 0, Algebra.smul_def, hr]`. Introduce and unpack `_ ⟨g, hg, rfl⟩ x`. Take `⟨r, hr⟩` from `AA.le_int hg 0`. Conclude with `⟨r, by simpa [LinearMap.funLeft] using hr⟩`. Introduce `g hg`.
+Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨r, hr⟩` from `AA.le_int hg 0`. Establish `: (fun x : ZMod p => g ((0 : Z →+ ZMod p) ((0 : ZMod p →+ Z) x))) = r • 1`. Use extensionality with `x`. Simplify using `[Algebra.smul_def, hr]`. Rewrite using `[this]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `AA.carrier.smul_mem _ AA.one_mem`.
+A detailed English derivation is pending.
 -/
 theorem good_trivial (hv : v.Integers R) (hp : v (p : C) < 1)
     (hc : IsAdicComplete (Ideal.span {(p : R)}) R) (hOC : OrdinaryCurveStatement)
@@ -639,9 +633,9 @@ def consEquiv (p d : ℕ) : (ZMod p × (Fin d → ZMod p)) ≃+ (Fin (d + 1) →
     refine Fin.cases ?_ (fun j => ?_) i <;> simp
 
 /- English proof (translation)
-Proceed by induction on `d with`. Consider the case `zero => exact h₀`. Consider the case `succ d ih`. Establish `h` using `good_tens hv hp (fun x => by simp) (fun x => by ext i; simp) h₁ ih`. Rewrite `h` using `[← hprod]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h'` using `good_trS hv hp (consEquiv p d) h`. Rewrite `h'` using `[htr]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem good_pow (L : ∀ (N : Type) [AddCommGroup N], Submodule R (N → C))
     (hv : v.Integers R) (hp : v (p : C) < 1)
@@ -658,9 +652,9 @@ theorem good_pow (L : ∀ (N : Type) [AddCommGroup N], Submodule R (N → C))
     rwa [htr] at h'
 
 /- English proof (translation)
-Use `letI : Module (ZMod p) N := AddCommGroup.zmodModule hN`. Use `haveI h₂ : Module.Finite (ZMod p) N := Module.Finite.of_finite`. Use `haveI h₃ : Module.Free (ZMod p) N := Module.Free.of_divisionRing _ _`. Establish `b : Module.Basis (Fin (Module.finrank (ZMod p) N)) (ZMod p) N` using `@Module.finBasis (ZMod p) N _ _ _ h₃ _ h₂`. Establish `e : (Fin (Module.finrank (ZMod p) N) → ZMod p) ≃+ N` using `b.equivFun.symm.toAddEquiv`.
+Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `h` using `good_trS hv hp e (good_pow L hv hp hprod htr h₁ h₀ _)`. Rewrite `h` using `[htr]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem good_of_killed (L : ∀ (N : Type) [AddCommGroup N], Submodule R (N → C))
     (hv : v.Integers R) (hp : v (p : C) < 1)
@@ -679,9 +673,9 @@ theorem good_of_killed (L : ∀ (N : Type) [AddCommGroup N], Submodule R (N → 
   rwa [htr] at h
 
 /- English proof (translation)
-Introduce `hHT hOC p _ C _ _ _ v R _ _ hv hp hc P T N _ _ _ pt hpt Nm _ _ _ Ne _ _ _ hNm hNe`. Use `haveI : IsCommMonObj P.A := P.isAb.comm`. Take `⟨⟨AA, hAA⟩, -, -, -, k⟩` from `GlobalTheory.T.torsion_points_hopf_order p C v R hv hp P.A T N pt hpt`. Establish `g₁ : Good p v N (torsFun C T pt)` using `⟨⟨AA, hAA⟩, isAbFactor_self P.grp P.L P.isAb P.isLB P.ample T hpt, (GlobalTheory.CompanionTheory.Ar.GR.gp_polAV hHT p C v R hv hp hc P T N pt hpt).2⟩`. Take `⟨zm, ze⟩` from `good_zmod (R := R) hv hp hc hOC`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `gm : Good p v Nm (charLat (C` using `C) R Nm) := good_of_killed (fun N => charLat R N) hv hp (fun d => charLat_prod _ _) (fun _ _ _ _ e => trS_charLat e) zm (by simpa only [charLat_trivial] using good_trivial hv hp hc hOC (Fin 0 → ZMod p)) Nm hNm`. Establish `ge : Good p v Ne (intFun (C` using `C) R Ne) := good_of_killed (fun N => intFun R N) hv hp (fun d => intFun_prod _ _) (fun _ _ _ _ e => trS_intFun e) ze (good_trivial hv hp hc hOC _) Ne hNe`. Establish `h` using `good_tens hv hp k (fun x => Prod.ext (hNm x.1) (hNe x.2)) g₁ (good_tens hv hp hNm hNe gm ge)`. Conclude with `⟨h.2.1, h.2.2⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem main : HodgeTateDatumStatement → OrdinaryCurveStatement → ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C] [CharZero C] (v : Valuation C NNReal) (R : Type) [CommRing R] [Algebra R C], v.Integers R → v (p : C) < 1 → IsAdicComplete (Ideal.span {(p : R)}) R → ∀ (P : Out.PolAV (Spec (CommRingCat.of R))), ∀ (T : TorsRep P.A p) (N : Type) [AddCommGroup N] [Fintype N] [DecidableEq N] (pt : N → (sp (R₀ := R) R ⟶ P.A)), IsTorsPts P.A p pt → ∀ (Nm : Type) [AddCommGroup Nm] [Fintype Nm] [DecidableEq Nm], ∀ (Ne : Type) [AddCommGroup Ne] [Fintype Ne] [DecidableEq Ne], (∀ x : Nm, p • x = 0) → (∀ x : Ne, p • x = 0) → IsAbFactor p (tens (torsFun C T pt) (tens (Submodule.span R (Set.range fun (ψ : AddChar Nm C) (x : Nm) => ψ x)) (intFun (C := C) R Ne))) ∧ IsTight v p (tens (torsFun C T pt) (tens (Submodule.span R (Set.range fun (ψ : AddChar Nm C) (x : Nm) => ψ x)) (intFun (C := C) R Ne))) := by
   intro hHT hOC p _ C _ _ _ v R _ _ hv hp hc P T N _ _ _ pt hpt Nm _ _ _ Ne _ _ _ hNm hNe

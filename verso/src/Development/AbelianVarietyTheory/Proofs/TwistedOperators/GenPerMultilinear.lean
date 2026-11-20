@@ -17,7 +17,7 @@ section Lin
 variable {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} (W : G.Weil) (M : Vol G)
 
 /- English proof (translation)
-Introduce `g h`. Simplify using `only [GridData.Weil.kerA, GridData.Weil.ker, thetaKO, map_add, Pi.add_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem kerA_col_add (t : T) (j : ℕ) (f f' : Sch G (.col t j)) :
     ∀ g h, W.kerA (.col t j) (f + f') g h = W.kerA (.col t j) f g h + W.kerA (.col t j) f' g h := by
@@ -25,7 +25,7 @@ theorem kerA_col_add (t : T) (j : ℕ) (f f' : Sch G (.col t j)) :
   simp only [GridData.Weil.kerA, GridData.Weil.ker, thetaKO, map_add, Pi.add_apply]
 
 /- English proof (translation)
-Introduce `g h`. Simplify using `only [GridData.Weil.kerA, GridData.Weil.ker, thetaKO, map_smul, Pi.smul_apply, smul_eq_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem kerA_col_smul (t : T) (j : ℕ) (c : ℂ) (f : Sch G (.col t j)) :
     ∀ g h, W.kerA (.col t j) (c • f) g h = c * W.kerA (.col t j) f g h := by
@@ -33,7 +33,7 @@ theorem kerA_col_smul (t : T) (j : ℕ) (c : ℂ) (f : Sch G (.col t j)) :
   simp only [GridData.Weil.kerA, GridData.Weil.ker, thetaKO, map_smul, Pi.smul_apply, smul_eq_mul]
 
 /- English proof (translation)
-Introduce `g h`. Simplify using `only [GridData.Weil.kerA, GridData.Weil.ker, thetaKO, map_add, Pi.add_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem kerA_right_add (i j : ℕ) (f f' : Sch G (.right i j)) :
     ∀ g h, W.kerA (.right i j) (f + f') g h = W.kerA (.right i j) f g h + W.kerA (.right i j) f' g h := by
@@ -41,7 +41,7 @@ theorem kerA_right_add (i j : ℕ) (f f' : Sch G (.right i j)) :
   simp only [GridData.Weil.kerA, GridData.Weil.ker, thetaKO, map_add, Pi.add_apply]
 
 /- English proof (translation)
-Introduce `g h`. Simplify using `only [GridData.Weil.kerA, GridData.Weil.ker, thetaKO, map_smul, Pi.smul_apply, smul_eq_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem kerA_right_smul (i j : ℕ) (c : ℂ) (f : Sch G (.right i j)) :
     ∀ g h, W.kerA (.right i j) (c • f) g h = c * W.kerA (.right i j) f g h := by
@@ -59,7 +59,7 @@ section Lin2
 variable {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} (W : G.Weil) (M : Vol G)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Simplify using `only [liftA_apply, Pi.add_apply, hk, add_mul]`. Conclude with `integral_add (h1 x) (h2 x)`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem liftA_datum_add {a : Arrow T} {f f' f'' : Sch G a} {F : Fn G a.src}
     (hk : ∀ g h, W.kerA a f'' g h = W.kerA a f g h + W.kerA a f' g h)
@@ -70,7 +70,7 @@ theorem liftA_datum_add {a : Arrow T} {f f' f'' : Sch G a} {F : Fn G a.src}
   exact integral_add (h1 x) (h2 x)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Simplify using `only [liftA_apply, Pi.smul_apply, smul_eq_mul, hk, mul_assoc, integral_const_mul]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem liftA_datum_smul {a : Arrow T} {f f'' : Sch G a} {F : Fn G a.src} (c : ℂ)
     (hk : ∀ g h, W.kerA a f'' g h = c * W.kerA a f g h) :
@@ -79,7 +79,7 @@ theorem liftA_datum_smul {a : Arrow T} {f f'' : Sch G a} {F : Fn G a.src} (c : �
   simp only [liftA_apply, Pi.smul_apply, smul_eq_mul, hk, mul_assoc, integral_const_mul]
 
 /- English proof (translation)
-The claim follows from `| 0, _, _, _, j0, _, _, _, _, _ => j0.elim0 | n + 1, f, f', f'', j0, hne, h0, F, h1, h2 => by have h1a : PathConv W M (colPath t n) (colFam t n fun j => f j.castSucc) F := h1.1 have h2a : PathConv W M (colPath t n) (colFam t n fun j => f' j.castSucc) F := h2.1 have h1b : LiftConv …`.
+A detailed English derivation is pending.
 -/
 theorem pathLift_column_add (t : T) : ∀ (n : ℕ) (f f' f'' : ∀ j : Fin n, Sch G (.col t j)) (j0 : Fin n),
     (∀ j, j ≠ j0 → f j = f'' j ∧ f' j = f'' j) → f'' j0 = f j0 + f' j0 → ∀ F : Fn G (.top 0),
@@ -115,7 +115,7 @@ theorem pathLift_column_add (t : T) : ∀ (n : ℕ) (f f' f'' : ∀ j : Fin n, S
       exact liftA_add W M h1b h2b
 
 /- English proof (translation)
-The claim follows from `| 0, _, _, j0, _, _, _ => j0.elim0 | n + 1, f, f'', j0, hne, h0, F => by change liftA W M (.col t n) (f'' (Fin.last n)) (liftP W M (colPath t n) (colFam t n fun j => f'' j.castSucc) F) = c • liftA W M (.col t n) (f (Fin.last n)) (liftP W M (colPath t n) (colFam t n fun j => f j.c …`.
+A detailed English derivation is pending.
 -/
 theorem pathLift_column_smul (t : T) (c : ℂ) : ∀ (n : ℕ) (f f'' : ∀ j : Fin n, Sch G (.col t j)) (j0 : Fin n),
     (∀ j, j ≠ j0 → f j = f'' j) → f'' j0 = c • f j0 → ∀ F : Fn G (.top 0),
@@ -138,7 +138,7 @@ theorem pathLift_column_smul (t : T) (c : ℂ) : ∀ (n : ℕ) (f f'' : ∀ j : 
       exact liftA_smul W M _ _ c _
 
 /- English proof (translation)
-The claim follows from `| 0, _, _, _, j0, _, _, _, _, _ => j0.elim0 | n + 1, f, f', f'', j0, hne, h0, F, h1, h2 => by have h1a : PathConv W M (rowPath T k n) (rowFam k n fun j => f j.castSucc) F := h1.1 have h2a : PathConv W M (rowPath T k n) (rowFam k n fun j => f' j.castSucc) F := h2.1 have h1b : Lift …`.
+A detailed English derivation is pending.
 -/
 theorem pathLift_row_add (k : ℕ) : ∀ (n : ℕ) (f f' f'' : ∀ i : Fin n, Sch G (.right i k)) (j0 : Fin n),
     (∀ j, j ≠ j0 → f j = f'' j ∧ f' j = f'' j) → f'' j0 = f j0 + f' j0 → ∀ F : Fn G (.grid 0 k),
@@ -174,7 +174,7 @@ theorem pathLift_row_add (k : ℕ) : ∀ (n : ℕ) (f f' f'' : ∀ i : Fin n, Sc
       exact liftA_add W M h1b h2b
 
 /- English proof (translation)
-The claim follows from `| 0, _, _, j0, _, _, _ => j0.elim0 | n + 1, f, f'', j0, hne, h0, F => by change liftA W M (.right n k) (f'' (Fin.last n)) (liftP W M (rowPath T k n) (rowFam k n fun j => f'' j.castSucc) F) = c • liftA W M (.right n k) (f (Fin.last n)) (liftP W M (rowPath T k n) (rowFam k n fun j …`.
+A detailed English derivation is pending.
 -/
 theorem pathLift_row_smul (k : ℕ) (c : ℂ) : ∀ (n : ℕ) (f f'' : ∀ i : Fin n, Sch G (.right i k)) (j0 : Fin n),
     (∀ j, j ≠ j0 → f j = f'' j) → f'' j0 = c • f j0 → ∀ F : Fn G (.grid 0 k),
@@ -232,14 +232,14 @@ theorem genPer_eq (Q : PolCol ch.G × PolRow ch.G) ξ η :
       colLift ch t a M d Q.1 ξ (stabilizerEmbedding ch.G.sp.topDec h) * rowLift ch t M d y Q.2 η h ∂M.ν (.grid D.R.m D.R.m) := rfl
 
 /- English proof (translation)
-The claim follows from `h.2.2`.
+A detailed English derivation is pending.
 -/
 theorem genConv_int {Q : PolCol ch.G × PolRow ch.G} {ξ η} (h : GenConv ch t a M d y Q ξ η) :
     IntegrableOn (fun h => colLift ch t a M d Q.1 ξ (stabilizerEmbedding ch.G.sp.topDec h) * rowLift ch t M d y Q.2 η h)
       (M.fd (.grid D.R.m D.R.m)) (M.ν (.grid D.R.m D.R.m)) := h.2.2
 
 /- English proof (translation)
-The claim follows from `pathLift_column_add ch.W M t D.R.m (fun j => ch.W.fock (.top t j) (movedVec t ch.S.toGridChoice (d.1 j)) (Function.update Q1 i x j)) (fun j => ch.W.fock (.top t j) (movedVec t ch.S.toGridChoice (d.1 j)) (Function.update Q1 i x' j)) (fun j => ch.W.fock (.top t j) (movedVec t ch.S. …`.
+A detailed English derivation is pending.
 -/
 theorem colLift_add [DecidableEq (Fin D.R.m)] (Q1 : PolCol ch.G) (i : Fin D.R.m)
     (x x' : PolF D (ch.G.V (.top ((i : ℕ) + 1))).rank (ch.G.V (.top i)).rank) ξ
@@ -259,7 +259,7 @@ theorem colLift_add [DecidableEq (Fin D.R.m)] (Q1 : PolCol ch.G) (i : Fin D.R.m)
     (by simp only [Function.update_self, map_add]) _ h1 h2
 
 /- English proof (translation)
-The claim follows from `pathLift_column_smul ch.W M t c D.R.m (fun j => ch.W.fock (.top t j) (movedVec t ch.S.toGridChoice (d.1 j)) (Function.update Q1 i x j)) (fun j => ch.W.fock (.top t j) (movedVec t ch.S.toGridChoice (d.1 j)) (Function.update Q1 i (c • x) j)) i (fun j hj => by simp only [Function.up …`.
+A detailed English derivation is pending.
 -/
 theorem colLift_smul [DecidableEq (Fin D.R.m)] (Q1 : PolCol ch.G) (i : Fin D.R.m) (c : ℂ)
     (x : PolF D (ch.G.V (.top ((i : ℕ) + 1))).rank (ch.G.V (.top i)).rank) ξ :
@@ -271,7 +271,7 @@ theorem colLift_smul [DecidableEq (Fin D.R.m)] (Q1 : PolCol ch.G) (i : Fin D.R.m
     (by simp only [Function.update_self, map_smul]) _
 
 /- English proof (translation)
-The claim follows from `pathLift_row_add ch.W M D.R.m D.R.m (fun j => ch.W.fock (.chi j D.R.m) (movedVec t ch.S.toGridChoice (d.2 j)) (Function.update Q2 i x j)) (fun j => ch.W.fock (.chi j D.R.m) (movedVec t ch.S.toGridChoice (d.2 j)) (Function.update Q2 i x' j)) (fun j => ch.W.fock (.chi j D.R.m) (mov …`.
+A detailed English derivation is pending.
 -/
 theorem rowLift_add [DecidableEq (Fin D.R.m)] (Q2 : PolRow ch.G) (i : Fin D.R.m)
     (x x' : PolF D (ch.G.V (.grid i D.R.m)).rank (ch.G.V (.grid ((i : ℕ) + 1) D.R.m)).rank) η
@@ -291,7 +291,7 @@ theorem rowLift_add [DecidableEq (Fin D.R.m)] (Q2 : PolRow ch.G) (i : Fin D.R.m)
     (by simp only [Function.update_self, map_add]) _ h1 h2
 
 /- English proof (translation)
-The claim follows from `pathLift_row_smul ch.W M D.R.m c D.R.m (fun j => ch.W.fock (.chi j D.R.m) (movedVec t ch.S.toGridChoice (d.2 j)) (Function.update Q2 i x j)) (fun j => ch.W.fock (.chi j D.R.m) (movedVec t ch.S.toGridChoice (d.2 j)) (Function.update Q2 i (c • x) j)) i (fun j hj => by simp only [Fu …`.
+A detailed English derivation is pending.
 -/
 theorem rowLift_smul [DecidableEq (Fin D.R.m)] (Q2 : PolRow ch.G) (i : Fin D.R.m) (c : ℂ)
     (x : PolF D (ch.G.V (.grid i D.R.m)).rank (ch.G.V (.grid ((i : ℕ) + 1) D.R.m)).rank) η :
@@ -303,9 +303,9 @@ theorem rowLift_smul [DecidableEq (Fin D.R.m)] (Q2 : PolRow ch.G) (i : Fin D.R.m
     (by simp only [Function.update_self, map_smul]) _
 
 /- English proof (translation)
-Establish `hp : pairVec (GlobalTheory.IndefiniteRowSideFullHecke.LevelPlusSubgroup.coefPlus ch.G ch.W.θ) (ξ + ξ') (ch.col a) = pairVec (GlobalTheory.IndefiniteRowSideFullHecke.LevelPlusSubgroup.coefPlus ch.G ch.W.θ) ξ (ch.col a) + pairVec (GlobalTheory.IndefiniteRowSideFullHecke.LevelPlusSu …`. Use function extensionality and compare the values at `h`. Simplify using `only [pairVec_apply, LinearMap.add_apply, Pi.add_apply]`. Unfold `colLift`. Rewrite using `[hp]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Conclude with `pathLift_add ch.W M _ _ h1 h2`.
+A detailed English derivation is pending.
 -/
 theorem colLift_xi_add (Q1 : PolCol ch.G) ξ ξ'
     (h1 : PathConv ch.W M (colPath t D.R.m)
@@ -324,9 +324,9 @@ theorem colLift_xi_add (Q1 : PolCol ch.G) ξ ξ'
   exact pathLift_add ch.W M _ _ h1 h2
 
 /- English proof (translation)
-Establish `hp : pairVec (GlobalTheory.IndefiniteRowSideFullHecke.LevelPlusSubgroup.coefPlus ch.G ch.W.θ) (c • ξ) (ch.col a) = c • pairVec (GlobalTheory.IndefiniteRowSideFullHecke.LevelPlusSubgroup.coefPlus ch.G ch.W.θ) ξ (ch.col a)`. Use function extensionality and compare the values at `h`. Simplify using `only [pairVec_apply, LinearMap.smul_apply, Pi.smul_apply, smul_eq_mul]`. Unfold `colLift`. Rewrite using `[hp]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Conclude with `pathLift_smul ch.W M _ _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem colLift_xi_smul (Q1 : PolCol ch.G) (c : ℂ) ξ :
     colLift ch t a M d Q1 (c • ξ) = c • colLift ch t a M d Q1 ξ := by
@@ -339,21 +339,21 @@ theorem colLift_xi_smul (Q1 : PolCol ch.G) (c : ℂ) ξ :
   exact pathLift_smul ch.W M _ _ _ _
 
 /- English proof (translation)
-Use function extensionality and compare the values at `g`. Simplify using `only [formGen, LinearMap.add_apply, Pi.add_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem formGen_add (η η' : Module.Dual ℂ R.cX.W) : formGen ch t y (η + η') = formGen ch t y η + formGen ch t y η' := by
   funext g
   simp only [formGen, LinearMap.add_apply, Pi.add_apply]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `g`. Simplify using `only [formGen, LinearMap.smul_apply, Pi.smul_apply, smul_eq_mul]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem formGen_smul (c : ℂ) (η : Module.Dual ℂ R.cX.W) : formGen ch t y (c • η) = c • formGen ch t y η := by
   funext g
   simp only [formGen, LinearMap.smul_apply, Pi.smul_apply, smul_eq_mul]
 
 /- English proof (translation)
-Unfold `rowLift`. Rewrite using `[formGen_add]`. Conclude with `pathLift_add ch.W M _ _ h1 h2`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rowLift_eta_add (Q2 : PolRow ch.G) η η'
     (h1 : PathConv ch.W M (rowPath T D.R.m D.R.m)
@@ -366,7 +366,7 @@ theorem rowLift_eta_add (Q2 : PolRow ch.G) η η'
   exact pathLift_add ch.W M _ _ h1 h2
 
 /- English proof (translation)
-Unfold `rowLift`. Rewrite using `[formGen_smul]`. Conclude with `pathLift_smul ch.W M _ _ _ _`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rowLift_eta_smul (Q2 : PolRow ch.G) (c : ℂ) η :
     rowLift ch t M d y Q2 (c • η) = c • rowLift ch t M d y Q2 η := by
@@ -387,9 +387,9 @@ variable {D : D7} {Γ : Type} [Group Γ] [Fintype Γ] {Pl0 T : Type} {A : FamIn 
   (t : T) (a : Fin ch.n) (M : Vol ch.G) (d : PureDat ch.G t) (y : (R.HX t).H)
 
 /- English proof (translation)
-Establish `i1` using `genConv_int ch t a M d y (hc (Function.update Q1 i x, Q2) ξ η)`. Establish `i2` using `genConv_int ch t a M d y (hc (Function.update Q1 i x', Q2) ξ η)`. Establish `e` using `colLift_add ch t a M d Q1 i x x' ξ (hc (Function.update Q1 i x, Q2) ξ η).1 (hc (Function.update Q1 i x', Q2) ξ η).1`. Simplify using `only at i1 i2`. Rewrite using `[genPer_eq, genPer_eq, genPer_eq]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only`. Rewrite using `[e]`. Simplify using `only [Pi.add_apply, add_mul]`. Conclude with `integral_add i1 i2`.
+Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem genPer_col_add [DecidableEq (Fin D.R.m)] (hc : ∀ Q ξ η, GenConv ch t a M d y Q ξ η) (Q1 : PolCol ch.G)
     (Q2 : PolRow ch.G) (i : Fin D.R.m) (x x' : PolF D (ch.G.V (.top ((i : ℕ) + 1))).rank (ch.G.V (.top i)).rank) ξ η :
@@ -407,7 +407,7 @@ theorem genPer_col_add [DecidableEq (Fin D.R.m)] (hc : ∀ Q ξ η, GenConv ch t
   exact integral_add i1 i2
 
 /- English proof (translation)
-Rewrite using `[genPer_eq, genPer_eq]`. Simplify using `only`. Rewrite using `[colLift_smul]`. Simplify using `only [Pi.smul_apply, smul_eq_mul, mul_assoc, integral_const_mul]`.
+Rewrite the conclusion using the stated equalities. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem genPer_col_smul [DecidableEq (Fin D.R.m)] (Q1 : PolCol ch.G) (Q2 : PolRow ch.G) (i : Fin D.R.m) (c : ℂ)
     (x : PolF D (ch.G.V (.top ((i : ℕ) + 1))).rank (ch.G.V (.top i)).rank) ξ η :
@@ -418,9 +418,9 @@ theorem genPer_col_smul [DecidableEq (Fin D.R.m)] (Q1 : PolCol ch.G) (Q2 : PolRo
   simp only [Pi.smul_apply, smul_eq_mul, mul_assoc, integral_const_mul]
 
 /- English proof (translation)
-Establish `i1` using `genConv_int ch t a M d y (hc (Q1, Function.update Q2 i x) ξ η)`. Establish `i2` using `genConv_int ch t a M d y (hc (Q1, Function.update Q2 i x') ξ η)`. Establish `e` using `rowLift_add ch t M d y Q2 i x x' η (hc (Q1, Function.update Q2 i x) ξ η).2.1 (hc (Q1, Function.update Q2 i x') ξ η).2.1`. Simplify using `only at i1 i2`. Rewrite using `[genPer_eq, genPer_eq, genPer_eq]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only`. Rewrite using `[e]`. Simplify using `only [Pi.add_apply, mul_add]`. Conclude with `integral_add i1 i2`.
+Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem genPer_row_add [DecidableEq (Fin D.R.m)] (hc : ∀ Q ξ η, GenConv ch t a M d y Q ξ η) (Q1 : PolCol ch.G)
     (Q2 : PolRow ch.G) (i : Fin D.R.m)
@@ -439,7 +439,7 @@ theorem genPer_row_add [DecidableEq (Fin D.R.m)] (hc : ∀ Q ξ η, GenConv ch t
   exact integral_add i1 i2
 
 /- English proof (translation)
-Rewrite using `[genPer_eq, genPer_eq]`. Simplify using `only`. Rewrite using `[rowLift_smul]`. Simplify using `only [Pi.smul_apply, smul_eq_mul, mul_left_comm _ c, integral_const_mul]`.
+Rewrite the conclusion using the stated equalities. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem genPer_row_smul [DecidableEq (Fin D.R.m)] (Q1 : PolCol ch.G) (Q2 : PolRow ch.G) (i : Fin D.R.m) (c : ℂ)
     (x : PolF D (ch.G.V (.grid i D.R.m)).rank (ch.G.V (.grid ((i : ℕ) + 1) D.R.m)).rank) ξ η :
@@ -450,7 +450,7 @@ theorem genPer_row_smul [DecidableEq (Fin D.R.m)] (Q1 : PolCol ch.G) (Q2 : PolRo
   simp only [Pi.smul_apply, smul_eq_mul, mul_left_comm _ c, integral_const_mul]
 
 /- English proof (translation)
-Establish `i1` using `genConv_int ch t a M d y (hc Q ξ η)`. Establish `i2` using `genConv_int ch t a M d y (hc Q ξ' η)`. Rewrite using `[genPer_eq, genPer_eq, genPer_eq, colLift_xi_add ch t a M d Q.1 ξ ξ' (hc Q ξ η).1 (hc Q ξ' η).1]`. Simplify using `only [Pi.add_apply, add_mul]`. Conclude with `integral_add i1 i2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem genPer_xi_add (hc : ∀ Q ξ η, GenConv ch t a M d y Q ξ η) (Q : PolCol ch.G × PolRow ch.G) ξ ξ' η :
     genPer ch t a M d y Q (ξ + ξ') η = genPer ch t a M d y Q ξ η + genPer ch t a M d y Q ξ' η := by
@@ -461,7 +461,7 @@ theorem genPer_xi_add (hc : ∀ Q ξ η, GenConv ch t a M d y Q ξ η) (Q : PolC
   exact integral_add i1 i2
 
 /- English proof (translation)
-Rewrite using `[genPer_eq, genPer_eq, colLift_xi_smul]`. Simplify using `only [Pi.smul_apply, smul_eq_mul, mul_assoc, integral_const_mul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem genPer_xi_smul (Q : PolCol ch.G × PolRow ch.G) (c : ℂ) ξ η :
     genPer ch t a M d y Q (c • ξ) η = c * genPer ch t a M d y Q ξ η := by
@@ -469,7 +469,7 @@ theorem genPer_xi_smul (Q : PolCol ch.G × PolRow ch.G) (c : ℂ) ξ η :
   simp only [Pi.smul_apply, smul_eq_mul, mul_assoc, integral_const_mul]
 
 /- English proof (translation)
-Establish `i1` using `genConv_int ch t a M d y (hc Q ξ η)`. Establish `i2` using `genConv_int ch t a M d y (hc Q ξ η')`. Rewrite using `[genPer_eq, genPer_eq, genPer_eq, rowLift_eta_add ch t M d y Q.2 η η' (hc Q ξ η).2.1 (hc Q ξ η').2.1]`. Simplify using `only [Pi.add_apply, mul_add]`. Conclude with `integral_add i1 i2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem genPer_eta_add (hc : ∀ Q ξ η, GenConv ch t a M d y Q ξ η) (Q : PolCol ch.G × PolRow ch.G) ξ η η' :
     genPer ch t a M d y Q ξ (η + η') = genPer ch t a M d y Q ξ η + genPer ch t a M d y Q ξ η' := by
@@ -480,7 +480,7 @@ theorem genPer_eta_add (hc : ∀ Q ξ η, GenConv ch t a M d y Q ξ η) (Q : Pol
   exact integral_add i1 i2
 
 /- English proof (translation)
-Rewrite using `[genPer_eq, genPer_eq, rowLift_eta_smul]`. Simplify using `only [Pi.smul_apply, smul_eq_mul, mul_left_comm _ c, integral_const_mul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem genPer_eta_smul (Q : PolCol ch.G × PolRow ch.G) (c : ℂ) ξ η :
     genPer ch t a M d y Q ξ (c • η) = c * genPer ch t a M d y Q ξ η := by
@@ -488,7 +488,7 @@ theorem genPer_eta_smul (Q : PolCol ch.G × PolRow ch.G) (c : ℂ) ξ η :
   simp only [Pi.smul_apply, smul_eq_mul, mul_left_comm _ c, integral_const_mul]
 
 /- English proof (translation)
-Use `⟨ { toFun := fun Q1 => { toFun := fun Q2 => LinearMap.mk₂ ℂ (fun ξ η => genPer ch t a M d y (Q1, Q2) ξ η) (fun ξ ξ' η => genPer_xi_add ch t a M d y hc _ ξ ξ' η) (fun c ξ η => genPer_xi_smul ch t a M d y _ c ξ η) (fun ξ η η' => genPer_eta_add ch t a M d y hc _ ξ η η') (fun c ξ η = …` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations.
 -/
 theorem genPer_multilinear (hc : ∀ Q ξ η, GenConv ch t a M d y Q ξ η) :
     ∃ Φ : MultilinearMap ℂ (fun j : Fin D.R.m => PolF D (ch.G.V (.top ((j : ℕ) + 1))).rank (ch.G.V (.top j)).rank)

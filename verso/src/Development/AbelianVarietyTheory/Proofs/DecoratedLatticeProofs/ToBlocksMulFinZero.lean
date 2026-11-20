@@ -9,7 +9,7 @@ namespace GlobalTheory.PenVol
 variable {k n : Type} [Field k] [ValuativeRel k] [Fintype n] [DecidableEq n]
 
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using `[Matrix.toBlocks₁₁, Matrix.mul_apply, Fintype.sum_sum_type]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem toBlocks_mul_fin_zero (g h : Matrix (n ⊕ Fin 0) (n ⊕ Fin 0) k) :
     (g * h).toBlocks₁₁ = g.toBlocks₁₁ * h.toBlocks₁₁ := by
@@ -17,7 +17,7 @@ theorem toBlocks_mul_fin_zero (g h : Matrix (n ⊕ Fin 0) (n ⊕ Fin 0) k) :
   simp [Matrix.toBlocks₁₁, Matrix.mul_apply, Fintype.sum_sum_type]
 
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using `[Matrix.toBlocks₁₁, Matrix.one_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem toBlocks_one_fin_zero : (1 : Matrix (n ⊕ Fin 0) (n ⊕ Fin 0) k).toBlocks₁₁ = 1 := by
   ext a b
@@ -42,14 +42,14 @@ def cosStab (J : Subgroup (GL (n ⊕ Fin 0) k)) (M : Submodule 𝒪[k] (n → k)
     rw [← hg', e]
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_cosStab {J : Subgroup (GL (n ⊕ Fin 0) k)} {M : Submodule 𝒪[k] (n → k)} {c : (n → k) ⧸ M}
     {g : GL (n ⊕ Fin 0) k} : g ∈ cosStab J M c ↔ g ∈ J ∧ ∀ y : n → k,
       (Submodule.Quotient.mk (g.val.toBlocks₁₁ *ᵥ y) : (n → k) ⧸ M) = c ↔ Submodule.Quotient.mk y = c := Iff.rfl
 
 /- English proof (translation)
-Introduce `_ h` and use `h.1`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem cosStab_le (J : Subgroup (GL (n ⊕ Fin 0) k)) (M : Submodule 𝒪[k] (n → k)) (c : (n → k) ⧸ M) :
     cosStab J M c ≤ J := fun _ h => h.1

@@ -10,11 +10,11 @@ open scoped ComplexConjugate
 noncomputable section
 
 /- English proof (translation)
-Establish `hX2 : X ^ 2 ≤ X ^ 3` using `by nlinarith`. Establish `hY : 0 ≤ N * X ^ 2 + X ^ 3` using `by positivity`. Establish `hle : (N + 3) * X ^ 2 + X ^ 3 ≤ 4 * (N * X ^ 2 + X ^ 3)` using `by nlinarith`. Establish `hY' : 0 ≤ (N + 3) * X ^ 2 + X ^ 3` using `by positivity`. Establish `h0 : 0 ≤ Cc` using `le_trans (le_max_right _ _) hc`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h4 : 4 * c0 ≤ Cc` using `le_trans (le_max_left _ _) hc`. Use `le_trans ?_ hA` and prove the remaining obligations. Break down `le_or_gt c0 0 with hc0 | hc0` into its components or cases. Establish `: c0 * R * ((N + 3) * X ^ 2 + X ^ 3) ≤ 0` using `mul_nonpos_of_nonpos_of_nonneg (mul_nonpos_of_nonpos_of_nonneg hc0 hR) hY'`. Conclude with `le_trans this (by positivity)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem thr_plus3 (c0 Cc R X N A : ℝ) (hc : max (4 * c0) 0 ≤ Cc) (hR : 0 ≤ R) (hX : 1 ≤ X) (hN : 0 ≤ N)
     (hA : Cc * R * (N * X ^ 2 + X ^ 3) ≤ A) : c0 * R * ((N + 3) * X ^ 2 + X ^ 3) ≤ A := by
@@ -35,7 +35,7 @@ theorem thr_plus3 (c0 Cc R X N A : ℝ) (hc : max (4 * c0) 0 ≤ Cc) (hR : 0 ≤
       _ ≤ Cc * R * (N * X ^ 2 + X ^ 3) := by gcongr
 
 /- English proof (translation)
-Establish `h1 : C * y ≤ |C| * (M * b)` using `le_trans (mul_le_mul_of_nonneg_right (le_abs_self C) hy) (mul_le_mul_of_nonneg_left hyM (abs_nonneg C))`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem bound_absorb (K C M y a b : ℝ) (_hM : 0 ≤ M) (hy : 0 ≤ y) (_hb : 0 ≤ b) (hK : 0 ≤ K)
     (ha : a ≤ C * y) (hyM : y ≤ M * b) : K * a ≤ (K * |C| * M) * b := by
@@ -48,41 +48,37 @@ def DecayUnifOfPlace : Prop :=
   P5.ThmPActualCpt → KB.RadHead → KB.HeadTop → Formalism.FourierDecayAlt.P.PBO.DecayUnif → Formalism.FourierDecayAlt.P.PBASM.DecayUnif
 
 /- English proof (translation)
-Establish `hPS : PStdC` using `pStdC_of hP hRH hHT`. Introduce `Cb`. Take `⟨c0, hc0⟩` from `hD hP Cb`. Take `⟨c1, hc1⟩` from `Formalism.FourierDecayAlt.P.limit_of_module_forms Cb`. Use `⟨max (max (4 * c0) 0) c1, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `E _ _ _ Wp Wq _ _ _ _ _ _ S p f χ A₀ hB v ε hε i hi1 hir a ha h h' hsz hsz'`. Take `⟨j, rfl⟩ : ∃ j, i = j + 1` from `⟨i - 1, by omega⟩`. Establish `hj : j ≤ S.G.r` using `by omega`. Simplify using `only [Nat.add_sub_cancel] at hsz hsz'`. Establish `hgpos` using `g_pos_of_built hB`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hB'` using `hB`. Take `⟨-, -, -, hcut, -, -, -, -, -, -, hGo, -, -, -, hA, hv⟩` from `hB'`. Take `⟨hl0, hInD, -, hCk, hCC⟩` from `hv v`. Establish `hCI : KB.CutInside S` using `Formalism.FourierDecayAlt.P.PBCut.cutInside_of_built hB`. Take `⟨w, rfl⟩` from `ha`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hw : KB.CutWord (D.parOf S v) (S.l + 1) (w.1 v)` using `cutWord_of_adm S hGo hCI w v`. Establish `hlen : (w.1 v).length ≤ S.Ntop` using `le_trans (Formalism.FourierDecayAlt.P.PBB.len_le_cnt S w v) w.2.2`. Establish `hR : (0 : ℝ) ≤ ((S.G.r : ℝ) + 1) ^ 4` using `by positivity`. Establish `hX : (1 : ℝ) ≤ 2 * (S.G.r : ℝ) + S.G.k + 1`. Establish `: (0 : ℝ) ≤ S.G.r` using `Nat.cast_nonneg _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: (0 : ℝ) ≤ S.G.k` using `Nat.cast_nonneg _`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hNn : (0 : ℝ) ≤ S.Ntop` using `Nat.cast_nonneg _`. Establish `hcpt : ∀ n, KB.CptCoef (p v).T.base (Formalism.FourierDecayAlt.P.PBASM.cutSeq S p f χ n v ε)`. Introduce `n`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `((hc1 (Wp (S.pl v)) (Wq (S.pl v)) (D.parOf S v) (p v) (f v) χ ε A₀ S.Ntop Formalism.FourierDecayAlt.P.PBASM.cutN (by rw [hl0]; exact hInD) hcut hε hCk hCC (le_trans ?_ hA) (fun n g => rfl)).1 n)` and prove the remaining obligations. Conclude with `mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_right (le_max_right _ _) hR) (by positivity)`. Distinguish the cases in `hloc : D.IsLocPt h j ∧ D.IsLocPt h' j`. Establish `hH : D.IsLocPt (stdS S h) j` using `(isLocPt_toStd_iff _ _ hgpos h 1 j).2 hloc.1`. Establish `hH' : D.IsLocPt (stdS S h') j` using `(isLocPt_toStd_iff _ _ hgpos h' 1 j).2 hloc.2`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hroom : 10 * ((S.Ntop : ℝ) + 3 * (2 * (S.G.r : ℝ) + 1) + 1) ≤ S.cutHi v - S.cutLo v`. Establish `hN : (S.Ntop : ℝ) = 20 * ((S.G.r : ℝ) + 1)`. Unfold `C.HidaSetting.Ntop C.Kst`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `h6` using `(hGo v).1`. Establish `hr : (0 : ℝ) ≤ S.G.r` using `Nat.cast_nonneg _`. Establish `hN20 : (20 : ℝ) ≤ S.Ntop` using `by rw [hN]; linarith`. Establish `hsq : (400 : ℝ) ≤ (S.Ntop : ℝ) ^ 2` using `by nlinarith`. Establish `hN3 : (400 : ℝ) * S.Ntop ≤ (S.Ntop : ℝ) ^ 3`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Use the polynomial consequences of the given equalities and inequalities. Take `⟨C, hC⟩` from `hc0 (Wp (S.pl v)) (Wq (S.pl v)) (D.parOf S v) (p v) (f v) χ ε A₀ S.Ntop Formalism.FourierDecayAlt.P.PBASM.cutN (S.cutLo v) (S.cutHi v) (by rw [hl0]; exact hInD) hcut hε hCk hCC (by`. Use `thr_plus3 c0 (max (max (4 * c0) 0) c1) (((S.G.r : ℝ) + 1) ^ 4) (2 * (S.G.r : ℝ) + S.G.k + 1) S.Ntop A₀ (le_max_left _ _) hR hX hNn (by simpa [mul_assoc] using hA)` as an intermediate fact. Use `push_cast`.
+Use the polynomial consequences of the given equalities and inequalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear relations using `[this])`. Use the proof step `(fun n g => rfl) (fun Y h1 h2 => by rw [hl0]; exact hCI v Y ⟨h1, h2⟩) (by push_cast; linarith [hroom])`. Use `j hj (w.1 v) (by rw [hl0]; exact hw) hlen (stdS S h) (stdS S h') hH hH'`. Use `set lam := lamS S j with hlam`. Establish `hlam_pos : 0 < lam` using `lamS_pos S hgpos j`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Use `set tw : ℝ := 2 * Real.pi / ((S.g : ℝ) * lam) with htw`. Establish `htw_pos : 0 < tw` using `by rw [htw]; positivity`. Establish `hsW : ∀ l : ℂ, ‖sW S j l‖ = tw * ‖l‖`. Introduce `l`. Unfold `sW`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[norm_mul, norm_mul, Complex.norm_I, Complex.norm_real, Real.norm_of_nonneg htw_pos.le, one_mul]`. Use `set K1 : ℝ := |Kg S j h h'| with hK1`. Use `set K2 : ℝ := abs (Kg S j h h' * |(lamS S j ^ 2)⁻¹|) with hK2`. Use `⟨K1 * |C| * (max 1 lam⁻¹) ^ 3 + K2 * |C| * (max 1 tw⁻¹) ^ 3, fun n => ⟨fun c hc => ?_, fun l => ?_⟩⟩` and prove the remaining obligations. Establish `hb : 0 ≤ ((1 + ‖c‖) ^ 3)⁻¹` using `by positivity`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hlc : (lam : ℂ) * c ≠ 0` using `mul_ne_zero (by exact_mod_cast hlam_pos.ne') hc`. Establish `hb1` using `(hC n).1 _ hlc`. Rewrite using `[gramLoc_setC_app hB _ v ε j hj (w.1 v) h h' hsz hsz' c hc, mul_assoc, norm_mul, Complex.norm_real, Real.norm_eq_abs]`. Establish `hnl : ‖(lam : ℂ) * c‖ = lam * ‖c‖`. Rewrite using `[norm_mul, Complex.norm_real, Real.norm_of_nonneg hlam_pos.le]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hb1` using `[hnl]`. Use `bound_absorb K1 C ((max 1 lam⁻¹) ^ 3) (((1 + lam * ‖c‖) ^ 3)⁻¹) _ _ (by positivity) (by positivity) hb (abs_nonneg _) hb1 (decay_scale lam ‖c‖ hlam_pos (norm_nonneg _))` as an intermediate fact. Establish `h2 : 0 ≤ K2 * |C| * (max 1 tw⁻¹) ^ 3 * ((1 + ‖c‖) ^ 3)⁻¹` using `by positivity`. Combine the equalities or inequalities in the displayed calculation. Establish `hb : 0 ≤ ((1 + ‖l‖) ^ 3)⁻¹` using `by positivity`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `hb1` using `(hC n).2 (sW S j l)`. Rewrite `hb1` using `[hsW l]`. Rewrite using `[int_gramLoc_setC hPS hB _ v ε (hcpt n) j hj (w.1 v) hw l h h' hloc.1 hloc.2, norm_mul, Complex.norm_real, Real.norm_eq_abs]`. Use `bound_absorb K2 C ((max 1 tw⁻¹) ^ 3) (((1 + tw * ‖l‖) ^ 3)⁻¹) _ _ (by positivity) (by positivity) hb (abs_nonneg _) hb1 (decay_scale tw ‖l‖ htw_pos (norm_nonneg _))` as an intermediate fact. Establish `h2 : 0 ≤ K1 * |C| * (max 1 lam⁻¹) ^ 3 * ((1 + ‖l‖) ^ 3)⁻¹` using `by positivity`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hz : ∀ (n : ℕ) (c : ℂ), (setC S p (Formalism.FourierDecayAlt.P.PBASM.cutSeq S p f χ n)).gramLoc v ε (j + 1) (w.1 v) (h ++ [(1, c)]) (h' ++ [(1, c)]) = 0`. Introduce `n c`. Rewrite using `[gramLoc_setC hB, rr_zero_of_not, mul_zero]`. Unfold `stdS`.
-
-Rewrite using `[isLocPt_toStd_iff _ _ hgpos, isLocPt_toStd_iff _ _ hgpos]`. Introduce and unpack `⟨h1, h2⟩`. Conclude with `hloc ⟨⟨fun b hb => h1.1 b (List.mem_append_left _ hb), hsz⟩, ⟨fun b hb => h2.1 b (List.mem_append_left _ hb), hsz'⟩⟩`. Use `⟨0, fun n => ⟨fun c _ => ?_, fun l => ?_⟩⟩` and prove the remaining obligations. Rewrite using `[hz n c]`.
-
-Simplify using the standard rewrite rules. Simplify using `[hz n]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem decayUnif_of_place (hP : P5.ThmPActualCpt) (hRH : KB.RadHead) (hHT : KB.HeadTop)
     (hD : Formalism.FourierDecayAlt.P.PBO.DecayUnif) : Formalism.FourierDecayAlt.P.PBASM.DecayUnif := by
@@ -190,7 +186,7 @@ end
 end Formalism.FourierDecayAlt.P.StandardPairingDecay
 
 /- English proof (translation)
-Introduce `hP hRH hHT hD` and use `Formalism.FourierDecayAlt.P.StandardPairingDecay.decayUnif_of_place hP hRH hHT hD`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Formalism.FourierDecayAlt.P.uniform_decay_of_place : Formalism.FourierDecayAlt.P.StandardPairingDecay.DecayUnifOfPlace :=
   fun hP hRH hHT hD => Formalism.FourierDecayAlt.P.StandardPairingDecay.decayUnif_of_place hP hRH hHT hD

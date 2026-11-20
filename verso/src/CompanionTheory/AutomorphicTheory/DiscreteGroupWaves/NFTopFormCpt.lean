@@ -18,17 +18,17 @@ attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 def ordM (P : M.Par) (N : ℕ) : ℕ := 3 * (11 * (N * (2 * P.r + P.k + 1) ^ 2 + (2 * P.r + P.k + 1) ^ 3) + 5)
 
 /- English proof (translation)
-Take `⟨Cs, hCs0, hSQ⟩` from `PBE.sliceQ`. Use `⟨Cs, hCs0, ?_⟩` and prove the remaining obligations. Introduce `Wp Wq _ _ _ _ _ _ P p χ ε A N hχ hε hA w hw`. Establish `hk2 : 2 ≤ P.k` using `p.hl.2.2`. Establish `hloc : D.IsLocPt ([] : C.LPt) 0` using `⟨by simp, rfl⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc : P.r - 0 = P.r - D.ptSize ([] : C.LPt)` using `rfl`. Establish `hQ` using `fun e => hSQ Cs le_rfl P.k P.r Wp Wq p.T χ A N P rfl rfl hk2 hχ hA ε hε 0 (Nat.zero_le _) w hw [] hc hloc e`. Use `choose εa Ka hεa hKa hQ1 _ using hQ`. Use `set KK : ℝ := ∑ e, Ka e with hKK`. Establish `hKa' : ∀ e, Ka e ≤ KK` using `fun e => Finset.single_le_sum (f := Ka) (fun e _ => hKa e) (Finset.mem_univ e)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hKK0 : 0 ≤ KK` using `Finset.sum_nonneg fun e _ => hKa e`. Establish `hAu : P5.Auser P w.length + 1 ≤ P5.Auser P N + 1` using `by linarith [PBE.auser_mono P hw]`. Take `⟨Cf, hCf0, hCf⟩` from `JCx4.formLev_bound_mm P p.T (M.sgn P p.l0) ⟨0, by omega⟩ w (P5.Auser P N + 1 + 1) (by linarith)`. Establish `hmm5 : 5 + (2 * (P.r - 0) + P.k + 1) * w.length ≤ P5.mmUser P N`. Use `JCx2.pd_thr_mm P ⟨0, by omega⟩ N (P5.mmUser P N) le_rfl` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h2 : (2 * (P.r - 0) + P.k + 1) * w.length ≤ (2 * (P.r - 0) + P.k + 1) * N` using `Nat.mul_le_mul_left _ hw`. Simplify using `only at this`. Use linear arithmetic over natural numbers and integers. Establish `h5 : 5 ≤ P5.mmUser P N` using `by unfold P5.mmUser; omega`. Use `⟨Cf * KK ^ 2, by positivity, fun h c hh hcc => ?_⟩` and prove the remaining obligations.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc0 : 0 ≤ c` using `JCx2.pd_ccle_nonneg hcc`. Establish `hx : ∀ e, B.CCle (P5.Auser P N + 1) (P5.mmUser P N) (PBE.xs p.T χ ε 0 (Nat.zero_le _) w [] hc h e) (KK * c)` using `fun e => JCx2.pd_ccle_mono_c (hQ1 e h c hh hcc).2 (mul_le_mul_of_nonneg_right (hKa' e) hc0)`. Establish `hw0 : (0 : ℝ) ≤ w.length` using `Nat.cast_nonneg _`. Establish `hb` using `hCf (PBE.xs p.T χ ε 0 (Nat.zero_le _) w [] hc h) (PBE.xs p.T χ ε 0 (Nat.zero_le _) w [] hc h) (KK * c) (KK * c) (fun e => BetaSesquilinearity.CCle_mono_A (by linarith) (BetaSesquilinearity.CCle_mono_m hmm5 (hx e))) (fun e => BetaSesquilinearity.CCle_mono_A (by linarith) (BetaSesq …`. Establish `e : p.RR (D.cutF p.T.base χ h ε) 0 w [] [] = D.formLev p.T (M.sgn P p.l0) ⟨0, by omega⟩ w (PBE.xs p.T χ ε 0 (Nat.zero_le _) w [] hc h) (PBE.xs p.T χ ε 0 (Nat.zero_le _) w [] hc h)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `KB.Pl.RR D.RRplace`. Rewrite using `[dif_pos ⟨hloc, hloc⟩, dif_pos (Nat.zero_le _)]`. Both sides reduce to the same expression. Rewrite using `[e]`. Conclude with `hb.trans (le_of_eq (by ring))`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem residue_zero_bound : ∃ Cs : ℝ, 0 ≤ Cs ∧ ∀ (Wp Wq : Type) [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
     [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq] (P : M.Par) (p : KB.Pl P Wp Wq)
@@ -75,27 +75,25 @@ theorem residue_zero_bound : ∃ Cs : ℝ, 0 ≤ Cs ∧ ∀ (Wp Wq : Type) [Norm
   exact hb.trans (le_of_eq (by ring))
 
 /- English proof (translation)
-Take `⟨Cs, hCs0, hB⟩` from `residue_zero_bound`. Take `⟨Cl, hL⟩` from `limit_of_module_forms Cb`. Use `⟨max (Cs + 1) Cl, ?_⟩` and prove the remaining obligations. Introduce `Wp Wq _ _ _ _ _ _ P p f χ ε A N hCb hχ hε hf hfA hA w hw hwN`. Use `set X : ℝ := (N : ℝ) * (2 * (P.r : ℝ) + P.k + 1) ^ 2 + (2 * (P.r : ℝ) + P.k + 1) ^ 3 with hX`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hX1 : 1 ≤ X`. Establish `h1 : (1 : ℝ) ≤ 2 * (P.r : ℝ) + P.k + 1`. Establish `: (0 : ℝ) ≤ P.r` using `Nat.cast_nonneg _`. Establish `: (0 : ℝ) ≤ P.k` using `Nat.cast_nonneg _`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `: 1 ≤ (2 * (P.r : ℝ) + P.k + 1) ^ 3` using `one_le_pow₀ h1`. Establish `: 0 ≤ (N : ℝ) * (2 * (P.r : ℝ) + P.k + 1) ^ 2` using `by positivity`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hR4 : 1 ≤ ((P.r : ℝ) + 1) ^ 4` using `one_le_pow₀ (by have : (0 : ℝ) ≤ P.r := Nat.cast_nonneg _; linarith)`. Establish `hmono : ∀ c, c ≤ max (Cs + 1) Cl → c * ((P.r : ℝ) + 1) ^ 4 * X ≤ A` using `fun c hc => le_trans (mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_right hc (by positivity)) (by positivity)) hA`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hA' : Cs * ((P.r : ℝ) + 1) ^ 4 * X ≤ A - 1`. Establish `h1` using `hmono _ (le_max_left _ _)`. Establish `h2 : 1 ≤ ((P.r : ℝ) + 1) ^ 4 * X` using `by nlinarith`. Use the polynomial consequences of the given equalities and inequalities. Take `⟨hcpt, hlim⟩` from `hL Wp Wq P p f χ ε A N (cutN P.k P.r) hCb hχ hε hf hfA (hmono _ (le_max_right _ _)) (fun _ _ => rfl)`.
+Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨K, hK0, hK⟩` from `hB Wp Wq P p χ ε (A - 1) N hχ hε hA' w hwN`. Take `⟨bf, hbf⟩` from `hfA (ordM P N)`. Establish `hbf0 : 0 ≤ bf` using `JCx2.pd_ccle_nonneg hbf`. Take `⟨Kp, hKp0, hKp⟩` from `JCx2.pd_cut_ccle (k := P.k) (r := P.r) (E := Wq →L[ℂ] Wp) (ordM P N)`. Establish `hψ : ∀ n : ℕ, B.CCle (A - 1) (ordM P N) (fun g => JCx2.pdPsi ((n : ℝ) + 1) g • f g) (Kp * bf / ((n : ℝ) + 1))` using `fun n => hKp _ (by positivity) A f bf hbf`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hψs : ∀ n : ℕ, B.CkOn ⊤ (B.GV P.k P.r) (fun g => JCx2.pdPsi ((n : ℝ) + 1) g • f g)` using `fun n => JCx2.pd_smooth_smul (JCx2.pd_psi_cd _) hf`. Use `set H : ℕ → B.Mat P.k P.r → (Wq →L[ℂ] Wp) := fun n g => cutN P.k P.r n g • D.cutF p.T.base χ f ε g with hH`. Establish `hdiff : ∀ n m : ℕ, (fun g => H n g - H m g) = D.cutF p.T.base χ (fun g => JCx2.pdPsi ((m : ℝ) + 1) g • f g + (-1 : ℂ) • (JCx2.pdPsi ((n : ℝ) + 1) g • f g)) ε`. Introduce `n m`. Use function extensionality and compare the values at `g`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [hH, D.cutF, PBE.cut_eq (cutN P.k P.r) (fun _ _ => rfl)]`. Use `module`. Establish `hdc : ∀ n m, KB.CptCoef p.T.base (fun g => H n g - H m g)` using `fun n m => PBN.cpt_sub _ (hcpt n) (hcpt m)`. Establish `hd : ∀ n m : ℕ, ∫ c, topD p (fun g => H n g - H m g) w c ≤ K * (Kp * bf / ((m : ℝ) + 1) + Kp * bf / ((n : ℝ) + 1)) ^ 2`. Introduce `n m`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[(topForm_cpt hPS p hCb hw (hdc n m)).2, hdiff]`. Use `(Complex.re_le_norm _).trans (hK _ _ (BetaSesquilinearity.CkOn_add (hψs m) (BetaSesquilinearity.CkOn_smul (-1) (hψs n))) ?_)` and prove the remaining obligations. Use `BetaSesquilinearity.CCle_add (hψ m) (BetaSesquilinearity.CCle_smul (-1) (hψ n))` as an intermediate fact. Simplify using `using this`. Use `integral_eq_of_sqrt_cauchy (q := fun n => topD p (H n) w) (d := fun n m => topD p (fun g => H n g - H m g) w) (fun n => (topForm_cpt hPS p hCb hw (hcpt n)).1) (fun n c => ew_top_nonneg p _ w _) (fun n m => (topForm_cpt hPS p hCb hw (hdc n m)).1) (fun n m c => ew_top_nonneg p _ w …` and prove the remaining obligations.
+Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Unfold `topD TBB.Ew TBB.NP`. Conclude with `(Complex.continuous_re.tendsto _).comp ((hlim (P.r + 1) w hw hwN _ _).const_mul _)`. Conclude with `((Complex.continuous_re.tendsto _).comp (hlim 0 w hw hwN [] [])).congr fun n => (topForm_cpt hPS p hCb hw (hcpt n)).2.symm`. Introduce `η hη`. Establish `h1 : Tendsto (fun n : ℕ => K * (2 * (Kp * bf / ((n : ℝ) + 1))) ^ 2) atTop (𝓝 0)`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h0 : Tendsto (fun n : ℕ => Kp * bf / ((n : ℝ) + 1)) atTop (𝓝 0)` using `tendsto_const_nhds.div_atTop (tendsto_atTop_add_const_right _ 1 tendsto_natCast_atTop_atTop)`. Simplify using `using ((h0.const_mul 2).pow 2).const_mul K`. Take `⟨N₀, hN₀⟩` from `eventually_atTop.1 (h1.eventually (ge_mem_nhds hη))`. Use `⟨N₀, fun n m hn hm => (hd n m).trans (le_trans ?_ (hN₀ N₀ le_rfl))⟩` and prove the remaining obligations. Establish `hb : ∀ j : ℕ, N₀ ≤ j → Kp * bf / ((j : ℝ) + 1) ≤ Kp * bf / ((N₀ : ℝ) + 1)` using `fun j hj => div_le_div_of_nonneg_left (by positivity) (by positivity) (by exact_mod_cast Nat.succ_le_succ hj)`.
-
-Use `mul_le_mul_of_nonneg_left (pow_le_pow_left₀ (by positivity) ?_ 2) hK0` and prove the remaining obligations. Combine the linear relations using `[hb n hn, hb m hm]`.
+Reduce the conclusion to the remaining proof obligations. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem topForm_cut (hPS : StandardPairingDecay.PStdC) (Cb : ℝ) : ∃ Cc : ℝ, ∀ (Wp Wq : Type) [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
     [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq] (P : M.Par) (p : KB.Pl P Wp Wq)
@@ -178,9 +176,9 @@ def NFTopFormAllCpt : Prop :=
       NFTopForm p χ (TBBx4.fpm p f (fun _ => ContinuousLinearMap.id ℂ Wq) p₀) w
 
 /- English proof (translation)
-Introduce `hA Cb`. Take `⟨Cc, hC⟩` from `topForm_cut (StandardPairingDecay.pStdC_of hA radial_head head_top) Cb`. Use `⟨Cc, ?_⟩` and prove the remaining obligations. Introduce `Wp Wq _ _ _ _ _ _ P p f A₀ p₀ χ Y N hH w hw hN ε hε`. Take `⟨hχ, hCb, hf, hfA, hth, -⟩` from `hH`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hid : B.CkOn ⊤ (B.GV P.k P.r) (fun _ : B.Mat P.k P.r => ContinuousLinearMap.id ℂ Wq)` using `fun g₀ _ => ⟨Set.univ, fun _ => ContinuousLinearMap.id ℂ Wq, isOpen_univ, trivial, contDiffOn_const, fun _ _ _ => rfl⟩`. Conclude with `(hC Wp Wq P p _ χ ε _ N hCb hχ hε (ckOn_fpm p p₀ hf hid) (inCC_fpm_id p p₀ hfA) hth w hw.1 hN).2.symm`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem top_form_all_compact : NFTopFormAllCpt := by
   intro hA Cb

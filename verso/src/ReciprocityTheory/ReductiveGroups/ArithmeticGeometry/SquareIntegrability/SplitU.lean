@@ -15,7 +15,7 @@ section lin
 variable {dim : (E →+* ℂ) → ℕ}
 
 /- English proof (translation)
-Use `⟨add_mem hu.1 hv.1, fun a ha => ?_⟩` and prove the remaining obligations. Establish `hH : Hf (x + y) a = Hf x a + Hf y a`. Simplify using `[Hf, add_mul, Finset.sum_add_distrib]`. Rewrite using `[inner_add_left, hu.2 a ha, hv.2 a ha, hH, Complex.add_im]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem IsU.add' {I : Submodule ℤ (Vsp dim)} {x y u v : Vsp dim} (hu : IsU I x u)
     (hv : IsU I y v) : IsU I (x + y) (u + v) := by
@@ -25,15 +25,15 @@ theorem IsU.add' {I : Submodule ℤ (Vsp dim)} {x y u v : Vsp dim} (hu : IsU I x
   rw [inner_add_left, hu.2 a ha, hv.2 a ha, hH, Complex.add_im]
 
 /- English proof (translation)
-Conclude with `⟨zero_mem _, fun a _ => by simp [Hf]⟩`.
+Supply the required witnesses or components.
 -/
 theorem IsU.zero' (I : Submodule ℤ (Vsp dim)) : IsU I 0 0 := by
   exact ⟨zero_mem _, fun a _ => by simp [Hf]⟩
 
 /- English proof (translation)
-Use `⟨zsmul_mem hu.1 k, fun a ha => ?_⟩` and prove the remaining obligations. Establish `hH : Hf (k • x) a = (k : ℂ) * Hf x a`. Simplify using `only [Hf]`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[mul_assoc]`. Rewrite using `[← Int.cast_smul_eq_zsmul ℝ k u, real_inner_smul_left, hu.2 a ha, hH]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem IsU.zsmul' {I : Submodule ℤ (Vsp dim)} {x u : Vsp dim} (k : ℤ) (hu : IsU I x u) :
     IsU I (k • x) (k • u) := by
@@ -49,13 +49,13 @@ theorem IsU.zsmul' {I : Submodule ℤ (Vsp dim)} {x u : Vsp dim} (k : ℤ) (hu :
 end lin
 
 /- English proof (translation)
-Establish `hH : ∀ y, Hf y a = inner ℂ a y` using `fun y => by`. Simplify using `[Hf, PiLp.inner_apply, mul_comm]`. Establish `hf : (Complex.imLm.comp ((innerₛₗ ℂ a).restrictScalars ℝ) : Vsp X.dim →ₗ[ℝ] ℝ) = 0` using `X.b.ext fun i => by`. Simplify `h (X.b i) (Submodule.subset_span ⟨i, rfl⟩)` using `[← hH]`. Establish `h0 : (inner ℂ a ((Complex.I : ℂ) • a)).im = 0`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Use `LinearMap.congr_fun hf ((Complex.I : ℂ) • a)` as an intermediate fact. Use `first`. Consider the case `exact this`. Consider the case `(simp only [LinearMap.comp_apply, LinearMap.restrictScalars_apply, innerₛₗ_apply, LinearMap.zero_apply] at this`. Conclude with `this)`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h0` using `[inner_smul_right, inner_self_eq_norm_sq_to_K]`. Establish `h2 : ‖a‖ ^ 2 = 0`. Establish `h3 : (Complex.I * ((‖a‖ : ℂ) ^ 2)).im = ‖a‖ ^ 2`. Rewrite using `[← Complex.ofReal_pow, Complex.mul_im, Complex.I_re, Complex.I_im, Complex.ofReal_re, Complex.ofReal_im]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[← h3]`. Conclude with `h0`. Simplify using `using h2`.
+A detailed English derivation is pending.
 -/
 theorem eq_zero_of_im_L (X : PT E) {a : Vsp X.dim} (h : ∀ y ∈ X.L, (Hf y a).im = 0) : a = 0 := by
   have hH : ∀ y, Hf y a = inner ℂ a y := fun y => by
@@ -81,17 +81,17 @@ theorem eq_zero_of_im_L (X : PT E) {a : Vsp X.dim} (h : ∀ y ∈ X.L, (Hf y a).
   simpa using h2
 
 /- English proof (translation)
-Establish `hadd : ∀ y y' : Vsp X.dim, (Hf (y + y') a).im = (Hf y a).im + (Hf y' a).im` using `fun y y' => by simp [Hf, add_mul, Finset.sum_add_distrib]`. Set `φ : X.L →+ ℤ` to `{ toFun := fun y => (h (y : Vsp X.dim) y.2).choose map_zero' := by`. Establish `e` using `(h ((0 : X.L) : Vsp X.dim) (0 : X.L).2).choose_spec`. Establish `e' : (((h ((0 : X.L) : Vsp X.dim) (0 : X.L).2).choose : ℤ) : ℝ) = 0`. Rewrite using `[← e]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[Hf]`. Conclude with `e'` after adjusting the coercions. Use the proof step `map_add' := fun y y' => by`. Establish `e1` using `(h ((y + y' : X.L) : Vsp X.dim) (y + y').2).choose_spec`. Establish `e2` using `(h (y : Vsp X.dim) y.2).choose_spec`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e3` using `(h (y' : Vsp X.dim) y'.2).choose_spec`. Establish `e' : (((h ((y + y' : X.L) : Vsp X.dim) (y + y').2).choose : ℤ) : ℝ) = (h (y : Vsp X.dim) y.2).choose + (h (y' : Vsp X.dim) y'.2).choose`. Rewrite using `[← e1, ← e2, ← e3, Submodule.coe_add, hadd]`. Conclude with `e' }` after adjusting the coercions. Take `⟨x, hx, hxy⟩` from `X.perfect φ`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `key : a + x = 0`. Apply `eq_zero_of_im_L X` to reduce the goal to its premises. Introduce `y hy`. Establish `h1 : ((φ ⟨y, hy⟩ : ℤ) : ℝ) = (Hf x y).im` using `hxy ⟨y, hy⟩`. Establish `hφ : ((φ ⟨y, hy⟩ : ℤ) : ℝ) = (Hf y a).im` using `(h y hy).choose_spec.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hc : (Hf y x).im = -(Hf x y).im`. Establish `hcj : Hf y x = starRingEnd ℂ (Hf x y)` using `by simp [Hf, map_sum, mul_comm]`. Rewrite using `[hcj, Complex.conj_im]`. Establish `hr : Hf y (a + x) = Hf y a + Hf y x` using `by simp [Hf, mul_add, Finset.sum_add_distrib]`. Rewrite using `[hr, Complex.add_im, hc, ← h1, hφ]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `ha : a = -x` using `eq_neg_of_add_eq_zero_left key`. Rewrite using `[ha]`. Conclude with `neg_mem hx`.
+A detailed English derivation is pending.
 -/
 theorem mem_L_of_int (X : PT E) {a : Vsp X.dim} (h : ∀ y ∈ X.L, ∃ k : ℤ, (Hf y a).im = k) :
     a ∈ X.L := by
@@ -130,63 +130,59 @@ theorem mem_L_of_int (X : PT E) {a : Vsp X.dim} (h : ∀ y ∈ X.L, ∃ k : ℤ,
   exact neg_mem hx
 
 /- English proof (translation)
-Use `set K := IR I with hK`. Use `set N := Module.finrank ℝ K with hNdef`. Set `e : K ≃ₗᵢ[ℝ] EuclideanSpace ℝ (Fin N)` to `(stdOrthonormalBasis ℝ K).repr`. Set `M : Submodule ℤ (EuclideanSpace ℝ (Fin N))` to `{ carrier := {z | ∃ y ∈ X.L, IsU I y ((e.symm z : K) : Vsp X.dim)} add_mem' := by`. Introduce and unpack `z z' ⟨y, hy, hu⟩ ⟨y', hy', hu'⟩`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨y + y', X.L.add_mem hy hy', by simpa using hu.add' hu'⟩`. Use the proof step `zero_mem' := ⟨0, X.L.zero_mem, by simpa using IsU.zero' I⟩`. Use the proof step `smul_mem' := by`. Introduce and unpack `k z ⟨y, hy, hu⟩`. Conclude with `⟨k • y, X.L.smul_mem k hy, by simpa using hu.zsmul' k⟩ }`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hmemM : ∀ y ∈ X.L, ∀ u, IsU I y u → ∃ z ∈ M, ((e.symm z : K) : Vsp X.dim) = u` using `fun y hy u hu => ⟨e ⟨u, hu.1⟩, ⟨y, hy, by simpa using hu⟩, by simp⟩`. Establish `hinner : ∀ z z' : EuclideanSpace ℝ (Fin N), ⟪z, z'⟫_ℝ = ⟪((e.symm z : K) : Vsp X.dim), ((e.symm z' : K) : Vsp X.dim)⟫_ℝ`. Introduce `z z'`. Rewrite using `[← Submodule.coe_inner, LinearIsometryEquiv.inner_map_map]`. Establish `hnormE : ∀ z, ‖((e.symm z : K) : Vsp X.dim)‖ = ‖z‖`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Introduce `z`. Rewrite using `[← e.symm.norm_map z]`. Both sides reduce to the same expression. Establish `hdual : ∀ z ∈ PI.dualZ M, ((e.symm z : K) : Vsp X.dim) ∈ I`. Introduce `z hz`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Apply `hsat _ ?_ (e.symm z).2` to reduce the goal to its premises. Apply `mem_L_of_int X` to reduce the goal to its premises. Introduce `y hy`. Take `⟨u, hu⟩` from `exists_isU I y`. Take `⟨z', hz'M, hz'⟩` from `hmemM y hy u hu`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Take `⟨k, hk⟩` from `hz z' hz'M`. Use `⟨k, ?_⟩` and prove the remaining obligations. Rewrite using `[← hu.2 _ (e.symm z).2, ← hk, hinner, hz', real_inner_comm]`. Break down `Nat.eq_zero_or_pos N with hN0 | hNpos` into its components or cases. Establish `: IsEmpty (Fin N)` using `by rw [hN0]; infer_instance`.
+Establish an intermediate fact. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Conclude with `⟨fun _ => 0, fun _ => 0, fun j => isEmptyElim j, linearIndependent_empty_type, fun j => isEmptyElim j⟩`. Choose the witnesses or unpack the hypotheses as in `⟨a0, ha0I, ha0⟩ : ∃ a ∈ I, a ≠ 0 := by`. Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`. Establish `hK0 : K = ⊥`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[eq_bot_iff, hK]`. Conclude with `Submodule.span_le.2 (fun a ha => by simp [hcon a ha])`. Establish `: N = 0` using `by rw [hNdef, hK0]; exact finrank_bot ℝ _`. Use linear arithmetic over natural numbers and integers. Establish `hspan : Submodule.span ℝ (M : Set (EuclideanSpace ℝ (Fin N))) = ⊤`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← Submodule.orthogonal_eq_bot_iff, Submodule.eq_bot_iff]`. Introduce `z hz`. Establish `h0 : ∀ z' ∈ M, ⟪z', z⟫_ℝ = 0` using `fun z' hz' => (Submodule.mem_orthogonal _ _).1 hz z' (Submodule.subset_span hz')`. Establish `ha : ((e.symm z : K) : Vsp X.dim) = 0`. Apply `eq_zero_of_im_L X` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce `y hy`. Take `⟨u, hu⟩` from `exists_isU I y`. Take `⟨z', hz'M, hz'⟩` from `hmemM y hy u hu`. Rewrite using `[← hu.2 _ (e.symm z).2, ← hz', ← hinner]`. Conclude with `h0 z' hz'M`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `: e.symm z = 0` using `Subtype.ext ha`. Simplify using `using congrArg e this`. Take `⟨s, hsI, hsspan, hsli⟩` from `exists_linearIndependent ℝ (I : Set (Vsp X.dim))`. Establish `hsfin : s.Finite` using `hsli.setFinite`. Use `set A := ∑ a ∈ hsfin.toFinset, ‖a‖ + 1 with hA`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hApos : 0 < A`. Establish `: 0 ≤ ∑ a ∈ hsfin.toFinset, ‖a‖` using `Finset.sum_nonneg (fun _ _ => norm_nonneg _)`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hlow : ∀ z ∈ M, z ≠ 0 → 1 / A ≤ ‖z‖`. Introduce `z hzM hz0`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction.
 
-Take `⟨y, hy, hu⟩` from `hzM`. Use `set u := ((e.symm z : K) : Vsp X.dim)`. Establish `hu0 : u ≠ 0`. Introduce `h0`. Apply `hz0` to reduce the goal to its premises.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Establish `: e.symm z = 0` using `Subtype.ext h0`. Simplify using `using congrArg e this`. Choose the witnesses or unpack the hypotheses as in `⟨a, has, ha⟩ : ∃ a ∈ s, ⟪u, a⟫_ℝ ≠ 0 := by`. Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: ∀ w ∈ Submodule.span ℝ s, ⟪u, w⟫_ℝ = 0`. Introduce `w hw`. Proceed by induction on `hw using Submodule.span_induction with`. Consider the case `mem x hx => exact hcon x hx`. Consider the case `zero => exact inner_zero_right _`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Consider the case `add x y _ _ hx hy => rw [inner_add_right, hx, hy, add_zero]`. Consider the case `smul r x _ hx => rw [real_inner_smul_right, hx, mul_zero]`. Establish `h1` using `this u (by rw [hsspan]; exact hu.1)`. Conclude with `hu0 (inner_self_eq_zero.1 h1)`. Establish `h1 : 1 ≤ |⟪u, a⟫_ℝ|`.
+Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hu.2 a (mem_IR (hsI has))]`. Rewrite `ha` using `[hu.2 a (mem_IR (hsI has))]`. Conclude with `one_le_abs_im X hy (hle (hsI has)) ha`. Establish `h2 : |⟪u, a⟫_ℝ| ≤ ‖u‖ * ‖a‖` using `abs_real_inner_le_norm _ _`. Establish `h3 : ‖a‖ ≤ A`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Use `Finset.single_le_sum (f := fun a => ‖a‖) (fun _ _ => norm_nonneg _) ((Set.Finite.mem_toFinset hsfin).2 has)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[← hnormE z, div_le_iff₀ hApos]`. Use polynomial arithmetic with `[norm_nonneg u]`. Establish `hdisc : DiscreteTopology M`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[discreteTopology_iff_isOpen_singleton_zero, Metric.isOpen_singleton_iff]`. Use `⟨1 / A, by positivity, fun z hz => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hz0`. Establish `h1` using `hlow z z.2 (fun h => hz0 (Subtype.ext h))`. Rewrite `hz` using `[dist_zero_right]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: ‖(z : EuclideanSpace ℝ (Fin N))‖ = ‖z‖` using `rfl`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hT` using `transference_successive_minima N M hdisc hspan N hNpos le_rfl`. Rewrite `hT` using `[show N + 1 - N = 1 by omega]`. Establish `hsm0 : 0 ≤ PI.succMin M N` using `Real.sInf_nonneg (fun t ht => ht.1)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hdual1 : X.la1 ≤ PI.succMin (PI.dualZ M) 1`. Apply `le_csInf` to reduce the goal to its premises. Establish `hmem : e ⟨a0, mem_IR ha0I⟩ ∈ PI.dualZ M`. Introduce `z hz`. Take `⟨y, hy, hu⟩` from `hz`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨k, hk⟩` from `X.integral y a0 hy (hle ha0I)`. Use `⟨k, ?_⟩` and prove the remaining obligations. Rewrite using `[hinner, LinearIsometryEquiv.symm_apply_apply, real_inner_comm, hu.2 a0 (mem_IR ha0I), hk]`. Use `⟨‖e ⟨a0, mem_IR ha0I⟩‖, norm_nonneg _, fun _ => e ⟨a0, mem_IR ha0I⟩, fun _ => hmem, ?_, fun _ => le_rfl⟩` and prove the remaining obligations. Rewrite using `[linearIndependent_unique_iff]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce `h0`. Apply `ha0` to reduce the goal to its premises. Use `congrArg e.symm h0` as an intermediate fact. Simplify using `using congrArg Subtype.val this`. Introduce and unpack `t ⟨-, v, hvM, hvli, hvt⟩`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Establish `hv0` using `hvli.ne_zero 0`. Establish `ha` using `hdual (v 0) (hvM 0)`. Establish `hne : ((e.symm (v 0) : K) : Vsp X.dim) ≠ 0`. Introduce `h0`. Apply `hv0` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `: e.symm (v 0) = 0` using `Subtype.ext h0`. Simplify using `using congrArg e this`. Combine the equalities or inequalities in the displayed calculation. Establish `hlam : PI.succMin M N ≤ N / X.la1`. Rewrite using `[le_div_iff₀ hla]`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use the polynomial consequences of the given equalities and inequalities. Establish `hne : {t : ℝ | 0 ≤ t ∧ ∃ v : Fin N → EuclideanSpace ℝ (Fin N), (∀ j, v j ∈ M) ∧ LinearIndependent ℝ v ∧ ∀ j, ‖v j‖ ≤ t}.Nonempty`. Take `⟨s', hs'M, hs'span, hs'li⟩` from `exists_linearIndependent ℝ (M : Set (EuclideanSpace ℝ (Fin N)))`. Establish `hfin' : s'.Finite` using `hs'li.setFinite`. Establish `: Fintype s'` using `hfin'.fintype`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Set `bs` to `Module.Basis.mk hs'li (by rw [Subtype.range_coe, hs'span, hspan])`. Establish `hcard : Fintype.card s' = N`. Rewrite using `[← Module.finrank_eq_card_basis bs, finrank_euclideanSpace_fin]`. Set `eq : Fin N ≃ s'` to `(Fintype.equivFinOfCardEq hcard).symm`. Use `⟨∑ j, ‖((eq j : s') : EuclideanSpace ℝ (Fin N))‖, Finset.sum_nonneg (fun _ _ => norm_nonneg _), fun j => (eq j : EuclideanSpace ℝ (Fin N)), fun j => hs'M (eq j).2, hs'li.comp eq eq.injective, fun j => ?_⟩` and prove the remaining obligations.
-
-Conclude with `Finset.single_le_sum (f := fun j => ‖((eq j : s') : EuclideanSpace ℝ (Fin N))‖) (fun _ _ => norm_nonneg _) (Finset.mem_univ j)`. Take `⟨t, ⟨-, v, hvM, hvli, hvt⟩, htlt⟩` from `exists_lt_of_csInf_lt hne (lt_add_of_pos_right (PI.succMin M N) hε)`. Use `choose y hy hyU using hvM`. Use `⟨y, fun j => ((e.symm (v j) : K) : Vsp X.dim), fun j => ⟨hy j, hyU j⟩, ?_, ?_⟩` and prove the remaining obligations. Conclude with `(hvli.map' e.symm.toLinearEquiv.toLinearMap (LinearEquiv.ker _)).map' K.subtype K.ker_subtype`.
-
-Introduce `j`. Rewrite using `[hnormE]`. Use `hvt j` as an intermediate fact. Establish `h2 : PI.succMin M N = sInf {t : ℝ | 0 ≤ t ∧ ∃ v : Fin N → EuclideanSpace ℝ (Fin N), (∀ j, v j ∈ M) ∧ LinearIndependent ℝ v ∧ ∀ j, ‖v j‖ ≤ t}` using `rfl`. Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 theorem exists_short_vectors_realSpan (X : PT E) (I : Submodule ℤ (Vsp X.dim)) (hle : I ≤ X.L)
     (hsat : ∀ x ∈ X.L, x ∈ IR I → x ∈ I) (hla : 0 < X.la1) {ε : ℝ} (hε : 0 < ε) :

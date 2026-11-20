@@ -13,23 +13,23 @@ namespace PositivityTheory.Rg.Rs.C3.Fl
 variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {N c : ℕ} {n : Fin c → ℕ} (h : ∑ i, n i = N)
 
 /- English proof (translation)
-The claim follows from `cornerGL_leviEmb _ _ m`.
+A detailed English derivation is pending.
 -/
 theorem infGL_leviEmb (m : ∀ i, GL (Fin (n i)) (Cinf E)) :
     infGL E N (leviEmb (Cinf E) (stdBlocks n h) m) = leviEmb (Ad E) (stdBlocks n h) fun i => infGL E (n i) (m i) :=
   cornerGL_leviEmb _ _ m
 
 /- English proof (translation)
-The claim follows from `cornerGL_mem_unipRad _ _ hu`.
+A detailed English derivation is pending.
 -/
 theorem infGL_mem_unipRad {u : GL (Fin N) (Cinf E)} (hu : u ∈ unipRad (Cinf E) (stdBlocks n h)) :
     infGL E N u ∈ unipRad (Ad E) (stdBlocks n h) :=
   cornerGL_mem_unipRad _ _ hu
 
 /- English proof (translation)
-Take `⟨b, k, hb, hy⟩` from `exists_borel_unitary (GeneralLinearGroup.map (pInf E) g)`. Establish `hbp : b ∈ parab (Cinf E) (stdBlocks n h)` using `mem_parab_of_upper _ h hb`. Take `⟨u, hu, hbu⟩` from `exists_levi_mul_unip (Cinf E) (stdBlocks n h) ⟨b, hbp⟩`. Generalize the expression as in `leviProj (Cinf E) (stdBlocks n h) ⟨b, hbp⟩ = L at hbu`. Express the relevant statement in the definitionally equal form `b = _ at hbu`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Replace the chosen expression with an arbitrary variable. Express the relevant assertion in an equivalent form by its definition.
 
-Use `⟨fun i => infGL E (n i) (L i), infGL E N u, k, GeneralLinearGroup.map (pFin E) g, infGL_mem_unipRad h hu, ?_⟩` and prove the remaining obligations. Use `conv_lhs => rw [← infGL_mul_finGL g, hy, hbu]`. Rewrite using `[map_mul, map_mul, infGL_leviEmb, mul_assoc]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_iwasawa (g : GA E N) :
     ∃ (m : ∀ i, GA E (n i)) (u : GA E N) (k : Kinf E N) (g0 : GL (Fin N) (Af E)),
@@ -46,7 +46,7 @@ theorem exists_iwasawa (g : GA E N) :
   rw [map_mul, map_mul, infGL_leviEmb, mul_assoc]
 
 /- English proof (translation)
-Take `⟨m, u, k, x, hu, e⟩` from `exists_iwasawa h g`. Use `⟨leviEmb (Ad E) (stdBlocks n h) m * u * (leviEmb (Ad E) (stdBlocks n h) m)⁻¹, (Subgroup.mem_normalizer_iff.1 (leviEmb_mem_normalizer (Ad E) (stdBlocks n h) m) u).1 hu, m, k, x, ?_⟩` and prove the remaining obligations. Rewrite using `[e]`. Simplify using `only [mul_assoc, inv_mul_cancel_left]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem exists_iwasawa_left (g : GA E N) :
     ∃ u ∈ unipRad (Ad E) (stdBlocks n h), ∃ (m : ∀ i, GA E (n i)) (k : Kinf E N) (x : GL (Fin N) (Af E)),

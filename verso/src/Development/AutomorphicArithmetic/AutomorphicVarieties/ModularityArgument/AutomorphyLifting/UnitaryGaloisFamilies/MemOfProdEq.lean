@@ -17,7 +17,7 @@ open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 /- English proof (translation)
-Establish `h0 : Ideal.span {((l : ℕ) : 𝓞 K)} ≠ 0`. Rewrite using `[Ne, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot]`. Conclude with `(Fact.out : l.Prime).ne_zero` after adjusting the coercions. Conclude with `(Ideal.finite_factors h0).subset fun v hv => Ideal.dvd_span_singleton.mpr (not_not.1 hv)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem ev_notMem {K : Type} [Field K] [NumberField K] (l : ℕ) [Fact l.Prime] :
     ∀ᶠ v : HeightOneSpectrum (𝓞 K) in Filter.cofinite, ((l : ℕ) : 𝓞 K) ∉ v.asIdeal := by
@@ -27,7 +27,7 @@ private theorem ev_notMem {K : Type} [Field K] [NumberField K] (l : ℕ) [Fact l
   exact (Ideal.finite_factors h0).subset fun v hv => Ideal.dvd_span_singleton.mpr (not_not.1 hv)
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(UpperTheory.V.Af.tw r 1 g : Matrix (Fin n) (Fin n) k) = _`. Rewrite using `[UpperTheory.V.Af.tw_val]`. Simplify using the standard rewrite rules.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem tw_one {Γ k : Type} [Group Γ] [Field k] {n : ℕ} (r : Γ →* GL (Fin n) k) (g : Γ) :
     UpperTheory.V.W.mat (UpperTheory.V.Af.tw r 1) g = (r g : Matrix (Fin n) (Fin n) k) := by
@@ -37,7 +37,7 @@ private theorem tw_one {Γ k : Type} [Group Γ] [Field k] {n : ℕ} (r : Γ →*
 
 open Polynomial in
 /- English proof (translation)
-Rewrite `h` using `[← Multiset.prod_sum, ← UpperTheory.V.Af.Es.map_sum_ms]`. Establish `e` using `congrArg Polynomial.roots h`. Rewrite `e` using `[roots_multiset_prod_X_sub_C, roots_multiset_prod_X_sub_C]`. Simplify `hz` using `[e, Multiset.mem_sum]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem mem_of_prod_eq {I : Type} [Fintype I] {b : Multiset ℂ} {B : I → Multiset ℂ}
     (h : (b.map fun x => X - C x).prod = ∏ i, ((B i).map fun x => X - C x).prod) {z : ℂ} (hz : z ∈ b) : ∃ i, z ∈ B i := by
@@ -48,27 +48,25 @@ private theorem mem_of_prod_eq {I : Type} [Fintype I] {b : Multiset ℂ} {B : I 
 
 open GlobalTheory.WeilDeligne UpperTheory.V.Af UpperTheory.V.Af.Gu UpperTheory.V.Af.Es UpperTheory.V.Z.Win UpperTheory.V.Z.Win.Gu in
 /- English proof (translation)
-Introduce `E Ω _ _ _ _ _ _ hE l _ _ ι n hn π hπ R hRc hRs hR`. Take `⟨c, a, d, hsum, P, ρ, m, σ, hP, hS, hsplit⟩` from `hB E hE n hn π hπ`. Establish `hint : ∀ i τ, (m i τ).Nodup ∧ ∀ z ∈ m i τ, ∃ j : ℤ, z + (ex n (d i) 0 : ℂ) / 2 = j` using `fun i τ => by`. Take `⟨lam, hl⟩` from `GlobalTheory.T.exists_algebraicWeight_of_automorphic_definiteUnitary E n hn π hπ τ`. Conclude with `(UpperTheory.speh_parameter_strings n c d (m · τ) lam (hP.weight τ lam hl)).1 i ⟨0, (hP.pos i).2⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `choose r HT hr _ using fun i => hHalf E Ω l ι (a i) (hP.pos i).1 (P i) (hP.csd i) (ρ i) (hP.loc i) (m i) (hP.inf i) (ex n (d i) 0) (hint i)`. Establish `hch : ∀ g, (UpperTheory.V.W.mat R g).charpoly = ∏ i, ∏ j ∈ Finset.range (d i), (UpperTheory.V.W.mat (tw (r i) (cycBar E Ω l ^ (-(j : ℤ)))) g).charpoly` using `fun g => by`. Use `charpoly_eq_prod ι (I := Σ i, Fin (d i)) (a := fun x => a x.1) R (fun x => tw (r x.1) (cycBar E Ω l ^ (-((x.2 : ℕ) : ℤ)))) hRc (fun x => UpperTheory.galoisRep_irreducibility_criterion.2 _ _ _ _ _ (hr x.1).cont (cyc_cont.zpow _)) ?_ g` as an intermediate fact. Rewrite `this` using `[Fintype.prod_sigma]`. Conclude with `this.trans (Finset.prod_congr rfl fun i _ => (Finset.prod_range fun j => (UpperTheory.V.W.mat (tw (r i) (cycBar E Ω l ^ (-(j : ℤ)))) g).charpoly).symm)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `filter_upwards [ev_notMem (K := E) l, Filter.eventually_all.2 fun i => (hLink E _ (P i)).2] with w hw h2 hd`. Take `⟨S, hS'⟩` from `Classical.skolem.1 h2`. Establish `hSat : ∀ i, GlobalTheory.LFun.HasSatGL w (ρ i w).ρ (S i)` using `fun i => ((hLink E _ (P i)).1 w _ (hP.loc i w) _).1 (hS' i)`. Establish `hsp` using `UpperTheory.isSplitAt_of_unramified_of_inertiaDeg_eq_one E w (hE w) hd`. Set `τ : SmIrr (GL (Fin n) (w.adicCompletion E))` to `⟨_, locProd hsum w (σ · w), GlobalTheory.SmGL.isSmooth_parInd _ _, (hsplit w hsp).1⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hpar : ParAtT ι R w (totPar n d (ρ · w))` using `fun A h rc hrc => (hRec E Ω n c a d hsum P w (ρ · w) (σ · w) hP.pos (hP.loc · w) (hS · w) τ ⟨.refl _⟩ A h rc hrc).symm ▸ hR w hsp τ (hsplit w hsp) A h rc hrc`. Use `⟨_, algSat_satTot w n d S ▸ hFrob E Ω l ι n c a d R hRc w hw (ρ · w) S hSat hpar, fun x => ?_⟩` and prove the remaining obligations. Conclude with `UpperTheory.frobenius_eigenvalues_twist E Ω l ι _ _ _ w _ _ (hTw E Ω l ι _ (r x.1) w hw _ _ (hSat x.1) _ ((hr x.1).par w)) (charEig_cyc ι hw _)`. Use `⟨c, a, d, r, fun i => ⟨(hP.pos i).1, (hP.pos i).2, (hr i).cont⟩, hch, fun h1 => ?_⟩` and prove the remaining obligations. Establish `hch' : ∀ g, (R g : Matrix (Fin n) (Fin n) (Qbar l)).charpoly = ∏ i, (r i g : Matrix (Fin (a i)) (Fin (a i)) (Qbar l)).charpoly` using `fun g => (hch g).trans (Finset.prod_congr rfl fun i _ => by`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[h1 i, Finset.prod_range_one, Nat.cast_zero, neg_zero, zpow_zero, tw_one])`. Use `filter_upwards [ev_notMem (K := E) l, Filter.eventually_all.2 fun i => (hLink E _ (P i)).2] with w hw h2 b hb`. Take `⟨A, hA⟩` from `exists_isPlaceOver Ω w`. Take `⟨s, hs⟩` from `Formalism.MainNotions.LatticeVariant.exists_isFrob A w hA`. Take `⟨S, hS'⟩` from `Classical.skolem.1 h2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hSat : ∀ i, GlobalTheory.LFun.HasSatGL w (ρ i w).ρ (S i)` using `fun i => ((hLink E _ (P i)).1 w _ (hP.loc i w) _).1 (hS' i)`. Establish `hF` using `fun i => (hTw E Ω l ι _ (r i) w hw _ _ (hSat i) _ ((hr i).par w) A hA).2 s hs`. Establish `e` using `(hb A hA).2 s hs`. Rewrite `e` using `[hch', Polynomial.map_prod, Finset.prod_congr rfl fun i _ => hF i]`. Establish `hq : normV w = Ideal.absNorm w.asIdeal`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[Ideal.absNorm_apply, Submodule.cardQuot_apply]`. Both sides reduce to the same expression. Establish `hq0 : (0 : ℝ) < (normV w : ℕ)`. Rewrite using `[hq]`. Conclude with `zero_lt_one.trans (NumberField.HeightOneSpectrum.one_lt_absNorm w)` after adjusting the coercions.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `key : ∀ z ∈ b, (normV w : ℝ) ^ (-(1 / 2) : ℝ) * (normV w : ℝ) ^ (((n : ℝ) - 1) / 2) < ‖z‖ ∧ ‖z‖ < (normV w : ℝ) ^ (1 / 2 : ℝ) * (normV w : ℝ) ^ (((n : ℝ) - 1) / 2)` using `fun z hz => by`. Take `⟨i, hi⟩` from `mem_of_prod_eq e.symm hz`. Take `⟨α, hα, rfl⟩` from `Multiset.mem_map.1 hi`. Establish `hu` using `UpperTheory.GalN.satake_window E (a i) (P i) (hP.csd i) w _ (hP.loc i w) _ (hSat i) α hα`. Rewrite `hu` using `[← hq]`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[norm_mul, ← Complex.ofReal_neg, ← Complex.ofReal_natCast, ← Complex.ofReal_cpow (Nat.cast_nonneg _), Complex.norm_real, Real.norm_of_nonneg (by positivity), h1 i]`. Establish `ee : ∀ t : ℝ, t = ((n : ℝ) - 1) / 2 → (normV w : ℝ) ^ (-(1 / 2) : ℝ) * (normV w : ℝ) ^ (((n : ℝ) - 1) / 2) < ‖(α : ℂ)‖ * (normV w : ℝ) ^ t ∧ ‖(α : ℂ)‖ * (normV w : ℝ) ^ t < (normV w : ℝ) ^ (1 / 2 : ℝ) * (normV w : ℝ) ^ (((n : ℝ) - 1) / 2)`. Introduce and unpack `_ rfl`. Conclude with `⟨mul_lt_mul_of_pos_right hu.1 (by positivity), mul_lt_mul_of_pos_right hu.2 (by positivity)⟩`. Use `ee _ ?_` and prove the remaining obligations.
+Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Simplify using `only [ex]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Introduce `z hz z' hz'`. Use `(key z hz).2.trans_le (le_of_eq_of_le ?_ (mul_le_mul_of_nonneg_left (key z' hz').1.le hq0.le))` and prove the remaining obligations.
-
-Rewrite using `[← mul_assoc]`. Use `congr 1`. Use `nth_rewrite 2 [← Real.rpow_one (normV w : ℝ)]`. Rewrite using `[← Real.rpow_add hq0]`. Evaluate the numerical expressions.
+Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Win.Gu.endShape_of (hB : GlobalTheory.BcSpeh.BcSpeh) (hLink : SatLink) (hHalf : HalfG) (hRec : RecTotT) (hFrob : FrobTotT)
     (hTw : ∀ (E Ω : Type) [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω] (l : ℕ) [Fact l.Prime] (ι : Qbar l ≃+* ℂ) (a : ℕ) (r : G E Ω →* GL (Fin a) (Qbar l)) (w : HeightOneSpectrum (𝓞 E)), ((l : ℕ) : 𝓞 E) ∉ w.asIdeal → ∀ (σ : SmIrr (GL (Fin a) (w.adicCompletion E))) (B : Multiset ℂˣ), GlobalTheory.LFun.HasSatGL w σ.ρ B → ∀ t : ℝ, (ParAtT ι r w fun _ _ rc => (rc (cl σ)).lpTw t) → FrobEig ι r w (B.map fun α : ℂˣ => (α : ℂ) * ((normV w : ℕ) : ℂ) ^ (-(t : ℂ)))) :

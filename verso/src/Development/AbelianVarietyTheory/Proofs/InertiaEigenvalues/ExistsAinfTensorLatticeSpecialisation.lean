@@ -13,7 +13,7 @@ namespace GlobalTheory.Cyc.Decomp
 open Formalism.WeaklyAdmissibleFiltrations Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.MainNotions.N Formalism.MainNotions.LocalSituation GlobalTheory.Cyc TensorProduct
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Use `conv_lhs => rw [← b.sum_repr t]`. Simplify using `only [map_sum, map_smul, Finsupp.coe_finsetSum, Finset.sum_apply, Finsupp.smul_apply, smul_eq_mul, map_mul, Matrix.mulVec, dotProduct, hU]`. Conclude with `Finset.sum_congr rfl fun j _ => mul_comm _ _`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem specPhi_coord {Z N C : Type} [CommRing Z] [AddCommGroup N] [Module Z N] [CommRing C]
     (φ : Z →+* C) {d : ℕ} (b : Module.Basis (Fin d) Z N) (u : N →ₗ[Z] N)
@@ -26,7 +26,7 @@ theorem specPhi_coord {Z N C : Type} [CommRing Z] [AddCommGroup N] [Module Z N] 
   exact Finset.sum_congr rfl fun j _ => mul_comm _ _
 
 /- English proof (translation)
-Establish `hlin : ∀ (x : Z) (s : N), a • (x • s) = x • (a • s)`. Introduce `x s`. Rewrite using `[hs, hs, smul_smul, smul_smul, mul_comm]`. Set `u : N →ₗ[Z] N` to `{ toFun := fun s => a • s map_add' := fun x y => smul_add a x y map_smul' := fun x s => hlin x s }`. Conclude with `specPhi_coord φ b u U hU t`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem specPhi_coord_smul {Z O N C : Type} [CommRing Z] [CommRing O] [Algebra Z O] [AddCommGroup N]
     [Module O N] [Module Z N] (hs : ∀ (x : Z) (t : N), x • t = algebraMap Z O x • t) [CommRing C]
@@ -43,11 +43,11 @@ theorem specPhi_coord_smul {Z O N C : Type} [CommRing Z] [CommRing O] [Algebra Z
   exact specPhi_coord φ b u U hU t
 
 /- English proof (translation)
-Set `f : R →+ ↥T.L.T →+ (Fin d → C)` to `{ toFun := fun r => { toFun := fun t => (L r).mulVec (co t) map_zero' := by simp map_add' := fun x y => by simp [Matrix.mulVec_add] } map_zero' := by ext t : 1; simp [hL0] map_add' := fun x y => by ext t : 1; simp [hLa, Matrix.add_mulVec] }`. Establish `hf : ∀ (a : O) (r : R) (t : ↥T.L.T), f (a • r) t = f r (a • t)`. Introduce `a r t`. Use `show (L (a • r)).mulVec (co t) = (L r).mulVec (co (a • t))`. Rewrite using `[Algebra.smul_def, mul_comm, hLm, hco, Matrix.mulVec_mulVec]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨TensorProduct.liftAddHom f hf, fun r t => rfl, fun r z => ?_⟩` and prove the remaining obligations. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul x t`. Rewrite using `[TensorProduct.smul_tmul', smul_eq_mul]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `show (L (r * x)).mulVec (co t) = (L r).mulVec ((L x).mulVec (co t))`. Rewrite using `[hLm, Matrix.mulVec_mulVec]`. Consider the case `add x y hx hy => rw [smul_add, map_add, map_add, hx, hy, Matrix.mulVec_add]`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem specPhi_generic {G : Type} [Group G] [TopologicalSpace G] {Qp LL O : Type} [Field Qp]
     [Field LL] [Algebra Qp LL] [CommRing O] [Algebra O LL] [TopologicalSpace LL]
@@ -78,11 +78,11 @@ theorem specPhi_generic {G : Type} [Group G] [TopologicalSpace G] {Qp LL O : Typ
   | add x y hx hy => rw [smul_add, map_add, map_add, hx, hy, Matrix.mulVec_add]
 
 /- English proof (translation)
-Unfold `TWact`. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero`. Simplify using `only [map_zero, Pi.zero_apply]`. Conclude with `(Matrix.mulVec_zero U).symm`.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 
-Consider the case `tmul r t => exact h r t`. Consider the case `add x y hx hy`. Rewrite using `[map_add, map_add, hx, hy, ← Matrix.mulVec_add]`. Use `congr 1`. Use function extensionality and compare the values at `i`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using `[map_add]`.
+A detailed English derivation is pending.
 -/
 theorem specPhi_equiv {G : Type} [Group G] [TopologicalSpace G] {Qp LL O : Type} [Field Qp]
     [Field LL] [Algebra Qp LL] [CommRing O] [Algebra O LL] [TopologicalSpace LL]
@@ -105,7 +105,7 @@ theorem specPhi_equiv {G : Type} [Group G] [TopologicalSpace G] {Qp LL O : Type}
     simp [map_add]
 
 /- English proof (translation)
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul r t => exact h r t i`. Consider the case `add x y hx hy => simpa using S.add_mem hx hy`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem specPhi_norm {G : Type} [Group G] [TopologicalSpace G] {Qp LL O : Type} [Field Qp]
     [Field LL] [Algebra Qp LL] [CommRing O] [Algebra O LL] [TopologicalSpace LL]
@@ -123,11 +123,11 @@ variable {l : ℕ} [Fact l.Prime]
 set_option synthInstance.maxHeartbeats 400000 in
 
 /- English proof (translation)
-Take `⟨b, hM, hA⟩` from `h`. Use `letI := zlMod LL T`. Set `φ : ℤ_[l] →+* PadicComplex l` to `(algebraMap ℚ_[l] (PadicComplex l)).comp PadicInt.Coe.ringHom`. Set `co : ↥T.L.T →+ (Fin d → PadicComplex l)` to `{ toFun := fun t i => zC (b.repr t i) map_zero' := by funext i; simp [zC] map_add' := fun x y => by funext i; simp [zC] }`. Use `⟨co, fun t i => ?_, fun g t i => act_zC hact _ _, fun a t => ?_, fun g t => ?_, fun j => ⟨b j, ?_⟩⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(mem_OC _).2 ((norm_zC _).le.trans (PadicInt.norm_le_one _))`. Establish `hs : ∀ (x : ℤ_[l]) (s : ↥T.L.T), x • s = algebraMap ℤ_[l] ↥(OL LL) x • s` using `fun x s => rfl`. Conclude with `specPhi_coord_smul hs φ b a (A a) (fun i j => hA a i j) t`. Conclude with `specPhi_coord φ b (actTZ LL T g) (M g) (fun i j => hM g i j) t`. Use function extensionality and compare the values at `i show zC (b.repr (b j) i) = (Pi.single j (1 : PadicComplex l) : Fin d → PadicComplex l) i`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Rewrite using `[b.repr_self]`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Simplify using `[zC]`. Simplify using `[zC, hij]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem specPhi_co (K LL : FinExt l) (T : LocLat ↥(GK K) ℚ_[l] ↥LL.1 ↥(OL LL)) {d : ℕ}
     (M : GQ l → Matrix (Fin d) (Fin d) (PadicComplex l))
@@ -162,15 +162,15 @@ theorem specPhi_co (K LL : FinExt l) (T : LocLat ↥(GK K) ℚ_[l] ↥LL.1 ↥(O
     · simp [zC, hij]
 
 /- English proof (translation)
-Take `⟨Φ, hΦt, hΦs⟩` from `specPhi_generic T L hL0 hLa hLm co (fun a t => by rw [hcoA, hal])`. Establish `hLco : ∀ r t, (L r).mulVec (co t) = ∑ k, κ r k • co (o k • t)`. Introduce `r t`. Rewrite using `[hL, Matrix.sum_mulVec]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Matrix.smul_mulVec, hcoA]`. Use `⟨Φ, hΦs, fun z i => specPhi_norm T Φ S.toAddSubmonoid (fun r t i => ?_) z i, fun g z => specPhi_equiv T Φ (u g) g (M g) (σ g) (fun r t => ?_) z, fun t => ?_⟩` and prove the remaining obligations. Use `show _ ∈ S`. Rewrite using `[hΦt, hLco, Finset.sum_apply]`. Use `S.sum_mem fun k _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Pi.smul_apply, smul_eq_mul]`. Conclude with `S.mul_mem (hκS r k) (hS _ i)`. Rewrite using `[hΦt, hΦt, hLco, hLco]`. Establish `h1 : ∀ k, co (o k • T.actT g t) = (M g).mulVec (co (o k • t))` using `fun k => by`. Rewrite using `[← map_smul (T.actT g) (o k) t, hcoM]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `h2 : (fun i => σ g ((∑ k, κ r k • co (o k • t)) i)) = ∑ k, κ (u g r) k • co (o k • t)`. Use function extensionality and compare the values at `i`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, map_sum, map_mul, hσ, ← hκ]`. Rewrite using `[h2, Matrix.mulVec_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[h1, Matrix.mulVec_smul]`. Establish `h1 : L 1 = 1` using `by rw [← map_one (algebraMap O R), hal, hone]`. Rewrite using `[hΦt, h1, Matrix.one_mulVec]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem specPhi_abstract {G : Type} [Group G] [TopologicalSpace G] {Qp LL O : Type} [Field Qp]
     [Field LL] [Algebra Qp LL] [CommRing O] [Algebra O LL] [TopologicalSpace LL]
@@ -216,7 +216,7 @@ theorem specPhi_abstract {G : Type} [Group G] [TopologicalSpace G] {Qp LL O : Ty
 
 set_option synthInstance.maxHeartbeats 400000 in
 /- English proof (translation)
-Rewrite using `[Algebra.TensorProduct.algebraMap_apply, thR_tmul, map_one]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem specPhi_thR_alg (LL : FinExt l) (θ : Ainf l →ₐ[ℤ_[l]] OC l) (a : ↥(OL LL)) :
     thR LL θ (algebraMap ↥(OL LL) (RA LL) a) = (1 : OC l) ⊗ₜ[ℤ_[l]] a := by
@@ -226,15 +226,15 @@ theorem specPhi_thR_alg (LL : FinExt l) (θ : Ainf l →ₐ[ℤ_[l]] OC l) (a : 
 set_option synthInstance.maxHeartbeats 400000 in
 set_option maxHeartbeats 800000 in
 /- English proof (translation)
-Introduce `l _ P AI K LL T d f n M A o θ hM hθ`. Establish `hact : IsActC AI.actC` using `⟨AI.actC_ext, AI.actC_norm⟩`. Take `⟨co, hS, hσ, hcoA, hcoM, hsingle⟩` from `specPhi_co K LL T M A hM hact`. Establish `hmul` using `lam_mul_of_isMat l K LL T d f M A o hM`. Establish `hL : ∀ r : RA LL, lam o A (thR LL θ r) = ∑ k, kap o (thR LL θ r) k • A (o k)` using `fun r => rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hL0 : lam o A (thR LL θ 0) = 0` using `by rw [map_zero, lamMul_lam_zero]`. Establish `hLa : ∀ x y : RA LL, lam o A (thR LL θ (x + y)) = lam o A (thR LL θ x) + lam o A (thR LL θ y)` using `fun x y => by`. Rewrite using `[map_add, lamMul_lam_add]`. Establish `hLm : ∀ x y : RA LL, lam o A (thR LL θ (x * y)) = lam o A (thR LL θ x) * lam o A (thR LL θ y)` using `fun x y => by`. Rewrite using `[map_mul, hmul.2.2.2]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hal : ∀ a : ↥(OL LL), lam o A (thR LL θ (algebraMap ↥(OL LL) (RA LL) a)) = A a` using `fun a => by rw [specPhi_thR_alg, hmul.1]; simp`. Establish `hκS : ∀ (r : RA LL) (k : Fin f), kap o (thR LL θ r) k ∈ (PadicComplexInt l).toSubring` using `fun r k => (mem_OC _).2 (norm_kap_le o _ k)`. Establish `hκ : ∀ (g : ↥(GK K)) (r : RA LL) (k : Fin f), kap o (thR LL θ (gRA AI LL (g : GQ l) r)) k = AI.actC (g : GQ l) (kap o (thR LL θ r) k)` using `fun g r k => kap_thR_gRA AI o hθ _ r k`. Establish `keyA` using `specPhi_abstract (R := RA LL) T (PadicComplexInt l).toSubring A (fun g => M (g : GQ l)) (fun g => AI.actC (g : GQ l)) (fun g => gRA AI LL (g : GQ l)) o (fun r k => kap o (thR LL θ r) k) (fun r => lam o A (thR LL θ r)) hL hL0 hLa hLm hal hmul.2.1 hκS hκ co hS hσ hcoA hcoM`. Take `⟨Φ, hΦs, hΦS, hΦg, hΦ1⟩` from `keyA`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨Φ, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `hΦs`. Introduce `z i`. Conclude with `(mem_OC _).1 (hΦS z i)`. Introduce `g z`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Apply an available result and prove the equalities needed to match it to the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `hΦg g z using 3` and compare the differences between its conclusion and the goal. Introduce `j`. Take `⟨t, ht⟩` from `hsingle j`. Conclude with `⟨t, (hΦ1 t).trans ht⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_specPhi : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P) (K LL : FinExt l) (T : LocLat ↥(GK K) ℚ_[l] ↥LL.1 ↥(OL LL)) (d f n : ℕ) (M : GQ l → Matrix (Fin d) (Fin d) (PadicComplex l)) (A : ↥(OL LL) → Matrix (Fin d) (Fin d) (PadicComplex l)) (o : Module.Basis (Fin f) ℤ_[l] ↥(OL LL)) (θ : Ainf l →ₐ[ℤ_[l]] OC l), IsMat K LL T M A → IsThetaShift AI n θ → ∃ Φ : TW (RA LL) T →+ (Fin d → PadicComplex l), (∀ (r : RA LL) (z : TW (RA LL) T), Φ (r • z) = (lam o A (thR LL θ r)).mulVec (Φ z)) ∧ (∀ z i, ‖Φ z i‖ ≤ 1) ∧ (∀ (g : ↥(GK K)) (z : TW (RA LL) T), Φ (TWact (gRA AI LL (g : GQ l)) T g z) = (M (g : GQ l)).mulVec (fun i => AI.actC (g : GQ l) (Φ z i))) ∧ ∀ j, ∃ t : ↥T.L.T, Φ ((1 : RA LL) ⊗ₜ[↥(OL LL)] t) = Pi.single j 1 := by
   intro l _ P AI K LL T d f n M A o θ hM hθ

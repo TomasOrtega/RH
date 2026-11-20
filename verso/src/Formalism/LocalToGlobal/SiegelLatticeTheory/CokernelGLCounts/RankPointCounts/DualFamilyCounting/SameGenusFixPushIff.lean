@@ -20,18 +20,18 @@ def stabEquivW (hs : h.IsSymm) (hc : IsCompl U (orthK h U)) (N : Submodule (𝓞
   right_inv g := Subtype.ext (restr_extId hs hc g.2.1)
 
 /- English proof (translation)
-The claim follows from `Nat.card_congr (stabEquivW hs hc N)`.
+A detailed English derivation is pending.
 -/
 theorem card_stab_push (hs : h.IsSymm) (hc : IsCompl U (orthK h U)) (N : Submodule (𝓞 K) ↥(orthK h U)) :
     Nat.card (stabFix h U (push (orthK h U) N)) = Nat.card (Formalism.ThetaLiftIndependence.autL (formOn h (orthK h U)) N) :=
   Nat.card_congr (stabEquivW hs hc N)
 
 /- English proof (translation)
-Rewrite using `[GoodGenusOrbits.sameGenus_iff (F := F) hK hF A B]`. Prove the components needed by the constructor for the conclusion. Introduce `H 𝔭`. Take `⟨g, hg, e⟩` from `H 𝔭.1 𝔭.2`. Use `⟨restr hg, restr_mem hg, push_injective _ ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← gmap_push hg, push_locF _ 𝔭.2.isPrime, push_locF _ 𝔭.2.isPrime]`. Conclude with `e`. Introduce `H 𝔭 h𝔭`. Take `⟨g, hg, e⟩` from `H ⟨𝔭, h𝔭⟩`. Use `⟨extId hc g, extId_mem hs hc hg, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← push_locF _ h𝔭.isPrime, ← push_locF _ h𝔭.isPrime, gmap_extId_push hs hc hg]`. Conclude with `congrArg _ e`.
+A detailed English derivation is pending.
 -/
 theorem sameGenusFix_push_iff (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF : IsFixF K F) (hs : h.IsSymm)
     (hc : IsCompl U (orthK h U)) (A B : Submodule (𝓞 K) ↥(orthK h U)) :

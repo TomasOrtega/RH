@@ -58,7 +58,7 @@ def TieStabAllInst : Prop :=
     DV.Used D μ → OrbitPlaces.Stab0 D → StabEqRest KA → ∀ j, j ≤ D.R.m → TieStabAt (Y := Y) u μ KA.cls j
 
 /- English proof (translation)
-Introduce `D ex cc u μ w h _ Fl Lv Ch KA std vp unif eO eO_spec dG dG_spec om Y cls hU hS La hLa`. Rewrite using `[hS.2 u μ hU _]`. Conclude with `(KA.stab_zero La.1 La.2 (Y.Rep_lat 0 La hLa)).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem stabilizer_base_instance : TieStab0Inst := by
   intro D ex cc u μ w h _ Fl Lv Ch KA std vp unif eO eO_spec dG dG_spec om Y cls hU hS La hLa
@@ -66,7 +66,7 @@ theorem stabilizer_base_instance : TieStab0Inst := by
   exact (KA.stab_zero La.1 La.2 (Y.Rep_lat 0 La hLa)).symm
 
 /- English proof (translation)
-Introduce `D Gt cc Gd inQ T u μ w h _ Fl Lv Ch std vp unif eO eO_spec dG dG_spec om Y cls La hLa`. Take `⟨c0⟩` from `Formalism.L2.G.TwTie0.clsAt0_of_gatIs D Gd.herm.lev0 u w h (Gd.gat u w h) μ (T.eCls0 u μ) Lv`. Rewrite using `[Formalism.L2.G.StabilizerCardinality.card_stab0_of_equiv D Gd.herm.lev0 u μ (T.eCls0 u μ) (fun c => ⟨T.eStab0 u μ c⟩) _]`. Conclude with `(c0.stab_zero La.1 La.2 (Y.Rep_lat 0 La hLa)).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem stabilizer_base_agrees : StabilizerEqualityAtZero := by
   intro D Gt cc Gd inQ T u μ w h _ Fl Lv Ch std vp unif eO eO_spec dG dG_spec om Y cls La hLa
@@ -75,11 +75,11 @@ theorem stabilizer_base_agrees : StabilizerEqualityAtZero := by
   exact (c0.stab_zero La.1 La.2 (Y.Rep_lat 0 La hLa)).symm
 
 /- English proof (translation)
-Introduce `D ex cc u μ w h _ Fl Lv Ch KA std vp unif eO eO_spec dG dG_spec om Y`. Prove the components needed by the constructor for the conclusion. Introduce `hR j h1 hj La hLa`. Conclude with `hR j h1 hj La.1 La.2 (Y.Rep_lat j La hLa)`. Introduce `hT j h1 hj a L hL`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hjm : j ≤ Fl.mm` using `KA.fl_m ▸ hj`. Take `⟨L0, ⟨hmem, γ, hγ⟩, -⟩` from `Y.Rep_ex j hjm a L hL`. Establish `hL0 : (Fl.Pj j).IsLatTup L0` using `Y.Rep_lat j (a, L0) hmem`. Establish `hc : KA.cls j a L0 = KA.cls j a L` using `(KA.cls_iff j hj a a L0 L hL0 hL).2 ⟨rfl, γ, hγ⟩`. Establish `h0` using `hT j h1 hj (a, L0) hmem`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hc, h0, hγ, Formalism.L2.G.Pend.card_stab_smul (Lv.lev j a) γ L0]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem stabilizer_restrict_iff : TieStabRestIff := by
   intro D ex cc u μ w h _ Fl Lv Ch KA std vp unif eO eO_spec dG dG_spec om Y
@@ -97,7 +97,7 @@ theorem stabilizer_restrict_iff : TieStabRestIff := by
     rfl
 
 /- English proof (translation)
-Introduce `D ex cc u μ w h _ Fl Lv Ch KA std vp unif eO eO_spec dG dG_spec om Y hU hS hR j hj`. Break down `Nat.eq_zero_or_pos j with h0 | hpos` into its components or cases. Substitute `h0` using the available equality. Conclude with `stabilizer_base_instance D ex cc u μ w h Fl Lv Ch KA std vp unif eO eO_spec dG dG_spec om Y KA.cls hU hS`. Conclude with `(stabilizer_restrict_iff D ex cc u μ w h Fl Lv Ch KA std vp unif eO eO_spec dG dG_spec om Y).1 hR j hpos hj`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem stabilizer_all_instances : TieStabAllInst := by
   intro D ex cc u μ w h _ Fl Lv Ch KA std vp unif eO eO_spec dG dG_spec om Y hU hS hR j hj
@@ -107,7 +107,7 @@ theorem stabilizer_all_instances : TieStabAllInst := by
   · exact (stabilizer_restrict_iff D ex cc u μ w h Fl Lv Ch KA std vp unif eO eO_spec dG dG_spec om Y).1 hR j hpos hj
 
 /- English proof (translation)
-The claim follows from `stabilizer_base_agrees D Gt cc Gd inQ T u μ w h Fl Lv Ch std vp unif eO eO_spec dG dG_spec om Y KA.cls`.
+A detailed English derivation is pending.
 -/
 theorem tieStab0_KA {D : D7} {Gt : GatTies D} {cc : LatCmp D} (Gd : Formalism.L2.G.GroupCompatibilityAll D Gt cc)
     {inQ : D.what₂.Tup → IsDedekindDomain.HeightOneSpectrum (NumberField.RingOfIntegers D.host.F) → Prop}

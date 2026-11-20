@@ -25,7 +25,7 @@ def LevAgrees (V : HSp D) {La : Type} [AddCommGroup La] [Module (𝓞 D.host.E) 
     finVec V (ι (lev a)) - (finHom V κ).1.mulVec (finVec V (ι a)) = M • w
 
 /- English proof (translation)
-Use `⟨Subgroup.one_mem _, ?_⟩` and prove the remaining obligations. Unfold `gLat`. Rewrite using `[map_one]`. Use extensionality with `z`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem stabLat_one (V : HSp D) : StabLat V 1 := by
   refine ⟨Subgroup.one_mem _, ?_⟩
@@ -57,7 +57,7 @@ variable {D : D7} (T : CoreJ D) (hT : LawsJ T) (j : ℕ) (hj : InR D j) (σ : T.
 include hT hj hσ in
 
 /- English proof (translation)
-Take `⟨_, _, _, hd⟩` from `hT.dictU j hj σ hσ`. Conclude with `hd.2.2.2.1 h`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem dict_mem_dom (h : GA D (T.V j σ)) : (T.dict j σ h).2 ∈ ((T.U j σ).X (T.dict j σ h).1).dom := by
   obtain ⟨_, _, _, hd⟩ := hT.dictU j hj σ hσ
@@ -66,7 +66,7 @@ theorem dict_mem_dom (h : GA D (T.V j σ)) : (T.dict j σ h).2 ∈ ((T.U j σ).X
 include hT hj hσ in
 
 /- English proof (translation)
-The claim follows from `(hT.modelW j hj σ hσ).choose`.
+A detailed English derivation is pending.
 -/
 theorem rank_eq : (T.V j σ).rank = D.R.r := (hT.modelW j hj σ hσ).choose
 

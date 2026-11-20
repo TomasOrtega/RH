@@ -9,9 +9,7 @@ open Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes NumberField IsDed
 open scoped Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes TensorProduct
 
 /- English proof (translation)
-Use `haveI : Module.Finite (Fv F v) (Fv F v ⊗[F] E) := inferInstance`. Use `haveI : IsModuleTopology (Fv F v) (Fv F v ⊗[F] E) := ⟨rfl⟩`. Use `first`. Consider the case `exact IsModuleTopology.topologicalRing (Fv F v) _`. Consider the case `exact IsModuleTopology.isTopologicalRing (Fv F v) _`.
-
-Consider the case `exact IsModuleTopology.Module.topologicalRing (Fv F v) _`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem tens_topRing {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E] [FiniteDimensional F E]
     (v : HeightOneSpectrum (𝓞 F)) : IsTopologicalRing (Fv F v ⊗[F] E) := by
@@ -23,7 +21,7 @@ theorem tens_topRing {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F
     | exact IsModuleTopology.Module.topologicalRing (Fv F v) _
 
 /- English proof (translation)
-Use `haveI := tens_topRing (F := F) (E := E) v`. Use `first`. Consider the case `infer_instance`. Consider the case `(unfold HA; infer_instance)`. Consider the case `(show ContinuousMul (HR (Fv F v) σ J); infer_instance)`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem ha_contMul {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E] [FiniteDimensional F E]
     (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (v : HeightOneSpectrum (𝓞 F)) :
@@ -35,7 +33,7 @@ theorem ha_contMul {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E
     | (show ContinuousMul (HR (Fv F v) σ J); infer_instance)
 
 /- English proof (translation)
-Use `⟨ha_contMul _ _ _, ?_⟩` and prove the remaining obligations. Use `first`. Consider the case `exact ⟨rfl⟩`. Consider the case `(unfold HAp HA; infer_instance)`. Consider the case `(haveI := tens_topRing (F := X.B.I.F) (E := X.B.I.E) p.1; unfold HAp HA; infer_instance)`.
+Reduce the conclusion to the remaining proof obligations. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem stTop {D : D7} (X : HidaSetting D) (p : TypX X) : StTop X p := by
   refine ⟨ha_contMul _ _ _, ?_⟩

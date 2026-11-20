@@ -23,7 +23,7 @@ noncomputable section
 namespace GlobalTheory.WholeFlag.GlueProof
 
 /- English proof (translation)
-Simplify using `only [cramerCol, Matrix.of_apply]`. Rewrite using `[minor_eq_mul_inv H Tm hT hd _ k.2 (Fin.snoc (σ k) r), minor_eq_mul_inv H Tm hT hd _ k.2 (σ ((k : ℕ) + 1))]`. Conclude with `mul_div_mul_right _ _ (Finset.prod_ne_zero_iff.2 fun i _ => hd _)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cramerCol_apply_eq {K : Type} [Field K] {g : ℕ} (H : Matrix (Fin (g + g)) (Fin g) K)
     (Tm : Matrix (Fin g) (Fin g) K) (hT : Tm.BlockTriangular id) (hd : ∀ i, Tm i i ≠ 0)
@@ -35,50 +35,46 @@ theorem cramerCol_apply_eq {K : Type} [Field K] {g : ℕ} (H : Matrix (Fin (g + 
   exact mul_div_mul_right _ _ (Finset.prod_ne_zero_iff.2 fun i _ => hd _)
 
 /- English proof (translation)
-Simplify using `[rowSel, Matrix.mul_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem rowSel_mul_apply {R : Type} [CommRing R] {g : ℕ} {n : Type} [Fintype n] (τ : Fin g → Fin (g + g))
     (M : Matrix (Fin (g + g)) n R) (l : Fin g) (k : n) : (rowSel (R := R) τ * M : Matrix (Fin g) n R) l k = M (τ l) k := by
   simp [rowSel, Matrix.mul_apply]
 
 /- English proof (translation)
-Introduce `F _ _ Y C g A p V W ι U H J d T L m r hH q x hx hpx`. Take `⟨hp, hg0, hJ, hW, hm, -, -, hT, -, -, -, hreg, -⟩` from `id hH`. Establish `hx' : x ∈ chartSet V U H L m r q` using `hx`. Establish `hmin : ∀ (k : ℕ) (hk : k ≤ g), minorAt (H q.1) k hk (q.2.1 k) ≠ 0`. Introduce `k hk h0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `(hx'.2.2 k hk).ne_zero` to reduce the goal to its premises. Simplify using `[nmin, h0, zero_pow hm.ne']`. Take `⟨B, -, -, -, hdet⟩` from `cramerCol_tri_det (H q.1) q.2.1 hmin`. Establish `hU1 : (rowSel (q.2.1 g) * chartU V H q).det = 1`. Establish `e : rowSel (q.2.1 g) * chartU V H q = (toG V).symm.toRingHom.mapMatrix (rowSel (q.2.1 g) * cramerCol (H q.1) q.2.1)`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use extensionality with `l k`. Conclude with `(rowSel_mul_apply _ _ l k).trans (congrArg (toG V).symm.toRingHom (rowSel_mul_apply (q.2.1 g) (cramerCol (H q.1) q.2.1) l k).symm)`. Conclude with `(congrArg Matrix.det e).trans ((RingHom.map_det _ _).symm.trans ((congrArg _ hdet).trans (map_one _)))`. Establish `hU1u : IsUnit (rowSel (q.2.1 g) * chartU V H q).det` using `by rw [hU1]; exact isUnit_one`. Establish `hTz : ∀ y, ((T y).map V.φ).BlockTriangular id` using `fun y => blockTriangular_map V (hT y).1`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hdz : ∀ y i, ((T y).map V.φ) i i ≠ 0` using `fun y i => by`. Rewrite using `[Matrix.map_apply, (hT y).2 i, map_ne_zero]`. Conclude with `Units.ne_zero _`. Establish `hU : ∀ r' k, RegAt x (chartU V H q r' k)`. Introduce `r' k`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `GlobalTheory.Mean4O.Cover.RegOverP.regAt_of_values_over F Y V p hp W hW (chartOpen V U H L m r q) _ ?_ ?_ x hx hpx` and prove the remaining obligations. Introduce `z hz`. Establish `hz' : V.j z ∈ chartSet V U H L m r q` using `hz`. Simplify using `only [chartU, Matrix.map_apply]`. Rewrite using `[regAt_symm, cramerCol_apply_eq (H q.1) _ (hTz (V.π z)) (hdz (V.π z)), div_eq_mul_inv]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(regAt_minor _ (hreg q.1 z hz'.1) _ _ _).mul (GlobalTheory.T.hodge_chart_line_base_regular A p V W U H J d T L m r hH q z hz _ k.2).inv.regAt`. Introduce `v hv e y hy z yt hzy hc ht`. Establish `ht' : ⊤ ≤ (spMap e.O.subtype ≫ yt) ⁻¹ᵁ chartOpen V U H L m r q` using `fun q' _ => ht (x := spMap e.O.subtype q') trivial`. Establish `hb : V.j (below z) ∈ chartOpen V U H L m r q`. Establish `h0 : below (spMap e.O.subtype ≫ yt) ∈ chartOpen V U H L m r q` using `ht' trivial`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite `h0` using `[hc]`. Conclude with `h0`. Establish `hb' : V.j (below z) ∈ chartSet V U H L m r q` using `hb`. Establish `hby : below y.1 = V.π (below z)` using `by rw [← hzy]; rfl`. Simplify using `only [chartU, Matrix.map_apply]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[valAt_symm, cramerCol_apply_eq (H q.1) _ (hTz (V.π (below z))) (hdz _), div_eq_mul_inv]`. Establish `hHz` using `hreg q.1 (below z) hb'.1`. Establish `hD` using `GlobalTheory.T.hodge_chart_line_base_regular A p V W U H J d T L m r hH q (below z) hb _ k.2`. Establish `hN` using `minor_valAt z _ hHz _ k.2 (Fin.snoc (q.2.1 k) r')`. Establish `hD'` using `minor_valAt z _ hHz _ k.2 (q.2.1 ((k : ℕ) + 1))`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[Res.valAt_mul hN.1 hD.inv.regAt, valAt_inv z hD, hN.2, hD'.2, map_mul, map_inv₀, ← div_eq_mul_inv]`. Take `⟨hpos, hmx⟩` from `GlobalTheory.T.hodge_chart_minor_regularity A p V W U H J d T L m r hH v hv e y hy z yt hzy hc q ht _ k.2`. Rewrite `hpos`, `hmx` using `[hby]`. Conclude with `(div_le_one hpos).2 (hmx _)`. Take `⟨S, hS⟩` from `exists_lift (chartU V H q) hU`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hJ' : IsUnit (J.map (Int.castRingHom (V.X.presheaf.stalk x))).det`. Establish `h` using `hJ.map (Int.castRingHom (V.X.presheaf.stalk x))`. Rewrite `h` using `[RingHom.map_det]`. Conclude with `h`. Establish `hJF : IsUnit (J.map (Int.castRingHom V.X.functionField)).det`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `h` using `hJ.map (Int.castRingHom V.X.functionField)`. Rewrite `h` using `[RingHom.map_det]`. Conclude with `h`. Establish `hJmap : (J.map (Int.castRingHom (V.X.presheaf.stalk x))).map (algebraMap _ V.X.functionField) = J.map (Int.castRingHom V.X.functionField)`. Use extensionality with `a b`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Establish `hSdet : (rowSel (q.2.1 g) * S).det = 1`. Apply `IsFractionRing.injective (V.X.presheaf.stalk x) V.X.functionField` to reduce the goal to its premises. Use `(RingHom.map_det _ _).trans ?_` and prove the remaining obligations. Establish `e : (algebraMap (V.X.presheaf.stalk x) V.X.functionField).mapMatrix (rowSel (q.2.1 g) * S) = rowSel (q.2.1 g) * chartU V H q`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use extensionality with `l k`. Conclude with `(congrArg _ (rowSel_mul_apply _ _ l k)).trans ((congrArg (fun M => M (q.2.1 g l) k) hS).trans (rowSel_mul_apply _ _ l k).symm)`. Conclude with `(congrArg Matrix.det e).trans (hU1.trans (map_one _).symm)`. Establish `hSu : IsUnit (rowSel (q.2.1 g) * S).det` using `by rw [hSdet]; exact isUnit_one`. Establish `hM : chartM V H J q = (fullFrame S (J.map (Int.castRingHom (V.X.presheaf.stalk x))) (leftInv S (q.2.1 g))).map (algebraMap (V.X.presheaf.stalk x) V.X.functionField)`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[fullFrame_leftInv_map _ S _ _ hJ' hSu, hS, hJmap]`. Both sides reduce to the same expression. Establish `hmax : ∀ i k, (S.transpose * J.map (Int.castRingHom (V.X.presheaf.stalk x)) * S) i k ∈ IsLocalRing.maximalIdeal (V.X.presheaf.stalk x)`. Introduce `i k`. Establish `hf : algebraMap (V.X.presheaf.stalk x) V.X.functionField ((S.transpose * J.map (Int.castRingHom (V.X.presheaf.stalk x)) * S) i k) = ((chartU V H q).transpose * J.map (Int.castRingHom V.X.functionField) * chartU V H q) i k`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Rewrite using `[← hS, ← hJmap, ← Matrix.transpose_map, ← Matrix.map_mul, ← Matrix.map_mul]`. Both sides reduce to the same expression. Establish `hval : ∀ v : HeightOneSpectrum (𝓞 F), resP v = p → ∀ (e : TrueGeo.Ext v) (y : AlgPt Y), below y.1 ∈ W → ∀ (z : Sp (AlgebraicClosure F) ⟶ V.G) (yt : Sp e.O ⟶ V.X), z ≫ V.π = y.1 → spMap e.O.subtype ≫ yt = z ≫ V.j → ⊤ ≤ yt ⁻¹ᵁ chartOpen V U H L m r q → e.w (valAt (z ≫ V.j) (((chart …`. Introduce `v hv e y hy z yt hzy hc ht`. Establish `h2` using `(GlobalTheory.T.hodge_chart_section_divisor A p V W U H J d T L m r hH v hv e y hy z yt hzy hc q ht).2 i (Fin.castAdd g k)`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hif : ¬ ((i : ℕ) + ((Fin.castAdd g k : Fin (g + g)) : ℕ) = 2 * g - 1)`. Use `i.2` as an intermediate fact. Use `k.2` as an intermediate fact. Simplify using `only [Fin.coe_castAdd]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Simplify using `only [chartM] at h2`. Rewrite `h2` using `[if_neg hif, sub_zero, (fullFrame_gram (chartU V H q) (J.map (Int.castRingHom _)) (q.2.1 g) hJF hU1u i k).1]`. Conclude with `h2`. Take `⟨a, ha, hae⟩` from `GlobalTheory.Cover.ZeroAtFibre.zeroAt_of_w_lt_one F Y V p hp W hW (chartOpen V U H L m r q) _ hval x hx hpx ⟨_, hf⟩`. Take `rfl` from `IsFractionRing.injective (V.X.presheaf.stalk x) V.X.functionField (hae.trans hf.symm)`.
-
-Conclude with `ha`. Use `⟨fun i k => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hM]`. Conclude with `⟨_, rfl⟩`. Use `⟨_, GlobalTheory.T.full_frame_det_isUnit_of_isotropic S _ (q.2.1 g) hJ' hSu hmax, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[hM, RingHom.map_det]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem chartM_regAt_unitAt : ∀ {F : Type} [Field F] [NumberField F] {Y : Var F} {C : CxSt F} {g : ℕ} (A : Fin g → Adl C Y) (p : ℕ) (V : Cover Y) (W : Y.X.Opens) {ι : Type} (U : ι → V.X.Opens) (H : ι → Matrix (Fin (g + g)) (Fin g) V.G.functionField) (J : Matrix (Fin (g + g)) (Fin (g + g)) ℤ) (d : Y.X → Fin g → Y.Fnˣ) (T : Y.X → Matrix (Fin g) (Fin g) Y.Fn) (L : Fin g → LB V.X) (m : ℕ) (r : ∀ i, ((L i).pull V.j).ι → V.G.functionFieldˣ), Hyp A p V W U H J d T L m r → ∀ (q : Idx ι L), ∀ x ∈ chartOpen V U H L m r q, ¬ IsUnit (p : V.X.presheaf.stalk x) → (∀ i k, RegAt x (chartM V H J q i k)) ∧ UnitAt x (chartM V H J q).det := by
   intro F _ _ Y C g A p V W ι U H J d T L m r hH q x hx hpx

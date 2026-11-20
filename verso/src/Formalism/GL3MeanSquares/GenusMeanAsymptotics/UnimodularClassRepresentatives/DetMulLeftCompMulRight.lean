@@ -30,7 +30,7 @@ def hermSub (hF : ∀ a : K, star a = a ↔ a ∈ Set.range (algebraMap F K)) (m
 variable (hF : ∀ a : K, star a = a ↔ a ∈ Set.range (algebraMap F K))
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_hermSub (B : Matrix (Fin m) (Fin m) K) : B ∈ hermSub hF m ↔ Bᴴ = B := Iff.rfl
 
@@ -38,7 +38,7 @@ noncomputable def toMat (m : ℕ) : K ⊗[F] (hermSub hF m) →ₗ[K] Matrix (Fi
   (hermSub hF m).subtype.liftBaseChange K
 
 /- English proof (translation)
-Simplify using `[toMat]`.
+Simplify using the standard rewrite rules.
 -/
 theorem toMat_tmul (a : K) (B : hermSub hF m) :
     toMat hF m (a ⊗ₜ B) = a • (B : Matrix (Fin m) (Fin m) K) := by
@@ -46,9 +46,9 @@ theorem toMat_tmul (a : K) (B : hermSub hF m) :
 
 include hF in
 /- English proof (translation)
-Take `⟨x, hx⟩` from `(hF ((a + star a) / 2)).1 (by`. Rewrite using `[star_div₀, star_add, star_star, star_ofNat, add_comm])`. Take `⟨y, hy⟩` from `(hF ((a - star a) / (2 * δ))).1 (by`. Rewrite using `[star_div₀, star_sub, star_star, star_mul', star_ofNat, hδ]`. Clear the denominators using the available nonvanishing facts.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Use the proof step `ring)`. Use `⟨x, y, ?_⟩` and prove the remaining obligations. Rewrite using `[hx, hy]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem exists_decomp {δ : K} (hδ : star δ = -δ) (hδ0 : δ ≠ 0) (a : K) :
     ∃ x y : F, a = algebraMap F K x + δ * algebraMap F K y := by
@@ -64,11 +64,11 @@ theorem exists_decomp {δ : K} (hδ : star δ = -δ) (hδ0 : δ ≠ 0) (a : K) :
   ring
 
 /- English proof (translation)
-Proceed by induction on `t with`. Consider the case `zero => exact ⟨0, 0, by simp⟩`. Consider the case `tmul a B`. Take `⟨x, y, rfl⟩` from `exists_decomp hF hδ hδ0 a`. Use `⟨x • B, y • B, ?_⟩` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[TensorProduct.add_tmul, TensorProduct.tmul_smul, TensorProduct.tmul_smul, TensorProduct.smul_tmul', TensorProduct.smul_tmul', Algebra.smul_def, Algebra.smul_def, mul_one, mul_comm δ]`. Consider the case `add s t hs ht`. Take `⟨B, C, rfl⟩` from `hs`. Take `⟨B', C', rfl⟩` from `ht`. Use `⟨B + B', C + C', ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[TensorProduct.tmul_add, TensorProduct.tmul_add]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem exists_tensor_decomp {δ : K} (hδ : star δ = -δ) (hδ0 : δ ≠ 0) (t : K ⊗[F] (hermSub hF m)) :
     ∃ B C : hermSub hF m, t = (1 : K) ⊗ₜ B + δ ⊗ₜ C := by
@@ -88,13 +88,11 @@ theorem exists_tensor_decomp {δ : K} (hδ : star δ = -δ) (hδ0 : δ ≠ 0) (t
     abel
 
 /- English proof (translation)
-Rewrite using `[injective_iff_map_eq_zero]`. Introduce `t ht`. Take `⟨B, C, rfl⟩` from `exists_tensor_decomp hF hδ hδ0 t`. Rewrite `ht` using `[map_add, toMat_tmul, toMat_tmul, one_smul]`. Establish `ht'` using `congrArg Matrix.conjTranspose ht`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `ht'` using `[Matrix.conjTranspose_add, Matrix.conjTranspose_smul, (mem_hermSub hF _).1 B.2, (mem_hermSub hF _).1 C.2, hδ, Matrix.conjTranspose_zero, neg_smul]`. Establish `hB : (B : Matrix (Fin m) (Fin m) K) = 0`. Establish `: (2 : K) • (B : Matrix (Fin m) (Fin m) K) = 0`. Rewrite using `[two_smul]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Conclude with `(smul_eq_zero.1 this).resolve_left two_ne_zero`. Establish `hC : (C : Matrix (Fin m) (Fin m) K) = 0`. Rewrite `ht` using `[hB, zero_add]`. Conclude with `(smul_eq_zero.1 ht).resolve_left hδ0`. Rewrite using `[Subtype.ext (a1 := B) (a2 := 0) hB, Subtype.ext (a1 := C) (a2 := 0) hC]`.
-
-Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem toMat_injective {δ : K} (hδ : star δ = -δ) (hδ0 : δ ≠ 0) :
     Function.Injective (toMat hF m) := by
@@ -119,11 +117,11 @@ theorem toMat_injective {δ : K} (hδ : star δ = -δ) (hδ0 : δ ≠ 0) :
   simp
 
 /- English proof (translation)
-Introduce `X`. Establish `h1 : ((2 : K)⁻¹ • (X + Xᴴ)) ∈ hermSub hF m`. Rewrite using `[mem_hermSub, Matrix.conjTranspose_smul, Matrix.conjTranspose_add, Matrix.conjTranspose_conjTranspose, star_inv₀, star_ofNat, add_comm]`. Establish `h2 : ((2 * δ)⁻¹ • (X - Xᴴ)) ∈ hermSub hF m`. Rewrite using `[mem_hermSub, Matrix.conjTranspose_smul, Matrix.conjTranspose_sub, Matrix.conjTranspose_conjTranspose, star_inv₀, star_mul', star_ofNat, hδ, mul_neg, inv_neg, neg_smul, ← smul_neg, neg_sub]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨(1 : K) ⊗ₜ ⟨_, h1⟩ + δ ⊗ₜ ⟨_, h2⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, toMat_tmul, toMat_tmul, one_smul, smul_smul]`. Establish `: δ * (2 * δ)⁻¹ = (2 : K)⁻¹` using `by field_simp`. Rewrite using `[this, ← smul_add]`. Establish `: X + Xᴴ + (X - Xᴴ) = (2 : K) • X` using `by rw [two_smul]; abel`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[this, smul_smul, inv_mul_cancel₀ two_ne_zero, one_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem toMat_surjective {δ : K} (hδ : star δ = -δ) (hδ0 : δ ≠ 0) :
     Function.Surjective (toMat hF m) := by

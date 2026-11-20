@@ -13,7 +13,7 @@ namespace GlobalTheory.GamMul.UnitCell
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] {m : ℕ}
 
 /- English proof (translation)
-Use extensionality with `g`. Simplify using `only [Set.mem_setOf_eq, Set.mem_mul]`. Conclude with `⟨fun ⟨u, hu, c, hc, e⟩ => ⟨u, hu, c, hc, e.symm⟩, fun ⟨u, hu, c, hc, e⟩ => ⟨u, hu, c, hc, e.symm⟩⟩`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 theorem setOf_eq_mul (N K : Subgroup (GL (Fin m) k)) :
     {g : GL (Fin m) k | ∃ u ∈ N, ∃ c ∈ K, g = u * c} = (N : Set (GL (Fin m) k)) * (K : Set (GL (Fin m) k)) := by
@@ -22,7 +22,7 @@ theorem setOf_eq_mul (N K : Subgroup (GL (Fin m) k)) :
   exact ⟨fun ⟨u, hu, c, hc, e⟩ => ⟨u, hu, c, hc, e.symm⟩, fun ⟨u, hu, c, hc, e⟩ => ⟨u, hu, c, hc, e.symm⟩⟩
 
 /- English proof (translation)
-Rewrite using `[setOf_eq_mul]`. Conclude with `InvInt.isTestFun_indicator`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isTestFun_unitCell :
     IsTestFun (Set.indicator {g : GL (Fin m) k | ∃ u ∈ unipB k (Fin m), ∃ c ∈ KO k (Fin m), g = u * c}
@@ -31,13 +31,13 @@ theorem isTestFun_unitCell :
   exact InvInt.isTestFun_indicator
 
 /- English proof (translation)
-Establish `hB : IsOpen ((Subtype.val : (⊤ : Subgroup (GL (Fin m) k)) → GL (Fin m) k) ⁻¹' (KO k (Fin m) : Set (GL (Fin m) k)))` using `SplitFlip.isOpen_KO.preimage continuous_subtype_val`. Use `GlobalTheory.T.invariant_integral_unipotent_compact (GL (Fin m) k) (unipB k (Fin m)) ⊤ (KO k (Fin m)) {F | IsTestFun F} ?_ ?_ ?_ le_top SplitFlip.isCompact_KO hB I ?_ ?_ h0 f hf` and prove the remaining obligations. Introduce `F`. Simplify using `only [Set.mem_setOf_eq, IsTestFun]`. Use `and_congr Iff.rfl (and_congr Iff.rfl ⟨fun ⟨C, hC, hs⟩ => ⟨C, hC, fun _ _ => Subgroup.mem_top _, hs⟩, fun ⟨C, hC, _, hs⟩ => ⟨C, hC, hs⟩⟩)` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `K _ hKc hKo`. Establish `hKo' : IsOpen (K : Set (GL (Fin m) k))` using `hKo.preimage (continuous_id.subtype_mk (p := fun g => g ∈ (⊤ : Subgroup (GL (Fin m) k))) fun g => Subgroup.mem_top g)`. Rewrite using `[setOf_eq_mul]`. Conclude with `⟨InvInt.isClosed_unipB.mul_right_of_isCompact hKc, hKo'.mul_left⟩`. Introduce `U hU`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨_, K, hKo, hKc, hKU, hKO, hnorm, -⟩` from `GlobalTheory.T.exists_small_open_compact_normal k m m 0 (Nat.add_zero m) U hU`. Conclude with `⟨K, hKO, hKc, hKo.preimage continuous_subtype_val, hKU, hnorm⟩`. Introduce `F _ F' _ c c'`. Establish `: (fun g => c * F g + c' * F' g) = c • F + c' • F'` using `rfl`. Rewrite using `[this, map_add, map_smul, map_smul, smul_eq_mul, smul_eq_mul]`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `F hF x _`. Conclude with `hI F hF x`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_unitCell (I : (GL (Fin m) k → ℂ) →ₗ[ℂ] ℂ) (hI : IsInvIntegral I)
     (h0 : I (Set.indicator {g : GL (Fin m) k | ∃ u ∈ unipB k (Fin m), ∃ c ∈ KO k (Fin m), g = u * c}
@@ -66,9 +66,9 @@ theorem eq_zero_of_unitCell (I : (GL (Fin m) k → ℂ) →ₗ[ℂ] ℂ) (hI : I
     exact hI F hF x
 
 /- English proof (translation)
-Introduce `k _ _ _ _ m`. Use `⟨isTestFun_unitCell, fun I hI h0 f hf => eq_zero_of_unitCell I hI h0 f hf, ?_⟩` and prove the remaining obligations. Take `⟨I, f, hI, hf, hne⟩` from `InvInt.exists_isInvIntegral k m`. Use `set a := I (Set.indicator {g : GL (Fin m) k | ∃ u ∈ unipB k (Fin m), ∃ c ∈ KO k (Fin m), g = u * c} (fun _ => (1 : ℂ))) with ha`. Establish `ha0 : a ≠ 0` using `fun h => hne (eq_zero_of_unitCell I hI h f hf)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨a⁻¹ • I, fun F hF x => ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [LinearMap.smul_apply, hI F hF x]`. Rewrite using `[LinearMap.smul_apply, ← ha, smul_eq_mul, inv_mul_cancel₀ ha0]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem main : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (m : ℕ),
     IsTestFun (Set.indicator {g : GL (Fin m) k | ∃ u ∈ unipB k (Fin m), ∃ c ∈ KO k (Fin m), g = u * c}

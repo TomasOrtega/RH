@@ -12,33 +12,27 @@ namespace GlobalTheory.JacMinCuspGL
 open GlobalTheory.SmGL.CuspMax GlobalTheory.JacMinCusp Matrix
 
 /- English proof (translation)
-Introduce `k _ _ _ _ a b n h V _ _ π hπ hmin`. Use `set J := (jac₂ (stdSum h) π).comp (MonoidHom.inr (GL (Fin a) k) (GL (Fin b) k)) with hJdef`. Use `(isCuspidal_iff_maximal k b _ J).2 ⟨isSmooth_comp (isSmooth_jac₂ _ hπ) _ (continuous_const.prodMk continuous_id : Continuous fun x : GL (Fin b) k => ((1 : GL (Fin a) k), x)), fun r t h' hr ht => ?_⟩` and prove the remaining obligations. Establish `hcd : a + r + t = n` using `by omega`. Establish `hJ : twKer π (unipRad k (two (stdSum hcd))) 1 = ⊤` using `Submodule.Quotient.subsingleton_iff.1 (hmin (a + r) t hcd ht (by omega))`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set Kab := twKer π (unipRad k (two (stdSum h))) 1 with hKab`. Use `set K' := twKer J (unipRad k (two (stdSum h'))) 1 with hK'`. Establish `hB : ∀ g : GL (Fin a) k × GL (Fin b) k, g.1 = 1 → GeneralLinearGroup.det g.2 = 1 → ∀ v : V, jac₂ (stdSum h) π g (Submodule.Quotient.mk v) = Submodule.Quotient.mk (π (leviEmb k (two (stdSum h)) (leviTwo k _ _ g)) v)`. Introduce `g h1 h2 v`. Establish `hd : deltaHalf k (Two (Fin a) (Fin b)) (leviTwo k _ _ g) = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[deltaHalf_two, h1, h2]`. Simplify using the standard rewrite rules. Use `show jac (two (stdSum h)) π (leviTwo k _ _ g) _ = _`. Rewrite using `[jac_mk, hd]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hN : ∀ u ∈ unipRad k (two (stdSum h)), ∀ v : V, (Submodule.Quotient.mk (π u v) : V ⧸ Kab) = Submodule.Quotient.mk v`. Introduce `u hu v`. Conclude with `(Submodule.Quotient.eq Kab).2 (Submodule.subset_span ⟨⟨u, hu⟩, v, by simp⟩)`. Establish `hC : ∀ u ∈ unipRad k (two (stdSum hcd)), ∀ v : V, (Submodule.Quotient.mk (π u v) : V ⧸ Kab) - Submodule.Quotient.mk v ∈ K'`. Introduce `u hu v`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hu'` using `(mem_unipRad_two_iff hcd).1 hu`. Establish `hp : u ∈ parab k (two (stdSum h))`. Rewrite using `[mem_parab]`. Introduce `i j hij`. Rewrite `hij` using `[blk_two_stdSum_lt]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hu' i j (by omega), Matrix.one_apply_ne]`. Introduce `hij'`. Substitute `hij'` using the available equality. Use linear arithmetic over natural numbers and integers. Take `⟨n', hn', hun⟩` from `exists_levi_mul_unip k (two (stdSum h)) ⟨u, hp⟩`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `set g := (leviTwo k (Fin a) (Fin b)).symm (leviProj k (two (stdSum h)) ⟨u, hp⟩) with hg`. Establish `hlg : leviTwo k _ _ g = leviProj k (two (stdSum h)) ⟨u, hp⟩` using `by simp [g]`. Establish `hg1 : g.1 = 1`. Use extensionality with `i j`. Use `show (leviProj k (two (stdSum h)) ⟨u, hp⟩ false : Matrix (Fin a) (Fin a) k) i j = _`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[leviProj_apply, two_false, two_false]`. Rewrite using `[hu' _ _ (by simp; omega)]`. Simplify using `[Matrix.one_apply, stdSum]`. Establish `hg2 : g.2 ∈ unipRad k (two (stdSum h'))`. Rewrite using `[mem_unipRad_two_iff]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `i j hij`. Use `show (leviProj k (two (stdSum h)) ⟨u, hp⟩ true : Matrix (Fin b) (Fin b) k) i j = _`. Rewrite using `[leviProj_apply, two_true, two_true]`. Rewrite using `[hu' _ _ (by simp; omega)]`. Simplify using `[Matrix.one_apply, stdSum]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hdet : GeneralLinearGroup.det g.2 = 1` using `det_eq_one_of_mem_unipRad k hg2`. Establish `hu_eq : u = leviEmb k (two (stdSum h)) (leviTwo k _ _ g) * n'` using `by rw [hlg]; exact hun`. Establish `hJu : J g.2 (Submodule.Quotient.mk v) = Submodule.Quotient.mk (π u v)`. Rewrite using `[hu_eq, map_mul, Module.End.mul_apply]`. Use `show jac₂ (stdSum h) π (1, g.2) _ = _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hB (1, g.2) rfl hdet, show ((1, g.2) : GL (Fin a) k × GL (Fin b) k) = g from Prod.ext hg1.symm rfl]`. Use `(Submodule.Quotient.eq Kab).2 ?_` and prove the remaining obligations. Rewrite using `[← map_sub]`. Use `twKer_le_comap π _ _ (leviEmb_mem_normalizer k _ _) ?_` and prove the remaining obligations. Use `(Submodule.Quotient.eq Kab).1 (hN n' hn' v)` as an intermediate fact.
-
-Rewrite using `[← neg_sub]`. Conclude with `Kab.neg_mem this`. Rewrite using `[← hJu]`. Conclude with `Submodule.subset_span ⟨⟨g.2, hg2⟩, Submodule.Quotient.mk v, by simp⟩`. Use `Submodule.Quotient.subsingleton_iff.2 (eq_top_iff.2 fun x _ => ?_)` and prove the remaining obligations.
-
-Take `⟨v, rfl⟩` from `Submodule.Quotient.mk_surjective Kab x`. Establish `hle : twKer π (unipRad k (two (stdSum hcd))) 1 ≤ K'.comap Kab.mkQ`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨u, w, rfl⟩`. Simplify `hC u u.2 w` using `[Submodule.mkQ_apply]`.
-
-Conclude with `hle (hJ ▸ Submodule.mem_top)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem isCuspidal_jac₂_inr : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] (a b n : ℕ) (h : a + b = n) (V : Type) [AddCommGroup V] [Module ℂ V]

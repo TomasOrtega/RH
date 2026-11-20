@@ -18,14 +18,14 @@ def smulSub {W : Type} [AddCommGroup W] [Module K W] (t : K) (P : AddSubgroup W)
 
 omit [TopologicalSpace K] in
 /- English proof (translation)
-Simplify using `only [smulSub, AddSubgroup.mem_map, DistribMulAction.toAddMonoidHom_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_smulSub {W : Type} [AddCommGroup W] [Module K W] (t : K) (P : AddSubgroup W) (z : W) :
     z ∈ smulSub t P ↔ ∃ p ∈ P, t • p = z := by
   simp only [smulSub, AddSubgroup.mem_map, DistribMulAction.toAddMonoidHom_apply]
 
 /- English proof (translation)
-Use extensionality with `z`. Rewrite using `[SetLike.mem_coe, mem_smulSub, Set.mem_image]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem coe_smulSub {W : Type} [AddCommGroup W] [Module K W] (t : K) (P : AddSubgroup W) :
     (smulSub t P : Set W) = (fun p => t • p) '' (P : Set W) := by
@@ -34,7 +34,7 @@ theorem coe_smulSub {W : Type} [AddCommGroup W] [Module K W] (t : K) (P : AddSub
   rfl
 
 /- English proof (translation)
-Rewrite using `[coe_smulSub]`. Conclude with `isOpenMap_smul₀ ht _ hP`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isOpen_smulSub {W : Type} [AddCommGroup W] [Module K W] [TopologicalSpace W]
     [ContinuousSMul K W] (t : K) (ht : t ≠ 0) (P : AddSubgroup W) (hP : IsOpen (P : Set W)) :
@@ -43,7 +43,7 @@ theorem isOpen_smulSub {W : Type} [AddCommGroup W] [Module K W] [TopologicalSpac
   exact isOpenMap_smul₀ ht _ hP
 
 /- English proof (translation)
-Rewrite using `[coe_smulSub]`. Conclude with `hP.image (continuous_const_smul t)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isCompact_smulSub {W : Type} [AddCommGroup W] [Module K W] [TopologicalSpace W]
     [ContinuousSMul K W] (t : K) (P : AddSubgroup W) (hP : IsCompact (P : Set W)) :
@@ -52,7 +52,7 @@ theorem isCompact_smulSub {W : Type} [AddCommGroup W] [Module K W] [TopologicalS
   exact hP.image (continuous_const_smul t)
 
 /- English proof (translation)
-Establish `hev : ∀ᶠ c in 𝓝 (0 : K), ∀ p ∈ S, c • p ∈ N` using `hS.eventually_forall_of_forall_eventually fun p _ => by`. Establish `h0 : Tendsto (fun z : K × W => z.1 • z.2) (𝓝 ((0 : K), p)) (𝓝 ((0 : K) • p))` using `continuous_smul.continuousAt`. Rewrite `h0` using `[zero_smul]`. Conclude with `h0 hN`. Conclude with `(hs.eventually hev).exists`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eventually_smul_sub {W : Type} [AddCommGroup W] [Module K W] [TopologicalSpace W]
     [ContinuousSMul K W] (S : Set W) (hS : IsCompact S) (s : ℕ → K)
@@ -69,25 +69,23 @@ theorem eventually_smul_sub {W : Type} [AddCommGroup W] [Module K W] [Topologica
 variable [T2Space X]
 
 /- English proof (translation)
-Establish `hbase' : ∀ p ∈ P, ∃ l ∈ L, ∃ q ∈ P, π • q = p - D l` using `fun p hp => by`. Take `⟨l, hl, h⟩` from `hbase p hp`. Conclude with `⟨l, hl, (mem_smulSub π P _).1 h⟩`. Use `choose! fl hfl fq hfq hrel using hbase'`. Introduce `p hp`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression.
 
-Set `ps : ℕ → X` to `fun k => Nat.rec p (fun _ q => fq q) k`. Establish `hpsS : ∀ k, ps (k + 1) = fq (ps k)` using `fun k => rfl`. Establish `hpsP : ∀ k, ps k ∈ P`. Introduce `k`. Proceed by induction on `k with`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `zero => exact hp`. Consider the case `succ k ih => rw [hpsS]`. Conclude with `hfq _ ih`. Establish `hπLk : ∀ k : ℕ, ∀ w ∈ L, π ^ k • w ∈ L`. Introduce `k`.
+Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Proceed by induction on `k with`. Consider the case `zero => intro w hw`. Simplify using `using hw`. Consider the case `succ k ih => intro w hw`. Rewrite using `[pow_succ, mul_smul]`.
+Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `ih _ (hπL w hw)`. Set `σ : ℕ → V` to `fun k => ∑ i ∈ Finset.range (k + 1), π ^ i • fl (ps i)`. Establish `hσL : ∀ k, σ k ∈ L` using `fun k => L.sum_mem fun i _ => hπLk i _ (hfl _ (hpsP i))`. Establish `hrem : ∀ k, p - D (σ k) = π ^ (k + 1) • ps (k + 1)`. Introduce `k`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Proceed by induction on `k with`. Consider the case `zero => show p - D (∑ i ∈ Finset.range 1, π ^ i • fl (ps i)) = π ^ 1 • fq p`. Rewrite using `[Finset.sum_range_one, pow_zero, one_smul, pow_one, hrel p hp]`. Both sides reduce to the same expression. Consider the case `succ k ih`.
+Both sides reduce to the same expression. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e1 : σ (k + 1) = σ k + π ^ (k + 1) • fl (ps (k + 1))` using `Finset.sum_range_succ _ _`. Rewrite using `[hpsS (k + 1), e1, map_add, hDs, sub_add_eq_sub_sub, ih, ← smul_sub, ← hrel _ (hpsP (k + 1)), smul_smul, ← pow_succ]`. Establish `hsmallP : ∀ N ∈ 𝓝 (0 : X), ∀ᶠ c in 𝓝 (0 : K), ∀ q ∈ P, c • q ∈ N` using `fun N hN => hPc.eventually_forall_of_forall_eventually fun q _ => by`. Establish `h0 : Tendsto (fun z : K × X => z.1 • z.2) (𝓝 ((0 : K), q)) (𝓝 ((0 : K) • q))` using `continuous_smul.continuousAt`. Rewrite `h0` using `[zero_smul]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `h0 hN`. Establish `hπ1 : Tendsto (fun k : ℕ => π ^ (k + 1)) atTop (𝓝 0)` using `hπ.comp (tendsto_add_atTop_nat 1)`. Establish `hremT : Tendsto (fun k => p - D (σ k)) atTop (𝓝 0)`. Use `Tendsto.congr (fun k => (hrem k).symm) ?_` and prove the remaining obligations. Introduce `N hN`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(hπ1.eventually (hsmallP N hN)).mono fun k hk => hk _ (hpsP (k + 1))`. Establish `hDT : Tendsto (fun k => D (σ k)) atTop (𝓝 p)`. Simplify using `using (tendsto_const_nhds (x := p)).sub hremT`. Take `⟨l, hlL, hcl⟩` from `hLc (f := Filter.map σ atTop) (Filter.le_principal_iff.2 (Filter.mem_map.2 (Filter.univ_mem' hσL)))`. Use `⟨l, hlL, ?_⟩` and prove the remaining obligations.
-
-Establish `h2 : MapClusterPt (D l) atTop (D ∘ σ)` using `MapClusterPt.continuousAt_comp hDc.continuousAt hcl`. Conclude with `eq_of_nhds_neBot ((show ClusterPt (D l) (Filter.map (D ∘ σ) atTop) from h2).neBot.mono (inf_le_inf_left _ hDT))`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem reach_of_approx (π : K) (hπ : Tendsto (fun k : ℕ => π ^ k) atTop (𝓝 0))
     (L : AddSubgroup V) (hLc : IsCompact (L : Set V)) (hπL : ∀ w ∈ L, π • w ∈ L)
@@ -150,51 +148,47 @@ theorem reach_of_approx (π : K) (hπ : Tendsto (fun k : ℕ => π ^ k) atTop (�
     (inf_le_inf_left _ hDT))
 
 /- English proof (translation)
-Establish `hβ0 : ∀ w, β 0 w = 0` using `fun w => by simpa using hβ1 0 0 w`. Establish `hβcont : ∀ u, Continuous fun w => β u w` using `fun u => hβc.comp (continuous_const.prodMk continuous_id)`. Establish `hπLk : ∀ k : ℕ, ∀ w ∈ L, π ^ k • w ∈ L`. Introduce `k`. Proceed by induction on `k with`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `zero => intro w hw`. Simplify using `using hw`. Consider the case `succ k ih => intro w hw`. Rewrite using `[pow_succ, mul_smul]`. Conclude with `ih _ (hπL w hw)`.
+Treat this case separately. Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Set `Dx : V →+ X` to `AddMonoidHom.mk' (β x) (hβ2 x)`. Set `A : AddSubgroup X` to `L.map Dx`. Establish `hAcoe : (A : Set X) = β x '' (L : Set V)` using `AddSubgroup.coe_map _ _`. Establish `hAo : IsOpen (A : Set X)` using `by rw [hAcoe]; exact hxo`. Establish `hAc : IsCompact (A : Set X)` using `by rw [hAcoe]; exact hLc.image (hβcont x)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `U : AddSubgroup X` to `smulSub π A`. Establish `hUo : IsOpen (U : Set X)` using `isOpen_smulSub π hπ0 A hAo`. Establish `hU : (U : Set X) ∈ 𝓝 (0 : X)` using `hUo.mem_nhds U.zero_mem`. Establish `hUA : ∀ a ∈ U, a ∈ A`. Introduce `a ha`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨a', ha', rfl⟩` from `(mem_smulSub π A a).1 ha`. Take `⟨l, hl, rfl⟩` from `AddSubgroup.mem_map.1 ha'`. Conclude with `AddSubgroup.mem_map.2 ⟨π • l, hπL l hl, hβs π x l⟩`. Establish `hN3 : ∀ᶠ Z in 𝓝 (0 : V), ∀ w ∈ L, β Z w ∈ U` using `hLc.eventually_forall_of_forall_eventually fun w _ => by`. Establish `h0 : Tendsto (fun q : V × V => β q.1 q.2) (𝓝 ((0 : V), w)) (𝓝 (β 0 w))` using `hβc.continuousAt`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `h0` using `[hβ0]`. Conclude with `h0 hU`. Take `⟨N2, hN2, hN2'⟩` from `hsmall U hU`. Use `⟨N2 ∩ {Z | ∀ w ∈ L, β Z w ∈ U}, inter_mem hN2 hN3, ?_⟩` and prove the remaining obligations. Introduce and unpack `y ⟨-, hyN3⟩ Λ0 ⟨c, hc0, rfl⟩ hΛ0N`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `Dy : V →+ X` to `AddMonoidHom.mk' (β y) (hβ2 y)`. Establish `hDy : ∀ w, Dy w = β y w` using `fun w => rfl`. Establish `hDys : ∀ (t : K) w, Dy (t • w) = t • Dy w` using `fun t w => hβs t y w`. Establish `hβy : ∀ w, β y w = β x w + β (y - x) w` using `fun w => by`. Rewrite using `[← hβ1, add_sub_cancel]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Establish `hAy : L.map Dy = A`. Use extensionality with `a`. Prove the components needed by the constructor for the conclusion. Introduce `ha`. Take `⟨l, hl, rfl⟩` from `AddSubgroup.mem_map.1 ha`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hDy, hβy]`. Conclude with `A.add_mem (AddSubgroup.mem_map.2 ⟨l, hl, rfl⟩) (hUA _ (hyN3 l hl))`. Introduce `ha`. Use `AddSubgroup.mem_map.2 ?_` and prove the remaining obligations. Use `reach_of_approx π hπ L hLc hπL Dy (hβcont y) hDys A hAc ?_ a ha` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Introduce `p hp`. Take `⟨l, hl, rfl⟩` from `AddSubgroup.mem_map.1 hp`. Use `⟨l, hl, ?_⟩` and prove the remaining obligations. Establish `e : Dx l - Dy l = -β (y - x) l` using `by show β x l - β y l = _`. Rewrite using `[hβy]`.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Normalize the expressions using the abelian group laws. Rewrite using `[e]`. Conclude with `U.neg_mem (hyN3 l hl)`. Establish `hmapS : ∀ (t : K) (P : AddSubgroup V), (smulSub t P).map Dy = smulSub t (P.map Dy)`. Introduce `t P`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Use extensionality with `z`. Simplify using `only [AddSubgroup.mem_map, mem_smulSub]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨v, ⟨p, hp, rfl⟩, rfl⟩`. Conclude with `⟨Dy p, ⟨p, hp, rfl⟩, (hDys t p).symm⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce and unpack `⟨q, ⟨p, hp, rfl⟩, rfl⟩`. Conclude with `⟨t • p, ⟨p, hp, rfl⟩, hDys t p⟩`. Set `Λ : ℕ → AddSubgroup V` to `fun n => smulSub (π ^ n) (smulSub c L)`. Set `H : ℕ → AddSubgroup X` to `fun n => (Λ n).map Dy`. Establish `hH : ∀ n, H n = smulSub (π ^ n) (smulSub c A)` using `fun n => by show (smulSub (π ^ n) (smulSub c L)).map Dy = _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 
-Rewrite using `[hmapS, hmapS, hAy]`. Establish `hΛ0 : Λ 0 = smulSub c L`. Use extensionality with `z`. Simplify using `only [Λ, mem_smulSub, pow_zero, one_smul]`. Conclude with `⟨fun ⟨p, hp, e⟩ => e ▸ hp, fun h => ⟨z, h, rfl⟩⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hcL : IsOpen (smulSub c L : Set V)` using `isOpen_smulSub c hc0 L hLo`. Establish `hcLc : IsCompact (smulSub c L : Set V)` using `isCompact_smulSub c L hLc`. Use `⟨Λ, H, Dy, hΛ0, fun n => isOpen_smulSub _ (pow_ne_zero n hπ0) _ hcL, fun n => isCompact_smulSub _ _ hcLc, ?_, fun n => ?_, fun n => ?_, ?_, fun n => rfl, ?_⟩` and prove the remaining obligations. Use `antitone_nat_of_succ_le fun n => ?_` and prove the remaining obligations. Introduce `z hz`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Take `⟨p, hp, rfl⟩` from `(mem_smulSub _ _ z).1 hz`. Take `⟨l, hl, rfl⟩` from `(mem_smulSub c L p).1 hp`. Use `(mem_smulSub _ _ _).2 ⟨c • (π • l), (mem_smulSub c L _).2 ⟨π • l, hπL l hl, rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_comm c π l, smul_smul, ← pow_succ]`. Rewrite using `[hH]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `isOpen_smulSub _ (pow_ne_zero n hπ0) _ (isOpen_smulSub c hc0 A hAo)`. Use `show IsCompact ((Λ n).map Dy : Set X)`. Rewrite using `[AddSubgroup.coe_map]`. Conclude with `(isCompact_smulSub _ _ hcLc).image (hβcont y)`. Introduce `N' hN'`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨k, hk⟩` from `eventually_smul_sub (smulSub c A : Set X) (isCompact_smulSub c A hAc) (fun k => π ^ k) hπ N' hN'`. Use `⟨k, fun z hz => ?_⟩` and prove the remaining obligations. Rewrite `hz` using `[hH]`. Take `⟨p, hp, rfl⟩` from `(mem_smulSub _ _ z).1 hz`. Conclude with `hk p hp`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `n Z hZ W hW`. Rewrite `hZ` using `[hΛ0]`. Establish `hZN` using `(hΛ0N hZ).2`. Take `⟨z, hz, rfl⟩` from `(mem_smulSub c L Z).1 hZ`. Take `⟨W', hW', rfl⟩` from `(mem_smulSub _ _ W).1 hW`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨w, hw, rfl⟩` from `(mem_smulSub c L W').1 hW'`. Use `set t : K := π ^ n * c with ht`. Establish `e1 : G (y + c • z + π ^ n • c • w) - G (y + c • z) - Dy (π ^ n • c • w) = t • (β (c • z) w + t • G w)`. Rewrite using `[hG (y + c • z), hβ1, hDy]`. Simplify using `only [ht, hβs, hGs]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use `module`. Rewrite using `[e1]`. Establish `hu1 : β (c • z) w ∈ U` using `hZN w hw`. Establish `hu2 : t • G w ∈ U`. Use `hN2' t (fun w' hw' => (hΛ0N ?_).1) w hw` and prove the remaining obligations.
-
-Use `(mem_smulSub c L _).2 ⟨π ^ n • w', hπLk n w' hw', ?_⟩` and prove the remaining obligations. Rewrite using `[smul_smul, ht, mul_comm]`. Take `⟨a, ha, hae⟩` from `(mem_smulSub π A _).1 (U.add_mem hu1 hu2)`. Rewrite `ha` using `[← hAy]`. Take `⟨l', hl', rfl⟩` from `AddSubgroup.mem_map.1 ha`.
-
-Rewrite using `[← hae]`. Use `AddSubgroup.mem_map.2 ⟨π ^ (n + 1) • c • l', (mem_smulSub _ _ _).2 ⟨c • l', (mem_smulSub c L _).2 ⟨l', hl', rfl⟩, rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[hDys, hDys, smul_smul, smul_smul, ht]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem filt_abstract [ContinuousMul K] (π : K) (hπ0 : π ≠ 0) (hπ : Tendsto (fun k : ℕ => π ^ k) atTop (𝓝 0))
     (L : AddSubgroup V) (hLo : IsOpen (L : Set V)) (hLc : IsCompact (L : Set V))

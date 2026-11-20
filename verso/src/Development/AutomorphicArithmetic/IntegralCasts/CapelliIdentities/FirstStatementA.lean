@@ -1,15 +1,15 @@
 import Mathlib
 
 /- English proof (translation)
-Introduce `E _ _ n L x hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy => exact ⟨1, one_ne_zero, by simpa using hy⟩`. Consider the case `zero => exact ⟨1, one_ne_zero, by simp⟩`. Consider the case `add y z _ _ h1 h2`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Take `⟨a, ha, hya⟩` from `h1`. Take `⟨b, hb, hzb⟩` from `h2`. Use `⟨a * b, mul_ne_zero ha hb, ?_⟩` and prove the remaining obligations. Establish `e : (a * b) • (y + z) = b • (a • y) + a • (b • z)`. Rewrite using `[smul_add, mul_smul, mul_smul, smul_comm a b y]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `L.add_mem (L.smul_of_tower_mem b hya) (L.smul_of_tower_mem a hzb)`. Consider the case `smul c y _ h`. Take `⟨a, ha, hya⟩` from `h`. Establish `halg : IsAlgebraic ℤ c` using `(IsFractionRing.isAlgebraic_iff ℤ ℚ E).mpr (Algebra.IsAlgebraic.isAlgebraic c)`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨d, hd, hint⟩` from `halg.exists_integral_multiple`. Use `⟨d * a, mul_ne_zero hd ha, ?_⟩` and prove the remaining obligations. Set `r : NumberField.RingOfIntegers E` to `⟨d • c, hint⟩`. Establish `e : (d * a) • (c • y) = r • (a • y)`. Establish `: r • (a • y) = (d • c) • (a • y)` using `rfl`.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, mul_smul, smul_comm a c y, smul_assoc]`. Rewrite using `[e]`. Conclude with `L.smul_mem r hya`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.FirstStatementA.main :
     ∀ {E : Type} [inst : Field E]

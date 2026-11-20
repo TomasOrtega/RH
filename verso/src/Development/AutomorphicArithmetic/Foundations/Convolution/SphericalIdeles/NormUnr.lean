@@ -15,9 +15,9 @@ open NumberField IsDedekindDomain GlobalTheory.CuspRep Formalism.L2.Host Formali
 namespace UpperTheory.ConvolutionTheory.Sph.NormUnramified
 
 /- English proof (translation)
-Use `GlobalTheory.FrobDense.eq_one_of_unif (ψ.loc w) (fun y hy => ?_) x` and prove the remaining obligations. Establish `h2` using `unif_spec w`. Establish `h3` using `hu (y * (atFin w (unif w))⁻¹) (by`. Unfold `IsUnitAt`. Unfold `IsUnifAt at hy h2`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions.
 
-Rewrite using `[Units.val_mul, Units.val_inv_eq_inv_val, map_mul, map_inv₀, hy, h2]`. Conclude with `mul_inv_cancel₀ WithZero.exp_ne_zero)`. Rewrite `h3` using `[map_mul, map_inv, mul_inv_eq_one]`. Conclude with `h3.trans hv`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem loc_one_of {L : Type} [Field L] [NumberField L] (ψ : HChar L) (w : HeightOneSpectrum (𝓞 L))
     (hu : ψ.UnrAt w) (hv : ψ.val w = 1) (x : (w.adicCompletion L)ˣ) : ψ.loc w x = 1 := by
@@ -32,11 +32,11 @@ private theorem loc_one_of {L : Type} [Field L] [NumberField L] (ψ : HChar L) (
   exact h3.trans hv
 
 /- English proof (translation)
-Set `ψ : HChar E` to `⟨η.1.comp (GroundTheory.Global.ideleNorm F E), η.2.1.comp GroundTheory.Global.continuous_ideleNorm, fun k => (congrArg η.1 (GroundTheory.Global.ideleNorm_diagonal (K := F) k)).trans (η.2.2 _)⟩`. Establish `hψ : ∀ x, ψ.1 x = η.1 (GroundTheory.Global.ideleNorm F E x)` using `fun _ => rfl`. Establish `hev : ∀ᶠ w : HeightOneSpectrum (𝓞 E) in Filter.cofinite, ψ.UnrAt w ∧ ψ.val w = 1` using `by filter_upwards [hη.2.2, (GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.tendsto_under F E).eventually (Filter.eventually_cofinite.2 (GlobalTheory.Mem.UnrAe.finite_ramified η))] with w h1 h2`. Establish `hf` using `GlobalTheory.ArtinTransport.normV_eq_pow (E := F) (E' := E) (v := w.under (𝓞 F)) (w := w) rfl`. Take `⟨a, b⟩` from `GlobalTheory.NormValGen.unrAt_val_of_comp_norm F E η ψ hψ w _ hf h2`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨a, b.trans (h1 _ hf)⟩`. Establish `h1 : ψ.1 = 1` using `GlobalTheory.FrobDense.eq_one_of_away ψ.1 ψ.2.1 ψ.2.2 (Filter.eventually_cofinite.1 hev).toFinset fun w hw y => by`. Use `not_not.1 (fun h => hw ((Set.Finite.mem_toFinset _).2 h))` as an intermediate fact. Conclude with `loc_one_of ψ w this.1 this.2 y`. Introduce `x`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hψ, h1]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 private theorem comp_norm_eq_one {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (η : HChar F) (hη : IsNormChar E η) : ∀ x, η.1 (GroundTheory.Global.ideleNorm F E x) = 1 := by
@@ -60,13 +60,13 @@ end UpperTheory.ConvolutionTheory.Sph.NormUnramified
 
 open UpperTheory.ConvolutionTheory.Sph.NormUnramified in
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ _ η hη v hu x hx`. Take `⟨⟨w, hw⟩⟩` from `GroundTheory.Global.nonempty_placesOver E v`. Take `rfl : GroundTheory.Global.AdeleBaseChange.below F w = v` from `(GroundTheory.Global.AdeleBaseChange.below_eq_iff w v).2 hw`. Use `haveI := hw`. Establish `he : w.asIdeal.ramificationIdx (𝓞 F) = 1` using `Algebra.isUnramifiedAt_iff_of_isDedekindDomain.1 (hu ⟨w, hw⟩)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hxu : x ∈ (Submonoid.ofClass ((GroundTheory.Global.AdeleBaseChange.below F w).adicCompletionIntegers F)).units`. Establish `hx1 : Valued.v (x : (GroundTheory.Global.AdeleBaseChange.below F w).adicCompletion F) = 1` using `hx`. Rewrite using `[Submonoid.mem_units_iff]`. Use `⟨hx1.le, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Valued.v ((x⁻¹ : _ˣ) : (GroundTheory.Global.AdeleBaseChange.below F w).adicCompletion F) ≤ 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Units.val_inv_eq_inv_val, map_inv₀, hx1, inv_one]`. Take `⟨y, -, hy⟩` from `GroundTheory.Global.IdeleNorm.exists_norm_eq_of_ramificationIdx_eq_one _ w he hxu`. Establish `hn : GroundTheory.LocalField.normUnits ((GroundTheory.Global.AdeleBaseChange.below F w).adicCompletion F) (w.adicCompletion E) y = x` using `Units.ext (by rw [GroundTheory.LocalField.coe_normUnits]; exact hy)`. Establish `h2` using `GroundTheory.Global.ideleNorm_finiteEmbedding (K := F) w y`. Rewrite `h2` using `[hn]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h3` using `comp_norm_eq_one η hη (GroundTheory.Global.IdeleGroup.finiteEmbedding w y)`. Rewrite `h3` using `[h2]`. Conclude with `h3`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.Sph.normUnr :
     UpperTheory.ConvolutionTheory.Sph.NormUnr := by

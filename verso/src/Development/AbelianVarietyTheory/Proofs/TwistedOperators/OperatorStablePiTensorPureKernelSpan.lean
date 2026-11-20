@@ -8,11 +8,11 @@ namespace GlobalTheory.TensHead
 open scoped TensorProduct in
 
 /- English proof (translation)
-Unfold `_root_.GlobalTheory.TensHead.Stab at h ⊢`. Introduce and unpack `_ ⟨i, g, hg, rfl⟩ x hx`. Unfold `_root_.GlobalTheory.TensHead.piKer at hx ⊢`. Establish `hle : Submodule.span ℂ {t | ∃ y : ∀ j, M j, (∃ j, y j ∈ K j) ∧ t = PiTensorProduct.tprod ℂ y} ≤ (Submodule.span ℂ {t | ∃ y : ∀ j, M j, (∃ j, y j ∈ K j) ∧ t = PiTensorProduct.tprod ℂ y}).comap (_root_.GlobalTheory.TensHead.piOp i g)`. Rewrite using `[Submodule.span_le]`.
+Replace the relevant objects with their definitions. Assume the hypotheses and unpack their components. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `_ ⟨y, ⟨j, hj⟩, rfl⟩`. Use `Submodule.subset_span ⟨fun k => Function.update (fun _ => LinearMap.id) i g k (y k), ⟨j, ?_⟩, ?_⟩` and prove the remaining obligations. Distinguish the cases in `hji : j = i`. Substitute `hji` using the available equality. Simplify using `using h j g hg _ hj`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `hj` using `[Function.update_of_ne hji]`. Simplify using `[_root_.GlobalTheory.TensHead.piOp]`. Conclude with `hle hx`.
+Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.TensHead.stab_piOps_piKer {ι : Type} [DecidableEq ι] {M : ι → Type} [∀ i, AddCommGroup (M i)]
     [∀ i, Module ℂ (M i)]

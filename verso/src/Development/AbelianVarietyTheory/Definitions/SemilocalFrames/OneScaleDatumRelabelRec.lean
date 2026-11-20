@@ -25,25 +25,25 @@ def relabelRec (D : D7) (Lw : ℕ) (h : 2 ≤ Lw) : D7 :=
 variable {D : D7} {Lw : ℕ} {h : 2 ≤ Lw}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun G => ⟨G.1, G.2, G.3, G.4, G.5, G.6, G.7⟩, fun G => ⟨G.1, G.2, G.3, G.4, G.5, G.6, G.7⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem glob_relabelRec {x eps CD Cg CT : ℝ} : Glob (relabelRec D Lw h) x eps CD Cg CT ↔ Glob D x eps CD Cg CT :=
   ⟨fun G => ⟨G.1, G.2, G.3, G.4, G.5, G.6, G.7⟩, fun G => ⟨G.1, G.2, G.3, G.4, G.5, G.6, G.7⟩⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun G => ⟨G.1, G.2, G.3⟩, fun G => ⟨G.1, G.2, G.3⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem nodes_relabelRec {x eps : ℝ} : Nodes (relabelRec D Lw h) x eps ↔ Nodes D x eps :=
   ⟨fun G => ⟨G.1, G.2, G.3⟩, fun G => ⟨G.1, G.2, G.3⟩⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun G => ⟨G.1, G.2, G.3, G.4⟩, fun G => ⟨G.1, G.2, G.3, G.4⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem oneScale_relabelRec {x eps eta : ℝ} : OneScale (relabelRec D Lw h) x eps eta ↔ OneScale D x eps eta :=
   ⟨fun G => ⟨G.1, G.2, G.3, G.4⟩, fun G => ⟨G.1, G.2, G.3, G.4⟩⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun G => ⟨oneScale_relabelRec.1 G.1, ⟨G.2.1, G.2.2, G.2.3⟩, G.3, G.4, G.5⟩, fun G => ⟨oneScale_relabelRec.2 G.1, ⟨G.2.1, G.2.2, G.2.3⟩, G.3, G.4, G.5⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem oneScaleDatum_relabelRec {x eps eta : ℝ} {J : ℕ} :
     OneScaleDatum (relabelRec D Lw h) x eps eta J ↔ OneScaleDatum D x eps eta J :=
@@ -51,7 +51,7 @@ theorem oneScaleDatum_relabelRec {x eps eta : ℝ} {J : ℕ} :
     fun G => ⟨oneScale_relabelRec.2 G.1, ⟨G.2.1, G.2.2, G.2.3⟩, G.3, G.4, G.5⟩⟩
 
 /- English proof (translation)
-Take `⟨Lw, h, hd⟩` from `exists_deadLabels D.host`. Conclude with `⟨Lw, h, (labels_iff _ _ _ _).2 ⟨hd, L.1, L.2, L.3⟩⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_labels_relabelRec {x eps CG : ℝ} (L : LiveLabels D x eps CG) :
     ∃ (Lw : ℕ) (h : 2 ≤ Lw), Labels (relabelRec D Lw h) x eps CG := by

@@ -22,18 +22,18 @@ def genPt (Ω : Type) [Field Ω] (j₀ j : J) : FractionRing (MvPolynomial {j //
 
 omit [Fintype J] in
 /- English proof (translation)
-Simplify using `[genPt, genPoly]`.
+Simplify using the standard rewrite rules.
 -/
 theorem genPt_self (j₀ : J) : genPt Ω j₀ j₀ = 1 := by simp [genPt, genPoly]
 
 omit [Fintype J] in
 
 /- English proof (translation)
-Establish `h : ∀ p : MvPolynomial {j // j ≠ j₀} Ω, algebraMap _ _ p ∈ K` using `fun p => by`. Proceed by induction on `p using MvPolynomial.induction_on with`. Consider the case `C a => exact h1 a`. Consider the case `add p q hp hq => rw [map_add]`. Conclude with `add_mem hp hq`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `mul_X p j hp`. Rewrite using `[map_mul]`. Use `mul_mem hp ?_` and prove the remaining obligations. Simplify `h2 j.1` using `[genPt, genPoly, j.2]`. Use `top_unique fun x _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨p, q, -, rfl⟩` from `IsFractionRing.div_surjective (A := MvPolynomial {j // j ≠ j₀} Ω) x`. Conclude with `div_mem (h p) (h q)`.
+A detailed English derivation is pending.
 -/
 theorem eq_top_of_genPt_mem (j₀ : J) (K : Subfield (FractionRing (MvPolynomial {j // j ≠ j₀} Ω)))
     (h1 : ∀ a : Ω, algebraMap Ω _ a ∈ K) (h2 : ∀ j, genPt Ω j₀ j ∈ K) : K = ⊤ := by
@@ -50,13 +50,13 @@ theorem eq_top_of_genPt_mem (j₀ : J) (K : Subfield (FractionRing (MvPolynomial
   exact div_mem (h p) (h q)
 
 /- English proof (translation)
-Establish `h' : ∑ j, MvPolynomial.C (b j) * genPoly Ω j₀ j = 0`. Apply `IsFractionRing.injective _ (FractionRing (MvPolynomial {j // j ≠ j₀} Ω))` to reduce the goal to its premises. Rewrite using `[map_zero, map_sum, ← h]`. Conclude with `Finset.sum_congr rfl fun j _ => by rw [map_mul]; rfl`. Establish `e : ∀ x : J → Ω, x j₀ = 1 → ∑ j, b j * x j = 0` using `fun x hx => by`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `congrArg (MvPolynomial.eval fun j : {j // j ≠ j₀} => x j.1) h'` as an intermediate fact. Rewrite `this` using `[map_zero, map_sum]`. Rewrite using `[← this]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Distinguish the cases in `hj : j = j₀`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Substitute `hj` using the available equality. Simplify using `[genPoly, hx]`. Simplify using `[genPoly, hj]`. Establish `h0 : b j₀ = 0` using `by simpa [Pi.single_apply] using e (Pi.single j₀ 1) (by simp)`. Use function extensionality and compare the values at `j`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hj : j = j₀`. Conclude with `hj ▸ h0`. Use `e (fun l => Pi.single (M := fun _ => Ω) j₀ 1 l + Pi.single (M := fun _ => Ω) j 1 l) (by simp [Ne.symm hj])` as an intermediate fact. Simplify `this` using `[Pi.single_apply, mul_add, Finset.sum_add_distrib, h0]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_sum_genPt (j₀ : J) (b : J → Ω) (h : ∑ j, algebraMap Ω _ (b j) * genPt Ω j₀ j = 0) : b = 0 := by
   have h' : ∑ j, MvPolynomial.C (b j) * genPoly Ω j₀ j = 0 := by
@@ -79,17 +79,15 @@ theorem eq_zero_of_sum_genPt (j₀ : J) (b : J → Ω) (h : ∑ j, algebraMap Ω
     simpa [Pi.single_apply, mul_add, Finset.sum_add_distrib, h0] using this
 
 /- English proof (translation)
-Use `set u := (B.map (algebraMap Ω _)).mulVec (genPt Ω j₀) with hu`. Establish `hi : u i ≠ 0` using `fun h => hB (Matrix.det_eq_zero_of_row_eq_zero i (congrFun (eq_zero_of_sum_genPt j₀ (B i) h)))`. Use `⟨hi, ?_⟩` and prove the remaining obligations. Use `set r : {j // j ≠ i} → _ := fun j => u j.1 / u i`. Establish `hs : (B⁻¹.map (algebraMap Ω _)).mulVec u = genPt Ω j₀`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hu, Matrix.mulVec_mulVec, ← Matrix.map_mul, Matrix.nonsing_inv_mul _ (Ne.isUnit hB), Matrix.map_one _ (map_zero _) (map_one _), Matrix.one_mulVec]`. Use `set K := IntermediateField.adjoin Ω (Set.range r)`. Establish `h1 : ∀ j, u j / u i ∈ K` using `fun j => by`. Distinguish the cases in `hj : j = i`. Rewrite using `[hj, div_self hi]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `one_mem _`. Conclude with `IntermediateField.subset_adjoin _ _ ⟨⟨j, hj⟩, rfl⟩`. Establish `h2 : ∀ j, genPt Ω j₀ j / u i ∈ K` using `fun j => by`. Rewrite using `[← hs, Matrix.mulVec, dotProduct, Finset.sum_div]`. Use `sum_mem fun l _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Rewrite using `[mul_div_assoc]`. Conclude with `mul_mem (K.algebraMap_mem _) (h1 l)`. Establish `h3 : K.toSubfield = ⊤` using `eq_top_of_genPt_mem j₀ _ K.algebraMap_mem fun j => by`. Use `div_mem (h2 j) (h2 j₀)` as an intermediate fact. Rewrite `this` using `[div_div_div_cancel_right₀ hi, genPt_self, div_one]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h4 : Algebra.IsAlgebraic K (FractionRing (MvPolynomial {j // j ≠ j₀} Ω))` using `⟨fun x => isAlgebraic_algebraMap (⟨x, (h3 ▸ Subfield.mem_top x : x ∈ K.toSubfield)⟩ : K)⟩`. Establish `h5` using `IntermediateField.isAlgebraic_adjoin_iff_top.1 h4`. Use `(Algebra.IsAlgebraic.isTranscendenceBasis_of_le_trdeg_of_finite Ω r ?_).1` and prove the remaining obligations. Establish `h6` using `trdeg_add_eq Ω (MvPolynomial {j // j ≠ j₀} Ω) (A := FractionRing (MvPolynomial {j // j ≠ j₀} Ω))`. Rewrite using `[← h6, MvPolynomial.trdeg_of_isDomain]`.
-
-Use `le_trans (le_of_eq ?_) le_self_add` and prove the remaining obligations. Simplify using `[Cardinal.mk_fintype]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem genPt_ratio (j₀ : J) (B : Matrix J J Ω) (hB : B.det ≠ 0) (i : J) :
     (B.map (algebraMap Ω _)).mulVec (genPt Ω j₀) i ≠ 0 ∧ AlgebraicIndependent Ω fun j : {j // j ≠ i} =>
@@ -127,9 +125,9 @@ theorem genPt_ratio (j₀ : J) (B : Matrix J J Ω) (hB : B.det ≠ 0) (i : J) :
 end Generic
 
 /- English proof (translation)
-Introduce `F Ω _ _ _ M J _ inst ⟨j₀⟩ EE hM`. Take `rfl : inst = fun a b => Classical.propDecidable (a = b)` from `Subsingleton.elim _ _`. Use `letI : DecidableEq J := fun a b => Classical.propDecidable (a = b)`. Set `Ω'` to `FractionRing (MvPolynomial {j // j ≠ j₀} Ω)`. Set `φ : Ω →ₐ[F] Ω'` to `IsScalarTower.toAlgHom F Ω Ω'`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Take `⟨M', f, hf, hp, hc⟩` from `RatModel.exists_projBundle_closure F Ω M Ω' φ J EE (genPt Ω j₀) hM ⟨j₀, by rw [genPt_self]; exact one_ne_zero⟩ (eq_top_of_genPt_mem j₀ _ (fun a => Subfield.subset_closure (Or.inl ⟨a, rfl⟩)) fun j => Subfield.subset_closure (Or.inr ⟨j₀, j, by rw [genPt_self, div_one]⟩))`. Use `⟨Ω', inferInstance, inferInstance, M', φ, f, genPt Ω j₀, ⟨hf, fun B hB i => ?_, hc⟩, hp⟩` and prove the remaining obligations. Take `⟨h1, h2⟩` from `genPt_ratio j₀ B hB i`. Conclude with `⟨h1, fun P hP => algebraicIndependent_iff.1 h2 P hP⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_projBundle : ∀ (F Ω : Type) [Field F] [Field Ω] [Algebra F Ω] (M : RatModel F Ω) (J : Type) [Fintype J] [DecidableEq J] [Nonempty J] (EE : M.Lat J), IsProjOver M.s → ∃ (Ω' : Type) (_ : Field Ω') (_ : Algebra F Ω') (M' : RatModel F Ω') (φ : Ω →ₐ[F] Ω') (f : M'.Z ⟶ M.Z) (s : J → Ω'), ProjBundle M EE M' φ f s ∧ IsProjOver M'.s := by
   intro F Ω _ _ _ M J _ inst ⟨j₀⟩ EE hM

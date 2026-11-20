@@ -13,7 +13,7 @@ open Formalism.DoubleCosetMeasures
 namespace Phase
 
 /- English proof (translation)
-The claim follows from `| [], j, h => by simpa [revIn] using h | a :: s, j, h => by simp only [revIn, List.sum_cons] at h ⊢ split_ifs with hj · omega · have := revIn_lt s (j - a) (by omega); omega`.
+A detailed English derivation is pending.
 -/
 theorem revIn_lt : ∀ (s : List ℕ) (j : ℕ), j < s.sum → revIn s j < s.sum
   | [], j, h => by simpa [revIn] using h
@@ -24,7 +24,7 @@ theorem revIn_lt : ∀ (s : List ℕ) (j : ℕ), j < s.sum → revIn s j < s.sum
     · have := revIn_lt s (j - a) (by omega); omega
 
 /- English proof (translation)
-The claim follows from `| [], j, _ => by simp [revIn] | a :: s, j, h => by simp only [List.sum_cons] at h by_cases hj : j < a · simp only [revIn, if_pos hj] rw [if_pos (by omega)]; omega · simp only [revIn, if_neg hj] rw [if_neg (by omega)] have e : a + revIn s (j - a) - a = revIn s (j - a) := by omega …`.
+A detailed English derivation is pending.
 -/
 theorem revIn_revIn : ∀ (s : List ℕ) (j : ℕ), j < s.sum → revIn s (revIn s j) = j
   | [], j, _ => by simp [revIn]
@@ -39,7 +39,7 @@ theorem revIn_revIn : ∀ (s : List ℕ) (j : ℕ), j < s.sum → revIn s (revIn
       rw [e, revIn_revIn s (j - a) (by omega)]; omega
 
 /- English proof (translation)
-The claim follows from `| [], j, _ => by simp [blk] | a :: s, j, h => by simp only [List.sum_cons] at h by_cases hj : j < a · simp only [revIn, blk, if_pos hj] rw [if_pos (by omega)] · simp only [revIn, blk, if_neg hj] rw [if_neg (by omega)] have e : a + revIn s (j - a) - a = revIn s (j - a) := by omega …`.
+A detailed English derivation is pending.
 -/
 theorem blk_revIn : ∀ (s : List ℕ) (j : ℕ), j < s.sum → blk s (revIn s j) = blk s j
   | [], j, _ => by simp [blk]
@@ -54,7 +54,7 @@ theorem blk_revIn : ∀ (s : List ℕ) (j : ℕ), j < s.sum → blk s (revIn s j
       rw [e, blk_revIn s (j - a) (by omega)]
 
 /- English proof (translation)
-The claim follows from `| [], _, _, _ => by simp [blk] | a :: s, i, j, h => by simp only [blk] split_ifs with h1 h2 h2 · exact le_refl _ · omega · omega · have := blk_mono s (i - a) (j - a) (by omega); omega`.
+A detailed English derivation is pending.
 -/
 theorem blk_mono : ∀ (s : List ℕ) (i j : ℕ), i ≤ j → blk s i ≤ blk s j
   | [], _, _, _ => by simp [blk]
@@ -67,7 +67,7 @@ theorem blk_mono : ∀ (s : List ℕ) (i j : ℕ), i ≤ j → blk s i ≤ blk s
     · have := blk_mono s (i - a) (j - a) (by omega); omega
 
 /- English proof (translation)
-The claim follows from `| [], _, _, h, _, _ => by simp at h | a :: s, i, j, h, hij, hb => by simp only [List.sum_cons] at h simp only [blk] at hb simp only [revIn] split_ifs at hb ⊢ with h1 h2 h2 · omega · omega · omega · have := revIn_anti s (i - a) (j - a) (by omega) (by omega) (by omega); omega`.
+A detailed English derivation is pending.
 -/
 theorem revIn_anti : ∀ (s : List ℕ) (i j : ℕ), j < s.sum → i < j → blk s i = blk s j →
     revIn s j < revIn s i
@@ -83,7 +83,7 @@ theorem revIn_anti : ∀ (s : List ℕ) (i j : ℕ), j < s.sum → i < j → blk
     · have := revIn_anti s (i - a) (j - a) (by omega) (by omega) (by omega); omega
 
 /- English proof (translation)
-The claim follows from `| [], _, h, _ => by simp at h | a :: s, j, h, hb => by simp only [List.sum_cons] at h simp only [blk] at hb simp only [revIn] split_ifs at hb ⊢ with h1 h2 h2 · omega · omega · omega · have e : j + 1 - a = (j - a) + 1 := by omega rw [e] at hb ⊢ have := revIn_succ s (j - a) (by ome …`.
+A detailed English derivation is pending.
 -/
 theorem revIn_succ : ∀ (s : List ℕ) (j : ℕ), j + 1 < s.sum → blk s j = blk s (j + 1) →
     revIn s (j + 1) + 1 = revIn s j
@@ -108,17 +108,17 @@ Both sides reduce to the same expression.
 @[simp] theorem revF_val (s : List ℕ) (a : Fin s.sum) : (revF s a : ℕ) = revIn s a := rfl
 
 /- English proof (translation)
-The claim follows from `Fin.ext (revIn_revIn s a a.2)`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem revF_revF (s : List ℕ) (a : Fin s.sum) : revF s (revF s a) = a := Fin.ext (revIn_revIn s a a.2)
 
 /- English proof (translation)
-The claim follows from `blk_revIn s a a.2`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem blk_revF (s : List ℕ) (a : Fin s.sum) : blk s (revF s a) = blk s a := blk_revIn s a a.2
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem revF_inj (s : List ℕ) {a c : Fin s.sum} (h : revF s a = revF s c) : a = c := by
   calc a = revF s (revF s a) := (revF_revF s a).symm
@@ -126,13 +126,13 @@ theorem revF_inj (s : List ℕ) {a c : Fin s.sum} (h : revF s a = revF s c) : a 
     _ = c := revF_revF s c
 
 /- English proof (translation)
-The claim follows from `revIn_anti s a c c.2 h hb`.
+A detailed English derivation is pending.
 -/
 theorem revF_lt_of_blk_eq (s : List ℕ) {a c : Fin s.sum} (hb : blk s a = blk s c) (h : a < c) :
     revF s c < revF s a := revIn_anti s a c c.2 h hb
 
 /- English proof (translation)
-Use `show revIn s a < revIn s c`. Assume the negation of the conclusion as `hcon`. Use `blk_mono s (revIn s c) (revIn s a) (by omega)` as an intermediate fact. Rewrite `this` using `[blk_revIn s c c.2, blk_revIn s a a.2]`. Use linear arithmetic over natural numbers and integers.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem revF_lt_of_blk_lt (s : List ℕ) {a c : Fin s.sum} (hb : blk s a < blk s c) :
     revF s a < revF s c := by
@@ -143,7 +143,7 @@ theorem revF_lt_of_blk_lt (s : List ℕ) {a c : Fin s.sum} (hb : blk s a < blk s
   omega
 
 /- English proof (translation)
-The claim follows from `lt_of_le_of_ne (blk_mono s a c (le_of_lt h)) hb`.
+A detailed English derivation is pending.
 -/
 theorem blk_lt_of_lt_of_ne (s : List ℕ) {a c : Fin s.sum} (h : a < c) (hb : blk s a ≠ blk s c) :
     blk s a < blk s c := lt_of_le_of_ne (blk_mono s a c (le_of_lt h)) hb
@@ -154,7 +154,7 @@ def mono (s : List ℕ) (f : Fin s.sum → K) : Matrix (Fin s.sum) (Fin s.sum) K
   fun a c => if c = revF s a then f a else 0
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single (revF s a)]`. Simplify using `[mono]`. Introduce `b _ hb`. Simplify using `only [mono]`. Rewrite using `[if_neg hb, zero_mul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/
@@ -168,7 +168,7 @@ theorem mono_mul (s : List ℕ) (f : Fin s.sum → K) (M : Matrix (Fin s.sum) (F
   · simp
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single (revF s c)]`. Simplify using `[mono]`. Introduce `b _ hb`. Simplify using `only [mono]`. Rewrite using `[if_neg (fun h => hb (by rw [h, revF_revF])), mul_zero]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/
@@ -182,9 +182,9 @@ theorem mul_mono (s : List ℕ) (f : Fin s.sum → K) (M : Matrix (Fin s.sum) (F
   · simp
 
 /- English proof (translation)
-Unfold `pt`. Use function extensionality and compare the values at `a b`. Simplify using `only [mono]`. Distinguish the cases in `h : (b : ℕ) = revIn s a`. Rewrite using `[if_pos h, if_pos (Fin.ext h)]`.
+Replace the relevant objects with their definitions. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg h, if_neg (fun h' => h (congrArg Fin.val h'))]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem pt_eq_mono (s : List ℕ) (t : ℕ → Kˣ) :
     pt s t = mono s (fun a => ((t (blk s a) : Kˣ) : K)) := by
@@ -199,9 +199,9 @@ def ptI (s : List ℕ) (t : ℕ → Kˣ) : Matrix (Fin s.sum) (Fin s.sum) K :=
   mono s (fun a => (((t (blk s a))⁻¹ : Kˣ) : K))
 
 /- English proof (translation)
-Rewrite using `[pt_eq_mono]`. Use extensionality with `a c`. Rewrite using `[mono_mul]`. Simplify using `only [ptI, mono, revF_revF, blk_revF, Matrix.one_apply]`. Distinguish the cases in `h : c = a`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[h, Ne.symm h]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem pt_mul_ptI (s : List ℕ) (t : ℕ → Kˣ) : pt s t * ptI s t = (1 : Matrix _ _ K) := by
   rw [pt_eq_mono]
@@ -213,9 +213,9 @@ theorem pt_mul_ptI (s : List ℕ) (t : ℕ → Kˣ) : pt s t * ptI s t = (1 : Ma
   · simp [h, Ne.symm h]
 
 /- English proof (translation)
-Rewrite using `[pt_eq_mono]`. Use extensionality with `a c`. Rewrite using `[ptI, mono_mul]`. Simplify using `only [mono, revF_revF, blk_revF, Matrix.one_apply]`. Distinguish the cases in `h : c = a`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[h, Ne.symm h]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem ptI_mul_pt (s : List ℕ) (t : ℕ → Kˣ) : ptI s t * pt s t = (1 : Matrix _ _ K) := by
   rw [pt_eq_mono]
@@ -227,7 +227,7 @@ theorem ptI_mul_pt (s : List ℕ) (t : ℕ → Kˣ) : ptI s t * pt s t = (1 : Ma
   · simp [h, Ne.symm h]
 
 /- English proof (translation)
-Rewrite using `[pt_eq_mono, mul_mono, ptI, mono_mul]`. Simplify using `only [blk_revF]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem conj_apply (s : List ℕ) (t : ℕ → Kˣ) (M : Matrix (Fin s.sum) (Fin s.sum) K)
     (a c : Fin s.sum) : (ptI s t * M * pt s t) a c =
@@ -236,7 +236,7 @@ theorem conj_apply (s : List ℕ) (t : ℕ → Kˣ) (M : Matrix (Fin s.sum) (Fin
   simp only [blk_revF]
 
 /- English proof (translation)
-Use `first`. Consider the case `exact hx.1 h`. Consider the case `exact hx.1 (show OrderDual.toDual j < OrderDual.toDual i from h)`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem low_zero {n : ℕ} {x : Matrix (Fin n) (Fin n) K} (hx : IsLowUni x) {i j : Fin n}
     (h : i < j) : x i j = 0 := by
@@ -245,7 +245,7 @@ theorem low_zero {n : ℕ} {x : Matrix (Fin n) (Fin n) K} (hx : IsLowUni x) {i j
   | exact hx.1 (show OrderDual.toDual j < OrderDual.toDual i from h)
 
 /- English proof (translation)
-Use `first`. Consider the case `exact hy.1 h`. Consider the case `(unfold IsUpUni at hy; done)`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem up_zero {n : ℕ} {y : Matrix (Fin n) (Fin n) K} (hy : IsUpUni y) {i j : Fin n}
     (h : j < i) : y i j = 0 := by
@@ -254,7 +254,7 @@ theorem up_zero {n : ℕ} {y : Matrix (Fin n) (Fin n) K} (hy : IsUpUni y) {i j :
   | (unfold IsUpUni at hy; done)
 
 /- English proof (translation)
-Use extensionality with `i j`. Break down `lt_trichotomy i j with h | rfl | h` into its components or cases. Rewrite using `[low_zero h1 h, Matrix.one_apply_ne h.ne]`. Rewrite using `[h1.2 i, Matrix.one_apply_eq]`. Rewrite using `[up_zero h2 h, Matrix.one_apply_ne h.ne']`.
+By extensionality, compare the relevant components. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem eq_one_of_low_up {n : ℕ} {m : Matrix (Fin n) (Fin n) K} (h1 : IsLowUni m)
     (h2 : IsUpUni m) : m = 1 := by
@@ -265,7 +265,7 @@ theorem eq_one_of_low_up {n : ℕ} {m : Matrix (Fin n) (Fin n) K} (h1 : IsLowUni
   · rw [up_zero h2 h, Matrix.one_apply_ne h.ne']
 
 /- English proof (translation)
-Establish `hd : IsUnit x.det`. Rewrite using `[Matrix.det_of_isLowerTriangular x hx.1]`. Simplify using `[hx.2]`. Conclude with `Matrix.mul_nonsing_inv x hd`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mul_inv_one_low {n : ℕ} {x : Matrix (Fin n) (Fin n) K} (hx : IsLowUni x) :
     x * x⁻¹ = 1 := by
@@ -275,7 +275,7 @@ theorem mul_inv_one_low {n : ℕ} {x : Matrix (Fin n) (Fin n) K} (hx : IsLowUni 
   exact Matrix.mul_nonsing_inv x hd
 
 /- English proof (translation)
-Establish `hd : IsUnit x.det`. Rewrite using `[Matrix.det_of_isLowerTriangular x hx.1]`. Simplify using `[hx.2]`. Conclude with `Matrix.nonsing_inv_mul x hd`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem inv_mul_one_low {n : ℕ} {x : Matrix (Fin n) (Fin n) K} (hx : IsLowUni x) :
     x⁻¹ * x = 1 := by
@@ -285,7 +285,7 @@ theorem inv_mul_one_low {n : ℕ} {x : Matrix (Fin n) (Fin n) K} (hx : IsLowUni 
   exact Matrix.nonsing_inv_mul x hd
 
 /- English proof (translation)
-Establish `hd : IsUnit x.det`. Rewrite using `[Matrix.det_of_isUpperTriangular hx.1]`. Simplify using `[hx.2]`. Conclude with `Matrix.mul_nonsing_inv x hd`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mul_inv_one_up {n : ℕ} {x : Matrix (Fin n) (Fin n) K} (hx : IsUpUni x) :
     x * x⁻¹ = 1 := by
@@ -295,7 +295,7 @@ theorem mul_inv_one_up {n : ℕ} {x : Matrix (Fin n) (Fin n) K} (hx : IsUpUni x)
   exact Matrix.mul_nonsing_inv x hd
 
 /- English proof (translation)
-Establish `hd : IsUnit x.det`. Rewrite using `[Matrix.det_of_isUpperTriangular hx.1]`. Simplify using `[hx.2]`. Conclude with `Matrix.nonsing_inv_mul x hd`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem inv_mul_one_up {n : ℕ} {x : Matrix (Fin n) (Fin n) K} (hx : IsUpUni x) :
     x⁻¹ * x = 1 := by
@@ -305,13 +305,13 @@ theorem inv_mul_one_up {n : ℕ} {x : Matrix (Fin n) (Fin n) K} (hx : IsUpUni x)
   exact Matrix.nonsing_inv_mul x hd
 
 /- English proof (translation)
-Establish `hjk : j ≠ k`. Introduce `h'`. Rewrite `hk` using `[h']`. Use linear arithmetic over natural numbers and integers. Establish `h` using `congrFun (congrFun hyz j) k`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Rewrite `h` using `[Matrix.mul_apply, Matrix.one_apply_ne hjk, Fintype.sum_eq_add j k hjk ?_]`. Rewrite `h` using `[hy.2 j, hz.2 k]`. Take the linear combination `h`. Introduce `c ⟨hcj, hck⟩`. Break down `lt_or_gt_of_ne hcj with hc | hc` into its components or cases.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite using `[up_zero hy hc, zero_mul]`. Establish `hc' : (j : ℕ) < c` using `hc`. Establish `hck' : (c : ℕ) ≠ k` using `fun h' => hck (Fin.ext h')`. Establish `hkc : k < c` using `by show (k : ℕ) < c`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Rewrite using `[up_zero hz hkc, mul_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem simple_add_zero {n : ℕ} {y z : Matrix (Fin n) (Fin n) K} (hy : IsUpUni y)
     (hz : IsUpUni z) (hyz : y * z = 1) (j k : Fin n) (hk : (k : ℕ) = j + 1) :
@@ -335,9 +335,9 @@ theorem simple_add_zero {n : ℕ} {y z : Matrix (Fin n) (Fin n) K} (hy : IsUpUni
       rw [up_zero hz hkc, mul_zero]
 
 /- English proof (translation)
-Establish `h1 : (x * y).IsLowerTriangular` using `Matrix.BlockTriangular.mul hx.1 hy.1`. Unfold `IsLowUni`. Use `⟨h1, fun a => ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single a]`. Rewrite using `[hx.2 a, hy.2 a, one_mul]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `b _ hb`. Break down `lt_or_gt_of_ne hb with h | h` into its components or cases. Rewrite using `[low_zero hy h, mul_zero]`. Rewrite using `[low_zero hx h, zero_mul]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private lemma isLowUni_mul' {n : ℕ} {x y : Matrix (Fin n) (Fin n) K} (hx : IsLowUni x)
     (hy : IsLowUni y) : IsLowUni (x * y) := by
@@ -353,13 +353,13 @@ private lemma isLowUni_mul' {n : ℕ} {x y : Matrix (Fin n) (Fin n) K} (hx : IsL
   · simp
 
 /- English proof (translation)
-Establish `hd : IsUnit x.det`. Rewrite using `[Matrix.det_of_isLowerTriangular x hx.1]`. Simplify using `[hx.2]`. Use `letI := Matrix.invertibleOfIsUnitDet x hd`. Establish `h1 : x⁻¹.IsLowerTriangular` using `Matrix.blockTriangular_inv_of_blockTriangular hx.1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Unfold `IsLowUni`. Use `⟨h1, fun a => ?_⟩` and prove the remaining obligations. Establish `h` using `congrFun (congrFun (mul_inv_one_low hx) a) a`. Rewrite `h` using `[Matrix.mul_apply, Finset.sum_eq_single a, hx.2 a, one_mul, Matrix.one_apply_eq]`. Conclude with `h`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `b _ hb`. Break down `lt_or_gt_of_ne hb with h' | h'` into its components or cases. Establish `hz : x⁻¹ b a = 0` using `h1 (show OrderDual.toDual a < OrderDual.toDual b from h')`. Rewrite using `[hz, mul_zero]`. Rewrite using `[low_zero hx h', zero_mul]`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 private lemma isLowUni_inv' {n : ℕ} {x : Matrix (Fin n) (Fin n) K} (hx : IsLowUni x) :
     IsLowUni x⁻¹ := by
@@ -381,9 +381,9 @@ private lemma isLowUni_inv' {n : ℕ} {x : Matrix (Fin n) (Fin n) K} (hx : IsLow
   · simp
 
 /- English proof (translation)
-Establish `h1 : (x * y).IsUpperTriangular` using `Matrix.BlockTriangular.mul hx.1 hy.1`. Unfold `IsUpUni`. Use `⟨h1, fun a => ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single a]`. Rewrite using `[hx.2 a, hy.2 a, one_mul]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `b _ hb`. Break down `lt_or_gt_of_ne hb with h | h` into its components or cases. Rewrite using `[up_zero hx h, zero_mul]`. Rewrite using `[up_zero hy h, mul_zero]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private lemma isUpUni_mul' {n : ℕ} {x y : Matrix (Fin n) (Fin n) K} (hx : IsUpUni x)
     (hy : IsUpUni y) : IsUpUni (x * y) := by
@@ -399,13 +399,13 @@ private lemma isUpUni_mul' {n : ℕ} {x y : Matrix (Fin n) (Fin n) K} (hx : IsUp
   · simp
 
 /- English proof (translation)
-Establish `hd : IsUnit x.det`. Rewrite using `[Matrix.det_of_isUpperTriangular hx.1]`. Simplify using `[hx.2]`. Use `letI := Matrix.invertibleOfIsUnitDet x hd`. Establish `h1 : x⁻¹.IsUpperTriangular` using `Matrix.blockTriangular_inv_of_blockTriangular hx.1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Unfold `IsUpUni`. Use `⟨h1, fun a => ?_⟩` and prove the remaining obligations. Establish `h` using `congrFun (congrFun (mul_inv_one_up hx) a) a`. Rewrite `h` using `[Matrix.mul_apply, Finset.sum_eq_single a, hx.2 a, one_mul, Matrix.one_apply_eq]`. Conclude with `h`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `b _ hb`. Break down `lt_or_gt_of_ne hb with h' | h'` into its components or cases. Rewrite using `[up_zero hx h', zero_mul]`. Establish `hz : x⁻¹ b a = 0` using `h1 (show id a < id b from h')`. Rewrite using `[hz, mul_zero]`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 private lemma isUpUni_inv_lower_unipotent_orbits {n : ℕ} {x : Matrix (Fin n) (Fin n) K} (hx : IsUpUni x) :
     IsUpUni x⁻¹ := by
@@ -427,9 +427,9 @@ private lemma isUpUni_inv_lower_unipotent_orbits {n : ℕ} {x : Matrix (Fin n) (
   · simp
 
 /- English proof (translation)
-Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Use `split_ifs with h`. Rewrite using `[Finset.sum_eq_single (⟨a + 1, h⟩ : Fin n)]`. Simplify using the standard rewrite rules. Introduce `b _ hb`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg (show ¬ ((b : ℕ) = a + 1) from fun e => hb (Fin.ext e))]`. Simplify using the standard rewrite rules. Use `symm`. Use `Finset.sum_eq_zero fun c _ => ?_` and prove the remaining obligations. Rewrite using `[if_neg (show ¬ ((c : ℕ) = a + 1) from fun e => h (by have := c.2; omega))]`.
+Simplify using the standard rewrite rules. Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma sum_superdiagonal_eq_sum_ite {n : ℕ} (M : Matrix (Fin n) (Fin n) K) :
     (∑ j : Fin n, if h : (j : ℕ) + 1 < n then M j ⟨j + 1, h⟩ else 0) =
@@ -446,11 +446,11 @@ private lemma sum_superdiagonal_eq_sum_ite {n : ℕ} (M : Matrix (Fin n) (Fin n)
     rw [if_neg (show ¬ ((c : ℕ) = a + 1) from fun e => h (by have := c.2; omega))]
 
 /- English proof (translation)
-Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Use `split_ifs with h`. Rewrite using `[Finset.sum_eq_single (⟨c + 1, h⟩ : Fin n)]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `b _ hb`. Rewrite using `[if_neg (show ¬ ((b : ℕ) = c + 1) from fun e => hb (Fin.ext e))]`. Simplify using the standard rewrite rules. Use `symm`. Use `Finset.sum_eq_zero fun a _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg (show ¬ ((a : ℕ) = c + 1) from fun e => h (by have := a.2; omega))]`.
+A detailed English derivation is pending.
 -/
 private lemma sum_subdiagonal_eq_sum_ite {n : ℕ} (M : Matrix (Fin n) (Fin n) K) :
     (∑ j : Fin n, if h : (j : ℕ) + 1 < n then M ⟨j + 1, h⟩ j else 0) =
@@ -468,35 +468,33 @@ private lemma sum_subdiagonal_eq_sum_ite {n : ℕ} (M : Matrix (Fin n) (Fin n) K
     rw [if_neg (show ¬ ((a : ℕ) = c + 1) from fun e => h (by have := a.2; omega))]
 
 /- English proof (translation)
-Unfold `PhaseWellDef`. Introduce `K _ s t x y hx hy h`. Unfold `sLow sUp`. Establish `hyinv : y⁻¹ = ptI s t * x * pt s t`. Apply `Matrix.inv_eq_left_inv` to reduce the goal to its premises.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[show ptI s t * x * pt s t * y = ptI s t * (x * pt s t * y) by`. Simplify using `only [Matrix.mul_assoc], h, ptI_mul_pt]`. Establish `hzU : IsUpUni y⁻¹` using `isUpUni_inv_lower_unipotent_orbits hy`. Establish `hz : ∀ a c, y⁻¹ (revF s a) (revF s c) = ↑(t (blk s a))⁻¹ * x a c * ↑(t (blk s c))`. Introduce `a c`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hyinv, conj_apply]`. Simplify using `only [revF_revF, blk_revF]`. Establish `hxz : ∀ a c : Fin s.sum, (a : ℕ) = c + 1 → blk s a ≠ blk s c → x a c = 0`. Introduce `a c hac hb`. Establish `hlt : blk s c < blk s a` using `lt_of_le_of_ne (blk_mono s c a (by omega)) (Ne.symm hb)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h0` using `hz a c`. Rewrite `h0` using `[up_zero hzU (revF_lt_of_blk_lt s hlt)]`. Conclude with `(Units.mul_right_eq_zero _).1 ((Units.mul_left_eq_zero _).1 h0.symm)`. Establish `hterm : ∀ a c : Fin s.sum, (if (revF s c : ℕ) = revF s a + 1 then ↑(t (blk s a))⁻¹ * x a c * ↑(t (blk s c)) else 0) = (if (a : ℕ) = c + 1 then x a c else 0)`. Introduce `a c`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `h1 : (a : ℕ) = c + 1`. Rewrite using `[if_pos h1]`. Distinguish the cases in `hb : blk s a = blk s c`. Establish `hs` using `revIn_succ s c (by have := a.2; omega) (by rw [← h1]; exact hb.symm)`. Rewrite `hs` using `[← h1]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_pos (show (revF s c : ℕ) = revF s a + 1 by rw [revF_val, revF_val]; omega), hb, mul_assoc, mul_comm (x a c), ← mul_assoc, Units.inv_mul, one_mul]`. Rewrite using `[hxz a c h1 hb]`. Simplify using the standard rewrite rules. Rewrite using `[if_neg h1]`. Distinguish the cases in `h2 : (revF s c : ℕ) = revF s a + 1`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_pos h2]`. Distinguish the cases in `hb : blk s a = blk s c`. It suffices to derive a contradiction. Establish `hs` using `revIn_succ s (revF s a) (by have := (revF s c).2; omega) (by rw [← h2, blk_revF, blk_revF, hb])`. Rewrite `hs` using `[← h2]`.
+Consider separately whether the proposition holds or fails. It suffices to derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `e1 : revIn s (revF s c) = c` using `congrArg Fin.val (revF_revF s c)`. Establish `e2 : revIn s (revF s a) = a` using `congrArg Fin.val (revF_revF s a)`. Use linear arithmetic over natural numbers and integers. Establish `hle : blk s a ≤ blk s c`. Use `blk_mono s (revF s a) (revF s c) (by omega)` as an intermediate fact.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `this` using `[blk_revF, blk_revF]`. Then use the resulting hypothesis. Establish `hlt : blk s a < blk s c` using `lt_of_le_of_ne hle hb`. Establish `hac : a < c`. Assume the negation of the conclusion as `hca`. Use `blk_mono s c a (not_lt.1 hca)` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Rewrite using `[low_zero hx hac, mul_zero, zero_mul]`. Rewrite using `[if_neg h2]`. Establish `hy1` using `mul_inv_one_up hy`. Establish `hyz : ∀ a c : Fin s.sum, (if (c : ℕ) = a + 1 then y a c else 0) = -(if (c : ℕ) = a + 1 then y⁻¹ a c else 0)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a c`. Use `split_ifs with hc`. Use `simple_add_zero hy hzU hy1 a c hc` as an intermediate fact. Take the linear combination `this`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[sum_subdiagonal_eq_sum_ite x, sum_superdiagonal_eq_sum_ite y]`. Establish `hS : (∑ a : Fin s.sum, ∑ c : Fin s.sum, if (c : ℕ) = a + 1 then y a c else 0) = -∑ a : Fin s.sum, ∑ c : Fin s.sum, if (a : ℕ) = c + 1 then x a c else 0`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [hyz, Finset.sum_neg_distrib]`. Use `_ = -∑ a : Fin s.sum, ∑ c : Fin s.sum, if (revF s c : ℕ) = revF s a + 1 then y⁻¹ (revF s a) (revF s c) else 0 := by`.
+Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `congr 1`. Use `Fintype.sum_equiv (Function.Involutive.toPerm _ (revF_revF s)) _ _ fun a => ?_` and prove the remaining obligations. Use `Fintype.sum_equiv (Function.Involutive.toPerm _ (revF_revF s)) _ _ fun c => ?_` and prove the remaining obligations. Use `first`. Consider the case `simp only [Function.Involutive.coe_toPerm, revF_revF]`.
+Treat this case separately. Treat this case separately. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Consider the case `simp [Function.Involutive.toPerm, revF_revF]`. Use `_ = -∑ a : Fin s.sum, ∑ c : Fin s.sum, if (a : ℕ) = c + 1 then x a c else 0 := by`. Use `congr 1`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[hz a c, hterm a c]`.
-
-Rewrite using `[hS]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem phase_main : PhaseWellDef := by
   unfold PhaseWellDef
@@ -592,9 +590,9 @@ private lemma bdiag_apply (s : List ℕ) (x : Matrix (Fin s.sum) (Fin s.sum) K)
     (a c : Fin s.sum) : bdiag s x a c = if blk s a = blk s c then x a c else 0 := rfl
 
 /- English proof (translation)
-Unfold `IsLowUni`. Prove the components needed by the constructor for the conclusion. Introduce `i j h`. Establish `h' : i < j` using `h`. Rewrite using `[bdiag_apply]`.
+Replace the relevant objects with their definitions. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `split_ifs`. Conclude with `low_zero hx h'`. Both sides reduce to the same expression. Introduce `a`. Rewrite using `[bdiag_apply, if_pos rfl, hx.2 a]`.
+Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bdiag_low (s : List ℕ) {x : Matrix (Fin s.sum) (Fin s.sum) K} (hx : IsLowUni x) :
     IsLowUni (bdiag s x) := by
@@ -610,13 +608,13 @@ theorem bdiag_low (s : List ℕ) {x : Matrix (Fin s.sum) (Fin s.sum) K} (hx : Is
     rw [bdiag_apply, if_pos rfl, hx.2 a]
 
 /- English proof (translation)
-Establish `hBinv : bdiag s x * (bdiag s x)⁻¹ = 1` using `mul_inv_one_low (bdiag_low s hx)`. Establish `hP : bdiag s x * bdiag s (bdiag s x)⁻¹ = 1`. Use extensionality with `a' c'`. Establish `h1` using `congrFun (congrFun hBinv a') c'`. Rewrite `h1` using `[Matrix.mul_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[Matrix.mul_apply]`. Distinguish the cases in `hac : blk s a' = blk s c'`. Rewrite using `[← h1]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Distinguish the cases in `hab : blk s a' = blk s b`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[bdiag_apply s ((bdiag s x)⁻¹), if_pos (hab.symm.trans hac)]`. Rewrite using `[bdiag_apply s x, if_neg hab, zero_mul, zero_mul]`. Rewrite using `[Matrix.one_apply_ne (fun h' => hac (by rw [h']))]`. Use `Finset.sum_eq_zero fun b _ => ?_` and prove the remaining obligations. Distinguish the cases in `hab : blk s a' = blk s b`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[bdiag_apply s ((bdiag s x)⁻¹), if_neg (fun h' => hac (hab.trans h')), mul_zero]`. Rewrite using `[bdiag_apply s x, if_neg hab, zero_mul]`. Rewrite using `[Matrix.inv_eq_right_inv hP, bdiag_apply, if_neg h]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem bdiag_inv_blk (s : List ℕ) {x : Matrix (Fin s.sum) (Fin s.sum) K} (hx : IsLowUni x)
     {a c : Fin s.sum} (h : blk s a ≠ blk s c) : (bdiag s x)⁻¹ a c = 0 := by
@@ -640,9 +638,9 @@ theorem bdiag_inv_blk (s : List ℕ) {x : Matrix (Fin s.sum) (Fin s.sum) K} (hx 
   rw [Matrix.inv_eq_right_inv hP, bdiag_apply, if_neg h]
 
 /- English proof (translation)
-Establish `hBinv` using `mul_inv_one_low (bdiag_low s hx)`. Rewrite using `[← hBinv, Matrix.mul_apply, Matrix.mul_apply]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Distinguish the cases in `hbc : blk s b = blk s c`. Rewrite using `[bdiag_apply s x a b, if_pos (hac.trans hbc.symm)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[bdiag_inv_blk s hx hbc, mul_zero, mul_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mul_inv_blockDiag_apply_same_block (s : List ℕ) {x : Matrix (Fin s.sum) (Fin s.sum) K} (hx : IsLowUni x)
     {a c : Fin s.sum} (hac : blk s a = blk s c) :
@@ -655,19 +653,19 @@ theorem mul_inv_blockDiag_apply_same_block (s : List ℕ) {x : Matrix (Fin s.sum
   · rw [bdiag_inv_blk s hx hbc, mul_zero, mul_zero]
 
 /- English proof (translation)
-Establish `hv1 : IsLowUni (x * (bdiag s x)⁻¹)` using `isLowUni_mul' hx (isLowUni_inv' (bdiag_low s hx))`. Establish `hW : IsUpUni (ptI s t * bdiag s x * pt s t)`. Unfold `IsUpUni`. Prove the components needed by the constructor for the conclusion. Introduce `a c hca`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hca' : c < a` using `hca`. Rewrite using `[conj_apply]`. Establish `hw : bdiag s x (revF s a) (revF s c) = 0`. Rewrite using `[bdiag_apply]`. Distinguish the cases in `hb : blk s a = blk s c`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[if_pos (show blk s (revF s a) = blk s (revF s c) by rw [blk_revF, blk_revF, hb]), low_zero hx (revF_lt_of_blk_eq s hb.symm hca')]`. Rewrite using `[if_neg (show ¬ blk s (revF s a) = blk s (revF s c) by`. Rewrite using `[blk_revF, blk_revF]`. Conclude with `hb)]`. Rewrite using `[hw, mul_zero, zero_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a`. Rewrite using `[conj_apply, bdiag_apply, if_pos rfl, hx.2, mul_one, Units.inv_mul]`. Use `⟨x * (bdiag s x)⁻¹, ptI s t * bdiag s x * pt s t * y, ptI s t * (x * (bdiag s x)⁻¹) * pt s t, hv1, ?_, ?_, isUpUni_mul' hW hy, ?_⟩` and prove the remaining obligations. Unfold `IsLowUni`. Prove the components needed by the constructor for the conclusion.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a c hac`. Establish `hac' : a < c` using `hac`. Rewrite using `[conj_apply]`. Establish `hv : (x * (bdiag s x)⁻¹) (revF s a) (revF s c) = 0`. Distinguish the cases in `hb : blk s a = blk s c`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_inv_blockDiag_apply_same_block s hx (a := revF s a) (c := revF s c) (by rw [blk_revF, blk_revF, hb]), Matrix.one_apply_ne (fun h' => (ne_of_lt hac') (revF_inj s h'))]`. Conclude with `low_zero hv1 (revF_lt_of_blk_lt s (blk_lt_of_lt_of_ne s hac' hb))`. Rewrite using `[hv, mul_zero, zero_mul]`. Introduce `a`. Rewrite using `[conj_apply, mul_inv_blockDiag_apply_same_block s hx (a := revF s a) (c := revF s a) rfl, Matrix.one_apply_eq, mul_one, Units.inv_mul]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation.
 
-Simplify using `only [← Matrix.mul_assoc, pt_mul_ptI, Matrix.one_mul]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = x * pt s t * y := by`. Rewrite using `[pt_mul_ptI, Matrix.one_mul, inv_mul_one_low (bdiag_low s hx), Matrix.mul_one]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem section_exists (s : List ℕ) (t : ℕ → Kˣ) {x y : Matrix (Fin s.sum) (Fin s.sum) K}
     (hx : IsLowUni x) (hy : IsUpUni y) :
@@ -714,13 +712,13 @@ theorem section_exists (s : List ℕ) (t : ℕ → Kˣ) {x y : Matrix (Fin s.sum
           rw [pt_mul_ptI, Matrix.one_mul, inv_mul_one_low (bdiag_low s hx), Matrix.mul_one]
 
 /- English proof (translation)
-Establish `e1 : h' * u' = h * u`. Establish `e0 : pt s t * (h' * u') = pt s t * (h * u)`. Rewrite using `[← Matrix.mul_assoc, ← hvw', ← Matrix.mul_assoc, ← hvw, heq]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Matrix.mul_assoc, ptI_mul_pt, Matrix.one_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Use `_ = ptI s t * (pt s t * (h * u)) := by rw [e0]`. Use `_ = h * u := by rw [← Matrix.mul_assoc, ptI_mul_pt, Matrix.one_mul]`. Establish `e2 : h⁻¹ * h' = u * u'⁻¹`. Combine the equalities or inequalities in the displayed calculation. Establish `hl : IsLowUni (h⁻¹ * h')` using `isLowUni_mul K (isLowUni_inv K hh) hh'`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hup : IsUpUni (u * u'⁻¹)` using `isUpUni_mul K hu (isUpUni_inv K hu')`. Establish `e3 : h⁻¹ * h' = 1` using `eq_one_of_low_up hl (e2 ▸ hup)`. Establish `e4 : u * u'⁻¹ = 1` using `e2 ▸ e3`. Establish `hheq : h' = h`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `hueq : u' = u`. Combine the equalities or inequalities in the displayed calculation. Use `⟨?_, hueq⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem section_unique (s : List ℕ) (t : ℕ → Kˣ) {v u h v' u' h' : Matrix (Fin s.sum) (Fin s.sum) K}
     (hh : IsLowUni h) (hh' : IsLowUni h') (hu : IsUpUni u) (hu' : IsUpUni u')
@@ -755,9 +753,9 @@ theorem section_unique (s : List ℕ) (t : ℕ → Kˣ) {v u h v' u' h' : Matrix
     _ = v := by rw [Matrix.mul_assoc, pt_mul_ptI, Matrix.mul_one]
 
 /- English proof (translation)
-Unfold `SectionBij`. Introduce `K _ s t x y hx hy`. Take `⟨v, u, h, hv, hh, hvw, hu, heq⟩` from `section_exists s t hx hy`. Use `⟨(v, u), ⟨⟨hv, h, hh, hvw⟩, hu, heq⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨v', u'⟩ ⟨⟨hv', h', hh', hvw'⟩, hu', heq'⟩`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Take `⟨e1, e2⟩` from `section_unique s t hh hh' hu hu' hvw hvw' (heq'.trans heq.symm)`. Simplify using `only [Prod.mk.injEq]`. Conclude with `⟨e1, e2⟩`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 theorem section_main : SectionBij := by
   unfold SectionBij
@@ -772,12 +770,12 @@ theorem section_main : SectionBij := by
 end Phase
 
 /- English proof (translation)
-The claim follows from `Phase.phase_main`.
+A detailed English derivation is pending.
 -/
 theorem phaseWellDef : Formalism.DoubleCosetMeasures.PhaseWellDef := Phase.phase_main
 
 /- English proof (translation)
-The claim follows from `Phase.section_main`.
+A detailed English derivation is pending.
 -/
 theorem sectionBij : Formalism.DoubleCosetMeasures.SectionBij := Phase.section_main
 

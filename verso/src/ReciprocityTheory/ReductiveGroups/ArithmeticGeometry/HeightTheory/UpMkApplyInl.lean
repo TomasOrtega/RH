@@ -23,15 +23,15 @@ theorem upMk_apply_inr {D N : ℕ} (ab : (Fin (D + 2) →₀ ℕ) × (Option (Fi
     (i : Fin (D + 2)) : upMk ab (Sum.inr i) = ab.1 i := rfl
 
 /- English proof (translation)
-Unfold `upMono`. Rewrite using `[Finset.mem_image]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨a, b⟩, hab, rfl⟩`. Rewrite `hab` using `[Finset.mem_product, Finset.mem_finsuppAntidiag, Finset.mem_finsuppAntidiag]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨⟨ha, -⟩, ⟨hb, -⟩⟩` from `hab`. Apply the tactic sequence `try dsimp only at ha hb`. Rewrite `hb` using `[Fintype.sum_option]`. Prove the components needed by the constructor for the conclusion. Unfold `xDeg`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Prove the components needed by the constructor for the conclusion. Replace the relevant objects with their definitions. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `ha` using `only [upMk_apply_inr]`. Unfold `uDeg`. Simplify using `only [upMk_apply_inl]`. Use linear arithmetic over natural numbers and integers. Introduce and unpack `⟨hx, hu⟩`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨(Finsupp.equivFunOnFinite.symm (fun i => s (Sum.inr i)), Finsupp.equivFunOnFinite.symm (fun o => Option.elim o (n' - uDeg s) (fun p => s (Sum.inl p)))), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.mem_product, Finset.mem_finsuppAntidiag, Finset.mem_finsuppAntidiag]`. Use `⟨⟨?_, Finset.subset_univ _⟩, ⟨?_, Finset.subset_univ _⟩⟩` and prove the remaining obligations. Simplify `hx` using `[xDeg]`. Rewrite using `[Fintype.sum_option]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Finsupp.coe_equivFunOnFinite_symm, Option.elim]`. Unfold `uDeg at hu ⊢`. Use linear arithmetic over natural numbers and integers. Use extensionality with `x`. Apply the tactic sequence `cases x <;> simp [upMk]`.
+Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem mem_upMono {D N n n' : ℕ} {s : UXVar D N →₀ ℕ} :
     s ∈ upMono D N n n' ↔ xDeg s = n ∧ uDeg s ≤ n' := by
@@ -64,15 +64,15 @@ theorem mem_upMono {D N n n' : ℕ} {s : UXVar D N →₀ ℕ} :
       cases x <;> simp [upMk]
 
 /- English proof (translation)
-Unfold `upMono cardUX`. Rewrite using `[Finset.card_image_of_injOn, Finset.card_product, Finset.card_finsuppAntidiag_nat_eq_choose, Finset.card_finsuppAntidiag_nat_eq_choose, Finset.card_univ, Finset.card_univ, Fintype.card_fin, Fintype.card_option, Fintype.card_prod, Fintype.card_fin, Fintype.card_fin]`. Use `congr 1`. Rewrite using `[show D + 2 + n - 1 = n + (D + 1) by omega, Nat.choose_symm_add, Nat.add_assoc]`. Rewrite using `[show (D + 2) * (N + 1) + 1 + n' - 1 = n' + (D + 2) * (N + 1) by omega, Nat.choose_symm_add]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Introduce and unpack `⟨a, b⟩ hab ⟨a', b'⟩ hab' h`. Simplify using `only [Finset.coe_product, Set.mem_prod, Finset.mem_coe, Finset.mem_finsuppAntidiag] at hab hab'`. Establish `h1 : ∀ i, a i = a' i` using `fun i => by`. Use `congrArg (fun s => s (Sum.inr i)) h` as an intermediate fact. Simplify `this` using `[upMk]`.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h2 : ∀ p, b (some p) = b' (some p)` using `fun p => by`. Use `congrArg (fun s => s (Sum.inl p)) h` as an intermediate fact. Simplify `this` using `[upMk]`. Establish `hb` using `hab.2.1`. Establish `hb'` using `hab'.2.1`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hb`, `hb'` using `[Fintype.sum_option]`. Establish `hs : ∑ p, b (some p) = ∑ p, b' (some p)` using `Finset.sum_congr rfl fun p _ => h2 p`. Establish `h3 : b none = b' none` using `by omega`. Use `Prod.ext (Finsupp.ext h1) (Finsupp.ext fun o => ?_)` and prove the remaining obligations. Consider the cases of `o`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Split into cases according to the possible forms of the given data.
 
-Conclude with `h3`. Conclude with `h2 _`.
+A detailed English derivation is pending.
 -/
 theorem card_upMono (D N n n' : ℕ) : (upMono D N n n').card = cardUX D N n n' := by
   classical

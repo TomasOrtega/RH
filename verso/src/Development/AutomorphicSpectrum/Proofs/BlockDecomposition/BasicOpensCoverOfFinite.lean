@@ -9,31 +9,29 @@ attribute [local instance] MvPolynomial.gradedAlgebra
 namespace GlobalTheory.CompanionTheory.GeoCover
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hj`. Set `φ : (MvPolynomial (Fin n) K ⧸ I) →+* (MvPolynomial (Fin n) K ⧸ P)` to `Ideal.Quotient.factor hIP`. Establish `hφ : ∀ g, φ (Ideal.Quotient.mk I g) = Ideal.Quotient.mk P g` using `fun g => rfl`. Set `Q : Ideal (MvPolynomial (Fin n) K ⧸ I)` to `RingHom.ker φ`. Use `haveI : Q.IsPrime := RingHom.ker_isPrime φ`.
+Assume the negation of the conclusion and derive a contradiction. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `haveI : Algebra.IsIntegral (Algebra.adjoin K (Set.range fun k => Ideal.Quotient.mk I (y k))) (MvPolynomial (Fin n) K ⧸ I) := Algebra.IsIntegral.of_finite _ _`. Establish `hc0 : ∀ r ∈ Algebra.adjoin K (Set.range fun k => Ideal.Quotient.mk I (y k)), ∃ c : K, φ r = Ideal.Quotient.mk P (MvPolynomial.C c)`. Introduce `r hr`. Proceed by induction on `hr using Algebra.adjoin_induction with`. Consider the case `mem x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨k, rfl⟩` from `hx`. Conclude with `⟨0, by rw [hφ, map_zero, map_zero]; exact Ideal.Quotient.eq_zero_iff_mem.2 (hy k)⟩`. Consider the case `algebraMap c => exact ⟨c, rfl⟩`. Consider the case `add a b _ _ ha hb`. Take `⟨c, hc⟩` from `ha`.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨d, hd⟩` from `hb`. Conclude with `⟨c + d, by rw [map_add, hc, hd, map_add, map_add]⟩`. Consider the case `mul a b _ _ ha hb`. Take `⟨c, hc⟩` from `ha`. Take `⟨d, hd⟩` from `hb`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Conclude with `⟨c * d, by rw [map_mul, hc, hd, map_mul, map_mul]⟩`. Establish `h1 : (1 : MvPolynomial (Fin n) K ⧸ P) ≠ 0`. Introduce `h`. Establish `: (1 : MvPolynomial (Fin n) K) ∈ P` using `Ideal.Quotient.eq_zero_iff_mem.1 (by rw [map_one]; exact h)`. Conclude with `hPp.ne_top ((Ideal.eq_top_iff_one _).2 this)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hmax : (Q.comap (algebraMap (Algebra.adjoin K (Set.range fun k => Ideal.Quotient.mk I (y k))) (MvPolynomial (Fin n) K ⧸ I))).IsMaximal`. Rewrite using `[Ideal.isMaximal_iff]`. Use `⟨fun h => h1 ?_, fun J x hle hx hxJ => ?_⟩` and prove the remaining obligations. Establish `: φ 1 = 0` using `by simpa [Q, RingHom.mem_ker, Ideal.mem_comap] using h`. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Take `⟨c, hc⟩` from `hc0 x.1 x.2`. Establish `hc' : c ≠ 0`. Introduce and unpack `rfl`. Apply `hx` to reduce the goal to its premises. Rewrite using `[Ideal.mem_comap]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `φ x.1 = 0`. Rewrite using `[hc, map_zero, map_zero]`. Establish `hm : x * algebraMap K _ c⁻¹ - 1 ∈ J`. Apply `hle` to reduce the goal to its premises. Rewrite using `[Ideal.mem_comap]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `φ (x.1 * algebraMap K _ c⁻¹ - 1) = 0`. Rewrite using `[map_sub, map_mul, hc, map_one]`. Express the relevant statement in the definitionally equal form `_ * Ideal.Quotient.mk P (MvPolynomial.C c⁻¹) - 1 = 0`. Rewrite using `[← map_mul, ← map_mul, mul_inv_cancel₀ hc', map_one, map_one, sub_self]`. Use `J.sub_mem (J.mul_mem_right (algebraMap K _ c⁻¹) hxJ) hm` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `using this`. Establish `hQ : Q.IsMaximal` using `Ideal.isMaximal_of_isIntegral_of_isMaximal_comap (R := Algebra.adjoin K (Set.range fun k => Ideal.Quotient.mk I (y k))) Q hmax`. Establish `hjQ : Ideal.Quotient.mk I (MvPolynomial.X j) ∉ Q` using `fun h => hj (Ideal.Quotient.eq_zero_iff_mem.1 ((hφ _).symm.trans (RingHom.mem_ker.1 h)))`. Take `⟨a, b, hb, hab⟩` from `hQ.exists_inv hjQ`. Take `⟨g, rfl⟩` from `Ideal.Quotient.mk_surjective a`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2 : Ideal.Quotient.mk P (g * MvPolynomial.X j - 1) = 0`. Use `congrArg φ hab` as an intermediate fact. Rewrite `this` using `[map_add, map_mul, hφ, hφ, show φ b = 0 from hb, add_zero, map_one]`. Rewrite using `[map_sub, map_mul, this, map_one, sub_self]`. Establish `h3 : MvPolynomial.homogeneousComponent 0 (g * MvPolynomial.X j - 1) ∈ P`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← MvPolynomial.decomposition.decompose'_apply]`. Conclude with `hP 0 (Ideal.Quotient.eq_zero_iff_mem.1 h2)`. Establish `h4 : MvPolynomial.coeff 0 (g * MvPolynomial.X j - 1) = -1`. Establish `: MvPolynomial.constantCoeff (g * MvPolynomial.X j - 1) = -1` using `by simp`. Rewrite `this` using `[MvPolynomial.constantCoeff_eq]`. Then use the resulting hypothesis.
-
-Rewrite `h3` using `[MvPolynomial.homogeneousComponent_zero, h4, map_neg, map_one]`. Conclude with `hPp.ne_top ((Ideal.eq_top_iff_one _).2 (by simpa using P.neg_mem h3))`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem X_mem_of_finite {K : Type} [Field K] {n m : ℕ}
     (I P : Ideal (MvPolynomial (Fin n) K)) [hPp : P.IsPrime] (hIP : I ≤ P)
@@ -112,15 +110,13 @@ theorem X_mem_of_finite {K : Type} [Field K] {n m : ℕ}
   exact hPp.ne_top ((Ideal.eq_top_iff_one _).2 (by simpa using P.neg_mem h3))
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hfP`. Establish `hf' : f * MvPolynomial.X j ∈ grK K N (d + 1)`. Use `SetLike.mul_mem_graded hf (xv_mem K N j)` as an intermediate fact. Simplify using `using this`. Establish `e : HomogeneousLocalization.Away.mk (grK K N) (xv_mem K N j) d f hf = HomogeneousLocalization.Away.isLocalizationElem (xv_mem K N j) hf'`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Apply `HomogeneousLocalization.val_injective` to reduce the goal to its premises. Simplify using `[HomogeneousLocalization.Away.isLocalizationElem, HomogeneousLocalization.Away.val_mk]`. Conclude with `Localization.mk_eq_mk_iff.2 (Localization.r_of_eq (by`. Express the relevant statement in the definitionally equal form `MvPolynomial.X j ^ (d + 1) * f = MvPolynomial.X j ^ d * (f * MvPolynomial.X j)`. Use the proof step `ring))`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb` using `GroundTheory.Arith.SchemeCoh.ProjHom.basicOpen_awayToSection_isLocalizationElem (grK K N) (xv_mem K N j) one_pos hf' (Nat.succ_pos d)`. Establish `hx : i p ∈ (PSpace K N).basicOpen (Proj.awayToSection (grK K N) (MvPolynomial.X j) (HomogeneousLocalization.Away.isLocalizationElem (xv_mem K N j) hf'))` using `by erw [hb]`. Use `⟨hj, fun hm => ?_⟩` and prove the remaining obligations. Conclude with `((i p : ProjectiveSpectrum (grK K N)).isPrime.mem_or_mem hm).elim hfP hj`. Establish `hp : p ∈ i ⁻¹ᵁ (PSpace K N).basicOpen (Proj.awayToSection (grK K N) (MvPolynomial.X j) (HomogeneousLocalization.Away.isLocalizationElem (xv_mem K N j) hf'))` using `hx`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hp` using `[Scheme.preimage_basicOpen, ← e]`. Establish `h0 : i.app _ (Proj.awayToSection (grK K N) (MvPolynomial.X j) (HomogeneousLocalization.Away.mk (grK K N) (xv_mem K N j) d f hf)) = 0`. Rewrite using `[Scheme.Hom.app_eq_appLE]`. Conclude with `h`. Rewrite `hp` using `[h0, Scheme.basicOpen_zero]`.
-
-Conclude with `hp`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_of_evV_eq_zero {K : Type} [Field K] {X : Scheme.{0}} {N : ℕ} (i : X ⟶ PSpace K N) (p : X)
     (j : Fin (N + 1)) (hj : i p ∈ Proj.basicOpen (grK K N) (MvPolynomial.X j))
@@ -157,13 +153,13 @@ theorem mem_of_evV_eq_zero {K : Type} [Field K] {X : Scheme.{0}} {N : ℕ} (i : 
   exact hp
 
 /- English proof (translation)
-Introduce `K _ X N i m e _ y _ hfin`. Rewrite using `[_root_.eq_top_iff]`. Introduce `p _`. Assume the negation of the conclusion as `hcon`. Choose the witnesses or unpack the hypotheses as in `⟨j, hj⟩ : ∃ j, i p ∈ Proj.basicOpen (grK K N) (MvPolynomial.X j) := by`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Establish `: i p ∈ (⨆ j : Fin (N + 1), Proj.basicOpen (grK K N) (MvPolynomial.X j))` using `by erw [GroundTheory.Arith.SchemeCoh.ProjSpace.iSup_basicOpen_X]`. Discharge the goal by the elementary cases of `trivial`. Simplify `this` using `[TopologicalSpace.Opens.mem_iSup]`. Establish `hy : ∀ k, y k ∈ (ProjectiveSpectrum.asHomogeneousIdeal (i p : ProjectiveSpectrum (grK K N))).toIdeal`. Introduce `k`.
+Establish an intermediate fact. Check the elementary cases of the proposition. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Assume the negation of the conclusion as `hk`. Apply `hcon` to reduce the goal to its premises. Rewrite using `[TopologicalSpace.Opens.mem_iSup]`. Conclude with `⟨k, hk⟩`. Establish `hle : homIdeal i ≤ (ProjectiveSpectrum.asHomogeneousIdeal (i p : ProjectiveSpectrum (grK K N))).toIdeal`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact.
 
-Rewrite using `[homIdeal, Ideal.span_le]`. Introduce and unpack `f ⟨d, hf, hv⟩`. Conclude with `mem_of_evV_eq_zero i p j hj hf (hv j)`. Use `haveI : (ProjectiveSpectrum.asHomogeneousIdeal (i p : ProjectiveSpectrum (grK K N))).toIdeal.IsPrime := (i p : ProjectiveSpectrum (grK K N)).isPrime`. Conclude with `hj (X_mem_of_finite _ _ hle (ProjectiveSpectrum.asHomogeneousIdeal (i p : ProjectiveSpectrum (grK K N))).isHomogeneous y hy hfin j)`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem iSup_preimage_eq_top : ∀ {K : Type} [Field K] {X : Scheme.{0}} {N : ℕ} (i : X ⟶ PSpace K N), ∀ {m e : ℕ}, 0 < e → ∀ (y : Fin m → MvPolynomial (Fin (N + 1)) K), (∀ k, (y k).IsHomogeneous e) → Module.Finite (Algebra.adjoin K (Set.range fun k => Ideal.Quotient.mk (homIdeal i) (y k))) (MvPolynomial (Fin (N + 1)) K ⧸ homIdeal i) → ⨆ k, i ⁻¹ᵁ Proj.basicOpen (grK K N) (y k) = ⊤ := by
   intro K _ X N i m e _ y _ hfin

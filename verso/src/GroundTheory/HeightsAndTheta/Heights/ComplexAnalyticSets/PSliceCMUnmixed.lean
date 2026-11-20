@@ -8,31 +8,29 @@ namespace GroundTheory.Heights₂.Heights
 open MvPolynomial Matrix ComplexSets IsLocalRing
 
 /- English proof (translation)
-Introduce `P hP hPm`. Take `⟨I, hI⟩ : ∃ I, I = J ⊔ Ideal.span (Set.range ℓ)` from `⟨_, rfl⟩`. Rewrite `hP`, `hS`, the goal using `[← hI]`. Establish `hJI : J ≤ I` using `hI ▸ le_sup_left`. Set `x : Fin d → B` to `fun i => π (algebraMap R (Localization.AtPrime m) (ℓ i))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hspan : Ideal.span (Set.range x) = (I.map (algebraMap R (Localization.AtPrime m))).map π`. Rewrite using `[hI, Ideal.map_sup, Ideal.map_sup, (Ideal.map_eq_bot_iff_le_ker π).2 hker.ge, bot_sup_eq, Ideal.map_map, Ideal.map_span, ← Set.range_comp]`. Both sides reduce to the same expression. Establish `hker_le : ∀ Q : Ideal R, J ≤ Q → RingHom.ker π ≤ Q.map (algebraMap R (Localization.AtPrime m))` using `fun Q hQ => hker ▸ Ideal.map_mono hQ`. Establish `hcomap : ∀ Q : Ideal R, J ≤ Q → ((Q.map (algebraMap R (Localization.AtPrime m))).map π).comap π = Q.map (algebraMap R (Localization.AtPrime m))` using `fun Q hQ => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Ideal.comap_map_of_surjective _ hπ, ← RingHom.ker_eq_comap_bot, sup_eq_left.2 (hker_le Q hQ)]`. Establish `hdimx : ringKrullDim (B ⧸ Ideal.span (Set.range x)) = (1 : ℕ)`. Set `f : Localization.AtPrime m →+* B ⧸ Ideal.span (Set.range x)` to `(Ideal.Quotient.mk _).comp π`. Establish `hf : Function.Surjective f` using `Ideal.Quotient.mk_surjective.comp hπ`. Establish `hkf : RingHom.ker f = I.map (algebraMap R (Localization.AtPrime m))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use extensionality with `c`. Rewrite using `[RingHom.mem_ker, RingHom.comp_apply, Ideal.Quotient.eq_zero_iff_mem, hspan, ← Ideal.mem_comap, hcomap I hJI]`. Rewrite using `[← ringKrullDim_eq_of_ringEquiv (RingHom.quotientKerEquivOfSurjective hf), ringKrullDim_eq_of_ringEquiv (Ideal.quotEquivOfEq hkf), hS]`. Establish `hxm : ∀ i, x i ∈ maximalIdeal B` using `fun i => by`. Establish `: IsLocalHom π` using `IsLocalHom.of_surjective π hπ`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `map_nonunit π _ ((IsLocalization.AtPrime.to_map_mem_maximal_iff (Localization.AtPrime m) m (ℓ i)).2 (hℓ i))`. Establish `hsum : ringKrullDim (B ⧸ Ideal.span (Set.range x)) + (d : WithBot ℕ∞) = ringKrullDim B`. Rewrite using `[hdimx, hB, ← Nat.cast_add, Nat.add_comm]`. Take `⟨hPp, y, hPy⟩` from `isAssociatedPrime_iff.1 hP`. Take `⟨r, rfl⟩` from `Ideal.Quotient.mk_surjective y`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hmemP : ∀ s, s ∈ P ↔ s * r ∈ I` using `fun s => by`. Rewrite using `[hPy, Submodule.mem_colon_singleton, Submodule.mem_bot, show s • Ideal.Quotient.mk I r = Ideal.Quotient.mk I (s * r) from rfl, Ideal.Quotient.eq_zero_iff_mem]`. Establish `hIP : I ≤ P` using `fun s hs => (hmemP s).2 (I.mul_mem_right r hs)`. Establish `hdisj : ∀ Q : Ideal R, Q ≤ m → Disjoint (m.primeCompl : Set R) Q` using `fun Q hQ => Set.disjoint_left.2 fun u hu huQ => hu (hQ huQ)`. Establish `hprime : ∀ Q : Ideal R, Q.IsPrime → Q ≤ m → J ≤ Q → ((Q.map (algebraMap R (Localization.AtPrime m))).map π).IsPrime` using `fun Q hQ hQm hJQ => by`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `IsLocalization.isPrime_of_isPrime_disjoint m.primeCompl (Localization.AtPrime m) Q hQ (hdisj Q hQm)` as an intermediate fact. Conclude with `Ideal.map_isPrime_of_surjective hπ (hker_le Q hJQ)`. Establish `hback : ∀ Q : Ideal R, Q.IsPrime → Q ≤ m → J ≤ Q → (((Q.map (algebraMap R (Localization.AtPrime m))).map π).comap π).comap (algebraMap R (Localization.AtPrime m)) = Q` using `fun Q hQ hQm hJQ => by`. Rewrite using `[hcomap Q hJQ]`. Conclude with `IsLocalization.under_map_of_isPrime_disjoint m.primeCompl _ hQ (hdisj Q hQm)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨p, hp⟩ : ∃ p, p = (P.map (algebraMap R (Localization.AtPrime m))).map π` from `⟨_, rfl⟩`. Establish `hpP : p.IsPrime` using `hp ▸ hprime P hPp hPm (hJI.trans hIP)`. Establish `hass : p ∈ associatedPrimes B (B ⧸ Ideal.span (Set.range x))`. Use `isAssociatedPrime_iff.2 ⟨hpP, Ideal.Quotient.mk _ (π (algebraMap R (Localization.AtPrime m) r)), ?_⟩` and prove the remaining obligations. Use extensionality with `b`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨a, rfl⟩` from `hπ b`. Rewrite using `[Submodule.mem_colon_singleton, Submodule.mem_bot, show π a • Ideal.Quotient.mk (Ideal.span (Set.range x)) (π (algebraMap R (Localization.AtPrime m) r)) = Ideal.Quotient.mk _ (π (a * algebraMap R (Localization.AtPrime m) r)) by rw [map_mul]; rfl, Ideal.Quotient.eq_zero_iff_mem, h …`. Take `⟨s, t, rfl⟩` from `IsLocalization.exists_mk'_eq m.primeCompl a`. Rewrite using `[← IsLocalization.mk'_one (M := m.primeCompl) (Localization.AtPrime m) r, ← IsLocalization.mk'_mul, mul_one, IsLocalization.mk'_mem_map_algebraMap_iff, IsLocalization.mk'_mem_map_algebraMap_iff]`. Repeatedly rewrite using `[hmemP, mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take `⟨hmin, hdimp⟩` from `h B d x hxm hsum p hass`. Use `⟨⟨⟨hPp, hIP⟩, fun Q ⟨hQp, hIQ⟩ hQP => ?_⟩, fun hPeq => ?_⟩` and prove the remaining obligations. Establish `hQm : Q ≤ m` using `hQP.trans hPm`. Establish `hJQ : J ≤ Q` using `hJI.trans hIQ`. Establish `h1 : Ideal.span (Set.range x) ≤ (Q.map (algebraMap R (Localization.AtPrime m))).map π`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hspan]`. Conclude with `Ideal.map_mono (Ideal.map_mono hIQ)`. Establish `h2 : (Q.map (algebraMap R (Localization.AtPrime m))).map π ≤ p` using `hp ▸ Ideal.map_mono (Ideal.map_mono hQP)`. Establish `h3` using `hmin.2 ⟨hprime Q hQp hQm hJQ, h1⟩ h2`. Rewrite using `[← hback P hPp hPm (hJI.trans hIP), ← hback Q hQp hQm hJQ, ← hp]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `Ideal.comap_mono (Ideal.comap_mono h3)`. Establish `hpmax : p.IsMaximal`. Use `Ideal.map_eq_top_or_isMaximal_of_surjective π hπ (maximalIdeal.isMaximal (Localization.AtPrime m))` as an intermediate fact. Rewrite `hp` using `[hPeq, Localization.AtPrime.map_eq_maximalIdeal]`. Rewrite `this` using `[← hp]`.
-
-Conclude with `this.resolve_left hpP.ne_top`. Set `` to `Ideal.Quotient.field p`. Establish `h0 : ringKrullDim (B ⧸ p) = 0` using `ringKrullDim_eq_zero_of_field (B ⧸ p)`. Rewrite `h0` using `[hdimp, hdimx]`. Conclude with `absurd h0 (by simp)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sliceCMUnmixed_local (h : CMQuotientUnmixed.Statement) {R : Type} [CommRing R] [IsNoetherianRing R]
     (m : Ideal R) [m.IsPrime] {d : ℕ} (J : Ideal R) (ℓ : Fin d → R) (hℓ : ∀ i, ℓ i ∈ m)
@@ -133,11 +131,11 @@ theorem sliceCMUnmixed_local (h : CMQuotientUnmixed.Statement) {R : Type} [CommR
     exact absurd h0 (by simp)
 
 /- English proof (translation)
-Introduce `n d J L q hCM hdimB hdimS P hP hPm`. Establish `: IsCohenMacaulayLocalRing (localRingAt J q)` using `hCM`. Establish `hℓ : ∀ i, linPoly L i - C ((L *ᵥ q) i) ∈ RingHom.ker (eval q : MvPolynomial (Fin n) ℂ →+* ℂ)`. Introduce `i`. Rewrite using `[RingHom.mem_ker, map_sub, eval_linPoly, eval_C, sub_self]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hsl : sliceIdeal J L q = J ⊔ Ideal.span (Set.range fun i => linPoly L i - C ((L *ᵥ q) i))` using `rfl`. Rewrite `hP`, `hdimS`, the goal using `[hsl]`. Establish `h1` using `sliceCMUnmixed_local h (RingHom.ker (eval q : MvPolynomial (Fin n) ℂ →+* ℂ)) J (fun i => linPoly L i - C ((L *ᵥ q) i)) hℓ (localRingAt J q)`. Establish `h2` using `h1 (Ideal.Quotient.mk _) Ideal.Quotient.mk_surjective Ideal.mk_ker`. Establish `h3` using `h2 hdimB hdimS`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `h3 P hP hPm`.
+A detailed English derivation is pending.
 -/
 theorem SliceCMUnmixed.proof (h : CMQuotientUnmixed.Statement) : SliceCMUnmixed.Statement := by
   intro n d J L q hCM hdimB hdimS P hP hPm

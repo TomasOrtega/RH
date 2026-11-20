@@ -13,15 +13,15 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.Mem.Lift
 
 /- English proof (translation)
-Distinguish the cases in `h0 : ∃ f₀, P f₀ ∧ f₀ ≠ 0`. Take `⟨f₀, hf₀, hne⟩` from `h0`. Take `⟨c, hc, ec⟩` from `h f₀ hf₀`. Use `⟨c, hc, fun f hf => ?_⟩` and prove the remaining obligations. Distinguish the cases in `ha : ∃ a : ℂ, f = a • f₀`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Take `⟨a, rfl⟩` from `ha`. Rewrite using `[LinearMap.map_smul, ec, smul_comm]`. Take `⟨e, -, ee⟩` from `h f hf`. Take `⟨d, -, ed⟩` from `h (f + f₀) (hP _ _ hf hf₀)`. Rewrite `ed` using `[LinearMap.map_add, ec, ee, smul_add]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `k : (e - d) • f = (d - c) • f₀`. Rewrite using `[sub_smul, sub_smul, sub_eq_sub_iff_add_eq_add, ed, add_comm]`. Establish `hed : e - d = 0`. Assume the negation of the conclusion as `hn`. Conclude with `ha ⟨(e - d)⁻¹ * (d - c), by rw [mul_smul, ← k, smul_smul, inv_mul_cancel₀ hn, one_smul]⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `k` using `[hed, zero_smul]`. Establish `hdc : d - c = 0` using `(smul_eq_zero.1 k.symm).resolve_right hne`. Rewrite using `[ee, sub_eq_zero.1 hed, sub_eq_zero.1 hdc]`. Use `⟨1, norm_one, fun f hf => ?_⟩` and prove the remaining obligations. Establish `: f = 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hn`. Conclude with `h0 ⟨f, hf, hn⟩`. Rewrite using `[this, LinearMap.map_zero, smul_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_scalar_of_forall_eigen {V : Type*} [AddCommGroup V] [Module ℂ V] (P : V → Prop)
     (hP : ∀ f g, P f → P g → P (f + g)) (M : Module.End ℂ V) (h : ∀ f, P f → ∃ c : ℂ, ‖c‖ = 1 ∧ M f = c • f) :
@@ -51,9 +51,9 @@ theorem exists_scalar_of_forall_eigen {V : Type*} [AddCommGroup V] [Module ℂ V
     rw [this, LinearMap.map_zero, smul_zero]
 
 /- English proof (translation)
-Introduce `D ψ hψ S T M hM hcomm hiso`. Take `⟨i1, i2, i3, i4, i5, K, hK, hc⟩` from `GlobalTheory.AdelicMatrixLattice.lattice D T S`. Use `haveI : BorelSpace (WA T S) := ⟨rfl⟩`. Take `⟨⟨μ, 𝓕, hμ, h𝓕, -⟩, -⟩` from `GlobalTheory.meanSquare_addFundamentalDomain_of_cocompact (WA T S) (ratL T S) K hK hc`. Use `exists_scalar_of_forall_eigen _ (fun f g hf hg => GlobalTheory.OrientedHeis.theta_add hf hg) M fun f hf => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `GlobalTheory.T.thetaFunction_eq_unitSmul_of_diagonalCoefficient_eq D ψ hψ S T μ 𝓕 hμ h𝓕 f (M f) hf (hM f hf) fun w => ?_` and prove the remaining obligations. Rewrite using `[← hcomm w f hf]`. Apply the tactic sequence `exact GlobalTheory.T.thetaFunction_scalarProduct_preserved_isometry D ψ hψ S T μ 𝓕 hμ h𝓕 M hM (hiso μ 𝓕 hμ h𝓕) _ _ (GlobalTheory.ThetaClosed.isThetaFunO_heisO_all hψ hf w) hf`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem schur_theta : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ (S T : HSp D) (M : Module.End ℂ (WO S T → ℂ)), (∀ f, IsThetaFunO ψ S T f → IsThetaFunO ψ S T (M f)) → (∀ w f, IsThetaFunO ψ S T f → M (heisO ψ S T w f) = heisO ψ S T w (M f)) → (∀ (μ : Measure (WO S T)) (𝓕 : Set (WO S T)), μ.IsAddHaarMeasure → IsAddFundamentalDomain (ratL T S) 𝓕 μ → ∀ f, IsThetaFunO ψ S T f → ∫⁻ w in 𝓕, ‖M f w‖ₑ ^ 2 ∂μ = ∫⁻ w in 𝓕, ‖f w‖ₑ ^ 2 ∂μ) → ∃ c : ℂ, ‖c‖ = 1 ∧ ∀ f, IsThetaFunO ψ S T f → M f = c • f := by
   intro D ψ hψ S T M hM hcomm hiso

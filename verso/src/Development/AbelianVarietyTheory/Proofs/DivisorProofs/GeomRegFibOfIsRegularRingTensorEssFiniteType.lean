@@ -6,7 +6,7 @@ open IsLocalRing TensorProduct ReciprocityTheory.AnForm.R
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `R B _ _ _ h P _ K _ _ _ _ hfg`. Use `haveI : Algebra.EssFiniteType P.ResidueField K := IntermediateField.fg_top_iff.mp hfg`. Use `haveI : Algebra.EssFiniteType R K := Algebra.EssFiniteType.comp R P.ResidueField K`. Use `haveI hr : IsRegularRing (B ⊗[R] K) := h K`. Conclude with `⟨inferInstance, fun Q _ => hr.isRegularLocalRing_localization Q⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem geomRegFib_of_isRegularRing_essFiniteType :
     ∀ (R B : Type) [CommRing R] [CommRing B] [Algebra R B],

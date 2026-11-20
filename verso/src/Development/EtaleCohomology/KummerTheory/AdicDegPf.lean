@@ -18,7 +18,7 @@ def AdicAlg : Prop := ∀ (l : ℕ) [Fact l.Prime] (E : Spc) (n i : ℤ), Module
     ∀ k, IsoUpTo N (comb (l ^ k) fun s => lev l (c s) k)
 
 /- English proof (translation)
-Introduce `hA l _ E i hB hF n`. Take `⟨hfin, hker, M, hM, hcok⟩` from `h1 hA l E i hB hF n`. Conclude with `h2 l E n i hfin hker M hM hcok`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem AdicDeg_of (h1 : AdicLim) (h2 : AdicAlg) : AdicDeg := by
   intro hA l _ E i hB hF n

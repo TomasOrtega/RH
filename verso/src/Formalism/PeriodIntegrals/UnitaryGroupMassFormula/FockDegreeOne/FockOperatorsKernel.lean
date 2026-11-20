@@ -12,11 +12,11 @@ namespace PI.FockOneDegW
 section Ops
 
 /- English proof (translation)
-Establish `hl : linePos ((b, c) : Ln p q r s) = linePos ((a, c) : Ln p q r s)`. Apply the tactic sequence `rcases a with a | a <;> rcases b with b | b <;> rcases c with c | c <;>`. Simplify using `[sameBlock, linePos]`. Establish `hab' : (((a, c) : Ln p q r s) = (b, c)) ↔ a = b` using `by simp`. Rewrite using `[FockRL.omE_apply]`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Simplify the hypotheses and the goal together. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Unfold `raiB lowB`. Rewrite using `[hl]`. Consider the cases of `h : linePos ((a, c) : Ln p q r s)`. Distinguish the cases in `hab2 : a = b`. Substitute `hab2` using the available equality.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Split into cases according to the possible forms of the given data. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using `[Derivation.leibniz, pderiv_X]`. Use `module`. Establish `hne : ((a, c) : Ln p q r s) ≠ (b, c)` using `fun h' => hab2 (hab'.1 h')`. Simplify using `[hab2, hne, Derivation.leibniz, pderiv_X, Pi.single_apply, Ne.symm hne]`. Simplify using `[hab']`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem omE_same {p q r s : ℕ} (a b : Ix p q) (c : Ix r s) (hab : sameBlock a b)
     (P : Pol p q r s) :
@@ -46,7 +46,7 @@ theorem omE_same {p q r s : ℕ} (a b : Ix p q) (c : Ix r s) (hab : sameBlock a 
   · simp [hab']
 
 /- English proof (translation)
-Rewrite using `[FockRL.fockAct1_eq, FockRL.omAct_eq_sum]`. Simplify using `[Eab, Matrix.single_apply, Matrix.one_apply, ite_and, Fintype.sum_prod_type, LinearMap.sum_apply]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem fockAct1_Eab_apply {p q r s : ℕ} (a b : Ix p q) (P : Pol p q r s) :
     fockAct1 p q r s (Eab a b) P = ∑ c : Ix r s, omE ((a, c) : Ln p q r s) (b, c) P := by
@@ -56,7 +56,7 @@ theorem fockAct1_Eab_apply {p q r s : ℕ} (a b : Ix p q) (P : Pol p q r s) :
     LinearMap.sum_apply]
 
 /- English proof (translation)
-Unfold `posOp`. Rewrite using `[LinearMap.sum_apply]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> simp`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem posOp_apply {p q r s : ℕ} (a b : Ix p q) (P : Pol p q r s) :
     posOp a b P = ∑ c : Ix r s, (if linePos ((a, c) : Ln p q r s) = true then
@@ -67,7 +67,7 @@ theorem posOp_apply {p q r s : ℕ} (a b : Ix p q) (P : Pol p q r s) :
   split_ifs <;> simp
 
 /- English proof (translation)
-Unfold `negOp`. Rewrite using `[LinearMap.sum_apply]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> simp`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem negOp_apply {p q r s : ℕ} (a b : Ix p q) (P : Pol p q r s) :
     negOp a b P = ∑ c : Ix r s, (if linePos ((a, c) : Ln p q r s) = true then 0 else
@@ -78,7 +78,7 @@ theorem negOp_apply {p q r s : ℕ} (a b : Ix p q) (P : Pol p q r s) :
   split_ifs <;> simp
 
 /- English proof (translation)
-Apply the tactic sequence `rcases a with a | a <;> simp [kShift, cPair, linePos, Fintype.sum_sum_type] <;> push_cast <;> ring`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem sum_half {p q r s : ℕ} (a : Ix p q) :
     ∑ c : Ix r s, (if linePos ((a, c) : Ln p q r s) = true then (1 / 2 : ℂ) else -(1 / 2)) =
@@ -86,11 +86,11 @@ theorem sum_half {p q r s : ℕ} (a : Ix p q) :
   rcases a with a | a <;> simp [kShift, cPair, linePos, Fintype.sum_sum_type] <;> push_cast <;> ring
 
 /- English proof (translation)
-Introduce `p q r s a b hab`. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `P`. Rewrite using `[fockAct1_Eab_apply]`. Simplify using `only [LinearMap.add_apply, LinearMap.sub_apply, posOp_apply, negOp_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.sum_congr rfl fun c _ => omE_same a b c hab P, Finset.sum_add_distrib, Finset.sum_sub_distrib]`. Use `congr 1`. Use `split_ifs with h`. Substitute `h` using the available equality. Simplify using `only [↓reduceIte, LinearMap.smul_apply, Module.End.one_apply]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Finset.sum_smul, sum_half]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem fock_operators_kernel : OpsK := by
   intro p q r s a b hab
@@ -112,21 +112,21 @@ end Ops
 section Harm
 
 /- English proof (translation)
-Establish `hside : ∀ (a : Ix p q) (c d : Ix r s), ¬ sameBlock c d → linePos ((a, d) : Ln p q r s) = true → linePos ((a, c) : Ln p q r s) = false`. Introduce `a c d hcd hd`. Apply the tactic sequence `rcases a with a | a <;> rcases c with c | c <;> rcases d with d | d <;>`. Simplify using `[sameBlock, linePos]`. Establish `hOpp : FockRL.OppSign (Matrix.kroneckerMap (fun x y : ℂ => x * y) (1 : Mat p q) Z)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Simplify the hypotheses and the goal together. Establish an intermediate fact.
 
-Introduce and unpack `⟨a, c⟩ ⟨b, d⟩ hne`. Simplify using `only [Matrix.kroneckerMap_apply, Matrix.one_apply] at hne`. Use `split_ifs at hne with hab`. Substitute `hab` using the available equality. Establish `hcd : ¬ sameBlock c d` using `fun h => hne (by rw [hZ c d h, mul_zero])`.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Substitute using the available equality. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hEq`. Apply the tactic sequence `rcases a with a | a <;> rcases c with c | c <;> rcases d with d | d <;>`. Simplify using `[sameBlock, linePos]`. Simplify using `at hne`. Rewrite using `[FockRL.fockAct2_eq, FockRL.omAct_eq_Rop_add_Lop _ hOpp, (FockRaiseLowGrade.raisingLoweringSplit _ _ _ (fun d P hP => FockRL.Rop_raise _ d P hP) (fun e P => FockRL.Lop_shift _ e P) P).2, FockRL.Lop_apply]`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify the hypotheses and the goal together. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hL : ∀ (a : Ix p q) (c : Ix r s), (∑ l' : Ln p q r s, if linePos ((a, c) : Ln p q r s) = false ∧ linePos l' = true then Matrix.kroneckerMap (fun x y : ℂ => x * y) (1 : Mat p q) Z (a, c) l' • (-(pderiv ((a, c) : Ln p q r s) (pderiv l' P))) else 0) = ∑ d : Ix r s, if linePos ((a, d …`. Introduce `a c`. Rewrite using `[Fintype.sum_prod_type, Finset.sum_eq_single a]`. Use `Finset.sum_congr rfl fun d _ => ?_` and prove the remaining obligations. Simplify using `only [Matrix.kroneckerMap_apply, Matrix.one_apply_eq, one_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hZcd : Z c d = 0`. Simplify using `[hZcd]`. Establish `hcd : ¬ sameBlock c d` using `fun h => hZcd (hZ c d h)`. Distinguish the cases in `hd : linePos ((a, d) : Ln p q r s) = true`. Simplify using `[hd, hside a c d hcd hd]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[hd]`. Introduce `b _ hba`. Use `Finset.sum_eq_zero fun d _ => ?_` and prove the remaining obligations. Simplify using `[Matrix.kroneckerMap_apply, Matrix.one_apply_ne (Ne.symm hba)]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hR : -∑ c : Ix r s, ∑ d : Ix r s, Z c d • lowOp (p` using `p) (q := q) c d P = ∑ c : Ix r s, ∑ a : Ix p q, ∑ d : Ix r s, if linePos ((a, d) : Ln p q r s) = true then Z c d • (-(pderiv ((a, c) : Ln p q r s) (pderiv ((a, d) : Ln p q r s) P))) else 0 := by`. Rewrite using `[← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Simplify using `only [lowOp, LinearMap.sum_apply, Finset.smul_sum, ← Finset.sum_neg_distrib]`. Rewrite using `[Finset.sum_comm]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun d _ => ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> simp`. Rewrite using `[Fintype.sum_prod_type]`. Simplify using `only [hL]`. Rewrite using `[Finset.sum_comm, hR]`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem minus2_eq {p q r s : ℕ} (Z : Mat r s) (hZ : IsPC Z) (P : Pol p q r s) :
     minusPart (fockAct2 p q r s Z) P = -∑ c : Ix r s, ∑ d : Ix r s, Z c d • lowOp (p := p) (q := q) c d P := by
@@ -185,13 +185,13 @@ theorem minus2_eq {p q r s : ℕ} (Z : Mat r s) (hZ : IsPC Z) (P : Pol p q r s) 
   rw [Finset.sum_comm, hR]
 
 /- English proof (translation)
-Introduce `p q r s P`. Unfold `Harm2`. Prove the components needed by the constructor for the conclusion. Introduce `h c d hcd`. Establish `hZ : IsPC (Matrix.single c d (1 : ℂ) : Mat r s)`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `a b hab`. Rewrite using `[Matrix.single_apply]`. Use `split_ifs with h'`. Take `⟨rfl, rfl⟩` from `h'`. Conclude with `absurd hab hcd`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Establish `h1` using `h _ hZ`. Rewrite `h1` using `[minus2_eq _ hZ]`. Simplify `h1` using `[Matrix.single_apply, ite_and]`. Introduce `h Z hZ`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[minus2_eq _ hZ, neg_eq_zero]`. Use `Finset.sum_eq_zero fun c _ => Finset.sum_eq_zero fun d _ => ?_` and prove the remaining obligations. Distinguish the cases in `hcd : sameBlock c d`. Rewrite using `[hZ c d hcd, zero_smul]`. Rewrite using `[h c d hcd, smul_zero]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem harmIff : HarmIff := by
   intro p q r s P

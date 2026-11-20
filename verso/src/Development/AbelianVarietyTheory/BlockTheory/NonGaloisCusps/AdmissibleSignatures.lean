@@ -40,7 +40,7 @@ variable {O K : Type} [CommRing O] [NormedField K] [IsUltrametricDist K] [Algebr
 omit [NeZero e]
 
 /- English proof (translation)
-The claim follows from `add_mem (D.desc.Y'_le_Y η hy) ⟨D.upper _ (D.phi_mem_L hm.1), fun g => by rw [D.desc.act_phi, hm.2 g]⟩`.
+A detailed English derivation is pending.
 -/
 theorem add_phi_mem_Y {y' m : Vec K a ι} (hy : y' ∈ D.Y') (hm : m ∈ D.Minv) :
     y' + D.phi m ∈ D.Y :=

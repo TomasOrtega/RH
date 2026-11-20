@@ -5,7 +5,7 @@ open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.
 open scoped Pointwise
 
 /- English proof (translation)
-Substitute `h` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 private theorem ker_congr (Ω : Type) [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (m n : ℕ) [NeZero m] [NeZero n]
     (h : m = n) : (galChar Ω m).ker = (galChar Ω n).ker := by
@@ -13,7 +13,7 @@ private theorem ker_congr (Ω : Type) [Field Ω] [Algebra ℚ Ω] [IsAlgClosure 
   rfl
 
 /- English proof (translation)
-Use `haveI : IsAlgClosed Ω := IsAlgClosure.isAlgClosed ℚ`. Use `haveI : CharZero Ω := charZero_of_injective_algebraMap (algebraMap ℚ Ω).injective`. Take `⟨ζ, hζ⟩` from `IsAlgClosed.exists_root (Polynomial.cyclotomic m Ω) (Polynomial.degree_cyclotomic_pos m Ω (NeZero.pos m)).ne'`. Conclude with `⟨ζ, Polynomial.isRoot_cyclotomic_iff.mp hζ⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem prim_lemma (Ω : Type) [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (m : ℕ) [NeZero m] :
     ∃ ζ : Ω, IsPrimitiveRoot ζ m := by
@@ -24,9 +24,9 @@ private theorem prim_lemma (Ω : Type) [Field Ω] [Algebra ℚ Ω] [IsAlgClosure
   exact ⟨ζ, Polynomial.isRoot_cyclotomic_iff.mp hζ⟩
 
 /- English proof (translation)
-Establish `h1` using `galChar_spec m g ζ hζ.pow_eq_one`. Rewrite `h1` using `[hk]`. Establish `hfin : IsOfFinOrder ζ` using `isOfFinOrder_iff_pow_eq_one.mpr ⟨m, NeZero.pos m, hζ.pow_eq_one⟩`. Establish `h2` using `hfin.pow_eq_pow_iff_modEq.mp h1`. Rewrite `h2` using `[← hζ.eq_orderOf]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← ZMod.natCast_zmod_val (galChar Ω m g : ZMod m)]`. Conclude with `((ZMod.natCast_eq_natCast_iff _ _ _).mpr h2).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem galChar_eq_of_apply_primitiveRoot_eq_pow (Ω : Type) [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (m : ℕ) [NeZero m]
     (g : G ℚ Ω) (ζ : Ω) (hζ : IsPrimitiveRoot ζ m) (k : ℕ) (hk : g ζ = ζ ^ k) :
@@ -40,7 +40,7 @@ private theorem galChar_eq_of_apply_primitiveRoot_eq_pow (Ω : Type) [Field Ω] 
   exact ((ZMod.natCast_eq_natCast_iff _ _ _).mpr h2).symm
 
 /- English proof (translation)
-Take `⟨ζ, hζ⟩` from `prim_lemma Ω N`. Take `⟨d, hd⟩` from `h`. Establish `hμ : IsPrimitiveRoot (ζ ^ d) m` using `hζ.pow (NeZero.pos N) (by rw [hd, mul_comm])`. Use `(galChar_eq_of_apply_primitiveRoot_eq_pow Ω m g (ζ ^ d) hμ _ ?_).symm` and prove the remaining obligations. Rewrite using `[map_pow, galChar_spec N g ζ hζ.pow_eq_one, ← pow_mul, ← pow_mul, mul_comm]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 private theorem galChar_val_cast_eq_galChar_of_dvd (Ω : Type) [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (m N : ℕ) [NeZero m]
     [NeZero N] (h : m ∣ N) (g : G ℚ Ω) :
@@ -52,7 +52,7 @@ private theorem galChar_val_cast_eq_galChar_of_dvd (Ω : Type) [Field Ω] [Algeb
   rw [map_pow, galChar_spec N g ζ hζ.pow_eq_one, ← pow_mul, ← pow_mul, mul_comm]
 
 /- English proof (translation)
-Use `ext`. Rewrite using `[← galChar_val_cast_eq_galChar_of_dvd Ω m N h g, ← ZMod.cast_eq_val]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem unitsMap_galChar_eq_galChar_of_dvd (Ω : Type) [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (m N : ℕ) [NeZero m]
     [NeZero N] (h : m ∣ N) (g : G ℚ Ω) :
@@ -62,11 +62,11 @@ private theorem unitsMap_galChar_eq_galChar_of_dvd (Ω : Type) [Field Ω] [Algeb
   rfl
 
 /- English proof (translation)
-Introduce `u`. Use `haveI : CharZero Ω := charZero_of_injective_algebraMap (algebraMap ℚ Ω).injective`. Take `⟨ζ, hζ⟩` from `prim_lemma Ω m`. Establish `hcop : Nat.Coprime (u : ZMod m).val m` using `ZMod.val_coe_unit_coprime u`. Establish `hμ : IsPrimitiveRoot (ζ ^ (u : ZMod m).val) m` using `hζ.pow_of_coprime _ hcop`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmin : minpoly ℚ (ζ ^ (u : ZMod m).val) = minpoly ℚ ζ`. Establish `e1` using `Polynomial.cyclotomic_eq_minpoly_rat hμ (NeZero.pos m)`. Establish `e2` using `Polynomial.cyclotomic_eq_minpoly_rat hζ (NeZero.pos m)`. Apply the tactic sequence `convert e1.symm.trans e2 <;> exact Subsingleton.elim _ _`. Take `⟨g, hg⟩` from `(Normal.minpoly_eq_iff_mem_orbit (F := ℚ) (E := Ω)).mp hmin`.
+Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hg' : g ζ = ζ ^ (u : ZMod m).val` using `(AlgEquiv.smul_def g ζ).symm.trans hg`. Use `⟨g, ?_⟩` and prove the remaining obligations. Use `ext`. Rewrite using `[galChar_eq_of_apply_primitiveRoot_eq_pow Ω m g ζ hζ _ hg', ZMod.natCast_zmod_val]`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem galChar_surjective (Ω : Type) [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (m : ℕ) [NeZero m] :
     Function.Surjective (galChar Ω m) := by
@@ -86,11 +86,9 @@ private theorem galChar_surjective (Ω : Type) [Field Ω] [Algebra ℚ Ω] [IsAl
   rw [galChar_eq_of_apply_primitiveRoot_eq_pow Ω m g ζ hζ _ hg', ZMod.natCast_zmod_val]
 
 /- English proof (translation)
-Take `⟨ζ, hζ⟩` from `prim_lemma Ω m`. Use `haveI : CharZero Ω := charZero_of_injective_algebraMap (algebraMap ℚ Ω).injective`. Use `haveI : FiniteDimensional ℚ (IntermediateField.adjoin ℚ {ζ}) := IntermediateField.adjoin.finiteDimensional (hζ.isIntegral (NeZero.pos m)).tower_top`. Use `Subgroup.isOpen_mono (H₁ := (IntermediateField.adjoin ℚ {ζ}).fixingSubgroup) ?_ (IntermediateField.fixingSubgroup_isOpen _)` and prove the remaining obligations. Introduce `g hg`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hfix : g ζ = ζ ^ 1`. Rewrite using `[pow_one]`. Conclude with `(IntermediateField.mem_fixingSubgroup_iff _ _).mp hg ζ (IntermediateField.subset_adjoin ℚ {ζ} (Set.mem_singleton ζ))`. Rewrite using `[MonoidHom.mem_ker]`. Use `ext`.
-
-Rewrite using `[galChar_eq_of_apply_primitiveRoot_eq_pow Ω m g ζ hζ 1 hfix]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem isOpen_galChar_ker (Ω : Type) [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (m : ℕ) [NeZero m] :
     IsOpen ((galChar Ω m).ker : Set (G ℚ Ω)) := by
@@ -111,17 +109,15 @@ private theorem isOpen_galChar_ker (Ω : Type) [Field Ω] [Algebra ℚ Ω] [IsAl
   simp
 
 /- English proof (translation)
-Introduce `Ω _ _ _`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `A B`. Use extensionality with `g`. Rewrite using `[Subgroup.mem_inf]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Use `show ZMod.unitsMap (dvd_mul_right A.m B.m) (galChar Ω (A.m * B.m) g) ∈ A.H ∧ ZMod.unitsMap (dvd_mul_left B.m A.m) (galChar Ω (A.m * B.m) g) ∈ B.H ↔ galChar Ω A.m g ∈ A.H ∧ galChar Ω B.m g ∈ B.H`. Rewrite using `[unitsMap_galChar_eq_galChar_of_dvd Ω A.m (A.m * B.m) (dvd_mul_right _ _) g, unitsMap_galChar_eq_galChar_of_dvd Ω B.m (A.m * B.m) (dvd_mul_left _ _) g]`. Introduce `A`. Use `⟨Subgroup.index_comap_of_surjective _ (galChar_surjective Ω A.m), Subgroup.index_ne_zero_of_finite, ?_, ?_⟩` and prove the remaining obligations. Use `Subgroup.isOpen_mono ?_ (isOpen_galChar_ker Ω A.m)` and prove the remaining obligations.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `g hg`. Simplify using `[abU, MonoidHom.mem_ker.mp hg, one_mem]`. Introduce `g hg`. Simplify using `[abU, MonoidHom.mem_ker.mp hg, one_mem]`. Introduce `A N _ hN g`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [abU, Subgroup.mem_comap, AbF.ker]`. Rewrite using `[galChar_val_cast_eq_galChar_of_dvd Ω A.m N hN g]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `⟨_, h, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨u, hu, hEq⟩`. Rewrite using `[← Units.ext hEq]` and apply the resulting hypothesis. Introduce `m _`. Establish `hm : (AbF.cyc m).m = m` using `max_eq_left NeZero.one_le`. Use `show Subgroup.comap _ ⊥ = _`.
-
-Rewrite using `[MonoidHom.comap_bot]`. Conclude with `ker_congr Ω _ _ hm`.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Two.abBasic :
     ∀ (Ω : Type) [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω], (∀ A B : AbF, abU Ω (A.sup B) = abU Ω A ⊓ abU Ω B) ∧ (∀ A : AbF, (abU Ω A).index = A.deg ∧ A.deg ≠ 0 ∧ IsOpen (abU Ω A : Set (G ℚ Ω)) ∧ (galChar Ω A.m).ker ≤ abU Ω A) ∧

@@ -16,15 +16,15 @@ open GlobalTheory.RealPar
 variable {p q : ℕ}
 
 /- English proof (translation)
-Use `set f : ℝ → σ.H := fun t => σ.π (T.expt (t • X)) w with hf`. Establish `hd : ∀ t, HasDerivAt f (c • f t) t`. Introduce `t`. Establish `h1 : HasDerivAt (fun s : ℝ => f (s - t)) (c • w) t`. Use `HasDerivAt.comp_sub_const t t (f := f) (f' := c • w) (by rw [sub_self]; exact h0)` as an intermediate fact.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `this`. Establish `h2` using `((σ.π (T.expt (t • X))).restrictScalars ℝ).hasFDerivAt.comp_hasDerivAt t h1`. Use `h2 using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `s`. Simplify using `only [hf, Function.comp, ContinuousLinearMap.coe_restrictScalars']`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← ContinuousLinearMap.mul_apply, ← map_mul, ← T.expt_add X hX, add_sub_cancel]`. Simplify using `[hf]`. Establish `hg : ∀ t : ℝ, HasDerivAt (fun t : ℝ => Complex.exp (-(c * t)) • f t) 0 t`. Introduce `t`. Establish `h1 : HasDerivAt (fun t : ℝ => Complex.exp (-(c * t))) (Complex.exp (-(c * t)) * (-c)) t`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `: HasDerivAt (fun t : ℝ => -(c * (t : ℂ))) (-c) t`. Simplify using `using ((Complex.ofRealCLM.hasDerivAt (x := t)).const_mul c).fun_neg`. Conclude with `this.cexp`. Use `h1.fun_smul (hd t) using 1` and compare the differences between its conclusion and the goal. Rewrite using `[smul_smul, ← add_smul]`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Establish `hc` using `is_const_of_deriv_eq_zero (fun t => (hg t).differentiableAt) (fun t => (hg t).deriv) 1 0`. Simplify using `only [hf, one_smul, zero_smul, T.expt_zero, map_one, Complex.ofReal_one, mul_one, Complex.ofReal_zero, mul_zero, neg_zero, Complex.exp_zero, ContinuousLinearMap.one_apply] at hc`. Use `conv_rhs => rw [← hc, smul_smul, ← Complex.exp_add]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem flow_eq {T : GrpData p q} (σ : URep T) {X : Mat p q} (hX : X ∈ upq p q) {w : σ.H} {c : ℂ}
     (h0 : HasDerivAt (fun t : ℝ => σ.π (T.expt (t • X)) w) (c • w) 0) :
@@ -56,13 +56,11 @@ theorem flow_eq {T : GrpData p q} (σ : URep T) {X : Mat p q} (hX : X ∈ upq p 
   simp
 
 /- English proof (translation)
-Introduce `m n h`. Take `⟨k, hk⟩` from `Complex.exp_eq_exp_iff_exists_int.1 h`. Establish `h1 : ((m : ℝ) : ℂ) - (n : ℝ) = ((k : ℝ) * 2 * Real.pi : ℝ)`. Use `push_cast`. Apply `mul_left_cancel₀ Complex.I_ne_zero` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Reduce the claim to the hypotheses of an applicable result.
 
-Take the linear combination `hk`. Establish `h2 : (m : ℝ) - n = (k : ℝ) * 2 * Real.pi` using `by exact_mod_cast h1`. Distinguish the cases in `hk0 : k = 0`. Substitute `hk0` using the available equality. Establish `: (m : ℝ) = n` using `by simpa [sub_eq_zero] using h2`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact.
 
-Conclude with `this` after adjusting the coercions. It suffices to derive a contradiction. Establish `hi : Irrational (((k * 2 : ℤ) : ℝ) * Real.pi)` using `irrational_pi.intCast_mul (by omega)`. Establish `: ((k * 2 : ℤ) : ℝ) * Real.pi = ((m - n : ℤ) : ℝ)` using `by push_cast; linarith`. Rewrite `hi` using `[this]`.
-
-Conclude with `Int.not_irrational _ hi`.
+It suffices to derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exp_injective (c : ℂ) : Function.Injective fun m : ℕ => Complex.exp (Complex.I * (c + m)) := by
   intro m n h
@@ -84,13 +82,13 @@ theorem exp_injective (c : ℂ) : Function.Injective fun m : ℕ => Complex.exp 
     exact Int.not_irrational _ hi
 
 /- English proof (translation)
-Introduce `p q T σ M j hj N c hN`. Use `set θ : Ix p q → ℝ := Sum.elim (fun _ => 1) (fun _ => 0) with hθ`. Establish `hX` using `TorusWt.torX_mem θ`. Establish `hK : IsKC (TorusWt.torX θ)`. Introduce `a b hab`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `: a ≠ b`. Introduce and unpack `rfl`. Apply the tactic sequence `cases a <;> simp [sameBlock] at hab`. Simplify using `[TorusWt.torX, this]`. Establish `hk` using `KStabLie.expt_mem T hX hK 1`.
+Assume the hypotheses and unpack their components. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hk` using `[one_smul]`. Use `⟨_, hk, _, exp_injective (c : ℂ), fun m x hx => ?_⟩` and prove the remaining obligations. Apply `flow_eq σ hX` to reduce the goal to its premises. Establish `h0` using `hj _ hX x`. Establish `h1 : M.act (TorusWt.torX θ) x = (Complex.I * ((c : ℂ) + m)) • x`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[TorusWt.torX_eq_sum, map_sum, LinearMap.sum_apply, Fintype.sum_sum_type, mul_smul, ← hN m x hx, Finset.smul_sum]`. Simplify using `[hθ]`. Rewrite `h0` using `[h1, map_smul]`. Conclude with `h0`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_central_eigen : ∀ (p q : ℕ) (T : GrpData p q) (σ : URep T) (M : GKMod p q) (j : M.V →ₗ[ℂ] σ.H), (∀ Y ∈ upq p q, ∀ x, HasDerivAt (fun t : ℝ => σ.π (T.expt (t • Y)) (j x)) (j (M.act Y x)) 0) → ∀ (N : ℕ → Submodule ℂ M.V) (c : ℚ), (∀ m : ℕ, ∀ x ∈ N m, ∑ i : Fin p, M.act (Eab (Sum.inl i) (Sum.inl i)) x = ((c : ℂ) + m) • x) → ∃ k ∈ T.Kset, ∃ lam : ℕ → ℂ, Function.Injective lam ∧ ∀ m, ∀ x ∈ N m, σ.π k (j x) = lam m • j x := by
   intro p q T σ M j hj N c hN

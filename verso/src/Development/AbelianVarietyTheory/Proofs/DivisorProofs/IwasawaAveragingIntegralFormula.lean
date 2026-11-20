@@ -6,33 +6,27 @@ open scoped NNReal ENNReal
 namespace GlobalTheory.IwasawaAE
 
 /- English proof (translation)
-Introduce `G _ _ _ _ _ _ _ _ P K μG μP μK δ b hPc hKc hG hPH hKH hright hδ hdec hb hU Φ hΦ hΦeq g`. Use `haveI := hG`. Use `haveI := hPH`. Use `haveI := hKH`. Use `haveI : LocallyCompactSpace P := hPc.isClosedEmbedding_subtypeVal.locallyCompactSpace`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use `haveI : SecondCountableTopology P := TopologicalSpace.Subtype.secondCountableTopology _`. Use `haveI : CompactSpace K := isCompact_iff_compactSpace.mp hKc`. Establish `hsurj : Function.Surjective (GroundTheory.Automorphic.HaarSK.mulMap P K)`. Introduce `x`. Take `⟨p, hp, k, hk, rfl⟩` from `hdec x`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `⟨(⟨p, hp⟩, ⟨k, hk⟩), rfl⟩`. Take `⟨c, hc⟩` from `GlobalTheory.NAK.exists_eq_smul_map_mulMap_of_right P K μG (fun k _ => hright k) hPc hKc hsurj μP μK`. Establish `hc0 : c ≠ 0`. Introduce and unpack `rfl`. Establish `h0` using `(isOpen_univ (X := G)).measure_pos μG Set.univ_nonempty`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h0` using `[hc]`. Simplify using `at h0`. Establish `hm : Measurable (GroundTheory.Automorphic.HaarSK.mulMap P K)` using `(measurable_subtype_coe.comp measurable_fst).mul (measurable_subtype_coe.comp measurable_snd)`. Use `set M := Measure.map (GroundTheory.Automorphic.HaarSK.mulMap P K) (μP.prod μK) with hM`. Establish `hMG : M = c⁻¹ • μG` using `by rw [hc, inv_smul_smul₀ hc0]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Establish `hmeas : ∀ h : G, Measurable (fun z : P × K => (z.1 : G) * z.2 * h)` using `fun h => ((measurable_subtype_coe.comp measurable_fst).mul (measurable_subtype_coe.comp measurable_snd)).mul_const h`. Establish `hmap : ∀ h : G, Measure.map (fun z : P × K => (z.1 : G) * z.2 * h) (μP.prod μK) = M`. Introduce `h`. Establish `e : (fun z : P × K => (z.1 : G) * z.2 * h) = (· * h) ∘ GroundTheory.Automorphic.HaarSK.mulMap P K`. Use function extensionality and compare the values at `z`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Both sides reduce to the same expression. Rewrite using `[e, ← Measure.map_map (measurable_mul_const h) hm, ← hM, hMG, Measure.map_smul, hright]`. Use `set U : G → ℝ≥0∞ := fun x => ∫⁻ q : P, b ((q : G) * x) ∂μP with hUdef`. Establish `hUm : Measurable U` using `Measurable.lintegral_prod_right' (f := fun z : G × P => b ((z.2 : G) * z.1)) (hb.comp ((measurable_subtype_coe.comp measurable_snd).mul measurable_fst))`. Establish `hUeq : ∀ (p : P) (x : G), U ((p : G) * x) = (δ p : ℝ≥0∞) * U x`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `p x`. Establish `hf : Measurable (fun q : P => b ((q : G) * x))` using `hb.comp (measurable_subtype_coe.mul_const x)`. Combine the equalities or inequalities in the displayed calculation. Use `lintegral_congr fun q => ?_` and prove the remaining obligations. Rewrite using `[Subgroup.coe_mul, mul_assoc]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `_ = ∫⁻ q : P, b ((q : G) * x) ∂(μP.map (· * p)) := (lintegral_map hf (measurable_mul_const p)).symm`. Use `_ = _ := by rw [hδ p, lintegral_smul_measure, ENNReal.smul_def, smul_eq_mul]`. Establish `hδ0 : ∀ p : P, (δ p : ℝ≥0∞) ≠ 0`. Introduce `p h`. Establish `h1` using `hUeq p 1`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h1` using `[h, zero_mul, mul_one]`. Conclude with `(hU (p : G)).1 h1`. Use `set H : G → ℝ≥0∞ := fun x => b x * (Φ x / U x) with hHdef`. Establish `hkey : ∀ x : G, ∫⁻ q : P, H ((q : G) * x) ∂μP = Φ x`. Introduce `x`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : ∀ q : P, H ((q : G) * x) = b ((q : G) * x) * (Φ x / U x)`. Introduce `q`. Simplify using `only [hHdef]`. Rewrite using `[hΦeq, hUeq, ENNReal.mul_div_mul_left _ _ (hδ0 q) ENNReal.coe_ne_top]`. Repeatedly rewrite using `[h1]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[lintegral_mul_const (f := fun q : P => b ((q : G) * x)) _ (hb.comp (measurable_subtype_coe.mul_const x))]`. Conclude with `ENNReal.mul_div_cancel (hU x).1 (hU x).2`. Establish `hHM : AEMeasurable H M`. Rewrite using `[hMG]`. Conclude with `(hb.aemeasurable.mul (hΦ.div hUm.aemeasurable)).smul_measure _`.
-
-Establish `hall : ∀ h : G, ∫⁻ k : K, Φ ((k : G) * h) ∂μK = ∫⁻ y, H y ∂M`. Introduce `h`. Establish `hHh : AEMeasurable H (Measure.map (fun z : P × K => (z.1 : G) * z.2 * h) (μP.prod μK))`. Rewrite using `[hmap h]`. Conclude with `hHM`.
-
-Rewrite using `[← hmap h, lintegral_map' hHh (hmeas h).aemeasurable, lintegral_prod_symm (fun z : P × K => H ((z.1 : G) * z.2 * h)) (hHh.comp_aemeasurable (hmeas h).aemeasurable)]`. Use `lintegral_congr fun k => ?_` and prove the remaining obligations. Rewrite using `[← hkey]`. Use `lintegral_congr fun q => ?_` and prove the remaining obligations. Simplify using `only [mul_assoc]`.
-
-Rewrite using `[hall g, ← hall 1]`. Simplify using `only [mul_one]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem lintegral_mul_right_eq_of_equivariant : ∀ (G : Type) [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [LocallyCompactSpace G]
     [SecondCountableTopology G] [T2Space G] [MeasurableSpace G] [BorelSpace G] (P K : Subgroup G) (μG : Measure G) (μP : Measure P) (μK : Measure K) (δ : P → ℝ≥0) (b : G → ℝ≥0∞),

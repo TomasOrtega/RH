@@ -24,9 +24,9 @@ def cutoff (R : ℝ) : 𝓢(E, ℂ) :=
   h₁.toSchwartzMap h₂
 
 /- English proof (translation)
-Simplify using `only [cutoff]`. Express the relevant statement in the definitionally equal form `((ContDiffBump.toFun _ x : ℝ) : ℂ) = 1`. Rewrite using `[Complex.ofReal_eq_one]`. Apply `ContDiffBump.one_of_mem_closedBall` to reduce the goal to its premises. Rewrite using `[Metric.mem_closedBall]`.
+Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hx` using `[Metric.mem_ball]`. Simplify using `only`. Establish `: R ≤ R.toNNReal` using `Real.le_coe_toNNReal R`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem cutoff_eq_one {R : ℝ} {x : E} (hx : x ∈ Metric.ball (0 : E) (R + 1)) : cutoff R x = 1 := by
   simp only [cutoff]
@@ -40,13 +40,13 @@ theorem cutoff_eq_one {R : ℝ} {x : E} (hx : x ∈ Metric.ball (0 : E) (R + 1))
   linarith
 
 /- English proof (translation)
-Use extensionality with `φ`. Rewrite using `[smulLeftCLM_apply_apply]`. Establish `h0 : u (SchwartzMap.smulLeftCLM ℂ (cutoff R : E → ℂ) φ - φ) = 0`. Apply `hu` to reduce the goal to its premises. Establish `hsub : Function.support ⇑(SchwartzMap.smulLeftCLM ℂ (cutoff R : E → ℂ) φ - φ) ⊆ (Metric.ball (0 : E) (R + 1))ᶜ`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Introduce `x hx`. Assume the negation of the conclusion as `hb`. Apply `hx` to reduce the goal to its premises. Simplify using `only [Set.mem_compl_iff, not_not] at hb`. Rewrite using `[sub_apply, SchwartzMap.smulLeftCLM_apply_apply (cutoff R).hasTemperateGrowth, cutoff_eq_one hb, one_smul, sub_self]`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `(closure_minimal hsub Metric.isOpen_ball.isClosed_compl).trans ?_` and prove the remaining obligations. Introduce `x hx`. Simplify using `only [Set.mem_compl_iff, Metric.mem_ball, Metric.mem_closedBall, not_lt, not_le] at hx ⊢`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite `h0` using `[map_sub, sub_eq_zero]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h0`.
+A detailed English derivation is pending.
 -/
 theorem smulLeftCLM_cutoff_eq_self {F' : Type*} [NormedAddCommGroup F'] [NormedSpace ℂ F']
     {R : ℝ} (u : 𝓢'(E, F')) (hu : Distribution.IsVanishingOn u (Metric.closedBall (0 : E) R)ᶜ) :
@@ -71,7 +71,7 @@ theorem smulLeftCLM_cutoff_eq_self {F' : Type*} [NormedAddCommGroup F'] [NormedS
   exact h0
 
 /- English proof (translation)
-Rewrite using `[Real.fourier_eq, SchwartzMap.fourier_coe, Real.fourier_eq]`. Use `congr 1`. Use extensionality with `x`. Rewrite using `[Circle.smul_def, Circle.smul_def, smul_eq_mul, smul_eq_mul, ← mul_assoc, ← Circle.coe_mul, ← AddChar.map_add_eq_mul, inner_sub_right]`. Use `congr 3`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -84,11 +84,11 @@ theorem fourier_char_smul (χ : 𝓢(E, ℂ)) (η ξ : E) :
   congr 3; ring
 
 /- English proof (translation)
-Establish `hg : Integrable (fun x : E ↦ (𝐞 (inner ℝ x η) : ℂ) * χ x) (volume : Measure E)`. Use `(χ.integrable (μ := (volume : Measure E))).bdd_mul (c := 1) ?_ ?_` and prove the remaining obligations. Conclude with `(Continuous.aestronglyMeasurable (by fun_prop))`. Conclude with `ae_of_all _ fun x ↦ (Circle.norm_coe _).le`. Rewrite using `[SchwartzMap.fourierInv_coe, Real.fourierInv_eq]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h` using `integral_fourier_smul_eq_of_integrable (F := ℂ) φ hg`. Simplify using `only [smul_eq_mul] at h`. Rewrite `h` using `[fourier_char_smul]`. Rewrite using `[← h]`. Use `congr 1`.
+Rewrite the indicated hypotheses repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `x`. Rewrite using `[SchwartzMap.smulLeftCLM_apply_apply χ.hasTemperateGrowth, Circle.smul_def, smul_eq_mul, smul_eq_mul, SchwartzMap.fourier_coe]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem fourierInv_smulLeft_fourier_apply (χ φ : 𝓢(E, ℂ)) (η : E) :
     (𝓕⁻ (SchwartzMap.smulLeftCLM ℂ (χ : E → ℂ) (𝓕 φ)) : 𝓢(E, ℂ)) η =
@@ -117,7 +117,7 @@ def rellichKernel (p : E × E) : ℂ :=
 variable {s N}
 
 /- English proof (translation)
-Unfold `rellichKernel`. Establish `h1` using `(weight_hasTemperateGrowth (E := E) (s - N)).1.continuous`. Establish `h2` using `(weight_hasTemperateGrowth (E := E) (-s)).1.continuous`. Use `fun_prop`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem continuous_rellichKernel : Continuous (rellichKernel (E := E) s N χ) := by
   unfold rellichKernel
@@ -126,15 +126,15 @@ theorem continuous_rellichKernel : Continuous (rellichKernel (E := E) s N χ) :=
   fun_prop
 
 /- English proof (translation)
-Establish `pξ : (0 : ℝ) < 1 + ‖ξ‖ ^ 2` using `by positivity`. Establish `pη : (0 : ℝ) < 1 + ‖η‖ ^ 2` using `by positivity`. Establish `hp` using `peetre (-s) η ξ`. Rewrite `hp` using `[abs_neg, norm_sub_rev η ξ]`. Simplify using `only [rellichKernel, norm_mul, norm_weight, mul_pow]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `e1 : ((1 + ‖ξ‖ ^ 2) ^ ((s - N) / 2)) ^ 2 = (1 + ‖ξ‖ ^ 2) ^ (s - N)`. Rewrite using `[← Real.rpow_natCast, ← Real.rpow_mul pξ.le]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `e2 : ((1 + ‖η‖ ^ 2) ^ (-s / 2)) ^ 2 = (1 + ‖η‖ ^ 2) ^ (-s)`. Rewrite using `[← Real.rpow_natCast, ← Real.rpow_mul pη.le]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[e1, e2]`. Establish `e3 : (1 + ‖ξ‖ ^ 2) ^ (s - N) * (1 + ‖ξ‖ ^ 2) ^ (-s) = (1 + ‖ξ‖ ^ 2) ^ (-N)`. Rewrite using `[← Real.rpow_add pξ]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem norm_rellichKernel_sq_le (ξ η : E) :
     ‖rellichKernel s N χ (ξ, η)‖ ^ 2 ≤
@@ -160,13 +160,11 @@ theorem norm_rellichKernel_sq_le (ξ η : E) :
     _ = _ := by rw [e3]
 
 /- English proof (translation)
-Use `set n : ℝ := (Module.finrank ℝ E : ℝ)`. Take `⟨C, hC⟩` from `exists_norm_le_weight (𝓕 χ : 𝓢(E, ℂ)) (-(n + 1) / 2 - |s|)`. Establish `hint` using `(integrable_rpow_neg_one_add_norm_sq (E := E) (μ := (volume : Measure E)) (r := n + 1) (by linarith)).const_mul (C ^ 2)`. Use `hint.mono' ?_ (ae_of_all _ fun ζ ↦ ?_)` and prove the remaining obligations. Establish `hc : Continuous (fun ζ : E ↦ (1 + ‖ζ‖ ^ 2) ^ |s|)` using `(continuous_const.add (continuous_norm.pow 2)).rpow_const fun ζ ↦ Or.inl (by positivity : (0 : ℝ) < 1 + ‖ζ‖ ^ 2).ne'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(hc.mul ((𝓕 χ : 𝓢(E, ℂ)).continuous.norm.pow 2)).aestronglyMeasurable`. Establish `pζ : (0 : ℝ) < 1 + ‖ζ‖ ^ 2` using `by positivity`. Rewrite using `[Real.norm_eq_abs, abs_of_nonneg (by positivity)]`. Establish `h1` using `hC ζ`. Establish `h2 : ‖(𝓕 χ : 𝓢(E, ℂ)) ζ‖ ^ 2 ≤ (C * (1 + ‖ζ‖ ^ 2) ^ ((-(n + 1) / 2 - |s|) / 2)) ^ 2` using `pow_le_pow_left₀ (norm_nonneg _) h1 2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_pow, ← Real.rpow_natCast ((1 + ‖ζ‖ ^ 2) ^ _), ← Real.rpow_mul pζ.le]`. Rewrite using `[mul_left_comm, ← Real.rpow_add pζ]`. Use `congr 2`. Use `push_cast`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem integrable_weight_mul_norm_fourier_sq (s : ℝ) :
     Integrable (fun ζ : E ↦ (1 + ‖ζ‖ ^ 2) ^ |s| * ‖(𝓕 χ : 𝓢(E, ℂ)) ζ‖ ^ 2) (volume : Measure E) := by
@@ -193,13 +191,13 @@ theorem integrable_weight_mul_norm_fourier_sq (s : ℝ) :
           congr 2; push_cast; ring
 
 /- English proof (translation)
-Establish `hmeas` using `(continuous_rellichKernel (s := s) (N := N) χ).aestronglyMeasurable (μ := (volume : Measure E).prod volume)`. Rewrite using `[memLp_two_iff_integrable_sq_norm hmeas]`. Establish `hH` using `integrable_weight_mul_norm_fourier_sq χ s`. Establish `hW` using `integrable_rpow_neg_one_add_norm_sq (E := E) (μ := (volume : Measure E)) (r := 2 * N) hN`. Establish `hW' : Integrable (fun ξ : E ↦ (1 + ‖ξ‖ ^ 2) ^ (-N)) (volume : Measure E)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hW.congr (ae_of_all _ fun ξ ↦ ?_)` and prove the remaining obligations. Simplify using `only`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Use `set H : E → ℝ := fun ζ ↦ (1 + ‖ζ‖ ^ 2) ^ |s| * ‖(𝓕 χ : 𝓢(E, ℂ)) ζ‖ ^ 2`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `hdom : Integrable (fun p : E × E ↦ 2 ^ |s| * (1 + ‖p.1‖ ^ 2) ^ (-N) * H (p.1 - p.2)) ((volume : Measure E).prod volume)`. Establish `hg` using `(hW'.const_mul (2 ^ |s|)).mul_prod (hH.comp_neg (μ := (volume : Measure E)))`. Establish `hc` using `((measurePreserving_prod_sub (volume : Measure E) (volume : Measure E)).integrable_comp hg.aestronglyMeasurable).2 hg`. Use `hc.congr (ae_of_all _ fun p ↦ ?_)` and prove the remaining obligations. Simplify using `only [Function.comp_apply, neg_sub]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `hdom.mono' (hmeas.norm.pow 2) (ae_of_all _ fun p ↦ ?_)` and prove the remaining obligations. Rewrite using `[Real.norm_eq_abs, abs_of_nonneg (by positivity)]`. Conclude with `norm_rellichKernel_sq_le χ p.1 p.2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem memLp_rellichKernel (hN : (Module.finrank ℝ E : ℝ) < 2 * N) :
     MemLp (rellichKernel s N χ) 2 ((volume : Measure E).prod volume) := by
@@ -235,14 +233,14 @@ def rellichOp (hN : (Module.finrank ℝ E : ℝ) < 2 * N) :
   L2Kernel.kernelOp ((memLp_rellichKernel (s := s) χ hN).toLp _)
 
 /- English proof (translation)
-The claim follows from `(L2Kernel.kernelOp_isHilbertSchmidt _).isCompactOperator`.
+A detailed English derivation is pending.
 -/
 theorem isCompactOperator_rellichOp (hN : (Module.finrank ℝ E : ℝ) < 2 * N) :
     IsCompactOperator (rellichOp (s := s) χ hN) :=
   (L2Kernel.kernelOp_isHilbertSchmidt _).isCompactOperator
 
 /- English proof (translation)
-The claim follows from `L2Kernel.kernelOp_toLp_apply_ae (memLp_rellichKernel χ hN) G`.
+A detailed English derivation is pending.
 -/
 theorem rellichOp_apply_ae (hN : (Module.finrank ℝ E : ℝ) < 2 * N)
     (G : Lp ℂ 2 (volume : Measure E)) :
@@ -250,9 +248,9 @@ theorem rellichOp_apply_ae (hN : (Module.finrank ℝ E : ℝ) < 2 * N)
   L2Kernel.kernelOp_toLp_apply_ae (memLp_rellichKernel χ hN) G
 
 /- English proof (translation)
-Establish `hφ` using `(φ.memLp 2 (volume : Measure E))`. Establish `hG` using `Lp.memLp G`. Establish `hm : AEStronglyMeasurable (fun p : E × E ↦ φ p.1 * G p.2) ((volume : Measure E).prod volume)` using `(φ.continuous.aestronglyMeasurable.comp_fst).mul (hG.1.comp_snd)`. Rewrite using `[memLp_two_iff_integrable_sq_norm hm]`. Establish `h1` using `(memLp_two_iff_integrable_sq_norm hφ.1).1 hφ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2` using `(memLp_two_iff_integrable_sq_norm hG.1).1 hG`. Use `(h1.mul_prod h2).congr (ae_of_all _ fun p ↦ ?_)` and prove the remaining obligations. Simplify using `[mul_pow]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem memLp_two_prod_mul (φ : 𝓢(E, ℂ)) (G : Lp ℂ 2 (volume : Measure E)) :
     MemLp (fun p : E × E ↦ φ p.1 * G p.2) 2 ((volume : Measure E).prod volume) := by
@@ -268,23 +266,21 @@ theorem memLp_two_prod_mul (φ : 𝓢(E, ℂ)) (G : Lp ℂ 2 (volume : Measure E
   simp [mul_pow]
 
 /- English proof (translation)
-Use `set G : Lp ℂ 2 (volume : Measure E) := 𝓕 (SobolevSpace.bessel s u)`. Apply `Lp.ext` to reduce the goal to its premises. Apply `ae_eq_of_integral_schwartz_smul_eq (F := ℂ)` to reduce the goal to its premises. Conclude with `(Lp.memLp _).locallyIntegrable (by norm_num)`. Conclude with `(Lp.memLp _).locallyIntegrable (by norm_num)`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `φ _`. Use `set φ' : 𝓢(E, ℂ) := SchwartzMap.smulLeftCLM ℂ (weight (s - N)) φ`. Use `set ψ : 𝓢(E, ℂ) := 𝓕⁻ (SchwartzMap.smulLeftCLM ℂ (χ : E → ℂ) (𝓕 φ'))`. Establish `hL : ∫ ξ, φ ξ • (𝓕 (SobolevSpace.bessel (s - N) (SobolevSpace.inclusion (by linarith : s - N ≤ s) u)) : Lp ℂ 2 (volume : Measure E)) ξ = ∫ η, (∫ ξ, φ' ξ * (𝓕 χ : 𝓢(E, ℂ)) (ξ - η)) * (weight (-s) η * G η)`. Establish `e1 : ∫ ξ, φ ξ • (𝓕 (SobolevSpace.bessel (s - N) (SobolevSpace.inclusion (by linarith : s - N ≤ s) u)) : Lp ℂ 2 (volume : Measure E)) ξ = ∫ ξ, φ' ξ • fourierFun u ξ`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Apply `integral_congr_ae` to reduce the goal to its premises. Use `filter_upwards [fourierFun_inclusion (by linarith : s - N ≤ s) u] with ξ hξ`. Rewrite using `[← weight_smul_fourierFun, hξ, SchwartzMap.smulLeftCLM_apply_apply (weight_hasTemperateGrowth _)]`. Simplify using `only [smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Establish `e2 : SchwartzMap.smulLeftCLM ℂ (χ : E → ℂ) (𝓕 φ') = 𝓕 ψ`. Simplify using `only [ψ, FourierTransform.fourier_fourierInv_eq]`. Rewrite using `[e1, ← fourier_apply_eq_integral, ← hu, TemperedDistribution.fourier_apply, smulLeftCLM_apply_apply, e2, ← TemperedDistribution.fourier_apply, fourier_apply_eq_integral]`. Use `congr 1`. Use extensionality with `η`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[fourierInv_smulLeft_fourier_apply, fourierFun, smul_eq_mul, smul_eq_mul]`. Establish `hint : Integrable (fun p : E × E ↦ φ p.1 * rellichKernel s N χ p * G p.2) ((volume : Measure E).prod volume)`. Use `(memLp_rellichKernel (s := s) χ hN).integrable_mul (memLp_two_prod_mul φ G)` as an intermediate fact. Use `this.congr (ae_of_all _ fun p ↦ ?_)` and prove the remaining obligations. Simplify using `only [Pi.mul_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hR : ∫ ξ, φ ξ • (rellichOp (s` using `s) χ hN G : Lp ℂ 2 (volume : Measure E)) ξ = ∫ η, (∫ ξ, φ' ξ * (𝓕 χ : 𝓢(E, ℂ)) (ξ - η)) * (weight (-s) η * G η) := by`. Establish `e1 : ∫ ξ, φ ξ • (rellichOp (s` using `s) χ hN G : Lp ℂ 2 (volume : Measure E)) ξ = ∫ ξ, ∫ η, φ ξ * rellichKernel s N χ (ξ, η) * G η := by`. Apply `integral_congr_ae` to reduce the goal to its premises. Use `filter_upwards [rellichOp_apply_ae (s := s) χ hN G] with ξ hξ`.
+By extensionality, compare the relevant components. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Rewrite using `[hξ, smul_eq_mul, ← integral_const_mul]`. Use `congr 1`. Use extensionality with `η`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e1, integral_integral_swap hint]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Use `congr 1`. Use extensionality with `η`. Rewrite using `[← integral_mul_const]`. Use `congr 1`. Use extensionality with `ξ`.
-
-Simplify using `only [rellichKernel, φ', SchwartzMap.smulLeftCLM_apply_apply (weight_hasTemperateGrowth _), smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hL, hR]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fourier_bessel_inclusion_eq (hN : (Module.finrank ℝ E : ℝ) < 2 * N)
     (u : SobolevSpace E ℂ s)
@@ -343,7 +339,7 @@ theorem fourier_bessel_inclusion_eq (hN : (Module.finrank ℝ E : ℝ) < 2 * N)
 end Identity
 
 /- English proof (translation)
-Rewrite using `[SobolevSpace.norm_def, map_sub, ← Lp.norm_fourier_eq]`. Use `congr 1`. Conclude with `(Lp.fourierTransformₗᵢ E ℂ).map_sub _ _`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem norm_inclusion_sub_eq {s r : ℝ} (h : r ≤ s) (v w : SobolevSpace E ℂ s) :
     ‖SobolevSpace.inclusion h v - SobolevSpace.inclusion h w‖ =
@@ -356,27 +352,23 @@ theorem norm_inclusion_sub_eq {s r : ℝ} (h : r ≤ s) (v w : SobolevSpace E �
 open Filter Topology in
 
 /- English proof (translation)
-Take `⟨R, hR⟩` from `hK.isBounded.subset_closedBall (0 : E)`. Use `set χ := cutoff (E := E) R`. Establish `hu : ∀ j, smulLeftCLM ℂ (χ : E → ℂ) (SobolevSpace.toDistribution (u j)) = SobolevSpace.toDistribution (u j)` using `fun j ↦ smulLeftCLM_cutoff_eq_self _ ((hsupp j).mono (Set.compl_subset_compl.2 hR))`. Use `set n : ℝ := (Module.finrank ℝ E : ℝ)`. Use `set N : ℝ := max n (s - t) + 1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hN : n < 2 * N`. Establish `: n ≤ max n (s - t)` using `le_max_left _ _`. Establish `hn : 0 ≤ n` using `Nat.cast_nonneg _`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hN0 : 0 ≤ N`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `: s - t ≤ max n (s - t)` using `le_max_right _ _`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hrt : s - N < t`. Establish `: s - t ≤ max n (s - t)` using `le_max_right _ _`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hrs : s - N ≤ s` using `by linarith`. Use `set T := rellichOp (s := s) χ hN`. Use `set G : ℕ → Lp ℂ 2 (volume : Measure E) := fun j ↦ 𝓕 (SobolevSpace.bessel s (u j))`. Use `set M' := max M 0`. Establish `hG : ∀ j, G j ∈ Metric.closedBall (0 : Lp ℂ 2 (volume : Measure E)) M'` using `fun j ↦ by`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Metric.mem_closedBall, dist_zero_right, Lp.norm_fourier_eq, ← SobolevSpace.norm_def]`. Conclude with `(hM j).trans (le_max_left _ _)`. Take `⟨a, -, φ, hφ, hlim⟩` from `(isCompactOperator_rellichOp (s := s) χ hN).isCompact_closure_image_closedBall M' |>.tendsto_subseq (x := fun j ↦ T (G j)) fun j ↦ subset_closure ⟨G j, hG j, rfl⟩`. Use `⟨φ, hφ, ?_⟩` and prove the remaining obligations. Establish `hC : CauchySeq (fun j ↦ T (G (φ j)))` using `hlim.cauchySeq`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hdist : ∀ i j, dist (SobolevSpace.inclusion hrs (u (φ i))) (SobolevSpace.inclusion hrs (u (φ j))) = dist (T (G (φ i))) (T (G (φ j)))`. Introduce `i j`. Rewrite using `[dist_eq_norm, dist_eq_norm, norm_inclusion_sub_eq, fourier_bessel_inclusion_eq χ hN _ (hu _), fourier_bessel_inclusion_eq χ hN _ (hu _)]`. Use `set θ := (s - t) / (s - (s - N))`. Use `set α := (t - (s - N)) / (s - (s - N))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 
-Establish `hθ : 0 < θ` using `div_pos (by linarith) (by linarith)`. Establish `hα : 0 ≤ α` using `(div_pos (by linarith) (by linarith)).le`. Establish `hinterp : ∀ i j, dist (SobolevSpace.inclusion hts.le (u (φ i))) (SobolevSpace.inclusion hts.le (u (φ j))) ≤ (2 * M') ^ α * dist (T (G (φ i))) (T (G (φ j))) ^ θ`. Introduce `i j`. Establish `h` using `norm_inclusion_le_interpolation hrt hts (u (φ i) - u (φ j))`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite `h` using `[map_sub, map_sub]`. Rewrite using `[dist_eq_norm, ← hdist, dist_eq_norm]`. Use `h.trans ?_` and prove the remaining obligations. Use `gcongr`. Combine the equalities or inequalities in the displayed calculation.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Establish `hcauchy : CauchySeq (fun j ↦ SobolevSpace.inclusion hts.le (u (φ j)))`. Rewrite `hC`, the goal using `[Metric.cauchySeq_iff]`. Introduce `ε hε`. Use `set c := (2 * M') ^ α + 1`. Establish `hc : 0 < c` using `by positivity`.
-
-Take `⟨K₀, hK₀⟩` from `hC ((ε / c) ^ (1 / θ)) (by positivity)`. Use `⟨K₀, fun i hi j hj ↦ ?_⟩` and prove the remaining obligations. Establish `h1` using `hK₀ i hi j hj`. Establish `h2 : dist (T (G (φ i))) (T (G (φ j))) ^ θ < ε / c`. Combine the equalities or inequalities in the displayed calculation.
-
-Rewrite using `[← Real.rpow_mul (by positivity), one_div_mul_cancel hθ.ne', Real.rpow_one]`. Combine the equalities or inequalities in the displayed calculation. Take `⟨v, hv⟩` from `cauchySeq_tendsto_of_complete hcauchy`. Conclude with `⟨v, hv⟩`.
+Chain the equalities or inequalities of the calculation. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem rellich {s t : ℝ} (hts : t < s) {K : Set E} (hK : IsCompact K)
     (u : ℕ → SobolevSpace E ℂ s) {M : ℝ} (hM : ∀ j, ‖u j‖ ≤ M)

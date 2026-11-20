@@ -7,27 +7,25 @@ noncomputable section
 namespace Formalism.ZeroFreeDirichlet
 
 /- English proof (translation)
-Use `set z₀ : ℂ := (21 / 20 : ℂ) + s.im * I with hz₀`. Establish `hz₀re : z₀.re = 21 / 20` using `by simp [hz₀]`. Use `set A : ℝ := 21 * (|C| + 1) with hAdef`. Establish `hq1` using `one_le_modulus_real q`. Establish `hX : (0 : ℝ) < (q : ℝ) * (|s.im| + 2)` using `by positivity`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set M : ℝ := 2 * A * ((q : ℝ) * (|s.im| + 2)) with hMdef`. Establish `hA1 : 1 ≤ A`. Use `abs_nonneg C` as an intermediate fact. Rewrite using `[hAdef]`. Use the polynomial consequences of the given equalities and inequalities.
+Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hM1 : 1 ≤ M`. Establish `h2 : 2 ≤ (q : ℝ) * (|s.im| + 2)` using `by nlinarith [abs_nonneg s.im]`. Rewrite using `[hMdef]`. Use the polynomial consequences of the given equalities and inequalities. Establish `hf0 : DirichletCharacter.LFunction χ z₀ ≠ 0` using `DirichletCharacter.LFunction_ne_zero_of_one_le_re χ (Or.inl hχ) (by rw [hz₀re]; norm_num)`.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hinv` using `hInv q χ z₀ (by rw [hz₀re]; norm_num)`. Rewrite `hinv` using `[hz₀re]`. Establish `h21 : ‖DirichletCharacter.LFunction χ z₀‖⁻¹ ≤ 21`. Establish `e : (21 / 20 : ℝ) / (21 / 20 - 1) = 21` using `by norm_num`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlow : 1 ≤ 21 * ‖DirichletCharacter.LFunction χ z₀‖`. Establish `hp : 0 < ‖DirichletCharacter.LFunction χ z₀‖` using `norm_pos_iff.2 hf0`. Use `mul_le_mul_of_nonneg_right h21 hp.le` as an intermediate fact. Rewrite `this` using `[inv_mul_cancel₀ hp.ne']`. Then use the resulting hypothesis. Establish `hbound : ∀ z ∈ Metric.closedBall z₀ (11 / 20), ‖DirichletCharacter.LFunction χ z‖ ≤ M * ‖DirichletCharacter.LFunction χ z₀‖`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `z hz`. Establish `hre` using `re_ge_of_mem_closedBall hz`. Rewrite `hre` using `[hz₀re]`. Establish `h1` using `hC q χ hχ z (by linarith)`. Establish `hn` using `norm_le_norm_add_of_mem_closedBall' hz`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hn0` using `norm_disc_center_le s.im`. Establish `hq0 : (0 : ℝ) ≤ q` using `by positivity`. Establish `hz1 : 1 + ‖z‖ ≤ 2 * (|s.im| + 2)` using `by linarith [abs_nonneg s.im]`. Establish `hY : 0 ≤ (|C| + 1) * q * (2 * (|s.im| + 2))` using `by positivity`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result. Check the signs of the components of the expression. Rewrite the conclusion using the stated equalities.
 
-Apply `mul_le_mul (mul_le_mul_of_nonneg_right (by linarith) hq0) hz1 (by positivity)` to reduce the goal to its premises. Check the signs of the components of the expression. Use `_ = (|C| + 1) * q * (2 * (|s.im| + 2)) * 1 := by ring`. Use `_ ≤ (|C| + 1) * q * (2 * (|s.im| + 2)) * (21 * ‖DirichletCharacter.LFunction χ z₀‖) := mul_le_mul_of_nonneg_left hlow hY`. Use `_ = M * ‖DirichletCharacter.LFunction χ z₀‖ := by`.
+Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hMdef, hAdef]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨Z, m, hZ, -, -, hm1, hsum, hder⟩` from `hLL (DirichletCharacter.LFunction χ) z₀ (11 / 20) M (by norm_num) hM1 (DirichletCharacter.differentiable_LFunction hχ).differentiableOn hf0 hbound`. Establish `hlogM : Real.log M ≤ (Real.log (2 * A) / Real.log 2 + 1) * Real.log ((q : ℝ) * (|s.im| + 2))` using `log_le_of_le_exp_log_conductor hA1 hM1 (log_two_le_log_analytic_conductor q s.im) (Real.exp_pos _) (by rw [Real.exp_log hX, hMdef])`. Establish `hl2 : 0 < Real.log 2` using `Real.log_pos (by norm_num)`.
+Move the embeddings inside the algebraic operations. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `⟨Z, m, hZ, hm1, ?_, ?_⟩` and prove the remaining obligations. Move the coercions through the operations in `at hsum`. Combine the equalities or inequalities in the displayed calculation. Establish `hs6 : s ∈ Metric.closedBall z₀ (11 / 20 / 6)`. Rewrite using `[Metric.mem_closedBall, Complex.dist_eq]`.
-
-Establish `e : s - z₀ = ((s.re - 21 / 20 : ℝ) : ℂ)`. Apply the tactic sequence `apply Complex.ext <;> simp [hz₀]`. Rewrite using `[e, Complex.norm_real, Real.norm_eq_abs, abs_le]`. Apply the tactic sequence `constructor <;> linarith`. Combine the equalities or inequalities in the displayed calculation.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 lemma landau_lemma_lfunction_zeros (hLL : LandauLocal3) {C : ℝ}
     (hC : ∀ (q : ℕ) [NeZero q] (χ : DirichletCharacter ℂ q), χ ≠ 1 → ∀ s : ℂ, 1 / 2 ≤ s.re →

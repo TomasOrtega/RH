@@ -18,9 +18,9 @@ noncomputable section
 namespace GlobalTheory.HomFixMat
 
 /- English proof (translation)
-Establish `P` using `IsPullback.of_hasPullback (topS Rg).hom A.hom`. Establish `h' : f ≫ pullback.snd (topS Rg).hom A.hom = g ≫ pullback.snd (topS Rg).hom A.hom` using `h`. Apply `P.hom_ext` to reduce the goal to its premises. Establish `hm : Mono (topS Rg).hom`. Express the relevant statement in the definitionally equal form `Mono ((⊤ : (Sp Rg).Opens).ι ≫ 𝟙 _)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Use `infer_instance`. Rewrite using `[← cancel_mono (topS Rg).hom, Category.assoc, Category.assoc, P.w, ← Category.assoc, h', Category.assoc]`. Conclude with `h'`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem topS_tensor_left_ext {Rg : Type} [CommRing Rg] (A : Over (Sp Rg)) {Z : Scheme.{0}}
     (f g : Z ⟶ (topS Rg ⊗ A).left) (h : f ≫ (snd (topS Rg) A).left = g ≫ (snd (topS Rg) A).left) : f = g := by
@@ -37,43 +37,39 @@ end GlobalTheory.HomFixMat
 namespace GlobalTheory.HomFixMat
 
 /- English proof (translation)
-Introduce `Rg _ _ A B _ _ _ _ L M k mA mB bA bB eA eB hH R _ t A₁ B₁ _ _ φA₁ φB₁ Φ₁ A₂ B₂ _ _ φA₂ φB₂ Φ₂ c T₁ T₂ M₁ M₂`. Take `⟨-, hBab, hL, hM, -, -, -, -, hva, -, hbc⟩` from `hH`. Set `ψA : A₂.left ⟶ A₁.left` to `T₁.1.1.lift φA₂ A₂.hom T₂.1.1.w`. Set `ψB : B₂.left ⟶ B₁.left` to `T₁.2.1.1.lift φB₂ B₂.hom T₂.2.1.1.w`. Establish `hψA1 : ψA ≫ φA₁ = φA₂` using `T₁.1.1.lift_fst _ _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hψA2 : ψA ≫ A₁.hom = A₂.hom` using `T₁.1.1.lift_snd _ _ _`. Establish `hψB1 : ψB ≫ φB₁ = φB₂` using `T₁.2.1.1.lift_fst _ _ _`. Establish `hψB2 : ψB ≫ B₁.hom = B₂.hom` using `T₁.2.1.1.lift_snd _ _ _`. Establish `gA : IsGrpPullback A₂ A₁ (𝟙 _) ψA` using `IsGrpPullback.cancel T₁.1 (by rw [Category.id_comp, hψA1]; exact T₂.1) (by rw [hψA2, Category.comp_id])`. Establish `gB : IsGrpPullback B₂ B₁ (𝟙 _) ψB` using `IsGrpPullback.cancel T₁.2.1 (by rw [Category.id_comp, hψB1]; exact T₂.2.1) (by rw [hψB2, Category.comp_id])`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨ψA, ψB, gA, gB, hψA1, hψB1, ?_⟩` and prove the remaining obligations. It suffices to establish `key : Φ₂.left ≫ φB₂ = ψA ≫ Φ₁.left ≫ φB₁ by`. Apply `T₁.2.1.1.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, hψB1, key, Category.assoc]`. Rewrite using `[Category.assoc, hψB2, Over.w Φ₂, Category.assoc, Over.w Φ₁, hψA2]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the argument to an intermediate assertion. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Take `⟨ψA₁, ψB₁, eA₁, eB₁, g₁⟩` from `GlobalTheory.T.isMatrixIdentity_germ_pullback_chart M₁`. Take `⟨ψA₂, ψB₂, eA₂, eB₂, g₂⟩` from `GlobalTheory.T.isMatrixIdentity_germ_pullback_chart M₂`. Take `⟨x, b', hx, hb', hemb⟩` from `GlobalTheory.T.embeds_after_baseChange_specTopOpen_of_stable_basis B M k bB hBab hM hva hbc`. Establish `hG : ψA ≫ ψA₁ = ψA₂` using `topS_tensor_left_ext A _ _ (by rw [Category.assoc, eA₁, eA₂, hψA1])`. Set `H : (baseAt x ⊗ B).left ⟶ (topS Rg ⊗ B).left` to `(homAt x ▷ B).left`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hHi : IsIso (homAt x)`. Establish `: IsIso ((Over.forget _).map (homAt x))` using `hx`. Conclude with `isIso_of_reflects_iso (homAt x) (Over.forget _)`. Establish `hH : IsIso H` using `(inferInstance : IsIso ((Over.forget _).map (homAt x ▷ B)))`. Establish `hHs : H ≫ (snd (topS Rg) B).left = (snd (baseAt x) B).left`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Over.comp_left, whiskerRight_snd]`. Set `F₁ : A₂.left ⟶ (topS Rg ⊗ B).left` to `ψA ≫ Φ₁.left ≫ ψB₁`. Set `F₂ : A₂.left ⟶ (topS Rg ⊗ B).left` to `Φ₂.left ≫ ψB₂`. It suffices to establish `hF : F₂ ≫ inv H = F₁ ≫ inv H by`. Establish `e1 : F₂ = F₁` using `by simpa using congrArg (· ≫ H) hF`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the argument to an intermediate assertion. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2 : F₂ ≫ (snd (topS Rg) B).left = F₁ ≫ (snd (topS Rg) B).left` using `by rw [e1]`. Simplify using `only [F₁, F₂, Category.assoc] at e2`. Rewrite `e2` using `[eB₁, eB₂]`. Then use the resulting hypothesis. Establish `memw : ∀ {P Q : Scheme.{0}} (W : LB Q) (φ : P ⟶ Q) (j : Fin 1 → W.ι) (y : P), φ y ∈ W.U (j 0) → y ∈ LB.wchart W (fun _ : Fin 1 => φ) j` using `fun W φ j y h => Set.mem_iInter.2 fun i => by rw [Subsingleton.elim i 0]; exact h`. Establish `hsx : (snd (topS Rg) B).left = inv H ≫ (snd (baseAt x) B).left`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hHs, IsIso.inv_hom_id_assoc]`. Establish `hbase : ∀ (Z : Scheme.{0}) (r : Z ⟶ (baseAt x ⊗ B).left) (z : Z) (pM : Fin 1 → M.ι) (j : Fin mB), r z ∈ (LPow B M (k : ℤ) (baseAt x)).U pM → gs r z _ ((b' j).f pM) = gs (r ≫ H) z _ ((bB j).f pM)`. Introduce `Z r z pM j hz`. Rewrite using `[hb' j pM, gs_res _ _ _ hz, gs_pull]`. Conclude with `chart_le_res B M (homAt x ▷ B) (whiskerRight_snd (homAt x) B) (k : ℤ) pM hz`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmono : Mono (baseAt x).hom`. Establish `: Mono (topS Rg).hom`. Express the relevant statement in the definitionally equal form `Mono ((⊤ : (Sp Rg).Opens).ι ≫ 𝟙 _)`. Use `infer_instance`. Express the relevant statement in the definitionally equal form `Mono (x ≫ (topS Rg).hom)`.
+Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `infer_instance`. Establish `hπ : ∀ F : A₂.left ⟶ (topS Rg ⊗ B).left, F ≫ inv H ≫ (fst (baseAt x) B).left ≫ (baseAt x).hom = F ≫ (snd (topS Rg) B).left ≫ B.hom`. Introduce `F`. Establish `w : (fst (baseAt x) B).left ≫ (baseAt x).hom = (snd (baseAt x) B).left ≫ B.hom` using `pullback.condition`. Rewrite using `[w, hsx]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Category.assoc]`. Use `GlobalTheory.T.eq_of_proportional_germs_sectionsEmbedProjectively (fst (baseAt x) B).left b' hemb _ _ ?_ ?_` and prove the remaining obligations. Rewrite using `[← cancel_mono (baseAt x).hom]`. Simplify using `only [Category.assoc]`. Rewrite using `[hπ, hπ]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Simplify using `only [F₁, F₂, Category.assoc]`. Rewrite using `[reassoc_of% eB₁, reassoc_of% eB₂, T₁.2.1.1.w, T₂.2.1.1.w, reassoc_of% (Over.w Φ₂), reassoc_of% (Over.w Φ₁), reassoc_of% hψA2]`. Introduce `z`. Take `⟨q0, hq0⟩` from `exists_chart hL (φA₂ z)`. Take `⟨p₁, hp₁⟩` from `exists_chart hM ((ψA ≫ Φ₁.left ≫ φB₁) z)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨p₂, hp₂⟩` from `exists_chart hM ((Φ₂.left ≫ φB₂) z)`. Establish `mA₂ : (𝟙 A₂.left ≫ ψA₂) z ∈ (LPow A L (k : ℤ) (topS Rg)).U (fun _ => q0)`. Use `memw L _ _ _ ?_` and prove the remaining obligations. Rewrite using `[← Scheme.Hom.comp_apply, Category.id_comp, eA₂]`. Conclude with `hq0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `mA₁ : (ψA ≫ ψA₁) z ∈ (LPow A L (k : ℤ) (topS Rg)).U (fun _ => q0)`. Rewrite using `[hG]`. Simplify using `using mA₂`. Establish `mB₂ : (𝟙 A₂.left ≫ Φ₂.left ≫ ψB₂) z ∈ (LPow B M (k : ℤ) (topS Rg)).U (fun _ => p₂)`. Use `memw M _ _ _ ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← Scheme.Hom.comp_apply, Category.id_comp, Category.assoc, eB₂]`. Conclude with `hp₂`. Establish `mB₁ : (ψA ≫ Φ₁.left ≫ ψB₁) z ∈ (LPow B M (k : ℤ) (topS Rg)).U (fun _ => p₁)`. Use `memw M _ _ _ ?_` and prove the remaining obligations. Rewrite using `[← Scheme.Hom.comp_apply, Category.assoc, Category.assoc, eB₁]`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hp₁`. Take `⟨u₂, hu₂⟩` from `g₂ A₂.left (𝟙 _) z _ _ mB₂ mA₂`. Take `⟨u₁, hu₁⟩` from `g₁ A₂.left ψA z _ _ mB₁ mA₁`. Simplify using `only [Category.id_comp] at hu₂`. Rewrite `hu₁` using `[hψA2, hG]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun j => ∑ i, gs A₂.hom z ⊤ (c i j) * gs ψA₂ z _ ((bA i).f (fun _ => q0)), ⟨fun _ => p₂, ?_, u₂, fun l => ?_⟩, ⟨fun _ => p₁, ?_, u₁, fun l => ?_⟩⟩` and prove the remaining obligations. Use `memw M _ _ _ ?_` and prove the remaining obligations. Rewrite using `[← Scheme.Hom.comp_apply, Category.assoc, ← hsx]`. Simplify using `only [F₂, Category.assoc]`. Rewrite using `[eB₂]`.
-
-Conclude with `hp₂`. Rewrite using `[hbase _ _ _ _ _ (memw M _ _ _ (by rw [← Scheme.Hom.comp_apply, Category.assoc, ← hsx]; simp only [F₂, Category.assoc]; rw [eB₂]; exact hp₂)), Category.assoc, IsIso.inv_hom_id, Category.comp_id]`. Conclude with `hu₂ l`. Use `memw M _ _ _ ?_` and prove the remaining obligations. Rewrite using `[← Scheme.Hom.comp_apply, Category.assoc, ← hsx]`.
-
-Simplify using `only [F₁, Category.assoc]`. Rewrite using `[eB₁]`. Conclude with `hp₁`. Rewrite using `[hbase _ _ _ _ _ (memw M _ _ _ (by rw [← Scheme.Hom.comp_apply, Category.assoc, ← hsx]; simp only [F₁, Category.assoc]; rw [eB₁]; exact hp₁)), Category.assoc, IsIso.inv_hom_id, Category.comp_id]`. Conclude with `hu₁ l`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mat_determines : ∀ (Rg : Type) [CommRing Rg] [IsNoetherianRing Rg] (A B : Over (Sp Rg)) [GrpObj A] [IsCommMonObj A] [GrpObj B] [IsCommMonObj B] (L : LB A.left) (M : LB B.left) (k : ℕ) (mA mB : ℕ) (bA : Fin mA → LB.Sec (LPow A L (k : ℤ) (topS Rg))) (bB : Fin mB → LB.Sec (LPow B M (k : ℤ) (topS Rg))) (eA : LB.Gen (L.pull (eSec A))) (eB : LB.Gen (M.pull (eSec B))), Hyps L M k bA bB eA eB → ∀ (R : Type) [CommRing R] (t : Sp R ⟶ Sp Rg) (A₁ B₁ : Over (Sp R)) [GrpObj A₁] [GrpObj B₁] (φA₁ : A₁.left ⟶ A.left) (φB₁ : B₁.left ⟶ B.left) (Φ₁ : A₁ ⟶ B₁) (A₂ B₂ : Over (Sp R)) [GrpObj A₂] [GrpObj B₂] (φA₂ : A₂.left ⟶ A.left) (φB₂ : B₂.left ⟶ B.left) (Φ₂ : A₂ ⟶ B₂) (c : Fin mA → Fin mB → Γ(Sp R, ⊤)), IsTest A B L M t A₁ B₁ φA₁ φB₁ Φ₁ → IsTest A B L M t A₂ B₂ φA₂ φB₂ Φ₂ → IsMat L M k bA bB eA eB t A₁ B₁ φA₁ φB₁ Φ₁ c → IsMat L M k bA bB eA eB t A₂ B₂ φA₂ φB₂ Φ₂ c → IsPullD φA₁ φB₁ Φ₁ φA₂ φB₂ Φ₂ (𝟙 (Sp R)) := by
   intro Rg _ _ A B _ _ _ _ L M k mA mB bA bB eA eB hH R _ t A₁ B₁ _ _ φA₁ φB₁ Φ₁ A₂ B₂ _ _ φA₂ φB₂ Φ₂ c T₁ T₂ M₁ M₂

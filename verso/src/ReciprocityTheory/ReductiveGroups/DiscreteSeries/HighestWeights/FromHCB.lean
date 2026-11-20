@@ -14,20 +14,20 @@ section Alg
 variable {k : ℕ}
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[Jm, Matrix.diagonal, Matrix.one_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 lemma fh_Jm_allPos : Jm (fun _ : Fin k => true) = 1 := by
   ext i j
   simp [Jm, Matrix.diagonal, Matrix.one_apply]
 
 /- English proof (translation)
-Establish `hJ : Jm (fun _ : Fin k => true) = 1` using `fh_Jm_allPos`. Establish `hh : star (1 / 2 : ℂ) = 1 / 2` using `by simp`. Establish `hi : star (-(Complex.I / 2)) = Complex.I / 2`. Simplify using `[Complex.star_def, Complex.conj_I, neg_div]`. Use `⟨(1 / 2 : ℂ) • (Z - Zᴴ), (-(Complex.I / 2)) • (Z + Zᴴ), ⟨?_, ?_⟩, ⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [inG, hJ, Matrix.mul_one, Matrix.one_mul]`. Rewrite using `[Matrix.conjTranspose_smul, Matrix.conjTranspose_sub, Matrix.conjTranspose_conjTranspose, hh]`. Use `module`. Rewrite using `[hJ, Matrix.mul_one, Matrix.one_mul]`. Simplify using `only [inG, hJ, Matrix.mul_one, Matrix.one_mul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.conjTranspose_smul, Matrix.conjTranspose_add, Matrix.conjTranspose_conjTranspose, hi]`. Use `module`. Rewrite using `[hJ, Matrix.mul_one, Matrix.one_mul]`. Establish `hI : Complex.I * (-(Complex.I / 2)) = 1 / 2`. Rewrite using `[mul_neg, mul_div_assoc', Complex.I_mul_I]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[smul_smul, hI]`. Use `module`.
+A detailed English derivation is pending.
 -/
 lemma fh_decomp (Z : Matrix (Fin k) (Fin k) ℂ) : ∃ Z₁ Z₂ : Matrix (Fin k) (Fin k) ℂ,
     inK (fun _ : Fin k => true) Z₁ ∧ inK (fun _ : Fin k => true) Z₂ ∧ Z = Z₁ + Complex.I • Z₂ := by
@@ -51,9 +51,9 @@ lemma fh_decomp (Z : Matrix (Fin k) (Fin k) ℂ) : ∃ Z₁ Z₂ : Matrix (Fin k
     module
 
 /- English proof (translation)
-Rewrite using `[Matrix.star_eq_conjTranspose, Matrix.diagonal_conjTranspose]`. Use extensionality with `i j`. Rewrite using `[Matrix.mul_diagonal, Matrix.diagonal_mul, Matrix.smul_apply, Matrix.single_apply]`. Use `split_ifs with h`. Take `⟨rfl, rfl⟩` from `h`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Simplify using `[smul_eq_mul]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma fh_diag_conj (d : Fin k → ℂ) (a b : Fin k) :
     Matrix.diagonal d * Matrix.single a b 1 * star (Matrix.diagonal d) =
@@ -67,13 +67,13 @@ lemma fh_diag_conj (d : Fin k → ℂ) (a b : Fin k) :
   · simp
 
 /- English proof (translation)
-Introduce and unpack `⟨c, hc, hsum⟩`. Set `f : (Fin k → ℝ) →ₗ[ℝ] ℝ` to `∑ i : Fin k, ((i : ℕ) : ℝ) • LinearMap.proj i`. Establish `hf : ∀ x, f x = ∑ i : Fin k, ((i : ℕ) : ℝ) * x i` using `fun x => by simp [f]`. Establish `hs : ∀ j : Fin k, f (Pi.single j 1) = ((j : ℕ) : ℝ)` using `fun j => by`. Rewrite using `[hf]`.
+Assume the hypotheses and unpack their components. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[Pi.single_apply]`. Establish `hL : Λ - (Λ + Pi.single a 1 - Pi.single b 1) = Pi.single b 1 - Pi.single a 1` using `by abel`. Establish `h1` using `congrArg f hsum`. Rewrite `h1` using `[hL, map_sub, hs, hs]`. Simplify using `only [map_sum, map_smul, Formalism.REAL.root, map_sub, hs, smul_eq_mul] at h1`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hneg : ∑ x : Fin k, ∑ y : Fin k, (c x y : ℝ) * (((x : ℕ) : ℝ) - ((y : ℕ) : ℝ)) ≤ 0`. Use `Finset.sum_nonpos fun x _ => Finset.sum_nonpos fun y _ => ?_` and prove the remaining obligations. Distinguish the cases in `h0 : c x y = 0`. Simplify using `[h0]`. Establish `hxy : ((x : ℕ) : ℝ) < ((y : ℕ) : ℝ)` using `Nat.cast_lt.mpr (hc x y h0).1`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `mul_nonpos_of_nonneg_of_nonpos (by positivity) (by linarith)`. Establish `hab' : ((a : ℕ) : ℝ) < ((b : ℕ) : ℝ)` using `Nat.cast_lt.mpr hab`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 lemma fh_not_cdom {Λ : Fin k → ℝ} {a b : Fin k} (hab : a < b) :
     ¬ Formalism.MainNotions.S.CDom (fun _ : Fin k => true) (Λ + Pi.single a 1 - Pi.single b 1) Λ := by
@@ -103,11 +103,9 @@ section Tau
 variable {k : ℕ} {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
 
 /- English proof (translation)
-Establish `hmem : toMK g ∈ Formalism.MainNotions.S.UJset (Formalism.MainNotions.S.allPos k)` using `g.1.2`. Establish `hiso` using `hU.2.1 _ hmem`. Establish `hmul : ∀ a b : KG (fun _ : Fin k => true), π (toMK (a * b)) = π (toMK a) * π (toMK b)` using `fun a b => hU.1.2 _ a.1.2 _ b.1.2`. Establish `hone : π (toMK (1 : KG (fun _ : Fin k => true))) = 1` using `hU.1.1`. Establish `hTR : π (toMK g) * π (toMK g⁻¹) = 1` using `by rw [← hmul, mul_inv_cancel, hone]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : star (π (toMK g)) * π (toMK g) = 1`. Rewrite using `[ContinuousLinearMap.star_eq_adjoint]`. Conclude with `(ContinuousLinearMap.norm_map_iff_adjoint_comp_self _).mp hiso`. Establish `hstar : star (π (toMK g)) = π (toMK g⁻¹)`. Combine the equalities or inequalities in the displayed calculation.
-
-Conclude with `Unitary.mem_iff.mpr ⟨h1, by rw [hstar, hTR]⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 lemma fh_unitary (π : Matrix (Fin k) (Fin k) ℂ → (H →L[ℂ] H))
     (hU : Formalism.MainNotions.S.IsURepOn (Formalism.MainNotions.S.UJset (Formalism.MainNotions.S.allPos k)) π) (g : KG (fun _ : Fin k => true)) :
@@ -141,9 +139,9 @@ lemma fhTau_coe (π : Matrix (Fin k) (Fin k) ℂ → (H →L[ℂ] H))
     ((fhTau π hU g : unitary (H →L[ℂ] H)) : H →L[ℂ] H) = π (toMK g) := rfl
 
 /- English proof (translation)
-Apply `continuous_induced_rng.2` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `Continuous fun g : KG (fun _ : Fin k => true) => π (toMK g)`. Rewrite using `[continuous_clm_apply]`. Introduce `v`. Establish `hc : Continuous fun g : KG (fun _ : Fin k => true) => toMK g` using `Units.continuous_val.comp (continuous_subtype_val.comp continuous_subtype_val)`.
+Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `(hU.2.2 v).comp_continuous hc (fun g => g.1.2)`.
+A detailed English derivation is pending.
 -/
 lemma fhTau_cont [FiniteDimensional ℂ H] (π : Matrix (Fin k) (Fin k) ℂ → (H →L[ℂ] H))
     (hU : Formalism.MainNotions.S.IsURepOn (Formalism.MainNotions.S.UJset (Formalism.MainNotions.S.allPos k)) π) : Continuous (fhTau π hU) := by
@@ -170,17 +168,17 @@ variable {k : ℕ} {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [
 
 include hder in
 /- English proof (translation)
-Establish `hJ : Jm (fun _ : Fin k => true) = 1` using `fh_Jm_allPos`. Take `⟨-, hγ, -⟩` from `kcurve_spec (fun _ : Fin k => true) hY`. Establish `hKs : toMK g ∈ Formalism.REAL.Kset (fun _ : Fin k => true)` using `g.2`. Establish `hun : star (toMK g) * toMK g = 1` using `Matrix.mem_unitaryGroup_iff'.mp hKs.1`. Establish `hinv : toMK g * toMK g⁻¹ = 1` using `by exact Units.mul_inv g.1.1`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hg : star (toMK g) = toMK g⁻¹`. Combine the equalities or inequalities in the displayed calculation. Establish `hc : inK (fun _ : Fin k => true) (toMK g * Y * star (toMK g))`. Take `⟨h1, -⟩` from `hY`. Simplify using `only [inG, hJ, Matrix.mul_one, Matrix.one_mul] at h1`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Use `⟨?_, by rw [hJ, Matrix.mul_one, Matrix.one_mul]⟩` and prove the remaining obligations. Simplify using `only [inG, hJ, Matrix.mul_one, Matrix.one_mul]`. Rewrite using `[Matrix.star_eq_conjTranspose, Matrix.conjTranspose_mul, Matrix.conjTranspose_mul, Matrix.conjTranspose_conjTranspose, ← Matrix.mul_assoc, ← Matrix.add_mul, ← Matrix.mul_add, h1, Matrix.mul_zero, Matrix.zero_mul]`. Establish `hδ : ∀ t : ℝ, toMK (g * kcurve (fun _ : Fin k => true) Y t * g⁻¹) = NormedSpace.exp ((t : ℂ) • (toMK g * Y * star (toMK g)))`. Introduce `t`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e` using `Matrix.exp_units_conj g.1.1 ((t : ℂ) • Y)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hg, ← Matrix.smul_mul, ← Matrix.mul_smul]`. Conclude with `e.symm`. Establish `hU' : ((τ g⁻¹ : unitary (H →L[ℂ] H)) : H →L[ℂ] H) = star ((τ g : unitary (H →L[ℂ] H)) : H →L[ℂ] H)`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_inv, ← Unitary.star_eq_inv, Unitary.coe_star]`. Establish `hd1` using `hder _ hc (fun t => g * kcurve (fun _ : Fin k => true) Y t * g⁻¹) hδ`. Establish `h0` using `hder Y hY _ hγ`. Establish `heq : (fun t => ((τ (g * kcurve (fun _ : Fin k => true) Y t * g⁻¹) : unitary (H →L[ℂ] H)) : H →L[ℂ] H)) = fun t => ((τ g : unitary (H →L[ℂ] H)) : H →L[ℂ] H) * ((τ (kcurve (fun _ : Fin k => true) Y t) : unitary (H →L[ℂ] H)) : H →L[ℂ] H) * star ((τ g : unitary (H →L[ℂ] H)) : H →L[ℂ …`. Use function extensionality and compare the values at `t`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul, map_mul, ← hU']`. Both sides reduce to the same expression. Establish `hd2` using `(h0.const_mul ((τ g : unitary (H →L[ℂ] H)) : H →L[ℂ] H)).mul_const (star ((τ g : unitary (H →L[ℂ] H)) : H →L[ℂ] H))`. Rewrite `hd2` using `[← heq]`. Conclude with `hd2.unique hd1`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 lemma fh_conj (g : KG (fun _ : Fin k => true)) {Y : Matrix (Fin k) (Fin k) ℂ}
     (hY : inK (fun _ : Fin k => true) Y) :
@@ -229,7 +227,7 @@ lemma fh_conj (g : KG (fun _ : Fin k => true)) {Y : Matrix (Fin k) (Fin k) ℂ}
 
 include hder in
 /- English proof (translation)
-Take `⟨Z₁, Z₂, h1, h2, rfl⟩` from `fh_decomp Z`. Rewrite using `[map_add, map_smul, mul_add, add_mul, mul_smul_comm, smul_mul_assoc, fh_conj τ dτ hder g h1, fh_conj τ dτ hder g h2, Matrix.mul_add, Matrix.add_mul, Matrix.mul_smul, Matrix.smul_mul, map_add, map_smul]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 lemma fh_conj_all (g : KG (fun _ : Fin k => true)) (Z : Matrix (Fin k) (Fin k) ℂ) :
     ((τ g : unitary (H →L[ℂ] H)) : H →L[ℂ] H) * dτ Z * star ((τ g : unitary (H →L[ℂ] H)) : H →L[ℂ] H) =
@@ -241,21 +239,21 @@ lemma fh_conj_all (g : KG (fun _ : Fin k => true)) (Z : Matrix (Fin k) (Fin k) �
 
 include hder hσ in
 /- English proof (translation)
-Establish `hJ : Jm (fun _ : Fin k => true) = 1` using `fh_Jm_allPos`. Establish `hX : inK (fun _ : Fin k => true) (Complex.I • Matrix.single a a 1)`. Use `⟨?_, by rw [hJ, Matrix.mul_one, Matrix.one_mul]⟩` and prove the remaining obligations. Simplify using `only [inG, hJ, Matrix.mul_one, Matrix.one_mul]`. Rewrite using `[Matrix.conjTranspose_smul, Matrix.conjTranspose_single, star_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[Complex.star_def, Complex.conj_I]`. Take `⟨-, hγ, -⟩` from `kcurve_spec (fun _ : Fin k => true) hX`. Establish `hd1` using `hder _ hX _ hγ`. Establish `hd2 : HasDerivAt (fun t => ((τ (kcurve (fun _ : Fin k => true) (Complex.I • Matrix.single a a 1) t) : unitary (H →L[ℂ] H)) : H →L[ℂ] H) v) (dτ (Complex.I • Matrix.single a a 1) v) 0` using `((ContinuousLinearMap.apply ℂ H v).restrictScalars ℝ).hasFDerivAt.comp_hasDerivAt 0 hd1`. Set `θ : ℝ → Fin k → ℝ` to `fun t b => if b = a then t else 0`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hdiag : ∀ t : ℝ, NormedSpace.exp ((t : ℂ) • (Complex.I • Matrix.single a a (1 : ℂ))) = Matrix.diagonal (fun b => Complex.exp (((θ t b : ℝ) : ℂ) * Complex.I))`. Introduce `t`. Establish `e1 : (t : ℂ) • (Complex.I • Matrix.single a a (1 : ℂ)) = Matrix.diagonal (fun b => ((θ t b : ℝ) : ℂ) * Complex.I)`. Use extensionality with `i j`. Break down `eq_or_ne i j with rfl | hij` into its components or cases.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Separate the alternatives or extract the components of the hypothesis.
 
-Distinguish the cases in `hia : i = a`. Substitute `hia` using the available equality. Simplify using `[θ, Matrix.diagonal_apply, Matrix.single_apply, mul_comm]`. Simplify using `[θ, Matrix.diagonal_apply, Matrix.single_apply, hia, Ne.symm hia]`. Simplify using `[θ, Matrix.diagonal_apply, Matrix.single_apply, hij]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Introduce and unpack `rfl rfl`. Conclude with `absurd rfl hij`. Rewrite using `[e1, Matrix.exp_diagonal, Pi.exp_def, Complex.exp_eq_exp_ℂ]`. Establish `hval : ∀ t : ℝ, ((τ (kcurve (fun _ : Fin k => true) (Complex.I • Matrix.single a a 1) t) : unitary (H →L[ℂ] H)) : H →L[ℂ] H) v = Complex.exp (((μ a * t : ℝ) : ℂ) * Complex.I) • v`. Introduce `t`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hm : Matrix.diagonal (fun b => Complex.exp (((θ t b : ℝ) : ℂ) * Complex.I)) ∈ Formalism.REAL.Kset (fun _ : Fin k => true)`. Rewrite using `[← hdiag t, ← hγ t]`. Conclude with `(kcurve (fun _ : Fin k => true) (Complex.I • Matrix.single a a 1) t).2`. Rewrite using `[← hσ, hγ t, hdiag t, hv (θ t) hm]`. Use `congr 3`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[θ]`. Establish `hd3 : HasDerivAt (fun t : ℝ => Complex.exp (((μ a * t : ℝ) : ℂ) * Complex.I) • v) ((Complex.exp (((μ a * 0 : ℝ) : ℂ) * Complex.I) * (((μ a * 1 : ℝ) : ℂ) * Complex.I)) • v) 0` using `((((hasDerivAt_id (0 : ℝ)).const_mul (μ a)).ofReal_comp.mul_const Complex.I).cexp).smul_const v`. Establish `hfun : (fun t => ((τ (kcurve (fun _ : Fin k => true) (Complex.I • Matrix.single a a 1) t) : unitary (H →L[ℂ] H)) : H →L[ℂ] H) v) = fun t : ℝ => Complex.exp (((μ a * t : ℝ) : ℂ) * Complex.I) • v` using `funext hval`. Rewrite `hd2` using `[hfun]`. Establish `hu` using `hd2.unique hd3`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [mul_zero, Complex.ofReal_zero, zero_mul, Complex.exp_zero, one_mul, mul_one] at hu`. Rewrite `hu` using `[map_smul, ContinuousLinearMap.smul_apply, mul_comm, mul_smul]`. Conclude with `smul_right_injective H Complex.I_ne_zero hu`.
+A detailed English derivation is pending.
 -/
 lemma fh_dτ_of_wt {μ : Fin k → ℝ} {v : H}
     (hv : Formalism.MainNotions.S.IsWtOn (Formalism.REAL.Kset (fun _ : Fin k => true)) σ μ v) (a : Fin k) :
@@ -312,19 +310,19 @@ lemma fh_dτ_of_wt {μ : Fin k → ℝ} {v : H}
 
 include hder hσ in
 /- English proof (translation)
-Establish `hJ : Jm (fun _ : Fin k => true) = 1` using `fh_Jm_allPos`. Assume the negation of the conclusion as `hne`. Use `fh_not_cdom hab (hK5 _ (dτ (Matrix.single a b 1) w) Submodule.mem_top hne ?_)` and prove the remaining obligations. Introduce `θ hθ`. Use `set d : Fin k → ℂ := fun c => Complex.exp ((θ c : ℂ) * Complex.I) with hd`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hD1 : star (Matrix.diagonal d) * Matrix.diagonal d = 1` using `Matrix.mem_unitaryGroup_iff'.mp hθ.1`. Establish `hD2 : Matrix.diagonal d * star (Matrix.diagonal d) = 1` using `Matrix.mem_unitaryGroup_iff.mp hθ.1`. Set `u0 : (Matrix (Fin k) (Fin k) ℂ)ˣ` to `⟨Matrix.diagonal d, star (Matrix.diagonal d), hD2, hD1⟩`. Establish `huJ : u0 ∈ UJ (fun _ : Fin k => true)` using `by show (Matrix.diagonal d)ᴴ * Jm (fun _ : Fin k => true) * Matrix.diagonal d = Jm (fun _ : Fin k => true)`. Rewrite using `[hJ, Matrix.mul_one, ← Matrix.star_eq_conjTranspose, hD1]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Set `g0 : UJ (fun _ : Fin k => true)` to `⟨u0, huJ⟩`. Set `g : KG (fun _ : Fin k => true)` to `⟨g0, hθ⟩`. Establish `hg : toMK g = Matrix.diagonal d` using `rfl`. Establish `hU1 : star ((τ g : unitary (H →L[ℂ] H)) : H →L[ℂ] H) * ((τ g : unitary (H →L[ℂ] H)) : H →L[ℂ] H) = 1` using `Unitary.star_mul_self_of_mem (τ g).2`. Establish `hcomm : ((τ g : unitary (H →L[ℂ] H)) : H →L[ℂ] H) * dτ (Matrix.single a b 1) = dτ (toMK g * Matrix.single a b 1 * star (toMK g)) * ((τ g : unitary (H →L[ℂ] H)) : H →L[ℂ] H)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← fh_conj_all τ dτ hder g, mul_assoc _ (star _) _, hU1, mul_one]`. Establish `h3 : ((τ g : unitary (H →L[ℂ] H)) : H →L[ℂ] H) w = Complex.exp (((∑ c, Λ c * θ c : ℝ) : ℂ) * Complex.I) • w`. Rewrite using `[← hσ, hg]`. Conclude with `hw θ hθ`. Establish `h2` using `congrArg (fun T : H →L[ℂ] H => T w) hcomm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [ContinuousLinearMap.mul_apply] at h2`. Rewrite `h2` using `[hg, fh_diag_conj, h3]`. Rewrite using `[← hg, hσ, h2, map_smul, LinearMap.map_smul, ContinuousLinearMap.smul_apply, smul_smul]`. Use `congr 1`. Establish `hs : ∑ c, (Λ + Pi.single a 1 - Pi.single b 1 : Fin k → ℝ) c * θ c = (∑ c, Λ c * θ c) + θ a - θ b`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[add_mul, sub_mul, Finset.sum_add_distrib, Finset.sum_sub_distrib, Pi.single_apply]`. Establish `hst : star (d b) = Complex.exp (-((θ b : ℂ) * Complex.I))`. Rewrite using `[hd, Complex.star_def, ← Complex.exp_conj, map_mul, Complex.conj_ofReal, Complex.conj_I]`. Put the polynomial expressions in normal form. Rewrite using `[hs, hst, hd]`.
+Rewrite the conclusion using the stated equalities. Put the polynomial expressions in normal form. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only`. Rewrite using `[← Complex.exp_add, ← Complex.exp_add]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 lemma fh_hw {Λ : Fin k → ℝ}
     (hK5 : ∀ (μ : Fin k → ℝ) (v : H), v ∈ (⊤ : Submodule ℂ H) → v ≠ 0 →

@@ -27,7 +27,7 @@ def gsPairs : Set (τ × τ) := {p | p.1 ∈ T.genSet ∧ p.2 ∈ T.genSet ∧ T
 def CokernelCountConstant : ℝ := ∑' p : τ × τ, (gsPairs T).indicator (fun p => (inner ℂ (T.op p.1) (T.op p.2)).re) p
 
 /- English proof (translation)
-Substitute `hG` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem pairSum_eq {g : ℝ} (hG : T.Gam1 = g) : T.pairSum (T.sc T.genSet) = g * SigOf T := by
   subst hG
@@ -93,7 +93,7 @@ def bC : Formalism.FourierDecayAlt.S3.MassData (TypX X) :=
   { B1 with n0c := B1.AA / B1.ρ0, KV := B1.Sig / B1.ρ0 }
 
 /- English proof (translation)
-Establish `h' : (normalizedFourierDecayDatum X hb hK FdN FdN' u u' X0 L T sd C Th R).localVolumeArchimedean ≠ 0` using `h`. Unfold `Formalism.FourierDecayAlt.S3.MassData.InOrdinary`. Express the relevant statement in the definitionally equal form `(normalizedFourierDecayDatum X hb hK FdN FdN' u u' X0 L T sd C Th R).localVolumeArchimedean * (normalizedFourierDecayDatum X hb hK FdN FdN' u u' X0 L T sd C Th R).μKo ^ 2 / ((normalizedFourierDecayDatum X hb hK FdN FdN' u u' X0 L T sd C Th R).μSo * (normalizedFourierDecayDatum X …`. Rewrite using `[mul_div_assoc, mul_div_cancel_left₀ _ h']`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem inOrdinary_bC (h : L.localVolumeArchimedean ≠ 0) : (bC X hb hK FdN FdN' u u' X0 L T sd C Th R).InOrdinary := by
   have h' : (normalizedFourierDecayDatum X hb hK FdN FdN' u u' X0 L T sd C Th R).localVolumeArchimedean ≠ 0 := h
@@ -104,7 +104,7 @@ theorem inOrdinary_bC (h : L.localVolumeArchimedean ≠ 0) : (bC X hb hK FdN FdN
   rw [mul_div_assoc, mul_div_cancel_left₀ _ h']
 
 /- English proof (translation)
-Unfold `Formalism.FourierDecayAlt.S3.MassData.InForm`. Express the relevant statement in the definitionally equal form `(bC X hb hK FdN FdN' u u' X0 L T sd C Th R).Sig = (bC X hb hK FdN FdN' u u' X0 L T sd C Th R).ρ0 * ((bC X hb hK FdN FdN' u u' X0 L T sd C Th R).Sig / (bC X hb hK FdN FdN' u u' X0 L T sd C Th R).ρ0)`. Rewrite using `[mul_div_assoc', mul_comm, mul_div_assoc, div_self h, mul_one]`.
+Replace the relevant objects with their definitions. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem inForm_bC (h : (bC X hb hK FdN FdN' u u' X0 L T sd C Th R).ρ0 ≠ 0) :
     (bC X hb hK FdN FdN' u u' X0 L T sd C Th R).InForm := by
@@ -113,7 +113,7 @@ theorem inForm_bC (h : (bC X hb hK FdN FdN' u u' X0 L T sd C Th R).ρ0 ≠ 0) :
   rw [mul_div_assoc', mul_comm, mul_div_assoc, div_self h, mul_one]
 
 /- English proof (translation)
-Unfold `Formalism.FourierDecayAlt.S3.MassData.InMass`. Express the relevant statement in the definitionally equal form `(bC X hb hK FdN FdN' u u' X0 L T sd C Th R).AA / (bC X hb hK FdN FdN' u u' X0 L T sd C Th R).ρ0 * (bC X hb hK FdN FdN' u u' X0 L T sd C Th R).ρ0 = (bC X hb hK FdN FdN' u u' X0 L T sd C Th R).AA`. Rewrite using `[div_mul_eq_mul_div, mul_div_assoc, div_self h, mul_one]`.
+Replace the relevant objects with their definitions. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem inMass_bC (h : (bC X hb hK FdN FdN' u u' X0 L T sd C Th R).ρ0 ≠ 0) :
     (bC X hb hK FdN FdN' u u' X0 L T sd C Th R).InMass := by
@@ -122,14 +122,14 @@ theorem inMass_bC (h : (bC X hb hK FdN FdN' u u' X0 L T sd C Th R).ρ0 ≠ 0) :
   rw [div_mul_eq_mul_div, mul_div_assoc, div_self h, mul_one]
 
 /- English proof (translation)
-The claim follows from `pairSum_eq T h`.
+A detailed English derivation is pending.
 -/
 theorem link_sig (h : T.Gam1 = (bC X hb hK FdN FdN' u u' X0 L T sd C Th R).Gam1) :
     T.pairSum (T.sc T.genSet) =
       (bC X hb hK FdN FdN' u u' X0 L T sd C Th R).Gam1 * (bC X hb hK FdN FdN' u u' X0 L T sd C Th R).Sig := pairSum_eq T h
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨rfl, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem energy_defs :
     (bC X hb hK FdN FdN' u u' X0 L T sd C Th R).e1 = max sd 1 ∧
@@ -142,9 +142,9 @@ Both sides reduce to the same expression.
 theorem inJacMod_bC : (bC X hb hK FdN FdN' u u' X0 L T sd C Th R).InJacMod := rfl
 
 /- English proof (translation)
-Establish `h1 : c0X X u FdN = X.volK2 * (bOf X hb hK FdN FdN' u u' X0 L A).c0`. Express the relevant statement in the definitionally equal form `X.volK2 * (X.muN u FdN).toReal * (X.muH u Set.univ).toReal / (Module.finrank ℂ (X.Vpi u) : ℝ) = X.volK2 * ((X.muN u FdN).toReal * (X.muH u Set.univ).toReal / (Module.finrank ℂ (X.Vpi u) : ℝ))`. Expand and normalize the polynomial expressions, which then agree. Establish `h2 : c0X X u' FdN' = X.volK2 * (bOf X hb hK FdN FdN' u u' X0 L A).c0'`. Express the relevant statement in the definitionally equal form `X.volK2 * (X.muN u' FdN').toReal * (X.muH u' Set.univ).toReal / (Module.finrank ℂ (X.Vpi u') : ℝ) = X.volK2 * ((X.muN u' FdN').toReal * (X.muH u' Set.univ).toReal / (Module.finrank ℂ (X.Vpi u') : ℝ))`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h1, h2]`. Generalize the expression as in `(bOf X hb hK FdN FdN' u u' X0 L A).c0 = a`. Generalize the expression as in `(bOf X hb hK FdN FdN' u u' X0 L A).c0' = b`. Rewrite using `[show X.volK2 * a * (X.volK2 * b) = X.volK2 ^ 2 * (a * b) by ring, Real.sqrt_mul (sq_nonneg _), Real.sqrt_sq hV.le, mul_inv, mul_right_comm, inv_mul_cancel₀ hV.ne', one_mul]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem scaled_volume_level_subgroup (hV : 0 < X.volK2) (A : AnIn) :
     (Real.sqrt (c0X X u FdN * c0X X u' FdN'))⁻¹ * X.volK2 =
@@ -190,9 +190,9 @@ def MeasCompat : Prop :=
   ∃ ψ : AddChar (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF X.B.I.F) ℂ, IsCharAF X.B.I.F ψ ∧ Formalism.L2.SG.LocVol.IsStdChar ψ ∧ MeasCompatψ X ψ
 
 /- English proof (translation)
-Unfold `MeasCompat at hC`. Take `⟨ψ, hψ, -, hM⟩` from `hC`. Unfold `MeasCompatψ at hM`. Take `⟨hu, hB⟩` from `hM`. Take `⟨⟨hT1, νH, hO, hCm⟩, hN⟩` from `hu u`.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨⟨hT1', νH', hO', hCm'⟩, hN'⟩` from `hu u'`. Take `⟨hTB, νB, hOB, hCB⟩` from `hB X0 hdet`. Conclude with `hV hH ψ hψ hT1 νH hO hCm hT1' νH' hO' hCm' hTB νB hdet hOB hCB hN hN'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem inVolumes_of_compat (hb : AdBridge.AdBridgeIso X.B.I) (hK : X.LevelSubgroupCharacter) (FdN FdN' : Set X.B.I.Ginf)
     (u u' : D.what₂.Word) (X0 : Fin (2 * D.R.rS + 2) → Fin X.B.I.n → X.B.I.E) (L : LocIn (TypX X)) (A : AnIn)
@@ -310,7 +310,7 @@ def InFormC : Prop :=
   (bCF X hb hK FdN FdN' u u' X0 ψ T sd C Th vR Q M δ i0 i0' νq).InForm
 
 /- English proof (translation)
-The claim follows from `inForm_bC X hb hK FdN FdN' u u' X0 (locOf X u u' ψ) T sd C Th ⟨KVOf X u u' vR Q (VConstants X u u' 1 i0 i0' FdN FdN' νq), KtopVOf X u u' M δ (VConstants X u u' 1 i0 i0' FdN FdN' νq)⟩ h`.
+A detailed English derivation is pending.
 -/
 theorem inFormC_bCF (h : (bCF X hb hK FdN FdN' u u' X0 ψ T sd C Th vR Q M δ i0 i0' νq).ρ0 ≠ 0) :
     InFormC X hb hK FdN FdN' u u' X0 ψ T sd C Th vR Q M δ i0 i0' νq := inForm_bC X hb hK FdN FdN' u u' X0 (locOf X u u' ψ) T sd C Th
@@ -321,7 +321,7 @@ def InTypedC : Prop :=
     (bCF X hb hK FdN FdN' u u' X0 ψ T sd C Th vR Q M δ i0 i0' νq).InTyped
 
 /- English proof (translation)
-Unfold `ProdConv at hP`. Conclude with `inOrdinary_bC X hb hK FdN FdN' u u' X0 (locOf X u u' ψ) T sd C Th ⟨KVOf X u u' vR Q (VConstants X u u' 1 i0 i0' FdN FdN' νq), KtopVOf X u u' M δ (VConstants X u u' 1 i0 i0' FdN FdN' νq)⟩ hP.2.2.2.2.1.ne'`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem inOrdinary_bCF (hP : ProdConv X u u' ψ) :
     (bCF X hb hK FdN FdN' u u' X0 ψ T sd C Th vR Q M δ i0 i0' νq).InOrdinary := by
@@ -330,7 +330,7 @@ theorem inOrdinary_bCF (hP : ProdConv X u u' ψ) :
     ⟨KVOf X u u' vR Q (VConstants X u u' 1 i0 i0' FdN FdN' νq), KtopVOf X u u' M δ (VConstants X u u' 1 i0 i0' FdN FdN' νq)⟩ hP.2.2.2.2.1.ne'
 
 /- English proof (translation)
-The claim follows from `h`.
+A detailed English derivation is pending.
 -/
 theorem inTypedC_of
     (h : InTypedAt X hb hK FdN FdN' u u' X0
@@ -354,7 +354,7 @@ def ttC : Prop :=
     ∏ p : TypX X, (1 + 3 / ((Ideal.absNorm p.1.asIdeal : ℕ) : ℝ))
 
 /- English proof (translation)
-Unfold `ttC Formalism.FourierDecayAlt.S3.MassData.tt`. Use `Finset.prod_congr rfl (fun p _ => ?_)` and prove the remaining obligations. Rewrite using `[(h p).1]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem ttC_of_split (h : GSplitX X) : ttC X hb hK FdN FdN' u u' X0 ψ T sd C Th vR Q M δ i0 i0' νq := by
   unfold ttC Formalism.FourierDecayAlt.S3.MassData.tt
@@ -368,7 +368,7 @@ def MassDataDstarC : Prop :=
 def EnergyLinkC (jn : ℝ) : Prop := (bCF X hb hK FdN FdN' u u' X0 ψ T sd C Th vR Q M δ i0 i0' νq).IntN = jn
 
 /- English proof (translation)
-Unfold `Formalism.FourierDecayAlt.PB.EnergyLink`. Conclude with `⟨h, energy_defs X hb hK FdN FdN' u u' X0 (locOf X u u' ψ) T sd C Th ⟨KVOf X u u' vR Q (VConstants X u u' 1 i0 i0' FdN FdN' νq), KtopVOf X u u' M δ (VConstants X u u' 1 i0 i0' FdN FdN' νq)⟩⟩`.
+Replace the relevant objects with their definitions. Supply the required witnesses or components.
 -/
 theorem energyLink_bCF (jn : ℝ) (h : EnergyLinkC X hb hK FdN FdN' u u' X0 ψ T sd C Th vR Q M δ i0 i0' νq jn) :
     Formalism.FourierDecayAlt.PB.EnergyLink (bCF X hb hK FdN FdN' u u' X0 ψ T sd C Th vR Q M δ i0 i0' νq) jn sd C Th D.R.rS

@@ -16,9 +16,9 @@ open GlobalTheory.ZJ
 namespace GlobalTheory.ZJ
 
 /- English proof (translation)
-Set `e : H ≅ (Over.pullback y).obj G` to `Over.isoMk hf.isoPullback hf.isoPullback_hom_snd`. Establish `he : e.hom.left ≫ pullback.fst G.hom y = f` using `hf.isoPullback_hom_fst`. Establish `hs : IsSeparated ((Over.pullback y).obj G).hom`. Express the relevant statement in the definitionally equal form `IsSeparated (pullback.snd G.hom y)`. Use `infer_instance`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact.
 
-Establish `h₁ : IsGrpPullback ((Over.pullback j).obj H) ((Over.pullback y).obj G) j (pullback.fst H.hom j ≫ e.hom.left)` using `(isGrpPullback_pullback G y).cancel (h.congr rfl (by rw [Category.assoc, he])) (by rw [Category.assoc, Over.w]; exact pullback.condition)`. Establish `h₂ : IsMonHom e.hom` using `ExtUnique.isMonHom_of_isGrpPullback (isGrpPullback_pullback H j) h₁ (𝟙 _) e.hom (by rw [Over.id_left, Category.id_comp])`. Conclude with `((isGrpPullback_of_iso e).comp (isGrpPullback_pullback G y)).congr (Category.id_comp _) he`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isGrpPullback_of_dominant {W S Z : Scheme.{0}} (j : W ⟶ S) [QuasiCompact j]
     [IsSchemeTheoreticallyDominant j] {H : Over S} [GrpObj H] [Flat H.hom] {G : Over Z} [GrpObj G]
@@ -41,15 +41,15 @@ theorem isGrpPullback_of_dominant {W S Z : Scheme.{0}} (j : W ⟶ S) [QuasiCompa
   exact ((isGrpPullback_of_iso e).comp (isGrpPullback_pullback G y)).congr (Category.id_comp _) he
 
 /- English proof (translation)
-Introduce and unpack `C hsm hcart ⟨m, hm⟩ ⟨i, hi⟩`. Use `C.proper` as an intermediate fact. Establish `hsep : IsSeparated C.GG.hom`. Express the relevant statement in the definitionally equal form `IsSeparated (C.G.ι ≫ C.P.hom)`. Use `infer_instance`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact.
 
-Establish `hsmooth : Smooth C.GG.hom` using `SmoothOfRelativeDimension.smooth C.g _`. Establish `hne : Nonempty C.U.toScheme` using `C.ne.to_subtype`. Establish `hpb : IsPullback C.a C.A.hom C.GG.hom C.U.ι`. Establish `w : C.a ≫ C.GG.hom = C.A.hom ≫ C.U.ι`. Rewrite using `[← C.cart.w, Category.assoc]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Use `⟨⟨w⟩, ⟨PullbackCone.IsLimit.mk _ (fun s => C.cart.lift (s.fst ≫ C.G.ι) s.snd (by rw [Category.assoc]; exact s.condition)) (fun s => ?_) (fun s => C.cart.lift_snd _ _ _) (fun s t h₁ h₂ => ?_)⟩⟩` and prove the remaining obligations. Rewrite using `[← cancel_mono C.G.ι, Category.assoc]`. Conclude with `C.cart.lift_fst _ _ _`. Apply `C.cart.hom_ext` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[C.cart.lift_fst, ← h₁, Category.assoc]`. Rewrite using `[C.cart.lift_snd, h₂]`. Set `e : 𝟙_ (Over C.Z) ⟶ C.GG` to `Over.homMk C.e C.e_sec`. Take `⟨grp, -, hη, -, comm, pull⟩` from `grpObj_of_dense_open C.Z C.U.toScheme C.U.ι C.GG C.A C.a hpb m i e hm hi C.e_zero`. Use `⟨{ smooth := hsm, zero := congrArg (fun z => z.left) hη, pull := pull, test := fun p _ y τ => ?_ }⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨_, _⟩` from `ExtUnique.spec_fractionRing τ.V (FractionRing τ.V)`. Use `τ.smooth` as an intermediate fact. Establish `: Smooth τ.H.hom` using `SmoothOfRelativeDimension.smooth C.g _`. Conclude with `isGrpPullback_of_dominant (Out.jK τ.V) (hcart p y τ) ((τ.φ_cart.comp pull).congr τ.yK_fac τ.φ_f)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem Core.nonempty_law : ∀ C : Core, SmoothOfRelativeDimension C.g C.GG.hom → C.TestCart → (∃ m : C.GG ⊗ C.GG ⟶ C.GG, ∀ φ₂ : (C.A ⊗ C.A).left ⟶ (C.GG ⊗ C.GG).left, IsSquare C.a φ₂ → φ₂ ≫ m.left = (μ[C.A]).left ≫ C.a) → (∃ i : C.GG ⟶ C.GG, C.a ≫ i.left = (ι[C.A]).left ≫ C.a) → Nonempty C.Law := by
   rintro C hsm hcart ⟨m, hm⟩ ⟨i, hi⟩

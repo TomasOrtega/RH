@@ -10,9 +10,9 @@ namespace PI.GGConvScalarW
 open Formalism.L2.SG.GGMirabolic Finset
 
 /- English proof (translation)
-Unfold `gam`. Use `congr 1`. Rewrite using `[← Equiv.sum_comp (Equiv.mulRight g) (fun y => psiNat ψ₀ (y * x * y⁻¹))]`. Use `Finset.sum_congr rfl fun y _ => ?_` and prove the remaining obligations. Simplify using `only [Equiv.coe_mulRight]`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `congr 1`. Use `group`.
+Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem gam_conj {F : Type} [Field F] [Fintype F] {k : ℕ} (ψ₀ : AddChar F ℂ) (g x : GL (Fin k) F) :
     gam ψ₀ (g * x * g⁻¹) = gam ψ₀ x := by
@@ -25,11 +25,11 @@ theorem gam_conj {F : Type} [Field F] [Fintype F] {k : ℕ} (ψ₀ : AddChar F �
   group
 
 /- English proof (translation)
-Introduce `F _ _ k ψ₀ V _ _ π g`. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `v`. Simplify using `only [repGam, LinearMap.comp_apply, LinearMap.sum_apply, LinearMap.smul_apply, map_sum, map_smul]`. Establish `hm : ∀ a b : GL (Fin k) F, π a (π b v) = π (a * b) v` using `fun a b => by`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[map_mul, Module.End.mul_apply]`. Simplify using `only [hm]`. Rewrite using `[← Equiv.sum_comp (MulAut.conj g).toEquiv (fun x => gam ψ₀ x • π (x * g) v)]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Simplify using `only [MulEquiv.toEquiv_eq_coe, MulEquiv.coe_toEquiv, MulAut.conj_apply]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[gam_conj]`. Use `congr 2`. Use `group`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem representation_commutes_gamma : RepGamComm := by
   intro F _ _ k ψ₀ V _ _ π g
@@ -49,7 +49,7 @@ theorem representation_commutes_gamma : RepGamComm := by
   group
 
 /- English proof (translation)
-Rewrite using `[← Module.End.mul_apply, ← map_mul, ← Module.End.mul_apply, ← map_mul]`. Use `congr 2`. Use `group`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem representation_conjugation_apply {F : Type} [Field F] [Fintype F] {k : ℕ} {V : Type} [AddCommGroup V]
     [Module ℂ V] (π : Representation ℂ (GL (Fin k) F) V) (y x : GL (Fin k) F) (v : V) :
@@ -59,11 +59,11 @@ theorem representation_conjugation_apply {F : Type} [Field F] [Fintype F] {k : �
   group
 
 /- English proof (translation)
-Introduce `F _ _ k ψ₀ V _ _ π`. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `v`. Establish `hR : ∀ y : GL (Fin k) F, ((π y⁻¹) ∘ₗ projQ ψ₀ π ∘ₗ π y) v = ∑ z, ((cardU F k : ℂ)⁻¹ * psiNat ψ₀ (y * z * y⁻¹)) • π z v`. Introduce `y`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [projQ, LinearMap.comp_apply, LinearMap.smul_apply, LinearMap.sum_apply, map_smul, map_sum]`. Rewrite using `[← Equiv.sum_comp (MulAut.conj y).toEquiv, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun z _ => ?_` and prove the remaining obligations. Simplify using `only [MulEquiv.toEquiv_eq_coe, MulEquiv.coe_toEquiv, MulAut.conj_apply]`. Rewrite using `[representation_conjugation_apply, smul_smul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [repGam, gam, LinearMap.sum_apply, LinearMap.smul_apply]`. Rewrite using `[Finset.sum_congr rfl fun y _ => hR y, Finset.sum_comm]`. Use `Finset.sum_congr rfl fun z _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum, Finset.sum_smul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem representation_conjugate_gamma : RepGamConj := by
   intro F _ _ k ψ₀ V _ _ π
@@ -84,9 +84,9 @@ theorem representation_conjugate_gamma : RepGamConj := by
   rw [Finset.mul_sum, Finset.sum_smul]
 
 /- English proof (translation)
-Introduce `F _ _ k ψ₀ V _ _ _ π`. Rewrite using `[representation_conjugate_gamma F k ψ₀ V π, map_sum]`. Establish `h : ∀ y : GL (Fin k) F, LinearMap.trace ℂ V ((π y⁻¹) ∘ₗ projQ ψ₀ π ∘ₗ π y) = LinearMap.trace ℂ V (projQ ψ₀ π)`. Introduce `y`. Use `show LinearMap.trace ℂ V (π y⁻¹ * (projQ ψ₀ π * π y)) = _`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[LinearMap.trace_mul_comm, mul_assoc, ← map_mul, mul_inv_cancel, map_one, mul_one]`. Rewrite using `[Finset.sum_congr rfl fun y _ => h y, Finset.sum_const, Finset.card_univ, nsmul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem trace_representation_gamma : TraceRepGam := by
   intro F _ _ k ψ₀ V _ _ _ π

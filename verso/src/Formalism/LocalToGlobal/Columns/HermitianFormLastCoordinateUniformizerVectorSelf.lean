@@ -14,7 +14,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 variable {D : ColRec} {u : D.what₂.Word} (A : CF.AtTTied u) (P : ∀ i hi, CF.LvTied u A i hi)
 
 /- English proof (translation)
-The claim follows from `RingHom.ker_isMaximal_of_surjective (A.res v) (A.res_surj v)`.
+A detailed English derivation is pending.
 -/
 theorem hx_Pv_max (v : (D.mem u).A.vT) : (A.Pv v).IsMaximal :=
   RingHom.ker_isMaximal_of_surjective (A.res v) (A.res_surj v)

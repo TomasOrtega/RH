@@ -16,9 +16,9 @@ namespace Formalism.L2.SG.NGCut.PtPf
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Proceed by induction on `b using Fin.lastCases with`. Consider the case `last => rw [Formalism.MainNotions.LatticeGluingRadicals.a_frame_last]`. Conclude with `hz`. Consider the case `cast b`. Rewrite using `[Formalism.MainNotions.LatticeGluingRadicals.a_frame_castSucc]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h : F.fl.e b ∈ XLam Λ F` using `by rw [hX]; exact Formalism.MainNotions.BridgeLemma₂.basis_vector_mem_span D F.fl b`. Conclude with `h.1`.
+A detailed English derivation is pending.
 -/
 theorem frame_mem {D : D7} {Λ : Submodule (𝓞 D.host.E) (VS D).V} {T : D.host.E} (F : LFlag (VS D) D.R.rS T)
     (hz : F.fl.z ∈ Λ) (hX : XLam Λ F = XS D F.fl) (b : Fin (D.R.rS + 1)) : frame F b ∈ Λ := by
@@ -30,9 +30,7 @@ theorem frame_mem {D : D7} {Λ : Submodule (𝓞 D.host.E) (VS D).V} {T : D.host
     exact h.1
 
 /- English proof (translation)
-Take `⟨c, hc⟩` from `Formalism.MainNotions.LatticeGluingRadicals.d_Lam_int hun (hF i) (hF' j)`. Establish `hZ : ZhatL F F' i j = (VS D).hT (frame F i) (frame F' j)` using `rfl`. Establish `h1 : IsIntegral ℤ ((-1 : D.host.E) ^ (D.R.rS - j.val))` using `(isIntegral_one.neg).pow _`. Use `show IsIntegral ℤ ((-1 : D.host.E) ^ (D.R.rS - j.val) * ZhatL F F' i j)`. Rewrite using `[hZ, ← hc]`.
-
-Conclude with `h1.mul (RingOfIntegers.isIntegral_coe c)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem zhatOM_isIntegral {D : D7} {Λ : Submodule (𝓞 D.host.E) (VS D).V} {T T' : D.host.E}
     (F : LFlag (VS D) D.R.rS T) (F' : LFlag (VS D) D.R.rS T') (hun : Formalism.HermitianLatticesTheory.IsUnimodular (VS D).hT Λ)
@@ -48,9 +46,9 @@ theorem zhatOM_isIntegral {D : D7} {Λ : Submodule (𝓞 D.host.E) (VS D).V} {T 
 open Formalism.MainNotions.BesselShellMomentBounds Formalism.HermitianLatticeCounting.ExpansionTerms in
 
 /- English proof (translation)
-Take `⟨L, U, hL, hU, rfl⟩` from `hc`. Introduce `(a : Fin (toComp γ).length)`. Establish `key` using `Formalism.HermitianLatticeCounting.Final.ExpansionTerms.integral_evaluation_fourth D.host.E (integralClosure ℤ D.host.E).toSubring (D.R.rS + 1) (toComp γ) (toT γ) (toT_ne γ) L U ⟨fun i => (hL i i).2 rfl, fun i j hij => (hL i j).1 hij⟩ ⟨fun i => (hU i i).2 rfl, fun i j hij => (hU …`. Use `key.1 ((a : ℕ) + 1)` as an intermediate fact. Apply the tactic sequence `show IsIntegral ℤ (IndexedMinorEntry (toComp γ).blocksFun (toT γ) a) ∧ IndexedMinorEntry (toComp γ).blocksFun (toT γ) a ≠ 0`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[E5minor_eq]`. Conclude with `this`.
+A detailed English derivation is pending.
 -/
 theorem blockEndMinors_of_cell {D : D7} (Z : Matrix (Fin (D.R.rS + 1)) (Fin (D.R.rS + 1)) D.host.E)
     (hZ : ∀ i j, IsIntegral ℤ (Z i j)) (γ : Point D.host.E (D.R.rS + 1)) (hc : IsInCell Z γ) :
@@ -68,17 +66,15 @@ theorem blockEndMinors_of_cell {D : D7} (Z : Matrix (Fin (D.R.rS + 1)) (Fin (D.R
   exact this
 
 /- English proof (translation)
-Introduce `Cg cb Cw cT CT C0`. Use `⟨0, 0, fun C' Cl _ _ D large₂ X Y u u' hc νL νB ng γ hγ => ?_⟩` and prove the remaining obligations. Take `⟨c, ν, t, ht, hv, -, hpt, -⟩` from `hγ`. Establish `hG : t.toTerm.G ≠ 0`. Introduce `h`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `ht.1` to reduce the goal to its premises. Use `show Gt t = 0`. Establish `h' : t.G = 0` using `h`. Simplify using `[Gt, h']`. Establish `hrel : t.toTerm.relevant`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hr`. Apply `hv` to reduce the goal to its premises. Establish `h0 : OOt t = 0` using `hOV Cg cb Cw cT CT C0 C' Cl D large₂ X Y u u' hc t hr`. Use `show vec (Y.cs u) (Y.cs u') (Y.FN u) (Y.FN u') t = 0`. Unfold `vec ampN`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[h0]`. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Take `⟨w, hw⟩` from `hAt Cg cb Cw cT CT C0 C' Cl D large₂ X Y u u' hc t.toTerm hG hrel`. Establish `hat` using `Formalism.L2.SG.PairVal.ptOf_spec t.toTerm ⟨w, hw, hrel⟩`.
+Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨F', ⟨hP, -⟩, -, hcell⟩` from `hat`. Establish `hrow` using `(Y.rowsOK u).1 t.toTerm.lam t.toTerm.mem`. Establish `hF : ∀ b, frame (lf D (X.Fu u)) b ∈ t.toTerm.lam` using `frame_mem _ hrow.2.1.2.2.1.1 hrow.2.2`. Establish `hF' : ∀ b, frame F' b ∈ t.toTerm.lam` using `frame_mem _ hP.1.1 hP.2.2.2`. Establish `hE` using `blockEndMinors_of_cell _ (zhatOM_isIntegral _ _ hrow.2.1.2.1 hF hF') _ hcell`.
-
-Rewrite using `[← hpt]`. Conclude with `hE`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem stepPoints_of_ctx
     (hOV : ∀ (Cg cb Cw cT CT C0 C' Cl : ℝ) (D : D7) (large₂ : SizeData₂ D) (X : HidaSetting D) (Y : Full X) (u u' : D.what₂.Word),
@@ -117,7 +113,7 @@ theorem stepPoints_of_ctx
   exact hE
 
 /- English proof (translation)
-The claim follows from `stepPoints_of_ctx (fun _ _ _ _ _ _ _ _ D _ X Y u u' _ => hOV D X Y u u') (fun _ _ _ _ _ _ _ _ D _ X Y u u' _ => hAt D X Y u u')`.
+A detailed English derivation is pending.
 -/
 theorem stepPoints_of
     (hOV : ∀ (D : D7) (X : HidaSetting D) (Y : Full X) (u u' : D.what₂.Word),
@@ -131,7 +127,7 @@ theorem stepPoints_of
 open Formalism.L2.SG.TermOp.Vanish in
 
 /- English proof (translation)
-The claim follows from `stepPoints_of (fun _ _ Y _ _ t ht => ooVanish_of hA hU hN hC hG h1 h2 h3 h4 Y t ht) hAt`.
+A detailed English derivation is pending.
 -/
 theorem stepPoints_of_leaves (hA : AvgCore) (hU : GinfUnimod) (hN : NLamNinf) (hC : ChiTrivialC) (hG : PsiInfChar)
     (h1 : RClosedC) (h2 : RODiscreteC) (h3 : RCocompactC) (h4 : NonRelCharC)

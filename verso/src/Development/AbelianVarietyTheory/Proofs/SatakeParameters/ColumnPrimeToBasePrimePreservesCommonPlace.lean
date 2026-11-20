@@ -6,17 +6,15 @@ open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.L2.Col Formal
 namespace GlobalTheory.TwU
 
 /- English proof (translation)
-Introduce `D X s hs hX P Q h`. Establish `key : ∀ a : 𝓞 D.host.F, ∃ r : 𝓞 X.F, algebraMap (𝓞 D.host.F) (𝓞 D.host.E) a = RingOfIntegers.mapRingEquiv s.iE (algebraMap (𝓞 X.F) (𝓞 X.E) r)`. Introduce `a`. Use `set b := (RingOfIntegers.mapRingEquiv s.iE).symm (algebraMap (𝓞 D.host.F) (𝓞 D.host.E) a) with hb`. Establish `hbe : RingOfIntegers.mapRingEquiv s.iE b = algebraMap (𝓞 D.host.F) (𝓞 D.host.E) a`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hb, RingEquiv.apply_symm_apply]`. Establish `hfix : X.conjO b = b`. Apply `RingOfIntegers.ext` to reduce the goal to its premises. Apply `s.iE.injective` to reduce the goal to its premises. Establish `h1 : s.iE (b : X.E) = ((algebraMap (𝓞 D.host.F) (𝓞 D.host.E) a : 𝓞 D.host.E) : D.host.E)` using `congrArg (fun z : 𝓞 D.host.E => (z : D.host.E)) hbe`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : ((X.conjO b : 𝓞 X.E) : X.E) = star (b : X.E)` using `rfl`. Rewrite using `[h2, hs.2, h1]`. Establish `h3 : ((algebraMap (𝓞 D.host.F) (𝓞 D.host.E) a : 𝓞 D.host.E) : D.host.E) = algebraMap D.host.F D.host.E (a : D.host.F)` using `rfl`. Rewrite using `[h3, ← Formalism.BasicNotions.Examples₂.star_eq_conj]`. Conclude with `(D.sp.cm.fixed _).2 ⟨_, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨r, hr⟩` from `GlobalTheory.TwistPlaces.exists_of_conj_eq hX hfix`. Conclude with `⟨r, by rw [hr, hbe]⟩`. Apply `HeightOneSpectrum.ext` to reduce the goal to its premises. Rewrite using `[HeightOneSpectrum.under_asIdeal, HeightOneSpectrum.under_asIdeal]`. Use extensionality with `a`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨r, hr⟩` from `key a`. Establish `hPQ : r ∈ Ideal.under (𝓞 X.F) P.asIdeal ↔ r ∈ Ideal.under (𝓞 X.F) Q.asIdeal`. Rewrite using `[← HeightOneSpectrum.under_asIdeal, ← HeightOneSpectrum.under_asIdeal, h]`. Simplify using `only [Ideal.under, Ideal.mem_comap] at hPQ ⊢`. Rewrite using `[hr, mem_seamP, mem_seamP]`.
-
-Conclude with `hPQ`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem seamP_under_eq : ∀ (D : D7) (X : Fields) (s : Seam D X), s.Ok → X.Ok → ∀ P Q : HeightOneSpectrum (𝓞 X.E), P.under (𝓞 X.F) = Q.under (𝓞 X.F) → (seamP s P).under (𝓞 D.host.F) = (seamP s Q).under (𝓞 D.host.F) := by
   intro D X s hs hX P Q h

@@ -14,14 +14,14 @@ section Ops
 variable {K : Type} [Field K] [NumberField K] {n : ℕ} (μ : Measure (normOneGL K n)) [μ.IsHaarMeasure]
 
 /- English proof (translation)
-Use `(UpperTheory.ConvolutionTheory.Tf.commPrj K n μ ⊥).2.2.2.2.2.1` as an intermediate fact. Simplify using `only [rhoL, map_mul, this]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 private theorem rhoL_mul (w : Pl K) (g h : Gw n w) : rhoL μ w (g * h) = rhoL μ w g ∘L rhoL μ w h := by
   have := (UpperTheory.ConvolutionTheory.Tf.commPrj K n μ ⊥).2.2.2.2.2.1
   simp only [rhoL, map_mul, this]
 
 /- English proof (translation)
-Establish `h1` using `(UpperTheory.ConvolutionTheory.Tf.commPrj K n μ ⊥).2.2.2.2.2.1`. Establish `h2` using `(UpperTheory.ConvolutionTheory.Tf.locEmb K n w).2.2.2.1 w' h.symm g g'`. Use `show rhoL μ w g ∘L rhoL μ w' g' = rhoL μ w' g' ∘L rhoL μ w g`. Simplify using `only [rhoL, ← h1, h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem rhoL_comm {w w' : Pl K} (h : w ≠ w') (g : Gw n w) (g' : Gw n w') : Commute (rhoL μ w g) (rhoL μ w' g') := by
   have h1 := (UpperTheory.ConvolutionTheory.Tf.commPrj K n μ ⊥).2.2.2.2.2.1
@@ -30,7 +30,7 @@ private theorem rhoL_comm {w w' : Pl K} (h : w ≠ w') (g : Gw n w) (g' : Gw n w
   simp only [rhoL, ← h1, h2]
 
 /- English proof (translation)
-Use `show rightRegularRep (rationalGLOne K n) μ (archP K n a) * rightRegularRep (rationalGLOne K n) μ (MultiplicityOne.finProj K n (AdelicGLn.localEmbedding w g)) = rightRegularRep (rationalGLOne K n) μ (MultiplicityOne.finProj K n (AdelicGLn.localEmbedding w g)) * rightRegularRep (ra …`. Rewrite using `[← UnitaryRep.map_mul, ← UnitaryRep.map_mul, archimedeanProjection_apply, MultiplicityOne.finProj_mul_archProj_comm]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem arch_comm (a : archGroup K n) (w : Pl K) (g : Gw n w) :
     Commute (rightRegularRep (rationalGLOne K n) μ (archP K n a)) (rhoL μ w g) := by
@@ -39,9 +39,9 @@ private theorem arch_comm (a : archGroup K n) (w : Pl K) (g : Gw n w) :
   rw [← UnitaryRep.map_mul, ← UnitaryRep.map_mul, archimedeanProjection_apply, MultiplicityOne.finProj_mul_archProj_comm]
 
 /- English proof (translation)
-Use `ContinuousLinearMap.ext fun v => ext_inner_left ℂ fun u => ?_` and prove the remaining obligations. Use `show ⟪u, R (Bo v)⟫_ℂ = ⟪u, Bo (R v)⟫_ℂ`. Rewrite using `[← ContinuousLinearMap.adjoint_inner_left R, h, h]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun g => ?_)` and prove the remaining obligations. Use `show ψ g * _ = ψ g * _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Rewrite using `[ContinuousLinearMap.adjoint_inner_left]`. Use `congrArg (fun S : LL μ →L[ℂ] LL μ => S v) (hR g).eq` as an intermediate fact. Simplify using `only [ContinuousLinearMap.mul_apply] at this`. Rewrite using `[this]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem oloc_comm {w : Pl K} [MeasurableSpace (Gw n w)] {m : Measure (Gw n w)} {ψ : Gw n w → ℂ}
     {Bo : LL μ →L[ℂ] LL μ} (h : IsOloc μ w m ψ Bo) (R : LL μ →L[ℂ] LL μ) (hR : ∀ g, Commute R (rhoL μ w g)) :
@@ -58,9 +58,9 @@ private theorem oloc_comm {w : Pl K} [MeasurableSpace (Gw n w)] {m : Measure (Gw
   rw [this]
 
 /- English proof (translation)
-Use `((UpperTheory.ConvolutionTheory.Tf.commPrj K n μ _).2.1 _).2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨u, hu, rfl⟩`. Use `ext_inner_left ℂ fun a => ?_` and prove the remaining obligations. Use `show ⟪a, rhoL μ w u (Bo v)⟫_ℂ = ⟪a, Bo v⟫_ℂ`. Rewrite using `[← ContinuousLinearMap.adjoint_inner_left (rhoL μ w u), h, h, ← integral_mul_left_eq_self (μ := m) (fun g => ψ g * ⟪a, rhoL μ w g v⟫_ℂ) u]`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `integral_congr_ae (Filter.Eventually.of_forall fun g => ?_)` and prove the remaining obligations. Use `show ψ g * _ = ψ (u * g) * _`. Rewrite using `[hJ u hu, rhoL_mul, ContinuousLinearMap.comp_apply, ContinuousLinearMap.adjoint_inner_left]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem oloc_fix {w : Pl K} [MeasurableSpace (Gw n w)] [BorelSpace (Gw n w)] {m : Measure (Gw n w)} [m.IsHaarMeasure]
     {ψ : Gw n w → ℂ} {Bo : LL μ →L[ℂ] LL μ} (h : IsOloc μ w m ψ Bo) (J : Subgroup (Gw n w))
@@ -76,14 +76,14 @@ private theorem oloc_fix {w : Pl K} [MeasurableSpace (Gw n w)] [BorelSpace (Gw n
   rw [hJ u hu, rhoL_mul, ContinuousLinearMap.comp_apply, ContinuousLinearMap.adjoint_inner_left]
 
 /- English proof (translation)
-Simplify using `[eigL, Submodule.mem_iInf, LinearMap.mem_eqLocus]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem mem_eigL {w : Pl K} {J : Subgroup (Gw n w)} {χ : Gw n w → ℂ} {v : LL μ} :
     v ∈ eigL μ w J χ ↔ ∀ x ∈ J, rhoL μ w x v = χ x • v := by
   simp [eigL, Submodule.mem_iInf, LinearMap.mem_eqLocus]
 
 /- English proof (translation)
-Establish `hself : ∀ x ∈ V, prj V x = x` using `fun x hx => Submodule.starProjection_eq_self_iff.2 (Submodule.le_topologicalClosure V hx)`. Establish `h` using `congrArg (fun S : LL μ →L[ℂ] LL μ => S v) hR.eq`. Simplify using `only [ContinuousLinearMap.mul_apply, hself v hv] at h`. Rewrite using `[← h]`. Conclude with `hV.submodule_topologicalClosure_eq.le (Submodule.starProjection_apply_mem V.topologicalClosure (R v))`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem comm_prj {V : Submodule ℂ (LL μ)} (hV : IsClosed (V : Set (LL μ))) (R : LL μ →L[ℂ] LL μ)
     (hR : Commute (prj V) R) (v : LL μ) (hv : v ∈ V) : R v ∈ V := by
@@ -101,18 +101,18 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   {σ : E ≃ₐ[F] E} {n : ℕ} {q : Pl F} {w₀ : PlacesOver E q} (μ : Measure (normOneGL E n)) [μ.IsHaarMeasure]
 
 /- English proof (translation)
-Simplify using `only [offN, Submodule.mem_iInf, mem_eigL]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem mem_offN (T : Ty σ n q w₀) {v : LL μ} :
     v ∈ offN μ T ↔ ∀ w, w.under (𝓞 F) ∉ (nsS T : Set (Pl F)) → ∀ x ∈ T.J w, rhoL μ w x v = T.χ w x • v := by
   simp only [offN, Submodule.mem_iInf, mem_eigL]
 
 /- English proof (translation)
-Rewrite `hv`, the goal using `[mem_offN]`. Introduce `w hw x hx`. Distinguish the cases in `h : w = w₁`. Substitute `h` using the available equality. Establish `hch : IsChr (T.J w) 1` using `hχ ▸ T.chr w`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact.
 
-Establish `h1` using `(UpperTheory.ConvolutionTheory.L1.eigBasic E n μ w (T.J w) 1 (T.co w) hch).2.1`. Establish `h2 : Bo v ∈ eigL μ w (T.J w) 1` using `by rw [h1]; exact hfix v`. Rewrite using `[hχ]`. Conclude with `(mem_eigL μ).1 h2 x hx`. Use `congrArg (fun S : LL μ →L[ℂ] LL μ => S v) (hc w h x).eq` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [ContinuousLinearMap.mul_apply] at this`. Rewrite using `[← this, hv w hw x hx, map_smul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem off_step (T : Ty σ n q w₀) (Bo : LL μ →L[ℂ] LL μ) (w₁ : Pl E)
     (hfix : ∀ v, Bo v ∈ fixL μ w₁ (T.J w₁)) (hχ : T.χ w₁ = 1)
@@ -136,21 +136,17 @@ end UpperTheory.EigenLatticeOffDiagonal
 
 open UpperTheory.EigenLatticeOffDiagonal in
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ n μ _ q w₀ hq T V hV e j r p hp _ _ mm hmm ψ hψ B hBo`. Establish `hVc : IsClosed (V : Set (LL μ))` using `IsSummandOf.closed hV`. Establish `hVrho : ∀ (w : Pl E) (g : Gw n w), Commute (prj V) (rhoL μ w g)` using `fun w g => ((UpperTheory.ConvolutionTheory.Tf.innerOps E n μ).2.2.2.1 _ V hVc (IsSummandOf.inv hV)).symm`. Set `Good : (LL μ →L[ℂ] LL μ) → Prop` to `fun O => (∀ v ∈ offN μ T, O v ∈ offN μ T) ∧ (∀ g, Commute O (rightRegularRep (rationalGLOne E n) μ (archP E n g))) ∧ (∀ w ∉ T.marked, ∀ g, Commute O (rhoL μ w g)) ∧ (∀ v ∈ V, O v ∈ V)`. Establish `hGone : Good 1` using `⟨fun v hv => hv, fun g => Commute.one_left _, fun w _ g => Commute.one_left _, fun v hv => hv⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hGmul : ∀ O₁ O₂, Good O₁ → Good O₂ → Good (O₁ * O₂)` using `fun O₁ O₂ h₁ h₂ => ⟨fun v hv => h₁.1 _ (h₂.1 v hv), fun g => (h₁.2.1 g).mul_left (h₂.2.1 g), fun w hw g => (h₁.2.2.1 w hw g).mul_left (h₂.2.2.1 w hw g), fun v hv => h₁.2.2.2 _ (h₂.2.2.2 v hv)⟩`. Establish `hBG : Good (List.ofFn B).prod`. Use `List.prod_induction _ hGmul hGone fun O hO => ?_` and prove the remaining obligations. Take `⟨i, rfl⟩` from `(List.mem_ofFn' _ _).1 hO`. Use `haveI := (hmm (T.mk' (p i)).1).1`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hsp : p i ∈ T.sp` using `hp i`. Establish `hspl : GM.Split E (p i)` using `(Finset.mem_filter.1 hsp).2`. Establish `ht` using `(hψ i).2`. Establish `hne : ∀ w ∉ T.marked, w ≠ (T.mk' (p i)).1` using `fun w hw h => hw (Or.inr ⟨p i, hsp, h⟩)`. Use `⟨off_step μ T (B i) _ (oloc_fix μ (hBo i) _ ht) (T.triv _ hspl _) (fun w hw g => ?_), fun g => ?_, fun w hw g => ?_, comm_prj μ hVc _ (oloc_comm μ (hBo i) _ fun g' => hVrho _ g')⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `(oloc_comm μ (hBo i) _ fun g' => rhoL_comm μ hw g g').symm`. Conclude with `(oloc_comm μ (hBo i) _ fun g' => arch_comm μ g _ g').symm`. Conclude with `(oloc_comm μ (hBo i) _ fun g' => rhoL_comm μ (hne w hw) g g').symm`. Establish `hUG : Good (Uiw μ w₀.1 e)`. Establish `hI : T.J w₀.1 = GLnLocal.iwahori (w₀.1.adicCompletion E) n` using `T.at_q w₀`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hco` using `T.co w₀.1`. Rewrite `hco` using `[hI]`. Establish `hh` using `UpperTheory.ConvolutionTheory.Tf.hopBasic E n μ w₀.1 (GLnLocal.iwahori _ n) (Cartan.diagPow _ n e) hco.2 hco.1`. Establish `hne : ∀ w ∉ T.marked, w ≠ w₀.1` using `fun w hw h => hw (Or.inl h)`. Use `⟨off_step μ T _ w₀.1 (fun v => ?_) (T.triv q hq w₀) (fun w hw g => ?_), fun g => ?_, fun w hw g => ?_, comm_prj μ hVc _ (hh.2.2.2.2.1 _ fun g' => hVrho _ g')⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Proceed by induction. Treat this case separately.
 
-Rewrite using `[hI]`. Conclude with `hh.2.1 v`. Conclude with `(hh.2.2.2.2.1 _ fun g' => rhoL_comm μ hw g g').symm`. Conclude with `(hh.2.2.2.2.1 _ fun g' => arch_comm μ g _ g').symm`. Conclude with `(hh.2.2.2.2.1 _ fun g' => rhoL_comm μ (hne w hw) g g').symm`.
-
-Establish `hUjG : Good (Uiw μ w₀.1 e ^ j)`. Proceed by induction on `j with`. Consider the case `zero => simpa using hGone`. Consider the case `succ k ih => rw [pow_succ]`. Conclude with `hGmul _ _ ih hUG`.
-
-Establish `hCG : Good ((Uiw μ w₀.1 e ^ j) ∘L (List.ofFn B).prod)` using `hGmul _ _ hUjG hBG`. Conclude with `⟨hCG.2.1, hCG.2.2.1, hCG.1, hCG.2.2.2⟩`.
+Treat this case separately. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.heckeOperator_summand_weight_CMDatum :
     ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E ≃ₐ[F] E) (n : ℕ) (μ : Measure (normOneGL E n)) [μ.IsHaarMeasure] (q : Pl F) (w₀ : PlacesOver E q),

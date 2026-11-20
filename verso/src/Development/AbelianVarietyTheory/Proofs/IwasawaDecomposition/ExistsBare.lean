@@ -15,21 +15,19 @@ namespace GlobalTheory.Mem.R3.LedRec
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Use `⟨1, one_pos, fun eps C8 h0 _ h1 _ => ⟨⟨0, fun _ => 0, fun _ => 0, fun _ => 0⟩, fun C hC _ _ => ?_⟩⟩` and prove the remaining obligations. Take `⟨c1, hN⟩` from `szRow_numAt eps h0 h1 C hC`. Use `⟨max c1 0, fun cD hcD => ?_⟩` and prove the remaining obligations. Take `⟨c2, hN⟩` from `hN cD ((le_max_left _ _).trans hcD)`. Use `⟨max c2 402, fun ch hch => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨x1, hN⟩` from `hN ch ((le_max_left _ _).trans hch)`. Take `⟨x0, hx0⟩` from `GlobalTheory.EX.exists_sizeData_explicit eps C cD ch h0 h1 hC ((le_max_right _ _).trans hcD) ((le_max_right _ _).trans hch)`. Use `⟨max x0 x1, ?_⟩` and prove the remaining obligations. Introduce and unpack `K rfl rfl rfl hs hx X hO heta hA`. Establish `hP` using `K.ok`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Take `⟨sp, hT, hY, hA', hV, hz, hB, -⟩` from `hO`. Take `⟨B, Cc, W, V, S, N, Gj⟩` from `X`. Consider the cases of `B`. Simplify using `only at hB`. Substitute `hB` using the available equality.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Split into cases according to the possible forms of the given data. Simplify by unfolding definitions. Substitute using the available equality.
 
-Use `set D := Stages.toD7 _ with hD`. Establish `hlev : ∀ p ∈ K.Lv.host.levelPrimes, K.Lv.host.cls p = .splitK` using `(Pre.ofCh K.P K.Lv sp hT hY hA' hV hz).level_split`. Establish `hdel : D.s.Del = (Delv K.s K.cD : ℚ)`. Establish `τ : Tau K.P.R` using `tauPl D (false, 0)`. Establish `hk` using `K.P.R.m_add_three_le_k`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm` using `K.P.R.two_le_m`. Establish `hl : 0 + 1 < K.P.R.k - 1` using `by omega`. Establish `a1` using `D.s.cloud_gap K.P.u₀ τ 0 hl`. Establish `a2` using `congrArg₂ (· - ·) ((hP.hc K.P.u₀).1 τ ⟨0, by omega⟩) ((hP.hc K.P.u₀).1 τ ⟨0 + 1, hl⟩)`. Establish `a3` using `a1.symm.trans a2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : K.P.R.k - 2 - 0 = K.P.R.k - 2 - (0 + 1) + 1` using `by omega`. Simplify using `only at a3`. Rewrite `a3` using `[e]`. Move the coercions through the operations in `at a3`. Combine the linear equalities and inequalities to obtain the conclusion.
+Simplify by unfolding definitions. Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. Extract witnesses or component facts from the available result.
 
-Take `⟨L, e1, -, -, e4⟩` from `hx0 K.s D (fun t => K.a t.1) (fun t => K.b t.1) hs ((le_max_left _ _).trans hx) hP.rank hP.val (hP.hc K.P.u₀) hP.dlog hdel hP.ct2 hP.card heta (fun u => by`. Establish `e : (D.mem u).A.GamP = K.Lv.GamP` using `Cc.A_GamP u`. Rewrite using `[e, K.Gam_eq, GamS, Real.log_exp]`. Use the proof step `rfl)`. Use the proof step `(fun t => hP.win t.1 t.2) (fun τ t h ht => hP.top K.P.u₀ τ t h ht) (fun w _ j _ _ => hA w j)`.
-
-Take `⟨⟨M⟩, -, -⟩` from `hN D L (by rw [e1]; exact hs) (by rw [e1]; exact (le_max_right _ _).trans hx) e4 ⟨hP.arith.1, hP.arith.2.1, hP.arith.2.2.1, hlev⟩`. Conclude with `⟨L, e1, M.sizes, ⟨M.params⟩, M.parT.nV_ge⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem ev_exists_sizeData : Ev fun K => ∀ X : Stages, K.Over X.B.toPre → X.V.div.etaF = 6 * K.s.x ^ (-K.C.P.CF) →
     (∀ w j, X.toD7.what₂.Aj j w = 0) →
@@ -78,7 +76,7 @@ def bare {B : Base} {C : Cols B} (W : RowsRest B C) : RowsRest B C :=
   { GaloisStage.adapt W with Ij := fun _ _ _ => 0, jw := fun _ _ _ => 0 }
 
 /- English proof (translation)
-Take `⟨N, -, -, hN, -⟩` from `exists_nStage_grpTrue hG B C (bare a.W) (GlobalTheory.MemN.shaOK_shaTrue B.toPre) (fun _ _ _ _ => rfl) (fun _ => rfl) (fun _ _ => rfl) f`. Conclude with `⟨⟨bare a.W, { a.V with div := { a.V.div with etaF := η } }, { a.S with }, N, a.G⟩, hN, rfl, fun _ _ => rfl⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_bare (hG : GlobalTheory.Published.GreenCuspidal) {B : Base} {C : Cols B} (a : Late B C) (f : Fr B.toPre) (η : ℝ) :
     ∃ b : Late B C, GrpTrue b.N f ∧ b.V.div.etaF = η ∧ ∀ w j, b.D.what₂.Aj j w = 0 := by

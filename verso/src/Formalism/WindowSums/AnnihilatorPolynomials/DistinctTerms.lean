@@ -7,31 +7,27 @@ namespace Formalism.WindowSums
 open PowerSeries
 
 /- English proof (translation)
-Introduce `O _ _ ϖ hϖ hnu ι I w e m B s hw he`. Prove the components needed by the constructor for the conclusion. Introduce `hmem`. Assume the negation of the conclusion as `hbad`. Use `push_neg at hbad`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Take `⟨i₁, hi₁, hb₁, hs₁⟩` from `hbad`. Establish `hJne : (I.filter fun i => e i < B ∧ m i < s).Nonempty` using `⟨i₁, Finset.mem_filter.mpr ⟨hi₁, hb₁, hs₁⟩⟩`. Take `⟨i₀, hi₀J, hmin⟩` from `(I.filter fun i => e i < B ∧ m i < s).exists_min_image e hJne`. Take `⟨hi₀, hB, hs⟩` from `Finset.mem_filter.mp hi₀J`. Take `⟨a, b, hab⟩` from `Ideal.mem_span_pair.mp hmem`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hcoef` using `congrArg (PowerSeries.coeff (e i₀)) hab`. Rewrite `hcoef` using `[map_add, mul_comm a, PowerSeries.coeff_X_pow_mul', if_neg (by omega), zero_add, PowerSeries.coeff_mul_C, map_sum]`. Establish `hterm : ∀ i ∈ I, PowerSeries.coeff (e i₀) (w i * X ^ e i * C (ϖ ^ m i)) = (if e i ≤ e i₀ then PowerSeries.coeff (e i₀ - e i) (w i) else 0) * ϖ ^ m i`. Introduce `i _`. Rewrite using `[PowerSeries.coeff_mul_C, mul_comm (w i), PowerSeries.coeff_X_pow_mul']`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hcoef` using `[Finset.sum_congr rfl hterm, ← Finset.add_sum_erase _ _ hi₀, if_pos le_rfl, Nat.sub_self]`. Establish `hrest : ϖ ^ s ∣ ∑ i ∈ I.erase i₀, (if e i ≤ e i₀ then PowerSeries.coeff (e i₀ - e i) (w i) else 0) * ϖ ^ m i`. Use `Finset.dvd_sum fun i hi => ?_` and prove the remaining obligations. Take `⟨hne, hiI⟩` from `Finset.mem_erase.mp hi`. Distinguish the cases in `hle : e i ≤ e i₀`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_pos hle]`. Establish `hlt : e i < e i₀` using `lt_of_le_of_ne hle fun h => hne (he hiI hi₀ h)`. Establish `hms : s ≤ m i`. Assume the negation of the conclusion as `hms`. Use `push_neg at hms`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Use `hmin i (Finset.mem_filter.mpr ⟨hiI, by omega, hms⟩)` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Conclude with `Dvd.dvd.mul_left (pow_dvd_pow ϖ hms) _`. Rewrite using `[if_neg hle, zero_mul]`. Conclude with `dvd_zero _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hdvd : ϖ ^ s ∣ PowerSeries.coeff 0 (w i₀) * ϖ ^ m i₀`. Establish `h2 : PowerSeries.coeff 0 (w i₀) * ϖ ^ m i₀ = PowerSeries.coeff (e i₀) b * ϖ ^ s - ∑ i ∈ I.erase i₀, (if e i ≤ e i₀ then PowerSeries.coeff (e i₀ - e i) (w i) else 0) * ϖ ^ m i`. Rewrite using `[hcoef]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h2]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Conclude with `dvd_sub (dvd_mul_left _ _) hrest`. Establish `hu : IsUnit (PowerSeries.coeff 0 (w i₀))`. Use `(hw i₀ hi₀).map (PowerSeries.constantCoeff (R := O))` as an intermediate fact. Simplify using `using this`. Establish `hsplit : ϖ ^ s = ϖ ^ m i₀ * ϖ ^ (s - m i₀)`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← pow_add, Nat.add_sub_cancel' hs.le]`. Rewrite `hdvd` using `[hsplit, mul_comm (PowerSeries.coeff 0 (w i₀))]`. Establish `hd2` using `(mul_dvd_mul_iff_left (pow_ne_zero _ hϖ)).mp hdvd`. Establish `hd3 : ϖ ∣ PowerSeries.coeff 0 (w i₀)` using `(dvd_pow_self ϖ (by omega)).trans hd2`. Conclude with `hnu (isUnit_of_dvd_unit hd3 hu)`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `h`. Use `Ideal.sum_mem _ fun i hi => ?_` and prove the remaining obligations. Break down `h i hi with hb | hs` into its components or cases. Establish `hx : (X : PowerSeries O) ^ B ∈ Ideal.span {(X : PowerSeries O) ^ B, C (ϖ ^ s)}` using `Ideal.subset_span (Set.mem_insert _ _)`. Establish `heq : w i * X ^ e i * C (ϖ ^ m i) = X ^ B * (w i * X ^ (e i - B) * C (ϖ ^ m i))`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[show e i = B + (e i - B) by omega, pow_add]`. Simplify using `only [Nat.add_sub_cancel_left]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[heq]`. Conclude with `Ideal.mul_mem_right _ _ hx`.
-
-Establish `hc : C (ϖ ^ s) ∈ Ideal.span {(X : PowerSeries O) ^ B, C (ϖ ^ s)}` using `Ideal.subset_span (Set.mem_insert_of_mem _ rfl)`. Establish `heq : w i * X ^ e i * C (ϖ ^ m i) = C (ϖ ^ s) * (w i * X ^ e i * C (ϖ ^ (m i - s)))`. Rewrite using `[show m i = s + (m i - s) by omega, pow_add, map_mul]`. Simplify using `only [Nat.add_sub_cancel_left]`. Expand and normalize the polynomial expressions, which then agree.
-
-Rewrite using `[heq]`. Conclude with `Ideal.mul_mem_right _ _ hc`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_span_iff_of_distinct_exponents : DistinctTerms := by
   intro O _ _ ϖ hϖ hnu ι I w e m B s hw he

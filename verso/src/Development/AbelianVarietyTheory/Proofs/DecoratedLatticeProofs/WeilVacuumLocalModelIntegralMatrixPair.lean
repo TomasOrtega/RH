@@ -11,23 +11,21 @@ open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.Glob
 namespace GlobalTheory.LocOm
 
 /- English proof (translation)
-Introduce `k _ _ _ _ Y Y' _ _ _ _ a b v`. Establish `hO : IsOpen (𝒪[k] : Set k)` using `Valuation.isOpen_integer`. Establish `hK : IsCompact (𝒪[k] : Set k)` using `IsNonarchimedeanLocalField.isCompact_closedBall k 1`. Establish `hC : IsClosed (𝒪[k] : Set k)` using `AddSubgroup.isClosed_of_isOpen (𝒪[k].toAddSubgroup) hO`. Set `M : Set (Matrix Y Y' k)` to `{A | ∀ i j, A i j ∈ 𝒪[k]}`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hMeq : M = Set.pi Set.univ fun _ => Set.pi Set.univ fun _ => (𝒪[k] : Set k)`. Use extensionality with `A`. Conclude with `⟨fun h i _ j _ => h i j, fun h i j => h i (Set.mem_univ _) j (Set.mem_univ _)⟩`. Establish `hMK : IsCompact M` using `by rw [hMeq]; exact isCompact_univ_pi fun _ => isCompact_univ_pi fun _ => hK`. Establish `hMO : IsOpen M`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: M = ⋂ i, ⋂ j, (fun A : Matrix Y Y' k => A i j) ⁻¹' (𝒪[k] : Set k)` using `by ext A; simp [M]`. Rewrite using `[this]`. Conclude with `isOpen_iInter_of_finite fun i => isOpen_iInter_of_finite fun j => hO.preimage (continuous_id.matrix_elem i j)`. Establish `hMC : IsClosed M`. Establish `: M = ⋂ i, ⋂ j, (fun A : Matrix Y Y' k => A i j) ⁻¹' (𝒪[k] : Set k)` using `by ext A; simp [M]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Conclude with `isClosed_iInter fun i => isClosed_iInter fun j => hC.preimage (continuous_id.matrix_elem i j)`. Set `φ : Matrix Y Y' k → Matrix Y Y' k` to `fun x => (b : Matrix Y Y k) * (x + v) * (a : Matrix Y' Y' k)`. Set `χ : Matrix Y Y' k → Matrix Y Y' k` to `fun A => ((b⁻¹ : GL Y k) : Matrix Y Y k) * A * ((a⁻¹ : GL Y' k) : Matrix Y' Y' k) - v`. Establish `hφ : Continuous φ` using `(continuous_const.matrix_mul (continuous_id.add continuous_const)).matrix_mul continuous_const`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hχ : Continuous χ` using `((continuous_const.matrix_mul continuous_id).matrix_mul continuous_const).sub continuous_const`. Establish `hχφ : ∀ x, χ (φ x) = x` using `fun x => by show ((b⁻¹ : GL Y k) : Matrix Y Y k) * ((b : Matrix Y Y k) * (x + v) * (a : Matrix Y' Y' k)) * ((a⁻¹ : GL Y' k) : Matrix Y' Y' k) - v = x`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_mul, Matrix.mul_assoc, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.mul_one, add_sub_cancel_right]`. Set `U : Set (Matrix Y Y' k)` to `{x | ∀ r q, ((b : Matrix Y Y k) * (x + v) * (a : Matrix Y' Y' k)) r q ∈ 𝒪[k]}`. Establish `hU : U = φ ⁻¹' M` using `rfl`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hUK : IsCompact U`. Establish `: U = χ '' M`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce `hx`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨φ x, hx, hχφ x⟩`. Introduce and unpack `⟨A, hA, rfl⟩`. Express the relevant statement in the definitionally equal form `φ (χ A) ∈ M`. Establish `: φ (χ A) = A` using `by show (b : Matrix Y Y k) * ((((b⁻¹ : GL Y k) : Matrix Y Y k) * A * ((a⁻¹ : GL Y' k) : Matrix Y' Y' k) - v) + v) * (a : Matrix Y' Y' k) = A`. Rewrite using `[sub_add_cancel, ← Matrix.mul_assoc, ← Matrix.mul_assoc, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.one_mul, Matrix.mul_assoc, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.mul_one]`.
+Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Conclude with `hA`. Rewrite using `[this]`. Conclude with `hMK.image hχ`. Establish `hcl : IsClopen U` using `⟨hMC.preimage hφ, hMO.preimage hφ⟩`.
-
-Use `⟨?_, HasCompactSupport.intro hUK fun x hx => Set.indicator_of_notMem hx _⟩` and prove the remaining obligations. Conclude with `(LocallyConstant.charFn ℂ hcl).isLocallyConstant`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem indicator_mem_sb : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (Y Y' : Type) [Fintype Y] [DecidableEq Y] [Fintype Y'] [DecidableEq Y'] (a : GL Y' k) (b : GL Y k) (v : Matrix Y Y' k), ({x : Matrix Y Y' k | ∀ r q, ((b : Matrix Y Y k) * (x + v) * (a : Matrix Y' Y' k)) r q ∈ 𝒪[k]}).indicator (fun _ => (1 : ℂ)) ∈ SB (Matrix Y Y' k) := by
   intro k _ _ _ _ Y Y' _ _ _ _ a b v
@@ -75,13 +73,13 @@ theorem indicator_mem_sb : ∀ (k : Type) [Field k] [ValuativeRel k] [Topologica
 
 open GlobalTheory.SplitScalar GlobalTheory.SplitHecke in
 /- English proof (translation)
-Introduce `D ψ S T χS χT ω hW g h f hf hf0 c hc r hr R hpair hom`. Establish `hψ` using `hW.std.1`. Take `⟨i1, i2, i3, i4, i5, K, hK, hKc⟩` from `GlobalTheory.AdelicMatrixLattice.lattice D T S`. Use `haveI : BorelSpace (WO S T) := ⟨rfl⟩`. Take `⟨⟨μ, 𝓕, hμ⟩, c', hc'⟩` from `GlobalTheory.exists_normalise_meanSquare_of_cocompact (WO S T) (ratL T S) K hK hKc f hf.cont hf0 (by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ ⟨γ, rfl⟩ w`. Conclude with `(congrArg norm (hf.quasi γ w)).trans (by rw [norm_mul, hψ.2.1, one_mul]))`. Establish `hn : nrm2 μ 𝓕 (c' • f) = 1` using `hc' μ 𝓕 hμ.1 hμ.2.1 hμ.2.2`. Establish `hcf` using `GlobalTheory.WeilVacMove.isTheta_smul c' hf`. Establish `h1 : ω (g, h) (c' • f) = ((r : ℂ) * c) • ∑ u ∈ R, heisO ψ S T u (c' • f)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[map_smul, hom, smul_comm, Finset.smul_sum]`. Simplify using `only [heisO_smul]`. Establish `h2 : nrm2 μ 𝓕 (ω (g, h) (c' • f)) = 1`. Rewrite using `[← hn, nrm2, nrm2, integral_normSq_eq _ (hW.om_pres _ _ hcf).cont.measurable, integral_normSq_eq _ hcf.cont.measurable, hW.om_unit μ 𝓕 hμ.1 hμ.2.1 _ _ hcf]`. Establish `h3` using `GlobalTheory.HeisOrtho.thetaNormSq_sum_heisenbergTranslates_distinctChars D ψ S T hψ μ 𝓕 hμ _ hcf hn _ R (fun u => u) (fun _ => c) (fun _ _ => hc) (fun u hu u' hu' hne => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨l, ε, hε, hl, hne'⟩` from `hpair u hu u' hu' hne`. Conclude with `⟨l, ε, hε, by rw [heisO_smul, hl, smul_comm], hne'⟩)`. Rewrite `h2` using `[h1, mul_smul, pairNorm_smul, Finset.smul_sum, h3]`. Rewrite using `[← Real.sqrt_inv, ← eq_inv_of_mul_eq_one_left h2, Real.sqrt_sq hr.le]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem om_sum_scale_eq : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (χS χT : (AE D)ˣ →* Circle) (ω : Om S T), IsWeilDatumO ψ S T χS χT ω → ∀ (g : GA D S) (h : GA D T) (f : WO S T → ℂ), IsThetaFunO ψ S T f → f ≠ 0 → ∀ (c : ℂ), ‖c‖ = 1 → ∀ (r : ℝ), 0 < r → ∀ (R : Finset (WO S T)), (∀ u ∈ R, ∀ u' ∈ R, u ≠ u' → ∃ (l : WO S T) (ε : ℂ), ‖ε‖ = 1 ∧ heisO ψ S T l f = ε • f ∧ ψ (symplO S T (u - u') l) ≠ 1) → ω (g, h) f = ((r : ℂ) * c) • ∑ u ∈ R, heisO ψ S T u f → r = (Real.sqrt (R.card : ℝ))⁻¹ := by
   intro D ψ S T χS χT ω hW g h f hf hf0 c hc r hr R hpair hom
@@ -108,13 +106,13 @@ theorem om_sum_scale_eq : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (S T : H
   rw [← Real.sqrt_inv, ← eq_inv_of_mul_eq_one_left h2, Real.sqrt_sq hr.le]
 
 /- English proof (translation)
-Introduce `D k _ _ _ _ p V Z _ _ F g gk hg`. Establish `he : p.e * p.e = p.e` using `p.split.1`. Use `⟨GlobalTheory.SplitHecke.detU he V g, GlobalTheory.SplitHecke.isDetAt_detU he V g, ?_⟩` and prove the remaining obligations. Establish `h0 : ((GlobalTheory.SplitHecke.detU he V g : (AE D)ˣ) : AE D) = p.e * (mt V g).det + (1 - p.e)` using `GlobalTheory.SplitHecke.isDetAt_detU he V g`. Rewrite using `[h0]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Establish `hc` using `GlobalTheory.LocMod.Witness.card_frame F`. Set `σ : Fin V.rank ≃ Z` to `(Fintype.equivFinOfCardEq hc.symm).symm`. Set `P : Matrix (Fin V.rank) (Fin V.rank) k` to `F.β.submatrix id σ`. Set `Q : Matrix (Fin V.rank) (Fin V.rank) k` to `F.γ.submatrix σ id`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `G : Matrix (Fin V.rank) (Fin V.rank) k` to `gk.val.submatrix σ σ`. Establish `hPQ : P * Q = 1`. Simplify using `only [P, Q]`. Rewrite using `[Matrix.submatrix_mul_equiv, F.βγ, Matrix.submatrix_id_id]`. Establish `hPGQ : P * G * Q = F.β * gk.val * F.γ`.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [P, Q, G]`. Rewrite using `[Matrix.submatrix_mul_equiv, Matrix.submatrix_mul_equiv, Matrix.submatrix_id_id]`. Establish `hdet : p.π (mt V g).det = (Matrix.GeneralLinearGroup.det gk : k)`. Rewrite using `[RingHom.map_det, RingHom.mapMatrix_apply, hg.2, ← hPGQ, Matrix.det_mul, Matrix.det_mul, mul_right_comm, ← Matrix.det_mul, hPQ, Matrix.det_one, one_mul, Matrix.det_submatrix_equiv_self, Matrix.GeneralLinearGroup.val_det_apply]`. Rewrite using `[← hdet, p.ι_π]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_detAt_loc : ∀ (D : D7) (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (p : Place D k) (V : HSp D) (Z : Type) [Fintype Z] [DecidableEq Z] (F : Frame k V.rank Z) (g : GA D V) (gk : GL Z k), p.IsLoc F g gk → ∃ x : (AE D)ˣ, IsDetAt p.e V g x ∧ (x : AE D) = p.ι (Matrix.GeneralLinearGroup.det gk : k) + (1 - p.e) := by
   intro D k _ _ _ _ p V Z _ _ F g gk hg
@@ -142,9 +140,9 @@ theorem exists_detAt_loc : ∀ (D : D7) (k : Type) [Field k] [ValuativeRel k] [T
   rw [← hdet, p.ι_π]
 
 /- English proof (translation)
-Establish `h1 : (mt V a⁻¹).map p.π * (mt V a).map p.π = 1`. Rewrite using `[← Matrix.map_mul, ← mt_mul, inv_mul_cancel, mt_one, Matrix.map_one _ (map_zero _) (map_one _)]`. Establish `h2 : (F.β * (ak : Matrix Z Z k) * F.γ) * (F.β * ((ak⁻¹ : GL Z k) : Matrix Z Z k) * F.γ) = 1`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc F.γ F.β, F.γβ, Matrix.one_mul, ← Matrix.mul_assoc (ak : Matrix Z Z k), ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.one_mul, F.βγ]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h1` using `[ha]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem map_mt_inv_loc {D : D7} {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (p : Place D k) {V : HSp D} {Z : Type} [Fintype Z] [DecidableEq Z] (F : Frame k V.rank Z) (a : GA D V) (ak : GL Z k)
@@ -162,9 +160,9 @@ theorem map_mt_inv_loc {D : D7} {k : Type} [Field k] [ValuativeRel k] [Topologic
     _ = _ := by rw [← Matrix.mul_assoc, h1, Matrix.one_mul]
 
 /- English proof (translation)
-Establish `hh : IsHalf p.e (actO S T a b (p.up FS FT x))` using `GlobalTheory.SplitHecke.isHalf_actO a b (GlobalTheory.LocMod.Witness.up_half p FS FT x)`. Rewrite using `[← GlobalTheory.LocMod.Witness.up_down p FS FT hh]`. Use `congr 1`. Establish `hx : (p.up FS FT x : Matrix (Fin T.rank) (Fin S.rank) (AE D)).map p.π = FT.β * x * FS.γ` using `Matrix.ext fun _ _ => p.π_ι _`. Unfold `Place.down actO`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[Matrix.map_mul, Matrix.map_mul, hb, ha, hx]`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc FT.γ, FT.γβ, Matrix.one_mul, ← Matrix.mul_assoc FT.γ, FT.γβ, Matrix.one_mul, ← Matrix.mul_assoc FS.γ, FS.γβ, Matrix.one_mul, Matrix.mul_one]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem actO_up_of_map {D : D7} {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (p : Place D k) {S T : HSp D} {Y Y' : Type} [Fintype Y] [DecidableEq Y] [Fintype Y'] [DecidableEq Y']
@@ -184,7 +182,7 @@ theorem actO_up_of_map {D : D7} {k : Type} [Field k] [ValuativeRel k] [Topologic
     ← Matrix.mul_assoc FS.γ, FS.γβ, Matrix.one_mul, Matrix.mul_one]
 
 /- English proof (translation)
-Introduce `D k _ _ _ _ p S T Y Y' _ _ _ _ FS FT a ak b bk ha hb x`. Use `⟨actO_up_of_map p FS FT a _ b _ hb.2 (map_mt_inv_loc p FS a ak ha.2) x, ?_⟩` and prove the remaining obligations. Use `actO_up_of_map p FS FT a⁻¹ _ b⁻¹ _ (map_mt_inv_loc p FT b bk hb.2) ?_ x` and prove the remaining obligations. Rewrite using `[inv_inv]`. Conclude with `ha.2`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem actO_up_loc : ∀ (D : D7) (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (p : Place D k) (S T : HSp D) (Y Y' : Type) [Fintype Y] [DecidableEq Y] [Fintype Y'] [DecidableEq Y'] (FS : Frame k S.rank Y') (FT : Frame k T.rank Y) (a : GA D S) (ak : GL Y' k) (b : GA D T) (bk : GL Y k), p.IsLoc FS a ak → p.IsLoc FT b bk → ∀ x : Matrix Y Y' k, actO S T a b (p.up FS FT x) = p.up FS FT ((bk : Matrix Y Y k) * x * ((ak⁻¹ : GL Y' k) : Matrix Y' Y' k)) ∧ actO S T a⁻¹ b⁻¹ (p.up FS FT x) = p.up FS FT (((bk⁻¹ : GL Y k) : Matrix Y Y k) * x * (ak : Matrix Y' Y' k)) := by
   intro D k _ _ _ _ p S T Y Y' _ _ _ _ FS FT a ak b bk ha hb x
@@ -195,55 +193,53 @@ theorem actO_up_loc : ∀ (D : D7) (k : Type) [Field k] [ValuativeRel k] [Topolo
 
 open GlobalTheory.SplitScalar GlobalTheory.LocMod.Witness in
 /- English proof (translation)
-Introduce `D k _ _ _ _ p ψ S T χS χT ω hW μS μT hμS hμT Y Y' _ _ _ _ FS FT Tm hTm g gk h hk hg hh he`. Take `⟨Λ, hdd, hd, hd', hup, hhalf, hchalf⟩` from `GlobalTheory.T.localSelfDualLattice_split_place_decomposition D k p ψ hW.std S T Y Y' FS FT`. Take `⟨R₀, hcard, hR₀, hR₀u⟩` from `GlobalTheory.T.index_integralMatrices_in_substitution_image k Y Y' gk hk he`. Establish `hact : ∀ x, actO S T g⁻¹ h⁻¹ (p.up FS FT x) = p.up FS FT (((hk⁻¹ : GL Y k) : Matrix Y Y k) * x * (gk : Matrix Y' Y' k))` using `fun x => (actO_up_loc D k p S T Y Y' FS FT g gk h hk hg hh x).2`. Establish `up_sub : ∀ x y, p.up FS FT (x - y) = p.up FS FT x - p.up FS FT y` using `fun x y => map_sub (upH p FS FT) x y`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `up_inj : Function.Injective (p.up FS FT)` using `fun x y hxy => by`. Rewrite using `[← down_up p FS FT x, hxy, down_up]`. Take `⟨x, hx, hxv⟩` from `exists_detAt_loc D k p S Y' FS g gk hg`. Take `⟨y, hy, hyv⟩` from `exists_detAt_loc D k p T Y FT h hk hh`. Establish `hχx : ((μT (Matrix.GeneralLinearGroup.det gk) : ℂˣ) : ℂ) = χT x` using `hμT _ _ hxv`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hχy : ((μS (Matrix.GeneralLinearGroup.det hk) : ℂˣ) : ℂ) = χS y` using `hμS _ _ hyv`. Establish `hR : ∀ u ∈ R₀.image (p.up FS FT), actO S T g⁻¹ h⁻¹ u ∈ Λ ∧ IsHalf p.e u`. Introduce `u hu`. Take `⟨v, hv, rfl⟩` from `Finset.mem_image.1 hu`. Conclude with `⟨by rw [hact, hup]; exact hR₀ v hv, up_half p FS FT v⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `hRu : ∀ w, actO S T g⁻¹ h⁻¹ w ∈ Λ → IsHalf p.e w → ∃! v, v ∈ R₀.image (p.up FS FT) ∧ w - v ∈ Λ`. Introduce `w hw hwh`. Take `⟨z, rfl⟩ : ∃ z, w = p.up FS FT z` from `⟨_, (up_down p FS FT hwh).symm⟩`. Rewrite `hw` using `[hact, hup]`. Take `⟨v, ⟨hv, hv2⟩, hvu⟩` from `hR₀u z hw`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `⟨p.up FS FT v, ⟨Finset.mem_image_of_mem _ hv, by rw [← up_sub, hup]; exact hv2⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `u ⟨hu, hu2⟩`. Take `⟨v', hv', rfl⟩` from `Finset.mem_image.1 hu`. Rewrite `hu2` using `[← up_sub, hup]`. Rewrite using `[hvu v' ⟨hv', hu2⟩]`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hle : ∀ w ∈ Λ, IsHalf p.e w → actO S T g⁻¹ h⁻¹ w ∈ Λ`. Introduce `w hw hwh`. Take `⟨z, hz, rfl⟩` from `hhalf w hw hwh`. Rewrite using `[hact, hup]`. Conclude with `he z hz`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨r, hr, hom⟩` from `GlobalTheory.SplitHecke.om_eq_smul_sum hW p.split hdd hd hd' hg.1 hh.1 hx hy hR hRu hle`. Set `ind : GL Y' k → GL Y k → Matrix Y Y' k → SB (Matrix Y Y' k)` to `fun a b v => ⟨_, indicator_mem_sb k Y Y' a b v⟩`. Establish `ind_apply : ∀ a b v t, (ind a b v).1 t = if (∀ r q, ((b : Matrix Y Y k) * (t + v) * (a : Matrix Y' Y' k)) r q ∈ 𝒪[k]) then 1 else 0` using `fun a b v t => by`. Simplify using `only [ind, Set.indicator_apply, Set.mem_setOf_eq]`. Establish `hΦ₀ : ∀ t, (ind 1 1 0).1 t = if (∀ r q, t r q ∈ 𝒪[k]) then 1 else 0` using `fun t => by`.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ind_apply]`. Simplify using the standard rewrite rules. Establish `hΦv : ∀ v t, (ind 1 1 v).1 t = (ind 1 1 0).1 (t + v)` using `fun v t => by`. Rewrite using `[ind_apply, ind_apply, add_zero]`. Establish `hΦB : ∀ t, (ind gk hk⁻¹ 0).1 t = if (∀ r q, (((hk⁻¹ : GL Y k) : Matrix Y Y k) * t * (gk : Matrix Y' Y' k)) r q ∈ 𝒪[k]) then 1 else 0` using `fun t => by rw [ind_apply]; simp`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsub : ∀ (a b : Matrix Y Y' k), (∀ r q, a r q ∈ 𝒪[k]) → (∀ r q, b r q ∈ 𝒪[k]) → ∀ r q, (a - b) r q ∈ 𝒪[k]` using `fun a b ha hb r q => by rw [Matrix.sub_apply]; exact sub_mem (ha r q) (hb r q)`. Establish `hf1 : ∀ u ∈ Λ, IsHalf p.e u → heisO ψ S T u (Tm (ind 1 1 0)) = Tm (ind 1 1 0)`. Introduce `u hu huh`. Take `⟨z, hz, rfl⟩` from `hhalf u hu huh`. Use `(hTm.trans z _ _ fun t => ?_).symm` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hΦ₀, hΦ₀]`. Use `if_congr ⟨fun h r q => ?_, fun h r q => ?_⟩ rfl rfl` and prove the remaining obligations. Rewrite using `[Matrix.add_apply]`. Conclude with `add_mem (h r q) (hz r q)`. Use `hsub _ _ h hz r q` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Rewrite `this` using `[add_sub_cancel_right]`. Then use the resulting hypothesis. Establish `hf2 : ∀ u ∈ Λ, IsHalf (cA D p.e) u → heisO ψ S T u (Tm (ind 1 1 0)) = Tm (ind 1 1 0)`. Introduce `u hu huh`. Use `(hTm.modul u huh _ _ fun t => ?_).symm` and prove the remaining obligations. Distinguish the cases in `ht : ∀ r q, t r q ∈ 𝒪[k]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hchalf u hu huh t ht, one_mul]`. Rewrite using `[hΦ₀, if_neg ht, mul_zero]`. Establish `key` using `hom _ (hTm.theta _) hf1 hf2`. Establish `hsum : ∑ u ∈ R₀.image (p.up FS FT), heisO ψ S T u (Tm (ind 1 1 0)) = Tm (ind gk hk⁻¹ 0)`. Rewrite using `[Finset.sum_image fun a _ b _ hab => up_inj hab]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e1 : ∀ v ∈ R₀, heisO ψ S T (p.up FS FT v) (Tm (ind 1 1 0)) = Tm (ind 1 1 v)` using `fun v _ => (hTm.trans v _ _ fun t => hΦv v t).symm`. Rewrite using `[Finset.sum_congr rfl e1, ← map_sum]`. Use `congr 1`. Use `Subtype.ext (funext fun t => ?_)` and prove the remaining obligations. Rewrite using `[Submodule.coe_sum, Finset.sum_apply, hΦB]`.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Finset.sum_congr rfl fun v _ => by rw [hΦv, hΦ₀]]`. Use `split_ifs with htB`. Establish `hnt : ∀ r q, (((hk⁻¹ : GL Y k) : Matrix Y Y k) * (-t) * (gk : Matrix Y' Y' k)) r q ∈ 𝒪[k]` using `fun r q => by`. Rewrite using `[Matrix.mul_neg, Matrix.neg_mul, Matrix.neg_apply]`. Conclude with `neg_mem (htB r q)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨v, ⟨hv, hv2⟩, hvu⟩` from `hR₀u (-t) hnt`. Establish `iff1 : ∀ v', (∀ r q, (-t - v') r q ∈ 𝒪[k]) ↔ (∀ r q, (t + v') r q ∈ 𝒪[k])` using `fun v' => by`. Use `forall_congr' fun r => forall_congr' fun q => ?_` and prove the remaining obligations. Rewrite using `[show -t - v' = -(t + v') by abel, Matrix.neg_apply, neg_mem_iff]`. Rewrite using `[Finset.sum_eq_single_of_mem v hv, if_pos ((iff1 v).1 hv2)]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `v' hv' hne`. Rewrite using `[if_neg]`. Introduce `h'`. Conclude with `hne (hvu v' ⟨hv', (iff1 v').2 h'⟩)`. Use `Finset.sum_eq_zero fun v hv => if_neg fun h' => htB fun r q => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2` using `he _ h' r q`. Establish `h3` using `hsub _ _ (he _ h') (hR₀ v hv) r q`. Rewrite `h3` using `[← Matrix.sub_mul, ← Matrix.mul_sub, add_sub_cancel_right]`. Then use the resulting hypothesis. Establish `hsf : ((splitFacO χS χT x y : Circle) : ℂ) = (((μT (Matrix.GeneralLinearGroup.det gk))⁻¹ : ℂˣ) : ℂ) * (μS (Matrix.GeneralLinearGroup.det hk) : ℂ)`. Rewrite using `[splitFacO, Circle.coe_mul, Circle.coe_inv, ← hχx, ← hχy, Units.val_inv_eq_inv_val]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `npos : ∀ z : kˣ, 0 < nabs k z` using `fun z => by`. Establish `h1 : distribHaarChar k z * distribHaarChar k z⁻¹ = 1` using `by rw [← map_mul, mul_inv_cancel, map_one]`. Establish `h2 : distribHaarChar k z ≠ 0` using `left_ne_zero_of_mul_eq_one h1`. Conclude with `NNReal.coe_pos.2 (pos_iff_ne_zero.2 h2)`. Use `⟨ind 1 1 0, ((((μT (Matrix.GeneralLinearGroup.det gk))⁻¹ : ℂˣ) : ℂ) * (μS (Matrix.GeneralLinearGroup.det hk) : ℂ) * ((nabs k (Matrix.GeneralLinearGroup.det gk) ^ ((Fintype.card Y : ℝ) / 2) : ℝ) : ℂ) * ((nabs k (Matrix.GeneralLinearGroup.det hk) ^ (-(Fintype.card Y' : ℝ) / 2) : ℝ) …` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Use `congrArg (fun F : SB (Matrix Y Y' k) => F.1 0) h0` as an intermediate fact. Simplify using `only [hΦ₀] at this`. Simplify using `at this`. Use function extensionality and compare the values at `t`. Rewrite using `[Submodule.coe_smul, Pi.smul_apply, Pi.smul_apply, smul_eq_mul, smul_eq_mul, hΦB]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Unfold `om`. Rewrite using `[hΦ₀]`. Use `split_ifs`. Simplify using `only [MonoidHom.mul_apply, MonoidHom.inv_apply, inv_inv, Units.val_mul, Units.val_inv_eq_inv_val]`. Clear the denominators using the available nonvanishing facts.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Simplify using the standard rewrite rules. Rewrite using `[key, hsum, map_smul]`. Distinguish the cases in `hf0 : Tm (ind 1 1 0) = 0`. Establish `hB : Tm (ind gk hk⁻¹ 0) = 0`. Rewrite using `[← hsum, hf0]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `Finset.sum_eq_zero fun u _ => funext fun w => by simp [heisO]`. Rewrite using `[hB, smul_zero, smul_zero]`. Use `congr 1`. Establish `hpair : ∀ u ∈ R₀.image (p.up FS FT), ∀ u' ∈ R₀.image (p.up FS FT), u ≠ u' → ∃ (l : WO S T) (ε : ℂ), ‖ε‖ = 1 ∧ heisO ψ S T l (Tm (ind 1 1 0)) = ε • Tm (ind 1 1 0) ∧ ψ (symplO S T (u - u') l) ≠ 1`. Introduce `u hu u' hu' hne`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hn : u - u' ∉ Λ` using `fun hm => hne ((hRu u (hR u hu).1 (hR u hu).2).unique ⟨hu, by rw [sub_self]; exact zero_mem _⟩ ⟨hu', hm⟩)`. Take `⟨l, hl, hlh, hlne⟩` from `hd _ (isHalf_sub (hR u hu).2 (hR u' hu').2) hn`. Conclude with `⟨l, 1, norm_one, by rw [hf2 l hl hlh, one_smul], psi_skew_ne hlne⟩`. Establish `hr'` using `om_sum_scale_eq D ψ S T χS χT ω hW g h _ (hTm.theta _) hf0 _ (Circle.norm_coe _) r hr _ hpair key`. Rewrite `hr'` using `[Finset.card_image_of_injective _ up_inj, hcard]`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hA` using `npos (Matrix.GeneralLinearGroup.det hk)`. Establish `hB` using `npos (Matrix.GeneralLinearGroup.det gk)`. Establish `hsq : (Real.sqrt (nabs k (Matrix.GeneralLinearGroup.det hk) ^ (Fintype.card Y' : ℝ) * nabs k (Matrix.GeneralLinearGroup.det gk) ^ (-(Fintype.card Y : ℝ))))⁻¹ = nabs k (Matrix.GeneralLinearGroup.det gk) ^ ((Fintype.card Y : ℝ) / 2) * nabs k (Matrix.GeneralLinearGroup.det hk) ^ (-( …`. Rewrite using `[Real.sqrt_eq_rpow, Real.mul_rpow (Real.rpow_nonneg hA.le _) (Real.rpow_nonneg hB.le _), ← Real.rpow_mul hA.le, ← Real.rpow_mul hB.le, mul_inv, ← Real.rpow_neg hA.le, ← Real.rpow_neg hB.le, mul_comm]`. Apply the tactic sequence `congr 2 <;> ring`.
-
-Rewrite using `[hr', hsq, hsf]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem vacuum_move : ∀ (D : D7) (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (p : Place D k) (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (χS χT : (AE D)ˣ →* Circle) (ω : Om S T), IsWeilDatumO ψ S T χS χT ω → ∀ (μS μT : kˣ →* ℂˣ), p.IsComp χS μS → p.IsComp χT μT → ∀ (Y Y' : Type) [Fintype Y] [DecidableEq Y] [Fintype Y'] [DecidableEq Y'] (FS : Frame k S.rank Y') (FT : Frame k T.rank Y) (Tm : SB (Matrix Y Y' k) →ₗ[ℂ] (WO S T → ℂ)), p.IsModel ψ FS FT Tm → ∀ (g : GA D S) (gk : GL Y' k) (h : GA D T) (hk : GL Y k), p.IsLoc FS g gk → p.IsLoc FT h hk → Enl gk hk → ∃ Φ₀ Φ₀' : SB (Matrix Y Y' k), Φ₀ ≠ 0 ∧ Φ₀'.1 = (((μS * μT⁻¹) (Matrix.GeneralLinearGroup.det gk) : ℂˣ) : ℂ) • om μS⁻¹ gk hk Φ₀.1 ∧ ω (g, h) (Tm Φ₀) = Tm Φ₀' := by
   intro D k _ _ _ _ p ψ S T χS χT ω hW μS μT hμS hμT Y Y' _ _ _ _ FS FT Tm hTm g gk h hk hg hh he

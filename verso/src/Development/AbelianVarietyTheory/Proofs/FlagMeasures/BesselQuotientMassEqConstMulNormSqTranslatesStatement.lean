@@ -9,7 +9,7 @@ open BranchingSupport GlobalTheory.CellAmp GlobalTheory.Amp Formalism.BasicNotio
 open scoped InnerProductSpace ENNReal
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.BesselIsometry.besselQuotientMass_eq_const_mul_norm_sq_translates` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FFlagMeasures%2FBesselQuotientMassEqConstMulNormSqTranslates.lean&line=330#L330)
 -/

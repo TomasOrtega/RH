@@ -15,27 +15,25 @@ namespace GlobalTheory.TopXiInv
 open Formalism.L2.Col.LocE Formalism.L2.Col.Loc
 
 /- English proof (translation)
-Introduce `X Pr R Ch sel S mu cst m2 u hPr hm hc hD p Y p' hY x y hy`. Take `⟨y₀, hy₀, rfl⟩` from `hy`. Use `set c : ℕ := cBof sel mu cst u with hcdef`. Express the relevant statement in the definitionally equal form `XiTop Ch sel mu cst m2 p Y p' (x + (c : 𝓞 X.E) • y₀) = _`. Unfold `XiTop`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Use `congrArg₂ (· * ·) ?_ ?_` and prove the remaining obligations. Use `GlobalTheory.TopInv.phiT_add _ _ p'.deco.2 x y₀ _ (fun P => ?_) fun P v hv => hy₀ P.1 (Finset.mem_union_left _ P.2) v hv` and prove the remaining obligations. Establish `h1 : Pr.piT u ∈ P.1.asIdeal`. Establish `h` using `P.2`. Unfold `Primes.vT divs at h`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify to obtain the desired conclusion from the available facts.
 
-Use `split_ifs at h with hf`. Simplify using `using h`. Simplify using `at h`. Rewrite using `[hcdef, cBof, Nat.cast_mul, ← hPr.piT_norm]`. Conclude with `Ideal.mul_mem_right _ _ (Ideal.mul_mem_right _ _ h1)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.prod_congr rfl fun P _ => ?_` and prove the remaining obligations. Establish `hq0` using `GlobalTheory.TopInv.qOf_ne P.1`. Rewrite using `[GlobalTheory.TopInv.inFr_add]`. Generalize the expression as in `inFr (frsF sel mu p P) (frsF sel mu p' P) x = x'`. Establish `hz : ∀ v : Sp X.E (R.N (m2 + 1)), (∀ l, IntAt P.1 (v l)) → ∀ l, IntAt P.1 (inFr (frsF sel mu p P) (frsF sel mu p' P) ((c : 𝓞 X.E) • y₀) v l / (qOf P.1 : X.E) ^ cst.B)`.
+Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `v hv l`. Establish `h1 : frsF sel mu p P v ∈ p.deco.1.at P.1` using `(frsF_mem p P v).2 ((mem_localization_standardLattice _ _).2 hv)`. Establish `h2` using `hy₀ P.1 (Finset.mem_union_right _ P.2) _ h1`. Establish `h3 : (frsF sel mu p' P).symm (y₀ (frsF sel mu p P v)) ∈ stdAt X.E _ P.1`. Use `(frsF_mem p' P _).1 ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[LinearEquiv.apply_symm_apply]`. Conclude with `h2`. Establish `h4` using `(mem_localization_standardLattice _ _).1 h3 l`. Take `⟨c', hc'⟩ : qOf P.1 ^ cst.B ∣ c` from `Dvd.dvd.mul_left (pow_dvd_pow_of_dvd (Finset.dvd_prod_of_mem (fun Q : rowSG Pr sel mu => qOf Q.1) (Finset.mem_univ P)) _) _`. Establish `h5 : inFr (frsF sel mu p P) (frsF sel mu p' P) ((c : 𝓞 X.E) • y₀) v l = (c : X.E) * (frsF sel mu p' P).symm (y₀ (frsF sel mu p P v)) l`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Express the relevant statement in the definitionally equal form `(frsF sel mu p' P).symm ((c : 𝓞 X.E) • y₀ (frsF sel mu p P v)) l = _`. Rewrite using `[equiv_osmul, Nat.cast_smul_eq_nsmul, Pi.smul_apply, nsmul_eq_mul]`. Rewrite using `[h5, hc']`. Use `(GlobalTheory.TopInv.intAt_nat (P := P.1) c').mul h4 using 1` and compare the differences between its conclusion and the goal. Use `push_cast`.
+Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Replace the chosen expression with an arbitrary variable. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Clear the denominators using the available nonvanishing facts. Generalize the expression as in `inFr (frsF sel mu p P) (frsF sel mu p' P) ((c : 𝓞 X.E) • y₀) = z at hz ⊢`. Unfold `locTop`. Rewrite using `[LinearMap.add_comp, LinearMap.comp_add, LinearMap.comp_add]`. Use `congrArg₂ (· * ·) ?_ ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `GlobalTheory.TopInv.PhiTop_add mu Ch _ _ hm P.1 _ _ fun s l => ?_` and prove the remaining obligations. Establish `h1` using `hz (LinearMap.funLeft X.E X.E (Fin.castAdd (cOf R (m2 + 1))) (Pi.single s 1)) fun l' => GlobalTheory.TopInv.single_int s _`. Establish `h2` using `GlobalTheory.TopInv.intAt_div_pow_le hq0 hc.B_pos (h1 (Br.iC (N_m_succ R) l))`. Rewrite `h2` using `[pow_one]`. Conclude with `h2`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `GlobalTheory.TopInv.ftY_add sel mu cst hc P (hD P) _ _ _ (fun s => ?_) ?_` and prove the remaining obligations. Conclude with `GlobalTheory.TopInv.atNL_int (R.N R.m - 1) _ _ (hz (Pi.single s 1) (GlobalTheory.TopInv.single_int s))`. Establish `h1` using `GlobalTheory.TopInv.repY_mem sel mu cst _ _ hY P`. Establish `h2` using `(frsF_mem p P ((frsF sel mu p P).symm (((qOf P.1 : X.E) ^ (if P.1 ∈ Pr.vGs then 1 else cst.M)) • repY Y))).1 (by`. Rewrite using `[LinearEquiv.apply_symm_apply]`.
-
-Conclude with `h1)`. Introduce `l`. Establish `h3` using `(mem_localization_standardLattice _ _).1 h2 l`. Rewrite `h3` using `[map_smul]`. Conclude with `h3`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem xiTop_invariant : ∀ {X : Fields} {Pr : Primes X} {R : Ranks} (Ch : Chars X Pr R.m) (sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)) {S : Set ℕ} (mu : Tup X.F X.E X.K S) (cst : LocCst X (rowSG Pr sel mu)) (m2 : ℕ) (u : Pr.Word), Pr.Ok → R.m = m2 + 2 → cst.Ok → (∀ P : rowSG Pr sel mu, P.1 ∉ Pr.vGs → 2 * cst.M ≤ cst.D P) → ∀ (p : ChPt (R := R) sel mu u (m2 + 1)) (Y : Set (Sp X.E (R.N (m2 + 1)))) (p' : TopPt R sel mu u), Y ∈ ybSet sel mu cst p.deco.1.N → ∀ x z, z ∈ mulLat (cBof sel mu cst u) (homAt (Sall sel mu u) p.deco.1.N p'.deco.1.N) → XiTop Ch sel mu cst m2 p Y p' (x + z) = XiTop Ch sel mu cst m2 p Y p' x := by
   classical

@@ -5,7 +5,7 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EtChart
 open TensorProduct
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.DenseSec.locQuot_finiteType_formallyUnramified | exact GlobalTheory.DenseSec.locQuot_finiteType_formallyUnramified | (intros; apply GlobalTheory.DenseSec.locQuot_finiteType_formallyUnramified <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.etaleChart_localization_finiteType_formallyUnramified : ∀ (R : Type) [CommRing R] (A : Type) [CommRing A] [Algebra R A] (g : ℕ) (t : Fin g → A) (h : A), GlobalTheory.DenseSec.EtChart R A t h → ∀ (Ω : Type) [Field Ω] [Algebra R Ω] (I : Ideal (TensorProduct R Ω A)),
   letI : Algebra (MvPolynomial (Fin g) Ω) (Localization.Away (Ideal.Quotient.mk I (1 ⊗ₜ[R] h))) :=

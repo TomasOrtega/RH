@@ -11,14 +11,14 @@ section
 variable {k R : Type} [CommRing k] [CommRing R] [Algebra k R] {n : ℕ}
 
 /- English proof (translation)
-Rewrite using `[ct, ct, ct, Matrix.map_mul, Matrix.transpose_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem ct_mul (c : R ≃ₐ[k] R) (M N : Matrix (Fin n) (Fin n) R) :
     ct c (M * N) = ct c N * ct c M := by
   rw [ct, ct, ct, Matrix.map_mul, Matrix.transpose_mul]
 
 /- English proof (translation)
-Use extensionality with `i j`. Establish `h` using `AlgEquiv.congr_fun hc (M i j)`. Rewrite `h` using `[pow_two, AlgEquiv.mul_apply]`. Simplify `h` using `[ct]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem ct_ct {c : R ≃ₐ[k] R} (hc : c ^ 2 = 1) (M : Matrix (Fin n) (Fin n) R) :
     ct c (ct c M) = M := by
@@ -34,7 +34,7 @@ private theorem th_inv_val (c : R ≃ₐ[k] R) (y : GL (Fin n) R) :
     ((th c y)⁻¹ : GL (Fin n) R).val = ct c y.val := rfl
 
 /- English proof (translation)
-Establish `h : (thConj c y d)⁻¹ = (th c y)⁻¹ * d⁻¹ * y`. Simplify using `[thConj, mul_assoc]`. Rewrite using `[h, Units.val_mul, Units.val_mul, th_inv_val]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 private theorem thConj_inv (c : R ≃ₐ[k] R) (y d : GL (Fin n) R) :
     ((thConj c y d)⁻¹ : GL (Fin n) R).val = ct c y.val * (d⁻¹ : GL (Fin n) R).val * y.val := by
@@ -45,37 +45,35 @@ private theorem thConj_inv (c : R ≃ₐ[k] R) (y d : GL (Fin n) R) :
 end
 
 /- English proof (translation)
-Introduce `k R _ _ _ A _ _ n b c hc g hg w hw`. Take `⟨hG1, -, hG3⟩` from `gramBasic k R A n b c hc`. Take `⟨hu, hinj, hcomm⟩` from `hG3 g hg`. Establish `hc2 : c ^ 2 = 1` using `hc.pow`. Establish `hio : ∀ x : A, io c A ((1 : R) ⊗ₜ[k] x) = (1 : R) ⊗ₜ[k] x` using `fun x => by simp [io]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hu1 : ∀ x : Aˣ, IsUnit ((1 : R) ⊗ₜ[k] (x : A))` using `fun x => x.isUnit.map (Algebra.TensorProduct.includeRight : A →ₐ[k] R ⊗[k] A)`. Establish `hs : ∀ x : Aˣ, IsUnit (((1 : R) ⊗ₜ[k] (x : A)) * w.val)` using `fun x => (hu1 x).mul w.isUnit`. Establish `hgs : ∀ x : Aˣ, io c A (((1 : R) ⊗ₜ[k] (x : A)) * w.val) = ((1 : R) ⊗ₜ[k] (x : A)) * w.val * g.val` using `fun x => by`. Rewrite using `[map_mul, hio, hw]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hct : ∀ x : Aˣ, ct c (gramL b (((1 : R) ⊗ₜ[k] (x : A)) * w.val)) = gramL b (((1 : R) ⊗ₜ[k] (x : A)) * w.val) * mat b g.val` using `fun x => by`. Rewrite using `[(hG1 _ g.val).2.2.1, hgs, (hG1 _ g.val).2.1]`. Establish `hcong : ∀ (z s : R ⊗[k] A), ct c (mat b z) * gramL b s * mat b z = gramL b (io c A z * s * z)` using `fun z s => by`. Rewrite using `[(hG1 s z).1, (hG1 _ z).2.1]`. Establish `hmm : ∀ u v : R ⊗[k] A, mat b (u * v) = mat b u * mat b v` using `fun u v => map_mul (Algebra.leftMulMatrix (Algebra.TensorProduct.basis R b)) u v`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hm1 : mat b (1 : R ⊗[k] A) = 1` using `map_one (Algebra.leftMulMatrix (Algebra.TensorProduct.basis R b))`. Establish `hminj : Function.Injective (mat (R` using `R) b) := Algebra.leftMulMatrix_injective _`. Establish `hdiv : ∀ x x' : Aˣ, (1 : R) ⊗ₜ[k] (x' : A) = ((1 : R) ⊗ₜ[k] ((x' / x : Aˣ) : A)) * ((1 : R) ⊗ₜ[k] (x : A))` using `fun x x' => by`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, one_mul, ← Units.val_mul, div_mul_cancel]`. Use `⟨fun x => ?_, fun x x' d d' hd hd' => ⟨?_, fun y => ?_⟩⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hdet : IsUnit (gramL b (((1 : R) ⊗ₜ[k] (x : A)) * w.val)).det`. Rewrite using `[(hG1 _ 1).2.2.2]`. Conclude with `((hs x).map (Algebra.norm R)).mul hu`. Use `⟨(Matrix.nonsingInvUnit _ hdet)⁻¹, ?_⟩` and prove the remaining obligations. Rewrite using `[inv_inv]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Use `Units.ext ?_` and prove the remaining obligations. Establish `h1 : (th c d).val = ct c (d⁻¹ : GL (Fin n) R).val` using `rfl`. Rewrite using `[Units.val_mul, h1, hd, hct, ← hd, ← mul_assoc, ← Units.val_mul, mul_inv_cancel, Units.val_one, one_mul]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hiff : d' = thConj c y d ↔ gramL b (((1 : R) ⊗ₜ[k] (x' : A)) * w.val) = ct c y.val * gramL b (((1 : R) ⊗ₜ[k] (x : A)) * w.val) * y.val`. Rewrite using `[← hd, ← hd', ← thConj_inv, ← inv_inj (a := d'), Units.ext_iff]`. Rewrite using `[hiff]`. Prove the components needed by the constructor for the conclusion. Introduce `hy`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hyM : y.val * mat b g.val = mat b g.val * y.val`. Establish `h1` using `congrArg (ct c) hy`. Rewrite `h1` using `[hct, ct_mul, ct_mul, ct_ct hc2, hct, hy]`. Establish `hU : IsUnit (ct c y.val * gramL b (((1 : R) ⊗ₜ[k] (x : A)) * w.val))`. Rewrite using `[← hd, ← th_inv_val, ← Units.val_mul]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Units.isUnit _`. Use `hU.mul_left_cancel ?_` and prove the remaining obligations. Establish `h2 : ct c y.val * gramL b (((1 : R) ⊗ₜ[k] (x : A)) * w.val) * (y.val * mat b g.val) = ct c y.val * (gramL b (((1 : R) ⊗ₜ[k] (x : A)) * w.val) * mat b g.val) * y.val`. Simplify `h1` using `only [mul_assoc]`. Rewrite using `[h2]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [mul_assoc]`. Establish `hyM' : (y⁻¹ : GL (Fin n) R).val * mat b g.val = mat b g.val * (y⁻¹ : GL (Fin n) R).val`. Establish `e1 : (y⁻¹ : GL (Fin n) R).val * y.val = 1`. Rewrite using `[← Units.val_mul, inv_mul_cancel, Units.val_one]`. Establish `e2 : y.val * (y⁻¹ : GL (Fin n) R).val = 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[← Units.val_mul, mul_inv_cancel, Units.val_one]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[e2, mul_one]`. Use `_ = (y⁻¹ : GL (Fin n) R).val * (y.val * mat b g.val) * (y⁻¹ : GL (Fin n) R).val := by`. Rewrite using `[hyM]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Simplify using `only [mul_assoc]`. Use `_ = mat b g.val * (y⁻¹ : GL (Fin n) R).val := by`. Rewrite using `[← mul_assoc, e1, one_mul]`. Take `⟨z, hz⟩` from `hcomm y.val hyM`. Take `⟨z', hz'⟩` from `hcomm _ hyM'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hzz : z * z' = 1` using `hminj (by`. Rewrite using `[hmm, hm1, ← hz, ← hz', ← Units.val_mul, mul_inv_cancel, Units.val_one])`. Establish `hzz' : z' * z = 1` using `by rw [mul_comm, hzz]`. Use `⟨⟨z, z', hzz, hzz'⟩, Units.ext hz, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(1 : R) ⊗ₜ[k] ((x' / x : Aˣ) : A) = z * io c A z`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `hy` using `[hz, hcong]`. Establish `h3` using `hinj hy`. Rewrite `h3` using `[hdiv x x']`. Use `(hs x).mul_right_cancel ?_` and prove the remaining obligations. Rewrite `h3` using `[← mul_assoc]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Assume the hypotheses and unpack their components. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[← mul_assoc, h3]`. Expand and normalize the polynomial expressions, which then agree. Introduce and unpack `⟨z, rfl, hz⟩`. Express the relevant statement in the definitionally equal form `_ = ct c (mat b z.val) * _ * mat b z.val`. Rewrite using `[hcong, hdiv x x', hz]`.
-
-Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem tIso : TIso := by
   intro k R _ _ _ A _ _ n b c hc g hg w hw

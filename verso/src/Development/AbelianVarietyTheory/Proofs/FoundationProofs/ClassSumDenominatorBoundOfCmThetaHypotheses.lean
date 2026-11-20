@@ -14,7 +14,7 @@ open scoped BigOperators
 namespace GlobalTheory.NormSum.DenomBound
 
 /- English proof (translation)
-Rewrite using `[Real.log_nat_eq_sum_factorization, Finsupp.sum_of_support_subset _ (Finset.subset_union_right (s₁ := S)) _ (by simp)]`. Rewrite using `[← Finset.sum_congr rfl fun (l : ℕ) (hl : l ∈ S) => congrArg (fun t : ℕ => (t : ℝ) * Real.log l) (Nat.factorization_def n (hS l hl))]`. Conclude with `Finset.sum_le_sum_of_subset_of_nonneg Finset.subset_union_left fun l _ _ => mul_nonneg (Nat.cast_nonneg _) (Real.log_natCast_nonneg _)`.
+Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_val_log_le (S : Finset ℕ) (hS : ∀ l ∈ S, l.Prime) (n : ℕ) :
     ∑ l ∈ S, (padicValNat l n : ℝ) * Real.log l ≤ Real.log n := by
@@ -26,11 +26,11 @@ theorem sum_val_log_le (S : Finset ℕ) (hS : ∀ l ∈ S, l.Prime) (n : ℕ) :
     mul_nonneg (Nat.cast_nonneg _) (Real.log_natCast_nonneg _)
 
 /- English proof (translation)
-Establish `h1 : 8 ^ (2 * x) ≤ x ^ (6 * x)`. Rewrite using `[show 6 * x = 3 * (2 * x) by ring, pow_mul x]`. Conclude with `Nat.pow_le_pow_left (by simpa using Nat.pow_le_pow_left hx 3) _`. Establish `h2 : (4 * x).factorial ≤ x ^ (12 * x)`. Use `(Nat.factorial_le_pow _).trans ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[show 12 * x = 3 * (4 * x) by ring, pow_mul x]`. Use `Nat.pow_le_pow_left ?_ _` and prove the remaining obligations. Rewrite using `[pow_succ]`. Conclude with `Nat.mul_le_mul_right _ (by simpa using Nat.pow_le_pow_left hx 2)`. Establish `h3 : 8 ^ (2 * x) * (4 * x).factorial ≤ x ^ (18 * x)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[show 18 * x = 6 * x + 12 * x by ring, pow_add]`. Conclude with `Nat.mul_le_mul h1 h2`. Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem log_order_le (x : ℕ) (hx : 2 ≤ x) :
     Real.log ((8 ^ (2 * x) * (4 * x).factorial : ℕ) : ℝ) ≤ 18 * x * Real.log x := by
@@ -56,25 +56,25 @@ noncomputable def expo_vp (f N d Q : ℕ) (B : ℝ) (dl : ℕ → ℝ) (p : ℕ)
     4 * (N : ℝ) ^ 2 * (padicValNat p Q : ℝ)
 
 /- English proof (translation)
-Use `set M : ℕ := 8 ^ (4 * f * N) * (8 * f * N).factorial with hM`. Establish `hM0 : M ≠ 0` using `by positivity`. Use `set S' : Finset ℕ := (M.primeFactors ∪ S ∪ {d} ∪ Q.primeFactors).filter Nat.Prime with hS'`. Establish `hP : ∀ l ∈ S', l.Prime` using `fun l hl => (Finset.mem_filter.1 hl).2`. Use `⟨S', hP, fun l => ?_, fun l hl => ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `h0 l` as an intermediate fact. Establish `hB0 : 0 ≤ B` using `by linarith`. Unfold `expo_vp`. Simplify using `only`. Apply the tactic sequence `split_ifs <;> positivity`.
+Replace the relevant objects with their definitions. Simplify by unfolding definitions. Apply the first step, then apply the next step to every resulting obligation. Simplify by unfolding definitions. Simplify using the standard rewrite rules.
 
-Simplify using `only split_ifs with hp`. Simplify using `only [hS', Finset.mem_filter, hp, and_true, Finset.mem_union, not_or, Finset.mem_singleton, Nat.mem_primeFactors, true_and, ne_eq, hM0, hQ.ne', not_false_eq_true] at hl`. Take `⟨⟨⟨a1, a2⟩, a3⟩, a4⟩` from `hl`. Unfold `expo_vp`. Rewrite using `[← hM, padicValNat.eq_zero_of_not_dvd a1, padicValNat.eq_zero_of_not_dvd a4, hz l a2, if_neg a3]`.
+Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish `e1` using `sum_val_log_le S' hP M`. Establish `e2` using `sum_val_log_le S' hP Q`. Establish `e3 : ∑ l ∈ S', dl l * Real.log l ≤ L`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `le_trans ?_ hs` and prove the remaining obligations. Rewrite using `[Finset.sum_subset (s₁ := S) (s₂ := S ∪ S') Finset.subset_union_left (fun l _ hl => by rw [hz l hl, zero_mul])]`. Conclude with `Finset.sum_le_sum_of_subset_of_nonneg Finset.subset_union_right fun l _ _ => mul_nonneg (h0 l) (Real.log_natCast_nonneg _)`. Establish `e4 : ∑ l ∈ S', (if l = d then (1 / 4 : ℝ) else 0) * Real.log l ≤ L / 2`. Simplify using `only [ite_mul, zero_mul, Finset.sum_ite_eq']`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply the tactic sequence `split_ifs <;> linarith`. Establish `e5 : Real.log M ≤ 18 * (f * (2 * N)) * Real.log (f * (2 * N))`. Use `log_order_le (f * (2 * N)) (by nlinarith)` as an intermediate fact. Rewrite `this` using `[show 2 * (f * (2 * N)) = 4 * f * N by ring, show 4 * (f * (2 * N)) = 8 * f * N by ring, ← hM]`. Move the coercions through the operations in `at this`.
+Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `this`. Establish `e6 : ∑ l ∈ S', (if l.Prime then expo_vp f N d Q B dl l else 0) * Real.log l = ∑ l ∈ S', (padicValNat l M : ℝ) * Real.log l + 4 * f * N * B * (∑ l ∈ S', dl l * Real.log l + ∑ l ∈ S', (if l = d then (1 / 4 : ℝ) else 0) * Real.log l + ∑ l ∈ S', (padicValNat l Q : ℝ) * Real.log l) + …`. Rewrite using `[← Finset.sum_add_distrib, ← Finset.sum_add_distrib, Finset.mul_sum, Finset.mul_sum, ← Finset.sum_add_distrib, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun l hl => ?_` and prove the remaining obligations. Rewrite using `[if_pos (hP l hl), expo_vp, ← hM]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hfR : (1 : ℝ) ≤ f` using `by exact_mod_cast hf`. Establish `hNR : (1 : ℝ) ≤ N` using `by exact_mod_cast hN`. Establish `hq : 0 ≤ Real.log Q` using `Real.log_natCast_nonneg _`. Establish `hc : 0 ≤ 4 * (f : ℝ) * N * B` using `by positivity`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfB : 1 ≤ (f : ℝ) * B` using `by nlinarith`. Establish `g1` using `mul_le_mul_of_nonneg_left (add_le_add (add_le_add e3 e4) e2) hc`. Establish `g2` using `mul_le_mul_of_nonneg_left e2 (show 0 ≤ 4 * (N : ℝ) ^ 2 by positivity)`. Establish `g3 : (N : ℝ) * (f * N * B * Real.log Q) ≥ 1 * (f * N * B * Real.log Q)` using `mul_le_mul_of_nonneg_right hNR (by positivity)`. Establish `g4 : (f : ℝ) * B * (N ^ 2 * Real.log Q) ≥ 1 * (N ^ 2 * Real.log Q)` using `mul_le_mul_of_nonneg_right hfB (by positivity)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 
-Establish `g5 : 0 ≤ (f : ℝ) * N * B * L` using `by positivity`. Establish `g6 : 0 ≤ (f : ℝ) * N ^ 2 * B * Real.log Q` using `by positivity`. Use `show ∑ l ∈ S', (if l.Prime then expo_vp f N d Q B dl l else 0) * Real.log l ≤ _`. Rewrite using `[e6, intBound]`. Use the polynomial consequences of the given equalities and inequalities.
+A detailed English derivation is pending.
 -/
 theorem exists_exponents (f N d Q : ℕ) (B L : ℝ) (S : Finset ℕ) (dl : ℕ → ℝ) (hf : 1 ≤ f) (hN : 1 ≤ N) (hB : 1 ≤ B)
     (hL : 1 ≤ L) (hQ : 0 < Q) (h0 : ∀ l, 0 ≤ dl l) (hz : ∀ l, l ∉ S → dl l = 0)
@@ -141,7 +141,7 @@ theorem exists_exponents (f N d Q : ℕ) (B L : ℝ) (S : Finset ℕ) (dl : ℕ 
     nlinarith
 
 /- English proof (translation)
-Use `w.isMaximal` as an intermediate fact. Take `⟨p, n, -, h, hp, -⟩` from `Ideal.exists_prime_and_absNorm_eq_pow w.asIdeal`. Conclude with `⟨p, hp, h⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_prime_mem {K : Type} [Field K] [NumberField K] (w : Formalism.PairingDivisionLocalBalance.Pl K) :
     ∃ p : ℕ, p.Prime ∧ (p : 𝓞 K) ∈ w.asIdeal := by
@@ -150,17 +150,15 @@ theorem exists_prime_mem {K : Type} [Field K] [NumberField K] (w : Formalism.Pai
   exact ⟨p, hp, h⟩
 
 /- English proof (translation)
-Introduce `hI`. Use `⟨18, by norm_num, fun D Q N B L hQ hN hB hL hr => ?_⟩` and prove the remaining obligations. Take `⟨⟨S, dl, hLet⟩, hd, -, hf, -⟩` from `letters_and_sizes D (hI D).g1`. Take `⟨S', hE⟩` from `exists_exponents (fF D) N D.host.d Q B L S dl hf hN hB hL hQ.1 hLet.2.1 hLet.2.2.1 (hLet.2.2.2.1.trans hr) (by linarith)`. Use `⟨S', _, hE, ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `δ t0 p hp Q' hQ' P hP`. Use `CoordBound.coordInt D (hI D) S dl hLet Q N B hQ (by linarith) δ t0 p Q' hQ' P hP` as an intermediate fact. Simplify using `only [if_pos hp.out]`. Conclude with `this`. Introduce `δ t0 K _ _ _ _ σ ι P P' zA zA' hs hc hn`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `ne : ∀ (R : Pair D ⊤ δ t0 Q) (z : K), (∃ h T, R.coord h T ≠ 0) → σ z = (R.norm : ℂ) → z ≠ 0`. Introduce and unpack `R z h1 h2 rfl`. Use `(RepInv.rep_indep D (hI D) ⊤ δ t0 Q R.crv R.pt0 R R.level_pos).2.2.2.2 h1` as an intermediate fact. Rewrite `h2` using `[map_zero]`. Conclude with `this.ne (by exact_mod_cast h2)`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `val : ∀ (R : Pair D ⊤ δ t0 Q) (z : K), R.Small N B → z ≠ 0 → σ z = (R.norm : ℂ) → ∀ w : Formalism.PairingDivisionLocalBalance.Pl K, -(3 * Formalism.PairingDivisionLocalBalance.wt S' (fun p => if p.Prime then expo_vp (fF D) N D.host.d Q B dl p else 0) w) ≤ (Formalism.DivisionValue …`. Introduce `R z h1 h2 h3 w`. Take `⟨p, hp, hw⟩` from `exists_prime_mem w`. Establish `: Fact p.Prime` using `⟨hp⟩`. Rewrite using `[hE.wt_eq hp w hw, if_pos hp, ← mul_assoc]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `GlobalTheory.PadicPlaceBound.neg_mul_vw_le_vw K σ z p w _ h2 hw fun lam => ?_` and prove the remaining obligations. Rewrite using `[h3]`. Conclude with `(GlobalTheory.T.definiteThetaPairNorm_padicValuation_bound D (hI D) S dl hLet δ t0 Q R.crv R.pt0 hQ R N B h1 p lam).2`. Use `⟨hE.wt_size.1, hE.wt_size.2, fun i => ?_⟩` and prove the remaining obligations. Establish `a1` using `ne _ _ (hc i).1 (hn i).1`.
-
-Establish `a2` using `ne _ _ (hc i).2 (hn i).2`. Conclude with `⟨a1, a2, fun w => ⟨val _ _ (hs i).1 a1 (hn i).1 w, val _ _ (hs i).2 a2 (hn i).2 w⟩⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem intSt_of_forall_inp : (∀ D, Inp D) → IntSt := by
   intro hI

@@ -6,23 +6,21 @@ open GlobalTheory.Cartier GlobalTheory.ProjVar GlobalTheory.TrueGeo GlobalTheory
 namespace GlobalTheory.Mean4O
 
 /- English proof (translation)
-Introduce `F _ _ Y e M I a h x hx`. Take `⟨U0, hU0, hU0u⟩` from `hx.exists_nhds`. Take `⟨b, hb⟩` from `exists_unit_fnOf_eq hU0u`. Establish `hb'` using `hb (gen_mem hU0)`. Establish `hx0 : I.pt a x ∈ ptsIn Y.str (I.ε a) U0` using `mem_ptsIn.2 hU0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set r0 := ev Y.str (I.ε a) U0 b.1 (I.pt a x) with hr0`. Establish `hr0ne : r0 ≠ 0` using `ev_ne_zero hx0 b.isUnit`. Set `S : Set (Pts Y (I.ε a))` to `ptsIn Y.str (I.ε a) U0 ∩ (fun p => ev Y.str (I.ε a) U0 b.1 p / r0) ⁻¹' Complex.slitPlane`. Establish `hS : IsOpen S` using `((continuousOn_ev b.1).div_const r0).isOpen_inter_preimage (isOpen_ptsIn U0) Complex.isOpen_slitPlane`. Set `g : Pts Y (I.ε a) → ℂ` to `fun p => Complex.log (ev Y.str (I.ε a) U0 b.1 p / r0) + ((Real.log ‖r0‖ : ℝ) : ℂ)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨(I.pt a) ⁻¹' S, hS.preimage (I.pt a).continuous, ⟨hx0, ?_⟩, g ∘ I.pt a, ?_, ?_⟩` and prove the remaining obligations. Use `show ev Y.str (I.ε a) U0 b.1 (I.pt a x) / r0 ∈ Complex.slitPlane`. Rewrite using `[← hr0, div_self hr0ne]`. Conclude with `Complex.one_mem_slitPlane`. Introduce `j`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨c, hc⟩` from `I.alg a j`. Establish `hd : DifferentiableOn ℂ (g ∘ c.e.symm) (c.e.target ∩ c.e.symm ⁻¹' S)`. Establish `h1 : DifferentiableOn ℂ (ev Y.str (I.ε a) U0 b.1 ∘ c.e.symm) (c.e.target ∩ c.e.symm ⁻¹' S)` using `(c.holo U0 b.1).mono fun v hv => ⟨hv.1, hv.2.1⟩`. Introduce `v hv`. Establish `h2 : (ev Y.str (I.ε a) U0 b.1 ∘ c.e.symm) v / r0 ∈ Complex.slitPlane` using `hv.2.2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `h3 : DifferentiableWithinAt ℂ (fun w => (ev Y.str (I.ε a) U0 b.1 ∘ c.e.symm) w / r0) (c.e.target ∩ c.e.symm ⁻¹' S) v`. Simplify `(h1 v hv).mul_const r0⁻¹` using `only [div_eq_mul_inv]`. Establish `h4` using `h3.clog h2`. Conclude with `h4.add_const _`. Establish `key` using `(c.analyticOnNhd_finChart_iff hS g).2 hd`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hfun : (g ∘ I.pt a) ∘ ((M.A a).chart j).symm = g ∘ c.finChart.symm`. Use function extensionality and compare the values at `z`. Rewrite using `[hc]`. Simplify using `[Homeomorph.transOpenPartialHomeomorph_symm_apply]`. Rewrite using `[hfun]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `key.mono ?_` and prove the remaining obligations. Introduce and unpack `z ⟨hz1, hz2⟩`. Rewrite `hz1`, `hz2` using `[hc]`. Use `⟨by simpa using hz1, ?_⟩` and prove the remaining obligations. Simplify `hz2` using `[Homeomorph.transOpenPartialHomeomorph_symm_apply]`.
+Simplify to obtain the desired conclusion from the available facts. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce and unpack `y ⟨hy1, hy2⟩`. Establish `hrat : ratVal h (I.pt a y) = ev Y.str (I.ε a) U0 b.1 (I.pt a y)`. Rewrite using `[← hb', ratVal_fnOf hy1]`. Establish `hne : ev Y.str (I.ε a) U0 b.1 (I.pt a y) ≠ 0` using `ev_ne_zero hy1 b.isUnit`. Simplify using `only [g, Function.comp_apply, Complex.add_re, Complex.log_re, Complex.ofReal_re, norm_div, hrat]`.
-
-Rewrite using `[Real.log_div (norm_ne_zero_iff.2 hne) (norm_ne_zero_iff.2 hr0ne)]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem log_norm_ratVal_eq_re_holo : ∀ (F : Type) [Field F] [NumberField F] (Y : Var F) (e : ℕ) (M : Man e) (I : ManIs M Y) (a : Fin (M.n + 1)) (h : Y.Fn) (x : M.X a), UnitAt (under (I.pt a x)) h → ∃ W : Set (M.X a), IsOpen W ∧ x ∈ W ∧ ∃ G : M.X a → ℂ, (M.A a).HoloOn W G ∧ ∀ y ∈ W, Real.log ‖ratVal h (I.pt a y)‖ = (G y).re := by
   intro F _ _ Y e M I a h x hx

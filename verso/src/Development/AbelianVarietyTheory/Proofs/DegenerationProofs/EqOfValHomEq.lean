@@ -13,9 +13,9 @@ open GlobalTheory.ZH.CrdCalc
 variable {R : Type} [CommRing R] {X : Scheme.{0}}
 
 /- English proof (translation)
-Establish `e₁ : x.appLE U ⊤ h = x'.appLE U ⊤ h'`. Rewrite using `[← cancel_mono (Scheme.ΓSpecIso (CommRingCat.of R)).hom]`. Conclude with `CommRingCat.hom_ext e`. Establish `a` using `IsAffineOpen.SpecMap_appLE_fromSpec x hU (isAffineOpen_top (Sp R)) h`. Establish `a'` using `IsAffineOpen.SpecMap_appLE_fromSpec x' hU (isAffineOpen_top (Sp R)) h'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `a` using `[e₁, a', IsAffineOpen.fromSpec_top]`. Conclude with `((cancel_epi _).1 a).symm`.
+A detailed English derivation is pending.
 -/
 theorem eq_of_valHom_eq (x x' : Sp R ⟶ X) (U : X.Opens) (hU : IsAffineOpen U) (h : ⊤ ≤ x ⁻¹ᵁ U)
     (h' : ⊤ ≤ x' ⁻¹ᵁ U) (e : valHom x U h = valHom x' U h') : x = x' := by
@@ -28,7 +28,7 @@ theorem eq_of_valHom_eq (x x' : Sp R ⟶ X) (U : X.Opens) (hU : IsAffineOpen U) 
   exact ((cancel_epi _).1 a).symm
 
 /- English proof (translation)
-Rewrite using `[← Scheme.Hom.appLE_comp_appLE x p ⊤ U ⊤ le_top h]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem valHom_constFn {k : Type} [CommRing k] (p : X ⟶ Sp k) (x : Sp R ⟶ X) (U : X.Opens)
     (h : ⊤ ≤ x ⁻¹ᵁ U) (a : k) :
@@ -38,13 +38,13 @@ theorem valHom_constFn {k : Type} [CommRing k] (p : X ⟶ Sp k) (x : Sp R ⟶ X)
   rfl
 
 /- English proof (translation)
-Introduce `k _ X p H J s J₀ _ hI R _ _ x x' v hp hx hx'`. Establish `hm : x (IsLocalRing.closedPoint R) ∈ ⨆ i ∈ J₀, Out.nonzeroLocus (s i)`. Rewrite using `[hI.1]`. Discharge the goal by the elementary cases of `trivial`. Take `⟨i, hi⟩` from `TopologicalSpace.Opens.mem_iSup.1 hm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. Extract witnesses or component facts from the available result.
 
-Take `⟨hi₀, hi⟩` from `TopologicalSpace.Opens.mem_iSup.1 hi`. Establish `h` using `(top_le_iff x _).2 hi`. Establish `hu : IsUnit (v i)` using `(crd_isUnit_iff i hx).2 h`. Establish `h'` using `(crd_isUnit_iff i hx').1 hu`. Take `⟨hA, r, hr, hc⟩` from `hI.2 i hi₀`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `eq_of_valHom_eq x x' _ hA h h' (RingHom.eq_of_eqOn_set_dense hc ?_)` and prove the remaining obligations. Introduce and unpack `_ (⟨a, rfl⟩ | ⟨j, rfl⟩)`. Rewrite using `[valHom_constFn, valHom_constFn]`. Simplify using `only [hp]`. Establish `e` using `(crd_ratio hx (hr j) h).symm.trans (crd_ratio hx' (hr j) h')`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite `e` using `[valR_eq x _ h, valR_eq x' _ h']`. Conclude with `hu.mul_right_cancel e`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_of_crd_eq : (∀ (k : Type) [CommRing k] (X : Scheme.{0}) (p : X ⟶ Sp k) (H : LB X) (J : Type) (s : J → H.Sec) (J₀ : Set J), H.IsLB → ImmBy p H s J₀ → ∀ (R : Type) [CommRing R] [IsLocalRing R] (x x' : Sp R ⟶ X) (v : J → R), x ≫ p = x' ≫ p → Crd H s x v → Crd H s x' v → x = x') := by
   intro k _ X p H J s J₀ _ hI R _ _ x x' v hp hx hx'

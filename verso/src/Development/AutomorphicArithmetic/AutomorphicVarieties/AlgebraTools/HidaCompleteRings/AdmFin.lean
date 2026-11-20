@@ -5,7 +5,7 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AlgebraTools.HidaC
 open UpperTheory.V.AlgebraTools.AnnihilatorQuotientFinite TensorProduct
 
 /- English proof (translation)
-Establish `h1 : (P.map (Ideal.Quotient.mk I)).IsPrime` using `Ideal.map_isPrime_of_surjective Ideal.Quotient.mk_surjective (by rwa [Ideal.mk_ker])`. Establish `h2 : (P.map (Ideal.Quotient.mk I)).IsMaximal` using `IsArtinianRing.isMaximal_of_isPrime _`. Establish `h3` using `Ideal.comap_isMaximal_of_surjective (Ideal.Quotient.mk I) Ideal.Quotient.mk_surjective (K := P.map (Ideal.Quotient.mk I))`. Rewrite `h3` using `[Ideal.comap_map_of_surjective _ Ideal.Quotient.mk_surjective, ← RingHom.ker_eq_comap_bot, Ideal.mk_ker, sup_eq_left.2 h]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 private theorem isMax_of_le {R : Type*} [CommRing R] (I : Ideal R) [IsArtinianRing (R ⧸ I)]
     (P : Ideal R) [hP : P.IsPrime] (h : I ≤ P) : P.IsMaximal := by
@@ -18,9 +18,9 @@ private theorem isMax_of_le {R : Type*} [CommRing R] (I : Ideal R) [IsArtinianRi
     Ideal.mk_ker, sup_eq_left.2 h] at h3
 
 /- English proof (translation)
-Rewrite using `[isArtinianRing_iff_krullDimLE_zero, Ring.krullDimLE_zero_iff]`. Introduce `p hp`. Establish `h0 : I ^ k ≤ p.comap (Ideal.Quotient.mk (I ^ k))`. Introduce `x hx`. Simplify using `[Ideal.mem_comap, Ideal.Quotient.eq_zero_iff_mem.mpr hx]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `h1 : (p.comap (Ideal.Quotient.mk (I ^ k))).IsMaximal` using `isMax_of_le I _ (Ideal.IsPrime.le_of_pow_le h0)`. Establish `h2` using `Ideal.map_comap_of_surjective (Ideal.Quotient.mk (I ^ k)) Ideal.Quotient.mk_surjective p`. Break down `Ideal.map_eq_top_or_isMaximal_of_surjective (Ideal.Quotient.mk (I ^ k)) Ideal.Quotient.mk_surjective h1 with h | h` into its components or cases. Conclude with `absurd (h2 ▸ h) hp.ne_top`. Conclude with `h2 ▸ h`.
+Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 private theorem art_pow {R : Type*} [CommRing R] [IsNoetherianRing R] (I : Ideal R)
     [IsArtinianRing (R ⧸ I)] (k : ℕ) : IsArtinianRing (R ⧸ I ^ k) := by
@@ -38,9 +38,7 @@ private theorem art_pow {R : Type*} [CommRing R] [IsNoetherianRing R] (I : Ideal
   · exact h2 ▸ h
 
 /- English proof (translation)
-Introduce `R _ M _ _ _ I _ _ _`. Use `⟨UpperTheory.V.AlgebraTools.AnnihilatorQuotientFinite.completeFin I, fun k => ?_⟩` and prove the remaining obligations. Use `haveI := art_pow I k`. Rewrite using `[isFiniteLength_iff_isNoetherian_isArtinian]`. Use `⟨inferInstance, ?_⟩` and prove the remaining obligations.
-
-Use `haveI : Module.Finite (R ⧸ I ^ k) (M ⧸ (I ^ k • ⊤ : Submodule R M)) := Module.Finite.of_restrictScalars_finite R _ _`. Conclude with `isArtinian_of_surjective_algebraMap (R := R ⧸ I ^ k) Ideal.Quotient.mk_surjective`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.AlgebraTools.AnnihilatorQuotientFinite.tateH1FinitenessAtPlacesOver :
     ∀ {R : Type*} [CommRing R] {M : Type*} [AddCommGroup M] [Module R M] [IsNoetherianRing R] (I : Ideal R) [IsAdicComplete I R] [IsArtinianRing (R ⧸ I)] [Module.Finite R M], OrdAdm M I := by

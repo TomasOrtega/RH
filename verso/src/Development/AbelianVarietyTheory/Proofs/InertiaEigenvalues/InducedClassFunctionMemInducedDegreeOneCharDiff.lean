@@ -7,13 +7,13 @@ noncomputable section
 namespace GlobalTheory.BrauerZero
 
 /- English proof (translation)
-Establish `hS : (H.map E.subtype).subgroupOf E = H`. Use extensionality with `y`. Simplify using `[Subgroup.mem_subgroupOf]`. Establish `hc : Nat.card ((H.map E.subtype).subgroupOf E) = Nat.card H` using `Nat.card_congr (MulEquiv.subgroupCongr hS).toEquiv`. Use function extensionality and compare the values at `g`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [ind, hc]`. Use `congr 1`. Use `finsum_congr fun x => ?_` and prove the remaining obligations. Simplify using `only [ext0]`. Distinguish the cases in `hy : x⁻¹ * g * x ∈ H`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Establish `hy' : x⁻¹ * g * x ∈ (H.map E.subtype).subgroupOf E` using `by rw [hS]; exact hy`. Rewrite using `[dif_pos hy, dif_pos hy']`. Use `congr 1`. Apply `(Subgroup.equivMapOfInjective H E.subtype Subtype.val_injective).injective` to reduce the goal to its premises. Rewrite using `[MulEquiv.apply_symm_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `hy' : x⁻¹ * g * x ∉ (H.map E.subtype).subgroupOf E` using `by rw [hS]; exact hy`. Rewrite using `[dif_neg hy, dif_neg hy']`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem ind_eq_ind_map_subgroupOf {G : Type} [Group G] [Finite G] (E : Subgroup G) (H : Subgroup E)
     (φ : H → ℂ) :
@@ -42,15 +42,15 @@ theorem ind_eq_ind_map_subgroupOf {G : Type} [Group G] [Finite G] (E : Subgroup 
     rw [dif_neg hy, dif_neg hy']
 
 /- English proof (translation)
-Introduce `G _ _ E f hf`. Proceed by induction on `hf using AddSubgroup.closure_induction with`. Consider the case `mem x hx`. Take `⟨H, χ, rfl⟩` from `hx`. Establish `hK : H.map E.subtype ≤ E`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce and unpack `_ ⟨y, _, rfl⟩`. Conclude with `y.2`. Set `χ' : H.map E.subtype →* ℂˣ` to `χ.comp (Subgroup.equivMapOfInjective H E.subtype Subtype.val_injective).symm.toMonoidHom`. Rewrite using `[ind_sub, ind_eq_ind_map_subgroupOf E H (fun h => (χ h : ℂ)), ind_eq_ind_map_subgroupOf E H (fun _ => (1 : ℂ))]`. Establish `h1 : ind E (ind ((H.map E.subtype).subgroupOf E) (fun k => ((χ ((Subgroup.equivMapOfInjective H E.subtype Subtype.val_injective).symm ⟨((k : E) : G), k.2⟩) : ℂˣ) : ℂ))) = ind (H.map E.subtype) (fun k => (χ' k : ℂ))` using `GlobalTheory.T.inducedClassFunctionFromSubgroup_trans (H.map E.subtype) E hK (fun k => (χ' k : ℂ))`.
+Assume the hypotheses and unpack their components. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `GlobalTheory.T.inducedClassFunctionFromSubgroup_trans (H.map E.subtype) E hK (fun _ => (1 : ℂ))`. Rewrite using `[h1, h2]`. Conclude with `AddSubgroup.subset_closure ⟨H.map E.subtype, χ', rfl⟩`. Consider the case `zero`. Establish `: ind E (0 : E → ℂ) = 0` using `(indAddHomComplex E).map_zero`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Rewrite using `[this]`. Conclude with `zero_mem _`. Consider the case `add a b _ _ ha hb`. Establish `: ind E (a + b) = ind E a + ind E b` using `(indAddHomComplex E).map_add a b`. Rewrite using `[this]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `add_mem ha hb`. Consider the case `neg a _ ha`. Establish `: ind E (-a) = -ind E a` using `(indAddHomComplex E).map_neg a`. Rewrite using `[this]`. Conclude with `neg_mem ha`.
+A detailed English derivation is pending.
 -/
 theorem ind_mem_D0_of_mem_D0 : ∀ {G : Type} [Group G] [Finite G] (E : Subgroup G) (f : E → ℂ),
     f ∈ D0 E → ind E f ∈ D0 G := by

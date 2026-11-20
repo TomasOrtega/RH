@@ -12,17 +12,15 @@ open GlobalTheory.CechPic GlobalTheory.AbDual
 namespace GlobalTheory.ZarhinFam.KerC
 
 /- English proof (translation)
-Introduce `h M d S t c B _ _ Q la mu hZ T x hx hv j`. Take `⟨hB, hD1, hD2, hla, hmu, hlm, hml, hPiso⟩` from `id hZ`. Use `haveI : IsMonHom la := hla`. Establish `hQ : Q.IsLB` using `hD1.isLB`. Establish `hPQ : ∀ (Y : Over S) (a a' : Y ⟶ c.A), evc c.isLB a a' = evc hQ a (a' ≫ la)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : cls c.P c.isLB = evc hQ (fst c.A c.A) (snd c.A c.A ≫ la)` using `(cls_eq_iff c.isLB (pull_isLB hQ _)).2 hPiso`. Introduce `Y a a'`. Use `show CechPic.pull (lift a a').left (cls c.P c.isLB) = _`. Rewrite using `[e, pull_evc, lift_fst, lift_snd_assoc]`. Establish `hz` using `zarhinBundle_isLineBundle c.A B c.isLB hQ d mu`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h0 : CechPic.pull (lift (snd (Zob c.A B) T ≫ x) (fst (Zob c.A B) T)).left (zCls c.A B c.isLB hQ d mu) = 0`. Rewrite using `[← cls_zP c.A B c.isLB hQ d mu, ← cls_pull hz]`. Conclude with `(cls_eq_zero_iff (pull_isLB hz _)).2 hx`. Establish `h1` using `congrArg (CechPic.pull (lift (mkZ c.A B (fun _ => 1) (fun j' => if j' = j then snd T B else 1)) (fst T B) : T ⊗ B ⟶ Zob c.A B ⊗ T).left) h0`. Rewrite `h1` using `[← pull_comp, ← Over.comp_left, comp_lift, map_zero, lift_snd_assoc, lift_fst, AdjPf.pull_zCls c.isLB hQ d la mu hPQ]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [AdjPf.zf, Category.assoc, AdjPf.mkZ_pa, AdjPf.mkZ_pb, hv, MonObj.comp_one, MonObj.one_comp, evc_one_right hQ hD1.zero, hD1.additive.evc_one hQ, smul_zero, Finset.sum_const_zero, zero_add, add_zero] at h1`. Simplify using `only [apply_ite (evc hQ _), evc_one_right hQ hD1.zero, smul_ite, smul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true] at h1`. Use `(hD1.isPerfect hD2).ker_left T _ ((triv_ev_iff hQ _ _).2 ?_)` and prove the remaining obligations. Set `F : (T ⊗ B ⟶ c.A) →* Multiplicative (Pic (T ⊗ B).left)` to `MonoidHom.mk' (fun a => Multiplicative.ofAdd (evc hQ a (snd T B))) fun a a' => by`. Rewrite using `[(isAdditive_iff hQ).1 hD1.additive, ofAdd_add]`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `eF : ∀ a, evc hQ a (snd T B) = Multiplicative.toAdd (F a)` using `fun _ => rfl`. Establish `ep : fst T B ≫ ∏ i, (x ≫ pa c.A B i) ^ quat d j i = ∏ i, (fst T B ≫ x ≫ pa c.A B i) ^ quat d j i`. Use `map_prod (AdjPf.pre (G := c.A) (fst T B)) (fun i => (x ≫ pa c.A B i) ^ quat d j i) Finset.univ` as an intermediate fact. Simplify using `only [map_zpow] at this`. Conclude with `this`.
-
-Rewrite using `[ep, eF, map_prod, toAdd_prod]`. Simplify using `only [map_zpow, toAdd_zpow, ← eF]`. Conclude with `h1`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem ker_zarhinPolarization_of_pullback : ∀ (h M d : ℕ) (S : Scheme.{0}) (t : S ⟶ Sp (cycAway M)) (c : SiegPre h M (zetaAway M) t) (B : Over S) [GrpObj B] [IsCommMonObj B] (Q : LB (c.A ⊗ B).left) (la : c.A ⟶ B) (mu : B ⟶ c.A) (hZ : GlobalTheory.ZarhinFam.ZData c d B Q la mu) (T : Over S) (x : T ⟶ GlobalTheory.ZarhinFam.Zob c.A B), (∃ t : ((GlobalTheory.ZarhinFam.zP c.A B c.isLB hZ.2.1.isLB d mu).pull (lift (snd (GlobalTheory.ZarhinFam.Zob c.A B) T ≫ x) (fst (GlobalTheory.ZarhinFam.Zob c.A B) T)).left).Gen, t.IsGen) → (∀ j, x ≫ GlobalTheory.ZarhinFam.pb c.A B j = 1) → ∀ j, ∏ i, (x ≫ GlobalTheory.ZarhinFam.pa c.A B i) ^ GlobalTheory.ZarhinFam.quat d j i = 1 := by
   intro h M d S t c B _ _ Q la mu hZ T x hx hv j

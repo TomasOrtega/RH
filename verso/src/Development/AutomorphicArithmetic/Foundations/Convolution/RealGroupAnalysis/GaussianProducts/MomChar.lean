@@ -6,21 +6,19 @@ open UpperTheory.ConvolutionTheory.R2 UpperTheory.ConvolutionTheory.R2.G
 open scoped Classical ENNReal nonZeroDivisors
 
 /- English proof (translation)
-Introduce `Ω ι _ _ ν X ρ hX hint hmom t`. Establish `hym : Measurable (fun ω => ∑ i, t i * X ω i)` using `Finset.measurable_sum _ (fun i _ => ((measurable_pi_apply i).comp hX).const_mul (t i))`. Establish `hρ : Integrable ρ ν` using `by simpa using hint 0`. Establish `hbound : ∀ ω, |∑ i, t i * X ω i| ≤ (∑ i, |t i|) * ∑ i, |X ω i|`. Introduce `ω`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `(Finset.abs_sum_le_sum_abs _ _).trans ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_mul]`. Use `Finset.sum_le_sum (fun i _ => ?_)` and prove the remaining obligations. Rewrite using `[abs_mul]`. Conclude with `mul_le_mul_of_nonneg_left (Finset.single_le_sum (f := fun j => |X ω j|) (fun j _ => abs_nonneg _) (Finset.mem_univ i)) (abs_nonneg _)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hdom : Integrable (fun ω => Real.exp |∑ i, t i * X ω i| * ‖ρ ω‖) ν`. Use `(hint (∑ i, |t i|)).norm.mono' (((Real.measurable_exp.comp (continuous_abs.measurable.comp hym)).aestronglyMeasurable).mul hρ.norm.aestronglyMeasurable) (Eventually.of_forall fun ω => ?_)` and prove the remaining obligations. Simplify using `only [norm_mul, norm_norm, Complex.norm_real, Real.norm_eq_abs, abs_of_pos (Real.exp_pos _)]`. Rewrite using `[abs_norm]`. Conclude with `mul_le_mul_of_nonneg_right (Real.exp_le_exp.mpr (hbound ω)) (norm_nonneg (ρ ω))`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsum` using `hasSum_integral_of_dominated_convergence (μ := ν) (F := fun (n : ℕ) ω => (((∑ i, t i * X ω i : ℝ) : ℂ) * Complex.I) ^ n / (n.factorial : ℂ) * ρ ω) (f := fun ω => Complex.exp (((∑ i, t i * X ω i : ℝ) : ℂ) * Complex.I) * ρ ω) (fun (n : ℕ) ω => |∑ i, t i * X ω i| ^ n / (n.factorial …`. Establish `hz : (fun n : ℕ => ∫ ω, (((∑ i, t i * X ω i : ℝ) : ℂ) * Complex.I) ^ n / (n.factorial : ℂ) * ρ ω ∂ν) = fun _ => 0`. Use function extensionality and compare the values at `n`. Establish `: ∀ ω, (((∑ i, t i * X ω i : ℝ) : ℂ) * Complex.I) ^ n / (n.factorial : ℂ) * ρ ω = (Complex.I ^ n / (n.factorial : ℂ)) * (((∑ i, t i * X ω i : ℝ) : ℂ) ^ n * ρ ω)`. Introduce `ω`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[mul_pow]`. Expand and normalize the polynomial expressions, which then agree. Repeatedly rewrite using `[this]`. Rewrite using `[integral_const_mul, hmom n t, mul_zero]`. Rewrite `hsum` using `[hz]`.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hsum.unique hasSum_zero |>.symm ▸ rfl`. Establish `hc : Measurable (fun ω => ((∑ i, t i * X ω i : ℝ) : ℂ))` using `Complex.measurable_ofReal.comp hym`. Conclude with `((((hc.mul_const Complex.I).pow_const n).div_const _).aestronglyMeasurable).mul hρ.aestronglyMeasurable`. Use `Eventually.of_forall fun ω => ?_` and prove the remaining obligations. Rewrite using `[norm_mul, norm_div, norm_pow, norm_mul, Complex.norm_I, mul_one, Complex.norm_real, Complex.norm_natCast, Real.norm_eq_abs]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Eventually.of_forall fun ω => (Real.summable_pow_div_factorial _).mul_right _`. Establish `: (fun ω => ∑' n : ℕ, |∑ i, t i * X ω i| ^ n / (n.factorial : ℝ) * ‖ρ ω‖) = fun ω => Real.exp |∑ i, t i * X ω i| * ‖ρ ω‖`. Use function extensionality and compare the values at `ω`. Rewrite using `[tsum_mul_right, Real.exp_eq_exp_ℝ, NormedSpace.exp_eq_tsum_div]`. Rewrite using `[this]`.
-
-Conclude with `hdom`. Use `Eventually.of_forall fun ω => ?_` and prove the remaining obligations. Use `(NormedSpace.expSeries_div_hasSum_exp (𝔸 := ℂ) (((∑ i, t i * X ω i : ℝ) : ℂ) * Complex.I)).mul_right (ρ ω)` as an intermediate fact. Rewrite `this` using `[← Complex.exp_eq_exp_ℂ]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.R2.G.momChar :
     ∀ (Ω ι : Type) [MeasurableSpace Ω] [Fintype ι] (ν : Measure Ω) (X : Ω → ι → ℝ) (ρ : Ω → ℂ), Measurable X →

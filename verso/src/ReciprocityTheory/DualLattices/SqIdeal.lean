@@ -12,17 +12,15 @@ namespace ReciprocityTheory.PGsh.Up
 open ReciprocityTheory.PGsh.L2 ReciprocityTheory.PGsh.Up.U3
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero`. Introduce `f hf`. Take `⟨r, hr⟩` from `(AA.le_int hf : ∀ x, ∃ r : R, algebraMap R C r = f x) 0`. Establish `e : (fun a : ZMod p => f (((0 : ℕ) : ZMod p) * a)) = r • (1 : ZMod p → C)`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `a`. Simplify using `[Algebra.smul_def, hr]`. Rewrite using `[e]`. Conclude with `AA.carrier.smul_mem r AA.one_mem`. Consider the case `succ k ih`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `f hf`. Establish `hle : tensorSpan R AA.carrier ≤ AA.carrier.comap (LinearMap.funLeft R C (fun a : ZMod p => ((k : ZMod p) * a, a)))`. Unfold `tensorSpan`. Use `Submodule.span_le.mpr ?_` and prove the remaining obligations. Introduce and unpack `F ⟨g, hg, h, hh, rfl⟩`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[SetLike.mem_coe, Submodule.mem_comap]`. Establish `e : (LinearMap.funLeft R C (fun a : ZMod p => ((k : ZMod p) * a, a))) (fun q : ZMod p × ZMod p => g q.1 * h q.2) = (fun a => g ((k : ZMod p) * a)) * h`. Use function extensionality and compare the values at `a`. Simplify using `[LinearMap.funLeft_apply]`. Rewrite using `[e]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `AA.mul_mem _ _ (ih g hg) hh`. Establish `e : (fun a : ZMod p => f (((k + 1 : ℕ) : ZMod p) * a)) = (LinearMap.funLeft R C (fun a : ZMod p => ((k : ZMod p) * a, a))) (addPull R (ZMod p) f)`. Use function extensionality and compare the values at `a`. Simplify using `[addPull, LinearMap.funLeft_apply, add_mul]`. Rewrite using `[e]`.
-
-Conclude with `hle (AA.comul f hf)`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem stab_lemma {p : ℕ} [Fact p.Prime] {C : Type} [Field C] {R : Type} [CommRing R]
     [Algebra R C] (AA : HopfOrder (C := C) R (ZMod p)) (k : ℕ) :
@@ -58,9 +56,9 @@ private theorem stab_lemma {p : ℕ} [Fact p.Prime] {C : Type} [Field C] {R : Ty
     exact hle (AA.comul f hf)
 
 /- English proof (translation)
-Establish `hp` using `(Fact.out : p.Prime).two_le`. Establish `hinv : ω a * ω a⁻¹ = 1` using `by rw [← hmul, mul_inv_cancel₀ ha, hone]`. Establish `hne : ω a ≠ 0` using `left_ne_zero_of_mul_eq_one hinv`. Establish `h1 : ω a ^ (p - 1) = 1`. Establish `h2 : ω a ^ (p - 1) * ω a = 1 * ω a`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← pow_succ, Nat.sub_add_cancel (by omega), hpow, one_mul]`. Conclude with `mul_right_cancel₀ hne h2`. Establish `h3 : 2 * p - 3 + 1 = (p - 1) * 2` using `by omega`. Rewrite using `[← pow_succ, h3, pow_mul, h1, one_pow]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem pow_two_mul_p_sub_three_mul_self_eq_one {p : ℕ} [Fact p.Prime] {C : Type} [Field C] {ω : ZMod p → C}
     (hpow : ∀ a, ω a ^ p = ω a) (hone : ω 1 = 1) (hmul : ∀ a b, ω (a * b) = ω a * ω b)
@@ -76,9 +74,9 @@ private theorem pow_two_mul_p_sub_three_mul_self_eq_one {p : ℕ} [Fact p.Prime]
   rw [← pow_succ, h3, pow_mul, h1, one_pow]
 
 /- English proof (translation)
-Rewrite using `[Finset.mul_sum]`. Use `Fintype.sum_equiv (Equiv.mulRight₀ a ha) _ _ ?_` and prove the remaining obligations. Introduce `k`. Establish `h` using `pow_two_mul_p_sub_three_mul_self_eq_one hpow hone hmul a ha`. Use `show wt ω k * f (k * a) = ω a * (wt ω (k * a) * f (k * a))`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [wt, hmul, mul_pow]`. Take the linear combination `(-(ω k ^ (2 * p - 3) * f (k * a))) * h`.
+Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 private theorem sum_wt_mul_comp_mul_eq {p : ℕ} [Fact p.Prime] {C : Type} [Field C] {ω : ZMod p → C}
     (hpow : ∀ a, ω a ^ p = ω a) (hone : ω 1 = 1) (hmul : ∀ a b, ω (a * b) = ω a * ω b)
@@ -93,9 +91,9 @@ private theorem sum_wt_mul_comp_mul_eq {p : ℕ} [Fact p.Prime] {C : Type} [Fiel
   linear_combination (-(ω k ^ (2 * p - 3) * f (k * a))) * h
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation. Assume the negation of the conclusion as `h push_neg at h`. Establish `h2` using `Valuation.map_sub v q (q - 1)`. Rewrite `h2` using `[sub_sub_cancel, v.map_one]`.
+Reduce the claim to the hypotheses of an applicable result. Chain the equalities or inequalities of the calculation. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `absurd h2 (not_le.mpr (max_lt hq h))`.
+A detailed English derivation is pending.
 -/
 private theorem valuation_sub_one_eq_one_of_lt_one {C : Type} [Field C] (v : Valuation C NNReal) (q : C) (hq : v q < 1) :
     v (q - 1) = 1 := by
@@ -109,7 +107,7 @@ private theorem valuation_sub_one_eq_one_of_lt_one {C : Type} [Field C] (v : Val
     exact absurd h2 (not_le.mpr (max_lt hq h))
 
 /- English proof (translation)
-Establish `hk : v (k.val : C) ≤ 1`. Establish `h2` using `hv.map_le_one (k.val : R)`. Simplify using `using h2`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Chain the equalities or inequalities of the calculation.
 -/
 private theorem valuation_le_one_of_sub_natCast_lt_one {p : ℕ} {C : Type} [Field C] {v : Valuation C NNReal} {R : Type}
     [CommRing R] [Algebra R C] (hv : v.Integers R) (z : C) (k : ZMod p)
@@ -122,19 +120,17 @@ private theorem valuation_le_one_of_sub_natCast_lt_one {p : ℕ} {C : Type} [Fie
     _ ≤ 1 := max_le h.le hk
 
 /- English proof (translation)
-Establish `hpos : 0 < p` using `(Fact.out : p.Prime).pos`. Apply `le_antisymm` to reduce the goal to its premises. Introduce `f hf`. Simplify using `only [augIdeal, Submodule.mem_inf, LinearMap.mem_ker, LinearMap.proj_apply] at hf`. Take `⟨hfM, hf0⟩` from `hf`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Rewrite `hfM` using `[hM, Submodule.mem_span_range_iff_exists_fun]`. Take `⟨cf, rfl⟩` from `hfM`. Establish `hc0 : algebraMap R C (cf ⟨0, hpos⟩) = 0`. Rewrite `hf0` using `[Finset.sum_apply, Finset.sum_eq_single ⟨0, hpos⟩]`. Simplify `hf0` using `[Algebra.smul_def]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce `j _ hj`. Establish `hj' : (j : ℕ) ≠ 0` using `fun h => hj (Fin.ext h)`. Simplify using `[hx0, zero_pow hj']`. Simplify using the standard rewrite rules. Use `Submodule.sum_mem _ (fun j _ => ?_)` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Distinguish the cases in `hj : (j : ℕ) = 0`. Establish `hj0 : j = ⟨0, hpos⟩` using `Fin.ext hj`. Substitute `hj0` using the available equality. Establish `hz : cf ⟨0, hpos⟩ • x ^ ((⟨0, hpos⟩ : Fin p) : ℕ) = 0`. Use function extensionality and compare the values at `a`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [Pi.smul_apply, Pi.pow_apply, Fin.val_mk, pow_zero, Pi.zero_apply, Algebra.smul_def, hc0, zero_mul]`. Rewrite using `[hz]`. Conclude with `Submodule.zero_mem _`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨j, Nat.one_le_iff_ne_zero.mpr hj, j.isLt, rfl⟩)`. Use `Submodule.span_le.mpr ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 
-Introduce and unpack `_ ⟨j, hj1, hjp, rfl⟩`. Simplify using `only [SetLike.mem_coe, augIdeal, Submodule.mem_inf, LinearMap.mem_ker, LinearMap.proj_apply]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hM]`. Conclude with `Submodule.subset_span ⟨⟨j, hjp⟩, rfl⟩`.
-
-Simplify using `[hx0, zero_pow (by omega : j ≠ 0)]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem augIdeal_eq_span_pow_of_span_pow {p : ℕ} [Fact p.Prime] {C : Type} [Field C] {R : Type} [CommRing R]
     [Algebra R C] (M : Submodule R (ZMod p → C)) (x : ZMod p → C) (hx0 : x 0 = 0)
@@ -176,29 +172,25 @@ private theorem augIdeal_eq_span_pow_of_span_pow {p : ℕ} [Fact p.Prime] {C : T
     · simp [hx0, zero_pow (by omega : j ≠ 0)]
 
 /- English proof (translation)
-Establish `hp2` using `(Fact.out : p.Prime).two_le`. Use `set T := Submodule.span R ({fun a => algebraMap R C δ * x a} ∪ {y | ∃ j : ℕ, 2 ≤ j ∧ j < p ∧ y = x ^ j}) with hT`. Establish `hδ : (fun a => algebraMap R C δ * x a) = δ • x`. Use function extensionality and compare the values at `a`. Simplify using `[Algebra.smul_def]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hpow : ∀ n, 2 ≤ n → n ≤ 2 * p - 2 → x ^ n ∈ T`. Introduce `n hn2 hn`. Distinguish the cases in `hnp : n < p`. Conclude with `Submodule.subset_span (Or.inr ⟨n, hn2, hnp, rfl⟩)`. Use `push_neg at hnp`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨k, rfl⟩ : ∃ k, n = p + k` from `⟨n - p, by omega⟩`. Establish `hsplit : x ^ (p + k) = δ • x ^ (k + 1)`. Rewrite using `[pow_add, hxp, hδ, smul_mul_assoc, ← pow_succ']`. Rewrite using `[hsplit]`. Break down `Nat.eq_zero_or_pos k with hk | hk` into its components or cases.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Substitute `hk` using the available equality. Rewrite using `[zero_add, pow_one, ← hδ]`. Conclude with `Submodule.subset_span (Or.inl rfl)`. Conclude with `T.smul_mem δ (Submodule.subset_span (Or.inr ⟨k + 1, by omega, by omega, rfl⟩))`. Establish `hxI : ∀ j, 1 ≤ j → j < p → x ^ j ∈ I` using `fun j h1 h2 => by`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Rewrite using `[hI]`. Conclude with `Submodule.subset_span ⟨j, h1, h2, rfl⟩`. Apply `le_antisymm` to reduce the goal to its premises. Unfold `sqIdeal`. Use `Submodule.span_le.mpr ?_` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `_ ⟨f, hf, f', hf', rfl⟩`. Establish `key : ∀ i, 1 ≤ i → i < p → ∀ g ∈ I, x ^ i * g ∈ T`. Introduce `i hi1 hip g hg`. Rewrite `hg` using `[hI]`. Establish `hle : Submodule.span R {y | ∃ j : ℕ, 1 ≤ j ∧ j < p ∧ y = x ^ j} ≤ T.comap (LinearMap.mulLeft R (x ^ i))`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Submodule.span_le.mpr ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨k, hk1, hkp, rfl⟩`. Rewrite using `[SetLike.mem_coe, Submodule.mem_comap, LinearMap.mulLeft_apply, ← pow_add]`. Conclude with `hpow _ (by omega) (by omega)`. Conclude with `hle hg`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Establish `hle2 : I ≤ T.comap (LinearMap.mulRight R f')`. Rewrite using `[hI]`. Use `Submodule.span_le.mpr ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨i, hi1, hip, rfl⟩`. Rewrite using `[SetLike.mem_coe, Submodule.mem_comap, LinearMap.mulRight_apply]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Use linear arithmetic over natural numbers and integers.
 
-Conclude with `key i hi1 hip f' hf'`. Conclude with `hle2 hf`. Use `Submodule.span_le.mpr ?_` and prove the remaining obligations. Introduce and unpack `y (rfl | ⟨j, hj2, hjp, rfl⟩)`. Rewrite using `[SetLike.mem_coe]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Unfold `sqIdeal`. Use `Submodule.subset_span ⟨x ^ 1, hxI 1 le_rfl (by omega), x ^ (p - 1), hxI (p - 1) (by omega) (by omega), ?_⟩` and prove the remaining obligations. Rewrite using `[← hxp, ← pow_add]`. Use `congr 1`. Use linear arithmetic over natural numbers and integers.
-
-Rewrite using `[SetLike.mem_coe]`. Unfold `sqIdeal`. Use `Submodule.subset_span ⟨x ^ 1, hxI 1 le_rfl (by omega), x ^ (j - 1), hxI (j - 1) (by omega) (by omega), ?_⟩` and prove the remaining obligations. Rewrite using `[← pow_add]`. Use `congr 1`.
-
-Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 private theorem sqIdeal_eq_span_of_pow_p_eq_smul {p : ℕ} [Fact p.Prime] {C : Type} [Field C] {R : Type} [CommRing R]
     [Algebra R C] (x : ZMod p → C) (δ : R) (hxp : x ^ p = fun a => algebraMap R C δ * x a)
@@ -268,87 +260,79 @@ private theorem sqIdeal_eq_span_of_pow_p_eq_smul {p : ℕ} [Fact p.Prime] {C : T
       omega
 
 /- English proof (translation)
-Introduce `p hpf C _ _ _ v R _ _ hv hpv AA`. Establish `hprime : p.Prime` using `hpf.out`. Use `haveI : NeZero p := ⟨hprime.ne_zero⟩`. Take `⟨ω, hωpow, hωcong, hω0, hω1, hωmul, hωsep⟩` from `exists_teichChar hv hpv`. Establish `hT : IsTeich v ω` using `⟨hωpow, hωcong, hω0, hω1, hωmul, hωsep⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨ζ, hζ⟩ : ∃ ζ : C, IsPrimitiveRoot ζ p` from `exists_primRoot`. Take `⟨e, he1, he2⟩` from `exists_charEquiv hζ`. Take `⟨AD, hAD1, -, hcol⟩` from `ReciprocityTheory.PGsh.L2.h1 C R v hv (ZMod p) (ZMod p) e he1 rfl AA`. Take `⟨BA, hBAu, hBA⟩` from `AA.lat`. Take `⟨BD, hBDu, hBD⟩` from `AD.lat`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hcc` using `hcol (v BA.det) (v BD.det) ⟨BA, hBA, rfl⟩ ⟨BD, hBD, rfl⟩`. Rewrite `hcc` using `[ZMod.card]`. Establish `hvp1 : v ((p : C) - 1) = 1` using `valuation_sub_one_eq_one_of_lt_one v _ hpv`. Establish `hq0 : (p : C) - 1 ≠ 0`. Introduce `h`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hvp1` using `[h, Valuation.map_zero]`. Conclude with `zero_ne_one hvp1`. Establish `hsumω : ∑ a, u0 ω a * ω a = (p : C) - 1`. Establish `hterm : ∀ a, u0 ω a * ω a = 1 - if a = 0 then 1 else 0`. Introduce `a`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Distinguish the cases in `ha : a = 0`. Substitute `ha` using the available equality. Simplify using `[hω0]`. Rewrite using `[if_neg ha, sub_zero]`. Simplify using `only [u0, if_neg ha, sub_zero]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `pow_two_mul_p_sub_three_mul_self_eq_one hωpow hω1 hωmul a ha`. Rewrite using `[Finset.sum_congr rfl (fun a _ => hterm a)]`. Simplify using `[Finset.sum_sub_distrib, Finset.card_univ, ZMod.card]`. Take `⟨j0, -, hj0'⟩` from `Finset.exists_max_image Finset.univ (fun j => v (∑ a, u0 ω a * BA a j)) Finset.univ_nonempty`. Establish `hj0 : ∀ j, v (∑ a, u0 ω a * BA a j) ≤ v (∑ a, u0 ω a * BA a j0)` using `fun j => hj0' j (Finset.mem_univ _)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `clear hj0'`. Use `set m := ∑ a, u0 ω a * BA a j0 with hmdef`. Establish `hm : m ≠ 0`. Introduce `hm0`. Establish `hall : ∀ j, (∑ a, u0 ω a * BA a j) = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Introduce `j`. Establish `h` using `hj0 j`. Rewrite `h` using `[hm0, Valuation.map_zero]`. Conclude with `(Valuation.zero_iff v).mp (le_antisymm h (by positivity))`. Establish `hinv : BA * BA⁻¹ = 1` using `Matrix.mul_nonsing_inv BA hBAu`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation.
 
-Choose the witnesses or unpack the hypotheses as in `⟨w, hw⟩ : ∃ w : ZMod p → C, ∀ a, ω a = ∑ j, BA a j * w j := by`. Use `⟨fun j => ∑ k, BA⁻¹ j k * ω k, fun a => ?_⟩` and prove the remaining obligations. Establish `h1 : ∑ k, (BA * BA⁻¹) a k * ω k = ω a`. Rewrite using `[hinv]`. Simplify using `[Matrix.one_apply]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations.
 
-Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_apply, Finset.sum_mul, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl (fun j _ => Finset.sum_congr rfl (fun k _ => by ring))`. Establish `h0 : ∑ a, u0 ω a * ω a = 0`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_congr rfl (fun a _ => ?_)` and prove the remaining obligations. Rewrite using `[hw a, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl (fun j _ => by ring)`. Use `_ = ∑ j, ∑ a, u0 ω a * BA a j * w j := Finset.sum_comm`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Use `_ = ∑ j, (∑ a, u0 ω a * BA a j) * w j := by`. Use `Finset.sum_congr rfl (fun j _ => ?_)` and prove the remaining obligations. Rewrite using `[Finset.sum_mul]`. Use `_ = 0 := Finset.sum_eq_zero (fun j _ => by rw [hall j, zero_mul])`. Rewrite `h0` using `[hsumω]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hq0 h0`. Establish `hvm : v m ≠ 0` using `(Valuation.ne_zero_iff v).mpr hm`. Establish `hcolR : ∀ j, ∃ r : R, algebraMap R C r = (∑ a, u0 ω a * BA a j) * m⁻¹`. Introduce `j`. Apply `hv.exists_of_le_one` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_mul, map_inv₀]`. Combine the equalities or inequalities in the displayed calculation. Establish `hP : AA.carrier ≤ dualLat (Submodule.span R {fun a => m⁻¹ * u0 ω a})`. Rewrite using `[hBA]`. Use `Submodule.span_le.mpr ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce and unpack `_ ⟨j, rfl⟩`. Use `show ∀ g ∈ Submodule.span R {fun a => m⁻¹ * u0 ω a}, ∃ r : R, algebraMap R C r = ∑ a, BA a j * g a`. Introduce `g hg`. Take `⟨s, rfl⟩` from `Submodule.mem_span_singleton.mp hg`. Take `⟨r, hr⟩` from `hcolR j`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `⟨s * r, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, hr, Finset.sum_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl (fun a _ => ?_)` and prove the remaining obligations. Simplify using `only [Pi.smul_apply, Algebra.smul_def]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hu : (fun a => m⁻¹ * u0 ω a) ∈ dualLat AA.carrier` using `by show ∀ f ∈ AA.carrier, ∃ r : R, algebraMap R C r = ∑ a, m⁻¹ * u0 ω a * f a`. Introduce `f hf`. Establish `hf' : ∀ g ∈ Submodule.span R {fun a => m⁻¹ * u0 ω a}, ∃ r : R, algebraMap R C r = ∑ a, f a * g a` using `hP hf`. Take `⟨r', hr'⟩` from `hf' _ (Submodule.mem_span_singleton_self _)`. Conclude with `⟨r', by rw [hr']; exact Finset.sum_congr rfl (fun a _ => mul_comm _ _)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hyAD : fourier (R` using `R) (fun h a => e h a) (fun a => m⁻¹ * u0 ω a) ∈ AD.carrier := by`. Rewrite using `[hAD1]`. Conclude with `Submodule.mem_map_of_mem hu`. Rewrite `hyAD` using `[fourierMap_smul_lambdaWeight (R := R) hT e he2 m⁻¹]`. Establish `hg` using `v_gamma hv hpv hT hζ`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `set g := ∑ a, u0 ω a * ζ ^ a.val with hgdef`. Use `set c := m * ((p : C) - 1)⁻¹ with hcdef`. Establish `hf0 : (fun x => BA x j0) ∈ AA.carrier`. Rewrite using `[hBA]`. Conclude with `Submodule.subset_span ⟨j0, rfl⟩`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Take `⟨s0, hs0⟩` from `(AA.le_int hf0 : ∀ y, ∃ r : R, algebraMap R C r = BA y j0) 0`. Establish `hcoef : ∀ k : ZMod p, ∃ r : R, algebraMap R C r = wt ω k * ((p : C) - 1)⁻¹`. Introduce `k`. Apply `hv.exists_of_le_one` to reduce the goal to its premises. Rewrite using `[map_mul, map_inv₀, hvp1, inv_one, mul_one]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation. Reduce the claim to the hypotheses of an applicable result.
 
-Use `show v (ω k ^ (2 * p - 3)) ≤ 1`. Rewrite using `[map_pow]`. Conclude with `pow_le_one' (valuation_le_one_of_sub_natCast_lt_one hv (ω k) k (hωcong k)) _`. Use `choose r hr using hcoef`. Establish `hmexp : m = ∑ b, wt ω b * BA b j0 - sS ω * BA 0 j0`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[hmdef]`. Simplify using `[u0, sub_mul, ite_mul, Finset.sum_sub_distrib]`. Establish `hE : (fun a => c * ω a) ∈ AA.carrier`. Establish `hmem : (∑ k : ZMod p, r k • ((fun a => BA (k * a) j0) - s0 • (1 : ZMod p → C))) ∈ AA.carrier`. Use `Submodule.sum_mem _ (fun k _ => Submodule.smul_mem _ _ (Submodule.sub_mem _ ?_ (Submodule.smul_mem _ _ AA.one_mem)))` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `h` using `stab_lemma AA k.val (fun x => BA x j0) hf0`. Simplify `h` using `[ZMod.natCast_zmod_val]`. Use `hmem using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `a`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, Pi.sub_apply, Pi.one_apply, Algebra.smul_def, Pi.mul_apply, Pi.algebraMap_apply, hr, hs0, mul_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Distinguish the cases in `ha : a = 0`. Substitute `ha` using the available equality. Rewrite using `[hω0, mul_zero]`. Use `symm`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises.
+Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `k _`. Simplify using `[hr, hs0, Algebra.smul_def]`. Establish `h1' : ∑ k, wt ω k * BA (k * a) j0 = ω a * ∑ b, wt ω b * BA b j0` using `sum_wt_mul_comp_mul_eq hωpow hω1 hωmul a ha (fun b => BA b j0)`. Establish `h2' : ∑ k, wt ω k = ω a * ∑ b, wt ω b`. Simplify using `using sum_wt_mul_comp_mul_eq hωpow hω1 hωmul a ha (fun _ => (1 : C))`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `h3' : ∑ k, wt ω k * ((p : C) - 1)⁻¹ * (BA (k * a) j0 - BA 0 j0) = ((p : C) - 1)⁻¹ * ∑ k, wt ω k * BA (k * a) j0 - ((p : C) - 1)⁻¹ * BA 0 j0 * ∑ k, wt ω k`. Rewrite using `[Finset.mul_sum, Finset.mul_sum, ← Finset.sum_sub_distrib]`. Conclude with `Finset.sum_congr rfl (fun k _ => by ring)`. Rewrite using `[h3', h1', h2', hcdef, hmexp]`. Unfold `sS`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hxle : Submodule.span R (Set.range fun j x => (Matrix.of fun a j : ZMod p => (c * ω a) ^ j.val) x j) ≤ Submodule.span R (Set.range fun j x => BA x j)`. Rewrite using `[← hBA]`. Use `Submodule.span_le.mpr (Set.range_subset_iff.mpr fun j => ?_)` and prove the remaining obligations. Rewrite using `[SetLike.mem_coe]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `h` using `pow_mem' AA hE j.val`. Use `h using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `a`. Simplify using `[Matrix.of_apply, Pi.pow_apply]`. Establish `hyle : Submodule.span R (Set.range fun j x => (Matrix.of fun a j : ZMod p => (m⁻¹ * g * ω a) ^ j.val) x j) ≤ Submodule.span R (Set.range fun j x => BD x j)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← hBD]`. Use `Submodule.span_le.mpr (Set.range_subset_iff.mpr fun j => ?_)` and prove the remaining obligations. Rewrite using `[SetLike.mem_coe]`. Establish `h` using `pow_mem' AD hyAD j.val`. Use `h using 1` and compare the differences between its conclusion and the goal.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Use function extensionality and compare the values at `a`. Simplify using `[Matrix.of_apply, Pi.pow_apply]`. Establish `hA1` using `vdet_le_of_span_le hv hxle`. Establish `hD1` using `vdet_le_of_span_le hv hyle`. Establish `hMx` using `vdet_pow ω hωsep c`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hMy` using `vdet_pow ω hωsep (m⁻¹ * g)`. Establish `hcd : v c * v (m⁻¹ * g) = v g`. Rewrite using `[hcdef, map_mul, map_mul, map_inv₀, map_inv₀, hvp1, inv_one, mul_one, ← mul_assoc, mul_inv_cancel₀ hvm, one_mul]`. Establish `hN : 2 * (p * (p - 1) / 2) = p * (p - 1)` using `Nat.mul_div_cancel' (Nat.even_mul_pred_self p).two_dvd`. Establish `hprod : (v c ^ (p * (p - 1) / 2) * v (m⁻¹ * g) ^ (p * (p - 1) / 2)) ^ 2 = v (p : C) ^ p`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Rewrite using `[← mul_pow, hcd, ← pow_mul, mul_comm (p * (p - 1) / 2) 2, hN, mul_comm p (p - 1), pow_mul, hg]`. Establish `hsq : (v (Matrix.of fun a j : ZMod p => (c * ω a) ^ j.val).det * v (Matrix.of fun a j : ZMod p => (m⁻¹ * g * ω a) ^ j.val).det) ^ 2 = (v BA.det * v BD.det) ^ 2`. Rewrite using `[hMx, hMy, hprod, hcc]`. Establish `hab` using `congrArg NNReal.sqrt hsq`. Rewrite `hab` using `[NNReal.sqrt_sq, NNReal.sqrt_sq]`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hvp0 : v (p : C) ≠ 0` using `(Valuation.ne_zero_iff v).mpr (Nat.cast_ne_zero.mpr hprime.ne_zero)`. Establish `hαβ : v BA.det * v BD.det ≠ 0`. Introduce `h0`. Rewrite `hcc` using `[h0]`. Conclude with `pow_ne_zero p hvp0 (hcc.symm.trans (by norm_num))`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `haα : v (Matrix.of fun a j : ZMod p => (c * ω a) ^ j.val).det = v BA.det`. Apply `le_antisymm hA1` to reduce the goal to its premises. Establish `hb0 : 0 < v (Matrix.of fun a j : ZMod p => (m⁻¹ * g * ω a) ^ j.val).det`. Use `pos_iff_ne_zero.mpr (fun h => hαβ ?_)` and prove the remaining obligations. Rewrite using `[← hab, h, mul_zero]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `le_of_mul_le_mul_right ?_ hb0` and prove the remaining obligations. Rewrite using `[hab]`. Conclude with `mul_le_mul_of_nonneg_left hD1 (by positivity)`. Establish `hspan` using `hBA.trans (span_eq_of_vdet_eq hv hBAu hxle haα).symm`. Establish `hrange : (Set.range fun j : Fin p => (fun a : ZMod p => c * ω a) ^ (j : ℕ)) = Set.range fun j x => (Matrix.of fun a j : ZMod p => (c * ω a) ^ j.val) x j`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Use extensionality with `F`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨j, rfl⟩`. Use `⟨finZ p j, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `a`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[Matrix.of_apply, finZ_val]`. Introduce and unpack `⟨j, rfl⟩`. Use `⟨⟨j.val, j.val_lt⟩, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `a`. Simplify using `[Matrix.of_apply]`.
-
-Establish `hspanFin : AA.carrier = Submodule.span R (Set.range fun j : Fin p => (fun a : ZMod p => c * ω a) ^ (j : ℕ))`. Rewrite using `[hrange]`. Conclude with `hspan`. Take `⟨r1, hr1⟩` from `(AA.le_int hE : ∀ y, ∃ r : R, algebraMap R C r = c * ω y) 1`. Simplify using `only [hω1, mul_one] at hr1`.
-
-Establish `hxp : (fun a : ZMod p => c * ω a) ^ p = fun a => algebraMap R C (r1 ^ (p - 1)) * (c * ω a)`. Use function extensionality and compare the values at `a`. Simplify using `only [Pi.pow_apply, map_pow, hr1]`. Establish `hpp : c ^ p = c ^ (p - 1) * c`. Rewrite using `[← pow_succ, Nat.sub_add_cancel hprime.one_le]`.
-
-Rewrite using `[mul_pow, hωpow, hpp]`. Expand and normalize the polynomial expressions, which then agree. Establish `haug` using `augIdeal_eq_span_pow_of_span_pow AA.carrier (fun a : ZMod p => c * ω a) (by simp [hω0]) hspanFin`. Establish `hsqI` using `sqIdeal_eq_span_of_pow_p_eq_smul (fun a : ZMod p => c * ω a) (r1 ^ (p - 1)) hxp (augIdeal AA.carrier) haug`. Use `⟨fun a => c * ω a, ω, r1 ^ (p - 1), hE, by simp [hω0], hωpow, hωcong, fun a => by simp only [hω1, mul_one]; ring, hxp, ?_, hspanFin, haug, hsqI, ?_⟩` and prove the remaining obligations.
-
-Simplify using `only [map_pow, hr1, hω1, mul_one]`. Use `⟨_, hspan, ?_⟩` and prove the remaining obligations. Rewrite using `[hMx]`. Simplify using `only [hω1, mul_one]`.
+A detailed English derivation is pending.
 -/
 theorem u3 : PrimeHopfOrderStatement := by
   intro p hpf C _ _ _ v R _ _ hv hpv AA

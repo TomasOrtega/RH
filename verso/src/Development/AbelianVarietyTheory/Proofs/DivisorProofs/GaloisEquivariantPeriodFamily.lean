@@ -10,9 +10,9 @@ noncomputable section
 namespace GlobalTheory.PMC.DdRLine
 
 /- English proof (translation)
-Establish `: Algebra.FormallyUnramified F E` using `Algebra.FormallyUnramified.of_isSeparable F E`. Take `⟨t, h1, h2⟩` from `(Algebra.FormallyUnramified.iff_exists_tensorProduct (R := F) (S := E)).1 this`. Use `⟨t, fun a => ?_, h2⟩` and prove the remaining obligations. Use `h1 a` as an intermediate fact. Rewrite `this` using `[sub_mul, sub_eq_zero]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this.symm`.
+A detailed English derivation is pending.
 -/
 theorem exists_sep (F E : Type) [Field F] [CharZero F] [Field E] [Algebra F E] [FiniteDimensional F E] :
     ∃ e : E ⊗[F] E, (∀ a : E, (a ⊗ₜ[F] (1 : E)) * e = ((1 : E) ⊗ₜ[F] a) * e) ∧
@@ -27,11 +27,11 @@ theorem exists_sep (F E : Type) [Field F] [CharZero F] [Field E] [Algebra F E] [
 open Classical in
 
 /- English proof (translation)
-Use `split_ifs with h`. Substitute `h` using the available equality. Establish `: Algebra.TensorProduct.productMap ν ν = ν.comp (Algebra.TensorProduct.lmul' F)`. Apply the tactic sequence `ext a <;> simp`. Rewrite using `[this, AlgHom.comp_apply, h2, map_one]`.
+Substitute using the available equality. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Choose the witnesses or unpack the hypotheses as in `⟨a, ha⟩ : ∃ a, ν a ≠ ν' a := by`. Assume the negation of the conclusion as `hc`. Conclude with `h (AlgHom.ext fun a => by_contra fun h' => hc ⟨a, h'⟩)`. Use `congrArg (Algebra.TensorProduct.productMap ν ν') (h1 a)` as an intermediate fact. Simplify using `only [map_mul, Algebra.TensorProduct.productMap_apply_tmul, map_one, mul_one, one_mul] at this`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h3 : (ν a - ν' a) * Algebra.TensorProduct.productMap ν ν' e = 0`. Rewrite using `[sub_mul, this, sub_self]`. Conclude with `(mul_eq_zero.1 h3).resolve_left (sub_ne_zero.2 ha)`.
+A detailed English derivation is pending.
 -/
 theorem pair_sep {F E Ω : Type} [Field F] [Field E] [Field Ω] [Algebra F E] [Algebra F Ω]
     (e : E ⊗[F] E) (h1 : ∀ a : E, (a ⊗ₜ[F] (1 : E)) * e = ((1 : E) ⊗ₜ[F] a) * e)
@@ -52,35 +52,33 @@ theorem pair_sep {F E Ω : Type} [Field F] [Field E] [Field Ω] [Algebra F E] [A
     exact (mul_eq_zero.1 h3).resolve_left (sub_ne_zero.2 ha)
 
 /- English proof (translation)
-Take `⟨e, h1, h2⟩` from `exists_sep F E`. Take `⟨L₁, hL₁⟩ : ∃ L₁ : E →ₗ[F] (Fin 1 → E), ∀ a, L₁ a = fun _ => a` from `⟨LinearMap.pi fun _ => LinearMap.id, fun _ => rfl⟩`. Take `⟨L₂, hL₂⟩ : ∃ L₂ : E →ₗ[F] D, ∀ b, L₂ b = ∑ ν : E →ₐ[F] Ω, j (ν b) * y ν` from `⟨∑ ν : E →ₐ[F] Ω, LinearMap.mulRight F (y ν) ∘ₗ (j.comp ν).toLinearMap, fun b => by`. Simplify using `[LinearMap.sum_apply]⟩`. Establish `hsm : ∀ c a : E, c • L₁ a = L₁ (c * a)` using `fun c a => by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[hL₁, hL₁]`. Both sides reduce to the same expression. Establish `hact : ∀ g b, PD.actdR g (L₂ b) = L₂ ((((μ g)⁻¹ : Eˣ) : E) * b)` using `fun g b => by`. Set `q : (E →ₐ[F] Ω) ≃ (E →ₐ[F] Ω)` to `{ toFun := fun ν => (s g).toAlgHom.comp ν invFun := fun ν => (s g).symm.toAlgHom.comp ν left_inv := fun ν => by ext a; simp right_inv := fun ν => by ext a; simp }`. Rewrite using `[hL₂, hL₂, map_sum]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 
-Use `conv_rhs => rw [← q.sum_comp]`. Use `Finset.sum_congr rfl fun ν _ => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ = j (s g (ν _)) * y ((s g).toAlgHom.comp ν)`. Rewrite using `[← hG, ← mul_assoc, ← map_mul, ← map_mul, ← map_mul, mul_right_comm, Units.inv_mul, one_mul, map_mul, hs]`. Establish `hmul : ∀ (c : K) b, algebraMap K D c * L₂ b = L₂ (τ c * b)` using `fun c b => by`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hL₂, hL₂, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun ν _ => ?_` and prove the remaining obligations. Rewrite using `[mul_left_comm, ← hK, map_mul, map_mul]`. Expand and normalize the polynomial expressions, which then agree. Set `Ψ : E ⊗[F] E →ₗ[F] (Fin 1 → E) ⊗[F] D` to `TensorProduct.map L₁ L₂`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hΨ : ∀ a b, Ψ (a ⊗ₜ b) = L₁ a ⊗ₜ L₂ b` using `fun _ _ => rfl`. Establish `hA : ∀ g t, actVdR PD ρ g (Ψ t) = Ψ (((μ g : E) ⊗ₜ[F] (((μ g)⁻¹ : Eˣ) : E)) * t)` using `fun g t => by`. Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero, mul_zero]`. Consider the case `tmul a b`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, hΨ, hΨ, ← hsm, ← hact, ← hρ]`. Both sides reduce to the same expression. Consider the case `add a b ha hb => simp only [map_add, mul_add, ha, hb]`. Establish `hM : ∀ (c : K) t, mulVdR (Qp` using `F) (K := K) (BdR := D) (V := Fin 1 → E) (LL := E) c (Ψ t) = Ψ (((1 : E) ⊗ₜ[F] τ c) * t) := fun c t => by`. Proceed by induction on `t using TensorProduct.induction_on with`.
+Both sides reduce to the same expression. Treat this case separately. Establish an intermediate fact. Proceed by induction. Treat this case separately.
 
-Consider the case `zero => simp only [map_zero, mul_zero]`. Consider the case `tmul a b`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, hΨ, hΨ, ← hmul, one_mul]`. Both sides reduce to the same expression. Consider the case `add a b ha hb => simp only [map_add, mul_add, ha, hb]`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Treat this case separately. Establish an intermediate fact.
 
-Establish `hS : ∀ (c : E) t, c • Ψ t = Ψ ((c ⊗ₜ[F] (1 : E)) * t)` using `fun c t => by`. Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero, mul_zero, smul_zero]`. Consider the case `tmul a b => rw [Algebra.TensorProduct.tmul_mul_tmul, hΨ, hΨ, ← hsm, one_mul, TensorProduct.smul_tmul']`. Consider the case `add a b ha hb => simp only [map_add, mul_add, smul_add, ha, hb]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨Ψ e, ⟨?_, ?_⟩, ?_, fun ν f hf => ?_⟩` and prove the remaining obligations. Simplify using `only [DdR, SetLike.mem_coe, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.id_apply, sub_eq_zero]`. Introduce `g`. Establish `h3 : ((μ g : E) ⊗ₜ[F] (((μ g)⁻¹ : Eˣ) : E)) = ((1 : E) ⊗ₜ[F] (((μ g)⁻¹ : Eˣ) : E)) * ((μ g : E) ⊗ₜ[F] (1 : E))`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, one_mul, mul_one]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hA, h3, mul_assoc, h1, ← mul_assoc, Algebra.TensorProduct.tmul_mul_tmul, Units.inv_mul, one_mul, ← Algebra.TensorProduct.one_def, one_mul]`. Simplify using `only [SetLike.mem_coe, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.id_apply, sub_eq_zero]`. Introduce `c`. Rewrite using `[hM, hS, h1]`. Generalize the expression as in `e = t`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Proceed by induction.
 
-Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => rw [map_zero]`. Conclude with `zero_mem _`. Consider the case `tmul a b`. Establish `hb : L₂ b ∈ PD.Fil 0`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Rewrite using `[hL₂]`. Conclude with `Submodule.sum_mem _ fun ν _ => by simpa using PD.Fil_mul 0 0 _ _ (hΩ (ν b)) (hy ν)`. Conclude with `⟨L₁ a ⊗ₜ ⟨L₂ b, hb⟩, rfl⟩`. Consider the case `add a b ha hb => rw [map_add]`. Conclude with `add_mem ha hb`.
+Treat this case separately. Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Establish `h4 : ∀ t, f (Ψ t) = ∑ ν' : E →ₐ[F] Ω, j (Algebra.TensorProduct.productMap ν ν' t) * y ν'` using `fun t => by`. Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a b`. Rewrite using `[hΨ, hf, hL₁, hL₂, Finset.mul_sum]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun ν' _ => ?_` and prove the remaining obligations. Rewrite using `[Algebra.TensorProduct.productMap_apply_tmul, map_mul, mul_assoc]`. Consider the case `add a b ha hb => simp only [map_add, ha, hb, add_mul, Finset.sum_add_distrib]`. Rewrite using `[h4, Finset.sum_eq_single ν]`. Rewrite using `[pair_sep e h1 h2, if_pos rfl, map_one, one_mul]`.
-
-Introduce `ν' _ hne`. Rewrite using `[pair_sep e h1 h2, if_neg (Ne.symm hne), map_zero, zero_mul]`. Conclude with `fun h => absurd (Finset.mem_univ ν) h`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
 -/
 theorem exists_glue {G F K₀ K B D E Ω : Type} [Group G] [Field F] [CharZero F] [Field K₀] [Field K]
     [Algebra F K₀] [Algebra F K] [Algebra K₀ K] [IsScalarTower F K₀ K]
@@ -180,7 +178,7 @@ theorem exists_glue {G F K₀ K B D E Ω : Type} [Group G] [Field F] [CharZero F
     · exact fun h => absurd (Finset.mem_univ ν) h
 
 /- English proof (translation)
-Introduce `l _ P K LL μ τ y hΩ hy hG hK`. Use `haveI : FiniteDimensional ℚ_[l] ↥LL.1 := LL.2`. Conclude with `exists_glue (P.PD K) (IsScalarTower.toAlgHom ℚ_[l] (Om l) P.R.BdR) (fun g => (g : GQ l)) (fun g ω => by rw [P.PD_actdR]; exact P.actQdR_Om _ _) μ _ (fun _ _ => rfl) τ y hΩ hy (fun g ν => by rw [P.PD_actdR]; exact hG g ν) hK`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem main : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (K LL : FinExt l)
     (μ : ↥(GK K) →* (↥LL.1)ˣ) (τ : ↥K.1 →ₐ[ℚ_[l]] ↥LL.1) (y : (↥LL.1 →ₐ[ℚ_[l]] Om l) → P.R.BdR),

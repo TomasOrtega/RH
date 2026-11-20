@@ -5,7 +5,7 @@ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.RankPosOfLeaves
 open GlobalTheory.CompanionTheory.EGlue
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.EGlue.mCloseFacts_holds | exact GlobalTheory.CompanionTheory.EGlue.mCloseFacts_holds | (intros; apply GlobalTheory.CompanionTheory.EGlue.mCloseFacts_holds <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.closure_facts_alt : GlobalTheory.CompanionTheory.EGlue.MCloseFacts := by
   first | exact @GlobalTheory.CompanionTheory.EGlue.mCloseFacts_holds | exact GlobalTheory.CompanionTheory.EGlue.mCloseFacts_holds | (intros; apply GlobalTheory.CompanionTheory.EGlue.mCloseFacts_holds <;> assumption)

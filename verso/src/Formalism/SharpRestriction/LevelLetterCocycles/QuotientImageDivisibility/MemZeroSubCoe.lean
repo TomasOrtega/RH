@@ -15,7 +15,7 @@ def kerSub (A : Submodule O FF) {M : Type} [AddCommGroup M] [Module O M] (w : �
   (Y.comap w).map A.subtype
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩`. Conclude with `⟨y.2, by simpa using hy⟩`. Introduce and unpack `⟨h, hY⟩`. Conclude with `⟨⟨x, h⟩, hY, rfl⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem mem_kerSub (A : Submodule O FF) {M : Type} [AddCommGroup M] [Module O M]
     (w : ↥A →ₗ[O] M) (Y : Submodule O M) (x : FF) :
@@ -27,7 +27,7 @@ theorem mem_kerSub (A : Submodule O FF) {M : Type} [AddCommGroup M] [Module O M]
     exact ⟨⟨x, h⟩, hY, rfl⟩
 
 /- English proof (translation)
-Introduce and unpack `x ⟨y, -, rfl⟩`. Conclude with `y.2`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem kerSub_le (A : Submodule O FF) {M : Type} [AddCommGroup M] [Module O M]
     (w : ↥A →ₗ[O] M) (Y : Submodule O M) : kerSub A w Y ≤ A := by
@@ -35,7 +35,7 @@ theorem kerSub_le (A : Submodule O FF) {M : Type} [AddCommGroup M] [Module O M]
   exact y.2
 
 /- English proof (translation)
-Rewrite using `[mem_kerSub]`. Conclude with `⟨fun ⟨_, h⟩ => h, fun h => ⟨x.2, h⟩⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem mem_kerSub_coe (A : Submodule O FF) {M : Type} [AddCommGroup M] [Module O M]
     (w : ↥A →ₗ[O] M) (Y : Submodule O M) (x : ↥A) :
@@ -44,7 +44,7 @@ theorem mem_kerSub_coe (A : Submodule O FF) {M : Type} [AddCommGroup M] [Module 
   exact ⟨fun ⟨_, h⟩ => h, fun h => ⟨x.2, h⟩⟩
 
 /- English proof (translation)
-Use `⟨kerSub_le A w Y, M ⧸ Y, inferInstance, inferInstance, Y.mkQ.comp w, fun x => ?_, fun h => h.elim, fun _ => ⟨L, kO, hL, hk, hc⟩⟩` and prove the remaining obligations. Rewrite using `[LinearMap.comp_apply, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero, mem_kerSub_coe]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem pstep_len (A : Submodule O FF) {M : Type} [AddCommGroup M] [Module O M]
     (w : ↥A →ₗ[O] M) (Y : Submodule O M) {lenO : ℕ∞} {m : ℕ} {c : ℝ} (L kO : ℕ)
@@ -56,17 +56,15 @@ theorem pstep_len (A : Submodule O FF) {M : Type} [AddCommGroup M] [Module O M]
     mem_kerSub_coe]
 
 /- English proof (translation)
-Use `set Y := X ⊔ Submodule.span O (s : Set M) with hY`. Use `set Xc : Submodule O ↥Y := X.comap Y.subtype`. Use `⟨kerSub_le A w X, ↥Y ⧸ Xc, inferInstance, inferInstance, Xc.mkQ.comp (w.codRestrict Y hw), fun x => ?_, fun _ => ?_, fun h => (h trivial).elim⟩` and prove the remaining obligations. Rewrite using `[LinearMap.comp_apply, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero, mem_kerSub_coe]`. Simplify using `[Xc]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `ψ : ↥(Submodule.span O (s : Set M)) →ₗ[O] ↥Y ⧸ Xc` to `Xc.mkQ.comp (Submodule.inclusion (le_sup_right : Submodule.span O (s : Set M) ≤ Y))`. Set `g : M → ↥Y ⧸ Xc` to `fun x => if h : x ∈ Submodule.span O (s : Set M) then ψ ⟨x, h⟩ else 0`. Use `⟨s.image g, Finset.card_image_le.trans hs, ?_⟩` and prove the remaining obligations. Establish `hrange : LinearMap.range ψ = ⊤`. Rewrite using `[eq_top_iff]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Introduce and unpack `q -`. Take `⟨⟨y, hy⟩, rfl⟩` from `Submodule.Quotient.mk_surjective Xc q`. Take `⟨x, hx, z, hz, rfl⟩` from `Submodule.mem_sup.1 hy`. Use `⟨⟨z, hz⟩, ?_⟩` and prove the remaining obligations. Simplify using `only [ψ, LinearMap.comp_apply, Submodule.mkQ_apply]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Submodule.Quotient.eq]`. Simplify using `only [Xc, Submodule.mem_comap, Submodule.subtype_apply]`. Establish `: ((Submodule.inclusion (le_sup_right : Submodule.span O (s : Set M) ≤ Y) ⟨z, hz⟩ - ⟨x + z, hy⟩ : ↥Y) : M) = -x`. Simplify using the standard rewrite rules. Rewrite using `[this]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `X.neg_mem hx`. Rewrite using `[eq_top_iff, ← hrange, LinearMap.range_eq_map, ← Submodule.span_span_coe_preimage, Submodule.map_span]`. Apply `Submodule.span_mono` to reduce the goal to its premises. Introduce and unpack `_ ⟨⟨x, hxs⟩, hx, rfl⟩`. Use `Finset.mem_coe.2 (Finset.mem_image.2 ⟨x, hx, ?_⟩)` and prove the remaining obligations.
-
-Simplify using `[g, hxs]`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem pstep_gen (A : Submodule O FF) {M : Type} [AddCommGroup M] [Module O M]
     (w : ↥A →ₗ[O] M) (X : Submodule O M) (s : Finset M) {lenO : ℕ∞} {m : ℕ} {c : ℝ}
@@ -128,9 +126,9 @@ def zeroSub {LL : Type} [Field LL] [Algebra O LL] {U : Type} [AddCommGroup U] [M
   (zeroSubA A φ hφ).map A.subtype
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, hyx⟩`. Establish `: y = x` using `Subtype.ext hyx`. Substitute `this` using the available equality. Conclude with `hy`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Substitute using the available equality. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Conclude with `⟨x, h, rfl⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem mem_zeroSub_coe {LL : Type} [Field LL] [Algebra O LL] {U : Type} [AddCommGroup U]
     [Module LL U] (A : Submodule O FF) (φ : ↥A →+ U)
@@ -145,7 +143,7 @@ theorem mem_zeroSub_coe {LL : Type} [Field LL] [Algebra O LL] {U : Type} [AddCom
     exact ⟨x, h, rfl⟩
 
 /- English proof (translation)
-Introduce and unpack `x ⟨y, -, rfl⟩`. Conclude with `y.2`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem zeroSub_le {LL : Type} [Field LL] [Algebra O LL] {U : Type} [AddCommGroup U] [Module LL U]
     (A : Submodule O FF) (φ : ↥A →+ U)
@@ -154,37 +152,29 @@ theorem zeroSub_le {LL : Type} [Field LL] [Algebra O LL] {U : Type} [AddCommGrou
   exact y.2
 
 /- English proof (translation)
-Use `set K := zeroSubA A φ hφ with hK`. Use `⟨zeroSub_le A φ hφ, ↥A ⧸ K, inferInstance, inferInstance, K.mkQ, fun x => ?_, fun _ => ?_, fun h => (h trivial).elim⟩` and prove the remaining obligations. Rewrite using `[Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero, mem_zeroSub_coe]`. Both sides reduce to the same expression. Use `haveI : IsNoetherian O FF := isNoetherian_of_isNoetherianRing_of_finite O FF`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `haveI : Module.Finite O ↥A := Module.IsNoetherian.finite O ↥A`. Use `haveI : Module.Finite O (↥A ⧸ K) := Module.Finite.quotient O K`. Establish `hinj : Function.Injective (algebraMap O LL)` using `IsFractionRing.injective O LL`. Use `haveI : NoZeroSMulDivisors O (↥A ⧸ K) := by`. Use `⟨fun {a q} h => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails. Prove the first alternative. Rewrite the conclusion using the stated equalities.
 
-Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective K q`. Rewrite `h` using `[← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero]`. Distinguish the cases in `ha : a = 0`. Conclude with `Or.inl ha`. Use `right`.
+Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Rewrite using `[Submodule.Quotient.mk_eq_zero]`. Express the relevant statement in the definitionally equal form `φ (a • x) = 0 at h`. Express the relevant statement in the definitionally equal form `φ x = 0`. Rewrite `h` using `[hφ]`. Establish `ha' : algebraMap O LL a ≠ 0` using `fun h0 => ha (hinj (by rw [h0, map_zero]))`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(smul_eq_zero.1 h).resolve_left ha'`. Use `haveI : Module.Free O (↥A ⧸ K) := Module.free_of_finite_type_torsion_free'`. Set `ι` to `Module.Free.ChooseBasisIndex O (↥A ⧸ K)`. Set `bQ : Basis ι O (↥A ⧸ K)` to `Module.Free.chooseBasis O (↥A ⧸ K)`. Establish `hrep : ∀ i, ∃ x : ↥A, K.mkQ x = bQ i` using `fun i => Submodule.Quotient.mk_surjective K (bQ i)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `choose xr hxr using hrep`. Set `u : ι → U` to `fun i => φ (xr i)`. Establish `hu : LinearIndependent LL u`. Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `g hg i`.
+Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Take `⟨d, hd⟩` from `IsLocalization.exist_integer_multiples_of_finset (nonZeroDivisors O) (Finset.univ.image g)`. Establish `hint : ∀ j, ∃ a : O, algebraMap O LL a = (d : O) • g j`. Introduce `j`. Take `⟨a, ha⟩` from `hd (g j) (Finset.mem_image_of_mem g (Finset.mem_univ j))`. Conclude with `⟨a, ha⟩`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `choose a ha using hint`. Establish `hsum : φ (∑ j, a j • xr j) = 0`. Rewrite using `[map_sum]`. Simplify using `only [hφ, ha]`. Simplify using `only [Algebra.smul_def, mul_smul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← Finset.smul_sum]`. Express the relevant statement in the definitionally equal form `algebraMap O LL (d : O) • ∑ j, g j • u j = 0`. Rewrite using `[hg, smul_zero]`. Establish `hQ : ∑ j, a j • bQ j = 0`. Establish `: K.mkQ (∑ j, a j • xr j) = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`. Conclude with `hsum`. Rewrite `this` using `[map_sum]`. Simplify `this` using `[hxr]`. Establish `hai : a i = 0` using `(Fintype.linearIndependent_iff.1 bQ.linearIndependent) a hQ i`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Proceed by induction.
 
-Establish `hd0 : algebraMap O LL (d : O) ≠ 0`. Introduce `h0`. Establish `: (d : O) = 0` using `hinj (by rw [h0, map_zero])`. Conclude with `nonZeroDivisors.coe_ne_zero d this`. Use `ha i` as an intermediate fact.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Introduce a local definition for the expression.
 
-Rewrite `this` using `[hai, map_zero, Algebra.smul_def]`. Conclude with `(mul_eq_zero.1 this.symm).resolve_left hd0`. Take `⟨gA, hgA⟩` from `(Module.Finite.fg_top (R := O) (M := ↥A))`. Establish `hspan : Submodule.span LL (Set.range φ) ≤ Submodule.span LL (φ '' (gA : Set ↥A))`. Rewrite using `[Submodule.span_le]`.
-
-Introduce and unpack `_ ⟨x, rfl⟩`. Establish `hx : x ∈ Submodule.span O (gA : Set ↥A)` using `by rw [hgA]; trivial`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy => exact Submodule.subset_span ⟨y, hy, rfl⟩`. Consider the case `zero => simp`.
-
-Consider the case `add y z _ _ hy hz => rw [map_add]`. Conclude with `Submodule.add_mem _ hy hz`. Consider the case `smul r y _ hy => rw [hφ]`. Conclude with `Submodule.smul_mem _ _ hy`. Use `haveI : FiniteDimensional LL ↥(Submodule.span LL (φ '' (gA : Set ↥A))) := FiniteDimensional.span_of_finite LL (gA.finite_toSet.image φ)`.
-
-Use `haveI : FiniteDimensional LL ↥(Submodule.span LL (Set.range φ)) := Submodule.finiteDimensional_of_le hspan`. Set `u' : ι → ↥(Submodule.span LL (Set.range φ))` to `fun i => ⟨u i, Submodule.subset_span ⟨xr i, rfl⟩⟩`. Establish `hu' : LinearIndependent LL u'` using `LinearIndependent.of_comp (Submodule.span LL (Set.range φ)).subtype hu`. Establish `hcard : Fintype.card ι ≤ m` using `(hu'.fintype_card_le_finrank).trans hm`. Use `⟨Finset.univ.image bQ, Finset.card_image_le.trans (by simpa using hcard), ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[Finset.coe_image, Finset.coe_univ, Set.image_univ]`. Conclude with `bQ.span_eq`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pstep_rank [IsDomain O] [IsPrincipalIdealRing O] {LL : Type} [Field LL] [Algebra O LL]
     [IsFractionRing O LL] [Module.Finite O FF] {U : Type} [AddCommGroup U] [Module LL U]
@@ -288,7 +278,7 @@ open Formalism.MainNotions.RamifiedCoefficientChains.S9
 variable {O : Type} [CommRing O] {FF : Type} [AddCommGroup FF] [Module O FF]
 
 /- English proof (translation)
-Use `⟨1, fun i => if i = 0 then A else B, {0}, by simp, by simp, by simp, by simp, by simp, fun i hi => ?_⟩` and prove the remaining obligations. Establish `hi0 : i = 0` using `by omega`. Substitute `hi0` using the available equality. Simplify using `using h`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem pchain_of_gen {lenO : ℕ∞} {m : ℕ} {c : ℝ} {A B : Submodule O FF}
     (h : PStep lenO m c A B True) : PChain lenO m c A B 1 0 := by
@@ -299,7 +289,7 @@ theorem pchain_of_gen {lenO : ℕ∞} {m : ℕ} {c : ℝ} {A B : Submodule O FF}
   simpa using h
 
 /- English proof (translation)
-Use `⟨1, fun i => if i = 0 then A else B, ∅, by simp, by simp, by simp, by simp, by simp, fun i hi => ?_⟩` and prove the remaining obligations. Establish `hi0 : i = 0` using `by omega`. Substitute `hi0` using the available equality. Simplify using `using h`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem pchain_of_len {lenO : ℕ∞} {m : ℕ} {c : ℝ} {A B : Submodule O FF}
     (h : PStep lenO m c A B False) : PChain lenO m c A B 0 1 := by

@@ -1,27 +1,27 @@
 import Mathlib
 
 /- English proof (translation)
-Introduce `G V _ _ _ _ _ ρ hI B hh hp hinv B₁ h₁`. Set `n` to `Module.finrank ℂ V`. Set `e` to `Module.finBasis ℂ V`. Set `φB : V →ₗ[ℂ] (Fin n → ℂ)` to `LinearMap.pi (fun j => B.flip (e j))`. Set `φ₁ : V →ₗ[ℂ] (Fin n → ℂ)` to `LinearMap.pi (fun j => B₁.flip (e j))`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hinj : Function.Injective φB`. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `a ha`. Establish `h0 : B a = 0` using `e.ext (fun j => by`. Use `congrFun ha j` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify `this)` using `[φB]`. Assume the negation of the conclusion as `hne`. Use `hp a hne` as an intermediate fact. Rewrite `this` using `[h0]`. Simplify using `at this`.
+Simplify to obtain the desired conclusion from the available facts. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hsurj : Function.Surjective φB` using `(LinearMap.injective_iff_surjective_of_finrank_eq_finrank (by rw [Module.finrank_fin_fun])).mp hinj`. Set `E` to `LinearEquiv.ofBijective φB ⟨hinj, hsurj⟩`. Set `T : Module.End ℂ V` to `E.symm.toLinearMap ∘ₗ φ₁`. Take `⟨c, hc⟩` from `Module.End.exists_eigenvalue T`. Take `⟨v, hv⟩` from `hc.exists_hasEigenvector`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hTv : T v = c • v` using `hv.apply_eq_smul`. Establish `hv0 : v ≠ 0` using `hv.2`. Establish `key : B₁ v = c • B v`. Apply `e.ext` to reduce the goal to its premises. Introduce `j`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1 : φB (T v) = φ₁ v` using `E.apply_symm_apply (φ₁ v)`. Rewrite `h1` using `[hTv]`. Establish `h2` using `congrFun h1 j`. Simplify using `[φB, φ₁] at h2`. Simplify `h2.symm` using `[LinearMap.smul_apply]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 
-Set `W` to `LinearMap.ker (B₁ - c • B)`. Establish `hW : ∀ g, ∀ w ∈ W, ρ g w ∈ W`. Introduce `g w hw`. Rewrite `hw`, the goal using `[LinearMap.mem_ker]`. Establish `hw' : ∀ b, B₁ w b = c * B w b`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `b`. Use `LinearMap.congr_fun hw b` as an intermediate fact. Simplify using `at this`. Take the linear combination `this`. Use extensionality with `b`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. By extensionality, compare the relevant components.
 
-Establish `hb : ρ g (ρ g⁻¹ b) = b`. Rewrite using `[← Module.End.mul_apply, ← map_mul, mul_inv_cancel, map_one, Module.End.one_apply]`. Take `⟨b', rfl⟩ : ∃ b', ρ g b' = b` from `⟨_, hb⟩`. Simplify using `[h₁, hinv, hw']`. Break down `hI W hW with h | h` into its components or cases.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `hvW : v ∈ W`. Rewrite using `[LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.smul_apply, key, sub_self]`. Rewrite `hvW` using `[h]`. Conclude with `absurd ((Submodule.mem_bot ℂ).mp hvW) hv0`. Use `⟨c, fun a b => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `ha : a ∈ W` using `h ▸ Submodule.mem_top`. Rewrite `ha` using `[LinearMap.mem_ker]`. Use `LinearMap.congr_fun ha b` as an intermediate fact. Simplify using `at this`. Take the linear combination `this`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem UpperTheory.invariant_sesquilinearForm_eq_smul_of_irreducible :
     ∀ {G V : Type} [Group G] [AddCommGroup V] [Module ℂ V] [FiniteDimensional ℂ V] [Nontrivial V] (ρ : G →* Module.End ℂ V)

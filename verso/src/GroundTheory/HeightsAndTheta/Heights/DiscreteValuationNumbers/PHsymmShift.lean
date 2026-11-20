@@ -23,7 +23,7 @@ variable {F : Type u} [Field F] {K : Type} [Fintype K] [DecidableEq K] {ι : K �
 omit [Fintype K] [DecidableEq K] in
 
 /- English proof (translation)
-Unfold `rootList`. Simplify using `[List.length_flatMap, Fin.sum_univ_def]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem length_rootList {n : ℕ} (x : Fin n → K → ℤ) (α : Fin n → ℕ) :
     (rootList x α).length = ∑ i, α i := by
@@ -31,9 +31,9 @@ theorem length_rootList {n : ℕ} (x : Fin n → K → ℤ) (α : Fin n → ℕ)
   simp [List.length_flatMap, Fin.sum_univ_def]
 
 /- English proof (translation)
-Establish `key : ∀ e, Function.update (c :: l).get (0 : Fin (l.length + 1)) e = (e :: l).get`. Introduce `e`. Use function extensionality and compare the values at `j`. Use `Fin.cases ?_ (fun j => ?_) j` and prove the remaining obligations. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[Function.update_of_ne (Fin.succ_ne_zero j)]`. Both sides reduce to the same expression. Establish `h` using `FieldNumbers.IntNumAdd.full.{u} F K ι W hW.multiHomog hW.relevant (l.length + 1) hd ((c :: l).get) 0 c c'`. Rewrite `h` using `[key, key, key]`. Conclude with `h`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cons_add (W : Ideal (MRing ι F)) (hW : IsMultiProjPrime W) (l : List (K → ℤ))
     (hd : FieldNumbers.relDim W = ((l.length + 1 : ℕ) : WithBot (WithTop ℤ))) (c c' : K → ℤ) :
@@ -51,7 +51,7 @@ theorem cons_add (W : Ideal (MRing ι F)) (hW : IsMultiProjPrime W) (l : List (K
   exact h
 
 /- English proof (translation)
-The claim follows from `| 0, L, _ => by simp | n + 1, L, hd => by have hd' : ∀ c : K → ℤ, FieldNumbers.relDim W = ((n + (c :: L).length : ℕ) : WithBot (WithTop ℤ)) := by intro c rw [hd, List.length_cons, Nat.add_right_comm, Nat.add_assoc] rw [List.replicate_succ, List.cons_append, cons_add W hW _ (by rw …`.
+A detailed English derivation is pending.
 -/
 theorem replicate_add (W : Ideal (MRing ι F)) (hW : IsMultiProjPrime W)
     (z s : K → ℤ) : ∀ (n : ℕ) (L : List (K → ℤ)),
@@ -88,7 +88,7 @@ def H (W : Ideal (MRing ι F)) {n : ℕ} (x : Fin n → K → ℤ) (c : ℕ) (L 
 
 omit [Fintype K] [∀ k, Fintype (ι k)] in
 /- English proof (translation)
-Simplify using `[H, Finset.Nat.antidiagonalTuple_zero_right, rootList_zero]`.
+Simplify using the standard rewrite rules.
 -/
 theorem H_zero (W : Ideal (MRing ι F)) {n : ℕ} (x : Fin n → K → ℤ) (L : List (K → ℤ)) :
     H W x 0 L = intNumL F W L := by
@@ -96,7 +96,7 @@ theorem H_zero (W : Ideal (MRing ι F)) {n : ℕ} (x : Fin n → K → ℤ) (L :
 
 omit [Fintype K] [∀ k, Fintype (ι k)] in
 /- English proof (translation)
-Unfold `H`. Rewrite using `[Finset.Nat.antidiagonalTuple_one, Finset.sum_singleton, rootList_succ]`. Simplify using `[rootList]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem H_one (W : Ideal (MRing ι F)) (x : Fin 1 → K → ℤ) (c : ℕ) (L : List (K → ℤ)) :
     H W x c L = intNumL F W (List.replicate c (x 0) ++ L) := by
@@ -106,16 +106,16 @@ theorem H_one (W : Ideal (MRing ι F)) (x : Fin 1 → K → ℤ) (c : ℕ) (L : 
 
 omit [Fintype K] [∀ k, Fintype (ι k)] in
 /- English proof (translation)
-The claim follows from `Finset.sum_congr rfl fun _ _ => intNumL_perm F W (h.append_left _)`.
+A detailed English derivation is pending.
 -/
 theorem H_perm (W : Ideal (MRing ι F)) {n : ℕ} (x : Fin n → K → ℤ) (c : ℕ)
     {L L' : List (K → ℤ)} (h : L.Perm L') : H W x c L = H W x c L' :=
   Finset.sum_congr rfl fun _ _ => intNumL_perm F W (h.append_left _)
 
 /- English proof (translation)
-Unfold `H`. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun α hα => ?_` and prove the remaining obligations. Establish `hlen : (rootList x α).length = c`. Rewrite using `[length_rootList]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.Nat.mem_antidiagonalTuple.mp hα`. Rewrite using `[intNumL_perm F W (List.perm_middle (l₁ := rootList x α) (a := a + b)), intNumL_perm F W (List.perm_middle (l₁ := rootList x α) (a := a)), intNumL_perm F W (List.perm_middle (l₁ := rootList x α) (a := b))]`. Conclude with `cons_add W hW _ (by rw [hd, List.length_append, hlen, show c + 1 + L.length = c + L.length + 1 by omega]) a b`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem H_add (W : Ideal (MRing ι F)) (hW : IsMultiProjPrime W) {n : ℕ} (x : Fin n → K → ℤ)
     (c : ℕ) (L : List (K → ℤ))
@@ -136,9 +136,9 @@ theorem H_add (W : Ideal (MRing ι F)) (hW : IsMultiProjPrime W) {n : ℕ} (x : 
 omit [Fintype K] [∀ k, Fintype (ι k)] in
 
 /- English proof (translation)
-Unfold `H`. Rewrite using `[sum_antidiagonalTuple_succ]`. Use `congr 1`. Use `Finset.sum_congr rfl fun α _ => ?_` and prove the remaining obligations. Rewrite using `[rootList_snoc_zero]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun β _ => ?_` and prove the remaining obligations. Rewrite using `[rootList_update_last, List.append_assoc, List.singleton_append]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem H_succ (W : Ideal (MRing ι F)) {i : ℕ} (x : Fin (i + 1) → K → ℤ) (c : ℕ)
     (L : List (K → ℤ)) :
@@ -152,7 +152,7 @@ theorem H_succ (W : Ideal (MRing ι F)) {i : ℕ} (x : Fin (i + 1) → K → ℤ
     rw [rootList_update_last, List.append_assoc, List.singleton_append]
 
 /- English proof (translation)
-Rewrite using `[Finset.sum_range_succ', Finset.sum_range_succ' (fun k => (M.choose k : ℤ) * f k)]`. Simplify using `only [Nat.choose_succ_succ', Nat.cast_add, add_mul, Finset.sum_add_distrib, Nat.choose_zero_right]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem sum_choose_pascal (M r : ℕ) (f : ℕ → ℤ) :
     ∑ k ∈ Finset.range (r + 1 + 1), ((M + 1).choose k : ℤ) * f k =
@@ -164,7 +164,7 @@ theorem sum_choose_pascal (M r : ℕ) (f : ℕ → ℤ) :
   ring
 
 /- English proof (translation)
-The claim follows from `| 0, x, r, Y, hd => by rw [H_one, replicate_add W hW (x 0) s r Y hd] refine Finset.sum_congr rfl fun k _ => ?_ rw [H_one, List.append_assoc, show 0 + r = r from Nat.zero_add r] | N + 1, x, r, Y, hd => by induction r generalizing Y with | zero => simp [H_zero] | succ r ih => have …`.
+A detailed English derivation is pending.
 -/
 theorem main (W : Ideal (MRing ι F)) (hW : IsMultiProjPrime W) (s : K → ℤ) :
     ∀ (N : ℕ) (x : Fin (N + 1) → K → ℤ) (r : ℕ) (Y : List (K → ℤ)),
@@ -218,9 +218,9 @@ theorem main (W : Ideal (MRing ι F)) (hW : IsMultiProjPrime W) (s : K → ℤ) 
 end HsymmShiftProof
 
 /- English proof (translation)
-Introduce `F _ K _ _ ι _ W hW d hd N hN x s r Y hrY`. Take `⟨M, rfl⟩ : ∃ M, N = M + 1` from `⟨N - 1, by omega⟩`. Establish `h` using `HsymmShiftProof.main W hW s M x r Y (by rw [hd, ← hrY])`. Simplify using `only [HsymmShiftProof.H] at h`. Rewrite using `[h, Nat.add_sub_cancel]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Simplify using `only [List.append_assoc]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem HsymmShift.proof : HsymmShift.Statement.{u} := by
   intro F _ K _ _ ι _ W hW d hd N hN x s r Y hrY

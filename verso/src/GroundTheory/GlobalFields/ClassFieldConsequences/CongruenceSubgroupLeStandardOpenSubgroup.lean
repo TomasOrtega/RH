@@ -33,7 +33,7 @@ def positiveAt (S : Set {w : InfinitePlace K // w.IsReal}) : Subgroup (IdeleGrou
     exact inv_pos.2 (ha w hw)
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_positiveAt {S : Set {w : InfinitePlace K // w.IsReal}} {x : IdeleGroup K} :
     x ∈ positiveAt S ↔ ∀ w ∈ S, 0 < InfinitePlace.Completion.extensionEmbeddingOfIsReal w.2
@@ -41,9 +41,9 @@ theorem mem_positiveAt {S : Set {w : InfinitePlace K // w.IsReal}} {x : IdeleGro
   Iff.rfl
 
 /- English proof (translation)
-Establish `: (positiveAt S : Set (IdeleGroup K)) = ⋂ w ∈ S, (fun x : IdeleGroup K ↦ InfinitePlace.Completion.extensionEmbeddingOfIsReal w.2 ((infiniteProj w.1 x : (w.1.Completion)ˣ) : w.1.Completion)) ⁻¹' Set.Ioi 0`. Use extensionality with `x`. Simplify using `[mem_positiveAt]`. Rewrite using `[this]`. Use `S.toFinite.isOpen_biInter fun w _ ↦ isOpen_Ioi.preimage ?_` and prove the remaining obligations.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(InfinitePlace.Completion.isometry_extensionEmbeddingOfIsReal w.2).continuous.comp (Units.continuous_val.comp (continuous_infiniteProj w.1))`.
+A detailed English derivation is pending.
 -/
 theorem isOpen_positiveAt (S : Set {w : InfinitePlace K // w.IsReal}) :
     IsOpen (positiveAt S : Set (IdeleGroup K)) := by
@@ -70,7 +70,7 @@ def exponent (v : HeightOneSpectrum (𝓞 K)) : ℕ :=
 
 omit [NumberField K] in
 /- English proof (translation)
-The claim follows from `multiplicity_eq_zero`.
+A detailed English derivation is pending.
 -/
 theorem exponent_eq_zero_iff (v : HeightOneSpectrum (𝓞 K)) :
     𝔪.exponent v = 0 ↔ ¬ v.asIdeal ∣ 𝔪.ideal :=
@@ -78,7 +78,7 @@ theorem exponent_eq_zero_iff (v : HeightOneSpectrum (𝓞 K)) :
 
 omit [NumberField K] in
 /- English proof (translation)
-Rewrite using `[Nat.one_le_iff_ne_zero, Ne, exponent_eq_zero_iff, not_not]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem one_le_exponent_iff (v : HeightOneSpectrum (𝓞 K)) :
     1 ≤ 𝔪.exponent v ↔ v.asIdeal ∣ 𝔪.ideal := by
@@ -87,14 +87,14 @@ theorem one_le_exponent_iff (v : HeightOneSpectrum (𝓞 K)) :
 omit [NumberField K] in
 
 /- English proof (translation)
-The claim follows from `pow_multiplicity_dvd _ _`.
+A detailed English derivation is pending.
 -/
 theorem asIdeal_pow_exponent_dvd (v : HeightOneSpectrum (𝓞 K)) :
     v.asIdeal ^ 𝔪.exponent v ∣ 𝔪.ideal :=
   pow_multiplicity_dvd _ _
 
 /- English proof (translation)
-Establish `hm : HasFiniteMulSupport fun v : HeightOneSpectrum (𝓞 K) ↦ v.asIdeal ^ multiplicity v.asIdeal 𝔪.ideal`. Simplify `Ideal.hasFiniteMulSupport 𝔪.ideal_ne_bot` using `only [HeightOneSpectrum.maxPowDividing_eq_pow_multiplicity 𝔪.ideal_ne_bot]`. Rewrite using `[← mulSupport_asIdeal_pow]`. Conclude with `hm`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finite_support_exponent : (support 𝔪.exponent).Finite := by
   have hm : HasFiniteMulSupport fun v : HeightOneSpectrum (𝓞 K) ↦
@@ -108,7 +108,7 @@ def congruenceSubgroup : Subgroup (IdeleGroup K) :=
   (idealLevel 𝔪.ideal).comap (toFinite K) ⊓ positiveAt 𝔪.real
 
 /- English proof (translation)
-Rewrite using `[congruenceSubgroup, Subgroup.mem_inf, Subgroup.mem_comap, idealLevel, mem_finiteLevel, mem_positiveAt]`. Simplify using `only [finiteComponent_toFinite]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem mem_congruenceSubgroup {x : IdeleGroup K} :
     x ∈ 𝔪.congruenceSubgroup ↔
@@ -121,11 +121,11 @@ theorem mem_congruenceSubgroup {x : IdeleGroup K} :
   rfl
 
 /- English proof (translation)
-Rewrite using `[mem_congruenceSubgroup]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hf, hi⟩`. Use `⟨fun v hv ↦ (hf v).2, fun v hv ↦ (hf v).1, hi⟩` and prove the remaining obligations. Introduce and unpack `⟨hd, hn, hi⟩`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Use `⟨fun v ↦ ?_, hi⟩` and prove the remaining obligations. Distinguish the cases in `hv : v.asIdeal ∣ 𝔪.ideal`. Conclude with `(mem_unitsLevel_of_one_le ((𝔪.one_le_exponent_iff v).2 hv)).2 (hd v hv)`. Rewrite using `[(𝔪.exponent_eq_zero_iff v).2 hv, mem_unitsLevel]`. Use `⟨hn v hv, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Nat.cast_zero, neg_zero, exp_zero]`. Conclude with `Valuation.map_sub_le _ (hn v hv).le (by simp)`.
+A detailed English derivation is pending.
 -/
 theorem mem_congruenceSubgroup_iff {x : IdeleGroup K} :
     x ∈ 𝔪.congruenceSubgroup ↔
@@ -148,7 +148,7 @@ theorem mem_congruenceSubgroup_iff {x : IdeleGroup K} :
       exact Valuation.map_sub_le _ (hn v hv).le (by simp)
 
 /- English proof (translation)
-Rewrite using `[congruenceSubgroup, Subgroup.coe_inf, Subgroup.coe_comap]`. Use `IsOpen.inter ?_ (isOpen_positiveAt _)` and prove the remaining obligations. Conclude with `(isOpen_finiteLevel 𝔪.finite_support_exponent).preimage (continuous_toFinite K)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isOpen_congruenceSubgroup : IsOpen (𝔪.congruenceSubgroup : Set (IdeleGroup K)) := by
   rw [congruenceSubgroup, Subgroup.coe_inf, Subgroup.coe_comap]
@@ -156,7 +156,7 @@ theorem isOpen_congruenceSubgroup : IsOpen (𝔪.congruenceSubgroup : Set (Idele
   exact (isOpen_finiteLevel 𝔪.finite_support_exponent).preimage (continuous_toFinite K)
 
 /- English proof (translation)
-The claim follows from `fun x hx ↦ by rw [mem_standardOpenSubgroup_iff_toFinite_mem] exact finiteLevel_le_finiteLevel_zero _ (Subgroup.mem_inf.1 hx).1`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem congruenceSubgroup_le_standardOpenSubgroup :
     𝔪.congruenceSubgroup ≤ standardOpenSubgroup K := fun x hx ↦ by
@@ -168,7 +168,7 @@ def idelesOneMod : Subgroup (IdeleGroup K) :=
     (unitsLevel v (𝔪.exponent v)).comap (finiteProj v)) ⊓ positiveAt 𝔪.real
 
 /- English proof (translation)
-Simplify using `only [idelesOneMod, Subgroup.mem_inf, Subgroup.mem_iInf, Subgroup.mem_comap, mem_positiveAt]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_idelesOneMod {x : IdeleGroup K} :
     x ∈ 𝔪.idelesOneMod ↔
@@ -178,11 +178,11 @@ theorem mem_idelesOneMod {x : IdeleGroup K} :
   simp only [idelesOneMod, Subgroup.mem_inf, Subgroup.mem_iInf, Subgroup.mem_comap, mem_positiveAt]
 
 /- English proof (translation)
-Use extensionality with `x`. Rewrite using `[Subgroup.mem_inf, mem_congruenceSubgroup, mem_idelesOneMod, mem_standardOpenSubgroup_iff_toFinite_mem, mem_finiteLevel]`. Simplify using `only [finiteComponent_toFinite, Pi.zero_apply]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hf, hi⟩`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨⟨fun v _ ↦ hf v, hi⟩, fun v ↦ unitsLevel_antitone v (Nat.zero_le _) (hf v)⟩`. Introduce and unpack `⟨⟨hf, hi⟩, h0⟩`. Use `⟨fun v ↦ ?_, hi⟩` and prove the remaining obligations. Distinguish the cases in `hv : v.asIdeal ∣ 𝔪.ideal`. Conclude with `hf v hv`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[(𝔪.exponent_eq_zero_iff v).2 hv]`. Conclude with `h0 v`.
+A detailed English derivation is pending.
 -/
 theorem congruenceSubgroup_eq_inf :
     𝔪.congruenceSubgroup = 𝔪.idelesOneMod ⊓ standardOpenSubgroup K := by
@@ -201,7 +201,7 @@ theorem congruenceSubgroup_eq_inf :
       exact h0 v
 
 /- English proof (translation)
-Rewrite using `[congruenceSubgroup_eq_inf]`. Conclude with `inf_le_left`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem congruenceSubgroup_le_idelesOneMod : 𝔪.congruenceSubgroup ≤ 𝔪.idelesOneMod := by
   rw [congruenceSubgroup_eq_inf]
@@ -211,9 +211,9 @@ def rayUnits : Subgroup Kˣ :=
   𝔪.idelesOneMod.comap (diagonal K)
 
 /- English proof (translation)
-Rewrite using `[rayUnits, Subgroup.mem_comap, mem_idelesOneMod]`. Use `and_congr (forall_congr' fun v ↦ forall_congr' fun hv ↦ ?_) (forall_congr' fun w ↦ forall_congr' fun _ ↦ ?_)` and prove the remaining obligations. Establish `hc : ∀ k : K, (k : v.adicCompletion K) = algebraMap K (v.adicCompletion K) k` using `fun k ↦ by`. Rewrite using `[HeightOneSpectrum.algebraMap_adicCompletion]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[mem_unitsLevel_of_one_le ((𝔪.one_le_exponent_iff v).2 hv), coe_finiteProj_diagonal, ← HeightOneSpectrum.valuedAdicCompletion_eq_valuation', hc, hc, (algebraMap K (v.adicCompletion K)).map_sub, (algebraMap K (v.adicCompletion K)).map_one]`. Rewrite using `[coe_infiniteProj_diagonal]`. Conclude with `Iff.of_eq (congrArg (0 < ·) (InfinitePlace.Completion.extensionEmbeddingOfIsReal_coe _ _))`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_rayUnits {a : Kˣ} :
     a ∈ 𝔪.rayUnits ↔

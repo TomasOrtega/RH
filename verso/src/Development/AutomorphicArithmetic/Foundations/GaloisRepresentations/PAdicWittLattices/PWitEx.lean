@@ -11,9 +11,9 @@ universe u
 open GlobalTheory.UPel.HT.Hecke in
 
 /- English proof (translation)
-Establish `e₁ : LBIso (o₂.P.pull h₁.φ₂) ((o₃.P.pull h₂.φ₂).pull h₁.φ₂)` using `LBIso.chartPull (chartPullPull o₂.P h₁.φ₂ h₁.φ₂ rfl) (chartPullPull (o₃.P.pull h₂.φ₂) h₁.φ₂ h₁.φ₂ rfl) h₂.pol`. Establish `e₂ : LBIso (o₂.P.pull h₁.φ₂) (o₃.P.pull (h₁.φ₂ ≫ h₂.φ₂))` using `LBIso.chartPull (chartPullId _) (chartPullIn o₃.P (fun _ => h₂.φ₂) (fun _ => 1) h₁.φ₂) e₁`. Use `⟨⟨h₁.φ ≫ h₂.φ, h₁.φ₂ ≫ h₂.φ₂, h₁.cart.comp h₂.cart, ?_, ?_, LBIso.trans o₁.isLB (pull_isLB o₂.isLB _) (pull_isLB o₃.isLB _) h₁.pol e₂, ?_⟩, rfl⟩` and prove the remaining obligations. Conclude with `⟨by simp only [Category.assoc, h₂.sq.1, reassoc_of% h₁.sq.1], by simp only [Category.assoc, h₂.sq.2, reassoc_of% h₁.sq.2]⟩`. Introduce `c`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [← Category.assoc, h₁.act c]`. Simplify using `only [Category.assoc, h₂.act c]`. Introduce `y`. Simplify using `only [reassoc_of% h₁.eta y, h₂.eta y, Category.assoc]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 private theorem gObjMap_comp_keep {G₀ : GDatum} {R : Type} [CommRing R] [Algebra ℚ R] {b : GBase G₀ R} {N : ℕ}
     {S₁ S₂ S₃ : Scheme.{0}} {s₁ : S₁ ⟶ Sp R} {s₂ : S₂ ⟶ Sp R} {s₃ : S₃ ⟶ Sp R} {o₁ : GObj b N s₁} {o₂ : GObj b N s₂}
@@ -35,19 +35,17 @@ private theorem gObjMap_comp_keep {G₀ : GDatum} {R : Type} [CommRing R] [Algeb
     simp only [reassoc_of% h₁.eta y, h₂.eta y, Category.assoc]
 
 /- English proof (translation)
-Introduce `_ hSm hRig hWF hWD hDM hTI hTC hTD p _ D G L R _ _ gb X N' N h hI hA`. Take `⟨M, hdiv, hAM, π₁, Φ₁, hs₁, o₁, ψ₁, φ₁, ht₁, hΦ₁⟩` from `hWD p D G L R gb X N' N h hI`. Take `⟨c, Φc, hw, hfin, het, hsur⟩` from `hWF p D G L R gb N' M hdiv (X N') (X M)`. Establish `hA1 : AdmK L (↑M) (↑N') 1`. Introduce `u hu`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `using UpperTheory.Gal.Int.Geo.KN_anti hdiv hu`. Take `⟨π, Φ, hcπ, hΦ, hπs, hΦw⟩` from `hDM p D G L R gb M N' N (X M) (X N') (X N) h hI hA hA1 c Φc π₁ Φ₁ hw hfin het hsur ⟨hs₁, o₁, ψ₁, φ₁, ht₁, hΦ₁⟩`. Substitute `hcπ` using the available equality. Take `⟨hsc, oc, ψc, φc, htc, hΦc⟩` from `hw`. Take `⟨o, ⟨φ⟩⟩` from `UpperTheory.exists_levelObj_pullback_of_charZero (X N').s π hπs (X N).univ`.
+Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Substitute using the available equality. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Set `ψl : (X N').univ.A.left ⟶ o.A.left` to `φ.cart.1.lift Φ (X N').univ.A.hom hΦw`. Establish `hψ₁ : ψl ≫ φ.φ = Φ` using `φ.cart.1.lift_fst _ _ _`. Establish `hψ₂ : ψl ≫ o.A.hom = (X N').univ.A.hom` using `φ.cart.1.lift_snd _ _ _`. Set `ψ : (X N').univ.A ⟶ o.A` to `Over.homMk ψl hψ₂`. Use `⟨π, Φ, hπs, o, ψ, φ, ?_, hψ₁.symm⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨m₂⟩` from `BaseChange.gObjMap_cancel φ₁ φ`. Use `haveI := hTI p D G L R gb (X M).X (X M).s M N' (X M).univ oc ψc 1 (one_mem _) htc`. Establish `htr : IsTrans L h oc o₁ (inv ψc ≫ ψ₁)` using `hTC p D G L R gb (X M).X (X M).s M N' N (X M).univ oc o₁ ψc (inv ψc ≫ ψ₁) h hI hAM htc (by simpa using ht₁)`. Use `haveI : Smooth (X M).s := (hSm p D R gb M (X M)).1`. Use `haveI : AlgebraicGeometry.IsReduced (X M).X := GlobalTheory.isReduced_of_smooth_of_isReduced (X M).s`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Establish `hcomp : m₂.φ ≫ φ.φ = φ₁.φ`. Take `⟨m, hm⟩` from `gObjMap_comp_keep m₂ φ`. Rewrite using `[← hm]`. Conclude with `hRig p D R gb (X N).X (X M).X (X N).s (X M).s (c ≫ π) (by rw [Category.assoc, hπs, hsc]) N (X N).univ o₁ m φ₁`. Use `hTD p D G L R gb (X N').X (X M).X (X N').s (X M).s c hsc N' N (X N').univ o oc o₁ φc m₂ ψ (inv ψc ≫ ψ₁) h ?_ htr` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Establish `key : ψc.left ≫ φc.φ ≫ Φ = ψ₁.left ≫ φ₁.φ`. Rewrite using `[← Category.assoc, ← hΦc, hΦ, hΦ₁]`. Apply `φ.cart.1.hom_ext` to reduce the goal to its premises. Simplify using `only [Category.assoc, hcomp, ψ, Over.homMk_left, hψ₁, Over.comp_left]`. Rewrite using `[← key, ← Category.assoc, ← Over.comp_left, IsIso.inv_hom_id, Over.id_left, Category.id_comp]`.
-
-Simplify using `only [Category.assoc, ψ, Over.homMk_left, hψ₂, Over.comp_left]`. Rewrite using `[m₂.cart.1.w, φc.cart.1.w, ← Over.comp_left_assoc, Over.w_assoc]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.G3.pWitEx :
     KNBasic → GenSm → Rigid → WitForget → WitDeep → DescMap → TransIso → TransCancel → TransDesc → WitEx := by

@@ -18,13 +18,13 @@ open CategoryTheory AlgebraicGeometry ReciprocityTheory.ChartRestriction.G Recip
 namespace GlobalTheory.CxDegIntegers
 
 /- English proof (translation)
-Set `a : 𝓞 K →+* Γ(T, ⊤)` to `((Scheme.ΓSpecIso (.of (𝓞 K))).inv ≫ g.appTop).hom`. Establish `ha : ∀ y : nonZeroDivisors (𝓞 K), IsUnit (a y)`. Introduce and unpack `⟨y, hy⟩`. Establish `hy0 : y ≠ 0` using `nonZeroDivisors.ne_zero hy`. Establish `hm` using `Ideal.absNorm_mem (Ideal.span {y})`.
+Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨c, hc⟩` from `Ideal.mem_span_singleton'.1 hm`. Establish `hn : Ideal.absNorm (Ideal.span {y}) ≠ 0`. Rewrite using `[Ne, Ideal.absNorm_eq_zero_iff, Ideal.span_singleton_eq_bot]`. Conclude with `hy0`. Establish `hu : IsUnit (a (c * y))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hc, map_natCast, ← map_natCast (algebraMap ℚ Γ(T, ⊤))]`. Conclude with `(isUnit_iff_ne_zero.2 (Nat.cast_ne_zero.2 hn)).map _`. Rewrite `hu` using `[map_mul]`. Conclude with `isUnit_of_mul_isUnit_right hu`. Set `ψ : K →+* Γ(T, ⊤)` to `IsLocalization.lift (M := nonZeroDivisors (𝓞 K)) (S := K) ha`.
+Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Use `⟨T.toSpecΓ ≫ Spec.map (CommRingCat.ofHom ψ), ?_⟩` and prove the remaining obligations. Establish `e : CommRingCat.ofHom (algebraMap (𝓞 K) K) ≫ CommRingCat.ofHom ψ = (Scheme.ΓSpecIso (.of (𝓞 K))).inv ≫ g.appTop`. Apply `CommRingCat.hom_ext` to reduce the goal to its premises. Conclude with `IsLocalization.lift_comp ha`. Rewrite using `[Category.assoc, spMap, ← Spec.map_comp, e, Spec.map_comp, ← Scheme.toSpecΓ_naturality_assoc, toSpecΓ_SpecMap_ΓSpecIso_inv, Category.comp_id]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_factor_spec_field (K : Type) [Field K] [NumberField K] (T : Scheme.{0})
     [Algebra ℚ Γ(T, ⊤)] (g : T ⟶ Sp (𝓞 K)) :
@@ -53,11 +53,11 @@ theorem exists_factor_spec_field (K : Type) [Field K] [NumberField K] (T : Schem
     toSpecΓ_SpecMap_ΓSpecIso_inv, Category.comp_id]
 
 /- English proof (translation)
-Introduce `K _ _ M r hM k _ Y p _ hX q`. Establish `hC` using `GlobalTheory.T.rational_fibre_projective_curve k Y p hX`. Use `haveI := hC.isIntegral`. Establish `hE` using `hM.pullback q`. Establish `hL` using `hM.isLB_det`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hB` using `hE.isLB_det`. Establish `hA` using `Semi.LB.isLB_pull hL q`. Establish `hB'` using `Semi.LB.isLB_pull hB (ratFibre.fst p)`. Take `⟨φ, hφ⟩` from `exists_factor_spec_field K (ratFibre p) (ratFibre.fst p ≫ q)`. Establish `h2` using `Semi.LB.isLB_pull hL (spMap (algebraMap (𝓞 K) K))`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `z : CechPic.pull (spMap (algebraMap (𝓞 K) K)) (CechPic.cls _ hL) = 0`. Rewrite using `[← CechPic.cls_pull hL _ h2]`. Conclude with `(CechPic.cls_eq_zero_iff h2).2 (ReciprocityTheory.ChartRestriction.G.DVR.exists_gen_of_isLB_local _ h2)`. Establish `c : CechPic.cls _ hB = CechPic.cls _ hA` using `((CechPic.cls_eq_iff hA hB).2 (hM.lbIso_det_pullback q)).symm`. Rewrite using `[ChernDegree.cxDeg_eq_ratDeg hX hE, ratDeg_eq_degLB hB, ← VB.IsProjCurve.degPic_cls hC hB', CechPic.cls_pull hB _ hB', c, CechPic.cls_pull hL q hA, ← CechPic.pull_comp, ← hφ, CechPic.pull_comp, z, map_zero, map_zero]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cxDeg_pullback_eq_zero : ∀ (K : Type) [Field K] [NumberField K] (M : (Sp (𝓞 K)).Modules) (r : ℕ),
     GlobalTheory.VB.IsVB M r → ∀ (k : Type) [CommRing k] (Y : Scheme.{0}) (p : Y ⟶ Sp k) [IsIntegral Y],

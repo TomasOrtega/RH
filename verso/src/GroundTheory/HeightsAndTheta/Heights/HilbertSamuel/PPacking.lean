@@ -9,19 +9,19 @@ open MeasureTheory Metric Module
 noncomputable section
 
 /- English proof (translation)
-Set `_ : MeasurableSpace W` to `borel W`. Establish `: BorelSpace W` using `⟨rfl⟩`. Use `set μ : Measure W := (Module.finBasis ℝ W).addHaar with hμ`. Establish `hl2 : 0 < lam / 2` using `half_pos hlam`. Establish `hdisj : Set.PairwiseDisjoint (s : Set W) fun w => ball w (lam / 2)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `w hw w' hw' hne`. Apply `ball_disjoint_ball` to reduce the goal to its premises. Rewrite using `[add_halves, dist_eq_norm]`. Conclude with `hsep w hw w' hw' hne`. Establish `hsubset : (⋃ w ∈ s, ball w (lam / 2)) ⊆ ball (0 : W) (r + lam / 2)`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `x hx`. Simplify using `only [Set.mem_iUnion] at hx`. Take `⟨w, hw, hxw⟩` from `hx`. Rewrite using `[mem_ball_zero_iff]`. Rewrite `hxw` using `[mem_ball, dist_eq_norm]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hmeas` using `measure_biUnion_finset (μ := μ) hdisj fun w _ => measurableSet_ball`. Establish `hle` using `measure_mono (μ := μ) hsubset`. Rewrite `hle` using `[hmeas]`. Simplify using `only [Measure.addHaar_ball_of_pos μ _ hl2, Finset.sum_const, nsmul_eq_mul] at hle`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hle` using `[Measure.addHaar_ball_of_pos μ _ (by linarith : 0 < r + lam / 2)]`. Establish `hc0 : μ (ball 0 1) ≠ 0` using `(measure_ball_pos μ 0 one_pos).ne'`. Establish `hct : μ (ball 0 1) ≠ ⊤` using `measure_ball_lt_top.ne`. Rewrite `hle` using `[← mul_assoc]`. Establish `hle'` using `(ENNReal.mul_le_mul_iff_left hc0 hct).1 hle`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hle'` using `[show ((s.card : ℕ) : ENNReal) = ENNReal.ofReal (s.card : ℝ) by simp, ← ENNReal.ofReal_mul (by positivity), ENNReal.ofReal_le_ofReal_iff (pow_nonneg (by linarith) _)]`. Establish `hpos : 0 < (lam / 2) ^ finrank ℝ W` using `by positivity`. Establish `key : (1 + 2 * r / lam) ^ finrank ℝ W = ((r + lam / 2) / (lam / 2)) ^ finrank ℝ W`. Use `congr 1`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Reduce the equality to equality of the corresponding arguments. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[key, div_pow, le_div_iff₀ hpos]`. Conclude with `hle'`.
+A detailed English derivation is pending.
 -/
 theorem card_le_of_separated_of_norm_le {W : Type*} [NormedAddCommGroup W] [NormedSpace ℝ W]
     [FiniteDimensional ℝ W] (s : Finset W) {lam r : ℝ} (hlam : 0 < lam) (hr : 0 ≤ r)
@@ -67,15 +67,13 @@ theorem card_le_of_separated_of_norm_le {W : Type*} [NormedAddCommGroup W] [Norm
   exact hle'
 
 /- English proof (translation)
-Establish `: IsAddTorsionFree V` using `IsAddTorsionFree.of_isTorsionFree ℝ V`. Establish `: Module.IsTorsionFree ℤ La` using `inferInstance`. Establish `: Module.Free ℤ La` using `Module.free_of_finite_type_torsion_free'`. Set `B` to `Module.Free.chooseBasis ℤ La`. Set `f : Module.Free.ChooseBasisIndex ℤ La → V` to `fun i => (B i : V)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hspan : Submodule.span ℝ (La : Set V) = Submodule.span ℝ (Set.range f)`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Submodule.span_le]`. Introduce `x hx`. Establish `hx'' : x = ∑ i, B.repr ⟨x, hx⟩ i • f i` using `by conv_lhs => rw [show x = ((⟨x, hx⟩ : La) : V) from rfl, ← B.sum_repr ⟨x, hx⟩]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `only [Submodule.coe_sum, Submodule.coe_smul, f]`. Rewrite using `[SetLike.mem_coe, hx'']`. Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← Int.cast_smul_eq_zsmul ℝ]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Conclude with `Submodule.subset_span (B i).2`. Use `⟨Submodule.subset_span, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hspan]`.
-
-Conclude with `FiniteDimensional.span_of_finite ℝ (Set.finite_range f)`. Rewrite using `[hspan, finrank_eq_card_basis B]`. Conclude with `finrank_range_le_card f`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finrank_span_le_finrank_int {V : Type*} [AddCommGroup V] [Module ℝ V]
     (La : Submodule ℤ V) [Module.Finite ℤ La] :
@@ -108,19 +106,19 @@ theorem finrank_span_le_finrank_int {V : Type*} [AddCommGroup V] [Module ℝ V]
     exact finrank_range_le_card f
 
 /- English proof (translation)
-Introduce `V _ _ La _ S b hb hmem hnorm hsep`. Take `⟨hsub, hfd, hdim⟩` from `finrank_span_le_finrank_int La`. Use `set W := Submodule.span ℝ (La : Set V) with hW`. Establish `hR0 : (0 : ℝ) ≤ Module.finrank ℤ La * (b + Real.log 3)`. Establish `: 0 ≤ Real.log 3` using `Real.log_nonneg (by norm_num)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Check the signs of the components of the expression.
 
-Check the signs of the components of the expression. Break down `Nat.eq_zero_or_pos S.card with h0 | hpos` into its components or cases. Rewrite using `[h0, Nat.cast_zero, Real.log_zero]`. Conclude with `hR0`. Set `T : Finset W` to `S.subtype (· ∈ W)`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hTcard : T.card = S.card`. Rewrite using `[Finset.card_subtype, Finset.filter_true_of_mem]`. Conclude with `fun s hs => hsub (hmem s hs)`. Establish `hδ : 0 < Real.exp (-b)` using `Real.exp_pos _`. Establish `hbound` using `card_le_of_separated_of_norm_le T hδ zero_le_one (fun x hx => by`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hx` using `[Finset.mem_subtype]`. Rewrite using `[Submodule.coe_norm]`. Conclude with `hnorm _ hx)`. Use the proof step `(fun x hx y hy hxy => by`. Rewrite `hx`, `hy` using `[Finset.mem_subtype]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Submodule.coe_norm, Submodule.coe_sub]`. Conclude with `hsep _ hx _ hy (fun h => hxy (Subtype.ext h)))`. Rewrite `hbound` using `[hTcard]`. Establish `hq : 1 + 2 * 1 / Real.exp (-b) ≤ 3 * Real.exp b`. Establish `h1 : 1 ≤ Real.exp b` using `Real.one_le_exp hb`.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Rewrite using `[Real.exp_neg, mul_one, div_inv_eq_mul]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h3 : 1 ≤ 3 * Real.exp b`. Establish `h1 : 1 ≤ Real.exp b` using `Real.one_le_exp hb`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hcard : (S.card : ℝ) ≤ (3 * Real.exp b) ^ Module.finrank ℤ La` using `hbound.trans ((pow_le_pow_left₀ (by positivity) hq _).trans (pow_le_pow_right₀ h3 hdim))`. Establish `hSpos : (0 : ℝ) < S.card` using `by exact_mod_cast hpos`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Real.log_pow, Real.log_mul (by norm_num) (Real.exp_pos b).ne', Real.log_exp]`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem Packing.proof : Packing.Statement := by
   classical

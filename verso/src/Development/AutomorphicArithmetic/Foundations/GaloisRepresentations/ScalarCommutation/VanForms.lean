@@ -21,9 +21,9 @@ private def atHom {G : HTGroup p} {k : Type} [Field k] [Algebra G.F k] (P : Pl G
     ((MonoidHom.fst _ _).comp (Subgroup.subtype _))
 
 /- English proof (translation)
-Establish `h` using `Matrix.charpoly_units_conj (Units.map (P.κ : AfP p ⊗[ℚ] G.C →* Matrix (Fin G.n) (Fin G.n) k) x) (P.ι ((y.1.1 : G.Cˣ) : G.C))`. Rewrite using `[← h, ← P.κ_ι]`. Establish `e : P.at (toAfF G β x t hx y) = P.κ (x : AfP p ⊗[ℚ] G.C) * P.κ (1 ⊗ₜ ((y.1.1 : G.Cˣ) : G.C)) * P.κ ((x⁻¹ : (AfP p ⊗[ℚ] G.C)ˣ) : AfP p ⊗[ℚ] G.C)`. Rewrite using `[← map_mul, ← map_mul]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[e, ← Matrix.coe_units_inv]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem charpoly_at_toAfF {G : HTGroup p} {k : Type} [Field k] [Algebra G.F k] (P : Pl G k) (β : G.Cˣ)
     (x : (AfP p ⊗[ℚ] G.C)ˣ) (t : (AfP p)ˣ) (hx : Triv G (AfP p) β x t) (y : grp G β) :
@@ -39,21 +39,19 @@ private theorem charpoly_at_toAfF {G : HTGroup p} {k : Type} [Field k] [Algebra 
   rfl
 
 /- English proof (translation)
-Establish `hcsa` using `GlobalTheory.CentSep.centralizer_eq_adjoin G.F G.C G.n G.rankC ((y.1.1 : G.Cˣ) : G.C) hsep hdeg`. Establish `hcent : ∀ w : G.C, w * ((y.1.1 : G.Cˣ) : G.C) = ((y.1.1 : G.Cˣ) : G.C) * w ↔ w ∈ Set.range ((Algebra.adjoin G.F ({((y.1.1 : G.Cˣ) : G.C)} : Set G.C)).val.restrictScalars ℚ)`. Introduce `w`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hw : w ∈ Subalgebra.centralizer G.F {((y.1.1 : G.Cˣ) : G.C)}`. Rewrite using `[Subalgebra.mem_centralizer_iff]`. Simplify using `using h.symm`. Rewrite `hw` using `[hcsa]`. Conclude with `⟨⟨w, hw⟩, rfl⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 
-Introduce and unpack `⟨v, rfl⟩`. Establish `hw : (v : G.C) ∈ Subalgebra.centralizer G.F {((y.1.1 : G.Cˣ) : G.C)}` using `by rw [hcsa]; exact v.2`. Rewrite `hw` using `[Subalgebra.mem_centralizer_iff]`. Conclude with `(hw _ rfl).symm`. Use `set U : (AfP p ⊗[ℚ] G.C)ˣ := Units.map (inC G (AfP p)).toMonoidHom y.1.1 with hU`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hUv : (U : AfP p ⊗[ℚ] G.C) = (1 : AfP p) ⊗ₜ[ℚ] ((y.1.1 : G.Cˣ) : G.C)` using `rfl`. Establish `hδ : ((toAfF G β x t hx y : G.GAf) : (AfP p ⊗[ℚ] G.C)ˣ × (AfP p)ˣ).1 = x * U * x⁻¹` using `rfl`. Establish `conj : ∀ a ∈ twCent (MonoidHom.id G.GAf) (toAfF G β x t hx y), (((x⁻¹ * (a : (AfP p ⊗[ℚ] G.C)ˣ × (AfP p)ˣ).1 * x : (AfP p ⊗[ℚ] G.C)ˣ)) : AfP p ⊗[ℚ] G.C) * ((1 : AfP p) ⊗ₜ[ℚ] ((y.1.1 : G.Cˣ) : G.C)) = ((1 : AfP p) ⊗ₜ[ℚ] ((y.1.1 : G.Cˣ) : G.C)) * (((x⁻¹ * (a : (AfP p ⊗[ℚ] G.C)ˣ × ( …`. Introduce `a ha`. Establish `h1` using `congrArg (fun g : G.GAf => (g : (AfP p ⊗[ℚ] G.C)ˣ × (AfP p)ˣ).1) ha`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [Subgroup.coe_mul, Prod.fst_mul, MonoidHom.id_apply] at h1`. Rewrite `h1` using `[hδ]`. Use `set A := (a : (AfP p ⊗[ℚ] G.C)ˣ × (AfP p)ˣ).1`. Establish `h2 : x⁻¹ * A * x * U = U * (x⁻¹ * A * x)`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[← hUv, ← Units.val_mul, ← Units.val_mul, h2]`. Introduce `a ha b hb`. Establish `hc` using `GlobalTheory.LKCentAf.commute_of_centralizer ℚ (AfP p) G.C _ ((y.1.1 : G.Cˣ) : G.C) _ hcent _ _ (conj a ha) (conj b hb)`. Use `set A := (a : (AfP p ⊗[ℚ] G.C)ˣ × (AfP p)ˣ).1`. Use `set B := (b : (AfP p ⊗[ℚ] G.C)ˣ × (AfP p)ˣ).1`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hc' : (x⁻¹ * A * x) * (x⁻¹ * B * x) = (x⁻¹ * B * x) * (x⁻¹ * A * x)` using `Units.ext (by`. Simplify `hc)` using `only [Units.val_mul]`. Establish `hAB : A * B = B * A`. Combine the equalities or inequalities in the displayed calculation. Apply `Subtype.ext` to reduce the goal to its premises.
-
-Apply `Prod.ext` to reduce the goal to its premises. Simplify `hAB` using `only [Subgroup.coe_mul, Prod.fst_mul]`. Simplify using `only [Subgroup.coe_mul, Prod.snd_mul]`. Conclude with `mul_comm _ _`.
+Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem toAfF_cent_comm {G : HTGroup p} (β : G.Cˣ) (x : (AfP p ⊗[ℚ] G.C)ˣ) (t : (AfP p)ˣ)
     (hx : Triv G (AfP p) β x t) (y : grp G β) (hdeg : (minpoly G.F ((y.1.1 : G.Cˣ) : G.C)).natDegree = G.n)
@@ -110,15 +108,15 @@ private theorem toAfF_cent_comm {G : HTGroup p} (β : G.Cˣ) (x : (AfP p ⊗[ℚ
     exact mul_comm _ _
 
 /- English proof (translation)
-Establish `hrho : ∀ w, (G.rho w ((y.1.1 : G.Cˣ) : G.C)).charpoly.Separable`. Introduce `w`. Use `letI : Algebra G.F (G.Fw w) := (G.embW w).toAlgebra`. Establish `hg : ∀ a, G.rho w (algebraMap G.F G.C a) = algebraMap G.F (Matrix (Fin G.n) (Fin G.n) (G.Fw w)) a` using `fun a => by rw [G.rho_F, Matrix.algebraMap_eq_diagonal]; rfl`. Set `g : G.C →ₐ[G.F] Matrix (Fin G.n) (Fin G.n) (G.Fw w)` to `{ G.rho w with commutes' := hg }`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `h` using `GlobalTheory.charpoly_algHom_eq_map_minpoly G.F (G.Fw w) G.C G.n G.rankC g _ hdeg`. Establish `e : g ((y.1.1 : G.Cˣ) : G.C) = G.rho w ((y.1.1 : G.Cˣ) : G.C)` using `rfl`. Rewrite `h` using `[e]`. Rewrite using `[h]`. Conclude with `hsep.map`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hb` using `GlobalTheory.TorCls.AtP.inclG_one_bijective G`. Establish `hy : toP1 G β y = inclG G 1 (locC G y.1)` using `rfl`. Establish `key : ∀ a ∈ twCent (MonoidHom.id (Gr G 1)) (toP1 G β y), ∃ a' : Gp G, inclG G 1 a' = a ∧ a' * locC G y.1 = locC G y.1 * a'`. Introduce `a ha`. Take `⟨a', rfl⟩` from `hb.2 a`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨a', rfl, hb.1 ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, map_mul, ← hy]`. Conclude with `ha`. Introduce `a ha b hb'`. Take `⟨a', rfl, ha'⟩` from `key a ha`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨b', rfl, hb''⟩` from `key b hb'`. Rewrite using `[← map_mul, ← map_mul]`. Use `congr 1`. Use `Prod.ext (mul_comm _ _) (funext fun w => ?_)` and prove the remaining obligations. Conclude with `GlobalTheory.CentSep.centraliser_comm_of_separable (G.Fw w) (Fin G.n) ((locC G y.1).2 w) (a'.2 w) (b'.2 w) (hrho w) (congrFun (congrArg Prod.snd ha') w) (congrFun (congrArg Prod.snd hb'') w)`.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem twisted_centralizer_commutative {G : HTGroup p} (β : G.Cˣ) (y : grp G β)
     (hdeg : (minpoly G.F ((y.1.1 : G.Cˣ) : G.C)).natDegree = G.n)
@@ -158,27 +156,25 @@ end UpperTheory.Gal.Spc
 
 open UpperTheory.Gal.Spc in
 /- English proof (translation)
-Introduce `p _ G _ Lv k _ _ _ _ _ _ _ P H _ _ _ _ S k₁ _ _ P₁ f hf hC hR B x t hx y hy`. Distinguish the cases in `hs1 : (P₁.ι ((y.1.1 : G.Cˣ) : G.C)).charpoly.Separable`. Establish `hns` using `GlobalTheory.SepCharpoly.not_separable_charpoly G.F k₁ G.C G.n P₁.ι ((y.1.1 : G.Cˣ) : G.C)`. Establish `hle` using `GlobalTheory.VanishNonEll.natDegree_minpoly_le G.F k₁ G.C G.n G.n_pos P₁.ι ((y.1.1 : G.Cˣ) : G.C)`. Establish `hdeg : (minpoly G.F ((y.1.1 : G.Cˣ) : G.C)).natDegree = G.n`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `h`. Conclude with `hns (Or.inl (lt_of_le_of_ne hle h)) hs1`. Establish `hms : (minpoly G.F ((y.1.1 : G.Cˣ) : G.C)).Separable`. Assume the negation of the conclusion as `h`. Conclude with `hns (Or.inr ⟨hdeg, h⟩) hs1`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hirr : ¬ Irreducible (minpoly G.F ((y.1.1 : G.Cˣ) : G.C))` using `fun h => hy ⟨hdeg, hms, h⟩`. Establish `hcp` using `GlobalTheory.charpoly_algHom_eq_map_minpoly G.F k G.C G.n G.rankC P.ι ((y.1.1 : G.Cˣ) : G.C) hdeg`. Establish `hat` using `charpoly_at_toAfF P B.β x t hx y`. Rewrite `hat` using `[hcp]`. Establish `hδs : (P.at (toAfF G B.β x t hx y)).charpoly.Separable`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hat]`. Conclude with `hms.map`. Establish `hδi : ¬ Irreducible (P.at (toAfF G B.β x t hx y)).charpoly`. Rewrite using `[hat]`. Conclude with `GlobalTheory.VanishNonEll.not_irreducible_map _ _ (minpoly.monic (IsIntegral.of_finite G.F _)) hirr`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hT₁` using `toAfF_cent_comm B.β x t hx y hdeg hms`. Establish `hT₂` using `twisted_centralizer_commutative B.β y hdeg hms`. Establish `h1` using `orbK_eq_zero_of_cuspSlices S f hf hC _ hδs hδi hT₁`. Establish `hbi : Formalism.UG.IsBiInv Lv.K.toSubgroup f` using `hf.1`. Use `orbK_prod_eq_zero_of_slices Lv.K.toSubgroup (Kp G) (toAfF G B.β x t hx y) (toP1 G B.β y) _ hT₁ hT₂ ?_ fun z => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `c hc w`. Rewrite `hc` using `[Subgroup.mem_prod]`. Establish `e1 : f (c.1⁻¹ * w.1 * c.1) = f w.1` using `hbi ⟨c.1⁻¹, Subgroup.inv_mem _ hc.1⟩ ⟨c.1, hc.1⟩ _`. Establish `e2 : oneP G (c.2⁻¹ * w.2 * c.2) = oneP G w.2`. Establish `hiff : c.2⁻¹ * w.2 * c.2 ∈ Kp G ↔ w.2 ∈ Kp G`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[(Kp G).mul_mem_cancel_right hc.2, (Kp G).mul_mem_cancel_left ((Kp G).inv_mem hc.2)]`. Unfold `oneP`. Distinguish the cases in `hw : w.2 ∈ Kp G`. Rewrite using `[Set.indicator_of_mem (show _ ∈ (Kp G : Set (Gr G 1)) from hiff.2 hw), Set.indicator_of_mem (show _ ∈ (Kp G : Set (Gr G 1)) from hw)]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[Set.indicator_of_notMem (show _ ∉ (Kp G : Set (Gr G 1)) from fun h => hw (hiff.1 h)), Set.indicator_of_notMem (show _ ∉ (Kp G : Set (Gr G 1)) from hw)]`. Use `show f (c.1⁻¹ * w.1 * c.1) * oneP G (c.2⁻¹ * w.2 * c.2) = f w.1 * oneP G w.2`. Rewrite using `[e1, e2]`. Unfold `orbK at h1 ⊢`. Rewrite `h1`, the goal using `[orbC_eq]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Establish `e : ∀ q : DoubleCoset.Quotient (twCent (MonoidHom.id G.GAf) (toAfF G B.β x t hx y) : Set G.GAf) (Lv.K.toSubgroup : Set G.GAf), oTerm (MonoidHom.id G.GAf) Lv.K.toSubgroup (twCent (MonoidHom.id G.GAf) (toAfF G B.β x t hx y) ⊓ Lv.K.toSubgroup) (toAfF G B.β x t hx y) (fun v => f v * …`. Introduce `q`. Unfold `oTerm`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[finsum_congr e]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `finsum_mul_eq_zero _ _ h1`. Use `GlobalTheory.orbK_eq_zero_of_charpoly_not_separable _ k₁ G.n ((atHom P₁).comp (MonoidHom.fst _ _)) _ _ _ ?_ ?_` and prove the remaining obligations. Introduce `g hg`. Conclude with `hR g.1 (left_ne_zero_of_mul hg)`. Introduce `h`.
-
-Apply `hs1` to reduce the goal to its premises. Rewrite using `[← charpoly_at_toAfF P₁ B.β x t hx y]`. Conclude with `h`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.Spc.vanForms :
     UpperTheory.Gal.Spc.VanForms := by

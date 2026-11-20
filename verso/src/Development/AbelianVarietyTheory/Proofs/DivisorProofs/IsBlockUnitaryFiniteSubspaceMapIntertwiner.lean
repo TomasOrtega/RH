@@ -7,47 +7,43 @@ open Formalism.BasicNotions.TH GlobalTheory.FockAlg GlobalTheory.RealLift Global
 namespace GlobalTheory.HoweR
 
 /- English proof (translation)
-Introduce `ι M _ _ _ _ s F M' _ _ F' f U hF hU`. Take `⟨hfd, hst, ip, hherm, hpos, hadj⟩` from `hU`. Set `K : Submodule ℂ M` to `U ⊓ LinearMap.ker f`. Establish `hKU : ∀ k ∈ K, k ∈ U` using `fun k hk => (Submodule.mem_inf.mp hk).1`. Establish `hKf : ∀ k ∈ K, f k = 0` using `fun k hk => LinearMap.mem_ker.mp (Submodule.mem_inf.mp hk).2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : FiniteDimensional ℂ K := Submodule.finiteDimensional_of_le (inf_le_left : K ≤ U)`. Set `n` to `Module.finrank ℂ K`. Set `b` to `Module.finBasis ℂ K`. Set `ψ : M →ₗ[ℂ] (Fin n → ℂ)` to `LinearMap.pi (fun i => ip (b i : M))`. Set `U1 : Submodule ℂ M` to `U ⊓ LinearMap.ker ψ`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hU1U : ∀ w ∈ U1, w ∈ U` using `fun w hw => (Submodule.mem_inf.mp hw).1`. Establish `hA : ∀ w ∈ U1, ∀ k ∈ K, ip k w = 0`. Introduce `w hw k hk`. Establish `hw' : ∀ i, ip (b i : M) w = 0` using `fun i => by`. Use `congrFun (LinearMap.mem_ker.mp (Submodule.mem_inf.mp hw).2) i` as an intermediate fact.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `this` using `[ψ]`. Establish `h0 : ((ip.flip w).comp K.subtype) = 0` using `b.ext (fun i => by simpa using hw' i)`. Use `LinearMap.congr_fun h0 ⟨k, hk⟩` as an intermediate fact. Simplify using `using this`. Establish `hA' : ∀ w ∈ U1, ∀ k ∈ K, ip w k = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `w hw k hk`. Use `hherm k (hKU k hk) w (hU1U w hw)` as an intermediate fact. Rewrite `this` using `[hA w hw k hk, star_zero]`. Conclude with `this.symm`. Establish `hinj : Function.Injective (ψ.comp K.subtype)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `k hk`. Establish `hk1 : (k : M) ∈ U1` using `Submodule.mem_inf.mpr ⟨hKU k k.2, LinearMap.mem_ker.mpr (by simpa using hk)⟩`. Establish `h0` using `hA _ hk1 _ k.2`. Assume the negation of the conclusion as `hne`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hne' : (k : M) ≠ 0` using `fun h => hne (Subtype.ext h)`. Use `hpos _ (hKU k k.2) hne'` as an intermediate fact. Rewrite `this` using `[h0]`. Simplify using `at this`. Establish `hsurj : Function.Surjective (ψ.comp K.subtype)` using `(LinearMap.injective_iff_surjective_of_finrank_eq_finrank (by simp [n])).mp hinj`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hdec : ∀ u ∈ U, ∃ k ∈ K, u - k ∈ U1`. Introduce `u hu`. Take `⟨k, hk⟩` from `hsurj (ψ u)`. Use `⟨k, k.2, Submodule.mem_inf.mpr ⟨U.sub_mem hu (hKU k k.2), LinearMap.mem_ker.mpr ?_⟩⟩` and prove the remaining obligations. Rewrite using `[map_sub]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `sub_eq_zero.mpr (by simpa using hk.symm)`. Establish `hinj1 : LinearMap.ker (f.comp U1.subtype) = ⊥`. Rewrite using `[LinearMap.ker_eq_bot']`. Introduce `w hw`. Establish `hwK : (w : M) ∈ K` using `Submodule.mem_inf.mpr ⟨hU1U w w.2, LinearMap.mem_ker.mpr (by simpa using hw)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `h0` using `hA _ w.2 _ hwK`. Assume the negation of the conclusion as `hne`. Establish `hne' : (w : M) ≠ 0` using `fun h => hne (Subtype.ext h)`. Use `hpos _ (hU1U w w.2) hne'` as an intermediate fact. Rewrite `this` using `[h0]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Simplify using `at this`. Take `⟨h, hh⟩` from `LinearMap.exists_leftInverse_of_injective (f.comp U1.subtype) hinj1`. Set `g : M' →ₗ[ℂ] M` to `U1.subtype.comp h`. Establish `hg : ∀ w ∈ U1, g (f w) = w`. Introduce `w hw`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Use `congrArg Subtype.val (LinearMap.congr_fun hh ⟨w, hw⟩)` as an intermediate fact. Simplify `this` using `[g]`. Establish `hkey : ∀ u ∈ U, g (f u) ∈ U1 ∧ u - g (f u) ∈ K`. Introduce `u hu`. Take `⟨k, hk, hw⟩` from `hdec u hu`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Establish `hfu : f u = f (u - k)` using `by rw [map_sub, hKf k hk, sub_zero]`. Rewrite using `[hfu, hg _ hw, sub_sub_cancel]`. Conclude with `⟨hw, hk⟩`. Establish `hgU1 : ∀ x ∈ U.map f, g x ∈ U1`. Introduce and unpack `x ⟨u, hu, rfl⟩`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Conclude with `(hkey u hu).1`. Establish `hfg : ∀ x ∈ U.map f, f (g x) = x`. Introduce and unpack `x ⟨u, hu, rfl⟩`. Use `hKf _ (hkey u hu).2` as an intermediate fact. Rewrite `this` using `[map_sub, sub_eq_zero]`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `this.symm`. Use `haveI := hfd`. Use `⟨inferInstance, ?_, (ip.comp g).compl₂ g, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `a b hab _ ⟨u, hu, rfl⟩`. Conclude with `⟨F a b u, hst a b hab u hu, hF a b hab u hu⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Introduce `x hx y hy`. Conclude with `hherm _ (hU1U _ (hgU1 x hx)) _ (hU1U _ (hgU1 y hy))`. Introduce `x hx hne`. Apply `hpos _ (hU1U _ (hgU1 x hx))` to reduce the goal to its premises. Introduce `h0`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `hne` to reduce the goal to its premises. Rewrite using `[← hfg x hx]`. Express the relevant statement in the definitionally equal form `f (g x) = 0`. Rewrite using `[h0, map_zero]`. Introduce `a b hab x hx y hy`.
+Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hu0` using `hgU1 x hx`. Establish `hv0` using `hgU1 y hy`. Establish `e1 : F' a b x = f (F a b (g x))` using `by rw [hF a b hab _ (hU1U _ hu0), hfg x hx]`. Establish `e2 : F' b a y = f (F b a (g y))` using `by rw [hF b a hab.symm _ (hU1U _ hv0), hfg y hy]`. Express the relevant statement in the definitionally equal form `ip (g (F' a b x)) (g y) = ip (g x) (g (F' b a y))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[e1, e2]`. Establish `hk1` using `(hkey _ (hst a b hab _ (hU1U _ hu0))).2`. Establish `hk2` using `(hkey _ (hst b a hab.symm _ (hU1U _ hv0))).2`. Establish `l1 : ip (g (f (F a b (g x)))) (g y) = ip (F a b (g x)) (g y)`. Use `hA (g y) hv0 _ hk1` as an intermediate fact.
-
-Rewrite `this` using `[map_sub, LinearMap.sub_apply]`. Conclude with `(sub_eq_zero.mp this).symm`. Establish `l2 : ip (g x) (g (f (F b a (g y)))) = ip (g x) (F b a (g y))`. Use `hA' (g x) hu0 _ hk2` as an intermediate fact. Rewrite `this` using `[map_sub]`.
-
-Conclude with `(sub_eq_zero.mp this).symm`. Rewrite using `[l1, l2]`. Conclude with `hadj a b hab _ (hU1U _ hu0) _ (hU1U _ hv0)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unitOn_map : ∀ (ι M : Type) [Fintype ι] [DecidableEq ι] [AddCommGroup M] [Module ℂ M] (s : ι → Bool)
     (F : ι → ι → Module.End ℂ M), ∀ (M' : Type) [AddCommGroup M'] [Module ℂ M'] (F' : ι → ι → Module.End ℂ M')

@@ -113,7 +113,7 @@ def LineHigh : Prop := Hyp → ∀ (q : ℕ) (i : ℤ) (A : Type) [CommRing A] [
   (p : Z ⟶ Spec (CommRingCat.of A)), IL p → AICSch Z → ∀ n : ℤ, 2 ≤ n → Subsingleton (Ht q (sch.obj (pullback p (cpt A))) n i)
 
 /- English proof (translation)
-Take `⟨h1, f, hf⟩` from `h`. Use `⟨MorphismProperty.of_isPullback w h1, a ≫ f, ?_⟩` and prove the remaining obligations. Use `w.paste_horiz hf` as an intermediate fact. Rewrite `this` using `[terminal.comp_from]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem IsLine.bc {L S L' S' : Scheme.{0}} {l : L ⟶ S} (h : IsLine l) {a : L' ⟶ L} {l' : L' ⟶ S'} {t : S' ⟶ S}
     (w : IsPullback a l' l t) : IsLine l' := by
@@ -123,7 +123,7 @@ theorem IsLine.bc {L S L' S' : Scheme.{0}} {l : L ⟶ S} (h : IsLine l) {a : L' 
   rwa [terminal.comp_from] at this
 
 /- English proof (translation)
-Take `⟨L, u, l, hu, hl, rfl⟩` from `h`. Establish `e : (a ≫ u) ≫ l = c' ≫ t` using `by rw [Category.assoc, w.w]`. Use `⟨pullback l t, pullback.lift (a ≫ u) c' e, pullback.snd l t, ?_, hl.bc (IsPullback.of_hasPullback l t), pullback.lift_snd _ _ _⟩` and prove the remaining obligations. Establish `w' : IsPullback a (pullback.lift (a ≫ u) c' e) u (pullback.fst l t)` using `IsPullback.of_bot (by rw [pullback.lift_snd]; exact w) (pullback.lift_fst _ _ _).symm (IsPullback.of_hasPullback l t)`. Conclude with `MorphismProperty.of_isPullback w' hu`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem IL.bc {Z S Z' S' : Scheme.{0}} {c : Z ⟶ S} (h : IL c) {a : Z' ⟶ Z} {c' : Z' ⟶ S'} {t : S' ⟶ S}
     (w : IsPullback a c' c t) : IL c' := by
@@ -135,14 +135,14 @@ theorem IL.bc {Z S Z' S' : Scheme.{0}} {c : Z ⟶ S} (h : IL c) {a : Z' ⟶ Z} {
   exact MorphismProperty.of_isPullback w' hu
 
 /- English proof (translation)
-Take `⟨L, u, l, hu, hl, rfl⟩` from `h`. Conclude with `⟨L, v ≫ u, l, inferInstance, hl, Category.assoc _ _ _⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem IL.pre {W Z S : Scheme.{0}} {c : Z ⟶ S} (h : IL c) (v : W ⟶ Z) (hv : IsIntegralHom v) : IL (v ≫ c) := by
   obtain ⟨L, u, l, hu, hl, rfl⟩ := h
   exact ⟨L, v ≫ u, l, inferInstance, hl, Category.assoc _ _ _⟩
 
 /- English proof (translation)
-Take `⟨L, u, l, hu, hl, e⟩` from `h`. Use `⟨pullback l k, pullback.lift u c e, pullback.snd l k, ?_, hl.bc (IsPullback.of_hasPullback l k), pullback.lift_snd _ _ _⟩` and prove the remaining obligations. Establish `: IsIntegralHom (pullback.lift u c e ≫ pullback.fst l k)` using `by rwa [pullback.lift_fst]`. Conclude with `IsIntegralHom.of_comp _ (pullback.fst l k)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem IL.cancel {W T S : Scheme.{0}} {c : W ⟶ T} {k : T ⟶ S} (hk : IsIntegralHom k) (h : IL (c ≫ k)) : IL c := by
   obtain ⟨L, u, l, hu, hl, e⟩ := h
@@ -151,16 +151,16 @@ theorem IL.cancel {W T S : Scheme.{0}} {c : W ⟶ T} {k : T ⟶ S} (hk : IsInteg
   exact IsIntegralHom.of_comp _ (pullback.fst l k)
 
 /- English proof (translation)
-Take `⟨L, u, l, hu, ⟨hl, -⟩, rfl⟩` from `h`. Conclude with `⟨inferInstance, inferInstance⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem IL.qc {Z S : Scheme.{0}} {c : Z ⟶ S} (h : IL c) : QuasiCompact c ∧ QuasiSeparated c := by
   obtain ⟨L, u, l, hu, ⟨hl, -⟩, rfl⟩ := h
   exact ⟨inferInstance, inferInstance⟩
 
 /- English proof (translation)
-Proceed by induction on `h with`. Consider the case `int p hp => exact ⟨inferInstance, inferInstance⟩`. Consider the case `step c k p _ hc e ih`. Take `⟨_, _⟩` from `hc.qc`. Take `⟨_, _⟩` from `ih`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Substitute `e` using the available equality. Conclude with `⟨inferInstance, inferInstance⟩`.
+Substitute using the available equality. Supply the required witnesses or components.
 -/
 theorem IT.qc {X S : Scheme.{0}} {p : X ⟶ S} (h : IT p) : QuasiCompact p ∧ QuasiSeparated p := by
   induction h with
@@ -172,7 +172,7 @@ theorem IT.qc {X S : Scheme.{0}} {p : X ⟶ S} (h : IT p) : QuasiCompact p ∧ Q
     exact ⟨inferInstance, inferInstance⟩
 
 /- English proof (translation)
-Consider the cases of `h with`. Consider the case `int p hp => exact IT.int _ inferInstance`. Consider the case `step c k p hk hc e => exact IT.step (v ≫ c) k _ hk (hc.pre v hv) (by rw [Category.assoc, e])`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 -/
 theorem IT.pre {X S : Scheme.{0}} {p : X ⟶ S} (h : IT p) {W : Scheme.{0}} (v : W ⟶ X) (hv : IsIntegralHom v) : IT (v ≫ p) := by
   cases h with
@@ -180,9 +180,9 @@ theorem IT.pre {X S : Scheme.{0}} {p : X ⟶ S} (h : IT p) {W : Scheme.{0}} (v :
   | step c k p hk hc e => exact IT.step (v ≫ c) k _ hk (hc.pre v hv) (by rw [Category.assoc, e])
 
 /- English proof (translation)
-Proceed by induction on `h with`. Consider the case `int p hp => exact fun w => IT.int _ (MorphismProperty.of_isPullback w hp)`. Consider the case `step c k p _ hc e ih`. Introduce `X' a p' w`. Substitute `e` using the available equality.
+Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality.
 
-Establish `e : (a ≫ c) ≫ k = p' ≫ t` using `by rw [Category.assoc, w.w]`. Establish `w' : IsPullback a (pullback.lift (a ≫ c) p' e) c (pullback.fst k t)` using `IsPullback.of_bot (by rw [pullback.lift_snd]; exact w) (pullback.lift_fst _ _ _).symm (IsPullback.of_hasPullback k t)`. Conclude with `IT.step _ _ _ (ih (IsPullback.of_hasPullback k t)) (hc.bc w') (pullback.lift_snd _ _ _)`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem IT.bc {X S : Scheme.{0}} {p : X ⟶ S} (h : IT p) {S' : Scheme.{0}} (t : S' ⟶ S) :
     ∀ {X' : Scheme.{0}} {a : X' ⟶ X} {p' : X' ⟶ S'}, IsPullback a p' p t → IT p' := by
@@ -197,23 +197,23 @@ theorem IT.bc {X S : Scheme.{0}} {p : X ⟶ S} (h : IT p) {S' : Scheme.{0}} (t :
     exact IT.step _ _ _ (ih (IsPullback.of_hasPullback k t)) (hc.bc w') (pullback.lift_snd _ _ _)
 
 /- English proof (translation)
-Simplify using `using h.map ((Scheme.ΓSpecIso (CommRingCat.of A)).inv ≫ p.appTop).hom`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem unit_of {q : ℕ} {A : Type} [CommRing A] (h : IsUnit (q : A)) {X : Scheme.{0}} (p : X ⟶ Spec (CommRingCat.of A)) :
     IsUnit (q : Γ(X, ⊤)) := by
   simpa using h.map ((Scheme.ΓSpecIso (CommRingCat.of A)).inv ≫ p.appTop).hom
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨QuasiCompact.compactSpace_of_compactSpace p, quasiSeparatedSpace_of_quasiSeparated p⟩`.
+Supply the required witnesses or components.
 -/
 theorem qcqs_of {A : Type} [CommRing A] {X : Scheme.{0}} (p : X ⟶ Spec (CommRingCat.of A)) [QuasiCompact p] [QuasiSeparated p] :
     CompactSpace X ∧ QuasiSeparatedSpace X :=
   ⟨QuasiCompact.compactSpace_of_compactSpace p, quasiSeparatedSpace_of_quasiSeparated p⟩
 
 /- English proof (translation)
-Introduce `n`. Break down `lt_trichotomy n 0 with hn | rfl | hn` into its components or cases. Use `(h9 _ (tw q i)).1 E n hn` as an intermediate fact. Use `(h9 _ (tw q i)).1 E' n hn` as an intermediate fact. Conclude with `⟨fun _ _ _ => Subsingleton.elim _ _, fun _ => ⟨0, Subsingleton.elim _ _⟩⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 
-Conclude with `h0`. Use `h n hn` as an intermediate fact. Use `h' n hn` as an intermediate fact. Conclude with `⟨fun _ _ _ => Subsingleton.elim _ _, fun _ => ⟨0, Subsingleton.elim _ _⟩⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem eqv_of (h9 : A9) {q : ℕ} {i : ℤ} {E E' : Spc} (f : E ⟶ E') (h0 : Function.Bijective (pull _ f (tw q i) 0))
     (h : ∀ n, 0 < n → Subsingleton (Ht q E n i)) (h' : ∀ n, 0 < n → Subsingleton (Ht q E' n i)) : Eqv _ f (tw q i) := by
@@ -228,7 +228,7 @@ theorem eqv_of (h9 : A9) {q : ℕ} {i : ℤ} {E E' : Spc} (f : E ⟶ E') (h0 : F
     exact ⟨fun _ _ _ => Subsingleton.elim _ _, fun _ => ⟨0, Subsingleton.elim _ _⟩⟩
 
 /- English proof (translation)
-Use `hD H q i A hq p fun X g hg => ?_` and prove the remaining obligations. Take `⟨_, _⟩` from `qcqs_of (g ≫ p)`. Use `hC H q i A hq (g ≫ p) fun Z k hk hZ => ?_` and prove the remaining obligations. Rewrite using `[← Category.assoc]`. Conclude with `h Z (k ≫ g) inferInstance hZ`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem reduce (H : Hyp) (hD : Desc) (hC : Cover) (q : ℕ) (i : ℤ) (A : Type) [CommRing A] [IsLocalRing A] (hq : IsUnit (q : A))
     {P : Scheme.{0}} (p : P ⟶ Spec (CommRingCat.of A)) [QuasiCompact p] [QuasiSeparated p]
@@ -240,9 +240,9 @@ theorem reduce (H : Hyp) (hD : Desc) (hC : Cover) (q : ℕ) (i : ℤ) (A : Type)
   exact h Z (k ≫ g) inferInstance hZ
 
 /- English proof (translation)
-Take `⟨_, _⟩` from `hp.qc`. Use `reduce H hD hC q i A hq p fun Z h hh hZ => ?_` and prove the remaining obligations. Establish `hl` using `hp.pre h hh`. Take `⟨_, _⟩` from `qcqs_of (h ≫ p)`. Use `eqv_of H.a9 _ (h0 H q _ hZ (l0 A hS _ hl hZ) (unit_of hq (h ≫ p)) i) (fun n hn => ?_) (fun n hn => hA H q Z hZ (unit_of hq (h ≫ p)) n i hn)` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Break down `(show n = 1 ∨ 2 ≤ n by omega) with rfl | h2` into its components or cases. Conclude with `l1 H q i A hS hq _ hl hZ`. Conclude with `l2 H q i A hq _ hl hZ n h2`.
+Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem line (H : Hyp) (hD : Desc) (hC : Cover) (h0 : HZero) (hA : AICAcyc) (l0 : LineZero) (l1 : LineOne) (l2 : LineHigh)
     (q : ℕ) (i : ℤ) (A : Type) [CommRing A] [IsLocalRing A] (hS : SH A) (hq : IsUnit (q : A))
@@ -258,11 +258,11 @@ theorem line (H : Hyp) (hD : Desc) (hC : Cover) (h0 : HZero) (hA : AICAcyc) (l0 
   · exact l2 H q i A hq _ hl hZ n h2
 
 /- English proof (translation)
-Proceed by induction on `hp with`. Consider the case `int p hp => exact fun v hv => hI H q i A hS hq _ inferInstance`. Consider the case `step c k p hk hc e ih`. Introduce `W v hv`. Substitute `e` using the available equality.
+Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality.
 
-Take `⟨_, _⟩` from `hc.qc`. Take `⟨_, _⟩` from `hk.qc`. Use `reduce H hD hC q i A hq _ fun Z h hh hZ => ?_` and prove the remaining obligations. Take `⟨T, c', k', hT, hd, hk', e⟩` from `hSt ((h ≫ v) ≫ c) hZ`. Establish `hl : IL c'` using `IL.cancel hk' (e ▸ hc.pre (h ≫ v) inferInstance)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨_, _⟩` from `hl.qc`. Establish `e' : h ≫ v ≫ c ≫ k = c' ≫ k' ≫ k` using `by rw [← Category.assoc c', e]; simp`. Rewrite using `[e']`. Conclude with `(hF H q i A hq c' (k' ≫ k) hZ hT fun B _ _ hB hqB t => line H hD hC h0 hA l0 l1 l2 q i B hB hqB _ (hl.bc (IsPullback.of_hasPullback c' t))).2 (ih k' hk')`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tower (H : Hyp) (hD : Desc) (hC : Cover) (h0 : HZero) (hA : AICAcyc) (l0 : LineZero) (l1 : LineOne) (l2 : LineHigh)
     (hI : IntPB) (hSt : Stein) (hF : Fib)
@@ -286,9 +286,9 @@ theorem tower (H : Hyp) (hD : Desc) (hC : Cover) (h0 : HZero) (hA : AICAcyc) (l0
       line H hD hC h0 hA l0 l1 l2 q i B hB hqB _ (hl.bc (IsPullback.of_hasPullback c' t))).2 (ih k' hk')
 
 /- English proof (translation)
-Introduce `a1 a2 a3 a4 a5 a7 a8 a9 a10 _ b1 b2 b3 b4 b5 _ _ _ _ _ _ _ _ _ e1 q A _ _ hS hq X p _ i`. Establish `H : Hyp` using `⟨a1, a2, a3, a4, a5, a7, a8, a9, a10, b1, b2, b3, b4, b5, e1⟩`. Establish `tw' : ∀ (B : Type) [CommRing B] [IsLocalRing B], SH B → IsUnit (q : B) → ∀ {Y : Scheme.{0}} (r : Y ⟶ Spec (CommRingCat.of B)), IT r → PB q i r` using `fun B _ _ hB hqB Y r hr => by`. Use `tower H hD hC h0 hA l0 l1 l2 hI hSt hF q i B hB hqB r hr (𝟙 _) inferInstance` as an intermediate fact. Rewrite `this` using `[Category.id_comp]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `reduce H hD hC q i A hq p fun Z h hh hZ => ?_` and prove the remaining obligations. Take `⟨Z', c, hZ', hd, hc, hc'⟩` from `hCh A h p hh hZ`. Take `⟨_, _⟩` from `hc.qc`. Conclude with `(hF H q i A hq c (h ≫ p) hZ' hZ fun B _ _ hB hqB t => tw' B hB hqB _ (hc.bc t (IsPullback.of_hasPullback c t))).1 (tw' A hS hq _ hc')`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem goal_of (hD : Desc) (hC : Cover) (h0 : HZero) (hA : AICAcyc) (l0 : LineZero) (l1 : LineOne) (l2 : LineHigh)
     (hI : IntPB) (hSt : Stein) (hF : Fib) (hCh : Chow) : LateralTheory.E.EtaleChapterETwo := by

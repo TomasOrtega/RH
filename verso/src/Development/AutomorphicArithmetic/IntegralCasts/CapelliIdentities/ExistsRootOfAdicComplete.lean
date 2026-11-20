@@ -5,33 +5,29 @@ open Polynomial
 namespace UpperTheory.Reformulated.B.AdicCompleteRootExistence
 
 /- English proof (translation)
-Take `⟨f', hf'⟩ : ∃ f' : R[X], f' = derivative f` from `⟨_, rfl⟩`. Take `⟨c, hc0, hc⟩ : ∃ c : ℕ → R, c 0 = a₀ ∧ ∀ n, c (n + 1) = c n - f.eval (c n) * Ring.inverse (f'.eval (c n))` from `⟨fun n => Nat.recOn n a₀ fun _ b => b - f.eval b * Ring.inverse (f'.eval b), rfl, fun _ => rfl⟩`. Rewrite `h₂` using `[← hf']`. Establish `hc_mod : ∀ n, c n ≡ a₀ [SMOD I]`. Introduce `n`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `n with`. Consider the case `zero => rw [hc0]`. Consider the case `succ n ih`. Rewrite using `[hc, sub_eq_add_neg, ← add_zero a₀]`. Use `ih.add ?_` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[SModEq.zero, Ideal.neg_mem_iff]`. Use `I.mul_mem_right _ ?_` and prove the remaining obligations. Rewrite `h₁`, the goal using `[← SModEq.zero]`. Conclude with `(ih.eval f).trans h₁`. Establish `hf'c : ∀ n, IsUnit (f'.eval (c n))`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `n`. Use `isLocalHom_of_le_jacobson_bot I (IsAdicComplete.le_jacobson_bot I)` as an intermediate fact. Apply `IsUnit.of_map (Ideal.Quotient.mk I)` to reduce the goal to its premises. Use `convert! h₂ using 1`. Conclude with `SModEq.def.mp ((hc_mod n).eval _)`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Establish `hfcI : ∀ n, f.eval (c n) ∈ I ^ (n + 1)`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => simpa only [hc0, zero_add, pow_one] using h₁`. Consider the case `succ n ih`.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨q, hq⟩` from `Polynomial.binomExpansion f (c n) (-(f.eval (c n) * Ring.inverse (f'.eval (c n))))`. Rewrite using `[hc, sub_eq_add_neg, hq]`. Establish `hcancel : f'.eval (c n) * Ring.inverse (f'.eval (c n)) = 1` using `Ring.mul_inverse_cancel _ (hf'c n)`. Establish `hz : eval (c n) f + eval (c n) (derivative f) * (-(f.eval (c n) * Ring.inverse (f'.eval (c n)))) = 0`. Rewrite using `[← hf']`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take the linear combination `(-(f.eval (c n))) * hcancel`. Rewrite using `[hz, zero_add]`. Establish `hle : I ^ (2 * (n + 1)) ≤ I ^ (n + 1 + 1)` using `Ideal.pow_le_pow_right (by omega)`. Use `Ideal.mul_mem_left _ _ (hle ?_)` and prove the remaining obligations. Rewrite using `[pow_mul']`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Ideal.pow_mem_pow ((Ideal.neg_mem_iff _).2 <| Ideal.mul_mem_right _ _ ih) _`. Establish `aux : ∀ m n, m ≤ n → c m ≡ c n [SMOD (I ^ m • ⊤ : Ideal R)]`. Introduce `m n hmn`. Rewrite using `[← Ideal.one_eq_top, Ideal.smul_eq_mul, mul_one]`. Take `⟨k, rfl⟩` from `Nat.exists_eq_add_of_le hmn`.
+Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Use `clear hmn`. Proceed by induction on `k with`. Consider the case `zero => rw [add_zero]`. Consider the case `succ k ih`. Rewrite using `[← add_assoc, hc, ← add_zero (c m), sub_eq_add_neg]`.
+Reduce the conclusion to the remaining proof obligations. Use symmetry to reverse the relation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `ih.add ?_` and prove the remaining obligations. Use `symm`. Rewrite using `[SModEq.zero, Ideal.neg_mem_iff]`. Use `Ideal.mul_mem_right _ _ (Ideal.pow_le_pow_right ?_ (hfcI _))` and prove the remaining obligations. Rewrite using `[add_assoc]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the argument to an intermediate assertion. Fix the arbitrary inputs or assume the hypotheses. Apply the general hypothesis to the chosen values.
 
-Conclude with `le_self_add`. Take `⟨a, ha⟩` from `IsPrecomplete.prec' c (aux _ _)`. Use `⟨a, ?_, ?_⟩` and prove the remaining obligations. It suffices to establish `∀ n, f.eval a ≡ 0 [SMOD (I ^ n • ⊤ : Ideal R)] by exact IsHausdorff.haus' _ this`. Introduce `n`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply the general hypothesis to the chosen values. Rewrite the indicated hypotheses using the stated equalities.
 
-Specialize `ha n`. Rewrite `ha`, the goal using `[← Ideal.one_eq_top, Ideal.smul_eq_mul, mul_one]`. Use `(ha.symm.eval f).trans ?_` and prove the remaining obligations. Rewrite using `[SModEq.zero]`. Conclude with `Ideal.pow_le_pow_right le_self_add (hfcI _)`.
-
-Specialize `ha (0 + 1)`. Rewrite `ha` using `[hc, hc0, pow_one, ← Ideal.one_eq_top, Ideal.smul_eq_mul, mul_one, sub_eq_add_neg]`. Rewrite using `[← SModEq.sub_mem, ← add_zero a₀]`. Use `ha.symm.trans (SModEq.rfl.add ?_)` and prove the remaining obligations. Rewrite using `[SModEq.zero, Ideal.neg_mem_iff]`.
-
-Conclude with `Ideal.mul_mem_right _ _ h₁`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma exists_root_of_adicComplete {R : Type*} [CommRing R] (I : Ideal R)
     [IsAdicComplete I R] (f : R[X]) (a₀ : R) (h₁ : f.eval a₀ ∈ I)
@@ -113,21 +109,21 @@ private lemma exists_root_of_adicComplete {R : Type*} [CommRing R] (I : Ideal R)
     exact Ideal.mul_mem_right _ _ h₁
 
 /- English proof (translation)
-Take `⟨c, hc⟩` from `h2`. Take `⟨q, hq⟩` from `Polynomial.binomExpansion (f.map C) (C a) (C (ϖ ^ (k + 1)) * X)`. Establish `hcomp : eval (C a + C (ϖ ^ (k + 1)) * X) (f.map C) = f.comp (C a + C (ϖ ^ (k + 1)) * X)`. Rewrite using `[eval_map]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite `hq` using `[hcomp, eval_map_apply, derivative_map, eval_map_apply, h1, hc]`. Set `g : R[X]` to `C c + C (ε : R) * X + C ϖ * q * X ^ 2`. Establish `hgy : ∀ y, g.eval y = c + ε * y + ϖ * (q.eval y * y ^ 2)`. Introduce `y`. Simplify using `only [g, eval_add, eval_mul, eval_C, eval_X, eval_pow]`.
+Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hg'y : ∀ y, g.derivative.eval y = ε + ϖ * (q.derivative.eval y * y ^ 2 + q.eval y * (2 * y))`. Introduce `y`. Simplify using `only [g, derivative_add, derivative_mul, derivative_C, derivative_X, derivative_X_pow, eval_add, eval_mul, eval_C, eval_X, eval_pow, eval_zero, eval_one, map_natCast, eval_natCast]`. Evaluate the numerical expressions.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Evaluate the numerical expressions.
 
-Expand and normalize the polynomial expressions, which then agree. Use `set y₀ : R := -((ε⁻¹ : Rˣ) : R) * c with hy₀`. Establish `hεy : (ε : R) * y₀ = -c`. Rewrite using `[hy₀, ← mul_assoc, mul_neg, Units.mul_inv]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `hroot₀ : g.eval y₀ ∈ IsLocalRing.maximalIdeal R`. Rewrite using `[hgy, add_assoc, ← add_assoc c, hεy, add_neg_cancel, zero_add]`. Conclude with `Ideal.mul_mem_right _ _ hϖ`. Establish `hunit : IsUnit (g.derivative.eval y₀)`. Rewrite using `[hg'y]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hn`. Establish `hm` using `(IsLocalRing.mem_maximalIdeal _).2 hn`. Establish `hε : (ε : R) ∈ IsLocalRing.maximalIdeal R`. Use `Ideal.sub_mem _ hm (Ideal.mul_mem_right (q.derivative.eval y₀ * y₀ ^ 2 + q.eval y₀ * (2 * y₀)) _ hϖ)` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(IsLocalRing.mem_maximalIdeal _).1 hε ε.isUnit`. Take `⟨y, hy, -⟩` from `exists_root_of_adicComplete (IsLocalRing.maximalIdeal R) g y₀ hroot₀ (hunit.map _)`. Use `⟨a + ϖ ^ (k + 1) * y, ?_, ⟨y, by ring⟩⟩` and prove the remaining obligations. Establish `hev` using `congrArg (eval y) hq`. Simplify using `only [eval_comp, eval_add, eval_mul, eval_C, eval_X, eval_pow] at hev`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hev]`. Establish `: ϖ ^ (2 * k + 1) * g.eval y = 0` using `by rw [hy, mul_zero]`. Rewrite `this` using `[hgy]`. Take the linear combination `this`.
+Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 private lemma root_of_local {R : Type*} [CommRing R] [IsLocalRing R]
     [IsAdicComplete (IsLocalRing.maximalIdeal R) R] {ϖ : R}
@@ -178,7 +174,7 @@ private lemma root_of_local {R : Type*} [CommRing R] [IsLocalRing R]
 end UpperTheory.Reformulated.B.AdicCompleteRootExistence
 
 /- English proof (translation)
-Introduce `K _ _ _ _ ϖ hϖ f a k ε h1 h2`. Set `` to `IsTopologicalAddGroup.rightUniformSpace K`. Use `isUniformAddGroup_of_addCommGroup (G := K)` as an intermediate fact. Conclude with `UpperTheory.Reformulated.B.AdicCompleteRootExistence.root_of_local ((IsLocalRing.mem_maximalIdeal _).2 hϖ.not_isUnit) f a k ε h1 h2`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.AdicCompleteRootExistence.exists_root_of_dvd.{u_1} :
     ∀ {K : Type u_1} [inst : Field K] [inst_1 : ValuativeRel K] [inst_2 : TopologicalSpace K] [IsNonarchimedeanLocalField K]

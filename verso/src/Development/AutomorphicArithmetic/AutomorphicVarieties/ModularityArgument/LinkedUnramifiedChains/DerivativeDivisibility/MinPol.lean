@@ -5,9 +5,9 @@ open Polynomial TensorProduct
 namespace UpperTheory.V.J
 
 /- English proof (translation)
-Proceed by induction on `p using Polynomial.induction_on generalizing m with`. Consider the case `C a`. Rewrite using `[aeval_C, eval₂_C, Module.algebraMap_end_apply]`. Conclude with `hs a m`. Consider the case `add p q hp hq`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_add, LinearMap.add_apply, hp, hq, eval₂_add, add_smul]`. Consider the case `monomial n a ih`. Establish `e : (C a * X ^ (n + 1) : Λ[X]) = (C a * X ^ n) * X` using `by rw [pow_succ, mul_assoc]`. Rewrite using `[e, map_mul, aeval_X, Module.End.mul_apply, ih, eval₂_mul (p := C a * X ^ n) (q := X), eval₂_X, mul_smul]`. Both sides reduce to the same expression.
+Treat this case separately. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 private lemma aeval_actL {O Λ B : Type} [CommRing O] [CommRing Λ] [CommRing B] [Algebra O Λ] [Algebra O B]
     (lam : Λ →ₐ[O] B) (M : Type) [AddCommGroup M] [Module B M] [Module Λ M]
@@ -25,15 +25,15 @@ private lemma aeval_actL {O Λ B : Type} [CommRing O] [CommRing Λ] [CommRing B]
     rfl
 
 /- English proof (translation)
-Set `F` to `FractionRing Λ`. Set `L` to `AlgebraicClosure F`. Establish `hinj : Function.Injective (algebraMap Λ F)` using `IsFractionRing.injective Λ F`. Rewrite using `[← Polynomial.map_dvd_map (algebraMap Λ F) hinj hm]`. Take `⟨z, hz⟩` from `IsAlgClosed.exists_aeval_eq_zero L (g.map (algebraMap Λ F)) (degree_pos_of_irreducible hi).ne'`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hzg : aeval z g = 0` using `by rwa [aeval_map_algebraMap] at hz`. Establish `hroot : (T.baseChange L).charpoly.IsRoot z`. Rewrite using `[LinearMap.charpoly_baseChange, IsRoot.def, eval_map_algebraMap]`. Take `⟨r, hr⟩` from `hd`. Rewrite using `[hr, map_mul, hzg, zero_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Establish `hev : Module.End.HasEigenvalue (T.baseChange L) z` using `Module.End.hasEigenvalue_iff_isRoot_charpoly _ _ |>.2 hroot`. Take `⟨v, hv⟩` from `hev.exists_hasEigenvector`. Establish `hbc : (aeval T (q ^ N)).baseChange L = aeval (T.baseChange L) (q ^ N)` using `(aeval_algHom_apply (Module.End.baseChangeHom Λ L M) T (q ^ N)).symm`. Establish `hq : aeval z q = 0`. Establish `h1 : (aeval (T.baseChange L) (q ^ N)) v = (aeval z (q ^ N)) • v`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← aeval_map_algebraMap L, Module.End.aeval_apply_of_hasEigenvector hv, eval_map_algebraMap]`. Rewrite `h1` using `[← hbc, h, LinearMap.baseChange_zero, LinearMap.zero_apply, map_pow]`. Break down `smul_eq_zero.1 h1.symm with h2 | h2` into its components or cases. Conclude with `(pow_eq_zero_iff (n := N) (by rintro rfl; simp at h2)).1 h2`. Conclude with `absurd h2 hv.2`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hint : IsIntegral F z` using `Algebra.IsIntegral.isIntegral z`. Establish `hmin : minpoly F z ∣ g.map (algebraMap Λ F)` using `minpoly.dvd F z hz`. Establish `hmq : minpoly F z ∣ q.map (algebraMap Λ F)` using `minpoly.dvd F z (by rwa [aeval_map_algebraMap])`. Conclude with `((minpoly.irreducible hint).dvd_symm hi hmin).trans hmq`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private lemma dvd_of_aeval {Λ M : Type} [CommRing Λ] [IsDomain Λ] [AddCommGroup M] [Module Λ M]
     [Module.Free Λ M] [Module.Finite Λ M] (T : Module.End Λ M) (g q : Λ[X]) (hm : g.Monic)
@@ -67,19 +67,17 @@ private lemma dvd_of_aeval {Λ M : Type} [CommRing Λ] [IsDomain Λ] [AddCommGro
   exact ((minpoly.irreducible hint).dvd_symm hi hmin).trans hmq
 
 /- English proof (translation)
-Introduce `O Λ B _ _ _ _ _ _ lam J M _ _ _ _ _ h t s g m hf`. Establish `hJrad : J ≤ (Module.annihilator B M).radical`. Rewrite using `[Ideal.radical_eq_sInf]`. Use `le_sInf ?_` and prove the remaining obligations. Introduce and unpack `p ⟨hp, hprime⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Conclude with `(h.supp p hprime).1 hp`. Establish `hann : Module.annihilator B M ≤ J`. Rewrite using `[← h.rad.radical, Ideal.radical_eq_sInf]`. Use `le_sInf ?_` and prove the remaining obligations. Introduce and unpack `p ⟨hp, hprime⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Conclude with `(h.supp p hprime).2 hp`. Establish `hχ : (actL lam M h.hs t).charpoly.eval₂ (lam : Λ →+* B) t ∈ J`. Use `hann (Module.mem_annihilator.2 fun x => ?_)` and prove the remaining obligations. Rewrite using `[← aeval_actL lam M h.hs t, LinearMap.aeval_self_charpoly, LinearMap.zero_apply]`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hdvd : (actL lam M h.hs t).charpoly ∣ (∏ i, g i) ^ (∑ i, m i)`. Rewrite using `[hf.prod, ← Finset.prod_pow]`. Conclude with `Finset.prod_dvd_prod_of_dvd _ _ fun i _ => pow_dvd_pow _ (Finset.single_le_sum (fun _ _ => Nat.zero_le _) (Finset.mem_univ i))`. Take `⟨r, hr⟩` from `hdvd`. Use `h.rad ⟨∑ i, m i, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← eval₂_pow, hr, eval₂_mul]`. Conclude with `J.mul_mem_right _ hχ`. Introduce `q hq i`. Take `⟨N, hN⟩` from `hJrad hq`. Establish `hzero : aeval (actL lam M h.hs t) (q ^ N) = 0`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `LinearMap.ext fun x => ?_` and prove the remaining obligations. Rewrite using `[aeval_actL, eval₂_pow, LinearMap.zero_apply]`. Conclude with `Module.mem_annihilator.1 hN x`. Establish `hd : g i ∣ (actL lam M h.hs t).charpoly`. Rewrite using `[hf.prod]`.
-
-Conclude with `(dvd_pow_self _ (by have := hf.pos i; omega)).trans (Finset.dvd_prod_of_mem (fun j => g j ^ m j) (Finset.mem_univ i))`. Conclude with `dvd_of_aeval _ (g i) q (hf.monic i) (hf.irr i) hd N hzero`.
+A detailed English derivation is pending.
 -/
 theorem minPol : MinPol := by
   intro O Λ B _ _ _ _ _ _ lam J M _ _ _ _ _ h t s g m hf

@@ -16,9 +16,7 @@ noncomputable section
 namespace GlobalTheory.PsiInfLinear
 
 /- English proof (translation)
-Use `continuous_pi fun v => ?_` and prove the remaining obligations. Break down `v.isReal_or_isComplex with hv | hv` into its components or cases. Rewrite using `[(InfinitePlace.Completion.isometry_extensionEmbeddingOfIsReal hv).isEmbedding.continuous_iff]`. Conclude with `((continuous_apply _).comp continuous_fst).congr fun y => (congrFun (congrArg Prod.fst ((InfiniteAdeleRing.ringEquiv_mixedSpace E).apply_symm_apply y)) ⟨v, hv⟩).symm`. Rewrite using `[(InfinitePlace.Completion.isometry_extensionEmbedding v).isEmbedding.continuous_iff]`.
-
-Conclude with `((continuous_apply _).comp continuous_snd).congr fun y => (congrFun (congrArg Prod.snd ((InfiniteAdeleRing.ringEquiv_mixedSpace E).apply_symm_apply y)) ⟨v, hv⟩).symm`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_ringEquiv_mixedSpace_symm (E : Type) [Field E] [NumberField E] :
     Continuous (InfiniteAdeleRing.ringEquiv_mixedSpace E).symm := by
@@ -32,13 +30,11 @@ theorem continuous_ringEquiv_mixedSpace_symm (E : Type) [Field E] [NumberField E
       (congrFun (congrArg Prod.snd ((InfiniteAdeleRing.ringEquiv_mixedSpace E).apply_symm_apply y)) ⟨v, hv⟩).symm
 
 /- English proof (translation)
-Introduce `D ψ h`. Take `⟨-, ⟨θ, hθ⟩, hall⟩` from `h`. Establish `hform` using `hall θ hθ`. Use `set e := InfiniteAdeleRing.ringEquiv_mixedSpace D.host.F`. Set `c : ℂ` to `2 * Real.pi * Complex.I * ((-1 : ℤ) : ℂ)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `g : mixedEmbedding.mixedSpace D.host.F →+ ℂ` to `{ toFun := fun m => c * ∑ ρ, θ ρ (e.symm m ⊗ₜ[D.host.F] (1 : D.host.E)) map_zero' := by simp map_add' := by`. Introduce `a b`. Simplify using `[TensorProduct.add_tmul, Finset.sum_add_distrib, mul_add] }`. Establish `hg : Continuous g` using `by show Continuous fun m => c * ∑ ρ, θ ρ (e.symm m ⊗ₜ[D.host.F] (1 : D.host.E))`. Use `continuous_const.mul (continuous_finset_sum _ fun ρ _ => ?_)` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(hθ ρ).2.comp (continuous_ringEquiv_mixedSpace_symm D.host.F)`. Use `⟨AddMonoidHom.toRealLinearMap g hg, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[hform x]`. Use `congr 1`. Use `show _ = c * ∑ ρ, θ ρ (e.symm (e x) ⊗ₜ[D.host.F] (1 : D.host.E))`.
-
-Rewrite using `[e.symm_apply_apply]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem psiInf_eq_exp_linear : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) →
     ∃ Λ : mixedEmbedding.mixedSpace D.host.F →L[ℝ] ℂ, ∀ x : InfiniteAdeleRing D.host.F,

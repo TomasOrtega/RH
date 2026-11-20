@@ -14,25 +14,25 @@ variable {A : Type} [CommRing A] {n : Type} [Fintype n] [DecidableEq n]
 def locM (e : A) (M : Matrix n n A) : Matrix n n A := 1 + e • (M - 1)
 
 /- English proof (translation)
-Simplify using `[locM]`.
+Simplify using the standard rewrite rules.
 -/
 theorem Loc_locM_one (e : A) : locM e (1 : Matrix n n A) = 1 := by
   simp [locM]
 
 /- English proof (translation)
-Simplify using `[locM]`.
+Simplify using the standard rewrite rules.
 -/
 theorem Loc_locM_zero (M : Matrix n n A) : locM (0 : A) M = 1 := by
   simp [locM]
 
 /- English proof (translation)
-Simplify using `[locM]`.
+Simplify using the standard rewrite rules.
 -/
 theorem Loc_locM_one' (M : Matrix n n A) : locM (1 : A) M = M := by
   simp [locM]
 
 /- English proof (translation)
-Simplify using `only [locM, add_mul, mul_add, one_mul, mul_one, smul_mul_smul_comm, hab, zero_smul, add_zero, add_smul]`. Normalize the expressions using the abelian group laws.
+Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 theorem Loc_locM_add (a b : A) (hab : a * b = 0) (M : Matrix n n A) :
     locM a M * locM b M = locM (a + b) M := by
@@ -40,7 +40,7 @@ theorem Loc_locM_add (a b : A) (hab : a * b = 0) (M : Matrix n n A) :
   abel
 
 /- English proof (translation)
-Establish `h : M * N - 1 = (M - 1) + (N - 1) + (M - 1) * (N - 1)` using `by noncomm_ring`. Simplify using `only [locM, h, add_mul, mul_add, one_mul, mul_one, smul_mul_smul_comm, he, smul_add]`. Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 theorem Loc_locM_mul (e : A) (he : e * e = e) (M N : Matrix n n A) :
     locM e (M * N) = locM e M * locM e N := by
@@ -49,7 +49,7 @@ theorem Loc_locM_mul (e : A) (he : e * e = e) (M N : Matrix n n A) :
   abel
 
 /- English proof (translation)
-Rewrite using `[Loc_locM_add e (1 - e) (by rw [mul_sub, mul_one, he, sub_self]), show e + (1 - e) = (1 : A) by ring, Loc_locM_one']`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem Loc_locM_split (e : A) (he : e * e = e) (M : Matrix n n A) :
     locM e M * locM (1 - e) M = M := by
@@ -57,7 +57,7 @@ theorem Loc_locM_split (e : A) (he : e * e = e) (M : Matrix n n A) :
     Loc_locM_one']
 
 /- English proof (translation)
-Rewrite using `[locM, add_sub_cancel_left]`. Use `first`. Consider the case `exact Matrix.smul_mulVec _ _ _`. Consider the case `(ext i; simp [Matrix.mulVec, dotProduct, Finset.mul_sum, mul_assoc])`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem Loc_locM_sub_one (e : A) (M : Matrix n n A) (v : n → A) :
     (locM e M - 1) *ᵥ v = e • ((M - 1) *ᵥ v) := by
@@ -67,7 +67,7 @@ theorem Loc_locM_sub_one (e : A) (M : Matrix n n A) (v : n → A) :
     | (ext i; simp [Matrix.mulVec, dotProduct, Finset.mul_sum, mul_assoc])
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [locM, Matrix.map_apply, Matrix.add_apply, Matrix.smul_apply, Matrix.sub_apply, Matrix.one_apply, smul_eq_mul]`. Apply the tactic sequence `split_ifs <;> simp [map_add, map_mul, map_sub]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem Loc_locM_map {B : Type} [CommRing B] (f : A →+* B) (e : A) (M : Matrix n n A) :
     (locM e M).map f = locM (f e) (M.map f) := by
@@ -77,7 +77,7 @@ theorem Loc_locM_map {B : Type} [CommRing B] (f : A →+* B) (e : A) (M : Matrix
   split_ifs <;> simp [map_add, map_mul, map_sub]
 
 /- English proof (translation)
-Unfold `Formalism.UG.cT`. Rewrite using `[Loc_locM_map, hσ]`. Simplify using `[locM, Matrix.transpose_add, Matrix.transpose_smul, Matrix.transpose_sub, Matrix.transpose_one]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem Loc_cT (σ : A →+* A) (e : A) (hσ : σ e = e) (M : Matrix n n A) :
     Formalism.UG.cT σ (locM e M) = locM e (Formalism.UG.cT σ M) := by
@@ -86,9 +86,9 @@ theorem Loc_cT (σ : A →+* A) (e : A) (hσ : σ e = e) (M : Matrix n n A) :
   simp [locM, Matrix.transpose_add, Matrix.transpose_smul, Matrix.transpose_sub, Matrix.transpose_one]
 
 /- English proof (translation)
-Rewrite using `[Loc_cT σ e hσ]`. Use `set N := Formalism.UG.cT σ M with hN`. Establish `key : (N - 1) * J + J * (M - 1) + (N - 1) * J * (M - 1) = 0`. Establish `h0 : N * J * M - J = 0` using `sub_eq_zero.mpr hM`. Rewrite using `[← h0]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Use `noncomm_ring`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [locM, add_mul, mul_add, one_mul, mul_one, smul_mul_assoc, mul_smul_comm, smul_smul, he, smul_add, Matrix.mul_assoc]`. Normalize the expressions using the abelian group laws. Use `_ = J := by rw [key, smul_zero, add_zero]`.
+Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem Loc_locM_unitary (σ : A →+* A) (e : A) (he : e * e = e) (hσ : σ e = e) (J M : Matrix n n A)
     (hM : Formalism.UG.cT σ M * J * M = J) : Formalism.UG.cT σ (locM e M) * J * locM e M = J := by

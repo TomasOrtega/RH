@@ -14,21 +14,19 @@ namespace GlobalTheory.Mem.VolInfIso
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Take `⟨hF, hE, h2, hσ⟩` from `h`. Use `haveI : FiniteDimensional F E := Module.finite_of_finrank_pos (by omega)`. Set `c : E ≃ₐ[F] E` to `AlgEquiv.ofBijective σ (Algebra.IsAlgebraic.algHom_bijective σ)`. Establish `hc' : ∀ (τ : E →+* ℂ) x, τ (c x) = starRingEnd ℂ (τ x)` using `hσ`. Establish `hnr : ∀ φ : E →+* ℂ, ComplexEmbedding.conjugate φ ≠ φ` using `fun φ hφ => IsTotallyComplex.complexEmbedding_not_isReal φ (ComplexEmbedding.isReal_iff.2 hφ)`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc : c ≠ 1`. Introduce `h1`. Take `⟨φ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Use `hnr φ (RingHom.ext fun x => ?_)` and prove the remaining obligations. Rewrite using `[ComplexEmbedding.conjugate_coe_eq, ← hc', h1]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Use `choose θ0 h0 h0' using fun φ : E →+* ℂ => GlobalTheory.InfAdeleCM.exists_hom (F := F) φ`. Establish `hΨ : ∀ φ : E →+* ℂ, φ ∈ Set.range τ ↔ ComplexEmbedding.conjugate φ ∉ Set.range τ`. Introduce `φ`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Introduce and unpack `⟨i, rfl⟩ ⟨j, hj⟩`. Establish `: j = i` using `hτ.1 (by show InfinitePlace.mk (τ j) = InfinitePlace.mk (τ i)`. Rewrite using `[hj, InfinitePlace.mk_conjugate_eq])`. Substitute `this` using the available equality. Conclude with `hnr _ hj.symm`.
+Rewrite the conclusion using the stated equalities. Substitute using the available equality. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis.
 
-Introduce `hn`. Take `⟨i, hi⟩` from `hτ.2 (InfinitePlace.mk φ)`. Break down `InfinitePlace.mk_eq_iff.1 hi with e | e` into its components or cases. Conclude with `⟨i, e⟩`. Use `absurd ⟨i, ?_⟩ hn` and prove the remaining obligations.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[← e]`. Use extensionality with `x`. Simplify using the standard rewrite rules. Establish `hb` using `GlobalTheory.InfAdeleCM.bijective c h2 hc hc' θ0 (fun φ => GlobalTheory.InfAdeleCM.hom_tmul φ (θ0 φ) (h0 φ) (h0' φ)) (Set.range τ) hΨ`. Establish `hinj : Function.Injective τ` using `fun i j hij => hτ.1 (by show InfinitePlace.mk (τ i) = InfinitePlace.mk (τ j)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[hij])`. Set `u : I ≃ Set.range τ` to `Equiv.ofInjective τ hinj`. Establish `he : (fun (z : Ainf F ⊗[F] E) (i : I) => θ i z) = (Equiv.arrowCongr u.symm (Equiv.refl ℂ)) ∘ (fun (z : Ainf F ⊗[F] E) (φ : Set.range τ) => θ0 φ.1 z)`. Use function extensionality and compare the values at `z i`. Rewrite using `[GlobalTheory.Mem.VolEmb.infEmb_unique (τ i) (θ i) (θ0 (τ i)) (hθ i) ⟨h0 _, h0' _⟩]`.
-
-Both sides reduce to the same expression. Rewrite using `[he]`. Conclude with `(Equiv.bijective _).comp hb`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bijective_fam (σ : E →ₐ[F] E) {I : Type} (τ : I → (E →+* ℂ)) (θ : I → (Ainf F ⊗[F] E →+* ℂ))
     (h : IsCMExt F E σ) (hτ : IsCMFam τ) (hθ : ∀ i, IsInfEmb (τ i) (θ i)) :
@@ -78,9 +76,9 @@ theorem bijective_fam (σ : E →ₐ[F] E) {I : Type} (τ : I → (E →+* ℂ))
   exact (Equiv.bijective _).comp hb
 
 /- English proof (translation)
-Take `⟨hF, -, -, hσ⟩` from `h`. Establish `hθ'` using `GlobalTheory.InfAdeleCM.hom_tmul τ θ hθ.1 hθ.2`. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a x => show θ (a ⊗ₜ[F] σ x) = starRingEnd ℂ _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Rewrite using `[hθ', hθ', map_mul, GlobalTheory.InfAdeleCM.conj_ext, hσ]`. Both sides reduce to the same expression. Consider the case `add x y hx hy => rw [map_add, map_add, map_add, hx, hy, star_add]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Treat this case separately.
 -/
 theorem infEmb_sigR (σ : E →ₐ[F] E) (τ : E →+* ℂ) (θ : Ainf F ⊗[F] E →+* ℂ)
     (h : IsCMExt F E σ) (hθ : IsInfEmb τ θ) (z : Ainf F ⊗[F] E) :
@@ -96,11 +94,9 @@ theorem infEmb_sigR (σ : E →ₐ[F] E) (τ : E →+* ℂ) (θ : Ainf F ⊗[F] 
   | add x y hx hy => rw [map_add, map_add, map_add, hx, hy, star_add]
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ I _ τ θ h hτ hθ`. Use `haveI : FiniteDimensional F E := Module.finite_of_finrank_pos (by rw [h.2.2.1]; omega)`. Use `haveI : IsModuleTopology (Ainf F) (Ainf F ⊗[F] E) := ⟨rfl⟩`. Use `haveI : IsTopologicalRing (Ainf F ⊗[F] E) := IsModuleTopology.isTopologicalRing (Ainf F) _`. Use `haveI := GlobalTheory.AdelicUnitaryTop.secondCountable_infiniteAdele F`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Take `⟨e0⟩` from `GlobalTheory.AdelicUnitaryTop.nonempty_homeomorph (F := F) (E := E) (Ainf F)`. Use `haveI : LocallyCompactSpace (Ainf F ⊗[F] E) := e0.isClosedEmbedding.locallyCompactSpace`. Use `haveI : SecondCountableTopology (Ainf F ⊗[F] E) := e0.secondCountableTopology`. Establish `hb : Function.Bijective (Pi.ringHom θ : Ainf F ⊗[F] E →+* (I → ℂ))` using `bijective_fam σ τ θ h hτ hθ`. Set `e : (Ainf F ⊗[F] E) ≃+* (I → ℂ)` to `RingEquiv.ofBijective _ hb`.
-
-Establish `hc : Continuous e` using `continuous_pi fun i => IsModuleTopology.continuous_of_ringHom (R := Ainf F) (θ i) (hθ i).2`. Establish `ho : IsOpenMap e` using `AddMonoidHom.isOpenMap_of_sigmaCompact e.toAddEquiv.toAddMonoidHom e.surjective hc`. Use `⟨e, fun _ _ => rfl, hc, ?_, fun x i => infEmb_sigR σ (τ i) (θ i) h (hθ i) x⟩` and prove the remaining obligations. Conclude with `(e.toEquiv.toHomeomorphOfContinuousOpen hc ho).symm.continuous`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_infAdele_equiv : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (I : Type) [Fintype I] (τ : I → (E →+* ℂ)) (θ : I → (Ainf F ⊗[F] E →+* ℂ)), IsCMExt F E σ → IsCMFam τ → (∀ i, IsInfEmb (τ i) (θ i)) → ∃ e : (Ainf F ⊗[F] E) ≃+* (I → ℂ), (∀ x i, e x i = θ i x) ∧ Continuous e ∧ Continuous e.symm ∧ ∀ x i, e (sigR (Ainf F) σ x) i = star (e x i) := by
   intro F E _ _ _ _ _ σ I _ τ θ h hτ hθ

@@ -15,23 +15,23 @@ private def eqv (F : Type) : (Fin 2 → F) × (Fin 2 → F) ≃ (Fin 4 → F) wh
   right_inv x := by ext i; fin_cases i <;> rfl
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ _ _ D W σ hσ φ`. Establish `H` using `UpperTheory.ConvolutionTheory.R2.hatSt F E D W`. Establish `hs : Summable (fun ξ : Fin 4 → F => hat φ.1 fun i => rt (ξ i))` using `(poisson_of_mem_schwartzBruhatPi (H.mem φ)).1.of_norm`. Establish `hs2 : Summable (fun p : (Fin 2 → F) × (Fin 2 → F) => hat φ.1 ![rt (p.1 0), rt (p.1 1), rt (p.2 0), rt (p.2 1)])`. Establish `h` using `((eqv F).summable_iff).2 hs`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `h.congr fun p => ?_` and prove the remaining obligations. Simplify using `only [Function.comp]`. Use `congr 1`. Use extensionality with `i`. Apply the tactic sequence `fin_cases i <;> rfl`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `hrowsum : Summable (fun r : Fin 2 → F => ThRow (rt (r 0)) (rt (r 1)) φ.1)` using `hs2.prod`. Establish `hth : Th φ.1 = ∑' r : Fin 2 → F, ThRow (rt (r 0)) (rt (r 1)) φ.1`. Rewrite using `[H.th φ, Th, ← (eqv F).tsum_eq, ]`. Establish `: (fun p : (Fin 2 → F) × (Fin 2 → F) => hat φ.1 fun i => rt ((eqv F) p i)) = fun p => hat φ.1 ![rt (p.1 0), rt (p.1 1), rt (p.2 0), rt (p.2 1)]`. Use function extensionality and compare the values at `p`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `congr 1`. Use extensionality with `i`. Apply the tactic sequence `fin_cases i <;> rfl`. Rewrite using `[this, hs2.tsum_prod]`. Both sides reduce to the same expression.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hr : ∀ r : Rw F, ThRow (rt (r.1 0)) (rt (r.1 1)) φ.1 = ∑' ξ : Fin 2 → F, hat (W.Om (ratS F (σ r)) φ).1 (pt ξ)`. Introduce `r`. Establish `hv : (![0, 1] : Fin 2 → F) ᵥ* (σ r).1 = r.1`. Rewrite using `[← hσ r]`. Use extensionality with `j`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Simplify using `[Matrix.vecMul, dotProduct, Fin.sum_univ_two]`. Establish `h` using `H.row (σ r) ![0, 1] φ`. Rewrite `h` using `[hv]`. Rewrite using `[← h]`. Simplify using `[ThRow, pt]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hth, hrowsum.tsum_eq_add_tsum_ite (0 : Fin 2 → F)]`. Establish `h0 : ThRow (rt ((0 : Fin 2 → F) 0)) (rt ((0 : Fin 2 → F) 1)) φ.1 = ThRow 0 0 φ.1` using `by simp`. Rewrite using `[h0]`. Use `congrArg _ ?_` and prove the remaining obligations. Establish `h1` using `tsum_subtype {r : Fin 2 → F | r ≠ 0} (fun r => ThRow (rt (r 0)) (rt (r 1)) φ.1)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h2 : ∑' r : Rw F, ∑' ξ : Fin 2 → F, hat (W.Om (ratS F (σ r)) φ).1 (pt ξ) = ∑' r : {r : Fin 2 → F | r ≠ 0}, ThRow (rt (r.1 0)) (rt (r.1 1)) φ.1` using `tsum_congr fun r => (hr r).symm`. Rewrite using `[h2, h1]`. Use `tsum_congr fun r => ?_` and prove the remaining obligations. Distinguish the cases in `h : r = 0`. Simplify using `[h]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Simplify using `[h]`.
+Simplify using the standard rewrite rules.
 -/
 theorem UpperTheory.ConvolutionTheory.R2.G.kern :
     ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] [IsTotallyReal F] [IsTotallyComplex E] (D : Dat F E) (W : Weil D) (σ : Rw F → Matrix.SpecialLinearGroup (Fin 2) F), M.RowSec σ → ∀ φ : S4 F,

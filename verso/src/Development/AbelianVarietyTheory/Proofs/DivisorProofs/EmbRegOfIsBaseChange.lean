@@ -4,19 +4,19 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.Arithmet
 namespace GlobalTheory.BadCount
 
 /- English proof (translation)
-Introduce `K L Γ V W _ _ _ _ _ _ _ _ _ _ _ f hf ρ ρ' hρ H n hE`. Take `⟨j, hj, hje⟩` from `hE`. Set `eK : MonoidAlgebra K H ≃ₗ[K] (H →₀ K)` to `MonoidAlgebra.coeffLinearEquiv K`. Set `eL : MonoidAlgebra L H ≃ₗ[L] (H →₀ L)` to `MonoidAlgebra.coeffLinearEquiv L`. Set `m0 : (H →₀ K) →ₗ[K] (H →₀ L)` to `Finsupp.mapRange.linearMap (Algebra.linearMap K L)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `φ0 : MonoidAlgebra K H →ₗ[K] MonoidAlgebra L H` to `(eL.restrictScalars K).symm.toLinearMap ∘ₗ m0 ∘ₗ eK.toLinearMap`. Establish `h0 : IsBaseChange L φ0`. Use `(IsBaseChange.iff_of_equiv_comm eK eL (f' := m0) ?_).mpr (IsBaseChange.finsuppPow H (IsBaseChange.linearMap K L))` and prove the remaining obligations. Conclude with `LinearMap.ext fun x => (eL.apply_symm_apply (m0 (eK x))).symm`. Establish `hφ0 : ∀ x, φ0 x = MonoidAlgebra.mapRingHom H (algebraMap K L) x`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x`. Use extensionality with `g`. Simplify using `[φ0, eK, eL, m0]`. Set `φ : (Fin n → MonoidAlgebra K H) →ₗ[K] (Fin n → MonoidAlgebra L H)` to `φ0.compLeft (Fin n)`. Establish `hφ : IsBaseChange L φ` using `IsBaseChange.finitePow (Fin n) h0`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨p, hp⟩` from `LinearMap.exists_leftInverse_of_injective j (LinearMap.ker_eq_bot.mpr hj)`. Set `j' : W →ₗ[L] (Fin n → MonoidAlgebra L H)` to `hf.lift (φ ∘ₗ j)`. Establish `hj'f : ∀ v, j' (f v) = φ (j v)` using `fun v => hf.lift_eq _ v`. Set `P : (Fin n → MonoidAlgebra L H) →ₗ[L] W` to `hφ.lift (f ∘ₗ p)`. Establish `hPj : ∀ w, P (j' w) = w`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `w`. Establish `: P ∘ₗ j' = LinearMap.id` using `hf.algHom_ext _ _ (fun v => by`. Rewrite using `[LinearMap.comp_apply, hj'f]`. Express the relevant statement in the definitionally equal form `hφ.lift (f ∘ₗ p) (φ (j v)) = f v`. Rewrite using `[hφ.lift_eq, LinearMap.comp_apply, ← LinearMap.comp_apply p j, hp, LinearMap.id_apply])`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `LinearMap.congr_fun this w`. Use `⟨j', fun a b hab => by rw [← hPj a, ← hPj b, hab], ?_⟩` and prove the remaining obligations. Introduce `h w i`. Establish `key : (LinearMap.proj i ∘ₗ j' ∘ₗ (ρ' h)) = (LinearMap.mulLeft L (MonoidAlgebra.single h (1 : L)) ∘ₗ LinearMap.proj i ∘ₗ j')`. Use `hf.algHom_ext _ _ (fun v => ?_)` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition.
 
-Simplify using `only [LinearMap.comp_apply, LinearMap.proj_apply, LinearMap.mulLeft_apply, hρ, hj'f]`. Express the relevant statement in the definitionally equal form `φ0 (j (ρ h v) i) = MonoidAlgebra.single h 1 * φ0 (j v i)`. Rewrite using `[hje, hφ0, hφ0, map_mul, MonoidAlgebra.mapRingHom_single, map_one]`. Conclude with `LinearMap.congr_fun key w`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem embReg_of_isBaseChange : ∀ (K L Γ V W : Type) [Field K] [Field L] [Algebra K L] [Group Γ] [Finite Γ] [AddCommGroup V] [Module K V] [AddCommGroup W] [Module K W] [Module L W] [IsScalarTower K L W] (f : V →ₗ[K] W), IsBaseChange L f → ∀ (ρ : Representation K Γ V) (ρ' : Representation L Γ W), (∀ g v, ρ' g (f v) = f (ρ g v)) → ∀ (H : Subgroup Γ) (n : ℕ), EmbReg ρ H n → EmbReg ρ' H n := by
   intro K L Γ V W _ _ _ _ _ _ _ _ _ _ _ f hf ρ ρ' hρ H n hE

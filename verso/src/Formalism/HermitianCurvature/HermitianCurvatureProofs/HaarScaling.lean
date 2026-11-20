@@ -11,11 +11,9 @@ namespace Formalism.FourierDecayAlt.P.HaarScaling
 open Formalism.REAL Formalism.QuantumDeterminants Formalism.FourierDecayAlt.B Formalism.FourierDecayAlt.B2
 
 /- English proof (translation)
-Rewrite using `[Measure.smul_apply, h.conc, smul_zero]`. Use `left := fun a ha => by rw [Measure.map_smul, h.left a ha]`. Use `right := fun a ha => by rw [Measure.map_smul, h.right a ha]`. Use `finite_compact := fun K hK => by`. Rewrite using `[Measure.smul_apply, ENNReal.smul_def, smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Conclude with `ENNReal.mul_lt_top ENNReal.coe_lt_top (h.finite_compact K hK)`. Use `ne_zero := by`. Introduce `h0`. Apply `h.ne_zero` to reduce the goal to its premises. Establish `h1 : (c • μ) Set.univ = 0` using `by rw [h0]; rfl`.
-
-Rewrite `h1` using `[Measure.smul_apply, ENNReal.smul_def, smul_eq_mul]`. Break down `mul_eq_zero.mp h1 with h2 | h2` into its components or cases. Conclude with `absurd (by exact_mod_cast h2 : c = 0) hc.ne'`. Conclude with `Measure.measure_univ_eq_zero.mp h2`.
+Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem haar_smul {k r : ℕ} {U : Set (Mat k r)} {μ : Measure (Mt k r)} (h : IsHaarOn U μ) (c : ℝ≥0) (hc : 0 < c) :
     IsHaarOn U (c • μ) where
@@ -36,7 +34,7 @@ theorem haar_smul {k r : ℕ} {U : Set (Mat k r)} {μ : Measure (Mt k r)} (h : I
     · exact Measure.measure_univ_eq_zero.mp h2
 
 /- English proof (translation)
-Establish `hk : (0 : ℝ) ≤ k` using `Nat.cast_nonneg k`. Establish `hr : (0 : ℝ) ≤ r` using `Nat.cast_nonneg r`. Unfold `AB`. Move the coercions through the operations in `at h`. Use polynomial arithmetic with `[mul_nonneg hk hr, mul_nonneg hk hk, mul_nonneg hr hr]`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Move the embeddings inside the algebraic operations. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem AB_le (k r : ℕ) (A : ℝ) (h : 2 * ((2 * r + k + 1 : ℕ) : ℝ) ^ 2 < A) : AB k r ≤ A := by
   have hk : (0 : ℝ) ≤ k := Nat.cast_nonneg k
@@ -53,7 +51,7 @@ def scaleG (D : RealPlaceData k r Wp Wq) (c : ℝ≥0) (hc : 0 < c) : RealPlaceD
   { D with μG := c • D.μG, haarG := haar_smul D.haarG c hc }
 
 /- English proof (translation)
-Establish `h2 : ∀ g : ℝ → ℂ, iteratedDeriv 2 g = deriv (deriv g)`. Introduce `g`. Rewrite using `[iteratedDeriv_succ, iteratedDeriv_one]`. Rewrite using `[h2, h2, deriv_const_mul_field', deriv_const_mul_field']`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem iteratedDeriv_two_const_mul (c : ℂ) (f : ℝ → ℂ) :
     iteratedDeriv 2 (fun x => c * f x) = fun x => c * iteratedDeriv 2 f x := by
@@ -63,7 +61,7 @@ theorem iteratedDeriv_two_const_mul (c : ℂ) (f : ℝ → ℂ) :
   rw [h2, h2, deriv_const_mul_field', deriv_const_mul_field']
 
 /- English proof (translation)
-Simplify using `only [oneMinusDD, iteratedDeriv_two_const_mul, ← mul_sub]`.
+Simplify using the standard rewrite rules.
 -/
 theorem oneMinusDD_const_mul (c : ℂ) (h : ℝ → ℝ → ℂ) (t₁ t₂ : ℝ) :
     oneMinusDD (fun a b => c * h a b) t₁ t₂ = c * oneMinusDD h t₁ t₂ := by
@@ -72,7 +70,7 @@ theorem oneMinusDD_const_mul (c : ℂ) (h : ℝ → ℝ → ℂ) (t₁ t₂ : �
 variable [FiniteDimensional ℂ Wq]
 
 /- English proof (translation)
-Establish `hμ : (scaleG D c hc).μG = c • D.μG` using `rfl`. Unfold `Ph`. Rewrite using `[hμ, integral_smul_nnreal_measure, NNReal.smul_def, Complex.real_smul]`. Apply the tactic sequence `try rfl`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ph_scale (D : RealPlaceData k r Wp Wq) (c : ℝ≥0) (hc : 0 < c) (F F' : Mat k r → (Wq →L[ℂ] Wp)) (p : SS k r) :
     Ph (scaleG D c hc) F F' p = ((c : ℝ) : ℂ) * Ph D F F' p := by
@@ -82,11 +80,11 @@ theorem ph_scale (D : RealPlaceData k r Wp Wq) (c : ℝ≥0) (hc : 0 < c) (F F' 
   try rfl
 
 /- English proof (translation)
-Establish `hreg : ∀ p, regBracket (scaleG D c hc) F F' p = fun a b => ((c : ℝ) : ℂ) * regBracket D F F' p a b`. Introduce `p`. Use function extensionality and compare the values at `a b`. Establish `hχ : (scaleG D c hc).χ = D.χ` using `rfl`. Simplify using `only [regBracket]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[ph_scale, hχ]`. Expand and normalize the polynomial expressions, which then agree. Establish `hz : (scaleG D c hc).z = D.z` using `rfl`. Establish `hz' : (scaleG D c hc).z' = D.z'` using `rfl`. Establish `hS : (scaleG D c hc).μSS = D.μSS` using `rfl`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `betaInf betaInfTau`. Simplify using `only [hreg, hz, hz', hS, oneMinusDD_const_mul, mul_assoc, integral_const_mul]`. Rewrite using `[← integral_const_mul]`. Use `congr 1`. Use function extensionality and compare the values at `p`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -131,23 +129,23 @@ namespace Formalism.FourierDecayAlt.P
 open Formalism.REAL Formalism.QuantumDeterminants Formalism.FourierDecayAlt.B Formalism.FourierDecayAlt.B2 Formalism.FourierDecayAlt.P.HaarScaling
 
 /- English proof (translation)
-Introduce `hC hJ hD hI k r Wp Wq _ _ _ _ _ _ D A hA hF`. Conclude with `hC k r Wp Wq D A hA hF (hJ k r Wp Wq D) (hD k r Wp Wq D) (hI k r Wp Wq D A hA)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem lemma_b_normalised_of_parts : Formalism.FourierDecayAlt.B2.LemmaBNormFromParts := by
   intro hC hJ hD hI k r Wp Wq _ _ _ _ _ _ D A hA hF
   exact hC k r Wp Wq D A hA hF (hJ k r Wp Wq D) (hD k r Wp Wq D) (hI k r Wp Wq D A hA)
 
 /- English proof (translation)
-Introduce `hC hJ hD hI k r Wp Wq _ _ _ _ _ _ D A hA hF`. Conclude with `hC k r Wp Wq D A (AB_le k r A hA) hF (hJ k r Wp Wq D) (hD k r Wp Wq D) (hI k r Wp Wq D A hA)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem lemma_b_crude_of_parts : Formalism.FourierDecayAlt.B2.LemmaBCrudeFromParts := by
   intro hC hJ hD hI k r Wp Wq _ _ _ _ _ _ D A hA hF
   exact hC k r Wp Wq D A (AB_le k r A hA) hF (hJ k r Wp Wq D) (hD k r Wp Wq D) (hI k r Wp Wq D A hA)
 
 /- English proof (translation)
-Introduce `hN hB k r Wp Wq _ _ _ _ _ _ D A hA`. Take `⟨c, ⟨hc, hF⟩, -⟩` from `hB k r Wp Wq D`. Establish `hF' : IntFormula (scaleG D c hc)` using `hF`. Take `⟨h1, h2, h3, h4⟩` from `hN k r Wp Wq (scaleG D c hc) A hA hF'`. Use `⟨c, hc, hF, h1, ?_, ?_, h4⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `F F' hF1 hF2`. Rewrite using `[← beta_scale D c hc F F', h2 F F' hF1 hF2, betaInf_scale]`. Introduce `UU Θ hU hS hC F F' hF1 hF2 hs1 hs2 hI1 hI2 hI3 hI4 hIC`. Conclude with `h3 UU Θ hU hS hC F F' hF1 hF2 hs1 hs2 hI1 hI2 hI3 hI4 (fun p hp T hT i j hij hj => (hIC p hp T hT i j hij hj).smul_measure_nnreal)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem lemma_b_any_measure_from_normalised : Formalism.FourierDecayAlt.B2.LemmaBAnyFromNorm := by
   intro hN hB k r Wp Wq _ _ _ _ _ _ D A hA

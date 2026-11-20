@@ -6,7 +6,7 @@ open CategoryTheory AlgebraicGeometry KaehlerDifferential GlobalTheory GlobalThe
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `Z _ p hp inst hinst U hU h B hB`. Conclude with `smooth_sections_in_functionField Z p hp hinst U hU h B hB`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem germImage_smooth : ∀ (Z : Scheme.{0}) [IsIntegral Z] (p : Z ⟶ Sp ℂ) [Smooth p] [inst : Algebra ℂ Z.functionField], inst = ffAlg p → ∀ (U : Z.Opens), IsAffineOpen U → ∀ (h : genericPoint Z ∈ U) (B : Subalgebra ℂ Z.functionField), (∀ y, y ∈ B ↔ ∃ f : Γ(Z, U), (Z.presheaf.germ U (genericPoint Z) h).hom f = y) → Algebra.Smooth ℂ B := by
   intro Z _ p hp inst hinst U hU h B hB

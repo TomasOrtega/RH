@@ -10,7 +10,7 @@ variable {F L M : Type*} [Field F] [Field L] [Field M] [NumberField F] [NumberFi
   [NumberField M] [Algebra F L] [Algebra L M] [Algebra F M] [IsScalarTower F L M]
 
 /- English proof (translation)
-Rewrite using `[← Ideal.ramificationIdx_eq_one_iff, ← Ideal.ramificationIdx_eq_one_iff, ← Ideal.ramificationIdx_eq_one_iff, Ideal.ramificationIdx_tower (q := Q.under (𝓞 L))]`. Conclude with `mul_eq_one`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUnramifiedAt_tower_iff (Q : Ideal (𝓞 M)) [Q.IsPrime] :
     Algebra.IsUnramifiedAt (𝓞 F) Q ↔
@@ -27,14 +27,14 @@ variable {F E M : Type*} [Field F] [Field E] [Field M] [Algebra F E] [Algebra E 
   [IsScalarTower F E M]
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem restrictScalars_mem_inertia_iff (Q : Ideal (𝓞 M)) (σ : Gal(M/E)) :
     AlgEquiv.restrictScalarsHom F σ ∈ Q.inertia Gal(M/F) ↔ σ ∈ Q.inertia Gal(M/E) :=
   Iff.rfl
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨τ, rfl⟩ x`. Conclude with `τ.commutes x`. Introduce `h`. Conclude with `⟨AlgEquiv.ofRingEquiv (f := σ.toRingEquiv) h, AlgEquiv.ext fun _ => rfl⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem mem_range_restrictScalarsHom_iff (σ : Gal(M/F)) :
     σ ∈ (AlgEquiv.restrictScalarsHom F : Gal(M/E) →* Gal(M/F)).range ↔
@@ -48,19 +48,19 @@ theorem mem_range_restrictScalarsHom_iff (σ : Gal(M/F)) :
 variable [NumberField F] [NumberField E] [NumberField M] [IsGalois F M]
 
 /- English proof (translation)
-Establish `: IsGaloisGroup Gal(M/F) (𝓞 F) (𝓞 M)` using `IsGaloisGroup.of_isFractionRing _ _ _ F M`. Establish `: IsGalois E M` using `IsGalois.tower_top_of_isGalois F E M`. Establish `: IsGaloisGroup Gal(M/E) (𝓞 E) (𝓞 M)` using `IsGaloisGroup.of_isFractionRing _ _ _ E M`. Establish `cF : Nat.card (Q.inertia Gal(M/F)) = Q.ramificationIdx (𝓞 F)`. Rewrite using `[Ideal.card_inertia_eq_ramificationIdxIn (Q.under (𝓞 F)) Q, Ideal.ramificationIdxIn_eq_ramificationIdx (Q.under (𝓞 F)) Q Gal(M/F)]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `cE : Nat.card (Q.inertia Gal(M/E)) = Q.ramificationIdx (𝓞 E)`. Rewrite using `[Ideal.card_inertia_eq_ramificationIdxIn (Q.under (𝓞 E)) Q, Ideal.ramificationIdxIn_eq_ramificationIdx (Q.under (𝓞 E)) Q Gal(M/E)]`. Establish `htow : Q.ramificationIdx (𝓞 F) = (Q.under (𝓞 E)).ramificationIdx (𝓞 F) * Q.ramificationIdx (𝓞 E)` using `Ideal.ramificationIdx_tower (q := Q.under (𝓞 E)) (r := Q)`. Use `set φ : Gal(M/E) →* Gal(M/F) := AlgEquiv.restrictScalarsHom F with hφ`. Establish `hinj : Function.Injective φ` using `AlgEquiv.restrictScalarsHom_injective F`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmap : (Q.inertia Gal(M/E)).map φ = Q.inertia Gal(M/F) ⊓ φ.range`. Use extensionality with `σ`. Simplify using `only [Subgroup.mem_map, Subgroup.mem_inf, MonoidHom.mem_range]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨τ, hτ, rfl⟩`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Conclude with `⟨(restrictScalars_mem_inertia_iff Q τ).2 hτ, τ, rfl⟩`. Introduce and unpack `⟨hσ, τ, rfl⟩`. Conclude with `⟨τ, (restrictScalars_mem_inertia_iff Q τ).1 hσ, rfl⟩`. Establish `hcardmap : Nat.card ((Q.inertia Gal(M/E)).map φ) = Nat.card (Q.inertia Gal(M/E))` using `Subgroup.card_map_of_injective hinj`. Establish `hpos : 0 < Nat.card (Q.inertia Gal(M/E))` using `Nat.card_pos`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Ideal.ramificationIdx_eq_one_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `h1 σ hσ`. Establish `hc : Nat.card (Q.inertia Gal(M/F) ⊓ φ.range : Subgroup Gal(M/F)) ≥ Nat.card (Q.inertia Gal(M/F))`. Rewrite using `[← hmap, hcardmap, cF, cE, htow, h1, one_mul]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `heq` using `Subgroup.eq_of_le_of_card_ge (inf_le_left : Q.inertia Gal(M/F) ⊓ φ.range ≤ _) hc`. Establish `hσ' : σ ∈ Q.inertia Gal(M/F) ⊓ φ.range` using `by rw [heq]; exact hσ`. Conclude with `(mem_range_restrictScalarsHom_iff σ).1 hσ'.2`. Introduce `h`. Establish `hle : Q.inertia Gal(M/F) ≤ φ.range` using `fun σ hσ => (mem_range_restrictScalarsHom_iff σ).2 (h σ hσ)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hmap' : (Q.inertia Gal(M/E)).map φ = Q.inertia Gal(M/F)`. Rewrite using `[hmap, inf_eq_left.2 hle]`. Establish `hc : (Q.under (𝓞 E)).ramificationIdx (𝓞 F) * Q.ramificationIdx (𝓞 E) = 1 * Q.ramificationIdx (𝓞 E)`. Rewrite using `[← htow, ← cF, ← cE, ← hmap', hcardmap, one_mul]`. Conclude with `Nat.eq_of_mul_eq_mul_right (cE ▸ hpos) hc`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUnramifiedAt_under_iff_inertia (Q : Ideal (𝓞 M)) [Q.IsPrime] :
     Algebra.IsUnramifiedAt (𝓞 F) (Q.under (𝓞 E)) ↔

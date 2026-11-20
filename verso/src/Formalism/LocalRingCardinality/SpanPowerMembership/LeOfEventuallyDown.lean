@@ -16,9 +16,7 @@ def QInv (nu : Measure V) (ε δ : ℝ) : Prop :=
       nu (closedBall 0 r) ≤ nu (closedBall X ((1 + ε) * r))
 
 /- English proof (translation)
-Establish `hc : Tendsto (fun r : ℝ => t * r) (𝓝[>] 0) (𝓝 0)`. Establish `: Tendsto (fun r : ℝ => t * r) (𝓝 0) (𝓝 (t * 0))` using `tendsto_const_nhds.mul tendsto_id`. Rewrite `this` using `[mul_zero]`. Conclude with `this.mono_left nhdsWithin_le_nhds`. Use `tendsto_nhdsWithin_iff.mpr ⟨hc, ?_⟩` and prove the remaining obligations.
-
-Use `filter_upwards [self_mem_nhdsWithin] with r hr`. Conclude with `mul_pos ht hr`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem tendsto_mul_pos {t : ℝ} (ht : 0 < t) :
     Tendsto (fun r : ℝ => t * r) (𝓝[>] 0) (𝓝[>] 0) := by
@@ -33,7 +31,7 @@ theorem tendsto_mul_pos {t : ℝ} (ht : 0 < t) :
 variable (lam nu : Measure V) [lam.IsAddHaarMeasure] [IsFiniteMeasure nu]
 
 /- English proof (translation)
-Introduce `hne`. Establish `h2` using `(Besicovitch.tendsto_filterAt μ x).eventually hne`. Take `⟨r, hr1, hr2⟩` from `(h.and h2).exists`. Conclude with `hr2 hr1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 private theorem frequently_filterAt_of_eventually_closedBall (μ : Measure V) [SFinite μ] (x : V) {P : Set V → Prop}
     (h : ∀ᶠ r in 𝓝[>] (0 : ℝ), P (closedBall x r)) :
@@ -44,13 +42,13 @@ private theorem frequently_filterAt_of_eventually_closedBall (μ : Measure V) [S
   exact hr2 hr1
 
 /- English proof (translation)
-Establish `ha : 0 < 1 - ε` using `by linarith`. Establish `key : nu s ≤ (M' • lam) s`. Use `VitaliFamily.measure_le_of_frequently_le (Besicovitch.vitaliFamily nu) (M' • lam) MeasureTheory.Measure.AbsolutelyContinuous.rfl s fun x hx => frequently_filterAt_of_eventually_closedBall nu x ?_` and prove the remaining obligations. Establish `hx' : ‖x‖ < δ` using `mem_ball_zero_iff.mp (hs hx)`. Establish `hδ : 0 < δ` using `lt_of_le_of_lt (norm_nonneg x) hx'`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ht` using `tendsto_mul_pos (inv_pos.mpr ha)`. Establish `hsmall : ∀ᶠ ρ in 𝓝[>] (0 : ℝ), (1 - ε)⁻¹ * ρ < δ` using `(ht.mono_right nhdsWithin_le_nhds).eventually (gt_mem_nhds hδ)`. Use `filter_upwards [ht.eventually hev, hsmall, self_mem_nhdsWithin] with ρ h1 h2 h3`. Establish `hr : 0 < (1 - ε)⁻¹ * ρ` using `mul_pos (inv_pos.mpr ha) h3`. Establish `hq'` using `(hq x hx' _ hr h2).1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hq'` using `[← mul_assoc, mul_inv_cancel₀ ha.ne', one_mul]`. Establish `e` using `Measure.addHaar_closedBall_mul lam x ha.le hr.le`. Rewrite `e` using `[← mul_assoc, mul_inv_cancel₀ ha.ne', one_mul]`. Simplify using `only [Measure.smul_apply, ENNReal.smul_def, smul_eq_mul]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `key` using `only [Measure.smul_apply, ENNReal.smul_def, smul_eq_mul]`.
+A detailed English derivation is pending.
 -/
 theorem le_of_eventually_up {ε δ : ℝ} (hε1 : ε < 1) (hq : QInv nu ε δ) (M M' : ℝ≥0)
     (hM : (M : ℝ≥0∞) ≤ M' * ENNReal.ofReal ((1 - ε) ^ finrank ℝ V))
@@ -80,13 +78,13 @@ theorem le_of_eventually_up {ε δ : ℝ} (hε1 : ε < 1) (hq : QInv nu ε δ) (
   simpa only [Measure.smul_apply, ENNReal.smul_def, smul_eq_mul] using key
 
 /- English proof (translation)
-Establish `hb : 0 < 1 + ε` using `by linarith`. Establish `key : ((M' : ℝ≥0∞) • lam) s ≤ nu s`. Use `VitaliFamily.measure_le_of_frequently_le (Besicovitch.vitaliFamily lam) nu (Measure.smul_absolutelyContinuous) s fun x hx => frequently_filterAt_of_eventually_closedBall lam x ?_` and prove the remaining obligations. Establish `hx' : ‖x‖ < δ` using `mem_ball_zero_iff.mp (hs hx)`. Establish `hδ : 0 < δ` using `lt_of_le_of_lt (norm_nonneg x) hx'`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ht` using `tendsto_mul_pos (inv_pos.mpr hb)`. Establish `hsmall : ∀ᶠ ρ in 𝓝[>] (0 : ℝ), (1 + ε)⁻¹ * ρ < δ` using `(ht.mono_right nhdsWithin_le_nhds).eventually (gt_mem_nhds hδ)`. Use `filter_upwards [ht.eventually hev, hsmall, self_mem_nhdsWithin] with ρ h1 h2 h3`. Establish `hr : 0 < (1 + ε)⁻¹ * ρ` using `mul_pos (inv_pos.mpr hb) h3`. Establish `hq'` using `(hq x hx' _ hr h2).2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hq'` using `[← mul_assoc, mul_inv_cancel₀ hb.ne', one_mul]`. Establish `e` using `Measure.addHaar_closedBall_mul lam x hb.le hr.le`. Rewrite `e` using `[← mul_assoc, mul_inv_cancel₀ hb.ne', one_mul]`. Simplify using `only [Measure.smul_apply, smul_eq_mul]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, mul_assoc]`. Use `_ ≤ M * lam (closedBall 0 ((1 + ε)⁻¹ * ρ)) := by gcongr`. Use `_ ≤ nu (closedBall 0 ((1 + ε)⁻¹ * ρ)) := h1`. Use `_ ≤ nu (closedBall x ρ) := hq'`. Simplify `key` using `only [Measure.smul_apply, smul_eq_mul]`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem le_of_eventually_down {ε δ : ℝ} (hε0 : 0 < ε) (hq : QInv nu ε δ) (M M' : ℝ≥0)
     (hM : (M' : ℝ≥0∞) * ENNReal.ofReal ((1 + ε) ^ finrank ℝ V) ≤ M)
@@ -117,7 +115,7 @@ theorem le_of_eventually_down {ε δ : ℝ} (hε0 : 0 < ε) (hq : QInv nu ε δ)
   simpa only [Measure.smul_apply, smul_eq_mul] using key
 
 /- English proof (translation)
-Establish `h : Tendsto (fun ε : ℝ => (1 + σ * ε) ^ n) (𝓝 0) (𝓝 ((1 + σ * 0) ^ n))` using `((tendsto_const_nhds.add (tendsto_const_nhds.mul tendsto_id)).pow n)`. Rewrite `h` using `[mul_zero, add_zero, one_pow]`. Establish `h2` using `(ENNReal.continuous_ofReal.tendsto 1).comp h`. Rewrite `h2` using `[ENNReal.ofReal_one]`. Conclude with `h2.mono_left nhdsWithin_le_nhds`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tendsto_ofReal_pow (n : ℕ) (σ : ℝ) :
     Tendsto (fun ε : ℝ => ENNReal.ofReal ((1 + σ * ε) ^ n)) (𝓝[>] 0) (𝓝 1) := by
@@ -129,17 +127,15 @@ theorem tendsto_ofReal_pow (n : ℕ) (σ : ℝ) :
   exact h2.mono_left nhdsWithin_le_nhds
 
 /- English proof (translation)
-Establish `hae` using `Besicovitch.ae_tendsto_rnDeriv nu lam`. Establish `hfin` using `Measure.rnDeriv_lt_top nu lam`. Establish `hpos : lam (ball (0 : V) δ) ≠ 0` using `(measure_ball_pos lam 0 hδ).ne'`. Choose the witnesses or unpack the hypotheses as in `⟨X, hX, hXt, hXf⟩ : ∃ X ∈ ball (0 : V) δ, Tendsto (fun r => nu (closedBall X r) / lam (closedBall X r)) (𝓝[>] 0) (𝓝 (nu.rnDeriv lam X)) ∧ nu.rnDeriv lam X < ⊤ := by`. Assume the negation of the conclusion as `hcon`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction.
 
-Apply `hpos` to reduce the goal to its premises. Establish `h3` using `ae_iff.mp (hae.and hfin)`. Use `measure_mono_null (fun y hy => ?_) h3` and prove the remaining obligations. Use `show ¬ _`. Conclude with `fun h => hcon ⟨y, hy, h.1, h.2⟩`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact.
 
-Establish `hXn : ‖X‖ < δ` using `mem_ball_zero_iff.mp hX`. Establish `key : ∀ t : ℝ, 0 < t → ∀ r : ℝ, 0 < r → nu (closedBall X (t * r)) / lam (closedBall 0 r) = ENNReal.ofReal (t ^ finrank ℝ V) * (nu (closedBall X (t * r)) / lam (closedBall X (t * r)))`. Introduce `t ht r hr`. Rewrite using `[Measure.addHaar_closedBall_mul lam X ht.le hr.le, ← mul_div_assoc, ENNReal.mul_div_mul_left]`. Conclude with `(ENNReal.ofReal_pos.mpr (pow_pos ht _)).ne'`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `ENNReal.ofReal_ne_top`. Establish `hup : Tendsto (fun r => ENNReal.ofReal ((1 + ε) ^ finrank ℝ V) * (nu (closedBall X ((1 + ε) * r)) / lam (closedBall X ((1 + ε) * r)))) (𝓝[>] 0) (𝓝 (ENNReal.ofReal ((1 + ε) ^ finrank ℝ V) * nu.rnDeriv lam X))` using `ENNReal.Tendsto.const_mul (hXt.comp (tendsto_mul_pos (by linarith))) (Or.inr ENNReal.ofReal_ne_top)`. Establish `hlo : Tendsto (fun r => ENNReal.ofReal ((1 - ε) ^ finrank ℝ V) * (nu (closedBall X ((1 - ε) * r)) / lam (closedBall X ((1 - ε) * r)))) (𝓝[>] 0) (𝓝 (ENNReal.ofReal ((1 - ε) ^ finrank ℝ V) * nu.rnDeriv lam X))` using `ENNReal.Tendsto.const_mul (hXt.comp (tendsto_mul_pos (by linarith))) (Or.inr ENNReal.ofReal_ne_top)`. Establish `hev : ∀ᶠ r in 𝓝[>] (0 : ℝ), 0 < r ∧ r < δ` using `by filter_upwards [self_mem_nhdsWithin, nhdsWithin_le_nhds (gt_mem_nhds hδ)] with r h0 h1`. Conclude with `⟨h0, h1⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨nu.rnDeriv lam X, hXf.ne, ?_, ?_⟩` and prove the remaining obligations. Use `(Filter.limsup_le_limsup ?_).trans hup.limsup_eq.le filter_upwards [hev] with r hr` and prove the remaining obligations. Rewrite using `[← key _ (by linarith) r hr.1]`. Conclude with `ENNReal.div_le_div_right (hq X hXn r hr.1 hr.2).2 _`. Use `hlo.liminf_eq.ge.trans (Filter.liminf_le_liminf ?_) filter_upwards [hev] with r hr` and prove the remaining obligations.
-
-Rewrite using `[← key _ (by linarith) r hr.1]`. Conclude with `ENNReal.div_le_div_right (hq X hXn r hr.1 hr.2).1 _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem limsup_liminf_bounds {ε δ : ℝ} (hε0 : 0 < ε) (hε1 : ε < 1) (hδ : 0 < δ) (hq : QInv nu ε δ) :
     ∃ L : ℝ≥0∞, L ≠ ⊤ ∧
@@ -189,35 +185,31 @@ theorem limsup_liminf_bounds {ε δ : ℝ} (hε0 : 0 < ε) (hε1 : ε < 1) (hδ 
     exact ENNReal.div_le_div_right (hq X hXn r hr.1 hr.2).1 _
 
 /- English proof (translation)
-Establish `hlam0 : ∀ r : ℝ, 0 < r → lam (closedBall (0 : V) r) ≠ 0` using `fun r hr => (Metric.measure_closedBall_pos lam 0 hr).ne'`. Establish `hlamT : ∀ r : ℝ, lam (closedBall (0 : V) r) ≠ ⊤` using `fun r => (isCompact_closedBall (0 : V) r).measure_lt_top.ne`. Establish `hcmp : ∀ ε : ℝ, 0 < ε → ε < 1 → ENNReal.ofReal ((1 - ε) ^ finrank ℝ V) * limsup (fun r : ℝ => nu (closedBall (0 : V) r) / lam (closedBall (0 : V) r)) (𝓝[>] (0 : ℝ)) ≤ ENNReal.ofReal ((1 + ε) ^ finrank ℝ V) * liminf (fun r : ℝ => nu (closedBall (0 : V) r) / lam (closedBall (0 : V) …`. Introduce `ε h0 h1`. Take `⟨δ, hδ, hqδ⟩` from `hq ε h0 h1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨L, -, hls, hli⟩` from `limsup_liminf_bounds lam nu h0 h1 hδ hqδ`. Combine the equalities or inequalities in the displayed calculation. Establish `hls_le : limsup (fun r : ℝ => nu (closedBall (0 : V) r) / lam (closedBall (0 : V) r)) (𝓝[>] (0 : ℝ)) ≤ liminf (fun r : ℝ => nu (closedBall (0 : V) r) / lam (closedBall (0 : V) r)) (𝓝[>] (0 : ℝ))`. Establish `A` using `ENNReal.Tendsto.mul_const (tendsto_ofReal_pow (finrank ℝ V) (-1)) (Or.inl one_ne_zero) (b := limsup (fun r : ℝ => nu (closedBall (0 : V) r) / lam (closedBall (0 : V) r)) (𝓝[>] (0 : ℝ)))`. Establish `B` using `ENNReal.Tendsto.mul_const (tendsto_ofReal_pow (finrank ℝ V) 1) (Or.inl one_ne_zero) (b := liminf (fun r : ℝ => nu (closedBall (0 : V) r) / lam (closedBall (0 : V) r)) (𝓝[>] (0 : ℝ)))`.
+Extract witnesses or component facts from the available result. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `A`, `B` using `[one_mul]`. Use `le_of_tendsto_of_tendsto A B ?_` and prove the remaining obligations. Use `filter_upwards [self_mem_nhdsWithin, nhdsWithin_le_nhds (gt_mem_nhds zero_lt_one)] with ε h0 h1`. Rewrite using `[show (1 : ℝ) + -1 * ε = 1 - ε by ring, show (1 : ℝ) + 1 * ε = 1 + ε by ring]`. Conclude with `hcmp ε h0 h1`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `heq : liminf (fun r : ℝ => nu (closedBall (0 : V) r) / lam (closedBall (0 : V) r)) (𝓝[>] (0 : ℝ)) = limsup (fun r : ℝ => nu (closedBall (0 : V) r) / lam (closedBall (0 : V) r)) (𝓝[>] (0 : ℝ))` using `le_antisymm Filter.liminf_le_limsup hls_le`. Establish `hlsT : limsup (fun r : ℝ => nu (closedBall (0 : V) r) / lam (closedBall (0 : V) r)) (𝓝[>] (0 : ℝ)) < ⊤`. Take `⟨δ, hδ, hqδ⟩` from `hq (1 / 2) (by norm_num) (by norm_num)`. Take `⟨L, hL, hls, -⟩` from `limsup_liminf_bounds lam nu (by norm_num : (0 : ℝ) < 1 / 2) (by norm_num) hδ hqδ`. Conclude with `lt_of_le_of_lt hls (ENNReal.mul_ne_top ENNReal.ofReal_ne_top hL).lt_top`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hup : ∀ C : ℝ≥0, limsup (fun r : ℝ => nu (closedBall (0 : V) r) / lam (closedBall (0 : V) r)) (𝓝[>] (0 : ℝ)) < C → ∃ δ > 0, ∀ s ⊆ ball (0 : V) δ, nu s ≤ C * lam s`. Introduce `C hC`. Establish `t1` using `ENNReal.Tendsto.const_mul (tendsto_ofReal_pow (finrank ℝ V) (-1)) (Or.inr (ENNReal.coe_ne_top (r := C)))`. Rewrite `t1` using `[mul_one]`. Establish `hev : ∀ᶠ ε in (𝓝[>] (0 : ℝ)), (limsup (fun r : ℝ => nu (closedBall (0 : V) r) / lam (closedBall (0 : V) r)) (𝓝[>] (0 : ℝ)) < C * ENNReal.ofReal ((1 + -1 * ε) ^ finrank ℝ V)) ∧ 0 < ε ∧ ε < 1` using `by filter_upwards [t1.eventually (lt_mem_nhds hC), self_mem_nhdsWithin, nhdsWithin_le_nhds (gt_mem_nhds zero_lt_one)] with ε a b c`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `⟨a, b, c⟩`. Take `⟨ε, hcε, h0, h1⟩` from `hev.exists`. Rewrite `hcε` using `[show (1 : ℝ) + -1 * ε = 1 - ε by ring]`. Take `⟨δ, hδ, hqδ⟩` from `hq ε h0 h1`. Establish `hMe : ((C * ((1 - ε) ^ finrank ℝ V).toNNReal : ℝ≥0) : ℝ≥0∞) = C * ENNReal.ofReal ((1 - ε) ^ finrank ℝ V)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite using `[ENNReal.coe_mul]`. Both sides reduce to the same expression. Establish `hcM : limsup (fun r : ℝ => nu (closedBall (0 : V) r) / lam (closedBall (0 : V) r)) (𝓝[>] (0 : ℝ)) < ((C * ((1 - ε) ^ finrank ℝ V).toNNReal : ℝ≥0) : ℝ≥0∞)` using `by rw [hMe]; exact hcε`. Establish `hevr` using `Filter.eventually_lt_of_limsup_lt hcM`. Use `⟨δ, hδ, fun s hs => le_of_eventually_up lam nu h1 hqδ _ C hMe.le ?_ s hs⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `filter_upwards [hevr, self_mem_nhdsWithin] with r hr hr0`. Conclude with `(ENNReal.div_le_iff_le_mul (Or.inl (hlam0 r hr0)) (Or.inl (hlamT r))).mp hr.le`. Establish `hdown : ∀ C : ℝ≥0, (C : ℝ≥0∞) < liminf (fun r : ℝ => nu (closedBall (0 : V) r) / lam (closedBall (0 : V) r)) (𝓝[>] (0 : ℝ)) → ∃ δ > 0, ∀ s ⊆ ball (0 : V) δ, C * lam s ≤ nu s`. Introduce `C hC`. Establish `t1` using `ENNReal.Tendsto.const_mul (tendsto_ofReal_pow (finrank ℝ V) 1) (Or.inr (ENNReal.coe_ne_top (r := C)))`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `t1` using `[mul_one]`. Establish `hev : ∀ᶠ ε in (𝓝[>] (0 : ℝ)), (C * ENNReal.ofReal ((1 + 1 * ε) ^ finrank ℝ V) < liminf (fun r : ℝ => nu (closedBall (0 : V) r) / lam (closedBall (0 : V) r)) (𝓝[>] (0 : ℝ))) ∧ 0 < ε ∧ ε < 1` using `by filter_upwards [t1.eventually (gt_mem_nhds hC), self_mem_nhdsWithin, nhdsWithin_le_nhds (gt_mem_nhds zero_lt_one)] with ε a b c`. Conclude with `⟨a, b, c⟩`. Take `⟨ε, hcε, h0, h1⟩` from `hev.exists`. Rewrite `hcε` using `[one_mul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Take `⟨δ, hδ, hqδ⟩` from `hq ε h0 h1`. Establish `hMe : ((C * ((1 + ε) ^ finrank ℝ V).toNNReal : ℝ≥0) : ℝ≥0∞) = C * ENNReal.ofReal ((1 + ε) ^ finrank ℝ V)`. Rewrite using `[ENNReal.coe_mul]`. Both sides reduce to the same expression. Establish `hcM : ((C * ((1 + ε) ^ finrank ℝ V).toNNReal : ℝ≥0) : ℝ≥0∞) < liminf (fun r : ℝ => nu (closedBall (0 : V) r) / lam (closedBall (0 : V) r)) (𝓝[>] (0 : ℝ))` using `by rw [hMe]; exact hcε`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hevr` using `Filter.eventually_lt_of_lt_liminf hcM`. Use `⟨δ, hδ, fun s hs => le_of_eventually_down lam nu h0 hqδ _ C hMe.ge ?_ s hs⟩` and prove the remaining obligations. Use `filter_upwards [hevr, self_mem_nhdsWithin] with r hr hr0`. Conclude with `(ENNReal.le_div_iff_mul_le (Or.inl (hlam0 r hr0)) (Or.inl (hlamT r))).mp hr.le`. Establish `hc0 : limsup (fun r : ℝ => nu (closedBall (0 : V) r) / lam (closedBall (0 : V) r)) (𝓝[>] (0 : ℝ)) ≠ 0`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Introduce `hzero`. Take `⟨δ, hδ, hqδ⟩` from `hq (1 / 2) (by norm_num) (by norm_num)`. Establish `hB : closedBall (0 : V) (δ / 2) ⊆ ball 0 δ` using `closedBall_subset_ball (by linarith)`. Take `⟨C, hC0, hClt⟩` from `ENNReal.exists_nnreal_pos_mul_lt (hlamT (δ / 2)) (hpos (δ / 2) (by linarith)).ne'`. Establish `hMe : ((C * ((1 - 1 / 2 : ℝ) ^ finrank ℝ V).toNNReal : ℝ≥0) : ℝ≥0∞) = C * ENNReal.ofReal ((1 - 1 / 2 : ℝ) ^ finrank ℝ V)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[ENNReal.coe_mul]`. Both sides reduce to the same expression. Establish `hcM : limsup (fun r : ℝ => nu (closedBall (0 : V) r) / lam (closedBall (0 : V) r)) (𝓝[>] (0 : ℝ)) < ((C * ((1 - 1 / 2 : ℝ) ^ finrank ℝ V).toNNReal : ℝ≥0) : ℝ≥0∞)`. Rewrite using `[hzero, hMe]`. Conclude with `ENNReal.mul_pos (ENNReal.coe_ne_zero.mpr hC0.ne') (ENNReal.ofReal_pos.mpr (pow_pos (by norm_num) _)).ne'`.
-
-Establish `hevr` using `Filter.eventually_lt_of_limsup_lt hcM`. Establish `hle` using `le_of_eventually_up lam nu (by norm_num : (1 / 2 : ℝ) < 1) hqδ _ C hMe.le (by filter_upwards [hevr, self_mem_nhdsWithin] with r hr hr0`. Conclude with `(ENNReal.div_le_iff_le_mul (Or.inl (hlam0 r hr0)) (Or.inl (hlamT r))).mp hr.le) _ hB`. Conclude with `absurd hle (not_le.mpr hClt)`. Use `⟨limsup (fun r : ℝ => nu (closedBall (0 : V) r) / lam (closedBall (0 : V) r)) (𝓝[>] (0 : ℝ)), hc0, hlsT.ne, hup, fun C hC => hdown C ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[heq]`. Conclude with `hC`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_density
     (hq : ∀ ε : ℝ, 0 < ε → ε < 1 → ∃ δ > 0, QInv nu ε δ)
@@ -310,11 +302,9 @@ theorem exists_density
   exact hC
 
 /- English proof (translation)
-Rewrite using `[tendsto_order]`. Use `⟨fun a ha => ?_, fun b hb => ?_⟩` and prove the remaining obligations. Take `⟨C, haC, hCc⟩` from `ENNReal.lt_iff_exists_nnreal_btwn.mp ha`. Take `⟨δ, hδ, hd⟩` from `hdown C hCc`. Use `filter_upwards [hS δ hδ, hS0] with r hr h0`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `lt_of_lt_of_le haC ?_` and prove the remaining obligations. Rewrite using `[ENNReal.le_div_iff_mul_le (Or.inl h0.1) (Or.inl h0.2)]`. Conclude with `hd (S r) hr`. Take `⟨C, hcC, hCb⟩` from `ENNReal.lt_iff_exists_nnreal_btwn.mp hb`. Take `⟨δ, hδ, hu⟩` from `hup C hcC`.
-
-Use `filter_upwards [hS δ hδ] with r hr`. Conclude with `lt_of_le_of_lt (ENNReal.div_le_of_le_mul (hu (S r) hr)) hCb`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem tendsto_ratio {c : ℝ≥0∞}
     (hup : ∀ C : ℝ≥0, c < C → ∃ δ > 0, ∀ s ⊆ ball (0 : V) δ, nu s ≤ C * lam s)

@@ -13,7 +13,7 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.FinOf
 
 /- English proof (translation)
-Break down `IsLocalRing.isUnit_or_isUnit_one_sub_self x with hu | hu` into its components or cases. Use `right`. Conclude with `hu.mul_left_cancel (by rw [_root_.mul_one]; exact h.eq)`. Use `left`. Conclude with `hu.mul_left_cancel (by rw [mul_zero]; exact h.one_sub_mul_self)`.
+Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 lemma finOf_idem {S : Type} [CommRing S] [IsLocalRing S] {x : S} (h : IsIdempotentElem x) :
     x = 0 ∨ x = 1 := by
@@ -24,9 +24,7 @@ lemma finOf_idem {S : Type} [CommRing S] [IsLocalRing S] {x : S} (h : IsIdempote
     exact hu.mul_left_cancel (by rw [mul_zero]; exact h.one_sub_mul_self)
 
 /- English proof (translation)
-Establish `h1 : (maximalIdeal S).comap (g.comp (algebraMap O Q)) = maximalIdeal O` using `((local_hom_TFAE (g.comp (algebraMap O Q))).out 0 4).1 h`. Establish `h2 : (((maximalIdeal S).comap g).comap (algebraMap O Q)).IsMaximal`. Rewrite using `[Ideal.comap_comap, h1]`. Use `infer_instance`. Establish `h3` using `Ideal.isMaximal_of_isIntegral_of_isMaximal_comap _ h2`.
-
-Conclude with `((local_hom_TFAE g).out 4 0).1 (eq_maximalIdeal h3)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 lemma finOf_local_of_comp {O Q S : Type} [CommRing O] [CommRing Q] [CommRing S] [IsLocalRing O]
     [IsLocalRing Q] [IsLocalRing S] [Algebra O Q] [Algebra.IsIntegral O Q] (g : Q →+* S)
@@ -39,7 +37,7 @@ lemma finOf_local_of_comp {O Q S : Type} [CommRing O] [CommRing Q] [CommRing S] 
   exact ((local_hom_TFAE g).out 4 0).1 (eq_maximalIdeal h3)
 
 /- English proof (translation)
-The claim follows from `((local_hom_TFAE (algebraMap O Q)).out 4 0).1 (eq_maximalIdeal (Ideal.isMaximal_comap_of_isIntegral_of_isMaximal (maximalIdeal Q)))`.
+A detailed English derivation is pending.
 -/
 lemma finOf_local_algebraMap {O Q : Type} [CommRing O] [CommRing Q] [IsLocalRing O]
     [IsLocalRing Q] [Algebra O Q] [Algebra.IsIntegral O Q] : IsLocalHom (algebraMap O Q) :=
@@ -53,9 +51,9 @@ def finOf_fst (C : Type) [Field C] [Algebra R₀ C] :
   ⟨TrivSqZeroExt.fstHom R₀ C C, ⟨fun a h => TrivSqZeroExt.isUnit_iff_isUnit_fst.2 h⟩⟩
 
 /- English proof (translation)
-Use `⟨fun c => ⟨TrivSqZeroExt.inl c, rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[pow_two, eq_bot_iff, Ideal.mul_le]`. Introduce `a ha b hb`. Establish `ha' : TrivSqZeroExt.fst (a : DualNumber C) = 0` using `ha`. Establish `hb' : TrivSqZeroExt.fst (b : DualNumber C) = 0` using `hb`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `(a * b : DualNumber C) = 0`. Use `ext`. Simplify using `[ha']`. Simplify using `[ha', hb']`.
+Express the relevant assertion in an equivalent form by its definition. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 lemma finOf_fst_sqZero (C : Type) [Field C] [Algebra R₀ C] : (finOf_fst (R₀ := R₀) C).SqZero := by
   refine ⟨fun c => ⟨TrivSqZeroExt.inl c, rfl⟩, ?_⟩
@@ -69,13 +67,13 @@ lemma finOf_fst_sqZero (C : Type) [Field C] [Algebra R₀ C] : (finOf_fst (R₀ 
   · simp [ha', hb']
 
 /- English proof (translation)
-Take `⟨v, hv⟩` from `(B.tg_ker (finOf_fst C) (finOf_fst_sqZero C) (z - z')).1 (by rw [map_sub, h, sub_self])`. Establish `h1 : p • v = 0` using `B.tg_inj (finOf_fst C) (finOf_fst_sqZero C) (by rw [map_nsmul, hv, smul_sub, hz, hz', sub_self, map_zero])`. Establish `hinj : Function.Injective (p • LinearMap.id : (finOf_fst (R₀` using `R₀) C).ker →ₗ[R₀] (finOf_fst (R₀ := R₀) C).ker) := by`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `a ha`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `ha' : p • (a.1 : DualNumber C) = 0` using `congrArg Subtype.val ha`. Apply `Subtype.ext` to reduce the goal to its premises. Establish `hpC : (p : C) ≠ 0` using `Nat.cast_ne_zero.2 hp`. Rewrite `ha'` using `[← Nat.cast_smul_eq_nsmul C]`. Conclude with `(smul_eq_zero.1 ha').resolve_left hpC`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h2` using `Module.Flat.lTensor_preserves_injective_linearMap (M := B.gg) _ hinj`. Establish `h3 : v = 0` using `h2 (by`. Rewrite using `[map_zero, ← h1]`. Use `map_nsmul (LinearMap.lTensorHom (R := R₀) B.gg) p (LinearMap.id : (finOf_fst (R₀ := R₀) C).ker →ₗ[R₀] (finOf_fst (R₀ := R₀) C).ker)` as an intermediate fact. Simplify using `only [LinearMap.coe_lTensorHom, LinearMap.lTensor_id] at this`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Use the proof step `rfl)`. Rewrite `hv` using `[h3, map_zero]`. Conclude with `sub_eq_zero.1 hv.symm`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 lemma finOf_tangent (B : BX R₀) (p : ℕ) (hp : p ≠ 0) (C : Type) [Field C] [CharZero C]
     [Algebra R₀ C] (z z' : B.G ⟨DualNumber C⟩) (hz : p • z = 0) (hz' : p • z' = 0)
@@ -104,9 +102,7 @@ lemma finOf_tangent (B : BX R₀) (p : ℕ) (hp : p ≠ 0) (C : Type) [Field C] 
   exact sub_eq_zero.1 hv.symm
 
 /- English proof (translation)
-Set `Q : Fin n → Type` to `fun i => A ⧸ Ideal.span {1 - ε i}`. Set `E : A ≃ₗ[O] (∀ i, Q i)` to `LinearEquiv.ofBijective (LinearMap.pi fun i => (Ideal.Quotient.mkₐ O _).toLinearMap) hε.bijective_pi`. Use `haveI hfree : ∀ i, Module.Free O (Q i) := fun i => by haveI : Module.Projective O (Q i) := Module.Projective.of_split (M := A) (E.symm.toLinearMap ∘ₗ LinearMap.single O Q i) (LinearMap.proj i ∘ₗ E.toLinearMap) (LinearMap.ext fun x => by simp)`. Conclude with `Module.free_of_flat_of_isLocalRing`. Use `⟨hfree, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[E.finrank_eq, Module.finrank_pi_fintype]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma finOf_free {O A : Type} [CommRing O] [IsLocalRing O] [CommRing A] [Algebra O A]
     [Module.Free O A] [Module.Finite O A] {n : ℕ} (ε : Fin n → A)
@@ -136,18 +132,18 @@ def finOf_sO [Module.Finite (O : Type) A] (I : Ideal A) [IsLocalRing (A ⧸ I)] 
   ⟨IsScalarTower.toAlgHom R₀ (O : Type) (A ⧸ I), finOf_local_algebraMap (O := O) (Q := A ⧸ I)⟩
 
 /- English proof (translation)
-The claim follows from `Algebra.algebra_ext _ _ fun _ => rfl`.
+A detailed English derivation is pending.
 -/
 lemma finOf_algOf [Module.Finite (O : Type) A] (I : Ideal A) [IsLocalRing (A ⧸ I)] :
     algOf (finOf_sO O I) = (inferInstance : Algebra (O : Type) (A ⧸ I)) :=
   Algebra.algebra_ext _ _ fun _ => rfl
 
 /- English proof (translation)
-Establish `hk : ∀ a ∈ Ideal.span {1 - ε}, φ a = 0`. Introduce `a ha`. Take `⟨b, rfl⟩` from `Ideal.mem_span_singleton'.1 ha`. Rewrite using `[map_mul, map_sub, map_one, hε, sub_self, mul_zero]`. Set `ψ : (A ⧸ Ideal.span {1 - ε}) →ₐ[R₀] S` to `Ideal.Quotient.liftₐ _ φ hk`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Establish `hψ : ψ.comp (IsScalarTower.toAlgHom R₀ (O : Type) (A ⧸ Ideal.span {1 - ε})) = s.1`. Rewrite using `[← hφ]`. Both sides reduce to the same expression. Use `⟨⟨ψ, finOf_local_of_comp (O := O) (ψ : (A ⧸ Ideal.span {1 - ε}) →+* S) ?_⟩, Subtype.ext hψ, by ext a; rfl⟩` and prove the remaining obligations. Establish `: (ψ : (A ⧸ Ideal.span {1 - ε}) →+* S).comp (algebraMap (O : Type) _) = (s.1 : O →+* S)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[← hψ]`. Both sides reduce to the same expression. Rewrite using `[this]`. Conclude with `s.2`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma finOf_lift [Module.Finite (O : Type) A] (ε : A) [IsLocalRing (A ⧸ Ideal.span {1 - ε})]
     (S : LAlg R₀) (s : LHom O S) (φ : A →ₐ[R₀] S)
@@ -168,29 +164,27 @@ lemma finOf_lift [Module.Finite (O : Type) A] (ε : A) [IsLocalRing (A ⧸ Ideal
   rw [this]; exact s.2
 
 /- English proof (translation)
-Take `⟨hfree, h1⟩` from `finOf_free (O := O) ε hε`. Establish `hone : ∀ (S : LAlg R₀) (φ : A →ₐ[R₀] S), ∃ i, φ (ε i) = 1`. Introduce `S φ`. Assume the negation of the conclusion as `hcon`. Establish `h0 : ∀ i, φ (ε i) = 0` using `fun i => (finOf_idem ((hε.idem i).map φ)).resolve_right fun h => hcon ⟨i, h⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `h1` using `congrArg φ hε.complete`. Rewrite `h1` using `[map_sum, map_one, Finset.sum_eq_zero fun i _ => h0 i]`. Conclude with `zero_ne_one h1`. Establish `hmk : ∀ i, Ideal.Quotient.mk (Ideal.span {1 - ε i}) (ε i) = 1` using `fun i => by`. Rewrite using `[← map_one (Ideal.Quotient.mk (Ideal.span {1 - ε i})), eq_comm, Ideal.Quotient.eq]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Ideal.mem_span_singleton_self _`. Use `⟨FIN.mk (Fin n) (fun i => ⟨A ⧸ Ideal.span {1 - ε i}⟩) (fun i => finOf_sO O _) (fun i => ?_) (fun i => pt _ (Ideal.Quotient.mkₐ R₀ _)) (fun i => pt_p _ _) (fun S s z hz => ?_) (fun i f hf => ?_) ?_⟩` and prove the remaining obligations. Rewrite using `[finOf_algOf]`. Conclude with `⟨hfree i, inferInstance⟩`. Take `⟨φ, ⟨hφs, hφz⟩, huniq⟩` from `pt_univ S s.1 z hz`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨i, hi⟩` from `hone S φ`. Take `⟨ψ, hψs, hψφ⟩` from `finOf_lift O (ε i) S s φ hφs hi`. Use `⟨i, ψ, hψs, by rw [pt_nat, hψφ, hφz], fun j φ' h1 h2 => ?_⟩` and prove the remaining obligations. Establish `h3 : φ'.1.comp (Ideal.Quotient.mkₐ R₀ _) = φ`. Use `huniq _ ⟨?_, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[← h1]`. Both sides reduce to the same expression. Rewrite using `[← h2, pt_nat]`. Establish `hj : φ (ε j) = 1`. Rewrite using `[← h3]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `φ'.1 (Ideal.Quotient.mk _ (ε j)) = 1`. Rewrite using `[hmk, map_one]`. Establish `hji : j = i`. Assume the negation of the conclusion as `hne`. Establish `h4` using `congrArg φ (hε.ortho hne)`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality.
 
-Rewrite `h4` using `[map_mul, hi, hj, map_zero, _root_.mul_one]`. Conclude with `one_ne_zero h4`. Substitute `hji` using the available equality. Use `⟨rfl, heq_of_eq (Subtype.ext ?_)⟩` and prove the remaining obligations. Conclude with `Ideal.Quotient.algHom_ext R₀ (h3.trans hψφ.symm)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨a, rfl⟩` from `Ideal.Quotient.mk_surjective f`. Establish `h0 : a * ε i = 0`. Use `hsep _ fun φ => ?_` and prove the remaining obligations. Rewrite using `[map_mul]`. Break down `finOf_idem ((hε.idem i).map φ) with h | h` into its components or cases.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[h, mul_zero]`. Take `⟨ψ, hψs, hψφ⟩` from `finOf_lift O (ε i) O (LHom.id O) (φ.restrictScalars R₀) (by ext r; exact φ.commutes r) h`. Establish `h1` using `hf ψ hψs`. Establish `h2 : φ a = 0` using `(AlgHom.congr_fun hψφ a).symm.trans h1`. Rewrite using `[h2, zero_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `Ideal.Quotient.eq_zero_iff_mem.2 (Ideal.mem_span_singleton'.2 ⟨a, ?_⟩)` and prove the remaining obligations. Rewrite using `[mul_sub, h0, sub_zero, _root_.mul_one]`. Establish `h2 : Nat.card (A →ₐ[(O : Type)] O) = Nat.card {t : B.G O // p • t = 0}`. Use `Nat.card_congr (Equiv.ofBijective (fun φ => ⟨pt O (φ.restrictScalars R₀), pt_p _ _⟩) ⟨fun φ φ' h => ?_, fun t => ?_⟩)` and prove the remaining obligations. Establish `h' : pt O (φ.restrictScalars R₀) = pt O (φ'.restrictScalars R₀)` using `congrArg Subtype.val h`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Use `(pt_univ O (AlgHom.id R₀ O) _ (pt_p O (φ'.restrictScalars R₀))).unique (y₁ := φ.restrictScalars R₀) (y₂ := φ'.restrictScalars R₀) ⟨by ext r; exact φ.commutes r, h'⟩ ⟨by ext r; exact φ'.commutes r, rfl⟩` as an intermediate fact. Conclude with `AlgHom.restrictScalars_injective R₀ this`. Take `⟨φ, ⟨h1, h2⟩, -⟩` from `pt_univ O (AlgHom.id R₀ O) t.1 t.2`. Conclude with `⟨⟨φ.toRingHom, fun r => AlgHom.congr_fun h1 r⟩, Subtype.ext h2⟩`. Rewrite using `[← h2, ← hrank, ← h1]`.
-
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[finOf_algOf]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma finOf_split (B : BX R₀) (p : ℕ) [Module.Free (O : Type) A] [Module.Finite (O : Type) A]
     (pt : ∀ S : LAlg R₀, (A →ₐ[R₀] S) → B.G S)
@@ -269,11 +263,9 @@ lemma finOf_split (B : BX R₀) (p : ℕ) [Module.Free (O : Type) A] [Module.Fin
     rw [finOf_algOf]
 
 /- English proof (translation)
-Set `ψ : A →ₐ[R₀] DualNumber C` to `φ.restrictScalars R₀`. Set `ψ' : A →ₐ[R₀] DualNumber C` to `φ'.restrictScalars R₀`. Establish `h1 : pt ⟨DualNumber C⟩ ψ = pt ⟨DualNumber C⟩ ψ'`. Use `finOf_tangent B p hp C _ _ (pt_p _ _) (pt_p _ _) ?_` and prove the remaining obligations. Rewrite using `[pt_nat, pt_nat]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use extensionality with `a`. Conclude with `h a`. Establish `h2 : ψ.comp (IsScalarTower.toAlgHom R₀ (O : Type) A) = ψ'.comp (IsScalarTower.toAlgHom R₀ (O : Type) A)` using `AlgHom.ext fun r => (φ.commutes r).trans (φ'.commutes r).symm`. Establish `h3 : ψ = ψ'` using `(pt_univ ⟨DualNumber C⟩ (ψ'.comp (IsScalarTower.toAlgHom R₀ (O : Type) A)) _ (pt_p ⟨DualNumber C⟩ ψ')).unique ⟨h2, h1⟩ ⟨rfl, rfl⟩`.
-
-Conclude with `AlgHom.ext fun a => AlgHom.congr_fun h3 a`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 lemma finOf_unram (B : BX R₀) (p : ℕ) (hp : p ≠ 0)
     (pt : ∀ S : LAlg R₀, (A →ₐ[R₀] S) → B.G S)
@@ -303,19 +295,17 @@ lemma finOf_unram (B : BX R₀) (p : ℕ) (hp : p ≠ 0)
 end Split
 
 /- English proof (translation)
-Introduce `REP SPLIT ETA R₀ _ G _ _ O p B e hbij hadd hnat hfin hflat hsm C _ _ _ v _ hv hp`. Take `⟨A, _, _, _, _, hAfree, hAfin, y, hy, huniv⟩` from `REP G O p hfin hflat hsm`. Establish `he0 : ∀ R, e R 0 = 1` using `fun R => by`. Establish `h` using `hadd R 0 0`. Rewrite `h` using `[add_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `left_eq_mul.1 h`. Establish `hen : ∀ R (x : B.G R) (n : ℕ), e R (n • x) = e R x ^ n` using `fun R x n => by`. Proceed by induction on `n with`. Consider the case `zero => rw [zero_nsmul, pow_zero, he0]`. Consider the case `succ n ih => rw [succ_nsmul, hadd, ih, pow_succ]`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Establish `htor : ∀ R (x : B.G R), p • x = 0 ↔ e R x ^ p = 1` using `fun R x => by`. Rewrite using `[← hen, ← he0 R, (hbij R).1.eq_iff]`. Set `pt : ∀ S : LAlg R₀, (A →ₐ[R₀] S) → B.G S` to `fun S φ => (Equiv.ofBijective _ (hbij S)).symm (spMap φ ≫ y)`. Establish `hpt : ∀ S φ, e S (pt S φ) = spMap φ ≫ y` using `fun S φ => (Equiv.ofBijective _ (hbij S)).apply_symm_apply _`. Establish `pt_nat : ∀ {S S' : LAlg R₀} (f : LHom S S') (φ : A →ₐ[R₀] S), B.map f (pt S φ) = pt S' (f.1.comp φ)` using `fun {S S'} f φ => (hbij S').1 (by`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hnat, hpt, hpt, ← Category.assoc, spMap_comp])`. Establish `pt_p : ∀ S φ, p • pt S φ = 0` using `fun S φ => by`. Rewrite using `[htor, hpt, ← MonObj.comp_pow, hy, MonObj.comp_one]`. Establish `pt_univ : ∀ (S : LAlg R₀) (s : O →ₐ[R₀] S) (z : B.G S), p • z = 0 → ∃! φ : A →ₐ[R₀] S, φ.comp (IsScalarTower.toAlgHom R₀ (O : Type) A) = s ∧ pt S φ = z`. Introduce `S s z hz`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure.
 
-Use `letI : Algebra (O : Type) S := s.toRingHom.toAlgebra`. Use `haveI : IsScalarTower R₀ (O : Type) S := IsScalarTower.of_algebraMap_eq fun r => (s.commutes r).symm`. Take `⟨φ, hφ, hu⟩` from `huniv S (e S z) ((htor S z).1 hz)`. Use `⟨φ.restrictScalars R₀, ⟨by ext r; exact φ.commutes r, (hbij S).1 (by rw [hpt, hφ])⟩, fun φ' ⟨h1, h2⟩ => ?_⟩` and prove the remaining obligations. Establish `h3` using `hu ⟨φ'.toRingHom, fun r => AlgHom.congr_fun h1 r⟩ (by rw [← h2, hpt]; rfl)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[← h3]`. Both sides reduce to the same expression. Use `letI : Algebra R₀ C := ((algebraMap (O : Type) C).comp (algebraMap R₀ (O : Type))).toAlgebra`. Use `haveI : IsScalarTower R₀ (O : Type) C := IsScalarTower.of_algebraMap_eq fun _ => rfl`. Take `⟨hfinite, hsep, hrank⟩` from `ETA C O A v hv (finOf_unram O B p hp pt pt_nat pt_p pt_univ C)`.
-
-Take `⟨n, ε, hε, hloc⟩` from `SPLIT O A hsep`. Conclude with `finOf_split O B p pt pt_nat pt_p pt_univ hsep hrank ε hε`.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem main :
   (∀ {R₀ : Type} [CommRing R₀] (G : Over (Spec (CommRingCat.of R₀))) [GrpObj G] [IsCommMonObj G] (O : LAlg R₀) (p : ℕ), IsFinite ((𝟙 G) ^ p : G ⟶ G).left → Flat ((𝟙 G) ^ p : G ⟶ G).left → Smooth G.hom →

@@ -14,29 +14,23 @@ open GlobalTheory.Mum
 namespace GlobalTheory.Mum
 
 /- English proof (translation)
-Introduce `R' _ _ _ _ G₁ _ _ hG x hx q hq`. Use `hG.smooth` as an intermediate fact. Use `hG.geomConnected` as an intermediate fact. Take `⟨U, hU, hxU, -⟩` from `TopologicalSpace.Opens.isBasis_iff_nbhd.mp G₁.left.isBasis_affineOpens (show x ∈ (⊤ : G₁.left.Opens) from trivial)`. Use `replace hU : IsAffineOpen U := hU`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Set `A` to `Γ(G₁.left, U)`. Set `ψ : R' →+* A` to `(G₁.left.presheaf.map (homOfLE le_top : U ⟶ ⊤).op).hom.comp ((G₁.hom.appTop).hom.comp (Scheme.ΓSpecIso (CommRingCat.of R')).inv.hom)`. Establish `hφ : (G₁.left.presheaf.germ ⊤ x trivial).hom.comp ((G₁.hom.appTop).hom.comp (Scheme.ΓSpecIso (CommRingCat.of R')).inv.hom) = (G₁.left.presheaf.germ U x hxU).hom.comp ψ`. Use extensionality with `r`. Rewrite using `[← TopCat.Presheaf.germ_res G₁.left.presheaf (homOfLE le_top : U ⟶ ⊤) x hxU]`.
+Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Rewrite using `[hφ, ← Ideal.map_map]`. Use `letI : Algebra R' A := ψ.toAlgebra`. Establish `hnu : ∀ r ∈ q, ¬ IsUnit ((G₁.left.presheaf.germ U x hxU).hom (ψ r))`. Introduce `r hr hu`.
+Rewrite the conclusion using the stated equalities. Equip the data with the indicated structure. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `key` using `DFunLike.congr_fun hφ r`. Simplify using `only [RingHom.comp_apply] at key`. Rewrite `hu` using `[← key]`. Establish `hu` using `(Scheme.mem_basicOpen G₁.left _ x (show x ∈ (⊤ : G₁.left.Opens) from trivial)).mpr hu`. Rewrite `hu` using `[← Scheme.preimage_basicOpen_top, basicOpen_eq_of_affine]`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `G₁.hom x ∈ PrimeSpectrum.basicOpen r at hu`. Rewrite `hu` using `[hx]`. Conclude with `hu (IsLocalRing.le_maximalIdeal hq.ne_top hr)`. Use `set P := hU.primeIdealOf ⟨x, hxU⟩`. Use `letI : Algebra A (G₁.left.presheaf.stalk x) := TopCat.Presheaf.algebra_section_stalk G₁.left.presheaf ⟨x, hxU⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Equip the data with the indicated structure. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `haveI := hU.isLocalization_stalk ⟨x, hxU⟩`. Establish `hle : Ideal.map ψ q ≤ P.asIdeal`. Rewrite using `[Ideal.map_le_iff_le_comap]`. Introduce `r hr`. Rewrite using `[Ideal.mem_comap, ← IsLocalization.AtPrime.to_map_mem_maximal_iff (G₁.left.presheaf.stalk x) P.asIdeal]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `hnu r hr`. Establish `hI : (Ideal.map ψ q).IsPrime` using `by haveI := hq`. Establish `hne : Ideal.map ψ q ≠ ⊤` using `fun h => P.isPrime.ne_top (top_le_iff.mp (h ▸ hle))`. Set `e` to `Algebra.TensorProduct.quotIdealMapEquivTensorQuot (A := R') A q`. Use `haveI : Nontrivial (A ⧸ Ideal.map (algebraMap R' A) q) := Ideal.Quotient.nontrivial_iff.mpr hne`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Use `haveI : Nontrivial (TensorProduct R' A (R' ⧸ q)) := e.symm.toEquiv.nontrivial`. Establish `eSp : Spec.map (CommRingCat.ofHom (algebraMap R' A)) = hU.fromSpec ≫ G₁.hom`. Apply `ext_of_isAffine` to reduce the goal to its premises. Establish `h1` using `Scheme.ΓSpecIso_naturality (CommRingCat.ofHom (algebraMap R' A))`. Rewrite `h1` using `[← Iso.eq_comp_inv]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Rewrite using `[h1, Scheme.Hom.comp_appTop]`. Express the relevant statement in the definitionally equal form `_ = _ ≫ hU.fromSpec.app ⊤`. Rewrite using `[IsAffineOpen.fromSpec_app_of_le hU ⊤ le_top]`. Rewrite using `[show (homOfLE le_top : hU.fromSpec ⁻¹ᵁ ⊤ ⟶ ⊤) = 𝟙 _ from rfl]`. Use `erw [CategoryTheory.Functor.map_id, Category.comp_id]`.
-
-Use extensionality with `r`. Simplify using `[ψ, RingHom.algebraMap_toAlgebra]`. Use `haveI : IsIntegral (Spec (CommRingCat.of (R' ⧸ q))) := (affine_isIntegral_iff _).mpr (inferInstanceAs (IsDomain (R' ⧸ q)))`. Use `haveI : IsIntegral (pullback G₁.hom (Spec.map (CommRingCat.ofHom (algebraMap R' (R' ⧸ q))))) := GlobalTheory.isIntegral_pullback_of_smooth _ _`. Set `j` to `(pullbackSpecIso R' A (R' ⧸ q)).inv ≫ (pullback.congrHom eSp rfl).hom ≫ (pullbackRightPullbackFstIso G₁.hom _ hU.fromSpec).inv ≫ pullback.snd _ _`.
-
-Use `haveI : Nonempty (Spec (CommRingCat.of (TensorProduct R' A (R' ⧸ q)))) := inferInstanceAs (Nonempty (PrimeSpectrum _))`. Use `haveI := isIntegral_of_isOpenImmersion j`. Use `haveI hdom := (affine_isIntegral_iff _).mp this`. Use `haveI : IsDomain (A ⧸ Ideal.map (algebraMap R' A) q) := MulEquiv.isDomain _ e.toRingEquiv.toMulEquiv`. Conclude with `(Ideal.Quotient.isDomain_iff_prime _).mp this`.
-
-Conclude with `IsLocalization.isPrime_of_isPrime_disjoint P.asIdeal.primeCompl _ _ hI (Set.disjoint_left.mpr fun a ha h => ha (hle h))`.
+A detailed English derivation is pending.
 -/
 theorem ideal_map_stalk_isPrime_of_closedPoint : ∀ (R' : Type) [CommRing R'] [IsDomain R'] [IsLocalRing R'], AdmBase R' (maximalIdeal R') → ∀ (G₁ : Over (Sp R')) [GrpObj G₁] [IsCommMonObj G₁], IsSemiAbelian G₁ → ∀ x : G₁.left, G₁.hom x = closedPoint R' → ∀ q : Ideal R', q.IsPrime → (Ideal.map ((G₁.left.presheaf.germ ⊤ x trivial).hom.comp ((G₁.hom.appTop).hom.comp (Scheme.ΓSpecIso (CommRingCat.of R')).inv.hom)) q).IsPrime := by
   intro R' _ _ _ _ G₁ _ _ hG x hx q hq

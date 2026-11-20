@@ -6,25 +6,23 @@ open Classical
 namespace GlobalTheory.UPoinc
 
 /- English proof (translation)
-Introduce `p _ X Y _ _ e β be sc sc' hsc hid m t ht v ν hv μ hμν htμ hmin`. Establish `hR' : ‖t (e μ)‖ = Real.exp (-(sc * (β μ μ : ℝ)) / 2)`. Rewrite using `[htμ, hid μ μ]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hlt1 : Real.exp (-(sc * ((β μ μ : ℝ) + 1)) / 2) < Real.exp (-(sc * (β μ μ : ℝ)) / 2)` using `Real.exp_lt_exp.2 (by nlinarith)`. Establish `hbound : ∀ y : Y, CongMod m y ν → y ≠ e μ → ‖t y‖ ≤ Real.exp (-(sc * ((β μ μ : ℝ) + 1)) / 2)`. Introduce `y h1 h2`. Take `⟨w1, hw1⟩` from `h1`. Take `⟨w2, hw2⟩` from `hμν`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hx : CongMod m (e.symm y) μ`. Use `⟨e.symm (w1 - w2), ?_⟩` and prove the remaining obligations. Apply `e.injective` to reduce the goal to its premises. Rewrite using `[e.apply_symm_apply, map_add, map_nsmul, e.apply_symm_apply, hw1, hw2, smul_sub]`. Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Establish `hne : e.symm y ≠ μ`. Introduce `h`. Apply `h2` to reduce the goal to its premises. Rewrite using `[← h, e.apply_symm_apply]`. Establish `hlt` using `Int.add_one_le_of_lt (hmin (e.symm y) hx hne)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hle : (β μ μ : ℝ) + 1 ≤ (β (e.symm y) (e.symm y) : ℝ)` using `by exact_mod_cast hlt`. Combine the equalities or inequalities in the displayed calculation. Establish `h3` using `hid (e.symm y) (e.symm y)`. Rewrite `h3` using `[e.apply_symm_apply]`. Rewrite using `[h3]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ Real.exp (-(sc * ((β μ μ : ℝ) + 1)) / 2) := Real.exp_le_exp.2 (by nlinarith)`. Establish `hRpos : 0 < Real.exp (-(sc * (β μ μ : ℝ)) / 2)` using `Real.exp_pos _`. Take `⟨S₀, hS₀⟩` from `hv (Real.exp (-(sc * (β μ μ : ℝ)) / 2) / 2) (by positivity)`.
+Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hSc : ∀ x ∈ insert (e μ) (S₀.filter (fun x => CongMod m x ν)), CongMod m x ν`. Introduce `x hx`. Break down `Finset.mem_insert.1 hx with rfl | hx` into its components or cases. Conclude with `hμν`. Conclude with `(Finset.mem_filter.1 hx).2`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hclose` using `hS₀ (insert (e μ) (S₀.filter (fun x => CongMod m x ν))) hSc (fun x hx hc => Finset.mem_insert_of_mem (Finset.mem_filter.2 ⟨hx, hc⟩))`. Use `set S := insert (e μ) (S₀.filter (fun x => CongMod m x ν)) with hSdef`. Establish `hsum : ∑ x ∈ S, t x = t (e μ) + ∑ x ∈ S.erase (e μ), t x` using `(Finset.add_sum_erase S t (Finset.mem_insert_self _ _)).symm`. Establish `hrest : ‖∑ x ∈ S.erase (e μ), t x‖ ≤ Real.exp (-(sc * ((β μ μ : ℝ) + 1)) / 2)`. Apply `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg (Real.exp_pos _).le` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `x hx`. Conclude with `hbound x (hSc x (Finset.mem_of_mem_erase hx)) (Finset.ne_of_mem_erase hx)`. Establish `hnS : ‖∑ x ∈ S, t x‖ = Real.exp (-(sc * (β μ μ : ℝ)) / 2)`. Rewrite using `[hsum, IsUltrametricDist.norm_add_eq_max_of_norm_ne_norm (by rw [hR']; linarith), hR']`. Conclude with `max_eq_left (by linarith)`.
-
-Establish `hv' : v = (v - ∑ x ∈ S, t x) + ∑ x ∈ S, t x` using `by abel`. Rewrite using `[hv', IsUltrametricDist.norm_add_eq_max_of_norm_ne_norm (by rw [hnS]; linarith), hnS]`. Conclude with `max_eq_right (by linarith)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem classSum_norm_eq_of_unique_least : ∀ (p : ℕ) [Fact p.Prime] (X Y : Type) [AddCommGroup X] [AddCommGroup Y] (e : X ≃+ Y) (β : LinearMap.BilinForm ℤ X) (be : LinearMap.BilinForm ℤ Y) (sc sc' : ℝ), 0 < sc → (∀ a b, sc * (β a b : ℝ) = sc' * (be (e a) (e b) : ℝ)) → ∀ (m : ℕ) (t : Y → PadicAlgCl p), (∀ μ, ‖t μ‖ ≤ Real.exp (-(sc' * (be μ μ : ℝ) / 2))) → ∀ (v : PadicAlgCl p) (ν : Y), (∀ δ : ℝ, 0 < δ → ∃ S₀ : Finset Y, ∀ S : Finset Y, (∀ μ ∈ S, CongMod m μ ν) → (∀ μ ∈ S₀, CongMod m μ ν → μ ∈ S) → ‖v - ∑ μ ∈ S, t μ‖ ≤ δ) → ∀ μ : X, CongMod m (e μ) ν → ‖t (e μ)‖ = Real.exp (-(sc' * (be (e μ) (e μ) : ℝ) / 2)) → (∀ μ' : X, CongMod m μ' μ → μ' ≠ μ → β μ μ < β μ' μ') → ‖v‖ = Real.exp (-(sc * (β μ μ : ℝ)) / 2) := by
   intro p _ X Y _ _ e β be sc sc' hsc hid m t ht v ν hv μ hμν htμ hmin

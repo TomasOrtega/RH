@@ -15,9 +15,9 @@ open scoped InnerProductSpace ContDiff ENNReal
 namespace GlobalTheory.SobAtOne
 
 /- English proof (translation)
-Proceed by induction on `S with`. Consider the case `nil => simp`. Consider the case `cons a S ih`. Simplify using `only [List.map_cons, List.sum_cons]`. Rewrite using `[ENNReal.ofReal_add (hg a) (List.sum_nonneg fun x hx => by`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Take `⟨b, -, rfl⟩` from `List.mem_map.1 hx`. Conclude with `hg b), ih]`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem ofReal_list_sum {α : Type*} (S : List α) (g : α → ℝ) (hg : ∀ a, 0 ≤ g a) :
     ENNReal.ofReal (S.map g).sum = (S.map fun a => ENNReal.ofReal (g a)).sum := by
@@ -29,57 +29,51 @@ theorem ofReal_list_sum {α : Type*} (S : List α) (g : α → ℝ) (hg : ∀ a,
       obtain ⟨b, -, rfl⟩ := List.mem_map.1 hx; exact hg b), ih]
 
 /- English proof (translation)
-Introduce `k r μG hμ`. Take `⟨-, -, -, ε, -, P, hPd, hPJ⟩` from `hpkFacts k r`. Establish `hPu : IsUnit P` using `(Matrix.isUnit_iff_isUnit_det P).2 hPd`. Establish `hPP : P * P⁻¹ = 1` using `Matrix.mul_nonsing_inv P hPd`. Establish `hPP' : P⁻¹ * P = 1` using `Matrix.nonsing_inv_mul P hPd`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨S, C, Q, hQ, hS, hC, hsob⟩` from `GlobalTheory.T.sobolev_valueAtOne_fixedCompact_diagSignUnitary (2 * r + k + 1) ε`. Take `⟨c, hc, hB⟩` from `GlobalTheory.T.besselUnitary_haar_transport_diagonal k r μG ε P hμ hPd hPJ`. Set `cj : Mat k r → Mat k r` to `fun Y => P⁻¹ * Y * P`. Establish `hcjc : Continuous cj` using `(continuous_const.matrix_mul continuous_id).matrix_mul continuous_const`. Set `ψ : Formalism.REAL.UJ ε → Mt k r` to `fun y => Matrix.of.symm (cj (umat y))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hψc : Continuous ψ` using `hcjc.comp (Units.continuous_val.comp continuous_subtype_val)`. Establish `hmemG : ∀ g : Mat k r, Formalism.REAL.inUJ ε g → cj g ∈ GG k r`. Introduce `g hg`. Use `show cj g ∈ UH (Hpk k r)`. Rewrite using `[uHConj _ ε (Hpk k r) P hPd hPJ]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e : P * cj g * P⁻¹ = g`. Simplify using `only [cj, ← Matrix.mul_assoc, hPP, Matrix.one_mul]`. Rewrite using `[Matrix.mul_assoc, hPP, Matrix.mul_one]`. Rewrite using `[e]`. Conclude with `hg`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hlie : ∀ X, Formalism.REAL.inG ε X → InLieHpk k r (cj X)`. Introduce `X hX`. Establish `hX' : Xᴴ * Formalism.REAL.Jm ε + Formalism.REAL.Jm ε * X = 0` using `hX`. Establish `e1 : (P⁻¹)ᴴ * Pᴴ = 1` using `by rw [← conjTranspose_mul, hPP, conjTranspose_one]`. Use `show (P⁻¹ * X * P)ᴴ * Hpk k r + Hpk k r * (P⁻¹ * X * P) = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules.
 
-Rewrite using `[← hPJ]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [conjTranspose_mul, Matrix.mul_add, Matrix.add_mul, Matrix.mul_assoc]`. Use `_ = 0 := by rw [e1, hPP, Matrix.mul_one, Matrix.mul_one, hX', Matrix.mul_zero, Matrix.zero_mul]`. Establish `hwm : ∀ l : List (Mat k r), (∀ Y ∈ l, Formalism.REAL.inG ε Y) → ∀ Y ∈ l.map cj, InLieHpk k r Y`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `l hl Y hY`. Take `⟨Z, hZ, rfl⟩` from `List.mem_map.1 hY`. Conclude with `hlie Z (hl Z hZ)`. Establish `hK₀ : IsCompact (ψ '' Q)` using `hQ.image hψc`. Establish `hK₀G : ∀ x ∈ ψ '' Q, Matrix.of x ∈ GG k r`.
+Assume the hypotheses and unpack their components. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Introduce and unpack `_ ⟨y, -, rfl⟩`. Simplify `hmemG _ y.2` using `[ψ]`. Establish `hfin : IsFiniteMeasureOnCompacts μG`. Take `⟨hG, -⟩` from `closedSub_groups k r (bvec (wI k r (Fin.last k))) (fun i hi => by`. Simplify using `only [bvec, wI]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Pi.single_apply, if_neg]`. Introduce `h; rw [h] at hi; simp at hi) (by`. Establish `h : herm (Hpk k r) (bvec (wI k r (Fin.last k))) (bvec (wI k r (Fin.last k))) = Hpk k r (wI k r (Fin.last k)) (wI k r (Fin.last k))`. Simplify using `[herm, bvec, Matrix.mulVec, dotProduct, Pi.single_apply]`. Rewrite using `[Tz, h]`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Simplify using `[Hpk, wI])`. Conclude with `⟨fun K hK => (haarOn_locFinite_openPos k r (GG k r) μG hG hμ).1 K hK⟩`. Use `⟨C * c.toReal, S.map (List.map cj), ψ '' Q, hK₀, ?_, ?_⟩` and prove the remaining obligations. Introduce `ws hws X hX`. Take `⟨l, hl, rfl⟩` from `List.mem_map.1 hws`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Conclude with `hwm l (hS l hl) X hX`. Introduce `B _ _ _ f hf`. Establish `hword : ∀ l : List (Mat k r), (∀ Y ∈ l, InLieHpk k r Y) → SmoothOnH (Hpk k r) (rdWord l f)`. Introduce `l`. Proceed by induction on `l with`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Consider the case `nil => intro _`. Conclude with `hf`. Consider the case `cons X l ih`. Introduce `hl`. Conclude with `(GlobalTheory.T.rightDerivative_smooth_on_indefinite_unitary_group _ (Hpk k r) X B (rdWord l f) (hl X List.mem_cons_self) (ih fun Y hY => hl Y (List.mem_cons_of_mem _ hY))).2.1`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hcont : ∀ l : List (Mat k r), (∀ Y ∈ l, Formalism.REAL.inG ε Y) → ContinuousOn (rdWord (l.map cj) f) (GG k r)` using `fun l hl => (GlobalTheory.T.rightDerivative_smooth_on_indefinite_unitary_group _ (Hpk k r) 0 B _ (by simp) (hword _ (hwm l hl))).1`. Establish `hof : Continuous (fun x : Mt k r => (Matrix.of x : Mat k r))` using `continuous_id`. Establish `hI : ∀ l : List (Mat k r), (∀ Y ∈ l, Formalism.REAL.inG ε Y) → ContinuousOn (fun x : Mt k r => ‖rdWord (l.map cj) f (Matrix.of x)‖ ^ 2) (ψ '' Q)` using `fun l hl => (((hcont l hl).comp hof.continuousOn fun x hx => hK₀G x hx).norm).pow 2`. Establish `hnn : 0 ≤ C * c.toReal * ((S.map (List.map cj)).map fun ws => ∫ x in ψ '' Q, ‖rdWord ws f (Matrix.of x)‖ ^ 2 ∂μG).sum` using `mul_nonneg (mul_nonneg hC ENNReal.toReal_nonneg) (List.sum_nonneg fun x hx => by`. Take `⟨b, -, rfl⟩` from `List.mem_map.1 hx; exact integral_nonneg fun _ => by positivity)`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `h0 : f 1 = 0`. Rewrite using `[h0, norm_zero]`. Simplify using `using hnn`. Use `haveI : Nontrivial B := ⟨⟨f 1, 0, h0⟩⟩`. Take `⟨ℓ, hℓ1, hℓ⟩` from `exists_dual_vector' ℂ (f 1)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Set `F : List (Mat k r) → Mat k r → ℂ` to `fun l g => ℓ (rdWord (l.map cj) f (cj g))`. Establish `hFc : ∀ l : List (Mat k r), (∀ Y ∈ l, Formalism.REAL.inG ε Y) → ContinuousOn (F l) (UJset ε)` using `fun l hl => ℓ.continuous.comp_continuousOn ((hcont l hl).comp hcjc.continuousOn fun g hg => hmemG g hg)`. Establish `hFd : ∀ l : List (Mat k r), (∀ Y ∈ l, Formalism.REAL.inG ε Y) → ∀ X, Formalism.REAL.inG ε X → ∀ g ∈ UJset ε, HasDerivAt (fun t : ℝ => F l (g * NormedSpace.exp ((t : ℂ) • X))) (F (X :: l) g) 0`. Introduce `l hl X hX g hg`. Establish `hA` using `(GlobalTheory.T.rightDerivative_smooth_on_indefinite_unitary_group _ (Hpk k r) (cj X) B (rdWord (l.map cj) f) (hlie X hX) (hword _ (hwm l hl))).2.2 (cj g) (hmemG g hg)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2` using `(ℓ.restrictScalars ℝ).hasFDerivAt.comp_hasDerivAt (0 : ℝ) hA`. Establish `e : ∀ t : ℝ, cj (g * NormedSpace.exp ((t : ℂ) • X)) = cj g * NormedSpace.exp ((t : ℂ) • cj X)`. Introduce `t`. Establish `e2 : (t : ℂ) • cj X = P⁻¹ * ((t : ℂ) • X) * P`. Simplify using `only [cj, Matrix.mul_smul, Matrix.smul_mul]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[e2, Matrix.exp_conj' P _ hPu]`. Simplify using `only [cj, Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc P P⁻¹, hPP, Matrix.one_mul]`. Establish `e3 : (fun t : ℝ => F l (g * NormedSpace.exp ((t : ℂ) • X))) = (ℓ.restrictScalars ℝ) ∘ (fun t : ℝ => rdWord (l.map cj) f (cj g * NormedSpace.exp ((t : ℂ) • cj X)))`. Use function extensionality and compare the values at `t`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [F, Function.comp_apply, e]`. Both sides reduce to the same expression. Rewrite using `[e3]`. Conclude with `h2`. Establish `key` using `hsob F hFc hFd`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hF1 : ‖F [] 1‖ = ‖f 1‖`. Establish `: cj 1 = 1` using `by simp [cj, hPP']`. Simplify using `only [F, List.map_nil, this]`. Use `show ‖ℓ (f 1)‖ = ‖f 1‖`. Rewrite using `[hℓ]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using the standard rewrite rules. Rewrite `key` using `[hF1]`. Establish `hstep : ∀ l ∈ S, ∫⁻ y in Q, ENNReal.ofReal (‖F l (umat y)‖ ^ 2) ∂(Formalism.REAL.muG ε) ≤ c * ENNReal.ofReal (∫ x in ψ '' Q, ‖rdWord (l.map cj) f (Matrix.of x)‖ ^ 2 ∂μG)`. Introduce `l hlS`. Establish `hl` using `hS l hlS`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `set φ : Mt k r → ℝ≥0∞ := (ψ '' Q).indicator (fun x => ENNReal.ofReal (‖rdWord (l.map cj) f (Matrix.of x)‖ ^ 2)) with hφ`. Establish `hφm : Measurable φ`. Use `ContinuousOn.measurable_piecewise (f := fun x : Mt k r => ENNReal.ofReal (‖rdWord (l.map cj) f (Matrix.of x)‖ ^ 2)) (g := 0) (ENNReal.continuous_ofReal.comp_continuousOn (hI l hl)) continuousOn_const hK₀.isClosed.measurableSet` as an intermediate fact. Rewrite `this` using `[Set.piecewise_eq_indicator]`. Then use the resulting hypothesis. Establish `hint : IntegrableOn (fun x : Mt k r => ‖rdWord (l.map cj) f (Matrix.of x)‖ ^ 2) (ψ '' Q) μG` using `(hI l hl).integrableOn_compact hK₀`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ofReal_integral_eq_lintegral_ofReal hint (Filter.Eventually.of_forall fun _ => by positivity), ← lintegral_indicator hK₀.isClosed.measurableSet, ← hφ, ← hB φ hφm]`. Use `le_trans ?_ (setLIntegral_le_lintegral Q _)` and prove the remaining obligations. Use `setLIntegral_mono (hφm.comp hψc.measurable) fun y hy => ?_` and prove the remaining obligations. Establish `hψy : ψ y ∈ ψ '' Q` using `⟨y, hy, rfl⟩`. Establish `hφy : φ (ψ y) = ENNReal.ofReal (‖rdWord (l.map cj) f (Matrix.of (ψ y))‖ ^ 2)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[hφ]`. Conclude with `Set.indicator_of_mem hψy _`. Use `show _ ≤ φ (ψ y)`. Rewrite using `[hφy]`. Use `ENNReal.ofReal_le_ofReal (pow_le_pow_left₀ (norm_nonneg _) ?_ 2)` and prove the remaining obligations.
-
-Establish `: (Matrix.of (ψ y) : Mat k r) = cj (umat y)` using `by simp [ψ]`. Rewrite using `[this]`. Use `(ℓ.le_opNorm _).trans ?_` and prove the remaining obligations. Rewrite using `[hℓ1, one_mul]`. Establish `hsum` using `List.sum_le_sum hstep`.
-
-Rewrite `hsum` using `[List.sum_map_mul_left, ← ofReal_list_sum S _ (fun l => integral_nonneg fun _ => by positivity)]`. Establish `htot : ENNReal.ofReal (‖f 1‖ ^ 2) ≤ ENNReal.ofReal C * (c * ENNReal.ofReal ((S.map fun l => ∫ x in ψ '' Q, ‖rdWord (l.map cj) f (Matrix.of x)‖ ^ 2 ∂μG).sum))` using `key.trans (by gcongr)`. Use `conv_rhs at htot => rw [← ENNReal.ofReal_toReal hc]`. Rewrite `htot` using `[← ENNReal.ofReal_mul ENNReal.toReal_nonneg, ← ENNReal.ofReal_mul hC, ← mul_assoc]`. Rewrite `hnn`, the goal using `[List.map_map]`.
-
-Conclude with `(ENNReal.ofReal_le_ofReal_iff hnn).1 htot`.
+A detailed English derivation is pending.
 -/
 theorem sobolev_at_one_G : ∀ (k r : ℕ) (μG : Measure (Mt k r)), IsHaarOn (GG k r) μG → ∃ (C : ℝ)
     (Ws : List (List (Mat k r))) (K₀ : Set (Mt k r)), IsCompact K₀ ∧ (∀ ws ∈ Ws, ∀ X ∈ ws, InLieHpk k r X) ∧

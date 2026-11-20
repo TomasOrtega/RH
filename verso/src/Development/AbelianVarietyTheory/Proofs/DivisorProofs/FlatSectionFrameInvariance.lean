@@ -30,13 +30,13 @@ noncomputable section
 namespace GlobalTheory.FlatGL
 
 /- English proof (translation)
-Set `α : ∀ b, Matrix (Fin (m b)) (Fin (m b)) K` to `Function.update X b A₀`. Set `β : ∀ b, Matrix (Fin (m b)) (Fin (m b)) K` to `Function.update (fun _ => 0) b D`. Establish `hl : ∀ x : K, Function.update X b (A₀ + x • D) = fun b' => α b' + x • β b'`. Introduce `x`. Use function extensionality and compare the values at `b'`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Distinguish the cases in `h : b' = b`. Substitute `h` using the available equality. Simplify using `[α, β]`. Simplify using `[α, β, Function.update_of_ne h]`. Use `⟨MvPolynomial.aeval (fun v : FrVar m => Polynomial.C (α v.1 v.2.2 v.2.1) + Polynomial.C (β v.1 v.2.2 v.2.1) * Polynomial.X) G, fun x => ?_⟩` and prove the remaining obligations.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Establish `key : ∀ (a c : FrVar m → K) (P : MvPolynomial (FrVar m) K), MvPolynomial.eval (fun v => a v + x * c v) P = (MvPolynomial.aeval (fun v => Polynomial.C (a v) + Polynomial.C (c v) * Polynomial.X) P).eval x`. Introduce `a c P`. Proceed by induction on `P using MvPolynomial.induction_on with`. Consider the case `C a => simp`. Consider the case `add p q hp hq => rw [map_add, map_add, Polynomial.eval_add, hp, hq]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `mul_X p v hp`. Rewrite using `[map_mul, map_mul, Polynomial.eval_mul, hp]`. Simplify using `only [MvPolynomial.aeval_X, Polynomial.eval_add, Polynomial.eval_mul, Polynomial.eval_C, Polynomial.eval_X, MvPolynomial.eval_X]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hl, ← key]`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -93,7 +93,7 @@ variable {k : Type} [Field k] [Algebra c.F k] (τ : Psi H) {f : Rul Xo c} (y₀ 
   (G : MvPolynomial (FrVar Dw.mult) k)
 
 /- English proof (translation)
-Establish `hD : (∏ b, (Y b).det) ≠ 0` using `Finset.prod_ne_zero_iff.2 fun b _ => hY b`. Establish `h2` using `hY (conjEmb τ.1)`. Unfold `hfun wr`. Rewrite using `[← hGY y' Y hY h]`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 -/
 theorem hfun_eq
     (hGY : ∀ (y' : FrPt Xo c k) (Y : ∀ b : E →+* ℂ, Matrix (Fin (Dw.mult b)) (Fin (Dw.mult b)) k),
@@ -108,21 +108,21 @@ theorem hfun_eq
   field_simp
 
 /- English proof (translation)
-Set `Tf : ∀ b : E →+* ℂ, Matrix (Fin (Dw.mult b)) (Fin (Dw.mult b)) k` to `Function.update (fun _ => 1) b T`. Establish `hTb : Tf b = T` using `Function.update_self ..`. Establish `hTo : ∀ b', b' ≠ b → Tf b' = 1` using `fun b' h => Function.update_of_ne h ..`. Establish `hTtri : ∀ b', (Tf b').BlockTriangular id`. Introduce `b'`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `h : b' = b`. Substitute `h` using the available equality. Rewrite using `[hTb]`. Conclude with `htri`. Rewrite using `[hTo b' h]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Matrix.blockTriangular_one`. Establish `hTd : ∀ b', (Tf b').det ≠ 0`. Introduce `b'`. Distinguish the cases in `h : b' = b`. Substitute `h` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hTb]`. Conclude with `hT`. Rewrite using `[hTo b' h]`. Simplify using the standard rewrite rules. Establish `hup : Function.update X b (X b * T) = fun b' => X b' * Tf b'`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Use function extensionality and compare the values at `b'`. Distinguish the cases in `h : b' = b`. Substitute `h` using the available equality. Rewrite using `[hTb, Function.update_self]`. Rewrite using `[hTo b' h, Function.update_of_ne h, _root_.mul_one]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨z₁, h₁, -⟩` from `GlobalTheory.Frames.existsUnique_frChg E H Dw l Xo c k y₀ (fun b => (X b).transpose) 1 (fun b' => by rw [Matrix.det_transpose]; exact (hX b').isUnit)`. Take `⟨z₂, h₂, -⟩` from `GlobalTheory.Frames.existsUnique_frChg E H Dw l Xo c k z₁ (fun b => (Tf b).transpose) 1 (fun b' => by rw [Matrix.det_transpose]; exact (hTd b').isUnit)`. Rewrite `h₁`, `h₂` using `[Units.val_one]`. Establish `h₃` using `(GlobalTheory.Frames.frChg_refl_and_comp E H Dw l Xo c k y₀ z₁ z₂).2 _ _ _ _ h₁ h₂`. Simplify using `only [← Matrix.transpose_mul, _root_.mul_one] at h₃`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hXT : ∀ b', (X b' * Tf b').det ≠ 0` using `fun b' => by rw [Matrix.det_mul]; exact mul_ne_zero (hX b') (hTd b')`. Establish `e₁` using `hfun_eq τ y₀ G hGY X hX z₁ h₁`. Establish `e₂` using `hfun_eq τ y₀ G hGY (fun b' => X b' * Tf b') hXT z₂ h₃`. Establish `e₃` using `GlobalTheory.FlatFrameLaw.evR_flat_frChg τ hf (fun σ => (Tf σ).transpose) 1 z₁ z₂ h₂ (fun σ i j hij => hTtri σ hij) (fun σ => by rw [Matrix.det_transpose]; exact (hTd σ).isUnit) one_ne_zero`. Rewrite using `[hup, e₂, e₁, e₃]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Matrix.det_transpose, Matrix.det_mul]`. Establish `a1` using `hTd τ.1`. Establish `a2` using `hTd (conjEmb τ.1)`. Establish `a3` using `hX (conjEmb τ.1)`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem hfun_upper (hf : f ∈ secZ Xo c (exOf Dw (flatWt Dw τ) 0))
     (hGY : ∀ (y' : FrPt Xo c k) (Y : ∀ b : E →+* ℂ, Matrix (Fin (Dw.mult b)) (Fin (Dw.mult b)) k),
@@ -169,15 +169,15 @@ theorem hfun_upper (hf : f ∈ secZ Xo c (exOf Dw (flatWt Dw τ) 0))
   field_simp
 
 /- English proof (translation)
-Establish `hψ : ∀ A : Matrix (Fin (Dw.mult b)) (Fin (Dw.mult b)) k, A.det ≠ 0 → hfun Dw τ G (Function.update X b A) = wr τ (Function.update (fun b' => (X b').det) b A.det) * evalFr G (Function.update X b A)`. Introduce `A _`. Unfold `hfun`. Use `congr 2`. Use function extensionality and compare the values at `b'`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Distinguish the cases in `h : b' = b`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Function.update_of_ne h]`. Establish `hT : ∀ A T : Matrix (Fin (Dw.mult b)) (Fin (Dw.mult b)) k, A.det ≠ 0 → T.det ≠ 0 → T.BlockTriangular id → hfun Dw τ G (Function.update X b (A * T)) = hfun Dw τ G (Function.update X b A)`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `A T hA hT htri`. Establish `hX' : ∀ b', (Function.update X b A b').det ≠ 0`. Introduce `b'`. Distinguish the cases in `h : b' = b`. Substitute `h` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using `using hA`. Rewrite using `[Function.update_of_ne h]`. Conclude with `hX b'`. Use `hfun_upper τ y₀ G hf hGY (Function.update X b A) hX' b T hT htri` as an intermediate fact. Simplify `this` using `[Function.update_idem, Function.update_self]`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `key` using `GlobalTheory.T.rightInvariant_GL_of_upperTriangular_rightInvariant (fun A => hfun Dw τ G (Function.update X b A)) (fun A => evalFr G (Function.update X b A)) (fun d => wr τ (Function.update (fun b' => (X b').det) b d)) (fun A₀ D => evalFr_update_line G X b A₀ D) hψ hT 1 (X b) (by …`. Simplify using `only [_root_.one_mul, Function.update_eq_self] at key`. Conclude with `key`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hfun_update_one [Infinite k] (hf : f ∈ secZ Xo c (exOf Dw (flatWt Dw τ) 0))
     (hGY : ∀ (y' : FrPt Xo c k) (Y : ∀ b : E →+* ℂ, Matrix (Fin (Dw.mult b)) (Fin (Dw.mult b)) k),
@@ -211,13 +211,13 @@ theorem hfun_update_one [Infinite k] (hf : f ∈ secZ Xo c (exOf Dw (flatWt Dw �
   exact key
 
 /- English proof (translation)
-It suffices to establish `h : ∀ s : Finset (E →+* ℂ), ∀ X : ∀ b : E →+* ℂ, Matrix (Fin (Dw.mult b)) (Fin (Dw.mult b)) k, (∀ b, (X b).det ≠ 0) → (∀ b, b ∉ s → X b = 1) → hfun Dw τ G X = hfun Dw τ G (fun _ => 1) from h Finset.univ X hX fun b hb => absurd (Finset.mem_univ b) hb`. Introduce `s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Introduce `X _ h1`.
+Reduce the argument to an intermediate assertion. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `: X = fun _ => 1` using `funext fun b => h1 b (Finset.notMem_empty b)`. Rewrite using `[this]`. Consider the case `insert b s hb ih`. Introduce `X hX h1`. Rewrite using `[hfun_update_one τ y₀ G hf hGY X hX b]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `ih _ (fun b' => ?_) (fun b' hb' => ?_)` and prove the remaining obligations. Distinguish the cases in `h : b' = b`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[Function.update_of_ne h]`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hX b'`. Distinguish the cases in `h : b' = b`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[Function.update_of_ne h]; exact h1 b' (by simp [h, hb'])`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hfun_eq_one [Infinite k] (hf : f ∈ secZ Xo c (exOf Dw (flatWt Dw τ) 0))
     (hGY : ∀ (y' : FrPt Xo c k) (Y : ∀ b : E →+* ℂ, Matrix (Fin (Dw.mult b)) (Fin (Dw.mult b)) k),
@@ -247,19 +247,19 @@ theorem hfun_eq_one [Infinite k] (hf : f ∈ secZ Xo c (exOf Dw (flatWt Dw τ) 0
 end Fixed
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c τ f hf k _ _ z y hx g₁ g₂ h₁ h₂`. Establish `: CharZero k` using `charZero_of_injective_algebraMap (algebraMap c.F k).injective`. Establish `: Infinite k` using `Infinite.of_injective (Nat.cast : ℕ → k) Nat.cast_injective`. Take `⟨G, -, hG⟩` from `GlobalTheory.FieldPolyZ.exists_isHomogeneous_secZ E H Dw l Xo c k y (exOf Dw (flatWt Dw τ) 0) (fun _ => 1) (fun b i => (exOf Dw (flatWt Dw τ) 0 (some ⟨b, i⟩) + 1).toNat) (GlobalTheory.FlatFrameLaw.exOf_flatWt_none τ) (fun b i => by`. Establish `h0 : 0 ≤ exOf Dw (flatWt Dw τ) 0 (some ⟨b, i⟩) + 1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Apply the tactic sequence `rw [GlobalTheory.FlatFrameLaw.exOf_flatWt_some]; split_ifs <;> norm_num`. Rewrite using `[Int.toNat_of_nonneg h0]`. Use the proof step `simp) f hf`. Establish `hGY : ∀ (y' : FrPt Xo c k) (Y : ∀ b : E →+* ℂ, Matrix (Fin (Dw.mult b)) (Fin (Dw.mult b)) k), (∀ b, (Y b).det ≠ 0) → FrChg (fun b => (Y b).transpose) 1 y y' → (∏ b, (Y b).det) * evR Xo c f y' = evalFr G Y` using `fun y' Y hY h => by`. Use `hG y' Y 1 hY (by simpa using h)` as an intermediate fact.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using this`. Take `⟨g, a, hg, hc⟩` from `(GlobalTheory.Frames.frChg_exists_unique E H Dw l Xo c k y z).1 hx`. Take `⟨w, hw, -⟩` from `GlobalTheory.Frames.existsUnique_frChg E H Dw l Xo c k y g 1 hg`. Rewrite `hw` using `[Units.val_one]`. Establish `hwz : FrChg (fun _ => 1) (a : k) w z` using `((GlobalTheory.Frames.frChg_calculus E H Dw l Xo c k).1 g (fun _ => 1) 1 a y w z hw).2 (by simpa using hc)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1` using `GlobalTheory.FlatFrameLaw.evR_flat_frChg τ hf (fun _ => 1) (a : k) w z hwz (fun σ i j hij => Matrix.one_apply_ne hij.ne) (fun σ => by simp) a.ne_zero`. Simplify using `only [Matrix.det_one, inv_one, _root_.one_mul] at e1`. Establish `hgt : ∀ b, ((g b).transpose).det ≠ 0` using `fun b => by rw [Matrix.det_transpose]; exact (hg b).ne_zero`. Establish `e2` using `hfun_eq τ y G hGY (fun b => (g b).transpose) hgt w (by simpa using hw)`. Establish `hr : FrChg (fun b => (1 : Matrix (Fin (Dw.mult b)) (Fin (Dw.mult b)) k).transpose) 1 y y`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using (GlobalTheory.Frames.frChg_refl_and_comp E H Dw l Xo c k y y y).1`. Establish `e3` using `hfun_eq τ y G hGY (fun _ => 1) (fun b => by simp) y hr`. Establish `e4` using `hfun_eq_one τ y G hf hGY (fun b => (g b).transpose) hgt`. Establish `hg1 : g τ.1 = g₁` using `funext fun i => (y.basis τ.1 (z.u τ.1 i) (by rw [← hx]; exact z.tan τ.1 i) (z.eig τ.1 i)).unique (hc.2.1 τ.1 i) (h₁ i)`. Establish `hg2 : g (conjEmb τ.1) = g₂` using `funext fun i => (y.basis (conjEmb τ.1) (z.u (conjEmb τ.1) i) (by rw [← hx]; exact z.tan (conjEmb τ.1) i) (z.eig (conjEmb τ.1) i)).unique (hc.2.1 (conjEmb τ.1) i) (h₂ i)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e4` using `[e2, e3]`. Simplify using `only [Matrix.det_transpose, Matrix.det_one, div_one, _root_.mul_one] at e4`. Rewrite using `[e1, ← hg1, ← hg2]`. Establish `a2` using `hgt (conjEmb τ.1)`. Rewrite `a2` using `[Matrix.det_transpose]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Clear denominators, using `at e4` for the nonvanishing conditions. Take the linear combination `e4`.
+Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem evR_flat_chg : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Level H}
     {Xo : Moduli Dw l} {c : Coeff l} (τ : Psi H) {f : Rul Xo c}, f ∈ secZ Xo c (exOf Dw (flatWt Dw τ) 0) →

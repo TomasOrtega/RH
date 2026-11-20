@@ -32,19 +32,19 @@ def locGL (v : HeightOneSpectrum (𝓞 F)) :
   Units.map (RingHom.mapMatrix (coordV v)).toMonoidHom
 
 /- English proof (translation)
-The claim follows from `map_mul _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem locM_mul (v : HeightOneSpectrum (𝓞 F)) (M N : Matrix (Fin n) (Fin n) (FiniteAdeleRing (𝓞 F) F)) :
     locM v (M * N) = locM v M * locM v N := map_mul _ _ _
 
 /- English proof (translation)
-The claim follows from `map_one _`.
+A detailed English derivation is pending.
 -/
 theorem locM_one (v : HeightOneSpectrum (𝓞 F)) :
     locM v (1 : Matrix (Fin n) (Fin n) (FiniteAdeleRing (𝓞 F) F)) = 1 := map_one _
 
 /- English proof (translation)
-Use `Matrix.ext fun i j => FiniteAdeleRing.ext F fun v => ?_` and prove the remaining obligations. Conclude with `congrFun (congrFun (h v) i) j`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem matrix_ext_loc {M N : Matrix (Fin n) (Fin n) (FiniteAdeleRing (𝓞 F) F)}
     (h : ∀ v, locM v M = locM v N) : M = N := by
@@ -52,7 +52,7 @@ theorem matrix_ext_loc {M N : Matrix (Fin n) (Fin n) (FiniteAdeleRing (𝓞 F) F
   exact congrFun (congrFun (h v) i) j
 
 /- English proof (translation)
-The claim follows from `Units.ext (matrix_ext_loc fun v => congrArg Units.val (e v))`.
+A detailed English derivation is pending.
 -/
 theorem gl_ext_loc {g h : GL (Fin n) (FiniteAdeleRing (𝓞 F) F)} (e : ∀ v, locGL v g = locGL v h) :
     g = h :=
@@ -62,7 +62,7 @@ def IntAt (v : HeightOneSpectrum (𝓞 F)) (M : Matrix (Fin n) (Fin n) (v.adicCo
   ∀ i j, M i j ∈ v.adicCompletionIntegers F
 
 /- English proof (translation)
-Introduce `i j`. Rewrite using `[Matrix.one_apply]`. Use `split_ifs`. Conclude with `(v.adicCompletionIntegers F).one_mem`. Conclude with `(v.adicCompletionIntegers F).zero_mem`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem intAt_one (v : HeightOneSpectrum (𝓞 F)) : IntAt v (1 : Matrix (Fin n) (Fin n) (v.adicCompletion F)) := by
   intro i j
@@ -78,7 +78,7 @@ def glueM (x : ∀ v : HeightOneSpectrum (𝓞 F), Matrix (Fin n) (Fin n) (v.adi
       Πʳ v : HeightOneSpectrum (𝓞 F), [v.adicCompletion F, v.adicCompletionIntegers F])
 
 /- English proof (translation)
-Use extensionality with `i j`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Both sides reduce to the same expression.
 -/
 theorem locM_glueM (x : ∀ v : HeightOneSpectrum (𝓞 F), Matrix (Fin n) (Fin n) (v.adicCompletion F))
     (hx : ∀ᶠ v in Filter.cofinite, IntAt v (x v)) (v : HeightOneSpectrum (𝓞 F)) :
@@ -97,7 +97,7 @@ def glueGL (x : ∀ v : HeightOneSpectrum (𝓞 F), GL (Fin n) (v.adicCompletion
     rw [locM_mul, locM_glueM, locM_glueM, locM_one]; exact Units.inv_mul (x v)
 
 /- English proof (translation)
-The claim follows from `Units.ext (locM_glueM _ (hx.mono fun _ h => h.1) v)`.
+A detailed English derivation is pending.
 -/
 theorem locGL_glueGL (x : ∀ v : HeightOneSpectrum (𝓞 F), GL (Fin n) (v.adicCompletion F))
     (hx : ∀ᶠ v in Filter.cofinite, IntAt v (x v).val ∧ IntAt v (x v)⁻¹.val) (v : HeightOneSpectrum (𝓞 F)) :
@@ -105,9 +105,9 @@ theorem locGL_glueGL (x : ∀ v : HeightOneSpectrum (𝓞 F), GL (Fin n) (v.adic
   Units.ext (locM_glueM _ (hx.mono fun _ h => h.1) v)
 
 /- English proof (translation)
-Unfold `IntAt`. Rewrite using `[Filter.eventually_all]`. Introduce `i`. Rewrite using `[Filter.eventually_all]`. Introduce `j`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(M i j).2`.
+A detailed English derivation is pending.
 -/
 theorem eventually_intAt (M : Matrix (Fin n) (Fin n) (FiniteAdeleRing (𝓞 F) F)) :
     ∀ᶠ v in Filter.cofinite, IntAt v (locM v M) := by
@@ -119,11 +119,11 @@ theorem eventually_intAt (M : Matrix (Fin n) (Fin n) (FiniteAdeleRing (𝓞 F) F
   exact (M i j).2
 
 /- English proof (translation)
-Establish `hdet0 : b.val.det ≠ 0` using `((Matrix.isUnit_iff_isUnit_det _).mp b.isUnit).ne_zero`. Establish `hne : ∀ i, b.val i i ≠ 0`. Introduce `i h`. Apply `hdet0` to reduce the goal to its premises. Rewrite using `[Matrix.det_of_upperTriangular hb]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.prod_eq_zero (Finset.mem_univ i) h`. Set `t : GL (Fin n) K` to `⟨diagonal (fun i => b.val i i), diagonal (fun i => (b.val i i)⁻¹), by rw [diagonal_mul_diagonal, ← diagonal_one]; congr 1; funext i; exact mul_inv_cancel₀ (hne i), by rw [diagonal_mul_diagonal, ← diagonal_one]; congr 1; funext i; exact inv_mul_cancel₀ (hne i)⟩`. Establish `hU : ∀ i j, (b * t⁻¹).val i j = b.val i j * (b.val j j)⁻¹`. Introduce `i j`. Express the relevant statement in the definitionally equal form `(b.val * diagonal (fun i => (b.val i i)⁻¹)) i j = _`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_diagonal]`. Use `⟨b * t⁻¹, t, ⟨fun i j hij => ?_, fun i => ?_⟩, fun i j hij => ?_, by group⟩` and prove the remaining obligations. Rewrite using `[hU, hb hij, zero_mul]`. Rewrite using `[hU, mul_inv_cancel₀ (hne i)]`. Conclude with `diagonal_apply_ne _ hij`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem upper_eq_uni_mul_diag {K : Type} [Field K] (b : GL (Fin n) K) (hb : b.val.BlockTriangular id) :
     ∃ u t : GL (Fin n) K, PIW.ClassFinD.IsUpperUni u.val ∧ PIW.ClassFinD.IsDiagM t.val ∧ b = u * t := by
@@ -147,19 +147,19 @@ theorem upper_eq_uni_mul_diag {K : Type} [Field K] (b : GL (Fin n) K) (hb : b.va
   · exact diagonal_apply_ne _ hij
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun i j hij => Matrix.one_apply_ne (ne_of_gt hij), fun i => Matrix.one_apply_eq i⟩`.
+Supply the required witnesses or components.
 -/
 theorem isUpperUni_one {K : Type} [CommRing K] : PIW.ClassFinD.IsUpperUni (1 : Matrix (Fin n) (Fin n) K) :=
   ⟨fun i j hij => Matrix.one_apply_ne (ne_of_gt hij), fun i => Matrix.one_apply_eq i⟩
 
 /- English proof (translation)
-Introduce `i j hij` and use `Matrix.one_apply_ne hij`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isDiagM_one {K : Type} [CommRing K] : PIW.ClassFinD.IsDiagM (1 : Matrix (Fin n) (Fin n) K) :=
   fun i j hij => Matrix.one_apply_ne hij
 
 /- English proof (translation)
-Take `⟨K, rfl⟩` from `hk`. Use `⟨fun i j => (K.val i j).2, fun i j => ?_⟩` and prove the remaining obligations. Rewrite using `[← map_inv]`. Conclude with `((K⁻¹).val i j).2`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem intAt_of_glint (v : HeightOneSpectrum (𝓞 F)) (k : GL (Fin n) (v.adicCompletion F))
     (hk : k ∈ Formalism.UG.GLint (Fin n) (Formalism.UG.Ov F v)) : IntAt v k.val ∧ IntAt v k⁻¹.val := by
@@ -175,21 +175,19 @@ namespace GlobalTheory.IwasawaFinAd
 open PIW.ClassFinD
 
 /- English proof (translation)
-Introduce `F _ _ n g`. Set `good : HeightOneSpectrum (𝓞 F) → Prop` to `fun v => IntAt v (locGL v g).val ∧ IntAt v (locGL v g)⁻¹.val`. Establish `hgood : ∀ᶠ v in Filter.cofinite, good v`. Use `(eventually_intAt g.val).and ((eventually_intAt (g⁻¹).val).mono fun v h => ?_)` and prove the remaining obligations. Rewrite using `[← map_inv]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h`. Establish `hloc : ∀ v : HeightOneSpectrum (𝓞 F), ∃ u t k : GL (Fin n) (v.adicCompletion F), IsUpperUni u.val ∧ IsDiagM t.val ∧ IntAt v k.val ∧ IntAt v k⁻¹.val ∧ locGL v g = u * t * k ∧ (good v → u = 1 ∧ t = 1 ∧ k = locGL v g)`. Introduce `v`. Distinguish the cases in `hv : good v`. Conclude with `⟨1, 1, locGL v g, isUpperUni_one, isDiagM_one, hv.1, hv.2, by rw [one_mul, one_mul], fun _ => ⟨rfl, rfl, rfl⟩⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `⟨b, k, hb, hk, hbk⟩` from `Formalism.UG.P.spherical_iwasawa F v (locGL v g)`. Take `⟨u, t, hu, ht, rfl⟩` from `upper_eq_uni_mul_diag b hb`. Take `⟨hk1, hk2⟩` from `intAt_of_glint v k hk`. Conclude with `⟨u, t, k, hu, ht, hk1, hk2, hbk, fun h => absurd h hv⟩`. Use `choose uL tL kL huL htL hkL hkL' hgL hgoodL using hloc`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hu : ∀ᶠ v in Filter.cofinite, IntAt v (uL v).val ∧ IntAt v (uL v)⁻¹.val` using `hgood.mono fun v hv => by`. Rewrite using `[(hgoodL v hv).1, inv_one]`. Conclude with `⟨intAt_one v, intAt_one v⟩`. Establish `ht : ∀ᶠ v in Filter.cofinite, IntAt v (tL v).val ∧ IntAt v (tL v)⁻¹.val` using `hgood.mono fun v hv => by`. Rewrite using `[(hgoodL v hv).2.1, inv_one]`.
+Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact.
 
-Conclude with `⟨intAt_one v, intAt_one v⟩`. Establish `hk : ∀ᶠ v in Filter.cofinite, IntAt v (kL v).val ∧ IntAt v (kL v)⁻¹.val` using `Filter.Eventually.of_forall fun v => ⟨hkL v, hkL' v⟩`. Use `⟨glueGL uL hu, glueGL tL ht, glueGL kL hk, ⟨fun i j hij => ?_, fun i => ?_⟩, fun i j hij => ?_, ⟨fun i j v => hkL v i j, fun i j v => hkL' v i j⟩, ?_⟩` and prove the remaining obligations. Use `FiniteAdeleRing.ext F fun v => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `coordV v ((glueGL uL hu).val i j) = coordV v 0`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_zero]`. Conclude with `(huL v).1 i j hij`. Use `FiniteAdeleRing.ext F fun v => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `coordV v ((glueGL uL hu).val i i) = coordV v 1`. Rewrite using `[map_one]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(huL v).2 i`. Use `FiniteAdeleRing.ext F fun v => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `coordV v ((glueGL tL ht).val i j) = coordV v 0`. Rewrite using `[map_zero]`. Conclude with `htL v i j hij`.
-
-Use `gl_ext_loc fun v => ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_mul, locGL_glueGL, locGL_glueGL, locGL_glueGL]`. Conclude with `hgL v`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem iwasawaAf : PIW.ClassFinD.IwasawaAf := by
   classical

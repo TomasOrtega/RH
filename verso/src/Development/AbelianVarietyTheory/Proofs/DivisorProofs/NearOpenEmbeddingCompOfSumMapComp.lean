@@ -16,16 +16,16 @@ namespace GlobalTheory.Mum.DescFix
 set_option backward.isDefEq.respectTransparency false
 
 /- English proof (translation)
-Establish `: IsPullback (𝟙 W) m (m ≫ e) e` using `IsPullback.of_horiz_isIso_mono ⟨by simp⟩`. Conclude with `MorphismProperty.of_isPullback (P := @Smooth) this hs`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem smooth_of_comp_mono {W X G : Scheme.{0}} (m : W ⟶ X) (e : X ⟶ G) [Mono e] [hs : Smooth (m ≫ e)] : Smooth m := by
   have : IsPullback (𝟙 W) m (m ≫ e) e := IsPullback.of_horiz_isIso_mono ⟨by simp⟩
   exact MorphismProperty.of_isPullback (P := @Smooth) this hs
 
 /- English proof (translation)
-Set `σ : G ⊗ G ≅ G ⊗ G` to `{ hom := lift (fst G G * snd G G) (snd G G) inv := lift (fst G G * (snd G G)⁻¹) (snd G G) hom_inv_id := by`. Apply the tactic sequence `apply CartesianMonoidalCategory.hom_ext <;> simp [MonObj.comp_mul, GrpObj.comp_inv]`. Use `inv_hom_id := by`. Apply the tactic sequence `apply CartesianMonoidalCategory.hom_ext <;> simp [MonObj.comp_mul, GrpObj.comp_inv] }`. Establish `h : μ[G] = σ.hom ≫ fst G G`.
+Introduce a local definition for the expression. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[σ, Hom.mul_def]`. Establish `h₁ : Smooth (fst G G).left` using `inferInstanceAs (Smooth (pullback.fst G.hom G.hom))`. Establish `h₂ : IsIso σ.hom.left` using `inferInstanceAs (IsIso ((Over.forget T).mapIso σ).hom)`. Rewrite using `[h, Over.comp_left]`. Use `infer_instance`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem smooth_mul {T : Scheme.{0}} (G : Over T) [GrpObj G] [Smooth G.hom] : Smooth (μ[G]).left := by
   let σ : G ⊗ G ≅ G ⊗ G :=
@@ -43,7 +43,7 @@ theorem smooth_mul {T : Scheme.{0}} (G : Over T) [GrpObj G] [Smooth G.hom] : Smo
   infer_instance
 
 /- English proof (translation)
-Establish `: IrreducibleSpace (f.fiber t)` using `GlobalTheory.irreducibleSpace_of_smooth_field_of_connectedSpace (T.residueField t) (f.fiber t) (f.fiberToSpecResidueField t) (inferInstanceAs (Smooth (pullback.snd _ _))) inferInstance`. Rewrite using `[← Scheme.Hom.range_fiberι, ← Set.image_univ]`. Conclude with `(PreirreducibleSpace.isPreirreducible_univ).image _ (f.fiberι t).continuous.continuousOn`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isPreirreducible_fibre {X T : Scheme.{0}} (f : X ⟶ T) [Smooth f] [GeometricallyConnected f] (t : T) :
     IsPreirreducible (f ⁻¹' {t}) := by
@@ -54,13 +54,13 @@ theorem isPreirreducible_fibre {X T : Scheme.{0}} (f : X ⟶ T) [Smooth f] [Geom
   exact (PreirreducibleSpace.isPreirreducible_univ).image _ (f.fiberι t).continuous.continuousOn
 
 /- English proof (translation)
-Set `P : X.Opens` to `⟨Set.range m, m.isOpenMap.isOpen_range⟩`. Use `GlobalTheory.T.hom_ext_of_agree_on_fibreDense_open_smooth X T Y p q P (fun x => ?_) f g hfg ?_` and prove the remaining obligations. Take `⟨w, hw⟩` from `(m ≫ p).surjective (p x)`. Use `subset_closure_inter_of_isPreirreducible_of_isOpen (hp (p x)) P.2 ⟨m w, by simpa using hw, w, rfl⟩` as an intermediate fact. Rewrite `this` using `[Set.inter_comm]`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this rfl`. Set `l : W ⟶ P.toScheme` to `IsOpenImmersion.lift P.ι m (by simp [P])`. Establish `hl : l ≫ P.ι = m` using `IsOpenImmersion.lift_fac _ _ _`. Establish `: Smooth (l ≫ P.ι)` using `by rw [hl]; infer_instance`. Establish `: Smooth l` using `smooth_of_comp_mono l P.ι`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: Surjective l` using `⟨fun y => by`. Take `⟨w, hw⟩` from `y.2`. Use `⟨w, P.ι.isOpenEmbedding.injective ?_⟩` and prove the remaining obligations. Rewrite using `[← Scheme.Hom.comp_apply, hl]`. Conclude with `hw⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: Epi l` using `Flat.epi_of_flat_of_surjective l`. Rewrite using `[← cancel_epi l, ← Category.assoc, ← Category.assoc, hl, h]`.
+A detailed English derivation is pending.
 -/
 theorem eq_of_smooth_comp {W X T Y : Scheme.{0}} (p : X ⟶ T) [Smooth p] (hp : ∀ t : T, IsPreirreducible (p ⁻¹' {t}))
     (m : W ⟶ X) [Smooth m] [Surjective (m ≫ p)] (q : Y ⟶ T) [IsSeparated q] (f g : X ⟶ Y) (hfg : f ≫ q = g ≫ q)
@@ -86,9 +86,9 @@ theorem eq_of_smooth_comp {W X T Y : Scheme.{0}} (p : X ⟶ T) [Smooth p] (hp : 
 variable {R : Type} [CommRing R] [IsLocalRing R] {S : Scheme.{0}} {π : S ⟶ Sp R} {G : Over S}
 
 /- English proof (translation)
-Establish `h₁ : IsPullback (Desc.toS N p hp) (pullback.snd N.U.hom (pullback.fst π π ≫ π)) (pullback.snd N.U.hom π) p`. Use `IsPullback.of_right (h₁₂ := pullback.fst N.U.hom π) (h₂₂ := π) (v₁₃ := N.U.hom) ?_ (pullback.lift_snd _ _ _) (IsPullback.of_hasPullback _ _)` and prove the remaining obligations. Rewrite using `[hp, Desc.toS, pullback.lift_fst]`. Conclude with `IsPullback.of_hasPullback _ _`. Establish `h₂ : IsPullback (Desc.toS N p hp) (Desc.embL N p hp) N.u (pullback.fst G.hom p)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `IsPullback.of_bot (v₂₁ := pullback.snd G.hom p) (v₂₂ := G.hom) (h₃₁ := p) ?_ (pullback.lift_fst _ _ _).symm (IsPullback.of_hasPullback _ _)` and prove the remaining obligations. Rewrite using `[N.u_over, Desc.embL, pullback.lift_snd]`. Conclude with `h₁`. Conclude with `MorphismProperty.of_isPullback (P := @IsOpenImmersion) h₂ N.isOpen`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isOpenImmersion_emb (N : Near π G) (p : pullback π π ⟶ S) (hp : p ≫ π = pullback.fst π π ≫ π) :
     IsOpenImmersion (Desc.emb N p hp).left := by
@@ -105,13 +105,13 @@ theorem isOpenImmersion_emb (N : Near π G) (p : pullback π π ⟶ S) (hp : p �
   exact MorphismProperty.of_isPullback (P := @IsOpenImmersion) h₂ N.isOpen
 
 /- English proof (translation)
-Use `N.smooth` as an intermediate fact. Establish `: Smooth (N.U ⊗ N.U).hom` using `inferInstanceAs (Smooth (pullback.fst N.U.hom N.U.hom ≫ N.U.hom))`. Take `⟨s, hs⟩` from `π.surjective (closedPoint R)`. Establish `he : (η[G]).left ≫ G.hom = 𝟙 S` using `Over.w η[G]`. Establish `he' : G.hom ((η[G]).left s) = s`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← Scheme.Hom.comp_apply, he]`. Both sides reduce to the same expression. Take `⟨x, hx⟩` from `N.all ((η[G]).left s) (by rw [he', hs])`. Establish `h₁ : N.U.hom (pullback.fst N.U.hom π x) = closedPoint R`. Rewrite using `[← Scheme.Hom.comp_apply, pullback.condition, Scheme.Hom.comp_apply, ← N.u_over, Scheme.Hom.comp_apply, hx, he', hs]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Set `z : (N.U ⊗ N.U).left` to `(lift (𝟙 N.U) (𝟙 N.U)).left (pullback.fst N.U.hom π x)`. Establish `hz : (N.U ⊗ N.U).hom z = closedPoint R`. Rewrite using `[← h₁, ← Scheme.Hom.comp_apply, Over.w]`. Set `O : TopologicalSpace.Opens (PrimeSpectrum R)` to `⟨Set.range (V.ι ≫ (N.U ⊗ N.U).hom), (V.ι ≫ (N.U ⊗ N.U).hom).isOpenMap.isOpen_range⟩`. Establish `hO : O = ⊤` using `(closedPoint_mem_iff O).1 ⟨⟨z, hV z hz⟩, hz⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `⟨fun t => (hO.ge (Set.mem_univ t) : t ∈ O)⟩`.
+Supply the required witnesses or components.
 -/
 theorem surjective_of_closedFibre [GrpObj G] [Surjective π] (N : Near π G) (V : (N.U ⊗ N.U).left.Opens)
     (hV : ∀ z : (N.U ⊗ N.U).left, (N.U ⊗ N.U).hom z = closedPoint R → z ∈ V) :
@@ -140,19 +140,19 @@ def toSq (N : Near π G) : (Desc.UT N ⊗ Desc.UT N).left ⟶ (N.U ⊗ N.U).left
       exact congrArg (· ≫ _) ((Over.w (fst (Desc.UT N) (Desc.UT N))).trans (Over.w (snd (Desc.UT N) (Desc.UT N))).symm))
 
 /- English proof (translation)
-The claim follows from `pullback.lift_fst _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem toSq_fst (N : Near π G) : toSq N ≫ (fst N.U N.U).left =
     (fst (Desc.UT N) (Desc.UT N)).left ≫ pullback.fst N.U.hom (pullback.fst π π ≫ π) := pullback.lift_fst _ _ _
 
 /- English proof (translation)
-The claim follows from `pullback.lift_snd _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem toSq_snd (N : Near π G) : toSq N ≫ (snd N.U N.U).left =
     (snd (Desc.UT N) (Desc.UT N)).left ≫ pullback.fst N.U.hom (pullback.fst π π ≫ π) := pullback.lift_snd _ _ _
 
 /- English proof (translation)
-Rewrite using `[← Over.w (fst N.U N.U), ← Category.assoc, toSq_fst, Category.assoc, pullback.condition, ← Category.assoc]`. Conclude with `congrArg (· ≫ _) (Over.w (fst (Desc.UT N) (Desc.UT N)))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem toSq_hom (N : Near π G) : toSq N ≫ (N.U ⊗ N.U).hom =
     (Desc.UT N ⊗ Desc.UT N).hom ≫ pullback.fst π π ≫ π := by
@@ -160,17 +160,15 @@ theorem toSq_hom (N : Near π G) : toSq N ≫ (N.U ⊗ N.U).hom =
   exact congrArg (· ≫ _) (Over.w (fst (Desc.UT N) (Desc.UT N)))
 
 /- English proof (translation)
-Set `a` to `V.ι ≫ (N.U ⊗ N.U).hom`. Set `b` to `pullback.fst π π ≫ π`. Set `Z : Over (pullback π π)` to `Over.mk (pullback.snd a b)`. Set `k₁ : Z ⟶ Desc.UT N` to `Over.homMk (pullback.lift (pullback.fst a b ≫ V.ι ≫ (fst N.U N.U).left) (pullback.snd a b) (by`. Rewrite using `[Category.assoc, Category.assoc, Over.w]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 
-Conclude with `pullback.condition)) (pullback.lift_snd _ _ _)`. Set `k₂ : Z ⟶ Desc.UT N` to `Over.homMk (pullback.lift (pullback.fst a b ≫ V.ι ≫ (snd N.U N.U).left) (pullback.snd a b) (by`. Rewrite using `[Category.assoc, Category.assoc, Over.w]`. Conclude with `pullback.condition)) (pullback.lift_snd _ _ _)`. Set `k : pullback a b ⟶ (Desc.UT N ⊗ Desc.UT N).left` to `(lift k₁ k₂).left`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hk : k ≫ toSq N = pullback.fst a b ≫ V.ι`. Apply `pullback.hom_ext` to reduce the goal to its premises. Use `(Category.assoc _ _ _).trans ((congrArg (k ≫ ·) (toSq_fst N)).trans ?_)` and prove the remaining obligations. Establish `: k ≫ (fst (Desc.UT N) (Desc.UT N)).left = k₁.left` using `congrArg (·.left) (lift_fst k₁ k₂)`. Rewrite using `[← Category.assoc, this]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `(pullback.lift_fst _ _ _).trans (Category.assoc _ _ _).symm`. Use `(Category.assoc _ _ _).trans ((congrArg (k ≫ ·) (toSq_snd N)).trans ?_)` and prove the remaining obligations. Establish `: k ≫ (snd (Desc.UT N) (Desc.UT N)).left = k₂.left` using `congrArg (·.left) (lift_snd k₁ k₂)`. Rewrite using `[← Category.assoc, this]`. Conclude with `(pullback.lift_fst _ _ _).trans (Category.assoc _ _ _).symm`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hk' : k ≫ (Desc.UT N ⊗ Desc.UT N).hom = pullback.snd a b` using `Over.w (lift k₁ k₂)`. Use `⟨fun t => ?_⟩` and prove the remaining obligations. Take `⟨z, hz⟩` from `(pullback.snd a b).surjective t`. Use `⟨⟨k z, ?_⟩, ?_⟩` and prove the remaining obligations. Use `show toSq N (k z) ∈ V`.
-
-Rewrite using `[← Scheme.Hom.comp_apply, hk]`. Conclude with `(pullback.fst a b z).2`. Rewrite using `[← hz, ← hk']`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem surjective_preimage (N : Near π G) (V : (N.U ⊗ N.U).left.Opens) [Surjective (V.ι ≫ (N.U ⊗ N.U).hom)] :
     Surjective ((toSq N ⁻¹ᵁ V).ι ≫ (Desc.UT N ⊗ Desc.UT N).hom) := by
@@ -203,23 +201,21 @@ theorem surjective_preimage (N : Near π G) (V : (N.U ⊗ N.U).left.Opens) [Surj
     rfl
 
 /- English proof (translation)
-Take `⟨V, m, hV, hm, law⟩` from `hN`. Use `surjective_of_closedFibre N V hV` as an intermediate fact. Set `W` to `toSq N ⁻¹ᵁ V`. Set `v : W.toScheme ⟶ V.toScheme` to `toSq N ∣_ V`. Establish `hv : v ≫ V.ι = W.ι ≫ toSq N` using `morphismRestrict_ι _ _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `τ : W.toScheme ⟶ pullback π π` to `W.ι ≫ (Desc.UT N ⊗ Desc.UT N).hom`. Set `m' : W.toScheme ⟶ pullback N.U.hom (pullback.fst π π ≫ π)` to `pullback.lift (v ≫ m) τ (by`. Rewrite using `[Category.assoc, hm, ← Category.assoc, hv, Category.assoc, toSq_hom, Category.assoc])`. Use `⟨W, m', surjective_preimage N V, fun p hp => ?_⟩` and prove the remaining obligations. Set `J : Over.mk τ ⟶ Desc.UT N ⊗ Desc.UT N` to `Over.homMk W.ι rfl`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression.
 
-Establish `lift₀ : ∀ x : Over.mk τ ⟶ (Over.pullback p).obj G, ∃ x₀ : Over.mk (τ ≫ p) ⟶ G, x₀.left = x.left ≫ pullback.fst G.hom p` using `fun x => ⟨Over.homMk (x.left ≫ pullback.fst G.hom p) ((Category.assoc _ _ _).trans ((congrArg (x.left ≫ ·) pullback.condition).trans ((Category.assoc _ _ _).symm.trans (congrArg (· ≫ p) (Over.w x))))), rfl⟩`. Establish `pt : ∀ (c : Over.mk τ ⟶ Desc.UT N), N.Pt (τ ≫ p) (c.left ≫ pullback.fst N.U.hom (pullback.fst π π ≫ π)) ((c ≫ Desc.emb N p hp).left ≫ pullback.fst G.hom p)` using `fun c => ⟨c.left ≫ Desc.toS N p hp, (Category.assoc _ _ _).trans (congrArg (c.left ≫ ·) (pullback.lift_fst _ _ _)), (Category.assoc _ _ _).trans ((congrArg (c.left ≫ ·) (pullback.lift_snd _ _ _)).trans ((Category.assoc _ _ _).symm.trans (congrArg (· ≫ p) (Over.w c)))), (Category. …`. Take `⟨x₀, hx₀⟩` from `lift₀ ((J ≫ fst _ _) ≫ Desc.emb N p hp)`. Take `⟨y₀, hy₀⟩` from `lift₀ ((J ≫ snd _ _) ≫ Desc.emb N p hp)`. Establish `hx` using `pt (J ≫ fst _ _)`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hy` using `pt (J ≫ snd _ _)`. Rewrite `hx` using `[← hx₀]`. Rewrite `hy` using `[← hy₀]`. Establish `ex : v ≫ V.ι ≫ (fst N.U N.U).left = (J ≫ fst _ _).left ≫ pullback.fst N.U.hom (pullback.fst π π ≫ π)`. Rewrite using `[← Category.assoc, hv, Category.assoc, toSq_fst]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(Category.assoc _ _ _).symm`. Establish `ey : v ≫ V.ι ≫ (snd N.U N.U).left = (J ≫ snd _ _).left ≫ pullback.fst N.U.hom (pullback.fst π π ≫ π)`. Rewrite using `[← Category.assoc, hv, Category.assoc, toSq_snd]`. Conclude with `(Category.assoc _ _ _).symm`. Rewrite `hx` using `[← ex]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `hy` using `[← ey]`. Take `⟨x₁, h₁, h₂, h₃⟩` from `law _ v (τ ≫ p) x₀ y₀ hx hy`. Establish `hmul` using `(isGrpPullback_pullback G p).2 (Over.mk τ) _ _ x₀ y₀ hx₀ hy₀`. Establish `hsum : ((J ≫ fst _ _) ≫ Desc.emb N p hp) * ((J ≫ snd _ _) ≫ Desc.emb N p hp) = J ≫ Desc.sum N p hp`. Rewrite using `[Desc.sum, MonObj.comp_mul, Category.assoc, Category.assoc]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hmul` using `[hsum]`. Establish `e₁ : x₁ = m' ≫ Desc.toS N p hp`. Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[h₁, Category.assoc, Desc.toS, pullback.lift_fst, pullback.lift_fst]`. Rewrite using `[h₂, Category.assoc m', Desc.toS, pullback.lift_snd, ← Category.assoc m', pullback.lift_snd]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Apply `pullback.hom_ext` to reduce the goal to its premises. Use `(Category.assoc _ _ _).trans ((congrArg (m' ≫ ·) (pullback.lift_fst _ _ _)).trans ?_)` and prove the remaining obligations. Rewrite using `[← Category.assoc, ← e₁, h₃]`. Conclude with `hmul`. Use `(Category.assoc _ _ _).trans ((congrArg (m' ≫ ·) (pullback.lift_snd _ _ _)).trans ?_)` and prove the remaining obligations.
-
-Use `(pullback.lift_snd _ _ _).trans ?_` and prove the remaining obligations. Conclude with `((Category.assoc _ _ _).trans (congrArg (W.ι ≫ ·) (Over.w (Desc.sum N p hp)))).symm`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_factor [GrpObj G] [Surjective π] (N : Near π G) (hN : N.Law) :
     ∃ (W : (Desc.UT N ⊗ Desc.UT N).left.Opens) (m : W.toScheme ⟶ (Desc.UT N).left),
@@ -281,19 +277,17 @@ theorem exists_factor [GrpObj G] [Surjective π] (N : Near π G) (hN : N.Law) :
     exact ((Category.assoc _ _ _).trans (congrArg (W.ι ≫ ·) (Over.w (Desc.sum N p hp)))).symm
 
 /- English proof (translation)
-Introduce `R _ _ _ _ S π _ hπ _ G _ _ hG N hN p p' hp hp' φ hφ`. Take `⟨W, m, hW, hm⟩` from `exists_factor N hN`. Use `hG.smooth` as an intermediate fact. Use `hG.separated` as an intermediate fact. Use `hG.geomConnected` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `N.smooth` as an intermediate fact. Establish `he` using `isOpenImmersion_emb N p hp`. Establish `s₁ : Smooth ((Over.pullback p).obj G).hom` using `inferInstanceAs (Smooth (pullback.snd G.hom p))`. Establish `c₁ : GeometricallyConnected ((Over.pullback p).obj G).hom` using `inferInstanceAs (GeometricallyConnected (pullback.snd G.hom p))`. Establish `s₂ : IsSeparated ((Over.pullback p').obj G).hom` using `inferInstanceAs (IsSeparated (pullback.snd G.hom p'))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `s₃ : Smooth (Desc.UT N).hom` using `inferInstanceAs (Smooth (pullback.snd _ _))`. Establish `s₄ : Smooth (Desc.sum N p hp).left`. Establish `h : Desc.sum N p hp = (Desc.emb N p hp ⊗ₘ Desc.emb N p hp) ≫ μ[(Over.pullback p).obj G]`. Rewrite using `[Desc.sum, Hom.mul_def, lift_fst_comp_snd_comp]`. Use `smooth_mul ((Over.pullback p).obj G)` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: IsOpenImmersion (Desc.emb N p hp ⊗ₘ Desc.emb N p hp).left`. Rewrite using `[Over.tensorHom_left]`. Use `infer_instance`. Rewrite using `[h, Over.comp_left]`. Use `infer_instance`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `s₅ : Smooth (m ≫ (Desc.emb N p hp).left)`. Rewrite using `[hm]`. Use `infer_instance`. Establish `s₆ : Smooth m` using `smooth_of_comp_mono m (Desc.emb N p hp).left`. Establish `s₇ : Surjective (m ≫ (Desc.UT N).hom)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← Over.w (Desc.emb N p hp), ← Category.assoc, hm, Category.assoc, Over.w]`. Conclude with `hW`. Establish `hirr : ∀ t, IsPreirreducible ((Desc.UT N).hom ⁻¹' {t})` using `fun t => by`. Use `(isPreirreducible_fibre ((Over.pullback p).obj G).hom t).preimage (Desc.emb N p hp).left.isOpenEmbedding` as an intermediate fact. Rewrite using `[← Over.w (Desc.emb N p hp)]`.
-
-Conclude with `this`. Use `ext1`. Use `eq_of_smooth_comp (Desc.UT N).hom hirr m ((Over.pullback p').obj G).hom _ _ ((Over.w _).trans (Over.w _).symm) ?_` and prove the remaining obligations. Rewrite using `[Over.comp_left, ← Category.assoc, hm, hm, Category.assoc, ← Over.comp_left, hφ]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem emb_comp_of_sum_comp : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], AdmBase R (maximalIdeal R) → ∀ (S : Scheme.{0}) (π : S ⟶ Sp R), IsProper π → Surjective π → IsIntegral S → ∀ (G' : Over S) [GrpObj G'] [IsCommMonObj G'], IsSemiAbelian G' → ∀ N : Near π G', N.Law → ∀ (p p' : pullback π π ⟶ S) (hp : p ≫ π = pullback.fst π π ≫ π) (hp' : p' ≫ π = pullback.fst π π ≫ π), ∀ φ : (Over.pullback p).obj G' ⟶ (Over.pullback p').obj G', Desc.sum N p hp ≫ φ = Desc.sum N p' hp' → Desc.emb N p hp ≫ φ = Desc.emb N p' hp' := by
   intro R _ _ _ _ S π _ hπ _ G _ _ hG N hN p p' hp hp' φ hφ

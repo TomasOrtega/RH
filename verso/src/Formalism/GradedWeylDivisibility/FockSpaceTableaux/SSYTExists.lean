@@ -8,23 +8,21 @@ noncomputable section
 namespace Formalism.GradedWeylDivisibility
 
 /- English proof (translation)
-Introduce `N`. Use `Nat.strong_induction_on N ?_` and prove the remaining obligations. Introduce `N ih ν m hN hcol hint_r`. Distinguish the cases in `hm : m = 0`. Substitute `hm` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Establish `hν : ν = 0`. Use function extensionality and compare the values at `t`. Rewrite using `[← hcol t]`. Simplify using the standard rewrite rules. Substitute `hν` using the available equality.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Substitute using the available equality.
 
-Use `⟨0, Fin.elim0, fun k => k.elim0, fun k => k.elim0, ?_, fun k => k.elim0, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `t`. Simplify using `[shapeDeg]`. Simplify using `[bidetExp]`. Take `⟨h, hh, c, hc, hν, hle, hint', hcol'⟩` from `hP r n ν m hcol hint_r hm`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Choose the witnesses or unpack the hypotheses as in `⟨⟨a0, t0⟩, hne⟩ : ∃ x, m x ≠ 0 := by`. Assume the negation of the conclusion as `H`. Use `push_neg at H`. Conclude with `hm (Finsupp.ext H)`. Establish `hpos : 0 < ν t0`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← hcol t0]`. Conclude with `lt_of_lt_of_le (Nat.pos_of_ne_zero hne) (Finset.single_le_sum (f := fun a => m (a, t0)) (fun _ _ => Nat.zero_le _) (Finset.mem_univ a0))`. Establish `hlt : ∑ t, (ν t - if t.val < h then 1 else 0) < N`. Rewrite using `[← hN]`. Apply `Finset.sum_lt_sum` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `t _`. Conclude with `Nat.sub_le _ _`. Use `⟨t0, Finset.mem_univ _, ?_⟩` and prove the remaining obligations. Rewrite using `[if_pos ((hν t0).2 hpos)]`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Take `⟨K, sz, hsz, I, hshape, hI, hexp⟩` from `ih _ hlt (fun t => ν t - if t.val < h then 1 else 0) (m - colExp c hh) rfl hcol' hint'`. Use `⟨K + 1, Fin.cons h sz, lcssyt_consSz hh sz hsz, lcssyt_consI sz c I, ?_, lcssyt_consI_strictMono sz c I hc hI, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `t`. Rewrite using `[lcssyt_shapeDeg_cons, congrFun hshape t]`. Distinguish the cases in `ht : t.val < h`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules.
 
-Establish `h1` using `(hν t).1 ht`. Simplify using `only [if_pos ht]`. Use linear arithmetic over natural numbers and integers. Simplify using `only [if_neg ht]`. Use linear arithmetic over natural numbers and integers.
-
-Rewrite using `[lcssyt_bidetExp_cons hh c sz hsz I, hexp]`. Conclude with `add_tsub_cancel_of_le hle`.
+Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem exists_tableau_of_sum_eq_lemma (hP : SSYTPeel) (r n : ℕ) :
     ∀ (N : ℕ) (ν : Fin n → ℕ) (m : Fin r × Fin n →₀ ℕ), ∑ t, ν t = N →
@@ -78,7 +76,7 @@ private theorem exists_tableau_of_sum_eq_lemma (hP : SSYTPeel) (r n : ℕ) :
       exact add_tsub_cancel_of_le hle
 
 /- English proof (translation)
-Introduce `r n ν m hcol hint_r` and use `exists_tableau_of_sum_eq_lemma hP r n _ ν m rfl hcol hint_r`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem sSYTExists_of (hP : SSYTPeel) : SSYTExists :=
   fun r n ν m hcol hint_r => exists_tableau_of_sum_eq_lemma hP r n _ ν m rfl hcol hint_r

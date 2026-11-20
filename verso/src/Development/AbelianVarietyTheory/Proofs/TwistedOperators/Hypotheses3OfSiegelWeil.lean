@@ -9,7 +9,7 @@ import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SiegelWeil
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `h1 h2 h3 h4 h5 h6 h7 h8 h9 h10 h11 h12 h13 h14` and use `GlobalTheory.T.siegel_weil_doubling_assembly h1 h2 h3 h4 h5 h6 h7 (GlobalTheory.T.siegelWeil_doubledSpace_of_standardUnitary h8) h9 h10 h11 h12 h13 h14`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem hypotheses3_of_siegelWeil :
     GlobalTheory.Hk3.HoweUnram → GlobalTheory.Published.CuspRapidDecay → GlobalTheory.Published.HarishChandraFinite →

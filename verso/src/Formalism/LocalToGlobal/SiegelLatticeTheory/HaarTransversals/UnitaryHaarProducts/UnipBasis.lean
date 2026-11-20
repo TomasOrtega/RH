@@ -16,13 +16,13 @@ variable {D : D7} (X : HidaSetting D)
 abbrev hE (x y : Fin X.B.I.n → X.B.I.E) : X.B.I.E := Formalism.UG.hform (starRingEnd X.B.I.E) X.B.I.J x y
 
 /- English proof (translation)
-Simplify using `only [hE, Formalism.UG.hform, Pi.add_apply, mul_add, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hE_add_right (x y z : Fin X.B.I.n → X.B.I.E) : hE X x (y + z) = hE X x y + hE X x z := by
   simp only [hE, Formalism.UG.hform, Pi.add_apply, mul_add, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Simplify using `only [hE, Formalism.UG.hform, Pi.smul_apply, smul_eq_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem hE_smul_right (x y : Fin X.B.I.n → X.B.I.E) (c : X.B.I.E) : hE X x (c • y) = c * hE X x y := by
   simp only [hE, Formalism.UG.hform, Pi.smul_apply, smul_eq_mul, Finset.mul_sum]
@@ -30,19 +30,19 @@ theorem hE_smul_right (x y : Fin X.B.I.n → X.B.I.E) (c : X.B.I.E) : hE X x (c 
   ring
 
 /- English proof (translation)
-Simplify using `only [hE, Formalism.UG.hform, Pi.sub_apply, mul_sub, Finset.sum_sub_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hE_sub_right (x y z : Fin X.B.I.n → X.B.I.E) : hE X x (y - z) = hE X x y - hE X x z := by
   simp only [hE, Formalism.UG.hform, Pi.sub_apply, mul_sub, Finset.sum_sub_distrib]
 
 /- English proof (translation)
-Simplify using `only [hE, Formalism.UG.hform, Pi.zero_apply, mul_zero, Finset.sum_const_zero]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hE_zero_right (x : Fin X.B.I.n → X.B.I.E) : hE X x 0 = 0 := by
   simp only [hE, Formalism.UG.hform, Pi.zero_apply, mul_zero, Finset.sum_const_zero]
 
 /- English proof (translation)
-Use `Finset.induction_on s ?_ ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_empty, Finset.sum_empty, hE_zero_right]`. Introduce `a t ha ih`. Rewrite using `[Finset.sum_insert ha, Finset.sum_insert ha, hE_add_right, ih]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem hE_sum_right {α : Type*} (s : Finset α) (x : Fin X.B.I.n → X.B.I.E) (y : α → Fin X.B.I.n → X.B.I.E) :
     hE X x (∑ a ∈ s, y a) = ∑ a ∈ s, hE X x (y a) := by
@@ -52,14 +52,14 @@ theorem hE_sum_right {α : Type*} (s : Finset α) (x : Fin X.B.I.n → X.B.I.E) 
     rw [Finset.sum_insert ha, Finset.sum_insert ha, hE_add_right, ih]
 
 /- English proof (translation)
-Establish `h` using `congrFun (congrFun X.B.I.J_herm j) i`. Simplify `h` using `[Formalism.UG.cT, Matrix.transpose_apply, Matrix.map_apply, starRingEnd_apply]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem J_star (i j : Fin X.B.I.n) : star (X.B.I.J i j) = X.B.I.J j i := by
   have h := congrFun (congrFun X.B.I.J_herm j) i
   simpa [Formalism.UG.cT, Matrix.transpose_apply, Matrix.map_apply, starRingEnd_apply] using h
 
 /- English proof (translation)
-Simplify using `only [hE, Formalism.UG.hform, star_sum, star_mul', starRingEnd_apply, star_star, J_star]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem hE_symm (x y : Fin X.B.I.n → X.B.I.E) : hE X x y = star (hE X y x) := by
   simp only [hE, Formalism.UG.hform, star_sum, star_mul', starRingEnd_apply, star_star, J_star]
@@ -68,7 +68,7 @@ theorem hE_symm (x y : Fin X.B.I.n → X.B.I.E) : hE X x y = star (hE X y x) := 
   ring
 
 /- English proof (translation)
-Set `_` to `D.host.cmStar`. Use `D.host.isCMField_hostE` as an intermediate fact. Apply `D.host.φ₀.injective` to reduce the goal to its premises. Rewrite using `[D.host.conjE_apply]`. Conclude with `NumberField.IsCMField.complexEmbedding_complexConj D.host.E D.host.φ₀ x`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem star_host_apply {D : D7} (x : D.host.E) :
     (letI := D.host.cmStar; star x) = D.host.conj x := by
@@ -79,9 +79,9 @@ private theorem star_host_apply {D : D7} (x : D.host.E) :
   exact NumberField.IsCMField.complexEmbedding_complexConj D.host.E D.host.φ₀ x
 
 /- English proof (translation)
-Apply `X.ιE.injective` to reduce the goal to its premises. Rewrite using `[RingEquiv.apply_symm_apply]`. Use `conv_rhs => rw [← X.bas.sum_repr v, ← X.bas.sum_repr w]`. Simplify using `only [hE, Formalism.UG.P.hform_eq_dot, dotProduct, mulVec, Function.comp_apply, map_sum, map_mul, LinearMap.sum_apply, LinearMap.map_smulₛₗ₂, LinearMap.map_smul, smul_eq_mul, starRingEnd_apply, X.ιE_conj, X.J_eq, HidaSetting.crd, crdOf, RingEquiv.apply_symm_apply, Finset.mul_sum]`. Use `conv_rhs => rw [Finset.sum_comm]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[star_host_apply]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem hE_crd (v w : (VS D).V) : hE X (X.crd v) (X.crd w) = X.ιE.symm ((VS D).hT v w) := by
   apply X.ιE.injective
@@ -98,21 +98,21 @@ theorem hE_crd (v w : (VS D).V) : hE X (X.crd v) (X.crd w) = X.ιE.symm ((VS D).
 variable (u : D.what₂.Word)
 
 /- English proof (translation)
-Simplify using `only [HidaSetting.eR]`. Rewrite using `[hE_crd, X.ee, map_zero]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem hE_ee (a b : Fin D.R.rS) : hE X (X.eR a) (X.eR b) = 0 := by
   simp only [HidaSetting.eR]
   rw [hE_crd, X.ee, map_zero]
 
 /- English proof (translation)
-Simplify using `only [HidaSetting.fR]`. Rewrite using `[hE_crd, X.ff, map_zero]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem hE_ff (a b : Fin D.R.rS) : hE X (X.fR a) (X.fR b) = 0 := by
   simp only [HidaSetting.fR]
   rw [hE_crd, X.ff, map_zero]
 
 /- English proof (translation)
-Simplify using `only [HidaSetting.eR, HidaSetting.fR]`. Rewrite using `[hE_crd, X.ef]`. Apply the tactic sequence `split_ifs <;> simp`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem hE_ef (a b : Fin D.R.rS) : hE X (X.eR a) (X.fR b) = if a = b then 1 else 0 := by
   simp only [HidaSetting.eR, HidaSetting.fR]
@@ -120,7 +120,7 @@ theorem hE_ef (a b : Fin D.R.rS) : hE X (X.eR a) (X.fR b) = if a = b then 1 else
   split_ifs <;> simp
 
 /- English proof (translation)
-Rewrite using `[hE_symm, hE_ef]`. Distinguish the cases in `h : a = b`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[h, Ne.symm h]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem hE_fe (a b : Fin D.R.rS) : hE X (X.fR a) (X.eR b) = if a = b then 1 else 0 := by
   rw [hE_symm, hE_ef]
@@ -130,14 +130,14 @@ theorem hE_fe (a b : Fin D.R.rS) : hE X (X.fR a) (X.eR b) = if a = b then 1 else
   · simp [h, Ne.symm h]
 
 /- English proof (translation)
-Simplify using `only [HidaSetting.eR, HidaSetting.zR]`. Rewrite using `[hE_crd, (X.zu_orth u a).1, map_zero]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem hE_ez (a : Fin D.R.rS) : hE X (X.eR a) (X.zR u) = 0 := by
   simp only [HidaSetting.eR, HidaSetting.zR]
   rw [hE_crd, (X.zu_orth u a).1, map_zero]
 
 /- English proof (translation)
-Simplify using `only [HidaSetting.fR, HidaSetting.zR]`. Rewrite using `[hE_crd, (X.zu_orth u a).2, map_zero]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem hE_fz (a : Fin D.R.rS) : hE X (X.fR a) (X.zR u) = 0 := by
   simp only [HidaSetting.fR, HidaSetting.zR]
@@ -170,9 +170,9 @@ def lvk : Kap X → ℕ :=
   Sum.elim (fun a => a.1 + 1) (Sum.elim (fun _ => D.R.rS + 1) (fun a => 2 * D.R.rS + 1 - a.1))
 
 /- English proof (translation)
-Break down `k with a | i | a` into its components or cases. Use `a.isLt` as an intermediate fact. Simplify using `only [lvk, Sum.elim_inl]`. Use linear arithmetic over natural numbers and integers. Simplify using `only [lvk, Sum.elim_inr, Sum.elim_inl]`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules.
 
-Use linear arithmetic over natural numbers and integers. Use `a.isLt` as an intermediate fact. Simplify using `only [lvk, Sum.elim_inr]`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem lvk_le (k : Kap X) : lvk X k ≤ 2 * D.R.rS + 1 := by
   rcases k with a | i | a
@@ -189,7 +189,7 @@ def pW (x : Fin X.B.I.n → X.B.I.E) : Fin X.B.I.n → X.B.I.E :=
   x - ∑ a, hE X (X.fR a) x • X.eR a - ∑ a, hE X (X.eR a) x • X.fR a
 
 /- English proof (translation)
-Use `show ∀ a, hE X (X.eR a) (pW X x) = 0 ∧ hE X (X.fR a) (pW X x) = 0`. Introduce `a`. Prove the components needed by the constructor for the conclusion. Simplify using `[pW, hE_sub_right, hE_sum_right, hE_smul_right, hE_ee, hE_ef, mul_boole, Finset.sum_ite_eq]`. Simplify using `[pW, hE_sub_right, hE_sum_right, hE_smul_right, hE_ff, hE_fe, mul_boole, Finset.sum_ite_eq]`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem pW_mem (x : Fin X.B.I.n → X.B.I.E) : pW X x ∈ Wsub X := by
   show ∀ a, hE X (X.eR a) (pW X x) = 0 ∧ hE X (X.fR a) (pW X x) = 0
@@ -199,14 +199,14 @@ theorem pW_mem (x : Fin X.B.I.n → X.B.I.E) : pW X x ∈ Wsub X := by
   · simp [pW, hE_sub_right, hE_sum_right, hE_smul_right, hE_ff, hE_fe, mul_boole, Finset.sum_ite_eq]
 
 /- English proof (translation)
-Simplify using `only [pW, hE_add_right, add_smul, Finset.sum_add_distrib]`. Normalize the expressions using the abelian group laws.
+Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 theorem pW_add (x y : Fin X.B.I.n → X.B.I.E) : pW X (x + y) = pW X x + pW X y := by
   simp only [pW, hE_add_right, add_smul, Finset.sum_add_distrib]
   abel
 
 /- English proof (translation)
-Simplify using `only [pW, hE_smul_right, smul_sub, Finset.smul_sum, mul_smul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem pW_smul (c : X.B.I.E) (x : Fin X.B.I.n → X.B.I.E) : pW X (c • x) = c • pW X x := by
   simp only [pW, hE_smul_right, smul_sub, Finset.smul_sum, mul_smul]
@@ -237,14 +237,14 @@ def cE : (Fin X.B.I.n → X.B.I.E) →ₗ[X.B.I.E] (Kap X → X.B.I.E) where
     · simp [hE_smul_right]
 
 /- English proof (translation)
-Rewrite using `[Fintype.sum_sum_type, Fintype.sum_sum_type, add_assoc]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem sum_kap {M : Type*} [AddCommMonoid M] (g : Kap X → M) :
     ∑ k, g k = ∑ a, g (Sum.inl a) + ∑ i, g (Sum.inr (Sum.inl i)) + ∑ a, g (Sum.inr (Sum.inr a)) := by
   rw [Fintype.sum_sum_type, Fintype.sum_sum_type, add_assoc]
 
 /- English proof (translation)
-Rewrite using `[sum_kap]`. Establish `h` using `congrArg Subtype.val ((wb X).sum_repr ⟨pW X x, pW_mem X x⟩)`. Simplify using `only [Submodule.coe_sum, Submodule.coe_smul] at h`. Simplify using `only [cE, bv, LinearMap.coe_mk, AddHom.coe_mk, Sum.elim_inl, Sum.elim_inr, h]`. Simplify using `only [pW]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
 Normalize the expressions using the abelian group laws.
 -/
@@ -257,7 +257,7 @@ theorem cE_recon (x : Fin X.B.I.n → X.B.I.E) : ∑ k, cE X x k • bv X k = x 
   abel
 
 /- English proof (translation)
-Establish `h` using `(wb X i).2`. Conclude with `h a`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem wb_mem (i : Fin (mW X)) (a : Fin D.R.rS) :
     hE X (X.eR a) ((wb X i : Wsub X) : Fin X.B.I.n → X.B.I.E) = 0 ∧
@@ -266,7 +266,7 @@ theorem wb_mem (i : Fin (mW X)) (a : Fin D.R.rS) :
   exact h a
 
 /- English proof (translation)
-Establish `hx' : ∀ a, hE X (X.eR a) x = 0 ∧ hE X (X.fR a) x = 0` using `hx`. Establish `h1 : ∀ a, hE X (X.eR a) x = 0` using `fun a => (hx' a).1`. Establish `h2 : ∀ a, hE X (X.fR a) x = 0` using `fun a => (hx' a).2`. Simplify using `only [pW, h1, h2, zero_smul, Finset.sum_const_zero, sub_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem pW_of_mem {x : Fin X.B.I.n → X.B.I.E} (hx : x ∈ Wsub X) : pW X x = x := by
   have hx' : ∀ a, hE X (X.eR a) x = 0 ∧ hE X (X.fR a) x = 0 := hx
@@ -275,9 +275,9 @@ theorem pW_of_mem {x : Fin X.B.I.n → X.B.I.E} (hx : x ∈ Wsub X) : pW X x = x
   simp only [pW, h1, h2, zero_smul, Finset.sum_const_zero, sub_zero]
 
 /- English proof (translation)
-Establish `hw1 : ∀ i a, hE X (X.eR a) ((wb X i : Wsub X) : Fin X.B.I.n → X.B.I.E) = 0` using `fun i a => (wb_mem X i a).1`. Establish `hw2 : ∀ i a, hE X (X.fR a) ((wb X i : Wsub X) : Fin X.B.I.n → X.B.I.E) = 0` using `fun i a => (wb_mem X i a).2`. Establish `pe : ∀ a, (⟨pW X (X.eR a), pW_mem X (X.eR a)⟩ : Wsub X) = 0` using `fun a => Subtype.ext (by`. Simplify using `[pW, hE_fe, hE_ee, ite_smul, Finset.sum_ite_eq'])`. Establish `pf : ∀ a, (⟨pW X (X.fR a), pW_mem X (X.fR a)⟩ : Wsub X) = 0` using `fun a => Subtype.ext (by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[pW, hE_ff, hE_ef, ite_smul, Finset.sum_ite_eq'])`. Establish `pw : ∀ i, (⟨pW X ((wb X i : Wsub X) : Fin X.B.I.n → X.B.I.E), pW_mem X _⟩ : Wsub X) = wb X i` using `fun i => Subtype.ext (pW_of_mem X (wb X i).2)`. Apply the tactic sequence `rcases k with a | i | a <;> rcases k' with b | j | b <;>`. Simplify using `only [cE, bv, LinearMap.coe_mk, AddHom.coe_mk, Sum.elim_inl, Sum.elim_inr, pe, pf, pw, map_zero, Finsupp.coe_zero, Pi.zero_apply, Module.Basis.repr_self, Finsupp.single_apply, hE_fe, hE_ee, hE_ff, hE_ef, hw1, hw2, Sum.inl.injEq, Sum.inr.injEq, reduceCtorEq, ↓reduceIte]`. Apply the tactic sequence `all_goals split_ifs <;> simp_all`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem cE_bv (k k' : Kap X) : cE X (bv X k) k' = if k' = k then 1 else 0 := by
   have hw1 : ∀ i a, hE X (X.eR a) ((wb X i : Wsub X) : Fin X.B.I.n → X.B.I.E) = 0 := fun i a => (wb_mem X i a).1
@@ -298,7 +298,7 @@ def Bm : Matrix (Fin X.B.I.n) (Kap X) X.B.I.E := Matrix.of fun i k => bv X k i
 def Bm' : Matrix (Kap X) (Fin X.B.I.n) X.B.I.E := Matrix.of fun k i => cE X (Pi.single i 1) k
 
 /- English proof (translation)
-Establish `hB : Bm' X = LinearMap.toMatrix' (cE X)`. Use extensionality with `k i`. Simplify using `only [Bm', Matrix.of_apply, LinearMap.toMatrix'_apply]`. Apply the tactic sequence `try (congr 2; funext j'; simp [Pi.single_apply])`. Rewrite using `[hB, ← Matrix.toLin'_apply, Matrix.toLin'_toMatrix']`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Bm'_mulVec (x : Fin X.B.I.n → X.B.I.E) : Bm' X *ᵥ x = cE X x := by
   have hB : Bm' X = LinearMap.toMatrix' (cE X) := by
@@ -308,7 +308,7 @@ theorem Bm'_mulVec (x : Fin X.B.I.n → X.B.I.E) : Bm' X *ᵥ x = cE X x := by
   rw [hB, ← Matrix.toLin'_apply, Matrix.toLin'_toMatrix']
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `only [Bm, Matrix.mulVec, dotProduct, Matrix.of_apply, Finset.sum_apply, Pi.smul_apply, smul_eq_mul]`. Conclude with `Finset.sum_congr rfl fun k _ => mul_comm _ _`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem Bm_mulVec (c : Kap X → X.B.I.E) : Bm X *ᵥ c = ∑ k, c k • bv X k := by
   funext i
@@ -316,7 +316,7 @@ theorem Bm_mulVec (c : Kap X → X.B.I.E) : Bm X *ᵥ c = ∑ k, c k • bv X k 
   exact Finset.sum_congr rfl fun k _ => mul_comm _ _
 
 /- English proof (translation)
-Apply `Matrix.toLin'.injective` to reduce the goal to its premises. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `x`. Rewrite using `[Matrix.toLin'_apply, Matrix.toLin'_apply, ← Matrix.mulVec_mulVec, Bm'_mulVec, Bm_mulVec, cE_recon, Matrix.one_mulVec]`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem Bm_mul_Bm' : Bm X * Bm' X = 1 := by
   apply Matrix.toLin'.injective
@@ -325,9 +325,9 @@ theorem Bm_mul_Bm' : Bm X * Bm' X = 1 := by
   rw [Matrix.toLin'_apply, Matrix.toLin'_apply, ← Matrix.mulVec_mulVec, Bm'_mulVec, Bm_mulVec, cE_recon, Matrix.one_mulVec]
 
 /- English proof (translation)
-Apply `Matrix.toLin'.injective` to reduce the goal to its premises. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `c`. Rewrite using `[Matrix.toLin'_apply, Matrix.toLin'_apply, ← Matrix.mulVec_mulVec, Bm_mulVec, Bm'_mulVec, map_sum, Matrix.one_mulVec]`. Use function extensionality and compare the values at `k'`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `[Finset.sum_apply, cE_bv]`.
+Simplify using the standard rewrite rules.
 -/
 theorem Bm'_mul_Bm : Bm' X * Bm X = 1 := by
   apply Matrix.toLin'.injective
@@ -340,7 +340,7 @@ theorem Bm'_mul_Bm : Bm' X * Bm X = 1 := by
 def JB : Matrix (Kap X) (Kap X) X.B.I.E := Matrix.of fun k k' => hE X (bv X k) (bv X k')
 
 /- English proof (translation)
-Use extensionality with `k k'`. Simplify using `only [JB, Matrix.of_apply, hE, Formalism.UG.hform, Matrix.mul_apply, Matrix.conjTranspose_apply, Bm, starRingEnd_apply, Finset.sum_mul]`. Conclude with `Finset.sum_comm`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem JB_eq : JB X = (Bm X)ᴴ * X.B.I.J * Bm X := by
   ext k k'
@@ -348,7 +348,7 @@ theorem JB_eq : JB X = (Bm X)ᴴ * X.B.I.J * Bm X := by
   exact Finset.sum_comm
 
 /- English proof (translation)
-Use extensionality with `k k'`. Simplify using `only [Matrix.conjTranspose_apply, JB, Matrix.of_apply]`. Conclude with `(hE_symm X _ _).symm`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem JB_herm : (JB X)ᴴ = JB X := by
   ext k k'
@@ -356,11 +356,11 @@ theorem JB_herm : (JB X)ᴴ = JB X := by
   exact (hE_symm X _ _).symm
 
 /- English proof (translation)
-Establish `hw1 : ∀ a i, hE X (X.eR a) ((wb X i : Wsub X) : Fin X.B.I.n → X.B.I.E) = 0` using `fun a i => (wb_mem X i a).1`. Establish `hw2 : ∀ a i, hE X (X.fR a) ((wb X i : Wsub X) : Fin X.B.I.n → X.B.I.E) = 0` using `fun a i => (wb_mem X i a).2`. Establish `hw3 : ∀ a i, hE X ((wb X i : Wsub X) : Fin X.B.I.n → X.B.I.E) (X.eR a) = 0` using `fun a i => by`. Rewrite using `[hE_symm, hw1, star_zero]`. Establish `hw4 : ∀ a i, hE X ((wb X i : Wsub X) : Fin X.B.I.n → X.B.I.E) (X.fR a) = 0` using `fun a i => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hE_symm, hw2, star_zero]`. Introduce `k k' h`. Apply the tactic sequence `rcases k with a | i | a <;> rcases k' with b | j | b <;>`. Simplify using `only [JB, Matrix.of_apply, bv, Sum.elim_inl, Sum.elim_inr, lvk, hE_ee, hE_ff, hE_ef, hE_fe, hw1, hw2, hw3, hw4, ne_eq, not_true_eq_false, ite_eq_right_iff, one_ne_zero, imp_false, not_not] at h ⊢`. Apply the tactic sequence `all_goals first`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Treat this case separately.
 
-Consider the case `omega`. Consider the case `(have ha := a.isLt; have hb := b.isLt; subst h; omega)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem JB_graded : Graded (lvk X) (2 * D.R.rS + 2) (JB X) := by
   have hw1 : ∀ a i, hE X (X.eR a) ((wb X i : Wsub X) : Fin X.B.I.n → X.B.I.E) = 0 := fun a i => (wb_mem X i a).1
@@ -379,9 +379,9 @@ theorem JB_graded : Graded (lvk X) (2 * D.R.rS + 2) (JB X) := by
     | (have ha := a.isLt; have hb := b.isLt; subst h; omega)
 
 /- English proof (translation)
-Establish `hw1 : ∀ a i, hE X (X.eR a) ((wb X i : Wsub X) : Fin X.B.I.n → X.B.I.E) = 0` using `fun a i => (wb_mem X i a).1`. Break down `k with b | j | b` into its components or cases. Simplify using `[JB, bv, hE_ee]`. Simplify using `[JB, bv, hw1]`. Simplify using `only [JB, Matrix.of_apply, bv, Sum.elim_inl, Sum.elim_inr, hE_ef, Sum.inr.injEq]`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `h : a = b`. Substitute `h` using the available equality. Simplify using `[hE_ef]`. Simplify using `[hE_ef, h, Ne.symm h]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem JB_e_row (a : Fin D.R.rS) (k : Kap X) :
     JB X (Sum.inl a) k = if k = Sum.inr (Sum.inr a) then 1 else 0 := by
@@ -398,14 +398,14 @@ theorem JB_e_row (a : Fin D.R.rS) (k : Kap X) :
 def JB' : Matrix (Kap X) (Kap X) X.B.I.E := Bm' X * (X.B.I.J)⁻¹ * (Bm' X)ᴴ
 
 /- English proof (translation)
-The claim follows from `isUnit_iff_ne_zero.mpr X.B.I.J_det`.
+A detailed English derivation is pending.
 -/
 theorem J_unit : IsUnit X.B.I.J.det := isUnit_iff_ne_zero.mpr X.B.I.J_det
 
 /- English proof (translation)
-Establish `h1 : Bm X * Bm' X = 1` using `Bm_mul_Bm' X`. Establish `hJ : X.B.I.J * (X.B.I.J)⁻¹ = 1` using `Matrix.mul_nonsing_inv _ (J_unit X)`. Rewrite using `[JB_eq, JB']`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules.
 
-Use `_ = (Bm X)ᴴ * (Bm' X)ᴴ := by`. Rewrite using `[h1, Matrix.one_mul, ← Matrix.mul_assoc X.B.I.J, hJ, Matrix.one_mul]`. Use `_ = 1 := by`. Rewrite using `[← Matrix.conjTranspose_mul, Bm'_mul_Bm, Matrix.conjTranspose_one]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem JB_mul_JB' : JB X * JB' X = 1 := by
   have h1 : Bm X * Bm' X = 1 := Bm_mul_Bm' X
@@ -420,29 +420,29 @@ theorem JB_mul_JB' : JB X * JB' X = 1 := by
         rw [← Matrix.conjTranspose_mul, Bm'_mul_Bm, Matrix.conjTranspose_one]
 
 /- English proof (translation)
-Rewrite using `[← Matrix.inv_eq_right_inv (JB_mul_JB' X)]`. Conclude with `Matrix.nonsing_inv_mul _ (Matrix.isUnit_det_of_right_inverse (JB_mul_JB' X))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem JB'_mul_JB : JB' X * JB X = 1 := by
   rw [← Matrix.inv_eq_right_inv (JB_mul_JB' X)]
   exact Matrix.nonsing_inv_mul _ (Matrix.isUnit_det_of_right_inverse (JB_mul_JB' X))
 
 /- English proof (translation)
-The claim follows from `(Matrix.inv_eq_right_inv (JB_mul_JB' X)).symm`.
+A detailed English derivation is pending.
 -/
 theorem JB'_eq_inv : JB' X = (JB X)⁻¹ := (Matrix.inv_eq_right_inv (JB_mul_JB' X)).symm
 
 /- English proof (translation)
-Establish `hG` using `JB_graded X`. Set `K' : Matrix (Kap X) (Kap X) X.B.I.E` to `Matrix.of fun i k => if lvk X i + lvk X k = 2 * D.R.rS + 2 then JB' X i k else 0`. Establish `hK'def : ∀ i k, K' i k = if lvk X i + lvk X k = 2 * D.R.rS + 2 then JB' X i k else 0` using `fun i k => rfl`. Establish `hmul : JB X * K' = 1`. Use extensionality with `i k`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `h1` using `congrFun (congrFun (JB_mul_JB' X) i) k`. Rewrite `h1`, the goal using `[Matrix.mul_apply]`. Distinguish the cases in `hik : lvk X k = lvk X i`. Rewrite using `[← h1]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Distinguish the cases in `hj : JB X i j = 0`. Simplify using `[hj]`. Use `hG i j hj` as an intermediate fact. Establish `hc : lvk X j + lvk X k = 2 * D.R.rS + 2` using `by omega`. Rewrite using `[hK'def, if_pos hc]`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hne : i ≠ k` using `fun h => hik (by rw [h])`. Rewrite using `[Matrix.one_apply_ne hne]`. Use `Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations. Distinguish the cases in `hj : JB X i j = 0`. Simplify using `[hj]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Use `hG i j hj` as an intermediate fact. Establish `hc : ¬ (lvk X j + lvk X k = 2 * D.R.rS + 2)` using `by omega`. Rewrite using `[hK'def, if_neg hc, mul_zero]`. Establish `hK : K' = JB' X` using `(Matrix.inv_eq_right_inv hmul).symm.trans (Matrix.inv_eq_right_inv (JB_mul_JB' X))`. Introduce `i k h`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `h` using `[← hK]`. Assume the negation of the conclusion as `hc`. Conclude with `h (by rw [hK'def, if_neg hc])`.
+Rewrite the indicated hypotheses using the stated equalities. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem JB'_graded : Graded (lvk X) (2 * D.R.rS + 2) (JB' X) := by
   have hG := JB_graded X
@@ -478,7 +478,7 @@ theorem JB'_graded : Graded (lvk X) (2 * D.R.rS + 2) (JB' X) := by
   exact h (by rw [hK'def, if_neg hc])
 
 /- English proof (translation)
-Rewrite using `[JB'_eq_inv, Matrix.conjTranspose_nonsing_inv, JB_herm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem JB'_herm : (JB' X)ᴴ = JB' X := by
   rw [JB'_eq_inv, Matrix.conjTranspose_nonsing_inv, JB_herm]
@@ -488,13 +488,13 @@ section Half
 variable {ι : Type*} [Fintype ι] [DecidableEq ι] {K : Type*} [CommRing K] [StarRing K]
 
 /- English proof (translation)
-Introduce `i j hij`. Distinguish the cases in `hj : lv j ≤ h₀`. Conclude with `hM i j hj hij`. Establish `hM1 : M - 1 = J' * (Nᴴ - 1) * J`. Rewrite using `[hMN, sharp, Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_one, h]`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hM1, Matrix.mul_apply]`. Use `Finset.sum_eq_zero fun q _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.mul_apply, Finset.sum_mul]`. Use `Finset.sum_eq_zero fun p _ => ?_` and prove the remaining obligations. Distinguish the cases in `hp : J' i p = 0`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Simplify using `[hp]`. Distinguish the cases in `hq : J q j = 0`. Simplify using `[hq]`. Establish `e1` using `hJ' i p hp`. Establish `e2` using `hJ q j hq`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hz : (N - 1) q p = 0` using `hN q p (by omega) (by omega)`. Establish `hz' : (Nᴴ - 1) p q = 0`. Rewrite using `[← Matrix.conjTranspose_one, ← Matrix.conjTranspose_sub, Matrix.conjTranspose_apply, hz, star_zero]`. Simplify using `[hz']`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem half_to_full {lv : ι → ℕ} {T h₀ : ℕ} {J J' : Matrix ι ι K} (hJ : Graded lv T J) (hJ' : Graded lv T J')
     (h : J' * J = 1) (hT : T ≤ 2 * h₀ + 1) {M N : Matrix ι ι K} (hMN : M = sharp J J' N)
@@ -527,13 +527,13 @@ section Real
 variable (v : InfinitePlace X.B.I.F)
 
 /- English proof (translation)
-Rewrite using `[X.B.I.cm.cmUnram.2.1, starRingEnd_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem phi_star (a : X.B.I.E) : X.B.I.φ v (star a) = star (X.B.I.φ v a) := by
   rw [X.B.I.cm.cmUnram.2.1, starRingEnd_apply]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [Matrix.conjTranspose_apply, Matrix.map_apply]`. Conclude with `(phi_star X v _).symm`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem map_conjTranspose {m p : Type*} (M : Matrix m p X.B.I.E) :
     (M.map (X.B.I.φ v))ᴴ = Mᴴ.map (X.B.I.φ v) := by
@@ -542,7 +542,7 @@ theorem map_conjTranspose {m p : Type*} (M : Matrix m p X.B.I.E) :
   exact (phi_star X v _).symm
 
 /- English proof (translation)
-The claim follows from `(Matrix.isUnit_iff_isUnit_det _).mp (X.B.I.P_unit v)`.
+A detailed English derivation is pending.
 -/
 theorem P_unit' : IsUnit (X.B.I.P v).det := (Matrix.isUnit_iff_isUnit_det _).mp (X.B.I.P_unit v)
 
@@ -550,7 +550,7 @@ def Bv : Matrix (Fin X.B.I.n) (Kap X) ℂ := (X.B.I.P v)⁻¹ * (Bm X).map (X.B.
 def Bv' : Matrix (Kap X) (Fin X.B.I.n) ℂ := (Bm' X).map (X.B.I.φ v) * X.B.I.P v
 
 /- English proof (translation)
-Establish `h1 : ((1 : Matrix (Kap X) (Kap X) X.B.I.E).map (X.B.I.φ v)) = 1` using `Matrix.map_one _ (map_zero _) (map_one _)`. Simplify using `only [Bv, Bv']`. Rewrite using `[Matrix.mul_assoc, ← Matrix.mul_assoc (X.B.I.P v), Matrix.mul_nonsing_inv _ (P_unit' X v), Matrix.one_mul, ← Matrix.map_mul, Bm'_mul_Bm, h1]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem Bv'_mul_Bv : Bv' X v * Bv X v = 1 := by
   have h1 : ((1 : Matrix (Kap X) (Kap X) X.B.I.E).map (X.B.I.φ v)) = 1 :=
@@ -560,7 +560,7 @@ theorem Bv'_mul_Bv : Bv' X v * Bv X v = 1 := by
     Matrix.one_mul, ← Matrix.map_mul, Bm'_mul_Bm, h1]
 
 /- English proof (translation)
-Establish `h1 : ((1 : Matrix (Fin X.B.I.n) (Fin X.B.I.n) X.B.I.E).map (X.B.I.φ v)) = 1` using `Matrix.map_one _ (map_zero _) (map_one _)`. Simplify using `only [Bv, Bv']`. Rewrite using `[Matrix.mul_assoc, ← Matrix.mul_assoc ((Bm X).map (X.B.I.φ v)), ← Matrix.map_mul, Bm_mul_Bm', h1, Matrix.one_mul, Matrix.nonsing_inv_mul _ (P_unit' X v)]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem Bv_mul_Bv' : Bv X v * Bv' X v = 1 := by
   have h1 : ((1 : Matrix (Fin X.B.I.n) (Fin X.B.I.n) X.B.I.E).map (X.B.I.φ v)) = 1 :=
@@ -570,7 +570,7 @@ theorem Bv_mul_Bv' : Bv X v * Bv' X v = 1 := by
     Matrix.one_mul, Matrix.nonsing_inv_mul _ (P_unit' X v)]
 
 /- English proof (translation)
-Simplify using `only [rv, Bv]`. Rewrite using `[← Matrix.mulVec_mulVec]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Simplify using `[Matrix.mulVec, Bm]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem Bv_col (k : Kap X) : Bv X v *ᵥ Pi.single k 1 = rv X.B.I v (bv X k) := by
   simp only [rv, Bv]
@@ -580,7 +580,7 @@ theorem Bv_col (k : Kap X) : Bv X v *ᵥ Pi.single k 1 = rv X.B.I v (bv X k) := 
   simp [Matrix.mulVec, Bm]
 
 /- English proof (translation)
-Rewrite using `[← Bv_col, Matrix.mulVec_mulVec, Bv'_mul_Bv, Matrix.one_mulVec]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem Bv'_rv (k : Kap X) : Bv' X v *ᵥ rv X.B.I v (bv X k) = Pi.single k 1 := by
   rw [← Bv_col, Matrix.mulVec_mulVec, Bv'_mul_Bv, Matrix.one_mulVec]
@@ -589,21 +589,21 @@ def JBv : Matrix (Kap X) (Kap X) ℂ := (JB X).map (X.B.I.φ v)
 def JBv' : Matrix (Kap X) (Kap X) ℂ := (JB' X).map (X.B.I.φ v)
 
 /- English proof (translation)
-Introduce `k k' h`. Conclude with `JB_graded X k k' (fun h0 => h (by simp [JBv, h0]))`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem JBv_graded : Graded (lvk X) (2 * D.R.rS + 2) (JBv X v) := by
   intro k k' h
   exact JB_graded X k k' (fun h0 => h (by simp [JBv, h0]))
 
 /- English proof (translation)
-Introduce `k k' h`. Conclude with `JB'_graded X k k' (fun h0 => h (by simp [JBv', h0]))`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem JBv'_graded : Graded (lvk X) (2 * D.R.rS + 2) (JBv' X v) := by
   intro k k' h
   exact JB'_graded X k k' (fun h0 => h (by simp [JBv', h0]))
 
 /- English proof (translation)
-Establish `h1 : ((1 : Matrix (Kap X) (Kap X) X.B.I.E).map (X.B.I.φ v)) = 1` using `Matrix.map_one _ (map_zero _) (map_one _)`. Simplify using `only [JBv, JBv']`. Rewrite using `[← Matrix.map_mul, JB'_mul_JB, h1]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem JBv'_mul : JBv' X v * JBv X v = 1 := by
   have h1 : ((1 : Matrix (Kap X) (Kap X) X.B.I.E).map (X.B.I.φ v)) = 1 :=
@@ -612,7 +612,7 @@ theorem JBv'_mul : JBv' X v * JBv X v = 1 := by
   rw [← Matrix.map_mul, JB'_mul_JB, h1]
 
 /- English proof (translation)
-Establish `h1 : ((1 : Matrix (Kap X) (Kap X) X.B.I.E).map (X.B.I.φ v)) = 1` using `Matrix.map_one _ (map_zero _) (map_one _)`. Simplify using `only [JBv, JBv']`. Rewrite using `[← Matrix.map_mul, JB_mul_JB', h1]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem JBv_mul : JBv X v * JBv' X v = 1 := by
   have h1 : ((1 : Matrix (Kap X) (Kap X) X.B.I.E).map (X.B.I.φ v)) = 1 :=
@@ -621,23 +621,23 @@ theorem JBv_mul : JBv X v * JBv' X v = 1 := by
   rw [← Matrix.map_mul, JB_mul_JB', h1]
 
 /- English proof (translation)
-Simplify using `only [JBv]`. Rewrite using `[map_conjTranspose, JB_herm]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem JBv_herm : (JBv X v)ᴴ = JBv X v := by
   simp only [JBv]
   rw [map_conjTranspose, JB_herm]
 
 /- English proof (translation)
-Simplify using `only [JBv']`. Rewrite using `[map_conjTranspose, JB'_herm]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem JBv'_herm : (JBv' X v)ᴴ = JBv' X v := by
   simp only [JBv']
   rw [map_conjTranspose, JB'_herm]
 
 /- English proof (translation)
-Establish `hQ : X.B.I.P v * (X.B.I.P v)⁻¹ = 1` using `Matrix.mul_nonsing_inv _ (P_unit' X v)`. Establish `hQ' : ((X.B.I.P v)⁻¹)ᴴ * (X.B.I.P v)ᴴ = 1`. Rewrite using `[← Matrix.conjTranspose_mul, hQ, Matrix.conjTranspose_one]`. Simplify using `only [Bv, JBv]`. Rewrite using `[← X.B.I.P_spec v, JB_eq, Matrix.map_mul, Matrix.map_mul, ← map_conjTranspose, Matrix.conjTranspose_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc (X.B.I.P v), hQ, Matrix.one_mul, ← Matrix.mul_assoc ((X.B.I.P v)⁻¹)ᴴ, hQ', Matrix.one_mul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem Bv_gram : (Bv X v)ᴴ * Formalism.REAL.Jm (X.B.I.ε v) * Bv X v = JBv X v := by
   have hQ : X.B.I.P v * (X.B.I.P v)⁻¹ = 1 := Matrix.mul_nonsing_inv _ (P_unit' X v)
@@ -651,7 +651,7 @@ theorem Bv_gram : (Bv X v)ᴴ * Formalism.REAL.Jm (X.B.I.ε v) * Bv X v = JBv X 
 def Mv (s : X.B.I.Ginf) : Matrix (Kap X) (Kap X) ℂ := Bv' X v * uMat (s v) * Bv X v
 
 /- English proof (translation)
-Simplify using `only [Mv]`. Simplify using `only [← Matrix.mul_assoc]`. Rewrite using `[Bv_mul_Bv', Matrix.one_mul, Matrix.mul_assoc, Bv_mul_Bv', Matrix.mul_one]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem uMat_eq (s : X.B.I.Ginf) : uMat (s v) = Bv X v * Mv X v s * Bv' X v := by
   simp only [Mv]
@@ -659,7 +659,7 @@ theorem uMat_eq (s : X.B.I.Ginf) : uMat (s v) = Bv X v * Mv X v s * Bv' X v := b
   rw [Bv_mul_Bv', Matrix.one_mul, Matrix.mul_assoc, Bv_mul_Bv', Matrix.mul_one]
 
 /- English proof (translation)
-Establish `hm : ∀ g h : Formalism.REAL.UJ (X.B.I.ε v), uMat (g * h) = uMat g * uMat h` using `fun g h => by`. Simplify using `[uMat]`. Simplify using `only [Mv, Pi.mul_apply, hm, Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc (Bv X v), Bv_mul_Bv', Matrix.one_mul]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem Mv_mul (s t : X.B.I.Ginf) : Mv X v (s * t) = Mv X v s * Mv X v t := by
   have hm : ∀ g h : Formalism.REAL.UJ (X.B.I.ε v), uMat (g * h) = uMat g * uMat h := fun g h => by
@@ -668,15 +668,15 @@ theorem Mv_mul (s t : X.B.I.Ginf) : Mv X v (s * t) = Mv X v s * Mv X v t := by
   rw [← Matrix.mul_assoc (Bv X v), Bv_mul_Bv', Matrix.one_mul]
 
 /- English proof (translation)
-Simplify using `[Mv, uMat, Bv'_mul_Bv]`.
+Simplify using the standard rewrite rules.
 -/
 theorem Mv_one : Mv X v 1 = 1 := by
   simp [Mv, uMat, Bv'_mul_Bv]
 
 /- English proof (translation)
-Establish `hU : (uMat (s v))ᴴ * Formalism.REAL.Jm (X.B.I.ε v) * uMat (s v) = Formalism.REAL.Jm (X.B.I.ε v)` using `(s v).2`. Establish `hU' : ∀ Z : Matrix (Fin X.B.I.n) (Kap X) ℂ, (uMat (s v))ᴴ * (Formalism.REAL.Jm (X.B.I.ε v) * (uMat (s v) * Z)) = Formalism.REAL.Jm (X.B.I.ε v) * Z` using `fun Z => by`. Simplify using `only [← Matrix.mul_assoc, hU]`. Establish `hB : (Bv' X v)ᴴ * (Bv X v)ᴴ = 1`. Rewrite using `[← Matrix.conjTranspose_mul, Bv_mul_Bv', Matrix.conjTranspose_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Bv_gram]`. Simplify using `only [Mv, Matrix.conjTranspose_mul, Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc (Bv' X v)ᴴ, hB, Matrix.one_mul, ← Matrix.mul_assoc (Bv X v), Bv_mul_Bv', Matrix.one_mul, hU']`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem Mv_unitary (s : X.B.I.Ginf) : (Mv X v s)ᴴ * JBv X v * Mv X v s = JBv X v := by
   have hU : (uMat (s v))ᴴ * Formalism.REAL.Jm (X.B.I.ε v) * uMat (s v) = Formalism.REAL.Jm (X.B.I.ε v) := (s v).2
@@ -690,9 +690,9 @@ theorem Mv_unitary (s : X.B.I.Ginf) : (Mv X v s)ᴴ * JBv X v * Mv X v s = JBv X
   rw [← Matrix.mul_assoc (Bv' X v)ᴴ, hB, Matrix.one_mul, ← Matrix.mul_assoc (Bv X v), Bv_mul_Bv', Matrix.one_mul, hU']
 
 /- English proof (translation)
-Establish `h1 : Mv X v s * Mv X v s⁻¹ = 1`. Rewrite using `[← Mv_mul, mul_inv_cancel, Mv_one]`. Establish `h2 : sharp (JBv X v) (JBv' X v) (Mv X v s) * Mv X v s = 1`. Rewrite using `[sharp, Matrix.mul_assoc, Matrix.mul_assoc, ← Matrix.mul_assoc _ (JBv X v), Mv_unitary, JBv'_mul]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[h2, Matrix.one_mul]`. Use `_ = sharp (JBv X v) (JBv' X v) (Mv X v s) := by`. Rewrite using `[Matrix.mul_assoc, h1, Matrix.mul_one]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Mv_inv (s : X.B.I.Ginf) : Mv X v s⁻¹ = sharp (JBv X v) (JBv' X v) (Mv X v s) := by
   have h1 : Mv X v s * Mv X v s⁻¹ = 1 := by

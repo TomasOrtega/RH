@@ -10,9 +10,9 @@ namespace GlobalTheory.Ex.NumD
 variable {O : Type} [CommRing O] (N : NumD O)
 
 /- English proof (translation)
-Establish `e : N.c χ * (g * N.io w).b = N.c (χ + w) * g.b`. Rewrite using `[Gt.mul_b, io_b, N.c_add, mul_assoc, mul_comm g.b]`. Rewrite using `[vt, vt, e, ← mul_assoc, ← Units.val_mul]`. Use `congr 2`. Establish `a` using `congrArg Additive.ofMul (g.mult χ w)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Rewrite using `[Gt.mul_s, io_s, io_b, N.ψ_add, N.τ_symm w χ, N.cub.s12 (N.c χ) g.b]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_div] at a ⊢`. Take the linear combination `(norm := abel) -a`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem vt_mul_io_shift (g : N.Gt) (w χ : N.X) :
     ((N.ψ w * g.s w : Oˣ) : O) * N.vt (g * N.io w) χ = N.vt g (χ + w) := by
@@ -27,29 +27,29 @@ theorem vt_mul_io_shift (g : N.Gt) (w χ : N.X) :
   linear_combination (norm := abel) -a
 
 /- English proof (translation)
-Rewrite using `[vt, vt, mul_comm g, N.tor_mul_s_apply, Gt.mul_b, tor_b, one_mul, mul_left_comm (N.ψ χ), Units.val_mul, mul_assoc]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem vt_mul_tor_shift (g : N.Gt) (t : Multiplicative N.X →* Oˣ) (χ : N.X) :
     N.vt (g * N.tor t) χ = (t (Multiplicative.ofAdd χ) : Oˣ) * N.vt g χ := by
   rw [vt, vt, mul_comm g, N.tor_mul_s_apply, Gt.mul_b, tor_b, one_mul, mul_left_comm (N.ψ χ), Units.val_mul, mul_assoc]
 
 /- English proof (translation)
-The claim follows from `((GlobalTheory.T.degenerationData_psi_quadratic_generators_linear O N k z).2.2 p.1.2).1`.
+A detailed English derivation is pending.
 -/
 theorem tk_qTriv_right {k : ℕ} (p : N.QT k) (z : N.X) : N.tk p (N.qTriv k z) = p.1.2.s z ^ k :=
   ((GlobalTheory.T.degenerationData_psi_quadratic_generators_linear O N k z).2.2 p.1.2).1
 
 /- English proof (translation)
-Rewrite using `[← Gt.pow_s, N.mem_QT.1 p.2, io_s, N.τ_symm]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem tk_qTriv_left {k : ℕ} (p : N.QT k) (z : N.X) : N.tk (N.qTriv k z) p = p.1.2.s z ^ k := by
   rw [← Gt.pow_s, N.mem_QT.1 p.2, io_s, N.τ_symm]
   rfl
 
 /- English proof (translation)
-Use `symm`. Rewrite using `[(GlobalTheory.T.wQ_characterization_and_mul_relation O N k hk (N.qTriv k z) (N.qTriv k z)).1, tk_qTriv_right]`. Take `⟨h₁, h₂, -⟩` from `GlobalTheory.T.degenerationData_psi_quadratic_generators_linear O N k z`. Prove the components needed by the constructor for the conclusion. Express the relevant statement in the definitionally equal form `_ * dbl N.θ N.σ (N.c z) ^ k = N.τ z z ^ k`.
+Use symmetry to reverse the relation. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Prove the components needed by the constructor for the conclusion. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[h₁, mul_pow, ← pow_mul, ← pow_mul, mul_comm k 2]`. Express the relevant statement in the definitionally equal form `_ = N.ψ (k • z) * mulq N.θ N.σ k (N.c z)`. Rewrite using `[h₂, ← pow_mul, sq]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem wQ_qTriv_odd {k : ℕ} (hk : Odd k) (z : N.X) : N.wQ (N.qTriv k z) = N.ψ z ^ k := by
   symm
@@ -62,7 +62,7 @@ theorem wQ_qTriv_odd {k : ℕ} (hk : Odd k) (z : N.X) : N.wQ (N.qTriv k z) = N.�
     rw [h₂, ← pow_mul, sq]
 
 /- English proof (translation)
-Establish `h` using `(GlobalTheory.T.wQ_characterization_and_mul_relation O N k hk p (N.qTriv k z)).2.1`. Rewrite `h` using `[wp, tk_qTriv_right, tk_qTriv_left, div_self', one_pow, one_mul, N.wQ_qTriv_odd hk]`. Conclude with `h.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem wQ_mul_qTriv_odd {k : ℕ} (hk : Odd k) (p : N.QT k) (z : N.X) :
     N.wQ (p * N.qTriv k z) = N.wQ p * N.ψ z ^ k * p.1.2.s z ^ k := by
@@ -71,11 +71,11 @@ theorem wQ_mul_qTriv_odd {k : ℕ} (hk : Odd k) (p : N.QT k) (z : N.X) :
   exact h.symm
 
 /- English proof (translation)
-Establish `e : (p * N.qTriv (m ^ 2) z).1.2 = p.1.2 * N.io z` using `rfl`. Rewrite using `[txT, txT, N.wQ_mul_qTriv_odd hm.pow, e, mul_pow, ← N.io_nsmul, ← N.vt_mul_io_shift, ← mul_assoc, ← Units.val_mul]`. Use `congr 2`. Establish `h₁` using `(GlobalTheory.T.mulq_dbl_cubN_relations O N.toNumB m 0 p.1.2.b (N.c z)).2.1`. Take `⟨-, h₂, h₃⟩` from `GlobalTheory.T.degenerationData_psi_quadratic_generators_linear O N m z`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `h₄` using `congrArg (· ^ m) (h₃ p.1.2).1`. Establish `h₅` using `Gt.pow_s p.1.2 m (m • z)`. Rewrite `h₅` using `[N.c_nsmul]`. Simplify using `only [mul_pow, ← pow_mul, ← sq] at h₄`. Rewrite using `[Gt.mul_b, io_b, h₁, ← h₂, ← h₄, ← h₅]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_div]`. Normalize the expressions using the abelian group laws.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 theorem txT_mul_qTriv {m : ℕ} (hm : Odd m) (p : N.QT (m ^ 2)) (z χ : N.X) :
     N.txT m (p * N.qTriv (m ^ 2) z) χ = N.txT m p (χ + m • z) := by
@@ -95,13 +95,13 @@ theorem txT_mul_qTriv {m : ℕ} (hm : Odd m) (p : N.QT (m ^ 2)) (z χ : N.X) :
   abel
 
 /- English proof (translation)
-Establish `ht : t ^ (m ^ 2) = 1`. Apply `N.tor_injective` to reduce the goal to its premises. Establish `a` using `N.mem_QT.1 p'.2`. Rewrite `a` using `[h, h', mul_pow, N.mem_QT.1 p.2, mul_eq_left]`. Rewrite using `[N.tor_pow, a, N.tor_one]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Take `⟨j, hj⟩ : Odd (m ^ 2)` from `hm.pow`. Establish `hd : (m ^ 2 - 1) / 2 = j` using `by omega`. Establish `hy : t p.1.1 ^ j * t p.1.1 ^ j * t p.1.1 = 1`. Rewrite using `[← pow_add, ← pow_succ, ← two_mul, ← hj, ← MonoidHom.pow_apply, ht, MonoidHom.one_apply]`. Establish `hb : p'.1.2.b = p.1.2.b` using `by rw [h', Gt.mul_b, tor_b, mul_one]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hs : p'.1.2.s p.1.1.toAdd = t p.1.1 * p.1.2.s p.1.1.toAdd`. Rewrite using `[h', mul_comm p.1.2, N.tor_mul_s_apply]`. Both sides reduce to the same expression. Rewrite using `[txT, txT, wQ, wQ, NumB.wS, NumB.wS, hb, h, hs, h', mul_pow, ← N.tor_pow, vt_mul_tor_shift, hd, ← mul_assoc, ← mul_assoc, ← Units.val_mul, ← Units.val_mul]`. Use `congr 2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[ofAdd_add, ofAdd_toAdd, ofAdd_nsmul, map_mul, map_pow, MonoidHom.pow_apply]`. Establish `a` using `congrArg Additive.ofMul hy`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [div_pow, mul_pow, ofMul_mul, ofMul_div, ofMul_one] at a ⊢`. Take the linear combination `(norm := abel) -a`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem txT_mul_tor {m : ℕ} (hm : Odd m) (p p' : N.QT (m ^ 2)) (χ : N.X) (t : Multiplicative N.X →* Oˣ)
     (h : p'.1.1 = p.1.1) (h' : p'.1.2 = p.1.2 * N.tor t) :
@@ -134,7 +134,7 @@ end GlobalTheory.Ex.NumD
 namespace GlobalTheory.Ex
 
 /- English proof (translation)
-Introduce `O _ N m hm p p' χ`. Use `⟨fun z h h' => ?_, fun t h h' => N.txT_mul_tor hm p p' χ t h h'⟩` and prove the remaining obligations. Establish `e : p' = p * N.qTriv (m ^ 2) z` using `Subtype.ext (Prod.ext h h')`. Rewrite using `[e, N.txT_mul_qTriv hm]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem txT_shift : ∀ (O : Type) [CommRing O] (N : NumD O), ∀ (m : ℕ), Odd m → ∀ (p p' : N.QT (m ^ 2)) (χ : N.X), (∀ z, p'.1.1.toAdd = p.1.1.toAdd + m ^ 2 • z → p'.1.2 = p.1.2 * N.io z → N.txT m p' χ = N.txT m p (χ + m • z)) ∧ (∀ t : Multiplicative N.X →* Oˣ, p'.1.1 = p.1.1 → p'.1.2 = p.1.2 * N.tor t → N.txT m p' χ = (t p.1.1 ^ ((m ^ 2 - 1) / 2) * t (Multiplicative.ofAdd (p.1.1.toAdd + m • χ)) : Oˣ) * N.txT m p χ) := by
   intro O _ N m hm p p' χ

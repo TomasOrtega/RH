@@ -21,7 +21,7 @@ theorem valAt_top {B : Type} [CommRing B] {X : Scheme.{0}} (v : Spec (CommRingCa
   rfl
 
 /- English proof (translation)
-Rewrite using `[valAt_top, valAt_top, Scheme.Hom.comp_appTop]`. Conclude with `congrArg (fun f => f.hom (v.appTop.hom s)) (Scheme.ΓSpecIso_naturality (CommRingCat.ofHom φ))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem valAt_spec_comp {B C : Type} [CommRing B] [CommRing C] {X : Scheme.{0}} (φ : B →+* C)
     (v : Spec (CommRingCat.of B) ⟶ X) (s : Γ(X, ⊤)) :
@@ -30,7 +30,7 @@ theorem valAt_spec_comp {B C : Type} [CommRing B] [CommRing C] {X : Scheme.{0}} 
   exact congrArg (fun f => f.hom (v.appTop.hom s)) (Scheme.ΓSpecIso_naturality (CommRingCat.ofHom φ))
 
 /- English proof (translation)
-Establish `h` using `(PositivityTheory.HtPt.Htat.ht_char_mul R T Γ χ s hs (Over.mk q)).1 y z`. Rewrite using `[valAt_top, valAt_top, valAt_top, ← map_mul]`. Conclude with `congrArg _ h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem valAt_mul [Finite T] (Γ : QFGroup R T) (χ : T →* Rˣ) (s : Γ(Γ.G.left, ⊤))
     (hs : Γ.HasValues s (fun t => ((χ t : Rˣ) : R))) {B : Type} [CommRing B]
@@ -42,7 +42,7 @@ theorem valAt_mul [Finite T] (Γ : QFGroup R T) (χ : T →* Rˣ) (s : Γ(Γ.G.l
   exact congrArg _ h
 
 /- English proof (translation)
-Establish `h` using `(PositivityTheory.HtPt.Htat.ht_char_mul R T Γ χ s hs (Over.mk q)).2`. Rewrite using `[valAt_top]`. Use `(congrArg _ h).trans ?_` and prove the remaining obligations. Conclude with `map_one _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem valAt_one [Finite T] (Γ : QFGroup R T) (χ : T →* Rˣ) (s : Γ(Γ.G.left, ⊤))
     (hs : Γ.HasValues s (fun t => ((χ t : Rˣ) : R))) {B : Type} [CommRing B]
@@ -54,9 +54,9 @@ theorem valAt_one [Finite T] (Γ : QFGroup R T) (χ : T →* Rˣ) (s : Γ(Γ.G.l
   exact map_one _
 
 /- English proof (translation)
-Set `y₀ : Over.mk (Y.hom ≫ x) ⟶ G` to `Over.homMk ((1 : Y ⟶ Γ.G).left ≫ i) (by show ((1 : Y ⟶ Γ.G).left ≫ i) ≫ G.hom = Y.hom ≫ x`. Rewrite using `[Category.assoc, h.isOver, ← Category.assoc, Over.w])`. Establish `h1` using `h.mul Y 1 1 y₀ y₀ rfl rfl`. Rewrite `h1` using `[_root_.mul_one]`. Establish `h2 : y₀ * y₀ = y₀ * 1`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[_root_.mul_one]`. Conclude with `Over.OverMorphism.ext h1`. Establish `h3 : y₀ = 1` using `mul_left_cancel h2`. Conclude with `congrArg (fun f => f.left) h3`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem tors_one {Γ : QFGroup R T} {S : Scheme.{0}} {G : Over S} [GrpObj G]
     {x : Spec (CommRingCat.of R) ⟶ S} {N : ℕ} {i : Γ.G.left ⟶ G.left} (h : Γ.IsTorsionAlong G x N i)
@@ -84,7 +84,7 @@ abbrev dMap : Spec (CommRingCat.of (DualNumber A)) ⟶ Spec (CommRingCat.of (Dua
   Spec.map (CommRingCat.ofHom (dualMap π))
 
 /- English proof (translation)
-Rewrite using `[← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Use `congr 2`. Apply the tactic sequence `refine RingHom.ext fun a => TrivSqZeroExt.ext ?_ ?_ <;> simp [dualMap, TrivSqZeroExt.algebraMap_eq_inl]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem dMap_over : dMap π ≫ Spec.map (CommRingCat.ofHom (algebraMap R (DualNumber R))) = qMap π := by
   rw [← Spec.map_comp, ← CommRingCat.ofHom_comp]
@@ -92,20 +92,20 @@ theorem dMap_over : dMap π ≫ Spec.map (CommRingCat.ofHom (algebraMap R (DualN
   refine RingHom.ext fun a => TrivSqZeroExt.ext ?_ ?_ <;> simp [dualMap, TrivSqZeroExt.algebraMap_eq_inl]
 
 /- English proof (translation)
-Apply the tactic sequence `refine RingHom.ext fun a => TrivSqZeroExt.ext ?_ ?_ <;> simp [dualMap, epsMul, mul_comm]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem dualMap_epsMul (c : R) :
     (epsMul (π c)).comp (dualMap π) = (dualMap π).comp (epsMul c) := by
   refine RingHom.ext fun a => TrivSqZeroExt.ext ?_ ?_ <;> simp [dualMap, epsMul, mul_comm]
 
 /- English proof (translation)
-Apply the tactic sequence `refine RingHom.ext fun a => TrivSqZeroExt.ext ?_ ?_ <;> simp [epsMul, TrivSqZeroExt.algebraMap_eq_inl]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem epsMul_algebraMap (c : A) : (epsMul c).comp (algebraMap A (DualNumber A)) = algebraMap A (DualNumber A) := by
   refine RingHom.ext fun a => TrivSqZeroExt.ext ?_ ?_ <;> simp [epsMul, TrivSqZeroExt.algebraMap_eq_inl]
 
 /- English proof (translation)
-Use `RingHom.ext fun a => ?_` and prove the remaining obligations. Simplify using `[dualMap]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem fst_dualMap : ((TrivSqZeroExt.fstHom A A A).toRingHom).comp (dualMap π) =
     π.comp (TrivSqZeroExt.fstHom R R R).toRingHom := by
@@ -113,7 +113,7 @@ theorem fst_dualMap : ((TrivSqZeroExt.fstHom A A A).toRingHom).comp (dualMap π)
   simp [dualMap]
 
 /- English proof (translation)
-Use `RingHom.ext fun a => ?_` and prove the remaining obligations. Simplify using `[TrivSqZeroExt.algebraMap_eq_inl]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem fst_q : ((TrivSqZeroExt.fstHom A A A).toRingHom).comp ((algebraMap A (DualNumber A)).comp π) = π := by
   refine RingHom.ext fun a => ?_
@@ -129,15 +129,15 @@ def IsTan (Γ : QFGroup R T) (i : Γ.G.left ⟶ G.left) (M : LieModel G x L) (e 
 variable {π} {N : ℕ} {Γ : QFGroup R T} {i : Γ.G.left ⟶ G.left} {M : LieModel G x L}
 
 /- English proof (translation)
-Set `r : Spec (CommRingCat.of A) ⟶ Spec (CommRingCat.of R)` to `Spec.map (CommRingCat.ofHom π)`. Set `p : Spec (CommRingCat.of A) ⟶ Spec (CommRingCat.of (DualNumber A))` to `Spec.map (CommRingCat.ofHom (TrivSqZeroExt.fstHom A A A).toRingHom)`. Establish `hpq : p ≫ qMap π = r`. Simplify using `only [p, r, qMap]`. Rewrite using `[← Spec.map_comp, ← CommRingCat.ofHom_comp, fst_q]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Set `y : Over.mk r ⟶ Γ.G` to `Over.homMk (p ≫ v) (by show (p ≫ v) ≫ Γ.G.hom = r`. Rewrite using `[Category.assoc, hv.1, hpq])`. Establish `hy : y = 1`. Apply `h.inj (Over.mk r)` to reduce the goal to its premises. Rewrite using `[tors_one h]`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `hp : p ≫ dMap π = r ≫ Spec.map (CommRingCat.ofHom (TrivSqZeroExt.fstHom R R R).toRingHom)`. Simplify using `only [p, r, dMap]`. Rewrite using `[← Spec.map_comp, ← Spec.map_comp, ← CommRingCat.ofHom_comp, ← CommRingCat.ofHom_comp, fst_dualMap]`. Set `w : Over.mk (r ≫ x) ⟶ Over.mk x` to `Over.homMk r rfl`. Establish `h1 : (w ≫ (1 : Over.mk x ⟶ G)).left = r ≫ (1 : Over.mk x ⟶ G).left` using `rfl`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite `h1` using `[comp_one]`. Use `show (p ≫ v) ≫ i = (1 : Over.mk (r ≫ x) ⟶ G).left`. Rewrite using `[h1, Category.assoc, hv.2, ← Category.assoc, hp, Category.assoc]`. Conclude with `congrArg (r ≫ ·) (M.tan e)`. Establish `h2 : valAt (p ≫ v) ⊤ le_top s = 1`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h3` using `valAt_one Γ χ s hs r`. Rewrite `h3` using `[← hy]`. Conclude with `h3`. Establish `h4` using `valAt_spec_comp (TrivSqZeroExt.fstHom A A A).toRingHom v s`. Conclude with `h4.symm.trans h2`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem fst_valAt [Finite T] (h : Γ.IsTorsionAlong G x N i) (χ : T →* Rˣ) (s : Γ(Γ.G.left, ⊤))
     (hs : Γ.HasValues s (fun t => ((χ t : Rˣ) : R))) {e : L}
@@ -172,9 +172,9 @@ theorem fst_valAt [Finite T] (h : Γ.IsTorsionAlong G x N i) (χ : T →* Rˣ) (
   exact h4.symm.trans h2
 
 /- English proof (translation)
-Set `y : Over.mk (qMap π) ⟶ Γ.G` to `Over.homMk v hv.1`. Set `z : Over.mk (qMap π) ⟶ Γ.G` to `Over.homMk v' hv'.1`. Set `ρ : Over.mk (qMap π ≫ x) ⟶ epsAt x` to `Over.homMk (dMap π) (by show dMap π ≫ Spec.map (CommRingCat.ofHom (algebraMap R (DualNumber R))) ≫ x = qMap π ≫ x`. Rewrite using `[← Category.assoc, dMap_over])`. Establish `hm` using `h.mul (Over.mk (qMap π)) y z (ρ ≫ M.pt e) (ρ ≫ M.pt e') hv.2.symm hv'.2.symm`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hm` using `[← comp_mul, ← M.add]`. Conclude with `⟨(y * z).left, ⟨Over.w (y * z), hm.symm⟩, valAt_mul Γ χ s hs (qMap π) y z⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 -/
 theorem isTan_add [Finite T] (h : Γ.IsTorsionAlong G x N i) (χ : T →* Rˣ) (s : Γ(Γ.G.left, ⊤))
     (hs : Γ.HasValues s (fun t => ((χ t : Rˣ) : R))) {e e' : L}
@@ -191,7 +191,7 @@ theorem isTan_add [Finite T] (h : Γ.IsTorsionAlong G x N i) (χ : T →* Rˣ) (
   exact ⟨(y * z).left, ⟨Over.w (y * z), hm.symm⟩, valAt_mul Γ χ s hs (qMap π) y z⟩
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Rewrite using `[Category.assoc, hv.1, ← Spec.map_comp, ← CommRingCat.ofHom_comp, ← RingHom.comp_assoc, epsMul_algebraMap]`. Rewrite using `[Category.assoc, hv.2, M.smul, ← Category.assoc, ← Category.assoc, ← Spec.map_comp, ← Spec.map_comp, ← CommRingCat.ofHom_comp, ← CommRingCat.ofHom_comp, dualMap_epsMul]`.
+Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem isTan_smul (c : R) {e : L} {v : Spec (CommRingCat.of (DualNumber A)) ⟶ Γ.G.left}
     (hv : IsTan π Γ i M e v) :
@@ -204,27 +204,27 @@ theorem isTan_smul (c : R) {e : L} {v : Spec (CommRingCat.of (DualNumber A)) ⟶
 end Tangent
 
 /- English proof (translation)
-Simplify using `[epsMul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem snd_epsMul {A : Type} [CommRing A] (c : A) (a : DualNumber A) :
     (epsMul c a).snd = c * a.snd := by
   simp [epsMul]
 
 /- English proof (translation)
-Simplify using `[epsMul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem fst_epsMul {A : Type} [CommRing A] (c : A) (a : DualNumber A) :
     (epsMul c a).fst = a.fst := by
   simp [epsMul]
 
 /- English proof (translation)
-Introduce `R _ _ T _ _ Γ S G _ _ x N i h L _ _ M χ s hs`. Establish `hex : ∀ e : L, ∃ v, IsTan (Ideal.Quotient.mk (Ideal.span {(N : R)})) Γ i M e v ∧ ∀ w, IsTan (Ideal.Quotient.mk (Ideal.span {(N : R)})) Γ i M e w → w = v` using `fun e => GlobalTheory.T.existsUnique_tangent_dual_number R T Γ S G x N i h L M e`. Use `choose v hv hu using hex`. Establish `hfst : ∀ e, (valAt (v e) ⊤ le_top s).fst = 1` using `fun e => fst_valAt h χ s hs (hv e)`. Use `⟨{ toFun := fun e => (valAt (v e) ⊤ le_top s).snd, map_add' := ?_, map_smul' := ?_ }, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `e e'`. Take `⟨w, hw, hval⟩` from `isTan_add h χ s hs (hv e) (hv e')`. Rewrite using `[← hu _ w hw, hval, TrivSqZeroExt.snd_mul, hfst, hfst]`. Simplify using `[add_comm]`. Introduce `c e`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h1` using `hu _ _ (isTan_smul c (hv e))`. Rewrite using `[← h1, valAt_spec_comp, snd_epsMul]`. Simplify using `[Algebra.smul_def]`. Introduce `e w hw`. Rewrite using `[hu e w hw]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Use `ext`. Simplify using `[hfst]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem char_on_tangent_linear : ∀ (R : Type) [CommRing R] [IsDomain R] (T : Type) [CommGroup T] [Finite T] (Γ : QFGroup R T) (S : Scheme.{0}) (G : Over S) [GrpObj G] [IsCommMonObj G] (x : Spec (CommRingCat.of R) ⟶ S) (N : ℕ) (i : Γ.G.left ⟶ G.left), Γ.IsTorsionAlong G x N i → ∀ (L : Type) [AddCommGroup L] [Module R L] (M : LieModel G x L) (χ : T →* Rˣ) (s : Γ(Γ.G.left, ⊤)), Γ.HasValues s (fun t => ((χ t : Rˣ) : R)) → ∃ l : L →ₗ[R] (R ⧸ Ideal.span {(N : R)}), ∀ (e : L) (v : Spec (CommRingCat.of (DualNumber (R ⧸ Ideal.span {(N : R)}))) ⟶ Γ.G.left), v ≫ Γ.G.hom = Spec.map (CommRingCat.ofHom ((algebraMap (R ⧸ Ideal.span {(N : R)}) (DualNumber (R ⧸ Ideal.span {(N : R)}))).comp (Ideal.Quotient.mk _))) ∧ v ≫ i = Spec.map (CommRingCat.ofHom (dualMap (Ideal.Quotient.mk (Ideal.span {(N : R)})))) ≫ (M.pt e).left → valAt v ⊤ le_top s = TrivSqZeroExt.inl 1 + TrivSqZeroExt.inr (l e) := by
   intro R _ _ T _ _ Γ S G _ _ x N i h L _ _ M χ s hs
@@ -251,7 +251,7 @@ theorem char_on_tangent_linear : ∀ (R : Type) [CommRing R] [IsDomain R] (T : T
 end PositivityTheory.HtPt.Htat.QuotientDualMap
 
 /- English proof (translation)
-The claim follows from `@PositivityTheory.HtPt.Htat.QuotientDualMap.char_on_tangent_linear`.
+A detailed English derivation is pending.
 -/
 theorem PositivityTheory.HtPt.Htat.ht_linear : ∀ (R : Type) [CommRing R] [IsDomain R] (T : Type) [CommGroup T] [Finite T] (Γ : QFGroup R T) (S : Scheme.{0}) (G : Over S) [GrpObj G] [IsCommMonObj G] (x : Spec (CommRingCat.of R) ⟶ S) (N : ℕ) (i : Γ.G.left ⟶ G.left), Γ.IsTorsionAlong G x N i → ∀ (L : Type) [AddCommGroup L] [Module R L] (M : LieModel G x L) (χ : T →* Rˣ) (s : Γ(Γ.G.left, ⊤)), Γ.HasValues s (fun t => ((χ t : Rˣ) : R)) → ∃ l : L →ₗ[R] (R ⧸ Ideal.span {(N : R)}), ∀ (e : L) (v : Spec (CommRingCat.of (DualNumber (R ⧸ Ideal.span {(N : R)}))) ⟶ Γ.G.left), v ≫ Γ.G.hom = Spec.map (CommRingCat.ofHom ((algebraMap (R ⧸ Ideal.span {(N : R)}) (DualNumber (R ⧸ Ideal.span {(N : R)}))).comp (Ideal.Quotient.mk _))) ∧ v ≫ i = Spec.map (CommRingCat.ofHom (dualMap (Ideal.Quotient.mk (Ideal.span {(N : R)})))) ≫ (M.pt e).left → valAt v ⊤ le_top s = TrivSqZeroExt.inl 1 + TrivSqZeroExt.inr (l e) :=
   @PositivityTheory.HtPt.Htat.QuotientDualMap.char_on_tangent_linear

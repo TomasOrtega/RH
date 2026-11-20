@@ -10,15 +10,13 @@ attribute [local instance] Ideal.Quotient.field
 open UpperTheory.Gal.crystallineComparison UpperTheory.Gal.crystallineComparison.Mod
 
 /- English proof (translation)
-Establish `hex : ∀ E : Submodule k (H ⧸ C), ∃ D : Submodule k H, ¬ C ≤ D ∧ D.map C.mkQ = E`. Introduce `E`. Establish `hcard` using `hOut k H C hC E`. Establish `hpos : 0 < Nat.card {D : Submodule k H // ¬ C ≤ D ∧ D.map C.mkQ = E}`. Rewrite using `[hcard]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `pow_pos Nat.card_pos _`. Take `⟨⟨D, hD⟩⟩` from `(Nat.card_pos_iff.mp hpos).1`. Conclude with `⟨D, hD⟩`. Use `choose D hDC hDE using hex`. Establish `hrk : ∀ E, Module.finrank k (D E) = Module.finrank k E`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `E`. Rewrite using `[(hIn k H C hC).2.2 (D E) (hDC E), hDE E]`. Establish `hlt : ∀ E : Submodule k (H ⧸ C), Module.finrank k E < n + 1`. Introduce `E`. Establish `h1 : Module.finrank k E ≤ Module.finrank k (H ⧸ C)` using `Submodule.finrank_le E`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Establish `h2 : Module.finrank k (H ⧸ C) ≤ Module.finrank k H` using `Submodule.finrank_quotient_le C`. Use linear arithmetic over natural numbers and integers. Use `⟨fun E => v ⟨Module.finrank k (D E), by rw [hrk]; exact hlt E⟩ ((e _).symm ⟨D E, rfl⟩), D, hDC, hDE, hrk, hlt, ?_⟩` and prove the remaining obligations. Introduce `E j' hj'`. Take `rfl : j' = ⟨Module.finrank k (D E), by rw [hrk]; exact hlt E⟩` from `Fin.ext hj'.symm`.
-
-Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 private theorem exA (hIn : CountIn) (hOut : CountOut) {n : ℕ} {P : Type} {I : Fin (n + 1) → Type}
     (v : ∀ j, I j → P) {k H : Type} [Field k] [Finite k] [AddCommGroup H] [Module k H]
@@ -55,17 +53,13 @@ private theorem exA (hIn : CountIn) (hOut : CountOut) {n : ℕ} {P : Type} {I : 
   rfl
 
 /- English proof (translation)
-Introduce `hIn hOut q n P F I v k H _ _ _ _ _ C e hq hn hC h1 h2`. Take `⟨A, D, hDC, hDE, hrk, hlt, hA⟩` from `exA hIn hOut v C e hn hC`. Use `⟨k, H, _, inferInstance, _, _, inferInstance, C, A, e, hq, hn, hC, fun j i => ⟨fun hle => ?_, fun hnle => ?_⟩⟩` and prove the remaining obligations. Use `set E := ((e j i).1).map C.mkQ with hEdef`. Establish `hj : (j : ℕ) = Module.finrank k E + 1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← (e j i).2, (hIn k H C hC).2.1 _ hle]`. Set `j' : Fin (n + 1)` to `⟨Module.finrank k E, hlt E⟩`. Establish `hj' : Module.finrank k (D E) = j'` using `hrk E`. Establish `hs : ((e j') ((e j').symm ⟨D E, hj'⟩)).1 = D E` using `congrArg Subtype.val (Equiv.apply_symm_apply (e j') ⟨D E, hj'⟩)`. Rewrite using `[hA E j' hj']`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `h2 j j' i` to reduce the goal to its premises. Conclude with `hj`. Conclude with `hle`. Rewrite using `[hs]`. Conclude with `hDC E`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hs, hDE E]`. Use `set E := ((e j i).1).map C.mkQ with hEdef`. Establish `hj : Module.finrank k (D E) = j`. Rewrite using `[hrk E, ← (e j i).2, (hIn k H C hC).2.2 _ hnle]`. Establish `hs : ((e j) ((e j).symm ⟨D E, hj⟩)).1 = D E` using `congrArg Subtype.val (Equiv.apply_symm_apply (e j) ⟨D E, hj⟩)`.
-
-Rewrite using `[hA E j hj]`. Apply `h1 j i` to reduce the goal to its premises. Conclude with `hnle`. Rewrite using `[hs]`. Conclude with `hDC E`.
-
-Rewrite using `[hs, hDE E]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.crystallineComparison.Mod.ordReadOf_of :
     CountIn → CountOut → OrdReadOf := by

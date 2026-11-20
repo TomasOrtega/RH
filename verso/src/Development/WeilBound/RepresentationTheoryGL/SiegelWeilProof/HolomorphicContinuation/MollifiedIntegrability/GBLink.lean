@@ -27,29 +27,29 @@ Both sides reduce to the same expression.
 theorem hermL_apply (x : Fin n → Fin n → ℝ) : hermL n x = herm x := rfl
 
 /- English proof (translation)
-Apply the tactic sequence `unfold vkl; split_ifs <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem vkl_re (k l a b : Fin n) :
     (vkl k l a b).re = (if a = k ∧ b = l then 1 / 2 else 0) + (if a = l ∧ b = k then 1 / 2 else 0) := by
   unfold vkl; split_ifs <;> simp
 
 /- English proof (translation)
-Apply the tactic sequence `unfold vkl; split_ifs <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem vkl_im (k l a b : Fin n) :
     (vkl k l a b).im = (if a = k ∧ b = l then 1 / 2 else 0) + (if a = l ∧ b = k then -1 / 2 else 0) := by
   unfold vkl; split_ifs <;> simp
 
 /- English proof (translation)
-Use extensionality with `i j`. Rewrite using `[Matrix.add_apply, Matrix.smul_apply, smul_eq_mul, Matrix.single_apply]`. Unfold `herm`. Simplify using `only`. Rewrite using `[vkl_re, vkl_re, vkl_im, vkl_im]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `have e1 : (if j = k ∧ i = l then (1 / 2 : ℝ) else 0) = 1 / 2 * (if i = l ∧ j = k then 1 else 0) := by split_ifs <;> first | (exfalso; tauto) | norm_num`. Apply the tactic sequence `have e2 : (if j = l ∧ i = k then (1 / 2 : ℝ) else 0) = 1 / 2 * (if i = k ∧ j = l then 1 else 0) := by split_ifs <;> first | (exfalso; tauto) | norm_num`. Apply the tactic sequence `have e3 : (if i = k ∧ j = l then (1 / 2 : ℝ) else 0) = 1 / 2 * (if i = k ∧ j = l then 1 else 0) := by split_ifs <;> first | (exfalso; tauto) | norm_num`. Apply the tactic sequence `have e4 : (if i = l ∧ j = k then (1 / 2 : ℝ) else 0) = 1 / 2 * (if i = l ∧ j = k then 1 else 0) := by split_ifs <;> first | (exfalso; tauto) | norm_num`. Apply the tactic sequence `have e5 : (if i = l ∧ j = k then (-1 / 2 : ℝ) else 0) = -1 / 2 * (if i = l ∧ j = k then 1 else 0) := by split_ifs <;> first | (exfalso; tauto) | norm_num`.
+Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `have e6 : (if j = l ∧ i = k then (-1 / 2 : ℝ) else 0) = -1 / 2 * (if i = k ∧ j = l then 1 else 0) := by split_ifs <;> first | (exfalso; tauto) | norm_num`. Establish `e7 : (if l = i ∧ k = j then (1 : ℂ) else 0) = (((if i = l ∧ j = k then (1 : ℝ) else 0) : ℝ) : ℂ)`. Distinguish the cases in `h : i = l ∧ j = k`. Rewrite using `[if_pos h, if_pos ⟨h.1.symm, h.2.symm⟩]`. Simplify using the standard rewrite rules.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[if_neg h, if_neg (fun h' => h ⟨h'.1.symm, h'.2.symm⟩)]`. Simplify using the standard rewrite rules. Rewrite using `[e1, e2, e3, e4, e5, e6, e7]`. Use `push_cast`. Put the polynomial expressions in normal form.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Put the polynomial expressions in normal form.
 
-Rewrite using `[Complex.I_sq]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem herm_re_im_vkl (k l : Fin n) :
     herm (fun a b => (vkl k l a b).re) + Complex.I • herm (fun a b => (vkl k l a b).im) =
@@ -84,9 +84,9 @@ theorem herm_re_im_vkl (k l : Fin n) :
 variable {F G : Mc n → ℂ} {U : Set (Mc n)}
 
 /- English proof (translation)
-Establish `hG : HasFDerivAt G ((fderiv ℂ G (herm y)).restrictScalars ℝ) (herm y)` using `hd.hasFDerivAt.restrictScalars ℝ`. Establish `hc : HasFDerivAt (fun y => G (herm y)) (((fderiv ℂ G (herm y)).restrictScalars ℝ).comp (hermL n)) y` using `hG.comp y (hermL n).hasFDerivAt`. Unfold `Dkl dirC cpart`. Rewrite using `[hc.fderiv]`. Simplify using `only [ContinuousLinearMap.comp_apply, ContinuousLinearMap.coe_restrictScalars', hermL_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← herm_re_im_vkl k l, map_add, map_smul, smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem dkl_comp_herm (k l : Fin n) (y : Fin n → Fin n → ℝ) (hd : DifferentiableAt ℂ G (herm y)) :
     Dkl k l (fun y => G (herm y)) y = cpart l k G (herm y) := by
@@ -100,7 +100,7 @@ theorem dkl_comp_herm (k l : Fin n) (y : Fin n → Fin n → ℝ) (hd : Differen
   rw [← herm_re_im_vkl k l, map_add, map_smul, smul_eq_mul]
 
 /- English proof (translation)
-Establish `h` using `hF.fderiv_of_isOpen hU (m := ((⊤ : ℕ∞) : WithTop ℕ∞)) (by norm_cast)`. Conclude with `h.clm_apply contDiffOn_const`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem cpart_contDiffOn (i j : Fin n) (hU : IsOpen U) (hF : ContDiffOn ℂ (⊤ : ℕ∞) F U) :
     ContDiffOn ℂ (⊤ : ℕ∞) (cpart i j F) U := by
@@ -108,16 +108,16 @@ theorem cpart_contDiffOn (i j : Fin n) (hU : IsOpen U) (hF : ContDiffOn ℂ (⊤
   exact h.clm_apply contDiffOn_const
 
 /- English proof (translation)
-The claim follows from `((hF.contDiffAt (hU.mem_nhds hb)).differentiableAt (by norm_cast))`.
+A detailed English derivation is pending.
 -/
 theorem differentiableAt_of_cdo (hU : IsOpen U) (hF : ContDiffOn ℂ (⊤ : ℕ∞) F U) {b : Mc n} (hb : b ∈ U) :
     DifferentiableAt ℂ F b :=
   ((hF.contDiffAt (hU.mem_nhds hb)).differentiableAt (by norm_cast))
 
 /- English proof (translation)
-Proceed by induction on `L with`. Consider the case `nil => exact ⟨rfl, hF⟩`. Consider the case `cons a L ih`. Use `⟨?_, cpart_contDiffOn _ _ hU ih.2⟩` and prove the remaining obligations. Simplify using `only [List.foldr_cons]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[ih.1]`. Use function extensionality and compare the values at `y`. Conclude with `dkl_comp_herm a (τ a) y (differentiableAt_of_cdo hU ih.2 (hh y))`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem foldr_herm (τ : Fin n → Fin n) (hU : IsOpen U) (hF : ContDiffOn ℂ (⊤ : ℕ∞) F U) (hh : ∀ y, herm y ∈ U)
     (L : List (Fin n)) :
@@ -134,11 +134,11 @@ theorem foldr_herm (τ : Fin n → Fin n) (hU : IsOpen U) (hF : ContDiffOn ℂ (
     exact dkl_comp_herm a (τ a) y (differentiableAt_of_cdo hU ih.2 (hh y))
 
 /- English proof (translation)
-Establish `: DeltaC F = fun b => ∑ σ : Equiv.Perm (Fin n), ((Equiv.Perm.sign σ : ℤ) : ℂ) • (List.finRange n).foldr (fun k g => cpart (σ k) k g) F b`. Use function extensionality and compare the values at `b`. Simplify using `[DeltaC, Finset.sum_apply]`. Rewrite using `[this]`. Use `ContDiffOn.sum fun σ _ => ContDiffOn.const_smul _ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `key : ∀ L : List (Fin n), ContDiffOn ℂ (⊤ : ℕ∞) (L.foldr (fun k g => cpart (σ k) k g) F) U`. Introduce `L`. Proceed by induction on `L with`. Consider the case `nil => exact hF`. Consider the case `cons a L ih => exact cpart_contDiffOn _ _ hU ih`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Conclude with `key _`.
+A detailed English derivation is pending.
 -/
 theorem deltaC_contDiffOn (hU : IsOpen U) (hF : ContDiffOn ℂ (⊤ : ℕ∞) F U) :
     ContDiffOn ℂ (⊤ : ℕ∞) (DeltaC F) U := by
@@ -154,7 +154,7 @@ theorem deltaC_contDiffOn (hU : IsOpen U) (hF : ContDiffOn ℂ (⊤ : ℕ∞) F 
   exact key _
 
 /- English proof (translation)
-Use function extensionality and compare the values at `y`. Simplify using `only [Delta, DeltaC, Finset.sum_apply, Pi.smul_apply]`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Rewrite using `[(foldr_herm σ hU hF hh _).1]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem delta_herm (hU : IsOpen U) (hF : ContDiffOn ℂ (⊤ : ℕ∞) F U) (hh : ∀ y, herm y ∈ U) :
     Delta (fun y => F (herm y)) = fun y => DeltaC F (herm y) := by
@@ -164,7 +164,7 @@ theorem delta_herm (hU : IsOpen U) (hF : ContDiffOn ℂ (⊤ : ℕ∞) F U) (hh 
   rw [(foldr_herm σ hU hF hh _).1]
 
 /- English proof (translation)
-Proceed by induction on `N with`. Consider the case `zero => exact ⟨rfl, hF⟩`. Consider the case `succ N ih`. Rewrite using `[Function.iterate_succ_apply', Function.iterate_succ_apply', ih.1]`. Conclude with `⟨delta_herm hU ih.2 hh, deltaC_contDiffOn hU ih.2⟩`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem iterate_herm (hU : IsOpen U) (hF : ContDiffOn ℂ (⊤ : ℕ∞) F U) (hh : ∀ y, herm y ∈ U) (N : ℕ) :
     (Delta^[N] (fun y => F (herm y))) = (fun y => (DeltaC^[N] F) (herm y)) ∧
@@ -176,7 +176,7 @@ theorem iterate_herm (hU : IsOpen U) (hF : ContDiffOn ℂ (⊤ : ℕ∞) F U) (h
     exact ⟨delta_herm hU ih.2 hh, deltaC_contDiffOn hU ih.2⟩
 
 /- English proof (translation)
-Introduce `b hb` and use `by have : H =ᶠ[nhds b] H' := Filter.eventuallyEq_of_mem (hU.mem_nhds hb) h simp only [cpart, this.fderiv_eq]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem eqOn_cpart (i j : Fin n) (hU : IsOpen U) {H H' : Mc n → ℂ} (h : Set.EqOn H H' U) :
     Set.EqOn (cpart i j H) (cpart i j H') U := fun b hb => by
@@ -184,7 +184,7 @@ theorem eqOn_cpart (i j : Fin n) (hU : IsOpen U) {H H' : Mc n → ℂ} (h : Set.
   simp only [cpart, this.fderiv_eq]
 
 /- English proof (translation)
-Proceed by induction on `L with`. Consider the case `nil => exact h`. Consider the case `cons a L ih => exact eqOn_cpart a.1 a.2 hU ih`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem eqOn_word (L : List (Fin n × Fin n)) (hU : IsOpen U) {H H' : Mc n → ℂ} (h : Set.EqOn H H' U) :
     Set.EqOn (word L H) (word L H') U := by
@@ -193,7 +193,7 @@ theorem eqOn_word (L : List (Fin n × Fin n)) (hU : IsOpen U) {H H' : Mc n → �
   | cons a L ih => exact eqOn_cpart a.1 a.2 hU ih
 
 /- English proof (translation)
-Proceed by induction on `L with`. Consider the case `nil => exact hF`. Consider the case `cons a L ih => exact cpart_contDiffOn _ _ hU ih`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem word_contDiffOn (L : List (Fin n × Fin n)) (hU : IsOpen U) (hF : ContDiffOn ℂ (⊤ : ℕ∞) F U) :
     ContDiffOn ℂ (⊤ : ℕ∞) (word L F) U := by
@@ -202,9 +202,9 @@ theorem word_contDiffOn (L : List (Fin n × Fin n)) (hU : IsOpen U) (hF : ContDi
   | cons a L ih => exact cpart_contDiffOn _ _ hU ih
 
 /- English proof (translation)
-Introduce `b hb`. Establish `hd : ∀ t ∈ s, DifferentiableAt ℂ (fun x => c t * f t x) b` using `fun t _ => (differentiableAt_of_cdo hU (hf t) hb).const_mul (c t)`. Simplify using `only [cpart]`. Establish `hs : HasFDerivAt (fun x => ∑ t ∈ s, c t * f t x) (∑ t ∈ s, fderiv ℂ (fun x => c t * f t x) b) b` using `HasFDerivAt.fun_sum (fun t ht => (hd t ht).hasFDerivAt)`. Rewrite using `[hs.fderiv, _root_.sum_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations. Establish `h1 : HasFDerivAt (fun x => c t * f t x) (c t • fderiv ℂ (f t) b) b` using `(differentiableAt_of_cdo hU (hf t) hb).hasFDerivAt.const_mul (c t)`. Rewrite using `[h1.fderiv, ContinuousLinearMap.smul_apply, smul_eq_mul]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem cpart_sum {ι : Type} (s : Finset ι) (c : ι → ℂ) (f : ι → Mc n → ℂ) (i j : Fin n) (hU : IsOpen U)
     (hf : ∀ t, ContDiffOn ℂ (⊤ : ℕ∞) (f t) U) :
@@ -222,9 +222,9 @@ theorem cpart_sum {ι : Type} (s : Finset ι) (c : ι → ℂ) (f : ι → Mc n 
   rw [h1.fderiv, ContinuousLinearMap.smul_apply, smul_eq_mul]
 
 /- English proof (translation)
-Proceed by induction on `L with`. Consider the case `nil => intro b _`. Both sides reduce to the same expression. Consider the case `cons a L ih`. Introduce `b hb`.
+Proceed by induction. Treat this case separately. Both sides reduce to the same expression. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1` using `eqOn_cpart a.1 a.2 hU ih hb`. Simplify using `only [word, List.foldr_cons] at h1 ⊢`. Rewrite using `[h1]`. Conclude with `cpart_sum s c (fun t => word L (f t)) a.1 a.2 hU (fun t => word_contDiffOn L hU (hf t)) hb`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem word_sum {ι : Type} (s : Finset ι) (c : ι → ℂ) (f : ι → Mc n → ℂ) (L : List (Fin n × Fin n))
     (hU : IsOpen U) (hf : ∀ t, ContDiffOn ℂ (⊤ : ℕ∞) (f t) U) :
@@ -239,7 +239,7 @@ theorem word_sum {ι : Type} (s : Finset ι) (c : ι → ℂ) (f : ι → Mc n �
     exact cpart_sum s c (fun t => word L (f t)) a.1 a.2 hU (fun t => word_contDiffOn L hU (hf t)) hb
 
 /- English proof (translation)
-Simplify using `[word, List.foldr_append]`.
+Simplify using the standard rewrite rules.
 -/
 theorem word_append (L₁ L₂ : List (Fin n × Fin n)) (H : Mc n → ℂ) :
     word (L₁ ++ L₂) H = word L₁ (word L₂ H) := by
@@ -248,7 +248,7 @@ theorem word_append (L₁ L₂ : List (Fin n × Fin n)) (H : Mc n → ℂ) :
 def blk (σ : Equiv.Perm (Fin n)) : List (Fin n × Fin n) := (List.finRange n).map fun k => (σ k, k)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `b`. Simplify using `only [DeltaC, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, word, blk, List.foldr_map]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem deltaC_eq_word (H : Mc n → ℂ) :
     DeltaC H = fun b => ∑ σ : Equiv.Perm (Fin n), ((Equiv.Perm.sign σ : ℤ) : ℂ) * word (blk σ) H b := by
@@ -256,7 +256,7 @@ theorem deltaC_eq_word (H : Mc n → ℂ) :
   simp only [DeltaC, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, word, blk, List.foldr_map]
 
 /- English proof (translation)
-Rewrite using `[List.finRange_succ, List.flatMap_cons, List.flatMap_map]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem flat_succ {N : ℕ} (τ : Fin (N + 1) → Equiv.Perm (Fin n)) :
     (List.finRange (N + 1)).flatMap (fun j => blk (τ j)) =
@@ -264,13 +264,13 @@ theorem flat_succ {N : ℕ} (τ : Fin (N + 1) → Equiv.Perm (Fin n)) :
   rw [List.finRange_succ, List.flatMap_cons, List.flatMap_map]
 
 /- English proof (translation)
-Proceed by induction on `N with`. Consider the case `zero => intro b _`. Simplify using `[word]`. Consider the case `succ N ih`. Introduce `b hb`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Function.iterate_succ_apply', deltaC_eq_word]`. Simplify using `only`. Establish `step : ∀ σ : Equiv.Perm (Fin n), word (blk σ) (DeltaC^[N] F) b = ∑ τ : Fin N → Equiv.Perm (Fin n), ((∏ j, (Equiv.Perm.sign (τ j) : ℤ) : ℤ) : ℂ) * word (blk σ ++ (List.finRange N).flatMap fun j => blk (τ j)) F b`. Introduce `σ`. Rewrite using `[eqOn_word (blk σ) hU ih hb]`.
+Rewrite the conclusion using the stated equalities. Simplify by unfolding definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hw` using `word_sum (Finset.univ : Finset (Fin N → Equiv.Perm (Fin n))) (fun τ => ((∏ j, (Equiv.Perm.sign (τ j) : ℤ) : ℤ) : ℂ)) (fun τ => word ((List.finRange N).flatMap fun j => blk (τ j)) F) (blk σ) hU (fun τ => word_contDiffOn _ hU hF) hb`. Rewrite using `[hw]`. Simplify using `only [word_append]`. Simplify using `only [step, Finset.mul_sum]`. Rewrite using `[← (Fin.consEquiv fun _ => Equiv.Perm (Fin n)).sum_comp, Fintype.sum_prod_type]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun σ _ => Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Simplify using `only [Fin.consEquiv_apply, flat_succ, Fin.cons_zero, Fin.cons_succ, Fin.prod_univ_succ]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem deltaC_iter_word (hU : IsOpen U) (hF : ContDiffOn ℂ (⊤ : ℕ∞) F U) (N : ℕ) :
     Set.EqOn (DeltaC^[N] F) (fun b => ∑ τ : Fin N → Equiv.Perm (Fin n),
@@ -301,7 +301,7 @@ theorem deltaC_iter_word (hU : IsOpen U) (hF : ContDiffOn ℂ (⊤ : ℕ∞) F U
     ring
 
 /- English proof (translation)
-Introduce `n F U hU hF hh`. Conclude with `⟨fun N y => by rw [(iterate_herm hU hF hh N).1], fun N b hb => (deltaC_iter_word hU hF N hb).trans (by simp only [blk])⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem link : Link := by
   intro n F U hU hF hh

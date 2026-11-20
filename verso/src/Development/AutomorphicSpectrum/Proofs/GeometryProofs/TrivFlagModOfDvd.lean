@@ -9,7 +9,7 @@ open CategoryTheory AlgebraicGeometry NumberField MvPolynomial GlobalTheory.Comp
 namespace GlobalTheory.CompanionTheory.Ar.HT
 
 /- English proof (translation)
-The claim follows from `@PositivityTheory.HtPt.Gf.trivflag_mono`.
+A detailed English derivation is pending.
 -/
 theorem trivFlagMod_of_dvd : ∀ (o : Type) [CommRing o] (Ω : Type) [Field Ω] [Algebra o Ω] (K : Type) [Fintype K] (J : K → Type) [∀ k, Fintype (J k)] (y : (Σ k, J k) → Ω) (ϖ ϖ' : o) (N : ℕ) (b : Fin N → K → ℤ), ϖ' ∣ ϖ → Num.TrivFlagMod o ϖ y N b → Num.TrivFlagMod o ϖ' y N b :=
   @PositivityTheory.HtPt.Gf.trivflag_mono

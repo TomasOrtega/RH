@@ -13,11 +13,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.CovTop.VolUp
 
 /- English proof (translation)
-Introduce `E _ _ _ r Ψ G Γ`. Use `haveI : Countable E := (Module.finBasis ℚ E).equivFun.injective.countable`. Use `haveI : Countable (Matrix (Fin r) (Fin r) E) := inferInstanceAs (Countable (Fin r → Fin r → E))`. Use `haveI : Countable (GL (Fin r) E) := Units.val_injective.countable`. Establish `h : ((Γ.map (embGL Ψ r) : Subgroup (Ψ → GL (Fin r) ℂ)) : Set (Ψ → GL (Fin r) ℂ)).Countable`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Subgroup.coe_map]`. Conclude with `(Set.to_countable _).image _`. Use `haveI : Countable (Γ.map (embGL Ψ r)) := h.to_subtype`. Use `Function.Injective.countable (f := fun x : inReal Ψ G Γ => (⟨x.1.1, x.2⟩ : Γ.map (embGL Ψ r))) ?_` and prove the remaining obligations. Introduce `x y hxy`.
-
-Establish `h2 : x.1.1 = y.1.1` using `Subtype.mk.inj hxy`. Conclude with `Subtype.ext (Subtype.ext h2)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem countable_inReal_of_numberField : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (Ψ : Finset (E →+* ℂ)) (G : Matrix (Fin r) (Fin r) E) (Γ : Subgroup (GL (Fin r) E)), Countable (inReal Ψ G Γ) := by
   intro E _ _ _ r Ψ G Γ

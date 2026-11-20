@@ -7,17 +7,15 @@ namespace FiniteFieldPlancherel
 open Classical
 
 /- English proof (translation)
-Distinguish the cases in `hg : g = 0`. Substitute `hg` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[if_neg hg]`. Choose the witnesses or unpack the hypotheses as in `⟨a, ha⟩ : ∃ a, ψ a ≠ 1 := by`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Assume the negation of the conclusion as `h`. Use `push Not at h`. Apply `hψ` to reduce the goal to its premises. Use extensionality with `a`. Simplify using `[h a]`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Choose the witnesses or unpack the hypotheses as in `⟨x, hx⟩ : ∃ x, g x ≠ 0 := by`. Assume the negation of the conclusion as `h`. Use `push Not at h`. Conclude with `hg (LinearMap.ext fun x => by simp [h x])`. Use `set e0 : U := (a / g x) • x with he0`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `hge0 : g e0 = a`. Rewrite using `[he0, map_smul, smul_eq_mul, div_mul_cancel₀ _ hx]`. Establish `hshift : ∑ e : U, ψ (g e) = (∑ e : U, ψ (g e)) * ψ a`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.sum_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun e _ => ?_` and prove the remaining obligations. Rewrite using `[map_add, AddChar.map_add_eq_mul, hge0]`. Establish `h1 : (∑ e : U, ψ (g e)) * (ψ a - 1) = 0`. Rewrite using `[mul_sub, mul_one, ← hshift, sub_self]`. Break down `mul_eq_zero.mp h1 with h | h` into its components or cases.
-
-Conclude with `h`. Conclude with `absurd (sub_eq_zero.mp h) ha`.
+Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem charSum {𝔽 U : Type} [Field 𝔽] [AddCommGroup U] [Module 𝔽 U] [Fintype U]
     (ψ : AddChar 𝔽 ℂ) (hψ : ψ ≠ 1) (g : Module.Dual 𝔽 U) :
@@ -52,9 +50,9 @@ theorem charSum {𝔽 U : Type} [Field 𝔽] [AddCommGroup U] [Module 𝔽 U] [F
     · exact absurd (sub_eq_zero.mp h) ha
 
 /- English proof (translation)
-Establish `h : ∀ e, star (ψ (f e)) * ψ (g e) = ψ ((g - f) e)`. Introduce `e`. Rewrite using `[LinearMap.sub_apply, sub_eq_add_neg, AddChar.map_add_eq_mul, AddChar.map_neg_eq_conj, Complex.star_def, mul_comm]`. Repeatedly rewrite using `[h]`. Rewrite using `[charSum ψ hψ]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hfg : f = g`. Simplify using `[hfg]`. Rewrite using `[if_neg hfg, if_neg (fun h' => hfg (sub_eq_zero.mp h').symm)]`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem orth {𝔽 U : Type} [Field 𝔽] [AddCommGroup U] [Module 𝔽 U] [Fintype U]
     (ψ : AddChar 𝔽 ℂ) (hψ : ψ ≠ 1) [Fintype 𝔽] (f g : Module.Dual 𝔽 U) :

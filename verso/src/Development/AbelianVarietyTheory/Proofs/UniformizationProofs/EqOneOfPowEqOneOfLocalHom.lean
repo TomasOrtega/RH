@@ -20,9 +20,9 @@ noncomputable section
 namespace GlobalTheory.UU
 
 /- English proof (translation)
-Establish `hu : IsUnit (∑ i ∈ Finset.range N, ζ ^ i)`. Use `isUnit_of_map_unit f _ ?_` and prove the remaining obligations. Use `hN.map f` as an intermediate fact. Simplify `this` using `[map_sum, hf]`. Use `geom_sum_mul ζ N` as an intermediate fact.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Rewrite `this` using `[h, sub_self]`. Conclude with `sub_eq_zero.1 ((hu.mul_right_eq_zero).1 this)`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_one_of_pow_eq_one_of_localHom {W Ω : Type} [CommRing W] [IsLocalRing W] [Field Ω] (f : W →+* Ω)
     [IsLocalHom f] {N : ℕ} (hN : IsUnit (N : W)) {ζ : W} (h : ζ ^ N = 1) (hf : f ζ = 1) : ζ = 1 := by
@@ -35,9 +35,9 @@ theorem eq_one_of_pow_eq_one_of_localHom {W Ω : Type} [CommRing W] [IsLocalRing
   exact sub_eq_zero.1 ((hu.mul_right_eq_zero).1 this)
 
 /- English proof (translation)
-Establish `nat` using `congrArg (fun q => q.hom ζ.val) (Scheme.ΓSpecIso_naturality (CommRingCat.ofHom f))`. Establish `hf' : (Spec.map (CommRingCat.ofHom f)).appTop.hom ζ.val = 1` using `congrArg Units.val hf`. Simplify using `only [CommRingCat.hom_comp, RingHom.comp_apply, hf', map_one, CommRingCat.hom_ofHom] at nat`. Establish `h1` using `eq_one_of_pow_eq_one_of_localHom f hN (ζ := (Scheme.ΓSpecIso (CommRingCat.of W)).hom.hom ζ.val) (by rw [← map_pow, ← Units.val_pow_eq_pow_val, h, Units.val_one, map_one]) nat.symm`. Apply `Units.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `(Scheme.ΓSpecIso (CommRingCat.of W)).commRingCatIsoToRingEquiv.injective` to reduce the goal to its premises. Rewrite using `[Units.val_one, map_one]`. Conclude with `h1`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unit_eq_one_of_localHom {W Ω : Type} [CommRing W] [IsLocalRing W] [Field Ω] (f : W →+* Ω)
     [IsLocalHom f] {N : ℕ} (hN : IsUnit (N : W)) {ζ : Γ(Spec (CommRingCat.of W), ⊤)ˣ} (h : ζ ^ N = 1)
@@ -54,7 +54,7 @@ theorem unit_eq_one_of_localHom {W Ω : Type} [CommRing W] [IsLocalRing W] [Fiel
   exact h1
 
 /- English proof (translation)
-Use `⟨cubWeil_map _ _ _ _ _ _ _ _ _ _ h N T x y ζ, fun h' => ?_⟩` and prove the remaining obligations. Take `⟨ξ, hξ, -⟩` from `existsUnique_cubWeil P'.c hx hy`. Use `(cubWeil_map _ _ _ _ _ _ _ _ _ _ h N T x y ξ hξ).unique h'` as an intermediate fact. Conclude with `this ▸ hξ`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem IsCPMap.cubWeil_iff {S S' : Scheme.{0}} {f : S' ⟶ S} {G : Over S} [GrpObj G] [IsCommMonObj G] {G' : Over S'}
     [GrpObj G'] [IsCommMonObj G'] {P : CP G} {P' : CP G'} {F : G'.left ⟶ G.left} {hw} {w}
@@ -66,11 +66,11 @@ theorem IsCPMap.cubWeil_iff {S S' : Scheme.{0}} {f : S' ⟶ S} {G : Over S} [Grp
   exact this ▸ hξ
 
 /- English proof (translation)
-Rewrite using `[D.map.cubWeil_iff hx hy]`. Set `ρ : T ⟶ Over.mk (T.hom ≫ 𝟙 S)` to `Over.homMk (𝟙 T.left) (by simp)`. Set `ρ' : Over.mk (T.hom ≫ 𝟙 S) ⟶ T` to `Over.homMk (𝟙 T.left) (by simp)`. Establish `hw : Q.q.left ≫ Q.B.hom = G.hom ≫ 𝟙 S` using `by simp`. Establish `e : ∀ a : T ⟶ G, ρ ≫ toBase hw a = a ≫ Q.q` using `fun a => Over.OverMorphism.ext (Category.id_comp (a.left ≫ Q.q.left))`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e' : ∀ a : T ⟶ G, ρ' ≫ (a ≫ Q.q) = toBase hw a` using `fun a => Over.OverMorphism.ext (Category.id_comp (a.left ≫ Q.q.left))`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `h.comp ρ` as an intermediate fact. Rewrite `this` using `[e, e, map_one]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Introduce `h`. Use `h.comp ρ'` as an intermediate fact. Rewrite `this` using `[e', e', map_one]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem TQ.Desc.cubWeil_one_iff {S : Scheme.{0}} {G : Over S} [GrpObj G] [IsCommMonObj G] {X : Type} [AddCommGroup X]
     {Q : TQ G X} {P : CP G} (D : Q.Desc P) {N : ℕ} {T : Over S} {x y : T ⟶ G} (hx : x ^ N = 1) (hy : y ^ N = 1) :
@@ -92,19 +92,17 @@ theorem TQ.Desc.cubWeil_one_iff {S : Scheme.{0}} {G : Over S} [GrpObj G] [IsComm
     rwa [e', e', map_one] at this
 
 /- English proof (translation)
-Introduce `V _ _ _ A G _ _ s t W Ω _ _ _ _ f' hf' p N hN y y' x x' hy hy' hx hx'`. Set `I` to `IsLocalRing.maximalIdeal V`. Establish `hw : pullback.fst G.hom (thick V I 0) ≫ G.hom = (thickObj V I 0 G).hom ≫ thick V I 0` using `pullback.condition`. Take `⟨w, hl⟩` from `(t.l 0).lev`. Establish `hρ : Spec.map (CommRingCat.ofHom f') ≫ Spec.map (CommRingCat.ofHom (algebraMap V W)) = (Over.mk p).hom ≫ thick V I 0`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `a` using `Over.w (toBase hw x)`. Establish `b` using `Over.w y`. Conclude with `(congrArg (Spec.map (CommRingCat.ofHom f') ≫ ·) b).symm.trans ((Category.assoc _ _ _).symm.trans ((congrArg (· ≫ G.hom) hx).symm.trans a))`. Set `ρ : Over.mk ((Over.mk p).hom ≫ thick V I 0) ⟶ Over.mk (Spec.map (CommRingCat.ofHom (algebraMap V W)))` to `Over.homMk (Spec.map (CommRingCat.ofHom f')) hρ`. Establish `e : ρ ≫ y = toBase hw x` using `Over.OverMorphism.ext hx.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e' : ρ ≫ y' = toBase hw x'` using `Over.OverMorphism.ext hx'.symm`. Establish `inj : ∀ a b : Over.mk p ⟶ thickObj V I 0 G, toBase hw a = toBase hw b → a = b` using `fun a b h => Over.OverMorphism.ext (pullback.hom_ext (congrArg (fun q => q.left) h) ((Over.w a).trans (Over.w b).symm))`. Establish `tor : ∀ (a : Over.mk p ⟶ thickObj V I 0 G) (b : Over.mk (Spec.map (CommRingCat.ofHom (algebraMap V W))) ⟶ G), b ^ N = 1 → ρ ≫ b = toBase hw a → a ^ N = 1` using `fun a b hb h => by`. Use `inj _ _ ((map_pow (toBaseHom hl.mul _) a N).trans (Eq.trans ?_ (map_one (toBaseHom hl.mul _)).symm))` and prove the remaining obligations. Conclude with `(congrArg (· ^ N) h.symm).trans (by rw [← MonObj.comp_pow, hb, MonObj.comp_one])`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hxN` using `tor x y hy e`. Establish `hxN'` using `tor x' y' hy' e'`. Use `Iff.trans ?_ ((t.l 0).D.cubWeil_one_iff hxN hxN')` and prove the remaining obligations. Use `Iff.trans ?_ (hl.cubWeil_iff hxN hxN' 1).symm` and prove the remaining obligations. Prove the components needed by the constructor for the conclusion.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `h`. Use `h.comp ρ` as an intermediate fact. Rewrite `this` using `[e, e', map_one]`. Conclude with `this`. Introduce `h`.
+Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨ζ, hζ, -⟩` from `existsUnique_cubWeil s.P.c hy hy'`. Establish `c` using `hζ.comp ρ`. Rewrite `c` using `[e, e']`. Establish `hNW : IsUnit (N : W)` using `by simpa using hN.map (algebraMap V W)`. Establish `: ζ = 1` using `unit_eq_one_of_localHom f' hNW hζ.pow_eq_one (c.unique h)`.
-
-Conclude with `this ▸ hζ`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem cubWeil_one_iff_closedFibre : AllSet fun {V} _ _ _ {A} {G} _ _ s => ∀ (t : Tower s) (W Ω : Type) [CommRing W] [IsLocalRing W] [Algebra V W] [Field Ω] (f' : W →+* Ω), IsLocalHom f' → ∀ (p : Spec (CommRingCat.of Ω) ⟶ Spec (CommRingCat.of (V ⧸ (IsLocalRing.maximalIdeal V) ^ (0 + 1)))) (N : ℕ), IsUnit (N : V) → ∀ (y y' : Over.mk (Spec.map (CommRingCat.ofHom (algebraMap V W))) ⟶ G) (x x' : Over.mk p ⟶ thickObj V (IsLocalRing.maximalIdeal V) 0 G), y ^ N = 1 → y' ^ N = 1 → x.left ≫ (fstG _ 0 G).left = (Spec.map (CommRingCat.ofHom f')) ≫ y.left → x'.left ≫ (fstG _ 0 G).left = (Spec.map (CommRingCat.ofHom f')) ≫ y'.left → (CubWeil s.P.c N y y' 1 ↔ CubWeil (t.l 0).D.M.c N (x ≫ (t.l 0).Q.q) (x' ≫ (t.l 0).Q.q) 1) := by
   intro V _ _ _ A G _ _ s t W Ω _ _ _ _ f' hf' p N hN y y' x x' hy hy' hx hx'

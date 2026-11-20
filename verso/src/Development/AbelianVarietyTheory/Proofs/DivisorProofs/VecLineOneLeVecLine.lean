@@ -23,7 +23,7 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 
 omit [NumberField E] in
 /- English proof (translation)
-Rewrite using `[Matrix.mulVec_mulVec, ← Units.val_mul, ← map_mul, inv_mul_cancel, map_one, Units.val_one, Matrix.one_mulVec]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem inv_mulVec_cancel (p : GAd σ J) (y : Fin n → AF F ⊗[F] E) :
     (matHom _ σ J p⁻¹).1 *ᵥ (matHom _ σ J p).1 *ᵥ y = y := by
@@ -53,33 +53,33 @@ variable {σ J}
 
 omit [NumberField E] in
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun ⟨l, hl, e⟩ => by rw [e, Subgroup.mem_bot.1 hl, Units.val_one, one_smul], fun e => ⟨1, one_mem _, by simpa using e⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem mem_vecFix {z : Fin n → AF F ⊗[F] E} {p : GAd σ J} : p ∈ vecFix σ J z ↔ (matHom _ σ J p).1 *ᵥ z = z :=
   ⟨fun ⟨l, hl, e⟩ => by rw [e, Subgroup.mem_bot.1 hl, Units.val_one, one_smul], fun e => ⟨1, one_mem _, by simpa using e⟩⟩
 
 omit [NumberField E] in
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun ⟨l, _, e⟩ => ⟨l, e⟩, fun ⟨l, e⟩ => ⟨l, trivial, e⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem mem_vecLine {z : Fin n → AF F ⊗[F] E} {p : GAd σ J} :
     p ∈ vecLine σ J z ↔ ∃ l : (AF F ⊗[F] E)ˣ, (matHom _ σ J p).1 *ᵥ z = l.1 • z :=
   ⟨fun ⟨l, _, e⟩ => ⟨l, e⟩, fun ⟨l, e⟩ => ⟨l, trivial, e⟩⟩
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_vecLineOne {z : Fin n → AF F ⊗[F] E} {p : GAd σ J} :
     p ∈ vecLineOne σ J z ↔ ∃ l : (AF F ⊗[F] E)ˣ, absE F E l = 1 ∧ (matHom _ σ J p).1 *ᵥ z = l.1 • z := Iff.rfl
 
 /- English proof (translation)
-Introduce `_ ⟨l, hl, e⟩` and use `⟨l, bot_le (a := (absE F E).ker) hl, e⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem vecFix_le_vecLineOne (z : Fin n → AF F ⊗[F] E) : vecFix σ J z ≤ vecLineOne σ J z :=
   fun _ ⟨l, hl, e⟩ => ⟨l, bot_le (a := (absE F E).ker) hl, e⟩
 
 /- English proof (translation)
-Introduce `_ ⟨l, _, e⟩` and use `⟨l, trivial, e⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem vecLineOne_le_vecLine (z : Fin n → AF F ⊗[F] E) : vecLineOne σ J z ≤ vecLine σ J z :=
   fun _ ⟨l, _, e⟩ => ⟨l, trivial, e⟩
@@ -87,9 +87,9 @@ theorem vecLineOne_le_vecLine (z : Fin n → AF F ⊗[F] E) : vecLineOne σ J z 
 omit [NumberField E] in
 
 /- English proof (translation)
-Take `⟨l, -, e⟩` from `hp`. Take `⟨l', -, e'⟩` from `inv_mem (show p ∈ vecLine σ J z from ⟨l, trivial, e⟩)`. Take `⟨k, hk, ek⟩` from `hq`. Use `⟨k, hk, ?_⟩` and prove the remaining obligations. Establish `h` using `inv_mulVec_cancel σ J p⁻¹ z`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `h` using `[inv_inv]`. Rewrite using `[map_mul, map_mul, Units.val_mul, Units.val_mul, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, e', Matrix.mulVec_smul, ek, smul_comm, ← e', Matrix.mulVec_smul, h]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem conj_mem_vecStab {z : Fin n → AF F ⊗[F] E} {H : Subgroup (AF F ⊗[F] E)ˣ} {p q : GAd σ J} (hp : p ∈ vecLine σ J z)
     (hq : q ∈ vecStab σ J z H) : p * q * p⁻¹ ∈ vecStab σ J z H := by
@@ -105,11 +105,11 @@ theorem conj_mem_vecStab {z : Fin n → AF F ⊗[F] E} {H : Subgroup (AF F ⊗[F
 omit [NumberField E] in
 
 /- English proof (translation)
-Use `exists_congr fun l => and_congr_right fun _ => ?_` and prove the remaining obligations. Establish `h` using `inv_mulVec_cancel σ J γ⁻¹`. Rewrite `h` using `[inv_inv]`. Rewrite using `[map_mul, map_mul, Units.val_mul, Units.val_mul, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, e]`. Prove the components needed by the constructor for the conclusion.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Introduce `h1`. Establish `h2` using `congrArg ((matHom _ σ J γ).1 *ᵥ ·) h1`. Simplify using `only [h, Matrix.mulVec_smul, e] at h2`. Rewrite `h2` using `[smul_comm]`. Conclude with `(c.isUnit.smul_left_cancel).1 h2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h1`. Rewrite using `[Matrix.mulVec_smul, h1, smul_comm, ← e, Matrix.mulVec_smul, inv_mulVec_cancel]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conj_mem_vecStab_iff {z w : Fin n → AF F ⊗[F] E} {H : Subgroup (AF F ⊗[F] E)ˣ} {γ p : GAd σ J} {c : (AF F ⊗[F] E)ˣ}
     (e : (matHom _ σ J γ).1 *ᵥ z = c.1 • w) : γ⁻¹ * p * γ ∈ vecStab σ J z H ↔ p ∈ vecStab σ J w H := by
@@ -127,7 +127,7 @@ theorem conj_mem_vecStab_iff {z w : Fin n → AF F ⊗[F] E} {H : Subgroup (AF F
     rw [Matrix.mulVec_smul, h1, smul_comm, ← e, Matrix.mulVec_smul, inv_mulVec_cancel]
 
 /- English proof (translation)
-Take `⟨_, _⟩` from `GlobalTheory.StdPar.ring_facts (F := F) (E := E)`. Establish `: (vecFix σ J z : Set (GAd σ J)) = {p | (matHom _ σ J p).1 *ᵥ z = z}` using `Set.ext fun _ => mem_vecFix`. Conclude with `this ▸ isClosed_eq (GlobalTheory.StdPar.continuous_mat.matrix_mulVec continuous_const) continuous_const`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isClosed_vecFix (z : Fin n → AF F ⊗[F] E) : IsClosed (vecFix σ J z : Set (GAd σ J)) := by
   obtain ⟨_, _⟩ := GlobalTheory.StdPar.ring_facts (F := F) (E := E)
@@ -140,14 +140,14 @@ def IsStdVec {r : ℕ} (X Y : Matrix (Fin n) (Fin r) E) (S : Finset (Fin r)) (z 
   (∃ j, IsStart S j ∧ z = Xᵀ j) ∨ ∃ j ∈ S, z = Yᵀ j
 
 /- English proof (translation)
-The claim follows from `Or.inl ⟨0, Or.inl rfl, rfl⟩`.
+Prove the first alternative.
 -/
 example {r : ℕ} (X Y : Matrix (Fin n) (Fin (r + 1)) E) (S : Finset (Fin (r + 1))) : IsStdVec X Y S (Xᵀ 0) :=
   Or.inl ⟨0, Or.inl rfl, rfl⟩
 
 omit [NumberField E] in
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h => funext fun i => congrFun (congrFun h i) 0, fun h => Matrix.ext fun i _ => congrFun h i⟩`.
+Supply the required witnesses or components.
 -/
 theorem col0_eq_iff {r : ℕ} {X : Matrix (Fin n) (Fin (r + 1)) E} {m : Matrix (Fin n) (Fin n) (AF F ⊗[F] E)} {l : AF F ⊗[F] E} :
     m * adMat F (col0 X) = l • adMat F (col0 X) ↔ m *ᵥ adVec F (Xᵀ 0) = l • adVec F (Xᵀ 0) :=
@@ -161,14 +161,14 @@ def term {r : ℕ} (X : Matrix (Fin n) (Fin (r + 1)) E) (h : GAd σ J → ℝ) (
   (h ((q.out : ratPts σ J).1⁻¹ * g) : ℂ) ^ e
 
 /- English proof (translation)
-The claim follows from `(exists_congr fun _ => col0_eq_iff).trans mem_vecLine.symm`.
+A detailed English derivation is pending.
 -/
 theorem mem_lineStab_iff {r : ℕ} {X : Matrix (Fin n) (Fin (r + 1)) E} {γ : ratPts σ J} :
     γ ∈ lineStab σ J (col0 X) ↔ γ.1 ∈ vecLine σ J (adVec F (Xᵀ 0)) :=
   (exists_congr fun _ => col0_eq_iff).trans mem_vecLine.symm
 
 /- English proof (translation)
-Rewrite using `[eq_comm, MulAction.Quotient.smul_coe, QuotientGroup.eq, mem_lineStab_iff, smul_eq_mul, ← mul_assoc]`. Conclude with `conj_mem_vecStab_iff e`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem smul_mk_eq_iff {r : ℕ} {X : Matrix (Fin n) (Fin (r + 1)) E} {γ δ : ratPts σ J} {w : Fin n → AF F ⊗[F] E}
     {c : (AF F ⊗[F] E)ˣ} (e : (matHom _ σ J γ.1).1 *ᵥ adVec F (Xᵀ 0) = c.1 • w) :
@@ -183,7 +183,7 @@ variable {r : ℕ} {X Y : Matrix (Fin n) (Fin (r + 1)) E} {L : Submodule (𝓞 E
 include hS
 
 /- English proof (translation)
-Take `⟨l, hl, e⟩` from `mem_vecLineOne.1 hp`. Take `⟨p', l', e', k, hk, rfl⟩` from `hS.2.2.2.2.2.2.1 g`. Rewrite using `[← mul_assoc, hS.2.2.2.2.2.2.2 p' l' e' k hk, hS.2.2.2.2.2.2.2 (p * p') (l * l') ?_ k hk, map_mul, hl, one_mul]`. Rewrite using `[map_mul, Units.val_mul, Matrix.mul_assoc, e', Matrix.mul_smul, col0_eq_iff.2 e, smul_smul, Units.val_mul, mul_comm]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem ht_mul_left {p : GAd σ J} (hp : p ∈ vecLineOne σ J (adVec F (Xᵀ 0))) (g : GAd σ J) : h (p * g) = h g := by
   obtain ⟨l, hl, e⟩ := mem_vecLineOne.1 hp
@@ -192,7 +192,7 @@ theorem ht_mul_left {p : GAd σ J} (hp : p ∈ vecLineOne σ J (adVec F (Xᵀ 0)
   rw [map_mul, Units.val_mul, Matrix.mul_assoc, e', Matrix.mul_smul, col0_eq_iff.2 e, smul_smul, Units.val_mul, mul_comm]
 
 /- English proof (translation)
-Take `⟨p, l, e, k, hk, rfl⟩` from `hS.2.2.2.2.2.2.1 g`. Rewrite using `[hS.2.2.2.2.2.2.2 p l e k hk]`. Conclude with `GlobalTheory.Doubling.hom_pos _ l` after adjusting the coercions.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ht_pos (g : GAd σ J) : 0 < h g := by
   obtain ⟨p, l, e, k, hk, rfl⟩ := hS.2.2.2.2.2.2.1 g
@@ -200,7 +200,7 @@ theorem ht_pos (g : GAd σ J) : 0 < h g := by
   exact_mod_cast GlobalTheory.Doubling.hom_pos _ l
 
 /- English proof (translation)
-Take `⟨p, hp⟩` from `QuotientGroup.mk_out_eq_mul (lineStab σ J (col0 X)) γ`. Rewrite using `[term, hp, Subgroup.coe_mul, mul_inv_rev, mul_assoc]`. Conclude with `congrArg (fun x : ℝ => (x : ℂ) ^ e) (GlobalTheory.EisCT.iwaHt_mul_rat_stabL F E σ n J r X Y L a h hS _ (p⁻¹).1.2 (p⁻¹).2 _)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem term_mk (e : ℂ) (γ : ratPts σ J) (g : GAd σ J) : term X h e (γ : Lines σ J X) g = (h (γ.1⁻¹ * g) : ℂ) ^ e := by
   obtain ⟨p, hp⟩ := QuotientGroup.mk_out_eq_mul (lineStab σ J (col0 X)) γ
@@ -208,7 +208,7 @@ theorem term_mk (e : ℂ) (γ : ratPts σ J) (g : GAd σ J) : term X h e (γ : L
   exact congrArg (fun x : ℝ => (x : ℂ) ^ e) (GlobalTheory.EisCT.iwaHt_mul_rat_stabL F E σ n J r X Y L a h hS _ (p⁻¹).1.2 (p⁻¹).2 _)
 
 /- English proof (translation)
-Proceed by induction on `q using QuotientGroup.induction_on with`. Consider the case `H δ => rw [MulAction.Quotient.smul_coe, term_mk hS, term_mk hS, smul_eq_mul, Subgroup.coe_mul, mul_inv_rev, mul_assoc, inv_mul_cancel_left]`.
+Proceed by induction. Treat this case separately.
 -/
 theorem term_smul (e : ℂ) (γ : ratPts σ J) (q : Lines σ J X) (g : GAd σ J) : term X h e (γ • q) (γ.1 * g) = term X h e q g := by
   induction q using QuotientGroup.induction_on with
@@ -216,14 +216,14 @@ theorem term_smul (e : ℂ) (γ : ratPts σ J) (q : Lines σ J X) (g : GAd σ J)
       inv_mul_cancel_left]
 
 /- English proof (translation)
-The claim follows from `(Complex.continuous_ofReal.comp ((HtCont.continuous_iwaHt F E σ n J r X Y L a h hS).comp (continuous_mul_left _))).cpow continuous_const fun _ => Complex.ofReal_mem_slitPlane.2 (ht_pos hS _)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_term (e : ℂ) (q : Lines σ J X) : Continuous (term X h e q) :=
   (Complex.continuous_ofReal.comp ((HtCont.continuous_iwaHt F E σ n J r X Y L a h hS).comp (continuous_mul_left _))).cpow
     continuous_const fun _ => Complex.ofReal_mem_slitPlane.2 (ht_pos hS _)
 
 /- English proof (translation)
-Rewrite using `[term_mk hS, term_mk hS, ← ht_mul_left hS ((conj_mem_vecStab_iff hγ).2 hp) (γ.1⁻¹ * g)]`. Simplify using `only [mul_assoc, mul_inv_cancel_left]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem term_mul_left (e : ℂ) {γ : ratPts σ J} {w : Fin n → AF F ⊗[F] E} {c : (AF F ⊗[F] E)ˣ}
     (hγ : (matHom _ σ J γ.1).1 *ᵥ adVec F (Xᵀ 0) = c.1 • w) {p : GAd σ J} (hp : p ∈ vecLineOne σ J w) (g : GAd σ J) :
@@ -232,7 +232,7 @@ theorem term_mul_left (e : ℂ) {γ : ratPts σ J} {w : Fin n → AF F ⊗[F] E}
   simp only [mul_assoc, mul_inv_cancel_left]
 
 /- English proof (translation)
-The claim follows from `Complex.norm_cpow_eq_rpow_re_of_pos (ht_pos hS _) e`.
+A detailed English derivation is pending.
 -/
 theorem norm_term (e : ℂ) (q : Lines σ J X) (g : GAd σ J) : ‖term X h e q g‖ = h ((q.out : ratPts σ J).1⁻¹ * g) ^ e.re :=
   Complex.norm_cpow_eq_rpow_re_of_pos (ht_pos hS _) e
@@ -240,11 +240,11 @@ theorem norm_term (e : ℂ) (q : Lines σ J X) (g : GAd σ J) : ‖term X h e q 
 end HidaSetting
 
 /- English proof (translation)
-Set `f : Lines σ J X → ratPts σ J` to `fun q => (q.out)⁻¹`. Establish `hf : Function.Injective f` using `fun q q' e => Quotient.out_injective (inv_injective e)`. Use `hE (Set.range f) (fun γ => ⟨f (γ⁻¹ : ratPts σ J), ⟨⟨_, rfl⟩, ?_⟩, ?_⟩) s hs g` as an intermediate fact. Conclude with `(Equiv.ofInjective f hf).hasSum_iff.2 this`. Take `⟨p, hp⟩` from `QuotientGroup.mk_out_eq_mul (lineStab σ J (col0 X)) γ⁻¹`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `: γ * (f (γ⁻¹ : ratPts σ J))⁻¹ = p` using `by simp only [f, inv_inv, hp, mul_inv_cancel_left]`. Rewrite using `[this]`. Conclude with `p.2`. Introduce and unpack `_ ⟨⟨q, rfl⟩, ht⟩`. Use `congrArg f ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← QuotientGroup.out_eq' q, eq_comm, QuotientGroup.eq, inv_inv]`. Simplify using `only [f, inv_inv] at ht`. Conclude with `ht`.
+A detailed English derivation is pending.
 -/
 theorem hasSum_term {r : ℕ} {X : Matrix (Fin n) (Fin (r + 1)) E} {h : GAd σ J → ℝ} {Eis : ℂ → GAd σ J → ℂ}
     (hE : IsSerG σ J (col0 X) h Eis) {s : ℂ} (hs : ((n : ℝ) - 1) / 2 < s.re) (g : GAd σ J) :

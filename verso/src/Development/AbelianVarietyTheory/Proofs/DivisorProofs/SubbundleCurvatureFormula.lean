@@ -13,7 +13,7 @@ namespace GlobalTheory.SubGauss
 variable {m l : Type} [Fintype m] [Fintype l] [DecidableEq m] [DecidableEq l]
 
 /- English proof (translation)
-Establish `hc : (orthCoeff K)ᵀ = K.toBlocks₂₁ * K.toBlocks₁₁⁻¹`. Simplify using `[orthCoeff, transpose_nonsing_inv]`. Rewrite using `[orthProj, transpose_fromCols, transpose_one, fromRows_mul, hc, subGram, nonsing_inv_mul_cancel_right K.toBlocks₁₁ _ hs]`. Use `conv_rhs => rw [← fromBlocks_toBlocks K]`. Simplify using `[incl, fromBlocks_mul_fromRows, subGram]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem orthProj_transpose_mul_subGram (K : Matrix (m ⊕ l) (m ⊕ l) ℂ)
     (hs : IsUnit (subGram K).det) : (orthProj K)ᵀ * subGram K = K * incl m l := by
@@ -25,7 +25,7 @@ theorem orthProj_transpose_mul_subGram (K : Matrix (m ⊕ l) (m ⊕ l) ℂ)
   simp [incl, fromBlocks_mul_fromRows, subGram]
 
 /- English proof (translation)
-Use `conv_lhs => rw [← fromBlocks_toBlocks M]`. Simplify using `[incl, transpose_fromRows, fromCols_mul_fromBlocks, fromCols_mul_fromRows]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem incl_transpose_mul_mul (M : Matrix (m ⊕ l) (m ⊕ l) ℂ) :
     (incl m l)ᵀ * M * incl m l = M.toBlocks₁₁ := by
@@ -36,7 +36,7 @@ variable {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V] [NormedSpace ℝ 
   [IsScalarTower ℝ ℂ V]
 
 /- English proof (translation)
-Use `(eq_conn_of_compatible (H := gramS H) hs ?_).symm` and prove the remaining obligations. Establish `e : mdel (gramS H) x ξ = (mdel H x ξ).toBlocks₁₁` using `by ext a b; rfl`. Rewrite using `[e, ← incl_transpose_mul_mul, ← conn_transpose_mul hu, transpose_mul, transpose_mul, Matrix.mul_assoc, Matrix.mul_assoc, gramS, orthProj_transpose_mul_subGram _ hs]`. Simplify using `only [Matrix.mul_assoc]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem conn_gramS {H : V → Matrix (m ⊕ l) (m ⊕ l) ℂ} {x : V} (hu : IsUnit (H x).det)
     (hs : IsUnit (subGram (H x)).det) (ξ : V) :
@@ -48,7 +48,7 @@ theorem conn_gramS {H : V → Matrix (m ⊕ l) (m ⊕ l) ℂ} {x : V} (hu : IsUn
   simp only [Matrix.mul_assoc]
 
 /- English proof (translation)
-Establish `hc : MContDiffAt k (fun x => orthCoeff (H x)) z` using `(h.subGram.transpose.inv (by rwa [det_transpose])).mul (h.submatrix Sum.inr Sum.inl).transpose`. Introduce and unpack `a (b | b)`. Simplify `(contDiffAt_const : ContDiffAt ℝ k (fun _ : V => (1 : Matrix m m ℂ) a b) z)` using `[orthProj]`. Simplify `hc a b` using `[orthProj]`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem mContDiffAt_orthProj {H : V → Matrix (m ⊕ l) (m ⊕ l) ℂ} {z : V} {k : WithTop ℕ∞}
     (h : MContDiffAt k H z) (hs : IsUnit (subGram (H z)).det) :
@@ -60,7 +60,7 @@ theorem mContDiffAt_orthProj {H : V → Matrix (m ⊕ l) (m ⊕ l) ℂ} {z : V} 
   · simpa [orthProj] using hc a b
 
 /- English proof (translation)
-Establish `e1 : mdbar (fun x => orthProj (H x)) z η = fromCols 0 (mdbar (fun x => orthCoeff (H x)) z η)`. Apply the tactic sequence `ext a (b | b) <;> simp [orthProj]`. Establish `e2 : mdbar (fun x => orthCoeff (H x)) z η = secondFormAdj H z η`. Rewrite using `[← neg_neg (mdbar _ z η), ← extForm_eq_neg_mdbar, extForm_eq_neg_secondFormAdj h hh hu hs, neg_neg]`. Rewrite using `[e1, e2, quotMap, mul_fromCols]`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/
@@ -78,9 +78,9 @@ theorem mdbar_orthProj {H : V → Matrix (m ⊕ l) (m ⊕ l) ℂ} {z : V} (h : M
   simp
 
 /- English proof (translation)
-Establish `hU : U ∈ 𝓝 z` using `h.isOpen.mem_nhds hz`. Establish `h2` using `h.two hz`. Establish `h1` using `h.one hz`. Establish `hθ : MContDiffAt 1 (fun x => conn H x ξ) z` using `h2.conn (h.isUnit z hz) (by norm_num) ξ`. Establish `hP : MContDiffAt 1 (fun x => orthProj (H x)) z` using `mContDiffAt_orthProj h1 (hs z hz)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `he : (fun x => conn (gramS H) x ξ) =ᶠ[𝓝 z] fun x => orthProj (H x) * (conn H x ξ * incl m l)` using `Filter.mem_of_superset hU fun x hx => conn_gramS (h.isUnit x hx) (hs x hx) ξ`. Establish `hB : mdbar (fun x => conn H x ξ * incl m l) z η = mdbar (fun x => conn H x ξ) z η * incl m l`. Rewrite using `[mdbar_mul hθ (mContDiffAt_const _), mdbar_const, Matrix.mul_zero, zero_add]`. Rewrite using `[curv, mdbar_congr he, mdbar_mul hP (hθ.mul (mContDiffAt_const _)), hB, mdbar_orthProj h1 (h.eventually_herm hz) (h.isUnit z hz) (hs z hz), blockSS, curv, wedgeAntiHol, secondForm, blockQS]`. Simplify using `only [Matrix.mul_assoc, Matrix.mul_neg, Matrix.neg_mul, neg_add]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem curv_gramS {U : Set V} {H : V → Matrix (m ⊕ l) (m ⊕ l) ℂ} {z : V} (h : IsHermFrame U H)
     (hs : ∀ x ∈ U, IsUnit (subGram (H x)).det) (hz : z ∈ U) (ξ η : V) :

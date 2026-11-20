@@ -42,9 +42,9 @@ def HermLattice.twiceStandardExample : HermLattice ℚ 1 where
   conj := fun _ => by simp
 
 /- English proof (translation)
-Use `show Submodule.span (𝓞 ℚ) {twoVecExample} ≤ _`. Rewrite using `[Submodule.span_le, Set.singleton_subset_iff]`. Establish `h : twoVecExample = (2 : 𝓞 ℚ) • (Pi.single 0 1 : Fin 1 → ℚ)`. Use function extensionality and compare the values at `j`. Use `fin_cases j`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[twoVecExample, Algebra.smul_def, map_ofNat]`. Rewrite using `[h]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨0, rfl⟩)`.
+A detailed English derivation is pending.
 -/
 theorem twiceStandardExample_le :
     HermLattice.twiceStandardExample.lattice ≤ (HermLattice.standard ℚ 1).lattice := by
@@ -58,7 +58,7 @@ theorem twiceStandardExample_le :
   exact Submodule.smul_mem _ _ (Submodule.subset_span ⟨0, rfl⟩)
 
 /- English proof (translation)
-Take `⟨T, hT, hdT, ⟨b'⟩⟩` from `DualLatticeBasisExists.proof ℚ 1 HermLattice.twiceStandardExample`. Conclude with `⟨T, hT, hdT, b', DualEmbBijective.proof ℚ 1 _ T b', dualEmbMatrix_standard_bijective, twiceStandardExample_le, le_rfl⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 example : ∃ (T : Type) (_ : Fintype T) (_ : DecidableEq T)
     (b' : Module.Basis T ℤ (dualLattice HermLattice.twiceStandardExample)),

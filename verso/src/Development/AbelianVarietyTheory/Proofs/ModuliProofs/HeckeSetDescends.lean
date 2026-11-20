@@ -16,11 +16,11 @@ open GlobalTheory.HkFam
 namespace GlobalTheory.HkSetDesc
 
 /- English proof (translation)
-Take `⟨s', hs'⟩` from `Surjective.surj (f := f) (x.base (IsLocalRing.closedPoint k))`. Take `⟨q, hq, -⟩` from `Scheme.Pullback.exists_preimage_pullback (f := f) (g := x) s' (IsLocalRing.closedPoint k) hs'`. Take `⟨g, hg⟩ : ∃ g : Spec ((pullback f x).residueField q) ⟶ Sp k, g = (pullback f x).fromSpecResidueField q ≫ pullback.snd f x` from `⟨_, rfl⟩`. Take `⟨h, hh⟩ : ∃ h : Spec ((pullback f x).residueField q) ⟶ S', h = (pullback f x).fromSpecResidueField q ≫ pullback.fst f x` from `⟨_, rfl⟩`. Establish `hgh : h ≫ f = g ≫ x`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[hg, hh, Category.assoc, Category.assoc, pullback.condition]`. Set `j` to `algebraMap ((pullback f x).residueField q) (AlgebraicClosure ((pullback f x).residueField q))`. Use `⟨AlgebraicClosure ((pullback f x).residueField q), inferInstance, inferInstance, j.comp (Spec.preimage g).hom, Spec.map (CommRingCat.ofHom j) ≫ h, ?_⟩` and prove the remaining obligations. Establish `hβ : spMap (j.comp (Spec.preimage g).hom) = Spec.map (CommRingCat.ofHom j) ≫ Spec.map (Spec.preimage g)`. Rewrite using `[← Spec.map_comp]`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[hβ, Spec.map_preimage, Category.assoc, Category.assoc, hgh]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_lift {S S' : Scheme.{0}} (f : S' ⟶ S) [Surjective f] {k : Type} [Field k] (x : Sp k ⟶ S) :
     ∃ (k' : Type) (_ : Field k') (_ : IsAlgClosed k') (β : k →+* k') (x' : Sp k' ⟶ S'), x' ≫ f = spMap β ≫ x := by
@@ -44,17 +44,15 @@ theorem exists_lift {S S' : Scheme.{0}} (f : S' ⟶ S) [Surjective f] {k : Type}
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E}
 
 /- English proof (translation)
-Establish `h1 : ∀ a : D.La, I.ev n a = 1 ↔ a ∈ (nsmulAddMonoidHom (α` using `D.La) n).range := by`. Introduce `a`. Rewrite using `[I.ker n hn a, AddMonoidHom.mem_range]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨b, rfl⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨b, rfl⟩`. Introduce and unpack `⟨b, rfl⟩`. Conclude with `⟨b, rfl⟩`. Set `φ : D.La →+ Additive Q` to `{ toFun := fun a => Additive.ofMul (I.ev n a) map_zero' := by show Additive.ofMul (I.ev n 0) = Additive.ofMul 1`. Rewrite using `[(h1 0).2 (zero_mem _)]`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `map_add' := fun a b => by show Additive.ofMul (I.ev n (a + b)) = Additive.ofMul (I.ev n a * I.ev n b)`. Rewrite using `[I.add] }`. Establish `hker : φ.ker = (nsmulAddMonoidHom (α` using `D.La) n).range := by`. Use extensionality with `a`. Rewrite using `[AddMonoidHom.mem_ker, ← h1]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Conclude with `ofMul_eq_zero`. Set `σ : {x : Q // x ^ n = 1} ≃ φ.range` to `{ toFun := fun x => ⟨Additive.ofMul x.1, by`. Take `⟨a, ha⟩` from `(I.onto n hn x.1).1 x.2`. Conclude with `⟨a, by show Additive.ofMul (I.ev n a) = Additive.ofMul x.1; rw [ha]⟩⟩`. Use `invFun := fun y => ⟨Additive.toMul y.1, by`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Take `⟨a, ha⟩` from `y.2`. Rewrite using `[← ha]`. Conclude with `(I.onto n hn _).2 ⟨a, rfl⟩⟩`. Use `left_inv := fun _ => rfl`. Use `right_inv := fun _ => rfl }`.
-
-Rewrite using `[Nat.card_congr σ, ← Nat.card_congr (QuotientAddGroup.quotientKerEquivRange φ).toEquiv, hker, AddSubgroup.index_eq_card]`.
+A detailed English derivation is pending.
 -/
 theorem card_torsion {D : Datum H} {k : Type} [Field k] {Q : Type} [Group Q] {act : 𝓞 E → Q → Q}
     {e : ℕ → Q → Q → kˣ → Prop} (I : TateIso D k Q act e) {n : ℕ} (hn : 0 < n) :
@@ -93,11 +91,11 @@ theorem card_torsion {D : Datum H} {k : Type} [Field k] {Q : Type} [Group Q] {ac
     AddSubgroup.index_eq_card]
 
 /- English proof (translation)
-Establish `: Module.Finite (𝓞 E) D.La` using `D.fin`. Establish `: Module.Finite ℤ D.La` using `Module.Finite.trans (𝓞 E) D.La`. Establish `: AddGroup.FG D.La` using `Module.Finite.iff_addGroup_fg.mp inferInstance`. Establish `: Finite (D.La ⧸ (nsmulAddMonoidHom (α` using `D.La) n).range) := by`. Apply `AddCommGroup.finite_of_fg_isAddTorsion` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `q`. Proceed by induction on `q using QuotientAddGroup.induction_on with`. Consider the case `H a`. Use `isOfFinAddOrder_iff_nsmul_eq_zero.mpr ⟨n, hn, ?_⟩` and prove the remaining obligations. Rewrite using `[← QuotientAddGroup.mk_nsmul, QuotientAddGroup.eq_zero_iff]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨a, rfl⟩`. Conclude with `AddSubgroup.index_ne_zero_of_finite`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem index_ne_zero (D : Datum H) {n : ℕ} (hn : 0 < n) :
     (nsmulAddMonoidHom (α := D.La) n).range.index ≠ 0 := by
@@ -115,9 +113,9 @@ theorem index_ne_zero (D : Datum H) {n : ℕ} (hn : 0 < n) :
   exact AddSubgroup.index_ne_zero_of_finite
 
 /- English proof (translation)
-Establish `hA` using `card_torsion I hn`. Establish `hB` using `card_torsion I' hn`. Establish `: Finite {x : Q' // x ^ n = 1}` using `Nat.finite_of_card_ne_zero (by rw [hB]; exact index_ne_zero D hn)`. Set `g : {x : Q // x ^ n = 1} → {x : Q' // x ^ n = 1}` to `fun x => ⟨r x.1, by rw [← map_pow, x.2, map_one]⟩`. Establish `hg : Function.Injective g` using `fun a b hab => Subtype.ext (hr (congrArg Subtype.val hab))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Take `⟨x, hx⟩` from `(hg.bijective_of_nat_card_le (by rw [hA, hB])).2 ⟨y, hy⟩`. Conclude with `⟨x.1, congrArg Subtype.val hx⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem torsion_onto {D : Datum H} {k k' : Type} [Field k] [Field k'] {Q Q' : Type} [Group Q] [Group Q']
     {act : 𝓞 E → Q → Q} {e : ℕ → Q → Q → kˣ → Prop} {act' : 𝓞 E → Q' → Q'} {e' : ℕ → Q' → Q' → k'ˣ → Prop}
@@ -134,9 +132,9 @@ theorem torsion_onto {D : Datum H} {k k' : Type} [Field k] [Field k'] {Q Q' : Ty
 variable {S : Scheme.{0}}
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero`. Establish `h0 : t.act.act 0 = 1`. Establish `h : t.act.act 0 * t.act.act 0 = t.act.act 0 * 1`. Rewrite using `[_root_.mul_one, ← t.act.add, add_zero]`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_left_cancel h`. Rewrite using `[Nat.cast_zero, h0, comp_one, _root_.pow_zero]`. Consider the case `succ n ih`. Rewrite using `[Nat.cast_succ, t.act.add, comp_mul, ih, t.act.one, Category.comp_id, _root_.pow_succ]`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem comp_act_natCast (t : SAB H S) {T : Over S} (x : T ⟶ t.G) (n : ℕ) :
     x ≫ t.act.act (n : 𝓞 E) = x ^ n := by
@@ -151,9 +149,9 @@ theorem comp_act_natCast (t : SAB H S) {T : Over S} (x : T ⟶ t.G) (n : ℕ) :
     rw [Nat.cast_succ, t.act.add, comp_mul, ih, t.act.one, Category.comp_id, _root_.pow_succ]
 
 /- English proof (translation)
-Apply `Nat.card_congr` to reduce the goal to its premises. Use `Equiv.ofBijective (fun x => ⟨r x.1, x.2⟩) ⟨?_, ?_⟩` and prove the remaining obligations. Introduce `a b hab`. Conclude with `Subtype.ext (hr (congrArg Subtype.val hab))`. Introduce and unpack `⟨y, hy⟩`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Take `⟨x, rfl⟩` from `hA y hy`. Conclude with `⟨⟨x, hy⟩, rfl⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem card_preimage {Q Q' : Type} (r : Q → Q') (hr : Function.Injective r) (A : Set Q')
     (hA : ∀ y ∈ A, ∃ x, r x = y) : Nat.card (r ⁻¹' A) = Nat.card A := by
@@ -166,25 +164,23 @@ theorem card_preimage {Q Q' : Type} (r : Q → Q') (hr : Function.Injective r) (
     exact ⟨⟨x, hy⟩, rfl⟩
 
 /- English proof (translation)
-Establish `hcomm : ∀ (x : T ⟶ t.G) (a : 𝓞 E), r (x ≫ t.act.act a) = r x ≫ t.act.act a`. Introduce `x a`. Rewrite using `[he, he, Category.assoc]`. Establish `htors : ∀ (J : Ideal (𝓞 E)) (x : T ⟶ t.G), x ∈ t.tors T J ↔ r x ∈ t.tors T' J`. Introduce `J x`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [SAB.tors, Set.mem_ofPred_eq]`. Use `forall₂_congr fun a _ => ?_` and prove the remaining obligations. Rewrite using `[← hcomm]`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[h, map_one]`. Introduce `h`. Apply `hr` to reduce the goal to its premises. Rewrite using `[h, map_one]`. Establish `hkill : ∀ (z : T' ⟶ t.G) (J : Ideal (𝓞 E)), (p : 𝓞 E) ^ 2 ∈ J → z ∈ t.tors T' J → z ^ (p ^ 2) = 1`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `z J hJ hz`. Rewrite using `[← comp_act_natCast t z (p ^ 2), Nat.cast_pow]`. Conclude with `hz _ hJ`. Establish `hsp : (p : 𝓞 E) ^ 2 ∈ Ideal.span {(p : 𝓞 E)}` using `Ideal.mem_span_singleton.mpr (dvd_pow_self _ two_ne_zero)`. Establish `hmem : (p : 𝓞 E) ^ 2 ∈ Ideal.span {(p : 𝓞 E)} * P.map (H.bar : 𝓞 E →+* 𝓞 E)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[sq]`. Use `Ideal.mul_mem_mul (Ideal.mem_span_singleton_self _) ?_` and prove the remaining obligations. Simplify using `using Ideal.mem_map_of_mem (H.bar : 𝓞 E →+* 𝓞 E) hp`. Establish `hpow : ∀ x : T ⟶ t.G, r x ^ (p ^ 2) = 1 → x ^ (p ^ 2) = 1`. Introduce `x h`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hr` to reduce the goal to its premises. Rewrite using `[map_pow, h, map_one]`. Take `⟨c1, c2, c3, c4, c5, c6⟩` from `hC`. Use `⟨?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `x hx a`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Subgroup.mem_comap, hcomm]`. Conclude with `c1 _ hx a`. Introduce `J hJ x hx`. Conclude with `c2 J hJ ((htors J x).1 hx)`. Introduce `x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(htors _ x).2 (c3 hx)`. Introduce `x hx y hy`. Conclude with `hw x y (hpow x (hkill _ _ hmem (c3 hx))) (hpow y (hkill _ _ hmem (c3 hy))) (c4 _ hx _ hy)`. Rewrite using `[← c5]`. Conclude with `card_preimage r hr (C : Set (T' ⟶ t.G)) (fun y hy => hs y (hkill y _ hmem (c3 hy)))`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `e1 : t.tors T (Ideal.span {(p : 𝓞 E)}) = r ⁻¹' t.tors T' (Ideal.span {(p : 𝓞 E)})` using `Set.ext fun x => htors _ x`. Establish `e2 : (C.comap r : Set (T ⟶ t.G)) ∩ t.tors T (Ideal.span {(p : 𝓞 E)}) = r ⁻¹' ((C : Set (T' ⟶ t.G)) ∩ t.tors T' (Ideal.span {(p : 𝓞 E)}))`. Use extensionality with `x`. Simplify using `only [Set.mem_inter_iff, Set.mem_preimage, SetLike.mem_coe, Subgroup.mem_comap]`. Rewrite using `[htors]`.
-
-Rewrite using `[e2, e1, card_preimage r hr _ (fun y hy => hs y (hkill y _ hsp hy)), card_preimage r hr _ (fun y hy => hs y (hkill y _ hsp hy.2))]`. Conclude with `c6`.
+A detailed English derivation is pending.
 -/
 theorem heckeKer_comap (D : Datum H) (P : Ideal (𝓞 E)) (p i : ℕ) (t : SAB H S) {T T' : Over S} (e : T' ⟶ T)
     (r : (T ⟶ t.G) →* (T' ⟶ t.G)) (he : ∀ x, r x = e ≫ x) (hp : (p : 𝓞 E) ∈ P)
@@ -249,33 +245,31 @@ end GlobalTheory.HkSetDesc
 open GlobalTheory.HkSetDesc in
 
 /- English proof (translation)
-Introduce `E _ _ _ H D l 𝔓 p i S S' s s' f o o' m K hA hf hK k _ _ x`. Take `⟨k', _, _, β, x', hx'⟩` from `exists_lift f x`. Establish `hxs : x ≫ s = spMap (Spec.preimage (x ≫ s)).hom` using `(Spec.map_preimage (x ≫ s)).symm`. Take `⟨-, I, -⟩` from `o.geom k x _ hxs`. Establish `hxs' : (x' ≫ f) ≫ s = spMap (Spec.preimage ((x' ≫ f) ≫ s)).hom` using `(Spec.map_preimage _).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨-, I', -⟩` from `o.geom k' (x' ≫ f) _ hxs'`. Establish `hn : 0 < p ^ 2` using `pow_pos hA.2.2.1.pos 2`. Set `e : Over.mk (x' ≫ f) ⟶ Over.mk x` to `Over.homMk (spMap β) hx'.symm`. Establish `hepi : Epi (spMap β)` using `Flat.epi_of_flat_of_surjective (spMap β)`. Set `r : (Over.mk x ⟶ o.t.G) →* (Over.mk (x' ≫ f) ⟶ o.t.G)` to `{ toFun := fun z => e ≫ z map_one' := comp_one e map_mul' := fun a b => comp_mul e a b }`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hr : Function.Injective r`. Introduce `a b hab`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Apply `(cancel_epi (spMap β)).1` to reduce the goal to its premises. Conclude with `congrArg (fun z => CommaMorphism.left z) hab`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `hs : ∀ y : Over.mk (x' ≫ f) ⟶ o.t.G, y ^ (p ^ 2) = 1 → ∃ z, r z = y` using `fun y hy => torsion_onto I I' r hr hn y hy`. Establish `hAb : IsAbelianScheme o.t.G`. Prove the components needed by the constructor for the conclusion. Apply the tactic sequence `all_goals first`. Consider the case `exact inferInstance`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact o.proper`. Consider the case `exact o.t.comm`. Consider the case `exact o.t.semi.smooth`. Consider the case `exact o.t.semi.geomConnected`. Establish `hinj : Function.Injective (Units.map e.left.appTop.hom.toMonoidHom)`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `Units.map_injective` to reduce the goal to its premises. Use `show Function.Injective (Spec.map (CommRingCat.ofHom β)).appTop.hom`. Introduce `a b hab`. Establish `key` using `congrArg (fun g => g.hom) (Scheme.ΓSpecIso_naturality (CommRingCat.ofHom β))`. Simplify using `only [CommRingCat.hom_comp, CommRingCat.hom_ofHom] at key`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h1` using `RingHom.congr_fun key a`. Establish `h2` using `RingHom.congr_fun key b`. Simplify using `only [RingHom.comp_apply] at h1 h2`. Rewrite `h1` using `[hab, h2]`. Establish `h3` using `congrArg (Scheme.ΓSpecIso (CommRingCat.of k)).inv.hom (β.injective h1)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `using h3.symm`. Establish `hw : ∀ (a b : Over.mk x ⟶ o.t.G), a ^ (p ^ 2) = 1 → b ^ (p ^ 2) = 1 → Out.WeilIs o.t.G o.t.PP.L ((p : ℤ) ^ 2) (r a) (r b) 1 → Out.WeilIs o.t.G o.t.PP.L ((p : ℤ) ^ 2) a b 1`. Introduce `a b ha hb hab`. Take `⟨u, rfl⟩` from `(I.onto _ hn a).1 ha`. Take `⟨v, rfl⟩` from `(I.onto _ hn b).1 hb`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h1` using `I.isom _ hn u v`. Establish `hpp : ((p ^ 2 : ℕ) : ℤ) = (p : ℤ) ^ 2` using `by push_cast; rfl`. Simplify using `only [hpp] at h1`. Establish `h2` using `GlobalTheory.CommPairing.weilIs_pull GlobalTheory.globalFns_holds hAb o.t.PP.isLB e h1`. Establish `h3` using `GlobalTheory.CommutatorPairing.weilIs_unique GlobalTheory.globalFns_holds hAb o.t.PP.isLB h2 hab`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite `h1` using `[hinj (h3.trans (map_one _).symm)]`. Conclude with `h1`. Take `⟨C', hC'K, hC'⟩` from `hK k' x'`. Take `⟨ρ, hρ⟩` from `GlobalTheory.HkSetPull.exists_equiv m.toSABMap.cart (Over.mk x')`. Set `C2 : Subgroup (Over.mk (x' ≫ f) ⟶ o.t.G)` to `C'.map ρ.toMonoidHom`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hC2 : o.t.HeckeKer (Over.mk (x' ≫ f)) D 𝔓 p i C2`. Use `(GlobalTheory.HkSetPull.heckeKer_iff D 𝔓 p i m.toSABMap (Over.mk x') C' C2 ?_).1 hC'` and prove the remaining obligations. Introduce `u v huv`. Establish `hv : v = ρ u` using `Over.OverMorphism.ext (by rw [hρ]; exact huv)`. Rewrite using `[hv, Subgroup.mem_map_equiv, MulEquiv.symm_apply_apply]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `⟨C2.comap r, ?_, heckeKer_comap D 𝔓 p i o.t e r (fun _ => rfl) hA.2.2.2.1 hr hs hw C2 hC2⟩` and prove the remaining obligations. Introduce `z`. Rewrite using `[Subgroup.mem_comap, Subgroup.mem_map_equiv, hC'K]`. Establish `hu` using `hρ (ρ.symm (r z))`. Rewrite `hu` using `[MulEquiv.apply_symm_apply]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Simplify using `only [Set.range_subset_iff, Set.mem_preimage]`. Prove the components needed by the constructor for the conclusion. Introduce `h w`. Take `⟨y, rfl⟩` from `Surjective.surj (f := spMap β) w`. Use `h y` as an intermediate fact.
-
-Rewrite `this` using `[← Scheme.Hom.comp_apply, ← hu]`. Conclude with `this`. Introduce `h y`. Rewrite using `[← Scheme.Hom.comp_apply, ← hu]`. Conclude with `h _`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.heckeSet_descends : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (𝔓 : Ideal (𝓞 E)) (p i : ℕ) (S S' : Scheme.{0}) (s : S ⟶ Sp (KA l)) (s' : S' ⟶ Sp (KA l)) (f : S' ⟶ S) (o : Ob D l s) (o' : Ob D l s') (m : ObjMap o' o f) (K : Set o.t.G.left), admitted l 𝔓 p → Surjective f → HeckeSet D o'.t 𝔓 p i (m.toSABMap.φ ⁻¹' K) → HeckeSet D o.t 𝔓 p i K := by
   intro E _ _ _ H D l 𝔓 p i S S' s s' f o o' m K hA hf hK k _ _ x

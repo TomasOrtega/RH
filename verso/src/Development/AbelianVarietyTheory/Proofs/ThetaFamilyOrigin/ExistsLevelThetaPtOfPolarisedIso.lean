@@ -17,9 +17,9 @@ namespace GlobalTheory.LevelPullIso
 open ReciprocityTheory.ChartRestriction.G.Out
 
 /- English proof (translation)
-Use `⟨H.1, H.2.1, fun p => ?_⟩` and prove the remaining obligations. Take `⟨V, hV, Q⟩` from `H.2.2 p`. Use `⟨V, hV, ?_⟩` and prove the remaining obligations. Establish `hk' : ∀ i, (overResι V ≫ x i) ^ (k ^ 2) = 1` using `fun i => by`. Rewrite using `[← MonObj.comp_pow, hk, MonObj.comp_one]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `GlobalTheory.ThetaPtUp.isThetaPtOver_down (T := overRes V) (T₀ := overRes V) (𝟙 (overRes V).left) (Geo.Tor.isGrpPullback_of_iso φ) hw ((Category.id_comp _).trans (Category.comp_id _).symm) (x₀ := fun i => overResι V ≫ x i ≫ φ.hom) (fun i => (Category.id_comp _).trans (by rw [← Ca …`.
+A detailed English derivation is pending.
 -/
 theorem isThetaPt_of_iso {S : Scheme.{0}} {P P' : PolAV S} (φ : P.A ≅ P'.A) [IsMonHom φ.hom]
     (hw : LBIso P.L (P'.L.pull φ.hom.left)) {T : Over S} {k : ℕ} {I : Type} {x : I → (T ⟶ P.A)}
@@ -40,12 +40,12 @@ section Basis
 variable {S : Scheme.{0}} {P : PolAV S} {M : ℕ} {ze : Γ(S, ⊤)ˣ} (lev : Level P M ze) {g : ℕ} (hg : P.g = g)
 
 /- English proof (translation)
-The claim follows from `lev.torsion _`.
+A detailed English derivation is pending.
 -/
 theorem basis_pow (i : Fin (2 * g)) : levelBasis lev hg i ^ M = 1 := lev.torsion _
 
 /- English proof (translation)
-Substitute `hg` using the available equality. Conclude with `lev.indep K s c c' h`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem basis_indep (K : Type) [Field K] [IsAlgClosed K] (s : Spec (CommRingCat.of K) ⟶ S)
     (c c' : Fin (2 * g) → Fin M)
@@ -56,7 +56,7 @@ theorem basis_indep (K : Type) [Field K] [IsAlgClosed K] (s : Spec (CommRingCat.
   subst hg; exact lev.indep K s c c' h
 
 /- English proof (translation)
-Substitute `hg` using the available equality. Conclude with `lev.span K s y hy`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem basis_span (K : Type) [Field K] [IsAlgClosed K] (s : Spec (CommRingCat.of K) ⟶ S)
     (y : Over.mk s ⟶ P.A) (hy : y ^ M = 1) : ∃ c : Fin (2 * g) → Fin M,
@@ -65,7 +65,7 @@ theorem basis_span (K : Type) [Field K] [IsAlgClosed K] (s : Spec (CommRingCat.o
   subst hg; exact lev.span K s y hy
 
 /- English proof (translation)
-Substitute `hg` using the available equality. Conclude with `lev.pairing i j`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem basis_pairing (i j : Fin (2 * g)) :
     WeilIs P.A P.L M (levelBasis lev hg i) (levelBasis lev hg j) (ze ^ stdSymp g i j) := by
@@ -74,7 +74,7 @@ theorem basis_pairing (i j : Fin (2 * g)) :
 end Basis
 
 /- English proof (translation)
-Set `F : (T ⟶ A) →* (T ⟶ B)` to `IsMonHom.monoidHom φ.hom T`. Establish `hF : Function.Injective F` using `fun a b h => (cancel_mono φ.hom).1 h`. Establish `e : F (x ^ M) = (x ≫ φ.hom) ^ M` using `map_pow F x M`. Rewrite using `[← e]`. Conclude with `map_eq_one_iff F hF`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem comp_pow_eq_one_iff {S : Scheme.{0}} {A B T : Over S} [GrpObj A] [GrpObj B] (φ : A ≅ B) [IsMonHom φ.hom]
     (x : T ⟶ A) (M : ℕ) : (x ≫ φ.hom) ^ M = 1 ↔ x ^ M = 1 := by
@@ -85,11 +85,11 @@ theorem comp_pow_eq_one_iff {S : Scheme.{0}} {A B T : Over S} [GrpObj A] [GrpObj
   exact map_eq_one_iff F hF
 
 /- English proof (translation)
-Take `⟨w, hw⟩` from `hw`. Take `⟨x, hx⟩ : ∃ x : Fin (2 * P.g) → (baseOver S ⟶ P.A), ∀ i, x i ≫ φ.hom = levelBasis lev' hg' i` from `⟨fun i => levelBasis lev' hg' i ≫ φ.inv, fun i => by simp⟩`. Establish `ht : ∀ i, x i ^ M = 1` using `fun i => by`. Rewrite using `[← comp_pow_eq_one_iff φ, hx]`. Conclude with `basis_pow lev' hg' i`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hc : ∀ {T : Over S} (h : T ⟶ baseOver S) (a : Fin (2 * P.g) → ℕ), linComb (fun i => h ≫ x i) a ≫ φ.hom = linComb (fun i => h ≫ levelBasis lev' hg' i) a` using `fun h a => by`. Rewrite using `[ThetaPtDet.linComb_comp]`. Conclude with `congrArg (linComb · a) (funext fun i => by rw [Category.assoc, hx])`. Use `⟨⟨x, lev'.prim, ht, fun K _ _ s c c' e => ?_, fun K _ _ s y hy => ?_, fun i j => ?_⟩, hx⟩` and prove the remaining obligations. Conclude with `basis_indep lev' hg' K s c c' ((hc _ _).symm.trans ((congrArg (· ≫ φ.hom) e).trans (hc _ _)))`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Take `⟨c, e⟩` from `basis_span lev' hg' K s (y ≫ φ.hom) ((comp_pow_eq_one_iff φ y M).2 hy)`. Conclude with `⟨c, (cancel_mono φ.hom).1 ((hc _ _).trans e)⟩`. Rewrite using `[← weilIs_iso_iff hL.globalFns hL.cube P P' φ w hw M _ _ (ht i) (ht j), hx, hx]`. Conclude with `basis_pairing lev' hg' i j`.
+A detailed English derivation is pending.
 -/
 theorem exists_level (hL : Laws) {S : Scheme.{0}} [IsLocallyNoetherian S] {P P' : PolAV S} (hg' : P'.g = P.g)
     (φ : P.A ≅ P'.A) [IsMonHom φ.hom] (hw : LBIso P.L (P'.L.pull φ.hom.left)) {M : ℕ} {ze : Γ(S, ⊤)ˣ}
@@ -115,9 +115,9 @@ end GlobalTheory.LevelPullIso
 open GlobalTheory.LevelPullIso in
 
 /- English proof (translation)
-Introduce `hL g N' K _ _ P P' hg hg' φ ⟨hφ, t⟩ ze lev' v hv`. Substitute `hg` using the available equality. Establish `hw : LBIso P.L (P'.L.pull φ.hom.left)` using `LBIso.symm t`. Take `⟨lev, hl⟩` from `exists_level hL hg' φ hw lev'`. Establish `hp : ∀ a, levelPoint lev rfl a ≫ φ.hom = levelPoint lev' hg' a` using `fun a => by`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[ThetaPtDet.levelPoint_eq, ThetaPtDet.levelPoint_eq, ThetaPtDet.linComb_comp]`. Conclude with `congrArg (Out.linComb · _) (funext hl)`. Use `⟨lev, hl, isThetaPt_of_iso φ hw (fun a => ThetaPtDet.levelPoint_pow lev rfl a) ?_⟩` and prove the remaining obligations. Rewrite using `[funext hp]`. Conclude with `hv`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.exists_level_thetaPt_of_polIso : Out.Laws → ∀ (g N' : ℕ) (K : Type) [Field K] [IsAlgClosed K] (P P' : Out.PolAV (Sp K)) (hg : P.g = g) (hg' : P'.g = g) (φ : P.A ≅ P'.A), IsPolIso P P' φ → ∀ (ze : Γ(Sp K, ⊤)ˣ) (lev' : Out.Level P' (N' ^ 2) ze) (v : (Fin (2 * g) → ZMod (N' ^ 2)) → Γ((Out.baseOver (Sp K)).left, ⊤)), Out.IsThetaPt P' N' (levelPoint lev' hg') v → ∃ lev : Out.Level P (N' ^ 2) ze, (∀ i, levelBasis lev hg i ≫ φ.hom = levelBasis lev' hg' i) ∧ Out.IsThetaPt P N' (levelPoint lev hg) v := by
   intro hL g N' K _ _ P P' hg hg' φ ⟨hφ, t⟩ ze lev' v hv

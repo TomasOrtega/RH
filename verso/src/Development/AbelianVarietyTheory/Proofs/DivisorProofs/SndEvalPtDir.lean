@@ -11,11 +11,9 @@ noncomputable section
 namespace GlobalTheory.CompHS
 
 /- English proof (translation)
-Establish `h : ∀ z : PrimeSpectrum (TrivSqZeroExt L M), ∀ a, a ∈ z.asIdeal ↔ a.fst = 0` using `fun z a => by`. Prove the components needed by the constructor for the conclusion. Introduce `ha`. Assume the negation of the conclusion as `h0`. Conclude with `z.2.ne_top (z.asIdeal.eq_top_of_isUnit_mem ha (TrivSqZeroExt.isUnit_iff_isUnit_fst.2 (Ne.isUnit h0)))`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `ha`. Use `z.2.mem_of_pow_mem 2 ?_` and prove the remaining obligations. Apply the tactic sequence `rw [show a ^ 2 = 0 by ext <;> simp [pow_two, ha]]`. Conclude with `z.asIdeal.zero_mem`. Use extensionality with `a`.
-
-Rewrite using `[h, h]`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem primeSpectrum_trivSqZeroExt_eq {L M : Type} [Field L] [AddCommGroup M] [Module L M] [Module Lᵐᵒᵖ M]
     [IsCentralScalar L M] (x y : PrimeSpectrum (TrivSqZeroExt L M)) : x = y := by
@@ -32,7 +30,7 @@ theorem primeSpectrum_trivSqZeroExt_eq {L M : Type} [Field L] [AddCommGroup M] [
   rw [h, h]
 
 /- English proof (translation)
-Introduce `s _`. Establish `hp : (spMap φ) (IsLocalRing.closedPoint L) = s` using `hR _ _`. Establish `h₁ : (spMap φ ≫ x) (IsLocalRing.closedPoint L) ∈ V` using `h (Set.mem_univ _)`. Conclude with `hp ▸ h₁`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem le_preimage_of_reduction {R L : Type} [CommRing R] [Field L] (hR : ∀ a b : PrimeSpectrum R, a = b)
     (φ : R →+* L) {T : Scheme.{0}} (x : Sp R ⟶ T) (V : T.Opens) (h : ⊤ ≤ (spMap φ ≫ x) ⁻¹ᵁ V) : ⊤ ≤ x ⁻¹ᵁ V := by
@@ -42,7 +40,7 @@ theorem le_preimage_of_reduction {R L : Type} [CommRing R] [Field L] (hR : ∀ a
   exact hp ▸ h₁
 
 /- English proof (translation)
-Introduce `s _`. Establish `hp : (spMap φ) s₀ = s` using `hR _ _`. Establish `h₁ : (spMap φ ≫ x) s₀ ∈ V` using `h (Set.mem_univ _)`. Conclude with `hp ▸ h₁`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem le_preimage_of_comp {R S : Type} [CommRing R] [CommRing S] (hR : ∀ a b : PrimeSpectrum R, a = b)
     (φ : R →+* S) (s₀ : Sp S) {T : Scheme.{0}} (x : Sp R ⟶ T) (V : T.Opens) (h : ⊤ ≤ (spMap φ ≫ x) ⁻¹ᵁ V) :
@@ -56,15 +54,15 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : D
   {Xo : Moduli Dw l} {c : Coeff l} {Y : Model Xo c (RingHom.id c.F)} {X : GlobalTheory.FlagMod.FlagCover Y} {Z : Comp Xo c}
 
 /- English proof (translation)
-Establish `hred : spMap (TrivSqZeroExt.fstHom c.F K (ι → K)).toRingHom ≫ X.ptY W = X.ptY Q` using `X.ptY_frMap hW`. Establish `hpt : ∀ a b : PrimeSpectrum (TrivSqZeroExt K (ι → K)), a = b` using `primeSpectrum_trivSqZeroExt_eq`. Establish `hU : ⊤ ≤ (z ≫ M.σ) ⁻¹ᵁ U₀ X Z` using `fun s _ => by`. Use `ho (Set.mem_univ s)` as an intermediate fact. Rewrite `this` using `[M.off_eq]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this`. Establish `hb : ⊤ ≤ X.ptY W ⁻¹ᵁ (inc₀ X Z).opensRange` using `le_preimage_of_reduction hpt (TrivSqZeroExt.fstHom c.F K (ι → K)).toRingHom _ _ (by`. Rewrite using `[hred, ← hz]`. Introduce and unpack `s -`. Conclude with `⟨(z ≫ M.σ) s, rfl⟩)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `hr : Set.range (X.ptY W) ⊆ Set.range (inc₀ X Z)`. Introduce and unpack `_ ⟨s, rfl⟩`. Conclude with `hb (Set.mem_univ s)`. Take `⟨w₁, hw₁⟩ : ∃ w₁, w₁ ≫ inc₀ X Z = X.ptY W` from `⟨_, IsOpenImmersion.lift_fac _ _ hr⟩`. Establish `ered : spMap (TrivSqZeroExt.fstHom c.F K (ι → K)).toRingHom ≫ w₁ = z ≫ M.σ`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← cancel_mono (inc₀ X Z), Category.assoc, hw₁, hred, ← hz, Category.assoc]`. Establish `hwU : ⊤ ≤ w₁ ⁻¹ᵁ U₀ X Z` using `le_preimage_of_reduction hpt _ _ _ (by rw [ered]; exact hU)`. Take `⟨ZW, hZW, -⟩` from `M.existsUnique_lift w₁ hwU`. Use `⟨ZW, by rw [toFlag, ← Category.assoc, hZW, hw₁], fun m x hx => ?_⟩` and prove the remaining obligations. Establish `hxU : ⊤ ≤ (spMap (GlobalTheory.FlagTan.dir c m).toRingHom ≫ w₁) ⁻¹ᵁ U₀ X Z` using `fun s _ => hwU (Set.mem_univ _)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `(M.existsUnique_lift _ hxU).unique ?_ (by rw [Category.assoc, hZW])` and prove the remaining obligations. Rewrite using `[← cancel_mono (inc₀ X Z), Category.assoc, Category.assoc, hw₁, ← hx]`.
+A detailed English derivation is pending.
 -/
 theorem exists_thickLift (M : Modif (str₀ X Z) (U₀ X Z) (dimFlag Dw)) {K : Type} [Field K] [Algebra c.F K]
     {ι : Type} [Fintype ι] (z : Sp K ⟶ M.X) (ho : ⊤ ≤ z ⁻¹ᵁ M.off) {Q : FrPt Xo c K} (hz : z ≫ toFlag M = X.ptY Q)
@@ -98,7 +96,7 @@ theorem exists_thickLift (M : Modif (str₀ X Z) (U₀ X Z) (dimFlag Dw)) {K : T
   rw [← cancel_mono (inc₀ X Z), Category.assoc, Category.assoc, hw₁, ← hx]
 
 /- English proof (translation)
-Substitute `e` using the available equality. Rewrite using `[evalPt_spMap_comp (GlobalTheory.FlagTan.dir c m).toRingHom ZW O hO hx g]`. Conclude with `GlobalTheory.FlagTan.snd_dir m _`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem snd_evalPt_dir {K : Type} [Field K] [Algebra c.F K] {ι : Type} [Fintype ι] {T : Scheme.{0}}
     (ZW : Sp (TrivSqZeroExt K (ι → K)) ⟶ T) (O : T.Opens) (hO : ⊤ ≤ ZW ⁻¹ᵁ O) (m : ι → K)

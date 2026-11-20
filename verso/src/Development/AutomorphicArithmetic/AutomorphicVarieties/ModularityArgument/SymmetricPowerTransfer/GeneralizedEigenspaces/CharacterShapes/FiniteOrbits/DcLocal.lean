@@ -8,7 +8,7 @@ open UpperTheory.V.Z.Sym UpperTheory.V.Z.Sym.Loc UpperTheory.V.Z.Sym.Glob UpperT
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 /- English proof (translation)
-Consider the cases of `nonempty_fintype α`. Simplify using `only [finsum_eq_sum_of_fintype, LinearMap.sum_apply]`.
+Split into cases according to the possible forms of the given data. Simplify using the standard rewrite rules.
 -/
 private theorem finsum_end_apply {α M : Type} [AddCommGroup M] [Module ℂ M] [Finite α]
     (f : α → Module.End ℂ M) (x : M) : (∑ᶠ a, f a) x = ∑ᶠ a, f a x := by
@@ -16,33 +16,31 @@ private theorem finsum_end_apply {α M : Type} [AddCommGroup M] [Module ℂ M] [
   simp only [finsum_eq_sum_of_fintype, LinearMap.sum_apply]
 
 /- English proof (translation)
-Introduce `H G V _ _ _ _ j p J U hpj hU hJ d hd`. Establish `hin : ∀ h : H, (h : H ⧸ J) ∈ MulAction.orbit J (d : H ⧸ J) → ((j h : G) : G ⧸ U) ∈ MulAction.orbit U ((j d : G) : G ⧸ U)`. Introduce and unpack `h ⟨a, ha⟩`. Establish `h1 : (((a : H) * d : H) : H ⧸ J) = (h : H ⧸ J)` using `ha`. Establish `h2 : ((a : H) * d)⁻¹ * h ∈ J` using `QuotientGroup.eq.1 h1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : (j ((a : H) * d))⁻¹ * j h ∈ U`. Use `hJ _ h2` as an intermediate fact. Simplify `this` using `[map_mul]`. Use `⟨⟨j a, hJ _ a.2⟩, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `((j a * j d : G) : G ⧸ U) = ((j h : G) : G ⧸ U)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Use `QuotientGroup.eq.2 ?_` and prove the remaining obligations. Simplify `h3` using `[map_mul]`. Establish `hsurj : ∀ y ∈ MulAction.orbit U ((j d : G) : G ⧸ U), ∃ h : H, (h : H ⧸ J) ∈ MulAction.orbit J (d : H ⧸ J) ∧ ((j h : G) : G ⧸ U) = y`. Introduce and unpack `y ⟨u, rfl⟩`. Take `⟨hpu, hc⟩` from `hU u u.2`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Use `set c : G := (u : G) * (j (p u))⁻¹ with hcdef`. Establish `hcU : c ∈ U` using `U.mul_mem u.2 (U.inv_mem (hJ _ hpu))`. Use `⟨p u * d, ⟨⟨p u, hpu⟩, rfl⟩, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `((j (p u * d) : G) : G ⧸ U) = (((u : G) * j d : G) : G ⧸ U)`. Establish `hfac : (u : G) * j d = j (p u * d) * c`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : (u : G) = c * j (p u)` using `by simp [hcdef]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hfac]`. Conclude with `(QuotientGroup.mk_mul_of_mem _ hcU).symm`. Establish `hfin : AlgebraTools.FinOrb U U (j d)`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `(hd.image fun q : H ⧸ J => ((j q.out : G) : G ⧸ U)).subset ?_` and prove the remaining obligations. Introduce `y hy`. Take `⟨h, hh, rfl⟩` from `hsurj y hy`. Use `⟨(h : H ⧸ J), hh, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `((j (h : H ⧸ J).out : G) : G ⧸ U) = ((j h : G) : G ⧸ U)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `QuotientGroup.eq.2 ?_` and prove the remaining obligations. Establish `h1 : ((h : H ⧸ J).out)⁻¹ * h ∈ J` using `QuotientGroup.eq.1 (by simp)`. Use `hJ _ h1` as an intermediate fact. Simplify `this` using `[map_mul]`. Use `⟨hfin, fun φ hφ => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `haveI : Finite (MulAction.orbit J (d : H ⧸ J)) := Set.Finite.to_subtype hd`. Use `haveI : Finite (MulAction.orbit U ((j d : G) : G ⧸ U)) := Set.Finite.to_subtype hfin`. Set `e : MulAction.orbit J (d : H ⧸ J) → MulAction.orbit U ((j d : G) : G ⧸ U)` to `fun q => ⟨((j (q : H ⧸ J).out : G) : G ⧸ U), hin _ (by simpa using q.2)⟩`. Establish `he : Function.Bijective e`. Prove the components needed by the constructor for the conclusion.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `q q' hqq`. Establish `h1 : ((j (q : H ⧸ J).out : G) : G ⧸ U) = ((j (q' : H ⧸ J).out : G) : G ⧸ U)` using `congrArg Subtype.val hqq`. Establish `h2 : (j (q : H ⧸ J).out)⁻¹ * j (q' : H ⧸ J).out ∈ U` using `QuotientGroup.eq.1 h1`. Establish `h3` using `(hU _ h2).1`. Establish `h4 : ((q : H ⧸ J).out)⁻¹ * (q' : H ⧸ J).out ∈ J`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `h3` using `[map_mul, map_inv, hpj]`. Establish `h5 : (((q : H ⧸ J).out : H) : H ⧸ J) = (((q' : H ⧸ J).out : H) : H ⧸ J)` using `QuotientGroup.eq.2 h4`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `using h5`. Introduce and unpack `⟨y, hy⟩`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨h, hh, rfl⟩` from `hsurj y hy`. Use `⟨⟨(h : H ⧸ J), hh⟩, Subtype.ext ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `((j (h : H ⧸ J).out : G) : G ⧸ U) = ((j h : G) : G ⧸ U)`. Use `QuotientGroup.eq.2 ?_` and prove the remaining obligations. Establish `h1 : ((h : H ⧸ J).out)⁻¹ * h ∈ J` using `QuotientGroup.eq.1 (by simp)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `hJ _ h1` as an intermediate fact. Simplify `this` using `[map_mul]`. Unfold `dcF dc`. Rewrite using `[finsum_end_apply, finsum_end_apply, ← finsum_comp e he]`. Use `finsum_congr fun q => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Use function extensionality and compare the values at `g`. Establish `h1 : (((e q : G ⧸ U)).out)⁻¹ * j (q : H ⧸ J).out ∈ U` using `QuotientGroup.eq.1 (by simp [e])`. Establish `h2` using `hφ _ h1 (g * ((e q : G ⧸ U)).out)`. Express the relevant statement in the definitionally equal form `φ (g * ((e q : G ⧸ U)).out) = φ (g * j (q : H ⧸ J).out)`. Rewrite using `[← h2]`.
-
-Use `congr 1`. Use `group`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Sym.So.dcLocal :
     UpperTheory.V.Z.Sym.So.DcLocal := by

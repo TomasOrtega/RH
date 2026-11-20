@@ -18,14 +18,14 @@ def JA : Ideal ↥M.A' :=
   Ideal.span (Set.range fun i : Fin (WeightFamilies.dimY D j) => (⟨sfr (xplus X E hM) la G.w i.succ, M.sA i⟩ : ↥M.A'))
 
 /- English proof (translation)
-Rewrite using `[JA, Ideal.map_span, ← Set.range_comp]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem map_JA : M.JA.map (algebraMap ↥M.A' ↥(Frac0 (xplus X E hM) la G.w)) = Jid (xplus X E hM) la G.w := by
   rw [JA, Ideal.map_span, ← Set.range_comp]
   rfl
 
 /- English proof (translation)
-Use `ReciprocityTheory.ChartRestriction.G.I2.quotientMap_bijective_of_loc M.h M.JA M.h_one (fun b => ?_) Subtype.val_injective` and prove the remaining obligations. Take `⟨m, a, ha⟩` from `M.loc b`. Conclude with `⟨m, a, by rw [map_pow]; exact ha⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem bij_quot : Function.Bijective (Ideal.quotientMap (M.JA.map (algebraMap ↥M.A' ↥(Frac0 (xplus X E hM) la G.w)))
     (algebraMap ↥M.A' ↥(Frac0 (xplus X E hM) la G.w)) Ideal.le_comap_map) := by
@@ -42,9 +42,9 @@ def quotEquiv : (↥M.A' ⧸ M.JA) ≃ₐ[Kp (xplus X E hM) la G.N] OsK (xplus X
     ((Ideal.quotientEquivAlgOfEq (Kp (xplus X E hM) la G.N) M.map_JA).bijective.comp M.bij_quot)
 
 /- English proof (translation)
-Establish `h1 : ((M.h : ↥(Frac0 (xplus X E hM) la G.w)) - 1) ∈ Jid (xplus X E hM) la G.w`. Rewrite using `[← M.map_JA]`. Use `Ideal.mem_map_of_mem (algebraMap ↥M.A' ↥(Frac0 (xplus X E hM) la G.w)) M.h_one` as an intermediate fact. Rewrite `this` using `[map_sub, map_one]`. Then use the resulting hypothesis. Establish `h2` using `(toOsK_eq_zero_iff (xplus X E hM) la G.w _).2 h1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Rewrite `h2` using `[map_sub, map_one, sub_eq_zero]`. Conclude with `h2`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem toOsK_h : toOsK (xplus X E hM) la G.w (M.h : ↥(Frac0 (xplus X E hM) la G.w)) = 1 := by
   have h1 : ((M.h : ↥(Frac0 (xplus X E hM) la G.w)) - 1) ∈ Jid (xplus X E hM) la G.w := by
@@ -56,7 +56,7 @@ theorem toOsK_h : toOsK (xplus X E hM) la G.w (M.h : ↥(Frac0 (xplus X E hM) la
   exact h2
 
 /- English proof (translation)
-Rewrite using `[map_smul]`. Conclude with `(algebraMap_smul (OsK (xplus X E hM) la G.w) b _).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fractionToIntegralSection_smul_eq (b : ↥(Frac0 (xplus X E hM) la G.w)) (n : ↥(HK (xplus X E hM) la G.w wF)) :
     toA0K (xplus X E hM) la G.w wF (b • n) = toOsK (xplus X E hM) la G.w b • toA0K (xplus X E hM) la G.w wF n := by
@@ -64,7 +64,7 @@ theorem fractionToIntegralSection_smul_eq (b : ↥(Frac0 (xplus X E hM) la G.w))
   exact (algebraMap_smul (OsK (xplus X E hM) la G.w) b _).symm
 
 /- English proof (translation)
-Rewrite using `[Submodule.coe_smul, coe_toHK0]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem coe_smul_base_cusp_form (b : ↥(Frac0 (xplus X E hM) la G.w)) :
     ((b • toHK0 (xplus X E hM) la G.w wF ⟨emb (xplus X E hM) la G.N (X.inc wF g0), emb_mem_Vw (xplus X E hM) la G.N wF g0⟩ : ↥(HK (xplus X E hM) la G.w wF)) : Lw (xplus X E hM) la G.w) =
@@ -73,7 +73,7 @@ theorem coe_smul_base_cusp_form (b : ↥(Frac0 (xplus X E hM) la G.w)) :
   rfl
 
 /- English proof (translation)
-Rewrite using `[Submodule.coe_smul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem coe_smul' (b : ↥(Frac0 (xplus X E hM) la G.w)) (n : ↥(HK (xplus X E hM) la G.w wF)) : ((b • n : ↥(HK (xplus X E hM) la G.w wF)) : Lw (xplus X E hM) la G.w) = (b : Lw (xplus X E hM) la G.w) * (n : Lw (xplus X E hM) la G.w) := by
   rw [Submodule.coe_smul]
@@ -82,21 +82,21 @@ theorem coe_smul' (b : ↥(Frac0 (xplus X E hM) la G.w)) (n : ↥(HK (xplus X E 
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Use `set e0 : ↥(HK (xplus X E hM) la G.w wF) := toHK0 (xplus X E hM) la G.w wF ⟨emb (xplus X E hM) la G.N (X.inc wF g0), emb_mem_Vw (xplus X E hM) la G.N wF g0⟩ with he0`. Establish `key : ∀ r ∈ Jid (xplus X E hM) la G.w, ∀ n : ↥(HK (xplus X E hM) la G.w wF), ∃ m : ℕ, ∃ a' ∈ M.JA, ((M.h : ↥(Frac0 (xplus X E hM) la G.w)) ^ m • (r • n)) = ((a' : ↥(Frac0 (xplus X E hM) la G.w)) • e0)`. Introduce `r hr`. Proceed by induction on `hr using Submodule.span_induction with`. Consider the case `mem x hx`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨i, rfl⟩` from `hx`. Introduce `n`. Take `⟨m, a, ha⟩` from `M.base_form_local n`. Use `⟨m, ⟨sfr (xplus X E hM) la G.w i.succ, M.sA i⟩ * a, Ideal.mul_mem_right _ _ (Ideal.subset_span ⟨i, rfl⟩), ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[coe_smul', coe_smul', he0, coe_smul_base_cusp_form]`. Simplify using `only [MulMemClass.coe_mul, SubmonoidClass.coe_pow]`. Rewrite using `[mul_left_comm, ha]`. Expand and normalize the polynomial expressions, which then agree. Consider the case `zero => intro n; exact ⟨0, 0, Ideal.zero_mem _, by simp⟩`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Treat this case separately. Treat this case separately.
 
-Consider the case `add x y _ _ hx hy`. Introduce `n`. Take `⟨m, a, ha, he⟩` from `hx n`. Take `⟨m', a', ha', he'⟩` from `hy n`. Use `⟨m + m', M.h ^ m' * a + M.h ^ m * a', Ideal.add_mem _ (Ideal.mul_mem_left _ _ ha) (Ideal.mul_mem_left _ _ ha'), ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e1 : ((M.h : ↥(Frac0 (xplus X E hM) la G.w)) ^ m * (M.h : ↥(Frac0 (xplus X E hM) la G.w)) ^ m') • (x • n) = ((M.h ^ m' * a : ↥M.A') : ↥(Frac0 (xplus X E hM) la G.w)) • e0`. Rewrite using `[MulMemClass.coe_mul, SubmonoidClass.coe_pow, mul_comm, mul_smul, he, ← mul_smul]`. Establish `e2 : ((M.h : ↥(Frac0 (xplus X E hM) la G.w)) ^ m * (M.h : ↥(Frac0 (xplus X E hM) la G.w)) ^ m') • (y • n) = ((M.h ^ m * a' : ↥M.A') : ↥(Frac0 (xplus X E hM) la G.w)) • e0`. Rewrite using `[MulMemClass.coe_mul, SubmonoidClass.coe_pow, mul_smul, he', ← mul_smul]`. Rewrite using `[add_smul, smul_add, pow_add, e1, e2, ← add_smul, ← AddMemClass.coe_add]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `smul c x _ hx`. Introduce `n`. Take `⟨m, a, ha, he⟩` from `hx ((c • n : ↥(HK (xplus X E hM) la G.w wF)))`. Use `⟨m, a, ha, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_eq_mul, mul_comm, mul_smul]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `he`. Use `Submodule.smul_induction_on hz (fun r hr n _ => key r hr n) ?_` and prove the remaining obligations. Introduce and unpack `x y ⟨m, a, ha, he⟩ ⟨m', a', ha', he'⟩`. Use `⟨m + m', M.h ^ m' * a + M.h ^ m * a', Ideal.add_mem _ (Ideal.mul_mem_left _ _ ha) (Ideal.mul_mem_left _ _ ha'), ?_⟩` and prove the remaining obligations. Establish `e1 : ((M.h : ↥(Frac0 (xplus X E hM) la G.w)) ^ m * (M.h : ↥(Frac0 (xplus X E hM) la G.w)) ^ m') • x = ((M.h ^ m' * a : ↥M.A') : ↥(Frac0 (xplus X E hM) la G.w)) • e0`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[MulMemClass.coe_mul, SubmonoidClass.coe_pow, mul_comm, mul_smul, he, ← mul_smul]`. Establish `e2 : ((M.h : ↥(Frac0 (xplus X E hM) la G.w)) ^ m * (M.h : ↥(Frac0 (xplus X E hM) la G.w)) ^ m') • y = ((M.h ^ m * a' : ↥M.A') : ↥(Frac0 (xplus X E hM) la G.w)) • e0`. Rewrite using `[MulMemClass.coe_mul, SubmonoidClass.coe_pow, mul_smul, he', ← mul_smul]`. Rewrite using `[smul_add, pow_add, e1, e2, ← add_smul, ← AddMemClass.coe_add]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem JH_mem (z : ↥(HK (xplus X E hM) la G.w wF)) (hz : z ∈ Jid (xplus X E hM) la G.w • (⊤ : Submodule ↥(Frac0 (xplus X E hM) la G.w) ↥(HK (xplus X E hM) la G.w wF))) :
     ∃ m : ℕ, ∃ a' ∈ M.JA, ((M.h : ↥(Frac0 (xplus X E hM) la G.w)) ^ m • z) = ((a' : ↥(Frac0 (xplus X E hM) la G.w)) •
@@ -145,21 +145,19 @@ theorem JH_mem (z : ↥(HK (xplus X E hM) la G.w wF)) (hz : z ∈ Jid (xplus X E
   rw [smul_add, pow_add, e1, e2, ← add_smul, ← AddMemClass.coe_add]
 
 /- English proof (translation)
-Use `set e0 : ↥(HK (xplus X E hM) la G.w wF) := toHK0 (xplus X E hM) la G.w wF ⟨emb (xplus X E hM) la G.N (X.inc wF g0), emb_mem_Vw (xplus X E hM) la G.N wF g0⟩ with he0`. Establish `hres : resF G la g0 = toA0K (xplus X E hM) la G.w wF e0` using `rfl`. Unfold `IsGen`. Rewrite using `[hres]`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `u v huv`. Rewrite using `[← sub_eq_zero]`. Establish `hw : (u - v) • toA0K (xplus X E hM) la G.w wF e0 = 0` using `by rw [sub_smul]; exact sub_eq_zero.2 huv`. Take `⟨b, hb⟩` from `toOsK_surjective (xplus X E hM) la G.w (u - v)`. Take `⟨m, a, ha⟩` from `M.loc b`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hta : toOsK (xplus X E hM) la G.w (a : ↥(Frac0 (xplus X E hM) la G.w)) = u - v`. Rewrite using `[← ha, map_mul, map_pow, M.toOsK_h, one_pow, one_mul, hb]`. Rewrite `hw` using `[← hta, ← fractionToIntegralSection_smul_eq]`. Take `⟨m', a', ha', he'⟩` from `M.JH_mem _ ((reduction_eq_zero_iff_mem_ideal_smul (xplus X E hM) la G.w wF _).1 hw)`. Establish `hinj : M.h ^ m' * a = a'`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `M.base_form_injective` to reduce the goal to its premises. Use `congrArg (fun n : ↥(HK (xplus X E hM) la G.w wF) => (n : Lw (xplus X E hM) la G.w)) he'` as an intermediate fact. Rewrite `this` using `[he0]`. Simplify using `only [coe_smul', coe_toHK0, SubmonoidClass.coe_pow] at this`. Simplify using `only [MulMemClass.coe_mul, SubmonoidClass.coe_pow]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_assoc]`. Conclude with `this`. Establish `hJ : ((M.h ^ m' * a : ↥M.A') : ↥(Frac0 (xplus X E hM) la G.w)) ∈ Jid (xplus X E hM) la G.w`. Rewrite using `[hinj, ← M.map_JA]`. Conclude with `Ideal.mem_map_of_mem _ ha'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `h0` using `(toOsK_eq_zero_iff (xplus X E hM) la G.w _).2 hJ`. Rewrite `h0` using `[MulMemClass.coe_mul, SubmonoidClass.coe_pow, map_mul, map_pow, M.toOsK_h, one_pow, one_mul]`. Rewrite using `[← hta]`. Conclude with `h0`. Introduce `n`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take `⟨x, rfl⟩` from `reductionMap_surjective (xplus X E hM) la G.w wF n`. Take `⟨m, a, ha⟩` from `M.base_form_local x`. Use `⟨toOsK (xplus X E hM) la G.w (a : ↥(Frac0 (xplus X E hM) la G.w)), ?_⟩` and prove the remaining obligations. Establish `hx : ((M.h : ↥(Frac0 (xplus X E hM) la G.w)) ^ m • x) = ((a : ↥(Frac0 (xplus X E hM) la G.w)) • e0)`. Apply `Subtype.ext` to reduce the goal to its premises.
-
-Rewrite using `[coe_smul', he0, coe_smul_base_cusp_form]`. Simplify `ha` using `only [Subalgebra.coe_pow, SubmonoidClass.coe_pow]`. Use `show toOsK (xplus X E hM) la G.w (a : ↥(Frac0 (xplus X E hM) la G.w)) • toA0K (xplus X E hM) la G.w wF e0 = toA0K (xplus X E hM) la G.w wF x`. Rewrite using `[← fractionToIntegralSection_smul_eq, ← hx, fractionToIntegralSection_smul_eq, map_pow, M.toOsK_h, one_pow, one_smul]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isGen (M : CurveModel G la g0) : IsGen (OsK (xplus X E hM) la G.w) (resF G la g0) := by
   set e0 : ↥(HK (xplus X E hM) la G.w wF) := toHK0 (xplus X E hM) la G.w wF ⟨emb (xplus X E hM) la G.N (X.inc wF g0), emb_mem_Vw (xplus X E hM) la G.N wF g0⟩ with he0
@@ -204,9 +202,7 @@ theorem isGen (M : CurveModel G la g0) : IsGen (OsK (xplus X E hM) la G.w) (resF
 end CurveModel
 
 /- English proof (translation)
-Introduce `y hs g0 hMod _`. Take `⟨M⟩` from `hMod`. Use `⟨?_, ?_, M.isGen⟩` and prove the remaining obligations. Use `haveI : FiniteDimensional (Kp (xplus X E hM) la G.N) (↥M.A' ⧸ M.JA) := M.fin`. Conclude with `LinearEquiv.finiteDimensional M.quotEquiv.toLinearEquiv`.
-
-Use `haveI : IsReduced (↥M.A' ⧸ M.JA) := M.red`. Conclude with `isReduced_of_injective M.quotEquiv.symm.toRingHom M.quotEquiv.symm.injective`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem inCurveSec (G : GlobalFamilyData (xplus X E hM) ka wL wF) (la : HeightOneSpectrum (𝓞 B.KO)) : InCurveSecSt (E := E) G la := by
   intro y hs g0 hMod _

@@ -14,16 +14,16 @@ variable {n : ℕ}
 def cd (x : Mt n) (v : Fin n → ℂ) : Mt n := x * diagonal v * x⁻¹
 
 /- English proof (translation)
-Unfold `ReciprocityTheory.ChartRestriction.G.FD.sgn`. Apply the tactic sequence `split_ifs <;> norm_num`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma sgn_sq (q a : ℕ) : (-((ReciprocityTheory.ChartRestriction.G.FD.sgn q a : ℝ) : ℂ)) * (-((ReciprocityTheory.ChartRestriction.G.FD.sgn q a : ℝ) : ℂ)) = 1 := by
   unfold ReciprocityTheory.ChartRestriction.G.FD.sgn
   split_ifs <;> norm_num
 
 /- English proof (translation)
-Rewrite using `[det_diagonal]`. Use `Finset.prod_ne_zero_iff.mpr fun a _ => ?_` and prove the remaining obligations. Introduce `h0`. Establish `h1` using `sgn_sq q (a : ℕ)`. Rewrite `h1` using `[h0, zero_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `zero_ne_one h1`.
+A detailed English derivation is pending.
 -/
 private lemma det_diagonal_neg_sgn_ne_zero (q : ℕ) :
     (diagonal fun a : Fin n => -((ReciprocityTheory.ChartRestriction.G.FD.sgn q (a : ℕ) : ℝ) : ℂ)).det ≠ 0 := by
@@ -35,9 +35,9 @@ private lemma det_diagonal_neg_sgn_ne_zero (q : ℕ) :
   exact zero_ne_one h1
 
 /- English proof (translation)
-Establish `hd` using `det_diagonal_neg_sgn_ne_zero (n := n) q`. Rewrite `hd` using `[← h.2, det_mul, det_mul]`. Use `⟨isUnit_iff_ne_zero.mpr ?_, isUnit_iff_ne_zero.mpr ?_⟩` and prove the remaining obligations. Introduce `h0`. Apply `hd` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[h0, mul_zero]`. Introduce `h0`. Apply `hd` to reduce the goal to its premises. Rewrite using `[h0, mul_zero, zero_mul]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 lemma units_of_orth {H x : Mt n} {q : ℕ} (h : OrthFr H q x) : IsUnit x.det ∧ IsUnit H.det := by
   have hd := det_diagonal_neg_sgn_ne_zero (n := n) q
@@ -51,7 +51,7 @@ lemma units_of_orth {H x : Mt n} {q : ℕ} (h : OrthFr H q x) : IsUnit x.det ∧
     rw [h0, mul_zero, zero_mul]
 
 /- English proof (translation)
-Unfold `cd`. Establish `hi : x⁻¹ * x = 1` using `nonsing_inv_mul x hx`. Rewrite using `[show v * v' = fun i => v i * v' i from rfl, ← diagonal_mul_diagonal]`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc x⁻¹ x, hi, Matrix.one_mul]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 lemma cd_mul {x : Mt n} (hx : IsUnit x.det) (v v' : Fin n → ℂ) : cd x v * cd x v' = cd x (v * v') := by
   unfold cd
@@ -61,36 +61,36 @@ lemma cd_mul {x : Mt n} (hx : IsUnit x.det) (v v' : Fin n → ℂ) : cd x v * cd
   rw [← Matrix.mul_assoc x⁻¹ x, hi, Matrix.one_mul]
 
 /- English proof (translation)
-Unfold `cd`. Rewrite using `[diagonal_one, Matrix.mul_one, mul_nonsing_inv x hx]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 lemma cd_one {x : Mt n} (hx : IsUnit x.det) : cd x (fun _ => 1) = 1 := by
   unfold cd
   rw [diagonal_one, Matrix.mul_one, mul_nonsing_inv x hx]
 
 /- English proof (translation)
-Unfold `cd`. Rewrite using `[diagonal_smul, Matrix.mul_smul, Matrix.smul_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 lemma cd_smul (x : Mt n) (c : ℂ) (v : Fin n → ℂ) : c • cd x v = cd x (c • v) := by
   unfold cd
   rw [diagonal_smul, Matrix.mul_smul, Matrix.smul_mul]
 
 /- English proof (translation)
-Unfold `cd`. Rewrite using `[show -v = fun i => -v i from rfl, ← diagonal_neg, Matrix.mul_neg, Matrix.neg_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 lemma cd_neg (x : Mt n) (v : Fin n → ℂ) : cd x (-v) = -cd x v := by
   unfold cd
   rw [show -v = fun i => -v i from rfl, ← diagonal_neg, Matrix.mul_neg, Matrix.neg_mul]
 
 /- English proof (translation)
-Establish `hx : IsUnit x.det` using `(units_of_orth h).1`. Establish `e : (x⁻¹)ᴴ * (xᴴ * H * x) * x⁻¹ = (x⁻¹)ᴴ * (diagonal fun a : Fin n => -((ReciprocityTheory.ChartRestriction.G.FD.sgn q (a : ℕ) : ℝ) : ℂ)) * x⁻¹`. Rewrite using `[h.2]`. Establish `hH : H = (x⁻¹)ᴴ * (diagonal fun a : Fin n => -((ReciprocityTheory.ChartRestriction.G.FD.sgn q (a : ℕ) : ℝ) : ℂ)) * x⁻¹`. Rewrite using `[← e]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : (x⁻¹)ᴴ * xᴴ = 1` using `by rw [← conjTranspose_mul, mul_nonsing_inv x hx, conjTranspose_one]`. Establish `h2 : x * x⁻¹ = 1` using `mul_nonsing_inv x hx`. Combine the equalities or inequalities in the displayed calculation. Establish `e1 : ∀ Z : Mt n, xᴴ * ((x⁻¹)ᴴ * Z) = Z`. Introduce `Z`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← Matrix.mul_assoc, ← conjTranspose_mul, nonsing_inv_mul x hx, conjTranspose_one, Matrix.one_mul]`. Establish `e2 : ∀ Z : Mt n, x⁻¹ * (x * Z) = Z`. Introduce `Z`. Rewrite using `[← Matrix.mul_assoc, nonsing_inv_mul x hx, Matrix.one_mul]`. Rewrite using `[hH]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Unfold `cd`. Simplify using `only [conjTranspose_mul, diagonal_conjTranspose, Matrix.mul_assoc, e1, e2]`. Use `congr 1`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, diagonal_mul_diagonal, diagonal_mul_diagonal]`. Use `congr 2`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use function extensionality and compare the values at `i`. Conclude with `mul_comm _ _`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 lemma cd_adj {H x : Mt n} {q : ℕ} (h : OrthFr H q x) (v : Fin n → ℂ) :
     (cd x v)ᴴ * H = H * cd x (star v) := by
@@ -120,7 +120,7 @@ lemma cd_adj {H x : Mt n} {q : ℕ} (h : OrthFr H q x) (v : Fin n → ℂ) :
   exact mul_comm _ _
 
 /- English proof (translation)
-Unfold `cd`. Rewrite using `[Matrix.exp_conj x _ ((Matrix.isUnit_iff_isUnit_det x).mpr hx), Matrix.exp_diagonal, Pi.exp_def]`. Simplify using `only [Complex.exp_eq_exp_ℂ]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma exp_cd {x : Mt n} (hx : IsUnit x.det) (v : Fin n → ℂ) :
     NormedSpace.exp (cd x v) = cd x (fun a => Complex.exp (v a)) := by
@@ -129,7 +129,7 @@ lemma exp_cd {x : Mt n} (hx : IsUnit x.det) (v : Fin n → ℂ) :
   simp only [Complex.exp_eq_exp_ℂ]
 
 /- English proof (translation)
-Establish `hH : IsUnit H.det` using `(units_of_orth h).2`. Unfold `conjH`. Rewrite using `[Matrix.mul_assoc, cd_adj h, ← Matrix.mul_assoc, nonsing_inv_mul H hH, Matrix.one_mul]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 lemma conjH_cd {H x : Mt n} {q : ℕ} (h : OrthFr H q x) (v : Fin n → ℂ) :
     conjH H (cd x v) = -cd x (star v) := by
@@ -141,9 +141,9 @@ variable {ι : Type} [Fintype ι] [DecidableEq ι] {Hm : ι → Mt n} {q : ι �
 
 omit [Fintype ι] [DecidableEq ι] in
 /- English proof (translation)
-Use function extensionality and compare the values at `τ`. Establish `hx` using `(units_of_orth (h τ)).1`. Use `show cd (x₀ τ) (fun a => Complex.exp ((((s + s') τ a : ℝ) : ℂ) * Complex.I)) = cd (x₀ τ) (fun a => Complex.exp (((s τ a : ℝ) : ℂ) * Complex.I)) * cd (x₀ τ) (fun a => Complex.exp (((s' τ a : ℝ) : ℂ) * Complex.I))`. Rewrite using `[cd_mul hx]`. Use `congr 1`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `a`. Simplify using `only [Pi.add_apply, Pi.mul_apply, Complex.ofReal_add, add_mul, Complex.exp_add]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma torEl_add (h : ∀ τ, OrthFr (Hm τ) (q τ) (x₀ τ)) (s s' : ι → Fin n → ℝ) :
     torEl x₀ (s + s') = torEl x₀ s * torEl x₀ s' := by
@@ -159,7 +159,7 @@ lemma torEl_add (h : ∀ τ, OrthFr (Hm τ) (q τ) (x₀ τ)) (s s' : ι → Fin
 
 omit [Fintype ι] [DecidableEq ι] in
 /- English proof (translation)
-Use function extensionality and compare the values at `τ`. Establish `hx` using `(units_of_orth (h τ)).1`. Use `show cd (x₀ τ) (fun a => Complex.exp ((((0 : ι → Fin n → ℝ) τ a : ℝ) : ℂ) * Complex.I)) = 1`. Simplify using `only [Pi.zero_apply, Complex.ofReal_zero, zero_mul, Complex.exp_zero]`. Conclude with `cd_one hx`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma torEl_zero (h : ∀ τ, OrthFr (Hm τ) (q τ) (x₀ τ)) : torEl x₀ 0 = 1 := by
   funext τ
@@ -170,13 +170,11 @@ lemma torEl_zero (h : ∀ τ, OrthFr (Hm τ) (q τ) (x₀ τ)) : torEl x₀ 0 = 
 
 omit [Fintype ι] [DecidableEq ι] in
 /- English proof (translation)
-Unfold `UG`. Rewrite using `[Set.mem_ofPred_eq]`. Introduce `τ`. Establish `hx` using `(units_of_orth (h τ)).1`. Establish `ht : (torEl x₀ s τ)ᴴ * Hm τ * torEl x₀ s τ = Hm τ` using `by show (cd (x₀ τ) (fun a => Complex.exp (((s τ a : ℝ) : ℂ) * Complex.I)))ᴴ * Hm τ * cd (x₀ τ) (fun a => Complex.exp (((s τ a : ℝ) : ℂ) * Complex.I)) = Hm τ`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[cd_adj (h τ), Matrix.mul_assoc, cd_mul hx]`. Establish `hs1 : (star fun a => Complex.exp (((s τ a : ℝ) : ℂ) * Complex.I)) * (fun a => Complex.exp (((s τ a : ℝ) : ℂ) * Complex.I)) = fun _ => 1`. Use function extensionality and compare the values at `a`. Use `show (starRingEnd ℂ) (Complex.exp (((s τ a : ℝ) : ℂ) * Complex.I)) * Complex.exp (((s τ a : ℝ) : ℂ) * Complex.I) = 1`. Rewrite using `[← Complex.exp_conj, ← Complex.exp_add, map_mul, Complex.conj_ofReal, Complex.conj_I]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Rewrite using `[hs1, cd_one hx, Matrix.mul_one]`. Establish `hu' : (u τ)ᴴ * Hm τ * u τ = Hm τ` using `hu τ`. Use `show (u τ * torEl x₀ s τ)ᴴ * Hm τ * (u τ * torEl x₀ s τ) = Hm τ`. Rewrite using `[conjTranspose_mul]`.
-
-Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 lemma mul_torEl_mem (h : ∀ τ, OrthFr (Hm τ) (q τ) (x₀ τ)) (s : ι → Fin n → ℝ) {u : ι → Mt n} (hu : u ∈ UG Hm) :
     u * torEl x₀ s ∈ UG Hm := by
@@ -204,9 +202,9 @@ lemma mul_torEl_mem (h : ∀ τ, OrthFr (Hm τ) (q τ) (x₀ τ)) (s : ι → Fi
 
 omit [DecidableEq ι] in
 /- English proof (translation)
-Unfold `torCh`. Rewrite using `[← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun a _ => ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Pi.add_apply, Pi.add_apply, Complex.ofReal_add, add_mul, Complex.exp_add, mul_zpow]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma torCh_add (s s' : ι → Fin n → ℝ) : torCh w (s + s') = torCh w s * torCh w s' := by
   unfold torCh
@@ -217,11 +215,11 @@ lemma torCh_add (s s' : ι → Fin n → ℝ) : torCh w (s + s') = torCh w s * t
   rw [Pi.add_apply, Pi.add_apply, Complex.ofReal_add, add_mul, Complex.exp_add, mul_zpow]
 
 /- English proof (translation)
-Unfold `torCh`. Establish `h1 : ∀ σ ∈ (Finset.univ : Finset ι), σ ≠ τ → (∏ b, Complex.exp ((((Pi.single τ (Pi.single a t) : ι → Fin n → ℝ) σ b : ℝ) : ℂ) * Complex.I) ^ w σ b) = 1`. Introduce `σ _ hσ`. Simplify using `[Pi.single_eq_of_ne hσ]`. Rewrite using `[Finset.prod_eq_single τ h1 (fun h => absurd (Finset.mem_univ τ) h)]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : ∀ b ∈ (Finset.univ : Finset (Fin n)), b ≠ a → Complex.exp ((((Pi.single τ (Pi.single a t) : ι → Fin n → ℝ) τ b : ℝ) : ℂ) * Complex.I) ^ w τ b = 1`. Introduce `b _ hb`. Simplify using `[Pi.single_eq_of_ne hb]`. Rewrite using `[Finset.prod_eq_single a h2 (fun h => absurd (Finset.mem_univ a) h)]`. Simplify using `only [Pi.single_eq_same]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← Complex.exp_int_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma torCh_single (τ : ι) (a : Fin n) (t : ℝ) :
     torCh w (Pi.single τ (Pi.single a t)) = Complex.exp ((w τ a : ℂ) * ((t : ℂ) * Complex.I)) := by
@@ -241,15 +239,13 @@ lemma torCh_single (τ : ι) (a : Fin n) (t : ℝ) :
 
 omit [Fintype ι] in
 /- English proof (translation)
-Establish `hx : IsUnit (x₀ τ).det` using `(units_of_orth (h τ)).1`. Establish `hsm : t • cd (x₀ τ) (Pi.single a (-Complex.I)) = cd (x₀ τ) ((t : ℂ) • Pi.single a (-Complex.I))`. Rewrite using `[← cd_smul]`. Use extensionality with `i j`. Simplify using `[Complex.real_smul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[hsm, exp_cd hx]`. Use function extensionality and compare the values at `σ`. Distinguish the cases in `hσ : σ = τ`. Rewrite using `[hσ, Pi.mulSingle_eq_same] show _ = cd (x₀ τ) (fun b => Complex.exp ((((Pi.single τ (Pi.single a (-t)) : ι → Fin n → ℝ) τ b : ℝ) : ℂ) * Complex.I))`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use function extensionality and compare the values at `b`. Distinguish the cases in `hb : b = a`. Rewrite using `[hb]`. Simplify using `only [Pi.smul_apply, Pi.single_eq_same, smul_eq_mul, Complex.ofReal_neg]`. Put the polynomial expressions in normal form.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Put the polynomial expressions in normal form.
 
-Simplify using `[Pi.single_eq_of_ne hb]`. Rewrite using `[Pi.mulSingle_eq_of_ne hσ]`. Establish `hxσ : IsUnit (x₀ σ).det` using `(units_of_orth (h σ)).1`. Use `show (1 : Mt n) = cd (x₀ σ) (fun b => Complex.exp ((((Pi.single τ (Pi.single a (-t)) : ι → Fin n → ℝ) σ b : ℝ) : ℂ) * Complex.I))`. Simplify using `only [Pi.single_eq_of_ne hσ, Pi.zero_apply, Complex.ofReal_zero, zero_mul, Complex.exp_zero]`.
-
-Conclude with `(cd_one hxσ).symm`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma oneP_eq (h : ∀ τ, OrthFr (Hm τ) (q τ) (x₀ τ)) (τ : ι) (a : Fin n) (t : ℝ) :
     (Pi.mulSingle τ (NormedSpace.exp (t • cd (x₀ τ) (Pi.single a (-Complex.I)))) : ι → Mt n) =
@@ -279,56 +275,52 @@ lemma oneP_eq (h : ∀ τ, OrthFr (Hm τ) (q τ) (x₀ τ)) (τ : ι) (a : Fin n
     exact (cd_one hxσ).symm
 
 /- English proof (translation)
-Unfold `der`. Simplify using `[NormedSpace.exp_zero]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 private lemma der_zero' (τ : ι) (f : (ι → Mt n) → ℂ) (u : ι → Mt n) : der τ (0 : Mt n) f u = 0 := by
   unfold der
   simp [NormedSpace.exp_zero]
 
 /- English proof (translation)
-Take `⟨S, hSdef⟩ : ∃ S : ℝ → ι → Mt n, S = fun r => torEl x₀ (Pi.single τ (Pi.single a r))` from `⟨_, rfl⟩`. Establish `hS_add : ∀ r r', S (r + r') = S r * S r'`. Introduce `r r'`. Rewrite using `[hSdef]`. Simplify using `only [Pi.single_add]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `torEl_add h _ _`. Establish `hS0 : S 0 = 1`. Rewrite using `[hSdef]`. Simplify using `only [Pi.single_zero]`. Conclude with `torEl_zero h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hS_mem : ∀ v ∈ UG Hm, ∀ r, v * S r ∈ UG Hm`. Introduce `v hv r`. Rewrite using `[hSdef]`. Conclude with `mul_torEl_mem h _ hv`. Take `⟨Y, hY⟩ : ∃ Y : Mt n, Y = cd (x₀ τ) (Pi.single a (-Complex.I))` from `⟨_, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hexp : ∀ r : ℝ, (Pi.mulSingle τ (NormedSpace.exp (r • Y)) : ι → Mt n) = S (-r)`. Introduce `r`. Rewrite using `[hSdef, hY]`. Conclude with `oneP_eq h τ a r`. Establish `hYlie : Y ∈ lieH (Hm τ)` using `by show Yᴴ * Hm τ + Hm τ * Y = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Establish `hst : star (Pi.single a (-Complex.I) : Fin n → ℂ) = -Pi.single a (-Complex.I)`. Use function extensionality and compare the values at `b`. Distinguish the cases in `hb : b = a`. Rewrite using `[hb]`. Simplify using `[Complex.conj_I]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Simplify using `[Pi.single_eq_of_ne hb]`. Rewrite using `[hY, cd_adj (h τ), hst, cd_neg, Matrix.mul_neg, neg_add_cancel]`. Establish `hZ : x₀ τ * Matrix.single a a (1 : ℂ) * (x₀ τ)⁻¹ = cd (x₀ τ) (Pi.single a 1)`. Unfold `cd`. Rewrite using `[Matrix.diagonal_single]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hconj : conjH (Hm τ) (cd (x₀ τ) (Pi.single a 1)) = -cd (x₀ τ) (Pi.single a 1)`. Rewrite using `[conjH_cd (h τ)]`. Use `congr 2`. Use function extensionality and compare the values at `b`. Distinguish the cases in `hb : b = a`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[hb]`. Simplify using the standard rewrite rules. Simplify using `[Pi.single_eq_of_ne hb]`. Establish `hcoef : (1 / (2 * Complex.I)) • (cd (x₀ τ) (Pi.single a 1) - -cd (x₀ τ) (Pi.single a 1)) = Y`. Establish `hI : (1 / (2 * Complex.I)) * 2 = -Complex.I`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[one_div, mul_inv, mul_comm (2 : ℂ)⁻¹, mul_assoc, inv_mul_cancel₀ two_ne_zero, mul_one, Complex.inv_I]`. Rewrite using `[sub_neg_eq_add, ← two_smul ℂ, smul_smul, hI, hY, cd_smul]`. Use `congr 1`. Use function extensionality and compare the values at `b`. Distinguish the cases in `hb : b = a`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[hb]`. Simplify using the standard rewrite rules. Simplify using `[Pi.single_eq_of_ne hb]`. Establish `hd : ∀ v ∈ UG Hm, Complex.I * der τ Y f v = (w τ a : ℂ) * f v`. Introduce `v hv`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hkv` using `hk τ a a le_rfl v hv`. Rewrite `hkv` using `[if_pos rfl, hZ]`. Unfold `derC at hkv`. Rewrite `hkv` using `[hconj, add_neg_cancel, smul_zero, der_zero', zero_add, hcoef]`. Conclude with `hkv`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hψ : ∀ v ∈ UG Hm, HasDerivAt (fun r : ℝ => f (v * S r)) (Complex.I * (w τ a : ℂ) * f v) 0`. Introduce `v hv`. Establish `hsm` using `hs 1 (fun _ => τ) (fun _ => Y) (fun _ => hYlie) v hv`. Establish `hneg : (fun r : ℝ => f (v * S (-r))) = (fun t : Fin 1 → ℝ => f (v * (List.ofFn fun i => (Pi.mulSingle ((fun _ : Fin 1 => τ) i) (NormedSpace.exp (t i • (fun _ : Fin 1 => Y) i)) : ι → Mt n)).prod)) ∘ (fun r : ℝ => fun _ : Fin 1 => r)`. Use function extensionality and compare the values at `r`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `[Function.comp, List.ofFn_succ, hexp]`. Establish `hdn : Differentiable ℝ (fun r : ℝ => f (v * S (-r)))`. Rewrite using `[hneg]`. Conclude with `(hsm.differentiable (by simp)).comp (differentiable_pi.2 fun _ => differentiable_id)`. Establish `hdiff : Differentiable ℝ (fun r : ℝ => f (v * S r))`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : (fun r : ℝ => f (v * S r)) = (fun r : ℝ => f (v * S (-r))) ∘ Neg.neg`. Use function extensionality and compare the values at `r`. Simplify using `only [Function.comp, neg_neg]`. Rewrite using `[h3]`. Conclude with `hdn.comp differentiable_neg`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hder : deriv (fun r : ℝ => f (v * S r)) 0 = Complex.I * (w τ a : ℂ) * f v`. Establish `h1` using `hd v hv`. Establish `h2 : der τ Y f v = -deriv (fun r : ℝ => f (v * S r)) 0`. Unfold `der`. Simplify using `only [hexp]`.
+Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h4` using `deriv_comp_neg (fun r : ℝ => f (v * S r)) 0`. Simplify using `only [neg_zero] at h4`. Conclude with `h4`. Rewrite `h1` using `[h2]`. Take the linear combination `Complex.I * h1 + deriv (fun r : ℝ => f (v * S r)) 0 * Complex.I_sq`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hder]`. Conclude with `(hdiff 0).hasDerivAt`. Establish `hφ : ∀ r : ℝ, HasDerivAt (fun r : ℝ => f (u * S r)) (Complex.I * (w τ a : ℂ) * f (u * S r)) r`. Introduce `r`. Establish `h1` using `hψ (u * S r) (hS_mem u hu r)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h3 : HasDerivAt (fun x : ℝ => f (u * S r * S (x - r))) (Complex.I * (w τ a : ℂ) * f (u * S r)) r` using `HasDerivAt.comp_sub_const (f := fun r' : ℝ => f (u * S r * S r')) r r (by rw [sub_self]; exact h1)`. Establish `h2 : (fun x : ℝ => f (u * S r * S (x - r))) = fun x : ℝ => f (u * S x)`. Use function extensionality and compare the values at `x`. Rewrite using `[mul_assoc, ← hS_add, show r + (x - r) = x by ring]`. Rewrite `h3` using `[h2]`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `h3`. Establish `hg : ∀ r : ℝ, HasDerivAt (fun r : ℝ => Complex.exp (-(Complex.I * (w τ a : ℂ) * r)) * f (u * S r)) 0 r`. Introduce `r`. Establish `he : HasDerivAt (fun r : ℝ => Complex.exp (-(Complex.I * (w τ a : ℂ) * r))) (Complex.exp (-(Complex.I * (w τ a : ℂ) * r)) * (-(Complex.I * (w τ a : ℂ) * ((1 : ℝ) : ℂ)))) r` using `(((hasDerivAt_id r).ofReal_comp).const_mul (Complex.I * (w τ a : ℂ))).neg.cexp`. Use `(he.mul (hφ r)).congr_deriv ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hdg : Differentiable ℝ (fun r : ℝ => Complex.exp (-(Complex.I * (w τ a : ℂ) * r)) * f (u * S r))` using `fun x => (hg x).differentiableAt`. Establish `hdg' : ∀ x, deriv (fun r : ℝ => Complex.exp (-(Complex.I * (w τ a : ℂ) * r)) * f (u * S r)) x = 0` using `fun x => (hg x).deriv`. Establish `hgc : Complex.exp (-(Complex.I * (w τ a : ℂ) * t)) * f (u * S t) = f u`.
-
-Use `(is_const_of_deriv_eq_zero hdg hdg' t 0).trans ?_` and prove the remaining obligations. Simplify using `[hS0]`. Establish `hfin : torEl x₀ (Pi.single τ (Pi.single a t)) = S t` using `by rw [hSdef]`. Rewrite using `[hfin, torCh_single]`. Establish `hinv : Complex.exp ((w τ a : ℂ) * ((t : ℂ) * Complex.I)) * Complex.exp (-(Complex.I * (w τ a : ℂ) * t)) = 1`.
-
-Rewrite using `[← Complex.exp_add, show (w τ a : ℂ) * ((t : ℂ) * Complex.I) + -(Complex.I * (w τ a : ℂ) * t) = 0 by ring, Complex.exp_zero]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the hypotheses and the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 lemma law_single (h : ∀ τ, OrthFr (Hm τ) (q τ) (x₀ τ)) {f : (ι → Mt n) → ℂ} (hs : SmFn Hm f) (hk : KilledFn Hm x₀ w f)
     (τ : ι) (a : Fin n) (t : ℝ) {u : ι → Mt n} (hu : u ∈ UG Hm) :
@@ -461,17 +453,17 @@ namespace GlobalTheory.HolDict
 open TorusLaw in
 
 /- English proof (translation)
-Introduce `n ι _ _ Hm q x₀ w h f hs hk u hu s`. Establish `key : ∀ S : Finset (ι × Fin n), ∀ v ∈ UG Hm, f (v * torEl x₀ (fun τ a => if (τ, a) ∈ S then s τ a else 0)) = torCh w (fun τ a => if (τ, a) ∈ S then s τ a else 0) * f v`. Introduce `S`. Use `Finset.induction_on S ?_ ?_` and prove the remaining obligations. Introduce `v _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h0 : (fun τ a => if ((τ, a) : ι × Fin n) ∈ (∅ : Finset (ι × Fin n)) then s τ a else 0) = (0 : ι → Fin n → ℝ)`. Use function extensionality and compare the values at `τ a`. Simplify using the standard rewrite rules. Establish `hc0 : torCh w (0 : ι → Fin n → ℝ) = 1`. Simplify using `[torCh]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[h0, torEl_zero h, mul_one, hc0, one_mul]`. Introduce `p S hp ih v hv`. Establish `hps : ∀ (τ : ι) (a : Fin n), (Pi.single p.1 (Pi.single p.2 (s p.1 p.2)) : ι → Fin n → ℝ) τ a = if (τ, a) = p then s τ a else 0`. Introduce `τ a`. Break down `p with ⟨τ0, a0⟩` into its components or cases.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Apply the tactic sequence `by_cases e1 : τ = τ0 <;> by_cases e2 : a = a0 <;> simp [e1, e2]`. Establish `hsplit : (fun τ a => if (τ, a) ∈ insert p S then s τ a else 0) = Pi.single p.1 (Pi.single p.2 (s p.1 p.2)) + (fun τ a => if (τ, a) ∈ S then s τ a else 0)`. Use function extensionality and compare the values at `τ a`. Rewrite using `[Pi.add_apply, Pi.add_apply, hps]`. Distinguish the cases in `e : (τ, a) = p`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Substitute `e` using the available equality. Simplify using `[hp]`. Simplify using `[e]`. Rewrite using `[hsplit, torEl_add h, ← mul_assoc, ih _ (mul_torEl_mem h _ hv), law_single h hs hk p.1 p.2 (s p.1 p.2) hv, torCh_add]`. Expand and normalize the polynomial expressions, which then agree.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hfull : (fun τ a => if ((τ, a) : ι × Fin n) ∈ (Finset.univ : Finset (ι × Fin n)) then s τ a else 0) = s`. Use function extensionality and compare the values at `τ a`. Simplify using the standard rewrite rules. Use `key Finset.univ u hu` as an intermediate fact. Rewrite `this` using `[hfull]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem torus_law_of_killed : ∀ (n : ℕ) (ι : Type) [Fintype ι] [DecidableEq ι] (Hm : ι → Mt n) (q : ι → ℕ) (x₀ : ι → Mt n) (w : ι → Fin n → ℤ), (∀ τ, OrthFr (Hm τ) (q τ) (x₀ τ)) → ∀ f, SmFn Hm f → KilledFn Hm x₀ w f → ∀ u ∈ UG Hm, ∀ s, f (u * torEl x₀ s) = torCh w s * f u := by
   intro n ι _ _ Hm q x₀ w h f hs hk u hu s

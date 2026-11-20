@@ -7,7 +7,7 @@ import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.Differentiabl
 open Complex
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.SgStarOddTheta.exp_mul_oddTheta_eq_deriv_mul_sgStar` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FGlobalInterpolation%2FGaussianOddJacobiThetaEqDerivMulSgStar.lean&line=100#L100)
 -/

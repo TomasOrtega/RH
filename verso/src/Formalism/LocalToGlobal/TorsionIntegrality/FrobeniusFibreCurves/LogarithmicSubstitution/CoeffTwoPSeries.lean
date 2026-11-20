@@ -10,7 +10,7 @@ namespace Formalism.L2.Th1.B.KSum
 open Formalism.L2.Th1.F (MulStable IsKerReps taylor0 pSeries)
 
 /- English proof (translation)
-Rewrite using `[Formalism.L2.Th1.F.pSeriesCoeff L 2, if_neg (by norm_num)]`. Use `first`. Consider the case `(simp only [PeriodPair.g₂]; push_cast; ring)`. Consider the case `(unfold PeriodPair.g₂; push_cast; ring)`. Consider the case `(norm_num [PeriodPair.g₂]; ring)`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem coeff_two_pSeries (L : PeriodPair) :
     PowerSeries.coeff 2 (pSeries L) = L.g₂ / 20 := by
@@ -21,15 +21,15 @@ theorem coeff_two_pSeries (L : PeriodPair) :
     | (norm_num [PeriodPair.g₂]; ring)
 
 /- English proof (translation)
-Unfold `taylor0`. Rewrite using `[PowerSeries.coeff_mk]`. Establish `hc : IsClosed (L.lattice : Set ℂ)` using `by first`. Consider the case `exact L.isClosed_lattice`. Consider the case `exact PeriodPair.isClosed_lattice L`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Treat this case separately. Treat this case separately.
 
-Consider the case `(haveI : DiscreteTopology L.lattice.toAddSubgroup := inferInstanceAs (DiscreteTopology L.lattice)`. Conclude with `AddSubgroup.isClosed_of_discrete (H := L.lattice.toAddSubgroup))`. Establish `hopen : ∀ᶠ w in nhds P, w ∉ L.lattice` using `hc.isOpen_compl.mem_nhds hP`. Establish `hev : deriv L.weierstrassP =ᶠ[nhds P] L.derivWeierstrassP` using `by filter_upwards [hopen] with w hw first`. Consider the case `exact (L.hasDerivAt_weierstrassP hw).deriv`.
+Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Treat this case separately. Treat this case separately.
 
-Consider the case `exact (PeriodPair.hasDerivAt_weierstrassP L hw).deriv`. Consider the case `exact congrFun L.deriv_weierstrassP w`. Establish `h1 : deriv (fun z => L.weierstrassP (z + P)) = fun w => deriv L.weierstrassP (w + P)`. Use function extensionality and compare the values at `w`. Rewrite using `[deriv_comp_add_const]`.
+Treat this case separately. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : deriv (fun w => deriv L.weierstrassP (w + P)) 0 = 6 * L.weierstrassP P ^ 2 - L.g₂ / 2`. Rewrite using `[deriv_comp_add_const, zero_add, hev.deriv_eq]`. Conclude with `(Formalism.L2.Th1.F.pSecond L P hP).deriv`. Establish `h3 : iteratedDeriv 2 (fun z => L.weierstrassP (z + P)) = deriv (deriv (fun z => L.weierstrassP (z + P)))`. Rewrite using `[iteratedDeriv_succ, iteratedDeriv_one]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[h3, h1, h2, Nat.factorial_two]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem coeff_two_shift (L : PeriodPair) (P : ℂ) (hP : P ∉ L.lattice) :
     PowerSeries.coeff 2 (taylor0 (fun z => L.weierstrassP (z + P)))
@@ -63,9 +63,9 @@ theorem coeff_two_shift (L : PeriodPair) (P : ℂ) (hP : P ∉ L.lattice) :
   ring
 
 /- English proof (translation)
-Introduce `L α S hα hst hS`. Take `⟨neg, -, -, -, h3⟩` from `Formalism.L2.Th1.F.endoZInstance L α S hα hst hS`. Establish `h4` using `congrArg (PowerSeries.coeff 2) h3`. Rewrite `h4` using `[PowerSeries.coeff_C_mul, PowerSeries.coeff_rescale, map_add, map_sum, coeff_two_pSeries]`. Establish `h5 : ∀ P : S, PowerSeries.coeff 2 (taylor0 (fun z => L.weierstrassP (z + (P : ℂ))) - PowerSeries.C (L.weierstrassP (P : ℂ))) = 3 * L.weierstrassP (P : ℂ) ^ 2 - L.g₂ / 4`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Introduce `P`. Rewrite using `[map_sub, coeff_two_shift L P (hS.1 P P.2).2, PowerSeries.coeff_C]`. Simplify using the standard rewrite rules. Rewrite `h4` using `[Finset.sum_congr rfl (fun P _ => h5 P), Finset.sum_coe_sort S (fun P => 3 * L.weierstrassP P ^ 2 - L.g₂ / 4)]`. Take the linear combination `-h4`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem kappa_sum_holds : KappaSum := by
   intro L α S hα hst hS

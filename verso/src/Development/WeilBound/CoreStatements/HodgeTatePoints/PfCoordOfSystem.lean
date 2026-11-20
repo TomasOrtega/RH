@@ -14,11 +14,9 @@ namespace PositivityTheory.HtPt.Aig
 open ReciprocityTheory.ChartRestriction.G.AI.I2 in
 
 /- English proof (translation)
-Introduce and unpack `⟨II, hSys, -, hPF, -⟩`. Introduce `I hI K _ ι _ K' _ ι' _ κ v Ω _ _ y d L L' hv hP' hP hL hL'`. Establish `hU : UniqueStatement` using `GroundTheory.Heights₂.Heights.Inter.ThmIUnique.proof GroundTheory.Heights₂.Heights.Inter.arithVarZero`. Establish `hd : 1 ≤ d`. Break down `Nat.eq_zero_or_pos d with rfl | h` into its components or cases.
+Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `absurd hP (GroundTheory.Heights₂.Heights.Inter.arithVarZero K ι _)`. Conclude with `h`. Establish `hL's : ∀ j, IsSmoothHerm (L' j)` using `fun j => GroundTheory.Heights₂.Heights.Inter.PushforwardArithIntersection.isSmoothHerm_pull hv (hL j) (hL' j)`. Establish `e1 : I K' ι' (mCoordIdeal y) d L' = II K' ι' (mCoordIdeal y) d L'` using `hU K' ι' (I K' ι') (II K' ι') (IsIntersectionFamily.isRFamily (hI K' ι')) (IsIntersectionFamily.isRFamily (hSys K' ι')) _ d L' hd hP' hL's`. Establish `e2 : I K ι (imageZ v (mCoordIdeal y)) d L = II K ι (imageZ v (mCoordIdeal y)) d L` using `hU K ι (I K ι) (II K ι) (IsIntersectionFamily.isRFamily (hI K ι)) (IsIntersectionFamily.isRFamily (hSys K ι)) _ d L hd hP hL`.
-
-Rewrite using `[e1, e2]`. Conclude with `hPF K ι K' ι' κ v Ω y d L L' hv hP' hP hL hL'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pfCoord_of_system :
     ReciprocityTheory.ChartRestriction.G.Geo.ArithIntersectionSystemStatement → PFCoordStatement := by
@@ -42,7 +40,7 @@ theorem pfCoord_of_system :
   exact hPF K ι K' ι' κ v Ω y d L L' hv hP' hP hL hL'
 
 /- English proof (translation)
-The claim follows from `pfCoord_of_system`.
+A detailed English derivation is pending.
 -/
 theorem pfCoord : ReciprocityTheory.ChartRestriction.G.Geo.ArithIntersectionSystemStatement → PFCoordStatement :=
   pfCoord_of_system

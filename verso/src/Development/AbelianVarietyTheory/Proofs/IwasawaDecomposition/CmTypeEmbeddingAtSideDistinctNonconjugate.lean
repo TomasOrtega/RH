@@ -6,24 +6,22 @@ open scoped TensorProduct
 namespace GlobalTheory.HeightCounting.FormsStep
 
 /- English proof (translation)
-Apply `D.host.φ₀.injective` to reduce the goal to its premises. Rewrite using `[NumberField.IsCMField.complexEmbedding_complexConj, Formalism.HC.HostAx.conjE_apply]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem complexConj_eq_hostConj (D : D7) (x : D.host.E) : IsCMField.complexConj D.host.E x = D.host.conj x := by
   apply D.host.φ₀.injective
   rw [NumberField.IsCMField.complexEmbedding_complexConj, Formalism.HC.HostAx.conjE_apply]
 
 /- English proof (translation)
-Introduce `D T i b`. Establish `hR : Function.Injective ((readT D T i b).comp (Formalism.L2.NX.embEL0 D))` using `RingHom.injective _`. Establish `hS : ∀ g h : D.R.GG, (∀ x : D.host.E, D.host.sigmaOf g x = D.host.sigmaOf h x) → g = h`. Introduce `g h e`. Conclude with `Formalism.MainNotions.Gaps.LevGap.sigmaOf_injective D.host (AlgEquiv.ext e)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hk : ∀ t x, kEmbT D T i b t x = ((readT D T i b).comp (Formalism.L2.NX.embEL0 D)) (D.host.sigmaOf ((D.eTau t : D.R.Psi) : D.R.GG) x)` using `fun _ _ => rfl`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `t t' e`. Apply `D.eTau.injective` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hS` to reduce the goal to its premises. Introduce `x`. Apply `hR` to reduce the goal to its premises. Rewrite using `[← hk, ← hk, e]`. Introduce `t t' e`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h1 : ((D.eTau t : D.R.Psi) : D.R.GG) = ((D.eTau t' : D.R.Psi) : D.R.GG) * D.R.cc`. Apply `hS` to reduce the goal to its premises. Introduce `x`. Apply `hR` to reduce the goal to its premises. Rewrite using `[← hk, Formalism.MainNotions.Gaps.LevGap.sigmaOf_mul, AlgEquiv.mul_apply, ← Formalism.MainNotions.Gaps.LevGap.conj_eq_sigmaOf, ← complexConj_eq_hostConj D x]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `DFunLike.congr_fun e x`. Establish `ht : ((D.eTau t : D.R.Psi) : D.R.GG).1.2 = 1` using `(Formalism.HC.Frame.mem_Psi_iff _).1 (D.eTau t).2`. Establish `ht' : ((D.eTau t' : D.R.Psi) : D.R.GG).1.2 = 1` using `(Formalism.HC.Frame.mem_Psi_iff _).1 (D.eTau t').2`. Establish `h2 : ((D.eTau t : D.R.Psi) : D.R.GG).1.2 = ((D.eTau t' : D.R.Psi) : D.R.GG).1.2 * (-1)` using `by rw [h1]; rfl`. Rewrite `h2` using `[ht, ht']`.
-
-Conclude with `absurd h2 (by decide)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kEmbT_cmDist : ∀ (D : D7) (T : TwR D.LL0 D.nd) (i : T.Tw) (b : Bool), GlobalTheory.AlgWtF.CMDist (kEmbT D T i b) := by
   intro D T i b

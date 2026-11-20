@@ -11,7 +11,7 @@ open ReciprocityTheory.ChartRestriction.G.FD NumberField Formalism.L2.Pj.FJ Form
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `E _ _ _ r ρ X hspan hbas la hχ c P hP`. Conclude with `⟨fun h => GlobalTheory.T.maxCusp_killedCoefficient_eq_zero E r ρ X hbas la hχ c P h, fun h => GlobalTheory.T.maxCusp_mem_cuspForms_of_killedCoef_zero E r ρ X hspan hbas la hχ c P hP h⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem maxCusps_iff_killed_coeff_vanish : MaxCuspsStatement := by
   intro E _ _ _ r ρ X hspan hbas la hχ c P hP

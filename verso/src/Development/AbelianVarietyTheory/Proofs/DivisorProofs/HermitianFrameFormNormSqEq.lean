@@ -15,9 +15,9 @@ section
 variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] [NormedSpace ℝ E] [IsScalarTower ℝ ℂ E]
 
 /- English proof (translation)
-Establish `hR : ContDiffAt ℝ 2 s z` using `hs.restrict_scalars ℝ`. Establish `hc : ContDiffAt ℝ 2 (fun x => conj (s x)) z` using `Complex.conjCLE.contDiff.contDiffAt.comp z hR`. Establish `hW : ContDiffAt ℝ 2 (fun x => conj (s x) * U x) z` using `hc.mul hU`. Establish `he : (fun x => dbar (fun y => s y * (conj (s y) * U y)) x η) =ᶠ[𝓝 z] fun x => s x * dbar (fun y => conj (s y) * U y) x η` using `by filter_upwards [eventually_differentiableAt_of_contDiffAt_two hs, eventually_differentiableAt_of_contDiffAt_two hW] with x h1 h2`. Rewrite using `[dbar_mul (h1.restrictScalars ℝ) h2, dbar_eq_zero h1]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Rewrite using `[ddbar_eq_del_dbar (hR.mul hW), del_congr he, del_mul (hR.differentiableAt two_ne_zero) (differentiableAt_dbar_apply hW η), dbar_mul (hc.differentiableAt two_ne_zero) (hU.differentiableAt two_ne_zero), dbar_conj, h0]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem ddbar_mul_conj_mul_of_zero {s U : E → ℂ} {z : E} (hs : ContDiffAt ℂ 2 s z) (h0 : s z = 0)
     (hU : ContDiffAt ℝ 2 U z) (ξ η : E) :
@@ -39,13 +39,13 @@ theorem ddbar_mul_conj_mul_of_zero {s U : E → ℂ} {z : E} (hs : ContDiffAt �
 open Matrix in
 
 /- English proof (translation)
-Establish `eA : A z = fromBlocks (A z).toBlocks₁₁ (A z).toBlocks₁₂ 0 (A z).toBlocks₂₂`. Rewrite using `[← ht, fromBlocks_toBlocks]`. Establish `hd` using `hu`. Rewrite `hd` using `[eA, det_fromBlocks_zero₂₁, IsUnit.mul_iff]`. Establish `hK` using `hp.self_of_nhds`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hb (ξ : E) : secondForm (fun x => chg (A x) (K x)) z ξ = (A z).toBlocks₂₂⁻¹ * (secondForm K z ξ + (mdel A z ξ).toBlocks₂₁ * (A z).toBlocks₁₁⁻¹) * (A z).toBlocks₁₁`. Establish `e` using `congrArg (A z * ·) (conn_changeFrame h hK.det_pos.ne'.isUnit hA hu hA0 ξ)`. Simplify using `only [mul_nonsing_inv_cancel_left _ _ hu] at e`. Establish `e₁` using `congrArg toBlocks₂₁ e`. Rewrite `e₁` using `[← fromBlocks_toBlocks (conn _ z ξ), ← fromBlocks_toBlocks (conn K z ξ), ← fromBlocks_toBlocks (mdel A z ξ), eA]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [fromBlocks_multiply, fromBlocks_add, toBlocks_fromBlocks₂₁, Matrix.zero_mul, Matrix.mul_zero, zero_add, add_zero] at e₁`. Rewrite using `[secondForm_eq, secondForm_eq, Matrix.mul_assoc, Matrix.add_mul, Matrix.mul_assoc, nonsing_inv_mul _ hd.1, Matrix.mul_one]`. Use `first`. Consider the case `(rw [← e₁, nonsing_inv_mul_cancel_left _ _ hd.2]; rfl)`. Consider the case `(rw [add_comm, ← e₁, nonsing_inv_mul_cancel_left _ _ hd.2]; rfl)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Establish `hp' : ∀ᶠ x in 𝓝 z, (chg (A x) (K x)).PosDef` using `by filter_upwards [hp, hA.eventually_isUnit hu] with x h₁ h₂`. Conclude with `posDef_chg ((isUnit_iff_isUnit_det _).2 h₂) h₁`. Rewrite using `[extTrace_eq (K := fun x => chg (A x) (K x)) ((hA.transpose.mul h).mul hA.conjTranspose.transpose) hp', secondFormAdj, hb, hb, ← trace_mul_adj_chg hd.1 hd.2 (subGram (K z)), ← subGram_chg _ (A z).toBlocks₁₂ (A z).toBlocks₂₂, ← quotGram_chg (A z).toBlocks₁₂ _ hd.1 (posDef_subGram …`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem extTrace_chg_of_block_eq_zero {m l : Type} [Fintype m] [Fintype l] [DecidableEq m] [DecidableEq l]
     {K A : E → Matrix (m ⊕ l) (m ⊕ l) ℂ} {z : E} (h : MContDiffAt 1 K z)
@@ -87,7 +87,7 @@ theorem extTrace_chg_of_block_eq_zero {m l : Type} [Fintype m] [Fintype l] [Deci
 end
 
 /- English proof (translation)
-Establish `h1 : conj (K (.inl 0) (.inl 0)) = K (.inl 0) (.inl 0)` using `hK.apply _ _`. Establish `h2 : conj (K (.inl 0) (.inr 0)) = K (.inr 0) (.inl 0)` using `hK.apply _ _`. Rewrite using `[Complex.ofReal_pow, ← Complex.mul_conj', chg_apply, form_eq_sum, form_eq_sum]`. Simplify using `[Fintype.sum_sum_type, h1, h2]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem chg_mul_sub_form {K A : Matrix (Fin 1 ⊕ Fin 1) (Fin 1 ⊕ Fin 1) ℂ} (hK : K.IsHermitian) :
     chg A K (.inl 0) (.inl 0) * K (.inl 0) (.inl 0) -
@@ -105,9 +105,9 @@ end GlobalTheory.HermFrame
 namespace GlobalTheory.LineForm
 
 /- English proof (translation)
-Establish `e : ((ofValues (fun ξ η => c * (u ξ * u' η)) : Ev n) : Alt n) = c • ((ofValues (fun ξ η => u ξ * u' η) : Ev n) : Alt n)`. Simplify using `only [ofValues, AddSubmonoidClass.coe_finsetSum, Subalgebra.coe_smul, Finset.smul_sum, smul_smul]`. Rewrite using `[e, coe_ofValues_mul, coe_ofValues_mul, coe_ofValues_mul]`. Generalize the expression as in `(∑ a, u (GlobalTheory.GoodMetric.coordVec a) • Pi.single (Sum.inl a) (1 : ℂ) : Fin n ⊕ Fin n → ℂ) = x`. Generalize the expression as in `(∑ a, w (GlobalTheory.GoodMetric.coordVec a) • Pi.single (Sum.inl a) (1 : ℂ) : Fin n ⊕ Fin n → ℂ) = x'`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable.
 
-Generalize the expression as in `(∑ b, u' (GlobalTheory.GoodMetric.coordVec b) • Pi.single (Sum.inr b) (1 : ℂ) : Fin n ⊕ Fin n → ℂ) = y`. Generalize the expression as in `(∑ b, w' (GlobalTheory.GoodMetric.coordVec b) • Pi.single (Sum.inr b) (1 : ℂ) : Fin n ⊕ Fin n → ℂ) = y'`. Establish `h` using `Subalgebra.mem_center_iff.1 (ι_mul_ι_mem_center x y) (ExteriorAlgebra.ι ℂ x)`. Establish `h'` using `Subalgebra.mem_center_iff.1 (ι_mul_ι_mem_center x' y) (ExteriorAlgebra.ι ℂ y)`. Rewrite using `[smul_mul_assoc, mul_add, ← mul_assoc _ (ExteriorAlgebra.ι ℂ x), ← h, ← mul_assoc (ExteriorAlgebra.ι ℂ x), ExteriorAlgebra.ι_sq_zero, mul_assoc (ExteriorAlgebra.ι ℂ x), h', mul_assoc (ExteriorAlgebra.ι ℂ x'), ExteriorAlgebra.ι_sq_zero]`.
+Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/
@@ -131,7 +131,7 @@ theorem ofValues_mul_ofValues_eq_zero {n : ℕ} (u u' w w' : ReciprocityTheory.L
   simp
 
 /- English proof (translation)
-Simplify using `only [ofValues, AddSubmonoidClass.coe_finsetSum, Subalgebra.coe_smul, Subalgebra.coe_add, h, add_smul, Finset.sum_add_distrib, add_sub_cancel_left]`.
+Simplify using the standard rewrite rules.
 -/
 theorem coe_ofValues_sub_eq {n : ℕ} {α β γ δ : ReciprocityTheory.L2DbarEstimates.V n → ReciprocityTheory.L2DbarEstimates.V n → ℂ}
     (h : ∀ ξ η, α ξ η = β ξ η + (γ ξ η + δ ξ η)) :
@@ -141,25 +141,23 @@ theorem coe_ofValues_sub_eq {n : ℕ} {α β γ δ : ReciprocityTheory.L2DbarEst
     Finset.sum_add_distrib, add_sub_cancel_left]
 
 /- English proof (translation)
-Introduce `n K A v z hK hp hA hu hv he`. Establish `hA2 : MContDiffAt 2 A z` using `fun a b => ((hA a b).contDiffAt (n := 2)).restrict_scalars ℝ`. Establish `hA1 : MContDiffAt 1 A z` using `fun a b => (hA2 a b).of_le (by norm_num)`. Establish `hK1 : MContDiffAt 1 K z` using `fun a b => (hK a b).of_le (by norm_num)`. Establish `hC : MContDiffAt 2 (fun x => chg (A x) (K x)) z` using `(hA2.transpose.mul hK).mul hA2.conjTranspose.transpose`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hp' : ∀ᶠ x in 𝓝 z, (chg (A x) (K x)).PosDef` using `by filter_upwards [hp, hA1.eventually_isUnit hu] with x h₁ h₂`. Conclude with `posDef_chg ((Matrix.isUnit_iff_isUnit_det _).2 h₂) h₁`. Use `set s : ReciprocityTheory.L2DbarEstimates.V n → ℂ := fun x => A x (.inr 0) (.inl 0) with hs`. Use `set U : ReciprocityTheory.L2DbarEstimates.V n → ℂ := fun x => (K x (.inl 0) (.inl 0) * K x (.inr 0) (.inr 0) - K x (.inl 0) (.inr 0) * K x (.inr 0) (.inl 0)) * (chg (A x) (K x) (.inl 0) (.inl 0) * K x (.inl 0) (.inl 0))⁻¹ with hU`. Establish `hne : chg (A z) (K z) (.inl 0) (.inl 0) * K z (.inl 0) (.inl 0) ≠ 0` using `mul_ne_zero (hp'.self_of_nhds.diag_pos).ne' (hp.self_of_nhds.diag_pos).ne'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hU2 : ContDiffAt ℝ 2 U z` using `(((hK _ _).mul (hK _ _)).sub ((hK _ _).mul (hK _ _))).mul (((hC _ _).mul (hK _ _)).inv hne)`. Establish `hev : (fun x => ((1 - v x : ℝ) : ℂ)) =ᶠ[𝓝 z] fun x => s x * (conj (s x) * U x)` using `by filter_upwards [hp, hp', he] with x h₁ h₂ h₃`. Establish `e` using `chg_mul_sub_form (A := A x) h₁.isHermitian`. Establish `n₁` using `(h₁.diag_pos (i := .inl 0))`. Establish `n₂` using `(h₂.diag_pos (i := .inl 0))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `r₁ : ((K x (.inl 0) (.inl 0)).re : ℂ) = K x (.inl 0) (.inl 0)` using `Complex.ext rfl (by simpa using (Complex.lt_def.1 n₁).2)`. Establish `r₂ : ((chg (A x) (K x) (.inl 0) (.inl 0)).re : ℂ) = chg (A x) (K x) (.inl 0) (.inl 0)` using `Complex.ext rfl (by simpa using (Complex.lt_def.1 n₂).2)`. Rewrite `e` using `[h₃, Complex.ofReal_mul, Complex.ofReal_mul, r₁, r₂]`. Establish `n₁'` using `n₁.ne'`. Establish `n₂'` using `n₂.ne'`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Simplify using `only [hs, hU]`. Rewrite using `[← mul_assoc (conj _), ← mul_assoc, ← e]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Establish `hUz : U z ≠ 0`.
+Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `mul_ne_zero ?_ (inv_ne_zero hne)` and prove the remaining obligations. Use `hp.self_of_nhds.det_pos.ne'` as an intermediate fact. Rewrite `this` using `[← Matrix.det_submatrix_equiv_self finSumFinEquiv.symm, Matrix.det_fin_two]`. Conclude with `this`. Establish `hs0 : s z = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Use `hev.self_of_nhds` as an intermediate fact. Simplify using `only [hv, sub_self, Complex.ofReal_zero] at this`. Simplify `this.symm` using `[hUz]`. Establish `e1 : ddc (fun x => 1 - v x) z = fun ξ η => (kappa * U z) * (del s z ξ * conj (del s z η))`. Use function extensionality and compare the values at `ξ η`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[ddc, leviForm, ddbar_congr hev, ddbar_mul_conj_mul_of_zero (hA _ _).contDiffAt hs0 hU2]`. Expand and normalize the polynomial expressions, which then agree. Establish `hA0 : ∀ η, mdbar A z η = 0` using `fun η => Matrix.ext fun i j => congr($(dbar_eq_zero (hA i j).differentiableAt) η)`. Establish `ht : (A z).toBlocks₂₁ = 0`. Use extensionality with `i j`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Subsingleton.elim i 0, Subsingleton.elim j 0]`. Conclude with `hs0`. Use `set c : ℂ := kappa * ((subGram (K z)).transpose⁻¹ 0 0 * quotGram (K z) 0 0) with hc`. Use `set d : ℂ := (A z).toBlocks₁₁⁻¹ 0 0 with hd`. Rewrite using `[e1, coe_ofValues_sub_eq (γ := fun ξ η => del s z ξ * (c * d * conj (secondForm K z η 0 0 + del s z η * d))) (δ := fun ξ η => (c * conj d * secondForm K z ξ 0 0) * conj (del s z η)) fun ξ η => ?_]`.
-
-Conclude with `ofValues_mul_ofValues_eq_zero _ (fun η => conj (del s z η)) _ _ _`. Establish `m (ξ) : (mdel A z ξ).toBlocks₂₁ 0 0 = del s z ξ` using `rfl`. Rewrite using `[extTrace_chg_of_block_eq_zero hK1 hp hA1 hu hA0 ht, extTrace_eq hK1 hp, secondFormAdj]`. Simplify using `only [adj, Matrix.trace, Matrix.diag, Matrix.mul_apply, Fin.sum_univ_one, Matrix.add_apply, Matrix.conjTranspose_apply, Matrix.transpose_apply, m, ← hd, hc, Complex.star_def, map_add, map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem ddc_sinSq_mul_extTrace_sub : ∀ (n : ℕ) (K A : ReciprocityTheory.L2DbarEstimates.V n → Matrix (Fin 1 ⊕ Fin 1) (Fin 1 ⊕ Fin 1) ℂ) (v : ReciprocityTheory.L2DbarEstimates.V n → ℝ) (z : ReciprocityTheory.L2DbarEstimates.V n),
     GlobalTheory.HermFrame.MContDiffAt 2 K z → (∀ᶠ x in nhds z, (K x).PosDef) → (∀ a b, AnalyticAt ℂ (fun x => A x a b) z) → IsUnit (A z).det → v z = 1 →

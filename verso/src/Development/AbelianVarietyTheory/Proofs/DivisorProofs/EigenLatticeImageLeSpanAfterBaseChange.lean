@@ -20,13 +20,11 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E}
   {K K' : Type} [Field K] [NumberField K] [Field K'] [NumberField K'] {j : K →+* K'}
 
 /- English proof (translation)
-Establish `hL : Out.Laws` using `GlobalTheory.abelianSchemeLaws_all.1`. Establish `hB : Out.PolBaseChangeSt` using `hL.polBaseChange`. Establish `hdT : SmoothOfRelativeDimension T.g T'.t.G.hom` using `(smoothOfRelativeDimension_isStableUnderBaseChange _).of_isPullback m.cart.1 T.dim`. Establish `hξ : IsPolFibre (RingOfIntegers.mapRingHom j) T.pol T'.pol m.φ` using `⟨H1.dim_unique _ T'.dim hdT (eSec T'.t.G (⟨⊥, Ideal.isPrime_bot⟩ : PrimeSpectrum (𝓞 K'))), m.cart, (PAT.exists_of_sabMap E H _ _ _ T T'.t m).2⟩`. Take `⟨F'⟩` from `GenFib.nonempty_of_baseChange hB K' T'.pol`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hg : F'.P₀.g = F.P₀.g` using `F'.fib.1.trans (hξ.1.trans F.fib.1.symm)`. Establish `hd : SmoothOfRelativeDimension F.P₀.g F'.P₀.A.hom` using `hg ▸ F'.P₀.smoothDim`. Establish `fib : IsPolFibre (algebraMap (𝓞 K') K') T'.pol (withDim F'.P₀ F.P₀.g hd) F'.φ` using `⟨hg.symm.trans F'.fib.1, F'.fib.2⟩`. Take `⟨ψ, hψ, w⟩` from `PolFibre.cancel (g := j) F.fib (PolFibre.comp hξ fib)`. Use `haveI := F.P₀.isAb.comm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `haveI := F'.P₀.isAb.comm`. Use `haveI := F.P₀.smoothDim`. Take `⟨v', basis, hv⟩` from `exists_isLieBasis_baseChange K K' j F.P₀.A F'.P₀.A ψ hψ.2.1 (SmoothOfRelativeDimension.smooth F.P₀.g _) _ F.v F.basis`. Use `⟨F'.P₀, hd, F'.φ, fib, v', basis, fun τ => ?_, fun u c hc u' hu => ?_⟩` and prove the remaining obligations. Conclude with `eigLat_eq_span hB hξ hψ.2.1 w hv T.t.act T'.t.act m.act τ`.
-
-Conclude with `isCoord_over hξ.2.1 hψ.2.1 w hv hc hu`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_genFib_baseChange (T : PAT H (Sp (𝓞 K))) (T' : PAT H (Sp (𝓞 K')))
     (m : SABMap T'.t T.t (spMap (RingOfIntegers.mapRingHom j))) (F : GenFib T.pol) :
@@ -69,37 +67,31 @@ namespace GlobalTheory.CM.LieSpanBaseChange
 open GlobalTheory.CM.LieBaseChange GlobalTheory.CM.IntCoord
 
 /- English proof (translation)
-Introduce `E _ _ _ H K K' _ _ _ _ j A B A' B' mA mB n f f' g' _ hf' hg' hff' hid FA FB M hM τ w hw`. Take `⟨QA, hdA, φA, fibA, vA, bA, hA1, hA2⟩` from `exists_genFib_baseChange A A' mA FA`. Take `⟨QB, hdB, φB, fibB, vB, bB, hB1, hB2⟩` from `exists_genFib_baseChange B B' mB FB`. Set `F₁A : GenFib A'.pol` to `GenFib.mk (withDim QA FA.P₀.g hdA) φA fibA vA bA`. Set `F₁B : GenFib B'.pol` to `GenFib.mk (withDim QB FB.P₀.g hdB) φB fibB vB bB`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hcB` using `GlobalTheory.T.integral_tangent_vector_coordinates K' _ F₁B`. Use `choose M' hM' using fun i => ((DiffCoord.existsUnique_isDiffOf K' A'.pol F₁A B'.pol F₁B (f' i) (hf' i).isMonHom).1).exists`. Use `choose N' hN' using fun i => ((DiffCoord.existsUnique_isDiffOf K' B'.pol F₁B A'.pol F₁A (g' i) (hg' i).isMonHom).1).exists`. Use `set S := Submodule.span (𝓞 K') ((fun (c : Fin FB.P₀.g → K) k => j (c k)) '' {v | ∃ i, ∃ e ∈ FA.eigLat A.t.act τ, v = M i e}) with hSdef`. Establish `hjadd : ∀ {m : ℕ} (x y : Fin m → K), (fun k => j ((x + y) k)) = (fun k => j (x k)) + (fun k => j (y k))` using `fun x y => funext fun k => by simp`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hjsmul : ∀ {m : ℕ} (r : 𝓞 K) (x : Fin m → K), (fun k => j ((r • x) k)) = (RingOfIntegers.mapRingHom j r) • (fun k => j (x k))` using `fun r x => funext fun k => by`. Rewrite using `[← algebraMap_smul K r x, Pi.smul_apply, Pi.smul_apply, smul_eq_mul, map_mul, ← algebraMap_smul K', smul_eq_mul]`. Both sides reduce to the same expression. Establish `hcomp : ∀ i, ∀ e ∈ FA.eigLat A.t.act τ, M' i (fun k => j (e k)) = fun k => j (M i e k)`. Introduce `i e he`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Proceed by induction on `he using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨u, hu, -⟩` from `hx`. Take `⟨u', hu', -⟩` from `existsUnique_isVecOver mA.cart.1 u`. Establish `h1` using `hM' i u' _ (hA2 u x hu u' hu')`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `h2` using `hB2 (u ≫ f i) (M i x) (hM i u x hu) (u' ≫ f' i) (by`. Unfold `IsVecOver at hu' ⊢`. Rewrite using `[Over.comp_left, Over.comp_left, Category.assoc, hff' i, ← Category.assoc, hu', Category.assoc])`. Conclude with `(hcB.1 _ h1.1).unique h1 h2`. Consider the case `zero`.
+Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Establish `h0 : (fun k => j ((0 : Fin FA.P₀.g → K) k)) = 0` using `funext fun k => by simp`. Rewrite using `[h0, map_zero, map_zero]`. Use function extensionality and compare the values at `k`. Simplify using the standard rewrite rules. Consider the case `add x y _ _ hx hy`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hjadd, map_add, hx, hy, map_add, hjadd]`. Consider the case `smul r x _ hx`. Rewrite using `[hjsmul, ← algebraMap_smul K' (RingOfIntegers.mapRingHom j r), map_smul, hx, algebraMap_smul, ← algebraMap_smul K r x, map_smul, algebraMap_smul, hjsmul]`. Establish `hS : ∀ i, ∀ x ∈ Submodule.span (𝓞 K') ((fun (c : Fin FA.P₀.g → K) k => j (c k)) '' (FA.eigLat A.t.act τ : Set (Fin FA.P₀.g → K))), M' i x ∈ S`. Introduce `i x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨e, he, rfl⟩` from `hx`. Rewrite using `[hcomp i e he]`. Conclude with `Submodule.subset_span ⟨M i e, ⟨i, e, he, rfl⟩, rfl⟩`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `zero`. Rewrite using `[map_zero]`. Conclude with `S.zero_mem`. Consider the case `add x y _ _ hx hy`. Rewrite using `[map_add]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Conclude with `S.add_mem hx hy`. Consider the case `smul s x _ hx`. Rewrite using `[← algebraMap_smul K' s x, map_smul, algebraMap_smul]`. Conclude with `S.smul_mem s hx`. Establish `hkey : F₁B.eigLat B'.t.act ((RingOfIntegers.mapRingHom j).comp τ) ≤ S`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `c' ⟨u', hu', heig⟩`. Establish `hN'mem : ∀ i, N' i c' ∈ F₁A.eigLat A'.t.act ((RingOfIntegers.mapRingHom j).comp τ)` using `fun i => Indep.map_eigLat_le (hg' i).comm (hN' i) _ (Submodule.mem_map_of_mem (f := (N' i).restrictScalars (𝓞 K')) (Submodule.subset_span ⟨u', hu', heig⟩))`. Establish `hs : ∀ i, F₁B.IsCoord (u' ≫ (g' i ≫ f' i)) (M' i (N' i c'))` using `fun i => by`. Rewrite using `[← Category.assoc]`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hM' i _ _ (hN' i _ _ hu')`. Establish `hprod : ∀ s : Finset (Fin n), F₁B.IsCoord (u' ≫ ∏ i ∈ s, (g' i ≫ f' i)) (∑ i ∈ s, M' i (N' i c'))`. Introduce `s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.prod_empty, Finset.sum_empty, comp_one]`. Conclude with `isCoord_one F₁B`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.prod_insert ha, Finset.sum_insert ha, comp_mul]`. Conclude with `isCoord_mul F₁B (hs a) ih`.
-
-Establish `h1` using `hprod Finset.univ`. Rewrite `h1` using `[hid, Category.comp_id]`. Establish `heq : c' = ∑ i, M' i (N' i c')` using `(hcB.1 _ hu'.1).unique hu' h1`. Rewrite using `[heq]`. Use `S.sum_mem fun i _ => hS i _ ?_` and prove the remaining obligations.
-
-Rewrite using `[← hA1 τ]`. Conclude with `hN'mem i`. Establish `hw' : (fun k => j (w k)) ∈ F₁B.eigLat B'.t.act ((RingOfIntegers.mapRingHom j).comp τ)`. Rewrite using `[hB1 τ]`. Conclude with `Submodule.subset_span ⟨w, hw, rfl⟩`.
-
-Conclude with `hkey hw'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eigLat_image_le_span_diff : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (K K' : Type) [Field K] [NumberField K] [Field K'] [NumberField K'] (j : K →+* K')
     (A B : PAT H (Sp (𝓞 K))) (A' B' : PAT H (Sp (𝓞 K'))) (mA : SABMap A'.t A.t (spMap (RingOfIntegers.mapRingHom j)))

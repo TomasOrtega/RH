@@ -17,14 +17,14 @@ noncomputable section
 namespace GlobalTheory.LogKSUp
 
 /- English proof (translation)
-Rewrite using `[← Spec.map_comp, ← CommRingCat.ofHom_comp]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem spMap_comp'' {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (α : A →+* B) (β : B →+* C) :
     spMap β ≫ spMap α = spMap (β.comp α) := by
   rw [← Spec.map_comp, ← CommRingCat.ofHom_comp]
 
 /- English proof (translation)
-Use `RingHom.ext fun x => ?_` and prove the remaining obligations. Apply the tactic sequence `ext <;> simp [dualMap]`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem dualMap_comp'' {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (α : A →+* B) (β : B →+* C) :
     (dualMap β).comp (dualMap α) = dualMap (β.comp α) := by
@@ -32,18 +32,18 @@ theorem dualMap_comp'' {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (α
   ext <;> simp [dualMap]
 
 /- English proof (translation)
-The claim follows from `U.2.map_fromSpec W.2 (homOfLE h).op`.
+A detailed English derivation is pending.
 -/
 theorem chart_res' {X : Scheme.{0}} (U W : X.affineOpens) (h : W.1 ≤ U.1) :
     spMap (X.presheaf.map (homOfLE h).op).hom ≫ GlobalTheory.LogKS.chart U = GlobalTheory.LogKS.chart W :=
   U.2.map_fromSpec W.2 (homOfLE h).op
 
 /- English proof (translation)
-Establish `hr' : Set.range (spMap φ ≫ GlobalTheory.LogKS.chart U) ⊆ Set.range (GlobalTheory.LogKS.chart W)` using `by show _ ⊆ Set.range (IsAffineOpen.fromSpec W.2)`. Rewrite using `[W.2.range_fromSpec]`. Introduce and unpack `_ ⟨z, rfl⟩`. Conclude with `hr z`. Establish `: IsOpenImmersion (GlobalTheory.LogKS.chart W)` using `W.2.isOpenImmersion_fromSpec`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsOpenImmersion (GlobalTheory.LogKS.chart U)` using `U.2.isOpenImmersion_fromSpec`. Take `⟨ψ, hψ⟩ : ∃ ψ : Sp S ⟶ Sp Γ(X, W.1), ψ ≫ GlobalTheory.LogKS.chart W = spMap φ ≫ GlobalTheory.LogKS.chart U` from `⟨IsOpenImmersion.lift (GlobalTheory.LogKS.chart W) _ hr', IsOpenImmersion.lift_fac _ _ _⟩`. Use `⟨(Spec.preimage ψ).hom, ?_⟩` and prove the remaining obligations. Establish `hfac : spMap (Spec.preimage ψ).hom ≫ GlobalTheory.LogKS.chart W = spMap φ ≫ GlobalTheory.LogKS.chart U`. Simplify using `only [spMap, CommRingCat.ofHom_hom, Spec.map_preimage]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hψ`. Rewrite `hfac` using `[← chart_res' U W h, ← Category.assoc, spMap_comp'']`. Establish `h2` using `Spec.map_inj.1 ((cancel_mono (GlobalTheory.LogKS.chart U)).1 hfac)`. Simplify using `using (congrArg CommRingCat.Hom.hom h2).symm`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem exists_factor {X : Scheme.{0}} (U W : X.affineOpens) (h : W.1 ≤ U.1) {S : Type} [CommRing S]
     (φ : Γ(X, U.1) →+* S) (hr : ∀ z, (spMap φ ≫ GlobalTheory.LogKS.chart U) z ∈ W.1) :
@@ -70,15 +70,15 @@ end GlobalTheory.LogKSUp
 namespace GlobalTheory.LogKSUp
 
 /- English proof (translation)
-Introduce `E _ _ _ H X t V U W hW n v D DW Θ hD ⟨J, Wc, j, d, hsup, hj, hfld, hcomp, htest⟩`. Establish `hWU : W.1 ≤ U.1` using `hW.le.trans inf_le_left`. Establish `hWW : ∀ i, Wc i ≤ t.G.hom ⁻¹ᵁ W.1` using `fun i => (le_iSup Wc i).trans (hsup.le.trans (t.G.hom.preimage_mono inf_le_left))`. Use `⟨J, Wc, j, d, ?_, hj, hfld, fun i h r => ?_, fun i i' O hO f S _ φ g₀ w hg₀ hO' hw => ?_⟩` and prove the remaining obligations. Rewrite using `[hsup, hW, inf_assoc, inf_idem]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `e : ∀ r : Γ(X, U.1), (t.G.hom.appLE U.1 (Wc i) h).hom r = (t.G.hom.appLE W.1 (Wc i) (hWW i)).hom ((X.presheaf.map (homOfLE hWU).op).hom r)`. Introduce `r`. Conclude with `(congrArg (fun k => k.hom r) (t.G.hom.map_appLE (hWW i) (homOfLE hWU).op)).symm`. Rewrite using `[e, e, hcomp i (hWW i), hD]`. Establish `hr : ∀ z, (spMap φ ≫ GlobalTheory.LogKS.chart U) z ∈ W.1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `z`. Rewrite using `[← hg₀]`. Establish `hz : g₀ z ∈ O` using `hO' (show z ∈ (⊤ : (Sp S).Opens) from trivial)`. Conclude with `hWW i (inf_le_left (a := Wc i) (b := Wc i') (hO hz))`. Take `⟨φ', hfac⟩` from `exists_factor U W hWU φ hr`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hg₀' : g₀ ≫ t.G.hom = spMap φ' ≫ GlobalTheory.LogKS.chart W`. Rewrite using `[hg₀, hfac, ← spMap_comp'', Category.assoc, chart_res']`. Use `htest i i' O hO f S φ' g₀ w hg₀' hO' fun a => by` as an intermediate fact. Take `⟨g', v', h₁, h₂, h₃⟩` from `hw a`. Use `⟨g', v', h₁, ?_, h₃⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h₂, ← Category.assoc, spMap_comp'', dualMap_comp'', ← hfac]`. Rewrite using `[this]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[hfac]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem isKS_of_inf : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (X : Scheme.{0}) (t : SAB H X) (V : X.Opens) (U W : X.affineOpens) (hW : W.1 = U.1 ⊓ V) (n : ℕ) (v : Fin n → (Sp (DualNumber Γ(X, U.1)) ⟶ t.G.left)) (D : Γ(X, U.1) → Γ(X, U.1)) (DW : Γ(X, W.1) → Γ(X, W.1)) (Θ : Matrix (Fin n) (Fin n) Γ(X, U.1)), (∀ r, DW ((X.presheaf.map (homOfLE (hW.le.trans inf_le_left)).op).hom r) = (X.presheaf.map (homOfLE (hW.le.trans inf_le_left)).op).hom (D r)) → IsKS t V W (fun i => spMap (dualMap (X.presheaf.map (homOfLE (hW.le.trans inf_le_left)).op).hom) ≫ v i) DW ((X.presheaf.map (homOfLE (hW.le.trans inf_le_left)).op).hom.mapMatrix Θ) → IsKS t V U v D Θ := by
   intro E _ _ _ H X t V U W hW n v D DW Θ hD ⟨J, Wc, j, d, hsup, hj, hfld, hcomp, htest⟩

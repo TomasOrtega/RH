@@ -4,21 +4,21 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AdditiveValuationN
 open UpperTheory.V UpperTheory.V.PropA
 
 /- English proof (translation)
-Introduce `K _ _ n S`. Use `set p := S.charpoly with hp`. Establish `hmon : p.Monic` using `Matrix.charpoly_monic S`. Establish `hprod : (p.roots.map (fun a => Polynomial.X - Polynomial.C a)).prod = p` using `Polynomial.prod_multiset_X_sub_C_of_monic_of_roots_card_eq hmon IsAlgClosed.card_roots_eq_natDegree`. Establish `hcard : Multiset.card p.roots = n`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[IsAlgClosed.card_roots_eq_natDegree, hp, Matrix.charpoly_natDegree_eq_dim, Fintype.card_fin]`. Establish `heval : ∀ x : K, (Matrix.scalar (Fin n) x - S).det = (p.roots.map (fun a => x - a)).prod`. Introduce `x`. Rewrite using `[← Matrix.eval_charpoly, ← hp]`. Use `conv_lhs => rw [← hprod]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[Polynomial.eval_multiset_prod, Multiset.map_map]`. Use `congr 1`. Apply `Multiset.map_congr rfl` to reduce the goal to its premises. Introduce `a _`. Simplify using the standard rewrite rules.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hz : ∃ z : Fin n → K, ∀ f : K → K, (p.roots.map f).prod = ∏ i, f (z i)`. Take `⟨L, hL⟩ : ∃ L : List K, (L : Multiset K) = p.roots` from `⟨_, Multiset.coe_toList _⟩`. Establish `hlen : L.length = n` using `by rw [← hcard, ← hL, Multiset.coe_card]`. Use `⟨fun i => L.get (Fin.cast hlen.symm i), fun f => ?_⟩` and prove the remaining obligations. Rewrite using `[← hL, Multiset.map_coe, Multiset.prod_coe, ← List.prod_ofFn]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation.
 
-Use `congr 1`. Apply the tactic sequence `apply List.ext_get <;> simp [hlen]`. Take `⟨z, hz⟩` from `hz`. Use `⟨z, fun c => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hc : c = 0`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Substitute `hc` using the available equality. Simplify using `[Matrix.det_neg]`. Establish `hmat : c • S - 1 = (-c) • (Matrix.scalar (Fin n) c⁻¹ - S)`. Use extensionality with `i j`. Distinguish the cases in `hij : i = j`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Substitute `hij` using the available equality. Simplify using `[Matrix.sub_apply, Matrix.one_apply]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Simplify using `[Matrix.sub_apply, Matrix.one_apply, hij]`.
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hmat, Matrix.det_smul, heval, hz, Fintype.card_fin, ← Fin.prod_const, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl (fun i _ => ?_)` and prove the remaining obligations. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.PropA.detFactor :
     ∀ (K : Type) [Field K] [IsAlgClosed K] (n : ℕ) (S : Matrix (Fin n) (Fin n) K),

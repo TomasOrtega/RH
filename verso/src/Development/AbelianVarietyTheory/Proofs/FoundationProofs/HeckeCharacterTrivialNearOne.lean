@@ -17,28 +17,26 @@ namespace GlobalTheory.QuadSubfield
 variable (D : D7)
 
 /- English proof (translation)
-The claim follows from `D.host.conjE_apply f y`.
+A detailed English derivation is pending.
 -/
 theorem emb_conj (f : D.host.E →+* ℂ) (y : D.host.E) :
     f (D.host.conj y) = starRingEnd ℂ (f y) := D.host.conjE_apply f y
 
 /- English proof (translation)
-Apply `D.host.φ₀.injective` to reduce the goal to its premises. Rewrite using `[emb_conj, emb_conj, Complex.conj_conj]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem conj_conj (y : D.host.E) : D.host.conj (D.host.conj y) = y := by
   apply D.host.φ₀.injective
   rw [emb_conj, emb_conj, Complex.conj_conj]
 
 /- English proof (translation)
-Establish `halg : IsAlgebraic ℚ D.host.sqrtMinusD` using `Algebra.IsAlgebraic.isAlgebraic _`. Establish `hx' : x ∈ Algebra.adjoin ℚ {D.host.sqrtMinusD}`. Rewrite using `[← IntermediateField.adjoin_simple_toSubalgebra_of_isAlgebraic halg]`. Conclude with `hx`. Use `clear hx`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Proceed by induction.
 
-Establish `hs` using `D.host.sqrtMinusD_sq`. Proceed by induction on `hx' using Algebra.adjoin_induction with`. Consider the case `mem x hx`. Rewrite `hx` using `[Set.mem_singleton_iff]`. Conclude with `⟨0, 1, by simp [hx]⟩`.
+Treat this case separately. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Treat this case separately. Treat this case separately.
 
-Consider the case `algebraMap r => exact ⟨r, 0, by simp⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨a, b, rfl⟩` from `hx`. Take `⟨a', b', rfl⟩` from `hy`. Conclude with `⟨a + a', b + b', by push_cast; ring⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Consider the case `mul x y _ _ hx hy`. Take `⟨a, b, rfl⟩` from `hx`. Take `⟨a', b', rfl⟩` from `hy`. Use `⟨a * a' - D.host.d * b * b', a * b' + a' * b, ?_⟩` and prove the remaining obligations. Use `push_cast`.
-
-Take the linear combination `(b : D.host.E) * (b' : D.host.E) * hs`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem exists_coords {x : D.host.E} (hx : x ∈ D.host.K) :
     ∃ a b : ℚ, x = (a : D.host.E) + (b : D.host.E) * D.host.sqrtMinusD := by
@@ -65,7 +63,7 @@ theorem exists_coords {x : D.host.E} (hx : x ∈ D.host.K) :
     linear_combination (b : D.host.E) * (b' : D.host.E) * hs
 
 /- English proof (translation)
-Rewrite using `[map_add, map_mul, map_ratCast, map_ratCast, D.host.conj_sqrtMinusD]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem conj_coords (a b : ℚ) :
     D.host.conj ((a : D.host.E) + (b : D.host.E) * D.host.sqrtMinusD) =
@@ -74,7 +72,7 @@ theorem conj_coords (a b : ℚ) :
   ring
 
 /- English proof (translation)
-Take `⟨a, b, rfl⟩` from `exists_coords D hx`. Rewrite using `[conj_coords]`. Conclude with `sub_mem (SubfieldClass.ratCast_mem _ a) (mul_mem (SubfieldClass.ratCast_mem _ b) (Formalism.L2.Pj.LPb.sqrtMinusD_mem_K D))`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conj_mem {x : D.host.E} (hx : x ∈ D.host.K) : D.host.conj x ∈ D.host.K := by
   obtain ⟨a, b, rfl⟩ := exists_coords D hx
@@ -92,14 +90,14 @@ Both sides reduce to the same expression.
 theorem coe_conjK (x : D.host.K) : ((conjK D x : D.host.K) : D.host.E) = D.host.conj (x : D.host.E) := rfl
 
 /- English proof (translation)
-Establish `: IsGalois ℚ D.host.E` using `D.host.hostE_isGalois`. Conclude with `IsGalois.tower_top_of_isGalois ℚ _ _`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isGalois_over : IsGalois D.host.K D.host.E := by
   have : IsGalois ℚ D.host.E := D.host.hostE_isGalois
   exact IsGalois.tower_top_of_isGalois ℚ _ _
 
 /- English proof (translation)
-Use `isGalois_over D` as an intermediate fact. Conclude with `trace_eq_sum_automorphisms (K := D.host.K) y`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem coe_trace (y : D.host.E) :
     ((Algebra.trace D.host.K D.host.E y : D.host.K) : D.host.E) =
@@ -108,7 +106,7 @@ theorem coe_trace (y : D.host.E) :
   exact trace_eq_sum_automorphisms (K := D.host.K) y
 
 /- English proof (translation)
-Establish `h : D.host.conj * τ.restrictScalars ℚ = τ.restrictScalars ℚ * D.host.conj` using `D.host.gal.injective (by rw [map_mul, map_mul, mul_comm])`. Conclude with `AlgEquiv.congr_fun h y`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem conj_comm (τ : D.host.E ≃ₐ[D.host.K] D.host.E) (y : D.host.E) :
     D.host.conj (τ y) = τ (D.host.conj y) := by
@@ -117,7 +115,7 @@ theorem conj_comm (τ : D.host.E ≃ₐ[D.host.K] D.host.E) (y : D.host.E) :
   exact AlgEquiv.congr_fun h y
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[coe_conjK, coe_trace, coe_trace, map_sum]`. Conclude with `Finset.sum_congr rfl fun τ _ => (conj_comm D τ y).symm`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem trace_conj (y : D.host.E) :
     Algebra.trace D.host.K D.host.E (D.host.conj y) =
@@ -127,13 +125,13 @@ theorem trace_conj (y : D.host.E) :
   exact Finset.sum_congr rfl fun τ _ => (conj_comm D τ y).symm
 
 /- English proof (translation)
-Take `⟨a, b, hab⟩` from `exists_coords D (Algebra.trace D.host.K D.host.E (y * D.host.conj y)).2`. Establish `hfix : D.host.conj ((Algebra.trace D.host.K D.host.E (y * D.host.conj y) : D.host.K) : D.host.E) = ((Algebra.trace D.host.K D.host.E (y * D.host.conj y) : D.host.K) : D.host.E)`. Rewrite using `[← coe_conjK, ← trace_conj, map_mul, conj_conj, mul_comm]`. Rewrite `hfix` using `[hab, conj_coords]`. Establish `hb : (b : D.host.E) * D.host.sqrtMinusD = 0` using `by linear_combination (-1 / 2 : D.host.E) * hfix`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hab` using `[hb, add_zero]`. Use `⟨a, ?_, Subtype.ext (by rw [hab]; simp)⟩` and prove the remaining obligations. Establish `h1` using `congrArg D.host.φ₀ hab`. Rewrite `h1` using `[coe_trace, map_sum, map_ratCast]`. Establish `h2 : ∀ τ : D.host.E ≃ₐ[D.host.K] D.host.E, D.host.φ₀ (τ (y * D.host.conj y)) = ((Complex.normSq (D.host.φ₀ (τ y)) : ℝ) : ℂ)`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Introduce `τ`. Rewrite using `[map_mul, ← conj_comm, map_mul, emb_conj, Complex.mul_conj]`. Simplify using `only [h2] at h1`. Establish `h3 : ∑ τ : D.host.E ≃ₐ[D.host.K] D.host.E, Complex.normSq (D.host.φ₀ (τ y)) = (a : ℝ)`. Conclude with `h1` after adjusting the coercions.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h4 : (0 : ℝ) < a`. Rewrite using `[← h3]`. Use `Finset.sum_pos (fun τ _ => Complex.normSq_pos.2 ?_) Finset.univ_nonempty` and prove the remaining obligations. Simplify using `using hy`. Conclude with `h4` after adjusting the coercions.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem trace_pos (y : D.host.E) (hy : y ≠ 0) :
     ∃ a : ℚ, 0 < a ∧ Algebra.trace D.host.K D.host.E (y * D.host.conj y) = (a : D.host.K) := by
@@ -161,7 +159,7 @@ theorem trace_pos (y : D.host.E) (hy : y ≠ 0) :
   exact_mod_cast h4
 
 /- English proof (translation)
-Establish `h` using `Module.finrank_mul_finrank ℚ D.host.K D.host.E`. Rewrite `h` using `[Formalism.L2.Pj.LPb.finrank_K, D.host.finrank_cmField]`. Use `show _ = 2 * D.R.ord`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem finrank_over : Module.finrank D.host.K D.host.E = fF D := by
   have h := Module.finrank_mul_finrank ℚ D.host.K D.host.E
@@ -170,11 +168,11 @@ theorem finrank_over : Module.finrank D.host.K D.host.E = fF D := by
   omega
 
 /- English proof (translation)
-Introduce `D`. Use `⟨finrank_over D, conjK D, ⟨D.host.sqrtMinusD, Formalism.L2.Pj.LPb.sqrtMinusD_mem_K D⟩, coe_conjK D, ?_, ?_, ?_, ?_, conj_conj D, trace_conj D, trace_pos D⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `using D.host.sqrtMinusD_sq`. Apply `Subtype.ext` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[coe_conjK]`. Conclude with `D.host.conj_sqrtMinusD`. Introduce `x`. Take `⟨a, b, h⟩` from `exists_coords D x.2`. Conclude with `⟨a, b, Subtype.ext (by simpa using h)⟩`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `h` using `(Formalism.L2.Pj.LPb.w0K D).2`. Use `h using 1` and compare the differences between its conclusion and the goal. Apply the tactic sequence `first | rfl | (apply Subtype.ext; simp [Formalism.L2.Pj.LPb.w0K])`.
+Apply an available result and prove the equalities needed to match it to the conclusion. A detailed English derivation is pending.
 -/
 theorem quadratic_subfield : ∀ D : D7, Module.finrank D.host.K D.host.E = fF D ∧ ∃ (σ : D.host.K →+* D.host.K) (θ : D.host.K), (∀ x : D.host.K, ((σ x : D.host.K) : D.host.E) = D.host.conj (x : D.host.E)) ∧ θ ^ 2 = -(D.host.d : D.host.K) ∧ σ θ = -θ ∧ (∀ x : D.host.K, ∃ a b : ℚ, x = (a : D.host.K) + (b : D.host.K) * θ) ∧ IsIntegral ℤ ((1 + θ) / 2) ∧ (∀ y : D.host.E, D.host.conj (D.host.conj y) = y) ∧ (∀ y : D.host.E, Algebra.trace D.host.K D.host.E (D.host.conj y) = σ (Algebra.trace D.host.K D.host.E y)) ∧ ∀ y : D.host.E, y ≠ 0 → ∃ a : ℚ, 0 < a ∧ Algebra.trace D.host.K D.host.E (y * D.host.conj y) = (a : D.host.K) := by
   intro D

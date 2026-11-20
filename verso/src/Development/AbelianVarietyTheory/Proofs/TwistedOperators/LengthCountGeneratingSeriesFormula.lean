@@ -8,17 +8,15 @@ noncomputable section
 namespace GlobalTheory.InertZeta
 
 /- English proof (translation)
-Use `set y := (q : 𝕜) ^ (N + 1) * x with hy`. Establish `hy2 : ‖y ^ 2‖ < 1`. Rewrite using `[norm_pow]`. Use polynomial arithmetic with `[norm_nonneg y]`. Establish `hg` using `hasSum_geometric_of_norm_lt_one hy2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `fe : (fun k : ℕ => ((c * q ^ (2 * N * ((2 * k) / 2) + 2 * k) : ℕ) : 𝕜) * x ^ (2 * k)) = fun k => (c : 𝕜) * (y ^ 2) ^ k`. Use function extensionality and compare the values at `k`. Rewrite using `[Nat.mul_div_cancel_left k (by norm_num : 0 < 2)]`. Use `push_cast`. Rewrite using `[hy]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `fo : (fun k : ℕ => ((c * q ^ (2 * N * ((2 * k + 1) / 2) + (2 * k + 1)) : ℕ) : 𝕜) * x ^ (2 * k + 1)) = fun k => ((c : 𝕜) * q * x) * (y ^ 2) ^ k`. Use function extensionality and compare the values at `k`. Rewrite using `[show (2 * k + 1) / 2 = k by omega]`. Use `push_cast`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the hypotheses and the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hy]`. Expand and normalize the polynomial expressions, which then agree. Establish `he` using `hg.mul_left (c : 𝕜)`. Establish `ho` using `hg.mul_left ((c : 𝕜) * q * x)`. Rewrite `he` using `[← fe]`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `ho` using `[← fo]`. Use `HasSum.even_add_odd (f := fun j : ℕ => ((c * q ^ (2 * N * (j / 2) + j) : ℕ) : 𝕜) * x ^ j) he ho` as an intermediate fact. Rewrite using `[show (c : 𝕜) * (1 + q * x) / (1 - y ^ 2) = c * (1 - y ^ 2)⁻¹ + c * q * x * (1 - y ^ 2)⁻¹ by`. Rewrite using `[div_eq_mul_inv]`. Use the proof step `ring]`.
-
-Conclude with `this`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem genFun_counts_hasSum {𝕜 : Type} [NormedField 𝕜] [CompleteSpace 𝕜] (c q N : ℕ) (x : 𝕜)
     (hx : ‖(q : 𝕜) ^ (N + 1) * x‖ < 1) :
@@ -50,13 +48,13 @@ theorem genFun_counts_hasSum {𝕜 : Type} [NormedField 𝕜] [CompleteSpace �
   exact this
 
 /- English proof (translation)
-Set `h : ℕ → 𝕜` to `fun j => if j = 0 then 0 else (C (j - 1) : 𝕜) * x ^ j`. Establish `hsh : (fun n => h (n + 1)) = fun n => x * ((C n : 𝕜) * x ^ n)`. Use function extensionality and compare the values at `n`. Simplify using `only [h, Nat.add_sub_cancel, if_neg (Nat.succ_ne_zero n)]`. Expand and normalize the polynomial expressions, which then agree.
+Introduce a local definition for the expression. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `h1 : HasSum (fun n => h (n + 1)) (x * S)` using `by rw [hsh]; exact hA.mul_left x`. Establish `hh : HasSum h (x * S)`. Use `(hasSum_nat_add_iff (f := h) 1).1 h1` as an intermediate fact. Simplify `this` using `[h]`. Establish `hd : (fun j => (d j : 𝕜) * x ^ j) = fun j => (C j : 𝕜) * x ^ j - h j`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `j`. Break down `j with _ | j` into its components or cases. Simplify using `[h, h0]`. Simplify using `only [h, if_neg (Nat.succ_ne_zero j), Nat.add_sub_cancel, hs j] push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Apply function extensionality and compare values at an arbitrary argument. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[hd, show (1 - x) * S = S - x * S by ring]`. Conclude with `hA.sub hh`.
+Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem genFun_diff_hasSum {𝕜 : Type} [NormedField 𝕜] (C d : ℕ → ℕ) (x S : 𝕜)
     (h0 : d 0 = C 0) (hs : ∀ j, C (j + 1) = C j + d (j + 1))
@@ -81,9 +79,9 @@ theorem genFun_diff_hasSum {𝕜 : Type} [NormedField 𝕜] (C d : ℕ → ℕ) 
   exact hA.sub hh
 
 /- English proof (translation)
-Use `haveI : Finite {i // f i - l = j} := hfin.to_subtype`. Use `haveI : Fintype {i // f i - l = j} := Fintype.ofFinite _`. Establish `hc : ∀ y : {i // f i - l = j}, x ^ f y.1 = x ^ (l + j)` using `fun y => by`. Use `hl y.1` as an intermediate fact. Use `y.2` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[show f y.1 = l + j by omega]`. Establish `e : Nat.card {i // f i - l = j} = Set.ncard {i | f i - l = j}` using `Nat.card_coe_set_eq _`. Establish `h` using `hasSum_fintype (fun y : {i // f i - l = j} => x ^ f y.1)`. Rewrite `h` using `[Finset.sum_congr rfl (fun y _ => hc y), Finset.sum_const, Finset.card_univ, nsmul_eq_mul, ← Nat.card_eq_fintype_card, e]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem genFun_fibre_hasSum {ι 𝕜 : Type} [NormedField 𝕜] (f : ι → ℕ) (l j : ℕ) (x : 𝕜)
     (hfin : Set.Finite {i | f i - l = j}) (hl : ∀ i, l ≤ f i) :
@@ -100,27 +98,27 @@ theorem genFun_fibre_hasSum {ι 𝕜 : Type} [NormedField 𝕜] (f : ι → ℕ)
   exact h
 
 /- English proof (translation)
-Introduce `ι f l c q N X hc hq hl hcard hX`. Set `C : ℕ → ℕ` to `fun j => c * q ^ (2 * N * (j / 2) + j)`. Set `g : ι → ℕ` to `fun i => f i - l`. Establish `hCpos : ∀ j, C j ≠ 0` using `fun j => Nat.mul_ne_zero (by omega) (pow_ne_zero _ (by omega))`. Establish `hle : ∀ j, {i | g i ≤ j} = {i | f i ≤ l + j}` using `fun j => by`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use extensionality with `i`. Simplify using `only [Set.mem_setOf_eq, g]`. Use `hl i` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hcum : ∀ j, Set.ncard {i | g i ≤ j} = C j` using `fun j => by`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Rewrite using `[hle, ← Nat.card_coe_set_eq]`. Conclude with `hcard j`. Establish `hfin : ∀ j, Set.Finite {i | g i ≤ j}` using `fun j => by`. Apply `Set.finite_of_ncard_ne_zero` to reduce the goal to its premises. Rewrite using `[hcum]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hCpos j`. Establish `hfin' : ∀ j, Set.Finite {i | f i - l = j}` using `fun j => (hfin j).subset fun i hi => by simp only [Set.mem_setOf_eq, g] at hi ⊢; omega`. Set `d : ℕ → ℕ` to `fun j => Set.ncard {i | f i - l = j}`. Establish `h0 : d 0 = C 0`. Rewrite using `[← hcum 0]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Use `show Set.ncard {i | f i - l = 0} = _`. Use `congr 1`. Use extensionality with `i`. Simplify using `only [Set.mem_setOf_eq, g]`. Use linear arithmetic over natural numbers and integers.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs : ∀ j, C (j + 1) = C j + d (j + 1)` using `fun j => by`. Establish `hdis : Disjoint {i | g i ≤ j} {i | f i - l = j + 1}` using `Set.disjoint_left.2 fun i h1 h2 => by simp only [Set.mem_setOf_eq, g] at h1 h2; omega`. Establish `hun : {i | g i ≤ j + 1} = {i | g i ≤ j} ∪ {i | f i - l = j + 1}`. Use extensionality with `i`. Simplify using `only [Set.mem_setOf_eq, Set.mem_union, g]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Use linear arithmetic over natural numbers and integers. Rewrite using `[← hcum, ← hcum, hun, Set.ncard_union_eq hdis (hfin j) (hfin' (j + 1))]`. Set `e` to `Equiv.sigmaFiberEquiv g`. Establish `hr : ‖(q : ℝ) ^ (N + 1) * ‖X‖‖ < 1`. Rewrite using `[norm_mul, norm_pow, Real.norm_natCast, norm_norm]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hX` using `[norm_mul, norm_pow, Complex.norm_natCast]`. Then use the resulting hypothesis. Establish `hRB` using `(genFun_diff_hasSum C d ‖X‖ _ h0 hs (genFun_counts_hasSum c q N ‖X‖ hr)).mul_left (‖X‖ ^ l)`. Establish `hsumR : Summable (fun i => ‖X‖ ^ f i)`. Rewrite using `[← e.summable_iff]`. Use `(summable_sigma_of_nonneg (f := (fun i => ‖X‖ ^ f i) ∘ e) (fun _ => pow_nonneg (norm_nonneg _) _)).2 ⟨fun j => (genFun_fibre_hasSum f l j ‖X‖ (hfin' j) hl).summable, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `hRB.summable.congr fun j => ?_` and prove the remaining obligations. Establish `ht : ∑' (y : {x // g x = j}), ((fun i => ‖X‖ ^ f i) ∘ e) ⟨j, y⟩ = (d j : ℝ) * ‖X‖ ^ (l + j)` using `(genFun_fibre_hasSum f l j ‖X‖ (hfin' j) hl).tsum_eq`. Rewrite using `[ht, pow_add]`. Expand and normalize the polynomial expressions, which then agree. Establish `hsumC : Summable (fun i => X ^ f i)` using `Summable.of_norm (by simpa [norm_pow] using hsumR)`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hB` using `(genFun_diff_hasSum C d X _ h0 hs (genFun_counts_hasSum c q N X hX)).mul_left (X ^ l)`. Establish `hBC : HasSum (fun j => (d j : ℂ) * X ^ (l + j)) (c * X ^ l * jFac q N X)`. Establish `e1 : (fun j => (d j : ℂ) * X ^ (l + j)) = fun j => X ^ l * ((d j : ℂ) * X ^ j)`. Use function extensionality and compare the values at `j`. Rewrite using `[pow_add]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e1, show (c : ℂ) * X ^ l * jFac q N X = X ^ l * ((1 - X) * (c * (1 + q * X) / (1 - ((q : ℂ) ^ (N + 1) * X) ^ 2))) by unfold jFac; ring]`. Conclude with `hB`. Establish `hsig` using `HasSum.sigma_of_hasSum (f := (fun i => X ^ f i) ∘ e) hBC (fun j => genFun_fibre_hasSum f l j X (hfin' j) hl) (e.summable_iff.2 hsumC)`. Conclude with `e.hasSum_iff.1 hsig`.
+A detailed English derivation is pending.
 -/
 theorem genFun_holds : GenFun := by
   intro ι f l c q N X hc hq hl hcard hX

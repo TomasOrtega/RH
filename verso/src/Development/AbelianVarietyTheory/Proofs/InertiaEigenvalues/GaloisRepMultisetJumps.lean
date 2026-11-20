@@ -7,7 +7,7 @@ open NumberField IsDedekindDomain Formalism Formalism.BasicNotions Formalism.Bas
 namespace GlobalTheory.GalSum
 
 /- English proof (translation)
-Apply `HeightOneSpectrum.ext` to reduce the goal to its premises. Use extensionality with `x`. Rewrite using `[← h x, h' x]`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 -/
 theorem inducesW_unique {D : D7} {i : D.nd.Loc} {τ : D.host.E →+* Qbar (D.nd.l i)} {w w' : PlE D.host}
     (h : InducesW D.nd i τ w) (h' : InducesW D.nd i τ w') : w' = w := by
@@ -16,13 +16,13 @@ theorem inducesW_unique {D : D7} {i : D.nd.Loc} {τ : D.host.E →+* Qbar (D.nd.
   rw [← h x, h' x]
 
 /- English proof (translation)
-Introduce `D hT i a b ρ ρ' p q m m' ⟨c, s, hp, hw⟩ ⟨c', s', hq, hw'⟩`. Take `⟨-, -, hGal⟩` from `hT`. Take `⟨-, -, hsum, -⟩` from `hGal.2.2.2 i`. Take `⟨hdR, hwd, hj⟩` from `hsum a b ρ ρ' c c'`. Establish `wdok : ∀ w, SumRepresentations.At.WDok D.nd D.naut i ρ w ∧ SumRepresentations.At.WDok D.nd D.naut i ρ' w`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `w`. Distinguish the cases in `hl : w ∈ placesOver D.host.E (D.nd.l i)`. Conclude with `⟨Or.inr (hw w hl).1, Or.inr (hw' w hl).1⟩`. Conclude with `⟨Or.inl hl, Or.inl hl⟩`. Use `⟨SumRepresentations.At.sumRep ρ ρ', GlobalTheory.BCGal.cont_sumRep ρ ρ' c c', GlobalTheory.BCGal.ss_sumRep ρ ρ' s s', fun w => ?_, fun w hl => ⟨(hdR w hl).2 ⟨(hw w hl).1, (hw' w hl).1⟩, fun τ hτ => ?_⟩⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hwd w (wdok w).1 (wdok w).2, hp, hq]`. Establish `key : ∀ w', InducesW D.nd i τ w' → D.naut.IsdRW i ρ w' ∧ D.naut.IsdRW i ρ' w'`. Introduce `w' h'`. Rewrite using `[inducesW_unique hτ h']`. Conclude with `⟨(hw w hl).1, (hw' w hl).1⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Rewrite using `[hj τ key, Multiset.map_add, (hw w hl).2 τ hτ, (hw' w hl).2 τ hτ]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem main : ∀ D : D7, SumRepresentations.tie0 D → ∀ (i : D.nd.Loc) (a b : ℕ) (ρ : GE D.nd →* GL (Fin a) (Qbar (D.nd.l i))) (ρ' : GE D.nd →* GL (Fin b) (Qbar (D.nd.l i))) (p q : ∀ w, D.naut.LP w) (m m' : (D.host.E →+* ℂ) → Multiset ℂ), (SumRepresentations.At.ContQ D.nd i ρ ∧ IsSSRep ρ ∧ (∀ w, D.naut.wdOf i ρ w = p w) ∧ ∀ w ∈ placesOver D.host.E (D.nd.l i), D.naut.IsdRW i ρ w ∧ ∀ τ, InducesW D.nd i τ w → (D.naut.jumpsW i ρ τ).map (fun n : ℤ => (n : ℂ)) = m ((D.naut.iotaQC i).toRingHom.comp τ)) → (SumRepresentations.At.ContQ D.nd i ρ' ∧ IsSSRep ρ' ∧ (∀ w, D.naut.wdOf i ρ' w = q w) ∧ ∀ w ∈ placesOver D.host.E (D.nd.l i), D.naut.IsdRW i ρ' w ∧ ∀ τ, InducesW D.nd i τ w → (D.naut.jumpsW i ρ' τ).map (fun n : ℤ => (n : ℂ)) = m' ((D.naut.iotaQC i).toRingHom.comp τ)) → ∃ σ : GE D.nd →* GL (Fin (a + b)) (Qbar (D.nd.l i)), (SumRepresentations.At.ContQ D.nd i σ ∧ IsSSRep σ ∧ (∀ w, D.naut.wdOf i σ w = D.naut.lpSum (p w) (q w)) ∧ ∀ w ∈ placesOver D.host.E (D.nd.l i), D.naut.IsdRW i σ w ∧ ∀ τ, InducesW D.nd i τ w → (D.naut.jumpsW i σ τ).map (fun n : ℤ => (n : ℂ)) = m ((D.naut.iotaQC i).toRingHom.comp τ) + m' ((D.naut.iotaQC i).toRingHom.comp τ)) := by
   intro D hT i a b ρ ρ' p q m m' ⟨c, s, hp, hw⟩ ⟨c', s', hq, hw'⟩

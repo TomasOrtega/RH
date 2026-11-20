@@ -11,15 +11,15 @@ namespace GlobalTheory.CompanionTheory.Equi.CosetStep
 variable {F : Type} [Field F] [NumberField F]
 
 /- English proof (translation)
-Establish `hv : v.asIdeal ≠ ⊤` using `v.isPrime.ne_top`. Establish `hex : ∃ m : ℕ, ¬ D ≤ v.asIdeal ^ (m + 1)`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Apply `hD` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `h' : D ≤ ⨅ i : ℕ, v.asIdeal ^ i`. Use `le_iInf fun i => ?_` and prove the remaining obligations. Consider the cases of `i with`. Consider the case `zero => simp`. Consider the case `succ i => exact h i`.
+Reduce the conclusion to the remaining proof obligations. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h'` using `[Ideal.iInf_pow_eq_bot_of_isDomain _ hv]`. Conclude with `le_bot_iff.mp h'`. Choose the witnesses or unpack the hypotheses as in `⟨m, hm, hle⟩ : ∃ m : ℕ, ¬ D ≤ v.asIdeal ^ (m + 1) ∧ D ≤ v.asIdeal ^ m := by`. Use `⟨Nat.find hex, Nat.find_spec hex, ?_⟩` and prove the remaining obligations. Break down `Nat.eq_zero_or_pos (Nat.find hex) with h0 | hpos` into its components or cases.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[h0]`. Establish `h1` using `Nat.find_min hex (Nat.sub_lt hpos Nat.one_pos) push_neg at h1`. Establish `e : Nat.find hex - 1 + 1 = Nat.find hex` using `by omega`. Rewrite `h1` using `[e]`. Then use the resulting hypothesis. Take `⟨B, hB⟩` from `Ideal.dvd_iff_le.mpr hle`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨m, B, hB, fun hBv => hm ?_⟩` and prove the remaining obligations. Rewrite using `[hB, pow_succ]`. Conclude with `Ideal.mul_mono_right hBv`.
+A detailed English derivation is pending.
 -/
 theorem exists_pow_mul (v : HeightOneSpectrum (𝓞 F)) {D : Ideal (𝓞 F)} (hD : D ≠ ⊥) :
     ∃ (m : ℕ) (B : Ideal (𝓞 F)), D = v.asIdeal ^ m * B ∧ ¬ B ≤ v.asIdeal := by
@@ -49,7 +49,7 @@ theorem exists_pow_mul (v : HeightOneSpectrum (𝓞 F)) {D : Ideal (𝓞 F)} (hD
   exact Ideal.mul_mono_right hBv
 
 /- English proof (translation)
-Assume the negation of the conclusion as `h`. Use `push_neg at h`. Establish `hle : v.asIdeal ^ k ≤ w.asIdeal` using `fun e he => h e he`. Establish `hvw : v.asIdeal ≤ w.asIdeal` using `w.isPrime.le_of_pow_le hle`. Conclude with `hw (HeightOneSpectrum.ext (v.isMaximal.eq_of_le w.isPrime.ne_top hvw).symm)`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_mem_pow_not_mem {v w : HeightOneSpectrum (𝓞 F)} (hw : w ≠ v) (k : ℕ) :
     ∃ e ∈ v.asIdeal ^ k, e ∉ w.asIdeal := by
@@ -60,7 +60,7 @@ theorem exists_mem_pow_not_mem {v w : HeightOneSpectrum (𝓞 F)} (hw : w ≠ v)
   exact hw (HeightOneSpectrum.ext (v.isMaximal.eq_of_le w.isPrime.ne_top hvw).symm)
 
 /- English proof (translation)
-Take `⟨s, hs, y, hy, hsy⟩` from `ha`. Take `⟨t, ht, z, hz, htz⟩` from `hb`. Use `⟨s * t, fun h => (w.isPrime.mem_or_mem h).elim hs ht, t * y + s * z, I.add_mem (I.mul_mem_left _ hy) (I.mul_mem_left _ hz), ?_⟩` and prove the remaining obligations. Use `push_cast`. Take the linear combination `(t : F) * hsy + (s : F) * htz`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem locMem_add {I : Ideal (𝓞 F)} {w : HeightOneSpectrum (𝓞 F)} {a b : F}
     (ha : LocMem I w a) (hb : LocMem I w b) : LocMem I w (a + b) := by
@@ -72,7 +72,7 @@ theorem locMem_add {I : Ideal (𝓞 F)} {w : HeightOneSpectrum (𝓞 F)} {a b : 
   linear_combination (t : F) * hsy + (s : F) * htz
 
 /- English proof (translation)
-Take `⟨s, hs, y, hy, hsy⟩` from `ha`. Use `⟨s, hs, -y, I.neg_mem hy, ?_⟩` and prove the remaining obligations. Use `push_cast`. Rewrite using `[mul_neg, hsy]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 -/
 theorem locMem_neg {I : Ideal (𝓞 F)} {w : HeightOneSpectrum (𝓞 F)} {a : F}
     (ha : LocMem I w a) : LocMem I w (-a) := by
@@ -82,16 +82,16 @@ theorem locMem_neg {I : Ideal (𝓞 F)} {w : HeightOneSpectrum (𝓞 F)} {a : F}
   rw [mul_neg, hsy]
 
 /- English proof (translation)
-Rewrite using `[sub_eq_add_neg]`. Conclude with `locMem_add ha (locMem_neg hb)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem locMem_sub {I : Ideal (𝓞 F)} {w : HeightOneSpectrum (𝓞 F)} {a b : F}
     (ha : LocMem I w a) (hb : LocMem I w b) : LocMem I w (a - b) := by
   rw [sub_eq_add_neg]; exact locMem_add ha (locMem_neg hb)
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨s, hs, y, hy, h⟩`. Conclude with `⟨s, hs, y, (Ideal.mul_le_left : I * v.asIdeal ^ k ≤ I) hy, h⟩`. Introduce and unpack `⟨s, hs, y, hy, h⟩`. Take `⟨e, he, hew⟩` from `exists_mem_pow_not_mem hw k`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Use `⟨e * s, fun hm => (w.isPrime.mem_or_mem hm).elim hew hs, y * e, Ideal.mul_mem_mul hy he, ?_⟩` and prove the remaining obligations. Use `push_cast`. Rewrite using `[mul_assoc, h]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem locMem_mul_pow_iff {I : Ideal (𝓞 F)} {v w : HeightOneSpectrum (𝓞 F)} (hw : w ≠ v) (k : ℕ)
     {t : F} : LocMem (I * v.asIdeal ^ k) w t ↔ LocMem I w t := by
@@ -106,7 +106,7 @@ theorem locMem_mul_pow_iff {I : Ideal (𝓞 F)} {v w : HeightOneSpectrum (𝓞 F
     ring
 
 /- English proof (translation)
-Rewrite using `[HeightOneSpectrum.valuation_of_algebraMap]`. Conclude with `(v.intValuation_le_pow_iff_mem y k).2 hy`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem val_le_of_mem_pow (v : HeightOneSpectrum (𝓞 F)) {y : 𝓞 F} {k : ℕ}
     (hy : y ∈ v.asIdeal ^ k) :
@@ -115,7 +115,7 @@ theorem val_le_of_mem_pow (v : HeightOneSpectrum (𝓞 F)) {y : 𝓞 F} {k : ℕ
   exact (v.intValuation_le_pow_iff_mem y k).2 hy
 
 /- English proof (translation)
-Rewrite `hy` using `[HeightOneSpectrum.valuation_of_algebraMap]`. Conclude with `(v.intValuation_le_pow_iff_mem y k).1 hy`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_pow_of_val_le (v : HeightOneSpectrum (𝓞 F)) {y : 𝓞 F} {k : ℕ}
     (hy : v.valuation F (algebraMap (𝓞 F) F y) ≤ WithZero.exp (-(k : ℤ))) :
@@ -124,7 +124,7 @@ theorem mem_pow_of_val_le (v : HeightOneSpectrum (𝓞 F)) {y : 𝓞 F} {k : ℕ
   exact (v.intValuation_le_pow_iff_mem y k).1 hy
 
 /- English proof (translation)
-Rewrite using `[HeightOneSpectrum.valuation_of_algebraMap]`. Conclude with `(HeightOneSpectrum.intValuation_eq_one_iff_mem_primeCompl v s).mpr hs`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem val_eq_one_of_not_mem (v : HeightOneSpectrum (𝓞 F)) {s : 𝓞 F} (hs : s ∉ v.asIdeal) :
     v.valuation F (algebraMap (𝓞 F) F s) = 1 := by
@@ -132,7 +132,7 @@ theorem val_eq_one_of_not_mem (v : HeightOneSpectrum (𝓞 F)) {s : 𝓞 F} (hs 
   exact (HeightOneSpectrum.intValuation_eq_one_iff_mem_primeCompl v s).mpr hs
 
 /- English proof (translation)
-Use `show Valued.v (algebraMap F (Fv F v) t) ≤ _ ↔ _`. Rewrite using `[show Valued.v (algebraMap F (Fv F v) t) = v.valuation F t by first`. Consider the case `exact HeightOneSpectrum.valuedAdicCompletion_eq_valuation v t`. Consider the case `exact HeightOneSpectrum.valuedAdicCompletion_eq_valuation' v t`. Consider the case `rfl]`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem mem_ballV_iff (v : HeightOneSpectrum (𝓞 F)) (k : ℕ) (t : F) :
     algebraMap F (Fv F v) t ∈ ballV v k ↔ v.valuation F t ≤ WithZero.exp (-(k : ℤ)) := by
@@ -144,7 +144,7 @@ theorem mem_ballV_iff (v : HeightOneSpectrum (𝓞 F)) (k : ℕ) (t : F) :
       | rfl]
 
 /- English proof (translation)
-Use `show Valued.v (a + b) ≤ _`. Conclude with `(Valuation.map_add _ a b).trans (max_le ha hb)`.
+A detailed English derivation is pending.
 -/
 theorem ballV_add {v : HeightOneSpectrum (𝓞 F)} {k : ℕ} {a b : Fv F v}
     (ha : a ∈ ballV v k) (hb : b ∈ ballV v k) : a + b ∈ ballV v k := by
@@ -152,7 +152,7 @@ theorem ballV_add {v : HeightOneSpectrum (𝓞 F)} {k : ℕ} {a b : Fv F v}
   exact (Valuation.map_add _ a b).trans (max_le ha hb)
 
 /- English proof (translation)
-Use `show Valued.v (a - b) ≤ _`. Conclude with `(Valuation.map_sub _ a b).trans (max_le ha hb)`.
+A detailed English derivation is pending.
 -/
 theorem ballV_sub {v : HeightOneSpectrum (𝓞 F)} {k : ℕ} {a b : Fv F v}
     (ha : a ∈ ballV v k) (hb : b ∈ ballV v k) : a - b ∈ ballV v k := by
@@ -160,27 +160,25 @@ theorem ballV_sub {v : HeightOneSpectrum (𝓞 F)} {k : ℕ} {a b : Fv F v}
   exact (Valuation.map_sub _ a b).trans (max_le ha hb)
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨s, hs, y, hy, h⟩`. Establish `h1` using `val_le_of_mem_pow v ((Ideal.mul_le_right : I * v.asIdeal ^ k ≤ v.asIdeal ^ k) hy)`. Establish `h2` using `val_eq_one_of_not_mem v hs`. Establish `h3 : v.valuation F (algebraMap (𝓞 F) F s * t) = v.valuation F (algebraMap (𝓞 F) F y)`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `congrArg (v.valuation F) h`. Rewrite `h3` using `[map_mul, h2, one_mul]`. Rewrite using `[h3]`. Conclude with `h1`. Introduce `ht`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨s0, hs0I, hs0v⟩` from `SetLike.not_le_iff_exists.mp hI`. Take `⟨a, b, hb, rfl⟩` from `IsFractionRing.div_surjective (A := 𝓞 F) t`. Establish `hb0 : b ≠ 0` using `nonZeroDivisors.ne_zero hb`. Establish `hbF : algebraMap (𝓞 F) F b ≠ 0` using `IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors hb`. Establish `hspan : Ideal.span {b} ≠ ⊥`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result.
 
-Rewrite using `[Ne, Ideal.span_singleton_eq_bot]` and apply the resulting hypothesis. Take `⟨m, B, hbB, hBv⟩` from `exists_pow_mul v hspan`. Take `⟨c, hcB, hcv⟩` from `SetLike.not_le_iff_exists.mp hBv`. Establish `hbm : b ∈ v.asIdeal ^ m`. Establish `hb' : b ∈ Ideal.span {b}` using `Ideal.subset_span rfl`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hb'` using `[hbB]`. Conclude with `(Ideal.mul_le_left : v.asIdeal ^ m * B ≤ v.asIdeal ^ m) hb'`. Establish `hk1 : WithZero.exp (-(k : ℤ)) ≤ 1`. Rewrite using `[← WithZero.exp_zero, WithZero.exp_le_exp]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts.
 
-Establish `hvala : v.valuation F (algebraMap (𝓞 F) F a) ≤ WithZero.exp (-(m : ℤ))`. Establish `e : algebraMap (𝓞 F) F a = (algebraMap (𝓞 F) F a / algebraMap (𝓞 F) F b) * algebraMap (𝓞 F) F b`. Clear the denominators using the available nonvanishing facts. Rewrite using `[e, map_mul]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `ham : a ∈ v.asIdeal ^ m` using `mem_pow_of_val_le v hvala`. Establish `hac : a * c ∈ Ideal.span {b}`. Rewrite using `[hbB]`. Conclude with `Ideal.mul_mem_mul ham hcB`. Take `⟨r, hr⟩` from `Ideal.mem_span_singleton'.mp hac`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Establish `hrF : algebraMap (𝓞 F) F c * (algebraMap (𝓞 F) F a / algebraMap (𝓞 F) F b) = algebraMap (𝓞 F) F r`. Use `congrArg (algebraMap (𝓞 F) F) hr` as an intermediate fact. Rewrite `this` using `[map_mul, map_mul]`. Clear the denominators using the available nonvanishing facts. Take the linear combination `-this`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hvr : v.valuation F (algebraMap (𝓞 F) F r) ≤ WithZero.exp (-(k : ℤ))`. Rewrite using `[← hrF, map_mul, val_eq_one_of_not_mem v hcv, one_mul]`. Conclude with `ht`. Establish `hrk : r ∈ v.asIdeal ^ k` using `mem_pow_of_val_le v hvr`. Use `⟨s0 * c, fun hm => (v.isPrime.mem_or_mem hm).elim hs0v hcv, s0 * r, Ideal.mul_mem_mul hs0I hrk, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `e1 : ((s0 * c : 𝓞 F) : F) = algebraMap (𝓞 F) F s0 * algebraMap (𝓞 F) F c`. Rewrite using `[← map_mul]`. Establish `e2 : ((s0 * r : 𝓞 F) : F) = algebraMap (𝓞 F) F s0 * algebraMap (𝓞 F) F r`. Rewrite using `[← map_mul]`. Rewrite using `[e1, e2, ← hrF]`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem locMem_v_iff {I : Ideal (𝓞 F)} {v : HeightOneSpectrum (𝓞 F)} (hI : ¬ I ≤ v.asIdeal) (k : ℕ)
     (t : F) : LocMem (I * v.asIdeal ^ k) v t ↔ v.valuation F t ≤ WithZero.exp (-(k : ℤ)) := by
@@ -242,15 +240,15 @@ theorem locMem_v_iff {I : Ideal (𝓞 F)} {v : HeightOneSpectrum (𝓞 F)} (hI :
     ring
 
 /- English proof (translation)
-Establish `hd : DenseRange (algebraMap F (Fv F v))` using `HeightOneSpectrum.denseRange_algebraMap F v`. Establish `hval : ∀ t : F, Valued.v (algebraMap F (Fv F v) t) = v.valuation F t` using `fun t => by first`. Consider the case `exact HeightOneSpectrum.valuedAdicCompletion_eq_valuation v t`. Consider the case `exact HeightOneSpectrum.valuedAdicCompletion_eq_valuation' v t`. Consider the case `rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Take `⟨π, hπ⟩` from `HeightOneSpectrum.valuation_exists_uniformizer (K := F) v`. Establish `hvp : Valued.v (algebraMap F (Fv F v) (π ^ k)) = WithZero.exp (-(k : ℤ))`. Rewrite using `[hval, map_pow, hπ, ← WithZero.exp_nsmul, nsmul_eq_mul, mul_neg, mul_one]`. Establish `hp0 : algebraMap F (Fv F v) (π ^ k) ≠ 0`. Introduce `h`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hvp` using `[h, map_zero]`. Conclude with `absurd hvp.symm (by simp)`. Establish `hopen : IsOpen {z : Fv F v | Valued.v z ≤ WithZero.exp (-(k : ℤ))}`. Establish `h1` using `Valued.isOpen_closedBall (R := Fv F v) (r := (Valued.v : Valuation (Fv F v) _).restrict (algebraMap F (Fv F v) (π ^ k))) ((Valuation.ne_zero_iff _).mpr hp0)`. Use `h1 using 2` and compare the differences between its conclusion and the goal.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `z`. Rewrite using `[Valuation.restrict_le_iff, hvp]`. Establish `ho : IsOpen {z : Fv F v | Valued.v (z - c) ≤ WithZero.exp (-(k : ℤ))}` using `hopen.preimage (continuous_id.sub continuous_const)`. Establish `hmem : {z : Fv F v | Valued.v (z - c) ≤ WithZero.exp (-(k : ℤ))} ∈ 𝓝 c` using `ho.mem_nhds (by simp)`. Take `⟨a, ha⟩` from `hd.mem_nhds hmem`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨a, ha⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_near (v : HeightOneSpectrum (𝓞 F)) (k : ℕ) (c : Fv F v) :
     ∃ a : F, algebraMap F (Fv F v) a - c ∈ ballV v k := by
@@ -282,11 +280,11 @@ theorem exists_near (v : HeightOneSpectrum (𝓞 F)) (k : ℕ) (c : Fv F v) :
   exact ⟨a, ha⟩
 
 /- English proof (translation)
-Establish `hcop : C ⊔ v.asIdeal ^ M = ⊤`. Assume the negation of the conclusion as `h`. Take `⟨P, hP, hle⟩` from `Ideal.exists_le_maximal _ h`. Establish `h1 : v.asIdeal ^ M ≤ P` using `le_sup_right.trans hle`. Establish `h2 : C ≤ P` using `le_sup_left.trans hle`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : v.asIdeal ≤ P` using `hP.isPrime.le_of_pow_le h1`. Establish `h4 : v.asIdeal = P` using `v.isMaximal.eq_of_le hP.ne_top h3`. Conclude with `hC (h4 ▸ h2)`. Establish `h1 : (1 : 𝓞 F) ∈ C ⊔ v.asIdeal ^ M` using `hcop ▸ Submodule.mem_top`. Take `⟨e, he, f, hf, hef⟩` from `Submodule.mem_sup.mp h1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨e, he, f, hf, hef⟩`.
+A detailed English derivation is pending.
 -/
 private theorem exists_add_eq_one_lemma {v : HeightOneSpectrum (𝓞 F)} {C : Ideal (𝓞 F)}
     (hC : ¬ C ≤ v.asIdeal) (M : ℕ) : ∃ e ∈ C, ∃ f ∈ v.asIdeal ^ M, e + f = 1 := by
@@ -303,31 +301,29 @@ private theorem exists_add_eq_one_lemma {v : HeightOneSpectrum (𝓞 F)} {C : Id
   exact ⟨e, he, f, hf, hef⟩
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `exists_near v k c`. Take `⟨a', b', hb', hab⟩` from `IsFractionRing.div_surjective (A := 𝓞 F) (a - x0)`. Establish `hb0 : b' ≠ 0` using `nonZeroDivisors.ne_zero hb'`. Establish `hbF : algebraMap (𝓞 F) F b' ≠ 0` using `IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors hb'`. Establish `hspan : Ideal.span {b'} ≠ ⊥`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Ne, Ideal.span_singleton_eq_bot]` and apply the resulting hypothesis. Take `⟨r, B', hbB, hB'v⟩` from `exists_pow_mul v hspan`. Take `⟨m, B, hIB, hBv⟩` from `exists_pow_mul v hI`. Establish `hCv : ¬ B' * B ≤ v.asIdeal` using `fun hle => (v.isPrime.mul_le.mp hle).elim hB'v hBv`. Take `⟨e, he, f, hf, hef⟩` from `exists_add_eq_one_lemma hCv (k + r)`.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨g, hgB', hgv⟩` from `SetLike.not_le_iff_exists.mp hB'v`. Establish `hgF : algebraMap (𝓞 F) F g ≠ 0`. Introduce `h0`. Apply `hgv` to reduce the goal to its premises. Rewrite using `[(map_eq_zero_iff _ (IsFractionRing.injective (𝓞 F) F)).mp h0]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `v.asIdeal.zero_mem`. Establish `hfg : f * g ∈ Ideal.span {b'} * v.asIdeal ^ k`. Establish `e1 : v.asIdeal ^ (k + r) * B' = Ideal.span {b'} * v.asIdeal ^ k`. Rewrite using `[hbB, pow_add]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← e1]`. Conclude with `Ideal.mul_mem_mul hf hgB'`. Take `⟨h, hh, hbh⟩` from `Ideal.mem_span_singleton_mul.mp hfg`. Use `⟨x0 + (a - x0) * algebraMap (𝓞 F) F e, fun w hw => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[add_sub_cancel_left]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨s1, hs1, hs1w⟩` from `exists_mem_pow_not_mem hw r`. Take `⟨s2, hs2, hs2w⟩` from `exists_mem_pow_not_mem hw m`. Establish `hs1e : s1 * e ∈ Ideal.span {b'} * B`. Establish `e2 : v.asIdeal ^ r * (B' * B) = Ideal.span {b'} * B`. Rewrite using `[hbB]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[← e2]`. Conclude with `Ideal.mul_mem_mul hs1 he`. Take `⟨β, hβ, hbβ⟩` from `Ideal.mem_span_singleton_mul.mp hs1e`. Use `⟨s2 * s1, fun hm => (w.isPrime.mem_or_mem hm).elim hs2w hs1w, s2 * (a' * β), ?_, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hIB]`. Conclude with `Ideal.mul_mem_mul hs2 (B.mul_mem_left _ hβ)`. Establish `h1` using `congrArg (algebraMap (𝓞 F) F) hbβ`. Rewrite `h1` using `[map_mul, map_mul]`. Establish `e1 : ((s2 * s1 : 𝓞 F) : F) = algebraMap (𝓞 F) F s2 * algebraMap (𝓞 F) F s1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← map_mul]`. Establish `e2 : ((s2 * (a' * β) : 𝓞 F) : F) = algebraMap (𝓞 F) F s2 * (algebraMap (𝓞 F) F a' * algebraMap (𝓞 F) F β)`. Rewrite using `[← map_mul, ← map_mul]`. Rewrite using `[e1, e2, ← hab]`. Clear the denominators using the available nonvanishing facts.
+Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Take the linear combination `(-(algebraMap (𝓞 F) F s2 * algebraMap (𝓞 F) F a')) * h1`. Establish `hy : algebraMap F (Fv F v) (x0 + (a - x0) * algebraMap (𝓞 F) F e) - c = algebraMap F (Fv F v) ((a - x0) * algebraMap (𝓞 F) F e - (a - x0)) + (algebraMap F (Fv F v) a - c)`. Rewrite using `[map_sub, map_add, map_mul, map_sub]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hy]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `ballV_add ((mem_ballV_iff v k _).mpr ?_) ha` and prove the remaining obligations. Establish `e3 : (a - x0) * algebraMap (𝓞 F) F e - (a - x0) = -(algebraMap (𝓞 F) F a' * algebraMap (𝓞 F) F h / algebraMap (𝓞 F) F g)`. Establish `h1` using `congrArg (algebraMap (𝓞 F) F) hbh`. Establish `h2` using `congrArg (algebraMap (𝓞 F) F) hef`. Rewrite `h1` using `[map_mul, map_mul]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion.
 
-Rewrite `h2` using `[map_add, map_one]`. Rewrite using `[← hab]`. Clear the denominators using the available nonvanishing facts. Take the linear combination `(algebraMap (𝓞 F) F a' * algebraMap (𝓞 F) F g) * h2 + algebraMap (𝓞 F) F a' * h1`. Rewrite using `[e3, Valuation.map_neg, map_div₀, map_mul, val_eq_one_of_not_mem v hgv, div_one]`.
-
-Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem exists_approx {I : Ideal (𝓞 F)} (hI : I ≠ ⊥) (v : HeightOneSpectrum (𝓞 F)) (k : ℕ)
     (x0 : F) (c : Fv F v) :
@@ -402,17 +398,17 @@ theorem exists_approx {I : Ideal (𝓞 F)} (hI : I ≠ ⊥) (v : HeightOneSpectr
       _ = _ := one_mul _
 
 /- English proof (translation)
-Introduce `F _ _ ι S v hvS I hI hIv k x0 c`. Use `choose x1 hx1w hx1v using fun i => exists_approx hI v k (x0 i) (c i)`. Use `⟨x1, fun x => ?_⟩` and prove the remaining obligations. Simplify using `only [cosetOff, Set.mem_ofPred_eq]`. Prove the components needed by the constructor for the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨hx, hball⟩ w hwS i`. Distinguish the cases in `hwv : w = v`. Substitute `hwv` using the available equality. Rewrite using `[locMem_v_iff hIv, ← mem_ballV_iff, map_sub]`. Establish `h3` using `ballV_sub (hball i) (hx1v i)`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use `h3 using 1` and compare the differences between its conclusion and the goal. Normalize the expressions using the abelian group laws. Establish `h1 : LocMem I w (x i - x0 i)` using `hx w (by simp [hwv, hwS]) i`. Establish `h2` using `locMem_sub h1 (hx1w i w hwv)`. Rewrite using `[locMem_mul_pow_iff hwv]`.
+Normalize the expressions using the abelian group laws. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use `h2 using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree. Introduce `hx`. Use `⟨fun w hw i => ?_, fun i => ?_⟩` and prove the remaining obligations. Establish `hwv : w ≠ v` using `fun h => hw (by simp [h])`.
+Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hwS : w ∉ S` using `fun h => hw (by simp [h])`. Establish `h1` using `(locMem_mul_pow_iff hwv k).mp (hx w hwS i)`. Establish `h2` using `locMem_add h1 (hx1w i w hwv)`. Use `h2 using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `h1` using `(locMem_v_iff hIv k (x i - x1 i)).mp (hx v hvS i)`. Rewrite `h1` using `[← mem_ballV_iff, map_sub]`. Establish `h3` using `ballV_add h1 (hx1v i)`. Use `h3 using 1` and compare the differences between its conclusion and the goal. Normalize the expressions using the abelian group laws.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem coset_step : ∀ (F : Type) [Field F] [NumberField F] (ι : Type) (S : Finset (HeightOneSpectrum (𝓞 F))) (v : HeightOneSpectrum (𝓞 F)), v ∉ S → ∀ (I : Ideal (𝓞 F)), I ≠ ⊥ → ¬ I ≤ v.asIdeal → ∀ (k : ℕ) (x0 : ι → F) (c : ι → Fv F v), ∃ x1 : ι → F, ∀ x : ι → F, (x ∈ cosetOff (insert v S) I x0 ∧ ∀ i, algebraMap F (Fv F v) (x i) - c i ∈ ballV v k) ↔ x ∈ cosetOff S (I * v.asIdeal ^ k) x1 := by
   intro F _ _ ι S v hvS I hI hIv k x0 c

@@ -16,7 +16,7 @@ Both sides reduce to the same expression.
 private theorem proj_apply (hs : s * s = Δ) (x : Lsq K Δ) : proj hs x = x.re + s * x.im := rfl
 
 /- English proof (translation)
-Simplify using `[proj_apply]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem proj_star (hs : s * s = Δ) (x : Lsq K Δ) : proj hs (star x) = x.re - s * x.im := by
   simp [proj_apply]; ring
@@ -24,7 +24,7 @@ private theorem proj_star (hs : s * s = Δ) (x : Lsq K Δ) : proj hs (star x) = 
 private def lf (s Δ p q : K) : Lsq K Δ := ⟨(p + q) / 2, (p - q) / (2 * s)⟩
 
 /- English proof (translation)
-Rewrite using `[proj_apply]`. Use `show (p + q) / 2 + s * ((p - q) / (2 * s)) = p`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 private theorem proj_lf (hs : s * s = Δ) (h2 : (2 : K) ≠ 0) (h0 : s ≠ 0) (p q : K) : proj hs (lf s Δ p q) = p := by
   rw [proj_apply]
@@ -33,9 +33,9 @@ private theorem proj_lf (hs : s * s = Δ) (h2 : (2 : K) ≠ 0) (h0 : s ≠ 0) (p
   ring
 
 /- English proof (translation)
-Rewrite using `[proj_star, proj_apply]`. Use `QuadraticAlgebra.ext_iff.2 ⟨?_, ?_⟩` and prove the remaining obligations. Use `show x.re = (x.re + s * x.im + (x.re - s * x.im)) / 2`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Clear the denominators using the available nonvanishing facts.
 
-Use `show x.im = (x.re + s * x.im - (x.re - s * x.im)) / (2 * s)`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 private theorem eq_lf (hs : s * s = Δ) (h2 : (2 : K) ≠ 0) (h0 : s ≠ 0) (x : Lsq K Δ) :
     x = lf s Δ (proj hs x) (proj hs (star x)) := by
@@ -49,9 +49,9 @@ private theorem eq_lf (hs : s * s = Δ) (h2 : (2 : K) ≠ 0) (h0 : s ≠ 0) (x :
     ring
 
 /- English proof (translation)
-Use `QuadraticAlgebra.ext_iff.2 ⟨?_, ?_⟩` and prove the remaining obligations. Use `show (z + z) / 2 = _`. Rewrite using `[QuadraticAlgebra.algebraMap_re]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
 
-Use `show (z - z) / (2 * s) = _`. Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 private theorem lf_self (h2 : (2 : K) ≠ 0) (z : K) : lf s Δ z z = algebraMap K (Lsq K Δ) z := by
   refine QuadraticAlgebra.ext_iff.2 ⟨?_, ?_⟩
@@ -63,7 +63,7 @@ private theorem lf_self (h2 : (2 : K) ≠ 0) (z : K) : lf s Δ z z = algebraMap 
     simp
 
 /- English proof (translation)
-Use `QuadraticAlgebra.ext_iff.2 ⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[QuadraticAlgebra.re_star] show (p + q) / 2 + 0 * ((p - q) / (2 * s)) = (q + p) / 2`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[QuadraticAlgebra.im_star] show -((p - q) / (2 * s)) = (q - p) / (2 * s)`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the hypotheses and the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem star_lf (hs : s * s = Δ) (h2 : (2 : K) ≠ 0) (h0 : s ≠ 0) (p q : K) : star (lf s Δ p q) = lf s Δ q p := by
   refine QuadraticAlgebra.ext_iff.2 ⟨?_, ?_⟩
@@ -75,7 +75,7 @@ private theorem star_lf (hs : s * s = Δ) (h2 : (2 : K) ≠ 0) (h0 : s ≠ 0) (p
     ring
 
 /- English proof (translation)
-Use `QuadraticAlgebra.ext_iff.2 ⟨?_, ?_⟩` and prove the remaining obligations. Use `show (-p + -q) / 2 = -((p + q) / 2)`. Expand and normalize the polynomial expressions, which then agree. Use `show (-p - -q) / (2 * s) = -((p - q) / (2 * s))`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 private theorem lf_neg (hs : s * s = Δ) (h2 : (2 : K) ≠ 0) (h0 : s ≠ 0) (p q : K) : lf s Δ (-p) (-q) = -lf s Δ p q := by
   refine QuadraticAlgebra.ext_iff.2 ⟨?_, ?_⟩
@@ -85,9 +85,9 @@ private theorem lf_neg (hs : s * s = Δ) (h2 : (2 : K) ≠ 0) (h0 : s ≠ 0) (p 
     ring
 
 /- English proof (translation)
-Use `QuadraticAlgebra.ext_iff.2 ⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[QuadraticAlgebra.re_mul] show (a + b) / 2 * ((c + d) / 2) + Δ * ((a - b) / (2 * s)) * ((c - d) / (2 * s)) = (a * c + b * d) / 2`. Rewrite using `[← hs]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[QuadraticAlgebra.im_mul] show (a + b) / 2 * ((c - d) / (2 * s)) + (a - b) / (2 * s) * ((c + d) / 2) + 0 * ((a - b) / (2 * s)) * ((c - d) / (2 * s)) = (a * c - b * d) / (2 * s)`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the hypotheses and the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem lf_mul (hs : s * s = Δ) (h2 : (2 : K) ≠ 0) (h0 : s ≠ 0) (a b c d : K) :
     lf s Δ a b * lf s Δ c d = lf s Δ (a * c) (b * d) := by
@@ -103,7 +103,7 @@ private theorem lf_mul (hs : s * s = Δ) (h2 : (2 : K) ≠ 0) (h0 : s ≠ 0) (a 
     ring
 
 /- English proof (translation)
-Use `QuadraticAlgebra.ext_iff.2 ⟨?_, ?_⟩` and prove the remaining obligations. Use `show (a + b) / 2 + (c + d) / 2 = (a + c + (b + d)) / 2`. Expand and normalize the polynomial expressions, which then agree. Use `show (a - b) / (2 * s) + (c - d) / (2 * s) = (a + c - (b + d)) / (2 * s)`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 private theorem lf_add (hs : s * s = Δ) (h2 : (2 : K) ≠ 0) (h0 : s ≠ 0) (a b c d : K) :
     lf s Δ a b + lf s Δ c d = lf s Δ (a + c) (b + d) := by
@@ -114,7 +114,7 @@ private theorem lf_add (hs : s * s = Δ) (h2 : (2 : K) ≠ 0) (h0 : s ≠ 0) (a 
     ring
 
 /- English proof (translation)
-Use `QuadraticAlgebra.ext_iff.2 ⟨?_, ?_⟩` and prove the remaining obligations. Use `show (a + b) / 2 - (c + d) / 2 = (a - c + (b - d)) / 2`. Expand and normalize the polynomial expressions, which then agree. Use `show (a - b) / (2 * s) - (c - d) / (2 * s) = (a - c - (b - d)) / (2 * s)`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 private theorem lf_sub (hs : s * s = Δ) (h2 : (2 : K) ≠ 0) (h0 : s ≠ 0) (a b c d : K) :
     lf s Δ a b - lf s Δ c d = lf s Δ (a - c) (b - d) := by
@@ -128,7 +128,7 @@ private def gm (s Δ : K) (h : Matrix (Fin 2) (Fin 2) K) : Matrix (Fin 2) (Fin 2
   !![lf s Δ (h 0 0) (h 1 1), lf s Δ (h 0 1) (-h 1 0); lf s Δ (h 1 0) (-h 0 1), lf s Δ (h 1 1) (h 0 0)]
 
 /- English proof (translation)
-Rewrite using `[gm, det_fin_two_of, lf_mul hs h2 h0, lf_mul hs h2 h0, lf_sub hs h2 h0, det_fin_two, ← lf_self h2]`. Apply the tactic sequence `congr 1 <;> ring`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem det_gm (hs : s * s = Δ) (h2 : (2 : K) ≠ 0) (h0 : s ≠ 0) (h : Matrix (Fin 2) (Fin 2) K) :
     (gm s Δ h).det = algebraMap K _ h.det := by
@@ -136,7 +136,7 @@ private theorem det_gm (hs : s * s = Δ) (h2 : (2 : K) ≠ 0) (h0 : s ≠ 0) (h 
   congr 1 <;> ring
 
 /- English proof (translation)
-Rewrite using `[gm, trace_fin_two_of, lf_add hs h2 h0, trace_fin_two, ← lf_self h2]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem trace_gm (hs : s * s = Δ) (h2 : (2 : K) ≠ 0) (h0 : s ≠ 0) (h : Matrix (Fin 2) (Fin 2) K) :
     (gm s Δ h).trace = algebraMap K _ h.trace := by
@@ -145,7 +145,7 @@ private theorem trace_gm (hs : s * s = Δ) (h2 : (2 : K) ≠ 0) (h0 : s ≠ 0) (
   ring
 
 /- English proof (translation)
-Rewrite using `[Matrix.eta_fin_two M]`. Simplify using `[Matrix.mul_fin_two]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem conj_w (M : Matrix (Fin 2) (Fin 2) (Lsq K Δ)) :
     (!![0, -1; 1, 0] : Matrix (Fin 2) (Fin 2) (Lsq K Δ)) * M * !![0, 1; -1, 0] = !![M 1 1, -M 1 0; -M 0 1, M 0 0] := by
@@ -153,7 +153,7 @@ private theorem conj_w (M : Matrix (Fin 2) (Fin 2) (Lsq K Δ)) :
   simp [Matrix.mul_fin_two]
 
 /- English proof (translation)
-Establish `e : g ∈ DX Δ ↔ g.val.map star = !![0, -1; 1, 0] * g.val * !![0, 1; -1, 0]` using `by show _ = _ ↔ _`. Rewrite using `[Units.ext_iff]`. Both sides reduce to the same expression. Rewrite using `[e, conj_w, Matrix.eta_fin_two (g.val.map star)]`. Simplify using `[and_assoc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem mem_DX (g : GL (Fin 2) (Lsq K Δ)) : g ∈ DX Δ ↔
     star (g.val 0 0) = g.val 1 1 ∧ star (g.val 0 1) = -g.val 1 0 ∧ star (g.val 1 0) = -g.val 0 1 ∧ star (g.val 1 1) = g.val 0 0 := by
@@ -171,13 +171,9 @@ private theorem eD_apply (hs : s * s = Δ) (g : DX Δ) (i j : Fin 2) :
     (eD hs g).val i j = proj hs ((g : GL (Fin 2) (Lsq K Δ)).val i j) := rfl
 
 /- English proof (translation)
-Take `⟨e00, e01, e10, e11⟩` from `(mem_DX _).1 g.2`. Use `set M := (g : GL (Fin 2) (Lsq K Δ)).val with hM`. Establish `k` using `fun x => eq_lf hs h2 h0 x`. Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Apply the tactic sequence `fin_cases i <;> fin_cases j`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Use `show M 0 0 = lf s Δ (proj hs (M 0 0)) (proj hs (M 1 1))`. Rewrite using `[← e00]`. Conclude with `k _`. Use `show M 0 1 = lf s Δ (proj hs (M 0 1)) (-proj hs (M 1 0))`. Rewrite using `[← map_neg, ← e01]`.
-
-Conclude with `k _`. Use `show M 1 0 = lf s Δ (proj hs (M 1 0)) (-proj hs (M 0 1))`. Rewrite using `[← map_neg, ← e10]`. Conclude with `k _`. Use `show M 1 1 = lf s Δ (proj hs (M 1 1)) (proj hs (M 0 0))`.
-
-Rewrite using `[← e11]`. Conclude with `k _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem val_eq_gm (hs : s * s = Δ) (h2 : (2 : K) ≠ 0) (h0 : s ≠ 0) (g : DX Δ) :
     (g : GL (Fin 2) (Lsq K Δ)).val = gm s Δ (eD hs g).val := by
@@ -210,7 +206,7 @@ private def gG (hs : s * s = Δ) (h2 : (2 : K) ≠ 0) (h0 : s ≠ 0) (h : GL (Fi
       rw [star_lf hs h2 h0, ← lf_neg hs h2 h0, neg_neg], star_lf hs h2 h0 _ _⟩⟩
 
 /- English proof (translation)
-Use `Units.ext (Matrix.ext fun i j => ?_)` and prove the remaining obligations. Rewrite using `[eD_apply]`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> exact proj_lf hs h2 h0 _ _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem eD_gG (hs : s * s = Δ) (h2 : (2 : K) ≠ 0) (h0 : s ≠ 0) (h : GL (Fin 2) K) : eD hs (gG hs h2 h0 h) = h := by
   refine Units.ext (Matrix.ext fun i j => ?_)
@@ -218,27 +214,27 @@ private theorem eD_gG (hs : s * s = Δ) (h2 : (2 : K) ≠ 0) (h0 : s ≠ 0) (h :
   fin_cases i <;> fin_cases j <;> exact proj_lf hs h2 h0 _ _
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun a b e => Subtype.ext (Units.ext (by rw [val_eq_gm hs h2 h0 a, val_eq_gm hs h2 h0 b, e])), fun h => ⟨gG hs h2 h0 h, eD_gG hs h2 h0 h⟩⟩`.
+Supply the required witnesses or components.
 -/
 private theorem eD_bij (hs : s * s = Δ) (h2 : (2 : K) ≠ 0) (h0 : s ≠ 0) : Function.Bijective (eD hs) :=
   ⟨fun a b e => Subtype.ext (Units.ext (by rw [val_eq_gm hs h2 h0 a, val_eq_gm hs h2 h0 b, e])),
     fun h => ⟨gG hs h2 h0 h, eD_gG hs h2 h0 h⟩⟩
 
 /- English proof (translation)
-Rewrite using `[proj_apply]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem proj_alg (hs : s * s = Δ) (h2 : (2 : K) ≠ 0) (h0 : s ≠ 0) (z : K) : proj hs (algebraMap K (Lsq K Δ) z) = z := by
   rw [proj_apply]
   simp
 
 /- English proof (translation)
-Establish `hgm : gm s Δ (Matrix.scalar (Fin 2) (z : K)) = Matrix.scalar (Fin 2) (algebraMap K (Lsq K Δ) (z : K))`. Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [gm, lf_self h2]`. Establish `inj : ∀ A B : Matrix (Fin 2) (Fin 2) K, gm s Δ A = gm s Δ B → A = B`. Introduce `A B h`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Apply the tactic sequence `fin_cases i <;> fin_cases j`. Simplify `congrArg (fun M => proj hs (M 0 0)) h` using `[gm, proj_lf hs h2 h0]`. Simplify `congrArg (fun M => proj hs (M 0 1)) h` using `[gm, proj_lf hs h2 h0]`. Simplify `congrArg (fun M => proj hs (M 1 0)) h` using `[gm, proj_lf hs h2 h0]`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `congrArg (fun M => proj hs (M 1 1)) h` using `[gm, proj_lf hs h2 h0]`. Establish `hv : ((GeneralLinearGroup.scalar (Fin 2) z : GL (Fin 2) K) : Matrix _ _ _) = Matrix.scalar (Fin 2) (z : K)`. Simplify using the standard rewrite rules. Use `show ((g : GL (Fin 2) (Lsq K Δ)) : Matrix _ _ _) = Matrix.scalar (Fin 2) (algebraMap K (Lsq K Δ) (z : K)) ↔ _`. Rewrite using `[val_eq_gm hs h2 h0 g, Units.ext_iff, ← hgm, hv]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `⟨inj _ _, fun h => by rw [h]⟩`.
+A detailed English derivation is pending.
 -/
 private theorem isScal_iff (hs : s * s = Δ) (h2 : (2 : K) ≠ 0) (h0 : s ≠ 0) (z : Kˣ) (g : DX Δ) :
     IsScal z g ↔ eD hs g = GeneralLinearGroup.scalar (Fin 2) z := by
@@ -260,9 +256,9 @@ private theorem isScal_iff (hs : s * s = Δ) (h2 : (2 : K) ≠ 0) (h0 : s ≠ 0)
   exact ⟨inj _ _, fun h => by rw [h]⟩
 
 /- English proof (translation)
-Use extensionality with `g`. Rewrite using `[Subgroup.mem_comap, MonoidHom.mem_range, ZD, Subgroup.mem_subgroupOf, MonoidHom.mem_range]`. Use `exists_congr fun z => ?_` and prove the remaining obligations. Rewrite using `[eq_comm, ← isScal_iff hs h2 h0]`. Use `show ((g : GL (Fin 2) (Lsq K Δ)) : Matrix _ _ _) = Matrix.scalar (Fin 2) (algebraMap K (Lsq K Δ) (z : K)) ↔ _`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Units.ext_iff, eq_comm]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem comap_scalar (hs : s * s = Δ) (h2 : (2 : K) ≠ 0) (h0 : s ≠ 0) :
     (GeneralLinearGroup.scalar (Fin 2) : Kˣ →* GL (Fin 2) K).range.comap (eD hs) = ZD Δ := by
@@ -282,21 +278,21 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
   {O : Type} [CommRing O] [Algebra O k] {Δ s : k}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hO.inj, fun x => (hO.range _).1 ⟨x, rfl⟩, fun x hx => (hO.range x).2 hx⟩`.
+Supply the required witnesses or components.
 -/
 private theorem ints (hO : IsInts k O) : Valuation.Integers (valuation k) O :=
   ⟨hO.inj, fun x => (hO.range _).1 ⟨x, rfl⟩, fun x hx => (hO.range x).2 hx⟩
 
 /- English proof (translation)
-Conclude with `IsScalarTower.algebraMap_apply O k _ x`.
+A detailed English derivation is pending.
 -/
 private theorem alg_tower (x : O) : algebraMap O (Lsq k Δ) x = algebraMap k (Lsq k Δ) (algebraMap O k x) := by
   exact IsScalarTower.algebraMap_apply O k _ x
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `(hO.range (p + q)).2 ((valuation k).map_add_le hp hq)`. Take `⟨b, hb⟩` from `(hO.range (p * q)).2 (by rw [map_mul]; exact mul_le_one' hp hq)`. Establish `e : lf s Δ p q ^ 2 - algebraMap k (Lsq k Δ) (p + q) * lf s Δ p q + algebraMap k (Lsq k Δ) (p * q) = 0`. Rewrite using `[← lf_self (s := s) h2, ← lf_self (s := s) h2, sq, lf_mul hs h2 h0, lf_mul hs h2 h0, lf_sub hs h2 h0, lf_add hs h2 h0]`. Rewrite using `[show p * p - (p + q) * p + p * q = 0 by ring, show q * q - (p + q) * q + p * q = 0 by ring, lf_self h2, map_zero]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Use `⟨Polynomial.X ^ 2 - Polynomial.C a * Polynomial.X + Polynomial.C b, by monicity!, ?_⟩` and prove the remaining obligations. Rewrite using `[← Polynomial.aeval_def]`. Simplify using `only [map_add, map_sub, map_mul, map_pow, Polynomial.aeval_X, Polynomial.aeval_C]`. Rewrite using `[alg_tower a, alg_tower b, ha, hb]`. Conclude with `e`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem isIntegral_lf (hO : IsInts k O) (hs : s * s = Δ) (h2 : (2 : k) ≠ 0) (h0 : s ≠ 0) {p q : k}
     (hp : valuation k p ≤ 1) (hq : valuation k q ≤ 1) : IsIntegral O (lf s Δ p q) := by
@@ -313,11 +309,9 @@ private theorem isIntegral_lf (hO : IsInts k O) (hs : s * s = Δ) (h2 : (2 : k) 
   exact e
 
 /- English proof (translation)
-Establish `hb` using `GlAx.bd_zero.1 (GlAx.mem_KO.1 hg).1`. Establish `hv : ∀ a b, valuation k ((eD hs g : GL (Fin 2) k) a b) ≤ 1` using `fun a b => hb a b`. Establish `hn : ∀ a b, valuation k (-(eD hs g : GL (Fin 2) k) a b) ≤ 1` using `fun a b => by`. Rewrite using `[Valuation.map_neg]`. Conclude with `hv a b`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[val_eq_gm hs h2 h0 g]`. Apply the tactic sequence `fin_cases i <;> fin_cases j`. Conclude with `isIntegral_lf hO hs h2 h0 (hv 0 0) (hv 1 1)`. Conclude with `isIntegral_lf hO hs h2 h0 (hv 0 1) (hn 1 0)`. Conclude with `isIntegral_lf hO hs h2 h0 (hv 1 0) (hn 0 1)`.
-
-Conclude with `isIntegral_lf hO hs h2 h0 (hv 1 1) (hv 0 0)`.
+Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 private theorem int_of_KO (hO : IsInts k O) (hs : s * s = Δ) (h2 : (2 : k) ≠ 0) (h0 : s ≠ 0) (g : DX Δ)
     (hg : eD hs g ∈ KO k (Fin 2)) (i j : Fin 2) : IsIntegral O ((g : GL (Fin 2) (Lsq k Δ)).val i j) := by
@@ -334,19 +328,19 @@ private theorem int_of_KO (hO : IsInts k O) (hs : s * s = Δ) (h2 : (2 : k) ≠ 
   · exact isIntegral_lf hO hs h2 h0 (hv 1 1) (hv 0 0)
 
 /- English proof (translation)
-Establish `key : ∀ x : Lsq k Δ, IsIntegral O x → valuation k (proj hs x) ≤ 1` using `fun x hx => (ints hO).mem_of_integral (IsIntegral.map_of_comp_eq (RingHom.id O) (proj hs) (RingHom.ext fun y => by show algebraMap O k y = proj hs (algebraMap O (Lsq k Δ) y)`. Rewrite using `[alg_tower y, proj_alg hs h2 h0]) hx)`. Use extensionality with `g`. Rewrite using `[Subgroup.mem_comap, KD, Subgroup.mem_subgroupOf, MonoidHom.mem_range]`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Introduce `hg`. Establish `hg' : eD hs g⁻¹ ∈ KO k (Fin 2)`. Rewrite using `[map_inv]`. Conclude with `inv_mem hg`. Establish `I1` using `int_of_KO hO hs h2 h0 g hg`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `I2` using `int_of_KO hO hs h2 h0 g⁻¹ hg'`. Set `f : integralClosure O (Lsq k Δ) →+* Lsq k Δ` to `((integralClosure O (Lsq k Δ)).val : _ →+* _)`. Set `A : Matrix (Fin 2) (Fin 2) (integralClosure O (Lsq k Δ))` to `fun i j => ⟨_, I1 i j⟩`. Set `B : Matrix (Fin 2) (Fin 2) (integralClosure O (Lsq k Δ))` to `fun i j => ⟨_, I2 i j⟩`. Establish `hA : A.map f = (g : GL (Fin 2) (Lsq k Δ)).val` using `Matrix.ext fun _ _ => rfl`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hB : B.map f = ((g⁻¹ : DX Δ) : GL (Fin 2) (Lsq k Δ)).val` using `Matrix.ext fun _ _ => rfl`. Establish `finj : Function.Injective (fun M : Matrix (Fin 2) (Fin 2) (integralClosure O (Lsq k Δ)) => M.map f)` using `Matrix.map_injective fun a b hab => Subtype.ext hab`. Establish `hAB : A * B = 1` using `finj (by`. Simplify using `only`. Rewrite using `[Matrix.map_mul, hA, hB, Matrix.map_one f (map_zero f) (map_one f), Subgroup.coe_inv, Units.mul_inv])`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hBA : B * A = 1` using `finj (by`. Simplify using `only`. Rewrite using `[Matrix.map_mul, hA, hB, Matrix.map_one f (map_zero f) (map_one f), Subgroup.coe_inv, Units.inv_mul])`. Conclude with `⟨⟨A, B, hAB, hBA⟩, Units.ext hA⟩`. Introduce and unpack `⟨h, hh⟩`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `hI : ∀ i j, IsIntegral O ((g : GL (Fin 2) (Lsq k Δ)).val i j)` using `fun i j => by`. Rewrite using `[← hh]`. Conclude with `(h.val i j).2`. Establish `hI' : ∀ i j, IsIntegral O (((g⁻¹ : DX Δ) : GL (Fin 2) (Lsq k Δ)).val i j)` using `fun i j => by`. Rewrite using `[Subgroup.coe_inv, ← hh, ← map_inv]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `((h⁻¹).val i j).2`. Rewrite using `[GlAx.mem_KO, GlAx.bd_zero, GlAx.bd_zero]`. Use `⟨fun i j => key _ (hI i j), fun i j => ?_⟩` and prove the remaining obligations. Rewrite using `[← map_inv]`. Conclude with `key _ (hI' i j)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem comap_KO (hO : IsInts k O) (hs : s * s = Δ) (h2 : (2 : k) ≠ 0) (h0 : s ≠ 0) :
     (KO k (Fin 2)).comap (eD hs) = KD Δ O := by
@@ -395,9 +389,9 @@ end Loc
 end UpperTheory.V.Z.Sym.Sig
 
 /- English proof (translation)
-Introduce `k _ _ _ _ O _ _ hO h2 Δ s hs h0`. Use `⟨eD_bij hs h2 h0, comap_KO hO hs h2 h0, comap_scalar hs h2 h0, isScal_iff hs h2 h0, fun g => ?_, fun V => ?_⟩` and prove the remaining obligations. Use `show ((g : GL (Fin 2) (Lsq k Δ)).val).det = _ ∧ ((g : GL (Fin 2) (Lsq k Δ)).val).trace = _`. Rewrite using `[val_eq_gm hs h2 h0 g]`. Conclude with `⟨det_gm hs h2 h0 _, trace_gm hs h2 h0 _⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Lev.ZJ, ← Subgroup.comap_sup_eq _ _ _ (eD_bij hs h2 h0).2, comap_scalar hs h2 h0]`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Sym.Sig.eD_facts :
     UpperTheory.V.Z.Sym.Sig.ED := by

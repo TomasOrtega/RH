@@ -28,7 +28,7 @@ instance : Nonempty (Idx B) := ⟨⟨1, one_ne_zero⟩⟩
 variable {B}
 
 /- English proof (translation)
-The claim follows from `isUnit_of_dvd_unit (map_dvd _ h) (IsLocalization.Away.algebraMap_isUnit b)`.
+A detailed English derivation is pending.
 -/
 theorem isUnit_of_dvd {a b : B} (h : a ∣ b) : IsUnit (algebraMap B (Localization.Away b) a) :=
   isUnit_of_dvd_unit (map_dvd _ h) (IsLocalization.Away.algebraMap_isUnit b)
@@ -37,13 +37,13 @@ def tr {a b : B} (h : a ∣ b) : Localization.Away a →+* Localization.Away b :
   Localization.awayLift (algebraMap B _) a (isUnit_of_dvd h)
 
 /- English proof (translation)
-The claim follows from `IsLocalization.Away.lift_comp a (isUnit_of_dvd h)`.
+A detailed English derivation is pending.
 -/
 theorem tr_comp {a b : B} (h : a ∣ b) : (tr h).comp (algebraMap B _) = algebraMap B _ :=
   IsLocalization.Away.lift_comp a (isUnit_of_dvd h)
 
 /- English proof (translation)
-The claim follows from `IsLocalization.ringHom_ext (Submonoid.powers a) h`.
+A detailed English derivation is pending.
 -/
 theorem away_ext {a : B} {R : Type} [CommRing R] {f g : Localization.Away a →+* R}
     (h : f.comp (algebraMap B _) = g.comp (algebraMap B _)) : f = g :=
@@ -68,7 +68,7 @@ def toFrac (a : Idx B) : Localization.Away a.val →+* FractionRing B :=
     (IsLocalization.map_units (FractionRing B) (⟨a.val, mem_nonZeroDivisors_of_ne_zero a.ne⟩ : nonZeroDivisors B))
 
 /- English proof (translation)
-The claim follows from `IsLocalization.Away.lift_comp a.val (IsLocalization.map_units (FractionRing B) (⟨a.val, mem_nonZeroDivisors_of_ne_zero a.ne⟩ : nonZeroDivisors B))`.
+A detailed English derivation is pending.
 -/
 theorem toFrac_comp (a : Idx B) : (toFrac a).comp (algebraMap B _) = algebraMap B (FractionRing B) :=
   IsLocalization.Away.lift_comp a.val
@@ -88,9 +88,9 @@ def cocone : Cocone (diag B) where
 def idx1 : Idx B := ⟨1, one_ne_zero⟩
 
 /- English proof (translation)
-Set `b : Idx B` to `⟨y.1, nonZeroDivisors.ne_zero y.2⟩`. Establish `hw` using `s.w (homOfLE (show (idx1 : Idx B) ≤ b from one_dvd _))`. Rewrite using `[← hw]`. Express the relevant statement in the definitionally equal form `IsUnit ((s.ι.app b).hom ((tr (one_dvd y.1)) (algebraMap B _ y.1)))`. Rewrite using `[← RingHom.comp_apply (tr _), tr_comp]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(IsLocalization.Away.algebraMap_isUnit (S := Localization.Away y.1) y.1).map (s.ι.app b).hom`.
+A detailed English derivation is pending.
 -/
 theorem desc_unit (s : Cocone (diag B)) (y : nonZeroDivisors B) :
     IsUnit (((s.ι.app idx1).hom.comp (algebraMap B (Localization.Away (1 : B)))) y) := by
@@ -122,7 +122,7 @@ def isColim : IsColimit (cocone B) where
     exact congrArg m.hom (DFunLike.congr_fun (toFrac_comp idx1) b).symm
 
 /- English proof (translation)
-Simplify using `only [spMap, ← Functor.map_comp, ← Spec.map_comp]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem spMap_comp {A A' A'' : Type} [CommRing A] [CommRing A'] [CommRing A''] (f : A →+* A') (g : A' →+* A'') :
     spMap (g.comp f) = spMap g ≫ spMap f := by
@@ -133,13 +133,13 @@ end GlobalTheory.EtC.FracAway
 
 open GlobalTheory.EtC.FracAway in
 /- English proof (translation)
-Introduce `q B _ _ hF hq n i x hx`. Establish `hB1` using `(GlobalTheory.T.etaleCohomology_twisted_filtered_colimit_continuity q (diag B) (cocone B) (isColim B) n i).2`. Establish `hq1 : IsUnit (q : Localization.Away (idx1 : Idx B).val)`. Use `hq.map (algebraMap B (Localization.Away (idx1 : Idx B).val))` as an intermediate fact. Rewrite `this` using `[map_natCast]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `h2 : pull _ (spMap (toFrac (idx1 : Idx B))) _ _ (pull _ (spMap (algebraMap B (Localization.Away (idx1 : Idx B).val))) _ _ x) = 0`. Rewrite using `[← pull_comp, ← spMap_comp, toFrac_comp]`. Conclude with `hx`. Take `⟨k, f, hk⟩` from `hB1 idx1 (pull _ (spMap (algebraMap B (Localization.Away (idx1 : Idx B).val))) _ _ x) hq1 h2`. Take `⟨g, hg0, hgu⟩` from `Ring.exists_not_isUnit_of_not_isField hF`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hf : (idx1 : Idx B).val ∣ k.val` using `leOfHom f`. Use `⟨k.val * g, mul_ne_zero k.ne hg0, fun hu => hgu (isUnit_of_mul_isUnit_right hu), ?_⟩` and prove the remaining obligations. Establish `e : algebraMap B (Localization.Away (k.val * g)) = (tr (dvd_mul_right k.val g)).comp ((tr hf).comp (algebraMap B (Localization.Away (idx1 : Idx B).val)))`. Rewrite using `[tr_comp, tr_comp]`. Rewrite using `[e, spMap_comp, pull_comp, spMap_comp, pull_comp]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hk' : pull _ (spMap (tr hf)) _ _ (pull _ (spMap (algebraMap B (Localization.Away (idx1 : Idx B).val))) _ _ x) = 0` using `hk`. Rewrite using `[hk', map_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.EtC.classVanishesAway : ∀ (q : ℕ) (B : Type) [CommRing B] [IsDomain B], ¬ IsField B → IsUnit (q : B) →
     ∀ (n i : ℤ) (x : Ht q (sp B) n i), pull _ (spMap (algebraMap B (FractionRing B))) _ _ x = 0 →

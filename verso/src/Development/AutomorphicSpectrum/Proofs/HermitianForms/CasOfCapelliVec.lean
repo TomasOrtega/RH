@@ -13,13 +13,13 @@ open Polynomial
 noncomputable def rev {ι : Type} (s : Finset ι) (f : ι → ℂ) : ℂ[X] := ∏ l ∈ s, (1 + C (f l) * X)
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp [rev, coeff_one]`. Consider the case `insert a s ha ih`. Take `⟨h0, h1, h2⟩` from `ih`. Establish `c1 : ∀ p : ℂ[X], (X * p).coeff 1 = p.coeff 0` using `fun p => coeff_X_mul p 0`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `c2 : ∀ p : ℂ[X], (X * p).coeff 2 = p.coeff 1` using `fun p => coeff_X_mul p 1`. Establish `: rev (insert a s) f = rev s f + C (f a) * (X * rev s f)`. Simplify using `only [rev, prod_insert ha]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this, sum_insert ha, sum_insert ha]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [coeff_add, coeff_C_mul]`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Simplify using `[h0]`. Rewrite using `[c1, h0, h1]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[c2, h1]`. Take the linear combination `h2`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem rev_coeff {ι : Type} (s : Finset ι) (f : ι → ℂ) :
     (rev s f).coeff 0 = 1 ∧ (rev s f).coeff 1 = ∑ l ∈ s, f l ∧
@@ -42,7 +42,7 @@ theorem rev_coeff {ι : Type} (s : Finset ι) (f : ι → ℂ) :
       linear_combination h2
 
 /- English proof (translation)
-Rewrite using `[rev, eval_prod, ← prod_const, ← prod_mul_distrib]`. Use `prod_congr rfl fun l _ => ?_` and prove the remaining obligations. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts.
 -/
 theorem rev_eval {ι : Type} (s : Finset ι) (f : ι → ℂ) (t : ℂ) (ht : t ≠ 0) :
     (rev s f).eval t = t ^ s.card * ∏ l ∈ s, (t⁻¹ + f l) := by
@@ -51,29 +51,29 @@ theorem rev_eval {ι : Type} (s : Finset ι) (f : ι → ℂ) (t : ℂ) (ht : t 
   simp; field_simp
 
 /- English proof (translation)
-Establish `key : C e * rev univ ρ + X * ∑ i, C (a i) * rev (univ.erase i) ρ + X ^ 2 * ∑ i, ∑ j ∈ univ.filter (fun j => i < j), C (b i j) * rev ((univ.erase i).erase j) ρ + X ^ 3 * ∑ d ∈ range (n - 2), C (r d) * X ^ (n - 3 - d) * (1 + C c * X) ^ d = C e * rev univ μ`. Apply `Polynomial.eq_of_infinite_eval_eq` to reduce the goal to its premises. Use `Set.Infinite.mono (s := {0}ᶜ) ?_ (Set.finite_singleton (0:ℂ)).infinite_compl` and prove the remaining obligations. Introduce `t ht`. Establish `ht : t ≠ 0` using `ht`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `only [Set.mem_setOf_eq, eval_add, eval_mul, eval_C, eval_X, eval_pow, eval_finset_sum, eval_one, rev_eval _ _ _ ht, card_univ, Fintype.card_fin]`. Use `congrArg (fun z => t ^ n * z) (h t⁻¹)` as an intermediate fact. Simplify using `only [mul_add, mul_sum] at this ⊢`. Use `Eq.trans ?_ (this.trans (by ring))` and prove the remaining obligations. Use `congr 1`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Use `sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[card_erase_of_mem (mem_univ _), card_univ, Fintype.card_fin]`.
+Reduce the equality to equality of the corresponding arguments. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨m, hm⟩ : ∃ m, n = m + 2` from `⟨n - 2, by omega⟩`. Establish `: t ^ n = t * t ^ (n - 1)`. Rewrite using `[← pow_succ']`. Use `congr 1`. Use linear arithmetic over natural numbers and integers.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Use linear arithmetic over natural numbers and integers.
 
-Rewrite using `[this]`. Expand and normalize the polynomial expressions, which then agree. Use `sum_congr rfl fun i _ => sum_congr rfl fun j hj => ?_` and prove the remaining obligations. Establish `hij : j ≠ i` using `(mem_filter.1 hj).2.ne'`. Rewrite using `[card_erase_of_mem (mem_erase.2 ⟨hij, mem_univ _⟩), card_erase_of_mem (mem_univ _), card_univ, Fintype.card_fin]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: t ^ n = t ^ 2 * t ^ (n - 1 - 1)`. Rewrite using `[← pow_add]`. Use `congr 1`. Use linear arithmetic over natural numbers and integers. Rewrite using `[this]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Use `sum_congr rfl fun d hd => ?_` and prove the remaining obligations. Establish `hd` using `mem_range.1 hd`. Establish `h1 : t ^ n = t ^ 3 * t ^ (n - 3 - d) * t ^ d`. Rewrite using `[← pow_add, ← pow_add]`.
+Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use linear arithmetic over natural numbers and integers. Establish `h2 : (1 + c * t) = t * (t⁻¹ + c)` using `by field_simp`. Rewrite using `[h1, h2, mul_pow]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the equality to equality of the corresponding arguments. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `k1` using `congrArg (fun p => p.coeff 1) key`. Establish `k2` using `congrArg (fun p => p.coeff 2) key`. Simplify using `only [coeff_add, coeff_C_mul, coeff_X_pow_mul'] at k1 k2`. Establish `c1 : ∀ p : ℂ[X], (X * p).coeff 1 = p.coeff 0` using `fun p => coeff_X_mul p 0`. Establish `c2 : ∀ p : ℂ[X], (X * p).coeff 2 = p.coeff 1` using `fun p => coeff_X_mul p 1`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `k1` using `[c1]`. Rewrite `k2` using `[c2]`. Simplify using `only [finset_sum_coeff, coeff_C_mul, (rev_coeff _ _).1, (rev_coeff _ _).2.1, le_refl, if_true, Nat.sub_self, mul_one] at k1 k2`. Evaluate the numerical expressions using `at k1 k2`. Prove the components needed by the constructor for the conclusion.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Evaluate the numerical expressions. Prove the components needed by the constructor for the conclusion.
 
-Take the linear combination `k1`. Establish `p1` using `(rev_coeff univ ρ).2.2`. Establish `p2` using `(rev_coeff univ μ).2.2`. Establish `: ∑ i, (∑ l ∈ univ.erase i, ρ l) * a i = ∑ i, a i * (∑ l, ρ l - ρ i)`. Use `sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[sum_erase_eq_sub (mem_univ _), mul_comm]`. Rewrite using `[this]`. Take the linear combination `2 * k2 - e * p1 + e * p2`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem scalar_core (n : ℕ) (hn : 2 ≤ n) (ρ μ a : Fin n → ℂ) (b : Fin n → Fin n → ℂ) (r : ℕ → ℂ)
     (e c : ℂ)
@@ -141,9 +141,9 @@ theorem scalar_core (n : ℕ) (hn : 2 ≤ n) (ρ μ a : Fin n → ℂ) (b : Fin 
     linear_combination 2 * k2 - e * p1 + e * p2
 
 /- English proof (translation)
-Establish `h1 : ∀ i j, F i j = (if i = j then F i j else 0) + (if i < j then F i j else 0) + (if j < i then F i j else 0)`. Introduce `i j`. Break down `lt_trichotomy i j with h | h | h` into its components or cases. Simplify using `[h, h.ne, h.not_gt]`. Simplify using `[h]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[h, h.ne', h.not_gt]`. Rewrite using `[sum_congr rfl fun i _ => sum_congr rfl fun j _ => h1 i j]`. Simplify using `only [sum_add_distrib, sum_filter, sum_ite_eq, mem_univ, if_true]`. Rewrite using `[add_assoc, sum_comm (f := fun i j => if j < i then F i j else 0)]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem sum_sq_split {A : Type} [AddCommGroup A] {n : ℕ} (F : Fin n → Fin n → A) :
     ∑ i, ∑ j, F i j = ∑ i, F i i + ∑ i, ∑ j ∈ univ.filter (fun j => i < j), (F i j + F j i) := by
@@ -159,11 +159,11 @@ theorem sum_sq_split {A : Type} [AddCommGroup A] {n : ℕ} (F : Fin n → Fin n 
   rw [add_assoc, sum_comm (f := fun i j => if j < i then F i j else 0)]
 
 /- English proof (translation)
-Simplify using `only [sum_sub_distrib]`. Establish `: ∑ i, ∑ j ∈ univ.filter (fun j => i < j), x j = ∑ j, ∑ i ∈ univ.filter (fun i => i < j), x j`. Simplify using `only [sum_filter]`. Conclude with `sum_comm`. Rewrite using `[this, ← sum_sub_distrib]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[sum_const, sum_const, filter_lt_eq_Ioi, filter_gt_eq_Iio, Fin.card_Ioi, Fin.card_Iio, ← Nat.cast_smul_eq_nsmul ℂ, ← Nat.cast_smul_eq_nsmul ℂ, ← sub_smul]`. Use `congr 1`. Use `i.2` as an intermediate fact. Rewrite using `[Nat.cast_sub (by omega), Nat.cast_sub (by omega)]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem sum_diff {A : Type} [AddCommGroup A] [Module ℂ A] {n : ℕ} (x : Fin n → A) :
     ∑ i, ∑ j ∈ univ.filter (fun j => i < j), (x i - x j)
@@ -182,9 +182,9 @@ theorem sum_diff {A : Type} [AddCommGroup A] [Module ℂ A] {n : ℕ} (x : Fin n
   push_cast; ring
 
 /- English proof (translation)
-Rewrite using `[← sum_diff, Formalism.REAL.Cas, sum_mul_sum, ← sum_sub_distrib]`. Simplify using `only [← sum_sub_distrib]`. Rewrite using `[sum_sq_split]`. Simplify using `only [sub_self, sum_const_zero, zero_add, smul_sum, ← sum_sub_distrib]`. Use `sum_congr rfl fun i _ => sum_congr rfl fun j hj => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hij : i ≠ j` using `(mem_filter.1 hj).2.ne`. Establish `h1` using `hE i j j i`. Establish `h2` using `hE i i j j`. Simplify using `only [if_true, hij, hij.symm, if_false, sub_zero] at h1 h2`. Rewrite using `[two_smul, ← h1, ← sub_eq_zero.1 h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
 Normalize the expressions using the abelian group laws.
 -/
@@ -206,7 +206,7 @@ theorem sq_sub_cas {A : Type} [Ring A] [Algebra ℂ A] {n : ℕ} (E : Fin n → 
   abel
 
 /- English proof (translation)
-Establish `h : Formalism.REAL.rhoC ε + Formalism.REAL.rhoN ε = ReciprocityTheory.ChartRestriction.DS.rho n` using `(ReciprocityTheory.ChartRestriction.DS.rho_eq_rhoC_add_rhoN ε).symm`. Rewrite using `[Formalism.REAL.cvalR, h]`. Simplify using `only [Formalism.REAL.nsq, Formalism.REAL.dot, ReciprocityTheory.ChartRestriction.DS.rho]`. Use `push_cast`. Apply the tactic sequence `congr 1 <;> refine sum_congr rfl fun l _ => ?_ <;> ring`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem cvalR_eq {n : ℕ} (ε : Fin n → Bool) (lam : Fin n → ℝ) :
     ((Formalism.REAL.cvalR ε lam : ℝ) : ℂ)
@@ -221,25 +221,25 @@ theorem cvalR_eq {n : ℕ} (ε : Fin n → Bool) (lam : Fin n → ℝ) :
 open Formalism.REAL in
 
 /- English proof (translation)
-Introduce `n ε M _ _ E mu v hE h`. Rewrite using `[cvalR_eq]`. Take `⟨Rm, hR⟩` from `_root_.GlobalTheory.qdet_top_three_orders (Module.End ℂ M) n E`. Distinguish the cases in `hn : 2 ≤ n`. Use `swap`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Establish `hn' : n = 0 ∨ n = 1` using `by omega`. Break down `hn' with rfl | rfl` into its components or cases. Simplify using `[Cas]`. Establish `h0` using `h 0`. Rewrite `h0` using `[hR]`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : E 0 0 v = (mu 0 : ℂ) • v`. Simplify `h0` using `[Formalism.QuantumDeterminants.capP, Finset.filter_singleton]`. Simplify using `[Cas, h1, sq, mul_smul]`. Use `set ρ : Fin n → ℂ := fun l => ((n : ℂ) - 1) / 2 - ((l : ℕ) : ℂ) with hρ`. Establish `hρ0 : ∑ l, ρ l = 0`.
+Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : ∑ l, ρ l = ∑ l, ρ (Fin.rev l)` using `(Equiv.sum_comp Fin.revPerm ρ).symm`. Establish `h2 : ∑ l, ρ (Fin.rev l) = - ∑ l, ρ l`. Rewrite using `[← sum_neg_distrib]`. Use `sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Use `l.2` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [hρ, Fin.val_rev]`. Rewrite using `[Nat.cast_sub (by omega)]; push_cast; ring`. Take the linear combination `(h1.trans h2) / 2`. Establish `core` using `fun φ : Module.Dual ℂ M => scalar_core n hn ρ (fun s => (mu s : ℂ)) (fun i => φ (E i i v)) (fun i j => φ ((E i i * E j j - E j i * E i j) v)) (fun d => φ (Rm d v)) (φ v) (((n : ℂ) - 1) / 2) (fun Y => by`. Establish `h1` using `h Y`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h1` using `[hR]`. Establish `h2` using `congrArg φ h1`. Simplify using `only [LinearMap.add_apply, LinearMap.sum_apply, LinearMap.smul_apply, Module.End.one_apply, map_add, map_sum, map_smul, smul_eq_mul, add_sub_assoc, Formalism.QuantumDeterminants.capP] at h2`. Conclude with `h2)`. Establish `e1 : (∑ i, E i i) v = (∑ l, (mu l : ℂ)) • v`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[← sub_eq_zero, ← Module.forall_dual_apply_eq_zero_iff ℂ]`. Introduce `φ`. Use `(core φ).1` as an intermediate fact. Rewrite `this` using `[hρ0]`. Simplify using `only [LinearMap.sum_apply, map_sub, map_sum, map_smul, smul_eq_mul]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Take the linear combination `this`. Rewrite using `[← sub_eq_zero, ← Module.forall_dual_apply_eq_zero_iff ℂ]`. Introduce `φ`. Establish `h2` using `(core φ).2`. Establish `h3` using `congrArg (fun T : Module.End ℂ M => φ (T v)) (sq_sub_cas E hE)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite `h3` using `[LinearMap.sub_apply, Module.End.mul_apply, e1, map_smul, e1, LinearMap.sub_apply]`. Simplify using `only [sum_erase_eq_sub (mem_univ _), hρ0] at h2`. Simplify using `only [LinearMap.sum_apply, LinearMap.smul_apply, map_sub φ, map_sum, map_smul, smul_eq_mul] at h3 h2 ⊢`. Establish `h5 : ∑ i : Fin n, ((n : ℂ) - 1 - 2 * (i : ℕ)) * φ (E i i v) = - (2 * ∑ i, (0 - ρ i) * φ (E i i v))`. Rewrite using `[mul_sum, ← sum_neg_distrib]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Use `sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [hρ]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `h3` using `[h5]`. Take the linear combination `-h3 - h2`.
+Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem cas_of_capelli_vec : ∀ (n : ℕ) (ε : Fin n → Bool) (V : Type) [AddCommGroup V] [Module ℂ V] (E : Fin n → Fin n → Module.End ℂ V) (lam : Fin n → ℝ) (v : V), GlRel E → (∀ Y : ℂ, qdet E (Y + ((n : ℂ) - 1) / 2) v = Formalism.QuantumDeterminants.capP (fun s => (lam s : ℂ)) Y • v) → Cas E v = ((cvalR ε lam : ℝ) : ℂ) • v := by
   intro n ε M _ _ E mu v hE h

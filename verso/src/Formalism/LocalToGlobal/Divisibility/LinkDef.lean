@@ -20,7 +20,7 @@ def SyOf (Df : DefSide Bs) (S : IndefData Df) : Finset (HeightOneSpectrum (𝓞 
   S.Tw ∪ (if h : (Function.support fun y => vw y (GmOf Df Bs.μ0 y)).Finite then h.toFinset else ∅)
 
 /- English proof (translation)
-Establish `h` using `(reduction_lemma_second K Bs.K0 wf.cm Bs.v0 wf.conj (Df.nV t) (Df.dQ t) (Df.HV t) (wf.HV_rat t) (wf.HV_pos t) (Df.Pq t) (wf.Pq_surj t) (Df.XQ t) (wf.XQ_quot t) (Df.Mt t) (wf.Mt_lat t) (fun y => ebOf Df t y) (fun y => ebOf_spec wf t y)).1`. Use `h.subset fun y hy => ?_` and prove the remaining obligations. Rewrite `hy`, the goal using `[Function.mem_support]`. Conclude with `mul_ne_zero (PlaceSumConjugation.lw_pos y).ne' (by exact_mod_cast hy)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gm_support_finite [IsTotallyComplex K] {Df : DefSide Bs} (wf : Df.WF) (t : Bs.Tup) :
     (Function.support fun y => vw y (GmOf Df t y)).Finite := by
@@ -32,7 +32,7 @@ theorem gm_support_finite [IsTotallyComplex K] {Df : DefSide Bs} (wf : Df.WF) (t
   exact mul_ne_zero (PlaceSumConjugation.lw_pos y).ne' (by exact_mod_cast hy)
 
 /- English proof (translation)
-Introduce `x hx`. Unfold `SyOf`. Conclude with `Finset.mem_union_left _ hx`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem tw_sub_SyOf (Df : DefSide Bs) (S : IndefData Df) : S.Tw ⊆ SyOf Df S := by
   classical
@@ -41,9 +41,9 @@ theorem tw_sub_SyOf (Df : DefSide Bs) (S : IndefData Df) : S.Tw ⊆ SyOf Df S :=
   exact Finset.mem_union_left _ hx
 
 /- English proof (translation)
-Unfold `SyOf at hy`. Rewrite `hy` using `[dif_pos (gm_support_finite wf Bs.μ0)]`. Simplify using `only [Finset.mem_union, not_or, Set.Finite.mem_toFinset, Function.mem_support, not_not] at hy`. Establish `hμ : S.μ y = Bs.μ0`. Assume the negation of the conclusion as `h`.
+Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Conclude with `hy.1 ((hH0.2 y).2 h)`. Rewrite using `[hμ]`. Conclude with `hy.2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gram_det_unit_outside [IsTotallyComplex K] {Df : DefSide Bs} (wf : Df.WF) (S : IndefData Df) (hH0 : S.H0)
     (y : HeightOneSpectrum (𝓞 K)) (hy : y ∉ SyOf Df S) : vw y (Df.Gm (ebOf Df) (S.μ y) y) = 0 := by
@@ -57,13 +57,13 @@ theorem gram_det_unit_outside [IsTotallyComplex K] {Df : DefSide Bs} (wf : Df.WF
   exact hy.2
 
 /- English proof (translation)
-Take `⟨c, rfl⟩` from `h`. Establish `ha0 : a ≠ 0`. Introduce and unpack `rfl`. Simplify using `at hb`. Establish `hc0 : c ≠ 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce and unpack `rfl`. Simplify using `at hb`. Establish `ha : (a : K) ≠ 0` using `by exact_mod_cast ha0`. Establish `hc : (c : K) ≠ 0` using `by exact_mod_cast hc0`. Establish `hcnn : 0 ≤ FractionalIdeal.count K w (FractionalIdeal.spanSingleton (nonZeroDivisors (𝓞 K)) (c : K))`.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : FractionalIdeal.spanSingleton (nonZeroDivisors (𝓞 K)) (c : K) = ((Ideal.span {(c : 𝓞 K)} : Ideal (𝓞 K)) : FractionalIdeal (nonZeroDivisors (𝓞 K)) K)`. Rewrite using `[FractionalIdeal.coeIdeal_span_singleton, map_natCast]`. Rewrite using `[e]`. Conclude with `FractionalIdeal.count_coe_nonneg K w _`. Unfold `vw`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Nat.cast_mul, ← FractionalIdeal.spanSingleton_mul_spanSingleton, FractionalIdeal.count_mul K w (FractionalIdeal.spanSingleton_ne_zero_iff.mpr ha) (FractionalIdeal.spanSingleton_ne_zero_iff.mpr hc)]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem vw_nat_le_of_dvd (w : HeightOneSpectrum (𝓞 K)) {a b : ℕ} (hb : 0 < b) (h : a ∣ b) :
     vw w (a : K) ≤ vw w (b : K) := by
@@ -114,7 +114,7 @@ def etaSumBound {J : Type} (bd : J → ℝ) (dg s : ℕ) (j : J) : ℝ :=
   bd j + Real.log (dg : ℝ) + Real.log (s : ℝ)
 
 /- English proof (translation)
-Introduce `y hy j`. Establish `hlat` using `lift_lattices K G Pl0 (A.fam.L j (μ y)) (A.fam.lvlA P0 ψ0) (Zs.Zl j (μ y)) A.fam.v0 s (A.fam.blockHyp_lift hOk P0 ψ0 j (μ y))`. Use `⟨A.fam.JJW P0 ψ0 Zs j (μ y) y, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hJ0 y hy j, mul_comm, A.fam.JJ_ramw P0 ψ0 Zs j (μ y) y]`. Conclude with `(exponent_weight_spectral K _ y ((A.fam.L j (μ y)).cutZ (A.fam.lvlA P0 ψ0) (Zs.Zl j (μ y))) ((A.fam.L j (μ y)).delZ (A.fam.lvlA P0 ψ0) (Zs.Zl j (μ y))) hlat.2.1 hlat.2.2.1).1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lift_exponent_of_least (A : FamIn K G Pl0 T m) {s : ℕ} (hOk : A.fam.Ok s) (P0 : Subgroup G) (ψ0 : P0 →* Kˣ)
     (Zs : DefSub A.fam.amb) (μ : HeightOneSpectrum (𝓞 K) → T) (Tw : Finset (HeightOneSpectrum (𝓞 K)))
@@ -130,7 +130,7 @@ theorem lift_exponent_of_least (A : FamIn K G Pl0 T m) {s : ℕ} (hOk : A.fam.Ok
       ((A.fam.L j (μ y)).delZ (A.fam.lvlA P0 ψ0) (Zs.Zl j (μ y))) hlat.2.1 hlat.2.2.1).1
 
 /- English proof (translation)
-Establish `h : vw y (GmOf (A.side P0 ψ0 Zs) (S.μ y) y) ≤ (((A.side P0 ψ0 Zs).dQ (S.μ y) : ℕ) : ℤ) * vw y ((Fintype.card G * s : ℕ) : K)` using `A.fam.GmOf_le hOk P0 ψ0 Zs (S.μ y) y`. Rewrite `h` using `[S.dQ_eq]`. Conclude with `h` after adjusting the coercions.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bi_def [IsTotallyComplex K] (A : FamIn K G Pl0 T m) {s : ℕ} (hOk : A.fam.Ok s) (P0 : Subgroup G)
     (ψ0 : P0 →* Kˣ) (Zs : DefSub A.fam.amb) (S : IndefRows (A.side P0 ψ0 Zs)) (y : HeightOneSpectrum (𝓞 K)) :
@@ -143,7 +143,7 @@ theorem bi_def [IsTotallyComplex K] (A : FamIn K G Pl0 T m) {s : ℕ} (hOk : A.f
   exact_mod_cast h
 
 /- English proof (translation)
-Establish `hn : 0 < Fintype.card G * s` using `Nat.mul_pos Fintype.card_pos hs`. Establish `h1` using `(place_sum_natural K (Fintype.card G * s) hn).2.2 S`. Establish `h2 : Real.log (((Fintype.card G * s : ℕ)) : ℝ) = Real.log (Fintype.card G : ℝ) + Real.log (s : ℝ)`. Rewrite using `[Nat.cast_mul, Real.log_mul (by exact_mod_cast Fintype.card_ne_zero) (by exact_mod_cast hs.ne')]`. Unfold `lgDef`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
 Combine the linear equalities and inequalities to obtain the conclusion.
 -/
@@ -158,11 +158,11 @@ theorem bLG_def {J Pl : Type} [Fintype J] [Fintype Pl] [DecidableEq Pl] (R : Rec
   linarith
 
 /- English proof (translation)
-Take `⟨Jn, hJn, hinc⟩` from `h11 y hy j`. Establish `wf` using `A.side_WF hOk P0 ψ0 Zs hst hin hsep`. Establish `hD : (A.side P0 ψ0 Zs).dZ j (S.μ y) = S.D` using `S.rankZ wf j (S.μ y)`. Establish `hlat` using `lift_lattices K G Pl0 (A.fam.L j (S.μ y)) (A.fam.lvlA P0 ψ0) (Zs.Zl j (S.μ y)) A.fam.v0 s (A.fam.blockHyp_lift hOk P0 ψ0 j (S.μ y))`. Establish `hJ : A.fam.JJW P0 ψ0 Zs j (S.μ y) y ≤ Jn` using `(exponent_weight_spectral K _ y ((A.fam.L j (S.μ y)).cutZ (A.fam.lvlA P0 ψ0) (Zs.Zl j (S.μ y))) ((A.fam.L j (S.μ y)).delZ (A.fam.lvlA P0 ψ0) (Zs.Zl j (S.μ y))) hlat.2.1 hlat.2.2.1).2 Jn hinc`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : jw ((A.side P0 ψ0 Zs).HT j (S.μ y)) y ((A.side P0 ψ0 Zs).Tl j (S.μ y)) ≤ (A.fam.etaJW P0 ψ0 Zs j (S.μ y) y : ℤ) + ((A.side P0 ψ0 Zs).dZ j (S.μ y) : ℤ) * ((A.fam.JJW P0 ψ0 Zs j (S.μ y) y : ℤ) + vw y (((A.fam.L j (S.μ y)).DG (A.fam.lvlA P0 ψ0) : ℕ) : K) + vw y (s : K))` using `A.fam.jw_le hOk P0 ψ0 Zs j (S.μ y) y`. Establish `h2 : (jw ((A.side P0 ψ0 Zs).HT j (S.μ y)) y ((A.side P0 ψ0 Zs).Tl j (S.μ y)) : ℝ) ≤ (A.fam.etaJW P0 ψ0 Zs j (S.μ y) y : ℝ) + (((A.side P0 ψ0 Zs).dZ j (S.μ y) : ℕ) : ℝ) * ((A.fam.JJW P0 ψ0 Zs j (S.μ y) y : ℝ) + (vw y (((A.fam.L j (S.μ y)).DG (A.fam.lvlA P0 ψ0) : ℕ) : K) : ℝ) + (vw …`. Conclude with `h1` after adjusting the coercions. Establish `hDr : (((A.side P0 ψ0 Zs).dZ j (S.μ y) : ℕ) : ℝ) = (S.D : ℝ)` using `by exact_mod_cast hD`. Rewrite `h2` using `[hDr]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h3 : (A.fam.JJW P0 ψ0 Zs j (S.μ y) y : ℝ) ≤ (ramw y : ℝ) * J0 (S.μ y) y j` using `le_trans (by exact_mod_cast hJ) hJn`. Establish `hD0 : (0 : ℝ) ≤ S.D` using `Nat.cast_nonneg _`. Establish `h4` using `mul_le_mul_of_nonneg_left h3 hD0`. Unfold `etaYOf`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem biv_def (A : FamIn K G Pl0 T m) {s : ℕ} (hOk : A.fam.Ok s) (hsep : A.fam.TypesSep) (P0 : Subgroup G)
     (ψ0 : P0 →* Kˣ) (Zs : DefSub A.fam.amb) (hst : Zs.Stable) (hin : Zs.InBlock) (S : IndefRows (A.side P0 ψ0 Zs))
@@ -198,15 +198,13 @@ theorem biv_def (A : FamIn K G Pl0 T m) {s : ℕ} (hOk : A.fam.Ok s) (hsep : A.f
   nlinarith
 
 /- English proof (translation)
-Establish `hDpos : (0 : ℝ) < S.D` using `by exact_mod_cast S.D_pos`. Establish `e : (A.fam.R A.fam.μ0).dZ (A.fam.lvl P0 ψ0) (Zs.Z A.fam.μ0) = S.D` using `S.dQ_eq A.fam.base.μ0`. Establish `hN' : ∑ y ∈ S.Tw, lw y * (A.fam.etaJW P0 ψ0 Zs j (S.μ y) y : ℝ) ≤ bd j * (S.D : ℝ)`. Establish `h` using `hN j`. Rewrite `h` using `[e]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h`. Establish `hsplit : ∑ y ∈ S.Tw, lw y * etaYOf A P0 ψ0 Zs s S.μ S.D y j / (S.D : ℝ) = (∑ y ∈ S.Tw, lw y * (A.fam.etaJW P0 ψ0 Zs j (S.μ y) y : ℝ)) / (S.D : ℝ) + ((∑ y ∈ S.Tw, lw y * (vw y (((A.fam.L j (S.μ y)).DG (A.fam.lvlA P0 ψ0) : ℕ) : K) : ℝ)) + (∑ y ∈ S.Tw, lw y * (vw y (s : K) : ℝ)))`. Rewrite using `[Finset.sum_div, ← Finset.sum_add_distrib, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun y _ => ?_` and prove the remaining obligations. Unfold `etaYOf`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Clear the denominators using the available nonvanishing facts.
 
-Clear the denominators using the available nonvanishing facts. Establish `hA : (∑ y ∈ S.Tw, lw y * (A.fam.etaJW P0 ψ0 Zs j (S.μ y) y : ℝ)) / (S.D : ℝ) ≤ bd j`. Rewrite using `[div_le_iff₀ hDpos]`. Conclude with `hN'`. Establish `hB : ∑ y ∈ S.Tw, lw y * (vw y (((A.fam.L j (S.μ y)).DG (A.fam.lvlA P0 ψ0) : ℕ) : K) : ℝ) ≤ Real.log (dg : ℝ)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `le_trans (Finset.sum_le_sum fun y _ => mul_le_mul_of_nonneg_left ?_ (W5.lw_nonneg y)) ((place_sum_natural K dg hdg).2.2 S.Tw)` and prove the remaining obligations. Conclude with `vw_nat_le_of_dvd y hdg (hdvd j (S.μ y))` after adjusting the coercions. Establish `hC` using `(place_sum_natural K s hs).2.2 S.Tw`. Rewrite using `[hsplit]`. Unfold `etaSumBound`.
-
-Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem twisted_place_eta_sum_le (A : FamIn K G Pl0 T m) (P0 : Subgroup G) (ψ0 : P0 →* Kˣ) (Zs : DefSub A.fam.amb) {s : ℕ}
     (hs : 0 < s) (S : IndefRows (A.side P0 ψ0 Zs)) (bd : Fin m → ℝ) (hN : InEta A.fam P0 ψ0 Zs S.μ S.Tw bd)
@@ -240,11 +238,11 @@ theorem twisted_place_eta_sum_le (A : FamIn K G Pl0 T m) (P0 : Subgroup G) (ψ0 
   linarith
 
 /- English proof (translation)
-Establish `: Finite T` using `hOk.tup_fin`. Use `Fintype.ofFinite T` as an intermediate fact. Establish `hpos : ∀ j t, 0 < (A.fam.L j t).DG (A.fam.lvlA P0 ψ0)`. Introduce `j t`. Unfold `BlockDat.DG`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Use `Nat.mul_pos Nat.card_pos (Nat.pos_of_ne_zero ?_)` and prove the remaining obligations. Unfold `CSD.DGam`. Rewrite using `[Ne, Finset.lcm_eq_zero_iff]`. Introduce and unpack `⟨c, -, hc⟩`. Conclude with `(Fintype.card_pos (α := ((A.fam.L j t).S.Gam c))).ne' hc`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Conclude with `⟨∏ p : Fin m × T, (A.fam.L p.1 p.2).DG (A.fam.lvlA P0 ψ0), Finset.prod_pos fun p _ => hpos p.1 p.2, fun j t => Finset.dvd_prod_of_mem (fun p : Fin m × T => (A.fam.L p.1 p.2).DG (A.fam.lvlA P0 ψ0)) (Finset.mem_univ (j, t))⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_dg (A : FamIn K G Pl0 T m) {s : ℕ} (hOk : A.fam.Ok s) (P0 : Subgroup G) (ψ0 : P0 →* Kˣ) :
     ∃ dg : ℕ, 0 < dg ∧ ∀ j t, (A.fam.L j t).DG (A.fam.lvlA P0 ψ0) ∣ dg := by
@@ -391,7 +389,7 @@ theorem DivInputsDef.eb_eq (hOk : A.fam.Ok s) (hsep : A.fam.TypesSep)
     (I.toDivInputs0 hOk hsep).eb = ebOf (A.side P0 ψ0 Pk.Zs) := rfl
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨rfl, rfl, rfl, rfl, rfl, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem DivInputsDef.defs_eq (hOk : A.fam.Ok s) (hsep : A.fam.TypesSep)
     (I : DivInputsDef A s P0 ψ0 P1 ψ1 Dc Sp Zsc C CH Pk R u Nu sg) :
@@ -409,7 +407,7 @@ section Corollary
 variable {K : Type} [Field K] [NumberField K] [StarRing K] {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {m : ℕ}
 
 /- English proof (translation)
-Conclude with `division_height_bound_clauses A hOk hsep P0 ψ0 P1 ψ1 Dc Sp Zsc C CH Pk R u Nu sg ⟨I.toDivInputs0 hOk hsep, val2⟩`.
+A detailed English derivation is pending.
 -/
 theorem division_height_bound_definite [IsTotallyComplex K] (A : FamIn K G Pl0 T m) {s : ℕ} (hOk : A.fam.Ok s) (hsep : A.fam.TypesSep)
     (P0 : Subgroup G) (ψ0 : P0 →* Kˣ) (P1 : Subgroup G) (ψ1 : P1 →* Kˣ)

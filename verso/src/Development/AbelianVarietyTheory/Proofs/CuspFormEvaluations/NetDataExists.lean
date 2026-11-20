@@ -21,11 +21,11 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   {l : Level H}
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h1 h2`. Establish `e : (starRingEnd ℂ) H.rt0 = H.rt0`. Establish `h3 : (starRingEnd ℂ) ((σ.comp (IntermediateField.inclusion c.le).toRingHom) (baseKA l).ρ) = H.rt0` using `h1`. Rewrite `h3` using `[show (σ.comp (IntermediateField.inclusion c.le).toRingHom) (baseKA l).ρ = H.rt0 from h2]`. Then use the resulting hypothesis.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `him : H.rt0.im = 0` using `Complex.conj_eq_iff_im.mp e`. Establish `hre` using `congrArg Complex.re H.sqrt_neg_disc_sq`. Establish `hd : (0 : ℝ) < H.d` using `by exact_mod_cast H.d_prime.pos`. Simplify using `only [sq, Complex.mul_re, Complex.neg_re, Complex.natCast_re, him] at hre`. Use polynomial arithmetic with `[mul_self_nonneg H.rt0.re]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Use the polynomial consequences of the given equalities and inequalities.
 
-Introduce `h`. Use `goodEmb_goodOf c σ` as an intermediate fact. Unfold `goodOf at this`. Rewrite `this` using `[if_neg h]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem good_conj_iff (c : Coeff l) (σ : c.F →+* ℂ) :
     GoodEmb c (ComplexEmbedding.conjugate σ) ↔ ¬ GoodEmb c σ := by
@@ -45,9 +45,9 @@ theorem good_conj_iff (c : Coeff l) (σ : c.F →+* ℂ) :
     rwa [if_neg h] at this
 
 /- English proof (translation)
-Unfold `goodOf`. Distinguish the cases in `h : GoodEmb c σ`. Rewrite using `[if_neg (fun h' => (good_conj_iff c σ).1 h' h), if_pos h]`. Use extensionality with `x`. Simplify using `[ComplexEmbedding.conjugate]`.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[if_pos ((good_conj_iff c σ).2 h), if_neg h]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem goodOf_conj (c : Coeff l) (σ : c.F →+* ℂ) : goodOf c (ComplexEmbedding.conjugate σ) = goodOf c σ := by
   unfold goodOf
@@ -59,9 +59,9 @@ theorem goodOf_conj (c : Coeff l) (σ : c.F →+* ℂ) : goodOf c (ComplexEmbedd
 end
 
 /- English proof (translation)
-Establish `e : T.Ns j w (ComplexEmbedding.conjugate σ) = T.Ns j w σ`. Use function extensionality and compare the values at `f`. Unfold `Core.Ns`. Rewrite using `[goodOf_conj]`. Express the relevant statement in the definitionally equal form `cutN T.C T.Ns j w (ComplexEmbedding.conjugate σ) F = cutN T.C T.Ns j w σ F`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Unfold `cutN`. Rewrite using `[e]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem supN_conj {D : D7} {T : Top D} (h : LawsP T) (j : ℕ) (w : WeightFamilies.Wt D j) (σ : T.Q.c.F →+* ℂ)
     (F : (recB h.toLawsCore).Cusp j w) :
@@ -75,9 +75,9 @@ theorem supN_conj {D : D7} {T : Top D} (h : LawsP T) (j : ℕ) (w : WeightFamili
   rw [e]
 
 /- English proof (translation)
-Introduce `D T h hG large₂ j hj w hP hL hr hf`. Establish `key` using `GlobalTheory.T.exists_scalar_evaluations_cusp_forms_finite_net D T h hG large₂ j hj w hP hL hr hf`. Establish `key2 : ∀ σ : T.Q.c.F →+* ℂ, ∃ (n : ℕ) (ev : Fin n → ((recB h.toLawsCore).Cusp j w →ₛₗ[σ] ℂ)), GoodEmb T.Q.c σ → (∀ F, ∃ y, (recB h.toLawsCore).supN j w σ F / 4 ≤ ‖ev y F‖) ∧ (∀ y F, ‖ev y F‖ ≤ (recB h.toLawsCore).supN j w σ F) ∧ Real.log (16 * (n : ℝ)) ≤ 1041 * Zb D large₂ ^ 3 ∧ …`. Introduce `σ`. Distinguish the cases in `hσ : GoodEmb T.Q.c σ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Take `⟨n, ev, H⟩` from `key σ hσ`. Conclude with `⟨n, ev, fun _ => H⟩`. Conclude with `⟨0, Fin.elim0, fun h' => absurd h' hσ⟩`. Use `choose n ev H using key2`. Conclude with `GlobalTheory.T.exists_netData_from_half_conjugate_embeddings D (recB h.toLawsCore) j w (GoodEmb T.Q.c) (fun σ => by rw [good_conj_iff]; exact not_not.symm) (supN_conj h j w) n ev _ H`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem netData_exists : ∀ (D : D7) (T : Top D) (h : LawsP T), GamAt T.toCore → ∀ (large₂ : SizeData₂ D) (j : ℕ) (_hj : InR D j) (w : WeightFamilies.Wt D j), ReciprocityTheory.ChartRestriction.G.PullbackSections.SupBoundPageRows D large₂ w → 2 ≤ large₂.sc.L → D.R.r ≤ w.n → 16 ≤ D.R.f → ∃ Nt : NetData (recB h.toLawsCore) j w, NetMax Nt ∧ NetLeSup Nt ∧ NetSize Nt (1041 * Zb D large₂ ^ 3) ∧ ∀ σ, NetInj Nt σ := by
   intro D T h hG large₂ j hj w hP hL hr hf

@@ -14,9 +14,7 @@ namespace GroundTheory.Global
 noncomputable section
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp only [Finset.prod_empty]`. Conclude with `HasTemperateGrowth.const (1 : ℂ)`. Consider the case `insert a s ha ih`. Repeatedly rewrite using `[Finset.prod_insert ha]`.
-
-Conclude with `(hf a (Finset.mem_insert_self _ _)).mul (ih fun i hi ↦ hf i (Finset.mem_insert_of_mem hi))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion repeatedly using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasTemperateGrowth_finsetProd {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     {ι : Type*} (s : Finset ι) {f : ι → E → ℂ} (hf : ∀ i ∈ s, (f i).HasTemperateGrowth) :
@@ -30,7 +28,7 @@ theorem hasTemperateGrowth_finsetProd {E : Type*} [NormedAddCommGroup E] [Normed
       (ih fun i hi ↦ hf i (Finset.mem_insert_of_mem hi))
 
 /- English proof (translation)
-Proceed by induction on `t using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert a t ha ih`. Rewrite using `[Finset.prod_insert ha, Finset.prod_insert ha, ofReal_mul, mul_cpow_ofReal_nonneg (hr a (Finset.mem_insert_self _ _)) (Finset.prod_nonneg fun i hi ↦ hr i (Finset.mem_insert_of_mem hi)), ih fun i hi ↦ hr i (Finset.mem_insert_of_mem hi)]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem ofReal_finsetProd_cpow {ι : Type*} (t : Finset ι) {r : ι → ℝ} (hr : ∀ i ∈ t, 0 ≤ r i)
     (s : ℂ) : ((∏ i ∈ t, r i : ℝ) : ℂ) ^ s = ∏ i ∈ t, ((r i : ℝ) : ℂ) ^ s := by
@@ -46,9 +44,9 @@ theorem ofReal_finsetProd_cpow {ι : Type*} (t : Finset ι) {r : ι → ℝ} (hr
 variable {K : Type*} [Field K] [NumberField K]
 
 /- English proof (translation)
-Rewrite using `[← real_inner_self_eq_norm_sq]`. Express the relevant statement in the definitionally equal form `⟪(euclidean.toMixed K).symm (mapComplexCoord K sqrtTwoSMulComplex x), (euclidean.toMixed K).symm (mapComplexCoord K sqrtTwoSMulComplex x)⟫ = _`. Rewrite using `[inner_toMixed_symm, mapComplexCoord_apply, Finset.mul_sum]`. Use `congr 1`. Conclude with `Finset.sum_congr rfl fun w _ ↦ by ring`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun w _ ↦ ?_ dsimp only` and prove the remaining obligations. Rewrite using `[sqrtTwoSMulComplex_apply, Complex.real_smul, map_mul, conj_ofReal, show ((√2 : ℝ) : ℂ) * conj (x.2 w) * (((√2 : ℝ) : ℂ) * x.2 w) = (((√2 : ℝ) ^ 2 : ℝ) : ℂ) * (conj (x.2 w) * x.2 w) by push_cast; ring, Real.sq_sqrt (by norm_num), Complex.conj_mul']`. Use `norm_cast`.
+Simplify by unfolding definitions. Rewrite the hypotheses and the conclusion using the stated equalities. Put the expressions in a common number system so they can be compared. A detailed English derivation is pending.
 -/
 theorem norm_mixedToEuclidean_sq (x : mixedSpace K) :
     ‖mixedToEuclidean K x‖ ^ 2 = ∑ w, x.1 w ^ 2 + 2 * ∑ w, ‖x.2 w‖ ^ 2 := by
@@ -76,11 +74,9 @@ def infinitePoly (x : mixedSpace K) : ℂ :=
       (if 0 < χ.infiniteWeight w then conj (x.2 w) else x.2 w) ^ (χ.infiniteWeight w).natAbs
 
 /- English proof (translation)
-Establish `h1 : ∀ w : {w // IsReal w}, (fun x : mixedSpace K ↦ ((x.1 w : ℝ) : ℂ) ^ (χ.infiniteWeight w).natAbs).HasTemperateGrowth` using `fun w ↦ by`. Establish `h` using `(((Complex.ofRealCLM.comp ((ContinuousLinearMap.proj w : ({w // IsReal w} → ℝ) →L[ℝ] ℝ).comp (ContinuousLinearMap.fst ℝ ({w // IsReal w} → ℝ) ({w // IsComplex w} → ℂ))) : mixedSpace K →L[ℝ] ℂ)).hasTemperateGrowth).pow (χ.infiniteWeight w).natAbs`. Conclude with `h`. Establish `h2 : ∀ w : {w // IsComplex w}, (fun x : mixedSpace K ↦ (if 0 < χ.infiniteWeight w then conj (x.2 w) else x.2 w) ^ (χ.infiniteWeight w).natAbs).HasTemperateGrowth`. Introduce `w`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hw : 0 < χ.infiniteWeight w`. Simplify using `only [if_pos hw]`. Establish `h` using `(((Complex.conjCLE.toContinuousLinearMap.comp ((ContinuousLinearMap.proj w : ({w // IsComplex w} → ℂ) →L[ℝ] ℂ).comp (ContinuousLinearMap.snd ℝ ({w // IsReal w} → ℝ) ({w // IsComplex w} → ℂ))) : mixedSpace K →L[ℝ] ℂ)).hasTemperateGrowth).pow (χ.infiniteWeight w).natAbs`. Conclude with `h`. Simplify using `only [if_neg hw]`.
-
-Establish `h` using `((((ContinuousLinearMap.proj w : ({w // IsComplex w} → ℂ) →L[ℝ] ℂ).comp (ContinuousLinearMap.snd ℝ ({w // IsReal w} → ℝ) ({w // IsComplex w} → ℂ)) : mixedSpace K →L[ℝ] ℂ)).hasTemperateGrowth).pow (χ.infiniteWeight w).natAbs`. Conclude with `h`. Conclude with `(hasTemperateGrowth_finsetProd _ fun w _ ↦ h1 w).mul (hasTemperateGrowth_finsetProd _ fun w _ ↦ h2 w)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem hasTemperateGrowth_infinitePoly : χ.infinitePoly.HasTemperateGrowth := by
   have h1 : ∀ w : {w // IsReal w}, (fun x : mixedSpace K ↦
@@ -113,7 +109,7 @@ def infiniteSchwartz : 𝓢(mixedSpace K, ℂ) :=
       (gaussianSchwartz (euclidean.mixedSpace K)))
 
 /- English proof (translation)
-Rewrite using `[infiniteSchwartz, SchwartzMap.smulLeftCLM_apply_apply χ.hasTemperateGrowth_infinitePoly, SchwartzMap.compCLMOfContinuousLinearEquiv_apply, Function.comp_apply, gaussianSchwartz_apply, norm_mixedToEuclidean_sq, smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem infiniteSchwartz_apply (x : mixedSpace K) :
     χ.infiniteSchwartz x = χ.infinitePoly x *
@@ -123,13 +119,13 @@ theorem infiniteSchwartz_apply (x : mixedSpace K) :
     norm_mixedToEuclidean_sq, smul_eq_mul]
 
 /- English proof (translation)
-Rewrite using `[infiniteSchwartz_apply, prod_eq_prod_mul_prod, homeomorphMixedSpace_apply, InfiniteAdeleRing.ringEquiv_mixedSpace_apply]`. Simplify using `only [infinitePoly, infiniteTest, Finset.prod_mul_distrib]`. Establish `hr : ∀ w : {w // IsReal w}, (if 0 < χ.infiniteWeight w.1 then conj (extensionEmbedding w.1 (x w.1)) else extensionEmbedding w.1 (x w.1)) = ((extensionEmbeddingOfIsReal w.2 (x w.1) : ℝ) : ℂ)` using `fun w ↦ by`. Rewrite using `[extensionEmbeddingOfIsReal_apply]`. Use `split_ifs`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← extensionEmbeddingOfIsReal_apply w.2, conj_ofReal]`. Both sides reduce to the same expression. Establish `hnr : ∀ w : {w // IsReal w}, (extensionEmbeddingOfIsReal w.2 (x w.1)) ^ 2 = ‖x w.1‖ ^ 2` using `fun w ↦ by`. Rewrite using `[← (isometry_extensionEmbeddingOfIsReal w.2).norm_map_of_map_zero (map_zero _), Real.norm_eq_abs, sq_abs]`. Establish `hnc : ∀ w : {w // IsComplex w}, ‖extensionEmbedding w.1 (x w.1)‖ = ‖x w.1‖` using `fun w ↦ (isometry_extensionEmbedding w.1).norm_map_of_map_zero (map_zero _) _`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [hr, hnr, hnc, mult_isReal, mult_isComplex]`. Establish `hexp : ((Real.exp (-π * (∑ w : {w // IsReal w}, ‖x w.1‖ ^ 2 + 2 * ∑ w : {w // IsComplex w}, ‖x w.1‖ ^ 2)) : ℝ) : ℂ) = (∏ w : {w // IsReal w}, ((Real.exp (-(π * ((1 : ℕ) : ℝ) * ‖x w.1‖ ^ 2)) : ℝ) : ℂ)) * ∏ w : {w // IsComplex w}, ((Real.exp (-(π * ((2 : ℕ) : ℝ) * ‖x w.1‖ ^ 2)) : ℝ …`. Rewrite using `[← ofReal_prod, ← ofReal_prod, ← ofReal_mul, ← Real.exp_sum, ← Real.exp_sum, ← Real.exp_add]`. Use `congr 2`. Rewrite using `[mul_add, Finset.mul_sum, Finset.mul_sum, Finset.mul_sum]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `congr 1 <;> exact Finset.sum_congr rfl fun w _ ↦ by push_cast; ring`. Rewrite using `[hexp]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem infiniteSchwartz_homeomorphMixedSpace (x : InfiniteAdeleRing K) :
     χ.infiniteSchwartz (homeomorphMixedSpace K x) = ∏ w, χ.infiniteTest w (x w) := by
@@ -162,9 +158,9 @@ theorem infiniteSchwartz_homeomorphMixedSpace (x : InfiniteAdeleRing K) :
   ring
 
 /- English proof (translation)
-Establish `ha : a = ∏ w, Units.map (IdeleGroup.infiniteAdeleSingle w) (IdeleGroup.infiniteComponent w a)` using `by ext1`. Rewrite using `[Units.coe_prod]`. Simplify using `only [Units.coe_map, IdeleGroup.coe_infiniteComponent]`. Conclude with `(Finset.univ_prod_mulSingle (fun w ↦ (a : InfiniteAdeleRing K) w)).symm`. Use `conv_lhs => rw [ha]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_prod, map_prod]`. Conclude with `Finset.prod_congr rfl fun w _ ↦ by`. Rewrite using `[IdeleGroup.ofInfinite_map_infiniteAdeleSingle]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem toIdele_ofInfinite (a : (InfiniteAdeleRing K)ˣ) :
     χ.toIdele (IdeleGroup.ofInfinite a) =
@@ -181,11 +177,11 @@ theorem toIdele_ofInfinite (a : (InfiniteAdeleRing K)ˣ) :
     rfl
 
 /- English proof (translation)
-Establish `he : MeasurableEmbedding (infiniteUnitsEquiv K).symm` using `(infiniteUnitsEquiv K).symm.toHomeomorph.measurableEmbedding`. Rewrite using `[infiniteIdeleMeasure, he.integral_map]`. Establish `hpt : ∀ y : Π w : InfinitePlace K, (w.Completion)ˣ, χ.infiniteSchwartz (homeomorphMixedSpace K ((infiniteUnitsEquiv K).symm y)) * (χ.toIdele (IdeleGroup.ofInfinite ((infiniteUnitsEquiv K).symm y)) : ℂ) * ((∏ w, ‖(((infiniteUnitsEquiv K).symm y : (InfiniteAdeleRing K)ˣ) : Infinite …`. Introduce `y`. Establish `hy : ∀ w, (((infiniteUnitsEquiv K).symm y : (InfiniteAdeleRing K)ˣ) : InfiniteAdeleRing K) w = (y w : w.Completion)` using `fun w ↦ rfl`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hc : ∀ w, IdeleGroup.infiniteComponent w ((infiniteUnitsEquiv K).symm y) = y w` using `fun w ↦ Units.ext rfl`. Rewrite using `[infiniteSchwartz_homeomorphMixedSpace, toIdele_ofInfinite, ofReal_finsetProd_cpow _ (fun w _ ↦ by positivity)]`. Establish `hcp : ((∏ w, χ.infiniteComponent w (y w) : Circle) : ℂ) = ∏ w, (χ.infiniteComponent w (y w) : ℂ)` using `map_prod Circle.coeHom (fun w ↦ χ.infiniteComponent w (y w)) Finset.univ`. Simplify using `only [hy, hc, hcp, Finset.prod_mul_distrib]`. Rewrite using `[integral_congr_ae (Filter.Eventually.of_forall hpt)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hfub` using `integral_fintype_prod_eq_prod (μ := fun w : InfinitePlace K ↦ infinitePlaceUnitsMeasure w) (fun w (u : (w.Completion)ˣ) ↦ χ.infiniteTest w u * (χ.infiniteComponent w u : ℂ) * ((‖(u : w.Completion)‖ ^ w.mult : ℝ) : ℂ) ^ s)`. Conclude with `hfub.trans (Finset.prod_congr rfl fun w _ ↦ χ.integral_infiniteTest w hs)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem integral_infiniteSchwartz {s : ℂ} (hs : 0 < s.re) :
     ∫ a : (InfiniteAdeleRing K)ˣ, χ.infiniteSchwartz (homeomorphMixedSpace K a) *

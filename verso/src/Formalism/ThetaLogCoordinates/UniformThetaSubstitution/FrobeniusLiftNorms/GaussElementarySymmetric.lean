@@ -19,7 +19,7 @@ variable {K σ : Type} [CommRing K] [Fintype σ]
 def genE (x : σ → K) : PowerSeries K := ∏ i, (1 + PowerSeries.C (x i) * PowerSeries.X)
 
 /- English proof (translation)
-Unfold `eF`. Simplify using `[MvPolynomial.esymm, map_sum, map_prod]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 lemma eF_eq_sum (x : σ → K) (l : ℕ) :
     eF x l = ∑ s ∈ powersetCard l univ, ∏ i ∈ s, x i := by
@@ -27,9 +27,9 @@ lemma eF_eq_sum (x : σ → K) (l : ℕ) :
   simp [MvPolynomial.esymm, map_sum, map_prod]
 
 /- English proof (translation)
-Rewrite using `[eF_eq_sum, Finset.powersetCard_eq_filter, Finset.sum_filter]`. Unfold `genE`. Establish `hc : ∀ i, (1 + PowerSeries.C (x i) * PowerSeries.X : PowerSeries K) = PowerSeries.C (x i) * PowerSeries.X + 1` using `fun i => add_comm _ _`. Repeatedly rewrite using `[hc]`. Rewrite using `[Finset.prod_add, map_sum]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.prod_const_one, mul_one, Finset.prod_mul_distrib, Finset.prod_const, ← map_prod, PowerSeries.coeff_C_mul_X_pow]`. Apply the tactic sequence `split_ifs with h1 h2 h2 <;> first | rfl | omega`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma coeff_genE (x : σ → K) (l : ℕ) : PowerSeries.coeff l (genE x) = eF x l := by
   classical
@@ -45,13 +45,13 @@ lemma coeff_genE (x : σ → K) (l : ℕ) : PowerSeries.coeff l (genE x) = eF x 
   split_ifs with h1 h2 h2 <;> first | rfl | omega
 
 /- English proof (translation)
-Simplify using `[eF, MvPolynomial.esymm_zero]`.
+Simplify using the standard rewrite rules.
 -/
 lemma eF_zero (x : σ → K) : eF x 0 = 1 := by
   simp [eF, MvPolynomial.esymm_zero]
 
 /- English proof (translation)
-Simplify using `only [eF_eq_sum, Finset.prod_mul_distrib, Finset.prod_const, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun s hs => ?_` and prove the remaining obligations. Rewrite using `[(Finset.mem_powersetCard.1 hs).2]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 lemma eF_smul (c : K) (x : σ → K) (l : ℕ) : eF (fun i => c * x i) l = c ^ l * eF x l := by
   simp only [eF_eq_sum, Finset.prod_mul_distrib, Finset.prod_const, Finset.mul_sum]
@@ -59,13 +59,13 @@ lemma eF_smul (c : K) (x : σ → K) (l : ℕ) : eF (fun i => c * x i) l = c ^ l
   rw [(Finset.mem_powersetCard.1 hs).2]
 
 /- English proof (translation)
-Rewrite using `[eF_eq_sum, Finset.powersetCard_eq_empty.2 (by simpa using h), Finset.sum_empty]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma eF_of_card_lt (x : σ → K) (l : ℕ) (h : Fintype.card σ < l) : eF x l = 0 := by
   rw [eF_eq_sum, Finset.powersetCard_eq_empty.2 (by simpa using h), Finset.sum_empty]
 
 /- English proof (translation)
-Rewrite using `[← coeff_genE, h, PowerSeries.coeff_mul, Finset.Nat.sum_antidiagonal_eq_sum_range_succ_mk]`. Simplify using `only [coeff_genE]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma eF_of_genE_mul {τ ρ : Type} [Fintype τ] [Fintype ρ] (z : σ → K) (x : τ → K) (y : ρ → K)
     (h : genE z = genE x * genE y) (n : ℕ) :
@@ -74,7 +74,7 @@ lemma eF_of_genE_mul {τ ρ : Type} [Fintype τ] [Fintype ρ] (z : σ → K) (x 
   simp only [coeff_genE]
 
 /- English proof (translation)
-Use `split_ifs with hl`. Substitute `hl` using the available equality. Conclude with `eF_zero x`. Conclude with `eF_of_card_lt x l (by rw [Fintype.card_eq_zero]; omega)`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 lemma eF_isEmpty [IsEmpty σ] (x : σ → K) (l : ℕ) : eF x l = if l = 0 then 1 else 0 := by
   split_ifs with hl
@@ -83,7 +83,7 @@ lemma eF_isEmpty [IsEmpty σ] (x : σ → K) (l : ℕ) : eF x l = if l = 0 then 
   · exact eF_of_card_lt x l (by rw [Fintype.card_eq_zero]; omega)
 
 /- English proof (translation)
-Establish `hg : genE x = genE (fun i : Fin g => x i.castSucc) * (1 + PowerSeries.C (x (Fin.last g)) * PowerSeries.X)`. Unfold `genE`. Rewrite using `[Fin.prod_univ_castSucc]`. Rewrite using `[← coeff_genE, hg, mul_add, mul_one, map_add, show genE (fun i : Fin g => x i.castSucc) * (PowerSeries.C (x (Fin.last g)) * PowerSeries.X) = PowerSeries.C (x (Fin.last g)) * genE (fun i : Fin g => x i.castSucc) * PowerSeries.X by ring, PowerSeries.coeff_succ_mul_X, PowerSeries.co …`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 lemma eF_fin_succ {g : ℕ} (x : Fin (g + 1) → K) (l : ℕ) :
     eF x (l + 1) = eF (fun i : Fin g => x i.castSucc) (l + 1) +
@@ -100,9 +100,9 @@ lemma eF_fin_succ {g : ℕ} (x : Fin (g + 1) → K) (l : ℕ) :
 end gen
 
 /- English proof (translation)
-Repeatedly rewrite using `[Finset.smul_sum, smul_smul, Finset.sum_smul]`. Establish `hin : ∀ l ∈ range (i + 1), ∑ l' ∈ range (i - l + 1), (f l * g l') • E (i - l - l') = ∑ n ∈ Ico l (i + 1), (f l * g (n - l)) • E (i - n)`. Introduce `l hl`. Simplify using `only [Finset.mem_range] at hl`. Rewrite using `[Finset.sum_Ico_eq_sum_range, show i + 1 - l = i - l + 1 by omega]`.
+Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun l' _ => ?_` and prove the remaining obligations. Rewrite using `[show l + l' - l = l' by omega, show i - (l + l') = i - l - l' by omega]`. Rewrite using `[Finset.sum_congr rfl hin]`. Conclude with `Finset.sum_comm' (fun l n => by simp only [Finset.mem_range, Finset.mem_Ico]; omega)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma conv_smul {K V : Type} [CommRing K] [AddCommGroup V] [Module K V] (f g : ℕ → K) (E : ℕ → V)
     (i : ℕ) :
@@ -120,7 +120,7 @@ lemma conv_smul {K V : Type} [CommRing K] [AddCommGroup V] [Module K V] (f g : �
   exact Finset.sum_comm' (fun l n => by simp only [Finset.mem_range, Finset.mem_Ico]; omega)
 
 /- English proof (translation)
-Use extensionality with `a`. Simplify using `[LinearMap.sum_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 lemma sum_comp {K A B C ι : Type} [CommRing K] [AddCommGroup A] [AddCommGroup B] [AddCommGroup C]
     [Module K A] [Module K B] [Module K C] (s : Finset ι) (f : ι → B →ₗ[K] C) (g : A →ₗ[K] B) :
@@ -129,7 +129,7 @@ lemma sum_comp {K A B C ι : Type} [CommRing K] [AddCommGroup A] [AddCommGroup B
   simp [LinearMap.sum_apply]
 
 /- English proof (translation)
-Use extensionality with `a`. Simplify using `[LinearMap.sum_apply, map_sum]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 lemma comp_sum {K A B C ι : Type} [CommRing K] [AddCommGroup A] [AddCommGroup B] [AddCommGroup C]
     [Module K A] [Module K B] [Module K C] (s : Finset ι) (f : ι → A →ₗ[K] B) (g : B →ₗ[K] C) :
@@ -142,7 +142,7 @@ section gauss
 variable {K : Type} [Field K]
 
 /- English proof (translation)
-Unfold `beFam`. Rewrite using `[show ((g + 1 : ℕ) : ℤ) - 1 - 2 * ((i.castSucc : Fin (g + 1)).val : ℤ) = ((g : ℤ) - 1 - 2 * (i.val : ℤ)) + 1 by simp; ring, zpow_add_one₀ hQ, mul_comm]`.
+Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 lemma beFam_castSucc (Q : K) (hQ : Q ≠ 0) (g : ℕ) (i : Fin g) :
     beFam Q (g + 1) i.castSucc = Q * beFam Q g i := by
@@ -151,7 +151,7 @@ lemma beFam_castSucc (Q : K) (hQ : Q ≠ 0) (g : ℕ) (i : Fin g) :
       ((g : ℤ) - 1 - 2 * (i.val : ℤ)) + 1 by simp; ring, zpow_add_one₀ hQ, mul_comm]
 
 /- English proof (translation)
-Unfold `beFam`. Use `congr 1`. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 lemma beFam_last (Q : K) (g : ℕ) : beFam Q (g + 1) (Fin.last g) = Q ^ (-(g : ℤ)) := by
   unfold beFam
@@ -160,7 +160,7 @@ lemma beFam_last (Q : K) (g : ℕ) : beFam Q (g + 1) (Fin.last g) = Q ^ (-(g : �
   ring
 
 /- English proof (translation)
-Rewrite using `[eF_fin_succ]`. Repeatedly rewrite using `[beFam_castSucc Q hQ]`. Rewrite using `[eF_smul, eF_smul, beFam_last]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 lemma eF_beFam_succ (Q : K) (hQ : Q ≠ 0) (g l : ℕ) :
     eF (beFam Q (g + 1)) (l + 1) =
@@ -170,7 +170,7 @@ lemma eF_beFam_succ (Q : K) (hQ : Q ≠ 0) (g l : ℕ) :
   rw [eF_smul, eF_smul, beFam_last]
 
 /- English proof (translation)
-The claim follows from `| g, 0 => by rw [Formalism.G0.QVandermondeP.gb_zero_right, eF_zero]; simp | 0, l + 1 => by rw [Formalism.G0.QVandermondeP.gb_zero_succ, eF_of_card_lt _ _ (by simp)]; simp | g + 1, l + 1 => by rw [Formalism.G0.QVandermondeP.gb_succ_succ, eF_beFam_succ _ hQ] push_cast rw [gauss_zpo …`.
+A detailed English derivation is pending.
 -/
 lemma gauss_zpow (Q : ℕ) (hQ : (Q : K) ≠ 0) : ∀ g l : ℕ,
     ((Formalism.G0.gaussBinom (Q ^ 2) g l : ℕ) : K) =
@@ -208,7 +208,7 @@ end CSym
 open CSym
 
 /- English proof (translation)
-Introduce `K _ Q g l hQ`. Rewrite using `[gauss_zpow Q hQ g l]`. Break down `le_or_gt l g with h | h` into its components or cases. Rewrite using `[show ((l : ℤ) * ((g : ℤ) - l)) = ((l * (g - l) : ℕ) : ℤ) by push_cast [Nat.cast_sub h]; ring, zpow_natCast]`. Rewrite using `[eF_of_card_lt _ _ (by simpa using h)]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/
@@ -222,13 +222,13 @@ theorem gauss_elementary_symmetric : GaussEsymm := by
     simp
 
 /- English proof (translation)
-Introduce `K σ _ _ _ x n hn`. Establish `h` using `Formalism.FT.SymmetricSeries.esymm_hsymm_rel (σ := σ) (R := K) n hn`. Establish `h2` using `congrArg (MvPolynomial.eval x) h`. Simplify using `only [map_sum, map_mul, map_pow, map_neg, map_one, map_zero] at h2`. Rewrite using `[← Finset.sum_range_reflect]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hterm : ∀ j ∈ range (n + 1), (-1 : K) ^ (n + 1 - 1 - j) * hF x (n + 1 - 1 - j) * eF x (n - (n + 1 - 1 - j)) = (-1) ^ n * ((-1) ^ j * MvPolynomial.eval x (MvPolynomial.esymm σ K j) * MvPolynomial.eval x (MvPolynomial.hsymm σ K (n - j)))`. Introduce `j hj`. Simplify using `only [Finset.mem_range] at hj`. Rewrite using `[show n + 1 - 1 - j = n - j by omega, show n - (n - j) = j by omega]`. Establish `e : (-1 : K) ^ n = (-1) ^ (n - j) * (-1) ^ j`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← pow_add, Nat.sub_add_cancel (by omega)]`. Establish `e2 : (-1 : K) ^ (n - j) = (-1) ^ n * (-1) ^ j`. Rewrite using `[e, mul_assoc, ← pow_add, ← two_mul, pow_mul, neg_one_sq, one_pow, mul_one]`. Unfold `hF eF`. Rewrite using `[e2]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Finset.sum_congr rfl hterm, ← Finset.mul_sum, h2, mul_zero]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 -/
 theorem hecke_convolution : HEConvolution := by
   intro K σ _ _ _ x n hn
@@ -254,7 +254,7 @@ theorem hecke_convolution : HEConvolution := by
 namespace CSym
 
 /- English proof (translation)
-Unfold `genE`. Rewrite using `[Fintype.prod_prod_type, Fintype.prod_prod_type, Fin.prod_univ_castSucc, mul_comm]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 lemma genE_FFam_succ {K : Type} [Field K] (Q : K) (t : ℕ) (m : ℕ → K) (j : ℕ) :
     genE (FFam Q t m (j + 1)) =
@@ -266,13 +266,13 @@ lemma genE_FFam_succ {K : Type} [Field K] (Q : K) (t : ℕ) (m : ℕ → K) (j :
 end CSym
 
 /- English proof (translation)
-Introduce `K _ M _ _ Kk e Q t m J hI j`. Proceed by induction on `j with`. Consider the case `zero`. Introduce `_ i`. Simplify using `only [Kc, LinearMap.comp_id, LinearMap.id_comp]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.sum_eq_single 0 (fun l _ hl => by rw [eF_isEmpty, if_neg hl, zero_smul]) (by simp), eF_isEmpty, if_pos rfl, one_smul, Nat.sub_zero]`. Consider the case `succ j ih`. Introduce `hj i`. Establish `ih'` using `ih (by omega)`. Use `show (e (j + 1) i).comp ((Kk j).comp (Kc Kk j)) = ((Kk j).comp (Kc Kk j)).comp (∑ l ∈ range (i + 1), eF (FFam Q t m (j + 1)) l • e 0 (i - l))`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← LinearMap.comp_assoc, hI j (by omega) i, LinearMap.comp_assoc, CSym.sum_comp]`. Repeatedly rewrite using `[LinearMap.smul_comp, ih', ← LinearMap.comp_smul, ← CSym.comp_sum]`. Rewrite using `[← LinearMap.comp_assoc]`. Use `congr 1`. Rewrite using `[conv_smul]`.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun n _ => ?_` and prove the remaining obligations. Rewrite using `[eF_of_genE_mul _ _ _ (genE_FFam_succ Q t m j) n]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem iterate_statement : Iterate := by
   intro K _ M _ _ Kk e Q t m J hI j
@@ -296,11 +296,11 @@ theorem iterate_statement : Iterate := by
     rw [eF_of_genE_mul _ _ _ (genE_FFam_succ Q t m j) n]
 
 /- English proof (translation)
-Introduce `K _ M _ _ Kk e Q t m J hI j hj r`. Establish `hit` using `iterate_statement K M Kk e Q t m J hI j hj`. Rewrite using `[CSym.sum_comp]`. Repeatedly rewrite using `[LinearMap.smul_comp, hit, ← LinearMap.comp_smul, ← CSym.comp_sum]`. Use `congr 1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[conv_smul, Finset.sum_eq_single 0]`. Simplify using `[hF, eF_zero, MvPolynomial.hsymm_zero]`. Introduce `n _ hn0`. Rewrite using `[hecke_convolution K _ (FFam Q t m j) n (by omega), zero_smul]`. Introduce `h`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `at h`.
+Simplify using the standard rewrite rules.
 -/
 theorem inversion_formula : Inversion := by
   intro K _ M _ _ Kk e Q t m J hI j hj r
@@ -316,19 +316,19 @@ theorem inversion_formula : Inversion := by
     simp at h
 
 /- English proof (translation)
-Introduce `K ι _ M _ _ Kk Tm pp ν k t r j Ev Od lam w m hpp hrk hI`. Use `set Q := pp ^ ν with hQdef`. Establish `hQ : Q ≠ 0` using `pow_ne_zero _ hpp`. Establish `hinv` using `inversion_formula K M Kk (fun a i => (Q ^ (-((i : ℤ) * ((NN k t a : ℤ) - i)))) • Tm a i) Q t m j hI j le_rfl r`. Establish `hZ : Zop pp ν Ev Od lam w m k t r j (Tm j) = (pp ^ (NprimeZ Ev Od lam (w j) r) * Q ^ ((r : ℤ) * ((NN k t j : ℤ) - r))) • ∑ l ∈ range (r + 1), ((-1 : K) ^ l * hF (FFam Q t m j) l) • ((Q ^ (-(((r - l : ℕ) : ℤ) * ((NN k t j : ℤ) - ((r - l : ℕ) : ℤ))))) • Tm j (r - l))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `Zop`. Rewrite using `[Finset.smul_sum]`. Use `Finset.sum_congr rfl fun l hl => ?_` and prove the remaining obligations. Establish `hlr : l ≤ r` using `by simp only [Finset.mem_range] at hl; omega`. Unfold `cCoef Ttil`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
-Simplify using `only [smul_smul]`. Use `congr 1`. Establish `h1 : pp ^ (NprimeZ Ev Od lam (w j) r - NprimeZ Ev Od lam (w j) (r - l)) * pp ^ (NprimeZ Ev Od lam (w j) (r - l)) = pp ^ (NprimeZ Ev Od lam (w j) r)`. Rewrite using `[← zpow_add₀ hpp]`. Put the polynomial expressions in normal form.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Put the polynomial expressions in normal form. Establish an intermediate fact.
 
-Establish `h2 : Q ^ ((l : ℤ) * ((NN k t j : ℤ) - 2 * r + l)) = Q ^ ((r : ℤ) * ((NN k t j : ℤ) - r)) * Q ^ (-(((r - l : ℕ) : ℤ) * ((NN k t j : ℤ) - ((r - l : ℕ) : ℤ))))`. Rewrite using `[← zpow_add₀ hQ]`. Use `congr 1`. Move the coercions through the operations in `[Nat.cast_sub hlr]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h2]`. Take the linear combination `((-1 : K) ^ l * Q ^ ((r : ℤ) * ((NN k t j : ℤ) - r)) * Q ^ (-(((r - l : ℕ) : ℤ) * ((NN k t j : ℤ) - ((r - l : ℕ) : ℤ)))) * hF (FFam Q t m j) l) * h1`. Rewrite using `[hZ, LinearMap.smul_comp, hinv]`. Simplify using `only [LinearMap.comp_smul, smul_smul]`. Use `congr 1`.
+Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Establish `hQz : ∀ z : ℤ, Q ^ z = pp ^ ((ν : ℤ) * z)` using `fun z => by rw [zpow_mul, zpow_natCast]`. Rewrite using `[hQz, hQz, ← zpow_add₀ hpp, ← zpow_add₀ hpp, ← zpow_add₀ hpp]`. Use `congr 1`. Unfold `NprimeZ PrZ ArZ NN`. Use `push_cast`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Replace the relevant objects with their definitions. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_add_distrib, Finset.mul_sum]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem theorem_c_i : ThmCi := by
   intro K ι _ M _ _ Kk Tm pp ν k t r j Ev Od lam w m hpp hrk hI

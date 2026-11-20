@@ -18,23 +18,19 @@ open GlobalTheory.PD GlobalTheory.CechDR KaehlerDifferential
 namespace GlobalTheory.PD
 
 /- English proof (translation)
-Introduce `k _ _ F K _ _ _ _ _ _ d x hx p W _ _ _ _ _ _ _ e he hr`. Establish `hstab : ∀ I, ∀ c ∈ rB k K x I, ∀ w ∈ ((omB k K (rB k K x I) p).comap (e.restrictScalars k) : Set W), (c : K) • w ∈ ((omB k K (rB k K x I) p).comap (e.restrictScalars k) : Set W)`. Introduce `I c hc w hw`. Simplify using `only [SetLike.mem_coe, Submodule.mem_comap, LinearMap.restrictScalars_apply] at hw ⊢`. Rewrite using `[map_smul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `((GlobalTheory.T.kahlerFormsOverSubalgebra_closure_properties k K _ p p).2.1 _ hw).2.2.2 c hc`. Establish `key : ∀ i, Module.Finite (rA k x {i}) (Submodule.span (rA k x {i}) ((omB k K (rB k K x {i}) p).comap (e.restrictScalars k) : Set W)) ∧ Module.Projective (rA k x {i}) (Submodule.span (rA k x {i}) ((omB k K (rB k K x {i}) p).comap (e.restrictScalars k) : Set W))`. Introduce `i`. Take `⟨hf1, hf2, hf3⟩` from `GlobalTheory.T.finite_cover_chart_smooth_normal k F K d x hx {i} (Finset.singleton_nonempty i)`. Use `haveI := hf2`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `haveI := hf3`. Take `⟨hB1, hB2⟩` from `GlobalTheory.T.span_regularForms_finite_projective_smooth k K (rB k K x {i}) p W e he hr`. Conclude with `GlobalTheory.T.finite_projective_span_of_integralClosure' k F K (rA k x {i}) (rB k K x {i}) (fun y => Iff.rfl) hf1 (GlobalTheory.T.integralClosure_projective_over_standardOpenRing k F K d x hx i) W _ (hstab {i}) hB1 hB2`. Use `⟨fun i => ?_, fun i => (key i).2, fun I i hi => GlobalTheory.T.pulledBackForms_intersection_eq_chart_localization k F K d x hx p W e I i hi⟩` and prove the remaining obligations. Take `⟨hfin, -⟩` from `key i`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨-, hf2, -⟩` from `GlobalTheory.T.finite_cover_chart_smooth_normal k F K d x hx {i} (Finset.singleton_nonempty i)`. Use `haveI := hf2`. Use `haveI : FiniteDimensional F K := hx.fin`. Use `set S : Set W := ((omB k K (rB k K x {i}) p).comap (e.restrictScalars k) : Set W) with hSdef`. Take `⟨s, hs⟩` from `Module.Finite.iff_fg.1 hfin`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `hA : ∀ a : rA k x {i}, ∀ w ∈ S, a • w ∈ S`. Introduce `a w hw`. Rewrite using `[Subalgebra.smul_def, ← algebraMap_smul K (a : F) w]`. Conclude with `hstab {i} _ (Subalgebra.algebraMap_mem (integralClosure (rA k x {i}) K) a) w hw`. Establish `hspan : (Submodule.span (rA k x {i}) S).restrictScalars k = (omB k K (rB k K x {i}) p).comap (e.restrictScalars k)`.
+Express the relevant assertion in an equivalent form by its definition. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Apply `le_antisymm` to reduce the goal to its premises. Introduce `y hy`. Express the relevant statement in the definitionally equal form `y ∈ Submodule.span (rA k x {i}) S at hy`. Express the relevant statement in the definitionally equal form `y ∈ S`. Proceed by induction on `hy using Submodule.span_induction with`.
+Treat this case separately. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Consider the case `mem z hz => exact hz`. Consider the case `zero => exact Submodule.zero_mem _`. Consider the case `add a b _ _ ha hb => exact Submodule.add_mem _ ha hb`. Consider the case `smul a z _ hz => exact hA a z hz`. Conclude with `fun y hy => Submodule.subset_span hy`.
-
-Use `⟨s, by rw [hs, hspan], ?_⟩` and prove the remaining obligations. Establish `hK` using `GlobalTheory.T.kahlerFormsOverSubalgebra_comap_span_eq_top k K (rB k K x {i}) p W e he hr`. Establish `hF` using `GlobalTheory.T.span_eq_top_of_stable_of_isFractionRing' k F K (rB k K x {i}) W S (hstab {i}) hK`. Rewrite using `[eq_top_iff, ← hF, Submodule.span_le]`. Introduce `w hw`.
-
-Establish `: w ∈ Submodule.span (rA k x {i}) (s : Set W)` using `by rw [hs]; exact Submodule.subset_span hw`. Conclude with `Submodule.span_le_restrictScalars (rA k x {i}) F (s : Set W) this`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem omB_isBundle : ∀ (k : Type) [Field k] [CharZero k] (F K : Type) [Field F] [Field K] [Algebra k F] [Algebra k K] [Algebra F K] [IsScalarTower k F K] (d : ℕ) (x : Fin (d + 1) → F), IsFinCover k K x → ∀ (p : ℕ) (W : Type) [AddCommGroup W] [Module K W] [Module F W] [Module k W] [IsScalarTower F K W] [IsScalarTower k F W] [IsScalarTower k K W] (e : W →ₗ[K] DR k K), Function.Injective e → LinearMap.range e = ⋀[K]^p Ω[K⁄k] → IsBundle k x fun I => (omB k K (rB k K x I) p).comap (e.restrictScalars k) := by
   intro k _ _ F K _ _ _ _ _ _ d x hx p W _ _ _ _ _ _ _ e he hr

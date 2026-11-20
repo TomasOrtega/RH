@@ -62,7 +62,7 @@ namespace GlobalTheory.Mem.SRe
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Introduce `_ Z X _ h h'` and use `⟨IsoRe.sIsoRe Z h h', (by with_unfolding_all exact ((HEq.refl (eHHre Z X)) :)), fun u => (by with_unfolding_all exact ((HEq.refl (eCure Z h h' u)) :))⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem sIso_reD : ∀ (D : D7) (Z : New D) (X : HidaSetting D) (Y : Full X) (h : FinX Y) (h' : FinX (reY Z Y)),
     ∃ e : SIso (sOf h) ((@sOf (reD D Z) (@reX D Z X) (@reY D Z X Y) h')), HEq e.eHH (eHHre Z X) ∧ ∀ u, HEq (e.eCu u) (eCure Z h h' u) :=

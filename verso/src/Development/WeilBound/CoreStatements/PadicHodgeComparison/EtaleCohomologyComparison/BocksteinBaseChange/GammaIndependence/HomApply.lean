@@ -15,11 +15,11 @@ def F (n : ℕ) (x : N → H) (y : N) (φ : Q) : B := (i t ^ n)⁻¹ * κ (x y) 
 variable {i t β κ}
 
 /- English proof (translation)
-Take `⟨n₀, h₀⟩` from `hinj`. Establish `h1 : β (t ^ n • x' - c • x y) = 0`. Rewrite using `[map_sub, map_smul, map_smul, h, hx, smul_smul, smul_smul, mul_comm, sub_self]`. Establish `h2 : κ (t ^ n₀ • (t ^ n • x' - c • x y)) φ = 0` using `by rw [h₀ _ h1]; simp`. Simplify using `only [smul_sub, map_sub, AddMonoidHom.sub_apply, hlin, map_pow] at h2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hn0 : i t ^ n₀ ≠ 0` using `pow_ne_zero _ ht`. Establish `hn : i t ^ n ≠ 0` using `pow_ne_zero _ ht`. Establish `h3 : i t ^ n * κ x' φ = i c * κ (x y) φ`. Apply `mul_left_cancel₀ hn0` to reduce the goal to its premises. Take the linear combination `h2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Take a linear combination of the given relations to obtain the conclusion.
 
-Unfold `F`. Clear the denominators using the available nonvanishing facts. Take the linear combination `h3`.
+Replace the relevant objects with their definitions. Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem key (hlin : ∀ (c : A) (x : H) (φ : Q), κ (c • x) φ = i c * κ x φ) (ht : i t ≠ 0)
     (hinj : ∃ n₀ : ℕ, ∀ x, β x = 0 → t ^ n₀ • x = 0) {n : ℕ} {x : N → H} (hx : ∀ y, β (x y) = t ^ n • y)
@@ -61,7 +61,7 @@ theorem hom_apply (hlin : ∀ (c : A) (x : H) (φ : Q), κ (c • x) φ = i c * 
     hom hlin ht hinj n x hx y φ = F i t κ n x y φ := rfl
 
 /- English proof (translation)
-The claim follows from `key hlin ht hinj hx h φ`.
+A detailed English derivation is pending.
 -/
 theorem hom_key (hlin : ∀ (c : A) (x : H) (φ : Q), κ (c • x) φ = i c * κ x φ) (ht : i t ≠ 0)
     (hinj : ∃ n₀ : ℕ, ∀ x, β x = 0 → t ^ n₀ • x = 0) (n : ℕ) (x : N → H) (hx : ∀ y, β (x y) = t ^ n • y)

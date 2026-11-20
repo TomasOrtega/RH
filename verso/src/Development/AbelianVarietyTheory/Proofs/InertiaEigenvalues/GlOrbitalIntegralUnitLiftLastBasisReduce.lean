@@ -20,14 +20,14 @@ noncomputable section
 namespace GlobalTheory.JR.GLift
 
 /- English proof (translation)
-Simplify using `only [act, _root_.mul_inv_rev, Units.val_mul, Matrix.mul_assoc, Matrix.mulVec_mulVec, Matrix.vecMul_vecMul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem act_mul' {k : Type} [CommRing k] {n : ℕ} (g h : GL (Fin n) k) (Y : Gl n k) :
     act (g * h) Y = act g (act h Y) := by
   simp only [act, _root_.mul_inv_rev, Units.val_mul, Matrix.mul_assoc, Matrix.mulVec_mulVec, Matrix.vecMul_vecMul]
 
 /- English proof (translation)
-Establish `h` using `(GlobalTheory.JR.transfer_factor_lemma F (r + 1)).1 (GlobalTheory.JR.Step.lift Z μ l)`. Establish `hc : (Cm (GlobalTheory.JR.Step.lift Z μ l)).det = lastDet Z` using `rfl`. Unfold `omega eta`. Rewrite using `[h, hc, norm_mul, norm_pow, norm_neg, norm_one, one_pow, one_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem omega_lift {F : Type} [NontriviallyNormedField F] (r : ℕ) (Z : Gl r F) (μ l : F) :
     omega (GlobalTheory.JR.Step.lift Z μ l) = omega Z := by
@@ -37,15 +37,11 @@ theorem omega_lift {F : Type} [NontriviallyNormedField F] (r : ℕ) (Z : Gl r F)
   rw [h, hc, norm_mul, norm_pow, norm_neg, norm_one, one_pow, one_mul]
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ hU r M M' Z μ l hμ hΔ`. Use `haveI := hU.ultraF`. Use `haveI := hU.lcF`. Use `haveI : ProperSpace F := ProperSpace.of_locallyCompactSpace F`. Take `⟨lc1, sc1⟩` from `gl_lc_sc F (r + 1)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Equip the data with the indicated structure. Extract witnesses or component facts from the available result.
 
-Use `letI := M.mG`. Use `haveI := M.bG`. Use `letI := M'.mG`. Use `haveI := M'.bG`. Use `haveI := M.haarG`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `haveI := M'.haarG`. Use `haveI := gl_unimodular F E (r + 1) M`. Use `haveI := gl_unimodular F E r M'`. Take `⟨hO, hC⟩` from `GlobalTheory.T.integralGLSet_isOpen_and_isCompact F (r + 1)`. Establish `hemb` using `GlobalTheory.T.isClosedEmbedding_diagOneGeneralLinearEmbedding F r`.
-
-Establish `key` using `GlobalTheory.CosetIntegral.integral_eq_of_coset_support (GL (Fin (r + 1)) F) (GL (Fin r) F) (GlobalTheory.JR.Step.emb r F) hemb M.μG M'.μG (glOSub (r + 1) F) hO hC M.volG (by rw [coe_glOSub, GlobalTheory.T.preimage_diagOneGeneralLinearEmbedding_integralGLSet F r]; exact M'.volG) …`. Simplify using `only [act_mul', GlobalTheory.T.unitIndicatorGLBlock_glBorderedConjugationAction_integral F (r + 1) k hk, GlobalTheory.T.jacquetRallisTransferFactor_glBorderedConjugationAction_integral F (r + 1) k hk])`. Use the proof step `(fun g hg => GlobalTheory.T.exists_integralGL_mul_diagOne_of_unitIndicator_lift_ne_zero F E r Z μ l hμ g (left_ne_zero_of_mul hg))`. Use the proof step `((GlobalTheory.T.hasCompactSupport_jacquetRallisOrbitalIntegrand F (r + 1) _ hΔ).comp_isClosedEmbedding hemb)`. Unfold `orbG`.
-
-Rewrite using `[key]`. Simplify using `only [GlobalTheory.T.borderedConjugation_diagOne_liftBlockMatrix, GlobalTheory.T.unitIndicatorGLBlock_liftBlockMatrixWithLastBasis F r _ μ l hμ.le, omega_lift, mul_assoc]`. Conclude with `integral_const_mul _ _`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem orbG_lift : ∀ (F E : Type) [NontriviallyNormedField F] [NontriviallyNormedField E] [NormedAlgebra F E]
     [StarRing E] [Unram F E] (r : ℕ) (M : Meas (r + 1) F E) (M' : Meas r F E) (Z : Gl r F) (μ l : F), ‖μ‖ = 1 →

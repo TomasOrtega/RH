@@ -13,7 +13,7 @@ open NumberField Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Globa
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Use `conv_rhs => rw [← w.mk_embedding, InfinitePlace.comap_mk]`. Conclude with `(InfinitePlace.embedding_mk_eq_of_isReal (InfinitePlace.isReal_mk_iff.1 (IsTotallyReal.isReal _))).symm`.
+A detailed English derivation is pending.
 -/
 theorem embedding_comp [IsTotallyReal F] (w : InfinitePlace E) :
     w.embedding.comp (algebraMap F E) = (w.comap (algebraMap F E)).embedding := by
@@ -25,7 +25,7 @@ def embOf [IsTotallyReal F] (w : InfinitePlace E) : EmbOver E (w.comap (algebraM
   ⟨w.embedding, embedding_comp w⟩
 
 /- English proof (translation)
-Establish `hr : w.IsReal` using `IsTotallyReal.isReal w`. Rewrite using `[← InfinitePlace.Completion.extensionEmbeddingOfIsReal_apply hr, Complex.conj_ofReal]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem conj_ext [IsTotallyReal F] (w : InfinitePlace F) (a : w.Completion) :
     starRingEnd ℂ (InfinitePlace.Completion.extensionEmbedding w a) =
@@ -34,9 +34,9 @@ theorem conj_ext [IsTotallyReal F] (w : InfinitePlace F) (a : w.Completion) :
   rw [← InfinitePlace.Completion.extensionEmbeddingOfIsReal_apply hr, Complex.conj_ofReal]
 
 /- English proof (translation)
-Establish `c1 : Continuous fun a : (w.comap (algebraMap F E)).Completion => InfinitePlace.Completion.extensionEmbedding w (algebraMap _ w.Completion a)` using `(InfinitePlace.Completion.isometry_extensionEmbedding w).continuous.comp (NumberField.LiesOver.continuous_completionMap (v := w.comap (algebraMap F E)) (w := w))`. Establish `c2` using `(InfinitePlace.Completion.isometry_extensionEmbedding (w.comap (algebraMap F E))).continuous`. Use `congrFun ((InfinitePlace.Completion.denseRange_coe (w.comap (algebraMap F E))).equalizer c1 c2 (funext fun x => ?_)) a` and prove the remaining obligations. Take `⟨k, rfl⟩` from `(WithAbs.equiv (w.comap (algebraMap F E)).1).symm.surjective x`. Express the relevant statement in the definitionally equal form `InfinitePlace.Completion.extensionEmbedding w (algebraMap _ w.Completion (algebraMap F (w.comap (algebraMap F E)).Completion k)) = InfinitePlace.Completion.extensionEmbedding (w.comap (algebraMap F E)) (algebraMap F (w.comap (algebraMap F E)).Completion k)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[← IsScalarTower.algebraMap_apply, IsScalarTower.algebraMap_apply F E]`. Establish `e1 : InfinitePlace.Completion.extensionEmbedding w (algebraMap E w.Completion (algebraMap F E k)) = w.embedding (algebraMap F E k)` using `InfinitePlace.Completion.extensionEmbedding_coe w ((WithAbs.equiv w.1).symm (algebraMap F E k))`. Establish `e2 : InfinitePlace.Completion.extensionEmbedding (w.comap (algebraMap F E)) (algebraMap F (w.comap (algebraMap F E)).Completion k) = (w.comap (algebraMap F E)).embedding k` using `InfinitePlace.Completion.extensionEmbedding_coe _ ((WithAbs.equiv (w.comap (algebraMap F E)).1).symm k)`. Rewrite using `[e1, e2]`. Conclude with `RingHom.congr_fun (embedding_comp w) k`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ext_algebraMap [IsTotallyReal F] (w : InfinitePlace E) (a : (w.comap (algebraMap F E)).Completion) :
     InfinitePlace.Completion.extensionEmbedding w (algebraMap _ w.Completion a) =
@@ -64,9 +64,9 @@ theorem ext_algebraMap [IsTotallyReal F] (w : InfinitePlace E) (a : (w.comap (al
   exact RingHom.congr_fun (embedding_comp w) k
 
 /- English proof (translation)
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Consider the case `tmul a x`. Establish `e : eqv F E (a ⊗ₜ x) = algebraMap E 𝔸[E] x * GroundTheory.Global.AdeleBaseChange.adeleMap F E a` using `GroundTheory.BlockD.ThmBHecke.adeleEquiv_tmul a x`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Rewrite using `[e, map_mul]`. Express the relevant statement in the definitionally equal form `_ * InfinitePlace.Completion.extensionEmbedding w (algebraMap _ w.Completion (a.1 (w.comap (algebraMap F E)))) = InfinitePlace.Completion.extensionEmbedding (w.comap (algebraMap F E)) (a.1 (w.comap (algebraMap F E))) * w.embedding x`. Rewrite using `[ext_algebraMap, mul_comm]`. Use `congr 1`. Conclude with `InfinitePlace.Completion.extensionEmbedding_coe w ((WithAbs.equiv w.1).symm x)`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem phi_eqv [IsTotallyReal F] (w : InfinitePlace E) (z : AE F E) :
     (adStd E).φ w (eqv F E z) = piInf (embOf w) z := by
@@ -84,9 +84,9 @@ theorem phi_eqv [IsTotallyReal F] (w : InfinitePlace E) (z : AE F E) :
     exact InfinitePlace.Completion.extensionEmbedding_coe w ((WithAbs.equiv w.1).symm x)
 
 /- English proof (translation)
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Consider the case `tmul a x`. Express the relevant statement in the definitionally equal form `InfinitePlace.Completion.extensionEmbedding w (a.1 w) * τ.1 (σ x) = starRingEnd ℂ (InfinitePlace.Completion.extensionEmbedding w (a.1 w) * τ.1 x)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[map_mul, conj_ext, h.2.2.2]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem piInf_cA [IsTotallyReal F] {σ : E →ₐ[F] E} (h : IsCMExt F E σ) {w : InfinitePlace F} (τ : EmbOver E w)
     (z : AE F E) : piInf τ (cA σ z) = starRingEnd ℂ (piInf τ z) := by
@@ -100,9 +100,9 @@ theorem piInf_cA [IsTotallyReal F] {σ : E →ₐ[F] E} (h : IsCMExt F E σ) {w 
     rfl
 
 /- English proof (translation)
-Substitute `hv` using the available equality. Break down `infEmb_eq_or_conj h (embOf w') τ with e | e` into its components or cases. Use `Or.inl fun z => ?_` and prove the remaining obligations. Rewrite using `[phi_eqv]`. Conclude with `RingHom.congr_fun e (compInf F E _ z)`.
+Substitute using the available equality. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Or.inr fun z => ?_` and prove the remaining obligations. Rewrite using `[phi_eqv]`. Conclude with `RingHom.congr_fun e (compInf F E _ z)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem place_cases [IsTotallyReal F] {σ : E →ₐ[F] E} (h : IsCMExt F E σ) (w' : InfinitePlace E)
     {w : InfinitePlace F} (hv : w'.comap (algebraMap F E) = w) (τ : EmbOver E w) :
@@ -118,9 +118,9 @@ theorem place_cases [IsTotallyReal F] {σ : E →ₐ[F] E} (h : IsCMExt F E σ) 
     exact RingHom.congr_fun e (compInf F E _ z)
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ h`. Use `h.1` as an intermediate fact. Use `⟨fun w z => ?_, fun τ => ⟨fun w => ?_, fun w' => ⟨w'.comap (algebraMap F E), place_cases h w' rfl _⟩⟩⟩` and prove the remaining obligations. Rewrite using `[phi_eqv, phi_eqv]`. Conclude with `piInf_cA h _ z`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨InfinitePlace.mk (τ w).1, place_cases h _ ?_ (τ w)⟩` and prove the remaining obligations. Rewrite using `[InfinitePlace.comap_mk, (τ w).2, InfinitePlace.mk_embedding]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dictInf : DictInf := by
   intro F E _ _ _ _ _ σ h

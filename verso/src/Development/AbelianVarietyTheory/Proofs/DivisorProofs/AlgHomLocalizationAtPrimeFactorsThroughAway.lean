@@ -6,11 +6,11 @@ namespace GlobalTheory
 namespace FactorAway
 
 /- English proof (translation)
-Introduce `R A B _ _ _ _ _ _ p _ φ`. Set `φ' : B ⊗[R] A →ₐ[B] Localization.AtPrime p` to `Algebra.TensorProduct.lift (Algebra.ofId B _) φ (fun _ _ => Commute.all _ _)`. Take `⟨g, hg, s, ι, hι⟩` from `SpreadOut.spread_out B (B ⊗[R] A) p φ'`. Use `⟨g, hg, (s.restrictScalars R).comp Algebra.TensorProduct.includeRight, fun a => ?_⟩` and prove the remaining obligations. Establish `hext : (Localization.awayLift (algebraMap B (Localization.AtPrime p)) g (IsLocalization.map_units (Localization.AtPrime p) (⟨g, hg⟩ : p.primeCompl))) = (ι : Localization.Away g →+* Localization.AtPrime p)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Apply `IsLocalization.ringHom_ext (Submonoid.powers g)` to reduce the goal to its premises. Use extensionality with `b`. Simplify using `[Localization.awayLift]`. Establish `h1` using `congrArg (fun h => h ((1 : B) ⊗ₜ[R] a)) hι`. Simplify using `only [AlgHom.comp_apply, φ', Algebra.TensorProduct.lift_tmul, map_one, one_mul] at h1`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [AlgHom.comp_apply, AlgHom.restrictScalars_apply, Algebra.TensorProduct.includeRight_apply]`. Rewrite using `[hext]`. Conclude with `h1`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem factor_away : ∀ (R A B : Type) [CommRing R] [CommRing A] [CommRing B] [Algebra R A]
     [Algebra R B] [Algebra.FinitePresentation R A] (p : Ideal B) [p.IsPrime]

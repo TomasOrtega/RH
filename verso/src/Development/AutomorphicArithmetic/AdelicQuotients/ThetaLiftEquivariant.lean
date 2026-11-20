@@ -12,19 +12,17 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 open UpperTheory.TP
 
 /- English proof (translation)
-Introduce `T F E _ _ _ _ _ σ B n d X W M χX χW om hp Φ hΦ φ hφ a b h`. Establish `c : Cpt σ X.J` using `T.cpt F E σ B n X n 0 hp.base (Or.inl hp.herm) (by simp)`. Establish `hTB` using `T.basic F E σ B n d X W M χX χW om n 0 d 0 hp`. Set `G : UA σ X.J → ℂ` to `fun x => theta om Φ x (h * b) * star (φ x)`. Establish `hinv : ∀ γ ∈ ratU σ X.J, ∀ x, G (γ * x) = G x`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `γ hγ x`. Establish `h1` using `(hTB.1 Φ hΦ).2.1 γ hγ 1 (one_mem _) x (h * b)`. Rewrite `h1` using `[one_mul]`. Simplify using `only [G]`. Rewrite using `[h1, hφ.2 γ hγ x]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `haveI : IsTopologicalRing (AE F E) := IsModuleTopology.isTopologicalRing (AF F) _`. Use `haveI := hp.good.haar`. Use `haveI : M.μ.IsMulRightInvariant := c.right _ hp.good.haar`. Use `haveI := c.cnt`. Use `haveI : MeasurableConstSMul (ratU σ X.J) (UA σ X.J) := ⟨fun c => measurable_const_mul (c : UA σ X.J)⟩`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `haveI : SMulInvariantMeasure (ratU σ X.J) (UA σ X.J) M.μ := ⟨fun c s _ => measure_preimage_mul M.μ (c : UA σ X.J) s⟩`. Establish `hL : lift M om (om (a, b) Φ) (fun y => φ (y * a)) h = ∫ x in M.dom, G (x * a) ∂M.μ`. Unfold `lift`. Use `integral_congr_ae (.of_forall fun x => ?_)` and prove the remaining obligations. Simplify using `only [G, theta]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Rewrite using `[← Module.End.mul_apply, ← map_mul]`. Both sides reduce to the same expression. Establish `hmp` using `measurePreserving_mul_right M.μ a`. Establish `h1` using `hmp.setIntegral_preimage_emb (measurableEmbedding_mulRight a) G ((fun x : UA σ X.J => x * a⁻¹) ⁻¹' M.dom)`. Establish `hpre : (fun x : UA σ X.J => x * a) ⁻¹' ((fun x : UA σ X.J => x * a⁻¹) ⁻¹' M.dom) = M.dom`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `x`. Simplify using the standard rewrite rules. Rewrite `h1` using `[hpre]`. Establish `hfd : IsFundamentalDomain (ratU σ X.J) ((fun x : UA σ X.J => x * a⁻¹) ⁻¹' M.dom) M.μ` using `hp.good.dom.preimage_of_equiv (measurePreserving_mul_right M.μ a⁻¹).quasiMeasurePreserving (e := id) Function.bijective_id (fun γ x => by show (γ.1 * x) * a⁻¹ = γ.1 * (x * a⁻¹)`. Conclude with `mul_assoc _ _ _)`.
-
-Establish `h2` using `hfd.setIntegral_eq hp.good.dom (f := G) (fun γ x => hinv γ.1 γ.2 x)`. Rewrite using `[hL, h1, h2]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem UpperTheory.theta_lift_equivariant :
     Tools → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (n d : ℕ) (X : Spc F E n) (W : Spc F E d) (M : Model σ X W) (χX χW : Chr F E) (om : Rep σ X W), IsPair B M χX χW om n 0 d 0 → ∀ Φ ∈ schA F (Fin n × Fin d), ∀ φ : UA σ X.J → ℂ, IsFn φ → ∀ (a : UA σ X.J) (b h : UA σ W.J), lift M om (om (a, b) Φ) (fun y => φ (y * a)) h = lift M om Φ φ (h * b) := by

@@ -7,9 +7,9 @@ open scoped TensorProduct
 namespace GlobalTheory.LKMid
 
 /- English proof (translation)
-Unfold `nrmG`. Rewrite using `[map_list_prod, List.map_map]`. Use `congr 1`. Apply `List.map_congr_left` to reduce the goal to its premises. Introduce `i _`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(Function.Semiconj.iterate_right (f := f) (ga := θ) (gb := θ') hf i) x`.
+A detailed English derivation is pending.
 -/
 theorem twistedNormProductIterate_map_intertwining {H H' : Type} [Group H] [Group H'] (θ : H →* H) (θ' : H' →* H') (f : H →* H')
     (hf : ∀ x, f (θ x) = θ' (f x)) (r : ℕ) (x : H) : f (nrmG θ r x) = nrmG θ' r (f x) := by
@@ -21,9 +21,9 @@ theorem twistedNormProductIterate_map_intertwining {H H' : Type} [Group H] [Grou
   exact (Function.Semiconj.iterate_right (f := f) (ga := θ) (gb := θ') hf i) x
 
 /- English proof (translation)
-Unfold `nrmG`. Rewrite using `[← List.prod_map_mul]`. Use `congr 1`. Apply `List.map_congr_left` to reduce the goal to its premises. Introduce `i hi`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `clear hi`. Proceed by induction on `i generalizing a b with`. Consider the case `zero => rfl`. Consider the case `succ n ih => rw [Function.iterate_succ_apply, Function.iterate_succ_apply, Function.iterate_succ_apply, map_mul, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem twistedNormProductIterate_mul_commGroup {H : Type} [CommGroup H] (θ : H →* H) (r : ℕ) (a b : H) :
     nrmG θ r (a * b) = nrmG θ r a * nrmG θ r b := by
@@ -42,7 +42,7 @@ end GlobalTheory.LKMid
 namespace GlobalTheory.LKMid
 
 /- English proof (translation)
-Use `ext`. Simplify using `[GlobalTheory.LKLoc.sig, Matrix.det_unique]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem det_unramifiedExtFrobeniusGLEntrywise_GL_one (p : ℕ) [Fact p.Prime] (r : ℕ) (x : GL (Fin 1) (Qr p r)) :
     Matrix.GeneralLinearGroup.det (GlobalTheory.LKLoc.sig p (Q0 p) 1 r x) =
@@ -52,9 +52,7 @@ theorem det_unramifiedExtFrobeniusGLEntrywise_GL_one (p : ℕ) [Fact p.Prime] (r
   rfl
 
 /- English proof (translation)
-Introduce `x y h`. Use extensionality with `i j`. Use `congrArg Units.val h` as an intermediate fact. Simplify using `[Matrix.det_unique] at this`. Use `fin_cases i`.
-
-Use `fin_cases j`. Conclude with `this`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem generalLinearGroup_det_injective_GL_one (R : Type) [CommRing R] :
     Function.Injective (Matrix.GeneralLinearGroup.det : GL (Fin 1) R →* Rˣ) := by
@@ -66,7 +64,7 @@ theorem generalLinearGroup_det_injective_GL_one (R : Type) [CommRing R] :
   exact this
 
 /- English proof (translation)
-Use `ext`. Simplify using `[Matrix.det_unique]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem generalLinearGroup_det_scalar_GL_one (R : Type) [CommRing R] (u : Rˣ) :
     Matrix.GeneralLinearGroup.det (GeneralLinearGroup.scalar (Fin 1) u) = u := by
@@ -74,23 +72,21 @@ theorem generalLinearGroup_det_scalar_GL_one (R : Type) [CommRing R] (u : Rˣ) :
   simp [Matrix.det_unique]
 
 /- English proof (translation)
-Introduce `p _ r hr δ δ' hN`. Set `D : GL (Fin 1) (Qr p r) →* (Qr p r)ˣ` to `Matrix.GeneralLinearGroup.det`. Set `θ : (Qr p r)ˣ →* (Qr p r)ˣ` to `Units.map (frobQ p r).toRingHom.toMonoidHom`. Establish `hD : ∀ x, D (GlobalTheory.LKLoc.sig p (Q0 p) 1 r x) = θ (D x)` using `det_unramifiedExtFrobeniusGLEntrywise_GL_one p r`. Establish `hN' : nrmG θ r (D δ) = nrmG θ r (D δ')`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← twistedNormProductIterate_map_intertwining _ _ D hD, ← twistedNormProductIterate_map_intertwining _ _ D hD, hN]`. Set `c : (Qr p r)ˣ` to `D δ' * (D δ)⁻¹`. Establish `hc : nrmG θ r c = 1`. Establish `h1 : nrmG θ r c * nrmG θ r (D δ) = nrmG θ r (D δ)`. Rewrite using `[← twistedNormProductIterate_mul_commGroup, inv_mul_cancel_right, hN']`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_eq_right.1 h1`. Set `L` to `Algebra.TensorProduct.lid ℚ_[p] (Qr p r)`. Set `Φ` to `Algebra.TensorProduct.map (AlgHom.id ℚ_[p] ℚ_[p]) (frobQ p r)`. Establish `hL : ∀ x, L (Φ x) = frobQ p r (L x)`. Introduce `x`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul b y`. Simplify using `only [L, Φ, Algebra.TensorProduct.map_tmul, Algebra.TensorProduct.lid_tmul, AlgHom.id_apply]`. Conclude with `((frobQ p r).toLinearMap.map_smul b y).symm`.
+Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Establish an intermediate fact.
 
-Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy, map_add, map_add]`. Establish `hLs : ∀ y, L.symm (frobQ p r y) = Φ (L.symm y)`. Introduce `y`. Apply `L.injective` to reduce the goal to its premises. Rewrite using `[hL, AlgEquiv.apply_symm_apply, AlgEquiv.apply_symm_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `fS : (Qr p r)ˣ →* (ℚ_[p] ⊗[ℚ_[p]] Qr p r)ˣ` to `Units.map L.symm.toAlgHom.toRingHom.toMonoidHom`. Set `fL : (ℚ_[p] ⊗[ℚ_[p]] Qr p r)ˣ →* (Qr p r)ˣ` to `Units.map L.toAlgHom.toRingHom.toMonoidHom`. Set `ΦU : (ℚ_[p] ⊗[ℚ_[p]] Qr p r)ˣ →* (ℚ_[p] ⊗[ℚ_[p]] Qr p r)ˣ` to `Units.map Φ.toRingHom.toMonoidHom`. Establish `hfS : ∀ x, fS (θ x) = ΦU (fS x)` using `fun x => Units.ext (hLs x)`. Establish `hfL : ∀ x, fL (ΦU x) = θ (fL x)` using `fun x => Units.ext (hL x)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hLS : ∀ x, fL (fS x) = x` using `fun x => Units.ext (AlgEquiv.apply_symm_apply L x)`. Establish `ha : nrmG ΦU r (fS c) = 1`. Rewrite using `[← twistedNormProductIterate_map_intertwining _ _ fS hfS, hc, map_one]`. Take `⟨g, hg⟩` from `hilbert90_frobenius_tensor_unramified_padic p r hr ℚ_[p] (fS c) ha`. Establish `hc' : c = (fL g)⁻¹ * θ (fL g)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← hLS c, hg, map_mul, map_inv, hfL]`. Use `⟨GeneralLinearGroup.scalar (Fin 1) (fL g), generalLinearGroup_det_injective_GL_one _ ?_⟩` and prove the remaining obligations. Establish `hs : D (GeneralLinearGroup.scalar (Fin 1) (fL g)) = fL g` using `generalLinearGroup_det_scalar_GL_one _ _`. Establish `e : D δ' = c * D δ` using `by rw [inv_mul_cancel_right]`. Express the relevant statement in the definitionally equal form `D δ' = D ((GeneralLinearGroup.scalar (Fin 1) (fL g))⁻¹ * δ * GlobalTheory.LKLoc.sig p (Q0 p) 1 r (GeneralLinearGroup.scalar (Fin 1) (fL g)))`.
-
-Rewrite using `[map_mul, map_mul, map_inv, hD, hs, e, hc']`. Conclude with `mul_right_comm _ _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_sig_twisted_conj_of_nrmG_eq : ∀ (p : ℕ) [Fact p.Prime] (r : ℕ), 0 < r → ∀ δ δ' : GL (Fin 1) (Qr p r),
     nrmG (GlobalTheory.LKLoc.sig p (Q0 p) 1 r) r δ = nrmG (GlobalTheory.LKLoc.sig p (Q0 p) 1 r) r δ' →

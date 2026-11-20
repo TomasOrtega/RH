@@ -9,23 +9,21 @@ namespace Formalism.MainNotions.ColumnSystems.Pf
 open Formalism.MainNotions.G Formalism.MainNotions.CovariantDegrees MvPolynomial
 
 /- English proof (translation)
-Distinguish the cases in `hx0 : x = 0`. Conclude with `⟨0, by simp [hx0]⟩`. Break down `hx with hx | hv` into its components or cases. Conclude with `absurd hx hx0`. Use `haveI : Fact p.Prime := ⟨hp⟩`.
+Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hv' : (c : ℤ) ≤ padicValRat p x` using `by exact_mod_cast hv`. Simplify using `only [padicValRat] at hv'`. Establish `hden : ¬ p ∣ x.den`. Introduce `hd`. Establish `hnum : ¬ (p : ℤ) ∣ x.num`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `hn`. Establish `h1 : p ∣ x.num.natAbs` using `Int.ofNat_dvd_left.mp hn`. Establish `h2` using `Nat.dvd_gcd h1 hd`. Rewrite `h2` using `[x.reduced.gcd_eq_one]`. Conclude with `hp.one_lt.ne' (Nat.dvd_one.mp h2)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h0 : padicValInt p x.num = 0` using `padicValInt.eq_zero_of_not_dvd hnum`. Establish `h1 : 1 ≤ padicValNat p x.den` using `one_le_padicValNat_of_dvd x.den_nz hd`. Rewrite `hv'` using `[h0]`. Use linear arithmetic over natural numbers and integers. Establish `hpv0 : padicValNat p x.den = 0` using `padicValNat.eq_zero_of_not_dvd hden`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hv'` using `[hpv0]`. Establish `hdvd : (p : ℤ) ^ c ∣ x.num`. Use `(padicValInt_dvd_iff (p := p) c x.num).mpr (Or.inr (by omega))` as an intermediate fact. Conclude with `this` after adjusting the coercions. Take `⟨n, hn⟩` from `hdvd`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hcop : Nat.Coprime p x.den` using `(Nat.Prime.coprime_iff_not_dvd hp).mpr hden`. Establish `hb` using `Nat.gcd_eq_gcd_ab p x.den`. Rewrite `hb` using `[hcop.gcd_eq_one, Nat.cast_one]`. Establish `hb' : (p : O) * (Nat.gcdA p x.den : O) + (x.den : O) * (Nat.gcdB p x.den : O) = 1`. Use `congrArg (Int.cast : ℤ → O) hb` as an intermediate fact.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Move the coercions through the operations in `at this`. Conclude with `this.symm`. Establish `hdu : IsUnit (x.den : O)`. Break down `IsLocalRing.isUnit_or_isUnit_of_add_one hb' with h | h` into its components or cases. Conclude with `absurd (isUnit_of_mul_isUnit_left h) hpO`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Conclude with `isUnit_of_mul_isUnit_left h`. Establish `hinv : algebraMap O K (↑hdu.unit⁻¹ : O) * (x.den : K) = 1`. Rewrite using `[← map_natCast (algebraMap O K), ← map_mul, IsUnit.val_inv_mul, map_one]`. Establish `hainv : algebraMap O K (↑hdu.unit⁻¹ : O) = (x.den : K)⁻¹` using `eq_inv_of_mul_eq_one_left hinv`. Use `⟨(n : O) * ↑hdu.unit⁻¹, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[map_mul, map_intCast, hainv, Rat.cast_def, hn]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem rat_int {O K : Type} [CommRing O] [IsLocalRing O] [Field K] [CharZero K] [Algebra O K] {p : ℕ} (hp : p.Prime)
     (hpO : ¬ IsUnit (p : O)) (x : ℚ) (c : ℕ) (hx : PadicGe p x c) :
@@ -79,19 +77,17 @@ def Rblk (C0 CE1 CE2 : ℝ) (X : Loc) (j : Fin (numSeg X.TT)) (b : SegBlock (seg
   ∏ x ∈ Finset.univ \ (Finset.univ.image (symVar C0 CE1 CE2 X j)), (baseExp C0 CE1 CE2 X j b x).factorial
 
 /- English proof (translation)
-Establish `hinj` using `symVar_inj C0 CE1 CE2 X j`. Establish `hsumv : ∀ x, (μ.sum fun v n => Finsupp.single (symVar C0 CE1 CE2 X j v) (symLev X.p C0 CE1 CE2 X j v * n)) x = ∑ v ∈ μ.support, if symVar C0 CE1 CE2 X j v = x then symLev X.p C0 CE1 CE2 X j v * μ v else 0`. Introduce `x`. Rewrite using `[Finsupp.sum_apply]`. Conclude with `Finset.sum_congr rfl fun v _ => Finsupp.single_apply`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hout : ∀ x ∉ Finset.univ.image (symVar C0 CE1 CE2 X j), ioExp C0 CE1 CE2 X j b μ x = baseExp C0 CE1 CE2 X j b x`. Introduce `x hx`. Rewrite using `[ioExp, Finsupp.add_apply, hsumv, Finset.sum_eq_zero, add_zero]`. Introduce `v _`. Rewrite using `[if_neg]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Conclude with `hx (Finset.mem_image.2 ⟨v, Finset.mem_univ _, h⟩)`. Establish `hin : ∀ v, ioExp C0 CE1 CE2 X j b μ (symVar C0 CE1 CE2 X j v) = baseExp C0 CE1 CE2 X j b (symVar C0 CE1 CE2 X j v) + symLev X.p C0 CE1 CE2 X j v * μ v`. Introduce `v`. Rewrite using `[ioExp, Finsupp.add_apply, hsumv]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Rewrite using `[Finset.sum_eq_single v]`. Rewrite using `[if_pos rfl]`. Introduce `v' _ hne`. Rewrite using `[if_neg]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `fun h => hne (hinj h)`. Introduce `hv`. Establish `h0 : μ v = 0` using `by simpa using hv`. Rewrite using `[if_pos rfl, h0, mul_zero]`. Rewrite using `[expFact, Finsupp.prod_fintype _ _ (fun _ => Nat.factorial_zero)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Finset.prod_sdiff (Finset.subset_univ (Finset.univ.image (symVar C0 CE1 CE2 X j)))]`. Rewrite using `[Finset.prod_image (fun a _ c _ h => hinj h)]`. Use `congr 1`. Unfold `Rblk`. Conclude with `Finset.prod_congr rfl fun x hx => by rw [hout x (Finset.mem_sdiff.1 hx).2]`.
-
-Conclude with `Finset.prod_congr rfl fun v _ => by rw [hin v]`.
+Reduce the equality to equality of the corresponding arguments. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem expFact_ioExp (C0 CE1 CE2 : ℝ) (X : Loc) (j : Fin (numSeg X.TT)) (b : SegBlock (segS X.TT j) X.m)
     (μ : BV C0 CE1 CE2 X j →₀ ℕ) :
@@ -135,27 +131,23 @@ theorem expFact_ioExp (C0 CE1 CE2 : ℝ) (X : Loc) (j : Fin (numSeg X.TT)) (b : 
   · exact Finset.prod_congr rfl fun v _ => by rw [hin v]
 
 /- English proof (translation)
-Establish `hinj` using `topOdd_inj X j`. Establish `hite : ∀ (Q : Prop) [Decidable Q] (f : ((X.TT × Bool) × Fin (X.m + 1)) →₀ ℕ) (y), (if Q then f else 0) y = if Q then f y else 0`. Introduce `Q _ f y`. Apply the tactic sequence `split_ifs <;> rfl`. Establish `hne : ∀ (i : Fin (segS X.TT j)) (β : Bool) (c : Fin (X.m + 1)), i ≠ i0 → ((topOdd X j i, β), c) ≠ ((topOdd X j i0, β0), c0)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Introduce `i β c hi h`. Conclude with `hi (hinj (congrArg (fun y => y.1.1) h))`. Rewrite using `[baseExp, Finsupp.add_apply]`. Use `congr 1`. Rewrite using `[Finsupp.finset_sum_apply, Finset.sum_eq_single i0]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finsupp.finset_sum_apply, Finset.sum_eq_single c0]`. Rewrite using `[Finsupp.add_apply, Finsupp.single_apply, Finsupp.single_apply]`. Apply the tactic sequence `cases β0 <;> simp`. Introduce `c _ hc`. Rewrite using `[Finsupp.add_apply, Finsupp.single_apply, Finsupp.single_apply, if_neg, if_neg]`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Introduce `h`. Conclude with `hc (congrArg (fun y => y.2) h)`. Introduce `h`. Conclude with `hc (congrArg (fun y => y.2) h)`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `h`. Conclude with `absurd (Finset.mem_univ c0) h`. Introduce `i _ hi`. Rewrite using `[Finsupp.finset_sum_apply]`. Use `Finset.sum_eq_zero fun c _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finsupp.add_apply, Finsupp.single_apply, Finsupp.single_apply, if_neg (hne i true c hi), if_neg (hne i false c hi)]`. Both sides reduce to the same expression. Introduce `h`. Conclude with `absurd (Finset.mem_univ i0) h`. Rewrite using `[Finsupp.finset_sum_apply, Finset.sum_eq_single i0]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hite]`. Distinguish the cases in `h1 : (i0 : ℕ) < (X.seg C0 CE1 CE2 j).sigma`. Distinguish the cases in `hc : c0 = 0`. Substitute `hc` using the available equality. Rewrite using `[if_pos h1, if_pos ⟨h1, rfl⟩, Finsupp.add_apply, Finsupp.single_apply, Finsupp.single_apply]`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply the tactic sequence `cases β0 <;> simp`. Rewrite using `[if_pos h1, if_neg (fun h => hc h.2), Finsupp.add_apply, Finsupp.single_apply, Finsupp.single_apply, if_neg, if_neg]`. Both sides reduce to the same expression. Introduce `h`. Conclude with `hc (congrArg (fun y => y.2) h).symm`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Introduce `h`. Conclude with `hc (congrArg (fun y => y.2) h).symm`. Rewrite using `[if_neg h1, if_neg (fun h => h1 h.1)]`. Introduce `i _ hi`. Rewrite using `[hite]`.
-
-Use `split_ifs`. Rewrite using `[Finsupp.add_apply, Finsupp.single_apply, Finsupp.single_apply, if_neg (hne i true 0 hi), if_neg (hne i false 0 hi)]`. Both sides reduce to the same expression. Both sides reduce to the same expression. Introduce `h`.
-
-Conclude with `absurd (Finset.mem_univ i0) h`.
+Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem baseExp_odd (C0 CE1 CE2 : ℝ) (X : Loc) (j : Fin (numSeg X.TT)) (b : SegBlock (segS X.TT j) X.m)
     (i0 : Fin (segS X.TT j)) (β0 : Bool) (c0 : Fin (X.m + 1)) :
@@ -221,7 +213,7 @@ theorem baseExp_odd (C0 CE1 CE2 : ℝ) (X : Loc) (j : Fin (numSeg X.TT)) (b : Se
       exact absurd (Finset.mem_univ i0) h
 
 /- English proof (translation)
-Establish `hite : ∀ (Q : Prop) [Decidable Q] (f : ((X.TT × Bool) × Fin (X.m + 1)) →₀ ℕ) (y), (if Q then f else 0) y = if Q then f y else 0`. Introduce `Q _ f y`. Apply the tactic sequence `split_ifs <;> rfl`. Simplify using `[baseExp, Finsupp.finset_sum_apply, Finsupp.single_apply, topOdd_ne_end, hite]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem baseExp_end (C0 CE1 CE2 : ℝ) (X : Loc) (j : Fin (numSeg X.TT)) (b : SegBlock (segS X.TT j) X.m)
     (β0 : Bool) (c0 : Fin (X.m + 1)) : baseExp C0 CE1 CE2 X j b ((topEnd X j, β0), c0) = 0 := by

@@ -18,7 +18,7 @@ section Blocks
 variable {R : Type} [CommRing R] {n r t : ℕ} (hn : r + t = n)
 
 /- English proof (translation)
-Simplify using `only [bl]`. Rewrite using `[Matrix.submatrix_mul_equiv, Matrix.fromBlocks_multiply]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem block_mul₂ (a a' : Matrix (Fin r) (Fin r) R) (b b' : Matrix (Fin r) (Fin t) R)
     (c c' : Matrix (Fin t) (Fin r) R) (d d' : Matrix (Fin t) (Fin t) R) :
@@ -28,21 +28,21 @@ theorem block_mul₂ (a a' : Matrix (Fin r) (Fin r) R) (b b' : Matrix (Fin r) (F
   rw [Matrix.submatrix_mul_equiv, Matrix.fromBlocks_multiply]
 
 /- English proof (translation)
-Simplify using `only [bl]`. Rewrite using `[Matrix.fromBlocks_one, Matrix.submatrix_one_equiv]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem blockRowSubstitution_one : bl hn (1 : Matrix (Fin r) (Fin r) R) 0 0 1 = 1 := by
   simp only [bl]
   rw [Matrix.fromBlocks_one, Matrix.submatrix_one_equiv]
 
 /- English proof (translation)
-Simplify using `only [bl, Matrix.fromBlocks_zero]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem blockMatrix_zero : bl hn (0 : Matrix (Fin r) (Fin r) R) 0 0 0 = 0 := by
   simp only [bl, Matrix.fromBlocks_zero]
   rfl
 
 /- English proof (translation)
-Simplify using `only [bl]`. Rewrite using `[Matrix.det_submatrix_equiv_self, Matrix.det_fromBlocks_zero₂₁]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem det_bl_unip (y : Matrix (Fin r) (Fin t) R) : (bl hn 1 y 0 1).det = 1 := by
   simp only [bl]
@@ -50,11 +50,11 @@ theorem det_bl_unip (y : Matrix (Fin r) (Fin t) R) : (bl hn 1 y 0 1).det = 1 := 
   simp
 
 /- English proof (translation)
-Use `set e := finSumFinEquiv.trans (finCongr hn) with he`. Establish `h1 : Z = (Matrix.fromBlocks (Z.submatrix (e ∘ Sum.inl) (e ∘ Sum.inl)) (Z.submatrix (e ∘ Sum.inl) (e ∘ Sum.inr)) (Z.submatrix (e ∘ Sum.inr) (e ∘ Sum.inl)) (Z.submatrix (e ∘ Sum.inr) (e ∘ Sum.inr))).submatrix e.symm e.symm`. Use extensionality with `i j`. Take `⟨i, rfl⟩` from `e.surjective i`. Take `⟨j, rfl⟩` from `e.surjective j`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `rcases i with i | i <;> rcases j with j | j <;> simp`. Use `conv_lhs => rw [h1]`. Simplify using `only [bl, ← he]`. Rewrite using `[Matrix.submatrix_mul_equiv, Matrix.fromBlocks_multiply]`. Simplify using `only [Matrix.trace, Matrix.diag, Matrix.submatrix_apply]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Equiv.sum_comp e.symm (fun s => Matrix.fromBlocks _ _ _ _ s s), Fintype.sum_sum_type]`. Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem trace_bl_last (b : Matrix (Fin t) (Fin t) R) (Z : Matrix (Fin n) (Fin n) R) :
     Matrix.trace (bl hn 0 0 0 b * Z) =
@@ -81,7 +81,7 @@ section Frames
 variable {D : D7} {a n r t : ℕ} (hn : r + t = n)
 
 /- English proof (translation)
-Simplify using `only [jn, bl]`. Rewrite using `[Matrix.submatrix_mul_equiv, Matrix.fromCols_mul_fromBlocks]`. Simplify using `[mm]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem jn_mul_unip (x : Mx D a r) (y : Mx D r t) :
     (HMul.hMul (jn hn x 0) (bl hn 1 y 0 1) : Mx D a n) = jn hn x (mm x y) := by
@@ -90,9 +90,9 @@ theorem jn_mul_unip (x : Mx D a r) (y : Mx D r t) :
   simp [mm]
 
 /- English proof (translation)
-Rewrite using `[trace_bl_last]`. Use `congr 1`. Establish `h : (GlobalTheory.StdUnn.inner V (jn hn x v) (jn hn x v)).submatrix (finSumFinEquiv.trans (finCongr hn) ∘ Sum.inr) (finSumFinEquiv.trans (finCongr hn) ∘ Sum.inr) = ip V v v`. Use extensionality with `i j`. Simplify using `[GlobalTheory.StdUnn.inner, ip, mm, jn, adj, Matrix.mul_apply]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[h]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem trace_inner_jn (V : HSp D) (b : Mx D t t) (x : Mx D V.rank r) (v : Mx D V.rank t) :
     Matrix.trace (HMul.hMul (bl hn 0 0 0 b) (GlobalTheory.StdUnn.inner V (jn hn x v) (jn hn x v)) : Mx D n n) =
@@ -112,16 +112,16 @@ def unipGL (y : Mx D r t) : GL (Fin n) (AE D) where
   inv_val := by rw [block_mul₂]; simpa using blockRowSubstitution_one hn
 
 /- English proof (translation)
-The claim follows from `Units.ext (det_bl_unip hn y)`.
+A detailed English derivation is pending.
 -/
 theorem det_unipGL (y : Mx D r t) :
     Matrix.GeneralLinearGroup.det (unipGL hn y : GL (Fin n) (AE D)) = (1 : (AE D)ˣ) :=
   Units.ext (det_bl_unip hn y)
 
 /- English proof (translation)
-Use extensionality with `i j`. Take `⟨i, rfl⟩` from `(finSumFinEquiv.trans (finCongr hn)).surjective i`. Take `⟨j, rfl⟩` from `(finSumFinEquiv.trans (finCongr hn)).surjective j`. Apply the tactic sequence `rcases i with i | i <;> rcases j with j | j <;>`. Simplify using `[adj, bl, Matrix.one_apply, apply_ite (cA D)]`.
+By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `all_goals by_cases h : i = j <;> simp [h, eq_comm]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem adj_bl_unip_neg (y : Mx D r t) :
     adj (bl hn (1 : Mx D r r) (-y) 0 (1 : Mx D t t)) = bl hn (1 : Mx D r r) 0 (-adj y) (1 : Mx D t t) := by
@@ -135,13 +135,13 @@ theorem adj_bl_unip_neg (y : Mx D r t) :
 end Frames
 
 /- English proof (translation)
-Establish `e1 : ω (M.sh y * M.emb (w * nb b) * 1) Φ = ω (M.sh y) (ω (M.emb w) (ω (M.emb (nb b)) Φ))`. Simplify using `only [mul_one, map_mul, Module.End.mul_apply]`. Establish `hdet` using `det_unipGL hn y`. Establish `hsh : mat (M.sh y) = blk4 (unipGL hn y).1 0 0 (adj ((unipGL hn y)⁻¹).1)`. Rewrite using `[M.sh_mat]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: ((unipGL hn y)⁻¹).1 = bl hn 1 (-y) 0 1` using `rfl`. Rewrite using `[this, adj_bl_unip_neg]`. Both sides reduce to the same expression. Establish `hemb : mat (M.emb (nb b)) = blk4 1 (bl hn 0 0 0 b.1) 0 1`. Rewrite using `[M.emb_mat (nb b) 1 b.1 0 1 (hnb b), blockRowSubstitution_one, blockMatrix_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e1, hω.levi (M.sh y) (unipGL hn y) hsh, hdet]`. Establish `hpow : npow (absA D 1) ((V.rank : ℂ) / 2) = 1` using `by simp [npow]`. Rewrite using `[map_one, hpow]`. Simplify using `only [Circle.coe_one, one_mul]`. Establish `hj : (HMul.hMul (jn hn x 0) (unipGL hn y).1 : Mx D V.rank n) = jn hn x (mm x y)` using `jn_mul_unip hn x y`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[hj, (hP D n r t hn M V ψ hψ χ hχ hη θ hθ μ hμ ω hω μr μt hμr hμt (ω (M.emb (nb b)) Φ)).2.2 w hw x (mm x y)]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun v => ?_)` and prove the remaining obligations. Simplify using `only`. Rewrite using `[hω.unip (M.emb (nb b)) _ hemb, trace_inner_jn]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem weil_translate_frame {D : D7} {n r t : ℕ} (hP : PartFT) {hn : r + t = n} (M : Maps D hn) (V : HSp D)
     {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsCharAF D.host.F ψ) {χ : (AE D)ˣ →* Circle} (hχ : IsHeckeChar D χ)

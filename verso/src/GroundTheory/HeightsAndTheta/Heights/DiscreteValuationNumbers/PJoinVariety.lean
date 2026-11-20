@@ -31,7 +31,7 @@ def varEquiv : Option (Σ k, ι k) ≃ (Σ k : K ⊕ Unit, Sum.elim ι ptIdx k) 
       rfl
 
 /- English proof (translation)
-The claim follows from `(varEquiv (ι := ι)).injective.comp (Option.some_injective _)`.
+A detailed English derivation is pending.
 -/
 theorem liftVar_injective : Function.Injective (liftVar (ι := ι) ptIdx) :=
   (varEquiv (ι := ι)).injective.comp (Option.some_injective _)
@@ -43,7 +43,7 @@ def retr (F : Type) [Field F] :
     | ⟨.inr _, _⟩ => 1
 
 /- English proof (translation)
-Establish `: (retr F).comp (rename (liftVar (ι` using `ι) ptIdx)) = AlgHom.id F _ := by`. Use extensionality with `⟨k, i⟩`. Simplify using `[retr, liftVar]`. Conclude with `congrArg (fun φ => φ p) this`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem retr_rename (F : Type) [Field F] (p : MvPolynomial (Σ k, ι k) F) :
     retr F (rename (liftVar (ι := ι) ptIdx) p) = p := by
@@ -56,33 +56,31 @@ end JoinVariety
 
 open JoinVariety in
 /- English proof (translation)
-Introduce `F _ K _ ι _ V n hV`. Take `⟨⟨hprime, ⟨S0, hS0, hspan⟩, hrel⟩, hdim⟩` from `hV`. Use `set V' := V.map (rename (liftVar (ι := ι) ptIdx))`. Set `Φ : Polynomial (MvPolynomial (Σ k, ι k) F) ≃ₐ[F] MvPolynomial (Σ k : K ⊕ Unit, Sum.elim ι ptIdx k) F` to `(optionEquivLeft F (Σ k, ι k)).symm.trans (renameEquiv F varEquiv)`. Establish `hΦC : (Φ : Polynomial (MvPolynomial (Σ k, ι k) F) →+* _).comp Polynomial.C = (rename (liftVar (ι` using `ι) ptIdx) : MvPolynomial (Σ k, ι k) F →ₐ[F] _).toRingHom := by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `r`. Establish `h1 : (optionEquivLeft F (Σ k, ι k)).symm (Polynomial.C (C r)) = C r`. Rewrite using `[AlgEquiv.symm_apply_eq]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `show renameEquiv F varEquiv ((optionEquivLeft F (Σ k, ι k)).symm (Polynomial.C (C r))) = _`. Rewrite using `[h1]`. Simplify using the standard rewrite rules. Introduce `s`. Establish `h1 : (optionEquivLeft F (Σ k, ι k)).symm (Polynomial.C (X s)) = X (some s)`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[AlgEquiv.symm_apply_eq]`. Simplify using the standard rewrite rules. Use `show renameEquiv F varEquiv ((optionEquivLeft F (Σ k, ι k)).symm (Polynomial.C (X s))) = _`. Rewrite using `[h1]`. Simplify using `[varEquiv]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hV' : V' = (V.map (Polynomial.C : MvPolynomial (Σ k, ι k) F →+* Polynomial (MvPolynomial (Σ k, ι k) F))).map (Φ : Polynomial (MvPolynomial (Σ k, ι k) F) →+* _)`. Rewrite using `[Ideal.map_map, hΦC]`. Both sides reduce to the same expression. Establish `hmem : ∀ y, y ∈ V' → retr F y ∈ V`. Establish `: V' ≤ V.comap (retr F : _ →ₐ[F] MvPolynomial (Σ k, ι k) F).toRingHom`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[Ideal.map_le_iff_le_comap]`. Introduce `v hv`. Simplify `hv` using `[Ideal.mem_comap, retr_rename]`. Conclude with `fun y hy => this hy`. Use `⟨⟨?_, ?_, ?_⟩, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Rewrite using `[hV']`. Conclude with `Ideal.map_isPrime_of_equiv _`. Use `⟨rename (liftVar (ι := ι) ptIdx) '' S0, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨f, hf, rfl⟩`. Take `⟨a, ha⟩` from `hS0 f hf`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `⟨Sum.elim a 0, ?_⟩` and prove the remaining obligations. Introduce `m hm k`. Rewrite `hm` using `[support_rename_of_injective liftVar_injective]`. Take `⟨m0, hm0, rfl⟩` from `Finset.mem_image.mp hm`. Consider the cases of `k with`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Treat this case separately.
 
-Consider the case `inl k`. Express the relevant statement in the definitionally equal form `∑ i : ι k, (Finsupp.mapDomain (liftVar (ι := ι) ptIdx) m0) (liftVar (ι := ι) ptIdx ⟨k, i⟩) = a k`. Simplify using `only [Finsupp.mapDomain_apply liftVar_injective]`. Conclude with `ha m0 hm0 k`. Consider the case `inr u`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Split into cases according to the possible forms of the given data. Express the relevant assertion in an equivalent form by its definition.
 
-Simplify using `only [Sum.elim_inr, Pi.zero_apply]`. Use `Finset.sum_eq_zero fun i _ => Finsupp.mapDomain_of_notMem_range _ _ ?_` and prove the remaining obligations. Introduce and unpack `⟨p, hp⟩`. Consider the cases of `hp`. Express the relevant statement in the definitionally equal form `V.map _ = _`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[hspan, Ideal.map_span]`. Introduce and unpack `(k | u)`. Take `⟨i, hi⟩` from `hrel k`. Use `⟨i, fun h => hi ?_⟩` and prove the remaining obligations. Use `hmem _ h` as an intermediate fact.
+Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `this` using `[retr]`. Use `⟨(0 : Fin 1), fun h => hprime.ne_top ?_⟩` and prove the remaining obligations. Use `hmem _ h` as an intermediate fact. Rewrite using `[Ideal.eq_top_iff_one]`. Simplify `this` using `[retr]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Establish `e1 : (ReciprocityTheory.ChartRestriction.G.Geo.MRingOver F (Sum.elim ι ptIdx) ⧸ V') ≃+* Polynomial (MvPolynomial (Σ k, ι k) F ⧸ V)` using `(Ideal.quotientEquiv _ _ Φ.toRingEquiv hV').symm.trans (Ideal.polynomialQuotientEquivQuotientPolynomial V).symm`. Use `(ringKrullDim_eq_of_ringEquiv (S := Polynomial (MvPolynomial (Σ k, ι k) F ⧸ V)) e1).trans ?_` and prove the remaining obligations. Rewrite using `[Polynomial.ringKrullDim_of_isNoetherianRing]`. Express the relevant statement in the definitionally equal form `ringKrullDim (ReciprocityTheory.ChartRestriction.G.Geo.MRingOver F ι ⧸ V) + 1 = _`. Rewrite using `[hdim, Fintype.card_sum, Fintype.card_unit]`.
-
-Use `norm_cast`.
+Put the expressions in a common number system so they can be compared. A detailed English derivation is pending.
 -/
 theorem JoinVariety.proof : JoinVariety.Statement := by
   intro F _ K _ ι _ V n hV

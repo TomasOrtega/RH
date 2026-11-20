@@ -13,9 +13,9 @@ section Generic
 variable {G : Type} [Group G]
 
 /- English proof (translation)
-Rewrite using `[DoubleCoset.mem_doubleCoset]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, ha, b, hb, rfl⟩`. Conclude with `⟨⟨a, ha⟩, ⟨b, hb⟩, rfl⟩`. Introduce and unpack `⟨a, b, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨a, a.2, b, b.2, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem mem_dc_iff (K : Subgroup G) (g x : G) :
     x ∈ DoubleCoset.doubleCoset g (K : Set G) (K : Set G) ↔
@@ -28,9 +28,9 @@ theorem mem_dc_iff (K : Subgroup G) (g x : G) :
     exact ⟨a, a.2, b, b.2, rfl⟩
 
 /- English proof (translation)
-Rewrite using `[mem_dc_iff]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, b, rfl⟩`. Rewrite using `[mul_one]`. Conclude with `K.mul_mem a.2 b.2`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hx`. Conclude with `⟨⟨x, hx⟩, 1, by simp⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem mem_dc_one (K : Subgroup G) (x : G) :
     x ∈ DoubleCoset.doubleCoset (1 : G) (K : Set G) (K : Set G) ↔ x ∈ K := by
@@ -43,9 +43,9 @@ theorem mem_dc_one (K : Subgroup G) (x : G) :
     exact ⟨⟨x, hx⟩, 1, by simp⟩
 
 /- English proof (translation)
-Unfold `IsBiInv`. Introduce `a b x`. Distinguish the cases in `hx : x ∈ T`. Simplify using `[Set.indicator_apply, hx, hT a b x hx]`. Establish `h' : (a : G) * x * b ∉ T`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `h`. Apply `hx` to reduce the goal to its premises. Use `hT a⁻¹ b⁻¹ _ h` as an intermediate fact. Simplify `this` using `[mul_assoc]`. Simplify using `[Set.indicator_apply, hx, h']`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules.
 -/
 theorem ind_biInv (k : Type) [CommRing k] (K : Subgroup G) (T : Set G)
     (hT : ∀ a b : K, ∀ x : G, x ∈ T → (a : G) * x * b ∈ T) :
@@ -62,7 +62,7 @@ theorem ind_biInv (k : Type) [CommRing k] (K : Subgroup G) (T : Set G)
     simp [Set.indicator_apply, hx, h']
 
 /- English proof (translation)
-Rewrite `hx`, the goal using `[mem_dc_iff]`. Take `⟨c, d, rfl⟩` from `hx`. Conclude with `⟨a * c, d * b, by simp [mul_assoc]⟩`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem dc_stable (K : Subgroup G) (g : G) (a b : K) (x : G)
     (hx : x ∈ DoubleCoset.doubleCoset g (K : Set G) (K : Set G)) :
@@ -72,27 +72,27 @@ theorem dc_stable (K : Subgroup G) (g : G) (a b : K) (x : G)
   exact ⟨a * c, d * b, by simp [mul_assoc]⟩
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_hecke_iff (k : Type) [CommRing k] (K : Subgroup G) (f : G → k) :
     f ∈ Hecke k K ↔ IsBiInv K f ∧ FinDosetSupp K f := Iff.rfl
 
 /- English proof (translation)
-Simplify using `[dosetInd, hx]`.
+Simplify using the standard rewrite rules.
 -/
 theorem dosetInd_of_mem (k : Type) [CommRing k] (K : Subgroup G) (g x : G)
     (hx : x ∈ DoubleCoset.doubleCoset g (K : Set G) (K : Set G)) : dosetInd k K g x = 1 := by
   simp [dosetInd, hx]
 
 /- English proof (translation)
-Simplify using `[dosetInd, hx]`.
+Simplify using the standard rewrite rules.
 -/
 theorem dosetInd_of_not_mem (k : Type) [CommRing k] (K : Subgroup G) (g x : G)
     (hx : x ∉ DoubleCoset.doubleCoset g (K : Set G) (K : Set G)) : dosetInd k K g x = 0 := by
   simp [dosetInd, hx]
 
 /- English proof (translation)
-Establish `h : ((x.out : G) : G ⧸ K) = ((1 : G) : G ⧸ K)` using `by rw [QuotientGroup.out_eq', hx]`. Rewrite `h` using `[QuotientGroup.eq]`. Simplify using `using h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem out_mem_of_eq_one (K : Subgroup G) (x : G ⧸ K) (hx : x = ((1 : G) : G ⧸ K)) :
     x.out ∈ K := by
@@ -101,7 +101,7 @@ theorem out_mem_of_eq_one (K : Subgroup G) (x : G ⧸ K) (hx : x = ((1 : G) : G 
   simpa using h
 
 /- English proof (translation)
-Introduce `h`. Apply `hx` to reduce the goal to its premises. Rewrite using `[← QuotientGroup.out_eq' x, QuotientGroup.eq]`. Simplify using `using h`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem out_not_mem_of_ne_one (K : Subgroup G) (x : G ⧸ K) (hx : x ≠ ((1 : G) : G ⧸ K)) :
     x.out ∉ K := by
@@ -113,9 +113,9 @@ theorem out_not_mem_of_ne_one (K : Subgroup G) (x : G ⧸ K) (hx : x ≠ ((1 : G
 end Generic
 
 /- English proof (translation)
-Unfold `Formalism.UG.DosetIndMem`. Introduce `G _ K k _ g`. Rewrite using `[mem_hecke_iff]`. Use `⟨ind_biInv k K _ (fun a b x hx => dc_stable K g a b x hx), ?_⟩` and prove the remaining obligations. Use `⟨{g}, fun x hx => ⟨g, Finset.mem_singleton_self g, (mem_dc_iff K g x).1 ?_⟩⟩` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Assume the negation of the conclusion as `h`. Conclude with `hx (dosetInd_of_not_mem k K g x h)`.
+Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem double_coset_indicator_mem : Formalism.UG.DosetIndMem := by
   unfold Formalism.UG.DosetIndMem
@@ -127,19 +127,19 @@ theorem double_coset_indicator_mem : Formalism.UG.DosetIndMem := by
   exact hx (dosetInd_of_not_mem k K g x h)
 
 /- English proof (translation)
-Unfold `Formalism.UG.HeckeUnit`. Introduce `G _ K k _ f hf`. Unfold `conv`. Establish `hb` using `((mem_hecke_iff k K f).1 hf).1`. Establish `h1 : ∀ y : G, dosetInd k K 1 y = if y ∈ K then 1 else 0`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `y`. Distinguish the cases in `hy : y ∈ K`. Rewrite using `[if_pos hy, dosetInd_of_mem]`. Conclude with `(mem_dc_one K y).2 hy`. Rewrite using `[if_neg hy, dosetInd_of_not_mem]`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Conclude with `fun h => hy ((mem_dc_one K y).1 h)`. Use `⟨funext fun g => ?_, funext fun g => ?_⟩` and prove the remaining obligations. Use `show ∑ᶠ x : G ⧸ K, dosetInd k K 1 (Quotient.out x) * f ((Quotient.out x)⁻¹ * g) = f g`. Establish `e` using `finsum_eq_single (fun x : G ⧸ K => dosetInd k K 1 (Quotient.out x) * f ((Quotient.out x)⁻¹ * g)) ((1 : G) : G ⧸ K) (fun x hx => by show dosetInd k K 1 (Quotient.out x) * f ((Quotient.out x)⁻¹ * g) = 0`. Rewrite using `[h1, if_neg (out_not_mem_of_ne_one K x hx), zero_mul])`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[e]`. Establish `hm` using `out_mem_of_eq_one K ((1 : G) : G ⧸ K) rfl`. Rewrite using `[h1, if_pos hm, one_mul]`. Use `hb ⟨(Quotient.out ((1 : G) : G ⧸ K))⁻¹, K.inv_mem hm⟩ 1 g` as an intermediate fact. Simplify using `using this`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `show ∑ᶠ x : G ⧸ K, f (Quotient.out x) * dosetInd k K 1 ((Quotient.out x)⁻¹ * g) = f g`. Establish `e` using `finsum_eq_single (fun x : G ⧸ K => f (Quotient.out x) * dosetInd k K 1 ((Quotient.out x)⁻¹ * g)) ((g : G) : G ⧸ K) (fun x hx => by show f (Quotient.out x) * dosetInd k K 1 ((Quotient.out x)⁻¹ * g) = 0`. Establish `hm : (Quotient.out x)⁻¹ * g ∉ K`. Introduce `h`. Apply `hx` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← QuotientGroup.out_eq' x, QuotientGroup.eq]`. Conclude with `h`. Rewrite using `[h1, if_neg hm, mul_zero])`. Rewrite using `[e]`. Establish `hm : (Quotient.out ((g : G) : G ⧸ K))⁻¹ * g ∈ K`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[← QuotientGroup.eq, QuotientGroup.out_eq']`. Rewrite using `[h1, if_pos hm, mul_one]`. Use `(hb 1 ⟨(Quotient.out ((g : G) : G ⧸ K))⁻¹ * g, hm⟩ (Quotient.out ((g : G) : G ⧸ K))).symm` as an intermediate fact. Simplify using `using this`.
+A detailed English derivation is pending.
 -/
 theorem hecke_algebra_unit : Formalism.UG.HeckeUnit := by
   unfold Formalism.UG.HeckeUnit
@@ -184,15 +184,13 @@ theorem hecke_algebra_unit : Formalism.UG.HeckeUnit := by
     simpa using this
 
 /- English proof (translation)
-Unfold `Formalism.UG.HeckeActOne`. Introduce `G _ Γ K k _ W _ _ ρ φ hφ`. Unfold `hAct`. Establish `h1 : ∀ y : G, dosetInd k K 1 y = if y ∈ K then 1 else 0`. Introduce `y`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `hy : y ∈ K`. Rewrite using `[if_pos hy, dosetInd_of_mem]`. Conclude with `(mem_dc_one K y).2 hy`. Rewrite using `[if_neg hy, dosetInd_of_not_mem]`. Conclude with `fun h => hy ((mem_dc_one K y).1 h)`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Reduce the conclusion to the remaining proof obligations.
 
-Use `funext fun g => ?_` and prove the remaining obligations. Use `show ∑ᶠ x : G ⧸ K, dosetInd k K 1 (Quotient.out x) • φ (g * Quotient.out x) = φ g`. Establish `e` using `finsum_eq_single (fun x : G ⧸ K => dosetInd k K 1 (Quotient.out x) • φ (g * Quotient.out x)) ((1 : G) : G ⧸ K) (fun x hx => by show dosetInd k K 1 (Quotient.out x) • φ (g * Quotient.out x) = 0`. Rewrite using `[h1, if_neg (out_not_mem_of_ne_one K x hx), zero_smul])`. Rewrite using `[e]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hm` using `out_mem_of_eq_one K ((1 : G) : G ⧸ K) rfl`. Rewrite using `[h1, if_pos hm, one_smul]`. Simplify using `[AMF] at hφ`. Use `hφ 1 Γ.one_mem g _ hm` as an intermediate fact. Rewrite `this` using `[one_mul, show (⟨1, Γ.one_mem⟩ : Γ) = 1 from rfl, map_one]`.
-
-Simplify using `using this`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem hecke_action_identity : Formalism.UG.HeckeActOne := by
   unfold Formalism.UG.HeckeActOne
@@ -225,7 +223,7 @@ section Basis
 variable {G : Type} [Group G]
 
 /- English proof (translation)
-Take `⟨a, ha, b, hb, e⟩` from `(DoubleCoset.eq K K g (Quotient.out (DoubleCoset.mk K K g))).1 (DoubleCoset.out_eq' K K _).symm`. Conclude with `⟨⟨a, ha⟩, ⟨b, hb⟩, e⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem mk_out_dc (K : Subgroup G) (g : G) :
     ∃ a b : K, Quotient.out (DoubleCoset.mk K K g) = (a : G) * g * b := by
@@ -234,7 +232,7 @@ theorem mk_out_dc (K : Subgroup G) (g : G) :
   exact ⟨⟨a, ha⟩, ⟨b, hb⟩, e⟩
 
 /- English proof (translation)
-Take `⟨a, b, e⟩` from `mk_out_dc K g`. Rewrite using `[e]`. Conclude with `hf a b g`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem biInv_mk_out {k : Type} (K : Subgroup G) (f : G → k) (hf : IsBiInv K f) (g : G) :
     f (Quotient.out (DoubleCoset.mk K K g)) = f g := by
@@ -290,7 +288,7 @@ def heckeEquiv {G : Type} [Group G] (K : Subgroup G) (k : Type) [CommRing k] :
     rw [DoubleCoset.out_eq']
 
 /- English proof (translation)
-Unfold `Formalism.UG.HeckeBasis`. Introduce `G _ K k _`. Conclude with `⟨heckeEquiv K k, fun f g => biInv_mk_out K _ f.2.1 g⟩`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem hecke_algebra_basis : Formalism.UG.HeckeBasis := by
   unfold Formalism.UG.HeckeBasis
@@ -298,15 +296,15 @@ theorem hecke_algebra_basis : Formalism.UG.HeckeBasis := by
   exact ⟨heckeEquiv K k, fun f g => biInv_mk_out K _ f.2.1 g⟩
 
 /- English proof (translation)
-Unfold `Formalism.UG.TjMem`. Introduce `L _ O ϖ k _ n j hϖ`. Rewrite using `[mem_hecke_iff]`. Prove the components needed by the constructor for the conclusion. Unfold `Tj`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Replace the relevant objects with their definitions.
 
-Apply `ind_biInv` to reduce the goal to its premises. Introduce and unpack `a' b' x ⟨a, ha, b, hb, e⟩`. Rewrite using `[Set.mem_setOf_eq]`. Conclude with `⟨↑a' * a, (GLint (Fin n) O).mul_mem a'.2 ha, b * ↑b', (GLint (Fin n) O).mul_mem hb b'.2, by simp only [Units.val_mul, e, mul_assoc]⟩`. Distinguish the cases in `hne : ∃ g0, Tj k n O ϖ j g0 ≠ 0`.
+Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Consider separately whether the proposition holds or fails.
 
-Take `⟨g0, hg0⟩` from `hne`. Unfold `Tj at hg0`. Take `⟨a0, ha0, b0, hb0, e0⟩` from `Set.mem_of_indicator_ne_zero hg0`. Use `⟨{g0}, fun x hx => ⟨g0, Finset.mem_singleton_self _, ?_⟩⟩` and prove the remaining obligations. Unfold `Tj at hx`.
+Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Take `⟨a, ha, b, hb, e⟩` from `Set.mem_of_indicator_ne_zero hx`. Use `⟨⟨a * a0⁻¹, (GLint (Fin n) O).mul_mem ha ((GLint (Fin n) O).inv_mem ha0)⟩, ⟨b0⁻¹ * b, (GLint (Fin n) O).mul_mem ((GLint (Fin n) O).inv_mem hb0) hb⟩, ?_⟩` and prove the remaining obligations. Apply `Units.ext` to reduce the goal to its premises. Simplify using `only [Subgroup.coe_mk, Units.val_mul, e, e0]`. Simplify using `only [mul_assoc, Units.inv_mul_cancel_left, Units.mul_inv_cancel_left]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use `push_neg at hne`. Conclude with `⟨∅, fun x hx => absurd (hne x) hx⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem Tj_double_coset_mem : Formalism.UG.TjMem := by
   unfold Formalism.UG.TjMem

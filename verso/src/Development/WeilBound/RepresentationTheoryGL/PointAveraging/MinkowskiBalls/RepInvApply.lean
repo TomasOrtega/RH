@@ -8,14 +8,14 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
 
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
 /- English proof (translation)
-Use extensionality with `i l`. Simplify using `[idem, GlobalTheory.GodementJacquet.eMat]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem idem_eq_eMat (r t : ℕ) : idem k r (r + t) r = GlobalTheory.GodementJacquet.eMat k r t := by
   ext i l
   simp [idem, GlobalTheory.GodementJacquet.eMat]
 
 /- English proof (translation)
-Establish `h1 : x.rank ≤ r`. Simplify using `using Matrix.rank_le_width x`. Establish `h2 : ¬ x.rank < r` using `fun h => hx (hΦ x h)`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem rank_eq_of_ne {r t : ℕ} {V W : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W]
     (Φ : SB (Matrix (Fin (r + t)) (Fin r) k))
@@ -28,7 +28,7 @@ theorem rank_eq_of_ne {r t : ℕ} {V W : Type} [AddCommGroup V] [Module ℂ V] [
 
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
 /- English proof (translation)
-Rewrite using `[← Module.End.mul_apply, ← map_mul, mul_inv_cancel, map_one]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem rep_inv_apply {n : ℕ} {W : Type} [AddCommGroup W] [Module ℂ W]
     (π : Representation ℂ (GL (Fin n) k) W) (h : GL (Fin n) k) (w : W) : π h (π h⁻¹ w) = w := by
@@ -40,21 +40,19 @@ end PositivityTheory.Rg.Ming
 namespace PositivityTheory.Rg.Ming
 
 /- English proof (translation)
-Introduce `hball hloc hnf k _ _ _ _ _ _ ν hν r t μ V _ _ W _ _ σ π B hEq hG Φ hΦ`. Use extensionality with `w`. Use `show B Φ w = 0`. Use `set e := GlobalTheory.GodementJacquet.eMat k r t with he`. Establish `key` using `hloc k (r + t) r (LinearMap.ker (B.flip w)) Φ`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hmem` using `key ?_`. Simplify using `using hmem`. Introduce `x hx`. Establish `hrk` using `rank_eq_of_ne (V := V) (W := W) Φ hΦ x hx`. Take `⟨⟨H, G, hxHG⟩, -⟩` from `hnf k (r + t) r r x hrk`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `hxHG` using `[idem_eq_eMat]`. Take `⟨c, hc⟩` from `hG (π H⁻¹ w)`. Set `f : Matrix (Fin (r + t)) (Fin r) k → Matrix (Fin (r + t)) (Fin r) k` to `fun z => (H⁻¹ : GL (Fin (r + t)) k).val * z * (G⁻¹ : GL (Fin r) k).val`. Establish `hf : Continuous f` using `(continuous_const.matrix_mul continuous_id).matrix_mul continuous_const`. Use `⟨f ⁻¹' ballM c e, ((hball k (r + t) r).1 c e).1.preimage hf, ?_, ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `show f x ∈ ballM c e`. Establish `: f x = e`. Simplify using `only [f, hxHG, ← Matrix.mul_assoc]`. Rewrite using `[Units.inv_mul, Matrix.one_mul, Matrix.mul_assoc, Units.mul_inv, Matrix.mul_one]`. Rewrite using `[this]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `fun i l => by simp`. Introduce `Ψ hΨ`. Take `⟨Ψ', hΨ'def⟩ : ∃ Ψ' : SB (Matrix (Fin (r + t)) (Fin r) k), Ψ'.1 = om μ G H⁻¹ Ψ.1` from `⟨⟨_, om_mem_SB μ _ _ Ψ.2⟩, rfl⟩`. Establish `hΨΨ' : (Ψ : Matrix (Fin (r + t)) (Fin r) k → ℂ) = om μ G⁻¹ H Ψ'.1` using `by show Ψ.1 = _`. Rewrite using `[hΨ'def, ← om_mul, inv_mul_cancel, mul_inv_cancel, om_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hsupp : ∀ y, Ψ'.1 y ≠ 0 → y ∈ ballM c e`. Introduce `y hy`. Rewrite `hy` using `[hΨ'def]`. Simplify using `only [om, inv_inv] at hy`. Establish `h2` using `(hΨ _ (right_ne_zero_of_mul hy)).1`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `h3 : f (H.val * y * G.val) = y`. Simplify using `only [f, ← Matrix.mul_assoc]`. Rewrite using `[Units.inv_mul, Matrix.one_mul, Matrix.mul_assoc, Units.mul_inv, Matrix.mul_one]`. Simplify `h2` using `[Set.mem_preimage, h3]`. Establish `h1` using `hEq G⁻¹ H Ψ' Ψ hΨΨ' (π H⁻¹ w)`.
-
-Rewrite `h1` using `[rep_inv_apply]`. Use `show B Ψ w = 0`. Rewrite using `[h1, hc Ψ' hsupp, smul_zero, map_zero]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nz : BallSt → LocSt → NfSt → NzSt := by
   intro hball hloc hnf k _ _ _ _ _ _ ν hν r t μ V _ _ W _ _ σ π B hEq hG Φ hΦ

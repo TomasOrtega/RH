@@ -8,21 +8,19 @@ open scoped WithZero
 namespace GlobalTheory.QNorm
 
 /- English proof (translation)
-Introduce `F _ _ _ S T hS hST hA`. Establish `hval : ∀ (v : HeightOneSpectrum (𝓞 F)) (z : F), Valued.v (algebraMap F (v.adicCompletion F) z) = v.valuation F z` using `fun v z => HeightOneSpectrum.valuedAdicCompletion_eq_valuation' v z`. Establish `hTS : ∀ v ∈ T, v ∉ S` using `fun v hv h => Finset.disjoint_left.1 hST h hv`. Rewrite using `[eq_top_iff]`. Introduce `x _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨a, ha⟩` from `exists_unit_valuation_eq_of_adm F S T (fun v => if v ∈ T then -WithZero.log (v.valuation F (x : F)) else 0) hS (fun v hv => by simp [hv])`. Establish `haU : a ∈ sUnits F (S ∪ T)`. Rewrite using `[mem_sUnits]`. Introduce `v hv`. Rewrite `hv` using `[Finset.mem_union, not_or]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[ha v hv.1]`. Simplify using `[hv.2]`. Establish `hy : ∀ v ∈ T, v.valuation F ((a * x : Fˣ) : F) = 1`. Introduce `v hv`. Establish `hx0 : v.valuation F (x : F) ≠ 0` using `by simp`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[Units.val_mul, map_mul, ha v (hTS v hv), if_pos hv, WithZero.exp_neg, WithZero.exp_log hx0, inv_mul_cancel₀ hx0]`. Take `⟨u, hu, huA⟩` from `hA (T.filter fun v => ¬ IsSquare (algebraMap F (v.adicCompletion F) ((a * x : Fˣ) : F)))`. Establish `huU : u ∈ sUnits F (S ∪ T)`. Rewrite `hu`, the goal using `[mem_sUnits]`. Introduce `v hv`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hu v fun h => hv (Finset.mem_union_left _ h)`. Establish `hsq : u * (a * x) ∈ finSq F T`. Simplify using `only [finSq, Subgroup.mem_iInf]`. Introduce `v hv`. Rewrite using `[mem_sqSub, Units.val_mul, map_mul]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h` using `huA v hv`. Rewrite `h` using `[Finset.mem_filter]`. Distinguish the cases in `hs : IsSquare (algebraMap F (v.adicCompletion F) ((a * x : Fˣ) : F))`. Conclude with `(h.2 fun hh => hh.2 hs).mul hs`. Use `isSquare_mul_of_nonsquare_units F v ?_ _ _ ?_ ?_ (fun hh => h.1 hh ⟨hv, hs⟩) hs` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← map_ofNat (algebraMap F (v.adicCompletion F)) 2, hval]`. Conclude with `(hS v (hTS v hv)).1`. Rewrite using `[hval]`. Conclude with `(mem_sUnits F S u).1 hu v (hTS v hv)`. Rewrite using `[hval]`.
-
-Conclude with `hy v hv`. Establish `hx : x = (u * a)⁻¹ * (u * (a * x))` using `by group`. Rewrite using `[hx]`. Conclude with `Subgroup.mul_mem_sup (inv_mem (mul_mem huU haU)) hsq`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sUnits_union_sup_finSq_eq_top :
     ∀ (F : Type) [Field F] [NumberField F] [DecidableEq (HeightOneSpectrum (𝓞 F))] (S T : Finset (HeightOneSpectrum (𝓞 F))), admitted F S → Disjoint S T → (∀ A : Finset (HeightOneSpectrum (𝓞 F)), ∃ u ∈ sUnits F S, ∀ v ∈ T, (IsSquare (algebraMap F (v.adicCompletion F) (u : F)) ↔ v ∉ A)) → sUnits F (S ∪ T) ⊔ finSq F T = ⊤ := by

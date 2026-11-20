@@ -14,13 +14,13 @@ attribute [local instance] MvPolynomial.gradedAlgebra
 namespace ComplexMetric
 
 /- English proof (translation)
-Introduce `A _ N ρ`. Rewrite using `[continuous_iff_isClosed]`. Introduce `Z hZ`. Set `Z' : Set (ProjectiveSpectrum (ProjSpace.grading A N))` to `Z`. Establish `hZ' : IsClosed Z'` using `hZ`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `e : Z' = ProjectiveSpectrum.zeroLocus _ (ProjectiveSpectrum.vanishingIdeal Z' : Set (MvPolynomial (Fin (N + 1)) A))`. Rewrite using `[ProjectiveSpectrum.zeroLocus_vanishingIdeal_eq_closure, hZ'.closure_eq]`. Establish `hpre : (projPoint ρ : CP N → projectiveSpace A N) ⁻¹' Z = ⋂ d, ⋂ f ∈ {f | f ∈ ProjSpace.grading A N d ∧ f ∈ ProjectiveSpectrum.vanishingIdeal Z'}, {v : CP N | f ∈ (projPoint ρ v).asHomogeneousIdeal}`. Use extensionality with `v`. Simplify using `only [Set.mem_preimage, Set.mem_iInter, Set.mem_ofPred_eq, and_imp]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Express the relevant statement in the definitionally equal form `projPoint ρ v ∈ Z' ↔ _`. Use `conv_lhs => rw [e]`. Express the relevant statement in the definitionally equal form `(ProjectiveSpectrum.vanishingIdeal Z' : Set (MvPolynomial (Fin (N + 1)) A)) ⊆ (projPoint ρ v).asHomogeneousIdeal ↔ _`. Prove the components needed by the constructor for the conclusion. Introduce `h d f _ hf`.
+Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `h hf`. Introduce `h`. Conclude with `ProjScheme.le_of_homogeneous _ _ h`. Rewrite using `[hpre]`. Conclude with `isClosed_iInter fun d => isClosed_biInter fun f hf => isClosed_setOf_mem_projPoint ρ hf.1`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ProjPointContinuous.proof : ProjPointContinuous.Statement.{u} := by
   intro A _ N ρ

@@ -4,19 +4,17 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AlgebraTools.EqOne
 open MvPolynomial Equiv UpperTheory.V.AlgebraTools.Hk
 
 /- English proof (translation)
-Introduce `n p h1 hstep`. Take `⟨hA, hB, -, -, -⟩` from `UpperTheory.V.AlgebraTools.hkInv n`. Establish `red : ∀ w : Perm (Fin n), w ≠ 1 → ∃ w', invN w = invN w' + 1 ∧ (p w' → p w)`. Introduce `w hw`. Take `⟨a, c, hac, hlt⟩` from `hB w hw`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hlt' : (swap a c * w)⁻¹ a < (swap a c * w)⁻¹ c`. Rewrite using `[mul_inv_rev, swap_inv, Perm.mul_apply, Perm.mul_apply, swap_apply_left, swap_apply_right]`. Conclude with `hlt`. Establish `hw' : swap a c * (swap a c * w) = w` using `swap_mul_self_mul a c w`. Use `⟨swap a c * w, ?_, fun hp => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `(hA a c hac _ hlt').2.2` as an intermediate fact. Rewrite `this` using `[hw']`. Then use the resulting hypothesis. Use `hstep a c hac _ hlt' hp` as an intermediate fact. Rewrite `this` using `[hw']`. Then use the resulting hypothesis. Establish `key : ∀ k, ∀ w : Perm (Fin n), invN w = k → p w`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `k`. Proceed by induction on `k with`. Consider the case `zero`. Introduce `w hw`. Distinguish the cases in `h : w = 1`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Substitute `h` using the available equality. Conclude with `h1`. Take `⟨w', e, -⟩` from `red w h`. It suffices to derive a contradiction. Use linear arithmetic over natural numbers and integers.
+Extract witnesses or component facts from the available result. It suffices to derive a contradiction. Use linear arithmetic over natural numbers and integers. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Consider the case `succ k ih`. Introduce `w hw`. Distinguish the cases in `h : w = 1`. Substitute `h` using the available equality. Conclude with `h1`.
-
-Take `⟨w', e, hp⟩` from `red w h`. Conclude with `hp (ih w' (by omega))`. Conclude with `fun w => key _ w rfl`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Extract witnesses or component facts from the available result. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.AlgebraTools.hkInd :
     ∀ (n : ℕ) (p : Perm (Fin n) → Prop), p 1 →

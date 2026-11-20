@@ -33,9 +33,9 @@ variable {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] [MeasurableS
 variable {M : Model F E} {g : SplitG M.L} {r : ℕ} (hs : M.split = some g)
 
 /- English proof (translation)
-Unfold `ZZm`. Use extensionality with `a b`. Simplify using `only [Matrix.add_apply, Matrix.of_apply, cor]`. Use `split_ifs`. Establish `h0 : g.e.symm (-T / (g.q : F), T' / (g.q : F)) + g.e.symm (T / (g.q : F), -T' / (g.q : F)) = 0`.
+Replace the relevant objects with their definitions. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← map_add, Prod.mk_add_mk]`. Establish `e : (-T / (g.q : F) + T / (g.q : F), T' / (g.q : F) + -T' / (g.q : F)) = (0 : F × F)` using `Prod.ext (by simp [neg_div]) (by simp [neg_div])`. Rewrite using `[e, map_zero]`. Rewrite using `[add_assoc, h0, add_zero]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem zz_split (Zh : Matrix (Fin (r + 1)) (Fin (r + 1)) E) (T T' : F) :
     HermSp.ZZplusOf M Zh T T' = ZZm g Zh T T' +
@@ -55,23 +55,23 @@ theorem zz_split (Zh : Matrix (Fin (r + 1)) (Fin (r + 1)) E) (T T' : F) :
 include hs in
 
 /- English proof (translation)
-Establish `hq : ((g.q : F)) ≠ 0` using `fun h => g.q_irr.ne_zero (by ext; simpa using h)`. Establish `hcor1 : (Matrix.of fun a b => cor r a b (g.e.symm (T / (g.q : F), -T' / (g.q : F)))).map (ph1 g) = Formalism.L2.SG.LocalCountModules.UnitaryGroupMassFormula.LocCntUG.cornerM r (T / (g.q : F))`. Use extensionality with `a b`. Simplify using `only [Matrix.map_apply, Matrix.of_apply, cor, Formalism.L2.SG.LocalCountModules.UnitaryGroupMassFormula.LocCntUG.cornerM]`. Apply the tactic sequence `split_ifs <;> simp [firstProj_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `hcor2 : (Matrix.of fun a b => cor r a b (g.e.symm (T / (g.q : F), -T' / (g.q : F)))).map (ph2 g) = Formalism.L2.SG.LocalCountModules.UnitaryGroupMassFormula.LocCntUG.cornerM r (-T' / (g.q : F))`. Use extensionality with `a b`. Simplify using `only [Matrix.map_apply, Matrix.of_apply, cor, Formalism.L2.SG.LocalCountModules.UnitaryGroupMassFormula.LocCntUG.cornerM]`. Apply the tactic sequence `split_ifs <;> simp [secondProj_apply]`. Establish `hd1 : (Zh.map (ph1 g)).det = ph1 g Zh.det`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Rewrite using `[RingHom.map_det, RingHom.mapMatrix_apply]`. Establish `hd2 : (Zh.map (ph2 g)).det = ph2 g Zh.det`. Rewrite using `[RingHom.map_det, RingHom.mapMatrix_apply]`. Establish `hs1 : ((Zh.map (ph1 g)).submatrix Fin.castSucc Fin.castSucc).det = ph1 g (Zh.submatrix Fin.castSucc Fin.castSucc).det`. Rewrite using `[Matrix.submatrix_map, RingHom.map_det, RingHom.mapMatrix_apply]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hs2 : ((Zh.map (ph2 g)).submatrix Fin.castSucc Fin.castSucc).det = ph2 g (Zh.submatrix Fin.castSucc Fin.castSucc).det`. Rewrite using `[Matrix.submatrix_map, RingHom.map_det, RingHom.mapMatrix_apply]`. Establish `e1 : ph1 g (HermSp.ZZplusOf M Zh T T').det = ((g.q : F)⁻¹) ^ (r + 1) * (ph1 g Zh.det + T * ph1 g (Zh.submatrix Fin.castSucc Fin.castSucc).det)`. Rewrite using `[RingHom.map_det, RingHom.mapMatrix_apply, zz_split, Matrix.map_add _ (map_add _), zzMinus_firstProj_smul hs, hcor1, Formalism.L2.SG.LocalCountModules.UnitaryGroupMassFormula.LocCntUG.det_add_cornerM]`. Establish `es : ∀ (c : F) (A : Matrix (Fin (r + 1)) (Fin (r + 1)) F), ((c • A).submatrix Fin.castSucc Fin.castSucc).det = c ^ r * (A.submatrix Fin.castSucc Fin.castSucc).det`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `c A`. Establish `: (c • A).submatrix Fin.castSucc Fin.castSucc = c • A.submatrix Fin.castSucc Fin.castSucc`. Use extensionality with `i j`. Both sides reduce to the same expression. Rewrite using `[this, Matrix.det_smul, Fintype.card_fin]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.det_smul, Fintype.card_fin, es, hd1, hs1]`. Expand and normalize the polynomial expressions, which then agree. Establish `e2 : ph2 g (HermSp.ZZplusOf M Zh T T').det = (-((g.q : F)⁻¹)) ^ (r + 1) * (ph2 g Zh.det + T' * ph2 g (Zh.submatrix Fin.castSucc Fin.castSucc).det)`. Rewrite using `[RingHom.map_det, RingHom.mapMatrix_apply, zz_split, Matrix.map_add _ (map_add _), zzMinus_secondProj_transpose hs, hcor2, Formalism.L2.SG.LocalCountModules.UnitaryGroupMassFormula.LocCntUG.det_add_cornerM]`. Establish `es : ∀ (c : F) (A : Matrix (Fin (r + 1)) (Fin (r + 1)) F), ((c • A).submatrix Fin.castSucc Fin.castSucc).det = c ^ r * (A.submatrix Fin.castSucc Fin.castSucc).det`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `c A`. Establish `: (c • A).submatrix Fin.castSucc Fin.castSucc = c • A.submatrix Fin.castSucc Fin.castSucc`. Use extensionality with `i j`. Both sides reduce to the same expression. Rewrite using `[this, Matrix.det_smul, Fintype.card_fin]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Establish `et : ∀ A : Matrix (Fin (r + 1)) (Fin (r + 1)) F, (A.transpose.submatrix Fin.castSucc Fin.castSucc).det = (A.submatrix Fin.castSucc Fin.castSucc).det`. Introduce `A`. Rewrite using `[← Matrix.transpose_submatrix, Matrix.det_transpose]`. Rewrite using `[Matrix.det_smul, Fintype.card_fin, es, Matrix.det_transpose, et, hd2, hs2]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[isUnit_iff_ph (g := g), e1, e2, mul_ne_zero_iff, mul_ne_zero_iff]`. Simplify using `only [ne_eq, pow_eq_zero_iff', inv_eq_zero, neg_eq_zero, hq, false_and, not_false_eq_true, true_and]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem zz_unit_iff (Zh : Matrix (Fin (r + 1)) (Fin (r + 1)) E) (T T' : F) :
     IsUnit (HermSp.ZZplusOf M Zh T T').det ↔
@@ -130,7 +130,7 @@ theorem zz_unit_iff (Zh : Matrix (Fin (r + 1)) (Fin (r + 1)) E) (T T' : F) :
   simp only [ne_eq, pow_eq_zero_iff', inv_eq_zero, neg_eq_zero, hq, false_and, not_false_eq_true, true_and]
 
 /- English proof (translation)
-Unfold `dlast`. Rewrite using `[Matrix.det_diagonal, Finset.prod_ite_eq']`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem dlast_det {K : Type} [CommRing K] (δ : K) : (dlast r δ).det = δ := by
   unfold dlast
@@ -138,7 +138,7 @@ theorem dlast_det {K : Type} [CommRing K] (δ : K) : (dlast r δ).det = δ := by
   simp
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[dlast, Matrix.mul_diagonal, Fin.castSucc_ne_last]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem head_mul_dlast {K : Type} [CommRing K] (A : Matrix (Fin (r + 1)) (Fin (r + 1)) K) (δ : K) :
     (A * dlast r δ).submatrix Fin.castSucc Fin.castSucc = A.submatrix Fin.castSucc Fin.castSucc := by

@@ -7,23 +7,21 @@ open Matrix
 namespace GlobalTheory.Hk3.GramSep
 
 /- English proof (translation)
-Introduce `L _ _ ϖ σ δ hv hδ n n' r JT a y M e Γ hJT hya haM hΓ`. Establish `hmem : ∀ x : L, x ∈ Formalism.UG.intL L ↔ Valued.v x ≤ 1` using `fun _ => Iff.rfl`. Use `set N := y * M with hNdef`. Establish `hNe : N = (y * (a : Matrix (Fin n) (Fin n) L)) * (((a⁻¹ : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) * M)`. Rewrite using `[hNdef, Matrix.mul_assoc, ← Matrix.mul_assoc (a : Matrix (Fin n) (Fin n) L)]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: (a : Matrix (Fin n) (Fin n) L) * ((a⁻¹ : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) = 1`. Rewrite using `[← Units.val_mul, mul_inv_cancel, Units.val_one]`. Rewrite using `[this, Matrix.one_mul]`. Establish `hN : ∀ q k, N q k * ϖ ^ e k ∈ Formalism.UG.intL L`. Introduce `q k`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hNe, Matrix.mul_apply, Finset.sum_mul]`. Use `Subring.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Rewrite using `[mul_assoc]`. Conclude with `Subring.mul_mem _ (hya q i) (haM i k)`. Establish `hNσ : ∀ p j, σ (N p j) * ϖ ^ e j ∈ Formalism.UG.intL L`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `p j`. Establish `h` using `hN p j`. Rewrite `h`, the goal using `[hmem]`. Rewrite using `[map_mul, hv]`. Rewrite `h` using `[map_mul]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `h`. Establish `hG : ∀ j k, (Formalism.UG.cT σ N * (JT : Matrix (Fin n') (Fin n') L) * N) j k * ϖ ^ (e j + e k) ∈ Formalism.UG.intL L`. Introduce `j k`. Rewrite using `[Matrix.mul_apply, Finset.sum_mul]`. Use `Subring.sum_mem _ fun q _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[Matrix.mul_apply, Finset.sum_mul, Finset.sum_mul]`. Use `Subring.sum_mem _ fun p _ => ?_` and prove the remaining obligations. Establish `hc : Formalism.UG.cT σ N j p = σ (N p j)` using `rfl`. Rewrite using `[hc, pow_add]`. Establish `: σ (N p j) * (JT : Matrix (Fin n') (Fin n') L) p q * N q k * (ϖ ^ e j * ϖ ^ e k) = (σ (N p j) * ϖ ^ e j) * (JT : Matrix (Fin n') (Fin n') L) p q * (N q k * ϖ ^ e k)` using `by ring`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Conclude with `Subring.mul_mem _ (Subring.mul_mem _ (hNσ p j) (hJT p q)) (hN q k)`. Use `Subring.mul_mem _ hδ ?_` and prove the remaining obligations. Rewrite using `[Matrix.trace]`. Use `Subring.sum_mem _ fun k _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Matrix.diag_apply, Matrix.mul_apply]`. Use `Subring.sum_mem _ fun j _ => ?_` and prove the remaining obligations. Rewrite using `[hmem, map_mul]`. Establish `h1` using `hΓ.2 k j`. Establish `h2` using `hG j k`.
-
-Rewrite `h2` using `[hmem, map_mul, map_pow]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_comm, add_comm]`. Use `_ ≤ 1 := h2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem trace_skewHermitian_gram_integral : ∀ (L : Type) [Field L] [Valued L (WithZero (Multiplicative ℤ))] (ϖ : L) (σ : L →+* L) (δ : L), (∀ x, Valued.v (σ x) = Valued.v x) → δ ∈ Formalism.UG.intL L →
   ∀ (n n' r : ℕ) (JT : GL (Fin n') L) (a : GL (Fin n) L) (y : Matrix (Fin n') (Fin n) L)

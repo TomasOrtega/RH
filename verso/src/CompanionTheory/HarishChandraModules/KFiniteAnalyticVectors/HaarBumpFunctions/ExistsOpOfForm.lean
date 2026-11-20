@@ -12,9 +12,9 @@ variable {G : Type} [Group G] {H H' : Type} [NormedAddCommGroup H] [InnerProduct
 
 omit [CompleteSpace H] in
 /- English proof (translation)
-Establish `h` using `(⟨(σ g : H →ₗ[ℂ] H), hiso g⟩ : H →ₗᵢ[ℂ] H).inner_map_map v (σ g⁻¹ w)`. Establish `e : σ g (σ g⁻¹ w) = w`. Rewrite using `[← ContinuousLinearMap.mul_apply, ← map_mul, mul_inv_cancel, map_one]`. Both sides reduce to the same expression. Rewrite using `[← h]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Use `show _ = ⟪σ g v, σ g (σ g⁻¹ w)⟫_ℂ`. Rewrite using `[e]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inner_map_left (hiso : ∀ g v, ‖σ g v‖ = ‖v‖) (g : G) (v w : H) : ⟪σ g v, w⟫_ℂ = ⟪v, σ g⁻¹ w⟫_ℂ := by
   have h := (⟨(σ g : H →ₗ[ℂ] H), hiso g⟩ : H →ₗᵢ[ℂ] H).inner_map_map v (σ g⁻¹ w)
@@ -25,25 +25,23 @@ theorem inner_map_left (hiso : ∀ g v, ‖σ g v‖ = ‖v‖) (g : G) (v w : H
   rw [e]
 
 /- English proof (translation)
-Set `e : WithLp 2 (H' × H) ≃L[ℂ] H' × H` to `WithLp.prodContinuousLinearEquiv 2 ℂ H' H`. Set `V : Submodule ℂ (WithLp 2 (H' × H))` to `Γ.comap (e : WithLp 2 (H' × H) →ₗ[ℂ] H' × H)`. Establish `hV : IsClosed (V : Set (WithLp 2 (H' × H)))` using `hcl.preimage e.continuous`. Establish `: CompleteSpace V` using `hV.completeSpace_coe`. Set `U : G → H' × H → WithLp 2 (H' × H)` to `fun g p => e.symm (σ' g p.1, σ g p.2)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hQ : ∀ g (p : H' × H), V.starProjection (U g p) = U g (e (V.starProjection (e.symm p)))`. Introduce `g p`. Use `Submodule.eq_starProjection_of_mem_of_inner_eq_zero ?_ fun w hw => ?_` and prove the remaining obligations. Conclude with `hinv g _ (V.starProjection_apply_mem (e.symm p))`. Establish `h1` using `V.starProjection_inner_eq_zero (e.symm p) (U g⁻¹ (e w)) (hinv g⁻¹ _ hw)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← h1, WithLp.prod_inner_apply, WithLp.prod_inner_apply]`. Use `show ⟪σ' g p.1 - σ' g _, _⟫_ℂ + ⟪σ g p.2 - σ g _, _⟫_ℂ = _`. Rewrite using `[← map_sub, ← map_sub, inner_map_left hiso', inner_map_left hiso]`. Both sides reduce to the same expression. Set `Q : H' →L[ℂ] H' × H` to `(e : WithLp 2 (H' × H) →L[ℂ] H' × H) ∘L V.starProjection ∘L (e.symm : H' × H →L[ℂ] WithLp 2 (H' × H)) ∘L ContinuousLinearMap.inl ℂ H' H`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hQa : ∀ y, Q y = e (V.starProjection (e.symm (y, 0)))` using `fun y => rfl`. Establish `hQg : ∀ g y, Q (σ' g y) = (σ' g (Q y).1, σ g (Q y).2)`. Introduce `g y`. Use `hQ g (y, 0)` as an intermediate fact. Simplify using `only [U, map_zero] at this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[hQa, this]`. Both sides reduce to the same expression. Establish `hQm : ∀ y, Q y ∈ Γ` using `fun y => V.starProjection_apply_mem _`. Take `⟨c, hc⟩` from `hs (ContinuousLinearMap.fst ℂ H' H ∘L Q) fun g v => congrArg Prod.fst (hQg g v)`. Establish `hc' : ∀ y, (Q y).1 = c • y` using `hc`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `hc0 : c ≠ 0`. Introduce and unpack `rfl`. Use `set q := V.starProjection (e.symm (y₀, 0)) with hq`. Establish `h1` using `V.starProjection_inner_eq_zero (e.symm (y₀, 0)) q (V.starProjection_apply_mem _)`. Establish `h2` using `V.starProjection_inner_eq_zero (e.symm (y₀, 0)) (e.symm (y₀, z₀)) h₀`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h1`, `h2` using `[← hq, inner_sub_left]`. Establish `h3 : ⟪e.symm (y₀, 0), q⟫_ℂ = 0`. Rewrite using `[WithLp.prod_inner_apply]`. Use `show ⟪y₀, (Q y₀).1⟫_ℂ + ⟪(0 : H), _⟫_ℂ = 0`. Rewrite using `[hc']`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Rewrite `h1` using `[h3, zero_sub, neg_eq_zero, inner_self_eq_zero]`. Rewrite `h2` using `[h1, inner_zero_left, sub_zero, WithLp.prod_inner_apply]`. Establish `h4 : ⟪y₀, y₀⟫_ℂ + ⟪(0 : H), z₀⟫_ℂ = 0` using `h2`. Rewrite `h4` using `[inner_zero_left, add_zero, inner_self_eq_zero]`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Conclude with `hy₀ h4`. Use `⟨c⁻¹ • (ContinuousLinearMap.snd ℂ H' H ∘L Q), fun g y => ?_, fun y => ?_⟩` and prove the remaining obligations. Use `show c⁻¹ • (Q (σ' g y)).2 = σ g (c⁻¹ • (Q y).2)`. Rewrite using `[hQg, map_smul]`. Use `Γ.smul_mem c⁻¹ (hQm y)` as an intermediate fact.
-
-Use `this using 1` and compare the differences between its conclusion and the goal. Use `Prod.ext ?_ rfl` and prove the remaining obligations. Use `show y = c⁻¹ • (Q y).1`. Rewrite using `[hc', smul_smul, inv_mul_cancel₀ hc0, one_smul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_graph (hiso : ∀ g v, ‖σ g v‖ = ‖v‖) (hiso' : ∀ g v, ‖σ' g v‖ = ‖v‖)
     (hs : ∀ T : H' →L[ℂ] H', (∀ g v, T (σ' g v) = σ' g (T v)) → ∃ c : ℂ, ∀ v, T v = c • v)
@@ -102,13 +100,13 @@ theorem exists_graph (hiso : ∀ g v, ‖σ g v‖ = ‖v‖) (hiso' : ∀ g v, 
     rw [hc', smul_smul, inv_mul_cancel₀ hc0, one_smul]
 
 /- English proof (translation)
-Set `Γ : Submodule ℂ (H' × H)` to `{ carrier := {p | ∀ x ∈ S, ∀ w, (∀ y ∈ S', B x y = ⟪y, w⟫_ℂ) → ⟪p.2, x⟫_ℂ = ⟪p.1, w⟫_ℂ} add_mem' := fun {p q} hp hq x hx w hw => by`. Simplify using `only [Prod.snd_add, Prod.fst_add, inner_add_left, hp x hx w hw, hq x hx w hw]`. Use the proof step `zero_mem' := fun x _ w _ => by simp`. Use the proof step `smul_mem' := fun c p hp x hx w hw => by`. Simplify using `only [Prod.smul_snd, Prod.smul_fst, inner_smul_left, hp x hx w hw] }`.
+Introduce a local definition for the expression. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcl : IsClosed (Γ : Set (H' × H))`. Establish `: (Γ : Set (H' × H)) = ⋂ x ∈ S, ⋂ w, ⋂ _ : (∀ y ∈ S', B x y = ⟪y, w⟫_ℂ), {p : H' × H | ⟪p.2, x⟫_ℂ = ⟪p.1, w⟫_ℂ}`. Use extensionality with `p`. Simplify using `[Γ]`. Rewrite using `[this]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `isClosed_biInter fun x _ => isClosed_iInter fun w => isClosed_iInter fun _ => isClosed_eq (continuous_snd.inner continuous_const) (continuous_fst.inner continuous_const)`. Establish `hinv : ∀ g, ∀ p ∈ Γ, (σ' g p.1, σ g p.2) ∈ Γ`. Introduce `g p hp x hx w hw`. Use `show ⟪σ g p.2, x⟫_ℂ = ⟪σ' g p.1, w⟫_ℂ`. Rewrite using `[inner_map_left hiso, inner_map_left hiso']`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result.
 
-Use `hp _ (hS _ x hx) _ fun y hy => ?_` and prove the remaining obligations. Rewrite using `[← hB g _ (hS _ x hx) y hy, ← inner_map_left hiso', ← hw _ (hS' g y hy), ← ContinuousLinearMap.mul_apply, ← map_mul, mul_inv_cancel, map_one]`. Both sides reduce to the same expression. Take `⟨T, hT, hΓ⟩` from `exists_graph hiso hiso' hs Γ hcl hinv (y₀ := y₀) (z₀ := z₀) (fun x hx w hw => (h₀ x hx).symm.trans (hw y₀ hy₀S)) hy₀`. Conclude with `⟨T, hT, fun x hx w hw y hy => (hw y hy).trans (hΓ y x hx w hw).symm⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_op_of_form (hiso : ∀ g v, ‖σ g v‖ = ‖v‖) (hiso' : ∀ g v, ‖σ' g v‖ = ‖v‖)
     (hs : ∀ T : H' →L[ℂ] H', (∀ g v, T (σ' g v) = σ' g (T v)) → ∃ c : ℂ, ∀ v, T v = c • v)

@@ -13,19 +13,17 @@ open scoped ENNReal
 namespace GlobalTheory.LevGeo
 
 /- English proof (translation)
-Establish `hinv : A⁻¹ * A = 1` using `inv_mul_cancel₀ hA`. Establish `hA1 : ∀ b ∈ A⁻¹, ∀ x ∈ X.Λ, b • x ∈ X.L'`. Introduce `b hb x hx`. Rewrite `hx` using `[hΛ]`. Proceed by induction on `hx using Submodule.span_induction with`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Proceed by induction.
 
-Consider the case `mem x hx`. Take `⟨a, ha, u, hu, rfl⟩` from `hx`. Establish `hm : b * a ∈ A⁻¹ * A` using `FractionalIdeal.mul_mem_mul hb ha`. Rewrite `hm` using `[hinv, FractionalIdeal.mem_one_iff]`. Take `⟨z, hz⟩` from `hm`.
+Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[smul_smul, ← hz, algebraMap_smul]`. Conclude with `X.L'.smul_mem z hu`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [smul_add]`. Conclude with `add_mem hx hy`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Consider the case `smul c x _ hx => rw [smul_comm]`. Conclude with `X.L'.smul_mem c hx`. Introduce `γ hγ v hv`. Establish `key : ∀ y ∈ ((A⁻¹ : FractionalIdeal (nonZeroDivisors (𝓞 E)) E) : Submodule (𝓞 E) E) * (A : Submodule (𝓞 E) E), (γ : Matrix (Fin r) (Fin r) E).mulVec (y • v) ∈ X.L'`. Introduce `y hy`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Submodule.mul_induction_on hy (fun b hb a ha => ?_) (fun y1 y2 h1 h2 => ?_)` and prove the remaining obligations. Establish `hav : a • v ∈ X.Λ`. Rewrite using `[hΛ]`. Conclude with `Submodule.subset_span ⟨a, ha, v, hv, rfl⟩`. Establish `h1` using `((X.Γ_stab γ hγ).2 (a • v)).1 hav`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_smul, Matrix.mulVec_smul]`. Conclude with `hA1 b hb _ h1`. Rewrite using `[add_smul, Matrix.mulVec_add]`. Conclude with `add_mem h1 h2`. Establish `h1 : (1 : E) ∈ ((A⁻¹ : FractionalIdeal (nonZeroDivisors (𝓞 E)) E) : Submodule (𝓞 E) E) * (A : Submodule (𝓞 E) E)`.
-
-Rewrite using `[← FractionalIdeal.coe_mul, hinv]`. Conclude with `(FractionalIdeal.mem_one_iff _).2 ⟨1, map_one _⟩`. Use `key 1 h1` as an intermediate fact. Rewrite `this` using `[one_smul]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem gam_keeps_L' {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} (X : DataX E r)
     (A : FractionalIdeal (nonZeroDivisors (𝓞 E)) E) (hA : A ≠ 0)
@@ -65,7 +63,7 @@ theorem gam_keeps_L' {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ
   rwa [one_smul] at this
 
 /- English proof (translation)
-Establish `key : ∀ s : ℝ, 0 < s → s * s = d → m * (n * d) * (2 * (1 / (n * s))) = 2 * m * s`. Introduce `s hs hss`. Substitute `hss` using the available equality. Clear the denominators using the available nonvanishing facts. Conclude with `key _ (Real.sqrt_pos.2 hd) (Real.mul_self_sqrt hd.le)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem level_mul_two_div (m n d : ℝ) (hn : 0 < n) (hd : 0 < d) :
     m * (n * d) * (2 * (1 / (n * Real.sqrt d))) = 2 * m * Real.sqrt d := by
@@ -76,25 +74,23 @@ theorem level_mul_two_div (m n d : ℝ) (hn : 0 < n) (hd : 0 < d) :
   exact key _ (Real.sqrt_pos.2 hd) (Real.mul_self_sqrt hd.le)
 
 /- English proof (translation)
-Introduce `D j H Dw l Xo c U dict h σ hσ k`. Establish `hP` using `GlobalTheory.T.principalLevel_arithmeticGroups_contain_congruence D j H Dw l Xo c U dict h σ hσ`. Establish `hN : 0 < Ideal.absNorm D.host.ccK` using `Nat.pos_of_ne_zero fun h0 => D.host.ccK_ne_bot (Ideal.absNorm_eq_zero_iff.1 h0)`. Establish `hd : 0 < D.host.d` using `by have := D.host.qd_big.2; omega`. Establish `hN' : (0 : ℝ) < Ideal.absNorm D.host.ccK` using `by exact_mod_cast hN`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hd' : (0 : ℝ) < D.host.d` using `by exact_mod_cast hd`. Establish `hs` using `Real.sqrt_pos.2 hd'`. Establish `hx1 : xiR D ≤ 1`. Rewrite using `[GlobalTheory.TransvModel.xiR_eq]`. Establish `h1 : (1 : ℝ) ≤ Ideal.absNorm D.host.ccK` using `by exact_mod_cast hN`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : (1 : ℝ) ≤ Real.sqrt D.host.d`. Rewrite using `[Real.one_le_sqrt]`. Conclude with `hd` after adjusting the coercions. Rewrite using `[div_le_one (by positivity)]`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Establish `habs` using `h.xiAbs σ hσ k`. Establish `hperf` using `GlobalTheory.traceForm_integral_perfect_of_isUnf _ _ _ _ _ _ σ _ (Formalism.L2.PjFree.Unf.ofPj (U σ)) ((Formalism.L2.PjFree.isUnf_ofPj _).2 (h.unf σ hσ)) k`. Establish `hξ` using `GlobalTheory.eq_or_eq_neg_of_purelyImaginary_of_norm_eq _ D.host.xi0 ((U σ).X k).ξ0 D.host.φ₀ (GlobalTheory.LatticeData.flagDomainConj_hostXi_eq_neg D) ((U σ).X k).ξ0_im (habs _).symm`. Establish `hone : FractionalIdeal.spanSingleton (nonZeroDivisors (𝓞 D.host.E)) ((U σ).X k).ξ0 * D.host.AA * D.host.AAbar * (differentIdeal ℤ (𝓞 D.host.E) : FractionalIdeal (nonZeroDivisors (𝓞 D.host.E)) D.host.E) = 1`. Establish `h1` using `Formalism.IndefR.Fin.factPrincipalDatum D.R D.host`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `hξ with e | e` into its components or cases. Rewrite using `[e]`. Conclude with `h1`. Rewrite using `[e, show -D.host.xi0 = (-1 : (𝓞 D.host.E)ˣ) • D.host.xi0 by simp, ← (FractionalIdeal.spanSingleton_eq_spanSingleton.2 ⟨-1, rfl⟩)]`. Conclude with `h1`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hA : D.host.AA ≠ 0`. Introduce `e`. Rewrite `hone` using `[e]`. Simplify using `at hone`. Establish `hM : 0 < l.M` using `by have := l.three_le; omega`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Take `⟨Xx, h1, h2, h3⟩` from `GlobalTheory.exists_dataX_of_perfect_traceForm _ _ ((U σ).X k) D.host.AA D.host.AAbar (xiR D) l.M (fun a => by`. Rewrite using `[GlobalTheory.LatticeData.cc_eq_conj]`. Conclude with `⟨conj_mem_AA D, fun ha => by simpa only [conj_conj] using conj_mem_AAbar D ha⟩)`. Use `hone habs hx1 hperf.1 hperf.2 hM (hP k)`. Set `Xy : DataX D.host.E D.R.r` to `{ Xx with k0 := 2 * xiR D minWeight_pos := by have := GlobalTheory.TransvModel.xiR_eq D; rw [this]; positivity k0_le := by linarith ξ0_abs := fun τ => by rw [show Xx.ξ0 = ((U σ).X k).ξ0 from congrArg _ h1, habs]; ring }`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hΛ : Xy.Λ = Submodule.span (𝓞 D.host.E) {v | ∃ a ∈ D.host.AA, ∃ u ∈ Xy.L', v = a • u}` using `h3`. Establish `hX0 : Xy.toData = (U σ).X k` using `h1`. Establish `habs' : ∀ τ : D.host.E →+* ℂ, ‖τ Xy.ξ0‖ = 1 / ((Ideal.absNorm D.host.ccK : ℝ) * Real.sqrt D.host.d)` using `fun τ => by`. Rewrite using `[← GlobalTheory.TransvModel.xiR_eq, ← habs τ, ← hX0]`. Use `⟨Xy, h1, h2, h3, gam_keeps_L' Xy _ hA hΛ, ((l.M * (Ideal.absNorm D.host.ccK * D.host.d) : ℕ) : ℝ), by positivity, ?_, fun v hv hiso b hb hbi => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `_ * (2 * xiR D) = _`. Rewrite using `[GlobalTheory.TransvModel.xiR_eq]`. Use `push_cast`. Conclude with `level_mul_two_div _ _ _ hN' hd'`. Use `GlobalTheory.TransvModel.transv_mem_of_span Xy (D.host.AA : Set D.host.E) hΛ (Ideal.absNorm D.host.ccK * D.host.d) (GlobalTheory.TransvModel.isIntegral_level_mul_kappa Xy.toData hN hd D.host.φ₀ (habs' _)) v hv hiso b hb hbi` as an intermediate fact.
-
-Establish `hg : Xy.g = l.M` using `h2`. Rewrite `this` using `[hg]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem exists_dataX_transv : ∀ (D : D7) (j : ℕ) (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host D.host.E) (Dw : Datum H) (l : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level H) (Xo : Moduli Dw l) (c : Coeff l) (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ D.R.r) (dict : ∀ σ : c.F →+* ℂ, GA D (D.sp.W j) → Σ k, Frame ((U σ).X k).Ψ D.R.r), Laws D j Xo c U dict → ∀ σ, GoodEmb c σ → ∀ k : (U σ).Comp, ∃ Xx : DataX D.host.E D.R.r, Xx.toData = (U σ).X k ∧ Xx.g = l.M ∧ Xx.Λ = Submodule.span (𝓞 D.host.E) {v | ∃ a ∈ D.host.AA, ∃ u ∈ Xx.L', v = a • u} ∧ (∀ γ ∈ Xx.Γ, ∀ v ∈ Xx.L', (γ : Matrix (Fin D.R.r) (Fin D.R.r) D.host.E).mulVec v ∈ Xx.L') ∧ ∃ M : ℝ, 0 < M ∧ M * Xx.k0 = 2 * l.M * Real.sqrt D.host.d ∧ ∀ v ∈ Xx.L', herm Xx.Gm v v = 0 → ∀ b : D.host.E, cc b = b → IsIntegral ℤ b → ∃ γ ∈ Xx.Γ, ∀ τ : Xx.Ψ, (γ : Matrix (Fin D.R.r) (Fin D.R.r) D.host.E).map τ.1 = Xx.flowMat v τ ((M : ℂ) * τ.1 b) := by
   intro D j H Dw l Xo c U dict h σ hσ k

@@ -9,17 +9,17 @@ open Classical
 namespace GlobalTheory.GJReg.FinReps
 
 /- English proof (translation)
-Introduce `k _ _ _ _ n t ht _ N M`. Establish `hN : t ^ N ≠ 0` using `pow_ne_zero _ ht`. Establish `hM : t ^ M ≠ 0` using `pow_ne_zero _ ht`. Use `set I : Set (Matrix (Fin n) (Fin n) k) := intM k (Fin n) (Fin n) with hI`. Establish `hIc : IsCompact I` using `isCompact_intMatrix (k := k) (m := Fin n) (n := Fin n)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hIo : IsOpen I` using `isOpen_intMatrix (k := k) (m := Fin n) (n := Fin n)`. Use `set S : Set (Matrix (Fin n) (Fin n) k) := {X | t ^ N • X ∈ I} with hS`. Establish `hSimg : S = (fun X => (t ^ N)⁻¹ • X) '' I`. Use extensionality with `X`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Assume the hypotheses and unpack their components.
 
-Introduce `hX; exact ⟨t ^ N • X, hX, by simp [smul_smul, inv_mul_cancel₀ hN]⟩`. Introduce and unpack `⟨E, hE, rfl⟩`. Use `show t ^ N • (t ^ N)⁻¹ • E ∈ I`. Simplify `hE` using `[smul_smul, mul_inv_cancel₀ hN]`. Establish `hSc : IsCompact S` using `by rw [hSimg]; exact hIc.image (continuous_const_smul _)`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `U : Matrix (Fin n) (Fin n) k → Set (Matrix (Fin n) (Fin n) k)` to `fun Y => (fun X => (t ^ M)⁻¹ • (X - Y)) ⁻¹' I`. Establish `hUo : ∀ Y ∈ S, IsOpen (U Y)` using `fun Y _ => hIo.preimage (by fun_prop : Continuous fun X : Matrix (Fin n) (Fin n) k => (t ^ M)⁻¹ • (X - Y))`. Establish `hcov : S ⊆ ⋃ Y ∈ S, U Y`. Introduce `X hX`. Use `Set.mem_biUnion hX ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Use `show (t ^ M)⁻¹ • (X - X) ∈ I`. Simplify using `only [sub_self, smul_zero]`. Introduce `i j`. Simplify using the standard rewrite rules. Take `⟨b, hbS, hbf, hsub⟩` from `hSc.elim_finite_subcover_image hUo hcov`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨hbf.toFinset, fun Y hY => hbS (hbf.mem_toFinset.1 hY), fun X hX => ?_⟩` and prove the remaining obligations. Take `⟨Y, hYb, hXY⟩` from `Set.mem_iUnion₂.1 (hsub hX)`. Use `⟨Y, hbf.mem_toFinset.2 hYb, (t ^ M)⁻¹ • (X - Y), hXY, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_smul, mul_inv_cancel₀ hM, one_smul]`. Normalize the expressions using the abelian group laws.
+Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem finite_reps_intM : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (n : ℕ) (t : k),
     t ≠ 0 → valuation k t < 1 → ∀ N M : ℕ, ∃ R : Finset (Matrix (Fin n) (Fin n) k),

@@ -13,13 +13,13 @@ namespace GlobalTheory.LocGrp
 open GlobalTheory.LocMod GlobalTheory.RootEx GlobalTheory.SplitWeil
 
 /- English proof (translation)
-Introduce `D k _ _ _ _ p n _ _ c ρ B s FA F hF h γ hh`. Take `⟨rfl, h0, hX, hz, hY⟩` from `hF`. Rewrite using `[embA_apply]`. Establish `eA : mt B.V (B.d.emb0 (B.o.emb (h, 1))) ⬝ (B.d.j0 ⬝ B.o.jA) = B.d.j0 ⬝ B.o.jA ⬝ mt B.A h`. Rewrite using `[cancel₂ (B.d.wittDecomp_anisotropicEmbedding_inclAnisotropic _), Matrix.mul_assoc, B.o.emb_jA, Matrix.mul_assoc]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `eB : mt B.V (B.d.emb0 (B.o.emb (h, 1))) ⬝ (B.d.j0 ⬝ B.o.jB) = B.d.j0 ⬝ B.o.jB`. Rewrite using `[cancel₂ (B.d.wittDecomp_anisotropicEmbedding_inclAnisotropic _), Matrix.mul_assoc, B.o.emb_jB, GlobalTheory.MixModel.mt_one, Matrix.mul_one]`. Establish `rA : B.d.j0 ⬝ B.o.jA = rat (B.d.i₀ * B.o.iA)` using `(rat_mul _ _).symm`. Establish `rB : B.d.j0 ⬝ B.o.jB = rat (B.d.i₀ * B.o.iB)` using `(rat_mul _ _).symm`. Rewrite `eA` using `[rA]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `eB` using `[rB]`. Use `⟨suppAt_wittLeviEmbedding B.d (suppAt_emb B.o hh.1), eq_embX F _ γ ((rat (B.d.i₀ * B.o.iA)).map p.π * FA.β) h0 (intertwine p eA hh) fun j => ?_⟩` and prove the remaining obligations. Break down `lt_trichotomy j.val ρ with hj | hj | hj` into its components or cases. Conclude with `fix_col (map_fix p (B.d.wittDecomp_anisotropicEmbedding_inclX _)) _ ⟨j.val, hj⟩ (hX _ j rfl)`. Use `fix_vec (map_fix p eB) s (Witness.prH p ∘ B.ζ) fun r => (hz j hj r).trans (congrArg (s * ·) ?_)` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[vecB, Matrix.mulVec_mulVec]`. Conclude with `RingHom.map_mulVec (Witness.prH p) _ _ r`. Conclude with `fix_col (map_fix p (B.d.wittDecomp_anisotropicEmbedding_inclY _)) _ ⟨2 * ρ - j.val, by omega⟩ (hY _ j (by simp only; omega))`.
+A detailed English derivation is pending.
 -/
 theorem isLoc_embA : ∀ (D : D7) (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (p : GlobalTheory.LocMod.Place D k) (n : Type) [Fintype n] [DecidableEq n] (c ρ : ℕ) (B : BesLev D ρ) (s : k) (FA : GlobalTheory.LocMod.Frame k B.A.rank n) (F : GlobalTheory.LocMod.Frame k B.V.rank (n ⊕ Fin c)), p.IsBesFrame B s FA F → ∀ (h : GA D B.A) (γ : GL n k), p.IsLoc FA h γ → p.IsLoc F (embA B.d B.o h) (GlobalTheory.RootEx.embX c γ) := by
   intro D k _ _ _ _ p n _ _ c ρ B s FA F hF h γ hh

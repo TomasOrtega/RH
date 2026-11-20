@@ -9,7 +9,7 @@ namespace ReciprocityTheory.PTheta.sphereQuadraticPositivity
 variable {ι : Type*} [Fintype ι]
 
 /- English proof (translation)
-Rewrite using `[mulVec_smul, smul_dotProduct, dotProduct_smul, smul_eq_mul, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem quad_smul (A : Matrix ι ι ℝ) (r : ℝ) (x : ι → ℝ) :
     (r • x) ⬝ᵥ (A *ᵥ (r • x)) = r ^ 2 * (x ⬝ᵥ (A *ᵥ x)) := by
@@ -17,7 +17,7 @@ theorem quad_smul (A : Matrix ι ι ℝ) (r : ℝ) (x : ι → ℝ) :
   ring
 
 /- English proof (translation)
-Rewrite using `[dotProduct_mulVec, vecMul_transpose]`. Conclude with `dotProduct_comm _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem quad_transpose (A : Matrix ι ι ℝ) (x : ι → ℝ) :
     x ⬝ᵥ (Aᵀ *ᵥ x) = x ⬝ᵥ (A *ᵥ x) := by
@@ -25,7 +25,7 @@ theorem quad_transpose (A : Matrix ι ι ℝ) (x : ι → ℝ) :
   exact dotProduct_comm _ _
 
 /- English proof (translation)
-Rewrite using `[mem_sphere_zero_iff_norm, norm_smul, norm_inv, norm_norm, inv_mul_cancel₀ (norm_ne_zero_iff.mpr hx)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem norm_inv_smul_mem_sphere {x : ι → ℝ} (hx : x ≠ 0) :
     ‖x‖⁻¹ • x ∈ Metric.sphere (0 : ι → ℝ) 1 := by
@@ -33,7 +33,7 @@ theorem norm_inv_smul_mem_sphere {x : ι → ℝ} (hx : x ≠ 0) :
     inv_mul_cancel₀ (norm_ne_zero_iff.mpr hx)]
 
 /- English proof (translation)
-Establish `h1` using `h _ (norm_inv_smul_mem_sphere hx)`. Rewrite `h1` using `[quad_smul]`. Establish `h2 : 0 ≤ ‖x‖⁻¹ ^ 2` using `by positivity`. Conclude with `pos_of_mul_pos_right h1 h2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem quad_pos_of_sphere (A : Matrix ι ι ℝ)
     (h : ∀ y ∈ Metric.sphere (0 : ι → ℝ) 1, 0 < y ⬝ᵥ (A *ᵥ y)) (x : ι → ℝ) (hx : x ≠ 0) :
@@ -44,9 +44,7 @@ theorem quad_pos_of_sphere (A : Matrix ι ι ℝ)
   exact pos_of_mul_pos_right h1 h2
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation. Establish `h` using `norm_le_pi_norm x i`. Rewrite `h` using `[Real.norm_eq_abs]`. Rewrite using `[← sq_abs]`. Conclude with `pow_le_pow_left₀ (abs_nonneg _) h 2`.
-
-Use `_ = (Fintype.card ι) * ‖x‖ ^ 2 := by simp`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_sq_le (x : ι → ℝ) : ∑ i, x i ^ 2 ≤ (Fintype.card ι) * ‖x‖ ^ 2 := by
   calc ∑ i, x i ^ 2 ≤ ∑ _i : ι, ‖x‖ ^ 2 := Finset.sum_le_sum fun i _ => by
@@ -57,21 +55,19 @@ theorem sum_sq_le (x : ι → ℝ) : ∑ i, x i ^ 2 ≤ (Fintype.card ι) * ‖x
     _ = (Fintype.card ι) * ‖x‖ ^ 2 := by simp
 
 /- English proof (translation)
-Establish `hF : Continuous (fun q : X × (ι → ℝ) => q.2 ⬝ᵥ (Mf q.1 *ᵥ q.2))` using `by fun_prop`. Establish `hKS : IsCompact (K ×ˢ Metric.sphere (0 : ι → ℝ) 1)` using `hK.prod (isCompact_sphere 0 1)`. Break down `(K ×ˢ Metric.sphere (0 : ι → ℝ) 1).eq_empty_or_nonempty with he | hne` into its components or cases. Use `⟨1, one_pos, fun p hp x => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hx : x = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Simplify using `[hx]`. It suffices to derive a contradiction. Establish `hy : (p, ‖x‖⁻¹ • x) ∈ K ×ˢ Metric.sphere (0 : ι → ℝ) 1` using `⟨hp, norm_inv_smul_mem_sphere hx⟩`. Rewrite `hy` using `[he]`. Conclude with `hy`.
+Simplify using the standard rewrite rules. It suffices to derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨q0, hq0, hmin⟩` from `hKS.exists_isMinOn hne hF.continuousOn`. Establish `hq0S : q0.2 ∈ Metric.sphere (0 : ι → ℝ) 1` using `hq0.2`. Establish `hne0 : q0.2 ≠ 0`. Introduce `h`. Rewrite `hq0S` using `[h]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `at hq0S`. Establish `hmpos : 0 < q0.2 ⬝ᵥ (Mf q0.1 *ᵥ q0.2)`. Establish `h0` using `(Matrix.posDef_iff_dotProduct_mulVec.mp (hpos q0.1 hq0.1)).2 hne0`. Simplify using `using h0`. Use `⟨q0.2 ⬝ᵥ (Mf q0.1 *ᵥ q0.2) / (Fintype.card ι + 1), by positivity, fun p hp x => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hx : x = 0`. Simplify using `[hx]`. Establish `hy : (p, ‖x‖⁻¹ • x) ∈ K ×ˢ Metric.sphere (0 : ι → ℝ) 1` using `⟨hp, norm_inv_smul_mem_sphere hx⟩`. Establish `h1 : q0.2 ⬝ᵥ (Mf q0.1 *ᵥ q0.2) ≤ (‖x‖⁻¹ • x) ⬝ᵥ (Mf p *ᵥ (‖x‖⁻¹ • x))` using `isMinOn_iff.mp hmin _ hy`. Rewrite `h1` using `[quad_smul]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hn : 0 < ‖x‖` using `norm_pos_iff.mpr hx`. Establish `h3 : ‖x‖⁻¹ ^ 2 * ‖x‖ ^ 2 = 1` using `by field_simp`. Establish `h2 : q0.2 ⬝ᵥ (Mf q0.1 *ᵥ q0.2) * ‖x‖ ^ 2 ≤ x ⬝ᵥ (Mf p *ᵥ x)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_comm, ← mul_assoc, mul_comm (‖x‖ ^ 2), h3, one_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h4` using `sum_sq_le x`. Establish `hc1 : (0:ℝ) < Fintype.card ι + 1` using `by positivity`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[div_mul_eq_mul_div, div_le_iff₀ hc1]`. Use polynomial arithmetic with `[mul_nonneg hmpos.le (sq_nonneg ‖x‖)]`.
-
-Use `_ ≤ _ := h2`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem quad_lower {X : Type*} [TopologicalSpace X] (Mf : X → Matrix ι ι ℝ) (hc : Continuous Mf)
     (K : Set X) (hK : IsCompact K) (hpos : ∀ p ∈ K, (Mf p).PosDef) :
@@ -125,14 +121,14 @@ theorem quad_lower {X : Type*} [TopologicalSpace X] (Mf : X → Matrix ι ι ℝ
         _ ≤ _ := h2
 
 /- English proof (translation)
-Use `Matrix.IsHermitian.ext fun i j => ?_` and prove the remaining obligations. Simplify using `[add_comm]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem symPart_isHermitian (A : Matrix ι ι ℝ) : (A + Aᵀ).IsHermitian := by
   refine Matrix.IsHermitian.ext fun i j => ?_
   simp [add_comm]
 
 /- English proof (translation)
-Conclude with `Matrix.posDef_iff_dotProduct_mulVec.mpr ⟨symPart_isHermitian A, fun x hx => by simpa using quad_pos_of_sphere _ h x hx⟩`.
+A detailed English derivation is pending.
 -/
 theorem symPart_posDef_of_sphere (A : Matrix ι ι ℝ)
     (h : ∀ y ∈ Metric.sphere (0 : ι → ℝ) 1, 0 < y ⬝ᵥ ((A + Aᵀ) *ᵥ y)) : (A + Aᵀ).PosDef := by
@@ -145,9 +141,9 @@ namespace ReciprocityTheory.PTheta
 open sphereQuadraticPositivity
 
 /- English proof (translation)
-Unfold `SiegelSubDomainStatement ThetaDomain SiegelH`. Introduce `ι _ τ hτ`. Take `⟨hs, hp⟩` from `hτ`. Establish `ht : (τ.map Complex.im)ᵀ = τ.map Complex.im`. Rewrite using `[← Matrix.transpose_map, hs.eq]`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `show (τ.map Complex.im + (τ.map Complex.im)ᵀ).PosDef`. Rewrite using `[ht]`. Conclude with `hp.add hp`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem siegelSubDomain_holds : SiegelSubDomainStatement := by
   unfold SiegelSubDomainStatement ThetaDomain SiegelH
@@ -160,15 +156,15 @@ theorem siegelSubDomain_holds : SiegelSubDomainStatement := by
   exact hp.add hp
 
 /- English proof (translation)
-Unfold `DomainOpenStatement`. Introduce `ι _`. Set `Mt : (ι → ι → ℂ) → Matrix ι ι ℝ` to `fun t => (of t).map Complex.im + ((of t).map Complex.im)ᵀ`. Establish `hc : Continuous Mt`. Use `continuous_pi fun i => continuous_pi fun j => ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(Complex.continuous_im.comp ((continuous_apply j).comp (continuous_apply i))).add (Complex.continuous_im.comp ((continuous_apply i).comp (continuous_apply j)))`. Establish `hF : Continuous (fun q : (ι → ι → ℂ) × (ι → ℝ) => q.2 ⬝ᵥ (Mt q.1 *ᵥ q.2))` using `by fun_prop`. Establish `hset : {t : ι → ι → ℂ | of t ∈ ThetaDomain ι} = {t | ∀ y ∈ Metric.sphere (0 : ι → ℝ) 1, 0 < y ⬝ᵥ (Mt t *ᵥ y)}`. Use extensionality with `t`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `ht y hy`. Establish `ht' : (Mt t).PosDef` using `ht`. Establish `hy0 : y ≠ 0`. Introduce and unpack `rfl`. Simplify using `at hy`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h0` using `(Matrix.posDef_iff_dotProduct_mulVec.mp ht').2 hy0`. Simplify using `using h0`. Introduce `ht`. Conclude with `symPart_posDef_of_sphere ((of t).map Complex.im) ht`. Rewrite using `[hset, isOpen_iff_mem_nhds]`.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `t0 ht0`. Establish `hev : ∀ y ∈ Metric.sphere (0 : ι → ℝ) 1, ∀ᶠ q : (ι → ι → ℂ) × (ι → ℝ) in nhds (t0, y), 0 < q.2 ⬝ᵥ (Mt q.1 *ᵥ q.2)` using `fun y hy => (hF.tendsto (t0, y)).eventually (lt_mem_nhds (ht0 y hy))`. Conclude with `(isCompact_sphere (0 : ι → ℝ) 1).eventually_forall_of_forall_eventually (P := fun t y => 0 < y ⬝ᵥ (Mt t *ᵥ y)) hev`.
+A detailed English derivation is pending.
 -/
 theorem domainOpen_holds : DomainOpenStatement := by
   unfold DomainOpenStatement
@@ -210,7 +206,7 @@ namespace ReciprocityTheory.PTheta.sphereQuadraticPositivity
 variable {ι : Type*} [Fintype ι]
 
 /- English proof (translation)
-Unfold `eC`. Rewrite using `[Complex.norm_exp]`. Use `congr 1`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 -/
 theorem norm_eC (w : ℂ) : ‖eC w‖ = Real.exp (-2 * Real.pi * w.im) := by
   unfold eC
@@ -219,7 +215,7 @@ theorem norm_eC (w : ℂ) : ‖eC w‖ = Real.exp (-2 * Real.pi * w.im) := by
   simp
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `[shiftVec, ofRealVec]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem shiftVec_eq (a : ι → ℝ) (l : ι → ℤ) :
     shiftVec a l = ofRealVec (fun i => (l i : ℝ) + a i) := by
@@ -227,14 +223,14 @@ theorem shiftVec_eq (a : ι → ℝ) (l : ι → ℤ) :
   simp [shiftVec, ofRealVec]
 
 /- English proof (translation)
-Simplify using `[dotProduct, ofRealVec, Complex.im_sum]`.
+Simplify using the standard rewrite rules.
 -/
 theorem im_ofReal_dot (v : ι → ℝ) (w : ι → ℂ) :
     (ofRealVec v ⬝ᵥ w).im = v ⬝ᵥ (fun i => (w i).im) := by
   simp [dotProduct, ofRealVec, Complex.im_sum]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `[mulVec, dotProduct, ofRealVec, Complex.im_sum]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem im_mulVec_ofReal (τ : Matrix ι ι ℂ) (v : ι → ℝ) :
     (fun i => ((τ *ᵥ ofRealVec v) i).im) = τ.map Complex.im *ᵥ v := by
@@ -242,7 +238,7 @@ theorem im_mulVec_ofReal (τ : Matrix ι ι ℂ) (v : ι → ℝ) :
   simp [mulVec, dotProduct, ofRealVec, Complex.im_sum]
 
 /- English proof (translation)
-Rewrite using `[shiftVec_eq, Complex.add_im, Complex.div_ofNat_im, im_ofReal_dot, im_mulVec_ofReal, im_ofReal_dot]`. Use `congr 2`. Use function extensionality and compare the values at `i`. Simplify using `[ofRealVec]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem im_arg (a b : ι → ℝ) (z : ι → ℂ) (τ : Matrix ι ι ℂ) (l : ι → ℤ) :
     (shiftVec a l ⬝ᵥ (τ *ᵥ shiftVec a l) / 2 + shiftVec a l ⬝ᵥ (z + ofRealVec b)).im =
@@ -255,11 +251,11 @@ theorem im_arg (a b : ι → ℝ) (z : ι → ℂ) (τ : Matrix ι ι ℂ) (l : 
   simp [ofRealVec]
 
 /- English proof (translation)
-Establish `hβ' : β ≠ 0` using `hβ.ne'`. Establish `h1 : γ * |k + a| ≤ β / 2 * |k + a| ^ 2 + γ ^ 2 / (2 * β)`. Establish `e : β / 2 * |k + a| ^ 2 + γ ^ 2 / (2 * β) - γ * |k + a| = (β * |k + a| - γ) ^ 2 / (2 * β)`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `h0 : 0 ≤ (β * |k + a| - γ) ^ 2 / (2 * β)` using `by positivity`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite `h1` using `[sq_abs]`. Establish `h2 : k ^ 2 ≤ 2 * (k + a) ^ 2 + 2 * a ^ 2` using `by nlinarith [sq_nonneg (k + 2 * a)]`. Establish `h3` using `mul_le_mul_of_nonneg_left h2 hβ.le`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use polynomial arithmetic with `[h1, h3]`.
+Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem coord_bound (β γ k a : ℝ) (hβ : 0 < β) (hγ : 0 ≤ γ) :
     -β * (k + a) ^ 2 + γ * |k + a| ≤ -(β / 4) * k ^ 2 + (γ ^ 2 / (2 * β) + β / 2 * a ^ 2) := by
@@ -277,11 +273,11 @@ theorem coord_bound (β γ k a : ℝ) (hβ : 0 < β) (hγ : 0 ≤ γ) :
   nlinarith [h1, h3]
 
 /- English proof (translation)
-Proceed by induction on `q with`. Consider the case `zero`. Simplify using `only [Fin.prod_univ_zero]`. Conclude with `Summable.of_finite`. Consider the case `succ q ih`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Establish an intermediate fact.
 
-Establish `hs : Summable (fun x : Fin q → α => ∏ i, f i.succ (x i))` using `ih (fun (i : Fin q) => f i.succ) (fun (i : Fin q) a => hf0 i.succ a) (fun (i : Fin q) => hf i.succ)`. Establish `key : ∀ p : α × (Fin q → α), (fun x : Fin (q + 1) → α => ∏ i, f i (x i)) (Fin.consEquiv (fun _ => α) p) = f 0 p.1 * ∏ i, f i.succ (p.2 i)`. Introduce and unpack `⟨a, y⟩`. Simplify using `[Fin.consEquiv, Fin.prod_univ_succ]`. Establish `hf00 : 0 ≤ f 0` using `fun a => hf0 0 a`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hg0 : 0 ≤ fun y : Fin q → α => ∏ i : Fin q, f i.succ (y i)` using `fun y => Finset.prod_nonneg fun (i : Fin q) _ => hf0 i.succ (y i)`. Establish `hprod` using `Summable.mul_of_nonneg (hf 0) hs hf00 hg0`. Establish `hcomp : (fun x : Fin (q + 1) → α => ∏ i, f i (x i)) ∘ (Fin.consEquiv fun _ => α) = fun p : α × (Fin q → α) => f 0 p.1 * ∏ i, f i.succ (p.2 i)` using `funext key`. Conclude with `(Equiv.summable_iff (Fin.consEquiv fun _ => α)).mp (by rw [hcomp]; exact hprod)`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem summable_pi_prod_of_nonneg' {α : Type*} {q : ℕ} (f : Fin q → α → ℝ)
     (hf0 : ∀ i a, 0 ≤ f i a) (hf : ∀ i, Summable (f i)) :
@@ -308,9 +304,9 @@ private theorem summable_pi_prod_of_nonneg' {α : Type*} {q : ℕ} (f : Fin q �
     exact (Equiv.summable_iff (Fin.consEquiv fun _ => α)).mp (by rw [hcomp]; exact hprod)
 
 /- English proof (translation)
-Set `e` to `Fintype.equivFin ι`. Establish `h` using `summable_pi_prod_of_nonneg' (fun j k => g (e.symm j) k) (fun j k => hg0 _ _) (fun j => hg _)`. Establish `key : (fun x : Fin (Fintype.card ι) → ℤ => ∏ j, g (e.symm j) (x j)) ∘ (e.arrowCongr (Equiv.refl ℤ)) = fun l : ι → ℤ => ∏ i, g i (l i)`. Use function extensionality and compare the values at `l`. Conclude with `Equiv.prod_comp e.symm (fun i => g i (l i))`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← key]`. Conclude with `(Equiv.summable_iff _).mpr h`.
+A detailed English derivation is pending.
 -/
 theorem summable_pi_prod {g : ι → ℤ → ℝ} (hg0 : ∀ i k, 0 ≤ g i k) (hg : ∀ i, Summable (g i)) :
     Summable (fun l : ι → ℤ => ∏ i, g i (l i)) := by
@@ -325,11 +321,11 @@ theorem summable_pi_prod {g : ι → ℤ → ℝ} (hg0 : ∀ i k, 0 ≤ g i k) (
   exact (Equiv.summable_iff _).mpr h
 
 /- English proof (translation)
-Establish `hτ : 0 < (⟨0, β / (4 * Real.pi)⟩ : ℂ).im` using `by show 0 < β / (4 * Real.pi)`. Check the signs of the components of the expression. Establish `hs` using `((summable_jacobiTheta₂_term_iff 0 _).mpr hτ).norm`. Establish `key : (fun k : ℤ => Real.exp (-(β / 4) * (k : ℝ) ^ 2 + C)) = fun k : ℤ => Real.exp C * ‖jacobiTheta₂_term k 0 (⟨0, β / (4 * Real.pi)⟩ : ℂ)‖`. Use function extensionality and compare the values at `k`.
+Establish an intermediate fact. Check the signs of the components of the expression. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[norm_jacobiTheta₂_term, ← Real.exp_add]`. Use `congr 1`. Simplify using `only`. Simplify using `only [Complex.zero_im, mul_zero, sub_zero]`. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify by unfolding definitions. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[key]`. Conclude with `hs.mul_left _`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem summable_gauss (β C : ℝ) (hβ : 0 < β) :
     Summable (fun k : ℤ => Real.exp (-(β / 4) * (k : ℝ) ^ 2 + C)) := by
@@ -355,17 +351,17 @@ namespace ReciprocityTheory.PTheta.sphereQuadraticPositivity
 variable {ι : Type*} [Fintype ι]
 
 /- English proof (translation)
-Establish `hβ : 0 < Real.pi * c / 2` using `by positivity`. Take `⟨v, hv⟩ : ∃ v : ι → ℝ, v = fun i => (l i : ℝ) + a i` from `⟨_, rfl⟩`. Establish `hnorm : ‖thetaTerm a b z A l‖ = Real.exp (-2 * Real.pi * (v ⬝ᵥ (A.map Complex.im *ᵥ v) / 2 + v ⬝ᵥ (fun i => (z i).im)))`. Unfold `thetaTerm`. Rewrite using `[norm_eC, im_arg, ← hv]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hnorm, ← Real.exp_sum]`. Apply `Real.exp_le_exp.mpr` to reduce the goal to its premises. Establish `hq2 : c * ∑ i, v i ^ 2 ≤ 2 * (v ⬝ᵥ (A.map Complex.im *ᵥ v))`. Establish `h0` using `hq v`. Rewrite `h0` using `[add_mulVec, dotProduct_add, quad_transpose]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hz : -(v ⬝ᵥ (fun i => (z i).im)) ≤ R * ∑ i, |v i|`. Rewrite using `[Finset.mul_sum, dotProduct, ← Finset.sum_neg_distrib]`. Apply `Finset.sum_le_sum` to reduce the goal to its premises. Introduce `i _`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `show -(v i * (z i).im) ≤ R * |v i|`. Establish `h1` using `hR i`. Establish `h2 : -(v i * (z i).im) ≤ |v i| * |(z i).im|`. Rewrite using `[← abs_mul]`. Conclude with `neg_le_abs _`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Use polynomial arithmetic with `[abs_nonneg (v i), mul_le_mul_of_nonneg_left h1 (abs_nonneg (v i))]`. Establish `hcb : ∀ i, -(Real.pi * c / 2) * v i ^ 2 + 2 * Real.pi * R * |v i| ≤ -((Real.pi * c / 2) / 4) * (l i : ℝ) ^ 2 + ((2 * Real.pi * R) ^ 2 / (2 * (Real.pi * c / 2)) + (Real.pi * c / 2) / 2 * a i ^ 2)`. Introduce `i`. Rewrite using `[hv]`. Conclude with `coord_bound _ _ _ _ hβ (by positivity)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.sum_add_distrib, ← Finset.mul_sum, ← Finset.mul_sum]`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left hq2 Real.pi_pos.le, mul_le_mul_of_nonneg_left hz (by positivity : (0:ℝ) ≤ 2 * Real.pi)]`. Use `_ ≤ _ := Finset.sum_le_sum fun i _ => hcb i`.
+A detailed English derivation is pending.
 -/
 theorem term_bound (a b : ι → ℝ) (z : ι → ℂ) (A : Matrix ι ι ℂ) (l : ι → ℤ) (c R : ℝ)
     (hc0 : 0 < c) (hR0 : 0 ≤ R) (hR : ∀ i, |(z i).im| ≤ R)
@@ -413,11 +409,11 @@ namespace ReciprocityTheory.PTheta
 open sphereQuadraticPositivity
 
 /- English proof (translation)
-Introduce `ι _ a K hK hKd`. Set `Mf : (ι → ℂ) × (ι → ι → ℂ) → Matrix ι ι ℝ` to `fun p => (of p.2).map Complex.im + ((of p.2).map Complex.im)ᵀ`. Establish `hc : Continuous Mf`. Use `continuous_pi fun i => continuous_pi fun j => ?_` and prove the remaining obligations. Conclude with `(Complex.continuous_im.comp ((continuous_apply j).comp ((continuous_apply i).comp continuous_snd))).add (Complex.continuous_im.comp ((continuous_apply i).comp ((continuous_apply j).comp continuous_snd)))`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨c, hc0, hcK⟩` from `quad_lower Mf hc K hK (fun p hp => hKd p hp)`. Take `⟨C, hC⟩` from `hK.exists_bound_of_continuousOn (f := fun p => p.1) continuous_fst.continuousOn`. Use `⟨fun l => ∏ i, Real.exp (-((Real.pi * c / 2) / 4) * (l i : ℝ) ^ 2 + ((2 * Real.pi * max C 0) ^ 2 / (2 * (Real.pi * c / 2)) + (Real.pi * c / 2) / 2 * a i ^ 2)), ?_, ?_⟩` and prove the remaining obligations. Conclude with `summable_pi_prod (g := fun i k => Real.exp (-((Real.pi * c / 2) / 4) * (k : ℝ) ^ 2 + ((2 * Real.pi * max C 0) ^ 2 / (2 * (Real.pi * c / 2)) + (Real.pi * c / 2) / 2 * a i ^ 2))) (fun i k => (Real.exp_pos _).le) (fun i => summable_gauss _ _ (by positivity))`. Introduce `b p hp l`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `term_bound a b p.1 (of p.2) l c (max C 0) hc0 (le_max_right _ _) (fun i => ?_) (fun x => hcK p hp x)` and prove the remaining obligations. Establish `h1 : ‖p.1‖ ≤ C` using `hC p hp`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem thetaMTest_holds : ThetaMTestStatement := by
   intro ι _ a K hK hKd
@@ -448,7 +444,7 @@ theorem thetaMTest_holds : ThetaMTestStatement := by
       _ ≤ max C 0 := le_max_left _ _
 
 /- English proof (translation)
-Introduce `ι _ a b z τ hτ`. Take `⟨u, hu, hb⟩` from `thetaMTest_holds ι a {(z, Matrix.of.symm τ)} isCompact_singleton (by rintro p rfl; simpa using hτ)`. Use `Summable.of_nonneg_of_le (fun l => norm_nonneg _) (fun l => ?_) hu` and prove the remaining obligations. Simplify using `using hb b (z, Matrix.of.symm τ) rfl l`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem thetaSummable_holds : ThetaSummableStatement := by
   intro ι _ a b z τ hτ

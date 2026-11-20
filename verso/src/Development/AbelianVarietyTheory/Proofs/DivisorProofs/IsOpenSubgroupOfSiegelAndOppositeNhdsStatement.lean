@@ -7,7 +7,7 @@ open GlobalTheory.WeilM (UG IsQuad IsHerm ResEtaPow)
 open GlobalTheory.SplitWeil (SB nabs)
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.KSp.isOpen_of_sieg_of_opp` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+Apply the cited theorem to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FIsOpenSubgroupOfSiegelAndOppositeNhds.lean&line=148#L148)
 -/

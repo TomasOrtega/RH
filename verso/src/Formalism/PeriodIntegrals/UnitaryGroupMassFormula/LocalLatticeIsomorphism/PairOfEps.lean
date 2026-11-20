@@ -12,7 +12,7 @@ namespace PI.KLW.Pair
 open PI.KLW
 
 /- English proof (translation)
-Establish `h` using `Ind.add_smul_mem hL (Ind.zero_mem_of hL) hb hr`. Rewrite `h` using `[zero_add]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem smul_mem' {K : Type} [Field K] [NumberField K] {c : K →+* K} {p : ℕ} {ι : Type}
     [Fintype ι] {L : Set (ι → K)} (hL : Unimod K c p L) {b : ι → K} (hb : b ∈ L) {r : K}
@@ -21,7 +21,7 @@ theorem smul_mem' {K : Type} [Field K] [NumberField K] {c : K →+* K} {p : ℕ}
   rwa [zero_add] at h
 
 /- English proof (translation)
-Establish `h` using `Ind.add_smul_mem hL ha hb (Ind.rp_one p)`. Rewrite `h` using `[one_smul]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem add_mem' {K : Type} [Field K] [NumberField K] {c : K →+* K} {p : ℕ} {ι : Type}
     [Fintype ι] {L : Set (ι → K)} (hL : Unimod K c p L) {a b : ι → K} (ha : a ∈ L) (hb : b ∈ L) :
@@ -30,31 +30,29 @@ theorem add_mem' {K : Type} [Field K] [NumberField K] {c : K →+* K} {p : ℕ} 
   rwa [one_smul] at h
 
 /- English proof (translation)
-Assume the negation of the conclusion as `H`. Use `push_neg at H`. Establish `hp0 : (p : K) ≠ 0` using `by exact_mod_cast hp.ne_zero`. Establish `hce : c ε = 1 - ε` using `by linear_combination hsum`. Take `⟨T, hT⟩ : ∃ T, T = ε / p + c ε` from `⟨_, rfl⟩`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hTL : ∀ x ∈ L, T • x ∈ L` using `fun x hx => (hL _).2 fun y hy => by`. Rewrite using `[Ind.hf_smul_left]`. Establish `e : T * hf c x y = ε * hf c x y / p + c ε * hf c x y` using `by rw [hT]; ring`. Rewrite using `[e]`. Conclude with `NO.rp_add (H x hx y hy) (NO.rp_mul (NO.rp_c c hε) ((hL x).1 hx y hy))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨i⟩` from `‹Nonempty ι›`. Take `⟨N, hN0, hNL⟩` from `hS (Pi.single i 1)`. Establish `hTj : ∀ j : ℕ, T ^ j • ((N : K) • Pi.single i (1 : K)) ∈ L`. Introduce `j`. Proceed by induction on `j with`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `zero => rw [pow_zero, one_smul]`. Conclude with `hNL`. Consider the case `succ j ihj => rw [pow_succ', mul_smul]`. Conclude with `hTL _ ihj`. Establish `hvv : hf c ((N : K) • Pi.single i (1 : K)) ((N : K) • Pi.single i (1 : K)) = (N : K) * N`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite using `[Ind.hf_smul_left, Ind.hf_smul_right, Ind.hf_single_single, map_natCast, mul_one]`. Establish `hj : ∀ j : ℕ, Rp K p (T ^ j * ((N : K) * N))` using `fun j => by`. Use `(hL _).1 (hTj j) _ hNL` as an intermediate fact. Rewrite `this` using `[Ind.hf_smul_left, hvv]`. Then use the resulting hypothesis. Establish `hcT : c T = c ε / p + ε` using `by rw [hT, map_add, map_div₀, map_natCast, hc]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hjj : ∀ j : ℕ, Rp K p ((T * c T) ^ j * ((N : K) ^ 4))` using `fun j => by`. Establish `h1` using `hj j`. Establish `h2` using `NO.rp_c c (hj j)`. Rewrite `h2` using `[map_mul, map_pow, map_mul, map_natCast]`. Establish `e : (T * c T) ^ j * ((N : K) ^ 4) = (T ^ j * ((N : K) * N)) * (c T ^ j * ((N : K) * N))` using `by ring`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[e]`. Conclude with `NO.rp_mul h1 h2`. Take `⟨d, hd⟩ : ∃ d, d = ε * c ε / (p : K) ^ 2` from `⟨_, rfl⟩`. Establish `hdR : Rp K p d` using `hd ▸ hδ`. Take `⟨ρ, hρ⟩ : ∃ ρ, ρ = d + (p : K) ^ 2 * d - p * d - p * d` from `⟨_, rfl⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hρR : Rp K p ρ`. Rewrite using `[hρ]`. Establish `hpd : Rp K p ((p : K) * d)` using `NO.rp_mul (NO.rp_natCast p) hdR`. Conclude with `NO.rp_sub (NO.rp_sub (NO.rp_add hdR (NO.rp_mul (NO.rp_pow (NO.rp_natCast p) 2) hdR)) hpd) hpd`. Establish `hTcT : T * c T = (1 + (p : K) * ρ) / p`.
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hcT, hT, hρ, hd, hce]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Take `⟨hu0, huinv⟩` from `NO.one_add_p_unit c hc hK hne hp hρR`. Establish `hQ : N ^ 4 ≠ 0` using `pow_ne_zero _ hN0`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hpow` using `NO.rp_pow_div (K := K) hp hQ (le_refl (N ^ 4))`. Establish `hA` using `hjj (N ^ 4 + 1)`. Establish `hB` using `NO.rp_pow huinv (N ^ 4 + 1)`. Take `⟨M, hM⟩ : ∃ M, N ^ 4 = M` from `⟨_, rfl⟩`. Rewrite `hpow`, `hA`, `hB` using `[hM]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hMK : (M : K) = (N : K) ^ 4` using `by rw [← hM]; push_cast; ring`. Establish `hN : (N : K) ≠ 0` using `by exact_mod_cast hN0`. Establish `e1 : (1 + (p : K) * ρ) ^ (M + 1) * ((1 + (p : K) * ρ)⁻¹) ^ (M + 1) = 1`. Rewrite using `[← mul_pow, mul_inv_cancel₀ hu0, one_pow]`. Establish `hpM : (p : K) ^ M ≠ 0` using `pow_ne_zero _ hp0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Establish `hN4 : (N : K) ^ 4 ≠ 0` using `pow_ne_zero _ hN`. Establish `key : ((T * c T) ^ (M + 1) * (N : K) ^ 4) * ((1 + (p : K) * ρ)⁻¹ ^ (M + 1)) * ((p : K) ^ M / (M : K)) = ((p : K))⁻¹`. Establish `e2 : ((T * c T) ^ (M + 1) * (N : K) ^ 4) * ((1 + (p : K) * ρ)⁻¹ ^ (M + 1)) * ((p : K) ^ M / (M : K)) = ((1 + (p : K) * ρ) ^ (M + 1) * ((1 + (p : K) * ρ)⁻¹) ^ (M + 1)) * ((N : K) ^ 4 / (N : K) ^ 4) * ((p : K) ^ M / ((p : K) ^ M * p))`. Rewrite using `[hTcT, div_pow, hMK]`. Expand and normalize the polynomial expressions, which then agree.
-
-Rewrite using `[e2, e1, div_self hN4, div_mul_eq_div_div, div_self hpM, one_mul, one_mul, one_div]`. Apply `NO.not_rp_inv_p (K := K) hp` to reduce the goal to its premises. Rewrite using `[← key]`. Conclude with `NO.rp_mul (NO.rp_mul hA hB) hpow`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem half {K : Type} [Field K] [NumberField K] (c : K →+* K) (hc : ∀ x, c (c x) = x)
     (hK : Module.finrank ℚ K = 2) (hne : ∃ z, c z ≠ z) {p : ℕ} (hp : p.Prime) {ι : Type}
@@ -133,17 +131,17 @@ theorem half {K : Type} [Field K] [NumberField K] (c : K →+* K) (hc : ∀ x, c
   exact NO.rp_mul (NO.rp_mul hA hB) hpow
 
 /- English proof (translation)
-Take `⟨x', hx', y', hy', hn⟩` from `half c hc hK hne hp hL hS hε hsum hδ`. Establish `hp0 : (p : K) ≠ 0` using `by exact_mod_cast hp.ne_zero`. Establish `hce : c ε = 1 - ε` using `by linear_combination hsum`. Take `⟨ρ', hρ'⟩ : ∃ ρ', ρ' = hf c x' y'` from `⟨_, rfl⟩`. Establish `hρR : Rp K p ρ'` using `by rw [hρ']; exact (hL x').1 hx' y' hy'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `hn` using `[← hρ']`. Take `⟨z, hz⟩ : ∃ z, z = ε * ρ' + c ε` from `⟨_, rfl⟩`. Establish `hzR : Rp K p z` using `by rw [hz]; exact NO.rp_add (NO.rp_mul hε hρR) (NO.rp_c c hε)`. Establish `hcz : c z = c ε * c ρ' + ε` using `by rw [hz, map_add, map_mul, hc]`. Establish `hnz : ¬ Rp K p (z * c z / p)`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `h`. Apply `hn` to reduce the goal to its premises. Establish `key : ε * ρ' / p = ε * (z * c z / p) + ((p : K) * (ε * c ε / (p : K) ^ 2)) * (-ε * (ρ' * c ρ' - ρ' - c ρ' + 1) + ρ' - c ρ')`. Rewrite using `[hcz, hz, hce]`. Clear the denominators using the available nonvanishing facts.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[key]`. Establish `hcρ : Rp K p (c ρ')` using `NO.rp_c c hρR`. Establish `hW : Rp K p (-ε * (ρ' * c ρ' - ρ' - c ρ' + 1) + ρ' - c ρ')` using `NO.rp_sub (NO.rp_add (NO.rp_mul (NO.rp_neg hε) (NO.rp_add (NO.rp_sub (NO.rp_sub (NO.rp_mul hρR hcρ) hρR) hcρ) NO.rp_one)) hρR) hcρ`. Conclude with `NO.rp_add (NO.rp_mul hε h) (NO.rp_mul (NO.rp_mul (NO.rp_natCast p) hδ) hW)`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨hz0, hzi⟩` from `NO.unit_of_norm c hc hK hne hp hzR hnz`. Use `⟨x', hx', c (z⁻¹) • y', smul_mem' hL hy' (NO.rp_c c hzi), z⁻¹ * (ρ' - 1), NO.rp_mul hzi (NO.rp_sub hρR NO.rp_one), ?_⟩` and prove the remaining obligations. Rewrite using `[Ind.hf_smul_right, hc, ← hρ']`. Establish `h1 : ε * (ρ' - z) = ε * c ε * (ρ' - 1)` using `by rw [hz, hce]; ring`. Establish `hzz : z⁻¹ * z = 1` using `inv_mul_cancel₀ hz0`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `z⁻¹ * h1 + ε * hzz`.
+A detailed English derivation is pending.
 -/
 theorem near_one {K : Type} [Field K] [NumberField K] (c : K →+* K) (hc : ∀ x, c (c x) = x)
     (hK : Module.finrank ℚ K = 2) (hne : ∃ z, c z ≠ z) {p : ℕ} (hp : p.Prime) {ι : Type}
@@ -182,13 +180,13 @@ theorem near_one {K : Type} [Field K] [NumberField K] (c : K →+* K) (hc : ∀ 
   linear_combination z⁻¹ * h1 + ε * hzz
 
 /- English proof (translation)
-Take `⟨x1, hx1, y1, hy1, r1, hr1, h1⟩` from `near_one c hc hK hne hp hL hS hε hsum hδ`. Establish `hε' : Rp K p (c ε)` using `NO.rp_c c hε`. Establish `hsum' : c ε + c (c ε) = 1` using `by rw [hc, add_comm, hsum]`. Establish `hδ' : Rp K p (c ε * c (c ε) / (p : K) ^ 2)` using `by rw [hc, mul_comm]; exact hδ`. Take `⟨x2, hx2, y2, hy2, r2, hr2, h2⟩` from `near_one c hc hK hne hp hL hS hε' hsum' hδ'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite `h2` using `[hc]`. Establish `hp0 : (p : K) ≠ 0` using `by exact_mod_cast hp.ne_zero`. Establish `hxL : ε • x1 + c ε • x2 ∈ L` using `add_mem' hL (smul_mem' hL hx1 hε) (smul_mem' hL hx2 hε')`. Establish `hyL : c ε • y1 + ε • y2 ∈ L` using `add_mem' hL (smul_mem' hL hy1 hε') (smul_mem' hL hy2 hε)`. Establish `hd : (p : K) * ((p : K) * (ε * c ε / (p : K) ^ 2)) = ε * c ε` using `by field_simp`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hxy : hf c (ε • x1 + c ε • x2) (c ε • y1 + ε • y2) = 1 + (p : K) * ((p : K) * (ε * c ε / (p : K) ^ 2) * (ε * r1 + hf c x1 y2 + hf c x2 y1 + c ε * r2 - 1 - 1))`. Simplify using `only [Ind.hf_add_left, Ind.hf_add_right, Ind.hf_smul_left, Ind.hf_smul_right, hc]`. Take the linear combination `ε * h1 + c ε * h2 - (ε * r1 + hf c x1 y2 + hf c x2 y1 + c ε * r2 - 1 - 1) * hd + (ε + c ε + 1) * hsum`. Establish `hQ : Rp K p ((p : K) * (ε * c ε / (p : K) ^ 2) * (ε * r1 + hf c x1 y2 + hf c x2 y1 + c ε * r2 - 1 - 1))` using `NO.rp_mul (NO.rp_mul (NO.rp_natCast p) hδ) (NO.rp_sub (NO.rp_sub (NO.rp_add (NO.rp_add (NO.rp_add (NO.rp_mul hε hr1) ((hL x1).1 hx1 y2 hy2)) ((hL x2).1 hx2 y1 hy1)) (NO.rp_mul hε' hr2)) NO.rp_one) NO.rp_one)`. Take `⟨ha0, hai⟩` from `NO.one_add_p_unit c hc hK hne hp hQ`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite `ha0`, `hai` using `[← hxy]`. Use `⟨_, hxL, c ((hf c (ε • x1 + c ε • x2) (c ε • y1 + ε • y2))⁻¹) • (c ε • y1 + ε • y2), smul_mem' hL hyL (NO.rp_c c hai), ?_⟩` and prove the remaining obligations. Rewrite using `[Ind.hf_smul_right, hc, inv_mul_cancel₀ ha0]`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem pair_of_eps {K : Type} [Field K] [NumberField K] (c : K →+* K) (hc : ∀ x, c (c x) = x)
     (hK : Module.finrank ℚ K = 2) (hne : ∃ z, c z ≠ z) {p : ℕ} (hp : p.Prime) {ι : Type}
@@ -222,7 +220,7 @@ theorem pair_of_eps {K : Type} [Field K] [NumberField K] (c : K →+* K) (hc : �
   rw [Ind.hf_smul_right, hc, inv_mul_cancel₀ ha0]
 
 /- English proof (translation)
-Take `⟨P, _, _, a, b, hab, ha, hb⟩` from `hs`. Use `⟨(a : K), ?_⟩` and prove the remaining obligations. Rewrite using `[hab]`. Introduce `h`. Conclude with `hb (by rwa [RingOfIntegers.ext h])`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem ne_of_split {K : Type} [Field K] [NumberField K] {c : K →+* K} {p : ℕ}
     (hs : SplitK c p) : ∃ z, c z ≠ z := by
@@ -238,7 +236,7 @@ def EpsSplit : Prop :=
       ∀ k : ℕ, ∃ ε : K, Rp K p ε ∧ ε + c ε = 1 ∧ Rp K p (ε * c ε / (p : K) ^ k)
 
 /- English proof (translation)
-Introduce `K _ _ c p ι _ _ L hK hc hp hs hL hS`. Take `⟨ε, hε, hsum, hδ⟩` from `h K c p hK hc hp hs 2`. Conclude with `pair_of_eps c hc hK (ne_of_split hs) hp hL hS hε hsum hδ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem pairOne_of (h : EpsSplit) : PairOne := by
   intro K _ _ c p ι _ _ L hK hc hp hs hL hS
@@ -246,7 +244,7 @@ theorem pairOne_of (h : EpsSplit) : PairOne := by
   exact pair_of_eps c hc hK (ne_of_split hs) hp hL hS hε hsum hδ
 
 /- English proof (translation)
-Introduce `K _ _ c p hK hc hp hs k`. Conclude with `NO.eps c hc hK hp hs k`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem epsSplit : EpsSplit := by
   intro K _ _ c p hK hc hp hs k
@@ -257,7 +255,7 @@ end PI.KLW.Pair
 namespace PI.KLW
 
 /- English proof (translation)
-The claim follows from `Pair.pairOne_of Pair.epsSplit`.
+A detailed English derivation is pending.
 -/
 theorem pairOne : PairOne := Pair.pairOne_of Pair.epsSplit
 

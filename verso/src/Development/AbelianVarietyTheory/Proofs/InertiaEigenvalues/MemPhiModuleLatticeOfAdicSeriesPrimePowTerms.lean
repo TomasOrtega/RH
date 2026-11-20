@@ -9,11 +9,11 @@ namespace GlobalTheory.BK
 open PowerSeries Matrix
 
 /- English proof (translation)
-Introduce `w t ht hw`. Use `choose v hv htv using ht`. Establish `h2 (k : ℕ) : ∃ s ∈ P.MM, ∀ m, ∃ g ∈ P.MM, w - (s + (l : K) ^ k • g) ∈ uPow K a ι m`. Use `⟨∑ n ∈ Finset.range k, t n, sum_mem fun n _ => (htv n) ▸ P.l_pow_smul_mem_MM n (hv n), fun m => ?_⟩` and prove the remaining obligations. Use `⟨∑ n ∈ Finset.range m, (l : K) ^ n • v (k + n), sum_mem fun n _ => P.l_pow_smul_mem_MM n (hv _), uPow_anti (Nat.le_add_left m k) ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `hw (k + m)` as an intermediate fact. Rewrite `this` using `[Finset.sum_range_add]`. Simplify `this` using `only [Finset.smul_sum, smul_smul, ← pow_add, ← htv]`. Use `mem_tot.2 fun τ => P.mem_extc_iff.2 fun i => mem_S_of_approx (l := l) fun k => ?_` and prove the remaining obligations. Take `⟨s, hs, H⟩` from `h2 k`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨_, P.mem_extc_iff.1 (mem_tot.1 hs τ) i, fun m => ?_⟩` and prove the remaining obligations. Take `⟨g, hg, H'⟩` from `H m`. Use `⟨_, P.mem_extc_iff.1 (mem_tot.1 hg τ) i, ?_⟩` and prove the remaining obligations. Use `dvd_mulVec (P.mxInv τ) (H' τ) i` as an intermediate fact. Simplify `this` using `only [Pi.sub_apply, Pi.add_apply, Pi.smul_apply, Matrix.mulVec_sub, Matrix.mulVec_add, Matrix.mulVec_smul]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem PhiMod.mem_MM_of_series (O K : Type) [CommRing O] [NormedField K] [IsUltrametricDist K]
     [Algebra O K] [IsUnitBall O K] (l e a : ℕ) (ι : Type) [Fintype ι] [DecidableEq ι] [Fact l.Prime]

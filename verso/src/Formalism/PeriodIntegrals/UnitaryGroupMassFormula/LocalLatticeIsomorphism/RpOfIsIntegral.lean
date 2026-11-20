@@ -10,7 +10,7 @@ section
 variable {K : Type} [Field K] [NumberField K]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, rfl⟩`. Conclude with `RingOfIntegers.isIntegral_coe y`. Introduce `h`. Conclude with `⟨⟨x, h⟩, rfl⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem mem_range_iff {x : K} : x ∈ (algebraMap (𝓞 K) K).range ↔ IsIntegral ℤ x := by
   constructor
@@ -20,39 +20,39 @@ theorem mem_range_iff {x : K} : x ∈ (algebraMap (𝓞 K) K).range ↔ IsIntegr
     exact ⟨⟨x, h⟩, rfl⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨1, Nat.coprime_one_left p, by rw [Nat.cast_one, one_mul, mem_range_iff]; exact h⟩`.
+Supply the required witnesses or components.
 -/
 theorem Rp_of_isIntegral {p : ℕ} {x : K} (h : IsIntegral ℤ x) : Rp K p x :=
   ⟨1, Nat.coprime_one_left p, by rw [Nat.cast_one, one_mul, mem_range_iff]; exact h⟩
 
 /- English proof (translation)
-The claim follows from `Rp_of_isIntegral isIntegral_zero`.
+A detailed English derivation is pending.
 -/
 theorem Rp_zero {p : ℕ} : Rp K p 0 := Rp_of_isIntegral isIntegral_zero
 
 /- English proof (translation)
-The claim follows from `Rp_of_isIntegral isIntegral_one`.
+A detailed English derivation is pending.
 -/
 theorem Rp_one {p : ℕ} : Rp K p 1 := Rp_of_isIntegral isIntegral_one
 
 /- English proof (translation)
-The claim follows from `Rp_of_isIntegral (by simpa using (isIntegral_algebraMap (R := ℤ) (A := K) (x := (m : ℤ))))`.
+A detailed English derivation is pending.
 -/
 theorem Rp_natCast {p : ℕ} (m : ℕ) : Rp K p (m : K) := Rp_of_isIntegral (by
   simpa using (isIntegral_algebraMap (R := ℤ) (A := K) (x := (m : ℤ))))
 
 /- English proof (translation)
-The claim follows from `Rp_of_isIntegral (by simpa using (isIntegral_algebraMap (R := ℤ) (A := K) (x := m)))`.
+A detailed English derivation is pending.
 -/
 theorem Rp_intCast {p : ℕ} (m : ℤ) : Rp K p (m : K) := Rp_of_isIntegral (by
   simpa using (isIntegral_algebraMap (R := ℤ) (A := K) (x := m)))
 
 /- English proof (translation)
-Take `⟨s, hs, hsx⟩` from `hx`. Take `⟨t, ht, hty⟩` from `hy`. Use `⟨s * t, Nat.Coprime.mul_left hs ht, ?_⟩` and prove the remaining obligations. Rewrite `*` using `[mem_range_iff]`. Establish `e : ((s * t : ℕ) : K) * (x + y) = (t : K) * ((s : K) * x) + (s : K) * ((t : K) * y)` using `by push_cast; ring`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[e]`. Establish `ht' : IsIntegral ℤ (t : K)`. Simplify using `using (isIntegral_algebraMap (R := ℤ) (A := K) (x := (t : ℤ)))`. Establish `hs' : IsIntegral ℤ (s : K)`. Simplify using `using (isIntegral_algebraMap (R := ℤ) (A := K) (x := (s : ℤ)))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Conclude with `(ht'.mul hsx).add (hs'.mul hty)`.
+A detailed English derivation is pending.
 -/
 theorem Rp_add {p : ℕ} {x y : K} (hx : Rp K p x) (hy : Rp K p y) : Rp K p (x + y) := by
   obtain ⟨s, hs, hsx⟩ := hx
@@ -69,9 +69,9 @@ theorem Rp_add {p : ℕ} {x y : K} (hx : Rp K p x) (hy : Rp K p y) : Rp K p (x +
   exact (ht'.mul hsx).add (hs'.mul hty)
 
 /- English proof (translation)
-Take `⟨s, hs, hsx⟩` from `hx`. Take `⟨t, ht, hty⟩` from `hy`. Use `⟨s * t, Nat.Coprime.mul_left hs ht, ?_⟩` and prove the remaining obligations. Rewrite `*` using `[mem_range_iff]`. Establish `e : ((s * t : ℕ) : K) * (x * y) = ((s : K) * x) * ((t : K) * y)` using `by push_cast; ring`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[e]`. Conclude with `hsx.mul hty`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Rp_mul {p : ℕ} {x y : K} (hx : Rp K p x) (hy : Rp K p y) : Rp K p (x * y) := by
   obtain ⟨s, hs, hsx⟩ := hx
@@ -84,20 +84,20 @@ theorem Rp_mul {p : ℕ} {x y : K} (hx : Rp K p x) (hy : Rp K p y) : Rp K p (x *
   exact hsx.mul hty
 
 /- English proof (translation)
-Use `Rp_mul (Rp_intCast (K := K) (p := p) (-1)) hx` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem Rp_neg {p : ℕ} {x : K} (hx : Rp K p x) : Rp K p (-x) := by
   have := Rp_mul (Rp_intCast (K := K) (p := p) (-1)) hx
   simpa using this
 
 /- English proof (translation)
-Simplify `Rp_add hx (Rp_neg hy)` using `[sub_eq_add_neg]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem Rp_sub {p : ℕ} {x y : K} (hx : Rp K p x) (hy : Rp K p y) : Rp K p (x - y) := by
   simpa [sub_eq_add_neg] using Rp_add hx (Rp_neg hy)
 
 /- English proof (translation)
-Take `⟨s, hs, hsx⟩` from `hx`. Use `⟨s, hs, ?_⟩` and prove the remaining obligations. Rewrite `*` using `[mem_range_iff]`. Use `hsx.map c.toIntAlgHom` as an intermediate fact. Simplify using `using this`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem Rp_map {p : ℕ} (c : K →+* K) {x : K} (hx : Rp K p x) : Rp K p (c x) := by
   obtain ⟨s, hs, hsx⟩ := hx
@@ -107,9 +107,9 @@ theorem Rp_map {p : ℕ} (c : K →+* K) {x : K} (hx : Rp K p x) : Rp K p (c x) 
   simpa using this
 
 /- English proof (translation)
-Use `⟨s, hs, ?_⟩` and prove the remaining obligations. Rewrite using `[mem_range_iff]`. Distinguish the cases in `h : (s : K) = 0`. Rewrite using `[h, zero_mul]`. Conclude with `isIntegral_zero`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_inv_cancel₀ h]`. Conclude with `isIntegral_one`.
+A detailed English derivation is pending.
 -/
 theorem Rp_inv_natCast {p : ℕ} {s : ℕ} (hs : Nat.Coprime s p) : Rp K p ((s : K)⁻¹) := by
   refine ⟨s, hs, ?_⟩
@@ -124,44 +124,44 @@ section
 variable {K : Type} [Field K] {ι : Type} [Fintype ι] (c : K →+* K)
 
 /- English proof (translation)
-Simplify using `[hf, add_mul, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hf_add_left (v v' w : ι → K) : hf c (v + v') w = hf c v w + hf c v' w := by
   simp [hf, add_mul, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Simplify using `[hf, mul_add, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hf_add_right (v w w' : ι → K) : hf c v (w + w') = hf c v w + hf c v w' := by
   simp [hf, mul_add, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Simplify using `[hf, Finset.mul_sum, mul_assoc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hf_smul_left (a : K) (v w : ι → K) : hf c (a • v) w = a * hf c v w := by
   simp [hf, Finset.mul_sum, mul_assoc]
 
 /- English proof (translation)
-Simplify using `only [hf, Pi.smul_apply, smul_eq_mul, map_mul, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => by ring`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hf_smul_right (a : K) (v w : ι → K) : hf c v (a • w) = c a * hf c v w := by
   simp only [hf, Pi.smul_apply, smul_eq_mul, map_mul, Finset.mul_sum]
   exact Finset.sum_congr rfl fun i _ => by ring
 
 /- English proof (translation)
-Simplify using `[hf]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hf_zero_left (w : ι → K) : hf c 0 w = 0 := by simp [hf]
 
 /- English proof (translation)
-Simplify using `only [hf, map_sum, map_mul, hc]`. Conclude with `Finset.sum_congr rfl fun i _ => mul_comm _ _`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hf_symm (hc : ∀ x, c (c x) = x) (v w : ι → K) : hf c w v = c (hf c v w) := by
   simp only [hf, map_sum, map_mul, hc]
   exact Finset.sum_congr rfl fun i _ => mul_comm _ _
 
 /- English proof (translation)
-Simplify using `[hf, Pi.single_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hf_single_left [DecidableEq ι] (i : ι) (a : K) (w : ι → K) :
     hf c (Pi.single i a) w = a * c (w i) := by
@@ -174,13 +174,13 @@ variable {K : Type} [Field K] [NumberField K] {c : K →+* K} {p : ℕ} {ι : Ty
   {L : Set (ι → K)}
 
 /- English proof (translation)
-The claim follows from `(hL 0).2 fun w _ => by simpa [hf_zero_left] using (Rp_zero : Rp K p 0)`.
+A detailed English derivation is pending.
 -/
 theorem Unimod.zero_mem (hL : Unimod K c p L) : (0 : ι → K) ∈ L :=
   (hL 0).2 fun w _ => by simpa [hf_zero_left] using (Rp_zero : Rp K p 0)
 
 /- English proof (translation)
-The claim follows from `(hL _).2 fun w hw => by rw [hf_add_left]; exact Rp_add ((hL v).1 hv w hw) ((hL v').1 hv' w hw)`.
+A detailed English derivation is pending.
 -/
 theorem Unimod.add_mem (hL : Unimod K c p L) {v v' : ι → K} (hv : v ∈ L) (hv' : v' ∈ L) :
     v + v' ∈ L :=
@@ -188,7 +188,7 @@ theorem Unimod.add_mem (hL : Unimod K c p L) {v v' : ι → K} (hv : v ∈ L) (h
     rw [hf_add_left]; exact Rp_add ((hL v).1 hv w hw) ((hL v').1 hv' w hw)
 
 /- English proof (translation)
-The claim follows from `(hL _).2 fun w hw => by rw [hf_smul_left]; exact Rp_mul ha ((hL v).1 hv w hw)`.
+A detailed English derivation is pending.
 -/
 theorem Unimod.smul_mem (hL : Unimod K c p L) {a : K} (ha : Rp K p a) {v : ι → K} (hv : v ∈ L) :
     a • v ∈ L :=
@@ -196,20 +196,20 @@ theorem Unimod.smul_mem (hL : Unimod K c p L) {a : K} (ha : Rp K p a) {v : ι �
     rw [hf_smul_left]; exact Rp_mul ha ((hL v).1 hv w hw)
 
 /- English proof (translation)
-Simplify using `using hL.smul_mem (Rp_intCast (-1)) hv`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem Unimod.neg_mem (hL : Unimod K c p L) {v : ι → K} (hv : v ∈ L) : -v ∈ L := by
   simpa using hL.smul_mem (Rp_intCast (-1)) hv
 
 /- English proof (translation)
-Simplify `hL.add_mem hv (hL.neg_mem hv')` using `[sub_eq_add_neg]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem Unimod.sub_mem (hL : Unimod K c p L) {v v' : ι → K} (hv : v ∈ L) (hv' : v' ∈ L) :
     v - v' ∈ L := by
   simpa [sub_eq_add_neg] using hL.add_mem hv (hL.neg_mem hv')
 
 /- English proof (translation)
-The claim follows from `(hL v).1 hv w hw`.
+A detailed English derivation is pending.
 -/
 theorem Unimod.hf_mem (hL : Unimod K c p L) {v w : ι → K} (hv : v ∈ L) (hw : w ∈ L) :
     Rp K p (hf c v w) := (hL v).1 hv w hw

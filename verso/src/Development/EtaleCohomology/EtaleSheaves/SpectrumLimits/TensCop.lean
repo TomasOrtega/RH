@@ -9,27 +9,25 @@ open LateralTheory.E.CechLevelsPf LateralTheory.E.LevelsPf
 
 open PiTensorProduct in
 /- English proof (translation)
-Introduce `A A' _ _ φ n`. Use `letI : Algebra A A' := φ.toAlgebra`. Use `⟨PiTensorProduct A (fun _ : Fin (n + 1) => A'), inferInstance, algebraMap A _, fun i => (singleAlgHom (A := fun _ => A') i).toRingHom, fun i => ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `(singleAlgHom (A := fun _ => A') i).comp_algebraMap`. Rewrite using `[eq_top_iff]`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x _`. Proceed by induction on `x using PiTensorProduct.induction_on with`. Consider the case `smul_tprod r f`. Rewrite using `[Algebra.smul_def]`. Use `Subring.mul_mem _ ?_ ?_` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← (singleAlgHom (A := fun _ => A') 0).commutes r]`. Conclude with `Subring.subset_closure (Set.mem_iUnion.2 ⟨0, _, rfl⟩)`. Establish `: tprod A f = ∏ i, singleAlgHom (A` using `fun _ => A') i (f i) := by`. Simplify using `only [singleAlgHom_apply, ← tprod_prod]`. Use `congr 1`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Conclude with `(Finset.univ_prod_mulSingle f).symm`. Rewrite using `[this]`. Conclude with `Subring.prod_mem _ fun i _ => Subring.subset_closure (Set.mem_iUnion.2 ⟨i, _, rfl⟩)`. Consider the case `add x y hx hy => exact Subring.add_mem _ (hx trivial) (hy trivial)`. Introduce `R _ g c hg`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use `letI : Algebra A R := c.toAlgebra`. Establish `hc : ∀ i r, g i (algebraMap A A' r) = algebraMap A R r` using `fun i r => by`. Express the relevant statement in the definitionally equal form `g i (φ r) = c r`. Rewrite using `[← RingHom.comp_apply, hg i]`. Set `ga : Fin (n + 1) → (A' →ₐ[A] R)` to `fun i => AlgHom.mk (g i) (hc i)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `F : MultilinearMap A (fun _ : Fin (n + 1) => A') R` to `(MultilinearMap.mkPiAlgebra A (Fin (n + 1)) R).compLinearMap (fun i => (ga i).toLinearMap)`. Set `H` to `liftAlgHom F (by simp [F]) (by intro x y; simp [F, Finset.prod_mul_distrib])`. Establish `hH : ∀ i a, H (singleAlgHom (A` using `fun _ => A') i a) = g i a := by`. Introduce `i a`. Express the relevant statement in the definitionally equal form `lift F (tprod A (MonoidHom.mulSingle (fun _ => A') i a)) = _`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[lift.tprod]`. Simplify using `only [F, MultilinearMap.compLinearMap_apply, MultilinearMap.mkPiAlgebra_apply]`. Rewrite using `[Finset.prod_eq_single i]`. Simplify using `[ga]`. Introduce `j _ hj`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Simplify using `[ga, MonoidHom.mulSingle_apply, Pi.mulSingle_eq_of_ne hj]`. Simplify using the standard rewrite rules. Use `⟨H.toRingHom, ⟨fun i => ?_, ?_⟩, fun h2 ⟨h2l, h2c⟩ => ?_⟩` and prove the remaining obligations. Use extensionality with `a`. Conclude with `hH i a`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Use extensionality with `a`. Conclude with `H.commutes a`. Establish `hc2 : ∀ r, h2 (algebraMap A (PiTensorProduct A (fun _ : Fin (n + 1) => A')) r) = algebraMap A R r` using `fun r => by`. Express the relevant statement in the definitionally equal form `h2 (algebraMap A _ r) = c r`. Rewrite using `[← RingHom.comp_apply, h2c]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition.
 
-Set `H2 : (PiTensorProduct A (fun _ : Fin (n + 1) => A')) →ₐ[A] R` to `AlgHom.mk h2 hc2`. Establish `: H2 = H`. Apply `PiTensorProduct.algHom_ext` to reduce the goal to its premises. Introduce `i`. Use extensionality with `a`.
-
-Express the relevant statement in the definitionally equal form `h2 (singleAlgHom (A := fun _ => A') i a) = H (singleAlgHom (A := fun _ => A') i a)`. Rewrite using `[hH]`. Conclude with `RingHom.congr_fun (h2l i) a`. Conclude with `congrArg AlgHom.toRingHom this`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tensCop : TensCop := by
   intro A A' _ _ φ n

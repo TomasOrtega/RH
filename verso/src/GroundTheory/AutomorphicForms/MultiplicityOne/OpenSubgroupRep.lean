@@ -58,7 +58,7 @@ def extendZero {L : Subgroup G} (hL : IsOpen (L : Set G)) (f : CompactlySupporte
 
 open Classical in
 /- English proof (translation)
-Use `show (if h : (x : G) ∈ L then f ⟨x, h⟩ else 0) = f x`. Rewrite using `[dif_pos x.2]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem extendZero_apply_coe {L : Subgroup G} (hL : IsOpen (L : Set G))
     (f : CompactlySupportedContinuousMap L ℂ) (x : L) : extendZero hL f x = f x := by
@@ -67,7 +67,7 @@ theorem extendZero_apply_coe {L : Subgroup G} (hL : IsOpen (L : Set G))
 
 open Classical in
 /- English proof (translation)
-Use `show (if h : g ∈ L then f ⟨g, h⟩ else 0) = 0`. Rewrite using `[dif_neg hg]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem extendZero_apply_of_notMem {L : Subgroup G} (hL : IsOpen (L : Set G))
     (f : CompactlySupportedContinuousMap L ℂ) {g : G} (hg : g ∉ L) : extendZero hL f g = 0 := by
@@ -77,7 +77,7 @@ theorem extendZero_apply_of_notMem {L : Subgroup G} (hL : IsOpen (L : Set G))
 variable [MeasurableSpace G] [BorelSpace G]
 
 /- English proof (translation)
-Use `⟨fun S hS => ?_⟩` and prove the remaining obligations. Use `erw [(MeasurableEmbedding.subtype_coe hL.measurableSet).comap_apply]`. Conclude with `(hS.image continuous_subtype_val).measure_lt_top`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isFiniteMeasureOnCompacts_comap (μ : Measure G) [IsFiniteMeasureOnCompacts μ]
     {L : Subgroup G} (hL : IsOpen (L : Set G)) :
@@ -87,7 +87,7 @@ theorem isFiniteMeasureOnCompacts_comap (μ : Measure G) [IsFiniteMeasureOnCompa
   exact (hS.image continuous_subtype_val).measure_lt_top
 
 /- English proof (translation)
-The claim follows from `isFiniteMeasureOnCompacts_comap μ hL (π.compHom L.subtype continuous_subtype_val).integrated (μ.comap ((↑) : L → G)) (ccToL1 (μ.comap ((↑) : L → G)) f) = π.integrated μ (ccToL1 μ (extendZero hL f)) := by have := isFiniteMeasureOnCompacts_comap μ hL refine ContinuousLinearMap.ext …`.
+A detailed English derivation is pending.
 -/
 theorem integrated_compHom_subtype (π : UnitaryRep G H) (μ : Measure G) [IsFiniteMeasureOnCompacts μ]
     {L : Subgroup G} (hL : IsOpen (L : Set G)) (f : CompactlySupportedContinuousMap L ℂ) :
@@ -112,7 +112,7 @@ theorem integrated_compHom_subtype (π : UnitaryRep G H) (μ : Measure G) [IsFin
   rw [extendZero_apply_of_notMem hL f hg, zero_smul]
 
 /- English proof (translation)
-The claim follows from `isFiniteMeasureOnCompacts_comap μ hL IsCompactOperator ((π.compHom L.subtype continuous_subtype_val).integrated (μ.comap ((↑) : L → G)) (ccToL1 (μ.comap ((↑) : L → G)) f)) := by have := isFiniteMeasureOnCompacts_comap μ hL rw [integrated_compHom_subtype π μ hL f] exact hcpt _`.
+A detailed English derivation is pending.
 -/
 theorem isCompactOperator_compHom_subtype (π : UnitaryRep G H) (μ : Measure G)
     [IsFiniteMeasureOnCompacts μ] {L : Subgroup G} (hL : IsOpen (L : Set G))
@@ -129,9 +129,9 @@ theorem isCompactOperator_compHom_subtype (π : UnitaryRep G H) (μ : Measure G)
 end UnitaryRep
 
 /- English proof (translation)
-Establish `e` using `UnitaryRep.comp_integrated_of_mem_intertwiners (π.restrict V hinv) μ (UnitaryRep.subtypeL_mem_intertwiners π V hinv) g`. Establish `hc : IsCompactOperator (V.subtypeL ∘L (π.restrict V hinv).integrated μ g)`. Rewrite using `[e]`. Conclude with `h.comp_clm _`. Establish `hmem : ∀ v, (fun v => (V.subtypeL ∘L (π.restrict V hinv).integrated μ g) v) v ∈ V` using `fun v => ((π.restrict V hinv).integrated μ g v).2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfun : (((π.restrict V hinv).integrated μ g : V →L[ℂ] V) : V → V) = Set.codRestrict (fun v => (V.subtypeL ∘L (π.restrict V hinv).integrated μ g) v) V hmem`. Use function extensionality and compare the values at `fun v => Subtype.ext rfl`. Rewrite using `[hfun]`. Conclude with `hc.codRestrict hmem hV`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UnitaryRep.isCompactOperator_restrict_integrated {G : Type*} [Group G] [TopologicalSpace G]
     [MeasurableSpace G] [OpensMeasurableSpace G]

@@ -14,13 +14,11 @@ open GlobalTheory.LevelSeries
 namespace GlobalTheory.LevelSeries
 
 /- English proof (translation)
-Introduce `D H l₂ Q hM hnot`. Establish `hprod : l₂.Mb * l₂.Mb.map (H.bar : 𝓞 D.host.E →+* 𝓞 D.host.E) ≤ Q.asIdeal`. Rewrite using `[l₂.prod, Ideal.span_le, Set.singleton_subset_iff]`. Conclude with `hM`. Break down `Ideal.IsPrime.mul_le Q.isPrime |>.1 hprod with h | h` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `absurd h hnot`. Rewrite `h` using `[Ideal.map_le_iff_le_comap]`. Introduce `x hx`. Establish `hx'` using `h hx`. Use `show Formalism.L2.DIV.starOHom x ∈ Q.asIdeal`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `e : Formalism.L2.DIV.starOHom x = (H.bar : 𝓞 D.host.E →+* 𝓞 D.host.E) x`. Apply `RingOfIntegers.ext` to reduce the goal to its premises. Establish `hb` using `H.bar_eq x`. Simplify using `only [RingEquiv.coe_toRingHom] at hb ⊢`. Rewrite using `[hb]`.
-
-Conclude with `Formalism.L2.DIV.starO_coe x`. Rewrite using `[e]`. Conclude with `hx'`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mb_le_conjPl_of_not_le : ∀ (D : D7) (H : Geo.Tor.Host D.host.E) (l₂ : Geo.Tor.Level H) (Q : Formalism.L2.DIV.Pl D.host.E), ((l₂.M : ℕ) : 𝓞 D.host.E) ∈ Q.asIdeal → ¬ l₂.Mb ≤ Q.asIdeal → l₂.Mb ≤ (Formalism.L2.DIV.conjPl Q).asIdeal := by
   intro D H l₂ Q hM hnot

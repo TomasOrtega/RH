@@ -17,11 +17,11 @@ noncomputable section
 namespace GlobalTheory.DblDiagValue
 
 /- English proof (translation)
-Establish `hG : IsUnit (incM F J).det`. Establish `e : (incM F J).det = inclR (F` using `F) (AF F) J.det := by`. Rewrite using `[incM, RingHom.map_det]`. Both sides reduce to the same expression. Rewrite using `[e]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(Ne.isUnit hJ).map _`. Establish `hd` using `congrArg Matrix.det (show (h.1.1)ᵀ * incM F J * (h.1.1).map (cA σ) = incM F J from h.2)`. Rewrite `hd` using `[Matrix.det_mul, Matrix.det_mul, Matrix.det_transpose, show (h.1.1.map (cA σ)).det = cA σ h.1.1.det from ((cA σ).toRingHom.map_det _).symm]`. Establish `key : cA σ h.1.1.det * h.1.1.det = 1` using `hG.mul_left_cancel (by linear_combination hd)`. Establish `hu : conjUnit σ (Matrix.GeneralLinearGroup.det h.1) * Matrix.GeneralLinearGroup.det h.1 = 1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use `ext`. Conclude with `key`. Establish `h2` using `congrArg (absE F E) hu`. Rewrite `h2` using `[map_mul, absE_conjUnit, map_one, ← sq]`. Conclude with `(pow_eq_one_iff_of_nonneg (by positivity) two_ne_zero).1 h2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem absE_det {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
     {d : ℕ} {J : Matrix (Fin d) (Fin d) E} (hJ : J.det ≠ 0) (h : UA σ J) :
@@ -43,13 +43,13 @@ theorem absE_det {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E
   exact (pow_eq_one_iff_of_nonneg (by positivity) two_ne_zero).1 h2
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B n d Xs W M χX χW om r s' r₁ s₁ hP W₂ hW₂ i hi co _ hΔ _ om₂ hom h Φ hΦ`. Take `⟨⟨-, dd, omd, hdc, ⟨-, hus, hSR⟩, hbox⟩, -, -⟩` from `hom`. Establish `hJB : incM F W₂.J = blkMat finSumFinEquiv (incM F W.J) (-(incM F W.J))`. Rewrite using `[hW₂, dblGram, incM, incM, blkMat_map _ _ (map_zero _), Matrix.map_neg _ (map_neg _)]`. Establish `hev` using `GlobalTheory.DblEvalLaw.proj_mem_adm F (Fin n × Fin (d + d) ⊕ Fin n × Fin (d + d)) 0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hm : (i (h, h)).1.1 = blkMat finSumFinEquiv (mat h) (mat h)` using `hi h h`. Establish `hp : ((i (h, h)).1 : GL (Fin (d + d)) (AE F E)) ∈ Formalism.UG.stabGL (diagSub (AE F E) finSumFinEquiv)`. Rewrite using `[mem_stabGL_diagSub, hm, keepsDiag_blkMat]`. Establish `hk` using `GlobalTheory.DblEvalLaw.apply_zero_of_keepsDiag finSumFinEquiv hJB hdc hus.toIsSplitting hSR hbox hΔ hev (fun φ₁ h₁ φ₂ h₂ => GlobalTheory.SchwartzBox.boxFun_mem_schA F _ _ φ₁ h₁ φ₂ h₂) (GlobalTheory.SchANonzero.exists_mem_schA_ne_zero F _) (i (h, h)) hp Φ hΦ`. Establish `hl : leviGL finSumFinEquiv ⟨(i (h, h)).1, hp⟩ = h.1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Units.ext ?_` and prove the remaining obligations. Rewrite using `[val_leviGL]`. Use `show leviMat finSumFinEquiv (i (h, h)).1.1 = _`. Rewrite using `[hm, leviMat_blkMat]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hk` using `[MonoidHom.comp_apply, MonoidHom.inr_apply, hl, GlobalTheory.ModuAdele.modu_norm_eq_absE, absE_det (GlobalTheory.SkewGram.det_ne_zero F E σ B d W r₁ s₁ hP.skew) h]`. Simplify using `using hk`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem apply_zero_diag : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : Base F E) (n d : ℕ) (Xs : Spc F E n) (W : Spc F E d) (M : Model σ Xs W) (χX χW : Chr F E) (om : Rep σ Xs W) (r s' r₁ s₁ : ℕ),

@@ -12,9 +12,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.TypeR
 namespace GlobalTheory.GalLoc.EigLoc
 set_option maxHeartbeats 4000000 in
 /- English proof (translation)
-Take `⟨⟨D, cf, jE, A, cg, au, rep, row, low, Pq, S, hk, eig, θ, Bs, M, C, tp, ch, mt, big, L, Sp, Au, ss, eq⟩, pack⟩` from `nt`. Substitute `eq` using the available equality. Take `⟨-, h2⟩` from `Sigma.mk.inj_iff.mp pack`. Take `⟨hcf, -⟩` from `Sigma.mk.inj_iff.mp (eq_of_heq h2)`. Substitute `hcf` using the available equality.
+Extract witnesses or component facts from the available result. Substitute using the available equality. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Substitute using the available equality.
 
-Establish `hr : rep = rep'` using `eq_of_heq hrep`. Substitute `hr` using the available equality. Set `T : GlobalTheory.RowTie.WDTie (withLoc L).nd (withLoc L).naut` to `{ A.wdT with }`. Set `Rw : RowSide (withLoc L)` to `{ A.row with }`. Use `⟨Rw, HEq.rfl, ⟨{ T := T, lab := A.lab, chr := { A.chr with }, cg := { cg with }, A := { A.au with }, au := au, row := row }⟩⟩` and prove the remaining obligations.
+Establish an intermediate fact. Substitute using the available equality. Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem parIn_loc_alt {hL : _root_.UpperTheory.Zero.LLC.RecTExists} {D' : D7} {cf' : CharFrame D'} {C' : NChoice D'}
     {tp' : TupTied D' cf' C'} (nt : _root_.GlobalTheory.HeightCounting.NormChoiceRealisation hL D' cf' C' tp') (rep' : D'.what₂.FT → NG.FinTyp D'.host.E D'.R.r)
@@ -32,13 +32,13 @@ theorem parIn_loc_alt {hL : _root_.UpperTheory.Zero.LLC.RecTExists} {D' : D7} {c
   refine ⟨Rw, HEq.rfl, ⟨{ T := T, lab := A.lab, chr := { A.chr with }, cg := { cg with }, A := { A.au with }, au := au, row := row }⟩⟩
 set_option maxHeartbeats 4000000 in
 /- English proof (translation)
-Take `⟨⟨D, cf, jE, A, cg, au, rep, row, low, Pq, S, hk, eig, θ, Bs, M, C, tp, ch, mt, big, L, Sp, Au, ss, eq⟩, pack⟩` from `nt`. Substitute `eq` using the available equality. Take `⟨-, h2⟩` from `Sigma.mk.inj_iff.mp pack`. Take `⟨hcf, -⟩` from `Sigma.mk.inj_iff.mp (eq_of_heq h2)`. Substitute `hcf` using the available equality.
+Extract witnesses or component facts from the available result. Substitute using the available equality. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Substitute using the available equality.
 
-Establish `e1 : ratL L S = S'` using `eq_of_heq hS`. Substitute `e1` using the available equality. Establish `e2 : hk = hL'` using `eq_of_heq hh`. Substitute `e2` using the available equality. Establish `e3 : θ = θ'` using `eq_of_heq hθ`.
+Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact.
 
-Substitute `e3` using the available equality. Establish `e4 : eig = e` using `eq_of_heq he`. Substitute `e4` using the available equality. Use `⟨Sb, hS0, fun Rw hRw => ?_, hO⟩` and prove the remaining obligations. Establish `e5 : Rw.locR = Rw0.locR` using `(eq_of_heq hRw).trans (eq_of_heq hR0).symm`.
+Substitute using the available equality. Establish an intermediate fact. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Unfold `GlobalTheory.TwInputs.EigTrue at hT ⊢`. Rewrite using `[e5]`. Conclude with `hT`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem transport_alt {hL : _root_.UpperTheory.Zero.LLC.RecTExists} {D' : D7} {cf' : CharFrame D'} {C' : NChoice D'}
     {tp' : TupTied D' cf' C'} (nt : _root_.GlobalTheory.HeightCounting.NormChoiceRealisation hL D' cf' C' tp') (Sb : Finset (PlE D'.host)) (hS0 : ∀ i, Sb ⊆ D'.ntw.S0 i)

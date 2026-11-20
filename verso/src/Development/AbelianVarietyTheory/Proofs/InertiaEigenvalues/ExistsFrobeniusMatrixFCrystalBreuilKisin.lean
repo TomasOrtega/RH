@@ -9,7 +9,7 @@ noncomputable section
 namespace GlobalTheory.BSP.FrobMat
 
 /- English proof (translation)
-Unfold `IsFrac at *`. Rewrite using `[h, LocalizedModule.mk_eq]`. Use `⟨1, ?_⟩` and prove the remaining obligations. Simplify using `only [Submonoid.smul_def, one_smul, smul_smul, pow_add, mul_comm]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem isFrac_add {A M : Type} [CommRing A] [AddCommGroup M] [Module A M] {d : A}
     {y : LocalizedModule (Submonoid.powers d) M} {m : M} {k : ℕ} (h : IsFrac d y m k) (c : ℕ) :
@@ -20,7 +20,7 @@ theorem isFrac_add {A M : Type} [CommRing A] [AddCommGroup M] [Module A M] {d : 
   simp only [Submonoid.smul_def, one_smul, smul_smul, pow_add, mul_comm]
 
 /- English proof (translation)
-Use `isFrac_add h (a - k)` as an intermediate fact. Rewrite `this` using `[Nat.add_sub_cancel' hka]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem isFrac_le {A M : Type} [CommRing A] [AddCommGroup M] [Module A M] {d : A}
     {y : LocalizedModule (Submonoid.powers d) M} {m : M} {k a : ℕ} (h : IsFrac d y m k) (hka : k ≤ a) :
@@ -29,7 +29,7 @@ theorem isFrac_le {A M : Type} [CommRing A] [AddCommGroup M] [Module A M] {d : A
   rwa [Nat.add_sub_cancel' hka] at this
 
 /- English proof (translation)
-Unfold `IsFrac at h`. Rewrite using `[h, LocalizedModule.smul'_mk, LocalizedModule.mk_eq]`. Use `⟨1, ?_⟩` and prove the remaining obligations. Simplify using `only [Submonoid.smul_def, one_smul, OneMemClass.coe_one]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem isFrac_smul {A M : Type} [CommRing A] [AddCommGroup M] [Module A M] {d : A}
     {y : LocalizedModule (Submonoid.powers d) M} {m : M} {k : ℕ} (h : IsFrac d y m k) :
@@ -40,7 +40,7 @@ theorem isFrac_smul {A M : Type} [CommRing A] [AddCommGroup M] [Module A M] {d :
   simp only [Submonoid.smul_def, one_smul, OneMemClass.coe_one]
 
 /- English proof (translation)
-Take `⟨⟨_, n, rfl⟩, hn⟩` from `IsLocalization.exist_integer_multiples_of_finite (Submonoid.powers x) f`. Use `choose g hg using hn`. Conclude with `⟨n, g, hg⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_common_den {R : Type} [CommRing R] (x : R) {ι : Type} [Finite ι]
     (f : ι → Localization.Away x) : ∃ (n : ℕ) (g : ι → R), ∀ i, algebraMap R _ (g i) = x ^ n • f i := by
@@ -49,13 +49,11 @@ theorem exists_common_den {R : Type} [CommRing R] (x : R) {ι : Type} [Finite ι
   exact ⟨n, g, hg⟩
 
 /- English proof (translation)
-Set `S` to `Submodule.span B (Set.range fun i => u (e i))`. Establish `hu : ∀ x, u x ∈ S`. Introduce `x`. Rewrite using `[← e.sum_repr x, map_sum]`. Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[u.map_smulₛₗ]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`. Take `⟨w, -, huniq⟩` from `h (N ⧸ S) 0`. Establish `h1 : S.mkQ = w` using `huniq _ fun x => by`. Simplify using `only [Submodule.mkQ_apply, LinearMap.zero_apply, Submodule.Quotient.mk_eq_zero]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `hu x`. Establish `h2 : (0 : N →ₗ[B] N ⧸ S) = w` using `huniq _ fun x => by simp`. Rewrite using `[eq_top_iff]`. Introduce `y _`. Use `LinearMap.congr_fun (h1.trans h2.symm) y` as an intermediate fact.
-
-Simplify using `using this`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem span_eq_top_of_semiBC {A B M N : Type} [CommRing A] [CommRing B] [AddCommGroup M] [Module A M]
     [AddCommGroup N] [Module B N] {f : A →+* B} {u : M →ₛₗ[f] N} (h : SemiBC u) {ι : Type} [Fintype ι]
@@ -81,21 +79,19 @@ end GlobalTheory.BSP.FrobMat
 namespace GlobalTheory.BSP.FrobMat
 
 /- English proof (translation)
-Use `haveI : Module.Free R Mo := Module.Free.of_basis e`. Establish `h1 : ∀ j, ∃ m k, IsFrac x (u (e j)) m k` using `fun j => exists_isFrac _ _`. Use `choose m k hmk using h1`. Set `a` to `∑ j, k j`. Establish `hk : ∀ j, k j ≤ a` using `fun j => Finset.single_le_sum (fun _ _ => Nat.zero_le _) (Finset.mem_univ j)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `m' : Fin d → Mo` to `fun j => x ^ (a - k j) • m j`. Establish `hm' : ∀ j, IsFrac x (u (e j)) (m' j) a` using `fun j => isFrac_le (hmk j) (hk j)`. Set `A : Matrix (Fin d) (Fin d) R` to `fun i j => e.repr (m' j) i`. Establish `hA : ∀ j, ∑ i, A i j • e i = m' j` using `fun j => e.sum_repr (m' j)`. Establish `hsp` using `span_eq_top_of_semiBC hu e`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `h2 : ∀ k' : Fin d, ∃ c : Fin d → Localization.Away x, ∑ j, c j • u (e j) = LocalizedModule.mk (e k') 1` using `fun k' => (Submodule.mem_span_range_iff_exists_fun _).1 (Submodule.eq_top_iff'.1 hsp _)`. Use `choose c hc using h2`. Take `⟨n, A', hA'⟩` from `exists_common_den x (fun p : Fin d × Fin d => c p.2 p.1)`. Set `A'' : Matrix (Fin d) (Fin d) R` to `fun j k' => A' (j, k')`. Use `⟨a, a + n, A, A'', ?_, fun j => (hA j).symm ▸ hm' j⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `key : ∀ k', LocalizedModule.mk (x ^ (a + n) • e k') (1 : Submonoid.powers x) = LocalizedModule.mk (∑ j, A' (j, k') • m' j) 1`. Introduce `k'`. Establish `hr : LocalizedModule.mk (∑ j, A' (j, k') • m' j) (1 : Submonoid.powers x) = ∑ j, A' (j, k') • LocalizedModule.mk (m' j) (1 : Submonoid.powers x)`. Rewrite using `[← LocalizedModule.mkLinearMap_apply, map_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_smul, LocalizedModule.mkLinearMap_apply]`. Rewrite using `[hr, ← LocalizedModule.smul'_mk, ← hc k', pow_add, mul_smul, Finset.smul_sum, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[← smul_assoc (x ^ n) (c k' j), ← hA' (j, k'), algebraMap_smul, smul_comm, isFrac_smul (hm' j)]`. Establish `key2 : ∀ k', x ^ (a + n) • e k' = ∑ j, A' (j, k') • m' j`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Introduce `k'`. Take `⟨⟨_, r, rfl⟩, hr⟩` from `LocalizedModule.mk_eq.1 (key k')`. Simplify using `only [Submonoid.smul_def, one_smul] at hr`. Conclude with `smul_right_injective _ (pow_ne_zero r hx) hr`. Use extensionality with `i k'`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h3` using `congrArg (fun y => e.repr y i) (key2 k')`. Simplify using `only [map_smul, e.repr_self, map_sum, Finsupp.smul_apply, Finsupp.coe_finsetSum, Finset.sum_apply, Finsupp.single_apply, smul_eq_mul] at h3`. Rewrite using `[Matrix.mul_apply, Matrix.smul_apply, Matrix.one_apply, smul_eq_mul]`. Rewrite `h3` using `[eq_comm]`. Simplify using `only [eq_comm (a := k') (b := i)] at h3`.
-
-Rewrite using `[← h3]`. Conclude with `Finset.sum_congr rfl fun j _ => mul_comm _ _`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem frob_matrix_general {R Mo : Type} [CommRing R] [IsDomain R] [AddCommGroup Mo] [Module R Mo]
     (φ : R →+* R) (x : R) (hx : x ≠ 0)
@@ -150,7 +146,7 @@ theorem frob_matrix_general {R Mo : Type} [CommRing R] [IsDomain R] [AddCommGrou
 end GlobalTheory.BSP.FrobMat
 
 /- English proof (translation)
-Introduce `l _ K bk d M e`. Use `haveI : IsDomain bk.prism.A := inferInstanceAs (IsDomain bk.S)`. Conclude with `GlobalTheory.BSP.FrobMat.frob_matrix_general (R := bk.prism.A) bk.prism.D.φ (bk.toP bk.E) bk.E_ne_zero (M.Φ bk.prism ⟨bk.toP bk.E, Ideal.mem_span_singleton_self _⟩) (M.Φ_bc bk.prism ⟨bk.toP bk.E, Ideal.mem_span_singleton_self _⟩) e`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.BSP.frob_matrix_bk : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (bk : BK K) (d : ℕ) (M : FCrys l ↥(OL K)) (e : Module.Basis (Fin d) bk.prism.A (M.M bk.prism)), ∃ (a b : ℕ) (A A' : Matrix (Fin d) (Fin d) bk.S), A * A' = bk.E ^ b • (1 : Matrix (Fin d) (Fin d) bk.S) ∧ ∀ j : Fin d, IsFrac (bk.toP bk.E) (M.Φ bk.prism ⟨bk.toP bk.E, Ideal.mem_span_singleton_self _⟩ (e j)) (∑ i, bk.toP (A i j) • e i) a := by
   intro l _ K bk d M e

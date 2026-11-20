@@ -8,17 +8,17 @@ open Formalism.BasicNotions Formalism.L2.Forms Formalism.UG NumberField Matrix
 namespace Formalism.L2.G
 
 /- English proof (translation)
-Set `b' : Module.Basis (Fin n) E (Fin n → E)` to `b.map c`. Set `M : Matrix (Fin n) (Fin n) E` to `(Pi.basisFun E (Fin n)).toMatrix b'`. Set `M' : Matrix (Fin n) (Fin n) E` to `b'.toMatrix (Pi.basisFun E (Fin n))`. Establish `h1 : M * M' = 1` using `Module.Basis.toMatrix_mul_toMatrix_flip _ _`. Establish `h2 : M' * M = 1` using `Module.Basis.toMatrix_mul_toMatrix_flip _ _`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `B : GL (Fin n) E` to `⟨M, M', h1, h2⟩`. Establish `hM : ∀ i a, M i a = c (b a) i` using `fun i a => by`. Simplify using `[M, b', Module.Basis.toMatrix_apply]`. Use `⟨B, ?_, fun x => ?_⟩` and prove the remaining obligations. Use extensionality with `a a'`.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Use `hb a a'` as an intermediate fact. Rewrite `this` using `[hc]`. Rewrite using `[Matrix.one_apply, ← this]`. Simplify using `only [hform, Matrix.mul_apply, cT, Matrix.transpose_apply, Matrix.map_apply, B, hM, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `e1 : L0.map ((c : V →ₗ[E] (Fin n → E)).restrictScalars (𝓞 E)) = Submodule.span (𝓞 E) (Set.range b')`. Rewrite using `[hL, Submodule.map_span, ← Set.range_comp]`. Both sides reduce to the same expression. Rewrite using `[e1, Module.Basis.mem_span_iff_repr_mem]`. Establish `e2 : (B⁻¹ : GL (Fin n) E).1 *ᵥ x = b'.repr x` using `by show M' *ᵥ x = b'.repr x`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h3` using `Module.Basis.toMatrix_mulVec_repr (Pi.basisFun E (Fin n)) b' x`. Establish `h4 : ((Pi.basisFun E (Fin n)).repr x : Fin n → E) = x` using `funext fun i => Pi.basisFun_repr E (Fin n) x i`. Rewrite `h3` using `[h4]`. Conclude with `h3`. Rewrite using `[e2]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem stdB_core {E : Type} [Field E] [NumberField E] {V : Type} [AddCommGroup V] [Module E V] [Module (𝓞 E) V]
     [IsScalarTower (𝓞 E) E V] {n : ℕ} (σ : E →+* E) (J : Matrix (Fin n) (Fin n) E) (h : V → V → E)
@@ -60,7 +60,7 @@ theorem stdB_core {E : Type} [Field E] [NumberField E] {V : Type} [AddCommGroup 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Rewrite using `[Formalism.L2.Herm.hT_crd D.sp.cm]`. Unfold `hform`. Rewrite using `[← (finCongr (rankN D 0 (Nat.zero_le _))).sum_comp]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[← (finCongr (rankN D 0 (Nat.zero_le _))).sum_comp]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -75,11 +75,9 @@ theorem hermitian_form_frame_coordinates (D : D7) (x y : (D.sp.X 0).V) :
   rfl
 
 /- English proof (translation)
-Take `⟨b, hb, hL⟩` from `h`. Take `⟨B, h1, h2⟩` from `stdB_core (sigD D : D.host.E →+* D.host.E) (gramN D 0 (Nat.zero_le _)) (fun x y => (D.sp.X 0).hT x y) (crdN D 0 (Nat.zero_le _)) (hermitian_form_frame_coordinates D) (b.reindex (finCongr (rankN D 0 (Nat.zero_le _)))) (fun a a' => by`. Simplify using `only [Module.Basis.reindex_apply]`. Rewrite using `[hb]`. Use the proof step `simp)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use the proof step `(D.sp.X 0).L0 (by rw [hL, Module.Basis.range_reindex])`. Use `⟨(reGL (rank_eq_first_level D.R) D.host.E).symm B, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[MulEquiv.apply_symm_apply]`. Conclude with `h1`. Rewrite using `[MulEquiv.apply_symm_apply]`.
-
-Conclude with `h2`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_stdB (D : D7) (h : Formalism.L2.Herm.IsStd (D.sp.X 0)) : ∃ B : GL (Fin D.R.k) D.host.E, Cmp.StdB D B := by
   obtain ⟨b, hb, hL⟩ := h
@@ -98,7 +96,7 @@ theorem exists_stdB (D : D7) (h : Formalism.L2.Herm.IsStd (D.sp.X 0)) : ∃ B : 
     exact h2
 
 /- English proof (translation)
-The claim follows from `exists_stdB D (h.1 0 (Nat.zero_le _))`.
+A detailed English derivation is pending.
 -/
 theorem exists_stdB_of_tied (D : D7) (h : Formalism.L2.Herm.StdTied D) : ∃ B : GL (Fin D.R.k) D.host.E, Cmp.StdB D B :=
   exists_stdB D (h.1 0 (Nat.zero_le _))

@@ -19,14 +19,14 @@ def DualGeomDegCharts.Statement : Prop :=
         ∑ σ : K →+* ℂ, chartMass ((A σ)ᴴ * F.metric σ * A σ)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨dualBasisStandard, dualEmbMatrix_standard_bijective, le_rfl⟩`.
+Supply the required witnesses or components.
 -/
 example : Σ' (b : Module.Basis Unit ℤ (dualLattice HermLattice.scaledExample)),
     Function.Bijective (Matrix.mulVecLin (dualEmbMatrix b)) ∧ 1 ≤ 1 :=
   ⟨dualBasisStandard, dualEmbMatrix_standard_bijective, le_rfl⟩
 
 /- English proof (translation)
-Establish `h : (1 : Matrix (Fin 1) (Fin 1) ℂ).mulVec = id` using `funext Matrix.one_mulVec`. Conclude with `h ▸ Function.bijective_id`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 example : Function.Bijective (1 : Matrix (Fin 1) (Fin (1 - 1 + 1)) ℂ).mulVec := by
   have h : (1 : Matrix (Fin 1) (Fin 1) ℂ).mulVec = id := funext Matrix.one_mulVec

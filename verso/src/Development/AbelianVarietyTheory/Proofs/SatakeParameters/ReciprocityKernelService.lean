@@ -10,7 +10,7 @@ open Formalism.BasicNotions Formalism.MainNotions GlobalTheory.EX GlobalTheory.E
 namespace GlobalTheory.Svd
 
 /- English proof (translation)
-Introduce `hA hL p`. Conclude with `GlobalTheory.T.bundle_bothParts_of_standardKernel_of_globalArtinReciprocity hA (Bd := BdRec) (IsGoodE p.s) (LinkR p) (fun _ _ _ R => R.T.ker) (fun K X f T c h => (GlobalTheory.Svd.builtC_hasPart p.s).2 K X f T c (IsBuiltE.isBuilt K X f T c (IsGoodE.isBuiltE K X f T c h))) (Global …`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem servH_row_linkR : GlobalTheory.Published.GlobalArtinReciprocity → ∀ {hL : GlobalTheory.Published.LocalLanglandsGL} (p : Prm hL),
     Row (Bd := BdRec) (IsGoodE p.s) (LinkR p) (ServH (Bd := BdRec) fun _ _ _ R => R.T.ker) := by

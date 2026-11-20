@@ -21,13 +21,13 @@ section Abstract
 variable {Φ I G : Type} [AddCommGroup Φ] [Module ℂ Φ] [AddCommGroup I] [Module ℂ I] [Group G]
 
 /- English proof (translation)
-Establish `hM : twKer π N 1 ≤ ((J ⊓ S).map P).comap (π q)`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨n, f, rfl⟩`. Take `⟨ψ, hψ, hPψ⟩` from `hsurj (π q f)`. Take `⟨ψ₁, hψ₁, hJ, h1⟩` from `hlift n n.2 ψ hψ`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨ψ₁ - ψ, ⟨hJ, sub_mem hψ₁ hψ⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[map_sub, h1, hPψ]`. Simplify using `only [MonoidHom.one_apply, Units.val_one, one_smul, map_sub]`. Use `congr 1`. Rewrite using `[← Module.End.mul_apply, ← map_mul, ← Module.End.mul_apply, ← map_mul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Use `congr 2`. Use `group`. Introduce `z hz ψ hψ hPz`. Take `⟨ζ, ⟨hζj, hζs⟩, hPζ⟩` from `hM hz`. Establish `h0 : ψ - ζ ∈ A` using `hker _ (sub_mem hψ hζs) (by rw [map_sub, hPz, hPζ, sub_self])`.
+Reduce the equality to equality of the corresponding arguments. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using add_mem (hAJ h0) hζj`.
+A detailed English derivation is pending.
 -/
 theorem mem_of_map_twKer (π : Representation ℂ G I) (N : Subgroup G) (P : Φ →ₗ[ℂ] I) (S J A : Submodule ℂ Φ)
     (hAJ : A ≤ J) (q : G) (hsurj : ∀ f, ∃ φ ∈ S, P φ = f) (hker : ∀ φ ∈ S, P φ = 0 → φ ∈ A)
@@ -50,7 +50,7 @@ theorem mem_of_map_twKer (π : Representation ℂ G I) (N : Subgroup G) (P : Φ 
   simpa using add_mem (hAJ h0) hζj
 
 /- English proof (translation)
-Rewrite using `[map_sub, map_sub, hPa, hPb, map_sub, map_sub, ← Module.End.mul_apply, ← map_mul, mul_inv_cancel, map_one, Module.End.one_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem map_sub_sub (π : Representation ℂ G I) (P : Φ →ₗ[ℂ] I) (q : G) {φ φa φb : Φ} {fa fb : I}
     (hPa : P φa = π q fa) (hPb : P φb = π q fb) : P (φ - φa - φb) = π q (π q⁻¹ (P φ) - fa - fb) := by
@@ -58,7 +58,7 @@ theorem map_sub_sub (π : Representation ℂ G I) (P : Φ →ₗ[ℂ] I) (q : G)
     Module.End.one_apply]
 
 /- English proof (translation)
-Rewrite using `[map_sub, map_smul, h1, hPa, map_sub, map_smul]`. Use `congr 1`. Rewrite using `[← Module.End.mul_apply, ← map_mul, ← Module.End.mul_apply, ← map_mul]`. Use `congr 2`. Use `group`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem map_eig (π : Representation ℂ G I) (P : Φ →ₗ[ℂ] I) (q s : G) (C : ℂ) {φa φ₁ : Φ} {fa : I}
     (hPa : P φa = π q fa) (h1 : P φ₁ = π (q * s * q⁻¹) (P φa)) : P (φ₁ - C • φa) = π q (π s fa - C • fa) := by
@@ -70,21 +70,17 @@ theorem map_eig (π : Representation ℂ G I) (P : Φ →ₗ[ℂ] I) (q s : G) (
 end Abstract
 
 /- English proof (translation)
-Introduce `hKP F E _ _ _ _ _ σ B a a' G X om om' hT d₁ W₁ H' i₀ i₁ hH' v hv w hw φ hφ`. Establish `h2 : 2 ≤ a + a'` using `by have := hT.geo.aBig; omega`. Take `⟨t, c', hlift, hlev⟩` from `GlobalTheory.T.triple_adapted_local_place_extension F E σ B a a' G X om om' hT h2 d₁ W₁ H' i₀ i₁ hH' v hv w hw`. Take `⟨P, c, hsurj, hker, hex, heq⟩` from `GlobalTheory.T.good_place_induced_intertwiner_exists hKP F E σ B a a' G X om om' hT v hv t`. Establish `hconj : ∀ g : GL (Fin (a + a')) (Fv F v), c' * g * c'⁻¹ = c * ((c⁻¹ * c') * g * (c⁻¹ * c')⁻¹) * c⁻¹`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `g`. Use `group`. Establish `key` using `mem_of_map_twKer (indAA (Fv F v) a a' ![chrW X.α t, chrW X.β t]) (unipRad (Fv F v) (linePlace h2)) P (SB (Fin a × Fin (a + a') → Fv F v)) (GlobalTheory.JacquetLine.jacKer om H' v) (augAt om v) (GlobalTheory.JacquetLine.augAt_le_jacKer om H' v) (c⁻¹ * c') hsurj hker (by`. Introduce `n hn ψ hψ`. Take `⟨u, hu, huv, hmu⟩` from `hlift n hn`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨ψ₁, hψ₁, hact⟩` from `hex u huv ψ hψ`. Conclude with `⟨ψ₁, hψ₁, GlobalTheory.JacquetLine.unipAug_le_jacKer om H' v (Submodule.subset_span ⟨u, hu, huv, ψ, hψ, ψ₁, hψ₁, hact, rfl⟩), heq u huv _ (by rw [hmu, hconj]) ψ hψ ψ₁ hψ₁ hact⟩)`. Establish `hsm : ∀ j, IsSmoothChar ((![chrW X.α t, chrW X.β t] : Fin 2 → (Fv F v)ˣ →* ℂˣ) j)`. Introduce `j`. Use `fin_cases j`.
+Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `GlobalTheory.RootEx.UniformLattices.isOpen_ker_of_continuous _ (GlobalTheory.ChrWSmooth.continuous_chrW hT.chars.heckeα.1 t)`. Conclude with `GlobalTheory.RootEx.UniformLattices.isOpen_ker_of_continuous _ (GlobalTheory.ChrWSmooth.continuous_chrW hT.chars.heckeβ.1 t)`. Establish `hun : ∀ j, IsUnitaryChar ((![chrW X.α t, chrW X.β t] : Fin 2 → (Fv F v)ˣ →* ℂˣ) j)`. Introduce `j`. Use `fin_cases j`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `GlobalTheory.ChrWSmooth.isUnitaryChar_chrW _ t`. Conclude with `GlobalTheory.ChrWSmooth.isUnitaryChar_chrW _ t`. Take `⟨fa, fb, hsum, hea, heb⟩` from `GlobalTheory.T.induced_line_kernel_decomposition (Fv F v) hKP.geometricLemmaFiltration a a' hT.geo.lt h2 ![chrW X.α t, chrW X.β t] hsm hun (indAA (Fv F v) a a' ![chrW X.α t, chrW X.β t] (c⁻¹ * c')⁻¹ (P φ))`. Take `⟨φa, hφa, hPa⟩` from `hsurj (indAA (Fv F v) a a' ![chrW X.α t, chrW X.β t] (c⁻¹ * c') fa)`. Take `⟨φb, hφb, hPb⟩` from `hsurj (indAA (Fv F v) a a' ![chrW X.α t, chrW X.β t] (c⁻¹ * c') fb)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `⟨φa, hφa, φb, hφb, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `key _ hsum _ (sub_mem (sub_mem hφ hφa) hφb) (map_sub_sub _ P _ hPa hPb)`. Introduce `x m hm hmv φ₁ hφ₁ hact`. Take `⟨y, hya, -, hlv⟩` from `hlev x`. Establish `h1` using `heq m hmv _ (by rw [hlv m hm hmv, hconj]) φa hφa φ₁ hφ₁ hact`.
-
-Rewrite using `[hya]`. Conclude with `key _ (hea y) _ (sub_mem hφ₁ (Submodule.smul_mem _ _ hφa)) (map_eig _ P _ _ _ hPa h1)`. Introduce `x m hm hmv φ₁ hφ₁ hact`. Take `⟨y, -, hyb, hlv⟩` from `hlev x`. Establish `h1` using `heq m hmv _ (by rw [hlv m hm hmv, hconj]) φb hφb φ₁ hφ₁ hact`.
-
-Rewrite using `[hyb]`. Conclude with `key _ (heb y) _ (sub_mem hφ₁ (Submodule.smul_mem _ _ hφb)) (map_eig _ P _ _ _ hPb h1)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_positionOne_eigen : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (a a' : ℕ) (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W), IsTriple B G X om om' → ∀ (d₁ : ℕ) (W₁ : Spc F E d₁) (H' : Plane E (a + a') d₁) (i₀ i₁ : ℕ), H'.IsAdapted σ B G.W W₁ i₀ i₁ → ∀ v, X.Good v → ∀ w : HeightOneSpectrum (𝓞 E), w.under (𝓞 F) = v → ∀ φ ∈ SB (Fin a × Fin (a + a') → Fv F v), ∃ φa ∈ SB (Fin a × Fin (a + a') → Fv F v), ∃ φb ∈ SB (Fin a × Fin (a + a') → Fv F v), φ - φa - φb ∈ GlobalTheory.JacquetLine.jacKer om H' v ∧ (∀ (x : (w.adicCompletion E)ˣ) (m : UA σ G.W.J), IsLevi (W₁ := W₁) H' (locIdele F w x) 1 m → m ∈ UAt σ G.W (evFin F v) → ∀ φ₁ ∈ SB (Fin a × Fin (a + a') → Fv F v), Acts (evFin F v) (om (1, m)) φa φ₁ → φ₁ - ((GlobalTheory.CtTyp.twAbs X.α ((a' : ℝ) / 2) (locIdele F w x) : ℂˣ) : ℂ) • φa ∈ GlobalTheory.JacquetLine.jacKer om H' v) ∧ (∀ (x : (w.adicCompletion E)ˣ) (m : UA σ G.W.J), IsLevi (W₁ := W₁) H' (locIdele F w x) 1 m → m ∈ UAt σ G.W (evFin F v) → ∀ φ₁ ∈ SB (Fin a × Fin (a + a') → Fv F v), Acts (evFin F v) (om (1, m)) φb φ₁ → φ₁ - ((GlobalTheory.CtTyp.twAbs X.β ((a : ℝ) / 2) (locIdele F w x) : ℂˣ) : ℂ) • φb ∈ GlobalTheory.JacquetLine.jacKer om H' v) := by
   intro hKP F E _ _ _ _ _ σ B a a' G X om om' hT d₁ W₁ H' i₀ i₁ hH' v hv w hw φ hφ

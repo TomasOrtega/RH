@@ -13,7 +13,7 @@ noncomputable section
 namespace UpperTheory.V.Z.Sym.Unl
 
 /- English proof (translation)
-Use `show (1 : ℝ) ∈ (Gamma1 N : Subgroup (GL (Fin 2) ℝ)).strictPeriods`. Rewrite using `[strictPeriods_Gamma1]`. Conclude with `AddSubgroup.mem_zmultiples 1`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem one_mem_per (N : ℕ) :
     (1 : ℝ) ∈ (Subgroup.map (Matrix.SpecialLinearGroup.mapGL ℝ) (Gamma1 N)).strictPeriods := by
@@ -22,7 +22,7 @@ private theorem one_mem_per (N : ℕ) :
   exact AddSubgroup.mem_zmultiples 1
 
 /- English proof (translation)
-Unfold `coef`. Rewrite using `[show ((c • f : CuspForm (Gamma1 N) k) : ℍ → ℂ) = c • (f : ℍ → ℂ) from rfl, ModularForm.qExpansion_smul one_pos (one_mem_per N) c f]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem coef_smul {N : ℕ} {k : ℤ} (c : ℂ) (f : CuspForm (Gamma1 N) k) (n : ℕ) :
     coef (c • f : CuspForm (Gamma1 N) k) n = c * coef f n := by
@@ -32,7 +32,7 @@ private theorem coef_smul {N : ℕ} {k : ℤ} (c : ℂ) (f : CuspForm (Gamma1 N)
   simp
 
 /- English proof (translation)
-Use `show PowerSeries.coeff n (qExpansion 1 ⇑(f + g)) = PowerSeries.coeff n (qExpansion 1 ⇑f) + PowerSeries.coeff n (qExpansion 1 ⇑g)`. Rewrite using `[show ⇑(f + g) = ⇑f + ⇑g from rfl, ModularForm.qExpansion_add one_pos (one_mem_per N) f g, map_add]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem coef_add {N : ℕ} {k : ℤ} (f g : CuspForm (Gamma1 N) k) (n : ℕ) :
     coef (f + g : CuspForm (Gamma1 N) k) n = coef f n + coef g n := by
@@ -41,9 +41,9 @@ private theorem coef_add {N : ℕ} {k : ℤ} (f g : CuspForm (Gamma1 N) k) (n : 
   rw [show ⇑(f + g) = ⇑f + ⇑g from rfl, ModularForm.qExpansion_add one_pos (one_mem_per N) f g, map_add]
 
 /- English proof (translation)
-Distinguish the cases in `ha : IsUnit a`. Take `⟨u, rfl⟩` from `ha`. Establish `hpos : 0 < orderOf u` using `orderOf_pos u`. Establish `hpow : (χ u) ^ orderOf u = 1`. Rewrite using `[← map_pow, ← Units.val_pow_eq_pow_val, pow_orderOf_eq_one, Units.val_one, map_one]`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : ‖ι.symm (χ u)‖ ^ orderOf u = 1`. Rewrite using `[← norm_pow, ← map_pow, hpow, map_one, norm_one]`. Conclude with `le_of_eq ((pow_eq_one_iff_of_nonneg (norm_nonneg _) hpos.ne').mp h1)`. Rewrite using `[MulChar.map_nonunit χ ha, map_zero, norm_zero]`. Conclude with `zero_le_one`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem norm_chi {l : ℕ} [Fact l.Prime] (ι : Qbar l ≃+* ℂ) {N : ℕ} [NeZero N] (χ : DirichletCharacter ℂ N)
     (a : ZMod N) : ‖ι.symm (χ a)‖ ≤ 1 := by
@@ -74,17 +74,17 @@ private theorem fT_apply {K : Type} [Field K] (p : ℕ) (e : K) (c : ℕ → K) 
     fT p e c n = c (p * n) + e * (if p ∣ n then c (n / p) else 0) := rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `n`. Simplify using `only [fT_apply]`. Establish `hqp : ¬ q ∣ p` using `fun h => hpq ((Nat.prime_dvd_prime_iff_eq hq hp).mp h).symm`. Establish `hpq' : ¬ p ∣ q` using `fun h => hpq ((Nat.prime_dvd_prime_iff_eq hp hq).mp h)`. Establish `dq : ∀ m, q ∣ p * m ↔ q ∣ m` using `fun m => ⟨fun h => (hq.dvd_mul.mp h).resolve_left hqp, fun h => dvd_mul_of_dvd_right h p⟩`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `dp : ∀ m, p ∣ q * m ↔ p ∣ m` using `fun m => ⟨fun h => (hp.dvd_mul.mp h).resolve_left hpq', fun h => dvd_mul_of_dvd_right h q⟩`. Establish `hc : q * (p * n) = p * (q * n)` using `Nat.mul_left_comm q p n`. Establish `hdd : n / p / q = n / q / p`. Rewrite using `[Nat.div_div_eq_div_mul, Nat.div_div_eq_div_mul, Nat.mul_comm]`. Rewrite using `[hc, hdd]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [dq, dp]`. Apply the tactic sequence `by_cases hpn : p ∣ n <;> by_cases hqn : q ∣ n`. Establish `h1 : q ∣ n / p` using `(dq _).mp (by rwa [Nat.mul_div_cancel' hpn])`. Establish `h2 : p ∣ n / q` using `(dp _).mp (by rwa [Nat.mul_div_cancel' hqn])`. Simplify using `only [hpn, hqn, h1, h2, ↓reduceIte, Nat.mul_div_assoc p hqn, Nat.mul_div_assoc q hpn]`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `h1 : ¬ q ∣ n / p` using `fun h => hqn (by`. Rewrite using `[← Nat.mul_div_cancel' hpn]`. Conclude with `dvd_mul_of_dvd_right h p)`. Simplify using `only [hpn, hqn, h1, ↓reduceIte, Nat.mul_div_assoc q hpn]`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `h2 : ¬ p ∣ n / q` using `fun h => hpn (by`. Rewrite using `[← Nat.mul_div_cancel' hqn]`. Conclude with `dvd_mul_of_dvd_right h q)`. Simplify using `only [hpn, hqn, h2, ↓reduceIte, Nat.mul_div_assoc p hqn]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Simplify using `only [hpn, hqn, ↓reduceIte]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 private theorem fT_comm {K : Type} [Field K] {p q : ℕ} (hp : p.Prime) (hq : q.Prime) (hpq : p ≠ q) (e e' : K)
     (c : ℕ → K) : fT p e (fT q e' c) = fT q e' (fT p e c) := by
@@ -120,15 +120,13 @@ private theorem fT_comm {K : Type} [Field K] {p q : ℕ} (hp : p.Prime) (hq : q.
     ring
 
 /- English proof (translation)
-Use function extensionality and compare the values at `n`. Proceed by induction on `n using Nat.strong_induction_on with`. Consider the case `_ n ih => show c n = 0`. Break down `Nat.lt_or_ge n 2 with hn | hn` into its components or cases. Use `interval_cases n`.
+Apply function extensionality and compare values at an arbitrary argument. Proceed by induction. Treat this case separately. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Conclude with `h0`. Conclude with `h1`. Establish `hp : (Nat.minFac n).Prime` using `Nat.minFac_prime (by omega)`. Take `⟨m, hm⟩` from `Nat.minFac_dvd n`. Establish `hp2` using `hp.two_le`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hm1 : 1 ≤ m`. Break down `Nat.eq_zero_or_pos m with h' | h'` into its components or cases. Rewrite `hm` using `[h', mul_zero]`. Use linear arithmetic over natural numbers and integers. Conclude with `h'`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Establish `hmn : m < n`. Establish `: 1 * m < Nat.minFac n * m` using `Nat.mul_lt_mul_of_pos_right (by omega) (by omega)`. Use linear arithmetic over natural numbers and integers. Establish `hcm : c m = 0` using `ih m hmn`. Establish `hcmp : c (m / n.minFac) = 0` using `ih _ (lt_of_le_of_lt (Nat.div_le_self _ _) hmn)`.
-
-Establish `he` using `congrFun (h ⟨n.minFac, hp⟩) m`. Simplify using `only [fT_apply, Pi.smul_apply, smul_eq_mul, hcm, mul_zero, hcmp, ite_self, add_zero] at he`. Rewrite using `[hm]`. Conclude with `he`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem eq_zero_of_eig {K : Type} [Field K] (e b : Nat.Primes → K) (c : ℕ → K) (h0 : c 0 = 0) (h1 : c 1 = 0)
     (h : ∀ p : Nat.Primes, fT p.1 (e p) c = b p • c) : c = 0 := by
@@ -190,7 +188,7 @@ private def chSub (N k : ℕ) (χ : DirichletCharacter ℂ N) : Submodule ℂ (C
       hf γ hγ, smul_comm]
 
 /- English proof (translation)
-Use `show PowerSeries.coeff n (qExpansion 1 (0 : ℍ → ℂ)) = 0`. Rewrite using `[qExpansion_zero]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem coef_zero' {N : ℕ} {k : ℤ} (n : ℕ) : coef (0 : CuspForm (Gamma1 N) k) n = 0 := by
   show PowerSeries.coeff n (qExpansion 1 (0 : ℍ → ℂ)) = 0
@@ -217,11 +215,11 @@ private def cjSub (N k : ℕ) (χ : DirichletCharacter ℂ N) : Submodule ℂ (C
     rw [coef_smul, coef_smul, a2 n hn, map_mul]
 
 /- English proof (translation)
-Take `⟨hgc, hgj⟩` from `hg`. Take `⟨g', hg'c, hg'n⟩` from `heckeEx N k hk χ g hgc p hp`. Use `⟨g', ⟨hg'c, fun σ => ?_⟩, hg'n⟩` and prove the remaining obligations. Take `⟨f', hf'c, hf'n⟩` from `hgj σ`. Take `⟨f'', hf''c, hf''n⟩` from `heckeEx N k hk (cj σ χ) f' hf'c p hp`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨f'', hf''c, fun n hn => ?_⟩` and prove the remaining obligations. Establish `hpn : 1 ≤ p * n` using `Nat.one_le_iff_ne_zero.mpr (Nat.mul_ne_zero hp.ne_zero (by omega))`. Establish `hcj : (cj σ χ) (p : ZMod N) = σ (χ p)` using `rfl`. Rewrite using `[hf''n n hn, hg'n n hn]`. Distinguish the cases in `hd : p ∣ n`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Establish `hq : 1 ≤ n / p` using `Nat.div_pos (Nat.le_of_dvd (by omega) hd) hp.pos`. Simplify using `only [hd, if_true, hf'n _ hq, hf'n _ hpn, hcj, map_add, map_mul, map_pow, map_natCast]`. Simplify using `only [hd, if_false, hf'n _ hpn, hcj, map_add, map_mul, mul_zero, map_zero]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 private theorem heckeC (N k : ℕ) [NeZero N] (hk : 1 ≤ k) (χ : DirichletCharacter ℂ N)
     (g : CuspForm (Gamma1 N) (k : ℤ)) (hg : g ∈ cjSub N k χ) (p : ℕ) (hp : p.Prime) :
@@ -242,9 +240,9 @@ private theorem heckeC (N k : ℕ) [NeZero N] (hk : 1 ≤ k) (χ : DirichletChar
   · simp only [hd, if_false, hf'n _ hpn, hcj, map_add, map_mul, mul_zero, map_zero]
 
 /- English proof (translation)
-Establish `hn0 : n ≠ 0` using `by omega`. Establish `hpn : p * n ≠ 0` using `Nat.mul_ne_zero hp.ne_zero hn0`. Rewrite using `[fT_apply, Phi_apply, if_neg hpn]`. Distinguish the cases in `hd : p ∣ n`. Establish `hq : n / p ≠ 0` using `(Nat.div_pos (Nat.le_of_dvd (by omega) hd) hp.pos).ne'`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Rewrite using `[if_pos hd, if_pos hd, Phi_apply, if_neg hq, map_add, map_mul]`. Rewrite using `[if_neg hd, if_neg hd]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem fT_Phi {l : ℕ} [Fact l.Prime] (ι : Qbar l ≃+* ℂ) (N : ℕ) (k : ℤ) (g : CuspForm (Gamma1 N) k)
     {p : ℕ} (hp : p.Prime) (e : ℂ) {n : ℕ} (hn : 1 ≤ n) :
@@ -263,49 +261,41 @@ end UpperTheory.V.Z.Sym.Unl
 set_option maxHeartbeats 1000000 in
 open UpperTheory.V.Z.Sym.Unl in
 /- English proof (translation)
-Introduce `l _ ι N k _ hk χ f hfc hfj hfI hf1 a ha`. Take `⟨e, he_def⟩ : ∃ e : Nat.Primes → Qbar l, ∀ p, e p = ι.symm (χ (p.1 : ZMod N) * (p.1 : ℂ) ^ (k - 1))` from `⟨_, fun _ => rfl⟩`. Establish `hfW : f ∈ cjSub N k χ` using `⟨hfc, hfj⟩`. Establish `hfd : FiniteDimensional (Qbar l) ((cjSub N k χ).map (Phi ι N k))` using `by haveI := (finDim N k).1`. Conclude with `Module.Finite.iff_fg.mpr ((IsNoetherian.noetherian (cjSub N k χ)).map _)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hinv : ∀ p : Nat.Primes, ∀ v ∈ (cjSub N k χ).map (Phi ι N k), fT p.1 (e p) v ∈ (cjSub N k χ).map (Phi ι N k)`. Introduce `p v hv`. Take `⟨g, hg, rfl⟩` from `hv`. Take `⟨g', hg', hg'n⟩` from `heckeC N k hk χ g hg p.1 p.2`. Use `⟨g', hg', ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `n`. Break down `Nat.eq_zero_or_pos n with rfl | hn` into its components or cases. Simplify using `[Phi_apply, fT_apply]`. Use `show Phi ι N k g' n = fT p.1 (e p) (Phi ι N k g) n`. Rewrite using `[he_def p, fT_Phi ι N k g p.2 _ hn, Phi_apply, if_neg (show n ≠ 0 by omega), hg'n n hn]`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `he : ∀ p : Nat.Primes, ‖e p‖ ≤ 1`. Introduce `p`. Rewrite using `[he_def p, map_mul ι.symm, map_pow ι.symm, map_natCast ι.symm, norm_mul, norm_pow]`. Conclude with `mul_le_one₀ (norm_chi ι χ _) (by positivity) (pow_le_one₀ (norm_nonneg _) (IsUltrametricDist.norm_natCast_le_one (Qbar l) _))`. Establish `key : ∀ (p : Nat.Primes) (v : ℕ → Qbar l) (n : ℕ), ‖fT p.1 (e p) v n‖ ≤ max ‖v (p.1 * n)‖ (if p.1 ∣ n then ‖v (n / p.1)‖ else 0)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `p v n`. Rewrite using `[fT_apply]`. Use `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le_max le_rfl ?_)` and prove the remaining obligations. Use `split_ifs`. Rewrite using `[norm_mul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `mul_le_of_le_one_left (norm_nonneg _) (he p)`. Simplify using the standard rewrite rules. Set `T : Nat.Primes → Module.End (Qbar l) ((cjSub N k χ).map (Phi ι N k))` to `fun p => (fT p.1 (e p)).restrict (hinv p)`. Establish `hT : ∀ p v, ((T p v : ↥((cjSub N k χ).map (Phi ι N k))) : ℕ → Qbar l) = fT p.1 (e p) v` using `fun _ _ => rfl`. Establish `hcomm : ∀ i j, T i * T j = T j * T i`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Introduce `i j`. Use `LinearMap.ext fun v => Subtype.ext ?_` and prove the remaining obligations. Rewrite using `[Module.End.mul_apply, Module.End.mul_apply, hT, hT, hT, hT]`. Distinguish the cases in `hij : i = j`. Rewrite using `[hij]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `fT_comm i.2 j.2 (fun h => hij (Subtype.ext h)) _ _ _`. Establish `hle : ∀ (j : Nat.Primes) (v : ↥((cjSub N k χ).map (Phi ι N k))), (∀ n, ‖(v : ℕ → Qbar l) n‖ ≤ 1) → ∀ n, ‖((T j v : ↥((cjSub N k χ).map (Phi ι N k))) : ℕ → Qbar l) n‖ ≤ 1`. Introduce `j v hv n`. Rewrite using `[hT]`. Use `(key j v n).trans (max_le (hv _) ?_)` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `split_ifs`. Conclude with `hv _`. Conclude with `zero_le_one`. Establish `hlt : ∀ (j : Nat.Primes) (v : ↥((cjSub N k χ).map (Phi ι N k))), (∀ n, ‖(v : ℕ → Qbar l) n‖ < 1) → ∀ n, ‖((T j v : ↥((cjSub N k χ).map (Phi ι N k))) : ℕ → Qbar l) n‖ < 1`. Introduce `j v hv n`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Rewrite using `[hT]`. Use `lt_of_le_of_lt (key j v n) (max_lt (hv _) ?_)` and prove the remaining obligations. Use `split_ifs`. Conclude with `hv _`. Conclude with `zero_lt_one`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules.
 
-Establish `hfint : ∀ n, ‖Phi ι N k f n‖ ≤ 1`. Introduce `n`. Rewrite using `[Phi_apply]`. Use `split_ifs`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hfI n`. Establish `hf1' : ‖Phi ι N k f 1‖ = 1`. Rewrite using `[Phi_apply, if_neg one_ne_zero]`. Conclude with `hf1`. Set `f0 : ↥((cjSub N k χ).map (Phi ι N k))` to `⟨Phi ι N k f, Submodule.mem_map_of_mem hfW⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `happ : ∀ (j : Nat.Primes) (n : ℕ), ‖((T j f0 : ↥((cjSub N k χ).map (Phi ι N k))) : ℕ → Qbar l) n - ι.symm (a j.1) * (f0 : ℕ → Qbar l) n‖ < 1`. Introduce `j n`. Rewrite using `[hT]`. Use `show ‖fT j.1 (e j) (Phi ι N k f) n - ι.symm (a j.1) * Phi ι N k f n‖ < 1`. Break down `Nat.eq_zero_or_pos n with rfl | hn` into its components or cases.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `[Phi_apply, fT_apply]`. Rewrite using `[he_def j, fT_Phi ι N k f j.2 _ hn, Phi_apply, if_neg (show n ≠ 0 by omega), ← map_mul ι.symm, ← map_sub ι.symm]`. Conclude with `(ha j.1 j.2).2 n hn`. Take `⟨h, b, hne, -, hhe, hb⟩` from `delSerre l ℕ Nat.Primes ((cjSub N k χ).map (Phi ι N k)) hfd T hcomm hle hlt f0 (fun p => ι.symm (a p.1)) hfint ⟨1, hf1'⟩ (fun p => (ha p.1 p.2).1) happ`. Take `⟨g, hgW, hgh⟩` from `h.2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hev : ∀ p : Nat.Primes, fT p.1 (e p) (Phi ι N k g) = b p • Phi ι N k g`. Introduce `p`. Rewrite using `[hgh, ← hT]`. Conclude with `congrArg Subtype.val (hhe p)`. Establish `hc1 : coef g 1 ≠ 0`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `hz`. Apply `hne` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Use `show (h : ℕ → Qbar l) = 0`. Rewrite using `[← hgh]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `eq_zero_of_eig e b _ ?_ ?_ hev` and prove the remaining obligations. Rewrite using `[Phi_apply, if_pos rfl]`. Rewrite using `[Phi_apply, if_neg one_ne_zero, hz, map_zero]`. Establish `heig : ∀ p (hp : p.Prime) n, 1 ≤ n → coef g (p * n) + χ p * (p : ℂ) ^ (k - 1) * (if p ∣ n then coef g (n / p) else 0) = ι (b ⟨p, hp⟩) * coef g n`. Introduce `p hp n hn`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `h1` using `congrFun (hev ⟨p, hp⟩) n`. Express the relevant statement in the definitionally equal form `fT p (e ⟨p, hp⟩) (Phi ι N k g) n = b ⟨p, hp⟩ * Phi ι N k g n at h1`. Rewrite `h1` using `[he_def ⟨p, hp⟩, fT_Phi ι N k g hp _ hn, Phi_apply, if_neg (show n ≠ 0 by omega)]`. Establish `h2` using `congrArg ι h1`. Rewrite `h2` using `[RingEquiv.apply_symm_apply, map_mul ι, RingEquiv.apply_symm_apply]`. Then use the resulting hypothesis.
-
-Establish `hlam : ∀ p (hp : p.Prime), (coef g 1)⁻¹ * coef g p = ι (b ⟨p, hp⟩)`. Introduce `p hp`. Establish `h1` using `heig p hp 1 le_rfl`. Rewrite `h1` using `[mul_one, if_neg hp.not_dvd_one, mul_zero, add_zero]`. Rewrite using `[h1, mul_comm, mul_assoc, mul_inv_cancel₀ hc1, mul_one]`.
-
-Establish `hg1W : (coef g 1)⁻¹ • g ∈ cjSub N k χ` using `(cjSub N k χ).smul_mem _ hgW`. Use `⟨⟨(coef g 1)⁻¹ • g, hg1W.1, ?_, ?_⟩, hg1W.2, fun p hp => ?_⟩` and prove the remaining obligations. Rewrite using `[coef_smul]`. Conclude with `inv_mul_cancel₀ hc1`. Introduce `p hp n hn`.
-
-Simplify using `only [coef_smul]`. Rewrite using `[hlam p hp]`. Apply the tactic sequence `have hr : (coef g 1)⁻¹ * coef g (p * n) + χ p * (p : ℂ) ^ (k - 1) * (if p ∣ n then (coef g 1)⁻¹ * coef g (n / p) else 0) = (coef g 1)⁻¹ * (coef g (p * n) + χ p * (p : ℂ) ^ (k - 1) * (if p ∣ n then coef g (n / p) else 0)) := by split_ifs <;> ring`. Rewrite using `[hr, heig p hp n hn]`. Expand and normalize the polynomial expressions, which then agree.
-
-Use `show ‖ι.symm (coef ⇑((coef g 1)⁻¹ • g) p - a p)‖ < 1`. Rewrite using `[coef_smul, hlam p hp, map_sub ι.symm, RingEquiv.symm_apply_apply]`. Conclude with `hb ⟨p, hp⟩`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Sym.Unl.eigLiftC :
     UpperTheory.V.Z.Sym.Unl.EigLiftC := by

@@ -3,13 +3,13 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.PatchingModules.De
 open Matrix IsLocalRing UpperTheory.V.Alg UpperTheory.V.W UpperTheory.V.Pa
 
 /- English proof (translation)
-Introduce `F F' ι _ _ f n e r h X hX`. Use `letI : Algebra F F' := f.toAlgebra`. Establish `hs : ∀ (x : F) (y : F'), f x * y = x • y` using `fun x y => (Algebra.smul_def x y).symm`. Set `b` to `Module.Basis.ofVectorSpace F F'`. Establish `key : ∀ k, (Matrix.of fun a c => b.repr (X a c) k) = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `k`. Apply `h` to reduce the goal to its premises. Introduce `i`. Use extensionality with `a c`. Establish `hac` using `congrArg (fun M => b.repr (M a c) k) (hX i)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Simplify using `only [Matrix.smul_apply, Matrix.mul_apply, Matrix.map_apply, smul_eq_mul, Matrix.of_apply] at hac ⊢`. Simplify using `only [hs, mul_comm (X _ _) (f _), ← Finset.smul_sum, map_sum, map_smul, Finsupp.smul_apply, Finsupp.coe_finset_sum, Finset.sum_apply, smul_eq_mul] at hac`. Rewrite using `[hac]`. Conclude with `Finset.sum_congr rfl fun m _ => mul_comm _ _`. Use extensionality with `a c`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Establish `hk : b.repr (X a c) = 0`. Use extensionality with `k`. Conclude with `congrFun (congrFun (key k) a) c`. Simplify using `using hk`.
+By extensionality, compare the relevant components. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Pa.Det.solBase :
     ∀ {F F' ι : Type} [Field F] [Field F'] (f : F →+* F') {n : ℕ} (e : ι → F) (r : ι → Matrix (Fin n) (Fin n) F), (∀ X : Matrix (Fin n) (Fin n) F, (∀ i, e i • (r i * X) = X * r i) → X = 0) → ∀ X : Matrix (Fin n) (Fin n) F', (∀ i, f (e i) • ((r i).map f * X) = X * (r i).map f) → X = 0 := by

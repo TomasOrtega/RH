@@ -11,23 +11,19 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 open GlobalTheory.Doubling (absE)
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B a a' G X om om' R Rf h hp hq μ D hμ hD s t lam hl y hy Ψ hΨ`. Establish `T` using `h.triple`. Establish `l1` using `T.geo.lt`. Establish `l2` using `T.geo.aBig`. Establish `cW` using `hC F E σ B _ G.W _ _ T.base (Or.inr T.geo.hW) (by omega)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `cV` using `hC F E σ B _ G.V' _ _ T.base (Or.inl T.geo.hV') (by omega)`. Take `⟨q1, q2⟩` from `(hM F E σ B a a' G X om om' R Rf h).2.2 _ _ hy.1 hy.2`. Establish `b1` using `(hB F E σ B _ _ _ _ _ _ _ _ _ _ _ _ (pairV T)).1`. Establish `b2` using `(hB F E σ B _ _ _ _ _ _ _ _ _ _ _ _ (pairV' T)).1`. Establish `s1` using `hP F E σ B _ _ _ _ _ _ _ _ _ _ _ _ (pairV T) _ q1`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `s2` using `hP F E σ B _ _ _ _ _ _ _ _ _ _ _ _ (pairV' T) _ q2.1`. Establish `s3` using `hP F E σ B _ _ _ _ _ _ _ _ _ _ _ _ (pairV' T) _ hΨ`. Establish `c1` using `(hI F E σ B _ _ _ _ _ _ _ _ _ _ _ _ (pairV T)).1 (Or.inr (by omega))`. Establish `c2` using `(hI F E σ B _ _ _ _ _ _ _ _ _ _ _ _ (pairV' T)).1 (Or.inr (by omega))`. Establish `rp : ∀ s u, IsRapid (comb G om om' s u y)` using `fun s u => cW.rapid (((c1 _ s1).const_smul s).add ((c2 _ s2).const_smul u)) fun γ hγ g => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [comb, Pi.add_apply, Pi.smul_apply, I_inv G.M (b1 _ s1).2.1 γ hγ, I_inv G.M' (b2 _ s2).2.1 γ hγ]`. Establish `tr : ∀ s u g, (fun h => comb G om om' s u y (h * g)) = comb G om om' s u (om (1, g) y.1, om' (1, g) y.2)` using `fun s u g =>`. Use function extensionality and compare the values at `fun h => by simp only [comb, Pi.add_apply, Pi.smul_apply, I_right]`. Take `⟨dd, om₂, S, l, d1, d2, d3, -⟩` from `hW F E σ B _ _ _ _ _ _ _ _ _ _ _ _ (pairV' T)`. Take `⟨⟨K, ht, k1, k2, k3, k4⟩, e, ce, he⟩` from `hH F E σ B _ G.W _ _ T.base (.inr T.geo.hW)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨t₀, hi⟩` from `hT F E σ B _ G.W _ _ T.base (.inr T.geo.hW) K ht e k1 k2 he μ hμ`. Establish `sec` using `hX F E σ B _ _ _ _ G.M' _ _ _ _ T.base (by omega) (by omega) T.geo.hV' (by omega) T.geo.hW T.geo.hM' X.α T.chars.heckeα T.chars.resα dd om₂ S l d3 d1 K ht k1 k2 Ψ hΨ Ψ hΨ`. Take `⟨U, Ê, hE, u, hv⟩` from `hS F E σ B _ _ _ _ G.M' _ _ _ _ T.base (by omega) (by omega) T.geo.hV' (by omega) T.geo.hW T.geo.hM' X.α T.chars.heckeα T.chars.resα dd om₂ S l d3 d1 K ht k1 k2 Ψ hΨ Ψ hΨ`. Take `⟨hol, t₁, far⟩` from `kpair_cont T.base (.inr T.geo.hW) (by omega) cW T.chars.heckeα he ce (hK F E σ B _ G.W _ _ T.base (.inr T.geo.hW) K k1) k2 k3 k4 sec.cont sec.law hE hμ hD hi`. Establish `key` using `An.ident hE.isOpen hE.conn (hol _ (rp s t)) ((hol _ (rp 0 1)).const_mul lam) (fun z hz => ⟨(far z hz).1, by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Simplify using `only [(far z hz).2.2 _ (rp s t), (far z hz).2.2 _ (rp 0 1), tr, ← integral_const_mul, fun g => hl _ ((hR F E σ B a a' G X om om' R Rf h hp hq).2 y hy g) y hy]`. Conclude with `integral_congr_ae (.of_forall fun g => mul_left_comm _ _ _)⟩) u`. Use `haveI := cW.sc`. Use `haveI := cV.sc`. Use `haveI := cW.lc`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `haveI := cV.lc`. Use `haveI : IsFiniteMeasure (μ.restrict D) := ⟨by rw [Measure.restrict_apply_univ]; exact cW.fin _ _ hμ hD⟩`. Use `haveI : IsFiniteMeasure (G.M'.μ.restrict G.M'.dom) := ⟨by rw [Measure.restrict_apply_univ]; exact cV.fin _ _ T.geo.hM'.haar T.geo.hM'.dom⟩`. Establish `val : ∀ φ, IsRapid φ → kpair X.α e μ D (Ê (((a' : ℂ) - (a + a' : ℕ)) / 2)) φ = 2 * ((G.M'.μ.real G.M'.dom)⁻¹ : ℝ) * pet G.M'.μ G.M'.dom (th om' μ D φ Ψ) (th om' μ D φ Ψ)` using `fun φ hφ => by`. Use `An.at_value (μ.restrict D) (G.M'.μ.restrict G.M'.dom) ⟨(b2 _ s3).1, cV.bdd₂ cW (b2 _ s3).1 (b2 _ s3).2.1⟩ ⟨hφ.1, cW.bdd hφ.1 hφ.2.1⟩` as an intermediate fact.
-
-Use `Eq.trans ?_ (congrArg _ this)` and prove the remaining obligations. Rewrite using `[← integral_const_mul]`. Use `integral_congr_ae (.of_forall fun y => ?_)` and prove the remaining obligations. Simplify using `only [hv, if_neg (show ¬ a + a' < a' by omega), setAverage_eq, Complex.real_smul, ← fun g => (((d2 Ψ s3 Ψ s3).2 g y.1 y.2 _ (he _ _)).1), integral_const_mul]`. Expand and normalize the polynomial expressions, which then agree.
-
-Rewrite `key` using `[val _ (rp s t), val _ (rp 0 1), mul_left_comm lam]`. Conclude with `mul_left_cancel₀ (mul_ne_zero two_ne_zero (Complex.ofReal_ne_zero.2 (inv_ne_zero (cV.vol_ne T.geo.hM'.haar T.geo.hM'.dom)))) key`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coefLine_of (hS : SWFull) (hX : BoxSec) (hW : DblW) (hH : HgtEx) (hT : HgtInt) (hK : Stab2Cpt) (hC : CptAll)
     (hR : PairsStable) (hM : MatchEx) (hB : ThetaBasic) (hI : PositivityTheory.ThKF.ICont) (hP : PolSch) : CoefLine := by

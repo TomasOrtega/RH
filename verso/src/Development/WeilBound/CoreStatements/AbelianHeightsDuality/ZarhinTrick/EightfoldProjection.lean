@@ -28,7 +28,7 @@ def mk8 (x : Fin 4 → (Y ⟶ A)) (z : Fin 4 → (Y ⟶ B)) : Y ⟶ G4 (A ⊗ B)
 
 omit [GrpObj A] [GrpObj B] in
 /- English proof (translation)
-Apply the tactic sequence `fin_cases i <;> simp [mk8, prj]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem eightfold_projection (x : Fin 4 → (Y ⟶ A)) (z : Fin 4 → (Y ⟶ B)) (i : Fin 4) :
     mk8 x z ≫ prj (A ⊗ B) i = lift (x i) (z i) := by
@@ -36,7 +36,7 @@ theorem eightfold_projection (x : Fin 4 → (Y ⟶ A)) (z : Fin 4 → (Y ⟶ B))
 
 omit [GrpObj A] [GrpObj B] in
 /- English proof (translation)
-Rewrite using `[← Category.assoc, eightfold_projection]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem eightfold_fst (x : Fin 4 → (Y ⟶ A)) (z : Fin 4 → (Y ⟶ B)) (i : Fin 4) :
     mk8 x z ≫ prj (A ⊗ B) i ≫ fst A B = x i := by
@@ -44,7 +44,7 @@ theorem eightfold_fst (x : Fin 4 → (Y ⟶ A)) (z : Fin 4 → (Y ⟶ B)) (i : F
 
 omit [GrpObj A] [GrpObj B] in
 /- English proof (translation)
-Rewrite using `[← Category.assoc, eightfold_projection]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem eightfold_snd (x : Fin 4 → (Y ⟶ A)) (z : Fin 4 → (Y ⟶ B)) (i : Fin 4) :
     mk8 x z ≫ prj (A ⊗ B) i ≫ snd A B = z i := by
@@ -52,7 +52,7 @@ theorem eightfold_snd (x : Fin 4 → (Y ⟶ A)) (z : Fin 4 → (Y ⟶ B)) (i : F
 
 omit [GrpObj A] [GrpObj B] in
 /- English proof (translation)
-Rewrite using `[reassoc_of% (eightfold_fst x z i)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem eightfold_fst_assoc (x : Fin 4 → (Y ⟶ A)) (z : Fin 4 → (Y ⟶ B)) (i : Fin 4) {W : Over S} (f : A ⟶ W) :
     mk8 x z ≫ prj (A ⊗ B) i ≫ fst A B ≫ f = x i ≫ f := by
@@ -60,7 +60,7 @@ theorem eightfold_fst_assoc (x : Fin 4 → (Y ⟶ A)) (z : Fin 4 → (Y ⟶ B)) 
 
 omit [GrpObj A] [GrpObj B] in
 /- English proof (translation)
-Rewrite using `[reassoc_of% (eightfold_snd x z i)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem eightfold_snd_assoc (x : Fin 4 → (Y ⟶ A)) (z : Fin 4 → (Y ⟶ B)) (i : Fin 4) {W : Over S} (f : B ⟶ W) :
     mk8 x z ≫ prj (A ⊗ B) i ≫ snd A B ≫ f = z i ≫ f := by
@@ -69,9 +69,9 @@ theorem eightfold_snd_assoc (x : Fin 4 → (Y ⟶ A)) (z : Fin 4 → (Y ⟶ B)) 
 omit [GrpObj A] [GrpObj B] in
 
 /- English proof (translation)
-Establish `h : ∀ i, a ≫ prj (A ⊗ B) i = b ≫ prj (A ⊗ B) i` using `fun i => CartesianMonoidalCategory.hom_ext _ _ (by simpa using hx i) (by simpa using hz i)`. Establish `h0` using `h 0`. Establish `h1` using `h 1`. Establish `h2` using `h 2`. Establish `h3` using `h 3`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [prj] at h0 h1 h2 h3`. Use `CartesianMonoidalCategory.hom_ext _ _ h0 (CartesianMonoidalCategory.hom_ext _ _ (by simpa using h1) (CartesianMonoidalCategory.hom_ext _ _ (by simpa using h2) (by simpa using h3)))` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem ext8 {a b : Y ⟶ G4 (A ⊗ B)} (hx : ∀ i, a ≫ prj _ i ≫ fst A B = b ≫ prj _ i ≫ fst A B)
     (hz : ∀ i, a ≫ prj _ i ≫ snd A B = b ≫ prj _ i ≫ snd A B) : a = b := by
@@ -87,20 +87,20 @@ theorem ext8 {a b : Y ⟶ G4 (A ⊗ B)} (hx : ∀ i, a ≫ prj _ i ≫ fst A B =
       (CartesianMonoidalCategory.hom_ext _ _ (by simpa using h2) (by simpa using h3)))
 
 /- English proof (translation)
-Apply the tactic sequence `fin_cases i <;> simp [prj] <;> infer_instance`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem kIsMonHom_prj (i : Fin 4) : IsMonHom (prj (A ⊗ B) i) := by
   fin_cases i <;> simp [prj] <;> infer_instance
 
 /- English proof (translation)
-Use `kIsMonHom_prj (A := A) (B := B) i` as an intermediate fact. Rewrite using `[← Category.assoc, MonObj.one_comp, MonObj.one_comp]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem one_prj_fst (i : Fin 4) : (1 : Y ⟶ G4 (A ⊗ B)) ≫ prj (A ⊗ B) i ≫ fst A B = 1 := by
   have := kIsMonHom_prj (A := A) (B := B) i
   rw [← Category.assoc, MonObj.one_comp, MonObj.one_comp]
 
 /- English proof (translation)
-Use `kIsMonHom_prj (A := A) (B := B) i` as an intermediate fact. Rewrite using `[← Category.assoc, MonObj.one_comp, MonObj.one_comp]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem one_prj_snd (i : Fin 4) : (1 : Y ⟶ G4 (A ⊗ B)) ≫ prj (A ⊗ B) i ≫ snd A B = 1 := by
   have := kIsMonHom_prj (A := A) (B := B) i
@@ -119,7 +119,7 @@ def preH (U : T' ⟶ T) : (T ⟶ G) →* (T' ⟶ G) :=
   MonoidHom.mk' (U ≫ ·) fun x y => MonObj.comp_mul U x y
 
 /- English proof (translation)
-Proceed by induction on `m with`. Consider the case `zero => simp`. Consider the case `succ n ih => rw [pow_succ, pow_succ, MonObj.comp_mul, ih, Category.comp_id]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem comp_id_pow (x : T ⟶ G) (m : ℕ) : x ≫ 𝟙 G ^ m = x ^ m := by
   induction m with
@@ -133,14 +133,14 @@ section Evc
 variable {Y : Over S} {P : LB (A ⊗ B).left} [IsCommMonObj A] [IsCommMonObj B]
 
 /- English proof (translation)
-The claim follows from `(isAdditive_iff hD.isLB).1 hD.additive Y a a' b`.
+A detailed English derivation is pending.
 -/
 theorem kEvc_mul_left (hD : IsDual A B P) (a a' : Y ⟶ A) (b : Y ⟶ B) :
     evc hD.isLB (a * a') b = evc hD.isLB a b + evc hD.isLB a' b :=
   (isAdditive_iff hD.isLB).1 hD.additive Y a a' b
 
 /- English proof (translation)
-Rewrite using `[← evc_swap hD.isLB hD'.isLB (b * b') a, ← evc_swap hD.isLB hD'.isLB b a, ← evc_swap hD.isLB hD'.isLB b' a]`. Conclude with `(isAdditive_iff hD'.isLB).1 hD'.additive Y b b' a`.
+Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kEvc_mul_right (hD : IsDual A B P) (hD' : IsDual B A (swap P)) (a : Y ⟶ A) (b b' : Y ⟶ B) :
     evc hD.isLB a (b * b') = evc hD.isLB a b + evc hD.isLB a b' := by
@@ -157,7 +157,7 @@ def evcL (hD : IsDual A B P) (b : Y ⟶ B) : (Y ⟶ A) →* Multiplicative (Pic 
     simp [kEvc_mul_left hD, ofAdd_add]
 
 /- English proof (translation)
-Establish `e : ∀ x, evc hD.isLB a x = Multiplicative.toAdd (evcR hD hD' a x)` using `fun _ => rfl`. Rewrite using `[e, map_mul, map_pow, map_prod, toAdd_mul, toAdd_pow, toAdd_prod]`. Simplify using `only [map_zpow, toAdd_zpow, ← e]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem evc_right_pow_prod (hD : IsDual A B P) (hD' : IsDual B A (swap P)) (a : Y ⟶ A) (b : Y ⟶ B) (n : ℕ)
     (c : Fin 4 → (Y ⟶ B)) (k : Fin 4 → ℤ) :
@@ -167,7 +167,7 @@ theorem evc_right_pow_prod (hD : IsDual A B P) (hD' : IsDual B A (swap P)) (a : 
   simp only [map_zpow, toAdd_zpow, ← e]
 
 /- English proof (translation)
-Establish `e : ∀ x, evc hD.isLB a x = Multiplicative.toAdd (evcR hD hD' a x)` using `fun _ => rfl`. Rewrite using `[e, map_pow, toAdd_pow, ← e]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem evc_right_pow (hD : IsDual A B P) (hD' : IsDual B A (swap P)) (a : Y ⟶ A) (b : Y ⟶ B) (n : ℕ) :
     evc hD.isLB a (b ^ n) = n • evc hD.isLB a b := by
@@ -175,7 +175,7 @@ theorem evc_right_pow (hD : IsDual A B P) (hD' : IsDual B A (swap P)) (a : Y ⟶
   rw [e, map_pow, toAdd_pow, ← e]
 
 /- English proof (translation)
-Establish `e : ∀ x, evc hD.isLB x b = Multiplicative.toAdd (evcL hD b x)` using `fun _ => rfl`. Rewrite using `[e, map_mul, map_pow, map_prod, toAdd_mul, toAdd_pow, toAdd_prod]`. Simplify using `only [map_zpow, toAdd_zpow, ← e]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem evc_left_prod_pow (hD : IsDual A B P) (c : Fin 4 → (Y ⟶ A)) (k : Fin 4 → ℤ) (d : Y ⟶ A) (n : ℕ)
     (b : Y ⟶ B) :
@@ -191,9 +191,9 @@ section Slots
 variable {Y : Over S} {P : LB (A ⊗ B).left}
 
 /- English proof (translation)
-Establish `r1 : ∀ (a : Y ⟶ A), evc hD.isLB a (1 : Y ⟶ B) = 0` using `evc_one_right hD.isLB hD.zero`. Establish `l1 : ∀ (b : Y ⟶ B), evc hD.isLB (1 : Y ⟶ A) b = 0` using `IsAdditive.evc_one hD.isLB hD.additive`. Establish `c1 : ∀ {W : Over S} [GrpObj W] (f : A ⟶ W) [IsMonHom f], (1 : Y ⟶ A) ≫ f = 1` using `fun f => MonObj.one_comp f`. Establish `c2 : ∀ {W : Over S} [GrpObj W] (f : B ⟶ W) [IsMonHom f], (1 : Y ⟶ B) ≫ f = 1` using `fun f => MonObj.one_comp f`. Establish `e : ∀ k : Fin 4, (if k = i then x' else (1 : Y ⟶ A)) ≫ l = if k = i then x' ≫ l else 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply the tactic sequence `intro k; split_ifs <;> simp [c1]`. Simplify using `only [zcPair, eightfold_fst, eightfold_snd, eightfold_fst_assoc, eightfold_snd_assoc, e, c2, r1, add_zero, smul_zero, Finset.sum_const_zero, apply_ite (evc hD.isLB _), l1]`. Simplify using the standard rewrite rules. Rewrite using `[Finset.sum_eq_single i (fun k _ hk => by simp [hk, l1]) (by simp)]`. Simplify using the standard rewrite rules.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem zcPair_positionA (hD : IsDual A B P) (l : A ⟶ B) [IsMonHom l] (mu : B ⟶ A) [IsMonHom mu]
     (α : Matrix (Fin 4) (Fin 4) ℤ) (u : Y ⟶ G4 (A ⊗ B)) (x' : Y ⟶ A) (i : Fin 4) :
@@ -213,13 +213,13 @@ theorem zcPair_positionA (hD : IsDual A B P) (l : A ⟶ B) [IsMonHom l] (mu : B 
   simp
 
 /- English proof (translation)
-Establish `r1 : ∀ (a : Y ⟶ A), evc hD.isLB a (1 : Y ⟶ B) = 0` using `evc_one_right hD.isLB hD.zero`. Establish `l1 : ∀ (b : Y ⟶ B), evc hD.isLB (1 : Y ⟶ A) b = 0` using `IsAdditive.evc_one hD.isLB hD.additive`. Establish `c1 : ∀ {W : Over S} [GrpObj W] (f : A ⟶ W) [IsMonHom f], (1 : Y ⟶ A) ≫ f = 1` using `fun f => MonObj.one_comp f`. Establish `c2 : ∀ {W : Over S} [GrpObj W] (f : B ⟶ W) [IsMonHom f], (1 : Y ⟶ B) ≫ f = 1` using `fun f => MonObj.one_comp f`. Establish `e : ∀ k : Fin 4, (if k = j then z' else (1 : Y ⟶ B)) ≫ mu ≫ l = if k = j then z' ≫ mu ≫ l else 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `k`. Use `split_ifs`. Both sides reduce to the same expression. Rewrite using `[← Category.assoc, c2, c1]`. Establish `e' : ∀ k : Fin 4, (if k = j then z' else (1 : Y ⟶ B)) ≫ mu = if k = j then z' ≫ mu else 1`.
+Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `intro k; split_ifs <;> simp [c2]`. Simplify using `only [zcPair, eightfold_fst, eightfold_snd, eightfold_fst_assoc, eightfold_snd_assoc, c1, r1, l1, add_zero, zero_add, smul_zero, Finset.sum_const_zero]`. Rewrite using `[Finset.sum_comm]`. Simplify using `only [apply_ite (evc hD.isLB _), r1, smul_ite, smul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Use `congr 1`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_eq_single j (fun k _ hk => by simp [hk, e, e', r1]) (by simp)]`. Simplify using the standard rewrite rules. Rewrite using `[Finset.sum_eq_single j (fun k _ hk => by simp [hk, e, r1]) (by simp)]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem zcPair_positionB (hD : IsDual A B P) (l : A ⟶ B) [IsMonHom l] (mu : B ⟶ A) [IsMonHom mu]
     (α : Matrix (Fin 4) (Fin 4) ℤ) (u : Y ⟶ G4 (A ⊗ B)) (z' : Y ⟶ B) (j : Fin 4) :
@@ -251,7 +251,7 @@ end Slots
 omit [GrpObj A] [GrpObj B] in
 
 /- English proof (translation)
-Simplify using `only [zcPair, map_add, map_sum, map_zsmul, map_nsmul, pull_evc, Category.assoc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem zcPair_pull {P : LB (A ⊗ B).left} (hP : P.IsLB) (l : A ⟶ B) (mu : B ⟶ A) (α : Matrix (Fin 4) (Fin 4) ℤ)
     {Y Y' : Over S} (h : Y' ⟶ Y) (u u' : Y ⟶ G4 (A ⊗ B)) :
@@ -259,14 +259,14 @@ theorem zcPair_pull {P : LB (A ⊗ B).left} (hP : P.IsLB) (l : A ⟶ B) (mu : B 
   simp only [zcPair, map_add, map_sum, map_zsmul, map_nsmul, pull_evc, Category.assoc]
 
 /- English proof (translation)
-Simplify using `[Fin.sum_univ_four, Fin.prod_univ_four, zpow_add]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem zpow_fin_sum_eq_prod_zpow {M : Type*} [CommGroup M] (a : M) (f : Fin 4 → ℤ) :
     a ^ (∑ k, f k) = ∏ k, a ^ f k := by
   simp [Fin.sum_univ_four, Fin.prod_univ_four, zpow_add]
 
 /- English proof (translation)
-Simplify using `only [Matrix.mul_apply, zpow_fin_sum_eq_prod_zpow, ← Finset.prod_zpow, ← zpow_mul]`. Rewrite using `[Finset.prod_comm]`. Use `Finset.prod_congr rfl fun j _ => Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[_root_.mul_comm]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 private theorem prod_pow_prod_pow_eq_prod_pow_mul {M : Type*} [CommGroup M] (v : Fin 4 → M) (p q : Matrix (Fin 4) (Fin 4) ℤ)
     (i : Fin 4) : ∏ k, (∏ j, v j ^ q k j) ^ p i k = ∏ j, v j ^ (p * q) i j := by
@@ -276,7 +276,7 @@ private theorem prod_pow_prod_pow_eq_prod_pow_mul {M : Type*} [CommGroup M] (v :
   rw [_root_.mul_comm]
 
 /- English proof (translation)
-Rewrite using `[Finset.prod_eq_single j (fun k _ hk => by simp [Matrix.one_apply_ne (Ne.symm hk)]) (by simp)]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem prod_pow_smul_one_fin_four_apply {M : Type*} [CommGroup M] (v : Fin 4 → M) (c : ℤ) (j : Fin 4) :
     ∏ k, v k ^ (c • (1 : Matrix (Fin 4) (Fin 4) ℤ)) j k = v j ^ c := by
@@ -284,23 +284,21 @@ private theorem prod_pow_smul_one_fin_four_apply {M : Type*} [CommGroup M] (v : 
   simp
 
 /- English proof (translation)
-Take `⟨c, hc⟩ : ∃ c, c = 4 * m ^ 2 - 1` from `⟨_, rfl⟩`. Rewrite `hα`, `hα'` using `[← hc]`. Establish `h4 : 1 ≤ 4 * m ^ 2` using `by nlinarith`. Establish `hc1 : c + 1 = 4 * m ^ 2` using `by rw [hc]; exact Nat.sub_add_cancel h4`. Establish `hZ : ∀ j, Z j = 1`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `j`. Establish `e2 : (∏ k, fl (X k) ^ α k j) * Z j ^ (m * (2 * m)) = 1`. Establish `h` using `congrArg fl (R2 j)`. Simplify using `only [map_mul, map_prod, map_zpow, map_pow, hml, map_one, ← pow_mul] at h`. Conclude with `h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `e1 : ∀ k, (fl (X k) ^ α k j) ^ 2 = ((∏ j', Z j' ^ α k j') ^ α.transpose j k)⁻¹`. Introduce `k`. Rewrite using `[← zpow_natCast, ← zpow_mul, _root_.mul_comm (α k j), zpow_mul, zpow_natCast, eq_inv_of_mul_eq_one_left (R1 k), inv_zpow, Matrix.transpose_apply]`. Establish `e3 : (∏ k, fl (X k) ^ α k j) ^ 2 = (Z j ^ (c : ℤ))⁻¹`. Rewrite using `[← Finset.prod_pow]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities.
 
-Repeatedly rewrite using `[e1]`. Rewrite using `[Finset.prod_inv_distrib, prod_pow_prod_pow_eq_prod_pow_mul, hα, prod_pow_smul_one_fin_four_apply]`. Establish `e4` using `congrArg (· ^ 2) e2`. Simplify using `only [mul_pow, one_pow, e3, ← pow_mul] at e4`. Establish `e5 : m * (2 * m) * 2 = c + 1` using `by rw [hc1]; ring`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e4` using `[e5, pow_succ, zpow_natCast, ← _root_.mul_assoc, inv_mul_cancel, _root_.one_mul]`. Conclude with `e4`. Establish `hX2 : ∀ i, X i ^ (2 * m) = 1`. Introduce `i`. Establish `h` using `R1 i`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [hZ, one_zpow, Finset.prod_const_one, _root_.mul_one] at h`. Establish `h'` using `congrArg fm h`. Rewrite `h'` using `[map_pow, hlm, map_one, ← pow_mul, _root_.mul_comm]`. Conclude with `h'`. Establish `R2' : ∀ j, ∏ k, X k ^ α k j = 1`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Introduce `j`. Establish `h` using `R2 j`. Simplify using `only [hZ, map_one, one_pow, _root_.mul_one] at h`. Conclude with `h`. Establish `hXc : ∀ i, X i ^ c = 1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `i`. Establish `h : ∏ j, (∏ k, X k ^ α.transpose j k) ^ α i j = 1`. Simplify using `[Matrix.transpose_apply, R2']`. Rewrite `h` using `[prod_pow_prod_pow_eq_prod_pow_mul, hα', prod_pow_smul_one_fin_four_apply, zpow_natCast]`. Conclude with `h`.
-
-Use `⟨fun i => ?_, hZ⟩` and prove the remaining obligations. Establish `h1 : X i ^ (c + 1) = 1`. Rewrite using `[hc1, show 4 * m ^ 2 = 2 * m * (2 * m) by ring, pow_mul, hX2, one_pow]`. Rewrite `h1` using `[pow_succ, hXc, _root_.one_mul]`. Conclude with `h1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem algebraMap_OmS_eq_algebraMap_comp {M N : Type*} [CommGroup M] [CommGroup N] (fl : M →* N) (fm : N →* M) (m : ℕ)
     (hm : 1 ≤ m) (hlm : ∀ x, fm (fl x) = x ^ m) (hml : ∀ y, fl (fm y) = y ^ m) (α : Matrix (Fin 4) (Fin 4) ℤ)
@@ -356,23 +354,19 @@ private theorem algebraMap_OmS_eq_algebraMap_comp {M N : Type*} [CommGroup M] [C
   exact h1
 
 /- English proof (translation)
-Use `haveI := hA.comm`. Use `haveI := hB.comm`. Establish `oneB : ∀ {Y : Over S} (f : Y ⟶ T), f ≫ (1 : T ⟶ B) = 1` using `fun f => by simp`. Establish `oneA : ∀ {Y : Over S} (f : Y ⟶ T), f ≫ (1 : T ⟶ A) = 1` using `fun f => by simp`. Establish `dB : ∀ y : T ⟶ B, evc hD.isLB (fst A T) (snd A T ≫ y) = 0 → y = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `y hy`. Apply `hD.eq_of_evc` to reduce the goal to its premises. Rewrite using `[hy, oneB, evc_one_right hD.isLB hD.zero]`. Establish `dA : ∀ y : T ⟶ A, evc hD.isLB (snd B T ≫ y) (fst B T) = 0 → y = 1`. Introduce `y hy`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `hD'.eq_of_evc` to reduce the goal to its premises. Rewrite using `[evc_swap hD.isLB hD'.isLB, evc_swap hD.isLB hD'.isLB, hy, oneA, IsAdditive.evc_one hD.isLB hD.additive]`. Establish `R1 : ∀ i, postH l (a ≫ prj (A ⊗ B) i ≫ fst A B) ^ 2 * ∏ j, (a ≫ prj (A ⊗ B) j ≫ snd A B) ^ α i j = 1`. Introduce `i`. Apply `dB` to reduce the goal to its premises.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hz` using `h0 (A ⊗ T) (snd A T) (mk8 (fun k => if k = i then fst A T else 1) (fun _ => 1))`. Rewrite `hz` using `[zcPair_positionA hD l mu α (snd A T ≫ a) (fst A T) i, hsym (A ⊗ T) (snd A T)]`. Use `show evc hD.isLB (fst A T) (preH (snd A T) (postH l (a ≫ prj (A ⊗ B) i ≫ fst A B) ^ 2 * ∏ j, (a ≫ prj (A ⊗ B) j ≫ snd A B) ^ α i j)) = 0`. Rewrite using `[map_mul, map_pow, map_prod]`. Simplify using `only [map_zpow, preH, postH, MonoidHom.mk'_apply]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Rewrite using `[evc_right_pow_prod hD hD']`. Simplify `hz` using `only [Category.assoc]`. Establish `R2 : ∀ j, (∏ k, (a ≫ prj (A ⊗ B) k ≫ fst A B) ^ α k j) * postH mu (a ≫ prj (A ⊗ B) j ≫ snd A B) ^ (2 * m) = 1`. Introduce `j`. Apply `dA` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hz` using `h0 (B ⊗ T) (snd B T) (mk8 (fun _ => 1) (fun k => if k = j then fst B T else 1))`. Rewrite `hz` using `[zcPair_positionB hD l mu α (snd B T ≫ a) (fst B T) j, h₂, comp_id_pow, evc_right_pow hD hD', smul_smul]`. Use `show evc hD.isLB (preH (snd B T) ((∏ k, (a ≫ prj (A ⊗ B) k ≫ fst A B) ^ α k j) * postH mu (a ≫ prj (A ⊗ B) j ≫ snd A B) ^ (2 * m))) (fst B T) = 0`. Rewrite using `[map_mul, map_pow, map_prod]`. Simplify using `only [map_zpow, preH, postH, MonoidHom.mk'_apply]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[evc_left_prod_pow hD]`. Simplify `hz` using `only [Category.assoc]`. Take `⟨hX, hZ⟩` from `algebraMap_OmS_eq_algebraMap_comp (postH l) (postH mu) m hm (fun x => by show (x ≫ l) ≫ mu = x ^ m`. Rewrite using `[Category.assoc, h₁, comp_id_pow])`. Use the proof step `(fun y => by show (y ≫ mu) ≫ l = y ^ m`.
-
-Rewrite using `[Category.assoc, h₂, comp_id_pow])`. Use `α hα hα' (fun i => a ≫ prj (A ⊗ B) i ≫ fst A B) (fun j => a ≫ prj (A ⊗ B) j ≫ snd A B) R1 R2`. Apply `ext8` to reduce the goal to its premises. Introduce `i`. Conclude with `(hX i).trans (one_prj_fst i).symm`.
-
-Introduce `i`. Conclude with `(hZ i).trans (one_prj_snd i).symm`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem zcPair_eq_one (hA : IsAbelianScheme A) (hB : IsAbelianScheme B) {P : LB (A ⊗ B).left} (hD : IsDual A B P)
     (hD' : IsDual B A (swap P)) (l : A ⟶ B) [IsMonHom l] (mu : B ⟶ A) [IsMonHom mu] (α : Matrix (Fin 4) (Fin 4) ℤ)

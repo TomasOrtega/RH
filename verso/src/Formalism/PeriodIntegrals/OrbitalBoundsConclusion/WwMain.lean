@@ -6,7 +6,7 @@ import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.LFunctionMinors.SumInjE
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.LFunctionMinors.DeXCBOf
 
 /- English proof (translation)
-The claim follows from `PI.WwMainW.wwMain_of PI.WwMainW.evalH PI.WwMainW.lH PI.WwMainW.lLin (PI.WwMainW.deXCB_of PI.WwMainW.cbSorted)`.
+A detailed English derivation is pending.
 -/
 theorem minor_identity : PI.WwMain.WwMain :=
   PI.WwMainW.wwMain_of PI.WwMainW.evalH PI.WwMainW.lH PI.WwMainW.lLin

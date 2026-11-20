@@ -12,21 +12,21 @@ noncomputable section
 namespace GlobalTheory.ThK.LemF.InfLevi
 
 /- English proof (translation)
-Introduce `hP F E _ _ _ _ _ σ B b a' G G₁ H H' cfg e hev ei ev hloc X om om' om₁ om₁' T T₁ g₀ g hLv hg hg₀ f`. Establish `hL` using `(EvInvALoc.global_laws hP F E σ B b a' G G₁ H H' cfg e hev X om om' om₁ om₁' T T₁).2 g₀ g hLv`. Establish `hM` using `T.geo.hM`. Establish `hM₁` using `T₁.geo.hM`. Take `⟨-, hevv, hpure⟩` from `hloc`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hfin : ∀ {κ : Type} [Fintype κ] (z : κ → AF F), At (evI F) z → ∀ (w : Pl F) (i : κ), evFin F w (z i) = 0` using `fun z hz w i => by`. Rewrite using `[← partInf_of_at hz, partInf, Pi.smul_apply, smul_eq_mul, map_mul, show evFin F w (realAd F 1) = 0 from map_zero (evalV F w), zero_mul]`. Set `r₀ : (Fin (b + 2) × Fin (b + 2 + a') → AF F) → ℂ` to `fun x => ∏ᶠ w, G.M.vac w fun i => evFin F w (x i)`. Set `r₁ : (Fin b × Fin (b + a') → AF F) → ℂ` to `fun x => ∏ᶠ w, G₁.M.vac w fun i => evFin F w (x i)`. Establish `hr₀ : ∀ x z, At (evI F) z → r₀ (x + z) = r₀ x` using `fun x z hz => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Simplify using `only [r₀, Pi.add_apply, map_add, hfin z hz, add_zero]`. Establish `hr₁ : ∀ x z, At (evI F) z → r₁ (x + z) = r₁ x` using `fun x z hz => by`. Simplify using `only [r₁, Pi.add_apply, map_add, hfin z hz, add_zero]`. Establish `ht₀ : ∀ h : SInf F (Fin (b + 2) × Fin (b + 2 + a')), tens (evI F) ⇑h r₀ = pure h G.M.vac` using `fun h => rfl`. Establish `ht₁ : ∀ h : SInf F (Fin b × Fin (b + a')), tens (evI F) ⇑h r₁ = pure h G₁.M.vac` using `fun h => rfl`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hS₀ : ∀ h : SInf F (Fin (b + 2) × Fin (b + 2 + a')), pure h G.M.vac ∈ schA F _` using `fun h => GlobalTheory.TensUniq.pure_mem_schA h _ (fun w => (hM.vac w).1) hM.std`. Establish `hS₁ : ∀ h : SInf F (Fin b × Fin (b + a')), pure h G₁.M.vac ∈ schA F _` using `fun h => GlobalTheory.TensUniq.pure_mem_schA h _ (fun w => (hM₁.vac w).1) hM₁.std`. Establish `hR₀ : ∀ h : SInf F (Fin (b + 2) × Fin (b + 2 + a')), Rest (evI F) ⇑h r₀` using `fun h => ⟨hr₀, hS₀ h⟩`. Establish `hR₁ : ∀ h : SInf F (Fin b × Fin (b + a')), Rest (evI F) ⇑h r₁` using `fun h => ⟨hr₁, hS₁ h⟩`. Establish `hep : ∀ h : SInf F (Fin (b + 2) × Fin (b + 2 + a')), e (pure h G.M.vac) = pure (ei h) G₁.M.vac` using `fun h => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hpure h G.M.vac (fun w => (hM.vac w).1) (Eventually.of_forall fun _ => rfl)]`. Use `congr 1`. Use function extensionality and compare the values at `w`. Conclude with `(hevv w).1`. Take `⟨f₁, hf₁⟩` from `GlobalTheory.ArchLocalityX.acts_arch_left hP F E σ (b + 2) (b + 2 + a') G.V G.W G.M B.ψ X.β (X.β / X.α) om T.base.cm T.base.std T.weil g hg f`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨h₁, hh₁⟩` from `GlobalTheory.ArchLocalityX.acts_arch_left hP F E σ b (b + a') G₁.V G₁.W G₁.M B.ψ X.β (X.β / X.α) om₁ T₁.base.cm T₁.base.std T₁.weil g₀ hg₀ (ei f)`. Rewrite using `[locOpInf_eq hf₁, locOpInf_eq hh₁]`. Establish `k : pure (ei f₁) G₁.M.vac = pure h₁ G₁.M.vac`. Establish `a1` using `hf₁ r₀ (hR₀ f)`. Establish `a2` using `hh₁ r₁ (hR₁ (ei f))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `a1` using `[ht₀, ht₀]`. Rewrite `a2` using `[ht₁, ht₁]`. Rewrite using `[← hep, ← a1, hL _ (hS₀ f), hep, a2]`. Assume the negation of the conclusion as `hne`. Use `GlobalTheory.EvNonzero.pure_ne_zero (ei f₁ - h₁) (sub_ne_zero.2 hne) G₁.M.vac (fun w => (hM₁.vac w).2.1) hM₁.std ?_` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `x`. Use `congrFun k x` as an intermediate fact. Simplify using `only [GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure, SchwartzMap.sub_apply, Pi.zero_apply] at this ⊢`. Rewrite using `[sub_mul, this, sub_self]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ei_levi : GlobalTheory.FunPr.Hypotheses₂ → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (b a' : ℕ)
     (G : Geo σ (b + 2) a') (G₁ : Geo σ b a') (H : Plane E (b + 2) b) (H' : Plane E (b + 2 + a') (b + a')), CfgA B G G₁ H H' →

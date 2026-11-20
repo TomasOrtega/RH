@@ -11,7 +11,7 @@ namespace PositivityTheory.SiegelWeilFormula.KLI
 variable {m n : ℕ}
 
 /- English proof (translation)
-Simplify using `[Matrix.star_mulVec, Matrix.dotProduct_mulVec, Matrix.vecMul_vecMul, Matrix.mulVec_mulVec, Matrix.star_eq_conjTranspose, Matrix.mul_assoc]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem star_mulVec_dotProduct_mulVec_conj (U M : Matrix (Fin n) (Fin n) ℂ) (y : Fin n → ℂ) :
     star (U *ᵥ y) ⬝ᵥ (M *ᵥ (U *ᵥ y)) = star y ⬝ᵥ ((star U * M * U) *ᵥ y) := by
@@ -19,15 +19,15 @@ private theorem star_mulVec_dotProduct_mulVec_conj (U M : Matrix (Fin n) (Fin n)
     Matrix.star_eq_conjTranspose, Matrix.mul_assoc]
 
 /- English proof (translation)
-Establish `hn : Complex.normSq U.det = 1`. Establish `h` using `Matrix.det_of_mem_unitary hU`. Establish `h2 : star U.det * U.det = 1` using `Unitary.star_mul_self_of_mem h`. Establish `h3 : ((Complex.normSq U.det : ℝ) : ℂ) = 1`. Rewrite using `[Complex.normSq_eq_conj_mul_self]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h2`. Conclude with `h3` after adjusting the coercions. Establish `hsU : star U * U = 1` using `Matrix.mem_unitaryGroup_iff'.mp hU`. Establish `hUs : U * star U = 1` using `Matrix.mem_unitaryGroup_iff.mp hU`. Set `e : (Fin n → ℂ) ≃ᵐ (Fin n → ℂ)` to `{ toFun := fun y => U *ᵥ y invFun := fun v => star U *ᵥ v left_inv := fun y => by simp [Matrix.mulVec_mulVec, hsU] right_inv := fun v => by simp [Matrix.mulVec_mulVec, hUs] measurable_toFun := (Continuous.matrix_mulVec continuous_const continuous_id).measurable measurable_invFun …`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `L : (Fin n → ℂ) →ₗ[ℝ] (Fin n → ℂ)` to `(Matrix.toLin' U).restrictScalars ℝ`. Establish `hdet : LinearMap.det L = 1`. Simplify using `only [L]`. Rewrite using `[LinearMap.det_restrictScalars, LinearMap.det_toLin', Algebra.norm_complex_apply, hn]`. Establish `hmap : MeasureTheory.Measure.map (⇑e) MeasureTheory.volume = MeasureTheory.volume`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `he : (⇑e) = ⇑L`. Use function extensionality and compare the values at `y`. Both sides reduce to the same expression. Rewrite using `[he, MeasureTheory.Measure.map_linearMap_addHaar_eq_smul_addHaar _ (by rw [hdet]; exact one_ne_zero), hdet]`. Simplify using the standard rewrite rules.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h` using `MeasureTheory.integral_map_equiv (μ := MeasureTheory.volume) e f`. Rewrite `h` using `[hmap]`. Conclude with `h.symm`.
+A detailed English derivation is pending.
 -/
 private theorem integral_comp_unitary_mulVec (U : Matrix (Fin n) (Fin n) ℂ) (hU : U ∈ Matrix.unitaryGroup (Fin n) ℂ)
     (f : (Fin n → ℂ) → ℂ) : ∫ y, f (U *ᵥ y) = ∫ v, f v := by
@@ -63,7 +63,7 @@ private theorem integral_comp_unitary_mulVec (U : Matrix (Fin n) (Fin n) ℂ) (h
   exact h.symm
 
 /- English proof (translation)
-Simplify using `only [Matrix.mulVec_diagonal, dotProduct, Pi.star_apply]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[← Complex.normSq_eq_norm_sq, Complex.normSq_eq_conj_mul_self]`. Simplify using `only [RCLike.star_def]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem star_dotProduct_diagonal_mulVec_eq_sum (d y : Fin n → ℂ) :
     star y ⬝ᵥ (Matrix.diagonal d *ᵥ y) = ∑ k, d k * ((‖y k‖ ^ 2 : ℝ) : ℂ) := by
@@ -74,9 +74,9 @@ private theorem star_dotProduct_diagonal_mulVec_eq_sum (d y : Fin n → ℂ) :
   ring
 
 /- English proof (translation)
-Repeatedly rewrite using `[Complex.exp_sum]`. Rewrite using `[integral_fintype_prod_volume_eq_prod (f := fun k (z : ℂ) => Complex.exp (d k * ((‖z‖ ^ 2 : ℝ) : ℂ)))]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Establish `hf : (fun z : ℂ => Complex.exp (d k * ((‖z‖ ^ 2 : ℝ) : ℂ))) = fun z : ℂ => Complex.exp (-(-d k) * (‖z‖ : ℂ) ^ 2)`. Use function extensionality and compare the values at `z`.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `push_cast`. Put the polynomial expressions in normal form. Rewrite using `[hf, GaussianFourier.integral_cexp_neg_mul_sq_norm (hd k)]`. Simplify using the standard rewrite rules.
+Move the embeddings inside the algebraic operations. Put the polynomial expressions in normal form. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem integral_cexp_diagonal_eq_prod_pi_div (d : Fin n → ℂ) (hd : ∀ k, 0 < (-d k).re) :
     ∫ y : Fin n → ℂ, Complex.exp (∑ k, d k * ((‖y k‖ ^ 2 : ℝ) : ℂ)) = ∏ k, (Real.pi : ℂ) / (-d k) := by
@@ -93,13 +93,13 @@ private theorem integral_cexp_diagonal_eq_prod_pi_div (d : Fin n → ℂ) (hd : 
   simp
 
 /- English proof (translation)
-Rewrite using `[← integral_comp_unitary_mulVec U hU]`. Simplify using `only [star_mulVec_dotProduct_mulVec_conj, hM, star_dotProduct_diagonal_mulVec_eq_sum]`. Rewrite using `[integral_cexp_diagonal_eq_prod_pi_div d hd]`. Establish `hsU : star U * U = 1` using `Matrix.mem_unitaryGroup_iff'.mp hU`. Establish `hdet : (-M).det = ∏ k, (-d k)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : (star U * (-M) * U).det = (-M).det`. Rewrite using `[Matrix.det_mul, Matrix.det_mul, mul_comm (star U).det, mul_assoc, ← Matrix.det_mul, hsU, Matrix.det_one, mul_one]`. Establish `h2 : -Matrix.diagonal d = Matrix.diagonal (fun k => -d k)`. Use extensionality with `i j`. Distinguish the cases in `hij : i = j`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails.
 
-Substitute `hij` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Matrix.diagonal_apply_ne _ hij]`. Rewrite using `[← h1, Matrix.mul_neg, Matrix.neg_mul, hM, h2, Matrix.det_diagonal]`. Rewrite using `[hdet, ← Finset.prod_mul_distrib]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.prod_congr rfl fun k _ => div_mul_cancel₀ (Real.pi : ℂ) (fun h => by`. Use `hd k` as an intermediate fact. Rewrite `this` using `[h]`. Simplify using `at this)]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 private theorem integral_cexp_quadratic_mul_det_neg_eq_pi_pow (M U : Matrix (Fin n) (Fin n) ℂ) (hU : U ∈ Matrix.unitaryGroup (Fin n) ℂ)
     (d : Fin n → ℂ) (hd : ∀ k, 0 < (-d k).re) (hM : star U * M * U = Matrix.diagonal d) :
@@ -127,15 +127,15 @@ private theorem integral_cexp_quadratic_mul_det_neg_eq_pi_pow (M U : Matrix (Fin
   simp
 
 /- English proof (translation)
-Establish `hn : ∀ z : ℂ, (‖z‖ : ℂ) ^ 2 = star z * z`. Introduce `z`. Use `Complex.normSq_eq_norm_sq z` as an intermediate fact. Rewrite using `[← Complex.ofReal_pow, ← this, Complex.normSq_eq_conj_mul_self]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[← Complex.exp_sum]`. Simplify using `only [evX, map_one, one_mul, gs]`. Rewrite using `[← Complex.exp_add]`. Use `congr 1`. Simplify using `only [Matrix.add_mulVec, Matrix.smul_mulVec, Matrix.one_mulVec, dotProduct_add, dotProduct_smul, Finset.sum_add_distrib, Matrix.trace, Matrix.diag, Matrix.mul_apply, gramX_tr_g, dotProduct, Matrix.mulVec, Matrix.transpose_apply, Pi.star_apply, smul_eq_mul, Pi.smul_apply]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Use `push_cast`. Simplify using `only [hn, Finset.mul_sum, Finset.sum_neg_distrib, Matrix.add_apply, Matrix.smul_apply, Matrix.one_apply, Matrix.transpose_apply, smul_eq_mul, mul_add, add_mul, Finset.sum_add_distrib, ite_mul, mul_ite, zero_mul, mul_zero, mul_one, one_mul, Finset.sum_ite_eq, Finset.mem_univ, if_t …`. Use `congr 1`. Rewrite using `[← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations.
+Move the embeddings inside the algebraic operations. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Use `conv_lhs => enter [2, y]`. Rewrite using `[Finset.sum_comm]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 private theorem evX_one_mul_gs_mul_cexp_eq_prod (b : Matrix (Fin n) (Fin n) ℂ) (c t : ℝ) (x : Fin m → Fin n → ℂ) :
     evX (1 : PX m n) x * gs c x * Complex.exp (Complex.I * ↑t * (b * gramX (fun _ : Fin m => true) x).trace)
@@ -171,15 +171,15 @@ private theorem evX_one_mul_gs_mul_cexp_eq_prod (b : Matrix (Fin n) (Fin n) ℂ)
     ring
 
 /- English proof (translation)
-Establish `hmR : mR (jG n * nG b) = Matrix.fromBlocks 0 1 (-1) (-b)`. Rewrite using `[mR_mul, mR_jG, mR_nG hb]`. Simplify using `[JJ, nU, Matrix.fromBlocks_multiply]`. Establish `hD : (mR (jG n * nG b)).det = (JJ n).det`. Rewrite using `[mR_mul, mR_jG, mR_nG hb, Matrix.det_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[nU, Matrix.det_fromBlocks_zero₂₁]`. Simplify using `only [F0, f0, u1, u2]`. Rewrite using `[hD, hmR]`. Simplify using `only [Matrix.toBlocks_fromBlocks₂₁, Matrix.toBlocks_fromBlocks₂₂]`. Break down `Int.units_eq_one_or sg with rfl | rfl` into its components or cases.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis.
 
-Simplify using `only [pOf, qOf, if_true]`. Establish `hM : Complex.I • (-1 : Matrix (Fin n) (Fin n) ℂ) + -b = (-(Complex.I * (((1 : ℤˣ) : ℤ) : ℂ))) • (1 - (Complex.I * (((1 : ℤˣ) : ℤ) : ℂ)) • b)`. Use extensionality with `i j`. Simplify using `[Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> ring_nf <;> simp [Complex.I_sq] <;> ring`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[hM, Matrix.det_smul, Fintype.card_fin]`. Simplify using the standard rewrite rules. Simplify using `only [pOf, qOf]`. Establish `hne : (-1 : ℤˣ) ≠ 1` using `by decide`. Simplify using `only [hne, if_false]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hM : -(Complex.I • (-1 : Matrix (Fin n) (Fin n) ℂ)) + -b = (-(Complex.I * (((-1 : ℤˣ) : ℤ) : ℂ))) • (1 - (Complex.I * (((-1 : ℤˣ) : ℤ) : ℂ)) • b)`. Use extensionality with `i j`. Simplify using `[Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> ring_nf <;> simp [Complex.I_sq] <;> ring`. Rewrite using `[hM, Matrix.det_smul, Fintype.card_fin]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/
@@ -217,29 +217,29 @@ private theorem F0_jG_mul_nG_eq (sg : ℤˣ) (e : ℤ) (b : Matrix (Fin n) (Fin 
     simp
 
 /- English proof (translation)
-Establish `hs : ((sg : ℤ) : ℂ) = 1 ∨ ((sg : ℤ) : ℂ) = -1`. Apply the tactic sequence `rcases Int.units_eq_one_or sg with h | h <;> simp [h]`. Establish `hIs : Complex.I * ((sg : ℤ) : ℂ) ≠ 0`. Apply the tactic sequence `rcases hs with h | h <;> simp [h, Complex.I_ne_zero]`. Establish `hpi : (Real.pi : ℂ) ≠ 0` using `by exact_mod_cast Real.pi_ne_zero`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Establish `h2 : (((2 * Real.pi : ℝ)) : ℂ) ≠ 0`. Use `push_cast`. Conclude with `mul_ne_zero two_ne_zero hpi`. Use `⟨(JJ n).det ^ e * ((-(Complex.I * ((sg : ℤ) : ℂ))) ^ n) ^ (-(m : ℤ)) * ((((2 * Real.pi : ℝ)) : ℂ) ^ n / (Real.pi : ℂ) ^ n) ^ m, ?_, ?_⟩` and prove the remaining obligations. Conclude with `mul_ne_zero (mul_ne_zero (zpow_ne_zero _ JJ_det_ne) (zpow_ne_zero _ (pow_ne_zero _ (neg_ne_zero.mpr hIs)))) (pow_ne_zero _ (div_ne_zero (pow_ne_zero _ h2) (pow_ne_zero _ hpi)))`.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `b hb`. Establish `hA : bᵀ.IsHermitian` using `(show b.IsHermitian from hb).transpose`. Establish `hU : (hA.eigenvectorUnitary : Matrix (Fin n) (Fin n) ℂ) ∈ Matrix.unitaryGroup (Fin n) ℂ` using `hA.eigenvectorUnitary.2`. Establish `hsU : star (hA.eigenvectorUnitary : Matrix (Fin n) (Fin n) ℂ) * (hA.eigenvectorUnitary : Matrix (Fin n) (Fin n) ℂ) = 1` using `Matrix.mem_unitaryGroup_iff'.mp hU`. Establish `hspec : star (hA.eigenvectorUnitary : Matrix (Fin n) (Fin n) ℂ) * bᵀ * (hA.eigenvectorUnitary : Matrix (Fin n) (Fin n) ℂ) = Matrix.diagonal (Complex.ofReal ∘ hA.eigenvalues)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `hA.conjStarAlgAut_star_eigenvectorUnitary` as an intermediate fact. Simplify `this` using `[Unitary.conjStarAlgAut_apply, mul_assoc]`. Establish `hMd : star (hA.eigenvectorUnitary : Matrix (Fin n) (Fin n) ℂ) * (-(((2 * Real.pi : ℝ)) : ℂ) • (1 : Matrix (Fin n) (Fin n) ℂ) + (Complex.I * (((2 * Real.pi * ((sg : ℤ) : ℝ)) : ℝ) : ℂ)) • bᵀ) * (hA.eigenvectorUnitary : Matrix (Fin n) (Fin n) ℂ) = Matrix.diagonal (fun k => -(((2 * R …`. Establish `e1 : star (hA.eigenvectorUnitary : Matrix (Fin n) (Fin n) ℂ) * (-(((2 * Real.pi : ℝ)) : ℂ) • (1 : Matrix (Fin n) (Fin n) ℂ) + (Complex.I * (((2 * Real.pi * ((sg : ℤ) : ℝ)) : ℝ) : ℂ)) • bᵀ) * (hA.eigenvectorUnitary : Matrix (Fin n) (Fin n) ℂ) = -(((2 * Real.pi : ℝ)) : ℂ) • (star ( …`. Simplify using `only [Matrix.mul_add, Matrix.add_mul, Matrix.mul_smul, Matrix.smul_mul, Matrix.mul_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Rewrite using `[e1, hsU, hspec]`. Use extensionality with `i j`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Simplify using the standard rewrite rules.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[Matrix.diagonal_apply_ne _ hij, Matrix.one_apply_ne hij]`. Establish `hd : ∀ k, 0 < (-(-(((2 * Real.pi : ℝ)) : ℂ) + Complex.I * (((2 * Real.pi * ((sg : ℤ) : ℝ)) : ℝ) : ℂ) * (hA.eigenvalues k : ℂ))).re`. Introduce `k`. Simplify using `[Complex.mul_re]`. Conclude with `Real.pi_pos`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `hJ` using `integral_cexp_quadratic_mul_det_neg_eq_pi_pow _ _ hU _ hd hMd`. Establish `hnegM : -(-(((2 * Real.pi : ℝ)) : ℂ) • (1 : Matrix (Fin n) (Fin n) ℂ) + (Complex.I * (((2 * Real.pi * ((sg : ℤ) : ℝ)) : ℝ) : ℂ)) • bᵀ) = (((2 * Real.pi : ℝ)) : ℂ) • (1 - (Complex.I * ((sg : ℤ) : ℂ)) • b)ᵀ`. Use extensionality with `i j`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Simplify using `[Matrix.one_apply_ne hij]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `hJ` using `[hnegM, Matrix.det_smul, Matrix.det_transpose, Fintype.card_fin]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Establish `hsec : secN (fun _ : Fin m => true) (2 * Real.pi) (2 * Real.pi * ((sg : ℤ) : ℝ)) (1 : PX m n) b = (∫ v : Fin n → ℂ, Complex.exp (star v ⬝ᵥ ((-(((2 * Real.pi : ℝ)) : ℂ) • (1 : Matrix (Fin n) (Fin n) ℂ) + (Complex.I * (((2 * Real.pi * ((sg : ℤ) : ℝ)) : ℝ) : ℂ)) • bᵀ) *ᵥ v))) ^ m`. Simplify using `only [secN]`. Simplify using `only [evX_one_mul_gs_mul_cexp_eq_prod]`. Establish `hp` using `integral_fintype_prod_volume_eq_pow (ι := Fin m) (fun v : Fin n → ℂ => Complex.exp (star v ⬝ᵥ ((-(((2 * Real.pi : ℝ)) : ℂ) • (1 : Matrix (Fin n) (Fin n) ℂ) + (Complex.I * (((2 * Real.pi * ((sg : ℤ) : ℝ)) : ℝ) : ℂ)) • bᵀ) *ᵥ v)))`. Rewrite `hp` using `[Fintype.card_fin]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable.
 
-Conclude with `hp`. Rewrite using `[F0_jG_mul_nG_eq sg e b hb, hsec]`. Generalize the expression as in `(∫ v : Fin n → ℂ, Complex.exp (star v ⬝ᵥ ((-(((2 * Real.pi : ℝ)) : ℂ) • (1 : Matrix (Fin n) (Fin n) ℂ) + (Complex.I * (((2 * Real.pi * ((sg : ℤ) : ℝ)) : ℝ) : ℂ)) • bᵀ) *ᵥ v))) = J at hJ ⊢`. Generalize the expression as in `(1 - (Complex.I * ((sg : ℤ) : ℂ)) • b).det = Δ at hJ ⊢`. Establish `hΔ : Δ ≠ 0`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `rfl`. Simplify using `at hJ`. Conclude with `pow_ne_zero _ hpi hJ.symm`. Establish `hJ' : J = (Real.pi : ℂ) ^ n / ((((2 * Real.pi : ℝ)) : ℂ) ^ n * Δ)` using `eq_div_of_mul_eq (mul_ne_zero (pow_ne_zero _ h2) hΔ) hJ`. Rewrite using `[hJ', mul_zpow, zpow_neg, zpow_neg, zpow_natCast, zpow_natCast]`.
+Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities.
 
-Clear the denominators using the available nonvanishing facts. Rewrite using `[mul_assoc, mul_assoc, ← mul_pow, ← mul_pow]`. Establish `hx : Δ * ((((2 * Real.pi : ℝ)) : ℂ) ^ n / (Real.pi : ℂ) ^ n * ((Real.pi : ℂ) ^ n / ((((2 * Real.pi : ℝ)) : ℂ) ^ n * Δ))) = 1`. Clear the denominators using the available nonvanishing facts. Rewrite using `[hx, one_pow, mul_one]`.
+A detailed English derivation is pending.
 -/
 theorem gauss_cell (sg : ℤˣ) (e : ℤ) : ∃ κ : ℂ, κ ≠ 0 ∧ ∀ b : Matrix (Fin n) (Fin n) ℂ, bᴴ = b →
     F0 (pOf sg m) (qOf sg m) e (jG n * nG b) =
@@ -338,13 +338,13 @@ theorem gauss_cell (sg : ℤˣ) (e : ℤ) : ∃ κ : ℂ, κ ≠ 0 ∧ ∀ b : M
     rw [hx, one_pow, mul_one]
 
 /- English proof (translation)
-Take `⟨κ, hκ, hF⟩` from `gauss_cell (m := m) (n := n) sg e`. Establish `hpar : ∀ (a b : Matrix (Fin n) (Fin n) ℂ), IsUnit a.det → bᴴ = b → (mR (mG a * nG b)).toBlocks₂₁ = 0`. Introduce `a b ha hb`. Rewrite using `[mR_mul, mR_mG ha, mR_nG hb, lower_left_block_mul]`. Simplify using `[mLc, nU]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hbig : Set.EqOn S (fun g => (C / κ) * F0 (pOf sg m) (qOf sg m) e g) {g : GR n | IsUnit (Matrix.toBlocks₂₁ (mR g)).det}`. Introduce `g hg`. Take `⟨a, b, b', ha, hb, hb', rfl⟩` from `big_eq g hg`. Establish `hy` using `hpar a b ha hb`. Establish `hassoc : mG a * nG b * jG n * nG b' = (mG a * nG b) * (jG n * nG b')`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [mul_assoc]`. Simplify using `only`. Rewrite using `[hassoc, hlaw _ _ hy, weight_factor_mul_parabolic _ _ _ _ _ hy, hcell b' hb', hF b' hb']`. Clear the denominators using the available nonvanishing facts. Establish `hall : S = fun g => (C / κ) * F0 (pOf sg m) (qOf sg m) e g` using `Continuous.ext_on dense_big hS (continuous_const.mul (continuous_weight_factor_unitary _ _ _)) hbig`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact.
 
-Establish `h1'` using `congrFun hall 1`. Rewrite `h1'` using `[h1, weight_factor_one, mul_one]`. Introduce `g`. Rewrite using `[hall, ← h1']`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem vac_unique (sg : ℤˣ) (e : ℤ) (S : GR n → ℂ) (C : ℂ) (hS : Continuous S) (h1 : S 1 = 1)
     (hlaw : ∀ y g : GR n, (mR y).toBlocks₂₁ = 0 → S (y * g) = F0 (pOf sg m) (qOf sg m) e y * S g)

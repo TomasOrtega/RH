@@ -17,11 +17,11 @@ variable {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] {Z : G
   {E E' : Z.X.Modules} {r : ℕ}
 
 /- English proof (translation)
-Use `hE.isQuasicoherent` as an intermediate fact. Use `hE'.isQuasicoherent` as an intermediate fact. Use `(VertDiv.IsSum.cls_eq (P := VertDiv.zero Z) (P' := VertDiv.zero Z) fun i j k => ?_).trans (by simp)` and prove the remaining obligations. Take `⟨c, c'⟩` from `k`. Establish `hV : (VertDiv.zero Z).M.U i ⊓ (VertDiv.zero Z).M.U j ⊓ (c.U ⊓ c'.U) ≤ c.U ⊓ c'.U` using `inf_le_right`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨c.isFrame.detUnit (c'.isFrame.map_iso ψ) (hV.trans inf_le_left) (hV.trans inf_le_right), (eqn_div_of_hom hE hE' hψ c c' le_rfl hV).trans ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ = _ * (resG _ _ 1 * resG _ _ 1)`. Rewrite using `[map_one, map_one, mul_one, mul_one, GlobalTheory.VB.IsFrame.val_detUnit]`. Use `congr 2`. Use function extensionality and compare the values at `l`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `GlobalTheory.Twist.app_resM _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem cls_div_of_isIso (hE : GlobalTheory.VB.IsVB E r) (hE' : GlobalTheory.VB.IsVB E' r) {φ : Z.GenIso E E'}
     {ψ : E' ⟶ E} [IsIso ψ] (hψ : φ.inv = Z.genRes.map ψ) : (φ.div hE hE').cls = 0 := by
@@ -41,9 +41,9 @@ theorem cls_div_of_isIso (hE : GlobalTheory.VB.IsVB E r) (hE' : GlobalTheory.VB.
   exact GlobalTheory.Twist.app_resM _ _ _
 
 /- English proof (translation)
-Introduce `O _ _ _ Z L L' M M' r hL hL' hM hM' φ χ e e' hcomm`. Establish `hχ : χ = (Z.genRes.mapIso e).symm ≪≫ φ ≪≫ Z.genRes.mapIso e'`. Use `Iso.ext ?_` and prove the remaining obligations. Simplify using `only [Iso.trans_hom, Iso.symm_hom, Functor.mapIso_hom, Functor.mapIso_inv, hcomm]`. Rewrite using `[← Category.assoc, ← Functor.map_comp, Iso.inv_hom_id, CategoryTheory.Functor.map_id, Category.id_comp]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Substitute `hχ` using the available equality. Rewrite using `[cls_div_trans _ hM hL hM', cls_div_trans _ hL hL' hM', cls_div_of_isIso hM hL (ψ := e.hom) rfl, cls_div_of_isIso hL' hM' (ψ := e'.inv) rfl, zero_add, add_zero]`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 -/
 theorem cls_div_eq_of_iso : ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
     (Z : GlobalTheory.Vert.Model O) (L L' M M' : Z.X.Modules) (r : ℕ) (hL : GlobalTheory.VB.IsVB L r)

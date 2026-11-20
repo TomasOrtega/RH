@@ -42,18 +42,18 @@ def fixBall (σ : L →+* L) (j : ℤ) : AddSubgroup L where
     exact ⟨by rw [map_neg, ha], by rwa [Valuation.map_neg]⟩
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_ball {j : ℤ} {b : L} : b ∈ ball L j ↔ Valued.v b ≤ WithZero.exp j := Iff.rfl
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_antiBall {σ : L →+* L} {j : ℤ} {b : L} :
     b ∈ antiBall σ j ↔ σ b = -b ∧ Valued.v b ≤ WithZero.exp j := Iff.rfl
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_fixBall {σ : L →+* L} {j : ℤ} {f : L} :
     f ∈ fixBall σ j ↔ σ f = f ∧ Valued.v f ≤ WithZero.exp j := Iff.rfl
@@ -61,7 +61,7 @@ theorem mem_fixBall {σ : L →+* L} {j : ℤ} {f : L} :
 omit [Valued L (WithZero (Multiplicative ℤ))] in
 
 /- English proof (translation)
-Establish `e1 : A = A'.comap (AddMonoidHom.mulLeft c)` using `AddSubgroup.ext hA`. Establish `e2 : B = B'.comap (AddMonoidHom.mulLeft c)` using `AddSubgroup.ext hB`. Rewrite using `[e1, AddSubgroup.relIndex_comap, e2, AddSubgroup.map_comap_eq_self_of_surjective]`. Introduce `y`. Conclude with `⟨c⁻¹ * y, mul_inv_cancel_left₀ hc y⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem relIndex_eq_of_mul {c : L} (hc : c ≠ 0) {A B A' B' : AddSubgroup L}
     (hA : ∀ x, x ∈ A ↔ c * x ∈ A') (hB : ∀ x, x ∈ B ↔ c * x ∈ B') : A.relIndex B = A'.relIndex B' := by
@@ -72,9 +72,9 @@ theorem relIndex_eq_of_mul {c : L} (hc : c ≠ 0) {A B A' B' : AddSubgroup L}
   exact ⟨c⁻¹ * y, mul_inv_cancel_left₀ hc y⟩
 
 /- English proof (translation)
-Proceed by induction on `y using WithZero.recZeroCoe with`. Consider the case `zero => exact zero_le'`. Consider the case `coe a`. Rewrite `h` using `[← WithZero.coe_one, WithZero.coe_lt_coe]`. Use `show (a : WithZero (Multiplicative ℤ)) ≤ ((Multiplicative.ofAdd (-1 : ℤ) : Multiplicative ℤ) : WithZero (Multiplicative ℤ))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[WithZero.coe_le_coe]`. Establish `h' : Multiplicative.toAdd a < 0` using `h`. Use `show Multiplicative.toAdd a ≤ -1`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem le_exp_neg_one_of_lt_one {y : WithZero (Multiplicative ℤ)} (h : y < 1) : y ≤ WithZero.exp (-1 : ℤ) := by
   induction y using WithZero.recZeroCoe with
@@ -88,13 +88,13 @@ theorem le_exp_neg_one_of_lt_one {y : WithZero (Multiplicative ℤ)} (h : y < 1)
     omega
 
 /- English proof (translation)
-Take `⟨-, -, -, -, -, -, hcard⟩` from `hU`. Use `set v := (Valued.v : Valuation L (WithZero (Multiplicative ℤ))) with hv`. Set `f : v.valuationSubring →+ L` to `v.valuationSubring.subtype.toAddMonoidHom`. Establish `e1 : (IsLocalRing.maximalIdeal v.valuationSubring).toAddSubgroup = (ball L (-1)).comap f`. Use extensionality with `x`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Use `show x ∈ IsLocalRing.maximalIdeal v.valuationSubring ↔ v (x : L) ≤ WithZero.exp (-1 : ℤ)`. Rewrite using `[Valuation.mem_maximalIdeal_iff]`. Use `⟨le_exp_neg_one_of_lt_one, fun h => h.trans_lt ?_⟩` and prove the remaining obligations. Rewrite using `[← WithZero.exp_zero, WithZero.exp_lt_exp]`. Evaluate the numerical expressions.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `e2 : (⊤ : AddSubgroup v.valuationSubring).map f = ball L 0`. Use extensionality with `x`. Rewrite using `[mem_ball, WithZero.exp_zero]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, -, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Conclude with `(Valuation.mem_valuationSubring_iff _ _).1 y.2`. Introduce `h`. Conclude with `⟨⟨x, (Valuation.mem_valuationSubring_iff _ _).2 h⟩, trivial, rfl⟩`. Rewrite using `[← e2, ← AddSubgroup.relIndex_comap, ← e1, AddSubgroup.relIndex_top_right, AddSubgroup.index_eq_card]`. Conclude with `hcard`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem relIndex_ball {ϖ : L} {σ : L →+* L} {q : ℕ} (hU : IsUnramInv ϖ σ q) :
     (ball L (-1)).relIndex (ball L 0) = q ^ 2 := by
@@ -120,17 +120,15 @@ theorem relIndex_ball {ϖ : L} {σ : L →+* L} {q : ℕ} (hU : IsUnramInv ϖ σ
   exact hcard
 
 /- English proof (translation)
-Take `⟨hσ, -, hϖ, hv, ⟨x, -, hx⟩, -, -⟩` from `hU`. Establish `hv' : Valued.v ϖ = WithZero.exp (-1 : ℤ)` using `hv`. Use `set δ := σ x - x with hδ`. Establish `hσδ : σ δ = -δ` using `by rw [hδ, map_sub, hσ]; ring`. Establish `hδ0 : δ ≠ 0` using `fun h => by rw [h, map_zero] at hx; exact zero_ne_one hx`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hϖ0 : ϖ ≠ 0` using `fun h => by rw [h, map_zero] at hv'; exact WithZero.exp_ne_zero hv'.symm`. Establish `hc : δ * ϖ ^ (j + 1) ≠ 0` using `mul_ne_zero hδ0 (zpow_ne_zero _ hϖ0)`. Establish `key : ∀ (i : ℤ) (z : L), z ∈ antiBall σ (i + (j + 1)) ↔ δ * ϖ ^ (j + 1) * z ∈ fixBall σ i`. Introduce `i z`. Rewrite using `[mem_antiBall, mem_fixBall]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `and_congr ?_ ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_mul, map_zpow₀, hϖ, hσδ]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Rewrite using `[h]`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Introduce `h`. Apply `mul_left_cancel₀ hc` to reduce the goal to its premises. Take the linear combination `-h`. Rewrite using `[map_mul, map_mul, map_zpow₀, hx, hv', one_mul, ← WithZero.exp_zsmul, WithZero.exp_add, smul_eq_mul, mul_neg, mul_one, WithZero.exp_neg, inv_mul_le_iff₀ WithZero.exp_pos, mul_comm]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `relIndex_eq_of_mul hc (fun z => ?_) (fun z => ?_)` and prove the remaining obligations. Rewrite using `[← key]`. Use `congr! 2`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[← key]`.
-
-Use `congr! 2`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem relIndex_anti_eq_fix {ϖ : L} {σ : L →+* L} {q : ℕ} (hU : IsUnramInv ϖ σ q) (j : ℤ) :
     (antiBall σ j).relIndex (antiBall σ (j + 1)) = (fixBall σ (-1)).relIndex (fixBall σ 0) := by
@@ -158,27 +156,25 @@ theorem relIndex_anti_eq_fix {ϖ : L} {σ : L →+* L} {q : ℕ} (hU : IsUnramIn
   · rw [← key]; congr! 2; ring
 
 /- English proof (translation)
-Establish `h0` using `relIndex_ball hU`. Establish `h1` using `relIndex_anti_eq_fix hU (-1)`. Rewrite using `[relIndex_anti_eq_fix hU j]`. Take `⟨hσ, hvσ, -, -, ⟨x, hxO, hx⟩, -, -⟩` from `hU`. Use `set δ := σ x - x with hδ`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hσδ : σ δ = -δ` using `by rw [hδ, map_sub, hσ]; ring`. Establish `hδ0 : δ ≠ 0` using `fun h => by rw [h, map_zero] at hx; exact zero_ne_one hx`. Use `set e := -x / δ with he`. Establish `he1 : e + σ e = 1`. Rewrite using `[he, map_div₀, map_neg, hσδ]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities.
 
-Clear the denominators using the available nonvanishing facts. Rewrite using `[hδ]`. Expand and normalize the polynomial expressions, which then agree. Establish `hve : Valued.v e ≤ 1`. Rewrite using `[he, map_div₀, hx, div_one, Valuation.map_neg]`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `(Valuation.mem_integer_iff _ _).1 hxO`. Set `t : L →+ L` to `AddMonoidHom.id L - σ.toAddMonoidHom`. Establish `ht : ∀ z, t z = z - σ z` using `fun z => rfl`. Establish `hte : ∀ b, σ b = -b → t (e * b) = b` using `fun b hb => by`. Rewrite using `[ht, map_mul, hb]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Take the linear combination `b * he1`. Establish `hσt : ∀ z, σ (t z) = -t z` using `fun z => by rw [ht, map_sub, hσ]; ring`. Establish `hvt : ∀ z i, Valued.v z ≤ WithZero.exp i → Valued.v (t z) ≤ WithZero.exp (i : ℤ)` using `fun z i h => (Valuation.map_sub _ _ _).trans (max_le h ((hvσ z).le.trans h))`. Establish `hve' : ∀ z i, Valued.v z ≤ WithZero.exp i → Valued.v (e * z) ≤ WithZero.exp (i : ℤ)` using `fun z i h => by`. Rewrite using `[map_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Conclude with `(mul_le_mul' hve h).trans (one_mul _).le`. Establish `hle : WithZero.exp (-1 : ℤ) ≤ WithZero.exp (0 : ℤ)` using `WithZero.exp_le_exp.2 (by norm_num)`. Establish `a1 : (ball L 0).map t = antiBall σ 0`. Use extensionality with `b`. Prove the components needed by the constructor for the conclusion.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `⟨z, hz, rfl⟩`. Conclude with `⟨hσt z, hvt z 0 hz⟩`. Introduce and unpack `⟨hb, hb'⟩`. Conclude with `⟨e * b, hve' b 0 hb', hte b hb⟩`. Establish `a2 : (antiBall σ (-1)).comap t ⊓ ball L 0 = fixBall σ 0 ⊔ ball L (-1)`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Apply `le_antisymm` to reduce the goal to its premises. Introduce and unpack `z ⟨⟨-, hz⟩, hz'⟩`. Use `AddSubgroup.mem_sup.2 ⟨z - e * t z, ⟨?_, ?_⟩, e * t z, hve' _ _ hz, by ring⟩` and prove the remaining obligations. Establish `: t (z - e * t z) = 0` using `by rw [map_sub, hte _ (hσt z), sub_self]`. Rewrite `this` using `[ht]`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(sub_eq_zero.1 this).symm`. Conclude with `(Valuation.map_sub _ _ _).trans (max_le hz' ((hve' _ _ hz).trans hle))`. Use `sup_le (fun z hz => ⟨⟨hσt z, ?_⟩, hz.2⟩) (fun z hz => ⟨⟨hσt z, hvt z _ hz⟩, le_trans hz hle⟩)` and prove the remaining obligations. Rewrite using `[ht, hz.1, sub_self, map_zero]`. Conclude with `zero_le'`.
+Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `a3 : ball L (-1) ⊓ fixBall σ 0 = fixBall σ (-1)` using `le_antisymm (fun z hz => ⟨hz.2.1, hz.1⟩) (fun z hz => ⟨hz.2, hz.1, hz.2.trans hle⟩)`. Establish `b1 : (fixBall σ 0 ⊔ ball L (-1)).relIndex (ball L 0) = (fixBall σ (-1)).relIndex (fixBall σ 0)`. Rewrite using `[← a2, AddSubgroup.inf_relIndex_right, AddSubgroup.relIndex_comap, a1, ← h1]`. Evaluate the numerical expressions. Establish `b2 : (ball L (-1)).relIndex (fixBall σ 0 ⊔ ball L (-1)) = (fixBall σ (-1)).relIndex (fixBall σ 0)`.
-
-Rewrite using `[AddSubgroup.relIndex_sup_right, ← a3, AddSubgroup.inf_relIndex_right]`. Establish `b3` using `AddSubgroup.relIndex_mul_relIndex (ball L (-1)) (fixBall σ 0 ⊔ ball L (-1)) (ball L 0) le_sup_right (by rw [← a2]; exact inf_le_right)`. Rewrite `b3` using `[b1, b2, h0, ← sq]`. Conclude with `Nat.pow_left_injective two_ne_zero b3`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem relIndex_antiBall {ϖ : L} {σ : L →+* L} {q : ℕ} (hU : IsUnramInv ϖ σ q) (j : ℤ) :
     (antiBall σ j).relIndex (antiBall σ (j + 1)) = q := by
@@ -236,13 +232,11 @@ theorem relIndex_antiBall {ϖ : L} {σ : L →+* L} {q : ℕ} (hU : IsUnramInv �
 end Balls
 
 /- English proof (translation)
-Establish `hemb : MeasurableEmbedding (K.subtype : K → G)` using `MeasurableEmbedding.subtype_coe hK`. Use `haveI : (μ.comap (K.subtype : K → G)).IsMulLeftInvariant := Measure.IsMulLeftInvariant.comap μ hemb`. Use `haveI : (H.subgroupOf K).FiniteIndex := ⟨hi⟩`. Establish `key` using `(H.subgroupOf K).index_mul_measure (hemb.measurable hH) (μ.comap (K.subtype : K → G))`. Rewrite `key` using `[hemb.comap_apply, hemb.comap_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `e1 : (K.subtype : K → G) '' Set.univ = (K : Set G)`. Use extensionality with `x`. Simplify using the standard rewrite rules. Establish `e2 : (K.subtype : K → G) '' ((H.subgroupOf K : Subgroup K) : Set K) = (H : Set G)`. Use extensionality with `x`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩`. Conclude with `hy`. Introduce `hx`. Conclude with `⟨⟨x, hle hx⟩, hx, rfl⟩`.
-
-Rewrite `key` using `[e1, e2]`. Conclude with `key.symm`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem measure_eq_relIndex_mul {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
     [MeasurableSpace G] [BorelSpace G] (μ : Measure G) [μ.IsMulLeftInvariant]
@@ -266,11 +260,11 @@ theorem measure_eq_relIndex_mul {G : Type} [Group G] [TopologicalSpace G] [IsTop
   exact key.symm
 
 /- English proof (translation)
-Establish `hq0 : (q : ENNReal) ≠ 0` using `Nat.cast_ne_zero.2 hq`. Establish `hqt : (q : ENNReal) ≠ ⊤` using `ENNReal.natCast_ne_top q`. Establish `step : ∀ j, μ (H (j + 1)) = q * μ (H j)` using `fun j => by`. Rewrite using `[measure_eq_relIndex_mul μ (H j) (H (j + 1)) (hm _) (hm _) (hle j) (by rw [hi]; exact hq), hi]`. Proceed by induction on `j using Int.induction_on with`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Proceed by induction.
 
-Consider the case `zero => rw [h0, zpow_zero]`. Consider the case `succ i ih => rw [step, ih, ENNReal.zpow_add hq0 hqt, zpow_one, mul_comm]`. Consider the case `pred i ih`. Establish `h` using `step (-(i : ℤ) - 1)`. Rewrite `h` using `[sub_add_cancel, ih]`.
+Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Apply `(ENNReal.mul_right_inj hq0 hqt).1` to reduce the goal to its premises. Rewrite using `[← h]`. Use `conv_lhs => rw [show -(i : ℤ) = 1 + (-(i : ℤ) - 1) by ring, ENNReal.zpow_add hq0 hqt, zpow_one]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem measure_chain {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [MeasurableSpace G]
     [BorelSpace G] (μ : Measure G) [μ.IsMulLeftInvariant] (H : ℤ → Subgroup G) {q : ℕ} (hq : q ≠ 0)
@@ -291,9 +285,9 @@ theorem measure_chain {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGr
     conv_lhs => rw [show -(i : ℤ) = 1 + (-(i : ℤ) - 1) by ring, ENNReal.zpow_add hq0 hqt, zpow_one]
 
 /- English proof (translation)
-Establish `e : {x : L | Valued.v x ≤ WithZero.exp j} = (fun x => ϖ ^ j * x) ⁻¹' (intL L : Set L)`. Use extensionality with `x`. Use `show _ ↔ Valued.v (ϖ ^ j * x) ≤ 1`. Rewrite using `[map_mul, map_zpow₀, hv, ← WithZero.exp_zsmul, smul_eq_mul, mul_neg, mul_one, WithZero.exp_neg, inv_mul_le_iff₀ WithZero.exp_pos, mul_one]`. Both sides reduce to the same expression.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `(Valued.isOpen_integer L).preimage (continuous_const.mul continuous_id)`.
+A detailed English derivation is pending.
 -/
 theorem isOpen_ball {L : Type} [Field L] [Valued L (WithZero (Multiplicative ℤ))] {ϖ : L}
     (hv : Valued.v ϖ = WithZero.exp (-1 : ℤ)) (j : ℤ) : IsOpen {x : L | Valued.v x ≤ WithZero.exp j} := by
@@ -307,45 +301,39 @@ theorem isOpen_ball {L : Type} [Field L] [Valued L (WithZero (Multiplicative ℤ
   exact (Valued.isOpen_integer L).preimage (continuous_const.mul continuous_id)
 
 /- English proof (translation)
-Introduce `L _ _ _ _ ϖ σ q hU n k hk hn y hyK hy _ _ μ _ hμ j`. Establish `hidx` using `relIndex_antiBall hU`. Take `⟨-, -, -, hv, -, hq2, -⟩` from `hU`. Establish `haa : lo k ≠ (lo k).rev`. Introduce `h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `congrArg Fin.val h` as an intermediate fact. Simplify using `only [Fin.val_rev, Fin.coe_castLE] at this`. Use `k.2` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hshape` using `cellU_rankOne_shape L σ n k hk hn y hy`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Use `set a := lo k with ha`. Set `M : cellU y → Matrix (Fin n) (Fin n) L` to `fun u => (((u : GU σ n) : GL (Fin n) L) : Matrix (Fin n) (Fin n) L)`. Set `c : cellU y → L` to `fun u => M u a a.rev`. Establish `hstr : ∀ u : cellU y, M u = 1 + Matrix.single a a.rev (c u)`. Introduce `u`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Use extensionality with `i l`. Rewrite using `[Matrix.add_apply, Matrix.single_apply]`. Use `split_ifs with h`. Take `⟨rfl, rfl⟩` from `h`. Rewrite using `[Matrix.one_apply_ne haa, zero_add]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[add_zero]`. Conclude with `(hshape u).1 u.2 i l (fun h' => h ⟨h'.1.symm, h'.2.symm⟩)`. Establish `hprod : ∀ b d : L, (1 + Matrix.single a a.rev b) * (1 + Matrix.single a a.rev d) = 1 + Matrix.single a a.rev (b + d)`. Introduce `b d`. Rewrite using `[Matrix.add_mul, Matrix.mul_add, Matrix.mul_add, Matrix.single_mul_single_of_ne _ _ _ _ haa.symm, Matrix.single_add]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Establish an intermediate fact.
 
-Simplify using `only [Matrix.one_mul, Matrix.mul_one, add_zero]`. Normalize the expressions using the abelian group laws. Establish `hent : ∀ b : L, (1 + Matrix.single a a.rev b : Matrix (Fin n) (Fin n) L) a a.rev = b`. Introduce `b`. Rewrite using `[Matrix.add_apply, Matrix.one_apply_ne haa, Matrix.single_apply_same, zero_add]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hM : ∀ u w : cellU y, M (u * w) = M u * M w` using `fun u w => rfl`. Establish `hmul : ∀ u w : cellU y, c (u * w) = c u + c w`. Introduce `u w`. Use `show M (u * w) a a.rev = c u + c w`. Rewrite using `[hM, hstr u, hstr w, hprod, hent]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hone : c 1 = 0` using `Matrix.one_apply_ne haa`. Establish `hinv : ∀ u, c u⁻¹ = -c u` using `fun u => by`. Use `hmul u⁻¹ u` as an intermediate fact. Rewrite `this` using `[inv_mul_cancel, hone]`. Take the linear combination `-this`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hanti : ∀ u, σ (c u) = -c u` using `fun u => by`. Use `(LGrp.mem_GU_iff σ n _).1 (u : GU σ n).2 a a.rev` as an intermediate fact. Rewrite `this` using `[Fin.rev_rev]`. Rewrite using `[← hinv]`. Conclude with `this.symm`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hsurj : ∀ b : L, σ b = -b → ∃ u : cellU y, c u = b`. Introduce `b hb`. Set `g : GL (Fin n) L` to `⟨1 + Matrix.single a a.rev b, 1 + Matrix.single a a.rev (-b), by rw [hprod]; simp, by rw [hprod]; simp⟩`. Establish `hg : g ∈ GU σ n`. Rewrite using `[LGrp.mem_GU_iff]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `i l`. Use `show (1 + Matrix.single a a.rev (-b) : Matrix (Fin n) (Fin n) L) i l = σ ((1 + Matrix.single a a.rev b : Matrix (Fin n) (Fin n) L) l.rev i.rev)`. Rewrite using `[Matrix.add_apply, Matrix.add_apply, map_add, Matrix.one_apply, Matrix.one_apply, Matrix.single_apply, Matrix.single_apply, apply_ite σ, apply_ite σ, map_one, map_zero, hb]`. Use `congr 1`. Conclude with `if_congr (by rw [Fin.rev_inj, eq_comm]) rfl rfl`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `if_congr ?_ rfl rfl` and prove the remaining obligations. Rewrite using `[Fin.rev_inj, and_comm, Fin.rev_eq_iff]`. Use `⟨⟨⟨g, hg⟩, (hshape _).2 fun i l h => ?_⟩, hent b⟩` and prove the remaining obligations. Use `show (1 + Matrix.single a a.rev b : Matrix (Fin n) (Fin n) L) i l = _`. Rewrite using `[Matrix.add_apply, Matrix.single_apply, if_neg (fun h' => h ⟨h'.1.symm, h'.2.symm⟩), add_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `φ : cellU y →* Multiplicative L` to `{ toFun := fun u => Multiplicative.ofAdd (c u) map_one' := by simp only [hone]; rfl map_mul' := fun u w => by simp only [hmul]; rfl }`. Set `H : ℤ → Subgroup (cellU y)` to `fun j => (AddSubgroup.toSubgroup (antiBall σ j)).comap φ`. Establish `memH : ∀ j (u : cellU y), u ∈ H j ↔ Valued.v (c u) ≤ WithZero.exp j`. Introduce `j u`. Use `show (c u) ∈ antiBall σ j ↔ _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mem_antiBall]`. Conclude with `⟨fun h => h.2, fun h => ⟨hanti u, h⟩⟩`. Establish `hset : ∀ j, (H j : Set (cellU y)) = c ⁻¹' {x : L | Valued.v x ≤ WithZero.exp j}` using `fun j => Set.ext (memH j)`. Establish `hc : Continuous c` using `(Units.continuous_val.comp (continuous_subtype_val.comp continuous_subtype_val)).matrix_elem a a.rev`. Establish `hm : ∀ j, MeasurableSet (H j : Set (cellU y))` using `fun j => by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hset]`. Conclude with `((isOpen_ball hv j).preimage hc).measurableSet`. Establish `hle : ∀ j, H j ≤ H (j + 1)` using `fun j u hu => (memH _ _).2 (((memH _ _).1 hu).trans (WithZero.exp_le_exp.2 (by omega)))`. Establish `hi : ∀ j, (H j).relIndex (H (j + 1)) = q` using `fun j => by show ((AddSubgroup.toSubgroup (antiBall σ j)).comap φ).relIndex ((AddSubgroup.toSubgroup (antiBall σ (j + 1))).comap φ) = q`. Rewrite using `[Subgroup.relIndex_comap, Subgroup.map_comap_eq_self, AddSubgroup.relIndex_toSubgroup, hidx]`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Introduce `b hb`. Take `⟨u, hu⟩` from `hsurj (Multiplicative.toAdd b) hb.1`. Conclude with `⟨u, congrArg Multiplicative.ofAdd hu⟩`. Establish `hint : ∀ u : cellU y, Valued.v (c u) ≤ 1 → ∀ i l, M u i l ∈ intL L`. Introduce `u hu i l`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[hstr u, Matrix.add_apply, Matrix.one_apply, Matrix.single_apply]`. Apply the tactic sequence `refine add_mem ?_ ?_ <;> split_ifs`. Conclude with `one_mem _`. Conclude with `zero_mem _`. Conclude with `hu`.
-
-Conclude with `zero_mem _`. Establish `hH0 : H 0 = (KU σ n).subgroupOf (cellU y)`. Use extensionality with `u`. Rewrite using `[memH, WithZero.exp_zero, Subgroup.mem_subgroupOf, ← SetLike.mem_coe, LFun.IntPtsUnitary.coe_KU, LFun.IntPtsUnitary.coe_GLint]`. Prove the components needed by the constructor for the conclusion.
-
-Introduce `h`. Conclude with `⟨hint u h, hint u⁻¹ (by rwa [hinv, Valuation.map_neg])⟩`. Introduce `h`. Conclude with `h.1 a a.rev`. Establish `hfin` using `measure_chain μ H (q := q) (by omega) hm hle hi (by rw [hH0]; exact hμ) j`.
-
-Establish `hmj` using `hm j`. Rewrite `hfin`, `hmj` using `[hset]`. Conclude with `⟨hmj, hfin⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem shell_measure : ∀ (L : Type) [Field L] [CharZero L] [Valued L (WithZero (Multiplicative ℤ))] [CompleteSpace L]
     (ϖ : L) (σ : L →+* L) (q : ℕ), IsUnramInv ϖ σ q → ∀ (n : ℕ) (k : Fin (n / 2)), ¬ k.val + 1 < n / 2 →

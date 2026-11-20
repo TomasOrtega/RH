@@ -5,23 +5,21 @@ open NumberField
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `L _ _ v a`. Establish `hZ : ∀ m : ℤ, 0 ≤ v (m : L)`. Introduce `m`. Proceed by induction on `m using Int.induction_on with`. Consider the case `zero => simp [AddValuation.map_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `succ k ih`. Rewrite using `[Int.cast_add, Int.cast_one]`. Conclude with `AddValuation.map_le_add v ih (by rw [AddValuation.map_one])`. Consider the case `pred k ih`. Rewrite using `[Int.cast_sub, Int.cast_one]`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction.
 
-Conclude with `AddValuation.map_le_sub v ih (by rw [AddValuation.map_one])`. Assume the negation of the conclusion as `hneg`. Use `push_neg at hneg`. Take `⟨f, hm, hf⟩` from `NumberField.RingOfIntegers.isIntegral_coe a`. Use `set x : L := (a : L) with hx`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hxtop : v x ≠ ⊤` using `ne_top_of_lt hneg`. Take `⟨k, hk⟩` from `WithTop.ne_top_iff_exists.mp hxtop`. Establish `hk0 : k < 0`. Rewrite `hneg` using `[← hk]`. Conclude with `hneg` after adjusting the coercions.
+Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Distinguish the cases in `hn : f.natDegree = 0`. Rewrite `hn` using `[Polynomial.natDegree_eq_zero]`. Take `⟨c, rfl⟩` from `hn`. Establish `hc : c = 1`. Establish `h1` using `hm.leadingCoeff`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[Polynomial.leadingCoeff_C]`. Then use the resulting hypothesis. Substitute `hc` using the available equality. Simplify using `at hf`. Simplify using `only [Polynomial.eval₂_eq_sum_range, Finset.sum_range_succ, hm.coeff_natDegree, map_one, one_mul, add_eq_zero_iff_eq_neg] at hf`. Use `apply_fun v at hf`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hf` using `[AddValuation.map_neg, AddValuation.map_pow, ← hk]`. Establish `hlt : ((f.natDegree • k : ℤ) : WithTop ℤ) < v (∑ i ∈ Finset.range f.natDegree, (algebraMap ℤ L) (f.coeff i) * x ^ i)`. Apply `AddValuation.map_lt_sum v (WithTop.coe_ne_top)` to reduce the goal to its premises. Introduce `i hi`. Rewrite `hi` using `[Finset.mem_range]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[AddValuation.map_mul, AddValuation.map_pow, ← hk, eq_intCast]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[WithTop.coe_lt_coe, nsmul_eq_mul, nsmul_eq_mul]`. Establish `: (i : ℤ) < f.natDegree` using `by exact_mod_cast hi`. Use the polynomial consequences of the given equalities and inequalities.
-
-Use `_ = i • (k : WithTop ℤ) := by rw [WithTop.coe_nsmul]`. Use `_ ≤ v ((f.coeff i : ℤ) : L) + i • (k : WithTop ℤ) := le_add_of_nonneg_left (hZ _)`. Rewrite `hlt` using `[WithTop.coe_nsmul, hf]`. Conclude with `lt_irrefl _ hlt`.
+A detailed English derivation is pending.
 -/
 theorem addValuation_nonneg_of_ringOfIntegers :
     ∀ (L : Type) [Field L] [NumberField L] (v : AddValuation L (WithTop ℤ)) (a : 𝓞 L),

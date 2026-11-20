@@ -16,7 +16,7 @@ open NumberField UpperHalfPlane in
 open scoped Classical MatrixGroups nonZeroDivisors in
 variable {F : Type} [Field F] [NumberField F] in
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `T.toLinearMap ((ε : 𝓞 F) • x) = (ε : 𝓞 F) • T.toLinearMap x`. Conclude with `LinearMap.map_smul_of_tower T.toLinearMap _ _`.
+Express the relevant assertion in an equivalent form by its definition. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.HilbFam.transf_units_smul (T : (Fin 2 → F) ≃ₗ[F] (Fin 2 → F)) (ε : (𝓞 F)ˣ) (x : Fin 2 → F) :
     T (ε • x) = ε • T x := by

@@ -6,9 +6,9 @@ import Mathlib.FieldTheory.Finiteness
 open Matrix IsLocalRing ReciprocityTheory.Gal UpperTheory.V.U3 UpperTheory.V.Alg UpperTheory.V.UnitaryThreeInertia
 
 /- English proof (translation)
-Introduce `O N _ _ _ _ _ _ h`. Establish `hM : Module.IsTorsionBySet O N (maximalIdeal O)` using `fun x a => h a a.2 x`. Use `letI : Module (ResidueField O) N := hM.module`. Use `haveI : IsScalarTower O (ResidueField O) N := hM.isScalarTower`. Establish `e` using `LinearMap.extendScalarsOfSurjectiveEquiv (R := O) (S := ResidueField O) (M := N) (N := ResidueField O) IsLocalRing.residue_surjective`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Equip the data with the indicated structure. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Nat.card_congr e.toEquiv]`. Set `b` to `Module.Free.chooseBasis (ResidueField O) N`. Conclude with `(Nat.card_congr b.toDualEquiv.toEquiv).symm`.
+Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem UpperTheory.card_dual_residueField_eq_card_of_maximalIdeal_smul_eq_zero :
     ∀ {O N : Type} [CommRing O] [IsLocalRing O] [Finite (ResidueField O)] [AddCommGroup N] [Module O N] [Finite N], (∀ a ∈ maximalIdeal O, ∀ x : N, a • x = 0) → Nat.card (N →ₗ[O] ResidueField O) = Nat.card N := by

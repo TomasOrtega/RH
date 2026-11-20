@@ -30,15 +30,13 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.CompanionTheory.SphPole
 
 /- English proof (translation)
-Rewrite using `[h𝓕.setLIntegral_eq_tsum' f U]`. Establish `e : ∀ γ : Γ, ∫⁻ x in γ • U ∩ 𝓕, f (γ⁻¹ • x) ∂μ = ∫⁻ x in γ • U ∩ 𝓕, f x ∂μ` using `fun γ => by`. Use `lintegral_congr fun x => ?_` and prove the remaining obligations. Rewrite using `[Subgroup.smul_def, smul_eq_mul]`. Conclude with `hinv _ (γ⁻¹).2 x`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [e]`. Establish `hm : ∀ γ : Γ, NullMeasurableSet (γ • U ∩ 𝓕) μ` using `fun γ => ((hU.const_smul γ).nullMeasurableSet).inter h𝓕.nullMeasurableSet`. Establish `hdis : Pairwise (Function.onFun (AEDisjoint μ) fun γ : Γ => γ • U ∩ 𝓕)`. Introduce `γ γ' hne`. Use `Disjoint.aedisjoint (Set.disjoint_left.2 ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `y ⟨⟨u, hu, rfl⟩, -⟩ ⟨⟨u', hu', e⟩, -⟩`. Apply `hne` to reduce the goal to its premises. Simplify using `only [Subgroup.smul_def, smul_eq_mul] at e`. Establish `h2 : ((γ⁻¹ * γ' : Γ) : G) * u' = u`. Simplify using `only [Subgroup.coe_mul, Subgroup.coe_inv, mul_assoc]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, inv_mul_cancel_left]`. Establish `h3` using `hd _ (γ⁻¹ * γ').2 u' hu' (h2 ▸ hu)`. Establish `h4 : γ⁻¹ * γ' = 1` using `Subtype.ext h3`. Conclude with `(inv_mul_eq_one.1 h4)`. Rewrite using `[← lintegral_iUnion₀ hm hdis]`.
-
-Conclude with `lintegral_mono_set (Set.iUnion_subset fun γ => Set.inter_subset_right)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem setLIntegral_le_of_disjoint {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [MeasurableSpace G]
     [BorelSpace G] [SecondCountableTopology G] (μ : Measure G) [μ.IsMulLeftInvariant] (Γ : Subgroup G) [Countable Γ] (𝓕 U : Set G)
@@ -68,11 +66,11 @@ theorem setLIntegral_le_of_disjoint {G : Type} [Group G] [TopologicalSpace G] [I
   exact lintegral_mono_set (Set.iUnion_subset fun γ => Set.inter_subset_right)
 
 /- English proof (translation)
-Take `⟨O, hO, hO1⟩` from `isOpen_induced_iff.1 (isOpen_discrete ({1} : Set Γ))`. Establish `h1 : (1 : G) ∈ O`. Establish `: (1 : Γ) ∈ Subtype.val ⁻¹' O` using `by rw [hO1]; rfl`. Conclude with `this`. Establish `hc : Continuous fun p : G × G => p.2 * p.1⁻¹` using `continuous_snd.mul continuous_fst.inv`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hn : (fun p : G × G => p.2 * p.1⁻¹) ⁻¹' O ∈ nhds ((1 : G), (1 : G))` using `hc.continuousAt.preimage_mem_nhds (by simpa using hO.mem_nhds h1)`. Take `⟨V, hV, W, hW, hVW⟩` from `mem_nhds_prod_iff.1 hn`. Take `⟨U, hU, hUs, hUc⟩` from `local_compact_nhds (Filter.inter_mem hV hW)`. Use `⟨U, hUc, hU, fun γ hγ x hx hy => ?_⟩` and prove the remaining obligations. Establish `h2 : (x, γ * x) ∈ V ×ˢ W` using `⟨(hUs hx).1, (hUs hy).2⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `hVW h2`. Simplify using `only [Set.mem_preimage, mul_inv_cancel_right] at h3`. Establish `h4 : (⟨γ, hγ⟩ : Γ) ∈ Subtype.val ⁻¹' O` using `h3`. Rewrite `h4` using `[hO1]`. Conclude with `congrArg Subtype.val h4`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_compact_nhds_separated {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [LocallyCompactSpace G]
     (Γ : Subgroup G) [DiscreteTopology Γ] : ∃ U : Set G, IsCompact U ∧ U ∈ nhds (1 : G) ∧ ∀ γ ∈ Γ, ∀ x ∈ U, γ * x ∈ U → γ = 1 := by
@@ -94,69 +92,61 @@ theorem exists_compact_nhds_separated {G : Type} [Group G] [TopologicalSpace G] 
   exact congrArg Subtype.val h4
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ n J r X Y L a h hD T hT`. Take `⟨hK, hht, -⟩` from `GlobalTheory.T.isCompact_level_height_scales_isotropicFrame F E σ n J r X Y L a h hD`. Take `⟨hperm, -, hinv, hrep⟩` from `GlobalTheory.T.isotropicEisensteinSeries_rationalPoints_permute_terms F E σ n J r X Y L a h hD T hT`. Take `⟨hn, -⟩` from `GlobalTheory.T.wittFrame_rank_le_and_exists_rational_swap F E σ n J r X Y hD.cm hD.herm hD.witt`. Use `set d : ℝ := (n : ℝ) - (r + 1) with hdd`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hd : (0 : ℝ) < d`. Establish `: (2 * ((r : ℝ) + 1)) ≤ n` using `by exact_mod_cast hn`. Establish `: (0 : ℝ) ≤ r` using `Nat.cast_nonneg r`. Rewrite using `[hdd]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Introduce a local definition for the expression.
 
-Set `μ : Measure (GAd σ J)` to `Measure.haar`. Set `Λ : Subgroup (GAd σ J)` to `ratPts σ J ⊓ GlobalTheory.StdPar.frameStab σ J X ⊤`. Use `haveI : DiscreteTopology Λ := inferInstance`. Use `haveI : Countable (ratPts σ J) := inferInstance`. Establish `h𝓕` using `GlobalTheory.AutomorphicL2Unitary.isFundamentalDomain_stdDom (ratPts σ J) μ`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hDom` using `GlobalTheory.AutomorphicL2Unitary.isFundamentalDomain_stdDom Λ μ`. Take `⟨B₀, hB₀, hsh⟩` from `GlobalTheory.T.measure_heightShell_le_isotropicFrame_quotient F E σ n J r X Y L a h hD μ _ inferInstance hDom`. Establish `hm : Measurable h` using `hht.cont.measurable`. Take `⟨U, hUc, hU1, hUd⟩` from `exists_compact_nhds_separated (ratPts σ J)`. Establish `hKU` using `hK.prod hUc`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hc1 : Continuous fun u : GAd σ J × GAd σ J => h (u.1 * u.2)` using `hht.cont.comp (continuous_fst.mul continuous_snd)`. Establish `hc2 : Continuous fun u : GAd σ J × GAd σ J => (h (u.1 * u.2))⁻¹` using `hc1.inv₀ fun u => (hht.pos _).ne'`. Take `⟨M₀, hM₀⟩` from `hKU.exists_bound_of_continuousOn hc1.continuousOn`. Take `⟨m₀, hm₀⟩` from `hKU.exists_bound_of_continuousOn hc2.continuousOn`. Use `set M : ℝ := max M₀ 1 with hM`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set m : ℝ := max m₀ 1 with hmm`. Establish `hM1 : 1 ≤ M` using `le_max_right _ _`. Establish `hm1 : 1 ≤ m` using `le_max_right _ _`. Establish `hM0 : 0 < M` using `by linarith`. Establish `hm0 : 0 < m` using `by linarith`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hup : ∀ g, ∀ u ∈ U, h (g * u) ≤ M * h g`. Introduce `g u hu`. Take `⟨k, hk, e⟩` from `hht.iw g`. Rewrite using `[e u]`. Establish `h1` using `hM₀ (k, u) ⟨hk, hu⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h2 : h (k * u) ≤ M` using `((le_abs_self _).trans h1).trans (le_max_left _ _)`. Use `hht.pos g` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish `hlow : ∀ g, ∀ u ∈ U, h g ≤ m * h (g * u)`. Introduce `g u hu`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨k, hk, e⟩` from `hht.iw g`. Rewrite using `[e u]`. Establish `h1` using `hm₀ (k, u) ⟨hk, hu⟩`. Establish `h2 : (h (k * u))⁻¹ ≤ m` using `((le_abs_self _).trans h1).trans (le_max_left _ _)`. Establish `hp` using `hht.pos (k * u)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Use the polynomial consequences of the given equalities and inequalities.
 
-Establish `hg` using `hht.pos g`. Establish `h3 : 1 ≤ m * h (k * u)`. Use `(inv_le_iff_one_le_mul₀ hp).1 h2` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Use the polynomial consequences of the given equalities and inequalities.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `f : ℝ → GAd σ J → ℝ≥0∞` to `fun ε x => if h x ≤ 1 then ENNReal.ofReal (h x ^ (d + ε)) else 0`. Establish `hf : ∀ ε : ℝ, Measurable (f ε)` using `fun ε => Measurable.ite (measurableSet_le hm measurable_const) (hm.pow_const _).ennreal_ofReal measurable_const`. Set `Φ : ℝ → GAd σ J → ℝ≥0∞` to `fun ε g => ∑' t : T, f ε (t.1.1 * g)`. Establish `hΦ : ∀ ε, ∀ γ ∈ ratPts σ J, ∀ g, Φ ε (γ * g) = Φ ε g`. Introduce `ε γ hγ g`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Take `⟨π, hπ⟩` from `hperm γ hγ`. Establish `: ∀ i : T, f ε (i.1.1 * (γ * g)) = f ε ((π i).1.1 * g)` using `fun i => by`. Simplify using `only [f, hπ i g]`. Simplify using `only [Φ, this]`. Conclude with `π.tsum_eq fun t : T => f ε (t.1.1 * g)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hint : ∀ ε : ℝ, 0 < ε → ε ≤ 1 → ENNReal.ofReal ε * ∫⁻ g in GlobalTheory.AutomorphicL2Unitary.stdDom (ratPts σ J), Φ ε g ∂μ ≤ 2 * B₀`. Introduce `ε h0 h1`. Establish `hu` using `GlobalTheory.T.setLIntegral_tsum_unfold_of_cosetRepresentatives (GAd σ J) μ (ratPts σ J) Λ T _ _ inferInstance inf_le_left hrep h𝓕 hDom _ (hf ε) (fun γ hγ g => by simp only [f, hinv γ hγ g])`. Simplify using `only [Φ]`. Rewrite using `[hu]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `GlobalTheory.T.mul_lintegral_rpow_le_of_shell_bound' _ _ h _ B₀ hm hht.pos hd hsh ε h0 h1`. Establish `hUm : MeasurableSet U` using `hUc.measurableSet`. Establish `hμU : 0 < μ U` using `lt_of_lt_of_le ((isOpen_interior.measure_pos μ ⟨1, mem_interior_iff_mem_nhds.2 hU1⟩)) (measure_mono interior_subset)`. Establish `hμU' : μ U ≠ ⊤` using `hUc.measure_ne_top`. Use `set c₀ : ℝ := (m ^ (d + 1))⁻¹ with hc₀`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hc₀0 : 0 < c₀` using `by positivity`. Set `b : ℝ → T → ℝ` to `fun ε t => if h t.1.1 ≤ M⁻¹ then h t.1.1 ^ (d + ε) else 0`. Establish `hb0 : ∀ ε t, 0 ≤ b ε t` using `fun ε t => by`. Simplify using `only [b]`. Use `split_ifs`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Real.rpow_nonneg (hht.pos _).le _`. Conclude with `le_rfl`. Establish `hpt : ∀ ε : ℝ, 0 < ε → ε ≤ 1 → ∀ u ∈ U, ENNReal.ofReal c₀ * ∑' t : T, ENNReal.ofReal (b ε t) ≤ Φ ε u`. Introduce `ε h0 h1 u hu`. Rewrite using `[← ENNReal.tsum_mul_left]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `ENNReal.tsum_le_tsum fun t => ?_` and prove the remaining obligations. Simplify using `only [b, f]`. Distinguish the cases in `ht : h t.1.1 ≤ M⁻¹`. Establish `hle : h (t.1.1 * u) ≤ 1`. Use `hup t.1.1 u hu` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h3 : M * h t.1.1 ≤ 1`. Use `mul_le_mul_of_nonneg_left ht hM0.le` as an intermediate fact. Rewrite `this` using `[mul_inv_cancel₀ hM0.ne']`. Then use the resulting hypothesis. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[if_pos ht, if_pos hle, ← ENNReal.ofReal_mul hc₀0.le]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `ENNReal.ofReal_le_ofReal ?_` and prove the remaining obligations. Establish `hp` using `hht.pos t.1.1`. Establish `hq` using `hht.pos (t.1.1 * u)`. Establish `hx : 0 ≤ d + ε` using `by linarith`. Establish `h4 : h t.1.1 ^ (d + ε) ≤ (m * h (t.1.1 * u)) ^ (d + ε)` using `Real.rpow_le_rpow hp.le (hlow _ u hu) hx`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 
-Rewrite `h4` using `[Real.mul_rpow hm0.le hq.le]`. Establish `h5 : m ^ (d + ε) ≤ m ^ (d + 1)` using `Real.rpow_le_rpow_of_exponent_le hm1 (by linarith)`. Establish `h6 : 0 ≤ h (t.1.1 * u) ^ (d + ε)` using `Real.rpow_nonneg hq.le _`. Establish `h7 : 0 < m ^ (d + 1)` using `by positivity`. Rewrite using `[hc₀, inv_mul_le_iff₀ h7]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `h4.trans (mul_le_mul_of_nonneg_right h5 h6)`. Rewrite using `[if_neg ht]`. Simplify using the standard rewrite rules. Establish `hB₁ : ∀ ε : ℝ, 0 < ε → ε ≤ 1 → ENNReal.ofReal ε * (μ U * (ENNReal.ofReal c₀ * ∑' t : T, ENNReal.ofReal (b ε t))) ≤ 2 * B₀`. Introduce `ε h0 h1`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `le_trans (mul_le_mul_right ?_ _) (hint ε h0 h1)` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[setLIntegral_const, mul_comm]`. Use `_ ≤ ∫⁻ g in U, Φ ε g ∂μ := setLIntegral_mono' hUm (hpt ε h0 h1)`. Use `_ ≤ _ := setLIntegral_le_of_disjoint μ (ratPts σ J) _ U h𝓕 hUm hUd _ (hΦ ε)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hw0 : μ U * ENNReal.ofReal c₀ ≠ 0` using `mul_ne_zero hμU.ne' (by simpa using hc₀0)`. Establish `hwt : μ U * ENNReal.ofReal c₀ ≠ ⊤` using `ENNReal.mul_ne_top hμU' ENNReal.ofReal_ne_top`. Use `set B₁ : ℝ≥0∞ := 2 * B₀ / (μ U * ENNReal.ofReal c₀) with hB₁d`. Establish `hB₁t : B₁ ≠ ⊤` using `ENNReal.div_ne_top (ENNReal.mul_ne_top (by simp) hB₀) hw0`. Establish `hS : ∀ e : ℝ, d < e → Summable fun t : T => h t.1.1 ^ e` using `fun e he => by`.
+Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `using GlobalTheory.T.godement_summable_height_rpow_representatives F E σ n J r X Y L a h hD T hT 1 e he`. Use `set S₁ : ℝ := ∑' t : T, h t.1.1 ^ (d + 1) with hS₁`. Establish `hS₁0 : 0 ≤ S₁` using `tsum_nonneg fun t => Real.rpow_nonneg (hht.pos _).le _`. Use `⟨B₁.toReal + M * S₁, fun ε h0 h1 => ?_⟩` and prove the remaining obligations. Establish `hSε` using `hS (d + ε) (by linarith)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `hS1` using `hS (d + 1) (by linarith)`. Establish `hbS : ∀ t, b ε t ≤ h t.1.1 ^ (d + ε)` using `fun t => by`. Simplify using `only [b]`. Use `split_ifs`. Conclude with `le_rfl`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Conclude with `Real.rpow_nonneg (hht.pos _).le _`. Establish `hbs : Summable (b ε)` using `Summable.of_nonneg_of_le (hb0 ε) hbS hSε`. Establish `hA : ENNReal.ofReal (ε * ∑' t : T, b ε t) ≤ B₁`. Rewrite using `[ENNReal.ofReal_mul h0.le, ENNReal.ofReal_tsum_of_nonneg (hb0 ε) hbs, hB₁d, ENNReal.le_div_iff_mul_le (Or.inl hw0) (Or.inl hwt)]`. Use `le_trans (le_of_eq ?_) (hB₁ ε h0 h1)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hA' : ε * ∑' t : T, b ε t ≤ B₁.toReal` using `(ENNReal.ofReal_le_iff_le_toReal hB₁t).1 hA`. Establish `hsplit : ∀ t : T, h t.1.1 ^ (d + ε) ≤ b ε t + M * h t.1.1 ^ (d + 1)`. Introduce `t`. Establish `hp` using `hht.pos t.1.1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [b]`. Use `split_ifs with ht`. Establish `: 0 ≤ M * h t.1.1 ^ (d + 1)` using `by positivity`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `ht' : M⁻¹ < h t.1.1` using `not_le.1 ht`.
-
-Establish `e1 : h t.1.1 ^ (d + ε) = h t.1.1 ^ (d + 1) * h t.1.1 ^ (ε - 1)`. Rewrite using `[← Real.rpow_add hp]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Establish `e2 : h t.1.1 ^ (ε - 1) ≤ M`.
-
-Establish `h2 : h t.1.1 ^ (ε - 1) ≤ (M⁻¹) ^ (ε - 1)` using `Real.rpow_le_rpow_of_nonpos (by positivity) ht'.le (by linarith)`. Establish `h3 : (M⁻¹) ^ (ε - 1) = M ^ (1 - ε)`. Rewrite using `[Real.inv_rpow hM0.le, ← Real.rpow_neg hM0.le]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
-
-Establish `h4 : M ^ (1 - ε) ≤ M ^ (1 : ℝ)` using `Real.rpow_le_rpow_of_exponent_le hM1 (by linarith)`. Rewrite `h4` using `[Real.rpow_one]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h5 : 0 ≤ h t.1.1 ^ (d + 1)` using `by positivity`. Rewrite using `[e1, zero_add, mul_comm M]`.
-
-Conclude with `mul_le_mul_of_nonneg_left e2 h5`. Establish `hsum : ∑' t : T, h t.1.1 ^ (d + ε) ≤ ∑' t : T, b ε t + M * S₁`. Rewrite using `[hS₁, ← tsum_mul_left, ← (hbs.tsum_add (hS1.mul_left M))]`. Conclude with `hSε.tsum_le_tsum hsplit (hbs.add (hS1.mul_left M))`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem frame_bound : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (n : ℕ)
     (J : Matrix (Fin n) (Fin n) E) (r : ℕ) (X Y : Matrix (Fin n) (Fin (r + 1)) E) (L : Submodule (𝓞 E) (Fin n → E))
@@ -328,13 +318,13 @@ theorem frame_bound : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [Numb
     _ = _ := by ring
 
 /- English proof (translation)
-Use `haveI := isTopologicalRing_tens (F := D.host.F) (E := D.host.E) (R := AF D.host.F)`. Take `⟨-, hdet, -⟩` from `GlobalTheory.T.doubledBasisSkewColumnMatrix_gram_inverse D A μ hμ`. Establish `hTi' : rat (Tm A μ) * rat (Tm A μ)⁻¹ = 1`. Rewrite using `[← rat_mul, Matrix.mul_nonsing_inv _ hdet, rat_one]`. Establish `e : ∀ g : G D A.rank, mt (dblSp A) (κ.symm g) = rat (Tm A μ) * (mat g * rat (Tm A μ)⁻¹)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `g`. Establish `h` using `hκ (κ.symm g)`. Rewrite `h` using `[MulEquiv.apply_symm_apply]`. Rewrite using `[← Matrix.mul_assoc, h, Matrix.mul_assoc, hTi', Matrix.mul_one]`. Establish `hm : Continuous fun g : G D A.rank => rat (Tm A μ) * (mat g * rat (Tm A μ)⁻¹)` using `continuous_const.matrix_mul (HeightExists.continuous_mat.matrix_mul continuous_const)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `(isEmbedding_matHom (AF D.host.F) D.sp.cm.sig (dblSp A).gram).continuous_iff.2 (Units.continuous_iff.2 ⟨?_, ?_⟩)` and prove the remaining obligations. Conclude with `hm.congr fun g => (e g).symm`. Use `(hm.comp continuous_inv).congr fun g => ?_` and prove the remaining obligations. Use `e g⁻¹` as an intermediate fact. Rewrite `this` using `[map_inv]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Function.comp_apply, ← this]`. Simplify using `only [Function.comp_apply, map_inv]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem continuous_chart_symm (D : D7) (A : HSp D) (μ : D.host.E) (hμ : IsSkew μ) (κ : GA D (dblSp A) ≃* G D A.rank)
     (hκ : IsChart A μ κ) : Continuous κ.symm := by
@@ -359,41 +349,39 @@ theorem continuous_chart_symm (D : D7) (A : HSp D) (μ : D.host.E) (hμ : IsSkew
     rfl
 
 /- English proof (translation)
-Introduce `D r`. Set `A : HSp D` to `Formalism.BasicNotions.Examples₂.posSpace (E := D.host.E) Formalism.BasicNotions.Examples₂.star_isIntegral (r + 1)`. Take `⟨μ, hμ, -⟩` from `ConjElt.exists_isConj D`. Take `⟨κ, hκ⟩ : ∃ κ : GA D (dblSp A) ≃* G D (r + 1), IsChart A μ κ` from `chart_exists D A μ hμ`. Set `d : HypDec (dblSp A) (GlobalTheory.Core.Rk.SWLaw.zeroSp D) (r + 1)` to `GlobalTheory.Core.Rk.SWLaw.dblDec A`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Take `⟨l, hl⟩` from `GlobalTheory.RegSch.Inhab.exists_good (dblSp A)`. Establish `hIw` using `GlobalTheory.Published.SiegelSectionIwasawa.hasIw_of_good d l hl`. Take `⟨hD, -, -⟩` from `GlobalTheory.T.wittDecomposition_isotropicFrameEisenstein_dictionary D (dblSp A) (GlobalTheory.Core.Rk.SWLaw.zeroSp D) r d (GlobalTheory.EisCont.isAniso_zeroSp D) l hl hIw`. Establish `hstabS : siegel A = GlobalTheory.RegSW.stab d` using `(GlobalTheory.T.doubled_space_maximal_level_lattice D A).1`. Establish `hsc : ∀ q : GlobalTheory.RegSW.stab d, GlobalTheory.ResidueEisenstein.ScalesBy D.sp.cm.sig (dblSp A).gram d.e (q : GA D (dblSp A)) (GlobalTheory.RegSW.onX d q)` using `fun q => GlobalTheory.RegSW.mul_jX d q`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hstab` using `(GlobalTheory.EisCont.parFlag_stab_leftInv D (dblSp A) _ (r + 1) d).2.2.1`. Establish `hPs : ∀ x : GA D (dblSp A), x ∈ GlobalTheory.RegSW.stab d ↔ κ x ∈ P D (r + 1)` using `fun x => by`. Rewrite using `[← hstabS]`. Conclude with `GlobalTheory.T.mem_doublingSiegelParabolic_iff_chart_mem_siegelUnn D A μ hμ κ hκ x`. Establish `hiff : ∀ x : GA D (dblSp A), (∃ β, GlobalTheory.ResidueEisenstein.ScalesBy D.sp.cm.sig (dblSp A).gram d.e x β) ↔ κ x ∈ P D (r + 1)` using `fun x => ⟨fun ⟨β, e⟩ => (hPs x).1 (hstab x β e).1, fun hx => ⟨_, hsc ⟨x, (hPs x).2 hx⟩⟩⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hG : ∀ g, g ∈ GQ (dblSp A) ↔ κ g ∈ GF D (r + 1)` using `chart_mem_GF_iff D A μ hμ κ hκ`. Set `t : GlobalTheory.Eis.Cosets (P D (r + 1)) (GF D (r + 1)) → ratPts D.sp.cm.sig (dblSp A).gram` to `fun q => ⟨κ.symm (q.out : GF D (r + 1)), (hG _).2 (by simp)⟩`. Establish `ht_inj : Function.Injective t` using `fun q q' e => by`. Establish `h1 : κ.symm (q.out : GF D (r + 1)) = κ.symm (q'.out : GF D (r + 1))` using `congrArg Subtype.val e`. Establish `h2 : q.out = q'.out` using `Subtype.ext (κ.symm.injective h1)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Quotient.out_injective h2`. Establish `hmk : ∀ u v : GF D (r + 1), GlobalTheory.AutomorphicL2Unitary.mk ((P D (r + 1)).subgroupOf (GF D (r + 1))) u = GlobalTheory.AutomorphicL2Unitary.mk ((P D (r + 1)).subgroupOf (GF D (r + 1))) v ↔ ((v * u⁻¹ : GF D (r + 1)) : G D (r + 1)) ∈ P D (r + 1)` using `fun u v => by`. Rewrite using `[GlobalTheory.AutomorphicL2Unitary.mk_eq_iff]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨δ, hδ⟩`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: (v * u⁻¹ : GF D (r + 1)) = δ` using `by rw [← hδ]; group`. Rewrite using `[this]`. Conclude with `δ.2`. Introduce `h`. Conclude with `⟨⟨v * u⁻¹, h⟩, by simp⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `T : Set (ratPts D.sp.cm.sig (dblSp A).gram)` to `Set.range t`. Establish `hκt : ∀ (γ : ratPts D.sp.cm.sig (dblSp A).gram) (q : GlobalTheory.Eis.Cosets (P D (r + 1)) (GF D (r + 1))), κ ((γ * (t q)⁻¹ : ratPts D.sp.cm.sig (dblSp A).gram) : GA D (dblSp A)) = κ γ.1 * ((q.out : GF D (r + 1)) : G D (r + 1))⁻¹`. Introduce `γ q`. Simplify using `[t, map_mul, map_inv]`. Establish `hT : GlobalTheory.ResidueEisenstein.IsRepsJ D.sp.cm.sig (dblSp A).gram d.e T`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Introduce `γ`. Set `g₀ : GF D (r + 1)` to `⟨κ γ.1, (hG _).1 γ.2⟩`. Set `q₀ : GlobalTheory.Eis.Cosets (P D (r + 1)) (GF D (r + 1))` to `GlobalTheory.AutomorphicL2Unitary.mk _ g₀`. Use `⟨t q₀, ⟨⟨q₀, rfl⟩, (hiff _).2 ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[hκt]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(hmk q₀.out g₀).1 (Quotient.out_eq _)`. Introduce and unpack `_ ⟨⟨q, rfl⟩, hs⟩`. Establish `h1` using `(hiff _).1 hs`. Rewrite `h1` using `[hκt]`. Establish `e` using `(hmk q.out g₀).2 h1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `e2 : q = q₀` using `(Quotient.out_eq q).symm.trans e`. Rewrite using `[e2]`. Take `⟨B, hB⟩` from `frame_bound _ _ _ _ _ _ _ _ _ _ _ hD T hT`. Take `⟨-, hht, hlaw⟩` from `GlobalTheory.T.isCompact_level_height_scales_isotropicFrame _ _ _ _ _ _ _ _ _ _ _ hD`. Establish `hNc : Continuous fun g : GA D (dblSp A) => GlobalTheory.Doubling.iwAbs (GlobalTheory.RegSW.absDet d) l.K g`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Use `continuous_real_toNNReal.comp hht.cont` as an intermediate fact. Use `this.congr fun g => ?_` and prove the remaining obligations. Simplify using the standard rewrite rules. Set `H' : G D (r + 1) → ℝ≥0` to `fun g => GlobalTheory.Doubling.iwAbs (GlobalTheory.RegSW.absDet d) l.K (κ.symm g)`. Use `⟨H', ⟨hNc.comp (continuous_chart_symm D A μ hμ κ hκ), fun g => ?_, fun q hq a ha g => ?_⟩, B, fun ε h0 h1 => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `NNReal.coe_pos.1 (hht.pos _)`. Establish `hq1 : κ.symm q ∈ siegel A` using `(GlobalTheory.T.mem_doublingSiegelParabolic_iff_chart_mem_siegelUnn D A μ hμ κ hκ _).2 (show κ (κ.symm q) ∈ P D (r + 1) by rw [κ.apply_symm_apply]; exact hq)`. Establish `hq2 : κ.symm q ∈ GlobalTheory.RegSW.stab d` using `hstabS ▸ hq1`. Establish `h1` using `hlaw _ _ (hsc ⟨_, hq2⟩) (κ.symm g)`. Establish `h2` using `(GlobalTheory.T.doubled_space_maximal_level_lattice D A).2.1 _ hq1 hq2`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hk : blkA (mat (κ (κ.symm q))) = a.1` using `by rw [κ.apply_symm_apply]; exact ha`. Establish `h3` using `GlobalTheory.T.standardUnitaryChart_siegelLeviDet_eq D A μ hμ κ hκ ⟨_, hq1⟩ a hk`. Apply `NNReal.coe_injective` to reduce the goal to its premises. Use `show ((GlobalTheory.Doubling.iwAbs (GlobalTheory.RegSW.absDet d) l.K (κ.symm (q * g)) : ℝ≥0) : ℝ) = _`. Rewrite using `[map_mul, h1]`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h4 : Matrix.GeneralLinearGroup.det (GlobalTheory.RegSW.onX d ⟨_, hq2⟩) = Matrix.GeneralLinearGroup.det a` using `h2.symm.trans h3`. Rewrite using `[h4]`. Use `push_cast`. Both sides reduce to the same expression. Establish `hn : ((dblSp A).rank : ℝ) - ((r : ℝ) + 1) + ε = ((r + 1 : ℕ) : ℝ) + ε`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: ((dblSp A).rank : ℝ) = ((r + 1 + (r + 1) : ℕ) : ℝ)` using `rfl`. Rewrite using `[this]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hs` using `GlobalTheory.T.godement_summable_height_rpow_representatives _ _ _ _ _ _ _ _ _ _ _ hD T hT 1 (((dblSp A).rank : ℝ) - ((r : ℝ) + 1) + ε) (by linarith)`.
+Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Establish an intermediate fact.
 
-Establish `hb` using `hB ε h0 h1`. Rewrite `hs`, `hb` using `[hn]`. Set `e : GlobalTheory.Eis.Cosets (P D (r + 1)) (GF D (r + 1)) ≃ T` to `Equiv.ofInjective t ht_inj`. Establish `he : ∀ q, (e q).1.1 = κ.symm (q.out : GF D (r + 1))` using `fun q => rfl`. Prove the components needed by the constructor for the conclusion.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Use `(e.summable_iff).2 hs` as an intermediate fact. Use `this.congr fun q => ?_` and prove the remaining obligations. Simplify using `only [Function.comp_apply, mul_one, he]`. Both sides reduce to the same expression. Rewrite `hb` using `[← e.tsum_eq]`.
-
-Simplify `hb` using `only [he]`.
+A detailed English derivation is pending.
 -/
 theorem height_bound : ∀ (D : D7) (r : ℕ), ∃ H' : G D (r + 1) → ℝ≥0, PositivityTheory.Rg.Rsw.IsHt H' ∧ ∃ B : ℝ, ∀ ε : ℝ, 0 < ε → ε ≤ 1 →
     Summable (fun q : GlobalTheory.Eis.Cosets (P D (r + 1)) (GF D (r + 1)) => (H' (q.out : GF D (r + 1)) : ℝ) ^ (((r + 1 : ℕ) : ℝ) + ε)) ∧
@@ -487,25 +475,23 @@ theorem height_bound : ∀ (D : D7) (r : ℕ), ∃ H' : G D (r + 1) → ℝ≥0,
       simpa only [he] using hb
 
 /- English proof (translation)
-Introduce `hE D p hp H hH C hC`. Take `⟨r, rfl⟩ : ∃ r, p = r + 1` from `⟨p - 1, by omega⟩`. Take `⟨H', hH', B, hB⟩` from `height_bound D r`. Take `⟨-, C₀, hC₀, hcov⟩` from `hE D (r + 1)`. Establish `hHc : Continuous fun g : G D (r + 1) => (H g : ℝ)` using `NNReal.continuous_coe.comp hH.1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hHc' : Continuous fun g : G D (r + 1) => (H' g : ℝ)` using `NNReal.continuous_coe.comp hH'.1`. Establish `hpos' : ∀ g, (0 : ℝ) < H' g` using `fun g => NNReal.coe_pos.2 (hH'.2.1 g)`. Establish `hcont : Continuous (fun u : G D (r + 1) × G D (r + 1) => (H (u.1 * u.2) : ℝ) / (H' u.1 : ℝ))` using `(hHc.comp (continuous_fst.mul continuous_snd)).div (hHc'.comp continuous_fst) fun u => (hpos' _).ne'`. Take `⟨c, hc⟩` from `(hC₀.prod hC).exists_bound_of_continuousOn hcont.continuousOn`. Use `set c₁ : ℝ := max c 1 with hc₁`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hc₁1 : 1 ≤ c₁` using `le_max_right _ _`. Establish `hc₁0 : 0 < c₁` using `by linarith`. Establish `key : ∀ γ : G D (r + 1), ∀ h ∈ C, (H (γ * h) : ℝ) ≤ c₁ * H' γ`. Introduce `γ h hh`. Take `⟨q, hq, c₀, hc₀, rfl⟩` from `hcov γ`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Set `a` to `HeightExists.leviBlock (D := D) (n := r + 1) ⟨q, hq⟩`. Establish `e1 : H (q * c₀ * h) = absA D (Matrix.GeneralLinearGroup.det a) * H (c₀ * h)`. Rewrite using `[mul_assoc]`. Conclude with `hH.2.2 q hq a rfl _`. Establish `e2 : H' (q * c₀) = absA D (Matrix.GeneralLinearGroup.det a) * H' c₀` using `hH'.2.2 q hq a rfl _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : (H (c₀ * h) : ℝ) ≤ c₁ * H' c₀`. Use `hc (c₀, h) ⟨hc₀, hh⟩` as an intermediate fact. Establish `h4 : (H (c₀ * h) : ℝ) / H' c₀ ≤ c₁` using `((le_abs_self _).trans this).trans (le_max_left _ _)`. Conclude with `(div_le_iff₀ (hpos' _)).1 h4`. Rewrite using `[e1, e2]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Use `push_cast`. Establish `: (0 : ℝ) ≤ absA D (Matrix.GeneralLinearGroup.det a)` using `NNReal.coe_nonneg _`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left h3 this]`. Use `set c₂ : ℝ := c₁ ^ (((r + 1 : ℕ) : ℝ) + 1) with hc₂`. Establish `hc₂0 : 0 ≤ c₂` using `by positivity`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨c₂ * B, fun σ hσ h hh => ?_⟩` and prove the remaining obligations. Take `⟨hσ1, hσ2⟩` from `hσ`. Use `set ε : ℝ := σ - ((r + 1 : ℕ) : ℝ) / 2 with hε`. Establish `hε0 : 0 < ε` using `by rw [hε]; linarith`. Establish `hε1 : ε ≤ 1` using `by rw [hε]; linarith`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hx : σ + ((r + 1 : ℕ) : ℝ) / 2 = ((r + 1 : ℕ) : ℝ) + ε` using `by rw [hε]; ring`. Rewrite using `[hx]`. Take `⟨hS, hle⟩` from `hB ε hε0 hε1`. Establish `hterm : ∀ q : GlobalTheory.Eis.Cosets (P D (r + 1)) (GF D (r + 1)), (H ((q.out : GF D (r + 1)) * h) : ℝ) ^ (((r + 1 : ℕ) : ℝ) + ε) ≤ c₂ * (H' (q.out : GF D (r + 1)) : ℝ) ^ (((r + 1 : ℕ) : ℝ) + ε)`. Introduce `q`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hx0 : 0 ≤ ((r + 1 : ℕ) : ℝ) + ε` using `by positivity`. Combine the equalities or inequalities in the displayed calculation. Establish `hS2` using `hS.mul_left c₂`. Establish `hs : Summable fun q : GlobalTheory.Eis.Cosets (P D (r + 1)) (GF D (r + 1)) => (H ((q.out : GF D (r + 1)) * h) : ℝ) ^ (((r + 1 : ℕ) : ℝ) + ε)` using `Summable.of_nonneg_of_le (fun _ => by positivity) hterm hS2`. Use `⟨hs, ?_⟩` and prove the remaining obligations.
-
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[tsum_mul_left]`. Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ _ := mul_le_mul_of_nonneg_left hle hc₂0`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem sphBound_of_htExist : HtExist → SphBound := by
   intro hE D p hp H hH C hC

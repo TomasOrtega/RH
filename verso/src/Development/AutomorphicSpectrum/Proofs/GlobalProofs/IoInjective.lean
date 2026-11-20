@@ -28,7 +28,7 @@ variable (θ V) in
 abbrev Mc : Submodule ℂ (GA D V → ℂ) := cuspForms θ V ⊥
 
 /- English proof (translation)
-Use `⟨fun h => (mem_cuspForms.1 h).1, fun h => mem_cuspForms.2 ⟨h, ?_⟩⟩` and prove the remaining obligations. Use `GlobalTheory.Doubling.isKFinite_iff.2 ⟨Submodule.span ℂ {φ}, inferInstance, fun k hk => ?_⟩` and prove the remaining obligations. Rewrite using `[Subgroup.mem_bot.1 hk]`. Conclude with `Submodule.subset_span (by simp [funext_iff])`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_Mc_iff {φ : GA D V → ℂ} : φ ∈ Mc θ V ↔ IsAutFunSm θ V φ ∧ IsCuspFun V φ := by
   refine ⟨fun h => (mem_cuspForms.1 h).1, fun h => mem_cuspForms.2 ⟨h, ?_⟩⟩
@@ -54,7 +54,7 @@ def io (μ : Measure (GA D V)) [μ.IsHaarMeasure] (hθ : IsInfFam θ) : Mc θ V 
   cuspToL2 ⊥ μ (GlobalTheory.Grow.cuspRapidDecay_of_bound GlobalTheory.CuspGeo.cuspDecayBound) hθ
 
 /- English proof (translation)
-The claim follows from `cusp_form_toL2_injective _ hθ`.
+A detailed English derivation is pending.
 -/
 theorem io_injective (μ : Measure (GA D V)) [μ.IsHaarMeasure] (hθ : IsInfFam θ) :
     Function.Injective (io (V := V) μ hθ) := cusp_form_toL2_injective _ hθ

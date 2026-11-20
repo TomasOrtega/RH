@@ -23,14 +23,14 @@ open GlobalTheory.CompanionTheory.SiegelND.Integ.Weyl GlobalTheory.CompanionTheo
 namespace GlobalTheory.CompanionTheory.SiegelND.Integ.Weyl.RatMem
 
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.ExistsNatMulMem.exists_nat_mul_mem F x`.
+A detailed English derivation is pending.
 -/
 theorem exists_nat_mul_mem (F : Type) [Field F] [NumberField F] (x : F) :
     ∃ m : ℕ, 0 < m ∧ ∃ r : 𝓞 F, (r : F) = (m : F) * x :=
   _root_.UpperTheory.Reformulated.B.ExistsNatMulMem.exists_nat_mul_mem F x
 
 /- English proof (translation)
-Establish `h : inclR (Af F) x = (1 : Af F) ⊗ₜ[F] x` using `rfl`. Rewrite using `[h, Algebra.TensorProduct.basis_repr_tmul]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem repr_inclR {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E] {d : ℕ}
     (b : Module.Basis (Fin d) F E) (x : E) (k : Fin d) :
@@ -41,35 +41,33 @@ theorem repr_inclR {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E
   simp
 
 /- English proof (translation)
-Rewrite using `[Algebra.smul_def, map_natCast]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem natCast_mul_eq_smul {F E : Type} [Field F] [Field E] [Algebra F E] (n : ℕ) (z : E) :
     (n : E) * z = (n : F) • z := by
   rw [Algebra.smul_def, map_natCast]
 
 /- English proof (translation)
-Rewrite using `[Algebra.smul_def, map_intCast]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem intCast_mul_eq_smul {F E : Type} [Field F] [Field E] [Algebra F E] (n : ℤ) (z : E) :
     (n : E) * z = (n : F) • z := by
   rw [Algebra.smul_def, map_intCast]
 
 /- English proof (translation)
-Set `B` to `RingOfIntegers.basis E`. Use `choose m hm hr using fun p : ι × Module.Free.ChooseBasisIndex ℤ (𝓞 E) × Fin d => exists_nat_mul_mem F (b.repr (e p.1 * (B p.2.1 : E)) p.2.2)`. Use `⟨∏ p, m p, Finset.prod_pos fun p _ => hm p, fun t o k => ?_⟩` and prove the remaining obligations. Use `set D : ℕ := ∏ p, m p with hDdef`. Establish `hterm : ∀ l, ∃ r : 𝓞 F, (r : F) = b.repr ((D : E) * (e t * (B l : E))) k`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `l`. Take `⟨c, hc⟩ : m (t, l, k) ∣ D` from `Finset.dvd_prod_of_mem _ (Finset.mem_univ _)`. Take `⟨r, hr1⟩` from `hr (t, l, k)`. Use `⟨(c : 𝓞 F) * r, ?_⟩` and prove the remaining obligations. Rewrite using `[natCast_mul_eq_smul (F := F), map_smul, Finsupp.smul_apply, smul_eq_mul, hc]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [map_mul, map_natCast, Nat.cast_mul]`. Establish `hr2 : (r : F) = (m (t, l, k) : F) * b.repr (e t * (B l : E)) k` using `hr1`. Express the relevant statement in the definitionally equal form `(c : F) * (r : F) = _`. Rewrite using `[hr2]`. Expand and normalize the polynomial expressions, which then agree.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `choose r hr' using hterm`. Use `⟨∑ l, (B.repr o l) • r l, ?_⟩` and prove the remaining obligations. Establish `ho : (o : E) = ∑ l, ((B.repr o l : ℤ) : E) * (B l : E)`. Establish `h3` using `congrArg (algebraMap (𝓞 E) E) (B.sum_repr o)`. Rewrite `h3` using `[map_sum]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[show (o : E) = algebraMap (𝓞 E) E o from rfl, ← h3]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Simplify using `[zsmul_eq_mul]`. Establish `hsum : (D : E) * (e t * (o : E)) = ∑ l, ((B.repr o l : ℤ) : F) • ((D : E) * (e t * (B l : E)))`. Rewrite using `[ho, Finset.mul_sum, Finset.mul_sum]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[← intCast_mul_eq_smul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hsum, map_sum, Finsupp.finsetSum_apply]`. Establish `h4 : ((∑ l, (B.repr o l) • r l : 𝓞 F) : F) = ∑ l, ((B.repr o l : ℤ) : F) * (r l : F)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[show ((∑ l, (B.repr o l) • r l : 𝓞 F) : F) = algebraMap (𝓞 F) F (∑ l, (B.repr o l) • r l) from rfl, map_sum]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Simplify using `[zsmul_eq_mul]`. Rewrite using `[h4]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations.
-
-Rewrite using `[map_smul, Finsupp.smul_apply, smul_eq_mul, hr']`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_clear_family {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E]
     [Algebra F E] {d : ℕ} (b : Module.Basis (Fin d) F E) {ι : Type} [Fintype ι] (e : ι → E) :
@@ -117,13 +115,11 @@ theorem exists_clear_family {F E : Type} [Field F] [NumberField F] [Field E] [Nu
   rw [map_smul, Finsupp.smul_apply, smul_eq_mul, hr']
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ d b M J n N hN`. Take `⟨D, hD0, hD⟩` from `exists_clear_family b (fun p : Fin M × Fin M => J⁻¹ p.1 p.2)`. Use `⟨N * D, Nat.mul_pos hN hD0, fun ρ => ?_⟩` and prove the remaining obligations. Use `show ∀ a i, InNOh b N (ratTuple J (N * D) ρ a i)`. Introduce `a j k`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `choose r hr using fun i => hD (j, i) (ρ i a) k`. Use `⟨algebraMap F (Af F) (((∑ i, r i : 𝓞 F)) : F), ?_, ?_⟩` and prove the remaining obligations. Conclude with `((GlobalTheory.T.mem_Oh_iff_and_nat_mul_properties F).2.2.2.2.2.2.1 _).2 ⟨_, rfl⟩`. Use `show (Algebra.TensorProduct.basis (Af F) b).repr (inclR (Af F) (((N * D : ℕ) : E) * (J⁻¹ *ᵥ fun i => algebraMap (𝓞 E) E (ρ i a)) j)) k = _`. Rewrite using `[repr_inclR]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `h1 : ((N * D : ℕ) : E) * (J⁻¹ *ᵥ fun i => algebraMap (𝓞 E) E (ρ i a)) j = (N : F) • ∑ i, (D : E) * (J⁻¹ j i * (ρ i a : E))`. Rewrite using `[← natCast_mul_eq_smul, Nat.cast_mul, Matrix.mulVec, dotProduct, ← Finset.mul_sum, mul_assoc]`. Rewrite using `[h1, map_smul, Finsupp.smul_apply, smul_eq_mul, map_sum, Finsupp.finsetSum_apply, map_mul, map_natCast]`. Use `congr 2`. Rewrite using `[show ((∑ i, r i : 𝓞 F) : F) = algebraMap (𝓞 F) F (∑ i, r i) from rfl, map_sum]`.
-
-Conclude with `Finset.sum_congr rfl fun i _ => (hr i).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ratTuple_mem_latN : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (d : ℕ) (b : Module.Basis (Fin d) F E) (M : ℕ) (J : Matrix (Fin M) (Fin M) E) (n N : ℕ), 0 < N →

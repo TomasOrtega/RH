@@ -5,7 +5,7 @@ import Development.WeilBound.RepresentationTheoryGL.ResidualSpectrum.Exponential
 namespace PositivityTheory.Rg.Rs
 
 /- English proof (translation)
-The claim follows from `sqIntCrit_of initBnd_holds h boxvol_holds`.
+A detailed English derivation is pending.
 -/
 theorem sqIntCrit_of_finTr (h : FinTr) : SqIntCrit := sqIntCrit_of initBnd_holds h boxvol_holds
 

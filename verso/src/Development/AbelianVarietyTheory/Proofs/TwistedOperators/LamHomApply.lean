@@ -26,7 +26,7 @@ def rowRed (T : HSp D) (βT : GL (Fin T.rank) (EAf D)) (a e : AE D) (PP : Formal
   fun j => redM PP (rowAdj T βT a e v) 0 j
 
 /- English proof (translation)
-The claim follows from `Ideal.prod_le_inf.trans (Finset.inf_le h)`.
+A detailed English derivation is pending.
 -/
 theorem liftI_le {Pg Q : Finset (Formalism.L2.DIV.Pl D.host.E)} {PP : Formalism.L2.DIV.Pl D.host.E} (h : PP ∈ Pg ∪ Q) :
     liftI Pg Q ≤ conjI PP.asIdeal :=
@@ -49,7 +49,7 @@ def lamHom (Pg Q : Finset (Formalism.L2.DIV.Pl D.host.E)) (r : ℕ)
     (Matrix.GeneralLinearGroup.det.comp (Jgrp Pg Q r).subtype)))⁻¹
 
 /- English proof (translation)
-Simplify using `[Jgrp, Subgroup.mem_iInf, MonoidHom.mem_ker]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_Jgrp {Pg Q : Finset (Formalism.L2.DIV.Pl D.host.E)} {r : ℕ} {κ : GL (Fin r) (𝓞 D.host.E ⧸ liftI Pg Q)} :
     κ ∈ Jgrp Pg Q r ↔ ∀ PP (h : PP ∈ Pg),
@@ -57,7 +57,7 @@ theorem mem_Jgrp {Pg Q : Finset (Formalism.L2.DIV.Pl D.host.E)} {r : ℕ} {κ : 
   simp [Jgrp, Subgroup.mem_iInf, MonoidHom.mem_ker]
 
 /- English proof (translation)
-Simplify using `[lamHom, MonoidHom.finset_prod_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem lamHom_apply {Pg Q : Finset (Formalism.L2.DIV.Pl D.host.E)} {r : ℕ}
     (ξ : ∀ PP : Formalism.L2.DIV.Pl D.host.E, (Formalism.L2.DIV.kP PP)ˣ →* ℂˣ) (κ : Jgrp Pg Q r) :

@@ -6,7 +6,7 @@ open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions F
 open scoped ENNReal Classical
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.PolarDeg.arDeg_lin_mul_pow | exact GlobalTheory.PolarDeg.arDeg_lin_mul_pow | (intros; apply GlobalTheory.PolarDeg.arDeg_lin_mul_pow <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.arithmetic_degree_mixed_linear_root : ∀ (D : D7) (Y : DV.ShimX D.what₂.Tau) (T : Real0 Y), TieDeg T → ∀ B : ℝ, 2 ≤ B → ∀ R : ℝ, Real.exp 2 ≤ R →
     ∀ w u : Wt Y, Y.arDeg (GlobalTheory.FlagAr.setB Y B) R (Formalism.DegreeFormula.linRoot w * Formalism.DegreeFormula.linRoot u ^ Formalism.MainNotions.WeightThresholdDefs.dimY Y) =

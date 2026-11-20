@@ -20,9 +20,9 @@ def Filt : Prop := ∀ (R : Type) [CommRing R] (F : Shv R) {U E : Spc} (u : U �
   (∀ p : ℕ, RelK R F n (piece R u p)) → RelZS R F n u
 
 /- English proof (translation)
-Introduce `R _ F U E u n hlow h0`. Use `hF R F u n (fun p => ?_)` and prove the remaining obligations. Break down `Nat.eq_zero_or_pos p with rfl | hp` into its components or cases. Use `hP R F u 0 n h0` as an intermediate fact. Simplify using `using this`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hk : n - (p : ℤ) < n` using `by omega`. Use `hP R F u p (n - p) (hlow p (n - p) hk)` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem etale_relK_single_degree_pieces_of_piece_and_filtration (hP : Piece) (hF : Filt) : LateralTheory.E.DescIntPf.EtaleRelativeIsoTruncationFromLevels := by
   intro R _ F U E u n hlow h0

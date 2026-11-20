@@ -27,7 +27,7 @@ section SlopeTestRemainingChoices
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ}
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Use `show ((k * k' : Kinf E n) : Matrix (Fin n) (Fin n) (Cinf E)).map (evV v) = (k : Matrix (Fin n) (Fin n) (Cinf E)).map (evV v) * (k' : Matrix (Fin n) (Fin n) (Cinf E)).map (evV v)`. Rewrite using `[← Matrix.map_mul]`. Both sides reduce to the same expression.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 private theorem uAt_mul' (v : InfinitePlace E) (k k' : Kinf E n) : uAt v (k * k') = uAt v k * uAt v k' := by
   apply Subtype.ext
@@ -37,7 +37,7 @@ private theorem uAt_mul' (v : InfinitePlace E) (k k' : Kinf E n) : uAt v (k * k'
   rfl
 
 /- English proof (translation)
-Establish `h1 : ∀ v, ent (M v) ((M v).ρ (uAt v (x * k)⁻¹)) (I v) (L v) = ∑ l, ent (M v) ((M v).ρ (uAt v k⁻¹)) (I v) l * ent (M v) ((M v).ρ (uAt v x⁻¹)) l (L v)`. Introduce `v`. Rewrite using `[_root_.mul_inv_rev, uAt_mul', map_mul, PMul.ent_mul]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Fintype.piFinset_univ, Finset.prod_mul_distrib, coef]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules.
 -/
 private theorem coef_mul' (M : Mods E n) (I L : IxA M) (x k : Kinf E n) :
     coef M I L (x * k) = ∑ m : IxA M, coef M I m k * coef M m L x := by
@@ -55,11 +55,11 @@ private theorem coef_mul' (M : Mods E n) (I L : IxA M) (x k : Kinf E n) :
         simp only [Fintype.piFinset_univ, Finset.prod_mul_distrib, coef]
 
 /- English proof (translation)
-Introduce `f hf k`. Proceed by induction on `hf using Submodule.span_induction with`. Consider the case `mem f h`. Take `⟨p, rfl⟩` from `h`. Establish `e : (fun x => coef M p.1 p.2 (x * k)) = ∑ m : IxA M, coef M p.1 m k • coef M m p.2`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `x`. Simplify using `only [coef_mul', Finset.sum_apply, Pi.smul_apply, smul_eq_mul]`. Use `show (fun x => coef M p.1 p.2 (x * k)) ∈ Wsp M`. Rewrite using `[e]`. Conclude with `Submodule.sum_mem _ fun m _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨(m, p.2), rfl⟩)`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately.
 
-Consider the case `zero => exact (Wsp M).zero_mem`. Consider the case `add a b _ _ ha hb => exact (Wsp M).add_mem ha hb`. Consider the case `smul c a _ ha => exact (Wsp M).smul_mem c ha`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 private theorem rinv_Wsp (M : Mods E n) : RInv (Wsp M) := by
   intro f hf k
@@ -77,7 +77,7 @@ private theorem rinv_Wsp (M : Mods E n) : RInv (Wsp M) := by
   | smul c a _ ha => exact (Wsp M).smul_mem c ha
 
 /- English proof (translation)
-Establish `h1 : IsOpen ((U.comap (MonoidHom.inl _ _) : Subgroup (GL (Fin n) (Af E))) : Set (GL (Fin n) (Af E)))` using `hU.preimage (Continuous.prodMk_left 1)`. Establish `h2 : IsOpen ((U.comap (MonoidHom.inl _ _) ⊓ GroundTheory.Automorphic.AdelicGLn.integralFiniteGL E n : Subgroup (GL (Fin n) (Af E))) : Set (GL (Fin n) (Af E)))` using `h1.inter (GroundTheory.Automorphic.AdelicGLn.isOpen_integralFiniteGL E n)`. Conclude with `⟨h2, (GroundTheory.Automorphic.AdelicGLn.isCompact_integralFiniteGL E n).of_isClosed_subset (Subgroup.isClosed_of_isOpen _ h2) Set.inter_subset_right⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 private theorem level_open_compact {b : ℕ} (U : Subgroup (Hf E n b)) (hU : IsOpen (U : Set (Hf E n b))) :
     IsOpen ((U.comap (MonoidHom.inl _ _) ⊓ GroundTheory.Automorphic.AdelicGLn.integralFiniteGL E n : Subgroup (GL (Fin n) (Af E))) : Set (GL (Fin n) (Af E))) ∧
@@ -91,15 +91,13 @@ private theorem level_open_compact {b : ℕ} (U : Subgroup (Hf E n b)) (hU : IsO
 end SlopeTestRemainingChoices
 
 /- English proof (translation)
-Introduce `E _ _ _ n μa μb _ _ Ma Mb κ ka kb va vb R ψ U ha hb hψ hU hlev i j`. Take `⟨hKo, hKc⟩` from `level_open_compact U hU`. Use `⟨tens_cs ha hb hψ i j, _, Wsp Ma, hKo, hKc, fd_Wsp Ma, rinv_Wsp Ma, fun u hu y => ?_, fun y => ?_⟩` and prove the remaining obligations. Establish `e1 : entA ka i.1.1 j.1.1 (finGL E n u * y.1) = entA ka i.1.1 j.1.1 y.1`. Establish `h` using `entA_fin ka i.1.1 j.1.1 u⁻¹ y.1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h` using `[map_inv, inv_inv]`. Then use the resulting hypothesis. Establish `e2 : hFin ((finGL E n u, 1) * y) = ((u, 1) : Hf E n 0) * hFin y` using `by show (gFin (finGL E n u * y.1), gFin (1 * y.2)) = (u * gFin y.1, 1 * gFin y.2)`. Rewrite using `[map_mul, gFin_finGL, one_mul, one_mul]`. Use `show entA ka i.1.1 j.1.1 (finGL E n u * y.1) * entA kb i.1.2 j.1.2 (1 * y.2) * ψ i.2 j.2 (hFin ((finGL E n u, 1) * y)) = entA ka i.1.1 j.1.1 y.1 * entA kb i.1.2 j.1.2 y.2 * ψ i.2 j.2 (hFin y)`. Rewrite using `[e1, one_mul, e2, hlev i.2 j.2 (u, 1) hu.1 (hFin y)]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e : (fun k : Kinf E n => tens ka kb ψ i j (((kI E n k)⁻¹, 1) * y)) = ∑ L : IxA Ma, (entA ka L j.1.1 y.1 * entA kb i.1.2 j.1.2 y.2 * ψ i.2 j.2 (hFin y)) • coef Ma i.1.1 L`. Use function extensionality and compare the values at `k`. Establish `e2 : hFin (((kI E n k)⁻¹, 1) * y) = hFin y`. Establish `h1 : gFin (infGL E n (Unitary.toUnits k)) = 1` using `pFin_infGL _`. Use `show (gFin ((infGL E n (Unitary.toUnits k))⁻¹ * y.1), gFin (1 * y.2)) = (gFin y.1, gFin y.2)`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul, map_inv, h1, inv_one, one_mul, one_mul]`. Use `show entA ka i.1.1 j.1.1 ((infGL E n (Unitary.toUnits k))⁻¹ * y.1) * entA kb i.1.2 j.1.2 (1 * y.2) * ψ i.2 j.2 (hFin (((kI E n k)⁻¹, 1) * y)) = _`. Rewrite using `[entA_inf ha, one_mul, e2, Finset.sum_mul, Finset.sum_mul]`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul]`. Conclude with `Finset.sum_congr rfl fun L _ => by ring`.
-
-Rewrite using `[e]`. Conclude with `Submodule.sum_mem _ fun L _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨(i.1.1, L), rfl⟩)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tensType_pf : TensType := by
   intro E _ _ _ n μa μb _ _ Ma Mb κ ka kb va vb R ψ U ha hb hψ hU hlev i j

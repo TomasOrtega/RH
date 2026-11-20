@@ -18,7 +18,7 @@ variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
 
 omit [∀ k, Fintype (ι k)] in
 /- English proof (translation)
-Consider the cases of `A`. Consider the cases of `B`. Simplify using `only at ha hh`. Substitute `ha hh` using the available equality. Both sides reduce to the same expression.
+Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Simplify using the standard rewrite rules. Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem hermLine_ext {A B : HermLine ι} (ha : A.a = B.a) (hh : A.h = B.h) : A = B := by
   cases A
@@ -40,15 +40,15 @@ noncomputable def indLine (ι : K → Type) [∀ k, Fintype (ι k)] : HermLine �
     simp
 
 /- English proof (translation)
-The claim follows from `(contDiffOn_const (c := (1 : ℝ))).congr fun _ hz => if_pos hz`.
+A detailed English derivation is pending.
 -/
 theorem indLine_smooth : IsSmoothHerm (indLine ι) :=
   (contDiffOn_const (c := (1 : ℝ))).congr fun _ hz => if_pos hz
 
 /- English proof (translation)
-Use `hermLine_ext (by simp [HermLine.tensor, ha]) (funext fun z => ?_)` and prove the remaining obligations. Distinguish the cases in `hz : ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0`. Use `show A.h z * _ = B.h z * _`. Rewrite using `[hh z hz]`. Establish `: (indLine ι).h z = 0` using `if_neg hz show A.h z * _ = B.h z * _`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, mul_zero, mul_zero]`.
+A detailed English derivation is pending.
 -/
 theorem tensor_indLine {A B : HermLine ι} (ha : A.a = B.a)
     (hh : ∀ z : (Σ k, ι k) → ℂ, (∀ k, ∃ i, z ⟨k, i⟩ ≠ 0) → A.h z = B.h z) :
@@ -62,7 +62,7 @@ theorem tensor_indLine {A B : HermLine ι} (ha : A.a = B.a)
     rw [this, mul_zero, mul_zero]
 
 /- English proof (translation)
-Establish `h1` using `hφ A _ hA indLine_smooth`. Establish `h2` using `hφ B _ hB indLine_smooth`. Rewrite `h1` using `[tensor_indLine ha hh]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem additive_congr (φ : HermLine ι → ℝ)
     (hφ : ∀ A B, IsSmoothHerm A → IsSmoothHerm B → φ (A.tensor B) = φ A + φ B)
@@ -74,7 +74,7 @@ theorem additive_congr (φ : HermLine ι → ℝ)
   linarith
 
 /- English proof (translation)
-Use `hermLine_ext ?_ (funext fun z => ?_)` and prove the remaining obligations. Use `show ∑ i, (Pi.single j 1 : J → ℤ) i • (ℓ i).a = _`. Apply the tactic sequence `rw [Finset.sum_eq_single j] <;> simp +contextual`. Use `show ∏ i, (ℓ i).h z ^ (Pi.single j 1 : J → ℤ) i = _`. Apply the tactic sequence `rw [Finset.prod_eq_single j] <;> simp +contextual`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem combLine_single {J : Type} [Fintype J] [DecidableEq J] (ℓ : J → HermLine ι) (j : J) :
     combLine ℓ (Pi.single j 1) = ℓ j := by
@@ -85,19 +85,17 @@ theorem combLine_single {J : Type} [Fintype J] [DecidableEq J] (ℓ : J → Herm
     rw [Finset.prod_eq_single j] <;> simp +contextual
 
 /- English proof (translation)
-The claim follows from `ContDiffOn.mul hA hB`.
+A detailed English derivation is pending.
 -/
 theorem tensor_smooth {A B : HermLine ι} (hA : IsSmoothHerm A) (hB : IsSmoothHerm B) :
     IsSmoothHerm (A.tensor B) := ContDiffOn.mul hA hB
 
 /- English proof (translation)
-Establish `hs : ∀ m, IsSmoothHerm (combLine ℓ m)` using `fun m => (combLine_smooth_conj_invariant K ι J ℓ m).1 hℓ`. Set `ψ : (J → ℤ) →+ ℝ` to `AddMonoidHom.mk' (fun m => φ (combLine ℓ m)) (fun m m' => by show φ _ = φ _ + φ _`. Rewrite using `[← hφ _ _ (hs m) (hs m')]`. Use `additive_congr φ hφ (hs _) (tensor_smooth (hs m) (hs m')) ?_ fun z hz => ?_` and prove the remaining obligations. Use `show ∑ i, (m + m') i • (ℓ i).a = ∑ i, m i • (ℓ i).a + ∑ i, m' i • (ℓ i).a`.
+Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [Pi.add_apply, add_smul, Finset.sum_add_distrib]`. Use `show ∏ i, (ℓ i).h z ^ (m + m') i = (∏ i, (ℓ i).h z ^ m i) * ∏ i, (ℓ i).h z ^ m' i`. Rewrite using `[← Finset.prod_mul_distrib]`. Conclude with `Finset.prod_congr rfl fun i _ => zpow_add₀ ((ℓ i).pos z hz).ne' _ _)`. Establish `hn : n = ∑ j, n j • (Pi.single j 1 : J → ℤ)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `i`. Simplify using `[Finset.sum_apply, Pi.single_apply]`. Use `show ψ n = _`. Use `conv_lhs => rw [hn]`. Rewrite using `[map_sum]`.
-
-Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_zsmul, zsmul_eq_mul]`. Use `show _ * φ (combLine ℓ (Pi.single j 1)) = _`. Rewrite using `[combLine_single]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem additive_comb (φ : HermLine ι → ℝ)
     (hφ : ∀ A B, IsSmoothHerm A → IsSmoothHerm B → φ (A.tensor B) = φ A + φ B)
@@ -131,7 +129,7 @@ end Ii
 
 open Ii in
 /- English proof (translation)
-Introduce `II hII K _ ι _ P d L k J _ ℓ n hP hL hℓ`. Conclude with `additive_comb (fun A => II K ι P d (Function.update L k A)) (fun A B hA hB => hII.2.1 K ι P d L k A B hP hL hA hB) ℓ hℓ n`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem intersection_multilinear_one_position : ∀ II : IntersectionSystem, IsFullIntersectionSystem II → ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] (P : Ideal (MRing ι)) (d : ℕ) (L : Fin d → HermLine ι) (k : Fin d) (J : Type) [Fintype J] (ℓ : J → HermLine ι) (n : J → ℤ), IsArithVar P d → (∀ i, IsSmoothHerm (L i)) → (∀ j, IsSmoothHerm (ℓ j)) → II K ι P d (Function.update L k (combLine ℓ n)) = ∑ j, (n j : ℝ) * II K ι P d (Function.update L k (ℓ j)) := by
   intro II hII K _ ι _ P d L k J _ ℓ n hP hL hℓ

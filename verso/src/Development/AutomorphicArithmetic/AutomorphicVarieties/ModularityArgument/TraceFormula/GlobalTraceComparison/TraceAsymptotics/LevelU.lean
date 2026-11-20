@@ -10,14 +10,14 @@ open scoped Classical
 namespace UpperTheory.V.Z.Tf.GlobalTraceComparison.Asm
 
 /- English proof (translation)
-Simplify using `[UL, hw]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem UL_top {E : Type} [Field E] [NumberField E] [IsCMField E] (n : ℕ) (w : Pl E)
     (hw : IsSplitAt w) : UL n w = ⊤ := by
   simp [UL, hw]
 
 /- English proof (translation)
-Apply `IsClosed.isClosedEmbedding_subtypeVal` to reduce the goal to its premises. Rewrite using `[UL_top n w hw]`. Conclude with `isClosed_univ`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem val_closed {E : Type} [Field E] [NumberField E] [IsCMField E] (n : ℕ) (w : Pl E)
     (hw : IsSplitAt w) : IsClosedEmbedding (Subtype.val : UL n w → GLw n w) := by
@@ -26,7 +26,7 @@ private theorem val_closed {E : Type} [Field E] [NumberField E] [IsCMField E] (n
   exact isClosed_univ
 
 /- English proof (translation)
-Use `⟨h.1.comp_isClosedEmbedding (val_closed n w hw), fun k hk x => ?_⟩` and prove the remaining obligations. Establish `hk' : (k : GLw n w) ∈ K'` using `Subgroup.mem_subgroupOf.mp hk`. Conclude with `⟨(h.2 _ hk' _).1, (h.2 _ hk' _).2⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 private theorem hecke_restrict {E : Type} [Field E] [NumberField E] [IsCMField E] (n : ℕ) (w : Pl E)
     (hw : IsSplitAt w) (K' : Subgroup (GLw n w)) (f : GLw n w → ℂ) (h : IsHecke K' f) :
@@ -36,9 +36,9 @@ private theorem hecke_restrict {E : Type} [Field E] [NumberField E] [IsCMField E
   exact ⟨(h.2 _ hk' _).1, (h.2 _ hk' _).2⟩
 
 /- English proof (translation)
-Introduce `E _ _ _ n w hw`. Use `⟨?_, fun f hf => ?_⟩` and prove the remaining obligations. Introduce and unpack `f ⟨K', hop, hle, hH⟩`. Use `⟨K'.subgroupOf (UL n w), ?_, ?_, hecke_restrict n w hw K' f hH⟩` and prove the remaining obligations. Conclude with `hop.preimage continuous_subtype_val`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x hx`. Unfold `KL`. Conclude with `Subgroup.mem_subgroupOf.mpr (hle (Subgroup.mem_subgroupOf.mp hx))`. Conclude with `hecke_restrict n w hw _ f hf`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem levelU : LevelU := by
   intro E _ _ _ n w hw

@@ -10,11 +10,11 @@ namespace Formalism.MainNotions.DIV.Bridge.LetterLogIntegrality
 open Formalism.MainNotions Formalism.DworkPowerSeriesWeights Formalism.MainNotions.DIV.Bridge.DworkPowerSeriesWeights
 
 /- English proof (translation)
-Introduce `n hn`. Take `⟨h1, h2, h3⟩` from `h n hn`. Establish `e1 : (product_zeroth_first_parts.bideg d n).1 = degE n`. Unfold `product_zeroth_first_parts.bideg degE`. Simplify using `only [Nat.even_iff]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `exact Finsupp.sum_fintype _ _ (by intro s; split_ifs <;> rfl)`. Establish `e2 : (product_zeroth_first_parts.bideg d n).2 = degO n`. Unfold `product_zeroth_first_parts.bideg degO`. Simplify using `only [Nat.even_iff]`. Apply the tactic sequence `exact Finsupp.sum_fintype _ _ (by intro s; split_ifs <;> rfl)`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Use `⟨Nat.pos_of_ne_zero (e1 ▸ h1), Nat.pos_of_ne_zero (e2 ▸ h2), ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨a, b⟩`. Conclude with `h3 (Prod.ext (e1.trans a) (e2.trans b))`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem no_low_bidegree_of_vanishing (l d : ℕ) [Fact l.Prime] [NeZero d] (be : MvPowerSeries (ZMod d) ℂ_[l]) (h : product_zeroth_first_parts.B3 l d be) :
     NoLowBidegree be := by
@@ -33,7 +33,7 @@ theorem no_low_bidegree_of_vanishing (l d : ℕ) [Fact l.Prime] [NeZero d] (be :
   exact h3 (Prod.ext (e1.trans a) (e2.trans b))
 
 /- English proof (translation)
-Establish `: NeZero (n : ℂ_[l])` using `⟨by exact_mod_cast hn.ne'⟩`. Take `⟨ζ, hζ⟩` from `IsAlgClosed.exists_root (Polynomial.cyclotomic n ℂ_[l]) (by rw [Polynomial.degree_cyclotomic]; exact_mod_cast (Nat.totient_pos.2 hn).ne')`. Conclude with `⟨ζ, (Polynomial.isRoot_cyclotomic_iff).mp hζ⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_prim (l n : ℕ) [Fact l.Prime] (hn : 0 < n) : ∃ ζ : ℂ_[l], IsPrimitiveRoot ζ n := by
   have : NeZero (n : ℂ_[l]) := ⟨by exact_mod_cast hn.ne'⟩
@@ -42,7 +42,7 @@ theorem exists_prim (l n : ℕ) [Fact l.Prime] (hn : 0 < n) : ∃ ζ : ℂ_[l], 
   exact ⟨ζ, (Polynomial.isRoot_cyclotomic_iff).mp hζ⟩
 
 /- English proof (translation)
-Proceed by induction on `d using Finsupp.induction with`. Consider the case `zero => simp`. Consider the case `single_add a b f ha hb ih`. Rewrite using `[Finsupp.prod_add_index' (by simp) (by intros; rw [pow_add]), ih, Finsupp.prod_single_index (by simp), MvPowerSeries.X_pow_eq, MvPowerSeries.monomial_mul_monomial, one_mul]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem prod_X_pow_monomial {σ K : Type} [Field K] [DecidableEq σ] (d : σ →₀ ℕ) :
     (d.prod fun s k => (MvPowerSeries.X s : MvPowerSeries σ K) ^ k) = MvPowerSeries.monomial d 1 := by
@@ -53,11 +53,11 @@ theorem prod_X_pow_monomial {σ K : Type} [Field K] [DecidableEq σ] (d : σ →
       MvPowerSeries.X_pow_eq, MvPowerSeries.monomial_mul_monomial, one_mul]
 
 /- English proof (translation)
-Establish `ha : MvPowerSeries.HasSubst (fun s : σ => (MvPowerSeries.C (c s) * MvPowerSeries.X s : MvPowerSeries σ K))` using `MvPowerSeries.hasSubst_of_constantCoeff_zero (fun s => by simp)`. Rewrite using `[MvPowerSeries.coeff_subst ha]`. Establish `hp : ∀ d : σ →₀ ℕ, (d.prod fun s k => (MvPowerSeries.C (c s) * MvPowerSeries.X s : MvPowerSeries σ K) ^ k) = MvPowerSeries.C (d.prod fun s k => c s ^ k) * MvPowerSeries.monomial d 1`. Introduce `d`. Repeatedly rewrite using `[mul_pow, ← map_pow]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion repeatedly using the stated equalities.
 
-Rewrite using `[Finsupp.prod_mul, ← prod_X_pow_monomial]`. Use `congr 1`. Simplify using `only [Finsupp.prod, map_prod]`. Repeatedly rewrite using `[hp, MvPowerSeries.coeff_C_mul, MvPowerSeries.coeff_monomial]`. Rewrite using `[finsum_eq_single _ m]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[mul_comm]`. Introduce `d hd`. Simplify using `[Ne.symm hd]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem coeff_subst_scale {σ K : Type} [Field K] [Fintype σ] [DecidableEq σ] (c : σ → K) (f : MvPowerSeries σ K)
     (m : σ →₀ ℕ) : MvPowerSeries.coeff m (MvPowerSeries.subst (fun s => MvPowerSeries.C (c s) * MvPowerSeries.X s) f) =
@@ -79,9 +79,9 @@ theorem coeff_subst_scale {σ K : Type} [Field K] [Fintype σ] [DecidableEq σ] 
     simp [Ne.symm hd]
 
 /- English proof (translation)
-Unfold `lw product_zeroth_first_parts.twist`. Distinguish the cases in `h : Even s.val`. Establish `h' : s.val % 2 = 0` using `Nat.even_iff.mp h`. Rewrite using `[if_pos h', if_pos h, one_mul]`. Conclude with `zpow_natCast ζ (l ^ s.val)` after adjusting the coercions.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h' : ¬ s.val % 2 = 0` using `fun e => h (Nat.even_iff.mpr e)`. Rewrite using `[if_neg h', if_neg h, neg_one_mul, zpow_neg]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem lw_twist (l d : ℕ) [Fact l.Prime] [NeZero d] (ζ : ℂ_[l]) (s : ZMod d) : ζ ^ lw l s = product_zeroth_first_parts.twist l d ζ s := by
   unfold lw product_zeroth_first_parts.twist
@@ -94,9 +94,9 @@ theorem lw_twist (l d : ℕ) [Fact l.Prime] [NeZero d] (ζ : ℂ_[l]) (s : ZMod 
     congr 1
 
 /- English proof (translation)
-Use extensionality with `m`. Establish `e : (torus l ζ : ZMod d → MvPowerSeries (ZMod d) ℂ_[l]) = fun s => MvPowerSeries.C (ζ ^ lw l s) * MvPowerSeries.X s` using `rfl`. Rewrite using `[e, coeff_subst_scale]`. Establish `h1` using `h ζ hζ.pow_eq_one m`. Rewrite using `[mul_comm]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `h1 using 2` and compare the differences between its conclusion and the goal. Unfold `Finsupp.prod`. Conclude with `Finset.prod_congr rfl (fun s _ => by show (ζ ^ lw l s) ^ m s = product_zeroth_first_parts.twist l d ζ s ^ m s; rw [lw_twist])`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem torus_invariant_of_teichmuller (l d : ℕ) [Fact l.Prime] [NeZero d] (be : MvPowerSeries (ZMod d) ℂ_[l]) (ζ : ℂ_[l])
     (hζ : IsPrimitiveRoot ζ (l ^ d - 1)) (h : product_zeroth_first_parts.B2 l d be) : MvPowerSeries.subst (torus l ζ) be = be := by
@@ -111,7 +111,7 @@ theorem torus_invariant_of_teichmuller (l d : ℕ) [Fact l.Prime] [NeZero d] (be
   exact Finset.prod_congr rfl (fun s _ => by show (ζ ^ lw l s) ^ m s = product_zeroth_first_parts.twist l d ζ s ^ m s; rw [lw_twist])
 
 /- English proof (translation)
-Rewrite using `[← prod_X_pow_monomial, Finsupp.prod_equivMapDomain]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem prod_X_rename {σ τ K : Type} [Field K] [DecidableEq τ] (r : σ ≃ τ) (d : σ →₀ ℕ) :
     (d.prod fun w k => (MvPowerSeries.X (r w) : MvPowerSeries τ K) ^ k) =
@@ -119,11 +119,11 @@ theorem prod_X_rename {σ τ K : Type} [Field K] [DecidableEq τ] (r : σ ≃ τ
   rw [← prod_X_pow_monomial, Finsupp.prod_equivMapDomain]
 
 /- English proof (translation)
-Establish `ha : MvPowerSeries.HasSubst (fun w : σ => (MvPowerSeries.X (r w) : MvPowerSeries τ K))` using `MvPowerSeries.hasSubst_of_constantCoeff_zero (fun w => by simp)`. Rewrite using `[MvPowerSeries.coeff_subst ha]`. Repeatedly rewrite using `[prod_X_rename, MvPowerSeries.coeff_monomial]`. Rewrite using `[finsum_eq_single _ (Finsupp.equivMapDomain r.symm n)]`. Simplify using `[← Finsupp.equivMapDomain_trans]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `d hd`. Establish `: n ≠ Finsupp.equivMapDomain r d`. Introduce `h`. Apply `hd` to reduce the goal to its premises. Rewrite using `[h, ← Finsupp.equivMapDomain_trans]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Simplify using `[this]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem coeff_subst_rename {σ τ K : Type} [Field K] [DecidableEq τ] [Finite σ] (r : σ ≃ τ) (f : MvPowerSeries σ K)
     (n : τ →₀ ℕ) : MvPowerSeries.coeff n (MvPowerSeries.subst (fun w => (MvPowerSeries.X (r w) : MvPowerSeries τ K)) f) =
@@ -158,21 +158,21 @@ section Subst
 variable {σ τ K : Type} [Field K]
 
 /- English proof (translation)
-Rewrite using `[← MvPowerSeries.coe_substAlgHom hb, map_add]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem subst_add' {b : σ → MvPowerSeries τ K} (hb : MvPowerSeries.HasSubst b) (f g : MvPowerSeries σ K) :
     MvPowerSeries.subst b (f + g) = MvPowerSeries.subst b f + MvPowerSeries.subst b g := by
   rw [← MvPowerSeries.coe_substAlgHom hb, map_add]
 
 /- English proof (translation)
-Rewrite using `[← MvPowerSeries.coe_substAlgHom hb, map_sub]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem subst_sub' {b : σ → MvPowerSeries τ K} (hb : MvPowerSeries.HasSubst b) (f g : MvPowerSeries σ K) :
     MvPowerSeries.subst b (f - g) = MvPowerSeries.subst b f - MvPowerSeries.subst b g := by
   rw [← MvPowerSeries.coe_substAlgHom hb, map_sub]
 
 /- English proof (translation)
-Rewrite using `[← MvPowerSeries.coe_substAlgHom hb, map_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem subst_zero' {b : σ → MvPowerSeries τ K} (hb : MvPowerSeries.HasSubst b) :
     MvPowerSeries.subst b (0 : MvPowerSeries σ K) = 0 := by
@@ -181,22 +181,22 @@ theorem subst_zero' {b : σ → MvPowerSeries τ K} (hb : MvPowerSeries.HasSubst
 end Subst
 
 /- English proof (translation)
-The claim follows from `MvPowerSeries.hasSubst_of_constantCoeff_zero (fun u => by simp)`.
+A detailed English derivation is pending.
 -/
 theorem hasSubst_XeV (l d : ℕ) [Fact l.Prime] [NeZero d] :
     MvPowerSeries.HasSubst (fun u : Bool × ZMod d => (MvPowerSeries.X (eV d u) : MvPowerSeries (ZMod d × Fin 2) ℂ_[l])) :=
   MvPowerSeries.hasSubst_of_constantCoeff_zero (fun u => by simp)
 
 /- English proof (translation)
-Establish `hb` using `hasSubst_XeV l d`. Unfold `de1`. Apply the tactic sequence `rw [subst_sub' hb, subst_sub' hb, MvPowerSeries.subst_comp_subst_apply (MvPowerSeries.hasSubst_of_constantCoeff_zero (fun s => by unfold s1; split_ifs <;> simp)) hb, MvPowerSeries.subst_comp_subst_apply (MvPowerSeries.hasSubst_of_constantCoeff_zero (fun s => by simp [s0])) hb, Mv …`. Establish `f1 : (fun s : ZMod d => MvPowerSeries.subst (fun u : Bool × ZMod d => (MvPowerSeries.X (eV d u) : MvPowerSeries (ZMod d × Fin 2) ℂ_[l])) (s1 (K` using `ℂ_[l]) s)) = fun s => if Even s.val then (MvPowerSeries.X (s, 0) + MvPowerSeries.X (s, 1) : MvPowerSeries (ZMod d × Fin 2) ℂ_[l]) else MvPowerSeries.X (s, 0) := by`. Use function extensionality and compare the values at `s`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Unfold `s1`. Distinguish the cases in `h : Even s.val`. Establish `h' : s.val % 2 = 0` using `Nat.even_iff.mp h`. Rewrite using `[if_pos h', if_pos h, subst_add' hb, MvPowerSeries.subst_X hb, MvPowerSeries.subst_X hb, eV_false, eV_true]`. Establish `h' : ¬ s.val % 2 = 0` using `fun e => h (Nat.even_iff.mpr e)`.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[if_neg h', if_neg h, add_zero, MvPowerSeries.subst_X hb, eV_false]`. Establish `f0 : (fun s : ZMod d => MvPowerSeries.subst (fun u : Bool × ZMod d => (MvPowerSeries.X (eV d u) : MvPowerSeries (ZMod d × Fin 2) ℂ_[l])) (s0 (K` using `ℂ_[l]) s)) = fun s => (MvPowerSeries.X (s, 0) : MvPowerSeries (ZMod d × Fin 2) ℂ_[l]) := by`. Use function extensionality and compare the values at `s`. Unfold `s0`. Rewrite using `[MvPowerSeries.subst_X hb, eV_false]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `f2 : (fun s : ZMod d => MvPowerSeries.subst (fun u : Bool × ZMod d => (MvPowerSeries.X (eV d u) : MvPowerSeries (ZMod d × Fin 2) ℂ_[l])) (s2 (K` using `ℂ_[l]) s)) = fun s => if Even s.val then (MvPowerSeries.X (s, 1) : MvPowerSeries (ZMod d × Fin 2) ℂ_[l]) else MvPowerSeries.X (s, 0) := by`. Use function extensionality and compare the values at `s`. Unfold `s2`. Distinguish the cases in `h : Even s.val`. Establish `h' : s.val % 2 = 0` using `Nat.even_iff.mp h`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Rewrite using `[if_pos h', if_pos h, MvPowerSeries.subst_X hb, eV_true]`. Establish `h' : ¬ s.val % 2 = 0` using `fun e => h (Nat.even_iff.mpr e)`. Rewrite using `[if_neg h', if_neg h, MvPowerSeries.subst_X hb, eV_false]`. Rewrite using `[f1, f0, f2]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem cobX_eq (l d : ℕ) [Fact l.Prime] [NeZero d] (be : MvPowerSeries (ZMod d) ℂ_[l]) :
     product_zeroth_first_parts.cobX l d be = MvPowerSeries.subst (fun u : Bool × ZMod d => (MvPowerSeries.X (eV d u) :
@@ -241,15 +241,15 @@ theorem cobX_eq (l d : ℕ) [Fact l.Prime] [NeZero d] (be : MvPowerSeries (ZMod 
   rfl
 
 /- English proof (translation)
-Establish `hb` using `hasSubst_XeV l d`. Unfold `de2`. Apply the tactic sequence `rw [subst_sub' hb, subst_sub' hb, MvPowerSeries.subst_comp_subst_apply (MvPowerSeries.hasSubst_of_constantCoeff_zero (fun s => by unfold s1'; split_ifs <;> simp)) hb, MvPowerSeries.subst_comp_subst_apply (MvPowerSeries.hasSubst_of_constantCoeff_zero (fun s => by simp [s0])) hb, M …`. Establish `f1 : (fun s : ZMod d => MvPowerSeries.subst (fun u : Bool × ZMod d => (MvPowerSeries.X (eV d u) : MvPowerSeries (ZMod d × Fin 2) ℂ_[l])) (s1' (K` using `ℂ_[l]) s)) = fun s => if Even s.val then (MvPowerSeries.X (s, 0) : MvPowerSeries (ZMod d × Fin 2) ℂ_[l]) else MvPowerSeries.X (s, 0) + MvPowerSeries.X (s, 1) := by`. Use function extensionality and compare the values at `s`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Unfold `s1'`. Distinguish the cases in `h : Even s.val`. Establish `h' : s.val % 2 = 0` using `Nat.even_iff.mp h`. Rewrite using `[if_pos h', if_pos h, add_zero, MvPowerSeries.subst_X hb, eV_false]`. Establish `h' : ¬ s.val % 2 = 0` using `fun e => h (Nat.even_iff.mpr e)`.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[if_neg h', if_neg h, subst_add' hb, MvPowerSeries.subst_X hb, MvPowerSeries.subst_X hb, eV_false, eV_true]`. Establish `f0 : (fun s : ZMod d => MvPowerSeries.subst (fun u : Bool × ZMod d => (MvPowerSeries.X (eV d u) : MvPowerSeries (ZMod d × Fin 2) ℂ_[l])) (s0 (K` using `ℂ_[l]) s)) = fun s => (MvPowerSeries.X (s, 0) : MvPowerSeries (ZMod d × Fin 2) ℂ_[l]) := by`. Use function extensionality and compare the values at `s`. Unfold `s0`. Rewrite using `[MvPowerSeries.subst_X hb, eV_false]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `f2 : (fun s : ZMod d => MvPowerSeries.subst (fun u : Bool × ZMod d => (MvPowerSeries.X (eV d u) : MvPowerSeries (ZMod d × Fin 2) ℂ_[l])) (s2' (K` using `ℂ_[l]) s)) = fun s => if Even s.val then (MvPowerSeries.X (s, 0) : MvPowerSeries (ZMod d × Fin 2) ℂ_[l]) else MvPowerSeries.X (s, 1) := by`. Use function extensionality and compare the values at `s`. Unfold `s2'`. Distinguish the cases in `h : Even s.val`. Establish `h' : s.val % 2 = 0` using `Nat.even_iff.mp h`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Rewrite using `[if_pos h', if_pos h, MvPowerSeries.subst_X hb, eV_false]`. Establish `h' : ¬ s.val % 2 = 0` using `fun e => h (Nat.even_iff.mpr e)`. Rewrite using `[if_neg h', if_neg h, MvPowerSeries.subst_X hb, eV_true]`. Rewrite using `[f1, f0, f2]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem cobY_eq (l d : ℕ) [Fact l.Prime] [NeZero d] (be : MvPowerSeries (ZMod d) ℂ_[l]) :
     product_zeroth_first_parts.cobY l d be = MvPowerSeries.subst (fun u : Bool × ZMod d => (MvPowerSeries.X (eV d u) :
@@ -294,15 +294,15 @@ theorem cobY_eq (l d : ℕ) [Fact l.Prime] [NeZero d] (be : MvPowerSeries (ZMod 
   rfl
 
 /- English proof (translation)
-Use extensionality with `n`. Rewrite using `[coeff_subst_rename, Equiv.symm_symm]`. Establish `hdeg : Formalism.BasicNotions.JetTdeg (Finsupp.equivMapDomain (eV d) n) = n.degree`. Unfold `Formalism.BasicNotions.JetTdeg`. Rewrite using `[Finsupp.sum_equivMapDomain, Finsupp.degree]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Express the relevant statement in the definitionally equal form `(Formalism.BasicNotions.jetLogG l d (β := Fin 2) (eV d u)) (Finsupp.equivMapDomain (eV d) n) = (letterLog (K := ℂ_[l]) l u) n`. Unfold `Formalism.BasicNotions.jetLogG letterLog`. Rewrite using `[hdeg]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises.
+Both sides reduce to the same expression. Express the relevant assertion in an equivalent form by its definition. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `e _`. Establish `hx : ((eV d u).1 - 2 * (e : ZMod d), (eV d u).2) = eV d (u.1, u.2 - 2 * (e : ZMod d))`. Apply the tactic sequence `rcases u with ⟨c, s⟩; cases c <;> rfl`. Rewrite using `[hx]`. Distinguish the cases in `h : n = Finsupp.single (u.1, u.2 - 2 * (e : ZMod d)) ((l ^ 2) ^ e)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Establish `h' : Finsupp.equivMapDomain (eV d) n = Finsupp.single (eV d (u.1, u.2 - 2 * (e : ZMod d))) ((l ^ 2) ^ e)`. Rewrite using `[h, Finsupp.equivMapDomain_single]`. Rewrite using `[if_pos h', if_pos h]`. Establish `h' : ¬ Finsupp.equivMapDomain (eV d) n = Finsupp.single (eV d (u.1, u.2 - 2 * (e : ZMod d))) ((l ^ 2) ^ e)`. Introduce `h2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `h` to reduce the goal to its premises. Use `congrArg (Finsupp.equivMapDomain (eV d).symm) h2` as an intermediate fact. Simplify `this` using `[← Finsupp.equivMapDomain_trans]`. Rewrite using `[if_neg h', if_neg h]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 -/
 theorem jetLog_rename (l d : ℕ) [Fact l.Prime] [NeZero d] (u : Bool × ZMod d) :
     MvPowerSeries.subst (fun w : ZMod d × Fin 2 => (MvPowerSeries.X ((eV d).symm w) : MvPowerSeries (V2 d) ℂ_[l]))
@@ -334,9 +334,9 @@ theorem jetLog_rename (l d : ℕ) [Fact l.Prime] [NeZero d] (u : Bool × ZMod d)
     rw [if_neg h', if_neg h]
 
 /- English proof (translation)
-Rewrite using `[← MvPowerSeries.coeff_zero_eq_constantCoeff_apply]`. Express the relevant statement in the definitionally equal form `(letterLog (K := ℂ_[l]) l x) 0 = 0`. Unfold `letterLog`. Simplify using the standard rewrite rules. Introduce `h`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `absurd h.symm (Finsupp.single_ne_zero.mpr one_ne_zero)`.
+A detailed English derivation is pending.
 -/
 theorem letterLog_cc (l d : ℕ) [Fact l.Prime] [NeZero d] (x : V2 d) :
     MvPowerSeries.constantCoeff (letterLog (K := ℂ_[l]) l x) = 0 := by
@@ -347,9 +347,9 @@ theorem letterLog_cc (l d : ℕ) [Fact l.Prime] [NeZero d] (x : V2 d) :
   intro h; exact absurd h.symm (Finsupp.single_ne_zero.mpr one_ne_zero)
 
 /- English proof (translation)
-Rewrite using `[← MvPowerSeries.coeff_zero_eq_constantCoeff_apply]`. Express the relevant statement in the definitionally equal form `(Formalism.BasicNotions.jetLogG l d (β := Fin 2) v) 0 = 0`. Unfold `Formalism.BasicNotions.jetLogG`. Simplify using `[Formalism.BasicNotions.JetTdeg]`. Introduce `h`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `absurd h.symm (Finsupp.single_ne_zero.mpr one_ne_zero)`.
+A detailed English derivation is pending.
 -/
 theorem jetLogG_cc (l d : ℕ) [Fact l.Prime] [NeZero d] (v : ZMod d × Fin 2) :
     MvPowerSeries.constantCoeff (Formalism.BasicNotions.jetLogG l d (β := Fin 2) v) = 0 := by
@@ -360,15 +360,15 @@ theorem jetLogG_cc (l d : ℕ) [Fact l.Prime] [NeZero d] (v : ZMod d × Fin 2) :
   intro h; exact absurd h.symm (Finsupp.single_ne_zero.mpr one_ne_zero)
 
 /- English proof (translation)
-Establish `hb` using `hasSubst_XeV l d`. Establish `hbs : MvPowerSeries.HasSubst (fun w : ZMod d × Fin 2 => (MvPowerSeries.X ((eV d).symm w) : MvPowerSeries (V2 d) ℂ_[l]))` using `MvPowerSeries.hasSubst_of_constantCoeff_zero (fun w => by simp)`. Establish `hJ : MvPowerSeries.HasSubst (Formalism.BasicNotions.jetLogG l d (β` using `Fin 2)) := MvPowerSeries.hasSubst_of_constantCoeff_zero (jetLogG_cc l d)`. Establish `hD : MvPowerSeries.HasSubst (fun _ : Unit => D)` using `MvPowerSeries.hasSubst_of_constantCoeff_zero (fun _ => hD0)`. Establish `hLr : MvPowerSeries.HasSubst (fun v : ZMod d × Fin 2 => letterLog (K` using `ℂ_[l]) l ((eV d).symm v)) := MvPowerSeries.hasSubst_of_constantCoeff_zero (fun v => letterLog_cc l d _)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hrn : (fun v : ZMod d × Fin 2 => MvPowerSeries.subst (fun w : ZMod d × Fin 2 => (MvPowerSeries.X ((eV d).symm w) : MvPowerSeries (V2 d) ℂ_[l])) (Formalism.BasicNotions.jetLogG l d (β` using `Fin 2) v)) = fun v => letterLog (K := ℂ_[l]) l ((eV d).symm v) := by`. Use function extensionality and compare the values at `v`. Use `jetLog_rename l d ((eV d).symm v)` as an intermediate fact. Rewrite `this` using `[Equiv.apply_symm_apply]`. Then use the resulting hypothesis. Establish `hexp : product_zeroth_first_parts.expS ℂ_[l] (MvPowerSeries.subst (fun u : Bool × ZMod d => (MvPowerSeries.X (eV d u) : MvPowerSeries (ZMod d × Fin 2) ℂ_[l])) D) = MvPowerSeries.subst (fun u : Bool × ZMod d => (MvPowerSeries.X (eV d u) : MvPowerSeries (ZMod d × Fin 2) ℂ_[l])) (mv …`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Unfold `product_zeroth_first_parts.expS mvExp PowerSeries.subst`. Rewrite using `[MvPowerSeries.subst_comp_subst_apply hD hb]`. Establish `key : MvPowerSeries.subst (fun w : ZMod d × Fin 2 => (MvPowerSeries.X ((eV d).symm w) : MvPowerSeries (V2 d) ℂ_[l])) (MvPowerSeries.subst (Formalism.BasicNotions.jetLogG l d (β` using `Fin 2)) (product_zeroth_first_parts.expS ℂ_[l] (MvPowerSeries.subst (fun u : Bool × ZMod d => (MvPowerSeries.X (eV d u) : MvPowerSeries (ZMod d × Fin 2) ℂ_[l])) D))) = MvPowerSeries.subst (letterLog (K := ℂ_[l]) l) (mvExp D) := by`. Rewrite using `[hexp, MvPowerSeries.subst_comp_subst_apply hJ hbs, hrn, MvPowerSeries.subst_comp_subst_apply hb hLr]`. Use `congr 1`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use function extensionality and compare the values at `u`. Rewrite using `[MvPowerSeries.subst_X hLr, Equiv.symm_apply_apply]`. Use `⟨fun n => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← key, coeff_subst_rename]`. Conclude with `(h.1 _).2`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← MvPowerSeries.coeff_zero_eq_constantCoeff_apply, ← key, coeff_subst_rename, Finsupp.equivMapDomain_zero, MvPowerSeries.coeff_zero_eq_constantCoeff_apply]`. Conclude with `h.2`.
+A detailed English derivation is pending.
 -/
 theorem integral_letter_log_exp (l d : ℕ) [Fact l.Prime] [NeZero d] (D : MvPowerSeries (V2 d) ℂ_[l])
     (hD0 : MvPowerSeries.constantCoeff D = 0)
@@ -414,7 +414,7 @@ theorem integral_letter_log_exp (l d : ℕ) [Fact l.Prime] [NeZero d] (D : MvPow
     exact h.2
 
 /- English proof (translation)
-Take `⟨hX, hY⟩` from `h`. Rewrite `hX` using `[cobX_eq]`. Rewrite `hY` using `[cobY_eq]`. Conclude with `⟨integral_letter_log_exp l d _ (constantCoeff_evenDerivative_eq_zero h0) hX, integral_letter_log_exp l d _ (constantCoeff_oddDerivative_eq_zero h0) hY⟩`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 -/
 theorem unipotent_exp_haar_sqrt_bound (l d : ℕ) [Fact l.Prime] [NeZero d] (be : MvPowerSeries (ZMod d) ℂ_[l])
     (h0 : MvPowerSeries.constantCoeff be = 0) (h : product_zeroth_first_parts.B4 l d be) :
@@ -428,7 +428,7 @@ theorem unipotent_exp_haar_sqrt_bound (l d : ℕ) [Fact l.Prime] [NeZero d] (be 
   exact ⟨integral_letter_log_exp l d _ (constantCoeff_evenDerivative_eq_zero h0) hX, integral_letter_log_exp l d _ (constantCoeff_oddDerivative_eq_zero h0) hY⟩
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Rewrite `hne` using `[← MvPowerSeries.coeff_zero_eq_constantCoeff_apply]`. Use `(h 0 hne).1` as an intermediate fact. Simplify using `[product_zeroth_first_parts.bideg] at this`.
+Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem constant_coeff_zero_of_vanishing (l d : ℕ) [Fact l.Prime] [NeZero d] (be : MvPowerSeries (ZMod d) ℂ_[l]) (h : product_zeroth_first_parts.B3 l d be) :
     MvPowerSeries.constantCoeff be = 0 := by
@@ -438,7 +438,7 @@ theorem constant_coeff_zero_of_vanishing (l d : ℕ) [Fact l.Prime] [NeZero d] (
   simp [product_zeroth_first_parts.bideg] at this
 
 /- English proof (translation)
-The claim follows from `unipotent_exp_haar_sqrt_bound l d be (constant_coeff_zero_of_vanishing l d be h3) h4`.
+A detailed English derivation is pending.
 -/
 theorem integrality_of_letter_log (l : ℕ) [Fact l.Prime] (d : ℕ) [NeZero d] (be : MvPowerSeries (ZMod d) ℂ_[l]) (h3 : product_zeroth_first_parts.B3 l d be)
     (h4 : product_zeroth_first_parts.B4 l d be) :

@@ -5,9 +5,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.CommutativeAlgebra
 open Matrix IsLocalRing ReciprocityTheory.Gal UpperTheory.V.HV UpperTheory.V.U3 UpperTheory.V.Alg UpperTheory.V.UnitaryThreeInertia
 
 /- English proof (translation)
-Establish `hA : W.A = Sring O u`. Use extensionality with `x`. Use `show x ∈ ⨆ j, W.part j ↔ x ∈ ⨆ j, wpart O u j`. Simplify using `only [hW]`. Use `⟨(act W.gr (zpowersHom Kˣ t) (ξ.comp (Subalgebra.inclusion hA.le))).comp (Subalgebra.inclusion hA.ge), fun j x hx => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hx' : Subalgebra.inclusion hA.ge ⟨x, mem_Sring u hx⟩ ∈ W.gr j` using `by show x ∈ W.part j`. Rewrite using `[hW]` and apply the resulting hypothesis. Rewrite using `[AlgHom.comp_apply, act_of_mem W.gr _ _ hx']`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 private theorem exists_act {O : Type} [CommRing O] [IsLocalRing O] {Γ : Type} [Group Γ]
     {R : Type} [CommRing R] [Algebra O R] (u : Γ →* GG 3 R) (W : WPres O ℤ R)
@@ -27,13 +27,13 @@ private theorem exists_act {O : Type} [CommRing O] [IsLocalRing O] {Γ : Type} [
   rfl
 
 /- English proof (translation)
-Introduce `l _ O _ _ _ _ _ _ _ _ _ _ _ G Γ ι _ _ _ _ _ _ _ _ _ _ _ _ _ F hF g₁ hg R _ _ _ u hu hfin ξ r hr ξ' t`. Take `⟨hm, hri, -⟩` from `conjBy_tor r t`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Take `⟨W, hW, -⟩` from `exists_adapted F hF g₁ hg u hu`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨ξt, hξt⟩` from `exists_act u W hW.part ξ t`. Establish `e : ξ' = ξt`. Use `AlgHom.ext_of_eq_adjoin (sring_eq_adjoin F hF g₁ hg u hu hfin).1 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨g, a, b, -, rfl⟩`. Use `Eq.trans ?_ (hξt _ _ (entry_mem u g a b)).symm` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1` using `congrFun (congrFun (h g).2 a) b`. Rewrite `h1` using `[hm, (hr g).2]`. Conclude with `h1.symm`. Rewrite using `[e]`. Conclude with `hξt`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `h g`. Use `⟨(hri g).trans (hr g).1, ?_⟩` and prove the remaining obligations. Use extensionality with `a b`. Rewrite using `[hm, (hr g).2]`. Conclude with `(h _ _ (entry_mem u g a b)).symm`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.UnitaryThreeInertia.isPtHom_act :
     ∀ {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [IsAdicComplete (maximalIdeal O) O] [CharZero O] [Finite (ResidueField O)]

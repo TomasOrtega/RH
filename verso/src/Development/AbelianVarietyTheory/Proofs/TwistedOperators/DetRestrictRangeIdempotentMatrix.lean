@@ -11,11 +11,11 @@ open scoped TensorProduct
 namespace GlobalTheory.RegSS.IdemDet
 
 /- English proof (translation)
-Set `f` to `Matrix.toLin' p`. Set `c` to `Module.finBasis F (LinearMap.range f)`. Set `e` to `Pi.basisFun F m`. Establish `hAB : LinearMap.toMatrix c e (LinearMap.range f).subtype * LinearMap.toMatrix e c f.rangeRestrict = p`. Rewrite using `[← LinearMap.toMatrix_comp, show (LinearMap.range f).subtype ∘ₗ f.rangeRestrict = f from rfl]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[e, f]`. Use `⟨_, _, _, ?_, hAB, ?_⟩` and prove the remaining obligations. Use `Nat.pos_of_ne_zero fun h => h0 ?_ haveI : IsEmpty (Fin (Module.finrank F (LinearMap.range f))) := by rw [h]; infer_instance` and prove the remaining obligations. Rewrite using `[← hAB]`. Use extensionality with `i j`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Simplify using `[Matrix.mul_apply]`. Rewrite using `[← LinearMap.toMatrix_comp, ← LinearMap.toMatrix_id c]`. Use `congr 1`. Use extensionality with `⟨_, v, rfl⟩ : 2`. Simplify using `[f, hp]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem exists_factor {F m : Type} [Field F] [Fintype m] [DecidableEq m] (p : Matrix m m F)
     (h0 : p ≠ 0) (hp : p * p = p) :
@@ -37,7 +37,7 @@ theorem exists_factor {F m : Type} [Field F] [Fintype m] [DecidableEq m] (p : Ma
     simp [f, hp]
 
 /- English proof (translation)
-Establish `e : t • (A * B) + 1 - A * B = 1 + ((t - 1) • A) * B`. Rewrite using `[Matrix.smul_mul, sub_smul, one_smul]`. Normalize the expressions using the abelian group laws. Rewrite using `[e, Matrix.det_one_add_mul_comm, Matrix.mul_smul, h, sub_smul, one_smul, add_sub_cancel]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem det_smul_idem {R m : Type} [CommRing R] [Fintype m] [DecidableEq m] {d : ℕ}
     (A : Matrix m (Fin d) R) (B : Matrix (Fin d) m R) (h : B * A = 1) (t : R) :
@@ -59,7 +59,7 @@ def regRep (b : Module.Basis ι F E) (R : Type) [CommRing R] [Algebra F R] :
     (fun _ a => (Algebra.commutes a _).symm)
 
 /- English proof (translation)
-Use `(Algebra.TensorProduct.lift_tmul _ _ _ x t).trans ?_` and prove the remaining obligations. Rewrite using `[IsScalarTower.toAlgHom_apply, ← Algebra.commutes, ← Algebra.smul_def]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem regRep_tmul (b : Module.Basis ι F E) (R : Type) [CommRing R] [Algebra F R] (x : E) (t : R) :
     regRep b R (x ⊗ₜ t) = t • (Algebra.leftMulMatrix b x).map (algebraMap F R) := by
@@ -68,9 +68,9 @@ theorem regRep_tmul (b : Module.Basis ι F E) (R : Type) [CommRing R] [Algebra F
   rfl
 
 /- English proof (translation)
-Use `letI : Algebra R (E ⊗[F] R) := Algebra.TensorProduct.rightAlgebra`. Use `letI := moduleTopology R (E ⊗[F] R)`. Use `haveI : IsModuleTopology R (E ⊗[F] R) := ⟨rfl⟩`. Use `IsModuleTopology.continuous_of_ringHom (R := R) (regRep b R).toRingHom ?_` and prove the remaining obligations. Establish `: ⇑((regRep b R).toRingHom.comp (algebraMap R (E ⊗[F] R))) = fun t : R => t • (Algebra.leftMulMatrix b 1).map (algebraMap F R)`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `fun t => regRep_tmul b R 1 t`. Rewrite using `[this]`. Use `fun_prop`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_regRep (b : Module.Basis ι F E) (R : Type) [CommRing R] [Algebra F R]
     [TopologicalSpace R] [IsTopologicalRing R] :
@@ -108,7 +108,7 @@ theorem blockRat_apply (b : Module.Basis ι F E) (g : Matrix n n E) (i j : n × 
     blockRat b g i j = Algebra.leftMulMatrix b (g i.1 j.1) i.2 j.2 := rfl
 
 /- English proof (translation)
-Introduce `g h e`. Use extensionality with `i j`. Apply `Algebra.leftMulMatrix_injective b` to reduce the goal to its premises. Use extensionality with `k l`. Conclude with `congrFun (congrFun e (i, k)) (j, l)`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem blockRat_injective (b : Module.Basis ι F E) :
     Function.Injective (blockRat (n := n) b) := by
@@ -119,7 +119,7 @@ theorem blockRat_injective (b : Module.Basis ι F E) :
   exact congrFun (congrFun e (i, k)) (j, l)
 
 /- English proof (translation)
-Use extensionality with `i j`. Rewrite using `[blockRep_apply, Matrix.map_apply, Matrix.map_apply, blockRat_apply]`. Express the relevant statement in the definitionally equal form `regRep b R (g i.1 j.1 ⊗ₜ 1) _ _ = _`. Rewrite using `[regRep_tmul, one_smul, Matrix.map_apply]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem blockRep_map (b : Module.Basis ι F E) (R : Type) [CommRing R] [Algebra F R]
     (g : Matrix n n E) :
@@ -130,7 +130,7 @@ theorem blockRep_map (b : Module.Basis ι F E) (R : Type) [CommRing R] [Algebra 
   rw [regRep_tmul, one_smul, Matrix.map_apply]
 
 /- English proof (translation)
-Use extensionality with `i j`. Rewrite using `[blockRep_apply, Matrix.smul_apply, Matrix.smul_apply, blockRep_apply, smul_eq_mul, map_mul, regRep_tmul, map_one, Matrix.map_one _ (map_zero _) (map_one _), Matrix.smul_mul, Matrix.one_mul, Matrix.smul_apply]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 -/
 theorem blockRep_smul (b : Module.Basis ι F E) (R : Type) [CommRing R] [Algebra F R]
     (t : R) (g : Matrix n n (E ⊗[F] R)) :
@@ -149,21 +149,19 @@ namespace GlobalTheory.RegSS
 open IdemDet
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ n _ _ ε h0 hε R _ _ _ _`. Use `letI : TopologicalSpace (E ⊗[F] R) := Formalism.BasicNotions.tensTopL (F := F) (E := E) R`. Set `b` to `Module.finBasis F E`. Establish `hq : blockRat b ε * blockRat b ε = blockRat b ε` using `by rw [← map_mul, hε]`. Take `⟨d, A, B, hd, hAB, hBA⟩` from `exists_factor (blockRat b ε) (fun h => h0 (blockRat_injective b (by rw [h, map_zero]))) hq`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `set p := blockRep b R (ε.map (inclE (F := F) R)) with hp`. Establish `hpq : p = (blockRat b ε).map (algebraMap F R)` using `blockRep_map b R ε`. Establish `hpp : p * p = p` using `by rw [hpq, ← Matrix.map_mul, hq]`. Use `⟨d, fun g => (blockRep b R g * p + 1 - p).det, hd, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `hc : Continuous (blockRep (n` using `n) b R) := by`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `continuous_matrix fun i j => ?_` and prove the remaining obligations. Conclude with `((continuous_regRep b R).comp (continuous_id.matrix_elem i.1 j.1)).matrix_elem i.2 j.2`. Conclude with `(((hc.matrix_mul continuous_const).add continuous_const).sub continuous_const).matrix_det`. Simplify using the standard rewrite rules. Introduce `g h hh`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hc : blockRep b R h * p = p * blockRep b R h`. Rewrite using `[hp, ← map_mul, ← map_mul, hh]`. Establish `h1 : p * (blockRep b R h * p) = blockRep b R h * p`. Rewrite using `[← mul_assoc, ← hc, mul_assoc, hpp]`. Simplify using `only`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Rewrite using `[← Matrix.det_mul, map_mul]`. Use `congr 1`. Simplify using `only [mul_sub, sub_mul, mul_add, add_mul, mul_assoc, h1, hpp, mul_one, one_mul]`. Normalize the expressions using the abelian group laws. Introduce `g`.
+Normalize the expressions using the abelian group laws. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `⟨(blockRat b g * blockRat b ε + 1 - blockRat b ε).det, ?_⟩` and prove the remaining obligations. Simplify using `only`. Rewrite using `[RingHom.map_det, map_sub, map_add, map_mul, map_one, blockRep_map, hpq]`. Both sides reduce to the same expression. Introduce `g t hg`.
+Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `h1 : blockRep b R g * p = t • p`. Rewrite using `[hp, ← map_mul, hg, blockRep_smul]`. Simplify using `only`. Rewrite using `[h1, hpq, ← hAB, Matrix.map_mul]`. Use `det_smul_idem _ _ ?_ t` and prove the remaining obligations.
-
-Rewrite using `[← Matrix.map_mul, hBA, Matrix.map_one _ (map_zero _) (map_one _)]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem idempotentDet : IdempotentDet := by
   intro F E _ _ _ _ n _ _ ε h0 hε R _ _ _ _

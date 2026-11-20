@@ -15,7 +15,7 @@ abbrev Ch (n : ℕ) : Type := ComposableArrows Mn n
 def val {x y : Mn} (h : x ⟶ y) : ℕ := Multiplicative.toAdd (show Multiplicative ℕ from h)
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `Multiplicative.toAdd ((show Multiplicative ℕ from g) * (show Multiplicative ℕ from f)) = _`. Rewrite using `[toAdd_mul, add_comm]`. Both sides reduce to the same expression.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem val_comp {x y z : Mn} (f : x ⟶ y) (g : y ⟶ z) : val (f ≫ g) = val f + val g := by
   change Multiplicative.toAdd ((show Multiplicative ℕ from g) * (show Multiplicative ℕ from f)) = _
@@ -49,7 +49,7 @@ theorem val_ch {n : ℕ} (c : Fin (n + 1) → ℕ) (hc : Monotone c) {i j : Fin 
     val ((ch c hc).map φ) = c j - c i := rfl
 
 /- English proof (translation)
-Use `CategoryTheory.Functor.ext (fun _ => rfl) fun i j φ => ?_` and prove the remaining obligations. Simplify using `only [eqToHom_refl, Category.comp_id, Category.id_comp]`. Conclude with `(Multiplicative.toAdd).injective (h i j φ)`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem chain_ext {n : ℕ} {s t : Ch n} (h : ∀ (i j : Fin (n + 1)) (φ : i ⟶ j), val (s.map φ) = val (t.map φ)) : s = t := by
   refine CategoryTheory.Functor.ext (fun _ => rfl) fun i j φ => ?_
@@ -57,7 +57,7 @@ theorem chain_ext {n : ℕ} {s t : Ch n} (h : ∀ (i j : Fin (n + 1)) (φ : i �
   exact (Multiplicative.toAdd).injective (h i j φ)
 
 /- English proof (translation)
-Substitute `h` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem ch_congr {n : ℕ} {c c' : Fin (n + 1) → ℕ} (hc : Monotone c) (hc' : Monotone c') (h : c = c') : ch c hc = ch c' hc' := by
   subst h; rfl
@@ -65,7 +65,7 @@ theorem ch_congr {n : ℕ} {c c' : Fin (n + 1) → ℕ} (hc : Monotone c) (hc' :
 def ht {n : ℕ} (s : Ch n) (i : Fin (n + 1)) : ℕ := val (s.map (homOfLE (Fin.zero_le i)))
 
 /- English proof (translation)
-Unfold `ht`. Rewrite using `[← val_comp, ← s.map_comp]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem ht_add {n : ℕ} (s : Ch n) {i j : Fin (n + 1)} (h : i ≤ j) :
     ht s j = ht s i + val (s.map (homOfLE h)) := by
@@ -74,13 +74,13 @@ theorem ht_add {n : ℕ} (s : Ch n) {i j : Fin (n + 1)} (h : i ≤ j) :
   rfl
 
 /- English proof (translation)
-Introduce `i j h` and use `by rw [ht_add s h]; omega`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem ht_mono {n : ℕ} (s : Ch n) : Monotone (ht s) := fun i j h => by
   rw [ht_add s h]; omega
 
 /- English proof (translation)
-Use `chain_ext fun i j φ => ?_` and prove the remaining obligations. Establish `h` using `leOfHom φ`. Rewrite using `[val_ch, ht_add s h]`. Establish `: φ = homOfLE h` using `Subsingleton.elim _ _`. Rewrite using `[this]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
 Use linear arithmetic over natural numbers and integers.
 -/
@@ -92,7 +92,7 @@ theorem ch_ht {n : ℕ} (s : Ch n) : s = ch (ht s) (ht_mono s) := by
   rw [this]; omega
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨_, _, ch_ht s⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_ch {n : ℕ} (s : Ch n) : ∃ c hc, s = ch c hc := ⟨_, _, ch_ht s⟩
 
@@ -105,25 +105,25 @@ theorem face_ch {n : ℕ} (j : Fin (n + 2)) (c : Fin (n + 2) → ℕ) (hc : Mono
 def sn {n : ℕ} (c : Fin (n + 1) → ℕ) (t : ℕ) : Fin (n + 2) → ℕ := Fin.snoc (α := fun _ => ℕ) c t
 
 /- English proof (translation)
-Simplify using `[sn]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem sn_castSucc {n : ℕ} (c : Fin (n + 1) → ℕ) (t : ℕ) (i : Fin (n + 1)) : sn c t i.castSucc = c i := by
   simp [sn]
 
 /- English proof (translation)
-Simplify using `[sn]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem sn_last {n : ℕ} (c : Fin (n + 1) → ℕ) (t : ℕ) : sn c t (Fin.last _) = t := by
   simp [sn]
 
 /- English proof (translation)
-Introduce `i j hij`. Proceed by induction on `j using Fin.lastCases with`. Consider the case `last`. Proceed by induction on `i using Fin.lastCases with`. Consider the case `last => exact le_rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Proceed by induction. Treat this case separately.
 
-Consider the case `cast i => rw [sn_castSucc, sn_last]`. Conclude with `(hc (Fin.le_last i)).trans h`. Consider the case `cast j`. Proceed by induction on `i using Fin.lastCases with`. Consider the case `last`.
+Treat this case separately. Treat this case separately. Proceed by induction. Treat this case separately. It suffices to derive a contradiction.
 
-It suffices to derive a contradiction. Establish `: (Fin.last _ : Fin (n + 2)).1 ≤ j.castSucc.1` using `hij`. Simplify using `at this`. Use `j.2` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Treat this case separately.
 
-Consider the case `cast i`. Rewrite using `[sn_castSucc, sn_castSucc]`. Conclude with `hc (by simpa using hij)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sn_mono {n : ℕ} {c : Fin (n + 1) → ℕ} (hc : Monotone c) {t : ℕ} (h : c (Fin.last n) ≤ t) : Monotone (sn c t) := by
   intro i j hij
@@ -148,17 +148,17 @@ def E {n : ℕ} (b : ℕ) (s : Ch n) : Ch (n + 1) :=
   ch (sn (ht s) (ht s (Fin.last n) + b)) (sn_mono (ht_mono s) (Nat.le_add_right _ _))
 
 /- English proof (translation)
-Use `chain_ext fun i j φ => ?_` and prove the remaining obligations. Establish `hij` using `leOfHom φ`. Establish `key : ∀ x, ht (ch c hc) x = c x - c 0` using `fun x => rfl`. Establish `h0 : ∀ x, c 0 ≤ c x` using `fun x => hc (Fin.zero_le x)`. Unfold `E`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[val_ch, val_ch]`. Proceed by induction on `j using Fin.lastCases with`. Consider the case `last`. Proceed by induction on `i using Fin.lastCases with`. Consider the case `last => simp`.
+Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately. Proceed by induction. Treat this case separately.
 
-Consider the case `cast i`. Simplify using `only [sn_castSucc, sn_last, key]`. Use `h0 i` as an intermediate fact. Use `h0 (Fin.last n)` as an intermediate fact. Use `hc (Fin.le_last i)` as an intermediate fact.
+Treat this case separately. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Consider the case `cast j`. Proceed by induction on `i using Fin.lastCases with`. Consider the case `last`. It suffices to derive a contradiction.
+Use linear arithmetic over natural numbers and integers. Treat this case separately. Proceed by induction. Treat this case separately. It suffices to derive a contradiction.
 
-Establish `: (Fin.last _ : Fin (n + 2)).1 ≤ j.castSucc.1` using `hij`. Simplify using `at this`. Use `j.2` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Consider the case `cast i`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Treat this case separately.
 
-Simplify using `only [sn_castSucc, key]`. Use `h0 i` as an intermediate fact. Use `h0 j` as an intermediate fact. Use `hc (show i ≤ j by simpa using hij)` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem E_ch {n : ℕ} (b : ℕ) (c : Fin (n + 1) → ℕ) (hc : Monotone c) :
     E b (ch c hc) = ch (sn c (c (Fin.last n) + b)) (sn_mono hc (Nat.le_add_right _ _)) := by
@@ -196,7 +196,7 @@ theorem E_ch {n : ℕ} (b : ℕ) (c : Fin (n + 1) → ℕ) (hc : Monotone c) :
 def len {n : ℕ} (s : Ch (n + 1)) : ℕ := val (toLast (Fin.last (n + 1)) s)
 
 /- English proof (translation)
-Take `⟨c, hc, rfl⟩` from `exists_ch x`. Rewrite using `[E_ch, face_ch]`. Use `ch_congr _ _ (funext fun i => ?_)` and prove the remaining obligations. Simplify using the standard rewrite rules.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem ini_E {n : ℕ} (b : ℕ) (x : Ch n) : face (Fin.last (n + 1)) (E b x) = x := by
   obtain ⟨c, hc, rfl⟩ := exists_ch x
@@ -205,11 +205,11 @@ theorem ini_E {n : ℕ} (b : ℕ) (x : Ch n) : face (Fin.last (n + 1)) (E b x) =
   simp
 
 /- English proof (translation)
-Take `⟨c, hc, rfl⟩` from `exists_ch y`. Rewrite using `[E_ch, face_ch, face_ch, E_ch]`. Use `ch_congr _ _ (funext fun x => ?_)` and prove the remaining obligations. Establish `hl : ∀ {m : ℕ} (a : Fin (m + 1)), a.castSucc.succAbove (Fin.last m) = Fin.last (m + 1)` using `fun a => by`. Use `a.2` as an intermediate fact.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `ext`. Simplify using `[Fin.succAbove, Fin.lt_def]`. Rewrite using `[if_neg (by omega)]; simp`. Proceed by induction on `x using Fin.lastCases with`. Consider the case `last => simp [hl]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately.
 
-Consider the case `cast x`. Apply the tactic sequence `have : i.castSucc.castSucc.succAbove x.castSucc = (i.castSucc.succAbove x).castSucc := by ext; simp only [Fin.succAbove, Fin.lt_def, Fin.val_castSucc]; split_ifs <;> simp`. Simplify using `[this, hl]`.
+Treat this case separately. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem face_E {p : ℕ} (i : Fin (p + 1)) (b : ℕ) (y : Ch (p + 1)) :
     face i.castSucc.castSucc (E b y) = E b (face i.castSucc y) := by
@@ -228,11 +228,11 @@ theorem face_E {p : ℕ} (i : Fin (p + 1)) (b : ℕ) (y : Ch (p + 1)) :
     simp [this, hl]
 
 /- English proof (translation)
-Take `⟨c, hc, rfl⟩` from `exists_ch m`. Rewrite using `[E_ch, E_ch, face_ch, E_ch]`. Use `ch_congr _ _ (funext fun x => ?_)` and prove the remaining obligations. Proceed by induction on `x using Fin.lastCases with`. Consider the case `last`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately.
 
-Establish `: (Fin.last (p + 1)).castSucc.succAbove (Fin.last (p + 1)) = Fin.last (p + 2)` using `by ext; simp [Fin.succAbove, Fin.lt_def]`. Simplify using `[this, add_assoc]`. Consider the case `cast x`. Establish `: (Fin.last (p + 1)).castSucc.succAbove x.castSucc = x.castSucc.castSucc`. Use `x.2` as an intermediate fact.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `ext`. Simplify using `[Fin.succAbove, Fin.lt_def]`. Rewrite using `[if_pos (by omega)]; simp`. Simplify using `[this]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem face_EE {p : ℕ} (a b : ℕ) (m : Ch p) :
     face (Fin.last (p + 1)).castSucc (E b (E a m)) = E (a + b) m := by
@@ -252,7 +252,7 @@ theorem face_EE {p : ℕ} (a b : ℕ) (m : Ch p) :
     simp [this]
 
 /- English proof (translation)
-Take `⟨c, hc, rfl⟩` from `exists_ch m`. Rewrite using `[E_ch]`. Unfold `len toLast`. Rewrite using `[val_ch]`. Simplify using the standard rewrite rules.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem len_E {n : ℕ} (a : ℕ) (m : Ch n) : len (E a m) = a := by
   obtain ⟨c, hc, rfl⟩ := exists_ch m
@@ -262,11 +262,11 @@ theorem len_E {n : ℕ} (a : ℕ) (m : Ch n) : len (E a m) = a := by
   simp
 
 /- English proof (translation)
-Take `⟨c, hc, rfl⟩` from `exists_ch s`. Establish `hl : len (ch c hc) = c (Fin.last _) - c (Fin.last n).castSucc`. Unfold `len toLast`. Rewrite using `[val_ch]`. Simplify using the standard rewrite rules.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hl, face_ch, E_ch]`. Use `ch_congr _ _ (funext fun x => ?_)` and prove the remaining obligations. Proceed by induction on `x using Fin.lastCases with`. Consider the case `last`. Use `hc (Fin.le_last (Fin.last n).castSucc)` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Consider the case `cast x => simp`.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Treat this case separately.
 -/
 theorem E_surj {n : ℕ} (s : Ch (n + 1)) : E (len s) (face (Fin.last (n + 1)) s) = s := by
   obtain ⟨c, hc, rfl⟩ := exists_ch s
@@ -298,7 +298,7 @@ Both sides reduce to the same expression.
 theorem map_eq_gp {x y : Mn} (h : x ⟶ y) (v : Vv N) : (N.map h).hom v = gp N (val h) v := rfl
 
 /- English proof (translation)
-Establish `: (N.map (X` using `SingleObj.star _) (Y := SingleObj.star _) (𝟙 _)).hom v = v := by`. Rewrite using `[N.map_id]`. Both sides reduce to the same expression. Conclude with `this`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem gp_zero (v : Vv N) : gp N 0 v = v := by
   have : (N.map (X := SingleObj.star _) (Y := SingleObj.star _) (𝟙 _)).hom v = v := by
@@ -306,7 +306,7 @@ theorem gp_zero (v : Vv N) : gp N 0 v = v := by
   exact this
 
 /- English proof (translation)
-Establish `: (N.map (X` using `SingleObj.star _) (Y := SingleObj.star _) ((show SingleObj.star (Multiplicative ℕ) ⟶ SingleObj.star _ from Multiplicative.ofAdd a) ≫ (show SingleObj.star (Multiplicative ℕ) ⟶ SingleObj.star _ from Multiplicative.ofAdd b))).hom v = gp N b (gp N a v) := by`. Rewrite using `[N.map_comp]`. Both sides reduce to the same expression. Rewrite using `[← this, map_eq_gp, val_comp]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem gp_add (a b : ℕ) (v : Vv N) : gp N (a + b) v = gp N b (gp N a v) := by
   have : (N.map (X := SingleObj.star _) (Y := SingleObj.star _)
@@ -321,13 +321,13 @@ def dp {n : ℕ} (φ : Ch n → Vv N) (s : Ch (n + 1)) : Vv N :=
   ∑ i : Fin (n + 1), (-1 : ℤ) ^ (i : ℕ) • φ (face i.castSucc s)
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `∑ i : Fin (n + 2), (-1 : ℤ) ^ (i : ℕ) • (N.map (toLast i s)).hom (f (face i s)) = _`. Rewrite using `[Fin.sum_univ_castSucc]`. Use `congr 1`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `h : val (toLast i.castSucc s) = 0`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hl : i.castSucc.succAbove (Fin.last n) = Fin.last (n + 1)`. Use `i.2` as an intermediate fact. Use `ext`. Simplify using `[Fin.succAbove, Fin.lt_def]`. Rewrite using `[if_neg (by omega)]; simp`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `key : ∀ (x : Fin (n + 2)) (hx : x ≤ Fin.last (n + 1)), x = Fin.last (n + 1) → val (s.map (homOfLE hx)) = 0`. Introduce `x hx e`. Substitute `e` using the available equality. Establish `: homOfLE hx = 𝟙 _` using `Subsingleton.elim _ _`. Rewrite using `[this, s.map_id]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Conclude with `key _ _ hl`. Rewrite using `[map_eq_gp, h, gp_zero]`. Simplify using the standard rewrite rules.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem d_eq {n : ℕ} (f : Ch n → Vv N) (s : Ch (n + 1)) :
     (d N n (f : Cn N n) s : Vv N) = dp N f s + (-1 : ℤ) ^ (n + 1) • gp N (len s) (f (face (Fin.last (n + 1)) s)) := by
@@ -350,14 +350,14 @@ theorem d_eq {n : ℕ} (f : Ch n → Vv N) (s : Ch (n + 1)) :
     simp
 
 /- English proof (translation)
-Simplify using `[dp, smul_add, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem dp_add {n : ℕ} (φ ψ : Ch n → Vv N) (s : Ch (n + 1)) :
     dp N (fun x => φ x + ψ x) s = dp N φ s + dp N ψ s := by
   simp [dp, smul_add, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Simplify using `only [dp, Finset.smul_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => smul_comm _ _ _`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem dp_zsmul {n : ℕ} (e : ℤ) (φ : Ch n → Vv N) (s : Ch (n + 1)) :
     dp N (fun x => e • φ x) s = e • dp N φ s := by
@@ -365,14 +365,14 @@ theorem dp_zsmul {n : ℕ} (e : ℤ) (φ : Ch n → Vv N) (s : Ch (n + 1)) :
   exact Finset.sum_congr rfl fun i _ => smul_comm _ _ _
 
 /- English proof (translation)
-Simplify using `[dp, map_sum, map_zsmul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem dp_map {n : ℕ} (g : Vv N →ₗ[R] Vv N) (φ : Ch n → Vv N) (s : Ch (n + 1)) :
     dp N (fun x => g (φ x)) s = g (dp N φ s) := by
   simp [dp, map_sum, map_zsmul]
 
 /- English proof (translation)
-Simplify using `[dp]`.
+Simplify using the standard rewrite rules.
 -/
 theorem dp_zero {n : ℕ} (s : Ch (n + 1)) : dp N (fun _ : Ch n => 0) s = 0 := by
   simp [dp]
@@ -382,9 +382,9 @@ noncomputable def Pp (φ : ℕ → Vv N) : ℕ → Vv N
   | a + 1 => gp N 1 (Pp φ a) + φ a
 
 /- English proof (translation)
-Unfold `dp`. Rewrite using `[Fin.sum_univ_castSucc]`. Use `congr 1`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[face_E]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Rewrite using `[face_EE]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem dp_EE {p : ℕ} (φ : Ch (p + 1) → Vv N) (a b : ℕ) (m : Ch p) :
     dp N φ (E b (E a m)) = dp N (fun x => φ (E b x)) (E a m) + (-1 : ℤ) ^ (p + 1) • φ (E (a + b) m) := by
@@ -396,7 +396,7 @@ theorem dp_EE {p : ℕ} (φ : Ch (p + 1) → Vv N) (a b : ℕ) (m : Ch p) :
   · rw [face_EE]; simp
 
 /- English proof (translation)
-Establish `h'` using `d_eq N f (E b (E a m))`. Rewrite `h'` using `[len_E, ini_E, dp_EE]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem d_EE {p : ℕ} (f : Ch (p + 1) → Vv N) (a b : ℕ) (m : Ch p) :
     (d N (p + 1) (f : Cn N (p + 1)) (E b (E a m)) : Vv N) =
@@ -406,7 +406,7 @@ theorem d_EE {p : ℕ} (f : Ch (p + 1) → Vv N) (a b : ℕ) (m : Ch p) :
   rwa [len_E, ini_E, dp_EE] at h'
 
 /- English proof (translation)
-The claim follows from `(d_EE N f a b m).symm.trans (congrFun hf (E b (E a m)))`.
+A detailed English derivation is pending.
 -/
 theorem rel {p : ℕ} (f : Ch (p + 1) → Vv N) (hf : d N (p + 1) (f : Cn N (p + 1)) = 0) (a b : ℕ) (m : Ch p) :
     dp N (fun x => f (E b x)) (E a m) + (-1 : ℤ) ^ (p + 1) • f (E (a + b) m) +
@@ -414,11 +414,11 @@ theorem rel {p : ℕ} (f : Ch (p + 1) → Vv N) (hf : d N (p + 1) (f : Cn N (p +
   (d_EE N f a b m).symm.trans (congrFun hf (E b (E a m)))
 
 /- English proof (translation)
-Establish `key : ∀ (b : ℕ) (k : Ch (p + 1)), e (E b k) = 0`. Introduce `b k`. Proceed by induction on `b with`. Consider the case `zero => exact h0 k`. Consider the case `succ b ih`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Establish `h` using `rel N e he b 1 k`. Establish `hz : (fun x => e (E 1 x)) = fun _ => 0` using `funext h1`. Rewrite `h` using `[hz, dp_zero, ih, map_zero, smul_zero, add_zero, zero_add]`. Establish `h2` using `congrArg (fun v => (-1 : ℤ) ^ (p + 2) • v) h`. Simplify `h2` using `[smul_smul, ← mul_pow, ← pow_add]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[← E_surj s]`. Conclude with `key _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cocycle_zero {p : ℕ} (e : Ch (p + 2) → Vv N) (he : d N (p + 2) (e : Cn N (p + 2)) = 0)
     (h0 : ∀ k, e (E 0 k) = 0) (h1 : ∀ k, e (E 1 k) = 0) (s : Ch (p + 2)) : e s = 0 := by
@@ -436,33 +436,31 @@ theorem cocycle_zero {p : ℕ} (e : Ch (p + 2) → Vv N) (he : d N (p + 2) (e : 
   exact key _ _
 
 /- English proof (translation)
-Use `set w : Ch p → Vv N := fun m => f (E 0 (E 0 m)) with hw`. Use `set u : Ch (p + 1) → Vv N := fun x => f (E 1 x) with hu`. Use `set v : Ch (p + 1) → Vv N := fun x => f (E 0 x) with hv`. Set `z : Ch (p + 1) → Vv N` to `fun s => (-1 : ℤ) ^ (p + 1) • Pp N (fun i => u (E i (face (Fin.last (p + 1)) s))) (len s) + (-1 : ℤ) ^ p • gp N (len s) (w (face (Fin.last (p + 1)) s))`. Establish `hz : ∀ a m, z (E a m) = (-1 : ℤ) ^ (p + 1) • Pp N (fun i => u (E i m)) a + (-1 : ℤ) ^ p • gp N a (w m)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `a m`. Simplify using `only [z, len_E, ini_E]`. Establish `hz0 : (fun x => z (E 0 x)) = fun x => (-1 : ℤ) ^ p • w x`. Use function extensionality and compare the values at `x`. Rewrite using `[hz]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `[Pp, gp_zero]`. Establish `hz1 : (fun x => z (E 1 x)) = fun x => (-1 : ℤ) ^ (p + 1) • u (E 0 x) + (-1 : ℤ) ^ p • gp N 1 (w x)`. Use function extensionality and compare the values at `x`. Rewrite using `[hz]`. Simplify using `[Pp]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hR0 : ∀ a m, dp N w (E a m) + (-1 : ℤ) ^ (p + 1) • f (E 0 (E a m)) = 0`. Introduce `a m`. Establish `h` using `rel N f hf 0 0 (E a m)`. Establish `h2` using `dp_EE N v a 0 m`. Simplify using `only [Nat.add_zero, gp_zero] at h h2`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `h` using `[pow_succ (-1 : ℤ) (p + 2), mul_neg_one, neg_smul, add_neg_cancel_right]`. Conclude with `h2.symm.trans h`. Establish `hs0 : ∀ a m, (d N (p + 1) (z : Cn N (p + 1)) (E 0 (E a m)) : Vv N) = v (E a m)`. Introduce `a m`. Establish `h` using `hR0 a m`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Express the relevant statement in the definitionally equal form `dp N w (E a m) + (-1 : ℤ) ^ (p + 1) • v (E a m) = 0 at h`. Rewrite using `[d_EE, hz0, dp_zsmul]`. Simplify using `only [Nat.add_zero, gp_zero]`. Apply the tactic sequence `rcases neg_one_pow_eq_or ℤ p with hp | hp <;> simp only [pow_succ, hp] at h ⊢`. Take the linear combination `(norm := module) h`.
+Take a linear combination of the given relations to obtain the conclusion. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Take the linear combination `(norm := module) (-1 : ℤ) • h`. Establish `hs1 : ∀ a m, (d N (p + 1) (z : Cn N (p + 1)) (E 1 (E a m)) : Vv N) = u (E a m)`. Introduce `a m`. Establish `hd : dp N (fun x => z (E 1 x)) (E a m) = (-1 : ℤ) ^ (p + 1) • dp N (fun x => u (E 0 x)) (E a m) + (-1 : ℤ) ^ p • gp N 1 (dp N w (E a m))`. Rewrite using `[hz1, dp_add, dp_zsmul, dp_zsmul, dp_map]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h0 : dp N w (E a m) + (-1 : ℤ) ^ (p + 1) • v (E a m) = 0` using `hR0 a m`. Establish `hG : gp N 1 (dp N w (E a m)) + (-1 : ℤ) ^ (p + 1) • gp N 1 (v (E a m)) = 0`. Use `congrArg (gp N 1) h0` as an intermediate fact. Simplify `this` using `only [map_add, map_zsmul, map_zero]`. Establish `h1 : dp N u (E 0 (E a m)) + (-1 : ℤ) ^ (p + 2) • u (E a m) + (-1 : ℤ) ^ (p + 3) • gp N 1 (v (E a m)) = 0` using `rel N f hf 0 1 (E a m)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hB : dp N u (E 0 (E a m)) = dp N (fun x => u (E 0 x)) (E a m) + (-1 : ℤ) ^ (p + 1) • u (E a m)` using `dp_EE N u a 0 m`. Establish `hP : Pp N (fun i => u (E i m)) (a + 1) = gp N 1 (Pp N (fun i => u (E i m)) a) + u (E a m)` using `rfl`. Rewrite using `[d_EE, hd, hz (a + 1) m, hz a m, hP, gp_add N a 1 (w m)]`. Simplify using `only [map_add, map_zsmul]`. Apply the tactic sequence `rcases neg_one_pow_eq_or ℤ p with hp | hp <;> simp only [pow_succ, hp] at hG h1 hB ⊢`.
+Apply the first step, then apply the next step to every resulting obligation. Take a linear combination of the given relations to obtain the conclusion. Take a linear combination of the given relations to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression.
 
-Take the linear combination `(norm := module) hB - h1 + hG`. Take the linear combination `(norm := module) h1 - hB - hG`. Use `⟨z, fun t => ?_⟩` and prove the remaining obligations. Set `Dz : Ch (p + 2) → Vv N` to `d N (p + 1) (z : Cn N (p + 1))`. Set `e : Ch (p + 2) → Vv N` to `fun t => f t - Dz t`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `he : d N (p + 2) (e : Cn N (p + 2)) = 0`. Set `fC : Cn N (p + 2)` to `f`. Establish `: (e : Cn N (p + 2)) = fC - d N (p + 1) (z : Cn N (p + 1))` using `rfl`. Rewrite using `[this, map_sub]`. Establish `hf' : d N (p + 2) fC = 0` using `hf`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hf', d_d, sub_zero]`. Establish `h0 : ∀ k, e (E 0 k) = 0`. Introduce `k`. Rewrite using `[← E_surj k]`. Establish `: Dz (E 0 (E (len k) (face (Fin.last (p + 1)) k))) = f (E 0 (E (len k) (face (Fin.last (p + 1)) k)))` using `hs0 _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `sub_eq_zero.2 this.symm`. Establish `h1 : ∀ k, e (E 1 k) = 0`. Introduce `k`. Rewrite using `[← E_surj k]`. Establish `: Dz (E 1 (E (len k) (face (Fin.last (p + 1)) k))) = f (E 1 (E (len k) (face (Fin.last (p + 1)) k)))` using `hs1 _ _`.
-
-Conclude with `sub_eq_zero.2 this.symm`. Establish `h2 : f t - Dz t = 0` using `cocycle_zero N e he h0 h1 t`. Conclude with `(sub_eq_zero.1 h2).symm`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exact_hi {p : ℕ} (f : Ch (p + 2) → Vv N) (hf : d N (p + 2) (f : Cn N (p + 2)) = 0) :
     ∃ z : Ch (p + 1) → Vv N, ∀ t : Ch (p + 2), (d N (p + 1) (z : Cn N (p + 1)) t : Vv N) = f t := by
@@ -543,7 +541,7 @@ theorem exact_hi {p : ℕ} (f : Ch (p + 2) → Vv N) (hf : d N (p + 2) (f : Cn N
 def m0 : Ch 0 := ch (fun _ => 0) monotone_const
 
 /- English proof (translation)
-Use `chain_ext fun i j φ => ?_` and prove the remaining obligations. Take `rfl : i = j` from `Fin.ext (by have := i.2; have := j.2; omega)`. Establish `: φ = 𝟙 _` using `Subsingleton.elim _ _`. Rewrite using `[this, m.map_id, m'.map_id]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem cochain_degree_zero_subsingleton (m m' : Ch 0) : m = m' := by
   refine chain_ext fun i j φ => ?_
@@ -553,7 +551,7 @@ theorem cochain_degree_zero_subsingleton (m m' : Ch 0) : m = m' := by
   rfl
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `∑ i : Fin 1, (-1 : ℤ) ^ (i : ℕ) • φ (face i.castSucc t) = φ m0`. Rewrite using `[Fin.sum_univ_one, cochain_degree_zero_subsingleton (face _ t) m0]`. Simplify using the standard rewrite rules.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem dp0 (φ : Ch 0 → Vv N) (t : Ch 1) : dp N φ t = φ m0 := by
   change ∑ i : Fin 1, (-1 : ℤ) ^ (i : ℕ) • φ (face i.castSucc t) = φ m0
@@ -561,15 +559,15 @@ theorem dp0 (φ : Ch 0 → Vv N) (t : Ch 1) : dp N φ t = φ m0 := by
   simp
 
 /- English proof (translation)
-Establish `hr : ∀ a b, y (E b m0) - y (E (a + b) m0) + gp N b (y (E a m0)) = 0`. Introduce `a b`. Establish `h` using `rel N (p := 0) y hy a b m0`. Rewrite `h` using `[dp0]`. Simplify `h` using `[sub_eq_add_neg]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `y0 : y (E 0 m0) = 0` using `by simpa [gp_zero] using hr 0 0`. Take `⟨x, hx⟩` from `hS (y (E 1 m0))`. Establish `hx' : gp N 1 x - x = σ • y (E 1 m0)` using `by simpa using hx`. Establish `key : ∀ a, gp N a x - x = σ • y (E a m0)`. Introduce `a`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `a with`. Consider the case `zero => rw [gp_zero, sub_self, y0, smul_zero]`. Consider the case `succ a ih`. Establish `h` using `hr a 1`. Establish `e1 : y (E (a + 1) m0) = y (E 1 m0) + gp N 1 (y (E a m0))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Take the linear combination `(norm := module) (-1 : ℤ) • h`. Rewrite using `[e1, smul_add, ← map_smul, ← ih, gp_add, map_sub, ← hx']`. Normalize the expressions using the abelian group laws. Use `⟨fun _ => -x, fun t => ?_⟩` and prove the remaining obligations. Establish `e2 : E (len t) m0 = t`.
+Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `E_surj t` as an intermediate fact. Rewrite `this` using `[cochain_degree_zero_subsingleton (face _ t) m0]`. Then use the resulting hypothesis. Establish `h3` using `key (len t)`. Rewrite `h3` using `[e2]`. Rewrite using `[d_eq, dp0, ← h3]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
@@ -607,21 +605,19 @@ theorem exact_one (σ : R) (hS : SurjUpTo σ (gp N 1 - LinearMap.id)) (y : Ch 1 
 end Alg
 
 /- English proof (translation)
-Introduce `R _ M _ _ N a s hfix hinj hex hsurj`. Establish `hg : ∀ k x, gp N k (a x) = a x`. Introduce `k x`. Proceed by induction on `k with`. Consider the case `zero => exact gp_zero N _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `succ k ih => rw [gp_add, ih]`. Conclude with `hfix x`. Use `⟨fun x => ?_, fun x hx => ?_, fun y hy => ?_, fun n y hy => ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `t`. Establish `h` using `d_eq N (n := 0) (fun _ => a x) t`.
+Treat this case separately. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `h.trans ?_` and prove the remaining obligations. Rewrite using `[dp0, hg]`. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Conclude with `hinj x (congrFun hx m0)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `y' : Ch 0 → Vv N` to `y`. Establish `h1 : (d N 0 y (E 1 m0) : Vv N) = 0` using `congrFun hy (E 1 m0)`. Establish `h2` using `d_eq N (n := 0) y' (E 1 m0)`. Rewrite `h2` using `[dp0, len_E, ini_E]`. Establish `h3 : gp N 1 (y' m0) - y' m0 = 0`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h4` using `h2.symm.trans h1`. Establish `h5 : y' m0 - gp N 1 (y' m0) = 0` using `by simpa [sub_eq_add_neg] using h4`. Rewrite using `[← neg_sub, h5, neg_zero]`. Take `⟨x, hx⟩` from `hex (y' m0) (by rw [LinearMap.sub_apply]; exact h3)`. Use `⟨x, funext fun t => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Split into cases according to the possible forms of the given data.
 
-Rewrite using `[cochain_degree_zero_subsingleton t m0]`. Conclude with `hx`. Consider the cases of `n with`. Consider the case `zero`. Take `⟨x, hx⟩` from `exact_one N s hsurj y hy`.
+Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨x, funext hx⟩`. Consider the case `succ p`. Take `⟨z, hz⟩` from `exact_hi N y hy`. Use `⟨s • (z : Cn N (p + 1)), ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `d N (p + 1) (s • (z : Cn N (p + 1))) = _`.
-
-Rewrite using `[map_smul]`. Conclude with `congrArg (s • ·) (funext hz)`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem resUpTo_of_acyc : ∀ {R : Type} [CommRing R] {M : Type w} [AddCommGroup M] [Module R M] (N : SingleObj (Multiplicative ℕ) ⥤ ModuleCat.{w} R) (a : M →ₗ[R] N.obj (SingleObj.star _)) (s : R), (∀ x, (N.map (X := SingleObj.star _) (Y := SingleObj.star _) (Multiplicative.ofAdd 1)).hom (a x) = a x) → InjUpTo s a → ExactUpTo s a ((N.map (X := SingleObj.star _) (Y := SingleObj.star _) (Multiplicative.ofAdd 1)).hom - LinearMap.id) → SurjUpTo s ((N.map (X := SingleObj.star _) (Y := SingleObj.star _) (Multiplicative.ofAdd 1)).hom - LinearMap.id) → (cx N).ResUpTo s (aug N fun _ => a) := by
   intro R _ M _ _ N a s hfix hinj hex hsurj

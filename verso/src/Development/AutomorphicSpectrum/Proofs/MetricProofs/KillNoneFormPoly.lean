@@ -9,15 +9,15 @@ namespace GlobalTheory.CompanionTheory.Ar.PB
 open MvPolynomial
 
 /- English proof (translation)
-Unfold `formPoly`. Rewrite using `[map_sum]`. Use `symm`. Use `Finset.sum_of_injOn (fun (w : Fin n → σ) j => some (w j)) ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `w _ w' _ h`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use function extensionality and compare the values at `j`. Conclude with `Option.some_injective _ (congrFun h j)`. Introduce `w _`. Conclude with `Finset.mem_univ _`. Introduce `w _ hw`.
+Apply function extensionality and compare values at an arbitrary argument. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `: ∃ j, w j = none`. Assume the negation of the conclusion as `hc`. Apply `hw` to reduce the goal to its premises. Establish `hc' : ∀ j, (w j).isSome` using `fun j => by`. Consider the cases of `h : w j with`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 
-Consider the case `none => exact absurd ⟨j, h⟩ hc`. Consider the case `some _ => rfl`. Conclude with `⟨fun j => (w j).get (hc' j), Finset.mem_coe.2 (Finset.mem_univ _), by funext j; simp⟩`. Take `⟨j, hj⟩` from `this`. Rewrite using `[map_mul, map_prod, Finset.prod_eq_zero (Finset.mem_univ j) (by simp [hj]), mul_zero]`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `w _`. Simplify using `[map_prod]`.
+A detailed English derivation is pending.
 -/
 theorem killNone_formPoly {σ : Type} [Fintype σ] (n : ℕ) (a : (Fin n → Option σ) → ℝ) :
     aeval (fun o : Option σ => o.elim (0 : MvPolynomial σ ℝ) X) (formPoly n a)
@@ -47,9 +47,9 @@ theorem killNone_formPoly {σ : Type} [Fintype σ] (n : ℕ) (a : (Fin n → Opt
     simp [map_prod]
 
 /- English proof (translation)
-Establish `h : (aeval (fun o : Option (Ψ × Fin N) => o.elim (0 : MvPolynomial (Ψ × Fin N) ℝ) X)).comp toWtS = toWt.comp (aeval (fun o : Option (Ψ × Fin N) => o.elim (0 : MvPolynomial (Ψ × Fin N) ℝ) X))`. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `o`. Consider the cases of `o with`. Consider the case `none => simp [toWtS, toWt]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Treat this case separately.
 
-Consider the case `some p`. Simplify using `only [toWtS, toWt, AlgHom.comp_apply, aeval_X, Option.elim_some, aeval_rename]`. Establish `: ((fun o : Option (Ψ × Fin N) => o.elim (0 : MvPolynomial (Ψ × Fin N) ℝ) X) ∘ some) = X` using `rfl`. Rewrite using `[this, aeval_X_left_apply]`. Conclude with `DFunLike.congr_fun h Q`.
+Treat this case separately. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem killNone_toWtS {Ψ : Type} {N : ℕ} (Q : MvPolynomial (Option (Ψ × Fin N)) ℝ) :
     aeval (fun o : Option (Ψ × Fin N) => o.elim (0 : MvPolynomial (Ψ × Fin N) ℝ) X) (toWtS Q)
@@ -67,7 +67,7 @@ theorem killNone_toWtS {Ψ : Type} {N : ℕ} (Q : MvPolynomial (Option (Ψ × Fi
   exact DFunLike.congr_fun h Q
 
 /- English proof (translation)
-Proceed by induction on `Q using MvPolynomial.induction_on with`. Consider the case `C r => simp [toWt]`. Consider the case `add p q hp hq => simp only [map_add, hp, hq]`. Consider the case `mul_X p i hp => rw [map_mul, map_mul, map_mul, hp]`. Simplify using `[toWt, gap]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules.
 -/
 theorem eval_toWt_gap {Ψ : Type} {N : ℕ} (Q : MvPolynomial (Ψ × Fin N) ℝ) (lam : Ψ × Fin N → ℝ) :
     eval lam (toWt Q) = eval (gap lam) Q := by
@@ -77,9 +77,9 @@ theorem eval_toWt_gap {Ψ : Type} {N : ℕ} (Q : MvPolynomial (Ψ × Fin N) ℝ)
   | mul_X p i hp => rw [map_mul, map_mul, map_mul, hp]; simp [toWt, gap]
 
 /- English proof (translation)
-Proceed by induction on `Q using MvPolynomial.induction_on with`. Consider the case `C r => simp [toWtS]`. Consider the case `add p q hp hq => simp only [map_add, hp, hq]`. Consider the case `mul_X p i hp`. Rewrite using `[map_mul, map_mul, map_mul, hp]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Consider the cases of `i with`. Consider the case `none => simp [toWtS, gapS]`. Consider the case `some q`. Simplify using `only [toWtS, gapS, gap, aeval_X, eval_X, Option.elim_some, eval_rename]`.
+Reduce the equality to equality of the corresponding arguments. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules.
 
 Both sides reduce to the same expression.
 -/
@@ -98,7 +98,7 @@ theorem eval_toWtS_gapS {Ψ : Type} {N : ℕ} (Q : MvPolynomial (Option (Ψ × F
       rfl
 
 /- English proof (translation)
-Introduce `Ψ _ N n`. Use `⟨fun a => ?_, eval_toWt_gap, eval_toWtS_gapS⟩` and prove the remaining obligations. Rewrite using `[killNone_toWtS, killNone_formPoly]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem poly_s_zero : ∀ (Ψ : Type) [Fintype Ψ] (N n : ℕ),
     (∀ (a : (Fin n → Option (Ψ × Fin N)) → ℝ),

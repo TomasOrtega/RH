@@ -12,9 +12,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.IdemConjSum
 
 /- English proof (translation)
-Introduce `D Z e he`. Establish `h1 : e * e = e` using `GlobalTheory.PlaceDatum.idemSum_mul_self he`. Establish `h2 : e * cA D e = 0` using `he.2`. Establish `h3 : cA D e * cA D e = cA D e` using `by rw [← map_mul, h1]`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h4 : cA D e * e = 0` using `by rw [mul_comm]; exact h2`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[map_add, cA_cA, add_comm]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 -/
 theorem idemSum_add_conj_idem : ∀ {D : D7} (Z : Finset (Pl D.host.E)) (e : AE D), IsIdemSum e Z →
     (e + cA D e) * (e + cA D e) = e + cA D e ∧ cA D (e + cA D e) = e + cA D e := by

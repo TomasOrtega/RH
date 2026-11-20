@@ -15,19 +15,17 @@ namespace PosPartLocal
 variable {n d : ℕ}
 
 /- English proof (translation)
-Unfold `chartPosDens sheetSum`. Distinguish the cases in `hy : y ∈ U ∩ s ⁻¹' E`. Rewrite using `[Set.indicator_of_mem hy]`. Establish `hfib : s y ∈ fibre J A y` using `⟨(hsec y hy.1).2, (hsec y hy.1).1⟩`. Establish `hsh : IsSheetAt J A (s y) s` using `⟨U, hU, by rw [(hsec y hy.1).1]; exact hy.1, hsd, by rw [(hsec y hy.1).1], hsec, W, hW.mem_nhds (hEW hy.2), fun x' hx' _ => (hWs x' hx').2.symm⟩`.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[finsum_eq_single _ (s y) ?_, finsum_eq_if, if_pos hfib, dif_pos ⟨s, hsh⟩]`. Establish `h` using `SheetSumMeasurable.term_eq (fun a b => max (a * b) 0) (E.indicator f) φ hsh ⟨s, hsh⟩`. Rewrite `h` using `[(hsec y hy.1).1]`. Simplify using `only`. Rewrite using `[h, Set.indicator_of_mem (show s y ∈ E from hy.2)]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities.
 
-Introduce `x hne`. Rewrite using `[finsum_eq_if]`. Use `split_ifs with hx h`. Establish `hxE : x ∉ E` using `fun hxE => hne (by`. Establish `h'` using `(hWs x ⟨hx.1, hEW hxE⟩).2`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h'` using `[hx.2]`. Conclude with `h'.symm)`. Simplify using `only`. Rewrite using `[Set.indicator_of_notMem hxE, zero_mul, max_self]`. Both sides reduce to the same expression.
+Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[Set.indicator_of_notMem hy]`. Use `finsum_mem_eq_zero_of_forall_eq_zero fun x hx => ?_` and prove the remaining obligations. Use `split_ifs with h`. Establish `hxE : x ∉ E` using `fun hxE => hy (by`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 
-Take `⟨h1, h2⟩` from `hWs x ⟨hx.1, hEW hxE⟩`. Rewrite `h1`, `h2` using `[hx.2]`. Conclude with `⟨h1, by rw [Set.mem_preimage, h2]; exact hxE⟩)`. Simplify using `only`. Rewrite using `[Set.indicator_of_notMem hxE, zero_mul, max_self]`.
-
-Both sides reduce to the same expression.
+Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem chartPosDens_eq {J : Ideal (MvPolynomial (Fin n) ℂ)} {A : Matrix (Fin d) (Fin n) ℂ}
     {s : (Fin d → ℂ) → Fin n → ℂ} {U : Set (Fin d → ℂ)} {W E : Set (Fin n → ℂ)}
@@ -75,31 +73,25 @@ theorem chartPosDens_eq {J : Ideal (MvPolynomial (Fin n) ℂ)} {A : Matrix (Fin 
 end PosPartLocal
 
 /- English proof (translation)
-Introduce and unpack `n d J A A' f φ x - hφ ⟨s, U, hU, hxU, hsd, -, hsec, V, hV, hVs⟩ ⟨s', U', hU', hxU', hsd', -, hsec', V', hV', hVs'⟩`. Establish `hAc : Continuous fun z : Fin n → ℂ => A *ᵥ z` using `by fun_prop`. Establish `hAc' : Continuous fun z : Fin n → ℂ => A' *ᵥ z` using `by fun_prop`. Use `set W := (interior V ∩ (fun z => A *ᵥ z) ⁻¹' U) ∩ (interior V' ∩ (fun z => A' *ᵥ z) ⁻¹' U') with hWdef`. Establish `hW : IsOpen W` using `(isOpen_interior.inter (hU.preimage hAc)).inter (isOpen_interior.inter (hU'.preimage hAc'))`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hWs : ∀ x' ∈ zeroSet J ∩ W, A *ᵥ x' ∈ U ∧ s (A *ᵥ x') = x'` using `by rintro x' ⟨hZ, ⟨hV1, hU1⟩, -⟩; exact ⟨hU1, (hVs x' ⟨hZ, interior_subset hV1⟩ hU1).symm⟩`. Establish `hWs' : ∀ x' ∈ zeroSet J ∩ W, A' *ᵥ x' ∈ U' ∧ s' (A' *ᵥ x') = x'` using `by rintro x' ⟨hZ, -, ⟨hV1, hU1⟩⟩; exact ⟨hU1, (hVs' x' ⟨hZ, interior_subset hV1⟩ hU1).symm⟩`. Use `⟨W, hW, ⟨⟨mem_interior_iff_mem_nhds.2 hV, hxU⟩, ⟨mem_interior_iff_mem_nhds.2 hV', hxU'⟩⟩, fun E _ hEW => ?_⟩` and prove the remaining obligations. Repeatedly rewrite using `[PosPartLocal.chartPosDens_eq hU hsd hsec hW hWs hEW, PosPartLocal.chartPosDens_eq hU' hsd' hsec' hW hWs' hEW]`. Use `set O' := U' ∩ s' ⁻¹' W with hO'def`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set τ : (Fin d → ℂ) → Fin d → ℂ := fun z => A *ᵥ s' z with hτdef`. Establish `hO' : IsOpen O'` using `hsd'.continuousOn.isOpen_inter_preimage hU' hW`. Establish `hτU : ∀ z ∈ O', τ z ∈ U ∧ s (τ z) = s' z` using `fun z hz => hWs _ ⟨(hsec' z hz.1).2, hz.2⟩`. Establish `hτd : DifferentiableOn ℂ τ O'`. Establish `hs'O : DifferentiableOn ℂ s' O'` using `hsd'.mono Set.inter_subset_left`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `((Matrix.mulVecLin A).toContinuousLinearMap.differentiable.comp_differentiableOn hs'O)`. Establish `hτan : AnalyticOnNhd ℂ τ O'` using `IndefiniteRowSideFullHecke.ComplexSets.analyticOnNhd_of_differentiableOn hO' hτd`. Establish `hτinj : Set.InjOn τ O'` using `fun z₁ h₁ z₂ h₂ h => by`. Establish `h'` using `congrArg s h`. Rewrite `h'` using `[(hτU z₁ h₁).2, (hτU z₂ h₂).2]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← (hsec' z₁ h₁.1).1, ← (hsec' z₂ h₂.1).1, h']`. Establish `hsan : AnalyticOnNhd ℂ s U` using `IndefiniteRowSideFullHecke.ComplexSets.analyticOnNhd_of_differentiableOn hU hsd`. Combine the equalities or inequalities in the displayed calculation. Use `(setLIntegral_eq_of_support_subset fun y hy => ?_).symm` and prove the remaining obligations. Establish `hyE : y ∈ U ∩ s ⁻¹' E`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Assume the negation of the conclusion as `h`. Conclude with `hy (by simp [Set.indicator_of_notMem h])`. Establish `hZ : s y ∈ zeroSet J ∩ W` using `⟨(hsec y hyE.1).2, hEW hyE.2⟩`. Use `⟨A' *ᵥ s y, ⟨(hWs' _ hZ).1, ?_⟩, ?_⟩` and prove the remaining obligations. Use `show s' (A' *ᵥ s y) ∈ W`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[(hWs' _ hZ).2]`. Conclude with `hZ.2`. Use `show A *ᵥ s' (A' *ᵥ s y) = y`. Rewrite using `[(hWs' _ hZ).2, (hsec y hyE.1).1]`. Use `_ = ∫⁻ z in O', ENNReal.ofReal (Complex.normSq (ReciprocityTheory.AnForm.A.jacC τ z).det) * ENNReal.ofReal ((U ∩ s ⁻¹' E).indicator (fun y => max (f (s y) * ReciprocityTheory.AnForm.maDens (fun k => φ k ∘ s) y) 0) (τ z)) := ReciprocityTheory.AnForm.A.lintegral_image_eq_lintegral_ …`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `_ = ∫⁻ z in O', ENNReal.ofReal ((U' ∩ s' ⁻¹' E).indicator (fun y => max (f (s' y) * ReciprocityTheory.AnForm.maDens (fun k => φ k ∘ s') y) 0) z) := by`. Use `setLIntegral_congr_fun hO'.measurableSet fun z hz => ?_` and prove the remaining obligations. Distinguish the cases in `hzE : s' z ∈ E`. Establish `hm : τ z ∈ U ∩ s ⁻¹' E` using `⟨(hτU z hz).1, by rw [Set.mem_preimage, (hτU z hz).2]; exact hzE⟩`. Rewrite using `[Set.indicator_of_mem hm, Set.indicator_of_mem (show z ∈ U' ∩ s' ⁻¹' E from ⟨hz.1, hzE⟩)]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : ReciprocityTheory.AnForm.maDens (fun k => φ k ∘ s') z = ReciprocityTheory.AnForm.maDens (fun k => (φ k ∘ s) ∘ τ) z` using `IndefiniteRowSideFullHecke.ComplexSets.maDens_congr_of_eventuallyEq fun k => by filter_upwards [hO'.mem_nhds hz] with w hw show φ k (s' w) = φ k (s (τ w))`. Rewrite using `[(hτU w hw).2]`. Establish `h2 : ReciprocityTheory.AnForm.maDens (fun k => (φ k ∘ s) ∘ τ) z = ReciprocityTheory.AnForm.maDens (fun k => φ k ∘ s) (τ z) * Complex.normSq (ReciprocityTheory.AnForm.A.jacC τ z).det`. Use `ReciprocityTheory.AnForm.A.maDens_comp (fun k => φ k ∘ s) τ z (hτan z hz) fun k => ?_` and prove the remaining obligations. Take `⟨Ok, hOk, hZOk, hφk⟩` from `hφ k`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hsZ : s (τ z) ∈ Ok` using `hZOk (by rw [(hτU z hz).2]; exact (hsec' z hz.1).2)`. Establish `hφa : ContDiffAt ℝ 2 (φ k) (s (τ z))` using `(hφk.contDiffAt (hOk.mem_nhds hsZ)).of_le (WithTop.coe_le_coe.2 (le_top : (2 : ℕ∞) ≤ ⊤))`. Establish `hsa : ContDiffAt ℝ 2 s (τ z)` using `((hsan (τ z) (hτU z hz).1).contDiffAt).restrict_scalars ℝ`. Conclude with `hφa.comp (τ z) hsa`. Rewrite using `[h1, h2, (hτU z hz).2, ← ENNReal.ofReal_mul (Complex.normSq_nonneg _), mul_comm, max_mul_of_nonneg _ _ (Complex.normSq_nonneg _), zero_mul, mul_assoc]`.
-
-Rewrite using `[Set.indicator_of_notMem (fun hm => hzE (by`. Use `hm.2` as an intermediate fact. Rewrite `this` using `[Set.mem_preimage, (hτU z hz).2]`. Conclude with `this)),`. Use the proof step `Set.indicator_of_notMem (show z ∉ U' ∩ s' ⁻¹' E from fun hm => hzE hm.2)]`.
-
-Simplify using the standard rewrite rules. Use `_ = _ := by`. Use `setLIntegral_eq_of_support_subset fun z hz => ?_` and prove the remaining obligations. Establish `hzE : z ∈ U' ∩ s' ⁻¹' E`. Assume the negation of the conclusion as `h`.
-
-Conclude with `hz (by simp [Set.indicator_of_notMem h])`. Conclude with `⟨hzE.1, hEW hzE.2⟩`.
+Assume the negation of the conclusion and derive a contradiction. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem PosPartLocal.proof : PosPartLocal.Statement := by
   rintro n d J A A' f φ x - hφ ⟨s, U, hU, hxU, hsd, -, hsec, V, hV, hVs⟩

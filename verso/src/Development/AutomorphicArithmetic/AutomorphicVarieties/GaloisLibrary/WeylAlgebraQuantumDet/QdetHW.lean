@@ -4,7 +4,7 @@ open Matrix UpperTheory.V.Weyl
 
 open Formalism.REAL in
 /- English proof (translation)
-Establish `hT : ∀ v a b, φ (Tm X v a b) = Tm (fun a b => φ (X a b)) v a b` using `fun v a b => by`. Unfold `Tm`. Apply the tactic sequence `split_ifs <;> simp`. Simplify using `only [qdet, qminor, map_sum, map_mul, map_intCast, map_list_prod, List.map_ofFn, Function.comp_def, hT]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 private theorem UpperTheory.V.Weyl.map_quantum_determinant {A B : Type} [Ring A] [Algebra ℂ A] [Ring B] [Algebra ℂ B] (φ : A →ₐ[ℂ] B) {n : ℕ}
     (X : Fin n → Fin n → A) (u : ℂ) : φ (qdet X u) = qdet (fun a b => φ (X a b)) u := by
@@ -14,9 +14,9 @@ private theorem UpperTheory.V.Weyl.map_quantum_determinant {A B : Type} [Ring A]
   simp only [qdet, qminor, map_sum, map_mul, map_intCast, map_list_prod, List.map_ofFn, Function.comp_def, hT]
 
 /- English proof (translation)
-Introduce `n d E ν v hgl h1 h2 u`. Set `φ : Matrix (Fin d) (Fin d) ℂ →ₐ[ℂ] Module.End ℂ (Fin d → ℂ)` to `(Matrix.toLinAlgEquiv' : Matrix (Fin d) (Fin d) ℂ ≃ₐ[ℂ] _).toAlgHom`. Establish `hφ : ∀ M w, φ M w = M *ᵥ w` using `fun M w => Matrix.toLinAlgEquiv'_apply M w`. Establish `hgl' : Formalism.REAL.GlRel (fun a b => φ (E a b))`. Introduce `a b c e`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `congrArg φ (hgl a b c e)` as an intermediate fact. Simplify `this` using `only [map_sub, map_mul, apply_ite φ, map_zero]`. Establish `hw : Formalism.REAL.IsHW (fun a b => φ (E a b)) ν v` using `⟨fun a => (hφ _ _).trans (h1 a), fun a b hab => (hφ _ _).trans (h2 a b hab)⟩`. Rewrite using `[← hφ, UpperTheory.V.Weyl.map_quantum_determinant]`. Conclude with `Formalism.REAL.qDetHW _ n _ ν v hgl' hw u`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Weyl.qdetHW :
     ∀ (n d : ℕ) (E : Fin n → Fin n → Matrix (Fin d) (Fin d) ℂ) (ν : Fin n → ℂ) (v : Fin d → ℂ), Formalism.REAL.GlRel E →

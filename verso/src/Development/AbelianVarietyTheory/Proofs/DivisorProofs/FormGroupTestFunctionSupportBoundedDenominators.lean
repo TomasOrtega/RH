@@ -10,13 +10,11 @@ noncomputable section
 namespace GlobalTheory.LKCx.BoundedDen
 
 /- English proof (translation)
-Establish `hp : p.Prime` using `Fact.out`. Establish `hN : ((M * p ^ e : ℕ) : ℚ) ≠ 0`. Establish `: 0 < M * p ^ e` using `Nat.mul_pos hM (pow_pos hp.pos e)`. Conclude with `this.ne'` after adjusting the coercions. Establish `hq : q = Rat.divInt k ((M * p ^ e : ℕ) : ℤ)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Rat.divInt_eq_div]`. Move the coercions through the operations in `at hN ⊢`. Rewrite using `[eq_div_iff hN]`. Conclude with `h`. Establish `hd : q.den ∣ M * p ^ e`.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `Rat.den_dvd k ((M * p ^ e : ℕ) : ℤ)` as an intermediate fact. Rewrite `this` using `[← hq]`. Conclude with `this` after adjusting the coercions. Establish `hle` using `(Nat.factorization_le_iff_dvd q.den_nz (Nat.mul_pos hM (pow_pos hp.pos e)).ne').2 hd ℓ`. Rewrite `hle` using `[Nat.factorization_mul hM.ne' (pow_pos hp.pos e).ne', Nat.factorization_pow, hp.factorization]`.
-
-Simplify `hle` using `[Finsupp.single_apply, Ne.symm hℓ]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem den_factorization_le (p : ℕ) [Fact p.Prime] (q : ℚ) (M : ℕ) (hM : 0 < M) (k : ℤ) (e : ℕ)
     (h : q * ((M : ℚ) * (p : ℚ) ^ e) = k) (ℓ : ℕ) (hℓ : ℓ ≠ p) :
@@ -42,15 +40,13 @@ end GlobalTheory.LKCx.BoundedDen
 namespace GlobalTheory.LKCx.BoundedDen
 
 /- English proof (translation)
-Introduce `p _ G β x t hx L f hf h₁`. Take `⟨Ω, Ω', hΩ, hΩ', hmem⟩` from `exists_compact_toAfF p G L f hf β x t hx h₁`. Use `letI : TopologicalSpace (AfP p ⊗[ℚ] G.C) := moduleTopology (AfP p) (AfP p ⊗[ℚ] G.C)`. Use `haveI : IsModuleTopology (AfP p) (AfP p ⊗[ℚ] G.C) := ⟨rfl⟩`. Set `b` to `Module.finBasis ℚ G.C`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `b'` to `b.baseChange (AfP p)`. Establish `hcpt : ∀ i, IsCompact ((b'.coord i) '' Ω)` using `fun i => hΩ.image (IsModuleTopology.continuous_of_linearMap (b'.coord i))`. Use `choose m hm0 hm using fun i => GlobalTheory.DenAway.den_bounded_of_isCompact p _ (hcpt i)`. Take `⟨M', hM'0, hM'⟩` from `GlobalTheory.DenAway.den_bounded_of_isCompact p Ω' hΩ'`. Use `⟨(∏ i, m i) * M', Nat.mul_pos (Finset.prod_pos fun i _ => hm0 i) hM'0, fun y hy ℓ hℓ => ⟨fun i => ?_, ?_⟩⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hval : b'.coord i (inC G (AfP p) (((y : G.Cˣ × ℚˣ).1 : G.Cˣ) : G.C)) = algebraMap ℚ (AfP p) (b.repr (((y : G.Cˣ × ℚˣ).1 : G.Cˣ) : G.C) i)`. Simplify using `only [inC, b', RingHom.coe_coe, Algebra.TensorProduct.includeRight_apply, Module.Basis.coord_apply, Module.Basis.baseChange_repr_tmul, Algebra.smul_def, mul_one]`. Take `⟨k, e, hk⟩` from `hm i (b.repr (((y : G.Cˣ × ℚˣ).1 : G.Cˣ) : G.C) i) (by rw [← hval]; exact ⟨_, (hmem y hy).1, rfl⟩)`. Establish `h1` using `den_factorization_le p _ (m i) (hm0 i) k e hk ℓ hℓ`. Establish `hd : m i ∣ (∏ j, m j) * M'` using `(Finset.dvd_prod_of_mem m (Finset.mem_univ i)).mul_right _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `h1.trans ((Nat.factorization_le_iff_dvd (hm0 i).ne' (Nat.mul_pos (Finset.prod_pos fun i _ => hm0 i) hM'0).ne').2 hd ℓ)`. Establish `e0 : ((((y : G.Cˣ × ℚˣ).2)⁻¹ : ℚˣ) : ℚ) = (((y : G.Cˣ × ℚˣ).2 : ℚˣ) : ℚ)⁻¹` using `Units.val_inv_eq_inv_val _`. Take `⟨k, e, hk⟩` from `hM' _ (hmem y hy).2`. Rewrite using `[e0]`. Establish `h1` using `den_factorization_le p _ M' hM'0 k e hk ℓ hℓ`.
-
-Conclude with `h1.trans ((Nat.factorization_le_iff_dvd hM'0.ne' (Nat.mul_pos (Finset.prod_pos fun i _ => hm0 i) hM'0).ne').2 (dvd_mul_left _ _) ℓ)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem main : ∀ (p : ℕ) [Fact p.Prime] (G : HTGroup p) (β : G.Cˣ) (x : (AfP p ⊗[ℚ] G.C)ˣ) (t : (AfP p)ˣ) (hx : Triv G (AfP p) β x t) (L : G.Level) (f : G.GAf → ℂ), IsTest (MonoidHom.id _) L.K.toSubgroup L.K.toSubgroup f → ∀ (h₁ : G.GAf), ∃ D : ℕ, 0 < D ∧ ∀ y : grp G β, f (h₁⁻¹ * toAfF G β x t hx y * h₁) ≠ 0 → ∀ ℓ : ℕ, ℓ ≠ p → (∀ i, ((Module.finBasis ℚ G.C).repr (((y : G.Cˣ × ℚˣ).1 : G.Cˣ) : G.C) i).den.factorization ℓ ≤ D.factorization ℓ) ∧ (((((y : G.Cˣ × ℚˣ).2)⁻¹ : ℚˣ) : ℚ)).den.factorization ℓ ≤ D.factorization ℓ := by
   intro p _ G β x t hx L f hf h₁

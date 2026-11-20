@@ -14,7 +14,7 @@ open Formalism.IndefR.FWT Formalism.L2.Pj Formalism.IndefR.Mult GlobalTheory.Rea
 set_option maxHeartbeats 4000000
 
 /- English proof (translation)
-Take `rfl : P' = P` from `funext fun i => eq_of_heq (h i)`. Use `⟨e, fun i i' hi la la' hla y' y hy => ?_⟩` and prove the remaining obligations. Take `rfl : i = i'` from `Fin.ext hi`. Consider the cases of `hla`. Consider the cases of `hy`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data.
 
 Both sides reduce to the same expression.
 -/
@@ -30,13 +30,13 @@ private theorem ex_equiv_moved {m : ℕ} {L : Type} (P P' Q : Fin m → L → Ty
   rfl
 
 /- English proof (translation)
-Introduce `B B' f f' T T' w w' hPre Z hX Wt z Z' hX' Wt' core' alg' halg hH hL Xg tr R' hR hmu ι hι`. Take `⟨h1, h2, h3, h4, h5, -⟩` from `hH`. Take `⟨P'⟩` from `B'`. Simplify using `only at hPre`. Substitute `hPre` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify by unfolding definitions. Substitute using the available equality.
 
-Take `⟨⟨⟨H, l, c, Dw, Xo, eO⟩, U, V, dict, mu, Kf, pb⟩, cE, chiW, x₀, iota⟩` from `core'`. Establish `e1 : H = z.core.Q.H` using `eq_of_heq h1`. Substitute `e1` using the available equality. Establish `e2 : l = z.core.Q.l` using `eq_of_heq h2`. Substitute `e2` using the available equality.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Substitute using the available equality.
 
-Establish `e3 : c = z.core.Q.c` using `eq_of_heq h3`. Substitute `e3` using the available equality. Establish `e4 : Dw = z.core.Q.Dw` using `eq_of_heq h4`. Substitute `e4` using the available equality. Establish `e5 : Xo = z.core.Q.Xo` using `eq_of_heq h5`.
+Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact.
 
-Substitute `e5` using the available equality. Use `letI := z.alg`. Conclude with `(by with_unfolding_all exact (ex_equiv_moved (fun i => (z.R.FW i).Pt) (fun i => (R'.FW i).Pt) (fun i la => z.core.PtM ((i : ℕ) + 1) la) (fun i => ((hR.2.2.2.2.2.2.2.2.2.2.2.2.1 i i rfl).2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2 ι hι).2.2.2.2.1) z.geo.fw.pt :))`.
+Substitute using the available equality. Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem UpperTheory.pointEquiv_family_transport_of_same_pre :
     ∀ (B B' : Base) (f : Fr B.toPre) (f' : Fr B'.toPre) (T : TwDat B) (T' : TwDat B') (w : ColW B f T) (w' : ColW B' f' T'),

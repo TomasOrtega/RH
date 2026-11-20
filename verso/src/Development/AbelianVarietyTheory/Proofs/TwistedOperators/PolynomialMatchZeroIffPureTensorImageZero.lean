@@ -17,11 +17,11 @@ namespace GlobalTheory.PolKer
 open GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels in
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ Bs a a' G Xc om om' R Rf hM Φ`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨T, hX, m, m', f, φ, f', φ', h1, h1', hΦ, h0, he⟩`. Use `⟨T, hX, m, f, φ, h1, hΦ, ?_⟩` and prove the remaining obligations. Rewrite using `[he]`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `GlobalTheory.T.tmul_sum_eq_zero_of_pureTensor_function_zero G.M'.vac (fun v => (hM.triple.geo.hM'.vac v).2.1) hM.triple.geo.hM'.std R.p' Rf.Pi Rf.p' T m' f' φ' (fun j => (h1' j).2.2) h0.symm`. Introduce and unpack `⟨T, hX, m, f, φ, h1, hΦ, hz⟩`. Use `⟨T, hX, m, 0, f, φ, Fin.elim0, Fin.elim0, h1, fun j => j.elim0, hΦ, ?_, ?_⟩` and prove the remaining obligations. Simplify using the standard rewrite rules. Rewrite using `[hz]`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem polMatch_zero_iff_polZero : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (Bs : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Base F E) (a a' : ℕ) (G : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Geo σ a a') (Xc : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Chars F E)

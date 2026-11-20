@@ -5,7 +5,7 @@ import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.Archim
 
 open PositivityTheory.Rg.BcB PositivityTheory.Rg.BcB.F in
 /- English proof (translation)
-The claim follows from `Plug2B.bci_of (UpperTheory.HeckeLevelFrameExistence.frameEx_of_fin UpperTheory.BaseChangeIdentities.uSide (FX.candFin_of_jEigFin Tail.JB.jEigFin)) UpperTheory.BaseChangeIdentities.FrameWordIdentity.frameBound FinalAllB.frameRead_holdsB`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.BaseChangeIdentities.baseChangeNB : PositivityTheory.Rg.BcN.BaseChangeIsobaricN :=
   Plug2B.bci_of (UpperTheory.HeckeLevelFrameExistence.frameEx_of_fin UpperTheory.BaseChangeIdentities.uSide (FX.candFin_of_jEigFin Tail.JB.jEigFin))

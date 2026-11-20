@@ -8,17 +8,17 @@ namespace GlobalTheory.CompanionTheory.Ar.Fan
 open Matrix in
 
 /- English proof (translation)
-Establish `hpos : ∀ x : Fin n → ℝ, x ≠ 0 → 0 < x ⬝ᵥ (A *ᵥ x)`. Introduce `x hx`. Simplify using `using (Matrix.posDef_iff_dotProduct_mulVec.1 hA).2 hx`. Establish `hcont : Continuous fun x : Fin n → ℝ => x ⬝ᵥ (A *ᵥ x)`. Apply `Continuous.dotProduct continuous_id` to reduce the goal to its premises.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `Continuous.matrix_mulVec continuous_const continuous_id`. Establish `hS : IsCompact (Metric.sphere (0 : Fin n → ℝ) 1)` using `isCompact_sphere _ _`. Establish `key : ∃ ε : ℝ, 0 < ε ∧ ∀ x ∈ Metric.sphere (0 : Fin n → ℝ) 1, ε ≤ x ⬝ᵥ (A *ᵥ x)`. Break down `(Metric.sphere (0 : Fin n → ℝ) 1).eq_empty_or_nonempty with h | h` into its components or cases. Conclude with `⟨1, one_pos, by simp [h]⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `⟨x0, hx0, hmin⟩` from `hS.exists_isMinOn h hcont.continuousOn`. Use `⟨_, hpos x0 ?_, fun x hx => hmin hx⟩` and prove the remaining obligations. Introduce and unpack `rfl`. Simplify using `at hx0`. Take `⟨ε, hε, hb⟩` from `key`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨ε, hε, fun x => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hx : x = 0`. Substitute `hx` using the available equality. Simplify using the standard rewrite rules. Establish `hn : ‖x‖ ≠ 0` using `norm_ne_zero_iff.2 hx`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hu : (‖x‖⁻¹ • x) ∈ Metric.sphere (0 : Fin n → ℝ) 1`. Simplify using `[norm_smul, hn]`. Establish `h1` using `hb _ hu`. Establish `e : (‖x‖⁻¹ • x) ⬝ᵥ (A *ᵥ (‖x‖⁻¹ • x)) = (‖x‖⁻¹) ^ 2 * (x ⬝ᵥ (A *ᵥ x))`. Rewrite using `[Matrix.mulVec_smul, dotProduct_smul, smul_dotProduct]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[sq, mul_assoc]`. Rewrite `h1` using `[e]`. Establish `h2 : 0 < ‖x‖ ^ 2` using `by positivity`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem posDef_coercive {n : ℕ} (A : Matrix (Fin n) (Fin n) ℝ) (hA : A.PosDef) :
     ∃ ε : ℝ, 0 < ε ∧ ∀ x : Fin n → ℝ, ε * ‖x‖ ^ 2 ≤ x ⬝ᵥ (A *ᵥ x) := by
@@ -55,27 +55,27 @@ theorem posDef_coercive {n : ℕ} (A : Matrix (Fin n) (Fin n) ℝ) (hA : A.PosDe
 open Matrix in
 
 /- English proof (translation)
-Introduce `X _ _ _ β hsym hpos c`. Take `⟨n, b⟩ : ∃ n : ℕ, Nonempty (Module.Basis (Fin n) ℤ X)` from `⟨_, ⟨Module.finBasis ℤ X⟩⟩`. Take `⟨b⟩` from `b`. Set `Q : Matrix (Fin n) (Fin n) ℚ` to `Matrix.of fun i j => ((β (b i) (b j) : ℤ) : ℚ)`. Establish `hQs : Q.IsSymm`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use extensionality with `i j`. Simplify using `[Q, hsym (b i) (b j)]`. Establish `hval : ∀ v : Fin n → ℤ, β (∑ i, v i • b i) (∑ i, v i • b i) = ∑ i, ∑ j, β (b i) (b j) * v i * v j`. Introduce `v`. Simplify using `only [map_sum, LinearMap.sum_apply, map_smul, LinearMap.smul_apply, smul_eq_mul, Finset.mul_sum]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Use `Finset.sum_comm.trans ?_` and prove the remaining obligations. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Establish `hne : ∀ v : Fin n → ℤ, v ≠ 0 → (∑ i, v i • b i) ≠ 0`. Introduce `v hv h0`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hv (funext (Fintype.linearIndependent_iff.1 b.linearIndependent v h0))`. Establish `hQpos : ∀ v : Fin n → ℤ, v ≠ 0 → 0 < ∑ i, ∑ j, Q i j * v i * v j`. Introduce `v hv`. Establish `h` using `hpos _ (hne v hv)`. Rewrite `h` using `[hval]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h' : (0 : ℚ) < ((∑ i, ∑ j, β (b i) (b j) * v i * v j : ℤ) : ℚ)` using `by exact_mod_cast h`. Simplify `h'` using `[Q]`. Establish `hA` using `GlobalTheory.CompanionTheory.Ar.Fan.posDef_of_int_pos n Q hQs hQpos`. Take `⟨ε, hε, hco⟩` from `posDef_coercive _ hA`. Take `⟨N, hN⟩` from `exists_nat_ge ((c : ℝ) / ε)`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hbound : ∀ v : Fin n → ℤ, β (∑ i, v i • b i) (∑ i, v i • b i) ≤ c → ∀ i, |v i| ≤ (N + 1 : ℤ)`. Introduce `v hv i`. Establish `h1` using `hco (fun i => (v i : ℝ))`. Establish `h2 : (fun i => (v i : ℝ)) ⬝ᵥ ((Q.map (Rat.cast : ℚ → ℝ)) *ᵥ (fun i => (v i : ℝ))) = ((β (∑ i, v i • b i) (∑ i, v i • b i) : ℤ) : ℝ)`. Rewrite using `[hval]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [dotProduct, mulVec, Finset.mul_sum, Int.cast_sum, Int.cast_mul]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Simplify using `[Q]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `h1` using `[h2]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h3 : ((β (∑ i, v i • b i) (∑ i, v i • b i) : ℤ) : ℝ) ≤ c` using `by exact_mod_cast hv`. Establish `h4 : ‖(fun i => (v i : ℝ))‖ ^ 2 ≤ N`. Use `le_trans ?_ hN` and prove the remaining obligations. Rewrite using `[le_div_iff₀ hε]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `h5 : |(v i : ℝ)| ≤ ‖(fun i => (v i : ℝ))‖`. Simplify using `using norm_le_pi_norm (fun i => (v i : ℝ)) i`. Establish `h6 : |(v i : ℝ)| ≤ (N : ℝ) + 1`. Use polynomial arithmetic with `[sq_nonneg (‖(fun i => (v i : ℝ))‖ - 1), norm_nonneg (fun i => (v i : ℝ))]`. Conclude with `h6` after adjusting the coercions.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hfin : (Set.Icc (fun _ : Fin n => -(N + 1 : ℤ)) (fun _ => (N + 1 : ℤ))).Finite` using `Set.finite_Icc _ _`. Use `(hfin.image fun v => ∑ i, v i • b i).subset ?_` and prove the remaining obligations. Introduce `y hy`. Establish `hy' : y = ∑ i, (b.repr y i) • b i` using `(b.sum_repr y).symm`. Use `⟨fun i => b.repr y i, ?_, hy'.symm⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Supply the required witnesses or components.
 
-Establish `hb2` using `hbound (fun i => b.repr y i) (by rw [← hy']; exact hy)`. Conclude with `⟨fun i => (abs_le.1 (hb2 i)).1, fun i => (abs_le.1 (hb2 i)).2⟩`.
+A detailed English derivation is pending.
 -/
 theorem sublevel_finite : ∀ (X : Type) [AddCommGroup X] [Module.Finite ℤ X] [Module.Free ℤ X]
     (β : LinearMap.BilinForm ℤ X), (∀ y z, β y z = β z y) → (∀ y, y ≠ 0 → 0 < β y y) →

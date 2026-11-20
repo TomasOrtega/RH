@@ -6,19 +6,17 @@ open Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.MainNotions.N F
 namespace GlobalTheory.WeilDeligne
 
 /- English proof (translation)
-Take `⟨k, hk⟩` from `hN`. Establish `hline : ∀ μ : ℂ, ∀ v ∈ f.maxGenEigenspace μ, N v = 0`. Introduce `μ`. Establish `hdim : Module.finrank ℂ (f.maxGenEigenspace μ) ≤ 1`. Rewrite using `[LinearMap.finrank_maxGenEigenspace_eq]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Polynomial.rootMultiplicity_le_one_of_separable hf μ`. Take `⟨v₀, hv₀⟩` from `finrank_le_one_iff.mp hdim`. Establish `hgen : ∀ v ∈ f.maxGenEigenspace μ, ∃ c : ℂ, v = c • (v₀ : V)`. Introduce `v hv`. Take `⟨c, hcv⟩` from `hv₀ ⟨v, hv⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨c, (congrArg Subtype.val hcv).symm⟩`. Take `⟨c, hNv⟩` from `hgen _ (Module.End.mapsTo_maxGenEigenspace_of_comm hc μ v₀.2)`. Establish `hpow : ∀ m : ℕ, (N ^ m) (v₀ : V) = c ^ m • (v₀ : V)`. Introduce `m`. Proceed by induction on `m with`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `zero => simp`. Consider the case `succ m ih => rw [pow_succ', Module.End.mul_apply, ih, map_smul, hNv, smul_smul, ← pow_succ]`. Establish `h0 : N (v₀ : V) = 0`. Establish `hz` using `hpow k`. Rewrite `hz` using `[hk, LinearMap.zero_apply]`.
+Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `smul_eq_zero.mp hz.symm with h | h` into its components or cases. Rewrite using `[hNv, (pow_eq_zero_iff'.mp h).1, zero_smul]`. Rewrite using `[h, map_zero]`. Introduce `v hv`. Take `⟨a, rfl⟩` from `hgen v hv`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_smul, h0, smul_zero]`. Use extensionality with `v`. Establish `hv : v ∈ ⨆ μ, f.maxGenEigenspace μ`. Rewrite using `[Module.End.iSup_maxGenEigenspace_eq_top]`. Discharge the goal by the elementary cases of `trivial`.
-
-Conclude with `Submodule.iSup_induction _ (motive := fun v => N v = 0) hv hline (map_zero N) (fun x y hx hy => by rw [map_add, hx, hy, add_zero])`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_commute_of_separable {V : Type*} [AddCommGroup V] [Module ℂ V]
     [FiniteDimensional ℂ V] {f N : Module.End ℂ V} (hf : f.charpoly.Separable)
@@ -59,11 +57,11 @@ theorem eq_zero_of_commute_of_separable {V : Type*} [AddCommGroup V] [Module ℂ
 end GlobalTheory.WeilDeligne
 
 /- English proof (translation)
-Introduce `σ hσ`. Proceed by induction on `x using Quotient.inductionOn with`. Consider the case `h a`. Take `⟨n, a⟩` from `a`. Establish `hw : σ ∈ Weil h` using `Ine_le_Weil h hσ`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hcomm : Commute (a.ρ ⟨σ, hw⟩) a.N`. Establish `hc` using `a.comm ⟨σ, hw⟩`. Rewrite `hc` using `[deg_eq_zero_iff.mpr hσ, zpow_zero, one_smul]`. Conclude with `hc`. Simplify using `only [WD.mono0, WD.inePol, WD.charPol, dif_pos hw, Quotient.lift_mk, WDRep.Mono0]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hs`. Conclude with `eq_zero_of_commute_of_separable hs hcomm a.nilpotent`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.WeilDeligne.WD.noMonodromy_of_inertia_separable_charpoly (E Ω : Type) [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω] (A : ValuationSubring Ω) (w : HeightOneSpectrum (𝓞 E)) (h : IsPlaceOver A w) (x : GlobalTheory.WeilDeligne.WD h) :
     ∀ σ ∈ Ine (F := E) A, (x.inePol σ).Separable → x.mono0 := by

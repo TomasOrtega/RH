@@ -11,7 +11,7 @@ open NumberField IsDedekindDomain GlobalTheory.WeilM GlobalTheory.AdelicU Global
   PositivityTheory.ThK PositivityTheory.ThKH.Iwas MeasureTheory GlobalTheory.Doubling
 
 /- English proof (translation)
-Establish `hφ : Function.Injective (Φ.comp U.subtype)` using `fun x y e => Subtype.ext (hinj _ x.2 _ y.2 e)`. Establish `e : ∀ C : Subgroup G, C ≤ U → (C.subgroupOf U).map (Φ.comp U.subtype) = C.map Φ` using `fun C hC => by`. Rewrite using `[← Subgroup.map_map, Subgroup.subgroupOf_map_subtype, inf_of_le_left hC]`. Rewrite using `[← e A hA, ← e B hB, Subgroup.relIndex_map_map_of_injective _ _ hφ, Subgroup.relIndex_subgroupOf hB]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem relIndex_transport {G H : Type} [Group G] [Group H] (U : Subgroup G) (Φ : G →* H)
     (hinj : ∀ g ∈ U, ∀ g' ∈ U, Φ g = Φ g' → g = g') {A B : Subgroup G} (hA : A ≤ U) (hB : B ≤ U) :
@@ -22,7 +22,7 @@ theorem relIndex_transport {G H : Type} [Group G] [Group H] (U : Subgroup G) (Φ
   rw [← e A hA, ← e B hB, Subgroup.relIndex_map_map_of_injective _ _ hφ, Subgroup.relIndex_subgroupOf hB]
 
 /- English proof (translation)
-Rewrite using `[Subgroup.map_map, Subgroup.map_map]`. Use `congr 1`. Use extensionality with `x`. Simplify using `[map_mul, map_inv]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem map_conj_map {G H : Type} [Group G] [Group H] (Φ : G →* H) (g : G) (A : Subgroup G) :
     (A.map (MulAut.conj g).toMonoidHom).map Φ = (A.map Φ).map (MulAut.conj (Φ g)).toMonoidHom := by
@@ -32,29 +32,27 @@ theorem map_conj_map {G H : Type} [Group G] [Group H] (Φ : G →* H) (g : G) (A
   simp [map_mul, map_inv]
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ d B W r s hB hW v w hw _ m Cy hLag hAd p hp t ht u hu`. Take `rfl : d = m + m` from `hLag.rank.trans (two_mul m)`. Establish `hσ` using `hB.cm`. Establish `h : w.under (𝓞 F) = v` using `(under_eq_iff hw w).2 rfl`. Take `⟨c, hc, -⟩` from `existsUnique_isConjAt σ hw h`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨ϖ, hU⟩` from `exists_isUnramInv hσ hw hc`. Take `⟨Φ, hG, hinj, hsurj, hK, hP, hdet⟩` from `hC F E σ B r s m W hB hW v w hw h c hc Cy hLag`. Use `set KP := PositivityTheory.Sph.PSub σ W v Cy ⊓ KSub σ W v with hKP`. Establish `hKPU : KP ≤ USub σ W v` using `fun g hg => (hg.2 : g ∈ KAt σ W v).1`. Establish `hpU : p ∈ USub σ W v` using `(hp.1 : p ∈ PAt σ W v Cy).1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `himg : KP.map Φ = KPW (w.adicCompletion E) c m`. Use extensionality with `M`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨g, hg, rfl⟩`. Establish `hgU` using `hKPU hg`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Supply the required witnesses or components.
 
-Conclude with `⟨(hP g hgU).1 hg.1, hG g, (hK g hgU).1 hg.2⟩`. Introduce and unpack `⟨hM1, hM2, hM3⟩`. Take `⟨g, hgU, rfl⟩` from `hsurj _ hM2`. Conclude with `⟨g, ⟨(hP g hgU).2 hM1, (hK g hgU).2 hM3⟩, rfl⟩`. Establish `hconj : ∀ g ∈ USub σ W v, KP.map (MulAut.conj g).toMonoidHom ≤ USub σ W v` using `fun g hg => by`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ ⟨k, hk, rfl⟩`. Conclude with `(USub σ W v).mul_mem ((USub σ W v).mul_mem hg (hKPU hk)) ((USub σ W v).inv_mem hg)`. Establish `tr : ∀ g ∈ USub σ W v, (KP.map (MulAut.conj g).toMonoidHom).relIndex KP = ((KPW (w.adicCompletion E) c m).map (MulAut.conj (Φ g)).toMonoidHom).relIndex (KPW (w.adicCompletion E) c m)` using `fun g hg => by`. Rewrite using `[← relIndex_transport (USub σ W v) Φ hinj (hconj g hg) hKPU, map_conj_map, himg]`. Establish `hPW : Φ p ∈ PW (w.adicCompletion E) c m` using `(hP p hpU).1 hp`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `key` using `hL (w.adicCompletion E) ϖ c (Formalism.UG.qV F v) hU m (Φ p) hPW`. Rewrite `key` using `[← map_inv, ← tr p⁻¹ ((USub σ W v).inv_mem hpU), ← tr p hpU, hdet p hp t ht]`. Rewrite using `[key]`. Use `congr 1`. Establish `h21 : (Φ p : Matrix (Fin m ⊕ Fin m) (Fin m ⊕ Fin m) (w.adicCompletion E)).toBlocks₂₁ = 0` using `GlobalTheory.LGrp.mem_blockQ_two.1 hPW.2`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdetΦ : (Φ p : Matrix (Fin m ⊕ Fin m) (Fin m ⊕ Fin m) (w.adicCompletion E)).det = (Φ p : Matrix (Fin m ⊕ Fin m) (Fin m ⊕ Fin m) (w.adicCompletion E)).toBlocks₁₁.det * (Φ p : Matrix (Fin m ⊕ Fin m) (Fin m ⊕ Fin m) (w.adicCompletion E)).toBlocks₂₂.det` using `by conv_lhs => rw [← Matrix.fromBlocks_toBlocks (Φ p : Matrix (Fin m ⊕ Fin m) (Fin m ⊕ Fin m) (w.adicCompletion E)), h21]`. Conclude with `Matrix.det_fromBlocks_zero₂₁ _ _ _`. Establish `hne : piE h t.det ≠ 0`. Rewrite using `[← hdet p hp t ht]`. Introduce `h0`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression.
 
-Establish `hu'` using `(Matrix.isUnit_iff_isUnit_det _).1 (Φ p).isUnit`. Rewrite `hu'` using `[hdetΦ, h0, zero_mul]`. Conclude with `not_isUnit_zero hu'`. Set `x : (Fv F v ⊗[F] E)ˣ` to `Units.map (complEquiv hw h).symm.toMonoidHom (Units.mk0 _ hne)`. Establish `hx1 : x.1 = (t.map (compFin F E v)).det`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `(complEquiv hw h).symm ((complEquiv hw h) (compFin F E v t.det)) = _`. Rewrite using `[RingEquiv.symm_apply_apply]`. Conclude with `RingHom.map_det _ _`. Establish `habs` using `GlobalTheory.AbsInert.absEv_inert F E σ hσ v w h hw x`. Establish `hm : (((sbClass (Fv F v)).modu u : NNReal) : ℝ) = (absEv F E v x : ℝ)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e1` using `GlobalTheory.CompanionTheory.SW.ProdFormula.distribHaarChar_eq_nnnorm v (u : Fv F v) u.ne_zero`. Rewrite `e1` using `[Units.mk0_val]`. Express the relevant statement in the definitionally equal form `((distribHaarChar (Fv F v) u : NNReal) : ℝ) = _`. Rewrite using `[e1, absEv_apply, hx1, ← hu]`. Establish `hx : piE h t.det = toCompl h x.1`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hx1]`. Express the relevant statement in the definitionally equal form `toCompl h (compFin F E v t.det) = toCompl h (t.map (compFin F E v)).det`. Rewrite using `[RingHom.map_det]`. Both sides reduce to the same expression. Rewrite using `[hm, habs, hx, ← zpow_natCast, ← zpow_mul]`.
-
-Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem modSt_of (hC : ChartSt) (hL : LocModSt) : PositivityTheory.Sph.ModSt := by
   intro F E _ _ _ _ _ σ d B W r s hB hW v w hw _ m Cy hLag hAd p hp t ht u hu

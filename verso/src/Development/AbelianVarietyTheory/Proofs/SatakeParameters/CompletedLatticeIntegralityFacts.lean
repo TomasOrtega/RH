@@ -13,9 +13,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.LatIntFacts
 
 /- English proof (translation)
-Establish `a1 : P.intValuation ϖ ≤ WithZero.exp (-((1 : ℕ) : ℤ))` using `(P.intValuation_le_pow_iff_mem ϖ 1).2 (by rw [pow_one]; exact h1)`. Establish `a2 : ¬ P.intValuation ϖ ≤ WithZero.exp (-((2 : ℕ) : ℤ))` using `fun h => h2 ((P.intValuation_le_pow_iff_mem ϖ 2).1 h)`. Establish `a0 : P.intValuation ϖ ≠ 0` using `fun h => a2 (h ▸ zero_le')`. Rewrite `a1`, `a2`, the goal using `[← WithZero.exp_log a0]`. Rewrite `a1`, `a2` using `[WithZero.exp_le_exp]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `congr 1`. Use linear arithmetic over natural numbers and integers.
+Reduce the equality to equality of the corresponding arguments. Use linear arithmetic over natural numbers and integers.
 -/
 theorem intValuation_uniformiser {R : Type} [CommRing R] [IsDedekindDomain R] (P : HeightOneSpectrum R) {ϖ : R}
     (h1 : ϖ ∈ P.asIdeal) (h2 : ϖ ∉ P.asIdeal ^ 2) : P.intValuation ϖ = WithZero.exp (-1 : ℤ) := by
@@ -30,11 +30,11 @@ theorem intValuation_uniformiser {R : Type} [CommRing R] [IsDedekindDomain R] (P
   omega
 
 /- English proof (translation)
-Establish `key : ∀ X Y : Matrix (Fin n) (Fin n) R, (ε • X + (1 - ε) • (1 : Matrix (Fin n) (Fin n) R)) * (ε • Y + (1 - ε) • (1 : Matrix (Fin n) (Fin n) R)) = ε • (X * Y) + (1 - ε) • (1 : Matrix (Fin n) (Fin n) R)`. Introduce `X Y`. Establish `e1 : ε * (1 - ε) = 0` using `by linear_combination -hε`. Establish `e2 : (1 - ε) * ε = 0` using `by linear_combination -hε`. Establish `e3 : (1 - ε) * (1 - ε) = 1 - ε` using `by linear_combination hε`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [add_mul, mul_add, smul_mul_smul_comm, hε, e1, e2, e3, zero_smul, mul_one, add_zero, zero_add]`. Establish `h1` using `key B C`. Rewrite `h1` using `[h, ← add_smul, add_sub_cancel, one_smul]`. Establish `h2` using `mul_eq_one_comm.1 h1`. Rewrite `h2` using `[key]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[eq_sub_of_add_eq h2, sub_smul, one_smul, sub_sub_cancel]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_left_inverse {R : Type} [CommRing R] {n : ℕ} (ε : R) (B C : Matrix (Fin n) (Fin n) R)
     (hε : ε * ε = ε) (h : ε • (B * C) = ε • (1 : Matrix (Fin n) (Fin n) R)) :
@@ -56,39 +56,35 @@ theorem exists_left_inverse {R : Type} [CommRing R] {n : ℕ} (ε : R) (B C : Ma
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `D V`. Use `⟨GlobalTheory.LatDual.smul_mem_lamHat V, ?_, ?_⟩` and prove the remaining obligations. Introduce `P e ϖ ϖ' he h1 h2 h1' h2' n`. Establish `hv : P.valuation D.host.E ((ϖ' : D.host.E) ^ n / (ϖ : D.host.E) ^ n) ≤ 1`. Establish `v1 : P.valuation D.host.E (ϖ : D.host.E) = WithZero.exp (-1 : ℤ)` using `(P.valuation_of_algebraMap ϖ).trans (intValuation_uniformiser P h1 h2)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `v2 : P.valuation D.host.E (ϖ' : D.host.E) = WithZero.exp (-1 : ℤ)` using `(P.valuation_of_algebraMap ϖ').trans (intValuation_uniformiser P h1' h2')`. Rewrite using `[map_div₀, map_zpow₀, map_zpow₀, v1, v2]`. Conclude with `div_self_le_one _`. Take `⟨a, b, hab⟩` from `P.exists_primeCompl_mul_eq_of_integer _ hv`. Establish `hb : (b : 𝓞 D.host.E) ∉ P.asIdeal` using `b.2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb0 : (b : 𝓞 D.host.E) ≠ 0` using `fun h => hb (h ▸ zero_mem _)`. Establish `hb1 : ((b : 𝓞 D.host.E) : D.host.E) ≠ 0` using `by exact_mod_cast hb0`. Establish `hi : finPart D (e * incA D (((b : 𝓞 D.host.E) : D.host.E)⁻¹)) ∈ intAE D`. Assume the negation of the conclusion as `hc`. Conclude with `hb ((he.2 _ hb0).2 hc)`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hq : (ϖ' : D.host.E) ^ n / (ϖ : D.host.E) ^ n = (a : D.host.E) * ((b : 𝓞 D.host.E) : D.host.E)⁻¹`. Rewrite using `[eq_mul_inv_iff_mul_eq₀ hb1]`. Conclude with `hab`. Establish `ha : finPart D (incA D (a : D.host.E)) ∈ intAE D` using `AddSubgroup.subset_closure ⟨1, fun v => one_mem _, a, rfl⟩`. Establish `hm : ∀ {x y : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F ⊗[D.host.F] D.host.E}, x ∈ intAE D → y ∈ intAE D → x * y ∈ intAE D`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Introduce `x y hx hy`. Use `AddSubgroup.closure_induction₂ (p := fun x y _ _ => x * y ∈ intAE D) ?_ ?_ ?_ ?_ ?_ ?_ ?_ hx hy` and prove the remaining obligations. Introduce and unpack `_ _ ⟨a, ha, u, rfl⟩ ⟨b, hb, v, rfl⟩`. Use `AddSubgroup.subset_closure ⟨a * b, fun w => ?_, u * v, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `mul_mem (ha w) (hb w)`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul]`. Both sides reduce to the same expression. Introduce `x _`. Rewrite using `[zero_mul]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `zero_mem _`. Introduce `x _`. Rewrite using `[mul_zero]`. Conclude with `zero_mem _`. Introduce `x y z _ _ _ h1 h2`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[add_mul]`. Conclude with `add_mem h1 h2`. Introduce `x y z _ _ _ h1 h2`. Rewrite using `[mul_add]`. Conclude with `add_mem h1 h2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x y _ _ h`. Rewrite using `[neg_mul]`. Conclude with `neg_mem h`. Introduce `x y _ _ h`. Rewrite using `[mul_neg]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `neg_mem h`. Use `hm ha hi` as an intermediate fact. Rewrite `this` using `[RingHom.map_mul, mul_left_comm]`. Rewrite using `[hq, RingHom.map_mul, RingHom.map_mul]`. Conclude with `this`.
+Check the elementary cases of the proposition. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Introduce `ε B hε h`. Take `⟨-, -, -, hspan, -⟩` from `GlobalTheory.Member.latHat_eq_hat_and_gram D V`. Establish `hx : ∀ x : Fin V.rank → D.host.E, ∃ z, ∀ a, ε * ((1 : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F) ⊗ₜ[D.host.F] x a) = ε * B.mulVec z a`. Introduce `x`. Establish `hx : x ∈ Submodule.span D.host.E (GlobalTheory.Member.latC V : Set (Fin V.rank → D.host.E))`.
+Supply the required witnesses or components. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hspan]`. Discharge the goal by the elementary cases of `trivial`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨z, hz⟩` from `h (fun a => (1 : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F) ⊗ₜ[D.host.F] x a) (by`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[GlobalTheory.LatDual.lamHat_eq_hat]`. Conclude with `AddSubgroup.subset_closure ⟨1, fun v => one_mem _, x, hx, rfl⟩)`. Conclude with `⟨z, congrFun hz⟩`. Consider the case `zero => exact ⟨0, fun a => by simp⟩`. Consider the case `add u w _ _ hu hw`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨z, hz⟩` from `hu`. Take `⟨z', hz'⟩` from `hw`. Conclude with `⟨z + z', fun a => by`. Rewrite using `[Pi.add_apply, TensorProduct.tmul_add, mul_add, hz, hz', Matrix.mulVec_add, Pi.add_apply, mul_add]⟩`. Consider the case `smul c u _ hu`.
+Reduce the equality to equality of the corresponding arguments. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Take `⟨z, hz⟩` from `hu`. Use `⟨((1 : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F) ⊗ₜ[D.host.F] c) • z, fun a => ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mulVec_smul, Pi.smul_apply, Pi.smul_apply, smul_eq_mul, smul_eq_mul, mul_left_comm, ← hz, mul_left_comm, Algebra.TensorProduct.tmul_mul_tmul, mul_one]`. Use `choose z hz using hx`. Establish `hBC : ε • (B * Matrix.of fun j i => z (Pi.single i 1) j) = ε • (1 : Matrix (Fin V.rank) (Fin V.rank) (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F ⊗[D.host.F] D.host.E))`.
-
-Use `Matrix.ext fun a i => ?_` and prove the remaining obligations. Rewrite using `[Matrix.smul_apply, Matrix.smul_apply, smul_eq_mul, smul_eq_mul]`. Use `(hz (Pi.single i 1) a).symm.trans ?_` and prove the remaining obligations. Use `congr 1`. Distinguish the cases in `hai : a = i`.
-
-Substitute `hai` using the available equality. Rewrite using `[Pi.single_eq_same, Matrix.one_apply_eq]`. Both sides reduce to the same expression. Rewrite using `[Pi.single_eq_of_ne hai, Matrix.one_apply_ne hai, TensorProduct.tmul_zero]`. Conclude with `⟨_, hBC, exists_left_inverse ε B _ hε hBC⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem int_facts : ∀ {D : D7} (V : HSp D), (∀ a ∈ intAE D, ∀ y ∈ LamHat V, (fun i => a * y i) ∈ LamHat V) ∧ (∀ (P : HeightOneSpectrum (𝓞 D.host.E)) (e : Formalism.L2.Theta.AE D) (ϖ ϖ' : 𝓞 D.host.E), IsIdemAt e P → ϖ ∈ P.asIdeal → ϖ ∉ P.asIdeal ^ 2 → ϖ' ∈ P.asIdeal → ϖ' ∉ P.asIdeal ^ 2 → ∀ n : ℤ, finPart D e * finPart D (incA D ((ϖ' : D.host.E) ^ n / (ϖ : D.host.E) ^ n)) ∈ intAE D) ∧ ∀ (ε : (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F ⊗[D.host.F] D.host.E)) (B : Matrix (Fin V.rank) (Fin V.rank) (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F ⊗[D.host.F] D.host.E)), ε * ε = ε → (∀ y ∈ LamHat V, ∃ z, (fun a => ε * y a) = fun a => ε * B.mulVec z a) → ∃ C : Matrix (Fin V.rank) (Fin V.rank) (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F ⊗[D.host.F] D.host.E), ε • (B * C) = ε • (1 : Matrix (Fin V.rank) (Fin V.rank) (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F ⊗[D.host.F] D.host.E)) ∧ ε • (C * B) = ε • (1 : Matrix (Fin V.rank) (Fin V.rank) (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F ⊗[D.host.F] D.host.E)) := by
   intro D V

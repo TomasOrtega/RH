@@ -5,17 +5,17 @@ open scoped Matrix
 namespace GlobalTheory.HilbertThetaSeries
 
 /- English proof (translation)
-Introduce `F _ _ k M h f g c`. Establish `h0a : sl0 k h (f + g) = sl0 k h f + sl0 k h g`. Use function extensionality and compare the values at `z`. Simplify using `only [sl0, Pi.add_apply]`. Expand and normalize the polynomial expressions, which then agree.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `h0s : sl0 k h (c • f) = c • sl0 k h f`. Use function extensionality and compare the values at `z`. Simplify using `only [sl0, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `h0p : sl0 (k * M) h (f ^ M) = sl0 k h f ^ M`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `z`. Simplify using `only [sl0, Pi.pow_apply]`. Rewrite using `[mul_pow, pow_mul]`. Use `⟨h0a, h0s, h0p, ?_, ?_, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `z`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [sl, h0a, Pi.add_apply]`. Expand and normalize the polynomial expressions, which then agree. Use function extensionality and compare the values at `z`. Simplify using `only [sl, h0s, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Use function extensionality and compare the values at `z`. Simplify using `only [sl, h0p, Pi.pow_apply]`. Rewrite using `[mul_pow]`. Use `congr 1`. Establish `hx : (0 : ℝ) ≤ ∏ v, |(h : Matrix (Fin 2) (Fin 2) (InfinitePlace F → ℝ)).det v|` using `Finset.prod_nonneg fun v _ => abs_nonneg _`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Rewrite using `[← Complex.ofReal_pow, ← Real.rpow_mul_natCast hx]`. Use `congr 2`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem slash_add_smul_pow : ∀ (F : Type) [Field F] [NumberField F] (k M : ℕ) (h : GL (Fin 2) (InfinitePlace F → ℝ)) (f g : Hn F → ℂ) (c : ℂ), sl0 k h (f + g) = sl0 k h f + sl0 k h g ∧ sl0 k h (c • f) = c • sl0 k h f ∧ sl0 (k * M) h (f ^ M) = sl0 k h f ^ M ∧ sl k h (f + g) = sl k h f + sl k h g ∧ sl k h (c • f) = c • sl k h f ∧ sl (k * M) h (f ^ M) = sl k h f ^ M := by
   intro F _ _ k M h f g c

@@ -25,21 +25,21 @@ open GlobalTheory GlobalTheory.CM GlobalTheory.Frames GlobalTheory.LamT
 namespace GlobalTheory.LamT
 
 /- English proof (translation)
-Substitute `hn` using the available equality. Substitute `hx` using the available equality. Establish `hw0 : φ' ≫ G.hom = (G'.hom ≫ spMap f) ≫ x` using `by rw [Category.assoc]; exact h'.1.w`. Establish `hψ1 : h.1.lift φ' (G'.hom ≫ spMap f) hw0 ≫ φ = φ'` using `h.1.lift_fst _ _ _`. Establish `hψ2 : h.1.lift φ' (G'.hom ≫ spMap f) hw0 ≫ G₀.hom = G'.hom ≫ spMap f` using `h.1.lift_snd _ _ _`.
+Substitute using the available equality. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hG : IsGrpPullback G' G₀ (spMap f) (h.1.lift φ' (G'.hom ≫ spMap f) hw0)` using `IsGrpPullback.cancel h (IsGrpPullback.congr h' rfl hψ1.symm) hψ2`. Establish `he : (algebraMap S (DualNumber S)).comp f = (Chart.dualMapR f).comp (algebraMap R (DualNumber R))` using `by clear h h' hv hw hc hG hψ1 hψ2 hw0 first`. Consider the case `exact RingHom.ext fun r => rfl`. Consider the case `(ext r <;> simp [Chart.dualMapR] <;> rfl)`. Consider the case `(ext r <;> simp [Chart.dualMapR] <;> erw [TrivSqZeroExt.algebraMap_eq_inl] <;> simp <;> done)`.
+Establish an intermediate fact. Establish an intermediate fact. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(ext r <;> simp [Chart.dualMapR] <;> simp [Algebra.algebraMap_eq_smul_one] <;> done)`. Consider the case `(ext r`. Simplify using `[Chart.dualMapR] show f r = f r`. Both sides reduce to the same expression. Simplify using `[Chart.dualMapR] show (0 : S) = f 0 simp)`.
+Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Simplify using the standard rewrite rules.
 
-Use `ReciprocityTheory.ChartRestriction.G.Chart.comb_baseChange f hG hc (fun i => ?_) ?_` and prove the remaining obligations. Apply `h.1.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, hψ1, hv i, Category.assoc]`. Both sides reduce to the same expression. Rewrite using `[Category.assoc, hψ2, ← Category.assoc, Over.w (v' i), Category.assoc, Over.w (v i)] first`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Consider the case `(show spMap _ ≫ spMap f = spMap _ ≫ spMap _`. Rewrite using `[← spMap_comp, ← spMap_comp, he])`. Consider the case `(show spMap _ ≫ spMap f = spMap _ ≫ spMap _`. Rewrite using `[← Geo.Tor.spMap_comp, ← Geo.Tor.spMap_comp, he])`. Consider the case `(unfold epsR; simp only [Over.mk_hom, ← spMap_comp, he])`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `(show Spec.map _ ≫ Spec.map _ = Spec.map _ ≫ Spec.map _`. Rewrite using `[← Spec.map_comp, ← Spec.map_comp, ← CommRingCat.ofHom_comp, ← CommRingCat.ofHom_comp, he])`. Apply `h.1.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, hψ1, hw, Category.assoc]`. Both sides reduce to the same expression.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[Category.assoc, hψ2, ← Category.assoc, Over.w w', Category.assoc, Over.w w] first`. Consider the case `(show spMap _ ≫ spMap f = spMap _ ≫ spMap _`. Rewrite using `[← spMap_comp, ← spMap_comp, he])`. Consider the case `(show spMap _ ≫ spMap f = spMap _ ≫ spMap _`. Rewrite using `[← Geo.Tor.spMap_comp, ← Geo.Tor.spMap_comp, he])`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Consider the case `(unfold epsR; simp only [Over.mk_hom, ← spMap_comp, he])`. Consider the case `(show Spec.map _ ≫ Spec.map _ = Spec.map _ ≫ Spec.map _`. Rewrite using `[← Spec.map_comp, ← Spec.map_comp, ← CommRingCat.ofHom_comp, ← CommRingCat.ofHom_comp, he])`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem isLieComb_of_two_pullbacks {R S : Type} [CommRing R] [CommRing S] (f : R →+* S) {X : Scheme.{0}}
     {x : Sp R ⟶ X} {x' : Sp S ⟶ X} (hx : x' = spMap f ≫ x) {G : Over X} [GrpObj G] {G₀ : Over (Sp R)} [GrpObj G₀]
@@ -98,7 +98,7 @@ theorem isLieComb_of_two_pullbacks {R S : Type} [CommRing R] [CommRing S] (f : R
          rw [← Spec.map_comp, ← Spec.map_comp, ← CommRingCat.ofHom_comp, ← CommRingCat.ofHom_comp, he])
 
 /- English proof (translation)
-Unfold `hermForm`. Simplify using `[Matrix.mulVec, dotProduct, map_sum, Matrix.map_apply]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem hermForm_map_conj {g : ℕ} (Hm : Matrix (Fin g) (Fin g) ℂ) (z w : Fin g → ℂ) :
     hermForm (Hm.map (starRingEnd ℂ)) (fun i => starRingEnd ℂ (z i)) (fun i => starRingEnd ℂ (w i)) =
@@ -107,7 +107,7 @@ theorem hermForm_map_conj {g : ℕ} (Hm : Matrix (Fin g) (Fin g) ℂ) (z w : Fin
   simp [Matrix.mulVec, dotProduct, map_sum, Matrix.map_apply]
 
 /- English proof (translation)
-Substitute `hg` using the available equality. Conclude with `⟨Φ, u, Hm, χ, θ, Fd, w, W, h⟩`.
+Substitute using the available equality. Supply the required witnesses or components.
 -/
 theorem isMetricAt_of_dim {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Level H}
     {Xo : Moduli Dw l} (x : Sp ℂ ⟶ Xo.X) (s : LB.Sec (PPx x))
@@ -126,17 +126,15 @@ theorem isMetricAt_of_dim {E : Type} [Field E] [NumberField E] [IsCMField E] {H 
   exact ⟨Φ, u, Hm, χ, θ, Fd, w, W, h⟩
 
 /- English proof (translation)
-Take `⟨Φ, u, Hm, χ, θ, Fd, w, W, hT, hAH, hRig, hFn, hFd, hN, hw, hGr⟩` from `h`. Take `⟨Φ0⟩` from `GlobalTheory.T.universalTripleFibreKeyData_nonempty_field E H Dw l Xo ℂ x' hpq`. Establish `hNZ : SecNZ x' s'` using `GlobalTheory.Frames.secNZ_of_secGen GlobalTheory.lawsFieldsSeparately.2.1 E H Dw l Xo ℂ x' s' hgen`. Take `⟨-, hex, huniq⟩` from `GlobalTheory.T.rigidifiedSectionCorrespondence_existsUnique_nonvanishing E H Dw l Xo ℂ x' Φ0.T.t Φ0.m`. Take `⟨th, hth⟩` from `hex s'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hne` using `((huniq th s' hth).2).1 hNZ`. Take `⟨hg, v', hv', hKey, hvrel⟩` from `GlobalTheory.T.universalTripleFibreKeyData_baseChange_keyPullback E H Dw l Xo ℂ ℂ (starRingEnd ℂ) x x' Φ { Φ0 with th := th, th_ne := hne } s s' hx hT hth hs`. Take `⟨u', χ', θ', Fd', hAH', hRig', hFn', hFd', hNeq, hdiff⟩` from `GlobalTheory.T.exists_uniformisation_of_complexConjugate_keyDatum Φ.key _ hKey hg _ u Hm χ θ Fd ⟨hAH, hRig, hFn, hFd⟩`. Establish `hpb : ∀ (Ψ : FibKey Xo ℂ x'), IsGrpPullback Ψ.T.t.G Xo.univ.t.G x' Ψ.m.φ`. Introduce `Ψ`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Ψ.m.cart`. Establish `hpb0 : IsGrpPullback Φ.T.t.G Xo.univ.t.G x Φ.m.φ` using `Φ.m.cart`. Establish `hcomb : ∀ b i, ∃ cf : Fin Φ.T.g → ℂ, IsLieComb cf Φ.v (w b i)`. Introduce `b i`. Establish `hTB` using `((GlobalTheory.Frames.lieBasis_iff_tanBasis E H Dw l Xo ℂ x _ Φ.m.φ hpb0).2 _ Φ.v).1 Φ.basis`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨a, ha, -⟩` from `hTB.2 _ (ht b i)`. Use `⟨a, (ReciprocityTheory.ChartRestriction.G.Chart.comb_push hpb0 a Φ.v (w b i)).2 ?_⟩` and prove the remaining obligations. Rewrite `ha` using `[← (hw b i).1]`. Conclude with `ha`. Use `choose cf hcf using hcomb`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hw' : ∀ b i, ∃ w' : epsR ℂ ⟶ Φ0.T.t.G, w'.left ≫ Φ0.m.φ = uu' b i` using `fun b i => (GlobalTheory.Frames.lieBasis_iff_tanBasis E H Dw l Xo ℂ x' Φ0.T.t.G Φ0.m.φ (hpb Φ0)).1 _ (ht' b i)`. Use `choose w' hw'e using hw'`. Use `isMetricAt_of_dim x' s' uu' N _ _ _ hg u' (Hm.map (starRingEnd ℂ)) χ' θ' Fd' w' (fun b i k => starRingEnd ℂ (W b i k)) ⟨hth, hAH', hRig', hFn', hFd', ?_, fun b i => ⟨hw'e b i, ?_⟩, fun b i k => ?_⟩` and prove the remaining obligations. Rewrite using `[hN, hNeq]`. Conclude with `hdiff (cf b i) (w b i) (w' b i) (W b i) (hcf b i) (isLieComb_of_two_pullbacks (starRingEnd ℂ) hx hpb0 (hpb _) hg (hcf b i) hvrel (by rw [hw'e, hu, (hw b i).1])) (hw b i).2`.
-
-Rewrite using `[Matrix.map_apply, hGr, map_mul, hermForm_map_conj]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isMetricAt_conj {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Level H}
     {Xo : Moduli Dw l} (hpq : 1 ≤ Dw.p + Dw.q) (x x' : Sp ℂ ⟶ Xo.X) (s : LB.Sec (PPx x)) (s' : LB.Sec (PPx x'))
@@ -181,7 +179,7 @@ theorem isMetricAt_conj {E : Type} [Field E] [NumberField E] [IsCMField E] {H : 
     simp
 
 /- English proof (translation)
-Simplify using `only [scal]`. Use `first`. Consider the case `rw [map_one, one_mul]`. Consider the case `simp [Out.liftFun]`.
+Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem scal_one_mul_sec {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Level H}
     {Xo : Moduli Dw l} {S : Type} [CommRing S] (x : Sp S ⟶ Xo.X) (s : LB.Sec (PPx x)) (i : (PPx x).ι) :
@@ -192,11 +190,11 @@ theorem scal_one_mul_sec {E : Type} [Field E] [NumberField E] [IsCMField E] {H :
   | simp [Out.liftFun]
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c σ y y' N Gr hpq hF hM`. Take `⟨hx, hu, pm, h1, h2, h3⟩` from `hF`. Unfold `IsMetric at hM ⊢`. Use `isMetricAt_conj hpq y.x y'.x y.s y'.s y.u y'.u N Gr hx ?_ y'.gen y.tan y'.tan hu hM` and prove the remaining obligations. Use `⟨pm, h1, h2, fun i h => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h4` using `h3 i h`. Use `first`. Consider the case `exact (congrArg _ (scal_one_mul_sec (S := ℂ) y.x y.s i)).trans h4`. Consider the case `exact (congrArg _ (scal_one_mul_sec y.x y.s i)).trans h4`. Consider the case `(convert h4 using 2; exact scal_one_mul_sec (S := ℂ) y.x y.s i)`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(convert h4 using 2; simp only [scal]; first | rw [map_one, one_mul] | simp [Out.liftFun])`. Consider the case `(erw [scal_one_mul_sec]; exact h4)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem isMetric_conj : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (σ : c.F →+* ℂ) (y : FrPt Xo c (CAt σ)) (y' : FrPt Xo c (CAt ((starRingEnd ℂ).comp σ))) (N : ℝ) (Gr : (∀ b : E →+* ℂ, Matrix (Fin (Dw.mult b)) (Fin (Dw.mult b)) ℂ)), 1 ≤ Dw.p + Dw.q → FrMap (FrameNorm.conjAlg σ) y y' → IsMetric y N Gr → IsMetric y' N (fun b => (Gr b).map (starRingEnd ℂ)) := by
   intro E _ _ _ H Dw l Xo c σ y y' N Gr hpq hF hM

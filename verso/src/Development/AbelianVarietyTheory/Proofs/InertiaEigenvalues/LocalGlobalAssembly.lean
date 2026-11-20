@@ -10,15 +10,15 @@ open NumberField IsDedekindDomain Formalism Formalism.ConjugateSelfDual Reciproc
 namespace GlobalTheory.Proof.LocalGlobalAssembly
 
 /- English proof (translation)
-Introduce `D _ _ hZ a π hπ`. Establish `hπ' : π ∈ ZgoodN D.nd D.naut a` using `(D.Zgood_tie a π).1 hπ`. Take `⟨-, Sig, hX, hg⟩` from `id hπ'`. Establish `hHG : HG D.nd D.naut a` using `⟨π, hπ'⟩`. Establish `h1` using `((hZ a hHG).1 π hπ' Sig hX).2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hE : eigC D.nd D.naut a π ≠ ⊥`. Take `⟨P, hP, -⟩` from `hX`. Introduce `h`. Apply `D.naut.typeV_ne a P` to reduce the goal to its premises. Rewrite using `[eq_bot_iff, ← h]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `le_iSup₂_of_le (f := fun P (_ : P ∈ {P | D.naut.ptV a P = some π}) => D.naut.typeV a P) P hP le_rfl`. Establish `hM : MjSig D.nd D.naut a Sig ≠ ⊥`. Introduce `h`. Apply `hE` to reduce the goal to its premises. Rewrite using `[← h1, h, Submodule.map_bot]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Choose the witnesses or unpack the hypotheses as in `⟨σ, hW, hσ⟩ : ∃ σ, HasParamW D.nd D.naut a σ Sig ∧ D.what₂.isot (D.nd.j a) σ ≠ ⊥ := by`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Apply `hM` to reduce the goal to its premises. Unfold `MjSig`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Replace the relevant objects with their definitions. Establish an intermediate fact. Supply the required witnesses or components.
 
-Conclude with `le_bot_iff.1 (iSup₂_le fun σ hW => (hc σ hW).le)`. Establish `hgr : D.nd.goodRow σ` using `(GlobalTheory.Proof.SplitPlaceGoodSignature.goodRow_iff_goodSig D.nd D.naut hW.2.2).2 hg`. Conclude with `⟨σ, Sig, ⟨hgr, hσ⟩, hW, hX⟩`.
+A detailed English derivation is pending.
 -/
 theorem main : ∀ D : D7, SumRepresentations.tie0 D → SumRepresentations.Conclusion42 D → SumRepresentations.ConclusionZ D → GlobalTheory.PtCore.GoodPtRow D := by
   intro D _ _ hZ a π hπ

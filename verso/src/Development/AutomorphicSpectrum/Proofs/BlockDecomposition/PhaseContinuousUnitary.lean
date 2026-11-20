@@ -22,7 +22,7 @@ open GlobalTheory.CompanionTheory.SiegelND.Integ.Weyl GlobalTheory.CompanionTheo
 namespace GlobalTheory.CompanionTheory.SiegelND.Integ.Weyl
 
 /- English proof (translation)
-Use `⟨?_, fun y => hψ.2.1 _⟩` and prove the remaining obligations. Establish `: Continuous fun y : Af F => pairA F 0 y` using `continuous_const.prodMk continuous_id`. Conclude with `hψ.1.comp this`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem psiFin_continuous_unit (F : Type) [Field F] [NumberField F] (ψ : AddChar (AF F) ℂ)
     (hψ : IsCharAF F ψ) : Continuous (psiFin F ψ) ∧ ∀ y, ‖psiFin F ψ y‖ = 1 := by
@@ -33,11 +33,11 @@ theorem psiFin_continuous_unit (F : Type) [Field F] [NumberField F] (ψ : AddCha
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hσ M J n ψ hψ b`. Take `⟨a1, a2, a3, -, -, -, -, -, -, -⟩` from `GlobalTheory.T.mem_Oh_iff_and_nat_mul_properties F`. Use `haveI : LocallyCompactSpace (Af F) := a1`. Use `haveI : SecondCountableTopology (Af F) := a2`. Use `haveI : T2Space (Af F) := a3`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨t1, -, -, -, hs, htr, -, -, -, hG⟩` from `GlobalTheory.T.tensor_locally_compact_ring F E σ hσ (Af F)`. Use `haveI : IsTopologicalRing (Af F ⊗[F] E) := t1`. Take `⟨hc, hn⟩` from `psiFin_continuous_unit F ψ hψ`. Use `⟨?_, fun X => hn _, fun X => ?_⟩` and prove the remaining obligations. Use `hc.comp (continuous_const.mul (htr.comp (Continuous.matrix_trace (Continuous.matrix_mul continuous_const (hG n M J)))))` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `hc.comp (htr.comp (Continuous.matrix_trace (Continuous.matrix_mul continuous_const ?_)))` and prove the remaining obligations. Use `continuous_matrix fun a c => ?_` and prove the remaining obligations. Simplify using `only [gram2, hR, Formalism.UG.hform]`. Use `continuous_finset_sum _ fun i _ => continuous_finset_sum _ fun j _ => ?_` and prove the remaining obligations. Conclude with `continuous_const.mul ((continuous_apply j).comp (continuous_apply c))`.
+A detailed English derivation is pending.
 -/
 theorem phaseB_pairB_props : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (M : ℕ) (J : Matrix (Fin M) (Fin M) E)

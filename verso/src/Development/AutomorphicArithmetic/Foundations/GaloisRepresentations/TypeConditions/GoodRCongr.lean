@@ -18,7 +18,7 @@ def GoodR' (D : D7) (i : D.nd.Loc) (r : ℕ) (p : ∀ w, D.naut.LP w) (m : (D.ho
       ∀ τ, InducesW D.nd i τ w → (D.naut.jumpsW i ρ τ).map (fun n : ℤ => (n : ℂ)) = m ((D.naut.iotaQC i).toRingHom.comp τ)
 
 /- English proof (translation)
-Substitute `hr` using the available equality. Take `rfl : p = p'` from `funext hp`. Take `rfl : m = m'` from `funext hm`. Conclude with `h`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem goodR_congr {D : D7} {i : D.nd.Loc} {r r' : ℕ} {p p' : ∀ w, D.naut.LP w}
     {m m' : (D.host.E →+* ℂ) → Multiset ℂ} (hr : r = r') (hp : ∀ w, p w = p' w) (hm : ∀ τ, m τ = m' τ)
@@ -29,18 +29,18 @@ theorem goodR_congr {D : D7} {i : D.nd.Loc} {r r' : ℕ} {p p' : ∀ w, D.naut.L
   exact h
 
 /- English proof (translation)
-The claim follows from `HeightOneSpectrum.ext (Ideal.ext fun y => (h' y).symm.trans (h y))`.
+A detailed English derivation is pending.
 -/
 theorem ind_unique {D : D7} {i : D.nd.Loc} {τ : D.host.E →+* Qbar (D.nd.l i)} {w w' : PlE D.host}
     (h : InducesW D.nd i τ w) (h' : InducesW D.nd i τ w') : w' = w :=
   HeightOneSpectrum.ext (Ideal.ext fun y => (h' y).symm.trans (h y))
 
 /- English proof (translation)
-Take `⟨ρ, c, s, o, u⟩` from `ha`. Take `⟨ρ', c', s', o', u'⟩` from `hb`. Take `⟨k1, k2, k3⟩` from `(h0.2.2.2.2.2 i).2.2.1 a b ρ ρ' c c'`. Use `⟨SumRepresentations.At.sumRep ρ ρ', GlobalTheory.BCGal.cont_sumRep ρ ρ' c c', GlobalTheory.BCGal.ss_sumRep ρ ρ' s s', fun w hw => ?_, fun w hw hn => ?_⟩` and prove the remaining obligations. Rewrite using `[k2 w (Or.inl hw) (Or.inl hw)]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(o w hw).sum h0.1 (o' w hw)`. Take `⟨n1, n2⟩` from `nc_sum h0.1 _ _ hn`. Take `⟨d, r, j⟩` from `u w hw n1`. Take `⟨d', r', j'⟩` from `u' w hw n2`. Use `⟨(k1 w hw).2 ⟨d, d'⟩, by rw [k2 w (Or.inr d) (Or.inr d')]; exact r.sum h0.1 r', fun τ hτ => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[k3 τ (fun w' h' => by rw [ind_unique hτ h']; exact ⟨d, d'⟩), Multiset.map_add, j τ hτ, j' τ hτ]`.
+A detailed English derivation is pending.
 -/
 theorem goodR_sum {D : D7} (h0 : SumRepresentations.tie0 D) {i : D.nd.Loc} {a b : ℕ} {p q : ∀ w, D.naut.LP w}
     {m m' : (D.host.E →+* ℂ) → Multiset ℂ} (ha : GoodR' D i a p m) (hb : GoodR' D i b q m') :
@@ -58,11 +58,11 @@ theorem goodR_sum {D : D7} (h0 : SumRepresentations.tie0 D) {i : D.nd.Loc} {a b 
     rw [k3 τ (fun w' h' => by rw [ind_unique hτ h']; exact ⟨d, d'⟩), Multiset.map_add, j τ hτ, j' τ hτ]
 
 /- English proof (translation)
-Take `⟨ρ, k, s, o, u⟩` from `ha`. Take `⟨k1, k2, k3⟩` from `(h0.2.2.2.2.2 i).2.2.2 a ρ χ k hχ`. Use `⟨SumRepresentations.At.twGL ρ (Matrix.GeneralLinearGroup.det.comp χ), GlobalTheory.contQ_twGL D i ρ χ k hχ, GlobalTheory.isSSRep_twGL ρ χ s, fun w hw => ?_, fun w hw hn => ?_⟩` and prove the remaining obligations. Rewrite using `[k2 w (Or.inl hw) (Or.inl hw), ho w hw]`. Conclude with `(o w hw).char h0.1 _ (hd w) (hu w)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨d, r, j⟩` from `u w hw ((nc_char h0.1 _ _ (hd w) (hu w)).1 hn)`. Take `⟨d', e, j'⟩` from `hl w hw`. Use `⟨(k1 w hw d').2 d, by rw [k2 w (Or.inr d) (Or.inr d'), e]; exact r.char h0.1 _ (hd w) (hu w), fun τ hτ => ?_⟩` and prove the remaining obligations. Take `⟨n, hn, hnc⟩` from `Multiset.map_eq_singleton.1 (j' τ hτ)`. Rewrite using `[k3 τ n (fun w' h' => by rw [ind_unique hτ h']; exact ⟨d, d'⟩) hn, Multiset.map_map]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `beta_reduce`. Rewrite using `[← j τ hτ, Multiset.map_map, ← hnc]`. Use `congr 1`. Use function extensionality and compare the values at `x`. Simplify using the standard rewrite rules.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem goodR_char {D : D7} (h0 : SumRepresentations.tie0 D) {i : D.nd.Loc} {a : ℕ} {p q : ∀ w, D.naut.LP w}
     {m : (D.host.E →+* ℂ) → Multiset ℂ} {c : (D.host.E →+* ℂ) → ℂ} (ha : GoodR' D i a p m)
@@ -89,7 +89,7 @@ theorem goodR_char {D : D7} (h0 : SumRepresentations.tie0 D) {i : D.nd.Loc} {a :
     simp
 
 /- English proof (translation)
-Take `⟨ρ, c, s, o, u, -⟩` from `(h2 i).1 a ha π hc hr`. Use `⟨ρ, c, s, o, fun w hw hn => ?_⟩` and prove the remaining obligations. Take `⟨d, j, r⟩` from `u w hw (Or.inr ((nc_tw _ _).1 hn))`. Conclude with `⟨d, r.rel, fun τ hτ => by rw [j τ hτ, D.naut.jumpsInf_def i π τ hr]⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem goodR_cusp {D : D7} (h2 : AutomorphicGaloisAdmissible D.nd D.naut) (i : D.nd.Loc) {a : ℕ} (ha : 1 ≤ a) (π : D.naut.CG a)
     (hc : D.naut.csd π) (hr : D.naut.ralg π) :
@@ -101,7 +101,7 @@ theorem goodR_cusp {D : D7} (h2 : AutomorphicGaloisAdmissible D.nd D.naut) (i : 
   exact ⟨d, r.rel, fun τ hτ => by rw [j τ hτ, D.naut.jumpsInf_def i π τ hr]⟩
 
 /- English proof (translation)
-The claim follows from `| [], h, _ => (h rfl).elim | [x], _, hx => by refine goodR_congr ?_ ?_ ?_ (hx x (List.mem_singleton_self x)) · simp · intro w; simp [D.naut.lpSum_zero] · intro τ; simp | x :: y :: L, _, hx => by have ih := goodR_fold h0 r f g (y :: L) (List.cons_ne_nil _ _) (fun z hz => hx z (Lis …`.
+A detailed English derivation is pending.
 -/
 theorem goodR_fold {D : D7} (h0 : SumRepresentations.tie0 D) {i : D.nd.Loc} {β : Type*} (r : β → ℕ)
     (f : β → ∀ w, D.naut.LP w) (g : β → (D.host.E →+* ℂ) → Multiset ℂ) :
@@ -124,37 +124,35 @@ theorem goodR_fold {D : D7} (h0 : SumRepresentations.tie0 D) {i : D.nd.Loc} {β 
       · intro τ; simp only [List.map_cons, List.sum_cons]
 
 /- English proof (translation)
-Introduce `D htie hadm i a ha π e hcsd hinf`. Take `⟨hLP, hAut, hGal⟩` from `htie`. Take `⟨-, -, hG3⟩` from `hadm i`. Break down `Int.even_or_odd (e + (a : ℤ) - 1) with ⟨k, hk⟩ | ⟨k, hk⟩` into its components or cases. Establish `hkC : (e : ℂ) + (a : ℂ) - 1 = (k : ℂ) + (k : ℂ)` using `by exact_mod_cast hk`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Establish `hkR : (e : ℝ) + (a : ℝ) - 1 = (k : ℝ) + (k : ℝ)` using `by exact_mod_cast hk`. Establish `hralg : D.naut.ralg π`. Rewrite using `[D.naut.ralg_def]`. Introduce `τ`. Use `⟨(hinf τ).1, fun z hz => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨m, hm⟩` from `(hinf τ).2 z hz`. Conclude with `⟨m - k, by push_cast; linear_combination hm - hkC / 2⟩`. Establish `hinf0 : ∀ τ, D.naut.infG (D.naut.tw D.naut.etaT D.naut.etaTinv) τ = {0}`. Introduce `τ`. Take `⟨h, h1, h2, -⟩` from `eta_inf D hAut τ`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite using `[D.naut.infG_tw _ _ τ (-h) h2, h1, Multiset.map_singleton, add_neg_cancel]`. Take `⟨ρχ, hcχ, hoffχ, honχ⟩` from `hG3 (D.naut.tw D.naut.etaT D.naut.etaTinv) (k : ℝ) (fun τ z hz => by`. Rewrite `hz` using `[hinf0, Multiset.mem_singleton]`. Conclude with `⟨k, by rw [hz]; push_cast; ring⟩)`. Use `goodR_congr rfl (fun w => ?_) (fun τ => ?_) (goodR_char ⟨hLP, hAut, hGal⟩ (c := fun _ => -(k : ℂ)) (goodR_cusp hadm i ha π hcsd hralg) ρχ hcχ hoffχ (fun w hw => ⟨(honχ w hw).1, (honχ w hw).2.1, fun τ hτ => by` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[(honχ w hw).2.2 τ hτ, hinf0, Multiset.map_singleton, zero_add]`. Use `push_cast`. Use the proof step `rfl⟩) (fun w => by rw [D.naut.lpDim_tw, D.naut.locG_dim])`. Use the proof step `(fun w => (D.naut.unr_tw _ _).2 (by rw [D.naut.locG_tw]; exact D.naut.unr_char _ _ (D.naut.locG_dim _ _) (D.naut.etaT_unr w) (D.naut.etaTinv_def w).1)))`. Use `beta_reduce`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hU : D.naut.lpDim (D.naut.lpUnr w {1}) = 1`. Rewrite using `[(D.naut.lpUnr_spec w {1} (by simp)).2.2, Multiset.card_singleton]`. Rewrite using `[D.naut.locG_tw, eta_char, (hLP w (D.naut.lpTw (D.naut.locG π w) ((1 - (a : ℝ)) / 2)) (D.naut.lpTw (D.naut.locG π w) ((1 - (a : ℝ)) / 2)) (D.naut.lpUnr w {1}) (D.naut.lpUnr w {1}) (k : ℝ) hU hU).2.2.1, (hLP w (D.naut.lpTw (D.naut.locG π w) ((1 - (a : ℝ)) / 2)) (D.naut.lpTw (D.nau …`. Use `congr 1`. Take the linear combination `(-1 / 2 : ℝ) * hkR`.
+Reduce the equality to equality of the corresponding arguments. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[Multiset.map_map]`. Use `Multiset.map_congr rfl fun z _ => ?_` and prove the remaining obligations. Simplify using `only [Function.comp_apply]`. Take the linear combination `hkC / 2`. Establish `hkC : (e : ℂ) + (a : ℂ) - 1 = 2 * (k : ℂ) + 1` using `by exact_mod_cast hk`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hkR : (e : ℝ) + (a : ℝ) - 1 = 2 * (k : ℝ) + 1` using `by exact_mod_cast hk`. Establish `hcsd' : D.naut.csd (D.naut.tw π D.naut.etaT)` using `D.naut.csd_tw π D.naut.etaT hAut.1.1 hcsd`. Establish `hinfπ : ∀ τ, D.naut.infG (D.naut.tw π D.naut.etaT) τ = (D.naut.infG π τ).map (· + (D.naut.infG D.naut.etaT τ).sum)`. Introduce `τ`. Take `⟨h, h1, -, -⟩` from `eta_inf D hAut τ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[D.naut.infG_tw π D.naut.etaT τ h h1, h1, Multiset.sum_singleton]`. Establish `hralg : D.naut.ralg (D.naut.tw π D.naut.etaT)`. Rewrite using `[D.naut.ralg_def]`. Introduce `τ`. Take `⟨h, h1, -, hh⟩` from `eta_inf D hAut τ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Rewrite using `[D.naut.infG_tw π D.naut.etaT τ h h1]`. Use `⟨(hinf τ).1.map (add_left_injective h), fun z' hz' => ?_⟩` and prove the remaining obligations. Take `⟨z, hz, rfl⟩` from `Multiset.mem_map.1 hz'`. Take `⟨m, hm⟩` from `(hinf τ).2 z hz`. Break down `hh with rfl | rfl` into its components or cases.
+Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨m - k, by push_cast; linear_combination hm - hkC / 2⟩`. Conclude with `⟨m - k - 1, by push_cast; linear_combination hm - hkC / 2⟩`. Take `⟨ρχ, hcχ, hoffχ, honχ⟩` from `hG3 D.naut.etaTinv ((k : ℝ) + 1 / 2) (fun τ z hz => by`. Take `⟨h, -, h2, hh⟩` from `eta_inf D hAut τ`. Rewrite `hz` using `[h2, Multiset.mem_singleton]`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Break down `hh with rfl | rfl` into its components or cases. Conclude with `⟨k, by rw [hz]; push_cast; ring⟩`. Conclude with `⟨k + 1, by rw [hz]; push_cast; ring⟩)`. Use `goodR_congr rfl (fun w => ?_) (fun τ => ?_) (goodR_char ⟨hLP, hAut, hGal⟩ (c := fun τ => -((D.naut.infG D.naut.etaTinv τ).sum + (((k : ℝ) + 1 / 2 : ℝ) : ℂ))) (goodR_cusp hadm i ha _ hcsd' hralg) ρχ hcχ hoffχ (fun w hw => ⟨(honχ w hw).1, (honχ w hw).2.1, fun τ hτ => by` and prove the remaining obligations. Rewrite using `[(honχ w hw).2.2 τ hτ]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨h, -, h2, -⟩` from `eta_inf D hAut ((D.naut.iotaQC i).toRingHom.comp τ)`. Rewrite using `[h2, Multiset.map_singleton, Multiset.sum_singleton]⟩) (fun w => by rw [D.naut.lpDim_tw, D.naut.locG_dim])`. Use the proof step `(fun w => (D.naut.unr_tw _ _).2 (D.naut.etaTinv_def w).1))`. Use `beta_reduce`. Establish `hU : D.naut.lpDim (D.naut.lpUnr w {1}) = 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[(D.naut.lpUnr_spec w {1} (by simp)).2.2, Multiset.card_singleton]`. Establish `hη : D.naut.lpDim (D.naut.locG D.naut.etaT w) = 1` using `D.naut.locG_dim _ _`. Establish `hη' : D.naut.lpDim (D.naut.locG D.naut.etaTinv w) = 1` using `D.naut.locG_dim _ _`. Rewrite using `[D.naut.locG_tw, (hLP w (D.naut.lpTw (D.naut.lpChar (D.naut.locG π w) (D.naut.locG D.naut.etaT w)) ((1 - (a : ℝ)) / 2)) (D.naut.locG π w) (D.naut.locG D.naut.etaTinv w) (D.naut.locG D.naut.etaTinv w) ((k : ℝ) + 1 / 2) hη' hη').2.2.1, (hLP w (D.naut.lpChar (D.naut.locG π w) (D.nau …`. Use `congr 1`.
+Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Take the linear combination `(-1 / 2 : ℝ) * hkR`. Rewrite using `[hinfπ, Multiset.map_map, Multiset.map_map]`. Take `⟨h, h1', h2', -⟩` from `eta_inf D hAut τ`. Rewrite using `[h1', h2', Multiset.sum_singleton, Multiset.sum_singleton]`. Use `Multiset.map_congr rfl fun z _ => ?_` and prove the remaining obligations.
-
-Simplify using `only [Function.comp_apply]`. Use `push_cast`. Take the linear combination `hkC / 2`.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem halfTwist : ∀ D : D7, SumRepresentations.tie0 D → AutomorphicGaloisAdmissible D.nd D.naut → ∀ (i : D.nd.Loc) (a : ℕ), 1 ≤ a → ∀ (π : D.naut.CG a) (e : ℤ), D.naut.csd π → (∀ τ, (D.naut.infG π τ).Nodup ∧ ∀ z ∈ D.naut.infG π τ, ∃ k : ℤ, z + (e : ℂ) / 2 = (k : ℂ)) →
     GoodR' D i a (fun w => D.naut.lpTw (D.naut.locG π w) ((e : ℝ) / 2))
@@ -261,25 +259,23 @@ theorem halfTwist : ∀ D : D7, SumRepresentations.tie0 D → AutomorphicGaloisA
       linear_combination hkC / 2
 
 /- English proof (translation)
-Establish `hreg` using `GlobalTheory.T.infWt_nodup_and_half_integral D i P`. Use `set e : ℕ → ℤ := fun k => (p.d : ℤ) - 2 * k - D.R.nV with he`. Establish `hne : List.range p.d ≠ []`. Rewrite using `[Ne, List.range_eq_nil]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Establish `hpiece : ∀ k ∈ List.range p.d, GoodR' D i p.a (fun w => D.naut.lpTw (D.naut.locG p.π w) ((e k : ℝ) / 2)) (fun τ => (D.naut.infG p.π τ).map (fun z => -(z + (e k : ℂ) / 2)))`. Introduce `k hk`. Use `halfTwist D h0 h2 i p.a ha p.π (e k) hc ?_` and prove the remaining obligations. Introduce `τ`. Establish `hS : (D.naut.infG p.π τ).map (· + (((p.d : ℂ) - 1) / 2 - (k : ℂ))) ≤ D.naut.infWt i τ`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hinf τ, isoInf_eq]`. Use `le_trans (le_list_sum (List.mem_map_of_mem (f := fun k : ℕ => (D.naut.infG p.π τ).map (· + (((p.d : ℂ) - 1) / 2 - (k : ℂ)))) hk)) ?_` and prove the remaining obligations. Conclude with `le_list_sum (List.mem_map_of_mem (f := fun p : Formalism.BasicNotions.Part D.naut.CG => ((List.range p.d).map fun k : ℕ => (D.naut.infG p.π τ).map (· + (((p.d : ℂ) - 1) / 2 - (k : ℂ)))).sum) hp)`. Use `⟨Multiset.Nodup.of_map _ (Multiset.nodup_of_le hS (hreg τ).1), ?_⟩` and prove the remaining obligations. Introduce `z hz`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨m, hm⟩` from `(hreg τ).2 _ (Multiset.mem_of_le hS (Multiset.mem_map_of_mem _ hz))`. Use `⟨m, ?_⟩` and prove the remaining obligations. Establish `hm' : z = (m : ℂ) + ((D.R.nV : ℂ) - 1) / 2 - (((p.d : ℂ) - 1) / 2 - k)`. Rewrite using `[← hm]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[hm', he]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hf` using `goodR_fold h0 (fun _ : ℕ => p.a) (fun k w => D.naut.lpTw (D.naut.locG p.π w) ((e k : ℝ) / 2)) (fun k τ => (D.naut.infG p.π τ).map (fun z => -(z + (e k : ℂ) / 2))) (List.range p.d) hne hpiece`. Use `goodR_congr ?_ ?_ ?_ hf` and prove the remaining obligations.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[mul_comm]`. Introduce `w`. Establish `h1` using `lpTw_foldr D w (fun k : ℕ => D.naut.lpTw (D.naut.locG p.π w) (((p.d : ℝ) - 1) / 2 - (k : ℝ))) ((1 - (D.R.nV : ℝ)) / 2) (List.range p.d)`. Use `beta_reduce at h1`. Rewrite using `[spehLoc_eq, h1]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use function extensionality and compare the values at `k acc`. Rewrite using `[D.naut.lpTw_add, he]`. Use `congr 2`. Use `push_cast`.
+Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Introduce `τ`. Rewrite using `[map_list_sum, List.map_map]`. Use `congr 1`. Use `List.map_congr_left fun k _ => ?_` and prove the remaining obligations.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [Function.comp_apply, Multiset.map_map]`. Use `congr 1`. Use function extensionality and compare the values at `z`. Simplify using `only [Function.comp_apply, he]`. Use `push_cast`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem goodR_part (D : D7) (h0 : SumRepresentations.tie0 D) (h2 : AutomorphicGaloisAdmissible D.nd D.naut) (i : D.nd.Loc) (P : D.naut.AV i)
     (Pa : List (Formalism.BasicNotions.Part D.naut.CG)) (hinf : ∀ τ, isoInf D.nd D.naut Pa τ = D.naut.infWt i τ)
@@ -336,13 +332,11 @@ theorem goodR_part (D : D7) (h0 : SumRepresentations.tie0 D) (h2 : AutomorphicGa
     push_cast; ring
 
 /- English proof (translation)
-Introduce `D h0 h2 i P Pa hB`. Take `⟨hparts, -, hrank, -, -, hinf⟩` from `hB`. Establish `hne : Pa ≠ []`. Introduce and unpack `rfl`. Establish `ht` using `D.R.t_odd.pos`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Simplify using `[rankIso, Ranks.nV] at hrank`. Use linear arithmetic over natural numbers and integers. Establish `hf` using `goodR_fold h0 (fun p : Formalism.BasicNotions.Part D.naut.CG => p.a * p.d) (fun p w => D.naut.lpTw (spehLoc D.nd D.naut p w) ((1 - (D.R.nV : ℝ)) / 2)) (fun p τ => (((List.range p.d).map fun k : ℕ => (D.naut.infG p.π τ).map (· + (((p.d : ℂ) - 1) / 2 - (k : ℂ)))).sum).map (fun z => …`. Establish `hg : GoodR' D i D.R.nV (fun w => D.naut.lpTw (isoLoc D.nd D.naut Pa w) ((1 - (D.R.nV : ℝ)) / 2)) (fun τ => (D.naut.infWt i τ).map (fun z => -z + ((D.R.nV : ℂ) - 1) / 2))`. Use `goodR_congr ?_ ?_ ?_ hf` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hrank`. Introduce `w`. Conclude with `(lpTw_foldr D w (fun p : Formalism.BasicNotions.Part D.naut.CG => spehLoc D.nd D.naut p w) _ Pa).symm`. Introduce `τ`. Rewrite using `[← hinf τ, isoInf_eq, map_list_sum, List.map_map]`.
-
-Both sides reduce to the same expression. Conclude with `hg`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem goodR_iso : ∀ D : D7, SumRepresentations.tie0 D → AutomorphicGaloisAdmissible D.nd D.naut → ∀ (i : D.nd.Loc) (P : D.naut.AV i)
     (Pa : List (Formalism.BasicNotions.Part D.naut.CG)), IsBCV D.nd D.naut i P Pa →
@@ -375,9 +369,9 @@ theorem goodR_iso : ∀ D : D7, SumRepresentations.tie0 D → AutomorphicGaloisA
 end UpperTheory.GalS
 
 /- English proof (translation)
-Introduce `D h0 h2 i P Pa hB`. Take `⟨ρ, hc, hs, hw, hl⟩` from `UpperTheory.GalS.goodR_iso D h0 h2 i P Pa hB`. Use `⟨ρ, hc, hs, hw, fun w hw' hn => ?_⟩` and prove the remaining obligations. Take `⟨d, r, j⟩` from `hl w hw' ((UpperTheory.GalS.nc_tw _ _).2 hn)`. Use `⟨d, r, fun τ hτ => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Apply `Multiset.map_injective (f := fun n : ℤ => (n : ℂ)) Int.cast_injective` to reduce the goal to its premises. Rewrite using `[j τ hτ, D.naut.locAut_hodgeTateWeightsLevelZero_def i τ]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem UpperTheory.GalS.isoRep : ∀ D : D7, SumRepresentations.tie0 D → UpperTheory.GalS.AutomorphicGaloisAdmissible D.nd D.naut → UpperTheory.GalS.IsoRepB D := by
   intro D h0 h2 i P Pa hB

@@ -13,17 +13,15 @@ section General
 variable {K : Type} [Field K] (σ : K →+* ℂ) {V W C J : Type} [AddCommGroup V] [Module K V] [AddCommGroup W] [Module ℂ W]
 
 /- English proof (translation)
-Use `letI : Algebra K ℂ := σ.toAlgebra`. Set `r : (C → V) →ₗ[K] (C × J → K)` to `LinearMap.pi fun p => (e.coord p.2) ∘ₗ LinearMap.proj p.1`. Establish `hr : LinearMap.ker r = ⊥`. Rewrite using `[LinearMap.ker_eq_bot']`. Introduce `f hf`.
+Equip the data with the indicated structure. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use function extensionality and compare the values at `c`. Apply `e.ext_elem` to reduce the goal to its premises. Introduce `j`. Simplify `congrFun hf (c, j)` using `[r]`. Establish `h1` using `(linearIndependent_algebraMap_comp_iff (S := ℂ)).2 (hb.map' r hr)`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Set `T : (C × J → ℂ) →ₗ[ℂ] (C → W)` to `LinearMap.pi fun c => ∑ j, (LinearMap.proj (c, j) : (C × J → ℂ) →ₗ[ℂ] ℂ).smulRight (ev (e j))`. Establish `hT : LinearMap.ker T = ⊥`. Rewrite using `[LinearMap.ker_eq_bot']`. Introduce `u hu`. Use function extensionality and compare the values at `p`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `h2 : ∑ j, u (p.1, j) • ev (e j) = 0`. Simplify `congrFun hu p.1` using `[T, LinearMap.sum_apply]`. Conclude with `Fintype.linearIndependent_iff.1 he (fun j => u (p.1, j)) h2 p.2`. Establish `h3` using `h1.map' T hT`. It suffices to establish `hs : (fun i => fun c => ev (b i c)) = T ∘ fun i => algebraMap K ℂ ∘ (r ∘ b) i by`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the argument to an intermediate assertion. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hs]`. Conclude with `h3`. Use function extensionality and compare the values at `i c`. Establish `h4 : b i c = ∑ j, e.repr (b i c) j • e j` using `(e.sum_repr _).symm`. Use `conv_lhs => rw [h4]`.
-
-Simplify using `only [map_sum, LinearMap.map_smulₛₗ]`. Simplify using `[T, r, LinearMap.sum_apply, RingHom.algebraMap_toAlgebra]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem li_pi_of_basis [Finite C] [Fintype J] (e : Module.Basis J K V) (ev : V →ₛₗ[σ] W)
     (he : LinearIndependent ℂ fun j => ev (e j)) {κ : Type} (b : κ → C → V) (hb : LinearIndependent K b) :
@@ -60,7 +58,7 @@ theorem li_pi_of_basis [Finite C] [Fintype J] (e : Module.Basis J K V) (ev : V �
   simp [T, r, LinearMap.sum_apply, RingHom.algebraMap_toAlgebra]
 
 /- English proof (translation)
-Rewrite using `[← e.sum_repr x, map_sum]`. Use `Submodule.sum_mem _ fun j _ => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.map_smulₛₗ]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨j, rfl⟩)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_span_basis_image [Fintype J] (e : Module.Basis J K V) (ev : V →ₛₗ[σ] W) (x : V) :
     ev x ∈ Submodule.span ℂ (Set.range fun j => ev (e j)) := by
@@ -70,7 +68,7 @@ theorem mem_span_basis_image [Fintype J] (e : Module.Basis J K V) (ev : V →ₛ
   exact Submodule.smul_mem _ _ (Submodule.subset_span ⟨j, rfl⟩)
 
 /- English proof (translation)
-Rewrite using `[map_sum]`. Use `Fintype.sum_equiv (Equiv.mulLeft g) _ _ fun t => ?_` and prove the remaining obligations. Simplify using `[map_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem rho_sum_translates {G : Type} [Group G] [Fintype G] (ρ : G →* Module.End K V) (g : G) (x : V) :
     ρ g (∑ t, ρ t x) = ∑ t, ρ t x := by
@@ -88,9 +86,9 @@ variable {E K ι : Type} [Field E] [NumberField E] [StarRing E] [Field K] [Numbe
 omit [StarRing E] [StarRing K] in
 
 /- English proof (translation)
-Use function extensionality and compare the values at `y`. Establish `h1 : S.rho emb lam b g F = ((S.chr b g : Kˣ) : K) • rhoVr emb lam (S.gam b g) F` using `rfl`. Rewrite using `[h1, LinearMap.map_smulₛₗ, tr, trFr_apply, Pi.smul_apply, smul_eq_mul]`. Use `congr 1`. Use `evV_rhoVr_tr emb _ lam σ _ F y _ ?_` and prove the remaining obligations.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h2 : y = frMul emb σ (S.gam b g) (frMul emb σ (S.gam b g)⁻¹ y)`. Rewrite using `[← frMul_mul, mul_inv_cancel, frMul_one]`. Introduce `τ`. Conclude with `congrFun (congrArg Subtype.val h2) τ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem evV_rho_eq_tr (b : S.β) (g : S.G b) (F : VV K lam) :
     evV emb (1 : Matrix (Fin n) (Fin n) E) lam σ (S.rho emb lam b g F) =
@@ -106,25 +104,21 @@ theorem evV_rho_eq_tr (b : S.β) (g : S.G b) (F : VV K lam) :
   exact congrFun (congrArg Subtype.val h2) τ
 
 /- English proof (translation)
-Use `haveI : Fintype S.Cl := h.fintypeCl`. Prove the components needed by the constructor for the conclusion. Establish `h1 : LinearIndependent K fun a => ((S.csd emb lam h).basis a).1` using `(S.csd emb lam h).basis.linearIndependent.map' (S.csd emb lam h).Forms.subtype (Submodule.ker_subtype _)`. Conclude with `li_pi_of_basis σ (C := S.Cl) (S.csd emb lam h).bV (evV emb (1 : Matrix (Fin n) (Fin n) E) lam σ) (evV_linearIndependent emb _ lam σ (fr0 emb σ n) _ (S.csd emb lam h).bV.linearIndependent) _ h1`. Use `le_antisymm ?_ ?_` and prove the remaining obligations.
+Prove the components needed by the constructor for the conclusion. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨a, rfl⟩ c`. Use `⟨evV_mem_ValC emb _ lam σ _, fun g => ?_⟩` and prove the remaining obligations. Establish `h1` using `((S.csd emb lam h).basis a).2 c g`. Establish `h2` using `S.evV_rho_eq_tr emb σ lam c.1 g.1 (((S.csd emb lam h).basis a).1 c)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h2.symm.trans (congrArg (evV emb (1 : Matrix (Fin n) (Fin n) E) lam σ) h1)`. Introduce `φ hφ`. Rewrite using `[← Finset.univ_sum_single φ]`. Use `Submodule.sum_mem _ fun c _ => ?_` and prove the remaining obligations. Use `letI : Fintype (S.Stab c) := (S.csd emb lam h).finGam c`.
+Reduce the conclusion to the remaining proof obligations. Equip the data with the indicated structure. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Set `A : (Fr emb σ n → ℂ) →ₗ[ℂ] (S.Cl → Fr emb σ n → ℂ)` to `LinearMap.single ℂ (fun _ : S.Cl => Fr emb σ n → ℂ) c ∘ₗ ∑ g : S.Stab c, (S.tr emb σ c.1 g.1).toLinearMap`. Establish `hA : ∀ w, A w = Pi.single c (∑ g : S.Stab c, S.tr emb σ c.1 g.1 w)` using `fun w => by`. Simplify using `[A, LinearMap.sum_apply]`. Establish `hle : ValC (Gr emb σ n) lam ≤ (Submodule.span ℂ (Set.range fun a => S.embF emb σ lam h ((S.hlat emb lam h).b a))).comap A`. Rewrite using `[← span_evV, Submodule.span_le]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Introduce and unpack `_ ⟨F, rfl⟩`. Set `ρc : S.Stab c →* Module.End K (VV K lam)` to `(S.rho emb lam c.1).comp (MulAction.stabilizer (S.G c.1) (S.rep c)).subtype`. Set `x : S.FormsK emb lam h` to `⟨(Pi.single c (∑ t, ρc t F) : S.Cl → VV K lam), by`. Introduce `c' γ`. Distinguish the cases in `hc : c' = c`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Substitute `hc show ρc γ ((Pi.single c' (∑ t, ρc t F) : S.Cl → VV K lam) c') = (Pi.single c' (∑ t, ρc t F) : S.Cl → VV K lam) c'` using the available equality. Rewrite using `[Pi.single_eq_same]`. Conclude with `rho_sum_translates ρc γ F`. Use `show S.rho emb lam c'.1 γ.1 ((Pi.single c (∑ t, ρc t F) : S.Cl → VV K lam) c') = (Pi.single c (∑ t, ρc t F) : S.Cl → VV K lam) c'`. Rewrite using `[Pi.single_eq_of_ne hc, map_zero]⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Establish `hx : A (evV emb (1 : Matrix (Fin n) (Fin n) E) lam σ F) = S.embF emb σ lam h x`. Rewrite using `[hA]`. Use function extensionality and compare the values at `c'`. Use `show _ = evV emb (1 : Matrix (Fin n) (Fin n) E) lam σ ((Pi.single c (∑ t, ρc t F) : S.Cl → VV K lam) c')`. Distinguish the cases in `hc : c' = c`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Substitute `hc` using the available equality. Rewrite using `[Pi.single_eq_same, Pi.single_eq_same, map_sum]`. Conclude with `Finset.sum_congr rfl fun g _ => (S.evV_rho_eq_tr emb σ lam c'.1 g.1 F).symm`. Rewrite using `[Pi.single_eq_of_ne hc, Pi.single_eq_of_ne hc, map_zero]`. Rewrite using `[SetLike.mem_coe, Submodule.mem_comap, hx]`.
-
-Conclude with `mem_span_basis_image σ (S.hlat emb lam h).b (S.embF emb σ lam h) x`. Establish `h1` using `Submodule.mem_comap.1 (hle (hφ c).1)`. Establish `h2 : A (φ c) = (Fintype.card (S.Stab c) : ℂ) • (Pi.single c (φ c) : S.Cl → Fr emb σ n → ℂ)`. Rewrite using `[hA, Finset.sum_congr rfl fun g _ => (hφ c).2 g, Finset.sum_const, Finset.card_univ, ← Pi.single_smul', Nat.cast_smul_eq_nsmul]`. Rewrite `h1` using `[h2]`.
-
-Conclude with `(Submodule.smul_mem_iff _ (Nat.cast_ne_zero.2 Fintype.card_ne_zero)).1 h1`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lawBasis_of_ok (h : (S.fam emb lam).Ok) : S.LawBasis emb σ lam h := by
   classical
@@ -187,7 +181,7 @@ theorem lawBasis_of_ok (h : (S.fam emb lam).Ok) : S.LawBasis emb σ lam h := by
 end GStep
 
 /- English proof (translation)
-Introduce `S emb σ lam _ _ h` and use `S.lawBasis_of_ok emb σ lam h`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem lawBasis_all : ∀ {E K ι : Type} [Field E] [NumberField E] [StarRing E] [Field K] [NumberField K] [StarRing K] [Fintype ι]
     {n : ℕ} (S : GStep E K n) (emb : ι → E →+* K) (σ : K →+* ℂ) (lam : ι → DomWeight n),

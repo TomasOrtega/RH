@@ -16,29 +16,25 @@ def Step0 : Prop := ∀ (R : Type) [CommRing R] (F : Shv R) (n : ℤ) {Z' Z : PS
       LateralTheory.E.FiltGenPf.V ((chains R).map g) (-1) n ((z : Cochain _ _ n) - δ (n - 1) n c)
 
 /- English proof (translation)
-Introduce `_ R _ F n Z' Z X' X g h a b comm ha hb hlev`. Establish `hk : ∀ p : ℕ, 1 ≤ p → Subsingleton (CohomologyClass (mappingCone ((HomologicalComplex.single (Shv R) (ComplexShape.up ℤ) (-(p : ℤ))).map (((chains R).map g).f (-(p : ℤ))))) (res R F) n)`. Introduce `p hp`. Use `LateralTheory.E.CechFiltPf.Piece_of LateralTheory.E.DiscLvlPf.DiscLvl_of LateralTheory.E.ShiftLvlPf.ShiftLvl_of R F g p n ?_` and prove the remaining obligations. Take `⟨hi, hs⟩` from `hlev p hp (n - p) (by omega)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `LateralTheory.E.RelativeTruncationSingleDegree.sub_of R F _ _ ⟨fun m hm => ?_, hi⟩ (LateralTheory.E.RelativeTruncationSingleDegree.pull_fgt R F _ _)` and prove the remaining obligations. Take `rfl : m = n - p - 1` from `by omega`. Conclude with `hs`. Establish `hk' : ∀ k : ℤ, k ≤ -1 → Subsingleton (CohomologyClass (mappingCone ((HomologicalComplex.single (Shv R) (ComplexShape.up ℤ) k).map (((chains R).map g).f k))) (res R F) n)`. Introduce `k hk1`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨p, rfl⟩ : ∃ p : ℕ, k = -(p : ℤ)` from `⟨(-k).toNat, by omega⟩`. Conclude with `hk p (by omega)`. Establish `claim : ∀ m : ℕ, ∀ z : Cocycle (mappingCone ((chains R).map g)) (res R F) n, rpull R g (disc.map h) b a comm F n (CohomologyClass.mk z) = 0 → ∃ c : Cochain (mappingCone ((chains R).map g)) (res R F) (n - 1), LateralTheory.E.FiltGenPf.V ((chains R).map g) (-((m : ℤ) + 1)) n ((z : …`. Introduce `m`. Proceed by induction on `m with`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Consider the case `zero`. Introduce `z hz`. Establish `e : (-(((0 : ℕ) : ℤ) + 1)) = -1` using `by norm_num`. Rewrite using `[e]`. Conclude with `h0 R F n g h a b comm ha hb z hz`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Consider the case `succ m ih`. Introduce `z hz`. Take `⟨c, hc⟩` from `ih z hz`. Establish `hkm` using `hk' (-((m : ℤ) + 1)) (by omega)`. Establish `hs1` using `LateralTheory.E.FiltGenPf.step ((chains R).map g) (-((m : ℤ) + 1)) n hkm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hzz : δ n (n + 1) ((z : Cochain (mappingCone ((chains R).map g)) (res R F) n) - δ (n - 1) n c) = 0`. Rewrite using `[δ_sub, δ_δ, sub_zero]`. Conclude with `Cocycle.δ_eq_zero z (n + 1)`. Establish `hs2` using `hs1 _ hzz`. Take `⟨c', hc'⟩` from `hs2 hc`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `⟨c + c', ?_⟩` and prove the remaining obligations. Establish `e : (-((((m + 1 : ℕ) : ℤ)) + 1)) = -((m : ℤ) + 1) - 1` using `by push_cast; ring`. Rewrite using `[e, δ_add, ← sub_sub]`. Conclude with `hc'`. Rewrite using `[injective_iff_map_eq_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Introduce `x hx`. Take `⟨z, rfl⟩` from `CohomologyClass.mk_surjective x`. Take `⟨c, hc1, hc2⟩` from `claim (n.toNat + 1) z hx`. Express the relevant statement in the definitionally equal form `CohomologyClass.mk z = 0`. Rewrite using `[CohomologyClass.mk_eq_zero_iff, mem_coboundaries_iff _ (n - 1) (by omega)]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Simplify using the standard rewrite rules.
 
-Use `⟨c, ?_⟩` and prove the remaining obligations. Establish `hz0 : (z : Cochain (mappingCone ((chains R).map g)) (res R F) n) - δ (n - 1) n c = 0`. Rewrite using `[mappingCone.ext_cochain_from_iff _ (n - 1) n (by omega)]`. Prove the components needed by the constructor for the conclusion. Simplify using `only [Cochain.comp_zero]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `Cochain.ext _ _ (fun p q hpq => ?_)` and prove the remaining obligations. Rewrite using `[Cochain.zero_v]`. Break down `lt_or_ge (-((((n.toNat + 1 : ℕ) : ℤ)) + 1)) p with hp | hp` into its components or cases. Conclude with `hc1 p q hpq hp`. Conclude with `(LateralTheory.E.CechFiltPf.res_isZero R F q (by omega)).eq_of_tgt _ _`.
-
-Simplify using `only [Cochain.comp_zero]`. Use `Cochain.ext _ _ (fun p q hpq => ?_)` and prove the remaining obligations. Rewrite using `[Cochain.zero_v]`. Break down `lt_or_ge (-((((n.toNat + 1 : ℕ) : ℤ)) + 1)) p with hp | hp` into its components or cases. Conclude with `hc2 p q hpq hp`.
-
-Conclude with `(LateralTheory.E.CechFiltPf.res_isZero R F q (by omega)).eq_of_tgt _ _`. Rewrite `hz0` using `[sub_eq_zero]`. Conclude with `hz0.symm`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Filt_of (h0 : Step0) : LateralTheory.E.FiltrationLevelInjectivity.Filt := by
   intro _ R _ F n Z' Z X' X g h a b comm ha hb hlev
@@ -106,7 +102,7 @@ theorem Filt_of (h0 : Step0) : LateralTheory.E.FiltrationLevelInjectivity.Filt :
   exact hz0.symm
 
 /- English proof (translation)
-The claim follows from `LateralTheory.E.FiltrationLevelInjectivity.LevelInj_of (Filt_of h0) LateralTheory.E.TruncationCokernelLevelRelations.LvlRel_of`.
+A detailed English derivation is pending.
 -/
 theorem goal_of (h0 : Step0) : LateralTheory.E.RelDescPf.LevelInj :=
   LateralTheory.E.FiltrationLevelInjectivity.LevelInj_of (Filt_of h0) LateralTheory.E.TruncationCokernelLevelRelations.LvlRel_of

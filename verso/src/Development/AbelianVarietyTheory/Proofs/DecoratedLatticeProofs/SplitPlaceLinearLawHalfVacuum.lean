@@ -30,7 +30,7 @@ variable (hW : IsWeilDatumO ψ S T χS χT om) (hS : IsSelfDualC S ΛS) (hT : Is
 include hW hS hT ha hinf hc hf hTm he hae hfix
 
 /- English proof (translation)
-Use `haveI := finite_enlarge hS.1 hT.1 he.1 hle`. Take `⟨R, r1, r2, r3⟩` from `exists_reps ((latO S T ΛS ΛT fun _ => True) ⊓ half S T e) ((latO S T ΛS ΛT fun _ => True).comap (actAdd S T g⁻¹ h⁻¹) ⊓ half S T e)`. Establish `hR : ∀ u ∈ R, actO S T g⁻¹ h⁻¹ u ∈ latO S T ΛS ΛT (fun _ => True) ∧ IsHalf e u` using `fun u hu => ⟨(r2 u hu).1, (isHalf_iff S T).2 (r2 u hu).2⟩`. Establish `hRu : ∀ w, actO S T g⁻¹ h⁻¹ w ∈ latO S T ΛS ΛT (fun _ => True) → IsHalf e w → ∃! v, v ∈ R ∧ w - v ∈ latO S T ΛS ΛT (fun _ => True)` using `fun w hw hwe => (existsUnique_congr fun v => and_congr_right fun hv => ⟨fun h => h.1, fun h => ⟨h, (isHalf_iff S T).1 (GlobalTheory.SplitScalar.isHalf_sub hwe (hR v hv).2)⟩⟩).1 (r3 w ⟨hw, (isHalf_iff S T).1 hwe⟩)`. Rewrite using `[om_eq_sum_lattice hW hS hT he hf hfix hg hh hx hy hR hRu hle, r1, model_sum hTm fun u hu => isHalf_mono hae (hR u hu).2, sum_halfInd he.1 hc hae (GlobalTheory.SplitScalar.idem_smul_mem he.1) (suppAt_inv hg) (suppAt_inv hh) hR hRu hle]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem base_enlarge {g : GA D S} {h : GA D T} (hg : SuppAt e S g) (hh : SuppAt e T h) {x y : (AE D)ˣ}
     (hx : IsDetAt e S g x) (hy : IsDetAt e T h y)
@@ -53,7 +53,7 @@ theorem base_enlarge {g : GA D S} {h : GA D T} (hg : SuppAt e S g) (hh : SuppAt 
     sum_halfInd he.1 hc hae (GlobalTheory.SplitScalar.idem_smul_mem he.1) (suppAt_inv hg) (suppAt_inv hh) hR hRu hle]
 
 /- English proof (translation)
-Establish `h1` using `base_enlarge hW hS hT ha hinf hc hf hTm he hae hfix hg hh (isDetAt_detAt e he.1 S g) (isDetAt_detAt e he.1 T h) hle`. Rewrite `h1` using `[← Complex.ofReal_inv, sqrt_index hS.1 hT.1 he (isDetAt_detAt e he.1 S g) (isDetAt_detAt e he.1 T h) hle]`. Conclude with `om_model_of_base D ψ S T χS χT om ΛS ΛT a f₀ Tm hW hS hT ha hinf hf hTm g h _ h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem law_enlarge' {g : GA D S} {h : GA D T} (hg : SuppAt e S g) (hh : SuppAt e T h)
     (hle : ∀ w ∈ latO S T ΛS ΛT fun _ => True, IsHalf e w → actO S T g⁻¹ h⁻¹ w ∈ latO S T ΛS ΛT fun _ => True) :
@@ -64,11 +64,11 @@ theorem law_enlarge' {g : GA D S} {h : GA D T} (hg : SuppAt e S g) (hh : SuppAt 
   exact om_model_of_base D ψ S T χS χT om ΛS ΛT a f₀ Tm hW hS hT ha hinf hf hTm g h _ h1
 
 /- English proof (translation)
-Take `⟨N, hN, h1⟩` from `exists_nsmul_actO hS.1 hT.1 g⁻¹ h⁻¹`. Take `⟨z, z1, z2⟩` from `exists_scalar he T hN`. Establish `z4 : SuppAt e T z⁻¹` using `suppAt_of (GlobalTheory.SplitScalar.off_smul_mt_inv z1)`. Establish `l1` using `law_enlarge' hW hS hT ha hinf hc hf hTm he hae hfix hg (suppAt_mul hh z4) fun w hw hwe => by`. Rewrite using `[actO_scalar' z2 g h hwe]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h1 w hw`. Establish `l2` using `law_enlarge' hW hS hT ha hinf hc hf hTm he hae hfix (suppAt_one e S) z4 fun w hw hwe => by`. Rewrite using `[inv_one, inv_inv, actO_scalar z2 hwe]`. Conclude with `nsmul_mem hw N`. Establish `l3` using `l1.mul hS.1 hT.1 (l2.inv hS.1 hT.1 (fac_ne_zero _ _))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e1 : fac S T χS χT (detAt e he.1 S g) (detAt e he.1 T (h * z⁻¹)) = fac S T χS χT (detAt e he.1 S g) (detAt e he.1 T h) * fac S T χS χT (detAt e he.1 S 1) (detAt e he.1 T z⁻¹)`. Rewrite using `[← fac_mul, ← MonoidHom.map_mul, ← MonoidHom.map_mul, mul_one]`. Conclude with `l3.congr (by rw [inv_one, mul_one]) (mul_inv_cancel_right _ _) (by rw [e1, mul_inv_cancel_right₀ (fac_ne_zero _ _)])`.
+A detailed English derivation is pending.
 -/
 theorem law_place' {g : GA D S} {h : GA D T} (hg : SuppAt e S g) (hh : SuppAt e T h) :
     Law om a (latO S T ΛS ΛT fun _ => True) Tm g h (fac S T χS χT (detAt e he.1 S g) (detAt e he.1 T h)) := by
@@ -91,14 +91,14 @@ theorem law_place' {g : GA D S} {h : GA D T} (hg : SuppAt e S g) (hh : SuppAt e 
 end Model
 
 /- English proof (translation)
-The claim follows from `Units.ext (hx.trans (isDetAt_detAt e he V g).symm)`.
+A detailed English derivation is pending.
 -/
 theorem detAt_eq {V : HSp D} (he : e * e = e) {g : GA D V} {x : (AE D)ˣ} (hx : IsDetAt e V g x) :
     x = detAt e he V g :=
   Units.ext (hx.trans (isDetAt_detAt e he V g).symm)
 
 /- English proof (translation)
-Introduce `D ψ S T χS χT om ΛS ΛT e f₀ Tm hW hS hT he hf hfix hTm g h hg hh x y hx hy Φ hΦ`. Establish `hinf : infPart D e = 0` using `GlobalTheory.PlaceModelSum.IsOrthSum.infPart_eq ⟨Unit, {()}, fun _ => e, fun _ _ => he, fun _ _ _ _ h => absurd rfl h, (Finset.sum_singleton (fun _ => e) ()).symm⟩`. Rewrite using `[detAt_eq he.1 hx, detAt_eq he.1 hy]`. Conclude with `law_place' hW hS hT he.1 hinf he.2.1 hf hTm he he.1 hfix hg hh Φ hΦ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem law_half : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (χS χT : (AE D)ˣ →* Circle)
     (om : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ)) (ΛS : Lat S)

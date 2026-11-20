@@ -13,11 +13,11 @@ open NumberField Classical Formalism.BasicNotions Formalism.MainNotions Formalis
 namespace GlobalTheory.Mem.TruePeriods
 
 /- English proof (translation)
-Establish `e : ∀ x y : ℂ, (starRingEnd ℂ) (ζ * x) * (ζ * y) = (starRingEnd ℂ) x * y` using `fun x y => by`. Establish `: (starRingEnd ℂ) ζ * ζ = 1`. Rewrite using `[mul_comm, Complex.mul_conj, Complex.normSq_eq_norm_sq, hζ]`. Simplify using the standard rewrite rules. Rewrite using `[map_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Take the linear combination `((starRingEnd ℂ) x * y) * this`. Unfold `area`. Use `congr 1`. Use extensionality with `a`. Simplify using `only [Set.mem_setOf_eq]`.
+Take a linear combination of the given relations to obtain the conclusion. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨ha, _, ⟨x, hx, rfl⟩, _, ⟨y, hy, rfl⟩, rfl⟩`. Conclude with `⟨ha, x, hx, y, hy, congrArg (fun z : ℂ => |z.im|) (e x y)⟩`. Introduce and unpack `⟨ha, x, hx, y, hy, rfl⟩`. Conclude with `⟨ha, ζ * x, ⟨x, hx, rfl⟩, ζ * y, ⟨y, hy, rfl⟩, congrArg (fun z : ℂ => |z.im|) (e x y).symm⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem area_map_unit (Λ : AddSubgroup ℂ) {ζ : ℂ} (hζ : ‖ζ‖ = 1) :
     area (Λ.map (AddMonoidHom.mulLeft ζ)) = area Λ := by
@@ -36,7 +36,7 @@ theorem area_map_unit (Λ : AddSubgroup ℂ) {ζ : ℂ} (hζ : ‖ζ‖ = 1) :
     exact ⟨ha, ζ * x, ⟨x, hx, rfl⟩, ζ * y, ⟨y, hy, rfl⟩, congrArg (fun z : ℂ => |z.im|) (e x y).symm⟩
 
 /- English proof (translation)
-Take `⟨L, hL⟩` from `GlobalTheory.LatticeInvariants.exists_periodPair_of_discr_ne_zero (Λ := Λ) (by rw [h]; exact one_ne_zero)`. Use `⟨L.ω₁, L.ω₂, L.indep, ?_⟩` and prove the remaining obligations. Use extensionality with `z`. Rewrite using `[hL, AddSubgroup.mem_closure_pair, PeriodPair.mem_lattice]`. Simplify using `only [zsmul_eq_mul]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem isLat_of_discr_one {Λ : AddSubgroup ℂ} (h : TaylorLogMetric.discr Λ = 1) : GlobalTheory.ThetaConj.IsLat Λ := by
   obtain ⟨L, hL⟩ := GlobalTheory.LatticeInvariants.exists_periodPair_of_discr_ne_zero (Λ := Λ) (by rw [h]; exact one_ne_zero)
@@ -46,21 +46,21 @@ theorem isLat_of_discr_one {Λ : AddSubgroup ℂ} (h : TaylorLogMetric.discr Λ 
   simp only [zsmul_eq_mul]
 
 /- English proof (translation)
-Establish `h2 : g2 Λ ^ 3 = g2 Λ' ^ 3`. Unfold `jLat at hj`. Rewrite `hj` using `[h, h']`. Take the linear combination `hj / 1728`. Establish `h3 : g3 Λ ^ 2 = g3 Λ' ^ 2`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Unfold `TaylorLogMetric.discr at h h'`. Take the linear combination `(h' - h + h2) / 27`. Choose the witnesses or unpack the hypotheses as in `⟨u, hu, hu2⟩ : ∃ u : ℂ, u ^ 3 = 1 ∧ g2 Λ = u * g2 Λ' := by`. Distinguish the cases in `h0 : g2 Λ' = 0`. Use `⟨1, one_pow _, ?_⟩` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Take a linear combination of the given relations to obtain the conclusion. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `h2`, the goal using `[h0]`. Simplify using `using h2`. Conclude with `⟨g2 Λ / g2 Λ', by rw [div_pow, h2, div_self (pow_ne_zero _ h0)], by field_simp⟩`. Choose the witnesses or unpack the hypotheses as in `⟨ζ, h4, h6⟩ : ∃ ζ : ℂ, ζ ^ 4 = u ∧ g3 Λ = ζ ^ 6 * g3 Λ' := by`. Break down `sq_eq_sq_iff_eq_or_eq_neg.1 h3 with e | e` into its components or cases.
+Rewrite the hypotheses and the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `⟨u, by linear_combination u * hu, by rw [e]; linear_combination (-(u ^ 3 + 1) * g3 Λ') * hu⟩`. Establish `i4 : Complex.I ^ 4 = 1` using `Complex.I_pow_four`. Establish `i6 : Complex.I ^ 6 = -1`. Rewrite using `[show (6 : ℕ) = 4 + 2 from rfl, pow_add, i4, Complex.I_sq, one_mul]`. Use `⟨u * Complex.I, ?_, ?_⟩` and prove the remaining obligations.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[mul_pow, i4]`. Take the linear combination `u * hu`. Rewrite using `[mul_pow, i6, e]`. Take the linear combination `((u ^ 3 + 1) * g3 Λ') * hu`. Establish `h12 : ζ ^ 12 = 1` using `by rw [show ζ ^ 12 = (ζ ^ 4) ^ 3 by ring, h4, hu]`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Establish `h0 : ζ ≠ 0` using `by rintro rfl; simp at h12`. Use `⟨ζ, h12, ?_⟩` and prove the remaining obligations. Take `⟨L, hL⟩` from `(isLat_of_discr_one h').exists_periodPair`. Use `((GlobalTheory.LatticeInvariants.invariants_dictionary L Λ' hL).2.2.2.2.2.1 _ ?_ ?_).symm` and prove the remaining obligations. Rewrite `hu2` using `[← h4]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Unfold `g2 at hu2 ⊢`. Rewrite using `[Model.eisG_map _ _ h0]`. Clear the denominators using the available nonvanishing facts. Take the linear combination `hu2 / 60`. Unfold `g3 at h6 ⊢`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion. Replace the relevant objects with their definitions.
 
-Rewrite using `[Model.eisG_map _ _ h0]`. Clear the denominators using the available nonvanishing facts. Take the linear combination `h6 / 140`.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem exists_root_of_jLat_eq {Λ Λ' : AddSubgroup ℂ} (h : TaylorLogMetric.discr Λ = 1) (h' : TaylorLogMetric.discr Λ' = 1)
     (hj : jLat Λ = jLat Λ') : ∃ ζ : ℂ, ζ ^ 12 = 1 ∧ Λ' = Λ.map (AddMonoidHom.mulLeft ζ) := by
@@ -102,7 +102,7 @@ theorem exists_root_of_jLat_eq {Λ Λ' : AddSubgroup ℂ} (h : TaylorLogMetric.d
     linear_combination h6 / 140
 
 /- English proof (translation)
-Use `congrArg norm h` as an intermediate fact. Rewrite `this` using `[norm_pow, norm_one]`. Conclude with `(pow_eq_one_iff_of_nonneg (norm_nonneg _) (by norm_num)).1 this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_eq_one_of_pow {ζ : ℂ} (h : ζ ^ 12 = 1) : ‖ζ‖ = 1 := by
   have := congrArg norm h
@@ -110,15 +110,15 @@ theorem norm_eq_one_of_pow {ζ : ℂ} (h : ζ ^ 12 = 1) : ‖ζ‖ = 1 := by
   exact (pow_eq_one_iff_of_nonneg (norm_nonneg _) (by norm_num)).1 this
 
 /- English proof (translation)
-Establish `h0 : ζ ≠ 0` using `by rintro rfl; simp at hζ`. Establish `hn` using `norm_eq_one_of_pow hζ`. Establish `h' : TaylorLogMetric.discr (Λ.map (AddMonoidHom.mulLeft ζ)) = 1` using `by rw [Model.discr_map _ _ h0, hζ, h]; simp`. Establish `ha` using `area_map_unit Λ hn`. Establish `hc : ζ * (starRingEnd ℂ) ζ = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Complex.mul_conj, Complex.normSq_eq_norm_sq, hn]`. Simplify using the standard rewrite rules. Establish `hU : U1 (Λ.map (AddMonoidHom.mulLeft ζ)) (ζ * t) (sgStar (Λ.map (AddMonoidHom.mulLeft ζ))) 0 = ζ * U1 Λ t (sgStar Λ) 0`. Unfold `U1`. Rewrite using `[zero_add, zero_add, (GlobalTheory.OddTheta.sgStar_laws Λ (isLat_of_discr_one h)).2.2.2.2 ζ h0, ha, mul_assoc, show (Real.pi : ℂ) * (ζ * t) * (starRingEnd ℂ) (ζ * t) = (Real.pi : ℂ) * t * (starRingEnd ℂ) t by`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[map_mul]`. Take the linear combination `((Real.pi : ℂ) * t * (starRingEnd ℂ) t) * hc]`. Simplify using the standard rewrite rules. Take `⟨a1, a2⟩` from `GlobalTheory.OddThetaNorm.odd_theta_norm_sigma_star Λ (isLat_of_discr_one h) h`. Take `⟨b1, b2⟩` from `GlobalTheory.OddThetaNorm.odd_theta_norm_sigma_star _ (isLat_of_discr_one h') h'`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Distinguish the cases in `hz : U1 Λ t (sgStar Λ) 0 = 0`. Unfold `GL3Theta.th0`. Rewrite using `[hU, hz]`. Simplify using `[nrm1Sq]`. Rewrite using `[a2 t hz, b2 _ (by rw [hU]; exact mul_ne_zero h0 hz), hU, norm_mul, hn, one_mul]`.
+Consider separately whether the proposition holds or fails. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Rewrite `b1` using `[ha, ← a1]`. Apply the tactic sequence `refine (pow_left_inj₀ ?_ ?_ two_ne_zero).1 b1 <;> (rw [← normSq1_eq_nrm1Sq]; exact normSq1_nonneg _ _)`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the indicated hypotheses using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem meanSquare_evenTheta_twelfthRoot_invariant {Λ : AddSubgroup ℂ} (h : TaylorLogMetric.discr Λ = 1) {ζ : ℂ} (hζ : ζ ^ 12 = 1) (t : ℂ) :
     nrm1Sq (Λ.map (AddMonoidHom.mulLeft ζ)) (GL3Theta.th0 (Λ.map (AddMonoidHom.mulLeft ζ)) (ζ * t)) =
@@ -151,28 +151,28 @@ theorem meanSquare_evenTheta_twelfthRoot_invariant {Λ : AddSubgroup ℂ} (h : T
 variable {D : D7} {δ : ℂ} {M : IntermediateField ℚ ℂ}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨D.host.ccK_ne_bot, Nat.Coprime.mul_right (D.host.ccK_coprime 2 (by simp)) (D.host.ccK_coprime _ (by simp))⟩`.
+Supply the required witnesses or components.
 -/
 theorem isCurveIdeal_ccK (D : D7) : IsCurveIdeal D D.host.ccK :=
   ⟨D.host.ccK_ne_bot, Nat.Coprime.mul_right (D.host.ccK_coprime 2 (by simp)) (D.host.ccK_coprime _ (by simp))⟩
 
 /- English proof (translation)
-The claim follows from `IsAlgClosed.exists_pow_nat_eq _ (by norm_num)`.
+A detailed English derivation is pending.
 -/
 theorem exists_discriminantTwelfthRoot_of_ideal (D : D7) : ∃ δ, IsDiscriminantTwelfthRootOfIdealLattice D D.host.ccK δ :=
   IsAlgClosed.exists_pow_nat_eq _ (by norm_num)
 
 /- English proof (translation)
-Unfold `lamOf baseLat`. Simplify using `only [one_mul]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem lamOf_one (D : D7) : lamOf D D.host.ccK 1 = baseLat D.host := by
   unfold lamOf baseLat
   simp only [one_mul]
 
 /- English proof (translation)
-Unfold `lamOf baseLat`. Rewrite using `[AddMonoidHom.map_closure]`. Use `congr 1`. Use extensionality with `w`. Prove the components needed by the constructor for the conclusion.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨c, hc, rfl⟩`. Conclude with `⟨_, ⟨c, hc, rfl⟩, rfl⟩`. Introduce and unpack `⟨_, ⟨c, hc, rfl⟩, rfl⟩`. Conclude with `⟨c, hc, rfl⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem lamOf_eq_map (D : D7) (δ : ℂ) :
     lamOf D D.host.ccK δ = (baseLat D.host).map (AddMonoidHom.mulLeft δ) := by
@@ -187,14 +187,14 @@ theorem lamOf_eq_map (D : D7) (δ : ℂ) :
     exact ⟨c, hc, rfl⟩
 
 /- English proof (translation)
-Take `⟨L, hL⟩` from `GlobalTheory.Mem.Per.ConjCM.exists_periodPair_baseLat D.host`. Conclude with `(GlobalTheory.LatticeInvariants.invariants_dictionary L _ hL).2.2.1`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem discr_baseLat_ne_zero (D : D7) : TaylorLogMetric.discr (baseLat D.host) ≠ 0 := by
   obtain ⟨L, hL⟩ := GlobalTheory.Mem.Per.ConjCM.exists_periodPair_baseLat D.host
   exact (GlobalTheory.LatticeInvariants.invariants_dictionary L _ hL).2.2.1
 
 /- English proof (translation)
-Introduce and unpack `rfl`. Apply `discr_baseLat_ne_zero D` to reduce the goal to its premises. Rewrite using `[← lamOf_one, ← h]`. Simplify using the standard rewrite rules.
+Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem delta_ne_zero (h : IsDiscriminantTwelfthRootOfIdealLattice D D.host.ccK δ) : δ ≠ 0 := by
   rintro rfl
@@ -202,24 +202,24 @@ theorem delta_ne_zero (h : IsDiscriminantTwelfthRootOfIdealLattice D D.host.ccK 
   rw [← lamOf_one, ← h]; simp
 
 /- English proof (translation)
-Rewrite using `[lamOf_eq_map, Model.discr_map _ _ (delta_ne_zero h), ← lamOf_one, ← h, inv_mul_cancel₀ (pow_ne_zero _ (delta_ne_zero h))]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem discr_lamOf (h : IsDiscriminantTwelfthRootOfIdealLattice D D.host.ccK δ) : TaylorLogMetric.discr (lamOf D D.host.ccK δ) = 1 := by
   rw [lamOf_eq_map, Model.discr_map _ _ (delta_ne_zero h), ← lamOf_one, ← h,
     inv_mul_cancel₀ (pow_ne_zero _ (delta_ne_zero h))]
 
 /- English proof (translation)
-Rewrite using `[lamOf_eq_map, Model.jLat_map _ _ (delta_ne_zero h)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem jLat_lamOf (h : IsDiscriminantTwelfthRootOfIdealLattice D D.host.ccK δ) : jLat (lamOf D D.host.ccK δ) = jLat (baseLat D.host) := by
   rw [lamOf_eq_map, Model.jLat_map _ _ (delta_ne_zero h)]
 
 /- English proof (translation)
-Establish `h1 : ρ ⟨_, h2⟩ ^ 3 - 27 * ρ ⟨_, h3⟩ ^ 2 = 1`. Establish `: (⟨_, h2⟩ : M) ^ 3 - 27 * (⟨_, h3⟩ : M) ^ 2 = 1` using `Subtype.ext h`. Establish `e` using `congrArg ρ this`. Rewrite `e` using `[map_sub, map_mul, map_pow, map_pow, map_ofNat, map_one]`. Then use the resulting hypothesis. Take `⟨L, e2, e3⟩` from `GlobalTheory.LatticeInvariants.exists_periodPair_of_invariants (a := ρ ⟨_, h2⟩) (b := ρ ⟨_, h3⟩) (by rw [h1]; exact one_ne_zero)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result.
 
-Establish `hd` using `GlobalTheory.LatticeInvariants.invariants_dictionary L L.lattice.toAddSubgroup (fun _ => Iff.rfl)`. Establish `l2 : liftM M (g2 Λ) = ⟨_, h2⟩` using `dif_pos h2`. Establish `l3 : liftM M (g3 Λ) = ⟨_, h3⟩` using `dif_pos h3`. Establish `hs` using `Classical.epsilon_spec (p := fun Λ' : AddSubgroup ℂ => g2 Λ' = ρ (liftM M (g2 Λ)) ∧ g3 Λ' = ρ (liftM M (g3 Λ))) ⟨L.lattice.toAddSubgroup, by rw [hd.1, e2, l2], by rw [hd.2.1, e3, l3]⟩`. Establish `a2 : g2 (lamConj M ρ Λ) = ρ ⟨_, h2⟩` using `hs.1.trans (by rw [l2])`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a3 : g3 (lamConj M ρ Λ) = ρ ⟨_, h3⟩` using `hs.2.trans (by rw [l3])`. Conclude with `⟨a2, a3, by rw [TaylorLogMetric.discr, a2, a3, h1]⟩`.
+Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem lamConj_spec {Λ : AddSubgroup ℂ} (h : TaylorLogMetric.discr Λ = 1) (h2 : g2 Λ ∈ M) (h3 : g3 Λ ∈ M) (ρ : M →ₐ[ℚ] ℂ) :
     g2 (lamConj M ρ Λ) = ρ ⟨_, h2⟩ ∧ g3 (lamConj M ρ Λ) = ρ ⟨_, h3⟩ ∧ TaylorLogMetric.discr (lamConj M ρ Λ) = 1 := by
@@ -243,9 +243,9 @@ def into (D : D7) (M : IntermediateField ℚ ℂ) (hL : ∀ x, D.what₂.embLL x
   D.what₂.embLL.codRestrict M hL
 
 /- English proof (translation)
-Take `⟨c1, a, ha, ha'⟩` from `Model.conjLat_spec D.host hF s`. Take `⟨a2, -, a1⟩` from `lamConj_spec (discr_lamOf h) hM.2.1 hM.2.2 ρ`. Use `exists_root_of_jLat_eq a1 c1 ?_` and prove the remaining obligations. Establish `: into D M hL a = 1728 * (⟨_, hM.2.1⟩ : M) ^ 3`. Apply `Subtype.ext` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Express the relevant statement in the definitionally equal form `D.what₂.embLL a = 1728 * g2 (lamOf D D.host.ccK δ) ^ 3`. Rewrite using `[ha, ← jLat_lamOf h, jLat, discr_lamOf h, div_one]`. Rewrite using `[← ha', hs, this, jLat, a1, a2, div_one, map_mul, map_pow, map_ofNat]`. Both sides reduce to the same expression.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem conjLat_eq (hF : FieldOK D.host D.what₂.embLL D.embE) (h : IsDiscriminantTwelfthRootOfIdealLattice D D.host.ccK δ)
     (hL : ∀ x, D.what₂.embLL x ∈ M) (hM : DataIn D (tor0 D D.host.ccK δ) M) (ρ : M →ₐ[ℚ] ℂ)
@@ -263,11 +263,11 @@ theorem conjLat_eq (hF : FieldOK D.host D.what₂.embLL D.embE) (h : IsDiscrimin
   rfl
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `hF.1`. Establish `h1` using `discr_lamOf h`. Establish `h2 : g2 (lamOf D D.host.ccK δ) ^ 3 = D.what₂.embLL (a / 1728)`. Rewrite using `[map_div₀, ha, ← jLat_lamOf h, jLat, h1, map_ofNat]`. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Use `⟨fun τ x => ?_, h2 ▸ hL _, ?_⟩` and prove the remaining obligations. Use `hL (D.embE (D.host.sigmaOf (D.eTau τ).1 x))` as an intermediate fact. Rewrite `this` using `[← RingHom.comp_apply, D.embE_φ₀]`. Then use the resulting hypothesis. Establish `: g3 (lamOf D D.host.ccK δ) ^ 2 = D.what₂.embLL ((a / 1728 - 1) / 27)`. Rewrite using `[map_div₀, map_sub, ← h2, map_one, map_ofNat]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Unfold `TaylorLogMetric.discr at h1`. Take the linear combination `-h1 / 27`. Conclude with `this ▸ hL _`.
+Replace the relevant objects with their definitions. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem data_of_fieldOK (hF : FieldOK D.host D.what₂.embLL D.embE) (h : IsDiscriminantTwelfthRootOfIdealLattice D D.host.ccK δ)
     (hL : ∀ x, D.what₂.embLL x ∈ M) :
@@ -286,15 +286,13 @@ theorem data_of_fieldOK (hF : FieldOK D.host D.what₂.embLL D.embE) (h : IsDisc
     exact this ▸ hL _
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.Mem.EigenLine.ellT_eq_ellLat D M ((into D M hL).comp D.embE) (fun x => by rw [← D.embE_φ₀]; rfl) τ]`. Establish `hg` using `Model.gen_spec D.host hF (D.eTau τ).1`. Establish `key : ∀ (S : Set D.what₂.LL) (N : Submodule (𝓞 M) M), (∀ y ∈ S, into D M hL y ∈ N) → ∀ y ∈ Submodule.span (𝓞 D.what₂.LL) S, into D M hL y ∈ N`. Introduce `S N hS y hy`. Proceed by induction on `hy using Submodule.span_induction with`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `mem y hy => exact hS y hy`. Consider the case `zero => rw [map_zero]`. Conclude with `N.zero_mem`. Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `N.add_mem hx hy`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Consider the case `smul r y _ hy`. Use `N.smul_mem (RingOfIntegers.mapRingHom (into D M hL) r) hy` as an intermediate fact. Rewrite using `[Algebra.smul_def, map_mul]`. Conclude with `this`. Apply `le_antisymm` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Rewrite using `[Submodule.span_singleton_le_iff_mem]`. Use `key _ _ ?_ _ (hg.le (Submodule.mem_span_singleton_self _))` and prove the remaining obligations. Introduce and unpack `_ ⟨a, ha, b, hb, rfl⟩`. Conclude with `Submodule.subset_span ⟨a, ha, b, hb, rfl⟩`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations.
-
-Introduce and unpack `_ ⟨a, ha, b, hb, rfl⟩`. Use `key {gen D.host D.embE (D.eTau τ).1} _ ?_ _ (hg.ge (Submodule.subset_span ⟨a, ha, b, hb, rfl⟩))` and prove the remaining obligations. Introduce and unpack `_ rfl`. Conclude with `Submodule.mem_span_singleton_self _`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem span_gen [NumberField M] (hF : FieldOK D.host D.what₂.embLL D.embE) (hL : ∀ x, D.what₂.embLL x ∈ M)
     (τ : D.what₂.Tau) :
@@ -324,7 +322,7 @@ theorem span_gen [NumberField M] (hF : FieldOK D.host D.what₂.embLL D.embE) (h
     exact Submodule.mem_span_singleton_self _
 
 /- English proof (translation)
-Take `⟨ζ, hζ, e⟩` from `conjLat_eq hF h hL hM ρ s hs`. Establish `h0` using `(retie D).gx.Om_pos τ s`. Establish `h1 : (retie D).gx.Om τ s = _` using `Model.om_eq D.host hF D.eTau τ s`. Rewrite `h1` using `[e, area_map_unit _ (norm_eq_one_of_pow hζ), hs]`. Rewrite using `[logMet, ← Real.log_inv, inv_div, ← h1, Real.exp_log h0]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem om_eq (hF : FieldOK D.host D.what₂.embLL D.embE) (h : IsDiscriminantTwelfthRootOfIdealLattice D D.host.ccK δ)
     (hL : ∀ x, D.what₂.embLL x ∈ M) (hM : DataIn D (tor0 D D.host.ccK δ) M) (ρ : M →ₐ[ℚ] ℂ)
@@ -338,15 +336,15 @@ theorem om_eq (hF : FieldOK D.host D.what₂.embLL D.embE) (h : IsDiscriminantTw
   rw [logMet, ← Real.log_inv, inv_div, ← h1, Real.exp_log h0]
 
 /- English proof (translation)
-Take `⟨ζ, hζ, e⟩` from `conjLat_eq hF h hL hM ρ s hs`. Establish `hc : Crv D D.host.ccK δ` using `⟨isCurveIdeal_ccK D, h⟩`. Establish `h0 : ζ ≠ 0` using `by rintro rfl; simp at hζ`. Establish `hd` using `(lamConj_spec (discr_lamOf h) hM.2.1 hM.2.2 ρ).2.2`. Establish `hm : ∀ c z : ℂ, c * (ζ * z) ∈ conjLat D.host D.what₂.embLL s ↔ c * z ∈ lamConj M ρ (lamOf D D.host.ccK δ)` using `fun c z => by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[e, mul_left_comm]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, hy'⟩`. Conclude with `mul_left_cancel₀ h0 hy' ▸ hy`. Conclude with `fun hz => ⟨_, hz, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `hT : ∀ z, IsHalfPt D.host.d (conjLat D.host D.what₂.embLL s) (ζ * z) ↔ GL3Theta.IsTwoTorsionPointUnkilled D (lamConj M ρ (lamOf D D.host.ccK δ)) z` using `fun z => by`. Unfold `IsHalfPt GL3Theta.IsTwoTorsionPointUnkilled`. Rewrite using `[hm, hm, hm]`. Establish `hε` using `Classical.epsilon_spec (p := IsHalfPt D.host.d (conjLat D.host D.what₂.embLL s)) ⟨_, (hT t).2 ht⟩`. Establish `hv : thAt D.host D.what₂.embLL s = Real.sqrt (GL3Theta.normSq1 (lamConj M ρ (lamOf D D.host.ccK δ)) (GL3Theta.th0 (lamConj M ρ (lamOf D D.host.ccK δ)) t))`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `thAt`. Generalize the expression as in `Classical.epsilon (IsHalfPt D.host.d (conjLat D.host D.what₂.embLL s)) = u at hε`. Take `⟨v, rfl⟩ : ∃ v, u = ζ * v` from `⟨ζ⁻¹ * u, by field_simp⟩`. Rewrite using `[e, meanSquare_evenTheta_twelfthRoot_invariant hd hζ, normSq1_eq_nrm1Sq, thetaZero_eq_of_isThetaZero hc hM ρ ((hT v).1 hε) ht]`. Establish `hp` using `normSq_thetaZero_pos hc hM ρ ht`.
+Replace the chosen expression with an arbitrary variable. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `posOr1 (thAt D.host D.what₂.embLL s) ^ 2 = _`. Rewrite using `[posOr1, hv, if_pos (Real.sqrt_pos.2 hp), Real.sq_sqrt hp.le]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem thOne_sq (hF : FieldOK D.host D.what₂.embLL D.embE) (h : IsDiscriminantTwelfthRootOfIdealLattice D D.host.ccK δ)
     (hL : ∀ x, D.what₂.embLL x ∈ M) (hM : DataIn D (tor0 D D.host.ccK δ) M) (ρ : M →ₐ[ℚ] ℂ)
@@ -381,7 +379,7 @@ theorem thOne_sq (hF : FieldOK D.host D.what₂.embLL D.embE) (h : IsDiscriminan
   rw [posOr1, hv, if_pos (Real.sqrt_pos.2 hp), Real.sq_sqrt hp.le]
 
 /- English proof (translation)
-Establish `hL : ∀ x, D.what₂.embLL x ∈ coefM D` using `fun x => ⟨x, rfl⟩`. Establish `hM : DataIn D (tor0 D D.host.ccK δ) (coefM D)` using `⟨(data_of_fieldOK hF h hL).1, h2, h3⟩`. Establish `hs : ∀ (s : D.what₂.LL →+* ℂ) x, s x = rhoOf D.what₂.embLL s (into D (coefM D) hL x)` using `fun s x => (rhoOf_imEquiv D.what₂.embLL s x).symm`. Conclude with `⟨⟨isCurveIdeal_ccK D, h⟩, hM, fun τ => ⟨_, span_gen hF hL τ, fun s => om_eq hF h hL hM _ s (hs s) τ⟩, fun s t ht => thOne_sq hF h hL hM _ s (hs s) t ht⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem perTie_retie (hF : FieldOK D.host D.what₂.embLL D.embE) (h : IsDiscriminantTwelfthRootOfIdealLattice D D.host.ccK δ)
     (h2 : g2 (lamOf D D.host.ccK δ) ∈ coefM D) (h3 : g3 (lamOf D D.host.ccK δ) ∈ coefM D) :
@@ -395,11 +393,9 @@ theorem perTie_retie (hF : FieldOK D.host D.what₂.embLL D.embE) (h : IsDiscrim
     fun s t ht => thOne_sq hF h hL hM _ s (hs s) t ht⟩
 
 /- English proof (translation)
-Establish `hL : ∀ x, D.what₂.embLL x ∈ coefM D` using `fun x => ⟨x, rfl⟩`. Take `⟨-, h2, h3⟩` from `data_of_fieldOK hF h hL`. Establish `hi : ∀ x ∈ coefM D, IsIntegral ℚ x` using `fun x hx => (IsIntegral.of_finite ℚ (⟨x, hx⟩ : coefM D)).map (coefM D).val`. Set `S : Set ℂ` to `{g2 (lamOf D D.host.ccK δ), g3 (lamOf D D.host.ccK δ)}`. Establish `hS : FiniteDimensional ℚ (IntermediateField.adjoin ℚ S)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `IntermediateField.finiteDimensional_adjoin ?_` and prove the remaining obligations. Introduce and unpack `_ (rfl | rfl)`. Conclude with `(hi _ h2).of_pow (by norm_num)`. Conclude with `(hi _ h3).of_pow (by norm_num)`. Establish `hL' : ∀ x, D.what₂.embLL x ∈ coefM D ⊔ IntermediateField.adjoin ℚ S` using `fun x => le_sup_left (a := coefM D) (hL x)`.
-
-Use `⟨coefM D ⊔ IntermediateField.adjoin ℚ S, ⟨⟩, hL', (data_of_fieldOK hF h hL').1, ?_, ?_⟩` and prove the remaining obligations. Conclude with `le_sup_right (a := coefM D) (IntermediateField.subset_adjoin ℚ S (by simp [S, tor0]))`. Conclude with `le_sup_right (a := coefM D) (IntermediateField.subset_adjoin ℚ S (by simp [S, tor0]))`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_field (hF : FieldOK D.host D.what₂.embLL D.embE) (h : IsDiscriminantTwelfthRootOfIdealLattice D D.host.ccK δ) :
     ∃ (M : IntermediateField ℚ ℂ) (_ : NumberField M), (∀ x, D.what₂.embLL x ∈ M) ∧
@@ -420,7 +416,7 @@ theorem exists_field (hF : FieldOK D.host D.what₂.embLL D.embE) (h : IsDiscrim
   · exact le_sup_right (a := coefM D) (IntermediateField.subset_adjoin ℚ S (by simp [S, tor0]))
 
 /- English proof (translation)
-Introduce `D hF` and use `⟨exists_discriminantTwelfthRoot_of_ideal D, fun _ h => ⟨exists_field hF h, fun _ _ hL hM => ⟨_, span_gen hF hL, fun ρ => ⟨om_eq hF h hL hM ρ _ fun _ => rfl, thOne_sq hF h hL hM ρ _ fun _ => rfl⟩⟩⟩⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem retie_periods : ∀ D : D7, FieldOK D.host D.what₂.embLL D.embE →
     (∃ δ, IsDiscriminantTwelfthRootOfIdealLattice D D.host.ccK δ) ∧ ∀ δ, IsDiscriminantTwelfthRootOfIdealLattice D D.host.ccK δ →

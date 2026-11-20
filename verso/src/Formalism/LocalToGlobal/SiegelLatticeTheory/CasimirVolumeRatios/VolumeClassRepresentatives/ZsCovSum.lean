@@ -15,11 +15,11 @@ namespace Formalism.L2.S.S7.ZsCovSum
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Rewrite using `[UnfoldingVolume.FD, measure_biUnion_finset]`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun y _ => ?_` and prove the remaining obligations. Rewrite using `[UnfoldingVolume.muA_eq, Measure.prod_prod, UnfoldingVolume.Ky_measure, mul_comm]`. Introduce `y hy y' hy' hne`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `Set.disjoint_left.2 fun p hp hp' => hne ?_` and prove the remaining obligations. Establish `hk : y⁻¹ * p.2 ∈ I.Kset` using `hp.2`. Establish `hk' : y'⁻¹ * p.2 ∈ I.Kset` using `hp'.2`. Use `hys.2 y hy y' hy' ⟨1, rrg_one_mem I, (y⁻¹ * p.2) * (y'⁻¹ * p.2)⁻¹, UnfoldingVolume.kmul I hk (UnfoldingVolume.kinv I hk'), ?_⟩` and prove the remaining obligations. Use `show y' = 1 * y * ((y⁻¹ * p.2) * (y'⁻¹ * p.2)⁻¹)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `group`. Introduce `y hy`. Conclude with `(hD y hy).1.prod (UnfoldingVolume.Ky_meas I y)`.
+A detailed English derivation is pending.
 -/
 theorem muA_FD (I : AutInst) (μf : Measure I.Gf) [μf.IsHaarMeasure] [SigmaFinite μf] (ys : Finset I.Gf)
     (hys : Formalism.MainNotions.FundamentalDomainUnfolding.ClassReps I ys) (Dy : I.Gf → Set I.Ginf)
@@ -41,7 +41,7 @@ theorem muA_FD (I : AutInst) (μf : Measure I.Gf) [μf.IsHaarMeasure] [SigmaFini
     exact (hD y hy).1.prod (UnfoldingVolume.Ky_meas I y)
 
 /- English proof (translation)
-The claim follows from `Finset.measurableSet_biUnion ys fun y hy => (hD y hy).1.prod (UnfoldingVolume.Ky_meas I y)`.
+A detailed English derivation is pending.
 -/
 theorem FD_meas (I : AutInst) (ys : Finset I.Gf) (Dy : I.Gf → Set I.Ginf)
     (hD : ∀ y ∈ ys, Formalism.MainNotions.FundamentalDomainUnfolding.IsFundInf I y (Formalism.MainNotions.FundamentalDomainUnfolding.muInf I) (Dy y)) :
@@ -49,9 +49,9 @@ theorem FD_meas (I : AutInst) (ys : Finset I.Gf) (Dy : I.Gf → Set I.Ginf)
   Finset.measurableSet_biUnion ys fun y hy => (hD y hy).1.prod (UnfoldingVolume.Ky_meas I y)
 
 /- English proof (translation)
-Establish `hT : Fintype.card {i // ε i = true} = P` using `by rw [Fintype.card_subtype]; exact hP`. Establish `hF : Fintype.card {i // ¬ ε i = true} = Q`. Rewrite using `[Fintype.card_subtype_compl, hT, Fintype.card_fin]`. Use linear arithmetic over natural numbers and integers. Set `eT : Fin P ≃ {i // ε i = true}` to `(Fintype.equivFinOfCardEq hT).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Introduce a local definition for the expression.
 
-Set `eF : Fin Q ≃ {i // ¬ ε i = true}` to `(Fintype.equivFinOfCardEq hF).symm`. Use `⟨(Equiv.sumCongr eT eF).trans (Equiv.sumCompl fun i => ε i = true), fun i => ?_, fun j => ?_⟩` and prove the remaining obligations. Simplify using `using (eT i).2`. Simplify using `using (eF j).2`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem blockEquiv {n P Q : ℕ} (ε : Fin n → Bool) (hP : (Finset.univ.filter fun i => ε i = true).card = P)
     (hn : P + Q = n) :
@@ -66,7 +66,7 @@ theorem blockEquiv {n P Q : ℕ} (ε : Fin n → Bool) (hP : (Finset.univ.filter
   · simpa using (eF j).2
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simp [IwasawaCovolume.volgU]`. Consider the case `succ k ih`. Rewrite using `[IwasawaCovolume.volgU, Finset.prod_range_succ, ← IwasawaCovolume.volgU, ih, Finset.prod_Icc_succ_top (by omega)]`. Simplify using the standard rewrite rules.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem volgU_eq_Icc (n : ℕ) :
     IwasawaCovolume.volgU n = ∏ i ∈ Finset.Icc 1 n, (2 * Real.pi) ^ i / ((i - 1).factorial : ℝ) := by

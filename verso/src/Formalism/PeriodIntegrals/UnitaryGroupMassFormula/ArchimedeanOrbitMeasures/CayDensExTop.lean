@@ -15,26 +15,26 @@ variable (P Q : ℕ)
 local notation "Mat" => Matrix (Fin P ⊕ Fin Q) (Fin P ⊕ Fin Q) ℂ
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[HcS.UG.cT, Matrix.conjTranspose_apply, Complex.star_def]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem cT_eq (X : Mat) : HcS.UG.cT (starRingEnd ℂ) X = Xᴴ := by
   ext i j
   simp [HcS.UG.cT, Matrix.conjTranspose_apply, Complex.star_def]
 
 /- English proof (translation)
-Simplify using `[HcS.UG.Jpq, Matrix.fromBlocks_multiply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem Jpq_mul_self : HcS.UG.Jpq P Q * HcS.UG.Jpq P Q = 1 := by
   simp [HcS.UG.Jpq, Matrix.fromBlocks_multiply]
 
 /- English proof (translation)
-Simplify using `[HcS.UG.Jpq, Matrix.fromBlocks_conjTranspose]`.
+Simplify using the standard rewrite rules.
 -/
 theorem Jpq_conjTranspose : (HcS.UG.Jpq P Q)ᴴ = HcS.UG.Jpq P Q := by
   simp [HcS.UG.Jpq, Matrix.fromBlocks_conjTranspose]
 
 /- English proof (translation)
-Unfold `HcS.UG.Upq`. Rewrite using `[← cT_eq]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem mem_Upq_iff (g : GL (Fin P ⊕ Fin Q) ℂ) :
     g ∈ HcS.UG.Upq P Q ↔ (g : Mat)ᴴ * HcS.UG.Jpq P Q * (g : Mat) = HcS.UG.Jpq P Q := by
@@ -50,9 +50,9 @@ Both sides reduce to the same expression.
 theorem mat_eq (g : UpqT P Q) : UpqT.mat g = ((toS P Q g : GL (Fin P ⊕ Fin Q) ℂ) : Mat) := rfl
 
 /- English proof (translation)
-Establish `hmem : (UpqT.mat g)ᴴ * HcS.UG.Jpq P Q * UpqT.mat g = HcS.UG.Jpq P Q`. Rewrite using `[mat_eq]`. Conclude with `(mem_Upq_iff P Q _).mp (toS P Q g).2`. Establish `hAB : UpqT.mat g * (((toS P Q g : GL (Fin P ⊕ Fin Q) ℂ)⁻¹ : GL (Fin P ⊕ Fin Q) ℂ) : Mat) = 1`. Rewrite using `[mat_eq, ← Units.val_mul, mul_inv_cancel, Units.val_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hmem, Jpq_mul_self, Matrix.one_mul]`. Use `_ = HcS.UG.Jpq P Q * (UpqT.mat g)ᴴ * HcS.UG.Jpq P Q * (UpqT.mat g * (((toS P Q g : GL (Fin P ⊕ Fin Q) ℂ)⁻¹ : GL (Fin P ⊕ Fin Q) ℂ) : Mat)) := by`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = _ := by rw [hAB, Matrix.mul_one]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mat_inv (g : UpqT P Q) :
     (((toS P Q g : GL (Fin P ⊕ Fin Q) ℂ)⁻¹ : GL (Fin P ⊕ Fin Q) ℂ) : Mat) =
@@ -72,11 +72,11 @@ theorem mat_inv (g : UpqT P Q) :
     _ = _ := by rw [hAB, Matrix.mul_one]
 
 /- English proof (translation)
-Establish `hv : IsInducing (fun g : UpqT P Q => ((toS P Q g : HcS.UG.Upq P Q) : GL (Fin P ⊕ Fin Q) ℂ))`. Rewrite using `[isInducing_iff]`. Use extensionality with `s`. Rewrite using `[isOpen_induced_iff]`. Use `show HcS.BasicNotions.instTopologicalSpaceUpqT._aux_1 P Q s ↔ _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Unfold `HcS.BasicNotions.instTopologicalSpaceUpqT._aux_1`. Both sides reduce to the same expression. Establish `he : IsInducing ((Units.embedProduct Mat) ∘ (fun g : UpqT P Q => ((toS P Q g : HcS.UG.Upq P Q) : GL (Fin P ⊕ Fin Q) ℂ)))` using `Units.isEmbedding_embedProduct.isInducing.comp hv`. Establish `hcomp : (Units.embedProduct Mat) ∘ (fun g : UpqT P Q => ((toS P Q g : HcS.UG.Upq P Q) : GL (Fin P ⊕ Fin Q) ℂ)) = (fun X : Mat => (X, MulOpposite.op (HcS.UG.Jpq P Q * Xᴴ * HcS.UG.Jpq P Q))) ∘ UpqT.mat`. Use function extensionality and compare the values at `x`.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `Prod.ext rfl (congrArg MulOpposite.op (mat_inv P Q x))`. Rewrite `he` using `[hcomp]`. Use `IsInducing.of_comp ?_ ?_ he` and prove the remaining obligations. Conclude with `Units.continuous_val.comp hv.continuous`. Conclude with `continuous_id.prodMk (MulOpposite.continuous_op.comp ((continuous_const.matrix_mul continuous_id.matrix_conjTranspose).matrix_mul continuous_const))`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isInducing_mat : IsInducing (UpqT.mat (P := P) (Q := Q)) := by
   have hv : IsInducing (fun g : UpqT P Q => ((toS P Q g : HcS.UG.Upq P Q) : GL (Fin P ⊕ Fin Q) ℂ)) := by
@@ -101,11 +101,11 @@ theorem isInducing_mat : IsInducing (UpqT.mat (P := P) (Q := Q)) := by
       ((continuous_const.matrix_mul continuous_id.matrix_conjTranspose).matrix_mul continuous_const))
 
 /- English proof (translation)
-Use extensionality with `X`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨g, rfl⟩ show (UpqT.mat g)ᴴ * HcS.UG.Jpq P Q * UpqT.mat g = HcS.UG.Jpq P Q`. Rewrite using `[mat_eq]`. Conclude with `(mem_Upq_iff P Q _).mp (toS P Q g).2`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hX`. Establish `hX' : Xᴴ * HcS.UG.Jpq P Q * X = HcS.UG.Jpq P Q` using `hX`. Establish `hl : (HcS.UG.Jpq P Q * Xᴴ * HcS.UG.Jpq P Q) * X = 1`. Rewrite using `[Matrix.mul_assoc, Matrix.mul_assoc, ← Matrix.mul_assoc Xᴴ, hX', Jpq_mul_self]`. Establish `hr : X * (HcS.UG.Jpq P Q * Xᴴ * HcS.UG.Jpq P Q) = 1` using `mul_eq_one_comm.mp hl`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `u : GL (Fin P ⊕ Fin Q) ℂ` to `⟨X, _, hr, hl⟩`. Establish `hu : u ∈ HcS.UG.Upq P Q` using `(mem_Upq_iff P Q u).mpr hX'`. Conclude with `⟨(⟨u, hu⟩ : HcS.UG.Upq P Q), rfl⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem range_mat : Set.range (UpqT.mat (P := P) (Q := Q)) =
     {X : Mat | Xᴴ * HcS.UG.Jpq P Q * X = HcS.UG.Jpq P Q} := by
@@ -125,7 +125,7 @@ theorem range_mat : Set.range (UpqT.mat (P := P) (Q := Q)) =
     exact ⟨(⟨u, hu⟩ : HcS.UG.Upq P Q), rfl⟩
 
 /- English proof (translation)
-Use `⟨⟨isInducing_mat P Q, fun a b h => ?_⟩, ?_⟩` and prove the remaining obligations. Conclude with `Subtype.ext (Units.ext h)`. Rewrite using `[range_mat]`. Conclude with `isClosed_eq ((continuous_id.matrix_conjTranspose.matrix_mul continuous_const).matrix_mul continuous_id) continuous_const`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isClosedEmbedding_mat : IsClosedEmbedding (UpqT.mat (P := P) (Q := Q)) := by
   refine ⟨⟨isInducing_mat P Q, fun a b h => ?_⟩, ?_⟩
@@ -154,7 +154,7 @@ instance : SigmaCompactSpace (UpqT P Q) := inferInstance
 end Upq
 
 /- English proof (translation)
-Introduce `P Q`. Use `haveI := cd.haar P Q`. Use `infer_instance`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem cd_haar_finite (cd : CDHaar) : CdFin cd := by
   intro P Q
@@ -165,19 +165,17 @@ variable (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [StarR
   (hc : CMData F E) (T : Type) [Fintype T] (cd : CDHaar)
 
 /- English proof (translation)
-Introduce `W P Q Φ hmul hΦ hΦs μ hμ`. Use `haveI : SigmaFinite (cd.cd P Q) := cd_haar_finite cd P Q`. Use `haveI : (cd.cd P Q).IsHaarMeasure := cd.haar P Q`. Use `haveI : (μ.map Φ).IsMulLeftInvariant := by`. Prove the components needed by the constructor for the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Introduce `h`. Establish `hLg : (fun x => Φ.symm h * x) = Φ.symm ∘ (fun y => h * y) ∘ Φ`. Use function extensionality and compare the values at `x`. Apply `Φ.injective` to reduce the goal to its premises. Simplify using `[hmul]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hLgm : Measurable (fun x => Φ.symm h * x)`. Rewrite using `[hLg]`. Conclude with `Φ.symm.measurable.comp ((measurable_const_mul h).comp Φ.measurable)`. Establish `hc : (fun x => h * x) ∘ Φ = Φ ∘ (fun x => Φ.symm h * x)`. Use function extensionality and compare the values at `x`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[hmul]`. Rewrite using `[Measure.map_map (measurable_const_mul h) Φ.measurable, hc, ← Measure.map_map Φ.measurable hLgm, map_mul_left_eq_self]`. Use `haveI : IsFiniteMeasureOnCompacts (μ.map Φ) := by`. Prove the components needed by the constructor for the conclusion. Introduce `K hK`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[MeasurableEquiv.map_apply]`. Establish `hpre : Φ ⁻¹' K = Φ.symm '' K`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce `hx`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `⟨Φ x, hx, Φ.symm_apply_apply x⟩`. Introduce and unpack `⟨y, hy, rfl⟩`. Simplify using `using hy`. Rewrite using `[hpre]`. Conclude with `(hK.image hΦs).measure_lt_top`.
-
-Conclude with `⟨_, Measure.isMulLeftInvariant_eq_smul (μ.map Φ) (Measure.pi fun _ : T => cd.cd P Q)⟩`.
+A detailed English derivation is pending.
 -/
 theorem haar_unique' : HaarUnique F E hc T cd := by
   intro W P Q Φ hmul hΦ hΦs μ hμ

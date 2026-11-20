@@ -18,9 +18,9 @@ def pos (k r : ℕ) : Ix k r → Fin (2 * r + k + 1)
   | Sum.inr (Sum.inr a) => esI k r a
 
 /- English proof (translation)
-Introduce `p q h`. Apply the tactic sequence `rcases p with a | j | a <;> rcases q with b | j' | b <;>`. Apply the tactic sequence `simp only [pos, eI, wI, esI, Fin.ext_iff] at h <;>`. Use `first`. Consider the case `(congr 1; exact Fin.ext (by omega))`.
+Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Treat this case separately. Treat this case separately.
 
-Consider the case `(congr 2; exact Fin.ext (by omega))`. Consider the case `(exfalso; omega)`. Consider the case `skip`. Apply the tactic sequence `all_goals (first | (exfalso; have := a.isLt; have := b.isLt; omega) | skip)`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem pos_inj : Function.Injective (pos k r) := by
   intro p q h
@@ -34,7 +34,7 @@ theorem pos_inj : Function.Injective (pos k r) := by
   all_goals (first | (exfalso; have := a.isLt; have := b.isLt; omega) | skip)
 
 /- English proof (translation)
-Rewrite using `[Fintype.bijective_iff_injective_and_card]`. Use `⟨pos_inj, ?_⟩` and prove the remaining obligations. Simplify using `only [Fintype.card_sum, Fintype.card_fin]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem pos_bij : Function.Bijective (pos k r) := by
   rw [Fintype.bijective_iff_injective_and_card]
@@ -50,7 +50,7 @@ Both sides reduce to the same expression.
 theorem posE_apply (p : Ix k r) : posE k r p = pos k r p := rfl
 
 /- English proof (translation)
-Rewrite using `[← Equiv.sum_comp (posE k r) f, Fintype.sum_sum_type, Fintype.sum_sum_type]`. Conclude with `(add_assoc _ _ _).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_split {β : Type*} [AddCommMonoid β] (f : Fin (2 * r + k + 1) → β) :
     ∑ l, f l = ∑ a, f (eI k r a) + ∑ j, f (wI k r j) + ∑ a, f (esI k r a) := by
@@ -61,37 +61,37 @@ def dD (k : ℕ) : Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ :=
   Matrix.diagonal fun j => if j.val = k then -1 else 1
 
 /- English proof (translation)
-Apply the tactic sequence `unfold UnitaryGroupBasics.tau eI esI; apply Fin.ext; simp only; split_ifs <;> omega`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem tau_eI (a : Fin r) : UnitaryGroupBasics.tau k r (eI k r a) = esI k r a := by
   unfold UnitaryGroupBasics.tau eI esI; apply Fin.ext; simp only; split_ifs <;> omega
 
 /- English proof (translation)
-Apply the tactic sequence `unfold UnitaryGroupBasics.tau eI esI; apply Fin.ext; simp only; split_ifs <;> omega`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem tau_esI (a : Fin r) : UnitaryGroupBasics.tau k r (esI k r a) = eI k r a := by
   unfold UnitaryGroupBasics.tau eI esI; apply Fin.ext; simp only; split_ifs <;> omega
 
 /- English proof (translation)
-Apply the tactic sequence `unfold UnitaryGroupBasics.tau wI; apply Fin.ext; simp only; split_ifs <;> omega`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem tau_wI (j : Fin (k + 1)) : UnitaryGroupBasics.tau k r (wI k r j) = wI k r j := by
   unfold UnitaryGroupBasics.tau wI; apply Fin.ext; simp only; split_ifs <;> omega
 
 /- English proof (translation)
-Apply the tactic sequence `unfold UnitaryGroupBasics.sgn eI; simp only; split_ifs <;> first | rfl | omega`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem sgn_eI (a : Fin r) : UnitaryGroupBasics.sgn k r (eI k r a) = 1 := by
   unfold UnitaryGroupBasics.sgn eI; simp only; split_ifs <;> first | rfl | omega
 
 /- English proof (translation)
-Apply the tactic sequence `unfold UnitaryGroupBasics.sgn esI; simp only; split_ifs <;> first | rfl | omega`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem sgn_esI (a : Fin r) : UnitaryGroupBasics.sgn k r (esI k r a) = 1 := by
   unfold UnitaryGroupBasics.sgn esI; simp only; split_ifs <;> first | rfl | omega
 
 /- English proof (translation)
-Unfold `UnitaryGroupBasics.sgn wI dD`. Simplify using `only [Matrix.diagonal_apply_eq]`. Apply the tactic sequence `split_ifs <;> first | rfl | omega`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem sgn_wI (j : Fin (k + 1)) : UnitaryGroupBasics.sgn k r (wI k r j) = dD k j j := by
   unfold UnitaryGroupBasics.sgn wI dD
@@ -99,14 +99,14 @@ theorem sgn_wI (j : Fin (k + 1)) : UnitaryGroupBasics.sgn k r (wI k r j) = dD k 
   split_ifs <;> first | rfl | omega
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h => by simpa using @pos_inj k r (Sum.inl a) (Sum.inl b) h, fun h => h ▸ rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem eI_inj {a b : Fin r} : eI k r a = eI k r b ↔ a = b :=
   ⟨fun h => by simpa using @pos_inj k r (Sum.inl a) (Sum.inl b) h,
     fun h => h ▸ rfl⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h => by simpa using @pos_inj k r (Sum.inr (Sum.inr a)) (Sum.inr (Sum.inr b)) h, fun h => h ▸ rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem esI_inj {a b : Fin r} : esI k r a = esI k r b ↔ a = b :=
   ⟨fun h => by
@@ -114,7 +114,7 @@ theorem esI_inj {a b : Fin r} : esI k r a = esI k r b ↔ a = b :=
     fun h => h ▸ rfl⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h => by simpa using @pos_inj k r (Sum.inr (Sum.inl a)) (Sum.inr (Sum.inl b)) h, fun h => h ▸ rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem wI_inj {a b : Fin (k + 1)} : wI k r a = wI k r b ↔ a = b :=
   ⟨fun h => by
@@ -122,26 +122,26 @@ theorem wI_inj {a b : Fin (k + 1)} : wI k r a = wI k r b ↔ a = b :=
     fun h => h ▸ rfl⟩
 
 /- English proof (translation)
-Introduce `h` and use `by have := @pos_inj k r (Sum.inl a) (Sum.inr (Sum.inr b)) h; simp at this`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem eI_ne_esI (a b : Fin r) : eI k r a ≠ esI k r b := fun h => by
   have := @pos_inj k r (Sum.inl a) (Sum.inr (Sum.inr b)) h; simp at this
 
 /- English proof (translation)
-Introduce `h` and use `by have := @pos_inj k r (Sum.inl a) (Sum.inr (Sum.inl j)) h; simp at this`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem eI_ne_wI (a : Fin r) (j : Fin (k + 1)) : eI k r a ≠ wI k r j := fun h => by
   have := @pos_inj k r (Sum.inl a) (Sum.inr (Sum.inl j)) h; simp at this
 
 /- English proof (translation)
-Introduce `h` and use `by have := @pos_inj k r (Sum.inr (Sum.inl j)) (Sum.inr (Sum.inr a)) h simp at this`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem wI_ne_esI (j : Fin (k + 1)) (a : Fin r) : wI k r j ≠ esI k r a := fun h => by
   have := @pos_inj k r (Sum.inr (Sum.inl j)) (Sum.inr (Sum.inr a)) h
   simp at this
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_assoc, Matrix.mul_apply, sum_split]`. Simplify using `only [UnitaryGroupBasics.hpk_mul_apply, tau_eI, tau_esI, tau_wI, sgn_eI, sgn_esI, sgn_wI, conjTranspose_apply, one_mul, mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem form_apply (g : Mx k r) (i j : Fin (2 * r + k + 1)) :
     (gᴴ * Hpk k r * g) i j =
@@ -153,7 +153,7 @@ theorem form_apply (g : Mx k r) (i j : Fin (2 * r + k + 1)) :
     conjTranspose_apply, one_mul, mul_assoc]
 
 /- English proof (translation)
-Rewrite using `[UnitaryGroupBasics.hpk_row, tau_esI, sgn_esI]`. Distinguish the cases in `h : a = b`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[if_neg (fun e => h (eI_inj.1 e).symm), if_neg h]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem hpk_esI_eI (a b : Fin r) :
     Hpk k r (esI k r a) (eI k r b) = if a = b then 1 else 0 := by
@@ -180,11 +180,9 @@ structure ColB (g : Mx k r) : Prop where
   sw : ∀ (a : Fin r) (j : Fin (k + 1)), g (esI k r a) (wI k r j) = 0
 
 /- English proof (translation)
-Rewrite using `[h _ _ (by simp only [eI]; omega) (Or.inl (by simp only [eI]; exact hab))]`. Simplify using `only [eI_inj]`. Use `wa j b := by`. Rewrite using `[h _ _ (by simp only [eI]; omega) (Or.inr (by simp only [wI]; omega)), if_neg (eI_ne_wI b j).symm]`. Use `sa a b := by`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h _ _ (by simp only [eI]; omega) (Or.inr (by simp only [esI]; omega)), if_neg (eI_ne_esI b a).symm]`. Use `ww j c := by`. Rewrite using `[h _ _ (by simp only [wI]; omega) (Or.inr (by simp only [wI]; omega))]`. Simplify using `only [wI_inj]`. Use `sw a j := by`.
-
-Rewrite using `[h _ _ (by simp only [wI]; omega) (Or.inr (by simp only [esI]; omega)), if_neg (wI_ne_esI j a).symm]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem colB_of {g : Mx k r} (h : UnitaryGroupBasics.col k r g) : ColB g where
   aa a b hab := by
@@ -204,7 +202,7 @@ theorem colB_of {g : Mx k r} (h : UnitaryGroupBasics.col k r g) : ColB g where
       if_neg (wI_ne_esI j a).symm]
 
 /- English proof (translation)
-Introduce `a b hab`. Use `show g _ _ = 0`. Rewrite using `[h.aa a b (le_of_lt hab), if_neg (ne_of_gt (show b < a from hab))]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bA_upper {g : Mx k r} (h : ColB g) : (bA g).IsUpperTriangular := by
   intro a b hab
@@ -212,7 +210,7 @@ theorem bA_upper {g : Mx k r} (h : ColB g) : (bA g).IsUpperTriangular := by
   rw [h.aa a b (le_of_lt hab), if_neg (ne_of_gt (show b < a from hab))]
 
 /- English proof (translation)
-Rewrite using `[det_of_isUpperTriangular (bA_upper h)]`. Use `Finset.prod_eq_one fun a _ => ?_` and prove the remaining obligations. Use `show g _ _ = 1`. Rewrite using `[h.aa a a le_rfl, if_pos rfl]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bA_det {g : Mx k r} (h : ColB g) : (bA g).det = 1 := by
   rw [det_of_isUpperTriangular (bA_upper h)]
@@ -221,9 +219,9 @@ theorem bA_det {g : Mx k r} (h : ColB g) : (bA g).det = 1 := by
   rw [h.aa a a le_rfl, if_pos rfl]
 
 /- English proof (translation)
-Use extensionality with `a b`. Establish `e` using `congrFun (congrFun (show gᴴ * Hpk k r * g = Hpk k r from hu) (esI k r a)) (eI k r b)`. Rewrite `e` using `[form_apply, hpk_esI_eI]`. Simplify using `only [hc.sa, hc.wa, mul_zero, Finset.sum_const_zero, zero_add] at e`. Rewrite using `[Matrix.mul_apply, Matrix.one_apply]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify `e` using `[bF, bA, conjTranspose_apply]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem rel_F {g : Mx k r} (hc : ColB g) (hu : g ∈ UH (Hpk k r)) : (bF g)ᴴ * bA g = 1 := by
   ext a b
@@ -234,14 +232,14 @@ theorem rel_F {g : Mx k r} (hc : ColB g) (hu : g ∈ UH (Hpk k r)) : (bF g)ᴴ *
   simpa [bF, bA, conjTranspose_apply] using e
 
 /- English proof (translation)
-Simplify using `only [dD, Matrix.diagonal_mul, Matrix.diagonal_apply_eq]`.
+Simplify using the standard rewrite rules.
 -/
 theorem dD_mul_apply {m : Type*} (X : Matrix (Fin (k + 1)) m ℂ) (j : Fin (k + 1)) (b : m) :
     (dD k * X) j b = dD k j j * X j b := by
   simp only [dD, Matrix.diagonal_mul, Matrix.diagonal_apply_eq]
 
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using `only [bA, Matrix.mul_apply]`. Rewrite using `[sum_split]`. Simplify using `[hh.wa, hh.sa]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem bA_mul {g h : Mx k r} (hh : ColB h) : bA (g * h) = bA g * bA h := by
   ext a b
@@ -250,7 +248,7 @@ theorem bA_mul {g h : Mx k r} (hh : ColB h) : bA (g * h) = bA g * bA h := by
   simp [hh.wa, hh.sa]
 
 /- English proof (translation)
-Use extensionality with `a j`. Simplify using `only [bA, bB, Matrix.mul_apply, Matrix.add_apply]`. Rewrite using `[sum_split]`. Simplify using `[hh.ww, hh.sw]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem bB_mul {g h : Mx k r} (hh : ColB h) : bB (g * h) = bA g * bB h + bB g := by
   ext a j
@@ -259,7 +257,7 @@ theorem bB_mul {g h : Mx k r} (hh : ColB h) : bB (g * h) = bA g * bB h + bB g :=
   simp [hh.ww, hh.sw]
 
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using `only [bF, Matrix.mul_apply]`. Rewrite using `[sum_split]`. Simplify using `[hg.sa, hg.sw]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem bF_mul {g h : Mx k r} (hg : ColB g) : bF (g * h) = bF g * bF h := by
   ext a b
@@ -268,7 +266,7 @@ theorem bF_mul {g h : Mx k r} (hg : ColB g) : bF (g * h) = bF g * bF h := by
   simp [hg.sa, hg.sw]
 
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using `only [bA, bB, bC, bE, bF, Matrix.mul_apply, Matrix.add_apply]`. Rewrite using `[sum_split]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem bC_mul (g h : Mx k r) : bC (g * h) = bA g * bC h + bB g * bE h + bC g * bF h := by
   ext a b
@@ -276,21 +274,21 @@ theorem bC_mul (g h : Mx k r) : bC (g * h) = bA g * bC h + bB g * bE h + bC g * 
   rw [sum_split]
 
 /- English proof (translation)
-The claim follows from `colB_of ((UnitaryGroupBasics.nset_iff g).1 hg).2`.
+A detailed English derivation is pending.
 -/
 theorem colB_of_mem {g : Mx k r} (hg : g ∈ Nset k r) : ColB g :=
   colB_of ((UnitaryGroupBasics.nset_iff g).1 hg).2
 
 /- English proof (translation)
-Establish `hFA` using `rel_F hc hu`. Use `letI : Invertible (bA g).det := by rw [bA_det hc]; exact invertibleOne`. Use `letI : Invertible (bA g) := Matrix.invertibleOfDetInvertible (bA g)`. Establish `hinv : (bA g)⁻¹ = (bF g)ᴴ` using `Matrix.inv_eq_left_inv hFA`. Establish `hT : ((bF g)ᴴ).BlockTriangular id` using `hinv ▸ blockTriangular_inv_of_blockTriangular (bA_upper hc)`.
+Establish an intermediate fact. Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `a b hab`. Break down `lt_or_eq_of_le hab with h | rfl` into its components or cases. Rewrite using `[if_neg (ne_of_lt h)]`. Use `hT (show id a < id b from h)` as an intermediate fact. Rewrite `this` using `[conjTranspose_apply, star_eq_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this`. Rewrite using `[if_pos rfl]`. Establish `e` using `congrFun (congrFun hFA a) a`. Rewrite `e` using `[Matrix.mul_apply, Finset.sum_eq_single a, Matrix.one_apply_eq]`. Establish `h1 : bA g a a = 1` using `by show g _ _ = 1; rw [hc.aa a a le_rfl, if_pos rfl]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e` using `[h1, mul_one, conjTranspose_apply]`. Use `congrArg star e` as an intermediate fact. Rewrite `this` using `[star_star, star_one]`. Then use the resulting hypothesis. Introduce `c _ hca`. Break down `lt_or_gt_of_ne hca with h | h` into its components or cases.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hT (show id c < id a from h), zero_mul]`. Establish `: bA g c a = 0` using `by show g _ _ = 0; rw [hc.aa c a (le_of_lt h), if_neg (ne_of_gt h)]`. Rewrite using `[this, mul_zero]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem bF_lowId {g : Mx k r} (hc : ColB g) (hu : g ∈ UH (Hpk k r)) :
     ∀ a b : Fin r, a ≤ b → bF g a b = if a = b then 1 else 0 := by
@@ -325,15 +323,13 @@ def wt (k r : ℕ) (i : Fin (2 * r + k + 1)) : ℤ :=
   if i.val < r then (r : ℤ) - i.val else if i.val ≤ r + k then 0 else (r + k : ℤ) - i.val
 
 /- English proof (translation)
-Establish `hc` using `colB_of_mem hg`. Establish `hu : g ∈ UH (Hpk k r)` using `hg.1`. Rewrite using `[Matrix.sub_apply, Matrix.one_apply, sub_eq_zero]`. Take `⟨p, rfl⟩` from `(posE k r).surjective i`. Take `⟨q, rfl⟩` from `(posE k r).surjective j`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Simplify using `only [(posE k r).injective.eq_iff]`. Apply the tactic sequence `rcases p with a | c | a <;> rcases q with b | c' | b <;>`. Simplify using `only [posE_apply, pos, wt, eI, wI, esI, Sum.inl.injEq, Sum.inr.injEq, reduceCtorEq, if_false] at h ⊢`. Establish `hb` using `b.isLt`. Establish `ha` using `a.isLt`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply the tactic sequence `have hba : (b : ℕ) ≤ a := by split_ifs at h <;> omega`. Conclude with `hc.aa a b (Fin.le_iff_val_le_val.2 hba)`. Apply the tactic sequence `all_goals first`. Consider the case `(exfalso; have := a.isLt; have := b.isLt; split_ifs at h <;> omega)`. Consider the case `(exfalso; have := a.isLt; split_ifs at h <;> omega)`.
+Apply the first step, then apply the next step to every resulting obligation. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(exfalso; have := b.isLt; split_ifs at h <;> omega)`. Consider the case `skip`. Conclude with `hc.wa c b`. Conclude with `hc.ww c c'`. Conclude with `hc.sa a b`.
-
-Conclude with `hc.sw a c'`. Establish `ha` using `a.isLt`. Establish `hb` using `b.isLt`. Apply the tactic sequence `split_ifs at h with h1 h2 h3 <;> first | (exfalso; omega) | skip`. Conclude with `bF_lowId hc hu a b (Fin.le_iff_val_le_val.2 (by omega))`.
+Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem nset_upper {g : Mx k r} (hg : g ∈ Nset k r) (i j : Fin (2 * r + k + 1))
     (h : ¬ wt k r j < wt k r i) : (g - 1) i j = 0 := by

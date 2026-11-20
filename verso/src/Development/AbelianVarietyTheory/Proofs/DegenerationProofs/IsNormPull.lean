@@ -71,7 +71,7 @@ def NormIs (l : u.Lab) (ϖ : u.V) (Q : u.D.toPre.X → ℤ) (v : AddValuation (P
   ∀ (c : PadicAlgCl p) (r : ℚ), v c = (r : WithTop ℚ) ↔ ‖c‖ = Real.exp (-(lam * r))
 
 /- English proof (translation)
-Establish `hS : SecBaseChangeSt` using `h.secBaseChange`. Establish `hT : TwistBCSpanStatement` using `twistBCSpan_of twistBaseChange`. Conclude with `⟨⟨h, h₂, laws3, uniformisationLaws_of_baseChange_laws polBaseChange_holds globalFns_holds hS twistBaseChange, laws5 globalFns_holds hS⟩, hT, RatioVal.main, TWM.tw_of globalFns_holds hT RatioVal.main, UnitBallFree.main globalFns_holds twistBaseChange⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem laws_all (h : Laws) (h₂ : Laws2) :
     LL ∧ TwistBCSpanStatement ∧ TWM.VRatioGtStatement ∧ TWStatement ∧ UUStatement := by

@@ -23,11 +23,9 @@ theorem up_succ (t : Tup c) (k : ℕ) (ψ : t.Col 0) :
     t.up (k + 1) ψ = t.K (2 * k + 1) (t.K (2 * k) (t.S (2 * k) (t.up k ψ))) := rfl
 
 /- English proof (translation)
-Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => intro _`. Conclude with `hψ`. Consider the case `succ k ih`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hk`. Rewrite using `[up_succ]`. Establish `h0` using `ih (by omega)`. Establish `h1` using `ht.stabS (2 * k) (by omega) _ h0`. Establish `h2` using `ht.stabK (2 * k) (by omega) _ h1`.
-
-Conclude with `ht.stabK (2 * k + 1) (by omega) _ h2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem up_mem (t : Tup c) (ht : t.Is) (ψ : t.Col 0) (hψ : ψ ∈ t.Ram 0) :
     ∀ k, 2 * k ≤ D.R.m → t.up k ψ ∈ t.Ram (2 * k) := by
@@ -43,19 +41,17 @@ theorem up_mem (t : Tup c) (ht : t.Is) (ψ : t.Col 0) (hψ : ψ ∈ t.Ram 0) :
     exact ht.stabK (2 * k + 1) (by omega) _ h2
 
 /- English proof (translation)
-Introduce `k`. Proceed by induction on `k with`. Consider the case `zero`. Introduce `ρ h I _ s β ψ G hψ hyp ρ₀ h₀ y v`. Establish `hρ : ρ₀ = ρ` using `by omega`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Substitute `hρ` using the available equality. Use `Eq.trans (Finset.sum_congr rfl fun i _ => ?_) (hyp y v)` and prove the remaining obligations. Rewrite using `[show (∏ j ∈ Finset.range (2 * 0), (t (s i)).cI j) = (1 : ℂ) by simp, show W (t (s i)) 0 = 1 by simp [W]]`. Both sides reduce to the same expression. Consider the case `succ k ih`.
+Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Both sides reduce to the same expression. Treat this case separately.
 
-Introduce `ρ h I _ s β ψ G hψ hyp ρ₀ h₀ y v`. Establish `h' : 2 * k + 2 * (ρ + 1) + 2 = D.R.m` using `by omega`. Establish `hmem : ∀ i, (t (s i)).up k (ψ i) ∈ (t (s i)).Ram (2 * k)` using `fun i => up_mem _ (ht _) _ (hψ i) k (by omega)`. Establish `hst` using `hS (2 * k) ρ h' I s (fun i => β i * W (t (s i)) k) (fun i => (t (s i)).up k (ψ i)) G hmem (by`. Introduce `y v`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `Eq.trans (Finset.sum_congr rfl fun i _ => ?_) (hyp y v)` and prove the remaining obligations. Establish `hp : (t (s i)).per (2 * k + 1 + 1) ρ (idx_step h') ((t (s i)).K (2 * k + 1) ((t (s i)).K (2 * k) ((t (s i)).S (2 * k) ((t (s i)).up k (ψ i))))) (G i) y v = (t (s i)).per (2 * (k + 1)) ρ h ((t (s i)).up (k + 1) (ψ i)) (G i) y v` using `rfl`. Rewrite using `[hp]`. Simplify using `only [W, Finset.prod_range_succ]`. Use the proof step `ring)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hi` using `ih (ρ + 1) h' I s (fun i => β i * ((t (s i)).cI (2 * k) * (t (s i)).cI (2 * k + 1))) ψ (fun i => (t (s i)).io (2 * k) ((t (s i)).io (2 * k + 1) (G i))) hψ (by`. Introduce `y v`. Use `Eq.trans (Finset.sum_congr rfl fun i _ => ?_) (hst y v)` and prove the remaining obligations. Use the proof step `ring) ρ₀ h₀ y v`. Use `Eq.trans (Finset.sum_congr rfl fun i _ => ?_) hi` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `hp : ∏ j ∈ Finset.range (2 * (k + 1)), (t (s i)).cI j = (∏ j ∈ Finset.range (2 * k), (t (s i)).cI j) * ((t (s i)).cI (2 * k) * (t (s i)).cI (2 * k + 1))`. Rewrite using `[show 2 * (k + 1) = 2 * k + 1 + 1 by ring, Finset.prod_range_succ, Finset.prod_range_succ]`. Expand and normalize the polynomial expressions, which then agree. Establish `hd : (t (s i)).per 0 ρ₀ h₀ (ψ i) ((t (s i)).dn (2 * (k + 1)) (G i)) y v = (t (s i)).per 0 ρ₀ h₀ (ψ i) ((t (s i)).dn (2 * k) ((t (s i)).io (2 * k) ((t (s i)).io (2 * k + 1) (G i)))) y v` using `rfl`. Rewrite using `[hp, hd]`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem up_ind {𝒯 : Type} (t : 𝒯 → Tup c) (ht : ∀ s, (t s).Is) (hS : StepX t) :
     ∀ k ρ (h : 2 * k + 2 * ρ + 2 = D.R.m) (I : Type) [Fintype I] (s : I → 𝒯) (β : I → ℂ) (ψ : ∀ i, (t (s i)).Col 0)
@@ -110,15 +106,13 @@ namespace GlobalTheory.SeeSaw
 open GlobalTheory.SeeSaw.DoubleInd in
 
 /- English proof (translation)
-Introduce `D c 𝒯 t ht hS hL`. Introduce `n h h₀ I _ s α ψ F hψ hyp y v`. Establish `hmem : ∀ i, (t (s i)).up n (ψ i) ∈ (t (s i)).Ram (2 * n)` using `fun i => up_mem _ (ht _) _ (hψ i) n (by omega)`. Establish `hL'` using `hL (2 * n) h I s (fun i => α i * W (t (s i)) n) (fun i => (t (s i)).up n (ψ i)) F hmem (by`. Use `Eq.trans (Finset.sum_congr rfl fun i _ => ?_) hyp` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hp : (t (s i)).tail (2 * n + 1 + 1) h ((t (s i)).K (2 * n + 1) ((t (s i)).K (2 * n) ((t (s i)).S (2 * n) ((t (s i)).up n (ψ i))))) (F i) = (t (s i)).tail (2 * (n + 1)) h ((t (s i)).up (n + 1) (ψ i)) (F i)` using `rfl`. Rewrite using `[hp]`. Simplify using `only [Tup.cTop, W, Finset.prod_range_succ]`. Use the proof step `ring)`. Establish `hu` using `up_ind t ht hS n 0 h I s (fun i => α i * ((t (s i)).cI (2 * n) * (t (s i)).cI (2 * n + 1))) ψ (fun i => (t (s i)).io (2 * n) ((t (s i)).ioT (2 * n) h (F i))) hψ (by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `y v`. Use `Eq.trans (Finset.sum_congr rfl fun i _ => ?_) (hL' y v)` and prove the remaining obligations. Use the proof step `ring) n h₀ y v`. Use `Eq.trans (Finset.sum_congr rfl fun i _ => ?_) hu` and prove the remaining obligations. Establish `hc : (t (s i)).cBot = (∏ j ∈ Finset.range (2 * n), (t (s i)).cI j) * ((t (s i)).cI (2 * n) * (t (s i)).cI (2 * n + 1))`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Unfold `Tup.cBot`. Rewrite using `[show D.R.m = 2 * n + 1 + 1 by omega, Finset.prod_range_succ, Finset.prod_range_succ]`. Expand and normalize the polynomial expressions, which then agree. Establish `hd : (t (s i)).per 0 n h₀ (ψ i) ((t (s i)).dn (2 * n + 1) ((t (s i)).ioT (2 * n) h (F i))) y v = (t (s i)).per 0 n h₀ (ψ i) ((t (s i)).dn (2 * n) ((t (s i)).io (2 * n) ((t (s i)).ioT (2 * n) h (F i)))) y v` using `rfl`. Rewrite using `[hc, hd]`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem mainX_of_stepX_lastX : ∀ (D : D7) (c : Comm D) (𝒯 : Type) (t : 𝒯 → Tup c), (∀ s, (t s).Is) → StepX t → LastX t → MainX t := by
   intro D c 𝒯 t ht hS hL

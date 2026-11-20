@@ -18,7 +18,7 @@ def cj {Γ k : Type} [Group Γ] [Field k] {d : ℕ} (P : GL (Fin d) k) (ρ : Γ 
   (MulAut.conj P⁻¹).toMonoidHom.comp ρ
 
 /- English proof (translation)
-Simplify using `[cj]`.
+Simplify using the standard rewrite rules.
 -/
 theorem cj_apply {Γ k : Type} [Group Γ] [Field k] {d : ℕ} (P : GL (Fin d) k) (ρ : Γ →* GL (Fin d) k) (g : Γ) :
     cj P ρ g = P⁻¹ * ρ g * P := by simp [cj]
@@ -57,9 +57,9 @@ def GrEx : Prop := ∀ (Γ k : Type) [Group Γ] [Field k] (d : ℕ) (ρ₀ : Γ 
   ∃ (P : GL (Fin d) k) (ρ : Γ →* GL (Fin d) k), IsGr (cj P ρ₀) ρ ∧ IsSSRep ρ
 
 /- English proof (translation)
-Introduce `Γ k _ _ d ρ₀`. Take `⟨W, hm, h0, ht, hJ⟩` from `h1 Γ k d ρ₀`. Take `⟨P, c, hP⟩` from `h2 k d d W hm h0 ht`. Establish `hJ'` using `h3 Γ k d ρ₀ W P (low k c) hP hJ`. Take `⟨htri, ρ, hρ⟩` from `h4 Γ k d _ c hJ'.1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨P, ρ, ⟨c, fun g => ⟨htri g, hρ g⟩⟩, h5 Γ k d _ ρ c hJ' hρ⟩`.
+Supply the required witnesses or components.
 -/
 theorem grEx_of (h1 : FlagEx) (h2 : FlagBasis) (h3 : FlagMove) (h4 : GrHom) (h5 : GrSS) : GrEx := by
   intro Γ k _ _ d ρ₀
@@ -78,7 +78,7 @@ def GrKill : Prop := ∀ (Γ k : Type) [Group Γ] [Field k] (d : ℕ) (ρ₀ ρ 
     (ρ g : Matrix (Fin d) (Fin d) k).charpoly = (ρ₀ g : Matrix (Fin d) (Fin d) k).charpoly
 
 /- English proof (translation)
-Take `⟨c, hc⟩` from `h`. Conclude with `⟨c, fun g => hc (f g)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem IsGr.comp {Γ Γ' k : Type} [Group Γ] [Group Γ'] [Field k] {d : ℕ} {ρ₀ ρ : Γ →* GL (Fin d) k} (h : IsGr ρ₀ ρ) (f : Γ' →* Γ) :
     IsGr (ρ₀.comp f) (ρ.comp f) := by

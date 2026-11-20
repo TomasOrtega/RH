@@ -15,14 +15,14 @@ private def gaussTerm (x : ℝ) (f : PowerSeries O) (n : ℕ) : ℝ≥0∞ :=
   ((addVal O (PowerSeries.coeff n f) : ℕ∞) : ℝ≥0∞) + ENNReal.ofReal (x * n)
 
 /- English proof (translation)
-Unfold `gaussV gaussTerm`. Conclude with `iInf_le _ n`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 private theorem gaussV_le_term (x : ℝ) (f : PowerSeries O) (n : ℕ) : gaussV x f ≤ gaussTerm x f n := by
   unfold gaussV gaussTerm
   exact iInf_le _ n
 
 /- English proof (translation)
-Rewrite using `[Nat.cast_add, mul_add]`. Conclude with `ENNReal.ofReal_add (mul_nonneg hx (Nat.cast_nonneg _)) (mul_nonneg hx (Nat.cast_nonneg _))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem ofReal_mul_natAdd {x : ℝ} (hx : 0 ≤ x) (i j : ℕ) :
     ENNReal.ofReal (x * ((i + j : ℕ) : ℝ)) = ENNReal.ofReal (x * i) + ENNReal.ofReal (x * j) := by
@@ -30,7 +30,7 @@ private theorem ofReal_mul_natAdd {x : ℝ} (hx : 0 ≤ x) (i j : ℕ) :
   exact ENNReal.ofReal_add (mul_nonneg hx (Nat.cast_nonneg _)) (mul_nonneg hx (Nat.cast_nonneg _))
 
 /- English proof (translation)
-Unfold `gaussV`. Use `le_antisymm le_top (le_iInf fun n => ?_)` and prove the remaining obligations. Conclude with `le_of_eq (by rw [map_zero, (addVal O).map_zero, ENat.toENNReal_top, top_add])`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem gaussV_zero (x : ℝ) : gaussV x (0 : PowerSeries O) = ⊤ := by
   unfold gaussV
@@ -38,7 +38,7 @@ private theorem gaussV_zero (x : ℝ) : gaussV x (0 : PowerSeries O) = ⊤ := by
   exact le_of_eq (by rw [map_zero, (addVal O).map_zero, ENat.toENNReal_top, top_add])
 
 /- English proof (translation)
-Assume the negation of the conclusion as `h`. Use `push Not at h`. Conclude with `hf (PowerSeries.ext fun n => by rw [h n, map_zero])`.
+Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 private theorem exists_coeff_ne_zero {f : PowerSeries O} (hf : f ≠ 0) : ∃ m, PowerSeries.coeff m f ≠ 0 := by
   by_contra h
@@ -46,14 +46,14 @@ private theorem exists_coeff_ne_zero {f : PowerSeries O} (hf : f ≠ 0) : ∃ m,
   exact hf (PowerSeries.ext fun n => by rw [h n, map_zero])
 
 /- English proof (translation)
-Use `lift a to ℕ using h`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem enat_toENNReal_ne_top_of_ne_top {a : ℕ∞} (h : a ≠ ⊤) : (a : ℝ≥0∞) ≠ ⊤ := by
   lift a to ℕ using h
   simp
 
 /- English proof (translation)
-Establish `h1 : addVal O (PowerSeries.coeff n f) ≠ ⊤` using `fun h' => h (addVal_eq_top_iff.mp h')`. Unfold `gaussTerm`. Conclude with `ENNReal.add_ne_top.mpr ⟨enat_toENNReal_ne_top_of_ne_top h1, ENNReal.ofReal_ne_top⟩`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 private theorem gaussTerm_ne_top {x : ℝ} {f : PowerSeries O} {n : ℕ} (h : PowerSeries.coeff n f ≠ 0) :
     gaussTerm x f n ≠ ⊤ := by
@@ -62,7 +62,7 @@ private theorem gaussTerm_ne_top {x : ℝ} {f : PowerSeries O} {n : ℕ} (h : Po
   exact ENNReal.add_ne_top.mpr ⟨enat_toENNReal_ne_top_of_ne_top h1, ENNReal.ofReal_ne_top⟩
 
 /- English proof (translation)
-Introduce `h'`. Apply `h` to reduce the goal to its premises. Unfold `gaussTerm`. Rewrite using `[h', ENat.toENNReal_top, top_add]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 private theorem addVal_ne_top_of_term {x : ℝ} {f : PowerSeries O} {n : ℕ} (h : gaussTerm x f n ≠ ⊤) :
     addVal O (PowerSeries.coeff n f) ≠ ⊤ := by
@@ -72,14 +72,14 @@ private theorem addVal_ne_top_of_term {x : ℝ} {f : PowerSeries O} {n : ℕ} (h
   rw [h', ENat.toENNReal_top, top_add]
 
 /- English proof (translation)
-Take `⟨m, hm⟩` from `exists_coeff_ne_zero hf`. Conclude with `ne_top_of_le_ne_top (gaussTerm_ne_top (x := x) hm) (gaussV_le_term x f m)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 private theorem gaussV_ne_top {x : ℝ} {f : PowerSeries O} (hf : f ≠ 0) : gaussV x f ≠ ⊤ := by
   obtain ⟨m, hm⟩ := exists_coeff_ne_zero hf
   exact ne_top_of_le_ne_top (gaussTerm_ne_top (x := x) hm) (gaussV_le_term x f m)
 
 /- English proof (translation)
-Unfold `gaussTerm`. Rewrite using `[(addVal O).map_mul, ENat.toENNReal_add, ofReal_mul_natAdd hx]`. Conclude with `add_add_add_comm _ _ _ _`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem gaussTerm_add_gaussTerm_eq_addVal_coeff_mul {x : ℝ} (hx : 0 ≤ x) (f g : PowerSeries O) (i j : ℕ) :
     gaussTerm x f i + gaussTerm x g j =
@@ -90,11 +90,11 @@ private theorem gaussTerm_add_gaussTerm_eq_addVal_coeff_mul {x : ℝ} (hx : 0 �
   exact add_add_add_comm _ _ _ _
 
 /- English proof (translation)
-Establish `hR : gaussV x (f * g) = ⨅ n : ℕ, gaussTerm x (f * g) n` using `rfl`. Rewrite using `[hR]`. Use `le_iInf fun n => ?_` and prove the remaining obligations. Establish `key : ∀ p ∈ Finset.HasAntidiagonal.antidiagonal n, gaussV x f + gaussV x g ≤ ((addVal O (PowerSeries.coeff p.1 f * PowerSeries.coeff p.2 g) : ℕ∞) : ℝ≥0∞) + ENNReal.ofReal (x * n)`. Introduce `p hp`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hp` using `[Finset.HasAntidiagonal.mem_antidiagonal]`. Combine the equalities or inequalities in the displayed calculation. Take `⟨p0, hp0, hmin⟩` from `(Finset.HasAntidiagonal.antidiagonal n).exists_min_image (fun p => addVal O (PowerSeries.coeff p.1 f * PowerSeries.coeff p.2 g)) ⟨(0, n), by simp⟩`. Establish `hle : addVal O (PowerSeries.coeff p0.1 f * PowerSeries.coeff p0.2 g) ≤ addVal O (PowerSeries.coeff n (f * g))`. Rewrite using `[PowerSeries.coeff_mul]`.
+Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(addVal O).map_le_sum hmin`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 private theorem gaussV_add_le_mul {x : ℝ} (hx : 0 ≤ x) (f g : PowerSeries O) :
     gaussV x f + gaussV x g ≤ gaussV x (f * g) := by
@@ -121,15 +121,13 @@ private theorem gaussV_add_le_mul {x : ℝ} (hx : 0 ≤ x) (f g : PowerSeries O)
         add_le_add (ENat.toENNReal_le.mpr hle) le_rfl
 
 /- English proof (translation)
-Take `⟨m, hm⟩` from `exists_coeff_ne_zero hf`. Establish `hTtop : gaussTerm x f m ≠ ⊤` using `gaussTerm_ne_top hm`. Take `⟨N', hN'⟩` from `exists_nat_gt ((gaussTerm x f m).toReal / x)`. Take `⟨N, hmN, hN'N⟩ : ∃ N, m ≤ N ∧ N' ≤ N` from `⟨max m N', le_max_left _ _, le_max_right _ _⟩`. Take `⟨i, -, hmin⟩` from `(Finset.range (N + 1)).exists_min_image (gaussTerm x f) ⟨m, Finset.mem_range.mpr (by omega)⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨i, le_antisymm ?_ (gaussV_le_term x f i)⟩` and prove the remaining obligations. Establish `hR : gaussV x f = ⨅ n : ℕ, gaussTerm x f n` using `rfl`. Rewrite using `[hR]`. Use `le_iInf fun n => ?_` and prove the remaining obligations. Distinguish the cases in `hn : n ≤ N`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Conclude with `hmin n (Finset.mem_range.mpr (by omega))`. Use `push Not at hn`. Establish `h1 : gaussTerm x f i ≤ gaussTerm x f m` using `hmin m (Finset.mem_range.mpr (by omega))`. Establish `h4 : (N' : ℝ) < n` using `by exact_mod_cast lt_of_le_of_lt hN'N hn`. Establish `h3 : (gaussTerm x f m).toReal < N' * x` using `(div_lt_iff₀ hx).mp hN'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : gaussTerm x f m < ENNReal.ofReal (x * n)`. Rewrite using `[ENNReal.lt_ofReal_iff_toReal_lt hTtop]`. Use the polynomial consequences of the given equalities and inequalities. Establish `h5 : ENNReal.ofReal (x * n) ≤ gaussTerm x f n`. Unfold `gaussTerm`.
-
-Conclude with `le_add_self`. Conclude with `(h1.trans h2.le).trans h5`.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 private theorem gaussV_exists_eq {x : ℝ} (hx : 0 < x) {f : PowerSeries O} (hf : f ≠ 0) :
     ∃ i, gaussTerm x f i = gaussV x f := by
@@ -158,9 +156,9 @@ private theorem gaussV_exists_eq {x : ℝ} (hx : 0 < x) {f : PowerSeries O} (hf 
     exact (h1.trans h2.le).trans h5
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Assume the negation of the conclusion as `hc push Not at hc`. Establish `h1` using `(addVal O).map_add (a + b) (-b)`. Rewrite `h1` using `[add_neg_cancel_right, (addVal O).map_neg]`. Conclude with `absurd h1 (not_le.mpr (lt_min hc h))`.
+Reduce the claim to the hypotheses of an applicable result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h2` using `(addVal O).map_add a b`. Rewrite `h2` using `[min_eq_left h.le]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 private theorem addVal_add_eq_left_of_addVal_lt {a b : O} (h : addVal O a < addVal O b) :
     addVal O (a + b) = addVal O a := by
@@ -174,17 +172,17 @@ private theorem addVal_add_eq_left_of_addVal_lt {a b : O} (h : addVal O a < addV
     rwa [min_eq_left h.le] at h2
 
 /- English proof (translation)
-Establish `ef` using `gaussV_exists_eq hx hf`. Establish `eg` using `gaussV_exists_eq hx hg`. Take `⟨i0, hi0, ltf⟩ : ∃ i0, gaussTerm x f i0 = gaussV x f ∧ ∀ i < i0, gaussV x f < gaussTerm x f i` from `⟨Nat.find ef, Nat.find_spec ef, fun i hi => lt_of_le_of_ne (gaussV_le_term x f i) fun h => Nat.find_min ef hi h.symm⟩`. Take `⟨j0, hj0, ltg⟩ : ∃ j0, gaussTerm x g j0 = gaussV x g ∧ ∀ j < j0, gaussV x g < gaussTerm x g j` from `⟨Nat.find eg, Nat.find_spec eg, fun j hj => lt_of_le_of_ne (gaussV_le_term x g j) fun h => Nat.find_min eg hj h.symm⟩`. Establish `haf : addVal O (PowerSeries.coeff i0 f) ≠ ⊤` using `addVal_ne_top_of_term (x := x) (by rw [hi0]; exact gaussV_ne_top hf)`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hbg : addVal O (PowerSeries.coeff j0 g) ≠ ⊤` using `addVal_ne_top_of_term (x := x) (by rw [hj0]; exact gaussV_ne_top hg)`. Establish `ha : PowerSeries.coeff i0 f ≠ 0` using `fun h => haf (by rw [h, (addVal O).map_zero])`. Establish `hb : PowerSeries.coeff j0 g ≠ 0` using `fun h => hbg (by rw [h, (addVal O).map_zero])`. Establish `habtop : addVal O (PowerSeries.coeff i0 f * PowerSeries.coeff j0 g) ≠ ⊤` using `fun h => mul_ne_zero ha hb (addVal_eq_top_iff.mp h)`. Establish `hlt : ∀ p ∈ (Finset.HasAntidiagonal.antidiagonal (i0 + j0)).erase (i0, j0), addVal O (PowerSeries.coeff i0 f * PowerSeries.coeff j0 g) < addVal O (PowerSeries.coeff p.1 f * PowerSeries.coeff p.2 g)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `p hp`. Rewrite `hp` using `[Finset.mem_erase, Finset.HasAntidiagonal.mem_antidiagonal]`. Take `⟨hne, hsum⟩` from `hp`. Establish `hstrict : gaussTerm x f i0 + gaussTerm x g j0 < gaussTerm x f p.1 + gaussTerm x g p.2`. Rewrite using `[hi0, hj0]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Break down `lt_trichotomy p.1 i0 with h | h | h` into its components or cases. Combine the equalities or inequalities in the displayed calculation. Conclude with `absurd (Prod.ext h (by show p.2 = j0; omega)) hne`. Establish `h' : p.2 < j0` using `by omega`. Combine the equalities or inequalities in the displayed calculation.
+Separate the alternatives or extract the components of the hypothesis. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hstrict` using `[gaussTerm_add_gaussTerm_eq_addVal_coeff_mul hx.le f g i0 j0, gaussTerm_add_gaussTerm_eq_addVal_coeff_mul hx.le f g p.1 p.2, hsum]`. Conclude with `ENat.toENNReal_lt.mp ((ENNReal.add_lt_add_iff_right ENNReal.ofReal_ne_top).mp hstrict)`. Establish `hcoeff : addVal O (PowerSeries.coeff (i0 + j0) (f * g)) = addVal O (PowerSeries.coeff i0 f * PowerSeries.coeff j0 g)`. Rewrite using `[PowerSeries.coeff_mul, ← Finset.add_sum_erase _ _ (show (i0, j0) ∈ Finset.HasAntidiagonal.antidiagonal (i0 + j0) by simp)]`. Conclude with `addVal_add_eq_left_of_addVal_lt ((addVal O).map_lt_sum habtop hlt)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[gaussTerm_add_gaussTerm_eq_addVal_coeff_mul hx.le f g i0 j0]`. Unfold `gaussTerm`. Rewrite using `[hcoeff]`. Use `_ = gaussV x f + gaussV x g := by rw [hi0, hj0]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem gaussV_mul_le {x : ℝ} (hx : 0 < x) {f g : PowerSeries O} (hf : f ≠ 0) (hg : g ≠ 0) :
     gaussV x (f * g) ≤ gaussV x f + gaussV x g := by
@@ -242,9 +240,9 @@ private theorem gaussV_mul_le {x : ℝ} (hx : 0 < x) {f g : PowerSeries O} (hf :
 end GaussMulAux
 
 /- English proof (translation)
-Introduce `O _ _ _ x hx f g`. Distinguish the cases in `hf : f = 0`. Substitute `hf` using the available equality. Rewrite using `[zero_mul, gaussV_zero, top_add]`. Distinguish the cases in `hg : g = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Substitute `hg` using the available equality. Rewrite using `[mul_zero, gaussV_zero, add_top]`. Conclude with `le_antisymm (gaussV_mul_le hx hf hg) (gaussV_add_le_mul hx.le f g)`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gaussValMul : GaussMul := by
   intro O _ _ _ x hx f g

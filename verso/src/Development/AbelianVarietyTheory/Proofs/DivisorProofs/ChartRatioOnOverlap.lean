@@ -19,26 +19,24 @@ open GlobalTheory.FlatModel
 namespace GlobalTheory.FlatModel
 
 /- English proof (translation)
-Rewrite using `[sub_eq_add_neg, ← norm_neg y]`. Conclude with `IsUltrametricDist.norm_add_le_max _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unit_ratio_norm_sub_le_max {p : ℕ} [Fact p.Prime] (x y : ℂ_[p]) : ‖x - y‖ ≤ max ‖x‖ ‖y‖ := by
   rw [sub_eq_add_neg, ← norm_neg y]
   exact IsUltrametricDist.norm_add_le_max _ _
 
 /- English proof (translation)
-Introduce `p _ X Xw K hK R1 R2 A _ _ _ ξ1 ξ2 w c1 c2 a1 a2 h1 h2 H1 H2 χ1 χ2 hχ1 hχ2 φ hφ ψ hψ`. Establish `e1 : spMap (φ.comp a1) ≫ ξ1 = spMap φ ≫ w` using `by rw [← sp_sp, h1]`. Establish `e2 : spMap (φ.comp a2) ≫ ξ2 = spMap φ ≫ w` using `by rw [← sp_sp, h2]`. Establish `hψ1 : (ψ.comp χ1).comp (algebraMap R1 _) = (algebraMap 𝓞_ℂ_[p] ℂ_[p]).comp (φ.comp a1)`. Rewrite using `[RingHom.comp_assoc, hχ1, ← RingHom.comp_assoc, hψ, RingHom.comp_assoc]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hψ2 : (ψ.comp χ2).comp (algebraMap R2 _) = (algebraMap 𝓞_ℂ_[p] ℂ_[p]).comp (φ.comp a2)`. Rewrite using `[RingHom.comp_assoc, hχ2, ← RingHom.comp_assoc, hψ, RingHom.comp_assoc]`. Take `⟨κ, hκ⟩` from `hK _ hφ`. Establish `k1` using `H1 (φ.comp a1) (by rw [e1]; exact hφ) (ψ.comp χ1) hψ1 κ (by rw [e1]; exact hκ)`. Establish `k2` using `H2 (φ.comp a2) (by rw [e2]; exact hφ) (ψ.comp χ2) hψ2 κ (by rw [e2]; exact hκ)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [RingHom.comp_apply] at k1 k2`. Use `set a := ψ (χ1 (c1 : Localization.Away (p : R1)))`. Use `set b := ψ (χ2 (c2 : Localization.Away (p : R2)))`. Establish `hab : ‖a - b‖ < ‖κ‖`. Establish `: a - b = (a - κ) - (b - κ)` using `by ring`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[this]`. Conclude with `lt_of_le_of_lt (unit_ratio_norm_sub_le_max _ _) (max_lt k1 k2)`. Establish `hb : ‖b‖ = ‖κ‖`. Apply `le_antisymm` to reduce the goal to its premises. Establish `: b = (b - κ) + κ` using `by ring`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[this]`. Conclude with `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le k2.le le_rfl)`. Establish `: κ = b - (b - κ)` using `by ring`. Combine the equalities or inequalities in the displayed calculation. Use `max_le le_rfl ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the indicated hypotheses using the stated equalities.
 
-Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Establish `h3 : ‖κ‖ ≤ max ‖b‖ ‖b - κ‖`. Combine the equalities or inequalities in the displayed calculation. Rewrite `h3` using `[max_eq_right hc.le]`.
-
-Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[hb]`. Conclude with `hab`.
+Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unit_ratio_close : ∀ (p : ℕ) [Fact p.Prime] (X : Scheme.{0}) (Xw : X.Opens) (K : (Sp 𝓞_ℂ_[p] ⟶ X) → Set ℂ_[p]), (∀ yb, IsTest p Xw yb → (K yb).Nonempty) → ∀ (R1 R2 A : Type) [CommRing R1] [CommRing R2] [CommRing A] (ξ1 : Sp R1 ⟶ X) (ξ2 : Sp R2 ⟶ X) (w : Sp A ⟶ X) (c1 : (Localization.Away (p : R1))ˣ) (c2 : (Localization.Away (p : R2))ˣ) (a1 : R1 →+* A) (a2 : R2 →+* A), spMap a1 ≫ ξ1 = w → spMap a2 ≫ ξ2 = w → (∀ φ : R1 →+* 𝓞_ℂ_[p], IsTest p Xw (spMap φ ≫ ξ1) → ∀ ψ : Localization.Away (p : R1) →+* ℂ_[p], ψ.comp (algebraMap R1 _) = (algebraMap 𝓞_ℂ_[p] ℂ_[p]).comp φ → ∀ κ ∈ K (spMap φ ≫ ξ1), ‖ψ (c1 : Localization.Away (p : R1)) - κ‖ < ‖κ‖) → (∀ φ : R2 →+* 𝓞_ℂ_[p], IsTest p Xw (spMap φ ≫ ξ2) → ∀ ψ : Localization.Away (p : R2) →+* ℂ_[p], ψ.comp (algebraMap R2 _) = (algebraMap 𝓞_ℂ_[p] ℂ_[p]).comp φ → ∀ κ ∈ K (spMap φ ≫ ξ2), ‖ψ (c2 : Localization.Away (p : R2)) - κ‖ < ‖κ‖) → ∀ (χ1 : Localization.Away (p : R1) →+* Localization.Away (p : A)) (χ2 : Localization.Away (p : R2) →+* Localization.Away (p : A)), χ1.comp (algebraMap R1 _) = (algebraMap A _).comp a1 → χ2.comp (algebraMap R2 _) = (algebraMap A _).comp a2 → ∀ φ : A →+* 𝓞_ℂ_[p], IsTest p Xw (spMap φ ≫ w) → ∀ ψ : Localization.Away (p : A) →+* ℂ_[p], ψ.comp (algebraMap A _) = (algebraMap 𝓞_ℂ_[p] ℂ_[p]).comp φ → ‖ψ (χ1 (c1 : Localization.Away (p : R1))) - ψ (χ2 (c2 : Localization.Away (p : R2)))‖ < ‖ψ (χ2 (c2 : Localization.Away (p : R2)))‖ := by
   intro p _ X Xw K hK R1 R2 A _ _ _ ξ1 ξ2 w c1 c2 a1 a2 h1 h2 H1 H2 χ1 χ2 hχ1 hχ2 φ hφ ψ hψ

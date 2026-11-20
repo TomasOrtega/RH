@@ -14,11 +14,11 @@ namespace PositivityTheory.SiegelWeilFormula.Act
 open ComplexParameterFamilyContinuity
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ d`. Use `⟨fun nb lam 𝓖 h => ?_, fun L uM ν 𝓤 h => ?_⟩` and prove the remaining obligations. Establish `hσ` using `kfour.sigma_sigma_of_good d.ok.good`. Take `⟨hlc, hsc, ht2, hbo⟩` from `kfour.nA_top hσ d.ok.frame`. Take `⟨K, hK, hc⟩` from `kfour.nF_cocompact hσ d.ok.frame`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨hnb, hlam, hfd, h1⟩` from `h`. Take `⟨𝓖₀, hfd₀, hcpt⟩` from `addFD_of_cover' (nF σ d.Y d.b) hK hc lam`. Conclude with `⟨𝓖₀, ⟨hnb, hlam, hfd₀, by rw [← h1]; exact hfd₀.measure_eq hfd⟩, hcpt⟩`. Take `⟨hfr, hν, hfd, h1⟩` from `h haveI : DiscreteTopology L.ratV := ratVec_discrete (F := F) (E := E) L.n haveI : Countable L.ratV := ratVec_countable (F := F) (E := E) L.n`. Take `⟨K, hK, hc⟩ : ∃ K : Set (Fin L.n → AE F E), IsCompact K ∧ ∀ v, ∃ γ ∈ L.ratV, γ + v ∈ K` from `ratVec_cocompact (F := F) (E := E) L.n`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨𝓤₀, hfd₀, hcpt⟩` from `addFD_of_cover' L.ratV hK hc ν`. Conclude with `⟨𝓤₀, ⟨hfr, hν, hfd₀, by rw [← h1]; exact hfd₀.measure_eq hfd⟩, hcpt⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem cptDom : CptDom := by
   intro F E _ _ _ _ _ σ d
@@ -38,23 +38,21 @@ theorem cptDom : CptDom := by
     exact ⟨𝓤₀, ⟨hfr, hν, hfd₀, by rw [← h1]; exact hfd₀.measure_eq hfd⟩, hcpt⟩
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ d L s₁ f hf he`. Take `⟨U, p, Ê, t, -, -, -, -, -, -, -, hmaj⟩` from `he 0`. Use `⟨t, fun z hz nb lam 𝓖 h𝓖 hc𝓖 uM ν 𝓤 h𝓤 hc𝓤 T x => ?_⟩` and prove the remaining obligations. Take `⟨hTG, -⟩` from `kfour.doubled_group_topological_properties σ d.Y`. Establish `hσ` using `kfour.sigma_sigma_of_good d.ok.good`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨iLC, iSC, iT2, iBo⟩` from `kfour.nA_top hσ d.ok.frame`. Take `⟨hnb, hlam, hfd, h1⟩` from `h𝓖`. Take `⟨hfr, hν, hfdU, hU1⟩` from `h𝓤`. Establish `cu : Continuous uM` using `continuous_uM L ⟨hfr, hν, hfdU, hU1⟩`. Establish `cn : Continuous nb` using `kunf.continuous_nb hnb`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `cφ : Continuous (phz d f s₁ z)` using `continuous_phz d hf.cont s₁ z`. Use `set m : (Fin L.n → AE F E) × nA σ d.Y d.b → d.G := fun p => nb p.2 * (uM p.1 * x) with hm`. Establish `cm : Continuous m` using `(cn.comp continuous_snd).mul ((cu.comp continuous_fst).mul continuous_const)`. Establish `hKc : IsCompact (closure 𝓤 ×ˢ closure 𝓖)` using `hc𝓤.prod hc𝓖`. Take `⟨u, hu, hub⟩` from `(hmaj z hz).1 (m '' (closure 𝓤 ×ˢ closure 𝓖)) (hKc.image cm)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hψ` using `GlobalTheory.StdCharWeilDatum.isCharAF d.ok.good.std`. Establish `cψ` using `kfour.continuous_chr (σ := σ) (Y := d.Y) (b := d.b) hψ.1 T.1.1`. Take `⟨Mψ, hMψ⟩` from `hc𝓖.exists_bound_of_continuousOn cψ.continuousOn`. Use `set μ := (ν.restrict 𝓤).prod (lam.restrict 𝓖) with hμ`. Use `haveI : IsFiniteMeasure (ν.restrict 𝓤) := isFiniteMeasure_restrict.2 (by rw [hU1]; exact ENNReal.one_ne_top)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `haveI : IsFiniteMeasure (lam.restrict 𝓖) := isFiniteMeasure_restrict.2 (by rw [h1]; exact ENNReal.one_ne_top)`. Establish `hS : ∀ᵐ p ∂μ, p ∈ closure 𝓤 ×ˢ closure 𝓖`. Rewrite using `[ae_iff]`. Use `measure_mono_null (t := (closure 𝓤)ᶜ ×ˢ Set.univ ∪ Set.univ ×ˢ (closure 𝓖)ᶜ) ?_ ?_` and prove the remaining obligations. Introduce `p hp`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Prove the second alternative.
 
-Simplify using `only [Set.mem_ofPred_eq, Set.mem_prod, not_and_or] at hp`. Break down `hp with hp | hp` into its components or cases. Conclude with `Or.inl ⟨hp, Set.mem_univ _⟩`. Conclude with `Or.inr ⟨Set.mem_univ _, hp⟩`. Establish `eU : (closure 𝓤)ᶜ ∩ 𝓤 = ∅` using `(show Disjoint (closure 𝓤)ᶜ 𝓤 from Set.disjoint_left.2 fun y (hy : y ∈ (closure 𝓤)ᶜ) (h' : y ∈ 𝓤) => hy (subset_closure h')).inter_eq`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `eG : (closure 𝓖)ᶜ ∩ 𝓖 = ∅` using `(show Disjoint (closure 𝓖)ᶜ 𝓖 from Set.disjoint_left.2 fun y (hy : y ∈ (closure 𝓖)ᶜ) (h' : y ∈ 𝓖) => hy (subset_closure h')).inter_eq`. Use `measure_union_null ?_ ?_` and prove the remaining obligations. Rewrite using `[Measure.prod_prod, Measure.restrict_apply isClosed_closure.measurableSet.compl, eU, measure_empty, zero_mul]`. Rewrite using `[Measure.prod_prod, Measure.restrict_apply isClosed_closure.measurableSet.compl, eG, measure_empty, mul_zero]`. Establish `hbd : ∀ q : Cs d, ∀ᵐ p ∂μ, ‖kq L f s₁ z nb T uM (rep q) x p‖ ≤ |u q| * |Mψ|`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Introduce `q`. Use `filter_upwards [hS] with p hp`. Simplify using `only [kq, norm_mul]`. Use `mul_le_mul ((hub (m p) ⟨p, hp, rfl⟩ q).trans (le_abs_self _)) ((hMψ p.2 hp.2).trans (le_abs_self _)) (norm_nonneg _) (abs_nonneg _)` and prove the remaining obligations. Establish `hcq : ∀ q : Cs d, Continuous (kq L f s₁ z nb T uM (rep q) x)` using `fun q => (cφ.comp (continuous_const.mul cm)).mul (cψ.comp continuous_snd)`.
-
-Establish `hint : ∀ q : Cs d, Integrable (kq L f s₁ z nb T uM (rep q) x) μ` using `fun q => Integrable.of_bound (hcq q).aestronglyMeasurable _ (hbd q)`. Use `⟨hint, ?_⟩` and prove the remaining obligations. Use `Summable.of_nonneg_of_le (fun q => integral_nonneg fun p => norm_nonneg _) (fun q => ?_) ((hu.abs.mul_right |Mψ|).mul_right (μ.real Set.univ))` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem absConv : AbsConv := by
   intro F E _ _ _ _ _ σ d L s₁ f hf he

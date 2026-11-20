@@ -11,27 +11,25 @@ namespace GroundTheory.Heights₂.Heights.Inter
 open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.AI.I1 ReciprocityTheory.ChartRestriction.G.AI.I2 ReciprocityTheory.ChartRestriction.G.AI.I4 PointVertical
 
 /- English proof (translation)
-Introduce `K _ ι _ K' _ ι' _ κ v P' n a s α W' hv hP' hP hs hsP hW' hvert`. Establish `hs' : IsSectionOn P' (HermLine.sqMetric (ι` using `ι') (Function.extend κ α 0)) (rename v s) := ⟨Function.extend κ α 0, fun _ => rfl, isMultiHomog_rename hv hs, hsP⟩`. Take `⟨hW'm, hpr, hW'd⟩` from `(divSuppArith K' ι' P' n _ _ W' hP' hs' hW').2 hvert`. Use `set p := charOf W' with hpdef`. Establish `: Fact p.Prime` using `⟨hpr⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpW' : ((p : ℕ) : MRing ι') ∈ W'` using `ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.natCast_mem_of_charOf W'`. Establish `hW'p : IsProjVarF (W'.map (red p)) n` using `⟨isMultiProjPrime_red p hW'm hpW', by rw [ringKrullDim_red p hpW', hW'd]⟩`. Establish `hWm : IsMultiProjPrime (imageZ v W')` using `isMultiProjPrime_imageZ hv hW'm`. Establish `hpW : ((p : ℕ) : MRing ι) ∈ imageZ v W'` using `by show rename v ((p : ℕ) : MRing ι) ∈ W'`. Simplify using `using hpW'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hVm` using `isMultiProjPrime_red p hWm hpW`. Take `⟨I, hI, -⟩` from `hR4 (ZMod p) K ι`. Take `⟨I', hI', -⟩` from `hR4 (ZMod p) K' ι'`. Establish `hgeo' : geoNum n W' (fun j => pullDeg κ (a j)) = I' (W'.map (red p)) n (fun j => pullDeg κ (a j))` using `hGeo K' ι' p I' hI' W' n _ hW'm hpW' hW'p`. Distinguish the cases in `hmem : imageZ v W' ∈ divSupp (imageZ v P') s`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations.
 
-Use `Or.inl ⟨hmem, fun G' J' hJ' => ?_⟩` and prove the remaining obligations. Establish `hsW : IsSectionOn (imageZ v P') (HermLine.sqMetric (ι` using `ι) α) s := ⟨α, fun _ => rfl, hs, hsP⟩`. Establish `hWvert : ¬ IsHorizontal (imageZ v W')` using `fun h => by`. Establish `h2 : ((p : ℕ) : ℤ) ∈ (imageZ v W').comap (C : ℤ →+* MRing ι)`. Rewrite using `[Ideal.mem_comap, map_natCast]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hpW`. Rewrite `h2` using `[h, Ideal.mem_bot]`. Conclude with `hpr.ne_zero (by exact_mod_cast h2)`. Take `⟨-, -, hWd⟩` from `(divSuppArith K ι (imageZ v P') n _ _ _ hP hsW hmem).2 hWvert`. Establish `hWp : IsProjVarF ((imageZ v W').map (red p)) n` using `⟨hVm, by rw [ringKrullDim_red p hpW, hWd]⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hVi : IsProjVarF (imageVar (ZMod p) v (W'.map (red p))) n`. Rewrite using `[imageVar_red p v hpW']`. Conclude with `hWp`. Take `⟨i', hi'⟩ : ∃ i' : ∀ k', ι' k', IsChart (W'.map (red p)) i'` from `⟨fun k => (hW'p.1.2.2 k).choose, fun k => (hW'p.1.2.2 k).choose_spec⟩`. Rewrite using `[hgeo', hPD (ZMod p) K ι K' ι' I I' hI hI' κ v _ n a i' hv hW'p hVi hi', imageVar_red p v hpW', ← hGeo K ι p I hI _ n a hWm hpW hWp, hDeg K ι K' ι' κ v p W' n i' hv hpW' hW'p hVi hi' G' J' hJ']`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Or.inr ⟨hmem, ?_⟩` and prove the remaining obligations. Establish `hsW' : rename v s ∈ W'` using `hW'.1.1.2 (Ideal.mem_sup_right (Ideal.mem_span_singleton_self _))`. Establish `hle : imageZ v P' ⊔ Ideal.span {s} ≤ imageZ v W'` using `sup_le (Ideal.comap_mono (le_sup_left.trans hW'.1.1.2)) (Ideal.span_le.2 (Set.singleton_subset_iff.2 hsW'))`. Use `hWm.1` as an intermediate fact. Take `⟨Q, hQ, hQW⟩` from `Ideal.exists_minimalPrimes_le hle`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `hQne : Q ≠ imageZ v W'` using `fun h => hmem ⟨h ▸ hQ, hWm.2.2⟩`. Choose the witnesses or unpack the hypotheses as in `⟨x, hxW, hxQ⟩ : ∃ x ∈ imageZ v W', x ∉ Q := by`. Assume the negation of the conclusion as `hc`. Conclude with `hQne (le_antisymm hQW fun y hy => by_contra fun h => hc ⟨y, hy, h⟩)`. Use `hQ.1.1` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hP.2.1.1` as an intermediate fact. Establish `h1` using `dim_quot_minimal_add_one (imageZ v P') Q s hsP hQ`. Rewrite `h1` using `[hP.2.2.2]`. Establish `hQd : ringKrullDim (MRing ι ⧸ Q) = ((n + Fintype.card K : ℕ) : WithBot ℕ∞)` using `withBot_eq_of_add_one (by rw [h1, show n + 1 + Fintype.card K = n + Fintype.card K + 1 by omega])`. Establish `hdim` using `krullDim_quot_add_one_le hQW hxW hxQ`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨D, hKD, hD⟩` from `exists_dim_F p _ hVm`. Rewrite `hdim` using `[← ringKrullDim_red p hpW, hD, hQd]`. Establish `hD' : D + 1 ≤ n + Fintype.card K` using `by exact_mod_cast hdim`. Establish `hVi : IsProjVarF (imageVar (ZMod p) v (W'.map (red p))) (D - Fintype.card K)`. Rewrite using `[imageVar_red p v hpW']`.
-
-Conclude with `⟨hVm, by rw [hD, Nat.sub_add_cancel hKD]⟩`. Rewrite using `[hgeo']`. Conclude with `hPC (ZMod p) K ι K' ι' I' hI' κ v _ n (D - Fintype.card K) a hv hW'p hVi (by omega)`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ArithmeticIntersectionVertical.proof
     (hGeo : ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)], GeoNumStatement ι)

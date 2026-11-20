@@ -55,7 +55,7 @@ def ArBase (em : o →+* ℂ) : Prop := IsDedekindDomain o ∧ Algebra.FiniteTyp
 section Inhabitants
 
 /- English proof (translation)
-Unfold `IsE8`. Rewrite using `[w8_add_transpose_eq_e8]`. Conclude with `⟨e8_posDef, e8_det_eq_one⟩`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem isE8_W8 : IsE8 W8 := by
   unfold IsE8
@@ -63,13 +63,11 @@ theorem isE8_W8 : IsE8 W8 := by
   exact ⟨e8_posDef, e8_det_eq_one⟩
 
 /- English proof (translation)
-Establish `hn' : (n : 𝓞 F) ≠ 0` using `by exact_mod_cast hn`. Establish `hM : Submonoid.powers (n : 𝓞 F) ≤ nonZeroDivisors (𝓞 F)` using `powers_le_nonZeroDivisors_of_noZeroDivisors hn'`. Establish `: IsDomain (Localization.Away (n : 𝓞 F))` using `IsLocalization.isDomain_of_le_nonZeroDivisors _ hM`. Use `set ψ : 𝓞 F →+* ℂ := φ.comp (algebraMap (𝓞 F) F) with hψ`. Establish `hu : IsUnit (ψ (n : 𝓞 F))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_natCast]`. Conclude with `isUnit_iff_ne_zero.mpr (by exact_mod_cast hn)`. Establish `hψinj : Function.Injective ψ` using `φ.injective.comp (FaithfulSMul.algebraMap_injective (𝓞 F) F)`. Use `⟨IsLocalization.Away.lift (n : 𝓞 F) hu, ⟨?_, ?_, ?_⟩, ?_⟩` and prove the remaining obligations. Conclude with `IsLocalization.isDedekindDomain (𝓞 F) hM _`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `convert (inferInstance : Algebra.FiniteType ℤ (Localization.Away (n : 𝓞 F))) <;> first | rfl | exact Subsingleton.elim _ _`. Unfold `IsLocalization.Away.lift`. Rewrite using `[IsLocalization.lift_injective_iff]`. Introduce `x y`. Rewrite using `[(IsLocalization.injective (Localization.Away (n : 𝓞 F)) hM).eq_iff, hψinj.eq_iff]`.
-
-Conclude with `IsLocalization.lift_comp _`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_arBase_away {F : Type} [Field F] [NumberField F] (φ : F →+* ℂ) {n : ℕ} (hn : n ≠ 0) :
     ∃ em : Localization.Away (n : 𝓞 F) →+* ℂ, ArBase em ∧

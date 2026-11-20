@@ -16,23 +16,21 @@ open GlobalTheory.UAut GlobalTheory.AdelicU GlobalTheory.SiegelSet
 namespace GlobalTheory.CompanionTheory.DerGlRel
 
 /- English proof (translation)
-Establish `hs : ∀ (i j : Fin n) (x : ℂ), (Matrix.single i j x : Matrix (Fin n) (Fin n) ℂ) = x • Matrix.single i j 1`. Introduce `i j x`. Rewrite using `[Matrix.smul_single, smul_eq_mul, mul_one]`. Establish `base : ∀ a b c d : Fin n, L (Matrix.single a b 1) * L (Matrix.single c d 1) - L (Matrix.single c d 1) * L (Matrix.single a b 1) = L (Matrix.single a b 1 * Matrix.single c d 1 - Matrix.single c d 1 * Matrix.single a b 1)`. Introduce `a b c d`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h` using `hL a b c d`. Simplify using `only at h`. Rewrite using `[h, map_sub]`. Use `congr 1`. Distinguish the cases in `h' : b = c`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Consider separately whether the proposition holds or fails.
 
-Substitute `h'` using the available equality. Rewrite using `[if_pos rfl, Matrix.single_mul_single_same, mul_one]`. Rewrite using `[if_neg h']`. Simplify using `[Matrix.single_mul_single_of_ne, h']`. Distinguish the cases in `h' : d = a`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Substitute `h'` using the available equality. Rewrite using `[if_pos rfl, Matrix.single_mul_single_same, mul_one]`. Rewrite using `[if_neg h']`. Simplify using `[Matrix.single_mul_single_of_ne, h']`. Establish `key1 : ∀ (Z : Matrix (Fin n) (Fin n) ℂ) (c d : Fin n), L Z * L (Matrix.single c d 1) - L (Matrix.single c d 1) * L Z = L (Z * Matrix.single c d 1 - Matrix.single c d 1 * Z)`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `Z c d`. Use `Matrix.induction_on' Z ?_ ?_ ?_` and prove the remaining obligations. Simplify using the standard rewrite rules. Introduce `p q hp hq`. Rewrite using `[show (p + q) * Matrix.single c d 1 - Matrix.single c d 1 * (p + q) = (p * Matrix.single c d 1 - Matrix.single c d 1 * p) + (q * Matrix.single c d 1 - Matrix.single c d 1 * q) by noncomm_ring]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Simplify using `only [map_add]`. Rewrite using `[← hp, ← hq]`. Use `noncomm_ring`. Introduce `i j x`. Rewrite using `[hs i j x]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [smul_mul_assoc, mul_smul_comm, ← smul_sub, map_smul, base]`. Use `Matrix.induction_on' W ?_ ?_ ?_` and prove the remaining obligations. Simplify using the standard rewrite rules. Introduce `p q hp hq`. Rewrite using `[show Z * (p + q) - (p + q) * Z = (Z * p - p * Z) + (Z * q - q * Z) by noncomm_ring]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_add]`. Rewrite using `[← hp, ← hq]`. Use `noncomm_ring`. Introduce `i j x`. Rewrite using `[hs i j x]`.
-
-Simplify using `only [smul_mul_assoc, mul_smul_comm, ← smul_sub, map_smul, key1]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem commutator_eq_of_glRel {M : Type*} [AddCommGroup M] [Module ℂ M] {n : ℕ}
     (L : Matrix (Fin n) (Fin n) ℂ →ₗ[ℂ] Module.End ℂ M)
@@ -92,9 +90,9 @@ private theorem commutator_eq_of_glRel {M : Type*} [AddCommGroup M] [Module ℂ 
     simp only [smul_mul_assoc, mul_smul_comm, ← smul_sub, map_smul, key1]
 
 /- English proof (translation)
-Introduce `D θ hθ V τ M hM`. Unfold `Formalism.REAL.GlRel at hM ⊢`. Simplify using `only at hM ⊢`. Introduce `a b c d`. Establish `h1` using `commutator_eq_of_glRel (GlobalTheory.Mem.RealTranslate.derEnd (V := V) hθ τ) (GlobalTheory.Mem.Lift.glRel_derEnd hθ V τ) (M a b) (M c d)`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Simplify by unfolding definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[h1, hM a b c d, map_sub]`. Apply the tactic sequence `split_ifs <;> simp`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem glRel_derEnd_family : ∀ (D : D7) (θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ)) (hθ : IsInfFam θ) (V : HSp D) (τ : D.what₂.Tau)
     (M : Fin V.rank → Fin V.rank → Matrix (Fin V.rank) (Fin V.rank) ℂ), Formalism.REAL.GlRel M →

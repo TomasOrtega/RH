@@ -12,7 +12,7 @@ section Extend
 variable {O : Type} [CommRing O] {bar : O → O} {X : Type} [AddCommGroup X] [Module O X]
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `h`. Conclude with `⟨fun y z => mul_left_cancel₀ hn (by simpa using h1 y z), fun a y z => mul_left_cancel₀ hn (by simpa using h2 a y z)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem mem_balForms_of_smul {n : ℤ} (hn : n ≠ 0) {β : LinearMap.BilinForm ℤ X} (h : n • β ∈ balForms bar X) :
     β ∈ balForms bar X := by
@@ -21,15 +21,13 @@ theorem mem_balForms_of_smul {n : ℤ} (hn : n ≠ 0) {β : LinearMap.BilinForm 
     fun a y z => mul_left_cancel₀ hn (by simpa using h2 a y z)⟩
 
 /- English proof (translation)
-Set `P` to `balForms bar X`. Use `haveI : NoZeroSMulDivisors ℤ (LinearMap.BilinForm ℤ X ⧸ P) := by`. Prove the components needed by the constructor for the conclusion. Introduce `n q h`. Proceed by induction on `q using Submodule.Quotient.induction_on with`.
+Introduce a local definition for the expression. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `H β`. Rewrite `h` using `[← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero]`. Distinguish the cases in `hn : n = 0`. Conclude with `Or.inl hn`. Conclude with `Or.inr ((Submodule.Quotient.mk_eq_zero _).2 (mem_balForms_of_smul hn h))`.
+Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails. Prove the first alternative. Prove the second alternative. Extract witnesses or component facts from the available result.
 
-Use `haveI : Module.Free ℤ (LinearMap.BilinForm ℤ X ⧸ P) := Module.free_of_finite_type_torsion_free'`. Take `⟨s, hs⟩` from `Module.projective_lifting_property P.mkQ LinearMap.id P.mkQ_surjective`. Establish `hr : ∀ β, β - s (P.mkQ β) ∈ P` using `fun β => by`. Rewrite using `[← Submodule.Quotient.mk_eq_zero]`. Express the relevant statement in the definitionally equal form `P.mkQ (β - s (P.mkQ β)) = 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[map_sub, ← LinearMap.comp_apply P.mkQ s, hs]`. Simplify using the standard rewrite rules. Set `r : LinearMap.BilinForm ℤ X →ₗ[ℤ] P` to `(LinearMap.id - s ∘ₗ P.mkQ).codRestrict P hr`. Use `⟨f ∘ₗ r, fun β => ?_⟩` and prove the remaining obligations. Establish `: r β = β` using `Subtype.ext (by simp [r, (Submodule.Quotient.mk_eq_zero P).2 β.2])`.
-
-Simplify using `only [LinearMap.comp_apply, this]`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_extend_balForms [Module.Free ℤ X] [Module.Finite ℤ X] (f : balForms bar X →ₗ[ℤ] ℤ) :
     ∃ ℓ : LinearMap.BilinForm ℤ X →ₗ[ℤ] ℤ, ∀ β : balForms bar X, ℓ β = f β := by
@@ -62,27 +60,23 @@ end GlobalTheory.PolFan
 namespace GlobalTheory.ChartMono
 
 /- English proof (translation)
-Introduce `E _ _ _ H φ X _ _ _ _ k δ N S hF hC hS be hbe`. Use `haveI : Module.Finite ℤ X := Module.Finite.trans (R := ℤ) (𝓞 E) X`. Use `haveI : NoZeroSMulDivisors ℤ X := by`. Take `⟨s, hs⟩` from `Module.projective_def'.1 (inferInstance : Module.Projective (𝓞 E) X)`. Establish `hinj : Function.Injective (s.restrictScalars ℤ)` using `Function.LeftInverse.injective (g := Finsupp.linearCombination (𝓞 E) id) fun x => LinearMap.congr_fun hs x`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Conclude with `Function.Injective.noZeroSMulDivisors _ hinj (map_zero _) fun n x => map_zsmul _ n x`. Use `haveI : Module.Free ℤ X := Module.free_of_finite_type_torsion_free'`. Use `choose v hv using fun i => hF.integral (δ i) (hC.mem i) (hC.nonneg i)`. Take `⟨n, b, hb⟩` from `hC.basis`. Set `f : balForms H.bar X →ₗ[ℤ] ℤ` to `b.constr ℤ (Sum.elim (fun i => (N : ℤ) * v i) 0)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨ℓ, hℓ⟩` from `exists_extend_balForms f`. Establish `hδ : ∀ i, ℓ (δ i) = (N : ℤ) * v i` using `fun i => by`. Use `hℓ ⟨δ i, hC.mem i⟩` as an intermediate fact. Establish `hbi : b (Sum.inl i) = ⟨δ i, hC.mem i⟩` using `hb i`. Rewrite `this` using `[← hbi]`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Simplify using `only [f, Module.Basis.constr_basis, Sum.elim_inl] at this`. Rewrite `this` using `[hbi]`. Then use the resulting hypothesis. Establish `hδR : ∀ i, (ℓ (δ i) : ℝ) = N * φ.evalZ (δ i)` using `fun i => by rw [hδ i, hv i]; push_cast; ring`. Use `⟨ℓ, ?_, fun β hβS hβ hp => ?_⟩` and prove the remaining obligations. Take `⟨c, hc0, hc⟩` from `hbe`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `e1 : φ.evalZ be = ∑ i, c i * φ.evalZ (δ i)`. Rewrite using `[← evalR_toReal, hc]`. Conclude with `(linearOn_iff φ δ).1 hC.linear c hc0`. Establish `e2` using `sum_mul_eq_zero_of_sum_toReal (X := X) (j := LinearMap.id) Function.injective_id ℓ (β := Sum.elim δ fun _ : Unit => be) (c := Sum.elim c fun _ => -1) (by`. Rewrite using `[Fintype.sum_sum_type]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[hc])`. Rewrite `e2` using `[Fintype.sum_sum_type]`. Simplify using `only [Sum.elim_inl, Sum.elim_inr, Finset.univ_unique, Finset.sum_singleton, LinearMap.id_apply] at e2`. Rewrite using `[e1, Finset.mul_sum]`. Establish `e3 : (ℓ be : ℝ) = ∑ i, c i * (ℓ (δ i) : ℝ)` using `by linarith`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[e3]`. Conclude with `Finset.sum_congr rfl fun i _ => by rw [hδR i]; ring`. Take `⟨M, a, hM, hMa⟩` from `hS β hβS`. Take `⟨N₀, ℓ₁, hN₀, h1, h2, -⟩` from `hC.strict`. Establish `k1 : (M : ℝ) * ℓ β = ∑ i, (a i : ℝ) * ℓ (δ i)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congrArg ℓ hMa` as an intermediate fact. Simplify using `only [map_smul, map_sum, smul_eq_mul] at this`. Conclude with `this` after adjusting the coercions. Establish `k2 : (M : ℝ) * ℓ₁ β = ∑ i, (a i : ℝ) * ℓ₁ (δ i)`. Use `congrArg ℓ₁ hMa` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [map_smul, map_sum, smul_eq_mul] at this`. Conclude with `this` after adjusting the coercions. Establish `k3 : (M : ℝ) * ((N₀ : ℝ) * ℓ β) = (M : ℝ) * ((N : ℝ) * ℓ₁ β)`. Rewrite using `[mul_left_comm, k1, mul_left_comm (M : ℝ) (N : ℝ), k2, Finset.mul_sum, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => by rw [hδR i, h1 i]; ring`.
-
-Establish `hMpos : (0 : ℝ) < M` using `by exact_mod_cast hM`. Establish `k4 : (N₀ : ℝ) * ℓ β = (N : ℝ) * ℓ₁ β` using `mul_left_cancel₀ hMpos.ne' k3`. Establish `k5` using `h2 β hβ hp`. Establish `hN₀pos : (0 : ℝ) < N₀` using `by exact_mod_cast hN₀`. Establish `k6 : (N : ℝ) * ((N₀ : ℝ) * φ.evalZ β) ≤ (N : ℝ) * ℓ₁ β` using `mul_le_mul_of_nonneg_left k5 (Nat.cast_nonneg N)`.
-
-Establish `: (N₀ : ℝ) * ((N : ℝ) * φ.evalZ β) ≤ (N₀ : ℝ) * ℓ β` using `by nlinarith`. Conclude with `le_of_mul_le_mul_left this hN₀pos`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_intPiece : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (φ : InvFun (𝓞 E)) (X : Type)
     [AddCommGroup X] [Module (𝓞 E) X] [Module.Finite (𝓞 E) X] [Module.Projective (𝓞 E) X] (k : ℕ)

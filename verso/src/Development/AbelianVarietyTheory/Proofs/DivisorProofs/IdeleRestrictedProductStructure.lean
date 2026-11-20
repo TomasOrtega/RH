@@ -22,7 +22,7 @@ namespace GlobalTheory.IdeleRestr
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `at_evFin_iff.1 hl`. Conclude with `⟨fun w => by have := h1 w; rwa [map_sub, map_one, sub_eq_zero] at this, fun u hu => by have := h2 u hu; rwa [map_sub, map_one, sub_eq_zero] at this⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem comp_of_mem_fin {v : Pl F} {l : (AE F E)ˣ} (hl : l ∈ idelesAt E (evFin F v)) :
     (∀ w, compInf F E w (l : AE F E) = 1) ∧ ∀ u, u ≠ v → compFin F E u (l : AE F E) = 1 := by
@@ -31,7 +31,7 @@ theorem comp_of_mem_fin {v : Pl F} {l : (AE F E)ˣ} (hl : l ∈ idelesAt E (evFi
     fun u hu => by have := h2 u hu; rwa [map_sub, map_one, sub_eq_zero] at this⟩
 
 /- English proof (translation)
-Use `at_evI_iff.1 hl u` as an intermediate fact. Rewrite `this` using `[map_sub, map_one, sub_eq_zero]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem comp_of_mem_inf {l : (AE F E)ˣ} (hl : l ∈ idelesAt E (evI F)) (u : Pl F) :
     compFin F E u (l : AE F E) = 1 := by
@@ -50,11 +50,11 @@ namespace GlobalTheory.IdeleRestr
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Use `haveI : Module.Finite F E := Module.Finite.of_restrictScalars_finite ℚ F E`. Set `b` to `Module.finBasis F E`. Establish `hr : ∀ j, ∀ᶠ v in cofinite, (Algebra.TensorProduct.basis (Fv F v) b).repr (c v) j ∈ (v.adicCompletionIntegers F : Set (Fv F v))` using `fun j => (hc.and (GlobalTheory.IdeleCyl.eventually_repr_mem_of_mem_intLoc F E j)).mono fun v h => h.2 _ h.1`. Set `r : Fin (Module.finrank F E) → Af F` to `fun j => ⟨fun v => (Algebra.TensorProduct.basis (Fv F v) b).repr (c v) j, hr j⟩`. Set `q : Fin (Module.finrank F E) → AF F` to `fun j => ((0, r j) : InfiniteAdeleRing F × FiniteAdeleRing (𝓞 F) F)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨eInf F • z + ∑ j, q j ⊗ₜ[F] b j, fun w => ?_, fun v => ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, compInf_smul, GlobalTheory.IdeleCyl.evInf_eInf, one_smul, map_sum]`. Use `(add_eq_left).2 (Finset.sum_eq_zero fun j _ => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `evInf F w (q j) ⊗ₜ[F] b j = 0`. Rewrite using `[show evInf F w (q j) = 0 from map_zero (GlobalTheory.AutFunCompare.evW w), TensorProduct.zero_tmul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_add, compFin_smul, show evFin F v (eInf F) = 0 from map_zero (evalV F v), zero_smul, zero_add, map_sum] conv_rhs => rw [← (Algebra.TensorProduct.basis (Fv F v) b).sum_repr (c v)]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `evFin F v (q j) ⊗ₜ[F] b j = _`. Rewrite using `[Algebra.TensorProduct.basis_apply, TensorProduct.smul_tmul', smul_eq_mul, mul_one]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_adele_comp (z : AE F E) (c : ∀ v : Pl F, Fv F v ⊗[F] E)
     (hc : ∀ᶠ v in cofinite, c v ∈ intLoc F E v) :
@@ -86,9 +86,9 @@ namespace GlobalTheory.IdeleRestr
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Take `⟨y, hy1, hy2⟩` from `exists_adele_comp (a : AE F E) (fun v => (c v : Fv F v ⊗[F] E)) (hc.mono fun _ h => h.1)`. Take `⟨y', hy1', hy2'⟩` from `exists_adele_comp ((a⁻¹ : (AE F E)ˣ) : AE F E) (fun v => (((c v)⁻¹ : (Fv F v ⊗[F] E)ˣ) : Fv F v ⊗[F] E)) (hc.mono fun _ h => h.2)`. Establish `h : y * y' = 1` using `GlobalTheory.Doubling.adele_ext (fun w => by`. Rewrite using `[map_mul, hy1 w, hy1' w, ← map_mul, Units.mul_inv, map_one])`. Use the proof step `(fun v => by rw [map_mul, hy2 v, hy2' v, Units.mul_inv, map_one])`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨⟨y, y', h, by rw [mul_comm]; exact h⟩, fun w => Units.ext (hy1 w), fun v => Units.ext (hy2 v)⟩` and prove the remaining obligations.
+A detailed English derivation is pending.
 -/
 theorem exists_idele_comp (a : (AE F E)ˣ) (c : ∀ v : Pl F, (Fv F v ⊗[F] E)ˣ)
     (hc : ∀ᶠ v in cofinite, ((c v : Fv F v ⊗[F] E) ∈ intLoc F E v ∧ (((c v)⁻¹ : (Fv F v ⊗[F] E)ˣ) : Fv F v ⊗[F] E) ∈ intLoc F E v)) :
@@ -107,25 +107,21 @@ end GlobalTheory.IdeleRestr
 open GlobalTheory.IdeleRestr in
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _`. Take `⟨hcf, hca⟩` from `continuous_unitAt_unitArch F E`. Use `⟨fun _ => hca.subtype_mk _, fun v => (hcf v).subtype_mk _, fun v => (isCompact_isOpen_unitsAt v).2, fun v => (isCompact_isOpen_unitsAt v).1, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `x y ha hf`. Establish `hA : unitArch F E x = unitArch F E y` using `congrArg Subtype.val (ha ())`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hF : ∀ v, unitAt E v x = unitAt E v y` using `fun v => congrArg Subtype.val (hf v)`. Use `GlobalTheory.Doubling.idele_ext (fun w => Units.ext ?_) fun v => Units.ext ?_` and prove the remaining obligations. Conclude with `(GlobalTheory.IdeleCyl.compInf_unitArch w x).symm.trans ((congrArg (fun l : (AE F E)ˣ => compInf F E w (l : AE F E)) hA).trans (GlobalTheory.IdeleCyl.compInf_unitArch w y))`. Conclude with `(GlobalTheory.IdeleCyl.compFin_unitAt v x).symm.trans ((congrArg (fun l : (AE F E)ˣ => compFin F E v (l : AE F E)) (hF v)).trans (GlobalTheory.IdeleCyl.compFin_unitAt v y))`. Introduce `x`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `(eventually_unitAt_mem_unitsAt F E x).mono fun v h => Subgroup.mem_subgroupOf.2 h`. Introduce `a y hy`. Establish `hy' : ∀ᶠ v in cofinite, ((GlobalTheory.Doubling.unitFin F E v (y v).1 : Fv F v ⊗[F] E) ∈ intLoc F E v ∧ (((GlobalTheory.Doubling.unitFin F E v (y v).1)⁻¹ : (Fv F v ⊗[F] E)ˣ) : Fv F v ⊗[F] E) ∈ intLoc F E v)` using `hy.mono fun v h => by`. Establish `h'` using `mem_unitsAt.1 (Subgroup.mem_subgroupOf.1 h)`. Conclude with `⟨h'.2.1, by rw [← map_inv]; exact h'.2.2⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨x, hx1, hx2⟩` from `exists_idele_comp (a ()).1 (fun v => GlobalTheory.Doubling.unitFin F E v (y v).1) hy'`. Use `⟨x, fun _ => Subtype.ext ?_, fun v => Subtype.ext ?_⟩` and prove the remaining obligations. Use `show unitArch F E x = (a ()).1`. Use `GlobalTheory.Doubling.idele_ext (fun w => Units.ext ?_) fun v => Units.ext ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `compInf F E w (unitArch F E x : AE F E) = compInf F E w ((a ()).1 : AE F E)`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[GlobalTheory.IdeleCyl.compInf_unitArch]`. Conclude with `congrArg Units.val (hx1 w)`. Express the relevant statement in the definitionally equal form `compFin F E v (unitArch F E x : AE F E) = compFin F E v ((a ()).1 : AE F E)`. Rewrite using `[comp_of_mem_inf (unitArch_mem x), comp_of_mem_inf (a ()).2]`. Use `show unitAt E v x = (y v).1`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Use `GlobalTheory.Doubling.idele_ext (fun w => Units.ext ?_) fun u => Units.ext ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `compInf F E w (unitAt E v x : AE F E) = compInf F E w ((y v).1 : AE F E)`. Rewrite using `[(comp_of_mem_fin (unitAt_mem v x)).1, (comp_of_mem_fin (y v).2).1]`. Express the relevant statement in the definitionally equal form `compFin F E u (unitAt E v x : AE F E) = compFin F E u ((y v).1 : AE F E)`. Distinguish the cases in `hu : u = v`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Substitute `hu` using the available equality. Rewrite using `[GlobalTheory.IdeleCyl.compFin_unitAt]`. Conclude with `congrArg Units.val (hx2 u)`. Rewrite using `[(comp_of_mem_fin (unitAt_mem v x)).2 u hu, (comp_of_mem_fin (y v).2).2 u hu]`. Conclude with `isOpen_setOf_forall_unitAt_mem_unitsAt F E`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Introduce `C hC`. Establish `h` using `GlobalTheory.IdeleCyl.isCompact_cyl F E ∅ (Subtype.val '' C ()) (fun _ => ∅) ((hC ()).image continuous_subtype_val) (fun v hv => absurd hv (Finset.notMem_empty v))`. Use `h using 1` and compare the differences between its conclusion and the goal. Use extensionality with `l`. Prove the components needed by the constructor for the conclusion.
-
-Introduce and unpack `⟨h1, h2⟩`. Conclude with `⟨⟨_, h1 (), rfl⟩, fun v hv => absurd hv (Finset.notMem_empty v), fun v _ => Subgroup.mem_subgroupOf.1 (h2 v)⟩`. Introduce and unpack `⟨⟨m, hm, hml⟩, -, h3⟩`. Use `⟨fun u => ?_, fun v => Subgroup.mem_subgroupOf.2 (h3 v (Finset.notMem_empty v))⟩` and prove the remaining obligations. Consider the cases of `u`.
-
-Use `hm` and compare the differences between its conclusion and the goal. Conclude with `Subtype.ext hml.symm`.
+Reduce the conclusion to the remaining proof obligations. Split into cases according to the possible forms of the given data. Apply an available result and prove the equalities needed to match it to the conclusion. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.IdeleRestr.isRestrGroup_ideles : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E],
     GlobalTheory.RestrMeas.IsRestrGroup (X := (AE F E)ˣ) (W := Unit) (V := Pl F)

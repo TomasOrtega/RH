@@ -30,7 +30,7 @@ namespace GlobalTheory.SplitAlgForm
 open GlobalTheory.SplitScalar GlobalTheory.LevelSeries.IdemSumForm GlobalTheory.AlgWave
 
 /- English proof (translation)
-Introduce `h`. Use `ψ.map_add_eq_mul x (-x)` as an intermediate fact. Rewrite `this` using `[add_neg_cancel, AddChar.map_zero_eq_one, h, zero_mul]`. Conclude with `one_ne_zero this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem psi_ne_zero {G : Type} [AddGroup G] (ψ : AddChar G ℂ) (x : G) : ψ x ≠ 0 := by
   intro h
@@ -39,7 +39,7 @@ theorem psi_ne_zero {G : Type} [AddGroup G] (ψ : AddChar G ℂ) (x : G) : ψ x 
   exact one_ne_zero this
 
 /- English proof (translation)
-Use extensionality with `i j`. Establish `: infPart D (x i j) = 0` using `congrFun (congrFun hx i) j`. Use `show infPart D (a * x i j) = 0`. Rewrite using `[RingHom.map_mul, this, mul_zero]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fin_smul {D : D7} {m n : ℕ} (a : AE D) {x : Mx D m n} (hx : x.map (infPart D) = 0) :
     (a • x).map (infPart D) = 0 := by
@@ -49,7 +49,7 @@ theorem fin_smul {D : D7} {m n : ℕ} (a : AE D) {x : Mx D m n} (hx : x.map (inf
   rw [RingHom.map_mul, this, mul_zero]
 
 /- English proof (translation)
-Rewrite using `[Matrix.map_add _ (map_add (infPart D)), hx, hy, add_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem fin_add {D : D7} {m n : ℕ} {x y : Mx D m n} (hx : x.map (infPart D) = 0) (hy : y.map (infPart D) = 0) :
     (x + y).map (infPart D) = 0 := by
@@ -58,55 +58,51 @@ theorem fin_add {D : D7} {m n : ℕ} {x y : Mx D m n} (hx : x.map (infPart D) = 
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `D ψ θ S T sS sT ΛS ΛT v hv hS hT e he n w hw`. Establish `hψ : IsStdChar D ψ (-1)` using `hv.1`. Take `⟨hd, -, hsg⟩` from `GlobalTheory.LatVac.latO_selfDual_approx_sign D ψ S T ΛS ΛT hψ hS hT`. Use `set Λ : AddSubgroup (WO S T) := latO S T (ΛS : Set (Fin S.rank → D.host.E)) (ΛT : Set (Fin T.rank → D.host.E)) fun _ => True with hΛdef`. Establish `hΛ : ∀ a : AE D, a * a = a → ∀ u ∈ Λ, a • u ∈ Λ` using `fun a ha => GlobalTheory.LatticeStable.smul_mem_latO D S T _ _ _ a (GlobalTheory.AdIdem.idempotent_mem_intAE D _ (by rw [← RingHom.map_mul, ha]))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hΛfin : ∀ u ∈ Λ, u.map (infPart D) = 0` using `fun u hu => latO_fin hu`. Establish `hth : ∀ w f, IsThetaFunO ψ S T f → IsThetaFunO ψ S T (heisO ψ S T w f)` using `(GlobalTheory.HeisThetaLaws.heis_theta_laws D ψ hψ S T).1`. Establish `hvth : IsThetaFunO ψ S T v` using `hv.2.theta`. Establish `hlat : IsLatVac (heisO ψ S T) Λ v` using `hv.2.lat`. Establish `hsign : ∀ u ∈ Λ, ∃ ε : ℂ, (ε = 1 ∨ ε = -1) ∧ heisO ψ S T u v = ε • v` using `fun u hu => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨ε, hε, h⟩` from `hsg v hlat u hu`. Conclude with `⟨ε, hε, h v hlat⟩`. Establish `hεQ : ∀ ε : ℂ, (ε = 1 ∨ ε = -1) → ε ∈ Qb ∧ ε ≠ 0`. Introduce and unpack `ε (rfl | rfl)`. Conclude with `⟨one_mem _, one_ne_zero⟩`.
+Supply the required witnesses or components. Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Conclude with `⟨neg_mem (one_mem _), neg_ne_zero.2 one_ne_zero⟩`. Establish `hpsi : ∀ x y : WO S T, x.map (infPart D) = 0 → y.map (infPart D) = 0 → ψ (symplO S T x y) ∈ Qb` using `fun x y hx hy => GlobalTheory.BotFourier.psi_mem hψ hS hT hx hy`. Establish `hpsiH : ∀ x y : WO S T, x.map (infPart D) = 0 → y.map (infPart D) = 0 → ψ (symplOH S T x y) ∈ Qb` using `fun x y hx hy => GlobalTheory.BotFourier.psiH_mem hψ hS hT hx hy`. Establish `hcS : IsSplitIdem D (cA D e)` using `isSplitIdem_conj he`. Establish `he1 : e * e = e` using `he.1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hec : e * (cA D e) = 0` using `he.2.1`. Establish `hce : (cA D e) * e = 0` using `by rw [mul_comm]; exact hec`. Establish `hc1 : (cA D e) * (cA D e) = (cA D e)` using `by rw [← RingHom.map_mul, he1]`. Establish `hcc : cA D (cA D e) = e` using `GlobalTheory.DualPairCheck.cA_cA e`. Establish `hq1 : (1 - (e + (cA D e))) * (1 - (e + (cA D e))) = 1 - (e + (cA D e))` using `by linear_combination he1 + hc1 + 2 * hec`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcq : cA D (1 - (e + (cA D e))) = 1 - (e + (cA D e))`. Rewrite using `[map_sub, map_one, map_add, hcc, add_comm (cA D e) e]`. Establish `hcq0 : (cA D e) * (1 - (e + (cA D e))) = 0` using `by linear_combination -hc1 - hce`. Establish `hqc0 : cA D (1 - (e + (cA D e))) * (cA D e) = 0` using `by rw [hcq, mul_comm]; exact hcq0`. Establish `hdec : ∀ x : WO S T, (cA D e) • x + (e • x + (1 - (e + (cA D e))) • x) = x` using `fun x => by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← add_smul, ← add_smul, ← add_assoc, add_comm (cA D e) e, add_sub_cancel, one_smul]`. Establish `caseB : ∀ ℓ : (WO S T → ℂ) →ₗ[ℂ] ℂ, (∀ u : WO S T, IsHalf (cA D e) u → ∀ f, IsThetaFunO ψ S T f → ℓ (heisO ψ S T u f) = ℓ f) → ℓ v = 1 → ∀ x : WO S T, x.map (infPart D) = 0 → (1 - (e + (cA D e))) • x ∈ Λ → ℓ (heisO ψ S T x v) ∈ Qb`. Introduce `ℓ hinv h1 x hx hx'`. Take `⟨ε, hε, hεv⟩` from `hsign _ hx'`. Establish `hxe : IsHalf e (e • x)` using `(isHalf_iff _ _).2 (by rw [smul_smul, he1])`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hxc : IsHalf (cA D e) ((cA D e) • x)` using `(isHalf_iff _ _).2 (by rw [smul_smul, hc1])`. Establish `hxq : IsHalf (1 - (e + (cA D e))) ((1 - (e + (cA D e))) • x)` using `(isHalf_iff _ _).2 (by rw [smul_smul, hq1])`. Establish `horth : symplO S T (e • x) ((1 - (e + (cA D e))) • x) = 0` using `symplO_eq_zero S T hcq0 hxe hxq`. Establish `e1 : heisO ψ S T (e • x + (1 - (e + (cA D e))) • x) v = ε • heisO ψ S T (e • x) v`. Rewrite using `[heisO_add_of_orth ψ S T horth, hεv, heisO_smul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e2 : heisO ψ S T ((cA D e) • x) (heisO ψ S T (e • x + (1 - (e + (cA D e))) • x) v) = ψ (symplOH S T ((cA D e) • x) (e • x + (1 - (e + (cA D e))) • x)) • heisO ψ S T x v`. Rewrite using `[heisO_heisO, hdec x]`. Establish `e3 : ℓ (heisO ψ S T ((cA D e) • x) (heisO ψ S T (e • x + (1 - (e + (cA D e))) • x) v)) = ε * ℓ (heisO ψ S T (e • x) v)`. Rewrite using `[hinv _ hxc _ (hth _ _ hvth), e1, map_smul, smul_eq_mul]`. Rewrite `e3` using `[e2, map_smul, smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hx0` using `psi_ne_zero ψ (symplOH S T ((cA D e) • x) (e • x + (1 - (e + (cA D e))) • x))`. Establish `hpq : ψ (symplOH S T ((cA D e) • x) (e • x + (1 - (e + (cA D e))) • x)) ∈ Qb` using `hpsiH _ _ (fin_smul _ hx) (fin_add (fin_smul _ hx) (fin_smul _ hx))`. Establish `e4 : ℓ (heisO ψ S T x v) = (ψ (symplOH S T ((cA D e) • x) (e • x + (1 - (e + (cA D e))) • x)))⁻¹ * (ε * ℓ (heisO ψ S T (e • x) v))`. Rewrite using `[← e3, inv_mul_cancel_left₀ hx0]`. Rewrite using `[e4]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `mul_mem (inv_mem hpq) (mul_mem (hεQ ε hε).1 ?_)` and prove the remaining obligations. Distinguish the cases in `hxΛ : e • x ∈ Λ`. Rewrite using `[hlat.2 e he _ hxΛ hxe, h1]`. Conclude with `one_mem _`. Take `⟨l, hl, hlc, hne⟩` from `dual_half he1 (fun u hu => half_fin he hu) hd (fun u hu => hΛ (cA D e) hc1 u hu) hxe hxΛ`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0 : ℓ (heisO ψ S T (e • x) v) = 0`. Establish `k1` using `hinv l hlc _ (hth (e • x) v hvth)`. Rewrite `k1` using `[heisO_comm, hlat.2 (cA D e) hcS l hl hlc, map_smul, smul_eq_mul]`. Establish `: (ψ (symplO S T l (e • x)) - 1) * ℓ (heisO ψ S T (e • x) v) = 0`. Rewrite using `[sub_mul, k1, one_mul, sub_self]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(mul_eq_zero.1 this).resolve_left (sub_ne_zero.2 hne)`. Rewrite using `[h0]`. Conclude with `zero_mem _`. Establish `step : ∀ ℓ : (WO S T → ℂ) →ₗ[ℂ] ℂ, (∀ u : WO S T, IsHalf (cA D e) u → ∀ f, IsThetaFunO ψ S T f → ℓ (heisO ψ S T u f) = ℓ f) → ℓ v = 1 → ∀ x : WO S T, x.map (infPart D) = 0 → ∃ ℓ' : (WO S T → ℂ) →ₗ[ℂ] ℂ, (∀ u : WO S T, IsHalf (cA D e) u → ∀ f, IsThetaFunO ψ S T f → ℓ' (heisO ψ S T …`. Introduce `ℓ hinv h1 x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Distinguish the cases in `hB : (1 - (e + (cA D e))) • x ∈ Λ`. Conclude with `⟨ℓ, hinv, h1, caseB ℓ hinv h1 x hx hB, fun y _ => ⟨1, one_mem _, (one_mul _).symm⟩⟩`. Establish `hex : ¬ ∀ u ∈ Λ, ψ (symplO S T ((1 - (e + (cA D e))) • x) u) = 1` using `fun h => hB ((hd _ (fin_smul _ hx)).2 h)`. Use `push_neg at hex`. Take `⟨u', hu', hne'⟩` from `hex`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `huΛ : (1 - (e + (cA D e))) • u' ∈ Λ` using `hΛ _ hq1 u' hu'`. Establish `huq : IsHalf (1 - (e + (cA D e))) ((1 - (e + (cA D e))) • u')` using `(isHalf_iff _ _).2 (by rw [smul_smul, hq1])`. Rewrite `hne'` using `[symplO_smul, hcq]`. Establish `hne` using `psi_skew_ne hne'`. Take `⟨ε, hε, hεv⟩` from `hsign _ huΛ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨hεQ', hε0⟩` from `hεQ ε hε`. Establish `hzQ : ψ (symplO S T ((1 - (e + (cA D e))) • u') x) ∈ Qb` using `hpsi _ _ (hΛfin _ huΛ) hx`. Establish `hk : ε - ε * ψ (symplO S T ((1 - (e + (cA D e))) • u') x) ≠ 0`. Rewrite using `[← mul_one_sub]`. Conclude with `mul_ne_zero hε0 (sub_ne_zero.2 (Ne.symm hne))`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hcomm : ∀ w₁ : WO S T, heisO ψ S T ((1 - (e + (cA D e))) • u') (heisO ψ S T w₁ v) = (ψ (symplO S T ((1 - (e + (cA D e))) • u') w₁) * ε) • heisO ψ S T w₁ v` using `fun w₁ => by`. Rewrite using `[heisO_comm, hεv, heisO_smul, smul_smul]`. Use `⟨(ε - ε * ψ (symplO S T ((1 - (e + (cA D e))) • u') x))⁻¹ • (ℓ ∘ₗ (heisL ψ S T ((1 - (e + (cA D e))) • u') - (ε * ψ (symplO S T ((1 - (e + (cA D e))) • u') x)) • LinearMap.id)), fun y hy f hf => ?_, ?_, ?_, fun y hy => ?_⟩` and prove the remaining obligations. Apply the tactic sequence `all_goals simp only [LinearMap.smul_apply, LinearMap.comp_apply, LinearMap.sub_apply, heisL_apply, LinearMap.id_apply, map_sub, map_smul, smul_eq_mul]`. Establish `hc' : heisO ψ S T ((1 - (e + (cA D e))) • u') (heisO ψ S T y f) = heisO ψ S T y (heisO ψ S T ((1 - (e + (cA D e))) • u') f)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[heisO_comm, symplO_eq_zero S T hqc0 huq hy, AddChar.map_zero_eq_one, one_smul]`. Rewrite using `[hc', hinv y hy _ (hth _ _ hf), hinv y hy f hf]`. Rewrite using `[hεv, map_smul, smul_eq_mul, h1, mul_one, mul_one, inv_mul_cancel₀ hk]`. Rewrite using `[hcomm, map_smul, smul_eq_mul]`. Establish `: ψ (symplO S T ((1 - (e + (cA D e))) • u') x) * ε * ℓ (heisO ψ S T x v) - ε * ψ (symplO S T ((1 - (e + (cA D e))) • u') x) * ℓ (heisO ψ S T x v) = 0` using `by ring`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Rewrite using `[this, mul_zero]`. Conclude with `zero_mem _`. Use `⟨(ε - ε * ψ (symplO S T ((1 - (e + (cA D e))) • u') x))⁻¹ * (ψ (symplO S T ((1 - (e + (cA D e))) • u') y) * ε - ε * ψ (symplO S T ((1 - (e + (cA D e))) • u') x)), mul_mem (inv_mem (sub_mem hεQ' (mul_mem hεQ' hzQ))) (sub_mem (mul_mem (hpsi _ _ (hΛfin _ huΛ) hy) hεQ') (mul_mem hεQ' …` and prove the remaining obligations. Rewrite using `[hcomm, map_smul, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hv0 : v ≠ 0`. Introduce and unpack `rfl`. Take `⟨p, hp⟩` from `hv.2.norm.1`. Use `hv.2.norm.2 p hp` as an intermediate fact. Simplify using `[nrm2] at this`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨ℓ₀, hℓ₀, hinv₀⟩` from `invariant_form (e := (cA D e)) (Λ := Λ) hc1 (by rw [hcc]; exact hec) (fun u hu => half_fin hcS hu) hd (fun u hu => by rw [hcc]; exact hΛ e he1 u hu) hv0 (fun l hl hh => hlat.2 (cA D e) hcS l hl hh) (fun l hl hh => hlat.2 e he l hl (by rwa [hcc] at hh))`. Establish `main : ∀ (n : ℕ) (w : Fin n → WO S T), (∀ p, (w p).map (infPart D) = 0) → ∃ ℓ : (WO S T → ℂ) →ₗ[ℂ] ℂ, (∀ u : WO S T, IsHalf (cA D e) u → ∀ f, IsThetaFunO ψ S T f → ℓ (heisO ψ S T u f) = ℓ f) ∧ ℓ v = 1 ∧ ∀ p, ℓ (heisO ψ S T (w p) v) ∈ Qb`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Introduce `w _`. Use `⟨(ℓ₀ v)⁻¹ • ℓ₀, fun u hu f hf => ?_, ?_, fun p => p.elim0⟩` and prove the remaining obligations. Rewrite using `[LinearMap.smul_apply, LinearMap.smul_apply, hinv₀ u hu f hf]`. Rewrite using `[LinearMap.smul_apply, smul_eq_mul, inv_mul_cancel₀ hℓ₀]`. Consider the case `succ n ih`.
+Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Introduce `w hw`. Take `⟨ℓ, hinv, h1, halg⟩` from `ih (fun p => w p.castSucc) fun p => hw _`. Take `⟨ℓ', hinv', h1', hlast, hfac⟩` from `step ℓ hinv h1 (w (Fin.last n)) (hw _)`. Use `⟨ℓ', hinv', h1', fun p => ?_⟩` and prove the remaining obligations. Proceed by induction on `p using Fin.lastCases with`.
-
-Consider the case `last => exact hlast`. Consider the case `cast q`. Take `⟨a, ha, h⟩` from `hfac _ (hw q.castSucc)`. Rewrite using `[h]`. Conclude with `mul_mem ha (halg q)`.
-
-Take `⟨ℓ, hinv, h1, halg⟩` from `main n w hw`. Conclude with `⟨ℓ, fun u hu f hf => hinv u hu f hf, h1, fun p => mem_algebraicClosure_iff.1 (halg p)⟩`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_alg_form : ∀ {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D} {S T : HSp D}
     {sS : D.what₂.Tau → Matrix (Fin S.rank) (Fin S.rank) ℂ} {sT : D.what₂.Tau → Matrix (Fin T.rank) (Fin T.rank) ℂ}

@@ -7,9 +7,9 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.Inhab Fo
 namespace GlobalTheory.Mem.Top.TwFin
 
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.IsolatedTheoremFour.main`. Consider the case `exact _root_.GlobalTheory.IsolatedTheoremFour.main`. Consider the case `(apply _root_.GlobalTheory.IsolatedTheoremFour.main <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.IsolatedTheoremFour.main <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.IsolatedTheoremFour.main <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.IsolatedTheoremFour.main ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem exists_over {K : Type} [Field K] [NumberField K] {l : ℕ} (hl : l.Prime) :
     ∃ v : HeightOneSpectrum (𝓞 K), ((l : ℕ) : 𝓞 K) ∈ v.asIdeal := by
@@ -22,9 +22,7 @@ theorem exists_over {K : Type} [Field K] [NumberField K] {l : ℕ} (hl : l.Prime
   | (intros; exact _root_.GlobalTheory.IsolatedTheoremFour.main ..)
 
 /- English proof (translation)
-Establish `h0 : Ideal.span {((l : ℕ) : 𝓞 K)} ≠ 0`. Rewrite using `[Ne, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot]`. Conclude with `hl` after adjusting the coercions. Use `(Ideal.finite_factors h0).subset fun v hv => ?_` and prove the remaining obligations. Use `show v.asIdeal ∣ _`.
-
-Rewrite using `[Ideal.dvd_span_singleton]`. Conclude with `hv`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finite_mem {K : Type} [Field K] [NumberField K] {l : ℕ} (hl : l ≠ 0) :
     {v : HeightOneSpectrum (𝓞 K) | ((l : ℕ) : 𝓞 K) ∈ v.asIdeal}.Finite := by
@@ -37,11 +35,11 @@ theorem finite_mem {K : Type} [Field K] [NumberField K] {l : ℕ} (hl : l ≠ 0)
   exact hv
 
 /- English proof (translation)
-Introduce `h`. Take `⟨v, hv⟩` from `exists_over (K := H.E) hp`. Establish `hu : ψ.UnrAt v`. Assume the negation of the conclusion as `hn`. Take `⟨-, hq, -, hnS⟩` from `hψ.2.2.2 v hn`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Use `Examples₂.PlacesToy.prime_mem_unique v hq hp (Ideal.absNorm_mem _) hv` as an intermediate fact. Conclude with `hnS (this ▸ hS)`. Establish `h1` using `(hδ.ine v hv 1).1 fun x hx => by`. Establish `h2 : (δ * ψ).loc v x = 1` using `by rw [h, HChar.loc_one]`. Rewrite `h2` using `[HChar.loc_mul, hu x hx, mul_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h2, one_pow]`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem mul_ne_one {R : Ranks} {H : Formalism.BasicNotions.Host R} {S : Set ℕ} {p : ℕ} {δ ψ : HChar H.E} (hp : p.Prime) (hS : p ∈ S)
     (hδ : IsDelta (H := H) p δ) (hψ : Chr.IsTwist H S ψ) : δ * ψ ≠ 1 := by
@@ -59,7 +57,7 @@ theorem mul_ne_one {R : Ranks} {H : Formalism.BasicNotions.Host R} {S : Set ℕ}
   omega
 
 /- English proof (translation)
-Use `Examples₂.PlacesToy.prime_mem_unique (B.places.conj w) (Examples₂.PlacesToy.resCharW_prime _) (Examples₂.PlacesToy.resCharW_prime _) (Examples₂.PlacesToy.resCharW_mem _) ?_` and prove the remaining obligations. Establish `h` using `(Examples₂.PlacesToy.mem_conjW_pow w ((Examples₂.PlacesToy.resCharW w : ℕ) : 𝓞 B.LL) 1).2 (by rw [pow_one, map_natCast]; exact Examples₂.PlacesToy.resCharW_mem w)`. Rewrite `h` using `[pow_one]`. Conclude with `h`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem resChar_conj (B : Base) (w : B.places.Pl) : B.places.resChar (B.places.conj w) = B.places.resChar w := by
   refine Examples₂.PlacesToy.prime_mem_unique (B.places.conj w) (Examples₂.PlacesToy.resCharW_prime _) (Examples₂.PlacesToy.resCharW_prime _)
@@ -70,7 +68,7 @@ theorem resChar_conj (B : Base) (w : B.places.Pl) : B.places.resChar (B.places.c
   exact h
 
 /- English proof (translation)
-Use `((s.finite_toSet.subset (s := (s : Set ℕ)) (t := {p | p ∈ s ∧ p ≠ 0}) fun p hp => hp.1).biUnion fun p hp => finite_mem (K := B.LL) hp.2).subset fun w hw => ?_` and prove the remaining obligations. Simplify using `only [Set.mem_iUnion]`. Conclude with `⟨B.places.resChar w, ⟨hw, (B.places.resChar_prime w).ne_zero⟩, Examples₂.PlacesToy.resCharW_mem w⟩`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 theorem finite_pl (B : Base) (s : Finset ℕ) : {w : B.places.Pl | B.places.resChar w ∈ s}.Finite := by
   refine ((s.finite_toSet.subset (s := (s : Set ℕ)) (t := {p | p ∈ s ∧ p ≠ 0}) fun p hp => hp.1).biUnion
@@ -79,13 +77,13 @@ theorem finite_pl (B : Base) (s : Finset ℕ) : {w : B.places.Pl | B.places.resC
   exact ⟨B.places.resChar w, ⟨hw, (B.places.resChar_prime w).ne_zero⟩, Examples₂.PlacesToy.resCharW_mem w⟩
 
 /- English proof (translation)
-Introduce `B f T`. Use `⟨?_, fun w => ?_, fun w => ?_, finite_pl B T.pl⟩` and prove the remaining obligations. Establish `h3 : ({1, f.del, f.del'} : Set (HChar B.host.E)).Finite` using `Set.toFinite _`. Use `(h3.union ((finite_pl B T.pl).image (T.xiTw f))).subset ?_` and prove the remaining obligations. Introduce and unpack `ξ (h | ⟨w, rfl⟩)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Conclude with `Or.inl h`. Distinguish the cases in `hw : B.places.resChar w ∈ T.pl`. Conclude with `Or.inr ⟨w, hw, rfl⟩`. Use `left`. Unfold `TwDat.xiTw`.
+Prove the first alternative. Consider separately whether the proposition holds or fails. Prove the second alternative. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[(T.off w hw).1, mul_one]`. Use `split_ifs`. Conclude with `Or.inr (Or.inr rfl)`. Conclude with `Or.inr (Or.inl rfl)`. Unfold `TwDat.xiTw split_ifs`.
+Prove the second alternative. Prove the second alternative. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_ne_one B.host.pde'_prime (Or.inr (Or.inr (Or.inr (Or.inl rfl)))) f.isDel' (T.psi_tw w)`. Conclude with `mul_ne_one B.host.pde_prime (Or.inr (Or.inr (Or.inl rfl))) f.isDel (T.psi_tw w)`. Unfold `TwDat.xiTw`. Rewrite using `[resChar_conj, (T.conj w).1]`.
+A detailed English derivation is pending.
 -/
 theorem tw_fin : ∀ (B : Base) (f : Fr B.toPre) (T : TwDat B), (T.set f).Finite ∧ (∀ w, T.xiTw f w ≠ 1) ∧ (∀ w, T.xiTw f (B.places.conj w) = T.xiTw f w) ∧ {w : B.places.Pl | B.places.resChar w ∈ T.pl}.Finite := by
   intro B f T

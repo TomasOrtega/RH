@@ -15,13 +15,13 @@ open GlobalTheory.CompanionTheory.FexTheta
 namespace GlobalTheory.CompanionTheory.FexBound
 
 /- English proof (translation)
-Introduce `K _ _ _ c v L hok g ξ`. Consider the cases of `L with`. Consider the case `@sp w₁ w₂ h₁ h₂ Φ`. Take `⟨_, hl, hc⟩` from `hok`. Establish `hstd : IsStd (GP.psiF v)` using `GlobalTheory.CompanionTheory.RankinQ.isStd_local v`.
+Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hχc` using `GlobalTheory.CompanionTheory.BaseChangeFunctionalEquation.continuous_charInv (GP.psiF v) hstd.1`. Establish `hχ1 : (GP.psiF v)⁻¹ ≠ 1` using `inv_ne_one.2 hstd.2.1`. Establish `hf` using `(GlobalTheory.CompanionTheory.SplitPi.sPiRep (Qv v) (GP.psiF v)⁻¹ hχc hχ1 (cAt c v w₁) (cAt c v w₂) (GlobalTheory.CompanionTheory.BaseChangeFunctionalEquation.isUnit1_cAt c v w₁) (GlobalTheory.CompanionTheory.BaseChangeFunctionalEquation.isUnit1_cAt c v w₂) Φ ⟨hl, hc⟩ 1 g).2`. Take `⟨B, hB⟩` from `hf.1.continuous.bounded_above_of_compact_support hf.2`. Use `⟨B, fun x => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Unfold `fL`. Rewrite using `[norm_mul, GlobalTheory.CompanionTheory.CtMeas.norm_ct, one_mul]`. Express the relevant statement in the definitionally equal form `‖GL2LocalData.piS (GP.psiF v)⁻¹ (cAt c v w₁) g (fun y => Φ (y * ((x : Qv v), ((x⁻¹ : (Qv v)ˣ) : Qv v)))) (dg1 v w₁ ξ, dg1 v w₂ ξ)‖ ≤ B`. Rewrite using `[GlobalTheory.T.split_weil_action_torus_equivariant (Qv v) (GP.psiF v)⁻¹ hχc hχ1 (cAt c v w₁) g Φ x]`. Conclude with `hB _`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `@ns w h σ η Φ`. Use `⟨‖(LM.ns w σ η Φ : LM c v).val g ξ‖, fun x => ?_⟩` and prove the remaining obligations. Unfold `fL`. Rewrite using `[norm_mul, GlobalTheory.CompanionTheory.CtMeas.norm_ct, one_mul]`. Conclude with `le_rfl`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bounded : ∀ (K : Type) [Field K] [NumberField K], Module.finrank ℚ K = 2 → ∀ (c : HeckeCharacter K) (v : Pl) (L : LM c v),
   L.ok → ∀ (g : GL (Fin 2) (Qv v)) (ξ : K), ∃ C : ℝ, ∀ x, ‖fL L g ξ x‖ ≤ C := by

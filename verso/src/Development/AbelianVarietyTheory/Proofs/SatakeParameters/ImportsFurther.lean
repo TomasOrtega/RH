@@ -3,9 +3,9 @@ import Mathlib
 namespace GlobalTheory.NatMulIsIntegralSatakeParameters
 
 /- English proof (translation)
-Take `⟨y, hy0, hy'⟩` from `exists_integral_multiples ℤ ℚ (L := E) {a}`. Establish `hy` using `hy' a (Finset.mem_singleton_self a)`. Use `⟨y.natAbs, Int.natAbs_pos.mpr hy0, ?_⟩` and prove the remaining obligations. Rewrite `hy` using `[zsmul_eq_mul]`. Break down `Int.natAbs_eq y with h | h` into its components or cases.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite `hy` using `[h]`. Simplify using `using hy`. Rewrite `hy` using `[h]`. Simplify using `using hy.neg`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem exists_nat_mul_isIntegral {E : Type} [Field E] [NumberField E] (a : E) :
     ∃ m : ℕ, 0 < m ∧ IsIntegral ℤ ((m : E) * a) := by
@@ -20,15 +20,15 @@ theorem exists_nat_mul_isIntegral {E : Type} [Field E] [NumberField E] (a : E) :
     simpa using hy.neg
 
 /- English proof (translation)
-Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem x hx => exact ⟨1, one_pos, by simpa using hx⟩`. Consider the case `zero => exact ⟨1, one_pos, by simp⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨n₁, hn₁, h₁⟩` from `hx`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨n₂, hn₂, h₂⟩` from `hy`. Use `⟨n₁ * n₂, Nat.mul_pos hn₁ hn₂, ?_⟩` and prove the remaining obligations. Establish `e : (n₁ * n₂) • (x + y) = n₂ • (n₁ • x) + n₁ • (n₂ • y)`. Use extensionality with `i`. Use `show (n₁ * n₂) • (x i + y i) = n₂ • (n₁ • x i) + n₁ • (n₂ • y i)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `only [nsmul_eq_mul, Nat.cast_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `Lb.add_mem (nsmul_mem h₁ n₂) (nsmul_mem h₂ n₁)`. Consider the case `smul c x _ hx`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨n, hn, h⟩` from `hx`. Take `⟨m, hm, hc⟩` from `exists_nat_mul_isIntegral c`. Use `⟨m * n, Nat.mul_pos hm hn, ?_⟩` and prove the remaining obligations. Establish `e : (m * n) • (c • x) = (⟨(m : E) * c, (mem_integralClosure_iff ℤ E).mpr hc⟩ : NumberField.RingOfIntegers E) • (n • x)`. Use extensionality with `i`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Use `show (m * n) • (c * x i) = ((m : E) * c) * (n • x i)`. Simplify using `only [nsmul_eq_mul, Nat.cast_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `Lb.smul_mem _ h`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_nsmul_mem {E : Type} [Field E] [NumberField E] {N : ℕ}
     (Lb : Submodule (NumberField.RingOfIntegers E) (Fin N → E)) {v : Fin N → E}

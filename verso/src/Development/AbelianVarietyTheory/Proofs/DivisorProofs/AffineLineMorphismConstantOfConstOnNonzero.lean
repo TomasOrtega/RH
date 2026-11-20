@@ -9,20 +9,20 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.ConstAffineLine
 
 /- English proof (translation)
-Simplify using `only [spMap, ← Spec.map_comp, ← CommRingCat.ofHom_comp]`.
+Simplify using the standard rewrite rules.
 -/
 theorem spMap_comp' {R S T : Type} [CommRing R] [CommRing S] [CommRing T] (φ : R →+* S) (ψ : S →+* T) :
     spMap ψ ≫ spMap φ = spMap (ψ.comp φ) := by
   simp only [spMap, ← Spec.map_comp, ← CommRingCat.ofHom_comp]
 
 /- English proof (translation)
-Simplify using `only [spMap, CommRingCat.ofHom_id, Spec.map_id]`.
+Simplify using the standard rewrite rules.
 -/
 theorem spMap_id' (R : Type) [CommRing R] : spMap (RingHom.id R) = 𝟙 (Sp R) := by
   simp only [spMap, CommRingCat.ofHom_id, Spec.map_id]
 
 /- English proof (translation)
-Rewrite using `[spMap_comp', hφ, spMap_id']`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem spMap_section {k : Type} [Field k] (φ : Polynomial k →+* k)
     (hφ : φ.comp (algebraMap k (Polynomial k)) = RingHom.id k) :
@@ -30,27 +30,25 @@ theorem spMap_section {k : Type} [Field k] (φ : Polynomial k →+* k)
   rw [spMap_comp', hφ, spMap_id']
 
 /- English proof (translation)
-Introduce `k _ _ Y q _ _ f hq hc a b`. Establish `h1 : (Polynomial.evalRingHom (1 : k)).comp (algebraMap k (Polynomial k)) = RingHom.id k`. Use extensionality with `x`. Simplify using the standard rewrite rules. Establish `hs1` using `spMap_section _ h1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `set f' := spMap (algebraMap k (Polynomial k)) ≫ spMap (Polynomial.evalRingHom (1 : k)) ≫ f with hf'`. Establish `hlft : LocallyOfFiniteType (f ≫ q)`. Rewrite using `[hq]`. Conclude with `HasRingHomProperty.Spec_iff.2 (RingHom.finiteType_algebraMap.2 inferInstance)`. Establish `key : f = f'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `ext_of_apply_eq (K := k) q ((PrimeSpectrum.basicOpen (Polynomial.X : Polynomial k) : Set (PrimeSpectrum (Polynomial k)))) (PrimeSpectrum.basicOpen _).isOpen.isLocallyClosed ?_ ?_ ?_` and prove the remaining obligations. Use `IsOpen.dense (X := PrimeSpectrum (Polynomial k)) (PrimeSpectrum.basicOpen _).isOpen ⟨⟨⊥, Ideal.isPrime_bot⟩, ?_⟩` and prove the remaining obligations. Simplify using `[PrimeSpectrum.mem_basicOpen, Polynomial.X_ne_zero]`. Introduce `x hx hcl`. Establish `hp` using `pointOfClosedPoint_comp (f ≫ q) x hcl`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable.
 
-Establish `hpx` using `pointOfClosedPoint_apply (f ≫ q) x hcl (IsLocalRing.closedPoint k)`. Generalize the expression as in `pointOfClosedPoint (f ≫ q) x hcl = p at hp hpx`. Rewrite `hp` using `[hq]`. Take `⟨φ, rfl⟩ : ∃ φ, Spec.map φ = p` from `⟨Spec.preimage p, Spec.map_preimage p⟩`. Establish `hφ : φ.hom.comp (algebraMap k (Polynomial k)) = RingHom.id k`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `Spec.map_injective (show Spec.map (CommRingCat.ofHom (algebraMap k (Polynomial k)) ≫ φ) = Spec.map (𝟙 _) by rw [Spec.map_comp, Spec.map_id]; exact hp)` as an intermediate fact. Simplify using `using congrArg CommRingCat.Hom.hom this`. Establish `hev : φ = CommRingCat.ofHom (Polynomial.evalRingHom (φ.hom Polynomial.X))`. Apply `CommRingCat.hom_ext` to reduce the goal to its premises. Apply `Polynomial.ringHom_ext` to reduce the goal to its premises.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `a`. Rewrite `hφ` using `[Polynomial.algebraMap_eq]`. Simplify using `using RingHom.congr_fun hφ a`. Simplify using the standard rewrite rules. Establish `hc0 : φ.hom Polynomial.X ≠ 0`.
+Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `h0`. Rewrite `hx` using `[← hpx]`. Apply `(PrimeSpectrum.mem_basicOpen _ _).1 hx` to reduce the goal to its premises. Use `show φ.hom Polynomial.X ∈ IsLocalRing.maximalIdeal k`. Rewrite using `[h0]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `zero_mem _`. Establish `e : Spec.map φ ≫ f = Spec.map φ ≫ f'`. Rewrite using `[hf', reassoc_of% hp, hev]`. Conclude with `hc _ hc0`. Rewrite using `[← hpx]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Conclude with `congrArg (fun g : Sp k ⟶ Y => g (IsLocalRing.closedPoint k)) e`. Rewrite using `[hf', Category.assoc, Category.assoc, hq, hs1, Category.comp_id]`. Establish `ha : ∀ a : Polynomial k →ₐ[k] k, spMap a.toRingHom ≫ f = spMap (Polynomial.evalRingHom (1 : k)) ≫ f`. Introduce `a`. Establish `hsa : spMap a.toRingHom ≫ spMap (algebraMap k (Polynomial k)) = 𝟙 _` using `spMap_section _ (by`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `x`. Use `a.commutes x` as an intermediate fact. Rewrite `this` using `[Polynomial.algebraMap_eq]`. Simplify using `using this)`. Use `conv_lhs => rw [key]`.
-
-Rewrite using `[hf', reassoc_of% hsa]`. Rewrite using `[ha a, ha b]`.
+A detailed English derivation is pending.
 -/
 theorem eq_of_const_nonzero : ∀ (k : Type) [Field k] [IsAlgClosed k] (Y : Scheme.{0}) (q : Y ⟶ Sp k) [IsSeparated q] [LocallyOfFiniteType q] (f : Sp (Polynomial k) ⟶ Y), f ≫ q = spMap (algebraMap k (Polynomial k)) → (∀ c : k, c ≠ 0 → spMap (Polynomial.evalRingHom c) ≫ f = spMap (Polynomial.evalRingHom 1) ≫ f) → ∀ a b : Polynomial k →ₐ[k] k, spMap a.toRingHom ≫ f = spMap b.toRingHom ≫ f := by
   intro k _ _ Y q _ _ f hq hc a b

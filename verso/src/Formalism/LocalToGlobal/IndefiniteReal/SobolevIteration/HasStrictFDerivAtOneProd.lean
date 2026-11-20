@@ -14,7 +14,7 @@ attribute [local instance] Matrix.linftyOpNormedAddCommGroup Matrix.linftyOpNorm
 variable {n : ℕ}
 
 /- English proof (translation)
-Unfold `oneProd`. Rewrite using `[List.ofFn_succ, List.prod_cons]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem oneProd_succ {d : ℕ} (Y : Fin (d + 1) → Matrix (Fin n) (Fin n) ℂ) (t : Fin (d + 1) → ℝ) :
     oneProd Y t = NormedSpace.exp (t 0 • Y 0) * oneProd (fun i => Y i.succ) (fun i => t i.succ) := by
@@ -22,18 +22,18 @@ theorem oneProd_succ {d : ℕ} (Y : Fin (d + 1) → Matrix (Fin n) (Fin n) ℂ) 
   rw [List.ofFn_succ, List.prod_cons]
 
 /- English proof (translation)
-Introduce `d Y`. Simplify using `[oneProd, NormedSpace.exp_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem oneProd_zero : ∀ {d : ℕ} (Y : Fin d → Matrix (Fin n) (Fin n) ℂ), oneProd Y 0 = 1 := by
   intro d Y
   simp [oneProd, NormedSpace.exp_zero]
 
 /- English proof (translation)
-Introduce `d`. Proceed by induction on `d with`. Consider the case `zero`. Introduce `Y _ t`. Establish `h1 : oneProd Y t = 1` using `by simp [oneProd]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[h1]`. Use `show (1 : Matrix (Fin n) (Fin n) ℂ)ᴴ * G * 1 = G`. Simplify using the standard rewrite rules. Consider the case `succ d ih`. Introduce `Y hY t`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[oneProd_succ]`. Conclude with `mul_mem_UH₂ G _ (expS_mem_UH (hY 0) (t 0)) _ (ih _ (fun i => hY i.succ) _)`.
+A detailed English derivation is pending.
 -/
 theorem oneProd_mem (G : Matrix (Fin n) (Fin n) ℂ) :
     ∀ {d : ℕ} (Y : Fin d → Matrix (Fin n) (Fin n) ℂ), (∀ i, Y i ∈ lieG G) → ∀ t : Fin d → ℝ,
@@ -55,7 +55,7 @@ def lin {d : ℕ} (Y : Fin d → Matrix (Fin n) (Fin n) ℂ) : (Fin d → ℝ) �
   ∑ i, (ContinuousLinearMap.proj i : (Fin d → ℝ) →L[ℝ] ℝ).smulRight (Y i)
 
 /- English proof (translation)
-Unfold `lin`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem lin_apply {d : ℕ} (Y : Fin d → Matrix (Fin n) (Fin n) ℂ) (t : Fin d → ℝ) :
     lin Y t = ∑ i, t i • Y i := by
@@ -63,21 +63,17 @@ theorem lin_apply {d : ℕ} (Y : Fin d → Matrix (Fin n) (Fin n) ℂ) (t : Fin 
   simp
 
 /- English proof (translation)
-Introduce `d`. Proceed by induction on `d with`. Consider the case `zero`. Introduce `Y`. Establish `h1 : oneProd Y = fun _ => 1` using `funext fun t => by simp [oneProd]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h2 : lin Y = 0` using `ContinuousLinearMap.ext fun t => by simp [lin_apply]`. Rewrite using `[h1, h2]`. Conclude with `hasStrictFDerivAt_const _ _`. Consider the case `succ d ih`. Introduce `Y`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hsplit : oneProd Y = fun t : Fin (d + 1) → ℝ => NormedSpace.exp (t 0 • Y 0) * oneProd (fun i => Y i.succ) (fun i => t i.succ)`. Use function extensionality and compare the values at `fun t => oneProd_succ Y t`. Set `L0 : (Fin (d + 1) → ℝ) →L[ℝ] Matrix (Fin n) (Fin n) ℂ` to `(ContinuousLinearMap.proj (0 : Fin (d + 1))).smulRight (Y 0)`. Set `T : (Fin (d + 1) → ℝ) →L[ℝ] (Fin d → ℝ)` to `ContinuousLinearMap.pi fun i => ContinuousLinearMap.proj i.succ`. Establish `ha : HasStrictFDerivAt (fun t : Fin (d + 1) → ℝ => NormedSpace.exp (t 0 • Y 0)) L0 0`.
+Apply function extensionality and compare values at an arbitrary argument. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hz : L0 0 = 0` using `map_zero L0`. Establish `he : HasStrictFDerivAt (NormedSpace.exp : Matrix (Fin n) (Fin n) ℂ → Matrix (Fin n) (Fin n) ℂ) (1 : Matrix (Fin n) (Fin n) ℂ →L[ℝ] Matrix (Fin n) (Fin n) ℂ) (L0 0)`. Rewrite using `[hz]`. Conclude with `hasStrictFDerivAt_exp_zero`. Conclude with `(he.comp (0 : Fin (d + 1) → ℝ) L0.hasStrictFDerivAt).congr_fderiv (ContinuousLinearMap.ext fun t => rfl)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb : HasStrictFDerivAt (fun t : Fin (d + 1) → ℝ => oneProd (fun i => Y i.succ) (fun i => t i.succ)) ((lin fun i => Y i.succ).comp T) 0`. Establish `hz : T 0 = 0` using `map_zero T`. Establish `hi : HasStrictFDerivAt (oneProd fun i => Y i.succ) (lin fun i => Y i.succ) (T 0)`. Rewrite using `[hz]`. Conclude with `ih _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hi.comp (0 : Fin (d + 1) → ℝ) T.hasStrictFDerivAt`. Establish `hb0 : oneProd (fun i => Y i.succ) (fun _ => (0 : ℝ)) = 1` using `oneProd_zero _`. Establish `hm` using `ha.mul' hb`. Rewrite using `[hsplit]`. Use `hm.congr_fderiv ?_` and prove the remaining obligations.
-
-Use `ContinuousLinearMap.ext fun t => ?_` and prove the remaining obligations. Establish `e1 : NormedSpace.exp ((0 : Fin (d + 1) → ℝ) 0 • Y 0) = 1` using `by simp`. Establish `e2 : oneProd (fun i => Y i.succ) (fun i => (0 : Fin (d + 1) → ℝ) i.succ) = 1` using `hb0`. Use `show NormedSpace.exp ((0 : Fin (d + 1) → ℝ) 0 • Y 0) * (lin (fun i => Y i.succ) (T t)) + L0 t * oneProd (fun i => Y i.succ) (fun i => (0 : Fin (d + 1) → ℝ) i.succ) = lin Y t`. Rewrite using `[e1, e2, one_mul, mul_one, lin_apply, lin_apply, Fin.sum_univ_succ]`.
-
-Conclude with `add_comm _ _`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasStrictFDerivAt_oneProd : ∀ {d : ℕ} (Y : Fin d → Matrix (Fin n) (Fin n) ℂ),
     HasStrictFDerivAt (oneProd Y) (lin Y) 0 := by

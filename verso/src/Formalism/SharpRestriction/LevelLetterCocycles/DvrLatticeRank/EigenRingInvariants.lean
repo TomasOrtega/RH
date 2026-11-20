@@ -9,7 +9,7 @@ open PowerSeries
 noncomputable abbrev Ia {O : Type*} [CommRing O] (a : O) : Ideal (PowerSeries O) := Ideal.span {X - C a}
 
 /- English proof (translation)
-The claim follows from `Ideal.Quotient.eq.mpr (Ideal.mem_span_singleton.mpr dvd_rfl)`.
+A detailed English derivation is pending.
 -/
 theorem mk_X {O : Type*} [CommRing O] (a : O) : Ideal.Quotient.mk (Ia a) X = Ideal.Quotient.mk (Ia a) (C a) :=
   Ideal.Quotient.eq.mpr (Ideal.mem_span_singleton.mpr dvd_rfl)
@@ -19,14 +19,14 @@ section Ev
 variable {O : Type*} [CommRing O] [IsLocalRing O]
 
 /- English proof (translation)
-Rewrite using `[map_sub, PowerSeries.map_X, PowerSeries.map_C, (IsLocalRing.residue_eq_zero_iff a).mpr ha, map_zero, sub_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem map_residue_X_sub_C {a : O} (ha : a ∈ IsLocalRing.maximalIdeal O) :
     (X - C a : PowerSeries O).map (IsLocalRing.residue O) = X := by
   rw [map_sub, PowerSeries.map_X, PowerSeries.map_C, (IsLocalRing.residue_eq_zero_iff a).mpr ha, map_zero, sub_zero]
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `((X - C a : PowerSeries O).map (IsLocalRing.residue O)).order.toNat = 1`. Rewrite using `[map_residue_X_sub_C ha, PowerSeries.order_X]`. Both sides reduce to the same expression.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem order_map_X_sub_C {a : O} (ha : a ∈ IsLocalRing.maximalIdeal O) :
     ((X - C a : PowerSeries O).map (Ideal.Quotient.mk (IsLocalRing.maximalIdeal O))).order.toNat = 1 := by
@@ -37,11 +37,9 @@ theorem order_map_X_sub_C {a : O} (ha : a ∈ IsLocalRing.maximalIdeal O) :
 variable [IsAdicComplete (IsLocalRing.maximalIdeal O) O]
 
 /- English proof (translation)
-Establish `hg : (X - C a : PowerSeries O).map (IsLocalRing.residue O) ≠ 0`. Rewrite using `[map_residue_X_sub_C ha]`. Conclude with `PowerSeries.X_ne_zero`. Take `⟨q, r, hW⟩` from `f.exists_isWeierstrassDivision hg`. Take `⟨hdeg, heq⟩` from `hW`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hdeg` using `[order_map_X_sub_C ha]`. Establish `hr : r = Polynomial.C (r.coeff 0)` using `Polynomial.eq_C_of_degree_le_zero (Nat.WithBot.lt_one_iff_le_zero.mp (by exact_mod_cast hdeg))`. Use `⟨r.coeff 0, ?_⟩` and prove the remaining obligations. Rewrite using `[heq, map_add, Ideal.Quotient.eq_zero_iff_mem.mpr (Ideal.mem_span_singleton.mpr (dvd_mul_right _ _)), zero_add]`. Use `congr 1`.
-
-Use `conv_lhs => rw [hr]`. Conclude with `Polynomial.coe_C _`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem ev_exists {a : O} (ha : a ∈ IsLocalRing.maximalIdeal O) (f : PowerSeries O) :
     ∃ c : O, Ideal.Quotient.mk (Ia a) f = Ideal.Quotient.mk (Ia a) (C c) := by
@@ -61,15 +59,15 @@ theorem ev_exists {a : O} (ha : a ∈ IsLocalRing.maximalIdeal O) (f : PowerSeri
   exact Polynomial.coe_C _
 
 /- English proof (translation)
-Rewrite `h` using `[Ideal.Quotient.eq, ← map_sub]`. Take `⟨H, hH⟩` from `Ideal.mem_span_singleton.mp h`. Establish `hrec : ∀ n, PowerSeries.coeff (R` using `O) n H = a * PowerSeries.coeff (R := O) (n + 1) H := by`. Introduce `n`. Establish `hn` using `congrArg (PowerSeries.coeff (R := O) (n + 1)) hH`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `hn` using `[PowerSeries.coeff_C, if_neg (by omega : n + 1 ≠ 0), sub_mul, map_sub, PowerSeries.coeff_succ_X_mul, PowerSeries.coeff_C_mul]`. Take the linear combination `-hn`. Establish `hmem : ∀ n, PowerSeries.coeff (R` using `O) 0 H ∈ (IsLocalRing.maximalIdeal O) ^ n := by`. Introduce `n`. Establish `hpow : PowerSeries.coeff (R` using `O) 0 H = a ^ n * PowerSeries.coeff (R := O) n H := by`.
+Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih => rw [ih, hrec n, pow_succ]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hpow]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Ideal.mul_mem_right _ _ (Ideal.pow_mem_pow ha n)`. Establish `h0 : PowerSeries.coeff (R` using `O) 0 H = 0 := by`. Apply `IsHausdorff.haus' (I := IsLocalRing.maximalIdeal O)` to reduce the goal to its premises. Introduce `n`. Rewrite using `[SModEq.sub_mem, sub_zero, smul_eq_mul, Ideal.mul_top]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hmem n`. Establish `hc` using `congrArg (PowerSeries.coeff (R := O) 0) hH`. Rewrite `hc` using `[PowerSeries.coeff_zero_C, sub_mul, map_sub, PowerSeries.coeff_zero_X_mul, PowerSeries.coeff_C_mul, h0, mul_zero, sub_zero]`. Conclude with `sub_eq_zero.mp hc`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ev_inj {a : O} (ha : a ∈ IsLocalRing.maximalIdeal O) {c c' : O}
     (h : Ideal.Quotient.mk (Ia a) (C c) = Ideal.Quotient.mk (Ia a) (C c')) : c = c' := by
@@ -100,7 +98,7 @@ theorem ev_inj {a : O} (ha : a ∈ IsLocalRing.maximalIdeal O) {c c' : O}
   exact sub_eq_zero.mp hc
 
 /- English proof (translation)
-Conclude with `ev_inj ha (by rw [h, map_zero, map_zero])`.
+A detailed English derivation is pending.
 -/
 theorem ev_zero {a : O} (ha : a ∈ IsLocalRing.maximalIdeal O) {c : O}
     (h : Ideal.Quotient.mk (Ia a) (C c) = 0) : c = 0 := by
@@ -109,9 +107,9 @@ theorem ev_zero {a : O} (ha : a ∈ IsLocalRing.maximalIdeal O) {c : O}
 end Ev
 
 /- English proof (translation)
-Establish `hs : HasSubst P` using `HasSubst.of_constantCoeff_zero' hP`. Rewrite `hF` using `[Ideal.Quotient.mk_eq_mk_iff_sub_mem, Ideal.mem_span_singleton']`. Take `⟨k, hk⟩` from `hF`. Rewrite `hPb`, the goal using `[Ideal.Quotient.mk_eq_mk_iff_sub_mem]`. Establish `e : PowerSeries.subst P F - C c = PowerSeries.subst P k * (P - C b)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `congrArg (PowerSeries.subst P) hk` as an intermediate fact. Rewrite `this` using `[subst_mul hs, subst_sub hs, subst_sub hs, subst_X hs, subst_C, subst_C]`. Conclude with `this.symm`. Rewrite using `[e]`. Conclude with `Ideal.mul_mem_left _ _ hPb`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ev_subst {O : Type*} [CommRing O] {P : PowerSeries O} (hP : constantCoeff P = 0) {a b c : O}
     {F : PowerSeries O}
@@ -135,20 +133,20 @@ variable {O : Type*} [CommRing O] [IsLocalRing O] [IsDomain O]
   [IsAdicComplete (IsLocalRing.maximalIdeal O) O]
 
 /- English proof (translation)
-Simplify using `only [map_prod, map_sub, mk_X]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mk_prod_X_sub_C (a : O) (T : Finset O) :
     Ideal.Quotient.mk (Ia a) (∏ t ∈ T, (X - C t)) = Ideal.Quotient.mk (Ia a) (C (∏ t ∈ T, (a - t))) := by
   simp only [map_prod, map_sub, mk_X]
 
 /- English proof (translation)
-Proceed by induction on `T using Finset.induction_on generalizing f with`. Consider the case `empty => simp`. Consider the case `@insert t0 T ht0 ih`. Rewrite using `[Finset.prod_insert ht0]`. Establish `h0 : (X - C t0) ∣ f` using `Ideal.mem_span_singleton.mp (Ideal.Quotient.eq_zero_iff_mem.mp (hf t0 (Finset.mem_insert_self _ _)))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨g, rfl⟩` from `h0`. Apply `mul_dvd_mul_left` to reduce the goal to its premises. Apply `ih (fun t ht => hT t (Finset.mem_insert_of_mem ht))` to reduce the goal to its premises. Introduce `t ht`. Establish `htm` using `hT t (Finset.mem_insert_of_mem ht)`.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Take `⟨c, hc⟩` from `ev_exists htm g`. Establish `hft` using `hf t (Finset.mem_insert_of_mem ht)`. Establish `key : Ideal.Quotient.mk (Ia t) (C ((t - t0) * c)) = 0`. Rewrite using `[← hft]`. Simplify using `only [map_mul, map_sub, mk_X, hc]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hz` using `ev_zero htm key`. Establish `hne : t - t0 ≠ 0` using `sub_ne_zero.mpr (fun h => ht0 (h ▸ ht))`. Establish `hc0 : c = 0` using `(mul_eq_zero.mp hz).resolve_left hne`. Rewrite using `[hc, hc0, map_zero, map_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem prod_dvd (T : Finset O) (hT : ∀ t ∈ T, t ∈ IsLocalRing.maximalIdeal O) (f : PowerSeries O)
     (hf : ∀ t ∈ T, Ideal.Quotient.mk (Ia t) f = 0) : (∏ t ∈ T, (X - C t)) ∣ f := by
@@ -181,17 +179,15 @@ section Order
 variable {O : Type*} [CommRing O] [IsLocalRing O]
 
 /- English proof (translation)
-Use `set κ := IsLocalRing.ResidueField O`. Establish `hprod : (∏ t ∈ T, (X - C t) : PowerSeries O).map (IsLocalRing.residue O) = X ^ T.card`. Rewrite using `[map_prod]`. Rewrite using `[Finset.prod_congr rfl fun t ht => (map_residue_X_sub_C (hT t ht))]`. Rewrite using `[Finset.prod_const]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e : (X : PowerSeries κ) ^ s * v.map (IsLocalRing.residue O) = X ^ T.card * k.map (IsLocalRing.residue O)`. Rewrite using `[← map_X (IsLocalRing.residue O), ← map_pow, ← map_mul, ← hf, hk, map_mul, hprod, map_X]`. Establish `hv' : constantCoeff (v.map (IsLocalRing.residue O)) ≠ 0`. Use `(hv.map (PowerSeries.map (IsLocalRing.residue O)))` as an intermediate fact. Rewrite `this` using `[isUnit_iff_constantCoeff]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `this.ne_zero`. Establish `hX : (X : PowerSeries κ) ≠ 0` using `X_ne_zero`. Distinguish the cases in `hle : T.card ≤ s`. Use `⟨hle, fun hcs => ?_⟩` and prove the remaining obligations. Rewrite `e` using `[hcs]`.
+Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e2` using `mul_left_cancel₀ (pow_ne_zero _ hX) e`. Rewrite using `[isUnit_iff_constantCoeff]`. Assume the negation of the conclusion as `hnu`. Apply `hv'` to reduce the goal to its premises. Rewrite using `[e2, ← coeff_zero_eq_constantCoeff_apply, coeff_map, coeff_zero_eq_constantCoeff_apply, (IsLocalRing.residue_eq_zero_iff _).mpr ((IsLocalRing.mem_maximalIdeal _).mpr hnu)]`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. It suffices to derive a contradiction. Establish an intermediate fact.
 
-Use `exfalso replace hle := not_le.mp hle`. Establish `e2 : (X : PowerSeries κ) ^ s * v.map (IsLocalRing.residue O) = X ^ s * (X ^ (T.card - s) * k.map (IsLocalRing.residue O))`. Rewrite using `[e, ← mul_assoc, ← pow_add, Nat.add_sub_cancel' hle.le]`. Establish `e3` using `mul_left_cancel₀ (pow_ne_zero _ hX) e2`. Apply `hv'` to reduce the goal to its premises.
-
-Rewrite using `[e3, map_mul, map_pow, constantCoeff_X, zero_pow (by omega), zero_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_le_of_dvd {f v k : PowerSeries O} {s : ℕ} (T : Finset O)
     (hT : ∀ t ∈ T, t ∈ IsLocalRing.maximalIdeal O) (hv : IsUnit v)
@@ -240,13 +236,13 @@ open PowerSeries Formalism.IrreducibleCountingLemmas.WindowSums
 variable {l : ℕ} [hl : Fact l.Prime]
 
 /- English proof (translation)
-Use `set n := (PadicInt.toZMod ω).val`. Establish `h1 : ω - (n : ℤ_[l]) ∈ RingHom.ker (PadicInt.toZMod (p` using `l)) := by`. Rewrite using `[RingHom.mem_ker, map_sub, map_natCast, ZMod.natCast_zmod_val, sub_self]`. Rewrite `h1` using `[PadicInt.ker_toZMod, PadicInt.maximalIdeal_eq_span_p, Ideal.mem_span_singleton']`. Take `⟨t, ht⟩` from `h1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hω : ω = (n : ℤ_[l]) + t * l` using `by rw [ht]; ring`. Choose the witnesses or unpack the hypotheses as in `⟨m, hm⟩ : X ∣ binomialSeries ℤ_[l] t - 1 := by`. Rewrite using `[X_dvd_iff, map_sub, binomialSeries_constantCoeff, map_one, sub_self]`. Establish `hs` using `ConcreteDictionaryLemmas.brk_hasSubst (l := l) (l : ℤ_[l])`. Use `⟨(1 + X) ^ n * subst (brk l (l : ℤ_[l])) m, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hω, binomialSeries_add, binomialSeries_nat, ← ConcreteDictionaryLemmas.bin_comp t (l : ℤ_[l])]`. Establish `e1 : binomialSeries ℤ_[l] t = 1 + X * m` using `by rw [← hm]; ring`. Establish `e2 : subst (brk l (l : ℤ_[l])) (1 + X * m : PowerSeries ℤ_[l]) = 1 + brk l (l : ℤ_[l]) * subst (brk l (l : ℤ_[l])) m`. Rewrite using `[← coe_substAlgHom hs, map_add, map_one, map_mul, coe_substAlgHom, subst_X hs]`. Rewrite using `[e1, e2]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem bin_mod (ω : ℤ_[l]) : ∃ k : PowerSeries ℤ_[l],
     binomialSeries ℤ_[l] ω = (1 + X) ^ (PadicInt.toZMod ω).val + brk l (l : ℤ_[l]) * k := by
@@ -268,7 +264,7 @@ theorem bin_mod (ω : ℤ_[l]) : ∃ k : PowerSeries ℤ_[l],
   rw [e1, e2]; ring
 
 /- English proof (translation)
-Unfold `brk`. Rewrite using `[PowerSeries.binomialSeries_nat]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem brk_l : brk l (l : ℤ_[l]) = (1 + X) ^ l - 1 := by
   unfold brk
@@ -281,27 +277,27 @@ variable {O : Type*} [CommRing O] [Algebra ℤ_[l] O] {a ζ : O}
 local notation "toO" => PowerSeries.map (algebraMap ℤ_[l] O)
 
 /- English proof (translation)
-Simplify using `only [← haζ, map_add, map_one, mk_X]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mk_onX (haζ : 1 + a = ζ) : Ideal.Quotient.mk (Ia a) (1 + X) = Ideal.Quotient.mk (Ia a) (C ζ) := by
   simp only [← haζ, map_add, map_one, mk_X]
 
 /- English proof (translation)
-Simplify using `only [map_pow, mk_onX haζ]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mk_powX (haζ : 1 + a = ζ) (n : ℕ) :
     Ideal.Quotient.mk (Ia a) ((1 + X) ^ n) = Ideal.Quotient.mk (Ia a) (C (ζ ^ n)) := by
   simp only [map_pow, mk_onX haζ]
 
 /- English proof (translation)
-Rewrite using `[brk_l]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem toO_N : toO (brk l (l : ℤ_[l])) = (1 + X) ^ l - 1 := by
   rw [brk_l]
   simp
 
 /- English proof (translation)
-Rewrite using `[toO_N, map_sub, mk_powX haζ, hζ.pow_eq_one]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem mk_N (haζ : 1 + a = ζ) (hζ : IsPrimitiveRoot ζ l) :
     Ideal.Quotient.mk (Ia a) (toO (brk l (l : ℤ_[l]))) = 0 := by
@@ -309,7 +305,7 @@ theorem mk_N (haζ : 1 + a = ζ) (hζ : IsPrimitiveRoot ζ l) :
   simp
 
 /- English proof (translation)
-Take `⟨k, hk⟩` from `bin_mod (l := l) ω`. Establish `h1 : toO ((1 + X : PowerSeries ℤ_[l]) ^ (PadicInt.toZMod ω).val) = (1 + X) ^ (PadicInt.toZMod ω).val`. Simplify using the standard rewrite rules. Rewrite using `[hk, map_add, map_mul, h1, map_add, map_mul, mk_N haζ hζ, zero_mul, add_zero]`. Conclude with `mk_powX haζ _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mk_bin (haζ : 1 + a = ζ) (hζ : IsPrimitiveRoot ζ l) (ω : ℤ_[l]) :
     Ideal.Quotient.mk (Ia a) (toO (binomialSeries ℤ_[l] ω)) =
@@ -321,7 +317,7 @@ theorem mk_bin (haζ : 1 + a = ζ) (hζ : IsPrimitiveRoot ζ l) (ω : ℤ_[l]) :
   exact mk_powX haζ _
 
 /- English proof (translation)
-Unfold `brk`. Rewrite using `[map_sub, map_sub, mk_bin haζ hζ ω]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem mk_brk (haζ : 1 + a = ζ) (hζ : IsPrimitiveRoot ζ l) (ω : ℤ_[l]) :
     Ideal.Quotient.mk (Ia a) (toO (brk l ω)) =
@@ -331,7 +327,7 @@ theorem mk_brk (haζ : 1 + a = ζ) (hζ : IsPrimitiveRoot ζ l) (ω : ℤ_[l]) :
   simp
 
 /- English proof (translation)
-Simplify using `only [map_prod]`. Conclude with `Finset.prod_congr rfl (fun ω _ => mk_brk haζ hζ ω)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mk_prod_brk (haζ : 1 + a = ζ) (hζ : IsPrimitiveRoot ζ l) (S : Finset ℤ_[l]) :
     Ideal.Quotient.mk (Ia a) (toO (∏ ω ∈ S, brk l ω)) =
@@ -350,7 +346,7 @@ open PowerSeries Formalism.IrreducibleCountingLemmas.WindowSums Classical
 variable {l : ℕ} [hl : Fact l.Prime]
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hx`. Apply `h` to reduce the goal to its premises. Establish `hm : x ∈ IsLocalRing.maximalIdeal ℤ_[l]` using `(IsLocalRing.mem_maximalIdeal x).mpr (mem_nonunits_iff.mpr hx)`. Rewrite `hm` using `[← PadicInt.ker_toZMod]`. Conclude with `RingHom.mem_ker.mp hm`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUnit_of_toZMod_ne_zero {x : ℤ_[l]} (h : PadicInt.toZMod x ≠ 0) : IsUnit x := by
   by_contra hx
@@ -360,14 +356,14 @@ theorem isUnit_of_toZMod_ne_zero {x : ℤ_[l]} (h : PadicInt.toZMod x ≠ 0) : I
   exact RingHom.mem_ker.mp hm
 
 /- English proof (translation)
-Introduce `h`. Conclude with `Nat.not_dvd_of_pos_of_lt h0 hn ((CharP.cast_eq_zero_iff (ZMod l) l n).mp h)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem natCast_ne_zero_zmod {n : ℕ} (h0 : 0 < n) (hn : n < l) : (n : ZMod l) ≠ 0 := by
   intro h
   exact Nat.not_dvd_of_pos_of_lt h0 hn ((CharP.cast_eq_zero_iff (ZMod l) l n).mp h)
 
 /- English proof (translation)
-Apply `isUnit_of_toZMod_ne_zero` to reduce the goal to its premises. Rewrite using `[map_natCast]`. Conclude with `natCast_ne_zero_zmod h0 hn`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUnit_natCast {n : ℕ} (h0 : 0 < n) (hn : n < l) : IsUnit (n : ℤ_[l]) := by
   apply isUnit_of_toZMod_ne_zero
@@ -375,7 +371,7 @@ theorem isUnit_natCast {n : ℕ} (h0 : 0 < n) (hn : n < l) : IsUnit (n : ℤ_[l]
   exact natCast_ne_zero_zmod h0 hn
 
 /- English proof (translation)
-Introduce `h`. Establish `h1` using `congrArg PadicInt.toZMod hω`. Rewrite `h1` using `[map_pow, h, zero_pow hs.ne', map_one]`. Conclude with `zero_ne_one h1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem toZMod_ne_zero_of_pow {s : ℕ} (hs : 0 < s) {ω : ℤ_[l]} (hω : ω ^ s = 1) :
     PadicInt.toZMod ω ≠ 0 := by
@@ -385,23 +381,23 @@ theorem toZMod_ne_zero_of_pow {s : ℕ} (hs : 0 < s) {ω : ℤ_[l]} (hω : ω ^ 
   exact zero_ne_one h1
 
 /- English proof (translation)
-Conclude with `ZMod.val_pos.mpr (toZMod_ne_zero_of_pow hs hω)`.
+A detailed English derivation is pending.
 -/
 theorem val_pos_of_pow {s : ℕ} (hs : 0 < s) {ω : ℤ_[l]} (hω : ω ^ s = 1) :
     0 < (PadicInt.toZMod ω).val := by
   exact ZMod.val_pos.mpr (toZMod_ne_zero_of_pow hs hω)
 
 /- English proof (translation)
-The claim follows from `ZMod.val_lt _`.
+A detailed English derivation is pending.
 -/
 theorem val_lt (ω : ℤ_[l]) : (PadicInt.toZMod ω).val < l := ZMod.val_lt _
 
 /- English proof (translation)
-Establish `e` using `geom_sum₂_mul δ ε s`. Rewrite `e` using `[hδ, hε, sub_self]`. Establish `hS : IsUnit (∑ i ∈ Finset.range s, δ ^ i * ε ^ (s - 1 - i))`. Apply `isUnit_of_toZMod_ne_zero` to reduce the goal to its premises. Rewrite using `[map_sum]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `: ∀ i ∈ Finset.range s, PadicInt.toZMod (δ ^ i * ε ^ (s - 1 - i)) = PadicInt.toZMod δ ^ (s - 1)`. Introduce `i hi`. Rewrite using `[map_mul, map_pow, map_pow, ← h, ← pow_add]`. Use `congr 1`. Use `Finset.mem_range.mp hi` as an intermediate fact.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Rewrite using `[Finset.sum_congr rfl this, Finset.sum_const, Finset.card_range, nsmul_eq_mul]`. Conclude with `mul_ne_zero (natCast_ne_zero_zmod hs hsl) (pow_ne_zero _ (toZMod_ne_zero_of_pow hs hδ))`. Conclude with `sub_eq_zero.mp ((mul_eq_zero.mp e).resolve_left hS.ne_zero)`.
+Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem toZMod_injOn {s : ℕ} (hs : 0 < s) (hsl : s < l) {δ ε : ℤ_[l]} (hδ : δ ^ s = 1)
     (hε : ε ^ s = 1) (h : PadicInt.toZMod δ = PadicInt.toZMod ε) : δ = ε := by
@@ -422,7 +418,7 @@ theorem toZMod_injOn {s : ℕ} (hs : 0 < s) (hsl : s < l) {δ ε : ℤ_[l]} (hδ
   exact sub_eq_zero.mp ((mul_eq_zero.mp e).resolve_left hS.ne_zero)
 
 /- English proof (translation)
-Use `haveI : NeZero l := ⟨hl.out.ne_zero⟩`. Conclude with `(hζ.neZero').out`.
+A detailed English derivation is pending.
 -/
 theorem natCast_l_ne_zero {O : Type*} [CommRing O] [IsDomain O] {ζ : O} (hζ : IsPrimitiveRoot ζ l) :
     ((l : ℕ) : O) ≠ 0 := by
@@ -430,9 +426,9 @@ theorem natCast_l_ne_zero {O : Type*} [CommRing O] [IsDomain O] {ζ : O} (hζ : 
   exact (hζ.neZero').out
 
 /- English proof (translation)
-Rewrite using `[injective_iff_map_eq_zero]`. Introduce `x hx`. Assume the negation of the conclusion as `h0`. Rewrite `hx` using `[PadicInt.unitCoeff_spec h0, map_mul, map_pow, map_natCast]`. Establish `hu` using `(PadicInt.unitCoeff h0).isUnit.map (algebraMap ℤ_[l] O)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Break down `mul_eq_zero.mp hx with h | h` into its components or cases. Conclude with `hu.ne_zero h`. Conclude with `absurd h (pow_ne_zero _ hl0)`.
+Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem algebraMap_injective {O : Type*} [CommRing O] [IsDomain O] [Algebra ℤ_[l] O]
     (hl0 : ((l : ℕ) : O) ≠ 0) : Function.Injective (algebraMap ℤ_[l] O) := by
@@ -446,9 +442,9 @@ theorem algebraMap_injective {O : Type*} [CommRing O] [IsDomain O] [Algebra ℤ_
   · exact absurd h (pow_ne_zero _ hl0)
 
 /- English proof (translation)
-Establish `hl0 : ((l : ℕ) : IsLocalRing.ResidueField O) = 0`. Rewrite using `[← map_natCast (IsLocalRing.residue O), ← map_natCast (algebraMap ℤ_[l] O)]`. Conclude with `(IsLocalRing.residue_eq_zero_iff _).mpr hmax`. Establish `: CharP (IsLocalRing.ResidueField O) l` using `(CharP.charP_iff_prime_eq_zero hl.out).mpr hl0`. Establish `h2 : (IsLocalRing.residue O (ζ - 1)) ^ l = 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_sub, map_one, sub_pow_char, ← map_pow, hζ.pow_eq_one, map_one, one_pow, sub_self]`. Conclude with `(IsLocalRing.residue_eq_zero_iff _).mp ((pow_eq_zero_iff hl.out.ne_zero).mp h2)`.
+A detailed English derivation is pending.
 -/
 theorem sub_one_mem {O : Type*} [CommRing O] [IsLocalRing O] [Algebra ℤ_[l] O] {ζ : O}
     (hζ : IsPrimitiveRoot ζ l) (hmax : (algebraMap ℤ_[l] O) l ∈ IsLocalRing.maximalIdeal O) :
@@ -462,7 +458,7 @@ theorem sub_one_mem {O : Type*} [CommRing O] [IsLocalRing O] [Algebra ℤ_[l] O]
   exact (IsLocalRing.residue_eq_zero_iff _).mp ((pow_eq_zero_iff hl.out.ne_zero).mp h2)
 
 /- English proof (translation)
-Take `⟨c, hc⟩` from `sub_dvd_pow_sub_pow ζ 1 n`. Rewrite `hc` using `[one_pow]`. Rewrite using `[hc]`. Conclude with `Ideal.mul_mem_right _ _ h`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pow_sub_one_mem {O : Type*} [CommRing O] [IsLocalRing O] {ζ : O}
     (h : ζ - 1 ∈ IsLocalRing.maximalIdeal O) (n : ℕ) : ζ ^ n - 1 ∈ IsLocalRing.maximalIdeal O := by
@@ -474,11 +470,11 @@ theorem pow_sub_one_mem {O : Type*} [CommRing O] [IsLocalRing O] {ζ : O}
 noncomputable instance instFintypeRoots (s : ℕ) [NeZero s] : Fintype (rootsOfUnity s ℤ_[l]) := Fintype.ofFinite _
 
 /- English proof (translation)
-Rewrite using `[← Finset.prod_image (f := f) (s := Finset.univ) (g := fun δ : rootsOfUnity s ℤ_[l] => ((δ : ℤ_[l]ˣ) : ℤ_[l])) (by intro δ _ ε _ h; exact Subtype.ext (Units.ext h))]`. Use `congr 1`. Use extensionality with `x`. Simplify using `only [Finset.mem_image, Finset.mem_univ, true_and, Polynomial.mem_nthRootsFinset hs]`. Prove the components needed by the constructor for the conclusion.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨δ, rfl⟩`. Establish `h1` using `δ.2`. Rewrite `h1` using `[mem_rootsOfUnity]`. Rewrite using `[← Units.val_pow_eq_pow_val, h1, Units.val_one]`. Introduce `hx`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hu : IsUnit x` using `IsUnit.of_pow_eq_one hx hs.ne'`. Use `⟨⟨hu.unit, ?_⟩, rfl⟩` and prove the remaining obligations. Rewrite using `[mem_rootsOfUnity]`. Apply `Units.ext` to reduce the goal to its premises. Simplify using `[hx]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 -/
 theorem prod_roots {M : Type*} [CommMonoid M] (s : ℕ) [NeZero s] (hs : 0 < s) (f : ℤ_[l] → M) :
     ∏ δ : rootsOfUnity s ℤ_[l], f ((δ : ℤ_[l]ˣ) : ℤ_[l]) =
@@ -506,32 +502,32 @@ variable {O : Type*} [CommRing O] [Algebra ℤ_[l] O]
 local notation "toO" => PowerSeries.map (algebraMap ℤ_[l] O)
 
 /- English proof (translation)
-Rewrite using `[← coeff_zero_eq_constantCoeff_apply, coeff_map, coeff_zero_eq_constantCoeff_apply, ha, map_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem toO_const_zero {a : PowerSeries ℤ_[l]} (ha : constantCoeff a = 0) : constantCoeff (toO a) = 0 := by
   rw [← coeff_zero_eq_constantCoeff_apply, coeff_map, coeff_zero_eq_constantCoeff_apply, ha, map_zero]
 
 /- English proof (translation)
-The claim follows from `toO_const_zero (by rw [(Classical.choose_spec (ConcreteDictionaryLemmas.brk_factor a)).1, map_mul, constantCoeff_X, zero_mul])`.
+A detailed English derivation is pending.
 -/
 theorem toO_brk_const (a : ℤ_[l]) : constantCoeff (toO (brk l a)) = 0 :=
   toO_const_zero (by rw [(Classical.choose_spec (ConcreteDictionaryLemmas.brk_factor a)).1, map_mul, constantCoeff_X, zero_mul])
 
 /- English proof (translation)
-The claim follows from `HasSubst.of_constantCoeff_zero (toO_brk_const a)`.
+A detailed English derivation is pending.
 -/
 theorem hasSubst_brk (a : ℤ_[l]) : HasSubst (toO (brk l a)) :=
   HasSubst.of_constantCoeff_zero (toO_brk_const a)
 
 /- English proof (translation)
-The claim follows from `map_subst (HasSubst.of_constantCoeff_zero' ha) f`.
+A detailed English derivation is pending.
 -/
 theorem toO_subst {a : PowerSeries ℤ_[l]} (ha : constantCoeff a = 0) (f : PowerSeries ℤ_[l]) :
     toO (subst a f) = subst (toO a) (toO f) :=
   map_subst (HasSubst.of_constantCoeff_zero' ha) f
 
 /- English proof (translation)
-Rewrite using `[subst_comp_subst_apply (hasSubst_brk a) (hasSubst_brk b), ← toO_subst (ConcreteDictionaryLemmas.brk_const b), ConcreteDictionaryLemmas.brk_comp]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem subst_brk_brk (a b : ℤ_[l]) (f : PowerSeries O) :
     subst (toO (brk l b)) (subst (toO (brk l a)) f) = subst (toO (brk l (a * b))) f := by
@@ -539,14 +535,14 @@ theorem subst_brk_brk (a b : ℤ_[l]) (f : PowerSeries O) :
     ← toO_subst (ConcreteDictionaryLemmas.brk_const b), ConcreteDictionaryLemmas.brk_comp]
 
 /- English proof (translation)
-Unfold `brk`. Rewrite using `[← Nat.cast_one, PowerSeries.binomialSeries_nat, pow_one, add_sub_cancel_left]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem brk_one : brk l (1 : ℤ_[l]) = X := by
   unfold brk
   rw [← Nat.cast_one, PowerSeries.binomialSeries_nat, pow_one, add_sub_cancel_left]
 
 /- English proof (translation)
-Rewrite using `[brk_one, map_X, X_subst]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem subst_brk_one (f : PowerSeries O) : subst (toO (brk l 1)) f = f := by
   rw [brk_one, map_X, X_subst]
@@ -562,7 +558,7 @@ noncomputable def rhoE (δ : ℤ_[l]ˣ) : PowerSeries O ≃ₐ[O] PowerSeries O 
       rw [subst_brk_brk, ← Units.val_mul, mul_inv_cancel, Units.val_one, subst_brk_one])
 
 /- English proof (translation)
-Conclude with `congrFun (coe_substAlgHom (hasSubst_brk (O := O) (δ : ℤ_[l]))) f`.
+A detailed English derivation is pending.
 -/
 theorem rhoE_apply (δ : ℤ_[l]ˣ) (f : PowerSeries O) : rhoE δ f = subst (toO (brk l δ)) f := by
   exact congrFun (coe_substAlgHom (hasSubst_brk (O := O) (δ : ℤ_[l]))) f
@@ -578,7 +574,7 @@ noncomputable def rhoHom (s : ℕ) : rootsOfUnity s ℤ_[l] →* (PowerSeries O 
     ring
 
 /- English proof (translation)
-The claim follows from `rhoE_apply _ f`.
+A detailed English derivation is pending.
 -/
 theorem rhoHom_apply (s : ℕ) (δ : rootsOfUnity s ℤ_[l]) (f : PowerSeries O) :
     rhoHom s δ f = subst (toO (brk l ((δ : ℤ_[l]ˣ) : ℤ_[l]))) f :=
@@ -587,13 +583,13 @@ theorem rhoHom_apply (s : ℕ) (δ : rootsOfUnity s ℤ_[l]) (f : PowerSeries O)
 noncomputable def vS (a : ℤ_[l]) : PowerSeries ℤ_[l] := Classical.choose (ConcreteDictionaryLemmas.brk_factor a)
 
 /- English proof (translation)
-The claim follows from `(Classical.choose_spec (ConcreteDictionaryLemmas.brk_factor a)).1`.
+A detailed English derivation is pending.
 -/
 theorem brk_eq_X_mul (a : ℤ_[l]) : brk l a = X * vS a :=
   (Classical.choose_spec (ConcreteDictionaryLemmas.brk_factor a)).1
 
 /- English proof (translation)
-The claim follows from `(Classical.choose_spec (ConcreteDictionaryLemmas.brk_factor a)).2`.
+A detailed English derivation is pending.
 -/
 theorem vS_const (a : ℤ_[l]) : constantCoeff (vS a) = a :=
   (Classical.choose_spec (ConcreteDictionaryLemmas.brk_factor a)).2
@@ -618,9 +614,9 @@ noncomputable def dataS (s : ℕ) [NeZero s] (hinj : Function.Injective (algebra
     rfl
 
 /- English proof (translation)
-Unfold `EigenUniformiser.piPrime`. Establish `h1 : ∀ δ, (dataS s hinj).ρ δ X = toO (brk l ((δ : ℤ_[l]ˣ) : ℤ_[l]))` using `fun δ => by show rhoHom s δ X = _`. Rewrite using `[rhoHom_apply, subst_X (hasSubst_brk _)]`. Repeatedly rewrite using `[h1]`. Rewrite using `[piP, map_prod]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `prod_roots s hs (fun ω => toO (brk l ω))`.
+A detailed English derivation is pending.
 -/
 theorem piPrime_dataS (s : ℕ) [NeZero s] (hs : 0 < s) (hinj : Function.Injective (algebraMap ℤ_[l] O)) :
     EigenUniformiser.piPrime (dataS s hinj) = toO (piP l s) := by
@@ -633,7 +629,7 @@ theorem piPrime_dataS (s : ℕ) [NeZero s] (hs : 0 < s) (hinj : Function.Injecti
   exact prod_roots s hs (fun ω => toO (brk l ω))
 
 /- English proof (translation)
-Take `⟨ω₀, hω₀⟩` from `ConcreteDictionaryLemmas.exists_prim (l := l) e s hes`. Rewrite using `[← Nat.card_eq_fintype_card]`. Conclude with `hω₀.card_rootsOfUnity`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_roots {s e : ℕ} [NeZero s] (hes : e * s = l - 1) : Fintype.card (rootsOfUnity s ℤ_[l]) = s := by
   obtain ⟨ω₀, hω₀⟩ := ConcreteDictionaryLemmas.exists_prim (l := l) e s hes
@@ -641,11 +637,11 @@ theorem card_roots {s e : ℕ} [NeZero s] (hes : e * s = l - 1) : Fintype.card (
   exact hω₀.card_rootsOfUnity
 
 /- English proof (translation)
-Establish `hl2` using `hl.out.two_le`. Establish `hs0 : s ≠ 0` using `NeZero.ne s`. Establish `he0 : e ≠ 0`. Introduce and unpack `rfl`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Use linear arithmetic over natural numbers and integers.
 
-Establish `hse : s ≤ e * s` using `Nat.le_mul_of_pos_left s (Nat.pos_of_ne_zero he0)`. Establish `hsl : s < l`. Generalize the expression as in `e * s = q at hes hse`. Use linear arithmetic over natural numbers and integers. Rewrite using `[card_roots hes]`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
 
-Establish `hu` using `(isUnit_natCast (l := l) (Nat.pos_of_ne_zero hs0) hsl).map (algebraMap ℤ_[l] O)`. Rewrite `hu` using `[map_natCast]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem isUnit_card {s e : ℕ} [NeZero s] (hes : e * s = l - 1) :
     IsUnit ((Fintype.card (rootsOfUnity s ℤ_[l]) : ℕ) : O) := by
@@ -673,9 +669,9 @@ open PowerSeries Formalism.IrreducibleCountingLemmas.WindowSums Classical
 variable {l : ℕ} [hl : Fact l.Prime]
 
 /- English proof (translation)
-Establish `hl2` using `hl.out.two_le`. Establish `hs0 : s ≠ 0`. Introduce and unpack `rfl`. Use linear arithmetic over natural numbers and integers. Establish `he0 : e ≠ 0`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Introduce and unpack `rfl`. Use linear arithmetic over natural numbers and integers. Establish `hse : s ≤ e * s` using `Nat.le_mul_of_pos_left s (Nat.pos_of_ne_zero he0)`. Use `⟨Nat.pos_of_ne_zero hs0, ?_⟩` and prove the remaining obligations. Generalize the expression as in `e * s = q at hes hse`.
+Assume the hypotheses and unpack their components. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the chosen expression with an arbitrary variable.
 
 Use linear arithmetic over natural numbers and integers.
 -/
@@ -693,7 +689,7 @@ theorem s_bounds {s e : ℕ} (hes : e * s = l - 1) : 0 < s ∧ s < l := by
   omega
 
 /- English proof (translation)
-Take `⟨ω₀, hω₀⟩` from `ConcreteDictionaryLemmas.exists_prim (l := l) e s hes`. Conclude with `hω₀.card_nthRootsFinset`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem card_roots_finset {s e : ℕ} (hes : e * s = l - 1) :
     (Polynomial.nthRootsFinset s (1 : ℤ_[l])).card = s := by
@@ -701,7 +697,7 @@ theorem card_roots_finset {s e : ℕ} (hes : e * s = l - 1) :
   exact hω₀.card_nthRootsFinset
 
 /- English proof (translation)
-Rewrite using `[brk_l, ← geom_sum_mul, add_sub_cancel_left, mul_comm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem X_mul_geom : (X : PowerSeries ℤ_[l]) * ∑ j ∈ Finset.range l, (1 + X) ^ j = brk l (l : ℤ_[l]) := by
   rw [brk_l, ← geom_sum_mul, add_sub_cancel_left, mul_comm]
@@ -719,14 +715,14 @@ noncomputable def PRt (l : ℕ) (O : Type*) [CommRing O] [IsDomain O] : Finset O
   (Polynomial.nthRoots l (1 : O)).toFinset.filter fun z => IsPrimitiveRoot z l
 
 /- English proof (translation)
-Simplify using `only [PRt, Finset.mem_filter, Multiset.mem_toFinset, Polynomial.mem_nthRoots hl.out.pos]`. Conclude with `⟨fun h => h.2, fun h => ⟨h.pow_eq_one, h⟩⟩`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 theorem mem_PRt {z : O} : z ∈ PRt l O ↔ IsPrimitiveRoot z l := by
   simp only [PRt, Finset.mem_filter, Multiset.mem_toFinset, Polynomial.mem_nthRoots hl.out.pos]
   exact ⟨fun h => h.2, fun h => ⟨h.pow_eq_one, h⟩⟩
 
 /- English proof (translation)
-The claim follows from `((Nat.Prime.coprime_iff_not_dvd hl.out).mpr (Nat.not_dvd_of_pos_of_lt (val_pos_of_pow hs hδ) (val_lt δ))).symm`.
+A detailed English derivation is pending.
 -/
 theorem coprime_val {s : ℕ} (hs : 0 < s) {δ : ℤ_[l]} (hδ : δ ^ s = 1) :
     (PadicInt.toZMod δ).val.Coprime l :=
@@ -734,7 +730,7 @@ theorem coprime_val {s : ℕ} (hs : 0 < s) {δ : ℤ_[l]} (hδ : δ ^ s = 1) :
     (Nat.not_dvd_of_pos_of_lt (val_pos_of_pow hs hδ) (val_lt δ))).symm
 
 /- English proof (translation)
-Use `conv_lhs => rw [← Nat.mod_add_div n l]`. Rewrite using `[pow_add, pow_mul, hζ.pow_eq_one, one_pow, mul_one, ZMod.val_natCast]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pow_eq_pow_val {ζ : O} (hζ : IsPrimitiveRoot ζ l) (n : ℕ) :
     ζ ^ n = ζ ^ ((n : ZMod l).val) := by
@@ -742,13 +738,13 @@ theorem pow_eq_pow_val {ζ : O} (hζ : IsPrimitiveRoot ζ l) (n : ℕ) :
   rw [pow_add, pow_mul, hζ.pow_eq_one, one_pow, mul_one, ZMod.val_natCast]
 
 /- English proof (translation)
-Establish `: NeZero l` using `⟨hl.out.ne_zero⟩`. Unfold `vp`. Establish `key : ∀ ω : ℤ_[l], (ζ ^ (PadicInt.toZMod δ).val) ^ (PadicInt.toZMod ω).val = ζ ^ (PadicInt.toZMod (δ * ω)).val`. Introduce `ω`. Rewrite using `[← pow_mul, pow_eq_pow_val hζ, Nat.cast_mul, ZMod.natCast_zmod_val, ZMod.natCast_zmod_val, map_mul]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Repeatedly rewrite using `[key]`. Establish `hμ : ∀ ω, ω ∈ Polynomial.nthRootsFinset s (1 : ℤ_[l]) ↔ ω ^ s = 1` using `fun ω => Polynomial.mem_nthRootsFinset hs 1`. Establish `h02 : δ * δ ^ (s - 1) = 1` using `by rw [← pow_succ', Nat.sub_add_cancel hs, hδ]`. Use `Finset.prod_nbij' (fun ω => δ * ω) (fun ω => δ ^ (s - 1) * ω) ?_ ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `ω hω`.
+Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hω`, the goal using `[hμ]`. Rewrite using `[mul_pow, hω, hδ, one_mul]`. Introduce `ω hω`. Rewrite `hω`, the goal using `[hμ]`. Rewrite using `[mul_pow, hω, ← pow_mul, mul_comm (s - 1) s, pow_mul, hδ, one_pow, one_mul]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `ω _`. Rewrite using `[← mul_assoc, mul_comm (δ ^ (s - 1)) δ, h02, one_mul]`. Introduce `ω _`. Rewrite using `[← mul_assoc, h02, one_mul]`. Introduce `ω _`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
 Both sides reduce to the same expression.
 -/
@@ -775,7 +771,7 @@ theorem vp_pow {s : ℕ} (hs : 0 < s) {ζ : O} (hζ : IsPrimitiveRoot ζ l) {δ 
   · intro ω _; rfl
 
 /- English proof (translation)
-Unfold `piP vp`. Conclude with `mk_prod_brk (by ring) hζ _`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem mk_P {s : ℕ} {ζ : O} (hζ : IsPrimitiveRoot ζ l) :
     Ideal.Quotient.mk (Ia (ζ - 1)) (toO (piP l s)) = Ideal.Quotient.mk (Ia (ζ - 1)) (C (vp l s ζ)) := by
@@ -783,9 +779,9 @@ theorem mk_P {s : ℕ} {ζ : O} (hζ : IsPrimitiveRoot ζ l) :
   exact mk_prod_brk (by ring) hζ _
 
 /- English proof (translation)
-Use `haveI : Fact (1 < l) := ⟨hl.out.one_lt⟩`. Establish `hs0` using `(s_bounds hes).1`. Establish `h1 : (1 : ℤ_[l]) ∈ Polynomial.nthRootsFinset s (1 : ℤ_[l])` using `(Polynomial.mem_nthRootsFinset hs0 (1 : ℤ_[l])).mpr (one_pow _)`. Unfold `vp`. Rewrite using `[← Finset.mul_prod_erase _ _ h1]`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Ideal.mul_mem_right` to reduce the goal to its premises. Rewrite using `[map_one, ZMod.val_one, pow_one]`. Conclude with `sub_one_mem hζ hmax`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem vp_mem {s e : ℕ} (hes : e * s = l - 1) {ζ : O} (hζ : IsPrimitiveRoot ζ l)
     (hmax : (algebraMap ℤ_[l] O) l ∈ IsLocalRing.maximalIdeal O) :
@@ -801,9 +797,9 @@ theorem vp_mem {s e : ℕ} (hes : e * s = l - 1) {ζ : O} (hζ : IsPrimitiveRoot
   exact sub_one_mem hζ hmax
 
 /- English proof (translation)
-Establish `hs0` using `(s_bounds hes).1`. Unfold `vp`. Rewrite using `[Finset.prod_ne_zero_iff]`. Introduce `ω hω`. Establish `hω' : ω ^ s = 1` using `(Polynomial.mem_nthRootsFinset hs0 (1 : ℤ_[l])).mp hω`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `sub_ne_zero.mpr (hζ.pow_ne_one_of_pos_of_lt (val_pos_of_pow hs0 hω').ne' (val_lt ω))`.
+A detailed English derivation is pending.
 -/
 theorem vp_ne_zero {s e : ℕ} (hes : e * s = l - 1) {ζ : O} (hζ : IsPrimitiveRoot ζ l) :
     vp l s ζ ≠ 0 := by
@@ -818,9 +814,9 @@ noncomputable def Tp (l s : ℕ) [Fact l.Prime] (ζ : O) : Finset O :=
   (Polynomial.nthRootsFinset s (1 : ℤ_[l])).image fun δ => ζ ^ (PadicInt.toZMod δ).val - 1
 
 /- English proof (translation)
-Establish `: NeZero l` using `⟨hl.out.ne_zero⟩`. Take `⟨hs, hsl⟩` from `s_bounds hes`. Unfold `Tp`. Rewrite using `[Finset.card_image_of_injOn, card_roots_finset hes]`. Introduce `δ hδ ε hε h`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [Finset.mem_coe, Polynomial.mem_nthRootsFinset hs] at hδ hε`. Establish `h1 : ζ ^ (PadicInt.toZMod δ).val = ζ ^ (PadicInt.toZMod ε).val` using `sub_left_injective h`. Conclude with `toZMod_injOn hs hsl hδ hε (ZMod.val_injective _ (hζ.pow_inj (val_lt δ) (val_lt ε) h1))`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem card_Tp {s e : ℕ} (hes : e * s = l - 1) {ζ : O} (hζ : IsPrimitiveRoot ζ l) :
     (Tp l s ζ).card = s := by
@@ -834,9 +830,9 @@ theorem card_Tp {s e : ℕ} (hes : e * s = l - 1) {ζ : O} (hζ : IsPrimitiveRoo
   exact toZMod_injOn hs hsl hδ hε (ZMod.val_injective _ (hζ.pow_inj (val_lt δ) (val_lt ε) h1))
 
 /- English proof (translation)
-Establish `hs` using `(s_bounds hes).1`. Introduce `t ht`. Unfold `Tp at ht`. Take `⟨δ, hδ, rfl⟩` from `Finset.mem_image.mp ht`. Rewrite `hδ` using `[Polynomial.mem_nthRootsFinset hs]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `Finset.mem_image.mpr ⟨ζ ^ (PadicInt.toZMod δ).val, Finset.mem_filter.mpr ⟨?_, ?_⟩, rfl⟩` and prove the remaining obligations. Conclude with `mem_PRt.mpr (hζ.pow_of_coprime _ (coprime_val hs hδ))`. Conclude with `vp_pow hs hζ hδ`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem Tp_sub_PRt {s e : ℕ} (hes : e * s = l - 1) {ζ : O} (hζ : IsPrimitiveRoot ζ l) :
     Tp l s ζ ⊆ ((PRt l O).filter fun z => vp l s z = vp l s ζ).image (fun z => z - 1) := by
@@ -850,7 +846,7 @@ theorem Tp_sub_PRt {s e : ℕ} (hes : e * s = l - 1) {ζ : O} (hζ : IsPrimitive
   · exact vp_pow hs hζ hδ
 
 /- English proof (translation)
-Take `⟨ε, hε⟩` from `(concrete_dictionary_holds l e s hes 0 _ X_mul_geom).2.1`. Use `⟨toO ε, ε.isUnit.map _, ?_⟩` and prove the remaining obligations. Rewrite using `[hε, map_sub, map_C, (IsLocalRing.residue_eq_zero_iff b).mpr hb, map_zero, sub_zero, map_mul, map_pow, map_X, mul_comm]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_isUnit_map_residue_eq_X_pow_mul {s e : ℕ} (hes : e * s = l - 1) {b : O} (hb : b ∈ IsLocalRing.maximalIdeal O) :
     ∃ v : PowerSeries O, IsUnit v ∧ (toO (piP l s) - C b).map (IsLocalRing.residue O) =
@@ -863,7 +859,7 @@ theorem exists_isUnit_map_residue_eq_X_pow_mul {s e : ℕ} (hes : e * s = l - 1)
 variable [IsAdicComplete (IsLocalRing.maximalIdeal O) O]
 
 /- English proof (translation)
-Take `⟨k, hk⟩` from `prod_dvd U hU _ hUr`. Take `⟨v, hv, hf⟩` from `exists_isUnit_map_residue_eq_X_pow_mul hes hr`. Establish `h` using `card_le_of_dvd U hU hv hf hk`. Establish `hc : U.card = s` using `le_antisymm h.1 hcard`. Conclude with `⟨hc, k, h.2 hc, hk⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem fiber_factor {s e : ℕ} (hes : e * s = l - 1) {r : O} (hr : r ∈ IsLocalRing.maximalIdeal O)
     (U : Finset O) (hU : ∀ t ∈ U, t ∈ IsLocalRing.maximalIdeal O)
@@ -876,11 +872,11 @@ theorem fiber_factor {s e : ℕ} (hes : e * s = l - 1) {r : O} (hr : r ∈ IsLoc
   exact ⟨hc, k, h.2 hc, hk⟩
 
 /- English proof (translation)
-Establish `h1` using `Polynomial.cyclotomic_eq_prod_X_sub_primitiveRoots hζ0`. Rewrite `h1` using `[Polynomial.cyclotomic_prime]`. Establish `h2` using `congrArg (Polynomial.aeval (1 + X : PowerSeries O)) h1`. Establish `hC : ∀ μ : O, algebraMap O (PowerSeries O) μ = C μ` using `fun μ => rfl`. Simplify using `only [map_sum, map_pow, map_prod, map_sub, Polynomial.aeval_X, Polynomial.aeval_C, hC] at h2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hPR : PRt l O = primitiveRoots l O`. Use extensionality with `z`. Rewrite using `[mem_primitiveRoots hl.out.pos, mem_PRt]`. Rewrite using `[hPR]`. Simplify using `only [map_sum, map_pow, map_add, map_one, map_X]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[h2]`. Use `Finset.prod_congr rfl fun μ _ => ?_` and prove the remaining obligations. Rewrite using `[map_sub C, map_one]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem geom_eq_prod {ζ0 : O} (hζ0 : IsPrimitiveRoot ζ0 l) :
     toO (∑ j ∈ Finset.range l, (1 + X : PowerSeries ℤ_[l]) ^ j) = ∏ ζ ∈ PRt l O, (X - C (ζ - 1)) := by
@@ -900,17 +896,15 @@ theorem geom_eq_prod {ζ0 : O} (hζ0 : IsPrimitiveRoot ζ0 l) :
   ring
 
 /- English proof (translation)
-Use `set R := (PRt l O).image (vp l s)`. Establish `H : ∀ r ∈ R, ∃ k, IsUnit k ∧ toO (piP l s) - C r = (∏ ζ ∈ (PRt l O).filter (fun z => vp l s z = r), (X - C (ζ - 1))) * k`. Introduce `r hr`. Take `⟨ζ1, hζ1, rfl⟩` from `Finset.mem_image.mp hr`. Establish `hp1` using `mem_PRt.mp hζ1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set U := ((PRt l O).filter fun z => vp l s z = vp l s ζ1).image (fun z => z - 1)`. Establish `hU : ∀ t ∈ U, t ∈ IsLocalRing.maximalIdeal O`. Introduce `t ht`. Take `⟨z, hz, rfl⟩` from `Finset.mem_image.mp ht`. Conclude with `sub_one_mem (mem_PRt.mp (Finset.mem_filter.mp hz).1) hmax`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hUr : ∀ t ∈ U, Ideal.Quotient.mk (Ia t) (toO (piP l s) - C (vp l s ζ1)) = 0`. Introduce `t ht`. Take `⟨z, hz, rfl⟩` from `Finset.mem_image.mp ht`. Take `⟨hz1, hz2⟩` from `Finset.mem_filter.mp hz`. Rewrite using `[map_sub, mk_P (mem_PRt.mp hz1), hz2, sub_self]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hcard : s ≤ U.card`. Rewrite using `[← card_Tp hes hp1]`. Conclude with `Finset.card_le_card (Tp_sub_PRt hes hp1)`. Take `⟨-, k, hk, hk'⟩` from `fiber_factor hes (vp_mem hes hp1 hmax) U hU hUr hcard`. Use `⟨k, hk, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[hk', Finset.prod_image (fun x _ y _ h => sub_left_injective h)]`. Use `choose! k hk hk' using H`. Use `⟨∏ r ∈ R, k r, Finset.prod_induction _ IsUnit (fun _ _ => IsUnit.mul) isUnit_one (fun r hr => hk r hr), ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.prod_congr rfl hk', Finset.prod_mul_distrib, geom_eq_prod hζ0]`. Use `congr 1`.
-
-Conclude with `Finset.prod_fiberwise_of_maps_to (fun z hz => Finset.mem_image_of_mem _ hz) _`.
+A detailed English derivation is pending.
 -/
 theorem E_core {s e : ℕ} (hes : e * s = l - 1) {ζ0 : O} (hζ0 : IsPrimitiveRoot ζ0 l)
     (hmax : (algebraMap ℤ_[l] O) l ∈ IsLocalRing.maximalIdeal O) :

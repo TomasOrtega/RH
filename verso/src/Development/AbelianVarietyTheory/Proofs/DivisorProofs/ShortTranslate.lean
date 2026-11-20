@@ -24,9 +24,9 @@ set_option synthInstance.maxHeartbeats 400000 in
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Substitute `hn` using the available equality. Establish `hd : decide (w.n = D.R.nV) = true` using `decide_eq_true hnV`. Establish `hG : GoodDatum T.toTop j w Λ N P` using `⟨h1, h2, h3, h4, hP⟩`. Take `⟨f', hf'⟩` from `exists_isSeries hT.sh hj hG (x := x') (hd ▸ ha')`. Establish `e` using `mv_series T hT hj hxi (hnV ▸ Nat.le_add_right _ _) hγ hG hx ⟨hd ▸ ha, hs, hf⟩ hf'`.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[e]`. Conclude with `hf'.2.2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isShortRule_mv {D : D7} (T : Full D) (hT : LawsFull T) {j : ℕ} (hj : InR D j) (hxi : TwistTrivialOnRational T j)
     {w : WeightFamilies.Wt D j} {n : ℕ} (hn : w.n = n) (hnV : n = D.R.nV)
@@ -48,9 +48,9 @@ theorem isShortRule_mv {D : D7} (T : Full D) (hT : LawsFull T) {j : ℕ} (hj : I
 end GlobalTheory.LevelMoveShort
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 T0 A T _ R F κ v₀ fw hT _ i _ ℓ hℓ hAP v p hR hPg U hU Λ N x₀ P x f h1 h2 h3 h4 ha₀ hP hx u`. Take `⟨act, hact, hρ⟩` from `hAP`. Establish `hnV : (κ i).n = D.R.nV` using `(fw.kap i (D.eTau.symm 1)).2.2`. Establish `hnV' : (Vc D i).rank = D.R.nV` using `(GlobalTheory.IndefiniteRowSideFullHecke.HeckeTransferRankOne.rank_Vc i).1`. Establish `hxi` using `GlobalTheory.TraceLattice.twistTrivial_of_runPin hT hR`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdet : GlobalTheory.TraceLattice.DetOne (ℓ (u : G))` using `GlobalTheory.TraceLattice.detOne_of_levelPin hT hℓ hPg (hU u)`. Use `⟨act (u : G) (f u), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hact]`. Conclude with `GlobalTheory.LevelMoveShort.isShortRule_mv T hT (inR_succ i) hxi (hnV.trans hnV'.symm) hnV' hdet h1 h2 h3 h4 hP (hx u).1 (hx u).2.1 ha₀ (cutR_le T.C _ _ (f u).2).1 (hx u).2.2`. Rewrite using `[hρ, ← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.LevelMoveShort.short_translate : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T0 : Type) (A : FamIn D.what₂.LL G Pl0 T0 D.R.m) (T : Full D) [Algebra T.J.Q.c.F D.what₂.LL] (R : RealDat D A T.J.Q.c.F) (F : Face D A) (κ : ∀ i : Fin D.R.m, WeightFamilies.Wt D ((i : ℕ) + 1)) (v₀ : ∀ (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ), (R.MW i σ).Vec) (fw : FWTie T.J R κ v₀) (hT : LawsFull T), GlobalTheory.Hk3.Core R F → ∀ (i : Fin D.R.m), R.LUnif → ∀ (ℓ : G → (LaMod (T.Q.Dw ((i : ℕ) + 1)) T.Q.l ≃ₗ[𝓞 D.host.E] LaMod (T.Q.Dw ((i : ℕ) + 1)) T.Q.l)), LevelPin (T := T) R i ℓ → ActionPin (T := T) (R := R) hT.p fw i ℓ → ∀ (v : HeightOneSpectrum (𝓞 D.what₂.LL)) (p : ℕ), RunPin (T := T) R i (κ i).n v p → T.J.Q.l.Mb = ∏ PP ∈ R.Pg, PP.asIdeal → ∀ (U : Subgroup G), (∀ u : U, ∀ PP : R.Pg, ((R.eG (u : G) PP : GL _ _) : Matrix (Fin D.R.r) (Fin D.R.r) (kP PP.1)).det = 1) → ∀ (Λ : GenLat D.host.E (Vc D i).rank) (N : ℕ) (x₀ : Fin (Vc D i).rank → (T.Q.Dw ((i : ℕ) + 1)).La) (P : MvPolynomial (LtN (T.Q.Dw ((i : ℕ) + 1)) (Vc D i).rank) T.Q.c.F) (x : U → Fin (Vc D i).rank → (T.Q.Dw ((i : ℕ) + 1)).La) (f : U → (recB hT.p.toLawsCore).Cusp ((i : ℕ) + 1) (κ i)), Λ.Unimod → Λ.TrivAt (badN D) → Λ.TrivAt (T.dδ ((i : ℕ) + 1) (Vc D i).rank).l₂.M → Λ.LevOK N (T.dδ ((i : ℕ) + 1) (Vc D i).rank).l₂.M → AdmX (l := T.Q.l) true x₀ → P ∈ harmL (Dw := T.Q.Dw ((i : ℕ) + 1)) T.Q.c Λ (wtA (κ i)) → (∀ u : U, IsRightMul (ℓ u) x₀ (x u) ∧ AdmX (l := T.Q.l) true (x u) ∧ IsShortRule (T.Q.Xo ((i : ℕ) + 1)) T.Q.c (T.dδ ((i : ℕ) + 1) (Vc D i).rank) Λ N (x u) P ((f u).1 : T.R ((i : ℕ) + 1))) → ∀ u : U, ∃ F₀ : (recB hT.p.toLawsCore).Cusp ((i : ℕ) + 1) (κ i), IsShortRule (T.Q.Xo ((i : ℕ) + 1)) T.Q.c (T.dδ ((i : ℕ) + 1) (Vc D i).rank) Λ N x₀ P (F₀.1 : T.R ((i : ℕ) + 1)) ∧ cuspTo hT.p fw i (f u) = (R.FW i).ρ ((u : G)⁻¹) (cuspTo hT.p fw i F₀) := by
   intro D G _ _ Pl0 T0 A T _ R F κ v₀ fw hT _ i _ ℓ hℓ hAP v p hR hPg U hU Λ N x₀ P x f h1 h2 h3 h4 ha₀ hP hx u

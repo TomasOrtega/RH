@@ -19,7 +19,7 @@ namespace GlobalTheory.DegVal
 end GlobalTheory.DegVal
 namespace GlobalTheory.DegVal
 /- English proof (translation)
-Introduce `hP hD _ _`. Use `Formalism.MainNotions.Closed.imp hD fun Fm CH _ h => ?_` and prove the remaining obligations. Take `⟨C, hC, x0, h⟩` from `h`. Conclude with `⟨C, hC, x0, fun x hx hle ι p hp i _ Y _ Z TF y hy ν hν => _root_.GlobalTheory.DegVal.degree_valuation_phi_pos hP TF Z y hy ν hν⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_phiAt_pos_alt_alt : _root_.GlobalTheory.CovTop.PublishedHodgeBundleTheorems → _root_.GlobalTheory.CovTop.DeepGoodness → _root_.GlobalTheory.CovTop.SizeCondition → _root_.GlobalTheory.CovTop.FlatDegreeCondition → _root_.GlobalTheory.CovTop.CoversCondition fun Fm x _ ι p i Y PP _ => ∀ (Z : Comp Y.d.Xo₂ Y.d.c₂) (TF : TorFlag Y.d.Xo₂ Y.d.c₂), ∀ y ∈ (U₀ TF.X Z : Set (Y₀ TF.X Z))ᶜ, ∀ ν, Centred y ν → ∃ φ : ℝ, 0 < φ ∧ PhiAt TF.X Z y ν φ := by
   intro hP hD _ _
@@ -39,7 +39,7 @@ open GlobalTheory.FlagTan (dimFlag)
 open GlobalTheory.HSApp
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.DegVal.exists_phiAt_pos_alt_alt | exact _root_.GlobalTheory.DegVal.exists_phiAt_pos_alt_alt | (intros; apply _root_.GlobalTheory.DegVal.exists_phiAt_pos_alt_alt <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.exists_phi_pos_of_centred_off_U0 : _root_.GlobalTheory.CovTop.PublishedHodgeBundleTheorems → _root_.GlobalTheory.CovTop.DeepGoodness → _root_.GlobalTheory.CovTop.SizeCondition → _root_.GlobalTheory.CovTop.FlatDegreeCondition → _root_.GlobalTheory.CovTop.CoversCondition fun Fm x _ ι p i Y PP _ => ∀ (Z : Comp Y.d.Xo₂ Y.d.c₂) (TF : TorFlag Y.d.Xo₂ Y.d.c₂), ∀ y ∈ (U₀ TF.X Z : Set (Y₀ TF.X Z))ᶜ, ∀ ν, Centred y ν → ∃ φ : ℝ, 0 < φ ∧ PhiAt TF.X Z y ν φ := by
   first | exact @_root_.GlobalTheory.DegVal.exists_phiAt_pos_alt_alt | exact _root_.GlobalTheory.DegVal.exists_phiAt_pos_alt_alt | (intros; apply _root_.GlobalTheory.DegVal.exists_phiAt_pos_alt_alt <;> assumption)

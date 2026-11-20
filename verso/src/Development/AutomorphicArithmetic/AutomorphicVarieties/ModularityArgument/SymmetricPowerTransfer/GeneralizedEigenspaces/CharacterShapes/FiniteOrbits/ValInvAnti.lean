@@ -15,7 +15,7 @@ section Dominance
 variable {k : Type} [Field k] [ValuativeRel k]
 
 /- English proof (translation)
-Introduce `i j hij`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp at hij ⊢ <;> first | exact h1 | exact h2 | exact h1.trans h2`.
+Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem dom_three {x y z : kˣ} (h1 : valuation k (x : k) ≤ valuation k (y : k))
     (h2 : valuation k (y : k) ≤ valuation k (z : k)) : Dom ![x, y, z] := by
@@ -23,7 +23,7 @@ private theorem dom_three {x y z : kˣ} (h1 : valuation k (x : k) ≤ valuation 
   fin_cases i <;> fin_cases j <;> simp at hij ⊢ <;> first | exact h1 | exact h2 | exact h1.trans h2
 
 /- English proof (translation)
-Rewrite using `[Units.val_inv_eq_inv_val, Units.val_inv_eq_inv_val, map_inv₀, map_inv₀]`. Conclude with `inv_anti₀ ((Valuation.pos_iff _).2 x.ne_zero) h`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem val_inv_anti {x y : kˣ} (h : valuation k (x : k) ≤ valuation k (y : k)) :
     valuation k ((y⁻¹ : kˣ) : k) ≤ valuation k ((x⁻¹ : kˣ) : k) := by
@@ -31,14 +31,14 @@ private theorem val_inv_anti {x y : kˣ} (h : valuation k (x : k) ≤ valuation 
   exact inv_anti₀ ((Valuation.pos_iff _).2 x.ne_zero) h
 
 /- English proof (translation)
-Introduce `i j hij`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp at hij <;> first | exact le_rfl | exact val_inv_anti (h _ _ (by decide))`.
+Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem dom_rev {d : Fin 3 → kˣ} (h : Dom d) : Dom ![(d 2)⁻¹, (d 1)⁻¹, (d 0)⁻¹] := by
   intro i j hij
   fin_cases i <;> fin_cases j <;> simp at hij <;> first | exact le_rfl | exact val_inv_anti (h _ _ (by decide))
 
 /- English proof (translation)
-Introduce `i j hij`. Simplify using `only [Pi.mul_apply, Units.val_mul, map_mul]`. Conclude with `mul_le_mul' (ha i j hij) (hb i j hij)`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem dom_mul {n : ℕ} {a b : Fin n → kˣ} (ha : Dom a) (hb : Dom b) : Dom (a * b) := by
   intro i j hij
@@ -46,7 +46,7 @@ private theorem dom_mul {n : ℕ} {a b : Fin n → kˣ} (ha : Dom a) (hb : Dom b
   exact mul_le_mul' (ha i j hij) (hb i j hij)
 
 /- English proof (translation)
-Introduce `i j _`. Rewrite using `[h i, h j]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 private theorem dom_of_val {n : ℕ} {a : Fin n → kˣ} (h : ∀ i, valuation k (a i : k) = 1) : Dom a := by
   intro i j _
@@ -55,9 +55,9 @@ private theorem dom_of_val {n : ℕ} {a : Fin n → kˣ} (h : ∀ i, valuation k
 end Dominance
 
 /- English proof (translation)
-Establish `hp : 0 < valuation k (unif k : k)` using `(Valuation.pos_iff _).2 (unif k).ne_zero`. Apply `dom_three` to reduce the goal to its premises. Rewrite using `[Units.val_mul, map_mul, Units.val_inv_eq_inv_val, map_inv₀, mul_inv_le_iff₀ hp]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Units.val_inv_eq_inv_val, map_inv₀]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h2.trans ((one_le_inv₀ hp).2 (h1.trans h2))`.
+A detailed English derivation is pending.
 -/
 private theorem dom_cone {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     {t y : kˣ} (ht : valuation k (t : k) < valuation k (unif k : k) ^ 2)
@@ -73,37 +73,33 @@ private theorem dom_cone {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace
     exact h2.trans ((one_le_inv₀ hp).2 (h1.trans h2))
 
 /- English proof (translation)
-Introduce `F _ _ Δ A hA V _ _ B s _ u Θ hO`. Establish `hdom_sg : ∀ d : ParN F 3, A.DomS d → A.DomS (SD.sg d)` using `fun d hd v hv => dom_rev (hd v hv)`. Establish `hsgsg : ∀ d : ParN F 3, SD.sg (SD.sg d) = d`. Introduce `d`. Use function extensionality and compare the values at `v i`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Apply the tactic sequence `fin_cases i <;> simp [SD.sg]`. Set `σ : {d : ParN F 3 // A.DomS d} ≃ {d : ParN F 3 // A.DomS d}` to `{ toFun := fun a => ⟨SD.sg a.1, hdom_sg a.1 a.2⟩ invFun := fun a => ⟨SD.sg a.1, hdom_sg a.1 a.2⟩ left_inv := fun a => Subtype.ext (hsgsg a.1) right_inv := fun a => Subtype.ext (hsgsg a.1) }`. Set `uΛ : {d : ParN F 3 // A.DomS d} → Module.End ℂ ↥B.Forms` to `fun a => u a.1`. Establish `hcomm : ∀ a b : {d : ParN F 3 // A.DomS d}, Commute (uΛ a) (uΛ b)`. Introduce `a b`.
+Apply the first step, then apply the next step to every resulting obligation. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `show u a.1 * u b.1 = u b.1 * u a.1`. Rewrite using `[← hO.mul _ _ a.2 b.2, ← hO.mul _ _ b.2 a.2, mul_comm]`. Establish `hth : ∀ a, Θ * uΛ a = uΛ (σ a) * Θ` using `fun a => hO.th a.1 a.2`. Take `⟨X, c, hX, htr⟩` from `Tf.trTheta _ ↥B.Forms uΛ Θ σ hcomm hth`. Establish `hev : ∀ χ ∈ X, ∃ w : ↥B.Forms, w ≠ 0 ∧ ∀ a, uΛ a w = χ a • w` using `fun χ hχ => (Tf.eigVec _ ↥B.Forms uΛ hcomm χ).1 (hX χ hχ).1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `ext : ({d : ParN F 3 // A.DomS d} → ℂ) → ParN F 3 → ℂ` to `fun χ d => if h : A.DomS d then χ ⟨d, h⟩ else 0`. Establish `hext : ∀ χ (d : ParN F 3) (h : A.DomS d), ext χ d = χ ⟨d, h⟩` using `fun χ d h => dif_pos h`. Establish `hlevdom : ∀ d : ParN F 3, (∀ v ∈ A.Sg, ∀ i, d v i ∈ (A.V v).H) → A.DomS d`. Introduce `d hd v hv`. Conclude with `dom_of_val (fun i => (A.V v).H_le (hd v hv i))`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hcancel : ∀ (w : ↥B.Forms), w ≠ 0 → ∀ (x y : ℂ), x • w = y • w → x = y`. Introduce `w hw x y h`. Assume the negation of the conclusion as `hxy`. Apply `hw` to reduce the goal to its premises. Establish `h0 : (x - y) • w = 0` using `by rw [sub_smul, h, sub_self]`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Conclude with `(smul_eq_zero.1 h0).resolve_left (sub_ne_zero.2 hxy)`. Establish `key : ∀ i : {χ // χ ∈ X}, ∃ (bχ : ℂ) (βχ : Dat.Par F → ℂ), (∀ (t t' : Dat.Par F), A.Cone t → A.Cone t' → βχ (t * t') = βχ t * βχ t') ∧ (∀ (t : Dat.Par F), A.Cone t → ∑ y ∈ A.Ys, ext i.1 (A.dG t y) = bχ * βχ t) ∧ (bχ ≠ 0 → ∀ (a : Chs F), (∀ (t : Dat.Par F), A.Cone t → βχ t = A.exS …`. Introduce and unpack `⟨χ, hχ⟩`. Take `⟨w, hw, hwe⟩` from `hev χ hχ`. Apply `charShape F Δ A hA (ext χ)` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `d d' hd hd'`. Establish `hdd : A.DomS (d * d')` using `fun v hv => dom_mul (hd v hv) (hd' v hv)`. Rewrite using `[hext χ _ hdd, hext χ _ hd, hext χ _ hd']`. Apply `hcancel w hw` to reduce the goal to its premises. Rewrite using `[← hwe ⟨d * d', hdd⟩]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `show u (d * d') w = _`. Rewrite using `[hO.mul d d' hd hd', Module.End.mul_apply]`. Rewrite using `[show u d' w = χ ⟨d', hd'⟩ • w from hwe ⟨d', hd'⟩, map_smul, show u d w = χ ⟨d, hd⟩ • w from hwe ⟨d, hd⟩, smul_smul, mul_comm]`. Introduce `d hd`. Establish `hD` using `hlevdom d hd`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hext χ d hD]`. Apply `hcancel w hw` to reduce the goal to its premises. Rewrite using `[← hwe ⟨d, hD⟩, one_smul]`. Use `show u d w = w`. Rewrite using `[hO.lev d hd]`.
+Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Both sides reduce to the same expression. Introduce `d hd`. Rewrite using `[hext χ _ (hdom_sg d hd), hext χ d hd]`. Conclude with `(hX χ hχ).2 ⟨d, hd⟩`. Use `choose b β hβm hβs hβe using key`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨{χ // χ ∈ X}, Finset.univ, fun i => c i.1 * b i, β, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `i _ t t' ht ht'`. Conclude with `hβm i t t' ht ht'`. Introduce `t ht`. Establish `hdG : ∀ y ∈ A.Ys, A.DomS (A.dG t y)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `y hy v hv`. Establish `hyv : y ⟨v, hv⟩ ∈ A.Ry v` using `Fintype.mem_piFinset.1 hy ⟨v, hv⟩`. Establish `hr` using `(hA.ry v hv).1 _ hyv`. Use `show Dom ![t v * (unif (Kv v))⁻¹, if h : v ∈ A.Sg then y ⟨v, h⟩ else 1, (unif (Kv v))⁻¹]`. Rewrite using `[dif_pos hv]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Conclude with `dom_cone (ht v hv) hr.1 hr.2`. Rewrite using `[hO.tr t ht, map_sum]`. Establish `h1 : ∀ y ∈ A.Ys, LinearMap.trace ℂ ↥B.Forms (u (A.dG t y) * Θ) = ∑ χ ∈ X, c χ * ext χ (A.dG t y)`. Introduce `y hy`. Rewrite using `[show u (A.dG t y) = uΛ ⟨_, hdG y hy⟩ from rfl, htr]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.sum_congr rfl fun χ _ => by rw [hext χ _ (hdG y hy)]`. Rewrite using `[Finset.sum_congr rfl h1, Finset.sum_comm, ← Finset.sum_coe_sort X]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.mul_sum, hβs i t ht, mul_assoc]`. Introduce and unpack `⟨χ, hχ⟩ _ hb a ha`.
-
-Establish `hb' : b ⟨χ, hχ⟩ ≠ 0` using `right_ne_zero_of_mul hb`. Take `⟨w, hw, hwe⟩` from `hev χ hχ`. Use `⟨(w : GA Δ → V), w.2, fun h => hw (Subtype.ext h), ?_⟩` and prove the remaining obligations. Introduce `d g hd hg`. Rewrite using `[← hO.eq d g hd hg w, ← hβe ⟨χ, hχ⟩ hb' a ha d hd, hext χ d hd]`.
-
-Rewrite using `[show u d w = χ ⟨d, hd⟩ • w from hwe ⟨d, hd⟩]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Sym.So.gSpec :
     UpperTheory.V.Z.Sym.So.GSpec := by

@@ -24,7 +24,7 @@ def big {n : ℕ} (t : Matrix (Fin n) (Fin n) (AE F E)) :
   LinearMap.toMatrix (bas F E n) (bas F E n) ((Matrix.toLin' t).restrictScalars (AF F))
 
 /- English proof (translation)
-Rewrite using `[big, LinearMap.toMatrix_apply]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem big_apply {n : ℕ} (t : Matrix (Fin n) (Fin n) (AE F E)) (x y) :
     big t x y = (bas F E n).repr (t *ᵥ bas F E n y) x := by
@@ -32,16 +32,16 @@ theorem big_apply {n : ℕ} (t : Matrix (Fin n) (Fin n) (AE F E)) (x y) :
   rfl
 
 /- English proof (translation)
-Rewrite using `[big, LinearMap.det_toMatrix, LinearMap.det_restrictScalars, LinearMap.det_toLin']`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem det_big {n : ℕ} (t : Matrix (Fin n) (Fin n) (AE F E)) :
     (big t).det = Algebra.norm (AF F) t.det := by
   rw [big, LinearMap.det_toMatrix, LinearMap.det_restrictScalars, LinearMap.det_toLin']
 
 /- English proof (translation)
-Rewrite using `[bas, Pi.basis_apply]`. Use function extensionality and compare the values at `i`. Distinguish the cases in `h : i = x.1`. Substitute `h` using the available equality. Rewrite using `[Pi.single_eq_same, Pi.single_eq_same, Module.Basis.baseChange_apply]`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[Pi.single_eq_of_ne h, Pi.single_eq_of_ne h, map_zero]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 -/
 theorem bas_eq {n : ℕ} (x) :
     bas F E n x = fun i => inclR (F := F) (AF F) ((Pi.single x.1 (Module.finBasis F E x.2) : Fin n → E) i) := by
@@ -54,11 +54,11 @@ theorem bas_eq {n : ℕ} (x) :
   · rw [Pi.single_eq_of_ne h, Pi.single_eq_of_ne h, map_zero]
 
 /- English proof (translation)
-Rewrite using `[← det_big, RingHom.map_det]`. Establish `: φ.mapMatrix (big t) = 1`. Use extensionality with `x y`. Establish `h1 : u • (t *ᵥ bas F E n y) = u • bas F E n y`. Establish `h2 : (u • (t - 1)) *ᵥ bas F E n y = 0` using `by rw [ht, Matrix.zero_mulVec]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h2` using `[Matrix.smul_mulVec, Matrix.sub_mulVec, Matrix.one_mulVec, smul_sub, sub_eq_zero]`. Then use the resulting hypothesis. Establish `h3` using `congrArg (fun z => φ ((bas F E n).repr z x)) h1`. Simplify using `only [map_smul, Finsupp.smul_apply, smul_eq_mul, map_mul, hu, one_mul, Module.Basis.repr_self] at h3`. Rewrite using `[RingHom.mapMatrix_apply, Matrix.map_apply, big_apply, h3, Matrix.one_apply, Finsupp.single_apply]`. Distinguish the cases in `h : x = y`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Simplify using `[h]`. Simplify using `[h, Ne.symm h]`. Rewrite using `[this, Matrix.det_one]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem map_norm_det {n : ℕ} {K : Type} [CommRing K] (φ : AF F →+* K) (t : Matrix (Fin n) (Fin n) (AE F E))
     (u : AF F) (hu : φ u = 1) (ht : u • (t - 1) = 0) : φ (Algebra.norm (AF F) t.det) = 1 := by
@@ -77,9 +77,9 @@ theorem map_norm_det {n : ℕ} {K : Type} [CommRing K] (φ : AF F →+* K) (t : 
   rw [this, Matrix.det_one]
 
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.CoordinateEmbeddingMaps.main`. Consider the case `exact _root_.GlobalTheory.CoordinateEmbeddingMaps.main`. Consider the case `(apply _root_.GlobalTheory.CoordinateEmbeddingMaps.main <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.CoordinateEmbeddingMaps.main <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.CoordinateEmbeddingMaps.main <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.CoordinateEmbeddingMaps.main ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem exists_bound {n : ℕ} (W : Spc F E n) (hL : W.L.FG) (v : Pl F) :
     ∃ C : ℝ, ∀ z ∈ GlobalTheory.InertSph.latAt W v, ∀ x, ‖evFin F v ((bas F E n).repr z x)‖ ≤ C := by
@@ -92,9 +92,9 @@ theorem exists_bound {n : ℕ} (W : Spc F E n) (hL : W.L.FG) (v : Pl F) :
   | (intros; exact _root_.GlobalTheory.CoordinateEmbeddingMaps.main ..)
 
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.LatticeIntegerMultipleMembership.exists_int_smul_mem_of_isLattice`. Consider the case `exact _root_.GlobalTheory.LatticeIntegerMultipleMembership.exists_int_smul_mem_of_isLattice`. Consider the case `(apply _root_.GlobalTheory.LatticeIntegerMultipleMembership.exists_int_smul_mem_of_isLattice <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.LatticeIntegerMultipleMembership.exists_int_smul_mem_of_isLattice <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.LatticeIntegerMultipleMembership.exists_int_smul_mem_of_isLattice <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.LatticeIntegerMultipleMembership.exists_int_smul_mem_of_isLattice ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem exists_mul_mem {n : ℕ} (L : Submodule (𝓞 E) (Fin n → E)) (hL : L.IsLattice E) (y : Fin n → E) :
     ∃ D : ℤ, D ≠ 0 ∧ D • y ∈ L := by
@@ -107,15 +107,13 @@ theorem exists_mul_mem {n : ℕ} (L : Submodule (𝓞 E) (Fin n → E)) (hL : L.
   | (intros; exact _root_.GlobalTheory.LatticeIntegerMultipleMembership.exists_int_smul_mem_of_isLattice ..)
 
 /- English proof (translation)
-Take `⟨C, hC⟩` from `exists_bound W hL.fg v`. Use `choose D hD0 hD using fun x : (Σ _ : Fin n, Fin (Module.finrank F E)) => exists_mul_mem W.L hL (Pi.single x.1 (Module.finBasis F E x.2))`. Use `haveI : CharZero (Fv F v) := algebraRat.charZero _`. Use `⟨∑ y, |C| / ‖(D y : Fv F v)‖, fun t ht x y => ?_⟩` and prove the remaining obligations. Use `set e := GlobalTheory.EmbChart.atPlace v (1 : Fv F v) with he`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `he1 : evFin F v e = 1` using `GlobalTheory.EmbChart.evFin_atPlace v 1`. Establish `hmem : e • (D y • bas F E n y) ∈ GlobalTheory.InertSph.latAt W v`. Use `AddSubgroup.subset_closure ⟨e, ?_, ?_, _, hD y, ?_⟩` and prove the remaining obligations. Introduce `u hu`. Rewrite using `[smul_eq_mul, mul_comm, he, GlobalTheory.EmbChart.atPlace_mul_right, hu, mul_zero, map_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[he1]`. Conclude with `one_mem _`. Rewrite using `[bas_eq]`. Use `congr 1`. Use function extensionality and compare the values at `i`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [Pi.smul_apply, map_zsmul]`. Establish `h1` using `hC _ (ht _ hmem) x`. Rewrite `h1` using `[Matrix.mulVec_smul, Matrix.mulVec_smul, map_smul, map_zsmul, Finsupp.smul_apply, Finsupp.smul_apply, smul_eq_mul, map_mul, he1, one_mul, map_zsmul, zsmul_eq_mul, norm_mul, ← big_apply]`. Establish `hpos : 0 < ‖(D y : Fv F v)‖` using `norm_pos_iff.2 (Int.cast_ne_zero.2 (hD0 y))`. Combine the equalities or inequalities in the displayed calculation.
-
-Rewrite using `[le_div_iff₀ hpos, mul_comm]`. Conclude with `h1.trans (le_abs_self C)`. Use `_ ≤ _ := Finset.single_le_sum (f := fun y => |C| / ‖(D y : Fv F v)‖) (fun y _ => div_nonneg (abs_nonneg _) (norm_nonneg _)) (Finset.mem_univ y)`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_entry_bound {n : ℕ} (W : Spc F E n) (hL : W.L.IsLattice E) (v : Pl F) :
     ∃ C : ℝ, ∀ t : Matrix (Fin n) (Fin n) (AE F E),
@@ -146,13 +144,13 @@ theorem exists_entry_bound {n : ℕ} (W : Spc F E n) (hL : W.L.IsLattice E) (v :
         (fun y _ => div_nonneg (abs_nonneg _) (norm_nonneg _)) (Finset.mem_univ y)
 
 /- English proof (translation)
-Take `⟨C, hC⟩` from `exists_entry_bound W hL v`. Establish `hk : ∀ k : ℕ, ∀ z ∈ GlobalTheory.InertSph.latAt W v, (t ^ k) *ᵥ z ∈ GlobalTheory.InertSph.latAt W v`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => intro z hz`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Simplify using `using hz`. Consider the case `succ k ih => intro z hz`. Rewrite using `[pow_succ, ← Matrix.mulVec_mulVec]`. Conclude with `ih _ (ht z hz)`. Establish `hb : ∃ B : ℝ, ∀ k : ℕ, ‖evFin F v (Algebra.norm (AF F) t.det)‖ ^ k ≤ B`.
+Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨(Fintype.card (Σ _ : Fin n, Fin (Module.finrank F E))).factorial • C ^ Fintype.card (Σ _ : Fin n, Fin (Module.finrank F E)), fun k => ?_⟩` and prove the remaining obligations. Rewrite using `[← norm_pow, ← map_pow, ← map_pow, ← Matrix.det_pow, ← det_big]`. Use `Matrix.det_le (abv := (NormedField.toAbsoluteValue (Fv F v))) (A := (big (t ^ k)).map (evFin F v)) (x := C) (fun x y => hC _ (hk k) x y)` as an intermediate fact. Establish `e : evFin F v (big (t ^ k)).det = ((big (t ^ k)).map (evFin F v)).det` using `RingHom.map_det (evFin F v).toRingHom _`. Rewrite using `[e]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `this`. Take `⟨B, hB⟩` from `hb`. Assume the negation of the conclusion as `h`. Take `⟨k, hk⟩` from `((tendsto_pow_atTop_atTop_of_one_lt (not_le.1 h)).eventually_gt_atTop B).exists`. Conclude with `absurd (hB k) (not_le.2 hk)`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem norm_le_one {n : ℕ} (W : Spc F E n) (hL : W.L.IsLattice E) (v : Pl F) (t : Matrix (Fin n) (Fin n) (AE F E))
     (ht : ∀ z ∈ GlobalTheory.InertSph.latAt W v, t *ᵥ z ∈ GlobalTheory.InertSph.latAt W v) :
@@ -179,9 +177,9 @@ theorem norm_le_one {n : ℕ} (W : Spc F E n) (hL : W.L.IsLattice E) (v : Pl F) 
   exact absurd (hB k) (not_le.2 hk)
 
 /- English proof (translation)
-Apply `NNReal.eq` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `(MeasureTheory.distribHaarChar (AdeleRing (𝓞 F) F) a : ℝ) = _`. Rewrite using `[GlobalTheory.ModuAdele.distribHaarChar_adeleRing, GroundTheory.Global.IdeleGroup.ideleModule_eq]`. Establish `h3 : ∀ v : HeightOneSpectrum (𝓞 F), ‖(a : AF F).2 v‖ = 1` using `h2`. Establish `h4 : ∀ w : InfinitePlace F, ‖(a : AF F).1 w‖ = 1` using `fun w => by`.
+Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[h1]`. Conclude with `norm_one`. Simplify using `only [h3, h4, one_pow, Finset.prod_const_one, finprod_one, mul_one, NNReal.coe_one]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem modu_eq_one (a : (AF F)ˣ) (h1 : (a : AF F).1 = 1) (h2 : ∀ v, ‖evFin F v a‖ = 1) :
     (adeleClass F).modu a = 1 := by
@@ -194,13 +192,13 @@ theorem modu_eq_one (a : (AF F)ˣ) (h1 : (a : AF F).1 = 1) (h2 : ∀ v, ‖evFin
   simp only [h3, h4, one_pow, Finset.prod_const_one, finprod_one, mul_one, NNReal.coe_one]
 
 /- English proof (translation)
-Establish `h0` using `h1 (1 - GlobalTheory.EmbChart.atPlace v 1) (by rw [map_sub, map_one, GlobalTheory.EmbChart.evFin_atPlace, sub_self])`. Apply `modu_eq_one` to reduce the goal to its premises. Use `map_norm_det (fstA F).toRingHom _ _ ?_ h0` and prove the remaining obligations. Rewrite using `[map_sub, map_one, sub_eq_self]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Introduce `u`. Distinguish the cases in `hu : u = v`. Substitute `hu` using the available equality. Establish `a1` using `norm_le_one W hL u _ fun z hz => (h2 z hz).1`. Establish `a2` using `norm_le_one W hL u _ fun z hz => (h2 z hz).2`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a3 : ‖evFin F u (Algebra.norm (AF F) (t : Matrix (Fin n) (Fin n) (AE F E)).det)‖ * ‖evFin F u (Algebra.norm (AF F) ((t⁻¹ : GL (Fin n) (AE F E)) : Matrix (Fin n) (Fin n) (AE F E)).det)‖ = 1`. Rewrite using `[← norm_mul, ← map_mul, ← map_mul, ← Matrix.det_mul, Units.mul_inv, Matrix.det_one, map_one, map_one, norm_one]`. Use `le_antisymm a1 ?_` and prove the remaining obligations. Rewrite using `[← a3]`. Conclude with `mul_le_of_le_one_right (norm_nonneg _) a2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `map_norm_det (evFin F u).toRingHom _ _ (by` as an intermediate fact. Rewrite using `[map_sub, map_one, sub_eq_self]`. Conclude with `evalV_singleFin_ne hu 1) h0`. Conclude with `(congrArg norm this).trans norm_one`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem modu_norm_det {n : ℕ} (W : Spc F E n) (hL : W.L.IsLattice E) (v : Pl F) (t : GL (Fin n) (AE F E))
     (h1 : At (evFin F v) ((t : Matrix (Fin n) (Fin n) (AE F E)) - 1))
@@ -231,7 +229,7 @@ theorem modu_norm_det {n : ℕ} (W : Spc F E n) (hL : W.L.IsLattice E) (v : Pl F
 end GlobalTheory.IntegralDetModule
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B a a' G X om om' hT v _ _ _ t ht`. Conclude with `GlobalTheory.IntegralDetModule.modu_norm_det G.W hT.geo.hW.lat v t ht.1 ht.2`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.IntegralDetModule.modu_norm_det_triple : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (a a' : ℕ) (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W), IsTriple B G X om om' →

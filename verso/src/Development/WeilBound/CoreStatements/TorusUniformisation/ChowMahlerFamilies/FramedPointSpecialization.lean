@@ -9,17 +9,13 @@ open AlgebraicGeometry CategoryTheory Limits NumberField ReciprocityTheory.Chart
 namespace PositivityTheory.Xgn.FramedPointSpecialization
 
 /- English proof (translation)
-Use `letI := β.toAlgebra`. Use `letI := s.toAlgebra`. Take `⟨ι, x, hx⟩` from `exists_isTranscendenceBasis' K k`. Take `⟨κ, z, hz⟩` from `exists_isTranscendenceBasis' K ℂ`. Establish `hι : Countable ι` using `hx.1.injective.countable`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hκ : Cardinal.mk ℂ = Cardinal.mk κ`. Use `IsAlgClosed.cardinal_eq_cardinal_transcendence_basis_of_aleph0_lt' z hz (Cardinal.mk_le_aleph0_iff.2 inferInstance) (by rw [Cardinal.mk_complex]; exact Cardinal.aleph0_lt_continuum)` as an intermediate fact. Conclude with `this`. Establish `hle : Cardinal.mk ι ≤ Cardinal.mk κ`. Rewrite using `[← hκ, Cardinal.mk_complex]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `(Cardinal.mk_le_aleph0_iff.2 hι).trans Cardinal.aleph0_le_continuum`. Take `⟨e⟩` from `hle`. Establish `hz' : AlgebraicIndependent K (z ∘ e)` using `hz.1.comp e e.injective`. Use `letI : Algebra (MvPolynomial ι K) k := (MvPolynomial.aeval x : MvPolynomial ι K →ₐ[K] k).toRingHom.toAlgebra`. Use `letI : Algebra (MvPolynomial ι K) ℂ := (MvPolynomial.aeval (z ∘ e) : MvPolynomial ι K →ₐ[K] ℂ).toRingHom.toAlgebra`.
+Establish an intermediate fact. Equip the data with the indicated structure. Equip the data with the indicated structure. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Use `haveI : FaithfulSMul (MvPolynomial ι K) k := (faithfulSMul_iff_algebraMap_injective _ _).2 hx.1`. Use `haveI : FaithfulSMul (MvPolynomial ι K) ℂ := (faithfulSMul_iff_algebraMap_injective _ _).2 hz'`. Use `haveI : Algebra.IsAlgebraic (MvPolynomial ι K) k := by haveI := hx.isAlgebraic`. Conclude with `Algebra.IsAlgebraic.of_ringHom_of_comp_eq (S := Algebra.adjoin K (Set.range x)) (B := k) hx.1.aevalEquiv (RingHom.id k) hx.1.aevalEquiv.surjective Function.injective_id (RingHom.ext fun p => hx.1.algebraMap_aevalEquiv p)`. Set `j : k →ₐ[MvPolynomial ι K] ℂ` to `IsAlgClosed.lift`.
-
-Use `⟨j.toRingHom, RingHom.ext fun a => ?_⟩` and prove the remaining obligations. Establish `h` using `j.commutes (MvPolynomial.C a)`. Establish `h1 : algebraMap (MvPolynomial ι K) k (MvPolynomial.C a) = β a` using `MvPolynomial.aeval_C x a`. Establish `h2 : algebraMap (MvPolynomial ι K) ℂ (MvPolynomial.C a) = s a` using `MvPolynomial.aeval_C (z ∘ e) a`. Rewrite `h` using `[h1, h2]`.
-
-Conclude with `h`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_embedding (K k : Type) [Field K] [Field k] [Countable K] [Countable k] (β : K →+* k) (s : K →+* ℂ) :
     ∃ j : k →+* ℂ, j.comp β = s := by
@@ -55,17 +51,15 @@ theorem exists_embedding (K k : Type) [Field K] [Field k] [Countable K] [Countab
   exact h
 
 /- English proof (translation)
-Take `⟨_, ⟨U, hU', rfl⟩, hx, -⟩` from `X.isBasis_affineOpens.exists_subset_of_mem_open (Set.mem_univ (y (IsLocalRing.closedPoint F))) isOpen_univ`. Establish `hU : IsAffineOpen U` using `hU'`. Establish `hr : Set.range y ⊆ Set.range hU.fromSpec`. Introduce and unpack `_ ⟨p, rfl⟩`. Rewrite using `[hU.range_fromSpec, Subsingleton.elim p (IsLocalRing.closedPoint F)]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hx`. Take `⟨ψ, hψ⟩` from `Spec.map_surjective (IsOpenImmersion.lift hU.fromSpec y hr)`. Take `⟨φ, hφ⟩` from `Spec.map_surjective (hU.fromSpec ≫ s)`. Establish `hft : φ.hom.FiniteType`. Rewrite using `[← HasRingHomProperty.Spec_iff (P := @LocallyOfFiniteType), hφ]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `infer_instance`. Establish `hc : Countable Γ(X, U)`. Use `letI := φ.hom.toAlgebra`. Use `haveI : Algebra.FiniteType K Γ(X, U) := hft`. Take `⟨n, g, hg⟩` from `Algebra.FiniteType.iff_quotient_mvPolynomial''.1 this`.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `haveI : Countable (MvPolynomial (Fin n) K) := by`. Rewrite using `[← Cardinal.mk_le_aleph0_iff]`. Conclude with `MvPolynomial.cardinalMk_le_max.trans (max_le (max_le Cardinal.mk_le_aleph0 Cardinal.mk_le_aleph0) le_rfl)`. Conclude with `hg.countable`. Set `k : Subfield F` to `Subfield.closure (Set.range ψ.hom)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hk : Countable k`. Rewrite using `[← Cardinal.mk_le_aleph0_iff]`. Use `(Subfield.cardinalMk_closure_le_max _).trans (max_le ?_ le_rfl)` and prove the remaining obligations. Conclude with `Cardinal.mk_le_aleph0_iff.2 (Set.countable_range _).to_subtype`. Set `ψ₀ : Γ(X, U) →+* k` to `ψ.hom.codRestrict k fun a => Subfield.subset_closure ⟨a, rfl⟩`.
-
-Use `⟨k, inferInstance, hk, k.subtype, spMap ψ₀ ≫ hU.fromSpec, ?_⟩` and prove the remaining obligations. Rewrite using `[← Category.assoc, ← Spec.map_comp]`. Establish `: CommRingCat.ofHom ψ₀ ≫ CommRingCat.ofHom k.subtype = ψ` using `by ext a; rfl`. Use `erw [this]`. Rewrite using `[hψ, IsOpenImmersion.lift_fac]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_countable_field {X : Scheme.{0}} {K F : Type} [CommRing K] [Countable K] [Field F] (s : X ⟶ Sp K)
     [LocallyOfFiniteType s] (y : Sp F ⟶ X) :
@@ -103,13 +97,11 @@ theorem exists_countable_field {X : Scheme.{0}} {K F : Type} [CommRing K] [Count
   rw [hψ, IsOpenImmersion.lift_fac]
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.CompanionTheory.Ar.Flat.LieEigFrame.isEigFrame_pt_iff S F G x V M P act ρ σ n u h]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`. Use `⟨Fintype.linearIndependent_iff.2 fun g hg i => ?_, le_antisymm (Submodule.span_le.2 ?_) fun e he => ?_⟩` and prove the remaining obligations. Use `(h2 0 (Submodule.zero_mem _)).unique hg.symm (y₂ := 0) (by simp)` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `congrFun this i`. Introduce and unpack `_ ⟨i, rfl⟩`. Conclude with `h1 i`. Take `⟨cf, rfl, -⟩` from `h2 e he`. Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce and unpack `⟨h1, h2⟩`. Use `⟨fun i => h2 ▸ Submodule.subset_span ⟨i, rfl⟩, fun e he => ?_⟩` and prove the remaining obligations. Rewrite `he` using `[← h2, Submodule.mem_span_range_iff_exists_fun]`. Take `⟨cf, hcf⟩` from `he`. Use `⟨cf, hcf.symm, fun cf' h' => ?_⟩` and prove the remaining obligations.
-
-Conclude with `funext (Fintype.linearIndependent_iffₛ.1 h1 _ _ (h'.symm.trans hcf.symm))`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem frame_iff {S : Scheme.{0}} {G : Over S} [GrpObj G] [IsCommMonObj G] {F : Type} [Field F] {x : Sp F ⟶ S}
     {V : Type} [AddCommGroup V] [Module F V] (M : LieModel G x V) {P : Type} [CommRing P] (act : OAct P G)
@@ -134,19 +126,19 @@ theorem frame_iff {S : Scheme.{0}} {G : Over S} [GrpObj G] [IsCommMonObj G] {F :
     exact funext (Fintype.linearIndependent_iffₛ.1 h1 _ _ (h'.symm.trans hcf.symm))
 
 /- English proof (translation)
-Use `letI := f.toAlgebra`. Substitute `hx` using the available equality. Take `⟨V, _, _, ⟨M⟩⟩` from `lieModel_exists S G F x`. Take `⟨T, _, _, _, _, M', j, hl, hj⟩` from `GlobalTheory.T.exists_lie_model_base_change S G F F' x V M`. Take `⟨ρ, hρ, -⟩` from `lieModel_exists_unique_act S G F x V M P act.act act.hom act.one act.mul act.add`.
+Equip the data with the indicated structure. Substitute using the available equality. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨ρ', hρ', -⟩` from `lieModel_exists_unique_act S G F' _ T M' P act.act act.hom act.one act.mul act.add`. Establish `hl' : ∀ e, (M'.pt (j e)).left = spMap (dualMap (algebraMap F F')) ≫ (M.pt e).left` using `fun e => by`. Use `hl e` as an intermediate fact. Simplify `this` using `[LieModel.Lifts]`. Establish `hact : ∀ a e, ρ' a (j e) = j (ρ a e)` using `fun a e => M'.inj (Over.OverMorphism.ext (by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Rewrite using `[hρ' a (j e), Over.comp_left, hl', hl', hρ a e, Over.comp_left, Category.assoc]))`. Use `⟨fun v h => ?_, fun v' h => ?_⟩` and prove the remaining obligations. Use `choose u hu using fun i => M.onto (v i) (h.1 i).1`. Take `rfl : (fun k => M.pt (u k)) = v` from `funext hu`. Take `⟨hli, hsp⟩` from `(frame_iff M act ρ σ hρ u).1 h`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨fun k => M'.pt (j (u k)), (frame_iff M' act ρ' _ hρ' _).2 (EigBase.frame_base hj σ hact hli hsp), fun i => hl' _⟩`. Use `choose u' hu' using fun i => M'.onto (v' i) (h.1 i).1`. Take `rfl : (fun k => M'.pt (u' k)) = v'` from `funext hu'`. Take `⟨hli', hsp'⟩` from `(frame_iff M' act ρ' _ hρ' u').1 h`. Use `haveI : Module.Finite F V := (LieProj.lie_finite_projective_baseChange S G F x V M).1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `b` to `Module.finBasis F (eigSp ρ σ)`. Establish `hli : LinearIndependent F fun i => (b i : V)` using `b.linearIndependent.map' (eigSp ρ σ).subtype (Submodule.ker_subtype _)`. Establish `hsp : Submodule.span F (Set.range fun i => (b i : V)) = eigSp ρ σ`. Establish `: (Set.range fun i => (b i : V)) = (eigSp ρ σ).subtype '' Set.range b`. Rewrite using `[← Set.range_comp]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Both sides reduce to the same expression. Rewrite using `[this, ← Submodule.map_span, b.span_eq, Submodule.map_top, Submodule.range_subtype]`. Take `⟨h1, h2⟩` from `EigBase.frame_base hj σ hact hli hsp`. Establish `e1` using `finrank_span_eq_card h1`. Establish `e2` using `finrank_span_eq_card hli'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality.
 
-Establish `e3 : Submodule.span F' (Set.range fun i => j (b i : V)) = Submodule.span F' (Set.range u')` using `h2.trans hsp'.symm`. Rewrite `e1` using `[e3, e2, Fintype.card_fin, Fintype.card_fin]`. Substitute `e1` using the available equality. Conclude with `⟨fun i => M.pt (b i), (frame_iff M act ρ σ hρ _).2 ⟨hli, hsp⟩⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem frame_up_down {S : Scheme.{0}} {G : Over S} [GrpObj G] [IsCommMonObj G] [Smooth G.hom] {F F' : Type} [Field F]
     [Field F'] (f : F →+* F') (x : Sp F ⟶ S) (x' : Sp F' ⟶ S) (hx : x' = spMap f ≫ x) {P : Type} [CommRing P]
@@ -196,17 +188,15 @@ end PositivityTheory.Xgn.FramedPointSpecialization
 
 open PositivityTheory.Xgn.FramedPointSpecialization in
 /- English proof (translation)
-Introduce `E _ _ _ H D l Xo c U τ F _ β y v w h`. Take `⟨hβ, hU, hv, hw⟩` from `h`. Use `haveI := c.fin`. Use `haveI : Countable c.F := Countable.of_equiv _ (Module.finBasis ℚ c.F).equivFun.toEquiv.symm`. Use `haveI := Xo.smooth`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `haveI : Smooth Xo.s := SmoothOfRelativeDimension.smooth D.dim Xo.s`. Use `haveI := Xo.univ.t.semi.smooth`. Take `⟨k, _, _, f, y₀, rfl⟩` from `exists_countable_field (pullback.snd Xo.s (spMap (IntermediateField.inclusion c.le).toRingHom)) y`. Take `⟨b₀, hb₀⟩` from `Spec.map_surjective (y₀ ≫ pullback.snd _ _)`. Establish `hb : y₀ ≫ pullback.snd _ _ = spMap b₀.hom` using `hb₀.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `hf : f.comp b₀.hom = β`. Rewrite `hβ` using `[Category.assoc, hb, ← Spec.map_comp]`. Conclude with `congrArg CommRingCat.Hom.hom (Spec.map_injective hβ)`. Take `⟨j, hj⟩` from `exists_embedding c.F k b₀.hom (algebraMap c.F ℂ)`. Establish `hU₀ : Set.range y₀ ⊆ U`.
+Reduce the conclusion to the remaining proof obligations. Substitute using the available equality. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `_ ⟨p, rfl⟩`. Use `hU ⟨IsLocalRing.closedPoint F, ?_⟩` and prove the remaining obligations. Conclude with `(Scheme.Hom.comp_apply (spMap f) y₀ _).trans (congrArg y₀ (Subsingleton.elim _ _))`. Substitute `hf` using the available equality. Take `⟨v₀, hv₀⟩` from `(frame_up_down f (under y₀) (under (spMap f ≫ y₀)) (Category.assoc _ _ _) Xo.univ.t.act (b₀.hom.comp (tauIn c τ)) D.p).2 v hv`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Take `⟨w₀, hw₀⟩` from `(frame_up_down f (under y₀) (under (spMap f ≫ y₀)) (Category.assoc _ _ _) Xo.univ.t.act (b₀.hom.comp (tauIn c (ComplexEmbedding.conjugate τ))) D.q).2 w hw`. Use `⟨k, inferInstance, b₀.hom, y₀, v₀, w₀, f, j, ⟨hb, hU₀, hv₀, hw₀⟩, rfl, hj, rfl, fun F' _ f' => ?_⟩` and prove the remaining obligations. Take `⟨v', hv', ev⟩` from `(frame_up_down f' (under y₀) (under (spMap f' ≫ y₀)) (Category.assoc _ _ _) Xo.univ.t.act (b₀.hom.comp (tauIn c τ)) D.p).1 v₀ hv₀`. Take `⟨w', hw', ew⟩` from `(frame_up_down f' (under y₀) (under (spMap f' ≫ y₀)) (Category.assoc _ _ _) Xo.univ.t.act (b₀.hom.comp (tauIn c (ComplexEmbedding.conjugate τ))) D.q).1 w₀ hw₀`. Use `⟨v', w', ⟨?_, ?_, hv', hw'⟩, ev, ew⟩` and prove the remaining obligations.
-
-Rewrite using `[Category.assoc, hb, ← Spec.map_comp]`. Both sides reduce to the same expression. Introduce and unpack `_ ⟨p, rfl⟩`. Conclude with `hU₀ ⟨spMap f' p, (Scheme.Hom.comp_apply (spMap f') y₀ p).symm⟩`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem PositivityTheory.Xgn.framed_point_specialization : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (U : Set (Xo.XF c)) (τ : E →+* ℂ) (F : Type) [Field F] (β : c.F →+* F) (y : Sp F ⟶ Xo.XF c) (v : Vecs y D.p) (w : Vecs y D.q), IsFramed U τ β y v w → ∃ (k : Type) (_ : Field k) (β₀ : c.F →+* k) (y₀ : Sp k ⟶ Xo.XF c) (v₀ : Vecs y₀ D.p) (w₀ : Vecs y₀ D.q) (f : k →+* F) (j : k →+* ℂ), IsFramed U τ β₀ y₀ v₀ w₀ ∧ f.comp β₀ = β ∧ j.comp β₀ = algebraMap c.F ℂ ∧ y = spMap f ≫ y₀ ∧ ∀ (F' : Type) [Field F'] (f' : k →+* F'), ∃ (v' : Vecs (spMap f' ≫ y₀) D.p) (w' : Vecs (spMap f' ≫ y₀) D.q), IsFramed U τ (f'.comp β₀) (spMap f' ≫ y₀) v' w' ∧ (∀ a, (v' a).left = spMap (dualMap f') ≫ (v₀ a).left) ∧ ∀ b, (w' b).left = spMap (dualMap f') ≫ (w₀ b).left := by
   intro E _ _ _ H D l Xo c U τ F _ β y v w h

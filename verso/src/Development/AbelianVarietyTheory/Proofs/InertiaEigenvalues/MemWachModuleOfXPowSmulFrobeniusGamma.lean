@@ -22,14 +22,14 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     (W : LocWach PD LL O v n) (T : LocLat G Qp LL O)
 
 /- English proof (translation)
-Rewrite using `[← algebraMap_smul W.EE a x, W.γD_smul, W.γE_ext, algebraMap_smul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem γ_smul (g : W.Gam) (a : LetA O n) (x : W.DD T) : W.γD T g (a • x) = W.γA g a • W.γD T g x := by
   rw [← algebraMap_smul W.EE a x, W.γD_smul, W.γE_ext, algebraMap_smul]
   rfl
 
 /- English proof (translation)
-Rewrite using `[← algebraMap_smul W.EE a x, W.φD_smul, W.φE_ext, algebraMap_smul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem φ_smul (a : LetA O n) (x : W.DD T) : W.φD T (a • x) = W.φA a • W.φD T x := by
   rw [← algebraMap_smul W.EE a x, W.φD_smul, W.φE_ext, algebraMap_smul]
@@ -41,7 +41,7 @@ Both sides reduce to the same expression.
 theorem Q_def : ((letφ (n := n) W.φ₀ ^ (W.s - 1)) (fun _ => W.q₀)) = W.Q := rfl
 
 /- English proof (translation)
-Repeatedly rewrite using `[Finset.smul_sum, smul_smul, Finset.sum_smul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[mul_comm]`.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem sum_smul_sum {r : ℕ} (b : Fin r → W.DD T) (x : Fin r → LetA O n) (Mt : Fin r → Fin r → LetA O n) :
     ∑ j, x j • ∑ i, Mt i j • b i = ∑ i, (∑ j, Mt i j * x j) • b i := by
@@ -51,7 +51,7 @@ theorem sum_smul_sum {r : ℕ} (b : Fin r → W.DD T) (x : Fin r → LetA O n) (
   rw [mul_comm]
 
 /- English proof (translation)
-Establish `hu : IsUnit (algebraMap (LetA O n) W.EE (W.X ^ a))`. Rewrite using `[map_pow]`. Conclude with `(GlobalTheory.NL.IoXQ.isUnit_X W).pow a`. Rewrite `h` using `[← algebraMap_smul W.EE (W.X ^ a) x, ← algebraMap_smul W.EE (W.X ^ a) y]`. Conclude with `hu.smul_left_cancel.mp h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem X_smul_injective (a : ℕ) {x y : W.DD T} (h : W.X ^ a • x = W.X ^ a • y) : x = y := by
   have hu : IsUnit (algebraMap (LetA O n) W.EE (W.X ^ a)) := by
@@ -60,59 +60,53 @@ theorem X_smul_injective (a : ℕ) {x y : W.DD T} (h : W.X ^ a • x = W.X ^ a �
   exact hu.smul_left_cancel.mp h
 
 /- English proof (translation)
-Establish `hΓ : ∀ j, ∃ u : Fin r → LetA O n, W.γD T W.gam (b j) = ∑ i, u i • b i ∧ ∀ i, u i - (if i = j then 1 else 0) ∈ Ideal.span {(letπ : LetA O n)}`. Introduce `j`. Take `⟨y, hy, hyeq⟩` from `W.N_π T W.gam (b j) (hbN j)`. Take `⟨w, rfl⟩` from `hspan y hy`. Use `⟨fun i => (if i = j then 1 else 0) + letπ * w i, ?_, fun i => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[sub_eq_iff_eq_add'.1 hyeq]`. Simplify using `only [add_smul, Finset.sum_add_distrib, ite_smul, one_smul, zero_smul, Finset.sum_ite_eq', Finset.mem_univ, if_true, Finset.smul_sum, smul_smul]`. Rewrite using `[add_sub_cancel_left]`. Conclude with `Ideal.mul_mem_right _ _ (Ideal.subset_span rfl)`. Use `choose Γc hΓeq hΓmem using hΓ`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hcomm : ∀ (e : LetA O n) (x : LetA O n) (z : W.DD T), e • (x • z) = x • (e • z)` using `fun e x z => smul_comm _ _ _`. Take `⟨K, hK⟩ : ∃ K : ℕ, ∀ j, W.Q ^ K • W.φD T (b j) ∈ W.N T` from `by choose k hk using fun j => W.N_φ T (b j) (hbN j)`. Use `⟨∑ j, k j, fun j => ?_⟩` and prove the remaining obligations. Establish `hle` using `Finset.single_le_sum (fun j _ => Nat.zero_le (k j)) (Finset.mem_univ j)`. Rewrite using `[← Nat.sub_add_cancel hle, pow_add, mul_smul]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(W.N T).smul_mem _ (by rw [← Q_def]; exact hk j)`. Use `choose Φc hΦc using fun j => hspan _ (hK j)`. Establish `hspanφ : Submodule.span (LetA O n) (W.φD T '' (W.N T : Set (W.DD T))) ≤ Submodule.span (LetA O n) (Set.range fun i => W.φD T (b i))`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨x, hx, rfl⟩`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨u, rfl⟩` from `hspan x hx`. Rewrite using `[map_sum]`. Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Rewrite using `[φ_smul]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨k', hk'⟩ : ∃ k' : ℕ, ∀ j, W.Q ^ k' • b j ∈ Submodule.span (LetA O n) (Set.range fun i => W.φD T (b i))` from `by choose k hk using fun j => W.N_φinv T (b j) (hbN j)`. Use `⟨∑ j, k j, fun j => ?_⟩` and prove the remaining obligations. Establish `hle` using `Finset.single_le_sum (fun j _ => Nat.zero_le (k j)) (Finset.mem_univ j)`. Rewrite using `[← Nat.sub_add_cancel hle, pow_add, mul_smul]`. Conclude with `Submodule.smul_mem _ _ (hspanφ (by rw [← Q_def]; exact hk j))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `choose Ψc hΨc using fun j => (Submodule.mem_span_range_iff_exists_fun _).1 (hk' j)`. Take `⟨c, hc⟩` from `hspan _ hX`. Take `⟨υ, hυ⟩` from `hspan _ hφ`. Take `⟨y, hy, hym⟩` from `hγ`. Take `⟨ω, rfl⟩` from `hspan y hy`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact.
 
-Establish `E1 : ∀ i, W.X ^ a * ∑ k, Γc k i * W.γA W.gam (c k) = W.γA W.gam W.X ^ a * (c i + letπ * W.X ^ a * ω i)`. Establish `h1 : W.X ^ a • W.γD T W.gam (W.X ^ a • m) = ∑ i, (W.X ^ a * ∑ k, Γc k i * W.γA W.gam (c k)) • b i`. Rewrite using `[hc, map_sum]`. Repeatedly rewrite using `[γ_smul, hΓeq]`. Rewrite using `[sum_smul_sum W T b _ (fun i k => Γc k i), Finset.smul_sum]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Repeatedly rewrite using `[smul_smul]`. Establish `h2 : W.X ^ a • W.γD T W.gam (W.X ^ a • m) = ∑ i, (W.γA W.gam W.X ^ a * (c i + letπ * W.X ^ a * ω i)) • b i`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[γ_smul, map_pow, sub_eq_iff_eq_add'.1 hym]`. Establish `hA : W.X ^ a * W.γA W.gam W.X ^ a = W.γA W.gam W.X ^ a * W.X ^ a` using `mul_comm _ _`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hB : W.X ^ a * (W.γA W.gam W.X ^ a * letπ) = W.γA W.gam W.X ^ a * letπ * W.X ^ a` using `by ring`. Simplify using `only [smul_add, smul_smul, hA, hB]`. Use `_ = _ := by`. Rewrite using `[hc, Finset.smul_sum, Finset.smul_sum, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[smul_smul, smul_smul, ← add_smul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Conclude with `congrFun (hli _ _ (h1.symm.trans h2))`. Establish `E2 : ∀ i, W.Q ^ M * ∑ k, Φc k i * W.φA (c k) = W.Q ^ K * W.Q ^ a * W.Q ^ M * c i + W.Q ^ K * W.X ^ a * W.Q ^ a * υ i`.
+Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : W.Q ^ M • W.Q ^ K • W.φD T (W.X ^ a • m) = ∑ i, (W.Q ^ M * ∑ k, Φc k i * W.φA (c k)) • b i`. Rewrite using `[hc, map_sum, Finset.smul_sum]`. Repeatedly rewrite using `[φ_smul, hcomm (W.Q ^ K), hΦc]`. Rewrite using `[sum_smul_sum W T b _ (fun i k => Φc k i), Finset.smul_sum]`. Repeatedly rewrite using `[smul_smul]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h2 : W.Q ^ M • W.Q ^ K • W.φD T (W.X ^ a • m) = ∑ i, (W.Q ^ K * W.Q ^ a * W.Q ^ M * c i + W.Q ^ K * W.X ^ a * W.Q ^ a * υ i) • b i`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[φ_smul, map_pow, W.φA_X, mul_pow]`. Establish `hA : W.Q ^ K * W.Q ^ a * W.Q ^ M * W.X ^ a = W.Q ^ K * W.X ^ a * W.Q ^ a * W.Q ^ M` using `by ring`. Establish `hB : W.Q ^ M * (W.Q ^ K * (W.X ^ a * W.Q ^ a)) = W.Q ^ K * W.X ^ a * W.Q ^ a * W.Q ^ M` using `by ring`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [smul_sub, smul_smul, hA, hB]`. Normalize the expressions using the abelian group laws. Use `_ = _ := by`. Rewrite using `[hc, hυ, Finset.smul_sum, Finset.smul_sum, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[smul_smul, smul_smul, ← add_smul]`. Conclude with `congrFun (hli _ _ (h1.symm.trans h2))`. Establish `E3 : ∀ j l, ∑ i, Φc i l * Ψc j i = if l = j then W.Q ^ K * W.Q ^ k' else 0`. Introduce `j`. Establish `h1 : W.Q ^ K • W.Q ^ k' • b j = ∑ l, (∑ i, Φc i l * Ψc j i) • b l`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hΨc j, Finset.smul_sum]`. Repeatedly rewrite using `[hcomm (W.Q ^ K), hΦc]`. Conclude with `sum_smul_sum W T b _ (fun l i => Φc i l)`. Establish `h2 : W.Q ^ K • W.Q ^ k' • b j = ∑ l, (if l = j then W.Q ^ K * W.Q ^ k' else 0) • b l`. Simplify using `[ite_smul, smul_smul]`.
+Assume the hypotheses and unpack their components. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Conclude with `congrFun (hli _ _ (h1.symm.trans h2))`. Establish `key` using `hdiv (M + a) (K + k') (Matrix.fromBlocks (W.X ^ a • (1 : Matrix (Fin r) (Fin r) (LetA O n))) (Matrix.of fun i _ => -c i) 0 (W.X ^ a • (1 : Matrix Unit Unit (LetA O n)))) (Matrix.fromBlocks (Matrix.of fun i j => Γc j i) (Matrix.of fun i _ => letπ * ω i) 0 1) (Matrix.fromBlocks (Ma …`. Establish `hd : ∀ i, ∃ d, c i = W.X ^ a * d` using `fun i => by`. Use `key (Sum.inl i) (Sum.inr ())` as an intermediate fact. Conclude with `(by simpa [dvd_neg] using this : W.X ^ a ∣ c i)`.
+Assume the hypotheses and unpack their components. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use `choose d hd using hd`. Establish `e : W.X ^ a • m = W.X ^ a • ∑ i, d i • b i`. Rewrite using `[hc, Finset.smul_sum]`. Repeatedly rewrite using `[hd, smul_smul]`. Rewrite using `[X_smul_injective W T a e]`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
 
-Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (hbN i)`. Introduce and unpack `(i | i) (j | j)`. Simplify `hΓmem j i` using `[Matrix.one_apply]`. Simplify using `using Ideal.mul_mem_right (ω i) (Ideal.span {(letπ : LetA O n)}) (Ideal.mem_span_singleton_self _)`. Simplify using the standard rewrite rules.
+Take a linear combination of the given relations to obtain the conclusion. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using the standard rewrite rules. Introduce and unpack `(i | i) (j | j)`. Simplify `hΓmem j i` using `[Matrix.one_apply]`. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Use `Matrix.ext fun p q => ?_` and prove the remaining obligations. Apply the tactic sequence `rcases p with i | i <;> rcases q with j | j`. Simplify using `[Matrix.mul_apply, Fintype.sum_sum_type, Matrix.one_apply, apply_ite (W.γA W.gam)]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 
-Simplify using `[Matrix.mul_apply, Fintype.sum_sum_type, Matrix.one_apply, apply_ite (W.γA W.gam)]`. Take the linear combination `(-1 : LetA O n) * E1 i`. Simplify using `[Matrix.mul_apply, Fintype.sum_sum_type, Matrix.one_apply, apply_ite (W.γA W.gam)]`. Simplify using `[Matrix.mul_apply, Fintype.sum_sum_type, Matrix.one_apply, apply_ite (W.γA W.gam)]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities.
 
-Use `Matrix.ext fun p q => ?_` and prove the remaining obligations. Apply the tactic sequence `rcases p with i | i <;> rcases q with j | j`. Simplify using `[Matrix.mul_apply, Fintype.sum_sum_type, Matrix.one_apply]`. Rewrite using `[E3 j i, pow_add]`. Simplify using `[Matrix.mul_apply, Fintype.sum_sum_type, Matrix.one_apply]`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[Matrix.mul_apply, Fintype.sum_sum_type, Matrix.one_apply]`. Simplify using `[Matrix.mul_apply, Fintype.sum_sum_type, Matrix.one_apply]`. Expand and normalize the polynomial expressions, which then agree. Use `Matrix.ext fun p q => ?_` and prove the remaining obligations. Apply the tactic sequence `rcases p with i | i <;> rcases q with j | j`.
-
-Simplify using `[Matrix.mul_apply, Fintype.sum_sum_type, Matrix.one_apply, apply_ite W.φA]`. Rewrite using `[W.φA_X]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `[Matrix.mul_apply, Fintype.sum_sum_type, Matrix.one_apply, apply_ite W.φA]`. Rewrite using `[W.φA_X]`.
-
-Repeatedly rewrite using `[mul_assoc]`. Rewrite using `[← Finset.mul_sum]`. Take the linear combination `(-1 : LetA O n) * E2 i`. Simplify using `[Matrix.mul_apply, Fintype.sum_sum_type, Matrix.one_apply, apply_ite W.φA]`. Simplify using `[Matrix.mul_apply, Fintype.sum_sum_type, Matrix.one_apply, apply_ite W.φA]`.
-
-Rewrite using `[W.φA_X]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem mem_N_of_div {r : ℕ} (b : Fin r → W.DD T) (hbN : ∀ j, b j ∈ W.N T)
     (hspan : ∀ x ∈ W.N T, ∃ u : Fin r → LetA O n, x = ∑ i, u i • b i)
@@ -295,13 +289,11 @@ section Concrete
 set_option maxHeartbeats 1600000 in
 
 /- English proof (translation)
-Use `set e := Fintype.equivFin ι`. Use `set f := Matrix.reindexAlgEquiv (AA K LL) (AA K LL) e`. Establish `hf : ∀ (Z : Matrix ι ι (AA K LL)) i j, f Z i j = Z (e.symm i) (e.symm j)` using `fun Z i j => rfl`. Establish `hmap : ∀ (g : AA K LL → AA K LL) (Z : Matrix ι ι (AA K LL)), (f Z).map g = f (Z.map g)` using `fun g Z => rfl`. Apply the tactic sequence `have key := GlobalTheory.NL.WachMat.X_pow_dvd_entry D HW l K s LL h (Fintype.card ι) a m m' (f B) (f G) (f G₁) (f Pm) (f P₁) (f P₁') ?_ ?_ ?_ ?_ ?_`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `i j`. Use `key (e i) (e j)` as an intermediate fact. Rewrite `this` using `[hf, Equiv.symm_apply_apply, Equiv.symm_apply_apply]`. Then use the resulting hypothesis. Introduce `i j`. Rewrite using `[← map_one f, ← map_sub, hf]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hG _ _`. Introduce `i j`. Rewrite using `[← map_one f, ← map_sub, hf]`. Conclude with `hG₁ _ _`. Rewrite using `[hmap, ← map_mul, ← map_smul, hγ, map_smul, map_mul]`.
-
-Rewrite using `[← map_mul, hP, map_smul, map_one]`. Rewrite using `[hmap, ← map_mul, hφ, map_smul, map_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem X_pow_dvd_entry_of_fintype (D : Formalism.BasicNotions.D7) (HW : HWOf D.loc) (l : ℕ) [Fact l.Prime] (K : FinExt l)
     (s : ℕ) (LL : FinExt l) (h : Good K s LL) {ι : Type} [Fintype ι] [DecidableEq ι] (a m m' : ℕ)
@@ -336,13 +328,13 @@ theorem X_pow_dvd_entry_of_fintype (D : Formalism.BasicNotions.D7) (HW : HWOf D.
 set_option maxHeartbeats 1600000 in
 
 /- English proof (translation)
-Introduce `D HW F l _ K s LL h W T hT M a m hφ hγ hX`. Take `⟨bN⟩` from `GlobalTheory.NL.N_basis D HW F l K s LL h T hT`. Use `mem_N_of_div W T (fun i => (bN i : W.DD T)) (fun i => (bN i).2) ?_ ?_ a ?_ M m ?_ ?_ hX` and prove the remaining obligations. Introduce `x hx`. Use `⟨fun i => bN.repr ⟨x, hx⟩ i, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h2` using `congrArg Subtype.val (bN.sum_repr ⟨x, hx⟩)`. Rewrite `h2` using `[Submodule.coe_sum]`. Simplify using `only [Submodule.coe_smul] at h2`. Conclude with `h2.symm`. Introduce `u u' huu`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `e : ∑ i, u i • bN i = ∑ i, u' i • bN i`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify `huu` using `only [Submodule.coe_sum, Submodule.coe_smul]`. Use `congrArg (fun x => ⇑(bN.repr x)) e` as an intermediate fact. Simplify `this` using `only [Module.Basis.repr_sum_self]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `mm mm' B G G₁ Pm P₁ P₁' h1 h2 h3 h4 h5`. Conclude with `X_pow_dvd_entry_of_fintype D HW l K s LL h a mm mm' B G G₁ Pm P₁ P₁' h1 h2 h3 h4 h5`. Conclude with `hφ`. Take `⟨y, hy, hyx⟩` from `Submodule.mem_map.1 hγ`. Conclude with `⟨y, hy, hyx.symm⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem mem_N : ∀ (D : Formalism.BasicNotions.D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (l : ℕ) [Fact l.Prime] (K : FinExt l) (s : ℕ) (LL : FinExt l) (h : Good K s LL), let W := (HW l).W K s LL h; ∀ T : Lt K LL, IsCrys ((D.loc l).PD K) T.ρ → ∀ (M a : ℕ) (m : W.DD T), W.φD T m - m ∈ invN W T (W.Q ^ M) → W.γ T m - m ∈ aN W T letπ → W.X ^ a • m ∈ W.N T → m ∈ W.N T := by
   intro D HW F l _ K s LL h W T hT M a m hφ hγ hX

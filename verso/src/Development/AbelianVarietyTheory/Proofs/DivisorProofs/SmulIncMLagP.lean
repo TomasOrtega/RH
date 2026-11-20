@@ -54,14 +54,14 @@ def vvMap (F : Type) [Field F] {E : Type} [Field E] [Algebra F E] [Module.Finite
       rw [mul_smul, mul_smul_comm]
 
 /- English proof (translation)
-The claim follows from `(RingHom.map_dotProduct (algebraMap F (AF F)) u v).symm`.
+A detailed English derivation is pending.
 -/
 theorem ratDot {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ] (u v : κ → F) :
     (fun i => algebraMap F (AF F) (u i)) ⬝ᵥ (fun i => algebraMap F (AF F) (v i)) = algebraMap F (AF F) (u ⬝ᵥ v) :=
   (RingHom.map_dotProduct (algebraMap F (AF F)) u v).symm
 
 /- English proof (translation)
-Rewrite using `[diagCols, diagCols, Matrix.fromRows_map, Matrix.map_one _ (map_zero _) (map_one _)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem map_diagCols {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (n : ℕ) :
     (diagCols (Fin n) : Matrix (Fin n ⊕ Fin n) (Fin n) E).map (inclR (F := F) (AF F)) =
@@ -69,11 +69,11 @@ theorem map_diagCols {F E : Type} [Field F] [NumberField F] [Field E] [NumberFie
   rw [diagCols, diagCols, Matrix.fromRows_map, Matrix.map_one _ (map_zero _) (map_one _)]
 
 /- English proof (translation)
-Establish `hΔ : ∀ a b, inclR (F` using `F) (AF F) ((diagCols (Fin n) : Matrix (Fin n ⊕ Fin n) (Fin n) E) a b) = (diagCols (Fin n) : Matrix (Fin n ⊕ Fin n) (Fin n) (AE F E)) a b := fun a b => by`. Rewrite using `[← map_diagCols (F := F) n]`. Both sides reduce to the same expression. Use extensionality with `i j`. Simplify using `only [lagP, LinearMap.coe_mk, AddHom.coe_mk, incM, Matrix.smul_apply, Matrix.map_apply, Matrix.add_apply, Matrix.mul_apply, Matrix.vecMulVec_apply, incV, map_add, map_sum, map_mul, Matrix.transpose_apply, smul_add, Finset.smul_sum, hΔ, smul_eq_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use `congr 1`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[← mul_smul_comm, Finset.smul_sum]`. Use `congr 1`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[smul_mul_assoc]`. Rewrite using `[mul_smul_comm]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem smul_incM_lagP {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {n d d₁ : ℕ}
     (ι : Matrix (Fin d) (Fin d₁) E) (x : Fin d → E) (t : AF F) (p : Matrix (Fin d₁) (Fin n) E × (Fin n ⊕ Fin n → E)) :

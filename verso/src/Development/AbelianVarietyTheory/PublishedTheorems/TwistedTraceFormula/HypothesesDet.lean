@@ -14,7 +14,7 @@ namespace GlobalTheory.Published.TemperedComplex
 variable {n a : ℕ} {ε : Fin n → Bool}
 
 /- English proof (translation)
-Use `(isClosed_leviOne hW hj).inter ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `IsClosed {g : UJ ε | ∀ y : Fin n → ℂ, (∀ z ∈ W (Fin.last a), star z ⬝ᵥ (Jm ε *ᵥ y) = 0) → uMat g *ᵥ y - y ∈ W (Fin.last a)}`. Simplify using `only [Set.setOf_forall]`. Conclude with `isClosed_iInter fun y => isClosed_iInter fun _ => (W _).closed_of_finiteDimensional.preimage ((continuous_uMat.matrix_mulVec continuous_const).sub continuous_const)`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isClosed_glPart {j : Fin a → ℕ} {W : Flag n a} (hW : IsIsoFlag ε j W) (hj : ∀ i, 1 ≤ j i) :
     IsClosed (glPart ε W : Set (UJ ε)) := by
@@ -26,7 +26,7 @@ theorem isClosed_glPart {j : Fin a → ℕ} {W : Flag n a} (hW : IsIsoFlag ε j 
     (W _).closed_of_finiteDimensional.preimage ((continuous_uMat.matrix_mulVec continuous_const).sub continuous_const)
 
 /- English proof (translation)
-Establish `hK : IsCompact (KG ε : Set (UJ ε))` using `isCompact_iff_compactSpace.2 (instCompactKG n ε)`. Establish `: CompactSpace ↥(KG ε ⊓ glPart ε W)` using `isCompact_iff_compactSpace.1 (hK.inter_right (isClosed_glPart hW hj))`. Conclude with `⟨Measure.haarMeasure ⊤, inferInstance, ⟨Measure.haarMeasure_self⟩⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem exists_haar {j : Fin a → ℕ} {W : Flag n a} (hW : IsIsoFlag ε j W) (hj : ∀ i, 1 ≤ j i) :
     ∃ μ : Measure ↥(KG ε ⊓ glPart ε W), μ.IsHaarMeasure ∧ IsProbabilityMeasure μ := by
@@ -36,7 +36,7 @@ theorem exists_haar {j : Fin a → ℕ} {W : Flag n a} (hW : IsIsoFlag ε j W) (
   exact ⟨Measure.haarMeasure ⊤, inferInstance, ⟨Measure.haarMeasure_self⟩⟩
 
 /- English proof (translation)
-Use `haveI : LocallyCompactSpace (glPart ε W) := (isClosed_glPart hW hj).locallyCompactSpace`. Conclude with `⟨Measure.haar, inferInstance⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_haar_glPart {j : Fin a → ℕ} {W : Flag n a} (hW : IsIsoFlag ε j W) (hj : ∀ i, 1 ≤ j i) :
     ∃ ν : Measure (glPart ε W), ν.IsHaarMeasure := by
@@ -44,15 +44,15 @@ theorem exists_haar_glPart {j : Fin a → ℕ} {W : Flag n a} (hW : IsIsoFlag ε
   exact ⟨Measure.haar, inferInstance⟩
 
 /- English proof (translation)
-Establish `one : ∀ {u : UJ ε}, IsSplit ε W 0 u → u = 1` using `fun hu => (existsUnique_isSplit hW 0).unique hu isSplit_one`. Establish `hN : (1 : UJ ε) ∈ flagN ε W` using `⟨fun i y _ => by simp [uMat_one], fun y _ => by simp [uMat_one]⟩`. Establish `law : ∀ f ∈ indFun (glPart ε W) j W σ s, ∀ g ∈ glPart ε W, f g = σ (uMat g) (f 1)` using `fun f hf g hg => by`. Simplify `hf.2.2 1 hN g hg.1 0 1 isSplit_one (one_mem _) hg (one_mem _) 1 (one_mem _)` using `[pairing]`. Use `⟨Function.Surjective.denseRange fun v => ⟨⟨fun g => if g ∈ glPart ε W then σ (uMat g) v else 0, ?_, fun g hg => if_neg hg, fun u hu m _ x t ht h1 hm h3 g hg => ?_⟩, ?_⟩, fun f => ?_, fun y hy f f' e => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations.
 
-Use `((hσ.2.2 v).comp continuous_uMat.continuousOn fun g hg => ⟨g, hg, rfl⟩).congr fun g hg => if_pos hg` and prove the remaining obligations. Establish `hx : x = 0` using `funext fun i => by`. Use `ht.detOn_succ hW i` as an intermediate fact. Rewrite `this` using `[h3.1.2, h3.1.2, one_mul, eq_comm, Real.exp_eq_one_iff, mul_eq_zero]`. Establish `hji` using `hj i`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `this.resolve_left (by exact_mod_cast (by omega : j i ≠ 0))`. Substitute `hx` using the available equality. Establish `hu1 : u = 1` using `one ⟨h1.1.1, fun i y hy => by simpa using hu.1 i y hy, hu.2⟩`. Rewrite using `[hu1, one ht, one_mul, mul_one]`. Simplify using `only`.
+Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_pos (mul_mem hm hg), if_pos hg, uMat_mul, hσ.1.2 _ ⟨m, hm, rfl⟩ _ ⟨g, hg, rfl⟩]`. Simplify using `[pairing]`. Simplify using `[uMat_one, hσ.1.1, one_mem]`. Establish `: ∀ k : ↥(KG ε ⊓ glPart ε W), ‖f.1 k‖ = ‖f.1 1‖` using `fun k => by`. Rewrite using `[law _ f.2 _ k.2.2, hσ.2.1 _ ⟨_, k.2.2, rfl⟩]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[this]`. Simplify `(law _ f.2 y hy).symm` using `[e]`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem isIndModel_self {j : Fin a → ℕ} {W : Flag n a} (hW : IsIsoFlag ε j W) (hj : ∀ i, 1 ≤ j i)
     {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V] {σ : Matrix (Fin n) (Fin n) ℂ → (V →L[ℂ] V)}
@@ -86,7 +86,7 @@ theorem isIndModel_self {j : Fin a → ℕ} {W : Flag n a} (hW : IsIsoFlag ε j 
   · simpa [e] using (law _ f.2 y hy).symm
 
 /- English proof (translation)
-Use `⟨π, 0, by rwa [inf_eq_right.2 (glPart_le W)], fun μ _ _ => ⟨ℂ, _, _, inferInstance, π, _, isIndModel_self hW (fun _ => le_rfl) hπ _ μ, LinearIsometry.id, fun _ _ _ => rfl⟩⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations.
 -/
 theorem conclusion_of_steps_one {W : Flag n a} (hW : IsIsoFlag ε (fun _ => 1) W)
     {π : Matrix (Fin n) (Fin n) ℂ → (ℂ →L[ℂ] ℂ)} (hπ : IsURepOn (mats (glPart ε W)) π) :
@@ -102,13 +102,11 @@ theorem conclusion_of_steps_one {W : Flag n a} (hW : IsIsoFlag ε (fun _ => 1) W
     isIndModel_self hW (fun _ => le_rfl) hπ _ μ, LinearIsometry.id, fun _ _ _ => rfl⟩⟩
 
 /- English proof (translation)
-Establish `hW : IsIsoFlag e2 (fun _ => 1) W2`. Use `isIsotropicFlag_unitary_one_one using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `i`. Rewrite using `[Subsingleton.elim i 0]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `h` using `isURepOn_det (H := ℂ) e2`. Establish `sub : mats (glPart e2 W2) ⊆ UJset e2`. Introduce and unpack `_ ⟨g, -, rfl⟩`. Conclude with `g.2`. Use `⟨hW, fun e => ?_, ⟨⟨h.1.1, fun x hx y hy => h.1.2 x (sub hx) y (sub hy)⟩, fun g hg => h.2.1 g (sub hg), fun v => (h.2.2 v).mono sub⟩, fun S _ _ => eq_bot_or_eq_top S, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `GlobalTheory.LeviFactor.Model.neg_mem_generalLinearPart_unitary_one_one` as an intermediate fact. Rewrite `this` using `[e, Subgroup.mem_bot]`. Conclude with `GlobalTheory.LeviFactor.Model.neg_notMem_specialLinearPart_unitary_one_one (this ▸ one_mem _)`. Use `haveI : CompactSpace (glPart e2 W2) := isCompact_iff_compactSpace.1 ((isCompact_iff_compactSpace.2 (instCompactKG 2 e2)).of_isClosed_subset (isClosed_glPart hW fun _ => le_rfl) ((glPart_le W2).trans levi_borel_le_compact))`. Use `⟨Measure.haar, inferInstance, fun v w r hr => ?_⟩` and prove the remaining obligations.
-
-Use `Continuous.integrable_of_hasCompactSupport ?_ (isClosed_tsupport _).isCompact` and prove the remaining obligations. Use `Continuous.rpow_const (Continuous.norm (continuous_const.inner ?_)) fun _ => Or.inr (by positivity)` and prove the remaining obligations. Conclude with `(h.2.2 w).comp_continuous (continuous_uMat.comp continuous_subtype_val) fun g => g.1.2`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem hypotheses_det : IsIsoFlag e2 (fun _ => 1) W2 ∧ glPart e2 W2 ≠ ⊥ ∧
     IsURepOn (mats (glPart e2 W2)) (fun g => g.det • (1 : ℂ →L[ℂ] ℂ)) ∧

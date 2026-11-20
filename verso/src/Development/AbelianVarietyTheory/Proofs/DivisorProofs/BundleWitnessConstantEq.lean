@@ -13,11 +13,11 @@ namespace GlobalTheory.Mem.Top.Bl
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Introduce `hL p`. Use `GlobalTheory.Fc.EvP.of_all fun _ K _ q c b w _ => ?_` and prove the remaining obligations. Establish `hR : b.R.T.n.cf = GlobalTheory.Mem.Col2.TC.cf q.w.I q.w.l q.Z` using `congrArg Sigma.fst w.recPin.s.chr`. Rewrite using `[hR]`. Establish `hC : q.x.what₂.r.z.R.toRealDat.C = GlobalTheory.Mem.Col2.TC.cf q.w.I q.w.l q.Z` using `q.x.what₂.r.z.lev.C`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← hC]`. Take `⟨x, a, ax, y⟩` from `w`. Consider the cases of `ax`. Take `⟨Dc, Sp, Zsc, lam, err, lam_eq, x, pack, _⟩` from `a`. Take `⟨G, grp, fin, Pl0, I0, T0, A3, core, alg, R, F, cG, _⟩` from `x`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Split into cases according to the possible forms of the given data. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Simplify using `only at pack ⊢`. Consider the cases of `pack`. Both sides reduce to the same expression.
+Simplify by unfolding definitions. Split into cases according to the possible forms of the given data. Both sides reduce to the same expression.
 -/
 theorem bwit_cf_eq : ∀ (hL : GlobalTheory.Published.LocalLanglandsGL) (p : Prm hL), GlobalTheory.Fc.EvP fun _ K => ∀ (q : WPt p.s K) (c : ℝ) (b : GlobalTheory.Fc.Bundle (q.w.D q.Z) q.O c) (w : BWit q b), q.O.L.sc = K.s → w.x.R.C = b.R.T.n.cf := by
   intro hL p

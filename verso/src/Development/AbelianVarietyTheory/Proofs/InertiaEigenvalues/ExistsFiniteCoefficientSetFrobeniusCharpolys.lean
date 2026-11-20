@@ -11,13 +11,13 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formal
 namespace GlobalTheory.FrobSysCoef
 
 /- English proof (translation)
-Introduce `l _ ι E Ω _ _ _ _ _ a U p hU`. Distinguish the cases in `hex : ∃ ρ₀ : Formalism.ConjugateSelfDual.G E Ω →* GL (Fin a) (Qbar l), Continuous (fun g => ((ρ₀ g : GL _ _) : Matrix (Fin a) (Fin a) (Qbar l))) ∧ IsSSRep ρ₀ ∧ (∀ σ ∈ U, ((ρ₀ σ : GL _ _) : Matrix (Fin a) (Fin a) (Qbar l)).charpoly.map ι.toRingHom = p σ)`. Take `⟨ρ₀, hc₀, hs₀, hp₀⟩` from `hex`. Take `⟨S₀, hS₀⟩` from `GlobalTheory.T.galoisRep_entries_mem_of_finset l E Ω a ρ₀ hc₀`. Use `⟨S₀.image ι, fun K hK ρ hc hs hp => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hK' : ∀ z ∈ S₀, z ∈ K` using `fun z hz => by`. Simplify using `using hK (ι z) (Finset.mem_image_of_mem _ hz)`. Establish `hU' : ∀ σ ∈ U, ((ρ₀ σ : GL _ _) : Matrix (Fin a) (Fin a) (Qbar l)).charpoly = ((ρ σ : GL _ _) : Matrix (Fin a) (Fin a) (Qbar l)).charpoly` using `fun σ hσ => Polynomial.map_injective ι.toRingHom ι.injective ((hp₀ σ hσ).trans (hp σ hσ).symm)`. Establish `hall` using `GlobalTheory.charpoly_eq_of_eqOn_dense _ _ hc₀ hc U hU hU'`. Take `⟨Pm, hPm⟩` from `Formalism.MainNotions.SumRepresentations.brauerNesbitt_matrix ρ₀ ρ hs₀ hs hall`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨Pm⁻¹, fun g s t => ?_⟩` and prove the remaining obligations. Establish `: Pm⁻¹⁻¹ * ρ g * Pm⁻¹ = ρ₀ g`. Rewrite using `[hPm g, inv_inv]`. Use `group`. Rewrite using `[this]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hS₀ K hK' g s t`. Use `⟨∅, fun K _ ρ hc hs hp => ?_⟩` and prove the remaining obligations. Conclude with `absurd ⟨ρ, hc, hs, hp⟩ hex`.
+A detailed English derivation is pending.
 -/
 theorem main : ∀ (l : ℕ) [Fact l.Prime] (ι : Qbar l ≃+* ℂ) (E Ω : Type) [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω] (a : ℕ) (U : Set (Formalism.ConjugateSelfDual.G E Ω)) (p : Formalism.ConjugateSelfDual.G E Ω → ℂ[X]), Dense U → ∃ S : Finset ℂ, ∀ K : IntermediateField ℚ_[l] (Qbar l), (∀ z ∈ S, ι.symm z ∈ K) → ∀ ρ : Formalism.ConjugateSelfDual.G E Ω →* GL (Fin a) (Qbar l), Continuous (fun g => ((ρ g : GL _ _) : Matrix (Fin a) (Fin a) (Qbar l))) → IsSSRep ρ → (∀ σ ∈ U, ((ρ σ : GL _ _) : Matrix (Fin a) (Fin a) (Qbar l)).charpoly.map ι.toRingHom = p σ) → ∃ Pm : GL (Fin a) (Qbar l), ∀ g s t, ((Pm⁻¹ * ρ g * Pm : GL _ _) : Matrix (Fin a) (Fin a) (Qbar l)) s t ∈ K := by
   intro l _ ι E Ω _ _ _ _ _ a U p hU

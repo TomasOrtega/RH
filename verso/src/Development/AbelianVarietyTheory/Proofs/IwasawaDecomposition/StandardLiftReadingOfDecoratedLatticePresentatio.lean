@@ -10,7 +10,7 @@ open Formalism.IndefR.RecTie Formalism.IndefR.Lev Formalism.L2.Rows GlobalTheory
 namespace GlobalTheory.Mem.R3.LiftBrg
 
 /- English proof (translation)
-Substitute `h` using the available equality. Use extensionality with `i j`. Simplify using `only [castGL, Units.coe_mapEquiv, MulEquiv.coe_toMonoidHom]`. Simplify using `[Matrix.reindexAlgEquiv_apply]`. Conclude with `(hm.2 i j i j rfl rfl).symm`.
+Substitute using the available equality. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem castGL_of_matEq {A : Type} [CommRing A] {a b : ℕ} (h : a = b) (x : GL (Fin a) A) (y : GL (Fin b) A)
     (hm : MatEq x y) : y = castGL h x := by
@@ -21,7 +21,7 @@ theorem castGL_of_matEq {A : Type} [CommRing A] {a b : ℕ} (h : a = b) (x : GL 
   exact (hm.2 i j i j rfl rfl).symm
 
 /- English proof (translation)
-Substitute `h` using the available equality. Use `⟨rfl, fun i j i' j' hi hj => ?_⟩` and prove the remaining obligations. Take `rfl` from `Fin.ext hi`. Take `rfl` from `Fin.ext hj`. Simplify using `[castGL]`.
+Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 -/
 theorem matEq_castGL {A : Type} [CommRing A] {a b : ℕ} (h : a = b) (x : GL (Fin a) A) : MatEq x (castGL h x) := by
   subst h
@@ -31,7 +31,7 @@ theorem matEq_castGL {A : Type} [CommRing A] {a b : ℕ} (h : a = b) (x : GL (Fi
   simp [castGL]
 
 /- English proof (translation)
-Substitute `h` using the available equality. Establish `e : castGL (rfl : a = a) x = x`. Use extensionality with `i j`. Simplify using `[castGL]`. Rewrite using `[e]` and apply the resulting hypothesis.
+Substitute using the available equality. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 -/
 theorem castGL_mem_UA_std {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [StarRing E] [Algebra F E]
     (hc : CMData F E) {a b : ℕ} (h : a = b) (x : GL (Fin a) (E ⊗[F] Formalism.L2.Herm.Af F)) (hx : x ∈ Formalism.L2.DIV.UA hc 1) :
@@ -45,19 +45,17 @@ theorem castGL_mem_UA_std {F E : Type} [Field F] [NumberField F] [Field E] [Numb
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `X px I hX U Xg tr L eG hI hV hL hG cV i hβ hgram c hc P hR hcoef`. Unfold `BrgStdV StdSide`. Use `⟨c, ?_, ?_, ?_, X.toD7.sp.cm, ?_⟩` and prove the remaining obligations. Introduce `γ γE g hr hm v`. Establish `hg : g = castGL (rkEq X i).symm γE` using `castGL_of_matEq _ γE g hm`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Substitute `hg` using the available equality. Conclude with `hc γ γE hr v`. Introduce `hcm t φ h x hm`. Use `((hR t _ h).trans (hcoef t _)).trans ?_` and prove the remaining obligations. Use `congr 1`.
+Substitute using the available equality. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Formalism.L2.Col.decoPt_mk]`. Unfold `ptL`. Use `congr 1`. Rewrite `hm` using `[hβ]`. Establish `hx` using `castGL_of_matEq (rkEq X i).symm _ _ hm`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hx]`. Simplify using `only [matIn, mul_one, inv_one, one_mul, Equiv.symm_apply_apply, LinearEquiv.symm_apply_apply]`. Both sides reduce to the same expression. Establish `hli` using `(P (Formalism.L2.DIV.mu0F _)).coef_li`. Simplify using `only [hcoef] at hli`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hli`. Introduce `h`. Take `⟨g, hg⟩` from `h.2`. Establish `h1 : Formalism.UG.bc (swapAE X.toD7) h.1 ∈ Formalism.L2.DIV.UA X.toD7.sp.cm (Vc X.toD7 i).gram`. Rewrite using `[← hg]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `GlobalTheory.LevSplit.finE_mem_UA _ g`. Rewrite `h1` using `[hgram]`. Use `⟨⟨castGL (rkEq X i).symm (Formalism.UG.bc (swapAE X.toD7) h.1), castGL_mem_UA_std _ _ _ h1⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[hβ]`. Establish `hm` using `matEq_castGL (rkEq X i).symm (Formalism.UG.bc (swapAE X.toD7) h.1)`.
-
-Simplify using `only [matIn, mul_one]`. Conclude with `hm`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem brgStdV_of_readsStd_one : ∀ (X : Stages) (px : PreX X.B.toPre) (I : Col2.ColIn X.B px) (hX : X.B.fields.Ok) (U : Set I.ι) (Xg : Finset (Gc X.B px → X.B.LL)) (tr : TrI X.B px) (L : Formalism.IndefR.Links.LevCh X.toD7 (TupU I U)) (eG : Gc X.B px ≃* G0 L.Pg X.toD7.R.r), I.Ok → ValsIn I → LevOf X I U L → IsPlacewiseIdentity X (px := px) eG → ∀ (cV : ∀ i, CoefA (Vc X.toD7 i)) (i : Fin X.toD7.R.m), L.βV i = 1 → (Vc X.toD7 i).gram = 1 →
     ∀ c : VV X.B.fields.K (X.B.wts.lamV ((i : ℕ) + 1)) →ₛₗ[X.B.embLL] (cV i).W, (∀ (γ : GQ (Vc X.toD7 i)) (γE : GL (Fin (Vc X.toD7 i).rank) X.toD7.host.E), Bridge.IsRatMat (Vc X.toD7 i) γ γE →

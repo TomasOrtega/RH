@@ -27,7 +27,7 @@ variable {D : D7}
 def frameLat (V : HSp D) : Submodule (𝓞 D.host.E) V.V := Submodule.span (𝓞 D.host.E) (Set.range V.frame)
 
 /- English proof (translation)
-The claim follows from `Submodule.fg_span (Set.finite_range _) span_eq_top := by rw [frameLat, Submodule.span_span_of_tower] exact V.frame.span_eq`.
+A detailed English derivation is pending.
 -/
 theorem frameLat_isLattice (V : HSp D) : Submodule.IsLattice D.host.E (frameLat V) where
   fg := Submodule.fg_span (Set.finite_range _)
@@ -36,9 +36,9 @@ theorem frameLat_isLattice (V : HSp D) : Submodule.IsLattice D.host.E (frameLat 
     exact V.frame.span_eq
 
 /- English proof (translation)
-Establish `key` using `(Formalism.E.hermDual (𝓞 D.host.E) D.host.E V.V (Fin V.rank) V.hT V.frame (IsFractionRing.injective (𝓞 D.host.E) D.host.E) (fun s => ⟨⟨star (s : D.host.E), s.2.map (starRingEnd D.host.E).toIntAlgHom⟩, rfl⟩)).2 (1 : Matrix (Fin V.rank) (Fin V.rank) (𝓞 D.host.E)) (fun i j => by`. Use `congrFun (congrFun hV i) j` as an intermediate fact. Simplify using `only [HSpace.gram] at this`. Rewrite using `[this]`. Distinguish the cases in `h : i = j`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[h]) (by simp)`. Conclude with `key.2.2 (by simp)`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem frameLat_unimod (V : HSp D) (hV : V.gram = 1) : Formalism.HermitianLatticesTheory.IsUnimodular V.hT (frameLat V) := by
   have key := (Formalism.E.hermDual (𝓞 D.host.E) D.host.E V.V (Fin V.rank) V.hT V.frame
@@ -62,11 +62,11 @@ Both sides reduce to the same expression.
 example (V : HSp D) (hV : V.gram = 1) : GA D (stdLatSp V hV) = GA D V := rfl
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `∑ i, y i • V.frame i ∈ frameLat V ↔ _`. Rewrite using `[frameLat, Submodule.mem_span_range_iff_exists_fun]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨c, hc⟩ i`. Use `⟨c i, ?_⟩` and prove the remaining obligations.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1 : ∑ i, ((c i : D.host.E)) • V.frame i = ∑ i, y i • V.frame i`. Rewrite using `[← hc]`. Conclude with `Finset.sum_congr rfl fun i _ => (algebraMap_smul D.host.E (c i) (V.frame i))`. Use `congrArg (fun z => V.frame.repr z i) h1` as an intermediate fact. Simplify using `only [map_sum, map_smul, Module.Basis.repr_self, Finsupp.coe_finset_sum, Finset.sum_apply, Finsupp.smul_apply, Finsupp.single_apply, smul_eq_mul, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true] at this`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `this`. Introduce `h choose c hc using h`. Use `⟨c, Finset.sum_congr rfl fun i _ => ?_⟩` and prove the remaining obligations. Rewrite using `[← hc i]`. Conclude with `(algebraMap_smul D.host.E (c i) (V.frame i)).symm`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_frameLattice_iff_integral_coords (V : HSp D) (hV : V.gram = 1) (y : Fin V.rank → D.host.E) :
     y ∈ L0c D (stdLatSp V hV) ↔ ∀ i, ∃ b : 𝓞 D.host.E, (b : D.host.E) = y i := by

@@ -12,11 +12,11 @@ open GlobalTheory.Mum
 namespace GlobalTheory.Mum
 
 /- English proof (translation)
-Introduce `Ω T _ _ _ jT hj A P φ hφ x y k hxy hx`. Set `U : Over.mk ((baseOver (Sp Ω)).hom ≫ spMap jT) ⟶ baseOver (Sp T)` to `Over.homMk (spMap jT) (by simp)`. Establish `e1 : pushHom hφ (baseOver (Sp Ω)) x = U ≫ y` using `Over.OverMorphism.ext hxy`. Establish `e2 : U ≫ y ^ k = U ≫ 1`. Combine the equalities or inequalities in the displayed calculation.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `e3 : spMap jT ≫ (y ^ k).left = spMap jT ≫ (1 : baseOver (Sp T) ⟶ P.A).left` using `congrArg (fun z => z.left) e2`. Establish `: IsDominant (spMap jT)` using `⟨(PrimeSpectrum.denseRange_comap_iff_ker_le_nilRadical jT).2 (by`. Rewrite using `[(RingHom.injective_iff_ker_eq_bot jT).1 hj]`. Conclude with `bot_le)⟩`. Use `P.isAb.proper` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsReduced (baseOver (Sp T)).left` using `inferInstanceAs (IsReduced (Spec (CommRingCat.of T)))`. Conclude with `Over.OverMorphism.ext (ext_of_isDominant_of_isSeparated P.A.hom ((Over.w (y ^ k)).trans (Over.w (1 : baseOver (Sp T) ⟶ P.A)).symm) (spMap jT) e3)`.
+A detailed English derivation is pending.
 -/
 theorem pow_eq_one_of_isGrpPullback_of_injective : ∀ (Ω T : Type) [Field Ω] [CommRing T] [IsDomain T] (jT : T →+* Ω), Function.Injective jT → ∀ (A : PolAV (Sp Ω)) (P : PolAV (Sp T)) (φ : A.A.left ⟶ P.A.left), IsGrpPullback A.A P.A (spMap jT) φ → ∀ (x : baseOver (Sp Ω) ⟶ A.A) (y : baseOver (Sp T) ⟶ P.A) (k : ℕ), x.left ≫ φ = spMap jT ≫ y.left → x ^ k = 1 → y ^ k = 1 := by
   intro Ω T _ _ _ jT hj A P φ hφ x y k hxy hx

@@ -18,11 +18,11 @@ open GlobalTheory.HSShort GlobalTheory.HSChoice MvPolynomial
 namespace GlobalTheory.HSShort
 
 /- English proof (translation)
-Introduce `hF K _ _ X s hs hn hb hm`. Establish `hP` using `filP hF K X s hs hn hb`. Establish `hVT : spaceP X s ≤ X.V X.T` using `le_sup_right.trans (mulPow_mem_and_spaceV_le K X s hm).2`. Establish `hL : totFil X s (X.T - X.D) = (spaceP X s).map (LinearMap.single K (fun j => X.Sec j) X.T)` using `by show ((Fil (X.ideal s) (X.T - X.D) (spaceV X s)).comap (X.V X.T).subtype).map (LinearMap.single K _ X.T ∘ₗ (X.V X.T).subtype) = _`. Rewrite using `[hP, Submodule.map_comp, Submodule.map_comap_subtype, inf_of_le_right hVT]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hR : ∀ α : MonoDeg (Fin X.D) (X.T - X.D), (LinearMap.range (incl X X.D)).map (pw (shift X.toGeo) s α.1) = ((X.V X.D).map (mulPow X.toGeo s (add_sub_D X) α)).map (LinearMap.single K (fun j => X.Sec j) X.T)`. Introduce `α`. Establish `he : pw (shift X.toGeo) s α.1 ∘ₗ LinearMap.single K (fun j => X.Sec j) X.D = LinearMap.single K (fun j => X.Sec j) X.T ∘ₗ mulPow X.toGeo s (add_sub_D X) α`. Use `LinearMap.ext fun m => ?_` and prove the remaining obligations. Simplify using `only [LinearMap.comp_apply, LinearMap.coe_single]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Conclude with `(GlobalTheory.T.hilbertSamuelSectionShift_comm_single_monomial K X.toGeo).2.2 s (X.T - X.D) X.D X.T (add_sub_D X) α m`. Rewrite using `[show incl X X.D = LinearMap.single K (fun j => X.Sec j) X.D ∘ₗ (X.V X.D).subtype from rfl, LinearMap.range_comp, Submodule.range_subtype, ← Submodule.map_comp, he, Submodule.map_comp]`. Rewrite using `[hL, iSup_congr hR, ← Submodule.map_iSup]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem totFil_deepest : FilMono → ∀ (K : Type) [Field K] [NumberField K] (X : Data K) (s : Fin X.D → Fin X.N → K), X.IsGood s → IsNef K X.LA → IsBig K X.LA → X.MulStable → totFil X s (X.T - X.D) = ⨆ α : MonoDeg (Fin X.D) (X.T - X.D), (LinearMap.range (incl X X.D)).map (pw (shift X.toGeo) s α.1) := by
   intro hF K _ _ X s hs hn hb hm

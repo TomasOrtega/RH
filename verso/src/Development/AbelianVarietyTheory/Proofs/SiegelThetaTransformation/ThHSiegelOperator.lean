@@ -15,9 +15,9 @@ def cons0 (x : Matrix (Fin n) (Fin N) E) : Matrix (Fin n) (Fin (N + 1)) E :=
 
 omit [NumberField E] in
 /- English proof (translation)
-Introduce `τ`. Establish `e : imH (pushZ Ψ Z v t τ) = imH (Z τ) + (t : ℂ) • vecMulVec (fun a => τ.1 (v a)) (star fun a => τ.1 (v a))`. Use extensionality with `a b`. Simplify using `only [imH, pushZ, Matrix.smul_apply, Matrix.sub_apply, Matrix.add_apply, conjTranspose_apply, vecMulVec_apply, smul_eq_mul, star_add, star_mul', Pi.star_apply, RCLike.star_def, conj_I, conj_ofReal, conj_conj]`. Clear the denominators using the available nonvanishing facts.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `(h τ).add_posSemidef ((posSemidef_vecMulVec_self_star _).smul (Complex.zero_le_real.2 ht))`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pushZ_mem {Z : CM Ψ N N} (h : Z ∈ Hn Ψ N) (v : Fin N → E) {t : ℝ} (ht : 0 ≤ t) :
     pushZ Ψ Z v t ∈ Hn Ψ N := by
@@ -43,11 +43,11 @@ open Matrix Complex NumberField Filter Topology in
 open scoped ComplexConjugate ComplexOrder Real Classical in
 variable {E : Type} [Field E] [NumberField E] (Ψ : Finset (E →+* ℂ)) {n N : ℕ} in
 /- English proof (translation)
-Set `e : Matrix (Fin n) (Fin N) E →+ Matrix (Fin n) (Fin (N + 1)) E` to `{ toFun := _root_.GlobalTheory.SW.SiegelOp.cons0 map_zero' := by`. Use extensionality with `k a`. Apply the tactic sequence `refine Fin.cases ?_ (fun b => ?_) a <;> simp [_root_.GlobalTheory.SW.SiegelOp.cons0]`. Use the proof step `map_add' := fun x y => by`. Use extensionality with `k a`.
+Introduce a local definition for the expression. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `refine Fin.cases ?_ (fun b => ?_) a <;> simp [_root_.GlobalTheory.SW.SiegelOp.cons0] }`. Establish `h` using `_root_.GlobalTheory.SW.Dict.isSB_comp e 1 1 one_pos one_pos ?_ ?_ hφ`. Conclude with `h`. Introduce `x hx k a`. Use `Fin.cases ?_ (fun b => ?_) a` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `[e, _root_.GlobalTheory.SW.SiegelOp.cons0, isIntegral_zero]`. Simplify `hx k b` using `[e, _root_.GlobalTheory.SW.SiegelOp.cons0]`. Introduce `x hx k a`. Simplify `hx k a.succ` using `[e, _root_.GlobalTheory.SW.SiegelOp.cons0]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 private lemma isSB_dropF'
     (φ : Matrix (Fin n) (Fin (N + 1)) E → ℂ) (hφ : _root_.GlobalTheory.SW.IsSB φ) :
@@ -73,9 +73,9 @@ open Matrix Complex NumberField Filter Topology in
 open scoped ComplexConjugate ComplexOrder Real Classical in
 variable {E : Type} [Field E] [NumberField E] (Ψ : Finset (E →+* ℂ)) {n N : ℕ} in
 /- English proof (translation)
-Introduce `τ`. Establish `h` using `(hZ τ).submatrix (Fin.succ_injective N)`. Unfold `_root_.GlobalTheory.SW.imH at h ⊢`. Unfold `_root_.GlobalTheory.SW.dropZ`. Use `h using 1` and compare the differences between its conclusion and the goal.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use extensionality with `a b`. Simplify using `[conjTranspose_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 private lemma dropZ_mem_Hn (Z : _root_.GlobalTheory.SW.CM Ψ (N + 1) (N + 1))
     (hZ : Z ∈ _root_.GlobalTheory.SW.Hn Ψ (N + 1)) :
@@ -92,9 +92,9 @@ open Matrix Complex NumberField Filter Topology in
 open scoped ComplexConjugate ComplexOrder Real Classical in
 variable {E : Type} [Field E] [NumberField E] (Ψ : Finset (E →+* ℂ)) {n N : ℕ} in
 /- English proof (translation)
-Introduce `τ`. Establish `hP` using `(posSemidef_vecMulVec_self_star (fun a ↦ (τ : E →+* ℂ) ((Pi.single 0 1 : Fin (N + 1) → E) a))).smul (a := t) ht`. Establish `h` using `(hZ τ).add_posSemidef hP`. Unfold `_root_.GlobalTheory.SW.imH at h ⊢`. Unfold `_root_.GlobalTheory.SW.pushZ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions.
 
-Use `h using 1` and compare the differences between its conclusion and the goal. Use extensionality with `a b`. Simplify using `only [Matrix.add_apply, Matrix.sub_apply, Matrix.smul_apply, conjTranspose_apply, vecMulVec_apply, smul_eq_mul, star_add, star_smul, Pi.star_apply]`. Simplify using `only [star_mul', Complex.star_def, map_mul, Complex.conj_I, Complex.conj_ofReal, Complex.conj_conj, Complex.real_smul]`. Establish `hI : (2 * I) ≠ 0` using `mul_ne_zero two_ne_zero I_ne_zero`.
+Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
 Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -121,9 +121,9 @@ open Matrix Complex NumberField Filter Topology in
 open scoped ComplexConjugate ComplexOrder Real Classical in
 variable {E : Type} [Field E] [NumberField E] (Ψ : Finset (E →+* ℂ)) {n N : ℕ} in
 /- English proof (translation)
-Establish `hs : (fun a ↦ σ ((Pi.single 0 1 : Fin (N + 1) → E) a)) = Pi.single 0 1`. Use function extensionality and compare the values at `a`. Distinguish the cases in `h : a = 0`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[Pi.single_apply, h]`. Rewrite using `[hs, add_mulVec, dotProduct_add, smul_mulVec, dotProduct_smul]`. Use `congr 1`. Simplify using `[vecMulVec, mulVec, dotProduct, Pi.single_apply, Complex.mul_conj]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 -/
 private lemma dotProduct_add_smul_vecMulVec_single_zero_mulVec (M : Matrix (Fin (N + 1)) (Fin (N + 1)) ℂ)
     (σ : E →+* ℂ) (u : Fin (N + 1) → ℂ) (c : ℂ) :
@@ -145,9 +145,9 @@ open Matrix Complex NumberField Filter Topology in
 open scoped ComplexConjugate ComplexOrder Real Classical in
 variable {E : Type} [Field E] [NumberField E] (Ψ : Finset (E →+* ℂ)) {n N : ℕ} in
 /- English proof (translation)
-Unfold `_root_.GlobalTheory.SW.expo _root_.GlobalTheory.SW.pushZ _root_.GlobalTheory.SW.SiegelOp.col`. Repeatedly rewrite using `[dotProduct_add_smul_vecMulVec_single_zero_mulVec]`. Use `push_cast`. Rewrite using `[Finset.mul_sum, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the conclusion repeatedly using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Finset.mul_sum, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 private lemma expo_pushZ_single_zero (x : Matrix (Fin n) (Fin (N + 1)) E)
     (Z : _root_.GlobalTheory.SW.CM Ψ (N + 1) (N + 1)) (z z' : _root_.GlobalTheory.SW.CM Ψ n (N + 1))
@@ -167,7 +167,7 @@ open Matrix Complex NumberField Filter Topology in
 open scoped ComplexConjugate ComplexOrder Real Classical in
 variable {E : Type} [Field E] [NumberField E] (Ψ : Finset (E →+* ℂ)) {n N : ℕ} in
 /- English proof (translation)
-Establish `h : 2 * ↑Real.pi * I * (_root_.GlobalTheory.SW.expo Ψ x Z z z' + I * t * _root_.GlobalTheory.SW.SiegelOp.col Ψ x) = 2 * ↑Real.pi * I * _root_.GlobalTheory.SW.expo Ψ x Z z z' + ((-(2 * Real.pi * t * _root_.GlobalTheory.SW.SiegelOp.col Ψ x) : ℝ) : ℂ)`. Use `push_cast`. Take the linear combination `(2 * (Real.pi : ℂ) * t * (_root_.GlobalTheory.SW.SiegelOp.col Ψ x : ℂ)) * I_sq`. Rewrite using `[expo_pushZ_single_zero, h, Complex.exp_add, Complex.ofReal_exp]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 private lemma mul_cexp_expo_pushZ_single_zero (φ : Matrix (Fin n) (Fin (N + 1)) E → ℂ)
     (x : Matrix (Fin n) (Fin (N + 1)) E) (Z : _root_.GlobalTheory.SW.CM Ψ (N + 1) (N + 1))
@@ -189,7 +189,7 @@ open Matrix Complex NumberField Filter Topology in
 open scoped ComplexConjugate ComplexOrder Real Classical in
 variable {E : Type} [Field E] [NumberField E] (Ψ : Finset (E →+* ℂ)) {n N : ℕ} in
 /- English proof (translation)
-The claim follows from `Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => normSq_nonneg _`.
+A detailed English derivation is pending.
 -/
 private lemma col_nonneg' (x : Matrix (Fin n) (Fin (N + 1)) E) :
     0 ≤ _root_.GlobalTheory.SW.SiegelOp.col Ψ x :=
@@ -199,11 +199,11 @@ open Matrix Complex NumberField Filter Topology in
 open scoped ComplexConjugate ComplexOrder Real Classical in
 variable {E : Type} [Field E] [NumberField E] (Ψ : Finset (E →+* ℂ)) {n N : ℕ} in
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Take `⟨σ, hσ⟩` from `hΨ`. Use `⟨fun k a => x k a.succ, ?_⟩` and prove the remaining obligations. Use extensionality with `k a`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Use `Fin.cases ?_ (fun b => ?_) a` and prove the remaining obligations. Establish `h1` using `(Finset.sum_eq_zero_iff_of_nonneg (fun τ _ => Finset.sum_nonneg fun k _ => normSq_nonneg _)).mp h ⟨σ, hσ⟩ (Finset.mem_univ _)`. Establish `h2` using `(Finset.sum_eq_zero_iff_of_nonneg (fun k _ => normSq_nonneg _)).mp h1 k (Finset.mem_univ _)`. Simplify `h2` using `[_root_.GlobalTheory.SW.SiegelOp.cons0]`. Simplify using `[_root_.GlobalTheory.SW.SiegelOp.cons0]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules.
 
-Introduce and unpack `⟨y, rfl⟩`. Simplify using `[_root_.GlobalTheory.SW.SiegelOp.col, _root_.GlobalTheory.SW.SiegelOp.cons0]`.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 -/
 private lemma col_eq_zero_iff_exists_eq_cons0 (hΨ : Ψ.Nonempty)
     (x : Matrix (Fin n) (Fin (N + 1)) E) :
@@ -227,7 +227,7 @@ open Matrix Complex NumberField Filter Topology in
 open scoped ComplexConjugate ComplexOrder Real Classical in
 variable {E : Type} [Field E] [NumberField E] (Ψ : Finset (E →+* ℂ)) {n N : ℕ} in
 /- English proof (translation)
-Introduce `y y' h`. Use extensionality with `k a`. Simplify `congrFun (congrFun h k) a.succ` using `[_root_.GlobalTheory.SW.SiegelOp.cons0]`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify to obtain the desired conclusion from the available facts.
 -/
 private lemma cons0_injective :
     Function.Injective (_root_.GlobalTheory.SW.SiegelOp.cons0 : Matrix (Fin n) (Fin N) E → _) := by
@@ -239,7 +239,7 @@ open Matrix Complex NumberField Filter Topology in
 open scoped ComplexConjugate ComplexOrder Real Classical in
 variable {E : Type} [Field E] [NumberField E] (Ψ : Finset (E →+* ℂ)) {n N : ℕ} in
 /- English proof (translation)
-Unfold `_root_.GlobalTheory.SW.expo _root_.GlobalTheory.SW.dropZ _root_.GlobalTheory.SW.SiegelOp.cons0`. Simplify using `[dotProduct, mulVec, Fin.sum_univ_succ]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 private lemma expo_cons0' (y : Matrix (Fin n) (Fin N) E)
     (Z : _root_.GlobalTheory.SW.CM Ψ (N + 1) (N + 1)) (z z' : _root_.GlobalTheory.SW.CM Ψ n (N + 1)) :
@@ -253,21 +253,21 @@ open Matrix Complex NumberField Filter Topology in
 open scoped ComplexConjugate ComplexOrder Real Classical in
 
 /- English proof (translation)
-Introduce `E _ _ _ Ψ hΨ n N φ hφ`. Use `⟨isSB_dropF' φ hφ, fun Z hZ => ⟨dropZ_mem_Hn Ψ Z hZ, fun t ht => pushZ_single_zero_mem_Hn_of_nonneg Ψ Z hZ t ht, fun z z' => ?_⟩⟩` and prove the remaining obligations. Establish `hne : Ψ.Nonempty`. Set `σ : E →+* ℂ` to `(IsAlgClosed.lift (R := ℚ) (S := E) (M := ℂ)).toRingHom`. Distinguish the cases in `h : σ ∈ Ψ`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Introduce a local definition for the expression. Consider separately whether the proposition holds or fails.
 
-Conclude with `⟨σ, h⟩`. Use `⟨ComplexEmbedding.conjugate σ, (hΨ _).mpr ?_⟩` and prove the remaining obligations. Simplify using `using h`. Establish `hsum` using `(_root_.GlobalTheory.SW.thH_summable_and_inj E Ψ hΨ n (N + 1) φ hφ Z hZ).1 z z'`. Set `g : Matrix (Fin n) (Fin (N + 1)) E → ℂ` to `fun x => if _root_.GlobalTheory.SW.SiegelOp.col Ψ x = 0 then φ x * cexp (2 * ↑Real.pi * I * _root_.GlobalTheory.SW.expo Ψ x Z z z') else 0`.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hlim : Tendsto (fun t : ℝ => ∑' x, φ x * cexp (2 * ↑Real.pi * I * _root_.GlobalTheory.SW.expo Ψ x (_root_.GlobalTheory.SW.pushZ Ψ Z (Pi.single 0 1) t) z z')) atTop (𝓝 (∑' x, g x))`. Use `tendsto_tsum_of_dominated_convergence hsum (fun x => ?_) ?_` and prove the remaining obligations. Repeatedly rewrite using `[mul_cexp_expo_pushZ_single_zero]`. Distinguish the cases in `hc : _root_.GlobalTheory.SW.SiegelOp.col Ψ x = 0`. Simplify using `[g, hc]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion repeatedly using the stated equalities. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Establish `hpos : 0 < _root_.GlobalTheory.SW.SiegelOp.col Ψ x` using `lt_of_le_of_ne (col_nonneg' Ψ x) (Ne.symm hc)`. Establish `h1 : Tendsto (fun t : ℝ => 2 * Real.pi * t * _root_.GlobalTheory.SW.SiegelOp.col Ψ x) atTop atTop` using `(tendsto_id.const_mul_atTop (by positivity : (0 : ℝ) < 2 * Real.pi)).atTop_mul_const hpos`. Establish `h2 : Tendsto (fun t : ℝ => Real.exp (-(2 * Real.pi * t * _root_.GlobalTheory.SW.SiegelOp.col Ψ x))) atTop (𝓝 0)` using `Real.tendsto_exp_atBot.comp (tendsto_neg_atTop_atBot.comp h1)`. Establish `h3` using `(Complex.continuous_ofReal.tendsto 0).comp h2`. Establish `h4` using `(tendsto_const_nhds (x := φ x * cexp (2 * ↑Real.pi * I * _root_.GlobalTheory.SW.expo Ψ x Z z z'))).mul h3`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify `h4` using `[g, hc]`. Use `filter_upwards [eventually_ge_atTop 0] with t ht x`. Rewrite using `[mul_cexp_expo_pushZ_single_zero, norm_mul, Complex.norm_real, Real.norm_eq_abs, abs_of_pos (Real.exp_pos _)]`. Use `mul_le_of_le_one_right (norm_nonneg _) (Real.exp_le_one_iff.mpr (neg_nonpos.mpr ?_))` and prove the remaining obligations. Conclude with `mul_nonneg (mul_nonneg (by positivity) ht) (col_nonneg' Ψ x)`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hsupp : Function.support g ⊆ Set.range _root_.GlobalTheory.SW.SiegelOp.cons0`. Introduce `x hx`. Assume the negation of the conclusion as `hr`. Apply `hx` to reduce the goal to its premises. Establish `hc : _root_.GlobalTheory.SW.SiegelOp.col Ψ x ≠ 0` using `fun h => hr ((col_eq_zero_iff_exists_eq_cons0 Ψ hne x).mp h |>.elim fun y hy => ⟨y, hy.symm⟩)`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[g, hc]`. Establish `key : ∑' x, g x = ∑' y, _root_.GlobalTheory.SW.dropF φ y * cexp (2 * ↑Real.pi * I * _root_.GlobalTheory.SW.expo Ψ y (_root_.GlobalTheory.SW.dropZ Ψ Z) (fun τ => (z τ).submatrix id Fin.succ) (fun τ => (z' τ).submatrix id Fin.succ))`. Rewrite using `[← cons0_injective.tsum_eq hsupp]`. Use `tsum_congr fun y => ?_` and prove the remaining obligations. Establish `hc : _root_.GlobalTheory.SW.SiegelOp.col Ψ (_root_.GlobalTheory.SW.SiegelOp.cons0 y) = 0` using `(col_eq_zero_iff_exists_eq_cons0 Ψ hne _).mpr ⟨y, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Simplify using `only [g, hc, if_true, expo_cons0']`. Both sides reduce to the same expression. Unfold `_root_.GlobalTheory.SW.thH`. Rewrite using `[← key]`. Conclude with `hlim`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.SW.thH_siegel_operator : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E]
     (Ψ : Finset (E →+* ℂ)), _root_.GlobalTheory.SW.IsType Ψ → ∀ (n N : ℕ)

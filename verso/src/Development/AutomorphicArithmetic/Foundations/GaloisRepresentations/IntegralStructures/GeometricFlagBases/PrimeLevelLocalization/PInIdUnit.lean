@@ -8,7 +8,7 @@ open UpperTheory.Gal.CertificateRingHomMap (Plc)
 namespace UpperTheory.Gal.Int.Geo.Pl
 
 /- English proof (translation)
-Rewrite using `[HeightOneSpectrum.adicCompletionIntegers.isUnit_iff_valued_eq_one]`. Express the relevant statement in the definitionally equal form `Valued.v ((algebraMap (𝓞 E) E s : E) : HeightOneSpectrum.adicCompletion E w) = 1`. Rewrite using `[HeightOneSpectrum.adicCompletion.valued_coe, HeightOneSpectrum.valuation_of_algebraMap, HeightOneSpectrum.intValuation_eq_one_iff]`. Conclude with `hs`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem isUnit_algebraMap_adicCompletionIntegers_of_not_mem (E : Type) [Field E] [NumberField E] (w : Plc E) (s : 𝓞 E)
     (hs : s ∉ w.asIdeal) :
@@ -20,7 +20,7 @@ private theorem isUnit_algebraMap_adicCompletionIntegers_of_not_mem (E : Type) [
   exact hs
 
 /- English proof (translation)
-Introduce `E _ _ w b c hc y`. Take `⟨s, hsc, hsw⟩` from `hc`. Establish `htop : Ideal.map (algebraMap (𝓞 E) (HeightOneSpectrum.adicCompletionIntegers E w)) c = ⊤` using `Ideal.eq_top_of_isUnit_mem _ (Ideal.mem_map_of_mem _ hsc) (isUnit_algebraMap_adicCompletionIntegers_of_not_mem E w s hsw)`. Unfold `InId`. Rewrite using `[Ideal.map_mul, htop, Ideal.mul_top]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem inIdUnit_holds : InIdUnit := by
   intro E _ _ w b c hc y

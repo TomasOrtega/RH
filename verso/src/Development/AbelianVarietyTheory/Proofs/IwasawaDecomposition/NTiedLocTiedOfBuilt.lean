@@ -10,14 +10,14 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formal
 namespace GlobalTheory.HeightCounting
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨⟨fun l _ => GlobalTheory.LocArith.arithTied l (D'.loc l), fun i w hw => D'.nbr_ind i w hw, fun i w hw => D'.ntwbr_ind i w hw⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem locTied_any (D' : D7) : Nonempty (Formalism.L2.LocTied D') :=
   ⟨⟨fun l _ => GlobalTheory.LocArith.arithTied l (D'.loc l), fun i w hw => D'.nbr_ind i w hw,
     fun i w hw => D'.ntwbr_ind i w hw⟩⟩
 
 /- English proof (translation)
-Introduce `hL hcg D' b`. Conclude with `⟨⟨⟨⟩⟩, locTied_any D'⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem nTied_locTied_of_built : ∀ (hL : GlobalTheory.Published.LocalLanglandsGL), CgCmp hL → ∀ (D' : D7) (b : NBuilt hL D'),
     Nonempty (NormalizedHeckeDataPlaceholder D') ∧ Nonempty (Formalism.L2.LocTied D') := by

@@ -22,7 +22,7 @@ set_option linter.overlappingInstances false
 noncomputable section
 
 /- English proof (translation)
-Rewrite `hY` using `[← PrimeSpectrum.zeroLocus_minimalPrimes]`. Take `⟨η, hη, rfl⟩` from `hY`. Conclude with `⟨η, hη, fun _ => Iff.rfl⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private theorem comp_min {A : Type} [CommRing A] {Y : Set (PrimeSpectrum A)}
     (hY : Y ∈ irreducibleComponents (PrimeSpectrum A)) : ∃ η ∈ minimalPrimes A, ∀ p, p ∈ Y ↔ η ≤ p.asIdeal := by
@@ -50,26 +50,24 @@ private def ld {S : Space O F 2} (M : Ideal S.B) {x : Ideal S.A} (L : S.Loc x) :
   sharp := ⊥
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨⟨fun a => hQ.1.1 (a.trans h), fun a => hQ.1.2 (a.trans h)⟩, fun a => absurd a (by decide)⟩`.
+Supply the required witnesses or components.
 -/
 private theorem ti_down {R : Type} [CommRing R] (ρ : NRep F 2 R) {P Q : Ideal R} (h : P ≤ Q) (hQ : ρ.TI Q) :
     ρ.TI P :=
   ⟨⟨fun a => hQ.1.1 (a.trans h), fun a => hQ.1.2 (a.trans h)⟩, fun a => absurd a (by decide)⟩
 
 /- English proof (translation)
-Take `⟨hc, ht⟩` from `sharp2 hF S x L hB hx`. Use `⟨?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `P Q h hP`. Conclude with `le_trans hP (Ideal.comap_mono (Ideal.comap_mono h))`. Introduce `P Q h hQ`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `ti_down _ h hQ`. Introduce `p hp`. Conclude with `Or.inl ⟨hp.off, fun a => absurd a (by decide)⟩`. Introduce `I hI hd`. Take `⟨p, hp, hle⟩` from `exists_nice_prime_above_of_large_dim l O F C₀ 2 hF hB (Or.inl rfl) S x L hx M hM I.asIdeal hI hd`.
+Prove the first alternative. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `⟨⟨p, hp.prime⟩, hp, hle⟩`. Introduce `e he`. Conclude with `absurd he (Set.notMem_empty _)`. Introduce `P _ hP`. Conclude with `hP`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Introduce `P Q hP hQ`. Establish `key : ∀ q : Ideal L.R, Relation.ReflTransGen (fun P Q => P ∈ (⊥ : Ideal L.R).minimalPrimes ∧ Q ∈ (⊥ : Ideal L.R).minimalPrimes ∧ ((2 * F.d + 1 : ℕ) : WithBot ℕ∞) ≤ ringKrullDim (L.R ⧸ (P ⊔ Q))) P.asIdeal q → ∀ Q : PrimeSpectrum L.R, Q.asIdeal = q → Relation.ReflTransGen (ld M L). …`. Introduce `q h`. Proceed by induction on `h with`. Consider the case `refl`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `Q hQ`. Rewrite using `[PrimeSpectrum.ext hQ]`. Consider the case `@tail b c _ hbc ih`. Introduce `Q hQ`. Substitute `hQ` using the available equality.
+Substitute using the available equality. Fix the arbitrary inputs or assume the hypotheses. Prove the first alternative. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(ih ⟨b, hbc.1.1.1⟩ rfl).tail hbc`. Conclude with `key _ (hc.2 _ hP _ hQ) Q rfl`. Introduce `P hP`. Conclude with `Or.inl (ht _ hP)`. Introduce `p hp hI hG P hP`.
-
-Conclude with `h1 x L p.asIdeal hp hI hG P.asIdeal P.2 hP`. Introduce `p _ he`. Conclude with `absurd he (Set.notMem_empty _)`.
+A detailed English derivation is pending.
 -/
 private theorem ld_ok (hF : F.Ok C₀) (hB : F.Big C₀) {S : Space O F 2} {M : Ideal S.B} (hM : S.FinLam M)
     (h1 : P1' S M) {x : Ideal S.A} (hx : ¬ S.u.triP ≤ x) (L : S.Loc x) : (ld M L).Ok := by
@@ -111,7 +109,7 @@ private theorem ld_ok (hF : F.Ok C₀) (hB : F.Big C₀) {S : Space O F 2} {M : 
     exact absurd he (Set.notMem_empty _)
 
 /- English proof (translation)
-Establish `: (gd S M).TI = (PrimeSpectrum.zeroLocus (S.u.triP : Set S.A))ᶜ ∩ (PrimeSpectrum.zeroLocus (S.u.triM : Set S.A))ᶜ`. Use extensionality with `p`. Conclude with `⟨fun h => h.1, fun h => ⟨h, fun a => absurd a (by decide)⟩⟩`. Rewrite using `[this]`. Conclude with `(PrimeSpectrum.isClosed_zeroLocus _).isOpen_compl.inter (PrimeSpectrum.isClosed_zeroLocus _).isOpen_compl`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem ti_open (S : Space O F 2) (M : Ideal S.B) : IsOpen (gd S M).TI := by
   have : (gd S M).TI = (PrimeSpectrum.zeroLocus (S.u.triP : Set S.A))ᶜ ∩
@@ -122,7 +120,7 @@ private theorem ti_open (S : Space O F 2) (M : Ideal S.B) : IsOpen (gd S M).TI :
   exact (PrimeSpectrum.isClosed_zeroLocus _).isOpen_compl.inter (PrimeSpectrum.isClosed_zeroLocus _).isOpen_compl
 
 /- English proof (translation)
-Establish `: (gd S M).Good = PrimeSpectrum.zeroLocus (M.map (S.inc : S.B →+* S.A) : Set S.A)`. Use extensionality with `p`. Conclude with `Ideal.map_le_iff_le_comap.symm`. Rewrite using `[this]`. Conclude with `PrimeSpectrum.isClosed_zeroLocus _`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem good_closed (S : Space O F 2) (M : Ideal S.B) : IsClosed (gd S M).Good := by
   have : (gd S M).Good = PrimeSpectrum.zeroLocus (M.map (S.inc : S.B →+* S.A) : Set S.A) := by
@@ -132,11 +130,9 @@ private theorem good_closed (S : Space O F 2) (M : Ideal S.B) : IsClosed (gd S M
   exact PrimeSpectrum.isClosed_zeroLocus _
 
 /- English proof (translation)
-Take `⟨hc, ht⟩` from `sharp2 hF S x.asIdeal L hB hx`. Use `letI : Algebra S.A L.R := (L.ι : S.A →+* L.R).toAlgebra`. Use `haveI : Module.Flat S.A L.R := (loc_flat hF (Or.inl rfl) S x.asIdeal L).1`. Establish `ch` using `chartOfFlat (PrimeSpectrum S.A) S.A id Topology.IsOpenEmbedding.id L.R`. Establish `hpt : id (PrimeSpectrum.comap (algebraMap S.A L.R) (closedPoint L.R)) = x` using `PrimeSpectrum.ext L.lies`.
+Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `ch` using `[hpt]`. Establish `hr` using `(loc_rho hF (Or.inl rfl) S x.asIdeal L).2.2.1`. Take `⟨a, b, c⟩` from `globOfCharts _ (gd S M) (ti_open S M) (good_closed S M) x L.R _ ch (ld M L) (by`. Use extensionality with `p`. Conclude with `and_congr (and_congr (hr p.asIdeal).1.not (hr p.asIdeal).2.1.not) (imp_congr Iff.rfl (hr p.asIdeal).2.2.not)) rfl (locProp _ _ (ld_ok hF hB hM h1 hx L))`.
-
-Use `⟨a fun P hP => le_trans ?_ (hc.1 P hP), b fun P hP => ht _ hP, c⟩` and prove the remaining obligations. Conclude with `Nat.cast_le.2 (Nat.le_succ _)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem at_pt (hF : F.Ok C₀) (hB : F.Big C₀) {S : Space O F 2} {M : Ideal S.B} (hM : S.FinLam M)
     (h1 : P1' S M) {x : PrimeSpectrum S.A} (hx : ¬ S.u.triP ≤ x.asIdeal) (L : S.Loc x.asIdeal) :
@@ -161,19 +157,17 @@ private theorem at_pt (hF : F.Ok C₀) (hB : F.Big C₀) {S : Space O F 2} {M : 
 end
 
 /- English proof (translation)
-Introduce `l _ O _ _ _ _ F C₀ hF hB S M hM h1 hS`. Use `haveI : IsNoetherianRing S.A := (gr_A hF (Or.inl rfl) S).2.2.2.2.2.1`. Establish `hok : (gd S M).Ok`. Use `⟨fun p hp => hp.1, preconnected_rank_two hF S, ?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `C hC ⟨p, hp, hp'⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Take `⟨x, ⟨⟨a, -⟩, b⟩, c⟩` from `jac hF (Or.inl rfl) S C hC Set.univ isOpen_univ ⟨p, ⟨hp, trivial⟩, hp'⟩`. Conclude with `⟨x, a, b, c⟩`. Introduce `p hp`. Rewrite using `[mem_closure_iff]`. Introduce `U hU hpU`.
+Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨x, ⟨⟨-, a⟩, b⟩, c⟩` from `jac hF (Or.inl rfl) S Set.univ isClosed_univ U hU ⟨p, ⟨trivial, hpU⟩, hp⟩`. Conclude with `⟨x, a, ⟨b, c⟩, Set.notMem_empty _⟩`. Introduce and unpack `Y ⟨hY, p, hp, hpI⟩`. Take `⟨η, hη, hi⟩` from `comp_min hY`. Take `⟨x, -, b, c⟩` from `l41 hF (Or.inl rfl) S η hη.1.1 (min_hom hF (Or.inl rfl) S η hη) fun h => hpI.1.1 (h.trans ((hi p).1 hp))`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨x, (hi x).2 c, b⟩`. Introduce `x hx`. Take `⟨L⟩` from `loc_ex hF (Or.inl rfl) S x.asIdeal hx.2 hx.1.1`. Conclude with `(at_pt hF hB hM h1 hx.1.2 L).1`. Introduce and unpack `x ⟨hx, -⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨L⟩` from `loc_ex hF (Or.inl rfl) S x.asIdeal hx.2 hx.1.1`. Conclude with `(at_pt hF hB hM h1 hx.1.2 L).2.1`. Take `⟨ξ, Z, hξ, hI, hZ, hMZ, hZξ, hd⟩` from `hS`. Take `⟨x, hm, hx, H⟩` from `seedpt hF (Or.inl rfl) S Z ξ hZ hξ hI hZξ`. Take `⟨L⟩` from `loc_ex hF (Or.inl rfl) S x.asIdeal hm hx.1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨P, hP, hPI, hπ, hdim⟩` from `H L`. Use `(at_pt hF hB hM h1 hx.2 L).2.2 ⟨⟨P, hP⟩, hMZ.trans hπ.ge, hPI, ?_⟩` and prove the remaining obligations. Use `show ((2 * F.d + 1 : ℕ) : WithBot ℕ∞) ≤ ringKrullDim (L.R ⧸ P)`. Rewrite using `[hdim, show ringKrullDim (S.B ⧸ Z) = _ from hd]`. Conclude with `(by omega : 2 * F.d + 1 ≤ 1 + 2 * F.d + 1)` after adjusting the coercions.
-
-Introduce `p hp hI`. Conclude with `globProp _ (gd S M) hok (a := ⟨p, hp⟩) hI`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Pr.components_good_rank_two :
     UpperTheory.V.Pr.PropagationTheoremGL2 := by

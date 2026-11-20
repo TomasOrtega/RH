@@ -19,7 +19,7 @@ def sqHom {C D Y' : CommRingCat.{0}} (g : C ⟶ D) (φ' : C ⟶ Y') : Arrow.mk g
   Arrow.homMk (u := φ') (v := pushout.inl g φ') pushout.condition.symm
 
 /- English proof (translation)
-Introduce `n` and use `by have : (pull R (f ≫ g) F n : H R E'' F n → H R E F n) = (pull R f F n) ∘ (pull R g F n) := by funext x; exact pull_comp R f g F n x rw [this]; exact (hf n).comp (hg n)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem eqv_comp (R : Type) [CommRing R] (F : Shv R) {E E' E'' : Spc} (f : E ⟶ E') (g : E' ⟶ E'')
     (hf : Eqv R f F) (hg : Eqv R g F) : Eqv R (f ≫ g) F := fun n => by
@@ -47,7 +47,7 @@ def Level0 : Prop := ∀ (q : ℕ) (i : ℤ) {A Y C D Y' : CommRingCat.{0}} (φ 
     ∀ m, RelZ q i m ψ → RelZ q i m ((Arrow.mapCechConerve (sqHom g φ')).app (SimplexCategory.mk 0))
 
 /- English proof (translation)
-Take `⟨e, he⟩` from `LateralTheory.EtaleFoundations.etale_cech_conerve_image_iso_cech_nerve_of_preserves_wide_pushouts CommRingCat.{0} Ψ (fun n => inferInstance) C D g`. Establish `h1 : (ag g) = e.hom ≫ cechAug (Spec.map g)` using `he`. Rewrite using `[h1]`. Conclude with `eqv_comp _ _ _ _ (eqv_of_iso _ _ e) h`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ag_eqv (q : ℕ) (i : ℤ) {C D : CommRingCat.{0}} (g : C ⟶ D)
     (h : Eqv _ (cechAug (Spec.map g)) (tw q i)) : Eqv _ (ag g) (tw q i) := by
@@ -60,9 +60,9 @@ abbrev uMap {C D Y' : CommRingCat.{0}} (g : C ⟶ D) (φ' : C ⟶ Y') : Sg (push
   NatTrans.leftOp (Functor.whiskerRight (Arrow.mapCechConerve (sqHom g φ')) Ψ)
 
 /- English proof (translation)
-Use `NatTrans.ext (funext fun n => ?_)` and prove the remaining obligations. Establish `key : (coAug g).app n.unop ≫ (Arrow.mapCechConerve (sqHom g φ')).app n.unop = φ' ≫ (coAug (pushout.inr g φ')).app n.unop`. Simplify using `[coAug, sqHom]`. Apply `WidePushout.head_desc` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `(Ψ.map ((Arrow.mapCechConerve (sqHom g φ')).app n.unop)).unop ≫ (Ψ.map ((coAug g).app n.unop)).unop = (Ψ.map ((coAug (pushout.inr g φ')).app n.unop)).unop ≫ (Ψ.map φ').unop`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[← unop_comp, ← unop_comp, ← Ψ.map_comp, ← Ψ.map_comp, key]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem u_sq {C D Y' : CommRingCat.{0}} (g : C ⟶ D) (φ' : C ⟶ Y') :
     uMap g φ' ≫ ag g = ag (pushout.inr g φ') ≫ sch.map (Spec.map φ') := by
@@ -76,9 +76,9 @@ theorem u_sq {C D Y' : CommRingCat.{0}} (g : C ⟶ D) (φ' : C ⟶ Y') :
   rw [← unop_comp, ← unop_comp, ← Ψ.map_comp, ← Ψ.map_comp, key]
 
 /- English proof (translation)
-Introduce `hH q _ i A Y φ hq P hP C D c g hCc hDc hgi hgs Y' w φ' hpo`. Establish `hB4 : B4` using `hH.2.2.2.2.2.2.2.2.1`. Take `⟨hgi', hgs'⟩` from `h2 g φ' hgi hgs`. Establish `hqC : IsUnit (q : C)` using `by simpa using hq.map c.hom`. Establish `hqY : IsUnit (q : Y')` using `by simpa using hqC.map φ'.hom`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨_, _, uMap g φ', ag (pushout.inr g φ'), ag g, u_sq g φ', ag_eqv q i g (h1 hB4 q i g hgi hgs hqC), ag_eqv q i _ (h1 hB4 q i _ hgi' hgs' hqY), fun p => ?_, ?_⟩` and prove the remaining obligations. Conclude with `⟨_, c ≫ (coAug g).app (SimplexCategory.mk p), _, w ≫ (coAug (pushout.inr g φ')).app (SimplexCategory.mk p), _, h4 P hP c g hCc hDc _, h3 φ c w φ' g hpo _, fun m hm => hm⟩`. Take `⟨Z, wz, ψ, hpo0, hrel⟩` from `h5 q i φ c w φ' g hpo`. Conclude with `⟨Z, wz, ψ, hpo0, fun m hm => hrel m hm⟩`.
+Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem CechSq_of (h1 : IntegralSurjectiveRingCechAugmentationEtaleEqv) (h2 : BaseChange) (h3 : LevelPush) (h4 : LevelP) (h5 : Level0) : CechSq := by
   intro hH q _ i A Y φ hq P hP C D c g hCc hDc hgi hgs Y' w φ' hpo

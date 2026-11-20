@@ -3,9 +3,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument
 open MeasureTheory Topology PositivityTheory.Rg.Tf.Loc UpperTheory.V.Z.Tf.Orb
 
 /- English proof (translation)
-Introduce `hT k _ _ _ _ _ E _ _ _ _ _ _ _ _ σ hσ n _ _ μE hμE δ hδ μ hμ`. Use `⟨fun c φ => ?_, fun φ ψ a1 a2 b1 b2 => ?_⟩` and prove the remaining obligations. Simplify using `only [twOrbIntegralC, quotIntegral] split_ifs`. Simplify using `only [Pi.smul_apply, smul_eq_mul, mul_assoc]`. Conclude with `integral_const_mul _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Take `⟨h, p, -⟩` from `hT k E σ hσ n μE hμE φ a1 a2 δ hδ μ hμ`. Take `⟨-, q, -⟩` from `hT k E σ hσ n μE hμE ψ b1 b2 δ hδ μ hμ`. Simplify using `only [twOrbIntegralC, quotIntegral, dif_pos h, Pi.add_apply, add_mul]`. Conclude with `integral_add (p _ h.choose_spec) (q _ h.choose_spec)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Tf.Orb.twOrbLin :
     UpperTheory.V.Z.Tf.Orb.TwOrbFin → UpperTheory.V.Z.Tf.Orb.TwOrbLin := by

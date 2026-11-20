@@ -15,7 +15,7 @@ namespace PDiv
 variable {p : ℕ} [hp : Fact p.Prime] {R A : Type} [CommRing R] [CommRing A]
 
 /- English proof (translation)
-Take `⟨u, hu⟩` from `(dualTensorHom_bijective (R := R) (M := M) (N := M)).2 LinearMap.id`. Take `⟨u, rfl⟩` from `(LinearEquiv.rTensor M (CartierDual.toDual R M)).surjective u`. Take `⟨s, rfl⟩` from `TensorProduct.exists_finset u`. Conclude with `⟨s, fun a => by simpa using LinearMap.congr_fun hu a⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_dualSystem (R M : Type) [CommRing R] [AddCommGroup M] [Module R M]
     [Module.Finite R M] [Module.Projective R M] :
@@ -28,11 +28,11 @@ theorem exists_dualSystem (R M : Type) [CommRing R] [AddCommGroup M] [Module R M
 variable [Bialgebra R A]
 
 /- English proof (translation)
-Establish `key : ∀ k : ℕ, dUnit R (a ^ (k + 1)) = ((k + 1 : ℕ) * counitAlgHom R A a ^ k : R) • dUnit R a` using `fun k => by`. Proceed by induction on `k with`. Consider the case `zero => simp`. Consider the case `succ k ih`. Rewrite using `[pow_succ, dUnit, AugCot.d_mul, ← dUnit, ← dUnit, ih, smul_smul, ← add_smul, map_pow]`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Take `⟨k, hk⟩` from `Nat.exists_eq_succ_of_ne_zero hp.out.ne_zero`. Use `key k` as an intermediate fact.
+Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `this` using `[← Nat.succ_eq_add_one, ← hk, h, zero_mul, zero_smul]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem dUnit_pow_prime (h : (p : R) = 0) (a : A) : dUnit R (a ^ p) = 0 := by
   have key : ∀ k : ℕ, dUnit R (a ^ (k + 1)) =
@@ -51,9 +51,9 @@ theorem dUnit_pow_prime (h : (p : R) = 0) (a : A) : dUnit R (a ^ p) = 0 := by
 variable [IsCocomm R A]
 
 /- English proof (translation)
-Set `j : CartierDual R A →* WithConv (A →ₗ[R] B)` to `{ toFun := fun χ => toConv ((Algebra.ofId R B).toLinearMap ∘ₗ χ.ofConv) map_one' := rfl map_mul' := fun χ ψ => congrArg toConv (LinearMap.algHom_comp_convMul_distrib _ χ ψ) }`. Establish `hj : ∀ (c : B) χ a, (c • j χ).ofConv a = χ a • c` using `fun c χ a => (mul_comm _ _).trans (Algebra.smul_def _ _).symm`. Establish `e : toConv f = ∑ i ∈ s, b i • j (φ i)` using `WithConv.ext (LinearMap.ext fun a => by`. Rewrite using `[ofConv_toConv, hf, ofConv_sum, LinearMap.sum_apply]`. Simplify using `only [hj])`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `h0` using `natCast_eq_zero_of_algebra h (WithConv (A →ₗ[R] B))`. Rewrite using `[e, ← frobRing_apply h0, map_sum, ofConv_sum, LinearMap.sum_apply]`. Simplify using `only [frobRing_apply, smul_pow, ← map_pow, hj]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem convPow_prime_apply (h : (p : R) = 0) {B ι : Type} [CommRing B] [Algebra R B] (s : Finset ι)
     (φ : ι → CartierDual R A) (b : ι → B) (f : A →ₗ[R] B) (hf : ∀ a, f a = ∑ i ∈ s, φ i a • b i)
@@ -80,15 +80,15 @@ open PDiv
 variable {p : ℕ} [hp : Fact p.Prime] {R S : Type} [CommRing R] [CommRing S]
 
 /- English proof (translation)
-Rewrite using `[natCast_smul_id_app]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem prime_smul_id_app (G : PDivGroup p R) (n : ℕ) (a : G.A n) :
     Hom.app ((p : ℤ_[p]) • 𝟙 G) n a = mulBy R _ p a := by rw [natCast_smul_id_app]
 
 /- English proof (translation)
-Establish `e' : ((p : ℤ_[p]) • 𝟙 G) ≫ f = ((p : ℤ_[p]) • 𝟙 G) ≫ 0`. Rewrite using `[Linear.smul_comp, Category.id_comp, e, Limits.comp_zero]`. Use `hom_ext fun n => BialgHom.ext fun a => Test.mulP_injective G n ?_` and prove the remaining obligations. Take `⟨b, rfl⟩` from `H.res_surjective n a`. Rewrite using `[← res_app, ← res_app, mulP_res, mulP_res, ← prime_smul_id_app, ← prime_smul_id_app]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `congrArg (fun g => Hom.app g (n + 1) b) e'`.
+A detailed English derivation is pending.
 -/
 theorem eq_zero_of_prime_smul_eq_zero {G H : PDivGroup p R} {f : G ⟶ H}
     (e : (p : ℤ_[p]) • f = 0) : f = 0 := by
@@ -100,7 +100,7 @@ theorem eq_zero_of_prime_smul_eq_zero {G H : PDivGroup p R} {f : G ⟶ H}
   exact congrArg (fun g => Hom.app g (n + 1) b) e'
 
 /- English proof (translation)
-The claim follows from `LinearMap.ext fun y => by induction y with | zero => simp only [map_zero] | add x y hx hy => simp only [map_add, hx, hy] | tmul r x => rw [LinearMap.comp_apply, liftSemi_tmul, liftSemi_tmul, map_smul, ← SemiHom.ofHom_rig, (G.toBase S).rig_rig _ s fun n a => ((s.lift_app n 1 a).tr …`.
+A detailed English derivation is pending.
 -/
 theorem SemiHom.rigExtMap_lift_comp_liftSemi [Algebra R S] {G : PDivGroup p R} {G' : PDivGroup p S}
     (s : SemiHom (algebraMap R S) G' G) :
@@ -116,7 +116,7 @@ theorem SemiHom.rigExtMap_lift_comp_liftSemi [Algebra R S] {G : PDivGroup p R} {
 variable (h : (p : R) = 0) (G : PDivGroup p R)
 
 /- English proof (translation)
-The claim follows from `frobTwist_ext_dual h n fun χ => by rw [frobTwistDual_verschiebung, map_sum] refine (convPow_prime_apply h s φ (fun i => χ (e i)) χ.ofConv (fun a => by simpa only [map_sum, map_smul] using congrArg χ.ofConv (hs a).symm) a).trans (Finset.sum_congr rfl fun i _ => ?_) rw [map_smul, f …`.
+A detailed English derivation is pending.
 -/
 theorem verschiebung_app_eq_sum (n : ℕ) {ι : Type} (s : Finset ι) (φ : ι → CartierDual R (G.A n))
     (e : ι → G.A n) (hs : ∀ a, ∑ i ∈ s, φ i a • e i = a) (a : G.A n) :
@@ -129,7 +129,7 @@ theorem verschiebung_app_eq_sum (n : ℕ) {ι : Type} (s : Finset ι) (φ : ι �
     rw [map_smul, frobTwistDual_frobProj]
 
 /- English proof (translation)
-Take `⟨s, hs⟩` from `exists_dualSystem R (G.A n)`. Rewrite using `[verschiebung_app_eq_sum h G n s Prod.fst Prod.snd hs, map_sum]`. Simplify using `only [map_smul, relFrob_app_frobProj]`. Use `(convPow_prime_apply h s Prod.fst Prod.snd LinearMap.id (fun a => (hs a).symm) a).symm.trans ?_` and prove the remaining obligations. Conclude with `(congrArg (fun f => f.ofConv a) (BialgHom.toLinearMap_convPow (toConv (BialgHom.id R (G.A n))) p)).symm`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem relFrob_app_verschiebung_app (n : ℕ) (a : G.A n) :
     (relFrob h G).app n ((verschiebung h G).app n a) = mulBy R _ p a := by
@@ -141,16 +141,16 @@ theorem relFrob_app_verschiebung_app (n : ℕ) (a : G.A n) :
     (BialgHom.toLinearMap_convPow (toConv (BialgHom.id R (G.A n))) p)).symm
 
 /- English proof (translation)
-The claim follows from `hom_ext fun n => BialgHom.ext fun a => (relFrob_app_verschiebung_app h G n a).trans (prime_smul_id_app G n a).symm`.
+A detailed English derivation is pending.
 -/
 theorem relFrob_comp_verschiebung : relFrob h G ≫ verschiebung h G = (p : ℤ_[p]) • 𝟙 G :=
   hom_ext fun n => BialgHom.ext fun a =>
     (relFrob_app_verschiebung_app h G n a).trans (prime_smul_id_app G n a).symm
 
 /- English proof (translation)
-Rewrite using `[← absFrob_app h]`. Proceed by induction on `x using frobTwist_induction h n with`. Consider the case `h0 => simp only [map_zero]`. Consider the case `h2 x y hx hy => simp only [map_add, hx, hy]`. Consider the case `h1 r a`.
+Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Rewrite using `[map_smul, SemiBialgHom.smul_map, SemiBialgHom.smul_map, relFrob_app_frobProj, map_pow, absFrob_app]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem frobProj_app_relFrob_app (n : ℕ) (x : (frobTwist h G).A n) :
     (frobProj h G).app n ((relFrob h G).app n x) = x ^ p := by
@@ -163,7 +163,7 @@ theorem frobProj_app_relFrob_app (n : ℕ) (x : (frobTwist h G).A n) :
       absFrob_app]
 
 /- English proof (translation)
-The claim follows from `frobTwist_hom_ext h fun n a => by rw [prime_smul_id_app, ← SemiBialgHom.map_mulBy, ← relFrob_app_verschiebung_app h, frobProj_app_relFrob_app, ← map_pow, ← relFrob_app_frobProj h] rfl`.
+A detailed English derivation is pending.
 -/
 theorem verschiebung_comp_relFrob :
     verschiebung h G ≫ relFrob h G = (p : ℤ_[p]) • 𝟙 (frobTwist h G) :=
@@ -175,7 +175,7 @@ theorem verschiebung_comp_relFrob :
 variable {G}
 
 /- English proof (translation)
-The claim follows from `Preadditive.epi_of_cancel_zero _ fun g e => eq_zero_of_prime_smul_eq_zero (by rw [← Category.id_comp g, ← Linear.smul_comp, ← verschiebung_comp_relFrob, Category.assoc, e, Limits.comp_zero])`.
+A detailed English derivation is pending.
 -/
 theorem epi_relFrob : Epi (relFrob h G) :=
   Preadditive.epi_of_cancel_zero _ fun g e => eq_zero_of_prime_smul_eq_zero (by
@@ -183,7 +183,7 @@ theorem epi_relFrob : Epi (relFrob h G) :=
       Limits.comp_zero])
 
 /- English proof (translation)
-The claim follows from `Preadditive.mono_of_cancel_zero _ fun g e => eq_zero_of_prime_smul_eq_zero (by rw [← Category.comp_id g, ← Linear.comp_smul, ← relFrob_comp_verschiebung h, ← Category.assoc, e, Limits.zero_comp])`.
+A detailed English derivation is pending.
 -/
 theorem mono_relFrob : Mono (relFrob h G) :=
   Preadditive.mono_of_cancel_zero _ fun g e => eq_zero_of_prime_smul_eq_zero (by
@@ -191,7 +191,7 @@ theorem mono_relFrob : Mono (relFrob h G) :=
       Limits.zero_comp])
 
 /- English proof (translation)
-The claim follows from `haveI := epi_relFrob h (G := G) (cancel_epi _).1 (e.trans (relFrob_comp_verschiebung h G).symm)`.
+A detailed English derivation is pending.
 -/
 theorem eq_verschiebung_of_relFrob_comp {v : frobTwist h G ⟶ G}
     (e : relFrob h G ≫ v = (p : ℤ_[p]) • 𝟙 G) : v = verschiebung h G :=
@@ -199,7 +199,7 @@ theorem eq_verschiebung_of_relFrob_comp {v : frobTwist h G ⟶ G}
   (cancel_epi _).1 (e.trans (relFrob_comp_verschiebung h G).symm)
 
 /- English proof (translation)
-The claim follows from `haveI := mono_relFrob h (G := G) (cancel_mono _).1 (e.trans (verschiebung_comp_relFrob h G).symm)`.
+A detailed English derivation is pending.
 -/
 theorem eq_verschiebung_of_comp_relFrob {v : frobTwist h G ⟶ G}
     (e : v ≫ relFrob h G = (p : ℤ_[p]) • 𝟙 _) : v = verschiebung h G :=
@@ -211,7 +211,7 @@ section Naturality
 variable (h' : (p : S) = 0) {σ : R →+* S} {G' : PDivGroup p S} (s : SemiHom σ G' G)
 
 /- English proof (translation)
-Proceed by induction on `x using frobTwist_induction h n with`. Consider the case `h0 => simp only [map_zero]`. Consider the case `h2 x y hx hy => simp only [map_add, hx, hy]`. Consider the case `h1 r a`. Rewrite using `[map_smul, SemiBialgHom.smul_map, SemiBialgHom.smul_map, map_smul, relFrob_app_frobProj, SemiHom.frobTwist_app_frobProj, relFrob_app_frobProj, map_pow]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem SemiHom.app_relFrob (n : ℕ) (x : (PDivGroup.frobTwist h G).A n) :
     s.app n ((relFrob h G).app n x) = (relFrob h' G').app n ((s.frobTwist h h').app n x) := by
@@ -223,7 +223,7 @@ theorem SemiHom.app_relFrob (n : ℕ) (x : (PDivGroup.frobTwist h G).A n) :
       SemiHom.frobTwist_app_frobProj, relFrob_app_frobProj, map_pow]
 
 /- English proof (translation)
-Use `Test.mulP_injective (PDivGroup.frobTwist h' G') n ?_` and prove the remaining obligations. Take `⟨b, rfl⟩` from `G.res_surjective n a`. Rewrite using `[← PDivGroup.res_app, ← SemiHom.res_app, ← SemiHom.res_app, ← PDivGroup.res_app, mulP_res, mulP_res, ← map_mulBy, ← SemiBialgHom.map_mulBy (s.app _), ← relFrob_app_verschiebung_app h, s.app_relFrob h h', ← prime_smul_id_app, ← verschiebung_comp_relFrob]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem SemiHom.app_verschiebung (n : ℕ) (a : G.A n) :
     (s.frobTwist h h').app n ((verschiebung h G).app n a) =
@@ -239,7 +239,7 @@ theorem SemiHom.app_verschiebung (n : ℕ) (a : G.A n) :
 variable {H : PDivGroup p R}
 
 /- English proof (translation)
-The claim follows from `frobTwist_hom_ext h fun n a => by change f.app n ((relFrob h H).app n _) = (relFrob h G).app n ((frobTwistMap h f).app n _) rw [frobTwistMap_app_frobProj, relFrob_app_frobProj, relFrob_app_frobProj, map_pow]`.
+A detailed English derivation is pending.
 -/
 theorem relFrob_naturality (f : G ⟶ H) : f ≫ relFrob h H = relFrob h G ≫ frobTwistMap h f :=
   frobTwist_hom_ext h fun n a => by
@@ -247,7 +247,7 @@ theorem relFrob_naturality (f : G ⟶ H) : f ≫ relFrob h H = relFrob h G ≫ f
     rw [frobTwistMap_app_frobProj, relFrob_app_frobProj, relFrob_app_frobProj, map_pow]
 
 /- English proof (translation)
-Use `haveI := epi_relFrob h (G := G)`. Rewrite using `[← cancel_epi (relFrob h G), ← Category.assoc, ← relFrob_naturality, Category.assoc, ← Category.assoc (relFrob h G), relFrob_comp_verschiebung, relFrob_comp_verschiebung, Linear.comp_smul, Linear.smul_comp, Category.comp_id, Category.id_comp]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem verschiebung_naturality (f : G ⟶ H) :
     frobTwistMap h f ≫ verschiebung h H = verschiebung h G ≫ f := by
@@ -259,7 +259,7 @@ theorem verschiebung_naturality (f : G ⟶ H) :
 variable (G) [Algebra R S]
 
 /- English proof (translation)
-The claim follows from `baseChange_hom_ext fun n x => (congrArg ((relFrob h' (G.baseChange S)).app n) (frobTwistBaseChange_hom_app h G h' n x)).trans ((G.toBase S).app_relFrob h h' n x).symm`.
+A detailed English derivation is pending.
 -/
 theorem relFrob_baseChange : relFrob h' (G.baseChange S) ≫ (frobTwistBaseChange h G h').hom =
     baseChangeMap S (relFrob h G) :=
@@ -268,7 +268,7 @@ theorem relFrob_baseChange : relFrob h' (G.baseChange S) ≫ (frobTwistBaseChang
       ((G.toBase S).app_relFrob h h' n x).symm
 
 /- English proof (translation)
-The claim follows from `baseChange_hom_ext fun n a => (frobTwistBaseChange_hom_app h G h' n _).trans ((G.toBase S).app_verschiebung h h' n a)`.
+A detailed English derivation is pending.
 -/
 theorem verschiebung_baseChange : (frobTwistBaseChange h G h').hom ≫
     baseChangeMap S (verschiebung h G) = verschiebung h' (G.baseChange S) :=
@@ -280,7 +280,7 @@ end Naturality
 variable (G)
 
 /- English proof (translation)
-The claim follows from `frobTwist_hom_ext h fun n χ => (CartierDual.ext_apply fun a => frobTwistDual_verschiebung h n χ a).trans (relFrob_app_frobProj h (G := G.dual) n χ).symm`.
+A detailed English derivation is pending.
 -/
 theorem dualHom_verschiebung :
     dualHom _ _ (verschiebung h G) ≫ (frobTwistDual h G).hom = relFrob h G.dual :=
@@ -288,7 +288,7 @@ theorem dualHom_verschiebung :
     frobTwistDual_verschiebung h n χ a).trans (relFrob_app_frobProj h (G := G.dual) n χ).symm
 
 /- English proof (translation)
-Rewrite using `[← Iso.eq_inv_comp]`. Use `(eq_verschiebung_of_relFrob_comp h ?_).symm` and prove the remaining obligations. Rewrite using `[← dualHom_verschiebung, Category.assoc, Iso.hom_inv_id_assoc, ← dualHom_comp, relFrob_comp_verschiebung, map_smul, dualHom_id]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem dualHom_relFrob :
     (frobTwistDual h G).hom ≫ verschiebung h G.dual = dualHom _ _ (relFrob h G) := by
@@ -298,7 +298,7 @@ theorem dualHom_relFrob :
     relFrob_comp_verschiebung, map_smul, dualHom_id]
 
 /- English proof (translation)
-The claim follows from `LinearMap.ext fun w => Subtype.ext (funext fun n => by obtain ⟨x, hx⟩ := AugCot.d_surjective _ (w.1 n) rw [omegaMap_val, ← hx, cotMap_d] change dUnit R _ = 0 clear hx induction x using frobTwist_induction h n with | h0 => simp only [map_zero] | h2 x y hx hy => simp only [map_add, …`.
+A detailed English derivation is pending.
 -/
 theorem omegaMap_relFrob : omegaMap _ _ (relFrob h G) = 0 :=
   LinearMap.ext fun w => Subtype.ext (funext fun n => by
@@ -312,7 +312,7 @@ theorem omegaMap_relFrob : omegaMap _ _ (relFrob h G) = 0 :=
     | h1 r a => rw [map_smul, relFrob_app_frobProj, dUnit, map_smul, ← dUnit, dUnit_pow_prime h, smul_zero])
 
 /- English proof (translation)
-The claim follows from `LinearMap.ext fun w => by rw [LinearMap.comp_apply, rigExtMap_rigOfOmega, omegaMap_relFrob, LinearMap.zero_apply, map_zero, LinearMap.zero_apply]`.
+A detailed English derivation is pending.
 -/
 theorem rigExtMap_relFrob_comp_rigOfOmega :
     rigExtMap (relFrob h G) ∘ₗ (frobTwist h G).rigOfOmega = 0 :=
@@ -321,7 +321,7 @@ theorem rigExtMap_relFrob_comp_rigOfOmega :
       LinearMap.zero_apply]
 
 /- English proof (translation)
-The claim follows from `frobTwist_ext_dual h n fun χ => by rw [frobTwistDual_verschiebung, map_zero, ← primTangent_d ⟨b, hb⟩, dUnit_pow_prime h, map_zero]`.
+A detailed English derivation is pending.
 -/
 theorem verschiebung_app_eq_zero (n : ℕ) {b : G.A n} (hb : cobOne R _ b = 0) :
     (verschiebung h G).app n b = 0 :=
@@ -329,7 +329,7 @@ theorem verschiebung_app_eq_zero (n : ℕ) {b : G.A n} (hb : cobOne R _ b = 0) :
     rw [frobTwistDual_verschiebung, map_zero, ← primTangent_d ⟨b, hb⟩, dUnit_pow_prime h, map_zero]
 
 /- English proof (translation)
-The claim follows from `LinearMap.ext fun x => ((frobTwist h G).extChar_bijective h).1 (Subtype.ext (by rw [extChar_vecExtMap h, verschiebung_app_eq_zero h G 1 (G.extChar h x).2, LinearMap.zero_apply, map_zero] rfl))`.
+A detailed English derivation is pending.
 -/
 theorem vecExtMap_verschiebung : vecExtMap (verschiebung h G) = 0 :=
   LinearMap.ext fun x => ((frobTwist h G).extChar_bijective h).1 (Subtype.ext (by
@@ -338,7 +338,7 @@ theorem vecExtMap_verschiebung : vecExtMap (verschiebung h G) = 0 :=
     rfl))
 
 /- English proof (translation)
-Introduce and unpack `_ ⟨x, rfl⟩`. Use `((frobTwist h G).exact_rigOfOmega_rigToExt _).1 ?_` and prove the remaining obligations. Rewrite using `[rigToExt_rigExtMap, vecExtMap_verschiebung, LinearMap.zero_apply]`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem range_rigExtMap_verschiebung_le :
     LinearMap.range (rigExtMap (verschiebung h G)) ≤ LinearMap.range (frobTwist h G).rigOfOmega := by
@@ -347,7 +347,7 @@ theorem range_rigExtMap_verschiebung_le :
   rw [rigToExt_rigExtMap, vecExtMap_verschiebung, LinearMap.zero_apply]
 
 /- English proof (translation)
-Rewrite using `[← SemiHom.ofHom_rig]`. Conclude with `(frobProj h G).rig_rig _ _ (fun n a => (absFrob_app h G n a).trans (relFrob_app_frobProj h n a).symm) x`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rigExtMap_relFrob_rig (x : G.RigExt) :
     rigExtMap (relFrob h G) ((frobProj h G).rig x) = (absFrob h G).rig x := by
@@ -356,7 +356,7 @@ theorem rigExtMap_relFrob_rig (x : G.RigExt) :
     (fun n a => (absFrob_app h G n a).trans (relFrob_app_frobProj h n a).symm) x
 
 /- English proof (translation)
-The claim follows from `letI := (frobRing h).toAlgebra SemiHom.rigExtMap_lift_comp_liftSemi (R := R) (S := R) (absFrob h G)`.
+A detailed English derivation is pending.
 -/
 theorem rigExtMap_relFrob_comp_liftSemi :
     letI := (frobRing h).toAlgebra
@@ -370,13 +370,13 @@ section Perfect
 variable {k : Type} [Field k] [CharP k p]
 
 /- English proof (translation)
-Take `⟨M, map, red, h1, h2, h3⟩` from `hW`. Establish `hm : ∀ (K : PDivGroup p k) (m : M K), map K K ((p : ℤ_[p]) • 𝟙 K) m = p • m` using `fun K m => by`. Rewrite using `[Nat.cast_smul_eq_nsmul, map_nsmul, (h1 K).2.2.2.2.2, LinearMap.smul_apply, LinearMap.id_apply]`. Use `Submodule.ext fun x => ?_` and prove the remaining obligations. Take `⟨m, rfl⟩` from `(h1 H).2.2.2.1 x`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Rewrite using `[LinearMap.mem_ker, ← h3, (h1 G).2.2.2.2.1]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨n, hn⟩`. Use `(h1 H).1` as an intermediate fact. Establish `e : (p : WittVector p k) • m = (p : WittVector p k) • map H G g n`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Nat.cast_smul_eq_nsmul, Nat.cast_smul_eq_nsmul, ← map_nsmul, ← hn, ← hm, ← hg, h2, LinearMap.comp_apply]`. Conclude with `⟨red G n, by rw [← h3, smul_right_injective _ (WittVector.p_nonzero p k) e]⟩`. Introduce and unpack `⟨y, hy⟩`. Take `⟨n, rfl⟩` from `(h1 G).2.2.2.1 y`. Rewrite using `[← (h1 G).2.2.2.2.1, h3, ← hy, ← h3, ← h3, ← LinearMap.comp_apply (map G H f), ← h2, hf, hm, (h1 G).2.2.2.2.1]`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨n, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem ker_rigExtMap_eq_range
     (hW : ∃ (M : PDivGroup p k → ModuleCat.{0} (WittVector p k))
@@ -415,7 +415,7 @@ theorem ker_rigExtMap_eq_range
 end Perfect
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun _ _ h G => ⟨relFrob_comp_verschiebung h G, verschiebung_comp_relFrob h G, fun _ _ => eq_zero_of_prime_smul_eq_zero, fun _ => eq_verschiebung_of_relFrob_comp h, fun _ f => ⟨relFrob_naturality h f, verschiebung_naturality h f⟩, fun _ _ h' _ _ s n => ⟨s.app_relFrob h h' n, s.ap …`.
+Supply the required witnesses or components.
 -/
 theorem frobenius_verschiebung (p : ℕ) [Fact p.Prime] :
     (∀ ⦃R : Type⦄ [CommRing R] (h : (p : R) = 0) (G : PDivGroup p R),

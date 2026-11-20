@@ -14,15 +14,15 @@ open PositivityTheory.SiegelWeilFormula PositivityTheory.SiegelWeilFormula.KWhit
 namespace PositivityTheory.SiegelWeilFormula.HeightDict
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 /- English proof (translation)
-Establish `hinv1 : ∀ v : HeightOneSpectrum (𝓞 F), (t.1.map (compFin F E v)).map (HeckeCharacterZeroLocus.SiegelWeilU.sigR (v.adicCompletion F) σ) * ((t⁻¹ : GL (Fin n) (AE F E)).1.map (compFin F E v)).map (HeckeCharacterZeroLocus.SiegelWeilU.sigR (v.adicCompletion F) σ) = 1`. Introduce `v`. Establish `h` using `congrArg (fun M => (HeckeCharacterZeroLocus.SiegelWeilU.sigR (v.adicCompletion F) σ).mapMatrix ((compFin F E v).mapMatrix M)) (Units.mul_inv t)`. Simplify `h` using `only [map_mul, map_one, RingHom.mapMatrix_apply]`. Establish `hinv2 : ∀ v : HeightOneSpectrum (𝓞 F), ((inclR (F` using `F) (v.adicCompletion F) η) • u.1.map (compFin F E v)).map (HeckeCharacterZeroLocus.SiegelWeilU.sigR (v.adicCompletion F) σ) * ((inclR (F := F) (v.adicCompletion F) η⁻¹) • (u⁻¹ : GL (Fin n) (AE F E)).1.map (compFin F E v)).map (HeckeCharacterZeroLocus.SiegelWeilU.sigR (v.adicCompl …`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Introduce `v`. Establish `hu : u.1.map (compFin F E v) * (u⁻¹ : GL (Fin n) (AE F E)).1.map (compFin F E v) = 1`. Establish `h` using `congrArg (fun M => (compFin F E v).mapMatrix M) (Units.mul_inv u)`. Simplify `h` using `only [map_mul, map_one, RingHom.mapMatrix_apply]`. Establish `hc : inclR (F` using `F) (v.adicCompletion F) η * inclR (F := F) (v.adicCompletion F) η⁻¹ = 1 := by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Rewrite using `[← map_mul, mul_inv_cancel₀ hη, map_one]`. Establish `h2 : (inclR (F` using `F) (v.adicCompletion F) η • u.1.map (compFin F E v)) * (inclR (F := F) (v.adicCompletion F) η⁻¹ • (u⁻¹ : GL (Fin n) (AE F E)).1.map (compFin F E v)) = 1 := by`. Rewrite using `[Matrix.smul_mul, Matrix.mul_smul, hu, smul_smul, hc, one_smul]`. Establish `h` using `congrArg (fun M => (HeckeCharacterZeroLocus.SiegelWeilU.sigR (v.adicCompletion F) σ).mapMatrix M) h2`. Simplify `h` using `only [map_mul, map_one, RingHom.mapMatrix_apply]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `⟨fun v => ⟨latM_isCO v _ (Matrix.isUnit_det_of_right_inverse (hinv1 v)), latM_isCO v _ (Matrix.isUnit_det_of_right_inverse (hinv2 v))⟩, ?_⟩` and prove the remaining obligations. Establish `ent : ∀ M : Matrix (Fin n) (Fin n) (AE F E), ∀ᶠ v : HeightOneSpectrum (𝓞 F) in cofinite, ∀ i j, compFin F E v (M i j) ∈ OE E v` using `fun M => Filter.eventually_all.2 fun i => Filter.eventually_all.2 fun j => ev_OE (M i j)`. Use `filter_upwards [ent t.1, ent (t⁻¹ : GL (Fin n) (AE F E)).1, ent u.1, ent (u⁻¹ : GL (Fin n) (AE F E)).1, ev_inclR (F := F) η, ev_inclR (F := F) η⁻¹, ev_lat_latO d.bs n] with v ht ht' hu hu' he he' hl`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[latM_eq_lat v _ _ (hinv1 v) (fun i j => OE_sig v (ht i j)) (fun i j => OE_sig v (ht' i j)), hl]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[latM_eq_lat v _ _ (hinv2 v) (fun i j => OE_sig v (OE_mul v he (hu i j))) (fun i j => OE_sig v (OE_mul v he' (hu' i j))), hl]`.
+A detailed English derivation is pending.
 -/
 theorem fin_std_k (d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ) (n : ℕ) (t u : GL (Fin n) (AE F E)) (η : E) (hη : η ≠ 0) :
     (∀ v : HeightOneSpectrum (𝓞 F),

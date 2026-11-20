@@ -25,7 +25,7 @@ variable {h : V →ₗ⋆[K] V →ₗ[K] K} {U : Submodule K V} {hc : IsCompl U 
   {M T Λ : Submodule (𝓞 K) V} {𝔭 : Ideal (𝓞 F)}
 
 /- English proof (translation)
-Rewrite using `[Submodule.Quotient.eq]`. Simplify using `[Submodule.mem_comap]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem mk_eq_iff {X : Submodule K V} {L : Submodule (𝓞 K) V} (a b : ↥(locF 𝔭 (dualIn h X L))) :
     (Submodule.Quotient.mk a : DiscMod h X L 𝔭) = Submodule.Quotient.mk b ↔
@@ -34,9 +34,9 @@ theorem mk_eq_iff {X : Submodule K V} {L : Submodule (𝓞 K) V} (a b : ↥(locF
   simp [Submodule.mem_comap]
 
 /- English proof (translation)
-Use `first`. Consider the case `exact (Submodule.linearProjOfIsCompl X Y hc x).2`. Consider the case `exact Submodule.projection_apply_mem hc x`. Consider the case `exact Submodule.projection_apply_mem X Y hc x`. Consider the case `simp [prO]`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `simp [prO, Submodule.projection]`.
+A detailed English derivation is pending.
 -/
 private theorem prO_mem' {X Y : Submodule K V} (hc : IsCompl X Y) (x : V) : prO hc x ∈ X := by
   first
@@ -47,9 +47,9 @@ private theorem prO_mem' {X Y : Submodule K V} (hc : IsCompl X Y) (x : V) : prO 
   | simp [prO, Submodule.projection]
 
 /- English proof (translation)
-Establish `h1 : prO hc x ∈ X` using `prO_mem' hc x`. Establish `h2 : prO hc x ∈ Y`. Establish `e : prO hc x = x - prO hc.symm x` using `eq_sub_of_add_eq (prO_add hc x)`. Rewrite using `[e]`. Conclude with `Y.sub_mem hx (prO_mem' hc.symm x)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h3 : prO hc x ∈ X ⊓ Y` using `Submodule.mem_inf.2 ⟨h1, h2⟩`. Rewrite `h3` using `[hc.inf_eq_bot]`. Conclude with `(Submodule.mem_bot K).1 h3`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem prO_eq_zero_of_mem_compl {X Y : Submodule K V} (hc : IsCompl X Y) {x : V} (hx : x ∈ Y) :
     prO hc x = 0 := by
@@ -63,7 +63,7 @@ private theorem prO_eq_zero_of_mem_compl {X Y : Submodule K V} (hc : IsCompl X Y
   exact (Submodule.mem_bot K).1 h3
 
 /- English proof (translation)
-Establish `h0 : prO hc.symm x = 0` using `prO_eq_zero_of_mem_compl hc.symm hx`. Establish `e` using `prO_add hc x`. Rewrite `e` using `[h0, add_zero]`. Conclude with `e`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem prO_eq_self_of_mem {X Y : Submodule K V} (hc : IsCompl X Y) {x : V} (hx : x ∈ X) :
     prO hc x = x := by
@@ -73,40 +73,38 @@ private theorem prO_eq_self_of_mem {X Y : Submodule K V} (hc : IsCompl X Y) {x :
   exact e
 
 /- English proof (translation)
-The claim follows from `prO_mem' hc' x`.
+A detailed English derivation is pending.
 -/
 theorem prO_mem (hc' : IsCompl U (orthK h U)) (x : V) : prO hc' x ∈ U := prO_mem' hc' x
 
 /- English proof (translation)
-The claim follows from `prO_mem' hc'.symm x`.
+A detailed English derivation is pending.
 -/
 theorem prO_symm_mem (hc' : IsCompl U (orthK h U)) (x : V) : prO hc'.symm x ∈ orthK h U := prO_mem' hc'.symm x
 
 /- English proof (translation)
-Conclude with `prO_eq_zero_of_mem_compl hc' hx`.
+A detailed English derivation is pending.
 -/
 theorem orth_projection_of_mem_compl {hc' : IsCompl U (orthK h U)} {x : V} (hx : x ∈ orthK h U) : prO hc' x = 0 := by
   exact prO_eq_zero_of_mem_compl hc' hx
 
 /- English proof (translation)
-Conclude with `prO_eq_self_of_mem hc'.symm hx`.
+A detailed English derivation is pending.
 -/
 theorem orth_projection_symm_of_mem {hc' : IsCompl U (orthK h U)} {x : V} (hx : x ∈ orthK h U) :
     prO hc'.symm x = x := by
   exact prO_eq_self_of_mem hc'.symm hx
 
 /- English proof (translation)
-Conclude with `prO_eq_zero_of_mem_compl hc'.symm hx`.
+A detailed English derivation is pending.
 -/
 theorem prO_symm_of_mem_U {hc' : IsCompl U (orthK h U)} {x : V} (hx : x ∈ U) : prO hc'.symm x = 0 := by
   exact prO_eq_zero_of_mem_compl hc'.symm hx
 
 /- English proof (translation)
-Establish `hle : locF 𝔭 T ≤ Λ`. Rewrite using `[← hG.cW]`. Conclude with `inf_le_left`. Establish `ht : prO hc.symm x - prO hc.symm x' ∈ Λ` using `hle hW`. Establish `e1` using `prO_add hc x`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2` using `prO_add hc x'`. Rewrite `e2` using `[hU]`. Establish `hx : x = x' + (prO hc.symm x - prO hc.symm x')`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hx]`.
-
-Conclude with `Λ.add_mem hx' ht`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_of_proj (hG : Good hc M T 𝔭 Λ) {x x' : V} (hx' : x' ∈ Λ) (hU : prO hc x' = prO hc x)
     (hW : prO hc.symm x - prO hc.symm x' ∈ locF 𝔭 T) : x ∈ Λ := by
@@ -144,7 +142,7 @@ def gam (hG : Good hc M T 𝔭 Λ) : DiscMod h U M 𝔭 ≃ₗ[𝓞 K] DiscMod h
     (LinearMap.quotKerEquivOfSurjective _ (toDisc_surj h hc.symm T Λ 𝔭 hG.iW hG.oW))
 
 /- English proof (translation)
-Establish `h1 : (Submodule.Quotient.mk ⟨prO hc x, hG.iU x hx⟩ : DiscMod h U M 𝔭) = toDisc h hc M Λ 𝔭 hG.iU ⟨x, hx⟩` using `rfl`. Establish `h2 : (Submodule.Quotient.mk ⟨prO hc.symm x, hG.iW x hx⟩ : DiscMod h (orthK h U) T 𝔭) = toDisc h hc.symm T Λ 𝔭 hG.iW ⟨x, hx⟩` using `rfl`. Rewrite using `[h1, h2, ← LinearMap.quotKerEquivOfSurjective_apply_mk (toDisc h hc M Λ 𝔭 hG.iU) (toDisc_surj h hc M Λ 𝔭 hG.iU hG.oU)]`. Simplify using `only [gam, LinearEquiv.trans_apply, LinearEquiv.symm_apply_apply]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem gam_mk (hG : Good hc M T 𝔭 Λ) {x : V} (hx : x ∈ Λ) :
     gam hG (Submodule.Quotient.mk ⟨prO hc x, hG.iU x hx⟩) =

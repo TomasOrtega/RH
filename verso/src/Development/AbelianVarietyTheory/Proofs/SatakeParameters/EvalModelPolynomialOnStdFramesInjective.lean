@@ -7,7 +7,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.TwV.DelA
 
 /- English proof (translation)
-Introduce `p _ X D pos i n h R hR`. Use `Formalism.L2.G.evC_inj (X.Pj i) h (posJ X D pos i) (fun _ => 1) (fun _ => 1) (fun _ => by simp) R ?_` and prove the remaining obligations. Use function extensionality and compare the values at `f`. Conclude with `hR f`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_ev1_eq_zero_on_frames : ∀ {p : ℕ} [Fact p.Prime] (X : Sys p) (D : D7) (pos : (Σ v : X.Pl, Fin (X.G.P.n' v)) ≃ D.what₂.Tau) (i : ℕ) {n : ℕ} (h : (X.Pj i).m + 1 = n) (R : XR (X.Pj i) ℂ), (∀ f : Fr1 D n, ev1 X D pos i h R f = 0) → R = 0 := by
   intro p _ X D pos i n h R hR

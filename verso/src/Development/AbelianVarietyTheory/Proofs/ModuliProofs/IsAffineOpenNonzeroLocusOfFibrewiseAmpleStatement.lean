@@ -9,7 +9,7 @@ open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalC
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.Pdiv GlobalTheory.AbLaw
 open scoped CategoryTheory.Obj TensorProduct
 /- English proof (citation)
-Apply `GlobalTheory.FibreAmple.isAffineOpen_nonzeroLocus_of_fibres` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FModuliProofs%2FIsAffineOpenNonzeroLocusOfFibrewiseAmple.lean&line=60#L60)
 -/

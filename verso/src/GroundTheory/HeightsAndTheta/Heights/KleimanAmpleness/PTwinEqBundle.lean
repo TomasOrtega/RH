@@ -12,7 +12,7 @@ noncomputable section
 variable {S : Type} [CommRing S] {N : ℕ} {Ω : Type} [Field Ω] [Algebra S Ω] {x : Fin (N + 1) → Ω}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨X j, X i, 1, Kleiman.X_mem_monos hi, isHomogeneous_X S j, isHomogeneous_X S i, by simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem div_mem_chartRing_of_mem (I : Kleiman.Chart x) {i : Fin (N + 1)} (hi : i ∈ I.1)
     (j : Fin (N + 1)) : x j / x i ∈ Kleiman.chartRing S x I :=
@@ -26,19 +26,17 @@ def pairChart {i j : Fin (N + 1)} (hi : x i ≠ 0) (hj : x j ≠ 0) : Kleiman.Ch
     · rw [Finset.mem_singleton.1 h]; exact (Kleiman.mem_support x).2 hj⟩
 
 /- English proof (translation)
-Rewrite `hv` using `[← chartRingI.equiv]`. Establish `hij : x i / x j ∈ ReciprocityTheory.ChartRestriction.G.Geo.chartRing S x j` using `ReciprocityTheory.ChartRestriction.G.Geo.div_mem_chartRing x j i`. Proceed by induction on `hv using Algebra.adjoin_induction with`. Consider the case `mem y hy`. Take `⟨l, hl, k, rfl⟩` from `hy`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Express the relevant statement in the definitionally equal form `l ∈ ({i, j} : Finset (Fin (N + 1))) at hl`. Break down `Finset.mem_insert.1 hl with h | h` into its components or cases. Substitute `h` using the available equality. Use `⟨1, ?_⟩` and prove the remaining obligations. Establish `: x l / x j * (x k / x l) = x k / x j` using `by field_simp`.
+Express the relevant assertion in an equivalent form by its definition. Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[pow_one, this]`. Conclude with `ReciprocityTheory.ChartRestriction.G.Geo.div_mem_chartRing x j k`. Rewrite using `[Finset.mem_singleton.1 h]`. Conclude with `⟨0, by rw [pow_zero, one_mul]; exact ReciprocityTheory.ChartRestriction.G.Geo.div_mem_chartRing x j k⟩`. Consider the case `algebraMap r`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Treat this case separately. Supply the required witnesses or components.
 
-Conclude with `⟨0, by rw [pow_zero, one_mul]; exact Subalgebra.algebraMap_mem _ r⟩`. Consider the case `add y z _ _ hy hz`. Take `⟨m, hm⟩` from `hy`. Take `⟨n, hn⟩` from `hz`. Use `⟨m + n, ?_⟩` and prove the remaining obligations.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `: (x i / x j) ^ (m + n) * (y + z) = (x i / x j) ^ n * ((x i / x j) ^ m * y) + (x i / x j) ^ m * ((x i / x j) ^ n * z)`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`. Conclude with `add_mem (mul_mem (pow_mem hij _) hm) (mul_mem (pow_mem hij _) hn)`. Consider the case `mul y z _ _ hy hz`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨m, hm⟩` from `hy`. Take `⟨n, hn⟩` from `hz`. Use `⟨m + n, ?_⟩` and prove the remaining obligations. Establish `: (x i / x j) ^ (m + n) * (y * z) = ((x i / x j) ^ m * y) * ((x i / x j) ^ n * z)`. Expand and normalize the polynomial expressions, which then agree.
-
-Rewrite using `[this]`. Conclude with `mul_mem hm hn`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_pow_mul_mem_of_pair {i j : Fin (N + 1)} (hi : x i ≠ 0) (hj : x j ≠ 0) {v : Ω}
     (hv : v ∈ Kleiman.chartRing S x (pairChart hi hj)) :
@@ -78,11 +76,11 @@ theorem exists_pow_mul_mem_of_pair {i j : Fin (N + 1)} (hi : x i ≠ 0) (hj : x 
     exact mul_mem hm hn
 
 /- English proof (translation)
-Use `Submodule.mul_induction_on hz (fun p hp p' hp' => ⟨1, fun _ => p, fun _ => p', fun _ => hp, fun _ => hp', by simp⟩) ?_` and prove the remaining obligations. Introduce `u v hu hv`. Take `⟨k, q, q', hq, hq', rfl⟩` from `hu`. Take `⟨k', r, r', hr, hr', rfl⟩` from `hv`. Use `⟨k + k', Fin.append q r, Fin.append q' r', fun l => ?_, fun l => ?_, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Proceed by induction on `l using Fin.addCases with`. Consider the case `left l => simpa using hq l`. Consider the case `right l => simpa using hr l`. Proceed by induction on `l using Fin.addCases with`. Consider the case `left l => simpa using hq' l`.
+Proceed by induction. Treat this case separately. Treat this case separately. Proceed by induction. Treat this case separately.
 
-Consider the case `right l => simpa using hr' l`. Rewrite using `[Fin.sum_univ_add]`. Simplify using the standard rewrite rules.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem exists_sum_mul_eq {A : Subalgebra S Ω} {P P' : Submodule A Ω} {z : Ω} (hz : z ∈ P * P') :
     ∃ (k : ℕ) (q q' : Fin k → Ω), (∀ l, q l ∈ P) ∧ (∀ l, q' l ∈ P') ∧ ∑ l, q l * q' l = z := by
@@ -106,9 +104,9 @@ section First
 variable (Q : Kleiman.LineBundle S x)
 
 /- English proof (translation)
-Distinguish the cases in `h : x i ≠ 0`. Rewrite `he`, the goal using `[chartModule_of_ne_zero _ h, Submodule.restrictScalars_mem]`. Rewrite `ha` using `[chartRing.equiv S x h]`. Conclude with `(Q.sub _).smul_mem (⟨a, ha⟩ : Kleiman.chartRing S x _) he`. Establish `h0 : toIndefiniteRowSideFullHecke Q.toSubSystem i = ⊥` using `dif_neg h`.
+Consider separately whether the proposition holds or fails. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite `he`, the goal using `[h0, Submodule.mem_bot]`. Rewrite using `[he, smul_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ofFirst_stable (i : Fin (N + 1)) (a : Ω) (ha : a ∈ ReciprocityTheory.ChartRestriction.G.Geo.chartRing S x i) (e : Ω)
     (he : e ∈ toIndefiniteRowSideFullHecke Q.toSubSystem i) : a • e ∈ toIndefiniteRowSideFullHecke Q.toSubSystem i := by
@@ -121,15 +119,13 @@ theorem ofFirst_stable (i : Fin (N + 1)) (a : Ω) (ha : a ∈ ReciprocityTheory.
     rw [he, smul_zero]
 
 /- English proof (translation)
-Rewrite `he` using `[chartModule_of_ne_zero _ hi, Submodule.restrictScalars_mem]`. Establish `hiI : (Kleiman.singleChart hi).1 ⊆ (pairChart hi hj).1`. Express the relevant statement in the definitionally equal form `({i} : Finset (Fin (N + 1))) ⊆ {i, j}`. Simplify using the standard rewrite rules. Establish `hjI : (Kleiman.singleChart hj).1 ⊆ (pairChart hi hj).1`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `({j} : Finset (Fin (N + 1))) ⊆ {i, j}`. Simplify using the standard rewrite rules. Take `⟨a, ⟨u, hu⟩, hae⟩` from `(Q.mem_iff _ _ hjI e).1 (Q.mono _ _ hiI e he)`. Take `⟨m, hm⟩` from `exists_pow_mul_mem_of_pair hi hj (↑u⁻¹ : Kleiman.chartRing S x (pairChart hi hj)).2`. Rewrite `hm` using `[chartRing.equiv S x hj]`.
+Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `⟨m, ?_⟩` and prove the remaining obligations. Establish `hinv : ((↑u⁻¹ : Kleiman.chartRing S x (pairChart hi hj)) : Ω) * (a : Ω) = 1`. Use `congrArg Subtype.val (Units.inv_mul u)` as an intermediate fact. Rewrite `this` using `[hu]`. Conclude with `this`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `key : (x i / x j) ^ m • e = (⟨_, hm⟩ : Kleiman.chartRing S x (Kleiman.singleChart hj)) • ((a : Ω) • e)`. Rewrite using `[Subalgebra.smul_def, smul_eq_mul, smul_eq_mul, smul_eq_mul]`. Express the relevant statement in the definitionally equal form `(x i / x j) ^ m * e = (x i / x j) ^ m * ((↑u⁻¹ : Kleiman.chartRing S x (pairChart hi hj)) : Ω) * ((a : Ω) * e)`. Rewrite using `[show ∀ w : Ω, (x i / x j) ^ m * w * ((a : Ω) * e) = (x i / x j) ^ m * (w * a) * e from fun w => by ring, hinv, mul_one]`. Rewrite using `[chartModule_of_ne_zero _ hj, Submodule.restrictScalars_mem, key]`.
-
-Conclude with `Submodule.smul_mem _ _ hae`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ofFirst_overlap (i j : Fin (N + 1)) (hi : x i ≠ 0) (hj : x j ≠ 0) (e : Ω)
     (he : e ∈ toIndefiniteRowSideFullHecke Q.toSubSystem i) : ∃ m : ℕ, (x i / x j) ^ m • e ∈ toIndefiniteRowSideFullHecke Q.toSubSystem j := by
@@ -159,25 +155,21 @@ theorem ofFirst_overlap (i j : Fin (N + 1)) (hi : x i ≠ 0) (hj : x j ≠ 0) (e
   exact Submodule.smul_mem _ _ hae
 
 /- English proof (translation)
-Take `⟨Q'', hQ⟩` from `Q.invertible (Kleiman.singleChart h)`. Establish `h1 : (1 : Ω) ∈ Q.sub (Kleiman.singleChart h) * Q''` using `hQ ▸ Submodule.mem_one.2 ⟨1, map_one _⟩`. Take `⟨k, q, q', hq, hq', hsum⟩` from `exists_sum_mul_eq h1`. Establish `hprod : ∀ {p p' : Ω}, p ∈ Q.sub (Kleiman.singleChart h) → p' ∈ Q'' → p * p' ∈ ReciprocityTheory.ChartRestriction.G.Geo.chartRing S x i`. Introduce `p p' hp hp'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `Submodule.mul_mem_mul hp hp'` as an intermediate fact. Rewrite `this` using `[hQ, Submodule.mem_one]`. Take `⟨a, ha⟩` from `this`. Rewrite using `[chartRing.equiv S x h, ← ha]`. Conclude with `a.2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hmem : ∀ e, e ∈ (toIndefiniteRowSideFullHecke Q.toSubSystem i).toAddSubgroup ↔ e ∈ Q.sub (Kleiman.singleChart h)`. Introduce `e`. Rewrite using `[Submodule.mem_toAddSubgroup, chartModule_of_ne_zero _ h, Submodule.restrictScalars_mem]`. Use `⟨k, fun l => q l * q' l, fun _ => 1, fun l => hprod (hq l) (hq' l), fun _ => one_mem _, by simpa using hsum, fun l => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hq0 : q l = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun _ => 1, ?_, ?_, fun e => ⟨fun _ => ⟨fun _ => e, fun _ => ⟨1, by simp [hq0]⟩, by simp⟩, fun _ => ⟨1, by simp [hq0]⟩⟩⟩` and prove the remaining obligations. Rewrite using `[linearIndependent_unique_iff]`. Conclude with `one_ne_zero`. Rewrite using `[Set.range_const]`. Conclude with `Ideal.span_singleton_eq_top.2 isUnit_one`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `⟨fun _ => q l, ?_, ?_, fun e => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[linearIndependent_unique_iff]`. Conclude with `hq0`. Rewrite using `[Set.range_const]`. Conclude with `Ideal.span_singleton_eq_top.2 (isUnit_iff_ne_zero.2 hq0)`.
+Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `⟨n, hn⟩`. Rewrite `hn` using `[hmem]`. Use `⟨fun _ => e / q l, fun _ => ⟨n + 1, ?_⟩, ?_⟩` and prove the remaining obligations. Establish `: (q l * q' l) ^ (n + 1) * (e / q l) = ((q l * q' l) ^ n • e) * q' l`. Rewrite using `[smul_eq_mul]`.
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`. Conclude with `hprod hn (hq' l)`. Rewrite using `[Fin.sum_univ_one, smul_eq_mul]`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Clear the denominators using the available nonvanishing facts. Introduce and unpack `⟨a, ha, rfl⟩`. Take `⟨n, hn⟩` from `ha 0`. Rewrite `hn` using `[chartRing.equiv S x h]`. Use `⟨n, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[hmem, Fin.sum_univ_one]`. Establish `: (q l * q' l) ^ n • (a 0 • q l) = (⟨_, hn⟩ : Kleiman.chartRing S x (Kleiman.singleChart h)) • q l`. Rewrite using `[Subalgebra.smul_def, smul_eq_mul, smul_eq_mul, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`.
-
-Conclude with `Submodule.smul_mem _ _ (hq l)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ofFirst_frame (i : Fin (N + 1)) (h : x i ≠ 0) :
     ∃ (k : ℕ) (f c : Fin k → Ω), (∀ l, f l ∈ ReciprocityTheory.ChartRestriction.G.Geo.chartRing S x i) ∧
@@ -244,7 +236,7 @@ def ofFirst : IndefiniteRowSideFullHecke.Kleiman.LineBundle (S := S) x where
   overlap i j hi hj e he := ofFirst_overlap Q i j hi hj e he
 
 /- English proof (translation)
-The claim follows from `Submodule.span_eq _`.
+A detailed English derivation is pending.
 -/
 theorem ofFirst_mods (i : Fin (N + 1)) : (ofFirst Q).mods i = toIndefiniteRowSideFullHecke Q.toSubSystem i :=
   Submodule.span_eq _
@@ -271,11 +263,11 @@ def subOf (I : Kleiman.Chart x) : Submodule (Kleiman.chartRing S x I) Ω :=
   Submodule.span _ (⋃ i ∈ I.1, (Q'.lat i : Set Ω))
 
 /- English proof (translation)
-Establish `hxi : x i ≠ 0` using `(Kleiman.mem_support x).1 (I.2.2 hi)`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[subOf, Submodule.span_le]`. Introduce `e he`. Take `⟨j, hj, he⟩` from `Set.mem_iUnion₂.1 he`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hxj : x j ≠ 0` using `(Kleiman.mem_support x).1 (I.2.2 hj)`. Take `⟨m, hm⟩` from `Q'.overlap j i hxj hxi e he`. Establish `hr : (x i / x j) ^ m ∈ Kleiman.chartRing S x I` using `pow_mem (div_mem_chartRing_of_mem I hj i) m`. Establish `hc : x i / x j * (x j / x i) = 1` using `by field_simp`. Establish `key : e = (⟨_, hr⟩ : Kleiman.chartRing S x I) • ((x j / x i) ^ m • e)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Subalgebra.smul_def, smul_eq_mul, smul_eq_mul, ← mul_assoc, ← mul_pow, hc, one_pow, one_mul]`. Rewrite using `[key]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span hm)`. Conclude with `Submodule.span_mono fun e he => Set.mem_iUnion₂.2 ⟨i, hi, he⟩`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem subOf_eq {I : Kleiman.Chart x} {i : Fin (N + 1)} (hi : i ∈ I.1) :
     subOf Q' I = Submodule.span _ (Q'.lat i : Set Ω) := by
@@ -295,9 +287,9 @@ theorem subOf_eq {I : Kleiman.Chart x} {i : Fin (N + 1)} (hi : i ∈ I.1) :
   · exact Submodule.span_mono fun e he => Set.mem_iUnion₂.2 ⟨i, hi, he⟩
 
 /- English proof (translation)
-Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem z hz`. Take `⟨i, hi, hz⟩` from `Set.mem_iUnion₂.1 hz`. Conclude with `Submodule.subset_span (Set.mem_iUnion₂.2 ⟨i, h hi, hz⟩)`. Consider the case `zero => exact zero_mem _`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately.
 
-Consider the case `add u v _ _ hu hv => exact add_mem hu hv`. Consider the case `smul a z _ hz => exact Submodule.smul_mem _ (Kleiman.chartIncl h a) hz`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem subOf_mono (I J : Kleiman.Chart x) (h : I.1 ⊆ J.1) (y : Ω) (hy : y ∈ subOf Q' I) :
     y ∈ subOf Q' J := by
@@ -310,25 +302,23 @@ theorem subOf_mono (I J : Kleiman.Chart x) (h : I.1 ⊆ J.1) (y : Ω) (hy : y �
   | smul a z _ hz => exact Submodule.smul_mem _ (Kleiman.chartIncl h a) hz
 
 /- English proof (translation)
-Take `⟨i, hi⟩` from `I.2.1`. Establish `hxi : x i ≠ 0` using `(Kleiman.mem_support x).1 (I.2.2 hi)`. Prove the components needed by the constructor for the conclusion. Introduce `hy`. Proceed by induction on `hy using Submodule.span_induction with`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `mem z hz`. Take `⟨j, hj, hz⟩` from `Set.mem_iUnion₂.1 hz`. Establish `hxj : x j ≠ 0` using `(Kleiman.mem_support x).1 (J.2.2 hj)`. Take `⟨m, hm⟩` from `Q'.overlap j i hxj hxi z hz`. Use `⟨⟨(x j / x i) ^ m, pow_mem (div_mem_chartRing_of_mem I hi j) m⟩, ?_, ?_⟩` and prove the remaining obligations.
+Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[isUnit_iff_exists_inv]`. Use `⟨⟨(x i / x j) ^ m, pow_mem (div_mem_chartRing_of_mem J hj i) m⟩, Subtype.ext ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(x j / x i) ^ m * (x i / x j) ^ m = 1`. Establish `hc : x j / x i * (x i / x j) = 1` using `by field_simp`. Rewrite using `[← mul_pow, hc, one_pow]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[subOf_eq Q' hi]`. Conclude with `Submodule.subset_span hm`. Consider the case `zero => exact ⟨1, by simp, by rw [smul_zero]; exact zero_mem _⟩`. Consider the case `add u v _ _ hu hv`. Take `⟨a, ha, hau⟩` from `hu`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨b, hb, hbv⟩` from `hv`. Use `⟨a * b, by rw [map_mul]; exact ha.mul hb, ?_⟩` and prove the remaining obligations. Establish `: ((a * b : Kleiman.chartRing S x I) : Ω) • (u + v) = b • ((a : Ω) • u) + a • ((b : Ω) • v)`. Simplify using `only [Subalgebra.coe_mul, Subalgebra.smul_def, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Conclude with `add_mem (Submodule.smul_mem _ b hau) (Submodule.smul_mem _ a hbv)`. Consider the case `smul c z _ hz`. Take `⟨a, ha, haz⟩` from `hz`. Take `⟨a', ha', hc⟩` from `Kleiman.exists_isUnit_mul_mem h c`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨a' * a, by rw [map_mul]; exact ha'.mul ha, ?_⟩` and prove the remaining obligations. Establish `: ((a' * a : Kleiman.chartRing S x I) : Ω) • (c • z) = (⟨(a' : Ω) * c, hc⟩ : Kleiman.chartRing S x I) • ((a : Ω) • z)`. Simplify using `only [Subalgebra.coe_mul, Subalgebra.smul_def, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Conclude with `Submodule.smul_mem _ _ haz`. Introduce and unpack `⟨a, ⟨u, hu⟩, hay⟩`. Establish `hay'` using `subOf_mono Q' I J h _ hay`. Establish `hinv : ((↑u⁻¹ : Kleiman.chartRing S x J) : Ω) * (a : Ω) = 1`. Use `congrArg Subtype.val (Units.inv_mul u)` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `this` using `[hu]`. Conclude with `this`. Establish `hy' : y = (↑u⁻¹ : Kleiman.chartRing S x J) • ((a : Ω) • y)`. Rewrite using `[Subalgebra.smul_def, ← mul_smul, hinv, one_smul]`. Rewrite using `[hy']`.
-
-Conclude with `Submodule.smul_mem _ _ hay'`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem subOf_mem_iff (I J : Kleiman.Chart x) (h : I.1 ⊆ J.1) (y : Ω) :
     y ∈ subOf Q' J ↔
@@ -382,11 +372,11 @@ theorem subOf_mem_iff (I J : Kleiman.Chart x) (h : I.1 ⊆ J.1) (y : Ω) :
     exact Submodule.smul_mem _ _ hay'
 
 /- English proof (translation)
-Take `⟨k, f, c, hf, hc, hs, hb⟩` from `Q'.frame i h`. Establish `hA : ReciprocityTheory.ChartRestriction.G.Geo.chartRing S x i = Kleiman.chartRing S x (Kleiman.singleChart h)` using `chartRing.equiv S x h`. Simplify using `only [hA] at hf hc hb`. Use `choose b hbli _ hiff using hb`. Use `fg_and_invertible_of_frame _ f c (latSub Q' h) (fun l => b l 0) hf hc hs (fun l => linearIndependent_unique_iff.1 (hbli l)) (fun l e => ?_)` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `hiff l e` as an intermediate fact. Simplify using `only [Fin.sum_univ_one, smul_eq_mul] at this`. Prove the components needed by the constructor for the conclusion. Introduce `hn`. Take `⟨a, ha, he⟩` from `this.1 hn`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨a 0, ha 0, he⟩`. Introduce and unpack `⟨a, ha, he⟩`. Conclude with `this.2 ⟨fun _ => a, fun _ => ha, he⟩`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem latSub_fg_invertible {i : Fin (N + 1)} (h : x i ≠ 0) :
     (latSub Q' h).FG ∧ ∃ L' : Submodule (Kleiman.chartRing S x (Kleiman.singleChart h)) Ω,
@@ -408,7 +398,7 @@ theorem latSub_fg_invertible {i : Fin (N + 1)} (h : x i ≠ 0) :
     exact this.2 ⟨fun _ => a, fun _ => ha, he⟩
 
 /- English proof (translation)
-Take `⟨i, hi⟩` from `I.2.1`. Establish `hxi : x i ≠ 0` using `(Kleiman.mem_support x).1 (I.2.2 hi)`. Establish `hle : Kleiman.chartRing S x (Kleiman.singleChart hxi) ≤ Kleiman.chartRing S x I` using `Kleiman.chartRing_mono (I := Kleiman.singleChart hxi) (J := I) (Finset.singleton_subset_iff.2 hi)`. Rewrite using `[subOf_eq Q' hi]`. Conclude with `fg_span_of_le hle (latSub_fg_invertible Q' hxi).1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem subOf_fg (I : Kleiman.Chart x) : (subOf Q' I).FG := by
   obtain ⟨i, hi⟩ := I.2.1
@@ -419,9 +409,9 @@ theorem subOf_fg (I : Kleiman.Chart x) : (subOf Q' I).FG := by
   exact fg_span_of_le hle (latSub_fg_invertible Q' hxi).1
 
 /- English proof (translation)
-Take `⟨i, hi⟩` from `I.2.1`. Establish `hxi : x i ≠ 0` using `(Kleiman.mem_support x).1 (I.2.2 hi)`. Establish `hle : Kleiman.chartRing S x (Kleiman.singleChart hxi) ≤ Kleiman.chartRing S x I` using `Kleiman.chartRing_mono (I := Kleiman.singleChart hxi) (J := I) (Finset.singleton_subset_iff.2 hi)`. Take `⟨L', hL'⟩` from `(latSub_fg_invertible Q' hxi).2`. Establish `key` using `mul_span_eq_one_of_le (B := Kleiman.chartRing S x I) hle hL'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `key` using `[coe_latSub]`. Use `⟨Submodule.span (Kleiman.chartRing S x I) (L' : Set Ω), ?_⟩` and prove the remaining obligations. Rewrite using `[subOf_eq Q' hi]`. Conclude with `key`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem subOf_invertible (I : Kleiman.Chart x) :
     ∃ L' : Submodule (Kleiman.chartRing S x I) Ω, subOf Q' I * L' = 1 := by
@@ -444,11 +434,9 @@ def ofSecond : Kleiman.LineBundle S x where
   invertible I := subOf_invertible Q' I
 
 /- English proof (translation)
-Rewrite using `[chartModule_of_ne_zero _ h]`. Use extensionality with `z`. Express the relevant statement in the definitionally equal form `z ∈ Submodule.span S (Q'.lat i : Set Ω) ↔ z ∈ subOf Q' (Kleiman.singleChart h)`. Rewrite using `[subOf_eq Q' (Finset.mem_singleton_self i)]`. Prove the components needed by the constructor for the conclusion.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Introduce `hz`. Establish `hle : Submodule.span S (Q'.lat i : Set Ω) ≤ (latSub Q' h).restrictScalars S` using `Submodule.span_le.2 fun e he => he`. Conclude with `Submodule.subset_span (hle hz)`. Introduce `hz`. Establish `hle : Submodule.span (Kleiman.chartRing S x (Kleiman.singleChart h)) (Q'.lat i : Set Ω) ≤ latSub Q' h` using `Submodule.span_le.2 fun e he => he`.
-
-Conclude with `Submodule.subset_span (hle hz)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem ofSecond_mods {i : Fin (N + 1)} (h : x i ≠ 0) : Q'.mods i = toIndefiniteRowSideFullHecke (ofSecond Q').toSubSystem i := by
   rw [chartModule_of_ne_zero _ h]
@@ -470,7 +458,7 @@ end Second
 end
 
 /- English proof (translation)
-Introduce `S _ N Ω _ _ x`. Conclude with `⟨fun Q => ⟨ofFirst Q, ofFirst_mods Q⟩, fun Q' => ⟨ofSecond Q', fun i h => ofSecond_mods Q' h⟩⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem LineBundle.proof : LineBundle.Statement := by
   intro S _ N Ω _ _ x

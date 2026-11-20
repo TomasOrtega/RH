@@ -21,14 +21,14 @@ open Formalism Formalism.MainNotions Formalism.BasicNotions Formalism.BasicNotio
 namespace GlobalTheory.CutCore
 
 /- English proof (translation)
-The claim follows from `Module.length_le_of_injective (Submodule.inclusion h) (Submodule.inclusion_injective h)`.
+A detailed English derivation is pending.
 -/
 theorem length_mono {O M : Type} [CommRing O] [AddCommGroup M] [Module O M] {A B : Submodule O M} (h : A ≤ B) :
     Module.length O ↥A ≤ Module.length O ↥B :=
   Module.length_le_of_injective (Submodule.inclusion h) (Submodule.inclusion_injective h)
 
 /- English proof (translation)
-Establish `h : Ring.ord O a ≠ ⊤`. Rewrite using `[Ring.ord_eq_addVal, Ne, IsDiscreteValuationRing.addVal_eq_top_iff]` and apply the resulting hypothesis. Take `⟨e, he⟩` from `ENat.ne_top_iff_exists.mp h`. Conclude with `⟨e, he.symm⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_length_quot {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] {a : O} (ha : a ≠ 0) :
     ∃ n : ℕ, Module.length O (O ⧸ Ideal.span {a}) = n := by
@@ -38,7 +38,7 @@ theorem exists_length_quot {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValua
   exact ⟨e, he.symm⟩
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `Ring.ord O a = 0 ↔ _`. Rewrite using `[Ring.ord_eq_addVal, IsDiscreteValuationRing.addVal_eq_zero_iff]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem length_quot_eq_zero_iff {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] {a : O} :
     Module.length O (O ⧸ Ideal.span {a}) = 0 ↔ IsUnit a := by
@@ -48,7 +48,7 @@ theorem length_quot_eq_zero_iff {O : Type} [CommRing O] [IsDomain O] [IsDiscrete
 variable {D : D7} (i : D.nd.Loc)
 
 /- English proof (translation)
-The claim follows from `le_bot_iff.mp (hB ▸ Submodule.map_mono h)`.
+A detailed English derivation is pending.
 -/
 theorem resIne_eq_bot_of_le {k : ℕ} {A B : Submodule (D.nd.O i) (GE D.nd → KOG (D.nd.O i) k)} (h : A ≤ B)
     {v : HeightOneSpectrum (𝓞 D.host.E)} (hB : resIne i B v = ⊥) : resIne i A v = ⊥ :=
@@ -57,7 +57,7 @@ theorem resIne_eq_bot_of_le {k : ℕ} {A B : Submodule (D.nd.O i) (GE D.nd → K
 set_option synthInstance.maxHeartbeats 400000 in
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-The claim follows from `length_mono (inf_le_inf_right _ h)`.
+A detailed English derivation is pending.
 -/
 theorem lenCob_mono {k : ℕ} (M : GE D.nd →* Matrix (Fin k) (Fin k) (D.nd.O i))
     {A B : Submodule (D.nd.O i) (GE D.nd → KOG (D.nd.O i) k)} (h : A ≤ B) : lenCob i M A ≤ lenCob i M B :=
@@ -68,7 +68,7 @@ variable (r : D.nd.X i → (GE D.nd →* GL (Fin D.R.nV) (D.nd.O i)))
   (S : IdempotentChoiceData D.nd i)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨1, fun _ => 1, fun _ => 1, fun _ => S.T'.one_mem, by funext x' simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem inR'_one : InR' D.nd r S 1 :=
   ⟨1, fun _ => 1, fun _ => 1, fun _ => S.T'.one_mem, by
@@ -76,11 +76,11 @@ theorem inR'_one : InR' D.nd r S 1 :=
     simp⟩
 
 /- English proof (translation)
-Take `⟨-, -, -, -, -, -, -, -, -, -, ⟨h1, -, h3, -⟩, -⟩` from `hS`. Introduce `h0`. Establish `hz : (Eel D.nd S S.π').map (toK D.nd i) = 0`. Rewrite using `[← Matrix.toLin'.map_eq_zero_iff]`. Use `LinearMap.ext fun u => ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Apply `S.e.injective` to reduce the goal to its premises. Rewrite using `[Matrix.toLin'_apply, h3 u, h0]`. Simplify using `[Prod.ext_iff, funext_iff]`. Use `h1 S.π'` as an intermediate fact. Rewrite `this` using `[hz, Matrix.rank_zero]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `zero_ne_one this`.
+A detailed English derivation is pending.
 -/
 theorem del_ne_zero (hS : GoodCongruenceObjects D.nd r ρ π S) : del51 D.nd S S.π' ≠ 0 := by
   obtain ⟨-, -, -, -, -, -, -, -, -, -, ⟨h1, -, h3, -⟩, -⟩ := hS
@@ -99,7 +99,7 @@ set_option synthInstance.maxHeartbeats 400000 in
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Take `⟨C, hC, hfin, hlen⟩` from `GlobalTheory.T.length_global_cocycles_le_sum_places_over D i r Xs _ (WpO D.nd i ρ π) (cocRho i r S Xs) eρ (fun w hw => ⟨hL w hw, (GlobalTheory.T.localised_global_cocycles_in_local_span D i r ρ π Xs S hr hS hπ w hw).1⟩)`. Use `hlen.trans (add_le_add le_rfl ?_)` and prove the remaining obligations. Use `(GlobalTheory.T.length_cocycles_le_coboundaries_add_selmer D i ρ π C (hC.trans (GlobalTheory.T.finiteQuotientCocycleSpan_rho_char_le_cocycles D i r ρ π Xs S hr hS hπ).1) hfin ?_).trans (add_le_add ((lenCob_mono i _ hC).trans (GlobalTheory.T.length_coboundaries_among_block_cocycle …` and prove the remaining obligations. Introduce `v h1 h2 h3`. Conclude with `resIne_eq_bot_of_le i hC (GlobalTheory.Proof.LocalGlobalSelmer.main D i r Xs S _ S.ψρ (inR'_one i r S) hU v h1 h2 h3)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem length_cocRho_le (eρ : ℕ) (hr : GoodR D.nd i r) (hS : GoodCongruenceObjects D.nd r ρ π S) (hπ : π ∈ Xs)
     (hU : UnrOut i r Xs)
@@ -121,11 +121,11 @@ set_option synthInstance.maxHeartbeats 400000 in
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Take `⟨C, hC, hfin, hlen⟩` from `GlobalTheory.T.length_global_cocycles_le_sum_places_over D i r Xs _ (chiRatO D.nd i ((c : ℕ) + 1)) (cocChi i r S Xs c) eχ (fun w hw => ⟨hL w hw, (GlobalTheory.T.localised_global_cocycles_in_local_span D i r ρ π Xs S hr hS hπ w hw).2 c⟩)`. Take `⟨C', hC', hq, hlen'⟩` from `GlobalTheory.Cut.Peel.main D i 1 C (D.nd.Q i)`. Use `⟨C', hC'.trans hC, fun f hf => hfin f (hC' hf), ?_, hlen.trans (add_le_add le_rfl (hlen'.trans (add_le_add le_rfl (Finset.sum_le_sum fun q hq' => ?_))))⟩` and prove the remaining obligations. Introduce `v h1`. Distinguish the cases in `h3 : v ∈ D.nd.Q i`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Conclude with `hq v h3`. Use `resIne_eq_bot_of_le i (hC'.trans hC) ?_` and prove the remaining obligations. Distinguish the cases in `h2 : v ∈ D.nd.S i`. Break down `hSv v h2 with ⟨hqd, hu⟩ | hp` into its components or cases. Establish `h` using `GlobalTheory.T.length_inertia_restriction_cocycles_le D i r ρ π Xs S hr hS hπ v (Or.inl h2) hqd c`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[lenQ, length_quot_eq_zero_iff.mpr hu, nonpos_iff_eq_zero, Module.length_eq_zero_iff]`. Conclude with `Submodule.subsingleton_iff_eq_bot.mp h`. Conclude with `GlobalTheory.T.inertiaCocycles_charBlock_otherTypePrime D i r ρ π Xs S hr hS hπ v h2 hp c`. Conclude with `GlobalTheory.Proof.LocalGlobalSelmer.main D i r Xs S _ _ (inR'_one i r S) hU v h1 h2 h3`. Conclude with `(length_mono (Submodule.map_mono hC)).trans (GlobalTheory.T.length_inertia_restriction_cocycles_le D i r ρ π Xs S hr hS hπ q (Or.inr hq') (hQ q hq') c)`.
+A detailed English derivation is pending.
 -/
 theorem exists_fin_unr (eχ : ℕ) (hr : GoodR D.nd i r) (hS : GoodCongruenceObjects D.nd r ρ π S) (hπ : π ∈ Xs)
     (hU : UnrOut i r Xs)
@@ -162,13 +162,11 @@ set_option synthInstance.maxHeartbeats 400000 in
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Take `⟨C, hC, hfin, hunr, hlen⟩` from `exists_fin_unr i r ρ π Xs S eχ hr hS hπ hU hSv hQ c hL`. Use `hlen.trans (add_le_add le_rfl (add_le_add ?_ le_rfl))` and prove the remaining obligations. Establish `hZ` using `hC.trans ((GlobalTheory.T.finiteQuotientCocycleSpan_rho_char_le_cocycles D i r ρ π Xs S hr hS hπ).2 c)`. Distinguish the cases in `hc : (c : ℕ) = 0`. Rewrite using `[if_pos hc]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hZ`, `hfin` using `[hc, zero_add]`. Use `(GlobalTheory.UnramHom.length_le_classNumber hA D i C hZ fun v => ?_).trans le_add_self` and prove the remaining obligations. Distinguish the cases in `hv : v ∈ placesOver D.host.E (D.nd.l i)`. Conclude with `GlobalTheory.CutTrivIne.main D i C v hv fun f hf => (hH v hv).2 (hfin f hf v hv)`. Conclude with `hunr v hv`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[if_neg hc]`. Establish `h2 : 2 ≤ (c : ℕ) + 1` using `by omega`. Establish `ht : (c : ℕ) + 1 ≤ D.R.t` using `c.2`. Establish `h` using `GlobalTheory.T.length_cyclotomic_block_cocycles_le_sha D i ((c : ℕ) + 1) C hZ h2 ht (fun f hf w hw => (hH w hw).1 _ (Finset.mem_Icc.mpr ⟨h2, ht⟩) (hfin f hf w hw)) hunr`. Rewrite `h` using `[Nat.add_sub_cancel]`.
-
-Conclude with `h.trans (add_le_add ((lenCob_mono i _ hC).trans ((GlobalTheory.T.length_coboundaries_among_block_cocycles_le D i r ρ π Xs S hr hS hπ).2 c)) le_rfl)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem length_cocChi_le (hA : GlobalTheory.Published.GlobalArtinReciprocity) (eχ : ℕ) (hr : GoodR D.nd i r) (hS : GoodCongruenceObjects D.nd r ρ π S) (hπ : π ∈ Xs)
     (hU : UnrOut i r Xs)
@@ -203,9 +201,9 @@ theorem length_cocChi_le (hA : GlobalTheory.Published.GlobalArtinReciprocity) (e
       ((GlobalTheory.T.length_coboundaries_among_block_cocycles_le D i r ρ π Xs S hr hS hπ).2 c)) le_rfl)
 
 /- English proof (translation)
-Rewrite using `[Fin.sum_univ_eq_sum_range (fun c => if c = 0 then h else g c) t]`. Establish `: Finset.range t = insert 0 (Finset.Ioo 0 t)`. Use extensionality with `x`. Simplify using `only [Finset.mem_range, Finset.mem_insert, Finset.mem_Ioo]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Rewrite using `[this, Finset.sum_insert (by simp), if_pos rfl]`. Use `congr 1`. Conclude with `Finset.sum_congr rfl fun e he => if_neg (Finset.mem_Ioo.mp he).1.ne'`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem sum_fin_ite {t : ℕ} (ht : 0 < t) (h : ℕ) (g : ℕ → ℕ) :
     ∑ c : Fin t, (if (c : ℕ) = 0 then h else g c) = h + ∑ e ∈ Finset.Ioo 0 t, g e := by
@@ -222,29 +220,27 @@ set_option synthInstance.maxHeartbeats 400000 in
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `hA D i r ρ π Xs eρ eχ S hr hS hZ hπ hN hU hSv hQ hl hsel hsha`. Take `⟨L, hL⟩` from `exists_length_quot (GlobalTheory.LenUnitPow.natCast_ne_zero (D.nd.l i) (O := D.nd.O i))`. Establish `hL0 : L ≠ 0`. Introduce and unpack `rfl`. Conclude with `GlobalTheory.LenUnitPow.natCast_not_isUnit (D.nd.l i) (O := D.nd.O i) (length_quot_eq_zero_iff.mp hL)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Take `⟨d, hd⟩` from `exists_length_quot (del_ne_zero i r ρ π S hS)`. Take `⟨s, hs⟩` from `ENat.ne_top_iff_exists.mp (ne_of_lt hsel)`. Establish `hz : ∀ q ∈ D.nd.Q i, lenQ i (D.nd.zeta i q - 1) = ((lenQ i (D.nd.zeta i q - 1)).toNat : ℕ∞)`. Introduce `q hq`. Take `⟨n, hn⟩` from `exists_length_quot (sub_ne_zero.mpr (hQ q hq).2)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[lenQ, hn, ENat.toNat_coe]`. Use `set z : HeightOneSpectrum (𝓞 D.host.E) → ℕ := fun q => (lenQ i (D.nd.zeta i q - 1)).toNat with hzdef`. Use `set g : ℕ → ℕ := fun e => (Formalism.GaloisCohomology.shaLen (D.nd.ldat (D.nd.l i)) (e : ℤ)).toNat with hg`. Establish `hg' : ∀ e ∈ Finset.Ioo 0 D.R.t, Formalism.GaloisCohomology.shaLen (D.nd.ldat (D.nd.l i)) (e : ℤ) = (g e : ℕ∞)` using `fun e he => (ENat.coe_toNat (hsha e he).ne).symm`. Establish `ht : 0 < D.R.t` using `D.R.t_odd.pos`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `set n := (placesOver D.host.E (D.nd.l i)).ncard with hn`. Use `set h := padicValNat (D.nd.l i) (hE D.host) with hh`. Establish `hρ` using `length_cocRho_le i r ρ π Xs S eρ hr hS hπ hU fun w hw => (hl w hw).2.1`. Establish `hχ : ∀ c : Fin D.R.t, Module.length (D.nd.O i) ↥(cocChi i r S Xs c) ≤ ((n * eχ * L + ((2 * d + L * (if (c : ℕ) = 0 then h else g c)) + ∑ q ∈ D.nd.Q i, z q) : ℕ) : ℕ∞)`. Introduce `c`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Use `(length_cocChi_le i r ρ π Xs S hA eχ hr hS hπ hU hSv (fun v hv => (hQ v hv).1) c (fun w hw => (hl w hw).1) fun w hw => (hl w hw).2.2 _ (Finset.mem_Icc.mpr ⟨Nat.le_add_left _ _, c.2⟩)).trans (le_of_eq ?_)` and prove the remaining obligations. Rewrite using `[Finset.sum_congr rfl hz, lenQ, lenQ, hL, hd]`. Distinguish the cases in `hc : (c : ℕ) = 0`. Rewrite using `[if_pos hc, if_pos hc]`. Use `push_cast`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[if_neg hc, if_neg hc, hg' c (Finset.mem_Ioo.mpr ⟨Nat.pos_of_ne_zero hc, c.2⟩)]`. Use `push_cast`. Both sides reduce to the same expression. Rewrite `hρ` using `[lenQ, lenQ, hL, hd, ← hs]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `htot` using `(GlobalTheory.T.length_heckeQuotient_le_cocycleSpan_determinant D i r ρ π Xs S hr hS hπ hZ hN).trans (add_le_add hρ (Finset.sum_le_sum fun c _ => hχ c))`. Rewrite `htot` using `[← Nat.cast_sum, ← Nat.cast_mul, ← Nat.cast_mul, ← Nat.cast_add, ← Nat.cast_add, ← Nat.cast_add]`. Establish `hnat` using `ENat.toNat_le_of_le_coe htot`. Simplify using `only [Finset.sum_add_distrib, Finset.sum_const, Finset.card_univ, Fintype.card_fin, smul_eq_mul, ← Finset.mul_sum, sum_fin_ite ht] at hnat`. Establish `hvd : D.nd.vdel i = (d : ℚ) / L`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hS.2.2.2.2.2.2.2.2.2.2.1.2.2.2, lenUnit, hL, hd, ENat.toNat_coe, ENat.toNat_coe]`. Establish `hsp : Br.sPi D.loc D.nbr i ρ π = (s : ℚ) / L`. Rewrite using `[Br.sPi, lenUnit, hL, ← hs, ENat.toNat_coe, ENat.toNat_coe]`. Establish `hsh : ∑ e ∈ Finset.Ioo 0 D.R.t, (D.what₂.shaLen (D.nd.l i) e : ℚ) = ((∑ e ∈ Finset.Ioo 0 D.R.t, g e : ℕ) : ℚ)`. Rewrite using `[Nat.cast_sum]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Conclude with `Finset.sum_congr rfl fun e he => D.nd.sha_eq _ e (Finset.mem_Ioo.mp he).1 (Finset.mem_Ioo.mp he).2 _ (hg' e he)`. Establish `hzq : ∑ q ∈ D.nd.Q i, lenUnit (O` using `D.nd.O i) (D.nd.l i) (D.nd.O i ⧸ Ideal.span {D.nd.zeta i q - 1}) = ((∑ q ∈ D.nd.Q i, z q : ℕ) : ℚ) / L := by`. Rewrite using `[Nat.cast_sum, Finset.sum_div]`. Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Rewrite using `[lenUnit, hL, ENat.toNat_coe]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable.
 
-Both sides reduce to the same expression. Rewrite using `[hvd, hsp, hsh, hzq, vccOff, lenUnit, hL, ENat.toNat_coe]`. Establish `hLq : (0 : ℚ) < L` using `by exact_mod_cast Nat.pos_of_ne_zero hL0`. Generalize the expression as in `(Module.length (D.nd.O i) (D.nd.O i ⧸ ccOff i Xs π)).toNat = a at hnat`. Generalize the expression as in `∑ e ∈ Finset.Ioo 0 D.R.t, g e = G at hnat`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts.
 
-Generalize the expression as in `∑ q ∈ D.nd.Q i, z q = Z at hnat`. Establish `hq : (a : ℚ) ≤ _` using `Nat.cast_le.mpr hnat`. Rewrite using `[div_le_iff₀ hLq, Ranks.nV]`. Move the coercions through the operations in `at hq ⊢`. Establish `hd0 : (0 : ℚ) ≤ ((D.R.r : ℚ) + D.R.t) * d` using `by positivity`.
-
-Clear the denominators using the available nonvanishing facts. Use polynomial arithmetic with `[hq, hd0]`.
+Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem main : GlobalTheory.Published.GlobalArtinReciprocity → GlobalCore := by
   intro hA D i r ρ π Xs eρ eχ S hr hS hZ hπ hN hU hSv hQ hl hsel hsha

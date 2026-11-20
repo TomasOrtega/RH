@@ -7,11 +7,11 @@ namespace GroundTheory.Heights₂.Heights
 open Matrix
 
 /- English proof (translation)
-Introduce `g _ G hG hpos`. Take `⟨n, rfl⟩ : ∃ n, g = n + 1` from `Nat.exists_eq_succ_of_ne_zero (NeZero.ne g)`. Take `⟨ρsq, hleast, hρ, hle, P, hP, hent, hdet⟩` from `hStep n ((2 * (n : ℝ)) ^ n) G hG hpos (fun H hH hHpos => hDet n H hH hHpos)`. Use `⟨ρsq, hleast, ?_, P, hP, hent, ?_⟩` and prove the remaining obligations. Use `push_cast`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Nat.add_sub_cancel]`. Apply `mul_le_mul_of_nonneg_left _ hρ.le` to reduce the goal to its premises. Apply `pow_le_pow_left₀ (by positivity)` to reduce the goal to its premises.
+Combine the linear equalities and inequalities to obtain the conclusion. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion.
+Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem SymplecticReduction.proof (hStep : SymplStep.Statement) (hDet : SymplDetBound.Statement) :
     SymplecticReduction.Statement := by

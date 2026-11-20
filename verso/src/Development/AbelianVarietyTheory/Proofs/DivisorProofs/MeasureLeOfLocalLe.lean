@@ -5,21 +5,17 @@ open MeasureTheory TopologicalSpace
 namespace GlobalTheory.FubCover
 
 /- English proof (translation)
-Take `⟨T, hT, hU⟩` from `TopologicalSpace.isOpen_iUnion_countable (fun x : W => S x.1) (fun x => hS x.1)`. Rewrite using `[Measure.le_iff]`. Introduce `A hA`. Break down `T.eq_empty_or_nonempty with hTe | hTn` into its components or cases. Establish `hWe : W = ∅`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Rewrite using `[Set.eq_empty_iff_forall_notMem]`. Introduce `x hxW`. Establish `: x ∈ ⋃ i : W, S i.1` using `Set.mem_iUnion.2 ⟨⟨x, hxW⟩, hx x hxW⟩`. Rewrite `this` using `[← hU, hTe]`. Simplify using `at this`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite `hW` using `[hWe, Set.compl_empty]`. Establish `: M A = 0` using `measure_mono_null (Set.subset_univ _) hW`. Rewrite using `[this]`. Conclude with `bot_le`. Take `⟨f, hf⟩` from `hT.exists_eq_range hTn set s : ℕ → Set X := fun n => S (f n).1 with hs`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hsm : ∀ n, MeasurableSet (s n)` using `fun n => (hS _).measurableSet`. Establish `hcov : W ⊆ ⋃ n, disjointed s n`. Rewrite using `[iUnion_disjointed]`. Introduce `x hxW`. Establish `: x ∈ ⋃ i : W, S i.1` using `Set.mem_iUnion.2 ⟨⟨x, hxW⟩, hx x hxW⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[← hU, hf, Set.biUnion_range]`. Conclude with `this`. Establish `hd : Pairwise (Function.onFun Disjoint fun n => A ∩ disjointed s n)` using `fun i j hij => ((disjoint_disjointed s hij).mono Set.inter_subset_right Set.inter_subset_right)`. Establish `hm : ∀ n, MeasurableSet (A ∩ disjointed s n)` using `fun n => hA.inter (MeasurableSet.disjointed hsm n)`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `measure_mono` to reduce the goal to its premises. Introduce `x hxA`. Distinguish the cases in `hxW : x ∈ W`. Use `left`. Take `⟨n, hn⟩` from `Set.mem_iUnion.1 (hcov hxW)`.
-
-Conclude with `Set.mem_iUnion.2 ⟨n, hxA, hn⟩`. Use `right`. Conclude with `hxW`. Use `_ ≤ M (⋃ n, A ∩ disjointed s n) + M Wᶜ := measure_union_le _ _`. Use `_ = ∑' n, M (A ∩ disjointed s n) := by rw [hW, add_zero, measure_iUnion hd hm]`.
-
-Use `_ ≤ ∑' n, M' (A ∩ disjointed s n) := ENNReal.tsum_le_tsum fun n => h _ (f n).2 _ (hm n) (Set.inter_subset_right.trans (disjointed_subset s n))`. Use `_ = M' (⋃ n, A ∩ disjointed s n) := (measure_iUnion hd hm).symm`. Use `_ ≤ M' A := measure_mono (Set.iUnion_subset fun n => Set.inter_subset_left)`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem le_of_open_cover (X : Type) [TopologicalSpace X] [MeasurableSpace X] [BorelSpace X]
     [SecondCountableTopology X] (M M' : Measure X) (S : X → Set X) (W : Set X)

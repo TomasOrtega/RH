@@ -9,9 +9,9 @@ open IsLocalRing Matrix UpperTheory.V.Alg UpperTheory.V.W UpperTheory.V.AlgebraT
 open scoped TensorProduct
 
 /- English proof (translation)
-Unfold `oB`. Use `split_ifs with hi`. Simplify using `only [hi, iff_true]`. Conclude with `h1`. Simplify using `only [hi, iff_false, not_lt]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Use `i.2` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+A detailed English derivation is pending.
 -/
 private theorem oB_lt {n a : ℕ} (h1 : 1 ≤ a) (h2 : a ≤ n) (i : Fin n) :
     ((oB n a i : Fin n) : ℕ) < a ↔ (i : ℕ) < a := by
@@ -24,9 +24,9 @@ private theorem oB_lt {n a : ℕ} (h1 : 1 ≤ a) (h2 : a ≤ n) (i : Fin n) :
     omega
 
 /- English proof (translation)
-Establish `key` using `oB_lt h1 h2 i`. Unfold `oB at key ⊢`. Distinguish the cases in `hi : (i : ℕ) < a`. Establish `: ((if (i : ℕ) < a then (⟨0, by omega⟩ : Fin n) else ⟨n - 1, by omega⟩ : Fin n) : ℕ) < a` using `key.2 hi`. Simplify using `only [hi, if_true] at this ⊢`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [this, if_true]`. Establish `: ¬ ((if (i : ℕ) < a then (⟨0, by omega⟩ : Fin n) else ⟨n - 1, by omega⟩ : Fin n) : ℕ) < a` using `fun h => hi (key.1 h)`. Simplify using `only [hi, if_false] at this ⊢`. Simplify using `only [this, if_false]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 private theorem oB_oB {n a : ℕ} (h1 : 1 ≤ a) (h2 : a ≤ n) (i : Fin n) : oB n a (oB n a i) = oB n a i := by
   have key := oB_lt h1 h2 i
@@ -41,9 +41,7 @@ private theorem oB_oB {n a : ℕ} (h1 : 1 ≤ a) (h2 : a ≤ n) (i : Fin n) : oB
     simp only [this, if_false]
 
 /- English proof (translation)
-Introduce `i j`. Use `⟨fun _ => Submodule.mem_top, fun hij => ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.single_apply]`. Use `split_ifs with hpq`. Take `⟨rfl, rfl⟩` from `hpq`.
-
-Conclude with `absurd h hij`. Conclude with `Submodule.zero_mem _`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 private theorem single_mem {F : Type} [Field F] {n a : ℕ} (p q : Fin n) (h : (p : ℕ) < a ↔ (q : ℕ) < a) :
     (single p q 1 : Matrix (Fin n) (Fin n) F) ∈ Ev F F n a := by
@@ -56,11 +54,11 @@ private theorem single_mem {F : Type} [Field F] {n a : ℕ} (p q : Fin n) (h : (
   · exact Submodule.zero_mem _
 
 /- English proof (translation)
-Introduce `B E F _ _ _ _ _ _ n _ _ _ a D T r h1 h2 h2u hCH htr hker hchi hst hsurj`. Establish `hn : 1 ≤ n` using `le_trans h1 h2`. Use `haveI : IsAdicComplete (maximalIdeal B) E := GlobalTheory.isAdicComplete_of_finite (maximalIdeal B) E`. Take `⟨hnil, hidem⟩` from `idem_nil D r hCH hker hchi`. Establish `hdiag : ∀ i : Fin n, ∃ y, r y = single i i 1` using `fun i => hsurj _ (single_mem i i Iff.rfl)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨ep, hcoi, hstep, hrep⟩` from `st_coi_lift T (maximalIdeal B) r h2u (le_of_eq hker.symm) hnil hst hdiag`. Establish `hD : ∀ i, D.D B[X] (1 + X ⊗ₜ ep i) = 1 + X` using `fun i => hidem (ep i) i (hcoi.idem i) (hrep i)`. Establish `hcorner` using `fun i => d_corner D (ep i) hCH (hcoi.idem i) (hD i) hn`. Use `haveI : HenselianRing B (RingHom.ker (algebraMap B F)) := by`. Rewrite using `[hker]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `infer_instance`. Take `⟨U, hUep, hUx⟩` from `units_exist T (oB n a) r ep h2u (fun i => oB_oB h1 h2 i) hst (fun i => hsurj _ (single_mem _ _ (oB_lt h1 h2 i))) hcoi hstep hrep (fun i => by rw [htr]; exact (hcorner i).2.1) (fun i y => ⟨D.tr (ep i * y), (hcorner i).1 y⟩)`. Use `⟨U, hUx, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[hUep]`. Conclude with `hD i`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Pa.idem :
     ∀ {B E F : Type} [CommRing B] [IsLocalRing B] [Ring E] [Algebra B E] [Field F] [Algebra B F] {n : ℕ} [IsNoetherianRing B] [IsAdicComplete (maximalIdeal B) B] [Module.Finite B E] (a : ℕ) (D : Det n B E) (T : TrInv B E) (r : E →ₐ[B] Matrix (Fin n) (Fin n) F), 1 ≤ a → a ≤ n → IsUnit (2 : B) → D.IsCH → (∀ y, T.tr y = D.tr y) → RingHom.ker (algebraMap B F) = maximalIdeal B → (∀ y, (D.chi y).map (algebraMap B F) = (r y).charpoly) → (∀ y, r (T.st y) = (r y)ᵀ) → (∀ Z ∈ Ev F F n a, ∃ y, r y = Z) → ∃ U : T.Units (Fin n) (oB n a), (∀ i, r (U.x i) = single (oB n a i) i 1) ∧ ∀ i, D.D B[X] (1 + X ⊗ₜ U.ep i) = 1 + X := by

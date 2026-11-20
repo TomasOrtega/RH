@@ -23,7 +23,7 @@ def kap (x : Fin N → ℂ) : Fin (r + 1) ⊕ Fin (r + 1) → ℂ :=
 
 include hFF hGG hπ hZ hgap in
 /- English proof (translation)
-Rewrite using `[← gram_eq ε F G T T' π hFF hGG hπ hZ, kap, Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv _ (gram_unit ε F G T T' π hFF hGG hπ hZ hgap), Matrix.one_mulVec, wjx]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem kap_eq (x : Fin N → ℂ) :
     Matrix.fromBlocks (lastDiag (-(T : ℂ))) (Zm ε F G) (Zm ε F G)ᴴ (lastDiag (-(T' : ℂ))) *ᵥ kap ε F G x =
@@ -32,7 +32,7 @@ theorem kap_eq (x : Fin N → ℂ) :
     Matrix.mul_nonsing_inv _ (gram_unit ε F G T T' π hFF hGG hπ hZ hgap), Matrix.one_mulVec, wjx]
 
 /- English proof (translation)
-Unfold `Yc`. Rewrite using `[Ymat_sub, Wfg_mulVec]`. Unfold `Mm`. Rewrite using `[Matrix.fromBlocks_mulVec]`. Simplify using `[kap]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem Yc_sub (C : Matrix (Fin (r + 1)) (Fin (r + 1)) ℂ) (x : Fin N → ℂ) :
     Yc ε F G C *ᵥ x - x = ∑ a, ((Am ε F G C - 1) *ᵥ (kap ε F G x ∘ Sum.inl)) a • F a +
@@ -45,7 +45,7 @@ theorem Yc_sub (C : Matrix (Fin (r + 1)) (Fin (r + 1)) ℂ) (x : Fin N → ℂ) 
 
 include hπ hZ in
 /- English proof (translation)
-Rewrite using `[Matrix.mulVec, dotProduct, Finset.sum_eq_single (π a)]`. Introduce `j _ hj`. Establish `: Zm ε F G a j = 0` using `by by_contra h; exact hj (by rw [(hZ a j).1 h, hπ])`. Rewrite using `[this, zero_mul]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem monoZ_mulVec (v : Fin (r + 1) → ℂ) (a : Fin (r + 1)) : (Zm ε F G *ᵥ v) a = Zm ε F G a (π a) * v (π a) := by
   rw [Matrix.mulVec, dotProduct, Finset.sum_eq_single (π a)]
@@ -56,7 +56,7 @@ theorem monoZ_mulVec (v : Fin (r + 1) → ℂ) (a : Fin (r + 1)) : (Zm ε F G *�
 
 include hπ hZ in
 /- English proof (translation)
-Rewrite using `[Matrix.mulVec, dotProduct, Finset.sum_eq_single (π b)]`. Simplify using `[Matrix.conjTranspose_apply]`. Introduce `j _ hj`. Establish `: Zm ε F G j b = 0` using `by by_contra h; exact hj ((hZ j b).1 h)`. Simplify using `[Matrix.conjTranspose_apply, this]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
 Simplify using the standard rewrite rules.
 -/
@@ -71,21 +71,19 @@ theorem monoZh_mulVec (v : Fin (r + 1) → ℂ) (b : Fin (r + 1)) :
 
 include hFF hGG hπ hblk hanti hZ hgap in
 /- English proof (translation)
-Establish `hk` using `kap_eq ε F G T T' π hFF hGG hπ hZ hgap x`. Rewrite `hk` using `[Matrix.fromBlocks_mulVec]`. Use `set κ := kap ε F G x`. Establish `hG0 : ∀ j, j ≠ π (Fin.last r) → κ (Sum.inr j) = 0`. Introduce `j hj`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `ha : π j ≠ Fin.last r` using `fun h => hj (by rw [← h, hπ])`. Establish `h1` using `congrFun hk (Sum.inl (π j))`. Simplify using `only [Sum.elim_inl, Pi.add_apply] at h1`. Rewrite `h1` using `[hx _ ha, lastDiag_mulVec, Pi.single_apply, if_neg ha, zero_add, monoZ_mulVec ε F G π hπ hZ, hπ]`. Establish `hz : Zm ε F G (π j) j ≠ 0` using `(hZ _ _).2 rfl`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(mul_eq_zero.1 h1).resolve_left hz`. Rewrite using `[Yc_sub]`. Establish `h2 : ∑ b, ((C - 1) *ᵥ (κ ∘ Sum.inr)) b • G b = 0`. Use `Finset.sum_eq_zero fun b _ => ?_` and prove the remaining obligations. Establish `: ((C - 1) *ᵥ (κ ∘ Sum.inr)) b = 0`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[Matrix.mulVec, dotProduct, Finset.sum_eq_single (π (Fin.last r))]`. Apply the tactic sequence `rw [Matrix.sub_apply, colMin π blk hπ hblk hanti hC, Matrix.one_apply] split_ifs <;> simp`. Introduce `j _ hj`. Simplify using `[hG0 j hj]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, zero_smul]`. Rewrite using `[h2, add_zero]`. Use `Submodule.sum_mem _ fun a _ => ?_` and prove the remaining obligations. Distinguish the cases in `ha : a = Fin.last r`. Substitute `ha` using the available equality.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: ((Am ε F G C - 1) *ᵥ (κ ∘ Sum.inl)) (Fin.last r) = 0`. Rewrite using `[Matrix.mulVec, dotProduct]`. Use `Finset.sum_eq_zero fun k _ => ?_` and prove the remaining obligations. Establish `hA : IsUB blk (Am ε F G C)` using `isUB_A π hπ hblk hanti _ hZ hC`. Rewrite using `[Matrix.sub_apply, rowLast blk hA, Matrix.one_apply]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Distinguish the cases in `hk : k = Fin.last r`. Substitute `hk` using the available equality. Simplify using the standard rewrite rules. Simplify using `[hk, Ne.symm hk]`. Rewrite using `[this, zero_smul]`.
-
-Conclude with `Submodule.zero_mem _`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨a, ha, rfl⟩)`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Yc_perpF {C : Matrix (Fin (r + 1)) (Fin (r + 1)) ℂ} (hC : IsUB blk C) (x : Fin N → ℂ)
     (hx : ∀ a, a ≠ Fin.last r → hJ ε (F a) x = 0) :
@@ -128,21 +126,19 @@ theorem Yc_perpF {C : Matrix (Fin (r + 1)) (Fin (r + 1)) ℂ} (hC : IsUB blk C) 
 
 include hFF hGG hπ hblk hanti hZ hgap in
 /- English proof (translation)
-Establish `hk` using `kap_eq ε F G T T' π hFF hGG hπ hZ hgap x`. Rewrite `hk` using `[Matrix.fromBlocks_mulVec]`. Use `set κ := kap ε F G x`. Establish `hF0 : ∀ i, i ≠ π (Fin.last r) → κ (Sum.inl i) = 0`. Introduce `i hi`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hb : π i ≠ Fin.last r` using `fun h => hi (by rw [← h, hπ])`. Establish `h1` using `congrFun hk (Sum.inr (π i))`. Simplify using `only [Sum.elim_inr, Pi.add_apply] at h1`. Rewrite `h1` using `[hx _ hb, lastDiag_mulVec, Pi.single_apply, if_neg hb, add_zero, monoZh_mulVec ε F G π hπ hZ, hπ]`. Establish `hz : starRingEnd ℂ (Zm ε F G i (π i)) ≠ 0`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_ne_zero]`. Conclude with `(hZ _ _).2 (hπ i).symm`. Conclude with `(mul_eq_zero.1 h1).resolve_left hz`. Rewrite using `[Yc_sub]`. Establish `hA : IsUB blk (Am ε F G C)` using `isUB_A π hπ hblk hanti _ hZ hC`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h2 : ∑ a, ((Am ε F G C - 1) *ᵥ (κ ∘ Sum.inl)) a • F a = 0`. Use `Finset.sum_eq_zero fun a _ => ?_` and prove the remaining obligations. Establish `: ((Am ε F G C - 1) *ᵥ (κ ∘ Sum.inl)) a = 0`. Rewrite using `[Matrix.mulVec, dotProduct, Finset.sum_eq_single (π (Fin.last r))]`. Apply the tactic sequence `rw [Matrix.sub_apply, colMin π blk hπ hblk hanti hA, Matrix.one_apply] split_ifs <;> simp`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Introduce `j _ hj`. Simplify using `[hF0 j hj]`. Simplify using the standard rewrite rules. Rewrite using `[this, zero_smul]`. Rewrite using `[h2, zero_add]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Use `Submodule.sum_mem _ fun b _ => ?_` and prove the remaining obligations. Distinguish the cases in `hb : b = Fin.last r`. Substitute `hb` using the available equality. Establish `: ((C - 1) *ᵥ (κ ∘ Sum.inr)) (Fin.last r) = 0`. Rewrite using `[Matrix.mulVec, dotProduct]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Use `Finset.sum_eq_zero fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.sub_apply, rowLast blk hC, Matrix.one_apply]`. Distinguish the cases in `hk : k = Fin.last r`. Substitute `hk` using the available equality. Simplify using the standard rewrite rules.
-
-Simplify using `[hk, Ne.symm hk]`. Rewrite using `[this, zero_smul]`. Conclude with `Submodule.zero_mem _`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨b, hb, rfl⟩)`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Yc_perpG {C : Matrix (Fin (r + 1)) (Fin (r + 1)) ℂ} (hC : IsUB blk C) (x : Fin N → ℂ)
     (hx : ∀ b, b ≠ Fin.last r → hJ ε (G b) x = 0) :

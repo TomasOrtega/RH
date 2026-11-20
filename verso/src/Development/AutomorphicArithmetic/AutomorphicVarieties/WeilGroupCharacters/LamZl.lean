@@ -3,9 +3,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.WeilGroupCharacter
 open IsLocalRing UpperTheory.V.Alg UpperTheory.V.W
 
 /- English proof (translation)
-Proceed by induction on `N with`. Consider the case `zero => simpa using hu`. Consider the case `succ N ih`. Establish `h1 : u ^ l ^ N - 1 ∈ I` using `Ideal.pow_le_self (Nat.succ_ne_zero N) ih`. Rewrite using `[pow_succ l, pow_mul, ← mul_geom_sum, pow_succ I]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Ideal.mul_mem_mul ih ?_` and prove the remaining obligations. Rewrite `hl`, `h1`, the goal using `[← Ideal.Quotient.eq_zero_iff_mem]`. Rewrite `h1` using `[map_sub, map_one, sub_eq_zero]`. Simplify using `only [map_sum, map_pow _ (u ^ l ^ N), h1, one_pow]`. Simplify using `using hl`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem zl_pow {R : Type} [CommRing R] (I : Ideal R) (l : ℕ) (hl : (l : R) ∈ I) (u : R) (hu : u - 1 ∈ I)
     (N : ℕ) : u ^ l ^ N - 1 ∈ I ^ (N + 1) := by
@@ -21,7 +21,7 @@ private theorem zl_pow {R : Type} [CommRing R] (I : Ideal R) (l : ℕ) (hl : (l 
     simpa using hl
 
 /- English proof (translation)
-The claim follows from `sub_eq_zero.1 (IsHausdorff.haus' (I := I) _ fun n => by rw [SModEq.zero, smul_eq_mul, Ideal.mul_top]; exact Ideal.Quotient.eq.1 (h n))`.
+A detailed English derivation is pending.
 -/
 private theorem zl_eq {R : Type} [CommRing R] (I : Ideal R) [IsHausdorff I R] {a b : R}
     (h : ∀ n, Ideal.Quotient.mk (I ^ n) a = Ideal.Quotient.mk (I ^ n) b) : a = b :=
@@ -29,9 +29,7 @@ private theorem zl_eq {R : Type} [CommRing R] (I : Ideal R) [IsHausdorff I R] {a
     rw [SModEq.zero, smul_eq_mul, Ideal.mul_top]; exact Ideal.Quotient.eq.1 (h n))
 
 /- English proof (translation)
-Rewrite using `[IsLocallyConstant.iff_eventually_eq]`. Introduce `x`. Establish `hp : (0 : ℝ) < (l : ℝ) ^ (-N : ℤ)` using `zpow_pos (by exact_mod_cast (Fact.out : l.Prime).pos) _`. Use `filter_upwards [Metric.closedBall_mem_nhds x hp] with y hy`. Rewrite `hy` using `[Metric.mem_closedBall, dist_eq_norm, PadicInt.norm_le_pow_iff_mem_span_pow, ← PadicInt.ker_toZModPow, RingHom.mem_ker, map_sub, sub_eq_zero]`.
-
-Conclude with `hy`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem zl_lc (l : ℕ) [Fact l.Prime] (N : ℕ) :
     IsLocallyConstant (PadicInt.toZModPow N : ℤ_[l] → ZMod (l ^ N)) := by
@@ -44,17 +42,15 @@ private theorem zl_lc (l : ℕ) [Fact l.Prime] (N : ℕ) :
   exact hy
 
 /- English proof (translation)
-Establish `hl0 : ∀ N, NeZero (l ^ N)` using `fun N => ⟨pow_ne_zero _ (Fact.out : l.Prime).ne_zero⟩`. Establish `hB : ∀ N (a b : ℕ), (a : ZMod (l ^ N)) = b → Ideal.Quotient.mk (I ^ N) (u ^ a) = Ideal.Quotient.mk (I ^ N) (u ^ b)` using `fun N a b h => by`. Rewrite using `[map_pow, map_pow]`. Use `pow_eq_pow_of_modEq ((ZMod.natCast_eq_natCast_iff _ _ _).1 h) ?_` and prove the remaining obligations. Rewrite using `[← map_pow, ← map_one (Ideal.Quotient.mk (I ^ N)), Ideal.Quotient.eq]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Ideal.pow_le_pow_right (Nat.le_succ N) (zl_pow I l hl u hu N)`. Establish `hex : ∀ s : ℤ_[l], ∃ y : R, ∀ N (k : ℕ), (k : ZMod (l ^ N)) = PadicInt.toZModPow N s → Ideal.Quotient.mk (I ^ N) y = Ideal.Quotient.mk (I ^ N) (u ^ k)` using `fun s => by`. Take `⟨y, hy⟩` from `IsPrecomplete.prec' (I := I) (fun n => (u : R) ^ (PadicInt.toZModPow n s).val) (fun {m n} hmn => by`. Rewrite using `[SModEq.sub_mem, smul_eq_mul, Ideal.mul_top, ← Ideal.Quotient.eq]`. Use `hB _ _ _ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ZMod.natCast_zmod_val, ZMod.natCast_val, PadicInt.cast_toZModPow _ _ hmn])`. Use `⟨y, fun N k hk => ?_⟩` and prove the remaining obligations. Use `(hy N).symm` as an intermediate fact. Rewrite `this` using `[SModEq.sub_mem, smul_eq_mul, Ideal.mul_top, ← Ideal.Quotient.eq]`. Rewrite using `[this]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Conclude with `hB _ _ _ (by rw [ZMod.natCast_zmod_val, hk])`. Use `choose p hp using hex`. Set `P : Multiplicative ℤ_[l] →* R` to `{ toFun := fun x => p x.toAdd map_one' := zl_eq I fun n => by simpa using hp 0 n 0 (by simp) map_mul' := fun a b => zl_eq I fun n => by`. Rewrite using `[toAdd_mul, map_mul (Ideal.Quotient.mk (I ^ n)), hp (_ + _) n _ (ZMod.natCast_zmod_val _), hp a.toAdd n _ (ZMod.natCast_zmod_val _), hp b.toAdd n _ (ZMod.natCast_zmod_val _), ← map_mul, ← pow_add]`. Conclude with `hB _ _ _ (by simp) }`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use `⟨P.toHomUnits, fun N => ?_, Units.ext (zl_eq I fun n => ?_)⟩` and prove the remaining obligations. Establish `: (fun g : Multiplicative ℤ_[l] => Ideal.Quotient.mk (I ^ N) ((P.toHomUnits g : Rˣ) : R)) = (fun z : ZMod (l ^ N) => Ideal.Quotient.mk (I ^ N) ((u : R) ^ z.val)) ∘ ((PadicInt.toZModPow N : ℤ_[l] → ZMod (l ^ N)) ∘ Multiplicative.toAdd)`. Use function extensionality and compare the values at `fun g => hp _ N _ (ZMod.natCast_zmod_val _)`. Rewrite using `[this]`. Conclude with `((zl_lc l N).comp_continuous continuous_toAdd).comp _`.
-
-Use `hp 1 n 1 (by simp)` as an intermediate fact. Rewrite `this` using `[pow_one]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem zl_one (l : ℕ) [Fact l.Prime] {R : Type} [CommRing R] (I : Ideal R) [IsAdicComplete I R]
     (hl : (l : R) ∈ I) (u : Rˣ) (hu : (u : R) - 1 ∈ I) :
@@ -98,19 +94,17 @@ private theorem zl_one (l : ℕ) [Fact l.Prime] {R : Type} [CommRing R] (I : Ide
     exact this
 
 /- English proof (translation)
-Introduce `l _ O _ _ _ R _ _ _ ι _ _ u hu`. Establish `hl : (l : R) ∈ maximalIdeal R` using `(res_eq_zero_iff O R _).1 (by rw [map_natCast, CharP.cast_eq_zero])`. Establish `hu' : ∀ i, (u i : R) - 1 ∈ maximalIdeal R` using `fun i => (res_eq_zero_iff O R _).1 (by rw [map_sub, hu, map_one, sub_self])`. Use `choose c hc hc1 using fun i => zl_one l (maximalIdeal R) hl (u i) (hu' i)`. Use `existsUnique_of_exists_of_unique ⟨?_, ?_, ?_⟩ ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `{ toFun := fun x => ∏ i, c i (Multiplicative.ofAdd (x.toAdd i)) map_one' := by simp map_mul' := fun a b => by simp [ofAdd_add, Finset.prod_mul_distrib] }`. Introduce `N`. Use `letI : TopologicalSpace (R ⧸ maximalIdeal R ^ N) := ⊥`. Use `haveI : DiscreteTopology (R ⧸ maximalIdeal R ^ N) := ⟨rfl⟩`. Rewrite using `[IsLocallyConstant.iff_continuous]`.
+Equip the data with the indicated structure. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [MonoidHom.coe_mk, OneHom.coe_mk, Units.coe_prod, map_prod]`. Use `continuous_finset_prod _ fun i _ => ?_` and prove the remaining obligations. Conclude with `(hc i N).continuous.comp (continuous_ofAdd.comp ((continuous_apply i).comp continuous_toAdd))`. Introduce `i`. Simplify using `only [MonoidHom.coe_mk, OneHom.coe_mk, toAdd_ofAdd]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.prod_eq_single i, Pi.single_eq_same, hc1]`. Introduce `j _ hj`. Rewrite using `[Pi.single_eq_of_ne hj, ofAdd_zero, map_one]`. Simplify using the standard rewrite rules. Introduce and unpack `χ χ' ⟨h1, h2⟩ ⟨h1', h2'⟩`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `MonoidHom.ext fun x => Units.ext (zl_eq (maximalIdeal R) fun N => ?_)` and prove the remaining obligations. Use `letI : TopologicalSpace (R ⧸ maximalIdeal R ^ N) := ⊥`. Use `haveI : DiscreteTopology (R ⧸ maximalIdeal R ^ N) := ⟨rfl⟩`. Establish `hd : DenseRange (Pi.map fun (_ : ι) => (Nat.cast : ℕ → ℤ_[l]))` using `DenseRange.piMap fun _ => PadicInt.denseRange_natCast`. Establish `key` using `hd.equalizer ((h1 N).continuous.comp continuous_ofAdd) ((h1' N).continuous.comp continuous_ofAdd) (funext fun n => by`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Establish `e : Multiplicative.ofAdd (Pi.map (fun (_ : ι) => (Nat.cast : ℕ → ℤ_[l])) n) = ∏ i, Multiplicative.ofAdd (Pi.single i (1 : ℤ_[l]) : ι → ℤ_[l]) ^ n i`. Apply `Multiplicative.toAdd.injective` to reduce the goal to its premises. Use function extensionality and compare the values at `j`. Simplify using `[toAdd_prod, Finset.sum_apply, Pi.single_apply]`. Simplify using `only [Function.comp_apply, e, map_prod, map_pow, h2, h2'])`.
-
-Conclude with `congrFun key x.toAdd`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.W.lam_zl :
     ∀ (l : ℕ) [Fact l.Prime] (O : Type) [CommRing O] [IsLocalRing O] [CharP (ResidueField O) l] (R : Type) [CommRing R] [Algebra O R] [IsCO O R] (ι : Type) [Fintype ι] [DecidableEq ι] (u : ι → Rˣ), (∀ i, res O R (u i) = 1) →

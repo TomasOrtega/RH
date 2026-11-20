@@ -8,9 +8,9 @@ open MvPolynomial ReciprocityTheory.PGsh GlobalTheory.CayleyBlock
 namespace GlobalTheory
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => simp`. Consider the case `succ k ih`. Rewrite using `[pow_succ, Module.End.mul_apply, ← add_assoc, cayley p ℂ (s + k + 1), Nat.add_sub_cancel, map_nsmul, ih, smul_smul, Finset.prod_range_succ]`. Use `congr 1`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[mul_comm]`. Use `congr 1`. Use `Finset.prod_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem cayOp_pow_cayDet_pow (p s k : ℕ) :
     (cayOp p ℂ ^ k) (cayDet p ℂ ^ (s + k)) =
@@ -27,7 +27,7 @@ theorem cayOp_pow_cayDet_pow (p s k : ℕ) :
     ring
 
 /- English proof (translation)
-Proceed by induction on `q with`. Consider the case `zero => simp`. Consider the case `succ q ih`. Rewrite using `[Finset.prod_range_succ, mul_right_comm, ih, show q + 1 + j = (q + j) + 1 by ring, Nat.factorial_succ]`. Expand and normalize the polynomial expressions, which then agree.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem prod_succ_mul_factorial (j q : ℕ) :
     (∏ t ∈ Finset.range q, (1 + t + j)) * j.factorial = (q + j).factorial := by
@@ -39,9 +39,9 @@ theorem prod_succ_mul_factorial (j q : ℕ) :
     ring
 
 /- English proof (translation)
-Introduce `p q`. Establish `h` using `cayOp_pow_cayDet_pow p 0 q`. Rewrite `h` using `[zero_add]`. Rewrite using `[h, pow_zero, map_nsmul, map_one, nsmul_eq_mul, mul_one, Finset.prod_comm]`. Use `push_cast`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Use `Finset.prod_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[eq_div_iff (by exact_mod_cast (Nat.factorial_pos j).ne')]`. Use `prod_succ_mul_factorial j q` as an intermediate fact. Simplify using `only [zero_add] at *`. Conclude with `this` after adjusting the coercions.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem constantCoeff_cayOp_pow_cayDet_pow : ∀ (p q : ℕ),
     constantCoeff ((cayOp p ℂ ^ q) (cayDet p ℂ ^ q)) =

@@ -6,7 +6,7 @@ open Formalism.BasicNotions Formalism.UG Formalism.L2.Forms NumberField IsDedeki
 open scoped TensorProduct
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.St.G.exists_conj_of_covBy` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FFlagMeasures%2FExistsGLConjLatticePairsCovByDvr.lean&line=97#L97)
 -/

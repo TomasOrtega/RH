@@ -21,9 +21,9 @@ variable {X : Fields} (Pr : Primes X)
 def ReadAt (P : HeightOneSpectrum (𝓞 X.E)) : Prop := P ∈ Pr.vGs ∨ ∃ u, P ∈ Pr.vT u
 
 /- English proof (translation)
-Establish `hinj : Function.Injective (algebraMap (𝓞 X.F) (𝓞 X.E))` using `FaithfulSMul.algebraMap_injective (𝓞 X.F) (𝓞 X.E)`. Establish `hv` using `v.isPrime`. Take `⟨Q, _, hQ, hc⟩` from `Ideal.exists_ideal_over_prime_of_isIntegral v.asIdeal (⊥ : Ideal (𝓞 X.E)) (by rw [Ideal.comap_bot_of_injective _ hinj]; exact bot_le)`. Use `⟨⟨Q, hQ, ?_⟩, hc⟩` and prove the remaining obligations. Introduce and unpack `rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Conclude with `v.ne_bot (hc ▸ Ideal.comap_bot_of_injective _ hinj)`.
+A detailed English derivation is pending.
 -/
 theorem exists_over (X : Fields) (v : HeightOneSpectrum (𝓞 X.F)) :
     ∃ P : HeightOneSpectrum (𝓞 X.E), P.asIdeal.under (𝓞 X.F) = v.asIdeal := by

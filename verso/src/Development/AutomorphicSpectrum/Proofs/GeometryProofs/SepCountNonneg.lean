@@ -19,13 +19,13 @@ def sepCount {Ψ : Type} [Fintype Ψ] {e : ℕ} (N j : ℕ) (w : Fin e → Ψ ×
   ∑ f : LowEnt Ψ N ≃ Fin e, ∏ c : LowEnt Ψ N, if Sep N j (w (f c)) c then (1 : ℝ) else 0
 
 /- English proof (translation)
-Simplify using `[relab]`.
+Simplify using the standard rewrite rules.
 -/
 theorem relab_self (N : ℕ) (a : Fin N) : relab N N a = a := by
   simp [relab]
 
 /- English proof (translation)
-The claim follows from `Finset.sum_nonneg fun _ _ => Finset.prod_nonneg fun _ _ => by split_ifs <;> norm_num`.
+A detailed English derivation is pending.
 -/
 theorem sepCount_nonneg {Ψ : Type} [Fintype Ψ] {e : ℕ} (N j : ℕ) (w : Fin e → Ψ × Fin N) :
     0 ≤ sepCount N j w :=

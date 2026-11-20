@@ -7,11 +7,11 @@ noncomputable section
 namespace GlobalTheory.ParabolicCoord
 
 /- English proof (translation)
-Establish `hd : Measurable fun t => ((δ t : ℝ≥0) : ℝ≥0∞)` using `hδ.coe_nnreal_ennreal`. Use extensionality with `A hA`. Establish `hφ : Measurable fun t : T => t * s⁻¹` using `measurable_mul_const _`. Rewrite using `[Measure.map_apply hφ hA, withDensity_apply _ (hφ hA), Measure.smul_apply, withDensity_apply _ hA, smul_eq_mul, ← lintegral_indicator (hφ hA), ← lintegral_indicator hA, ← lintegral_const_mul _ (hd.indicator hA)]`. Rewrite using `[← lintegral_mul_right_eq_self _ s]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use extensionality with `u`. Distinguish the cases in `hu : u ∈ A`. Establish `: u * s ∈ (fun t => t * s⁻¹) ⁻¹' A` using `by simpa using hu`. Rewrite using `[Set.indicator_of_mem this, Set.indicator_of_mem hu, map_mul]`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `: u * s ∉ (fun t => t * s⁻¹) ⁻¹' A` using `by simpa using hu`. Rewrite using `[Set.indicator_of_notMem this, Set.indicator_of_notMem hu, mul_zero]`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem map_withDensity_mul_right_inv {T : Type} [CommGroup T] [MeasurableSpace T]
     [MeasurableMul T] [MeasurableInv T] (μT : Measure T) [μT.IsMulRightInvariant]
@@ -39,15 +39,13 @@ end GlobalTheory.ParabolicCoord
 namespace GlobalTheory.ParabolicCoord
 
 /- English proof (translation)
-Introduce `G _ _ _ _ _ _ _ _ K _ _ _ _ _ _ _ _ T _ _ _ _ _ _ _ _ Q κ m δ μK μT μQ hQ hκ hm hδ hμK hμT hμQ hn hmod s`. Use `haveI : LocallyCompactSpace Q := hQ.isClosedEmbedding_subtypeVal.locallyCompactSpace`. Establish `hmc : Continuous m` using `hm.continuous`. Use `haveI : SecondCountableTopology Q := TopologicalSpace.secondCountableTopology_induced _ G Subtype.val`. Use `haveI : SigmaCompactSpace Q := inferInstance`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : SigmaFinite μQ := inferInstance`. Use `haveI : SigmaFinite μT := inferInstance`. Establish `hcm` using `hmod μQ hμQ s⁻¹`. Establish `hcc : Continuous (fun q : Q => (⟨(m s⁻¹)⁻¹ * q * m s⁻¹, hn s⁻¹ q q.2⟩ : Q))` using `Continuous.subtype_mk (by fun_prop) _`. Establish `hF : Measurable (fun p : K × (T × Q) => (p.2.2 : G) * (m p.2.1)⁻¹ * κ p.1)`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Apply `Continuous.measurable` to reduce the goal to its premises. Use `fun_prop`. Establish `hφ : Measurable fun t : T => t * s⁻¹` using `measurable_mul_const _`. Establish `hΦ : Measurable (Prod.map (id : K → K) (Prod.map (fun t : T => t * s⁻¹) (fun q : Q => (⟨(m s⁻¹)⁻¹ * q * m s⁻¹, hn s⁻¹ q q.2⟩ : Q))))` using `measurable_id.prodMap (hφ.prodMap hcc.measurable)`. Establish `hLF : (fun x => m s * x) ∘ (fun p : K × (T × Q) => (p.2.2 : G) * (m p.2.1)⁻¹ * κ p.1) = (fun p : K × (T × Q) => (p.2.2 : G) * (m p.2.1)⁻¹ * κ p.1) ∘ Prod.map (id : K → K) (Prod.map (fun t : T => t * s⁻¹) (fun q : Q => (⟨(m s⁻¹)⁻¹ * q * m s⁻¹, hn s⁻¹ q q.2⟩ : Q)))`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use function extensionality and compare the values at `p`. Simplify using `only [Function.comp_apply, Prod.map_fst, Prod.map_snd, id, map_mul, map_inv, inv_inv]`. Use `group`. Establish `hδm : Measurable δ` using `hδ.measurable`. Unfold `coordMeasure`.
-
-Rewrite using `[Measure.map_map (measurable_const_mul _) hF, hLF, ← Measure.map_map hF hΦ]`. Use `congr 1`. Rewrite using `[← Measure.map_prod_map _ _ measurable_id (hφ.prodMap hcc.measurable), Measure.map_id, ← Measure.map_prod_map _ _ hφ hcc.measurable, hcm, map_withDensity_mul_right_inv μT δ hδm s, Measure.prod_smul_left, Measure.prod_smul_right, Measure.prod_smul_right, Measure.prod_smul_right, E …`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coordMeasure_map_mul_left_m :
     ∀ (G : Type) [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [LocallyCompactSpace G]

@@ -20,11 +20,9 @@ section Emb
 variable {F : Type} [Field F] [NumberField F]
 
 /- English proof (translation)
-Establish `hk : RingHom.ker σ₀ = ⊥`. Establish `h0 : Ideal.comap (algebraMap ℤ (𝓞 F)) (RingHom.ker σ₀) = ⊥`. Rewrite using `[RingHom.comap_ker]`. Establish `e : σ₀.comp (algebraMap ℤ (𝓞 F)) = Int.castRingHom ℂ` using `RingHom.ext_int _ _`. Rewrite using `[e]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(RingHom.injective_iff_ker_eq_bot _).1 Int.cast_injective`. Conclude with `Ideal.eq_bot_of_comap_eq_bot h0`. Establish `hinj : Function.Injective σ₀` using `(RingHom.injective_iff_ker_eq_bot _).2 hk`. Use `⟨IsFractionRing.lift (K := F) hinj, ?_⟩` and prove the remaining obligations. Use extensionality with `x`.
-
-Conclude with `IsFractionRing.lift_algebraMap (K := F) hinj x`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem exists_comp_eq (σ₀ : 𝓞 F →+* ℂ) : ∃ σ : F →+* ℂ, σ.comp (algebraMap (𝓞 F) F) = σ₀ := by
   have hk : RingHom.ker σ₀ = ⊥ := by
@@ -42,13 +40,13 @@ theorem exists_comp_eq (σ₀ : 𝓞 F →+* ℂ) : ∃ σ : F →+* ℂ, σ.com
 def extEmb (σ₀ : 𝓞 F →+* ℂ) : F →+* ℂ := (exists_comp_eq σ₀).choose
 
 /- English proof (translation)
-The claim follows from `(exists_comp_eq σ₀).choose_spec`.
+A detailed English derivation is pending.
 -/
 theorem extEmb_comp (σ₀ : 𝓞 F →+* ℂ) : (extEmb σ₀).comp (algebraMap (𝓞 F) F) = σ₀ :=
   (exists_comp_eq σ₀).choose_spec
 
 /- English proof (translation)
-The claim follows from `IsLocalization.ringHom_ext (nonZeroDivisors (𝓞 F)) (h.trans (extEmb_comp σ₀).symm)`.
+A detailed English derivation is pending.
 -/
 theorem eq_extEmb {σ₀ : 𝓞 F →+* ℂ} {σ : F →+* ℂ} (h : σ.comp (algebraMap (𝓞 F) F) = σ₀) : σ = extEmb σ₀ :=
   IsLocalization.ringHom_ext (nonZeroDivisors (𝓞 F)) (h.trans (extEmb_comp σ₀).symm)
@@ -56,20 +54,20 @@ theorem eq_extEmb {σ₀ : 𝓞 F →+* ℂ} {σ : F →+* ℂ} (h : σ.comp (al
 end Emb
 
 /- English proof (translation)
-Rewrite using `[← Spec.map_comp]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem spMap_comp {R R' R'' : Type} [CommRing R] [CommRing R'] [CommRing R''] (a : R →+* R') (b : R' →+* R'') :
     spMap b ≫ spMap a = spMap (b.comp a) := by
   rw [← Spec.map_comp]; rfl
 
 /- English proof (translation)
-The claim follows from `congrArg CommRingCat.Hom.hom (Spec.map_injective h)`.
+A detailed English derivation is pending.
 -/
 theorem eq_of_spMap_eq {R R' : Type} [CommRing R] [CommRing R'] {a b : R →+* R'} (h : spMap a = spMap b) : a = b :=
   congrArg CommRingCat.Hom.hom (Spec.map_injective h)
 
 /- English proof (translation)
-Substitute `e` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem evalPt_congr {R : Type} [CommRing R] {Y : Scheme.{0}} {x x' : Sp R ⟶ Y} (e : x = x') (U : Y.Opens)
     (h : ⊤ ≤ x ⁻¹ᵁ U) (h' : ⊤ ≤ x' ⁻¹ᵁ U) (f : Γ(Y, U)) :
@@ -94,9 +92,9 @@ def gramOf (G : EigMet Z σ') (y : CxPts (genStr Z) σ') (τ : E →+* ℂ)
   if h : ∃ g : EigFrame Z σ' (y.1 ≫ genι Z), g.v τ = u then G.gram y h.choose τ else 1
 
 /- English proof (translation)
-Establish `h : ∃ g : EigFrame Z σ' (y.1 ≫ genι Z), g.v τ = u` using `⟨g, hg⟩`. Establish `hco : h.choose.co g τ = 1` using `EigFrame.co_eq fun i => by`. Rewrite using `[h.choose_spec, ← hg]`. Use `isCombAtG_single Z.t _ (g.tan τ) i using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `a`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `[Matrix.one_apply, Pi.single_apply]`. Rewrite using `[gramOf, dif_pos h, G.change y h.choose g τ, hco]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem gramOf_eq (G : EigMet Z σ') {y : CxPts (genStr Z) σ'} {τ : E →+* ℂ}
     {u : Fin (Dw.mult τ) → (Sp (DualNumber ℂ) ⟶ Z.t.G.left)} (g : EigFrame Z σ' (y.1 ≫ genι Z)) (hg : g.v τ = u) :
@@ -111,7 +109,7 @@ theorem gramOf_eq (G : EigMet Z σ') {y : CxPts (genStr Z) σ'} {τ : E →+* �
   simp
 
 /- English proof (translation)
-Unfold `gramOf`. Use `split_ifs`. Use `exacts [G.pos _ _ _, Matrix.PosDef.one]`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem gramOf_posDef (G : EigMet Z σ') (y : CxPts (genStr Z) σ') (τ : E →+* ℂ)
     (u : Fin (Dw.mult τ) → (Sp (DualNumber ℂ) ⟶ Z.t.G.left)) : (gramOf G y τ u).PosDef := by
@@ -138,7 +136,7 @@ def withPart {K : Type} [CommRing K] {φ : c.F →+* K} {x : Sp K ⟶ Z.X} (g₀
     · rw [Function.update_of_ne h]; exact g₀.basis τ' w hw he
 
 /- English proof (translation)
-Take `⟨g₀⟩` from `GlobalTheory.ShFam.EigLoc.exists_eigFrame E H Dw l Xo c Oz β Z ℂ σ' y.1 y.2`. Conclude with `⟨withPart g₀ τ u hu, by simp [withPart]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_frame_part (y : CxPts (genStr Z) σ') {τ : E →+* ℂ}
     {u : Fin (Dw.mult τ) → (Sp (DualNumber ℂ) ⟶ Z.t.G.left)} (hu : IsEigBasis Z σ' (y.1 ≫ genι Z) τ u) :
@@ -160,19 +158,19 @@ def ptG {σ₀ : 𝓞 F →+* ℂ} (z : CxPts q σ₀) : Sp ℂ ⟶ W :=
   hpb.lift z.1 (spMap (extEmb σ₀)) (by rw [z.2, spMap_comp, extEmb_comp])
 
 /- English proof (translation)
-The claim follows from `hpb.lift_fst _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem ptG_fst {σ₀ : 𝓞 F →+* ℂ} (z : CxPts q σ₀) : ptG hpb z ≫ jB = z.1 := hpb.lift_fst _ _ _
 
 /- English proof (translation)
-The claim follows from `hpb.lift_snd _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem ptG_snd {σ₀ : 𝓞 F →+* ℂ} (z : CxPts q σ₀) :
     ptG hpb z ≫ πB ≫ genStr Z ≫ spMap e.toRingHom = spMap (extEmb σ₀) := hpb.lift_snd _ _ _
 
 omit [NumberField F] in
 /- English proof (translation)
-Rewrite using `[spMap_comp, ← Spec.map_id]`. Conclude with `congrArg Spec.map (CommRingCat.hom_ext (RingHom.ext e.apply_symm_apply))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem spMap_e : spMap e.toRingHom ≫ spMap e.symm.toRingHom = 𝟙 _ := by
   rw [spMap_comp, ← Spec.map_id]
@@ -180,7 +178,7 @@ theorem spMap_e : spMap e.toRingHom ≫ spMap e.symm.toRingHom = 𝟙 _ := by
 
 omit [NumberField F] in
 /- English proof (translation)
-Rewrite using `[← spMap_comp, ← h]`. Simplify using `only [Category.assoc, spMap_e, Category.comp_id]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem genStr_of {x : Sp ℂ ⟶ W} {σ : F →+* ℂ} (h : x ≫ πB ≫ genStr Z ≫ spMap e.toRingHom = spMap σ) :
     (x ≫ πB) ≫ genStr Z = spMap (σ.comp e.symm.toRingHom) := by
@@ -189,7 +187,7 @@ theorem genStr_of {x : Sp ℂ ⟶ W} {σ : F →+* ℂ} (h : x ≫ πB ≫ genSt
 
 omit [NumberField F] in
 /- English proof (translation)
-Rewrite using `[← Category.assoc, ← Category.assoc, h, spMap_comp]`. Use `congr 1`. Use extensionality with `a`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem of_genStr {x : Sp ℂ ⟶ W} {σ : F →+* ℂ} (h : (x ≫ πB) ≫ genStr Z = spMap (σ.comp e.symm.toRingHom)) :
     x ≫ πB ≫ genStr Z ≫ spMap e.toRingHom = spMap σ := by
@@ -202,7 +200,7 @@ def ptY {σ₀ : 𝓞 F →+* ℂ} (z : CxPts q σ₀) : CxPts (genStr Z) ((extE
   ⟨ptG hpb z ≫ πB, genStr_of (ptG_snd hpb z)⟩
 
 /- English proof (translation)
-The claim follows from `hpb.hom_ext (h₁.trans (ptG_fst hpb z).symm) (by rw [ptG_snd, of_genStr h₂, eq_extEmb hσ])`.
+A detailed English derivation is pending.
 -/
 theorem eq_ptG {σ₀ : 𝓞 F →+* ℂ} {z : CxPts q σ₀} {σ : F →+* ℂ} (hσ : σ.comp (algebraMap (𝓞 F) F) = σ₀)
     {zg : Sp ℂ ⟶ W} (h₁ : zg ≫ jB = z.1) (h₂ : (zg ≫ πB) ≫ genStr Z = spMap (σ.comp e.symm.toRingHom)) :
@@ -232,9 +230,9 @@ def lieGram (σ₀ : 𝓞 F →+* ℂ) (ch : Chart M (Dw.mult τ)) (z : CxPts q 
   else 0
 
 /- English proof (translation)
-Take `rfl` from `eq_extEmb hσ`. Take `rfl : zg = ptG hpb z` from `eq_ptG hpb hσ hzg (by rw [← hyc]; exact yc.2)`. Take `rfl : yc = ptY hpb z` from `Subtype.ext hyc`. Establish `hz : z ∈ CxPts.ptsIn q σ₀ ch.U` using `by have := hx; rwa [hzg] at this`. Establish `hg' : g.v τ = uvec hpb uu ch z hz` using `funext hg`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[lieGram, dif_pos hz, gramOf_eq (Gm _) g hg']`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem lieGram_spec {σ₀ : 𝓞 F →+* ℂ} (z : CxPts q σ₀) (σ : F →+* ℂ) (hσ : σ.comp (algebraMap (𝓞 F) F) = σ₀)
     (zg : Sp ℂ ⟶ W) (hzg : zg ≫ jB = z.1) (yc : CxPts (genStr Z) (σ.comp e.symm.toRingHom)) (hyc : yc.1 = zg ≫ πB)
@@ -250,7 +248,7 @@ theorem lieGram_spec {σ₀ : 𝓞 F →+* ℂ} (z : CxPts q σ₀) (σ : F →+
   rw [lieGram, dif_pos hz, gramOf_eq (Gm _) g hg']
 
 /- English proof (translation)
-Establish `hW : y ∈ CxPts.ptsIn q σ₀ (ch.U ⊓ ch'.U)` using `CxPts.mem_ptsIn_inf.2 ⟨hy, hy'⟩`. Rewrite using `[VB.Chart.tr, Matrix.of_apply, ch.crd_eq (ch'.e b) inf_le_right inf_le_left hW a, CxPts.ev_eq hW, CxPts.evHom_eq_evalPt]`. Conclude with `evalPt_congr hxy.symm _ _ _ _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem trEntry {r : ℕ} {σ₀ : 𝓞 F →+* ℂ} (ch ch' : Chart M r) (y : CxPts q σ₀) (hy : y ∈ CxPts.ptsIn q σ₀ ch.U)
     (hy' : y ∈ CxPts.ptsIn q σ₀ ch'.U) (x : Sp ℂ ⟶ X) (hxy : x = y.1) (hxx : ⊤ ≤ x ⁻¹ᵁ (ch.U ⊓ ch'.U))
@@ -262,9 +260,9 @@ theorem trEntry {r : ℕ} {σ₀ : 𝓞 F →+* ℂ} (ch ch' : Chart M r) (y : C
   exact evalPt_congr hxy.symm _ _ _ _
 
 /- English proof (translation)
-Establish `h1 : IsUnit Tᵀ.det` using `by rw [Matrix.det_transpose]; exact (Matrix.isUnit_iff_isUnit_det _).1 hT`. Establish `h2 : IsUnit (Tᵀ)ᴴ.det` using `by rw [Matrix.det_conjTranspose]; exact h1.star`. Establish `e : Tᴴᵀ = (Tᵀ)ᴴ` using `by ext; simp`. Rewrite using `[HermFrame.chg, Matrix.mul_inv_rev, Matrix.mul_inv_rev, e]`. Simplify using `only [← Matrix.mul_assoc, Matrix.mul_nonsing_inv _ h1, Matrix.one_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Matrix.mul_assoc, Matrix.nonsing_inv_mul _ h2, Matrix.mul_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem inv_chg_transpose_conj {n : ℕ} (T M : Matrix (Fin n) (Fin n) ℂ) (hT : IsUnit T) :
     M⁻¹ = HermFrame.chg T ((Tᵀ)ᴴ * M * Tᵀ)⁻¹ := by
@@ -276,21 +274,19 @@ theorem inv_chg_transpose_conj {n : ℕ} (T M : Matrix (Fin n) (Fin n) ℂ) (hT 
   rw [Matrix.mul_assoc, Matrix.nonsing_inv_mul _ h2, Matrix.mul_one]
 
 /- English proof (translation)
-Distinguish the cases in `hy' : y ∈ CxPts.ptsIn q σ₀ ch'.U`. Use `swap`. Rewrite using `[lieGram, dif_neg hy', VB.Chart.tr_of_notMem ch ch' hy', HermFrame.chg_zero]`. Establish `hx : ⊤ ≤ (ptG hpb y ≫ jB) ⁻¹ᵁ ch.U` using `by rw [ptG_fst]; exact hy`. Establish `hx' : ⊤ ≤ (ptG hpb y ≫ jB) ⁻¹ᵁ ch'.U` using `by rw [ptG_fst]; exact hy'`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hxx : ⊤ ≤ (ptG hpb y ≫ jB) ⁻¹ᵁ (ch.U ⊓ ch'.U)`. Rewrite using `[ptG_fst]`. Conclude with `CxPts.mem_ptsIn_inf.2 ⟨hy, hy'⟩`. Establish `hb : ∀ (ch₁ : Chart M (Dw.mult τ)) (h₁ : ⊤ ≤ (ptG hpb y ≫ jB) ⁻¹ᵁ ch₁.U), IsEigBasis Z ((extEmb σ₀).comp e.symm.toRingHom) ((ptY hpb y).1 ≫ genι Z) τ (uu ch₁.U ch₁.e ch₁.isFrame ℂ (ptG hpb y) h₁)` using `fun ch₁ h₁ => by`. Use `hLF.1 ch₁.U ch₁.e ch₁.isFrame ℂ (ptG hpb y) h₁ (extEmb σ₀) (ptG_snd hpb y)` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result.
 
-Simplify `this` using `only [ptY, Category.assoc]`. Take `⟨g, hg⟩` from `exists_frame_part (ptY hpb y) (hb ch hx)`. Take `⟨g', hg'⟩` from `exists_frame_part (ptY hpb y) (hb ch' hx')`. Establish `hg₁ : g.v τ = uvec hpb uu ch y hy` using `hg`. Establish `hg₁' : g'.v τ = uvec hpb uu ch' y hy'` using `hg'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpt : (ptY hpb y).1 ≫ genι Z = ptG hpb y ≫ πB ≫ genι Z` using `Category.assoc _ _ _`. Establish `hT` using `ch.isUnit_tr ch' hy hy'`. Rewrite using `[lieGram, lieGram, dif_pos hy, dif_pos hy', gramOf_eq _ g hg₁, gramOf_eq _ g' hg₁']`. Consider the cases of `dual`. Establish `hco : g.co g' τ = ch.tr q σ₀ ch' y` using `EigFrame.co_eq fun i => by`.
+Rewrite the conclusion using the stated equalities. Split into cases according to the possible forms of the given data. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `hLF.2.1 ch.U ch'.U ch.e ch'.e ch.isFrame ch'.isFrame ℂ (ptG hpb y) hx hx' hxx i` as an intermediate fact. Simplify using `only [cond] at this`. Establish `hcf : (fun a => ch.tr q σ₀ ch' y a i) = fun b => TangentOrigin.evalPt (ptG hpb y ≫ jB) (ch.U ⊓ ch'.U) hxx (trCo ch.isFrame ch'.e b i)`. Apply the tactic sequence `funext fun b => trEntry ch ch' y hy hy' _ (ptG_fst hpb y) hxx b i`. Rewrite using `[hg, hg', hpt, hcf]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `this`. Rewrite using `[(Gm _).change (ptY hpb y) g g' τ, hco]`. Simplify using `only [cond, HermFrame.chg, Matrix.transpose_mul, Matrix.mul_assoc]`. Establish `hco : g'.co g τ = (ch.tr q σ₀ ch' y)ᵀ` using `EigFrame.co_eq fun i => by`. Use `hLF.2.1 ch.U ch'.U ch.e ch'.e ch.isFrame ch'.isFrame ℂ (ptG hpb y) hx hx' hxx i` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [cond] at this`. Establish `hcf : (fun a => (ch.tr q σ₀ ch' y)ᵀ a i) = fun a => TangentOrigin.evalPt (ptG hpb y ≫ jB) (ch.U ⊓ ch'.U) hxx (trCo ch.isFrame ch'.e i a)`. Apply the tactic sequence `funext fun a => trEntry ch ch' y hy hy' _ (ptG_fst hpb y) hxx i a`. Rewrite using `[hg, hg', hpt, hcf]`. Conclude with `this`.
-
-Rewrite using `[(Gm _).change (ptY hpb y) g' g τ, hco]`. Conclude with `inv_chg_transpose_conj _ _ hT`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lieGram_trans (hLF : IsLieFrames Z e jB πB M (Dw.mult τ) τ dual uu) {σ₀ : 𝓞 F →+* ℂ}
     (ch ch' : Chart M (Dw.mult τ)) (y : CxPts q σ₀) (hy : y ∈ CxPts.ptsIn q σ₀ ch.U) :
@@ -337,7 +333,7 @@ theorem lieGram_trans (hLF : IsLieFrames Z e jB πB M (Dw.mult τ) τ dual uu) {
     exact inv_chg_transpose_conj _ _ hT
 
 /- English proof (translation)
-Establish `h : A.map (starRingEnd ℂ) = Aᴴᵀ` using `by ext; simp`. Rewrite using `[h, ← Matrix.transpose_nonsing_inv, ← Matrix.conjTranspose_nonsing_inv]`. Use `ext`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem inv_map_conj {n : ℕ} (A : Matrix (Fin n) (Fin n) ℂ) : (A.map (starRingEnd ℂ))⁻¹ = A⁻¹.map star := by
   have h : A.map (starRingEnd ℂ) = Aᴴᵀ := by ext; simp
@@ -345,23 +341,21 @@ theorem inv_map_conj {n : ℕ} (A : Matrix (Fin n) (Fin n) ℂ) : (A.map (starRi
   ext; simp
 
 /- English proof (translation)
-Distinguish the cases in `hy : y ∈ CxPts.ptsIn q σ₀ ch.U`. Use `swap`. Establish `hy' : y' ∉ CxPts.ptsIn q σ₀' ch.U` using `fun h => hy ((CxPts.mem_ptsIn_iff_of_conj hyy).1 h)`. Rewrite using `[lieGram, lieGram, dif_neg hy, dif_neg hy']`. Use `ext`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Establish `hy' : y' ∈ CxPts.ptsIn q σ₀' ch.U` using `(CxPts.mem_ptsIn_iff_of_conj hyy).2 hy`. Establish `hσ : (starRingEnd ℂ).comp σ₀ = σ₀'` using `eq_of_spMap_eq (by rw [← spMap_comp, ← y.2, ← y'.2, hyy, Category.assoc])`. Establish `hσ' : extEmb σ₀' = (starRingEnd ℂ).comp (extEmb σ₀)` using `(eq_extEmb (by rw [RingHom.comp_assoc, extEmb_comp, hσ])).symm`. Establish `hzg : ptG hpb y' = spMap (starRingEnd ℂ) ≫ ptG hpb y` using `hpb.hom_ext (by rw [ptG_fst, Category.assoc, ptG_fst, hyy]) (by rw [ptG_snd, Category.assoc, ptG_snd, spMap_comp, hσ'])`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hx : ⊤ ≤ (ptG hpb y ≫ jB) ⁻¹ᵁ ch.U` using `by rw [ptG_fst]; exact hy`. Establish `hb` using `hLF.1 ch.U ch.e ch.isFrame ℂ (ptG hpb y) hx (extEmb σ₀) (ptG_snd hpb y)`. Take `⟨g, hg⟩` from `exists_frame_part (ptY hpb y) (by simpa only [ptY, Category.assoc] using hb)`. Establish `hg₁ : g.v τ = uvec hpb uu ch y hy` using `hg`. Establish `hφ : (extEmb σ₀').comp e.symm.toRingHom = (starRingEnd ℂ).comp ((extEmb σ₀).comp e.symm.toRingHom)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hσ']`. Both sides reduce to the same expression. Establish `hyc : (ptY hpb y').1 = spMap (starRingEnd ℂ) ≫ (ptY hpb y).1`. Simplify using `only [ptY, hzg, Category.assoc]`. Establish `hpt : (ptY hpb y').1 ≫ genι Z = spMap (starRingEnd ℂ) ≫ ((ptY hpb y).1 ≫ genι Z)`.
+Both sides reduce to the same expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hyc, Category.assoc]`. Take `⟨g', hg'⟩` from `EigFrame.exists_isMap (φ' := (extEmb σ₀').comp e.symm.toRingHom) (x' := (ptY hpb y').1 ≫ genι Z) g (starRingEnd ℂ) hφ hpt`. Establish `key : ∀ (x₁ x₂ : Sp ℂ ⟶ W) (_ : x₁ = x₂) (h₁ : ⊤ ≤ (x₁ ≫ jB) ⁻¹ᵁ ch.U) (h₂ : ⊤ ≤ (x₂ ≫ jB) ⁻¹ᵁ ch.U), uu ch.U ch.e ch.isFrame ℂ x₁ h₁ = uu ch.U ch.e ch.isFrame ℂ x₂ h₂`. Introduce `x₁ x₂ ex _ _`. Substitute `ex` using the available equality.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Establish `hx₂ : ⊤ ≤ ((spMap (starRingEnd ℂ) ≫ ptG hpb y) ≫ jB) ⁻¹ᵁ ch.U`. Rewrite using `[← hzg, ptG_fst]`. Conclude with `hy'`. Establish `hv : g'.v τ = uvec hpb uu ch y' hy'` using `funext fun i => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[hg' τ, hg₁]`. Unfold `uvec`. Rewrite using `[key _ _ hzg _ hx₂]`. Conclude with `(hLF.2.2 ch.U ch.e ch.isFrame ℂ ℂ (starRingEnd ℂ) (ptG hpb y) _ hx₂ i).symm`. Establish `hgram` using `hEC _ _ (ptY hpb y) (ptY hpb y') g g' τ hφ hyc hg'`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Split into cases according to the possible forms of the given data. By extensionality, compare the relevant components.
 
-Rewrite using `[lieGram, lieGram, dif_pos hy, dif_pos hy', gramOf_eq _ g hg₁, gramOf_eq _ g' hv, hgram]`. Consider the cases of `dual`. Use extensionality with `a b`. Simplify using the standard rewrite rules. Simplify using `only [cond]`.
-
-Conclude with `inv_map_conj _`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem lieGram_conj (hLF : IsLieFrames Z e jB πB M (Dw.mult τ) τ dual uu) (hEC : EigConj Z Gm)
     {σ₀ σ₀' : 𝓞 F →+* ℂ} (ch : Chart M (Dw.mult τ)) (y : CxPts q σ₀) (y' : CxPts q σ₀')
@@ -435,9 +429,9 @@ namespace GlobalTheory.ArLieBase
 open MetOfEig in
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c Oz _ β Z F _ _ e X W q jB πB hpb M r τ dual hr uu G hVB hLF hEC`. Substitute `hr` using the available equality. Use `⟨vmet hpb dual uu G hVB hLF hEC, ?_⟩` and prove the remaining obligations. Introduce `σ z zg yc hzg hyc ch hx g hg`. Establish `e₁ : ∀ i, g.v τ i = uu ch.U ch.e ch.isFrame ℂ zg hx i` using `fun i => by simpa using hg i`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `lieGram_spec hpb dual uu G z σ rfl zg hzg yc hyc ch hx g e₁` as an intermediate fact. Simplify `this` using `[vmet, met]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem exists_isLieMet : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E)
     (Dw : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Datum H) (l : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level H) (Xo : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Moduli Dw l)

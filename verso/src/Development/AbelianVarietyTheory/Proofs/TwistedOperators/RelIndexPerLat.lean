@@ -10,7 +10,7 @@ namespace GlobalTheory.RootEx.PerIndex
 variable {k : Type} [Field k] [ValuativeRel k] {n : Type}
 
 /- English proof (translation)
-Use function extensionality and compare the values at `r`. Simplify using `only [UnfoldShape.col, Pi.add_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem col_add (n' : Type) {c : ℕ}
     (e f : {rs : (n ⊕ Fin c) × (n' ⊕ Fin (c + 1)) // Free 1 rs} → k) (i : Fin c) :
@@ -21,21 +21,21 @@ theorem col_add (n' : Type) {c : ℕ}
   split_ifs <;> simp
 
 /- English proof (translation)
-Set `φ : perLat ϖ n' c (stdLat k n) →+ (Fin c → (stdLat k n).toAddSubgroup)` to `AddMonoidHom.mk' (fun e i => ⟨fun r => ((ϖ : k) ^ ((i : ℕ) + 1) • UnfoldShape.col (n' := n') e.1 i) (Sum.inl r), (mem_chainLat.1 (mem_perLat.1 e.2 i)).1⟩) (by`. Introduce `e f`. Use function extensionality and compare the values at `i`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `r`.
+Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [AddSubgroup.coe_add, Pi.add_apply, col_add, smul_add])`. Establish `hφ : Function.Surjective φ`. Introduce `v`. Establish `hY : ∀ i : Fin c, ((ϖ : k) ^ ((i : ℕ) + 1))⁻¹ • inX k n c (v i).1 ∈ Yle k n c ((i : ℕ) + 1)`. Introduce `i`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[mem_Yle]`. Introduce `l _`. Simplify using `[inX_apply]`. Establish `hc` using `col_uncol (n' := n') hY`. Establish `hs : ∀ i : Fin c, (ϖ : k) ^ ((i : ℕ) + 1) • UnfoldShape.col (n'` using `n') (uncol n' fun i : Fin c => ((ϖ : k) ^ ((i : ℕ) + 1))⁻¹ • inX k n c (v i).1) i = inX k n c (v i).1 := by`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `i`. Rewrite using `[hc, smul_smul, mul_inv_cancel₀ (pow_ne_zero _ hϖ), one_smul]`. Use `⟨⟨uncol n' fun i : Fin c => ((ϖ : k) ^ ((i : ℕ) + 1))⁻¹ • inX k n c (v i).1, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[mem_perLat]`. Introduce `i`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hs, mem_chainLat]`. Use `⟨?_, fun l => ⟨0, ?_⟩⟩` and prove the remaining obligations. Simplify `(v i).2` using `[inX_apply]`. Simplify using `[inX_apply]`. Use function extensionality and compare the values at `i`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `r`. Conclude with `congrFun (hs i) (Sum.inl r)`. Establish `hcomap : (perLat ϖ n' c L).addSubgroupOf (perLat ϖ n' c (stdLat k n)) = (AddSubgroup.pi Set.univ fun _ : Fin c => L.toAddSubgroup.addSubgroupOf (stdLat k n).toAddSubgroup).comap φ`. Use extensionality with `e`.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[AddSubgroup.mem_addSubgroupOf, AddSubgroup.mem_comap, AddSubgroup.mem_pi, mem_perLat]`. Prove the components needed by the constructor for the conclusion. Introduce `h i _`. Conclude with `(mem_chainLat.1 (h i)).1`. Introduce `h i`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `mem_chainLat.2 ⟨h i trivial, (mem_chainLat.1 (mem_perLat.1 e.2 i)).2⟩`. Rewrite using `[AddSubgroup.relIndex, hcomap, AddSubgroup.index_comap_of_surjective _ hφ, AddSubgroup.index_pi]`. Simplify using `[AddSubgroup.relIndex]`.
+A detailed English derivation is pending.
 -/
 theorem relIndex_perLat (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] (n : Type) [Fintype n] [DecidableEq n] (n' : Type)

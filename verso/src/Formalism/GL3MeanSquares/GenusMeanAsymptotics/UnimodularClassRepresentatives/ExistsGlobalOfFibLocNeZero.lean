@@ -17,7 +17,7 @@ variable {K F V V' : Type} [Field K] [NumberField K] [StarRing K] [Field F] [Num
 variable {h : V →ₗ⋆[K] V →ₗ[K] K} {h' : V' →ₗ⋆[K] V' →ₗ[K] K}
 
 /- English proof (translation)
-The claim follows from `BrB.exists_locReps' hK hF hs hd S hL hLi h𝔭`.
+A detailed English derivation is pending.
 -/
 theorem exists_locReps (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF : IsFixF K F) (hs : h.IsSymm)
     (hd : IsTotPosDef h) (S : VecSplit h h') {L : Submodule (𝓞 K) V}
@@ -26,7 +26,7 @@ theorem exists_locReps (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF 
   BrB.exists_locReps' hK hF hs hd S hL hLi h𝔭
 
 /- English proof (translation)
-The claim follows from `BrB.psiP_eq_sum' hs S L 𝔭 hsr`.
+A detailed English derivation is pending.
 -/
 theorem psiP_eq_sum (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF : IsFixF K F) (hs : h.IsSymm)
     (hd : IsTotPosDef h) (S : VecSplit h h') {L : Submodule (𝓞 K) V}

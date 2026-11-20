@@ -14,7 +14,7 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 namespace GlobalTheory.SplitExtTorus
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.Diag.isCommMonObj _ X finiteType := inferInstance quasiCompact := inferInstance splits := ⟨k, inferInstance, inferInstance, X, inferInstance, inferInstance, inferInstance, GlobalTheory.Diag.baseChangeIso _ X, GlobalTheory.Diag.baseChangeIso_isMonHom _ X⟩`.
+A detailed English derivation is pending.
 -/
 theorem isTorus_splitTorus (k : Type u) [Field k] (X : Type u) [AddCommGroup X] [Module.Free ℤ X]
     [Module.Finite ℤ X] : IsTorus (splitTorus (Spec (CommRingCat.of k)) X) where
@@ -44,7 +44,7 @@ def torusExtOfSplit {k : Type u} [Field k] {G : Over (Spec (CommRingCat.of k))} 
     isKernel := E.isKernel }
 
 /- English proof (translation)
-Introduce `_ _ _ _ h` and use `h.map torusExtOfSplit`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem nonempty_torusExt_of_split : ∀ (k : Type) [Field k] (G : Over (Spec (CommRingCat.of k))) [GrpObj G], Nonempty (TorusExtension G) → Nonempty (TorusExt G) :=
   fun _ _ _ _ h => h.map torusExtOfSplit

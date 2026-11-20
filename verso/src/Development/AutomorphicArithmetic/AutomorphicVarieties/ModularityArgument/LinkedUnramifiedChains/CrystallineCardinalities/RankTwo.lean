@@ -7,15 +7,15 @@ open IsLocalRing Matrix UpperTheory.V.Alg UpperTheory.V.U3 UpperTheory.V.Fr Uppe
 namespace UpperTheory.V.Z.J
 
 /- English proof (translation)
-Set `φ : (O ⧸ I) →ₗ[O] (O ⧸ I)` to `c • LinearMap.id`. Establish `hφ : ∀ x, φ x = c • x` using `fun x => rfl`. Establish `hker : Nat.card {x : O ⧸ I // c • x = 0} = Nat.card (LinearMap.ker φ)` using `Nat.card_congr (Equiv.subtypeEquivRight (fun x => by rw [LinearMap.mem_ker, hφ]))`. Establish `hA1` using `Submodule.card_eq_card_quotient_mul_card (LinearMap.ker φ)`. Establish `hA2` using `Submodule.card_eq_card_quotient_mul_card (LinearMap.range φ)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hq : Nat.card ((O ⧸ I) ⧸ LinearMap.ker φ) = Nat.card (LinearMap.range φ)` using `Nat.card_congr (φ.quotKerEquivRange).toEquiv`. Establish `hpos : 0 < Nat.card (LinearMap.range φ)` using `Nat.card_pos`. Establish `heq : Nat.card (LinearMap.ker φ) = Nat.card ((O ⧸ I) ⧸ LinearMap.range φ)`. Rewrite `hA1` using `[hq]`. Establish `h : Nat.card (LinearMap.range φ) * Nat.card (LinearMap.ker φ) = Nat.card (LinearMap.range φ) * Nat.card ((O ⧸ I) ⧸ LinearMap.range φ)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[mul_comm, ← hA1, hA2]`. Conclude with `Nat.eq_of_mul_eq_mul_left hpos h`. Rewrite using `[hker, heq]`. Set `g : O →ₗ[O] (O ⧸ I) ⧸ LinearMap.range φ` to `(LinearMap.range φ).mkQ ∘ₗ (Submodule.mkQ I)`. Establish `hg : Submodule.span O {c} ≤ LinearMap.ker g`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Submodule.span_le, Set.singleton_subset_iff, SetLike.mem_coe, LinearMap.mem_ker]`. Simplify using `only [g, LinearMap.coe_comp, Function.comp_apply, Submodule.mkQ_apply]`. Rewrite using `[Submodule.Quotient.mk_eq_zero]`. Use `⟨Submodule.Quotient.mk 1, ?_⟩` and prove the remaining obligations. Rewrite using `[hφ, ← Submodule.Quotient.mk_smul, smul_eq_mul, mul_one]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Nat.card_le_card_of_surjective ((Submodule.span O {c}).liftQ g hg) ?_` and prove the remaining obligations. Introduce `z`. Take `⟨w, rfl⟩` from `Submodule.Quotient.mk_surjective _ z`. Take `⟨o, rfl⟩` from `Submodule.Quotient.mk_surjective _ w`. Conclude with `⟨Submodule.Quotient.mk o, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem tors_card {O : Type} [CommRing O] (I : Ideal O) [Finite (O ⧸ I)] (c : O)
     [Finite (O ⧸ Ideal.span {c})] :
@@ -50,21 +50,19 @@ private theorem tors_card {O : Type} [CommRing O] (I : Ideal O) [Finite (O ⧸ I
   exact ⟨Submodule.Quotient.mk o, rfl⟩
 
 /- English proof (translation)
-Take `⟨n, ι, _, p, hp, e, ⟨E⟩⟩` from `Module.equiv_free_prod_directSum O Q`. Distinguish the cases in `hn : 2 ≤ n`. Use `left`. Set `i0 : Fin n` to `⟨0, by omega⟩`. Set `i1 : Fin n` to `⟨1, by omega⟩`.
+Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Introduce a local definition for the expression. Introduce a local definition for the expression. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `refine ⟨(Finsupp.lapply i0) ∘ₗ (LinearMap.fst O _ _) ∘ₗ E.toLinearMap, (Finsupp.lapply i1) ∘ₗ (LinearMap.fst O _ _) ∘ₗ E.toLinearMap, E.symm (Finsupp.single i0 1, 0), E.symm (Finsupp.single i1 1, 0), ?_, ?_, ?_, ?_⟩ <;>`. Simplify using `[i0, i1, Finsupp.single_apply]`. Use `right`. Establish `hq : ∀ i, p i ^ e i ≠ 0` using `fun i => pow_ne_zero _ (hp i).ne_zero`. Use `haveI : ∀ i, Finite (O ⧸ Ideal.span {p i ^ e i}) := fun i => hfin _ (hq i)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨∏ i, Nat.card (O ⧸ Ideal.span {p i ^ e i}), fun I hI => ?_⟩` and prove the remaining obligations. Establish `htor : ∀ (φ : Q →ₗ[O] O ⧸ I) (i : ι), (p i ^ e i) • φ (E.symm (0, DirectSum.lof O ι (fun i => O ⧸ O ∙ p i ^ e i) i (Submodule.Quotient.mk 1))) = 0`. Introduce `φ i`. Rewrite using `[← map_smul, ← map_smul, Prod.smul_mk, smul_zero, ← map_smul, ← Submodule.Quotient.mk_smul, smul_eq_mul, mul_one, (Submodule.Quotient.mk_eq_zero _).mpr (Submodule.mem_span_singleton_self _), map_zero, Prod.mk_zero_zero, map_zero, map_zero]`. Set `F : (Q →ₗ[O] O ⧸ I) → (Fin n → O ⧸ I) × ((i : ι) → {x : O ⧸ I // (p i ^ e i) • x = 0})` to `fun φ => (fun j => φ (E.symm (Finsupp.single j 1, 0)), fun i => ⟨_, htor φ i⟩)`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hF : Function.Injective F`. Introduce `φ ψ h`. Establish `h1` using `congrArg Prod.fst h`. Establish `h2` using `congrArg Prod.snd h`. Establish `key : φ ∘ₗ E.symm.toLinearMap = ψ ∘ₗ E.symm.toLinearMap`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `LinearMap.prod_ext` to reduce the goal to its premises. Apply `Finsupp.lhom_ext` to reduce the goal to its premises. Introduce `j b`. Establish `hj` using `congrFun h1 j`. Rewrite using `[← Finsupp.smul_single_one, map_smul, map_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `congrArg (b • ·) hj`. Apply `DirectSum.linearMap_ext` to reduce the goal to its premises. Introduce `i`. Apply `Submodule.linearMap_qext` to reduce the goal to its premises. Apply `LinearMap.ext_ring` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `congrArg Subtype.val (congrFun h2 i)`. Use extensionality with `x`. Simplify using `using LinearMap.congr_fun key (E x)`. Establish `hcard` using `Nat.card_le_card_of_injective F hF`. Rewrite `hcard` using `[Nat.card_prod, Nat.card_pi, Nat.card_pi, Finset.prod_const, Finset.card_univ, Fintype.card_fin]`.
-
-Establish `hP : ∏ i, Nat.card {x : O ⧸ I // (p i ^ e i) • x = 0} ≤ ∏ i, Nat.card (O ⧸ Ideal.span {p i ^ e i})` using `Finset.prod_le_prod' (fun i _ => tors_card I (p i ^ e i))`. Establish `hpos : 0 < Nat.card (O ⧸ I)` using `Nat.card_pos`. Establish `hpow : Nat.card (O ⧸ I) ^ n ≤ Nat.card (O ⧸ I)`. Combine the equalities or inequalities in the displayed calculation. Conclude with `hcard.trans (Nat.mul_le_mul hpow hP)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 private theorem hom_alt {O : Type} [CommRing O] [IsDomain O] [IsPrincipalIdealRing O]
     (hfin : ∀ c : O, c ≠ 0 → Finite (O ⧸ Ideal.span {c}))
@@ -127,11 +125,11 @@ private def rel {O R : Type} [CommRing O] [CommRing R] [Algebra O R] (ξ : R →
   Submodule.span O ({x | ∃ a b, x = a * b - (ξ a • b + ξ b • a)} ∪ T)
 
 /- English proof (translation)
-Unfold `rel`. Rewrite using `[Submodule.span_le, Set.union_subset_iff]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`. Use `⟨fun a b => ?_, fun a ha => LinearMap.mem_ker.mp (h2 ha)⟩` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h` using `h1 ⟨a, b, rfl⟩`. Rewrite `h` using `[SetLike.mem_coe, LinearMap.mem_ker, map_sub, map_add, map_smul, map_smul, sub_eq_zero]`. Conclude with `h`. Introduce and unpack `⟨h1, h2⟩`. Use `⟨?_, fun a ha => LinearMap.mem_ker.mpr (h2 a ha)⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `x ⟨a, b, rfl⟩`. Rewrite using `[SetLike.mem_coe, LinearMap.mem_ker, map_sub, map_add, map_smul, map_smul, sub_eq_zero]`. Conclude with `h1 a b`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem rel_le {O R : Type} [CommRing O] [CommRing R] [Algebra O R] (ξ : R →ₐ[O] O) (T : Set R)
     {X : Type} [AddCommGroup X] [Module O X] (δ : R →ₗ[O] X) :
@@ -151,25 +149,23 @@ private theorem rel_le {O R : Type} [CommRing O] [CommRing R] [Algebra O R] (ξ 
     exact h1 a b
 
 /- English proof (translation)
-Take `⟨S, hS⟩` from `(IsNoetherian.noetherian (RingHom.ker ξ) : (RingHom.ker ξ).FG)`. Establish `hS' : Ideal.span (S : Set R) = RingHom.ker ξ` using `hS`. Establish `hrel : ∀ a b, a * b - (ξ a • b + ξ b • a) ∈ rel ξ T` using `fun a b => Submodule.subset_span (Or.inl ⟨a, b, rfl⟩)`. Establish `hmm : ∀ a b, ξ a = 0 → ξ b = 0 → a * b ∈ rel ξ T`. Introduce `a b ha hb`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h` using `hrel a b`. Rewrite `h` using `[ha, hb, zero_smul, zero_smul, add_zero, sub_zero]`. Then use the resulting hypothesis. Establish `hker : ∀ x, x ∈ Ideal.span (S : Set R) → x ∈ Submodule.span O (S : Set R) ⊔ rel ξ T`. Introduce `x hx`. Proceed by induction on `hx using Submodule.span_induction with`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `mem x hx => exact Submodule.mem_sup_left (Submodule.subset_span hx)`. Consider the case `zero => exact Submodule.zero_mem _`. Consider the case `add x y _ _ hx hy => exact Submodule.add_mem _ hx hy`. Consider the case `smul r x hxS hx`. Establish `hxk : ξ x = 0`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Establish `h` using `hxS`. Rewrite `h` using `[hS, RingHom.mem_ker]`. Conclude with `h`. Establish `h1 : r • x = ξ r • x + (r - ξ r • 1) * x`. Rewrite using `[smul_eq_mul, sub_mul, smul_mul_assoc, one_mul]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Normalize the expressions using the abelian group laws. Rewrite using `[h1]`. Use `Submodule.add_mem _ (Submodule.smul_mem _ _ hx) (Submodule.mem_sup_right (hmm _ _ ?_ hxk))` and prove the remaining obligations. Simplify using the standard rewrite rules. Establish `h1 : (1 : R) ∈ rel ξ T`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `hrel 1 1`. Rewrite `h` using `[map_one, one_smul, mul_one]`. Establish `h2 : (1 : R) - (1 + 1) = -1` using `by ring`. Rewrite `h` using `[h2]`. Conclude with `neg_mem_iff.mp h`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `htop : ∀ r : R, r ∈ Submodule.span O (S : Set R) ⊔ rel ξ T`. Introduce `r`. Establish `hmem : r - ξ r • 1 ∈ Ideal.span (S : Set R)`. Rewrite using `[hS', RingHom.mem_ker]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← sub_add_cancel r (ξ r • 1)]`. Conclude with `Submodule.add_mem _ (hker _ hmem) (Submodule.mem_sup_right (Submodule.smul_mem _ _ h1))`. Use `haveI : Module.Finite O (Submodule.span O (S : Set R)) := Module.Finite.span_of_finite O S.finite_toSet`. Use `Module.Finite.of_surjective ((rel ξ T).mkQ ∘ₗ (Submodule.span O (S : Set R)).subtype) ?_` and prove the remaining obligations. Introduce `q`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Take `⟨r, rfl⟩` from `Submodule.Quotient.mk_surjective _ q`. Take `⟨n, hn, m, hm, hnm⟩` from `Submodule.mem_sup.mp (htop r)`. Use `⟨⟨n, hn⟩, ?_⟩` and prove the remaining obligations. Simplify using `only [LinearMap.coe_comp, Function.comp_apply, Submodule.coe_subtype, Submodule.mkQ_apply]`. Rewrite using `[← hnm]`.
-
-Conclude with `(Submodule.Quotient.eq _).mpr (by simpa using hm)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem rel_fin {O R : Type} [CommRing O] [CommRing R] [Algebra O R] [IsNoetherianRing R] (ξ : R →ₐ[O] O)
     (T : Set R) : Module.Finite O (R ⧸ rel ξ T) := by
@@ -224,7 +220,7 @@ private theorem rel_fin {O R : Type} [CommRing O] [CommRing R] [Algebra O R] [Is
 end UpperTheory.V.Z.J
 
 /- English proof (translation)
-Take `⟨s, hs⟩` from `Module.Finite.fg_top (R := O) (M := M)`. Use `Finite.of_injective (fun φ : M →ₗ[O] N => fun x : (s : Set M) => φ x) ?_` and prove the remaining obligations. Introduce `φ ψ h`. Conclude with `LinearMap.ext_on hs (fun x hx => congrFun h ⟨x, hx⟩)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 private theorem finite_linearMap_of_finite_module_finite {O M N : Type} [CommRing O] [AddCommGroup M] [Module O M] [AddCommGroup N]
     [Module O N] [Module.Finite O M] [Finite N] : Finite (M →ₗ[O] N) := by
@@ -234,23 +230,21 @@ private theorem finite_linearMap_of_finite_module_finite {O M N : Type} [CommRin
   exact LinearMap.ext_on hs (fun x hx => congrFun h ⟨x, hx⟩)
 
 /- English proof (translation)
-Introduce `l _ O _ _ _ _ _ R _ _ _ ξ T C hl hX`. Take `⟨hOk, hfin, -, h2k, -, -, -⟩` from `okFin l O hl`. Use `haveI : Module.Finite O (R ⧸ rel ξ T) := rel_fin ξ T`. Establish `hder : ∀ {Y : Type} [AddCommGroup Y] [Module O Y] (φ : (R ⧸ rel ξ T) →ₗ[O] Y), (∀ a b, (φ ∘ₗ (rel ξ T).mkQ) (a * b) = ξ a • (φ ∘ₗ (rel ξ T).mkQ) b + ξ b • (φ ∘ₗ (rel ξ T).mkQ) a) ∧ ∀ a ∈ T, (φ ∘ₗ (rel ξ T).mkQ) a = 0`. Introduce `Y _ _ φ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `(rel_le ξ T (φ ∘ₗ (rel ξ T).mkQ)).mp ?_` and prove the remaining obligations. Introduce `x hx`. Simplify using `[LinearMap.mem_ker, (Submodule.Quotient.mk_eq_zero _).mpr hx]`. Break down `hom_alt hfin (R ⧸ rel ξ T) with ⟨f, g, x, y, hfx, hgx, hfy, hgy⟩ | ⟨C', hC'⟩` into its components or cases. Take `⟨x0, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨y0, rfl⟩` from `Submodule.Quotient.mk_surjective _ y`. Use `⟨f ∘ₗ (rel ξ T).mkQ, g ∘ₗ (rel ξ T).mkQ, (hder f).1, (hder f).2, (hder g).1, (hder g).2, ?_⟩` and prove the remaining obligations. Rewrite using `[LinearIndependent.pair_iff]`. Introduce `s t hst`. Establish `h1` using `congrArg (fun δ => δ x0) hst`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `congrArg (fun δ => δ y0) hst`. Simplify using `[hfx, hgx, hfy, hgy] at h1 h2`. Conclude with `⟨h1, h2⟩`. It suffices to derive a contradiction. Take `⟨D, hD⟩ : ∃ D, D = C * C'` from `⟨_, rfl⟩`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components. It suffices to derive a contradiction. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨k, hkD⟩ : ∃ k, k = D + 1` from `⟨_, rfl⟩`. Establish `hk : 0 < k` using `by omega`. Use `haveI := hOk k`. Use `haveI : Finite ((R ⧸ rel ξ T) →ₗ[O] Ok l O k) := finite_linearMap_of_finite_module_finite`. Set `Φ : ((R ⧸ rel ξ T) →ₗ[O] Ok l O k) → (R →ₗ[O] Ok l O k)` to `fun φ => φ ∘ₗ (rel ξ T).mkQ`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `hΦinj : Function.Injective Φ` using `fun φ ψ h => Submodule.linearMap_qext _ h`. Establish `hrange : Set.range Φ = {δ : R →ₗ[O] Ok l O k | (∀ a b, δ (a * b) = ξ a • δ b + ξ b • δ a) ∧ ∀ a ∈ T, δ a = 0}`. Use extensionality with `δ`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨φ, rfl⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Establish an intermediate fact.
 
-Conclude with `hder φ`. Introduce `hδ`. Conclude with `⟨(rel ξ T).liftQ δ ((rel_le ξ T δ).mpr hδ), Submodule.liftQ_mkQ _ _ _⟩`. Establish `hcard` using `hX k hk (Set.range Φ) hrange (Set.finite_range Φ)`. Rewrite `hcard` using `[Set.ncard_range_of_injective hΦinj]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hbound` using `hC' (Ideal.span {(l : O) ^ k}) (hOk k)`. Establish `hpos : 0 < Nat.card (Ok l O k)` using `Nat.card_pos`. Establish `h2` using `h2k k`. Establish `hle : Nat.card (Ok l O k) ≤ D`. Establish `h3 : Nat.card (Ok l O k) * Nat.card (Ok l O k) ≤ Nat.card (Ok l O k) * D`.
-
-Combine the equalities or inequalities in the displayed calculation. Conclude with `Nat.le_of_mul_le_mul_left h3 hpos`. Establish `h4 : k < 2 ^ k` using `Nat.lt_two_pow_self`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.J.rankTwo :
     ∀ (l : ℕ) [Fact l.Prime] (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [IsCoef l O] [Algebra ℤ_[l] O] (R : Type) [CommRing R] [Algebra O R] [IsNoetherianRing R] (ξ : R →ₐ[O] O) (T : Set R) (C : ℕ), (l : O) ≠ 0 → (∀ k, 0 < k → ∀ X : Set (R →ₗ[O] Ok l O k), X = {δ | (∀ a b, δ (a * b) = ξ a • δ b + ξ b • δ a) ∧ ∀ a ∈ T, δ a = 0} → X.Finite → Nat.card (Ok l O k) ^ 2 ≤ C * X.ncard) → ∃ δ δ' : R →ₗ[O] O, (∀ a b, δ (a * b) = ξ a • δ b + ξ b • δ a) ∧ (∀ a ∈ T, δ a = 0) ∧ (∀ a b, δ' (a * b) = ξ a • δ' b + ξ b • δ' a) ∧ (∀ a ∈ T, δ' a = 0) ∧ LinearIndependent O ![δ, δ'] := by

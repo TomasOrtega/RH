@@ -1,9 +1,9 @@
 import Mathlib
 
 /- English proof (translation)
-Introduce `Γ C _ _ _ _ η h`. Use `(IsLocallyConstant.iff_exists_open _).2 fun x => ?_` and prove the remaining obligations. Use `⟨(fun y => x⁻¹ * y) ⁻¹' (η.ker : Set Γ), h.preimage (continuous_const.mul continuous_id), ?_, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `x⁻¹ * x ∈ η.ker`. Simplify using `[MonoidHom.mem_ker]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 
-Introduce `y hy`. Establish `hy' : η (x⁻¹ * y) = 1` using `hy`. Rewrite `hy'` using `[map_mul, map_inv]`. Conclude with `(inv_mul_eq_one.mp hy').symm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.LocallyConstantOfKernel.lc_of_ker :
     ∀ {Γ C : Type} [inst : Group Γ]

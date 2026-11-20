@@ -12,7 +12,7 @@ open MvPolynomial Finset
 noncomputable section
 
 /- English proof (translation)
-Unfold `Comb.alt`. Rewrite using `[← Matrix.det_transpose, mul_comm]`. Conclude with `Schur.det_pow_add_staircase_eq lam`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem SchAltPartitionExpansion.alt_partition_add_stair_eq {r : ℕ} (lam : Fin r → ℕ) :
     Comb.alt (fun i : Fin r => lam i + (r - 1 - (i : ℕ))) =
@@ -22,9 +22,9 @@ theorem SchAltPartitionExpansion.alt_partition_add_stair_eq {r : ℕ} (lam : Fin
   exact Schur.det_pow_add_staircase_eq lam
 
 /- English proof (translation)
-Unfold `partitionsOf at hlam`. Rewrite `hlam` using `[Finset.mem_filter]`. Introduce `i j hij`. Establish `h1` using `hlam.2 i j hij.le`. Establish `hj` using `j.isLt`.
+Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hij' : (i : ℕ) < j` using `hij`. Simplify using `only`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem SchAltPartitionExpansion.strictAnti_partition_add_stair {r n : ℕ} {lam : Fin r → ℕ} (hlam : lam ∈ partitionsOf r n) :
     StrictAnti (fun i : Fin r => lam i + (r - 1 - (i : ℕ))) := by
@@ -38,21 +38,19 @@ theorem SchAltPartitionExpansion.strictAnti_partition_add_stair {r n : ℕ} {lam
   omega
 
 /- English proof (translation)
-Introduce `r n P hP hhom`. Use `set e : (Fin r → ℕ) → (Fin r →₀ ℕ) := fun lam => Finsupp.equivFunOnFinite.symm fun i : Fin r => lam i + (r - 1 - (i : ℕ)) with he`. Establish `e_inj : Set.InjOn e (partitionsOf r n : Set (Fin r → ℕ))`. Introduce `a _ b _ hab`. Use function extensionality and compare the values at `i`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Use `congrArg (fun f : Fin r →₀ ℕ => f i) hab` as an intermediate fact. Simplify using `only [he, Finsupp.coe_equivFunOnFinite_symm] at this`. Use linear arithmetic over natural numbers and integers. Establish `hR : ∑ lam ∈ partitionsOf r n, C (coeff (e lam) P) * (vandermondeOf (fun i : Fin r => (X i : MvPolynomial (Fin r) ℚ)) * schur (Fin r) lam) = ∑ d ∈ (partitionsOf r n).image e, coeff d P • Comb.alt (⇑d)`. Rewrite using `[Finset.sum_image e_inj]`.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun lam _ => ?_` and prove the remaining obligations. Rewrite using `[C_mul', ← SchAltPartitionExpansion.alt_partition_add_stair_eq]`. Simplify using `[he]`. Rewrite using `[hR]`. Use `conv_lhs => rw [Comb.IsAlt.eq_sum_alt hP]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `Finset.sum_subset ?_ ?_` and prove the remaining obligations. Introduce `d hd`. Rewrite `hd` using `[Finset.mem_filter]`. Establish `hsum : ∑ i, d i = r * (r - 1) / 2 + n`. Use `hhom (mem_support_iff.mp hd.1)` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← Finsupp.degree_eq_sum, Finsupp.degree_eq_weight_one]`. Conclude with `this`. Take `⟨hge, hmem⟩` from `h1 r n (⇑d) hd.2 hsum`. Use `Finset.mem_image.mpr ⟨_, hmem, ?_⟩` and prove the remaining obligations. Use extensionality with `i`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Simplify using `only [he, Finsupp.coe_equivFunOnFinite_symm]`. Use `hge i` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Introduce `d hd hnot`. Take `⟨lam, hlam, rfl⟩` from `Finset.mem_image.mp hd`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hz : coeff (e lam) P = 0`. Assume the negation of the conclusion as `hne`. Apply `hnot` to reduce the goal to its premises. Rewrite using `[Finset.mem_filter]`. Use `⟨mem_support_iff.mpr hne, ?_⟩` and prove the remaining obligations.
-
-Simplify `SchAltPartitionExpansion.strictAnti_partition_add_stair hlam` using `[he]`. Rewrite using `[hz, zero_smul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem SchAltPartitionExpansion.proof (h1 : SchStrictAntiSplit.Statement) :
     SchAltPartitionExpansion.Statement := by

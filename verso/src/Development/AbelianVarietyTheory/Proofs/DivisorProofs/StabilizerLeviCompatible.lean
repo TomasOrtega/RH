@@ -13,7 +13,7 @@ open GlobalTheory.Doubling (absE)
 namespace GlobalTheory.IwDec
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B b a' G G₁ H H' hC hB hG hG₁ K hK m hm g`. Take `⟨p, hp, k, hk, rfl⟩` from `GlobalTheory.IwLine.iwasawa B hB hG.hV hC.hH g`. Establish `hkK : k ∈ K` using `(hK k).2 ((GlobalTheory.StabHaar.isStab_stabK (σ := σ) B G.V k).1 hk)`. Take `⟨⟨n, l, g₀⟩, hz, -⟩` from `(GlobalTheory.T.levi_embedding_multiplicative F E σ B (b + 2) b G.V G₁.V _ _ _ _ 0 (b + 1) H hB hG.hV hG₁.hV hC.hH m hm).2.2.2.1 p hp`. Conclude with `⟨n.1, n.2, l, g₀, k, hkK, by rw [hz]⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem iwasawa_levi : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (b a' : ℕ) (G : Geo σ (b + 2) a') (G₁ : Geo σ b a')
     (H : Plane E (b + 2) b) (H' : Plane E (b + 2 + a') (b + a')), CfgA B G G₁ H H' → B.IsGood σ → G.IsGood B → G₁.IsGood B →

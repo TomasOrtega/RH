@@ -3,23 +3,23 @@ import Mathlib
 namespace Bl.general_b_fact_left
 
 /- English proof (translation)
-Introduce `k _ _ t m e hd`. Distinguish the cases in `hc : ringChar k = 2`. Establish `h2 : (2 : k) = 0`. Use `ringChar.Nat.cast_ringChar (R := k)` as an intermediate fact. Rewrite `this` using `[hc, Nat.cast_ofNat]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `h4 : (4 : k) = 0`. Establish `: (4 : k) = 2 * 2` using `by norm_num`. Rewrite using `[this, h2, zero_mul]`. Rewrite `hd` using `[h4, zero_mul, sub_zero]`. Establish `ht : t ≠ 0` using `fun h => hd (by rw [h]; ring)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Distinguish the cases in `hm : m = 0`. Use `⟨1, (e - 1) / t, ?_⟩` and prove the remaining obligations. Rewrite using `[hm]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 
-Take `⟨r, hr⟩` from `FiniteField.isSquare_of_char_two hc (e / m)`. Use `⟨0, r, ?_⟩` and prove the remaining obligations. Establish `: r ^ 2 = e / m` using `by rw [hr]; ring`. Rewrite using `[this]`. Clear the denominators using the available nonvanishing facts.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `h2 : (2 : k) ≠ 0` using `Ring.two_ne_zero hc`. Establish `h4 : (4 : k) ≠ 0`. Establish `: (4 : k) = 2 * 2` using `by norm_num`. Rewrite using `[this]`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_ne_zero h2 h2`. Use `set D : k := m - t ^ 2 / 4 with hD`. Establish `hD0 : D ≠ 0`. Introduce `h0`. Apply `hd` to reduce the goal to its premises.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: t ^ 2 - 4 * m = -4 * D` using `by rw [hD]; field_simp; ring`. Rewrite using `[this, h0, mul_zero]`. Establish `hf : Polynomial.degree (Polynomial.X ^ 2 - Polynomial.C e : Polynomial k) = 2`. Apply the tactic sequence `rw [Polynomial.degree_sub_C] <;> rw [Polynomial.degree_X_pow] <;> norm_num`. Establish `hg : Polynomial.degree (Polynomial.C D * Polynomial.X ^ 2 : Polynomial k) = 2`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[Polynomial.degree_C_mul_X_pow 2 hD0]`. Both sides reduce to the same expression. Take `⟨a, b, hab⟩` from `FiniteField.exists_root_sum_quadratic hf hg (FiniteField.odd_card_of_char_ne_two hc)`. Simplify using `only [Polynomial.eval_sub, Polynomial.eval_pow, Polynomial.eval_X, Polynomial.eval_C, Polynomial.eval_mul] at hab`. Use `⟨a - t * b / 2, b, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `key : a ^ 2 + D * b ^ 2 = e` using `by linear_combination hab`. Rewrite using `[← key, hD]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem goal1 :
   ∀ {k : Type} [inst : Field.{0} k] [Fintype.{0} k] (t m e : k),

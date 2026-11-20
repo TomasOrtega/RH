@@ -15,24 +15,22 @@ variable (P Q : ℕ)
 local notation "Mat" => Matrix (Fin P ⊕ Fin Q) (Fin P ⊕ Fin Q) ℂ
 
 /- English proof (translation)
-The claim follows from `(two_smul ℂ (1 : Mat)).symm`.
+A detailed English derivation is pending.
 -/
 theorem two_eq : (1 + 1 : Mat) = (2 : ℂ) • (1 : Mat) := (two_smul ℂ (1 : Mat)).symm
 
 /- English proof (translation)
-Use `set G := UpqT.mat g with hG`. Use `set J := HcS.UG.Jpq P Q`. Establish `hU : Gᴴ * J * G = J`. Use `(mem_Upq_iff P Q _).1 (toS P Q g).2` as an intermediate fact. Rewrite `this` using `[← mat_eq]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Distinguish the cases in `hu : IsUnit (G + 1).det`. Use `set K := (G + 1)⁻¹ set X := cayCand P Q g with hX`. Establish `hXdef : X = (1 + 1) * K * (G - 1)` using `rfl`. Establish `hKG : K * (G + 1) = 1` using `Matrix.nonsing_inv_mul _ hu`. Establish `hGK : (G + 1) * K = 1` using `Matrix.mul_nonsing_inv _ hu`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hXG : X * (G + 1) = (1 + 1) * (G - 1)`. Establish `e : (G - 1) * (G + 1) = (G + 1) * (G - 1)` using `by noncomm_ring`. Rewrite using `[hXdef, Matrix.mul_assoc, Matrix.mul_assoc, e, ← Matrix.mul_assoc K, hKG, Matrix.one_mul]`. Establish `hu' : IsUnit (G + 1)ᴴ.det`. Rewrite using `[Matrix.det_conjTranspose]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hu.star`. Use `show Xᴴ * J + J * X = 0`. Establish `key : (G + 1)ᴴ * (Xᴴ * J + J * X) * (G + 1) = 0`. Establish `e1 : (G + 1)ᴴ * (Xᴴ * J + J * X) * (G + 1) = (X * (G + 1))ᴴ * J * (G + 1) + (G + 1)ᴴ * J * (X * (G + 1))`. Rewrite using `[Matrix.conjTranspose_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `noncomm_ring`. Establish `hJ : Jᴴ = J` using `Jpq_conjTranspose P Q`. Establish `h2 : ((1 : Mat) + 1)ᴴ = 1 + 1` using `by simp`. Rewrite using `[e1, hXG, Matrix.conjTranspose_mul, h2, Matrix.conjTranspose_sub, Matrix.conjTranspose_add, Matrix.conjTranspose_one]`. Establish `e2 : (Gᴴ - 1) * (1 + 1) * J * (G + 1) + (Gᴴ + 1) * J * ((1 + 1) * (G - 1)) = (1 + 1) * ((1 + 1) * (Gᴴ * J * G - J))` using `by noncomm_ring`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e2, hU, sub_self, Matrix.mul_zero, Matrix.mul_zero]`. Establish `e3 : Xᴴ * J + J * X = ((G + 1)ᴴ)⁻¹ * ((G + 1)ᴴ * (Xᴴ * J + J * X) * (G + 1)) * K`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hu', Matrix.one_mul, Matrix.mul_assoc, hGK, Matrix.mul_one]`. Rewrite using `[e3, key, Matrix.mul_zero, Matrix.zero_mul]`. Establish `: cayCand P Q g = 0` using `by show (1 + 1) * (G + 1)⁻¹ * (G - 1) = 0`.
-
-Rewrite using `[Matrix.nonsing_inv_apply_not_isUnit _ hu, Matrix.mul_zero, Matrix.zero_mul]`. Rewrite using `[this]`. Conclude with `(lieU P Q).zero_mem`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cayCand_mem (g : UpqT P Q) : cayCand P Q g ∈ lieU P Q := by
   set G := UpqT.mat g with hG
@@ -77,7 +75,7 @@ theorem cayCand_mem (g : UpqT P Q) : cayCand P Q g ∈ lieU P Q := by
     exact (lieU P Q).zero_mem
 
 /- English proof (translation)
-Unfold `cayInv`. Rewrite using `[dif_pos (cayCand_mem P Q g)]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem cayInv_eq (g : UpqT P Q) : cayInv P Q g = ⟨cayCand P Q g, cayCand_mem P Q g⟩ := by
   unfold cayInv
@@ -86,15 +84,15 @@ theorem cayInv_eq (g : UpqT P Q) : cayInv P Q g = ⟨cayCand P Q g, cayCand_mem 
 end Chart
 
 /- English proof (translation)
-Introduce `P Q g X h`. Use `set G := UpqT.mat g with hG`. Use `set Y : Matrix (Fin P ⊕ Fin Q) (Fin P ⊕ Fin Q) ℂ := (X : Matrix (Fin P ⊕ Fin Q) (Fin P ⊕ Fin Q) ℂ)`. Rewrite `h` using `[two_eq]`. Establish `h4 : (G + 1) * ((2 : ℂ) • (1 : Matrix (Fin P ⊕ Fin Q) (Fin P ⊕ Fin Q) ℂ) - Y) = (4 : ℂ) • (1 : Matrix (Fin P ⊕ Fin Q) (Fin P ⊕ Fin Q) ℂ)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Rewrite using `[add_mul, one_mul, h, show (4 : ℂ) = 2 + 2 by norm_num, add_smul]`. Normalize the expressions using the abelian group laws. Establish `hB : (G + 1) * ((1 / 4 : ℂ) • ((2 : ℂ) • (1 : Matrix (Fin P ⊕ Fin Q) (Fin P ⊕ Fin Q) ℂ) - Y)) = 1`. Rewrite using `[Matrix.mul_smul, h4, smul_smul]`. Evaluate the numerical expressions.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hu : IsUnit (G + 1).det` using `Matrix.isUnit_det_of_right_inverse hB`. Establish `hGY : G * Y = (2 : ℂ) • G - ((2 : ℂ) • (1 : Matrix (Fin P ⊕ Fin Q) (Fin P ⊕ Fin Q) ℂ) + Y)`. Rewrite using `[← h, Matrix.mul_sub, Matrix.mul_smul, Matrix.mul_one]`. Normalize the expressions using the abelian group laws. Establish `hXY : (G + 1) * Y = (2 : ℂ) • (G - 1)`.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Rewrite using `[add_mul, one_mul, hGY, smul_sub]`. Normalize the expressions using the abelian group laws. Establish `hc : cayCand P Q g = Y` using `by show (1 + 1) * (G + 1)⁻¹ * (G - 1) = Y`. Establish `eY : Y = (G + 1)⁻¹ * ((G + 1) * Y)`. Rewrite using `[← Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hu, Matrix.one_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[eY, hXY, Matrix.mul_smul, two_eq, Matrix.smul_mul, Matrix.one_mul, Matrix.smul_mul]`. Rewrite using `[cayInv_eq]`. Conclude with `Subtype.ext hc`.
+A detailed English derivation is pending.
 -/
 theorem cayley_inverse_iff : CayInvIff := by
   intro P Q g X h
@@ -124,19 +122,17 @@ theorem cayley_inverse_iff : CayInvIff := by
   exact Subtype.ext hc
 
 /- English proof (translation)
-Introduce `P Q`. Use `set O : Set (UpqT P Q) := {g | (UpqT.mat g + 1).det ≠ 0}`. Establish `hmat : Continuous (UpqT.mat (P` using `P) (Q := Q)) := (isInducing_mat P Q).continuous`. Establish `hdet : Continuous fun g : UpqT P Q => (UpqT.mat g + 1).det` using `(hmat.add continuous_const).matrix_det`. Establish `hO : IsOpen O` using `isOpen_ne_fun hdet continuous_const`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcand : Continuous fun g : O => cayCand P Q g`. Establish `hm : Continuous fun g : O => UpqT.mat (g : UpqT P Q)` using `hmat.comp continuous_subtype_val`. Establish `hd : Continuous fun g : O => (UpqT.mat (g : UpqT P Q) + 1).det` using `hdet.comp continuous_subtype_val`. Establish `hinv : Continuous fun g : O => (UpqT.mat (g : UpqT P Q) + 1)⁻¹`. Establish `e : (fun g : O => (UpqT.mat (g : UpqT P Q) + 1)⁻¹) = fun g : O => ((UpqT.mat (g : UpqT P Q) + 1).det)⁻¹ • (UpqT.mat (g : UpqT P Q) + 1).adjugate`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `g`. Rewrite using `[Matrix.inv_def, Ring.inverse_eq_inv']`. Rewrite using `[e]`. Conclude with `(hd.inv₀ fun g => g.2).smul (hm.add continuous_const).matrix_adjugate`. Conclude with `(continuous_const.matrix_mul hinv).matrix_mul (hm.sub continuous_const)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hcont : ContinuousOn (cayInv P Q) O`. Use `continuousOn_iff_continuous_domRestrict.2 ?_` and prove the remaining obligations. Use `show Continuous fun g : O => cayInv P Q g`. Establish `e : (fun g : O => cayInv P Q g) = fun g : O => ⟨cayCand P Q g, cayCand_mem P Q g⟩`. Use function extensionality and compare the values at `g`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails.
 
-Conclude with `cayInv_eq P Q g`. Rewrite using `[e]`. Conclude with `Continuous.subtype_mk hcand _`. Establish `hpw : O.piecewise (cayInv P Q) (fun _ => 0) = cayInv P Q`. Use function extensionality and compare the values at `g`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hg : g ∈ O`. Conclude with `Set.piecewise_eq_of_mem _ _ _ hg`. Rewrite using `[Set.piecewise_eq_of_notMem _ _ _ hg]`. Establish `hg' : ¬IsUnit (UpqT.mat g + 1).det` using `fun hu => hg hu.ne_zero`. Rewrite using `[cayInv_eq]`.
-
-Apply `Subtype.ext` to reduce the goal to its premises. Use `show 0 = (1 + 1) * (UpqT.mat g + 1)⁻¹ * (UpqT.mat g - 1)`. Rewrite using `[Matrix.nonsing_inv_apply_not_isUnit _ hg', Matrix.mul_zero, Matrix.zero_mul]`. Rewrite using `[← hpw]`. Conclude with `hcont.measurable_piecewise continuousOn_const hO.measurableSet`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cayley_inverse_measurable : CayInvMeas := by
   intro P Q
@@ -180,13 +176,11 @@ theorem cayley_inverse_measurable : CayInvMeas := by
   exact hcont.measurable_piecewise continuousOn_const hO.measurableSet
 
 /- English proof (translation)
-Introduce `P Q`. Establish `hmat : Continuous (UpqT.mat (P` using `P) (Q := Q)) := (isInducing_mat P Q).continuous`. Use `set C : Set (UpqT P Q × lieU P Q) := {p | UpqT.mat p.1 * ((1 + 1) - ((p.2 : lieU P Q) : Matrix (Fin P ⊕ Fin Q) (Fin P ⊕ Fin Q) ℂ)) = (1 + 1) + ((p.2 : lieU P Q) : Matrix (Fin P ⊕ Fin Q) (Fin P ⊕ Fin Q) ℂ)}`. Establish `hC : IsClosed C`. Establish `hv : Continuous fun p : UpqT P Q × lieU P Q => ((p.2 : lieU P Q) : Matrix (Fin P ⊕ Fin Q) (Fin P ⊕ Fin Q) ℂ)` using `continuous_subtype_val.comp continuous_snd`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `isClosed_eq ((hmat.comp continuous_fst).matrix_mul (continuous_const.sub hv)) (continuous_const.add hv)`. Establish `e : cayS (Set.univ : Set (lieU P Q)) = (fun g => (g, cayInv P Q g)) ⁻¹' C`. Use extensionality with `g`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨X, -, h⟩ show UpqT.mat g * ((1 + 1) - ((cayInv P Q g : lieU P Q) : Matrix (Fin P ⊕ Fin Q) (Fin P ⊕ Fin Q) ℂ)) = (1 + 1) + ((cayInv P Q g : lieU P Q) : Matrix (Fin P ⊕ Fin Q) (Fin P ⊕ Fin Q) ℂ)`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[cayley_inverse_iff P Q g X h]`. Conclude with `h`. Introduce `h`. Conclude with `⟨cayInv P Q g, Set.mem_univ _, h⟩`. Rewrite using `[e]`.
-
-Conclude with `(measurable_id.prodMk (cayley_inverse_measurable P Q)) hC.measurableSet`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cayley_set_measurable : CaySUnivMeas := by
   intro P Q
@@ -215,7 +209,7 @@ theorem cayley_set_measurable : CaySUnivMeas := by
   exact (measurable_id.prodMk (cayley_inverse_measurable P Q)) hC.measurableSet
 
 /- English proof (translation)
-The claim follows from `cayleyLoc_of cayley_inverse_measurable cayley_inverse_iff cayley_set_measurable h`.
+A detailed English derivation is pending.
 -/
 theorem cayleyLoc_of_dens (h : CayleyDens) : CayleyLoc :=
   cayleyLoc_of cayley_inverse_measurable cayley_inverse_iff cayley_set_measurable h

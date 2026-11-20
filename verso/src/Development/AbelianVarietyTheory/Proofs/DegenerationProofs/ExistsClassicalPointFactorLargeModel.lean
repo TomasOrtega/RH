@@ -16,23 +16,21 @@ namespace GlobalTheory.ZH
 open GlobalTheory.Points
 
 /- English proof (translation)
-Introduce `o Ω _ _ _ hA S ρ M U₀ Q hO z p _ y hy`. Set `w : Sp (PadicAlgCl p)` to `IsLocalRing.closedPoint (PadicAlgCl p)`. Establish `hw : (gPt p ≫ y) w ∈ (U₀ : Set M.Z)` using `hy.2 ⟨w, rfl⟩`. Establish `hle : S.R ≤ M.O ((gPt p ≫ y) w)` using `hO.le.trans (RatModel.ringOn_le_O hw)`. Set `y₀ : S.R →+* PadicAlgCl p` to `(RatModel.valHom (gPt p ≫ y) _ (RatModel.range_eq_singleton _ w)).comp (Subalgebra.inclusion hle).toRingHom`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hn : ∀ a : o, ‖y₀ (algebraMap o S.R a)‖ ≤ 1` using `fun a => RatModel.norm_val_le_one (y := y) rfl (x := algebraMap o Ω a) ((M.O _).algebraMap_mem a)`. Establish `hat : S.At M y y₀` using `fun _ => rfl`. Take `⟨W, hW, hyW, -⟩` from `exists_isAffineOpen_le y (le_preimage_top y)`. Use `haveI := hA.ft`. Use `haveI := M.lft`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨t, ht⟩` from `exists_finset_closure_eq_top M.s hW`. Use `⟨y₀, t.image (fun f => (((valMap y W hyW).hom f : OO p) : PadicAlgCl p)), hat, hn, fun u hu => ?_⟩` and prove the remaining obligations. Set `j : u.V →+* OO p` to `((algebraMap (FractionRing u.V) (PadicAlgCl p)).comp (algebraMap u.V (FractionRing u.V))).codRestrict (OO p) fun x => (mem_OO_iff _).2 ((u.norm_le _).2 ⟨x, rfl⟩)`. Establish `hj : Function.Injective j` using `fun a b h => IsFractionRing.injective u.V (FractionRing u.V) ((algebraMap (FractionRing u.V) (PadicAlgCl p)).injective (congrArg Subtype.val h))`. Take `⟨ψ, hψ⟩` from `exists_factor_of_closure (valMap y W hyW).hom j hj ht (by`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `a ha`. Take `⟨x, hx⟩` from `hu _ (Finset.mem_image_of_mem _ ha)`. Take `⟨v, hv⟩` from `(u.norm_le x).1 (by rw [hx]; exact (mem_OO_iff _).1 (Subtype.prop _))`. Conclude with `⟨v, Subtype.ext (by rw [← hx, ← hv]; rfl)⟩)`. Set `yV : Sp u.V ⟶ M.Z` to `Spec.map (CommRingCat.ofHom ψ) ≫ hW.fromSpec`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hfac : spMap j ≫ yV = y`. Rewrite using `[← specMap_valMap_fromSpec hW y hyW, ← Category.assoc, ← Spec.map_comp, ← CommRingCat.ofHom_comp, hψ]`. Both sides reduce to the same expression. Establish `hg : spMap (algebraMap (FractionRing u.V) (PadicAlgCl p)) ≫ jK u.V ≫ yV = gPt p ≫ y`. Establish `e : spMap (algebraMap (FractionRing u.V) (PadicAlgCl p)) ≫ jK u.V = gPt p ≫ spMap j`.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[← Spec.map_comp, ← Spec.map_comp]`. Both sides reduce to the same expression. Rewrite using `[← hfac, ← Category.assoc, e, Category.assoc]`. Establish `hr : Set.range (jK u.V ≫ yV) ⊆ Set.range U₀.ι`. Rewrite using `[Scheme.Opens.range_ι]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `_ ⟨x, rfl⟩`. Rewrite using `[Subsingleton.elim x (spMap (algebraMap (FractionRing u.V) (PadicAlgCl p)) w)]`. Rewrite `hw` using `[← hg]`. Conclude with `hw`. Use `⟨j, yV, IsOpenImmersion.lift U₀.ι _ hr, fun _ => rfl, hfac, IsOpenImmersion.lift_fac _ _ _, ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Rewrite using `[← Spec.map_preimage (IsOpenImmersion.lift U₀.ι _ hr ≫ Q.u₀)]`. Use `congr 1`. Use extensionality with `a`. Apply `(algebraMap (FractionRing u.V) (PadicAlgCl p)).injective` to reduce the goal to its premises. Establish `h1` using `preimage_comp_eq_val M U₀ hO.ne S.R Q.u₀ Q.u₀_gen (spMap (algebraMap (FractionRing u.V) (PadicAlgCl p)) ≫ IsOpenImmersion.lift U₀.ι _ hr) a`.
-
-Rewrite `h1` using `[Category.assoc, Category.assoc, IsOpenImmersion.lift_fac, hg, ← hat a, Spec.preimage_comp, Spec.preimage_map]`. Conclude with `h1.trans (DFunLike.congr_fun u.fac a).symm`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ZHPre.exists_testFac_of_large : ∀ (o Ω : Type) [CommRing o] [Field Ω] [Algebra o Ω] [ArithBase o Ω] (S : ThetaSys o Ω) (ρ : S.Real) (M : RatModel o Ω) (U₀ : M.Z.Opens) (Q : ZHPre ρ M U₀), S.Over₀ M U₀ → ∀ (z : M.Z) (p : ℕ) [Fact p.Prime] (y : Sp (OO p) ⟶ M.Z), M.Cen U₀ z y → ∃ (y₀ : S.R →+* PadicAlgCl p) (Fs : Finset (PadicAlgCl p)), S.At M y y₀ ∧ (∀ a : o, ‖y₀ (algebraMap o S.R a)‖ ≤ 1) ∧ ∀ u : ρ.UTest p y₀, (∀ x ∈ Fs, x ∈ Set.range (algebraMap (FractionRing u.V) (PadicAlgCl p))) → ∃ jV yV yK, Q.TestFac y u jV yV yK := by
   intro o Ω _ _ _ hA S ρ M U₀ Q hO z p _ y hy

@@ -17,7 +17,7 @@ variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
   {P' J' : Ideal (MRing ι')} {n : ℕ} (R : AnLogRes P' J' n) {κ : K → K'} {v : (Σ k, ι k) → (Σ k', ι' k')}
 
 /- English proof (translation)
-Introduce and unpack `x ⟨hx, hxt⟩ x' ⟨-, hx't⟩`. Conclude with `R.inj x x' hx (sameOrbit_tr hxt (sameOrbit_comm hx't))`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem orbit_subsingleton (t : (Σ k', ι' k') → ℂ) :
     {x : R.X | R.lift x x ∉ mcPts J' ∧ SameOrbit (R.lift x x) t}.Subsingleton := by
@@ -25,19 +25,17 @@ theorem orbit_subsingleton (t : (Σ k', ι' k') → ℂ) :
   exact R.inj x x' hx (sameOrbit_tr hxt (sameOrbit_comm hx't))
 
 /- English proof (translation)
-Take `⟨f, a, hf, hfP, hfin⟩` from `hGen K ι K' ι' κ v P' n hv hP' hP`. Use `set O' := O ∩ ((R.A.chart j).target ∩ (R.A.chart j).symm ⁻¹' {x | R.lift x x ∉ mcPts J'}) ∩ ((R.A.chart j).target ∩ (R.A.chart j).symm ⁻¹' {x | eval (R.lift x x) (map (Int.castRingHom ℂ) f) ≠ 0}) with hO'def`. Establish `hO' : IsOpen O'` using `(hO.inter (isOpen_chart_notB R j)).inter (isOpen_chart_ne R hf j)`. Establish `hne' : O'.Nonempty`. Assume the negation of the conclusion as `h`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[Set.not_nonempty_iff_eq_empty]`. Establish `hsub : O ⊆ ((R.A.chart j).target ∩ (R.A.chart j).symm ⁻¹' {x | R.lift x x ∈ mcPts J'}) ∪ ((R.A.chart j).target ∩ (R.A.chart j).symm ⁻¹' {x | eval (R.lift x x) (map (Int.castRingHom ℂ) f) = 0})`. Introduce `u hu`. Distinguish the cases in `hB : R.lift ((R.A.chart j).symm u) ((R.A.chart j).symm u) ∈ mcPts J'`. Conclude with `Or.inl ⟨hOt hu, hB⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Prove the first alternative. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hF : eval (R.lift ((R.A.chart j).symm u) ((R.A.chart j).symm u)) (map (Int.castRingHom ℂ) f) = 0`. Conclude with `Or.inr ⟨hOt hu, hF⟩`. Establish `: u ∈ O'` using `⟨⟨hu, hOt hu, hB⟩, hOt hu, hF⟩`. Rewrite `this` using `[h]`. Conclude with `absurd this (Set.notMem_empty u)`.
+Prove the second alternative. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `(hO.measure_pos volume hne).ne' (measure_mono_null hsub (measure_union_null (R.null j) (fzero_null R hP' hf hfP j)))`. Take `⟨y, hy⟩` from `exists_infinite_fibre hO' hne' (han.mono fun u hu => hu.1.1) (fun u hu => hdet u hu.1.1)`. Establish `hSinf : ((R.A.chart j).symm '' (O' ∩ (pullQ R v Φ ∘ (R.A.chart j).symm) ⁻¹' {y})).Infinite` using `Set.Infinite.image ((R.A.chart j).symm.injOn.mono fun u hu => hu.1.1.2.1) hy`. Establish `hF` using `fibreFinite K ι (imageZ v P') n Φ hP hΦ y`. Use `choose! uw huw using fun w (hw : w ∈ fibre (imageZ v P') Φ y) => hw`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `choose T hT using fun w => hfin (uw w)`. Use `hSinf ((hF.biUnion fun w _ => (T w).finite_toSet.biUnion fun t _ => (orbit_subsingleton R t).finite).subset ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨u, ⟨huO', hqu⟩, rfl⟩`. Use `set x := (R.A.chart j).symm u`. Establish `hxB : R.lift x x ∉ mcPts J'` using `huO'.1.2.2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hxf : eval (R.lift x x) (map (Int.castRingHom ℂ) f) ≠ 0` using `huO'.2.2`. Establish `h0x : Φ (segre (pullPt R v x)) 0 ≠ 0` using `h0 u huO'.1.1`. Establish `hqx : pullQ R v Φ x = y` using `hqu`. Establish `hw` using `IntersectionWithSection.pullW_mem_fibre hv hP R Φ h0x`. Rewrite `hw` using `[hqx]`.
-
-Take `⟨hu1, hu2, -⟩` from `huw _ hw`. Establish `hso : SameOrbit (pullPt R v x) (uw (pullW R v Φ x))` using `sameOrbit_of_segre hu1.1 (Φ (segre (pullPt R v x)) 0) h0x (by rw [hu2]; simp [pullW, smul_smul, mul_inv_cancel₀ h0x])`. Take `⟨t, ht, hxt⟩` from `hT (pullW R v Φ x) (R.lift x x) (R.mem x x (R.mem_U x)) hxf hso`. Conclude with `Set.mem_biUnion hw (Set.mem_biUnion (Finset.mem_coe.mpr ht) ⟨hxB, hxt⟩)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem not_flat_pull (hGen : BlockGenFinite.Statement) (hv : IsBlockMap κ v)
     (hP' : IsArithVar P' (n + 1)) (hP : IsArithVar (imageZ v P') (n + 1))
@@ -95,35 +93,29 @@ theorem not_flat_pull (hGen : BlockGenFinite.Statement) (hv : IsBlockMap κ v)
   exact Set.mem_biUnion hw (Set.mem_biUnion (Finset.mem_coe.mpr ht) ⟨hxB, hxt⟩)
 
 /- English proof (translation)
-Apply `ReciprocityTheory.AnForm.volume_eq_zero_of_locally_in_analytic_zero_set` to reduce the goal to its premises. Introduce and unpack `u0 ⟨hu0, -⟩`. Use `set x0 := (R.A.chart j).symm u0`. Use `set V := (R.A.chart j).target ∩ (R.A.chart j).symm ⁻¹' R.U x0 with hVdef`. Establish `hV : IsOpen V` using `(R.A.chart j).isOpen_inter_preimage_symm (R.isOpen_U x0)`.
+Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨r, hr, hball⟩` from `Metric.isOpen_iff.mp hV u0 ⟨hu0, R.mem_U x0⟩`. Use `set f : (Fin n → ℂ) → ℂ := fun u => Ψ (segre (fun p => R.lift x0 ((R.A.chart j).symm u) (v p))) 0 with hfdef`. Establish `hfa : AnalyticOnNhd ℂ f V` using `fun u hu => analyticAt_pi_iff.mp (analyticAt_segre_pull R (v := v) Ψ x0 j hu) 0`. Use `⟨Metric.ball u0 r, Metric.isOpen_ball, Metric.mem_ball_self hr, (convex_ball u0 r).isPreconnected, f, hfa.mono hball, ?_, ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hall push Not at hall`.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `hgood` using `hΨ _ (IntersectionWithSection.comp_mem_mcPts hv (R.mem x0 x0 (R.mem_U x0)))`. Choose the witnesses or unpack the hypotheses as in `⟨i0, hi0⟩ : ∃ i0, Ψ (segre (pullPt R v x0)) i0 ≠ 0 := by`. Assume the negation of the conclusion as `h`. Use `push Not at h`. Conclude with `hgood (funext h)`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hi0ne : i0 ≠ 0`. Introduce and unpack `rfl`. Conclude with `hi0 (hall u0 (Metric.mem_ball_self hr))`. Use `set m : Fin n := i0.pred hi0ne`. Establish `hm : m.succ = i0` using `Fin.succ_pred i0 hi0ne`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `set Ψ' : (((k : K) → ι k) → ℂ) →ₗ[ℂ] (Fin (n + 1) → ℂ) := (LinearMap.funLeft ℂ ℂ (Equiv.swap (0 : Fin (n + 1)) i0)).comp Ψ with hΨ'def`. Establish `hΨ'app : ∀ w i, Ψ' w i = Ψ w (Equiv.swap 0 i0 i)` using `fun w i => rfl`. Establish `hΨ' : IsGoodProj (imageZ v P') Ψ'`. Introduce `z hz h`. Use `hΨ z hz (funext fun i => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `congrFun h (Equiv.swap 0 i0 i)` as an intermediate fact. Rewrite `this` using `[hΨ'app, Equiv.swap_apply_self]`. Conclude with `this`. Establish `hg'c : ContinuousOn (fun u => Ψ' (segre (fun p => R.lift x0 ((R.A.chart j).symm u) (v p))) 0) (Metric.ball u0 r)` using `fun u hu => (analyticAt_pi_iff.mp (analyticAt_segre_pull R (v := v) Ψ' x0 j (hball hu)) 0).continuousAt.continuousWithinAt`. Use `set O := Metric.ball u0 r ∩ (fun u => Ψ' (segre (fun p => R.lift x0 ((R.A.chart j).symm u) (v p))) 0) ⁻¹' {0}ᶜ with hOdef`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hO : IsOpen O` using `hg'c.isOpen_inter_preimage Metric.isOpen_ball isOpen_compl_singleton`. Establish `hu0O : u0 ∈ O`. Use `⟨Metric.mem_ball_self hr, ?_⟩` and prove the remaining obligations. Use `show Ψ' (segre (pullPt R v x0)) 0 ≠ 0`. Rewrite using `[hΨ'app, Equiv.swap_apply_left]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Conclude with `hi0`. Establish `h0O : ∀ u ∈ O, Ψ' (segre (pullPt R v ((R.A.chart j).symm u))) 0 ≠ 0`. Introduce `u hu`. Take `⟨μ, hμ, hμeq⟩` from `segre_of_sameOrbit (pullPt_sameOrbit R hv (hball hu.1).2)`. Rewrite using `[hμeq, map_smul, Pi.smul_apply, smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `mul_ne_zero hμ hu.2`. Establish `hanO : AnalyticOnNhd ℂ (pullQ R v Ψ' ∘ (R.A.chart j).symm) O`. Introduce `u hu`. Use `analyticAt_pullQ R hv Ψ' _ j ((R.A.chart j).map_target (hball hu.1).1) (h0O u hu)` as an intermediate fact. Rewrite `this` using `[(R.A.chart j).right_inv (hball hu.1).1]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hzero : ∀ u ∈ O, (pullQ R v Ψ' ∘ (R.A.chart j).symm) u m = 0`. Introduce `u hu`. Simplify using `only [Function.comp_apply, pullQ]`. Rewrite using `[hm, hΨ'app, Equiv.swap_apply_right]`. Take `⟨μ, hμ, hμeq⟩` from `segre_of_sameOrbit (pullPt_sameOrbit R hv (hball hu.1).2)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[hμeq, map_smul, Pi.smul_apply, smul_eq_mul]`. Establish `: f u = 0` using `hall u hu.1`. Simplify using `only [hfdef] at this`. Rewrite using `[this, mul_zero, zero_div]`. Establish `hdetO : ∀ u ∈ O, LinearMap.det (fderiv ℂ (pullQ R v Ψ' ∘ (R.A.chart j).symm) u : (Fin n → ℂ) →ₗ[ℂ] (Fin n → ℂ)) = 0`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `u hu`. Establish `hcoord : (fun w => (pullQ R v Ψ' ∘ (R.A.chart j).symm) w m) =ᶠ[𝓝 u] fun _ => 0` using `by filter_upwards [hO.mem_nhds hu] with w hw`. Conclude with `hzero w hw`. Establish `hd : HasFDerivAt (fun w => (pullQ R v Ψ' ∘ (R.A.chart j).symm) w m) ((ContinuousLinearMap.proj m).comp (fderiv ℂ (pullQ R v Ψ' ∘ (R.A.chart j).symm) u)) u` using `(ContinuousLinearMap.proj (R := ℂ) (φ := fun _ : Fin n => ℂ) m).hasFDerivAt.comp u (hanO u hu).differentiableAt.hasFDerivAt`. Establish `hd0 : HasFDerivAt (fun w => (pullQ R v Ψ' ∘ (R.A.chart j).symm) w m) (0 : (Fin n → ℂ) →L[ℂ] ℂ) u` using `(hasFDerivAt_const (0 : ℂ) u).congr_of_eventuallyEq hcoord`.
-
-Establish `hrow` using `hd.unique hd0`. Use `det_eq_zero_of_coord m fun w => ?_` and prove the remaining obligations. Use `congrArg (fun T : (Fin n → ℂ) →L[ℂ] ℂ => T w) hrow` as an intermediate fact. Simplify using `using this`. Conclude with `not_flat_pull R hGen hv hP' hP Ψ' hΨ' j hO (fun u hu => (hball hu.1).1) ⟨u0, hu0O⟩ h0O hanO hdetO`.
-
-Introduce and unpack `w ⟨⟨-, hw0⟩, hwb⟩`. Take `⟨μ, hμ, hμeq⟩` from `segre_of_sameOrbit (pullPt_sameOrbit R hv (hball hwb).2)`. Establish `h` using `congrArg (fun s => Ψ s 0) hμeq`. Simplify using `only [map_smul, Pi.smul_apply, smul_eq_mul] at h`. Establish `hw0' : Ψ (segre (pullPt R v ((R.A.chart j).symm w))) 0 = 0` using `hw0`.
-
-Rewrite `h` using `[hw0']`. Conclude with `(mul_eq_zero.mp h.symm).resolve_left hμ`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem projection_pullback_zeroSet_null (hGen : BlockGenFinite.Statement) (hv : IsBlockMap κ v)
     (hP' : IsArithVar P' (n + 1)) (hP : IsArithVar (imageZ v P') (n + 1))
@@ -222,17 +214,15 @@ theorem projection_pullback_zeroSet_null (hGen : BlockGenFinite.Statement) (hv :
     exact (mul_eq_zero.mp h.symm).resolve_left hμ
 
 /- English proof (translation)
-Apply `ReciprocityTheory.AnForm.volume_eq_zero_of_locally_in_analytic_zero_set` to reduce the goal to its premises. Introduce and unpack `u0 ⟨hu0, h00, -⟩`. Use `set x0 := (R.A.chart j).symm u0`. Use `set V := (R.A.chart j).target ∩ (R.A.chart j).symm ⁻¹' R.U x0 with hVdef`. Establish `hV : IsOpen V` using `(R.A.chart j).isOpen_inter_preimage_symm (R.isOpen_U x0)`.
+Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hgc : ContinuousOn (fun u => Ψ (segre (fun p => R.lift x0 ((R.A.chart j).symm u) (v p))) 0) V` using `fun u hu => (analyticAt_pi_iff.mp (analyticAt_segre_pull R (v := v) Ψ x0 j hu) 0).continuousAt.continuousWithinAt`. Use `set O := V ∩ (fun u => Ψ (segre (fun p => R.lift x0 ((R.A.chart j).symm u) (v p))) 0) ⁻¹' {0}ᶜ with hOdef`. Establish `hO : IsOpen O` using `hgc.isOpen_inter_preimage hV isOpen_compl_singleton`. Establish `hu0O : u0 ∈ O` using `⟨⟨hu0, R.mem_U x0⟩, h00⟩`. Take `⟨r, hr, hball⟩` from `Metric.isOpen_iff.mp hO u0 hu0O`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `h0 : ∀ u ∈ Metric.ball u0 r, Ψ (segre (pullPt R v ((R.A.chart j).symm u))) 0 ≠ 0`. Introduce `u hu`. Take `⟨μ, hμ, hμeq⟩` from `segre_of_sameOrbit (pullPt_sameOrbit R hv (hball hu).1.2)`. Rewrite using `[hμeq, map_smul, Pi.smul_apply, smul_eq_mul]`. Conclude with `mul_ne_zero hμ (hball hu).2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `hQa : AnalyticOnNhd ℂ (pullQ R v Ψ ∘ (R.A.chart j).symm) (Metric.ball u0 r)`. Introduce `u hu`. Use `analyticAt_pullQ R hv Ψ _ j ((R.A.chart j).map_target (hball hu).1.1) (h0 u hu)` as an intermediate fact. Rewrite `this` using `[(R.A.chart j).right_inv (hball hu).1.1]`. Then use the resulting hypothesis. Use `⟨Metric.ball u0 r, Metric.isOpen_ball, Metric.mem_ball_self hr, (convex_ball u0 r).isPreconnected, fun u => LinearMap.det (fderiv ℂ (pullQ R v Ψ ∘ (R.A.chart j).symm) u : (Fin n → ℂ) →ₗ[ℂ] (Fin n → ℂ)), fun u hu => analyticAt_det_fderiv (hQa u hu), ?_, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Assume the negation of the conclusion as `hall push Not at hall`. Conclude with `not_flat_pull R hGen hv hP' hP Ψ hΨ j Metric.isOpen_ball (fun u hu => (hball hu).1.1) ⟨u0, Metric.mem_ball_self hr⟩ h0 hQa hall`. Introduce and unpack `w ⟨⟨hwt, hw0, k, hk, hdk⟩, -⟩`. Use `det_pullQ_chart R hv Ψ (j := j) ((R.A.chart j).map_target hwt) hk hw0` as an intermediate fact. Rewrite `this` using `[(R.A.chart j).right_inv hwt]`.
-
-Use `show LinearMap.det (fderiv ℂ (pullQ R v Ψ ∘ (R.A.chart j).symm) w : (Fin n → ℂ) →ₗ[ℂ] (Fin n → ℂ)) = 0`. Rewrite using `[this, hdk, zero_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ram_pull_null (hGen : BlockGenFinite.Statement) (hv : IsBlockMap κ v)
     (hP' : IsArithVar P' (n + 1)) (hP : IsArithVar (imageZ v P') (n + 1))
@@ -278,11 +268,11 @@ theorem ram_pull_null (hGen : BlockGenFinite.Statement) (hv : IsBlockMap κ v)
     rw [this, hdk, zero_mul]
 
 /- English proof (translation)
-Establish `h3 : pullBad R v Ψ ⊆ {x | R.lift x x ∈ mcPts J'} ∪ {x | Ψ (segre (pullPt R v x)) 0 = 0} ∪ {x | Ψ (segre (pullPt R v x)) 0 ≠ 0 ∧ ∃ k, x ∈ (R.A.chart k).source ∧ LinearMap.det (fderiv ℂ (pullQ R v Ψ ∘ (R.A.chart k).symm) (R.A.chart k x) : (Fin n → ℂ) →ₗ[ℂ] (Fin n → ℂ)) = 0}`. Introduce and unpack `x ((h | h) | ⟨k, hk, hn⟩)`. Conclude with `Or.inl (Or.inl h)`. Conclude with `Or.inl (Or.inr h)`. Distinguish the cases in `h0 : Ψ (segre (pullPt R v x)) 0 = 0`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Prove the first alternative. Prove the first alternative. Consider separately whether the proposition holds or fails.
 
-Conclude with `Or.inl (Or.inr h0)`. Use `Or.inr ⟨h0, k, hk, ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hd`. Conclude with `hn ⟨analyticAt_pullQ R hv Ψ x k hk h0, hd⟩`. Use `measure_mono_null (Set.inter_subset_inter_right _ (Set.preimage_mono h3)) ?_` and prove the remaining obligations.
+Prove the first alternative. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [Set.preimage_union, Set.inter_union_distrib_left]`. Conclude with `measure_union_null (measure_union_null (R.null j) (projection_pullback_zeroSet_null R hGen hv hP' hP Ψ hΨ j)) (ram_pull_null R hGen hv hP' hP Ψ hΨ j)`.
+A detailed English derivation is pending.
 -/
 theorem pullBad_null (hGen : BlockGenFinite.Statement) (hv : IsBlockMap κ v)
     (hP' : IsArithVar P' (n + 1)) (hP : IsArithVar (imageZ v P') (n + 1))

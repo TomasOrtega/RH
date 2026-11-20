@@ -7,14 +7,14 @@ variable {l : ℕ} [Fact l.Prime] (F : GFrame l) (O : Type) [CommRing O] [Algebr
   [Algebra O R] (n : ℕ)
 
 /- English proof (translation)
-Simplify using `[GFrame.star]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem star_add' (y z : MonoidAlgebra R F.G₀) :
     F.star O R n (y + z) = F.star O R n y + F.star O R n z := by
   simp [GFrame.star]
 
 /- English proof (translation)
-Simplify using `[GFrame.star]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem star_zero' : F.star O R n 0 = 0 := by
   simp [GFrame.star]
@@ -22,7 +22,7 @@ private theorem star_zero' : F.star O R n 0 = 0 := by
 end
 
 /- English proof (translation)
-Simplify using `[GFrame.star, GFrame.starOp, MonoidAlgebra.lift_single]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem star_single_eq_single_conj_inv_mul_eps_zpow {l : ℕ} [Fact l.Prime] (F : GFrame l) (O : Type) [CommRing O] [Algebra ℤ_[l] O]
     (R : Type) [CommRing R] [Algebra O R] (n : ℕ) (g : F.G₀) (r : R) :
@@ -31,7 +31,7 @@ private theorem star_single_eq_single_conj_inv_mul_eps_zpow {l : ℕ} [Fact l.Pr
   simp [GFrame.star, GFrame.starOp, MonoidAlgebra.lift_single]
 
 /- English proof (translation)
-Establish `hc : F.c⁻¹ = F.c` using `inv_eq_of_mul_eq_one_right F.c_sq`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `[GFrame.conj, hc, ← mul_assoc, F.c_sq]`. Rewrite using `[mul_assoc, F.c_sq, mul_one]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 private theorem conjO_conjO_unimodular_class_representatives {l : ℕ} [Fact l.Prime] (F : GFrame l) (g : F.G₀) : F.conj (F.conj g) = g := by
   have hc : F.c⁻¹ = F.c := inv_eq_of_mul_eq_one_right F.c_sq
@@ -40,14 +40,14 @@ private theorem conjO_conjO_unimodular_class_representatives {l : ℕ} [Fact l.P
   rw [mul_assoc, F.c_sq, mul_one]
 
 /- English proof (translation)
-Simplify using `[GFrame.eps, GFrame.conj]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem eps_conj' {l : ℕ} [Fact l.Prime] (F : GFrame l) (O : Type) [CommRing O] [Algebra ℤ_[l] O]
     (R : Type) [CommRing R] [Algebra O R] (g : F.G₀) : F.eps O R (F.conj g) = F.eps O R g := by
   simp [GFrame.eps, GFrame.conj]
 
 /- English proof (translation)
-Establish `h : Units.map (f : R →* R') (F.eps O R g) = F.eps O R' g`. Use `ext`. Simplify using `[GFrame.eps, pushCh]`. Rewrite using `[← h, ← map_zpow (Units.map (f : R →* R')), Units.coe_map]`. Both sides reduce to the same expression.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem algHom_eps_zpow_eq {l : ℕ} [Fact l.Prime] (F : GFrame l) (O : Type) [CommRing O] [Algebra ℤ_[l] O]
     (R : Type) [CommRing R] [Algebra O R] (R' : Type) [CommRing R'] [Algebra O R'] (f : R →ₐ[O] R')
@@ -60,15 +60,13 @@ private theorem algHom_eps_zpow_eq {l : ℕ} [Fact l.Prime] (F : GFrame l) (O : 
   rfl
 
 /- English proof (translation)
-Introduce `l _ F O _ _ R _ _ n`. Use `⟨?_, ?_, star_add' F O R n, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `y z`. Simplify using `only [GFrame.star, map_mul, MulOpposite.unop_mul]`. Simplify using `[GFrame.star, map_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Introduce `a y`. Simplify using `only [GFrame.star, map_smul, MulOpposite.unop_smul]`. Introduce `y`. Proceed by induction on `y using MonoidAlgebra.induction_linear`. Use `next => simp [star_zero']`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Simplify using the standard rewrite rules.
 
-Use `next y z hy hz => rw [star_add', star_add', hy, hz]`. Use `next g r =>`. Simplify using `only [star_single_eq_single_conj_inv_mul_eps_zpow, map_inv, inv_inv, conjO_conjO_unimodular_class_representatives, eps_conj', _root_.inv_zpow]`. Rewrite using `[mul_assoc, ← Units.val_mul, mul_inv_cancel, Units.val_one, mul_one]`. Introduce `R' _ _ f y`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Proceed by induction on `y using MonoidAlgebra.induction_linear`. Use `next => simp [star_zero']`. Use `next y z hy hz => rw [map_add, star_add', star_add', map_add, hy, hz]`. Use `next g r =>`. Simplify using `only [star_single_eq_single_conj_inv_mul_eps_zpow, MonoidAlgebra.mapRingHom_single, RingHom.coe_coe, map_mul]`.
-
-Rewrite using `[algHom_eps_zpow_eq]`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.AlgebraTools.Det.starApi :
     ∀ {l : ℕ} [Fact l.Prime] (F : GFrame l) (O : Type) [CommRing O] [Algebra ℤ_[l] O] (R : Type) [CommRing R] [Algebra O R] (n : ℕ),

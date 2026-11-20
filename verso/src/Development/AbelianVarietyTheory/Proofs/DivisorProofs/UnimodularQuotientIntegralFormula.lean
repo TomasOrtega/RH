@@ -9,7 +9,7 @@ noncomputable section
 namespace GlobalTheory.ProdFundDom
 
 /- English proof (translation)
-The claim follows from `(AutomorphicL2Unitary.measurableSet_stdDom ΓT).nullMeasurableSet.prod h₁.nullMeasurableSet ae_covers := by filter_upwards [Measure.quasiMeasurePreserving_snd.ae h₁.ae_covers] with p hp obtain ⟨γ, hγ⟩ := hp obtain ⟨δ, hδ, -⟩ := AutomorphicL2Unitary.existsUnique_stdDom ΓT p.1 refin …`.
+A detailed English derivation is pending.
 -/
 theorem isFundamentalDomain_prod {T L : Type} [Group T] [TopologicalSpace T] [IsTopologicalGroup T]
     [SecondCountableTopology T] [MeasurableSpace T] [BorelSpace T] [Group L] [MeasurableSpace L]
@@ -56,25 +56,21 @@ end GlobalTheory.ProdFundDom
 namespace GlobalTheory.ProdFundDom
 
 /- English proof (translation)
-Introduce `G T L _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ φ Γ ΓT ΓL _ hΓ A a hA hint μ₁ 𝓕₁ hμ₁ h₁`. Set `ν : Measure T` to `Measure.haar`. Set `e : (T × L) ≃ᵐ G` to `φ.toHomeomorph.toMeasurableEquiv`. Set `μ : Measure G` to `(ν.prod μ₁).map φ`. Establish `he : MeasurePreserving e (ν.prod μ₁) μ` using `⟨e.measurable, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `haveI : μ.IsHaarMeasure := MulEquiv.isHaarMeasure_map (ν.prod μ₁) φ.toMulEquiv φ.continuous φ.symm.continuous`. Set `D` to `AutomorphicL2Unitary.stdDom ΓT`. Set `S` to `D ×ˢ 𝓕₁`. Establish `hF : IsFundamentalDomain Γ (e.symm ⁻¹' S) μ`. Use `(isFundamentalDomain_prod ΓT ΓL ν μ₁ h₁).preimage_of_equiv (MeasurePreserving.symm e he).quasiMeasurePreserving (e := fun γ => ⟨φ γ, (hΓ γ).2 (Subgroup.mem_prod.1 γ.2)⟩) ⟨fun x y h => ?_, fun γ => ?_⟩ fun g x => ?_` and prove the remaining obligations.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Subtype.ext (φ.injective (congrArg Subtype.val h))`. Use `⟨⟨φ.symm γ, Subgroup.mem_prod.2 ((hΓ _).1 (by simpa using γ.2))⟩, Subtype.ext (by simp)⟩` and prove the remaining obligations. Use `show φ.symm (φ g * x) = g * φ.symm x`. Rewrite using `[map_mul, φ.symm_apply_apply]`. Take `⟨hI0, hZ0⟩` from `hint μ _ inferInstance hF`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpre : e ⁻¹' (e.symm ⁻¹' S) = S` using `by ext p; simp`. Establish `hcomp : A ∘ e = fun p : T × L => a p.2` using `funext fun p => hA p`. Establish `hI1 : IntegrableOn (fun p : T × L => a p.2) S (ν.prod μ₁)`. Rewrite using `[← hcomp, ← hpre]`. Conclude with `(he.integrableOn_comp_preimage e.measurableEmbedding).2 hI0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hZ1 : ∫ p in S, a p.2 ∂(ν.prod μ₁) = 0`. Rewrite using `[← hZ0, ← he.setIntegral_preimage_emb e.measurableEmbedding, hpre]`. Conclude with `integral_congr_ae (Filter.Eventually.of_forall fun p => (hA p).symm)`. Rewrite `hI1` using `[IntegrableOn, ← Measure.prod_restrict]`. Rewrite `hZ1` using `[← Measure.prod_restrict]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Establish `hD0 : ν D ≠ 0` using `(AutomorphicL2Unitary.isFundamentalDomain_stdDom ΓT ν).measure_ne_zero (NeZero.ne _)`. Use `haveI : NeZero (ν.restrict D) := ⟨by rwa [Ne, Measure.restrict_eq_zero]⟩`. Take `⟨_, hσ⟩` from `hI1.prod_right_ae.exists`. Use `⟨hσ, ?_⟩` and prove the remaining obligations. Rewrite `hZ1` using `[integral_fun_snd]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Distinguish the cases in `htop : ν D = ⊤`. Establish `hfin` using `hI1.2`. Rewrite `hfin` using `[HasFiniteIntegral, lintegral_prod _ hI1.1.enorm]`. Simplify using `only [lintegral_const, Measure.restrict_apply_univ, htop] at hfin`. Establish `hK : ∫⁻ y, ‖a y‖ₑ ∂(μ₁.restrict 𝓕₁) = 0`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Assume the negation of the conclusion as `hK`. Rewrite `hfin` using `[ENNReal.mul_top hK]`. Conclude with `lt_irrefl _ hfin`. Establish `hae : a =ᵐ[μ₁.restrict 𝓕₁] 0` using `by filter_upwards [(lintegral_eq_zero_iff' hσ.1.enorm).1 hK] with y hy`. Simplify using `using hy`.
-
-Rewrite using `[integral_congr_ae hae]`. Simplify using the standard rewrite rules. Establish `hr : (ν.restrict D).real univ ≠ 0`. Rewrite using `[measureReal_def, Measure.restrict_apply_univ]`. Conclude with `ENNReal.toReal_ne_zero.2 ⟨hD0, htop⟩`.
-
-Conclude with `(smul_eq_zero.1 hZ1).resolve_left hr`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem setIntegral_eq_zero_of_prod : ∀ (G T L : Type) [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
     [MeasurableSpace G] [BorelSpace G]

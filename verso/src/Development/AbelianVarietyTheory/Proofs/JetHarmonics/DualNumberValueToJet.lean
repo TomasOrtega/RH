@@ -8,11 +8,11 @@ open MvPowerSeries ReciprocityTheory.ChartRestriction.G.Chart ReciprocityTheory.
 namespace GlobalTheory.JetSer
 
 /- English proof (translation)
-Use `(toJet_eq_mk_iff 1 u _).2 fun a ha => ?_` and prove the remaining obligations. Simplify using `only [MvPolynomial.coeff_add, MvPolynomial.coeff_sum, MvPolynomial.coeff_C_mul, MvPolynomial.coeff_C, MvPolynomial.coeff_X]`. Distinguish the cases in `h0 : Finsupp.degree a = 0`. Rewrite `h0` using `[Finsupp.degree_eq_zero_iff]`. Substitute `h0` using the available equality.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality.
 
-Simplify using `[Finsupp.single_eq_zero]`. Establish `h1 : a ∈ {d : κ →₀ ℕ | Finsupp.degree d = 1}` using `by show Finsupp.degree a = 1`. Use linear arithmetic over natural numbers and integers. Rewrite `h1` using `[← Finsupp.range_single_one]`. Take `⟨q, rfl⟩` from `h1`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[if_neg (Finsupp.single_ne_zero.2 one_ne_zero).symm, zero_add, Finset.sum_eq_single q]`. Simplify using the standard rewrite rules. Introduce `b _ hb`. Rewrite using `[if_neg, mul_zero]`. Rewrite using `[Finsupp.single_left_inj one_ne_zero]` and apply the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 
 Simplify using the standard rewrite rules.
 -/
@@ -40,9 +40,9 @@ theorem toJet_one_eq {O κ : Type} [CommRing O] [Fintype κ] (u : MvPowerSeries 
     · simp
 
 /- English proof (translation)
-Establish `h : ∀ i j : Fin d, constantCoeff (ev (n` using `1) ![pt O d 0, 0] (pderiv O ((1 : Fin 2), i) (G.mapF f j))) = if j = i then 1 else 0 := by`. Introduce `i j`. Rewrite using `[← coeff_zero_eq_constantCoeff_apply, ReciprocityTheory.ChartRestriction.G.TB.WickVanishing.coeff_ev_zero_right, Finsupp.embDomain_zero, coeff_pderiv, FGLaw.mapF, coeff_map, zero_add, SymbolOne.coeff_law]`. Apply the tactic sequence `split_ifs <;> simp`. Unfold `Dof`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Replace the relevant objects with their definitions.
 
-Simplify using `only [map_sum, map_mul, h, constantCoeff_C]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[← coeff_zero_eq_constantCoeff_apply, coeff_pderiv]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem constantCoeff_dof {R O : Type} [CommRing R] [CommRing O] (f : R →+* O) {d : ℕ}
     (G : FGLaw R d) (e : Fin d → O) (u : PS O 1 d) :
@@ -61,9 +61,9 @@ theorem constantCoeff_dof {R O : Type} [CommRing R] [CommRing O] (f : R →+* O)
   simp
 
 /- English proof (translation)
-Introduce `R O _ _ f d G e u S _ _ ψ hψ`. Establish `hC : ∀ c : O, ψ (Ideal.Quotient.mk _ (MvPolynomial.C c)) = TrivSqZeroExt.inl (algebraMap O S c)` using `fun c => ψ.commutes c`. Establish `hX : ∀ q, ψ (Ideal.Quotient.mk _ (MvPolynomial.X q)) = TrivSqZeroExt.inr (algebraMap O S (e q.2))` using `hψ`. Rewrite using `[toJet_one_eq, constantCoeff_dof]`. Simplify using `only [map_add, map_sum, map_mul, hC, hX, Fintype.sum_prod_type, Fin.sum_univ_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `congr 1`. Use `ext`. Simplify using `[TrivSqZeroExt.fst_sum]`. Simplify using `[TrivSqZeroExt.snd_sum, mul_comm]`. Simplify using `only [Algebra.smul_def]`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem dualNumber_value_toJet : ∀ (R O : Type) [CommRing R] [CommRing O] (f : R →+* O) (d : ℕ) (G : FGLaw R d) (e : Fin d → O) (u : PS O 1 d) (S : Type) [CommRing S] [Algebra O S] (ψ : JetR O (Fin 1 × Fin d) 1 →ₐ[O] DualNumber S), (∀ q, ψ (zR 1 q) = TrivSqZeroExt.inr (algebraMap O S (e q.2))) → ψ (toJet 1 u) = TrivSqZeroExt.inl (algebraMap O S (MvPowerSeries.constantCoeff u)) + TrivSqZeroExt.inr (algebraMap O S (MvPowerSeries.constantCoeff (Dof (G.mapF f) e u))) := by
   intro R O _ _ f d G e u S _ _ ψ hψ

@@ -30,7 +30,7 @@ def frStab (P : HeightOneSpectrum (𝓞 E)) (C : Set (Sp E n)) : Subgroup ↥(GL
     exact h.symm
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_frStab {P : HeightOneSpectrum (𝓞 E)} {C : Set (Sp E n)} {g : ↥(GLint E n P)} :
     g ∈ frStab P C ↔ ∀ v, g.1 v ∈ C ↔ v ∈ C := Iff.rfl
@@ -39,7 +39,7 @@ def cutQ (Θ : LevQFam E K n Q) (C : ∀ P : Q, Set (Sp E n)) : LevQFam E K n Q 
   ⟨(Θ P).H ⊓ frStab P.1 (C P), (Θ P).lam.comp (Subgroup.inclusion inf_le_left)⟩
 
 /- English proof (translation)
-Simplify using `only [LevQFam.grp, Subgroup.mem_pi, Set.mem_univ, forall_const]`. Conclude with `forall_and`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mem_cutQ_grp {Θ : LevQFam E K n Q} {C : ∀ P : Q, Set (Sp E n)} {t : GLQ E n Q} :
     t ∈ (cutQ Θ C).grp ↔ t ∈ Θ.grp ∧ ∀ P, t P ∈ frStab P.1 (C P) := by
@@ -47,7 +47,7 @@ theorem mem_cutQ_grp {Θ : LevQFam E K n Q} {C : ∀ P : Q, Set (Sp E n)} {t : G
   exact forall_and
 
 /- English proof (translation)
-Introduce `_ ht` and use `(mem_cutQ_grp.1 ht).1`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem cutQ_grp_le (Θ : LevQFam E K n Q) (C : ∀ P : Q, Set (Sp E n)) : (cutQ Θ C).grp ≤ Θ.grp := fun _ ht => (mem_cutQ_grp.1 ht).1
 
@@ -88,9 +88,9 @@ def PtDet (cq : PtY ST SG Q y → ∀ P : Q, Set (Sp X.E n)) : Prop :=
 end Inv
 
 /- English proof (translation)
-Rewrite using `[Subgroup.mem_map]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩`. Simplify `hy` using `[mul_assoc]`. Introduce `h`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `⟨k⁻¹ * x * k, h, by simp [mul_assoc]⟩`.
+Supply the required witnesses or components.
 -/
 theorem mem_map_conj {G : Type} [Group G] (S : Subgroup G) (k x : G) :
     x ∈ S.map (MulAut.conj k).toMonoidHom ↔ k⁻¹ * x * k ∈ S := by
@@ -116,7 +116,7 @@ abbrev rpT (u : B.Word) (a : I.ι) (i : ℕ) (c : (I.stp u a i).Cl) : PtAt B.R I
 
 open Classical in
 /- English proof (translation)
-Introduce `P hP`. Unfold `ColIn.SQ`. Conclude with `Finset.mem_biUnion.2 ⟨a, Finset.mem_univ _, hP⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem q_sub_SQ (a : I.ι) : I.Q a ⊆ I.SQ := by
   intro P hP
@@ -124,14 +124,14 @@ theorem q_sub_SQ (a : I.ι) : I.Q a ⊆ I.SQ := by
   exact Finset.mem_biUnion.2 ⟨a, Finset.mem_univ _, hP⟩
 
 /- English proof (translation)
-Introduce `P hP hG`. Conclude with `Finset.disjoint_left.1 (LevTwist.levOk_twists B X I hI).2.1 hG (q_sub_SQ I a hP)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem q_disj (hI : I.Ok) (a : I.ι) : ∀ P ∈ QE I.sel (I.tup a : Chr B.fields.F B.fields.E B.fields.K), P ∉ (B.primes X).vGs := by
   intro P hP hG
   exact Finset.disjoint_left.1 (LevTwist.levOk_twists B X I hI).2.1 hG (q_sub_SQ I a hP)
 
 /- English proof (translation)
-Introduce `P hc`. Take `⟨-, hs⟩` from `(LevTwist.levOk_twists B X I hI).1`. Establish `hm : P.1 ∈ uSG (B.primes X).vGs I.SQ`. Simplify using `[uSG, q_sub_SQ I a P.2]`. Conclude with `hs _ hm (by rw [hc]; exact hm)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem q_conj (hI : I.Ok) (a : I.ι) : ∀ P : I.Q a, conjPrime₂ P.1 ≠ P.1 := by
   intro P hc
@@ -141,9 +141,9 @@ theorem q_conj (hI : I.Ok) (a : I.ι) : ∀ P : I.Q a, conjPrime₂ P.1 ≠ P.1 
   exact hs _ hm (by rw [hc]; exact hm)
 
 /- English proof (translation)
-Establish `e : ∀ r : PtAt B.R I.sel (I.tup a) (I.cst a) u i, r.1.2 = ∅` using `fun r => by`. Establish `hr` using `r.2`. Rewrite `hr` using `[ysAt_ys_of_ne (h := h)]`. Conclude with `Set.mem_singleton_iff.1 hr`. Use function extensionality and compare the values at `P`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. By extensionality, compare the relevant components.
 
-Use extensionality with `z`. Simplify using `[cosetIn, e q, e q']`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cos_of_neT {u : B.Word} {a : I.ι} {i : ℕ} (h : i + 1 ≠ B.R.m) (q q' : PtAt B.R I.sel (I.tup a) (I.cst a) u i) :
     cosetIn q = cosetIn q' := by

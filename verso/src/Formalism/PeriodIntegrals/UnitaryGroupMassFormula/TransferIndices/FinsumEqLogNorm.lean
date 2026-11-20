@@ -9,7 +9,7 @@ open Formalism.BasicNotions NumberField IsDedekindDomain
 open scoped WithZero
 
 /- English proof (translation)
-Break down `eq_or_ne m 0 with h0 | h0` into its components or cases. Rewrite using `[h0, WithZero.log_zero]`. Rewrite `h` using `[← WithZero.exp_log h0, ← WithZero.exp_zero]`. Conclude with `WithZero.exp_le_exp.mp h`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem log_nonpos_of_le_one (m : ℤᵐ⁰) (h : m ≤ 1) : WithZero.log m ≤ 0 := by
   rcases eq_or_ne m 0 with h0 | h0
@@ -18,7 +18,7 @@ private theorem log_nonpos_of_le_one (m : ℤᵐ⁰) (h : m ≤ 1) : WithZero.lo
     exact WithZero.exp_le_exp.mp h
 
 /- English proof (translation)
-Introduce `K _ _ w x`. Unfold `vAdd`. Establish `h` using `log_nonpos_of_le_one (w.valuation K (algebraMap (𝓞 K) K x)) (w.valuation_le_one x)`. Use linear arithmetic over natural numbers and integers.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem volume_nonneg : VNonneg := by
   intro K _ _ w x
@@ -27,7 +27,7 @@ theorem volume_nonneg : VNonneg := by
   omega
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hx`. Apply `h` to reduce the goal to its premises. Establish `h1 : w.valuation K (algebraMap (𝓞 K) K x) = 1` using `le_antisymm (w.valuation_le_one x) (not_lt.mp fun hlt => hx ((w.valuation_lt_one_iff_mem x).mp hlt))`. Unfold `vAdd`. Rewrite using `[h1, WithZero.log_one, neg_zero]`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem mem_of_vAdd_ne {K : Type} [Field K] [NumberField K] (w : HeightOneSpectrum (𝓞 K)) (x : 𝓞 K)
     (h : vAdd w (algebraMap (𝓞 K) K x) ≠ 0) : x ∈ w.asIdeal := by
@@ -39,9 +39,9 @@ theorem mem_of_vAdd_ne {K : Type} [Field K] [NumberField K] (w : HeightOneSpectr
   rw [h1, WithZero.log_one, neg_zero]
 
 /- English proof (translation)
-Introduce `K _ _ x hx`. Establish `hI : Ideal.span {x} ≠ (0 : Ideal (𝓞 K))`. Rewrite using `[Ne, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot]` and apply the resulting hypothesis. Use `(Ideal.finite_factors hI).subset ?_` and prove the remaining obligations. Introduce `w hw`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Ideal.dvd_span_singleton.mpr (mem_of_vAdd_ne w x hw)`.
+A detailed English derivation is pending.
 -/
 theorem volume_finite' : VFin := by
   intro K _ _ x hx
@@ -52,7 +52,7 @@ theorem volume_finite' : VFin := by
   exact Ideal.dvd_span_singleton.mpr (mem_of_vAdd_ne w x hw)
 
 /- English proof (translation)
-Take `⟨a, rfl⟩` from `WithZero.ne_zero_iff_exists.mp h`. Use `first`. Consider the case `rfl`. Consider the case `simp [WithZero.log]`. Consider the case `simp`.
+Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem unzero_toAdd (m : ℤᵐ⁰) (h : m ≠ 0) : Multiplicative.toAdd (WithZero.unzero h) = WithZero.log m := by
   obtain ⟨a, rfl⟩ := WithZero.ne_zero_iff_exists.mp h
@@ -62,9 +62,9 @@ theorem unzero_toAdd (m : ℤᵐ⁰) (h : m ≠ 0) : Multiplicative.toAdd (WithZ
   | simp
 
 /- English proof (translation)
-Establish `hv : v.valuation K x ≠ 0` using `by simpa using hx`. Establish `he : Valued.v (FinitePlace.embedding v x) = v.valuation K x` using `by first`. Consider the case `exact v.valuedAdicCompletion_eq_valuation' x`. Consider the case `exact v.valuedAdicCompletion_eq_valuation x`. Consider the case `rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Rewrite using `[FinitePlace.norm_def, he, WithZeroMulInt.toNNReal_neg_apply _ hv, unzero_toAdd _ hv]`. Simplify using `[vAdd]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem norm_embedding_eq {K : Type} [Field K] [NumberField K] (v : HeightOneSpectrum (𝓞 K)) (x : K) (hx : x ≠ 0) :
     ‖FinitePlace.embedding v x‖ = (Ideal.absNorm v.asIdeal : ℝ) ^ (-(vAdd v x)) := by
@@ -78,7 +78,7 @@ theorem norm_embedding_eq {K : Type} [Field K] [NumberField K] (v : HeightOneSpe
   simp [vAdd]
 
 /- English proof (translation)
-Rewrite using `[norm_embedding_eq v x hx, Real.log_zpow]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem log_norm_embedding {K : Type} [Field K] [NumberField K] (v : HeightOneSpectrum (𝓞 K)) (x : K) (hx : x ≠ 0) :
     Real.log ‖FinitePlace.embedding v x‖ = -((vAdd v x : ℝ) * Real.log (Ideal.absNorm v.asIdeal : ℝ)) := by
@@ -87,23 +87,21 @@ theorem log_norm_embedding {K : Type} [Field K] [NumberField K] (v : HeightOneSp
   ring
 
 /- English proof (translation)
-Establish `hxK : algebraMap (𝓞 K) K x ≠ 0` using `by first`. Consider the case `simpa using hx`. Consider the case `exact (map_ne_zero_iff _ (FaithfulSMul.algebraMap_injective (𝓞 K) K)).mpr hx`. Establish `hf : ∀ w : HeightOneSpectrum (𝓞 K), lw K w * (vAdd w (algebraMap (𝓞 K) K x) : ℝ) = -Real.log ‖FinitePlace.embedding w (algebraMap (𝓞 K) K x)‖ / (Module.finrank ℚ K : ℝ)`. Introduce `w`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[log_norm_embedding w _ hxK]`. Unfold `lw`. Expand and normalize the polynomial expressions, which then agree. Establish `hfin` using `volume_finite' K x hx`. Establish `hsub : ∀ w, w ∉ hfin.toFinset → ‖FinitePlace.embedding w (algebraMap (𝓞 K) K x)‖ = 1`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `w hw`. Establish `h0 : vAdd w (algebraMap (𝓞 K) K x) = 0`. Rewrite `hw` using `[Set.Finite.mem_toFinset, Function.mem_support, not_not]`. Conclude with `hw`. Rewrite using `[norm_embedding_eq w _ hxK, h0, neg_zero, zpow_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hne : ∀ w ∈ hfin.toFinset, ‖FinitePlace.embedding w (algebraMap (𝓞 K) K x)‖ ≠ 0` using `fun w _ => norm_ne_zero_iff.mpr ((map_ne_zero _).mpr hxK)`. Establish `hprod : ∏ᶠ w : HeightOneSpectrum (𝓞 K), ‖FinitePlace.embedding w (algebraMap (𝓞 K) K x)‖ = ∏ w ∈ hfin.toFinset, ‖FinitePlace.embedding w (algebraMap (𝓞 K) K x)‖`. Use `finprod_eq_prod_of_mulSupport_subset _ ?_` and prove the remaining obligations. Introduce `w hw`. Rewrite using `[Finset.mem_coe]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hws`. Conclude with `hw (hsub w hws)`. Establish `PF : ∏ᶠ w : FinitePlace K, w (algebraMap (𝓞 K) K x) = (|((Algebra.norm ℤ x : ℤ) : ℝ)|)⁻¹`. Establish `h` using `FinitePlace.prod_eq_inv_abs_norm_int hx`. Use `first`.
+Establish an intermediate fact. Establish an intermediate fact. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact h`. Consider the case `(rw [Int.cast_abs] at h; exact h)`. Consider the case `(push_cast at h; exact h)`. Consider the case `(convert h using 3; simp)`. Establish `PF' : ∏ᶠ w : HeightOneSpectrum (𝓞 K), ‖FinitePlace.embedding w (algebraMap (𝓞 K) K x)‖ = (|((Algebra.norm ℤ x : ℤ) : ℝ)|)⁻¹`.
+Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately.
 
-Rewrite using `[← PF]`. Use `first`. Consider the case `exact finprod_comp_equiv (FinitePlace.equivHeightOneSpectrum (K := K)).symm`. Consider the case `exact finprod_eq_of_bijective (FinitePlace.equivHeightOneSpectrum (K := K)).symm (Equiv.bijective _) (fun _ => rfl)`. Consider the case `exact (finprod_eq_of_bijective (FinitePlace.equivHeightOneSpectrum (K := K)).symm (Equiv.bijective _) (fun _ => rfl)).symm`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[finsum_congr hf, finsum_eq_sum_of_support_subset _ (s := hfin.toFinset) ?_]`. Rewrite using `[← Finset.sum_div, Finset.sum_neg_distrib, ← Real.log_prod hne, ← hprod, PF', Real.log_inv, neg_neg]`. Introduce `w hw`. Rewrite using `[Finset.mem_coe]`. Assume the negation of the conclusion as `hws`.
-
-Apply `hw` to reduce the goal to its premises. Use `show -Real.log ‖FinitePlace.embedding w (algebraMap (𝓞 K) K x)‖ / (Module.finrank ℚ K : ℝ) = 0`. Rewrite using `[hsub w hws, Real.log_one, neg_zero, zero_div]`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finsum_eq_log_norm {K : Type} [Field K] [NumberField K] (x : 𝓞 K) (hx : x ≠ 0) :
     ∑ᶠ w : HeightOneSpectrum (𝓞 K), lw K w * (vAdd w (algebraMap (𝓞 K) K x) : ℝ) =
@@ -163,7 +161,7 @@ theorem finsum_eq_log_norm {K : Type} [Field K] [NumberField K] (x : 𝓞 K) (hx
     rw [hsub w hws, Real.log_one, neg_zero, zero_div]
 
 /- English proof (translation)
-The claim follows from `|((Algebra.norm ℤ x : ℤ) : ℝ)| ≤ B ^ Module.finrank ℚ K := by have h1 : |((Algebra.norm ℤ x : ℤ) : ℝ)| = ∏ w : InfinitePlace K, w (algebraMap (𝓞 K) K x) ^ w.mult := by rw [InfinitePlace.prod_eq_abs_norm, ← Algebra.coe_norm_int] first | simp | norm_cast rw [h1, ← InfinitePlace.sum …`.
+A detailed English derivation is pending.
 -/
 theorem abs_norm_le {K : Type} [Field K] [NumberField K] (x : 𝓞 K) (B : ℝ) (hB : 0 ≤ B)
     (hσ : ∀ σ : K →+* ℂ, ‖σ (algebraMap (𝓞 K) K x)‖ ≤ B) :
@@ -181,9 +179,9 @@ theorem abs_norm_le {K : Type} [Field K] [NumberField K] (x : 𝓞 K) (B : ℝ) 
   exact hσ _
 
 /- English proof (translation)
-Introduce `K _ _ x B hx hB hσ`. Rewrite using `[finsum_eq_log_norm x hx]`. Establish `hd : (0 : ℝ) < Module.finrank ℚ K` using `by exact_mod_cast Module.finrank_pos`. Establish `hN : (0 : ℝ) < |((Algebra.norm ℤ x : ℤ) : ℝ)|`. Rewrite using `[abs_pos, Int.cast_ne_zero, Ne, Algebra.norm_eq_zero_iff]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hx`. Rewrite using `[div_le_iff₀ hd, mul_comm, ← Real.log_pow]`. Conclude with `Real.log_le_log hN (abs_norm_le x B hB.le hσ)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem volume_sum_le : VSumLe := by
   intro K _ _ x B hx hB hσ

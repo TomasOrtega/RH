@@ -7,7 +7,7 @@ open MvPolynomial Formalism.DegreeFormula GlobalTheory.FlagPoly
 namespace GlobalTheory
 
 /- English proof (translation)
-The claim follows from `|∏ i ∈ s, f i - ∏ i ∈ s, g i| ≤ ∑ i ∈ s, |f i - g i| := by induction s using Finset.induction_on with | empty => simp | insert j s hj ih => rw [Finset.prod_insert hj, Finset.prod_insert hj, Finset.sum_insert hj] have hG : |∏ i ∈ s, g i| ≤ 1 := by rw [Finset.abs_prod] exact Finset …`.
+A detailed English derivation is pending.
 -/
 theorem abs_prod_sub_prod_le_sum_of_le_one {ι : Type} [DecidableEq ι] (s : Finset ι) (f g : ι → ℝ)
     (hf : ∀ i, |f i| ≤ 1) (hg : ∀ i, |g i| ≤ 1) :
@@ -29,7 +29,7 @@ theorem abs_prod_sub_prod_le_sum_of_le_one {ι : Type} [DecidableEq ι] (s : Fin
       exact (mul_le_of_le_one_left (abs_nonneg _) (hf j)).trans ih
 
 /- English proof (translation)
-The claim follows from `|∏ i, a i ^ m i - ∏ i, b i ^ m i| ≤ ((∑ i, m i : ℕ) : ℝ) * ‖a - b‖ := by have ha' : ∀ i, |a i| ≤ 1 := fun i => (norm_le_pi_norm a i).trans ha have hb' : ∀ i, |b i| ≤ 1 := fun i => (norm_le_pi_norm b i).trans hb refine (abs_prod_sub_prod_le_sum_of_le_one _ (fun i => a i ^ m i) (fu …`.
+A detailed English derivation is pending.
 -/
 theorem abs_monomial_sub_le_of_norm_le_one {σ : Type} [Fintype σ] [DecidableEq σ] (m : σ →₀ ℕ)
     (a b : σ → ℝ) (ha : ‖a‖ ≤ 1) (hb : ‖b‖ ≤ 1) :
@@ -49,7 +49,7 @@ theorem abs_monomial_sub_le_of_norm_le_one {σ : Type} [Fintype σ] [DecidableEq
     exact h2.trans (mul_le_mul_of_nonneg_left h1 (Nat.cast_nonneg _))
 
 /- English proof (translation)
-The claim follows from `|eval a P - eval b P| ≤ n * c * ‖a - b‖ := by classical let S : Finset (σ →₀ ℕ) := Finset.Iic (Finsupp.equivFunOnFinite.symm fun _ => d) refine ⟨(S.card : ℝ) * d, by positivity, fun P c a b hd hc ha hb => ?_⟩ have hc0 : 0 ≤ c := (abs_nonneg _).trans (hc 0) have hdeg : ∀ m ∈ P.sup …`.
+A detailed English derivation is pending.
 -/
 theorem exists_lipschitz_eval_of_coeff_le (σ : Type) [Fintype σ] [DecidableEq σ] (d : ℕ) :
     ∃ n : ℝ, 0 ≤ n ∧ ∀ (P : MvPolynomial σ ℝ) (c : ℝ) (a b : σ → ℝ), P.totalDegree ≤ d →

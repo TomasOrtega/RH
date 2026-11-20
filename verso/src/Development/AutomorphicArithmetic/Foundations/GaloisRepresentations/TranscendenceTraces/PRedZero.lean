@@ -9,13 +9,13 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EtaleLocalPropertyC
 open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComplex.HomComplex GlobalTheory.EtC UpperTheory.Gal.TranscendenceTraces
 
 /- English proof (translation)
-Introduce `Q q _ _ hqQ i`. Take `⟨f, hf_nat, hf_gen⟩` from `GlobalTheory.EtC.RedExists.twRed_sec Q q hqQ i`. Use `⟨f, hf_nat, ?_⟩` and prove the remaining obligations. Introduce `U a`. Apply `(GlobalTheory.T.etaleSheafSections_ext_and_glue (ZMod q) _ U).1` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Use `GlobalTheory.T.etaleLocal_property_calculus_rules.2.1 U _ _ ((GlobalTheory.T.tateTwist_sections_locally_generated Q i).1 U a) ?_` and prove the remaining obligations. Introduce `V g h`. Rewrite using `[SemiMap.nat, ← map_res, ← map_res, hf_nat]`. Break down `h with h | ⟨ζ, c, h⟩` into its components or cases. Rewrite using `[h]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Sec.map, map_zero]`. Rewrite using `[h]`. Establish `key` using `GlobalTheory.T.tateTwistReductionResolutionMap_generator Q q hqQ i V ζ (GlobalTheory.EtC.RedExists.powPrim hqQ ζ) rfl`. Simplify using `only [GlobalTheory.EtC.resGen] at key`. Simplify using `only [Sec.map, map_nsmul, map_zsmul] at key ⊢`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[key, hf_gen V ζ (GlobalTheory.EtC.RedExists.powPrim hqQ ζ) rfl]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem UpperTheory.Gal.TranscendenceTraces.redZero_of :
     RedZero := by

@@ -9,9 +9,9 @@ open UpperTheory.V.TR (Rinf Lie chart infGL pInf sInf toL lmul oneL invSet CuspS
 open scoped SchwartzMap FourierTransform RealInnerProductSpace ContDiff Topology
 
 /- English proof (translation)
-Use `TR.ga_ext ?_ ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_mul, TR.pInf_finGL, mul_one, one_mul]`. Rewrite using `[map_mul, map_mul, GlobalTheory.CuspRep.pFin_finGL]`. Use `cmp_ext fun v => ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_mul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `h : v = w`. Substitute `h` using the available equality. Rewrite using `[hg, mul_one, one_mul]`. Establish `: cmp v (locGL E n w y) = 1` using `GlobalTheory.CuspRep.pLoc_locGL_of_ne h y`. Rewrite using `[this, mul_one, one_mul]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 private theorem comm_loc {E : Type} [Field E] [NumberField E] [IsTotallyReal E] {n : ℕ} (w : HeightOneSpectrum (𝓞 E))
     (g : GA E n) (hg : cmp w (GeneralLinearGroup.map (pFin E) g) = 1) (y : GL (Fin n) (w.adicCompletion E)) :
@@ -28,13 +28,13 @@ private theorem comm_loc {E : Type} [Field E] [NumberField E] [IsTotallyReal E] 
       rw [this, mul_one, one_mul]
 
 /- English proof (translation)
-Introduce `hA hZ hE E _ _ _ n S B W hW hS hK p hp h0`. Use `hA E n S (fun k => W (p * finGL E n k) = 0) (fun k hk => (hK p k hk).trans h0) ?_` and prove the remaining obligations. Introduce `w hw k _ hk hP y`. Establish `hc : cmp w (GeneralLinearGroup.map (pFin E) (p * finGL E n k)) = 1`. Rewrite using `[map_mul, map_mul, GlobalTheory.CuspRep.pFin_finGL, hp w hw, hk, mul_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨e1, e2, -, -⟩` from `hE E n 0`. Establish `hz` using `hZ E n w (psiL w) (hS w hw).1 (B w) _ ?_ ((hS w hw).2 (p * finGL E n k)) (by simpa using hP)`. Use `congrFun hz y` as an intermediate fact. Simplify `this` using `[mul_assoc]`. Introduce `ν hν g`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨a1, a2⟩` from `e1 w ν hν`. Take `⟨b1, b2⟩` from `e2 _ a1`. Use `hW _ b1 (p * finGL E n k * finGL E n (locGL E n w g))` as an intermediate fact. Rewrite `this` using `[b2, a2]`. Use `show W _ = _`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul, map_mul, ← mul_assoc, comm_loc w _ hc ν, mul_assoc, this]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Af.Smo.sphAll :
     UpperTheory.V.Af.Smo.AwayInd → UpperTheory.V.Af.Smo.SphZero → UpperTheory.V.Af.Smo.EmbY → UpperTheory.V.Af.Smo.SphAll := by

@@ -12,11 +12,11 @@ namespace GlobalTheory.KapLat
 open GlobalTheory.UnitLemma
 
 /- English proof (translation)
-Proceed by induction on `p using Polynomial.induction_on generalizing y with`. Consider the case `C a`. Rewrite using `[aeval_C, ← Algebra.smul_def, hs, Polynomial.map_C, aeval_C, Algebra.algebraMap_eq_smul_one]`. Use extensionality with `i`. Simplify using `[Matrix.mulVec, dotProduct, Matrix.one_apply]`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Consider the case `add p q hp hq`. Rewrite using `[map_add, add_mul, map_add, hp, hq, Polynomial.map_add, map_add, Matrix.add_mulVec]`. Consider the case `monomial k a h`. Establish `h1 : aeval u (C a * X ^ (k + 1)) = aeval u (C a * X ^ k) * u`. Rewrite using `[pow_succ, ← mul_assoc, Polynomial.aeval_mul, aeval_X]`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : aeval g ((C a * X ^ (k + 1)).map (e : K.E →+* L)) = aeval g ((C a * X ^ k).map (e : K.E →+* L)) * g`. Rewrite using `[pow_succ, ← mul_assoc, Polynomial.map_mul, Polynomial.map_X, Polynomial.aeval_mul, aeval_X]`. Rewrite using `[h1, h2, mul_assoc, h, hu, Matrix.mulVec_mulVec]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem model_aeval_mulVec {K : UQ} {L : Type} [Field L] (e : K.E ≃+* L) {B : InvAlg K} {n : ℕ}
     (ψ : B.A ≃+ (Fin n → L)) (hs : ∀ (c : K.E) (y : B.A), ψ (c • y) = e c • ψ y) (u : B.A)
@@ -37,9 +37,9 @@ theorem model_aeval_mulVec {K : UQ} {L : Type} [Field L] (e : K.E ≃+* L) {B : 
     rw [h1, h2, mul_assoc, h, hu, Matrix.mulVec_mulVec]
 
 /- English proof (translation)
-Unfold `InvAlg.herm`. Establish `hel : x * (show (B₁.prod B₂).A from (y, 0)) * (B₁.prod B₂).σ (show (B₁.prod B₂).A from (z, 0)) = (show (B₁.prod B₂).A from (x.1 * y * B₁.σ z, 0))`. Use `Prod.ext rfl ?_` and prove the remaining obligations. Use `show x.2 * 0 * B₂.σ 0 = 0`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hel]`. Conclude with `(Algebra.trace_prod_apply (R := K.E) ((x.1 * y * B₁.σ z, 0) : B₁.A × B₂.A)).trans (by simp)`.
+A detailed English derivation is pending.
 -/
 theorem prod_herm_fst {K : UQ} (B₁ B₂ : InvAlg K) (x : (B₁.prod B₂).A) (y z : B₁.A) :
     (B₁.prod B₂).herm x ((y, 0) : B₁.A × B₂.A) ((z, 0) : B₁.A × B₂.A) = B₁.herm x.1 y z := by
@@ -53,13 +53,13 @@ theorem prod_herm_fst {K : UQ} (B₁ B₂ : InvAlg K) (x : (B₁.prod B₂).A) (
   exact (Algebra.trace_prod_apply (R := K.E) ((x.1 * y * B₁.σ z, 0) : B₁.A × B₂.A)).trans (by simp)
 
 /- English proof (translation)
-Unfold `UQ.eta`. Distinguish the cases in `hg : g = 0`. Substitute `hg` using the available equality. Simplify using the standard rewrite rules. Establish `hval : ∀ a b : K.E, a ≠ 0 → b ≠ 0 → val K.O (a * b) = val K.O a + val K.O b`.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `a b ha hb`. Unfold `val`. Rewrite using `[Valuation.map_mul, WithZero.log_mul ((Valuation.ne_zero_iff _).2 ha) ((Valuation.ne_zero_iff _).2 hb)]`. Expand and normalize the polynomial expressions, which then agree. Establish `hcd : K.c d ≠ 0` using `by simpa using hd`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Rewrite using `[hval _ _ (mul_ne_zero hd hg) hcd, hval _ _ hd hg, UnramNorm.val_c]`. Establish `h2 : (-1 : ℂ) ^ (val K.O d + val K.O g + val K.O d) = (-1 : ℂ) ^ val K.O g`. Rewrite using `[show val K.O d + val K.O g + val K.O d = 2 * val K.O d + val K.O g by ring, zpow_add₀ (by norm_num : (-1 : ℂ) ≠ 0), _root_.zpow_mul]`. Evaluate the numerical expressions. Rewrite using `[h2]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Evaluate the numerical expressions. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Both sides reduce to the same expression.
+Move the embeddings inside the algebraic operations. Both sides reduce to the same expression.
 -/
 theorem neg_one_zpow_val_norm_mul (K : UQ) (d g : K.E) (hd : d ≠ 0) :
     (-1 : ℂ) ^ val K.O (d * g * K.c d) = ((K.eta g : ℚ) : ℂ) := by
@@ -88,55 +88,49 @@ namespace GlobalTheory.KapLat
 open GlobalTheory.UnitLemma
 
 /- English proof (translation)
-Introduce `E _ _ _ w hns K e hB n Q₁ Q₂ B₁ B₂ u₁ u₂ hsep hF₁ hF₂ x γ hM`. Take `⟨ψ, hs, hu, hh⟩` from `hM`. Take `⟨-, -, hval, -⟩` from `hB`. Use `set P₁ : K.E[X] := Q₁.map e.symm.toRingHom with hP₁`. Establish `hQ₁ : Q₁ = P₁.map (e : K.E →+* w.adicCompletion E)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hP₁, Polynomial.map_map]`. Use extensionality with `i`. Simplify using the standard rewrite rules. Establish `hunit : IsUnit (aeval u₂ P₁)`. Take `⟨a, b, hab⟩` from `hsep.isCoprime.map (Polynomial.mapRingHom e.symm.toRingHom)`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h` using `congrArg (aeval u₂) hab`. Simplify using `only [Polynomial.coe_mapRingHom, map_add, map_mul, map_one] at h`. Rewrite `h` using `[hF₂.2.1, mul_zero, add_zero]`. Conclude with `⟨⟨aeval u₂ P₁, aeval u₂ a, by rw [mul_comm]; exact h, h⟩, rfl⟩`. Establish `hker : ∀ y : (B₁.prod B₂).A, aeval γ.val Q₁ *ᵥ ψ y = 0 ↔ y.2 = 0`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `y`. Rewrite using `[hQ₁, ← model_aeval_mulVec e ψ hs _ γ.val hu P₁ y, AddEquiv.map_eq_zero_iff]`. Establish `hp1 : (aeval (show (B₁.prod B₂).A from (u₁, u₂)) P₁).1 = aeval u₁ P₁` using `(Polynomial.aeval_algHom_apply (AlgHom.fst K.E B₁.A B₂.A) ((u₁, u₂) : B₁.A × B₂.A) P₁).symm`. Establish `hp2 : (aeval (show (B₁.prod B₂).A from (u₁, u₂)) P₁).2 = aeval u₂ P₁` using `(Polynomial.aeval_algHom_apply (AlgHom.snd K.E B₁.A B₂.A) ((u₁, u₂) : B₁.A × B₂.A) P₁).symm`. Establish `h1 : (aeval (show (B₁.prod B₂).A from (u₁, u₂)) P₁ * y).2 = aeval u₂ P₁ * y.2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hp2]`. Both sides reduce to the same expression. Establish `h0 : (aeval (show (B₁.prod B₂).A from (u₁, u₂)) P₁ * y).1 = 0` using `by show (aeval (show (B₁.prod B₂).A from (u₁, u₂)) P₁).1 * y.1 = 0`. Rewrite using `[hp1, hF₁.2.1, zero_mul]`. Prove the components needed by the constructor for the conclusion.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Establish `h2` using `congrArg Prod.snd h`. Rewrite `h2` using `[h1]`. Conclude with `hunit.mul_right_eq_zero.mp h2`. Introduce `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Prod.ext h0 (by rw [h1, h, mul_zero]; rfl)`. Unfold `kapSign`. Rewrite using `[if_neg hns]`. Simplify using `only`. Use `set V₁ := LinearMap.ker (Matrix.toLin' (aeval γ.val Q₁)) with hV₁`.
+Simplify by unfolding definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 
-Use `set m := Module.finrank (w.adicCompletion E) V₁ with hm`. Use `set v := Module.finBasis (w.adicCompletion E) V₁ with hv`. Establish `hmem : ∀ y : (B₁.prod B₂).A, ψ y ∈ V₁ ↔ y.2 = 0` using `fun y => by`. Rewrite using `[hV₁, LinearMap.mem_ker, Matrix.toLin'_apply, hker]`. Set `ψ₁ : B₁.A →+ (Fin n → w.adicCompletion E)` to `AddMonoidHom.mk' (fun z => ψ (show (B₁.prod B₂).A from (z, 0))) (fun z z' => by`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← map_add]`. Use `congr 1`. Conclude with `Prod.ext rfl (show (0 : B₂.A) = 0 + 0 by simp))`. Establish `hψ₁ : ∀ z, ψ₁ z = ψ (show (B₁.prod B₂).A from (z, 0))` using `fun z => rfl`. Establish `hψ₁s : ∀ (c : K.E) z, ψ₁ (c • z) = e c • ψ₁ z`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression.
 
-Introduce `c z`. Rewrite using `[hψ₁, hψ₁, ← hs]`. Use `congr 1`. Conclude with `Prod.ext rfl (show (0 : B₂.A) = c • 0 by simp)`. Establish `hψ₁i : Function.Injective ψ₁`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `z z' hzz`. Rewrite `hzz` using `[hψ₁, hψ₁]`. Conclude with `congrArg Prod.fst (ψ.injective hzz)`. Set `a' : Fin m → B₁.A` to `fun i => (ψ.symm (v i : Fin n → w.adicCompletion E)).1`. Establish `hva : ∀ i, ψ₁ (a' i) = v i`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `i`. Establish `h2 : (ψ.symm (v i : Fin n → w.adicCompletion E)).2 = 0` using `(hmem _).1 (by rw [ψ.apply_symm_apply]; exact (v i).2)`. Establish `h3 : (show (B₁.prod B₂).A from (a' i, 0)) = ψ.symm (v i)` using `Prod.ext rfl h2.symm`. Rewrite using `[hψ₁, h3, ψ.apply_symm_apply]`. Establish `hsum : ∀ g : Fin m → K.E, ψ₁ (∑ i, g i • a' i) = ∑ i, e (g i) • (v i : Fin n → w.adicCompletion E)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Introduce `g`. Rewrite using `[map_sum]`. Simplify using `only [hψ₁s, hva]`. Establish `hli : LinearIndependent K.E a'`. Rewrite using `[Fintype.linearIndependent_iff]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce `g hg i`. Establish `h0 : ∑ j, e (g j) • v j = 0`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[Submodule.coe_sum]`. Simplify using `only [Submodule.coe_smul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← hsum g, hg, map_zero]`. Both sides reduce to the same expression. Use `Fintype.linearIndependent_iff.mp v.linearIndependent _ h0 i` as an intermediate fact. Simplify using `using this`. Establish `hsp : ⊤ ≤ Submodule.span K.E (Set.range a')`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `z _`. Establish `hz : ψ₁ z ∈ V₁` using `(hmem _).2 rfl`. Establish `hrep` using `congrArg Subtype.val (v.sum_repr ⟨ψ₁ z, hz⟩)`. Rewrite `hrep` using `[Submodule.coe_sum]`. Simplify using `only [Submodule.coe_smul] at hrep`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hz' : z = ∑ i, e.symm (v.repr ⟨ψ₁ z, hz⟩ i) • a' i`. Apply `hψ₁i` to reduce the goal to its premises. Rewrite using `[hsum]`. Simplify using `only [RingEquiv.apply_symm_apply]`. Conclude with `hrep.symm`.
+Introduce a local definition for the expression. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[hz']`. Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`. Set `hb : Module.Basis (Fin m) K.E B₁.A` to `Module.Basis.mk hli hsp`. Establish `hbapp : ⇑hb = a'` using `funext fun i => Module.Basis.mk_apply hli hsp i`. Establish `hdm : Module.finrank K.E B₁.A = m`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite using `[Module.finrank_eq_card_basis hb, Fintype.card_fin]`. Set `bm` to `(Module.finBasis K.E B₁.A).reindex (finCongr hdm)`. Establish `hgram : B₁.gramDet x.1 = (Matrix.of fun i j => B₁.herm x.1 (bm i) (bm j)).det`. Unfold `InvAlg.gramDet`. Rewrite using `[← Matrix.det_reindex_self (finCongr hdm)]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `congr 1`. Use extensionality with `i j`. Simplify using `[bm, Module.Basis.reindex_apply, Matrix.reindex_apply, Matrix.submatrix_apply]`. Establish `hdetM : IsUnit (bm.toMatrix a').det`. Establish `h` using `bm.isUnit_det hb`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `h` using `[Module.Basis.det_apply, hbapp]`. Then use the resulting hypothesis. Establish `hGa` using `GlobalTheory.GramChange.gram_of_sum K B₁ K.E (RingEquiv.refl K.E) (K.c : K.E →+* K.E) (fun _ => rfl) x.1 bm a' (bm.toMatrix a') (fun j => (bm.sum_toMatrix_smul_self a' j).symm)`. Establish `e1 : (bm.toMatrix a').map (RingEquiv.refl K.E) = bm.toMatrix a'` using `Matrix.ext fun _ _ => rfl`. Rewrite `hGa` using `[e1]`. Establish `e2 : ((bm.toMatrix a').map (K.c : K.E →+* K.E)).det = K.c (bm.toMatrix a').det` using `(RingHom.map_det (K.c : K.E →+* K.E) (bm.toMatrix a')).symm`.
+Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Establish `hdetG : (Matrix.of fun i j => B₁.herm x.1 (a' i) (a' j)).det = (bm.toMatrix a').det * B₁.gramDet x.1 * K.c (bm.toMatrix a').det`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.det_mul, Matrix.det_mul, Matrix.det_transpose, e2, hgram]`. Both sides reduce to the same expression. Establish `hK : (Matrix.of fun i j => ∑ k, cj w ((v i : Fin n → w.adicCompletion E) k) * (v j : Fin n → w.adicCompletion E) k) = (Matrix.of fun i j => e (B₁.herm x.1 (a' i) (a' j)))ᵀ`.
-
-Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Simplify using `only [Matrix.of_apply, Matrix.transpose_apply]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hva, hva]`. Unfold `stdH`.
-
-Conclude with `Finset.sum_congr rfl fun k _ => mul_comm _ _`. Use `_ = e ((B₁.prod B₂).herm x (show (B₁.prod B₂).A from (a' j, 0)) (show (B₁.prod B₂).A from (a' i, 0))) := hh _ _`. Use `_ = e (B₁.herm x.1 (a' j) (a' i)) := congrArg e (prod_herm_fst B₁ B₂ x _ _)`. Establish `hdetE : (Matrix.of fun i j => e (B₁.herm x.1 (a' i) (a' j))).det = e (Matrix.of fun i j => B₁.herm x.1 (a' i) (a' j)).det`. Conclude with `(RingHom.map_det (e : K.E →+* w.adicCompletion E) _).symm`.
-
-Rewrite using `[hK, Matrix.det_transpose, hdetE, ← hval, hdetG]`. Conclude with `neg_one_zpow_val_norm_mul K _ _ hdetM.ne_zero`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kapSign_eq_eta_gramDet : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (w : Pl E), ¬ IsSplitAt w → ∀ (K : GlobalTheory.UnitLemma.UQ) (e : K.E ≃+* w.adicCompletion E), Bridge w K e → ∀ (n : ℕ) (Q₁ Q₂ : (w.adicCompletion E)[X]) (B₁ B₂ : GlobalTheory.UnitLemma.InvAlg K) (u₁ : B₁.A) (u₂ : B₂.A), (Q₁ * Q₂).Separable → Fits w e B₁ Q₁ u₁ → Fits w e B₂ Q₂ u₂ → ∀ (x : (B₁.prod B₂).A) (γ : GLw n w), IsModel w e (B₁.prod B₂) ((u₁, u₂) : B₁.A × B₂.A) x γ → kapSign n w Q₁ γ = ((K.eta (B₁.gramDet x.1) : ℚ) : ℂ) := by
   intro E _ _ _ w hns K e hB n Q₁ Q₂ B₁ B₂ u₁ u₂ hsep hF₁ hF₂ x γ hM

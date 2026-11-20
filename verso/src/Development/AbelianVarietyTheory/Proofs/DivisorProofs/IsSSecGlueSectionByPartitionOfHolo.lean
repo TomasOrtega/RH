@@ -9,19 +9,19 @@ open scoped ENNReal ContDiff
 namespace GlobalTheory.OTY
 
 /- English proof (translation)
-Introduce `n Y _ _ _ _ _ ι La _ A C la u hu`. Use `⟨fun i => ?_, fun i j y hi hj => ?_⟩` and prove the remaining obligations. Establish `key : ∀ a, ContDiffOn ℝ ∞ (fun v => (C.chi a ((A.chart i).symm v) : ℂ) * A.g (A.kap + la) i (C.idx a) ((A.chart i).symm v) * u a (A.chart (C.idx a) ((A.chart i).symm v))) (A.chart i).target`. Introduce `a v hv`. Apply `ContDiffAt.contDiffWithinAt` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Distinguish the cases in `hy : (A.chart i).symm v ∈ tsupport (C.chi a)`. Establish `hs` using `C.supp a hy`. Establish `hovo : IsOpen (ovl A.chart i (C.idx a))` using `(A.chart i).isOpen_inter_preimage_symm (A.chart (C.idx a)).open_source`. Establish `hvov : v ∈ ovl A.chart i (C.idx a)` using `⟨hv, hs.1⟩`. Establish `hUo : IsOpen (ovl A.chart i (C.idx a) ∩ (A.chart (C.idx a) ∘ (A.chart i).symm) ⁻¹' ball (C.c a) (C.r a))` using `(A.holo_trans i (C.idx a)).continuousOn.isOpen_inter_preimage hovo isOpen_ball`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hvU : v ∈ ovl A.chart i (C.idx a) ∩ (A.chart (C.idx a) ∘ (A.chart i).symm) ⁻¹' ball (C.c a) (C.r a)` using `⟨hvov, hs.2⟩`. Establish `h1 : ContDiffAt ℝ ∞ (C.chi a ∘ (A.chart i).symm) v` using `(C.smooth a i).contDiffAt ((A.chart i).open_target.mem_nhds hv)`. Establish `h1' : ContDiffAt ℝ ∞ (fun v => (C.chi a ((A.chart i).symm v) : ℂ)) v` using `Complex.ofRealCLM.contDiff.contDiffAt.comp v h1`. Establish `h2 : ContDiffAt ℝ ∞ (A.g (A.kap + la) i (C.idx a) ∘ (A.chart i).symm) v` using `hyq_contDiffAt_of_holo hovo (A.holo_g _ _ _) hvov`. Establish `h3 : ContDiffAt ℝ ∞ (u a ∘ (A.chart (C.idx a) ∘ (A.chart i).symm)) v` using `hyq_contDiffAt_of_holo hUo ((hu a).comp ((A.holo_trans i (C.idx a)).mono Set.inter_subset_left) (fun w hw => hw.2)) hvU`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(h1'.mul h2).mul h3`. Establish `hn : (tsupport (C.chi a))ᶜ ∈ 𝓝 ((A.chart i).symm v)` using `(isClosed_tsupport _).isOpen_compl.mem_nhds hy`. Establish `h2 : ∀ᶠ w in 𝓝 v, (A.chart i).symm w ∉ tsupport (C.chi a)` using `((A.chart i).continuousAt_symm hv).preimage_mem_nhds hn`. Use `(contDiffAt_const (c := (0 : ℂ))).congr_of_eventuallyEq ?_` and prove the remaining obligations. Use `filter_upwards [h2] with w hw`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[image_eq_zero_of_notMem_tsupport hw]`. Establish `he : (glue C la u i ∘ (A.chart i).symm) = fun v => ∑ a, (C.chi a ((A.chart i).symm v) : ℂ) * A.g (A.kap + la) i (C.idx a) ((A.chart i).symm v) * u a (A.chart (C.idx a) ((A.chart i).symm v))`. Use function extensionality and compare the values at `v`. Simplify using `[glue]`. Rewrite using `[he]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `ContDiffOn.sum fun a _ => key a`. Simplify using `only [glue]`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Distinguish the cases in `h : C.chi a y = 0`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[h]`. Establish `hk` using `(C.supp a (subset_tsupport _ h)).1`. Rewrite using `[A.g_cocycle (A.kap + la) i j (C.idx a) y hi hj hk]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem glue_isSSec_of_holo : ∀ (n : ℕ) (Y : Type) [TopologicalSpace Y] [T2Space Y]
     [SecondCountableTopology Y] [MeasurableSpace Y] [BorelSpace Y] (ι La : Type)

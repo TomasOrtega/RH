@@ -17,15 +17,15 @@ variable {S : Type} [CommRing S]
 abbrev fam1 {τ : Type} {d : ℕ} (χ : Fin d → MvPowerSeries τ S) : Fin 1 × Fin d → MvPowerSeries τ S := fun p => χ p.2
 
 /- English proof (translation)
-The claim follows from `hasSubst0 fun p => h p.2`.
+A detailed English derivation is pending.
 -/
 theorem has_subst_family_of_const {τ : Type} {d : ℕ} {χ : Fin d → MvPowerSeries τ S} (h : ∀ j, constantCoeff (χ j) = 0) :
     HasSubst (fam1 χ) := hasSubst0 fun p => h p.2
 
 /- English proof (translation)
-Unfold `ev`. Use `congr 1`. Use function extensionality and compare the values at `p`. Break down `p with ⟨i, j⟩` into its components or cases. Use `fin_cases i`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Separate the alternatives or extract the components of the hypothesis. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem eval_single_eq_subst {n d : ℕ} (χ : Pt S n d) (g : PS S 1 d) : ev (n := n) ![χ] g = subst (fam1 χ) g := by
   unfold ev
@@ -36,7 +36,7 @@ theorem eval_single_eq_subst {n d : ℕ} (χ : Pt S n d) (g : PS S 1 d) : ev (n 
   rfl
 
 /- English proof (translation)
-The claim follows from `subst_comp_subst_apply (has_subst_family_of_const hψ) (has_subst_family_of_const hχ) g`.
+A detailed English derivation is pending.
 -/
 theorem subst_family_comp {τ : Type} {d : ℕ} {χ : Fin d → MvPowerSeries τ S} {ψ : Pt S 1 d}
     (hχ : ∀ j, constantCoeff (χ j) = 0) (hψ : ∀ j, constantCoeff (ψ j) = 0) (g : PS S 1 d) :
@@ -46,15 +46,13 @@ theorem subst_family_comp {τ : Type} {d : ℕ} {χ : Fin d → MvPowerSeries τ
 open Formalism.FG.SolveVAux in
 
 /- English proof (translation)
-Establish `hs : HasSubst a` using `hasSubst_of_constantCoeff_zero ha`. Establish `hlow : ∀ s, Low 1 (a s)` using `fun s => (low_one_iff _).2 (ha s)`. Rewrite using `[coeff_subst hs, finsum_eq_sum_of_support_subset _ (s := Finset.univ.image (fun s : σ => Finsupp.single s 1))]`. Rewrite using `[Finset.sum_image (fun p _ q _ h => Finsupp.single_left_injective one_ne_zero h)]`. Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Finsupp.prod_single_index (h := fun (s : σ) (e : ℕ) => a s ^ e) (pow_zero _), pow_one, smul_eq_mul]`. Introduce `e he`. Rewrite `he` using `[Function.mem_support]`. Assume the negation of the conclusion as `hne`. Apply `he` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hz : coeff (Finsupp.single t 1) (e.prod fun s n => a s ^ n) = 0`. Break down `Nat.lt_or_ge e.degree 2 with hd | hd` into its components or cases. Break down `Nat.lt_or_ge e.degree 1 with hd1 | hd1` into its components or cases. Establish `he0 : e = 0`. Establish `: e.degree = 0` using `by omega`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(Finsupp.degree_eq_zero_iff e).1 this`. Rewrite using `[he0, Finsupp.prod_zero_index, coeff_one, if_neg]`. Conclude with `Finsupp.single_ne_zero.2 one_ne_zero`. Take `⟨p, rfl⟩` from `degree_eq_one e (by omega)`. Conclude with `absurd (Finset.mem_coe.2 (Finset.mem_image_of_mem _ (Finset.mem_univ p))) hne`.
-
-Establish `hl` using `low_P hlow e`. Conclude with `hl _ (by rw [Finsupp.degree_single]; omega)`. Rewrite using `[hz, smul_zero]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coeff_single_subst {σ τ : Type} [Fintype σ] [DecidableEq σ] [DecidableEq τ]
     (a : σ → MvPowerSeries τ S) (ha : ∀ s, constantCoeff (a s) = 0) (f : MvPowerSeries σ S) (t : τ) :
@@ -88,15 +86,13 @@ theorem coeff_single_subst {σ τ : Type} [Fintype σ] [DecidableEq σ] [Decidab
 open Formalism.FG.SolveVAux in
 
 /- English proof (translation)
-Use extensionality with `n`. Rewrite using `[map_sum]`. Distinguish the cases in `hn : n.degree = 1`. Take `⟨⟨i, q⟩, rfl⟩` from `degree_eq_one n hn fin_cases i`. Rewrite using `[Finset.sum_eq_single q]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[coeff_X]`. Introduce `b _ hb`. Rewrite using `[coeff_C_mul, coeff_X, if_neg, mul_zero]`. Introduce `e`. Apply `hb` to reduce the goal to its premises.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Use `Finsupp.single_left_injective one_ne_zero e` as an intermediate fact. Simplify using `only [Prod.mk.injEq] at this`. Conclude with `this.2.symm`. Simplify using the standard rewrite rules. Rewrite using `[h n hn]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation.
 
-Use `symm`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `q _`. Rewrite using `[coeff_C_mul, coeff_X, if_neg, mul_zero]`. Introduce and unpack `rfl`.
-
-Conclude with `hn (by simp [Finsupp.degree_single])`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem eq_linear {N : ℕ} (g : MvPowerSeries (Fin 1 × Fin N) S)
     (h : ∀ n : Fin 1 × Fin N →₀ ℕ, n.degree ≠ 1 → coeff n g = 0) :
@@ -133,53 +129,47 @@ open MvPowerSeries ReciprocityTheory.ChartRestriction.G.Geo.Tor.Germ Reciprocity
 open NumberField ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo.Tor Formalism.L2.Pj
 
 /- English proof (translation)
-Take `⟨ℓ, hℓ0, hℓ1, hℓadd⟩` from `LogPf.logSt S d B.G`. Take `⟨ε, hinv, -⟩` from `formal_exp_law S d B.G ℓ hℓ0 hℓ1 hℓadd`. Establish `hφ0` using `hφ.const`. Establish `hA0 : ∀ i, constantCoeff (B.A.act a i) = 0` using `B.A.const a`. Establish `hF0 : ∀ i, constantCoeff (B.G.F i) = 0` using `B.G.const`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set w : Fin (dL Dw) → Fin d → S := fun q i => uvec ((ltIdx Dw).symm q) i with hw`. Establish `hlin : ∀ q i, coeff (Finsupp.single ((0 : Fin 1), q) 1) (φ i) = w q i`. Introduce `q i`. Use `hφ.lin ((ltIdx Dw).symm q) i` as an intermediate fact. Simplify `this` using `[w]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hGF : B.G.add (pt S (n` using `2) d 0) (pt S (n := 2) d 1) = B.G.F := by`. Use function extensionality and compare the values at `i`. Use `show ev (n := 2) ![pt S d 0, pt S d 1] (B.G.F i) = B.G.F i`. Unfold `ev`. Establish `: (fun p : Fin 2 × Fin d => (![pt S d 0, pt S d 1] : Fin 2 → Pt S 2 d) p.1 p.2) = X`.
+Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `funext p; rcases p with ⟨b, i⟩; fin_cases b <;> rfl`. Rewrite using `[this, subst_self]`. Both sides reduce to the same expression. Establish `hBs : HasSubst (fun r : Fin 1 × Fin (dL Dw) => (X ((0 : Fin 2), r.2) + X ((1 : Fin 2), r.2) : MvPowerSeries (Fin 2 × Fin (dL Dw)) S))` using `hasSubst0 fun r => by simp`. Establish `hA2 : HasSubst (fun p : Fin 2 × Fin d => subst (cpy (S` using `S) p.1) (φ p.2)) := hasSubst0 fun p => constantCoeff_subst_eq_zero (hasSubst_cpy _) (fun r => by simp [cpy]) (hφ0 p.2)`.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hadd : ∀ i, ev (n` using `2) ![pt S (dL Dw) 0 + pt S (dL Dw) 1] (subst (fam1 φ) (ℓ i)) = ev (n := 2) ![pt S (dL Dw) 0] (subst (fam1 φ) (ℓ i)) + ev (n := 2) ![pt S (dL Dw) 1] (subst (fam1 φ) (ℓ i)) := by`. Introduce `i`. Rewrite using `[eval_single_eq_subst, eval_single_eq_subst, eval_single_eq_subst]`. Establish `hl : subst (fam1 B.G.F) (ℓ i) =`. Substitute `(fam1 (pt S (n := 2) d 0)) (ℓ i) + subst (fam1 (pt S (n := 2) d 1)) (ℓ i) := by` using the available equality.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `congrFun hℓadd i` as an intermediate fact. Simplify using `only [comp1, Pi.add_apply, eval_single_eq_subst, hGF] at this`. Conclude with `this`. Establish `e1 : subst (fam1 (pt S (dL Dw) 0 + pt S (dL Dw) 1)) (subst (fam1 φ) (ℓ i)) =`. Substitute `(fun p : Fin 2 × Fin d => subst (cpy (S := S) p.1) (φ p.2)) (subst (fam1 B.G.F) (ℓ i)) := by` using the available equality.
+Establish an intermediate fact. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[subst_comp_subst_apply (has_subst_family_of_const hφ0) (hasSubst0 fun r => by simp [pt]), subst_comp_subst_apply (has_subst_family_of_const hF0) hA2]`. Use `congr 1`. Use function extensionality and compare the values at `p`. Conclude with `(hφ.hom p.2).symm`. Rewrite using `[e1, hl, subst_add hA2, subst_comp_subst_apply (has_subst_family_of_const (fun j => by simp [pt])) hA2, subst_comp_subst_apply (has_subst_family_of_const (fun j => by simp [pt])) hA2, subst_comp_subst_apply (has_subst_family_of_const hφ0) (hasSubst0 fun r => by simp [pt]), subst_ …`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Apply the tactic sequence `congr 1 <;> congr 1 <;> funext p <;> (simp only [pt, fam1, subst_X hA2]; rfl)`. Establish `hlam : ∀ i, subst (fam1 φ) (ℓ i) = ∑ q, C (w q i) * X ((0 : Fin 1), q)`. Introduce `i`. Establish `h1` using `addition_linear S (dL Dw) (subst (fam1 φ) (ℓ i)) (hadd i)`. Rewrite using `[eq_linear _ h1]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `q _`. Use `congr 2`. Rewrite using `[coeff_single_subst (fam1 φ) (fun p => hφ0 p.2) (ℓ i) ((0 : Fin 1), q), Fintype.sum_prod_type, Fin.sum_univ_one]`. Establish `hd : ∀ k, coeff (Finsupp.single ((0 : Fin 1), k) 1) (ℓ i) = (1 : Matrix (Fin d) (Fin d) S) i k`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Simplify using the standard rewrite rules.
 
-Introduce `k`. Rewrite using `[← hℓ1]`. Both sides reduce to the same expression. Simplify using `only [fam1, hlin, hd, Matrix.one_apply, ite_mul, one_mul, zero_mul, Finset.sum_ite_eq, Finset.mem_univ, if_true]`. Establish `hε0 : ∀ i, constantCoeff (ε i) = 0` using `hinv.1`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hεℓ : ∀ k, subst (fam1 ℓ) (ε k) = X ((0 : Fin 1), k)`. Introduce `k`. Use `congrFun hinv.2.2.1 k` as an intermediate fact. Simplify `this` using `[comp1, eval_single_eq_subst, pt]`. Establish `hact` using `action_linear S d O B ℓ ε hℓ0 hℓ1 hℓadd hinv a`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hcε : ∀ k, constantCoeff (subst (fam1 ε) (B.A.act a k)) = 0` using `fun k => by`. Rewrite using `[const_subst0 (a := fam1 ε) (fun p => hε0 p.2)]`. Conclude with `hA0 k`. Establish `hℓA : ∀ i, subst (fam1 (B.A.act a)) (ℓ i) = ∑ k, C (dLin (B.A.act a) i k) * ℓ k`. Introduce `i`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hAk : ∀ k, B.A.act a k = subst (fam1 ℓ) (subst (fam1 ε) (B.A.act a k))`. Introduce `k`. Rewrite using `[subst_family_comp hℓ0 hε0]`. Establish `h2 : (fam1 fun j => subst (fam1 ℓ) (ε j)) = (X : Fin 1 × Fin d → PS S 1 d)`. Use function extensionality and compare the values at `p`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Break down `p with ⟨i, j⟩` into its components or cases. Use `fin_cases i`. Conclude with `hεℓ j`. Rewrite using `[h2, subst_self]`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hi` using `hact i`. Establish `hcomp : comp1 (B.A.act a) ε = fun k => subst (fam1 ε) (B.A.act a k)`. Use function extensionality and compare the values at `k`. Conclude with `eval_single_eq_subst _ _`. Rewrite `hi` using `[comp1, eval_single_eq_subst, hcomp]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Use `congr 1`. Use function extensionality and compare the values at `p`. Conclude with `hAk p.2`. Use `_ = subst (fam1 ℓ) (subst (fam1 fun k => subst (fam1 ε) (B.A.act a k)) (ℓ i)) := (subst_family_comp hℓ0 hcε _).symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `_ = subst (fam1 ℓ) (∑ k, C (dLin (B.A.act a) i k) * X ((0 : Fin 1), k)) := by rw [hi]`. Use `_ = ∑ k, C (dLin (B.A.act a) i k) * ℓ k := by`. Rewrite using `[subst_sum' (has_subst_family_of_const hℓ0)]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `k _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[subst_mul (has_subst_family_of_const hℓ0), subst_C, subst_X (has_subst_family_of_const hℓ0)]`. Use `set D : Fin 1 × Fin (dL Dw) → MvPowerSeries (Fin 1 × Fin (dL Dw)) S := fun q => cA ((ltIdx Dw).symm q.2) • (X q : MvPowerSeries (Fin 1 × Fin (dL Dw)) S) with hDdef`. Establish `hD : HasSubst D` using `hasSubst0 fun q => by simp [D]`. Establish `hP0 : ∀ k, constantCoeff (subst (fam1 φ) (B.A.act a k)) = 0` using `fun k => by`. Rewrite using `[const_subst0 (a := fam1 φ) (fun p => hφ0 p.2)]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Conclude with `hA0 k`. Establish `hQ0 : ∀ k, constantCoeff (subst D (φ k)) = 0` using `fun k => constantCoeff_subst_eq_zero hD (fun q => by simp [D]) (hφ0 k)`. Establish `hLP : ∀ i, subst (fam1 fun k => subst (fam1 φ) (B.A.act a k)) (ℓ i) = ∑ q, C (cA ((ltIdx Dw).symm q) * w q i) * X ((0 : Fin 1), q)`. Introduce `i`. Rewrite using `[← subst_family_comp hφ0 hA0, hℓA i, subst_sum' (has_subst_family_of_const hφ0)]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Repeatedly rewrite using `[subst_mul (has_subst_family_of_const hφ0), subst_C, hlam, Finset.mul_sum, ← mul_assoc, ← map_mul]`. Rewrite using `[Finset.sum_comm]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `q _`. Rewrite using `[← Finset.sum_mul, ← map_sum]`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `congr 2`. Use `hE ((ltIdx Dw).symm q) i` as an intermediate fact. Simplify `this` using `[w]`. Establish `hLQ : ∀ i, subst (fam1 fun k => subst D (φ k)) (ℓ i) = ∑ q, C (cA ((ltIdx Dw).symm q) * w q i) * X ((0 : Fin 1), q)`. Introduce `i`.
-
-Rewrite using `[show (fam1 fun k => subst D (φ k)) = fun s => subst D (fam1 φ s) from rfl, ← subst_comp_subst_apply (has_subst_family_of_const hφ0) hD, hlam i, subst_sum' hD]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `q _`. Rewrite using `[subst_mul hD, subst_C, subst_X hD]`. Simplify using `only [D, smul_eq_C_mul, map_mul]`.
-
-Expand and normalize the polynomial expressions, which then agree. Establish `hX : ∀ (P : Fin d → MvPowerSeries (Fin 1 × Fin (dL Dw)) S), (∀ k, constantCoeff (P k) = 0) → P j = subst (fam1 fun i => subst (fam1 P) (ℓ i)) (ε j)`. Introduce `P hP`. Rewrite using `[← subst_family_comp hP hℓ0, hεℓ j, subst_X (has_subst_family_of_const hP)]`. Rewrite using `[hX _ hP0, hX _ hQ0]`.
-
-Use `congr 1`. Use function extensionality and compare the values at `p`. Conclude with `(hLP p.2).trans (hLQ p.2).symm`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem expAct_core {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {S : Type}
     [CommRing S] [Algebra ℚ S] {d : ℕ} {O : Type} [CommRing O] [StarRing O] (B : FB S d O) (uvec : Lt1 Dw → Fin d → S)
@@ -320,7 +310,7 @@ theorem expAct_core {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host
   exact (hLP p.2).trans (hLQ p.2).symm
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c _ S _ _ _ y C φ hφ a j`. Conclude with `expAct_core C.B C.uvec φ hφ a (fun ℓ => algebraMap c.F S (embK c ℓ.1 a)) (fun ℓ i => hE E H Dw l Xo c S y C a ℓ i) j`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem expActOf_of_eig (hE : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H)
     (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) [StarRing (𝓞 E)] (S : Type) [CommRing S] [Algebra c.F S]

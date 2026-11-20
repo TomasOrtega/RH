@@ -22,9 +22,7 @@ namespace GlobalTheory.GKPair
 variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a : ℕ}
 
 /- English proof (translation)
-Establish `e : (B.map (·⁻¹)).map star = (B.map star).map (·⁻¹)`. Rewrite using `[Multiset.map_map, Multiset.map_map]`. Use `Multiset.map_congr rfl fun u _ => ?_` and prove the remaining obligations. Conclude with `Units.ext (by simp)`. Rewrite using `[e, h, Multiset.map_map]`.
-
-Use `conv_rhs => rw [← Multiset.map_id B]`. Conclude with `Multiset.map_congr rfl fun u _ => inv_inv u`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_inv_map_star {B : Multiset ℂˣ} (h : B.map star = B.map (·⁻¹)) : (B.map (·⁻¹)).map star = B := by
   have e : (B.map (·⁻¹)).map star = (B.map star).map (·⁻¹) := by
@@ -36,13 +34,11 @@ theorem map_inv_map_star {B : Multiset ℂˣ} (h : B.map star = B.map (·⁻¹))
   exact Multiset.map_congr rfl fun u _ => inv_inv u
 
 /- English proof (translation)
-Set `B : π.V →ₗ[ℂ] π.V →ₗ[ℂ] ℂ` to `(H.comp L.toLinearMap).flip`. Establish `hB : ∀ φ ψ, B φ ψ = H (L ψ) φ` using `fun _ _ => rfl`. Establish `h0 : ∀ φ, H φ φ = 0 → φ = 0` using `fun φ h => by`. Assume the negation of the conclusion as `hφ`. Use `hpos φ hφ` as an intermediate fact.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Rewrite `this` using `[h, Complex.zero_re]`. Conclude with `lt_irrefl _ this`. Use `⟨B, fun φ h => h0 φ ?_, fun ψ h => ?_, fun k φ ψ => ?_, fun k φ ψ => ?_, fun X φ ψ => ?_⟩` and prove the remaining obligations. Use `h (L.symm φ)` as an intermediate fact. Rewrite `this` using `[hB, LinearEquiv.apply_symm_apply]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Use `h (L ψ)` as an intermediate fact. Rewrite `this` using `[hB]`. Conclude with `(map_eq_zero_iff L L.injective).1 (h0 _ this)`. Rewrite using `[hB, hB, hL, hfin]`. Rewrite using `[hB, hB, hL, hcpt]`.
-
-Rewrite using `[hB, hB, hL, add_comm]`. Conclude with `hlie X (L ψ) φ`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem paired_of_form (π : CuspSub E a) (L : π.V ≃ₗ⋆[ℂ] π.V)
     (hL : ∀ o ψ, L (π.op (invTOp o) ψ) = π.op o (L ψ)) (H : π.V →ₗ⋆[ℂ] π.V →ₗ[ℂ] ℂ)
@@ -70,11 +66,11 @@ theorem paired_of_form (π : CuspSub E a) (L : π.V ≃ₗ⋆[ℂ] π.V)
     exact hlie X (L ψ) φ
 
 /- English proof (translation)
-Take `⟨H, hH, hpos, hfin, hcpt, hlie⟩` from `GlobalTheory.T.exists_invariant_hermitianForm_cuspidalRep hB E a π hπ`. Take `⟨π₂, J, hJ⟩` from `GlobalTheory.T.exists_complex_conjugate_cuspidal_representation E a (UpperTheory.V.TC.dual π)`. Establish `hsat : ∀ᶠ w : HeightOneSpectrum (𝓞 E) in Filter.cofinite, ∃ B, (CG.mk π₂).HasSat w B ∧ (CG.mk π).HasSat w B`. Use `(GlobalTheory.T.cuspidal_GL_local_components_eventually_satake hA E a π).mono fun w ⟨B, hBw⟩ => ⟨B, ?_, hBw⟩` and prove the remaining obligations. Establish `h1` using `UpperTheory.V.TC.hasSatGL_dual hBw`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h2` using `GlobalTheory.T.satake_parameter_GL_of_conj_linear_intertwiner E w a _ _ ((UpperTheory.V.TC.dual π).locRep w) (π₂.locRep w) J (fun g x => by rw [CuspSub.locRep_eq, CuspSub.locRep_eq, hJ]) _ h1`. Establish `h3` using `GlobalTheory.T.unitary_cuspidal_satake_parameter_star_eq_inv E a π H hH hpos hfin w B hBw`. Rewrite `h2` using `[map_inv_map_star h3]`. Conclude with `h2`. Establish `e` using `hJS.strong_multiplicity_one ha (CG.mk π₂) (CG.mk π) hsat`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨T, hT⟩ : CuspSub.Iso π₂ π` from `Quotient.exact e`. Set `L : π.V ≃ₗ⋆[ℂ] π.V` to `((UpperTheory.V.TC.toDual π).trans J).trans T`. Use `paired_of_form π L (fun o ψ => ?_) H hpos hfin hcpt hlie` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `T (J (UpperTheory.V.TC.toDual π (π.op (invTOp o) ψ))) = π.op o (T (J (UpperTheory.V.TC.toDual π ψ)))`. Rewrite using `[← UpperTheory.V.TC.op_toDual, hJ, hT]`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem paired_invTOp (hJS : GlobalTheory.Published.JacquetShalikaRigidity) (hB : GlobalTheory.Published.CuspFormsBoundedGL)
     (hA : GlobalTheory.Published.AutomorphicFormsFiniteGL) (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ)

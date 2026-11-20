@@ -13,7 +13,7 @@ namespace GlobalTheory.Katz.SubstCalc
 variable {R : Type} [CommRing R]
 
 /- English proof (translation)
-Establish `hs : HasSubst a` using `hasSubst_of_constantCoeff_zero ha`. Establish `h1 : f = (f - C (constantCoeff f)) + C (constantCoeff f)` using `by ring`. Use `conv_lhs => rw [h1]`. Rewrite using `[subst_add hs, map_add, constantCoeff_subst_eq_zero hs ha (by simp), subst_C, zero_add]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem constantCoeff_subst_of_zero {σ τ : Type} [Finite σ] {a : σ → MvPowerSeries τ R}
     (ha : ∀ i, constantCoeff (a i) = 0) (f : MvPowerSeries σ R) :
@@ -25,7 +25,7 @@ theorem constantCoeff_subst_of_zero {σ τ : Type} [Finite σ] {a : σ → MvPow
   simp
 
 /- English proof (translation)
-The claim follows from `hasSubst_of_constantCoeff_zero fun s => by cases s <;> simp [hu, hv]`.
+A detailed English derivation is pending.
 -/
 theorem hasSubst_elim {d : ℕ} {τ : Type} {u v : Fin d → MvPowerSeries τ R}
     (hu : ∀ i, constantCoeff (u i) = 0) (hv : ∀ i, constantCoeff (v i) = 0) :
@@ -33,7 +33,7 @@ theorem hasSubst_elim {d : ℕ} {τ : Type} {u v : Fin d → MvPowerSeries τ R}
   hasSubst_of_constantCoeff_zero fun s => by cases s <;> simp [hu, hv]
 
 /- English proof (translation)
-Unfold `at2`. Rewrite using `[subst_comp_subst_apply (hasSubst_elim hu hv) (hasSubst_of_constantCoeff_zero ha)]`. Use `congr 1`. Use function extensionality and compare the values at `s`. Apply the tactic sequence `cases s <;> rfl`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem subst_powerSeriesEvalTwoGroups {d : ℕ} {τ τ' : Type} [Finite τ] {u v : Fin d → MvPowerSeries τ R}
     (hu : ∀ i, constantCoeff (u i) = 0) (hv : ∀ i, constantCoeff (v i) = 0)
@@ -47,39 +47,37 @@ theorem subst_powerSeriesEvalTwoGroups {d : ℕ} {τ τ' : Type} [Finite τ] {u 
   cases s <;> rfl
 
 /- English proof (translation)
-Introduce `R _ d τ τ' _ u v hu hv`. Establish `hs` using `hasSubst_elim hu hv`. Establish `hX : HasSubst (fun i : Fin d => (X (Sum.inl i) : MvPowerSeries (Fin d ⊕ Fin d) R))` using `hasSubst_of_constantCoeff_zero fun _ => constantCoeff_X _`. Establish `hY : HasSubst (fun i : Fin d => (X (Sum.inr i) : MvPowerSeries (Fin d ⊕ Fin d) R))` using `hasSubst_of_constantCoeff_zero fun _ => constantCoeff_X _`. Use `⟨?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `f`. Unfold `at2 inL`. Rewrite using `[subst_comp_subst_apply hX hs]`. Use `congr 1`. Use function extensionality and compare the values at `i`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[subst_X hs]`. Both sides reduce to the same expression. Introduce `f`. Unfold `at2 inR`. Rewrite using `[subst_comp_subst_apply hY hs]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use function extensionality and compare the values at `i`. Rewrite using `[subst_X hs]`. Both sides reduce to the same expression. Introduce `c c'`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses.
 
-Unfold `at2`. Conclude with `⟨subst_add hs _ _, subst_sub hs _ _⟩`. Introduce `c`. Unfold `at2`. Apply the tactic sequence `exact constantCoeff_subst_of_zero (fun s => by cases s <;> simp [hu, hv]) c`.
+Replace the relevant objects with their definitions. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 
-Introduce `c`. Apply the tactic sequence `have hW : HasSubst (Sum.elim (fun i : Fin d => (X (Sum.inr i) : MvPowerSeries (Fin d ⊕ Fin d) R)) (fun i => X (Sum.inl i))) := hasSubst_of_constantCoeff_zero fun s => by cases s <;> simp`. Unfold `swap at2`. Rewrite using `[subst_comp_subst_apply hW hs]`. Use `congr 1`.
+Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use function extensionality and compare the values at `s`. Apply the tactic sequence `cases s <;> simp [subst_X hs]`. Introduce `e μ hμ f`. Unfold `at2`. Rewrite using `[subst_comp_subst_apply (hasSubst_of_constantCoeff_zero hμ) hs]`.
+Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Introduce `a ha c`. Conclude with `subst_powerSeriesEvalTwoGroups hu hv ha c`. Introduce `c hc set w : Fin d ⊕ (Fin d ⊕ Fin d) → MvPowerSeries τ R := Sum.elim u (Sum.elim u v) with hw`. Establish `hw0 : ∀ t, constantCoeff (w t) = 0` using `fun t => by`. Apply the tactic sequence `rcases t with t | t | t <;> simp [hw, hu, hv]`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Establish `hsw : HasSubst w` using `hasSubst_of_constantCoeff_zero hw0`. Establish `h1 : ∀ i, subst w (x1 (R` using `R) (d := d) i) = u i := fun i => by`. Unfold `x1`. Rewrite using `[subst_X hsw]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `h2 : ∀ i, subst w (x2 (R` using `R) (d := d) i) = u i := fun i => by`. Unfold `x2`. Rewrite using `[subst_X hsw]`. Both sides reduce to the same expression. Establish `h3 : ∀ i, subst w (x3 (R` using `R) (d := d) i) = v i := fun i => by`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `x3`. Rewrite using `[subst_X hsw]`. Both sides reduce to the same expression. Establish `hx0 : ∀ i, constantCoeff (x1 (R` using `R) (d := d) i) = 0 := fun i => constantCoeff_X _`. Establish `hx20 : ∀ i, constantCoeff (x2 (R` using `R) (d := d) i) = 0 := fun i => constantCoeff_X _`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hx30 : ∀ i, constantCoeff (x3 (R` using `R) (d := d) i) = 0 := fun i => constantCoeff_X _`. Establish `hop : ∀ (a b : Fin d → MvPowerSeries (Fin d ⊕ (Fin d ⊕ Fin d)) R), (∀ i, constantCoeff (a i) = 0) → (∀ i, constantCoeff (b i) = 0) → op (addLaw R d) a b = a + b`. Introduce `a b ha hb`. Use function extensionality and compare the values at `i`. Unfold `op addLaw at2`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Use `hasSubst_elim ha hb` as an intermediate fact. Rewrite using `[subst_add this, subst_X this, subst_X this]`. Both sides reduce to the same expression. Establish `hop0 : ∀ (a b : Fin d → MvPowerSeries (Fin d ⊕ (Fin d ⊕ Fin d)) R), (∀ i, constantCoeff (a i) = 0) → (∀ i, constantCoeff (b i) = 0) → ∀ i, constantCoeff ((a + b) i) = 0`. Introduce `a b ha hb i`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `[ha, hb]`. Establish `key` using `congrArg (subst w) hc`. Unfold `cob2 at key`. Rewrite `key` using `[hop _ _ hx0 hx20, hop _ _ hx20 hx30]`. Rewrite `key` using `[subst_sub hsw, subst_add hsw, subst_sub hsw, subst_powerSeriesEvalTwoGroups hx20 hx30 hw0, subst_powerSeriesEvalTwoGroups (hop0 _ _ hx0 hx20) hx30 hw0, subst_powerSeriesEvalTwoGroups hx0 (hop0 _ _ hx20 hx30) hw0, subst_powerSeriesEvalTwoGroups hx0 hx20 hw0]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `e : ∀ (a b : Fin d → MvPowerSeries (Fin d ⊕ (Fin d ⊕ Fin d)) R), (fun i => subst w ((a + b) i)) = (fun i => subst w (a i)) + (fun i => subst w (b i))`. Introduce `a b`. Use function extensionality and compare the values at `i`. Simplify using `only [Pi.add_apply]`. Conclude with `subst_add hsw _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite `key` using `[e, e]`. Simplify using `only [h1, h2, h3] at key`. Establish `e0 : subst w (0 : MvPowerSeries (Fin d ⊕ (Fin d ⊕ Fin d)) R) = 0`. Simplify using `using (subst_sub hsw (0 : MvPowerSeries _ R) 0)`. Rewrite `key` using `[e0]`.
-
-Use `key using 2` and compare the differences between its conclusion and the goal.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. A detailed English derivation is pending.
 -/
 theorem powerSeriesEvalTwoGroups_rules_alt : ∀ (R : Type) [CommRing R] (d : ℕ) (τ τ' : Type) [Finite τ] (u v : Fin d → MvPowerSeries τ R), (∀ i, constantCoeff (u i) = 0) → (∀ i, constantCoeff (v i) = 0) → (∀ f, at2 (inL f) u v = subst u f) ∧ (∀ f, at2 (inR f) u v = subst v f) ∧ (∀ c c', at2 (c + c') u v = at2 c u v + at2 c' u v ∧ at2 (c - c') u v = at2 c u v - at2 c' u v) ∧ (∀ c, constantCoeff (at2 c u v) = constantCoeff c) ∧ (∀ c, at2 (swap c) u v = at2 c v u) ∧ (∀ (e : ℕ) (μ : Fin e → MvPowerSeries (Fin d ⊕ Fin d) R), (∀ i, constantCoeff (μ i) = 0) → ∀ f : MvPowerSeries (Fin e) R, at2 (subst μ f) u v = subst (fun i => at2 (μ i) u v) f) ∧ (∀ a : τ → MvPowerSeries τ' R, (∀ t, constantCoeff (a t) = 0) → ∀ c, subst a (at2 c u v) = at2 c (fun i => subst a (u i)) (fun i => subst a (v i))) ∧ ∀ c : MvPowerSeries (Fin d ⊕ Fin d) R, cob2 (addLaw R d) c = 0 → at2 c u v - at2 c (u + u) v + at2 c u (u + v) - at2 c u u = 0 := by
   intro R _ d τ τ' _ u v hu hv

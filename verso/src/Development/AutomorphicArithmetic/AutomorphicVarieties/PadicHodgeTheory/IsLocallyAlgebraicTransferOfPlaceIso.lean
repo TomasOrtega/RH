@@ -17,15 +17,15 @@ variable {F M Ω : Type} [Field F] [NumberField F] [Field M] [NumberField M] [Fi
   {h : IsPlaceOver A v} {h' : IsPlaceOver A w}
 
 /- English proof (translation)
-Introduce and unpack `⟨ph, hop, hph⟩`. Use `haveI : Algebra.IsAlgebraic F Ω := IsAlgClosure.isAlgebraic`. Establish `hm : ∀ σ : Ine (F` using `F) A, ((c (ineIncl h σ) : Weil h') : G M Ω) ∈ Ine (F := M) A := fun σ => by`. Rewrite using `[← deg_eq_zero_iff, hdeg, deg_ineIncl]`. Set `e : Ine (F` to `F) A →* Ine (F := M) A := (((Weil h').subtype.comp c).comp (ineIncl h)).codRestrict _ hm`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `he : ∀ σ, ineIncl h' (e σ) = c (ineIncl h σ)` using `fun σ => Subtype.ext rfl`. Use `⟨ph.comp e, ?_, fun a ha σ => ?_⟩` and prove the remaining obligations. Take `⟨O', hO', hpre⟩` from `isOpen_induced_iff.mp hop`. Establish `h1 : (1 : G M Ω) ∈ O'`. Establish `: (1 : Ine (F` using `M) A) ∈ Subtype.val ⁻¹' O' := by rw [hpre]; simp`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `this`. Take `⟨U, hU, hU1, hUO⟩` from `GlobalTheory.WeilTransport.conj_nhds F Ω M Ω (RingEquiv.refl Ω) O' (hO'.mem_nhds h1)`. Use `Subgroup.isOpen_of_mem_nhds _ (g := 1) (Filter.mem_of_superset ((hU.preimage continuous_subtype_val).mem_nhds hU1) fun τ hτ => ?_)` and prove the remaining obligations. Establish `hO : e τ ∈ Subtype.val ⁻¹' O'` using `hUO τ hτ _ (hc (ineIncl h τ))`. Rewrite `hO` using `[hpre]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `hO`. Take `⟨a', ha', haa⟩` from `hA a ha`. Establish `h1` using `hph a' ha' (e σ)`. Rewrite using `[hκ _ (Subgroup.inclusion (Weil_le_Dec h') (ineIncl h' (e σ))) (hc (ineIncl h σ)), MonoidHom.comp_apply, h1, he, haa]`. Set `E : Emb l w ≃ Emb l v` to `{ toFun := fun τ' => ⟨τ'.1.comp i.toRingHom, τ'.2.comp hi⟩ invFun := fun τ => ⟨τ.1.comp i.symm.toRingHom, τ.2.comp hi'⟩ left_inv := fun τ => Subtype.ext (RingHom.ext fun x => by simp) right_inv := fun τ => Subtype.ext (RingHom.ext fun x => by simp) }`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← finprod_comp_equiv E]`. Use `finprod_congr fun τ => ?_` and prove the remaining obligations. Rewrite using `[hwt]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 private theorem locAlg_step {l : ℕ} [Fact l.Prime] (c : Weil h →* Weil h')
     (hc : ∀ (σ : Weil h) z, (σ : G F Ω) z = (c σ : G M Ω) z) (hdeg : ∀ σ, deg (c σ) = deg σ)
@@ -68,11 +68,11 @@ private theorem locAlg_step {l : ℕ} [Fact l.Prime] (c : Weil h →* Weil h')
     rfl
 
 /- English proof (translation)
-Take `⟨art, hart⟩` from `hG M Ω`. Take `⟨b, hs, ho, hg⟩` from `GlobalTheory.InvLocalArtin.exists_invLocalArtin M Ω A w h' art hart`. Establish `hb : (Units.map i.toRingHom.toMonoidHom).comp (a.comp c) = b` using `MonoidHom.ext fun σ => GlobalTheory.T.globalArtin_localIdele_injective GlobalTheory.Published.chevalleyUnits' M Ω art hart w ((hglob art hart σ).trans (hg σ).symm)`. Use `⟨hb ▸ hs, hb ▸ GlobalTheory.ArtinInvCont.continuous_inv_on_ine M Ω A w h' art b hart ho hg, hb ▸ ho, fun ξ hξ => ?_, hglob⟩` and prove the remaining obligations. Take `⟨χ, hχ, e⟩` from `ha.factor _ (hsm ξ hξ)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨χ.comp (Units.map i.symm.toRingHom.toMonoidHom), IsOpen.preimage (Continuous.units_map _ hi') hχ, ?_⟩` and prove the remaining obligations. Use `MonoidHom.ext fun σ => ?_` and prove the remaining obligations. Establish `h1 : Units.map i.symm.toRingHom.toMonoidHom (Units.map i.toRingHom.toMonoidHom (a (c σ))) = a (c σ)` using `by ext; simp`. Establish `h2` using `DFunLike.congr_fun e (c σ)`. Simplify using `only [MonoidHom.comp_apply] at h2 ⊢`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[h1, ← h2, hcc]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem artin_step (hG : GlobalArtinReciprocity) (c : Weil h' →* Weil h) (hcs : Function.Surjective c)
     (c' : Weil h →* Weil h') (hcc : ∀ σ, c' (c σ) = σ)
@@ -99,17 +99,17 @@ private theorem artin_step (hG : GlobalArtinReciprocity) (c : Weil h' →* Weil 
 end
 
 /- English proof (translation)
-Introduce `hG F M Ω _ _ _ _ _ _ _ _ _ l _ A v w h h' j i hP κ κ' hκ wt wt' hwt`. Take `⟨c, hc, hdeg, -, hsm⟩` from `GlobalTheory.WeilTransport.weil_equiv F Ω A v h M Ω A w h' _ j i hP`. Establish `hi' : Continuous i.symm`. Use `GlobalTheory.AdelicUnitaryTop.properSpace_adicCompletion F v` as an intermediate fact. Use `GlobalTheory.AdelicUnitaryTop.properSpace_adicCompletion M w` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `i.toEquiv.continuous_symm_iff.2 (AddMonoidHom.isOpenMap_of_sigmaCompact i.toAddEquiv.toAddMonoidHom i.surjective hP.cont)`. Establish `hr : ∀ σ, WeilRel (RingEquiv.refl Ω) σ (c σ)` using `fun σ => (hc σ _).2 rfl`. Establish `hr' : ∀ σ', WeilRel (RingEquiv.refl Ω) (c.symm σ') σ'` using `fun σ => (hc _ σ).2 (c.apply_symm_apply σ)`. Establish `inj` using `GlobalTheory.T.globalArtin_localIdele_injective GlobalTheory.Published.chevalleyUnits'`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Reduce the conclusion to the remaining proof obligations.
 
-Use `locAlg_step c.symm.toMonoidHom (fun σ z => (hr' σ z).symm) (fun σ => by rw [← hdeg]; simp) i.symm hi' hP.cont (fun a' ha' => ⟨_, artin_step hG c.toMonoidHom c.surjective c.symm.toMonoidHom c.symm_apply_apply (fun ξ hξ => (hsm _ _).2 ?_) i.symm hP.cont a' ha' fun art hart σ => ?_, …` and prove the remaining obligations. Use `hξ using 1 ext` and compare the differences between its conclusion and the goal. Simplify using the standard rewrite rules. Take `⟨art', hart'⟩` from `hG M Ω`. Use `GlobalTheory.T.globalArtin_compat_localDegreeOne F Ω A v h M Ω A w h' _ j i hP art art' hart hart' σ (c σ) _ (hr σ) ?_` and prove the remaining obligations.
+Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← ha'.glob art' hart' (c σ)]`. Use `congr 2`. Use `ext`. Simplify using the standard rewrite rules. Rewrite using `[hwt]`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Conclude with `Subtype.ext (RingHom.ext fun x => by simp)`. Use `locAlg_step c.toMonoidHom (fun σ z => hr σ z) hdeg i hP.cont hi' (fun a ha => ⟨_, artin_step hG c.symm.toMonoidHom c.symm.surjective c.toMonoidHom c.apply_symm_apply (fun ξ hξ => (hsm _ _).1 hξ) i hi' a ha fun art' hart' σ => ?_, fun σ => by simp⟩) κ κ' hκ wt wt' hwt` and prove the remaining obligations. Take `⟨art, hart⟩` from `hG F Ω`. Take `⟨b, -, -, hg⟩` from `GlobalTheory.InvLocalArtin.exists_invLocalArtin M Ω A w h' art' hart'`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hx : Units.map i.toRingHom.toMonoidHom (Units.map i.symm.toRingHom.toMonoidHom (b σ)) = b σ` using `by ext; simp`. Establish `h1` using `GlobalTheory.T.globalArtin_compat_localDegreeOne F Ω A v h M Ω A w h' _ j i hP art art' hart hart' (c.symm σ) σ _ (hr' σ) (by rw [hx]; exact hg σ)`. Establish `h2` using `inj F Ω art hart v (h1.trans (ha.glob art hart (c.symm σ)).symm)`. Rewrite using `[← hg σ, ← hx, h2]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem UpperTheory.isLocallyAlgebraic_transfer_of_placeIso :
     GlobalArtinReciprocity → ∀ {F M Ω : Type} [Field F] [NumberField F] [Field M] [NumberField M] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] [Algebra M Ω] [IsAlgClosure M Ω] {l : ℕ} [Fact l.Prime] {A : ValuationSubring Ω} {v : Plc F} {w : Plc M} (h : IsPlaceOver A v) (h' : IsPlaceOver A w) (j : F →+* M) (i : v.adicCompletion F ≃+* w.adicCompletion M) (hP : PlaceIso A v A w (RingEquiv.refl Ω) j i) (κ : ↥(Dec (F := F) A) →* (Qbar l)ˣ) (κ' : ↥(Dec (F := M) A) →* (Qbar l)ˣ), (∀ (g : ↥(Dec (F := F) A)) (g' : ↥(Dec (F := M) A)), (∀ z, (g : G F Ω) z = (g' : G M Ω) z) → κ g = κ' g') → ∀ (wt : Emb l v → ℤ) (wt' : Emb l w → ℤ), (∀ τ' : Emb l w, wt' τ' = wt ⟨τ'.1.comp i.toRingHom, τ'.2.comp hP.cont⟩) → (IsLocAlg h κ wt ↔ IsLocAlg h' κ' wt') := by

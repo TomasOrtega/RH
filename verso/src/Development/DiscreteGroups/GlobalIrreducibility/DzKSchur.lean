@@ -10,7 +10,7 @@ namespace DiscreteGroups.sglob.DzType.Kon
 variable {G : Type} [Group G] [Fintype G]
 
 /- English proof (translation)
-Take `⟨V, hV, hch⟩` from `h`. Rewrite `hV`, the goal using `[FDRep.simple_iff_char_is_norm_one]`. Simplify `hV` using `only [hch]`.
+Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem simple_of_isIrr (τ : FDRep ℂ G) (h : GlobalTheory.GLq.IsIrr τ.character) : Simple τ := by
   obtain ⟨V, hV, hch⟩ := h
@@ -18,19 +18,17 @@ theorem simple_of_isIrr (τ : FDRep ℂ G) (h : GlobalTheory.GLq.IsIrr τ.charac
   simpa only [hch] using hV
 
 /- English proof (translation)
-Set `A : τ →ₗ[ℂ] τ` to `∑ y, f y • τ.ρ y⁻¹`. Establish `hAapp : ∀ v, A v = ∑ y, f y • τ.ρ y⁻¹ v` using `fun v => by`. Simplify using `only [A, LinearMap.sum_apply, LinearMap.smul_apply]`. Establish `hA : ∀ h, A ∘ₗ τ.ρ h = τ.ρ h ∘ₗ A`. Introduce `h`.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `LinearMap.ext fun v => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.comp_apply, LinearMap.comp_apply, hAapp, hAapp, map_sum]`. Rewrite using `[← Equiv.sum_comp (MulAut.conj h).toEquiv]`. Use `Finset.sum_congr rfl fun y _ => ?_` and prove the remaining obligations. Establish `e1 : f ((MulAut.conj h).toEquiv y) = f y`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `using hf y h`. Rewrite using `[e1, map_smul]`. Use `congr 1`. Rewrite using `[← Module.End.mul_apply, ← map_mul, ← Module.End.mul_apply, ← map_mul]`. Use `congr 2`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Simplify using `[mul_assoc]`. Set `F : τ ⟶ τ` to `⟨FGModuleCat.ofHom A, fun g => by`. Use extensionality with `x`. Express the relevant statement in the definitionally equal form `A (τ.ρ g x) = τ.ρ g (A x)`. Conclude with `LinearMap.congr_fun (hA g) x⟩`.
+Simplify using the standard rewrite rules. Introduce a local definition for the expression. By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Extract witnesses or component facts from the available result.
 
-Take `⟨c, hc⟩` from `endomorphism_simple_eq_smul_id ℂ F`. Establish `hAv : ∀ v, A v = c • v` using `fun v => by`. Establish `: F.hom.hom.hom v = c • v` using `by rw [← hc]; rfl`. Conclude with `this`. Use `⟨c, fun v => by rw [← hAv, hAapp], ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hAc : A = c • LinearMap.id` using `LinearMap.ext fun v => by rw [hAv]; rfl`. Establish `htr : LinearMap.trace ℂ τ A = c * Module.finrank ℂ τ`. Rewrite using `[hAc, map_smul, LinearMap.trace_id, smul_eq_mul]`. Rewrite using `[← htr]`. Simplify using `only [A, map_sum, map_smul, smul_eq_mul]`.
-
-Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem central_scalar (τ : FDRep ℂ G) [Simple τ] (f : G → ℂ) (hf : ∀ x y : G, f (y * x * y⁻¹) = f x) :
     ∃ c : ℂ, (∀ v : τ, ∑ y, f y • τ.ρ y⁻¹ v = c • v) ∧

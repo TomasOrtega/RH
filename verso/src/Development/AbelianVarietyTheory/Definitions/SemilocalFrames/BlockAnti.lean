@@ -45,9 +45,7 @@ def absBd (k r : ℕ) (H₁ De D : ℝ) : ℝ :=
     (8 * Real.pi * Real.exp 1 / k) ^ (r * (k - 2 - r)) * (D ^ (k - 2 - r))⁻¹
 
 /- English proof (translation)
-Use `⟨monotone_const, by simp, fun _ _ _ => rfl, fun a b a' b' _ _ _ => ?_⟩` and prove the remaining obligations. Use `fin_cases a`. Use `fin_cases b`. Use `fin_cases a'`. Use `fin_cases b'`.
-
-Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 example : BlockAnti (r := 1) (fun _ => 0) !![2] := by
   refine ⟨monotone_const, by simp, fun _ _ _ => rfl, fun a b a' b' _ _ _ => ?_⟩

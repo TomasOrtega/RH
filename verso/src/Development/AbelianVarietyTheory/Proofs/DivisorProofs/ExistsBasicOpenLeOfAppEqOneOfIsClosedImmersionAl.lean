@@ -11,19 +11,17 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `X' Z' i' _ Y' hY N hN`. Set `K : Ideal Γ(X', Y')` to `{ carrier := {f | X'.basicOpen f ≤ N} add_mem' hf hg := (X'.basicOpen_add_le _ _).trans (sup_le hf hg) zero_mem' := by simp smul_mem' c f hf := by`. Express the relevant statement in the definitionally equal form `X'.basicOpen (c * f) ≤ N`. Rewrite using `[Scheme.basicOpen_mul]`. Conclude with `inf_le_right.trans hf }`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hmem (z : Spec Γ(X', Y')) (f : Γ(X', Y')) : hY.fromSpec z ∈ X'.basicOpen f ↔ f ∉ z.asIdeal`. Express the relevant statement in the definitionally equal form `z ∈ hY.fromSpec ⁻¹ᵁ X'.basicOpen f ↔ _`. Rewrite using `[hY.fromSpec_preimage_basicOpen]`. Both sides reduce to the same expression. Establish `hJ : RingHom.ker (i'.app Y').hom ⊔ K = ⊤`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `h`. Take `⟨m, hm, hJm⟩` from `Ideal.exists_le_maximal _ h`. Set `z : Spec Γ(X', Y')` to `⟨m, hm.isPrime⟩`. Establish `hyY : hY.fromSpec z ∈ Y'` using `hY.range_fromSpec.le ⟨z, rfl⟩`. Distinguish the cases in `hy : hY.fromSpec z ∈ Set.range i'`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Take `⟨w, hw⟩` from `hy`. Establish `hwN : hY.fromSpec z ∈ N` using `hw ▸ hN w (hw ▸ hyY)`. Take `⟨f, hfN, hf⟩` from `hY.exists_basicOpen_le (V := N) ⟨_, hwN⟩ hyY`. Conclude with `(hmem z f).mp hf (hJm (Ideal.mem_sup_right hfN))`. Establish `h1 : hY.fromSpec z ∉ (i'.ker.support : Set X')`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Scheme.Hom.support_ker, i'.isClosedEmbedding.isClosed_range.closure_eq]`. Conclude with `hy`. Establish `h2 : hY.fromSpec z ∉ X'.zeroLocus (U` using `Y') (i'.ker.ideal ⟨Y', hY⟩ : Set Γ(X', Y')) := fun h ↦ h1 ((i'.ker.coe_support_inter ⟨Y', hY⟩).ge ⟨h, hyY⟩).1`. Rewrite `h2` using `[Scheme.mem_zeroLocus_iff]`. Use `push_neg at h2`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Take `⟨a, ha, hya⟩` from `h2`. Establish `ha' : a ∈ RingHom.ker (i'.app Y').hom`. Rewrite `ha` using `[Scheme.Hom.ker_apply]`. Conclude with `ha`. Conclude with `(hmem z a).mp hya (hJm (Ideal.mem_sup_left ha'))`.
-
-Establish `h1 : (1 : Γ(X', Y')) ∈ RingHom.ker (i'.app Y').hom ⊔ K` using `hJ ▸ Submodule.mem_top`. Take `⟨a, ha, b, hb, hab⟩` from `Submodule.mem_sup.mp h1`. Use `⟨b, ?_, hb⟩` and prove the remaining obligations. Establish `ha0 : (i'.app Y').hom a = 0` using `ha`. Combine the equalities or inequalities in the displayed calculation.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem exists_basicOpen_le_of_app_eq_one_of_isClosedImmersion :
     ∀ (X' Z' : Scheme.{0}) (i' : Z' ⟶ X') [IsClosedImmersion i'] (Y' : X'.Opens), IsAffineOpen Y' →

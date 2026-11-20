@@ -14,9 +14,9 @@ open scoped Formalism.Per NNReal
 namespace GlobalTheory.BKLim
 
 /- English proof (translation)
-Introduce `l _ K bk τ hτ d N ρ tw F hDR`. Take `⟨P, r, hP⟩` from `GlobalTheory.T.exists_breuilKisin_basis_limit_lattice l K bk τ hτ d N ρ tw (fun n => (F n).toPre)`. Take `⟨F₀, hF₀⟩` from `GlobalTheory.T.exists_breuilKisinLatticeFrame_of_linked_preframe l K bk d N ρ tw F P r hP`. Establish `hL : ∀ n, ∃ m, n ≤ m ∧ Link bk F₀.T (F m).T (tw.Pi m) n r`. Substitute `hF₀` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality.
 
-Conclude with `hP`. Conclude with `⟨F₀, GlobalTheory.T.isDR_of_links' l K bk d N ρ tw F F₀ r hL hDR, fun hCr => GlobalTheory.T.breuilKisinFrame_isCr_of_linked_tower l K bk d N ρ tw F F₀ r hL hCr, r, hL⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem limit_frame_exists : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (bk : BK K) (τ : Ainf l), bk.IsPer τ → ∀ (d N : ℕ) (ρ : ↥(GK K) →* GL (Fin d) ℤ_[l]) (tw : Tower ρ) (F : ∀ n, Frame bk N (tw.d' n) fun g => (tw.ρ' n g).val), (∀ n, (F n).IsDR) → ∃ F₀ : Frame bk N d (fun g => (ρ g).val), F₀.IsDR ∧ ((∀ n, (F n).IsCr) → F₀.IsCr) ∧ ∃ r, ∀ n, ∃ m, n ≤ m ∧ Link bk F₀.T (F m).T (tw.Pi m) n r := by
   intro l _ K bk τ hτ d N ρ tw F hDR

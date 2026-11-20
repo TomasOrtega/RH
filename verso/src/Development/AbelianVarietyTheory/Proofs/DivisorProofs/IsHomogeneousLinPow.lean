@@ -12,7 +12,7 @@ namespace GlobalTheory.SwapTrue
 variable {ι : Type} {N j : ℕ}
 
 /- English proof (translation)
-Take `⟨⟨τ, b⟩, i⟩` from `z`. Establish `hi` using `i.2`. Apply the tactic sequence `cases b <;> simp only [rkB, cond_true, cond_false] at hi ⊢ <;> omega`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem block_lt (hj : j ≤ N) (z : Σ a : ι × Bool, Fin (rkB ι N j a)) : cond z.1.2 0 j + (z.2 : ℕ) < N := by
   obtain ⟨⟨τ, b⟩, i⟩ := z
@@ -57,7 +57,7 @@ Both sides reduce to the same expression.
     ((blockEquiv ι N j hj z).2 : ℕ) = cond z.1.2 0 j + z.2 := rfl
 
 /- English proof (translation)
-Simplify using `only [lin, map_sum, map_mul, rename_C, rename_X]`. Conclude with `Fintype.sum_equiv e _ _ fun _ => rfl`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem rename_lin_comp {κ ι : Type} [Fintype κ] [Fintype ι] (e : κ ≃ ι) (f : ι → ℝ) :
     rename e (lin fun z => f (e z)) = lin f := by
@@ -65,7 +65,7 @@ theorem rename_lin_comp {κ ι : Type} [Fintype κ] [Fintype ι] (e : κ ≃ ι)
   exact Fintype.sum_equiv e _ _ fun _ => rfl
 
 /- English proof (translation)
-Establish `h : (lin f).IsHomogeneous 1` using `IsHomogeneous.sum _ _ _ fun i _ => isHomogeneous_C_mul_X (f i) i`. Simplify using `using h.pow d`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem isHomogeneous_lin_pow {κ : Type} [Fintype κ] (f : κ → ℝ) (d : ℕ) : ((lin f) ^ d).IsHomogeneous d := by
   have h : (lin f).IsHomogeneous 1 :=
@@ -75,11 +75,11 @@ theorem isHomogeneous_lin_pow {κ : Type} [Fintype κ] (f : κ → ℝ) (d : ℕ
 open Classical in
 
 /- English proof (translation)
-Unfold `swapPol`. Rewrite using `[← AlgHom.comp_apply, comp_aeval]`. Use `congr 2`. Use function extensionality and compare the values at `i`. Use `fin_cases i`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Use `show rename e (lin fun z => if z = x ∨ z = y then 0 else ((n (e z) : ℤ) : ℝ)) = lin fun z => if z = e x ∨ z = e y then 0 else (n z : ℝ)`. Rewrite using `[← rename_lin_comp e]`. Use `congr 2`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `z`. Simplify using `only [e.injective.eq_iff]`.
+A detailed English derivation is pending.
 -/
 theorem rename_swapPol {κ ι : Type} [Fintype κ] [Fintype ι] (e : κ ≃ ι) (G : ℕ → ℤ → ℤ → MvPolynomial (Fin 3) ℝ)
     (D : ℕ) (x y : κ) (n : ι → ℤ) :
@@ -101,9 +101,9 @@ theorem rename_swapPol {κ ι : Type} [Fintype κ] [Fintype ι] (e : κ ≃ ι) 
 open GlobalTheory.FlagPoly in
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Take `⟨τ', k⟩` from `x`. Distinguish the cases in `h : τ' = τ`. Substitute `h` using the available equality. Simplify using `only [swapAt, if_true, Equiv.swap_apply_def, Prod.mk.injEq, true_and]`.
+Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `split_ifs <;> rfl`. Simplify using `[swapAt, h, Equiv.swap_apply_def]`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem swapAt_eq_swap [DecidableEq ι] (τ : ι) (a b : Fin N) : swapAt τ a b = ⇑(Equiv.swap (τ, a) (τ, b)) := by
   funext x
@@ -115,9 +115,9 @@ theorem swapAt_eq_swap [DecidableEq ι] (τ : ι) (a b : Fin N) : swapAt τ a b 
   · simp [swapAt, h, Equiv.swap_apply_def]
 
 /- English proof (translation)
-Establish `ha` using `a.2`. Establish `hb'` using `b.2`. Distinguish the cases in `h : (a : ℕ) < j`. Establish `h' : (b : ℕ) < j` using `by omega`. Apply the tactic sequence `refine ⟨(τ, true), ⟨a, by simpa [rkB] using h⟩, ⟨b, by simpa [rkB] using h'⟩, hab, ?_, ?_⟩ <;>`.
+Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Conclude with `Prod.ext rfl (Fin.ext (by simp))`. Apply the tactic sequence `refine ⟨(τ, false), ⟨a - j, by simp only [rkB, cond_false]; omega⟩, ⟨b - j, by simp only [rkB, cond_false]; omega⟩, by simp; omega, ?_, ?_⟩ <;> exact Prod.ext rfl (Fin.ext (by simp; omega))`.
+Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem exists_adj (hj : j ≤ N) (τ : ι) (a b : Fin N) (hab : (b : ℕ) = a + 1) (hb : (b : ℕ) ≠ j) :
     ∃ (A : ι × Bool) (i i' : Fin (rkB ι N j A)), (i' : ℕ) = i + 1 ∧
@@ -134,7 +134,7 @@ theorem exists_adj (hj : j ≤ N) (τ : ι) (a b : Fin N) (hab : (b : ℕ) = a +
 open GlobalTheory.FlagPoly in
 
 /- English proof (translation)
-Rewrite using `[swapAt_eq_swap, ← hp, ← hq, Equiv.swap_apply_def, Equiv.swap_apply_def]`. Simplify using `only [e.injective.eq_iff]`. Apply the tactic sequence `split_ifs <;> rfl`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem swapAt_comp_equiv {κ : Type} {inst : DecidableEq κ} [DecidableEq ι] (e : κ ≃ ι × Fin N) (p q : κ) (τ : ι)
     (a b : Fin N) (hp : e p = (τ, a)) (hq : e q = (τ, b)) (z : κ) : swapAt τ a b (e z) = e (Equiv.swap p q z) := by

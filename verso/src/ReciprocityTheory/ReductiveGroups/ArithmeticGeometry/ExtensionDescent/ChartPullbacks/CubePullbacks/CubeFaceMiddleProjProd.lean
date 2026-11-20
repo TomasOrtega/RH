@@ -16,13 +16,11 @@ namespace ReciprocityTheory.ChartRestriction.G.Out.CubePf.CubeCoordinateSums
 open Semi
 
 /- English proof (translation)
-Introduce `ψ`. Establish `key : ∀ {L : Type} [Fintype L] (g : L → J) (δ : L → ℤ), (∑ k, if P (g k) = ψ then δ k else 0) = ∑ j, if P j = ψ then (∑ k, if g k = j then δ k else 0) else 0`. Introduce `L _ g δ`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Finset.sum_ite_eq Finset.univ (g k) (fun j => if P j = ψ then δ k else 0)]`. Simplify using the standard rewrite rules. Use `_ = ∑ j, ∑ k, (if g k = j then (if P j = ψ then δ k else 0) else 0) := Finset.sum_comm`. Use `_ = ∑ j, if P j = ψ then (∑ k, if g k = j then δ k else 0) else 0 := by`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `hj : P j = ψ`. Simplify using `only [hj, if_true]`. Simplify using `only [hj, if_false, ite_self, Finset.sum_const_zero]`. Establish `e1` using `key f ε`. Establish `e2` using `key f' ε'`.
-
-Use `e1.trans ((Finset.sum_congr rfl fun j _ => by rw [h j]).trans e2.symm) using 2` and compare the differences between its conclusion and the goal.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. A detailed English derivation is pending.
 -/
 theorem sameSum_of_factor_loc {Y X : Scheme.{0}} {K K' J : Type} [Fintype K] [Fintype K']
     [Fintype J] [DecidableEq J] (P : J → (Y ⟶ X)) (f : K → J) (f' : K' → J) (ε : K → ℤ)
@@ -55,11 +53,11 @@ section Prod
 variable {S : Scheme.{0}} (H : Over S) [GrpObj H] [IsCommMonObj H]
 
 /- English proof (translation)
-Establish `hf : ∀ l : List (Fin n), l.foldr (fun k acc => padd H (x k) acc) (pzero H T) = (l.map x).prod`. Introduce `l`. Proceed by induction on `l with`. Consider the case `nil => rfl`. Consider the case `cons a l ih`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Simplify using `only [List.foldr_cons, List.map_cons, List.prod_cons, ih]`. Both sides reduce to the same expression. Unfold `psum`. Rewrite using `[hf, ← List.prod_toFinset x ((List.nodup_finRange n).filter _)]`. Use `congr 1`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use extensionality with `i`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem psum_eq_prod {T : Over S} {n : ℕ} (x : Fin n → (T ⟶ H)) (I : Finset (Fin n)) :
     psum H x I = ∏ i ∈ I, x i := by
@@ -79,7 +77,7 @@ theorem psum_eq_prod {T : Over S} {n : ℕ} (x : Fin n → (T ⟶ H)) (I : Finse
   simp
 
 /- English proof (translation)
-Proceed by induction on `I using Finset.induction_on with`. Consider the case `empty => simp only [Finset.prod_empty]`. Conclude with `MonObj.comp_one a`. Consider the case `insert b s hb ih => rw [Finset.prod_insert hb, Finset.prod_insert hb, MonObj.comp_mul, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem comp_prod {T T' : Over S} (a : T' ⟶ T) {n : ℕ} (x : Fin n → (T ⟶ H))
     (I : Finset (Fin n)) : a ≫ ∏ i ∈ I, x i = ∏ i ∈ I, (a ≫ x i) := by
@@ -89,7 +87,7 @@ theorem comp_prod {T T' : Over S} (a : T' ⟶ T) {n : ℕ} (x : Fin n → (T ⟶
   | insert b s hb ih => rw [Finset.prod_insert hb, Finset.prod_insert hb, MonObj.comp_mul, ih]
 
 /- English proof (translation)
-Use `show a.left ≫ (psum H (x3 H) k.down).left = _`. Rewrite using `[← Over.comp_left, psum_eq_prod, comp_prod, Finset.prod_biUnion]`. Conclude with `congrArg Over.Hom.left (Finset.prod_congr rfl fun i _ => hA i)`. Introduce `i _ i' _ hii'`. Conclude with `hdis i i' hii'`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem fam_eq {T : Over S} (a : T ⟶ G3 H) {m : ℕ} (y : Fin m → (T ⟶ H))
     (A : Fin 3 → Finset (Fin m)) (hA : ∀ i, a ≫ x3 H i = ∏ j ∈ A i, y j)
@@ -103,7 +101,7 @@ theorem fam_eq {T : Over S} (a : T ⟶ G3 H) {m : ℕ} (y : Fin m → (T ⟶ H))
     exact hdis i i' hii'
 
 /- English proof (translation)
-Use `show (psum H (x3 H) k.down).left = _`. Rewrite using `[psum_eq_prod]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem th_eq (k : thK) : thφ H (x3 H) k = (∏ j ∈ k.down, x3 H j).left := by
   show (psum H (x3 H) k.down).left = _
@@ -118,20 +116,20 @@ variable {S : Scheme.{0}} (H : Over S) [GrpObj H] [IsCommMonObj H]
 def faceA : Fin 3 → Fin 3 → Finset (Fin 2) := ![![∅, {0}, {1}], ![{0}, ∅, {1}], ![{0}, {1}, ∅]]
 
 /- English proof (translation)
-Apply the tactic sequence `fin_cases i <;> fin_cases j <;>`. Simplify using `[faceMap, x3, x2, faceA, pzero, Hom.one_def]`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem face_hA (i j : Fin 3) : faceMap H i ≫ x3 H j = ∏ l ∈ faceA i j, x2 H l := by
   fin_cases i <;> fin_cases j <;>
     simp [faceMap, x3, x2, faceA, pzero, Hom.one_def]
 
 /- English proof (translation)
-Apply the tactic sequence `fin_cases i <;> decide`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem face_hdis (i : Fin 3) : ∀ j j', j ≠ j' → Disjoint (faceA i j) (faceA i j') := by
   fin_cases i <;> decide
 
 /- English proof (translation)
-Apply the tactic sequence `fin_cases i <;> decide`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem face_fib (i : Fin 3) : ∀ J₀ : Finset (Fin 2),
     (∑ k : thK, if k.down.biUnion (faceA i) = J₀ then thε k else 0) =
@@ -142,14 +140,14 @@ def swapFirstTwoSubsets : Fin 3 → Finset (Fin 3) := ![{1}, {0}, {2}]
 def swapLastTwoSubsets : Fin 3 → Finset (Fin 3) := ![{0}, {2}, {1}]
 
 /- English proof (translation)
-Apply the tactic sequence `fin_cases j <;> simp [x3, swapFirstTwoSubsets]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem swapFirstTwo_proj_prod (j : Fin 3) :
     lift (x3 H 1) (lift (x3 H 0) (x3 H 2)) ≫ x3 H j = ∏ l ∈ swapFirstTwoSubsets j, x3 H l := by
   fin_cases j <;> simp [x3, swapFirstTwoSubsets]
 
 /- English proof (translation)
-Apply the tactic sequence `fin_cases j <;> simp [x3, swapLastTwoSubsets]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem swapLastTwo_proj_prod (j : Fin 3) :
     lift (x3 H 0) (lift (x3 H 2) (x3 H 1)) ≫ x3 H j = ∏ l ∈ swapLastTwoSubsets j, x3 H l := by
@@ -177,9 +175,9 @@ def c3A : Fin 3 → Finset (Fin 4) := ![{0}, {1, 2}, {3}]
 def c4A : Fin 3 → Finset (Fin 4) := ![{1}, {2}, {3}]
 
 /- English proof (translation)
-Use `fin_cases j`. Simplify using `only [x3, c1A, Fin.zero_eta, Fin.isValue, Matrix.cons_val_zero, lift_fst]`. Rewrite using `[Finset.prod_pair (by decide)]`. Both sides reduce to the same expression. Simplify using `[x3, c1A]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[x3, c1A]`.
+A detailed English derivation is pending.
 -/
 theorem cubeFaceFirst_proj_prod (j : Fin 3) :
     lift (padd H (x4 H 0) (x4 H 1)) (lift (x4 H 2) (x4 H 3)) ≫ x3 H j = ∏ l ∈ c1A j, x4 H l := by
@@ -191,16 +189,16 @@ theorem cubeFaceFirst_proj_prod (j : Fin 3) :
   · simp [x3, c1A]
 
 /- English proof (translation)
-Apply the tactic sequence `fin_cases j <;> simp [x3, c2A]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem cubeFaceOmit_proj_prod (j : Fin 3) :
     lift (x4 H 0) (lift (x4 H 1) (x4 H 3)) ≫ x3 H j = ∏ l ∈ c2A j, x4 H l := by
   fin_cases j <;> simp [x3, c2A]
 
 /- English proof (translation)
-Use `fin_cases j`. Simplify using `[x3, c3A]`. Simplify using `only [x3, c3A, Fin.mk_one, Fin.isValue, Matrix.cons_val_one, Matrix.cons_val_zero, lift_snd_assoc, lift_fst]`. Rewrite using `[Finset.prod_pair (by decide)]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Simplify using the standard rewrite rules.
 
-Simplify using `[x3, c3A]`.
+A detailed English derivation is pending.
 -/
 theorem cubeFaceMiddle_proj_prod (j : Fin 3) :
     lift (x4 H 0) (lift (padd H (x4 H 1) (x4 H 2)) (x4 H 3)) ≫ x3 H j = ∏ l ∈ c3A j, x4 H l := by
@@ -213,7 +211,7 @@ theorem cubeFaceMiddle_proj_prod (j : Fin 3) :
   · simp [x3, c3A]
 
 /- English proof (translation)
-Apply the tactic sequence `fin_cases j <;> simp [x3, c4A]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem cubeFaceLast_proj_prod (j : Fin 3) :
     lift (x4 H 1) (lift (x4 H 2) (x4 H 3)) ≫ x3 H j = ∏ l ∈ c4A j, x4 H l := by
@@ -242,9 +240,9 @@ section Sums
 variable {S : Scheme.{0}} (H : Over S) [GrpObj H] [IsCommMonObj H]
 
 /- English proof (translation)
-Establish `hfam : (fun k : thK => (faceMap H i).left ≫ thφ H (x3 H) k) = fun k => (fun J : Finset (Fin 2) => (∏ l ∈ J, x2 H l).left) (k.down.biUnion (faceA i))`. Use function extensionality and compare the values at `fun k => fam_eq H (faceMap H i) (x2 H) (faceA i) (face_hA H i) (face_hdis i) k`. Establish `hE : (PEmpty.elim : PEmpty → ((G2 H).left ⟶ H.left)) = fun k' => (fun J : Finset (Fin 2) => (∏ l ∈ J, x2 H l).left) (PEmpty.elim k')`. Use function extensionality and compare the values at `fun k' => k'.elim`. Rewrite using `[hfam, hE]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Conclude with `sameSum_of_factor_loc (fun J : Finset (Fin 2) => (∏ l ∈ J, x2 H l).left) (fun k : thK => k.down.biUnion (faceA i)) (PEmpty.elim : PEmpty → Finset (Fin 2)) thε PEmpty.elim (face_fib i)`.
+A detailed English derivation is pending.
 -/
 theorem face_sameSum (i : Fin 3) :
     LB.SameSum (fun k : thK => (faceMap H i).left ≫ thφ H (x3 H) k) thε
@@ -262,9 +260,9 @@ theorem face_sameSum (i : Fin 3) :
     PEmpty.elim (face_fib i)
 
 /- English proof (translation)
-Establish `h1 : thφ H (x3 H) = fun k => (fun J : Finset (Fin 3) => (∏ l ∈ J, x3 H l).left) k.down`. Use function extensionality and compare the values at `fun k => th_eq H k`. Establish `h2 : (fun k => (lift (x3 H 1) (lift (x3 H 0) (x3 H 2))).left ≫ thφ H (x3 H) k) = fun k => (fun J : Finset (Fin 3) => (∏ l ∈ J, x3 H l).left) (k.down.biUnion swapFirstTwoSubsets)`. Use function extensionality and compare the values at `fun k => fam_eq H _ (x3 H) swapFirstTwoSubsets (swapFirstTwo_proj_prod H) (by decide) k`. Rewrite using `[h2, h1]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Conclude with `sameSum_of_factor_loc (fun J : Finset (Fin 3) => (∏ l ∈ J, x3 H l).left) (fun k : thK => k.down) (fun k : thK => k.down.biUnion swapFirstTwoSubsets) thε thε swapFirstTwo_fiber_sum`.
+A detailed English derivation is pending.
 -/
 theorem swap_first_two_same_sum :
     LB.SameSum (thφ H (x3 H)) thε
@@ -280,9 +278,9 @@ theorem swap_first_two_same_sum :
     (fun k : thK => k.down) (fun k : thK => k.down.biUnion swapFirstTwoSubsets) thε thε swapFirstTwo_fiber_sum
 
 /- English proof (translation)
-Establish `h1 : thφ H (x3 H) = fun k => (fun J : Finset (Fin 3) => (∏ l ∈ J, x3 H l).left) k.down`. Use function extensionality and compare the values at `fun k => th_eq H k`. Establish `h2 : (fun k => (lift (x3 H 0) (lift (x3 H 2) (x3 H 1))).left ≫ thφ H (x3 H) k) = fun k => (fun J : Finset (Fin 3) => (∏ l ∈ J, x3 H l).left) (k.down.biUnion swapLastTwoSubsets)`. Use function extensionality and compare the values at `fun k => fam_eq H _ (x3 H) swapLastTwoSubsets (swapLastTwo_proj_prod H) (by decide) k`. Rewrite using `[h2, h1]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Conclude with `sameSum_of_factor_loc (fun J : Finset (Fin 3) => (∏ l ∈ J, x3 H l).left) (fun k : thK => k.down) (fun k : thK => k.down.biUnion swapLastTwoSubsets) thε thε swapLastTwo_fiber_sum`.
+A detailed English derivation is pending.
 -/
 theorem swap_last_two_same_sum :
     LB.SameSum (thφ H (x3 H)) thε
@@ -298,11 +296,9 @@ theorem swap_last_two_same_sum :
     (fun k : thK => k.down) (fun k : thK => k.down.biUnion swapLastTwoSubsets) thε thε swapLastTwo_fiber_sum
 
 /- English proof (translation)
-Establish `h1 : Sum.elim (fun k => (lift (padd H (x4 H 0) (x4 H 1)) (lift (x4 H 2) (x4 H 3))).left ≫ thφ H (x3 H) k) (fun k => (lift (x4 H 0) (lift (x4 H 1) (x4 H 3))).left ≫ thφ H (x3 H) k) = fun s => (fun J : Finset (Fin 4) => (∏ l ∈ J, x4 H l).left) (Sum.elim (fun k : thK => k.down.biUni …`. Use function extensionality and compare the values at `s`. Break down `s with k | k` into its components or cases. Conclude with `fam_eq H _ (x4 H) c1A (cubeFaceFirst_proj_prod H) (by decide) k`. Conclude with `fam_eq H _ (x4 H) c2A (cubeFaceOmit_proj_prod H) (by decide) k`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `h2 : Sum.elim (fun k => (lift (x4 H 0) (lift (padd H (x4 H 1) (x4 H 2)) (x4 H 3))).left ≫ thφ H (x3 H) k) (fun k => (lift (x4 H 1) (lift (x4 H 2) (x4 H 3))).left ≫ thφ H (x3 H) k) = fun s => (fun J : Finset (Fin 4) => (∏ l ∈ J, x4 H l).left) (Sum.elim (fun k : thK => k.down.biUni …`. Use function extensionality and compare the values at `s`. Break down `s with k | k` into its components or cases. Conclude with `fam_eq H _ (x4 H) c3A (cubeFaceMiddle_proj_prod H) (by decide) k`. Conclude with `fam_eq H _ (x4 H) c4A (cubeFaceLast_proj_prod H) (by decide) k`.
-
-Rewrite using `[h1, h2]`. Conclude with `sameSum_of_factor_loc (fun J : Finset (Fin 4) => (∏ l ∈ J, x4 H l).left) _ _ _ _ coc_fib`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cocycle_sameSum :
     LB.SameSum

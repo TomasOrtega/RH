@@ -13,11 +13,11 @@ section Block
 variable {R S : Type} [CommRing R] [CommRing S] {j n : ℕ}
 
 /- English proof (translation)
-Use extensionality with `a b`. Express the relevant statement in the definitionally equal form `GroundTheory.Automorphic.FourierWhittaker.blockMat hj ((1 : Matrix (Fin j) (Fin j) S) - (1 : Matrix (Fin j) (Fin j) R).map s + (g : Matrix (Fin j) (Fin j) R).map s) a b = (1 : Matrix (Fin n) (Fin n) S) a b - s ((1 : Matrix (Fin n) (Fin n) R) a b) + s (GroundTheory.Automorphic.Fou …`. Rewrite using `[GroundTheory.Automorphic.FourierWhittaker.blockMat_apply, GroundTheory.Automorphic.FourierWhittaker.blockMat_apply]`. Distinguish the cases in `ha : a.val < j`. Distinguish the cases in `hb : b.val < j`.
+By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails.
 
-Simplify using `only [dif_pos ha, dif_pos hb, Matrix.add_apply, Matrix.sub_apply, Matrix.map_apply, Matrix.one_apply, Fin.ext_iff]`. Establish `hab : a ≠ b` using `fun h => hb (h ▸ ha)`. Simplify using `[ha, hb, hab, Matrix.one_apply]`. Distinguish the cases in `hab : a = b`. Substitute `hab` using the available equality.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using `[ha, Matrix.one_apply]`. Simplify using `[ha, hab, Matrix.one_apply]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem blockGL_cornerGL (hj : j ≤ n) (s : R →ₙ+* S) (g : GL (Fin j) R) :
     GroundTheory.Automorphic.FourierWhittaker.blockGL hj (cornerGL j s g) =
@@ -39,11 +39,11 @@ theorem blockGL_cornerGL (hj : j ≤ n) (s : R →ₙ+* S) (g : GL (Fin j) R) :
     · simp [ha, hab, Matrix.one_apply]
 
 /- English proof (translation)
-Use extensionality with `a b`. Rewrite using `[GroundTheory.Automorphic.FourierWhittaker.coe_blockGL, GroundTheory.Automorphic.FourierWhittaker.blockMat_apply]`. Simplify using `only [diagPow, Units.coe_map, MonoidHom.coe_coe, RingHom.toMonoidHom_eq_coe, Matrix.diagonalRingHom_apply]`. Distinguish the cases in `ha : a.val < j`. Distinguish the cases in `hb : b.val < j`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails.
 
-Simplify using `[ha, hb, Matrix.diagonal_apply, GlobalTheory.RSnmUnf.padNat, Fin.ext_iff, MulEquiv.piUnits]`. Establish `hab : a ≠ b` using `fun h => hb (h ▸ ha)`. Simplify using `[ha, hb, hab, Matrix.diagonal_apply]`. Distinguish the cases in `hab : a = b`. Substitute `hab` using the available equality.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using `[ha, Matrix.diagonal_apply, GlobalTheory.RSnmUnf.padNat, MulEquiv.piUnits]`. Simplify using `[ha, hab, Matrix.diagonal_apply]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem blockGL_diagPow (hj : j ≤ n) (ϖ : Rˣ) (v : Fin j → ℕ) :
     GroundTheory.Automorphic.FourierWhittaker.blockGL hj (diagPow ϖ v) = diagPow ϖ (GlobalTheory.RSnmUnf.padNat (n := n) v) := by
@@ -60,9 +60,9 @@ theorem blockGL_diagPow (hj : j ≤ n) (ϖ : Rˣ) (v : Fin j → ℕ) :
     · simp [ha, hab, Matrix.diagonal_apply]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Use function extensionality and compare the values at `i`. Use `congrFun h ⟨i.val, by omega⟩` as an intermediate fact. Simplify `this` using `[GlobalTheory.RSnmUnf.padNat, i.isLt]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce and unpack `rfl`. Conclude with `GlobalTheory.RSnmUnf.padNat_zero`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem padNat_eq_zero_iff {m n : ℕ} (hmn : m ≤ n) (v : Fin m → ℕ) :
     GlobalTheory.RSnmUnf.padNat (n := n) v = 0 ↔ v = 0 := by
@@ -77,11 +77,11 @@ theorem padNat_eq_zero_iff {m n : ℕ} (hmn : m ≤ n) (v : Fin m → ℕ) :
 end Block
 
 /- English proof (translation)
-Establish `hsupp : (l.mapRange (GlobalTheory.RSnmUnf.padNat (n` using `m + r + 1 + 1)) GlobalTheory.RSnmUnf.padNat_zero).support = l.support := by`. Use extensionality with `w`. Simplify using `only [Finsupp.mem_support_iff, Finsupp.mapRange_apply, ne_eq]`. Rewrite using `[padNat_eq_zero_iff (by omega)]`. Unfold `tl`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[hsupp, map_list_prod, List.map_map]`. Use `congr 1`. Apply `List.map_congr_left` to reduce the goal to its premises. Introduce `w _`. Simplify using `only [Function.comp_apply, Finsupp.mapRange_apply]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Rewrite using `[finGL, locGL, blockGL_cornerGL, blockGL_cornerGL, blockGL_diagPow]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem blockGL_tl {E : Type} [Field E] [NumberField E] (m r : ℕ)
     (ϖ : ∀ w : HeightOneSpectrum (𝓞 E), (w.adicCompletion E)ˣ) (l : HeightOneSpectrum (𝓞 E) →₀ (Fin (m + 1) → ℕ)) :

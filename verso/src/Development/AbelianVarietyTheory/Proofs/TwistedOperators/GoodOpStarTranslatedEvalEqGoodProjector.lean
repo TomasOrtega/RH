@@ -16,9 +16,9 @@ namespace GlobalTheory.GoodProjEval
 open GlobalTheory.Mem.SRe Formalism.L2.SG.Pf.unitaryCongruence
 
 /- English proof (translation)
-Introduce `γ hγ g`. Proceed by induction on `hS using Submodule.span_induction with`. Consider the case `mem x hx => exact (hx.aut v₀).left γ hγ g`. Consider the case `zero => rfl`. Consider the case `add x y _ _ hx hy => show x v₀ (γ * g) + y v₀ (γ * g) = x v₀ g + y v₀ g`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Rewrite using `[hx, hy]`. Consider the case `smul c x _ hx => show c • x v₀ (γ * g) = c • x v₀ g`. Rewrite using `[hx]`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem multR_left_inv {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.what₂.LL G Pl0 T D.R.m}
     {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A)
@@ -36,51 +36,45 @@ theorem multR_left_inv {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} 
     rw [hx]
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 T A Ks _ _ _ R F X h _ _ _ Gd t v₀ hM S hS φ hφ`. Take `⟨σ, red, -, hB, hC⟩` from `hM`. Use `letI : Fintype (G0g D.nd) := Fintype.ofEquiv G σ.symm.toEquiv`. Take `⟨hgood, hmul, hsurj, hker⟩` from `hB.1`. Use `choose s hsK hsred using hsurj`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hinv` using `multR_left_inv R F v₀ S hS`. Establish `hEv` using `evalAct_intertwines D G Pl0 T A Ks R F X h t v₀ σ red hB S hS φ hφ hinv`. Establish `hF1 : ∀ k ∈ X.B.I.Kset, X.B.R (1, k) (star φ) = X.B.R (1, s (red k)) (star φ)`. Introduce `k hk`. Set `a : G0g D.nd → ℂ` to `fun γ => if γ = red k then 1 else 0`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `s' : G0g D.nd → X.B.I.Gf` to `Function.update s (red k) k`. Establish `hs' : ∀ γ, s' γ ∈ X.B.I.Kset ∧ red (s' γ) = γ`. Introduce `γ`. Distinguish the cases in `hγ : γ = red k`. Substitute `hγ` using the available equality.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `only [s', Function.update_self]`. Conclude with `⟨hk, trivial⟩`. Simplify using `only [s', Function.update_of_ne hγ]`. Conclude with `⟨hsK γ, hsred γ⟩`. Establish `e1` using `hEv a s' hs'`.
+Supply the required witnesses or components. Simplify using the standard rewrite rules. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2` using `hEv a s (fun γ => ⟨hsK γ, hsred γ⟩)`. Establish `hsum : ∀ u : G0g D.nd → X.B.I.Gf, (∑ γ, star (a γ) • star (X.B.R (1, u γ) (star φ)) : L2X X) = star (X.B.R (1, u (red k)) (star φ))`. Introduce `u`. Rewrite using `[Finset.sum_eq_single (red k)]`. Simplify using `[a]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `γ _ hγ`. Simplify using `[a, hγ]`. Introduce `hn`. Conclude with `absurd (Finset.mem_univ _) hn`. Rewrite `e1`, `e2` using `[hsum]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `e3 : star (X.B.R (1, k) (star φ)) = (star (X.B.R (1, s (red k)) (star φ)) : L2X X)`. Apply `Lp.ext` to reduce the goal to its premises. Establish `: s' (red k) = k` using `by simp [s']`. Rewrite `e1` using `[this]`. Conclude with `e1.trans e2.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `star_injective e3`. Establish `hKgK : X.B.I.Kg X.B.g ⊆ X.B.I.Kset` using `fun x hx => hx.1`. Establish `hKgO : IsOpen (X.B.I.Kg X.B.g)` using `X.B.I.topf_open X.B.g (Nat.one_le_iff_ne_zero.2 (Formalism.L2.SG.Pf.RowDictPf.level_ne_zero X))`. Establish `h1Kg : (1 : X.B.I.Gf) ∈ X.B.I.Kg X.B.g`. Rewrite using `[← hker 1 (K_one _)]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hmul 1 (K_one _) 1 (K_one _)` as an intermediate fact. Rewrite `this` using `[mul_one]`. Conclude with `left_eq_mul.mp this`. Establish `hvol_pos : 0 < X.B.μf (X.B.I.Kg X.B.g)` using `hKgO.measure_pos X.B.μf ⟨1, h1Kg⟩`. Establish `hvol_fin : X.B.μf (X.B.I.Kg X.B.g) < ⊤` using `lt_of_le_of_lt (measure_mono hKgK) ((Formalism.L2.SG.Closed.AutKCompact_holds X.B.I).measure_lt_top)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `set C : G0g D.nd → Set X.B.I.Gf := fun γ => (fun y => (s γ)⁻¹ * y) ⁻¹' X.B.I.Kg X.B.g with hCdef`. Establish `hCmem : ∀ γ k, k ∈ C γ ↔ k ∈ X.B.I.Kset ∧ red k = γ`. Introduce `γ k`. Use `show (s γ)⁻¹ * k ∈ X.B.I.Kg X.B.g ↔ _`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Introduce `hk'`. Establish `hk2 : k = s γ * ((s γ)⁻¹ * k)` using `by group`. Establish `hKk : k ∈ X.B.I.Kset` using `by rw [hk2]; exact K_mul _ (hsK γ) (hKgK hk')`. Use `⟨hKk, ?_⟩` and prove the remaining obligations. Rewrite using `[hk2, hmul _ (hsK γ) _ (hKgK hk'), (hker _ (hKgK hk')).2 hk', mul_one, hsred]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce and unpack `⟨hKk, hrk⟩`. Establish `hK' : (s γ)⁻¹ * k ∈ X.B.I.Kset` using `K_mul _ (K_inv _ (hsK γ)) hKk`. Use `(hker _ hK').1 ?_` and prove the remaining obligations. Use `hmul (s γ) (hsK γ) _ hK'` as an intermediate fact. Rewrite `this` using `[mul_inv_cancel_left, hrk, hsred]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(left_eq_mul.mp this)`. Establish `hCmeas : ∀ γ, MeasurableSet (C γ)` using `fun γ => (hKgO.preimage (continuous_const.mul continuous_id)).measurableSet`. Establish `hCvol : ∀ γ, X.B.μf (C γ) = X.B.μf (X.B.I.Kg X.B.g)` using `fun γ => measure_preimage_mul X.B.μf _ _`. Use `set vol : ℝ := (X.B.μf (X.B.I.Kg X.B.g)).toReal with hvol`. Establish `hvol0 : (vol : ℂ) ≠ 0`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[hvol]`. Conclude with `(ENNReal.toReal_pos hvol_pos.ne' hvol_fin.ne).ne'` after adjusting the coercions. Establish `hRg : Gd.Rg (star φ) = ∑ γ, D.ntypes.e0.coeff γ • X.B.R (1, s γ) (star φ)`. Apply `ext_inner_left ℂ` to reduce the goal to its premises. Introduce `x`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[Gd.Rg_spec.2 x (star φ), inner_sum]`. Repeatedly rewrite using `[inner_smul_right]`. Establish `hpt : ∀ k, eg X k * ⟪x, X.B.R (1, k) (star φ)⟫_ℂ = ∑ γ, (C γ).indicator (fun _ => D.ntypes.e0.coeff γ / (vol : ℂ) * ⟪x, X.B.R (1, s γ) (star φ)⟫_ℂ) k`. Introduce `k`. Distinguish the cases in `hk : k ∈ X.B.I.Kset`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hgk` using `hgood k hk`. Establish `heg : eg X k = D.ntypes.e0.coeff (red k) / (vol : ℂ)`. Unfold `eg`. Rewrite using `[dif_pos ⟨hk, ⟨red k, hgk⟩⟩]`. Use `congr 1`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Formalism.L2.SG.Pf.rowDictEgWellDef_holds X k _ _ (Classical.choose_spec _) hgk`. Rewrite using `[Finset.sum_eq_single (red k)]`. Rewrite using `[Set.indicator_of_mem ((hCmem _ k).2 ⟨hk, rfl⟩), heg, hF1 k hk]`. Introduce `γ _ hγ`. Conclude with `Set.indicator_of_notMem (fun hm => hγ ((hCmem γ k).1 hm).2.symm) _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Introduce `hn`. Conclude with `absurd (Finset.mem_univ _) hn`. Establish `heg : eg X k = 0`. Unfold `eg`. Rewrite using `[dif_neg (fun h' => hk h'.1)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[heg, zero_mul]`. Use `symm`. Use `Finset.sum_eq_zero fun γ _ => Set.indicator_of_notMem (fun hm => hk ((hCmem γ k).1 hm).1) _` and prove the remaining obligations. Rewrite using `[integral_congr_ae (Filter.Eventually.of_forall hpt)]`. Rewrite using `[integral_finset_sum _ (fun γ _ => (integrable_indicator_iff (hCmeas γ)).2 (integrableOn_const (by rw [hCvol]; exact hvol_fin.ne)))]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun γ _ => ?_` and prove the remaining obligations. Rewrite using `[integral_indicator_const _ (hCmeas γ), Measure.real, hCvol, ← hvol, Complex.real_smul]`. Clear the denominators using the available nonvanishing facts. Establish `hstar : (star (Gd.Rg (star φ)) : L2X X) = ∑ γ, star (D.ntypes.e0.coeff γ) • star (X.B.R (1, s γ) (star φ))`. Rewrite using `[← conjL_apply (muX X), hRg, map_sum]`.
-
-Use `Finset.sum_congr rfl fun γ _ => ?_` and prove the remaining obligations. Rewrite using `[LinearIsometryEquiv.map_smulₛₗ, conjL_apply]`. Both sides reduce to the same expression. Rewrite using `[hstar]`. Use `(hEv (fun γ => D.ntypes.e0.coeff γ) s (fun γ => ⟨hsK γ, hsred γ⟩)).trans (Filter.Eventually.of_forall fun x => ?_)` and prove the remaining obligations.
-
-Establish `hc : (fun g => star (D.ntypes.e0.coeff (σ.symm g))) = RealDat.eC (A` using `A) D.what₂.embLL := by`. Use function extensionality and compare the values at `g`. Rewrite using `[hC (σ.symm g), MulEquiv.apply_symm_apply]`. Use `show gaL (Yc D 0) (R.βY 0) (R.dat0 R.triv) R.eG (fun g => star (D.ntypes.e0.coeff (σ.symm g))) (S v₀) _ = R.e0 (S v₀) _`. Rewrite using `[hc]`.
-
-Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem goodOp_star_ev : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.what₂.LL G Pl0 T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A) (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (h : X.B.I = Formalism.L2.SG.InstExistsPf.instOf D), R.toLevCh.Is A.μ0 → R.IsGrp F → R.IsModels → ∀ (Gd : GoodOp X) (t : GA D (Yc D 0)) (v₀ : (MP R).Vec), RowLevelMatchAt R F X h t → ∀ S ∈ Mult R.θ (R.MY 0) (levS (Yc D 0) (R.βY 0) (R.dat0 (R.levR F true))) (levChi (Yc D 0) (R.βY 0) (R.dat0 (R.levR F true))), ∀ φ : L2X X, φ =ᵐ[muX X] (fun x => ev (MP R) v₀ S (@HMul.hMul (GA D (Yc D 0)) (GA D (Yc D 0)) (GA D (Yc D 0)) _ ((iotaX X h).symm x) t)) → (star (Gd.Rg (star φ)) : L2X X) =ᵐ[muX X] (fun x => ev (MP R) v₀ (postOn (MP R) R.e0 S) (@HMul.hMul (GA D (Yc D 0)) (GA D (Yc D 0)) (GA D (Yc D 0)) _ ((iotaX X h).symm x) t)) := by
   intro D G _ _ Pl0 T A Ks _ _ _ R F X h _ _ _ Gd t v₀ hM S hS φ hφ

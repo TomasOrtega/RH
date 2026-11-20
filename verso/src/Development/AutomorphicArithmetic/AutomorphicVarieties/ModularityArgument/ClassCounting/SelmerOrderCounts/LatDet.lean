@@ -3,25 +3,25 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument
 open NumberField IsDedekindDomain UpperTheory.V UpperTheory.V.ZK UpperTheory.V.ZK.Ct
 
 /- English proof (translation)
-Introduce `E V _ _ _ _ lam δ δV hcomm hker hdisc hspan hdet`. Use `set L := LinearMap.range lam with hL`. Use `haveI : IsZLattice ℝ L := ⟨hspan⟩`. Establish `hmaps : ∀ x ∈ L, (δV.restrictScalars ℤ) x ∈ L`. Introduce and unpack `_ ⟨y, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact.
 
-Conclude with `⟨δ y, by simp [hcomm]⟩`. Use `set f : L →ₗ[ℤ] L := (δV.restrictScalars ℤ).restrict hmaps with hf`. Establish `hfv : ∀ y : L, ((f y : L) : V) = δV y` using `fun y => rfl`. Establish `hVinj : Function.Injective δV` using `fun a b h => (LinearMap.equivOfDetNeZero δV hdet).injective h`. Establish `hfinj : Function.Injective f`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `a b h`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `hVinj` to reduce the goal to its premises. Rewrite using `[← hfv, ← hfv, h]`. Establish `hcard : Nat.card (L ⧸ LinearMap.range f) = (LinearMap.det f).natAbs`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Rewrite using `[← Submodule.natAbs_det_equiv (LinearMap.range f) (LinearEquiv.ofInjective f hfinj)]`. Use `congr 2`. Establish `hdetf : ((LinearMap.det f : ℤ) : ℝ) = LinearMap.det δV`. Set `b` to `Module.Free.chooseBasis ℤ L`. Set `bV` to `b.ofZLatticeBasis ℝ L`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Establish `hM : (Int.castRingHom ℝ).mapMatrix (LinearMap.toMatrix b b f) = LinearMap.toMatrix bV bV δV`. Use extensionality with `i j`. Simplify using `only [RingHom.mapMatrix_apply, Matrix.map_apply, LinearMap.toMatrix_apply, eq_intCast]`. Rewrite using `[show bV j = ((b j : L) : V) from b.ofZLatticeBasis_apply ℝ L j, ← hfv, Module.Basis.ofZLatticeBasis_repr_apply]`. Rewrite using `[← LinearMap.det_toMatrix b, ← LinearMap.det_toMatrix bV, ← hM, ← RingHom.map_det, eq_intCast]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hne : (LinearMap.det f).natAbs ≠ 0`. Introduce `h`. Apply `hdet` to reduce the goal to its premises. Rewrite using `[← hdetf, Int.natAbs_eq_zero.mp h, Int.cast_zero]`. Set `g : E →ₗ[ℤ] L ⧸ LinearMap.range f` to `(LinearMap.range f).mkQ ∘ₗ lam.rangeRestrict`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `hgs : Function.Surjective g` using `(Submodule.mkQ_surjective _).comp lam.surjective_rangeRestrict`. Establish `hkerg : LinearMap.ker g = LinearMap.range δ ⊔ Submodule.torsion ℤ E`. Use extensionality with `x`. Simplify using `only [g, LinearMap.mem_ker, LinearMap.comp_apply, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero, Submodule.mem_sup, LinearMap.mem_range]`. Prove the components needed by the constructor for the conclusion.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `⟨⟨_, z, rfl⟩, hz⟩`. Use `⟨δ z, ⟨z, rfl⟩, x - δ z, ?_, by abel⟩` and prove the remaining obligations. Rewrite using `[← hker, LinearMap.mem_ker, map_sub, sub_eq_zero]`. Use `congrArg Subtype.val hz` as an intermediate fact. Rewrite `this` using `[hfv]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify `this.symm` using `[hcomm]`. Introduce and unpack `⟨_, ⟨z, rfl⟩, t, ht, rfl⟩`. Rewrite `ht` using `[← hker, LinearMap.mem_ker]`. Use `⟨lam.rangeRestrict z, Subtype.ext ?_⟩` and prove the remaining obligations. Rewrite using `[hfv]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[hcomm, ht]`. Set `e2 : (E ⧸ (LinearMap.range δ ⊔ Submodule.torsion ℤ E)) ≃ₗ[ℤ] L ⧸ LinearMap.range f` to `(Submodule.quotEquivOfEq _ _ hkerg.symm).trans (g.quotKerEquivOfSurjective hgs)`. Use `haveI : Finite (L ⧸ LinearMap.range f) := Nat.finite_of_card_ne_zero (hcard ▸ hne)`. Use `⟨Finite.of_equiv _ e2.toEquiv.symm, ?_⟩` and prove the remaining obligations. Rewrite using `[Nat.card_congr e2.toEquiv, hcard, Nat.cast_natAbs, Int.cast_abs, hdetf]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.ZK.Ct.latDet :
     ∀ (E V : Type) [AddCommGroup E] [NormedAddCommGroup V] [NormedSpace ℝ V] [FiniteDimensional ℝ V] (lam : E →ₗ[ℤ] V) (δ : Module.End ℤ E) (δV : V →ₗ[ℝ] V), (∀ x, lam (δ x) = δV (lam x)) → LinearMap.ker lam = Submodule.torsion ℤ E → DiscreteTopology (LinearMap.range lam) → Submodule.span ℝ (LinearMap.range lam : Set V) = ⊤ → LinearMap.det δV ≠ 0 → Finite (E ⧸ (LinearMap.range δ ⊔ Submodule.torsion ℤ E)) ∧ (Nat.card (E ⧸ (LinearMap.range δ ⊔ Submodule.torsion ℤ E)) : ℝ) = |LinearMap.det δV| := by

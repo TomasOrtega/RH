@@ -20,13 +20,13 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.BigOn.Exp
 
 /- English proof (translation)
-Take `⟨gR, cR0, cL0, hT, u, hu, hF⟩` from `h`. Take `⟨gR', cR0', cL0', hT', u', hu', hF'⟩` from `h'`. Establish `huu : u' = u` using `funext fun τ => Subtype.ext ((hu' τ).trans (hu τ).symm)`. Substitute `huu` using the available equality. Take `⟨a, ⟨k, hk, hak⟩, ha⟩` from `GlobalTheory.T.definiteSideRealisations_coefMap_differ_rootOfUnity _ _ _ _ _ _ _ _ _ _ _ _ _ hT hT' j`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality. Extract witnesses or component facts from the available result.
 
-Take `⟨F, x, hx⟩` from `GlobalTheory.T.exists_coefficientPolynomial_GLFunction_ne_zero (FWT.lamV D j)`. Establish `e1` using `hF' F`. Rewrite `e1` using `[ha]`. Use `erw [LinearMap.map_smul, LinearMap.map_smul, hF F] at e1`. Establish `e2` using `congrFun e1 x`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Pi.smul_apply, smul_eq_mul] at e2`. Establish `hc : c' = D.what₂.embLL a * c`. Establish `h3 : D.what₂.embLL a * c * coefFn D.what₂.embLL (FWT.lamV D j) (F : Pol D.what₂.LL D.what₂.Tau (Vc D j).rank) x = c' * coefFn D.what₂.embLL (FWT.lamV D j) (F : Pol D.what₂.LL D.what₂.Tau (Vc D j).rank) x`. Rewrite using `[mul_assoc]`. Conclude with `e2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(mul_right_cancel₀ hx h3).symm`. Use `⟨k, hk, ?_⟩` and prove the remaining obligations. Rewrite using `[hc, mul_pow, ← map_pow, hak, map_one, one_mul]`.
+A detailed English derivation is pending.
 -/
 theorem isScale_pow_eq {D : D7} {Γ : Type} [Group Γ] [Fintype Γ] {Pl0 I0 T : Type} {A3 : FamIn3 D.what₂.LL Γ Pl0 I0 (List ℕ) T D.R.m}
     {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (Rl : RealDat3 D A3 Ks)
@@ -52,11 +52,11 @@ theorem isScale_pow_eq {D : D7} {Γ : Type} [Group Γ] [Fintype Γ] {Pl0 I0 T : 
   rw [hc, mul_pow, ← map_pow, hak, map_one, one_mul]
 
 /- English proof (translation)
-Unfold `ScaleRoot AtTw AtPts`. Use `⟨1, one_pos, fun _ _ _ => ⟨⟨0, fun _ => 0, fun _ => 0, fun _ => 0⟩, fun Fm CH _ _ => ?_⟩⟩` and prove the remaining obligations. Use `⟨0, fun x hx _ i p _ _ w _ j ρ ρ' hρ hρ' ν ν' _ _ hSB hN hN' _ _ s h P _ _ _ => ?_⟩` and prove the remaining obligations. Take `⟨-, c, hc, n, hn, hνn⟩` from `hN`. Take `⟨-, c', hc', m, hm, hν'm⟩` from `hN'`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite `hc'` using `[hSB.2.2.2.1]`. Take `⟨k, hk, hkk⟩` from `isScale_pow_eq p.R p.v₀ _ hc hc'`. Use `⟨n * m * k, Nat.mul_ne_zero (Nat.mul_ne_zero hn hm) hk, ?_⟩` and prove the remaining obligations. Establish `e1 : ν' ^ (n * m * k) = (ν' ^ m) ^ (n * k)` using `by rw [← pow_mul]; ring_nf`. Establish `e2 : ν ^ (n * m * k) = (ν ^ n) ^ (m * k)` using `by rw [← pow_mul]; ring_nf`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e3 : c' ^ (n * m * k) = c ^ (n * m * k)`. Rewrite using `[show n * m * k = k * (n * m) by ring, pow_mul c', pow_mul c, hkk]`. Rewrite using `[e1, e2, hν'm, hνn, ← pow_mul, ← pow_mul, mul_pow, mul_pow, show m * (n * k) = n * m * k by ring, show n * (m * k) = n * m * k by ring, e3]`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem scaleRoot_of_hypothesis (_ : GlobalTheory.Published.CuspRapidDecay) (_ : GlobalTheory.Published.GlobalArtinReciprocity) (_ : GlobalTheory.Published.RayClassFieldSt)
     (_ : GlobalTheory.IndefiniteRowSideFullHecke.RationalRayLevels.SeriesRat) : ScaleRoot := by

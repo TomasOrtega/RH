@@ -13,7 +13,7 @@ noncomputable section
 namespace GlobalTheory.MumProd
 
 /- English proof (translation)
-Use `forall_congr' fun χ => ?_` and prove the remaining obligations. Establish `: (res (fun x _ => show t.left.base x ∈ (⊤ : TopologicalSpace.Opens _) from trivial) (pullU t.left ⊤ (charUnit S X' χ)) : Γ((splitTorus S X).left, ⊤)ˣ).val = t.left.appTop.hom (charUnit S X' χ).val`. Rewrite using `[Scheme.Hom.appTop, Scheme.Hom.app_eq_appLE]`. Both sides reduce to the same expression. Rewrite using `[← this, Units.ext_iff]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 -/
 private theorem torusHomOf_iff_appTop₂ {S : Scheme.{0}} {X X' : Type} [AddCommGroup X] [AddCommGroup X']
     (h : X' → X) (t : splitTorus S X ⟶ splitTorus S X') : TorusHomOf h t ↔
@@ -26,7 +26,7 @@ private theorem torusHomOf_iff_appTop₂ {S : Scheme.{0}} {X X' : Type} [AddComm
   rw [← this, Units.ext_iff]
 
 /- English proof (translation)
-Apply `(GlobalTheory.splitTorusPointsEquiv S X' (splitTorus S X)).injective` to reduce the goal to its premises. Use `MonoidHom.ext fun χ => Units.ext ?_` and prove the remaining obligations. Rewrite using `[show χ = Multiplicative.ofAdd χ.toAdd from rfl, GlobalTheory.splitTorusPointsEquiv_val, GlobalTheory.splitTorusPointsEquiv_val, (torusHomOf_iff_appTop₂ h s).1 hs, (torusHomOf_iff_appTop₂ h s').1 hs']`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 private theorem torus_eq₂ {S : Scheme.{0}} {X X' : Type} [AddCommGroup X] [AddCommGroup X']
     (h : X' → X) {s s' : splitTorus S X ⟶ splitTorus S X'} (hs : TorusHomOf h s) (hs' : TorusHomOf h s') :
@@ -37,11 +37,11 @@ private theorem torus_eq₂ {S : Scheme.{0}} {X X' : Type} [AddCommGroup X] [Add
     GlobalTheory.splitTorusPointsEquiv_val, (torusHomOf_iff_appTop₂ h s).1 hs, (torusHomOf_iff_appTop₂ h s').1 hs']
 
 /- English proof (translation)
-Establish `h0 : (charUnit S X 0).val = 1`. Establish `k` using `GlobalTheory.splitTorusPointsEquiv_val S X (splitTorus S X) (𝟙 _) 0`. Rewrite `k` using `[ofAdd_zero, map_one, Units.val_one]`. Rewrite using `[k]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `: s = 1`. Apply `(GlobalTheory.splitTorusPointsEquiv S X' (splitTorus S X)).injective` to reduce the goal to its premises. Rewrite using `[map_one]`. Use `MonoidHom.ext fun χ => Units.ext ?_` and prove the remaining obligations. Rewrite using `[show χ = Multiplicative.ofAdd χ.toAdd from rfl, GlobalTheory.splitTorusPointsEquiv_val, (torusHomOf_iff_appTop₂ _ s).1 hs, h0]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[this, Hom.one_def]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 -/
 private theorem torus_eq_one₂ {S : Scheme.{0}} {X X' : Type} [AddCommGroup X] [AddCommGroup X']
     {s : splitTorus S X ⟶ splitTorus S X'} (hs : TorusHomOf (fun _ => (0 : X)) s) :
@@ -61,7 +61,7 @@ private theorem torus_eq_one₂ {S : Scheme.{0}} {X X' : Type} [AddCommGroup X] 
   rw [this, Hom.one_def]
 
 /- English proof (translation)
-The claim follows from `(isLimitOfPreserves (Over.pullback f) (tensorProductIsBinaryProduct X Y)).hom_ext (by rintro ⟨⟨⟩⟩ · exact h₁ · exact h₂)`.
+A detailed English derivation is pending.
 -/
 private theorem pullback_prod_ext₂ {S₀ C : Scheme.{0}} (f : C ⟶ S₀) {X Y : Over S₀} {Z : Over C}
     {a b : Z ⟶ (Over.pullback f).obj (X ⊗ Y)}
@@ -73,7 +73,7 @@ private theorem pullback_prod_ext₂ {S₀ C : Scheme.{0}} (f : C ⟶ S₀) {X Y
     · exact h₂)
 
 /- English proof (translation)
-Rewrite using `[Functor.obj.η_def, ← Category.assoc]`. Establish `: toUnit ((Over.pullback f).obj (𝟙_ _)) ≫ Functor.LaxMonoidal.ε (Over.pullback f) = 𝟙 _` using `(IsTerminal.isTerminalObj (Over.pullback f) _ isTerminalTensorUnit).hom_ext _ _`. Rewrite using `[this, Category.id_comp]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 private theorem map_eta₂ {S₀ C : Scheme.{0}} (f : C ⟶ S₀) (G : Over S₀) [MonObj G] :
     (Over.pullback f).map η[G] = toUnit _ ≫ η[(Over.pullback f).obj G] := by
@@ -87,25 +87,25 @@ end GlobalTheory.MumProd
 namespace GlobalTheory.MumProd
 
 /- English proof (translation)
-Introduce `R _ _ I D₁ A₁ G₁ _ _ U₁ D₂ A₂ G₂ _ _ U₂ D A U p₁ p₂ q₁ q₂ a₁ a₂ hS hU i₂ hi₁ hi₂`. Use `hS.lim` as an intermediate fact. Set `xe : D.toPre.X ≃+ D₁.toPre.X × D₂.toPre.X` to `AddEquiv.ofBijective (q₁.prod q₂) hS.xsum`. Establish `hxe : ∀ x, xe x = (q₁ x, q₂ x)` using `fun x => rfl`. Set `j₁ : D₁.toPre.X → D.toPre.X` to `fun y => xe.symm (y, 0)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `j₂ : D₂.toPre.X → D.toPre.X` to `fun y => xe.symm (0, y)`. Establish `hj₁ : ∀ y, q₁ (j₁ y) = y ∧ q₂ (j₁ y) = 0` using `fun y => by`. Establish `k` using `hxe (j₁ y)`. Simplify using `only [j₁, AddEquiv.apply_symm_apply] at k`. Conclude with `⟨(congrArg Prod.fst k).symm, (congrArg Prod.snd k).symm⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 
-Establish `hj₂ : ∀ y, q₁ (j₂ y) = 0 ∧ q₂ (j₂ y) = y` using `fun y => by`. Establish `k` using `hxe (j₂ y)`. Simplify using `only [j₂, AddEquiv.apply_symm_apply] at k`. Conclude with `⟨(congrArg Prod.fst k).symm, (congrArg Prod.snd k).symm⟩`. Establish `hone : IsMonHom (1 : G₂ ⟶ G₁)` using `by rw [Hom.one_def]; infer_instance`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Supply the required witnesses or components. Establish an intermediate fact.
 
-Use `⟨inferInstance, fun e => ?_, fun e => ?_⟩` and prove the remaining obligations. Establish `hq₁` using `(U₁.gt e).q_hom`. Establish `hq₂` using `(U₂.gt e).q_hom`. Establish `hiso : IsIso ((Over.pullback (thick R I e)).map (lift p₁ p₂))` using `inferInstance`. Rewrite using `[← cancel_mono ((Over.pullback (thick R I e)).map (lift p₁ p₂))]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Apply `pullback_prod_ext₂` to reduce the goal to its premises. Simplify using `only [Category.assoc, ← Functor.map_comp, lift_fst]`. Rewrite using `[hU.q_pr₁ e, ← Category.assoc, ← Functor.map_comp, lift_fst, hi₁, Hom.one_def]`. Simplify using `only [Functor.map_comp, map_eta₂, Category.assoc, IsMonHom.one_hom, comp_toUnit_assoc]`. Simplify using `only [Category.assoc, ← Functor.map_comp, lift_snd]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[hU.q_pr₂ e, ← Category.assoc, ← Functor.map_comp, lift_snd, hi₂]`. Simplify using the standard rewrite rules. Use `⟨GlobalTheory.SplitTorusPow.torusMap _ q₂, (torusHomOf_iff_appTop₂ _ _).2 fun χ => GlobalTheory.SplitTorusPow.torusMap_char q₂ χ, ?_⟩` and prove the remaining obligations. Establish `hT : TorusHomOf q₂ (GlobalTheory.SplitTorusPow.torusMap (Spec (CommRingCat.of (R ⧸ I ^ (e + 1)))) q₂)` using `(torusHomOf_iff_appTop₂ _ _).2 fun χ => GlobalTheory.SplitTorusPow.torusMap_char q₂ χ`. Take `⟨t₁, ht₁, e₁⟩` from `hU.i_pr₁ e j₁ (fun y => (hj₁ y).1) (fun y => (hj₁ y).2)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨t₂, ht₂, e₂⟩` from `hU.i_pr₂ e j₂ (fun y => (hj₂ y).1) (fun y => (hj₂ y).2)`. Establish `c₁ : GlobalTheory.SplitTorusPow.torusMap _ q₂ ≫ t₁ = toUnit _ ≫ η[splitTorus _ D₁.toPre.X]`. Use `torus_eq_one₂ ?_` and prove the remaining obligations. Establish `k` using `TorusHomOf.comp hT ht₁`. Simplify using `only [(hj₁ _).2] at k`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `k`. Establish `c₂ : GlobalTheory.SplitTorusPow.torusMap _ q₂ ≫ t₂ = 𝟙 _`. Use `torus_eq₂ (fun χ => χ) ?_ (TorusHomOf.id _)` and prove the remaining obligations. Establish `k` using `TorusHomOf.comp hT ht₂`. Simplify using `only [(hj₂ _).2] at k`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `k`. Establish `hi₁'` using `(U₁.gt e).i_hom`. Apply `pullback_prod_ext₂` to reduce the goal to its premises. Simplify using `only [Category.assoc]`. Rewrite using `[e₁, ← Category.assoc _ t₁, c₁, ← Functor.map_comp, lift_fst, Hom.one_def]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [Functor.map_comp, map_eta₂, Category.assoc, IsMonHom.one_hom, comp_toUnit_assoc]`. Simplify using `only [Category.assoc]`. Rewrite using `[e₂, ← Category.assoc _ t₂, c₂, ← Functor.map_comp, lift_snd]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem linHom_lift_one_id : ∀ (R : Type) [CommRing R] [IsDomain R] (I : Ideal R) (D₁ : DegData R I) (A₁ : PolAV (Sp (FractionRing R))) (G₁ : Over (Sp R)) [GrpObj G₁] [IsCommMonObj G₁] (U₁ : UnifPre I D₁ A₁ G₁) (D₂ : DegData R I) (A₂ : PolAV (Sp (FractionRing R))) (G₂ : Over (Sp R)) [GrpObj G₂] [IsCommMonObj G₂] (U₂ : UnifPre I D₂ A₂ G₂) (D : DegData R I) (A : PolAV (Sp (FractionRing R))) (U : UnifPre I D A (G₁ ⊗ G₂)) (p₁ : D.toPre.P.A ⟶ D₁.toPre.P.A) (p₂ : D.toPre.P.A ⟶ D₂.toPre.P.A) (q₁ : D.toPre.X →+ D₁.toPre.X) (q₂ : D.toPre.X →+ D₂.toPre.X) (a₁ : A.A ⟶ A₁.A) (a₂ : A.A ⟶ A₂.A), IsSumDeg D.toPre D₁.toPre D₂.toPre p₁ p₂ q₁ q₂ → IsProdUnif U₁ U₂ U p₁ p₂ q₁ q₂ a₁ a₂ → ∀ (i₂ : D₂.toPre.P.A ⟶ D.toPre.P.A), i₂ ≫ p₁ = toUnit _ ≫ η[D₁.toPre.P.A] → i₂ ≫ p₂ = 𝟙 _ → LinHom U₂ U i₂ q₂ (lift 1 (𝟙 G₂)) := by
   intro R _ _ I D₁ A₁ G₁ _ _ U₁ D₂ A₂ G₂ _ _ U₂ D A U p₁ p₂ q₁ q₂ a₁ a₂ hS hU i₂ hi₁ hi₂

@@ -17,20 +17,20 @@ namespace GlobalTheory.JSW
 variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a : ℕ}
 
 /- English proof (translation)
-The claim follows from `Submodule.mem_sInf.2 fun _ hS => hS.1 φ h`.
+A detailed English derivation is pending.
 -/
 theorem mem_mspanR_of_mem {π : CuspSub E a} {φ : Sm E a} (h : φ ∈ π.V) : φ.1 ∈ mspanR π :=
   Submodule.mem_sInf.2 fun _ hS => hS.1 φ h
 
 /- English proof (translation)
-The claim follows from `Submodule.mem_sInf.2 fun S hS => hS.2.1 F (Submodule.mem_sInf.1 hF S hS) h`.
+A detailed English derivation is pending.
 -/
 theorem mspanR_rt {π : CuspSub E a} {F : GA E a → ℂ} (hF : F ∈ mspanR π) (h : GA E a) :
     (fun g => F (g * h)) ∈ mspanR π :=
   Submodule.mem_sInf.2 fun S hS => hS.2.1 F (Submodule.mem_sInf.1 hF S hS) h
 
 /- English proof (translation)
-The claim follows from `Submodule.mem_sInf.2 fun S hS => hS.2.2 F (Submodule.mem_sInf.1 hF S hS) X _ ν inferInstance k γ hk`.
+A detailed English derivation is pending.
 -/
 theorem mspanR_kerOp {π : CuspSub E a} {F : GA E a → ℂ} (hF : F ∈ mspanR π) {X : Type} [MeasurableSpace X]
     (ν : Measure X) [SFinite ν] (k : X → ℂ) (γ : X → GL (Fin a) (Cinf E)) (hk : IsRapidInf ν k γ) :
@@ -38,25 +38,25 @@ theorem mspanR_kerOp {π : CuspSub E a} {F : GA E a → ℂ} (hF : F ∈ mspanR 
   Submodule.mem_sInf.2 fun S hS => hS.2.2 F (Submodule.mem_sInf.1 hF S hS) X _ ν inferInstance k γ hk
 
 /- English proof (translation)
-Simplify using `[GlobalTheory.GLFin.word]`.
+Simplify using the standard rewrite rules.
 -/
 theorem word_nil (φ : Sm E a) : GlobalTheory.GLFin.word [] φ = φ := by simp [GlobalTheory.GLFin.word]
 
 /- English proof (translation)
-Simplify using `[GlobalTheory.GLFin.word]`.
+Simplify using the standard rewrite rules.
 -/
 theorem word_cons (X : Lie E a) (l : List (Lie E a)) (φ : Sm E a) :
     GlobalTheory.GLFin.word (X :: l) φ = lie E a X (GlobalTheory.GLFin.word l φ) := by simp [GlobalTheory.GLFin.word]
 
 /- English proof (translation)
-Simplify using `[GlobalTheory.GLFin.word, List.map_append, List.prod_append]`.
+Simplify using the standard rewrite rules.
 -/
 theorem word_append (l : List (Lie E a)) (X : Lie E a) (φ : Sm E a) :
     GlobalTheory.GLFin.word (l ++ [X]) φ = GlobalTheory.GLFin.word l (lie E a X φ) := by
   simp [GlobalTheory.GLFin.word, List.map_append, List.prod_append]
 
 /- English proof (translation)
-Simplify using `[GlobalTheory.GLFin.word]`.
+Simplify using the standard rewrite rules.
 -/
 theorem word_single (X : Lie E a) (φ : Sm E a) : GlobalTheory.GLFin.word [X] φ = lie E a X φ := by simp [GlobalTheory.GLFin.word]
 
@@ -64,11 +64,11 @@ def adH (h : GA E a) (X : Lie E a) : Lie E a :=
   toL ((GeneralLinearGroup.map (pInf E) h)⁻¹.val * Matrix.of X * (GeneralLinearGroup.map (pInf E) h).val)
 
 /- English proof (translation)
-Use `set y := GeneralLinearGroup.map (pInf E) h`. Use `set k := GeneralLinearGroup.map (pFin E) h`. Establish `eh : h = infGL E a y * finGL E a k` using `(infGL_mul_finGL h).symm`. Establish `e1` using `GlobalTheory.CapAdInv.rt_lie y ((y⁻¹).val * Matrix.of X * y.val)`. Establish `e2 : toL (y.val * ((y⁻¹).val * Matrix.of X * y.val) * (y⁻¹).val) = X`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `[mul_assoc]`. Rewrite `e1` using `[e2]`. Establish `e3` using `lie_rt_fin (adH h X) k`. Establish `key : lie E a X * rt E a h = rt E a h * lie E a (adH h X)`. Establish `e4 : rt E a h = rt E a (infGL E a y) * rt E a (finGL E a k)` using `by rw [← map_mul, ← eh]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[e4, ← mul_assoc, ← e1, mul_assoc]`. Express the relevant statement in the definitionally equal form `_ * (lie E a (adH h X) * _) = _`. Rewrite using `[e3, ← mul_assoc]`. Conclude with `LinearMap.congr_fun key φ`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lie_rt (h : GA E a) (X : Lie E a) (φ : Sm E a) :
     lie E a X (rt E a h φ) = rt E a h (lie E a (adH h X) φ) := by
@@ -88,7 +88,7 @@ theorem lie_rt (h : GA E a) (X : Lie E a) (φ : Sm E a) :
   exact LinearMap.congr_fun key φ
 
 /- English proof (translation)
-The claim follows from `| [], φ => by simp [GlobalTheory.GLFin.word] | X :: l, φ => by rw [word_cons, word_rt h l, lie_rt, List.map_cons, word_cons]`.
+A detailed English derivation is pending.
 -/
 theorem word_rt (h : GA E a) : ∀ (l : List (Lie E a)) (φ : Sm E a),
     GlobalTheory.GLFin.word l (rt E a h φ) = rt E a h (GlobalTheory.GLFin.word (l.map (adH h)) φ)
@@ -107,7 +107,7 @@ def dSub (π : CuspSub E a) : Submodule ℂ (Sm E a) :=
   ⨅ l : List (Lie E a), (mspanR π ⊓ bccSub E a).comap ((Sm E a).subtype ∘ₗ GlobalTheory.GLFin.word l)
 
 /- English proof (translation)
-Simplify using `only [dSub, Submodule.mem_iInf, Submodule.mem_comap, Submodule.mem_inf, LinearMap.comp_apply, Submodule.subtype_apply]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem mem_dSub {π : CuspSub E a} {φ : Sm E a} :
     φ ∈ dSub π ↔ ∀ l, (GlobalTheory.GLFin.word l φ).1 ∈ mspanR π ∧ IsBCC (GlobalTheory.GLFin.word l φ).1 := by
@@ -116,13 +116,13 @@ theorem mem_dSub {π : CuspSub E a} {φ : Sm E a} :
   rfl
 
 /- English proof (translation)
-The claim follows from `mem_dSub.2 fun l => by rw [← word_append]; exact mem_dSub.1 h _`.
+A detailed English derivation is pending.
 -/
 theorem lie_mem_dSub {π : CuspSub E a} {φ : Sm E a} (h : φ ∈ dSub π) (X : Lie E a) : lie E a X φ ∈ dSub π :=
   mem_dSub.2 fun l => by rw [← word_append]; exact mem_dSub.1 h _
 
 /- English proof (translation)
-The claim follows from `hF.cont.comp (continuous_mul_right h) bdd := let ⟨C, hC⟩ := hF.bdd; ⟨C, fun g => hC _⟩ cusp := by intro r h0 h1 _ _ μ 𝓕 hμ hF' g simpa only [mul_assoc] using hF.cusp r h0 h1 μ 𝓕 hμ hF' (g * h) left γ g := by simpa only [mul_assoc] using hF.left γ (g * h)`.
+A detailed English derivation is pending.
 -/
 theorem isBCC_rt {F : GA E a → ℂ} (hF : IsBCC F) (h : GA E a) : IsBCC (fun g => F (g * h)) where
   cont := hF.cont.comp (continuous_mul_right h)
@@ -133,7 +133,7 @@ theorem isBCC_rt {F : GA E a → ℂ} (hF : IsBCC F) (h : GA E a) : IsBCC (fun g
   left γ g := by simpa only [mul_assoc] using hF.left γ (g * h)
 
 /- English proof (translation)
-The claim follows from `mem_dSub.2 fun l => by rw [word_rt] obtain ⟨h1, h2⟩ := mem_dSub.1 hφ (l.map (adH h)) exact ⟨mspanR_rt h1 h, isBCC_rt h2 h⟩`.
+A detailed English derivation is pending.
 -/
 theorem rt_mem_dSub {π : CuspSub E a} {φ : Sm E a} (hφ : φ ∈ dSub π) (h : GA E a) : rt E a h φ ∈ dSub π :=
   mem_dSub.2 fun l => by
@@ -142,7 +142,7 @@ theorem rt_mem_dSub {π : CuspSub E a} {φ : Sm E a} (hφ : φ ∈ dSub π) (h :
     exact ⟨mspanR_rt h1 h, isBCC_rt h2 h⟩
 
 /- English proof (translation)
-The claim follows from `(π.cusp φ h).1.continuous bdd := hB.of_isUnitary hπ h cusp := (π.cusp φ h).2 left := (π.cusp φ h).1.left`.
+A detailed English derivation is pending.
 -/
 theorem isBCC_of_mem (hB : GlobalTheory.Published.CuspFormsBoundedGL) {π : CuspSub E a} (hπ : π.IsUnitary) {φ : Sm E a}
     (h : φ ∈ π.V) : IsBCC φ.1 where
@@ -152,21 +152,21 @@ theorem isBCC_of_mem (hB : GlobalTheory.Published.CuspFormsBoundedGL) {π : Cusp
   left := (π.cusp φ h).1.left
 
 /- English proof (translation)
-The claim follows from `| [], _, h => by rw [word_nil]; exact h | X :: l, _, h => by rw [word_cons]; exact π.stable (.lie X) _ (word_mem π l h)`.
+A detailed English derivation is pending.
 -/
 theorem word_mem (π : CuspSub E a) : ∀ (l : List (Lie E a)) {φ : Sm E a}, φ ∈ π.V → GlobalTheory.GLFin.word l φ ∈ π.V
   | [], _, h => by rw [word_nil]; exact h
   | X :: l, _, h => by rw [word_cons]; exact π.stable (.lie X) _ (word_mem π l h)
 
 /- English proof (translation)
-The claim follows from `mem_dSub.2 fun l => ⟨mem_mspanR_of_mem (word_mem π l h), isBCC_of_mem hB hπ (word_mem π l h)⟩`.
+A detailed English derivation is pending.
 -/
 theorem mem_dSub_of_mem (hB : GlobalTheory.Published.CuspFormsBoundedGL) {π : CuspSub E a} (hπ : π.IsUnitary) {φ : Sm E a}
     (h : φ ∈ π.V) : φ ∈ dSub π :=
   mem_dSub.2 fun l => ⟨mem_mspanR_of_mem (word_mem π l h), isBCC_of_mem hB hπ (word_mem π l h)⟩
 
 /- English proof (translation)
-The claim follows from `(GlobalTheory.T.kernelOperator_integrable_continuous_smooth E a X ν k γ hk φ hφ.cont hφ.bdd).2 bdd := by obtain ⟨C, hC⟩ := hφ.bdd have hi : Integrable (fun x => ‖k x‖) ν := by simpa using hk.2.2 0 refine ⟨C * ∫ x, ‖k x‖ ∂ν, fun g => ?_⟩ rw [← integral_const_mul] refine norm_integ …`.
+A detailed English derivation is pending.
 -/
 theorem isBCC_kerOp {X : Type} [MeasurableSpace X] (ν : Measure X) [SFinite ν] (k : X → ℂ)
     (γ : X → GL (Fin a) (Cinf E)) (hk : IsRapidInf ν k γ) (φ : Sm E a) (hφ : IsBCC φ.1) :
@@ -184,7 +184,7 @@ theorem isBCC_kerOp {X : Type} [MeasurableSpace X] (ν : Measure X) [SFinite ν]
   left γ' g := by simp only [kerOp, mul_assoc, hφ.left]
 
 /- English proof (translation)
-Rewrite using `[← GlobalTheory.T.integral_fderiv_realLieChart_eq_sum_kernelOperators E a X ν k γ hk φ hd g]`. Conclude with `GlobalTheory.T.hasFDerivAt_realLieChart_kernelOperator_at_one E a X ν k γ hk φ hb hd g`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasFDerivAt_kerOp {X : Type} [MeasurableSpace X] (ν : Measure X) (k : X → ℂ) (γ : X → GL (Fin a) (Cinf E))
     (hk : IsRapidInf ν k γ) (φ : Sm E a) (hb : ∃ C : ℝ, ∀ g, ‖φ.1 g‖ ≤ C)
@@ -196,27 +196,25 @@ theorem hasFDerivAt_kerOp {X : Type} [MeasurableSpace X] (ν : Measure X) (k : X
   exact GlobalTheory.T.hasFDerivAt_realLieChart_kernelOperator_at_one E a X ν k γ hk φ hb hd g
 
 /- English proof (translation)
-Set `K : Set (GA E a → ℂ)` to `{f | ∃ (X : Type) (_ : MeasurableSpace X) (ν : Measure X) (_ : SFinite ν) (k : X → ℂ) (γ : X → GL (Fin a) (Cinf E)) (φ : Sm E a), IsRapidInf ν k γ ∧ φ ∈ dSub π ∧ f = kerOp ν k γ φ.1}`. Establish `hder : ∀ f ∈ K, ∃ fs : Fin (Module.finrank ℝ (Lie E a)) × Fin (Module.finrank ℝ (Lie E a)) → GA E a → ℂ, (∀ p, fs p ∈ K) ∧ ∀ g, HasFDerivAt (chart f g) (∑ p, fs p g • lieCoord E a p.2) (oneL E a)`. Introduce and unpack `_ ⟨X, _, ν, _, k, γ, φ, hk, hφ, rfl⟩`. Establish `hb : ∃ C : ℝ, ∀ g, ‖φ.1 g‖ ≤ C` using `by simpa [word_nil] using (mem_dSub.1 hφ []).2.bdd`. Establish `hd : ∀ i, ∃ C : ℝ, ∀ g, ‖(lie E a (lieBasis E a i) φ).1 g‖ ≤ C` using `fun i => by`.
+Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify `(mem_dSub.1 hφ [lieBasis E a i]).2.bdd` using `[word_single]`. Conclude with `⟨fun p => kerOp ν (fun x => k x * adCoef (γ x) p) γ (lie E a (lieBasis E a p.1) φ).1, fun p => ⟨X, _, ν, inferInstance, _, γ, _, GlobalTheory.T.rapidlyDecreasingKernel_mul_adjointConjCoefficient E a X ν k γ hk p, lie_mem_dSub hφ _, rfl⟩, hasFDerivAt_kerOp ν k γ hk φ hb hd⟩`. Establish `hSm : ∀ f ∈ K, f ∈ Sm E a` using `GlobalTheory.T.mem_smooth_of_chart_derivatives_at_identity E a K fun f hf => by`. Take `⟨fs, h1, h2⟩` from `hder f hf`. Conclude with `⟨_, inferInstance, fs, fun p => lieCoord E a p.2, h1, h2⟩`.
+Simplify to obtain the desired conclusion from the available facts. Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `hspan : Submodule.span ℂ K ≤ Sm E a` using `Submodule.span_le.2 hSm`. Establish `hlie : ∀ f ∈ Submodule.span ℂ K, ∀ (h : f ∈ Sm E a) (Y : Lie E a), (lie E a Y ⟨f, h⟩).1 ∈ Submodule.span ℂ K`. Introduce `f hf`. Proceed by induction on `hf using Submodule.span_induction with`. Consider the case `mem f hf`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Introduce `h Y`. Take `⟨fs, h1, h2⟩` from `hder f hf`. Establish `e : (lie E a Y ⟨f, h⟩).1 = ∑ p, (lieCoord E a p.2 Y) • fs p`. Use function extensionality and compare the values at `g`. Rewrite using `[CuspRep.lie_apply, lieD, (h2 g).fderiv]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [ContinuousLinearMap.coe_sum', Finset.sum_apply, ContinuousLinearMap.coe_smul', Pi.smul_apply, smul_eq_mul, mul_comm]`. Rewrite using `[e]`. Conclude with `Submodule.sum_mem _ fun p _ => Submodule.smul_mem _ _ (Submodule.subset_span (h1 p))`. Consider the case `zero`. Introduce `h Y`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `: (⟨0, h⟩ : Sm E a) = 0` using `rfl`. Rewrite using `[this, map_zero]`. Conclude with `Submodule.zero_mem _`. Consider the case `add f f' hf hf' ihf ihf'`. Introduce `h Y`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: (⟨f + f', h⟩ : Sm E a) = ⟨f, hspan hf⟩ + ⟨f', hspan hf'⟩` using `rfl`. Rewrite using `[this, map_add]`. Conclude with `Submodule.add_mem _ (ihf _ Y) (ihf' _ Y)`. Consider the case `smul c f hf ihf`. Introduce `h Y`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: (⟨c • f, h⟩ : Sm E a) = c • ⟨f, hspan hf⟩` using `rfl`. Rewrite using `[this, map_smul]`. Conclude with `Submodule.smul_mem _ c (ihf _ Y)`. Establish `hword : ∀ (l : List (Lie E a)) (ψ : Sm E a), ψ.1 ∈ Submodule.span ℂ K → (GlobalTheory.GLFin.word l ψ).1 ∈ Submodule.span ℂ K`. Introduce `l`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Treat this case separately.
 
-Proceed by induction on `l with`. Consider the case `nil => intro ψ h`. Rewrite using `[word_nil]` and apply the resulting hypothesis. Consider the case `cons Y l ih => intro ψ h`. Rewrite using `[word_cons]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hlie _ (ih ψ h) _ Y`. Establish `hgood : Submodule.span ℂ K ≤ mspanR π ⊓ bccSub E a` using `Submodule.span_le.2 (by`. Introduce and unpack `_ ⟨X, _, ν, _, k, γ, φ, hk, hφ, rfl⟩`. Take `⟨h1, h2⟩` from `mem_dSub.1 hφ []`. Rewrite `h1`, `h2` using `[word_nil]`.
-
-Conclude with `⟨mspanR_kerOp h1 ν k γ hk, isBCC_kerOp ν k γ hk φ h2⟩)`. Establish `hmem : kerOp ν k γ φ.1 ∈ K` using `⟨X, _, ν, inferInstance, k, γ, φ, hk, hφ, rfl⟩`. Conclude with `⟨⟨_, hSm _ hmem⟩, mem_dSub.2 fun l => hgood (hword l _ (Submodule.subset_span hmem)), rfl⟩`.
+Supply the required witnesses or components. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem kerOp_mem_dSub {π : CuspSub E a} {φ : Sm E a} (hφ : φ ∈ dSub π) {X : Type} [MeasurableSpace X]
     (ν : Measure X) [SFinite ν] (k : X → ℂ) (γ : X → GL (Fin a) (Cinf E)) (hk : IsRapidInf ν k γ) :
@@ -280,9 +278,9 @@ theorem kerOp_mem_dSub {π : CuspSub E a} {φ : Sm E a} (hφ : φ ∈ dSub π) {
   exact ⟨⟨_, hSm _ hmem⟩, mem_dSub.2 fun l => hgood (hword l _ (Submodule.subset_span hmem)), rfl⟩
 
 /- English proof (translation)
-Use `sInf_le ⟨fun φ hφ => ⟨φ, mem_dSub_of_mem hB hπ hφ, rfl⟩, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨φ, hφ, rfl⟩ h`. Conclude with `⟨rt E a h φ, rt_mem_dSub hφ h, rfl⟩`. Introduce and unpack `_ ⟨φ, hφ, rfl⟩ X _ ν _ k γ hk`. Take `⟨ψ, h1, h2⟩` from `kerOp_mem_dSub hφ ν k γ hk`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨ψ, h1, h2⟩`.
+Supply the required witnesses or components.
 -/
 theorem mspanR_le (hB : GlobalTheory.Published.CuspFormsBoundedGL) {π : CuspSub E a} (hπ : π.IsUnitary) :
     mspanR π ≤ (dSub π).map (Sm E a).subtype := by
@@ -294,7 +292,7 @@ theorem mspanR_le (hB : GlobalTheory.Published.CuspFormsBoundedGL) {π : CuspSub
     exact ⟨ψ, h1, h2⟩
 
 /- English proof (translation)
-Introduce `F hF`. Take `⟨φ, hφ, rfl⟩` from `mspanR_le hB hπ hF`. Conclude with `⟨φ, rfl, mem_dSub.1 hφ⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem mspanR_words (hB : GlobalTheory.Published.CuspFormsBoundedGL) {π : CuspSub E a} (hπ : π.IsUnitary) :
     ∀ F ∈ mspanR π, ∃ φ : Sm E a, φ.1 = F ∧
@@ -304,7 +302,7 @@ theorem mspanR_words (hB : GlobalTheory.Published.CuspFormsBoundedGL) {π : Cusp
   exact ⟨φ, rfl, mem_dSub.1 hφ⟩
 
 /- English proof (translation)
-Introduce `E _ _ _ a hB π hπ F hF`. Take `⟨φ, rfl, h⟩` from `mspanR_words hB hπ F hF`. Establish `h0` using `(h []).2`. Rewrite `h0` using `[word_nil]`. Conclude with `⟨φ, rfl, fun l => (h l).1, h0.cusp, h0.bdd⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 -/
 theorem mspanR_smooth : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ),
     GlobalTheory.Published.CuspFormsBoundedGL → ∀ π : CuspSub E a, π.IsUnitary → ∀ F ∈ mspanR π, ∃ φ : Sm E a, φ.1 = F ∧

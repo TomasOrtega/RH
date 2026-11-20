@@ -20,9 +20,9 @@ open GlobalTheory.JacStages
 namespace GlobalTheory.JacStages
 
 /- English proof (translation)
-Introduce `k _ _ _ _ n s d e V _ _ π hπ X _ _ ρ _ hsub t d' e' Y _ _ ρ' hρ'`. Use `⟨refinePlace e e', ?_⟩` and prove the remaining obligations. Use `isSubquotient_of_comp (flatHom fun a b => GL (Fin (d' a b)) k) (flatHom_surjective _) ?_` and prove the remaining obligations. Take `⟨φR⟩` from `GlobalTheory.T.piExteriorTensor_flattenedIndex_equiv_nested s t (fun a b => GL (Fin (d' a b)) k) Y ρ'`. Take `⟨φT⟩` from `GlobalTheory.T.relativeJacquet_piExteriorTensor_equiv_normalized k s d t d' e' X ρ`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨φS⟩` from `GlobalTheory.T.jacquetModule_in_stages_refined_blocks k s n d e t d' e' V π`. Establish `h1 : IsSubquotient (piTensor fun a => piTensor (ρ' a)) (piTensor fun a => jac (e' a) (ρ a))` using `GlobalTheory.piTensor_isSubquotient_of_forall _ _ _ _ _ _ hρ'`. Establish `h3` using `GlobalTheory.T.isSubquotient_relativeJacquet_blockLevi k s d t d' e' _ _ (piTensor ρ) (jac e π) (isSmooth_jac e hπ) hsub`. Conclude with `(isSubquotient_of_equiv φR).trans (h1.trans ((isSubquotient_of_equiv φT.symm).trans (h3.trans (isSubquotient_of_equiv φS.symm))))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isSubquotient_jac_refine : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (n s : ℕ) (d : Fin s → ℕ) (e : (Σ a, Fin (d a)) ≃ Fin n) (V : Type) [AddCommGroup V] [Module ℂ V]

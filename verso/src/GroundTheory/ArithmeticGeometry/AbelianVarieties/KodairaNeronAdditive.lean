@@ -20,7 +20,7 @@ omit [IsFractionRing 𝒪 K] [DecidableEq K] [DecidableEq (ResidueField 𝒪)]
   [IsAdicComplete (maximalIdeal 𝒪) 𝒪] [(W.map (algebraMap 𝒪 K)).IsElliptic] hπ in
 
 /- English proof (translation)
-Introduce `C'`. Rewrite using `[← mul_smul]`. Conclude with `hmin _`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem notScalable_vc {W : WeierstrassCurve 𝒪} (hmin : ∀ C : VariableChange 𝒪, ¬Scalable π (C • W))
     (C : VariableChange 𝒪) : ∀ C' : VariableChange 𝒪, ¬Scalable π (C' • C • W) := by
@@ -29,7 +29,7 @@ theorem notScalable_vc {W : WeierstrassCurve 𝒪} (hmin : ∀ C : VariableChang
   exact hmin _
 
 /- English proof (translation)
-Use `knBound_two K W fun P Q R hP hQ hR hs => ?_` and prove the remaining obligations. Take `⟨x₁, y₁, x₂, y₂, x₃, y₃, ℓ, ν, -, -, -, -, -, -, dx₁, -, dx₂, -, dx₃, -, -, -, -, v1, -, -⟩` from `triple_origin K W hπ h3 h4 h6 hP hQ hR hs`. Apply `hno ℓ` to reduce the goal to its premises. Rewrite using `[← v1]`. Conclude with `dvd_add (dvd_add dx₁ dx₂) dx₃`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem knBound_of_no_tangent (h3 : π ∣ W.a₃) (h4 : π ∣ W.a₄) (h6 : π ∣ W.a₆)
     (hno : ∀ s : 𝒪, ¬π ∣ s ^ 2 + W.a₁ * s - W.a₂) : KNBound K W 2 := by
@@ -41,13 +41,11 @@ theorem knBound_of_no_tangent (h3 : π ∣ W.a₃) (h4 : π ∣ W.a₄) (h6 : π
   exact dvd_add (dvd_add dx₁ dx₂) dx₃
 
 /- English proof (translation)
-Distinguish the cases in `hex : ∃ x y X : 𝒪, W.toAffine.Equation x y ∧ x = π * X ∧ π ∣ y ∧ π ∣ 3 * X ^ 2 + 2 * A₂ * X + A₄`. Take `⟨x, y, X, e, rfl, dy, hD⟩` from `hex`. Establish `hP` using `(pi_sq_dvd_y_of_double_root W hπ h1 h2 h3 h4 h6 e rfl dy).2`. Take `⟨s1, s2, s3, s4, s6⟩` from `variableChange_raises_divisibility W hπ h1 h2 h3 h4 h6 hP hD`. Use `KNBound.of_vc K W ⟨1, π * X, 0, 0⟩ ?_` and prove the remaining obligations.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hmin'` using `notScalable_vc hmin ⟨1, π * X, 0, 0⟩`. Take `⟨B₃, hB₃⟩` from `s3`. Take `⟨B₆', hB₆'⟩` from `s6`. Distinguish the cases in `hA : π ^ 2 ∣ ((⟨1, π * X, 0, 0⟩ : VariableChange 𝒪) • W).a₂`. Use `(knBound_star K _ hπ s1 hA hB₃ s4 hB₆' ?_).mono K (by norm_num)` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `C'`. Conclude with `hmin' C'`. Take `⟨A₂', hA₂'⟩` from `s2`. Establish `hA₂'' : ¬π ∣ A₂'`. Introduce and unpack `⟨c, rfl⟩; exact hA ⟨c, by rw [hA₂']; ring⟩`.
-
-Conclude with `knBound_Istar K _ hπ (by rwa [vc_Δ_one]) ⟨s1, ⟨A₂', hA₂', hA₂''⟩, ⟨B₃, hB₃⟩, s4, ⟨B₆', hB₆'⟩⟩`. Use `push Not at hex`. Conclude with `knBound_I0star K W hπ h1 h2 h3 h4 h6 fun x y X e hx hy hD => hex x y X e hx hy hD`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem kodairaNeron_bound_of_pi_cube_a6 (hΔ : W.Δ ≠ 0) (hmin : ∀ C : VariableChange 𝒪, ¬Scalable π (C • W))
     {A₁ A₂ A₃ A₄ A₆ : 𝒪} (h1 : W.a₁ = π * A₁) (h2 : W.a₂ = π * A₂)
@@ -75,13 +73,11 @@ theorem kodairaNeron_bound_of_pi_cube_a6 (hΔ : W.Δ ≠ 0) (hmin : ∀ C : Vari
     exact knBound_I0star K W hπ h1 h2 h3 h4 h6 fun x y X e hx hy hD => hex x y X e hx hy hD
 
 /- English proof (translation)
-Establish `d6 : π ∣ W.a₆` using `(dvd_pow_self π two_ne_zero).trans h6`. Distinguish the cases in `h4' : π ^ 2 ∣ W.a₄`. Take `⟨A₃, hA₃⟩` from `h3`. Take `⟨A₆, hA₆⟩` from `h6`. Distinguish the cases in `hex : ∃ x y Y : 𝒪, W.toAffine.Equation x y ∧ π ∣ x ∧ y = π * Y ∧ π ∣ 2 * Y + A₃`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails.
 
-Take `⟨x, y, Y, e, dx, hy, hD⟩` from `hex`. Take `⟨s1, s2, s3, s4, s6⟩` from `vc_IV_step W hπ h1 h2 hA₃ h4' hA₆ e dx hy hD`. Use `KNBound.of_vc K W ⟨1, 0, 0, y⟩ ?_` and prove the remaining obligations. Take `⟨B₁, hB₁⟩` from `s1`. Take `⟨B₂, hB₂⟩` from `s2`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨B₃, hB₃⟩` from `s3`. Take `⟨B₄, hB₄⟩` from `s4`. Take `⟨B₆, hB₆⟩` from `s6`. Conclude with `kodairaNeron_bound_of_pi_cube_a6 K _ hπ (by rwa [vc_Δ_one]) (notScalable_vc hmin _) hB₁ hB₂ hB₃ hB₄ hB₆`. Use `push Not at hex`.
-
-Conclude with `(knBound_IV K W hπ h1 h2 hA₃ h4' hA₆ fun x y Y e dx hy hD => hex x y Y e dx hy hD).mono K (by norm_num)`. Conclude with `(knBound_III K W hπ h1 h2 h3 h4 d6 h4').mono K (by norm_num)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem kodairaNeron_bound_of_pi_sq_dvd_a6 (hΔ : W.Δ ≠ 0) (hmin : ∀ C : VariableChange 𝒪, ¬Scalable π (C • W))
     (h1 : π ∣ W.a₁) (h2 : π ∣ W.a₂) (h3 : π ∣ W.a₃) (h4 : π ∣ W.a₄) (h6 : π ^ 2 ∣ W.a₆) :
@@ -106,15 +102,15 @@ theorem kodairaNeron_bound_of_pi_sq_dvd_a6 (hΔ : W.Δ ≠ 0) (hmin : ∀ C : Va
   · exact (knBound_III K W hπ h1 h2 h3 h4 d6 h4').mono K (by norm_num)
 
 /- English proof (translation)
-Establish `d6 : π ∣ W.a₆` using `(dvd_pow_self π two_ne_zero).trans h6`. Distinguish the cases in `hex : ∃ s : 𝒪, π ∣ s ^ 2 + W.a₁ * s - W.a₂`. Take `⟨s, hs⟩` from `hex`. Use `KNBound.of_vc K W ⟨1, 0, s, 0⟩ ?_` and prove the remaining obligations. Establish `e1 : ((⟨1, 0, s, 0⟩ : VariableChange 𝒪) • W).a₁ = W.a₁ + 2 * s`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `[variableChange_a₁]`. Establish `e2 : ((⟨1, 0, s, 0⟩ : VariableChange 𝒪) • W).a₂ = -(s ^ 2 + W.a₁ * s - W.a₂)`. Simplify using `[variableChange_a₂]`. Expand and normalize the polynomial expressions, which then agree. Establish `e3 : ((⟨1, 0, s, 0⟩ : VariableChange 𝒪) • W).a₃ = W.a₃`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Simplify using `[variableChange_a₃]`. Establish `e4 : ((⟨1, 0, s, 0⟩ : VariableChange 𝒪) • W).a₄ = W.a₄ - s * W.a₃`. Simplify using `[variableChange_a₄]`. Establish `e6 : ((⟨1, 0, s, 0⟩ : VariableChange 𝒪) • W).a₆ = W.a₆`. Simplify using `[variableChange_a₆]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `d1 : π ∣ W.a₁ + 2 * s`. Apply `hπ.prime.dvd_of_dvd_pow (n := 2)` to reduce the goal to its premises. Establish `: (W.a₁ + 2 * s) ^ 2 = W.b₂ + 4 * (s ^ 2 + W.a₁ * s - W.a₂)`. Rewrite using `[WeierstrassCurve.b₂]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[this]`. Conclude with `dvd_add hb₂ (dvd_mul_of_dvd_right hs 4)`. Use `kodairaNeron_bound_of_pi_sq_dvd_a6 K _ hπ (by rwa [vc_Δ_one]) (notScalable_vc hmin _) (by rw [e1]; exact d1) (by rw [e2]; exact hs.neg_right) (by rw [e3]; exact h3) (by rw [e4]; exact dvd_sub h4 (dvd_mul_of_dvd_right h3 s)) (by rw [e6]; exact h6)` and prove the remaining obligations. Use `push Not at hex`. Conclude with `(knBound_of_no_tangent K W hπ h3 h4 d6 hex).mono K (by norm_num)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem knBound_cusp_origin (hΔ : W.Δ ≠ 0) (hmin : ∀ C : VariableChange 𝒪, ¬Scalable π (C • W))
     (h3 : π ∣ W.a₃) (h4 : π ∣ W.a₄) (h6 : π ^ 2 ∣ W.a₆) (hb₂ : π ∣ W.b₂) : KNBound K W 4 := by
@@ -145,15 +141,13 @@ theorem knBound_cusp_origin (hΔ : W.Δ ≠ 0) (hmin : ∀ C : VariableChange �
     exact (knBound_of_no_tangent K W hπ h3 h4 d6 hex).mono K (by norm_num)
 
 /- English proof (translation)
-Distinguish the cases in `hall : ∀ P, P ∈ E0Set K W`. Conclude with `(knBound_one K W hall).mono K (by norm_num)`. Use `push Not at hall`. Take `⟨P, hP⟩` from `hall`. Take `⟨x₀, y₀, h₀, -, hs⟩` from `(notMem_E0Set_iff K W P).1 hP`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `e₀` using `equation_of_map K W h₀.1`. Take `⟨h6, h3, h4⟩` from `origin_vc W hπ e₀ hs`. Use `KNBound.of_vc K W ⟨1, x₀, 0, y₀⟩ ?_` and prove the remaining obligations. Use `knBound_cusp_origin K _ hπ (by rwa [vc_Δ_one]) (notScalable_vc hmin _) h3 h4 (by rw [h6]; exact dvd_zero _) ?_` and prove the remaining obligations. Establish `hc : π ∣ ((⟨1, x₀, 0, y₀⟩ : VariableChange 𝒪) • W).c₄`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[variableChange_c₄]`. Simplify using `using hc₄`. Apply `hπ.prime.dvd_of_dvd_pow (n := 2)` to reduce the goal to its premises. Establish `hb4 : π ∣ ((⟨1, x₀, 0, y₀⟩ : VariableChange 𝒪) • W).b₄`. Rewrite using `[WeierstrassCurve.b₄]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `dvd_add (dvd_mul_of_dvd_right h4 2) (dvd_mul_of_dvd_right h3 _)`. Establish `: ((⟨1, x₀, 0, y₀⟩ : VariableChange 𝒪) • W).b₂ ^ 2 = ((⟨1, x₀, 0, y₀⟩ : VariableChange 𝒪) • W).c₄ + 24 * ((⟨1, x₀, 0, y₀⟩ : VariableChange 𝒪) • W).b₄`. Rewrite using `[WeierstrassCurve.c₄]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`.
-
-Conclude with `dvd_add hc (dvd_mul_of_dvd_right hb4 24)`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem knBound_additive (hΔ : W.Δ ≠ 0) (hmin : ∀ C : VariableChange 𝒪, ¬Scalable π (C • W))
     (hc₄ : π ∣ W.c₄) : KNBound K W 4 := by

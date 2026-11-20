@@ -13,11 +13,9 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 namespace GlobalTheory.Frames
 
 /- English proof (translation)
-Establish `key : ∀ a : Fin n → S, ∑ i, a i • ∑ j, g i j • b j = ∑ j, (Matrix.vecMul a g) j • b j`. Introduce `a`. Simplify using `only [Finset.smul_sum, smul_smul, Matrix.vecMul, dotProduct, Finset.sum_smul]`. Rewrite using `[Finset.sum_comm]`. Take `⟨a, ha, hu⟩` from `h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `⟨Matrix.vecMul a g⁻¹, ?_, fun a' ha' => ?_⟩` and prove the remaining obligations. Use `show m = _`. Rewrite using `[key, Matrix.vecMul_vecMul, Matrix.nonsing_inv_mul g hg, Matrix.vecMul_one]`. Conclude with `ha`. Establish `h1` using `hu (Matrix.vecMul a' g) (Eq.trans ha' (key a'))`.
-
-Rewrite using `[← h1, Matrix.vecMul_vecMul, Matrix.mul_nonsing_inv g hg, Matrix.vecMul_one]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem existsUnique_comb_matrix {S N : Type} [CommRing S] [AddCommGroup N] [Module S N] {n : ℕ}
     (b : Fin n → N) (g : Matrix (Fin n) (Fin n) S) (hg : IsUnit g.det) (m : N)
@@ -36,23 +34,23 @@ theorem existsUnique_comb_matrix {S N : Type} [CommRing S] [AddCommGroup N] [Mod
     rw [← h1, Matrix.vecMul_vecMul, Matrix.mul_nonsing_inv g hg, Matrix.vecMul_one]
 
 /- English proof (translation)
-Take `⟨N, _, _, v, ρ, hinj, htan, hcomb, hρ, hsm⟩` from `GlobalTheory.T.exists_tangent_module_universal_group E H Dw l Xo S y.x`. Establish `hid : y.x = spMap (RingHom.id S) ≫ y.x`. Establish `: spMap (RingHom.id S) = 𝟙 (Sp S)`. Simplify using `[spMap]`. Rewrite using `[this, Category.id_comp]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Take `⟨-, hbc, -, hsc⟩` from `GlobalTheory.T.scaledBaseChange_fibreSection_calculus E H Dw l Xo S S S (RingHom.id S) (RingHom.id S) y.x y.x y.x hid hid`. Take `⟨s', hs', hs'u⟩` from `GlobalTheory.T.existsUnique_scaledBaseChange_fibreSection E H Dw l Xo S S (RingHom.id S) (a : S) y.x y.x hid y.s`. Establish `heig : ∀ τ m, IsEigAt c τ (v m) ↔ ∀ z : 𝓞 E, ρ z m = algebraMap c.F S (embK c τ z) • m`. Introduce `τ m`. Use `forall_congr' fun z => ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← hρ, ← hsm, hinj.eq_iff]`. Use `choose b hb using fun τ i => (htan (y.u τ i)).1 (y.tan τ i)`. Establish `hbu : ∀ τ, y.u τ = fun i => v (b τ i)` using `fun τ => funext fun i => (hb τ i).symm`. Establish `hs'f` using `(hbc (a : S) y.s s').1 hs'`. Use `⟨⟨y.x, y.x_over, fun τ i => v (∑ j, g τ i j • b τ j), fun τ i => (htan _).2 ⟨_, rfl⟩, fun τ i => ?_, fun τ w hw hwe => ?_, s', fun t => ?_⟩, ⟨rfl, fun τ i => ?_, hs'⟩, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[heig]`. Introduce `z`. Rewrite using `[map_sum, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Use `(heig τ (b τ j)).1 (by rw [hb]; exact y.eig τ j) z` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_smul, this, smul_comm]`. Establish `h` using `y.basis τ w hw hwe`. Take `⟨m, rfl⟩` from `(htan w).1 hw`. Rewrite `h` using `[hbu τ]`. Simplify using `only [hcomb, hinj.eq_iff] at h ⊢`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Conclude with `existsUnique_comb_matrix (b τ) (g τ) (hg τ) m h`. Take `⟨e, he, heu⟩` from `y.gen t`. Use `⟨e * (a⁻¹ : Sˣ), fun i => ?_, fun e' he' => ?_⟩` and prove the remaining obligations. Rewrite using `[hs'f, ← _root_.mul_assoc, ← (hsc _ _ i).1, Units.inv_mul_cancel_right]`. Conclude with `he i`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `heu (e' * a) (fun i => by rw [(hsc _ _ i).1, _root_.mul_assoc, ← hs'f]; exact he' i)` as an intermediate fact. Rewrite using `[← this, Units.mul_inv_cancel_right]`. Rewrite using `[hbu τ, hcomb]`. Introduce and unpack `⟨x', hx', u', ht', he', hb', t', hg'⟩ ⟨hx, hu, hs⟩ dsimp only at hx hu hs`. Substitute `hx` using the available equality.
+Assume the hypotheses and unpack their components. Simplify by unfolding definitions. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : t' = s'` using `hs'u t' hs`. Establish `e2 : u' = fun τ i => v (∑ j, g τ i j • b τ j)`. Use function extensionality and compare the values at `τ i`. Use `hu τ i` as an intermediate fact. Rewrite `this` using `[hbu τ, hcomb]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Both sides reduce to the same expression.
 
-Conclude with `this`. Substitute `e1 e2` using the available equality. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem existsUnique_frChg (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H)
     (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (S : Type) [CommRing S] [Algebra c.F S] (y : FrPt Xo c S)

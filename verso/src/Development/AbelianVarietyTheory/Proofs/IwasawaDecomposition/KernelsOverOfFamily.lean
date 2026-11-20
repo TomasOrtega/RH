@@ -26,11 +26,11 @@ variable {X : Fields} {Pr : Primes X} {R : Ranks} (W : Wts X Pr.Word R) {Ch : Ch
   (A : Amb X) {G : ChGlob X R.m} {m2 : ℕ} (u : Pr.Word)
 
 /- English proof (translation)
-Distinguish the cases in `hP : P.1 ∈ Pr.vGs`. Conclude with `LevFin.lam_root_G hL b P hP g`. Distinguish the cases in `hj : j ≤ m2 + 1`. Conclude with `ChRoot.lam_root hL hj b P hP g`. Take `⟨r, hr, hrg⟩` from `Subgroup.mem_subgroupOf.1 ((hL.grpQ j b P).le g.2)`.
+Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hχ` using `hL.chrQ j b P g r hr hrg`. Establish `h0 : Loc.n1Arg r = 0`. Unfold `Loc.n1Arg`. Rewrite using `[show cOf R j - 1 = 0 by have := hL.hm; unfold cOf; omega, Finset.sum_range_zero]`. Simplify using `only [chiInv, lamRow, hP, if_false, LocE.lamQB, h0, hL.cst_ok.psi_int _ 0 ChRoot.intAt_zero', inv_one, one_mul] at hχ`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hne` using `((L.levQ j b P).lam g).ne_zero`. Rewrite `hne` using `[hχ]`. Take `⟨k, hk, h2⟩` from `ChRoot.unitV_root _ _ (fun h0 => hne (inv_eq_zero.2 h0))`. Use `⟨k, hk, Units.ext ?_⟩` and prove the remaining obligations. Rewrite using `[Units.val_pow_eq_pow_val, hχ, inv_pow, h2, inv_one, Units.val_one]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lam_root (hL : L.Ok Ch sel mu cst G m2) {j : ℕ} (b : L.β j) (P : {P // P ∈ QE sel (mu : Chr X.F X.E X.K)})
     (g : (L.levQ j b P).H) : ∃ k : ℕ, 0 < k ∧ (L.levQ j b P).lam g ^ k = 1 := by
@@ -52,7 +52,7 @@ theorem lam_root (hL : L.Ok Ch sel mu cst G m2) {j : ℕ} (b : L.β j) (P : {P /
   rw [Units.val_pow_eq_pow_val, hχ, inv_pow, h2, inv_one, Units.val_one]
 
 /- English proof (translation)
-Introduce `b` and use `FramedForms.main hX (W.lamTrue u j) (L.levG j b) (L.levQ j b) (LevFin.lev_finiteIndex hL j b) fun g => by rw [← isOfFinOrder_iff_pow_eq_one, levQ_chr_apply] exact Finset.prod_induction _ IsOfFinOrder (fun _ _ ha hb => ha.mul hb) IsOfFinOrder.one fun P _ => isOfFinOrder_iff_pow_eq …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem chF_ok (hX : X.Ok) (hL : L.Ok Ch sel mu cst G m2) (j : ℕ) : (chF W sel mu L u j).Ok := fun b =>
   FramedForms.main hX (W.lamTrue u j) (L.levG j b) (L.levQ j b) (LevFin.lev_finiteIndex hL j b) fun g => by
@@ -61,13 +61,13 @@ theorem chF_ok (hX : X.Ok) (hL : L.Ok Ch sel mu cst G m2) (j : ℕ) : (chF W sel
       isOfFinOrder_iff_pow_eq_one.2 (lam_root hL b P _)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun p => ysAt_ys_of_eq sel mu cst hm.symm _ ▸ (CosetFin.ysAt_finite_nonempty R sel mu cst (m2 + 1) _ p.deco.2.lat).1⟩`.
+Supply the required witnesses or components.
 -/
 theorem ybHyp (hm : R.m = m2 + 2) (b : L.β (m2 + 1)) : YbHyp (R := R) sel mu cst L u m2 b :=
   ⟨fun p => ysAt_ys_of_eq sel mu cst hm.symm _ ▸ (CosetFin.ysAt_finite_nonempty R sel mu cst (m2 + 1) _ p.deco.2.lat).1⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨MatLaw.matEquiv hX hPr hsel hS hL hT, cp1Equiv_of_on W Ch sel mu cst L _ b hY (CoupledLaw.cp1EquivOn b hY hX hPr hsel hS hL hT), (TopLaw.topEquiv b hY default hX hPr hsel hS hL (Or.inr ⟨hs, rfl⟩) hT).cp2Equiv hX hPr hL.hm hL.cst_ok (tilOk_of_avoid hPr hsel u hS) (tameFr_chTh W C …`.
+Supply the required witnesses or components.
 -/
 theorem kerEquivC (hX : X.Ok) (hPr : Pr.Ok) (hsel : IsSel X sel) (hS : Pr.T u ∈ S ∧ ∀ i, Pr.g i ∈ S) (hL : L.Ok Ch sel mu cst G m2)
     (hs : cst.sharp = true) (hT : ChTh.Ok (Ch := Ch) cst (chTh W Ch sel mu cst A u m2)) (b : L.β (m2 + 1))
@@ -77,7 +77,7 @@ theorem kerEquivC (hX : X.Ok) (hPr : Pr.Ok) (hsel : IsSel X sel) (hS : Pr.T u �
       (tilOk_of_avoid hPr hsel u hS) (tameFr_chTh W Ch sel mu cst A u m2)⟩
 
 /- English proof (translation)
-Establish `hm` using `hL.hm`. Establish `hq` using `muqTie_of_ok Ch sel mu cst L hL`. Conclude with `⟨fun i hi => ChainTheta.stepC_ok_deg W Ch sel mu cst A u i (by omega) (i + 1) (hPr.T_prime u).pos hq (h.1 i hi).1 (h.1 i hi).2.1 (fun N N' c x hx m _ => (h.1 i hi).2.2 N N' c x hx m) (h.2.2.1 i hi), ChainTheta.stepC_ok_deg W Ch sel mu cst A u (m2 + 1) (by omega) R.m (hPr.T_prime …`.
+Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem chTh_ok_of_thHyp (hPr : Pr.Ok) (hL : L.Ok Ch sel mu cst G m2) (h : ThHyp W Ch sel mu cst A u m2) :
     ChTh.Ok (Ch := Ch) cst (chTh W Ch sel mu cst A u m2) := by
@@ -89,7 +89,7 @@ theorem chTh_ok_of_thHyp (hPr : Pr.Ok) (hL : L.Ok Ch sel mu cst G m2) (h : ThHyp
       (fun N N' c x hx m _ => h.2.1.2.2 N N' c x hx m) h.2.2.2⟩
 
 /- English proof (translation)
-Distinguish the cases in `h1 : i ≤ m2`. Conclude with `h.1 i h1`. Take `rfl : i = m2 + 1` from `by omega`. Rewrite using `[show m2 + 1 + 1 = R.m from hm.symm]`. Conclude with `h.2.1`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem anaStep_of_thHyp (hm : R.m = m2 + 2) (h : ThHyp W Ch sel mu cst A u m2) {i : ℕ} (hi : i < R.m) :
     A.AnaStep (R.N i) (R.N (i + 1)) (Sall sel mu u) (cAof sel mu cst * cBof sel mu cst u) := by
@@ -100,9 +100,9 @@ theorem anaStep_of_thHyp (hm : R.m = m2 + 2) (h : ThHyp W Ch sel mu cst A u m2) 
     exact h.2.1
 
 /- English proof (translation)
-Establish `key : ∀ (j : ℕ) (h : j = R.m) (q' : ChPt (R` using `R) sel mu u j), HEq q' q → HEq (KerT.ker W Ch sel mu cst A u (m2 + 1) j p.1.1.deco.1.N (frsF sel mu p.1.1) q'.deco.1.N (frsF sel mu q') (xiOver Ch sel mu cst m2 h p.1.1 p.1.2 q') x) (topDegreeKTwo W Ch sel mu cst (chTh W Ch sel mu cst A u m2) p.1.1 p.1.2 q x) := by`. Introduce and unpack `_ rfl q' e`. Take `rfl` from `eq_of_heq e`. Rewrite using `[ker_top W Ch A u hL]`. Conclude with `HEq.rfl`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Unfold `kAt`. Rewrite using `[xiAt_last Ch sel mu cst L hL.hm.symm]`. Conclude with `key _ _ _ e`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kAt_top_heq (hL : L.Ok Ch sel mu cst G m2) (b : Idx sel mu L (m2 + 1)) (b' : Idx sel mu L (m2 + 1 + 1))
     (p : PtAt R sel mu cst u (m2 + 1)) (p' : PtAt R sel mu cst u (m2 + 1 + 1)) (q : ChPt (R := R) sel mu u R.m) (e : HEq p'.1.1 q)
@@ -124,9 +124,7 @@ variable {u} {r : Reps sel mu cst L u (topLev Ch sel mu cst (rPsymF Ch))} {rho :
   {jet : ∀ i, (r.step i).Cl → (r.step (i + 1)).Cl → (Pol ℂ X.Tau (R.N i) →ₗ[ℂ] Pol ℂ X.Tau (R.N (i + 1)))} {DG : ℕ}
 
 /- English proof (translation)
-Introduce `b b' g' d d'`. Establish `key : kAt W Ch sel mu cst L A u i b b' ((1 : (r.step i).G b) • (d : (r.step i).D b)) (g' • d') = (r.step (i + 1)).rho X.emb (W.lamTrue u (i + 1)) b' g' ∘ₗ kAt W Ch sel mu cst L A u i b b' d d' ∘ₗ (r.step i).rho X.emb (W.lamTrue u i) b 1⁻¹`. Break down `lt_trichotomy (i + 2) R.m with h | h | h` into its components or cases. Conclude with `MatLaw.kAt_equiv X Pr R W Ch sel S mu cst L G m2 u i A hX hPr hCh hsel hS.1 hS.2 hL hs hT h b b' 1 g' d d'`. Conclude with `CoupledLaw.kAt_equiv X Pr R W Ch sel S mu cst L G m2 u i A hX hPr hCh hsel hS.1 hS.2 hL hs hT h b b' 1 g' d d'`.
-
-Conclude with `LvT.Built.TopEq.kAt_top_equiv X Pr R W Ch sel S mu cst L G m2 u i A hX hPr hCh hsel hS.1 hS.2 hL hs hT (by omega) b b' 1 g' d d'`. Rewrite `key` using `[one_smul, inv_one, map_one]`. Conclude with `key`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eqTarget (hX : X.Ok) (hPr : Pr.Ok) (hCh : Ch.Ok) (hsel : IsSel X sel) (hS : Pr.T u ∈ S ∧ ∀ i, Pr.g i ∈ S)
     (hL : L.Ok Ch sel mu cst G m2) (hs : cst.sharp = true) (hT : ChTh.Ok (Ch := Ch) cst (chTh W Ch sel mu cst A u m2))
@@ -169,11 +167,11 @@ abbrev evT (B : GlobalTheory.Mem.Base) (u : B.Word) (i : ℕ) :
 variable {I}
 
 /- English proof (translation)
-Introduce `c c' F`. Take `⟨hX, hPr, -⟩` from `base_fields_primes_ok B X`. Establish `h0 : I.A.AA ≠ ⊥`. Rewrite using `[I.A_AA, Ne, FractionalIdeal.coeToSubmodule_eq_bot]`. Use `inv_ne_zero (FractionalIdeal.coeIdeal_ne_zero.2 fun h0 => ?_)` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1` using `B.host.𝔟_spec.1`. Rewrite `h1` using `[h0, Ideal.bot_mul]`. Conclude with `(differentIdeal_ne_bot : differentIdeal (𝓞 B.host.K) (𝓞 B.host.E) ≠ ⊥) h1`. Use `LvT.Built.KMap.kmap_of_jet (X := B.fields) _ B.embLL hI (B.hcW u) hi c c' F _ ?_` and prove the remaining obligations. Establish `hV` using `ChSrc.jetInVV_trueWt (X := B.fields) (B.hcW u) hi`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e` using `ChSrc.nuEnd_eq (Pr := B.primes X) B.wts u hi`. Establish `key` using `fun (p : PtAt B.R I.sel (I.tup a) (I.cst a) u i) (p' : PtAt B.R I.sel (I.tup a) (I.cst a) u (i + 1)) => LvT.Built.KMap.map_kerOf I.A (I.Sb a u) (rowSG (B.primes X) I.sel (I.tup a)) (pow_pos (Finset.prod_pos fun P _ => ChRoot.qOf_pos P.1) _ : 0 < cAof I.sel (I.tup a) (I.cst a)) (M …`. Use `(key (GStep.rep _ c) (GStep.rep _ c')).trans ?_` and prove the remaining obligations. Rewrite using `[← LvT.Built.KMap.rhoIs I h a u hi c.1 (GStep.rep _ c) c'.1 (GStep.rep _ c'), ← e]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem readsAt (h : I.Ok) (hJ : I.JetsIn) (u : B.Word) (a : I.ι) (hI : (I.chIn u a).Ok) {i : ℕ} (hi : i < B.R.m)
     (hLa : I.A.LaHyp (B.R.N i) (B.R.N (i + 1)) (I.Sb a u)) (hE : I.A.ESmooth (B.R.N i) (B.R.N (i + 1))) :
@@ -213,7 +211,7 @@ def colForm (h : I.Ok) (u : B.Word) (a : I.ι) (φ : MfV (Pr := B.primes X) B.wt
       (StepZero.levQAt_zero (I.Tp a) (h.idx_ok a)) φ c.1 g.1 _).symm.trans (congrArg (fun q => φ.1 q.1.1.deco) g.2)⟩
 
 /- English proof (translation)
-The claim follows from `tilOk_of_avoid (base_fields_primes_ok B X).2.1 h.sel_ok u ⟨h.T_mem u, h.g_mem⟩`.
+A detailed English derivation is pending.
 -/
 theorem tilOk (h : I.Ok) (u : B.Word) (a : I.ι) : TilOk (B.primes X) I.sel (I.tup a) u :=
   tilOk_of_avoid (base_fields_primes_ok B X).2.1 h.sel_ok u ⟨h.T_mem u, h.g_mem⟩
@@ -261,7 +259,7 @@ section Parts
 variable {I} {u : B.Word} {a : I.ι}
 
 /- English proof (translation)
-The claim follows from `eqTarget (Pr := B.primes X) (r := reps I u a) (rho := (I.chIn u a).rho) (rho' := (I.chIn u a).rho') (jet := (I.chIn u a).jet) (DG := (I.chIn u a).DG) B.wts I.A (base_fields_primes_ok B X).1 (base_fields_primes_ok B X).2.1 h.ch_ok h.sel_ok ⟨h.T_mem u, h.g_mem⟩ (h.idx_ok a) (h.shar …`.
+A detailed English derivation is pending.
 -/
 theorem eqTarget_true (h : I.Ok) (hT : ChTh.Ok (Ch := I.Ch) (I.cst a) (thTrue I u a (B.R.m - 2))) (i : ℕ) (hi : i < B.R.m) :
     EqTarget B.fields.emb (kTrue I u a) i :=
@@ -270,7 +268,7 @@ theorem eqTarget_true (h : I.Ok) (hT : ChTh.Ok (Ch := I.Ch) (I.cst a) (thTrue I 
     ⟨h.T_mem u, h.g_mem⟩ (h.idx_ok a) (h.sharp a) hT i hi
 
 /- English proof (translation)
-Introduce `x` and use `exists_K_embF hR hE ((l.fmL u a).fam i) ((l.fmL u a).fam (i + 1)) x`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem kRat_true {i : ℕ} (hR : ReadsAt B.fields.emb B.embLL (l.ch u a) (kTrue I u a) i) (hE : EqTarget B.fields.emb (kTrue I u a) i) :
     (I.fm l u a).KRat i :=
@@ -279,7 +277,7 @@ theorem kRat_true {i : ℕ} (hR : ReadsAt B.fields.emb B.embLL (l.ch u a) (kTrue
 variable (u a) in
 
 /- English proof (translation)
-Establish `hw` using `LvT.BuiltChain.weights_ok (I.perIn u a) (B.hcW u) B.fields.emb fun τ => congrArg RowPar.sg (B.wts_isOk.hc_row u τ).symm`. Conclude with `fun x => exists_lower_embF (I.perIn u a) (l.per u a) (fun τ => (hw τ).1) (fun τ => (hw τ).2) ((l.fmL u a).fam _) (l.fmL u a).famP x`.
+Establish an intermediate fact. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem pRat_true : (I.fm l u a).PRat := by
   have hw := LvT.BuiltChain.weights_ok (I.perIn u a) (B.hcW u) B.fields.emb
@@ -288,7 +286,7 @@ theorem pRat_true : (I.fm l u a).PRat := by
     (l.fmL u a).famP x
 
 /- English proof (translation)
-The claim follows from `ptilCol_eq (Pr := B.primes X) B.wts I.Ch I.A (reps I u a) (I.chIn u a).rho (I.chIn u a).rho' (I.chIn u a).jet (I.chIn u a).DG (l.ch u a) hK hF (h.idx_ok a) φ (base_fields_primes_ok B X).1 l.pr B.wts_isOk h.sel_ok (tilOk I h u a) B.embLL hR hE (I.perIn u a).b0 (I.perIn u a).ext (I …`.
+A detailed English derivation is pending.
 -/
 theorem period_true (h : I.Ok) (hR : ∀ i, i < B.R.m → ReadsAt B.fields.emb B.embLL (l.ch u a) (kTrue I u a) i)
     (hE : ∀ i, i < B.R.m → EqTarget B.fields.emb (kTrue I u a) i) {b : (I.idx a).β (B.R.m - 2 + 1)}
@@ -308,13 +306,13 @@ theorem period_true (h : I.Ok) (hR : ∀ i, i < B.R.m → ReadsAt B.fields.emb B
 end Parts
 
 /- English proof (translation)
-Establish `hX` using `(base_fields_primes_ok B X).1`. Establish `hm` using `h.hm`. Establish `hL` using `h.idx_ok a`. Establish `hR : ∀ i, i < B.R.m → ReadsAt B.fields.emb B.embLL (l.ch u a) (kTrue I u a) i` using `fun i hi => readsAt h hJ u a (l.ch u a) hi (hA i hi).1 (hA i hi).2`. Establish `hE` using `eqTarget_true h hT`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨fun i hi c c' x => ?_, fun c c' x => ?_, fun c c' x q e => ?_, fun c c' x d e => ?_, fun i hi => kRat_true l (hR i hi) (hE i hi), pRat_true l u a, ⟨hL.last_uniq.choose⟩, fun b => ?_⟩` and prove the remaining obligations. Rewrite using `[← kAt_mat (Pr := B.primes X) B.wts I.Ch I.A u hL hi, Idx.of_get, Idx.of_get]`. Conclude with `hR i (by omega) c c' x`. Rewrite using `[← kernelAtPoint_penultimateStep_firstCoupledKernel (Pr := B.primes X) B.wts I.Ch I.A u hL _ c'.1, Idx.of_get]`. Conclude with `hR _ (by omega) c c' x`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨_, hR (B.R.m - 2 + 1) (by omega) c c' x, kAt_top_heq (Pr := B.primes X) B.wts I.A u hL c.1 c'.1 _ _ q e x⟩`. Rewrite using `[← k2top_tilF hX l.pr h.sel_ok hm hL.cst_ok (tilOk I h u a) (tameFr_chTh (Pr := B.primes X) B.wts I.Ch I.sel (I.tup a) (I.cst a) I.A u _)]`. Conclude with `⟨_, hR (B.R.m - 2 + 1) (by omega) c c' x, kAt_top_heq (Pr := B.primes X) B.wts I.A u hL c.1 c'.1 _ _ _ ((eq_tilAt_iff I.sel (I.tup a) _ _ d).1 e) x⟩`. Establish `hY` using `ybHyp (Pr := B.primes X) (cst := I.cst a) u hm b`. Establish `hK` using `kerEquivC (Pr := B.primes X) B.wts I.A u hX l.pr h.sel_ok ⟨h.T_mem u, h.g_mem⟩ hL (h.sharp a) hT b hY`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hF` using `chF_ok (Pr := B.primes X) B.wts u hX hL`. Establish `hM` using `mtildeOk (Pr := B.primes X) B.wts I.Ch I.sel (I.tup a) hX I.Ps`. Conclude with `⟨hY, hK, hF, hM, period_true l h hR hE hY hK hF hM⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem kernelsOver_of_ok (h : I.Ok) (hJ : I.JetsIn) (u : B.Word) (a : I.ι)
     (hT : ChTh.Ok (Ch := I.Ch) (I.cst a) (thTrue I u a (B.R.m - 2)))
@@ -353,7 +351,7 @@ abbrev FamilyLaws : Prop :=
   (I.J.toRec B (I.cols l) Z.W Z.V Z.S Z.N Z.G).EqP I.chi ∧ (I.J.toRec B (I.cols l) Z.W Z.V Z.S Z.N Z.G).VecP I.chi
 
 /- English proof (translation)
-Establish `h1 : ThHyp (Pr` using `B.primes X) B.wts I.Ch I.sel (I.tup a) (I.cst a) I.A u (B.R.m - 2) := by`. Rewrite using `[ColIn.A, AmbIn.amb_eq_ambOf B (I.cols l) Z.W Z.V Z.S Z.N Z.G]`. Conclude with `hT.2.2`. Conclude with `kernelsOver_of_ok I l h hJ u a (chTh_ok_of_thHyp (Pr := B.primes X) B.wts I.A u l.pr (h.idx_ok a) h1) fun i hi => ⟨(anaStep_of_thHyp (Pr := B.primes X) B.wts I.A u h.hm h1 hi).1, (anaStep_of_thHyp (Pr := B.primes X) B.wts I.A u h.hm h1 hi).2.1⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kernelsOver_of_thHyp (h : I.Ok) (hJ : I.JetsIn) (u : B.Word) (a : I.ι) (hT : ThHypAt I l Z u a) : KernelsOver I l h u a := by
   have h1 : ThHyp (Pr := B.primes X) B.wts I.Ch I.sel (I.tup a) (I.cst a) I.A u (B.R.m - 2) := by
@@ -363,14 +361,14 @@ theorem kernelsOver_of_thHyp (h : I.Ok) (hJ : I.JetsIn) (u : B.Word) (a : I.ι) 
     ⟨(anaStep_of_thHyp (Pr := B.primes X) B.wts I.A u h.hm h1 hi).1, (anaStep_of_thHyp (Pr := B.primes X) B.wts I.A u h.hm h1 hi).2.1⟩
 
 /- English proof (translation)
-The claim follows from `kernelsOver_of_ok I l h hJ u a (ChainTheta.chTh_ok_of_colIn' B _ Z.W Z.V Z.S Z.N Z.G I h hJ hT.1 hT.2 a u) fun i _ => LvT.Built.KMap.laHyp_of_vecP I _ Z.W Z.V Z.S Z.N Z.G h hT.2 a u i (i + 1)`.
+A detailed English derivation is pending.
 -/
 theorem kernelsOver_of_family (h : I.Ok) (hJ : I.JetsIn) (hT : FamilyLaws I l Z) (u : B.Word) (a : I.ι) : KernelsOver I l h u a :=
   kernelsOver_of_ok I l h hJ u a (ChainTheta.chTh_ok_of_colIn' B _ Z.W Z.V Z.S Z.N Z.G I h hJ hT.1 hT.2 a u) fun i _ =>
     LvT.Built.KMap.laHyp_of_vecP I _ Z.W Z.V Z.S Z.N Z.G h hT.2 a u i (i + 1)
 
 /- English proof (translation)
-Establish `key : ∀ u a, KernelsOver I l h u a` using `fun u a => hT.elim (fun hT => kernelsOver_of_thHyp I l Z h hJ u a (hT u a)) fun hT => kernelsOver_of_family I l Z h hJ hT u a`. Conclude with `⟨key, fun u => ⟨(key u I.mu0).krat, (key u I.mu0).prat⟩, fun _ u μ => ⟨(key u μ).krat, (key u μ).prat⟩⟩`.
+Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem kernels_rational (h : I.Ok) (hJ : I.JetsIn) (hT : (∀ u a, ThHypAt I l Z u a) ∨ FamilyLaws I l Z) :
     (∀ u a, KernelsOver I l h u a) ∧

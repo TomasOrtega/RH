@@ -15,35 +15,35 @@ import Formalism.HermitianCurvature.HermitianCurvatureProofs.MinusLetterFrameOfD
 namespace Formalism.FourierDecayAlt.P
 
 /- English proof (translation)
-The claim follows from `plus_letter_frame_of_data position_insertion_mul_compat position_insertion_star_compat position_insertion_diagonal_compat position_insertion_free_compat letter_module_plus rtt_relation_entries plus_letter_form plus_letter_tau plus_letter_l`.
+A detailed English derivation is pending.
 -/
 theorem plus_letter_maps_frames : Formalism.FourierDecayAlt.Fr.PlusStep :=
   plus_letter_frame_of_data position_insertion_mul_compat position_insertion_star_compat position_insertion_diagonal_compat position_insertion_free_compat letter_module_plus
     rtt_relation_entries plus_letter_form plus_letter_tau plus_letter_l
 
 /- English proof (translation)
-The claim follows from `minus_letter_frame_of_data position_insertion_mul_compat position_insertion_star_compat position_insertion_diagonal_compat position_insertion_free_compat letter_module_minus rtt_relation_entries minus_letter_form minus_letter_tau minus_letter_l`.
+A detailed English derivation is pending.
 -/
 theorem minus_letter_maps_frames : Formalism.FourierDecayAlt.Fr.MinusStep :=
   minus_letter_frame_of_data position_insertion_mul_compat position_insertion_star_compat position_insertion_diagonal_compat position_insertion_free_compat letter_module_minus
     rtt_relation_entries minus_letter_form minus_letter_tau minus_letter_l
 
 /- English proof (translation)
-The claim follows from `(frame_of_steps start_is_frame initial_module_structure plus_letter_maps_frames minus_letter_maps_frames frame_free_of_new_position frame_module_of_word).1`.
+A detailed English derivation is pending.
 -/
 theorem frame_of_admissible_word : Formalism.FourierDecayAlt.Fr.FrameAll :=
   (frame_of_steps start_is_frame initial_module_structure plus_letter_maps_frames minus_letter_maps_frames
     frame_free_of_new_position frame_module_of_word).1
 
 /- English proof (translation)
-The claim follows from `(frame_of_steps start_is_frame initial_module_structure plus_letter_maps_frames minus_letter_maps_frames frame_free_of_new_position frame_module_of_word).2`.
+A detailed English derivation is pending.
 -/
 theorem frame_eq_word_module : Formalism.FourierDecayAlt.Fr.FrameWord :=
   (frame_of_steps start_is_frame initial_module_structure plus_letter_maps_frames minus_letter_maps_frames
     frame_free_of_new_position frame_module_of_word).2
 
 /- English proof (translation)
-The claim follows from `frame_rec_of_steps start_is_frame initial_module_structure plus_letter_maps_frames minus_letter_maps_frames frame_free_of_new_position`.
+A detailed English derivation is pending.
 -/
 theorem frame_of_recursive_word : Formalism.FourierDecayAlt.Fr.FrameAllRec :=
   frame_rec_of_steps start_is_frame initial_module_structure plus_letter_maps_frames minus_letter_maps_frames

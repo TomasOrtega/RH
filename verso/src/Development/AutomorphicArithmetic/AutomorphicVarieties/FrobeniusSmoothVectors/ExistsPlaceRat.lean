@@ -5,13 +5,11 @@ import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.LengthCyclotom
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal IsLocalRing UpperTheory.V.HV UpperTheory.V.U3 UpperTheory.V.Base UpperTheory.V.Pr UpperTheory.V.Fr UpperTheory.V
 
 /- English proof (translation)
-Establish `hne : ((w : ℕ) : 𝓞 ℚ) ≠ 0` using `by exact_mod_cast hw.ne_zero`. Establish `hprime : Prime ((w : ℕ) : 𝓞 ℚ)`. Rewrite using `[← MulEquiv.prime_iff Rat.ringOfIntegersEquiv, map_natCast]`. Conclude with `Nat.prime_iff_prime_int.mp hw`. Establish `hP : (Ideal.span {((w : ℕ) : 𝓞 ℚ)}).IsPrime` using `(Ideal.span_singleton_prime hne).mpr hprime`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hbot : Ideal.span {((w : ℕ) : 𝓞 ℚ)} ≠ ⊥`. Rewrite using `[Ne, Ideal.span_singleton_eq_bot]`. Conclude with `hne`. Establish `hmax` using `hP.isMaximal hbot`. Set `v₀ : HeightOneSpectrum (𝓞 ℚ)` to `⟨Ideal.span {((w : ℕ) : 𝓞 ℚ)}, hP, hbot⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨v₀, fun v => ⟨fun hv => ?_, fun hv => ?_⟩⟩` and prove the remaining obligations. Rewrite using `[HeightOneSpectrum.ext_iff]`. Use `symm`. Conclude with `hmax.eq_of_le v.isPrime.ne_top ((Ideal.span_singleton_le_iff_mem _).mpr hv)`. Rewrite using `[hv]`.
-
-Conclude with `Ideal.subset_span (Set.mem_singleton _)`.
+Use symmetry to reverse the relation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem exists_place_rat {w : ℕ} (hw : w.Prime) :
     ∃ v₀ : HeightOneSpectrum (𝓞 ℚ), ∀ v : HeightOneSpectrum (𝓞 ℚ), ((w : ℕ) : 𝓞 ℚ) ∈ v.asIdeal ↔ v = v₀ := by
@@ -33,7 +31,7 @@ private theorem exists_place_rat {w : ℕ} (hw : w.Prime) :
     exact Ideal.subset_span (Set.mem_singleton _)
 
 /- English proof (translation)
-Establish `h0 : Ideal.span {(n : 𝓞 ℚ)} ≠ 0`. Rewrite using `[Ne, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot]`. Conclude with `Nat.cast_ne_zero.2 hn`. Use `(Ideal.finite_factors h0).subset fun v hv => ?_` and prove the remaining obligations. Conclude with `Ideal.dvd_span_singleton.2 hv`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem finite_above {n : ℕ} (hn : n ≠ 0) :
     {v : HeightOneSpectrum (𝓞 ℚ) | ((n : ℕ) : 𝓞 ℚ) ∈ v.asIdeal}.Finite := by
@@ -44,21 +42,21 @@ private theorem finite_above {n : ℕ} (hn : n ≠ 0) :
   exact Ideal.dvd_span_singleton.2 hv
 
 /- English proof (translation)
-Introduce `Ω _ _ _ l w N hl hw hN C _ κ hκ`. Take `⟨v₀, hv₀⟩` from `exists_place_rat hw`. Establish `hT` using `finite_above (n := l * w * N) (mul_ne_zero (mul_ne_zero hl.ne_zero hw.ne_zero) hN)`. Establish `key : ∀ (A A' : ValuationSubring Ω) (v : HeightOneSpectrum (𝓞 ℚ)), IsPlaceOver A v → IsPlaceOver A' v → Ine (F` using `ℚ) A ≤ κ.ker → Ine (F := ℚ) A' ≤ κ.ker := by`. Introduce `A A' v hA hA' hle τ hτ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨σ, rfl⟩` from `exists_smul_eq_of_isPlaceOver hA hA'`. Establish `h1` using `hle (GlobalTheory.Cut.ShaBound.conj_mem_Ine' hτ)`. Establish `h2` using `κ.normal_ker.conj_mem _ h1 σ`. Simplify `h2` using `[mul_assoc]`. Establish `hN' : ∀ (A : ValuationSubring Ω) (v : HeightOneSpectrum (𝓞 ℚ)), IsPlaceOver A v → ¬ Ine (F` using `ℚ) A ≤ κ.ker → ((N : ℕ) : 𝓞 ℚ) ∈ v.asIdeal := by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Introduce `A v hA hne`. Establish `h1 : A.valuation (N : Ω) < 1`. Assume the negation of the conclusion as `h`. Conclude with `hne (hκ A h)`. Rewrite using `[← hA (N : 𝓞 ℚ)]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using h1`. Use `⟨hT.toFinset.filter (fun v => ((l : ℕ) : 𝓞 ℚ) ∈ v.asIdeal ∨ v = v₀ ∨ ∃ A : ValuationSubring Ω, IsPlaceOver A v ∧ ¬ Ine (F := ℚ) A ≤ κ.ker), v₀, hv₀, ?_⟩` and prove the remaining obligations. Introduce `v A hA`. Rewrite using `[Finset.mem_filter, Set.Finite.mem_toFinset, Set.mem_setOf_eq]`. Prove the components needed by the constructor for the conclusion.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨-, h | h | ⟨A', hA', hne⟩⟩`. Conclude with `Or.inl h`. Conclude with `Or.inr (Or.inl h)`. Conclude with `Or.inr (Or.inr (fun hle => hne (key A A' v hA hA' hle)))`. Introduce `h`.
+Prove the first alternative. Prove the second alternative. Prove the second alternative. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `hmem : ((l : ℕ) : 𝓞 ℚ) ∈ v.asIdeal ∨ ((w : ℕ) : 𝓞 ℚ) ∈ v.asIdeal ∨ ((N : ℕ) : 𝓞 ℚ) ∈ v.asIdeal`. Break down `h with h | h | h` into its components or cases. Conclude with `Or.inl h`. Conclude with `Or.inr (Or.inl ((hv₀ v).mpr h))`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Prove the second alternative. Prove the second alternative.
 
-Conclude with `Or.inr (Or.inr (hN' A v hA h))`. Use `push_cast`. Break down `hmem with h | h | h` into its components or cases. Conclude with `v.asIdeal.mul_mem_right _ (v.asIdeal.mul_mem_right _ h)`. Conclude with `v.asIdeal.mul_mem_right _ (v.asIdeal.mul_mem_left _ h)`.
+Move the embeddings inside the algebraic operations. Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Prove the second alternative.
 
-Conclude with `v.asIdeal.mul_mem_left _ h`. Break down `h with h | h | h` into its components or cases. Conclude with `Or.inl h`. Conclude with `Or.inr (Or.inl h)`. Conclude with `Or.inr (Or.inr ⟨A, hA, h⟩)`.
+Prove the second alternative. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Fr.st_set :
     ∀ (Ω : Type) [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] (l w N : ℕ), l.Prime → w.Prime → N ≠ 0 → ∀ (C : Type) [Group C] (κ : G ℚ Ω →* C), (∀ A : ValuationSubring Ω, ¬ A.valuation (N : Ω) < 1 → Ine (F := ℚ) A ≤ κ.ker) → ∃ (S : Finset (HeightOneSpectrum (𝓞 ℚ))) (v₀ : HeightOneSpectrum (𝓞 ℚ)), (∀ v : HeightOneSpectrum (𝓞 ℚ), ((w : ℕ) : 𝓞 ℚ) ∈ v.asIdeal ↔ v = v₀) ∧ ∀ (v : HeightOneSpectrum (𝓞 ℚ)) (A : ValuationSubring Ω), IsPlaceOver A v → (v ∈ S ↔ ((l : ℕ) : 𝓞 ℚ) ∈ v.asIdeal ∨ v = v₀ ∨ ¬ Ine (F := ℚ) A ≤ κ.ker) := by

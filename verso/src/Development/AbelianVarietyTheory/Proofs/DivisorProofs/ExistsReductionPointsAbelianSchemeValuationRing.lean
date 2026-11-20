@@ -18,23 +18,21 @@ noncomputable section
 namespace GlobalTheory.ValReduction
 
 /- English proof (translation)
-Introduce `U Ω k _ _ _ _ _ _ _ _ _ h S G _ hA u`. Take `⟨e, he⟩` from `GlobalTheory.ValPts.points_generic_mulEquiv U Ω S G hA.proper u`. Set `Vk : Over.mk (spMap h ≫ u) ⟶ Over.mk u` to `Over.homMk (spMap h) rfl`. Set `φ : (Over.mk u ⟶ G) →* (Over.mk (spMap h ≫ u) ⟶ G)` to `MonoidHom.mk' (Vk ≫ ·) fun x y => MonObj.comp_mul Vk x y`. Establish `hφ : ∀ P, (φ P).left = spMap h ≫ P.left` using `fun P => rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hes : ∀ (P : Over.mk u ⟶ G) y, y.left = spMap (algebraMap U Ω) ≫ P.left → e.symm y = P`. Introduce `P y hy`. Rewrite using `[MulEquiv.symm_apply_eq]`. Conclude with `Over.OverMorphism.ext (hy.trans (he P).symm)`. Establish `hey : ∀ y, y.left = spMap (algebraMap U Ω) ≫ (e.symm y).left` using `fun y => by`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← he]`. Simplify using the standard rewrite rules. Use `⟨φ.comp e.symm.toMonoidHom, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `P y y₀ hy hy₀`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Simplify using `only [MonoidHom.comp_apply, MulEquiv.coe_toMonoidHom]`. Rewrite using `[hes P y hy, hφ, hy₀]`. Introduce `f y`. Simplify using `only [MonoidHom.comp_apply, MulEquiv.coe_toMonoidHom]`. Establish `: e.symm (y ≫ f) = e.symm y ≫ f` using `hes _ _ (by`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Over.comp_left, hey y, Category.assoc, Over.comp_left])`. Rewrite using `[this]`. Conclude with `(Category.assoc Vk (e.symm y) f).symm`. Introduce `n hn`. Use `⟨fun y (hy : y ^ n = 1) => (show _ ^ n = 1 by rw [← map_pow, hy, map_one]), ?_, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `y (hy : y ^ n = 1) y' (hy' : y' ^ n = 1) hyy`. Establish `hP : (e.symm y) ^ n = 1` using `by rw [← map_pow, hy, map_one]`. Establish `hP' : (e.symm y') ^ n = 1` using `by rw [← map_pow, hy', map_one]`. Take `⟨Q, -, hQ⟩` from `GlobalTheory.T.torsion_lift_unique_valuationRing_algClosed U Ω k h S G hA u n hn ((φ.comp e.symm.toMonoidHom) y) (by rw [← map_pow, hy, map_one])`. Establish `h1` using `hQ (e.symm y) ⟨hP, rfl⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h2` using `hQ (e.symm y') ⟨hP', by rw [hyy]; rfl⟩`. Conclude with `e.symm.injective (h1.trans h2.symm)`. Introduce `y₀ (hy₀ : y₀ ^ n = 1)`. Take `⟨P, ⟨hP, hPy⟩, -⟩` from `GlobalTheory.T.torsion_lift_unique_valuationRing_algClosed U Ω k h S G hA u n hn y₀ hy₀`. Use `⟨e P, (show e P ^ n = 1 by rw [← map_pow, hP, map_one]), ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Simplify using `only [MonoidHom.comp_apply, MulEquiv.coe_toMonoidHom, MulEquiv.symm_apply_apply]`. Rewrite using `[hφ, hPy]`. Introduce `Lb hLb n hn y y' c hy hy' H`. Establish `hP : (e.symm y) ^ n = 1` using `by rw [← map_pow, hy, map_one]`.
-
-Establish `hP' : (e.symm y') ^ n = 1` using `by rw [← map_pow, hy', map_one]`. Conclude with `GlobalTheory.WeilSpecialise.weilIs_specialise U Ω S G hA Lb hLb u n hn (e.symm y) (e.symm y') c hP hP' y y' (hey y) (hey y') H k h _ _ rfl rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem reduction_points : ∀ (U Ω k : Type) [CommRing U] [IsDomain U] [ValuationRing U] [Field Ω] [IsAlgClosed Ω] [Algebra U Ω] [IsFractionRing U Ω] [Field k] [IsAlgClosed k] (h : U →+* k) (S : Scheme.{0}) (G : Over S) [GrpObj G], IsAbelianScheme G → ∀ u : Sp U ⟶ S, ∃ r : (Over.mk (spMap (algebraMap U Ω) ≫ u) ⟶ G) →* (Over.mk (spMap h ≫ u) ⟶ G), (∀ (P : Over.mk u ⟶ G) y y₀, y.left = spMap (algebraMap U Ω) ≫ P.left → y₀.left = spMap h ≫ P.left → r y = y₀) ∧ (∀ (f : G ⟶ G) y, r (y ≫ f) = r y ≫ f) ∧ (∀ n : ℕ, IsUnit (n : U) → Set.BijOn r {y | y ^ n = 1} {y | y ^ n = 1}) ∧ ∀ (Lb : LB G.left), Lb.IsLB → ∀ n : ℕ, IsUnit (n : U) → ∀ y y' (c : Uˣ), y ^ n = 1 → y' ^ n = 1 → Out.WeilIs G Lb n y y' (unitOn (Units.map (algebraMap U Ω : U →* Ω) c)) → Out.WeilIs G Lb n (r y) (r y') (unitOn (Units.map (h : U →* k) c)) := by
   intro U Ω k _ _ _ _ _ _ _ _ _ h S G _ hA u

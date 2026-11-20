@@ -13,23 +13,21 @@ namespace GlobalTheory.KeyOriginTransport
 open GlobalTheory.KeyOriginBC
 
 /- English proof (translation)
-Introduce `H A R _ _ _ _ _ hAR A₁ R₁ _ _ _ _ _ hAR₁ f hf φ hφ β hβ DA _ _ q act hq hqA htor P₁ _ hS₁ hS π hπ y hy`. Use `haveI := hS₁`. Use `haveI := hS`. Use `letI algSS₁ : Algebra (Localization.AtPrime (P₁.comap φ)) (Localization.AtPrime P₁) := (Localization.localRingHom (P₁.comap φ) P₁ φ rfl).toAlgebra`. Establish `hloc : ∀ r : R, algebraMap (Localization.AtPrime (P₁.comap φ)) (Localization.AtPrime P₁) (algebraMap R (Localization.AtPrime (P₁.comap φ)) r) = algebraMap R₁ (Localization.AtPrime P₁) (φ r)` using `Localization.localRingHom_to_map _ _ _ rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hR₁S₁ : Function.Injective (algebraMap R₁ (Localization.AtPrime P₁))` using `IsLocalization.injective _ P₁.primeCompl_le_nonZeroDivisors`. Establish `hRS : Function.Injective (algebraMap R (Localization.AtPrime (P₁.comap φ)))` using `IsLocalization.injective _ (P₁.comap φ).primeCompl_le_nonZeroDivisors`. Establish `hπS : algebraMap A (Localization.AtPrime (P₁.comap φ)) π = algebraMap R (Localization.AtPrime (P₁.comap φ)) (algebraMap A R π)` using `IsScalarTower.algebraMap_apply A R _ π`. Establish `hφw : φ (algebraMap A R π) = algebraMap A₁ R₁ (f π)`. Rewrite using `[← RingHom.comp_apply, hφ]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Establish `hπ0 : f π ≠ 0`. Introduce `h`. Apply `hπ.ne_zero` to reduce the goal to its premises. Establish `h0 : π = 0` using `(injective_iff_map_eq_zero f).1 hf π h`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[h0, map_zero]`. Establish `hx0 : algebraMap R₁ (Localization.AtPrime P₁) (φ (algebraMap A R π)) ≠ 0`. Rewrite using `[hφw]`. Introduce `h`. Conclude with `hπ0 ((injective_iff_map_eq_zero _).1 hAR₁ _ ((injective_iff_map_eq_zero _).1 hR₁S₁ _ h))`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hxu : ¬ IsUnit (algebraMap R₁ (Localization.AtPrime P₁) (φ (algebraMap A R π)))`. Introduce `hu`. Rewrite `hu` using `[← hloc]`. Use `haveI := Localization.isLocalHom_localRingHom (P₁.comap φ) P₁ φ rfl`. Apply `hπ.not_isUnit` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hπS]`. Conclude with `isUnit_of_map_unit (Localization.localRingHom (P₁.comap φ) P₁ φ rfl) _ hu`. Establish `hSS₁ : Function.Injective (algebraMap (Localization.AtPrime (P₁.comap φ)) (Localization.AtPrime P₁))`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `x hx`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hx0'`. Take `⟨n, hn⟩` from `IsDiscreteValuationRing.associated_pow_irreducible hx0' hπ`. Establish `h2` using `hn.map (algebraMap (Localization.AtPrime (P₁.comap φ)) (Localization.AtPrime P₁))`. Rewrite `h2` using `[hx, map_pow, hπS, hloc]`. Conclude with `pow_ne_zero n hx0 (h2.eq_zero_iff.1 rfl)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hqS : IsUnit ((q : Localization.AtPrime (P₁.comap φ)))`. Use `hqA.map (algebraMap A (Localization.AtPrime (P₁.comap φ)))` as an intermediate fact. Rewrite `this` using `[map_natCast]`. Then use the resulting hypothesis. Establish `hy' : (algebraMap R₁ (Localization.AtPrime P₁) y) ^ q = algebraMap (Localization.AtPrime (P₁.comap φ)) (Localization.AtPrime P₁) (algebraMap A (Localization.AtPrime (P₁.comap φ)) π)`. Rewrite using `[← map_pow, hy, hπS, hloc]`.
-
-Establish `hxB : IsUnit (algebraMap R₁ (GlobalTheory.LocAcyc.GenFib A₁ R₁) (φ (algebraMap A R π)))`. Rewrite using `[hφw]`. Conclude with `IsLocalization.map_units (GlobalTheory.LocAcyc.GenFib A₁ R₁) (⟨algebraMap A₁ R₁ (f π), f π, mem_nonZeroDivisors_of_ne_zero hπ0, rfl⟩ : Algebra.algebraMapSubmonoid R₁ (nonZeroDivisors A₁))`. Conclude with `etale_closure_core H A R hAR A₁ R₁ hAR₁ φ β hβ DA q act hq htor (Localization.AtPrime (P₁.comap φ)) (Localization.AtPrime P₁) hRS hR₁S₁ hloc hSS₁ hqS (algebraMap A _ π) hπ (algebraMap R₁ _ y) hy' (φ (algebraMap A R π)) hx0 hxu hxB`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem etale_closure_of_field : (∀ (S S₁ K K₁ : Type) [CommRing S] [IsDomain S] [IsDiscreteValuationRing S] [CommRing S₁]
     [IsDomain S₁] [IsDiscreteValuationRing S₁] [Field K] [Algebra S K] [IsFractionRing S K] [Field K₁]

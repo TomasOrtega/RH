@@ -16,9 +16,7 @@ open scoped TensorProduct
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 set_option synthInstance.maxHeartbeats 200000
 /- English proof (translation)
-Use `haveI : CharP (O ⧸ maximalIdeal O) l := inferInstanceAs (CharP (ResidueField O) l)`. Use `haveI : PerfectRing (ResidueField O) l := inferInstance`. Set `j : ResidueField O →+* Perfection (O ⧸ maximalIdeal O) l` to `Perfection.lift l (ResidueField O) (O ⧸ maximalIdeal O) (RingHom.id (ResidueField O))`. Establish `hj : ∀ x, Perfection.coeff (O ⧸ maximalIdeal O) l 0 (j x) = x` using `fun x => by`. Use `(Perfection.lift l (ResidueField O) (O ⧸ maximalIdeal O)).symm_apply_apply (RingHom.id (ResidueField O))` as an intermediate fact.
-
-Conclude with `RingHom.congr_fun this x`. Use `⟨(Perfection.teichmuller l (maximalIdeal O)).comp j, fun x => ?_⟩` and prove the remaining obligations. Conclude with `(Perfection.mk_teichmuller (j x)).trans (hj x)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem au_teich_ex (l : ℕ) [Fact l.Prime] (O : Type) [CommRing O] [IsLocalRing O]
     [IsAdicComplete (maximalIdeal O) O] [Finite (ResidueField O)] [CharP (ResidueField O) l] :
@@ -33,9 +31,9 @@ private theorem au_teich_ex (l : ℕ) [Fact l.Prime] (O : Type) [CommRing O] [Is
   refine ⟨(Perfection.teichmuller l (maximalIdeal O)).comp j, fun x => ?_⟩
   exact (Perfection.mk_teichmuller (j x)).trans (hj x)
 /- English proof (translation)
-Take `⟨hc, hfin, hlm, -⟩` from `UpperTheory.V.abelian₂.dvr_finite l c.O`. Use `haveI : Finite (ResidueField c.O) := hfin`. Use `haveI : CharP (ResidueField c.O) l := by`. Use `(CharP.charP_iff_prime_eq_zero hl.out).2 ?_` and prove the remaining obligations. Rewrite using `[← map_natCast (residue c.O), residue_eq_zero_iff]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hlm`. Take `⟨τ, hτ⟩` from `au_teich_ex l c.O`. Use `⟨fun i => (Units.map τ).comp (r.chib i), fun i g => ⟨hτ _, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[MonoidHom.comp_apply, ← map_pow, ← Nat.card_units, pow_card_eq_one', map_one]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem au_isTeich {l : ℕ} [hl : Fact l.Prime] {F : W.GFrame l} (c : Coef l) {n : ℕ} (r : Resid F c.O n) :
     ∃ t, r.IsTeich t := by
@@ -49,7 +47,7 @@ private theorem au_isTeich {l : ℕ} [hl : Fact l.Prime] {F : W.GFrame l} (c : C
   refine ⟨fun i => (Units.map τ).comp (r.chib i), fun i g => ⟨hτ _, ?_⟩⟩
   rw [MonoidHom.comp_apply, ← map_pow, ← Nat.card_units, pow_card_eq_one', map_one]
 /- English proof (translation)
-Establish `: ((Matrix.GeneralLinearGroup.map f).comp τ).ker = τ.ker`. Use `MonoidHom.ker_comp_of_injective _ _ fun a b hab => ?_` and prove the remaining obligations. Use extensionality with `i j`. Conclude with `hf (congrArg (fun x : GL (Fin m) ℂ => (x : Matrix (Fin m) (Fin m) ℂ) i j) hab)`. Rewrite `h` using `[this]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 private theorem au_open {G O : Type} [Group G] [TopologicalSpace G] [CommRing O] {m : ℕ} (f : O →+* ℂ) (hf : Function.Injective f)
     (τ : G →* GL (Fin m) O) (h : IsOpen (((Matrix.GeneralLinearGroup.map f).comp τ).ker : Set G)) : IsOpen (τ.ker : Set G) := by
@@ -59,11 +57,11 @@ private theorem au_open {G O : Type} [Group G] [TopologicalSpace G] [CommRing O]
     exact hf (congrArg (fun x : GL (Fin m) ℂ => (x : Matrix (Fin m) (Fin m) ℂ) i j) hab)
   rwa [this] at h
 /- English proof (translation)
-Introduce `hP l _ L Ω _ _ _ _ _ _ s n hn V Q c r ι m τ₀ hτ lam _ d ξ hξ F hF hK hI`. Take `⟨e, he⟩` from `hξ`. Take `⟨t, ht⟩` from `au_isTeich c r`. Establish `hop : IsOpen (τ₀.ker : Set (KT n (wt s)))` using `au_open _ (ι.injective.comp Subtype.val_injective) τ₀ (hτ t ht).1`. Establish `h1` using `decompU l L Ω s n hn V Q c m τ₀ ι hop lam d e ξ he F hF hK hI`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `SetLike.le_def.1 (iSup_le fun σ => ?_) h1` and prove the remaining obligations. Distinguish the cases in `h0 : YOf Q ι τ₀ e ξ σ.1 = ⊥`. Rewrite using `[h0]`. Conclude with `bot_le`. Take `⟨Y, hY, hPU, -⟩` from `_root_.UpperTheory.V.Z.Desc.P.partU_alt hP l L Ω s n hn V Q c r ι m τ₀ hτ lam d e ξ he σ.1 σ.2 h0`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hY]`. Conclude with `le_iSup (fun Y : {Y : (hset Q τ₀).PartAltAlt ι lam ξ // _root_.UpperTheory.V.Hi.CaseU.UnitaryPointProperties r ι lam Y.r} => Y.1.Y) ⟨Y, hPU⟩`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Hi.automorphicHeckeSet_unitaryPointProperties_of_typeFor :
     _root_.UpperTheory.V.Af.HypothesesH' → ∀ (l : ℕ) [Fact l.Prime] (L Ω : Type) [Field L] [NumberField L] [IsCMField L] [Field Ω] [Algebra L Ω] [IsAlgClosure L Ω] (s : HidaSetting l L Ω) (n : ℕ), 1 ≤ n →

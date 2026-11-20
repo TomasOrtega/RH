@@ -15,15 +15,15 @@ namespace GlobalTheory.WeylShift
 variable (R : Type) [CommRing R]
 
 /- English proof (translation)
-Establish `hC : (Polynomial.C (detPol R n) : Polynomial (MvPolynomial (Fin n × Fin n) R)) = Matrix.det (Matrix.of fun p s : Fin n => (Polynomial.C (X (p, s)) : Polynomial (MvPolynomial (Fin n × Fin n) R)))`. Unfold `detPol`. Rewrite using `[RingHom.map_det]`. Both sides reduce to the same expression. Rewrite using `[hC]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Use `set A := (Matrix.of fun p s : Fin n => (Polynomial.C (X (p, s)) : Polynomial (MvPolynomial (Fin n × Fin n) R))) with hA`. Establish `h1 : rowGen R a b (detPol R n) = Matrix.det (A.updateRow b (A b + (Polynomial.X : Polynomial (MvPolynomial (Fin n × Fin n) R)) • A a))`. Unfold `detPol`. Rewrite using `[AlgHom.map_det]`. Use `congr 1`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Consider separately whether the proposition holds or fails.
 
-Use `ext1 p s`. Distinguish the cases in `hp : p = b`. Substitute `hp` using the available equality. Simplify using `[rowGen, hA]`. Simplify using `[rowGen, hA, hp, Matrix.updateRow_ne hp]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[h1]`. Distinguish the cases in `hab : a = b`. Substitute `hab` using the available equality. Rewrite using `[Matrix.det_updateRow_add, Matrix.det_updateRow_smul, Matrix.updateRow_eq_self, if_pos rfl]`. Expand and normalize the polynomial expressions, which then agree.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[Matrix.det_updateRow_add_smul_self A (Ne.symm hab), if_neg hab]`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem rowGen_detPol (n : ℕ) (a b : Fin n) :
     rowGen R a b (detPol R n) =
@@ -56,7 +56,7 @@ theorem rowGen_detPol (n : ℕ) (a b : Fin n) :
     ring
 
 /- English proof (translation)
-Unfold `rowDiv`. Rewrite using `[map_mul, rowGen_detPol]`. Apply the tactic sequence `split_ifs <;> simp [add_mul, mul_assoc]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem rowDiv_det_mul_zero (n : ℕ) (a b : Fin n) (g : MvPolynomial (Fin n × Fin n) R) :
     rowDiv R a b 0 (detPol R n * g) = detPol R n * rowDiv R a b 0 g := by
@@ -65,7 +65,7 @@ theorem rowDiv_det_mul_zero (n : ℕ) (a b : Fin n) (g : MvPolynomial (Fin n × 
   split_ifs <;> simp [add_mul, mul_assoc]
 
 /- English proof (translation)
-Unfold `rowDiv`. Rewrite using `[map_mul, rowGen_detPol]`. Use `split_ifs`. Rewrite using `[add_mul, add_mul, one_mul, mul_assoc, Polynomial.coeff_add, Polynomial.coeff_X_mul, Polynomial.coeff_C_mul, Polynomial.coeff_C_mul]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem rowDiv_det_mul_succ (n : ℕ) (a b : Fin n) (j : ℕ) (g : MvPolynomial (Fin n × Fin n) R) :
     rowDiv R a b (j + 1) (detPol R n * g) =
@@ -78,18 +78,18 @@ theorem rowDiv_det_mul_succ (n : ℕ) (a b : Fin n) (j : ℕ) (g : MvPolynomial 
   · simp
 
 /- English proof (translation)
-Substitute `h` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem lpMinor_full (n s : ℕ) (h : s = n) (h1 h2 : s ≤ n) : lpMinor R s h1 h2 = detPol R n := by
   subst h
   rfl
 
 /- English proof (translation)
-Consider the cases of `n with`. Consider the case `zero => simp [hw, detPol]`. Consider the case `succ m`. Unfold `hw`. Rewrite using `[Fin.prod_univ_castSucc, Fin.prod_univ_castSucc]`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : ∀ s : Fin m, (ν s.castSucc + 1) - nuNext (fun a => ν a + 1) s.castSucc = ν s.castSucc - nuNext ν s.castSucc`. Introduce `s`. Establish `hs : s.castSucc.val + 1 < m + 1` using `by have := s.2; simp`. Simplify using `only [nuNext, dif_pos hs]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Establish `h2 : ∀ μ : Fin (m + 1) → ℕ, nuNext μ (Fin.last m) = 0`. Introduce `μ`. Simplify using `[nuNext]`. Simplify using `only [h1, h2, Nat.sub_zero]`. Rewrite using `[lpMinor_full R (m + 1) ((Fin.last m).val + 1) (by simp)]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -114,27 +114,23 @@ theorem hw_add_one (n : ℕ) (ν : Fin n → ℕ) :
     ring
 
 /- English proof (translation)
-Establish `key : weyl R n n le_rfl (fun a => ν a + 1) = (weyl R n n le_rfl ν).map (LinearMap.mulLeft R (detPol R n))`. Apply `le_antisymm` to reduce the goal to its premises. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨w, rfl⟩`. Proceed by induction on `w with`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Proceed by induction.
 
-Consider the case `nil`. Conclude with `⟨hw R le_rfl ν, Submodule.subset_span ⟨[], rfl⟩, (hw_add_one R n ν).symm⟩`. Consider the case `cons x w ih`. Take `⟨g, hg, hge⟩` from `ih`. Take `⟨a, b, j⟩` from `x`.
+Treat this case separately. Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `he : applyWord R ((a, b, j) :: w) (hw R le_rfl fun a => ν a + 1) = rowDiv R a b j (detPol R n * g)`. Establish `: detPol R n * g = applyWord R w (hw R le_rfl fun a => ν a + 1)` using `hge`. Rewrite using `[this]`. Both sides reduce to the same expression. Use `show applyWord R ((a, b, j) :: w) (hw R le_rfl fun a => ν a + 1) ∈ (weyl R n n le_rfl ν).map (LinearMap.mulLeft R (detPol R n))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[he]`. Establish `hm : ∀ i, detPol R n * rowDiv R a b i g ∈ (weyl R n n le_rfl ν).map (LinearMap.mulLeft R (detPol R n))` using `fun i => ⟨_, weylModuleRowDividedPowerStable R n n le_rfl ν a b i g hg, rfl⟩`. Consider the cases of `j with`. Consider the case `zero => rw [rowDiv_det_mul_zero]`. Conclude with `hm 0`.
+Establish an intermediate fact. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Consider the case `succ j`. Rewrite using `[rowDiv_det_mul_succ]`. Use `Submodule.add_mem _ (hm _) ?_` and prove the remaining obligations. Use `split_ifs`. Conclude with `hm _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Proceed by induction.
 
-Conclude with `Submodule.zero_mem _`. Rewrite using `[Submodule.map_le_iff_le_comap]`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨w, rfl⟩`. Use `show detPol R n * applyWord R w (hw R le_rfl ν) ∈ weyl R n n le_rfl (fun a => ν a + 1)`.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact.
 
-Proceed by induction on `w with`. Consider the case `nil`. Conclude with `Submodule.subset_span ⟨[], hw_add_one R n ν⟩`. Consider the case `cons x w ih`. Take `⟨a, b, j⟩` from `x`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `show detPol R n * rowDiv R a b j (applyWord R w (hw R le_rfl ν)) ∈ _`. Generalize the expression as in `applyWord R w (hw R le_rfl ν) = g at ih ⊢`. Establish `hm : ∀ i, rowDiv R a b i (detPol R n * g) ∈ weyl R n n le_rfl (fun a => ν a + 1)` using `fun i => weylModuleRowDividedPowerStable R n n le_rfl _ a b i _ ih`. Proceed by induction on `j with`. Consider the case `zero => rw [← rowDiv_det_mul_zero]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Conclude with `hm 0`. Consider the case `succ j ihj`. Establish `h` using `hm (j + 1)`. Rewrite `h` using `[rowDiv_det_mul_succ]`. Use `(Submodule.add_mem_iff_left _ ?_).1 h` and prove the remaining obligations.
-
-Use `split_ifs`. Conclude with `ihj`. Conclude with `Submodule.zero_mem _`. Rewrite using `[key, Submodule.mem_map]`. Prove the components needed by the constructor for the conclusion.
-
-Introduce and unpack `⟨g, hg, rfl⟩`. Conclude with `⟨g, hg, rfl⟩`. Introduce and unpack `⟨g, hg, rfl⟩`. Conclude with `⟨g, hg, rfl⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem mem_weyl_add_one (n : ℕ) (ν : Fin n → ℕ) (f : MvPolynomial (Fin n × Fin n) R) :
     f ∈ weyl R n n le_rfl (fun a => ν a + 1) ↔ ∃ g ∈ weyl R n n le_rfl ν, f = detPol R n * g := by
@@ -195,11 +191,11 @@ theorem mem_weyl_add_one (n : ℕ) (ν : Fin n → ℕ) (f : MvPolynomial (Fin n
   · rintro ⟨g, hg, rfl⟩; exact ⟨g, hg, rfl⟩
 
 /- English proof (translation)
-Proceed by induction on `k generalizing f with`. Consider the case `zero => simp`. Consider the case `succ k ih`. Establish `h` using `mem_weyl_add_one R n (fun a => ν a + k) f`. Use `Iff.trans h ?_` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨g, hg, rfl⟩`. Take `⟨g', hg', rfl⟩` from `(ih g).1 hg`. Conclude with `⟨g', hg', by ring⟩`. Introduce and unpack `⟨g, hg, rfl⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨_, (ih _).2 ⟨g, hg, rfl⟩, by ring⟩`.
+Supply the required witnesses or components.
 -/
 theorem mem_weyl_add (R : Type) [CommRing R] (n k : ℕ) (ν : Fin n → ℕ) (f : MvPolynomial (Fin n × Fin n) R) :
     f ∈ weyl R n n le_rfl (fun a => ν a + k) ↔ ∃ g ∈ weyl R n n le_rfl ν, f = detPol R n ^ k * g := by

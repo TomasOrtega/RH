@@ -37,144 +37,144 @@ import Development.EtaleCohomology.EtaleSheaves.ZarLocalPf
 namespace UpperTheory.Et.QuasiAffineEquivalence
 
 /- English proof (translation)
-The claim follows from `LateralTheory.E.QAClosedPf.QAClosed_of`.
+A detailed English derivation is pending.
 -/
 theorem a0 : LateralTheory.E.t_E1Cut.QAClosed := LateralTheory.E.QAClosedPf.QAClosed_of
 /- English proof (translation)
-The claim follows from `LateralTheory.E.LocSHPf.LocSH_of`.
+A detailed English derivation is pending.
 -/
 theorem a1 : LateralTheory.E.ZarLocalPf.LocSH := LateralTheory.E.LocSHPf.LocSH_of
 /- English proof (translation)
-The claim follows from `LateralTheory.E.LocDiagPf.LocDiag_of`.
+A detailed English derivation is pending.
 -/
 theorem a2 : LateralTheory.E.ZarLocalPf.LocDiag := LateralTheory.E.LocDiagPf.LocDiag_of
 /- English proof (translation)
-The claim follows from `LateralTheory.E.ZarLocalPf.ZarLocal_of a1 a2`.
+A detailed English derivation is pending.
 -/
 theorem a3 : LateralTheory.E.t_E1Cut.ZarLocal := LateralTheory.E.ZarLocalPf.ZarLocal_of a1 a2
 /- English proof (translation)
-The claim follows from `LateralTheory.E.LeafMVVanishPf.mvSpc`.
+A detailed English derivation is pending.
 -/
 theorem a4 : LateralTheory.E.MVPf.MVSpc := LateralTheory.E.LeafMVVanishPf.mvSpc
 /- English proof (translation)
-The claim follows from `LateralTheory.E.MVPf.StdCover_of`.
+A detailed English derivation is pending.
 -/
 theorem a5 : LateralTheory.E.MVPf.StdCover := LateralTheory.E.MVPf.StdCover_of
 /- English proof (translation)
-The claim follows from `LateralTheory.E.MVPf.StdPB_of`.
+A detailed English derivation is pending.
 -/
 theorem a6 : LateralTheory.E.MVPf.StdPB := LateralTheory.E.MVPf.StdPB_of
 /- English proof (translation)
-The claim follows from `LateralTheory.E.t_E1Cut.MV_of a4 a5 a6`.
+A detailed English derivation is pending.
 -/
 theorem a7 : LateralTheory.E.t_E1Cut.MV := LateralTheory.E.t_E1Cut.MV_of a4 a5 a6
 /- English proof (translation)
-The claim follows from `LateralTheory.E.LCMapPf.LCMap_of`.
+A detailed English derivation is pending.
 -/
 theorem a8 : LateralTheory.E.LocallyConstantH0.LCMap := LateralTheory.E.LCMapPf.LCMap_of
 /- English proof (translation)
-The claim follows from `LateralTheory.E.TwGenNZACPf.TwGenNZAC_of`.
+A detailed English derivation is pending.
 -/
 theorem a9 : LateralTheory.E.LCBijPf.TwGenNZAC := LateralTheory.E.TwGenNZACPf.TwGenNZAC_of
 /- English proof (translation)
-The claim follows from `LateralTheory.E.LocFormPf.LocForm_of`.
+A detailed English derivation is pending.
 -/
 theorem a10 : LateralTheory.E.LCSurjPf.LocForm := LateralTheory.E.LocFormPf.LocForm_of
 /- English proof (translation)
-The claim follows from `LateralTheory.E.DescentPf.Descent_of a9`.
+A detailed English derivation is pending.
 -/
 theorem a11 : LateralTheory.E.LCSurjPf.Descent := LateralTheory.E.DescentPf.Descent_of a9
 /- English proof (translation)
-The claim follows from `LateralTheory.E.LCSurjPf.LCSurj_of a10 a11`.
+A detailed English derivation is pending.
 -/
 theorem a12 : LateralTheory.E.LCBijPf.LCSurj := LateralTheory.E.LCSurjPf.LCSurj_of a10 a11
 /- English proof (translation)
-The claim follows from `LateralTheory.E.LCBijPf.LCBij_of a9 a12`.
+A detailed English derivation is pending.
 -/
 theorem a13 : LateralTheory.E.LocallyConstantH0.LCBij := LateralTheory.E.LCBijPf.LCBij_of a9 a12
 /- English proof (translation)
-The claim follows from `LateralTheory.E.LocallyConstantH0.localConstant_H0 a8 a13`.
+A detailed English derivation is pending.
 -/
 theorem a14 : LateralTheory.E.t_E1Cut.EtaleDegreeZeroCohomologyEquivLocallyConstantFunctions := LateralTheory.E.LocallyConstantH0.localConstant_H0 a8 a13
 /- English proof (translation)
-The claim follows from `LateralTheory.E.EtLiftPf.EtLift_of`.
+A detailed English derivation is pending.
 -/
 theorem a15 : LateralTheory.E.t_E1Cut.EtLift := LateralTheory.E.EtLiftPf.EtLift_of
 /- English proof (translation)
-Introduce `T C _ _ _ _ _ h` and use `UpperTheory.exists_orthogonalIdempotents_isDomain_of_etale T C h`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem a16 : LateralTheory.E.EtAICPf.Split := fun T C _ _ _ _ _ h => UpperTheory.exists_orthogonalIdempotents_isDomain_of_etale T C h
 /- English proof (translation)
-The claim follows from `LateralTheory.E.DomOpenPf.DomOpen_of`.
+A detailed English derivation is pending.
 -/
 theorem a17 : LateralTheory.E.EtAICPf.DomOpen := LateralTheory.E.DomOpenPf.DomOpen_of
 /- English proof (translation)
-The claim follows from `LateralTheory.E.EtAICPf.EtAIC_of a16 a17`.
+A detailed English derivation is pending.
 -/
 theorem a18 : LateralTheory.E.t_E1Cut.EtAIC := LateralTheory.E.EtAICPf.EtAIC_of a16 a17
 /- English proof (translation)
-The claim follows from `LateralTheory.E.PiecesPf.Pieces_of a15 a18`.
+A detailed English derivation is pending.
 -/
 theorem a19 : LateralTheory.E.FinEtSectionPf.Pieces := LateralTheory.E.PiecesPf.Pieces_of a15 a18
 /- English proof (translation)
-The claim follows from `LateralTheory.E.FinOpenPf.FinOpen_of`.
+A detailed English derivation is pending.
 -/
 theorem a20 : LateralTheory.E.FinEtSectionPf.FinOpen := LateralTheory.E.FinOpenPf.FinOpen_of
 /- English proof (translation)
-The claim follows from `LateralTheory.E.Gluing₂.Glue_of a15 a18`.
+A detailed English derivation is pending.
 -/
 theorem a21 : LateralTheory.E.FinEtSectionPf.Glue := LateralTheory.E.Gluing₂.Glue_of a15 a18
 /- English proof (translation)
-The claim follows from `LateralTheory.E.FinEtSectionPf.FinEtSection_of a15 a18 a19 a20 a21`.
+A detailed English derivation is pending.
 -/
 theorem a22 : LateralTheory.E.t_E1Cut.FinEtSection := LateralTheory.E.FinEtSectionPf.FinEtSection_of a15 a18 a19 a20 a21
 /- English proof (translation)
-The claim follows from `LateralTheory.E.ProjFPf.projF`.
+A detailed English derivation is pending.
 -/
 theorem a23 : LateralTheory.E.TorEtPf.ProjF := LateralTheory.E.ProjFPf.projF
 /- English proof (translation)
-The claim follows from `LateralTheory.E.ProjGPf.ProjG_of`.
+A detailed English derivation is pending.
 -/
 theorem a24 : LateralTheory.E.TorEtPf.ProjG := LateralTheory.E.ProjGPf.ProjG_of
 /- English proof (translation)
-The claim follows from `LateralTheory.E.TorEtPf.TorEt_of_proj a23 a24`.
+A detailed English derivation is pending.
 -/
 theorem a25 : LateralTheory.E.LCSplitPf.TorEt := LateralTheory.E.TorEtPf.TorEt_of_proj a23 a24
 /- English proof (translation)
-The claim follows from `LateralTheory.E.TorSecPf.TorSec_of`.
+A detailed English derivation is pending.
 -/
 theorem a26 : LateralTheory.E.LCSplitPf.TorSec := LateralTheory.E.TorSecPf.TorSec_of
 /- English proof (translation)
-The claim follows from `LateralTheory.E.LCSplitPf.LCSplit_of_tor a22 a25 a26`.
+A detailed English derivation is pending.
 -/
 theorem a27 : LateralTheory.E.t_E1Cut.LCSplit := LateralTheory.E.LCSplitPf.LCSplit_of_tor a22 a25 a26
 /- English proof (translation)
-The claim follows from `LateralTheory.E.Deg0Pf.Deg0_of`.
+A detailed English derivation is pending.
 -/
 theorem a28 : LateralTheory.E.AcycQAPf.Deg0 := LateralTheory.E.Deg0Pf.Deg0_of
 /- English proof (translation)
-The claim follows from `LateralTheory.E.EmptyVan₂.EmptyVan_of`.
+A detailed English derivation is pending.
 -/
 theorem a29 : LateralTheory.E.CoverPf.EmptyVan := LateralTheory.E.EmptyVan₂.EmptyVan_of
 /- English proof (translation)
-The claim follows from `LateralTheory.E.CoverPf.Cover_of a29`.
+A detailed English derivation is pending.
 -/
 theorem a30 : LateralTheory.E.AcycQAPf.Cover := LateralTheory.E.CoverPf.Cover_of a29
 /- English proof (translation)
-The claim follows from `LateralTheory.E.AcycQAPf.AcycQA_of a0 a3 a7 a14 a27 a28 a30`.
+A detailed English derivation is pending.
 -/
 theorem a31 : LateralTheory.E.t_E1Cut.AcycQA := LateralTheory.E.AcycQAPf.AcycQA_of a0 a3 a7 a14 a27 a28 a30
 /- English proof (translation)
-The claim follows from `LateralTheory.E.LCGoodPf.LCGood_of`.
+A detailed English derivation is pending.
 -/
 theorem a32 : LateralTheory.E.t_E1Cut.LCGood := LateralTheory.E.LCGoodPf.LCGood_of
 /- English proof (translation)
-The claim follows from `LateralTheory.E.t_E1Cut.EqvQA_of a31 a0 a14 a32`.
+A detailed English derivation is pending.
 -/
 theorem a33 : LateralTheory.E.t_E1Cut.EqvQA := LateralTheory.E.t_E1Cut.EqvQA_of a31 a0 a14 a32
 
 /- English proof (translation)
-The claim follows from `a33`.
+A detailed English derivation is pending.
 -/
 theorem intersectionNumber_baseChange : LateralTheory.E.t_E1Cut.EqvQA := a33
 

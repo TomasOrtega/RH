@@ -18,11 +18,11 @@ set_option synthInstance.maxHeartbeats 200000
 section
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC ReciprocityTheory.Gal IsLocalRing Polynomial UpperTheory.V.Base UpperTheory.V.Alg UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.Ws
 /- English proof (translation)
-Introduce `hA4 hP hFW hFit h2 h4 hPM Ω _ _ _ h t hB l _ c e _ he0 het ψ hψ D hD hcase`. Establish `hctx : Ctx2 D ∨ Ctx3 D` using `hcase.imp (fun hc => ⟨hD, h, t, e, ψ, hB, he0, het, hψ, hc.1, hc.2⟩) (fun hc => ⟨hD, h, t, e, ψ, hB, he0, het, hψ, hc.1, hc.2⟩)`. Take `⟨ι⟩` from `(UpperTheory.V.Ws.ambZero l).2`. Establish `hA : ∀ (𝔞 : Amb l) r u, KPair D 𝔞 r u → Star (mapRep 𝔞.toK r) → _root_.UpperTheory.V.Ws.ProModAlt D ι 𝔞 r`. Introduce `𝔞 r u hK hS`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Break down `hctx with h₂ | h₃` into its components or cases. Conclude with `_root_.UpperTheory.V.Ws.proMod_of_pmEx_of_ctx2_of_kPair_of_star hP hFW h2 hPM D h₂ ι 𝔞 r u hK hS`. Conclude with `hA4 hP hFW hFit h4 hPM D h₃ ι 𝔞 r u hK hS`. Establish `hcon : Con D` using `fun 𝔞 hch r u hK hS => _root_.UpperTheory.V.Ws.contradiction_star_promodular D hD ι 𝔞 hch r u hK (hA 𝔞 r u hK hS) hS`. Establish `hpur : _root_.UpperTheory.V.Ws.PurityAtPoints D ι` using `fun 𝔞 e' he' r u hK hS => _root_.UpperTheory.V.Ws.pureW_of_proModular_of_isZero D hD ι 𝔞 e' he' r (hA 𝔞 r u hK hS)`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `haut : _root_.UpperTheory.V.Ws.AutmAlt D ι` using `fun 𝔞 e' he' r u hK hI => _root_.UpperTheory.V.Ws.aut_n_alt D hD ι 𝔞 e' he' r u hK (hA 𝔞 r u hK (Or.inl hI)) hI`. Take `⟨hF, hN, hAll⟩` from `_root_.UpperTheory.V.Ws.fin0_no_end_all_irr_of_good_con_purity_aut hP D hD ι hcon hpur haut`. Conclude with `⟨hF, hN, ι, hAll⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Cu.modularity_rank_four_of_promodularity_case_three : _root_.UpperTheory.V.Cu.PromodularityCaseThreeDense → _root_.UpperTheory.V.Cu.AutomorphyRankFourDense := by
   intro hA4 hP hFW hFit h2 h4 hPM Ω _ _ _ h t hB l _ c e _ he0 het ψ hψ D hD hcase

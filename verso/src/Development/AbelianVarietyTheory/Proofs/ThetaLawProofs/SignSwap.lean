@@ -4,7 +4,7 @@ open GlobalTheory.KeyKa
 namespace GlobalTheory.KaUnique
 
 /- English proof (translation)
-Rewrite using `[Finset.filter_insert, Finset.filter_insert]`. Break down `lt_or_gt_of_ne hne with h | h` into its components or cases. Rewrite using `[if_pos h, if_neg (not_lt.2 h.le), Finset.card_insert_of_notMem (fun hh => hi (Finset.mem_filter.1 hh).1)]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[if_pos h, if_neg (not_lt.2 h.le), Finset.card_insert_of_notMem (fun hh => hi' (Finset.mem_filter.1 hh).1)]`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -20,39 +20,35 @@ theorem sign_swap {R : Type} [CommRing R] {g : ℕ} (P : Finset (Fin g)) {i i' :
     ring
 
 /- English proof (translation)
-Establish `hc' : ∀ i i' j j₁ j₁' j₂, j₁ = j + 1 → j₁' = j + 1 → j₂ = j + 1 + 1 → j₂ ≤ g → m i j j₁ * m i' j₁ j₂ = m i' j j₁' * m i j₁' j₂`. Introduce and unpack `i i' j _ _ _ rfl rfl rfl h`. Conclude with `hc i i' j h`. Establish `he' : ∀ i j j₁, j = 0 → j₁ = 0 + 1 → ev j * m i j j₁ = 0`. Introduce and unpack `i _ _ rfl rfl`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `he i`. Use `⟨fun p q h => ?_, ?_⟩` and prove the remaining obligations. Apply the tactic sequence `rcases p with p | p <;> rcases q with q | q`. Simplify using `only [kosD]`. Use `Finset.sum_eq_zero fun i _ => if_neg ?_` and prove the remaining obligations.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce and unpack `⟨hi, hq⟩`. Apply `h` to reduce the goal to its premises. Simplify using `[kdeg, hq, Finset.card_insert_of_notMem hi]`. Both sides reduce to the same expression. Simplify using `only [kosD]`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `if_neg fun hq => h ?_` and prove the remaining obligations. Simplify using `[kdeg, hq]`. Both sides reduce to the same expression. Use extensionality with `p q`. Rewrite using `[Matrix.mul_apply, Fintype.sum_sum_type, Matrix.zero_apply]`.
+Both sides reduce to the same expression. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `have h0 : ∑ a : Fin d, kosD m ev p (.inr a) * kosD m ev (.inr a) q = 0 := Finset.sum_eq_zero fun a _ => by rcases p with p | p <;> exact zero_mul _`. Rewrite using `[h0, add_zero]`. Break down `q with ⟨Q, c⟩ | q` into its components or cases. Use `swap`. Conclude with `Finset.sum_eq_zero fun a _ => mul_zero _`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[Fintype.sum_sigma]`. Break down `p with ⟨P, a⟩ | a` into its components or cases. Set `F : Fin g × Fin g → R` to `fun ii => if ii.1 ∉ P ∧ ii.2 ∉ insert ii.1 P ∧ Q = insert ii.2 (insert ii.1 P) then ((-1 : R) ^ (P.filter (· < ii.1)).card * (-1) ^ ((insert ii.1 P).filter (· < ii.2)).card) * (m ii.1 P.card (insert ii.1 P).card * m ii.2 (insert ii.1 P).card Q.card) a c else 0`. Establish `h1 : ∑ I : Finset (Fin g), ∑ k : Fin (N I.card), kosD m ev (.inl ⟨P, a⟩) (.inl ⟨I, k⟩) * kosD m ev (.inl ⟨I, k⟩) (.inl ⟨Q, c⟩) = ∑ ii, F ii`. Simplify using `only [kosD, Finset.sum_mul_sum]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Fintype.sum_prod_type]`. Simplify using `only [Finset.sum_comm (s := (Finset.univ : Finset (Fin (N _)))) (t := (Finset.univ : Finset (Fin g)))]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Use `Finset.sum_congr rfl fun i' _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_eq_single (insert i P)]`. Simplify using `only [F, Matrix.mul_apply, Finset.mul_sum]`. Distinguish the cases in `h₁ : i ∉ P`. Distinguish the cases in `h₂ : i' ∉ insert i P ∧ Q = insert i' (insert i P)`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[if_pos ⟨h₁, h₂⟩]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[if_pos ⟨h₁, trivial⟩, if_pos h₂]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[if_neg fun hh => h₂ hh.2]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.sum_eq_zero fun k _ => by rw [if_neg h₂, mul_zero]`. Rewrite using `[if_neg fun hh => h₁ hh.1]`. Conclude with `Finset.sum_eq_zero fun k _ => by rw [if_neg fun hh => h₁ hh.1, zero_mul]`. Introduce `I _ hI`. Conclude with `Finset.sum_eq_zero fun k _ => by rw [if_neg fun hh => hI hh.2, zero_mul]`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`. Rewrite using `[h1]`. Establish `hsw : ∀ i i' : Fin g, (i ∉ P ∧ i' ∉ insert i P ∧ Q = insert i' (insert i P)) → (i' ∉ P ∧ i ∉ insert i' P ∧ Q = insert i (insert i' P))`. Introduce and unpack `i i' ⟨h₁, h₂, h₃⟩`.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Rewrite `h₂` using `[Finset.mem_insert, not_or]`. Use `⟨h₂.2, ?_, h₃.trans (Finset.insert_comm _ _ _)⟩` and prove the remaining obligations. Rewrite using `[Finset.mem_insert, not_or]`. Conclude with `⟨fun e => h₂.1 e.symm, h₁⟩`. Use `Finset.sum_involution (fun ii _ => ii.swap) ?_ ?_ (fun _ _ => Finset.mem_univ _) (fun _ _ => rfl)` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce and unpack `⟨i, i'⟩ _`. Simplify using `only [F, Prod.swap]`. Distinguish the cases in `h : i ∉ P ∧ i' ∉ insert i P ∧ Q = insert i' (insert i P)`. Establish `h'` using `hsw _ _ h`. Rewrite using `[if_pos h, if_pos h', hc' i i' P.card (insert i P).card (insert i' P).card Q.card (Finset.card_insert_of_notMem h.1) (Finset.card_insert_of_notMem h'.1) (by rw [h.2.2, Finset.card_insert_of_notMem h.2.1, Finset.card_insert_of_notMem h.1]) (by simpa using Q.card_le_univ), ← add_mu …`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Rewrite using `[if_neg h, if_neg fun hh => h (hsw _ _ hh), add_zero]`. Introduce and unpack `⟨i, i'⟩ _ hF e`. Apply `hF` to reduce the goal to its premises. Take `rfl : i' = i` from `congrArg Prod.fst e`. Conclude with `if_neg fun hh => hh.2.1 (Finset.mem_insert_self _ _)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `Finset.sum_eq_zero fun I _ => ?_` and prove the remaining obligations. Simplify using `only [kosD]`. Distinguish the cases in `hI : I = ∅`. Simplify using `only [if_pos hI, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`.
-
-Use `Finset.sum_eq_zero fun i _ => ?_` and prove the remaining obligations. Distinguish the cases in `h : i ∉ I ∧ Q = insert i I`. Use `congrFun (congrFun (he' i I.card Q.card (by simp [hI]) (by rw [h.2, Finset.card_insert_of_notMem h.1]; simp [hI])) a) c` as an intermediate fact. Rewrite `this` using `[Matrix.mul_apply, Matrix.zero_apply]`. Simplify using `only [if_pos h, mul_left_comm _ ((-1 : R) ^ _), ← Finset.mul_sum, this, mul_zero]`.
-
-Simplify using `only [if_neg h, mul_zero, Finset.sum_const_zero]`. Simplify using `only [if_neg hI, zero_mul, Finset.sum_const_zero]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isCx_kosD {R : Type} [CommRing R] {g d : ℕ} {N : ℕ → ℕ}
     (m : Fin g → ∀ j j', Matrix (Fin (N j)) (Fin (N j')) R) (ev : ∀ j, Matrix (Fin d) (Fin (N j)) R)

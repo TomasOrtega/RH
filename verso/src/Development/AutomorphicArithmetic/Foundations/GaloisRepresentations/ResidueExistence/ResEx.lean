@@ -5,7 +5,7 @@ set_option backward.isDefEq.respectTransparency false
 open CategoryTheory Limits AlgebraicGeometry TensorProduct GroundTheory.PAdicHodge CrystallineSemistableComparison
 
 /- English proof (translation)
-The claim follows from `CrystallineSemistableComparison.resEx`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.CD.resEx :
     CrystallineSemistableComparison.ResEx := CrystallineSemistableComparison.resEx

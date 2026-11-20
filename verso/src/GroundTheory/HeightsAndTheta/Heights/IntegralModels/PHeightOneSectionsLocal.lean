@@ -14,7 +14,7 @@ namespace HeightOneSections
 variable {X : Scheme.{0}} [IsIntegral X]
 
 /- English proof (translation)
-The claim follows from `((genericPoint_spec X).mem_open_set_iff U.isOpen).mpr ⟨x, trivial, hx⟩`.
+A detailed English derivation is pending.
 -/
 lemma genericPoint_mem {U : X.Opens} {x : X} (hx : x ∈ U) : genericPoint X ∈ U :=
   ((genericPoint_spec X).mem_open_set_iff U.isOpen).mpr ⟨x, trivial, hx⟩
@@ -22,7 +22,7 @@ lemma genericPoint_mem {U : X.Opens} {x : X} (hx : x ∈ U) : genericPoint X ∈
 omit [IsIntegral X] in
 
 /- English proof (translation)
-Establish `h : hV.fromSpec p ∈ Set.range hV.fromSpec` using `⟨p, rfl⟩`. Rewrite `h` using `[hV.range_fromSpec]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 lemma fromSpec_mem {V : X.Opens} (hV : IsAffineOpen V) (p : PrimeSpectrum Γ(X, V)) :
     hV.fromSpec p ∈ V := by
@@ -30,9 +30,9 @@ lemma fromSpec_mem {V : X.Opens} (hV : IsAffineOpen V) (p : PrimeSpectrum Γ(X, 
   rwa [hV.range_fromSpec] at h
 
 /- English proof (translation)
-Use `IsIntegrallyClosed.of_localization_maximal fun P _ hP => ?_` and prove the remaining obligations. Establish `hy` using `fromSpec_mem hV ⟨P, hP.isPrime⟩`. Set `_` to `TopCat.Presheaf.algebra_section_stalk X.presheaf (⟨hV.fromSpec ⟨P, hP.isPrime⟩, hy⟩ : V)`. Establish `: IsLocalization.AtPrime (X.presheaf.stalk (hV.fromSpec ⟨P, hP.isPrime⟩)) P` using `hV.isLocalization_stalk' ⟨P, hP.isPrime⟩ hy`. Use `hN (hV.fromSpec ⟨P, hP.isPrime⟩)` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `IsIntegrallyClosed.of_equiv (IsLocalization.algEquiv P.primeCompl (X.presheaf.stalk (hV.fromSpec ⟨P, hP.isPrime⟩)) (Localization.AtPrime P)).toRingEquiv`.
+A detailed English derivation is pending.
 -/
 lemma isIntegrallyClosed_of_isAffineOpen (hN : IsNormalScheme X) {V : X.Opens}
     (hV : IsAffineOpen V) [Nonempty V] : IsIntegrallyClosed Γ(X, V) := by
@@ -54,7 +54,7 @@ def comb (E : X.Modules) {V : X.Opens} {n : ℕ} (s : Fin n → Γ(E, V)) (W : X
 omit [IsIntegral X] in
 
 /- English proof (translation)
-Rewrite using `[comb, map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[BundlesAgree.germ_smul']`. Use `congr 1`. Conclude with `TopCat.Presheaf.germ_res_apply E.presheaf (homOfLE h) x hx (s i)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 lemma germ_comb (E : X.Modules) {V : X.Opens} {n : ℕ} (s : Fin n → Γ(E, V)) (W : X.Opens)
     (h : W ≤ V) (r : Fin n → Γ(X, W)) (x : X) (hx : x ∈ W) :
@@ -69,9 +69,9 @@ lemma germ_comb (E : X.Modules) {V : X.Opens} {n : ℕ} (s : Fin n → Γ(E, V))
 omit [IsIntegral X] in
 
 /- English proof (translation)
-Rewrite using `[comb, comb, map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Scheme.Modules.map_smul]`. Use `congr 1`. Use `show (E.presheaf.map (homOfLE h).op ≫ E.presheaf.map (homOfLE h').op) (s i) = _`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Functor.map_comp]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 lemma comb_res (E : X.Modules) {V : X.Opens} {n : ℕ} (s : Fin n → Γ(E, V)) (W W' : X.Opens)
     (h : W ≤ V) (h' : W' ≤ W) (r : Fin n → Γ(X, W)) :
@@ -88,9 +88,9 @@ lemma comb_res (E : X.Modules) {V : X.Opens} {n : ℕ} (s : Fin n → Γ(E, V)) 
 omit [IsIntegral X] in
 
 /- English proof (translation)
-Rewrite `e` using `[← germ_comb E s W h r x hx, ← germ_comb E s W' h' r' x hx']`. Take `⟨W'', hx'', iU, iV, e'⟩` from `E.presheaf.germ_eq x hx hx' _ _ e`. Establish `hU : iU = homOfLE iU.le` using `rfl`. Establish `hV : iV = homOfLE iV.le` using `rfl`. Rewrite `e'` using `[hU, hV, comb_res, comb_res]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `(hs W'' (iU.le.trans h)).1 e'` as an intermediate fact. Establish `hi` using `congrFun this i`. Rewrite using `[← TopCat.Presheaf.germ_res_apply X.presheaf iU x hx'' (r i), ← TopCat.Presheaf.germ_res_apply X.presheaf iV x hx'' (r' i)]`. Conclude with `congrArg (X.presheaf.germ W'' x hx'') hi`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma germ_coeff_unique (E : X.Modules) {V : X.Opens} {n : ℕ} {s : Fin n → Γ(E, V)}
     (hs : IsBasisOn E V s) (x : X) (hxV : x ∈ V) {W W' : X.Opens} (h : W ≤ V) (h' : W' ≤ V)
@@ -110,25 +110,25 @@ lemma germ_coeff_unique (E : X.Modules) {V : X.Opens} {n : ℕ} {s : Fin n → �
   exact congrArg (X.presheaf.germ W'' x hx'') hi
 
 /- English proof (translation)
-Establish `: Nonempty V` using `⟨⟨genericPoint X, hη⟩⟩`. Establish `: IsNoetherianRing Γ(X, V)` using `IsLocallyNoetherian.component_noetherian ⟨V, hV⟩`. Use `isIntegrallyClosed_of_isAffineOpen hN hV` as an intermediate fact. Use `functionField_isFractionRing_of_isAffineOpen X V hV` as an intermediate fact. Take `⟨W0, hW0, t0, ht0⟩` from `E.presheaf.exists_germ_eq v`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hW1 : genericPoint X ∈ W0 ⊓ V` using `⟨hW0, hη⟩`. Take `⟨r, hr⟩` from `(hs (W0 ⊓ V) inf_le_right).2 ((E.presheaf.map (homOfLE (inf_le_left : W0 ⊓ V ≤ W0)).op).hom t0)`. Establish `hvc : v = ∑ i, X.presheaf.germ (W0 ⊓ V) _ hW1 (r i) • E.presheaf.germ V (genericPoint X) hη (s i)`. Rewrite using `[← germ_comb E s (W0 ⊓ V) inf_le_right r _ hW1]`. Express the relevant statement in the definitionally equal form `v = E.presheaf.germ (W0 ⊓ V) _ hW1 (comb E s (W0 ⊓ V) inf_le_right r)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[show comb E s (W0 ⊓ V) inf_le_right r = _ from hr, ← ht0]`. Conclude with `(TopCat.Presheaf.germ_res_apply E.presheaf _ _ hW1 t0).symm`. Establish `hmem : ∀ i, X.presheaf.germ (W0 ⊓ V) _ hW1 (r i) ∈ Subalgebra.toSubmodule (⊥ : Subalgebra Γ(X, V) X.functionField)`. Introduce `i`. Rewrite using `[hHOI Γ(X, V) X.functionField, Submodule.mem_iInf]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `p`. Rewrite using `[Submodule.mem_iInf]`. Introduce `hp1`. Establish `hy` using `fromSpec_mem hV p`. Set `y` to `hV.fromSpec p`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `_` to `TopCat.Presheaf.algebra_section_stalk X.presheaf (⟨y, hy⟩ : V)`. Establish `hloc : IsLocalization.AtPrime (X.presheaf.stalk y) p.asIdeal` using `hV.isLocalization_stalk' p hy`. Establish `hdim : ringKrullDim (X.presheaf.stalk y) = 1`. Rewrite using `[IsLocalization.AtPrime.ringKrullDim_eq_height p.asIdeal, hp1]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result.
 
-Take `⟨w, hw⟩` from `hv y hy hdim`. Take `⟨W2, hW2, t, rfl⟩` from `E.presheaf.exists_germ_eq w`. Establish `hη3 : genericPoint X ∈ W2 ⊓ V` using `genericPoint_mem (show y ∈ W2 ⊓ V from ⟨hW2, hy⟩)`. Take `⟨r', hr'⟩` from `(hs (W2 ⊓ V) inf_le_right).2 ((E.presheaf.map (homOfLE (inf_le_left : W2 ⊓ V ≤ W2)).op).hom t)`. Establish `hvc' : v = ∑ i, X.presheaf.germ (W2 ⊓ V) _ hη3 (r' i) • E.presheaf.germ V (genericPoint X) hη (s i)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← germ_comb E s (W2 ⊓ V) inf_le_right r' _ hη3]`. Express the relevant statement in the definitionally equal form `v = E.presheaf.germ (W2 ⊓ V) _ hη3 (comb E s (W2 ⊓ V) inf_le_right r')`. Rewrite using `[show comb E s (W2 ⊓ V) inf_le_right r' = _ from hr', ← hw]`. Rewrite using `[TopCat.Presheaf.germ_res_apply]`. Conclude with `TopCat.Presheaf.germ_stalkSpecializes_apply E.presheaf hW2 (genericPoint_specializes y) t`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hc` using `germ_coeff_unique E hs _ hη inf_le_right inf_le_right hW1 hη3 r r' (hvc.symm.trans hvc') i`. Take `⟨⟨a, b⟩, hab⟩` from `IsLocalization.surj p.asIdeal.primeCompl (X.presheaf.germ (W2 ⊓ V) y ⟨hW2, hy⟩ (r' i))`. Use `⟨b, b.2, Algebra.mem_bot.mpr ⟨a, ?_⟩⟩` and prove the remaining obligations. Establish `hab'` using `congrArg (X.presheaf.stalkSpecializes (genericPoint_specializes y)) hab`. Rewrite `hab'` using `[map_mul]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : X.presheaf.stalkSpecializes (genericPoint_specializes y) (X.presheaf.germ (W2 ⊓ V) y ⟨hW2, hy⟩ (r' i)) = X.presheaf.germ (W2 ⊓ V) _ hη3 (r' i)` using `TopCat.Presheaf.germ_stalkSpecializes_apply _ _ _ _`. Establish `h2 : ∀ c : Γ(X, V), X.presheaf.stalkSpecializes (genericPoint_specializes y) (algebraMap Γ(X, V) (X.presheaf.stalk y) c) = algebraMap Γ(X, V) X.functionField c` using `fun c => TopCat.Presheaf.germ_stalkSpecializes_apply _ _ _ _`. Rewrite `hab'` using `[h1, h2, h2, ← hc]`. Rewrite using `[Algebra.smul_def, ← hab', mul_comm]`. Use `choose a ha using fun i => Algebra.mem_bot.mp (hmem i)`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨∑ i, a i • s i, ?_⟩` and prove the remaining obligations. Rewrite using `[map_sum, hvc]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[BundlesAgree.germ_smul', ← ha i]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_section_of_isBasisOn (hHOI : HeightOneIntersection.Statement)
     [IsLocallyNoetherian X] (hN : IsNormalScheme X) (E : X.Modules) {V : X.Opens}

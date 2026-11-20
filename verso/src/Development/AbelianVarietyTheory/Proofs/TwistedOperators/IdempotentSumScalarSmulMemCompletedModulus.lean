@@ -19,13 +19,13 @@ namespace GlobalTheory.HalfScalarHat
 open GlobalTheory.FunObj.HatFrame
 
 /- English proof (translation)
-Establish `hgen : ∀ a ∈ 𝔪, ((Formalism.L2.DIV.oToS D.host.F D.host.E a : Formalism.L2.Herm.intAf D.host.F D.host.E) : EAf D) • g.map (eToEAf D) ∈ genGrp D.host.F (𝔪 • M)`. Introduce `a ha`. Use `AddSubgroup.subset_closure ⟨1, one_mem _, a • g, Submodule.smul_mem_smul ha hg, ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Simplify using `only [Matrix.smul_apply, Matrix.map_apply, Matrix.of_apply, Formalism.L2.DIV.oToS_coe, smul_eq_mul, eToEAf, Algebra.TensorProduct.includeLeftRingHom_apply, Algebra.TensorProduct.tmul_mul_tmul, mul_one, Algebra.smul_def]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Establish `hspan : t ∈ Submodule.span (Formalism.L2.Herm.intAf D.host.F D.host.E) ((Formalism.L2.DIV.oToS D.host.F D.host.E) '' (𝔪 : Set (𝓞 D.host.E)))` using `ht`. Use `clear ht`. Proceed by induction on `hspan using Submodule.span_induction with`. Consider the case `mem u hu`. Take `⟨a, ha, rfl⟩` from `hu`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately.
 
-Conclude with `hgen a ha`. Consider the case `zero`. Simplify using `only [ZeroMemClass.coe_zero, zero_smul]`. Conclude with `zero_mem _`. Consider the case `add u v _ _ hu hv`.
+Simplify using the standard rewrite rules. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Simplify using the standard rewrite rules.
 
-Simplify using `only [AddMemClass.coe_add, add_smul]`. Conclude with `add_mem hu hv`. Consider the case `smul r u _ hu`. Simplify using `only [smul_eq_mul, MulMemClass.coe_mul, mul_smul]`. Conclude with `smul_mem_genGrp _ _ r.2 _ hu`.
+A detailed English derivation is pending.
 -/
 theorem smul_map_mem_genGrp {D : D7} {m n : ℕ} (M : Submodule (𝓞 D.host.E) (Matrix (Fin m) (Fin n) D.host.E))
     (𝔪 : Ideal (𝓞 D.host.E)) {g : Matrix (Fin m) (Fin n) D.host.E} (hg : g ∈ M)
@@ -56,7 +56,7 @@ theorem smul_map_mem_genGrp {D : D7} {m n : ℕ} (M : Submodule (𝓞 D.host.E) 
     exact smul_mem_genGrp _ _ r.2 _ hu
 
 /- English proof (translation)
-Simplify using `only [mul_assoc, Algebra.TensorProduct.tmul_mul_tmul, mul_one, one_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem tmul_split {R A B : Type} [CommRing R] [CommRing A] [CommRing B] [Algebra R A] [Algebra R B]
     (x : A ⊗[R] B) (b g : A) (α : B) :
@@ -64,7 +64,7 @@ theorem tmul_split {R A B : Type} [CommRing R] [CommRing A] [CommRing B] [Algebr
   simp only [mul_assoc, Algebra.TensorProduct.tmul_mul_tmul, mul_one, one_mul]
 
 /- English proof (translation)
-Substitute `h` using the available equality. Rewrite using `[map_mul, hx, one_mul, map_mul, map_mul]`. Combine the equalities or inequalities in the displayed calculation.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem v_triple_le {D : D7} {w : HeightOneSpectrum (𝓞 D.host.E)} {s x y z : EAf D} {c : WithZero (Multiplicative ℤ)} (h : s = x * (y * z))
     (hx : GlobalTheory.StdFrames.cpt (D := D) w x = 1) (hy : Valued.v (GlobalTheory.StdFrames.cpt (D := D) w y) ≤ c)
@@ -76,11 +76,11 @@ theorem v_triple_le {D : D7} {w : HeightOneSpectrum (𝓞 D.host.E)} {s x y z : 
     _ = c := mul_one c
 
 /- English proof (translation)
-Establish `hz' : ∀ w, Valued.v (GlobalTheory.StdFrames.cpt (D` using `D) w z) ≤ 1 := fun w => (IsDedekindDomain.HeightOneSpectrum.mem_adicCompletionIntegers _ _ _).1 ((GlobalTheory.StdFrames.mem_OA_iff z).1 hz w)`. Establish `hs : s ∈ GlobalTheory.StdFrames.OA D`. Rewrite using `[GlobalTheory.StdFrames.mem_OA_iff]`. Introduce `w`. Rewrite using `[IsDedekindDomain.HeightOneSpectrum.mem_adicCompletionIntegers]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hw : w ∈ G.pl.W0`. Use `v_triple_le h (e1 w hw) ((hy w hw).trans ?_) (hz' w)` and prove the remaining obligations. Rewrite using `[← WithZero.exp_zero, WithZero.exp_le_exp]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[h, map_mul, e2 w hw, zero_mul, map_zero]`.
+Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
 
-Conclude with `zero_le'`. Use `⟨⟨s, hs⟩, ?_, rfl⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.FunObj.Comparison₂.mem_idS_modul]`. Introduce `w hw`. Conclude with `v_triple_le h (e1 w hw) (hy w hw) (hz' w)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem scalar_mem_idS {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} (G : GridData L sc) {s x y z : EAf D}
     (h : s = x * (y * z)) (e1 : ∀ w ∈ G.pl.W0, GlobalTheory.StdFrames.cpt (D := D) w x = 1)
@@ -112,7 +112,7 @@ theorem toEAf_pair {D : D7} (α : Formalism.L2.Herm.Af D.host.F) (x : D.host.E) 
     toEAf D (pairA D.host.F 0 α ⊗ₜ[D.host.F] x) = x ⊗ₜ[D.host.F] α := rfl
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [Matrix.map_apply, Matrix.smul_apply, smul_eq_mul, map_mul]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem map_toEAf_smul {D : D7} {m n : ℕ} (e : AE D) (X : Mx D m n) :
     (e • X).map (toEAf D) = toEAf D e • X.map (toEAf D) := by
@@ -120,14 +120,14 @@ theorem map_toEAf_smul {D : D7} {m n : ℕ} (e : AE D) (X : Mx D m n) :
   simp only [Matrix.map_apply, Matrix.smul_apply, smul_eq_mul, map_mul]
 
 /- English proof (translation)
-Rewrite using `[Matrix.smul_apply, smul_eq_mul, map_mul, he, zero_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem infPart_smul {D : D7} {m n : ℕ} {e : AE D} (he : infPart D e = 0) (X : Mx D m n) (i : Fin m) (j : Fin n) :
     infPart D ((e • X) i j) = 0 := by
   rw [Matrix.smul_apply, smul_eq_mul, map_mul, he, zero_mul]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [Matrix.smul_apply, Matrix.map_apply, Matrix.of_apply, smul_eq_mul, toEAf_pair, eToEAf, Algebra.TensorProduct.includeLeftRingHom_apply]`. Conclude with `tmul_split _ b (g i j) α`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem smul_pair {D : D7} {m n : ℕ} (x : EAf D) (α : Formalism.L2.Herm.Af D.host.F) (b : D.host.E)
     (g : Matrix (Fin m) (Fin n) D.host.E) :
@@ -143,9 +143,9 @@ end GlobalTheory.HalfScalarHat
 
 open GlobalTheory.FunObj.HatFrame GlobalTheory.HalfScalarHat in
 /- English proof (translation)
-Introduce `D T L sc G m n M e he α hα b hb g hg`. Take `⟨hinf, h1, h0⟩` from `GlobalTheory.FunObj.Comparison₂.cpt_idemSum he`. Rewrite using `[GlobalTheory.FunObj.HatFrame.mem_hatMx_iff]`. Use `⟨fun i j => infPart_smul hinf _ i j, ?_⟩` and prove the remaining obligations. Rewrite using `[map_toEAf_smul, smul_pair]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hα' : ((1 : D.host.E) ⊗ₜ[D.host.F] α : EAf D) ∈ GlobalTheory.StdFrames.OA D` using `Subring.subset_closure (Or.inr ⟨⟨α, fun v => hα v⟩, rfl⟩)`. Take `⟨t, ht, hts⟩` from `scalar_mem_idS G rfl h1 h0 (fun w hw => by rw [GlobalTheory.FunObj.Comparison₂.cpt_tmul]; exact hb w hw) hα'`. Rewrite using `[← hts]`. Conclude with `smul_map_mem_genGrp M G.modul hg ht`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.HalfScalarHat.idemSum_smul_mem_hatMx : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} (G : GridData L sc) {m n : ℕ} (M : Submodule (𝓞 D.host.E) (Matrix (Fin m) (Fin n) D.host.E)) (e : AE D), IsIdemSum e G.pl.W0 → ∀ α ∈ intAf D.host.F, ∀ b : D.host.E, (∀ w ∈ G.pl.W0, Valued.v (algebraMap D.host.E (Kw w) b) ≤ WithZero.exp (-(cosExp G w : ℤ))) → ∀ g ∈ M, e • (Matrix.of fun i j => pairA D.host.F 0 α ⊗ₜ[D.host.F] (b * g i j) : Mx D m n) ∈ hatMx (G.modul • M) := by
   intro D T L sc G m n M e he α hα b hb g hg

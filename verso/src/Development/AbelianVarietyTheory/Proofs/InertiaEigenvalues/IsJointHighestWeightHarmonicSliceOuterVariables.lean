@@ -41,7 +41,7 @@ noncomputable def slice : MvPolynomial σ ℂ →ₐ[ℂ] MvPolynomial (Outer ι
 variable {ι}
 
 /- English proof (translation)
-Establish `h : ι u ∈ Set.range ι` using `⟨u, rfl⟩`. Simplify using `only [slice, aeval_X, sliceVar, dif_pos h]`. Rewrite using `[hι h.choose_spec]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem slice_X_inner (hι : Function.Injective ι) (u : σ₀) : slice ι (X (ι u)) = C (X u) := by
   have h : ι u ∈ Set.range ι := ⟨u, rfl⟩
@@ -49,13 +49,13 @@ theorem slice_X_inner (hι : Function.Injective ι) (u : σ₀) : slice ι (X (�
   rw [hι h.choose_spec]
 
 /- English proof (translation)
-Simplify using `only [slice, aeval_X, sliceVar, dif_neg hv]`.
+Simplify using the standard rewrite rules.
 -/
 theorem slice_X_outer {v : σ} (hv : v ∉ Set.range ι) : slice ι (X v) = X ⟨v, hv⟩ := by
   simp only [slice, aeval_X, sliceVar, dif_neg hv]
 
 /- English proof (translation)
-Simplify using `[slice, aeval_C, MvPolynomial.algebraMap_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem slice_C (a : ℂ) : slice ι (C a) = C (C a) := by
   simp [slice, aeval_C, MvPolynomial.algebraMap_apply]
@@ -70,22 +70,22 @@ noncomputable def coefAt (t : Outer ι →₀ ℕ) : MvPolynomial σ ℂ →ₗ[
 variable {ι}
 
 /- English proof (translation)
-Simplify using `[coefAt, map_mul, slice_X_inner hι, coeff_C_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem coefAt_X_mul (hι : Function.Injective ι) (t : Outer ι →₀ ℕ) (u : σ₀)
     (Q : MvPolynomial σ ℂ) : coefAt ι t (X (ι u) * Q) = X u * coefAt ι t Q := by
   simp [coefAt, map_mul, slice_X_inner hι, coeff_C_mul]
 
 /- English proof (translation)
-Simplify using `only [coefAt, LinearMap.coe_mk, AddHom.coe_mk]`. Proceed by induction on `Q using MvPolynomial.induction_on with`. Consider the case `C a => intro t; simp only [pderiv_C, map_zero, coeff_zero, slice_C, coeff_C]; split_ifs <;> simp`. Consider the case `add p q hp hq => intro t`. Simplify using `[hp, hq]`.
+Simplify using the standard rewrite rules. Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules.
 
-Consider the case `mul_X p v hp`. Introduce `t`. Distinguish the cases in `hv : v ∈ Set.range ι`. Take `⟨w, rfl⟩` from `hv`. Distinguish the cases in `huw : w = u`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails.
 
-Substitute `huw` using the available equality. Simplify using `[Derivation.leibniz, map_mul, slice_X_inner hι, hp, pderiv_X, coeff_C_mul, mul_comm (slice ι p) (C (X w))]`. Expand and normalize the polynomial expressions, which then agree. Establish `h1 : ι u ≠ ι w` using `fun h => huw (hι h).symm`. Establish `h2 : u ≠ w` using `fun h => huw h.symm`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `[Derivation.leibniz, map_mul, slice_X_inner hι, hp, pderiv_X, Pi.single_apply, h1, h2, coeff_C_mul, mul_comm (slice ι p) (C (X w))]`. Establish `h1 : ι u ≠ v` using `fun h => hv ⟨u, h⟩`. Simplify using `only [Derivation.leibniz, map_add, map_mul, smul_eq_mul, pderiv_X, Pi.single_apply, if_neg h1.symm, mul_zero, zero_add, slice_X_outer hv]`. Rewrite using `[coeff_X_mul', coeff_mul_X']`. Use `split_ifs`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hp]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem coefAt_pderiv (hι : Function.Injective ι) (u : σ₀) (Q : MvPolynomial σ ℂ) :
     ∀ t, coefAt ι t (pderiv (ι u) Q) = pderiv u (coefAt ι t Q) := by
@@ -116,11 +116,11 @@ theorem coefAt_pderiv (hι : Function.Injective ι) (u : σ₀) (Q : MvPolynomia
       · simp
 
 /- English proof (translation)
-Establish `hm : ∀ i j, coefAt ι t (mixedOp ℂ (ι ∘ z) (ι ∘ y) i j P) = mixedOp ℂ z y i j (coefAt ι t P)` using `fun i j => by`. Simplify using `only [mixedOp_apply, map_sub, map_sum, Function.comp_apply, coefAt_X_mul hι, coefAt_pderiv hι]`. Establish `hr : ∀ {K : ℕ} (w : Fin K × Fin N → σ₀) (a b : Fin K), coefAt ι t (rowOp ℂ (ι ∘ w) a b P) = rowOp ℂ w a b (coefAt ι t P)` using `fun w a b => by`. Simplify using `only [rowOp_apply, map_sum, Function.comp_apply, coefAt_X_mul hι, coefAt_pderiv hι]`. Take `⟨h1, h2, h3, h4, h5, h6, h7⟩` from `h`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Use `⟨fun i j hij => ?_, fun i => ?_, fun c c' hc => ?_, fun c => ?_, fun d d' hd => ?_, fun d => ?_, fun c d => ?_⟩` and prove the remaining obligations. Rewrite using `[← hm, h1 i j hij, map_zero]`. Rewrite using `[← hm, h2 i, map_smul]`. Rewrite using `[← hr, h3 c c' hc, map_zero]`. Rewrite using `[← hr, h4 c, map_smul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hr, h5 d d' hd, map_zero]`. Rewrite using `[← hr, h6 d, map_smul]`. Use `congrArg (coefAt ι t) (h7 c d)` as an intermediate fact. Simplify `this` using `only [map_sum, Function.comp_apply, coefAt_pderiv hι, map_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem coefAt_jointTop (hι : Function.Injective ι) (t : Outer ι →₀ ℕ) {k l N : ℕ}
     (z : Fin k × Fin N → σ₀) (y : Fin l × Fin N → σ₀) (κ : Fin N → ℂ) (α : Fin k → ℂ)
@@ -154,9 +154,9 @@ noncomputable def unslice : MvPolynomial (Outer ι) (MvPolynomial σ₀ ℂ) →
 variable {ι}
 
 /- English proof (translation)
-Distinguish the cases in `hv : v ∈ Set.range ι`. Take `⟨w, rfl⟩` from `hv`. Rewrite using `[slice_X_inner hι]`. Simplify using `only [unslice, coe_eval₂Hom, eval₂_C, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, rename_X]`. Rewrite using `[slice_X_outer hv]`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [unslice, coe_eval₂Hom, eval₂_X]`.
+Simplify using the standard rewrite rules.
 -/
 theorem unslice_slice_X (hι : Function.Injective ι) (v : σ) : unslice ι (slice ι (X v)) = X v := by
   by_cases hv : v ∈ Set.range ι
@@ -167,9 +167,9 @@ theorem unslice_slice_X (hι : Function.Injective ι) (v : σ) : unslice ι (sli
     simp only [unslice, coe_eval₂Hom, eval₂_X]
 
 /- English proof (translation)
-Proceed by induction on `Q using MvPolynomial.induction_on with`. Consider the case `C a`. Rewrite using `[slice_C]`. Simplify using `only [unslice, coe_eval₂Hom, eval₂_C, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, rename_C]`. Consider the case `add p q hp hq => rw [map_add, map_add, hp, hq]`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately.
 
-Consider the case `mul_X p v hp`. Rewrite using `[map_mul, map_mul, hp, unslice_slice_X hι]`.
+Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem unslice_slice (hι : Function.Injective ι) (Q : MvPolynomial σ ℂ) :
     unslice ι (slice ι Q) = Q := by
@@ -182,7 +182,7 @@ theorem unslice_slice (hι : Function.Injective ι) (Q : MvPolynomial σ ℂ) :
     rw [map_mul, map_mul, hp, unslice_slice_X hι]
 
 /- English proof (translation)
-Use `conv_lhs => rw [← unslice_slice hι P, (slice ι P).as_sum, map_sum]`. Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations. Simplify using `[unslice, eval₂_monomial, coefAt]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem slice_decomp (hι : Function.Injective ι) (P : MvPolynomial σ ℂ) :
     P = ∑ t ∈ (slice ι P).support,
@@ -192,7 +192,7 @@ theorem slice_decomp (hι : Function.Injective ι) (P : MvPolynomial σ ℂ) :
   simp [unslice, eval₂_monomial, coefAt]
 
 /- English proof (translation)
-Introduce `v hv`. Take `⟨r, -, hr⟩` from `Finset.mem_biUnion.1 (vars_prod _ hv)`. Use `vars_pow _ _ hr` as an intermediate fact. Rewrite `this` using `[vars_X, Finset.mem_singleton]`. Conclude with `this ▸ r.2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem vars_outer_prod (t : Outer ι →₀ ℕ) :
     ∀ v ∈ (t.prod (fun r e => (X r.1 : MvPolynomial σ ℂ) ^ e)).vars, v ∉ Set.range ι := by
@@ -210,7 +210,7 @@ noncomputable def outerBack (i : σ →₀ ℕ) : Outer ι →₀ ℕ :=
   Finsupp.comapDomain Subtype.val i Subtype.val_injective.injOn
 
 /- English proof (translation)
-The claim follows from `Finsupp.comapDomain_mapDomain _ Subtype.val_injective t`.
+A detailed English derivation is pending.
 -/
 theorem outerBack_emb (t : Outer ι →₀ ℕ) : outerBack (outerEmb t) = t :=
   Finsupp.comapDomain_mapDomain _ Subtype.val_injective t
@@ -219,9 +219,9 @@ end GlobalTheory.Slice
 
 open GlobalTheory.Slice in
 /- English proof (translation)
-Introduce `σ σ₀ _ ι hι k l N z y κ α β P hP`. Use `⟨(slice ι P).support.map (outerEmb (ι := ι)), fun i => coefAt ι (outerBack (ι := ι) i) P, fun i => (outerBack (ι := ι) i).prod (fun r n => (MvPolynomial.X r.1 : MvPolynomial σ ℂ) ^ n), ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.sum_map]`. Simplify using `only [outerBack_emb]`. Conclude with `slice_decomp hι P`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i _`. Conclude with `coefAt_jointTop hι _ z y κ α β P hP`. Introduce `i _`. Conclude with `vars_outer_prod _`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.jointTop_slice : ∀ {σ σ₀ : Type} [DecidableEq σ] (ι : σ₀ → σ), Function.Injective ι →
     ∀ {k l N : ℕ} (z : Fin k × Fin N → σ₀) (y : Fin l × Fin N → σ₀) (κ : Fin N → ℂ)

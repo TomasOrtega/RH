@@ -17,7 +17,7 @@ noncomputable def regAtEquivStalk {X : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : 
     ⟨fun _ _ e => h.inj q (congrArg Subtype.val e), (genMap ξ q).rangeRestrict_surjective⟩
 
 /- English proof (translation)
-Introduce `X Ω _ ξ h q`. Conclude with `(regAtEquivStalk h q).isLocalRing`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem isLocalRing_regAt : ∀ (X : Scheme.{0}) (Ω : Type) [Field Ω] (ξ : Spec (CommRingCat.of Ω) ⟶ X), IsCptGen ξ → ∀ q : Cpt ξ, IsLocalRing (regAt ξ q) := by
   intro X Ω _ ξ h q

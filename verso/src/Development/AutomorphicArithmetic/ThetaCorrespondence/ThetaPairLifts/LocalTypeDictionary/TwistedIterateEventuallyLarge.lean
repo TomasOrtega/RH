@@ -32,15 +32,15 @@ namespace GlobalTheory.RowChain
 open GlobalTheory.MixModel GlobalTheory.MixPer GlobalTheory.Grow GlobalTheory.FlipRun GlobalTheory.RowUnf GlobalTheory.RowVal
 variable {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} (G : GridData L sc)
 /- English proof (translation)
-Introduce `hP hL`. Take `⟨c0, h0⟩` from `(_root_.GlobalTheory.T.flipRun_cusp_transition hL hP).and ((_root_.GlobalTheory.EndCusp.leadingForm_mem_cuspList hP).and GlobalTheory.RowClaim.colFn_cont_left)`. Use `⟨c0, fun ε CF hC => ?_⟩` and prove the remaining obligations. Take `⟨x0, hx⟩` from `h0 ε CF hC`. Use `⟨x0, fun D large₂ he hxx Γ _ _ Pl0 T A Ks _ _ _ R Fc hS ch hch hsc => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨hstep, htop, hcol⟩` from `hx D large₂ he hxx Γ Pl0 T A Ks R Fc hS ch hch hsc`. Use `choose ρ hρ hρ' using exists_rowMeas ch.G`. Use `choose v hv using exists_vol_row ch.G`. Use `⟨ρ, fun j => (v j).μ, fun j hj => ⟨hρ j (mem_idx hj).2, (v j).haar⟩, ?_⟩` and prove the remaining obligations. Introduce `t a τ hτ M hM P y`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨e, he, φm, hw, -⟩` from `hτ`. Establish `hu : GlobalTheory.Unf.IsContAut _ (colFn ch a)` using `⟨(hcol a).2, (hcol a).1⟩`. Establish `core : ∀ d ∈ τ.support, BplusConv ch.W ch.M (colFn ch a) (liftP ch.W M (oppPath t D.R.m) (oppPure ch.W t P d) (formTop ch t y)) ∧ NIter ρ (fun j => (v j).μ) (fun h => per ch.W M t (conAt ch.W hM (fockD ch.W t d.2 P.2) h) d.1 P.1 (colFn ch a) (formTop ch t y)) (idx D) 1 (Bplus ch. …`. Introduce `d hd`. Establish `h2` using `hw d hd`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨-, h1, h3⟩` from `pure_core hP.cuspRapidDecay hch.vol hM (hstep t M hM) he (φm d) d h2.1 h2.2 P (htop t y) hu`. Use `⟨GlobalTheory.RowBplus.bplusConv_col ch.W ch.M hch.vol ch.ξ (ch.col a) (col_mem ch a) _ h1.1.toIsAutFun, ?_⟩` and prove the remaining obligations. Conclude with `nIter_meas_congr ρ _ _ _ (fun j hj => hv j (mem_idx hj).1 (mem_idx hj).2.le t M hM) (nIter_conAt_of_colPer ch.G ch.W t hM (fockD ch.W t d.2 P.2) _ _ _ h3 ρ (fun j => (hρ' j t M hM).1) fun j => (hρ' j t M hM).2)`. Establish `e1 : liftT ch.W M (oppPath t D.R.m) (oppTens ch.W t (Finsupp.single P 1) τ) (formTop ch t y) = ∑ d ∈ τ.support, τ d • liftP ch.W M (oppPath t D.R.m) (oppPure ch.W t P d) (formTop ch t y)`. Rewrite using `[GlobalTheory.RowVal.liftT_oppTens, Finsupp.support_single_ne_zero _ one_ne_zero, Finset.sum_singleton, Finsupp.single_eq_same, one_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `e2 : lhs ch t M (Finsupp.single P 1) τ a y = ∑ d ∈ τ.support, τ d * Bplus ch.W ch.M (colFn ch a) (liftP ch.W M (oppPath t D.R.m) (oppPure ch.W t P d) (formTop ch t y))`. Rewrite using `[lhs, e1, (bplus_sum_right ch.W ch.M (colFn ch a) τ.support _ fun d hd => (bplus_smul_right ch.W ch.M (τ d) (core d hd).1).1).2]`. Conclude with `Finset.sum_congr rfl fun d hd => (bplus_smul_right ch.W ch.M _ (core d hd).1).2`. Rewrite using `[e2]`. Conclude with `(niter_lin_congr _ _ _ ρ _ (idx D) 1).1 _ τ.support τ _ _ fun d hd => (core d hd).2`.
+A detailed English derivation is pending.
 -/
 theorem twisted_iterate_eventually_large : _root_.GlobalTheory.FunPr.ThetaLocalInputs → GlobalTheory.IndefiniteRowSideFullHecke.CuspAlongSmoothLifts.LiftsCuspidal → Big fun ch => IterAt ch := by
   intro hP hL
@@ -78,7 +78,7 @@ theorem twisted_iterate_eventually_large : _root_.GlobalTheory.FunPr.ThetaLocalI
   rw [e2]
   exact (niter_lin_congr _ _ _ ρ _ (idx D) 1).1 _ τ.support τ _ _ fun d hd => (core d hd).2
 /- English proof (translation)
-Introduce `hP hL` and use `(_root_.GlobalTheory.RowChain.twisted_iterate_eventually_large hP hL).and (_root_.GlobalTheory.RowVal.placeValuation_linAt_large hP hL)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem twisted_iterate_eq_linear : _root_.GlobalTheory.FunPr.ThetaLocalInputs → GlobalTheory.IndefiniteRowSideFullHecke.CuspAlongSmoothLifts.LiftsCuspidal → Big fun ch => IterAt ch ∧ LinAt ch :=
   fun hP hL => (_root_.GlobalTheory.RowChain.twisted_iterate_eventually_large hP hL).and (_root_.GlobalTheory.RowVal.placeValuation_linAt_large hP hL)
@@ -93,7 +93,7 @@ open GlobalTheory.MixModel GlobalTheory.MixPer GlobalTheory.Grow GlobalTheory.Ro
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.RowChain.twisted_iterate_eq_linear | exact _root_.GlobalTheory.RowChain.twisted_iterate_eq_linear | (intros; apply _root_.GlobalTheory.RowChain.twisted_iterate_eq_linear <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.twisted_iterate_chain : _root_.GlobalTheory.FunPr.ThetaLocalInputs → GlobalTheory.IndefiniteRowSideFullHecke.CuspAlongSmoothLifts.LiftsCuspidal → Big fun ch => IterAt ch ∧ LinAt ch := by
   first | exact @_root_.GlobalTheory.RowChain.twisted_iterate_eq_linear | exact _root_.GlobalTheory.RowChain.twisted_iterate_eq_linear | (intros; apply _root_.GlobalTheory.RowChain.twisted_iterate_eq_linear <;> assumption)

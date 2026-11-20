@@ -8,23 +8,23 @@ open ReciprocityTheory.ChartRestriction.G.AI.I1 (IsBlockMap pullDeg)
 namespace PositivityTheory.UnitarySelfGeneration
 
 /- English proof (translation)
-Introduce `K _ ι _ Ω Ω' _ _ _ _ φ y`. Establish `key : ∀ (s : MRing ι), aeval (fun p => φ (y p)) s = φ (aeval y s)`. Introduce `s`. Establish `h` using `MvPolynomial.comp_aeval_apply (R := ℤ) y (φ.toIntAlgHom) s`. Simplify using `using h.symm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `cone : ∀ (s : MRing ι), mConeMap (fun p => φ (y p)) s = MvPolynomial.map φ (mConeMap y s)`. Introduce `s`. Proceed by induction on `s using MvPolynomial.induction_on with`. Consider the case `C a => simp [mConeMap]`. Consider the case `add p q hp hq => rw [map_add, map_add, hp, hq, map_add]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `mul_X p n hp => rw [map_mul, map_mul, hp, map_mul]`. Simplify using `[mConeMap]`. Use `⟨?_, ?_, ?_, key⟩` and prove the remaining obligations. Use extensionality with `s`. Simplify using `only [mCoordIdeal, RingHom.mem_ker]`.
+Treat this case separately. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[cone]`. Prove the components needed by the constructor for the conclusion. Introduce `hs`. Apply `MvPolynomial.map_injective φ φ.injective` to reduce the goal to its premises. Rewrite using `[hs, map_zero]`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Introduce `hs`. Rewrite using `[hs, map_zero]`. Establish `e` using `IntermediateField.adjoin_map ℚ {t : Ω | ∃ (p : (k : K) × ι k) (q : (k : K) × ι k), p.fst = q.fst ∧ t = y p / y q} (φ.toRatAlgHom)`. Establish `e2` using `congrArg IntermediateField.toSubfield e`. Rewrite `e2` using `[IntermediateField.toSubfield_map]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hs : (φ.toRatAlgHom) '' {t : Ω | ∃ (p : (k : K) × ι k) (q : (k : K) × ι k), p.fst = q.fst ∧ t = y p / y q} = {t : Ω' | ∃ (p : (k : K) × ι k) (q : (k : K) × ι k), p.fst = q.fst ∧ t = φ (y p) / φ (y q)}`. Use extensionality with `t`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u, ⟨p, q, hpq, rfl⟩, rfl⟩`. Conclude with `⟨p, q, hpq, by simp [map_div₀]⟩`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `⟨p, q, hpq, rfl⟩`. Conclude with `⟨y p / y q, ⟨p, q, hpq, rfl⟩, by simp [map_div₀]⟩`. Rewrite `e2` using `[hs]`. Unfold `blockFnField`. Conclude with `e2.symm`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hsurj hb s'`. Take `⟨s, rfl⟩` from `hsurj s'`. Take `⟨d, g, h, hg, hh, hne, heq⟩` from `hb s`. Use `⟨d, g, h, hg, hh, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[key]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Conclude with `fun h0 => hne (φ.injective (by rw [h0, map_zero]))`. Rewrite using `[key, key, heq, map_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem t_ideal : ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] (Ω Ω' : Type) [Field Ω] [CharZero Ω] [Field Ω'] [CharZero Ω'] (φ : Ω →+* Ω') (y : (Σ k, ι k) → Ω), mCoordIdeal (fun p => φ (y p)) = mCoordIdeal y ∧ (blockFnField (fun p => φ (y p))).toSubfield = (blockFnField y).toSubfield.map φ ∧ (Function.Surjective φ → Birational y → Birational (fun p => φ (y p))) ∧ ∀ (s : MRing ι), aeval (fun p => φ (y p)) s = φ (aeval y s) := by
   intro K _ ι _ Ω Ω' _ _ _ _ φ y

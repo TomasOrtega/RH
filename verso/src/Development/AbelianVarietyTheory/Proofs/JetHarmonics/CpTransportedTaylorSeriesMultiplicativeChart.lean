@@ -8,7 +8,7 @@ open scoped ComplexConjugate BigOperators Topology
 namespace GlobalTheory.MomOne
 
 /- English proof (translation)
-Unfold `DT`. Rewrite using `[← smul_eq_C_mul, Derivation.map_smul, smul_eq_C_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 lemma hatmul_DT_C_mul {q : ℕ} [Fact q.Prime] (c : ℂ_[q]) (f : ℂ_[q]⟦X⟧) :
     DT (C c * f) = C c * DT f := by
@@ -17,7 +17,7 @@ lemma hatmul_DT_C_mul {q : ℕ} [Fact q.Prime] (c : ℂ_[q]) (f : ℂ_[q]⟦X⟧
   ring
 
 /- English proof (translation)
-Establish `: constantCoeff (logS : ℂ_[q]⟦X⟧) = 0`. Rewrite using `[← coeff_zero_eq_constantCoeff_apply]`. Simplify using `[logS]`. Simplify using `[this]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 lemma hatmul_const_log {q : ℕ} [Fact q.Prime] (ω : ℂ_[q]) :
     constantCoeff (C ω * logS : ℂ_[q]⟦X⟧) = 0 := by
@@ -27,7 +27,7 @@ lemma hatmul_const_log {q : ℕ} [Fact q.Prime] (ω : ℂ_[q]) :
   simp [this]
 
 /- English proof (translation)
-Take `⟨-, -, -, -, hd, -, -⟩` from `GlobalTheory.T.cpTransportedTaylorSeriesInChart_ringHom_laws q ι _ (hatmul_const_log ω)`. Take `⟨-, -, -, -, hl, -⟩` from `GlobalTheory.T.cpBinomialPowerSubOneSeries_integrality_composition_log q`. Establish `h1 : DT (C ω * logS : ℂ_[q]⟦X⟧) = C ω` using `by rw [hatmul_DT_C_mul, hl, mul_one]`. Unfold `DT at h1 ⊢`. Rewrite using `[hd G hG, ← mul_assoc, h1]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 lemma hatmul_DT_hat {q : ℕ} [Fact q.Prime] (ι : ℂ ≃+* ℂ_[q]) (ω : ℂ_[q]) (G : ℂ → ℂ)
     (hG : AnalyticAt ℂ G 0) :
@@ -39,9 +39,9 @@ lemma hatmul_DT_hat {q : ℕ} [Fact q.Prime] (ι : ℂ ≃+* ℂ_[q]) (ω : ℂ_
   rw [hd G hG, ← mul_assoc, h1]
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => intro G _`. Simplify using the standard rewrite rules. Consider the case `succ k ih`. Introduce `G hG`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hk : AnalyticAt ℂ (iteratedDeriv k G) 0`. Rewrite using `[iteratedDeriv_eq_iterate]`. Conclude with `hG.iterated_deriv k`. Rewrite using `[Function.iterate_succ_apply', ih G hG, hatmul_DT_C_mul, hatmul_DT_hat ι ω _ hk, iteratedDeriv_succ, pow_succ, map_mul, mul_assoc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma hatmul_iter {q : ℕ} [Fact q.Prime] (ι : ℂ ≃+* ℂ_[q]) (ω : ℂ_[q]) (k : ℕ) :
     ∀ (G : ℂ → ℂ), AnalyticAt ℂ G 0 →
@@ -57,7 +57,7 @@ lemma hatmul_iter {q : ℕ} [Fact q.Prime] (ι : ℂ ≃+* ℂ_[q]) (ω : ℂ_[q
       iteratedDeriv_succ, pow_succ, map_mul, mul_assoc]
 
 /- English proof (translation)
-Take `⟨-, -, -, -, -, -, hs⟩` from `GlobalTheory.T.cpTransportedTaylorSeriesInChart_ringHom_laws q ι _ (hatmul_const_log ω)`. Take `⟨hm, -⟩` from `GlobalTheory.T.cpBinomialPowerSubOneSeries_integrality_composition_log q`. Take `⟨-, h0, -, hl⟩` from `hm a`. Establish `hsub : HasSubst (mulS a : ℂ_[q]⟦X⟧)` using `HasSubst.of_constantCoeff_zero' h0`. Rewrite using `[hs G _ h0, ← smul_eq_C_mul (a := ω), subst_smul hsub, hl, smul_eq_C_mul, map_mul, mul_assoc]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 lemma hatmul_subst {q : ℕ} [Fact q.Prime] (ι : ℂ ≃+* ℂ_[q]) (ω : ℂ_[q]) (G : ℂ → ℂ) (a : ℤ_[q]) :
     hat ι (C (ω * zc a) * logS) G = (hat ι (C ω * logS) G).subst (mulS a : ℂ_[q]⟦X⟧) := by
@@ -68,9 +68,9 @@ lemma hatmul_subst {q : ℕ} [Fact q.Prime] (ι : ℂ ≃+* ℂ_[q]) (ω : ℂ_[
   rw [hs G _ h0, ← smul_eq_C_mul (a := ω), subst_smul hsub, hl, smul_eq_C_mul, map_mul, mul_assoc]
 
 /- English proof (translation)
-Introduce `q _ ι ω G hG`. Use `⟨hatmul_DT_hat ι ω G hG, fun k => ?_, fun α a ha => ?_, hatmul_subst ι ω G⟩` and prove the remaining obligations. Take `⟨-, -, -, hc, -⟩` from `GlobalTheory.T.cpTransportedTaylorSeriesInChart_ringHom_laws q ι _ (hatmul_const_log ω)`. Rewrite using `[hatmul_iter ι ω k G hG, map_mul, hc, constantCoeff_C]`. Take `⟨-, -, -, -, -, hα, -⟩` from `GlobalTheory.T.cpTransportedTaylorSeriesInChart_ringHom_laws q ι _ (hatmul_const_log ω)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hα G α hG, ← hatmul_subst, ha, map_mul, ← mul_assoc, mul_comm (C (zc a))]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem hat_multiplicative_chart : ∀ (q : ℕ) [Fact q.Prime] (ι : ℂ ≃+* ℂ_[q]) (ω : ℂ_[q]) (G : ℂ → ℂ), AnalyticAt ℂ G 0 → (DT (hat ι (C ω * logS) G) = C ω * hat ι (C ω * logS) (deriv G)) ∧ (∀ k : ℕ, constantCoeff (DT^[k] (hat ι (C ω * logS) G)) = ω ^ k * ι (iteratedDeriv k G 0)) ∧ (∀ (α : ℂ) (a : ℤ_[q]), ι α = zc a → hat ι (C ω * logS) (fun z => G (α * z)) = (hat ι (C ω * logS) G).subst (mulS a : ℂ_[q]⟦X⟧)) ∧ ∀ a : ℤ_[q], hat ι (C (ω * zc a) * logS) G = (hat ι (C ω * logS) G).subst (mulS a : ℂ_[q]⟦X⟧) := by
   intro q _ ι ω G hG

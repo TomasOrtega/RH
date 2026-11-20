@@ -5,17 +5,13 @@ namespace Formalism.GaloisIrreducibility
 open scoped Pointwise
 
 /- English proof (translation)
-Establish `key : ∀ d : ℕ, 0 < d → d < p → s ^ d • y ≠ y`. Introduce `d hd0 hdp hd`. Establish `hnd : ¬ p ∣ d` using `fun h => absurd (Nat.le_of_dvd hd0 h) (by omega)`. Establish `hcop : Nat.Coprime d p` using `Nat.coprime_comm.mp ((Nat.Prime.coprime_iff_not_dvd hp).mpr hnd)`. Establish `h1 : s ^ d ∈ MulAction.stabilizer M y` using `MulAction.mem_stabilizer_iff.mpr hd`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : s ^ p ∈ MulAction.stabilizer M y` using `by rw [hs]; exact one_mem _`. Establish `hb` using `Nat.gcd_eq_gcd_ab d p`. Rewrite `hb` using `[hcop.gcd_eq_one]`. Establish `e : s = (s ^ d) ^ (Nat.gcdA d p) * (s ^ p) ^ (Nat.gcdB d p)`. Rewrite using `[← zpow_natCast s d, ← zpow_natCast s p, ← zpow_mul, ← zpow_mul, ← zpow_add, ← hb, Nat.cast_one, zpow_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h3 : s ∈ MulAction.stabilizer M y`. Rewrite using `[e]`. Conclude with `mul_mem (zpow_mem h1 _) (zpow_mem h2 _)`. Conclude with `hy (MulAction.mem_stabilizer_iff.mp h3)`. Establish `step : ∀ i j : ℕ, i < j → j < p → s ^ i • y = s ^ j • y → False`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `i j hij hjp h`. Apply `key (j - i) (by omega) (by omega)` to reduce the goal to its premises. Establish `h' : s ^ i • (s ^ (j - i) • y) = s ^ i • y`. Rewrite using `[smul_smul, ← pow_add, show i + (j - i) = j by omega]`. Conclude with `h.symm`.
-
-Conclude with `(smul_left_cancel_iff _).mp h'`. Introduce `i hi j hj hij`. Break down `lt_trichotomy i j with h | h | h` into its components or cases. Conclude with `(step i j h hj hij).elim`. Conclude with `h`.
-
-Conclude with `(step j i h hi hij.symm).elim`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem poc_powSmul_injective {M Y : Type*} [Group M] [MulAction M Y] (s : M) (p : ℕ) (hp : p.Prime)
     (hs : s ^ p = 1) (y : Y) (hy : s • y ≠ y) :
@@ -48,53 +44,45 @@ theorem poc_powSmul_injective {M Y : Type*} [Group M] [MulAction M Y] (s : M) (p
   · exact (step j i h hi hij.symm).elim
 
 /- English proof (translation)
-Unfold `PrimitiveOfPCycle`. Introduce `α _ _ G σ p hp hσG hcyc hsupp hcard htr`. Use `@MulAction.IsPreprimitive.mk _ _ _ htr ?_` and prove the remaining obligations. Introduce `B hB`. Assume the negation of the conclusion as `hcon`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Unfold `MulAction.IsTrivialBlock at hcon`. Rewrite `hcon` using `[not_or]`. Take `⟨hns, hnt⟩` from `hcon`. Choose the witnesses or unpack the hypotheses as in `⟨b, hb, c, hc, hbc⟩ : ∃ b ∈ B, ∃ c ∈ B, b ≠ c := by`. Assume the negation of the conclusion as `h`.
+Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction.
 
-Use `push_neg at h`. Conclude with `hns (fun u hu v hv => h u hu v hv)`. Choose the witnesses or unpack the hypotheses as in `⟨z, hz⟩ : ∃ z, z ∉ B := by`. Assume the negation of the conclusion as `h`. Use `push_neg at h`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `hnt (Set.eq_univ_of_forall h)`. Establish `hσp : σ ^ p = 1`. Rewrite using `[← hsupp, ← hcyc.orderOf]`. Conclude with `pow_orderOf_eq_one σ`. Take `⟨x, hxs⟩ : σ.support.Nonempty` from `Finset.card_pos.mp (by rw [hsupp]; exact hp.pos)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨s, hsσ⟩ : ∃ s : G, (s : Equiv.Perm α) = σ` from `⟨⟨σ, hσG⟩, rfl⟩`. Establish `hs : s ^ p = 1` using `Subtype.ext (by simp [hsσ, hσp])`. Establish `hx : s • x ≠ x`. Rewrite using `[Subgroup.smul_def, hsσ, Equiv.Perm.smul_def]`. Conclude with `Equiv.Perm.mem_support.mp hxs`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Take `⟨g, hgb⟩` from `MulAction.exists_smul_eq G b x`. Use `set t : G := g⁻¹ * s * g with ht`. Establish `htp : t ^ p = 1`. Establish `e : ∀ i : ℕ, t ^ i = g⁻¹ * s ^ i * g`. Introduce `i`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Proceed by induction on `i with`. Consider the case `zero => simp`. Consider the case `succ i ih => rw [pow_succ, ih, ht, pow_succ]`. Use `group`. Rewrite using `[e, hs]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Use `group`. Establish `htb : t • b ≠ b`. Introduce `h`. Apply `hx` to reduce the goal to its premises. Establish `h2 : g • (t • b) = g • b` using `by rw [h]`.
+It suffices to derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h2` using `[ht, mul_smul, mul_smul, smul_inv_smul, hgb]`. Conclude with `h2`. Establish `blk : ∀ g₁ g₂ : G, g₁ • B ≠ g₂ • B → Disjoint (g₁ • B) (g₂ • B)`. Introduce `g₁ g₂ hne`. Break down `hB.smul_eq_or_disjoint (g₂⁻¹ * g₁) with h | h` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-It suffices to derive a contradiction. Apply `hne` to reduce the goal to its premises. Rewrite `h` using `[mul_smul]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Set.disjoint_left]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Introduce `a ha1 ha2`. Rewrite `ha1`, `ha2` using `[Set.mem_smul_set_iff_inv_smul_mem]`. Establish `h3 : g₂⁻¹ • a ∈ (g₂⁻¹ * g₁) • B`. Rewrite using `[Set.mem_smul_set_iff_inv_smul_mem, mul_inv_rev, inv_inv, mul_smul, smul_inv_smul]`. Conclude with `ha1`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `Set.disjoint_left.mp h h3 ha2`. Break down `hB.smul_eq_or_disjoint t with hE | hD` into its components or cases. Establish `hpow : ∀ i : ℕ, t ^ i • b ∈ B`. Introduce `i`. Proceed by induction on `i with`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Introduce a local definition for the expression.
 
-Consider the case `zero => simpa using hb`. Consider the case `succ i ih`. Rewrite using `[pow_succ', mul_smul, ← hE]`. Conclude with `Set.smul_mem_smul_set ih`. Take `⟨h, hhb⟩` from `MulAction.exists_smul_eq G b z`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Establish `hne : h • B ≠ B`. Introduce `e`. Apply `hz` to reduce the goal to its premises. Rewrite using `[← e, ← hhb]`. Conclude with `Set.smul_mem_smul_set hb`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Establish `hdis : Disjoint (h • B) B`. Establish `h4` using `blk h 1 (by rwa [one_smul])`. Rewrite `h4` using `[one_smul]`. Then use the resulting hypothesis. Set `f : Fin p ⊕ Fin p → α` to `Sum.elim (fun i => t ^ (i : ℕ) • b) (fun i => h • (t ^ (i : ℕ) • b))`. Establish `hf : Function.Injective f`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce and unpack `(i | i) (j | j) hij`. Simplify using `only [f, Sum.elim_inl] at hij`. Conclude with `congrArg Sum.inl (Fin.ext (poc_powSmul_injective t p hp htp b htb i i.2 j j.2 hij))`. Simplify using `only [f, Sum.elim_inl, Sum.elim_inr] at hij`. Conclude with `(Set.disjoint_left.mp hdis (Set.smul_mem_smul_set (hpow j)) (by rw [← hij]; exact hpow i)).elim`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Simplify using `only [f, Sum.elim_inl, Sum.elim_inr] at hij`. Conclude with `(Set.disjoint_left.mp hdis (Set.smul_mem_smul_set (hpow i)) (by rw [hij]; exact hpow j)).elim`. Simplify using `only [f, Sum.elim_inr] at hij`. Conclude with `congrArg Sum.inr (Fin.ext (poc_powSmul_injective t p hp htp b htb i i.2 j j.2 ((smul_left_cancel_iff h).mp hij)))`. Establish `hcd` using `Fintype.card_le_of_injective f hf`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Substitute using the available equality. Both sides reduce to the same expression. Simplify using the standard rewrite rules.
 
-Simplify using `only [Fintype.card_sum, Fintype.card_fin] at hcd`. Use linear arithmetic over natural numbers and integers. Establish `htB : t • B ≠ B`. Introduce `e`. Rewrite `hD` using `[e]`.
+Establish an intermediate fact. Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact. Substitute using the available equality.
 
-Conclude with `Set.disjoint_left.mp hD hb hb`. Establish `hinj` using `poc_powSmul_injective t p hp htp B htB`. Establish `key : ∀ i j : Fin p, ∀ u v : α, u ∈ B → v ∈ B → t ^ (i : ℕ) • u = t ^ (j : ℕ) • v → i = j`. Introduce `i j u v hu hv e`. Assume the negation of the conclusion as `hij`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Substitute using the available equality. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hne : t ^ (i : ℕ) • B ≠ t ^ (j : ℕ) • B` using `fun h => hij (Fin.ext (hinj i i.2 j j.2 h))`. Conclude with `Set.disjoint_left.mp (blk _ _ hne) (Set.smul_mem_smul_set hu) (by rw [e]; exact Set.smul_mem_smul_set hv)`. Set `f : Fin p ⊕ Fin p → α` to `Sum.elim (fun i => t ^ (i : ℕ) • b) (fun i => t ^ (i : ℕ) • c)`. Establish `hf : Function.Injective f`. Introduce and unpack `(i | i) (j | j) hij`.
-
-Simplify using `only [f, Sum.elim_inl] at hij`. Use `key i j b b hb hb hij` as an intermediate fact. Substitute `this` using the available equality. Both sides reduce to the same expression. Simplify using `only [f, Sum.elim_inl, Sum.elim_inr] at hij`.
-
-Use `key i j b c hb hc hij` as an intermediate fact. Substitute `this` using the available equality. Conclude with `absurd ((smul_left_cancel_iff _).mp hij) hbc`. Simplify using `only [f, Sum.elim_inl, Sum.elim_inr] at hij`. Use `key i j c b hc hb hij` as an intermediate fact.
-
-Substitute `this` using the available equality. Conclude with `absurd ((smul_left_cancel_iff _).mp hij).symm hbc`. Simplify using `only [f, Sum.elim_inr] at hij`. Use `key i j c c hc hc hij` as an intermediate fact. Substitute `this` using the available equality.
-
-Both sides reduce to the same expression. Establish `hcd` using `Fintype.card_le_of_injective f hf`. Simplify using `only [Fintype.card_sum, Fintype.card_fin] at hcd`. Use linear arithmetic over natural numbers and integers.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem primitive_of_p_cycle : PrimitiveOfPCycle := by
   unfold PrimitiveOfPCycle

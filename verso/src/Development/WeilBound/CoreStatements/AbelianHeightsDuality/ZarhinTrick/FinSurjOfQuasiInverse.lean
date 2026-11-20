@@ -23,7 +23,7 @@ variable {S : Scheme.{0}} {A B : Over S} [GrpObj A] [GrpObj B] [IsCommMonObj A] 
 variable {Ω : Type} [Field Ω] [IsAlgClosed Ω]
 
 /- English proof (translation)
-The claim follows from `Z2.isFinite_mu_fibre hA hB g hgA hgB l mu m hm h₁ h₂ s L hL ha`.
+A detailed English derivation is pending.
 -/
 theorem isFinite_mu_fibre (hA : IsAbelianScheme A) (hB : IsAbelianScheme B) (g : ℕ)
     (hgA : SmoothOfRelativeDimension g A.hom) (hgB : SmoothOfRelativeDimension g B.hom) (l : A ⟶ B) [IsMonHom l]

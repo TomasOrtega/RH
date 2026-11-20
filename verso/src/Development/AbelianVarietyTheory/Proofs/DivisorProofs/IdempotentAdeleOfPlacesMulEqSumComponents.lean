@@ -15,13 +15,13 @@ open GlobalTheory.CompanionTheory.SaGen
 variable {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E]
 
 /- English proof (translation)
-Take `⟨h1, h2, h3, h4⟩` from `h`. Use `adele_ext ?_ (finAdele_ext fun u => ?_)` and prove the remaining obligations. Establish `hfin : ∀ v ∈ S₂, fstA F ((placeMapFin v).inj 1) = 0` using `fun v _ => rfl`. Establish `hinf : ∀ w ∈ S₁, fstA F ((placeMapInf w).inj 1) = singleI w 1` using `fun w _ => rfl`. Rewrite using `[map_add, map_sum, map_sum, Finset.sum_congr rfl hfin, Finset.sum_const_zero, add_zero, Finset.sum_congr rfl hinf]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `ainf_ext fun u => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `fstA F ε u = (∑ w ∈ S₁, (singleI w 1 : ∀ u : InfinitePlace F, u.Completion)) u`. Use `Eq.trans ?_ (Finset.sum_apply u S₁ (fun w => (singleI w 1 : ∀ u : InfinitePlace F, u.Completion))).symm` and prove the remaining obligations. Distinguish the cases in `hu : u ∈ S₁`. Rewrite using `[h1 u hu, Finset.sum_eq_single u (fun w _ hw => singleI_ne (Ne.symm hw) 1) (fun h => absurd hu h), singleI_self]`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h2 u hu, Finset.sum_eq_zero fun w hw => singleI_ne (fun e : u = w => hu (e ▸ hw)) 1]`. Establish `hinf : ∀ w ∈ S₁, sndA F ((placeMapInf w).inj 1) = 0` using `fun w _ => rfl`. Establish `hfin : ∀ v ∈ S₂, sndA F ((placeMapFin v).inj 1) = singleV F v 1` using `fun v _ => rfl`. Rewrite using `[map_add, map_sum, map_sum, Finset.sum_congr rfl hinf, Finset.sum_const_zero, zero_add, Finset.sum_congr rfl hfin, map_sum]`. Distinguish the cases in `hu : u ∈ S₂`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[h3 u hu, Finset.sum_eq_single u (fun v _ hv => StrongApprox.evalV_single_ne (Ne.symm hv) 1) (fun h => absurd hu h), StrongApprox.evalV_single_same]`. Rewrite using `[h4 u hu, Finset.sum_eq_zero fun v hv => StrongApprox.evalV_single_ne (fun e : u = v => hu (e ▸ hv)) 1]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem idem_eq_sum (S₁ : Finset (InfinitePlace F)) (S₂ : Finset (HeightOneSpectrum (𝓞 F))) (ε : AF F)
     (h : IsPlacesIdem S₁ S₂ ε) :
@@ -56,16 +56,16 @@ theorem iB_tmul {K : Type} [Field K] [Algebra F K] [TopologicalSpace K] (P : Pla
     iB (E := E) P (y ⊗ₜ[F] e) = P.inj y ⊗ₜ[F] e := rfl
 
 /- English proof (translation)
-Rewrite using `[Algebra.TensorProduct.map_tmul, AlgHom.id_apply, iB_tmul, P.inj_proj]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem iB_map_tmul {K : Type} [Field K] [Algebra F K] [TopologicalSpace K] (P : PlaceMap F K) (x : AF F) (e : E) :
     iB P (Algebra.TensorProduct.map P.proj (AlgHom.id F E) (x ⊗ₜ[F] e)) = (P.inj 1 * x) ⊗ₜ[F] e := by
   rw [Algebra.TensorProduct.map_tmul, AlgHom.id_apply, iB_tmul, P.inj_proj]
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ S₁ S₂ ε hε a`. Proceed by induction on `a using TensorProduct.induction_on with`. Consider the case `zero => simp only [mul_zero, map_zero, Finset.sum_const_zero, add_zero]`. Consider the case `tmul x e`. Simplify using `only [iB_map_tmul]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules.
 
-Rewrite using `[Algebra.TensorProduct.algebraMap_apply, Algebra.algebraMap_self, RingHom.id_apply, Algebra.TensorProduct.tmul_mul_tmul, one_mul, ← TensorProduct.sum_tmul, ← TensorProduct.sum_tmul, ← TensorProduct.add_tmul, ← Finset.sum_mul, ← Finset.sum_mul, ← add_mul, ← idem_eq_sum S₁ S₂ ε hε]`. Consider the case `add a b ha hb`. Rewrite using `[mul_add, ha, hb]`. Simplify using `only [map_add, Finset.sum_add_distrib]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 theorem idem_mul_eq_sum : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E]
     (S₁ : Finset (InfinitePlace F)) (S₂ : Finset (HeightOneSpectrum (𝓞 F))) (ε : AF F), IsPlacesIdem S₁ S₂ ε →

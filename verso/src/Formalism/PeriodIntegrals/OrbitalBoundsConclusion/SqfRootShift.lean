@@ -2,7 +2,7 @@ import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.SquarefreeRootShift.Cou
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.SquarefreeRootShift.ArithP
 
 /- English proof (translation)
-The claim follows from `PI.SqfRootShift.W.claim_of PI.SqfRootShift.W.countP PI.SqfRootShift.W.arithP`.
+A detailed English derivation is pending.
 -/
 theorem squarefree_root_shift : PI.SqfRootShift.Claim :=
   PI.SqfRootShift.W.claim_of PI.SqfRootShift.W.countP PI.SqfRootShift.W.arithP

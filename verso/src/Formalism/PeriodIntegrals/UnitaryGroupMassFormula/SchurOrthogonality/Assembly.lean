@@ -7,11 +7,9 @@ namespace PI.WSF
 open Formalism.BasicNotions MvPolynomial MeasureTheory
 
 /- English proof (translation)
-Introduce `N lam s hs hbd`. Take `⟨μ, hμ⟩` from `hB N`. Establish `hprob` using `hμ.1`. Establish `hae` using `hμ.2.1`. Rewrite using `[hC N lam μ hμ s hs]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hint : ∫ x, ‖evalM x s‖ ^ 2 ∂μ ≤ 1`. Combine the equalities or inequalities in the displayed calculation. Apply `integral_mono_of_nonneg (ae_of_all _ fun x => by positivity) (integrable_const 1)` to reduce the goal to its premises. Use `filter_upwards [hae] with x hx`. Conclude with `pow_le_one₀ (norm_nonneg _) (hbd x hx)`.
-
-Use `_ = 1 := by simp`. Conclude with `mul_le_of_le_one_right (Nat.cast_nonneg _) hint`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem schurFock_of_steps (hB : HaarU) (hC : SchurOrth) : PI.SchurFock := by
   intro N lam s hs hbd

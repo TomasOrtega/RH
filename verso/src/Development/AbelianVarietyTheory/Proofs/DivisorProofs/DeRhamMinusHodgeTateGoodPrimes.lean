@@ -19,9 +19,9 @@ open Formalism.BasicNotions Formalism.MainNotions GlobalTheory.CovTop GlobalTheo
 namespace GlobalTheory.DeRhamHodgeTateGoodPrimes
 
 /- English proof (translation)
-Introduce `hX h₁ h₂ h₃ D O hO _ _ _ _ _`. Use `(GlobalTheory.MixedLocalChains.globalHeightBound_iff_atGoodPrimes O.Y).2 fun p hp h2 hu hl => ?_` and prove the remaining obligations. Use `haveI : Fact p.Prime := ⟨hp⟩`. Take `⟨ι, _, w, W, hW, jc, z, hpin, hT⟩` from `GlobalTheory.T.term_statement_of_alteration hX.y.alt h₁ h₂ D O hO p h2 hu hl`. Use `GlobalTheory.T.global_at_of_local_roots D O.Y p ι w jc _ _ hu hT fun la => ⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 
-Conclude with `fun t τ ht => ⟨GlobalTheory.ShFam.Pad.rootOf_lie (z la) ht, GlobalTheory.ShFam.Pad.rootOf_om (z la) ht⟩`. Conclude with `GlobalTheory.T.admissible_model_commutes D _ _ _ O.S O.κ p Fact.out (W la) (hW la) (z la) (jc la)`. Conclude with `GlobalTheory.T.cons_statement_of_prismatic h₁ h₂ D O hO p h2 hu hl (W la) (hW la) (jc la) (hpin la) (z la)`. Conclude with `GlobalTheory.T.local_statement_of_chain (GlobalTheory.T.chain_statement_of_prismatic hX h₁ h₂ h₃) D O hO p h2 hu hl (W la) (hW la) (jc la) (hpin la) (z la)`.
+A detailed English derivation is pending.
 -/
 theorem onObj_aux3At_of_knownResults : HypothesesXH → Hypotheses2 → HypothesesH → GlobalTheory.Published.PrismaticDieudonnePerfd →
     OnObj fun _ O _ _ _ _ => DeRhamMinusHodgeTateGoodPrimesAt O.Y := by

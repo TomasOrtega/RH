@@ -22,17 +22,17 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 namespace GlobalTheory.LocRepSplit
 
 /- English proof (translation)
-Introduce `hKP F E _ _ _ _ _ σ B a a' G X om om' R Rf hM v t c`. Take `⟨e, he⟩` from `GlobalTheory.T.matched_local_induced_space_iso hKP F E σ B a a' G X om om' R Rf hM v t c`. Establish `hα : IsSmoothChar (chrW X.α t)` using `(GlobalTheory.T.splitPlaceCharacterComponent_smooth_unitary_conductor F E X.α hM.triple.chars.heckeα v t).1.1`. Establish `hβ : IsSmoothChar (chrW X.β t)` using `(GlobalTheory.T.splitPlaceCharacterComponent_smooth_unitary_conductor F E X.β hM.triple.chars.heckeβ v t).1.1`. Take `⟨ρ, hρ, hsm, ⟨E₁⟩⟩` from `GlobalTheory.T.induced_rep_exists_right_translation (Fv F v) a a' (chrW X.α t) (chrW X.β t) hα hβ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Set `π : Representation ℂ (GL (Fin (a + a')) (Fv F v)) (Rf.Pi v)` to `{ toFun := fun g => e.symm.toLinearMap ∘ₗ ρ g ∘ₗ e.toLinearMap map_one' := by`. Use extensionality with `x`. Simplify using the standard rewrite rules. Use the proof step `map_mul' := by`. Introduce `g h`.
+Introduce a local definition for the expression. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Use extensionality with `x`. Simplify using `[map_mul] }`. Establish `hπ : ∀ g x, π g x = e.symm (ρ g (e x))` using `fun _ _ => rfl`. Use `⟨π, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `x`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `: {g | π g x = x} = {g | ρ g (e x) = e x}`. Use extensionality with `g`. Simplify using `only [Set.mem_setOf_eq, hπ]`. Conclude with `e.symm_apply_eq`. Rewrite using `[this]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Conclude with `hsm (e x)`. Use `⟨(Representation.Equiv.mk e fun g => ?_).trans E₁⟩` and prove the remaining obligations. Use extensionality with `x`. Simplify using `[hπ]`. Introduce `h hh φ hφ φ₁ hφ₁ hA`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[hπ, LinearEquiv.eq_symm_apply]`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `g`. Rewrite using `[hρ]`. Conclude with `he h hh φ hφ φ₁ hφ₁ hA g`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem locRep : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : Base F E) (a a' : ℕ) (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W)

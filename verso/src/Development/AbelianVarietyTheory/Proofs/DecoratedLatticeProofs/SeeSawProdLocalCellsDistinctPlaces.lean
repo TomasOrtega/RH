@@ -14,7 +14,7 @@ noncomputable section
 namespace GlobalTheory.SeeSaw.CellProd
 
 /- English proof (translation)
-The claim follows from `| 0, _, _, _ => by simp | n + 1, r, u, h => by have ih := prod_ofFn_mul (fun i => r i.succ) (fun i => u i.succ) (fun i i' hi => h _ _ fun e => hi (Fin.succ_injective _ e)) have hc : Commute (u 0) (List.ofFn fun i : Fin n => r i.succ).prod := by refine Commute.list_prod_right _ _ …`.
+A detailed English derivation is pending.
 -/
 theorem prod_ofFn_mul {M : Type} [Monoid M] : ∀ {n : ℕ} (r u : Fin n → M), (∀ i i', i ≠ i' → Commute (u i) (r i')) →
     (List.ofFn fun i => r i * u i).prod = (List.ofFn r).prod * (List.ofFn u).prod
@@ -30,7 +30,7 @@ theorem prod_ofFn_mul {M : Type} [Monoid M] : ∀ {n : ℕ} (r u : Fin n → M),
     rw [ih, mul_assoc, mul_assoc, ← mul_assoc (u 0), hc.eq, mul_assoc]
 
 /- English proof (translation)
-The claim follows from `| 0, _, i, _ => i.elim0 | n + 1, f, i, h => by simp only [List.ofFn_succ, List.prod_cons] induction i using Fin.cases with | zero => rw [List.prod_eq_one, mul_one] intro x hx obtain ⟨i, rfl⟩ := List.mem_ofFn.1 hx exact h _ (Fin.succ_ne_zero i) | succ i => rw [h 0 (Fin.succ_ne_zer …`.
+A detailed English derivation is pending.
 -/
 theorem prod_ofFn_single {M : Type} [Monoid M] : ∀ {n : ℕ} (f : Fin n → M) (i : Fin n), (∀ i', i' ≠ i → f i' = 1) →
     (List.ofFn f).prod = f i
@@ -51,20 +51,20 @@ variable {D : D7} {k k' : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] 
   [Field k'] [ValuativeRel k'] [TopologicalSpace k'] [IsNonarchimedeanLocalField k']
 
 /- English proof (translation)
-The claim follows from `inf_le_inf_left _ (le_iInf fun w => iInf_le_of_le ⟨w.1, fun hw => w.2 (h _ hw)⟩ le_rfl)`.
+A detailed English derivation is pending.
 -/
 theorem idAt_le {P P' : Pl D → Prop} (h : ∀ v, P v → P' v) : idAt D P ≤ idAt D P' :=
   inf_le_inf_left _ (le_iInf fun w => iInf_le_of_le ⟨w.1, fun hw => w.2 (h _ hw)⟩ le_rfl)
 
 /- English proof (translation)
-Take `⟨ε, hε, hs⟩` from `q.above`. Conclude with `((placeIdem_acts D q.v ε hε).1 a).2 (hs ▸ h)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem mem_idAt (q : SplitPt D k) {a : AE D} (h : (q.e + cA D q.e) * a = a) : a ∈ idAt D (· = q.v) := by
   obtain ⟨ε, hε, hs⟩ := q.above
   exact ((placeIdem_acts D q.v ε hε).1 a).2 (hs ▸ h)
 
 /- English proof (translation)
-Take `⟨ε, hε, hs⟩` from `q.above`. Rewrite using `[hs]`. Conclude with `(placeIdem_acts D q.v ε hε).2 a (idAt_le (fun v (e : v = q'.v) => e ▸ hv) (mem_idAt q' h))`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem idem_mul_eq_zero (q : SplitPt D k) (q' : SplitPt D k') (hv : q'.v ≠ q.v) {a : AE D}
     (h : (q'.e + cA D q'.e) * a = a) : (q.e + cA D q.e) * a = 0 := by
@@ -73,9 +73,9 @@ theorem idem_mul_eq_zero (q : SplitPt D k) (q' : SplitPt D k') (hv : q'.v ≠ q.
   exact (placeIdem_acts D q.v ε hε).2 a (idAt_le (fun v (e : v = q'.v) => e ▸ hv) (mem_idAt q' h))
 
 /- English proof (translation)
-Establish `h0` using `idem_mul_eq_zero q q' hv h`. Take `⟨h1, h2, -⟩` from `q.split`. Establish `: q.e * a = 0`. Use `congrArg (q.e * ·) h0` as an intermediate fact. Simplify `this` using `only [← mul_assoc, mul_add, h1, h2, add_zero, mul_zero]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[← q.pr_sec (q.pr a), q.sec_pr, this, map_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem pr_eq_zero (q : SplitPt D k) (q' : SplitPt D k') (hv : q'.v ≠ q.v) {a : AE D}
     (h : (q'.e + cA D q'.e) * a = a) : q.pr a = 0 := by
@@ -87,7 +87,7 @@ theorem pr_eq_zero (q : SplitPt D k) (q' : SplitPt D k') (hv : q'.v ≠ q.v) {a 
   rw [← q.pr_sec (q.pr a), q.sec_pr, this, map_zero]
 
 /- English proof (translation)
-Rewrite using `[grpAt, congGrp, MonoidHom.mem_ker]`. Use extensionality with `i j`. Express the relevant statement in the definitionally equal form `Ideal.Quotient.mk _ (mt V g i j) = (1 : Matrix (Fin V.rank) (Fin V.rank) _) i j`. Rewrite using `[← Matrix.map_one (Ideal.Quotient.mk (idAt D P)) (map_zero _) (map_one _), Matrix.map_apply, Ideal.Quotient.eq]`. Conclude with `idAt_le (fun v (e : v = q.v) => e ▸ hP) (mem_idAt q (hg i j))`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_grpAt (q : SplitPt D k) {V : HSp D} {g : GA D V} (hg : SuppAt q.e V g) {P : Pl D → Prop} (hP : P q.v) :
     g ∈ grpAt V P := by
@@ -98,15 +98,15 @@ theorem mem_grpAt (q : SplitPt D k) {V : HSp D} {g : GA D V} (hg : SuppAt q.e V 
   exact idAt_le (fun v (e : v = q.v) => e ▸ hP) (mem_idAt q (hg i j))
 
 /- English proof (translation)
-Simplify using `[Formalism.L2.Theta.mt]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mt_mul' (V : HSp D) (g h : GA D V) : mt V (g * h) = mt V g * mt V h := by
   simp [Formalism.L2.Theta.mt]
 
 /- English proof (translation)
-Establish `key : ∀ a b c d, (mt V g - 1) a b * (mt V h - 1) c d = 0` using `fun a b c d => by`. Rewrite using `[← hg a b, mul_comm (q.e + _), mul_assoc, idem_mul_eq_zero q q' hv (hh c d), mul_zero]`. Prove the components needed by the constructor for the conclusion. Use extensionality with `a b`. Rewrite using `[Matrix.mul_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.sum_eq_zero fun c _ => key _ _ _ _`. Use extensionality with `a b`. Rewrite using `[Matrix.mul_apply]`. Conclude with `Finset.sum_eq_zero fun c _ => by rw [mul_comm]; exact key _ _ _ _`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sub_mul_sub (q : SplitPt D k) (q' : SplitPt D k') (hv : q'.v ≠ q.v) {V : HSp D} {g h : GA D V}
     (hg : SuppAt q.e V g) (hh : SuppAt q'.e V h) :
@@ -122,9 +122,9 @@ theorem sub_mul_sub (q : SplitPt D k) (q' : SplitPt D k') (hv : q'.v ≠ q.v) {V
     exact Finset.sum_eq_zero fun c _ => by rw [mul_comm]; exact key _ _ _ _
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `sub_mul_sub q q' hv hg hh`. Establish `: mt V (g * h) = mt V (h * g)`. Rewrite using `[mt_mul', mt_mul', ← sub_eq_zero]`. Establish `e : mt V g * mt V h - mt V h * mt V g = (mt V g - 1) * (mt V h - 1) - (mt V h - 1) * (mt V g - 1)` using `by noncomm_ring`. Rewrite using `[e, h1, h2, sub_zero]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Subtype.ext (Units.ext this)`.
+A detailed English derivation is pending.
 -/
 theorem commute_of_suppAt (q : SplitPt D k) (q' : SplitPt D k') (hv : q'.v ≠ q.v) {V : HSp D} {g h : GA D V}
     (hg : SuppAt q.e V g) (hh : SuppAt q'.e V h) : Commute g h := by
@@ -137,7 +137,7 @@ theorem commute_of_suppAt (q : SplitPt D k) (q' : SplitPt D k') (hv : q'.v ≠ q
   exact Subtype.ext (Units.ext this)
 
 /- English proof (translation)
-Use extensionality with `i j`. Use `pr_eq_zero q q' hv (hg i j)` as an intermediate fact. Rewrite `this` using `[Matrix.sub_apply, map_sub, sub_eq_zero]`. Rewrite using `[Matrix.map_apply, this, ← Matrix.map_one q.pr (map_zero _) (map_one _), Matrix.map_apply]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem map_eq_one (q : SplitPt D k) (q' : SplitPt D k') (hv : q'.v ≠ q.v) {V : HSp D} {g : GA D V}
     (hg : SuppAt q'.e V g) : (mt V g).map q.pr = 1 := by
@@ -154,17 +154,15 @@ end GlobalTheory.SeeSaw.CellProd
 open GlobalTheory.SeeSaw.CellProd in
 
 /- English proof (translation)
-Introduce `D c v n G hG j' hj R b hb xs H`. Use `choose r hr hrs u uk hu huk hx using H`. Establish `hne : ∀ i i', i ≠ i' → (G i).q.v ≠ (G i').q.v` using `fun i i' h e => h (hG.inj e)`. Establish `hP : ∀ i, (G i).q.v ∈ v.gP` using `fun i => (hG.places _).2 ⟨i, rfl⟩`. Establish `hus : ∀ i, SuppAt (G i).q.e (c.V j') (u i)` using `fun i => (hu i).1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨(List.ofFn r).prod, R.list_prod_mem ?_, Subgroup.list_prod_mem _ ?_, (List.ofFn u).prod, (hG.lev j' hj _).2 ⟨Subgroup.list_prod_mem _ ?_, ?_⟩, ?_⟩` and prove the remaining obligations. Introduce `x hx`. Take `⟨i, rfl⟩` from `List.mem_ofFn.1 hx`. Conclude with `hr i`. Introduce `x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨i, rfl⟩` from `List.mem_ofFn.1 hx`. Conclude with `mem_grpAt (G i).q (hrs i) (hP i)`. Introduce `x hx`. Take `⟨i, rfl⟩` from `List.mem_ofFn.1 hx`. Conclude with `mem_grpAt (G i).q (hus i) (hP i)`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `i a ha y hy`. Take `rfl : a = b i` from `by have := hb i; omega`. Establish `e : matAt (G i).q (c.V j') (List.ofFn u).prod = matAt (G i).q (c.V j') (u i)`. Rewrite using `[map_list_prod, List.map_ofFn]`. Conclude with `prod_ofFn_single _ i fun i' hi => map_eq_one (G i).q (G i').q (hne _ _ hi) (hus i')`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `e2 : ((G i).FY j' (b i) ha).β * y.val * ((G i).FY j' (b i) ha).γ = ((G i).FY j' (b i) ha).β * (uk i).val * ((G i).FY j' (b i) ha).γ` using `hy.symm.trans (e.trans (hu i).2)`. Establish `e3` using `congrArg (fun x => ((G i).FY j' (b i) ha).γ * x * ((G i).FY j' (b i) ha).β) e2`. Simplify using `only [← Matrix.mul_assoc, GlobalTheory.LocMod.Frame.γβ, Matrix.one_mul] at e3`. Simplify using `only [Matrix.mul_assoc, GlobalTheory.LocMod.Frame.γβ, Matrix.mul_one] at e3`. Rewrite using `[Units.ext e3]`.
-
-Conclude with `huk i`. Rewrite using `[show xs = fun i => r i * u i from funext hx]`. Conclude with `prod_ofFn_mul r u fun i i' h => commute_of_suppAt (G i).q (G i').q (hne _ _ h.symm) (hus i) (hrs i')`.
+Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.SeeSaw.prod_local_cells : ∀ {D : D7} {c : Comm D} {v : VCom c} {n : ℕ} (G : Fin n → GLoc v), GPin G → ∀ (j' : ℕ), j' < D.R.m → ∀ (R : Subgroup (GA D (c.V j'))) (b : Fin n → ℕ) (hb : ∀ i, j' + b i = (G i).s + 1) (xs : Fin n → GA D (c.V j')), (∀ i, ∃ r ∈ R, SuppAt (G i).q.e (c.V j') r ∧ ∃ u uk, (GlobalTheory.LocMod.ofSplit (G i).q).IsLoc ((G i).FY j' (b i) (hb i)) u uk ∧ uk ∈ (((G i).S.T (Fin D.R.t)).lev j' (b i) (hb i)).J ∧ xs i = r * u) → ∃ r ∈ R, r ∈ grpAt (c.V j') (· ∈ v.gP) ∧ ∃ k ∈ v.JG j', (List.ofFn xs).prod = r * k := by
   intro D c v n G hG j' hj R b hb xs H

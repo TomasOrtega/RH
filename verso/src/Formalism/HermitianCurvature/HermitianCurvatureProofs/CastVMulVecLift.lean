@@ -18,9 +18,9 @@ section lift
 variable {k : ℕ}
 
 /- English proof (translation)
-Take `⟨h1, h2, h3⟩` from `h`. Use `⟨fun a => (PI.QnLevBasicsW.level_group_isotropic_vector k i r' (Bs a) (h1 a)).1, fun a b => ?_, fun a x hx => ?_⟩` and prove the remaining obligations. Rewrite using `[PIQnLT.herm_liftVec]`. Conclude with `h2 a b`. Take `⟨v, hv, rfl⟩` from `List.mem_map.1 hx`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[PIQnLT.herm_liftVec]`. Conclude with `h3 a v hv`.
+A detailed English derivation is pending.
 -/
 theorem frame_lift_list {i r' m : ℕ} (vs : List (Fin (2 * r' + k + 1) → ℂ)) (Bs : Fin m → Fin (2 * r' + k + 1) → ℂ)
     (h : IsFrameOf k r' vs Bs) :
@@ -33,7 +33,7 @@ theorem frame_lift_list {i r' m : ℕ} (vs : List (Fin (2 * r' + k + 1) → ℂ)
     exact h3 a v hv
 
 /- English proof (translation)
-Substitute `hn` using the available equality. Simplify using `only [JCTx5.castV_rfl]`. Conclude with `frame_lift_list vs Bs h`.
+Substitute using the available equality. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem frame_lift_cast {i r' n m : ℕ} (hn : i + r' = n) (vs : List (Fin (2 * r' + k + 1) → ℂ))
     (Bs : Fin m → Fin (2 * r' + k + 1) → ℂ) (h : IsFrameOf k r' vs Bs) :
@@ -43,7 +43,7 @@ theorem frame_lift_cast {i r' n m : ℕ} (hn : i + r' = n) (vs : List (Fin (2 * 
   exact frame_lift_list vs Bs h
 
 /- English proof (translation)
-Substitute `hn` using the available equality. Simplify using `only [JCTx5.castV_rfl, JCTx5.castM_rfl]`. Conclude with `JCTx5.capRep_lift π0 Bs w v`.
+Substitute using the available equality. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem capRep_lift_cast {Wp : Type} [NormedAddCommGroup Wp] [NormedSpace ℂ Wp] {i r' n m : ℕ} (hn : i + r' = n)
     (π0 : Mx k n → (Wp →L[ℂ] Wp)) (Bs : Fin m → Fin (2 * r' + k + 1) → ℂ) (w : ℂ) (v : Wp) :
@@ -54,7 +54,7 @@ theorem capRep_lift_cast {Wp : Type} [NormedAddCommGroup Wp] [NormedSpace ℂ Wp
   exact JCTx5.capRep_lift π0 Bs w v
 
 /- English proof (translation)
-Substitute `hn` using the available equality. Simplify using `only [JCTx5.castV_rfl, JCTx5.castM_rfl]`. Conclude with `PIQnLT.mulVec_liftVec M v`.
+Substitute using the available equality. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem castV_mulVec_lift {i r' n : ℕ} (hn : i + r' = n) (M : B.Mat k r') (v : Fin (2 * r' + k + 1) → ℂ) :
     D.castM hn (ιLev k i r' M) *ᵥ D.castV hn (liftVec k i r' v) = D.castV hn (liftVec k i r' (M *ᵥ v)) := by
@@ -70,11 +70,11 @@ variable {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [Norm
   [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq]
 
 /- English proof (translation)
-Establish `hn : P.r + (P.r - P.r) = P.r` using `by omega`. Take `⟨hν, hm, hbase⟩` from `hLF`. Establish `hB1` using `Topx1.vecw_frame_fwd (p.T.bs P.r) hbase hB`. Establish `hB2` using `frame_lift_cast hn _ _ hB1`. Establish `ez : D.castV hn (liftVec P.k P.r (P.r - P.r) (p.T.bs P.r).z) = p.T.base.z` using `p.T.z_lev P.r le_rfl`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ee : D.castV hn (liftVec P.k P.r (P.r - P.r) (m₀r *ᵥ ν'r)) = p.m₀ *ᵥ p.ν'`. Rewrite using `[← castV_mulVec_lift hn, hm, hν]`. Simplify using `only [List.map_cons, List.map_nil, ez, ee] at hB2`. Establish `h` using `p.TP.eigen _ hB2 ρ w u`. Rewrite `h` using `[capRep_lift_cast hn]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hπ : (fun y => p.T.base.π (D.castM hn (ιLev P.k P.r (P.r - P.r) y))) = (p.T.bs P.r).π`. Use function extensionality and compare the values at `fun y => (p.T.π_lev P.r le_rfl y).symm`. Rewrite `h` using `[hπ]`. Conclude with `h`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tp_eigen_lev {P : M.Par} (p : KB.Pl P Wp Wq) (ν'r : Fin (2 * (P.r - P.r) + P.k + 1) → ℂ)
     (m₀r : B.Mat P.k (P.r - P.r)) (hLF : PBI.LevFrame p ν'r m₀r)
@@ -98,11 +98,11 @@ theorem tp_eigen_lev {P : M.Par} (p : KB.Pl P Wp Wq) (ν'r : Fin (2 * (P.r - P.r
   exact h
 
 /- English proof (translation)
-Proceed by induction on `p using Polynomial.induction_on with`. Consider the case `C a => intro v`. Simplify using the standard rewrite rules. Consider the case `add p q hp hq => intro v`. Simplify using `[hp, hq]`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Simplify using the standard rewrite rules.
 
-Consider the case `monomial n a ih`. Introduce `v`. Establish `e1 : Polynomial.C a * Polynomial.X ^ (n + 1) = (Polynomial.C a * Polynomial.X ^ n) * Polynomial.X` using `by ring`. Establish `eR : Polynomial.aeval R (Polynomial.C a * Polynomial.X ^ n * Polynomial.X) = Polynomial.aeval R (Polynomial.C a * Polynomial.X ^ n) * R` using `by rw [map_mul, Polynomial.aeval_X]`. Establish `eL : Polynomial.aeval Lf (Polynomial.C a * Polynomial.X ^ n * Polynomial.X) = Polynomial.aeval Lf (Polynomial.C a * Polynomial.X ^ n) * Lf` using `by rw [map_mul, Polynomial.aeval_X]`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[e1, eR, eL, Module.End.mul_apply, Module.End.mul_apply, ih, h]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem aeval_intertwine (V : Wq →L[ℂ] Wp) (R : Module.End ℂ Wq) (Lf : Module.End ℂ Wp)
     (h : ∀ v, V (R v) = Lf (V v)) (p : Polynomial ℂ) : ∀ v, V (Polynomial.aeval R p v) = Polynomial.aeval Lf p (V v) := by
@@ -119,9 +119,9 @@ theorem aeval_intertwine (V : Wq →L[ℂ] Wp) (R : Module.End ℂ Wq) (Lf : Mod
     rw [e1, eR, eL, Module.End.mul_apply, Module.End.mul_apply, ih, h]
 
 /- English proof (translation)
-Proceed by induction on `p using Polynomial.induction_on with`. Consider the case `C a => simp [Algebra.algebraMap_eq_smul_one]`. Consider the case `add p q hp hq => simp [hp, hq, add_smul]`. Consider the case `monomial n a ih`. Establish `e1 : Polynomial.C a * Polynomial.X ^ (n + 1) = (Polynomial.C a * Polynomial.X ^ n) * Polynomial.X` using `by ring`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Establish `eL : Polynomial.aeval Lf (Polynomial.C a * Polynomial.X ^ n * Polynomial.X) = Polynomial.aeval Lf (Polynomial.C a * Polynomial.X ^ n) * Lf` using `by rw [map_mul, Polynomial.aeval_X]`. Establish `ev : (Polynomial.C a * Polynomial.X ^ n * Polynomial.X).eval c = (Polynomial.C a * Polynomial.X ^ n).eval c * c` using `by rw [Polynomial.eval_mul, Polynomial.eval_X]`. Rewrite using `[e1, eL, Module.End.mul_apply, h, map_smul, ih, smul_smul, ev, mul_comm]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem aeval_eigen (Lf : Module.End ℂ Wp) (x : Wp) (c : ℂ) (h : Lf x = c • x) (p : Polynomial ℂ) :
     Polynomial.aeval Lf p x = p.eval c • x := by
@@ -137,13 +137,13 @@ theorem aeval_eigen (Lf : Module.End ℂ Wp) (x : Wp) (c : ℂ) (h : Lf x = c �
     rw [e1, eL, Module.End.mul_apply, h, map_smul, ih, smul_smul, ev, mul_comm]
 
 /- English proof (translation)
-Use `set S := p.T.bs P.r`. Establish `hbase` using `hLF.2.2`. Establish `hBz' : IsFrameOf P.k (P.r - P.r) [S.z'] Bs'` using `Topx1.vecw_frame_sub (fun v hv => by simp at hv; simp [hv]) hB`. Establish `hBz : IsFrameOf P.k (P.r - P.r) [S.z] (fun a => m₀r *ᵥ Bs' a)` using `Topx1.vecw_frame_sub (fun v hv => by simp at hv; simp [hv]) (Topx1.vecw_frame_fwd S hbase hB)`. Establish `hglR` using `Formalism.FourierDecayAlt.P.frame_general_linear Wq P.k (P.r - P.r) (P.k - 1) S.z' S.π' Bs' ⟨S.π'_rep, S.π'_cont⟩ hBz'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hglL` using `Formalism.FourierDecayAlt.P.frame_general_linear Wp P.k (P.r - P.r) (P.k - 1) S.z S.π (fun a => m₀r *ᵥ Bs' a) ⟨S.π_rep, S.π_cont⟩ hBz`. Use `set w0 : ℂ := Y₀ + ((P.k : ℂ) - 2) / 2`. Establish `hint : ∀ v, V (qdet (Qr.EB S.π' Bs') w0 v) = qdet (Qr.EB S.π (fun a => m₀r *ᵥ Bs' a)) w0 (V v)`. Introduce `v`. Rewrite using `[← hglR.2, ← hglL.2]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `(PBI.gen_capRep_intertwine S hbase V hV hB w0 v).symm`. Rewrite using `[aeval_intertwine V _ _ hint q v]`. Use `conv_lhs => rw [← hex]`. Simplify using `only [ContinuousLinearMap.coe_sum', Finset.sum_apply, ContinuousLinearMap.comp_apply, map_sum]`. Use `Finset.sum_congr rfl fun ρ _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 
-Use `aeval_eigen _ _ _ ?_ q` and prove the remaining obligations. Rewrite using `[← hglL.2, tp_eigen_lev p ν'r m₀r hLF hB ρ w0 (V v)]`. Use `congr 2`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem poly_types {P : M.Par} (p : KB.Pl P Wp Wq) (ν'r : Fin (2 * (P.r - P.r) + P.k + 1) → ℂ)
     (m₀r : B.Mat P.k (P.r - P.r)) (hLF : PBI.LevFrame p ν'r m₀r)

@@ -34,7 +34,7 @@ theorem inertiaToResidueUnits_apply (σ : lowerRamificationGroup K L 0) :
   rfl
 
 /- English proof (translation)
-Use extensionality with `σ`. Rewrite using `[MonoidHom.mem_ker, Subgroup.mem_subgroupOf, inertiaToResidueUnits_apply, ← MonoidHom.mem_ker, ker_unitsToResidue]`. Conclude with `(mem_lowerRamificationGroup_iff_uniformizerRatio hϖ σ.2 1).symm`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ker_inertiaToResidueUnits :
     (inertiaToResidueUnits hϖ).ker =
@@ -51,7 +51,7 @@ def inertiaQuotientToResidueUnits :
     (QuotientGroup.quotientMulEquivOfEq (ker_inertiaToResidueUnits hϖ).symm).toMonoidHom
 
 /- English proof (translation)
-The claim follows from `fun _ _ hab ↦ (MulEquiv.injective _) (QuotientGroup.kerLift_injective (inertiaToResidueUnits hϖ) hab)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem inertiaQuotientToResidueUnits_injective :
     Function.Injective (inertiaQuotientToResidueUnits (K := K) hϖ) :=
@@ -62,7 +62,7 @@ omit hϖ
 variable (K L)
 
 /- English proof (translation)
-Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible 𝒪[L]`. Conclude with `isCyclic_of_injective _ (inertiaQuotientToResidueUnits_injective hϖ)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem isCyclic_lowerRamificationGroup_zero_quotient :
     IsCyclic (lowerRamificationGroup K L 0 ⧸
@@ -71,7 +71,7 @@ theorem isCyclic_lowerRamificationGroup_zero_quotient :
   exact isCyclic_of_injective _ (inertiaQuotientToResidueUnits_injective hϖ)
 
 /- English proof (translation)
-Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible 𝒪[L]`. Rewrite using `[← Nat.card_units 𝓀[L]]`. Conclude with `Subgroup.card_dvd_of_injective _ (inertiaQuotientToResidueUnits_injective hϖ)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_lowerRamificationGroup_zero_quotient_dvd :
     Nat.card (lowerRamificationGroup K L 0 ⧸
@@ -84,9 +84,9 @@ theorem card_lowerRamificationGroup_zero_quotient_dvd :
 variable {K L}
 
 /- English proof (translation)
-Set `` to `Fintype.ofFinite 𝓀[L]`. Establish `hq : ringChar 𝓀[L] ∣ Nat.card 𝓀[L]`. Rewrite using `[← CharP.cast_eq_zero_iff 𝓀[L] (ringChar 𝓀[L]), Nat.card_eq_fintype_card]`. Conclude with `FiniteField.cast_card_eq_zero _`. Establish `h1 : 1 ≤ Nat.card 𝓀[L]` using `Nat.card_pos`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `Nat.Coprime.symm (Nat.dvd_one.mp ?_)` and prove the remaining obligations. Establish `ha` using `Nat.gcd_dvd_left (ringChar 𝓀[L]) (Nat.card 𝓀[L] - 1)`. Establish `hb` using `Nat.gcd_dvd_right (ringChar 𝓀[L]) (Nat.card 𝓀[L] - 1)`. Use `Nat.dvd_sub (ha.trans hq) hb` as an intermediate fact. Rewrite `this` using `[Nat.sub_sub_self h1]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem coprime_card_residueField_sub_one : Nat.Coprime (Nat.card 𝓀[L] - 1) (ringChar 𝓀[L]) := by
   let := Fintype.ofFinite 𝓀[L]
@@ -103,7 +103,7 @@ theorem coprime_card_residueField_sub_one : Nat.Coprime (Nat.card 𝓀[L] - 1) (
 variable (K L)
 
 /- English proof (translation)
-Rewrite using `[Algebra.ringChar_eq 𝓀[K] 𝓀[L]]`. Conclude with `Nat.Coprime.coprime_dvd_left (card_lowerRamificationGroup_zero_quotient_dvd K L) coprime_card_residueField_sub_one`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coprime_card_lowerRamificationGroup_zero_quotient :
     Nat.Coprime (Nat.card (lowerRamificationGroup K L 0 ⧸
@@ -117,7 +117,7 @@ end Tame
 section Wild
 
 /- English proof (translation)
-Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible 𝒪[L]`. Apply `(unitFiltrationGradedEquiv hϖ hn).injective` to reduce the goal to its premises. Rewrite using `[map_pow, map_one]`. Apply `Multiplicative.toAdd.injective` to reduce the goal to its premises. Rewrite using `[toAdd_pow, toAdd_one, nsmul_eq_mul, ringChar.Nat.cast_ringChar, zero_mul]`.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem pow_ringChar_eq_one_unitFiltration {n : ℕ} (hn : 1 ≤ n)
     (y : unitFiltration L n ⧸ unitFiltrationSucc L n) : y ^ ringChar 𝓀[L] = 1 := by
@@ -128,7 +128,7 @@ theorem pow_ringChar_eq_one_unitFiltration {n : ℕ} (hn : 1 ≤ n)
   rw [toAdd_pow, toAdd_one, nsmul_eq_mul, ringChar.Nat.cast_ringChar, zero_mul]
 
 /- English proof (translation)
-Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible 𝒪[L]`. Establish `h : ((⟨σ, hσ⟩ : lowerRamificationGroup K L n) ^ ringChar 𝓀[L]) ∈ (ramificationToUnits hϖ n).ker`. Rewrite using `[MonoidHom.mem_ker, map_pow, pow_ringChar_eq_one_unitFiltration hn]`. Rewrite `h` using `[ker_ramificationToUnits, Subgroup.mem_subgroupOf]`. Simplify using `using h`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem pow_ringChar_mem_lowerRamificationGroup {n : ℕ} (hn : 1 ≤ n) {σ : L ≃ₐ[K] L}
     (hσ : σ ∈ lowerRamificationGroup K L n) :
@@ -143,11 +143,11 @@ theorem pow_ringChar_mem_lowerRamificationGroup {n : ℕ} (hn : 1 ≤ n) {σ : L
 variable (K L)
 
 /- English proof (translation)
-Rewrite using `[Algebra.ringChar_eq 𝓀[K] 𝓀[L]]`. Take `⟨N, hN⟩` from `exists_lowerRamificationGroup_eq_bot K L`. Establish `key : ∀ k : ℕ, ∀ σ ∈ lowerRamificationGroup K L 1, σ ^ (ringChar 𝓀[L] ^ k) ∈ lowerRamificationGroup K L ((1 + k : ℕ) : ℤ)`. Introduce `k σ hσ`. Proceed by induction on `k with`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `zero => simpa using hσ`. Consider the case `succ k ih`. Rewrite using `[pow_succ, pow_mul, show 1 + (k + 1) = 1 + k + 1 by omega]`. Conclude with `pow_ringChar_mem_lowerRamificationGroup (by omega) ih`. Introduce `σ`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨N, Subtype.ext ?_⟩` and prove the remaining obligations. Use `key N σ σ.2` as an intermediate fact. Rewrite `this` using `[hN _ (by omega), Subgroup.mem_bot]`. Simplify using `using this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem isPGroup_lowerRamificationGroup_one :
     IsPGroup (ringChar 𝓀[K]) (lowerRamificationGroup K L 1) := by
@@ -168,7 +168,7 @@ theorem isPGroup_lowerRamificationGroup_one :
   simpa using this
 
 /- English proof (translation)
-Establish `: Fact (ringChar 𝓀[K]).Prime` using `⟨CharP.char_is_prime 𝓀[K] _⟩`. Use `(isPGroup_lowerRamificationGroup_one K L).isNilpotent` as an intermediate fact. Use `infer_instance`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isSolvable_lowerRamificationGroup_one : Group.IsSolvable (lowerRamificationGroup K L 1) := by
   have : Fact (ringChar 𝓀[K]).Prime := ⟨CharP.char_is_prime 𝓀[K] _⟩
@@ -176,9 +176,9 @@ theorem isSolvable_lowerRamificationGroup_one : Group.IsSolvable (lowerRamificat
   infer_instance
 
 /- English proof (translation)
-Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible 𝒪[L]`. Use `isSolvable_lowerRamificationGroup_one K L` as an intermediate fact. Use `Group.isSolvable_of_ker_le_range (Subgroup.inclusion (lowerRamificationGroup_antitone K L zero_le_one)) (inertiaToResidueUnits hϖ) ?_` and prove the remaining obligations. Introduce `σ hσ`. Rewrite `hσ` using `[ker_inertiaToResidueUnits, Subgroup.mem_subgroupOf]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `⟨⟨σ, hσ⟩, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem isSolvable_lowerRamificationGroup_zero : Group.IsSolvable (lowerRamificationGroup K L 0) := by
   obtain ⟨ϖ, hϖ⟩ := IsDiscreteValuationRing.exists_irreducible 𝒪[L]
@@ -191,9 +191,9 @@ theorem isSolvable_lowerRamificationGroup_zero : Group.IsSolvable (lowerRamifica
   exact ⟨⟨σ, hσ⟩, rfl⟩
 
 /- English proof (translation)
-Use `isSolvable_lowerRamificationGroup_zero K L` as an intermediate fact. Establish `: Group.IsSolvable (𝓀[L] ≃ₐ[𝓀[K]] 𝓀[L])` using `Group.isSolvable_of_comm fun a b ↦ (IsCyclic.commGroup).mul_comm a b`. Use `Group.isSolvable_of_ker_le_range (lowerRamificationGroup K L 0).subtype (residueAlgEquiv K L) ?_` and prove the remaining obligations. Introduce `σ hσ`. Rewrite `hσ` using `[← lowerRamificationGroup_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `⟨⟨σ, hσ⟩, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem isSolvable_algEquiv : Group.IsSolvable (L ≃ₐ[K] L) := by
   have := isSolvable_lowerRamificationGroup_zero K L

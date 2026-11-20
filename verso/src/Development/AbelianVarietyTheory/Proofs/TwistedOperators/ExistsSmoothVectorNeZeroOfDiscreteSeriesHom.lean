@@ -35,9 +35,9 @@ variable {D : D7} {V : HSp D} {S : D.what₂.Tau → SPar} {M : DSModel V S} {H 
 open Classical in
 
 /- English proof (translation)
-Establish `h` using `inner_eq_bePi (isIrrUnitary_dsRep M) hπ hΨ hΨ y y`. Rewrite `h` using `[bePi]`. Simplify using `only [inner_self_eq_norm_sq_to_K] at h`. Establish `h2 : ‖Ψ y‖ ^ 2 = (‖Ψ (fun τ => unitVec (M.H τ))‖ * ∏ τ, ‖y τ‖) ^ 2`. Rewrite using `[mul_pow, ← Finset.prod_pow]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h` after adjusting the coercions. Conclude with `(pow_left_inj₀ (norm_nonneg _) (mul_nonneg (norm_nonneg _) (Finset.prod_nonneg fun _ _ => norm_nonneg _)) two_ne_zero).1 h2`.
+A detailed English derivation is pending.
 -/
 theorem norm_apply_eq (hπ : IsUnitaryRep π) {Ψ : ContinuousMultilinearMap ℂ M.H H} (hΨ : Ψ ∈ homDS M π ⊤)
     (y : ∀ τ, M.H τ) : ‖Ψ y‖ = ‖Ψ (fun τ => unitVec (M.H τ))‖ * ∏ τ, ‖y τ‖ := by
@@ -53,7 +53,7 @@ theorem norm_apply_eq (hπ : IsUnitaryRep π) {Ψ : ContinuousMultilinearMap ℂ
 open Classical in
 
 /- English proof (translation)
-Use `isClosed_of_closure_subset fun Φ hΦ => ⟨fun _ => trivial, fun i g y => ?_⟩` and prove the remaining obligations. Establish `hc : IsClosed {Ψ : ContinuousMultilinearMap ℂ M.H H | Ψ (Function.update y i (dsRep M i g (y i))) = π (embW V (placeOf D i) g) (Ψ y)}` using `isClosed_eq (continuous_eval_const _) ((π _).continuous.comp (continuous_eval_const _))`. Conclude with `closure_minimal (fun Ψ hΨ => hΨ.2 i g y) hc hΦ`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isClosed_homDS : IsClosed (homDS M π ⊤ : Set (ContinuousMultilinearMap ℂ M.H H)) := by
   refine isClosed_of_closure_subset fun Φ hΦ => ⟨fun _ => trivial, fun i g y => ?_⟩
@@ -67,7 +67,7 @@ end GlobalTheory.SmoothAvg
 namespace GlobalTheory.SmoothAvg
 
 /- English proof (translation)
-The claim follows from `haveI := GlobalTheory.Doubling.nonarchimedeanGroup_GFin D.sp.cm.sig V.gram NonarchimedeanGroup.nonarchimedean_of_emb (finPtsEquiv D.sp.cm.sig V.gram).toMonoidHom (finPtsEquiv D.sp.cm.sig V.gram).toHomeomorph.isOpenEmbedding`.
+A detailed English derivation is pending.
 -/
 theorem nonarchimedeanGroup_GfC (D : D7) (V : HSp D) : NonarchimedeanGroup (GfC V) :=
   haveI := GlobalTheory.Doubling.nonarchimedeanGroup_GFin D.sp.cm.sig V.gram
@@ -75,33 +75,29 @@ theorem nonarchimedeanGroup_GfC (D : D7) (V : HSp D) : NonarchimedeanGroup (GfC 
     (finPtsEquiv D.sp.cm.sig V.gram).toHomeomorph.isOpenEmbedding
 
 /- English proof (translation)
-Introduce `D V S M H _ _ _ π hπ hU Φ hΦ`. Set `u : ∀ τ, M.H τ` to `fun τ => unitVec (M.H τ)`. Set `f : homDS M π ⊤ →L[ℂ] H` to `(ContinuousMultilinearMap.apply ℂ M.H H u).comp (homDS M π ⊤).subtypeL`. Establish `hnorm : ∀ Ψ : homDS M π ⊤, ‖Ψ‖ ≤ ‖f Ψ‖` using `fun Ψ => by`. Use `ContinuousMultilinearMap.opNorm_le_bound (norm_nonneg _) fun y => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(norm_apply_eq hπ Ψ.2 y).le`. Establish `hinj : Function.Injective f` using `fun a b h => by`. Establish `h0 : ‖a - b‖ ≤ 0` using `by simpa [map_sub, h] using hnorm (a - b)`. Conclude with `sub_eq_zero.1 (norm_le_zero_iff.1 h0)`. Use `haveI : CompleteSpace (homDS M π ⊤) := (isClosed_homDS (π := π)).completeSpace_coe`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hclosed : IsClosed (Set.range f)` using `(f.antilipschitz_of_bound (K := 1) fun x => by simpa using hnorm x).isClosed_range f.uniformContinuous`. Establish `hequiv : ∀ (g : GfC V) (Ψ : homDS M π ⊤), f (finPartDS M hU g Ψ) = π g (f Ψ)` using `fun g Ψ => rfl`. Establish `hv : f Φ ≠ 0` using `fun h => hΦ (hinj (by rw [h, map_zero]))`. Use `haveI := nonarchimedeanGroup_GfC D V`. Establish `hcont : Continuous fun g : GfC V => π g (f Φ)` using `(hπ.continuous_apply _).comp continuous_subtype_val`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Introduce a local definition for the expression.
 
-Establish `hN : {g : GfC V | dist (π g (f Φ)) (f Φ) < ‖f Φ‖ / 2} ∈ nhds (1 : GfC V)` using `(isOpen_lt (hcont.dist continuous_const) continuous_const).mem_nhds (by simp [norm_pos_iff.2 hv])`. Take `⟨K, hK⟩` from `NonarchimedeanGroup.is_nonarchimedean _ hN`. Use `letI : InnerProductSpace ℝ H := InnerProductSpace.rclikeToReal ℂ H`. Set `O : Set H` to `Set.range fun k : K => π ((k : GfC V) : GA D V) (f Φ)`. Set `C : Set H` to `closure (convexHull ℝ O)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hCconv : Convex ℝ C` using `(convex_convexHull ℝ O).closure`. Establish `hvO : f Φ ∈ O` using `⟨1, by simp⟩`. Establish `hCne : C.Nonempty` using `⟨f Φ, subset_closure (subset_convexHull ℝ O hvO)⟩`. Take `⟨w, hwC, hw⟩` from `exists_norm_eq_iInf_of_complete_convex hCne isClosed_closure.isComplete hCconv 0`. Establish `hmin : ∀ x ∈ C, ‖w‖ ≤ ‖x‖` using `fun x hx => by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `h1` using `ciInf_le (f := fun z : C => ‖0 - (z : H)‖) ⟨0, by rintro _ ⟨z, rfl⟩; exact norm_nonneg _⟩ ⟨x, hx⟩`. Rewrite `h1` using `[← hw]`. Simplify using `using h1`. Establish `hball : C ⊆ Metric.closedBall (f Φ) (‖f Φ‖ / 2)` using `closure_minimal (convexHull_min (by rintro _ ⟨k, rfl⟩; exact Metric.mem_closedBall.2 (hK k.2).le) (convex_closedBall _ _)) Metric.isClosed_closedBall`. Establish `hw0 : w ≠ 0`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Introduce and unpack `rfl`. Establish `h1` using `Metric.mem_closedBall.1 (hball hwC)`. Rewrite `h1` using `[dist_zero_left]`. Conclude with `hv (norm_le_zero_iff.1 (by linarith))`. Establish `hRconv : Convex ℝ (Set.range f)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Establish `h1` using `((LinearMap.range (f : homDS M π ⊤ →ₗ[ℂ] H)).restrictScalars ℝ).convex`. Rewrite `h1` using `[Submodule.coe_restrictScalars, LinearMap.coe_range, ContinuousLinearMap.coe_coe]`. Conclude with `h1`. Establish `hOR : O ⊆ Set.range f`. Introduce and unpack `_ ⟨k, rfl⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `⟨finPartDS M hU k Φ, hequiv _ _⟩`. Take `⟨Ψ, hΨ⟩ : w ∈ Set.range f` from `closure_minimal (convexHull_min hOR hRconv) hclosed hwC`. Establish `hinv : ∀ k : K, π ((k : GfC V) : GA D V) w = w`. Introduce `k`. Set `T : H →L[ℝ] H` to `(π ((k : GfC V) : GA D V)).restrictScalars ℝ`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hTO : T '' O ⊆ O`. Introduce and unpack `_ ⟨_, ⟨j, rfl⟩, rfl⟩`. Use `⟨k * j, ?_⟩` and prove the remaining obligations. Simplify using `[T]`. Establish `hTC : T '' C ⊆ C`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `(image_closure_subset_closure_image T.continuous).trans (closure_mono ?_)` and prove the remaining obligations. Conclude with `(T.toLinearMap.image_convexHull O).trans_subset (convexHull_mono hTO)`. Establish `hx : π ((k : GfC V) : GA D V) w ∈ C` using `hTC ⟨w, hwC, rfl⟩`. Establish `hn : ‖π ((k : GfC V) : GA D V) w‖ = ‖w‖` using `hπ.norm_apply _ _`. Establish `hmid : (1 / 2 : ℝ) • (w + π ((k : GfC V) : GA D V) w) ∈ C`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h1` using `hCconv hwC hx (by norm_num : (0 : ℝ) ≤ 1 / 2) (by norm_num : (0 : ℝ) ≤ 1 / 2) (by norm_num)`. Simplify `h1` using `[smul_add]`. Establish `h1` using `hmin _ hmid`. Rewrite `h1` using `[norm_smul, Real.norm_eq_abs, abs_of_pos (by norm_num : (0 : ℝ) < 1 / 2)]`. Establish `hp` using `parallelogram_law_with_norm ℂ w (π ((k : GfC V) : GA D V) w)`.
-
-Rewrite `hp` using `[hn]`. Establish `h2 : ‖w - π ((k : GfC V) : GA D V) w‖ ^ 2 ≤ 0`. Use polynomial arithmetic with `[norm_nonneg w, norm_nonneg (w + π ((k : GfC V) : GA D V) w)]`. Establish `h3 : ‖w - π ((k : GfC V) : GA D V) w‖ = 0` using `by nlinarith [norm_nonneg (w - π ((k : GfC V) : GA D V) w)]`. Conclude with `(sub_eq_zero.1 (norm_eq_zero.1 h3)).symm`.
-
-Use `⟨Ψ, GlobalTheory.SmGL.mem_smoothPart_of_nhds (Filter.mem_of_superset (K.isOpen.mem_nhds K.one_mem) fun g hg => ?_), fun h => hw0 (by rw [← hΨ, h, map_zero])⟩` and prove the remaining obligations. Conclude with `hinj (by rw [hequiv, hΨ]; exact hinv ⟨g, hg⟩)`.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_smooth_ne_zero : ∀ (D : D7) (V : HSp D) (S : D.what₂.Tau → SPar) (M : DSModel V S) (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] (π : GA D V →* (H →L[ℂ] H)), IsUnitaryRep π → ∀ (hU : IsSubrep π ⊤) (Φ : homDS M π ⊤), Φ ≠ 0 → ∃ Ψ ∈ GlobalTheory.PRep.smoothPart (finPartDS M hU), Ψ ≠ 0 := by
   intro D V S M H _ _ _ π hπ hU Φ hΦ

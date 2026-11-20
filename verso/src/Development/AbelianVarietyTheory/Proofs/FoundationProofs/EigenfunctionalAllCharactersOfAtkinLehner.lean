@@ -19,56 +19,54 @@ open scoped MatrixGroups Real ComplexConjugate Manifold ModularForm
 namespace GlobalTheory.EisM
 
 /- English proof (translation)
-Simplify using `only [lam, Pi.add_apply, mul_add, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem lam_add' (B : ℕ) (c a b : ℕ → ℂ) : lam B c (a + b) = lam B c a + lam B c b := by
   simp only [lam, Pi.add_apply, mul_add, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Simplify using `only [lam, Pi.smul_apply, smul_eq_mul, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun _ _ => by ring`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem lam_smul' (B : ℕ) (c a : ℕ → ℂ) (z : ℂ) : lam B c (z • a) = z * lam B c a := by
   simp only [lam, Pi.smul_apply, smul_eq_mul, Finset.mul_sum]
   exact Finset.sum_congr rfl fun _ _ => by ring
 
 /- English proof (translation)
-Use function extensionality and compare the values at `τ`. Simplify using `only [slz, Pi.add_apply]`. Expand and normalize the polynomial expressions, which then agree.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem slz_add' (k : ℕ) (δ : M2) (f g : ℍ → ℂ) : slz k δ (f + g) = slz k δ f + slz k δ g := by
   funext τ; simp only [slz, Pi.add_apply]; ring
 
 /- English proof (translation)
-Use function extensionality and compare the values at `τ`. Simplify using `only [slz, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem slz_smul' (k : ℕ) (δ : M2) (z : ℂ) (f : ℍ → ℂ) : slz k δ (z • f) = z • slz k δ f := by
   funext τ; simp only [slz, Pi.smul_apply, smul_eq_mul]; ring
 
 /- English proof (translation)
-Introduce `k N l χ g α B c a₀ b₀ c₀ d₀ hdet hk hN hl hlN hE`. Use `set δ : M2 := !![(N : ℤ) * a₀, b₀; N * l * c₀, N * d₀] with hδ`. Establish `hL : 0 < N * l` using `Nat.mul_pos hN hl.pos`. Take `⟨hz1, hadd1, hsm1, -, -, -⟩` from `mf_linear k (N * l) (ch χ)`. Take `⟨hz2, hadd2, hsm2, -, -, -⟩` from `mf_linear k (N * l) (ch χ⁻¹)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `uniq : ∀ x y, MF k (N * l) (ch χ⁻¹) x → MF k (N * l) (ch χ⁻¹) y → qs x = qs y → x = y` using `fun x y hx hy h => qs_injective x y hx.1 hy.1 h`. Set `S : Set (ℕ → ℂ)` to `{a | MF k (N * l) (ch χ) a}`. Set `φ : (ℕ → ℂ) → ℂ` to `fun a => if h : ∃ a', MF k (N * l) (ch χ⁻¹) a' ∧ qs a' = slz k δ (qs a) then lam B c h.choose else 0`. Establish `hφ : ∀ a a', MF k (N * l) (ch χ⁻¹) a' → qs a' = slz k δ (qs a) → φ a = lam B c a'`. Introduce `a a' h1 h2`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h : ∃ a', MF k (N * l) (ch χ⁻¹) a' ∧ qs a' = slz k δ (qs a)` using `⟨a', h1, h2⟩`. Simplify using `only [φ, dif_pos h]`. Rewrite using `[uniq _ _ h.choose_spec.1 h1 (h.choose_spec.2.trans h2.symm)]`. Establish `hex : ∀ a, MF k (N * l) (ch χ) a → ∃ a', MF k (N * l) (ch χ⁻¹) a' ∧ qs a' = slz k δ (qs a)` using `fun a ha => GlobalTheory.T.atkinLehner_slash_isModularFormCoeffSeq k N l χ a a₀ b₀ c₀ d₀ hdet hk hN ha`. Take `⟨B₀, hB₀⟩` from `sturm_coef_zero k (N * l) N χ hL (dvd_mul_right N l)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨c₁, hc₁⟩` from `GlobalTheory.func_eq_lam S B₀ φ hz1 (by`. Introduce `a ha b hb`. Take `⟨a', ha', ea⟩` from `hex a ha`. Take `⟨b', hb', eb⟩` from `hex b hb`. Take `⟨hab, hqab⟩` from `hadd1 a b ha hb`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨hab', hqab'⟩` from `hadd2 a' b' ha' hb'`. Use `⟨hab, ?_⟩` and prove the remaining obligations. Rewrite using `[hφ a a' ha' ea, hφ b b' hb' eb, hφ (a + b) (a' + b') hab' (by rw [hqab', hqab, slz_add', ea, eb]), lam_add'])`. Use the proof step `(by`. Introduce `z a ha`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨a', ha', ea⟩` from `hex a ha`. Take `⟨hza, hqza⟩` from `hsm1 z a ha`. Take `⟨hza', hqza'⟩` from `hsm2 z a' ha'`. Use `⟨hza, ?_⟩` and prove the remaining obligations. Rewrite using `[hφ a a' ha' ea, hφ (z • a) (z • a') hza' (by rw [hqza', hqza, slz_smul', ea]), lam_smul'])`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use the proof step `(fun a ha h => hB₀ a ha h)`. Take `⟨B', c', hagree, hkill⟩` from `GlobalTheory.T.exists_lam_eq_and_vanishes_off_character k (N * l) N χ B₀ c₁ hL (dvd_mul_right N l)`. Establish `key : ∀ a a', MF k (N * l) (ch χ) a → MF k (N * l) (ch χ⁻¹) a' → qs a' = slz k δ (qs a) → lam B' c' a = lam B c a'`. Introduce `a a' ha ha' e`. Rewrite using `[hagree a ha, ← hc₁ a ha, hφ a a' ha' e]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `⟨B', c', ⟨⟨?_, ?_⟩, hkill⟩, key⟩` and prove the remaining obligations. Introduce `a ha q hq hqNl`. Take `⟨a', ha', ea⟩` from `hex a ha`. Establish `hqN : ¬ q ∣ N` using `fun h => hqNl (dvd_mul_of_dvd_left h l)`. Take `⟨hT, -⟩` from `GlobalTheory.T.atkinLehner_intertwines_hecke_operators k N l χ a a' a₀ b₀ c₀ d₀ hdet hk hN hl hlN ha ha' ea`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hTa : MF k (N * l) (ch χ) (To k (ch χ q) q a)` using `GlobalTheory.T.isModularFormCoeffSeq_heckeT_of_prime_not_dvd k (N * l) N q χ a hk (dvd_mul_right N l) hq hqNl ha`. Establish `hTa' : MF k (N * l) (ch χ⁻¹) (To k (ch χ⁻¹ q) q a')` using `GlobalTheory.T.isModularFormCoeffSeq_heckeT_of_prime_not_dvd k (N * l) N q χ⁻¹ a' hk (dvd_mul_right N l) hq hqNl ha'`. Take `⟨hs, hqs⟩` from `hsm2 (ch χ q) _ hTa'`. Rewrite using `[key _ _ hTa hs (by rw [hqs, hT q hq hqNl]), lam_smul', hE.T a' ha' q hq hqNl, key a a' ha ha' ea]`. Establish `hunit : IsUnit ((q : ℕ) : ZMod N)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[ZMod.isUnit_iff_coprime]`. Conclude with `(Nat.Prime.coprime_iff_not_dvd hq).mpr hqN`. Establish `h1 : χ (q : ZMod N) * χ⁻¹ (q : ZMod N) = 1`. Rewrite using `[show χ (q : ZMod N) * χ⁻¹ (q : ZMod N) = (χ * χ⁻¹) (q : ZMod N) by rw [MulChar.coeToFun_mul]; rfl, mul_inv_cancel, MulChar.one_apply hunit]`. Simplify using `only [ch, Int.cast_natCast]`.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take the linear combination `(g q * lam B c a') * h1`. Introduce `a ha`. Take `⟨a', ha', ea⟩` from `hex a ha`. Take `⟨-, hU⟩` from `GlobalTheory.T.atkinLehner_intertwines_hecke_operators k N l χ a a' a₀ b₀ c₀ d₀ hdet hk hN hl hlN ha ha' ea`. Establish `hper : ∀ (ε : DirichletCharacter ℂ N) (d : ℤ), ch ε (d + (N * l : ℕ)) = ch ε d`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `ε d`. Simplify using `[ch]`. Establish `hUa` using `(GlobalTheory.T.isModularFormCoeffSeq_heckeU_and_depletion k (N * l) l (ch χ) a hk hl (dvd_mul_left l N) (hper χ) ha).1`. Establish `hUa'` using `(GlobalTheory.T.isModularFormCoeffSeq_heckeU_and_depletion k (N * l) l (ch χ⁻¹) a' hk hl (dvd_mul_left l N) (hper χ⁻¹) ha').1`. Take `⟨hs, hqs⟩` from `hsm2 (ch χ l) _ hUa'`.
-
-Rewrite using `[key _ _ hUa hs (by rw [hqs, hU]), lam_smul', hE.U a' ha', key a a' ha ha' ea]`. Simplify using `only [ch, Int.cast_natCast]`. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem eigAll_of_atkinLehner : ∀ (k N l : ℕ) (χ : DirichletCharacter ℂ N) (g : ℕ → ℂ) (α : ℂ) (B : ℕ) (c : ℕ → ℂ)
     (a₀ b₀ c₀ d₀ : ℤ), N * a₀ * d₀ - l * b₀ * c₀ = 1 → 1 ≤ k → 0 < N → l.Prime → ¬ l ∣ N →

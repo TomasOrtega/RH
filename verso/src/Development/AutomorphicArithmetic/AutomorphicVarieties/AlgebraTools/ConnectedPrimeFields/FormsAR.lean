@@ -6,19 +6,17 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AlgebraTools.Conne
 open IsLocalRing UpperTheory.V.AlgebraTools.Conn
 
 /- English proof (translation)
-Take `⟨r, s, hs⟩` from `Module.Finite.exists_fin (R := R) (M := M)`. Take `⟨I, indepI, hI⟩` from `exists_maximal_linearIndepOn R s`. Establish `indepI' : LinearIndependent R (fun x : I => s x)` using `indepI`. Set `N` to `Submodule.span R (Set.range fun x : I => s x)`. Set `b : Module.Basis I R N` to `Module.Basis.span indepI'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `exists_a : ∀ i, ∃ a : R, a ≠ 0 ∧ a • s i ∈ N`. Introduce `i`. Distinguish the cases in `hi : i ∈ I`. Use `⟨1, one_ne_zero, ?_⟩` and prove the remaining obligations. Rewrite using `[one_smul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.subset_span (Set.mem_range_self (⟨i, hi⟩ : I))`. Take `⟨a, ha, ha'⟩` from `hI i hi`. Use `⟨a, ha, ?_⟩` and prove the remaining obligations. Rewrite `ha'` using `[Set.image_eq_range s I]`. Then use the resulting hypothesis. Use `choose a ha ha' using exists_a`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hA : (∏ i, a i) ≠ 0`. Rewrite using `[Finset.prod_ne_zero_iff]`. Conclude with `fun i _ => ha i`. Set `φ : M →ₗ[R] M` to `LinearMap.lsmul R M (∏ i, a i)`. Establish `hφ : Function.Injective φ` using `LinearMap.ker_eq_bot.mp (LinearMap.ker_lsmul hA)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the argument to an intermediate assertion.
 
-Establish `hle : LinearMap.range φ ≤ N`. It suffices to establish `∀ i, φ (s i) ∈ N by`. Rewrite using `[LinearMap.range_eq_map, ← hs, Submodule.map_span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Apply `this` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `i`. Establish `h1` using `N.smul_mem (∏ j ∈ {i}ᶜ, a j) (ha' i)`. Rewrite `h1` using `[← mul_smul, ← Fintype.prod_eq_prod_compl_mul i]`. Conclude with `h1`. Use `⟨I, inferInstance, b.equivFun.toLinearMap ∘ₗ φ.codRestrict N (fun x => hle ⟨x, rfl⟩), ?_⟩` and prove the remaining obligations.
-
-Introduce `x y h`. Establish `h2` using `b.equivFun.injective h`. Conclude with `hφ (congrArg Subtype.val h2)`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem formsAR_embed {R M : Type} [CommRing R] [IsDomain R] [AddCommGroup M] [Module R M]
     [Module.Finite R M] [Module.IsTorsionFree R M] :
@@ -60,7 +58,7 @@ private theorem formsAR_embed {R M : Type} [CommRing R] [IsDomain R] [AddCommGro
   exact hφ (congrArg Subtype.val h2)
 
 /- English proof (translation)
-Establish `: x = ∑ i, x i • (Pi.single i (1 : R) : ι → R)`. Use extensionality with `j`. Simplify using `[Finset.sum_apply, Pi.single_apply]`. Rewrite using `[this]`. Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem_smul (hx i) trivial`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem formsAR_pi {R ι : Type} [CommRing R] [Fintype ι] (J : Ideal R) (x : ι → R)
     (hx : ∀ i, x i ∈ J) : x ∈ J • (⊤ : Submodule R (ι → R)) := by
@@ -72,11 +70,11 @@ private theorem formsAR_pi {R ι : Type} [CommRing R] [Fintype ι] (J : Ideal R)
   exact Submodule.sum_mem _ fun i _ => Submodule.smul_mem_smul (hx i) trivial
 
 /- English proof (translation)
-Introduce `A M _ _ _ _ _ _ _ I`. Take `⟨ι, _, f, hf⟩` from `formsAR_embed (R := A) (M := M)`. Take `⟨k, hk⟩` from `Ideal.exists_pow_inf_eq_pow_smul I (LinearMap.range f)`. Use `⟨k, fun n m hm => ?_⟩` and prove the remaining obligations. Establish `h1 : f m ∈ I ^ (n + k) • (⊤ : Submodule A (ι → A)) ⊓ LinearMap.range f` using `⟨formsAR_pi _ _ fun i => hm ((LinearMap.proj i) ∘ₗ f), ⟨m, rfl⟩⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `h1` using `[hk (n + k) (Nat.le_add_left k n), Nat.add_sub_cancel]`. Establish `h2 : f m ∈ I ^ n • LinearMap.range f` using `Submodule.smul_mono le_rfl inf_le_right h1`. Rewrite `h2` using `[LinearMap.range_eq_map, ← Submodule.map_smul'']`. Take `⟨y, hy, hym⟩` from `h2`. Rewrite using `[← hf hym]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hy`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.AlgebraTools.Conn.formsAR :
     ∀ {A M : Type} [CommRing A] [IsDomain A] [IsNoetherianRing A] [AddCommGroup M] [Module A M] [Module.Finite A M]

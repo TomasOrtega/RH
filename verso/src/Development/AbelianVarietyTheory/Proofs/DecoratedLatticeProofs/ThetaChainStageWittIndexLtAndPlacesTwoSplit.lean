@@ -13,11 +13,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.ChainOnto.WittTwo
 
 /- English proof (translation)
-Introduce `D c j s hj hs`. Use `⟨?_, fun v h2 => GlobalTheory.Core.Rk.IP.Model.isSplit_two v h2⟩` and prove the remaining obligations. Use `haveI : IsCMField D.host.E := D.host.isCMField_hostE`. Establish `hpar : GlobalTheory.IndefiniteRowSideFullHecke.WittIndexParallel.ParallelSig s.V (sigYD D.R j).1 (sigYD D.R j).2` using `GlobalTheory.IndefiniteRowSideFullHecke.WittIndexParallel.parallelSig_of_sigOK hs.sigOK (fun τ => hs.sig τ)`. Take `⟨W, hW, e⟩` from `(GlobalTheory.Cusp.isGreatest_wittIndex (s.V : HSpace D.host.E)).1`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨τ⟩ : Nonempty (D.host.E →+* ℂ)` from `inferInstance`. Establish `h1` using `GlobalTheory.ParallelWitt.finrank_le (E := D.host.E) s.V τ (hpar τ) W (fun x hx y hy => by`. Use `hW hy` as an intermediate fact. Simplify using `only [GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.perp, Submodule.mem_iInf, LinearMap.mem_ker] at this`. Conclude with `this x hx)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h3` using `D.R.three_m_lt_t`. Simplify using `only [sigYD] at h1`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem wittIndex_lt_and_two_split : ∀ (D : D7) (c : Com D) (j : ℕ) (s : PiLocalization₂ D), j ≤ D.R.m → s.Is c j → GlobalTheory.Cusp.wittIndex s.V < D.R.t ∧ ∀ v : HeightOneSpectrum (𝓞 D.host.F), (2 : 𝓞 D.host.F) ∈ v.asIdeal → Formalism.MainNotions.SchurIrreducible.IsSplit (E := D.host.E) v := by
   intro D c j s hj hs

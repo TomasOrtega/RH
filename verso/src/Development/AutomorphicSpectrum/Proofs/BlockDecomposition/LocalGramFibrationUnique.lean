@@ -15,29 +15,23 @@ open scoped TensorProduct ENNReal NNReal Topology
 namespace GlobalTheory.CompanionTheory.SW.FibSch
 
 /- English proof (translation)
-Take `⟨hTR, hLC, hSC, hT2, -⟩` from `id hR`. Use `haveI := hTR`. Use `haveI := hLC`. Use `haveI := hSC`. Use `haveI := hT2`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨hTK, hLK, hSK, hTK2, -, -, -, hBor, -, -⟩` from `GlobalTheory.CompanionTheory.SW.TopK.topTens_props F E σ hσ R`. Use `haveI := hTK`. Use `haveI := hLK`. Use `haveI := hSK`. Use `haveI := hTK2`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `haveI := hBor n M`. Take `⟨hLH, hSH, hT2H, hBH, -⟩` from `GlobalTheory.CompanionTheory.SW.HermTop.herm_top F E σ hσ R n`. Use `haveI := hLH`. Use `haveI := hSH`. Use `haveI := hT2H`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Introduce a local definition for the expression. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use `haveI := hBH`. Take `⟨-, hcomp, hone, hmem, -⟩` from `GlobalTheory.CompanionTheory.SW.GramAlg.gram_algebra F E σ hσ M J hJ R n`. Establish `hg1 : g * g⁻¹ = 1` using `Matrix.mul_nonsing_inv g hg`. Establish `hg2 : g⁻¹ * g = 1` using `Matrix.nonsing_inv_mul g hg`. Establish `hrc : ∀ h : Matrix (Fin n) (Fin n) (R ⊗[F] E), Continuous fun X : Fin n → Fin M → R ⊗[F] E => GlobalTheory.CompanionTheory.SW.rmul R X h`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Use `continuous_pi fun b => continuous_pi fun i => ?_` and prove the remaining obligations. Simplify using `only [GlobalTheory.CompanionTheory.SW.rmul]`. Use `continuous_finset_sum _ fun k _ => ?_` and prove the remaining obligations. Establish `h1 : Continuous fun Y : Fin n → Fin M → R ⊗[F] E => Y k i` using `(continuous_apply i).comp (continuous_apply k)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `h1.mul continuous_const`. Set `e : (Fin n → Fin M → R ⊗[F] E) ≃+ (Fin n → Fin M → R ⊗[F] E)` to `{ toFun := fun X => GlobalTheory.CompanionTheory.SW.rmul R X g invFun := fun X => GlobalTheory.CompanionTheory.SW.rmul R X g⁻¹ left_inv := fun X => by simp only [hcomp, hg1, hone] right_inv := fun X => by simp only [hcomp, hg2, hone] map_add' := fun X Y => by`. Use function extensionality and compare the values at `b i`. Simplify using `only [GlobalTheory.CompanionTheory.SW.rmul, Pi.add_apply, add_mul, Finset.sum_add_distrib] }`. Establish `hc1 : HeckeCharacterZeroLocus.SiegelWeilU.cT (HeckeCharacterZeroLocus.SiegelWeilU.sigR R σ) (1 : Matrix (Fin n) (Fin n) (R ⊗[F] E)) = 1`.
+Introduce a local definition for the expression. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `HeckeCharacterZeroLocus.SiegelWeilU.cT`. Rewrite using `[Matrix.map_one _ (map_zero _) (map_one _), Matrix.transpose_one]`. Establish `key : ∀ (h h' A : Matrix (Fin n) (Fin n) (R ⊗[F] E)), h * h' = 1 → HeckeCharacterZeroLocus.SiegelWeilU.cT (HeckeCharacterZeroLocus.SiegelWeilU.sigR R σ) h' * (HeckeCharacterZeroLocus.SiegelWeilU.cT (HeckeCharacterZeroLocus.SiegelWeilU.sigR R σ) h * A * h) * h' = A`. Introduce `h h' A hh`. Establish `h1 : HeckeCharacterZeroLocus.SiegelWeilU.cT (HeckeCharacterZeroLocus.SiegelWeilU.sigR R σ) h' * HeckeCharacterZeroLocus.SiegelWeilU.cT (HeckeCharacterZeroLocus.SiegelWeilU.sigR R σ) h = 1`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← HeckeCharacterZeroLocus.SiegelWeilU.cT_mul, hh, hc1]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = A := by rw [h1, hh, Matrix.one_mul, Matrix.mul_one]`. Establish `hcj : ∀ h : Matrix (Fin n) (Fin n) (R ⊗[F] E), Continuous fun S : HeckeCharacterZeroLocus.SiegelWeilU.HermR R σ n => HeckeCharacterZeroLocus.SiegelWeilU.cT (HeckeCharacterZeroLocus.SiegelWeilU.sigR R σ) h * (S : Matrix (Fin n) (Fin n) (R ⊗[F] E)) * h` using `fun h => (continuous_const.matrix_mul continuous_subtype_val).matrix_mul continuous_const`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Set `t : HeckeCharacterZeroLocus.SiegelWeilU.HermR R σ n ≃+ HeckeCharacterZeroLocus.SiegelWeilU.HermR R σ n` to `{ toFun := fun S => ⟨HeckeCharacterZeroLocus.SiegelWeilU.cT (HeckeCharacterZeroLocus.SiegelWeilU.sigR R σ) g * (S : Matrix (Fin n) (Fin n) (R ⊗[F] E)) * g, hmem S g⟩ invFun := fun S => ⟨HeckeCharacterZeroLocus.SiegelWeilU.cT (HeckeCharacterZeroLocus.SiegelWeilU.sigR R σ) g⁻¹ * (S …`. Simplify using `only [AddSubgroup.coe_add, Matrix.mul_add, Matrix.add_mul]) }`. Establish `hec : Continuous e` using `hrc g`. Establish `hes : Continuous e.symm` using `hrc g⁻¹`. Establish `htc : Continuous t` using `(hcj g).subtype_mk _`.
-
-Establish `hts : Continuous t.symm` using `(hcj g⁻¹).subtype_mk _`. Use `haveI hμe : (μ.map e).IsAddHaarMeasure := e.isAddHaarMeasure_map μ hec hes`. Use `haveI hνt : (ν.map t).IsAddHaarMeasure := t.isAddHaarMeasure_map ν htc hts`. Take `⟨a, ha0, hmu⟩ : ∃ a : ℝ≥0, a ≠ 0 ∧ μ.map e = a • μ` from `⟨_, (Measure.addHaarScalarFactor_pos_of_isAddHaarMeasure (μ.map e) μ).ne', Measure.isAddLeftInvariant_eq_smul _ _⟩`. Take `⟨c, hc0, hnu⟩ : ∃ c : ℝ≥0, c ≠ 0 ∧ ν.map t = c • ν` from `⟨_, (Measure.addHaarScalarFactor_pos_of_isAddHaarMeasure (ν.map t) ν).ne', Measure.isAddLeftInvariant_eq_smul _ _⟩`.
-
-Establish `hfib` using `GlobalTheory.T.gram_fiber_measures_rmul_equivariant F E σ hσ M J hJ R hR n μ ν m hμ hν hm g hg t (fun _ => rfl) a c hmu hnu`. Use `⟨c / a, div_ne_zero hc0 ha0, fun S S' hS => ?_⟩` and prove the remaining obligations. Establish `hS' : S' = t S` using `Subtype.ext hS`. Establish `h` using `hfib S`. Rewrite `h` using `[← hS']`.
-
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[h, smul_smul, div_eq_inv_mul]`.
+A detailed English derivation is pending.
 -/
 theorem fib_scale_core (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) (hσ : HeckeCharacterZeroLocus.SiegelWeilU.IsCMExt F E σ) (M : ℕ) (J : Matrix (Fin M) (Fin M) E)
@@ -140,7 +134,7 @@ theorem fib_scale_core (F E : Type) [Field F] [NumberField F] [Field E] [NumberF
       rw [h, smul_smul, div_eq_inv_mul]
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hσ M J hJ R _ _ _ _ _ hR n μ ν m hμ hν hm g hg`. Conclude with `fib_scale_core F E σ hσ M J hJ R hR n μ ν m hμ hν hm g hg`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem fib_scale : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (M : ℕ) (J : Matrix (Fin M) (Fin M) E), IsHermND σ J → ∀ (R : Type) [CommRing R] [Algebra F R] [TopologicalSpace R] [MeasurableSpace R] [BorelSpace R], GlobalTheory.CompanionTheory.SW.IsLocR R → ∀ (n : ℕ) (μ : Measure (Fin n → Fin M → R ⊗[F] E)) (ν : Measure (HermR R σ n)) (m : HermR R σ n → Measure (Fin n → Fin M → R ⊗[F] E)), μ.IsAddHaarMeasure → ν.IsAddHaarMeasure → GlobalTheory.CompanionTheory.SW.IsGramFib R σ J n μ ν m → ∀ (g : Matrix (Fin n) (Fin n) (R ⊗[F] E)), IsUnit g.det → ∃ κ : ℝ≥0, κ ≠ 0 ∧ ∀ S S' : HermR R σ n, (S' : Matrix (Fin n) (Fin n) (R ⊗[F] E)) = HeckeCharacterZeroLocus.SiegelWeilU.cT (sigR R σ) g * (S : Matrix (Fin n) (Fin n) (R ⊗[F] E)) * g → m S' = κ • (m S).map (fun X => GlobalTheory.CompanionTheory.SW.rmul R X g) := by
   intro F E _ _ _ _ _ σ hσ M J hJ R _ _ _ _ _ hR n μ ν m hμ hν hm g hg

@@ -14,13 +14,13 @@ noncomputable section
 namespace GlobalTheory.Mem.R3.DTheta
 
 /- English proof (translation)
-Introduce `hP D G _ _ Pl0 I0 T A3 Ks _ _ _ R F cG hPins hHolds`. Establish `hb` using `hPins.char.base`. Introduce `b t w hw`. Establish `h1` using `GlobalTheory.KeepLevel.goodProjector_levelMultiplicitySpace_mem_goodRows hb.lev hb.models.inf hb.grp.record (R.toRealDat.levR F.lv2 b) t hw`. Use `⟨h1, fun c hc => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hcfix : postOn (R.MY 0) R.e0 c = c` using `sub_eq_zero.1 (LinearMap.mem_ker.1 hc.2)`. Establish `hc0 : c ∈ Mult R.θ (R.MY 0) (levS _ (R.βY 0) (R.dat0 R.triv)) (levChi _ (R.βY 0) (R.dat0 R.triv))`. Use `GlobalTheory.Mem.Th.multAt_le R.toRealDat (R.toRealDat.levR F.lv2 b) t 0 ((GlobalTheory.Mem.Th.multAt_zero R.toRealDat _ t).symm ▸ hc.1)` as an intermediate fact. Rewrite `this` using `[GlobalTheory.Mem.Th.multAt_zero]`. Then use the resulting hypothesis. Establish `hw0 : w ∈ Mult R.θ (R.MY 0) (levS _ (R.βY 0) (R.dat0 R.triv)) (levChi _ (R.βY 0) (R.dat0 R.triv))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Use `GlobalTheory.Mem.Th.multAt_le R.toRealDat (R.toRealDat.levR F.lv2 b) t 0 hw` as an intermediate fact. Rewrite `this` using `[GlobalTheory.Mem.Th.multAt_zero]`. Then use the resulting hypothesis. Take `⟨v, hv⟩` from `GlobalTheory.SchurConst.exists_vec (R.MY 0) (GlobalTheory.GardingVec.sm_ne_bot D _ _ (R.MY 0))`. Establish `ha : 0 < (RealDat.nP F.lv2 b)⁻¹` using `inv_pos.2 (GlobalTheory.KapRedII.nP_pos' F.lv2 b)`. Rewrite using `[GlobalTheory.KapRedII.ipM_smul_of_vec _ _ _ _ _ ha v hv, GlobalTheory.KapRedII.ipM_smul_of_vec _ _ _ _ _ ha v hv]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use `conv_lhs => rw [← hcfix]`. Conclude with `GlobalTheory.ProjectorAdjoint.ipM_gaL (L := R.dat0 R.triv) hP hb.models.inf hb.models.ν0.1.1 hb.models.ν0.2 R.eG _ (GlobalTheory.ProjectorAdjoint.eC_inv R.toRealDat hb.grp.record) hc0 hw0`.
+Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem rowProj_holds : GlobalTheory.Published.CuspRapidDecay → ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 I0 T : Type) (A3 : FamIn3 D.what₂.LL G Pl0 I0 (List ℕ) T D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat3 D A3 Ks) (F : Face3 D A3) (cG : G0 R.Pg D.R.r ≃* G0g D.nd), Pins R F cG → Holds R F → GlobalTheory.Mem.R3.DTheta.RowProj R.toRealDat F.lv2 := by
   intro hP D G _ _ Pl0 I0 T A3 Ks _ _ _ R F cG hPins hHolds

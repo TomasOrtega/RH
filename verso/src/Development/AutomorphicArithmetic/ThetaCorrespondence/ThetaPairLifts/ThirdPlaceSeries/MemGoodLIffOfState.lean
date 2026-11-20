@@ -16,7 +16,7 @@ variable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 I0 T : Type}
 end Core
 set_option maxHeartbeats 4000000 in
 /- English proof (translation)
-Introduce `hL`. Use `StepW.of_all fun K B f T w _ _ _ => ?_` and prove the remaining obligations. Introduce `P x _ θ _ hlv j _ _ v`. Take `⟨_, _, -, hidem, -, -⟩` from `x.m.z.pins.keep.grp`. Conclude with `mem_goodL_iff_iotaR x.m.z.R x.m.z.F x.m.z.cG (kKsOf x) (hkOf x) θ x.m.intersectionNumber_baseChange.prim.unif x.m.z.pins.char.base.models.HW hidem hlv j v`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem mem_goodL_iff_iotaR_mem_goodW_of_level_psi : ∀ hL : _root_.UpperTheory.Zero.LLC.RecTExists, StepW Start fun K B f T w => ∀ (P : Pre2 K w) (x : St P), _root_.GlobalTheory.HeightCounting.Up.SameGaloisLevel hL x →
     ∀ θ : (∀ kk : Fin 2, Multiplicative (ZMod ((Dof x).host.g kk)) →* (↥(Dof x).LL0)ˣ), (∀ kk, θ kk ≠ 1) →

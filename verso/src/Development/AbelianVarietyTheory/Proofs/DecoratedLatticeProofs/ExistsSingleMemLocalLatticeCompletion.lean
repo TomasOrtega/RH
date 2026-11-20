@@ -9,9 +9,9 @@ open NumberField IsDedekindDomain GlobalTheory.AdelicU Formalism.MainNotions.Glo
 namespace GlobalTheory.AdelicU
 
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.LatticeIntegerMultiple.exists_zsmul_mem_lattice`. Consider the case `exact _root_.GlobalTheory.LatticeIntegerMultiple.exists_zsmul_mem_lattice`. Consider the case `(apply _root_.GlobalTheory.LatticeIntegerMultiple.exists_zsmul_mem_lattice <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.LatticeIntegerMultiple.exists_zsmul_mem_lattice <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.LatticeIntegerMultiple.exists_zsmul_mem_lattice <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.LatticeIntegerMultiple.exists_zsmul_mem_lattice ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem exists_zsmul_mem_of_isLattice {E : Type} [Field E] [NumberField E] {n : ℕ}
     (L : Submodule (𝓞 E) (Fin n → E)) [Submodule.IsLattice E L] (x : Fin n → E) :
@@ -25,9 +25,9 @@ theorem exists_zsmul_mem_of_isLattice {E : Type} [Field E] [NumberField E] {n : 
   | (intros; exact _root_.GlobalTheory.LatticeIntegerMultiple.exists_zsmul_mem_lattice ..)
 
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.LocalLatticeIntegral.exists_single_mem_latLoc`. Consider the case `exact _root_.GlobalTheory.LocalLatticeIntegral.exists_single_mem_latLoc`. Consider the case `(apply _root_.GlobalTheory.LocalLatticeIntegral.exists_single_mem_latLoc <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.LocalLatticeIntegral.exists_single_mem_latLoc <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.LocalLatticeIntegral.exists_single_mem_latLoc <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.LocalLatticeIntegral.exists_single_mem_latLoc ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem exists_single_mem_latLoc {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     {n : ℕ} (L : Submodule (𝓞 E) (Fin n → E)) [Submodule.IsLattice E L] (v : HeightOneSpectrum (𝓞 F)) :

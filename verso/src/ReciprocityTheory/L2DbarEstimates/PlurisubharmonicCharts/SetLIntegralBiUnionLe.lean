@@ -13,9 +13,9 @@ variable {n : ℕ} {Y : Type*} [TopologicalSpace Y] [T2Space Y] [SecondCountable
   [MeasurableSpace Y] [BorelSpace Y] {ι : Type*} {La : Type*} [AddCommGroup La]
 
 /- English proof (translation)
-Take `⟨k, hk⟩` from `h`. Establish `h0 : 0 < A.nsq la (w k) y`. Unfold `nsq`. Use `norm_pos_iff.2 hk` as an intermediate fact. Check the signs of the components of the expression.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Check the signs of the components of the expression.
 
-Conclude with `lt_of_lt_of_le h0 (Finset.single_le_sum (f := fun j => A.nsq la (w j) y) (fun j _ => A.nsq_nonneg la (w j) y) (Finset.mem_univ k))`.
+A detailed English derivation is pending.
 -/
 theorem sqn_pos_of_ne (A : WeightedAtlas n Y ι La) {la : La} {N : ℕ} {w : Fin N → ι → Y → ℂ}
     {y : Y} (h : ∃ k, w k (A.pick y) y ≠ 0) : 0 < A.sqn la w y := by
@@ -28,7 +28,7 @@ theorem sqn_pos_of_ne (A : WeightedAtlas n Y ι La) {la : La} {N : ℕ} {w : Fin
     (fun j _ => A.nsq_nonneg la (w j) y) (Finset.mem_univ k))
 
 /- English proof (translation)
-Apply `A.sqn_pos_of_ne` to reduce the goal to its premises. Simplify `h` using `[zeroSet]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem sqn_pos_of_notMem (A : WeightedAtlas n Y ι La) {la : La} {N : ℕ} {s : Fin N → ι → Y → ℂ}
     {y : Y} (h : y ∉ A.zeroSet s) : 0 < A.sqn la s y := by
@@ -36,7 +36,7 @@ theorem sqn_pos_of_notMem (A : WeightedAtlas n Y ι La) {la : La} {N : ℕ} {s :
   simpa [zeroSet] using h
 
 /- English proof (translation)
-Proceed by induction on `F using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert a F ha ih`. Rewrite using `[Finset.set_biUnion_insert, Finset.sum_insert ha]`. Conclude with `(lintegral_union_le _ _ _).trans (add_le_add le_rfl ih)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem setLIntegral_biUnion_le {α κ : Type*} [MeasurableSpace α] (μ : Measure α)
     (F : Finset κ) (U : κ → Set α) (G : α → ℝ≥0∞) :
@@ -49,23 +49,19 @@ theorem setLIntegral_biUnion_le {α κ : Type*} [MeasurableSpace α] (μ : Measu
     exact (lintegral_union_le _ _ _).trans (add_le_add le_rfl ih)
 
 /- English proof (translation)
-Use `set G : Y → ℝ≥0∞ := fun y => ENNReal.ofReal (A.nsq la f y * A.sqn L s y ^ (-((T : ℝ) - 1 / 2)) * A.sqn L w y ^ (-(1 / 2 : ℝ))) with hG`. Establish `hloc : ∀ P ∈ A.zeroSet s, ∃ U : Set Y, IsOpen U ∧ P ∈ U ∧ ∫⁻ y in U, G y ∂A.mu < ⊤` using `fun P hP => A.local_int hMVI hn hD hf hT hP (hvan P hP)`. Use `choose! U hUo hPU hUint using hloc`. Use `set F := hD.finite_S.toFinset`. Use `set V := ⋃ P ∈ F, U P with hV`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hVo : IsOpen V` using `isOpen_biUnion (fun P hP => hUo P ((Set.Finite.mem_toFinset _).1 hP))`. Establish `hSV : A.zeroSet s ⊆ V` using `fun P hP => Set.mem_biUnion ((Set.Finite.mem_toFinset _).2 hP) (hPU P hP)`. Take `⟨C, hC⟩` from `hD.family_le_coords V hVo hSV`. Use `set a : ℝ := (T : ℝ) - 1 / 2 with ha`. Establish `hpt : ∀ y ∈ Vᶜ, G y ≤ ENNReal.ofReal (C ^ a) * ENNReal.ofReal (A.nsq la f y * A.sqn L w y ^ (-(T : ℝ)))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `y hy`. Establish `hyS : y ∉ A.zeroSet s` using `fun h => hy (hSV h)`. Establish `hs` using `A.sqn_pos_of_notMem (la := L) hyS`. Establish `hw` using `A.sqn_pos_of_ne (la := L) (hD.no_common_zero y)`. Establish `hCy` using `hC y hy`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Establish `hCpos : 0 < C`. Assume the negation of the conclusion as `hc`. Establish `hc'` using `not_lt.1 hc`. Use the polynomial consequences of the given equalities and inequalities. Establish `h1 : A.sqn L s y ^ (-a) ≤ (A.sqn L w y / C) ^ (-a)` using `Real.rpow_le_rpow_of_nonpos (by positivity) (by rw [div_le_iff₀ hCpos]; linarith) (by have : (1:ℝ) ≤ T := by exact_mod_cast (show 1 ≤ T by omega) linarith)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : (A.sqn L w y / C) ^ (-a) * A.sqn L w y ^ (-(1 / 2 : ℝ)) = C ^ a * A.sqn L w y ^ (-(T : ℝ))`. Rewrite using `[Real.div_rpow hw.le hCpos.le, Real.rpow_neg hCpos.le, div_inv_eq_mul, mul_comm _ (C ^ a), mul_assoc, ← Real.rpow_add hw]`. Use `congr 2`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[← ENNReal.ofReal_mul (by positivity)]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Apply `ENNReal.ofReal_le_ofReal` to reduce the goal to its premises. Establish `hn0` using `A.nsq_nonneg la f y`. Combine the equalities or inequalities in the displayed calculation. Use `Real.rpow_nonneg hw.le (-(1 / 2 : ℝ))` as an intermediate fact. Use `gcongr`.
+Expand and normalize the polynomial expressions, which then agree. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `_ = C ^ a * (A.nsq la f y * A.sqn L w y ^ (-(T : ℝ))) := by`. Rewrite using `[mul_assoc, h2]`. Expand and normalize the polynomial expressions, which then agree. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Set.union_compl_self, Measure.restrict_univ]`.
-
-Use `_ ≤ ∫⁻ y in V, G y ∂A.mu + ∫⁻ y in Vᶜ, G y ∂A.mu := lintegral_union_le _ _ _`. Use `_ ≤ ∑ P ∈ F, ∫⁻ y in U P, G y ∂A.mu + ∫⁻ y in Vᶜ, ENNReal.ofReal (C ^ a) * ENNReal.ofReal (A.nsq la f y * A.sqn L w y ^ (-(T : ℝ))) ∂A.mu := add_le_add (setLIntegral_biUnion_le _ _ _ _) (setLIntegral_mono' hVo.measurableSet.compl hpt)`. Use `_ ≤ ∑ P ∈ F, ∫⁻ y in U P, G y ∂A.mu + ∫⁻ y, ENNReal.ofReal (C ^ a) * ENNReal.ofReal (A.nsq la f y * A.sqn L w y ^ (-(T : ℝ))) ∂A.mu := add_le_add le_rfl (setLIntegral_le_lintegral _ _)`. Use `_ < ⊤ := by`. Rewrite using `[lintegral_const_mul' _ _ ENNReal.ofReal_ne_top]`.
-
-Use `ENNReal.add_lt_top.2 ⟨ENNReal.sum_lt_top.2 (fun P hP => hUint P ((Set.Finite.mem_toFinset _).1 hP)), ENNReal.mul_lt_top ENNReal.ofReal_lt_top hint⟩` and prove the remaining obligations.
+A detailed English derivation is pending.
 -/
 theorem start_int (A : WeightedAtlas n Y ι La) (hMVI : MVIntStatement n) (hn : 2 ≤ n) {L : La}
     {N : ℕ} {w : Fin N → ι → Y → ℂ} {w0 : ι → Y → ℂ} {s : Fin n → ι → Y → ℂ}
@@ -133,19 +129,19 @@ theorem start_int (A : WeightedAtlas n Y ι La) (hMVI : MVIntStatement n) (hn : 
           ((Set.Finite.mem_toFinset _).1 hP)), ENNReal.mul_lt_top ENNReal.ofReal_lt_top hint⟩
 
 /- English proof (translation)
-Establish `: NullSingletonClass A.mu` using `⟨fun x => A.mu_singleton hn x⟩`. Establish `hS0 : A.mu (A.zeroSet s) = 0` using `hD.finite_S.measure_zero A.mu`. Take `⟨C, hC⟩` from `hD.s_le_w`. Use `set a : ℝ := (n : ℝ) - 1 / 2 with ha`. Establish `hae : ∀ᵐ y ∂A.mu, ENNReal.ofReal (A.nsq la h y * A.sqn L w y ^ (-(n : ℝ))) ≤ ENNReal.ofReal (C ^ a) * ENNReal.ofReal (A.nsq la h y * A.sqn L s y ^ (-a) * A.sqn L w y ^ (-(1 / 2 : ℝ)))` using `by filter_upwards [measure_eq_zero_iff_ae_notMem.1 hS0] with y hyS`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs` using `A.sqn_pos_of_notMem (la := L) hyS`. Establish `hw` using `A.sqn_pos_of_ne (la := L) (hD.no_common_zero y)`. Establish `hCy` using `hC y`. Establish `hCpos : 0 < C`. Assume the negation of the conclusion as `hc`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `hc'` using `not_lt.1 hc`. Use the polynomial consequences of the given equalities and inequalities. Establish `hna : 0 ≤ a`. Establish `: (1:ℝ) ≤ n` using `by exact_mod_cast hn`. Combine the linear equalities and inequalities to obtain the conclusion.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `h1 : (C * A.sqn L w y) ^ (-a) ≤ A.sqn L s y ^ (-a)` using `Real.rpow_le_rpow_of_nonpos hs hCy (by linarith)`. Establish `h2 : A.sqn L w y ^ (-(n : ℝ)) = C ^ a * ((C * A.sqn L w y) ^ (-a) * A.sqn L w y ^ (-(1 / 2 : ℝ)))`. Rewrite using `[Real.mul_rpow hCpos.le hw.le, ← mul_assoc, ← mul_assoc, ← Real.rpow_add hCpos, mul_assoc, ← Real.rpow_add hw]`. Establish `e1 : a + -a = 0` using `by ring`. Establish `e2 : -a + -(1 / 2 : ℝ) = -(n : ℝ)` using `by rw [ha]; ring`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e1, e2, Real.rpow_zero, one_mul]`. Rewrite using `[← ENNReal.ofReal_mul (by positivity)]`. Apply `ENNReal.ofReal_le_ofReal` to reduce the goal to its premises. Establish `hn0` using `A.nsq_nonneg la h y`. Use `Real.rpow_nonneg hw.le (-(1 / 2 : ℝ))` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Real.rpow_nonneg hCpos.le a` as an intermediate fact. Rewrite using `[h2]`. Combine the equalities or inequalities in the displayed calculation. Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ C ^ a * (A.nsq la h y * A.sqn L s y ^ (-a) * A.sqn L w y ^ (-(1 / 2 : ℝ))) := by gcongr`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Expand and normalize the polynomial expressions, which then agree. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[lintegral_const_mul' _ _ ENNReal.ofReal_ne_top]`. Conclude with `ENNReal.mul_lt_top ENNReal.ofReal_lt_top hint`.
+A detailed English derivation is pending.
 -/
 theorem end_int (A : WeightedAtlas n Y ι La) (hn : 1 ≤ n) {L : La}
     {N : ℕ} {w : Fin N → ι → Y → ℂ} {w0 : ι → Y → ℂ} {s : Fin n → ι → Y → ℂ}
@@ -199,11 +195,9 @@ theorem end_int (A : WeightedAtlas n Y ι La) (hn : 1 ≤ n) {L : La}
         exact ENNReal.mul_lt_top ENNReal.ofReal_lt_top hint
 
 /- English proof (translation)
-Establish `hpt : ∀ y, ENNReal.ofReal (A.nsq la (fun i y => ∑ q ∈ F, h q i y) y * Wt y) ≤ ENNReal.ofReal (F.card : ℝ) * ∑ q ∈ F, ENNReal.ofReal (A.nsq la (h q) y * Wt y)`. Introduce `y`. Rewrite using `[← ENNReal.ofReal_sum_of_nonneg (fun q _ => mul_nonneg (A.nsq_nonneg _ _ _) (hW0 y)), ← ENNReal.ofReal_mul (by positivity)]`. Apply `ENNReal.ofReal_le_ofReal` to reduce the goal to its premises. Rewrite using `[← Finset.sum_mul, ← mul_assoc]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_le_mul_of_nonneg_right (A.nsq_sum_le la F h y) (hW0 y)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[lintegral_const_mul' _ _ ENNReal.ofReal_ne_top, lintegral_finsetSum']`. Introduce `q hq`. Conclude with `(ENNReal.measurable_ofReal.comp ((A.continuous_nsq (hh q hq)).measurable.mul hWt)).aemeasurable`.
-
-Use `_ < ⊤ := ENNReal.mul_lt_top ENNReal.ofReal_lt_top (ENNReal.sum_lt_top.2 hint)`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem sum_int (A : WeightedAtlas n Y ι La) {la : La} {κ : Type*} (F : Finset κ)
     (h : κ → ι → Y → ℂ) (hh : ∀ q ∈ F, A.IsSec la (h q)) (Wt : Y → ℝ) (hWt : Measurable Wt)

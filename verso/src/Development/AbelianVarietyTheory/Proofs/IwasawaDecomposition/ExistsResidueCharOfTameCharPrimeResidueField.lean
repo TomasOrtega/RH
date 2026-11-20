@@ -13,45 +13,41 @@ open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.
 namespace GlobalTheory.TameTau
 
 /- English proof (translation)
-Introduce `E Ω _ _ _ _ _ P g hg hN hgP O _ _ _ _ _ hadic χ hχc hχI`. Establish `: NeZero g` using `⟨hg.ne_zero⟩`. Establish `: Fact (1 < g)` using `⟨hg.one_lt⟩`. Establish `: IsAlgClosed Ω` using `IsAlgClosure.isAlgClosed E`. Use `set m := g - 1 with hm_def`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm0 : 0 < m` using `by have := hg.two_le; omega`. Establish `hPtop : P.asIdeal ≠ ⊤` using `P.isPrime.ne_top`. Establish `hmP : ((m : ℕ) : 𝓞 E) ∉ P.asIdeal`. Introduce `h`. Apply `hPtop` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Ideal.eq_top_iff_one]`. Establish `h1 : ((g : ℕ) : 𝓞 E) = (m : 𝓞 E) + 1`. Establish `: g = m + 1` using `by have := hg.two_le; omega`. Rewrite using `[this]`. Use `push_cast`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Use `P.asIdeal.sub_mem hgP h` as an intermediate fact. Rewrite `this` using `[h1, add_sub_cancel_left]`. Then use the resulting hypothesis. Establish `hNm : normV P - 1 = m` using `by rw [hN]`. Choose the witnesses or unpack the hypotheses as in `⟨ϖ, hϖ, hϖ2⟩ : ∃ ϖ : 𝓞 E, ϖ ∈ P.asIdeal ∧ ϖ ∉ P.asIdeal ^ 2 := by`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hlt : P.asIdeal ^ (1 + 1) < P.asIdeal ^ 1` using `Ideal.pow_succ_lt_pow P.ne_bot 1`. Rewrite `hlt` using `[pow_one]`. Conclude with `SetLike.exists_of_lt hlt`. Take `⟨π, hπ⟩` from `IsAlgClosed.exists_pow_nat_eq (algebraMap E Ω (ϖ : E)) hm0`. Establish `hπ0 : π ≠ 0`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce and unpack `rfl`. Rewrite `hπ` using `[zero_pow hm0.ne', eq_comm, map_eq_zero_iff _ (algebraMap E Ω).injective]`. Establish `hϖ0 : ϖ = 0` using `by exact_mod_cast hπ`. Conclude with `hϖ2 (hϖ0 ▸ Ideal.zero_mem _)`. Take `⟨A₀, hA₀⟩` from `exists_isPlaceOver Ω P`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hvm : ¬ A₀.valuation (m : Ω) < 1`. Introduce `h`. Apply `hmP` to reduce the goal to its premises. Rewrite using `[← hA₀]`. Simplify using `using h`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hex : ∀ u : 𝓞 E, u ∉ P.asIdeal → ∃ σ : G E Ω, σ ∈ Ine (F` using `E) A₀ ∧ ∃ ζ : Ω, ζ ^ m = 1 ∧ A₀.valuation (ζ - algebraMap E Ω (u : E)) < 1 ∧ σ π = ζ * π := by`. Introduce `u hu`. Take `⟨ζ, hζ, hζu⟩` from `GlobalTheory.T.exists_rootOfUnity_congr_unit_at_place A₀ P hA₀ u hu`. Rewrite `hζ` using `[hNm]`. Take `⟨σ, hσ, hσπ⟩` from `GlobalTheory.T.inertia_acts_on_tame_root A₀ P hA₀ m hm0 hmP ϖ hϖ hϖ2 π hπ ζ hζ`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `⟨σ, hσ, ζ, hζ, hζu, hσπ⟩`. Establish `hrep : ∀ σ ∈ Ine (F` using `E) A₀, ∀ u : 𝓞 E, A₀.valuation (σ π / π - algebraMap E Ω (u : E)) < 1 → NX.TameRep P 1 σ u := by`. Introduce `σ hσ u h`. Use `⟨A₀, hA₀, hσ, ϖ, π, hϖ, hϖ2, by rw [hNm]; exact hπ, ?_⟩` and prove the remaining obligations. Rewrite using `[zpow_one]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h`. Establish `hkey : ∀ (σ : G E Ω) (u : 𝓞 E), NX.TameRep P 1 σ u → NX.tameVal χ P 1 u = χ σ`. Introduce `σ u h`. Rewrite using `[NX.tameVal, dif_pos ⟨σ, h⟩]`. Conclude with `GlobalTheory.T.tameChar_eq_of_tameRep_congr P hadic χ hχc (by rw [hNm]; exact hm0) (by rw [hNm]; exact hmP) (by intro A hA σ' hσ'; rw [hNm]; exact hχI A hA σ' hσ') _ σ u u (⟨σ, h⟩ : ∃ σ, NX.TameRep P 1 σ u).choose_spec h (by simp)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `hlt : ∀ a b : Ω, A₀.valuation a ≤ 1 → A₀.valuation b < 1 → A₀.valuation (a * b) < 1`. Introduce `a b ha hb`. Rewrite using `[map_mul]`. Combine the equalities or inequalities in the displayed calculation. Establish `hle : ∀ a b : Ω, A₀.valuation a ≤ 1 → A₀.valuation (a - b) < 1 → A₀.valuation b ≤ 1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Introduce `a b ha hab`. Establish `e : b = a - (a - b)` using `by ring`. Rewrite using `[e]`. Conclude with `(Valuation.map_sub _ _ _).trans (max_le ha hab.le)`. Establish `hP1 : ∀ w : 𝓞 E, w ∈ P.asIdeal → A₀.valuation (algebraMap E Ω (w : E)) < 1` using `fun w hw => (hA₀ w).2 hw`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Set `U : (ZMod g)ˣ → 𝓞 E` to `fun x => (((x : ZMod g)).val : 𝓞 E)`. Establish `hcong : ∀ x y : (ZMod g)ˣ, U x * U y - U (x * y) ∈ P.asIdeal`. Introduce `x y`. Simplify using `only [U, Units.val_mul, ZMod.val_mul]`. Establish `e : (((x : ZMod g).val * (y : ZMod g).val : ℕ) : 𝓞 E) = (g : 𝓞 E) * (((x : ZMod g).val * (y : ZMod g).val / g : ℕ) : 𝓞 E) + (((x : ZMod g).val * (y : ZMod g).val % g : ℕ) : 𝓞 E)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `(Nat.div_add_mod ((x : ZMod g).val * (y : ZMod g).val) g).symm` after adjusting the coercions. Rewrite using `[← Nat.cast_mul, e, add_sub_cancel_right]`. Conclude with `P.asIdeal.mul_mem_right _ hgP`. Establish `hU1 : U 1 = 1` using `by show (((1 : (ZMod g)ˣ) : ZMod g).val : 𝓞 E) = 1`. Rewrite using `[Units.val_one, ZMod.val_one, Nat.cast_one]`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hUP : ∀ x, U x ∉ P.asIdeal`. Introduce `x hx`. Establish `h` using `hcong x x⁻¹`. Rewrite `h` using `[mul_inv_cancel, hU1]`. Apply `hPtop` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Ideal.eq_top_iff_one]`. Establish `e : (1 : 𝓞 E) = U x * U x⁻¹ - (U x * U x⁻¹ - 1)` using `by ring`. Rewrite using `[e]`. Conclude with `P.asIdeal.sub_mem (P.asIdeal.mul_mem_right _ hx) h`. Use `choose σx hσx ζx hζx hζu hσπ using fun x => hex (U x) (hUP x)`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hq : ∀ x, σx x π / π = ζx x` using `fun x => by rw [hσπ x, mul_div_cancel_right₀ _ hπ0]`. Establish `hζ1 : ∀ x, A₀.valuation (ζx x) = 1` using `fun x => valuation_eq_one_of_pow_eq_one A₀ hm0.ne' (hζx x)`. Establish `hrepx : ∀ x, NX.TameRep P 1 (σx x) (U x)` using `fun x => hrep _ (hσx x) _ (by rw [hq]; exact hζu x)`. Use `⟨MonoidHom.mk' (fun x => χ (σx x)) ?_, ?_⟩` and prove the remaining obligations. Introduce `x y`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← map_mul, ← hkey _ _ (hrepx (x * y))]`. Use `hkey _ _ (hrep _ ((Ine (F := E) A₀).mul_mem (hσx x) (hσx y)) _ ?_)` and prove the remaining obligations. Rewrite using `[GlobalTheory.TameTau.quot_mul (hσx x) m hvm hπ0 hπ, hq, hq]`. Establish `e : ζx x * ζx y - algebraMap E Ω (U (x * y) : E) = ζx x * (ζx y - algebraMap E Ω (U y : E)) + algebraMap E Ω (U y : E) * (ζx x - algebraMap E Ω (U x : E)) + algebraMap E Ω ((U x * U y - U (x * y) : 𝓞 E) : E)` using `by push_cast; ring`. Rewrite using `[e]`.
-
-Use `Valuation.map_add_lt _ (Valuation.map_add_lt _ (hlt _ _ (hζ1 x).le (hζu y)) (hlt _ _ (hle _ _ (hζ1 y).le (hζu y)) (hζu x))) (hP1 _ (hcong x y))` and prove the remaining obligations. Introduce `x u hxu show χ (σx x) = _`. Use `(hkey _ _ (hrep _ (hσx x) _ ?_)).symm` and prove the remaining obligations. Rewrite using `[hq]`. Establish `e : ζx x - algebraMap E Ω (u : E) = (ζx x - algebraMap E Ω (U x : E)) + algebraMap E Ω ((U x - u : 𝓞 E) : E)` using `by push_cast; ring`.
-
-Rewrite using `[e]`. Conclude with `Valuation.map_add_lt _ (hζu x) (hP1 _ hxu)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tameChar_of_prime_residue : ∀ {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω] (P : HeightOneSpectrum (𝓞 E)) (g : ℕ), g.Prime → normV P = g → ((g : ℕ) : 𝓞 E) ∈ P.asIdeal → ∀ {O : Type} [CommRing O] [IsLocalRing O] [IsNoetherianRing O] [TopologicalSpace O] [IsTopologicalRing O], IsAdic (IsLocalRing.maximalIdeal O) → ∀ (χ : G E Ω →* Oˣ), Continuous (fun g => ((χ g : Oˣ) : O)) → (∀ A : ValuationSubring Ω, IsPlaceOver A P → ∀ σ ∈ Ine (F := E) A, χ σ ^ (g - 1) = 1) → ∃ τ : (ZMod g)ˣ →* Oˣ, ∀ (x : (ZMod g)ˣ) (u : 𝓞 E), (((x : ZMod g).val : 𝓞 E) - u) ∈ P.asIdeal → τ x = NX.tameVal χ P 1 u := by
   intro E Ω _ _ _ _ _ P g hg hN hgP O _ _ _ _ _ hadic χ hχc hχI

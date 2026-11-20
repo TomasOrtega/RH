@@ -7,11 +7,11 @@ noncomputable section
 namespace GlobalTheory.Prism
 
 /- English proof (translation)
-Use `⟨fun h i => Ideal.mem_map_of_mem _ h, fun h => ?_⟩` and prove the remaining obligations. Rewrite using `[← Finset.univ_sum_single y]`. Use `Ideal.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Take `⟨x, hx, hxi⟩` from `(Ideal.mem_map_iff_of_surjective _ (fun b => ⟨Pi.single i b, by simp⟩ : Function.Surjective (Pi.evalRingHom A i))).1 (h i)`. Establish `e : Pi.single i (y i) = Pi.single i 1 * x`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use extensionality with `j`. Distinguish the cases in `hj : j = i`. Substitute `hj` using the available equality. Simplify using `[← hxi]`. Simplify using `[hj]`.
+By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[e]`. Conclude with `K.mul_mem_left _ hx`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pi_mem_iff_forall_mem_map_eval {ι : Type} [Fintype ι] [DecidableEq ι] {A : ι → Type}
     [∀ i, CommRing (A i)] (K : Ideal (∀ i, A i)) (y : ∀ i, A i) :
@@ -29,16 +29,16 @@ theorem pi_mem_iff_forall_mem_map_eval {ι : Type} [Fintype ι] [DecidableEq ι]
   rw [e]; exact K.mul_mem_left _ hx
 
 /- English proof (translation)
-Rewrite using `[SModEq.sub_mem, smul_eq_mul, Ideal.mul_top]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem smodEq_smul_top_iff {B : Type} [CommRing B] (K : Ideal B) (x y : B) :
     x ≡ y [SMOD (K • ⊤ : Submodule B B)] ↔ x - y ∈ K := by
   rw [SModEq.sub_mem, smul_eq_mul, Ideal.mul_top]
 
 /- English proof (translation)
-Establish `key : ∀ x : A, x * q = 0 → x = 0`. Introduce `x hx`. Apply `(Module.Invertible.toModuleEnd_bijective A ↥(Ideal.span {q})).1` to reduce the goal to its premises. Use extensionality with `⟨m, hm⟩`. Take `⟨c, rfl⟩` from `Ideal.mem_span_singleton'.1 hm`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result.
 
-Simplify using the standard rewrite rules. Take the linear combination `c * hx`. Conclude with `mem_nonZeroDivisors_iff.2 ⟨fun x hx => key x (by rw [mul_comm]; exact hx), key⟩`.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem mem_nonZeroDivisors_of_invertible_span {A : Type} [CommRing A] {q : A}
     (h : Module.Invertible A ↥(Ideal.span {q})) : q ∈ nonZeroDivisors A := by
@@ -63,7 +63,7 @@ def Delta.pi {l : ℕ} {ι : Type} {A : ι → Type} [∀ i, CommRing (A i)] (D 
 variable {l : ℕ} {R : Type} [CommRing R] {ι : Type} [Fintype ι]
 
 /- English proof (translation)
-Rewrite using `[pi_mem_iff_forall_mem_map_eval]`. Simplify using `[Ideal.map_span, ht]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem pi_mem_span_iff (C : ι → Obj l R) (t : ∀ i, (C i).A)
     (ht : ∀ i, (C i).I = Ideal.span {t i}) (x : ∀ i, (C i).A) :
@@ -73,7 +73,7 @@ theorem pi_mem_span_iff (C : ι → Obj l R) (t : ∀ i, (C i).A)
   simp [Ideal.map_span, ht]
 
 /- English proof (translation)
-Establish `hz : ∀ i, t i ∈ nonZeroDivisors (C i).A` using `fun i => mem_nonZeroDivisors_of_invertible_span (ht i ▸ (C i).inv)`. Use `mem_nonZeroDivisors_iff.2 ⟨fun x hx => funext fun i => ?_, fun x hx => funext fun i => ?_⟩` and prove the remaining obligations. Conclude with `(mem_nonZeroDivisors_iff.1 (hz i)).1 (x i) (congrFun hx i)`. Conclude with `(mem_nonZeroDivisors_iff.1 (hz i)).2 (x i) (congrFun hx i)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem pi_mem_nonZeroDivisors (C : ι → Obj l R) (t : ∀ i, (C i).A)
     (ht : ∀ i, (C i).I = Ideal.span {t i}) : t ∈ nonZeroDivisors (∀ i, (C i).A) := by
@@ -84,11 +84,11 @@ theorem pi_mem_nonZeroDivisors (C : ι → Obj l R) (t : ∀ i, (C i).A)
   · exact (mem_nonZeroDivisors_iff.1 (hz i)).2 (x i) (congrFun hx i)
 
 /- English proof (translation)
-Establish `hJ : ∀ (m : ℕ) (y : ∀ i, (C i).A), y ∈ (Ideal.span {((l : ℕ) : ∀ i, (C i).A)} ⊔ Ideal.span {t}) ^ m ↔ ∀ i, y i ∈ (Ideal.span {((l : ℕ) : (C i).A)} ⊔ (C i).I) ^ m`. Introduce `m y`. Rewrite using `[pi_mem_iff_forall_mem_map_eval]`. Simplify using `[Ideal.map_pow, Ideal.map_sup, Ideal.map_span, ht]`. Use `{ haus' := fun x hx => funext fun i => ?_, prec' := fun f hf => ?_ }` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `(C i).complete.toIsHausdorff.haus' (x i) fun n => ?_` and prove the remaining obligations. Rewrite using `[smodEq_smul_top_iff]`. Use `(hJ n _).1 ((smodEq_smul_top_iff _ _ _).1 (hx n)) i` as an intermediate fact. Simplify using `using this`. Use `choose L hL using fun i => (C i).complete.toIsPrecomplete.prec' (fun n => f n i) (fun {m n} hmn => (smodEq_smul_top_iff _ _ _).2 (by`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Use `(hJ m _).1 ((smodEq_smul_top_iff _ _ _).1 (hf hmn)) i` as an intermediate fact. Simplify using `using this))`. Conclude with `⟨fun i => L i, fun n => (smodEq_smul_top_iff _ _ _).2 ((hJ n _).2 fun i => by`. Simplify using `using (smodEq_smul_top_iff _ _ _).1 (hL i n))⟩`.
+Simplify to obtain the desired conclusion from the available facts. Supply the required witnesses or components. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem pi_isAdicComplete (C : ι → Obj l R) (t : ∀ i, (C i).A)
     (ht : ∀ i, (C i).I = Ideal.span {t i}) :
@@ -113,11 +113,11 @@ theorem pi_isAdicComplete (C : ι → Obj l R) (t : ∀ i, (C i).A)
       simpa using (smodEq_smul_top_iff _ _ _).1 (hL i n))⟩
 
 /- English proof (translation)
-Establish `h : ∀ i, ∃ a b : (C i).A, a * t i + b * (C i).D.φ (t i) = (l : (C i).A)`. Introduce `i`. Use `(C i).l_mem` as an intermediate fact. Rewrite `this` using `[ht i, Ideal.map_span, Set.image_singleton, Submodule.mem_sup]`. Take `⟨y, hy, z, hz, e⟩` from `this`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨a, rfl⟩` from `Ideal.mem_span_singleton'.1 hy`. Take `⟨b, rfl⟩` from `Ideal.mem_span_singleton'.1 hz`. Conclude with `⟨a, b, e⟩`. Use `choose a b hab using h`. Rewrite using `[Submodule.mem_sup]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨a * t, Ideal.mul_mem_left _ _ (Ideal.mem_span_singleton_self _), b * (Delta.pi fun i => (C i).D).φ t, Ideal.mul_mem_left _ _ (Ideal.mem_map_of_mem _ (Ideal.mem_span_singleton_self _)),` and prove the remaining obligations. Use function extensionality and compare the values at `fun i => ?_⟩`. Conclude with `hab i`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem pi_l_mem (C : ι → Obj l R) (t : ∀ i, (C i).A) (ht : ∀ i, (C i).I = Ideal.span {t i}) :
     ((l : ℕ) : ∀ i, (C i).A) ∈ Ideal.span {t} ⊔ (Ideal.span {t}).map (Delta.pi fun i => (C i).D).φ := by
@@ -138,18 +138,18 @@ theorem pi_l_mem (C : ι → Obj l R) (t : ∀ i, (C i).A) (ht : ∀ i, (C i).I 
   exact hab i
 
 /- English proof (translation)
-Rewrite using `[← map_natCast (Ideal.Quotient.mk K), ← map_pow, ← map_mul, Ideal.Quotient.eq_zero_iff_mem]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem quot_natCast_pow_mul_eq_zero_iff {B : Type} [CommRing B] (K : Ideal B) (l m : ℕ) (a : B) :
     ((l : B ⧸ K)) ^ m * Ideal.Quotient.mk K a = 0 ↔ (l : B) ^ m * a ∈ K := by
   rw [← map_natCast (Ideal.Quotient.mk K), ← map_pow, ← map_mul, Ideal.Quotient.eq_zero_iff_mem]
 
 /- English proof (translation)
-Use `choose n hn using fun i => (C i).bdd`. Use `⟨Finset.univ.sup n, fun x ⟨m, hm⟩ => ?_⟩` and prove the remaining obligations. Take `⟨a, rfl⟩` from `Ideal.Quotient.mk_surjective x`. Rewrite `hm`, the goal using `[quot_natCast_pow_mul_eq_zero_iff, pi_mem_span_iff C t ht]`. Introduce `i`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h1` using `hn i (Ideal.Quotient.mk _ (a i)) ⟨m, (quot_natCast_pow_mul_eq_zero_iff _ _ _ _).2 (by simpa using hm i)⟩`. Rewrite `h1` using `[quot_natCast_pow_mul_eq_zero_iff]`. Establish `hle : n i ≤ Finset.univ.sup n` using `Finset.le_sup (Finset.mem_univ i)`. Establish `e : ((l : ℕ) : ∀ i, (C i).A) ^ Finset.univ.sup n * a = ((l : ℕ) : ∀ i, (C i).A) ^ (Finset.univ.sup n - n i) * (((l : ℕ) : ∀ i, (C i).A) ^ n i * a)`. Rewrite using `[← mul_assoc, ← pow_add, Nat.sub_add_cancel hle]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Simplify using `using Ideal.mul_mem_left _ ((l : (C i).A) ^ (Finset.univ.sup n - n i)) h1`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem pi_bdd (C : ι → Obj l R) (t : ∀ i, (C i).A) (ht : ∀ i, (C i).I = Ideal.span {t i}) :
     ∃ N : ℕ, ∀ x : (∀ i, (C i).A) ⧸ Ideal.span {t},
@@ -180,14 +180,14 @@ def piQuotMap (C : ι → Obj l R) : (∀ i, (C i).A) →+* ∀ i, (C i).A ⧸ (
   RingHom.pi fun i => (Ideal.Quotient.mk (C i).I).comp (Pi.evalRingHom _ i)
 
 /- English proof (translation)
-Introduce `y` and use `⟨fun i => (Ideal.Quotient.mk_surjective (y i)).choose, funext fun i => (Ideal.Quotient.mk_surjective (y i)).choose_spec⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem piQuotMap_surjective (C : ι → Obj l R) : Function.Surjective (piQuotMap C) := fun y =>
   ⟨fun i => (Ideal.Quotient.mk_surjective (y i)).choose,
     funext fun i => (Ideal.Quotient.mk_surjective (y i)).choose_spec⟩
 
 /- English proof (translation)
-Use extensionality with `x`. Rewrite using `[RingHom.mem_ker, pi_mem_span_iff C t ht, funext_iff]`. Conclude with `forall_congr' fun i => Ideal.Quotient.eq_zero_iff_mem`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem piQuotMap_ker (C : ι → Obj l R) (t : ∀ i, (C i).A) (ht : ∀ i, (C i).I = Ideal.span {t i}) :
     RingHom.ker (piQuotMap C) = Ideal.span {t} := by
@@ -219,7 +219,7 @@ def Obj.pi (C : ι → Obj l R) (t : ∀ i, (C i).A) (ht : ∀ i, (C i).I = Idea
   str := (piQuotEquiv C t ht).symm.toRingHom.comp (RingHom.pi fun i => (C i).str)
 
 /- English proof (translation)
-The claim follows from `(piQuotEquiv C t ht).apply_symm_apply (fun i => (C i).str r)`.
+A detailed English derivation is pending.
 -/
 theorem piQuotEquiv_str (C : ι → Obj l R) (t : ∀ i, (C i).A) (ht : ∀ i, (C i).I = Ideal.span {t i})
     (r : R) : piQuotEquiv C t ht ((Obj.pi C t ht).str r) = fun i => (C i).str r :=
@@ -248,7 +248,7 @@ open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.Weakl
 open scoped Formalism.Per NNReal
 
 /- English proof (translation)
-Introduce `l _ R _ n C hC`. Use `choose t ht using hC`. Conclude with `⟨Obj.pi C t ht, fun i => Hom.piEval C t ht i, ⟨fun x y h => funext fun i => congrFun h i, fun y => ⟨y, rfl⟩⟩, fun x => pi_mem_span_iff C t ht x, fun Z a => ⟨Hom.piLift C t ht Z a, fun i => Hom.ext' (RingHom.ext fun _ => rfl)⟩⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.Prism.finite_product_oriented : ∀ (l : ℕ) [Fact l.Prime] (R : Type) [CommRing R] (n : ℕ) (C : Fin n → Obj l R), (∀ i, ∃ t, (C i).I = Ideal.span {t}) → ∃ (Q : Obj l R) (π : ∀ i, Hom Q (C i)), Function.Bijective (fun (x : Q.A) (i : Fin n) => (π i).f x) ∧ (∀ x, x ∈ Q.I ↔ ∀ i, (π i).f x ∈ (C i).I) ∧ ∀ (Z : Obj l R) (a : ∀ i, Hom Z (C i)), ∃ c : Hom Z Q, ∀ i, (π i).comp c = a i := by
   intro l _ R _ n C hC

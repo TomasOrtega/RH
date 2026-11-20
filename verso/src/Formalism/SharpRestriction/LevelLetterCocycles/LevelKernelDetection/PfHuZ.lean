@@ -17,7 +17,7 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     {uZ : ℤ_[PD.p]ˣ} {ιZ : ℤ_[PD.p] →+* O}
 
 /- English proof (translation)
-Take `⟨y, rfl⟩` from `hz`. Rewrite using `[map_mul, map_pow, map_natCast, map_mul, map_pow, map_natCast, AddValuation.map_mul, AddValuation.map_pow, W.v_l, nsmul_one]`. Conclude with `le_add_of_nonneg_right (hv_int _)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Pf_HuZ_v_dvd (W : LocWach PD LL O v n) (hv_int : ∀ x : O, 0 ≤ v (algebraMap O LL x))
     (k : ℕ) (z : ℤ_[PD.p]) (hz : (PD.p : ℤ_[PD.p]) ^ k ∣ z) :
@@ -28,7 +28,7 @@ theorem Pf_HuZ_v_dvd (W : LocWach PD LL O v n) (hv_int : ∀ x : O, 0 ≤ v (alg
   exact le_add_of_nonneg_right (hv_int _)
 
 /- English proof (translation)
-Introduce `s z hz` and use `Pf_HuZ_v_dvd W hv_int (s + 1) z hz`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem hv_holds (W : LocWach PD LL O v n) (hv_int : ∀ x : O, 0 ≤ v (algebraMap O LL x)) :
     ∀ (s : ℕ) (z : ℤ_[PD.p]), (PD.p : ℤ_[PD.p]) ^ (s + 1) ∣ z →
@@ -36,9 +36,9 @@ theorem hv_holds (W : LocWach PD LL O v n) (hv_int : ∀ x : O, 0 ≤ v (algebra
   fun s z hz => Pf_HuZ_v_dvd W hv_int (s + 1) z hz
 
 /- English proof (translation)
-Introduce `k`. Establish `: NeZero (PD.p ^ k)` using `⟨pow_ne_zero _ (Fact.out : PD.p.Prime).ne_zero⟩`. Establish `hdvd : (PD.p : ℤ_[PD.p]) ^ k ∣ (uZ : ℤ_[PD.p]) - ((PadicInt.toZModPow k (uZ : ℤ_[PD.p])).val : ℤ_[PD.p])`. Rewrite using `[← Ideal.mem_span_singleton, ← PadicInt.ker_toZModPow, RingHom.mem_ker, map_sub, map_natCast, ZMod.natCast_zmod_val, sub_self]`. Establish `h` using `Pf_HuZ_v_dvd (ιZ := ιZ) W hv_int k _ hdvd`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h` using `[map_sub, map_natCast, hu, map_sub, map_natCast]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem huZ_holds (hu : ιZ uZ = (W.χΓ W.gam : O)) (hv_int : ∀ x : O, 0 ≤ v (algebraMap O LL x)) :
     ∀ k : ℕ, (k : WithTop ℚ) ≤

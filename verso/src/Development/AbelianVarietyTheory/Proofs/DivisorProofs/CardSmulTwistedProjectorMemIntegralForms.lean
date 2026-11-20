@@ -7,23 +7,21 @@ namespace GlobalTheory
 open Formalism.IndefR.Arith
 
 /- English proof (translation)
-Introduce `LL Ks _ _ _ _ _ WL _ _ _ _ _ _ _ _ W _ _ G0 _ _ A eC hcl hint hMK J0 lam0 x hx`. Rewrite `hx`, the goal using `[FormsL.Mall, Submodule.mem_inf]`. Establish `hρspan : ∀ g, ∀ y ∈ Submodule.span (𝓞 LL) (A.MK : Set WL), A.ρ g y ∈ Submodule.span (𝓞 LL) (A.MK : Set WL)`. Introduce `g y hy`. Proceed by induction on `hy using Submodule.span_induction with`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `mem z hz => exact Submodule.subset_span (hMK g z hz)`. Consider the case `zero => simp`. Consider the case `add a b _ _ ha hb => rw [map_add]`. Conclude with `Submodule.add_mem _ ha hb`. Consider the case `smul r a _ ha`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← algebraMap_smul LL r a, LinearMap.map_smul, algebraMap_smul]`. Conclude with `Submodule.smul_mem _ r ha`. Establish `hchi : ∀ g, IsIntegral ℤ (((A.chi g)⁻¹ : LLˣ) : LL)`. Introduce `g`. Establish `h1 : ((A.chi g)⁻¹) ^ (orderOf g) = 1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← map_inv, ← map_pow, inv_pow, pow_orderOf_eq_one, inv_one, map_one]`. Use `IsIntegral.of_pow (orderOf_pos g) ?_` and prove the remaining obligations. Rewrite using `[← Units.val_pow_eq_pow_val, h1, Units.val_one]`. Conclude with `isIntegral_one`. Establish `hchic : ∀ p g : G0, A.chi (p * g * p⁻¹) = A.chi g`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Introduce `p g`. Rewrite using `[map_mul, map_mul, map_inv, mul_right_comm, mul_inv_cancel, one_mul]`. Prove the components needed by the constructor for the conclusion. Rewrite using `[FormsL.eOp_apply, Finset.smul_sum]`. Use `Submodule.sum_mem _ fun g _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[smul_smul]`. Establish `hi : IsIntegral ℤ (((Fintype.card G0 : ℕ) : LL) * (eC g * ((A.chi g)⁻¹ : LLˣ)))`. Rewrite using `[← mul_assoc]`. Conclude with `(hint g).mul (hchi g)`. Take `⟨r, hr⟩ : ∃ r : 𝓞 LL, algebraMap (𝓞 LL) LL r = ((Fintype.card G0 : ℕ) : LL) * (eC g * ((A.chi g)⁻¹ : LLˣ))` from `⟨⟨_, hi⟩, rfl⟩`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hr, algebraMap_smul]`. Conclude with `Submodule.smul_mem _ r (hρspan g x hx.1)`. Establish `hcomm : ∀ p : G0, A.ρ p (A.eOp eC x) = A.eOp eC (A.ρ p x)`. Introduce `p`. Rewrite using `[FormsL.eOp_apply, FormsL.eOp_apply, map_sum]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [LinearMap.map_smul]`. Use `Fintype.sum_equiv (MulAut.conj p).toEquiv _ _ fun g => ?_` and prove the remaining obligations. Simplify using `only [MulEquiv.toEquiv_eq_coe, MulEquiv.coe_toEquiv, MulAut.conj_apply]`. Rewrite using `[hcl g p, hchic p g, ← Module.End.mul_apply, ← Module.End.mul_apply, ← map_mul, ← map_mul, inv_mul_cancel_right]`. Introduce `p`.
-
-Use `show A.ρ p (((Fintype.card G0 : ℕ) : LL) • A.eOp eC x) = ((A.chi p * lam0 p : LLˣ) : LL) • (((Fintype.card G0 : ℕ) : LL) • A.eOp eC x)`. Rewrite using `[LinearMap.map_smul, hcomm, hx.2 p, LinearMap.map_smul, smul_comm]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_smul_eOp_mem_Mall : ∀ {LL Ks : Type} [Field LL] [NumberField LL] [Field Ks] [NumberField Ks] [Algebra Ks LL]
     {WL : Type} [AddCommGroup WL] [Module LL WL] [Module Ks WL] [IsScalarTower Ks LL WL]

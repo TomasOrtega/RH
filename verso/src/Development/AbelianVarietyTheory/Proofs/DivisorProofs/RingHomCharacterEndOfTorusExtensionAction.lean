@@ -17,7 +17,7 @@ namespace GlobalTheory
 namespace TorusActRing
 
 /- English proof (translation)
-Use `ext1`. Rewrite using `[chV_val]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem chV_id_eq {k : Type} [Field k] (X : Type) [AddCommGroup X] (χ : X) :
     chV (𝟙 (splitTorus (Sp k) X)) χ = charUnit (Sp k) X χ := by
@@ -26,7 +26,7 @@ theorem chV_id_eq {k : Type} [Field k] (X : Type) [AddCommGroup X] (χ : X) :
   simp
 
 /- English proof (translation)
-Rewrite using `[← chV_id_eq, ← chV_id_eq, ← chV_id_eq, chV_add]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem charUnit_add' {k : Type} [Field k] (X : Type) [AddCommGroup X] (χ ψ : X) :
     charUnit (Sp k) X (χ + ψ) = charUnit (Sp k) X χ * charUnit (Sp k) X ψ := by
@@ -35,25 +35,23 @@ theorem charUnit_add' {k : Type} [Field k] (X : Type) [AddCommGroup X] (χ ψ : 
 end TorusActRing
 
 /- English proof (translation)
-Introduce `k _ G _ _ E O _ act hmon h1 hmul hadd`. Use `letI := E.addCommGroup`. Establish `hex` using `fun a => GlobalTheory.TorusEndChar.main k G E (act a) (hmon a)`. Use `choose ρ₀ hρ₀ using fun a => (hex a).exists`. Establish `uniq : ∀ a (σ : E.X →+ E.X) (τ : splitTorus (Sp k) E.X ⟶ splitTorus (Sp k) E.X), τ ≫ E.i = E.i ≫ act a → (∀ χ, chV τ χ = charUnit (Sp k) E.X (σ χ)) → σ = ρ₀ a` using `fun a σ τ e₁ e₂ => (hex a).unique ⟨τ, e₁, e₂⟩ (hρ₀ a)`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `compχ : ∀ (σ : E.X →+ E.X) (τ : splitTorus (Sp k) E.X ⟶ splitTorus (Sp k) E.X), (∀ χ, chV τ χ = charUnit (Sp k) E.X (σ χ)) → ∀ (Z : Over (Sp k)) (s : Z ⟶ splitTorus (Sp k) E.X) χ, chV (s ≫ τ) χ = chV s (σ χ)` using `fun σ τ hτ Z s χ => ((splitTorus_map_of_charHom (Sp k) E.X E.X σ).2 τ hτ).2.2 Z s χ`. Establish `one : ρ₀ 1 = AddMonoidHom.id _`. Use `(uniq 1 (AddMonoidHom.id _) (𝟙 _) ?_ (fun χ => ?_)).symm` and prove the remaining obligations. Use `swap`. Rewrite using `[AddMonoidHom.id_apply]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `TorusActRing.chV_id_eq E.X χ`. Rewrite using `[h1, Category.id_comp, Category.comp_id]`. Establish `mul : ∀ a b, ρ₀ (a * b) = (ρ₀ a).comp (ρ₀ b)`. Introduce `a b`. Take `⟨τa, ha1, ha2⟩` from `hρ₀ a`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨τb, hb1, hb2⟩` from `hρ₀ b`. Use `(uniq (a * b) _ (τa ≫ τb) ?_ ?_).symm` and prove the remaining obligations. Rewrite using `[Category.assoc, hb1, ← Category.assoc, ha1, Category.assoc, hmul]`. Introduce `χ`. Rewrite using `[compχ _ τb hb2, ha2]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Both sides reduce to the same expression. Establish `add : ∀ a b, ρ₀ (a + b) = ρ₀ a + ρ₀ b`. Introduce `a b`. Take `⟨τa, ha1, ha2⟩` from `hρ₀ a`. Take `⟨τb, hb1, hb2⟩` from `hρ₀ b`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `haveI := E.i_hom`. Use `(uniq (a + b) _ (τa * τb) ?_ ?_).symm` and prove the remaining obligations. Rewrite using `[MonObj.mul_comp, ha1, hb1, hadd, Hom.mul_def, Hom.mul_def, ← Category.assoc, comp_lift]`. Introduce `χ`. Rewrite using `[chV_mul, ha2, hb2, AddMonoidHom.add_apply, TorusActRing.charUnit_add']`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `zero : ρ₀ 0 = 0`. Use `add 0 0` as an intermediate fact. Rewrite `this` using `[add_zero]`. Simplify using `using this`. Use `⟨{ toFun := fun a => (ρ₀ a).toIntLinearMap map_one' := ?_, map_mul' := ?_, map_zero' := ?_, map_add' := ?_ }, fun a => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Use extensionality with `x`. Simplify using `[one]`. Introduce `a b`. Use extensionality with `x`. Simplify using `[mul]`.
+Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Use extensionality with `x`. Simplify using `[zero]`. Introduce `a b`. Use extensionality with `x`. Simplify using `[add]`.
-
-Take `⟨τ, e₁, e₂⟩` from `hρ₀ a`. Conclude with `⟨τ, e₁, fun χ => e₂ χ⟩`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem ringHom_charEnd_of_torusExtension : ∀ (k : Type) [Field k] (G : Over (Sp k)) [GrpObj G] [IsCommMonObj G] (E : TorusExtension G) (O : Type) [Ring O] (act : O → (G ⟶ G)), (∀ a, IsMonHom (act a)) → act 1 = 𝟙 G → (∀ a b, act (a * b) = act a ≫ act b) → (∀ a b, act (a + b) = act a * act b) → letI := E.addCommGroup; ∃ ρ : O →+* Module.End ℤ E.X, ∀ a, ∃ τ : splitTorus (Sp k) E.X ⟶ splitTorus (Sp k) E.X, τ ≫ E.i = E.i ≫ act a ∧ ∀ χ, chV τ χ = charUnit (Sp k) E.X (ρ a χ) := by
   intro k _ G _ _ E O _ act hmon h1 hmul hadd

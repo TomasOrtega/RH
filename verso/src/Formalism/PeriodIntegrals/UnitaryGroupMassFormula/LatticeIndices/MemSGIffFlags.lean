@@ -22,11 +22,9 @@ def RowC (m : Matrix (Idx r k) (Idx r k) A) : Prop :=
     ∀ j, m zI (Sum.inl j) = 0
 
 /- English proof (translation)
-Establish `e1 : x.toBlocks₂₁ = 0`. Use extensionality with `(i | i) j`. Conclude with `congrFun (congrFun h21 i) j`. Conclude with `congrFun (congrFun h31 i) j`. Establish `e2 : x.toBlocks₂₂.toBlocks₂₁ = 0`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Use extensionality with `i j`. Conclude with `congrFun (congrFun h32 i) j`. Establish `d1 : x.toBlocks₁₁.det = 1` using `isUpUni_det _ h11`. Establish `d3 : x.toBlocks₂₂.toBlocks₂₂.det = 1` using `isUpUni_det _ h33`. Establish `d2 : x.toBlocks₂₂.toBlocks₁₁ = midEmb h` using `h22`.
-
-Rewrite using `[← Matrix.fromBlocks_toBlocks x, e1, Matrix.det_fromBlocks_zero₂₁, d1, one_mul, ← Matrix.fromBlocks_toBlocks x.toBlocks₂₂, e2, Matrix.det_fromBlocks_zero₂₁, d3, mul_one, d2, midEmb, Matrix.det_fromBlocks_zero₂₁, Matrix.det_one, mul_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem det_shape {x : Matrix (Idx r k) (Idx r k) A} (h11 : IsUpUni (b11 x)) (h33 : IsUpUni (b33 x))
     (h21 : b21 x = 0) (h31 : b31 x = 0) (h32 : b32 x = 0) (h : Matrix (Fin k) (Fin k) A)
@@ -46,27 +44,27 @@ theorem det_shape {x : Matrix (Idx r k) (Idx r k) A} (h11 : IsUpUni (b11 x)) (h3
     midEmb, Matrix.det_fromBlocks_zero₂₁, Matrix.det_one, mul_one]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hx`. Establish `hy : Par (fun h : Matrix (Fin k) (Fin k) A => IsUnit h.det) y` using `par_rinv gpUnit hx hxy`. Take `⟨h11, -, h21, h31, h32, h, -, h22⟩` from `hx`. Take `⟨-, g33, g21, g31, g32, g, -, g22⟩` from `hy`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨⟨h11, h21, h31, fun i => ?_, ?_, fun j => ?_⟩, ⟨g33, g31, g32, fun i => ?_, ?_, fun j => ?_⟩⟩` and prove the remaining obligations. Simplify `congrFun (congrFun h22 (Sum.inl i)) (Sum.inr ())` using `[b22, midEmb, wI, zI]`. Simplify `congrFun (congrFun h22 (Sum.inr ())) (Sum.inr ())` using `[b22, midEmb, zI]`. Simplify `congrFun (congrFun h32 j) (Sum.inr ())` using `[b32, zI]`. Simplify `congrFun (congrFun g22 (Sum.inr ())) (Sum.inl i)` using `[b22, midEmb, wI, zI]`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `congrFun (congrFun g22 (Sum.inr ())) (Sum.inr ())` using `[b22, midEmb, zI]`. Simplify `congrFun (congrFun g21 (Sum.inr ())) j` using `[b21, zI]`. Introduce and unpack `⟨⟨h11, h21, h31, hwz, hzz, hfz⟩, ⟨g33, g31, g32, gzw, gzz, gze⟩⟩ set B := b33 y with hB`. Establish `hBu : IsUnit B.det` using `by rw [isUpUni_det _ g33]; exact isUnit_one`. Set `R : Matrix (Fin r) (Idx r k) A` to `Matrix.of fun j c => x (Sum.inr (Sum.inr j)) c`.
+Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Assume the hypotheses and unpack their components. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `E : Matrix (Fin r) (Idx r k) A` to `Matrix.of fun j c => (1 : Matrix (Idx r k) (Idx r k) A) (Sum.inr (Sum.inr j)) c`. Establish `z1 : ∀ j a, y (Sum.inr (Sum.inr j)) (Sum.inl a) = 0` using `fun j a => congrFun (congrFun g31 j) a`. Establish `z2 : ∀ j m, y (Sum.inr (Sum.inr j)) (Sum.inr (Sum.inl m)) = 0` using `fun j m => congrFun (congrFun g32 j) m`. Establish `key : B * R = E`. Use extensionality with `j c`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Rewrite using `[show E j c = (y * x) (Sum.inr (Sum.inr j)) c by rw [hyx]; rfl, Matrix.mul_apply (M := y) (N := x), Fintype.sum_sum_type, Fintype.sum_sum_type]`. Simplify using `[z1, z2, B, R, b33, Matrix.mul_apply]`. Establish `hRE : R = B⁻¹ * E` using `by rw [← key, Matrix.nonsing_inv_mul_cancel_left _ _ hBu]`. Establish `fw : ∀ j i, x (Sum.inr (Sum.inr j)) (Sum.inr (Sum.inl (Sum.inl i))) = 0`. Introduce `j i`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `congrFun (congrFun hRE j) (Sum.inr (Sum.inl (Sum.inl i)))` as an intermediate fact. Simplify `this` using `[R, E, Matrix.mul_apply, Matrix.one_apply]`. Establish `hb33 : b33 x = B⁻¹`. Use extensionality with `j j'`. Use `congrFun (congrFun hRE j) (Sum.inr (Sum.inr j'))` as an intermediate fact.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Simplify `this` using `[R, E, b33, Matrix.mul_apply, Matrix.one_apply]`. Establish `hb32 : b32 x = 0`. Use extensionality with `j (i | u)`. Conclude with `fw j i`. Conclude with `hfz j`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `gze' : ∀ a, y (Sum.inr (Sum.inl (Sum.inr ()))) (Sum.inl a) = 0` using `gze`. Establish `gzw' : ∀ i, y (Sum.inr (Sum.inl (Sum.inr ()))) (Sum.inr (Sum.inl (Sum.inl i))) = 0` using `gzw`. Establish `gzz' : y (Sum.inr (Sum.inl (Sum.inr ()))) (Sum.inr (Sum.inl (Sum.inr ()))) = 1` using `gzz`. Establish `zw : ∀ i, x (Sum.inr (Sum.inl (Sum.inr ()))) (Sum.inr (Sum.inl (Sum.inl i))) = 0`. Introduce `i`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `congrFun (congrFun hyx (Sum.inr (Sum.inl (Sum.inr ())))) (Sum.inr (Sum.inl (Sum.inl i)))` as an intermediate fact. Rewrite `this` using `[Matrix.mul_apply, Fintype.sum_sum_type, Fintype.sum_sum_type, Fintype.sum_sum_type]`. Simplify `this` using `[gze', gzw', gzz', fw, Matrix.one_apply]`. Set `h : Matrix (Fin k) (Fin k) A` to `Matrix.of fun i j => x (wI i) (wI j)`. Establish `hb22 : b22 x = midEmb h`.
+Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use extensionality with `(i | u) (i' | u')`. Simplify using `[b22, midEmb, h, wI]`. Simplify `hwz i` using `[b22, midEmb, wI, zI]`. Simplify `zw i'` using `[b22, midEmb]`. Simplify `hzz` using `[b22, midEmb, zI]`.
+Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hb33' : IsUpUni (b33 x)` using `by rw [hb33]; exact isUpUni_inv _ g33`. Use `⟨h11, hb33', h21, h31, hb32, h, ?_, hb22⟩` and prove the remaining obligations. Use `show IsUnit h.det`. Rewrite using `[← det_shape h11 hb33' h21 h31 hb32 h hb22]`. Conclude with `Matrix.isUnit_det_of_right_inverse hxy`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem par_iff_flags (x y : Matrix (Idx r k) (Idx r k) A) (hxy : x * y = 1) (hyx : y * x = 1) :
     Par (fun h => IsUnit h.det) x ↔ ColC x ∧ RowC y := by
@@ -133,7 +131,7 @@ theorem par_iff_flags (x y : Matrix (Idx r k) (Idx r k) A) (hxy : x * y = 1) (hy
     exact Matrix.isUnit_det_of_right_inverse hxy
 
 /- English proof (translation)
-The claim follows from `par_iff_flags _ _ (Units.mul_inv g) (Units.inv_mul g)`.
+A detailed English derivation is pending.
 -/
 theorem mem_sG_iff_flags (g : GL (Idx r k) A) :
     g ∈ sG A r k ↔ ColC (g : Matrix (Idx r k) (Idx r k) A) ∧ RowC ((g⁻¹ : GL (Idx r k) A) : Matrix (Idx r k) (Idx r k) A) :=

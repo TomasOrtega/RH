@@ -18,19 +18,19 @@ open Formalism.MainNotions
 open MeasureTheory Formalism.IndefR.Lev Formalism.IndefR.Datum Formalism.IndefR.Mult Formalism.BasicNotions.TH Formalism.L2.Theta
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 /- English proof (translation)
-Introduce `_ D Tu C t0 hC i P`. Establish `hB : GlobalTheory.IndefiniteRowSideFullHecke.OneMeasureSizes.levW C i (LevelP.full _ _ _) = parLev D.sp.cm (Wc D i).gram (C.βW i) (C.datWp i P)`. Establish `e : C.datWp i (LevelP.full _ _ _) = { C.datWp i P with P` using `LevelP.full (C.datWp i P).Pg (C.datWp i P).r ℂ } := by`. Simplify using `only [LevCh.datWp, datY, if_true]`. Rewrite using `[← GlobalTheory.CovTop.LevelIndex.lev_full, ← e]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Take `⟨h0, h1⟩` from `GlobalTheory.CovTop.LevelIndex.relIndex_lev_le D.sp.cm (Wc D i).gram (C.βW i) (C.datWp i P) _ hB`. Use `⟨h0, ?_⟩` and prove the remaining obligations. Establish `hfr : Module.finrank ℚ D.host.E = 2 * D.R.f`. Rewrite using `[D.host.finrank_cmField]`. Unfold `Ranks.f Ranks.n`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hN : D.host.g 0 * D.host.g 1 ≠ 0` using `mul_ne_zero (D.host.g_prime 0).ne_zero (D.host.g_prime 1).ne_zero`. Establish `hg : ∀ PP ∈ C.Pg, ((D.host.g 0 * D.host.g 1 : ℕ) : 𝓞 D.host.E) ∈ PP.asIdeal`. Introduce `PP hP`. Take `⟨k, hk⟩` from `(hC.Pg PP).1 hP`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `h0` using `C.C.P.pb_over k`. Rewrite `h0` using `[← hk]`. Establish `h2 : algebraMap (𝓞 D.host.K) (𝓞 D.host.E) ((D.host.g k : ℕ) : 𝓞 D.host.K) ∈ PP.asIdeal` using `h0`. Rewrite `h2` using `[map_natCast]`. Rewrite using `[Nat.cast_mul]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `fin_cases k`. Conclude with `Ideal.mul_mem_right _ _ h2`. Conclude with `Ideal.mul_mem_left _ _ h2`. Establish `h2` using `GlobalTheory.CovTop.LevelIndex.prod_absNorm_le C.Pg hN hg`. Establish `h3` using `GlobalTheory.CovTop.LevelIndex.card_levelQuotientGroup_le_prod_absNorm_pow_sq C.Pg D.R.r`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h4 : (GlobalTheory.IndefiniteRowSideFullHecke.OneMeasureSizes.levW C i P).relIndex (GlobalTheory.IndefiniteRowSideFullHecke.OneMeasureSizes.levW C i (LevelP.full _ _ _)) ≤ (D.host.g 0 * D.host.g 1) ^ (2 * D.R.f * D.R.r ^ 2)`. Rewrite using `[pow_mul, ← hfr]`. Conclude with `h1.trans (h3.trans (Nat.pow_le_pow_left h2 _))`. Establish `h5` using `Real.log_le_log (Nat.cast_pos.2 (Nat.pos_of_ne_zero h0)) (Nat.cast_le (α := ℝ).2 h4)`. Use `h5.trans (le_of_eq ?_)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Use `push_cast`. Rewrite using `[Real.log_pow]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.CovTop.LevelIndex.level_index_le_bound : ∀ (hP : _root_.GlobalTheory.CovTop.PublishedHodgeBundleTheorems) (D : D7) (Tu : Type) (C : LevCh D Tu) (t0 : Tu) (hC : C.Is t0) (i : Fin D.R.m) (P : LevelP C.Pg D.R.r ℂ), GlobalTheory.IndefiniteRowSideFullHecke.OneMeasureSizes.IndexBound C i P := by
   intro _ D Tu C t0 hC i P
@@ -78,7 +78,7 @@ open Formalism.MainNotions
 open MeasureTheory Formalism.IndefR.Lev Formalism.IndefR.Datum Formalism.IndefR.Mult Formalism.BasicNotions.TH Formalism.L2.Theta
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.CovTop.LevelIndex.level_index_le_bound | exact _root_.GlobalTheory.CovTop.LevelIndex.level_index_le_bound | (intros; apply _root_.GlobalTheory.CovTop.LevelIndex.level_index_le_bound <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.level_subgroup_index_bounded : ∀ (hP : _root_.GlobalTheory.CovTop.PublishedHodgeBundleTheorems) (D : D7) (Tu : Type) (C : LevCh D Tu) (t0 : Tu) (hC : C.Is t0) (i : Fin D.R.m) (P : LevelP C.Pg D.R.r ℂ), GlobalTheory.IndefiniteRowSideFullHecke.OneMeasureSizes.IndexBound C i P := by
   first | exact @_root_.GlobalTheory.CovTop.LevelIndex.level_index_le_bound | exact _root_.GlobalTheory.CovTop.LevelIndex.level_index_le_bound | (intros; apply _root_.GlobalTheory.CovTop.LevelIndex.level_index_le_bound <;> assumption)

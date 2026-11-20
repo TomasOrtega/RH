@@ -5,17 +5,17 @@ open Formalism.REAL Formalism.QuantumDeterminants Formalism.FourierDecayAlt
 namespace Formalism.FourierDecayAlt.P.CutMP.Gauge.GC
 
 /- English proof (translation)
-Introduce `Wp Wq _ _ _ _ _ _ P Bs hpl T hT Φ Φ' c c' hc hc' hEq ζ hζ`. Take `⟨n, A, -, hTA⟩` from `hT`. Establish `hTT : Tz P.k P.r Bs.z * Tz P.k P.r Bs.z' = P.TT`. Rewrite using `[hpl.2.2.2.1, hpl.2.2.2.2.1]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hU : IsOpen (Ann P)` using `isOpen_lt continuous_const Complex.continuous_normSq`. Establish `hq : ((c, ζ) : (Fin P.r → ℂ) × ℂ) ∈ NF.QR P.k P.r Bs.z Bs.z'` using `⟨hc, by rw [hTT]; exact hζ⟩`. Establish `hq' : ((c', ζ) : (Fin P.r → ℂ) × ℂ) ∈ NF.QR P.k P.r Bs.z Bs.z'` using `⟨hc', by rw [hTT]; exact hζ⟩`. Establish `hev : (fun ζ' => NF.radR P.k P.r Bs.z Bs.z' Bs.μsec (Φ : Q.Fn P.k P.r (Wq →L[ℂ] Wp)) (c, ζ')) =ᶠ[nhds ζ] (fun ζ' => NF.radR P.k P.r Bs.z Bs.z' Bs.μsec (Φ' : Q.Fn P.k P.r (Wq →L[ℂ] Wp)) (c', ζ'))` using `by filter_upwards [hU.mem_nhds hζ] with ζ' hζ'`. Establish `m : ((c, ζ') : (Fin P.r → ℂ) × ℂ) ∈ NF.QR P.k P.r Bs.z Bs.z'` using `⟨hc, by rw [hTT]; exact hζ'⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `m' : ((c', ζ') : (Fin P.r → ℂ) × ℂ) ∈ NF.QR P.k P.r Bs.z Bs.z'` using `⟨hc', by rw [hTT]; exact hζ'⟩`. Unfold `NF.radR`. Rewrite using `[Set.indicator_of_mem m, Set.indicator_of_mem m']`. Conclude with `hEq ζ' hζ'`. Establish `e1 : NF.radR P.k P.r Bs.z Bs.z' Bs.μsec (T Φ : Q.Fn P.k P.r (Wq →L[ℂ] Wp)) (c, ζ) = (T Φ : Q.Fn P.k P.r (Wq →L[ℂ] Wp)) c (NF.muZ P.k P.r Bs.μsec ζ)`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `NF.radR`. Rewrite using `[Set.indicator_of_mem hq]`. Establish `e2 : NF.radR P.k P.r Bs.z Bs.z' Bs.μsec (T Φ' : Q.Fn P.k P.r (Wq →L[ℂ] Wp)) (c', ζ) = (T Φ' : Q.Fn P.k P.r (Wq →L[ℂ] Wp)) c' (NF.muZ P.k P.r Bs.μsec ζ)`. Unfold `NF.radR`. Rewrite using `[Set.indicator_of_mem hq']`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1` using `hTA Φ (c, ζ) hq`. Establish `h2` using `hTA Φ' (c', ζ) hq'`. Simplify using `only at h1 h2`. Rewrite using `[← e1, ← e2, h1, h2]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[(hev.iteratedFDeriv ℝ j).eq_of_nhds]`.
+A detailed English derivation is pending.
 -/
 theorem second_shift_slice_derivative : GTSSLSliceDZ := by
   intro Wp Wq _ _ _ _ _ _ P Bs hpl T hT Φ Φ' c c' hc hc' hEq ζ hζ

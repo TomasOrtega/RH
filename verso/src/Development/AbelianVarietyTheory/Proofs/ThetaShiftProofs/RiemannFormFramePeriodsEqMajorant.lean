@@ -24,7 +24,7 @@ noncomputable def pc (x : Frame X.Ψ r) (v : Fin r → E) (t : X.Ψ × Fin r) : 
   else ((mat x t.1)⁻¹ *ᵥ Data.emb t.1.1 v) t.2
 
 /- English proof (translation)
-Establish `h` using `congrArg τ X.ξ0_im`. Rewrite `h` using `[FD.cc, IsCMField.complexEmbedding_complexConj, map_neg]`. Use `congrArg Complex.re h` as an intermediate fact. Simplify using `only [Complex.conj_re, Complex.neg_re] at this`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem re_xi (τ : E →+* ℂ) : (τ X.ξ0).re = 0 := by
   have h := congrArg τ X.ξ0_im
@@ -34,7 +34,7 @@ theorem re_xi (τ : E →+* ℂ) : (τ X.ξ0).re = 0 := by
   linarith
 
 /- English proof (translation)
-Unfold `dmin lminor`. Rewrite using `[ho τ, Matrix.submatrix_diagonal _ _ (Fin.castLE_injective _), Matrix.det_diagonal, norm_prod]`. Use `Finset.prod_eq_one fun a _ => ?_` and prove the remaining obligations. Simplify using `only [Function.comp, sgn]`. Apply the tactic sequence `split_ifs <;> simp`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem norm_dmin_ortho {y : Frame X.Ψ r} (ho : X.IsOrtho y) (τ : X.Ψ) (i : Fin (r + 1)) :
     ‖dmin X.Gm y τ i‖ = 1 := by
@@ -45,9 +45,9 @@ theorem norm_dmin_ortho {y : Frame X.Ψ r} (ho : X.IsOrtho y) (τ : X.Ψ) (i : F
   split_ifs <;> simp
 
 /- English proof (translation)
-Establish `: hermForm (Matrix.diagonal fun j => ((s (idx j).1 : ℝ) : ℂ)) (fun j => p (idx j)) (fun j => q (idx j)) = ∑ t : X.Ψ × Fin r, (s t.1 : ℂ) * (p t * conj (q t))`. Rewrite using `[hermForm, dotProduct]`. Use `Fintype.sum_equiv idx _ _ fun k => ?_` and prove the remaining obligations. Rewrite using `[Matrix.mulVec_diagonal, Pi.star_apply]`. Simplify using `only [RCLike.star_def]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this, Fintype.sum_prod_type]`. Simplify using `only [Finset.mul_sum]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem hermForm_diag {g : ℕ} (idx : Fin g ≃ X.Ψ × Fin r) (s : X.Ψ → ℝ) (p q : X.Ψ × Fin r → ℂ) :
     hermForm (Matrix.diagonal fun j => ((s (idx j).1 : ℝ) : ℂ)) (fun j => p (idx j)) (fun j => q (idx j)) =
@@ -63,9 +63,9 @@ theorem hermForm_diag {g : ℕ} (idx : Fin g ≃ X.Ψ × Fin r) (s : X.Ψ → �
   simp only [Finset.mul_sum]
 
 /- English proof (translation)
-Rewrite using `[hermForm_diag X idx (fun τ => -2 * (τ.1 X.ξ0).im), UnitFrame.trace_eq_sum_re X.Ψ X.cmType, Complex.im_sum]`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Simplify using `only [pc]`. Rewrite using `[Complex.im_ofReal_mul, UnitFrame.im_sum_periods X.p0 τ.1 X.Gm (mat y τ) (ho τ)]`. Establish `h3 : τ.1 (herm X.Gm v w) = hermC τ.1 X.Gm (Data.emb τ.1 v) (Data.emb τ.1 w)`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `[FD.hermC, FD.herm, FD.Data.emb, FD.cc, IsCMField.complexEmbedding_complexConj]`. Rewrite using `[map_mul, map_neg, h3, Complex.mul_re, Complex.neg_re, Complex.neg_im, re_xi]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem im_diag {g : ℕ} (idx : Fin g ≃ X.Ψ × Fin r) {y : Frame X.Ψ r} (ho : X.IsOrtho y) (v w : Fin r → E) :
     (hermForm (Matrix.diagonal fun j => ((-2 * ((idx j).1.1 X.ξ0).im : ℝ) : ℂ)) (fun j => pc X y v (idx j))
@@ -80,13 +80,11 @@ theorem im_diag {g : ℕ} (idx : Fin g ≃ X.Ψ × Fin r) {y : Frame X.Ψ r} (ho
   ring
 
 /- English proof (translation)
-Use `set u := (mat y τ)⁻¹ *ᵥ Data.emb τ.1 v with hu`. Establish `h1 : Data.emb τ.1 v = mat y τ *ᵥ u`. Rewrite using `[hu, Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv _ (isUnit_iff_ne_zero.2 (hdet τ)), Matrix.one_mulVec]`. Use `conv_rhs => rw [h1]`. Rewrite using `[UnipMove.GraphH.maj_ortho X ho, OrthonormalChartBounds.nsq, Complex.re_sum]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[Complex.mul_conj, Complex.ofReal_re, Complex.normSq_eq_norm_sq]`. Use `congr 1`. Simplify using `only [pc]`. Use `split_ifs with ha`.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Establish `hcol : col (mat y τ) a = mat y τ *ᵥ Pi.single a 1`. Use extensionality with `k`. Simplify using `[FD.col]`. Rewrite using `[hcol, h1, UnitFrame.hermC_mulVec, ho τ]`. Simplify using `[Matrix.mulVec_diagonal, FD.sgn, ha]`.
-
-Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem maj_eq {y : Frame X.Ψ r} (hdet : ∀ τ, (mat y τ).det ≠ 0) (ho : X.IsOrtho y) (v : Fin r → E) (τ : X.Ψ) :
     (∑ a, pc X y v (τ, a) * conj (pc X y v (τ, a))).re = X.maj y τ (Data.emb τ.1 v) := by
@@ -107,33 +105,31 @@ theorem maj_eq {y : Frame X.Ψ r} (hdet : ∀ τ, (mat y τ).det ≠ 0) (ho : X.
   · rfl
 
 /- English proof (translation)
-Establish `hb` using `FrameDegreeData.bOf_mem X hx`. Establish `ho` using `FrameDegreeData.ortho_bOf X hx`. Use `set b := FrameDegreeData.bOf X x`. Establish `hy : rmul x b ∈ X.dom` using `OrthogonalFrameDomain.rmul_mem_dom X hx hb`. Use `set N := PerBor.moveMat X.p0 idx b with hN`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hmove : ∀ a, (fun j => pc X (rmul x b) (φ a) (idx j)) = N *ᵥ P a` using `fun a => PerBor.moveMat_mulVec X.p0 idx hb X.Gm x (φ a) _ _ (hP a) (fun _ => rfl)`. Set `s : X.Ψ → ℝ` to `fun τ => -2 * (τ.1 X.ξ0).im`. Establish `key : Hm = Nᵀ * ((Matrix.diagonal fun j => ((s (idx j).1 : ℝ) : ℂ)) * N.map (starRingEnd ℂ))`. Use `UnitDet.eq_of_im_hermForm_eq _ hspan _ _ ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨a, rfl⟩ _ ⟨a', rfl⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[him, ← UnitDet.hermForm_mulVec, ← hmove, ← hmove]`. Conclude with `(im_diag X idx ho _ _).symm`. Establish `hdiag : ∀ j, (Hm j j).re = ∑ k, s (idx k).1 * ‖N k j‖ ^ 2`. Introduce `j`. Rewrite using `[key, Matrix.mul_apply, Complex.re_sum]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.diagonal_mul, Matrix.transpose_apply, Matrix.map_apply, mul_left_comm, Complex.mul_conj, ← Complex.ofReal_mul, Complex.ofReal_re, Complex.normSq_eq_norm_sq]`. Establish `hκ : 0 < r → X.κ0 = 2 * X.ξ0`. Introduce `hr`. Use `X.κ0_xi.resolve_right fun h => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hs : ∀ τ, s τ < 0` using `fun τ => by`. Use `X.κ0_sign τ` as an intermediate fact. Rewrite `this` using `[h, map_neg, map_mul, map_ofNat]`. Simplify using `at this`. Simplify using `only [s]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨τ0⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Choose the witnesses or unpack the hypotheses as in `⟨τ⟩ : Nonempty X.Ψ := by`. Distinguish the cases in `h0 : τ0 ∈ X.Ψ`. Conclude with `⟨⟨_, h0⟩⟩`.
+Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Assume the negation of the conclusion and derive a contradiction. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hn`. Conclude with `h0 ((X.cmType τ0).2 fun h' => hn ⟨⟨_, h'⟩⟩)`. Set `j` to `idx.symm (τ, ⟨0, hr⟩)`. Establish `h1` using `hpos (Pi.single j 1) (by simp)`. Establish `h2 : hermForm Hm (Pi.single j 1) (Pi.single j 1) = Hm j j` using `by simp [hermForm]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `h1` using `[h2, hdiag]`. Conclude with `absurd h1 (not_lt.2 (Finset.sum_nonpos fun k _ => mul_nonpos_of_nonpos_of_nonneg (hs _).le (sq_nonneg _)))`. Establish `hsc : 0 < r → ∀ τ, s τ = X.c τ`. Introduce `hr τ`. Use `X.κ0_sign τ` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite `this` using `[hκ hr, map_mul, map_ofNat]`. Simplify using `at this`. Simplify using `only [s, Data.c]`. Rewrite using `[← Complex.abs_im_eq_norm.mpr (re_xi X τ.1), abs_of_neg (by linarith)]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Use `⟨fun a => ?_, hκ, fun j => ?_⟩` and prove the remaining obligations. Rewrite using `[key, ← UnitDet.hermForm_mulVec, ← hmove, hermForm_diag X idx s, Complex.re_sum]`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[Complex.re_ofReal_mul, maj_eq X (fun τ => (hy τ).1) ho, MajInv.maj_rmul X hx hb]`. Break down `Nat.eq_zero_or_pos r with rfl | hr` into its components or cases.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `: X.maj x τ (Data.emb τ.1 (φ a)) = 0`. Rewrite using `[← MajInv.maj_rmul X hx hb, ← maj_eq X (fun τ => (hy τ).1) ho]`. Simplify using the standard rewrite rules. Rewrite using `[this, mul_zero, mul_zero]`. Rewrite using `[hsc hr]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hr : 0 < r` using `(idx j).2.pos`. Establish `hc : ∀ τ, 0 ≤ X.c τ` using `fun τ => by unfold Data.c; positivity`. Rewrite using `[hdiag]`. Simplify using `only [hsc hr]`. Use `le_trans (le_of_eq ?_) (Finset.single_le_sum (f := fun k => X.c (idx k).1 * ‖N k j‖ ^ 2) (fun k _ => mul_nonneg (hc _) (sq_nonneg _)) (Finset.mem_univ j))` and prove the remaining obligations.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Establish `h1` using `FrameDegreeData.ratio_rmul X x hx hb (idx j).1 (idx j).2`. Rewrite `h1` using `[norm_div, norm_dmin_ortho X ho, norm_dmin_ortho X ho, div_one]`. Rewrite using `[hN, PerBor.moveMat_diag _ _ hb]`. Use `split_ifs`.
-
-Conclude with `(eq_inv_of_mul_eq_one_left h1.symm).symm`. Rewrite using `[norm_inv, inv_pow]`. Conclude with `eq_inv_of_mul_eq_one_right h1.symm`.
+A detailed English derivation is pending.
 -/
 theorem core {x : Frame X.Ψ r} (hx : x ∈ X.dom) {g : ℕ} (idx : Fin g ≃ X.Ψ × Fin r) {L : Type}
     (φ : L → Fin r → E) (P : L → Fin g → ℂ) (hP : ∀ a j, P a j = pc X x (φ a) (idx j))
@@ -222,27 +218,27 @@ theorem core {x : Frame X.Ψ r} (hx : x ∈ X.dom) {g : ℕ} (idx : Fin g ≃ X.
 end Core
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c σ r U Uw k x Hm hG hU hR`. Take `⟨hbij, hrt, -, -⟩` from `GlobalTheory.Relab.relab_good E H l c σ hG`. Take `⟨hp0, hty⟩` from `hU.2.1 k`. Take `⟨f, hf⟩` from `FrameUnif.exists_letter_equiv (U.X k).Ψ (U.X k).cmType Dw.p Dw.q r hU.1 (relab c σ) hbij Dw.mult (fun τ h => by unfold Datum.mult; rw [if_pos ((hrt τ).1 ((hty _).1 h))]) (fun τ h => by unfold Datum.mult; rw [if_neg (fun h' => h ((hty _).2 ((hrt τ).2 h')))])`. Rewrite `hf` using `[← hp0]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hper : ∀ v s, perFr (U.X k) x.1 v (relab c σ s.1) s.2 = pc (U.X k) x.1 v (f s)`. Introduce `v s`. Establish `h` using `hf s`. Generalize the expression as in `f s = t at h ⊢`. Take `⟨⟨τ, hτ⟩, ⟨n, hn⟩⟩` from `t`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Extract witnesses or component facts from the available result.
 
-Simplify using `only at h ⊢`. Unfold `pc`. Break down `h with ⟨a, rfl, rfl⟩ | ⟨a, rfl, rfl, d⟩` into its components or cases. Rewrite using `[if_neg (by simp)]`. Unfold `perFr`.
+Simplify by unfolding definitions. Replace the relevant objects with their definitions. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[dif_pos a, dif_pos hn]`. Rewrite using `[if_pos (by dsimp only; omega)]`. Unfold `perFr`. Rewrite using `[dif_neg a, dif_pos (show conjEmb (relab c σ s.1) ∈ (U.X k).Ψ from hτ), dif_pos hn]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Take `⟨h1, h2, h3⟩` from `core (U.X k) x.2 (Uw.e.trans f) (fun a => (Uw.φ k a : Fin r → E)) (Uw.Pm k x) (fun a j => by rw [Uw.Pm_eq, hper]; rfl) (Uw.period k x).2.2.2.1 Hm hR.2.1 (fun a b => by rw [hR.2.2, ← Uw.iso]; simp)`. Use `⟨h1, h2, fun xi a' hxi => ?_⟩` and prove the remaining obligations. Take `⟨τ0⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Establish `hxi0 : 0 < xi`. Rewrite using `[← hxi τ0]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `norm_pos_iff.2 ((map_ne_zero τ0).2 (U.X k).ξ0_ne)`. Establish `hpi : 0 < 2 * Real.pi * xi` using `by positivity`. Establish `e1 : (lieFac Dw xi a')⁻¹ = ∏ s : Σ τ : E →+* ℂ, Fin (Dw.mult τ), (2 * Real.pi * xi) ^ ((a' (s.1, (s.2 : ℕ)) : ℝ) / 2)`. Rewrite using `[← Real.rpow_sum_of_pos hpi, Real.rpow_def_of_pos hpi, lieFac, ← Real.exp_neg, ← Finset.sum_div, Fintype.sum_sigma]`. Use `congr 1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[mul_inv, e1, Data.nfac, ← Fintype.prod_prod_type', ← f.prod_comp, ← Finset.prod_inv_distrib, ← Finset.prod_mul_distrib, ← Fintype.prod_sigma']`. Use `Finset.prod_le_prod (fun s _ => by positivity) fun s _ => ?_` and prove the remaining obligations. Establish `h4` using `h3 (Uw.e.symm s)`. Simplify using `only [Equiv.trans_apply, Equiv.apply_symm_apply] at h4`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hinv` using `Function.leftInverse_invFun hbij.1 s.1`. Establish `hc : (U.X k).c (f s).1 = 2 * xi` using `by rw [Data.c, hxi]`. Rewrite `h4` using `[hc]`. Use `set ρ := ‖dmin (U.X k).Gm x.1 (f s).1 (f s).2.succ / dmin (U.X k).Gm x.1 (f s).1 (f s).2.castSucc‖ with hρ`. Establish `hρ0 : 0 ≤ ρ` using `norm_nonneg _`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `e2 : (ρ ^ (-(laU U a' 0 k (f s).1 (f s).2 : ℝ) / 2))⁻¹ = (if ((f s).2 : ℕ) < (U.X k).p0 then ρ⁻¹ else ρ) ^ ((a' (s.1, (s.2 : ℕ)) : ℝ) / 2)`. Unfold `laU`. Break down `hf s with ⟨a, b, c'⟩ | ⟨a, b, c', d⟩` into its components or cases. Rewrite using `[if_pos (by omega), if_neg (by omega), b, hinv, show ((f s).2 : ℕ) - (U.X k).p0 = s.2 by omega, neg_div, Real.rpow_neg hρ0, inv_inv]`. Simplify using the standard rewrite rules.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `t : conjEmb (f s).1.1 = relab c σ s.1`. Rewrite using `[b]`. Conclude with `ComplexEmbedding.involutive_conjugate E _`. Rewrite using `[if_neg (by omega), if_pos (by omega), t, hinv, show (U.X k).p0 - 1 - ((f s).2 : ℕ) = s.2 by omega, Real.inv_rpow hρ0]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Apply the tactic sequence `have hρ1 : 0 ≤ (if ((f s).2 : ℕ) < (U.X k).p0 then ρ⁻¹ else ρ) := by split_ifs <;> positivity`. Rewrite using `[e2, ← Real.mul_rpow hpi.le hρ1]`. Use `Real.rpow_le_rpow (by positivity) ?_ (by positivity)` and prove the remaining obligations. Use `mul_le_mul_of_nonneg_left h4 Real.pi_pos.le` as an intermediate fact. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem riemann_eq_majorant : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (σ : c.F →+* ℂ) (r : ℕ) (U : Unf Xo c σ r) (Uw : UnfWit U) (k : U.Comp) (x : (U.X k).dom) (Hm : Matrix (Fin Uw.g) (Fin Uw.g) ℂ), GoodEmb c σ → IsUnf U → IsRiem Uw.F (Uw.ik k) (Uw.Pm k x) Hm → (∀ v, (hermForm Hm (Uw.Pm k x v) (Uw.Pm k x v)).re = ∑ τ, (U.X k).c τ * (U.X k).maj x.1 τ (Data.emb τ.1 (Uw.φ k v : Fin r → E))) ∧ (0 < r → (U.X k).κ0 = 2 * (U.X k).ξ0) ∧ ∀ (xi : ℝ) (a' : (E →+* ℂ) × ℕ → ℕ), (∀ τ : E →+* ℂ, ‖τ (U.X k).ξ0‖ = xi) → (lieFac Dw xi a' * (U.X k).nfac (laU U a' 0 k) x.1)⁻¹ ≤ ∏ τ : E →+* ℂ, ∏ i : Fin (Dw.mult τ), (Real.pi * (Hm (Uw.e.symm ⟨τ, i⟩) (Uw.e.symm ⟨τ, i⟩)).re) ^ ((a' (τ, (i : ℕ)) : ℝ) / 2) := by
   intro E _ _ _ H Dw l Xo c σ r U Uw k x Hm hG hU hR

@@ -12,19 +12,17 @@ noncomputable section
 namespace GlobalTheory.TransvZeros
 
 /- English proof (translation)
-Use `⟨⟨hm.isPrime, hI⟩, fun P hP hPm => ?_⟩` and prove the remaining obligations. Take `⟨hPp, hIP⟩` from `hP`. Set `π` to `Ideal.Quotient.mk I`. Establish `hπ : Function.Surjective π` using `Ideal.Quotient.mk_surjective`. Establish `hcm : (m.map π).comap π = m`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Ideal.comap_map_of_surjective' π hπ, Ideal.mk_ker, sup_eq_left.2 hI]`. Establish `hcP : (P.map π).comap π = P`. Rewrite using `[Ideal.comap_map_of_surjective' π hπ, Ideal.mk_ker, sup_eq_left.2 hIP]`. Establish `hidem : IsIdempotentElem (m.map π)`. Use `le_antisymm Ideal.mul_le_left ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1 : m.map π ≤ (I ⊔ m ^ 2).map π` using `Ideal.map_mono hsq`. Rewrite `h1` using `[Ideal.map_sup, Ideal.map_quotient_self, bot_sup_eq, Ideal.map_pow, pow_two]`. Conclude with `h1`. Take `⟨e, he, hme⟩` from `(Ideal.isIdempotentElem_iff_of_fg _ (hfg.map π)).1 hidem`. Establish `hPq : (P.map π).IsPrime` using `Ideal.map_isPrime_of_surjective hπ (by rw [Ideal.mk_ker]; exact hIP)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hem : e ∈ m.map π` using `hme ▸ Ideal.mem_span_singleton_self e`. Establish `hne : 1 - e ∉ P.map π`. Introduce `h`. Establish `h' : 1 - e ∈ m.map π` using `Ideal.map_mono hPm h`. Establish `h1 : (1 : A ⧸ I) ∈ m.map π` using `by simpa using Ideal.add_mem _ h' hem`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : (1 : A) ∈ m`. Rewrite using `[← hcm, Ideal.mem_comap, map_one]`. Conclude with `h1`. Conclude with `hm.ne_top ((Ideal.eq_top_iff_one _).2 h2)`. Establish `heP : e ∈ P.map π`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h0 : e * (1 - e) ∈ P.map π`. Rewrite using `[mul_sub, mul_one, he.eq, sub_self]`. Conclude with `Ideal.zero_mem _`. Conclude with `(hPq.mem_or_mem h0).resolve_right hne`. Establish `hle : m.map π ≤ P.map π`.
-
-Rewrite using `[hme, Ideal.span_le, Set.singleton_subset_iff]`. Conclude with `heP`. Rewrite using `[← hcm, ← hcP]`. Conclude with `Ideal.comap_mono hle`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_minimalPrimes_of_le_sup_sq {A : Type} [CommRing A] {I m : Ideal A} [hm : m.IsMaximal]
     (hfg : m.FG) (hI : I ≤ m) (hsq : m ≤ I ⊔ m ^ 2) : m ∈ I.minimalPrimes := by
@@ -62,9 +60,9 @@ theorem mem_minimalPrimes_of_le_sup_sq {A : Type} [CommRing A] {I m : Ideal A} [
   exact Ideal.comap_mono hle
 
 /- English proof (translation)
-Establish `e₁ : y.1.appLE U ⊤ hy = z.1.appLE U ⊤ hz`. Rewrite using `[← cancel_mono (Scheme.ΓSpecIso (CommRingCat.of ℂ)).hom]`. Conclude with `CommRingCat.hom_ext e`. Establish `a` using `IsAffineOpen.SpecMap_appLE_fromSpec y.1 hU (isAffineOpen_top (Sp ℂ)) hy`. Establish `a'` using `IsAffineOpen.SpecMap_appLE_fromSpec z.1 hU (isAffineOpen_top (Sp ℂ)) hz`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `a` using `[e₁, a', IsAffineOpen.fromSpec_top]`. Conclude with `Subtype.ext ((cancel_epi _).1 a).symm`.
+A detailed English derivation is pending.
 -/
 theorem eq_of_evHom_eq {X : Scheme.{0}} {p : X ⟶ Sp ℂ} {U : X.Opens} (hU : IsAffineOpen U)
     {y z : CxPts p (RingHom.id ℂ)} (hy : y ∈ CxPts.ptsIn p (RingHom.id ℂ) U)
@@ -78,14 +76,14 @@ theorem eq_of_evHom_eq {X : Scheme.{0}} {p : X ⟶ Sp ℂ} {U : X.Opens} (hU : I
   exact Subtype.ext ((cancel_epi _).1 a).symm
 
 /- English proof (translation)
-The claim follows from `(CxPts.ev_eq hy _).symm.trans (CxPts.ev_algX hy c)`.
+A detailed English derivation is pending.
 -/
 theorem evHom_algX {X : Scheme.{0}} {p : X ⟶ Sp ℂ} {U : X.Opens} {y : CxPts p (RingHom.id ℂ)}
     (hy : y ∈ CxPts.ptsIn p (RingHom.id ℂ) U) (c : ℂ) : CxPts.evHom hy (algX p U c) = c :=
   (CxPts.ev_eq hy _).symm.trans (CxPts.ev_algX hy c)
 
 /- English proof (translation)
-Use `eq_of_evHom_eq hU hy hz (RingHom.ext fun f => ?_)` and prove the remaining obligations. Establish `h1 : f - algX p U (CxPts.evHom hy f) ∈ RingHom.ker (CxPts.evHom hy)`. Rewrite using `[RingHom.mem_ker, map_sub, evHom_algX, sub_self]`. Rewrite `h1` using `[e, RingHom.mem_ker, map_sub, evHom_algX, sub_eq_zero]`. Conclude with `h1.symm`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_of_ker_eq {X : Scheme.{0}} {p : X ⟶ Sp ℂ} {U : X.Opens} (hU : IsAffineOpen U)
     {y z : CxPts p (RingHom.id ℂ)} (hy : y ∈ CxPts.ptsIn p (RingHom.id ℂ) U)
@@ -98,13 +96,11 @@ theorem eq_of_ker_eq {X : Scheme.{0}} {p : X ⟶ Sp ℂ} {U : X.Opens} (hU : IsA
   exact h1.symm
 
 /- English proof (translation)
-Introduce `X p _ U hU k φ`. Establish `h1` using `LocallyOfFiniteType.finiteType_of_affine_subset p (isAffineOpen_top (Sp ℂ)) hU (by simp)`. Establish `h2 : ((Scheme.ΓSpecIso (CommRingCat.of ℂ)).inv).hom.FiniteType` using `RingHom.FiniteType.of_surjective _ (Scheme.ΓSpecIso (CommRingCat.of ℂ)).commRingCatIsoToRingEquiv.symm.surjective`. Establish `hft : (algX p U).FiniteType` using `h1.comp h2`. Use `letI : Algebra ℂ Γ(X, U) := (algX p U).toAlgebra`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Equip the data with the indicated structure.
 
-Use `haveI : Algebra.FiniteType ℂ Γ(X, U) := hft`. Use `haveI : IsNoetherianRing Γ(X, U) := Algebra.FiniteType.isNoetherianRing ℂ _`. Set `F : CxPts p (RingHom.id ℂ) → Ideal Γ(X, U)` to `fun z => if hz : z ∈ CxPts.ptsIn p (RingHom.id ℂ) U then RingHom.ker (CxPts.evHom hz) else ⊥`. Use `Set.Finite.of_finite_image (f := F) ((Ideal.finite_minimalPrimes_of_isNoetherianRing _ (Ideal.span (Set.range φ))).subset ?_) ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨z, ⟨hz, hv, hsq⟩, rfl⟩`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [F, dif_pos hz]`. Use `haveI : (RingHom.ker (CxPts.evHom hz)).IsMaximal := RingHom.ker_isMaximal_of_surjective _ fun c => ⟨algX p U c, evHom_algX hz c⟩`. Use `mem_minimalPrimes_of_le_sup_sq (IsNoetherian.noetherian _) ?_ hsq` and prove the remaining obligations. Rewrite using `[Ideal.span_le]`. Introduce and unpack `_ ⟨j, rfl⟩`.
-
-Conclude with `hv j`. Introduce and unpack `y ⟨hy, -⟩ z ⟨hz, -⟩ e`. Simplify using `only [F, dif_pos hy, dif_pos hz] at e`. Conclude with `eq_of_ker_eq hU hy hz e`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem finite_transv_zeros : ∀ (X : Scheme.{0}) (p : X ⟶ Sp ℂ) [LocallyOfFiniteType p] (U : X.Opens), IsAffineOpen U →
     ∀ (k : ℕ) (φ : Fin k → Γ(X, U)), {z : CxPts p (RingHom.id ℂ) | ∃ hz : z ∈ CxPts.ptsIn p (RingHom.id ℂ) U,

@@ -3,7 +3,7 @@ import Formalism.LocalToGlobal.SiegelLatticeTheory.ClosedLocalOrbits.GaugeLattic
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.HilbertSchmidtBlocks.HSBlocksMain
 
 /- English proof (translation)
-The claim follows from `NormHilbertSchmidtBlocks.hSBlocks_main`.
+A detailed English derivation is pending.
 -/
 theorem hilbert_schmidt_blocks : Formalism.L2.SG.NormCut.HSBlocks :=
   NormHilbertSchmidtBlocks.hSBlocks_main

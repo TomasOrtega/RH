@@ -15,32 +15,32 @@ def resF (x : F) : 𝓀[F] := if h : x ∈ 𝒪[F] then IsLocalRing.residue 𝒪
 def liftF (c : 𝓀[F]) : F := ((IsLocalRing.residue_surjective c).choose : 𝒪[F])
 
 /- English proof (translation)
-Rewrite using `[resF, dif_pos o.2]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem resF_coe (o : 𝒪[F]) : resF F (o : F) = IsLocalRing.residue 𝒪[F] o := by
   rw [resF, dif_pos o.2]
 
 /- English proof (translation)
-The claim follows from `(IsLocalRing.residue_surjective c).choose.2`.
+A detailed English derivation is pending.
 -/
 theorem liftF_mem (c : 𝓀[F]) : liftF F c ∈ 𝒪[F] :=
   (IsLocalRing.residue_surjective c).choose.2
 
 /- English proof (translation)
-Rewrite using `[liftF, resF_coe]`. Conclude with `(IsLocalRing.residue_surjective c).choose_spec`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem resF_liftF (c : 𝓀[F]) : resF F (liftF F c) = c := by
   rw [liftF, resF_coe]
   exact (IsLocalRing.residue_surjective c).choose_spec
 
 /- English proof (translation)
-Simplify using `using resF_coe F 1`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem resF_one : resF F 1 = 1 := by
   simpa using resF_coe F 1
 
 /- English proof (translation)
-Establish `h` using `resF_coe F (⟨x, hx⟩ * ⟨y, hy⟩)`. Rewrite `h` using `[map_mul, ← resF_coe F ⟨x, hx⟩, ← resF_coe F ⟨y, hy⟩]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem resF_mul {x y : F} (hx : x ∈ 𝒪[F]) (hy : y ∈ 𝒪[F]) : resF F (x * y) = resF F x * resF F y := by
   have h := resF_coe F (⟨x, hx⟩ * ⟨y, hy⟩)
@@ -48,7 +48,7 @@ theorem resF_mul {x y : F} (hx : x ∈ 𝒪[F]) (hy : y ∈ 𝒪[F]) : resF F (x
   exact h
 
 /- English proof (translation)
-Establish `hs : ((∑ i, (⟨c i, hc i⟩ : 𝒪[F]) * ⟨x i, hx i⟩ : 𝒪[F]) : F) = ∑ i, c i * x i`. Simplify using the standard rewrite rules. Rewrite using `[← hs, resF_coe, map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, ← resF_coe F ⟨c i, hc i⟩, ← resF_coe F ⟨x i, hx i⟩]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem resF_sum_mul {ι : Type} [Fintype ι] (c x : ι → F) (hc : ∀ i, c i ∈ 𝒪[F]) (hx : ∀ i, x i ∈ 𝒪[F]) :
     resF F (∑ i, c i * x i) = ∑ i, resF F (c i) * resF F (x i) := by
@@ -59,7 +59,7 @@ theorem resF_sum_mul {ι : Type} [Fintype ι] (c x : ι → F) (hc : ∀ i, c i 
   rw [map_mul, ← resF_coe F ⟨c i, hc i⟩, ← resF_coe F ⟨x i, hx i⟩]
 
 /- English proof (translation)
-Establish `hx1 : x ∈ 𝒪[F]` using `(Valuation.mem_integer_iff _ _).2 hx.le`. Rewrite using `[show x = ((⟨x, hx1⟩ : 𝒪[F]) : F) from rfl, resF_coe, IsLocalRing.residue_eq_zero_iff, IsLocalRing.mem_maximalIdeal, mem_nonunits_iff, (Valuation.integer.integers _).isUnit_iff_valuation_eq_one]`. Conclude with `hx.ne`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem resF_eq_zero_of_lt {x : F} (hx : valuation F x < 1) : resF F x = 0 := by
   have hx1 : x ∈ 𝒪[F] := (Valuation.mem_integer_iff _ _).2 hx.le
@@ -69,7 +69,7 @@ theorem resF_eq_zero_of_lt {x : F} (hx : valuation F x < 1) : resF F x = 0 := by
   exact hx.ne
 
 /- English proof (translation)
-Rewrite `h0` using `[show x = ((⟨x, hx⟩ : 𝒪[F]) : F) from rfl, resF_coe, IsLocalRing.residue_eq_zero_iff, (IsDiscreteValuationRing.irreducible_iff_uniformizer ϖ).1 hϖ, Ideal.mem_span_singleton']`. Take `⟨a, ha⟩` from `h0`. Use `⟨a, ?_⟩` and prove the remaining obligations. Rewrite using `[show x = ((⟨x, hx⟩ : 𝒪[F]) : F) from rfl, ← ha]`. Use `push_cast`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -84,7 +84,7 @@ theorem dvd_of_resF_eq_zero [IsDiscreteValuationRing 𝒪[F]] {ϖ : 𝒪[F]} (h�
   ring
 
 /- English proof (translation)
-Rewrite using `[resF_coe, IsLocalRing.residue_eq_zero_iff, IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]`. Conclude with `hϖ.not_isUnit`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem resF_irr {ϖ : 𝒪[F]} (hϖ : Irreducible ϖ) : resF F (ϖ : F) = 0 := by
   rw [resF_coe, IsLocalRing.residue_eq_zero_iff, IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]
@@ -99,13 +99,13 @@ def redM {ι : Type} {n : ℕ} (X : ι → Fin n → F) : ι → Fin n → 𝓀[
 variable {F}
 
 /- English proof (translation)
-Establish `hvj : 0 < valuation F (c j)` using `zero_lt_iff.2 ((Valuation.ne_zero_iff _).2 hcj)`. Establish `hd : ∀ i, c i / c j ∈ 𝒪[F]` using `fun i => (Valuation.mem_integer_iff _ _).2 (by rw [map_div₀]; exact (div_le_one₀ hvj).2 (hj i))`. Establish `hz : ∑ i, resF F (c i / c j) • redM F X i = 0`. Use function extensionality and compare the values at `k`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, redM, Pi.zero_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Establish `h` using `resF_sum_mul F (fun i => c i / c j) (fun i => X i k) hd (fun i => hX i k)`. Rewrite using `[← h]`. Apply `resF_eq_zero_of_lt F` to reduce the goal to its premises. Establish `hs : ∑ i, c i / c j * X i k = u k / c j`. Rewrite using `[← hu, Finset.sum_apply, Finset.sum_div]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hs, map_div₀]`. Conclude with `(div_lt_one₀ hvj).2 (hlt k)`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1` using `(Fintype.linearIndependent_iff.1 hred) _ hz j`. Rewrite `h1` using `[div_self hcj, resF_one]`. Conclude with `one_ne_zero h1`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem key_norm {ι : Type} [Fintype ι] {n : ℕ} (X : ι → Fin n → F) (hX : ∀ i k, X i k ∈ 𝒪[F])
     (hred : LinearIndependent 𝓀[F] (redM F X)) (c : ι → F) (u : Fin n → F) (hu : ∑ i, c i • X i = u)
@@ -132,11 +132,11 @@ theorem key_norm {ι : Type} [Fintype ι] {n : ℕ} (X : ι → Fin n → F) (hX
   exact one_ne_zero h1
 
 /- English proof (translation)
-Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `g hg`. Assume the negation of the conclusion as `hne`. Use `push_neg at hne`. Take `⟨i0, hi0⟩` from `hne`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨j, -, hj⟩` from `Finset.exists_max_image Finset.univ (fun i => valuation F (g i)) ⟨i0, Finset.mem_univ _⟩`. Establish `hcj : g j ≠ 0`. Introduce `h`. Establish `h2` using `hj i0 (Finset.mem_univ _)`. Rewrite `h2` using `[h, map_zero]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hi0 ((Valuation.zero_iff _).1 (le_antisymm h2 zero_le'))`. Use `key_norm X hX hred g 0 hg j (fun i => hj i (Finset.mem_univ _)) hcj (fun k => ?_)` and prove the remaining obligations. Rewrite using `[Pi.zero_apply, map_zero]`. Conclude with `zero_lt_iff.2 ((Valuation.ne_zero_iff _).2 hcj)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem indep_of_red {ι : Type} [Fintype ι] {n : ℕ} (X : ι → Fin n → F) (hX : ∀ i k, X i k ∈ 𝒪[F])
     (hred : LinearIndependent 𝓀[F] (redM F X)) : LinearIndependent F X := by
@@ -157,11 +157,11 @@ theorem indep_of_red {ι : Type} [Fintype ι] {n : ℕ} (X : ι → Fin n → F)
   exact zero_lt_iff.2 ((Valuation.ne_zero_iff _).2 hcj)
 
 /- English proof (translation)
-Introduce `u hu hex`. Take `⟨c, hc⟩` from `hex`. Use `⟨c, fun i => ?_, hc⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hci`. Rewrite `hci` using `[Valuation.mem_integer_iff, not_le]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨j, -, hj⟩` from `Finset.exists_max_image Finset.univ (fun i => valuation F (c i)) ⟨i, Finset.mem_univ _⟩`. Establish `hj1 : 1 < valuation F (c j)` using `lt_of_lt_of_le hci (hj i (Finset.mem_univ _))`. Establish `hcj : c j ≠ 0`. Introduce `h`. Rewrite `hj1` using `[h, map_zero]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `not_lt.2 zero_le' hj1`. Conclude with `key_norm X hX hred c u hc j (fun i => hj i (Finset.mem_univ _)) hcj (fun k => lt_of_le_of_lt ((Valuation.mem_integer_iff _ _).1 (hu k)) hj1)`.
+A detailed English derivation is pending.
 -/
 theorem sat_of_red {ι : Type} [Fintype ι] {n : ℕ} (X : ι → Fin n → F) (hX : ∀ i k, X i k ∈ 𝒪[F])
     (hred : LinearIndependent 𝓀[F] (redM F X)) : SatF F X := by
@@ -181,19 +181,19 @@ theorem sat_of_red {ι : Type} [Fintype ι] {n : ℕ} (X : ι → Fin n → F) (
     (fun k => lt_of_le_of_lt ((Valuation.mem_integer_iff _ _).1 (hu k)) hj1)
 
 /- English proof (translation)
-Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `a ha i`. Take `⟨d, hdm, hres⟩ : ∃ d : ι → F, (∀ i, d i ∈ 𝒪[F]) ∧ ∀ i, resF F (d i) = a i` from `⟨fun i => liftF F (a i), fun i => liftF_mem F _, fun i => resF_liftF F _⟩`. Establish `hcomp : ∀ k, (∑ i, d i • X i) k = ∑ i, d i * X i k` using `fun k => by`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hmem : ∀ k, (∑ i, d i • X i) k ∈ 𝒪[F]` using `fun k => by`. Rewrite using `[hcomp]`. Conclude with `Subring.sum_mem _ fun i _ => Subring.mul_mem _ (hdm i) (hX i k)`. Establish `hr0 : ∀ k, resF F ((∑ i, d i • X i) k) = 0` using `fun k => by`. Establish `h` using `resF_sum_mul F d (fun i => X i k) hdm (fun i => hX i k)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hcomp, h]`. Simplify using `only [hres]`. Establish `h2` using `congrFun ha k`. Simplify `h2` using `[Finset.sum_apply, redM]`. Use `choose w hw using fun k => dvd_of_resF_eq_zero F hϖ (hmem k) (hr0 k)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hϖ0 : (ϖ : F) ≠ 0` using `by exact_mod_cast hϖ.ne_zero`. Take `⟨c', hc'm, hc'⟩` from `hsat (fun k => (w k : F)) (fun k => (w k).2) ⟨fun i => d i / ϖ, by`. Use function extensionality and compare the values at `k`. Establish `e` using `hw k`. Rewrite `e` using `[hcomp]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion repeatedly using the stated equalities.
 
-Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul]`. Repeatedly rewrite using `[div_mul_eq_mul_div]`. Rewrite using `[← Finset.sum_div, e]`. Use the proof step `field_simp⟩`. Establish `hzero : ∑ i, (d i - ϖ * c' i) • X i = 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `k`. Establish `e1` using `congrFun hc' k`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul] at e1`. Establish `e2` using `hw k`. Rewrite `e2` using `[hcomp]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, sub_mul, Finset.sum_sub_distrib, Pi.zero_apply]`. Repeatedly rewrite using `[mul_assoc]`. Rewrite using `[← Finset.mul_sum, e1, e2, sub_self]`. Establish `hdi` using `(Fintype.linearIndependent_iff.1 hind) _ hzero i`. Rewrite using `[← hres i, sub_eq_zero.1 hdi, resF_mul F ϖ.2 (hc'm i), resF_irr F hϖ, zero_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem red_of_indep_sat [IsDiscreteValuationRing 𝒪[F]] {ϖ : 𝒪[F]} (hϖ : Irreducible ϖ)
     {ι : Type} [Fintype ι] {n : ℕ} (X : ι → Fin n → F) (hX : ∀ i k, X i k ∈ 𝒪[F])
@@ -238,7 +238,7 @@ theorem red_of_indep_sat [IsDiscreteValuationRing 𝒪[F]] {ϖ : 𝒪[F]} (hϖ :
   rw [← hres i, sub_eq_zero.1 hdi, resF_mul F ϖ.2 (hc'm i), resF_irr F hϖ, zero_mul]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h => red_of_indep_sat hϖ X hX h.1 h.2, fun h => ⟨indep_of_red X hX h, sat_of_red X hX h⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem dvr_prim_iff [IsDiscreteValuationRing 𝒪[F]] {ϖ : 𝒪[F]} (hϖ : Irreducible ϖ)
     {ι : Type} [Fintype ι] {n : ℕ} (X : ι → Fin n → F) (hX : ∀ i k, X i k ∈ 𝒪[F]) :

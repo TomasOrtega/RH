@@ -8,13 +8,13 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.CharConjFixed
 
 /- English proof (translation)
-The claim follows from `inferInstanceAs (Nontrivial (InfiniteAdeleRing D.host.F × FiniteAdeleRing (𝓞 D.host.F) D.host.F))`.
+A detailed English derivation is pending.
 -/
 theorem nontrivial_AF (D : D7) : Nontrivial (AF D.host.F) :=
   inferInstanceAs (Nontrivial (InfiniteAdeleRing D.host.F × FiniteAdeleRing (𝓞 D.host.F) D.host.F))
 
 /- English proof (translation)
-Use `haveI := nontrivial_AF D`. Rewrite using `[Module.finrank_baseChange]`. Conclude with `D.sp.cm.deg2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finrank_AE (D : D7) : Module.finrank (AF D.host.F) (AE D) = 2 := by
   haveI := nontrivial_AF D
@@ -29,11 +29,11 @@ theorem cA_tmul (D : D7) (a : AF D.host.F) (e : D.host.E) :
 set_option synthInstance.maxHeartbeats 200000 in
 
 /- English proof (translation)
-Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => exact ⟨0, by simp⟩`. Consider the case `add a b ha hb`. Take `⟨u, hu⟩` from `ha`. Take `⟨v, hv⟩` from `hb`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨u + v, ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, hu, hv, map_add]`. Normalize the expressions using the abelian group laws. Consider the case `tmul a e`. Establish `hfix : star (e + star e) = e + star e`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Treat this case separately. Establish an intermediate fact.
 
-Rewrite using `[star_add, star_star, add_comm]`. Take `⟨f, hf⟩` from `(D.sp.cm.fixed _).1 hfix`. Use `⟨f • a, ?_⟩` and prove the remaining obligations. Rewrite using `[cA_tmul, ← TensorProduct.tmul_add, ← hf, Algebra.algebraMap_eq_smul_one (A := D.host.E) f, ← TensorProduct.smul_tmul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem trace_mem (D : D7) (y : AE D) :
     ∃ b : AF D.host.F, algebraMap (AF D.host.F) (AE D) b = y + cA D y := by
@@ -54,7 +54,7 @@ theorem trace_mem (D : D7) (y : AE D) :
     rfl
 
 /- English proof (translation)
-Take `⟨b, hb⟩` from `trace_mem D y`. Use `⟨algebraMap D.host.F (AF D.host.F) (2⁻¹) * b, ?_⟩` and prove the remaining obligations. Establish `h2 : algebraMap (AF D.host.F) (AE D) (algebraMap D.host.F (AF D.host.F) (2⁻¹)) * 2 = 1`. Rewrite using `[show (2 : AE D) = algebraMap (AF D.host.F) (AE D) (algebraMap D.host.F (AF D.host.F) 2) by rw [map_ofNat, map_ofNat], ← map_mul, ← map_mul, inv_mul_cancel₀ (two_ne_zero : (2 : D.host.F) ≠ 0), map_one, map_one]`. Rewrite using `[map_mul, hb, hy, ← two_mul, ← mul_assoc, h2, one_mul]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem fixed_mem (D : D7) (y : AE D) (hy : cA D y = y) :
     ∃ b : AF D.host.F, algebraMap (AF D.host.F) (AE D) b = y := by
@@ -66,16 +66,16 @@ theorem fixed_mem (D : D7) (y : AE D) (hy : cA D y = y) :
   rw [map_mul, hb, hy, ← two_mul, ← mul_assoc, h2, one_mul]
 
 /- English proof (translation)
-Rewrite using `[Algebra.norm_algebraMap, finrank_AE]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem norm_scalar (D : D7) (b : AF D.host.F) :
     Algebra.norm (AF D.host.F) (algebraMap (AF D.host.F) (AE D) b) = b ^ 2 := by
   rw [Algebra.norm_algebraMap, finrank_AE]
 
 /- English proof (translation)
-Take `⟨b, hb⟩` from `fixed_mem D x hx`. Establish `hn : IsUnit (Algebra.norm (AF D.host.F) (x : AE D))` using `x.isUnit.map _`. Rewrite `hn` using `[← hb, norm_scalar]`. Take `⟨a, ha⟩` from `(isUnit_pow_iff two_ne_zero).1 hn`. Use `⟨a, Units.ext ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← hb, ← ha]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem fixed_unit (D : D7) (x : (AE D)ˣ) (hx : cA D (x : AE D) = x) :
     ∃ a : (AF D.host.F)ˣ, idF D a = x := by
@@ -91,13 +91,11 @@ end GlobalTheory.CharConjFixed
 open GlobalTheory.CharConjFixed in
 
 /- English proof (translation)
-Introduce `D μ n hμ hn V x hx`. Establish `hfix : cA D (x : AE D) = x`. Establish `h` using `hx`. Simplify using `only [IsDetRoot, map_one, Units.val_one, Matrix.det_one, one_mul] at h`. Conclude with `h.symm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Take `⟨a, ha⟩` from `fixed_unit D x hfix`. Take `⟨⟨η, hη⟩, hall⟩` from `hμ`. Establish `hμa : μ (idF D a) = η a ^ n` using `hall η hη a`. Establish `hsq : η a ^ 2 = 1`. Rewrite using `[← map_pow]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: Units.map (↑(Algebra.norm (AF D.host.F)) : AE D →* AF D.host.F) (idF D a) = a ^ 2`. Use `ext`. Conclude with `norm_scalar D (a : AF D.host.F)`. Rewrite using `[← this]`. Conclude with `hη.2.2.1 _`.
-
-Take `⟨k, rfl⟩` from `hn`. Rewrite using `[← ha, hμa, ← two_mul, pow_mul, hsq, one_pow]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.char_conj_fixed_eq_one : ∀ (D : D7) (μ : (AE D)ˣ →* Circle) (n : ℕ), ResEta D μ n → Even n →
     ∀ (V : HSp D) (x : (AE D)ˣ), IsDetRoot V 1 x → μ x = 1 := by

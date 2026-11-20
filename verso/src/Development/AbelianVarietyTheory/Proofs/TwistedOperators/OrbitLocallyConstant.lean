@@ -48,7 +48,7 @@ theorem omR_val {a b : Type} [Fintype a] [DecidableEq a] [Fintype b] [DecidableE
     (g : GL a k) (h : GL b k) (Φ : SB (Matrix b a k)) : (omR μ (g, h) Φ).1 = om μ g h Φ.1 := rfl
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (om_mul μ g g' h h' Φ.1).symm`.
+A detailed English derivation is pending.
 -/
 theorem omR_mul {a b : Type} [Fintype a] [DecidableEq a] [Fintype b] [DecidableEq b] (μ : kˣ →* ℂˣ)
     (g g' : GL a k) (h h' : GL b k) (Φ : SB (Matrix b a k)) :
@@ -56,7 +56,7 @@ theorem omR_mul {a b : Type} [Fintype a] [DecidableEq a] [Fintype b] [DecidableE
   Subtype.ext (om_mul μ g g' h h' Φ.1).symm
 
 /- English proof (translation)
-Introduce `Φ`. Use `isOpen_stabilizer_om hμ Φ.2` as an intermediate fact. Use `this using 3 with gh` and compare the differences between its conclusion and the goal. Conclude with `Subtype.ext_iff`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. A detailed English derivation is pending.
 -/
 theorem omR_smooth {a b : Type} [Fintype a] [DecidableEq a] [Fintype b] [DecidableEq b] {μ : kˣ →* ℂˣ}
     (hμ : IsOpen (μ.ker : Set kˣ)) : IsSmoothRep (omR (a := a) (b := b) μ) := by
@@ -66,9 +66,7 @@ theorem omR_smooth {a b : Type} [Fintype a] [DecidableEq a] [Fintype b] [Decidab
   exact Subtype.ext_iff
 
 /- English proof (translation)
-Rewrite using `[IsLocallyConstant.iff_eventually_eq]`. Introduce `g`. Establish `hc : Continuous fun y : G => g⁻¹ * y` using `by fun_prop`. Use `filter_upwards [((h v).preimage hc).mem_nhds (x := g) (by simp)] with y hy`. Establish `hy' : ρ (g⁻¹ * y) v = v` using `hy`.
-
-Use `conv_rhs => rw [← hy', ← Module.End.mul_apply, ← map_mul, mul_inv_cancel_left]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem orbit_locallyConstant {G V : Type*} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
     [AddCommGroup V] [Module ℂ V] {ρ : Representation ℂ G V} (h : IsSmoothRep ρ) (v : V) :
@@ -87,7 +85,7 @@ def cut (p : ℕ) (χ : (n' → k) → ℂ) (y : Matrix (n ⊕ Fin c) n' k) : �
 
 omit [Field k] [ValuativeRel k] [IsNonarchimedeanLocalField k] [Fintype n] [DecidableEq n] [Fintype n'] [DecidableEq n'] in
 /- English proof (translation)
-Establish `h : ∀ l : Fin c, IsLocallyConstant fun y : Matrix (n ⊕ Fin c) n' k => χ (fun s => y (Sum.inr l) s)` using `fun l => hχ.comp_continuous (by fun_prop)`. Rewrite using `[IsLocallyConstant.iff_eventually_eq]`. Introduce `x`. Use `filter_upwards [eventually_all.2 fun l => (h l).eventually_eq x] with y hy`. Simplify using `only [cut, hy]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cut_lc (p : ℕ) {χ : (n' → k) → ℂ} (hχ : IsLocallyConstant χ) :
     IsLocallyConstant (cut (n := n) (c := c) p χ) := by
@@ -100,7 +98,7 @@ theorem cut_lc (p : ℕ) {χ : (n' → k) → ℂ} (hχ : IsLocallyConstant χ) 
 
 omit [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [Fintype n] [DecidableEq n] [Fintype n'] [DecidableEq n'] in
 /- English proof (translation)
-Unfold `cut`. Rewrite using `[Finset.sum_eq_single (⟨p - 1, by omega⟩ : Fin c), if_pos (by simp only; omega)]`. Introduce `l _ hl`. Conclude with `if_neg fun e => hl (Fin.ext (by simp only; omega))`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cut_eq {p : ℕ} (hp : 1 ≤ p) (hc : p < c) (χ : (n' → k) → ℂ) (y : Matrix (n ⊕ Fin c) n' k) :
     cut p χ y = χ fun s => y (Sum.inr ⟨p - 1, by omega⟩) s := by
@@ -153,7 +151,7 @@ def fc (p : ℕ) (χ : (n' → k) → ℂ) (hχ : IsLocallyConstant χ)
 variable {μ σ θ b}
 
 /- English proof (translation)
-Establish `h1 : IsLocallyConstant fun h : GL (n ⊕ Fin c) k => omR μ (1, h) Φ` using `(orbit_locallyConstant (omR_smooth hμ) Φ).comp_continuous (by fun_prop)`. Conclude with `(h1.prodMk (orbit_locallyConstant hσ F)).comp fun q => b (θ φ (opL hψ ν (p + 1) (cutL p χ hχ q.1))) q.2`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem fc_lc (hμ : IsOpen (μ.ker : Set kˣ)) (hσ : IsSmoothRep σ) (χ : (n' → k) → ℂ) (hχ : IsLocallyConstant χ)
     (Φ : SB (Matrix (n ⊕ Fin c) (n' ⊕ Fin (c + 1)) k)) :
@@ -164,15 +162,13 @@ theorem fc_lc (hμ : IsOpen (μ.ker : Set kˣ)) (hσ : IsSmoothRep σ) (χ : (n'
     fun q => b (θ φ (opL hψ ν (p + 1) (cutL p χ hχ q.1))) q.2
 
 /- English proof (translation)
-Unfold `fc`. Use `set Ψ := opL hψ ν (p + 1) (cutL p χ hχ (omR μ (1, h) Φ)) with hΨ`. Establish `e1 : opL hψ ν (p + 1) (cutL p χ hχ (omR μ (1, embX c x * u * h) Φ)) = (((nabs k (Matrix.GeneralLinearGroup.det x) ^ (((c : ℝ) + 1) / 2 - ((p + 1 : ℕ) : ℝ)) : ℝ) : ℂ) * (ψ (-simpleSum u) : ℂ)) • omR μ (1, x) Ψ`. Use `_root_.GlobalTheory.RootEx.opE_cut_om_equivariant k n n' c p hp hc ψ ν μ χ (omR μ (1, h) Φ).1 x u hu` as an intermediate fact. Rewrite `this` using `[← omR_val, omR_mul, one_mul]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Subtype.ext this`. Establish `e2 : θ φ (omR μ (1, x) Ψ) = π x (θ φ Ψ)`. Use `hθ 1 x φ Ψ _ (omR_val μ 1 x Ψ)` as an intermediate fact. Rewrite `this` using `[map_one, Module.End.one_apply]`. Then use the resulting hypothesis. Establish `e3 : (ψ (-simpleSum u) : ℂ) * (ψ (simpleSum u) : ℂ) = 1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← Circle.coe_mul, ← AddChar.map_add_eq_mul]`. Simplify using the standard rewrite rules. Establish `e4 : (nabs k (Matrix.GeneralLinearGroup.det x) ^ ((c : ℝ) - 2 * p) : ℝ) = nabs k (Matrix.GeneralLinearGroup.det x) ^ (((c : ℝ) + 1) / 2 - ((p + 1 : ℕ) : ℝ)) * nabs k (Matrix.GeneralLinearGroup.det x) ^ (((c : ℝ) + 1) / 2 - p)`. Rewrite using `[← Real.rpow_add (nabs_pos k _)]`. Use `congr 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e1, map_smul, map_smul, e2, map_mul, map_mul, Module.End.mul_apply, Module.End.mul_apply, LinearMap.smul_apply, hb.2, hb.1 _ u hu.1, e4]`. Use `push_cast`. Rewrite using `[smul_eq_mul]`.
-
-Take the linear combination `(((nabs k (Matrix.GeneralLinearGroup.det x) ^ (((c : ℝ) + 1) / 2 - ((p : ℝ) + 1)) : ℝ) : ℂ) * ((nabs k (Matrix.GeneralLinearGroup.det x) ^ (((c : ℝ) + 1) / 2 - p) : ℝ) : ℂ) * b (θ φ Ψ) (σ h F)) * e3`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem fc_equiv (hp : 1 ≤ p) (hc : p < c)
     (hθ : ∀ g h φ Ψ Ψ', Ψ'.1 = om μ g h Ψ.1 → θ (π' g φ) Ψ' = π h (θ φ Ψ)) (hb : IsPos ψ p π σ b)
@@ -206,17 +202,17 @@ theorem fc_equiv (hp : 1 ≤ p) (hc : p < c)
       ((nabs k (Matrix.GeneralLinearGroup.det x) ^ (((c : ℝ) + 1) / 2 - p) : ℝ) : ℂ) * b (θ φ Ψ) (σ h F)) * e3
 
 /- English proof (translation)
-Take `⟨Λ, hΛ, hΦ⟩` from `GlobalTheory.T.schwartzBruhat_matrix_exists_open_addSubgroup_invariant k _ _ Φ.1 Φ.2`. Take `⟨Ω, hΩ, H⟩` from `opE_support_compact_mod_R k n n' c (p + 1) (by omega) hc ψ hψ hψ1 ν (tsupport Φ.1) Φ.2.2 Λ hΛ`. Take `⟨B, hB, HB⟩` from `_root_.GlobalTheory.RootEx.RowSupport.row_support_uniform k n c p hp hc ψ hψ1 A σ hσ F Ω hΩ`. Use `⟨_, (hB.image (ExchangeSupport.continuous_rowE (c := c) (p := p))).mul hΩ, fun χ hχ h hne => ?_⟩` and prove the remaining obligations. Establish `h1 : opL hψ ν (p + 1) (cutL p χ hχ (omR μ (1, h) Φ)) ≠ 0`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Introduce `e`. Apply `hne` to reduce the goal to its premises. Unfold `fc`. Rewrite using `[e]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Choose the witnesses or unpack the hypotheses as in `⟨x₀, hx₀⟩ : ∃ x₀, (opL hψ ν (p + 1) (cutL p χ hχ (omR μ (1, h) Φ))).1 x₀ ≠ 0 := by`. Assume the negation of the conclusion as `hh`. Use `push Not at hh`. Conclude with `h1 (Subtype.ext (funext hh))`. Take `⟨r, hr, w, hw, rfl⟩` from `H μ Φ.1 (subset_tsupport _) hΦ (cut p χ) (cut_lc p hχ) h x₀ hx₀`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨x, g, hg, rfl⟩` from `Radical.exists_of_mem_R hr`. Take `⟨g₁, hg₁, u, rfl⟩` from `GlobalTheory.T.rootExchangeUnipotentSubgroup_succ_decomposition k n c p g hg`. Use `⟨x, g₁, hg₁, rowE c p u * w, Set.mul_mem_mul (Set.mem_image_of_mem _ ?_) hw, by group⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hu`. Apply `hne` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Replace the relevant objects with their definitions. Replace the chosen expression with an arbitrary variable.
 
-Unfold `fc`. Generalize the expression as in `θ φ _ = φ₁`. Establish `e : φ₁ = π x (π x⁻¹ φ₁)`. Rewrite using `[← Module.End.mul_apply, ← map_mul, mul_inv_cancel, map_one, Module.End.one_apply]`. Rewrite using `[e]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [map_mul, Module.End.mul_apply]`. Rewrite using `[hb.2, hb.1 _ g₁ hg₁.1, HB _ (hb.1 _) w hw u hu]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem fc_supp (hp : 1 ≤ p) (hc : p < c) (hψ1 : ψ ≠ 1) (hσ : IsSmoothRep σ) (hb : IsPos ψ p π σ b)
     (Φ : SB (Matrix (n ⊕ Fin c) (n' ⊕ Fin (c + 1)) k)) :
@@ -249,13 +245,11 @@ theorem fc_supp (hp : 1 ≤ p) (hc : p < c) (hψ1 : ψ ≠ 1) (hσ : IsSmoothRep
   simp
 
 /- English proof (translation)
-Rewrite using `[hb₁, exUp]`. Use `integral_congr_ae (Eventually.of_forall fun u => ?_)` and prove the remaining obligations. Establish `e : opL hψ ν (p + 1) (cutL p (fun _ => 1) (IsLocallyConstant.const 1) (omR μ (1, rowE c p u * h) Φ)) = opL hψ ν (p + 1) (omR μ (1, h) Φ)`. Establish `e0 : ∀ Ψ : SB (Matrix (n ⊕ Fin c) (n' ⊕ Fin (c + 1)) k), cutL p (fun _ => 1) (IsLocallyConstant.const 1) Ψ = Ψ` using `fun Ψ => by`. Apply `Subtype.ext` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Use function extensionality and compare the values at `y`. Use `show cut p _ _ * Ψ.1 y = _`. Rewrite using `[cut_eq hp hc, one_mul]`. Establish `h1` using `(Radical.unipotent_radical_basic k n c (p + 1)).2.2.2.2.2.2.1 p u (by omega)`. Use `opE_om_target_unipotent k n n' c (p + 1) (by omega) hc ψ ν μ (omR μ (1, h) Φ).1 _ h1.1` as an intermediate fact.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[← omR_val, omR_mul, one_mul, h1.2]`. Rewrite using `[e0]`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite `this` using `[neg_zero, AddChar.map_zero_eq_one, Circle.coe_one, one_smul]`. Conclude with `this`.
-
-Simplify using `only [fc, e, map_mul, Module.End.mul_apply]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem fc_row (hp : 1 ≤ p) (hc : p < c) {b₁ : P →ₗ[ℂ] A →ₗ[ℂ] ℂ} (hb₁ : ∀ φ v, b₁ φ v = exUp ν p σ (b φ) v)
     (Φ : SB (Matrix (n ⊕ Fin c) (n' ⊕ Fin (c + 1)) k)) (h : GL (n ⊕ Fin c) k) :
@@ -283,15 +277,15 @@ theorem fc_row (hp : 1 ≤ p) (hc : p < c) {b₁ : P →ₗ[ℂ] A →ₗ[ℂ] �
 def ev {X : Type*} [TopologicalSpace X] (x : X) : SB X →ₗ[ℂ] ℂ := (LinearMap.proj x).comp (SB X).subtype
 
 /- English proof (translation)
-Use `secondCountable k` as an intermediate fact. Use `t2Space k` as an intermediate fact. Use `set Φ' := omR μ (1, h) Φ with hΦ'`. Set `T : (n → k) → SB (Matrix n n' k)` to `fun β => opL hψ ν (p + 1) (cutL p χ hχ (omR μ (1, colE c (p + 1) β) Φ'))`. Establish `hT : IsLocallyConstant T` using `((orbit_locallyConstant (omR_smooth hμ) Φ').comp_continuous (continuous_const.prodMk ExchangeSupport.continuous_colE)).comp fun Ψ => opL hψ ν (p + 1) (cutL p χ hχ Ψ)`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨K, hK, HK⟩` from `_root_.GlobalTheory.RootEx.ColumnSupport.opE_colE_eq_zero k n n' c p hc ψ ν μ Φ'.1 Φ'.2`. Take `⟨w, hw⟩` from `_root_.GlobalTheory.exists_weakIntegral_of_isLocallyConstant_of_isCompact (n → k) (Measure.pi fun _ => ν) _ T hT K hK fun β hβ => Subtype.ext (HK β hβ fun y => cut p χ y.toCols₁)`. Establish `e : opL hψ ν p (omR μ (1, h) Φχ) = w`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `x₀`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Establish `h1` using `hΦχ ((ev x₀).comp ((opL hψ ν p).comp (omR μ (1, h))))`. Establish `h2` using `hw (ev x₀)`. Establish `h3` using `(_root_.GlobalTheory.RootEx.Exchange.opE_exchange k n n' c p hp hc ψ hψ ν μ Φ'.1 Φ'.2 x₀ χ hχ).2.2`. Use `h1.trans (Eq.trans ?_ (h3.trans h2.symm))` and prove the remaining obligations. Use `integral_congr_ae (Eventually.of_forall fun u => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [LinearMap.comp_apply]`. Rewrite using `[← omR_val, hΦ', omR_mul, omR_mul, one_mul, mul_one, one_mul, mul_one]`. Both sides reduce to the same expression. Rewrite using `[e]`. Use `Eq.trans ?_ (hw ((b.flip (σ h F)).comp (θ φ))).symm` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `integral_congr_ae (Eventually.of_forall fun β => ?_)` and prove the remaining obligations. Establish `h1` using `(Radical.unipotent_radical_basic k n c p).2.2.2.2.2.2.2 (p + 1) β (by omega)`. Simplify using `only [fc, T, LinearMap.comp_apply, LinearMap.flip_apply, hΦ', omR_mul, one_mul, map_mul, Module.End.mul_apply]`. Rewrite using `[hb.1 _ _ h1.1, h1.2]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem fc_col (hp : 1 ≤ p) (hc : p < c) (hμ : IsOpen (μ.ker : Set kˣ)) (hb : IsPos ψ p π σ b)
     (χ : (n' → k) → ℂ) (hχ : IsLocallyConstant χ) (Φ Φχ : SB (Matrix (n ⊕ Fin c) (n' ⊕ Fin (c + 1)) k))
@@ -332,21 +326,19 @@ theorem fc_col (hp : 1 ≤ p) (hc : p < c) (hμ : IsOpen (μ.ker : Set kˣ)) (hb
   simp
 
 /- English proof (translation)
-Take `⟨Ω, hΩ, H⟩` from `fc_supp hψ ν φ F (μ := μ) (θ := θ) hp hc hψ1 hσ hb Φ`. Set `row : GL (n ⊕ Fin c) k × Matrix (n ⊕ Fin c) (n' ⊕ Fin (c + 1)) k → n' → k` to `fun q s => (q.1.val * q.2) (Sum.inr ⟨p - 1, by omega⟩) (Sum.inl s)`. Establish `hrow : Continuous row`. Use `continuous_pi fun s => ?_` and prove the remaining obligations. Conclude with `(((Units.continuous_val.comp continuous_fst).matrix_mul continuous_snd).matrix_elem _ _)`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨row '' (Ω ×ˢ tsupport Φ.1), (hΩ.prod Φ.2.2).image hrow, fun χ hχ h1 Φχ hΦχ => ?_⟩` and prove the remaining obligations. Establish `hw : ∀ w ∈ Ω, fc hψ ν μ σ θ b φ F p χ hχ Φ w = fc hψ ν μ σ θ b φ F p (fun _ => 1) (IsLocallyConstant.const 1) Φ w`. Introduce `w hw`. Unfold `fc`. Use `congr 4`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `y`. Use `show cut p _ _ * om μ 1 w Φ.1 y = cut p _ _ * om μ 1 w Φ.1 y`. Distinguish the cases in `hy : (w⁻¹).val * y * (1 : GL (n' ⊕ Fin (c + 1)) k).val ∈ tsupport Φ.1`. Rewrite using `[cut_eq hp hc, cut_eq hp hc, h1]`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `⟨(w, _), ⟨hw, hy⟩, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `s`. Simplify using `only [row, Units.val_one, Matrix.mul_one, ← Matrix.mul_assoc, Units.mul_inv, Matrix.one_mul]`. Both sides reduce to the same expression. Simplify using `only [om, image_eq_zero_of_notMem_tsupport hy, mul_zero]`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hf : fc hψ ν μ σ θ b φ F p χ hχ Φ = fc hψ ν μ σ θ b φ F p (fun _ => 1) (IsLocallyConstant.const 1) Φ`. Use function extensionality and compare the values at `h`. Assume the negation of the conclusion as `hne`. Choose the witnesses or unpack the hypotheses as in `⟨x, u, hu, w, hw', rfl⟩ : ∃ x : GL n k, ∃ u ∈ N k n c p ⊓ N k n c (p + 1), ∃ w ∈ Ω, h = embX c x * u * w := by`. Distinguish the cases in `h0 : fc hψ ν μ σ θ b φ F p χ hχ Φ h = 0`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `H _ _ h fun e => hne (h0.trans e.symm)`. Conclude with `H _ _ h h0`. Apply `hne` to reduce the goal to its premises. Rewrite using `[fc_equiv hψ ν φ F hp hc hθ hb χ hχ Φ x u hu w, fc_equiv hψ ν φ F hp hc hθ hb (fun _ => 1) (IsLocallyConstant.const 1) Φ x u hu w, hw w hw']`. Take `⟨z, hz1, hz2⟩` from `GlobalTheory.T.weil_formula_rootExchange_parabolic_intersection k n c p hp hc ν μX μG (fc hψ ν μ σ θ b φ F p χ hχ Φ) (fc_lc hψ ν φ F hμ hσ χ hχ Φ) ⟨Ω, hΩ, fun h hh => by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 
-Take `⟨x, u, hu, w, hw', rfl⟩` from `H _ _ h hh`. Conclude with `⟨_, ⟨Subgroup.mul_mem_sup ⟨x, rfl⟩ hu.1, Subgroup.mul_mem_sup ⟨x, rfl⟩ hu.2⟩, w, hw', rfl⟩⟩`. Use the proof step `(fc_equiv hψ ν φ F hp hc hθ hb χ hχ Φ)`. Use `⟨z, ?_, ?_⟩` and prove the remaining obligations. Simplify `hz1` using `only [fc_col hψ ν φ F hp hc hμ hb χ hχ Φ Φχ hΦχ]`.
-
-Simplify `hz2` using `only [hf, fc_row hψ ν φ F hp hc hb₁ Φ]`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem step_two (hp : 1 ≤ p) (hc : p < c) (hψ1 : ψ ≠ 1) (hμ : IsOpen (μ.ker : Set kˣ)) (hσ : IsSmoothRep σ)
     (μX : Measure (GL n k)) [μX.IsHaarMeasure] (μG : Measure (GL (n ⊕ Fin c) k)) [μG.IsHaarMeasure]

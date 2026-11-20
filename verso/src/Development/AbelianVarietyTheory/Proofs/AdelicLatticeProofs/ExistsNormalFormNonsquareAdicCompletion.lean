@@ -15,20 +15,20 @@ namespace Defect
 variable {K : Type} [Field K] (w : Valuation K ℤᵐ⁰)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨WithZero.log (w x), (WithZero.exp_log ((Valuation.ne_zero_iff w).2 hx)).symm⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_exp {x : K} (hx : x ≠ 0) : ∃ n : ℤ, w x = WithZero.exp n :=
   ⟨WithZero.log (w x), (WithZero.exp_log ((Valuation.ne_zero_iff w).2 hx)).symm⟩
 
 /- English proof (translation)
-Rewrite using `[← one_add_one_eq_two]`. Conclude with `w.map_add_le (by simp) (by simp)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_two_le : w 2 ≤ 1 := by
   rw [← one_add_one_eq_two]
   exact w.map_add_le (by simp) (by simp)
 
 /- English proof (translation)
-Establish `: (4 : K) = 2 + 2` using `by norm_num`. Rewrite using `[this]`. Conclude with `w.map_add_le (map_two_le w) (map_two_le w)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_four_le : w 4 ≤ 1 := by
   have : (4 : K) = 2 + 2 := by norm_num
@@ -36,19 +36,17 @@ theorem map_four_le : w 4 ≤ 1 := by
   exact w.map_add_le (map_two_le w) (map_two_le w)
 
 /- English proof (translation)
-Establish `h4 : (4 : K) ≠ 0`. Establish `: (4 : K) = 2 * 2` using `by norm_num`. Rewrite using `[this]`. Conclude with `mul_ne_zero h2 h2`. Establish `hw4 : 0 < w 4` using `zero_lt_iff.2 ((Valuation.ne_zero_iff w).2 h4)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set ρ : K := (δ - 1) / 4 with hρ`. Establish `hδρ : δ = 1 + 4 * ρ` using `by rw [hρ]; field_simp; ring`. Establish `hρ1 : w ρ ≤ 1` using `by rw [hρ, map_div₀]; exact div_le_one_of_le₀ h zero_le'`. Rewrite using `[hδρ]`. Use `GlobalTheory.T.evenOrderNorms_one_add_four_mul_of_no_root K w ρ h2 hρ1 fun x hx => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hle : w (x ^ 2 + x - ρ) ≤ 1`. Use `w.map_sub_le (w.map_add_le ?_ hx) hρ1` and prove the remaining obligations. Rewrite using `[map_pow]`. Conclude with `pow_le_one₀ zero_le' hx`. Use `le_antisymm hle (not_lt.1 fun hlt => hns ?_)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e1 : δ - (1 + 2 * x) ^ 2 = -(4 * (x ^ 2 + x - ρ))` using `by rw [hδρ]; ring`. Establish `l1 : w (δ - (1 + 2 * x) ^ 2) < w 4`. Rewrite using `[e1, Valuation.map_neg, map_mul]`. Conclude with `mul_lt_of_lt_one_right hw4 hlt`. Establish `l2 : w ((1 + 2 * x) ^ 2) = 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← hδ]`. Use `w.map_eq_of_sub_lt ?_` and prove the remaining obligations. Rewrite using `[Valuation.map_sub_swap, hδ]`. Conclude with `l1.trans_le (map_four_le w)`. Establish `hy : (1 + 2 * x) ^ 2 ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `h0`. Rewrite `l2` using `[h0]`. Simplify using `at l2`. Establish `hs : IsSquare (δ / (1 + 2 * x) ^ 2)`. Use `hsq _ ?_` and prove the remaining obligations.
-
-Rewrite using `[div_sub_one hy, map_div₀, l2, div_one]`. Conclude with `l1`. Establish `: δ = δ / (1 + 2 * x) ^ 2 * (1 + 2 * x) ^ 2` using `(div_mul_cancel₀ _ hy).symm`. Rewrite using `[this]`. Conclude with `hs.mul (IsSquare.sq _)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem evenNorms_of_le_four (h2 : (2 : K) ≠ 0)
     (hsq : ∀ x : K, w (x - 1) < w 4 → IsSquare x) (δ : K) (hδ : w δ = 1) (hns : ¬ IsSquare δ)
@@ -85,7 +83,7 @@ theorem evenNorms_of_le_four (h2 : (2 : K) ≠ 0)
   exact hs.mul (IsSquare.sq _)
 
 /- English proof (translation)
-Introduce `h`. Apply `hns` to reduce the goal to its premises. Establish `: δ = δ * c ^ 2 * (c⁻¹) ^ 2` using `by field_simp`. Rewrite using `[this]`. Conclude with `h.mul (IsSquare.sq _)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem not_isSquare_mul_sq {δ c : K} (hc : c ≠ 0) (hns : ¬ IsSquare δ) :
     ¬ IsSquare (δ * c ^ 2) := by
@@ -96,29 +94,27 @@ theorem not_isSquare_mul_sq {δ c : K} (hc : c ≠ 0) (hns : ¬ IsSquare δ) :
   exact h.mul (IsSquare.sq _)
 
 /- English proof (translation)
-Proceed by induction on `N with`. Consider the case `zero`. Introduce `δ hδ hns h`. Use `⟨1, one_ne_zero, Or.inr ?_⟩` and prove the remaining obligations. Rewrite using `[one_pow, mul_one]`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `evenNorms_of_le_four w h2 hsq δ hδ hns (by simpa [hm] using h)`. Consider the case `succ N ih`. Introduce `δ hδ hns h`. Distinguish the cases in `h4 : w (δ - 1) ≤ w 4`. Use `⟨1, one_ne_zero, Or.inr ?_⟩` and prove the remaining obligations.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[one_pow, mul_one]`. Conclude with `evenNorms_of_le_four w h2 hsq δ hδ hns h4`. Rewrite `h4` using `[not_le]`. Establish `hne : δ - 1 ≠ 0`. Introduce `h0`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite `h4` using `[h0]`. Simplify using `at h4`. Take `⟨d, hd⟩` from `exists_exp w hne`. Establish `hle : w (δ - 1) ≤ 1` using `w.map_sub_le hδ.le (by simp)`. Establish `hd0 : d ≤ 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite `hle` using `[hd, ← WithZero.exp_zero, WithZero.exp_le_exp]`. Conclude with `hle`. Break down `Int.even_or_odd' d with ⟨k, hk | hk⟩` into its components or cases. Establish `hw2 : w 2 < 1`. Use `lt_of_le_of_ne (map_two_le w) fun h1 => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: w 4 = 1`. Establish `: (4 : K) = 2 * 2` using `by norm_num`. Rewrite using `[this, map_mul, h1, one_mul]`. Rewrite `h4` using `[this]`. Conclude with `absurd hle (not_le.2 h4)`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Take `⟨c, hc, hlt⟩` from `GlobalTheory.T.exists_unit_mul_sq_quadratic_defect_step K w δ π (-k).toNat hπ (hres hw2) hδ h4 (by`. Rewrite using `[hd]`. Use `congr 1`. Use the proof step `omega)`. Establish `hc0 : c ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Introduce `h0`. Rewrite `hc` using `[h0]`. Simplify using `at hc`. Establish `hb : w (δ * c ^ 2 - 1) ≤ WithZero.exp (m + N)`. Distinguish the cases in `h0 : δ * c ^ 2 - 1 = 0`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[h0]`. Simplify using the standard rewrite rules. Take `⟨e, he⟩` from `exists_exp w h0`. Use `hlt.trans_le h` as an intermediate fact. Rewrite `this` using `[he, WithZero.exp_lt_exp]`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[he, WithZero.exp_le_exp]`. Move the coercions through the operations in `at this`. Use linear arithmetic over natural numbers and integers. Take `⟨c', hc', H⟩` from `ih (δ * c ^ 2) (by simp [hδ, hc]) (not_isSquare_mul_sq hc0 hns) hb`. Use `⟨c * c', mul_ne_zero hc0 hc', ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Establish `: δ * (c * c') ^ 2 = δ * c ^ 2 * c' ^ 2` using `by ring`. Rewrite using `[this]`. Conclude with `H`. Use `⟨1, one_ne_zero, Or.inl ?_⟩` and prove the remaining obligations. Rewrite using `[one_pow, mul_one]`.
-
-Conclude with `⟨hδ, h4, k, by rw [hd, hk]⟩`.
+A detailed English derivation is pending.
 -/
 theorem unit_case (h2 : (2 : K) ≠ 0) (π : K) (hπ : w π = WithZero.exp (-1))
     (hsq : ∀ x : K, w (x - 1) < w 4 → IsSquare x)
@@ -176,17 +172,15 @@ theorem unit_case (h2 : (2 : K) ≠ 0) (π : K) (hπ : w π = WithZero.exp (-1))
       exact ⟨hδ, h4, k, by rw [hd, hk]⟩
 
 /- English proof (translation)
-Establish `h4 : (4 : K) ≠ 0`. Establish `: (4 : K) = 2 * 2` using `by norm_num`. Rewrite using `[this]`. Conclude with `mul_ne_zero h2 h2`. Take `⟨m, hm⟩` from `exists_exp w h4`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨d, hd⟩` from `exists_exp w hδ`. Break down `Int.even_or_odd' d with ⟨k, hk | hk⟩` into its components or cases. Establish `hπ0 : π ≠ 0`. Introduce `h0`. Rewrite `hπ` using `[h0]`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `at hπ`. Conclude with `WithZero.exp_ne_zero hπ.symm`. Establish `hc0 : π ^ k ≠ 0` using `zpow_ne_zero _ hπ0`. Establish `hu : w (δ * (π ^ k) ^ 2) = 1`. Rewrite using `[map_mul, map_pow, map_zpow₀, hπ, hd, ← WithZero.exp_zsmul, ← WithZero.exp_nsmul, ← WithZero.exp_add, ← WithZero.exp_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Use `congr 1`. Simplify using `[hk]`. Take `⟨c', hc', H⟩` from `unit_case w h2 π hπ hsq hres m hm (-m).toNat _ hu (not_isSquare_mul_sq hc0 hns) (by`. Use `(w.map_sub_le hu.le (by simp)).trans ?_` and prove the remaining obligations. Rewrite using `[← WithZero.exp_zero, WithZero.exp_le_exp]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use the proof step `omega)`. Use `⟨π ^ k * c', mul_ne_zero hc0 hc', Or.inr ?_⟩` and prove the remaining obligations. Establish `: δ * (π ^ k * c') ^ 2 = δ * (π ^ k) ^ 2 * c' ^ 2` using `by ring`. Rewrite using `[this]`. Conclude with `H`.
-
-Use `⟨1, one_ne_zero, Or.inl ⟨k, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[one_pow, mul_one, hd, hk]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem general (h2 : (2 : K) ≠ 0) (π : K) (hπ : w π = WithZero.exp (-1))
     (hsq : ∀ x : K, w (x - 1) < w 4 → IsSquare x)
@@ -225,21 +219,19 @@ end Defect
 open NumberField IsDedekindDomain in
 open scoped WithZero in
 /- English proof (translation)
-Establish `h4 : (4 : v.adicCompletion F) ≠ 0`. Rewrite using `[← map_ofNat (algebraMap F (v.adicCompletion F)) 4]`. Conclude with `(map_ne_zero _).mpr (by norm_num)`. Establish `h2 : (2 : v.adicCompletion F) ≠ 0`. Rewrite using `[← map_ofNat (algebraMap F (v.adicCompletion F)) 2]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(map_ne_zero _).mpr (by norm_num)`. Establish `hw4 : 0 < Valued.v (4 : v.adicCompletion F)` using `zero_lt_iff.mpr ((Valuation.ne_zero_iff _).mpr h4)`. Establish `hw4le : Valued.v (4 : v.adicCompletion F) ≤ 1`. Rewrite using `[show (4 : v.adicCompletion F) = 1 + 1 + 1 + 1 by norm_num]`. Conclude with `Valuation.map_add_le _ (Valuation.map_add_le _ (Valuation.map_add_le _ (Valuation.map_one _).le (Valuation.map_one _).le) (Valuation.map_one _).le) (Valuation.map_one _).le`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨ρ, hρ_def⟩ : ∃ ρ : v.adicCompletion F, ρ = (e - 1) / 4` from `⟨_, rfl⟩`. Establish `heρ : e = 1 + 4 * ρ` using `by rw [hρ_def]; field_simp; ring`. Establish `hρ : Valued.v ρ ≤ 1`. Rewrite using `[hρ_def, map_div₀]`. Conclude with `div_le_one_of_le₀ hle zero_le'`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[heρ]`. Use `_root_.GlobalTheory.QNorm.evenNorms_one_add_four_mul _ Valued.v ρ h2 hρ ?_` and prove the remaining obligations. Introduce `x hx`. Establish `hint : Valued.v (x ^ 2 + x - ρ) ≤ 1` using `Valuation.map_sub_le _ (Valuation.map_add_le _ (by rw [map_pow]; exact pow_le_one₀ zero_le' hx) hx) hρ`. Use `le_antisymm hint ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hlt`. Use `push_neg at hlt`. Apply `hns` to reduce the goal to its premises. Take `⟨s, hs_def⟩ : ∃ s : v.adicCompletion F, s = 1 + 2 * x` from `⟨_, rfl⟩`. Establish `hdiff : e - s ^ 2 = -(4 * (x ^ 2 + x - ρ))` using `by rw [heρ, hs_def]; ring`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hdiff_lt : Valued.v (e - s ^ 2) < Valued.v (4 : v.adicCompletion F)`. Rewrite using `[hdiff, Valuation.map_neg, map_mul]`. Conclude with `mul_lt_of_lt_one_right hw4 hlt`. Establish `hs2 : Valued.v (s ^ 2) = 1`. Rewrite using `[show s ^ 2 = e - (e - s ^ 2) by ring, Valuation.map_sub_eq_of_lt_left _ (by rw [he]; exact lt_of_lt_of_le hdiff_lt hw4le), he]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hs : Valued.v s = 1` using `by rw [map_pow] at hs2; exact sq_eq_one.mp hs2`. Establish `hs0 : s ≠ 0` using `by rintro rfl; simp at hs`. Take `⟨r, hr⟩` from `_root_.GlobalTheory.LocalQuad.isSquare_of_valued_sub_one_lt F v (e * s⁻¹ ^ 2) (by`. Rewrite using `[show e * s⁻¹ ^ 2 - 1 = (e - s ^ 2) * s⁻¹ ^ 2 by field_simp, map_mul, map_pow, map_inv₀, hs, inv_one, one_pow, mul_one]`. Conclude with `hdiff_lt)`.
-
-Use `⟨r * s, ?_⟩` and prove the remaining obligations. Establish `: e = (e * s⁻¹ ^ 2) * s ^ 2` using `by field_simp`. Rewrite using `[this, hr]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 private theorem evenNorms_of_valuation_sub_one_le_four (F : Type) [Field F]
     [NumberField F] (v : HeightOneSpectrum (𝓞 F)) (e : v.adicCompletion F)
@@ -292,25 +284,23 @@ private theorem evenNorms_of_valuation_sub_one_le_four (F : Type) [Field F]
 open NumberField IsDedekindDomain in
 open scoped WithZero in
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero`. Introduce `e he hns j hj hja`. Use `⟨1, one_ne_zero, Or.inr ?_⟩` and prove the remaining obligations. Rewrite using `[one_pow, mul_one]`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `evenNorms_of_valuation_sub_one_le_four F v e he hns ?_` and prove the remaining obligations. Rewrite using `[hj, ha, WithZero.exp_le_exp]`. Simplify using `using hja`. Consider the case `succ n ih`. Introduce `e he hns j hj hja`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `hle : j ≤ a + n`. Conclude with `ih e he hns j hj hle`. Establish `h4lt : Valued.v (4 : v.adicCompletion F) < Valued.v (e - 1)`. Rewrite using `[ha, hj, WithZero.exp_lt_exp]`. Use linear arithmetic over natural numbers and integers.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Establish `he1 : Valued.v (e - 1) ≤ 1` using `Valuation.map_sub_le _ he.le (Valuation.map_one _).le`. Break down `Int.even_or_odd j with ⟨i, hi⟩ | ⟨m, hm⟩` into its components or cases. Establish `hj0 : j ≤ 0`. Rewrite `he1` using `[hj, ← WithZero.exp_zero, WithZero.exp_le_exp]`. Conclude with `he1`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `h2 : Valued.v (2 : v.adicCompletion F) < 1`. Assume the negation of the conclusion as `hge`. Use `push_neg at hge`. Establish `: 1 ≤ Valued.v (4 : v.adicCompletion F)`. Rewrite using `[show (4 : v.adicCompletion F) = 2 ^ 2 by norm_num, map_pow]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `one_le_pow₀ hge`. Conclude with `absurd (lt_of_lt_of_le h4lt he1) (not_lt.mpr this)`. Take `⟨c, hc, hlt⟩` from `_root_.GlobalTheory.QNorm.exists_unit_mul_sq_sub_one_lt _ Valued.v e π (-i).toNat hπ (hsq h2) he h4lt (by rw [hj]; congr 1; omega)`. Establish `hc0 : c ≠ 0` using `by rintro rfl; simp at hc`. Establish `he' : Valued.v (e * c ^ 2) = 1` using `by rw [map_mul, map_pow, he, hc, one_pow, mul_one]`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hns' : ¬ IsSquare (e * c ^ 2)`. Introduce and unpack `⟨r, hr⟩`. Apply `hns` to reduce the goal to its premises. Use `⟨r / c, ?_⟩` and prove the remaining obligations. Establish `: e = (e * c ^ 2) / c ^ 2` using `by field_simp`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[this, hr]`. Expand and normalize the polynomial expressions, which then agree. Establish `hne : e * c ^ 2 - 1 ≠ 0`. Introduce `h`. Apply `hns'` to reduce the goal to its premises.
+Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨1, by rw [sub_eq_zero] at h; rw [h, mul_one]⟩`. Establish `hv0 : Valued.v (e * c ^ 2 - 1) ≠ 0` using `(Valuation.ne_zero_iff _).mpr hne`. Take `⟨j', hj'⟩ : ∃ j' : ℤ, Valued.v (e * c ^ 2 - 1) = WithZero.exp j'` from `⟨WithZero.log _, (WithZero.exp_log hv0).symm⟩`. Establish `hj'lt : j' < j` using `by rw [hj', hj, WithZero.exp_lt_exp] at hlt; exact hlt`. Take `⟨c', hc'0, hc'⟩` from `ih (e * c ^ 2) he' hns' j' hj' (by push_cast at hja; omega)`.
-
-Use `⟨c * c', mul_ne_zero hc0 hc'0, ?_⟩` and prove the remaining obligations. Rewrite using `[show e * (c * c') ^ 2 = e * c ^ 2 * c' ^ 2 by ring]`. Conclude with `hc'`. Use `⟨1, one_ne_zero, Or.inl ⟨by rw [one_pow, mul_one, he], by rwa [one_pow, mul_one], m, by rw [one_pow, mul_one, hj, hm]⟩⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem exists_normalForm_nonsquare_unit_lemma (F : Type) [Field F] [NumberField F]
     (v : HeightOneSpectrum (𝓞 F)) (π : v.adicCompletion F) (hπ : Valued.v π = WithZero.exp (-1))
@@ -377,25 +367,21 @@ private theorem exists_normalForm_nonsquare_unit_lemma (F : Type) [Field F] [Num
 open NumberField IsDedekindDomain in
 open scoped WithZero in
 /- English proof (translation)
-Set `S : Setoid {a : K // w a ≤ 1}` to `{ r := fun a b => w (a.1 - b.1) < 1 iseqv := { refl := fun a => by simp`. Use symmetry as in `:= fun {a b} h => by rwa [← Valuation.map_neg, neg_sub]`. Use `trans := fun {a b c} hab hbc => by`. Establish `: a.1 - c.1 = (a.1 - b.1) + (b.1 - c.1)` using `by ring`. Rewrite using `[this]`.
+Introduce a local definition for the expression. Use symmetry to reverse the relation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Conclude with `Valuation.map_add_lt w hab hbc } }`. Set `sq : {a : K // w a ≤ 1} → {a : K // w a ≤ 1}` to `fun a => ⟨a.1 ^ 2, by rw [map_pow]; exact pow_le_one₀ zero_le' a.2⟩`. Establish `hsq : ∀ a b, S.r a b → S.r (sq a) (sq b)`. Introduce `a b hab`. Use `show w (a.1 ^ 2 - b.1 ^ 2) < 1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[show a.1 ^ 2 - b.1 ^ 2 = (a.1 - b.1) * (a.1 + b.1) by ring, map_mul]`. Conclude with `lt_of_le_of_lt (mul_le_of_le_one_right zero_le' (Valuation.map_add_le w a.2 b.2)) hab`. Set `g : Quotient S → Quotient S` to `Quotient.map sq hsq`. Establish `hfin : Finite (Quotient S)`. Use `Finite.of_surjective (fun r : R => Quotient.mk S ⟨r.1, hR r.1 r.2⟩) ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Introduce `q`. Proceed by induction on `q using Quotient.inductionOn with`. Consider the case `h a`. Take `⟨r, hr, har⟩` from `hcov a.1 a.2`. Conclude with `⟨⟨r, hr⟩, Quotient.sound (by show w (r - a.1) < 1`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Rewrite using `[← Valuation.map_neg, neg_sub])⟩` and apply the resulting hypothesis. Establish `hinj : Function.Injective g`. Introduce `p q hpq`. Proceed by induction on `p using Quotient.inductionOn with`. Consider the case `h a`.
+Treat this case separately. Proceed by induction. Treat this case separately. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Proceed by induction on `q using Quotient.inductionOn with`. Consider the case `h b`. Establish `hab : w (a.1 ^ 2 - b.1 ^ 2) < 1` using `Quotient.exact hpq`. Apply `Quotient.sound` to reduce the goal to its premises. Use `show w (a.1 - b.1) < 1`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hsq2 : w ((a.1 - b.1) ^ 2) < 1`. Rewrite using `[show (a.1 - b.1) ^ 2 = (a.1 ^ 2 - b.1 ^ 2) + -(2 * b.1 * (a.1 - b.1)) by ring]`. Use `Valuation.map_add_lt w hab ?_` and prove the remaining obligations. Rewrite using `[Valuation.map_neg, map_mul, map_mul]`. Use `lt_of_le_of_lt ?_ h2` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[mul_assoc]`. Conclude with `mul_le_of_le_one_right zero_le' (mul_le_one' b.2 (Valuation.map_sub_le w a.2 b.2))`. Assume the negation of the conclusion as `hge`. Use `push_neg at hge`. Rewrite `hsq2` using `[map_pow]`.
-
-Conclude with `absurd hsq2 (not_lt.mpr (one_le_pow₀ hge))`. Establish `hsurj : Function.Surjective g` using `Finite.injective_iff_surjective.mp hinj`. Take `⟨q, hq⟩` from `hsurj (Quotient.mk S ⟨x, hx⟩)`. Proceed by induction on `q using Quotient.inductionOn with`. Consider the case `h y`.
-
-Establish `hyx : w (y.1 ^ 2 - x) < 1` using `Quotient.exact hq`. Conclude with `⟨y.1, y.2, by rwa [← Valuation.map_neg, neg_sub]⟩`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem exists_sq_near_of_valuation_two_lt_one {K : Type} [Field K] (w : Valuation K ℤᵐ⁰)
     (R : Finset K) (hR : ∀ r ∈ R, w r ≤ 1) (hcov : ∀ x : K, w x ≤ 1 → ∃ r ∈ R, w (x - r) < 1)
@@ -457,23 +443,23 @@ open NumberField IsDedekindDomain in
 open scoped WithZero in
 
 /- English proof (translation)
-Introduce `F _ _ v δ hδ0 hδsq`. Take `⟨⟨π₀, -, hπ⟩, -, -, R, -, hR, hcov⟩` from `_root_.GlobalTheory.QNorm.exists_uniformizer_and_residue_representatives F v`. Take `⟨π, hπ_def⟩ : ∃ π : v.adicCompletion F, π = algebraMap F (v.adicCompletion F) π₀` from `⟨_, rfl⟩`. Rewrite `hπ` using `[← hπ_def]`. Establish `hπ0 : π ≠ 0` using `(Valuation.ne_zero_iff _).mp (by rw [hπ]; exact WithZero.exp_ne_zero)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hvδ : Valued.v δ ≠ 0` using `(Valuation.ne_zero_iff _).mpr hδ0`. Take `⟨m, hm⟩ : ∃ m : ℤ, Valued.v δ = WithZero.exp m` from `⟨_, (WithZero.exp_log hvδ).symm⟩`. Break down `Int.even_or_odd m with ⟨n, hn⟩ | ⟨n, hn⟩` into its components or cases. Take `⟨c₀, hc₀_def⟩ : ∃ c₀ : v.adicCompletion F, c₀ = π ^ n` from `⟨_, rfl⟩`. Establish `hc₀0 : c₀ ≠ 0` using `by rw [hc₀_def]; exact zpow_ne_zero _ hπ0`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hvc₀ : Valued.v c₀ = WithZero.exp (-n)`. Rewrite using `[hc₀_def, map_zpow₀, hπ, ← WithZero.exp_zsmul, zsmul_eq_mul]`. Use `congr 1`. Simplify using the standard rewrite rules. Take `⟨e, he_def⟩ : ∃ e : v.adicCompletion F, e = δ * c₀ ^ 2` from `⟨_, rfl⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Establish `he : Valued.v e = 1`. Rewrite using `[he_def, map_mul, map_pow, hm, hvc₀, ← WithZero.exp_nsmul, ← WithZero.exp_add, ← WithZero.exp_zero]`. Use `congr 1`. Rewrite using `[hn]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hns : ¬ IsSquare e`. Introduce and unpack `⟨r, hr⟩`. Apply `hδsq` to reduce the goal to its premises. Use `⟨r / c₀, ?_⟩` and prove the remaining obligations.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: δ = e / c₀ ^ 2` using `by rw [he_def]; field_simp`. Rewrite using `[this, hr]`. Expand and normalize the polynomial expressions, which then agree. Establish `h4 : (4 : v.adicCompletion F) ≠ 0`. Rewrite using `[← map_ofNat (algebraMap F (v.adicCompletion F)) 4]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(map_ne_zero _).mpr (by norm_num)`. Establish `hv4 : Valued.v (4 : v.adicCompletion F) ≠ 0` using `(Valuation.ne_zero_iff _).mpr h4`. Establish `he1 : e - 1 ≠ 0`. Introduce `h`. Apply `hns` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Supply the required witnesses or components.
 
-Conclude with `⟨1, by rw [sub_eq_zero] at h; rw [h, mul_one]⟩`. Establish `hve1 : Valued.v (e - 1) ≠ 0` using `(Valuation.ne_zero_iff _).mpr he1`. Take `⟨c, hc0, hc⟩` from `exists_normalForm_nonsquare_unit_lemma F v π hπ (fun h2 => exists_sq_near_of_valuation_two_lt_one Valued.v R hR hcov h2) (WithZero.log (Valued.v (4 : v.adicCompletion F))) (WithZero.exp_log hv4).symm (WithZero.log (Valued.v (e - 1)) - WithZero.log (Valued.v (4 : v.adicCompletion …`. Use `⟨c₀ * c, mul_ne_zero hc₀0 hc0, Or.inr ?_⟩` and prove the remaining obligations. Rewrite using `[show δ * (c₀ * c) ^ 2 = e * c ^ 2 by rw [he_def]; ring]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `hc`. Conclude with `⟨1, one_ne_zero, Or.inl ⟨n, by rw [one_pow, mul_one, hm, hn]⟩⟩`.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.QNorm.exists_normal_form_of_not_isSquare : ∀ (F : Type) [Field F] [NumberField F] (v : HeightOneSpectrum (𝓞 F)) (δ : v.adicCompletion F), δ ≠ 0 → ¬ IsSquare δ → ∃ c : v.adicCompletion F, c ≠ 0 ∧ ((∃ n : ℤ, Valued.v (δ * c ^ 2) = WithZero.exp (2 * n + 1)) ∨ (Valued.v (δ * c ^ 2) = 1 ∧ Valued.v (4 : v.adicCompletion F) < Valued.v (δ * c ^ 2 - 1) ∧ ∃ n : ℤ, Valued.v (δ * c ^ 2 - 1) = WithZero.exp (2 * n + 1)) ∨ _root_.GlobalTheory.QNorm.EvenNorms Valued.v (δ * c ^ 2)) := by
   intro F _ _ v δ hδ0 hδsq

@@ -11,9 +11,9 @@ namespace PositivityTheory.Rg.BcB.SpectralAccumulation.Cz.BlockCapelli
 variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E]
 
 /- English proof (translation)
-Establish `hR : restrLin (stdBlocks n h) m i ψ = θ` using `Subtype.ext (funext fun y => hθ y)`. Establish `key` using `LinearMap.congr_fun (qdet_intertwine (restrLin (stdBlocks n h) m i) _ (Eop τ) (restrLin_Eop (stdBlocks n h) m i τ) w) ψ`. Rewrite `key` using `[LinearMap.comp_apply, LinearMap.comp_apply, hR]`. Establish `k2` using `congrArg (fun φ : Sm E (n i) => φ.1 (m i)) key`. Establish `hm : Function.update m i (m i) = m` using `Function.update_eq_self i m`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `k3 : (Formalism.REAL.qdet (fun p q : Fin (n i) => Eop (a` using `n 0 + n 1) τ (stdBlocks n h ⟨i, p⟩) (stdBlocks n h ⟨i, q⟩)) w ψ).1 (leviEmb (Ad E) (stdBlocks n h) (Function.update m i (m i))) = (Formalism.REAL.qdet (Eop (a := n i) τ) w θ).1 (m i) := k2`. Rewrite `k3` using `[hm]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem qdet_slice {n : Fin 2 → ℕ} (h : ∑ i, n i = n 0 + n 1) (τ : E →+* ℂ) (i : Fin 2) (w : ℂ)
     (ψ : Sm E (n 0 + n 1)) (m : ∀ j, GA E (n j)) (θ : Sm E (n i))
@@ -32,7 +32,7 @@ theorem qdet_slice {n : Fin 2 → ℕ} (h : ∑ i, n i = n 0 + n 1) (τ : E →+
   rwa [hm] at k3
 
 /- English proof (translation)
-Use function extensionality and compare the values at `j`. Use `match j with`. Consider the case `⟨0, _⟩ => rfl`. Consider the case `⟨1, _⟩ => rfl`.
+Apply function extensionality and compare values at an arbitrary argument. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem update_levPair_zero {n : Fin 2 → ℕ} (p : GA E (n 0) × GA E (n 1)) (y : GA E (n 0)) :
     Function.update (CapFactor.levPair p) 0 y = CapFactor.levPair (y, p.2) := by
@@ -42,7 +42,7 @@ theorem update_levPair_zero {n : Fin 2 → ℕ} (p : GA E (n 0) × GA E (n 1)) (
   | ⟨1, _⟩ => rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `j`. Use `match j with`. Consider the case `⟨0, _⟩ => rfl`. Consider the case `⟨1, _⟩ => rfl`.
+Apply function extensionality and compare values at an arbitrary argument. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem update_levPair_one {n : Fin 2 → ℕ} (p : GA E (n 0) × GA E (n 1)) (y : GA E (n 1)) :
     Function.update (CapFactor.levPair p) 1 y = CapFactor.levPair (p.1, y) := by
@@ -52,11 +52,11 @@ theorem update_levPair_one {n : Fin 2 → ℕ} (p : GA E (n 0) × GA E (n 1)) (y
   | ⟨1, _⟩ => rfl
 
 /- English proof (translation)
-Establish `h : ∑ i, n i = n 0 + n 1` using `CapFactor.two_sum n`. Use `set θ : Sm E (n 0) := ∑ i, (q i).1 p.2 • b i with hθ`. Establish `key` using `qdet_slice h τ 0 (w + ((n 0 : ℂ) - 1) / 2) G (CapFactor.levPair p) θ (fun y => by`. Rewrite using `[update_levPair_zero, ← CapFactor.lev_eq_leviEmb n h, hG]`. Simplify using `[hθ, Finset.sum_apply, mul_comm])`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `e1 : (fun p q : Fin (n 0) => Eop (a` using `n 0 + n 1) τ (stdBlocks n h ⟨0, p⟩) (stdBlocks n h ⟨0, q⟩)) = fun p q => Eop (a := n 0 + n 1) τ (Fin.castAdd (n 1) p) (Fin.castAdd (n 1) q) := by`. Use function extensionality and compare the values at `p q`. Rewrite using `[CapFactor.std_zero, CapFactor.std_zero]`. Rewrite `key` using `[e1, ← CapFactor.lev_eq_leviEmb n h]`. Express the relevant statement in the definitionally equal form `(capR (n 0) (n 1) τ w G).1 _ = (cap τ w θ).1 p.1 at key`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[key, hθ, map_sum]`. Simplify using `[Finset.sum_apply, mul_comm]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem capR_expand {n : Fin 2 → ℕ} (τ : E →+* ℂ) (w : ℂ) (G : Sm E (n 0 + n 1)) {k : ℕ}
     (b : Fin k → Sm E (n 0)) (q : Fin k → Sm E (n 1))
@@ -77,11 +77,11 @@ theorem capR_expand {n : Fin 2 → ℕ} (τ : E →+* ℂ) (w : ℂ) (G : Sm E (
   simp [Finset.sum_apply, mul_comm]
 
 /- English proof (translation)
-Establish `h : ∑ i, n i = n 0 + n 1` using `CapFactor.two_sum n`. Use `set θ : Sm E (n 1) := ∑ i, (b i).1 p.1 • q i with hθ`. Establish `key` using `qdet_slice h τ 1 (w + ((n 1 : ℂ) - 1) / 2) G (CapFactor.levPair p) θ (fun y => by`. Rewrite using `[update_levPair_one, ← CapFactor.lev_eq_leviEmb n h, hG]`. Simplify using `[hθ, Finset.sum_apply])`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `e1 : (fun p q : Fin (n 1) => Eop (a` using `n 0 + n 1) τ (stdBlocks n h ⟨1, p⟩) (stdBlocks n h ⟨1, q⟩)) = fun p q => Eop (a := n 0 + n 1) τ (Fin.natAdd (n 0) p) (Fin.natAdd (n 0) q) := by`. Use function extensionality and compare the values at `p q`. Rewrite using `[CapFactor.std_one, CapFactor.std_one]`. Rewrite `key` using `[e1, ← CapFactor.lev_eq_leviEmb n h]`. Express the relevant statement in the definitionally equal form `(capS (n 0) (n 1) τ w G).1 _ = (cap τ w θ).1 p.2 at key`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[key, hθ, map_sum]`. Simplify using `[Finset.sum_apply]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem capS_expand {n : Fin 2 → ℕ} (τ : E →+* ℂ) (w : ℂ) (G : Sm E (n 0 + n 1)) {k : ℕ}
     (b : Fin k → Sm E (n 0)) (q : Fin k → Sm E (n 1))

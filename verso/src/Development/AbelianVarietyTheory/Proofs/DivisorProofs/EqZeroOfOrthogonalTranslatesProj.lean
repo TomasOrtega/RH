@@ -17,11 +17,11 @@ variable {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℝ V] [FiniteDime
 omit [FiniteDimensional ℝ V] [MeasurableSpace V] [BorelSpace V] [CompleteSpace H] in
 
 /- English proof (translation)
-Establish `h0 : omJ J u (-u) = 0`. Use `omJ_skew hJ u u` as an intermediate fact. Establish `e : omJ J u (-u) = -omJ J u u` using `by simp [omJ]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `e : ρ u (ρ (-u) y) = y`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Rewrite using `[h.2.1, h0, add_neg_cancel, h.1]`. Simplify using the standard rewrite rules. Use `(⟨(ρ u : H →ₗ[ℂ] H), h.2.2.1 u⟩ : H →ₗᵢ[ℂ] H).inner_map_map x (ρ (-u) y)` as an intermediate fact. Rewrite using `[← this]`. Express the relevant statement in the definitionally equal form `_ = ⟪ρ u x, ρ u (ρ (-u) y)⟫_ℂ`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[e]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem IsHeis.inner_left (hJ : ∀ x, J (J x) = -x) (h : IsHeis (omJ J) ρ) (u : V) (x y : H) :
     ⟪ρ u x, y⟫_ℂ = ⟪x, ρ (-u) y⟫_ℂ := by
@@ -38,7 +38,7 @@ theorem IsHeis.inner_left (hJ : ∀ x, J (J x) = -x) (h : IsHeis (omJ J) ρ) (u 
   rw [e]
 
 /- English proof (translation)
-Rewrite using `[proj_apply, ← integral_inner (h.integrable y)]`. Simplify using `only [inner_smul_right]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem inner_proj_right {om : V → V → ℝ} (h : IsHeis om ρ) (x y : H) :
     ⟪x, proj h y⟫_ℂ = ∫ u, gau u * ⟪x, ρ u y⟫_ℂ := by
@@ -47,7 +47,7 @@ theorem inner_proj_right {om : V → V → ℝ} (h : IsHeis om ρ) (x y : H) :
 
 omit [InnerProductSpace ℝ V] [FiniteDimensional ℝ V] [MeasurableSpace V] [BorelSpace V] in
 /- English proof (translation)
-Unfold `gau`. Rewrite using `[← Complex.exp_conj]`. Simplify using `[map_ofNat]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem conj_gau (u : V) : (starRingEnd ℂ) (gau u) = gau u := by
   unfold gau
@@ -55,7 +55,7 @@ theorem conj_gau (u : V) : (starRingEnd ℂ) (gau u) = gau u := by
   simp [map_ofNat]
 
 /- English proof (translation)
-Rewrite using `[← inner_conj_symm, inner_proj_right, inner_proj_right, ← integral_conj, ← integral_neg_eq_self (fun u => gau u * ⟪x, ρ u y⟫_ℂ)]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun u => ?_)` and prove the remaining obligations. Simplify using `only [map_mul, conj_gau, inner_conj_symm, gau_neg, h.inner_left hJ]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem inner_proj_left (hJ : ∀ x, J (J x) = -x) (h : IsHeis (omJ J) ρ) (x y : H) :
     ⟪proj h x, y⟫_ℂ = ⟪x, proj h y⟫_ℂ := by
@@ -65,9 +65,9 @@ theorem inner_proj_left (hJ : ∀ x, J (J x) = -x) (h : IsHeis (omJ J) ρ) (x y 
   simp only [map_mul, conj_gau, inner_conj_symm, gau_neg, h.inner_left hJ]
 
 /- English proof (translation)
-Establish `hpi : (π : ℂ) ≠ 0` using `by exact_mod_cast Real.pi_ne_zero`. Establish `key` using `GaussianFourier.integral_cexp_neg_mul_sq_norm (V := V) (b := (π : ℂ)) (by simpa using Real.pi_pos)`. Rewrite `key` using `[div_self hpi, one_cpow]`. Rewrite using `[← key]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun u => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [gau, ← Complex.exp_add]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem integral_gau_mul_gau : ∫ u : V, gau u * gau u = 1 := by
   have hpi : (π : ℂ) ≠ 0 := by exact_mod_cast Real.pi_ne_zero
@@ -81,7 +81,7 @@ theorem integral_gau_mul_gau : ∫ u : V, gau u * gau u = 1 := by
   ring
 
 /- English proof (translation)
-Use `proj_heis_proj hJ h 0 x` as an intermediate fact. Rewrite `this` using `[h.1, gau_zero, one_smul]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem proj_idem (hJ : ∀ x, J (J x) = -x) (h : IsHeis (omJ J) ρ) (x : H) :
     proj h (proj h x) = proj h x := by
@@ -89,7 +89,7 @@ theorem proj_idem (hJ : ∀ x, J (J x) = -x) (h : IsHeis (omJ J) ρ) (x : H) :
   rwa [h.1, gau_zero, one_smul] at this
 
 /- English proof (translation)
-Establish `h1 : ⟪v, proj h v⟫_ℂ = ⟪v, v⟫_ℂ`. Rewrite using `[inner_proj_right]`. Simplify using `only [hv, ← mul_assoc]`. Rewrite using `[integral_mul_const, integral_gau_mul_gau, one_mul]`. Rewrite using `[← sub_eq_zero, ← inner_self_eq_zero (𝕜 := ℂ), inner_sub_left, inner_sub_right, inner_sub_right, inner_proj_left hJ, inner_proj_left hJ, proj_idem hJ, h1]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -104,9 +104,9 @@ theorem proj_eq_self_of_vacuum (hJ : ∀ x, J (J x) = -x) (h : IsHeis (omJ J) ρ
   ring
 
 /- English proof (translation)
-Establish `h1 : ∀ a, proj h (ρ (-a) x) = 0` using `fun a => by`. Use `ext_inner_left ℂ fun y => ?_` and prove the remaining obligations. Rewrite using `[← inner_proj_left hJ, ← h.inner_left hJ, hx, inner_zero_right]`. Establish `hg : Good h x` using `fun n => by simp [h1]`. Rewrite using `[← hg.inversion hJ]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[h1]`.
+Simplify using the standard rewrite rules.
 -/
 theorem eq_zero_of_orthogonal_translates_proj (hJ : ∀ x, J (J x) = -x) (h : IsHeis (omJ J) ρ) {x : H}
     (hx : ∀ y a, ⟪ρ a (proj h y), x⟫_ℂ = 0) : x = 0 := by
@@ -126,7 +126,7 @@ noncomputable def signJ (p q : ℕ) : EuclideanSpace ℂ (Fin p ⊕ Fin q) ≃�
   LinearIsometryEquiv.piLpCongrRight 2 fun a => rotation (signUnit p q a)
 
 /- English proof (translation)
-Rewrite using `[gau, ← ofReal_sum, ← EuclideanSpace.norm_sq_eq]`. Use `push_cast`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression.
 -/
 theorem gau_toLp {ι : Type} [Fintype ι] (z : EuclideanSpace ℂ ι) :
     gau z = Complex.exp (-(Real.pi / 2) * ∑ a, ((‖z a‖ ^ 2 : ℝ) : ℂ)) := by

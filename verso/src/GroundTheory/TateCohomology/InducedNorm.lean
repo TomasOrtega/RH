@@ -39,9 +39,7 @@ noncomputable def fromCoindRes (φ : M.V →ₗ[k] M.V) :
         mul_inv_cancel_left]⟩
 
 /- English proof (translation)
-Use extensionality with `m`. Express the relevant statement in the definitionally equal form `(fromCoindRes M φ).hom.toLinearMap ((toCoindRes M).hom.toLinearMap m) = m`. Use `(LinearMap.sum_apply _ _ _).trans ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `∑ x : G, M.ρ x⁻¹ (φ (M.ρ x m)) = m`. Use `conv_rhs => rw [← hφ m]`.
-
-Conclude with `Fintype.sum_equiv (Equiv.inv G) _ _ fun x => by simp`.
+By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. A detailed English derivation is pending.
 -/
 theorem toCoindRes_fromCoindRes (φ : M.V →ₗ[k] M.V)
     (hφ : ∀ m : M, ∑ g : G, M.ρ g (φ (M.ρ g⁻¹ m)) = m) :
@@ -54,7 +52,7 @@ theorem toCoindRes_fromCoindRes (φ : M.V →ₗ[k] M.V)
   exact Fintype.sum_equiv (Equiv.inv G) _ _ fun x => by simp
 
 /- English proof (translation)
-The claim follows from `(tateAcyclic_coind_bot _).of_retract _ _ (toCoindRes_fromCoindRes M φ hφ)`.
+A detailed English derivation is pending.
 -/
 theorem tateAcyclic_of_sum_eq (φ : M.V →ₗ[k] M.V)
     (hφ : ∀ m : M, ∑ g : G, M.ρ g (φ (M.ρ g⁻¹ m)) = m) : TateAcyclic M :=
@@ -80,11 +78,11 @@ theorem coeffOneProj_apply (x : MonoidAlgebra k G) :
 variable (B : Rep.{u} k G)
 
 /- English proof (translation)
-Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, Finset.sum_add_distrib, hx, hy]`. Consider the case `tmul x b`. Proceed by induction on `x using MonoidAlgebra.induction_linear with`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Proceed by induction.
 
-Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [TensorProduct.add_tmul, map_add, Finset.sum_add_distrib, hx, hy]`. Consider the case `single h c`. Rewrite using `[Fintype.sum_eq_single h]`. Simplify using `[Rep.tensor_ρ, coeffOneProj_apply]`.
+Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `g hg`. Establish `: g⁻¹ * h ≠ 1` using `fun e => hg (inv_mul_eq_one.mp e)`. Simplify using `[Rep.tensor_ρ, coeffOneProj_apply, this]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem sum_leftRegular_tensor (t : (leftRegular k G ⊗ B : Rep k G)) :
     ∑ g : G, (leftRegular k G ⊗ B).ρ g
@@ -104,26 +102,26 @@ theorem sum_leftRegular_tensor (t : (leftRegular k G ⊗ B : Rep k G)) :
         simp [Rep.tensor_ρ, coeffOneProj_apply, this]
 
 /- English proof (translation)
-The claim follows from `tateAcyclic_of_sum_eq _ (TensorProduct.map coeffOneProj LinearMap.id) (sum_leftRegular_tensor B)`.
+A detailed English derivation is pending.
 -/
 theorem tateAcyclic_leftRegular_tensor : TateAcyclic (leftRegular k G ⊗ B) :=
   tateAcyclic_of_sum_eq _ (TensorProduct.map coeffOneProj LinearMap.id) (sum_leftRegular_tensor B)
 
 /- English proof (translation)
-The claim follows from `tateAcyclic_leftRegular_tensor _`.
+A detailed English derivation is pending.
 -/
 theorem tateAcyclic_leftRegular_tensor_trivial (V : Type u) [AddCommGroup V] [Module k V] :
     TateAcyclic (leftRegular k G ⊗ trivial k G V) :=
   tateAcyclic_leftRegular_tensor _
 
 /- English proof (translation)
-The claim follows from `(tateAcyclic_leftRegular_tensor (𝟙_ (Rep k G))).of_iso (ρ_ (leftRegular k G)).symm`.
+A detailed English derivation is pending.
 -/
 theorem tateAcyclic_leftRegular : TateAcyclic (leftRegular k G) :=
   (tateAcyclic_leftRegular_tensor (𝟙_ (Rep k G))).of_iso (ρ_ (leftRegular k G)).symm
 
 /- English proof (translation)
-Conclude with `(tateAcyclic_leftRegular_tensor_trivial _).of_iso (leftRegularTensorTrivialIsoFree k G α).symm`.
+A detailed English derivation is pending.
 -/
 theorem tateAcyclic_free (α : Type u) : TateAcyclic (free k G α) := by
   classical

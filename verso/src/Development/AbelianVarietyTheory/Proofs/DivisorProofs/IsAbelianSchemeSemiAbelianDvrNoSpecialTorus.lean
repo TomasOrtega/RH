@@ -19,17 +19,17 @@ noncomputable section
 namespace GlobalTheory.ToricRankZero
 
 /- English proof (translation)
-Use `letI := E.addCommGroup`. Use `letI := E.free`. Use `letI := E.finite`. Use `letI := E.grpB`. Use `haveI := E.q_hom`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Establish `hsub : Subsingleton E.X` using `Module.finrank_zero_iff.1 hX`. Establish `hp` using `E.isKernel`. Establish `: Mono E.q` using `⟨fun {Y} x y hxy => by`. Establish `h1 : (x * y⁻¹) ≫ E.q = toUnit _ ≫ η[E.B]`. Rewrite using `[MonObj.mul_comp, GrpObj.inv_comp, hxy, mul_inv_cancel]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Establish `h2 : hp.lift _ _ h1 = 1`. Apply `(GlobalTheory.splitTorusPointsEquiv (Sp k) E.X Y).injective` to reduce the goal to its premises. Use `MonoidHom.ext fun a => ?_` and prove the remaining obligations. Establish `ha1 : a = 1` using `by show a = Multiplicative.ofAdd 0`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← ofAdd_toAdd a, Subsingleton.elim (Multiplicative.toAdd a) 0]`. Rewrite using `[ha1, map_one, map_one]`. Establish `h3` using `hp.lift_fst _ _ h1`. Use `haveI := E.i_hom`. Rewrite `h3` using `[h2, MonObj.one_comp]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `mul_inv_eq_one.1 h3.symm⟩`. Establish `: Mono E.q.left` using `inferInstanceAs (Mono ((Over.forget _).map E.q))`. Use `E.isAbelian.proper` as an intermediate fact. Establish `: Flat E.q.left` using `E.q_flat`. Establish `: Surjective E.q.left` using `E.q_surjective`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: QuasiCompact E.q.left` using `E.q_quasiCompact`. Establish `: IsIso E.q.left` using `Flat.isIso_of_surjective_of_mono E.q.left`. Rewrite using `[← Over.w E.q]`. Use `infer_instance`.
+A detailed English derivation is pending.
 -/
 theorem isProper_of_torusExtension_of_finrank_eq_zero {k : Type} [Field k] (G : Over (Sp k)) [GrpObj G]
     (E : TorusExtension G) (hX : (letI := E.addCommGroup; Module.finrank ℤ E.X) = 0) : IsProper G.hom := by
@@ -65,7 +65,7 @@ theorem isProper_of_torusExtension_of_finrank_eq_zero {k : Type} [Field k] (G : 
   infer_instance
 
 /- English proof (translation)
-Introduce `W L _ _ _ _ _ _ G _ hG hgen E hE`. Establish `hS : GlobalTheory.SS.SmConn G` using `⟨hG.comm, hG.smooth, hG.separated, hG.quasiCompact, hG.geomConnected⟩`. Establish `hsp : IsProper (GlobalTheory.SS.spFibre G).hom` using `isProper_of_torusExtension_of_finrank_eq_zero _ E hE`. Conclude with `GlobalTheory.SmConnProper.isAbelianScheme_of_smConn_of_isProper _ G hS (GlobalTheory.GoodRedProper.isProper_of_proper_fibres W L G hS hgen hsp)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isAbelianScheme_of_finrank_eq_zero : ∀ (W L : Type) [CommRing W] [IsDomain W] [IsDiscreteValuationRing W] [Field L] [Algebra W L] [IsFractionRing W L] (G : Over (Sp W)) [GrpObj G], IsSemiAbelian G → IsProper ((Over.pullback (spMap (algebraMap W L))).obj G).hom → ∀ E : TorusExtension (GlobalTheory.SS.spFibre G), (letI := E.addCommGroup; Module.finrank ℤ E.X) = 0 → IsAbelianScheme G := by
   intro W L _ _ _ _ _ _ G _ hG hgen E hE

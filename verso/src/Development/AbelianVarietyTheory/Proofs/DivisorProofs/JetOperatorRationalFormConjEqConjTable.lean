@@ -18,26 +18,24 @@ open Formalism.MainNotions.TaylorLogMetric Formalism.MainNotions.StandardLattice
 namespace GlobalTheory.JetDescent
 
 /- English proof (translation)
-Unfold `Formalism.MainNotions.TaylorLogMetric.liftM`. Conclude with `dif_pos hx`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem coe_lift_of_mem (M : IntermediateField ℚ ℂ) (x : ℂ) (hx : x ∈ M) : Formalism.MainNotions.TaylorLogMetric.liftM M x = ⟨x, hx⟩ := by
   unfold Formalism.MainNotions.TaylorLogMetric.liftM
   exact dif_pos hx
 
 /- English proof (translation)
-Introduce `D a b lam lam' n J σ ρ' f hV hJ hσ hf u`. Establish `halg : ∀ x : D.what₂.LL, D.what₂.embLL x ∈ Qbar` using `fun x => by`. Rewrite using `[mem_algebraicClosure_iff]`. Conclude with `(Algebra.IsAlgebraic.isAlgebraic (R := ℚ) x).algHom D.what₂.embLL.toRatAlgHom`. Set `e : D.what₂.LL →+* Qbar` to `D.what₂.embLL.codRestrict Qbar halg`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `i : Qbar →+* ℂ` to `algebraMap Qbar ℂ`. Set `r : Qbar →+* ℂ` to `ρ'`. Set `Jq : (Formalism.L2.Ker.DVar D.what₂.Tau a b →₀ ℕ) → Qbar` to `fun m => ⟨J m, hJ m⟩`. Establish `hie : i.comp e = D.what₂.embLL` using `RingHom.ext fun _ => rfl`. Establish `hre : r.comp e = σ` using `RingHom.ext fun x => by`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hσ x]`. Unfold `Formalism.MainNotions.StandardLatticesGL3.cj`. Rewrite using `[coe_lift_of_mem _ _ (halg x)]`. Both sides reduce to the same expression. Establish `hJi : (fun m => i (Jq m)) = J` using `funext fun _ => rfl`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hJr : (fun m => r (Jq m)) = fun m => Formalism.MainNotions.StandardLatticesGL3.cj Qbar ρ' (J m)` using `funext fun m => by`. Unfold `Formalism.MainNotions.StandardLatticesGL3.cj`. Rewrite using `[coe_lift_of_mem _ _ (hJ m)]`. Both sides reduce to the same expression. Establish `h1 : Formalism.L2.Ker.jetMap J n (MvPolynomial.map D.what₂.embLL u.1) = MvPolynomial.map D.what₂.embLL (f u).1`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `congrArg Subtype.val (hf u)`. Rewrite `h` using `[Formalism.L2.Ker.jetOp_coe lam lam' n hV]`. Conclude with `h`. Establish `h2 : Formalism.L2.Ker.jetMap Jq n (MvPolynomial.map e u.1) = MvPolynomial.map e (f u).1`. Apply `MvPolynomial.map_injective i i.injective` to reduce the goal to its premises.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Formalism.L2.Ker.map_jetMap, MvPolynomial.map_map, MvPolynomial.map_map, hie, hJi]`. Conclude with `h1`. Establish `h3` using `congrArg (MvPolynomial.map r) h2`. Rewrite `h3` using `[Formalism.L2.Ker.map_jetMap, MvPolynomial.map_map, MvPolynomial.map_map, hre, hJr]`. Apply `Subtype.ext` to reduce the goal to its premises.
-
-Rewrite using `[Formalism.L2.Ker.jetOp_coe lam lam' n hV]`. Conclude with `h3.symm`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mapVV_rational_form_conj : ∀ {D : D7} {a b : ℕ} (lam : D.what₂.Tau → DomWeight a) (lam' : D.what₂.Tau → DomWeight b) (n : D.what₂.Tau → ℕ)
     (J : (Formalism.L2.Ker.DVar D.what₂.Tau a b →₀ ℕ) → ℂ) (σ : D.what₂.LL →+* ℂ) (ρ' : Qbar →ₐ[ℚ] ℂ)

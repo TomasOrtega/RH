@@ -17,13 +17,13 @@ namespace GlobalTheory.SUCovol
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
 
 /- English proof (translation)
-The claim follows from `(Module.finBasis ℚ E).equivFun.injective.countable`.
+A detailed English derivation is pending.
 -/
 theorem countable_numberField : Countable E :=
   (Module.finBasis ℚ E).equivFun.injective.countable
 
 /- English proof (translation)
-Use `haveI := countable_numberField (E := E)`. Use `haveI : Countable (Matrix (Fin r) (Fin r) E) := inferInstanceAs (Countable (Fin r → Fin r → E))`. Conclude with `Function.Injective.countable (f := (Units.val : GL (Fin r) E → Matrix (Fin r) (Fin r) E)) fun a b h => Units.ext h`.
+A detailed English derivation is pending.
 -/
 theorem countable_GL : Countable (GL (Fin r) E) := by
   haveI := countable_numberField (E := E)
@@ -37,33 +37,33 @@ def invB {Ψ : Finset (E →+* ℂ)} (b : Frame Ψ r) : Frame Ψ r :=
   fun τ => ((mat b τ)⁻¹ : Matrix (Fin r) (Fin r) ℂ)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `τ`. Conclude with `Matrix.mul_assoc (mat y τ) (mat b τ) (mat b' τ)`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem rmul_assoc {Ψ : Finset (E →+* ℂ)} (y b b' : Frame Ψ r) :
     rmul (rmul y b) b' = rmul y (rmul b b') := by
   funext τ; exact Matrix.mul_assoc (mat y τ) (mat b τ) (mat b' τ)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `τ`. Conclude with `Matrix.mul_one (mat y τ)`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem rmul_idF {Ψ : Finset (E →+* ℂ)} (y : Frame Ψ r) : rmul y (idF Ψ r) = y := by
   funext τ; exact Matrix.mul_one (mat y τ)
 
 /- English proof (translation)
-Introduce `τ` and use `⟨by show (1 : Matrix (Fin r) (Fin r) ℂ).det ≠ 0; simp, fun a c h => by show (1 : Matrix (Fin r) (Fin r) ℂ) a c = 0; exact Matrix.one_apply_ne h.ne'⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem idF_mem (Ψ : Finset (E →+* ℂ)) (r : ℕ) : idF Ψ r ∈ Bor Ψ r := fun τ =>
   ⟨by show (1 : Matrix (Fin r) (Fin r) ℂ).det ≠ 0; simp,
     fun a c h => by show (1 : Matrix (Fin r) (Fin r) ℂ) a c = 0; exact Matrix.one_apply_ne h.ne'⟩
 
 /- English proof (translation)
-Introduce `a c h` and use `(hb τ).2 a c h`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem tri_of_mem {Ψ : Finset (E →+* ℂ)} {b : Frame Ψ r} (hb : b ∈ Bor Ψ r) (τ : Ψ) :
     (mat b τ).BlockTriangular id := fun a c h => (hb τ).2 a c h
 
 /- English proof (translation)
-Introduce `τ`. Establish `hm : mat (rmul b b') τ = mat b τ * mat b' τ` using `rfl`. Use `⟨by rw [hm, Matrix.det_mul]; exact mul_ne_zero (hb τ).1 (hb' τ).1, fun a c h => ?_⟩` and prove the remaining obligations. Conclude with `((tri_of_mem hb τ).mul (tri_of_mem hb' τ)) h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem rmul_mem {Ψ : Finset (E →+* ℂ)} {b b' : Frame Ψ r} (hb : b ∈ Bor Ψ r) (hb' : b' ∈ Bor Ψ r) :
     rmul b b' ∈ Bor Ψ r := by
@@ -73,9 +73,9 @@ theorem rmul_mem {Ψ : Finset (E →+* ℂ)} {b b' : Frame Ψ r} (hb : b ∈ Bor
   exact ((tri_of_mem hb τ).mul (tri_of_mem hb' τ)) h
 
 /- English proof (translation)
-Introduce `τ`. Establish `hm : mat (invB b) τ = (mat b τ)⁻¹` using `rfl`. Establish `hu : IsUnit (mat b τ).det` using `isUnit_iff_ne_zero.mpr (hb τ).1`. Use `letI := Matrix.invertibleOfIsUnitDet _ hu`. Use `⟨by rw [hm]; exact (Matrix.isUnit_nonsing_inv_det _ hu).ne_zero, fun a c h => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(Matrix.blockTriangular_inv_of_blockTriangular (tri_of_mem hb τ)) h`.
+A detailed English derivation is pending.
 -/
 theorem invB_mem {Ψ : Finset (E →+* ℂ)} {b : Frame Ψ r} (hb : b ∈ Bor Ψ r) : invB b ∈ Bor Ψ r := by
   intro τ
@@ -86,14 +86,14 @@ theorem invB_mem {Ψ : Finset (E →+* ℂ)} {b : Frame Ψ r} (hb : b ∈ Bor Ψ
   exact (Matrix.blockTriangular_inv_of_blockTriangular (tri_of_mem hb τ)) h
 
 /- English proof (translation)
-Use function extensionality and compare the values at `τ`. Conclude with `Matrix.mul_nonsing_inv (mat b τ) (isUnit_iff_ne_zero.mpr (hb τ).1)`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem rmul_invB {Ψ : Finset (E →+* ℂ)} {b : Frame Ψ r} (hb : b ∈ Bor Ψ r) : rmul b (invB b) = idF Ψ r := by
   funext τ
   exact Matrix.mul_nonsing_inv (mat b τ) (isUnit_iff_ne_zero.mpr (hb τ).1)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `τ`. Conclude with `(Matrix.mul_assoc ((γ : Matrix (Fin r) (Fin r) E).map τ.1) (mat y τ) (mat b τ)).symm`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem lact_rmul {Ψ : Finset (E →+* ℂ)} (γ : GL (Fin r) E) (y b : Frame Ψ r) :
     lact γ (rmul y b) = rmul (lact γ y) b := by
@@ -101,7 +101,7 @@ theorem lact_rmul {Ψ : Finset (E →+* ℂ)} (γ : GL (Fin r) E) (y b : Frame �
   exact (Matrix.mul_assoc ((γ : Matrix (Fin r) (Fin r) E).map τ.1) (mat y τ) (mat b τ)).symm
 
 /- English proof (translation)
-Use function extensionality and compare the values at `τ`. Use `show ((γ * δ : GL (Fin r) E) : Matrix (Fin r) (Fin r) E).map τ.1 * mat y τ = (γ : Matrix (Fin r) (Fin r) E).map τ.1 * ((δ : Matrix (Fin r) (Fin r) E).map τ.1 * mat y τ)`. Rewrite using `[Units.val_mul, Matrix.map_mul, Matrix.mul_assoc]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lact_mul {Ψ : Finset (E →+* ℂ)} (γ δ : GL (Fin r) E) (y : Frame Ψ r) :
     lact (γ * δ) y = lact γ (lact δ y) := by
@@ -111,7 +111,7 @@ theorem lact_mul {Ψ : Finset (E →+* ℂ)} (γ δ : GL (Fin r) E) (y : Frame �
   rw [Units.val_mul, Matrix.map_mul, Matrix.mul_assoc]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `τ`. Use `show ((1 : GL (Fin r) E) : Matrix (Fin r) (Fin r) E).map τ.1 * mat y τ = mat y τ`. Rewrite using `[Units.val_one, Matrix.map_one _ (map_zero _) (map_one _), Matrix.one_mul]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lact_one {Ψ : Finset (E →+* ℂ)} (y : Frame Ψ r) : lact (1 : GL (Fin r) E) y = y := by
   funext τ
@@ -119,18 +119,16 @@ theorem lact_one {Ψ : Finset (E →+* ℂ)} (y : Frame Ψ r) : lact (1 : GL (Fi
   rw [Units.val_one, Matrix.map_one _ (map_zero _) (map_one _), Matrix.one_mul]
 
 /- English proof (translation)
-Use `continuous_pi fun τ => ?_` and prove the remaining obligations. Conclude with `continuous_const.matrix_mul (continuous_apply τ : Continuous fun y : Frame Ψ r => mat y τ)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuous_lact {Ψ : Finset (E →+* ℂ)} (γ : GL (Fin r) E) : Continuous (lact (Ψ := Ψ) γ) := by
   refine continuous_pi fun τ => ?_
   exact continuous_const.matrix_mul (continuous_apply τ : Continuous fun y : Frame Ψ r => mat y τ)
 
 /- English proof (translation)
-Establish `hc : ∀ τ : Ψ, Continuous fun b : Frame Ψ r => mat b τ` using `fun τ => continuous_apply τ`. Establish `e : Bor Ψ r = ⋂ τ : Ψ, ({b | (mat b τ).det ≠ 0} ∩ ⋂ a : Fin r, ⋂ c : Fin r, {b : Frame Ψ r | c < a → b τ a c = 0})`. Use extensionality with `b`. Simplify using `[Bor]`. Rewrite using `[e]`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `MeasurableSet.iInter fun τ => (IsOpen.measurableSet ?_).inter (MeasurableSet.iInter fun a => MeasurableSet.iInter fun c => ?_)` and prove the remaining obligations. Conclude with `isOpen_ne_fun (hc τ).matrix_det continuous_const`. Distinguish the cases in `h : c < a`. Simplify using `only [h, true_implies]`. Conclude with `(isClosed_eq ((continuous_apply c).comp ((continuous_apply a).comp (continuous_apply τ))) continuous_const).measurableSet`.
-
-Simplify using `[h]`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem measurableSet_Bor (Ψ : Finset (E →+* ℂ)) (r : ℕ) : MeasurableSet (Bor Ψ r) := by
   have hc : ∀ τ : Ψ, Continuous fun b : Frame Ψ r => mat b τ := fun τ => continuous_apply τ
@@ -151,7 +149,7 @@ def frOf (X : Data E r) (x : Frame X.Ψ r) (g : realSU X.Ψ X.Gm) : Frame X.Ψ r
   X.lmulC (fun τ => (((g : realSU X.Ψ X.Gm) : X.Ψ → GL (Fin r) ℂ) τ : Matrix (Fin r) (Fin r) ℂ)) x
 
 /- English proof (translation)
-Use function extensionality and compare the values at `τ`. Use `show ((((h * g : realSU X.Ψ X.Gm) : X.Ψ → GL (Fin r) ℂ) τ : GL (Fin r) ℂ) : Matrix (Fin r) (Fin r) ℂ) * mat x τ = ((((h : realSU X.Ψ X.Gm) : X.Ψ → GL (Fin r) ℂ) τ : GL (Fin r) ℂ) : Matrix (Fin r) (Fin r) ℂ) * (((((g : realSU X.Ψ X.Gm) : X.Ψ → GL (Fin r) ℂ) τ : GL (Fin r) ℂ) : Mat …`. Rewrite using `[Subgroup.coe_mul, Pi.mul_apply, Units.val_mul, Matrix.mul_assoc]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem frOf_mul (X : Data E r) (x : Frame X.Ψ r) (h g : realSU X.Ψ X.Gm) :
     frOf X x (h * g) = X.lmulC (fun τ => (((h : realSU X.Ψ X.Gm) : X.Ψ → GL (Fin r) ℂ) τ :
@@ -163,14 +161,14 @@ theorem frOf_mul (X : Data E r) (x : Frame X.Ψ r) (h g : realSU X.Ψ X.Gm) :
   rw [Subgroup.coe_mul, Pi.mul_apply, Units.val_mul, Matrix.mul_assoc]
 
 /- English proof (translation)
-Rewrite using `[frOf_mul, ← e]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem frOf_smul (X : Data E r) (x : Frame X.Ψ r) (h g : realSU X.Ψ X.Gm) (c : GL (Fin r) E)
     (e : embGL X.Ψ r c = (h : X.Ψ → GL (Fin r) ℂ)) : frOf X x (h * g) = lact c (frOf X x g) := by
   rw [frOf_mul, ← e]; rfl
 
 /- English proof (translation)
-Use `continuous_pi fun τ => ?_` and prove the remaining obligations. Use `show Continuous fun g : realSU X.Ψ X.Gm => ((((g : realSU X.Ψ X.Gm) : X.Ψ → GL (Fin r) ℂ) τ : GL (Fin r) ℂ) : Matrix (Fin r) (Fin r) ℂ) * mat x τ`. Conclude with `(Units.continuous_val.comp ((continuous_apply τ).comp continuous_subtype_val)).matrix_mul continuous_const`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuous_frOf (X : Data E r) (x : Frame X.Ψ r) : Continuous (frOf X x) := by
   refine continuous_pi fun τ => ?_
@@ -184,69 +182,59 @@ end GlobalTheory.SUCovol
 namespace GlobalTheory.SUCovol
 
 /- English proof (translation)
-Introduce `E _ _ _ r X x FF _ _ hr hdet hx hFF`. Take `⟨C, hC⟩ : ∃ C : ℝ≥0∞, C = ENNReal.ofReal (((2 : ℝ) ^ (r * (r - 1) / 2) * (2 * Real.pi) ^ (r - 1) * Real.sqrt r) ^ fdeg E)` from `⟨_, rfl⟩`. Rewrite using `[← hC]`. Take `⟨ν, hν, hνφ⟩` from `GlobalTheory.T.exists_haar_specialUnitary_lying_over_flagDomain E r X x hr hx`. Establish `hμ : riemHaar X.Ψ X.Gm x = C • ν` using `by rw [hC]; exact GlobalTheory.T.riemannianHaar_specialUnitary_eq_smul_haar E r X x ν hr hx hν hνφ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `KF : ∀ φ : Frame X.Ψ r → ℝ≥0∞, Measurable φ → (∀ y ∈ X.dom, ∀ b ∈ Bor X.Ψ r, φ (rmul y b) = φ y) → ∫⁻ g, φ (frOf X x g) ∂riemHaar X.Ψ X.Gm x = C * ∫⁻ z, φ (cpt X x z) ∂muF X x`. Introduce `φ hφ hB`. Rewrite using `[hμ, lintegral_smul_measure, smul_eq_mul]`. Conclude with `congrArg (C * ·) (hνφ φ hφ hB)`. Take `⟨hFFm, hFFO, hFFinj, hFFae⟩` from `hFF`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `haveI := countable_GL (E := E) (r := r)`. Take `⟨T, hTdef⟩ : ∃ T : Set (Frame X.Ψ r), T = (fun p : ReciprocityTheory.L2DbarEstimates.V (nd X) × Frame X.Ψ r => rmul (cpt X x p.1) p.2) '' (FF ×ˢ Bor X.Ψ r)` from `⟨_, rfl⟩`. Establish `memT : ∀ y, y ∈ T ↔ ∃ z ∈ FF, ∃ b ∈ Bor X.Ψ r, y = rmul (cpt X x z) b`. Introduce `y`. Rewrite using `[hTdef]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨z, b⟩, ⟨hz, hb⟩, rfl⟩`. Conclude with `⟨z, hz, b, hb, rfl⟩`. Introduce and unpack `⟨z, hz, b, hb, rfl⟩`. Conclude with `⟨(z, b), ⟨hz, hb⟩, rfl⟩`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hTm : MeasurableSet T`. Rewrite using `[hTdef]`. Use `haveI : PolishSpace (Frame X.Ψ r) := {}`. Use `haveI : PolishSpace (ReciprocityTheory.L2DbarEstimates.V (nd X) × Frame X.Ψ r) := {}`. Use `(hFFm.prod (measurableSet_Bor X.Ψ r)).image_of_continuousOn_injOn ?_ ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `((GlobalTheory.UnitaryInvMeasure.continuous_rmul X).comp (((KU.cont_cpt X x).comp continuous_fst).prodMk continuous_snd)).continuousOn`. Introduce `p hp q hq h`. Take `⟨h1, h2⟩` from `KU.cpt_inj X hx hp.2 hq.2 h`. Conclude with `Prod.ext h1 h2`. Establish `hTB : ∀ y, ∀ b ∈ Bor X.Ψ r, rmul y b ∈ T ↔ y ∈ T`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `y b hb`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Take `⟨z, hz, b', hb', e⟩` from `(memT _).1 h`. Use `(memT _).2 ⟨z, hz, rmul b' (invB b), rmul_mem hb' (invB_mem hb), ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion.
 
-Rewrite using `[← rmul_assoc, ← e, rmul_assoc, rmul_invB hb, rmul_idF]`. Introduce `h`. Take `⟨z, hz, b', hb', e⟩` from `(memT _).1 h`. Conclude with `(memT _).2 ⟨z, hz, rmul b' b, rmul_mem hb' hb, by rw [e, rmul_assoc]⟩`. Establish `hcptT : ∀ z, cpt X x z ∈ T ↔ z ∈ FF`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `z`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Take `⟨z', hz', b, hb, e⟩` from `(memT _).1 h`. Establish `e' : rmul (cpt X x z) (idF X.Ψ r) = rmul (cpt X x z') b` using `by rw [rmul_idF]; exact e`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Rewrite using `[(KU.cpt_inj X hx (idF_mem X.Ψ r) hb e').1]`. Conclude with `hz'`. Introduce `hz`. Conclude with `(memT _).2 ⟨z, hz, idF X.Ψ r, idF_mem X.Ψ r, (rmul_idF _).symm⟩`. Take `⟨S, hSdef⟩ : ∃ S : Set (Frame X.Ψ r), S = ⋃ γ : X.Γ, (lact ((γ : GL (Fin r) E)⁻¹)) ⁻¹' T` from `⟨_, rfl⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `memS : ∀ y, y ∈ S ↔ ∃ γ ∈ X.Γ, lact γ⁻¹ y ∈ T`. Introduce `y`. Rewrite using `[hSdef, Set.mem_iUnion]`. Conclude with `⟨fun ⟨γ, h⟩ => ⟨γ, γ.2, h⟩, fun ⟨γ, hγ, h⟩ => ⟨⟨γ, hγ⟩, h⟩⟩`. Establish `hSm : MeasurableSet S`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[hSdef]`. Conclude with `MeasurableSet.iUnion fun γ => (continuous_lact _).measurable hTm`. Establish `hSB : ∀ y ∈ X.dom, ∀ b ∈ Bor X.Ψ r, rmul y b ∈ S ↔ y ∈ S`. Introduce `y _ b hb`. Rewrite using `[memS, memS]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [lact_rmul]`. Conclude with `exists_congr fun γ => and_congr_right fun _ => hTB _ b hb`. Establish `hfm : Measurable (frOf X x)` using `(continuous_frOf X x).measurable`. Establish `hind : ∀ (A : Set (Frame X.Ψ r)) (y y' : Frame X.Ψ r), (y ∈ A ↔ y' ∈ A) → A.indicator (1 : Frame X.Ψ r → ℝ≥0∞) y = A.indicator 1 y'`. Introduce `A y y' h`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hy : y ∈ A`. Rewrite using `[Set.indicator_of_mem hy, Set.indicator_of_mem (h.1 hy)]`. Both sides reduce to the same expression. Rewrite using `[Set.indicator_of_notMem hy, Set.indicator_of_notMem (mt h.2 hy)]`. Establish `hpre : ∀ A : Set (Frame X.Ψ r), (fun g => A.indicator (1 : Frame X.Ψ r → ℝ≥0∞) (frOf X x g)) = (frOf X x ⁻¹' A).indicator 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `A`. Use function extensionality and compare the values at `g`. Distinguish the cases in `hg : frOf X x g ∈ A`. Rewrite using `[Set.indicator_of_mem hg, Set.indicator_of_mem (show g ∈ frOf X x ⁻¹' A from hg)]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[Set.indicator_of_notMem hg, Set.indicator_of_notMem (show g ∉ frOf X x ⁻¹' A from hg)]`. Establish `hnull : riemHaar X.Ψ X.Gm x (frOf X x ⁻¹' Sᶜ) = 0`. Establish `hφm : Measurable (Sᶜ.indicator (1 : Frame X.Ψ r → ℝ≥0∞))` using `measurable_one.indicator hSm.compl`. Establish `hφB : ∀ y ∈ X.dom, ∀ b ∈ Bor X.Ψ r, Sᶜ.indicator (1 : Frame X.Ψ r → ℝ≥0∞) (rmul y b) = Sᶜ.indicator 1 y`. Introduce `y hy b hb; exact hind _ _ _ (by rw [Set.mem_compl_iff, Set.mem_compl_iff, hSB y hy b hb])`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `KF _ hφm hφB`. Establish `hzero : ∫⁻ z, Sᶜ.indicator (1 : Frame X.Ψ r → ℝ≥0∞) (cpt X x z) ∂muF X x = 0`. Rewrite using `[← lintegral_zero (μ := muF X x)]`. Use `lintegral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [hFFae] with z hz`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨z', hz', γ, hγ, b, hb, e⟩` from `hz`. Establish `hS : cpt X x z ∈ S` using `(memS _).2 ⟨γ, hγ, by`. Rewrite using `[e, ← lact_mul, inv_mul_cancel, lact_one]`. Conclude with `(memT _).2 ⟨z', hz', b, hb, rfl⟩⟩`. Conclude with `Set.indicator_of_notMem (Set.notMem_compl_iff.2 hS) _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h` using `[hzero, mul_zero]`. Rewrite `h` using `[hpre, lintegral_indicator_one (hfm hSm.compl)]`. Conclude with `h`. Establish `hcov : ∀ᵐ g ∂riemHaar X.Ψ X.Gm x, ∃ γ' : inReal X.Ψ X.Gm X.Γ, γ' • g ∈ frOf X x ⁻¹' T`. Establish `hae : ∀ᵐ g ∂riemHaar X.Ψ X.Gm x, frOf X x g ∈ S`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[ae_iff]`. Conclude with `hnull`. Use `filter_upwards [hae] with g hg`. Take `⟨γ, hγ, hγT⟩` from `(memS _).1 hg`. Establish `hδ : γ⁻¹ ∈ X.Γ` using `X.Γ.inv_mem hγ`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmem : embGL X.Ψ r γ⁻¹ ∈ realSU X.Ψ X.Gm` using `embGL_mem_realSU X.Ψ X.Gm γ⁻¹ (hdet _ hδ) (X.Γ_stab _ hδ).1`. Use `⟨⟨⟨embGL X.Ψ r γ⁻¹, hmem⟩, Subgroup.mem_subgroupOf.2 (Subgroup.mem_map.2 ⟨γ⁻¹, hδ, rfl⟩)⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[Set.mem_preimage, Subgroup.smul_def, smul_eq_mul, frOf_smul X x _ g γ⁻¹ rfl]`. Conclude with `hγT`. Establish `hdisj : Pairwise (Function.onFun (AEDisjoint (riemHaar X.Ψ X.Gm x)) fun γ' : inReal X.Ψ X.Gm X.Γ => γ' • (frOf X x ⁻¹' T))`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `γ1 γ2 hne`. Use `Disjoint.aedisjoint ?_` and prove the remaining obligations. Rewrite using `[Set.disjoint_left]`. Introduce `g hg1 hg2`. Take `⟨h1, hh1, rfl⟩` from `Set.mem_smul_set.1 hg1`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨h2, hh2, he⟩` from `Set.mem_smul_set.1 hg2`. Apply `hne` to reduce the goal to its premises. Take `⟨c1, hc1, e1⟩` from `Subgroup.mem_map.1 (Subgroup.mem_subgroupOf.1 γ1.2)`. Take `⟨c2, hc2, e2⟩` from `Subgroup.mem_map.1 (Subgroup.mem_subgroupOf.1 γ2.2)`. Take `⟨z1, hz1, b1, hb1, hf1⟩` from `(memT _).1 hh1`.
+Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨z2, hz2, b2, hb2, hf2⟩` from `(memT _).1 hh2`. Establish `hfr : lact c2 (frOf X x h2) = lact c1 (frOf X x h1)`. Use `congrArg (frOf X x) he` as an intermediate fact. Rewrite `this` using `[Subgroup.smul_def, Subgroup.smul_def, smul_eq_mul, smul_eq_mul, frOf_smul X x _ h2 c2 e2, frOf_smul X x _ h1 c1 e1]`. Then use the resulting hypothesis. Establish `hc : c2⁻¹ * c1 ∈ X.Γ` using `X.Γ.mul_mem (X.Γ.inv_mem hc2) hc1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `h21 : rmul (cpt X x z2) b2 = lact (c2⁻¹ * c1) (rmul (cpt X x z1) b1)`. Rewrite using `[← hf2, ← hf1, lact_mul, ← hfr, ← lact_mul, inv_mul_cancel, lact_one]`. Establish `hz : z1 = z2`. Use `hFFinj z1 hz1 z2 hz2 _ hc (rmul b1 (invB b2)) (rmul_mem hb1 (invB_mem hb2)) ?_` and prove the remaining obligations. Rewrite using `[← rmul_assoc, lact_rmul, ← h21, rmul_assoc, rmul_invB hb2, rmul_idF]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Substitute `hz` using the available equality. Establish `hfree : lact (c2⁻¹ * c1) (cpt X x z1) = rmul (cpt X x z1) (rmul b2 (invB b1))`. Rewrite using `[← rmul_assoc, h21, lact_rmul, rmul_assoc, rmul_invB hb1, rmul_idF]`. Establish `h1'` using `X.Γ_free _ hc (cpt X x z1) (hFFO hz1) _ (rmul_mem hb2 (invB_mem hb1)) hfree`. Establish `hcc : c1 = c2` using `(inv_mul_eq_one.1 h1').symm`.
+Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Substitute `hcc` using the available equality. Conclude with `Subtype.ext (Subtype.ext (e1.symm.trans e2))`. Establish `hDμ : riemHaar X.Ψ X.Gm x (frOf X x ⁻¹' T) = C * muF X x FF`. Establish `hφm : Measurable (T.indicator (1 : Frame X.Ψ r → ℝ≥0∞))` using `measurable_one.indicator hTm`. Establish `hφB : ∀ y ∈ X.dom, ∀ b ∈ Bor X.Ψ r, T.indicator (1 : Frame X.Ψ r → ℝ≥0∞) (rmul y b) = T.indicator 1 y`.
-
-Introduce `y _ b hb`. Conclude with `hind _ _ _ (hTB y b hb)`. Establish `h` using `KF _ hφm hφB`. Establish `e2 : (fun z => T.indicator (1 : Frame X.Ψ r → ℝ≥0∞) (cpt X x z)) = FF.indicator 1`. Use function extensionality and compare the values at `z`.
-
-Distinguish the cases in `hz : z ∈ FF`. Rewrite using `[Set.indicator_of_mem ((hcptT z).2 hz), Set.indicator_of_mem hz]`. Both sides reduce to the same expression. Rewrite using `[Set.indicator_of_notMem (mt (hcptT z).1 hz), Set.indicator_of_notMem hz]`. Rewrite `h` using `[hpre, e2, lintegral_indicator_one (hfm hTm), lintegral_indicator_one hFFm]`.
-
-Conclude with `h`. Establish `hfd : IsFundamentalDomain (inReal X.Ψ X.Gm X.Γ) (frOf X x ⁻¹' T) (riemHaar X.Ψ X.Gm x)` using `⟨(hfm hTm).nullMeasurableSet, hcov, hdisj⟩`. Use `haveI : Countable (inReal X.Ψ X.Gm X.Γ) := by`. Set `f : {γ : X.Γ // embGL X.Ψ r (γ : GL (Fin r) E) ∈ realSU X.Ψ X.Gm} → inReal X.Ψ X.Gm X.Γ` to `fun p => ⟨⟨embGL X.Ψ r p.1, p.2⟩, Subgroup.mem_subgroupOf.2 (Subgroup.mem_map.2 ⟨p.1, p.1.2, rfl⟩)⟩`. Use `Function.Surjective.countable (f := f) ?_` and prove the remaining obligations.
-
-Introduce and unpack `⟨⟨g, hg⟩, hgm⟩`. Take `⟨c, hc, e⟩` from `Subgroup.mem_map.1 (Subgroup.mem_subgroupOf.1 hgm)`. Conclude with `⟨⟨⟨c, hc⟩, e ▸ hg⟩, Subtype.ext (Subtype.ext e)⟩`. Use `haveI : MeasurableConstSMul (inReal X.Ψ X.Gm X.Γ) (realSU X.Ψ X.Gm) := ⟨fun c => by show Measurable fun a : realSU X.Ψ X.Gm => (c : realSU X.Ψ X.Gm) * a`. Conclude with `(continuous_mul_left _).measurable⟩`.
-
-Use `haveI : (riemHaar X.Ψ X.Gm x).IsMulLeftInvariant := by rw [hμ]; infer_instance`. Use `haveI : SMulInvariantMeasure (inReal X.Ψ X.Gm X.Γ) (realSU X.Ψ X.Gm) (riemHaar X.Ψ X.Gm x) := ⟨fun c s _ => measure_preimage_mul (riemHaar X.Ψ X.Gm x) (c : realSU X.Ψ X.Gm) s⟩`. Rewrite using `[hfd.covolume_eq_volume, hDμ]`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem covolume_realSU : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (X : Data E r) (x : Frame X.Ψ r) (FF : Set (ReciprocityTheory.L2DbarEstimates.V (nd X))) [MeasurableSpace (realSU X.Ψ X.Gm)] [BorelSpace (realSU X.Ψ X.Gm)], 1 ≤ r → (∀ γ ∈ X.Γ, (γ : Matrix (Fin r) (Fin r) E).det = 1) → IsOrth X x → IsFundSet X x FF → ENNReal.ofReal (((2 : ℝ) ^ (r * (r - 1) / 2) * (2 * Real.pi) ^ (r - 1) * Real.sqrt r) ^ fdeg E) * muF X x FF = covolume (inReal X.Ψ X.Gm X.Γ) (realSU X.Ψ X.Gm) (riemHaar X.Ψ X.Gm x) := by
   intro E _ _ _ r X x FF _ _ hr hdet hx hFF

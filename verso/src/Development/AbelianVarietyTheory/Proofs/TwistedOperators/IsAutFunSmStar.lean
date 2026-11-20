@@ -22,13 +22,13 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 attribute [local instance 100] LieRing.ofAssociativeRing
 
 /- English proof (translation)
-Establish `h1 : κ (gelfA E k) ∈ Algebra.adjoin ℂ (Set.range fun p : Fin n × Fin n => E p.1 p.2)`. Rewrite using `[gelfA, map_sum]`. Use `Subalgebra.sum_mem _ fun idx _ => ?_` and prove the remaining obligations. Rewrite using `[map_list_prod]`. Use `Subalgebra.list_prod_mem _ fun x hx => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨y, hy, rfl⟩` from `List.mem_map.1 hx`. Take `⟨i, rfl⟩` from `List.mem_ofFn.1 hy`. Conclude with `Algebra.span_le_adjoin ℂ _ (hs _ _)`. Take `⟨d, hd⟩` from `exists_filt h1`. Use `central_of_filt hE d _ hd fun a b => ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h2 : ∀ y ∈ Submodule.span ℂ (Set.range fun p : Fin n × Fin n => E p.1 p.2), y * gelfA E k = gelfA E k * y`. Introduce `y hy`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem x hx => obtain ⟨p, rfl⟩ := hx`. Conclude with `gelf_adjoin_comm hE (Algebra.subset_adjoin ⟨k, rfl⟩) _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [add_mul, mul_add, hx, hy]`. Consider the case `smul c x _ hx => rw [smul_mul_assoc, mul_smul_comm, hx]`. Establish `h3` using `congrArg κ (h2 _ (hs a b))`. Rewrite `h3` using `[map_mul, map_mul, hκ]`. Then use the resulting hypothesis.
+Treat this case separately. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem map_gelfA_mem {A : Type} [Ring A] [Algebra ℂ A] {n : ℕ} {E : Fin n → Fin n → A} (hE : Formalism.REAL.GlRel E)
     (κ : A →+* A) (hκ : ∀ a, κ (κ a) = a)
@@ -108,7 +108,7 @@ def jM : LieM J →ₗ[ℝ] MAlg n where
   map_smul' _ _ := rfl
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `_ * _ * _ = _ at ha hb ⊢`. Rewrite using `[conjTranspose_mul]`. Combine the equalities or inequalities in the displayed calculation.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem mul_mem_UH {a b : Matrix (Fin n) (Fin n) ℂ} (ha : a ∈ Formalism.QuantumDeterminants.UH J) (hb : b ∈ Formalism.QuantumDeterminants.UH J) :
     a * b ∈ Formalism.QuantumDeterminants.UH J := by
@@ -118,7 +118,7 @@ theorem mul_mem_UH {a b : Matrix (Fin n) (Fin n) ℂ} (ha : a ∈ Formalism.Quan
     _ = J := by rw [ha, hb]
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `_ * _ * _ = _`. Simplify using the standard rewrite rules.
+Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 -/
 theorem one_mem_UH : (1 : Matrix (Fin n) (Fin n) ℂ) ∈ Formalism.QuantumDeterminants.UH J := by
   change _ * _ * _ = _
@@ -138,7 +138,7 @@ def UG : Subgroup (Matrix (Fin n) (Fin n) ℂ)ˣ where
 variable {J}
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `_ * _ * _ = _ at ha`. Rewrite using `[isUnit_iff_isUnit_det]`. Use `congrArg det ha` as an intermediate fact. Rewrite `this` using `[det_mul]`. Conclude with `isUnit_of_mul_isUnit_right (this ▸ hJ)`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUnit_of_UH (hJ : IsUnit J.det) {a : Matrix (Fin n) (Fin n) ℂ} (ha : a ∈ Formalism.QuantumDeterminants.UH J) : IsUnit a := by
   change _ * _ * _ = _ at ha
@@ -153,15 +153,15 @@ def secM (hJ : IsUnit J.det) (a : MAlg n) : UG J :=
   if h : a.mat ∈ Formalism.QuantumDeterminants.UH J then ⟨(isUnit_of_UH hJ h).unit, h⟩ else 1
 
 /- English proof (translation)
-Rewrite using `[secM, dif_pos h]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem secM_val (hJ : IsUnit J.det) {a : MAlg n} (h : a.mat ∈ Formalism.QuantumDeterminants.UH J) : (secM hJ a).1.1 = a.mat := by
   rw [secM, dif_pos h]; rfl
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `J⁻¹ * u.matᴴ * J * u.mat = 1 ↔ u.matᴴ * J * u.mat = J`. Prove the components needed by the constructor for the conclusion. Introduce `h1`. Use `congrArg (J * ·) h1` as an intermediate fact. Simplify `this` using `only [← mul_assoc, mul_nonsing_inv _ h, one_mul, mul_one]`.
+Express the relevant assertion in an equivalent form by its definition. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce `h1`. Rewrite using `[mul_assoc, mul_assoc, ← mul_assoc u.matᴴ, h1, nonsing_inv_mul _ h]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem unit_iffM (h : IsUnit J.det) (u : MAlg n) : sigM J u * u = 1 ↔ u.mat ∈ Formalism.QuantumDeterminants.UH J := by
   change J⁻¹ * u.matᴴ * J * u.mat = 1 ↔ u.matᴴ * J * u.mat = J
@@ -173,15 +173,15 @@ theorem unit_iffM (h : IsUnit J.det) (u : MAlg n) : sigM J u * u = 1 ↔ u.mat �
     rw [mul_assoc, mul_assoc, ← mul_assoc u.matᴴ, h1, nonsing_inv_mul _ h]
 
 /- English proof (translation)
-Establish `anti : ∀ a b, sigM J (a * b) = sigM J b * sigM J a` using `fun a b => by`. Express the relevant statement in the definitionally equal form `_ * (a.mat * b.mat)ᴴ * _ = (_ * b.matᴴ * _) * (_ * a.matᴴ * _)`. Rewrite using `[conjTranspose_mul]`. Simplify using `only [mul_assoc]`. Rewrite using `[mul_nonsing_inv_cancel_left _ _ hJ]`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `⟨anti, ?_, fun a => ?_, fun X Y h => Subtype.ext h, fun X => ⟨fun h => ?_, ?_⟩, fun a b ha hb => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `J⁻¹ * (1 : Matrix (Fin n) (Fin n) ℂ)ᴴ * J = 1`. Rewrite using `[conjTranspose_one, mul_one, nonsing_inv_mul _ hJ]`. Express the relevant statement in the definitionally equal form `J⁻¹ * (J⁻¹ * a.matᴴ * J)ᴴ * J = a.mat`. Rewrite using `[conjTranspose_mul, conjTranspose_mul, conjTranspose_conjTranspose, conjTranspose_nonsing_inv, hH]`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [mul_assoc]`. Rewrite using `[nonsing_inv_mul_cancel_left _ _ hJ, nonsing_inv_mul _ hJ, mul_one]`. Use `⟨⟨X.mat, ?_⟩, rfl⟩` and prove the remaining obligations. Establish `h1 : J⁻¹ * X.matᴴ * J = -X.mat` using `h`. Express the relevant statement in the definitionally equal form `X.matᴴ * J + J * X.mat = 0`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[← mul_nonsing_inv_cancel_left _ (X.matᴴ * J) hJ, ← mul_assoc J⁻¹, h1, mul_neg, neg_add_cancel]`. Introduce and unpack `⟨Y, rfl⟩`. Establish `h1 : Y.1ᴴ * J + J * Y.1 = 0` using `Y.2`. Express the relevant statement in the definitionally equal form `J⁻¹ * Y.1ᴴ * J = -Y.1`. Rewrite using `[mul_assoc, eq_neg_of_add_eq_zero_left h1, mul_neg, nonsing_inv_mul_cancel_left _ _ hJ]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite `ha`, `hb` using `[unit_iffM hJ]`. Establish `hab : (a * b).mat ∈ Formalism.QuantumDeterminants.UH J` using `mul_mem_UH J ha hb`. Use `Subtype.ext (Units.ext ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ = (secM hJ a).1.1 * (secM hJ b).1.1`. Rewrite using `[secM_val hJ ha, secM_val hJ hb, secM_val hJ hab]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -214,7 +214,7 @@ theorem isLieDataM (hH : Jᴴ = J) (hJ : IsUnit J.det) : IsLieData (sigM J) (jM 
     rfl
 
 /- English proof (translation)
-The claim follows from `secM_val hJ (GlobalTheory.SmoothAutCheck.exp_mem_UH hJ X.2 t)`.
+A detailed English derivation is pending.
 -/
 theorem expMap_val (hJ : IsUnit J.det) (X : LieM J) (t : ℝ) :
     (expMap (jM J) (secM hJ) (t • X)).1.1 = NormedSpace.exp (t • X.1) :=
@@ -244,24 +244,24 @@ def goodFun : Submodule ℂ (GA D V → ℂ) := GlobalTheory.MultMem.smFun θ V 
 variable {θ V}
 
 /- English proof (translation)
-The claim follows from `Submonoid.subset_closure ⟨τ, g, hg, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem atTau_mem {τ : D.what₂.Tau} {g : Matrix (Fin V.rank) (Fin V.rank) ℂ} (hg : g ∈ Formalism.QuantumDeterminants.UH (gramAt D V τ)) :
     atTau θ V τ g ∈ realMon θ V := Submonoid.subset_closure ⟨τ, g, hg, rfl⟩
 
 /- English proof (translation)
-The claim follows from `atTau_mem (GlobalTheory.SmoothAutCheck.exp_mem_UH (GlobalTheory.SmoothAutCheck.gramAt_unit V τ) hX t)`.
+A detailed English derivation is pending.
 -/
 theorem oneP_mem {τ : D.what₂.Tau} {X : Matrix (Fin V.rank) (Fin V.rank) ℂ} (hX : X ∈ lieAt V τ) (t : ℝ) :
     oneP θ V τ X t ∈ realMon θ V :=
   atTau_mem (GlobalTheory.SmoothAutCheck.exp_mem_UH (GlobalTheory.SmoothAutCheck.gramAt_unit V τ) hX t)
 
 /- English proof (translation)
-Use `⟨(GlobalTheory.MultMem.linOn_Rder hX).1 F hF.1, fun y hy τ' x => ⟨?_, fun g hg g' hg' => ?_⟩⟩` and prove the remaining obligations. Unfold `Rder`. Use `congr 1`. Use function extensionality and compare the values at `t`. Use `(hF.2 _ (mul_mem hy (oneP_mem hX t)) τ' x).1` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Simplify `this` using `only [mul_assoc]`. Unfold `Rder`. Use `congr 1`. Use function extensionality and compare the values at `t`. Use `(hF.2 _ (mul_mem hy (oneP_mem hX t)) τ' x).2 g hg g' hg'` as an intermediate fact.
+Simplify to obtain the desired conclusion from the available facts. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Simplify `this` using `only [mul_assoc]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem Rder_mem {τ : D.what₂.Tau} {X : Matrix (Fin V.rank) (Fin V.rank) ℂ} (hX : X ∈ lieAt V τ)
     {F : GA D V → ℂ} (hF : F ∈ goodFun θ V) : Rder θ V τ X F ∈ goodFun θ V := by
@@ -285,9 +285,9 @@ def rho (τ : D.what₂.Tau) (X : lieU (gramAt D V τ)) : Module.End ℂ (goodFu
   map_smul' c F := Subtype.ext ((GlobalTheory.MultMem.linOn_Rder X.2).2.2 c _ F.2.1)
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => intro g`. Simplify using the standard rewrite rules. Consider the case `cons a l ih`. Introduce `g`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[List.prod_cons, ← mul_assoc, ih, List.map_cons, List.prod_cons, ← mul_assoc]`. Use `((hF _ (list_prod_mem fun z hz => ?_) τ x).2 _ g.2 _ a.2).symm` and prove the remaining obligations. Take `⟨u, -, rfl⟩` from `List.mem_map.1 hz`. Conclude with `atTau_mem u.2`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem hom_list {F : GA D V → ℂ} (hF : F ∈ homFun θ V) (τ : D.what₂.Tau) (x : GA D V) (l : List (UG (gramAt D V τ))) :
     ∀ g : UG (gramAt D V τ), F (x * atTau θ V τ (g * l.prod).1.1) =
@@ -302,20 +302,20 @@ theorem hom_list {F : GA D V → ℂ} (hF : F ∈ homFun θ V) (τ : D.what₂.T
     exact atTau_mem u.2
 
 /- English proof (translation)
-The claim follows from `isLieDataM (GlobalTheory.SmoothAutCheck.gramAt_herm V τ) _`.
+A detailed English derivation is pending.
 -/
 theorem lieData (τ : D.what₂.Tau) :
     IsLieData (sigM (gramAt D V τ)) (jM (gramAt D V τ)) (secM (GlobalTheory.SmoothAutCheck.gramAt_unit V τ)) :=
   isLieDataM (GlobalTheory.SmoothAutCheck.gramAt_herm V τ) _
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.SmoothForms.hasLog_of_isLieData _ _ _ _ _ _ (lieData τ)`.
+A detailed English derivation is pending.
 -/
 theorem hasLogAt (τ : D.what₂.Tau) : HasLog (sigM (gramAt D V τ)) (jM (gramAt D V τ)) :=
   GlobalTheory.SmoothForms.hasLog_of_isLieData _ _ _ _ _ _ (lieData τ)
 
 /- English proof (translation)
-Use `(GlobalTheory.SmoothForms.SecondKind.main _ _ _ _ _ _ (lieData (V := V) τ) (hasLogAt τ) Set.univ (by simp) _).2 fun k Y _ g => ?_` and prove the remaining obligations. Use `F.2.1 k (fun _ => τ) (fun i => (Y i).1) (fun i => (Y i).2) (x * atTau θ V τ g.1.1)` as an intermediate fact. Use `this using 2 with t` and compare the differences between its conclusion and the goal. Rewrite using `[hom_list F.2.2, List.map_ofFn]`. Simplify using `only [Function.comp_def, expMap_val]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
 Both sides reduce to the same expression.
 -/
@@ -337,9 +337,9 @@ def loc (τ : D.what₂.Tau) (x : GA D V) :
   map_smul' _ _ := rfl
 
 /- English proof (translation)
-Use `Subtype.ext (funext fun u => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `deriv (fun t : ℝ => F.1 (x * atTau θ V τ u.1.1 * oneP θ V τ X.1 t)) 0 = deriv (fun t : ℝ => F.1 (x * atTau θ V τ (u.1.1 * (expMap (jM _) (secM (GlobalTheory.SmoothAutCheck.gramAt_unit V τ)) (t • toL X)).1.1))) 0`. Use `congr 1`. Use function extensionality and compare the values at `t`. Rewrite using `[expMap_val]`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use `(F.2.2 1 (one_mem _) τ x).2 _ u.2 _ (GlobalTheory.SmoothAutCheck.exp_mem_UH (GlobalTheory.SmoothAutCheck.gramAt_unit V τ) X.2 t)` as an intermediate fact. Simplify using `only [mul_one] at this`. Conclude with `this`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem loc_rho (τ : D.what₂.Tau) (x : GA D V) (X : lieU (gramAt D V τ)) (F : goodFun θ V) :
     loc τ x (rho θ V τ X F) = derOp (lieData τ) (hasLogAt τ) (toL X) (loc τ x F) := by
@@ -355,9 +355,9 @@ theorem loc_rho (τ : D.what₂.Tau) (x : GA D V) (X : lieU (gramAt D V τ)) (F 
   exact this
 
 /- English proof (translation)
-Use `Subtype.ext (funext fun x => ?_)` and prove the remaining obligations. Establish `h1 : F.1 (x * atTau θ V τ 1) = F'.1 (x * atTau θ V τ 1)` using `congrFun (congrArg Subtype.val (h x)) 1`. Establish `h2` using `(F.2.2 1 (one_mem _) τ x).1`. Establish `h3` using `(F'.2.2 1 (one_mem _) τ x).1`. Simplify using `only [mul_one] at h2 h3`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[← h2, ← h3, h1]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem loc_ext (τ : D.what₂.Tau) {F F' : goodFun θ V} (h : ∀ x, loc τ x F = loc τ x F') : F = F' := by
   refine Subtype.ext (funext fun x => ?_)
@@ -368,7 +368,7 @@ theorem loc_ext (τ : D.what₂.Tau) {F F' : goodFun θ V} (h : ∀ x, loc τ x 
   rw [← h2, ← h3, h1]
 
 /- English proof (translation)
-Use `LinearMap.ext fun F => loc_ext τ fun x => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.add_apply, map_add, loc_rho, loc_rho, loc_rho, ← LinearMap.add_apply, ← derOp_add]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem rho_add (τ : D.what₂.Tau) (X Y : lieU (gramAt D V τ)) : rho θ V τ (X + Y) = rho θ V τ X + rho θ V τ Y := by
   refine LinearMap.ext fun F => loc_ext τ fun x => ?_
@@ -376,7 +376,7 @@ theorem rho_add (τ : D.what₂.Tau) (X Y : lieU (gramAt D V τ)) : rho θ V τ 
   rfl
 
 /- English proof (translation)
-Use `LinearMap.ext fun F => loc_ext τ fun x => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.smul_apply, map_smul, loc_rho, loc_rho, ← LinearMap.smul_apply, ← derOp_smul]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem rho_smul (τ : D.what₂.Tau) (c : ℝ) (X : lieU (gramAt D V τ)) : rho θ V τ (c • X) = (c : ℂ) • rho θ V τ X := by
   refine LinearMap.ext fun F => loc_ext τ fun x => ?_
@@ -384,9 +384,9 @@ theorem rho_smul (τ : D.what₂.Tau) (c : ℝ) (X : lieU (gramAt D V τ)) : rho
   rfl
 
 /- English proof (translation)
-Use `LinearMap.ext fun F => loc_ext τ fun x => ?_` and prove the remaining obligations. Establish `h1 : jM (gramAt D V τ) (toL Z) = jM (gramAt D V τ) (toL X) * jM (gramAt D V τ) (toL Y) - jM (gramAt D V τ) (toL Y) * jM (gramAt D V τ) (toL X)` using `h`. Establish `h2` using `LinearMap.congr_fun (derOp_bracket (lieData (V := V) τ) (hasLogAt τ) (toL X) (toL Y) (toL Z) h1) (loc τ x F)`. Rewrite `h2` using `[LinearMap.sub_apply, Module.End.mul_apply, Module.End.mul_apply]`. Rewrite using `[LinearMap.sub_apply, Module.End.mul_apply, Module.End.mul_apply, (loc τ x).map_sub]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [loc_rho]`. Conclude with `h2`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem rho_bracket (τ : D.what₂.Tau) (X Y Z : lieU (gramAt D V τ)) (h : Z.1 = X.1 * Y.1 - Y.1 * X.1) :
     rho θ V τ Z = rho θ V τ X * rho θ V τ Y - rho θ V τ Y * rho θ V τ X := by
@@ -400,7 +400,7 @@ theorem rho_bracket (τ : D.what₂.Tau) (X Y Z : lieU (gramAt D V τ)) (h : Z.1
   exact h2
 
 /- English proof (translation)
-Use function extensionality and compare the values at `g`. Conclude with `deriv.star`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem Rder_star (τ : D.what₂.Tau) (X : Matrix (Fin V.rank) (Fin V.rank) ℂ) (F : GA D V → ℂ) :
     Rder θ V τ X (star F) = star (Rder θ V τ X F) := by
@@ -408,7 +408,7 @@ theorem Rder_star (τ : D.what₂.Tau) (X : Matrix (Fin V.rank) (Fin V.rank) ℂ
   exact deriv.star
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun k τs Xs hX g => Complex.conjCLE.contDiff.comp (hF.1 k τs Xs hX g), fun y hy τ x => ⟨congrArg star (hF.2 y hy τ x).1, fun g hg g' hg' => congrArg star ((hF.2 y hy τ x).2 g hg g' hg')⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem star_mem_good {F : GA D V → ℂ} (hF : F ∈ goodFun θ V) : star F ∈ goodFun θ V :=
   ⟨fun k τs Xs hX g => Complex.conjCLE.contDiff.comp (hF.1 k τs Xs hX g),
@@ -422,7 +422,7 @@ def conjG : goodFun θ V →ₗ⋆[ℂ] goodFun θ V where
   map_smul' c F := Subtype.ext (star_smul c F.1)
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (star_star _)`.
+A detailed English derivation is pending.
 -/
 theorem conjG_conjG (F : goodFun θ V) : conjG θ V (conjG θ V F) = F := Subtype.ext (star_star _)
 
@@ -442,7 +442,7 @@ theorem kappa_apply (a : Module.End ℂ (goodFun θ V)) (F : goodFun θ V) :
     kappa θ V a F = conjG θ V (a (conjG θ V F)) := rfl
 
 /- English proof (translation)
-The claim follows from `LinearMap.ext fun F => Subtype.ext (by change star (Rder θ V τ X.1 (star F.1)) = Rder θ V τ X.1 F.1 rw [Rder_star, star_star])`.
+A detailed English derivation is pending.
 -/
 theorem kappa_rho (τ : D.what₂.Tau) (X : lieU (gramAt D V τ)) : kappa θ V (rho θ V τ X) = rho θ V τ X :=
   LinearMap.ext fun F => Subtype.ext (by
@@ -450,16 +450,16 @@ theorem kappa_rho (τ : D.what₂.Tau) (X : lieU (gramAt D V τ)) : kappa θ V (
     rw [Rder_star, star_star])
 
 /- English proof (translation)
-The claim follows from `LinearMap.ext fun F => by rw [kappa_apply, LinearMap.smul_apply, map_smulₛₗ]; rfl`.
+A detailed English derivation is pending.
 -/
 theorem kappa_smul (c : ℂ) (a : Module.End ℂ (goodFun θ V)) : kappa θ V (c • a) = star c • kappa θ V a :=
   LinearMap.ext fun F => by
     rw [kappa_apply, LinearMap.smul_apply, map_smulₛₗ]; rfl
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => intro f a _ x`. Simplify using the standard rewrite rules. Consider the case `succ k ih`. Introduce `f a h x`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[List.ofFn_succ, List.ofFn_succ, List.foldr_cons, List.prod_cons, Module.End.mul_apply, ih _ _ (fun i => h i.succ), h]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem foldr_ofFn_eq {M : Type} [AddCommGroup M] [Module ℂ M] (S : Submodule ℂ M) (k : ℕ) :
     ∀ (f : Fin k → M → M) (a : Fin k → Module.End ℂ S), (∀ i (x : S), f i x.1 = (a i x).1) → ∀ x : S,
@@ -472,9 +472,9 @@ theorem foldr_ofFn_eq {M : Type} [AddCommGroup M] [Module ℂ M] (S : Submodule 
       ih _ _ (fun i => h i.succ), h]
 
 /- English proof (translation)
-Take `⟨P, Q, hPQ, h⟩` from `GlobalTheory.UnitaryLieComplexification.glRel_and_span _ _ (GlobalTheory.SmoothAutCheck.gramAt_herm V τ) (GlobalTheory.SmoothAutCheck.gramAt_unit V τ)`. Take `⟨h1, h2⟩` from `h _ (rho θ V τ) (rho_add τ) (rho_smul τ) (rho_bracket τ)`. Use `⟨_, map_gelfA_mem h1 (kappa θ V) (fun a => LinearMap.ext fun F => by simp only [kappa_apply, conjG_conjG]) (fun a b => ?_), fun k F => ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, kappa_smul, kappa_rho, kappa_rho]`. Conclude with `add_mem (h2 _) (Submodule.smul_mem _ _ (h2 _))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[gelf, gelfA, LinearMap.sum_apply, Submodule.coe_sum]`. Use `Finset.sum_congr rfl fun idx _ => ?_` and prove the remaining obligations. Use `foldr_ofFn_eq _ _ _ _ (fun i x => ?_) F` and prove the remaining obligations. Rewrite using `[RderC, conjAt, ← (hPQ _ _).1, ← (hPQ _ _).2]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_gelf_op (τ : D.what₂.Tau) : ∃ c : ℕ → Module.End ℂ (goodFun θ V),
     (∀ k, kappa θ V (c k) ∈ Algebra.adjoin ℂ (Set.range c)) ∧ ∀ k (F : goodFun θ V), gelf θ V τ k F.1 = (c k F).1 := by
@@ -492,7 +492,7 @@ theorem exists_gelf_op (τ : D.what₂.Tau) : ∃ c : ℕ → Module.End ℂ (go
     rfl
 
 /- English proof (translation)
-The claim follows from `congrArg star (h.left γ hγ g) level := by obtain ⟨U, hU, e⟩ := h.level exact ⟨U, hU, fun k hk hf g => congrArg star (e k hk hf g)⟩ cont := h.cont.star smooth k τs Xs hX g := Complex.conjCLE.contDiff.comp (h.smooth k τs Xs hX g) zfin := by obtain ⟨W, hW, m, s⟩ := h.zfin let W₀ : S …`.
+A detailed English derivation is pending.
 -/
 theorem isAutFunSm_star {F : GA D V → ℂ} (h : IsAutFunSm θ V F) (hh : F ∈ homFun θ V) : IsAutFunSm θ V (star F) where
   left γ hγ g := congrArg star (h.left γ hγ g)

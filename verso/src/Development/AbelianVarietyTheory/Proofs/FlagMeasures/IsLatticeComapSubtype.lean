@@ -5,17 +5,15 @@ namespace GlobalTheory.SmulMemComapLattice
 open NumberField
 
 /- English proof (translation)
-Establish `hv : v ∈ Submodule.span K (L : Set V)` using `hL ▸ Submodule.mem_top`. Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem x hx => exact ⟨1, one_ne_zero, by simpa using hx⟩`. Consider the case `zero => exact ⟨1, one_ne_zero, by simp⟩`. Consider the case `add x y _ _ hx hy`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Take `⟨a, ha, hax⟩` from `hx`. Take `⟨b, hb, hby⟩` from `hy`. Use `⟨a * b, mul_ne_zero ha hb, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_add]`. Use `L.add_mem ?_ ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[mul_comm, mul_smul]`. Conclude with `L.smul_mem _ hax`. Rewrite using `[mul_smul]`. Conclude with `L.smul_mem _ hby`. Consider the case `smul c x _ hx`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨a, ha, hax⟩` from `hx`. Take `⟨p, q, hq, rfl⟩` from `IsFractionRing.div_surjective (A := R) c`. Establish `hq0 : q ≠ 0` using `nonZeroDivisors.ne_zero hq`. Establish `hqK : algebraMap R K q ≠ 0`. Simplify using `using hq0`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨q * a, mul_ne_zero hq0 ha, ?_⟩` and prove the remaining obligations. Establish `: (q * a) • (algebraMap R K p / algebraMap R K q) • x = p • a • x`. Rewrite using `[← algebraMap_smul K (q * a), ← algebraMap_smul K p, ← algebraMap_smul K a x, smul_smul, smul_smul, map_mul]`. Use `congr 1`. Clear the denominators using the available nonvanishing facts.
-
-Rewrite using `[this]`. Conclude with `L.smul_mem _ hax`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_smul_mem {R K V : Type} [CommRing R] [IsDomain R] [Field K] [Algebra R K]
     [IsFractionRing R K] [AddCommGroup V] [Module K V] [Module R V] [IsScalarTower R K V]
@@ -49,11 +47,11 @@ theorem exists_smul_mem {R K V : Type} [CommRing R] [IsDomain R] [Field K] [Alge
     exact L.smul_mem _ hax
 
 /- English proof (translation)
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `hinj : Function.Injective (LinearMap.restrictScalars (𝓞 K) W.subtype)` using `W.injective_subtype`. Use `Submodule.fg_of_fg_map_injective _ hinj ?_` and prove the remaining obligations. Conclude with `Submodule.FG.of_le hΛ.fg (Submodule.map_comap_le _ _)`. Rewrite using `[eq_top_iff]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `w _`. Take `⟨a, ha, haw⟩` from `exists_smul_mem Λ hΛ.span_eq_top (w : V)`. Establish `haK : algebraMap (𝓞 K) K a ≠ 0` using `by simpa using ha`. Establish `hw : w = (algebraMap (𝓞 K) K a)⁻¹ • (a • w)`. Rewrite using `[← algebraMap_smul K a w, smul_smul, inv_mul_cancel₀ haK, one_smul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hw]`. Use `Submodule.smul_mem _ _ (Submodule.subset_span ?_)` and prove the remaining obligations. Simplify using `using haw`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem isLattice_comap_subtype {K V : Type} [Field K] [NumberField K] [AddCommGroup V]
     [Module K V] [FiniteDimensional K V] [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V]

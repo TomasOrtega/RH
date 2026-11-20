@@ -17,9 +17,9 @@ namespace GramFrameCompositionLinFacts
 open MvPowerSeries in
 
 /- English proof (translation)
-Set `` to `WithPiTopology.instTopologicalSpace (σ := τ) (R := R)`. Use `continuous_pi fun n => ?_` and prove the remaining obligations. Establish `: (fun f : MvPowerSeries τ R => (pderiv R e f) n) = fun f => coeff (n + Finsupp.single e 1) f * ((n e : R) + 1)`. Use function extensionality and compare the values at `f`. Conclude with `coeff_pderiv f n`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Conclude with `(WithPiTopology.continuous_coeff R _).mul continuous_const`.
+A detailed English derivation is pending.
 -/
 theorem continuous_pderiv {R τ : Type} [CommRing R] [TopologicalSpace R] [IsTopologicalSemiring R]
     (e : τ) :
@@ -37,19 +37,17 @@ theorem continuous_pderiv {R τ : Type} [CommRing R] [TopologicalSpace R] [IsTop
 open MvPowerSeries in
 
 /- English proof (translation)
-Set `: UniformSpace R` to `⊥`. Establish `: DiscreteUniformity R` using `⟨rfl⟩`. Set `` to `WithPiTopology.instTopologicalSpace (σ := τ) (R := R)`. Set `` to `WithPiTopology.instTopologicalSpace (σ := σ) (R := R)`. Use `WithPiTopology.instIsTopologicalSemiring τ R` as an intermediate fact.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `WithPiTopology.instT2Space (σ := τ) (R := R)` as an intermediate fact. Establish `hc1 : Continuous fun H : MvPowerSeries σ R => pderiv R e (subst a H)` using `(continuous_pderiv e).comp (continuous_subst ha)`. Establish `hc2 : Continuous fun H : MvPowerSeries σ R => ∑ i, subst a (pderiv R i H) * pderiv R e (a i)` using `continuous_finsetSum _ fun i _ => ((continuous_subst ha).comp (continuous_pderiv i)).mul continuous_const`. Establish `main : ∀ P : MvPolynomial σ R, pderiv R e (subst a (P : MvPowerSeries σ R)) = ∑ i, subst a (pderiv R i (P : MvPowerSeries σ R)) * pderiv R e (a i)`. Introduce `P`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `P using MvPolynomial.induction_on with`. Consider the case `C r`. Establish `h0 : subst a (0 : MvPowerSeries σ R) = 0`. Rewrite using `[← coe_substAlgHom ha, map_zero]`. Simplify using `only [MvPolynomial.coe_C, subst_C, pderiv_C, h0, zero_mul, Finset.sum_const_zero]`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Consider the case `add p q hp hq`. Simplify using `only [MvPolynomial.coe_add, subst_add ha, map_add, add_mul, Finset.sum_add_distrib]`. Rewrite using `[hp, hq]`. Consider the case `mul_X p j hp`. Simplify using `only [MvPolynomial.coe_mul, MvPolynomial.coe_X, subst_mul ha, subst_X ha, Derivation.leibniz, smul_eq_mul, subst_add ha, add_mul, Finset.sum_add_distrib]`.
+Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately. Simplify using the standard rewrite rules.
 
-Rewrite using `[hp, Finset.mul_sum]`. Use `congr 1`. Rewrite using `[Finset.sum_eq_single j]`. Rewrite using `[pderiv_X_self, ← coe_substAlgHom ha, map_one, mul_one]`. Introduce `i _ hij`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[pderiv_X_of_ne hij.symm, ← coe_substAlgHom ha, map_zero, mul_zero, zero_mul]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ j) h`. Conclude with `Finset.sum_congr rfl fun i _ => by ring`. Establish `key` using `WithPiTopology.denseRange_toMvPowerSeries (σ := σ) (R := R).equalizer hc1 hc2 (funext main)`.
-
-Conclude with `congrFun key H`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem pderiv_subst {R σ τ : Type} [CommRing R] [Fintype σ] {a : σ → MvPowerSeries τ R}
     (ha : HasSubst a) (e : τ) (H : MvPowerSeries σ R) :
@@ -101,21 +99,21 @@ open MvPowerSeries
 variable {K : Type} [Field K]
 
 /- English proof (translation)
-The claim follows from `hasSubst_of_constantCoeff_zero fun i => by fin_cases i <;> simpa`.
+A detailed English derivation is pending.
 -/
 theorem hs2 {τ : Type} {u v : MvPowerSeries τ K} (hu : constantCoeff u = 0)
     (hv : constantCoeff v = 0) : HasSubst ![u, v] :=
   hasSubst_of_constantCoeff_zero fun i => by fin_cases i <;> simpa
 
 /- English proof (translation)
-The claim follows from `hasSubst_of_constantCoeff_zero fun i => by fin_cases i <;> simpa`.
+A detailed English derivation is pending.
 -/
 theorem hs3 {τ : Type} {u v w : MvPowerSeries τ K} (hu : constantCoeff u = 0)
     (hv : constantCoeff v = 0) (hw : constantCoeff w = 0) : HasSubst ![u, v, w] :=
   hasSubst_of_constantCoeff_zero fun i => by fin_cases i <;> simpa
 
 /- English proof (translation)
-Rewrite using `[subst_comp_subst_apply h hb]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Apply the tactic sequence `fin_cases i <;> rfl`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem subst_subst2 {τ κ : Type} {b : τ → MvPowerSeries κ K} (hb : HasSubst b)
     {u v : MvPowerSeries τ K} (h : HasSubst ![u, v]) (H : MvPowerSeries (Fin 2) K) :
@@ -126,7 +124,7 @@ theorem subst_subst2 {τ κ : Type} {b : τ → MvPowerSeries κ K} (hb : HasSub
   fin_cases i <;> rfl
 
 /- English proof (translation)
-The claim follows from `subst_comp_subst_apply hu.const hb f`.
+A detailed English derivation is pending.
 -/
 theorem subst_psubst {τ κ : Type} {b : τ → MvPowerSeries κ K} (hb : HasSubst b)
     {u : MvPowerSeries τ K} (hu : PowerSeries.HasSubst u) (f : PowerSeries K) :
@@ -134,7 +132,7 @@ theorem subst_psubst {τ κ : Type} {b : τ → MvPowerSeries κ K} (hb : HasSub
   subst_comp_subst_apply hu.const hb f
 
 /- English proof (translation)
-Unfold `at1`. Rewrite using `[subst_psubst hb (PowerSeries.HasSubst.X x), subst_X hb]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem subst_single_variable {τ κ : Type} {b : τ → MvPowerSeries κ K} (hb : HasSubst b) (x : τ)
     (f : PowerSeries K) : subst b (at1 x f) = PowerSeries.subst (b x) f := by
@@ -142,7 +140,7 @@ theorem subst_single_variable {τ κ : Type} {b : τ → MvPowerSeries κ K} (hb
   rw [subst_psubst hb (PowerSeries.HasSubst.X x), subst_X hb]
 
 /- English proof (translation)
-Establish `: ![(X 0 : MvPowerSeries (Fin 2) K), X 1] = X`. Use function extensionality and compare the values at `i`. Apply the tactic sequence `fin_cases i <;> rfl`. Rewrite using `[this, subst_self]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem subst_identity_two_vars (H : MvPowerSeries (Fin 2) K) :
     subst ![(X 0 : MvPowerSeries (Fin 2) K), X 1] H = H := by
@@ -153,7 +151,7 @@ theorem subst_identity_two_vars (H : MvPowerSeries (Fin 2) K) :
   rfl
 
 /- English proof (translation)
-Rewrite using `[pderiv_subst h, Fin.sum_univ_two]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem pderiv_subst2 {τ : Type} {u v : MvPowerSeries τ K} (h : HasSubst ![u, v]) (e : τ)
     (H : MvPowerSeries (Fin 2) K) :
@@ -163,7 +161,7 @@ theorem pderiv_subst2 {τ : Type} {u v : MvPowerSeries τ K} (h : HasSubst ![u, 
   rfl
 
 /- English proof (translation)
-Rewrite using `[PowerSeries.subst_def, pderiv_subst hw.const, Fintype.sum_unique]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem pderiv_psubst {τ : Type} {w : MvPowerSeries τ K} (hw : PowerSeries.HasSubst w) (e : τ)
     (f : PowerSeries K) :
@@ -173,7 +171,7 @@ theorem pderiv_psubst {τ : Type} {w : MvPowerSeries τ K} (hw : PowerSeries.Has
   rfl
 
 /- English proof (translation)
-Unfold `at1`. Rewrite using `[pderiv_psubst (PowerSeries.HasSubst.X x), pderiv_X_self, mul_one]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem pderiv_single_self {τ : Type} (x : τ) (f : PowerSeries K) :
     pderiv K x (at1 x f) = at1 x (PowerSeries.derivative K f) := by
@@ -181,7 +179,7 @@ theorem pderiv_single_self {τ : Type} (x : τ) (f : PowerSeries K) :
   rw [pderiv_psubst (PowerSeries.HasSubst.X x), pderiv_X_self, mul_one]
 
 /- English proof (translation)
-Unfold `at1`. Rewrite using `[pderiv_psubst (PowerSeries.HasSubst.X x), pderiv_X_of_ne h, mul_zero]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem pderiv_single_of_ne {τ : Type} {x e : τ} (h : x ≠ e) (f : PowerSeries K) :
     pderiv K e (at1 x f) = 0 := by
@@ -189,7 +187,7 @@ theorem pderiv_single_of_ne {τ : Type} {x e : τ} (h : x ≠ e) (f : PowerSerie
   rw [pderiv_psubst (PowerSeries.HasSubst.X x), pderiv_X_of_ne h, mul_zero]
 
 /- English proof (translation)
-Establish `hd : (X 0 : MvPowerSeries (Fin 2) K) ∣ G` using `X_dvd_iff.2 fun m hm => hG m (Or.inl hm)`. Take `⟨Q, rfl⟩` from `hd`. Establish `h` using `hs2 (map_zero _) hw`. Rewrite using `[subst_mul h, subst_X h]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem subst_zero_left {τ : Type} {G : MvPowerSeries (Fin 2) K} (hG : DivAB G)
     {w : MvPowerSeries τ K} (hw : constantCoeff w = 0) : subst ![0, w] G = 0 := by
@@ -200,11 +198,11 @@ theorem subst_zero_left {τ : Type} {G : MvPowerSeries (Fin 2) K} (hG : DivAB G)
   simp
 
 /- English proof (translation)
-Establish `hd : (X 0 : MvPowerSeries (Fin 2) K) ∣ pderiv K 0 G - at1 1 (fLin G)`. Use `X_dvd_iff.2 fun m hm => ?_` and prove the remaining obligations. Establish `hm1 : m = Finsupp.single 1 (m 1)`. Use extensionality with `i`. Apply the tactic sequence `fin_cases i <;> simp [hm]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[map_sub, coeff_pderiv, coeff_single_variable_series, if_pos hm1, hm, fLin, PowerSeries.coeff_mk, add_comm (Finsupp.single 0 1), ← hm1]`. Simplify using the standard rewrite rules. Take `⟨Q, hQ⟩` from `hd`. Establish `e : pderiv K 0 G = at1 1 (fLin G) + X 0 * Q` using `by rw [← hQ]; ring`. Establish `h` using `hs2 (map_zero _) hw`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[e, subst_add h, subst_mul h, subst_X h, subst_single_variable h]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem subst_zero_pderiv {τ : Type} (G : MvPowerSeries (Fin 2) K)
     {w : MvPowerSeries τ K} (hw : constantCoeff w = 0) :
@@ -224,7 +222,7 @@ theorem subst_zero_pderiv {τ : Type} (G : MvPowerSeries (Fin 2) K)
   simp
 
 /- English proof (translation)
-Unfold `swap2`. Rewrite using `[subst_subst2 h HasSubst.X_X, subst_X h, subst_X h]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem subst_swap2 {τ : Type} {u v : MvPowerSeries τ K} (h : HasSubst ![u, v])
     (H : MvPowerSeries (Fin 2) K) : subst ![u, v] (swap2 H) = subst ![v, u] H := by
@@ -233,7 +231,7 @@ theorem subst_swap2 {τ : Type} {u v : MvPowerSeries τ K} (h : HasSubst ![u, v]
   rfl
 
 /- English proof (translation)
-Unfold `swap2`. Rewrite using `[pderiv_subst2 HasSubst.X_X, pderiv_X_self, pderiv_X_of_ne (by decide), mul_one, mul_zero, add_zero]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem pderiv_swap2 (H : MvPowerSeries (Fin 2) K) :
     pderiv K 1 (swap2 H) = swap2 (pderiv K 0 H) := by
@@ -242,7 +240,7 @@ theorem pderiv_swap2 (H : MvPowerSeries (Fin 2) K) :
     add_zero]
 
 /- English proof (translation)
-The claim follows from `constantCoeff_subst_eq_zero HasSubst.X_X (fun i => by fin_cases i <;> simp) hF`.
+A detailed English derivation is pending.
 -/
 theorem constantCoeff_law_first_two_of_three {F : MvPowerSeries (Fin 2) K} (hF : constantCoeff F = 0) :
     constantCoeff (in3 F) = 0 :=
@@ -257,7 +255,7 @@ open MvPowerSeries
 variable {K : Type} [NormedField K] [IsUltrametricDist K]
 
 /- English proof (translation)
-Introduce `n`. Rewrite using `[coeff_X]`. Apply the tactic sequence `split_ifs <;> simp`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem integral_X {τ : Type} (x : τ) : Integral (X x : MvPowerSeries τ K) := by
   classical
@@ -266,14 +264,14 @@ theorem integral_X {τ : Type} (x : τ) : Integral (X x : MvPowerSeries τ K) :=
   split_ifs <;> simp
 
 /- English proof (translation)
-Introduce `n`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem integral_zero {τ : Type} : Integral (0 : MvPowerSeries τ K) := by
   intro n
   simp
 
 /- English proof (translation)
-Introduce `n`. Rewrite using `[coeff_pderiv, norm_mul]`. Establish `h : ‖((n e : K) + 1)‖ ≤ 1`. Conclude with `IsUltrametricDist.norm_natCast_le_one K (n e + 1)` after adjusting the coercions. Conclude with `mul_le_one₀ (hf _) (norm_nonneg _) h`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem integral_pderiv {τ : Type} {f : MvPowerSeries τ K} (hf : Integral f) (e : τ) :
     Integral (pderiv K e f) := by
@@ -284,9 +282,9 @@ theorem integral_pderiv {τ : Type} {f : MvPowerSeries τ K} (hf : Integral f) (
   exact mul_le_one₀ (hf _) (norm_nonneg _) h
 
 /- English proof (translation)
-Establish `hb` using `hasSubst_of_constantCoeff_zero hb0`. Establish `h1 : pderiv K e (mvExp D) = mvExp D * pderiv K e D`. Unfold `mvExp`. Rewrite using `[pderiv_psubst (PowerSeries.HasSubst.of_constantCoeff_zero hD0), PowerSeries.derivative_exp]`. Establish `h2 : subst b (pderiv K e D) = subst b (pderiv K e (mvExp D))`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[h1, subst_mul hb, LogarithmEquivalence.subst_mvExp' hb hD0, hbD, LogarithmEquivalence.mvExp_zero', one_mul]`. Rewrite using `[h2]`. Conclude with `LogarithmEquivalence.integral_subst' hb0 hbi (integral_pderiv hDi e)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integral_lin [CharZero K] {τ κ : Type} [Finite τ] {D : MvPowerSeries τ K}
     (hD0 : constantCoeff D = 0) (hDi : Integral (mvExp D)) {b : τ → MvPowerSeries κ K}
@@ -303,13 +301,13 @@ theorem integral_lin [CharZero K] {τ κ : Type} [Finite τ] {D : MvPowerSeries 
   exact LogarithmEquivalence.integral_subst' hb0 hbi (integral_pderiv hDi e)
 
 /- English proof (translation)
-Establish `hp0 : (0 : ℝ) < p` using `by exact_mod_cast hp.pos`. Establish `hpK : (p : K) ≠ 0`. Rewrite using `[← norm_pos_iff, hnp]`. Check the signs of the components of the expression. Rewrite using `[PowerSeries.coeff_derivative]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the signs of the components of the expression. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `h : PowerSeries.coeff (N + 1) (lgF K p) = 0`. Simplify using `[h]`. Take `⟨j, hj⟩` from `coeff_lgF_ne_zero h`. Establish `e : PowerSeries.coeff (N + 1) (lgF K p) * ((N : K) + 1) = (p : K) ^ j`. Establish `hc : ((N : K) + 1) = (((p ^ 2) ^ j : ℕ) : K)`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← hj]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hc, hj, coeff_lgF_pow K hp.two_le]`. Use `push_cast`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, norm_pow, hnp]`. Conclude with `pow_le_one₀ (by positivity) (inv_le_one_of_one_le₀ (by exact_mod_cast hp.one_lt.le))`.
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_coeff_dlgF {p : ℕ} (hp : p.Prime) (hnp : ‖(p : K)‖ = (p : ℝ)⁻¹) (N : ℕ) :
     ‖PowerSeries.coeff N (PowerSeries.derivative K (lgF K p))‖ ≤ 1 := by
@@ -334,7 +332,7 @@ theorem norm_coeff_dlgF {p : ℕ} (hp : p.Prime) (hnp : ‖(p : K)‖ = (p : ℝ
   exact pow_le_one₀ (by positivity) (inv_le_one_of_one_le₀ (by exact_mod_cast hp.one_lt.le))
 
 /- English proof (translation)
-Introduce `n`. Rewrite using `[coeff_single_variable_series]`. Use `split_ifs`. Conclude with `norm_coeff_dlgF hp hnp _`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem integral_single_log_derivative {τ : Type} {p : ℕ} (hp : p.Prime) (hnp : ‖(p : K)‖ = (p : ℝ)⁻¹) (x : τ) :
     Integral (at1 x (PowerSeries.derivative K (lgF K p))) := by
@@ -346,7 +344,7 @@ theorem integral_single_log_derivative {τ : Type} {p : ℕ} (hp : p.Prime) (hnp
   · simp
 
 /- English proof (translation)
-Rewrite using `[← PowerSeries.coeff_zero_eq_constantCoeff_apply, PowerSeries.coeff_derivative]`. Use `coeff_lgF_pow K hp 0` as an intermediate fact. Simplify using `only [pow_zero, inv_one] at this`. Simplify using `[this]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem constantCoeff_dlgF {p : ℕ} (hp : 2 ≤ p) :
     PowerSeries.constantCoeff (PowerSeries.derivative K (lgF K p)) = 1 := by
@@ -361,25 +359,23 @@ end GramFrameCompositionLinFacts
 
 open GramFrameCompositionLinFacts MvPowerSeries in
 /- English proof (translation)
-Introduce `K _ _ _ p hp hnp F hF G hG hS`. Take `⟨-, -, -, hF4⟩` from `hL K p hp hnp F hF`. Take `⟨hF0, hFi, hFc⟩` from `hF`. Take `⟨hD0, hDi⟩` from `hS`. Rewrite `hD0`, `hDi` using `[sub_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hX : ∀ {τ : Type} (x : τ), constantCoeff (X x : MvPowerSeries τ K) = 0` using `fun x => by simp`. Establish `he0 : HasSubst ![(X 0 : MvPowerSeries (Fin 2) K), 0, X 1]` using `hs3 (hX 0) (map_zero _) (hX 1)`. Establish `hin : HasSubst ![in3 F, (X 2 : MvPowerSeries (Fin 3) K)]` using `hs2 (constantCoeff_law_first_two_of_three hF0) (hX 2)`. Establish `hE : subst ![(X 0 : MvPowerSeries (Fin 2) K), 0, X 1] (in3 F) = X 0`. Unfold `in3`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[subst_subst2 he0 HasSubst.X_X, subst_X he0, subst_X he0]`. Conclude with `hF4`. Establish `hx0 : subst ![(X 0 : MvPowerSeries (Fin 2) K), 0, X 1] (X 0 : MvPowerSeries (Fin 3) K) = X 0` using `subst_X he0 0`. Establish `hx1 : subst ![(X 0 : MvPowerSeries (Fin 2) K), 0, X 1] (X 1 : MvPowerSeries (Fin 3) K) = 0` using `subst_X he0 1`. Establish `hx2 : subst ![(X 0 : MvPowerSeries (Fin 2) K), 0, X 1] (X 2 : MvPowerSeries (Fin 3) K) = X 1` using `subst_X he0 2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hA : subst ![(X 0 : MvPowerSeries (Fin 2) K), 0, X 1] (d1 F G) = 0`. Unfold `d1`. Rewrite using `[subst_sub he0, subst_sub he0, subst_subst2 he0 hin, subst_subst2 he0 HasSubst.X_X, subst_subst2 he0 HasSubst.X_X, hE, hx0, hx1, hx2, subst_zero_left hG (hX 1)]`. Simplify using the standard rewrite rules. Apply the tactic sequence `have hI := integral_lin hD0 hDi (b := ![(X 0 : MvPowerSeries (Fin 2) K), 0, X 1]) (fun i => by fin_cases i <;> simp) (fun i => by fin_cases i`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Substitute using the available equality.
 
-Conclude with `integral_X 0`. Conclude with `integral_zero`. Conclude with `integral_X 1) hA 1`. Use `set φ : MvPowerSeries (Fin 2) K :=`. Substitute `![(X 0 : MvPowerSeries (Fin 2) K), 0, X 1] (pderiv K 1 (in3 F)) with hφ` using the available equality.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hφ' : φ = subst ![(X 0 : MvPowerSeries (Fin 2) K), 0] (pderiv K 1 F)`. Rewrite using `[hφ]`. Unfold `in3`. Rewrite using `[pderiv_subst2 HasSubst.X_X, pderiv_X_self, pderiv_X_of_ne (by decide), mul_zero, mul_one, zero_add, subst_subst2 he0 HasSubst.X_X, hx0, hx1]`. Establish `hC : subst ![(X 0 : MvPowerSeries (Fin 2) K), 0, X 1] (pderiv K 1 (d1 F G)) = pderiv K 0 G * φ - at1 1 (fLin G)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Unfold `d1`. Rewrite using `[map_sub, map_sub, pderiv_subst2 hin, pderiv_subst2 HasSubst.X_X, pderiv_subst2 HasSubst.X_X, pderiv_X_self, pderiv_X_of_ne (show (2 : Fin 3) ≠ 1 by decide), pderiv_X_of_ne (show (0 : Fin 3) ≠ 1 by decide)]`. Simplify using `only [mul_zero, add_zero, sub_zero, mul_one]`. Rewrite using `[subst_sub he0, subst_mul he0, subst_subst2 he0 hin, subst_subst2 he0 HasSubst.X_X, hE, hx1, hx2, subst_identity_two_vars, subst_zero_pderiv G (hX 1)]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hs0 : HasSubst ![(X 0 : MvPowerSeries (Fin 2) K), 0]` using `HasSubst.X_zero`. Establish `hlφ : at1 0 (PowerSeries.derivative K (lgF K p)) * φ = 1`. Establish `h1` using `congrArg (pderiv K 1) hFc`. Unfold `cob at h1`. Rewrite `h1` using `[map_sub, map_sub, map_zero, pderiv_single_self, pderiv_single_of_ne (by decide), sub_zero, pderiv_psubst (PowerSeries.HasSubst.of_constantCoeff_zero hF0), sub_eq_zero]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Establish `h2` using `congrArg (subst ![(X 0 : MvPowerSeries (Fin 2) K), 0]) h1`. Rewrite `h2` using `[subst_mul hs0, subst_psubst hs0 (PowerSeries.HasSubst.of_constantCoeff_zero hF0), hF4, ← hφ', subst_single_variable hs0]`. Rewrite using `[at1, h2]`. Express the relevant statement in the definitionally equal form `PowerSeries.subst (0 : MvPowerSeries (Fin 2) K) _ = 1`. Rewrite using `[PowerSeries.subst_zero_eq_C_constantCoeff, constantCoeff_dlgF hp.two_le]`.
-
-Simplify using the standard rewrite rules. Establish `hfin : pderiv K 0 G - at1 0 (PowerSeries.derivative K (lgF K p)) * at1 1 (fLin G) = at1 0 (PowerSeries.derivative K (lgF K p)) * (pderiv K 0 G * φ - at1 1 (fLin G))`. Take the linear combination `(-(pderiv K 0 G)) * hlφ`. Rewrite using `[hfin, ← hC]`. Conclude with `LogarithmEquivalence.integral_mul' (integral_single_log_derivative hp hnp 0) hI`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem FirstDeriv_of (hL : LawSymm) : FirstDeriv := by
   intro K _ _ _ p hp hnp F hF G hG hS
@@ -454,23 +450,21 @@ theorem FirstDeriv_of (hL : LawSymm) : FirstDeriv := by
 
 open GramFrameCompositionLinFacts MvPowerSeries in
 /- English proof (translation)
-Introduce `K _ _ _ p _ _ F hF G hG hS`. Take `⟨hF0, -, -⟩` from `hF`. Take `⟨hD0, hDi⟩` from `hS`. Rewrite `hD0`, `hDi` using `[sub_zero]`. Establish `hX : ∀ {τ : Type} (x : τ), constantCoeff (X x : MvPowerSeries τ K) = 0` using `fun x => by simp`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `he : HasSubst ![(X 0 : MvPowerSeries (Fin 2) K), X 1, 0]` using `hs3 (hX 0) (hX 1) (map_zero _)`. Establish `hx2 : subst ![(X 0 : MvPowerSeries (Fin 2) K), X 1, 0] (X 2 : MvPowerSeries (Fin 3) K) = 0` using `subst_X he 2`. Establish `term : ∀ w : MvPowerSeries (Fin 3) K, constantCoeff w = 0 → pderiv K 2 w = 0 →`. Substitute `![(X 0 : MvPowerSeries (Fin 2) K), X 1, 0] (subst ![w, X 2] (swap2 G)) = 0 ∧` using the available equality. Substitute `![(X 0 : MvPowerSeries (Fin 2) K), X 1, 0] (pderiv K 2 (subst ![w, X 2] (swap2 G))) = PowerSeries.subst (subst ![(X 0 : MvPowerSeries (Fin 2) K), X 1, 0] w) (fLin G) := by` using the available equality.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality. Substitute using the available equality.
 
-Introduce `w hw hdw`. Establish `hs` using `hs2 hw (hX (2 : Fin 3))`. Apply the tactic sequence `have hw' : constantCoeff (subst ![(X 0 : MvPowerSeries (Fin 2) K), X 1, 0] w) = 0 := constantCoeff_subst_eq_zero he (fun i => by fin_cases i <;> simp) hw`. Establish `hs'` using `hs2 hw' (map_zero (constantCoeff (σ := Fin 2) (R := K)))`. Prove the components needed by the constructor for the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Rewrite using `[subst_subst2 he hs, hx2, subst_swap2 hs', subst_zero_left hG hw']`. Rewrite using `[pderiv_subst2 hs, hdw, pderiv_X_self, mul_zero, mul_one, zero_add, subst_subst2 he hs, hx2, pderiv_swap2, subst_swap2 hs', subst_zero_pderiv G hw']`. Establish `hdF : pderiv K 2 (in3 F) = 0`. Unfold `in3`. Rewrite using `[pderiv_subst2 HasSubst.X_X, pderiv_X_of_ne (by decide), pderiv_X_of_ne (by decide), mul_zero, mul_zero, add_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Take `⟨a1, b1⟩` from `term (in3 F) (constantCoeff_law_first_two_of_three hF0) hdF`. Take `⟨a2, b2⟩` from `term (X 0) (hX 0) (pderiv_X_of_ne (by decide))`. Take `⟨a3, b3⟩` from `term (X 1) (hX 1) (pderiv_X_of_ne (by decide))`. Establish `hA : subst ![(X 0 : MvPowerSeries (Fin 2) K), X 1, 0] (d1 F (swap2 G)) = 0`. Unfold `d1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[subst_sub he, subst_sub he, a1, a2, a3]`. Simplify using the standard rewrite rules. Apply the tactic sequence `have hI := integral_lin hD0 hDi (b := ![(X 0 : MvPowerSeries (Fin 2) K), X 1, 0]) (fun i => by fin_cases i <;> simp) (fun i => by fin_cases i`. Conclude with `integral_X 0`. Conclude with `integral_X 1`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Conclude with `integral_zero) hA 2`. Establish `hE : subst ![(X 0 : MvPowerSeries (Fin 2) K), X 1, 0] (in3 F) = F`. Unfold `in3`. Rewrite using `[subst_subst2 he HasSubst.X_X, subst_X he, subst_X he]`. Conclude with `subst_identity_two_vars F`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hC : subst ![(X 0 : MvPowerSeries (Fin 2) K), X 1, 0] (pderiv K 2 (d1 F (swap2 G))) = cob F (fLin G)`. Unfold `d1 cob`. Rewrite using `[map_sub, map_sub, subst_sub he, subst_sub he, b1, b2, b3, hE, subst_X he, subst_X he]`. Both sides reduce to the same expression. Rewrite using `[← hC]`.
-
-Conclude with `hI`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem CobLin_of (_hL : LawSymm) : CobLin := by
   intro K _ _ _ p _ _ F hF G hG hS
@@ -529,21 +523,21 @@ theorem CobLin_of (_hL : LawSymm) : CobLin := by
 namespace GramFrameCompositionLinFacts
 
 /- English proof (translation)
-The claim follows from `((Nat.modEq_iff_dvd' (Nat.one_le_pow _ _ (by omega))).2 dvd_rfl).symm`.
+A detailed English derivation is pending.
 -/
 theorem sq_modEq_one {p : ℕ} (hp : 2 ≤ p) : p ^ 2 ≡ 1 [MOD p ^ 2 - 1] :=
   ((Nat.modEq_iff_dvd' (Nat.one_le_pow _ _ (by omega))).2 dvd_rfl).symm
 
 /- English proof (translation)
-Simplify using `using (sq_modEq_one hp).pow i`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem powq_modEq_one {p : ℕ} (hp : 2 ≤ p) (i : ℕ) : (p ^ 2) ^ i ≡ 1 [MOD p ^ 2 - 1] := by
   simpa using (sq_modEq_one hp).pow i
 
 /- English proof (translation)
-Introduce `h`. Establish `h1 : p ^ 2 - 1 ∣ p - 1` using `(Nat.modEq_iff_dvd' (by omega)).1 h`. Establish `h2` using `Nat.le_of_dvd (by omega) h1`. Establish `h3 : p * 2 ≤ p ^ 2`. Rewrite using `[sq]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Nat.mul_le_mul_left p hp`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem not_one_modEq {p : ℕ} (hp : 2 ≤ p) : ¬ 1 ≡ p [MOD p ^ 2 - 1] := by
   intro h
@@ -558,29 +552,27 @@ end GramFrameCompositionLinFacts
 
 open GramFrameCompositionLinFacts MvPowerSeries in
 /- English proof (translation)
-Introduce `K _ _ _ _ p σ hU F hLaw G hS hd1 hd2`. Establish `hp : p.Prime` using `hU.1`. Establish `hnp : ‖(p : K)‖ = (p : ℝ)⁻¹` using `hU.2.2.1`. Establish `hp2 : 2 ≤ p` using `hp.two_le`. Establish `hDiv : DivAB G`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `n hn`. Assume the negation of the conclusion as `h`. Take `⟨a, b, -⟩` from `hS n h`. Use linear arithmetic over natural numbers and integers. Establish `hFD` using `hF K p hp hnp F hLaw G hDiv hd1`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Establish `hCL` using `hC K p hp hnp F hLaw G hDiv hd2`. Establish `hf0 : PowerSeries.constantCoeff (fLin G) = 0`. Rewrite using `[← PowerSeries.coeff_zero_eq_constantCoeff_apply, fLin, PowerSeries.coeff_mk]`. Conclude with `hDiv _ (Or.inr (by simp))`. Take `⟨α, β, R, hα, hR, hf⟩` from `h1 K p σ hU F hLaw (fLin G) hf0 hCL`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `key : ∀ j, ‖PowerSeries.coeff j (fLin G) - α * PowerSeries.coeff j (g0F K p)‖ ≤ 1`. Introduce `j`. Distinguish the cases in `hj : j ≡ p [MOD p ^ 2 - 1]`. Establish `hl : PowerSeries.coeff j (lgF K p) = 0`. Assume the negation of the conclusion as `h`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Take `⟨i, rfl⟩` from `coeff_lgF_ne_zero h`. Conclude with `not_one_modEq hp2 ((powq_modEq_one hp2 i).symm.trans hj)`. Establish `e : PowerSeries.coeff j (fLin G) - α * PowerSeries.coeff j (g0F K p) = PowerSeries.coeff j R`. Rewrite using `[hf]`. Simplify using `only [map_add, PowerSeries.coeff_C_mul, hl]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `hR j`. Establish `hfj : PowerSeries.coeff j (fLin G) = 0`. Assume the negation of the conclusion as `h`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Rewrite `h` using `[fLin, PowerSeries.coeff_mk]`. Take `⟨-, -, hc⟩` from `hS _ h`. Simplify using `only [Finsupp.add_apply, Finsupp.single_apply] at hc`. Simplify using `only [if_true, Fin.isValue, one_ne_zero, zero_ne_one, if_false, add_zero, zero_add] at hc`. Apply `hj` to reduce the goal to its premises.
+Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h3 : p * 1 ≡ p * (p * j) [MOD p ^ 2 - 1]` using `hc.mul_left p`. Establish `h4 : p * (p * j) ≡ 1 * j [MOD p ^ 2 - 1]`. Rewrite using `[← mul_assoc, ← sq]`. Conclude with `(sq_modEq_one hp2).mul_right j`. Simplify using `using (h3.trans h4).symm`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hgj : PowerSeries.coeff j (g0F K p) = 0`. Assume the negation of the conclusion as `h`. Take `⟨i, rfl⟩` from `coeff_g0F_ne_zero h`. Apply `hj` to reduce the goal to its premises. Simplify using `using (powq_modEq_one hp2 i).mul_left p`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hfj, hgj]`. Simplify using the standard rewrite rules. Use `⟨α, hα, ?_⟩` and prove the remaining obligations. Introduce `n`. Establish `e : coeff n (pderiv K 0 G - C α * (at1 0 (PowerSeries.derivative K (lgF K p)) * at1 1 (g0F K p))) = coeff n (pderiv K 0 G - at1 0 (PowerSeries.derivative K (lgF K p)) * at1 1 (fLin G)) + PowerSeries.coeff (n 0) (PowerSeries.derivative K (lgF K p)) * (PowerSeries.coeff (n 1) (fLin …`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_sub, map_sub, coeff_C_mul, coeff_product_single_variables (by decide) (by decide), coeff_product_single_variables (by decide) (by decide)]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Use `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le (hFD n) ?_)` and prove the remaining obligations. Rewrite using `[norm_mul]`.
-
-Conclude with `mul_le_one₀ (norm_coeff_dlgF hp hnp _) (norm_nonneg _) (key _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem StepI_of (h1 : LemmaOne) (hF : FirstDeriv) (hC : CobLin) : StepI := by
   intro K _ _ _ _ p σ hU F hLaw G hS hd1 hd2

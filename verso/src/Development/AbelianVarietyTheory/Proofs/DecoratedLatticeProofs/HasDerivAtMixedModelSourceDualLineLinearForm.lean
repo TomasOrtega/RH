@@ -20,19 +20,15 @@ noncomputable section
 namespace GlobalTheory.Unf
 
 /- English proof (translation)
-Introduce `D ψ hψ θ hθ S S₀ T ρ d v f hf L hLc hLf x w`. Set `M : ℝ →+ WO S T` to `(d.extY T).comp L`. Establish `hM : Formalism.L2.Theta.IsRealDir T S M`. Establish `hc : Continuous (d.extY T)` using `continuous_id.matrix_mul continuous_const`. Use `⟨hc.comp hLc, fun t => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `show (d.extY T (L t)).map (finPart D) = 0`. Rewrite using `[HypDec.extY_apply, Matrix.map_mul, hLf t, Matrix.zero_mul]`. Use `haveI : IsFiniteMeasure (v.μ.restrict v.𝓕) := ⟨by rw [Measure.restrict_apply_univ, v.covol.2.2]; exact ENNReal.one_lt_top⟩`. Take `⟨K, hK⟩` from `GlobalTheory.OrientedHeis.theta_bounded hψ (GlobalTheory.OrientedHeis.theta_dLine hθ hψ hM hf)`. Establish `e1 : (fun t : ℝ => ψ (symplO S T (d.extX T x) (d.extY T (L t))) * d.mixS T ψ v.μ v.𝓕 f x w) = fun t => d.mixS T ψ v.μ v.𝓕 (heisO ψ S T (M t) f) x w`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `t`. Establish `h` using `congrFun ((GlobalTheory.T.heisenbergOperator_thetaFunctional_mixedSourceModel D ψ hψ S S₀ T ρ d v f hf).2.1 x (L t)) w`. Rewrite `h` using `[Pi.smul_apply, smul_eq_mul]`. Conclude with `h.symm`. Establish `e2 : (fun p => deriv (fun t : ℝ => heisO ψ S T (d.extY T (L t)) f p) 0) = heisO ψ S T (M 0) (GlobalTheory.OrientedHeis.dLine ψ S T M f)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[M.map_zero, GlobalTheory.OrientedHeis.heisO_zero]`. Both sides reduce to the same expression. Rewrite using `[e1, e2]`. Establish `hI : ∀ g : WO S T → ℂ, IsThetaFunO ψ S T g → IntegrableOn (fun a => ψ (symplOH S T (d.extY T a) (d.extX T x)) * g (d.extY T a + d.extX T x + d.ext0 T w)) v.𝓕 v.μ` using `fun g hg => by`. Simplify `HypDec.integrableOn_mixS d hψ.1.1 v.covol hg x w` using `only [HypDec.integrandS_eq]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [HypDec.mixS, HypDec.integrandS_eq]`. Use `(hasDerivAt_integral_of_dominated_loc_of_deriv_le (μ := v.μ.restrict v.𝓕) (x₀ := (0 : ℝ)) (F' := fun t a => ψ (symplOH S T (d.extY T a) (d.extX T x)) * heisO ψ S T (M t) (GlobalTheory.OrientedHeis.dLine ψ S T M f) (d.extY T a + d.extX T x + d.ext0 T w)) (bound := fun _ => K) (s : …` and prove the remaining obligations. Conclude with `Filter.Eventually.of_forall fun t => (hI _ (GlobalTheory.OrientedHeis.theta_heisO_real hθ hψ (hM.2 t) hf)).aestronglyMeasurable`. Conclude with `hI _ (GlobalTheory.OrientedHeis.theta_heisO_real hθ hψ (hM.2 0) hf)`. Conclude with `(hI _ (GlobalTheory.OrientedHeis.theta_heisO_real hθ hψ (hM.2 0) (GlobalTheory.OrientedHeis.theta_dLine hθ hψ hM hf))).aestronglyMeasurable`.
-
-Use `Filter.Eventually.of_forall fun a t _ => ?_` and prove the remaining obligations. Rewrite using `[norm_mul, hψ.1.2.1, one_mul]`. Unfold `heisO`. Rewrite using `[norm_mul, hψ.1.2.1, one_mul]`. Conclude with `hK _`.
-
-Conclude with `Filter.Eventually.of_forall fun a t _ => (GlobalTheory.OrientedHeis.hasDerivAt_heisO hθ hψ hM hf _ t).const_mul _`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasDerivAt_mixS_extY : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ θ : InfFam D, IsInfFam θ → ∀ (S S₀ T : HSp D) (ρ : ℕ) (d : HypDec S S₀ ρ) (v : VolM D T.rank ρ) (f : WO S T → ℂ), IsThetaFunO ψ S T f → ∀ L : ℝ →+ Mx D T.rank ρ, Continuous L → (∀ t, (L t).map (finPart D) = 0) → ∀ x w, HasDerivAt (fun t : ℝ => ψ (symplO S T (d.extX T x) (d.extY T (L t))) * d.mixS T ψ v.μ v.𝓕 f x w) (d.mixS T ψ v.μ v.𝓕 (fun p => deriv (fun t : ℝ => heisO ψ S T (d.extY T (L t)) f p) 0) x w) 0 := by
   intro D ψ hψ θ hθ S S₀ T ρ d v f hf L hLc hLf x w

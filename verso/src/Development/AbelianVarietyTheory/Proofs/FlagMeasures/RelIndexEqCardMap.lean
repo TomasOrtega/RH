@@ -12,9 +12,9 @@ open scoped Pointwise ENNReal Classical
 namespace GlobalTheory.HL.LevelFamilies
 
 /- English proof (translation)
-Establish `h` using `AddSubgroup.relIndex_ker A.toAddSubgroup M.mkQ.toAddMonoidHom`. Establish `hk : M.mkQ.toAddMonoidHom.ker = M.toAddSubgroup`. Use extensionality with `x`. Simplify using `[AddMonoidHom.mem_ker]`. Rewrite `h` using `[hk]`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[h]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem relIndex_eq_card_map {O V : Type} [Ring O] [AddCommGroup V] [Module O V]
     (M A : Submodule O V) :
@@ -28,19 +28,19 @@ theorem relIndex_eq_card_map {O V : Type} [Ring O] [AddCommGroup V] [Module O V]
   rfl
 
 /- English proof (translation)
-Establish `hinj : Function.Injective (fun c : V ⧸ M => (M.mkQ ⁻¹' {c} : Set V))`. Introduce `c c' h`. Take `⟨v, rfl⟩` from `M.mkQ_surjective c`. Establish `: v ∈ (M.mkQ ⁻¹' {c'} : Set V)`. Establish `h' : (M.mkQ ⁻¹' {M.mkQ v} : Set V) = M.mkQ ⁻¹' {c'}` using `h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← h']`. Simplify using the standard rewrite rules. Simplify using `using this`. Establish `hpre : ∀ y : V, (M.mkQ ⁻¹' {M.mkQ y} : Set V) = {x | x - y ∈ M}`. Introduce `y`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use extensionality with `x`. Simplify using `[Submodule.Quotient.eq]`. Establish `hmem : ∀ y : V, M.mkQ y ∈ B.map M.mkQ ↔ y ∈ B`. Introduce `y`. Prove the components needed by the constructor for the conclusion.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨b, hb, hby⟩`. Establish `h1 : b - y ∈ M` using `by simpa [Submodule.Quotient.eq] using hby`. Establish `h2 : y = b - (b - y)` using `by abel`. Rewrite using `[h2]`. Conclude with `B.sub_mem hb (hMB h1)`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hy`. Conclude with `⟨y, hy, rfl⟩`. Establish `hset : {C : Set V | ∃ y ∈ A, y ∉ B ∧ C = {x | x - y ∈ M}} = (fun c : V ⧸ M => (M.mkQ ⁻¹' {c} : Set V)) '' ((A.map M.mkQ : Set (V ⧸ M)) \ (B.map M.mkQ : Set (V ⧸ M)))`. Use extensionality with `C`. Prove the components needed by the constructor for the conclusion.
+Supply the required witnesses or components. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨y, hyA, hyB, rfl⟩`. Conclude with `⟨M.mkQ y, ⟨⟨y, hyA, rfl⟩, fun h => hyB ((hmem y).1 h)⟩, hpre y⟩`. Introduce and unpack `⟨c, ⟨⟨y, hyA, rfl⟩, hc⟩, rfl⟩`. Conclude with `⟨y, hyA, fun h => hc ((hmem y).2 h), hpre y⟩`. Establish `hsub : (B.map M.mkQ : Set (V ⧸ M)) ⊆ (A.map M.mkQ : Set (V ⧸ M))` using `Submodule.map_mono hBA`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfin : (A.map M.mkQ : Set (V ⧸ M)).Finite` using `Set.toFinite _`. Rewrite using `[hset, Set.ncard_image_of_injective _ hinj, Set.ncard_diff hsub (hfin.subset hsub)]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem ncard_classes {O V : Type} [Ring O] [AddCommGroup V] [Module O V]
     (M B A : Submodule O V) (hMB : M ≤ B) (hBA : B ≤ A) [Finite (A.map M.mkQ)] :
@@ -83,9 +83,9 @@ theorem ncard_classes {O V : Type} [Ring O] [AddCommGroup V] [Module O V]
   rfl
 
 /- English proof (translation)
-Establish `h : Ideal.span {ϖ} = IsLocalRing.maximalIdeal 𝒪[F]` using `hϖ.maximalIdeal_eq.symm`. Establish `h1 : resQ ϖ = Nat.card (IsLocalRing.ResidueField 𝒪[F])`. Unfold `resQ`. Rewrite using `[h]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[h1]`. Conclude with `Finite.one_lt_card`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem two_le_resQ {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
     [IsNonarchimedeanLocalField F] (ϖ : 𝒪[F]) (hϖ : Irreducible ϖ) : 2 ≤ resQ ϖ := by
@@ -98,35 +98,33 @@ theorem two_le_resQ {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
   exact Finite.one_lt_card
 
 /- English proof (translation)
-Introduce `F _ _ _ _ _ E _ _ _ L r k S d Λ hT hB`. Take `⟨-, -, -, -, -, ⟨i, hia, hbe⟩, -, -, -, hlev0, hlev⟩` from `GlobalTheory.T.term_exponents_nonneg_and_defect_group_bound L r k S d Λ hT`. Establish `hMA : S.M d Λ ≤ S.sat Λ` using `(GlobalTheory.HL.TermBasic.term_basic L r k S d Λ hT).2.2.1`. Establish `hq : 2 ≤ S.q` using `two_le_resQ S.ϖ S.ϖ_irr`. Establish `hcard : Nat.card ((S.sat Λ).map (S.M d Λ).mkQ) = S.q ^ i`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← hbe, ← relIndex_eq_card_map]`. Both sides reduce to the same expression. Use `haveI hfin : Finite ((S.sat Λ).map (S.M d Λ).mkQ) := by`. Apply `Nat.finite_of_card_ne_zero` to reduce the goal to its premises. Rewrite using `[hcard]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Check the signs of the components of the expression.
 
-Check the signs of the components of the expression. Set `P : ℕ → Prop` to `fun j => ∃ y ∈ S.sat Λ, S.levC d Λ y = j`. Choose the witnesses or unpack the hypotheses as in `⟨y0, hy0A, hy0M⟩ : ∃ y ∈ S.sat Λ, y ∉ S.M d Λ := by`. Assume the negation of the conclusion as `h`. Use `push_neg at h`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `hB.1 (le_antisymm hMA h)`. Set `J` to `Nat.findGreatest P r`. Establish `hle : ∀ y ∈ S.sat Λ, S.levC d Λ y ≤ J` using `fun y hy => Nat.le_findGreatest (hB.2.1 y hy) ⟨y, hy, rfl⟩`. Establish `hPJ : P J` using `Nat.findGreatest_spec (hB.2.1 y0 hy0A) ⟨y0, hy0A, rfl⟩`. Establish `hJr : J ≤ r` using `Nat.findGreatest_le r`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hJ1 : 1 ≤ J`. Establish `h1 : S.levC d Λ y0 ≠ 0` using `fun h => hy0M ((hlev0 y0 hy0A).1 h)`. Use `hle y0 hy0A` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Set `B : Submodule L.O S.V` to `S.sat Λ ⊓ ((S.spanTo S.f (J - 1) ⊔ S.spanTo S.f' (J - 1)).restrictScalars L.O ⊔ S.M d Λ)`.
+Use linear arithmetic over natural numbers and integers. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hBmem : ∀ y ∈ S.sat Λ, y ∈ B ↔ S.levC d Λ y ≤ J - 1`. Introduce `y hy`. Rewrite using `[hlev y hy]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨-, h⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Take `⟨u, hu, m, hm, rfl⟩` from `Submodule.mem_sup.1 h`. Conclude with `⟨u, hu, by simpa using hm⟩`. Introduce and unpack `⟨u, hu, hm⟩`. Conclude with `⟨hy, Submodule.mem_sup.2 ⟨u, hu, y - u, hm, by abel⟩⟩`. Establish `hMB : S.M d Λ ≤ B` using `le_inf hMA le_sup_right`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hBA : B ≤ S.sat Λ` using `inf_le_left`. Establish `hle' : B.map (S.M d Λ).mkQ ≤ (S.sat Λ).map (S.M d Λ).mkQ` using `Submodule.map_mono hBA`. Use `haveI hfinB : Finite (B.map (S.M d Λ).mkQ) := Finite.of_injective _ (Submodule.inclusion_injective hle')`. Take `⟨i', hi'⟩` from `(GlobalTheory.FiniteModuleOrder.card_eq_pow_and_index_ge L S.ϖ S.ϖ_irr (B.map (S.M d Λ).mkQ)).1`. Establish `hi'q : Nat.card (B.map (S.M d Λ).mkQ) = S.q ^ i'` using `hi'`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments.
 
-Establish `hn : S.nLev d Λ J = S.q ^ i - S.q ^ i'`. Rewrite using `[← hcard, ← hi'q, ← ncard_classes _ _ _ hMB hBA]`. Unfold `Frames.nLev`. Use `congr 1`. Use extensionality with `C`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, hl, rfl⟩`. Use `⟨y, hy, fun h => ?_, rfl⟩` and prove the remaining obligations. Use `(hBmem y hy).1 h` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce and unpack `⟨y, hy, hl, rfl⟩`. Use `⟨y, hy, ?_, rfl⟩` and prove the remaining obligations. Establish `h1` using `hle y hy`. Establish `h2 : ¬ S.levC d Λ y ≤ J - 1` using `fun h => hl ((hBmem y hy).2 h)`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hlt : S.q ^ i' < S.q ^ i`. Rewrite using `[← hcard, ← hi'q]`. Take `⟨y, hy, hl⟩` from `hPJ`. Establish `hss : (B.map (S.M d Λ).mkQ : Set (S.V ⧸ S.M d Λ)) ⊂ ((S.sat Λ).map (S.M d Λ).mkQ : Set (S.V ⧸ S.M d Λ))`. Use `⟨hle', fun h => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨b, hb, hby⟩` from `h (⟨y, hy, rfl⟩ : (S.M d Λ).mkQ y ∈ (S.sat Λ).map (S.M d Λ).mkQ)`. Establish `h1 : b - y ∈ S.M d Λ` using `by simpa [Submodule.Quotient.eq] using hby`. Establish `h2 : y ∈ B`. Establish `h3 : y = b - (b - y)` using `by abel`. Rewrite using `[h3]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Supply the required witnesses or components.
 
-Conclude with `B.sub_mem hb (hMB h1)`. Use `(hBmem y hy).1 h2` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Conclude with `Set.ncard_lt_ncard hss (Set.toFinite _)`. Establish `hii : i' < i` using `(Nat.pow_lt_pow_iff_right (by omega)).1 hlt`.
-
-Conclude with `⟨i, J, i', by omega, hia, hJ1, hJr, hii, hB, hbe, hle, hPJ, hn⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_family : ∀ {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] [CharZero F] {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] (L : LocE F E), ∀ (r k : ℕ) (S : Frames L r k), ∀ (d : S.Datum) (Λ : Submodule L.O S.V), S.IsTerm d Λ → S.TypeBe d Λ → ∃ i J i' : ℕ, 1 ≤ i ∧ (i : ℤ) ≤ S.a ∧ 1 ≤ J ∧ J ≤ r ∧ i' < i ∧ S.InFF (S.q ^ i) J (S.q ^ i - S.q ^ i') d Λ := by
   intro F _ _ _ _ _ E _ _ _ L r k S d Λ hT hB

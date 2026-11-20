@@ -67,17 +67,17 @@ Both sides reduce to the same expression.
 theorem smul_def (T : C) (p : ℤ[X]) (x : Φ.Pr T) : p • x = aeval (Φ.sh T) p x := rfl
 
 /- English proof (translation)
-Rewrite using `[smul_def, aeval_X]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem X_smul (T : C) (x : Φ.Pr T) : (X : ℤ[X]) • x = Φ.sh T x := by rw [smul_def, aeval_X]
 
 /- English proof (translation)
-Rewrite using `[X_smul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem X_smul_zero (T : C) (x : Φ.Pr T) : ((X : ℤ[X]) • x) 0 = 0 := by rw [X_smul]; rfl
 
 /- English proof (translation)
-Rewrite using `[X_smul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem X_smul_succ (T : C) (x : Φ.Pr T) (r : ℕ) : (((X : ℤ[X]) • x) (r + 1)).1 = Φ.μ • (x r).1 := by rw [X_smul]; rfl
 

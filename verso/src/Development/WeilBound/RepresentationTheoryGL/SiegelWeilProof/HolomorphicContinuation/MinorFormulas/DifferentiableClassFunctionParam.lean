@@ -12,7 +12,7 @@ open PositivityTheory.Rg.Sw PositivityTheory.Rg.Sw.WR PositivityTheory.Rg.Sw.WR.
 variable {n : ℕ}
 
 /- English proof (translation)
-Unfold `clsC`. Use `fun_prop`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem differentiable_class_function_param (s : ℂ) (p q : ℕ) (R : MvPolynomial (Bool × Fin n × Fin n) ℂ) (B : MC n) :
     Differentiable ℂ (fun z : ℂ => clsC s z p q R B) := by
@@ -20,13 +20,11 @@ theorem differentiable_class_function_param (s : ℂ) (p q : ℕ) (R : MvPolynom
   fun_prop
 
 /- English proof (translation)
-Take `⟨hO, hherm, han⟩` from `hE n s hs`. Use `set P : Fm n := (cayF (n := n) s m)^[N] 1 with hP`. Use `choose d hd using hdiv`. Use `set v : Bool × Fin n × Fin n → ℂ := fun k => if k.1 then (1 + (Complex.I * s) • Matrix.of (herm y : MC n))⁻¹ k.2.1 k.2.2 else (1 - (Complex.I * s) • Matrix.of (herm y : MC n))⁻¹ k.2.1 k.2.2 with hv`. Use `⟨fun z => clsC s z m 0 1 (herm y) * ∑ e ∈ P.support, (d e).eval z * ∏ i ∈ e.support, v i ^ e i, ?_, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `(differentiable_class_function_param s m 0 1 _).mul ?_` and prove the remaining obligations. Conclude with `Differentiable.fun_sum fun e _ => (Polynomial.differentiable _).mul (differentiable_const _)`. Introduce `z`. Establish `hcls : cls s z m 0 1 = fun y : E n => clsC s z m 0 1 (herm y)` using `funext fun y => ((han z m 0 1).2 y).symm`. Rewrite using `[hcls, hCh n (OmS s) (clsC s z m 0 1) hO hherm (han z m 0 1).1 N y, hBr n s hs m N z (herm y) (hherm y)]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[MvPolynomial.eval_map, MvPolynomial.eval₂_eq]`. Simplify using `only [← hv, ← hP, Polynomial.coe_evalRingHom]`. Rewrite using `[Finset.mul_sum, Finset.mul_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun e _ => ?_` and prove the remaining obligations. Rewrite using `[hd e, Polynomial.eval_mul, Polynomial.eval_pow, Polynomial.eval_X]`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem factor (hE : Ext) (hCh : Chain) (hBr : Bridge) {s : ℂ} (hs : s = 1 ∨ s = -1) (m N r : ℕ)
     (hdiv : DivZ r ((cayF (n := n) s m)^[N] 1)) (y : E n) :

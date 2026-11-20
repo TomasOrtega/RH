@@ -4,19 +4,17 @@ open scoped ComplexConjugate
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `hre : ∀ (Z : ι × Fin r × Fin r → ℂ), (∀ τ a b, Z (τ, b, a) = -((s a * s b : ℝ) : ℂ) * conj (Z (τ, a, b))) → ∀ τ a, (Z (τ, a, a)).re = 0`. Introduce `Z hZ τ a`. Establish `h` using `hZ τ a a`. Rewrite `h` using `[hs a]`. Establish `h2` using `congrArg Complex.re h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [Complex.ofReal_one, neg_mul, one_mul, Complex.neg_re, Complex.conj_re] at h2`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hoff : ∀ τ (c : Fin r), (c : ℕ) + 1 < r → Y (τ, c, c) = Y' (τ, c, c)` using `fun τ c hc => Complex.ext (by rw [hre Y hY τ c, hre Y' hY' τ c]) (him τ c hc)`. Establish `hdiag : ∀ τ (a : Fin r), Y (τ, a, a) = Y' (τ, a, a)`. Introduce `τ a`.
+Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `ha : (a : ℕ) + 1 < r`. Conclude with `hoff τ a ha`. Establish `hsum : ∀ c ∈ Finset.univ.erase a, Y (τ, c, c) = Y' (τ, c, c)`. Introduce `c hc`. Apply `hoff` to reduce the goal to its premises.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `hca : c ≠ a` using `Finset.ne_of_mem_erase hc`. Establish `hcv : (c : ℕ) ≠ a` using `fun h => hca (Fin.ext h)`. Use `c.isLt` as an intermediate fact. Use `a.isLt` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Establish `e1 : Y (τ, a, a) + ∑ c ∈ Finset.univ.erase a, Y (τ, c, c) = 0`. Conclude with `(Finset.add_sum_erase Finset.univ (fun c => Y (τ, c, c)) (Finset.mem_univ a)).trans (hYt τ)`. Establish `e2 : Y' (τ, a, a) + ∑ c ∈ Finset.univ.erase a, Y' (τ, c, c) = 0`. Conclude with `(Finset.add_sum_erase Finset.univ (fun c => Y' (τ, c, c)) (Finset.mem_univ a)).trans (hY't τ)`. Rewrite `e1` using `[Finset.sum_congr rfl hsum]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result.
 
-Take the linear combination `e1 - e2`. Use function extensionality and compare the values at `p`. Take `⟨τ, a, b⟩` from `p`. Break down `lt_trichotomy a b with h | rfl | h` into its components or cases. Rewrite using `[hY τ b a, hY' τ b a, hlt τ b a h]`.
-
-Conclude with `hdiag τ a`. Conclude with `hlt τ a b h`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem skewFamily_eq_of_strictLower_of_diagIm
     {ι : Type} [Fintype ι] {r : ℕ} (s : Fin r → ℝ) (hs : ∀ a, s a * s a = 1)

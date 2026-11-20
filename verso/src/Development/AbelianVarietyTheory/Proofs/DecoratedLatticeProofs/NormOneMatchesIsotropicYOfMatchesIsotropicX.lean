@@ -18,7 +18,7 @@ variable {D : D7}
 open GlobalTheory.IwaPlace in
 
 /- English proof (translation)
-Establish `hg : ∀ j k, cA D (gA S j k) = gA S k j` using `fun j k => congrFun (congrFun (adj_gA S) k) j`. Rewrite using `[d.pX_eq]`. Simplify using `only [hermAt, colMul, Matrix.mulVec, dotProduct, Matrix.mul_apply, adj, Matrix.transpose_apply, Matrix.map_apply, map_sum, map_mul, cA_cA, hg, Finset.mul_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem hermAt_colMul_jY {S S₀ : HSp D} {ρ : ℕ} (d : HypDec S S₀ ρ) (i : Fin ρ) (a : AE D)
     (x : Fin S.rank → AE D) : hermAt S (colMul d.jY i a) x = a * cA D ((d.pX *ᵥ x) i) := by
@@ -30,9 +30,9 @@ theorem hermAt_colMul_jY {S S₀ : HSp D} {ρ : ℕ} (d : HypDec S S₀ ρ) (i :
   ring
 
 /- English proof (translation)
-Establish `h` using `congrFun (congrFun d.pX_jX i) i`. Simplify using `only [Matrix.mul_apply, Matrix.one_apply_eq] at h`. Simplify using `only [Matrix.mulVec, dotProduct, colMul]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.mul_sum]; exact Finset.sum_congr rfl fun k _ => by ring`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Use `_ = b := by rw [h, mul_one]`.
+A detailed English derivation is pending.
 -/
 theorem pX_colMul_jX {S S₀ : HSp D} {ρ : ℕ} (d : HypDec S S₀ ρ) (i : Fin ρ) (b : AE D) :
     (d.pX *ᵥ colMul d.jX i b) i = b := by
@@ -44,7 +44,7 @@ theorem pX_colMul_jX {S S₀ : HSp D} {ρ : ℕ} (d : HypDec S S₀ ρ) (i : Fin
     _ = b := by rw [h, mul_one]
 
 /- English proof (translation)
-Rewrite using `[← pX_colMul_jX d i b]`. Conclude with `GlobalTheory.IwaPlace.mulVec_mem_idAt d.pX ((GlobalTheory.IwaPlace.LocSD.isSDAt_latV D S L v hL).1 _ hb) i`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_idAt_of_colMul_jX {S S₀ : HSp D} {ρ : ℕ} (d : HypDec S S₀ ρ) {L : Lat S} (hL : IsSelfDualC S L)
     (v : GlobalTheory.FinPl.Pl D) (i : Fin ρ) {b : AE D} (hb : colMul d.jX i b ∈ latV S L (· = v)) : b ∈ idAt D (· = v) := by
@@ -52,9 +52,9 @@ theorem mem_idAt_of_colMul_jX {S S₀ : HSp D} {ρ : ℕ} (d : HypDec S S₀ ρ)
   exact GlobalTheory.IwaPlace.mulVec_mem_idAt d.pX ((GlobalTheory.IwaPlace.LocSD.isSDAt_latV D S L v hL).1 _ hb) i
 
 /- English proof (translation)
-Establish `hy : ∀ k, colMul d.jY i a k ∈ idAt D (· = v)` using `fun k => Ideal.mul_mem_right _ _ ha`. Rewrite using `[(GlobalTheory.IwaPlace.LocSD.isSDAt_latV D S L v hL).2.2 _ hy]`. Prove the components needed by the constructor for the conclusion. Introduce `h b hb`. Establish `h1` using `h _ hb`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `h1` using `[hermAt_colMul_jY, pX_colMul_jX]`. Then use the resulting hypothesis. Introduce `h x hx`. Rewrite using `[hermAt_colMul_jY]`. Conclude with `h _ (((hM x).1 hx).1 i)`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem colMul_jY_mem_iff {S S₀ : HSp D} {ρ : ℕ} (d : HypDec S S₀ ρ) {L : Lat S} {M : Lat S₀} {v : GlobalTheory.FinPl.Pl D}
     (hL : IsSelfDualC S L) (hM : MonoAt d L M v) (i : Fin ρ) {a : AE D} (ha : a ∈ idAt D (· = v)) :
@@ -71,15 +71,15 @@ theorem colMul_jY_mem_iff {S S₀ : HSp D} {ρ : ℕ} (d : HypDec S S₀ ρ) {L 
     exact h _ (((hM x).1 hx).1 i)
 
 /- English proof (translation)
-Introduce `D S S₀ ρ d L L' M M' v c hL hL' hM hM' hc hX i a ha`. Establish `hca : c * a ∈ idAt D (· = v)` using `Ideal.mul_mem_left _ _ ha`. Rewrite using `[colMul_jY_mem_iff d hL hM i ha, colMul_jY_mem_iff d hL' hM' i hca]`. Establish `hcc : c * cA D c = 1` using `hc.1`. Prove the components needed by the constructor for the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Introduce `h b' hb'`. Establish `hbI : cA D c * b' ∈ idAt D (· = v)` using `Ideal.mul_mem_left _ _ (mem_idAt_of_colMul_jX d hL' v i hb')`. Establish `e : c * (cA D c * b') = b'` using `by rw [← mul_assoc, hcc, one_mul]`. Establish `h1 : colMul d.jX i (cA D c * b') ∈ latV S L (· = v)` using `(hX i _ hbI).2 (by rw [e]; exact hb')`. Establish `h2` using `h _ h1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h2` using `[map_mul, cA_cA]`. Establish `e2 : c * a * cA D b' = a * (c * cA D b')` using `by ring`. Rewrite using `[e2]`. Conclude with `h2`. Introduce `h b hb`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h1` using `(hX i b (mem_idAt_of_colMul_jX d hL v i hb)).1 hb`. Establish `h2` using `h _ h1`. Establish `e : c * a * cA D (c * b) = a * cA D b`. Rewrite using `[map_mul]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `h2` using `[e]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem dualLine_match : ∀ (D : D7) (S S₀ : HSp D) (ρ : ℕ) (d : HypDec S S₀ ρ) (L L' : Lat S) (M M' : Lat S₀) (v : GlobalTheory.FinPl.Pl D) (c : AE D), IsSelfDualC S L → IsSelfDualC S L' → MonoAt d L M v → MonoAt d L' M' v → NormOneAt v c → (∀ i, ∀ a ∈ idAt D (· = v), (colMul d.jX i a ∈ latV S L (· = v) ↔ colMul d.jX i (c * a) ∈ latV S L' (· = v))) → ∀ i, ∀ a ∈ idAt D (· = v), (colMul d.jY i a ∈ latV S L (· = v) ↔ colMul d.jY i (c * a) ∈ latV S L' (· = v)) := by
   intro D S S₀ ρ d L L' M M' v c hL hL' hM hM' hc hX i a ha

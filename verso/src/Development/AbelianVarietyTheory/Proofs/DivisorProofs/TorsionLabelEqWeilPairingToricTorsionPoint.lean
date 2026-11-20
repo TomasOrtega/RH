@@ -25,23 +25,23 @@ open GlobalTheory.TorusExt GlobalTheory.ZH.TorusPerp GlobalTheory.QkNumberField 
 namespace GlobalTheory.Poinc.UTestLabel
 
 /- English proof (translation)
-Introduce `o Ω _ _ _ S ρ`. Use `⟨1, ?_⟩` and prove the remaining obligations. Introduce `p _ y₀ u l τ' b hτ hb a β hβ`. Establish `hL : LL` using `GlobalTheory.firstFiveLaws`. Establish `hG : GlobalFnsSt` using `hL.1.globalFns`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hk : 1 ≤ S.r * S.N` using `Nat.one_le_iff_ne_zero.2 (Nat.mul_ne_zero (by have := S.r_pos; omega) (by have := S.N_ge; omega))`. Use `haveI : CharZero u.V := CharZero.mk (fun m n hmn => by`. Establish `e0` using `congrArg ((algebraMap (FractionRing u.V) (PadicAlgCl p)).comp (algebraMap u.V (FractionRing u.V))) hmn`. Simplify `e0)` using `only [map_natCast, Nat.cast_inj]`. Take `⟨f, hf1, -, -, -, hfW⟩` from `GlobalTheory.ZH.uTors_closed u.V u.complete u.A u.G u.D u.U (PadicAlgCl p) (S.r * S.N) hk`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨pk, x, hpkx, hxo⟩` from `GlobalTheory.Poinc.exists_qkPt_of_utest o Ω S ρ p y₀ u a`. Take `⟨q, hqy, hqt⟩` from `exists_qkPt_tor u.D.tau_bimult τ' hτ`. Establish `hqx : QkToAkU u.U.toUnifPre (PadicAlgCl p) (S.r * S.N) q (f q)` using `(hf1 q (f q)).2 rfl`. Establish `hqo` using `hb q (f q) hqy hqt hqx`. Establish `hpk : x = f pk` using `(hf1 pk x).1 hpkx`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `W₁` using `weilQkIs_tor hG q pk hqy hqt`. Establish `W₂` using `(hfW q pk (τ' (Multiplicative.ofAdd pk.y))).1 W₁`. Use `ρ.P.isAb.comm` as an intermediate fact. Establish `hy : (TFK (R` using `u.V) (PadicAlgCl p)).hom ≫ spMap u.yK = spMap y₀ := by`. Establish `e1 : (TFK (R` using `u.V) (PadicAlgCl p)).hom ≫ spMap u.yK = spMap ((algebraMap (FractionRing u.V) (PadicAlgCl p)).comp u.yK) := (spMap_comp _ _).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e1, u.fac]`. Set `h : Over.mk ((TFK (R` to `u.V) (PadicAlgCl p)).hom ≫ spMap u.yK) ⟶ baseOver (Sp S.R) := Over.homMk ((TFK (R := u.V) (PadicAlgCl p)).hom ≫ spMap u.yK) (by simp)`. Establish `hh : h.left = spMap y₀` using `hy`. Establish `hζ : IsPrimitiveRoot (S.ζ ^ (S.r * S.N)) (S.r * S.N)` using `S.prim.pow (pow_pos hk 2) (pow_two _)`. Set `c₀ : (S.R)ˣ` to `Units.map (algebraMap o S.R).toMonoidHom (hζ.isUnit (by omega)).unit`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `w` using `GlobalTheory.CommPairing.weilIs_pull hG ρ.P.isAb ρ.P.isLB h (ρ.weil b a (c₀ ^ (eStd S.g _ b a).val) (by rw [pow_mul, map_pow]; rfl))`. Establish `W₃` using `(GlobalTheory.weilIs_iff_of_isGrpPullback_comm _ _ _ _ _ _ _ _ ρ.P.isLB u.A.isLB u.cart u.lb (TFK (R := u.V) (PadicAlgCl p)) _ (f q) (f pk) (h ≫ ρ.pt b) (h ≫ ρ.pt a) _ ?_ ?_).2 w`. Rewrite `W₃` using `[hh, map_unitOn]`. Establish `e` using `unitOn_injective (GlobalTheory.CommutatorPairing.weilIs_unique hG u.A.isAb u.A.isLB W₂ W₃)`. Establish `e'` using `congrArg Units.val e`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [MonoidHom.coe_coe, Units.coe_map, Units.val_pow_eq_pow_val, c₀, IsUnit.unit_spec, RingHom.toMonoidHom_eq_coe] at e'`. Establish `hq : (QuotientAddGroup.mk β : u.D.toPre.X ⧸ (nsmulAddMonoidHom (S.r * S.N) : u.D.toPre.X →+ u.D.toPre.X).range) = QuotientAddGroup.mk pk.y` using `hβ.symm.trans (l.yy_eq a pk x hpkx hxo)`. Take `⟨m, hm⟩` from `AddMonoidHom.mem_range.1 (QuotientAddGroup.eq.1 hq)`. Establish `hpy : pk.y = β + (S.r * S.N) • m`. Rewrite `hm` using `[nsmulAddMonoidHom_apply]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hm]`. Normalize the expressions using the abelian group laws. Establish `hτm : τ' (Multiplicative.ofAdd ((S.r * S.N) • m)) = 1`. Rewrite using `[ofAdd_nsmul, map_pow, ← MonoidHom.pow_apply, hτ, MonoidHom.one_apply]`. Rewrite `e'` using `[hpy, ofAdd_add, map_mul, hτm, _root_.mul_one]`.
+Normalize the expressions using the abelian group laws. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e', Units.val_one, one_smul, ← map_pow, ← pow_mul]`. Use `show h.left ≫ (ρ.pt b).left = _`. Rewrite using `[hh, hqo]`. Use `show h.left ≫ (ρ.pt a).left = _`. Rewrite using `[hh, ← hxo, hpk]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem char_eq_weil_of_label : ∀ (o Ω : Type) [CommRing o] [Field Ω] [Algebra o Ω] (S : ThetaSys o Ω) (ρ : S.Real), ∃ sg : ℤˣ, ∀ (p : ℕ) [Fact p.Prime] (y₀ : S.R →+* PadicAlgCl p) (u : ρ.UTest p y₀) (l : u.Lab) (τ' : Multiplicative u.D.toPre.X →* (PadicAlgCl p)ˣ) (b : S.Gam), τ' ^ (S.r * S.N) = 1 → (∀ (q : QkPt u.D.toPre (PadicAlgCl p) (S.r * S.N)) (x : TFK (R := u.V) (PadicAlgCl p) ⟶ u.A.A), q.y = 0 → GlobalTheory.UT.IsTor τ' q.g → QkToAkU u.U.toUnifPre (PadicAlgCl p) (S.r * S.N) q x → x.left ≫ u.φ = spMap y₀ ≫ (ρ.pt b).left) → ∀ (a : S.Gam) (β : u.D.toPre.X), l.yy a = QuotientAddGroup.mk β → ((τ' (Multiplicative.ofAdd β) : (PadicAlgCl p)ˣ) : PadicAlgCl p) = y₀ (algebraMap o S.R (S.ζ ^ (S.r * S.N * ((sg : ℤ) • eStd S.g _ b a).val))) := by
   intro o Ω _ _ _ S ρ

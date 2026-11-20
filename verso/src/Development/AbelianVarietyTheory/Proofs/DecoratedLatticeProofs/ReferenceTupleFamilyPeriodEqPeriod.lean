@@ -23,7 +23,7 @@ open Formalism.L2.Forms GlobalTheory.Core.Rk.Top
 variable {D : D7}
 
 /- English proof (translation)
-Substitute `hC` using the available equality. Consider the cases of `h`. Both sides reduce to the same expression.
+Substitute using the available equality. Split into cases according to the possible forms of the given data. Both sides reduce to the same expression.
 -/
 theorem chain_cast {R : Ranks} {ι : Type} [Fintype ι] {hc : ι → HCParam R} {C C' : ColumnChain R ι hc} (hC : C = C')
     (ψ : C.cls 0 → C.Y 0 → ℂ) (φ : C'.cls 0 → C'.Y 0 → ℂ) (h : HEq ψ φ) :
@@ -31,7 +31,7 @@ theorem chain_cast {R : Ranks} {ι : Type} [Fintype ι] {hc : ι → HCParam R} 
   subst hC; cases h; rfl
 
 /- English proof (translation)
-Substitute `h` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem rec_chain {R : Ranks} {ι : Type} [Fintype ι] {hc : ι → HCParam R} (C : ColumnChain R ι hc)
     (ψ : C.cls 0 → C.Y 0 → ℂ) {a b : ℕ} (h : a = b) :
@@ -42,7 +42,7 @@ variable {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst
   {Yd : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Yd cX} {W : RealPack ex} {u : D.what₂.Word}
 
 /- English proof (translation)
-Proceed by induction on `i with`. Consider the case `zero => rfl`. Consider the case `succ i ih => show (f.t t).K i ((f.t t).col i ψ) = _`. Rewrite using `[ih]`. Both sides reduce to the same expression.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem tcol (f : FamCh W u) (t : W.P.T) (i : ℕ) (ψ : (f.t t).Col 0) :
     (f.t t).col i ψ = Formalism.ThetaLiftIndependence.chainOpM (D.chTw u (W.P.I.tup t)).wt (D.chTw u (W.P.I.tup t)).Kmap i ψ := by
@@ -60,15 +60,15 @@ open Formalism.L2.Forms GlobalTheory.Core.Rk.Top Formalism.BasicNotions.TH Forma
 variable {D : D7}
 
 /- English proof (translation)
-Establish `hcard : ∀ c, (Nat.card (M.stabilizer₂ c) : ℂ) ≠ 0` using `fun c => Nat.cast_ne_zero.mpr Nat.card_pos.ne'`. Establish `hsingle : ∀ c v, Pm.period (eW.symm (Pi.single c (j v))) (G - G') = 0`. Introduce `c v`. Take `⟨h, hh⟩` from `GlobalTheory.Core.Rk.Top.Model.hasMat_exists (K.y c)`. Establish `a` using `(h1 c v h hh).symm.trans (h2 c v h hh)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[map_sub, sub_eq_zero]`. Conclude with `mul_left_cancel₀ (hcard c) a`. Establish `hz : ∀ z ∈ M.ptC, Pm.period z (G - G') = 0`. Introduce `z hz`. Establish `hdec : z = ∑ c, eW.symm (Pi.single c (eW z c))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `eW.injective` to reduce the goal to its premises. Rewrite using `[map_sum]`. Simplify using `only [LinearEquiv.apply_symm_apply]`. Conclude with `(Finset.univ_sum_single (eW z)).symm`. Rewrite using `[hdec, map_sum, LinearMap.sum_apply]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `Finset.sum_eq_zero fun c _ => ?_` and prove the remaining obligations. Take `⟨v, hv⟩` from `hval z hz c`. Rewrite using `[← hv]`. Conclude with `hsingle c v`. Establish `hz0 : jM (G - G') = 0` using `hpos _ (hjM _) (by rw [← hper]; exact hz _ (hjM _))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `w`. Use `hper w (G - G')` as an intermediate fact. Rewrite `this` using `[hz0, map_zero, LinearMap.zero_apply, map_sub, sub_eq_zero]`. Conclude with `this`.
+A detailed English derivation is pending.
 -/
 theorem reads_uniq {u : D.what₂.Word} {C : ColumnChain D.R D.what₂.Tau (D.hcW u)} {A : ColumnsAtT D.R C} {Pm : PeriodMap D.R C}
     {M : MemberForms D.what₂.LL D.what₂.embLL D.what₂.places D.what₂.Tau (D.hcW u) C A Pm}
@@ -113,7 +113,7 @@ open Formalism.L2.Forms GlobalTheory.Core.Rk.Top Formalism.BasicNotions.TH Forma
 variable {D : D7}
 
 /- English proof (translation)
-Take `⟨g, hg, rfl⟩` from `Submodule.mem_map.1 hz`. Conclude with `(Submodule.mem_pi.1 (Submodule.mem_inf.1 hg).2) (yc c) (Set.mem_univ _)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem fic_val {bad : Set (IsDedekindDomain.HeightOneSpectrum (𝓞 D.host.F))}
     (S : StepLevel D.host.F D.host.E (sigD D) (gramP D) 1 D.R.f bad) (lam : D.what₂.Tau → DomWeight (D.R.N D.R.m - 1))
@@ -123,15 +123,13 @@ theorem fic_val {bad : Set (IsDedekindDomain.HeightOneSpectrum (𝓞 D.host.F))}
   exact (Submodule.mem_pi.1 (Submodule.mem_inf.1 hg).2) (yc c) (Set.mem_univ _)
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Use `push Not at hne`. Take `⟨c0, hc0⟩` from `hne`. Establish `hre` using `congrArg Complex.re h`. Rewrite `hre` using `[Complex.re_sum, Complex.zero_re]`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hterm : ∀ c, (((N c : ℕ) : ℂ)⁻¹ * Formalism.MainNotions.product_first_zeroth_parts.nfAll lam (P c) (P c)).re = ((N c : ℝ))⁻¹ * (Formalism.MainNotions.product_first_zeroth_parts.nfAll lam (P c) (P c)).re`. Introduce `c`. Rewrite using `[show ((N c : ℕ) : ℂ)⁻¹ = ((((N c : ℝ))⁻¹ : ℝ) : ℂ) by push_cast; rfl, Complex.re_ofReal_mul]`. Simplify using `only [hterm] at hre`. Establish `hnn : ∀ c, 0 ≤ ((N c : ℝ))⁻¹ * (Formalism.MainNotions.product_first_zeroth_parts.nfAll lam (P c) (P c)).re`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `c`. Use `mul_nonneg (by positivity) ?_` and prove the remaining obligations. Distinguish the cases in `hp : P c = 0`. Rewrite using `[hp]`. Simplify using `[Formalism.MainNotions.product_first_zeroth_parts.nfAll, Formalism.REAL.fockF]`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `(GlobalTheory.LvT.PendExample.nfAll_pos lam hp).le`. Establish `hpos : 0 < ((N c0 : ℝ))⁻¹ * (Formalism.MainNotions.product_first_zeroth_parts.nfAll lam (P c0) (P c0)).re`. Establish `: (0 : ℝ) < N c0` using `by exact_mod_cast Nat.pos_of_ne_zero (hN c0)`. Conclude with `mul_pos (inv_pos.mpr this) (GlobalTheory.LvT.PendExample.nfAll_pos lam hc0)`. Use `Finset.sum_pos' (fun c _ => hnn c) ⟨c0, Finset.mem_univ _, hpos⟩` as an intermediate fact.
-
-Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem pos_core {κ : Type} [Fintype κ] {n : ℕ} (lam : D.what₂.Tau → DomWeight n) (N : κ → ℕ) (hN : ∀ c, N c ≠ 0)
     (P : κ → MvPolynomial (D.what₂.Tau × Fin n × Fin n) ℂ)
@@ -173,13 +171,11 @@ variable {u : D.what₂.Word} {C : ColumnChain D.R D.what₂.Tau (D.hcW u)} {A :
 open Formalism.BasicNotions.DV Formalism.MainNotions.G Formalism.MainNotions.WeilJacquetShalikaLaw in
 
 /- English proof (translation)
-Establish `hF` using `(V.ptC z).1 hz`. Take `⟨g, hg, hres⟩` from `Submodule.mem_map.1 hF`. Establish `hval` using `(Submodule.mem_pi.1 (Submodule.mem_inf.1 hg).2) (K.y c) (Set.mem_univ _)`. Take `⟨Q0, hQ0, hfn⟩` from `Submodule.mem_map.1 hval`. Establish `hQ0' : Q0 ∈ CSpan M.sg`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `CSpan_shW M.sg (fun _ => ((D.R.m * (D.R.t + 1) / 2 : ℕ) : ℤ))` as an intermediate fact. Unfold `sgTG at hQ0`. Rewrite `hQ0` using `[this]`. Conclude with `hQ0`. Establish `he : V.eW z c = fnOf _ (shiftOf (sgTG M)) 1 Q0`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hfn, ← hres]`. Both sides reduce to the same expression. Establish `hM : ∀ τ, IsUnit ((o.1 τ)⁻¹).det` using `fun τ => by`. Rewrite using `[Matrix.det_nonsing_inv]`. Conclude with `(o.2 τ).ringInverse`.
-
-Use `⟨_, ?_, he.trans (fnOf_change _ _ _ _ hM Q0)⟩` and prove the remaining obligations. Conclude with `Submodule.smul_mem _ _ (blkRow_mem _ _ hQ0')`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem eW_rep_G (V : ValuationAtPrimes K okW) (o : FrP D) (z : Pm.Wrow) (hz : z ∈ M.ptC) (c : M.clsP) :
     ∃ Q ∈ CSpan M.sg, V.eW z c = fnOf _ (shiftOf (sgTG M)) (fun τ => (o.1 τ)⁻¹) Q := by
@@ -200,9 +196,9 @@ theorem eW_rep_G (V : ValuationAtPrimes K okW) (o : FrP D) (z : Pm.Wrow) (hz : z
   exact Submodule.smul_mem _ _ (blkRow_mem _ _ hQ0')
 
 /- English proof (translation)
-Introduce `z hz h0`. Take `⟨o, ho⟩` from `GlobalTheory.PerRed.exists_orthonormal_frame₂ D`. Use `choose P hP hPe using eW_rep_G V o z hz`. Establish `hN : ∀ c, Nat.card (M.stabilizer₂ c) ≠ 0` using `fun c => Nat.card_pos.ne'`. Establish `hPz` using `pos_core M.sg (fun c => Nat.card (M.stabilizer₂ c)) hN P ((V.ipP o ho z z P P hP hP hPe hPe).symm.trans h0)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `V.eW.injective` to reduce the goal to its premises. Rewrite using `[map_zero]`. Use function extensionality and compare the values at `c`. Rewrite using `[hPe c, hPz c, map_zero]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem pos_G (V : ValuationAtPrimes K okW) : ∀ z ∈ M.ptC, M.ipP z z = 0 → z = 0 := by
   intro z hz h0
@@ -219,9 +215,9 @@ theorem pos_G (V : ValuationAtPrimes K okW) : ∀ z ∈ M.ptC, M.ipP z z = 0 →
 end G
 
 /- English proof (translation)
-Introduce `z hz h0`. Take `⟨o, ho⟩` from `GlobalTheory.PerRed.exists_orthonormal_frame₂ D`. Use `choose P hP hPe using GlobalTheory.PerRed.eW_rep_o T o z hz`. Establish `hN : ∀ c, Nat.card ((D.fm u).stabilizer₂ c) ≠ 0` using `fun c => Nat.card_pos.ne'`. Establish `hPz` using `pos_core (D.fm u).sg (fun c => Nat.card ((D.fm u).stabilizer₂ c)) hN P ((T.valP.ipP o ho z z P P hP hP hPe hPe).symm.trans h0)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `T.valP.eW.injective` to reduce the goal to its premises. Rewrite using `[map_zero]`. Use function extensionality and compare the values at `c`. Rewrite using `[hPe c, hPz c, map_zero]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem pos_0 {u : D.what₂.Word} {Ch : ℕ → Type} {chOf : ∀ i, (D.mem u).C.cls i → Ch i} (T : FormsTiedSym D u Ch chOf) :
     ∀ z ∈ (D.fm u).ptC, (D.fm u).ipP z z = 0 → z = 0 := by
@@ -245,15 +241,15 @@ open Formalism.L2.Forms GlobalTheory.Core.Rk.Top Formalism.BasicNotions.TH Forma
 variable {D : D7}
 
 /- English proof (translation)
-Introduce and unpack `⟨a, _⟩ ⟨b, _⟩ h`. Consider the cases of `h`. Both sides reduce to the same expression.
+Assume the hypotheses and unpack their components. Split into cases according to the possible forms of the given data. Both sides reduce to the same expression.
 -/
 theorem domWeight_ext {n : ℕ} : ∀ a b : DomWeight n, a.w = b.w → a = b := by
   rintro ⟨a, _⟩ ⟨b, _⟩ h; cases h; rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `τ`. Unfold `sgTG sgT`. Use `congr 1`. Apply `domWeight_ext` to reduce the goal to its premises. Use function extensionality and compare the values at `i`.
+Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `a` using `V.sg τ i`. Establish `b` using `V0.sg τ i`. Conclude with `a.trans b.symm` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem sg_eq {u : D.what₂.Word} {C : ColumnChain D.R D.what₂.Tau (D.hcW u)} {A : ColumnsAtT D.R C} {Pm : PeriodMap D.R C}
     {M : MemberForms D.what₂.LL D.what₂.embLL D.what₂.places D.what₂.Tau (D.hcW u) C A Pm}
@@ -269,7 +265,7 @@ theorem sg_eq {u : D.what₂.Word} {C : ColumnChain D.R D.what₂.Tau (D.hcW u)}
   exact_mod_cast a.trans b.symm
 
 /- English proof (translation)
-Substitute `h0` using the available equality. Rewrite using `[D.perCol_base_eq_PtilCol, PeriodMap.PtilCol, PeriodMap.Ptil, PeriodMap.Ptil]`. Simplify using `only at hu ⊢`. Rewrite using `[hu, chain_cast (D.memberColumns_twistedChain_base u) ψ0 _ hφ]`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem referenceTuple_familyPeriod_eq_period (u : D.what₂.Word) (μ : D.what₂.Tup) (h0 : μ = D.what₂.mu0)
     (ψ0 : (D.chTw u μ).cls 0 → (D.chTw u μ).Y 0 → ℂ) (φ : D.what₂.Mu u) (hφ : HEq ψ0 (D.eMu u φ).1)
@@ -292,15 +288,15 @@ open Classical
 open GlobalTheory.MiTop.TailColumnRecursion Formalism.L2.Forms
 
 /- English proof (translation)
-Introduce `D L hT Gi Gl Kc Yd cX ex W u f hTR h0 n h t φ F F' hFF G hG`. Take `⟨hJ, -, hall⟩` from `hTR`. Establish `hR` using `(hall t).2 F F' hFF`. Establish `hex : ∃ G0, Reads W u f.j f.g.bT (W.P.I.tup t) G0 (topOf W t F')` using `⟨_, hR⟩`. Establish `hspec` using `hex.choose_spec`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `show tailOf W u f.j f.g.bT (W.P.I.tup t) (Eq.rec (motive := fun n _ => (D.chTw u (W.P.I.tup t)).cls n → (D.chTw u (W.P.I.tup t)).Y n → ℂ) ((f.t t).col (2 * n) (col0 f t φ)) h) G.1 = _`. Rewrite using `[hG, tcol, rec_chain]`. Unfold `tailOf`. Rewrite using `[dif_pos hex]`. Distinguish the cases in `hμ : W.P.I.tup t = D.what₂.mu0`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[dif_pos hμ]`. Use `referenceTuple_familyPeriod_eq_period u _ hμ _ φ (h0 t hμ φ) _ _ ?_` and prove the remaining obligations. Establish `hv : ∀ z ∈ (D.fm u).ptC, ∀ c, (W.R.T.cols.forms u).valP.eW z c ∈ LinearMap.range f.j`. Introduce `z hz c`. Rewrite using `[hJ.range]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `fic_val _ _ _ _ (((W.R.T.cols.forms u).valP.ptC z).1 hz) c`. Conclude with `reads_uniq _ _ _ _ (W.R.T.cols.forms u).jM hv (W.R.T.cols.forms u).per.2.1 (W.R.T.cols.forms u).per.2.2 (pos_0 (W.R.T.cols.forms u)) (hspec.1 hμ) (hR.1 hμ)`. Rewrite using `[dif_neg hμ, D.perCol_tie u _ hμ, PeriodMap.PtilCol, PeriodMap.Ptil, PeriodMap.Ptil]`. Establish `hv : ∀ z ∈ (ex.tw.fm u (W.P.I.tup t)).ptC, ∀ c, (W.R.T.tw.pt.val u _ hμ).eW z c ∈ LinearMap.range f.j`. Introduce `z hz c`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[hJ.range, ← sg_eq (W.R.T.tw.pt.val u _ hμ) (W.R.T.cols.forms u).valP]`. Conclude with `fic_val _ _ _ _ (((W.R.T.tw.pt.val u _ hμ).ptC z).1 hz) c`. Rewrite using `[reads_uniq _ _ _ _ (W.R.T.tw.ptE.jM u _) hv (W.R.T.tw.ptE.per u _ hμ).2.1 (W.R.T.tw.ptE.per u _ hμ).2.2 (pos_G (W.R.T.tw.pt.val u _ hμ)) (hspec.2 hμ) (hR.2 hμ)]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem linkTail_of_topReadAt : ∀ {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D} {Kc : Formalism.MainNotions.G.Consts} {Yd : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Yd cX} (W : RealPack ex), ∀ u (f : FamCh W u), TopReadAt W u f.j f.g.bT → (∀ t, W.P.I.tup t = D.what₂.mu0 → ∀ φ : D.what₂.Mu u, HEq (col0 f t φ) (D.eMu u φ).1) → LinkTail f := by
   intro D L hT Gi Gl Kc Yd cX ex W u f hTR h0 n h t φ F F' hFF G hG

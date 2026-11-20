@@ -27,53 +27,49 @@ open Formalism.REAL Formalism.QuantumDeterminants Formalism.FourierDecayAlt Form
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
 /- English proof (translation)
-Introduce `Wp Wq _ _ _ _ _ _ P z z' π π' X μ L st l0 D hD hl1 hl2 hz hz' hπ hπ' l hl ε hε G hN hGc Φ hlc hΦ c hc js hjs t0 ht0`. Establish `hr0 : 0 < P.r` using `by have := l.isLt; omega`. Take `rfl : l = ⟨0, hr0⟩` from `Fin.ext hl`. Take `⟨Tw, hNw, e1, e2, e3, e4, Di, Xi, μi, Li, sti, κ, hDiEq, hκ, hDi, hall⟩` from `Formalism.FourierDecayAlt.P.level_transport_unitary Wp Wq P z z' π π' X μ L st l0 D hD hz hz' hπ hπ' ⟨1, by omega⟩`. Substitute `e1 e2 e3 e4` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Substitute using the available equality.
 
-Substitute `hDiEq` using the available equality. Establish `hj : 0 + 1 ≤ P.r` using `by omega`. Establish `hP : IsPlace P Tw.base.z Tw.base.z' Tw.base.π Tw.base.π'` using `hD.1`. Establish `hPj` using `Formalism.FourierDecayAlt.P.JCTx5.isPlace_lev P Tw ⟨0, by omega⟩ hP`. Establish `hPs` using `Formalism.FourierDecayAlt.P.JCTx5.isPlace_lev P Tw ⟨0 + 1, by omega⟩ hP`.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨κ0, hκ0⟩` from `Formalism.FourierDecayAlt.P.jacquet_scaling P.k P.r Wp Wq D Tw.base hz hz' hπ hπ'`. Use `set G0 : B.Mat P.k (P.r - 0) → (Wq →L[ℂ] Wp) := fun g => κ0 • G g with hG0`. Establish `hG0ok : JFOKCpt (JC.parLev P 0) (Tw.bs 0).z (Tw.bs 0).z' G0`. Establish `hck : B.CkOn ⊤ (B.GV P.k (P.r - 0)) G0`. Introduce `g₀ hg₀`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨U, f', hU', hgU, hcf, hff⟩` from `hN.1 g₀ hg₀`. Conclude with `⟨U, fun g => κ0 • f' g, hU', hgU, hcf.const_smul κ0, fun g hg hgG => by`. Simplify using `only [hG0]`. Rewrite using `[hff g hg hgG]⟩`. Establish `hz0 : ∀ g ∈ B.GV P.k (P.r - 0), g ∉ tsupport G → G0 g = 0` using `fun g _ hg => by`.
+Supply the required witnesses or components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [hG0]`. Rewrite using `[image_eq_zero_of_notMem_tsupport hg, smul_zero]`. Use `⟨⟨fun A m => Formalism.FourierDecayAlt.P.JFxG.cptInCC_G hck hGc hz0 A m, ε, hε, fun g hg hne => ?_⟩, ?_⟩` and prove the remaining obligations. Establish `hne' : G g ≠ 0` using `fun h => hne (by simp only [hG0]; rw [h, smul_zero])`. Use `hN.2.2 g hg hne'` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `this` using `[hz, hz']`. Then use the resulting hypothesis. Conclude with `HasCompactSupport.intro hGc (fun g hg => by simp only [hG0]; rw [image_eq_zero_of_notMem_tsupport hg, smul_zero])`. Establish `hΦ0 : IsRadJF (JC.parLev P 0) (Tw.bs 0).z (Tw.bs 0).z' (Tw.bs 0).π (Tw.bs 0).π' (Tw.bs 0) G0 Φ`. Introduce `(x : (Fin P.r → ℂ) × Mx P.k P.r) hx`. Establish `e : B.JF Tw.base G0 = κ0 • B.JF Tw.base G`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `h`. Conclude with `Formalism.FourierDecayAlt.P.JCx2.bc_JF_smul (Bs := Tw.base) κ0 G h`. Establish `h2 : resG P.k P.r (Fin.last P.r) (B.JF D G) x.1 x.2 = resG P.k P.r (Fin.last P.r) (B.JF Tw.base G0) x.1 x.2`. Rewrite using `[hκ0 G, e]`. Conclude with `(hΦ x hx).trans h2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Establish `hC0 : CutSH.InC Tw 0 hj Φ` using `CutSH.inC_seed Formalism.FourierDecayAlt.P.cell_compatibility_identity Formalism.FourierDecayAlt.P.slice_family_good CutSH.slice_family_orbital hP hNw hPj hPs G0 hG0ok Φ hΦ0`. Establish `hW : ∀ js : List (Fin 6), CutSH.InC Tw 0 hj (wOp X ⟨0, hr0⟩ js Φ)`. Introduce `js`. Proceed by induction on `js with`. Consider the case `nil => simpa [wOp] using hC0`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Consider the case `cons j js ih`. Establish `e : wOp X ⟨0, hr0⟩ (j :: js) Φ = X.op ⟨0, hr0⟩ j (wOp X ⟨0, hr0⟩ js Φ)`. Simplify using `[wOp, List.map_cons, List.prod_cons, Module.End.mul_apply]`. Rewrite using `[e]`. Conclude with `Formalism.FourierDecayAlt.P.operator_class_closed Wp Wq P Tw hP hNw 0 hj hPj hPs X j _ ih`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨Gj, hGj, hRep⟩` from `hW js`. Use `set K : Set ℂ := Metric.closedBall t0 (‖t0‖ / 2) with hKdef`. Establish `hK : IsCompact K` using `isCompact_closedBall _ _`. Establish `hn0 : 0 < ‖t0‖` using `norm_pos_iff.2 ht0`. Establish `hK0 : ∀ t ∈ K, t ≠ 0` using `fun t ht h0 => by`.
+Combine the linear equalities and inequalities to obtain the conclusion. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `ht` using `[h0, hKdef, Metric.mem_closedBall, dist_zero_left]`. Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨c4, hc4⟩` from `hU Wp Wq P Tw 0 Gj hGj K hK hK0 (B.AB P.k (P.r - (0 + 1))) 4`. Take `⟨CR, hCR, hRB⟩` from `Formalism.FourierDecayAlt.P.radial_beta_pos Wp Wq P Tw ⟨1, by omega⟩ μi hDi.2.1`. Take `⟨-, -, -, ⟨CB, hB1⟩, -⟩` from `Formalism.FourierDecayAlt.P.b_any_of_xi P.k (P.r - (0 + 1)) Wp Wq (Tw.bs (0 + 1)) (B.AB _ _) le_rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality.
 
-Use `⟨‖t0‖ / 2, by positivity, κ⁻¹ * CR⁻¹ * (|CB| * |c4| * |c4|), fun t ht => ?_⟩` and prove the remaining obligations. Establish `htK : t ∈ K` using `Metric.ball_subset_closedBall ht`. Establish `ht0' : t ≠ 0` using `hK0 t htK`. Take `⟨Tt, ⟨hform, -⟩, hpair⟩` from `hall (Function.update c ⟨0, hr0⟩ t) (fun l' hl' => by`. Establish `e : l' = ⟨0, hr0⟩` using `Fin.ext (by simp at hl'; omega)`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Substitute `e` using the available equality. Simplify using `using ht0')`. Use `set Ψ := wOp X ⟨0, hr0⟩ js Φ with hΨdef`. Establish `hTΨ : ∀ x ∈ DomR P.k (P.r - (0 + 1)) (Tw.bs (0 + 1)).z (Tw.bs (0 + 1)).z', (Tt Ψ : Fn P.k (P.r - (0 + 1)) (Wq →L[ℂ] Wp)) x.1 x.2 = resG P.k (P.r - (0 + 1)) (Fin.last _) (B.JF (Tw.bs (0 + 1)) (Gj t)) x.1 x.2`. Introduce `x hx`.
+Apply function extensionality and compare values at an arbitrary argument. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Rewrite using `[hform]`. Establish `hg : glue ⟨1, by omega⟩ (Function.update c ⟨0, hr0⟩ t) (PTie.shiftCf ⟨1, by omega⟩ x.1) = CutSH.cc 0 hj t x.1`. Use function extensionality and compare the values at `l'`. Break down `Nat.eq_zero_or_pos l'.val with h | h` into its components or cases. Establish `e : l' = ⟨0, hr0⟩` using `Fin.ext h`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Substitute `e` using the available equality. Simplify using `[glue, CutSH.cc, consC]`. Establish `hne : l' ≠ ⟨0, hr0⟩` using `fun e => by rw [e] at h; simp at h`. Establish `h1 : (1 : ℕ) ≤ l'.val` using `h`. Simplify using `[glue, CutSH.cc, consC, PTie.shiftCf, h1, Nat.pos_iff_ne_zero.mp h]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hg]`. Conclude with `hRep t ht0' x hx`. Take `⟨⟨hInCC, εt, hεt, hεG⟩, -⟩` from `CutSH.family_orbital_valid Wp Wq P Tw 0 Gj hGj t ht0'`. Establish `hck : B.CkOn ⊤ (B.GV P.k (P.r - (0 + 1))) (Gj t)`. Introduce `γ₀ hγ₀`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Take `⟨U, f, hU', hmem, hf, hfe⟩` from `hGj.1 t ht0' γ₀ hγ₀`. Establish `hcm : Continuous (fun γ : B.Mat P.k (P.r - (0 + 1)) => (t, γ))` using `continuous_const.prodMk continuous_id`. Use `⟨(fun γ => (t, γ)) ⁻¹' U, fun γ => f (t, γ), hU'.preimage hcm, hmem, ?_, ?_⟩` and prove the remaining obligations. Conclude with `hf.comp (contDiff_const.prodMk contDiff_id).contDiffOn (fun γ hγ => hγ)`. Introduce `γ hγ hγG`.
+Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Conclude with `hfe (t, γ) hγ hγG`. Establish `hNice : JC.NiceCoef (Tw.bs (0 + 1)) εt (Gj t)` using `⟨hck, hInCC, hεG⟩`. Establish `hL2 : LevelSquareIntegrable μi 0 (Tt Ψ) 0`. Establish `h` using `Formalism.FourierDecayAlt.P5.HerC.level_zero_form_integrable_compact (S := Empty) (Tw.bs (0 + 1)) μi hDi.2.1 (fun _ => Gj t) (fun _ => Gj t) (fun _ => Tt Ψ) (fun _ => Tt Ψ) (fun _ => hInCC) (fun _ => hInCC) (fun _ => hTΨ) (fun _ => hTΨ) 0`. Unfold `LevelSquareIntegrable`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify `h` using `[wtI]`. Use `⟨level_one_square_integrable_of_transport μ ⟨0, hr0⟩ c t μi Tt κ hκ hpair Ψ 0 hL2, ?_⟩` and prove the remaining obligations. Rewrite using `[fs_tr μ ⟨0, hr0⟩ c t μi Tt κ hκ hpair Ψ Ψ]`. Establish `hform0 : (∫ c'' : Cf (P.r - (0 + 1)) 0, wtI 0 c'' * pairAt μi (Tt Ψ) (Tt Ψ) (glue 0 (shiftV (Fin.succ ⟨0, hr0⟩) (Function.update c ⟨0, hr0⟩ t)) c'')) = form μi 0 (fun _ : Wd.Ix (Fin 0) => Tt Ψ) (fun _ => Tt Ψ) 0`. Unfold `form`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use `congr 1`. Use function extensionality and compare the values at `c''`. Establish `eg : glue 0 (shiftV (Fin.succ ⟨0, hr0⟩) (Function.update c ⟨0, hr0⟩ t)) c'' = glue 0 0 c''`. Use function extensionality and compare the values at `l'`. Simplify using `[glue]`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[eg]`. Simplify using `[wtI]`. Establish `hβ` using `hRB 0 (fun _ => Gj t) (fun _ => Gj t) (fun _ => Tt Ψ) (fun _ => Tt Ψ) εt hεt (fun _ => hNice) (fun _ => hNice) (fun _ => hTΨ) (fun _ => hTΨ)`. Establish `hβ' : B.beta (Tw.bs (0 + 1)) (Gj t) (Gj t) = (CR : ℂ) * form μi 0 (fun _ : Wd.Ix (Fin 0) => Tt Ψ) (fun _ => Tt Ψ) 0`. Use `hβ using 1` and compare the differences between its conclusion and the goal.
+Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish `hb` using `(hB1 (Gj t) (Gj t) c4 c4 (hInCC _ 5) (hInCC _ 5) (hc4 t htK) (hc4 t htK)).2.2`. Use `erw [hform0]`. Establish `hf : form μi 0 (fun _ : Wd.Ix (Fin 0) => Tt Ψ) (fun _ => Tt Ψ) 0 = (CR : ℂ)⁻¹ * B.beta (Tw.bs (0 + 1)) (Gj t) (Gj t)`.
-
-Rewrite using `[hβ']`. Establish `: (CR : ℂ) ≠ 0` using `by exact_mod_cast hCR.ne'`. Clear the denominators using the available nonvanishing facts. Rewrite using `[hf, norm_mul, norm_mul, norm_inv, norm_inv, Complex.norm_real, Complex.norm_real, Real.norm_of_nonneg hκ.le, Real.norm_of_nonneg hCR.le, mul_assoc]`. Use `gcongr`.
-
-Combine the equalities or inequalities in the displayed calculation. Use `abs_mul_abs_self c4` as an intermediate fact. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem jSRadLoc_of (hU : FamCCUnif) : JSRadLoc := by
   intro Wp Wq _ _ _ _ _ _ P z z' π π' X μ L st l0 D hD hl1 hl2 hz hz' hπ hπ' l hl ε hε G hN hGc Φ hlc hΦ c hc js hjs t0 ht0
@@ -212,7 +208,7 @@ theorem jSRadLoc_of (hU : FamCCUnif) : JSRadLoc := by
         _ = |CB| * |c4| * |c4| := by rw [abs_mul, abs_mul, mul_assoc]
 
 /- English proof (translation)
-The claim follows from `jSRadLoc_of family_uniform_compact_convergence`.
+A detailed English derivation is pending.
 -/
 theorem spectral_radial_locality : JSRadLoc := jSRadLoc_of family_uniform_compact_convergence
 

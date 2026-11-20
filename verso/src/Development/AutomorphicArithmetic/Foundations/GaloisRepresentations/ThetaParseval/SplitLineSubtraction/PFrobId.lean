@@ -10,15 +10,15 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 open UpperTheory.Gal.TP.Sub
 
 /- English proof (translation)
-Introduce `hDI hCp E Ω _ _ _ _ _ _ l _ ι d t r r' a a' hr hr' ha ha' hev`. Establish `hS` using `Filter.eventually_cofinite.1 hev`. Use `hDI (G E Ω) l d d t t r r' a a' hr hr' ha ha' _ (GlobalTheory.SplitAttUniq.dense_splitFrobInv_away E Ω l (Fact.out) _ hS) ?_` and prove the remaining obligations. Introduce and unpack `g ⟨w, hw, hsp, hl, A, hA, hF⟩`. Take `⟨S₀, c, c', h1, h2, h3, h4⟩` from `(not_not.1 hw) hsp`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Establish `lin_map : ∀ (b : Fin t → G E Ω →* (Qbar l)ˣ) (e : Fin t → ℂ), (∀ i, FrobEig ι (rk1 (b i)) w {e i}) → (lin b g).map ι.toRingHom = ∏ i, (X - C (e i))`. Introduce `b e hb`. Rewrite using `[lin, Polynomial.map_prod]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `h` using `((hb i) A hA).2 g⁻¹ hF`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `h` using `[inv_inv]`. Establish `h' : cp (rk1 (b i)) g = X - C (b i g : Qbar l)` using `(hCp (G E Ω) (Qbar l) 0 0).2.1 (b i) g`. Rewrite using `[← h']`. Simplify using `using h`. Establish `cp_map : ∀ (s : G E Ω →* GL (Fin d) (Qbar l)) (e : Fin t → ℂ), FrobEig ι s w (S₀ + Finset.univ.val.map e) → (cp s g).map ι.toRingHom = (S₀.map fun z => X - C z).prod * ∏ i, (X - C (e i))`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Introduce `s e hs`. Establish `h` using `(hs A hA).2 g⁻¹ hF`. Rewrite `h` using `[inv_inv]`. Rewrite using `[cp, h, Multiset.map_add, Multiset.prod_add, Multiset.map_map]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Apply `Polynomial.map_injective ι.toRingHom ι.injective` to reduce the goal to its premises. Rewrite using `[Polynomial.map_mul, Polynomial.map_mul, cp_map r c h1, cp_map r' c' h2, lin_map a' c' h4, lin_map a c h3]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem UpperTheory.Gal.TP.Sub.frobId_holds :
     DenseId → CpFacts → FrobId := by

@@ -50,7 +50,7 @@ def IsBdSec (L : LocPot X) (s : X → X → ℂ) : Prop :=
   ∀ x, x ∉ Z → r x = P.rW L s x
 
 /- English proof (translation)
-Rewrite using `[h.2.2.2.2.2 x hx, P.rW]`. Combine the linear relations using `[h.2.2.1 x]`.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem IsBdSec.exp_le {L : LocPot X} {s : X → X → ℂ} (h : IsBdSec A Z r L s) (x : X) (hx : x ∉ Z) : Real.exp 1 ≤ r x := by
   rw [h.2.2.2.2.2 x hx, P.rW]
@@ -62,9 +62,9 @@ def IsPoin (b : LocPot X) (p : X → ℝ) : Prop :=
   PshOff A Z (b + LocPot.ofFun p)
 
 /- English proof (translation)
-Take `⟨x⟩` from `‹Nonempty X›`. Take `⟨j, hj⟩` from `A.cover x`. Assume the negation of the conclusion as `h0`. Establish `h1` using `h.2.1 j`. Rewrite `h1` using `[Set.compl_empty_iff.1 (Set.not_nonempty_iff_eq_empty.1 h0), Set.preimage_univ, Set.inter_univ]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `((A.chart j).open_target.measure_pos _ ⟨_, (A.chart j).map_source hj⟩).ne' h1`.
+A detailed English derivation is pending.
 -/
 theorem IsBd.compl_nonempty [Nonempty X] (h : IsBd A Z r Om) : Zᶜ.Nonempty := by
   obtain ⟨x⟩ := ‹Nonempty X›
@@ -114,7 +114,7 @@ def int (P : Fin e → M.Pot) (u : M.Fun) : ℝ := M.κ * ∑ σ, mInt (M.A σ) 
 def Smooth (u : M.Fun) : Prop := ∀ σ, (M.A σ).Smooth (u σ)
 
 /- English proof (translation)
-Rewrite using `[int, M.κ_eq, div_eq_inv_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem int_eq (P : Fin e → M.Pot) (u : M.Fun) :
     M.int P u = (∑ σ, mInt (M.A σ) (fun i => P i σ) (u σ)) / ((M.n : ℝ) + 1) := by
@@ -201,7 +201,7 @@ def QPolBd (d : ι → Fin N → ℝ) : Prop := ∀ σ, IsPsh (M.A σ) (F.a σ) 
 omit [Fintype ι] in
 
 /- English proof (translation)
-Introduce `σ` and use `by obtain ⟨h₁, -, L, s, g, h₂, h₃, h₄, ⟨n, m, W, h₅, -⟩, h₆⟩ := h σ refine ⟨h₁, 1, g, L, s, n, m, W, one_pos, h₂, h₃, h₄, h₅, fun j y hy w => (h₆ j y hy w).trans ?_⟩ exact congrArg (levi · y w) (funext fun _ => congrArg (· + _) (one_mul _).symm)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem QPolBd.qPol {F : An M ι N} {d : ι → Fin N → ℝ} (h : F.QPolBd d) : F.QPol d := fun σ => by
   obtain ⟨h₁, -, L, s, g, h₂, h₃, h₄, ⟨n, m, W, h₅, -⟩, h₆⟩ := h σ
@@ -272,7 +272,7 @@ def TiePs : Prop := ∀ B : ℝ, 2 ≤ B → ∀ c, (A.Ps B c).totalDegree ≤ d
 variable {T A} in
 
 /- English proof (translation)
-Introduce `B hB c` and use `⟨(h B hB c).1.totalDegree_le, fun u s => by obtain ⟨a, ha⟩ := hc B hB c u s rwa [(h B hB c).2 u s a ha]⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem TieLim.tiePs (h : TieLim T A) (hc : T.Conv) : TiePs T A := fun B hB c =>
   ⟨(h B hB c).1.totalDegree_le, fun u s => by
@@ -282,7 +282,7 @@ theorem TieLim.tiePs (h : TieLim T A) (hc : T.Conv) : TiePs T A := fun B hB c =>
 variable {T A} in
 
 /- English proof (translation)
-Introduce `B hB c u s` and use `⟨_, (h B hB c).2 u s⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem TiePs.conv (h : TiePs T A) : T.Conv := fun B hB c u s => ⟨_, (h B hB c).2 u s⟩
 
@@ -331,7 +331,7 @@ def Real0.Pts.mean (c : Y.Comp) (y : Y.Pt) (g : (T.M c).Fun) : ℝ :=
   (T.M c).κ * ∑ σ, (∑ i, g σ (P.conj c y σ i)) / ((P.d y : ℝ) + 1)
 
 /- English proof (translation)
-The claim follows from `mul_le_mul_of_nonneg_left (Finset.sum_le_sum fun σ _ => div_le_div_of_nonneg_right (Finset.sum_le_sum fun i _ => h σ i) (by positivity)) (T.M c).κ_pos.le`.
+A detailed English derivation is pending.
 -/
 theorem Real0.Pts.mean_le {c : Y.Comp} {y : Y.Pt} {g g' : (T.M c).Fun}
     (h : ∀ σ i, g σ (P.conj c y σ i) ≤ g' σ (P.conj c y σ i)) : P.mean c y g ≤ P.mean c y g' :=
@@ -339,7 +339,7 @@ theorem Real0.Pts.mean_le {c : Y.Comp} {y : Y.Pt} {g g' : (T.M c).Fun}
     div_le_div_of_nonneg_right (Finset.sum_le_sum fun i _ => h σ i) (by positivity)) (T.M c).κ_pos.le
 
 /- English proof (translation)
-Simplify using `only [Real0.Pts.mean, (T.M c).κ_eq, Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts.
 -/
 theorem Real0.Pts.mean_const (c : Y.Comp) (y : Y.Pt) (a : ℝ) : P.mean c y (fun _ _ => a) = a := by
   simp only [Real0.Pts.mean, (T.M c).κ_eq, Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul]
@@ -364,7 +364,7 @@ variable (Y) in
 def midWt : Wt Y := fun _ i => if (i : ℕ) < Y.j then 1 else 0
 
 /- English proof (translation)
-Use `Y.j_pos` as an intermediate fact. Simplify using `[gap, midWt, show Y.j - 1 < Y.j by omega]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 example (τ : D.what₂.Tau) : gap Y (midWt Y) τ = 1 := by
   have := Y.j_pos

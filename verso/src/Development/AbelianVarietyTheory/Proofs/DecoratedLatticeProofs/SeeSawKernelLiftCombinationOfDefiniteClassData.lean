@@ -12,17 +12,17 @@ noncomputable section
 namespace GlobalTheory.SeeSaw
 
 /- English proof (translation)
-Introduce `D c 𝒯 t hc ht hP`. Take `⟨ρ, hρ, hA⟩` from `hP`. Introduce `j hj y P`. Establish `hj1 : j + 1 ≤ D.R.m` using `hj`. Take `⟨hpos, hab⟩` from `hρ.rk j hj`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨hB, ν, hν1, hνL, hmain⟩` from `GlobalTheory.T.thetaLifts_all_charts_eq_classSum D c ρ hc hρ j hj1 hab`. Take `⟨m', y', s, hinv, havg⟩` from `@GlobalTheory.KJAvg.avg_span D.what₂.Tau _ (ρ.N j) (ρ.N (j + 1)) hab hpos (ρ.lam j) (ρ.n j) (GinfC (c.X j)) _ _ _ _ hB ν hν1 hνL (fun k τ => ρ.r j (Nat.le_of_succ_le hj1) k.1 τ) (hρ.uni j _) (ρ.fr j y).1 (castP (ρ.hN j (Nat.le_of_succ_le hj1)) (ρ.hN (j + 1) hj1) P)`. Establish `hz : ∀ i, ∀ τ, IsUnit ((fun τ => ρ.sc j τ • y' i τ) τ).det`. Introduce `i τ`. Simplify using `only [Matrix.det_smul]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Conclude with `(IsUnit.pow _ (Ne.isUnit (hρ.sc j τ))).mul (hinv i τ)`. Set `z : Fin m' → FrN D (ρ.N (j + 1))` to `fun i => ⟨fun τ => ρ.sc j τ • y' i τ, hz i⟩`. Set `y'' : Fin m' → c.Fr (j + 1)` to `fun i => (ρ.fr (j + 1)).symm (z i)`. Set `cst : ℂ` to `∏ τ, ((ρ.fr j y).1 τ).det ^ (-ρ.sS j τ)`. Establish `key` using `hmain 1 (fun _ => y) (fun _ => P) m' y' y'' (fun i => cst * s i) (by intro i τ; simp only [y'', Equiv.apply_symm_apply]; rfl) (by`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `F hF Λ`. Rewrite using `[Fin.sum_univ_one, havg F hF Λ, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Use the proof step `ring)`. Use `⟨∑ i, Finsupp.single (y'' i) (cst * s i * ∏ τ, ((ρ.fr (j + 1) (y'' i)).1 τ).det ^ ρ.sD j τ), ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `s' ψ hψ γ`. Take `⟨⟨A, hA'⟩, _⟩` from `hA s'`. Establish `h1` using `key (t s') A (ht s') hA' ψ hψ γ`. Rewrite `h1` using `[Fin.sum_univ_one]`. Rewrite using `[h1]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Express the relevant assertion in an equivalent form by its definition.
 
-Use `congr 1`. Express the relevant statement in the definitionally equal form `_ = Finsupp.sum _ (fun y' b => b • (t s').rd (j + 1) γ ((t s').K j ψ) y')`. Rewrite using `[← Finsupp.sum_finset_sum_index (h := fun y' b => b • (t s').rd (j + 1) γ ((t s').K j ψ) y') (fun _ => zero_smul ℂ _) (fun _ _ _ => add_smul _ _ _)]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finsupp.sum_single_index (h := fun y' b => b • (t s').rd (j + 1) γ ((t s').K j ψ) y') (zero_smul ℂ _)]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kerX_of_clsPinD : ∀ (D : D7) (c : Comm D) (𝒯 : Type) (t : 𝒯 → Tup c), c.Is → (∀ s, (t s).Is) → ClsPinD t → KerX t := by
   intro D c 𝒯 t hc ht hP

@@ -23,9 +23,9 @@ open GlobalTheory.HkFam
 namespace GlobalTheory.HkFam
 
 /- English proof (translation)
-Use extensionality with `g`. Take `⟨k, _, _, z₀, hz⟩` from `exists_geomPt_range_eq G.left g`. Set `z : Over.mk (z₀ ≫ G.hom) ⟶ G` to `Over.homMk z₀ rfl`. Establish `h1` using `h k _ z`. Establish `h2` using `h' k _ z`.
+By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hzl : z.left = z₀` using `rfl`. Rewrite `h1`, `h2` using `[hzl, hz, Set.singleton_subset_iff]`. Conclude with `h1.symm.trans h2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem corr_kerSet_unique {S : Scheme.{0}} {G G' : Over S} [GrpObj G'] {ψ : G ⟶ G'} {K K' : Set G.left}
     (h : KerSet ψ K) (h' : KerSet ψ K') : K = K' := by
@@ -39,13 +39,13 @@ theorem corr_kerSet_unique {S : Scheme.{0}} {G G' : Over S} [GrpObj G'] {ψ : G 
   exact h1.symm.trans h2
 
 /- English proof (translation)
-Establish `hnat : ∀ {T : Over S} (x : T ⟶ t.G) (n : ℕ), x ≫ t.act.act (n : 𝓞 E) = x ^ n`. Introduce `T x n`. Proceed by induction on `n with`. Consider the case `zero`. Establish `h` using `t.act.add 0 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Establish an intermediate fact.
 
-Rewrite `h` using `[add_zero]`. Establish `h0 : t.act.act 0 = 1` using `by simpa using h`. Rewrite using `[Nat.cast_zero, pow_zero, h0, MonObj.comp_one]`. Consider the case `succ n ih => rw [Nat.cast_succ, t.act.add, MonObj.comp_mul, ih, t.act.one, Category.comp_id, pow_succ]`. Take `⟨C, hC, hH⟩` from `hK k x`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Establish `hzC` using `hH.2.2.1 ((hC z).2 hz)`. Establish `hbar : (p : 𝓞 E) ∈ P.map (H.bar : 𝓞 E →+* 𝓞 E)`. Use `Ideal.mem_map_of_mem (H.bar : 𝓞 E →+* 𝓞 E) hpP` as an intermediate fact. Rewrite `this` using `[map_natCast]`. Then use the resulting hypothesis. Establish `h` using `hzC ((p ^ 2 : ℕ) : 𝓞 E) (by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Rewrite using `[Nat.cast_pow, pow_two]`. Conclude with `Ideal.mul_mem_mul (Ideal.mem_span_singleton_self _) hbar)`. Rewrite `h` using `[hnat]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem corr_heckeSet_kill {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Datum H}
     {S : Scheme.{0}} (t : SAB H S) {P : Ideal (𝓞 E)} {p i : ℕ} {K : Set t.G.left} (hpP : (p : 𝓞 E) ∈ P)
@@ -71,19 +71,19 @@ theorem corr_heckeSet_kill {E : Type} [Field E] [NumberField E] [IsCMField E] {H
   rwa [hnat] at h
 
 /- English proof (translation)
-Introduce `E _ _ _ H D l Xo P p i hr hA`. Take `⟨Z, hZ⟩` from `GlobalTheory.T.exists_heckeKernelScheme_universal_reduced_bases E H D l Xo P p i hA`. Use `Z.et₁` as an intermediate fact. Use `Xo.smooth` as an intermediate fact. Establish `hXs : Smooth Xo.s` using `SmoothOfRelativeDimension.smooth D.dim Xo.s`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs : Smooth (Z.π₁ ≫ Xo.s)` using `inferInstance`. Establish `hred : IsReduced Z.Hk` using `(GlobalTheory.isReduced_isNormalScheme_isLocallyNoetherian_of_smooth_over_field _ _ _ hs).1`. Take `⟨S', π, o', m, τ, hf, he, hsu, hL⟩` from `GlobalTheory.T.hecke_set_etale_level_structure_exists E H D l P p i Z.Hk _ Z.o₁ Z.K hA hZ Z.hecke`. Establish `hH'` using `((GlobalTheory.heckeSets_pull E H D P p i _ _ _ _ _ m.toSABMap Z.o₁.proper).2 Z.K).1 Z.hecke`. Establish `hq'` using `GlobalTheory.T.heckeQuotient_exists_listed_kernels_smooth_base E H D l Xo P p i _ S' _ o' τ _ hr hA inferInstance hL hH'`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨o₂, ψ, hi, hk⟩` from `GlobalTheory.T.heckeQuotient_descends_etale_surjective_cover E H D l Xo P p i Z.Hk S' _ π Z.o₁ o' m Z.K hA Z.hecke he hsu inferInstance hq'`. Take `⟨π₂, ⟨hb, ⟨m₂⟩⟩, -⟩` from `Xo.rep _ _ hred o₂`. Use `⟨{ toKerScheme := Z, π₂ := π₂, base₂ := hb, o₂ := o₂, m₂ := m₂, ψ := ψ, isog := hi, ker := hk, univ := ?_ }⟩` and prove the remaining obligations. Introduce `S s hS o o' ψ' ⟨hi', K', hk', hH⟩`. Use `o'.proper` as an intermediate fact.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `het` using `(etSet_of_kerSet S _ _ ψ' K' inferInstance hi'.1.2.1 hi'.1.2.2.1 hk').1`. Take `⟨h, ⟨hh, n₁, hn₁⟩, hu⟩` from `Z.rep S s hS o K' het hH`. Use `⟨h, ⟨hh, ?_⟩, ?_⟩` and prove the remaining obligations. Take `⟨o₃, ⟨n₃⟩⟩` from `GlobalTheory.obj_pull E H D l _ _ (baseKA l) (baseKA l) (RingHom.id _) _ _ _ s h rfl rfl (by rw [hh]; simp [spMap]) o₂`. Take `⟨⟨ψ₃, hψ₃, -⟩, hall⟩` from `GlobalTheory.T.exists_isogeny_pullback_heckeModuliObject E H D l p _ _ _ _ h Z.o₁ o₂ o o₃ n₁ n₃ ψ`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨hi₃, hk₃⟩` from `hall ψ₃ hψ₃`. Establish `hk₃'` using `hk₃ Z.K hi.1.1 hk`. Rewrite `hk₃'` using `[← hn₁]`. Take `⟨m, hm⟩` from `GlobalTheory.T.exists_iso_quotients_same_kernel_reduced_base E H D l p S s o o' o₃ ψ' ψ₃ K' hA.2.2.1 hA.2.2.2.2 hi' (hi₃ hi) hk' hk₃' (corr_heckeSet_kill o.t hA.2.2.2.1 hH)`. Establish `hc` using `((GlobalTheory.ObjMaps.id_comp_cancel E H D l _ _ _ _ _ _ _ _ _ _ _ _ o₂ o₃ o').2 h (𝟙 S) n₃).1 m`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hc' : ∀ g : S ⟶ Z.Hk, g = h → (∃ m'' : ObjMap o' o₂ g, m''.toSABMap.φ = m.toSABMap.φ ≫ n₃.toSABMap.φ) → ∃ m'' : ObjMap o' o₂ h, m''.toSABMap.φ = m.toSABMap.φ ≫ n₃.toSABMap.φ`. Introduce and unpack `g rfl hg`. Conclude with `hg`. Take `⟨n₂, hn₂⟩` from `hc' _ (Category.id_comp h) hc`. Conclude with `⟨n₁, n₂, by rw [hn₂, ← Category.assoc, hm, hψ₃]⟩`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `h' ⟨hh', n₁', n₂', e⟩`. Establish `hk₃` using `((GlobalTheory.T.exists_isogeny_pullback_heckeModuliObject E H D l p _ _ _ _ h' Z.o₁ o₂ o o' n₁' n₂' ψ).2 ψ' e).2 Z.K hi.1.1 hk`. Conclude with `hu h' ⟨hh', n₁', corr_kerSet_unique hk' hk₃⟩`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem corr_nonempty : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (𝔓 : Ideal (𝓞 E)) (p i : ℕ), 1 ≤ D.p + D.q → admitted l 𝔓 p → Nonempty (Corr Xo 𝔓 p i) := by
   intro E _ _ _ H D l Xo P p i hr hA

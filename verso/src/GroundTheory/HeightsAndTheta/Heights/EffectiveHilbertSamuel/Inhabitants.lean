@@ -33,7 +33,7 @@ def trivLB {D : ℕ} {U : Type} [TopologicalSpace U] (A : FinHolAtlas D U) : Hol
   cocycle _ _ _ _ _ := by simp
 
 /- English proof (translation)
-Establish `h : ((flatAtlas D).chart k ∘ ((flatAtlas D).chart j).symm) = id`. Use function extensionality and compare the values at `y`. Simplify using the standard rewrite rules. Simplify using `only [jac, h, fderiv_id]`. Conclude with `LinearMap.det_id`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem jac_flat {D : ℕ} (j k : Fin (flatAtlas D).n) (x : Fin D → ℂ) : jac (flatAtlas D) j k x = 1 := by
   have h : ((flatAtlas D).chart k ∘ ((flatAtlas D).chart j).symm) = id := by
@@ -42,9 +42,9 @@ theorem jac_flat {D : ℕ} (j k : Fin (flatAtlas D).n) (x : Fin D → ℂ) : jac
   exact LinearMap.det_id
 
 /- English proof (translation)
-Take `⟨hwh, hwc, hwz⟩` from `hw`. Take `⟨hFh, hFc, hFz⟩` from `hF`. Use `⟨fun j k => ?_, fun j k x hx => ?_, fun j x hx => ?_⟩` and prove the remaining obligations. Conclude with `(hwh j k).mul (hFh j k)`. Simplify using `only [Pi.mul_apply, hwc j k x hx, hFc j k x hx]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Simplify using `[hwz j x hx]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mul_mem_topSections {D : ℕ} {U : Type} [TopologicalSpace U] {A : FinHolAtlas D U}
     {L₂ L : HolLineBundle A} {m : ℕ} {w F : Fin A.n → U → ℂ} (hw : w ∈ L.sections 1)
@@ -57,9 +57,9 @@ theorem mul_mem_topSections {D : ℕ} {U : Type} [TopologicalSpace U] {A : FinHo
   · simp [hwz j x hx]
 
 /- English proof (translation)
-Use `⟨univ, id, 1, isOpen_univ, one_ne_zero, fun i => ?_, fun x _ => by simp, ?_, ?_, fun j => ⟨fun _ => 1, analyticOnNhd_const, by simp, fun y _ h => absurd (mem_univ _) h⟩⟩` and prove the remaining obligations. Introduce `j x _`. Simplify using `only [Function.comp_def, flatAtlas_chart, OpenPartialHomeomorph.refl_symm, OpenPartialHomeomorph.refl_apply, id_eq]`. Conclude with `(ContinuousLinearMap.proj (R := ℂ) (φ := fun _ : Fin D => ℂ) i).analyticAt x`. Establish `hh : (fun p : (univ : Set (Fin D → ℂ)) => id (p : Fin D → ℂ)) = ⇑(Homeomorph.Set.univ (Fin D → ℂ))` using `rfl`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hh]`. Use `IsClosedMap.isCoveringMapOn_of_isLocalHomeomorphOn (Homeomorph.Set.univ (Fin D → ℂ)).isClosedMap (fun y _ => ?_) (Homeomorph.Set.univ (Fin D → ℂ)).isLocalHomeomorph.isLocalHomeomorphOn` and prove the remaining obligations. Conclude with `(Set.finite_singleton y).preimage (Homeomorph.Set.univ (Fin D → ℂ)).injective.injOn`. Introduce `y _`. Conclude with `(Set.finite_singleton y).preimage fun a _ b _ h => Subtype.ext h`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem isAlgCover_flat (D : ℕ) : IsAlgCover (flatAtlas D) := by
   refine ⟨univ, id, 1, isOpen_univ, one_ne_zero, fun i => ?_, fun x _ => by simp, ?_, ?_,
@@ -79,7 +79,7 @@ theorem isAlgCover_flat (D : ℕ) : IsAlgCover (flatAtlas D) := by
     exact (Set.finite_singleton y).preimage fun a _ b _ h => Subtype.ext h
 
 /- English proof (translation)
-Use `⟨fun j k => ?_, fun j k x _ => by simp [trivLB], fun j x hx => absurd ?_ hx⟩` and prove the remaining obligations. Introduce `y _`. Simplify `hf y (mem_univ _)` using `[Function.comp_def]`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules.
 -/
 theorem mem_sections_flat {D : ℕ} (f : (Fin D → ℂ) → ℂ) (hf : AnalyticOnNhd ℂ f univ) :
     (fun _ => f : Fin (flatAtlas D).n → (Fin D → ℂ) → ℂ) ∈ (trivLB (flatAtlas D)).sections 1 := by
@@ -89,7 +89,7 @@ theorem mem_sections_flat {D : ℕ} (f : (Fin D → ℂ) → ℂ) (hf : Analytic
   · simp
 
 /- English proof (translation)
-Use `⟨fun j k => ?_, fun j k x _ => by simp [trivLB, jac_flat], fun j x hx => absurd ?_ hx⟩` and prove the remaining obligations. Introduce `y _`. Simplify `hf y (mem_univ _)` using `[Function.comp_def]`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules.
 -/
 theorem mem_topSections_flat {D : ℕ} (m : ℕ) (f : (Fin D → ℂ) → ℂ) (hf : AnalyticOnNhd ℂ f univ) :
     (fun _ => f : Fin (flatAtlas D).n → (Fin D → ℂ) → ℂ) ∈
@@ -125,16 +125,16 @@ abbrev exEmb : EmbDatum 1 where
 def exC : Fin 1 → Fin 2 → ℂ := fun _ => ![0, 1]
 
 /- English proof (translation)
-Simplify using `[lin, exE, exC, Fin.sum_univ_two]`.
+Simplify using the standard rewrite rules.
 -/
 theorem exS_apply (i : Fin 1) (j : Fin (flatAtlas 1).n) (x : Fin 1 → ℂ) :
     lin exE (exC i) j x = x 0 := by
   simp [lin, exE, exC, Fin.sum_univ_two]
 
 /- English proof (translation)
-Use extensionality with `x`. Simplify using `only [zeroSet, exS_apply, Set.mem_ofPred_eq, mem_singleton_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Use function extensionality and compare the values at `i`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[Subsingleton.elim i 0]`. Conclude with `h 0`. Introduce `h _`. Simplify using `[h]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exZero : zeroSet (flatAtlas 1) (fun i => lin exE (exC i)) = {0} := by
   ext x
@@ -144,7 +144,7 @@ theorem exZero : zeroSet (flatAtlas 1) (fun i => lin exE (exC i)) = {0} := by
   · intro h _; simp [h]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `z i`. Rewrite using `[exS_apply, Subsingleton.elim i 0]`. Simplify using the standard rewrite rules.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem exSMap (j : Fin (flatAtlas 1).n) :
     (fun (z : Fin 1 → ℂ) (i : Fin 1) => lin exE (exC i) j (((flatAtlas 1).chart j).symm z)) = id := by
@@ -191,9 +191,9 @@ abbrev exZ : ZeroDatum exEmb where
     linarith
 
 /- English proof (translation)
-Establish `h1 : 1 + t ^ 2 + (t ^ 2) ^ 2 / 2 ≤ Real.exp (t ^ 2)` using `Real.quadratic_le_exp_of_nonneg (sq_nonneg t)`. Establish `h4 : (t ^ 2) ^ 2 = t ^ 4` using `by ring`. Establish `h2 : (1 + t) ^ 3 ≤ 8 * (1 + t ^ 4)`. Use polynomial arithmetic with `[sq_nonneg (t - 1), sq_nonneg (t ^ 2 - 1), sq_nonneg t, mul_nonneg ht (sq_nonneg (t - 1)), mul_nonneg ht (sq_nonneg t), mul_nonneg (mul_nonneg ht ht) (sq_nonneg (t - 1))]`. Establish `h3 : (1 + t) ^ 3 ≤ Real.exp (t ^ 2) * 16` using `by nlinarith [sq_nonneg t]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Establish `hpos : 0 < (1 + t) ^ 3` using `by positivity`. Rewrite using `[Real.exp_neg, ← div_eq_mul_inv, le_div_iff₀ hpos, inv_mul_le_iff₀ (Real.exp_pos _)]`. Conclude with `h3`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exp_neg_sq_le (t : ℝ) (ht : 0 ≤ t) : Real.exp (-t ^ 2) ≤ 16 * ((1 + t) ^ 3)⁻¹ := by
   have h1 : 1 + t ^ 2 + (t ^ 2) ^ 2 / 2 ≤ Real.exp (t ^ 2) :=
@@ -208,15 +208,15 @@ theorem exp_neg_sq_le (t : ℝ) (ht : 0 ≤ t) : Real.exp (-t ^ 2) ≤ 16 * ((1 
   exact h3
 
 /- English proof (translation)
-Establish `hfin : (Module.finrank ℝ (Fin 1 → ℂ) : ℝ) < 3`. Rewrite using `[Module.finrank_pi_fintype]`. Simplify using the standard rewrite rules. Evaluate the numerical expressions. Establish `hI` using `finite_integral_one_add_norm (E := Fin 1 → ℂ) (μ := volume) hfin`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Evaluate the numerical expressions. Establish an intermediate fact.
 
-Establish `hpt : ∀ y : Fin 1 → ℂ, ENNReal.ofReal (c * Real.exp (-‖y 0‖ ^ 2)) ≤ ENNReal.ofReal (16 * |c|) * ENNReal.ofReal ((1 + ‖y‖) ^ (-(3 : ℝ)))`. Introduce `y`. Rewrite using `[← ENNReal.ofReal_mul (by positivity)]`. Apply `ENNReal.ofReal_le_ofReal` to reduce the goal to its premises. Establish `hy : ‖y‖ ≤ ‖y 0‖`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Use `(pi_norm_le_iff_of_nonneg (norm_nonneg _)).mpr fun i => ?_` and prove the remaining obligations. Rewrite using `[Subsingleton.elim i 0]`. Establish `hr : (1 + ‖y‖) ^ (-(3 : ℝ)) = ((1 + ‖y‖) ^ 3)⁻¹`. Rewrite using `[Real.rpow_neg (by positivity)]`. Use `norm_cast`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Put the expressions in a common number system so they can be compared.
 
-Rewrite using `[hr]`. Establish `he` using `exp_neg_sq_le ‖y 0‖ (norm_nonneg _)`. Establish `hmono : ((1 + ‖y 0‖) ^ 3)⁻¹ ≤ ((1 + ‖y‖) ^ 3)⁻¹`. Apply `inv_anti₀ (by positivity)` to reduce the goal to its premises. Use `gcongr`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem lintegral_gaussian_complex_line_lt_top (c : ℝ) : ∫⁻ y : Fin 1 → ℂ, ENNReal.ofReal (c * Real.exp (-‖y 0‖ ^ 2)) < ⊤ := by
   have hfin : (Module.finrank ℝ (Fin 1 → ℂ) : ℝ) < 3 := by
@@ -251,7 +251,7 @@ theorem lintegral_gaussian_complex_line_lt_top (c : ℝ) : ∫⁻ y : Fin 1 → 
     _ < ⊤ := ENNReal.mul_lt_top ENNReal.ofReal_lt_top hI
 
 /- English proof (translation)
-The claim follows from `(contDiff_norm_sq ℝ).comp (ContinuousLinearMap.proj (R := ℝ) (φ := fun _ : Fin 1 => ℂ) 0).contDiff`.
+A detailed English derivation is pending.
 -/
 theorem contDiff_normSq0 :
     ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (fun x : Fin 1 → ℂ => ‖x 0‖ ^ 2) :=
@@ -277,9 +277,7 @@ def exV (j : ℕ) : Submodule ℂ (Fin (flatAtlas 1).n → (Fin 1 → ℂ) → �
   else topSections (flatAtlas 1) (trivLB _) (trivLB _) (1 + j)
 
 /- English proof (translation)
-Unfold `exV`. Use `split_ifs with h`. Substitute `h` using the available equality. Rewrite using `[Submodule.span_le, singleton_subset_iff]`. Conclude with `mem_topSections_flat _ (fun _ => 1) analyticOnNhd_const`.
-
-Conclude with `le_rfl`.
+Replace the relevant objects with their definitions. Substitute using the available equality. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exV_le (j : ℕ) : exV j ≤ topSections (flatAtlas 1) (trivLB _) (trivLB _) (1 + j) := by
   unfold exV
@@ -290,9 +288,9 @@ theorem exV_le (j : ℕ) : exV j ≤ topSections (flatAtlas 1) (trivLB _) (trivL
   · exact le_rfl
 
 /- English proof (translation)
-Establish `hmem` using `exV_le 0 hF`. Establish `hF' : F ∈ Submodule.span ℂ {exOne}` using `by simpa [exV] using hF`. Take `⟨c, rfl⟩` from `Submodule.mem_span_singleton.mp hF'`. Use `⟨hmem, ?_⟩` and prove the remaining obligations. Simplify using `only [topNormSq, chartIntegral]`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `ENNReal.sum_lt_top.mpr fun j _ => ?_` and prove the remaining obligations. Use `lt_of_le_of_lt (setLIntegral_le_lintegral _ _) ?_` and prove the remaining obligations. Use `lt_of_le_of_lt (le_of_eq (lintegral_congr fun y => ?_)) (lintegral_gaussian_complex_line_lt_top (2 * ‖c‖ ^ 2))` and prove the remaining obligations. Simplify using `[exOne]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem mem_natural_sections_of_degree_zero (F : Fin (flatAtlas 1).n → (Fin 1 → ℂ) → ℂ) (hF : F ∈ exV 0) :
     F ∈ Vnat (flatAtlas 1) (trivLB _) (trivLB _) (fun _ x => ‖x 0‖ ^ 2) (fsWeight exE) 0 := by
@@ -307,7 +305,7 @@ theorem mem_natural_sections_of_degree_zero (F : Fin (flatAtlas 1).n → (Fin 1 
   simp [exOne]
 
 /- English proof (translation)
-Simplify using `only [sJac, sJacMap, exSMap, fderiv_id]`. Rewrite using `[ContinuousLinearMap.coe_id, LinearMap.det_id]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem exSJac (c : Fin (flatAtlas 1).n) (x : Fin 1 → ℂ) :
     sJac (flatAtlas 1) (fun i => lin exE (exC i)) c x = 1 := by
@@ -342,11 +340,9 @@ abbrev exSpace : SpaceDatum exEmb 2 where
     exact ENNReal.ofReal_toReal_le
 
 /- English proof (translation)
-Introduce `g`. Use `⟨g 0 • exOne, ?_, fun x hx => ?_⟩` and prove the remaining obligations. Use `show g 0 • exOne ∈ exV 0`. Simplify using `only [exV, ↓reduceIte]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span rfl)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hx' : x ∈ zeroSet (flatAtlas 1) (fun i => lin exE (exC i))` using `hx`. Rewrite `hx'` using `[exZero, mem_singleton_iff]`. Substitute `hx'` using the available equality. Use `show (g 0 • exOne) _ 0 / sJac (flatAtlas 1) (fun i => lin exE (exC i)) _ 0 = g 0`. Rewrite using `[exSJac]`.
-
-Simplify using `[exOne]`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exResOnto : ResOnto exZ exSpace := by
   intro g
@@ -362,7 +358,7 @@ theorem exResOnto : ResOnto exZ exSpace := by
     simp [exOne]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨exEmb, exZ, exSpace, exResOnto, ⟨0, by change (0 : Fin 1 → ℂ) ∈ zeroSet (flatAtlas 1) (fun i => lin exE (exC i)) rw [exZero]; rfl⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem inhabited_at_embedding :
     ∃ (X : EmbDatum 1) (Z : ZeroDatum X) (Y : SpaceDatum X 2), ResOnto Z Y ∧ Z.S.Nonempty :=
@@ -371,9 +367,9 @@ theorem inhabited_at_embedding :
     rw [exZero]; rfl⟩⟩
 
 /- English proof (translation)
-Use `⟨isAlgCover_flat 1, exPhiA.smooth, fun j k x _ => ?_, exPhiA.psh, fun j => ?_, fun j k x _ => by simp [exOne, jac_flat, trivLB], fun j x hx => absurd (by simp) hx, fun j y _ ξ => ?_⟩` and prove the remaining obligations. Simplify using `[exPhiA, trivLB]`. Conclude with `contDiffOn_const`. Establish `h1 : (exOne j ∘ ((flatAtlas 1).chart j).symm) = fun _ => (1 : ℂ)` using `rfl`. Simplify using `only [dbarC]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hormander_hyp :
     IsAlgCover (flatAtlas 1) ∧

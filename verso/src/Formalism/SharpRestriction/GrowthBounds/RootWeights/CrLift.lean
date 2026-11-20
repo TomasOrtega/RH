@@ -11,11 +11,11 @@ open Formalism.MainNotions.G Formalism.MainNotions.CovariantDegrees
 variable {n : ℕ} {K V : Type*} [Field K] [AddCommGroup V] [Module K V]
 
 /- English proof (translation)
-Establish `hg` using `v2rep_graded E W (fun a x hx => hW a a x hx) x0 hx0 (by rw [hT]; trivial)`. Take `⟨f, hf, hsum⟩` from `(Submodule.mem_iSup_iff_exists_finsupp _ _).1 hg`. Establish `hm : ∑ ν ∈ f.support, Z.mkQ (f ν) = Z.mkQ x0`. Rewrite using `[← hsum, Finsupp.sum, map_sum]`. Establish `hc` using `v2rep_comp_mem (cr_quot E Z hZ) (weightSp (cr_quot E Z hZ) mu) (fun a x hx => cr_wt_diag_stable _ mu a x hx) f.support (fun ν => Z.mkQ (f ν)) (fun ν _ => cr_quot_wt E Z hZ ν _ (hf ν).1) (by rw [hm]; exact hq)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `⟨f mu, (hf mu).2, (hf mu).1, ?_⟩` and prove the remaining obligations. Rewrite using `[← hm]`. Use `symm`. Use `Finset.sum_eq_single mu (fun ν hν hne => ?_) (fun hn => ?_)` and prove the remaining obligations. Conclude with `cr_wt_disj _ hne (cr_quot_wt E Z hZ ν _ (hf ν).1) (hc ν hν)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finsupp.notMem_support_iff.1 hn, map_zero]`.
+A detailed English derivation is pending.
 -/
 theorem cr_lift [CharZero K] (E : GLOps n K V) (hT : (⨆ ν, weightSp E ν) = ⊤) (W Z : Submodule K V)
     (hW : IsStableUnderOperators E W) (hZ : IsStableUnderOperators E Z) (mu : Fin n → ℤ) (x0 : V) (hx0 : x0 ∈ W)
@@ -37,39 +37,33 @@ theorem cr_lift [CharZero K] (E : GLOps n K V) (hT : (⨆ ν, weightSp E ν) = �
   · rw [Finsupp.notMem_support_iff.1 hn, map_zero]
 
 /- English proof (translation)
-Use `set W2 : Submodule K V := ⨆ mu, isotypicPartIn E W mu with hW2`. Establish `hW2st : IsStableUnderOperators E W2` using `v2rep_iSup_stable E _ fun mu => v2rep_isoIn_stable E W mu`. Assume the negation of the conclusion as `hnot`. Establish `hZne : W.map W2.mkQ ≠ ⊥`. Introduce `h`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hnot` to reduce the goal to its premises. Use `(LinearMap.le_ker_iff_map (f := W2.mkQ) (p := W)).2 h` as an intermediate fact. Rewrite `this` using `[Submodule.ker_mkQ]`. Then use the resulting hypothesis. Establish `hZst : IsStableUnderOperators (cr_quot E W2 hW2st) (W.map W2.mkQ)`. Introduce and unpack `a b y ⟨x, hx, rfl⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Conclude with `⟨E a b x, hW a b x hx, rfl⟩`. Establish `hRq` using `cr_quot_rel E hR W2 hW2st`. Take `⟨mu, xb, hxbZ, hxb⟩` from `v2rep_exists_hwv (cr_quot E W2 hW2st) hRq (W.map W2.mkQ) hZst (le_top.trans (cr_quot_top E W2 hW2st hT)) hZne`. Take `⟨x0, hx0W, rfl⟩` from `hxbZ`. Take `⟨x, hxW, hxwt, hxq⟩` from `cr_lift E hT W W2 hW hW2st mu x0 hx0W hxb.2.1`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hxb` using `[← hxq]`. Establish `hdom : Dominant mu` using `cr_hwv_dom _ hRq hxb`. Establish `hxn : x ∉ W2` using `fun h => hxb.1 ((Submodule.Quotient.mk_eq_zero W2).2 h)`. Establish `hup : ∀ a b : Fin n, a < b → E a b x ∈ W2`. Introduce `a b hab`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `hxb.2.2 a b hab` as an intermediate fact. Rewrite `this` using `[cr_quot_mk]`. Conclude with `(Submodule.Quotient.mk_eq_zero W2).1 this`. Use `set T := cr_C E with hTdef`. Establish `hTW2 : ∀ z ∈ W2, T z ∈ W2` using `cr_C_stable E W2 hW2st`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hy : T x - ((cr_c mu : ℤ) : K) • x ∈ W2`. Rewrite using `[hTdef, cr_C_wt E hR mu x hxwt, add_sub_cancel_left]`. Use `W2.smul_mem _ (Submodule.sum_mem _ fun a _ => Submodule.sum_mem _ fun b _ => ?_)` and prove the remaining obligations. Use `split_ifs with h`. Conclude with `hW2st b a _ (hup a b h)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Conclude with `zero_mem _`. Take `⟨q, hq1, hq2⟩` from `casimir_polynomial_isolates_level E hR (fun _ => W) _ hy (cr_c mu)`. Use `set x' := aeval T q x with hx'`. Establish `h1 : x' - x ∈ W2`. Use `cr_aeval_mod T W2 hTW2 _ x hy q` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Rewrite `this` using `[hq1, one_smul]`. Then use the resulting hypothesis. Establish `h2 : x' ∈ W` using `cr_aeval_stable T W (cr_C_stable E W hW) x hxW q`. Establish `h3 : x' ∈ weightSp E mu` using `cr_aeval_stable T _ (cr_C_weightSp E hR mu) x hxwt q`. Establish `h4 : x' ∉ W2`. Introduce `h`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Apply `hxn` to reduce the goal to its premises. Establish `: x = x' - (x' - x)` using `by abel`. Rewrite using `[this]`. Conclude with `W2.sub_mem h h1`. Establish `hy0 : T x' - ((cr_c mu : ℤ) : K) • x' = aeval T q (T x - ((cr_c mu : ℤ) : K) • x)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_sub, map_smul, cr_aeval_comm T T rfl q x]`. Establish `hy0e : T (T x' - ((cr_c mu : ℤ) : K) • x') = ((cr_c mu : ℤ) : K) • (T x' - ((cr_c mu : ℤ) : K) • x')`. Rewrite using `[hy0]`. Conclude with `casimir_acts_scalar_on_level E hR (fun _ => W) (cr_c mu) _ hq2`. Establish `hzero : ∀ a b : Fin n, a < b → E a b x' = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `a b hab`. Use `set z := E a b x' with hz`. Establish `hzW2 : z ∈ W2`. Establish `: z = E a b x + E a b (x' - x)` using `by rw [hz, ← map_add]; congr 1; abel`. Rewrite using `[this]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `W2.add_mem (hup a b hab) (hW2st a b _ h1)`. Establish `hzwt : z ∈ weightSp E (mu + rootW a b)` using `v2rep_shift E hR a b mu x' h3`. Use `set w1 := T z - ((cr_c mu : ℤ) : K) • z with hw1`. Establish `hw1' : w1 = E a b (T x' - ((cr_c mu : ℤ) : K) • x')`. Rewrite using `[hw1, hz, map_sub, map_smul, hTdef, cr_C_comm_apply E hR]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Establish `hw1e : T w1 = ((cr_c mu : ℤ) : K) • w1`. Rewrite using `[hw1', hTdef, cr_C_comm_apply E hR, ← hTdef, hy0e, map_smul]`. Take `⟨r, hr1, hr2⟩` from `casimir_polynomial_isolates_level E hR (fun _ => W) z hzW2 (cr_c mu)`. Establish `hz0 : aeval T r z = 0`. Use `casimir_isotypic_no_higher_weight E hR (fun _ => W) mu hdom (mu + rootW a b) ?_ ?_ _ hr2 (cr_aeval_stable T _ (cr_C_weightSp E hR _) z hzwt r)` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[add_sub_cancel_left]`. Conclude with `cr_root_mem a b hab`. Rewrite using `[add_sub_cancel_left]`. Conclude with `cr_ht_root a b hab`. Establish `hspan : aeval T r z - r.eval (((cr_c mu : ℤ) : K)) • z ∈ Submodule.span K {w1}`.
-
-Use `cr_aeval_mod T (Submodule.span K {w1}) ?_ _ z (Submodule.mem_span_singleton_self w1) r` and prove the remaining obligations. Introduce `y hy`. Take `⟨t, rfl⟩` from `Submodule.mem_span_singleton.1 hy`. Rewrite using `[map_smul, hw1e, smul_comm]`. Conclude with `Submodule.smul_mem _ _ (Submodule.smul_mem _ _ (Submodule.mem_span_singleton_self w1))`.
-
-Rewrite `hspan` using `[hz0, hr1, one_smul, zero_sub]`. Take `⟨t, ht⟩` from `Submodule.mem_span_singleton.1 hspan`. Establish `hzt : z = (-t) • w1` using `by rw [neg_smul, ht, neg_neg]`. Establish `hw0 : w1 = 0`. Establish `: T z = ((cr_c mu : ℤ) : K) • z` using `by rw [hzt, map_smul, hw1e, smul_comm]`.
-
-Rewrite using `[hw1, this, sub_self]`. Rewrite using `[hzt, hw0, smul_zero]`. Apply `h4` to reduce the goal to its premises. Establish `hne : x' ≠ 0` using `fun h => h4 (by rw [h]; exact zero_mem _)`. Conclude with `Submodule.mem_iSup_of_mem mu (Submodule.subset_span ⟨1, one_mem _, x', h2, ⟨hne, h3, hzero⟩, rfl⟩)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem cr_CR [CharZero K] [FiniteDimensional K V] (E : GLOps n K V) (hR : SatisfiesGLRelations E)
     (hT : (⨆ ν, weightSp E ν) = ⊤) (W : Submodule K V) (hW : IsStableUnderOperators E W) :

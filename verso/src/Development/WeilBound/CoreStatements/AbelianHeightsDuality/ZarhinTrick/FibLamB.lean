@@ -24,7 +24,7 @@ variable {A B : Over S} [GrpObj A] [GrpObj B] {P : LB (A ⊗ B).left} (hD : IsDu
 
 include hD in
 /- English proof (translation)
-The claim follows from `(isAdditive_iff hD.isLB).1 hD.additive Y a a' b`.
+A detailed English derivation is pending.
 -/
 theorem evc_mul_left (a a' : Y ⟶ A) (b : Y ⟶ B) :
     evc hD.isLB (a * a') b = evc hD.isLB a b + evc hD.isLB a' b :=
@@ -32,7 +32,7 @@ theorem evc_mul_left (a a' : Y ⟶ A) (b : Y ⟶ B) :
 
 include hD hD' in
 /- English proof (translation)
-Rewrite using `[← evc_swap hD.isLB hD'.isLB, (isAdditive_iff hD'.isLB).mp hD'.additive Y b b' a, evc_swap, evc_swap]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem evc_mul_right (a : Y ⟶ A) (b b' : Y ⟶ B) :
     evc hD.isLB a (b * b') = evc hD.isLB a b + evc hD.isLB a b' := by
@@ -40,21 +40,21 @@ theorem evc_mul_right (a : Y ⟶ A) (b b' : Y ⟶ B) :
 
 include hD in
 /- English proof (translation)
-The claim follows from `hD.additive.evc_one hD.isLB b`.
+A detailed English derivation is pending.
 -/
 theorem evc_one_l (b : Y ⟶ B) : evc hD.isLB (1 : Y ⟶ A) b = 0 := hD.additive.evc_one hD.isLB b
 
 include hD in
 /- English proof (translation)
-The claim follows from `evc_one_right hD.isLB hD.zero a`.
+A detailed English derivation is pending.
 -/
 theorem evc_one_r (a : Y ⟶ A) : evc hD.isLB a (1 : Y ⟶ B) = 0 := evc_one_right hD.isLB hD.zero a
 
 include hD hD' in
 /- English proof (translation)
-Establish `hl : evc hD.isLB a⁻¹ b⁻¹ = - evc hD.isLB a b⁻¹`. Establish `h` using `evc_mul_left hD a⁻¹ a b⁻¹`. Rewrite `h` using `[_root_.inv_mul_cancel, evc_one_l hD]`. Conclude with `eq_neg_of_add_eq_zero_left h.symm`. Establish `hr : evc hD.isLB a b⁻¹ = - evc hD.isLB a b`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `evc_mul_right hD hD' a b⁻¹ b`. Rewrite `h` using `[_root_.inv_mul_cancel, evc_one_r hD]`. Conclude with `eq_neg_of_add_eq_zero_left h.symm`. Rewrite using `[hl, hr, neg_neg]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem evc_inv_inv (a : Y ⟶ A) (b : Y ⟶ B) : evc hD.isLB a⁻¹ b⁻¹ = evc hD.isLB a b := by
   have hl : evc hD.isLB a⁻¹ b⁻¹ = - evc hD.isLB a b⁻¹ := by
@@ -77,13 +77,13 @@ def lamHom (x y : T ⟶ G) : Pic G.left →+ Pic T.left :=
   pull (x * y).left - pull x.left - pull y.left + pull (1 : T ⟶ G).left
 
 /- English proof (translation)
-Simplify using `[lam, lamHom]`.
+Simplify using the standard rewrite rules.
 -/
 theorem lam_eq_lamHom (c : Pic G.left) (x y : T ⟶ G) : lam c x y = lamHom x y c := by
   simp [lam, lamHom]
 
 /- English proof (translation)
-Simplify using `only [lam, ← pull_comp, ← Over.comp_left, hm, h1]`.
+Simplify using the standard rewrite rules.
 -/
 theorem lam_pull_pt (φ : G ⟶ G') (c : Pic G'.left) (x y : T ⟶ G) (hm : (x * y) ≫ φ = (x ≫ φ) * (y ≫ φ))
     (h1 : (1 : T ⟶ G) ≫ φ = 1) : lam (pull φ.left c) x y = lam c (x ≫ φ) (y ≫ φ) := by
@@ -96,7 +96,7 @@ section Fib
 variable {Ω : Type} [Field Ω] (s : Sp Ω ⟶ S)
 
 /- English proof (translation)
-Apply `toBase_injective s` to reduce the goal to its premises. Rewrite using `[toBase_map, toBase_mul, toBase_mul, toBase_map, toBase_map, MonObj.mul_comp]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem map_mul_pt {G G' : Over S} [GrpObj G] [GrpObj G'] (f : G ⟶ G') [IsMonHom f] {T : Over (Sp Ω)}
     (x y : T ⟶ (Over.pullback s).obj G) :
@@ -105,7 +105,7 @@ theorem map_mul_pt {G G' : Over S} [GrpObj G] [GrpObj G'] (f : G ⟶ G') [IsMonH
   rw [toBase_map, toBase_mul, toBase_mul, toBase_map, toBase_map, MonObj.mul_comp]
 
 /- English proof (translation)
-Apply `toBase_injective s G'` to reduce the goal to its premises. Rewrite using `[toBase_map, toBase_one, toBase_one, MonObj.one_comp]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem map_one_pt {G G' : Over S} [GrpObj G] [GrpObj G'] (f : G ⟶ G') [IsMonHom f] {T : Over (Sp Ω)} :
     (1 : T ⟶ (Over.pullback s).obj G) ≫ (Over.pullback s).map f = 1 := by

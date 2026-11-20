@@ -9,7 +9,7 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formal
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `e : a = 1 - (1 - a)` using `by ring`. Rewrite using `[e]`. Use `le_trans (Valuation.map_sub _ _ _) (max_le ?_ ha.le)` and prove the remaining obligations. Rewrite using `[map_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem valuation_le_one_of_valuation_one_sub_lt {Ω : Type} [Field Ω] (A : ValuationSubring Ω)
     {a : Ω} (ha : A.valuation (1 - a) < 1) : A.valuation a ≤ 1 := by
@@ -19,7 +19,7 @@ theorem valuation_le_one_of_valuation_one_sub_lt {Ω : Type} [Field Ω] (A : Val
   rw [map_one]
 
 /- English proof (translation)
-Establish `e : 1 - a * b = (1 - a) + a * (1 - b)` using `by ring`. Rewrite using `[e]`. Use `Valuation.map_add_lt _ ha ?_` and prove the remaining obligations. Rewrite using `[map_mul]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem valuation_one_sub_mul_lt {Ω : Type} [Field Ω] (A : ValuationSubring Ω) {a b : Ω}
     (ha : A.valuation (1 - a) < 1) (hb : A.valuation (1 - b) < 1) :
@@ -34,21 +34,19 @@ theorem valuation_one_sub_mul_lt {Ω : Type} [Field Ω] (A : ValuationSubring Ω
     _ < 1 := hb
 
 /- English proof (translation)
-Introduce `E Ω _ _ _ _ _ A A' σ hσ e₀ c hint hA hA'`. Take `⟨k, hk, hfix⟩` from `galAlgClosure_exists_pos_pow_apply_eq E Ω σ e₀`. Take `⟨m, rfl⟩ : ∃ m, k = m + 1` from `⟨k - 1, by omega⟩`. Use `set f : ℕ → Ω := fun i => (σ ^ i) e₀ with hf`. Establish `hfint : ∀ i, IsIntegral ℤ (f i)` using `fun i => hint.map ((σ ^ i : Ω ≃ₐ[E] Ω).toRingEquiv.toRingHom.toIntAlgHom)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hshift : ∀ i, σ (f i) = f (i + 1)`. Introduce `i`. Simplify using `only [hf, pow_succ', AlgEquiv.mul_apply]`. Establish `hcong : ∀ i, A'.valuation (1 - f i) < 1`. Introduce `i`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Proceed by induction on `i with`. Consider the case `zero => simpa [hf] using hA'`. Consider the case `succ i ih`. Establish `hy : A'.valuation (f i) ≤ 1` using `valuation_le_one_of_valuation_one_sub_lt A' ih`. Establish `hmove` using `hσ.2 (f i) hy`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : 1 - f (i + 1) = (1 - f i) + -(σ (f i) - f i)`. Rewrite using `[← hshift i]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Use `Valuation.map_add_lt _ ih ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Valuation.map_neg]`. Conclude with `hmove`. Use `⟨∏ i ∈ Finset.range (m + 1), f i, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `IsIntegral.prod _ (fun i _ => hfint i)`. Rewrite using `[map_prod]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [hshift]`. Rewrite using `[Finset.prod_range_succ (fun i => f (i + 1)), Finset.prod_range_succ' f]`. Establish `h0 : f (m + 1) = f 0` using `by simpa [hf] using hfix`. Rewrite using `[h0]`. Rewrite using `[Finset.prod_range_succ']`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hP : IsIntegral ℤ (∏ i ∈ Finset.range m, f (i + 1))` using `IsIntegral.prod _ (fun i _ => hfint (i + 1))`. Establish `hPle : A.valuation (∏ i ∈ Finset.range m, f (i + 1)) ≤ 1` using `(A.valuation_le_one_iff _).mpr (mem_of_isIntegral_int A hP)`. Rewrite using `[map_mul]`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.prod_induction f (fun x => A'.valuation (1 - x) < 1) (fun a b ha hb => valuation_one_sub_mul_lt A' ha hb) ?_ (fun i _ => hcong i)` and prove the remaining obligations.
-
-Simplify using the standard rewrite rules.
+Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_fixed_of_separating :
     ∀ (E Ω : Type) [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω] (A A' : ValuationSubring Ω) (σ : G E Ω), σ ∈ Ine (F := E) A' → ∀ (e₀ c : Ω), IsIntegral ℤ e₀ → A.valuation e₀ < A.valuation c → A'.valuation (1 - e₀) < 1 → ∃ e : Ω, IsIntegral ℤ e ∧ σ e = e ∧ A.valuation e < A.valuation c ∧ A'.valuation (1 - e) < 1 := by

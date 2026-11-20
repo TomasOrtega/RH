@@ -21,7 +21,7 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 namespace GlobalTheory.PolarBc
 
 /- English proof (translation)
-Establish `: w.asIdeal.LiesOver (w.under (𝓞 K)).asIdeal` using `⟨rfl⟩`. Use `w.isMaximal` as an intermediate fact. Use `(w.under (𝓞 K)).isMaximal` as an intermediate fact. Use `show Ideal.absNorm w.asIdeal = Ideal.absNorm (w.under (𝓞 K)).asIdeal ^ w.asIdeal.inertiaDeg (𝓞 K)`. Rewrite using `[← Ideal.absNorm_relNorm (𝓞 K) (𝓞 K') w.asIdeal, Ideal.relNorm_eq_pow_of_isMaximal w.asIdeal (w.under (𝓞 K)).asIdeal, map_pow]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem normV_under_eq {K K' : Type} [Field K] [NumberField K] [Field K'] [NumberField K'] [Algebra K K']
     (w : HeightOneSpectrum (𝓞 K')) : normV w = normV (w.under (𝓞 K)) ^ w.asIdeal.inertiaDeg (𝓞 K) := by
@@ -33,17 +33,15 @@ theorem normV_under_eq {K K' : Type} [Field K] [NumberField K] [Field K'] [Numbe
     Ideal.relNorm_eq_pow_of_isMaximal w.asIdeal (w.under (𝓞 K)).asIdeal, map_pow]
 
 /- English proof (translation)
-Introduce `js gk F K _ _ _ _ _ _ _ h2 n hn π χ P hpol hBC`. Take `⟨χ', hs, hv⟩` from `UpperTheory.heckeChar_realTransport F K h2 χ`. Use `⟨χ', fun v v' => ?_, UpperTheory.polOfSat_of_thetaSat UpperTheory.theta_satake_parameters_inverse js gk K n hn P _ ?_⟩` and prove the remaining obligations. Take `⟨u, e⟩` from `hs v`. Take `⟨u', e'⟩` from `hs v'`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[e, e', hpol.sign u u']`. Establish `hu : ∀ᶠ w : HeightOneSpectrum (𝓞 K) in Filter.cofinite, χ.UnrAt (w.under (𝓞 F))`. Rewrite using `[Filter.eventually_cofinite]`. Use `((GlobalTheory.Mem.UnrAe.finite_ramified χ).preimage' (f := fun w : HeightOneSpectrum (𝓞 K) => w.under (𝓞 F)) fun v _ => ?_).subset fun w hw => hw` and prove the remaining obligations. Use `haveI := v.isMaximal`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `((IsDedekindDomain.primesOver_finite v.asIdeal (𝓞 K)).preimage (f := fun w : HeightOneSpectrum (𝓞 K) => w.asIdeal) fun _ _ _ _ e => HeightOneSpectrum.ext e).subset fun w hw => ?_` and prove the remaining obligations. Conclude with `⟨w.isPrime, ⟨congrArg HeightOneSpectrum.asIdeal (Eq.symm hw)⟩⟩`. Use `filter_upwards [hu, hBC.unr, UpperTheory.baseChange_complexConj_invariance F K n π P hBC] with w hw h3 ⟨B₁, hB₁, hB₂⟩`. Take `⟨B, hB, hB'⟩` from `h3 (w.under (𝓞 F)) rfl _ (normV_under_eq w)`. Take `rfl` from `hB'.unique hB₁`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨e1, e2⟩` from `hv w`. Take `⟨e3, e4⟩` from `UpperTheory.ideleNorm_valuation_of_local_compatibility UpperTheory.ideleNorm_local_compatibility K χ' w _ (e1.symm ▸ normV_under_eq (K := F) w) (e2 hw).1`. Use `⟨e3, _, _, hB', hB₂, ?_⟩` and prove the remaining obligations. Take `⟨β, d, hl, -, -, hβ, -⟩` from `hpol.dual`. Establish `e5` using `UpperTheory.satake_inv_mul_char_eq_of_similitude_pairing F n _ _ _ (π.isSmooth_locRep _) χ hw β hl (fun g x y => by`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `hβ (GlobalTheory.CuspRep.locGL F n _ g) x y` as an intermediate fact. Rewrite using `[TR.CuspSub.chiDet_locGL] at this) B hB` and apply the resulting hypothesis. Rewrite using `[e4, (e2 hw).2]`. Use `conv_rhs => rw [← e5]`. Simplify using `only [Multiset.map_map]`.
-
-Conclude with `Multiset.map_congr rfl fun b _ => by simp [mul_pow]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem bcDual_of_polarized : Cr.BcDual := by
   intro js gk F K _ _ _ _ _ _ _ h2 n hn π χ P hpol hBC

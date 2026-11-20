@@ -14,9 +14,9 @@ attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 variable {n : ℕ}
 
 /- English proof (translation)
-Take `⟨-, horth, -⟩` from `hH n`. Simplify using `only [hOf, Finset.sum_mul, Finset.mul_sum, Matrix.smul_mul, Matrix.mul_smul, Matrix.trace_sum, Matrix.trace_smul, horth, smul_eq_mul, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq, Finset.mem_univ, if_true]`. Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_ite_eq']`. Simplify using `only [Finset.mem_univ, if_true]`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem trace_hOf_mul (hH : HbFacts) (u u' : Fin n × Fin n → ℝ) :
     (hOf u * hOf u').trace = ∑ p, ((u p * u' p : ℝ) : ℂ) := by
@@ -30,9 +30,9 @@ theorem trace_hOf_mul (hH : HbFacts) (u u' : Fin n × Fin n → ℝ) :
   ring
 
 /- English proof (translation)
-Simplify using `only [hOf, map_sum]`. Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations. Establish `e : ((u p : ℝ) : ℂ) • (hb p : Mat n) = (u p) • hb p`. Use extensionality with `a b`. Simplify using `[Complex.real_smul]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[e, map_smul]`. Use extensionality with `v`. Simplify using `[Complex.coe_smul]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem map_hOf {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V] (α : Mat n →ₗ[ℝ] (V →L[ℂ] V))
     (u : Fin n × Fin n → ℝ) : α (hOf u) = ∑ p, ((u p : ℝ) : ℂ) • α (hb p) := by
@@ -46,21 +46,19 @@ theorem map_hOf {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V] (α 
   simp [Complex.coe_smul]
 
 /- English proof (translation)
-Introduce `n V _ _ α β A A' hA hA' htr`. Take `⟨-, -, hcoord, -, -, -, -, -⟩` from `hH n`. Use `set a : Matrix (Fin n × Fin n) (Fin n × Fin n) ℝ := fun i p => coords (A i) p with ha`. Use `set a' : Matrix (Fin n × Fin n) (Fin n × Fin n) ℝ := fun i p => coords (A' i) p with ha'`. Establish `eA : ∀ i, A i = hOf (a i)` using `fun i => (hcoord _ (hA i)).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `eA' : ∀ i, A' i = hOf (a' i)` using `fun i => (hcoord _ (hA' i)).symm`. Establish `h1 : a * a'ᵀ = 1`. Use extensionality with `i j`. Use `htr i j` as an intermediate fact. Rewrite `this` using `[eA i, eA' j, trace_hOf_mul hH]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hre` using `congrArg Complex.re this`. Simplify using `only [Complex.re_sum, Complex.ofReal_re] at hre`. Simplify using `only [Matrix.mul_apply, Matrix.transpose_apply, Matrix.one_apply]`. Rewrite using `[hre]`. Apply the tactic sequence `split_ifs <;> simp`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `h2 : a'ᵀ * a = 1` using `mul_eq_one_comm.mp h1`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[eA i, eA' i, map_hOf α, map_hOf β, Finset.sum_mul_sum]`. Use `Finset.sum_congr rfl fun p _ => Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[smul_mul_smul_comm]`. Use `push_cast`. Both sides reduce to the same expression. Use `_ = ∑ p, ∑ q, ((a'ᵀ * a) q p : ℂ) • (α (hb p) * β (hb q)) := by`. Rewrite using `[Finset.sum_comm]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_smul]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Matrix.mul_apply, Matrix.transpose_apply]`. Use `push_cast`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Use `_ = ∑ p, α (hb p) * β (hb p) := by`.
-
-Rewrite using `[h2]`. Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations. Simplify using `[Matrix.one_apply]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem dualSum (hH : HbFacts) : DualSum := by
   intro n V _ _ α β A A' hA hA' htr

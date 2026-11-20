@@ -8,7 +8,7 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.DualMapAct
 
 /- English proof (translation)
-Introduce `o φ _ _` and use `GlobalTheory.CompanionTheory.DualAct.act_star_invT o φ _ _ (fun _ => rfl) (fun _ => rfl)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem act_dual : ∀ {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a : ℕ}, ∀ (o : Op E a) (φ : Sm E a)
     (h1 : (fun g => star (φ.1 (invA E a g))) ∈ Sm E a)

@@ -18,13 +18,11 @@ namespace PositivityTheory.RdEc
 variable {D : D7}
 
 /- English proof (translation)
-Use `haveI := isTopologicalRing_tens (F := D.host.F) (E := D.host.E) (R := Af D.host.F)`. Proceed by induction on `hφ using Submodule.span_induction with`. Consider the case `mem φ h`. Take `⟨f, g, hg, rfl⟩` from `h`. Use `Submodule.subset_span ⟨SchwartzMap.compSubConstCLM ℂ (-(fun τ i j => compAt θ τ x i j)) f, fun u => g (u + fun i j => finPart D (x i j)), ⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `hg.1.comp_continuous (continuous_add_const _)`. Conclude with `hg.2.comp_homeomorph (Homeomorph.addRight _)`. Use function extensionality and compare the values at `z`. Rewrite using `[SchwartzMap.compSubConstCLM_apply, sub_neg_eq_add]`. Use `beta_reduce`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Apply function extensionality and compare values at an arbitrary argument. Treat this case separately.
 
-Use `congr 2`. Use function extensionality and compare the values at `τ i j`. Conclude with `(congrArg (θ τ) ((infPart D).map_add (z i j) (x i j))).trans ((θ τ).map_add _ _)`. Use function extensionality and compare the values at `i j`. Conclude with `(finPart D).map_add (z i j) (x i j)`.
-
-Consider the case `zero => exact Submodule.zero_mem _`. Consider the case `add a b _ _ ha hb => exact Submodule.add_mem _ ha hb`. Consider the case `smul c a _ ha => exact Submodule.smul_mem _ c ha`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem translate_mem (θ : InfFam D) {m n : ℕ} (x : Mx D m n) {φ : Mx D m n → ℂ} (hφ : φ ∈ schwartzA θ m n) :
     (fun z => φ (z + x)) ∈ schwartzA θ m n := by
@@ -49,11 +47,11 @@ theorem translate_mem (θ : InfFam D) {m n : ℕ} (x : Mx D m n) {φ : Mx D m n 
   | smul c a _ ha => exact Submodule.smul_mem _ c ha
 
 /- English proof (translation)
-Take `⟨ψ₀, h₀, lam, hlam, hψeq⟩` from `GlobalTheory.ThetaAllChar.exists_std hψ`. Establish `hsh : ψ = shift ψ₀ lam`. Use extensionality with `x`. Rewrite using `[hψeq]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Take `⟨μ, 𝓕, hμ⟩` from `exists_isCovolOne D V.rank n`. Take `⟨χ, h1, h2⟩` from `GlobalTheory.RawLift.exists_hecke_resEta D V.rank`. Take `⟨ω, hω⟩` from `GlobalTheory.StdUnn.Inhab.weil_exists D n V ψ₀ h₀ lam hlam χ h1 h2 θ hθ μ 𝓕 hμ`. Rewrite `hω` using `[← hsh]`. Take `⟨g, hg⟩` from `(GlobalTheory.StdUnn.Model.exists_unip b).2 hb`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `(ω g ⟨φ, hφ⟩).2` as an intermediate fact. Rewrite `this` using `[show (ω g ⟨φ, hφ⟩).1 = _ from funext (hω.unip g b hg ⟨φ, hφ⟩)]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem quad_mem {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsCharAF D.host.F ψ) {θ : InfFam D} (hθ : IsInfFam θ) (V : HSp D)
     {n : ℕ} (b : Mx D n n) (hb : adj b = b) {φ : Mx D V.rank n → ℂ} (hφ : φ ∈ schwartzA θ V.rank n) :
@@ -72,11 +70,11 @@ theorem quad_mem {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsCharAF D.host.F ψ) {
   rwa [show (ω g ⟨φ, hφ⟩).1 = _ from funext (hω.unip g b hg ⟨φ, hφ⟩)] at this
 
 /- English proof (translation)
-Introduce `D ψ hψ θ hθ V n v Φ hΦ`. Establish `h1` using `translate_mem θ (xPart v) hΦ`. Establish `h2` using `quad_mem hψ hθ V (-1) (by simp [adj_neg, adj_one]) h1`. Establish `h3` using `translate_mem θ (-yPart v) h2`. Establish `h4` using `quad_mem hψ hθ V 1 adj_one h3`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h5` using `translate_mem θ (yPart v) h4`. Establish `h6` using `Submodule.smul_mem _ (ψ (halfTr (Matrix.trace (GlobalTheory.StdUnn.inner V (xPart v) (yPart v))) - halfTr (Matrix.trace (GlobalTheory.StdUnn.inner V (yPart v) (yPart v))))) h5`. Use `h6 using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `z`. Simplify using `only [EC.Heisenberg₂, Pi.smul_apply, smul_eq_mul, add_neg_cancel_right]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Rewrite using `[← mul_assoc, ← mul_assoc, ← AddChar.map_add_eq_mul, ← AddChar.map_add_eq_mul, Unip.quad_shift V adj_one z (yPart v)]`. Use `congr 2`. Simplify using `only [Matrix.mul_one, Matrix.one_mul, Matrix.neg_mul, Matrix.trace_neg, halfTr, map_neg, mul_neg]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 theorem heisSch : HeisSch := by
   intro D ψ hψ θ hθ V n v Φ hΦ

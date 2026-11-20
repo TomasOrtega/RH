@@ -6,17 +6,15 @@ open Matrix
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `E _ _ _ U hU hc hne ι _ f hf hnz`. Set `S : ι → Set E` to `fun i => (U ∩ f i ⁻¹' ({0}ᶜ)) ∪ (closure U)ᶜ`. Establish `hopen : ∀ i, IsOpen (S i)` using `fun i => ((hf i).continuousOn.isOpen_inter_preimage hU isOpen_compl_singleton).union isClosed_closure.isOpen_compl`. Establish `hdense : ∀ i, Dense (S i)`. Introduce `i`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[dense_iff_inter_open]`. Introduce `V hV hVne`. Distinguish the cases in `hVU : (V ∩ U).Nonempty`. Take `⟨z, hzV, hzU⟩` from `hVU`. Assume the negation of the conclusion as `hcon`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `hzero : ∀ y ∈ V ∩ U, f i y = 0`. Introduce `y hy`. Assume the negation of the conclusion as `hy0`. Conclude with `hcon ⟨y, hy.1, Or.inl ⟨hy.2, hy0⟩⟩`. Establish `hev : f i =ᶠ[nhds z] 0` using `by filter_upwards [(hV.inter hU).mem_nhds ⟨hzV, hzU⟩] with y hy`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hzero y hy`. Establish `hall` using `(hf i).eqOn_zero_of_preconnected_of_eventuallyEq_zero hc hzU hev`. Take `⟨x, hxU, hx⟩` from `hnz i`. Conclude with `hx (hall hxU)`. Take `⟨z, hzV⟩` from `hVne`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `⟨z, hzV, Or.inr ?_⟩` and prove the remaining obligations. Introduce `hz`. Conclude with `hVU (mem_closure_iff.1 hz V hV hzV)`. Establish `hD : Dense (⋂ i, S i)` using `dense_iInter_of_isOpen hopen hdense`. Take `⟨x, hxU, hx⟩` from `hD.inter_open_nonempty U hU hne`.
-
-Use `⟨x, hxU, fun i => ?_⟩` and prove the remaining obligations. Break down `Set.mem_iInter.1 hx i with h | h` into its components or cases. Conclude with `h.2`. Conclude with `absurd (subset_closure hxU) h`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem exists_forall_ne_zero_of_countable_analytic :
     ∀ (E : Type) [NormedAddCommGroup E] [NormedSpace ℂ E] [CompleteSpace E] (U : Set E),

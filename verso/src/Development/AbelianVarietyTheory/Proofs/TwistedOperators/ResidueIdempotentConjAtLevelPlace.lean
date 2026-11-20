@@ -20,9 +20,9 @@ open scoped Matrix
 namespace GlobalTheory.SeeConjIdem
 
 /- English proof (translation)
-Establish `h0 : resS D.host.F PP ((g : ℕ) : GlobalTheory.IndefiniteRowSideFullHecke.FlatSpaceComponents.OA D) = 0`. Use `(map_natCast (resS D.host.F PP) g).trans ?_` and prove the remaining obligations. Use `(map_natCast (Ideal.Quotient.mk PP.asIdeal) g).symm.trans ?_` and prove the remaining obligations. Conclude with `(Ideal.Quotient.eq_zero_iff_mem).2 hg`. Establish `h1` using `(GlobalTheory.AdIsom.resS_eq_zero_iff_cpt PP _).1 h0`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : (((g : ℕ) : GlobalTheory.IndefiniteRowSideFullHecke.FlatSpaceComponents.OA D) : EAf D) = (g : EAf D)` using `map_natCast (GlobalTheory.IndefiniteRowSideFullHecke.FlatSpaceComponents.OA D).subtype g`. Rewrite `h1` using `[e]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem natCast_cpt_lt {D : D7} (g : ℕ) (PP : Pl D.host.E) (hg : (g : 𝓞 D.host.E) ∈ PP.asIdeal) :
     Valued.v (GlobalTheory.StdFrames.cpt PP (g : EAf D)) < 1 := by
@@ -35,40 +35,38 @@ theorem natCast_cpt_lt {D : D7} (g : ℕ) (PP : Pl D.host.E) (hg : (g : 𝓞 D.h
   rwa [e] at h1
 
 /- English proof (translation)
-Rewrite using `[Matrix.mulVec_add, Pi.add_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mulVec_add_apply {n : ℕ} {R : Type} [CommRing R] (M : Matrix (Fin n) (Fin n) R) (x y : Fin n → R) (i : Fin n) :
     (M *ᵥ (x + y)) i = (M *ᵥ x) i + (M *ᵥ y) i := by
   rw [Matrix.mulVec_add, Pi.add_apply]
 
 /- English proof (translation)
-Rewrite using `[Matrix.mulVec_smul, Pi.smul_apply, smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mulVec_smul_apply {n : ℕ} {R : Type} [CommRing R] (M : Matrix (Fin n) (Fin n) R) (c : R) (y : Fin n → R) (i : Fin n) :
     (M *ᵥ (c • y)) i = c * (M *ᵥ y) i := by
   rw [Matrix.mulVec_smul, Pi.smul_apply, smul_eq_mul]
 
 /- English proof (translation)
-Rewrite using `[Matrix.mulVec_zero, Pi.zero_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mulVec_zero_apply {n : ℕ} {R : Type} [CommRing R] (M : Matrix (Fin n) (Fin n) R) (i : Fin n) :
     (M *ᵥ (0 : Fin n → R)) i = 0 := by
   rw [Matrix.mulVec_zero, Pi.zero_apply]
 
 /- English proof (translation)
-Establish `hL : ∀ x : VA (II D), x ∈ (II D).Lf → ∀ i, ((β⁻¹).val *ᵥ (x : Fin (Yc D 0).rank → EAf D)) i ∈ GlobalTheory.IndefiniteRowSideFullHecke.FlatSpaceComponents.OA D`. Introduce `x hx`. Establish `h1 : x ∈ Formalism.L2.Herm.hatL (F` using `D.host.F) (GlobalTheory.PlaceModel.latFrame (Yc D 0)) := (GlobalTheory.ConjPlaceRed.mem_Lf D x).2 hx`. Rewrite `h1` using `[hβ]`. Conclude with `(GlobalTheory.AdIsom.mem_hat_lat β x).1 h1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions.
 
-Unfold `mL at hw`. Proceed by induction on `hw using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨y, hy, rfl⟩` from `hx`. Introduce `i`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨((β⁻¹).val *ᵥ (y : Fin (Yc D 0).rank → EAf D)) i, hL y hy i, ?_⟩` and prove the remaining obligations. Establish `e1 : (((g : IntAf (II D).F (II D).E) : (II D).E ⊗[(II D).F] Af (II D).F)) = (g : EAf D)` using `map_natCast (IntAf (II D).F (II D).E).subtype g`. Establish `e2` using `mulVec_smul_apply (β⁻¹).val (show EAf D from ((g : IntAf (II D).F (II D).E) : (II D).E ⊗[(II D).F] Af (II D).F)) (y : Fin (Yc D 0).rank → EAf D) i`. Rewrite `e2` using `[e1]`. Conclude with `e2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Treat this case separately. Supply the required witnesses or components.
 
-Consider the case `zero => intro i`. Conclude with `⟨0, zero_mem _, (mulVec_zero_apply (β⁻¹).val i).trans (mul_zero _).symm⟩`. Consider the case `add x y _ _ hx hy`. Introduce `i`. Take `⟨a, ha, ea⟩` from `hx i`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨b, hb, eb⟩` from `hy i`. Use `⟨a + b, add_mem ha hb, ?_⟩` and prove the remaining obligations. Use `(mulVec_add_apply (β⁻¹).val (x : Fin (Yc D 0).rank → EAf D) y i).trans ?_` and prove the remaining obligations. Rewrite using `[ea, eb, mul_add]`. Consider the case `smul c x _ hx`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `i`. Take `⟨a, ha, ea⟩` from `hx i`. Use `⟨(show EAf D from c.1) * a, mul_mem c.2 ha, ?_⟩` and prove the remaining obligations. Use `(mulVec_smul_apply (β⁻¹).val (show EAf D from c.1) (x : Fin (Yc D 0).rank → EAf D) i).trans ?_` and prove the remaining obligations. Rewrite using `[ea]`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem coord_mL {D : D7} (g : ℕ) (β : GL (Fin (Yc D 0).rank) (EAf D))
     (hβ : GlobalTheory.PlaceModel.latFrame (Yc D 0) = GlobalTheory.NormSum.AdLattice.lat β) (w : VA (II D)) (hw : w ∈ mL (II D) g) :
@@ -110,9 +108,9 @@ end GlobalTheory.SeeConjIdem
 namespace GlobalTheory.SeeConjIdem
 
 /- English proof (translation)
-Establish `h` using `Formalism.L2.SG.InstExistsPf.rank_eq D`. Establish `h2 : (Yc D 0).rank = D.R.r` using `h`. Take `⟨j, hj⟩` from `D.R.m_even`. Use `D.R.two_le_m` as an intermediate fact. Rewrite using `[h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Formalism.BasicNotions.Ranks.r]`. Use linear arithmetic over natural numbers and integers.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem rank_pos (D : D7) : 0 < (Yc D 0).rank := by
   have h := Formalism.L2.SG.InstExistsPf.rank_eq D
@@ -124,15 +122,13 @@ theorem rank_pos (D : D7) : 0 < (Yc D 0).rank := by
   omega
 
 /- English proof (translation)
-Take `⟨β, hβ⟩` from `GlobalTheory.AdIsom.exists_eq_lat (GlobalTheory.PlaceModel.isSelfDualC_latFrame (Yc D 0)).1`. Set `i0 : Fin (Yc D 0).rank` to `⟨0, rank_pos D⟩`. Set `y : Fin (Yc D 0).rank → EAf D` to `β.val *ᵥ Pi.single i0 1`. Establish `hby : (β⁻¹).val *ᵥ y = Pi.single i0 1`. Simplify using `only [y, Matrix.mulVec_mulVec, Units.inv_mul, Matrix.one_mulVec]`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Set `yv : VA (II D)` to `y`. Establish `hyL : yv ∈ (II D).Lf`. Use `(GlobalTheory.ConjPlaceRed.mem_Lf D y).1 ?_` and prove the remaining obligations. Rewrite using `[hβ]`. Use `(GlobalTheory.AdIsom.mem_hat_lat β y).2 fun i => ?_` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hby, Pi.single_apply]`. Use `split_ifs`. Conclude with `one_mem _`. Conclude with `zero_mem _`. Take `⟨a, ha, ea⟩` from `coord_mL g β hβ _ (hy yv hyL) i0`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `e3 : ((β⁻¹).val *ᵥ ((c • yv : VA (II D)) : Fin (Yc D 0).rank → EAf D)) i0 = (show EAf D from c)`. Use `(mulVec_smul_apply (β⁻¹).val (show EAf D from c) y i0).trans ?_` and prove the remaining obligations. Rewrite using `[hby, Pi.single_eq_same, mul_one]`. Establish `ea' : (show EAf D from c) = (g : EAf D) * a` using `e3.symm.trans ea`. Rewrite using `[ea', map_mul, Valuation.map_mul, mul_comm]`.
-
-Conclude with `mul_lt_one_of_nonneg_of_lt_one_right ((GlobalTheory.AdIsom.mem_OA a).1 ha PP) zero_le (natCast_cpt_lt g PP hg)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cpt_lt_of_smul_mem {D : D7} (g : ℕ) (PP : Pl D.host.E) (hg : (g : 𝓞 D.host.E) ∈ PP.asIdeal)
     (c : (II D).E ⊗[(II D).F] Af (II D).F) (hy : ∀ y ∈ (II D).Lf, c • y ∈ mL (II D) g) :
@@ -160,21 +156,19 @@ theorem cpt_lt_of_smul_mem {D : D7} (g : ℕ) (PP : Pl D.host.E) (hg : (g : 𝓞
   exact mul_lt_one_of_nonneg_of_lt_one_right ((GlobalTheory.AdIsom.mem_OA a).1 ha PP) zero_le (natCast_cpt_lt g PP hg)
 
 /- English proof (translation)
-Establish `he' : GlobalTheory.StdFrames.cpt PP e * GlobalTheory.StdFrames.cpt PP e = GlobalTheory.StdFrames.cpt PP e`. Rewrite using `[← map_mul, he]`. Establish `hs' : GlobalTheory.StdFrames.cpt PP s * GlobalTheory.StdFrames.cpt PP s = GlobalTheory.StdFrames.cpt PP s`. Rewrite using `[← map_mul, hs]`. Establish `hes' : GlobalTheory.StdFrames.cpt PP e * GlobalTheory.StdFrames.cpt PP s = 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← map_mul, hes, map_zero]`. Establish `i01 : ∀ x : PP.adicCompletion D.host.E, x * x = x → x = 0 ∨ x = 1`. Introduce `x hx`. Establish `: x * (x - 1) = 0` using `by rw [mul_sub, hx, mul_one, sub_self]`. Break down `mul_eq_zero.1 this with h | h` into its components or cases.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `Or.inl h`. Conclude with `Or.inr (sub_eq_zero.1 h)`. Establish `r0 : ∀ t : GlobalTheory.IndefiniteRowSideFullHecke.FlatSpaceComponents.OA D, GlobalTheory.StdFrames.cpt PP (t : EAf D) = 0 → resS D.host.F PP t = 0` using `fun t h => (GlobalTheory.AdIsom.resS_eq_zero_iff_cpt PP t).2 (by rw [h, map_zero]; exact zero_lt_one)`. Establish `r1 : ∀ t : GlobalTheory.IndefiniteRowSideFullHecke.FlatSpaceComponents.OA D, GlobalTheory.StdFrames.cpt PP (t : EAf D) = 1 → resS D.host.F PP t = 1`. Introduce `t h`.
+Prove the first alternative. Prove the second alternative. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `r0 (1 - t) (by` as an intermediate fact. Rewrite using `[AddSubgroupClass.coe_sub, OneMemClass.coe_one, map_sub, map_one, h, sub_self])`. Rewrite `this` using `[map_sub, map_one, sub_eq_zero]`. Conclude with `this.symm`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h1`. Establish `hf0 : GlobalTheory.StdFrames.cpt PP s = 0`. Rewrite `hes'` using `[h1, one_mul]`. Conclude with `hes'`. Conclude with `⟨r1 ⟨e, hei⟩ h1, r0 ⟨s, hsi⟩ hf0⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `hne`. Establish `he0 : GlobalTheory.StdFrames.cpt PP e = 0` using `(i01 _ he').resolve_right hne`. Establish `hf1 : GlobalTheory.StdFrames.cpt PP s = 1`. Break down `i01 _ hs' with h | h` into its components or cases. It suffices to derive a contradiction.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : GlobalTheory.StdFrames.cpt PP (1 - e - s) = 1`. Rewrite using `[map_sub (GlobalTheory.StdFrames.cpt PP), map_sub (GlobalTheory.StdFrames.cpt PP), map_one, he0, h, sub_zero, sub_zero]`. Rewrite `key` using `[h1, Valuation.map_one]`. Conclude with `lt_irrefl _ key`. Conclude with `h`.
-
-Conclude with `⟨r0 ⟨e, hei⟩ he0, r1 ⟨s, hsi⟩ hf1⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem resS_of_idem {D : D7} (PP : Pl D.host.E) (e s : EAf D) (he : e * e = e) (hs : s * s = s) (hes : e * s = 0)
     (hei : e ∈ GlobalTheory.IndefiniteRowSideFullHecke.FlatSpaceComponents.OA D) (hsi : s ∈ GlobalTheory.IndefiniteRowSideFullHecke.FlatSpaceComponents.OA D)
@@ -219,7 +213,7 @@ theorem resS_of_idem {D : D7} (PP : Pl D.host.E) (e s : EAf D) (he : e * e = e) 
     exact ⟨r0 ⟨e, hei⟩ he0, r1 ⟨s, hsi⟩ hf1⟩
 
 /- English proof (translation)
-Introduce `D g ew hid hperp hint hy PP hg`. Establish `hs : sigA (II D) ew ∈ Formalism.L2.Herm.intAf D.host.F D.host.E` using `GlobalTheory.AdIsom.cjA_mem hint`. Establish `hss : sigA (II D) ew * sigA (II D) ew = sigA (II D) ew` using `by rw [← map_mul, hid]`. Conclude with `⟨hint, hs, resS_of_idem PP ew (sigA (II D) ew) hid hss hperp hint hs (cpt_lt_of_smul_mem g PP hg _ hy)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem resS_idem_conj : ∀ {D : D7} (g : ℕ) (ew : (II D).E ⊗[(II D).F] Af (II D).F), ew * ew = ew → ew * sigA (II D) ew = 0 → ew ∈ Formalism.L2.Herm.intAf D.host.F D.host.E → (∀ y ∈ (II D).Lf, (1 - ew - sigA (II D) ew) • y ∈ mL (II D) g) → ∀ PP : Pl D.host.E, ((g : 𝓞 D.host.E) ∈ PP.asIdeal) → ∃ (h1 : ew ∈ Formalism.L2.Herm.intAf D.host.F D.host.E) (h2 : sigA (II D) ew ∈ Formalism.L2.Herm.intAf D.host.F D.host.E), (GlobalTheory.StdFrames.cpt PP ew = 1 → resS D.host.F PP ⟨ew, h1⟩ = 1 ∧ resS D.host.F PP ⟨sigA (II D) ew, h2⟩ = 0) ∧ (GlobalTheory.StdFrames.cpt PP ew ≠ 1 → resS D.host.F PP ⟨ew, h1⟩ = 0 ∧ resS D.host.F PP ⟨sigA (II D) ew, h2⟩ = 1) := by
   intro D g ew hid hperp hint hy PP hg

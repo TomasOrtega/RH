@@ -9,13 +9,11 @@ open CategoryTheory CategoryTheory.Limits AlgebraicGeometry
 namespace ReciprocityTheory.ChartRestriction.G.Out.TLinPf
 
 /- English proof (translation)
-Establish `hE : EffectiveEpi Q`. Conclude with `inferInstance`. Take `⟨e, he⟩ : ∃ e, ∀ i : Fin 1, AffineSpace.toSpecMvPolyIntEquiv (Fin 1) e i = ρ` from `⟨(AffineSpace.toSpecMvPolyIntEquiv (Fin 1)).symm fun _ => ρ, fun i => by simp⟩`. Establish `hcomp : ∀ {Z : Scheme.{0}} (g : Z ⟶ X) (i : Fin 1), AffineSpace.toSpecMvPolyIntEquiv (Fin 1) (g ≫ e) i = g.appTop.hom ρ`. Introduce `Z g i`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[AffineSpace.toSpecMvPolyIntEquiv_comp, he]`. Establish `hdesc : ∀ {Z : Scheme.{0}} (g₁ g₂ : Z ⟶ X), g₁ ≫ Q = g₂ ≫ Q → g₁ ≫ e = g₂ ≫ e`. Introduce `Z g₁ g₂ h`. Apply `(AffineSpace.toSpecMvPolyIntEquiv (Fin 1)).injective` to reduce the goal to its premises. Use function extensionality and compare the values at `i`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hcomp, hcomp]`. Conclude with `hρ g₁ g₂ h`. Use `⟨AffineSpace.toSpecMvPolyIntEquiv (Fin 1) (EffectiveEpi.desc Q e hdesc) 0, ?_⟩` and prove the remaining obligations. Establish `hf : AffineSpace.toSpecMvPolyIntEquiv (Fin 1) (Q ≫ EffectiveEpi.desc Q e hdesc) 0 = ρ`. Rewrite using `[EffectiveEpi.fac, he]`.
-
-Rewrite `hf` using `[AffineSpace.toSpecMvPolyIntEquiv_comp]`. Conclude with `hf`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem descend_gen {X Y : Scheme.{0}} (Q : X ⟶ Y) [Flat Q] [Surjective Q] [IsAffineHom Q]
     (ρ : Γ(X, ⊤))

@@ -7,7 +7,7 @@ open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.HermitianLatt
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `_ _ _ _ _ _ _ d w` and use `GlobalTheory.TopStep.liftFr_spec d.2 w`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem decoSet_liftFr_lifts_level :
     ∀ (E : Type) [Field E] [NumberField E] [StarRing E] (n : ℕ) (ST SG : Finset (HeightOneSpectrum (𝓞 E)))

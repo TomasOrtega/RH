@@ -24,9 +24,9 @@ variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a : ℕ}
 def conjL (y : GL (Fin a) (Cinf E)) (X : Lie E a) : Lie E a := toL ((y⁻¹).val * Matrix.of X * y.val)
 
 /- English proof (translation)
-Establish `h1` using `GlobalTheory.CapAdInv.rt_lie y ((y⁻¹).val * Matrix.of X * y.val)`. Establish `e : toL (y.val * ((y⁻¹).val * Matrix.of X * y.val) * (y⁻¹).val) = X`. Simplify using `[mul_assoc]`. Rewrite `h1` using `[e]`. Establish `h2` using `lie_rt_fin (conjL y X) k`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h1' : lie E a X * rt E a (infGL E a y) = rt E a (infGL E a y) * lie E a (conjL y X)` using `h1.symm`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem lie_mul_rt (y : GL (Fin a) (Cinf E)) (k : GL (Fin a) (Af E)) (X : Lie E a) :
     lie E a X * rt E a (infGL E a y * finGL E a k) = rt E a (infGL E a y * finGL E a k) * lie E a (conjL y X) := by
@@ -42,7 +42,7 @@ theorem lie_mul_rt (y : GL (Fin a) (Cinf E)) (k : GL (Fin a) (Af E)) (X : Lie E 
     _ = rt E a (infGL E a y * finGL E a k) * lie E a (conjL y X) := by rw [h2, map_mul, mul_assoc]
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => rfl`. Consider the case `cons X l ih`. Rewrite using `[List.map_cons, GlobalTheory.MSpanDecay.word_cons, GlobalTheory.MSpanDecay.word_cons, ih, ← Module.End.mul_apply, lie_mul_rt, Module.End.mul_apply]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem word_rt (y : GL (Fin a) (Cinf E)) (k : GL (Fin a) (Af E)) (l : List (Lie E a)) (φ : Sm E a) :
     GlobalTheory.GLFin.word l (rt E a (infGL E a y * finGL E a k) φ) =
@@ -54,13 +54,11 @@ theorem word_rt (y : GL (Fin a) (Cinf E)) (k : GL (Fin a) (Af E)) (l : List (Lie
       lie_mul_rt, Module.End.mul_apply]
 
 /- English proof (translation)
-Use `set M : ℝ := ‖rmul (toL y.val)‖ * ‖lmul (toL (y⁻¹).val)‖ with hM`. Establish `hM0 : 0 ≤ M` using `by positivity`. Establish `key : ∀ u : GL (Fin a) (Cinf E), ‖toL (y⁻¹ * u * y).val‖ ≤ M * ‖toL u.val‖`. Introduce `u`. Establish `e : toL (y⁻¹ * u * y).val = rmul (toL y.val) (lmul (toL (y⁻¹).val) (toL u.val))` using `rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, hM, mul_assoc]`. Conclude with `(ContinuousLinearMap.le_opNorm _ _).trans (mul_le_mul_of_nonneg_left (ContinuousLinearMap.le_opNorm _ _) (norm_nonneg _))`. Use `⟨1 + M, by positivity, fun u => ?_⟩` and prove the remaining obligations. Establish `hi : (y⁻¹ * u * y)⁻¹ = y⁻¹ * u⁻¹ * y` using `by group`. Establish `k1` using `key u`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `k2` using `key u⁻¹`. Establish `n1` using `norm_nonneg (toL u.val)`. Establish `n2` using `norm_nonneg (toL (u⁻¹).val)`. Unfold `height`. Rewrite using `[hi]`.
-
-Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem height_conj_le (y : GL (Fin a) (Cinf E)) :
     ∃ K : ℝ, 0 ≤ K ∧ ∀ u : GL (Fin a) (Cinf E), height (y⁻¹ * u * y) ≤ K * height u := by
@@ -83,7 +81,7 @@ theorem height_conj_le (y : GL (Fin a) (Cinf E)) :
   nlinarith
 
 /- English proof (translation)
-Introduce `L hL C₀ hC₀ N` and use `by obtain ⟨C, hC⟩ := hG L hL (C₀ * {h}) (hC₀.mul isCompact_singleton) N refine ⟨C, fun g c hc ξ hξ hm => ?_⟩ have := hC g (c * h) (Set.mul_mem_mul hc (Set.mem_singleton h)) ξ hξ hm show ‖G (g * c * h)‖ ≤ _ rw [mul_assoc] exact this`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem decays_rt {G : GA E a → ℂ} (hG : GlobalTheory.ShortVecDecay.Decays G) (h : GA E a) :
     GlobalTheory.ShortVecDecay.Decays (fun g => G (g * h)) := fun L hL C₀ hC₀ N => by
@@ -95,11 +93,11 @@ theorem decays_rt {G : GA E a → ℂ} (hG : GlobalTheory.ShortVecDecay.Decays G
   exact this
 
 /- English proof (translation)
-Take `⟨y, k, rfl⟩ : ∃ y k, infGL E a y * finGL E a k = h` from `⟨_, _, infGL_mul_finGL h⟩`. Take `⟨K, hK0, hK⟩` from `height_conj_le y`. Introduce `g`. Take `⟨C, N, hC⟩` from `hG (g * (infGL E a y * finGL E a k))`. Use `⟨|C| * K ^ N, N, fun u => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hz : y * (y⁻¹ * u * y) = u * y` using `by group`. Establish `e : g * infGL E a u * (infGL E a y * finGL E a k) = g * (infGL E a y * finGL E a k) * infGL E a (y⁻¹ * u * y)`. Rewrite using `[mul_assoc g (infGL E a y * finGL E a k), mul_assoc (infGL E a y), ← infGL_comm (y⁻¹ * u * y) k, ← mul_assoc (infGL E a y), ← map_mul, hz, map_mul]`. Simplify using `only [mul_assoc]`. Use `show ‖G (g * infGL E a u * (infGL E a y * finGL E a k))‖ ≤ _`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Establish `h1` using `one_le_height u`. Establish `h2` using `hK u`. Establish `h3 : 0 ≤ height (y⁻¹ * u * y)` using `(zero_le_one.trans (one_le_height _))`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem growth_rt {G : GA E a → ℂ} (hG : GlobalTheory.MSpanDecay.Growth G) (h : GA E a) :
     GlobalTheory.MSpanDecay.Growth (fun g => G (g * h)) := by
@@ -125,9 +123,9 @@ theorem growth_rt {G : GA E a → ℂ} (hG : GlobalTheory.MSpanDecay.Growth G) (
     _ = |C| * K ^ N * height u ^ N := by rw [mul_pow, mul_assoc]
 
 /- English proof (translation)
-Introduce `E _ _ _ a F h hF`. Take `⟨y, k, rfl⟩ : ∃ y k, infGL E a y * finGL E a k = h` from `⟨_, _, infGL_mul_finGL h⟩`. Take `⟨hS, hl⟩` from `hF`. Use `⟨rt_mem_Sm _ F hS, fun l => ?_⟩` and prove the remaining obligations. Establish `e : (⟨fun g => F (g * (infGL E a y * finGL E a k)), rt_mem_Sm _ F hS⟩ : Sm E a) = rt E a (infGL E a y * finGL E a k) ⟨F, hS⟩` using `rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[e, word_rt]`. Take `⟨hd, hg⟩` from `hl (l.map (conjL y))`. Conclude with `⟨decays_rt hd _, growth_rt hg _⟩`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem good_mul_right : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ) (F : GA E a → ℂ)
     (h : GA E a), GlobalTheory.MSpanDecay.Good F → GlobalTheory.MSpanDecay.Good (fun g => F (g * h)) := by

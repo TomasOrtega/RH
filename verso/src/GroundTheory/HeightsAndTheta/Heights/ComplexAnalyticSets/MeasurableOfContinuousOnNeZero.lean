@@ -16,7 +16,7 @@ open MvPolynomial MeasureTheory Filter Topology Matrix
 noncomputable section
 
 /- English proof (translation)
-Use function extensionality and compare the values at `y`. Unfold `fsPot`. Rewrite using `[Real.log_pow]`. Evaluate the numerical expressions.
+Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 -/
 theorem fsPot_eq {n : ℕ} (h : HermNorm n) :
     fsPot h = fun y => 2 * Real.log (h.dualNorm y) := by
@@ -26,9 +26,9 @@ theorem fsPot_eq {n : ℕ} (h : HermNorm n) :
   norm_num
 
 /- English proof (translation)
-Establish `h1 : fderiv ℝ (fun w => c * φ w) = c • fderiv ℝ φ`. Establish `: (fun w => c * φ w) = c • φ` using `rfl`. Rewrite using `[this, fderiv_const_smul_field]`. Establish `h2 : fderiv ℝ (fderiv ℝ (fun w => c * φ w)) = c • fderiv ℝ (fderiv ℝ φ)`. Rewrite using `[h1]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `fderiv_const_smul_field (f := fderiv ℝ φ) c`. Use extensionality with `i j`. Simplify using `only [ReciprocityTheory.AnForm.hessC, h2, Pi.smul_apply, Matrix.smul_apply, _root_.smul_apply, smul_eq_mul]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem hessC_const_mul {D : ℕ} (c : ℝ) (φ : (Fin D → ℂ) → ℝ) (z : Fin D → ℂ) :
     ReciprocityTheory.AnForm.hessC (fun w => c * φ w) z = (c : ℂ) • ReciprocityTheory.AnForm.hessC φ z := by
@@ -45,7 +45,7 @@ theorem hessC_const_mul {D : ℕ} (c : ℝ) (φ : (Fin D → ℂ) → ℝ) (z : 
   ring
 
 /- English proof (translation)
-Unfold `ReciprocityTheory.AnForm.mdisc`. Simplify using `only [← Finset.smul_sum, Matrix.det_smul, Fintype.card_fin]`. Rewrite using `[Finset.mul_sum, Finset.mul_sum, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun S _ => by ring`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mdisc_smul {D : ℕ} (c : ℂ) (A : Fin D → Matrix (Fin D) (Fin D) ℂ) :
     ReciprocityTheory.AnForm.mdisc (fun k => c • A k) = c ^ D * ReciprocityTheory.AnForm.mdisc A := by
@@ -55,7 +55,7 @@ theorem mdisc_smul {D : ℕ} (c : ℂ) (A : Fin D → Matrix (Fin D) (Fin D) ℂ
   exact Finset.sum_congr rfl fun S _ => by ring
 
 /- English proof (translation)
-Unfold `ReciprocityTheory.AnForm.maDens`. Simplify using `only [hessC_const_mul, mdisc_smul]`. Rewrite using `[← Complex.ofReal_pow, Complex.re_ofReal_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem maDens_const_mul {D : ℕ} (c : ℝ) (φ : Fin D → (Fin D → ℂ) → ℝ) (z : Fin D → ℂ) :
     ReciprocityTheory.AnForm.maDens (fun k w => c * φ k w) z = c ^ D * ReciprocityTheory.AnForm.maDens φ z := by
@@ -65,13 +65,13 @@ theorem maDens_const_mul {D : ℕ} (c : ℝ) (φ : Fin D → (Fin D → ℂ) →
   ring
 
 /- English proof (translation)
-Unfold `GroundTheory.Heights₂.Heights.varInt`. Use `split_ifs with hA`. Unfold `GroundTheory.Heights₂.Heights.chartInt GroundTheory.Heights₂.Heights.chartDens GroundTheory.Heights₂.Heights.sheetSum`. Rewrite using `[← integral_const_mul]`. Use `congr 1`.
+Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `y`. Rewrite using `[mul_finsum]`. Use `finsum_congr fun x => ?_` and prove the remaining obligations. Rewrite using `[finsum_eq_if, finsum_eq_if]`. Use `split_ifs with hx hs`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify by unfolding definitions.
 
-Establish `key : ReciprocityTheory.AnForm.maDens (fun k => (fun _ x => c * ψ x : Fin e → (Fin n → ℂ) → ℝ) k ∘ hs.choose) y = c ^ e * ReciprocityTheory.AnForm.maDens (fun k => (fun _ => ψ : Fin e → (Fin n → ℂ) → ℝ) k ∘ hs.choose) y` using `maDens_const_mul c (fun _ => ψ ∘ hs.choose) y dsimp only`. Rewrite using `[key]`. Expand and normalize the polynomial expressions, which then agree. Expand and normalize the polynomial expressions, which then agree. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Expand and normalize the polynomial expressions, which then agree. Expand and normalize the polynomial expressions, which then agree. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem varInt_const_mul {n e : ℕ} (J : Ideal (MvPolynomial (Fin n) ℂ)) (g : (Fin n → ℂ) → ℝ)
     (c : ℝ) (ψ : (Fin n → ℂ) → ℝ) :
@@ -102,7 +102,7 @@ theorem varInt_const_mul {n e : ℕ} (J : Ideal (MvPolynomial (Fin n) ℂ)) (g :
   · ring
 
 /- English proof (translation)
-Rewrite using `[fsPot_eq]`. Conclude with `varInt_const_mul J g 2 _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem varInt_fsPot_eq_two_pow_mul {n e : ℕ} (h : HermNorm n) (J : Ideal (MvPolynomial (Fin n) ℂ))
     (g : (Fin n → ℂ) → ℝ) :
@@ -112,19 +112,19 @@ theorem varInt_fsPot_eq_two_pow_mul {n e : ℕ} (h : HermNorm n) (J : Ideal (MvP
   exact varInt_const_mul J g 2 _
 
 /- English proof (translation)
-Establish `hP` using `hJ.isPrime`. Establish `hne : J ⊔ Ideal.span {linForm ℓ - 1} ≠ ⊤`. Introduce `htop`. Establish `h1 : (1 : MvPolynomial (Fin n) ℂ) ∈ J` using `GroundTheory.Heights₂.Heights.ChartDehomog.proof ℂ n J ℓ 1 0 hP hH hℓ (isHomogeneous_one _ _) (htop ▸ Submodule.mem_top)`. Conclude with `hP.ne_top ((Ideal.eq_top_iff_one J).mpr h1)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨p, hp⟩` from `Ideal.nonempty_minimalPrimes hne`. Establish `hpP : p.IsPrime` using `hp.1.1`. Establish `hJp : J ≤ p` using `le_sup_left.trans hp.1.2`. Establish `hht` using `Ideal.map_height_le_one_of_mem_minimalPrimes hp`. Establish `hpm : (p.map (Ideal.Quotient.mk J)).IsPrime` using `Ideal.map_isPrime_of_surjective Ideal.Quotient.mk_surjective (by rwa [Ideal.mk_ker])`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hform` using `GroundTheory.Arith.Abelian.Jacobian.height_add_ringKrullDim_quotient ℂ (p.map (Ideal.Quotient.mk J))`. Rewrite `hform` using `[hJ.dim, ringKrullDim_eq_of_ringEquiv (DoubleQuot.quotQuotEquivQuotOfLE hJp)]`. Establish `hle : ringKrullDim (MvPolynomial (Fin n) ℂ ⧸ p) ≤ ringKrullDim (MvPolynomial (Fin n) ℂ ⧸ (J ⊔ Ideal.span {linForm ℓ - 1}))` using `ringKrullDim_le_of_surjective (Ideal.Quotient.factor hp.1.2) (Ideal.Quotient.factor_surjective hp.1.2)`. Use `le_trans ?_ hle` and prove the remaining obligations. Establish `key : ∀ a b : ℕ∞, a ≤ 1 → a + b = ((e + 1 : ℕ) : ℕ∞) → (e : ℕ∞) ≤ b`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a b ha hab`. Proceed by induction on `b using ENat.recTopCoe with`. Consider the case `top => exact le_top`. Consider the case `coe m`. Proceed by induction on `a using ENat.recTopCoe with`.
+Proceed by induction. Treat this case separately. Treat this case separately. Proceed by induction. Treat this case separately.
 
-Consider the case `top => simp at ha`. Consider the case `coe k`. Establish `h1 : k ≤ 1` using `by exact_mod_cast ha`. Establish `h2 : k + m = e + 1` using `by exact_mod_cast hab`. Conclude with `(by omega : e ≤ m)` after adjusting the coercions.
+Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Proceed by induction.
 
-Generalize the expression as in `ringKrullDim (MvPolynomial (Fin n) ℂ ⧸ p) = D at hform ⊢`. Proceed by induction on `D using WithBot.recBotCoe with`. Consider the case `bot`. It suffices to derive a contradiction. Rewrite `hform` using `[WithBot.add_bot]`.
+Treat this case separately. It suffices to derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Treat this case separately. Establish an intermediate fact.
 
-Conclude with `WithBot.bot_ne_coe hform`. Consider the case `coe b`. Establish `hab : (p.map (Ideal.Quotient.mk J)).height + b = ((e + 1 : ℕ) : ℕ∞)`. Conclude with `hform` after adjusting the coercions. Conclude with `key _ b hht hab` after adjusting the coercions.
+A detailed English derivation is pending.
 -/
 theorem le_ringKrullDim_slice {n e : ℕ} {J : Ideal (MvPolynomial (Fin n) ℂ)} {ℓ : Fin n → ℂ}
     (hJ : IsAffVariety J (e + 1)) (hH : IsHomogIdeal J) (hℓ : linForm ℓ ∉ J) :
@@ -174,13 +174,13 @@ theorem le_ringKrullDim_slice {n e : ℕ} {J : Ideal (MvPolynomial (Fin n) ℂ)}
     exact_mod_cast key _ b hht hab
 
 /- English proof (translation)
-Set `f` to `(GroundTheory.Heights₂.Heights.ComplexSets.projHom J A).toRingHom`. Set `P` to `RingHom.ker f`. Set `g : MvPolynomial (Fin d) ℂ ⧸ P →+* MvPolynomial (Fin n) ℂ ⧸ J` to `RingHom.kerLift f`. Establish `hgf : g.comp (Ideal.Quotient.mk P) = f` using `RingHom.ext fun a => RingHom.kerLift_mk f a`. Establish `hg_fin : g.Finite` using `RingHom.Finite.of_comp_finite (f := Ideal.Quotient.mk P) (by rw [hgf]; exact hfin)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `` to `g.toAlgebra`. Establish `: Algebra.IsIntegral (MvPolynomial (Fin d) ℂ ⧸ P) (MvPolynomial (Fin n) ℂ ⧸ J)` using `⟨hg_fin.to_isIntegral⟩`. Establish `h1 : ringKrullDim (MvPolynomial (Fin n) ℂ ⧸ J) ≤ ringKrullDim (MvPolynomial (Fin d) ℂ ⧸ P)` using `Order.krullDim_le_of_strictMono (PrimeSpectrum.comap (algebraMap _ _)) fun _ _ hpq => Ideal.IsIntegral.comap_lt_comap (R := MvPolynomial (Fin d) ℂ ⧸ P) hpq`. Establish `hd : ringKrullDim (MvPolynomial (Fin d) ℂ) = (d : ℕ)`. Rewrite using `[MvPolynomial.ringKrullDim_of_isNoetherianRing, ringKrullDim_eq_zero_of_field]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `a ha`. Assume the negation of the conclusion as `ha0`. Establish `haP : a ∈ P` using `ha`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `h2` using `ringKrullDim_succ_le_of_surjective (Ideal.Quotient.mk P) Ideal.Quotient.mk_surjective (mem_nonZeroDivisors_of_ne_zero ha0) (Ideal.Quotient.eq_zero_iff_mem.mpr haP)`. Rewrite `h2` using `[hd]`. Establish `h3` using `(add_le_add_left (hJ.trans h1) 1).trans h2`. Establish `h4 : d + 1 ≤ d` using `by exact_mod_cast h3`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem injective_projHom_of_finite_of_le {n d : ℕ} {J : Ideal (MvPolynomial (Fin n) ℂ)}
     {A : Matrix (Fin d) (Fin n) ℂ}
@@ -217,7 +217,7 @@ theorem injective_projHom_of_finite_of_le {n d : ℕ} {J : Ideal (MvPolynomial (
   omega
 
 /- English proof (translation)
-Unfold `IsFiniteProj`. Rewrite using `[aeval_linForm_eq_projHom]`. Conclude with `⟨fun h => ⟨injective_projHom_of_finite_of_le hJ h, h⟩, fun h => h.finite⟩`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem isFiniteProj_iff_of_le {n d : ℕ} {J : Ideal (MvPolynomial (Fin n) ℂ)}
     {A : Matrix (Fin d) (Fin n) ℂ}
@@ -228,11 +228,11 @@ theorem isFiniteProj_iff_of_le {n d : ℕ} {J : Ideal (MvPolynomial (Fin n) ℂ)
   exact ⟨fun h => ⟨injective_projHom_of_finite_of_le hJ h, h⟩, fun h => h.finite⟩
 
 /- English proof (translation)
-Establish `hp : (fun A : Matrix (Fin d) (Fin n) ℂ => IsFiniteProj J A) = fun A => GroundTheory.Heights₂.Heights.ComplexSets.IsFiniteProjection J A`. Use function extensionality and compare the values at `fun A => propext (isFiniteProj_iff_of_le hJ)`. Unfold `varIntegral GroundTheory.Heights₂.Heights.varInt`. Distinguish the cases in `h : ∃ A : Matrix (Fin d) (Fin n) ℂ, GroundTheory.Heights₂.Heights.ComplexSets.IsFiniteProjection J A`. Establish `h' : ∃ A : Matrix (Fin d) (Fin n) ℂ, IsFiniteProj J A`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Take `⟨A, hA⟩` from `h`. Conclude with `⟨A, (isFiniteProj_iff_of_le hJ).mpr hA⟩`. Rewrite using `[dif_pos h, dif_pos h', projInt_eq, choose_congr hp h' h]`. Establish `h' : ¬ ∃ A : Matrix (Fin d) (Fin n) ℂ, IsFiniteProj J A`. Introduce and unpack `⟨A, hA⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Conclude with `h ⟨A, (isFiniteProj_iff_of_le hJ).mp hA⟩`. Rewrite using `[dif_neg h, dif_neg h']`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem varIntegral_eq_of_le {n d : ℕ} (J : Ideal (MvPolynomial (Fin n) ℂ))
     (g : (Fin n → ℂ) → ℝ) (φ : Fin d → (Fin n → ℂ) → ℝ)
@@ -254,7 +254,7 @@ theorem varIntegral_eq_of_le {n d : ℕ} (J : Ideal (MvPolynomial (Fin n) ℂ))
     rw [dif_neg h, dif_neg h']
 
 /- English proof (translation)
-Rewrite using `[varIntegral_eq_of_le _ _ _ (le_ringKrullDim_slice hJ hH hℓ), varInt_fsPot_eq_two_pow_mul, ← mul_assoc, inv_mul_cancel₀ (by positivity), one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem slice_integral_eq {n e : ℕ} (h : HermNorm n) {J : Ideal (MvPolynomial (Fin n) ℂ)}
     {ℓ : Fin n → ℂ} (g : (Fin n → ℂ) → ℝ) (hJ : IsAffVariety J (e + 1)) (hH : IsHomogIdeal J)
@@ -266,13 +266,13 @@ theorem slice_integral_eq {n e : ℕ} (h : HermNorm n) {J : Ideal (MvPolynomial 
     inv_mul_cancel₀ (by positivity), one_mul]
 
 /- English proof (translation)
-Use `⟨hJ.isPrime, hH, ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hrel`. Simplify using `only [IsRelevant, not_exists, not_not] at hrel`. Establish `hsurj : Function.Surjective (algebraMap ℂ (MvPolynomial (Fin n) ℂ ⧸ J))`. Introduce `z`.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨p, rfl⟩` from `Ideal.Quotient.mk_surjective z`. Proceed by induction on `p using MvPolynomial.induction_on with`. Consider the case `C c => exact ⟨c, by rw [← Ideal.Quotient.mk_algebraMap]; rfl⟩`. Consider the case `add p q hp hq`. Take `⟨a, ha⟩` from `hp`.
+Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨b, hb⟩` from `hq`. Conclude with `⟨a + b, by rw [map_add, ha, hb, map_add]⟩`. Consider the case `mul_X p i _`. Conclude with `⟨0, by rw [map_zero, map_mul, Ideal.Quotient.eq_zero_iff_mem.mpr (hrel i), mul_zero]⟩`. Establish `h1` using `ringKrullDim_le_of_surjective _ hsurj`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Supply the required witnesses or components. Establish an intermediate fact.
 
-Rewrite `h1` using `[hJ.dim, ringKrullDim_eq_zero_of_field]`. Establish `: e + 1 ≤ 0` using `by exact_mod_cast h1`. Use linear arithmetic over natural numbers and integers.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem isProjPrime_of_isAffVariety {n e : ℕ} {J : Ideal (MvPolynomial (Fin n) ℂ)}
     (hJ : IsAffVariety J (e + 1)) (hH : IsHomogIdeal J) : IsProjPrime J := by
@@ -296,7 +296,7 @@ theorem isProjPrime_of_isAffVariety {n e : ℕ} {J : Ideal (MvPolynomial (Fin n)
   omega
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun ⟨F, hF⟩ => ⟨hJ.isPrime, GroundTheory.Heights₂.Heights.ConeDimOfChowForm.of_affineChartTrdeg GroundTheory.Heights₂.Heights.AffineChartTrdeg.proof ℂ n (e + 1) J F hJ hF⟩, fun hA => GroundTheory.Heights₂.Heights.ChowFormExists.of_affineChartTrdeg GroundTheory.Heights₂.Heights.A …`.
+Supply the required witnesses or components.
 -/
 theorem exists_isChowForm_iff {n e : ℕ} {J : Ideal (MvPolynomial (Fin n) ℂ)} (hJ : IsProjPrime J) :
     (∃ F : MvPolynomial (Fin (e + 1) × Fin n) ℂ, IsChowForm J (e + 1) F) ↔
@@ -307,9 +307,9 @@ theorem exists_isChowForm_iff {n e : ℕ} {J : Ideal (MvPolynomial (Fin n) ℂ)}
       GroundTheory.Heights₂.Heights.AffineChartTrdeg.proof ℂ n (e + 1) J hJ hA.dim⟩
 
 /- English proof (translation)
-Establish `hm : Measurable (Set.piecewise {x : Fin n → ℂ | x ≠ 0} g fun _ => g 0)` using `hg.measurable_piecewise continuousOn_const (measurableSet_singleton _).compl`. Use `hm using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `x`. Distinguish the cases in `hx : x = 0`. Substitute `hx` using the available equality.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using `[Set.piecewise]`. Simplify using `[Set.piecewise, hx]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem measurable_of_continuousOn_ne_zero {n : ℕ} {g : (Fin n → ℂ) → ℝ}
     (hg : ContinuousOn g {x | x ≠ 0}) : Measurable g := by
@@ -331,7 +331,7 @@ def ConeToProjectiveContinuous.Statement : Prop :=
         ((2 : ℝ) ^ e)⁻¹ * varIntegral (J ⊔ Ideal.span {linForm ℓ - 1}) g (fun _ : Fin e => fsPot h)
 
 /- English proof (translation)
-Introduce `n e h J ℓ g hA hH hℓ hgc hg` and use `H n e h J ℓ g hA hH hℓ (measurable_of_continuousOn_ne_zero hgc) hg`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem ConeToProjectiveContinuous.kleimanNef_field_of_alt (H : ConeToProjective.Statement) :
     ConeToProjectiveContinuous.Statement :=
@@ -339,9 +339,9 @@ theorem ConeToProjectiveContinuous.kleimanNef_field_of_alt (H : ConeToProjective
     H n e h J ℓ g hA hH hℓ (measurable_of_continuousOn_ne_zero hgc) hg
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `H n e h J ℓ g hA hH hℓ hgc hg`. Establish `hP` using `isProjPrime_of_isAffVariety hA hH`. Take `⟨F, hF⟩` from `(exists_isChowForm_iff (e := e) hP).mpr hA`. Rewrite using `[H n e h J F ℓ g hP hF hℓ (fun t x ht => hg t ht x) hgc, slice_integral_eq h g hA hH hℓ]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Introduce `H n e h J F ℓ g hP hF hℓ hg hgc`. Establish `hA : IsAffVariety J (e + 1)` using `(exists_isChowForm_iff hP).mp ⟨F, hF⟩`. Rewrite using `[H n e h J ℓ g hA hP.isHomog hℓ hgc (fun c hc y => hg c y hc), slice_integral_eq h g hA hP.isHomog hℓ]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem ConeToProjective.iff_continuous :
     GroundTheory.Heights₂.Heights.ConeToProjective.Statement ↔ ConeToProjectiveContinuous.Statement := by
@@ -356,20 +356,20 @@ theorem ConeToProjective.iff_continuous :
       slice_integral_eq h g hA hP.isHomog hℓ]
 
 /- English proof (translation)
-The claim follows from `ConeToProjective.iff_continuous.mpr (ConeToProjectiveContinuous.kleimanNef_field_of_alt H)`.
+A detailed English derivation is pending.
 -/
 theorem ConeToProjective.kleimanNef_field_of_alt (H : ConeToProjective.Statement) :
     GroundTheory.Heights₂.Heights.ConeToProjective.Statement :=
   ConeToProjective.iff_continuous.mpr (ConeToProjectiveContinuous.kleimanNef_field_of_alt H)
 
 /- English proof (translation)
-Take `⟨hA, hH, hℓ, -⟩` from `ConeToProjective.hypotheses_inhabited`. Establish `hpos : ∀ x : Fin 2 → ℂ, x ≠ 0 → ‖x 0‖ ^ 2 + ‖x 1‖ ^ 2 ≠ 0`. Introduce `x hx h0`. Apply `hx` to reduce the goal to its premises. Establish `h0' : ‖x 0‖ ^ 2 = 0 ∧ ‖x 1‖ ^ 2 = 0` using `(add_eq_zero_iff_of_nonneg (by positivity) (by positivity)).mp h0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `i`. Use `fin_cases i`. Simplify using `using h0'.1`. Simplify using `using h0'.2`. Use `⟨hA, hH, hℓ, ?_, ?_⟩` and prove the remaining obligations.
+Apply function extensionality and compare values at an arbitrary argument. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `ContinuousOn.div (by fun_prop) (by fun_prop) fun x hx => hpos x hx` and prove the remaining obligations. Introduce `c hc y`. Distinguish the cases in `hy : y = 0`. Substitute `hy` using the available equality. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hc2 : ‖c‖ ^ 2 ≠ 0` using `by positivity`. Simplify using `only [Pi.smul_apply, smul_eq_mul, norm_mul, mul_pow]`. Rewrite using `[← mul_add, mul_div_mul_left _ _ hc2]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ConeToProjectiveContinuous.hypotheses_inhabited :
     IsAffVariety (⊥ : Ideal (MvPolynomial (Fin 2) ℂ)) (1 + 1) ∧

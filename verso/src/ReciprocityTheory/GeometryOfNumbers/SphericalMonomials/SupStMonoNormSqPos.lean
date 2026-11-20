@@ -6,7 +6,7 @@ namespace ReciprocityTheory.GeometryOfNumbersTheory
 open MeasureTheory
 
 /- English proof (translation)
-Use extensionality with `a`. Simplify using `[Finset.mem_piAntidiag, Finset.Nat.mem_antidiagonalTuple]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem supSt_adt_eq (D n : ℕ) :
     Finset.Nat.antidiagonalTuple (D + 1) n = Finset.piAntidiag Finset.univ n := by
@@ -14,13 +14,13 @@ theorem supSt_adt_eq (D n : ℕ) :
   simp [Finset.mem_piAntidiag, Finset.Nat.mem_antidiagonalTuple]
 
 /- English proof (translation)
-Establish `hnorm : ‖monoC a z‖ ^ 2 = ∏ i, (‖z i‖ ^ 2) ^ a i`. Simplify using `only [monoC, norm_prod, norm_pow, ← Finset.prod_pow]`. Conclude with `Finset.prod_congr rfl fun i _ => by ring`. Establish `hP : ((∏ i, (a i).factorial : ℕ) : ℝ) ≠ 0`. Establish `: 0 < ∏ i, (a i).factorial` using `Finset.prod_pos fun i _ => Nat.factorial_pos _`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `this.ne'` after adjusting the coercions. Establish `hspec` using `Nat.multinomial_spec Finset.univ a`. Rewrite `hspec` using `[ha]`. Establish `hm : ((Nat.multinomial Finset.univ a : ℕ) : ℝ) = (n.factorial : ℝ) / ((∏ i, (a i).factorial : ℕ) : ℝ)`. Rewrite using `[eq_div_iff hP, mul_comm]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hspec` after adjusting the coercions. Establish `hc : ((n + D).choose D : ℝ) = ((n + D).factorial : ℝ) / ((n.factorial : ℝ) * (D.factorial : ℝ))`. Rewrite using `[eq_div_iff (by positivity), ← mul_assoc]`. Conclude with `Nat.add_choose_mul_factorial_mul_factorial n D` after adjusting the coercions. Rewrite using `[hnorm, monoNormSq, ha, hm, hc]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts.
 
-Establish `h1 : (n.factorial : ℝ) ≠ 0` using `by positivity`. Establish `h2 : (D.factorial : ℝ) ≠ 0` using `by positivity`. Establish `h3 : ((n + D).factorial : ℝ) ≠ 0` using `by positivity`. Clear the denominators using the available nonvanishing facts.
+A detailed English derivation is pending.
 -/
 theorem supSt_term {D n : ℕ} (a : Fin (D + 1) → ℕ) (ha : ∑ i, a i = n) (z : Fin (D + 1) → ℂ) :
     ‖monoC a z‖ ^ 2 / monoNormSq a =
@@ -48,7 +48,7 @@ theorem supSt_term {D n : ℕ} (a : Fin (D + 1) → ℕ) (ha : ∑ i, a i = n) (
   field_simp
 
 /- English proof (translation)
-Rewrite using `[Finset.sum_congr rfl (fun a ha => supSt_term a (Finset.Nat.mem_antidiagonalTuple.mp ha) z), ← Finset.mul_sum, supSt_adt_eq, sqN, Finset.sum_pow_eq_sum_piAntidiag]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem sum_mono_sq_div (D n : ℕ) (z : Fin (D + 1) → ℂ) :
     ∑ a ∈ Finset.Nat.antidiagonalTuple (D + 1) n, ‖monoC a z‖ ^ 2 / monoNormSq a =
@@ -57,9 +57,9 @@ theorem sum_mono_sq_div (D n : ℕ) (z : Fin (D + 1) → ℂ) :
     ← Finset.mul_sum, supSt_adt_eq, sqN, Finset.sum_pow_eq_sum_piAntidiag]
 
 /- English proof (translation)
-Simplify using `only [monoC, norm_prod, norm_pow]`. Apply `Finset.prod_le_one (fun i _ => by positivity)` to reduce the goal to its premises. Introduce `i _`. Establish `h1 : ‖z i‖ ^ 2 ≤ sqN z`. Unfold `sqN`.
+Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Conclude with `Finset.single_le_sum (f := fun j => ‖z j‖ ^ 2) (fun j _ => by positivity) (Finset.mem_univ i)`. Rewrite `h1` using `[h]`. Establish `h2 : ‖z i‖ ≤ 1` using `by nlinarith [norm_nonneg (z i)]`. Conclude with `pow_le_one₀ (norm_nonneg _) h2`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem supSt_norm_mono_le {D : ℕ} (a : Fin (D + 1) → ℕ) (z : Fin (D + 1) → ℂ) (h : sqN z = 1) :
     ‖monoC a z‖ ≤ 1 := by
@@ -74,9 +74,9 @@ theorem supSt_norm_mono_le {D : ℕ} (a : Fin (D + 1) → ℕ) (z : Fin (D + 1) 
   exact pow_le_one₀ (norm_nonneg _) h2
 
 /- English proof (translation)
-Establish `hae : ∀ᵐ z ∂(sphProb (D + 1)), sqN z = 1` using `mem_ae_iff.mpr (sphProb_compl_sphere D)`. Use `Integrable.of_bound (sphMonom_continuous_f a b).aestronglyMeasurable 1 ?_` and prove the remaining obligations. Use `filter_upwards [hae] with z hz`. Rewrite using `[norm_mul, RCLike.norm_conj]`. Establish `h1` using `supSt_norm_mono_le a z hz`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `supSt_norm_mono_le b z hz`. Use polynomial arithmetic with `[norm_nonneg (monoC a z), norm_nonneg (monoC b z)]`.
+Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem supSt_integrable {D : ℕ} (a b : Fin (D + 1) → ℕ) :
     Integrable (fun z => starRingEnd ℂ (monoC a z) * monoC b z) (sphProb (D + 1)) := by
@@ -89,9 +89,9 @@ theorem supSt_integrable {D : ℕ} (a b : Fin (D + 1) → ℕ) :
   nlinarith [norm_nonneg (monoC a z), norm_nonneg (monoC b z)]
 
 /- English proof (translation)
-Use `split_ifs with h`. Substitute `h` using the available equality. Establish `hz : ∀ z, starRingEnd ℂ (monoC a z) * monoC a z = ((‖monoC a z‖ ^ 2 : ℝ) : ℂ)`. Introduce `z`. Rewrite using `[Complex.conj_mul']`.
+Substitute using the available equality. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Repeatedly rewrite using `[hz]`. Rewrite using `[integral_complex_ofReal, integral_mono_sq_sphProb]`. Conclude with `integral_mono_sphProb_of_ne h`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem supSt_gram {D : ℕ} (a b : Fin (D + 1) → ℕ) :
     ∫ z, starRingEnd ℂ (monoC a z) * monoC b z ∂(sphProb (D + 1)) =
@@ -108,15 +108,15 @@ theorem supSt_gram {D : ℕ} (a b : Fin (D + 1) → ℕ) :
   · exact integral_mono_sphProb_of_ne h
 
 /- English proof (translation)
-Use `set T := Finset.Nat.antidiagonalTuple (D + 1) n`. Establish `key : ∀ z, ((‖∑ a ∈ T, c a * monoC a z‖ ^ 2 : ℝ) : ℂ) = ∑ a ∈ T, ∑ b ∈ T, (starRingEnd ℂ (c a) * c b) * (starRingEnd ℂ (monoC a z) * monoC b z)`. Introduce `z`. Use `push_cast`. Rewrite using `[← Complex.conj_mul', map_sum, Finset.sum_mul_sum]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `hI : ∫ z, ‖∑ a ∈ T, c a * monoC a z‖ ^ 2 ∂(sphProb (D + 1)) = (∫ z, ((‖∑ a ∈ T, c a * monoC a z‖ ^ 2 : ℝ) : ℂ) ∂(sphProb (D + 1))).re`. Rewrite using `[integral_complex_ofReal, Complex.ofReal_re]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `inner : ∀ a ∈ T, ∫ z, ∑ b ∈ T, (starRingEnd ℂ (c a) * c b) * (starRingEnd ℂ (monoC a z) * monoC b z) ∂(sphProb (D + 1)) = ((‖c a‖ ^ 2 * monoNormSq a : ℝ) : ℂ)`. Introduce `a ha`. Rewrite using `[integral_finset_sum _ (fun b _ => (supSt_integrable a b).const_mul _)]`. Repeatedly rewrite using `[integral_const_mul, supSt_gram]`. Simplify using `only [mul_ite, mul_zero, Finset.sum_ite_eq, ha, if_true]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Complex.conj_mul']`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hI]`. Repeatedly rewrite using `[key]`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[integral_finset_sum _ (fun a _ => integrable_finset_sum _ (fun b _ => (supSt_integrable a b).const_mul _)), Finset.sum_congr rfl inner, ← Complex.ofReal_sum, Complex.ofReal_re]`.
+A detailed English derivation is pending.
 -/
 theorem integral_form_sq (D n : ℕ) (c : (Fin (D + 1) → ℕ) → ℂ) :
     ∫ z, ‖∑ a ∈ Finset.Nat.antidiagonalTuple (D + 1) n, c a * monoC a z‖ ^ 2 ∂(sphProb (D + 1)) =
@@ -149,7 +149,7 @@ theorem integral_form_sq (D n : ℕ) (c : (Fin (D + 1) → ℕ) → ℂ) :
     Finset.sum_congr rfl inner, ← Complex.ofReal_sum, Complex.ofReal_re]
 
 /- English proof (translation)
-Unfold `monoNormSq`. Establish `: 0 < ∏ i, (a i).factorial` using `Finset.prod_pos fun i _ => Nat.factorial_pos _`. Establish `h1 : (0 : ℝ) < ((∏ i, (a i).factorial : ℕ) : ℝ)` using `by exact_mod_cast this`. Check the signs of the components of the expression.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Check the signs of the components of the expression.
 -/
 theorem supSt_monoNormSq_pos {D : ℕ} (a : Fin (D + 1) → ℕ) : 0 < monoNormSq a := by
   unfold monoNormSq
@@ -158,13 +158,13 @@ theorem supSt_monoNormSq_pos {D : ℕ} (a : Fin (D + 1) → ℕ) : 0 < monoNormS
   positivity
 
 /- English proof (translation)
-Use `set T := Finset.Nat.antidiagonalTuple (D + 1) n`. Establish `hN : ∀ a : Fin (D + 1) → ℕ, 0 < Real.sqrt (monoNormSq a)` using `fun a => Real.sqrt_pos.mpr (supSt_monoNormSq_pos a)`. Establish `h1 : ‖∑ a ∈ T, c a * monoC a z‖ ≤ ∑ a ∈ T, (‖c a‖ * Real.sqrt (monoNormSq a)) * (‖monoC a z‖ / Real.sqrt (monoNormSq a))`. Use `(norm_sum_le _ _).trans (le_of_eq (Finset.sum_congr rfl fun a _ => ?_))` and prove the remaining obligations. Rewrite using `[norm_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Clear denominators, using `[(hN a).ne']` for the nonvanishing conditions. Establish `h2` using `Finset.sum_mul_sq_le_sq_mul_sq T (fun a => ‖c a‖ * Real.sqrt (monoNormSq a)) (fun a => ‖monoC a z‖ / Real.sqrt (monoNormSq a))`. Establish `e1 : ∑ a ∈ T, (‖c a‖ * Real.sqrt (monoNormSq a)) ^ 2 = ∑ a ∈ T, ‖c a‖ ^ 2 * monoNormSq a`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[mul_pow, Real.sq_sqrt (supSt_monoNormSq_pos a).le]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e2 : ∑ a ∈ T, (‖monoC a z‖ / Real.sqrt (monoNormSq a)) ^ 2 = ∑ a ∈ T, ‖monoC a z‖ ^ 2 / monoNormSq a`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[div_pow, Real.sq_sqrt (supSt_monoNormSq_pos a).le]`. Rewrite `h2` using `[e1, e2, sum_mono_sq_div]`. Rewrite using `[integral_form_sq]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem form_sq_le (D n : ℕ) (c : (Fin (D + 1) → ℕ) → ℂ) (z : Fin (D + 1) → ℂ) :
     ‖∑ a ∈ Finset.Nat.antidiagonalTuple (D + 1) n, c a * monoC a z‖ ^ 2 ≤

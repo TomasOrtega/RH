@@ -9,9 +9,9 @@ open NumberField IsDedekindDomain Matrix Formalism.UG Formalism.L2.Forms Formali
 open scoped TensorProduct
 
 /- English proof (translation)
-Take `⟨x0, h⟩` from `h`. Use `rank_conditions_of_lowest_space Fm ⟨max x0 (Fm.x1 + 1), fun x hx i u => ?_⟩` and prove the remaining obligations. Establish `e1 : Fm.x1 < x`. Use `(le_max_right x0 (Fm.x1 + 1)).trans hx` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Take `⟨T⟩` from `h x e1 ((le_max_left _ _).trans hx) i`. Conclude with `mu0Tie_of_sym T.cols u`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem rankTiesF_of_C2S {eps : ℝ} (Fm : FamP eps) (h : Formalism.L2.LinkedFamiliesLevelClass Fm) : RankTiesF Fm := by
   obtain ⟨x0, h⟩ := h
@@ -23,7 +23,7 @@ theorem rankTiesF_of_C2S {eps : ℝ} (Fm : FamP eps) (h : Formalism.L2.LinkedFam
   exact mu0Tie_of_sym T.cols u
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨1, one_pos, fun _ _ _ => ⟨⟨0, fun _ => 0, fun _ => 0, fun _ => 0⟩, fun Fm _ hC _ => rankTiesF_of_C2S Fm hC⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem closed_rankTiesF_C2S : Closed Formalism.L2.LinkedFamiliesLevelClass fun Fm _ => RankTiesF Fm :=
   ⟨1, one_pos, fun _ _ _ => ⟨⟨0, fun _ => 0, fun _ => 0, fun _ => 0⟩, fun Fm _ hC _ => rankTiesF_of_C2S Fm hC⟩⟩

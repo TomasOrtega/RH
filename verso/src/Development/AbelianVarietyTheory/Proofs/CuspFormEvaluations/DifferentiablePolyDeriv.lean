@@ -15,7 +15,7 @@ section Deriv
 variable {σ W : Type*} [NormedAddCommGroup W] [NormedSpace ℂ W] {F : W → ℂ}
 
 /- English proof (translation)
-Simplify using `only [polyDeriv_eq_of_subset P u F _ subset_rfl, pdTerm_eq_itD]`. Conclude with `Differentiable.fun_sum fun m _ => (itD_differentiable hF _).const_mul _`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem differentiable_polyDeriv (hF : ContDiff ℂ (⊤ : ℕ∞) F) (P : MvPolynomial σ ℂ) (u : σ → W) :
     Differentiable ℂ fun y => polyDeriv P u F y := by
@@ -23,11 +23,11 @@ theorem differentiable_polyDeriv (hF : ContDiff ℂ (⊤ : ℕ∞) F) (P : MvPol
   exact Differentiable.fun_sum fun m _ => (itD_differentiable hF _).const_mul _
 
 /- English proof (translation)
-Proceed by induction on `P using MvPolynomial.induction_on' with`. Consider the case `monomial m c`. Establish `h (m : σ →₀ ℕ) : (monomial m c : MvPolynomial σ ℂ) = c • monomial m 1`. Simplify using `[smul_monomial]`. Rewrite using `[X, monomial_mul, mul_one, h, h]`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [polyDeriv_smul, polyDeriv_monomial_one, pdTerm_eq_itD]`. Rewrite using `[fderiv_const_mul (itD_differentiable hF _ x), ContinuousLinearMap.smul_apply, smul_eq_mul, ← itD_cons hF, ← List.map_cons]`. Use `congrArg _ (congrFun (ct_itD_perm hF (List.Perm.map u ?_)) x)` and prove the remaining obligations. Rewrite using `[← Multiset.coe_eq_coe, ← Multiset.cons_coe, Multiset.coe_toList, Multiset.coe_toList, map_add, Finsupp.toMultiset_single, one_nsmul, add_comm, Multiset.singleton_add]`. Consider the case `add P Q hP hQ`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Simplify using `only [add_mul, polyDeriv_add, hP, hQ]`. Rewrite using `[fderiv_fun_add (differentiable_polyDeriv hF P u x) (differentiable_polyDeriv hF Q u x), ContinuousLinearMap.add_apply]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem polyDeriv_mul_X (hF : ContDiff ℂ (⊤ : ℕ∞) F) (P : MvPolynomial σ ℂ) (u : σ → W) (l : σ)
     (x : W) : polyDeriv (P * X l) u F x = fderiv ℂ (fun y => polyDeriv P u F y) x (u l) := by
@@ -49,9 +49,9 @@ theorem polyDeriv_mul_X (hF : ContDiff ℂ (⊤ : ℕ∞) F) (P : MvPolynomial �
       ContinuousLinearMap.add_apply]
 
 /- English proof (translation)
-Proceed by induction on `P using MvPolynomial.induction_on generalizing x with`. Consider the case `C a`. Establish `h : (C a : MvPolynomial σ ℂ) = a • monomial 0 1` using `by simp [smul_eq_C_mul]`. Rewrite using `[algHom_C, algebraMap_eq, h]`. Simplify using `[polyDeriv_smul, polyDeriv_monomial_one, pdTerm_eq_itD, -smul_monomial, -monomial_zero']`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Consider the case `add P Q hP hQ => simp only [map_add, polyDeriv_add, hP, hQ]`. Consider the case `mul_X P l hP`. Rewrite using `[map_mul, hΦ, mul_add, mul_left_comm, C_mul', polyDeriv_add, polyDeriv_smul, polyDeriv_mul_X hF, polyDeriv_mul_X hF, polyDeriv_mul_X hF, funext hP]`. Simplify using the standard rewrite rules.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem polyDeriv_algHom (hF : ContDiff ℂ (⊤ : ℕ∞) F) (Φ : MvPolynomial σ ℂ →ₐ[ℂ] MvPolynomial σ ℂ)
     (s : σ → ℂ) (j : σ → σ) (hΦ : ∀ l, Φ (X l) = X l + C (s l) * X (j l)) (u : σ → W)
@@ -75,17 +75,17 @@ section Triangular
 variable {J V : Type*} [Fintype J] [DecidableEq J] [AddCommGroup V] [Module ℂ V]
 
 /- English proof (translation)
-Establish `hne : ∀ i j, lt i j → i ≠ j` using `fun i j h e => (hrk i j h).ne (congrArg rk e)`. Establish `one (y : J → V) (j : J) (T : Finset J) (hT : j ∉ T) : f (Function.update y j (N j j • y j + ∑ i ∈ T, N i j • y i)) = N j j ^ d j * f y`. Proceed by induction on `T using Finset.induction_on with`. Consider the case `empty => simpa using hsc j _ y`. Consider the case `insert i T hi ih`.
+Establish an intermediate fact. Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Establish `hij : i ≠ j` using `fun e => hT (e ▸ Finset.mem_insert_self _ _)`. Rewrite using `[Finset.sum_insert hi, ← ih fun h => hT (Finset.mem_insert_of_mem h)]`. Distinguish the cases in `h : lt i j`. Rewrite using `[← hadd i j h (N i j) (Function.update y j (N j j • y j + ∑ i ∈ T, N i j • y i)), Function.update_idem, Function.update_self, Function.update_of_ne hij]`. Use `congr 2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Normalize the expressions using the abelian group laws. Rewrite using `[hN i j hij h, zero_smul, zero_add]`. Establish `key (S : Finset J) : f (fun j => if j ∈ S then ∑ i, N i j • u i else u j) = (∏ j ∈ S, N j j ^ d j) * f u`. Proceed by induction on `S using Finset.induction_on_min_value rk with`. Consider the case `empty => simp`.
+Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Proceed by induction. Treat this case separately.
 
-Consider the case `insert a S ha hmin ih`. Rewrite using `[Finset.prod_insert ha, mul_assoc, ← ih, ← one _ a (Finset.univ.erase a) (by simp)]`. Use `congr 1`. Use function extensionality and compare the values at `j`. Distinguish the cases in `hj : j = a`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails.
 
-Substitute `hj` using the available equality. Rewrite using `[Function.update_self, if_pos (Finset.mem_insert_self _ _), if_neg ha, ← Finset.add_sum_erase _ _ (Finset.mem_univ j)]`. Use `congr 1`. Use `Finset.sum_congr rfl fun i hi => ?_` and prove the remaining obligations. Distinguish the cases in `h : lt i j`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[if_neg fun hS => (hmin i hS).not_gt (hrk i j h)]`. Rewrite using `[hN i j (Finset.ne_of_mem_erase hi) h, zero_smul, zero_smul]`. Simplify using `[Function.update_of_ne hj, hj]`. Simplify using `using key Finset.univ`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem eigen_of_triangular (f : (J → V) → ℂ) (lt : J → J → Prop) (rk : J → ℕ)
     (hrk : ∀ i j, lt i j → rk i < rk j) (d : J → ℕ)
@@ -133,17 +133,17 @@ end Triangular
 open Harm in
 
 /- English proof (translation)
-Take `⟨-, hdeg, hinv⟩` from `mem_rowHighest_iff_rowAdd.1 hP`. Establish `h` using `eigen_of_triangular (fun w : T × (Fin p ⊕ Fin q) → κ → W => polyDeriv P (fun l => w (l.1, l.2.1) l.2.2) F x) (fun i j => i.1 = j.1 ∧ RowLT i.2 j.2) (fun i => Sum.elim Fin.val Fin.val i.2) ?_ (fun j => Sum.elim (partOf (c j.1)) (partOf (c' j.1)) j.2) ?_ ?_ N hN fun i k => u (i.1, …`. Simplify `h` using `only [Finset.sum_apply, Pi.smul_apply]`. Apply the tactic sequence `rintro ⟨t, a | a⟩ ⟨t', b | b⟩ ⟨-, h⟩ <;> first | exact h | exact h.elim`. Introduce and unpack `⟨t, r⟩ ⟨t', r'⟩ ⟨rfl, h⟩ s w conv_rhs => rw [← rowAdd_eq_self_of_forall_int (hinv t r r' h) s]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Apply the first step, then apply the next step to every resulting obligation. Assume the hypotheses and unpack their components.
 
-Apply the tactic sequence `rw [polyDeriv_algHom hF _ (fun l => if l.1 = t ∧ l.2.1 = r' then s else 0) (fun l => (t, r, l.2.2)) (fun ⟨t', r'', k⟩ => by rw [rowAdd_X]; split_ifs <;> simp)]`. Use `congr 1`. Use function extensionality and compare the values at `⟨t', r'', k⟩`. Distinguish the cases in `e : t' = t ∧ r'' = r'`. Take `⟨rfl, rfl⟩` from `e`.
+Apply the first step, then apply the next step to every resulting obligation. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Simplify using the standard rewrite rules. Rewrite using `[Function.update_of_ne (by simpa using e), if_neg e]`. Simplify using the standard rewrite rules. Introduce and unpack `⟨t, r⟩ s w`. Rewrite using `[← polyDeriv_smul_letter P (fun l => if l.1 = t ∧ l.2.1 = r then s else 1) _ fun m hm => ?_]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use function extensionality and compare the values at `⟨t', r'', k⟩`. Distinguish the cases in `e : t' = t ∧ r'' = r`. Take `⟨rfl, rfl⟩` from `e`. Simplify using the standard rewrite rules.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Rewrite using `[Function.update_of_ne (by simpa using e), if_neg e]`. Simplify using the standard rewrite rules. Rewrite using `[← hdeg t r (mem_support_iff.1 hm), Finsupp.weight_apply, Finsupp.sum, ← Finset.prod_pow_eq_pow_sum]`. Use `Finset.prod_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[rowInd_apply]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `split_ifs with h <;> simp [h]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem polyDeriv_triangular {T κ W : Type*} [Fintype T] [Fintype κ] {p q : ℕ}
     [NormedAddCommGroup W] [NormedSpace ℂ W] {F : W → ℂ} (hF : ContDiff ℂ (⊤ : ℕ∞) F)

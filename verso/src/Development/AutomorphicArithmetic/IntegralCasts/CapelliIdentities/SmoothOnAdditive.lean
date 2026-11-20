@@ -12,7 +12,7 @@ noncomputable def UpperTheory.Reformulated.B.SmoothOnAdditive.SmOn.{u_1, u_3} :
 namespace UpperTheory.Reformulated.B.SmoothOnAdditive.Helpers
 
 /- English proof (translation)
-Introduce `a _`. Conclude with `⟨Set.univ, fun _ => 0, isOpen_univ, Set.mem_univ _, contDiffOn_const, fun _ _ _ => rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 private lemma smOn_zero {E V : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     [NormedAddCommGroup V] [NormedSpace ℝ V] (A : Set E) :
@@ -21,9 +21,9 @@ private lemma smOn_zero {E V : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
   exact ⟨Set.univ, fun _ => 0, isOpen_univ, Set.mem_univ _, contDiffOn_const, fun _ _ _ => rfl⟩
 
 /- English proof (translation)
-Introduce `a ha`. Take `⟨U1, F1, hU1, ha1, hF1, he1⟩` from `hf a ha`. Take `⟨U2, F2, hU2, ha2, hF2, he2⟩` from `hg a ha`. Use `⟨U1 ∩ U2, fun x => F1 x + F2 x, hU1.inter hU2, ⟨ha1, ha2⟩, (hF1.mono Set.inter_subset_left).add (hF2.mono Set.inter_subset_right), ?_⟩` and prove the remaining obligations. Introduce `x hx hxA`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [he1 x hx.1 hxA, he2 x hx.2 hxA]`.
+Simplify using the standard rewrite rules.
 -/
 private lemma smOn_add {E V : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     [NormedAddCommGroup V] [NormedSpace ℝ V] {A : Set E} {f g : E → V}
@@ -41,11 +41,11 @@ end UpperTheory.Reformulated.B.SmoothOnAdditive.Helpers
 
 open UpperTheory.Reformulated.B.SmoothOnAdditive.Helpers in
 /- English proof (translation)
-Introduce `E V ι _ _ _ _ A f s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Introduce `_`. Simplify using `using (smOn_zero (V := V) A)`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts.
 
-Consider the case `insert j s hj ih`. Introduce `h`. Establish `h1` using `h j (Finset.mem_insert_self j s)`. Establish `h2` using `ih (fun i hi => h i (Finset.mem_insert_of_mem hi))`. Use `smOn_add h1 h2` as an intermediate fact.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify `this` using `[Finset.sum_insert hj]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem UpperTheory.Reformulated.B.SmoothOnAdditive.main.{u_1, u_2, u_3} :
     ∀ {E : Type u_1} {V : Type u_2} {ι : Type u_3} [inst : NormedAddCommGroup E] [inst_1 : NormedSpace ℝ E]

@@ -14,7 +14,7 @@ open ReciprocityTheory.PGsh.L2
 section Rank
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[Matrix.map_apply, Matrix.smul_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 private lemma map_smul_hom {n S T : Type} [Fintype n] [CommRing S] [CommRing T] (f : S →+* T)
     (r : S) (A : Matrix n n S) : (r • A).map f = f r • A.map f := by
@@ -26,19 +26,17 @@ variable {p : ℕ} [Fact p.Prime] {g : ℕ} {C : Type} [Field C] {v : Valuation 
   {σ : O ≃ₐ[ℤ_[p]] O} {cp : R}
 
 /- English proof (translation)
-Use `haveI : IsDomain R := Function.Injective.isDomain (algebraMap R C) hS.integers.hom_inj`. Establish `hcp : cp ≠ 0`. Introduce `h`. Establish `hv` using `hS.cp_val`. Establish `hp2` using `(Fact.out : p.Prime).two_le`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hv` using `[h, map_zero, map_zero, zero_pow (by omega)]`. Conclude with `hS.p_ne hv.symm`. Establish `hE : IsUnit (H.E.map (algebraMap ℤ_[p] R)).det`. Rewrite using `[← RingHom.mapMatrix_apply, ← RingHom.map_det]`. Conclude with `H.isUnit_det_E.map _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1 : U.εT (U.cj i) = 0`. Establish `he` using `εT_E hS H U i`. Rewrite `he` using `[h0, Matrix.transpose_zero, Matrix.zero_mul]`. Combine the equalities or inequalities in the displayed calculation. Establish `hcc : U.cj (U.cj i) = i`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hne`. Take `⟨a, ha⟩` from `U.distinct _ _ hne`. Establish `e : U.sg (U.cj (U.cj i)) a = U.sg i a` using `by rw [U.conj, U.conj, hS.invol]`. Rewrite `ha` using `[e, sub_self, map_zero, map_zero]`. Conclude with `zero_ne_one ha`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hx : ∀ x : Fin g → R, (U.εL (U.cj (U.cj i)))ᵀ *ᵥ x = 0`. Introduce `x`. Set `y : LinearMap.range (Matrix.mulVecLin (U.εL (U.cj (U.cj i)))ᵀ)` to `⟨(U.εL (U.cj (U.cj i)))ᵀ *ᵥ x, ⟨x, rfl⟩⟩`. Establish `hk` using `up_kill hS H U (U.cj i) (Submodule.Quotient.mk y)`. Rewrite `hk` using `[← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero, Submodule.mem_comap, h1]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [Matrix.mulVecLin_zero, LinearMap.range_zero, Submodule.map_bot, Submodule.mem_bot] at hk`. Establish `hk' : cp • ((U.εL (U.cj (U.cj i)))ᵀ *ᵥ x) = 0`. Simplify `hk` using `[y]`. Conclude with `(smul_eq_zero.mp hk').resolve_left hcp`. Rewrite `hx` using `[hcc]`.
-
-Establish `hT : (U.εL i)ᵀ = 0`. Use extensionality with `a b`. Use `congrFun (hx (Pi.single b 1)) a` as an intermediate fact. Simplify `this` using `[Matrix.mulVec, dotProduct, Pi.single_apply]`. Conclude with `Matrix.transpose_eq_zero.mp hT`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 private lemma εL_eq_zero (hS : HodgeTateSetting p v R O σ cp) (H : HodgeTateDatum p g v R O σ cp)
     (U : UnramData p g v R O σ cp H) (i : Fin U.m) (h0 : U.εT i = 0) : U.εL i = 0 := by
@@ -85,11 +83,11 @@ private lemma εL_eq_zero (hS : HodgeTateSetting p v R O σ cp) (H : HodgeTateDa
   exact Matrix.transpose_eq_zero.mp hT
 
 /- English proof (translation)
-Establish `h` using `εL_eq_zero hS H U i h0`. Take `⟨e⟩` from `U.rank i`. Use `haveI : Nontrivial R := (Function.Injective.isDomain (algebraMap R C) hS.integers.hom_inj).toNontrivial`. Assume the negation of the conclusion as `hr`. Establish `hall : ∀ y : LinearMap.range (Matrix.mulVecLin (U.εL i)), y = 0`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨y, x, rfl⟩`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `[h]`. Establish `hne : (Pi.single ⟨0, Nat.pos_of_ne_zero hr⟩ 1 : Fin (U.r i) → R) ≠ 0`. Introduce `hz`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `congrFun hz ⟨0, Nat.pos_of_ne_zero hr⟩` as an intermediate fact. Simplify using `at this`. Apply `hne` to reduce the goal to its premises. Rewrite using `[← e.apply_symm_apply (Pi.single _ 1), hall (e.symm _), map_zero]`.
+Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma r_eq_zero (hS : HodgeTateSetting p v R O σ cp) (H : HodgeTateDatum p g v R O σ cp)
     (U : UnramData p g v R O σ cp H) (i : Fin U.m) (h0 : U.εT i = 0) : U.r i = 0 := by
@@ -110,11 +108,9 @@ private lemma r_eq_zero (hS : HodgeTateSetting p v R O σ cp) (H : HodgeTateDatu
   rw [← e.apply_symm_apply (Pi.single _ 1), hall (e.symm _), map_zero]
 
 /- English proof (translation)
-Establish `hsum : (H.ρ a).map (algebraMap ℤ_[p] R) = ∑ i, U.sg i a • U.εT i`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[U.εT_sum, Matrix.mul_one]`. Use `_ = ∑ i, U.sg i a • U.εT i := by`. Rewrite using `[Finset.mul_sum]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.sum_congr rfl fun i _ => U.εT_eig a i`. Rewrite using `[hsum, Finset.mul_sum, Finset.sum_eq_single j]`. Rewrite using `[Matrix.mul_smul, U.εT_orth, if_pos rfl]`. Introduce `b _ hb`. Rewrite using `[Matrix.mul_smul, U.εT_orth, if_neg (Ne.symm hb), smul_zero]`.
-
-Introduce `h`. Conclude with `absurd (Finset.mem_univ j) h`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 private lemma εT_eig_left {H : HodgeTateDatum p g v R O σ cp} (U : UnramData p g v R O σ cp H) (a : O)
     (j : Fin U.m) : U.εT j * (H.ρ a).map (algebraMap ℤ_[p] R) = U.sg j a • U.εT j := by
@@ -136,7 +132,7 @@ section Local
 variable [IsLocalRing R]
 
 /- English proof (translation)
-Rewrite using `[IsLocalRing.residue_eq_zero_iff, IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]`. Introduce `hu`. Rewrite `hu` using `[hS.integers.isUnit_iff_valuation_eq_one]`. Conclude with `absurd hu (ne_of_lt hr)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma res_zero (hS : HodgeTateSetting p v R O σ cp) {r : R} (hr : v (algebraMap R C r) < 1) :
     IsLocalRing.residue R r = 0 := by
@@ -146,7 +142,7 @@ private lemma res_zero (hS : HodgeTateSetting p v R O σ cp) {r : R} (hr : v (al
   exact absurd hu (ne_of_lt hr)
 
 /- English proof (translation)
-Rewrite using `[Ne, IsLocalRing.residue_eq_zero_iff, IsLocalRing.mem_maximalIdeal, mem_nonunits_iff, not_not, hS.integers.isUnit_iff_valuation_eq_one]`. Conclude with `hr`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma res_ne (hS : HodgeTateSetting p v R O σ cp) {r : R} (hr : v (algebraMap R C r) = 1) :
     IsLocalRing.residue R r ≠ 0 := by
@@ -155,7 +151,7 @@ private lemma res_ne (hS : HodgeTateSetting p v R O σ cp) {r : R} (hr : v (alge
   exact hr
 
 /- English proof (translation)
-Establish `hp` using `(Fact.out : p.Prime)`. Rewrite using `[CharP.charP_iff_prime_eq_zero hp, ← map_natCast (IsLocalRing.residue R)]`. Conclude with `res_zero hS hS.p_lt`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma charP_res (hS : HodgeTateSetting p v R O σ cp) : CharP (IsLocalRing.ResidueField R) p := by
   have hp := (Fact.out : p.Prime)
@@ -163,9 +159,9 @@ private lemma charP_res (hS : HodgeTateSetting p v R O σ cp) : CharP (IsLocalRi
   exact res_zero hS hS.p_lt
 
 /- English proof (translation)
-Take `⟨c, hc⟩` from `Ideal.mem_span_singleton'.mp (PadicInt.appr_spec 1 z)`. Establish `hz : z = ((z.appr 1 : ℕ) : ℤ_[p]) + c * (p : ℤ_[p]) ^ 1`. Rewrite using `[hc]`. Expand and normalize the polynomial expressions, which then agree. Establish `hp0 : ((p : ℕ) : IsLocalRing.ResidueField R) = 0` using `CharP.cast_eq_zero _ p`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `key : IsLocalRing.residue R (algebraMap ℤ_[p] R z) = ((z.appr 1 : ℕ) : IsLocalRing.ResidueField R)`. Establish `e` using `congrArg (fun w => IsLocalRing.residue R (algebraMap ℤ_[p] R w)) hz`. Simplify using `only [map_add, map_mul, map_pow, map_natCast, hp0, pow_one, mul_zero, add_zero] at e`. Conclude with `e`. Rewrite using `[key, map_natCast]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma frob_fix [CharP (IsLocalRing.ResidueField R) p] (z : ℤ_[p]) :
     frobenius (IsLocalRing.ResidueField R) p (IsLocalRing.residue R (algebraMap ℤ_[p] R z)) =
@@ -183,21 +179,19 @@ private lemma frob_fix [CharP (IsLocalRing.ResidueField R) p] (z : ℤ_[p]) :
   rw [key, map_natCast]
 
 /- English proof (translation)
-Establish `hA : ∀ a j, (U.εT j).map (IsLocalRing.residue R) * ((H.ρ a).map (algebraMap ℤ_[p] R)).map (IsLocalRing.residue R) = IsLocalRing.residue R (U.sg j a) • (U.εT j).map (IsLocalRing.residue R)`. Introduce `a j`. Rewrite using `[← Matrix.map_mul, εT_eig_left U a j, map_smul_hom]`. Establish `hB : ∀ a j, ((H.ρ a).map (algebraMap ℤ_[p] R)).map (IsLocalRing.residue R) * (U.εT j).map (IsLocalRing.residue R) = IsLocalRing.residue R (U.sg j a) • (U.εT j).map (IsLocalRing.residue R)`. Introduce `a j`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← Matrix.map_mul, U.εT_eig a j, map_smul_hom]`. Establish `hC : ∀ a, (((H.ρ a).map (algebraMap ℤ_[p] R)).map (IsLocalRing.residue R)).map (frobenius (IsLocalRing.ResidueField R) p) = ((H.ρ a).map (algebraMap ℤ_[p] R)).map (IsLocalRing.residue R)`. Introduce `a`. Use extensionality with `x y`. Simplify using `only [Matrix.map_apply]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Conclude with `frob_fix _`. Establish `hsgp : ∀ a j, frobenius (IsLocalRing.ResidueField R) p (IsLocalRing.residue R (U.sg j a)) = IsLocalRing.residue R (U.sg (U.φ j) a)`. Introduce `a j`. Rewrite using `[frobenius_def, ← map_pow]`. Establish `h` using `res_zero hS (U.frob j a)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[map_sub, sub_eq_zero]`. Conclude with `h.symm`. Establish `hD : ∀ a j, ((H.ρ a).map (algebraMap ℤ_[p] R)).map (IsLocalRing.residue R) * ((U.εT j).map (IsLocalRing.residue R)).map (frobenius (IsLocalRing.ResidueField R) p) = IsLocalRing.residue R (U.sg (U.φ j) a) • ((U.εT j).map (IsLocalRing.residue R)).map (frobenius (IsLocalRing.Residue …`. Introduce `a j`. Rewrite using `[← hC a, ← Matrix.map_mul, hB a j, map_smul_hom, hsgp]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hE1 : ∑ j, ((U.εT j).map (IsLocalRing.residue R)).map (frobenius (IsLocalRing.ResidueField R) p) = 1`. Establish `e : ∑ j, ((U.εT j).map (IsLocalRing.residue R)).map (frobenius (IsLocalRing.ResidueField R) p) = (frobenius (IsLocalRing.ResidueField R) p).mapMatrix ((IsLocalRing.residue R).mapMatrix (∑ j, U.εT j))`. Simplify using `only [map_sum, RingHom.mapMatrix_apply]`. Rewrite using `[e, U.εT_sum, map_one, map_one]`. Establish `hF : ∀ j, j ≠ i → (U.εT (U.φ i)).map (IsLocalRing.residue R) * ((U.εT j).map (IsLocalRing.residue R)).map (frobenius (IsLocalRing.ResidueField R) p) = 0`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `j hj`. Establish `hφ : U.φ i ≠ U.φ j` using `fun h => hj (U.φ.injective h).symm`. Take `⟨a, ha⟩` from `U.distinct _ _ hφ`. Establish `h1` using `res_ne hS ha`. Rewrite `h1` using `[map_sub]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `key : (IsLocalRing.residue R (U.sg (U.φ i) a) - IsLocalRing.residue R (U.sg (U.φ j) a)) • ((U.εT (U.φ i)).map (IsLocalRing.residue R) * ((U.εT j).map (IsLocalRing.residue R)).map (frobenius (IsLocalRing.ResidueField R) p)) = 0`. Rewrite using `[sub_smul, sub_eq_zero, ← Matrix.smul_mul, ← hA a (U.φ i), Matrix.mul_assoc, hD a j, Matrix.mul_smul]`. Conclude with `(smul_eq_zero.mp key).resolve_left h1`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hE1, Matrix.mul_one]`.
-
-Use `_ = ∑ j, (U.εT (U.φ i)).map (IsLocalRing.residue R) * ((U.εT j).map (IsLocalRing.residue R)).map (frobenius (IsLocalRing.ResidueField R) p) := Finset.mul_sum _ _ _`. Use `_ = _ := Finset.sum_eq_single i (fun j _ hj => hF j hj) (fun h => absurd (Finset.mem_univ i) h)`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma frob_block (hS : HodgeTateSetting p v R O σ cp) [CharP (IsLocalRing.ResidueField R) p]
     {H : HodgeTateDatum p g v R O σ cp} (U : UnramData p g v R O σ cp H) (i : Fin U.m) :
@@ -264,7 +258,7 @@ private lemma frob_block (hS : HodgeTateSetting p v R O σ cp) [CharP (IsLocalRi
     _ = _ := Finset.sum_eq_single i (fun j _ hj => hF j hj) (fun h => absurd (Finset.mem_univ i) h)
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← frob_block hS U i]`. Use `_ ≤ (((U.εT i).map (IsLocalRing.residue R)).map (frobenius (IsLocalRing.ResidueField R) p)).rank := Matrix.rank_mul_le_right _ _`. Use `_ ≤ Module.finrank (IsLocalRing.ResidueField R) (LinearMap.range ((U.εT i).map (IsLocalRing.residue R)).mulVecLin) := RankA.rank_map_le _ _`. Use `_ = ((U.εT i).map (IsLocalRing.residue R)).rank := rfl`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma rank_phi_le (hS : HodgeTateSetting p v R O σ cp) [CharP (IsLocalRing.ResidueField R) p]
     {H : HodgeTateDatum p g v R O σ cp} (U : UnramData p g v R O σ cp H) (i : Fin U.m) :
@@ -286,17 +280,17 @@ end Local
 end Rank
 
 /- English proof (translation)
-Introduce `p _ g C _ _ _ v R _ _ _ O _ _ σ cp hS H U`. Use `haveI : IsLocalRing R := isLocal_of_integers hS.integers`. Use `haveI : CharP (IsLocalRing.ResidueField R) p := charP_res hS`. Establish `hidem : ∀ i, U.εT i * U.εT i = U.εT i` using `fun i => by rw [U.εT_orth, if_pos rfl]`. Use `haveI hfree : ∀ i, Module.Free R (LinearMap.range (U.εT i).mulVecLin) := fun i => (RankA.free_range_idem _ (hidem i)).1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI hfin : ∀ i, Module.Finite R (LinearMap.range (U.εT i).mulVecLin) := fun i => (RankA.free_range_idem _ (hidem i)).2`. Establish `hsn : ∀ i ∈ Finset.univ, ((U.εT i).map (IsLocalRing.residue R)).rank ≤ Module.finrank R (LinearMap.range (U.εT i).mulVecLin)` using `fun i _ => RankA.rank_map_le _ _`. Establish `hsumn : ∑ i, Module.finrank R (LinearMap.range (U.εT i).mulVecLin) = Fintype.card (Ix g)` using `RankA.sum_finrank U.εT U.εT_orth U.εT_sum`. Establish `hsums : ∑ i, ((U.εT i).map (IsLocalRing.residue R)).rank = Fintype.card (Ix g)`. Establish `horth : ∀ i j, (U.εT i).map (IsLocalRing.residue R) * (U.εT j).map (IsLocalRing.residue R) = if i = j then (U.εT i).map (IsLocalRing.residue R) else 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Introduce `i j`. Rewrite using `[← Matrix.map_mul, U.εT_orth]`. Apply the tactic sequence `split_ifs <;> simp`. Establish `hs1 : ∑ i, (U.εT i).map (IsLocalRing.residue R) = 1`. Establish `e : ∑ i, (U.εT i).map (IsLocalRing.residue R) = (IsLocalRing.residue R).mapMatrix (∑ i, U.εT i)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [map_sum, RingHom.mapMatrix_apply]`. Rewrite using `[e, U.εT_sum, map_one]`. Conclude with `RankA.sum_finrank (fun i => (U.εT i).map (IsLocalRing.residue R)) horth hs1`. Establish `hseq : ∀ i, ((U.εT i).map (IsLocalRing.residue R)).rank = Module.finrank R (LinearMap.range (U.εT i).mulVecLin)`. Establish `h` using `(Finset.sum_eq_sum_iff_of_le hsn).mp (hsums.trans hsumn.symm)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Conclude with `fun i => h i (Finset.mem_univ i)`. Establish `hphi : ∀ i, ((U.εT (U.φ i)).map (IsLocalRing.residue R)).rank = ((U.εT i).map (IsLocalRing.residue R)).rank`. Establish `hle : ∀ i ∈ Finset.univ, ((U.εT (U.φ i)).map (IsLocalRing.residue R)).rank ≤ ((U.εT i).map (IsLocalRing.residue R)).rank` using `fun i _ => rank_phi_le hS U i`. Establish `hs : ∑ i, ((U.εT (U.φ i)).map (IsLocalRing.residue R)).rank = ∑ i, ((U.εT i).map (IsLocalRing.residue R)).rank` using `Equiv.sum_comp U.φ (fun i => ((U.εT i).map (IsLocalRing.residue R)).rank)`. Conclude with `fun i => (Finset.sum_eq_sum_iff_of_le hle).mp hs i (Finset.mem_univ i)`.
+Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Use `⟨fun i => ⟨Module.finrank R (LinearMap.range (U.εT i).mulVecLin), ?_, ?_⟩, fun i h0 => r_eq_zero hS H U i h0⟩` and prove the remaining obligations. Conclude with `⟨(Module.finBasisOfFinrankEq R _ rfl).equivFun⟩`. Establish `hn : Module.finrank R (LinearMap.range (U.εT (U.φ i)).mulVecLin) = Module.finrank R (LinearMap.range (U.εT i).mulVecLin)`. Rewrite using `[← hseq, ← hseq, hphi]`. Conclude with `⟨(Module.finBasisOfFinrankEq R _ hn).equivFun⟩`.
+A detailed English derivation is pending.
 -/
 theorem rank_eq_rank_of_perm_and_zero : EigenRankStatement := by
   intro p _ g C _ _ _ v R _ _ _ O _ _ σ cp hS H U

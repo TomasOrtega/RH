@@ -25,17 +25,15 @@ namespace GlobalTheory.ThetaLocalDomain
 open GlobalTheory.IndivisibleSection
 
 /- English proof (translation)
-Establish `hle : I ^ (e + 1) ≤ I' ^ (e + 1)` using `Ideal.pow_right_mono hI _`. Establish `hth : Spec.map (CommRingCat.ofHom (Ideal.Quotient.factor hle)) ≫ thick R I e = thick R I' e`. Simplify using `only [thick, ← Spec.map_comp, ← CommRingCat.ofHom_comp, Ideal.Quotient.factor_comp_mk]`. Take `⟨ρ, hρ⟩ : ∃ ρ : (thickObj R I' e G).left ⟶ (thickObj R I e G).left, ρ ≫ fGl I G e = fGl I' G e` from `⟨pullback.lift (pullback.fst G.hom (thick R I' e)) (pullback.snd G.hom (thick R I' e) ≫ Spec.map (CommRingCat.ofHom (Ideal.Quotient.factor hle))) (by rw [Category.assoc, hth]; exact pullback.condition), pullback.lift_fst _ _ _⟩`. Establish `hw : (ρ ≫ pGl U e) ≫ D.toPre.P.A.hom = pullback.snd G.hom (thick R I' e) ≫ spMap (Ideal.Quotient.mk (I' ^ (e + 1)))`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `w₁ : pGl U e ≫ D.toPre.P.A.hom = fGl I G e ≫ G.hom` using `(Over.w (U.gt e).pG).trans (Over.w (fstG I e G)).symm`. Rewrite using `[Category.assoc, w₁, ← Category.assoc, hρ]`. Conclude with `pullback.condition`. Take `⟨S, hS⟩` from `expandsAt_val U e k σ f h`. Take `⟨jL, rfl⟩ : ∃ jL, j = fun _ => jL` from `⟨j 0, funext fun i => congrArg j (Subsingleton.elim i 0)⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `fn_ext fun y hy => ?_` and prove the remaining obligations. Use `choose J hJ using fun ψ : (thickObj R I' e G).left ⟶ D.toPre.P.A.left => exists_chart D.toPre.P.isLB (ψ y)`. Establish `hJ : Good D.toPre.P.L y J` using `hJ`. Establish `hy' : (ρ ≫ fGl I G e) y ∈ U.LG.L.U jL` using `by rw [hρ]; exact Set.mem_iInter.1 hy 0`. Establish `H` using `(hS _ ρ y J hJ).2 jL hy'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hz : ∀ α, sval (f α) (ρ ≫ pGl U e) y J = 0` using `fun α => by`. Take `⟨a, ha, f', hf'⟩` from `h0 α`. Establish `hc : cst ((ρ ≫ pGl U e) ≫ D.toPre.P.A.hom) y a = 0`. Rewrite using `[hw]`. Use `(cst_comp _ _ y a).trans ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Ideal.Quotient.eq_zero_iff_mem.2 ha, cst, map_zero]`. Conclude with `gs_zero _ y ⊤ trivial`. Rewrite using `[sval_of_secIsMul hf' _ y hJ, hc, zero_mul]`. Rewrite `H` using `[Finset.sum_eq_zero fun α _ => by rw [hz α, zero_mul], hρ]`. Use `(gs_pull (𝟙 _) _ y _ hy _).trans (Eq.trans ?_ (gs_zero (𝟙 _) y _ hy).symm)` and prove the remaining obligations.
-
-Rewrite using `[Category.id_comp]`. Conclude with `(Units.mul_right_eq_zero _).1 H`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem vanish_of_terms_mem {R : Type} [CommRing R] [IsDomain R] {I I' : Ideal R} (hI : I ≤ I') {D : DegData R I}
     {A : PolAV (Spec (CommRingCat.of (FractionRing R)))}
@@ -77,9 +75,9 @@ theorem vanish_of_terms_mem {R : Type} [CommRing R] [IsDomain R] {I I' : Ideal R
   exact (Units.mul_right_eq_zero _).1 H
 
 /- English proof (translation)
-Establish `hL` using `D.toPre.P.isLB`. Establish `tr : ∀ {a c : R} {s t w : D.toPre.SecB k α}, SecIsMul D.toPre.P.A.hom a s t → SecIsMul D.toPre.P.A.hom c t w → SecIsMul D.toPre.P.A.hom (a * c) s w` using `fun h h' => secIsMul_of_sval hL fun y J hJ => by`. Rewrite using `[sval_of_secIsMul h _ y hJ, sval_of_secIsMul h' _ y hJ, Category.id_comp, cst_mul', _root_.mul_assoc]`. Take `⟨u, rfl⟩` from `hu`. Establish `hinv : SecIsMul D.toPre.P.A.hom (↑u⁻¹ : R) b g` using `secIsMul_of_sval hL fun y J hJ => by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[sval_of_secIsMul ha₀ _ y hJ, Category.id_comp, ← _root_.mul_assoc, ← cst_mul', Units.inv_mul, cst_one', _root_.one_mul]`. Introduce `s`. Take `⟨a, ha, hau⟩` from `hb s`. Use `⟨a * ↑u⁻¹, tr ha hinv, fun a' ha' => ?_⟩` and prove the remaining obligations. Rewrite using `[← hau _ (tr ha' ha₀), Units.mul_inv_cancel_right]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem secBGenerates_of_isUnit {R : Type} [CommRing R] [IsDomain R] {I : Ideal R} {D : DegData R I} {k : ℕ}
     {α : D.toPre.X} {b g : D.toPre.SecB k α} (hb : SecBGenerates (D := D) k α b) {a₀ : R} (hu : IsUnit a₀)
@@ -99,13 +97,13 @@ theorem secBGenerates_of_isUnit {R : Type} [CommRing R] [IsDomain R] {I : Ideal 
   rw [← hau _ (tr ha' ha₀), Units.mul_inv_cancel_right]
 
 /- English proof (translation)
-Introduce `hLaws R _ _ _ _ I hI D A G _ _ U s hs`. Take `⟨sK, hsK⟩` from `exists_pull_val U.LG.isLB s (pullback.fst G.hom (jK R)) (φ' := fun _ : Fin 1 => pullback.fst G.hom (jK R)) (ε' := fun _ => ((1 : ℕ) : ℤ)) (fun U _ h => by simp only [Category.comp_id])`. Take `⟨E, hE, -⟩` from `(U.expand 1 le_rfl).1 sK`. Take `⟨g, hg, hgE⟩` from `GlobalTheory.T.expansion_integralSection_integral_noetherianLocal R I hI D A G U.toUnifPre 1 s sK (SectionScalarValuation.secScal_of_sval U.LG.isLB fun y J hJ => (hsK _ _ y J hJ).symm) E hE`. Take `⟨b, hb⟩` from `exists_secBGenerates hLaws.secBaseChange R I D`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨a, ha, -⟩` from `hb (g 0)`. Establish `hu : IsUnit a`. Assume the negation of the conclusion as `hn`. Take `⟨j, hj⟩` from `hs`. Use `hj (vanish_of_terms_mem hI U.toUnifPre 0 1 s g (hg 0) (fun α => ?_) j)` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[zero_add, pow_one]`. Distinguish the cases in `hα : α = 0`. Substitute `hα` using the available equality. Conclude with `⟨a, hn, b, ha⟩`. Take `⟨c, hc, g', hg'⟩` from `GlobalTheory.LevelOneIdeal.main hLaws.globalFns R I D E g hgE α hα`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨c, hI hc, g', hg'⟩`. Conclude with `fun e => ⟨g, hg e, secBGenerates_of_isUnit hb hu ha⟩`.
+Supply the required witnesses or components. Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem main : Laws → ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] [IsNoetherianRing R] (I : Ideal R), I ≤ maximalIdeal R → ∀ (D : DegData R I) (A : PolAV (Spec (CommRingCat.of (FractionRing R)))) (G : Over (Spec (CommRingCat.of R))) [GrpObj G] [IsCommMonObj G] (U : Unif I D A G) (s : H0 U.LG.L 1), NonzeroOnSpecial U s → IsTheta U s := by
   intro hLaws R _ _ _ _ I hI D A G _ _ U s hs

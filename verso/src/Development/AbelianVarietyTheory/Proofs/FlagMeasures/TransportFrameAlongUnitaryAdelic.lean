@@ -8,14 +8,14 @@ open scoped TensorProduct
 namespace GlobalTheory.St.G.FrMap
 
 /- English proof (translation)
-Simplify using `[hform, dotProduct, mulVec, Finset.mul_sum, mul_assoc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hform_eq_dot {A : Type} [CommRing A] {n : ℕ} (s : A →+* A) (J : Matrix (Fin n) (Fin n) A)
     (x y : Fin n → A) : hform s J x y = (fun i => s (x i)) ⬝ᵥ (J *ᵥ y) := by
   simp [hform, dotProduct, mulVec, Finset.mul_sum, mul_assoc]
 
 /- English proof (translation)
-Rewrite using `[hform_eq_dot, hform_eq_dot]`. Establish `h1 : (fun i => s ((M *ᵥ x) i)) = (M.map s) *ᵥ (fun i => s (x i))`. Use function extensionality and compare the values at `i`. Simplify using `[mulVec, dotProduct, map_sum]`. Rewrite using `[h1, cT, ← mulVec_mulVec, ← mulVec_mulVec, mulVec_transpose, dotProduct_comm, dotProduct_mulVec, dotProduct_comm]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem hform_mulVec {A : Type} [CommRing A] {n : ℕ} (s : A →+* A) (J M : Matrix (Fin n) (Fin n) A)
     (x y : Fin n → A) : hform s J (M *ᵥ x) (M *ᵥ y) = hform s (cT s M * J * M) x y := by
@@ -26,9 +26,9 @@ theorem hform_mulVec {A : Type} [CommRing A] {n : ℕ} (s : A →+* A) (J M : Ma
     dotProduct_comm]
 
 /- English proof (translation)
-Take `⟨s, hs, z, hz, rfl⟩` from `hx`. Set `f : (Fin n → A) →ₗ[O] (Fin n → A)` to `(Matrix.mulVecLin P).restrictScalars O`. Use `⟨P *ᵥ s, ?_, P *ᵥ z, hP z hz, by rw [mulVec_add, mulVec_smul]⟩` and prove the remaining obligations. Establish `: f s ∈ Submodule.span O (f '' S)`. Rewrite using `[← Submodule.map_span]`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.mem_map_of_mem hs`. Conclude with `Submodule.span_mono (by rintro _ ⟨t, ht, rfl⟩; exact hS t ht) this`.
+A detailed English derivation is pending.
 -/
 theorem inModL_map {A : Type} [CommRing A] {O : Subring A} {n : ℕ} {Λ Λ' : Submodule O (Fin n → A)} (m : ℕ)
     (P : Matrix (Fin n) (Fin n) A) (hP : ∀ z ∈ Λ, P *ᵥ z ∈ Λ') {S S' : Set (Fin n → A)}
@@ -41,53 +41,43 @@ theorem inModL_map {A : Type} [CommRing A] {O : Subring A} {n : ℕ} {Λ Λ' : S
   exact Submodule.span_mono (by rintro _ ⟨t, ht, rfl⟩; exact hS t ht) this
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ n σ J Λ Λ' g k h hΛ Fr`. Use `set M : Matrix (Fin n) (Fin n) (E ⊗[F] Ad F) := h.1.1 with hM`. Use `set Mi : Matrix (Fin n) (Fin n) (E ⊗[F] Ad F) := (h⁻¹).1.1 with hMi`. Establish `hMMi : M * Mi = 1`. Rewrite using `[hM, hMi]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `show (h.1 * h.1⁻¹).val = 1`. Rewrite using `[mul_inv_cancel]`. Both sides reduce to the same expression. Establish `hMiM : Mi * M = 1`. Rewrite using `[hM, hMi]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Use `show (h.1⁻¹ * h.1).val = 1`. Rewrite using `[inv_mul_cancel]`. Both sides reduce to the same expression. Establish `hinvM : ∀ u v, hR σ J (Ad F) (M *ᵥ u) (M *ᵥ v) = hR σ J (Ad F) u v`. Introduce `u v`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Unfold `hR`. Rewrite using `[hform_mulVec]`. Use `congr 1`. Conclude with `h.2`. Establish `hinvMi : ∀ u v, hR σ J (Ad F) (Mi *ᵥ u) (Mi *ᵥ v) = hR σ J (Ad F) u v`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Introduce `u v`. Unfold `hR`. Rewrite using `[hform_mulVec]`. Use `congr 1`. Conclude with `(h⁻¹).2`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hΛ'' : ∀ x, x ∈ Λ' ↔ M *ᵥ x ∈ Λ`. Introduce `x`. Rewrite using `[← hΛ (M *ᵥ x), mulVec_mulVec, hMiM, one_mulVec]`. Establish `hMiΛ : ∀ z ∈ Λ, Mi *ᵥ z ∈ Λ'` using `fun z hz => (hΛ z).2 hz`. Establish `hMΛ' : ∀ z ∈ Λ', M *ᵥ z ∈ Λ` using `fun z hz => (hΛ'' z).1 hz`.
+Establish an intermediate fact. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hMMiv : ∀ v, M *ᵥ (Mi *ᵥ v) = v` using `fun v => by rw [mulVec_mulVec, hMMi, one_mulVec]`. Establish `hMiMv : ∀ v, Mi *ᵥ (M *ᵥ v) = v` using `fun v => by rw [mulVec_mulVec, hMiM, one_mulVec]`. Set `Fr' : AdFrame σ J Λ' g k` to `{ eps := Fr.eps, eps_idem := Fr.eps_idem, eps_orth := Fr.eps_orth, eps_int := Fr.eps_int, eps_full := by`. Introduce `y hy`. Take `⟨z, hz, e⟩` from `Fr.eps_full (M *ᵥ y) (hMΛ' y hy)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `⟨Mi *ᵥ z, hMiΛ z hz, ?_⟩` and prove the remaining obligations. Use `congrArg (Mi *ᵥ ·) e` as an intermediate fact. Simplify using `only [mulVec_smul, hMiMv] at this`. Conclude with `this`. Use `b := fun i => Mi *ᵥ Fr.b i, bd := fun i => Mi *ᵥ Fr.bd i,`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `b_mem := fun i => hMiΛ _ (Fr.b_mem i), bd_mem := fun i => hMiΛ _ (Fr.bd_mem i),`. Use `b_eps := fun i => by show Mi *ᵥ Fr.b i = Fr.eps • (Mi *ᵥ Fr.b i)`. Rewrite using `[← mulVec_smul, ← Fr.b_eps i]`. Use `bd_eps := fun i => by show Mi *ᵥ Fr.bd i = sigR σ (Ad F) Fr.eps • (Mi *ᵥ Fr.bd i)`. Rewrite using `[← mulVec_smul, ← Fr.bd_eps i]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `dual := fun i j => by show ∃ t ∈ OAd F E, hR σ J (Ad F) (Mi *ᵥ Fr.bd i) (Mi *ᵥ Fr.b j) - _ = _`. Rewrite using `[hinvMi]`. Conclude with `Fr.dual i j`. Use `span := by`. Introduce `y hy`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Replace the relevant objects with their definitions.
 
-Use `inModL_map g Mi hMiΛ (S' := Set.range (fun i => Mi *ᵥ Fr.b i) ∪ Set.range (fun i => Mi *ᵥ Fr.bd i)) (by rintro _ (⟨i, rfl⟩ | ⟨i, rfl⟩); exacts [Or.inl ⟨i, rfl⟩, Or.inr ⟨i, rfl⟩]) (Fr.span (M *ᵥ y) (hMΛ' y hy))` as an intermediate fact. Rewrite `this` using `[hMiMv]`. Then use the resulting hypothesis. Use `psi := Fr.psi, psi_add := Fr.psi_add, psi_int := Fr.psi_int, psi_rat := Fr.psi_rat }`. Use `⟨Fr', fun y => ?_⟩` and prove the remaining obligations. Use `set Y : Matrix (Fin n) (Fin n) (E ⊗[F] Ad F) := y.1.1 with hY`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hconj : ((h⁻¹ * y * h : UPts σ J (Ad F)).1 : Matrix (Fin n) (Fin n) (E ⊗[F] Ad F)) = Mi * Y * M` using `rfl`. Establish `hc1 : M * (Mi * Y * M) = Y * M`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, hMMi, Matrix.one_mul]`. Establish `hc3 : M * (Mi * Y * M - 1) = (Y - 1) * M`. Rewrite using `[Matrix.mul_sub, hc1, Matrix.mul_one, Matrix.sub_mul, Matrix.one_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion.
 
-Establish `hc4 : (Mi * Y * M - 1) * Mi = Mi * (Y - 1)`. Rewrite using `[Matrix.sub_mul, Matrix.mul_assoc, hMMi, Matrix.mul_one, Matrix.one_mul, Matrix.mul_sub, Matrix.mul_one]`. Establish `hc5 : (Mi * Y * M) * Mi = Mi * Y`. Rewrite using `[Matrix.mul_assoc, hMMi, Matrix.mul_one]`. Prove the components needed by the constructor for the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Unfold `AdFrame.InK`. Rewrite using `[hconj]`. Establish `key1 : ∀ x, (Mi * Y * M) *ᵥ x ∈ Λ' ↔ Y *ᵥ (M *ᵥ x) ∈ Λ`. Introduce `x`. Rewrite using `[hΛ'', mulVec_mulVec, hc1, ← mulVec_mulVec]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `key2 : ∀ x, (Mi * Y * M - 1) *ᵥ x ∈ Λ' ↔ (Y - 1) *ᵥ (M *ᵥ x) ∈ Λ`. Introduce `x`. Rewrite using `[hΛ'', mulVec_mulVec, hc3, ← mulVec_mulVec]`. Establish `keyd : ∀ x, (∀ z ∈ Λ', hR σ J (Ad F) z x ∈ OAd F E) ↔ (∀ z ∈ Λ, hR σ J (Ad F) z (M *ᵥ x) ∈ OAd F E)`. Introduce `x`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Prove the components needed by the constructor for the conclusion. Introduce `H z hz`. Use `H _ (hMiΛ z hz)` as an intermediate fact. Rewrite `this` using `[← hinvM, hMMiv]`. Then use the resulting hypothesis. Introduce `H z hz`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations.
 
-Use `H _ (hMΛ' z hz)` as an intermediate fact. Rewrite `this` using `[hinvM]`. Then use the resulting hypothesis. Use `and_congr ?_ (and_congr ?_ ?_)` and prove the remaining obligations. Use `show (∀ x, x ∈ Λ ↔ Y *ᵥ x ∈ Λ) ↔ (∀ x, x ∈ Λ' ↔ (Mi * Y * M) *ᵥ x ∈ Λ')`. Prove the components needed by the constructor for the conclusion.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `H x`. Rewrite using `[hΛ'', key1]`. Conclude with `H _`. Introduce `H x`. Use `H (Mi *ᵥ x)` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Replace the relevant objects with their definitions.
 
-Rewrite `this` using `[hΛ'', key1, hMMiv]`. Then use the resulting hypothesis. Prove the components needed by the constructor for the conclusion. Introduce `H x hx`. Rewrite using `[key2]`. Conclude with `H _ ((keyd x).1 hx)`.
-
-Introduce `H x hx`. Use `H (Mi *ᵥ x) ((keyd _).2 (by rwa [hMMiv]))` as an intermediate fact. Rewrite `this` using `[key2, hMMiv]`. Then use the resulting hypothesis. Use `forall_congr' fun i => ?_ show _ ↔ InModL Λ' g ((fun j => Mi *ᵥ Fr.b j) '' {j | j.1 < i.1}) ((Mi * Y * M - 1) *ᵥ (Mi *ᵥ Fr.b i))` and prove the remaining obligations. Rewrite using `[mulVec_mulVec, hc4, ← mulVec_mulVec]`.
-
-Prove the components needed by the constructor for the conclusion. Introduce `H`. Conclude with `inModL_map g Mi hMiΛ (by rintro _ ⟨j, hj, rfl⟩; exact ⟨j, hj, rfl⟩) H`. Introduce `H`. Use `inModL_map g M hMΛ' (S' := Fr.b '' {j | j.1 < i.1}) (by rintro _ ⟨j, hj, rfl⟩; exact ⟨j, hj, (hMMiv _).symm⟩) H` as an intermediate fact.
-
-Rewrite `this` using `[hMMiv]`. Then use the resulting hypothesis. Unfold `AdFrame.chi`. Rewrite using `[hconj]`. Use `show Fr.psi _ = Fr.psi _`. Use `congr 2`.
-
-Unfold `supSum`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Use `split_ifs with hi`. Use `show hR σ J (Ad F) (Fr.bd i) (Y *ᵥ Fr.b _) = hR σ J (Ad F) (Mi *ᵥ Fr.bd i) ((Mi * Y * M) *ᵥ (Mi *ᵥ Fr.b _))`. Rewrite using `[mulVec_mulVec, hc5, ← mulVec_mulVec, hinvMi]`.
-
-Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem transport : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (n : ℕ) (σ : E →ₐ[F] E) (J : Matrix (Fin n) (Fin n) E) (Λ Λ' : Submodule (OAd F E) (Fin n → E ⊗[F] Ad F)) (g k : ℕ) (h : UPts σ J (Ad F)), (∀ x, (h⁻¹).1.1 *ᵥ x ∈ Λ' ↔ x ∈ Λ) → ∀ Fr : AdFrame σ J Λ g k, ∃ Fr' : AdFrame σ J Λ' g k, ∀ y : UPts σ J (Ad F), (Fr.InK y.1 ↔ Fr'.InK (h⁻¹ * y * h : UPts σ J (Ad F)).1) ∧ Fr.chi y.1 = Fr'.chi (h⁻¹ * y * h : UPts σ J (Ad F)).1 := by
   intro F E _ _ _ _ _ n σ J Λ Λ' g k h hΛ Fr

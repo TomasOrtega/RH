@@ -19,7 +19,7 @@ section Side
 variable {EE : Type} [NormedAddCommGroup EE] [InnerProductSpace ℂ EE] [FiniteDimensional ℂ EE] (S : RowSide D EE)
 
 /- English proof (translation)
-Proceed by induction on `j with`. Consider the case `zero => rfl`. Consider the case `succ j ih => exact congrArg (fun f => f.comp (S.io μ j)) ih`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem downTo_tr (μ : D.what₂.Tup) (j : ℕ) : (sideTr Λ S).downTo μ j = S.downTo μ j := by
   induction j with
@@ -27,25 +27,25 @@ theorem downTo_tr (μ : D.what₂.Tup) (j : ℕ) : (sideTr Λ S).downTo μ j = S
   | succ j ih => exact congrArg (fun f => f.comp (S.io μ j)) ih
 
 /- English proof (translation)
-Unfold `RowSide.iota`. Rewrite using `[downTo_tr]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem iota_tr (μ : D.what₂.Tup) : (sideTr Λ S).iota μ = S.iota μ := by
   unfold RowSide.iota; rw [downTo_tr]; rfl
 
 /- English proof (translation)
-Unfold `RowSide.Qsp RowSide.Usp`. Rewrite using `[iota_tr]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem Qsp_tr (μ : D.what₂.Tup) : (sideTr Λ S).Qsp μ = S.Qsp μ := by
   unfold RowSide.Qsp RowSide.Usp; rw [iota_tr]; rfl
 
 /- English proof (translation)
-Unfold `RowSide.RRset RowSide.LamSet`. Rewrite using `[iota_tr]`. Simplify using `only [Qsp_tr]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem RRset_tr (μ : D.what₂.Tup) : (sideTr Λ S).RRset μ = S.RRset μ := by
   unfold RowSide.RRset RowSide.LamSet; rw [iota_tr]; simp only [Qsp_tr]; rfl
 
 /- English proof (translation)
-Establish `key : ∀ (f f' : S.Amb D.what₂.mu0 →ₗ[ℂ] EE) (Q Q' : Submodule ℂ (S.Amb D.what₂.mu0)), f = f' → Q = Q' → f.domRestrict Q ∘ₗ LinearMap.adjoint (f.domRestrict Q) = f'.domRestrict Q' ∘ₗ LinearMap.adjoint (f'.domRestrict Q')`. Introduce and unpack `_ _ _ _ rfl rfl`. Both sides reduce to the same expression. Conclude with `key _ _ _ _ (iota_tr Λ S _) (Qsp_tr Λ S _)`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem iiStar_tr : (sideTr Λ S).iiStar = S.iiStar := by
   have key : ∀ (f f' : S.Amb D.what₂.mu0 →ₗ[ℂ] EE) (Q Q' : Submodule ℂ (S.Amb D.what₂.mu0)), f = f' → Q = Q' →
@@ -54,13 +54,13 @@ theorem iiStar_tr : (sideTr Λ S).iiStar = S.iiStar := by
   exact key _ _ _ _ (iota_tr Λ S _) (Qsp_tr Λ S _)
 
 /- English proof (translation)
-Unfold `RowSide.kapOf RowSide.kapRatio`. Rewrite using `[iiStar_tr]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem kapOf_tr {n : ℕ} (ty : Fin n → D.what₂.FT) : (sideTr Λ S).kapOf ty = S.kapOf ty := by
   unfold RowSide.kapOf RowSide.kapRatio; rw [iiStar_tr]; rfl
 
 /- English proof (translation)
-Establish `e : (sideTr Λ S).RRset = S.RRset` using `funext (RRset_tr Λ S)`. Unfold `RowSide.RRDef`. Rewrite using `[e]`. Conclude with `H`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rrDef_tr (H : S.RRDef) : (sideTr Λ S).RRDef := by
   have e : (sideTr Λ S).RRset = S.RRset := funext (RRset_tr Λ S)
@@ -69,7 +69,7 @@ theorem rrDef_tr (H : S.RRDef) : (sideTr Λ S).RRDef := by
 end Side
 
 /- English proof (translation)
-The claim follows from `kapOf_tr Λ (RowSide.sharp D) _`.
+A detailed English derivation is pending.
 -/
 theorem kapSharp_tr : kapSharp (cut D Λ) = kapSharp D := kapOf_tr Λ (RowSide.sharp D) _
 

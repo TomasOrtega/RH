@@ -5,7 +5,7 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.LiteratureResults.
 namespace PositivityTheory.KB.SplitAffineSpectral
 
 /- English proof (translation)
-The claim follows from `NormTraceLemmas.core_of NormTraceLemmas.splitA NormTraceLemmas.splitS NormTraceLemmas.splitB NormTraceLemmas.zInv NormTraceLemmas.e2z NormTraceLemmas.e2s`.
+A detailed English derivation is pending.
 -/
 theorem core : Core :=
   NormTraceLemmas.core_of NormTraceLemmas.splitA NormTraceLemmas.splitS NormTraceLemmas.splitB NormTraceLemmas.zInv NormTraceLemmas.e2z NormTraceLemmas.e2s

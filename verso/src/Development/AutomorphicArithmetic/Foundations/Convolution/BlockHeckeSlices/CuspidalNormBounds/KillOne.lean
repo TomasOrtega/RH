@@ -13,13 +13,13 @@ namespace UpperTheory.ConvolutionTheory.BW
 open GlobalTheory.CuspRep PositivityTheory.Rg.Fx UpperTheory.V.Cm
 
 /- English proof (translation)
-Rewrite using `[Finset.sum_sigma']`. Use `Finset.sum_bij' (fun A _ => ⟨A 0, Fin.tail A⟩) (fun p _ => Fin.cons p.1 p.2) ?_ ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `A hA`. Simplify using `only [Finset.mem_piAntidiag, Finset.mem_univ, implies_true, and_true, Fin.sum_univ_succ, Finset.mem_sigma, Finset.mem_range] at hA ⊢`. Use `⟨by omega, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Express the relevant statement in the definitionally equal form `∑ i : Fin m, A i.succ = _`. Use linear arithmetic over natural numbers and integers. Introduce `p hp`. Simplify using `only [Finset.mem_piAntidiag, Finset.mem_univ, implies_true, and_true, Fin.sum_univ_succ, Finset.mem_sigma, Finset.mem_range, Fin.cons_zero, Fin.cons_succ] at hp ⊢`. Establish `h2 : ∑ i, p.2 i = j - p.1` using `hp.2`.
+Express the relevant assertion in an equivalent form by its definition. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Introduce `A _`. Conclude with `Fin.cons_self_tail A`. Introduce `p _`. Simplify using the standard rewrite rules.
+Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `A _`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem sum_pi {m j : ℕ} (F : (Fin (m + 1) → ℕ) → ℂ) :
     ∑ A ∈ Finset.piAntidiag Finset.univ j, F A =
@@ -45,19 +45,19 @@ private theorem sum_pi {m j : ℕ} (F : (Fin (m + 1) → ℕ) → ℂ) :
     simp
 
 /- English proof (translation)
-Simplify using `[Multiset.esymm]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem esymm_zero' (s : Multiset ℂ) : s.esymm 0 = 1 := by simp [Multiset.esymm]
 
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.Qk43.esymm_add s t j`.
+A detailed English derivation is pending.
 -/
 private theorem esymm_add' (s t : Multiset ℂ) (j : ℕ) :
     (s + t).esymm j = ∑ a ∈ Finset.range (j + 1), s.esymm a * t.esymm (j - a) :=
   _root_.UpperTheory.Reformulated.B.Qk43.esymm_add s t j
 
 /- English proof (translation)
-The claim follows from `| 0, M, 0 => by simp [esymm_zero'] | 0, M, j + 1 => by simp [Multiset.esymm, Multiset.powersetCard_zero_right] | m + 1, M, j => by rw [Fin.sum_univ_succ, esymm_add', sum_pi] refine Finset.sum_congr rfl fun a _ => ?_ rw [esymm_sum m, Finset.mul_sum] simp only [Fin.prod_univ_succ, …`.
+A detailed English derivation is pending.
 -/
 private theorem esymm_sum : ∀ (m : ℕ) (M : Fin m → Multiset ℂ) (j : ℕ),
     (∑ l, M l).esymm j = ∑ a ∈ Finset.piAntidiag Finset.univ j, ∏ l, (M l).esymm (a l)
@@ -72,13 +72,13 @@ private theorem esymm_sum : ∀ (m : ℕ) (M : Fin m → Multiset ℂ) (j : ℕ)
 variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {S : Set (Pl E)} {n : ℕ}
 
 /- English proof (translation)
-Establish `hq : qc k.1 ≠ 0` using `Nat.cast_ne_zero.2 (GlobalTheory.LFun.qV_ne_zero k.1)`. Rewrite using `[Dat.hEP, map_sum, Dat.ptH, Dat.ptS, esymm_sum]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Establish `e : ∀ (v : Fin d.len → ℝ) (c : ℂ), ev z (AddMonoidAlgebra.single v (MvPolynomial.C c)) = c * Complex.exp (∑ l, (v l : ℂ) * z l)` using `fun v c => by`. Simplify using `[ev, lift, AddMonoidAlgebra.liftNCRingHom, expChar]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[e, Complex.exp_sum, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun l _ => ?_` and prove the remaining obligations. Establish `h` using `Multiset.pow_smul_esymm (qc k.1 ^ (-(z l + d.rho l))) (a l) ((d.sat l k.1).map fun x : ℂˣ => (x : ℂ))`. Simplify using `only [smul_eq_mul, Multiset.map_map, Function.comp_def] at h`. Simplify using `only [mul_comm _ (qc k.1 ^ (-(z l + d.rho l)))]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[← h, mul_assoc, mul_comm]`. Use `congr 1`. Rewrite using `[← Complex.cpow_natCast, Complex.cpow_def_of_ne_zero hq, Complex.cpow_natCast, Complex.cpow_def_of_ne_zero hq, ← Complex.exp_nat_mul, ← Complex.exp_add]`. Use `congr 1`. Simplify using `only [Pi.neg_apply]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Use `push_cast`. Unfold `qc`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Replace the relevant objects with their definitions. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem ev_hEP (d : Dat S n) (z : Fin d.len → ℂ) (k : Pl E × Fin n) :
     ev z (d.hEP k) = d.ptH (fun l => z l + d.rho l) k := by
@@ -104,9 +104,9 @@ private theorem ev_hEP (d : Dat S n) (z : Fin d.len → ℂ) (k : Pl E × Fin n)
   ring
 
 /- English proof (translation)
-Introduce `x hx`. Use `hF x ((MvPolynomial.mem_vars_iff_mem_support x).2 ⟨β, ?_, hx⟩)` and prove the remaining obligations. Assume the negation of the conclusion as `hn`. Establish `h` using `congrArg (MvPolynomial.coeff β) (hG k)`. Rewrite using `[MvPolynomial.coeff_map, pieceK, MvPolynomial.coeff_sum, Finset.sum_eq_zero fun γ hγ => by`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h` using `[MvPolynomial.coeff_monomial, if_neg fun e : γ = β => hn (e ▸ hγ)]]`. Conclude with `MvPolynomial.mem_support_iff.1 hβ (UpperTheory.ConvolutionTheory.FX.blockE_inj (E →+* ℂ) n (h.trans (map_zero _).symm))`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem supp_good {F : KF ((E →+* ℂ) × Fin n) (Pl E × Fin n)}
     {G : ℕ → MvPolynomial (Pl E × Fin n) (MvPolynomial ((E →+* ℂ) × Fin n) ℂ)} (hF : ∀ x ∈ F.vars, x.1 ∉ S) (hG : Gen F G)
@@ -121,9 +121,9 @@ private theorem supp_good {F : KF ((E →+* ℂ) × Fin n) (Pl E × Fin n)}
   exact MvPolynomial.mem_support_iff.1 hβ (UpperTheory.ConvolutionTheory.FX.blockE_inj (E →+* ℂ) n (h.trans (map_zero _).symm))
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => simp`. Consider the case `cons i l ih`. Introduce `v`. Establish `hp : ∀ (m : ℕ) (v : V), ((f i ^ m • v : V) : M) = (g i ^ m) v` using `fun m => by`.
+Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Proceed by induction on `m with`. Consider the case `zero => simp`. Consider the case `succ m ih => intro v; rw [pow_succ', pow_succ', mul_smul, h i (by simp), ih, Module.End.mul_apply]`. Rewrite using `[List.map_cons, List.map_cons, List.prod_cons, List.prod_cons, mul_smul, hp, Module.End.mul_apply, ih fun j hj => h j (List.mem_cons_of_mem _ hj)]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 private theorem list_rel {M A ι : Type} [AddCommGroup M] [Module ℂ M] {V : Submodule ℂ M} [CommRing A] [Module A V]
     (f : ι → A) (g : ι → Module.End ℂ M) (e : ι → ℕ) (l : List ι) (h : ∀ i ∈ l, ∀ v : V, ((f i • v : V) : M) = g i v) :
@@ -143,13 +143,13 @@ end UpperTheory.ConvolutionTheory.BW
 
 open UpperTheory.ConvolutionTheory.BW GlobalTheory.CuspRep PositivityTheory.Rg.Fx in
 /- English proof (translation)
-Introduce `E _ _ _ S n C d φ F G hC hb hs hF hK hG t`. Take `⟨A, _, _, _, _, Z, H, I, T, hZ, hH, hsys⟩` from `exists_sys d hC`. Establish `h` using `absKill (E →+* ℂ) (Pl E × Fin n) A (bsp S n hC) n d.len Z H I T (cmp d hC) d.idx d.lamR d.hEP _ C hsys F G hF (fun z => by`. Use `hK fun l => z l + d.rho l` as an intermediate fact. Rewrite using `[← this]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 2`. Use function extensionality and compare the values at `p`. Simplify using `only [Dat.lamR, Dat.ptL]`. Expand and normalize the polynomial expressions, which then agree. Use function extensionality and compare the values at `k`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `ev_hEP d z k) hG ⟨φ, hb, hs⟩ t`. Establish `e : ∀ k (v : bsp S n hC), ((MvPolynomial.eval₂ (MvPolynomial.aeval Z).toRingHom H (G k) • v : bsp S n hC) : Sm E n) = app (G k) v` using `fun k v => by`. Rewrite using `[MvPolynomial.eval₂_eq, Finset.sum_smul, Submodule.coe_sum, app, LinearMap.sum_apply]`. Use `Finset.sum_congr rfl fun β hβ => ?_` and prove the remaining obligations. Rewrite using `[mul_smul, Module.End.mul_apply, hmon, ← Finset.prod_map_toList, ← list_rel H (fun p => hk n p.1 (p.2 + 1)) β _ fun p hp => hH p (supp_good hF hG k hβ p (Finset.mem_toList.1 hp))]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Conclude with `hZ _ _`. Use `h using 2 with k` and compare the differences between its conclusion and the goal. Conclude with `congrArg (fun ψ : Sm E n => d.comp ψ.1 t) (e k ⟨φ, hb, hs⟩).symm`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.BW.killOne :
     ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E], UpperTheory.ConvolutionTheory.BW.KillOne E := by

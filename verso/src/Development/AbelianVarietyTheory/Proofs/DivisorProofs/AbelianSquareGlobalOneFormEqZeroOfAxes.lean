@@ -20,13 +20,11 @@ namespace GlobalTheory.AbCoh.AxesForm
 open GlobalTheory.AbCoh.PrimForm
 
 /- English proof (translation)
-Introduce `R _ A _ g hA hg y h₁ h₂`. Take `⟨hA2, hg2⟩` from `(GlobalTheory.T.abelian_square_affine_h1_vanish R).1 A g hA hg`. Take `⟨f1, p1, r1⟩` from `GlobalTheory.T.abelianScheme_global_oneForms_projective_rank R A g hA hg`. Take `⟨f2, p2, r2⟩` from `GlobalTheory.T.abelianScheme_global_oneForms_projective_rank R (A ⊗ A) (g + g) hA2 hg2`. Set `N : GlobForm (A ⊗ A).hom →ₗ[R] GlobForm A.hom × GlobForm A.hom` to `LinearMap.prod (pF (lift (𝟙 A) (toUnit A ≫ η[A]))) (pF (lift (toUnit A ≫ η[A]) (𝟙 A)))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Set `P : GlobForm A.hom × GlobForm A.hom →ₗ[R] GlobForm (A ⊗ A).hom` to `LinearMap.coprod (pF (fst A A)) (pF (snd A A))`. Establish `hNP : N ∘ₗ P = LinearMap.id`. Use `LinearMap.ext fun x ↦ Prod.ext ?_ ?_` and prove the remaining obligations. Use `show pF (lift (𝟙 A) (toUnit A ≫ η[A])) (pF (fst A A) x.1 + pF (snd A A) x.2) = x.1`. Rewrite using `[map_add, pF_comp, pF_comp, lift_fst, lift_snd, pF_id, pF_unit, add_zero]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `show pF (lift (toUnit A ≫ η[A]) (𝟙 A)) (pF (fst A A) x.1 + pF (snd A A) x.2) = x.2`. Rewrite using `[map_add, pF_comp, pF_comp, lift_fst, lift_snd, pF_id, pF_unit, zero_add]`. Establish `hinj` using `GlobalTheory.Obs.Axes.injective_of_section N P hNP (fun p ↦ by`. Rewrite using `[Module.rankAtStalk_prod, Pi.add_apply, r1, r2])`. Use `hinj (?_ : N y = N 0)` and prove the remaining obligations.
-
-Rewrite using `[map_zero]`. Conclude with `Prod.ext h₁ h₂`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_axes : ∀ (R : Type) [CommRing R] (A : Over (Sp R)) [GrpObj A] (g : ℕ), IsAbelianScheme A → SmoothOfRelativeDimension g A.hom → ∀ y : GlobForm (A ⊗ A).hom, GlobalTheory.AbCoh.pF (lift (𝟙 A) (toUnit A ≫ η[A])) y = 0 → GlobalTheory.AbCoh.pF (lift (toUnit A ≫ η[A]) (𝟙 A)) y = 0 → y = 0 := by
   intro R _ A _ g hA hg y h₁ h₂

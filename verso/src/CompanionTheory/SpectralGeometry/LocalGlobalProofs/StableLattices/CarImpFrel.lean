@@ -12,11 +12,11 @@ def bil {ι A : Type} [Fintype ι] [Ring A] [Algebra ℂ A] (c a : ι → A) (m 
   ∑ i, ∑ j, m i j • (c i * a j)
 
 /- English proof (translation)
-Establish `h1 : a j * c k = (if j = k then 1 else 0) - c k * a j` using `eq_sub_of_add_eq (hac j k)`. Establish `h2 : a l * c i = (if l = i then 1 else 0) - c i * a l` using `eq_sub_of_add_eq (hac l i)`. Establish `h3 : c k * c i = - (c i * c k)` using `eq_neg_of_add_eq_zero_left (hcc k i)`. Establish `h4 : a l * a j = - (a j * a l)` using `eq_neg_of_add_eq_zero_left (haa l j)`. Establish `e1 : (c i * a j) * (c k * a l) = (if j = k then c i * a l else 0) - (c i * c k) * (a j * a l)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[mul_assoc, ← mul_assoc (a j), h1]`. Apply the tactic sequence `split_ifs <;> noncomm_ring`. Establish `e2 : (c k * a l) * (c i * a j) = (if l = i then c k * a j else 0) - (c k * c i) * (a l * a j)`. Rewrite using `[mul_assoc, ← mul_assoc (a l), h2]`. Apply the tactic sequence `split_ifs <;> noncomm_ring`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[e1, e2, h3, h4]`. Use `noncomm_ring`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pair_comm {ι A : Type} [DecidableEq ι] [Ring A] (c a : ι → A)
     (haa : ∀ i j, a i * a j + a j * a i = 0) (hcc : ∀ i j, c i * c j + c j * c i = 0)
@@ -37,21 +37,21 @@ theorem pair_comm {ι A : Type} [DecidableEq ι] [Ring A] (c a : ι → A)
   noncomm_ring
 
 /- English proof (translation)
-Establish `e1 : bil c a m * bil c a m' = ∑ i, ∑ j, ∑ k, ∑ l, (m i j * m' k l) • ((c i * a j) * (c k * a l))`. Unfold `bil`. Rewrite using `[Finset.sum_mul]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_mul]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[smul_mul_smul_comm]`. Establish `e2 : bil c a m' * bil c a m = ∑ i, ∑ j, ∑ k, ∑ l, (m i j * m' k l) • ((c k * a l) * (c i * a j))`. Unfold `bil`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_mul]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[smul_mul_smul_comm, mul_comm (m' k l)]`. Establish `e3 : ∑ i, ∑ j, ∑ k, ∑ l, (m i j * m' k l) • (if j = k then c i * a l else 0) = ∑ i, ∑ l, (∑ k, m i k * m' k l) • (c i * a l)`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [Finset.sum_smul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.sum_comm (f := fun l k => (m i k * m' k l) • (c i * a l))]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`. Simplify using the standard rewrite rules. Establish `e4 : ∑ i, ∑ j, ∑ k, ∑ l, (m i j * m' k l) • (if l = i then c k * a j else 0) = ∑ i, ∑ l, (∑ k, m' i k * m k l) • (c i * a l)`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `: ∀ i j k, ∑ l, (m i j * m' k l) • (if l = i then c k * a j else 0) = (m' k i * m i j) • (c k * a j)`. Introduce `i j k`. Simplify using `[mul_comm]`. Simplify using `only [this, Finset.sum_smul]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[e1, e2]`. Simplify using `only [← Finset.sum_sub_distrib, ← smul_sub, pair_comm c a haa hcc hac]`. Simplify using `only [smul_sub, Finset.sum_sub_distrib, e3, e4, bil, sub_smul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem bil_comm {ι A : Type} [Fintype ι] [DecidableEq ι] [Ring A] [Algebra ℂ A] (c a : ι → A)
     (haa : ∀ i j, a i * a j + a j * a i = 0) (hcc : ∀ i j, c i * c j + c j * c i = 0)
@@ -111,7 +111,7 @@ variable {n : ℕ}
 def dl (x y : Fin n) : ℂ := if x = y then 1 else 0
 
 /- English proof (translation)
-Simplify using `only [dl, eq_comm]`.
+Simplify using the standard rewrite rules.
 -/
 theorem dl_comm (x y : Fin n) : dl x y = dl y x := by
   simp only [dl, eq_comm]
@@ -120,7 +120,7 @@ def mm (c d : Fin n) (x y : Fin n × Fin n) : ℂ :=
   dl x.1 c * dl y.1 d * dl x.2 y.2 - dl x.2 d * dl y.2 c * dl x.1 y.1
 
 /- English proof (translation)
-Unfold `Gop bil`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Use `congr 1`. Simplify using `only [mm, dl, ite_and, mul_ite, mul_one, mul_zero]`. Apply the tactic sequence `split_ifs <;> simp_all`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem gop_eq (ε : Fin n → Bool) (V : Type) [AddCommGroup V] [Module ℂ V] (c d : Fin n) :
     (Gop ε c d : Module.End ℂ (Ch ε V)) = bil cre ann (fun i j : NC ε => mm c d i.1 j.1) := by
@@ -131,9 +131,9 @@ theorem gop_eq (ε : Fin n → Bool) (V : Type) [AddCommGroup V] [Module ℂ V] 
   split_ifs <;> simp_all
 
 /- English proof (translation)
-Rewrite using `[Finset.sum_eq_single (⟨(x, y), hx, hy⟩ : NC ε)]`. Simplify using `[dl]`. Introduce and unpack `⟨⟨u, v⟩, h⟩ _ hne`. Distinguish the cases in `h1 : u = x`. Distinguish the cases in `h2 : v = y`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails.
 
-Substitute `h1 h2` using the available equality. Conclude with `absurd rfl hne`. Simplify using `[dl, h2]`. Simplify using `[dl, h1]`. Simplify using the standard rewrite rules.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sum_pt (ε : Fin n → Bool) (x y : Fin n) (hx : ε x = true) (hy : ε y = false)
     (f : Fin n × Fin n → ℂ) : ∑ k : NC ε, dl k.1.1 x * dl k.1.2 y * f k.1 = f (x, y) := by
@@ -148,11 +148,11 @@ theorem sum_pt (ε : Fin n → Bool) (x y : Fin n) (hx : ε x = true) (hy : ε y
   · simp
 
 /- English proof (translation)
-Establish `e : ∀ k : NC ε, mm a b i.1 k.1 * f k.1 = dl i.1.1 a * (dl k.1.1 b * dl k.1.2 i.1.2 * f k.1) - dl i.1.2 b * (dl k.1.1 i.1.1 * dl k.1.2 a * f k.1)`. Introduce `k`. Rewrite using `[mm, dl_comm i.1.2 k.1.2, dl_comm i.1.1 k.1.1]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [e, Finset.sum_sub_distrib, ← Finset.mul_sum]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
 
-Use `congr 1`. Distinguish the cases in `h : i.1.1 = a`. Rewrite using `[sum_pt ε b i.1.2 (by rw [← hab, ← h]; exact i.2.1) i.2.2]`. Simplify using `[dl, h]`. Distinguish the cases in `h : i.1.2 = b`.
+Reduce the equality to equality of the corresponding arguments. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[sum_pt ε i.1.1 a i.2.1 (by rw [hab, ← h]; exact i.2.2)]`. Simplify using `[dl, h]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem sum_mm (ε : Fin n → Bool) (a b : Fin n) (hab : ε a = ε b) (i : NC ε) (f : Fin n × Fin n → ℂ) :
     ∑ k : NC ε, mm a b i.1 k.1 * f k.1 = dl i.1.1 a * f (b, i.1.2) - dl i.1.2 b * f (i.1.1, a) := by
@@ -170,11 +170,11 @@ theorem sum_mm (ε : Fin n → Bool) (a b : Fin n) (hab : ε a = ε b) (i : NC �
     · simp [dl, h]
 
 /- English proof (translation)
-Introduce `a b c d hab hcd`. Establish `hr : ∀ (x y : Fin n) (T : Module.End ℂ (Ch ε V)), (if x = y then T else 0) = dl x y • T`. Apply the tactic sequence `intro x y T; unfold dl; split_ifs <;> simp`. Simplify using `only [gop_eq, hr]`. Rewrite using `[bil_comm cre ann (fun i j => (h n ε V i j).1) (fun i j => (h n ε V i j).2.1) (fun i j => by convert (h n ε V i j).2.2)]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [bil, Finset.smul_sum, ← Finset.sum_sub_distrib, smul_smul, ← sub_smul]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Use `congr 1`. Rewrite using `[Finset.sum_sub_distrib, sum_mm ε a b hab i (fun k => mm c d k j.1), sum_mm ε c d hcd i (fun k => mm a b k j.1)]`. Simplify using `only [mm]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[dl_comm b j.1.1, dl_comm d j.1.1, dl_comm a j.1.2, dl_comm c j.1.2, dl_comm a d, dl_comm c b]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem gop_rel (h : CAR) (ε : Fin n → Bool) (V : Type) [AddCommGroup V] [Module ℂ V] :
     KRel ε (Gop ε : Fin n → Fin n → Module.End ℂ (Ch ε V)) := by
@@ -197,9 +197,9 @@ section
 variable {ε : Fin n → Bool} {V : Type} [AddCommGroup V] [Module ℂ V]
 
 /- English proof (translation)
-Establish `ha : ∀ i : NC ε, Commute (lift ε T : Module.End ℂ (Ch ε V)) (ann i)`. Introduce `i`. Use `LinearMap.ext fun x => funext fun A => ?_` and prove the remaining obligations. Apply the tactic sequence `by_cases h : i ∈ A <;> simp [ann, h]`. Establish `hc : ∀ i : NC ε, Commute (lift ε T : Module.End ℂ (Ch ε V)) (cre i)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Introduce `i`. Use `LinearMap.ext fun x => funext fun A => ?_` and prove the remaining obligations. Apply the tactic sequence `by_cases h : i ∈ A <;> simp [cre, h]`. Unfold `Gop`. Conclude with `Commute.sum_right _ _ _ fun i _ => Commute.sum_right _ _ _ fun j _ => ((hc i).mul_right (ha j)).smul_right _`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem lift_gop (T : Module.End ℂ V) (c d : Fin n) :
     Commute (lift ε T : Module.End ℂ (Ch ε V)) (Gop ε c d) := by
@@ -216,7 +216,7 @@ theorem lift_gop (T : Module.End ℂ V) (c d : Fin n) :
     ((hc i).mul_right (ha j)).smul_right _
 
 /- English proof (translation)
-Introduce `a b c d hab hcd`. Use `LinearMap.ext fun x => funext fun A => ?_` and prove the remaining obligations. Use `LinearMap.congr_fun (hE a b c d hab hcd) (x A)` as an intermediate fact. Apply the tactic sequence `split_ifs at this ⊢ <;> simpa using this`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem lift_rel (E : Fin n → Fin n → Module.End ℂ V) (hE : KRel ε E) :
     KRel ε (fun c d => (lift ε (E c d) : Module.End ℂ (Ch ε V))) := by
@@ -228,11 +228,11 @@ theorem lift_rel (E : Fin n → Fin n → Module.End ℂ V) (hE : KRel ε E) :
 end
 
 /- English proof (translation)
-Introduce `a b c d hab hcd`. Establish `h1` using `hL a b c d hab hcd`. Establish `h2` using `hG a b c d hab hcd`. Establish `h3` using `(hc a b c d).eq`. Establish `h4` using `(hc c d a b).eq`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: (L a b + G a b) * (L c d + G c d) - (L c d + G c d) * (L a b + G a b) = (L a b * L c d - L c d * L a b) + (G a b * G c d - G c d * G a b)`. Simplify using `only [mul_add, add_mul, h3, h4]`. Normalize the expressions using the abelian group laws. Simplify using `only []`. Rewrite using `[this, h1, h2]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `split_ifs <;> abel`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem add_rel {A : Type} [Ring A] (ε : Fin n → Bool) (L G : Fin n → Fin n → A) (hL : KRel ε L) (hG : KRel ε G)
     (hc : ∀ a b c d, Commute (L a b) (G c d)) : KRel ε (fun c d => L c d + G c d) := by
@@ -249,9 +249,9 @@ theorem add_rel {A : Type} [Ring A] (ε : Fin n → Bool) (L G : Fin n → Fin n
   split_ifs <;> abel
 
 /- English proof (translation)
-Introduce `a b c d hab hcd`. Establish `h` using `hG b a d c hab.symm hcd.symm`. Simplify using `only [neg_mul_neg]`. Rewrite using `[h]`. Simplify using `only [eq_comm (a := a) (b := d), eq_comm (a := c) (b := b)]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `split_ifs <;> abel`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem neg_rel {A : Type} [Ring A] (ε : Fin n → Bool) (G : Fin n → Fin n → A) (hG : KRel ε G) :
     KRel ε (fun c d => -G d c) := by
@@ -263,7 +263,7 @@ theorem neg_rel {A : Type} [Ring A] (ε : Fin n → Bool) (G : Fin n → Fin n �
   split_ifs <;> abel
 
 /- English proof (translation)
-Introduce `n ε V _ _ E hE`. Use `⟨add_rel ε _ _ (lift_rel E hE) (gop_rel h ε V) fun a b c d => lift_gop _ c d, ?_⟩` and prove the remaining obligations. Use `add_rel ε _ _ (lift_rel E hE) (neg_rel ε _ (gop_rel h ε V)) fun a b c d => (lift_gop _ d c).neg_right` as an intermediate fact. Simplify using `only [← sub_eq_add_neg] at this`. Conclude with `this`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem frel_of_car (h : CAR) : FRel := by
   intro n ε V _ _ E hE
@@ -273,7 +273,7 @@ theorem frel_of_car (h : CAR) : FRel := by
   exact this
 
 /- English proof (translation)
-The claim follows from `frel_of_car`.
+A detailed English derivation is pending.
 -/
 theorem car_imp_frel : CompanionTheory.D.DSIC.CAR → CompanionTheory.D.DSIC.FRel := frel_of_car
 

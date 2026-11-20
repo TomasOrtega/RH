@@ -10,9 +10,9 @@ open Module Formalism.WeaklyAdmissibleFiltrations Formalism.BasicNotions Formali
   Formalism.MainNotions.RamifiedCoefficientChains.S9.ShB Formalism.MainNotions.RamifiedCoefficientChains.S9.DetS TensorProduct
 
 /- English proof (translation)
-Establish `h` using `congrArg (fun M => PowerSeries.constantCoeff (Matrix.det M)) hid`. Simplify using `only [Matrix.det_mul, map_mul, Matrix.det_diagonal, map_prod] at h`. Establish `hZd : Zext.map PowerSeries.constantCoeff = Matrix.diagonal zz`. Apply the tactic sequence `ext l k; simp only [Matrix.map_apply, hZ, Matrix.diagonal_apply]; split_ifs with h <;> simp [h]`. Rewrite `h` using `[RingHom.map_det PowerSeries.constantCoeff Zext]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[RingHom.map_det PowerSeries.constantCoeff QQ]`. Express the relevant statement in the definitionally equal form `(QQ.map PowerSeries.constantCoeff).det * _ = _ * (Zext.map PowerSeries.constantCoeff).det at h`. Rewrite `h` using `[hZd, Matrix.det_diagonal]`. Conclude with `h`.
+Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem det_const {O : Type} [CommRing O] {r : ℕ} (QQ P Zext : Matrix (Fin r) (Fin r) (PowerSeries O))
     (dd : Fin r → PowerSeries O) (zz : Fin r → O)
@@ -42,11 +42,11 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     (W : LocWach PD LL O v n)
 
 /- English proof (translation)
-Take `⟨L, hL⟩` from `Formalism.MainNotions.N.Pv.LocalLengthBound.rk_fildR_lo PD T.ρ τ`. Take `⟨H, hH⟩` from `Formalism.MainNotions.N.Pv.LocalLengthBound.rk_fildR_hi PD T.ρ τ`. Establish `hsub : Finset.Icc lo hi ⊆ Finset.Ico (min L lo) (max H (hi + 1))`. Introduce `a ha`. Simplify using `only [Finset.mem_Icc, Finset.mem_Ico] at ha ⊢`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `constructor <;> omega`. Establish `h1 : ∑ a ∈ Finset.Icc lo hi, multV PD T.ρ τ a = ∑ a ∈ Finset.Ico (min L lo) (max H (hi + 1)), multV PD T.ρ τ a`. Use `Finset.sum_subset hsub fun a _ ha => ?_` and prove the remaining obligations. Use `Formalism.MainNotions.N.Pv.LocalLengthBound.rk_multV_of_not_jump PD T.ρ τ a fun hj => ha ?_` and prove the remaining obligations. Conclude with `Finset.mem_Icc.mpr (hwin a hj)`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1, Formalism.MainNotions.N.Pv.LocalLengthBound.rk_sum_multV PD T.ρ τ _ _ (by omega), hL _ (min_le_left _ _), hH _ (le_max_left _ _), finrank_bot, Nat.cast_zero, sub_zero]`. Rewrite using `[← Formalism.MainNotions.N.Pv.LocalLengthBound.rk_DcrisL_map W hK hQ T hT τ, ← LinearEquiv.finrank_eq (Submodule.equivMapOfInjective _ (Formalism.MainNotions.N.Pv.LocalLengthBound.rk_ιV_inj PD) _)]`. Unfold `Formalism.MainNotions.LiftingTheory.Over at hτ`. Rewrite using `[hτ, Formalism.MainNotions.N.Pv.LocalLengthBound.rk_finrank_DcrisL W hK hQ T hT]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_mult_window (hK : Function.Bijective (algebraMap K₀ K)) (hQ : Formalism.MainNotions.RamifiedCoefficientChains.DdREqDcris PD LL)
     (T : LocLat G Qp LL O) (hT : IsCrys PD T.ρ) (i : ZMod n) (τ : K →ₐ[Qp] LL)
@@ -72,19 +72,19 @@ theorem sum_mult_window (hK : Function.Bijective (algebraMap K₀ K)) (hQ : Form
   rw [hτ, Formalism.MainNotions.N.Pv.LocalLengthBound.rk_finrank_DcrisL W hK hQ T hT]
 
 /- English proof (translation)
-Use `set h := ((bi + S : ℕ) : ℤ) with hh`. Establish `hsplit : Finset.Icc (-h) (η : ℤ) = Finset.Icc (-h) (-(η : ℤ) - 1) ∪ Finset.Icc (-(η : ℤ)) η`. Use extensionality with `a`. Simplify using `only [Finset.mem_union, Finset.mem_Icc]`. Move the coercions through the operations in `[hh] at *`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Establish `hdisj : Disjoint (Finset.Icc (-h) (-(η : ℤ) - 1)) (Finset.Icc (-(η : ℤ)) η)`. Rewrite using `[Finset.disjoint_left]`. Introduce `a ha hb`. Simplify using `only [Finset.mem_Icc] at ha hb`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Establish `e1 : h * finrank LL T.V + ∑ a ∈ Finset.Icc (-h) (η : ℤ), a * multV PD T.ρ τ a = ∑ a ∈ Finset.Icc (-h) (η : ℤ), multV PD T.ρ τ a * (h + a)`. Rewrite using `[← hsum, Finset.mul_sum, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun a _ => by ring` and prove the remaining obligations. Rewrite using `[e1, hsplit, Finset.sum_union hdisj]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Unfold `Formalism.MainNotions.RamifiedCoefficientChains.S9.Cut.lowSum`. Rewrite using `[← hh, add_sub_cancel_right]`. Establish `hle : ∀ a ∈ Finset.Icc (-h) (-(η : ℤ) - 1), multV PD T.ρ τ a * (h + a) ≤ (S : ℤ) * multV PD T.ρ τ a`. Introduce `a ha`. Simplify using `only [Finset.mem_Icc] at ha`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hj : IsJumpV PD T.ρ τ a`. Use `hwin a hj` as an intermediate fact. Simplify using `only [Set.mem_union, Set.mem_Icc] at this`. Break down `this with ⟨h1, h2⟩ | ⟨h1, h2⟩` into its components or cases. Establish `: h + a ≤ S` using `by rw [hh]; push_cast; omega`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Use polynomial arithmetic with `[hnn a]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[Formalism.MainNotions.N.Pv.LocalLengthBound.rk_multV_of_not_jump PD T.ρ τ a hj]`. Simplify using the standard rewrite rules. Combine the equalities or inequalities in the displayed calculation.
+Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `mul_le_mul_of_nonneg_left _ (Nat.cast_nonneg _)` to reduce the goal to its premises. Rewrite using `[hsplit, Finset.sum_union hdisj]`. Establish `: 0 ≤ ∑ a ∈ Finset.Icc (-(η : ℤ)) η, multV PD T.ρ τ a` using `Finset.sum_nonneg fun a _ => hnn a`. Combine the linear equalities and inequalities to obtain the conclusion. Use `_ = (finrank LL T.V : ℤ) * S := by rw [hsum, mul_comm]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem deep_bound (T : LocLat G Qp LL O) (τ : K →ₐ[Qp] LL) (bi S η : ℕ) (hηb : η < bi)
     (hwin : JumpsInV PD T.ρ τ (Set.Icc (-((bi + S : ℕ) : ℤ)) (-(bi : ℤ)) ∪ Set.Icc (-(η : ℤ)) η))
@@ -143,11 +143,11 @@ def MiS (b : ZMod n → ℕ) (S η : ℕ) (i : ZMod n) : ZMod n → ℕ := fun j
 def hiS (b : ZMod n → ℕ) (S η : ℕ) (i : ZMod n) : ZMod n → ℕ := fun j => if j = i then η else b j + S + η
 
 /- English proof (translation)
-Introduce `j τ hτ a ha`. Establish `hw` using `Formalism.MainNotions.N.Pv.LocalLengthBound.rk_jumps₂ W hE hC hQ hS j τ hτ a ha`. Simplify using `only [MiS, hiS, Set.mem_Icc]`. Distinguish the cases in `hj : j = i`. Substitute `hj` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Establish `hηb` using `Formalism.MainNotions.N.Pv.LocalLengthBound.rk_eta_lt W hS j`. Unfold `JumpWinS at hw`. Simplify using `only [hie, if_true, Set.mem_union, Set.mem_Icc] at hw`. Use `push_cast`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Use linear arithmetic over natural numbers and integers.
 
-Simplify using `only [hj, if_false]`. Unfold `JumpWinS at hw`. Apply the tactic sequence `split_ifs at hw <;> (simp only [Set.mem_union, Set.mem_Icc] at hw; push_cast; omega)`.
+Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem jumps_in_letter_of_even_index (hE : Formalism.MainNotions.RamifiedCoefficientChains.DcrisExactStrict PD LL) (hC : Formalism.MainNotions.RamifiedCoefficientChains.CrysSubQuot PD LL)
     (hQ : Formalism.MainNotions.RamifiedCoefficientChains.DdREqDcris PD LL) {d : ℕ} {T₁ T₂ : LocLat G Qp LL O} {F : LatHom T₁.L T₂.L}
@@ -168,11 +168,11 @@ theorem jumps_in_letter_of_even_index (hE : Formalism.MainNotions.RamifiedCoeffi
     split_ifs at hw <;> (simp only [Set.mem_union, Set.mem_Icc] at hw; push_cast; omega)
 
 /- English proof (translation)
-Establish `hT : IsCrys PD T₂.ρ` using `hS.2.2.2.2.2.1.2.1`. Establish `hJL` using `jumps_in_letter_of_even_index W hE hC hQ hS i hie`. Establish `h5T` using `h5 T₂ (MiS b S η i) (hiS b S η i) hT (fun τ j hτ => hJL j τ hτ)`. Establish `hmem : e' k ∈ W.Nl T₂ (i - 1)` using `⟨e' k, (he'.1 k).1, by simpa using (he'.1 k).2.1⟩`. Establish `h1` using `h5T.1 i (e' k) hmem`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [MiS, if_true] at h1`. Take `⟨-, -, w, hw⟩` from `uniformizer_unit_and_q_factor W h9 hS.1 T₂ hT (by have := hS.2.1; omega)`. Rewrite `h1` using `[Formalism.MainNotions.RamifiedCoefficientChains.S9.NinQ.Q_eq_q W hS.1.2.1, hw, mul_pow, mul_smul]`. Establish `hN : Formalism.MainNotions.LiftingTheory.qp W ^ (b i + S) • W.φD T₂ (e' k) ∈ W.N T₂`. Use `(W.N T₂).smul_mem (((w⁻¹ : (LetA O n)ˣ) : LetA O n) ^ (b i + S)) h1` as an intermediate fact.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[smul_smul, ← mul_pow, Units.inv_mul, one_pow, one_smul]`. Then use the resulting hypothesis. Use `⟨hN, ?_, fun δ hδ => ?_⟩` and prove the remaining obligations. Rewrite using `[smul_comm, ← Formalism.MainNotions.RamifiedCoefficientChains.S9.NinQ.φA_letE W i, ← Formalism.MainNotions.RamifiedCoefficientChains.S9.NinQ.φD_smulA, (he'.1 k).2.1]`. Rewrite using `[Formalism.MainNotions.RamifiedCoefficientChains.S9.NinQ.γD_smulA, map_pow, Formalism.MainNotions.RamifiedCoefficientChains.S9.LD.qp_mem W (uniformizer_mem_delta_invariants W) δ hδ, ← W.φγ_comm, (he'.1 k).2.2 δ hδ]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem qpφ_mem (hE : Formalism.MainNotions.RamifiedCoefficientChains.DcrisExactStrict PD LL) (hC : Formalism.MainNotions.RamifiedCoefficientChains.CrysSubQuot PD LL)
     (hQ : Formalism.MainNotions.RamifiedCoefficientChains.DdREqDcris PD LL) (h5 : Formalism.MainNotions.DeltaInvariantLattices.P5W W) (h9 : Formalism.MainNotions.DeltaInvariantLattices.P9W W)
@@ -210,63 +210,59 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     (W : LocWach PD LL O v n)
 
 /- English proof (translation)
-Introduce `d T₁ T₂ F b S η m hS i hi e' m' u had σ Z hσ hZ0 hgN`. Take `⟨hdom, hdvr, hfrac⟩` from `hS.2.2.2.1`. Establish `hA` using `hS.1`. Establish `hT : IsCrys PD T₂.ρ` using `hS.2.2.2.2.2.1.2.1`. Establish `hie : (i.val + d) % 2 = 0` using `(Finset.mem_filter.mp hi).2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hp2 : 2 ≤ PD.p` using `PD.hp.two_le`. Establish `hl0 : ((PD.p : ℕ) : O) ≠ 0`. Introduce `h0'`. Establish `h1' : ((PD.p : ℕ) : LL) = 0` using `by rw [← map_natCast (algebraMap O LL), h0', map_zero]`. Establish `h2` using `W.v_l`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h2` using `[h1', AddValuation.map_zero]`. Simplify using `at h2`. Take `⟨hz, hπu, -⟩` from `uniformizer_unit_and_q_factor W h9 hA T₂ hT hp2`. Establish `hqpu` using `qp_unit W hπu`. Take `⟨he', hm'm, hmr, hu, -, hlow⟩` from `had`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨⟨e, he⟩, -⟩` from `hB hA T₂ hT i`. Take `⟨red, hred, hredc⟩` from `red_exists W T₂ i hz hπu e he`. Establish `hy : ∀ k, Formalism.MainNotions.LiftingTheory.qp W ^ (b i + S) • W.φD T₂ (e' k) ∈ NDl W T₂ i` using `qpφ_mem W hE hC hQ h5 h9 hS i hie e' he'`. Establish `hPex : ∀ k, ∃ a : Fin (finrank LL T₂.V) → PowerSeries O, Formalism.MainNotions.LiftingTheory.qp W ^ (b i + S) • W.φD T₂ (e' k) = ∑ m₁, Formalism.MainNotions.RamifiedCoefficientChains.Sh.at0 W (a m₁) • e m₁` using `fun k => (he.2 _ (hy k).1 (hy k).2).exists`. Use `choose Pc hPc using hPex`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `P : Matrix (Fin (finrank LL T₂.V)) (Fin (finrank LL T₂.V)) (PowerSeries O)` to `fun m₁ k => Pc k m₁`. Take `⟨τ, hτ⟩` from `Formalism.MainNotions.N.Pv.LocalLengthBound.rk_lift hA.1 (W.emb i)`. Take `⟨u0, w0, hu0, hdetP, hw0⟩` from `hDT hS.2.1 hA T₂ (MiS b S η i) (hiS b S η i) hT (jumps_in_letter_of_even_index W hE hC hQ hS i hie) i τ hτ _ e e' he he' (b i + S) P (fun k => hPc k)`. Set `kk : Fin m' → ℕ` to `fun j => (((b i + S : ℕ) : ℤ) + u j).toNat`. Set `g : Fin m' → W.DD T₂` to `fun j => gE W T₂ (b i + S) (kk j) e' Z (Fin.castLE hmr j)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hgmem : ∀ j, g j ∈ NDl W T₂ i` using `fun j => hgN j hmr`. Set `cols : Fin (finrank LL T₂.V) → ↥(NDl W T₂ i)` to `fun k => if hk : (k : ℕ) < m' then ⟨g ⟨k, hk⟩, hgmem _⟩ else ⟨_, hy k⟩`. Establish `hcast : ∀ (k : Fin (finrank LL T₂.V)) (hk : (k : ℕ) < m'), Fin.castLE hmr (⟨k, hk⟩ : Fin m') = k` using `fun k hk => Fin.ext rfl`. Establish `hQex : ∀ k, ∃ a : Fin (finrank LL T₂.V) → PowerSeries O, ((cols k : ↥(NDl W T₂ i)) : W.DD T₂) = ∑ l, Formalism.MainNotions.RamifiedCoefficientChains.Sh.at0 W (a l) • e l` using `fun k => (he.2 _ (cols k).2.1 (cols k).2.2).exists`. Use `choose QQc' hQQc using hQex`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `QQc : Matrix (Fin (finrank LL T₂.V)) (Fin (finrank LL T₂.V)) (PowerSeries O)` to `fun l k => QQc' k l`. Establish `hhigh : ∀ k : Fin (finrank LL T₂.V), ¬ (k : ℕ) < m' → QQc' k = Pc k`. Introduce `k hk`. Establish `h1` using `hQQc k`. Simplify using `only [cols, hk, dite_false] at h1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(he.2 _ (hy k).1 (hy k).2).unique h1 (hPc k)`. Establish `hlowc : ∀ (k : Fin (finrank LL T₂.V)) (hk : (k : ℕ) < m') (l : Fin (finrank LL T₂.V)), (PowerSeries.X + PowerSeries.C ((PD.p : ℕ) : O)) ^ kk ⟨k, hk⟩ * QQc' k l = (P * Z) l k`. Introduce `k hk l`. Establish `h1` using `hQQc k`. Simplify using `only [cols, hk, dite_true] at h1`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Establish `hg'` using `hgmem ⟨k, hk⟩`. Simplify using `only [g, hcast k hk] at hg' h1`. Conclude with `hGC T₂ i (b i + S) (kk ⟨k, hk⟩) e e' he P Z (fun k' => hPc k') hz hqpu k hg'.1 hg'.2 _ h1 l`. Set `dd : Fin (finrank LL T₂.V) → PowerSeries O` to `fun k => if hk : (k : ℕ) < m' then (PowerSeries.X + PowerSeries.C ((PD.p : ℕ) : O)) ^ kk ⟨k, hk⟩ else 1`. Set `Zext : Matrix (Fin (finrank LL T₂.V)) (Fin (finrank LL T₂.V)) (PowerSeries O)` to `fun l k => if (k : ℕ) < m' then Z l k else (if l = k then 1 else 0)`.
+Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Establish `hid : QQc * Matrix.diagonal dd = P * Zext`. Use extensionality with `l k`. Rewrite using `[Matrix.mul_diagonal, Matrix.mul_apply]`. Distinguish the cases in `hk : (k : ℕ) < m'`. Simplify using `only [QQc, dd, Zext, dif_pos hk, if_pos hk]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[mul_comm, hlowc k hk l, Matrix.mul_apply]`. Simplify using `only [QQc, dd, Zext, dif_neg hk, if_neg hk, mul_one]`. Rewrite using `[hhigh k hk]`. Simplify using `[P]`. Set `zz : Fin (finrank LL T₂.V) → O` to `fun k => if (k : ℕ) < m' then ((PD.p : ℕ) : O) ^ σ else 1`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Establish `hZext : ∀ l k, PowerSeries.constantCoeff (Zext l k) = if l = k then zz k else 0`. Introduce `l k`. Distinguish the cases in `hk : (k : ℕ) < m'`. Simplify using `only [Zext, zz, if_pos hk]`. Conclude with `hZ0 l k`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Apply the tactic sequence `simp only [Zext, zz, if_neg hk] split_ifs <;> simp`. Establish `hconst` using `det_const QQc P Zext dd zz hid hZext`. Set `κ : ℕ → ℕ` to `fun k => if hk : k < m' then kk ⟨k, hk⟩ else 0`. Establish `hsumκ : ∑ k : Fin (finrank LL T₂.V), κ k = ∑ j : Fin m', kk j`. Rewrite using `[Fin.sum_univ_eq_sum_range κ, ← Finset.sum_subset (Finset.range_subset_range.mpr hmr) (fun k _ hk => by rw [Finset.mem_range] at hk; simp only [κ, dif_neg hk]), Finset.sum_range]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `Finset.sum_congr rfl fun j _ => by simp [κ, j.2]` and prove the remaining obligations. Establish `hsumσ : ∑ k : Fin (finrank LL T₂.V), (if (k : ℕ) < m' then σ else 0) = σ * m'`. Rewrite using `[Fin.sum_univ_eq_sum_range (fun k => if k < m' then σ else 0), ← Finset.sum_subset (Finset.range_subset_range.mpr hmr) (fun k _ hk => by rw [Finset.mem_range] at hk; simp only [if_neg hk]), Finset.sum_range]`. Simplify using `[Finset.sum_const, mul_comm]`. Establish `hdd : ∏ k, PowerSeries.constantCoeff (dd k) = ((PD.p : ℕ) : O) ^ (∑ j : Fin m', kk j)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[← hsumκ, ← Finset.prod_pow_eq_pow_sum]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Distinguish the cases in `hk : (k : ℕ) < m'`. Simplify using `only [dd, κ, dif_pos hk, map_pow, map_add, PowerSeries.constantCoeff_X, PowerSeries.constantCoeff_C, zero_add]`. Simplify using `[dd, κ, dif_neg hk]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Establish `hzz : ∏ k, zz k = ((PD.p : ℕ) : O) ^ (σ * m')`. Rewrite using `[← hsumσ, ← Finset.prod_pow_eq_pow_sum]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Apply the tactic sequence `by_cases hk : (k : ℕ) < m' <;> simp [zz, hk]`. Establish `hPd : PowerSeries.constantCoeff P.det = PowerSeries.constantCoeff u0 * ((PD.p : ℕ) : O) ^ w0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Rewrite using `[hdetP, map_mul, map_pow, map_add, PowerSeries.constantCoeff_X, zero_add, map_natCast]`. Establish `hM0 : (Matrix.of fun l k => red (cols k) l) = QQc.map PowerSeries.constantCoeff`. Use extensionality with `l k`. Simplify using `only [Matrix.of_apply, hredc (cols k) (QQc' k) (hQQc k)]`. Both sides reduce to the same expression.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hconst` using `[hdd, hzz, hPd, ← hM0, mul_assoc, ← pow_add]`. Take `⟨hfd⟩ : Nonempty (FiniteDimensional LL ↥(DdRE PD T₂.ρ τ))` from `⟨Formalism.MainNotions.RamifiedCoefficientChains.S9.NinQ.fd_DdRE W hQ hS i τ hτ⟩`. Establish `hηb` using `Formalism.MainNotions.N.Pv.LocalLengthBound.rk_eta_lt W hS i`. Establish `hwin : JumpsInV PD T₂.ρ τ (Set.Icc (-((b i + S : ℕ) : ℤ)) (-((b i : ℕ) : ℤ)) ∪ Set.Icc (-(η : ℤ)) η)`. Introduce `a ha`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hw` using `Formalism.MainNotions.N.Pv.LocalLengthBound.rk_jumps₂ W hE hC hQ hS i τ hτ a ha`. Unfold `JumpWinS at hw`. Simplify `hw` using `[hie]`. Establish `hwin' : JumpsInV PD T₂.ρ τ (Set.Icc (-((b i + S : ℕ) : ℤ)) η)`. Introduce `a ha`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hwin a ha` as an intermediate fact. Simplify using `only [Set.mem_union, Set.mem_Icc] at this ⊢`. Use linear arithmetic over natural numbers and integers. Establish `hsum` using `sum_mult_window W hA.1 hQ T₂ hT i τ hτ _ _ hwin' (by omega)`. Establish `hdeep` using `deep_bound (PD := PD) T₂ τ (b i) S η hηb hwin (fun a => Formalism.MainNotions.N.Pv.LocalLengthBound.rk_multV_nonneg (O := O) T₂ τ a) hsum`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hw0' : (w0 : ℤ) = ((b i + S : ℕ) : ℤ) * (finrank LL T₂.V) + ∑ a ∈ Finset.Icc (-((b i + S : ℕ) : ℤ)) (η : ℤ), a * multV PD T₂.ρ τ a`. Rewrite using `[hw0]`. Simplify using `[MiS, hiS]`. Establish `hkk : ∑ j : Fin m', ((kk j : ℕ) : ℤ) = ∑ j : Fin m', (((b i + S : ℕ) : ℤ) + u j)`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Simplify using `only [kk]`. Rewrite using `[Int.toNat_of_nonneg (by have := (hu j).1; push_cast; omega)]`. Establish `hlow'` using `hlow τ hτ`. Use `⟨finrank LL T₂.V, red, hred, m', hm'm, g, hgmem, cols, fun k => ?_, ?_⟩` and prove the remaining obligations. Distinguish the cases in `hk : (k : ℕ) < m'`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use the proof step `right; exact ⟨⟨k, hk⟩, by simp [cols, hk]⟩`. Use `left`. Simplify using `only [cols, hk, dite_false]`. Use `⟨W.φD T₂ (e' k), Submodule.subset_span ⟨1, W.AΔ.one_mem, e' k, ⟨(he'.1 k).1, (he'.1 k).2⟩, by simp⟩, by simp⟩` and prove the remaining obligations. Distinguish the cases in `hAB : (∑ j : Fin m', kk j) ≤ w0 + σ * m'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Use `⟨w0 + σ * m' - ∑ j : Fin m', kk j, ?_, dvd_of_mul_pow _ _ _ hl0 (hu0.map PowerSeries.constantCoeff) _ _ hAB hconst⟩` and prove the remaining obligations. Establish `h1 : ((∑ j : Fin m', kk j : ℕ) : ℤ) ≥ Formalism.MainNotions.RamifiedCoefficientChains.S9.Cut.lowSum (PD` using `PD) T₂ τ (b i + S) η := by push_cast; rw [hkk]; exact hlow'`. Establish `h2 : (σ : ℤ) * m' ≤ 2 * ⌊cD PD.p (hpar n b S + η)⌋₊ * m`. Use `Nat.mul_le_mul hσ hm'm` as an intermediate fact. Conclude with `this` after adjusting the coercions.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `h3 : ((w0 + σ * m' - ∑ j : Fin m', kk j : ℕ) : ℤ) = (w0 : ℤ) + σ * m' - ((∑ j : Fin m', kk j : ℕ) : ℤ)`. Rewrite using `[Nat.cast_sub hAB]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `e1 : (w0 : ℤ) - Formalism.MainNotions.RamifiedCoefficientChains.S9.Cut.lowSum (PD` using `PD) T₂ τ (b i + S) η ≤ (finrank LL T₂.V : ℤ) * S := by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[hw0']`. Move the coercions through the operations in `at hdeep ⊢`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `: ((w0 + σ * m' - ∑ j : Fin m', kk j : ℕ) : ℤ) ≤ ((finrank LL T₂.V * S + 2 * ⌊cD PD.p (hpar n b S + η)⌋₊ * m : ℕ) : ℤ)`. Rewrite using `[h3]`.
+Combine the linear equalities and inequalities to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1' : ((∑ j : Fin m', kk j : ℕ) : ℤ) ≥ Formalism.MainNotions.RamifiedCoefficientChains.S9.Cut.lowSum (PD` using `PD) T₂ τ (b i + S) η := h1`. Use `push_cast`. Move the coercions through the operations in `at h1' h2`. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `this` after adjusting the coercions.
-
-Use `⟨0, Nat.zero_le _, ?_⟩ push Not at hAB` and prove the remaining obligations. Establish `hsplit : ((PD.p : ℕ) : O) ^ (∑ j : Fin m', kk j) = ((PD.p : ℕ) : O) ^ (∑ j : Fin m', kk j - (w0 + σ * m')) * ((PD.p : ℕ) : O) ^ (w0 + σ * m')`. Rewrite using `[← pow_add, Nat.sub_add_cancel hAB.le]`. Rewrite `hconst` using `[hsplit, ← mul_assoc]`. Establish `h4` using `mul_right_cancel₀ (pow_ne_zero _ hl0) hconst`.
-
-Establish `hunit : IsUnit (Matrix.of fun l k => red (cols k) l).det` using `isUnit_of_mul_isUnit_left (h4 ▸ hu0.map PowerSeries.constantCoeff)`. Rewrite using `[pow_zero]`. Conclude with `hunit.dvd`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem detAlg_of (hE : Formalism.MainNotions.RamifiedCoefficientChains.DcrisExactStrict PD LL) (hC : Formalism.MainNotions.RamifiedCoefficientChains.CrysSubQuot PD LL)
     (hQ : Formalism.MainNotions.RamifiedCoefficientChains.DdREqDcris PD LL) (h5 : Formalism.MainNotions.DeltaInvariantLattices.P5W W) (h9 : Formalism.MainNotions.DeltaInvariantLattices.P9W W)

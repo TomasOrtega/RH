@@ -27,7 +27,7 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.LatModel.EigenForm
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.simultaneous_eigenbasis_integral R b ψ hψ T lam hT hsep hK i`.
+A detailed English derivation is pending.
 -/
 theorem exists_eigenForm (R : Subring ℂ) [IsPrincipalIdealRing R] {g : ℕ} {V : Type} [AddCommGroup V] [Module R V]
     (b : Module.Basis (Fin g) R V) (ψ : V →ₗ[R] (Fin g → ℂ)) (hψ : LinearIndependent ℂ fun k ↦ ψ (b k))
@@ -41,17 +41,15 @@ theorem exists_eigenForm (R : Subring ℂ) [IsPrincipalIdealRing R] {g : ℕ} {V
 open ReciprocityTheory.ChartRestriction.G.Chart (isTan_iff) in
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `GlobalTheory.TorusTransfer.tangent_bijective u X.dim`. Use `choose Df hDf using fun v : X.Lie ↦ (h1 v.hom v.isTangent).exists`. Establish `huq : ∀ (v : X.Lie) W, u.IsDiff W v.hom ↔ W = Df v` using `fun v W ↦ ⟨fun h ↦ (h1 v.hom v.isTangent).unique h (hDf v), fun h ↦ h ▸ hDf v⟩`. Set `Dl : X.Lie →ₗ[ℂ] (Fin (Module.finrank ℚ F) → ℂ)` to `{ toFun := Df map_add' := fun v w ↦ by`. Use `((huq (v + w) _).1 ?_).symm` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Serre.Lie.hom_add]`. Conclude with `GlobalTheory.UnifLieBasis.isDiff_add u ((isTan_iff _).2 v.isTangent) ((isTan_iff _).2 w.isTangent) (hDf v) (hDf w)`. Use the proof step `map_smul' := fun c v ↦ by`. Establish `hs : u.IsDiff (c • Df v) (c • v).hom`. Use `GlobalTheory.UnifLieBasis.isDiff_smul u ((isTan_iff _).2 v.isTangent) (hDf v) c` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Use `this using 1` and compare the differences between its conclusion and the goal. Both sides reduce to the same expression. Rewrite using `[RingHom.id_apply]`. Conclude with `((huq (c • v) _).1 hs).symm }`. Establish `hinj : Function.Injective Dl`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `v w hvw`. Establish `e0 : Dl v = Df v` using `rfl`. Establish `e1 : u.IsDiff (Df v) w.hom` using `(huq w (Df v)).2 (hvw.symm.trans rfl).symm`. Establish `e2 : v.hom = w.hom` using `(h2 (Df v)).unique (y₁ := v.hom) (y₂ := w.hom) ⟨v.isTangent, hDf v⟩ ⟨w.isTangent, e1⟩`. Conclude with `Serre.Lie.ext e2`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hsurj : Function.Surjective Dl`. Introduce `W`. Take `⟨v₀, ⟨ht, hd⟩, -⟩` from `h2 W`. Use `⟨Serre.Lie.mk X.rm v₀ ht, ?_⟩` and prove the remaining obligations. Establish `hd' : u.IsDiff W (Serre.Lie.mk X.rm v₀ ht).hom` using `hd`.
-
-Conclude with `((huq _ W).1 hd').symm`. Conclude with `⟨LinearEquiv.ofBijective Dl ⟨hinj, hsurj⟩, fun v W ↦ huq v W⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_diffEquiv {F : Type} [Field F] [NumberField F] {𝔠 : FracId F} (X : Obj F 𝔠 (Sp ℂ)) {L : LB X.A.left}
     (u : HolUnif X.A L (Module.finrank ℚ F)) :
@@ -88,9 +86,9 @@ theorem exists_diffEquiv {F : Type} [Field F] [NumberField F] {𝔠 : FracId F} 
   exact ⟨LinearEquiv.ofBijective Dl ⟨hinj, hsurj⟩, fun v W ↦ huq v W⟩
 
 /- English proof (translation)
-Use `haveI := X.rm.hom a`. Set `Fm : (Fin (Module.finrank ℚ (FR E)) → ℂ) →L[ℂ] (Fin (Module.finrank ℚ (FR E)) → ℂ)` to `ContinuousLinearMap.pi fun j ↦ φ (U.e j) ((a : FR E) : E) • ContinuousLinearMap.proj j`. Establish `hF : ∀ w, Fm w = fun j ↦ φ (U.e j) ((a : FR E) : E) * w j` using `fun w ↦ by`. Use extensionality with `j`. Simplify using `[Fm]`.
+Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `GlobalTheory.UnifLieBasis.isDiff_comp U.u (X.rm.act a) Fm (fun w ↦ by rw [hF]; exact U.act a w) v.isTangent h` as an intermediate fact. Rewrite `this` using `[hF]`. Conclude with `this`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isDiff_act {E : Type} [Field E] [NumberField E] {I : Type} {𝔠 : FracId (FR E)} {φ : I → E →+* ℂ} {L : Set E}
     {z : I → ℂ} {X : Obj (FR E) 𝔠 (Sp ℂ)} (U : Unif φ L z X) (a : 𝓞 (FR E)) (v : X.Lie)
@@ -106,7 +104,7 @@ theorem isDiff_act {E : Type} [Field E] [NumberField E] {I : Type} {𝔠 : FracI
   exact this
 
 /- English proof (translation)
-Unfold `Obj.LieCorr at h ⊢`. Express the relevant statement in the definitionally equal form `(v'.hom ≫ X'.rm.act a).left ≫ p = _ ≫ (v.hom ≫ X.rm.act a).left`. Rewrite using `[Over.comp_left, Over.comp_left, Category.assoc, hp.act a, ← Category.assoc, h, Category.assoc]`.
+Replace the relevant objects with their definitions. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem lieCorr_act {F : Type} [Field F] [NumberField F] {𝔠 : FracId F} {R R' : Type} [CommRing R] [CommRing R']
     {X : Obj F 𝔠 (Sp R)} {X' : Obj F 𝔠 (Sp R')} (σ : R →+* R') {b : Sp R' ⟶ Sp R} {p : X'.A.left ⟶ X.A.left}
@@ -121,27 +119,23 @@ end GlobalTheory.LatModel.EigenForm
 namespace GlobalTheory.LatModel.EigenForm
 
 /- English proof (translation)
-Introduce `_ E _ _ _ I _ φ hφ l _ lam 𝔠 R hR X₀ X L U p hp i`. Take `⟨hdvr, -, -, hKR⟩` from `hR`. Use `haveI := hdvr`. Take `⟨eq, hcorr⟩` from `GlobalTheory.T.lie_algebra_base_change_iso (R := R) (R' := ℂ) (X := X₀) (X' := X) (φ := p) hp`. Take `⟨D, hD⟩` from `exists_diffEquiv X U.u`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨hfin, hproj, hrk⟩` from `GlobalTheory.T.lie_algebra_finite_projective_rank X₀`. Use `haveI := hfin`. Use `haveI := hproj`. Use `haveI : Module.Free R X₀.Lie := Module.free_of_flat_of_isLocalRing`. Establish `hdim : Module.finrank R X₀.Lie = Module.finrank ℚ (FR E)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Use `hrk (IsLocalRing.closedPoint R)` as an intermediate fact. Rewrite `this` using `[Module.rankAtStalk_eq_finrank_of_free]`. Then use the resulting hypothesis. Set `b : Module.Basis (Fin (Module.finrank ℚ (FR E))) R X₀.Lie` to `(Module.finBasis R X₀.Lie).reindex (finCongr hdim)`. Set `ψ : X₀.Lie →ₗ[R] (Fin (Module.finrank ℚ (FR E)) → ℂ)` to `{ toFun := fun v ↦ D (eq (1 ⊗ₜ v)) map_add' := fun v w ↦ by simp [TensorProduct.tmul_add] map_smul' := fun r v ↦ by`. Establish `e1 : (1 : ℂ) ⊗ₜ[R] (r • v) = (r : ℂ) • ((1 : ℂ) ⊗ₜ[R] v)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Rewrite using `[← TensorProduct.smul_tmul, TensorProduct.smul_tmul']`. Both sides reduce to the same expression. Simplify using `only [e1, map_smul, RingHom.id_apply]`. Use `rfl }`. Establish `hψ : ∀ v, ψ v = D (eq (1 ⊗ₜ v))` using `fun v ↦ rfl`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `T : 𝓞 (FR E) → X₀.Lie →ₗ[R] X₀.Lie` to `fun a ↦ { toFun := fun v ↦ a • v map_add' := smul_add a map_smul' := fun r v ↦ smul_comm a r v }`. Set `lamv : 𝓞 (FR E) → Fin (Module.finrank ℚ (FR E)) → ℂ` to `fun a j ↦ φ (U.e j) ((a : FR E) : E)`. Establish `hT : ∀ a v j, ψ (T a v) j = lamv a j * ψ v j`. Introduce `a v j`. Establish `c0 : Obj.LieCorr R.subtype p v (eq (1 ⊗ₜ v))` using `(hcorr v _).2 rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `c1` using `lieCorr_act R.subtype hp a c0`. Establish `e1 : a • eq (1 ⊗ₜ v) = eq (1 ⊗ₜ (a • v))` using `(hcorr _ _).1 c1`. Establish `d0 : U.u.IsDiff (D (eq (1 ⊗ₜ v))) (eq (1 ⊗ₜ v)).hom` using `(hD _ _).2 rfl`. Establish `d1` using `isDiff_act U a _ _ d0`. Establish `e2` using `(hD _ _).1 d1`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `D (eq (1 ⊗ₜ (a • v))) j = _`. Rewrite using `[← e1, ← e2]`. Both sides reduce to the same expression. Establish `hsep : ∀ j k, j ≠ k → ∃ a, lamv a j ≠ lamv a k`. Introduce `j k hjk`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Conclude with `hjk (U.e.injective (GlobalTheory.SignGen.cm_restrict_inj E I φ hφ (U.e j) (U.e k) fun a ↦ hc a))`. Establish `hK : ∀ a j, ∃ x ∈ R, ∃ y ∈ R, y ≠ 0 ∧ lamv a j * y = x` using `fun a j ↦ hKR (φ (U.e j)) _`. Establish `hli : LinearIndependent ℂ fun k ↦ ψ (b k)`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `((b.baseChange ℂ).map (eq.trans D)).linearIndependent using 1` and compare the differences between its conclusion and the goal. Use extensionality with `k : 1`. Simplify using `[hψ, Module.Basis.baseChange_apply]`. Take `⟨e, c, hc, he, huniq⟩` from `exists_eigenForm R b ψ hli T lamv hT hsep hK (U.e.symm i)`. Use `⟨e, c, hc, ?_, ?_⟩` and prove the remaining obligations.
-
-Introduce `v v' W hvv hW`. Rewrite `hW` using `[(hcorr v v').1 hvv]`. Rewrite using `[(hD _ W).1 hW, he v]`. Both sides reduce to the same expression. Introduce `e' c' h'`.
-
-Conclude with `huniq e' c' fun v ↦ h' v (eq (1 ⊗ₜ v)) (ψ v) ((hcorr _ _).2 rfl) ((hD _ _).2 rfl)`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem exists_periodGen : GlobalTheory.Published.AbelianDeRham →
   ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (I : Type) [Fintype I] (φ : I → E →+* ℂ), IsCMType φ →

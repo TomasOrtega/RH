@@ -19,7 +19,7 @@ def nuOf (L : SizeData₂ D) (u : D.what₂.Word) {d : ℕ} (e : (Fin d → D.wh
   (L.NuLat u).comap ((e : (Fin d → D.what₂.LL) →ₗ[D.what₂.LL] (D.div.Nu u).V).restrictScalars (𝓞 D.what₂.LL))
 
 /- English proof (translation)
-Unfold `nuOf`. Conclude with `Submodule.map_comap_eq_of_surjective (fun y => ⟨e.symm y, by simp⟩) _`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem map_nuOf (L : SizeData₂ D) (u : D.what₂.Word) {d : ℕ} (e : (Fin d → D.what₂.LL) ≃ₗ[D.what₂.LL] (D.div.Nu u).V) :
     (nuOf L u e).map ((e : (Fin d → D.what₂.LL) →ₗ[D.what₂.LL] (D.div.Nu u).V).restrictScalars (𝓞 D.what₂.LL)) =
@@ -28,7 +28,7 @@ theorem map_nuOf (L : SizeData₂ D) (u : D.what₂.Word) {d : ℕ} (e : (Fin d 
   exact Submodule.map_comap_eq_of_surjective (fun y => ⟨e.symm y, by simp⟩) _
 
 /- English proof (translation)
-Unfold `Formalism.BasicNotions.SizeData₂.sg`. Use `Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations. Simplify using `[Formalism.BasicNotions.SizeData₂.gainD, L.gain_supp j w hw, L.F_supp j w hw, L.E_supp u j w hw]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 private theorem sg_eq_zero_of_not_mem_supp (L : SizeData₂ D) (u : D.what₂.Word) (w : D.what₂.places.Pl) (hw : w ∉ L.supp) :
     L.sg u w = 0 := by
@@ -37,13 +37,11 @@ private theorem sg_eq_zero_of_not_mem_supp (L : SizeData₂ D) (u : D.what₂.Wo
   simp [Formalism.BasicNotions.SizeData₂.gainD, L.gain_supp j w hw, L.F_supp j w hw, L.E_supp u j w hw]
 
 /- English proof (translation)
-Establish `hfun : ∀ i, shiftZ (sgRec L u) (D.plEq i) = ⌊Formalism.BasicNotions.DV.ur D i (L.sg u i)⌋`. Introduce `i`. Simplify using `[shiftZ, sgRec]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Formalism.DivisionValues.shiftIdeal]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(finprod_comp_equiv D.plEq).symm`. Use `_ = ∏ᶠ i, ((D.plEq i).asIdeal : FractionalIdeal (nonZeroDivisors (𝓞 D.what₂.LL)) D.what₂.LL) ^ (-⌊Formalism.BasicNotions.DV.ur D i (L.sg u i)⌋) := by`. Simplify using `only [hfun]`. Use `_ = Formalism.BasicNotions.DV.Iu D L u := by`. Unfold `Formalism.BasicNotions.DV.Iu`.
+Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `finprod_eq_prod_of_mulSupport_subset _ ?_` and prove the remaining obligations. Introduce `i hi`. Rewrite `hi` using `[Function.mem_mulSupport]`. Assume the negation of the conclusion as `hs`. Establish `hs' : i ∉ L.supp` using `fun h => hs (Finset.mem_coe.2 h)`.
-
-Apply `hi` to reduce the goal to its premises. Simplify using `[sg_eq_zero_of_not_mem_supp L u i hs', Formalism.BasicNotions.DV.ur]`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem shiftIdeal_shiftZ_sgRec_eq_Iu (L : SizeData₂ D) (u : D.what₂.Word) :
     Formalism.DivisionValues.shiftIdeal (shiftZ (sgRec L u)) = Formalism.BasicNotions.DV.Iu D L u := by
@@ -69,13 +67,13 @@ private theorem shiftIdeal_shiftZ_sgRec_eq_Iu (L : SizeData₂ D) (u : D.what₂
         simp [sg_eq_zero_of_not_mem_supp L u i hs', Formalism.BasicNotions.DV.ur]
 
 /- English proof (translation)
-Establish `finj : Function.Injective ((e : (Fin d → D.what₂.LL) →ₗ[D.what₂.LL] (D.div.Nu u).V).restrictScalars (𝓞 D.what₂.LL))` using `fun x y h => e.injective h`. Apply `Submodule.map_injective_of_injective finj` to reduce the goal to its premises. Rewrite using `[← hlat, hN u]`. Unfold `shiftLat Formalism.HermitianLatticesTheory.idealSmul nuOf`. Rewrite using `[Submodule.map_span, shiftIdeal_shiftZ_sgRec_eq_Iu]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use extensionality with `z`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, ha, y, hy, rfl⟩`. Use `⟨a • e.symm y, ⟨a, ?_, e.symm y, ?_, rfl⟩, ?_⟩` and prove the remaining obligations.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `using ha`. Use `show e (e.symm y) ∈ L.NuLat u`. Simplify using `using hy`. Use `show e (a • e.symm y) = a • y`. Simplify using the standard rewrite rules.
+Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `⟨z', ⟨a, ha, x, hx, rfl⟩, rfl⟩`. Use `⟨a, ?_, e x, hx, ?_⟩` and prove the remaining obligations. Simplify using `using ha`. Use `show e (a • x) = a • e x`. Conclude with `map_smul e a x`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem shift_nuOf (L : SizeData₂ D) (hN : NprimeDef D L) (u : D.what₂.Word) {d : ℕ}
     (e : (Fin d → D.what₂.LL) ≃ₗ[D.what₂.LL] (D.div.Nu u).V) (NuC : Submodule (𝓞 D.what₂.LL) (Fin d → D.what₂.LL))
@@ -106,7 +104,7 @@ theorem shift_nuOf (L : SizeData₂ D) (hN : NprimeDef D L) (u : D.what₂.Word)
       exact map_smul e a x
 
 /- English proof (translation)
-The claim follows from `shift_nuOf L hN u (eNu u) (NuC (wU u)) (h.Nu u).lat`.
+A detailed English derivation is pending.
 -/
 theorem shift_of_colTie (L : SizeData₂ D) (hN : NprimeDef D L) {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {m : ℕ}
     {A : FamIn D.what₂.LL G Pl0 T m} {Ps : Subgroup G} {ψs : Ps →* D.what₂.LLˣ} {Zs : DefSub A.fam.amb}
@@ -118,9 +116,9 @@ theorem shift_of_colTie (L : SizeData₂ D) (hN : NprimeDef D L) {G : Type} [Gro
   shift_nuOf L hN u (eNu u) (NuC (wU u)) (h.Nu u).lat
 
 /- English proof (translation)
-Use `(L.supp.finite_toSet.image D.plEq).subset ?_` and prove the remaining obligations. Introduce `w hw`. Rewrite `hw` using `[Function.mem_support]`. Use `⟨D.plEq.symm w, ?_, D.plEq.apply_symm_apply w⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hs`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `hs' : D.plEq.symm w ∉ L.supp` using `fun h => hs (Finset.mem_coe.2 h)`. Apply `hw` to reduce the goal to its premises. Simplify using `[shiftZ, sgRec, sg_eq_zero_of_not_mem_supp L u _ hs', Formalism.BasicNotions.DV.ur]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 -/
 theorem sgRec_fin (L : SizeData₂ D) (u : D.what₂.Word) : (Function.support (shiftZ (sgRec L u))).Finite := by
   refine (L.supp.finite_toSet.image D.plEq).subset ?_

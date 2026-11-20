@@ -7,19 +7,17 @@ open scoped nonZeroDivisors Matrix
 open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.AdelicU GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GroundTheory.Global GroundTheory.Global.IdeleGroup UpperTheory.Gal.TP.Skew
 
 /- English proof (translation)
-Introduce `hconj F E _ _ _ _ _ σ hcm a`. Take `⟨hgal, s, -, -, hss, hall, -⟩` from `hconj F E σ hcm`. Use `haveI := hgal`. Use `haveI hcomm : IsMulCommutative Gal(E/F) := ⟨⟨fun g h => by`. Apply the tactic sequence `rcases hall g with rfl | rfl <;> rcases hall h with rfl | rfl <;> simp⟩⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Take `⟨hFr, hEc, -, -⟩` from `hcm`. Set `v : InfinitePlace F` to `Classical.arbitrary _`. Establish `hram : infiniteLocalSymbol E v ≠ 1`. Rewrite using `[Ne, infiniteLocalSymbol_eq_one_iff]`. Introduce `hun`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨w, hw⟩` from `InfinitePlace.comap_surjective (k := F) (K := E) v`. Establish `hw' : w.comap (algebraMap F E) = v` using `hw`. Use `InfinitePlace.not_isUnramified_iff.mpr ⟨hEc.isComplex w, ?_⟩ (hun w hw')` and prove the remaining obligations. Rewrite using `[hw']`. Conclude with `hFr.isReal v`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Choose the witnesses or unpack the hypotheses as in `⟨c, hc⟩ : ∃ c, infiniteLocalSymbol E v c ≠ 1 := by`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Conclude with `hram (MonoidHom.ext h)`. Establish `hc' : infiniteLocalSymbol E v c = s` using `(hall _).resolve_left hc`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `key : ∀ a' : IdeleGroup F, ideleSymbol F E a' = 1 → ∃ x b, ∀ w, ord w a' = ord w (diagonal F x) + ord w (ideleNorm F E b)`. Introduce `a' ha'`. Establish `hmem : a' ∈ (ideleSymbol F E).ker` using `ha'`. Rewrite `hmem` using `[ker_ideleSymbol, Subgroup.mem_sup]`. Take `⟨y, ⟨x, rfl⟩, z, ⟨b, rfl⟩, rfl⟩` from `hmem`.
+Supply the required witnesses or components. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `⟨x, b, fun w => ord_mul w _ _⟩`. Distinguish the cases in `ha : ideleSymbol F E a = 1`. Conclude with `key a ha`. Take `⟨x, b, hxb⟩` from `key (a * infiniteEmbedding v c) (by`. Rewrite using `[map_mul, (hall _).resolve_left ha, ideleSymbol_infiniteEmbedding, hc', hss])`.
-
-Use `⟨x, b, fun w => ?_⟩` and prove the remaining obligations. Rewrite using `[← hxb w, ord_mul, mem_standardOpenSubgroup_iff_ord.mp (infiniteEmbedding_mem_standardOpenSubgroup v c) w, add_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.TP.Skew.ideleStep :
     UpperTheory.Gal.TP.Skew.ConjAut → UpperTheory.Gal.TP.Skew.IdeleStep := by

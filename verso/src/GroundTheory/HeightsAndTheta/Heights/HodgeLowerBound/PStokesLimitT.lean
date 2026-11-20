@@ -9,11 +9,11 @@ namespace GroundTheory.Heights₂.Heights.LowerBoundFree
 open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo Filter Topology
 
 /- English proof (translation)
-Introduce `II Ψ _ _ K _ ι _ Ω _ _ E _ _ D O Lt _ _ _ X B p q hII hAr hp hpq`. Use `⟨tendsto_nhds_limUnder (hTop II Ψ K ι Ω E D O Lt X B p q hII hAr hp hpq), tendsto_nhds_limUnder (hVb II Ψ K ι Ω E D O Lt X B p q hp hpq), ?_⟩` and prove the remaining obligations. Take `⟨t₁, ht₁, hN⟩` from `hNs II Ψ K ι Ω E D O Lt X B p q hp hpq`. Establish `ha : ∀ t : ℝ, (X.NbarQ B p q t).a = (X.NbarQ B p q t₁).a`. Introduce `t`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [ComponentSetting.NbarQ, smoothRep_a]`. Both sides reduce to the same expression. Establish `hconst : ∀ᶠ t in 𝓝[>] (0 : ℝ), X.degN B p q t₁ = X.degN B p q t` using `by filter_upwards [Ioc_mem_nhdsGT ht₁] with t ht`. Unfold `ComponentSetting.degN`. Rewrite using `[hG K ι Ω D.y D.n _ D.arith (hN t ht.1 ht.2).1, hG K ι Ω D.y D.n _ D.arith (hN t₁ ht₁ le_rfl).1, ha t]`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Conclude with `tendsto_nhds_limUnder ⟨_, tendsto_const_nhds.congr' hconst⟩`.
+A detailed English derivation is pending.
 -/
 theorem StokesLimitT.proof (hG : GroundTheory.Heights₂.Heights.HilbertSamuel.GenDegGeomDeg.Statement)
     (hNs : NbarSemipos.Statement) (hTop : StokesLimitTTop.Statement) (hVb : StokesLimitTVb.Statement) :

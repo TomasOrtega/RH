@@ -12,9 +12,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.AdelicSide
 
 /- English proof (translation)
-Use function extensionality and compare the values at `g`. Take `⟨k, ⟨γ, u, rfl⟩, -⟩` from `hy g`. Establish `m1` using `h1 γ (y k) ⟨u, hle u.2⟩`. Establish `m2` using `h2 γ (y k) ⟨u, hle u.2⟩`. Rewrite `m1` using `[h k]`.
+Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `m1.trans m2.symm`.
+A detailed English derivation is pending.
 -/
 theorem adForms_eq_of_reps {Gr Γ : Type} [Group Gr] [Group Γ] (ι : Γ →* Gr) {Wc : Type} [NormedAddCommGroup Wc]
     [InnerProductSpace ℂ Wc] (ρ : Γ →* Module.End ℂ Wc) {J J' : Subgroup Gr} (χ : J →* ℂˣ) (hle : J' ≤ J) {I : Type}
@@ -30,9 +30,9 @@ theorem adForms_eq_of_reps {Gr Γ : Type} [Group Gr] [Group Γ] (ι : Γ →* Gr
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 T0 A Ks _ _ _ R hR i t K' _ σ' c0' Cl h J' hle hr v₀`. Take `⟨hinj, hrange, -⟩` from `hR.HV i t`. Establish `huniq : ∀ y y' x, Place R i t h c0' y x → Place R i t h c0' y' x → y = y'` using `fun y y' x h1 h2 => hinj (adForms_eq_of_reps _ _ _ hle hr (hrange.le (LinearMap.mem_range_self _ y)) (hrange.le (LinearMap.mem_range_self _ y')) fun k => (h1 k).trans (h2 k).symm)`. Use `⟨fun x => if hx : ∃ y, Place R i t h c0' y x then onQ (Wc D i) (R.thF i t hx.choose v₀) else 0, fun y x hy => ?_⟩` and prove the remaining obligations. Establish `hx : ∃ y, Place R i t h c0' y x` using `⟨y, hy⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `only [dif_pos hx]`. Rewrite using `[huniq _ _ _ hx.choose_spec hy]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_thAd_of_models : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T0 : Type) (A : FamIn D.what₂.LL G Pl0 T0 D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks), R.IsModels → ∀ (i : Fin D.R.m) (t : T0) (K' : Type) [Field K'] (σ' : K' →+* ℂ) (c0' : VsV D i K' →ₛₗ[σ'] (R.cV i).W) (Cl : Type) (h : Cl → GA D (Vc D i)) (J' : Subgroup (Bridge.Gf (Vc D i))), J' ≤ levJ R i t → Bridge.IsReps (Bridge.ratF (Vc D i)) J' (fun k => FWT.fin _ (h k)) → ∀ v₀ : (R.MW i (sg0 D A)).Vec, ∃ thAd, ThAdIs R i t h c0' v₀ thAd := by
   intro D G _ _ Pl0 T0 A Ks _ _ _ R hR i t K' _ σ' c0' Cl h J' hle hr v₀

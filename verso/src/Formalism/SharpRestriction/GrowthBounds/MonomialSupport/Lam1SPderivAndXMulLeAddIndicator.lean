@@ -13,11 +13,11 @@ section TotallyRealRoots
 variable {R : Type} [CommRing R] {ι : Type} {n : ℕ} [NeZero n] (LL : Letters ι) (S : Set ι)
 
 /- English proof (translation)
-Distinguish the cases in `hx : x0 ∈ S`. Simplify using `only [hx, if_true]`. Use `⟨Formalism.MainNotions.TestSideWords.TwistedFiltration.G2.maxTwistDegree_pderiv_le_add_one LL S Fp (x0, b), Formalism.MainNotions.TestSideWords.TwistedFiltration.G2.maxTwistDegree_X_mul_le_add_one LL S Fp (x0, b), ?_⟩` and prove the remaining obligations. Consider the cases of `hv : LL.vec x0`. Combine the equalities or inequalities in the displayed calculation.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Split into cases according to the possible forms of the given data. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Simplify using `only [hx, if_false, WithBot.coe_zero, add_zero]`. Establish `h1` using `Formalism.MainNotions.TestSideWords.TwistedFiltration.G2.maxTwistDegree_pderiv_le_of LL S Fp (x0, b) (fun h => absurd h hx)`. Establish `h2` using `Formalism.MainNotions.TestSideWords.TwistedFiltration.G2.maxTwistDegree_X_mul_le_of LL S Fp (x0, b) (fun h => absurd h hx)`. Establish `h3` using `Formalism.MainNotions.TestSideWords.TwistedFiltration.G2.maxTwistDegree_X_mul_le_of LL S (pderiv (x0, b) Fp) (x0, b) (fun h => absurd h hx)`.
+Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `⟨h1, h2, h3.trans h1⟩`.
+Supply the required witnesses or components.
 -/
 theorem lam1S_pderiv_and_X_mul_le_add_indicator (x0 : ι) (b : Fin n) (Fp : MvPolynomial (ι × Fin n) R) :
     lam1S LL S (pderiv (x0, b) Fp) ≤ lam1S LL S Fp + (((if x0 ∈ S then 1 else 0 : ℤ)) : WithBot ℤ) ∧
@@ -43,39 +43,33 @@ theorem lam1S_pderiv_and_X_mul_le_add_indicator (x0 : ι) (b : Fin n) (Fp : MvPo
 end TotallyRealRoots
 
 /- English proof (translation)
-Introduce `D p _ O _ _ _ _ r J n' _ _ K _ hSet hR Dt x0 b T hT d th thL G ka' e he hG nu`. Establish `hee` using `fun i => (eeN_spec D K Dt i).1`. Establish `hdec` using `fun i => (eeN_spec D K Dt i).2`. Establish `hcomm` using `eeN_comm D K Dt hSet hR`. Establish `hin0 : ∀ j u, 0 ≤ inN Dt.nL x0 j u`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `j u`. Unfold `inN`. Apply the tactic sequence `split_ifs <;> norm_num`. Establish `hTb : ∀ (j : ZMod J) (u : ℕ) (z : MvPolynomial (TL J Dt.nL r × Fin K) (KK O)), lam1S Dt.trueLet (NSet Dt.nL j u) (T z) ≤ lam1S Dt.trueLet (NSet Dt.nL j u) z + ((inN Dt.nL x0 j u : ℤ) : WithBot ℤ)`. Introduce `j u z`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h3` using `lam1S_pderiv_and_X_mul_le_add_indicator Dt.trueLet (NSet Dt.nL j u) x0 b z`. Establish `hin : inN Dt.nL x0 j u = (if x0 ∈ NSet Dt.nL j u then 1 else 0 : ℤ)` using `rfl`. Rewrite using `[hin]`. Break down `hT with rfl | rfl | rfl` into its components or cases. Conclude with `h3.1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Conclude with `h3.2.1`. Conclude with `h3.2.2`. Establish `hkill : ∀ (κ : (Σ j : ZMod J, Fin (Dt.nL j + r + 1)) → Fin K → ℤ) (i : Σ j : ZMod J, Fin (Dt.nL j + r + 1)), κ i 0 + inN Dt.nL x0 i.1 i.2.val < ka' i.1 i.2.val 0 → ∀ y, e (T (jointE (eeN D K Dt) κ y)) = 0`. Introduce `κ i hlt y`. Use `set z := jointE (eeN D K Dt) κ y`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hz : z ∈ isoSub (normE p K Dt i) (κ i)` using `(jointN_props D K Dt hSet hR κ).2.2.2 y i`. Establish `hV` using `(Formalism.MainNotions.G.GLWeightTheory.valuation_field D).2 (KK O) (TL J Dt.nL r) Dt.trueLet K (NSet Dt.nL i.1 i.2.val) (eeN D K Dt i) (hee i)`. Establish `hzb : lam1S Dt.trueLet (NSet Dt.nL i.1 i.2.val) z ≤ ((κ i 0 : ℤ) : WithBot ℤ)`. Use `(hV.2 z (κ i 0)).2 (fun mu hmu => ?_)` and prove the remaining obligations. Assume the negation of the conclusion as `hne`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Conclude with `hmu ((hee i mu).2 (κ i) (fun h => hne (le_of_eq (congrFun h.symm 0))) z hz)`. Establish `hwb : lam1S Dt.trueLet (NSet Dt.nL i.1 i.2.val) (T z) ≤ ((κ i 0 + inN Dt.nL x0 i.1 i.2.val : ℤ) : WithBot ℤ)`. Combine the equalities or inequalities in the displayed calculation. Use `set w := T z`. Establish `hw0 : eeN D K Dt i (ka' i.1 i.2.val) w = 0`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Assume the negation of the conclusion as `hne`. Conclude with `absurd ((hV.2 w (κ i 0 + inN Dt.nL x0 i.1 i.2.val)).1 hwb _ hne) (not_le.mpr hlt)`. Take `⟨Sw, hSw⟩` from `joint_dec (normE p K Dt) (eeN D K Dt) hee hcomm hdec w`. Rewrite using `[hSw (insert (fun i => ka' i.1 i.2.val) Sw) (Finset.subset_insert _ _), map_sum]`. Use `Finset.sum_eq_zero (fun κ' _ => ?_)` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `hk : κ' = fun i => ka' i.1 i.2.val`. Substitute `hk` using the available equality. Take `⟨rest, _, h2⟩` from `jointE_factor hcomm (fun i => ka' i.1 i.2.val) i`. Rewrite using `[h2]`. Simplify using `[hw0]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Use `he.2 κ' hk _ ?_` and prove the remaining obligations. Simplify using `only [jIso, Submodule.mem_iInf]`. Conclude with `fun i' => (jointN_props D K Dt hSet hR κ').2.2.2 w i'`. Establish `hJ : ∀ y : MvPolynomial (TL J Dt.nL r × Fin K) (KK O), ∃ Sy : Finset ((Σ j : ZMod J, Fin (Dt.nL j + r + 1)) → Fin K → ℤ), ∀ S', Sy ≤ S' → y = ∑ κ ∈ S', jointE (eeN D K Dt) κ y` using `fun y => joint_dec (normE p K Dt) (eeN D K Dt) hee hcomm hdec y`. Use `choose Sy hSy using hJ`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Establish `hsplit : oneT (e * T) G = ∑ κ ∈ G.support.biUnion (fun mo => Sy (G.coeff mo)), oneT (e * T * jointE (eeN D K Dt) κ) G`. Use extensionality with `mo : 1`. Rewrite using `[MvPolynomial.coeff_sum, coeff_oneT]`. Simplify using `only [coeff_oneT]`. Distinguish the cases in `hmo : mo ∈ G.support`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `conv_lhs => rw [hSy (G.coeff mo) _ (Finset.subset_biUnion_of_mem (fun mo => Sy (G.coeff mo)) hmo)]`. Rewrite using `[map_sum]`. Simplify using `only [Module.End.mul_apply]`. Simplify using `only [MvPolynomial.mem_support_iff, not_not] at hmo`. Simplify using `[hmo]`.
+Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hsplit, planeCoeff_sum]`. Use `XXg_sum Dt d th thL _ _ (fun κ _ => ?_)` and prove the remaining obligations. Use `show XXg Dt d th thL (planeCoeff nu (oneT (e * T * jointE (eeN D K Dt) κ) G))`. Set `ka : ZMod J → ℕ → Fin K → ℤ` to `fun j u => if h : u < Dt.nL j + r + 1 then κ ⟨j, ⟨u, h⟩⟩ else ka' j u`. Establish `hka : (fun i : (Σ j : ZMod J, Fin (Dt.nL j + r + 1)) => ka i.1 i.2.val) = κ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `i`. Take `⟨j, u⟩` from `i`. Conclude with `dif_pos u.isLt`. Distinguish the cases in `hC : ∀ j u, ka' j u 0 ≤ ka j u 0 + inN Dt.nL x0 j u`. Establish `hP : IsJProj (normE p K Dt) {fun i => ka i.1 i.2.val} (jointE (eeN D K Dt) κ)`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Rewrite using `[hka]`. Conclude with `(jointN_props D K Dt hSet hR κ).1`. Establish `hX` using `hG ka hC (jointE (eeN D K Dt) κ) hP`. Rewrite using `[oneT_mul, planeCoeff_oneT]`. Conclude with `XXg_sum Dt d th thL _ _ (fun nu' _ => XXg_smul Dt d th thL _ (hX nu'))`.
-
-Simplify using `only [not_forall, not_le] at hC`. Take `⟨j, u, hju⟩` from `hC`. Establish `hu : u < Dt.nL j + r + 1`. Assume the negation of the conclusion as `hu`. Establish `hk : ka j u = ka' j u` using `dif_neg hu`.
-
-Rewrite `hju` using `[hk]`. Combine the linear relations using `[hin0 j u]`. Establish `hki : κ ⟨j, ⟨u, hu⟩⟩ = ka j u` using `by show κ ⟨j, ⟨u, hu⟩⟩ = (if h : u < Dt.nL j + r + 1 then κ ⟨j, ⟨u, h⟩⟩ else ka' j u)`. Rewrite using `[dif_pos hu]`. Establish `hlt : κ ⟨j, ⟨u, hu⟩⟩ 0 + inN Dt.nL x0 j u < ka' j u 0`.
-
-Rewrite using `[hki]`. Conclude with `hju`. Rewrite using `[oneT_eq_zero _ _ (fun mo => hkill κ ⟨j, ⟨u, hu⟩⟩ hlt (G.coeff mo)), planeCoeff_zero']`. Conclude with `XXg_zero Dt d th thL`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem noOpStep : NoOpStep := by
   intro D p _ O _ _ _ _ r J n' _ _ K _ hSet hR Dt x0 b T hT d th thL G ka' e he hG nu

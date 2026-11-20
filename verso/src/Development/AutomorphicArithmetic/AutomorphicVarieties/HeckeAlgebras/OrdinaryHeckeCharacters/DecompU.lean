@@ -18,21 +18,17 @@ set_option synthInstance.maxHeartbeats 200000
 
 open GlobalTheory.DefU in
 /- English proof (translation)
-Take `⟨h1, h2, h3, h4⟩` from `UpperTheory.unitary_adelic_t2_locallyCompact_secondCountable E n`. Take `⟨C, hC, hcov⟩` from `UpperTheory.exists_compact_fundamental_set_unitary E n`. Take `⟨B, hdef, hinv⟩` from `UpperTheory.exists_nondegenerate_right_invariant_form_of_compact_quotient (UA E n) (ratU E n) C hC hcov`. Establish `hsum` using `UpperTheory.mem_iSup_automorphicReps_of_invariant_form E n B (fun φ h => hdef φ h.cont h.left) (fun x φ ψ h h' => hinv x φ ψ h.cont h.left h'.cont h'.left)`. Establish `hi` using `Submodule.map_injective_of_injective (autU E n).injective_subtype`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨κ, _, U, P, hU, hP, hPe, hPs⟩` from `UpperTheory.exists_equivariant_projections_of_sum_irreducible (UA E n) (autU E n) (autRep E n) (fun x => by`. Establish `key : ∀ (Z : Submodule ℂ (autU E n)), (∀ σ, IsAutRepU σ → σ.comap (autU E n).subtype ≤ Z) → x ∈ Z`. Introduce `Z hZ`. Establish `hle : (⨆ σ : {σ : Submodule ℂ (UA E n → ℂ) // IsAutRepU σ}, σ.1) ≤ Z.map (autU E n).subtype` using `iSup_le fun σ φ hφ => ⟨⟨φ, σ.2.aut φ hφ⟩, hZ σ.1 σ.2 hφ, rfl⟩`. Take `⟨y, hy, e⟩` from `hle (hsum x.1 x.2)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `Subtype.ext e ▸ hy`. Use `key _ fun σ hσ => ?_` and prove the remaining obligations. Establish `hm : (σ.comap (autU E n).subtype).map (autU E n).subtype = σ`. Rewrite using `[Submodule.map_comap_subtype]`. Conclude with `inf_eq_right.2 hσ.aut`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `le_iSup_of_le ⟨σ.comap (autU E n).subtype, fun h => hσ.ne_bot ?_, fun g u hu => hσ.stable g u.1 hu, fun N hN hst => ?_⟩ le_rfl` and prove the remaining obligations. Rewrite using `[← hm, h, Submodule.map_bot]`. Use `(hσ.irred (N.map (autU E n).subtype) (hm ▸ Submodule.map_mono hN) ?_).imp (fun h => hi (h.trans (Submodule.map_bot _).symm)) fun h => hi (h.trans hm.symm)` and prove the remaining obligations. Introduce and unpack `g _ ⟨u, hu, rfl⟩`. Conclude with `⟨_, hst g u hu, rfl⟩) M hM`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Use `⟨κ, inferInstance, fun i => (U i).map (autU E n).subtype, P, fun i => ⟨?_, ?_, ?_, fun N hN hst => ?_⟩, fun i φ => ⟨_, hP i φ, rfl⟩, hPe, hPs⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨u, -, rfl⟩`. Conclude with `u.2`. Introduce and unpack `g _ ⟨u, hu, rfl⟩`. Conclude with `⟨_, (hU i).2.1 g u hu, rfl⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `fun h => (hU i).1 (hi (h.trans (Submodule.map_bot _).symm))`. Establish `hm : (N.comap (autU E n).subtype).map (autU E n).subtype = N`. Rewrite using `[Submodule.map_comap_subtype]`. Conclude with `inf_eq_right.2 (hN.trans (Submodule.map_subtype_le _ _))`. Break down `(hU i).2.2 (N.comap (autU E n).subtype) (fun u hu => by` into its components or cases.
-
-Take `⟨w, hw, e⟩` from `hN hu`. Conclude with `Subtype.ext e ▸ hw) (fun g u hu => hst g u.1 hu) with h | h`. Use `left`. Rewrite using `[← hm, h, Submodule.map_bot]`. Use `right`.
-
-Rewrite using `[← hm, h]`.
+Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem autProj (E : Type) [Field E] [NumberField E] [IsCMField E] (n : ℕ) (M : Submodule ℂ (autU E n))
     (hM : FiniteDimensional ℂ M) :
@@ -81,15 +77,13 @@ private theorem autProj (E : Type) [Field E] [NumberField E] [IsCMField E] (n : 
 
 open GlobalTheory.DefU in
 /- English proof (translation)
-Set `Φ : Fin m → D →ₗ[ℂ] autU E n` to `fun i => (tf (F i)).codRestrict (autU E n) (haut i)`. Take `⟨κ, _, σ, P, hσ, hP, hPe, hPs⟩` from `autProj E n (⨆ i, LinearMap.range (Φ i)) inferInstance`. Establish `hex : ∀ t i, ∃ G ∈ A, ∀ ℓ, tf G ℓ = (P t (Φ i ℓ)).1` using `fun t i => hsur ((autU E n).subtype ∘ₗ P t ∘ₗ Φ i) (fun ℓ => (P t (Φ i ℓ)).2) fun ℓ x hx => by`. Establish `e : autRep E n x (Φ i ℓ) = Φ i (r x ℓ)` using `Subtype.ext (heq i ℓ x hx)`. Conclude with `(congrArg Subtype.val (hPe t x (Φ i ℓ))).symm.trans (by rw [e]; rfl)`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `choose G hGA hG using hex`. Use `⟨κ, inferInstance, σ, G, hσ, hGA, fun t i ℓ => hG t i ℓ ▸ hP t _, fun t u i => ?_, funext fun i => ?_⟩` and prove the remaining obligations. Use `sub_eq_zero.1 (hinj _ (sub_mem (Submodule.sum_mem _ fun j _ => A.smul_mem _ (hTA u _ (hGA t j))) (hGA t i)) fun ℓ => ?_)` and prove the remaining obligations. Establish `e : ∑ j, a u i j • autRep E n (k u) (Φ j ℓ) = Φ i ℓ`. Apply `Subtype.ext` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `congrArg (fun y => tf y ℓ) (hF u i)` as an intermediate fact. Simplify using `only [map_sum, map_smul, LinearMap.sum_apply, LinearMap.smul_apply, hT] at this`. Rewrite using `[Submodule.coe_sum]`. Conclude with `this`. Establish `e2` using `congrArg (fun y => (P t y).1) e`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [map_sum, map_smul, hPe, Submodule.coe_sum] at e2`. Simplify using `only [map_sub, map_sum, map_smul, LinearMap.sub_apply, LinearMap.sum_apply, LinearMap.smul_apply, hT, hG]`. Conclude with `sub_eq_zero.2 e2`. Rewrite using `[Finset.sum_apply]`. Use `sub_eq_zero.1 (hinj _ (sub_mem (Submodule.sum_mem _ fun t _ => hGA t i) (hFA i)) fun ℓ => ?_)` and prove the remaining obligations.
-
-Establish `e` using `congrArg Subtype.val (hPs (Φ i ℓ) (Submodule.mem_iSup_of_mem i ⟨ℓ, rfl⟩))`. Rewrite `e` using `[Submodule.coe_sum]`. Simplify using `only [map_sub, map_sum, LinearMap.sub_apply, LinearMap.sum_apply, hG]`. Conclude with `sub_eq_zero.2 e`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem core {E : Type} [Field E] [NumberField E] [IsCMField E] {n m : ℕ} {Y D I : Type} [AddCommGroup Y] [Module ℂ Y]
     [AddCommGroup D] [Module ℂ D] [FiniteDimensional ℂ D] (A : Submodule ℂ Y) (tf : Y →ₗ[ℂ] D →ₗ[ℂ] (UA E n → ℂ))
@@ -131,21 +125,17 @@ private theorem core {E : Type} [Field E] [NumberField E] [IsCMField E] {n m : �
     exact sub_eq_zero.2 e
 
 /- English proof (translation)
-Establish `hra : ∀ (u : X.Ub) (G : Fin m → Ga × Gp → Fin d → ℂ) (i : Fin m), X.raF d τ u G i = ∑ j, (τ u).val i j • fun g => G j (g * ((u : Ga), 1))` using `fun u G i => by`. Use function extensionality and compare the values at `g t`. Rewrite using `[Finset.sum_apply, Finset.sum_apply]`. Both sides reduce to the same expression. Establish `hFA : ∀ i, F i ∈ X.AF ξ` using `fun i => hF.1 i trivial`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hopen : ∀ i, IsOpen {k : finU E n | ∀ g, F i (g * J k) = F i g}` using `fun i => by`. Set `S : Subgroup (finU E n)` to `{ carrier := {k | ∀ g, F i (g * J k) = F i g} one_mem' := fun g => by rw [OneMemClass.coe_one, map_one, mul_one] mul_mem' := fun {x y} hx hy g => by rw [Subgroup.coe_mul, map_mul, ← mul_assoc, hy, hx] inv_mem' := fun {x} hx g => by rw [← hx, Subgroup.coe_inv, map_inv, inv_mul_can …`. Use `S.isOpen_of_mem_nhds (g := 1) ?_` and prove the remaining obligations. Use `filter_upwards [hev] with k ⟨⟨u, hu, huk, h1⟩, hk⟩ g`. Establish `h2` using `(hra u F i).symm.trans (congrFun (hK u hu) i)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[h1]`. Establish `h3 : ∀ g, F i (g * ((u : Ga), 1)) = F i g` using `fun g => by`. Establish `h4` using `congrFun h2 g`. Rewrite using `[Finset.sum_apply, Finset.sum_eq_single i (fun j _ hj => by`. Rewrite using `[Units.val_one, Matrix.one_apply_ne hj.symm, zero_smul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use the proof step `rfl) (fun h => (h (Finset.mem_univ _)).elim),`. Use the proof step `Units.val_one, Matrix.one_apply_eq, one_smul] at h4`. Conclude with `h4`. Establish `h5 : ∀ g, F i (g * (1, (J k).2)) = F i g` using `fun g => congrFun (congrFun (hb _ hk) i) g`. Establish `h6 : J k = ((u : Ga), 1) * (1, (J k).2)` using `Prod.ext (huk.symm.trans (mul_one _).symm) (one_mul _).symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[h6, ← mul_assoc, h5, h3]`. Use `choose k hk using fun u : U₀ => hsurj (((u : X.Ub) : Ga), 1)`. Take `⟨κ, _, σ, G, hσ, hGA, hG, hGu, hsum⟩` from `core (X.AF ξ) tf r hinj hsur (fun (u : U₀) G g => G (g * (((u : X.Ub) : Ga), 1))) (fun u => (k u : UA E n)) (fun u => (τ u.1).val) (fun u G hG γ g => by`. Use `hG γ (g * (((u : X.Ub) : Ga), 1))` as an intermediate fact. Rewrite `this` using `[← mul_assoc]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `this)`. Use the proof step `(fun u G ℓ => by`. Establish `h1` using `htr G ℓ (k u)`. Rewrite `h1` using `[hRfin _ (k u).2, show J (k u) = _ from hk u]`. Conclude with `h1.symm)`.
-
-Use `F hFA (fun i => haut (F i) (hFA i) (hopen i))`. Use the proof step `(fun i ℓ x hx => by`. Establish `h1` using `htr (F i) ℓ x`. Simplify using `only [hJinf x hx, mul_one] at h1`. Conclude with `h1)`.
-
-Use the proof step `(fun u i => (hra u.1 F i).symm.trans (congrFun (hF.2 u.1 u.2) i))`. Rewrite using `[← hsum]`. Use `Submodule.sum_mem _ fun t _ => Submodule.mem_iSup_of_mem ⟨σ t, hσ t⟩ ⟨⟨fun i _ => hGA t i, fun u hu => ?_⟩, Submodule.subset_span (hG t)⟩` and prove the remaining obligations. Conclude with `funext fun i => (hra u (G t) i).trans (hGu t ⟨u, hu⟩ i)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem core2 {E : Type} [Field E] [NumberField E] [IsCMField E] {n m d : ℕ} {Γ Ga Gp D : Type} [Group Γ] [Group Ga]
     [Group Gp] [AddCommGroup D] [Module ℂ D] [FiniteDimensional ℂ D] (X : Frame Γ Ga Gp) (ξ : Gp →* GL (Fin d) ℂ)
@@ -211,17 +201,17 @@ private theorem core2 {E : Type} [Field E] [NumberField E] [IsCMField E] {n m d 
   exact funext fun i => (hra u (G t) i).trans (hGu t ⟨u, hu⟩ i)
 
 /- English proof (translation)
-Introduce `l _ L Ω _ _ _ _ _ _ s n hn V Q c m τ₀ ι hτ lam d e ξ hξ F hF ⟨K, hK⟩ ⟨b, hb⟩`. Set `J : UA L n →* Ga l L n × GV n (fun v : V.frame.Vl => s.w v.1)` to `MonoidHom.prod (away l L n).rangeRestrict (Pi.monoidHom fun v : V.frame.Vl => cLoc (s.w v.1))`. Take `⟨hinj, haut, htr, hsurj, hsur⟩` from `UpperTheory.V.Hi.formU l L Ω s n hn V Q c m τ₀ ι lam d e ξ hξ J (fun _ => rfl)`. Use `haveI := e.finiteDimensional`. Set `tf : (Ga l L n × GV n (fun v : V.frame.Vl => s.w v.1) → Fin d → ℂ) →ₗ[ℂ] Module.Dual ℂ (⨂[ℂ] e : Emb l (fun v : V.frame.Vl => s.w v.1), nablaSq ℂ n (lam e.res)) →ₗ[ℂ] (UA L n → ℂ)` to `LinearMap.mk₂ ℂ (toForm ι e) (fun F F' ℓ => funext fun g => by simp only [toForm, Pi.add_apply, map_add]) (fun a F ℓ => funext fun g => by simp only [toForm, Pi.smul_apply, map_smul]) (fun F ℓ ℓ' => funext fun g => by simp only [toForm, Pi.add_apply, LinearMap.add_apply]) (fun a …`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hJinf : ∀ x ∈ infU L n, J x = 1` using `fun x hx => by`. Establish `h1 : ∀ w, cLoc w x = 1` using `fun w => by`. Establish `h2 : Matrix.GeneralLinearGroup.map (pFin L) x.1 = 1` using `hx`. Express the relevant statement in the definitionally equal form `Matrix.GeneralLinearGroup.map (pLoc L w) (Matrix.GeneralLinearGroup.map (pFin L) x.1) = 1`. Rewrite using `[h2, map_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Prod.ext (Subtype.ext (funext fun w => h1 _)) (funext fun v => h1 _)`. Establish `hRfin : ∀ k ∈ finU L n, infRep (V` using `V) ι lam k = 1 := fun k hk => by`. Establish `h1 : ∀ τ, cEmb τ k = 1` using `fun τ => by`. Express the relevant statement in the definitionally equal form `Matrix.GeneralLinearGroup.map (coord τ) (cInf k) = 1`. Rewrite using `[MonoidHom.mem_ker.1 hk, map_one]`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `h2 : (Pi.monoidHom fun e : Emb l (fun v : V.frame.Vl => s.w v.1) => (GlobalTheory.Branching.sqRep ℂ n (lam e.res)).comp (cEmb (E` using `L) (n := n) (ι.toRingHom.comp e.res))) k = 1 :=`. Use function extensionality and compare the values at `fun y => by`. Express the relevant statement in the definitionally equal form `GlobalTheory.Branching.sqRep ℂ n (lam y.res) (cEmb _ k) = 1`. Rewrite using `[h1, map_one]`. Unfold `infRep`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[MonoidHom.comp_apply, h2, map_one]`. Use `core2 (hset Q τ₀).X ξ ((hset Q τ₀).τC ι) (hset Q τ₀).UQ ((hset Q τ₀).lev K) ((hset Q τ₀).X.I.I1 b) J tf (fun x ℓ => ℓ ∘ₗ infRep ι lam x⁻¹) hJinf (fun k hk ℓ => ?_) hinj haut htr hsurj hsur ?_ F hF hK hb` and prove the remaining obligations. Rewrite using `[hRfin _ ((finU L n).inv_mem hk)]`. Both sides reduce to the same expression. Use `filter_upwards [UpperTheory.eventually_mem_heckeLevel_and_iwahoriCongruence l L Ω s n hn V Q c m τ₀ hτ K b] with k ⟨⟨u, hu, huk, hu1⟩, hk⟩`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use `⟨⟨u, hu, huk, ?_⟩, hk⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Matrix.GeneralLinearGroup.map _ (τ₀ (toKT n s u)) = 1`. Rewrite using `[hu1, map_one]`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Hi.decompU :
     ∀ (l : ℕ) [Fact l.Prime] (L Ω : Type) [Field L] [NumberField L] [IsCMField L] [Field Ω] [Algebra L Ω] [IsAlgClosure L Ω] (s : HidaSetting l L Ω) (n : ℕ), 1 ≤ n →

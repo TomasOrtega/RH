@@ -19,9 +19,9 @@ variable {G : Type} [Group G] {Qp K₀ K : Type} [Field Qp] [Field K₀] [Field 
     {V : Type} [AddCommGroup V] [Module LL V] [Module Qp V] [IsScalarTower Qp LL V]
 
 /- English proof (translation)
-Take `⟨k, rfl⟩` from `Int.le.dest hab`. Use `clear hab`. Proceed by induction on `k with`. Consider the case `zero => simp`. Consider the case `succ k ih`.
+Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[show a + ((k + 1 : ℕ) : ℤ) = a + k + 1 by push_cast; ring]`. Conclude with `(PD.Fil_anti (a + k)).trans ih`.
+A detailed English derivation is pending.
 -/
 theorem jb_Fil_anti {a b : ℤ} (hab : a ≤ b) : PD.Fil b ≤ PD.Fil a := by
   obtain ⟨k, rfl⟩ := Int.le.dest hab
@@ -33,9 +33,9 @@ theorem jb_Fil_anti {a b : ℤ} (hab : a ≤ b) : PD.Fil b ≤ PD.Fil a := by
     exact (PD.Fil_anti (a + k)).trans ih
 
 /- English proof (translation)
-Introduce `a b hab`. Establish `h : (PD.Fil b).restrictScalars Qp ≤ (PD.Fil a).restrictScalars Qp` using `jb_Fil_anti PD hab`. Unfold `FilV`. Rewrite using `[← Submodule.subtype_comp_inclusion _ _ h]`. Establish `e : AlgebraTensorModule.map (LinearMap.id : V →ₗ[LL] V) (((PD.Fil a).restrictScalars Qp).subtype ∘ₗ Submodule.inclusion h) = AlgebraTensorModule.map (LinearMap.id : V →ₗ[LL] V) ((PD.Fil a).restrictScalars Qp).subtype ∘ₗ AlgebraTensorModule.map (LinearMap.id : V →ₗ[LL] V) (Submodu …`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← AlgebraTensorModule.map_comp, LinearMap.id_comp]`. Rewrite using `[e]`. Conclude with `LinearMap.range_comp_le_range _ _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem jb_FilV_anti : Antitone (FilV PD (LL := LL) (V := V)) := by
   intro a b hab
@@ -51,9 +51,9 @@ theorem jb_FilV_anti : Antitone (FilV PD (LL := LL) (V := V)) := by
   exact LinearMap.range_comp_le_range _ _
 
 /- English proof (translation)
-Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => exact ⟨0, zero_mem _⟩`. Consider the case `tmul v b`. Take `⟨a, ha⟩` from `PD.Fil_exh b`. Conclude with `⟨a, ⟨v ⊗ₜ ⟨b, ha⟩, by simp⟩⟩`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Consider the case `add x y hx hy`. Take `⟨a, ha⟩` from `hx`. Take `⟨b, hb⟩` from `hy`. Conclude with `⟨min a b, add_mem (jb_FilV_anti PD (min_le_left a b) ha) (jb_FilV_anti PD (min_le_right a b) hb)⟩`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem jb_FilV_exh (y : V ⊗[Qp] BdR) : ∃ a, y ∈ FilV PD (LL := LL) (V := V) a := by
   induction y using TensorProduct.induction_on with
@@ -68,13 +68,11 @@ theorem jb_FilV_exh (y : V ⊗[Qp] BdR) : ∃ a, y ∈ FilV PD (LL := LL) (V := 
       (jb_FilV_anti PD (min_le_right a b) hb)⟩
 
 /- English proof (translation)
-Set `bV` to `Module.Free.chooseBasis Qp V`. Set `e` to `TensorProduct.equivFinsuppOfBasisLeft (N := BdR) bV`. Establish `hc : ∀ a, ∀ z ∈ FilV PD (LL` using `LL) (V := V) a, ∀ i, e z i ∈ PD.Fil a := by`. Introduce `a z hz i`. Take `⟨t, rfl⟩` from `hz`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul v f`. Simplify using `only [AlgebraTensorModule.map_tmul, LinearMap.id_apply, Submodule.subtype_apply, e, TensorProduct.equivFinsuppOfBasisLeft_apply_tmul_apply]`. Conclude with `(PD.Fil a).smul_of_tower_mem _ f.2`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 
-Consider the case `add x y hx hy`. Rewrite using `[map_add, map_add, Finsupp.add_apply]`. Conclude with `add_mem hx hy`. Establish `h0 : e y = 0`. Use extensionality with `i`.
-
-Conclude with `PD.Fil_sep _ (fun a => hc a y (hy a) i)`. Conclude with `e.injective (by rw [h0, map_zero])`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem jb_FilV_sep (y : V ⊗[Qp] BdR) (hy : ∀ a, y ∈ FilV PD (LL := LL) (V := V) a) : y = 0 := by
   classical
@@ -98,31 +96,29 @@ theorem jb_FilV_sep (y : V ⊗[Qp] BdR) (hy : ∀ a, y ∈ FilV PD (LL := LL) (V
   exact e.injective (by rw [h0, map_zero])
 
 /- English proof (translation)
-Introduce `_ _ hab` and use `inf_le_inf_left _ (jb_FilV_anti PD hab)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem jb_FildR_anti (ρ : Representation LL G V) (τ : K →ₐ[Qp] LL) : Antitone (FildR PD ρ τ) :=
   fun _ _ hab => inf_le_inf_left _ (jb_FilV_anti PD hab)
 
 /- English proof (translation)
-Use `set D := DdRE PD ρ τ with hD`. Establish `hFD : ∀ a, FildR PD ρ τ a ≤ D` using `fun a => inf_le_left`. Set `bD` to `Module.finBasis LL ↥D`. Establish `hex : ∀ j, ∃ a, ((bD j : ↥D) : V ⊗[Qp] BdR) ∈ FilV PD (LL` using `LL) (V := V) a := fun j => jb_FilV_exh PD (LL := LL) (V := V) _`. Use `choose aj haj using hex`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `set a₀ : ℤ := -(∑ j, |aj j|) with ha₀`. Establish `ha₀j : ∀ j, a₀ ≤ aj j`. Introduce `j`. Establish `h1 : |aj j| ≤ ∑ k, |aj k|` using `Finset.single_le_sum (f := fun k => |aj k|) (fun k _ => abs_nonneg _) (Finset.mem_univ j)`. Establish `h2` using `neg_abs_le (aj j)`.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hlow : ∀ a, a ≤ a₀ → FildR PD ρ τ a = D`. Introduce `a ha`. Use `le_antisymm (hFD a) (le_inf le_rfl ?_)` and prove the remaining obligations. Establish `hspan : (Submodule.span LL (Set.range bD)).map D.subtype = D`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Rewrite using `[bD.span_eq, Submodule.map_top, Submodule.range_subtype]`. Rewrite using `[← hspan, Submodule.map_span, Submodule.span_le]`. Introduce and unpack `_ ⟨_, ⟨j, rfl⟩, rfl⟩`. Conclude with `jb_FilV_anti PD (ha.trans (ha₀j j)) (haj j)`. Set `f : ℕ → ℕ` to `fun k => finrank LL ↥(FildR PD ρ τ (k : ℤ))`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hne : ∃ m, ∃ k, f k = m` using `⟨_, 0, rfl⟩`. Set `m` to `Nat.find hne`. Take `⟨k₀, hk₀⟩` from `Nat.find_spec hne`. Establish `hmin : ∀ k, m ≤ f k` using `fun k => Nat.find_min' hne ⟨k, rfl⟩`. Establish `hfinF : ∀ a, FiniteDimensional LL ↥(FildR PD ρ τ a)` using `fun a => Submodule.finiteDimensional_of_le (hFD a)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hstab : ∀ k : ℕ, k₀ ≤ k → FildR PD ρ τ (k : ℤ) = FildR PD ρ τ (k₀ : ℤ)`. Introduce `k hk`. Establish `hle : FildR PD ρ τ (k : ℤ) ≤ FildR PD ρ τ (k₀ : ℤ)` using `jb_FildR_anti PD ρ τ (by exact_mod_cast hk)`. Establish `hr1 : f k ≤ f k₀` using `Submodule.finrank_mono hle`. Establish `hr2` using `hmin k`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.eq_of_le_of_finrank_eq hle (by show f k = f k₀; omega)`. Establish `hbot : FildR PD ρ τ (k₀ : ℤ) = ⊥`. Rewrite using `[eq_bot_iff]`. Introduce `x hx`. Rewrite using `[Submodule.mem_bot]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Apply `jb_FilV_sep PD (LL := LL) (V := V) x` to reduce the goal to its premises. Introduce `a`. Break down `le_total a (k₀ : ℤ) with h | h` into its components or cases. Conclude with `jb_FilV_anti PD (LL := LL) (V := V) h hx.2`. Take `⟨k, rfl⟩` from `Int.eq_ofNat_of_zero_le (le_trans (Int.natCast_nonneg k₀) h)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `hk : k₀ ≤ k` using `by exact_mod_cast h`. Rewrite `hx` using `[← hstab k hk]`. Conclude with `hx.2`. Establish `hhigh : ∀ a, (k₀ : ℤ) ≤ a → FildR PD ρ τ a = ⊥` using `fun a ha => eq_bot_iff.mpr (hbot ▸ jb_FildR_anti PD ρ τ ha)`. Use `⟨a₀, (k₀ : ℤ) - 1, fun a ha => ⟨?_, ?_⟩⟩` and prove the remaining obligations.
-
-Assume the negation of the conclusion as `hlt`. Conclude with `ha (by rw [hlow a (by omega), hlow (a + 1) (by omega)])`. Assume the negation of the conclusion as `hlt`. Conclude with `ha (by rw [hhigh a (by omega), hhigh (a + 1) (by omega)])`.
+A detailed English derivation is pending.
 -/
 theorem jb_bound (ρ : Representation LL G V) (τ : K →ₐ[Qp] LL) (hfin : FiniteDimensional LL ↥(DdRE PD ρ τ)) :
     ∃ a₀ a₁ : ℤ, ∀ a, IsJumpV PD ρ τ a → a₀ ≤ a ∧ a ≤ a₁ := by
@@ -196,11 +192,11 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     [Fintype (K →ₐ[Qp] LL)]
 
 /- English proof (translation)
-Introduce `T hT`. Establish `hfin : ∀ τ : K →ₐ[Qp] LL, FiniteDimensional LL ↥(DdRE PD T.ρ τ)` using `fun τ => ((hDR hK T.V T.ρ T.cont hT.2.2.2).2 τ).1`. Use `choose a₀ a₁ hab using fun τ => jb_bound PD T.ρ τ (hfin τ)`. Use `⟨fun _ => Finset.univ.sup (fun τ => (-a₀ τ).toNat), fun _ => Finset.univ.sup (fun τ => (a₁ τ).toNat), ?_⟩` and prove the remaining obligations. Introduce `i τ _ a ha`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨h0, h1⟩` from `hab τ a ha`. Establish `e0 : (-a₀ τ).toNat ≤ Finset.univ.sup (fun τ => (-a₀ τ).toNat)` using `Finset.le_sup (f := fun τ => (-a₀ τ).toNat) (Finset.mem_univ τ)`. Establish `e1 : (a₁ τ).toNat ≤ Finset.univ.sup (fun τ => (a₁ τ).toNat)` using `Finset.le_sup (f := fun τ => (a₁ τ).toNat) (Finset.mem_univ τ)`. Establish `f0` using `Int.self_le_toNat (-a₀ τ)`. Establish `f1` using `Int.self_le_toNat (a₁ τ)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `g0 : (((-a₀ τ).toNat : ℕ) : ℤ) ≤ ((Finset.univ.sup (fun τ => (-a₀ τ).toNat) : ℕ) : ℤ)` using `by exact_mod_cast e0`. Establish `g1 : (((a₁ τ).toNat : ℕ) : ℤ) ≤ ((Finset.univ.sup (fun τ => (a₁ τ).toNat) : ℕ) : ℤ)` using `by exact_mod_cast e1`. Simplify using `only [Set.mem_Icc]`. Apply the tactic sequence `constructor <;> omega`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem jumpsBdd_holds (hDR : Formalism.MainNotions.TruncatedSeriesCountingBounds.DdREqDcris PD LL) (hK : Function.Bijective (algebraMap K₀ K)) :
     ∀ T : LocLat G Qp LL O, CrysLat PD T → ∃ M h : ZMod n → ℕ, Formalism.MainNotions.LiftingTheory.JumpsLet W T M h := by

@@ -22,7 +22,7 @@ def resAt (ι : H →* G) (φ : G → W) (g : G) : H → W := fun y => φ (g * �
 def RightInv (S : Set G) (φ : G → W) : Prop := ∀ g, ∀ s ∈ S, φ (g * s) = φ g
 
 /- English proof (translation)
-Unfold `opAt hAct resAt`. Simplify using `only [one_mul]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem opAt_eq_hAct (ι : H →* G) (KH : Subgroup H) (f : H → k) (φ : G → W) (g : G) :
     opAt ι KH f φ g = hAct KH f (resAt ι φ g) 1 := by
@@ -30,7 +30,7 @@ theorem opAt_eq_hAct (ι : H →* G) (KH : Subgroup H) (f : H → k) (φ : G →
   simp only [one_mul]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `y`. Unfold `resAt opAt hAct`. Use `finsum_congr fun x => ?_` and prove the remaining obligations. Simplify using `only [map_mul, mul_assoc]`.
+Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem resAt_opAt (ι : H →* G) (KH : Subgroup H) (f : H → k) (φ : G → W) (g : G) :
     resAt ι (opAt ι KH f φ) g = hAct KH f (resAt ι φ g) := by
@@ -40,7 +40,7 @@ theorem resAt_opAt (ι : H →* G) (KH : Subgroup H) (f : H → k) (φ : G → W
   simp only [map_mul, mul_assoc]
 
 /- English proof (translation)
-Introduce `γ y κ`. Establish `hγ : (γ : H) = 1` using `Subgroup.mem_bot.mp γ.2`. Simplify using `only [hγ, one_mul, MonoidHom.one_apply, Module.End.one_apply, resAt, map_mul]`. Rewrite using `[← mul_assoc]`. Conclude with `hφ _ _ ⟨κ, κ.2, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem resAt_mem {ι : H →* G} {KH : Subgroup H} {φ : G → W} (hφ : RightInv (ι '' (KH : Set H)) φ) (g : G) :
     resAt ι φ g ∈ AMF k (⊥ : Subgroup H) KH (1 : Representation k (⊥ : Subgroup H) W) := by
@@ -51,7 +51,7 @@ theorem resAt_mem {ι : H →* G} {KH : Subgroup H} {φ : G → W} (hφ : RightI
   exact hφ _ _ ⟨κ, κ.2, rfl⟩
 
 /- English proof (translation)
-Use function extensionality and compare the values at `g`. Rewrite using `[opAt_eq_hAct, resAt_opAt, opAt_eq_hAct]`. Conclude with `(congrFun (Formalism.UG.Final.HeckeActMul H ⊥ KH k W 1 hK f₁ hf₁ f₂ hf₂ (resAt ι φ g) (resAt_mem hφ g)) 1).symm`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem opAt_mul {ι : H →* G} {KH : Subgroup H} (hK : IsCommensurated KH) {f₁ f₂ : H → k}
     (hf₁ : f₁ ∈ Hecke k KH) (hf₂ : f₂ ∈ Hecke k KH) {φ : G → W} (hφ : RightInv (ι '' (KH : Set H)) φ) :
@@ -61,7 +61,7 @@ theorem opAt_mul {ι : H →* G} {KH : Subgroup H} (hK : IsCommensurated KH) {f�
   exact (congrFun (Formalism.UG.Final.HeckeActMul H ⊥ KH k W 1 hK f₁ hf₁ f₂ hf₂ (resAt ι φ g) (resAt_mem hφ g)) 1).symm
 
 /- English proof (translation)
-Rewrite using `[opAt_mul hK hf₁ hf₂ hφ, opAt_mul hK hf₂ hf₁ hφ, hc]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem opAt_comm_same {ι : H →* G} {KH : Subgroup H} (hK : IsCommensurated KH) {f₁ f₂ : H → k}
     (hf₁ : f₁ ∈ Hecke k KH) (hf₂ : f₂ ∈ Hecke k KH) (hc : conv KH f₁ f₂ = conv KH f₂ f₁) {φ : G → W}
@@ -70,7 +70,7 @@ theorem opAt_comm_same {ι : H →* G} {KH : Subgroup H} (hK : IsCommensurated K
   rw [opAt_mul hK hf₁ hf₂ hφ, opAt_mul hK hf₂ hf₁ hφ, hc]
 
 /- English proof (translation)
-Unfold `opAt`. Use `finsum_eq_sum_of_support_subset _ fun x hx => hS x fun h0 => hx ?_` and prove the remaining obligations. Simplify using `[h0]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem opAt_eq_sum (ι : H →* G) (KH : Subgroup H) (f : H → k) (φ : G → W) (g : G) (S : Finset (H ⧸ KH))
     (hS : ∀ x : H ⧸ KH, f x.out ≠ 0 → x ∈ S) :
@@ -80,11 +80,9 @@ theorem opAt_eq_sum (ι : H →* G) (KH : Subgroup H) (f : H → k) (φ : G → 
   simp [h0]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `g`. Use `set S := (Formalism.UG.P.finite_supp KH hK f hf).toFinset`. Use `set S' := (Formalism.UG.P.finite_supp KH' hK' f' hf').toFinset`. Establish `hS : ∀ x : H ⧸ KH, f x.out ≠ 0 → x ∈ S` using `fun x hx => by simpa [S] using hx`. Establish `hS' : ∀ x : H' ⧸ KH', f' x.out ≠ 0 → x ∈ S'` using `fun x hx => by simpa [S'] using hx`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : ∀ (ψ : G → W) (g : G), opAt ι KH f ψ g = ∑ x ∈ S, f x.out • ψ (g * ι x.out)` using `fun ψ g => opAt_eq_sum ι KH f ψ g S hS`. Establish `e2 : ∀ (ψ : G → W) (g : G), opAt ι' KH' f' ψ g = ∑ y ∈ S', f' y.out • ψ (g * ι' y.out)` using `fun ψ g => opAt_eq_sum ι' KH' f' ψ g S' hS'`. Simplify using `only [e1, e2, Finset.smul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun y _ => Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations.
-
-Rewrite using `[smul_comm, mul_assoc, mul_assoc, hc]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem opAt_comm_diff {H' : Type} [Group H'] {ι : H →* G} {ι' : H' →* G} {KH : Subgroup H} {KH' : Subgroup H'}
     (hK : IsCommensurated KH) (hK' : IsCommensurated KH') {f : H → k} {f' : H' → k}
@@ -114,7 +112,7 @@ variable {H : Type} [Group H] {k : Type} [CommRing k]
 def twist (χ : H →* k) (f : H → k) : H → k := fun x => χ x * f x
 
 /- English proof (translation)
-Take `⟨hb, S, hS⟩` from `hf`. Use `⟨fun a b g => ?_, S, fun g hg => hS g fun h0 => hg ?_⟩` and prove the remaining obligations. Simplify using `only [twist, map_mul, hχ a a.2, hχ b b.2, one_mul, mul_one, hb a b g]`. Simplify using `[twist, h0]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem twist_mem {KH : Subgroup H} {χ : H →* k} (hχ : ∀ κ ∈ KH, χ κ = 1) {f : H → k} (hf : f ∈ Hecke k KH) :
     twist χ f ∈ Hecke k KH := by
@@ -124,11 +122,9 @@ theorem twist_mem {KH : Subgroup H} {χ : H →* k} (hχ : ∀ κ ∈ KH, χ κ 
   · simp [twist, h0]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `g`. Unfold `conv twist`. Use `show _ = χ g * ∑ᶠ x : H ⧸ KH, f₁ x.out * f₂ (x.out⁻¹ * g)`. Use `set S := (Formalism.UG.P.finite_supp KH hK f₁ hf₁).toFinset`. Establish `hS : ∀ x : H ⧸ KH, f₁ x.out ≠ 0 → x ∈ S` using `fun x hx => by simpa [S] using hx`.
+Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[finsum_eq_sum_of_support_subset _ (s := S) ?_, finsum_eq_sum_of_support_subset _ (s := S) ?_, Finset.mul_sum]`. Use `rotate_left`. Introduce `x hx`. Conclude with `hS x fun h0 => hx (by simp [h0])`. Introduce `x hx`.
-
-Conclude with `hS x fun h0 => hx (by simp [h0])`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Establish `: χ x.out * χ (x.out⁻¹ * g) = χ g` using `by rw [← map_mul, mul_inv_cancel_left]`. Combine the equalities or inequalities in the displayed calculation.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem conv_twist {KH : Subgroup H} (hK : IsCommensurated KH) (χ : H →* k) {f₁ : H → k} (hf₁ : f₁ ∈ Hecke k KH)
     (f₂ : H → k) : conv KH (twist χ f₁) (twist χ f₂) = twist χ (conv KH f₁ f₂) := by
@@ -151,7 +147,7 @@ theorem conv_twist {KH : Subgroup H} (hK : IsCommensurated KH) (χ : H →* k) {
     _ = χ g * (f₁ x.out * f₂ (x.out⁻¹ * g)) := by rw [this]
 
 /- English proof (translation)
-Rewrite using `[conv_twist hK χ hf₁, conv_twist hK χ hf₂, hc]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem conv_twist_comm {KH : Subgroup H} (hK : IsCommensurated KH) (χ : H →* k) {f₁ f₂ : H → k}
     (hf₁ : f₁ ∈ Hecke k KH) (hf₂ : f₂ ∈ Hecke k KH) (hc : conv KH f₁ f₂ = conv KH f₂ f₁) :
@@ -159,9 +155,9 @@ theorem conv_twist_comm {KH : Subgroup H} (hK : IsCommensurated KH) (χ : H →*
   rw [conv_twist hK χ hf₁, conv_twist hK χ hf₂, hc]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Simplify using `only [twist, dosetInd, Pi.smul_apply, smul_eq_mul]`. Distinguish the cases in `hx : x ∈ DoubleCoset.doubleCoset α (KH : Set H) (KH : Set H)`. Rewrite using `[Set.indicator_of_mem hx]`. Take `⟨a, ha, b, hb, rfl⟩` from `DoubleCoset.mem_doubleCoset.mp hx`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Simplify using `[map_mul, hχ a ha, hχ b hb]`. Simplify using `[Set.indicator_of_notMem hx]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem twist_dosetInd {KH : Subgroup H} {χ : H →* k} (hχ : ∀ κ ∈ KH, χ κ = 1) (α : H) :
     twist χ (dosetInd k KH α) = χ α • dosetInd k KH α := by
@@ -182,14 +178,14 @@ variable {F : Type} [Field F] [NumberField F] (v : HeightOneSpectrum (𝓞 F)) (
 abbrev Kv : Subgroup (GL (Fin n) (v.adicCompletion F)) := GLint (Fin n) (Ov F v)
 
 /- English proof (translation)
-The claim follows from `Formalism.UG.Final.GLintComm F v n`.
+A detailed English derivation is pending.
 -/
 theorem Kv_comm : IsCommensurated (Kv v n) := Formalism.UG.Final.GLintComm F v n
 
 variable {v n} {G : Type} [Group G] {W : Type} [AddCommGroup W] [Module ℂ W]
 
 /- English proof (translation)
-The claim follows from `opAt_comm_same (Kv_comm v n) hf₁ hf₂ (Formalism.UG.Final.HeckeCommGL F v n ℂ f₁ hf₁ f₂ hf₂) hφ`.
+A detailed English derivation is pending.
 -/
 theorem opAt_comm_GL (ι : GL (Fin n) (v.adicCompletion F) →* G) {f₁ f₂ : GL (Fin n) (v.adicCompletion F) → ℂ}
     (hf₁ : f₁ ∈ Hecke ℂ (Kv v n)) (hf₂ : f₂ ∈ Hecke ℂ (Kv v n)) {φ : G → W}
@@ -202,14 +198,14 @@ def hkN (ι : GL (Fin n) (v.adicCompletion F) →* G) (χ : GL (Fin n) (v.adicCo
   opAt ι (Kv v n) (twist χ (Tj ℂ n (Ov F v) ϖ k)) φ
 
 /- English proof (translation)
-The claim follows from `twist_mem hχ (Formalism.UG.Final.TjMem _ (Ov F v) ϖ ℂ n k hϖ)`.
+A detailed English derivation is pending.
 -/
 theorem hkN_fun_mem {χ : GL (Fin n) (v.adicCompletion F) →* ℂ} (hχ : ∀ κ ∈ Kv v n, χ κ = 1)
     {ϖ : v.adicCompletion F} (hϖ : ϖ ≠ 0) (k : ℕ) : twist χ (Tj ℂ n (Ov F v) ϖ k) ∈ Hecke ℂ (Kv v n) :=
   twist_mem hχ (Formalism.UG.Final.TjMem _ (Ov F v) ϖ ℂ n k hϖ)
 
 /- English proof (translation)
-Establish `h1` using `Formalism.UG.Final.TjMem _ (Ov F v) ϖ ℂ n k hϖ`. Establish `h2` using `Formalism.UG.Final.TjMem _ (Ov F v) ϖ ℂ n k' hϖ`. Conclude with `opAt_comm_same (Kv_comm v n) (twist_mem hχ h1) (twist_mem hχ h2) (conv_twist_comm (Kv_comm v n) χ h1 h2 (Formalism.UG.Final.HeckeCommGL F v n ℂ _ h1 _ h2)) hφ`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem hkN_comm_same (ι : GL (Fin n) (v.adicCompletion F) →* G) {χ : GL (Fin n) (v.adicCompletion F) →* ℂ}
     (hχ : ∀ κ ∈ Kv v n, χ κ = 1) {ϖ : v.adicCompletion F} (hϖ : ϖ ≠ 0) (k k' : ℕ) {φ : G → W}
@@ -221,7 +217,7 @@ theorem hkN_comm_same (ι : GL (Fin n) (v.adicCompletion F) →* G) {χ : GL (Fi
     (conv_twist_comm (Kv_comm v n) χ h1 h2 (Formalism.UG.Final.HeckeCommGL F v n ℂ _ h1 _ h2)) hφ
 
 /- English proof (translation)
-The claim follows from `opAt_comm_diff (Kv_comm v n) (Kv_comm v' n) (hkN_fun_mem hχ hϖ k) (hkN_fun_mem hχ' hϖ' k') hc φ`.
+A detailed English derivation is pending.
 -/
 theorem hkN_comm_diff {v' : HeightOneSpectrum (𝓞 F)} (ι : GL (Fin n) (v.adicCompletion F) →* G)
     (ι' : GL (Fin n) (v'.adicCompletion F) →* G) (hc : ∀ a b, ι a * ι' b = ι' b * ι a)
@@ -242,9 +238,9 @@ def IsDCSys (KH : Subgroup H) (α : H) (R : Finset H) : Prop :=
   ∀ x ∈ DoubleCoset.doubleCoset α (KH : Set H) KH, ∃! γ, γ ∈ R ∧ γ⁻¹ * x ∈ KH
 
 /- English proof (translation)
-Establish `hm : x.out ∈ DoubleCoset.doubleCoset α (KH : Set H) KH`. Assume the negation of the conclusion as `h`. Conclude with `hx (by simp [dosetInd, Set.indicator_of_notMem h])`. Take `⟨γ, ⟨hγR, hγ⟩, -⟩` from `hR.2 _ hm`. Use `Finset.mem_image.mpr ⟨γ, hγR, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← QuotientGroup.out_eq' x, QuotientGroup.eq]`. Conclude with `hγ`.
+A detailed English derivation is pending.
 -/
 theorem dosetInd_supp {KH : Subgroup H} [DecidableEq (H ⧸ KH)] {α : H} {R : Finset H} (hR : IsDCSys KH α R)
     (x : H ⧸ KH) (hx : dosetInd k KH α x.out ≠ 0) : x ∈ R.image (QuotientGroup.mk : H → H ⧸ KH) := by
@@ -257,13 +253,11 @@ theorem dosetInd_supp {KH : Subgroup H} [DecidableEq (H ⧸ KH)] {α : H} {R : F
   exact hγ
 
 /- English proof (translation)
-Rewrite using `[opAt_eq_sum ι KH _ φ g _ (dosetInd_supp hR), Finset.sum_image]`. Use `Finset.sum_congr rfl fun γ hγ => ?_` and prove the remaining obligations. Take `⟨κ, hκ⟩` from `QuotientGroup.mk_out_eq_mul KH γ`. Establish `hmem : ((γ : H ⧸ KH)).out ∈ DoubleCoset.doubleCoset α (KH : Set H) KH`. Take `⟨a, ha, b, hb, e⟩` from `DoubleCoset.mem_doubleCoset.mp (hR.1 γ hγ)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `DoubleCoset.mem_doubleCoset.mpr ⟨a, ha, b * κ, KH.mul_mem hb κ.2, ?_⟩` and prove the remaining obligations. Rewrite using `[hκ, e]`. Use `group`. Rewrite using `[dosetInd, Set.indicator_of_mem hmem, Pi.one_apply, one_smul, hκ, map_mul, ← mul_assoc]`. Conclude with `hφ _ _ ⟨κ, κ.2, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `γ hγ γ' hγ' he`. Establish `h1 : γ⁻¹ * γ' ∈ KH` using `QuotientGroup.eq.mp he`. Take `⟨c, -, hc⟩` from `hR.2 γ' (hR.1 γ' hγ')`. Establish `e1` using `hc γ ⟨hγ, h1⟩`. Establish `e2` using `hc γ' ⟨hγ', by simpa using KH.one_mem⟩`.
-
-Rewrite using `[e1, e2]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem opAt_dosetInd {ι : H →* G} {KH : Subgroup H} {α : H} {R : Finset H} (hR : IsDCSys KH α R) {φ : G → W}
     (hφ : RightInv (ι '' (KH : Set H)) φ) (g : G) :
@@ -287,7 +281,7 @@ theorem opAt_dosetInd {ι : H →* G} {KH : Subgroup H} {α : H} {R : Finset H} 
     rw [e1, e2]
 
 /- English proof (translation)
-Rewrite using `[opAt_eq_sum ι KH (c • f) φ g S (fun x hx => hS x fun h => hx (by simp [h])), opAt_eq_sum ι KH f φ g S hS, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Rewrite using `[Pi.smul_apply, smul_eq_mul, mul_smul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem opAt_smul (ι : H →* G) (KH : Subgroup H) (c : k) (f : H → k) (φ : G → W) (g : G) (S : Finset (H ⧸ KH))
     (hS : ∀ x : H ⧸ KH, f x.out ≠ 0 → x ∈ S) :
@@ -298,7 +292,7 @@ theorem opAt_smul (ι : H →* G) (KH : Subgroup H) (c : k) (f : H → k) (φ : 
   rw [Pi.smul_apply, smul_eq_mul, mul_smul]
 
 /- English proof (translation)
-Rewrite using `[twist_dosetInd hχ, opAt_smul ι KH _ _ φ g _ (dosetInd_supp hR), opAt_dosetInd hR hφ]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem opAt_twist_dosetInd {ι : H →* G} {KH : Subgroup H} {χ : H →* k} (hχ : ∀ κ ∈ KH, χ κ = 1) {α : H}
     {R : Finset H} (hR : IsDCSys KH α R) {φ : G → W} (hφ : RightInv (ι '' (KH : Set H)) φ) (g : G) :
@@ -307,15 +301,15 @@ theorem opAt_twist_dosetInd {ι : H →* G} {KH : Subgroup H} {χ : H →* k} (h
   rw [twist_dosetInd hχ, opAt_smul ι KH _ _ φ g _ (dosetInd_supp hR), opAt_dosetInd hR hφ]
 
 /- English proof (translation)
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `δ hδ`. Take `⟨γ, hγ, rfl⟩` from `Finset.mem_image.mp hδ`. Take `⟨a, ha, b, hb, e⟩` from `DoubleCoset.mem_doubleCoset.mp (hR.1 γ hγ)`. Conclude with `DoubleCoset.mem_doubleCoset.mpr ⟨ι a, hKH a ha, ι b, hKH b hb, by rw [e, map_mul, map_mul]⟩`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x hx`. Take `⟨κ1, hκ1, κ2, hκ2, rfl⟩` from `DoubleCoset.mem_doubleCoset.mp hx`. Take `⟨a1, ha1, c1, hc1, rfl⟩` from `hdec κ1 hκ1`. Take `⟨a2, ha2, c2, hc2, rfl⟩` from `hdec κ2 hκ2`. Establish `hy : a1 * α * a2 ∈ DoubleCoset.doubleCoset α (KH : Set H) KH` using `DoubleCoset.mem_doubleCoset.mpr ⟨a1, ha1, a2, ha2, rfl⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ex : ι a1 * c1 * ι α * (ι a2 * c2) = ι (a1 * α * a2) * (c1 * c2)`. Combine the equalities or inequalities in the displayed calculation. Take `⟨γ, ⟨hγR, hγ⟩, huniq⟩` from `hR.2 _ hy`. Establish `hc : c1 * c2 ∈ K` using `K.mul_mem (hKc hc1) (hKc hc2)`. Use `⟨ι γ, ⟨Finset.mem_image_of_mem _ hγR, ?_⟩, ?_⟩` and prove the remaining obligations.
+Chain the equalities or inequalities of the calculation. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ex, ← mul_assoc, ← map_inv, ← map_mul]`. Conclude with `K.mul_mem (hKH _ hγ) hc`. Introduce and unpack `δ ⟨hδ, hδx⟩`. Take `⟨γ', hγ', rfl⟩` from `Finset.mem_image.mp hδ`. Use `congr 1`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `huniq γ' ⟨hγ', hback _ ?_⟩` and prove the remaining obligations. Rewrite `hδx` using `[ex, ← mul_assoc, ← map_inv, ← map_mul]`. Simplify `K.mul_mem hδx (K.inv_mem hc)` using `only [mul_inv_cancel_right]`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem isDCSys_map [DecidableEq G] {ι : H →* G} {KH : Subgroup H} {K Kc : Subgroup G}
     (hKH : ∀ a ∈ KH, ι a ∈ K) (hKc : Kc ≤ K) (hdec : ∀ κ ∈ K, ∃ a ∈ KH, ∃ c ∈ Kc, κ = ι a * c)
@@ -349,7 +343,7 @@ theorem isDCSys_map [DecidableEq G] {ι : H →* G} {KH : Subgroup H} {K Kc : Su
       simpa only [mul_inv_cancel_right] using K.mul_mem hδx (K.inv_mem hc)
 
 /- English proof (translation)
-Use `⟨isDCSys_map hKH hKc hdec hcomm hback hR, ?_⟩` and prove the remaining obligations. Rewrite using `[opAt_dosetInd hR (fun g s ⟨a, ha, e⟩ => e ▸ hφ g _ (hKH a ha)) g, Finset.sum_image fun x _ y _ h => hι h]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem opAt_dosetInd_map [DecidableEq G] {ι : H →* G} (hι : Function.Injective ι) {KH : Subgroup H}
     {K Kc : Subgroup G} (hKH : ∀ a ∈ KH, ι a ∈ K) (hKc : Kc ≤ K) (hdec : ∀ κ ∈ K, ∃ a ∈ KH, ∃ c ∈ Kc, κ = ι a * c)
@@ -403,7 +397,7 @@ def hkGA {V : HSp D} {K : Set (GA D V)} (S : SplitEmb V K) (v : HeightOneSpectru
   opAt (S.emb v) (Kv v V.rank) f φ
 
 /- English proof (translation)
-Break down `eq_or_ne v v' with rfl | h` into its components or cases. Conclude with `opAt_comm_GL (S.emb v) hf hf' fun g s ⟨a, ha, e⟩ => e ▸ hφ g _ (S.emb_K v a ha)`. Conclude with `opAt_comm_diff (Kv_comm v V.rank) (Kv_comm v' V.rank) hf hf' (S.emb_comm v v' h) φ`.
+Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem hkGA_comm {V : HSp D} {K : Set (GA D V)} (S : SplitEmb V K) {v v' : HeightOneSpectrum (𝓞 D.host.F)}
     {f : GL (Fin V.rank) (v.adicCompletion D.host.F) → ℂ} {f' : GL (Fin V.rank) (v'.adicCompletion D.host.F) → ℂ}
@@ -425,9 +419,7 @@ def HkTie (Y : NExp D.R D.host D.what₂ D.LL0 N X) : Prop :=
     ∀ k P, Formalism.MainNotions.IntegralHeckeForms.HkIdx (X := X) i k P → ∀ f, ev (Y.hkF i j b k P f) = hkGA S (vP P) (hf k P) (ev f)
 
 /- English proof (translation)
-Introduce `i _ j b k k' P P' hk hk'`. Take `⟨V, K, S, ev, vP, hf, hinj, hinv, -, hmem, htie⟩` from `h i j b`. Use `show Y.hkF i j b k P * Y.hkF i j b k' P' = Y.hkF i j b k' P' * Y.hkF i j b k P`. Use `LinearMap.ext fun f => hinj ?_` and prove the remaining obligations. Rewrite using `[Module.End.mul_apply, Module.End.mul_apply, htie k P hk, htie k' P' hk', htie k' P' hk', htie k P hk]`.
-
-Conclude with `hkGA_comm S (hmem k P hk) (hmem k' P' hk') (hinv f)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hecke_commute_of_compatibility {Y : NExp D.R D.host D.what₂ D.LL0 N X} (h : HkTie Y) : Formalism.MainNotions.LatticeVariant.HeckeOperatorsCommute Y := by
   intro i _ j b k k' P P' hk hk'
@@ -444,14 +436,14 @@ section Checks
 open Formalism.BasicNotions Formalism.L2.Theta
 
 /- English proof (translation)
-The claim follows from `hkN_fun_mem (fun _ _ => rfl) hϖ k`.
+A detailed English derivation is pending.
 -/
 example {F : Type} [Field F] [NumberField F] (v : HeightOneSpectrum (𝓞 F)) (n k : ℕ) (ϖ : v.adicCompletion F)
     (hϖ : ϖ ≠ 0) : twist (1 : GL (Fin n) (v.adicCompletion F) →* ℂ) (Tj ℂ n (Ov F v) ϖ k) ∈ Hecke ℂ (Kv v n) :=
   hkN_fun_mem (fun _ _ => rfl) hϖ k
 
 /- English proof (translation)
-Introduce `_ _ _` and use `rfl`.
+Fix the arbitrary inputs and assume any hypotheses. Both sides reduce to the same expression.
 -/
 example {G : Type} [Group G] (S : Set G) (c : ℂ) : RightInv S (fun _ : G => c) := fun _ _ _ => rfl
 

@@ -8,19 +8,19 @@ import Formalism.HermitianCurvature.HermitianCurvatureProofs.CutSELeibnizClsC
 namespace Formalism.FourierDecayAlt.P.CutSE
 
 /- English proof (translation)
-The claim follows from `jSliceGenC_of_sob2_meas_locality spectral_sobolev_second_order spectral_measurability (jSL2Loc_of spectral_word_normal_form hR)`.
+A detailed English derivation is pending.
 -/
 theorem jSliceGenC_of_radLoc (hR : JSRadLoc) : JSliceGenC :=
   jSliceGenC_of_sob2_meas_locality spectral_sobolev_second_order spectral_measurability (jSL2Loc_of spectral_word_normal_form hR)
 
 /- English proof (translation)
-The claim follows from `leibnizCls_of_jSliceC (jSliceGenC_of_radLoc hR)`.
+A detailed English derivation is pending.
 -/
 theorem leibnizCls_of_radLoc (hR : JSRadLoc) : LeibnizCls :=
   leibnizCls_of_jSliceC (jSliceGenC_of_radLoc hR)
 
 /- English proof (translation)
-The claim follows from `densSmoothCls_of_jSliceC (jSliceGenC_of_radLoc hR)`.
+A detailed English derivation is pending.
 -/
 theorem densSmoothCls_of_radLoc (hR : JSRadLoc) : DensSmoothCls :=
   densSmoothCls_of_jSliceC (jSliceGenC_of_radLoc hR)

@@ -7,11 +7,11 @@ open scoped TensorProduct
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `h1 : Valued.v (((T : 𝓞 F) : F) : v.adicCompletion F) = 1`. Rewrite using `[HeightOneSpectrum.valuedAdicCompletion_eq_valuation']`. Conclude with `(HeightOneSpectrum.valuation_eq_one_iff_notMem (K := F) (v := v)).2 hT`. Establish `h2 : (((T : 𝓞 F) : F) : v.adicCompletion F) = (T : v.adicCompletion F)`. Establish `: ((T : 𝓞 F) : F) = (T : F)` using `by push_cast; rfl`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Conclude with `map_natCast (algebraMap F (v.adicCompletion F)) T`. Rewrite `h1` using `[h2]`. Establish `hne : (T : v.adicCompletion F) ≠ 0`. Introduce `h`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `h1` using `[h, map_zero]`. Conclude with `zero_ne_one h1`. Use `⟨hne, ?_⟩` and prove the remaining obligations. Rewrite using `[HeightOneSpectrum.mem_adicCompletionIntegers, map_inv₀, h1, inv_one]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem natCast_inv_mem_adicCompletionIntegers {F : Type} [Field F] [NumberField F]
     (v : HeightOneSpectrum (𝓞 F)) (T : ℕ) (hT : (T : 𝓞 F) ∉ v.asIdeal) :
@@ -30,37 +30,33 @@ theorem natCast_inv_mem_adicCompletionIntegers {F : Type} [Field F] [NumberField
   rw [HeightOneSpectrum.mem_adicCompletionIntegers, map_inv₀, h1, inv_one]
 
 /- English proof (translation)
-Establish `hleft : ∀ r : 𝓞 E, ((r : E) ⊗ₜ[F] (1 : v.adicCompletion F)) ∈ Formalism.BasicNotions.intV E v` using `fun r => Subring.subset_closure (Or.inl ⟨⟨(r : E), ⟨r, rfl⟩⟩, rfl⟩)`. Establish `hright : ∀ t ∈ v.adicCompletionIntegers F, ((1 : E) ⊗ₜ[F] t) ∈ Formalism.BasicNotions.intV E v` using `fun t ht => Subring.subset_closure (Or.inr ⟨⟨t, ht⟩, rfl⟩)`. Prove the components needed by the constructor for the conclusion. Introduce `hy`. Set `M : Submodule (Formalism.BasicNotions.intV E v) (Fin n → E ⊗[F] v.adicCompletion F)` to `{ carrier := {y | ∀ a, y a ∈ Formalism.BasicNotions.intV E v} add_mem' := fun ha hb a => (Formalism.BasicNotions.intV E v).add_mem (ha a) (hb a) zero_mem' := fun _ => (Formalism.BasicNotions.intV E v).zero_mem smul_mem' := fun s _ hy a => (Formalism.BasicNotions.intV E v).mul_mem …`.
+Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression.
 
-Establish `hle : Formalism.L2.Herm.locL v Λ ≤ M`. Unfold `Formalism.L2.Herm.locL Formalism.UG.latS`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨x, hx, rfl⟩ a`. Take `⟨r, hr, -⟩` from `(hΛ x).1 hx a`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Use `show Formalism.UG.inclE _ (x a) ∈ Formalism.BasicNotions.intV E v`. Rewrite using `[hr]`. Conclude with `hleft r`. Conclude with `hle hy`. Introduce `hy`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨_, hinv⟩` from `natCast_inv_mem_adicCompletionIntegers v T hT`. Establish `he : ∀ a, (Pi.single a (1 : E ⊗[F] v.adicCompletion F)) ∈ Formalism.L2.Herm.locL v Λ`. Introduce `a`. Establish `hx : (Pi.single a ((π : 𝓞 E) : E) : Fin n → E) ∈ Λ`. Rewrite using `[hΛ]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Introduce `b`. Use `⟨(Pi.single a π : Fin n → 𝓞 E) b, ?_, fun _ => ?_⟩` and prove the remaining obligations. Distinguish the cases in `h : b = a`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using `[h]`. Distinguish the cases in `h : b = a`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[h]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hg : (Pi.single a (((π : E)) ⊗ₜ[F] (1 : v.adicCompletion F)) : Fin n → _) ∈ Formalism.L2.Herm.locL v Λ`. Unfold `Formalism.L2.Herm.locL Formalism.UG.latS`. Apply `Submodule.subset_span` to reduce the goal to its premises. Use `⟨_, hx, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `b`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `h : b = a`. Substitute `h` using the available equality. Simplify using `[Formalism.UG.inclE]`. Simplify using `[h, Formalism.UG.inclE]`. Set `s : Formalism.BasicNotions.intV E v` to `⟨((c : E) ⊗ₜ[F] (1 : v.adicCompletion F)) * ((1 : E) ⊗ₜ[F] (T : v.adicCompletion F)⁻¹), (Formalism.BasicNotions.intV E v).mul_mem (hleft c) (hright _ hinv)⟩`.
+Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Establish `hs : (s : E ⊗[F] v.adicCompletion F) * ((π : E) ⊗ₜ[F] (1 : v.adicCompletion F)) = 1`. Take `⟨hne, -⟩` from `natCast_inv_mem_adicCompletionIntegers v T hT`. Use `show ((c : E) ⊗ₜ[F] (1 : v.adicCompletion F)) * ((1 : E) ⊗ₜ[F] (T : v.adicCompletion F)⁻¹) * ((π : E) ⊗ₜ[F] (1 : v.adicCompletion F)) = 1`. Simplify using `only [Algebra.TensorProduct.tmul_mul_tmul, mul_one, one_mul]`. Establish `hcπ : (c : E) * (π : E) = (T : E)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[mul_comm]`. Conclude with `congrArg (fun z : 𝓞 E => (z : E)) hπc` after adjusting the coercions. Rewrite using `[hcπ]`. Establish `hT1 : (T : E) ⊗ₜ[F] (1 : v.adicCompletion F) = (1 : E) ⊗ₜ[F] (T : v.adicCompletion F)`. Establish `e1` using `map_natCast (Algebra.TensorProduct.includeLeftRingHom (R := F) (A := E) (B := v.adicCompletion F)) T`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Establish `e2` using `map_natCast (Algebra.TensorProduct.includeRight (R := F) (A := E) (B := v.adicCompletion F)) T`. Rewrite `e1` using `[Algebra.TensorProduct.includeLeftRingHom_apply]`. Rewrite `e2` using `[Algebra.TensorProduct.includeRight_apply]`. Rewrite using `[e1, e2]`. Combine the equalities or inequalities in the displayed calculation.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Simplify using `only [Algebra.TensorProduct.tmul_mul_tmul, mul_one, one_mul]`. Use `_ = 1 := by`. Rewrite using `[hT1, Algebra.TensorProduct.tmul_mul_tmul, mul_one, mul_inv_cancel₀ hne]`. Both sides reduce to the same expression. Use `(Formalism.L2.Herm.locL v Λ).smul_mem s hg` as an intermediate fact.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `b`. Distinguish the cases in `h : b = a`. Substitute `h` using the available equality. Rewrite using `[Pi.smul_apply, Subring.smul_def, smul_eq_mul, Pi.single_eq_same, Pi.single_eq_same, hs]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Pi.smul_apply, Subring.smul_def, smul_eq_mul, Pi.single_eq_of_ne h, Pi.single_eq_of_ne h, mul_zero]`. Establish `hsum : y = ∑ a, (⟨y a, hy a⟩ : Formalism.BasicNotions.intV E v) • Pi.single a (1 : E ⊗[F] v.adicCompletion F)`. Use function extensionality and compare the values at `b`. Rewrite using `[Finset.sum_apply, Finset.sum_eq_single b]`. Rewrite using `[Pi.smul_apply, Subring.smul_def, smul_eq_mul, Pi.single_eq_same, mul_one]`.
-
-Introduce `a _ hab`. Rewrite using `[Pi.smul_apply, Subring.smul_def, smul_eq_mul, Pi.single_eq_of_ne (Ne.symm hab), mul_zero]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ b) h`. Rewrite using `[hsum]`.
-
-Conclude with `Submodule.sum_mem _ fun a _ => Submodule.smul_mem _ _ (he a)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem locL_eq_intV_of_dvd_unit {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [StarRing E]
     [Algebra F E] (v : HeightOneSpectrum (𝓞 F)) {n : ℕ} (Λ : Submodule (𝓞 E) (Fin n → E)) (P : Fin n → Prop)

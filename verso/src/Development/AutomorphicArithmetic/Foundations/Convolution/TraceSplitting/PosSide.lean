@@ -16,7 +16,7 @@ section Abs
 variable {G V : Type} [Group G] [AddCommGroup V] [Module ℂ V]
 
 /- English proof (translation)
-Substitute `h` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 private theorem trace_congr {p p' : Submodule ℂ V} (h : p = p') (A : V →ₗ[ℂ] V) (h1 : ∀ v ∈ p, A v ∈ p) (h2 : ∀ v ∈ p', A v ∈ p') :
     LinearMap.trace ℂ p (A.restrict h1) = LinearMap.trace ℂ p' (A.restrict h2) := by
@@ -24,9 +24,9 @@ private theorem trace_congr {p p' : Submodule ℂ V} (h : p = p') (A : V →ₗ[
   rfl
 
 /- English proof (translation)
-Take `⟨A, hA, hfin, rfl⟩` from `h`. Establish `hc' : ((c : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast hc`. Establish `hr : LinearMap.range (((c : ℝ) : ℂ) • A) = LinearMap.range A` using `LinearMap.range_smul _ _ hc'`. Use `⟨((c : ℝ) : ℂ) • A, fun v l => ⟨(hA v l).1.smul_measure_nnreal, ?_⟩, hr ▸ hfin, ?_⟩` and prove the remaining obligations. Rewrite using `[integral_smul_nnreal_measure, ← (hA v l).2, LinearMap.smul_apply, map_smul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[trace_congr hr _ _ (fun v _ => Submodule.smul_mem _ _ (LinearMap.mem_range_self A v)), ← smul_eq_mul, ← map_smul]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem hasTrace_smul [MeasurableSpace G] {m : Measure G} {ρ : Representation ℂ G V} {f : G → ℂ} {s : ℂ} (c : ℝ≥0)
     (hc : c ≠ 0) (h : HasTrace m ρ f s) : HasTrace (c • m) ρ f (((c : ℝ) : ℂ) * s) := by
@@ -42,25 +42,25 @@ private theorem hasTrace_smul [MeasurableSpace G] {m : Measure G} {ρ : Represen
 variable [TopologicalSpace G] [IsTopologicalGroup G] [MeasurableSpace G] [BorelSpace G]
 
 /- English proof (translation)
-The claim follows from `ENNReal.toReal_pos (hU.2.measure_pos m ⟨1, one_mem U⟩).ne' hU.1.measure_lt_top.ne`.
+A detailed English derivation is pending.
 -/
 private theorem vol_pos (m : Measure G) [m.IsHaarMeasure] {U : Subgroup G} (hU : CO U) : 0 < m.real U :=
   ENNReal.toReal_pos (hU.2.measure_pos m ⟨1, one_mem U⟩).ne' hU.1.measure_lt_top.ne
 
 /- English proof (translation)
-Take `⟨A, hA, hfin, rfl⟩` from `h`. Establish `hm : MeasurableSet (U : Set G)` using `hU.2.measurableSet`. Establish `hc : (m.real U : ℂ) ≠ 0` using `by exact_mod_cast (vol_pos m hU).ne'`. Establish `h1 : ∀ v, A v ∈ fixedVectors ρ U` using `fun v => mem_fixedVectors.2 fun a ha => by`. Rewrite using `[← sub_eq_zero, ← Module.forall_dual_apply_eq_zero_iff ℂ]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `l`. Rewrite using `[map_sub, sub_eq_zero, (hA v l).2]`. Use `(hA v (l ∘ₗ ρ a)).2.trans ?_` and prove the remaining obligations. Rewrite using `[← integral_mul_left_eq_self (fun g => (U : Set G).indicator (1 : G → ℂ) g * l (ρ g v)) a]`. Use `congr 1`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use function extensionality and compare the values at `g`. Distinguish the cases in `h : g ∈ U`. Simplify using `[h, mul_mem ha h]`. Establish `: a * g ∉ U` using `fun h' => h (by simpa using mul_mem (inv_mem ha) h')`. Simplify using `[h, this]`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h2 : ∀ v ∈ fixedVectors ρ U, A v = (m.real U : ℂ) • v` using `fun v hv => by`. Rewrite using `[← sub_eq_zero, ← Module.forall_dual_apply_eq_zero_iff ℂ]`. Introduce `l`. Rewrite using `[map_sub, sub_eq_zero, (hA v l).2, map_smul]`. Establish `: (fun g => (U : Set G).indicator (1 : G → ℂ) g * l (ρ g v)) = (U : Set G).indicator fun _ => l v`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `g`. Distinguish the cases in `h : g ∈ U`. Simplify using `[h, mem_fixedVectors.1 hv g h]`. Simplify using `[h]`. Rewrite using `[this, integral_indicator_const _ hm]`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `hr : LinearMap.range A = fixedVectors ρ U`. Use `le_antisymm (by rintro _ ⟨v, rfl⟩; exact h1 v) fun v hv => ⟨(m.real U : ℂ)⁻¹ • v, ?_⟩` and prove the remaining obligations. Rewrite using `[map_smul, h2 v hv, smul_smul, inv_mul_cancel₀ hc, one_smul]`. Use `haveI : FiniteDimensional ℂ (fixedVectors ρ U) := hr ▸ hfin`.
+Both sides reduce to the same expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨this, ?_⟩` and prove the remaining obligations. Rewrite using `[trace_congr hr _ _ (fun v _ => h1 v)]`. Establish `: A.restrict (p` using `fixedVectors ρ U) (q := fixedVectors ρ U) (fun v _ => h1 v) = (m.real U : ℂ) • LinearMap.id := LinearMap.ext fun v => Subtype.ext (h2 v v.2)`. Rewrite using `[this, map_smul, LinearMap.trace_id, smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem trace_ind (m : Measure G) [m.IsHaarMeasure] {ρ : Representation ℂ G V} {U : Subgroup G} (hU : CO U) {s : ℂ}
     (h : HasTrace m ρ ((U : Set G).indicator 1) s) :
@@ -102,7 +102,7 @@ private theorem trace_ind (m : Measure G) [m.IsHaarMeasure] {ρ : Representation
   rw [this, map_smul, LinearMap.trace_id, smul_eq_mul]
 
 /- English proof (translation)
-Take `⟨P, hP⟩ : ∃ P : TopologicalSpace.PositiveCompacts G, (P : Set G) = U` from `⟨⟨⟨U, hU.1⟩, by`. Express the relevant statement in the definitionally equal form `(interior (U : Set G)).Nonempty`. Rewrite using `[hU.2.interior_eq]`. Conclude with `⟨1, one_mem U⟩⟩, rfl⟩`. Conclude with `⟨Measure.haarMeasure P, inferInstance, hP ▸ Measure.haarMeasure_self⟩`.
+Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Supply the required witnesses or components.
 -/
 private theorem ex_haar [LocallyCompactSpace G] {U : Subgroup G} (hU : CO U) :
     ∃ m : Measure G, m.IsHaarMeasure ∧ m U = 1 := by
@@ -114,9 +114,9 @@ private theorem ex_haar [LocallyCompactSpace G] {U : Subgroup G} (hU : CO U) :
   exact ⟨Measure.haarMeasure P, inferInstance, hP ▸ Measure.haarMeasure_self⟩
 
 /- English proof (translation)
-Establish `h0 : m U ≠ 0` using `(hU.2.measure_pos m ⟨1, one_mem U⟩).ne'`. Establish `h1 : m U ≠ ⊤` using `hU.1.measure_lt_top.ne`. Establish `hc : (m U).toNNReal ≠ 0` using `ENNReal.toNNReal_ne_zero.2 ⟨h0, h1⟩`. Use `⟨(m U).toNNReal, (m U).toNNReal⁻¹ • m, hc, Measure.IsHaarMeasure.nnreal_smul m (inv_ne_zero hc), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Measure.smul_apply, ENNReal.smul_def, ENNReal.coe_inv hc, ENNReal.coe_toNNReal h1, smul_eq_mul, ENNReal.inv_mul_cancel h0 h1]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[smul_smul, mul_inv_cancel₀ hc, one_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem ex_norm (m : Measure G) [m.IsHaarMeasure] {U : Subgroup G} (hU : CO U) :
     ∃ (c : ℝ≥0) (m' : Measure G), c ≠ 0 ∧ m'.IsHaarMeasure ∧ m' U = 1 ∧ m = c • m' := by
@@ -131,7 +131,7 @@ private theorem ex_norm (m : Measure G) [m.IsHaarMeasure] {U : Subgroup G} (hU :
 end Abs
 
 /- English proof (translation)
-Substitute `h1` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 private theorem amp_eq {K : Type} [Field K] [NumberField K] {n : ℕ} {μ : Measure (normOneGL K n)} [μ.IsHaarMeasure]
     (𝔞 : Amp μ) (ν : Measure (archGroup K n)) [ν.IsHaarMeasure] (h1 : 𝔞.ν = ν) :
@@ -140,27 +140,23 @@ private theorem amp_eq {K : Type} [Field K] [NumberField K] {n : ℕ} {μ : Meas
   rfl
 
 /- English proof (translation)
-Use `letI : ∀ v : Pl F, MeasurableSpace (Gw n v) := fun v => borel _`. Use `haveI : ∀ v : Pl F, BorelSpace (Gw n v) := fun v => ⟨rfl⟩`. Establish `hK : ∀ v : Pl F, CO (GLnLocal.integralGL (v.adicCompletion F) n)` using `fun v => (UpperTheory.iwahori_compactOpen_and_iwCoset_indicator_test F n v).2.1 _ (GLnLocal.isOpen_integralGL _ _) le_rfl`. Use `choose m hm using fun v : Pl F => ex_haar (hK v)`. Use `haveI := fun v => (hm v).1`.
+Equip the data with the indicated structure. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨κ, hκ, H⟩` from `termF F E σ n l hn μ ν m hm`. Use `choose τ hτ using fun v : Pl F => (occursBasics F n μ V v (m v) hV).1`. Take `⟨N, hN, H⟩` from `H a q w₀ L.S V τ x hV hx fun v _ => hτ v`. Establish `hlev : levF L.UF = levOn (insert q L.S) L.UF`. Unfold `levOn`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `congr 1`. Use function extensionality and compare the values at `v`. Use `split_ifs with h`. Both sides reduce to the same expression. Rewrite `h` using `[Finset.mem_insert, not_or]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `(L.off v h.2 h.1).2.2.2`. Establish `hne'` using `hne`. Rewrite `hne'` using `[amp_eq 𝔣.toAmp ν hF.1, hF.2.1, hF.2.2.2.1, hlev, UpperTheory.eigenspace_comp_levelProjection_eq_inf_fixed F n hn μ ν V a x _ L.UF hx.ne']`. Establish `hN0 : 0 < N` using `hN.2 (ne_bot_of_le_ne_bot hne' inf_le_left)`. Establish `hCO : ∀ v ∈ insert q L.S, CO (L.UF v)` using `fun v hv => by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Break down `Finset.mem_insert.1 hv with rfl | hv` into its components or cases. Rewrite using `[L.at_q.2.2.2]`. Conclude with `(UpperTheory.iwahori_compactOpen_and_iwCoset_indicator_test F n v).1`. Conclude with `(UpperTheory.iwahori_compactOpen_and_iwCoset_indicator_test F n v).2.1 _ (L.lev v hv).2.2.1 (L.lev v hv).2.2.2`. Establish `hpos : ∀ v ∈ insert q L.S, FiniteDimensional ℂ (fixedVectors (τ v).ρ (L.UF v)) ∧ 0 < Module.finrank ℂ (fixedVectors (τ v).ρ (L.UF v)) ∧ HasTrace (m v) (τ v).ρ ((L.UF v : Set (Gw n v)).indicator 1) ((((m v).real (L.UF v) * Module.finrank ℂ (fixedVectors (τ v).ρ (L.UF v)) : ℝ)) : ℂ …` using `fun v hv => by`.
+Move the embeddings inside the algebraic operations. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨-, -, -, s, hs0, hs⟩` from `T.unitTrace F n μ V hV v (m v) inferInstance (τ v) (L.UF v) (hτ v) (hCO v hv) (ne_bot_of_le_ne_bot hne' (inf_le_inf (inf_le_left.trans inf_le_left) (iInf₂_le v hv)))`. Take `⟨h1, h2⟩` from `trace_ind (m v) (hCO v hv) hs`. Use `⟨h1, Nat.pos_of_ne_zero fun h => hs0 (by rw [h2, h]; simp), ?_⟩` and prove the remaining obligations. Use `push_cast`. Conclude with `h2 ▸ hs`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨hq1, hq2, -⟩` from `hpos q (Finset.mem_insert_self _ _)`. Rewrite `hq1`, `hq2` using `[L.at_q.2.2.2]`. Take `⟨c, m', hc, hm', hm1, hme⟩` from `ex_norm (m q) (UpperTheory.iwahori_compactOpen_and_iwCoset_indicator_test F n q).1`. Take `⟨Z, hZ0, hZc, hZ⟩` from `iwPow F n q m' hm1 (τ q) e he hq1`. Set `s : Pl F → ℝ` to `fun v => (m v).real (L.UF v) * Module.finrank ℂ (fixedVectors (τ v).ρ (L.UF v))`.
+Establish an intermediate fact. Check the signs of the components of the expression. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hs : ∀ v ∈ L.S, 0 < s v` using `fun v hv => mul_pos (vol_pos _ (hCO v (Finset.mem_insert_of_mem hv))) (Nat.cast_pos.2 (hpos v (Finset.mem_insert_of_mem hv)).2.1)`. Use `⟨κ * x * N * c * ∏ v ∈ L.S, s v, Z, ?_, hZ0, ?_, fun j => ?_⟩` and prove the remaining obligations. Establish `h1 : (0 : ℝ) < c` using `by exact_mod_cast hc.bot_lt`. Establish `h2 : (0 : ℝ) < N` using `Nat.cast_pos.2 hN0`. Establish `h3` using `Finset.prod_pos hs`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Check the signs of the components of the expression. Introduce and unpack `rfl`. Rewrite `hq2` using `[← hZc]`. Conclude with `lt_irrefl _ hq2`. Establish `h1` using `hasTrace_smul c hc (hZ j)`.
-
-Rewrite `h1` using `[← hme]`. Rewrite using `[H L e 𝔣 rfl he hF j _ (fun v => (s v : ℂ)) h1 fun v hv => by`. Rewrite using `[hf v hv]`. Conclude with `(hpos v (Finset.mem_insert_of_mem hv)).2.2]`. Use `push_cast`.
-
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 private theorem term {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] [IsTotallyComplex F]
     {σ : E ≃ₐ[F] E} {n : ℕ} (hn : 0 < n) {μ : Measure (normOneGL F n)} [μ.IsHaarMeasure] {q : Pl F}
@@ -228,15 +224,13 @@ private theorem term {F E : Type} [Field F] [NumberField F] [Field E] [NumberFie
     ring
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ _ _ _ σ _ _ n hn μ _ q w₀ ν _ a L e l 𝔣 he hF hf p V x hV hpV hx hne`. Establish `hfin : {W : Submodule ℂ (LL μ) | (IsSummand μ W ∧ eigIn W 𝔣.toAmp.A x ≠ ⊥) ∧ p W}.Finite` using `((T.ampFin F n hn μ 𝔣.toAmp).1 x hx).subset fun W hW => hW.1`. Set `ι` to `{W : Submodule ℂ (LL μ) | (IsSummand μ W ∧ eigIn W 𝔣.toAmp.A x ≠ ⊥) ∧ p W}`. Use `haveI : Fintype ι := hfin.fintype`. Use `choose c Z hc hZ0 hZ hT using fun W : ι => term hn he hF hf hx W.1 W.2.1.1 W.2.1.2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `htr : ∀ j, 𝔣.tr p x j = ∑ W : ι, (c W : ℂ) * ((Z W).map (· ^ j)).sum` using `fun j => by`. Simplify using `only [← hT]`. Rewrite using `[Side.tr, ← finsum_eq_sum_of_fintype, finsum_set_coe_eq_finsum_mem (s := ι) (f := fun W => trOn (eigIn W 𝔣.toAmp.A x) ((𝔣.Uq 0 ^ j) ∘L Rop μ 𝔣.g ∘L (Twist.id μ).U))]`. Use `finsum_mem_inter_support_eq' _ _ _ fun W hW => ⟨fun h => ⟨⟨h.1, fun hb => hW ?_⟩, h.2.2⟩, fun h => ⟨h.1.1, ?_, h.2⟩⟩` and prove the remaining obligations. Use `beta_reduce`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hb]`. Simplify using `using UpperTheory.trOn_eq_mul_of_eq_smul_on_subspace (LL μ) ⊥ ((𝔣.Uq 0 ^ j) ∘L Rop μ 𝔣.g ∘L (Twist.id μ).U) 0 0 inferInstance fun v hv => by`. Rewrite using `[(Submodule.mem_bot ℂ).1 hv]`. Simplify using the standard rewrite rules. Conclude with `Submodule.map_id W`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `h`. Set `V₀ : ι` to `⟨V, ⟨hV, hne⟩, hpV⟩`. Take `⟨ζ, hζ⟩` from `Multiset.exists_mem_of_ne_zero (hZ V₀)`. Establish `h0` using `powIndep ι (fun W => (c W : ℂ)) Z hZ0 (h.mono fun j hj => by rw [← htr]; exact not_not.1 hj) ζ`. Establish `h1 : ∑ W : ι, c W * ((Multiset.filter (· = ζ) (Z W)).card : ℝ) = 0` using `by exact_mod_cast h0`.
-
-Use `(Finset.sum_pos' (fun W _ => mul_nonneg (hc W).le (Nat.cast_nonneg _)) ⟨V₀, Finset.mem_univ _, mul_pos (hc _) ?_⟩).ne' h1` and prove the remaining obligations. Conclude with `Nat.cast_pos.2 (Multiset.card_pos_iff_exists_mem.2 ⟨ζ, Multiset.mem_filter.2 ⟨hζ, rfl⟩⟩)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.T.posSide :
     UpperTheory.ConvolutionTheory.T.PosSide := by

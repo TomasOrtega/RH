@@ -10,13 +10,11 @@ noncomputable section
 namespace UpperTheory.V.Z.Sym.Unl
 
 /- English proof (translation)
-Introduce `k N _ hk χ hχ g hg p hp hpN α β hs hm`. Take `⟨σ, hσ⟩` from `sqrtFlip p hp`. Take `⟨g', hg'⟩` from `conjEig k N χ g hg σ`. Establish `hu : IsUnit ((p : ℕ) : ZMod N)` using `(ZMod.isUnit_iff_coprime p N).2 ((Nat.Prime.coprime_iff_not_dvd hp).2 hpN)`. Establish `h1 : ‖χ (p : ZMod N)‖ = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `DirichletCharacter.unit_norm_eq_one χ hu.unit` as an intermediate fact. Simplify using `using this`. Establish `e : cj σ χ (p : ZMod N) = σ (χ (p : ZMod N))` using `rfl`. Establish `h2 : ‖σ (χ (p : ZMod N))‖ = 1`. Use `DirichletCharacter.unit_norm_eq_one (cj σ χ) hu.unit` as an intermediate fact.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[IsUnit.unit_spec, e]`. Conclude with `this`. Establish `a1` using `selfAdj k N hk χ hχ g p hp hpN`. Establish `a2` using `selfAdj k N hk (cj σ χ) (primCj N χ σ hχ) g' p hp hpN`. Rewrite `a2` using `[hg' p hp.one_lt.le, e]`.
-
-Conclude with `halfAlg p (k - 1) (g.a p) (χ (p : ZMod N)) α β σ hp.two_le h1 h2 hσ a1 a2 hs hm`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem goodHalf : GoodHalf := by
   intro k N _ hk χ hχ g hg p hp hpN α β hs hm

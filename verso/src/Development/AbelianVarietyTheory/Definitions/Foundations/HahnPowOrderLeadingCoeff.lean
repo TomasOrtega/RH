@@ -15,7 +15,7 @@ section Hahn
 variable {Ω : Type} [Field Ω]
 
 /- English proof (translation)
-Use `⟨HahnSeries.order_pow s n, ?_⟩` and prove the remaining obligations. Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih => rw [pow_succ, HahnSeries.leadingCoeff_mul, ih, pow_succ]`.
+Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem hahn_pow_order_leadingCoeff (s : HahnSeries ℚ Ω) (hs : s ≠ 0) (n : ℕ) :
     (s ^ n).order = n • s.order ∧ (s ^ n).leadingCoeff = s.leadingCoeff ^ n := by
@@ -25,7 +25,7 @@ theorem hahn_pow_order_leadingCoeff (s : HahnSeries ℚ Ω) (hs : s ≠ 0) (n : 
   | succ n ih => rw [pow_succ, HahnSeries.leadingCoeff_mul, ih, pow_succ]
 
 /- English proof (translation)
-Rewrite using `[HahnSeries.algebraMap_apply', PowerSeries.algebraMap_apply, Algebra.algebraMap_self, RingHom.id_apply, HahnSeries.ofPowerSeries_C, HahnSeries.C_mul_eq_smul, HahnSeries.coeff_smul, smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem hahnSeries_algebraMap_mul_coeff (c : Ω) (x : HahnSeries ℚ Ω) (r : ℚ) :
     (algebraMap Ω (HahnSeries ℚ Ω) c * x).coeff r = c * x.coeff r := by
@@ -33,11 +33,11 @@ private theorem hahnSeries_algebraMap_mul_coeff (c : Ω) (x : HahnSeries ℚ Ω)
     HahnSeries.ofPowerSeries_C, HahnSeries.C_mul_eq_smul, HahnSeries.coeff_smul, smul_eq_mul]
 
 /- English proof (translation)
-Introduce and unpack `⟨P, hP, hPs⟩`. Establish `hlead : P.coeff P.natDegree ≠ 0` using `Polynomial.leadingCoeff_ne_zero.2 hP`. Establish `hls : s.leadingCoeff ≠ 0` using `HahnSeries.leadingCoeff_ne_zero.2 hs`. Establish `key : (Polynomial.aeval s P).coeff (P.natDegree • s.order) = P.coeff P.natDegree * s.leadingCoeff ^ P.natDegree`. Rewrite using `[Polynomial.aeval_eq_sum_range, HahnSeries.coeff_sum, Finset.sum_range_succ, Finset.sum_eq_zero]`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[zero_add]`. Rewrite using `[Algebra.smul_def, hahnSeries_algebraMap_mul_coeff]`. Rewrite using `[← (hahn_pow_order_leadingCoeff s hs P.natDegree).1, ← HahnSeries.leadingCoeff_eq, (hahn_pow_order_leadingCoeff s hs P.natDegree).2]`. Introduce `k hk`. Rewrite using `[Algebra.smul_def, hahnSeries_algebraMap_mul_coeff]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[HahnSeries.coeff_eq_zero_of_lt_order, mul_zero]`. Rewrite using `[(hahn_pow_order_leadingCoeff s hs k).1, nsmul_eq_mul, nsmul_eq_mul]`. Conclude with `mul_lt_mul_of_neg_right (by exact_mod_cast Finset.mem_range.1 hk) ho`. Rewrite `key` using `[hPs]`. Conclude with `mul_ne_zero hlead (pow_ne_zero _ hls) (by simpa using key.symm)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hahn_transcendental {s : HahnSeries ℚ Ω} (hs : s ≠ 0) (ho : s.order < 0) : Transcendental Ω s := by
   rintro ⟨P, hP, hPs⟩
@@ -63,7 +63,7 @@ end Hahn
 variable {Ω : Type} [Field Ω] [Algebra ℚ Ω] {ε : Ω →+* ℂ}
 
 /- English proof (translation)
-Unfold `lev`. Simplify using `only [Subfield.mem_iInf, RingHom.mem_eqLocusField]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem mem_lev_iff (X : Tower Ω ε) (Γ' : Subgroup SL(2, ℤ)) (f : X.K) :
     f ∈ lev X Γ' ↔ ∀ γ ∈ Γ', X.sl (ofSL γ) f = f := by
@@ -72,24 +72,24 @@ theorem mem_lev_iff (X : Tower Ω ε) (Γ' : Subgroup SL(2, ℤ)) (f : X.K) :
   rfl
 
 /- English proof (translation)
-The claim follows from `(mem_lev_iff X Γ' _).2 fun γ _ => (X.sl (ofSL γ)).commutes c`.
+A detailed English derivation is pending.
 -/
 theorem algebraMap_mem_lev (X : Tower Ω ε) (Γ' : Subgroup SL(2, ℤ)) (c : Ω) : algebraMap Ω X.K c ∈ lev X Γ' := (mem_lev_iff X Γ' _).2 fun γ _ => (X.sl (ofSL γ)).commutes c
 
 /- English proof (translation)
-The claim follows from `(mem_lev_iff X Γ' _).2 fun γ _ => X.j_inv γ`.
+A detailed English derivation is pending.
 -/
 theorem jK_mem_lev (X : Tower Ω ε) (Γ' : Subgroup SL(2, ℤ)) : X.jK ∈ lev X Γ' := (mem_lev_iff X Γ' _).2 fun γ _ => X.j_inv γ
 
 /- English proof (translation)
-Unfold `mdl`. Conclude with `inf_le_left`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem mdl_le_lev (X : Tower Ω ε) (Γ' : Subgroup SL(2, ℤ)) (S : Subgroup (Ω ≃ₐ[ℚ] Ω)) : mdl X Γ' S ≤ lev X Γ' := by
   unfold mdl
   exact inf_le_left
 
 /- English proof (translation)
-Establish `h1 : (X.exp X.jK).coeff (-1) ≠ 0` using `by rw [X.j_exp.1]; exact one_ne_zero`. Establish `hne : X.exp X.jK ≠ 0` using `fun h => h1 (by rw [h]; rfl)`. Establish `hord : (X.exp X.jK).order < 0` using `lt_of_le_of_lt (HahnSeries.order_le_of_coeff_ne_zero h1) (by norm_num)`. Conclude with `fun h => hahn_transcendental hne hord (h.algHom X.exp)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem jK_transcendental (X : Tower Ω ε) : Transcendental Ω X.jK := by
   have h1 : (X.exp X.jK).coeff (-1) ≠ 0 := by rw [X.j_exp.1]; exact one_ne_zero
@@ -105,7 +105,7 @@ def jPoly (X : Tower Ω ε) (Γ' : Subgroup SL(2, ℤ)) : Polynomial Ω →+* le
   Polynomial.eval₂RingHom (levConst X Γ') ⟨X.jK, jK_mem_lev X Γ'⟩
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(lev X Γ').subtype (Polynomial.eval₂ (levConst X Γ') ⟨X.jK, jK_mem_lev X Γ'⟩ P) = _`. Rewrite using `[Polynomial.hom_eval₂, Polynomial.aeval_def]`. Both sides reduce to the same expression.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem coe_jPoly (X : Tower Ω ε) (Γ' : Subgroup SL(2, ℤ)) (P : Polynomial Ω) :
     ((jPoly X Γ' P : lev X Γ') : X.K) = Polynomial.aeval X.jK P := by
@@ -114,9 +114,9 @@ theorem coe_jPoly (X : Tower Ω ε) (Γ' : Subgroup SL(2, ℤ)) (P : Polynomial 
   rfl
 
 /- English proof (translation)
-Use `(injective_iff_map_eq_zero _).2 fun P hP => ?_` and prove the remaining obligations. Establish `h : Polynomial.aeval X.jK P = 0`. Rewrite using `[← coe_jPoly, hP]`. Both sides reduce to the same expression. Assume the negation of the conclusion as `hne`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Assume the negation of the conclusion and derive a contradiction.
 
-Conclude with `jK_transcendental X ⟨P, hne, h⟩`.
+A detailed English derivation is pending.
 -/
 theorem jPoly_injective (X : Tower Ω ε) (Γ' : Subgroup SL(2, ℤ)) : Function.Injective (jPoly X Γ') := by
   refine (injective_iff_map_eq_zero _).2 fun P hP => ?_
@@ -129,20 +129,18 @@ def jRat (X : Tower Ω ε) (Γ' : Subgroup SL(2, ℤ)) : RatFunc Ω →+* lev X 
   RatFunc.liftRingHom (jPoly X Γ') (nonZeroDivisors_le_comap_nonZeroDivisors_of_injective _ (jPoly_injective X Γ'))
 
 /- English proof (translation)
-The claim follows from `RatFunc.liftRingHom_algebraMap _ _ P`.
+A detailed English derivation is pending.
 -/
 theorem jRat_algebraMap (X : Tower Ω ε) (Γ' : Subgroup SL(2, ℤ)) (P : Polynomial Ω) :
     jRat X Γ' (algebraMap (Polynomial Ω) (RatFunc Ω) P) = jPoly X Γ' P := RatFunc.liftRingHom_algebraMap _ _ P
 
 /- English proof (translation)
-The claim follows from `(X.exp : X.K →+* HahnSeries ℚ Ω).injective`.
+A detailed English derivation is pending.
 -/
 theorem exp_injective (X : Tower Ω ε) : Function.Injective X.exp := (X.exp : X.K →+* HahnSeries ℚ Ω).injective
 
 /- English proof (translation)
-Rewrite using `[AlgHom.commutes, HahnSeries.algebraMap_apply', PowerSeries.algebraMap_apply, Algebra.algebraMap_self, RingHom.id_apply, HahnSeries.ofPowerSeries_C]`. Express the relevant statement in the definitionally equal form `(HahnSeries.single (0 : ℚ) c).coeff r = _`. Use `split_ifs with h`. Rewrite using `[h]`. Conclude with `HahnSeries.coeff_single_same _ _`.
-
-Conclude with `HahnSeries.coeff_single_of_ne h`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exp_algebraMap_coeff (X : Tower Ω ε) (c : Ω) (r : ℚ) :
     (X.exp (algebraMap Ω X.K c)).coeff r = if r = 0 then c else 0 := by
@@ -155,7 +153,7 @@ theorem exp_algebraMap_coeff (X : Tower Ω ε) (c : Ω) (r : ℚ) :
   · exact HahnSeries.coeff_single_of_ne h
 
 /- English proof (translation)
-Apply `exp_injective X` to reduce the goal to its premises. Use extensionality with `r`. Rewrite using `[X.gal_exp, exp_algebraMap_coeff, exp_algebraMap_coeff]`. Apply the tactic sequence `split_ifs <;> simp`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem gal_algebraMap (X : Tower Ω ε) (s : Ω ≃ₐ[ℚ] Ω) (c : Ω) :
     X.gal s (algebraMap Ω X.K c) = algebraMap Ω X.K (s c) := by
@@ -165,7 +163,7 @@ theorem gal_algebraMap (X : Tower Ω ε) (s : Ω ≃ₐ[ℚ] Ω) (c : Ω) :
   split_ifs <;> simp
 
 /- English proof (translation)
-Apply `exp_injective X` to reduce the goal to its premises. Use extensionality with `r`. Take `⟨n, hn⟩` from `X.j_exp.2.2 r`. Rewrite using `[X.gal_exp, hn, map_intCast]`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem gal_jK (X : Tower Ω ε) (s : Ω ≃ₐ[ℚ] Ω) : X.gal s X.jK = X.jK := by
   apply exp_injective X
@@ -174,7 +172,7 @@ theorem gal_jK (X : Tower Ω ε) (s : Ω ≃ₐ[ℚ] Ω) : X.gal s X.jK = X.jK :
   rw [X.gal_exp, hn, map_intCast]
 
 /- English proof (translation)
-Unfold `mdl`. Simplify using `only [Subfield.mem_inf, Subfield.mem_iInf, RingHom.mem_eqLocusField]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem mem_mdl_iff (X : Tower Ω ε) (Γ' : Subgroup SL(2, ℤ)) (S : Subgroup (Ω ≃ₐ[ℚ] Ω)) (f : X.K) :
     f ∈ mdl X Γ' S ↔ f ∈ lev X Γ' ∧ ∀ s ∈ S, X.gal s f = f := by
@@ -183,18 +181,18 @@ theorem mem_mdl_iff (X : Tower Ω ε) (Γ' : Subgroup SL(2, ℤ)) (S : Subgroup 
   rfl
 
 /- English proof (translation)
-The claim follows from `(mem_mdl_iff X Γ' S _).2 ⟨algebraMap_mem_lev X Γ' c, fun s hs => by rw [gal_algebraMap, hc s hs]⟩`.
+A detailed English derivation is pending.
 -/
 theorem algebraMap_mem_mdl (X : Tower Ω ε) (Γ' : Subgroup SL(2, ℤ)) (S : Subgroup (Ω ≃ₐ[ℚ] Ω)) (c : Ω)
     (hc : ∀ s ∈ S, s c = c) : algebraMap Ω X.K c ∈ mdl X Γ' S := (mem_mdl_iff X Γ' S _).2 ⟨algebraMap_mem_lev X Γ' c, fun s hs => by rw [gal_algebraMap, hc s hs]⟩
 
 /- English proof (translation)
-The claim follows from `(mem_mdl_iff X Γ' S _).2 ⟨jK_mem_lev X Γ', fun s _ => gal_jK X s⟩`.
+A detailed English derivation is pending.
 -/
 theorem jK_mem_mdl (X : Tower Ω ε) (Γ' : Subgroup SL(2, ℤ)) (S : Subgroup (Ω ≃ₐ[ℚ] Ω)) : X.jK ∈ mdl X Γ' S := (mem_mdl_iff X Γ' S _).2 ⟨jK_mem_lev X Γ', fun s _ => gal_jK X s⟩
 
 /- English proof (translation)
-Rewrite using `[← RatFunc.algebraMap_X, jRat_algebraMap, coe_jPoly, Polynomial.aeval_X]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem coe_jRat_X (X : Tower Ω ε) (Γ' : Subgroup SL(2, ℤ)) : ((jRat X Γ' RatFunc.X : lev X Γ') : X.K) = X.jK := by
   rw [← RatFunc.algebraMap_X, jRat_algebraMap, coe_jPoly, Polynomial.aeval_X]
@@ -213,19 +211,19 @@ section Instances
 attribute [local instance] algConst algPoly algRat algMdl
 
 /- English proof (translation)
-The claim follows from `IsScalarTower.of_algebraMap_eq fun P => (jRat_algebraMap X Γ' P).symm`.
+A detailed English derivation is pending.
 -/
 theorem isScalarTower_poly_rat (X : Tower Ω ε) (Γ' : Subgroup SL(2, ℤ)) :
     IsScalarTower (Polynomial Ω) (RatFunc Ω) (lev X Γ') := IsScalarTower.of_algebraMap_eq fun P => (jRat_algebraMap X Γ' P).symm
 
 /- English proof (translation)
-The claim follows from `IsScalarTower.of_algebraMap_eq fun _ => rfl`.
+A detailed English derivation is pending.
 -/
 theorem isScalarTower_mdl (X : Tower Ω ε) (Γ' : Subgroup SL(2, ℤ)) (S : Subgroup (Ω ≃ₐ[ℚ] Ω)) :
     IsScalarTower (mdl X Γ' S) (lev X Γ') X.K := IsScalarTower.of_algebraMap_eq fun _ => rfl
 
 /- English proof (translation)
-The claim follows from `coe_jRat_X X Γ'`.
+A detailed English derivation is pending.
 -/
 example (X : Tower Ω ε) (Γ' : Subgroup SL(2, ℤ)) :
     ((algebraMap (RatFunc Ω) (lev X Γ') RatFunc.X : lev X Γ') : X.K) = X.jK :=
@@ -238,7 +236,7 @@ example (X : Tower Ω ε) (Γ' : Subgroup SL(2, ℤ)) (c : Ω) :
     ((algebraMap Ω (lev X Γ') c : lev X Γ') : X.K) = algebraMap Ω X.K c := rfl
 
 /- English proof (translation)
-Rewrite using `[map_inv₀, Subfield.coe_inv]`. Use `show ((jRat X Γ' RatFunc.X : lev X Γ') : X.K)⁻¹ = _`. Rewrite using `[coe_jRat_X]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 example (X : Tower Ω ε) (Γ' : Subgroup SL(2, ℤ)) :
     ((algebraMap (RatFunc Ω) (lev X Γ') RatFunc.X⁻¹ : lev X Γ') : X.K) = X.jK⁻¹ := by
@@ -253,9 +251,9 @@ example (X : Tower Ω ε) (Γ' : Subgroup SL(2, ℤ)) (S : Subgroup (Ω ≃ₐ[�
     ((algebraMap (mdl X Γ' S) (lev X Γ') x : lev X Γ') : X.K) = x := rfl
 
 /- English proof (translation)
-Rewrite using `[← map_zero (algebraMap (Polynomial Ω) (lev X Γ'))]`. Introduce `h`. Use `jPoly_injective X Γ' h` as an intermediate fact. Establish `h2` using `congrArg (Polynomial.natDegree) this`. Rewrite `h2` using `[Polynomial.natDegree_X_pow_sub_C, Polynomial.natDegree_zero]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `absurd h2 (by norm_num)`.
+A detailed English derivation is pending.
 -/
 example (X : Tower Ω ε) (Γ' : Subgroup SL(2, ℤ)) :
     algebraMap (Polynomial Ω) (lev X Γ') (Polynomial.X ^ 2 - Polynomial.C 1) ≠ 0 := by

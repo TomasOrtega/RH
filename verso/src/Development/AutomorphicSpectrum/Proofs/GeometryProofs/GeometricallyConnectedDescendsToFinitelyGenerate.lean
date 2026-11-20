@@ -13,19 +13,17 @@ open scoped CategoryTheory.Obj CategoryTheory.MonObj
 namespace GlobalTheory.CompanionTheory.Ar.Approx
 
 /- English proof (translation)
-Introduce `k V _ _ _ _ G _ _ hs hp hV`. Use `set U : Set (PrimeSpectrum k) := {x | GeometricallyConnected (pullback.snd G.hom (spMap (algebraMap k x.asIdeal.ResidueField)))} with hUdef`. Establish `hU : IsOpen U` using `GlobalTheory.T.isOpen_geometricallyConnected_fibers k G hs hp`. Establish `hVU : ∀ x ∈ Set.range (PrimeSpectrum.comap (algebraMap k V)), x ∈ U` using `(GlobalTheory.T.geometricallyConnected_baseChange_iff_fibers k V G.left G.hom).1 hV`. Take `⟨I, hI⟩` from `(PrimeSpectrum.isClosed_iff_zeroLocus_ideal _).1 hU.isClosed_compl`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `htop : Ideal.map (algebraMap k V) I = ⊤`. Assume the negation of the conclusion as `hne`. Take `⟨M, hM, hle⟩` from `Ideal.exists_le_maximal _ hne`. Establish `hx` using `hVU (PrimeSpectrum.comap (algebraMap k V) ⟨M, hM.isPrime⟩) ⟨_, rfl⟩`. Establish `hx' : PrimeSpectrum.comap (algebraMap k V) ⟨M, hM.isPrime⟩ ∈ Uᶜ`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hI, PrimeSpectrum.mem_zeroLocus, PrimeSpectrum.comap_asIdeal]`. Conclude with `Ideal.map_le_iff_le_comap.1 hle`. Conclude with `hx' hx`. Establish `h1 : (1 : V) ∈ Submodule.span V (algebraMap k V '' (I : Set k))`. Establish `h` using `(Ideal.eq_top_iff_one _).1 htop`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `h`. Take `⟨n, c, g, hsum⟩` from `Submodule.mem_span_set'.1 h1`. Use `choose f hfI hfg using fun i => (g i).2`. Set `s : Finset V` to `Finset.univ.image c`. Establish `hc : ∀ i, c i ∈ Algebra.adjoin k (s : Set V)` using `fun i => Algebra.subset_adjoin (by simp [s])`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Use `⟨Algebra.adjoin k (s : Set V), Subalgebra.fg_adjoin_finset s, ?_⟩` and prove the remaining obligations. Apply `(GlobalTheory.T.geometricallyConnected_baseChange_iff_fibers k (Algebra.adjoin k (s : Set V)) G.left G.hom).2` to reduce the goal to its premises. Introduce and unpack `x ⟨y, rfl⟩`. Assume the negation of the conclusion as `hx`. Establish `hx' : PrimeSpectrum.comap (algebraMap k (Algebra.adjoin k (s : Set V))) y ∈ Uᶜ` using `hx`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Rewrite `hx'` using `[hI, PrimeSpectrum.mem_zeroLocus, PrimeSpectrum.comap_asIdeal]`. Establish `hmem : (∑ i, (⟨c i, hc i⟩ : Algebra.adjoin k (s : Set V)) * algebraMap k (Algebra.adjoin k (s : Set V)) (f i)) ∈ y.asIdeal` using `Ideal.sum_mem _ fun i _ => Ideal.mul_mem_left _ _ (hx' (hfI i))`. Establish `hone : (∑ i, (⟨c i, hc i⟩ : Algebra.adjoin k (s : Set V)) * algebraMap k (Algebra.adjoin k (s : Set V)) (f i)) = 1`. Apply `Subtype.ext` to reduce the goal to its premises. Establish `key : (Algebra.adjoin k (s : Set V)).val (∑ i, (⟨c i, hc i⟩ : Algebra.adjoin k (s : Set V)) * algebraMap k (Algebra.adjoin k (s : Set V)) (f i)) = ∑ i, c i • (g i : V)`.
-
-Simplify using `only [map_sum, map_mul, AlgHom.commutes, Subalgebra.coe_val, hfg, smul_eq_mul]`. Conclude with `key.trans (hsum.trans (by simp))`. Conclude with `y.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 (hone ▸ hmem))`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem geometricallyConnected_descends_to_fg :
     ∀ (k V : Type) [CommRing k] [IsNoetherianRing k] [CommRing V] [Algebra k V] (G : Over (Sp k))

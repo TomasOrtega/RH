@@ -7,7 +7,7 @@ namespace Formalism.MainNotions.ColumnSystems.Pf
 open Formalism.MainNotions.G Formalism.MainNotions.CovariantDegrees MvPolynomial
 
 /- English proof (translation)
-Rewrite using `[← hpw]`. Introduce `h`. Conclude with `hw.not_isUnit (isUnit_of_mul_isUnit_left (by rwa [pow_two] at h))`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem p_not_unit {O : Type} [CommRing O] {p : ℕ} {w : O} (hw : Irreducible w) (hpw : w ^ 2 = (p : O)) :
     ¬ IsUnit (p : O) := by
@@ -16,13 +16,11 @@ theorem p_not_unit {O : Type} [CommRing O] {p : ℕ} {w : O} (hw : Irreducible w
   exact hw.not_isUnit (isUnit_of_mul_isUnit_left (by rwa [pow_two] at h))
 
 /- English proof (translation)
-Establish `hp0 : (p : O) ≠ 0` using `by rw [← hpw]; exact pow_ne_zero _ hw.ne_zero`. Establish `hpu` using `p_not_unit hw hpw`. Take `⟨c, hc⟩` from `CharP.exists O`. Break down `CharP.char_is_prime_or_zero O c with h | h` into its components or cases. It suffices to derive a contradiction.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction.
 
-Establish `hc0 : (c : O) = 0` using `CharP.cast_eq_zero O c`. Distinguish the cases in `hcp : c = p`. Conclude with `hp0 (hcp ▸ hc0)`. Establish `hcop : Nat.Coprime c p` using `(Nat.coprime_primes h hp).2 hcp`. Take `⟨a, b, hab⟩` from `Nat.isCoprime_iff_coprime.2 hcop`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h1 : ((a * c + b * p : ℤ) : O) = 1` using `by rw [hab]; simp`. Move the coercions through the operations in `at h1`. Rewrite `h1` using `[hc0, mul_zero, zero_add]`. Conclude with `hpu (IsUnit.of_mul_eq_one_right _ h1)`. Substitute `h` using the available equality.
-
-Conclude with `CharP.charP_to_charZero O`.
+Move the embeddings inside the algebraic operations. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem charZero_of_w {O : Type} [CommRing O] [IsDomain O] {p : ℕ} (hp : p.Prime) {w : O} (hw : Irreducible w)
     (hpw : w ^ 2 = (p : O)) : CharZero O := by
@@ -56,9 +54,9 @@ def KapAt (C0 CYb Cde Ck CD Cb CE1 CE2 Cc : ℝ) : Prop :=
           algebraMap O (KK O) κ * (specConst X.p (X.seg C0 CE1 CE2 j) b : KK O)
 
 /- English proof (translation)
-Take `⟨s, ⟨-, -, -, h4⟩, h5⟩` from `get_spec X.TT j i`. Establish `hlt : (segDists X.TT j).get i < segG X.TT j` using `h5 ▸ h4`. Use `⟨segG X.TT j - (segDists X.TT j).get i - 1, ?_⟩` and prove the remaining obligations. Use `show X.p ^ (segG X.TT j - (segDists X.TT j).get i) = _`. Use `congr 1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers.
+A detailed English derivation is pending.
 -/
 theorem lev_pow (C0 CE1 CE2 : ℝ) (X : Loc) (j : Fin (numSeg X.TT)) (i : Fin (segS X.TT j)) :
     ∃ t, (X.seg C0 CE1 CE2 j).P X.p i = X.p ^ (t + 1) := by
@@ -70,13 +68,11 @@ theorem lev_pow (C0 CE1 CE2 : ℝ) (X : Loc) (j : Fin (numSeg X.TT)) (i : Fin (s
   omega
 
 /- English proof (translation)
-Break down `v with ⟨a, c⟩ | ⟨l, bo⟩` into its components or cases. Establish `h : (a : ℕ) < 2 * segS X.TT j` using `hv`. Simplify using `only [symLev, symVar, dif_pos h]`. Use `⟨lev_pow C0 CE1 CE2 X j _, ?_⟩` and prove the remaining obligations. Rewrite using `[baseExp_odd]`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Fin.succ_ne_zero, and_false, if_false, add_zero]`. Use `split_ifs`. Conclude with `(hb.1.1 _ _).1`. Conclude with `(hb.1.1 _ _).2`. Establish `h : (l : ℕ) < (X.seg C0 CE1 CE2 j).t` using `hv`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [symLev, symVar, dif_pos h]`. Use `⟨lev_pow C0 CE1 CE2 X j _, ?_⟩` and prove the remaining obligations. Rewrite using `[baseExp_odd]`. Establish `hz : ¬ ((uTop (X.seg C0 CE1 CE2 j) ⟨l, h⟩ : ℕ) < (X.seg C0 CE1 CE2 j).sigma)` using `by show ¬ ((X.seg C0 CE1 CE2 j).sigma + (l : ℕ) < (X.seg C0 CE1 CE2 j).sigma)`. Use linear arithmetic over natural numbers and integers.
-
-Simplify using `only [hz, false_and, if_false, add_zero]`. Use `split_ifs`. Conclude with `(hb.1.1 _ _).1`. Conclude with `(hb.1.1 _ _).2`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem oddVar_data (C0 CE1 CE2 : ℝ) (X : Loc) (j : Fin (numSeg X.TT)) (b : SegBlock (segS X.TT j) X.m)
     (hb : Kept X.p X.m (X.seg C0 CE1 CE2 j) (segATop X.TT X.aT j) b) (v : BV C0 CE1 CE2 X j)
@@ -105,9 +101,9 @@ theorem oddVar_data (C0 CE1 CE2 : ℝ) (X : Loc) (j : Fin (numSeg X.TT)) (b : Se
     · exact (hb.1.1 _ _).2
 
 /- English proof (translation)
-Break down `v with ⟨a, c⟩ | ⟨l, bo⟩` into its components or cases. Establish `h : ¬ (a : ℕ) < 2 * segS X.TT j` using `hv`. Simplify using `only [symLev, symVar, dif_neg h]`. Conclude with `⟨trivial, baseExp_end C0 CE1 CE2 X j b _ _⟩`. Establish `h : ¬ (l : ℕ) < (X.seg C0 CE1 CE2 j).t` using `hv`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Simplify using the standard rewrite rules. Supply the required witnesses or components. Establish an intermediate fact.
 
-Simplify using `only [symLev, symVar, dif_neg h]`. Conclude with `⟨trivial, baseExp_end C0 CE1 CE2 X j b _ _⟩`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 theorem endVar_data (C0 CE1 CE2 : ℝ) (X : Loc) (j : Fin (numSeg X.TT)) (b : SegBlock (segS X.TT j) X.m)
     (v : BV C0 CE1 CE2 X j) (hv : ¬ IsOddVar C0 CE1 CE2 X j v) :
@@ -121,25 +117,23 @@ theorem endVar_data (C0 CE1 CE2 : ℝ) (X : Loc) (j : Fin (numSeg X.TT)) (b : Se
     exact ⟨trivial, baseExp_end C0 CE1 CE2 X j b _ _⟩
 
 /- English proof (translation)
-Introduce `X _ O _ _ _ w hw h2 hD1 hH hc j b hb`. Establish `hp : X.p.Prime` using `hD1.1`. Establish `hpO` using `p_not_unit hw h2`. Establish `hO : CharZero O` using `charZero_of_w hp hw h2`. Establish `: CharZero (KK O)` using `charZero_of_injective_algebraMap (IsFractionRing.injective O (KK O))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨κ, hκ0, hκv, hκ⟩` from `hK X O w hw h2 hD1 hH hc j b hb`. Establish `ht : ∀ v : BV C0 CE1 CE2 X j, ∃ t, IsOddVar C0 CE1 CE2 X j v → symLev X.p C0 CE1 CE2 X j v = X.p ^ (t + 1)`. Introduce `v`. Distinguish the cases in `hv : IsOddVar C0 CE1 CE2 X j v`. Take `⟨t, ht⟩` from `(oddVar_data C0 CE1 CE2 X j b hb v hv).1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨t, fun _ => ht⟩`. Conclude with `⟨0, fun h => absurd h hv⟩`. Use `choose t ht using ht`. Take `⟨T, q, hT, hfa⟩` from `fact_abs h52 hp hD1.2.1 (BV C0 CE1 CE2 X j) (IsOddVar C0 CE1 CE2 X j) t (fun v => baseExp C0 CE1 CE2 X j b (symVar C0 CE1 CE2 X j v)) (fun v => symLev X.p C0 CE1 CE2 X j v) (fun v hv => ⟨ht v hv, (oddVar_data C0 CE1 CE2 X j b hb v hv).2⟩) (fun v hv => endVar_data C0 CE1 CE2 X j b …`. Establish `hq : ∀ ν, ∃ y : O, ν ∈ T → ((q ν : ℚ) : KK O) = algebraMap O (KK O) y`.
+Supply the required witnesses or components. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `ν`. Distinguish the cases in `hν : ν ∈ T`. Take `⟨y, hy⟩` from `rat_int (O := O) (K := KK O) hp hpO (q ν) 0 (by simpa using (hT ν hν).2.2)`. Conclude with `⟨y, fun _ => by rw [hy, pow_zero, one_mul]⟩`. Conclude with `⟨0, fun h => absurd h hν⟩`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Use `choose qO hqO using hq`. Use `⟨κ, T, qO, hκ0, hκv, fun ν hν => ⟨(hT ν hν).1, (hT ν hν).2.1⟩, ?_⟩` and prove the remaining obligations. Introduce `μ hμ`. Take `⟨h, hh, heq⟩` from `hfa μ`. Take `⟨y, hy⟩` from `rat_int (O := O) (K := KK O) hp hpO h X.c hh`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨w ^ X.c * y, ?_⟩` and prove the remaining obligations. Establish `hg : algebraMap O (KK O) (gEv T qO μ) = ((∑ ν ∈ T, q ν * ((ν.prod fun k i => (μ k).choose i : ℕ) : ℚ) : ℚ) : KK O)`. Unfold `gEv`. Rewrite using `[map_sum, Rat.cast_sum]`. Use `Finset.sum_congr rfl fun ν hν => ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[map_mul, ← hqO ν hν, map_natCast, Rat.cast_mul, Rat.cast_natCast]`. Establish `heqK` using `congrArg (fun x : ℚ => (x : KK O)) heq`. Simplify using `only [Rat.cast_mul, Rat.cast_prod, Rat.cast_natCast, Rat.cast_add, Rat.cast_one, Rat.cast_pow] at heqK`. Establish `hsplit : (∏ x : BV C0 CE1 CE2 X j, ((baseExp C0 CE1 CE2 X j b (symVar C0 CE1 CE2 X j x)).factorial : KK O) * ((μ x).factorial : KK O) * ((symLev X.p C0 CE1 CE2 X j x).factorial : KK O) ^ (μ x)) = (∏ v : BV C0 CE1 CE2 X j, ((baseExp C0 CE1 CE2 X j b (symVar C0 CE1 CE2 X j v)).fact …`. Rewrite using `[← Finset.prod_mul_distrib]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Conclude with `Finset.prod_congr rfl fun v _ => by ring`. Establish `hmu : (expFact μ : KK O) = ∏ v : BV C0 CE1 CE2 X j, ((μ v).factorial : KK O)`. Unfold `expFact`. Rewrite using `[Finsupp.prod_fintype _ _ (fun _ => rfl)]`. Use `push_cast`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `hW : (algebraMap O (KK O) (w ^ X.c)) ^ 2 = (X.p : KK O) ^ X.c`. Rewrite using `[← map_pow, ← pow_mul, mul_comm, pow_mul, h2, map_pow, map_natCast]`. Establish `hk` using `hκ μ hμ`. Rewrite using `[expFact_ioExp, hg, hmu, map_add, map_one, map_mul, map_mul, Nat.cast_mul, Nat.cast_prod]`.
-
-Rewrite `heqK` using `[hsplit]`. Take the linear combination `(zSeg (KK O) X j * (X.p : KK O) ^ padicValNat X.p (Nblk C0 CE1 CE2 X j b) * (Rblk C0 CE1 CE2 X j b : KK O)) * heqK + ((∏ v : BV C0 CE1 CE2 X j, ((μ v).factorial : KK O)) * (1 + (h : KK O))) * hk + (algebraMap O (KK O) κ * (specConst X.p (X.seg C0 CE1 CE2 j) b : KK O) * (∏ v : BV …`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem factAt_of {D : Formalism.BasicNotions.D7} (h52 : Formalism.MainNotions.CovariantDegrees.FactorialUnitDecomposition D) {C0 CYb Cde Ck CD Cb CE1 CE2 Cc : ℝ}
     (hK : KapAt C0 CYb Cde Ck CD Cb CE1 CE2 Cc) : FactAt C0 CYb Cde Ck CD Cb CE1 CE2 Cc := by

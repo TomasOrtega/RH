@@ -7,11 +7,11 @@ open scoped TensorProduct ENNReal NNReal Matrix Classical
 namespace GlobalTheory.CompanionTheory.SW.RankOneSiegelWeil
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ _ J hJ h`. Establish `hg : cT (sigR (AF F) σ) ((HA.mat (AF F) σ J h : GL (Fin 1) (AF F ⊗[F] E)) : Matrix (Fin 1) (Fin 1) (AF F ⊗[F] E)) * JR (AF F) J * ((HA.mat (AF F) σ J h : GL (Fin 1) (AF F ⊗[F] E)) : Matrix (Fin 1) (Fin 1) (AF F ⊗[F] E)) = JR (AF F) J` using `h.2`. Establish `hx : ((ue (AF F) σ J h : (AF F ⊗[F] E)ˣ) : AF F ⊗[F] E) = ((HA.mat (AF F) σ J h : GL (Fin 1) (AF F ⊗[F] E)) : Matrix (Fin 1) (Fin 1) (AF F ⊗[F] E)) 0 0`. Simplify using `only [ue, Matrix.GeneralLinearGroup.val_det_apply, Matrix.det_fin_one]`. Establish `he` using `congrFun (congrFun hg 0) 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [Matrix.mul_apply, Finset.univ_unique, Finset.sum_singleton, cT, JR, Matrix.transpose_apply, Matrix.map_apply, Fin.default_eq_zero, Fin.isValue] at he`. Establish `hj : J 0 0 ≠ 0`. Use `hJ.2` as an intermediate fact. Rewrite `this` using `[Matrix.det_fin_one]`. Then use the resulting hypothesis. Establish `hu : IsUnit (inclR (F` using `F) (AF F) (J 0 0)) := (IsUnit.mk0 _ hj).map (inclR (F := F) (AF F))`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Use `show ((1 : (AF F)ˣ) : AF F) ⊗ₜ[F] (1 : E) = sigR (AF F) σ _ * _`. Rewrite using `[hx, Units.val_one, ← Algebra.TensorProduct.one_def]`. Apply `hu.mul_left_cancel` to reduce the goal to its premises. Rewrite using `[mul_one]`. Conclude with `he.symm.trans (by ring)`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isNm_ue_one : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (J : Matrix (Fin 1) (Fin 1) E), IsHermND σ J → ∀ h : HA (AF F) σ J, IsNm σ (ue (AF F) σ J h) 1 := by
   intro F E _ _ _ _ _ σ _ J hJ h

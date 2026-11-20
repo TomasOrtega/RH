@@ -17,7 +17,7 @@ def targetVar {ι : Type*} {n : ℕ} (LL : Letters ι) (a b : Fin n) (l : ι) : 
 def letterSign (B : Type*) [CommRing B] {ι : Type*} (LL : Letters ι) (l : ι) : B := if LL.vec l then 1 else -1
 
 /- English proof (translation)
-Unfold `sourceVar`. Apply the tactic sequence `split_ifs <;> rfl`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem sourceVar_fst {ι : Type*} {n : ℕ} (LL : Letters ι) (a b : Fin n) (l : ι) : (sourceVar LL a b l).1 = l := by
   unfold sourceVar
@@ -29,7 +29,7 @@ variable {R B : Type*} [CommRing R] [CommRing B] {ι : Type*} {n : ℕ} (LL : Le
   (φ : R →+* B) (a b : Fin n) (t : B)
 
 /- English proof (translation)
-Rewrite using `[Finset.sum_eq_single c]`. Simplify using the standard rewrite rules. Introduce `b' _ hb`. Simplify using `[Matrix.one_apply_ne hb]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem sum_C_one_col (l : ι) (c : Fin n) :
     ∑ b' : Fin n, C ((1 : Matrix (Fin n) (Fin n) B) b' c) * (X (l, b') : MvPolynomial (ι × Fin n) B) = X (l, c) := by
@@ -40,7 +40,7 @@ theorem sum_C_one_col (l : ι) (c : Fin n) :
   · simp
 
 /- English proof (translation)
-Rewrite using `[Finset.sum_eq_single c]`. Simplify using the standard rewrite rules. Introduce `b' _ hb`. Simplify using `[Matrix.one_apply_ne (Ne.symm hb)]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem sum_C_one_row (l : ι) (c : Fin n) :
     ∑ b' : Fin n, C ((1 : Matrix (Fin n) (Fin n) B) c b') * (X (l, b') : MvPolynomial (ι × Fin n) B) = X (l, c) := by
@@ -51,9 +51,9 @@ theorem sum_C_one_row (l : ι) (c : Fin n) :
   · simp
 
 /- English proof (translation)
-Distinguish the cases in `hc : c = b`. Substitute `hc` using the available equality. Rewrite using `[Finset.sum_eq_single a]`. Simplify using the standard rewrite rules. Introduce `b' _ hb`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[Ne.symm hb]`. Simplify using the standard rewrite rules. Simplify using `[hc, Ne.symm hc]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem sum_C_single_col (s : B) (l : ι) (c : Fin n) :
     ∑ b' : Fin n, C (Matrix.single a b s b' c) * (X (l, b') : MvPolynomial (ι × Fin n) B) =
@@ -68,9 +68,9 @@ theorem sum_C_single_col (s : B) (l : ι) (c : Fin n) :
   · simp [hc, Ne.symm hc]
 
 /- English proof (translation)
-Distinguish the cases in `hc : c = a`. Substitute `hc` using the available equality. Rewrite using `[Finset.sum_eq_single b]`. Simplify using the standard rewrite rules. Introduce `b' _ hb`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[Ne.symm hb]`. Simplify using the standard rewrite rules. Simplify using `[hc, Ne.symm hc]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem sum_C_single_row (s : B) (l : ι) (c : Fin n) :
     ∑ b' : Fin n, C (Matrix.single a b s c b') * (X (l, b') : MvPolynomial (ι × Fin n) B) =
@@ -86,7 +86,7 @@ theorem sum_C_single_row (s : B) (l : ι) (c : Fin n) :
 
 open Classical in
 /- English proof (translation)
-Take `⟨l, c⟩` from `v`. Rewrite using `[matrixSubst_X]`. Simplify using `only [Matrix.transvection, Matrix.add_apply, map_add, add_mul, Finset.sum_add_distrib, sum_C_one_col, sum_C_one_row, sum_C_single_col, sum_C_single_row, sourceVar, targetVar, letterSign]`. Apply the tactic sequence `by_cases hS : l ∈ S <;> by_cases hv : LL.vec l <;> simp [hS, hv]`. Apply the tactic sequence `all_goals split_ifs <;> simp`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem matrixSubst_transvection_X (v : ι × Fin n) :
     matrixSubst LL S φ (Matrix.transvection a b t) (Matrix.transvection a b (-t)) (X v) =
@@ -106,11 +106,11 @@ variable {ι : Type*} [Fintype ι] {n : ℕ} (LL : Letters ι) (a b : Fin n)
 
 open Classical in
 /- English proof (translation)
-Rewrite using `[Finsupp.finsetSum_apply, Finset.sum_eq_single v.1]`. Rewrite using `[Finsupp.single_apply]`. Distinguish the cases in `h : v = sourceVar LL a b v.1`. Rewrite using `[if_pos h.symm, if_pos h]`. Rewrite using `[if_neg (Ne.symm h), if_neg h]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `l _ hl`. Rewrite using `[Finsupp.single_apply, if_neg]`. Introduce `h`. Apply `hl` to reduce the goal to its premises. Rewrite using `[← h, sourceVar_fst]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem sum_single_sourceVar_apply (c : ι → ℕ) (v : ι × Fin n) :
     (∑ l : ι, Finsupp.single (sourceVar LL a b l) (c l)) v = if v = sourceVar LL a b v.1 then c v.1 else 0 := by

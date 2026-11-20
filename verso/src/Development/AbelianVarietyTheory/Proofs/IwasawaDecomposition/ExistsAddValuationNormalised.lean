@@ -10,19 +10,17 @@ open scoped Formalism.Per
 namespace GlobalTheory.MemLoc
 
 /- English proof (translation)
-Introduce `l _ LL`. Establish `hprime : l.Prime` using `Fact.out`. Establish `hnorm : ‖(l : PadicAlgCl l)‖ = (l : ℝ)⁻¹`. Rewrite using `[← map_natCast (algebraMap ℚ_[l] (PadicAlgCl l)), PadicAlgCl.norm_extends, Padic.norm_p]`. Establish `hl0 : 0 < ‖(l : PadicAlgCl l)‖`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hnorm]`. Conclude with `inv_pos.2 (Nat.cast_pos.2 hprime.pos)`. Establish `hl1 : ‖(l : PadicAlgCl l)‖ < 1`. Rewrite using `[hnorm]`. Conclude with `inv_lt_one_of_one_lt₀ (Nat.one_lt_cast.2 hprime.one_lt)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hL : Real.log ‖(l : PadicAlgCl l)‖ < 0` using `Real.log_neg hl0 hl1`. Take `⟨v, hv⟩` from `_root_.GlobalTheory.PadicVal.exists_addValuation (l : PadicAlgCl l) hl0 hl1`. Use `⟨v.comap LL.1.val.toRingHom, ?_, fun x => ?_⟩` and prove the remaining obligations. Establish `hcast : ((l : ↥LL.1) : PadicAlgCl l) = l` using `by simp show v ((l : ↥LL.1) : PadicAlgCl l) = 1`. Rewrite using `[hcast]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨q, hvq, hlog⟩` from `hv _ (norm_pos_iff.1 hl0)`. Establish `hq : q = 1` using `Rat.cast_injective (by`. Use `mul_right_cancel₀ hL.ne (hlog.symm.trans (one_mul _).symm)` as an intermediate fact. Simplify using `using this)`. Rewrite using `[hvq, hq]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Use `show 0 ≤ v (x : PadicAlgCl l) ↔ x ∈ integralClosure ℤ_[l] LL.1`. Rewrite using `[_root_.GlobalTheory.mem_integralClosure_padicInt_iff]`. Distinguish the cases in `hx : (x : PadicAlgCl l) = 0`. Simplify using `[hx]`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Take `⟨q, hvq, hlog⟩` from `hv _ hx`. Rewrite using `[hvq, WithTop.coe_nonneg, ← Real.log_nonpos_iff (norm_nonneg _), hlog]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `mul_nonpos_of_nonneg_of_nonpos (by exact_mod_cast h) hL.le`.
-
-Introduce `h`. Establish `h' : (0 : ℝ) ≤ q` using `(mul_le_mul_right_of_neg hL).1 (by simpa using h)`. Conclude with `h'` after adjusting the coercions.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.MemLoc.exists_addValuation_normalised : ∀ (l : ℕ) [Fact l.Prime], ∀ LL : _root_.Formalism.BasicNotions.Loc.FinExt l,
     ∃ v : AddValuation ↥LL.1 (WithTop ℚ), v (l : ↥LL.1) = 1 ∧

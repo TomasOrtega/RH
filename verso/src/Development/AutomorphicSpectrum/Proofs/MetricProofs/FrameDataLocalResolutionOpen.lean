@@ -14,13 +14,11 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.Ar.PB.PFl.Exact
 
 /- English proof (translation)
-Introduce `K _ ι _ Φ _ y Ψ _ _ N j M n e Rb keep Kk _ ιk _ κ v F kb V bl r h ε hc w hw`. Take `⟨hbm, hran, -, -, -, -, hh⟩` from `hc`. Establish `key : ∀ q : Σ k, ι k, q.1 ∈ Set.range κ → upV v (pPhi M F keep v bl h ε w) q = flagZ M F (bl (pB ε w)) (fun τ => pH keep h ε τ w) q`. Introduce `q hq`. Take `⟨q', rfl⟩` from `hbm.2.2.2 q hq`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite using `[upV_apply hbm.2.1]`. Both sides reduce to the same expression. Use `⟨fun τ => ⟨?_, ?_⟩, ?_, fun p k hk hp m => ?_⟩` and prove the remaining obligations. Conclude with `isBlockDiag_mul (hh τ).1 (WMan.Exact.lowMat_isBlockDiag _ _)`. Rewrite using `[pH, Matrix.det_mul, pMat, WMan.Exact.lowMat_det, mul_one]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `(hh τ).2`. Use function extensionality and compare the values at `q`. Take `⟨k, m⟩` from `q`. Use `show upV v (pPhi M F keep v bl h ε w) ⟨k.1, m⟩ = _`. Rewrite using `[key ⟨k.1, m⟩ ((hran k.1).2 (Or.inl k.2))]`.
-
-Conclude with `WMan.Exact.flagZ_base k m`. Rewrite using `[key ⟨k, m⟩ ((hran k).2 (Or.inr ⟨p, hk, hp⟩))]`. Conclude with `WMan.Exact.flagZ_step hp m`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chart_points : ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] (Φ : Type) [Field Φ] (y : (Σ k, ι k) → Φ) (Ψ : Type) [Fintype Ψ] [DecidableEq Ψ] (N j : ℕ) (M : FlagModel y Ψ N j) (n e : ℕ) (Rb : AnLogRes (mCoordIdeal M.x) ⊤ n) (keep : Ψ × Fin N → Prop) (Kk : Type) [Fintype Kk] (ιk : Kk → Type) [∀ k, Fintype (ιk k)] (κ : Kk → K) (v : (Σ k, ιk k) → (Σ k, ι k)) (F : FrameData ι Ψ N M.Ω M.blk) (kb : Fin Rb.A.n) (V : Set (Fin n → ℂ)) (bl : (Fin n → ℂ) → (Σ k, baseIdx ι M.blk k) → ℂ) (r : ((Σ k, baseIdx ι M.blk k) → ℂ) → Rb.X) (h : Ψ → Matrix (Fin N) (Fin N) ℂ) (ε : Fin n ⊕ PIdx j keep ≃ Fin e), IsPCtx M Rb keep κ v F kb V bl r h → ∀ w ∈ pD ε V, (∀ τ, IsBlockDiag j (pH keep h ε τ w) ∧ (pH keep h ε τ w).det ≠ 0) ∧ pBase M v (pPhi M F keep v bl h ε w) = bl (pB ε w) ∧ ∀ p k, keep p → M.blk p = some k → ∀ m : ι k, upV v (pPhi M F keep v bl h ε w) ⟨k, m⟩ = ∑ I, valAt M.x (F.u ⟨k, m⟩ I) (bl (pB ε w)) * minorIJ (pH keep h ε p.1 w) I (stepCols N j p.2) := by
   intro K _ ι _ Φ _ y Ψ _ _ N j M n e Rb keep Kk _ ιk _ κ v F kb V bl r h ε hc w hw

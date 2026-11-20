@@ -9,9 +9,9 @@ noncomputable section
 namespace GlobalTheory.FullRankCoinv
 
 /- English proof (translation)
-Use `continuous_iff_continuousAt.2 fun g => ?_` and prove the remaining obligations. Establish `ho : IsOpen ((g⁻¹ * ·) ⁻¹' (H : Set G))` using `hH.preimage (continuous_const.mul continuous_id)`. Establish `hev : ∀ᶠ x in nhds g, f g = f x` using `by filter_upwards [ho.mem_nhds (by simpa using H.one_mem)] with x hx`. Use `hf g (g⁻¹ * x) hx` as an intermediate fact. Simplify using `using this.symm`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Conclude with `tendsto_const_nhds.congr' hev`.
+A detailed English derivation is pending.
 -/
 theorem continuous_of_mul_right_inv {G : Type*} [Group G] [TopologicalSpace G] [ContinuousMul G]
     (H : Subgroup G) (hH : IsOpen (H : Set G)) (f : G → ℂ) (hf : ∀ g, ∀ h ∈ H, f (g * h) = f g) : Continuous f := by
@@ -26,9 +26,9 @@ theorem continuous_of_mul_right_inv {G : Type*} [Group G] [TopologicalSpace G] [
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Use `Units.continuous_iff.2 ⟨?_, ?_⟩` and prove the remaining obligations. Use `(Units.continuous_val (M := Matrix (Fin n) (Fin n) k)).matrix_det using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `g`. Conclude with `Matrix.GeneralLinearGroup.val_det_apply g`. Use `(Units.continuous_coe_inv (M := Matrix (Fin n) (Fin n) k)).matrix_det using 1` and compare the differences between its conclusion and the goal.
+Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `g`. Use `show (((gdet g)⁻¹ : kˣ) : k) = _`. Rewrite using `[← map_inv]`. Conclude with `Matrix.GeneralLinearGroup.val_det_apply _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_gdet (n : ℕ) : Continuous (gdet : GL (Fin n) k → kˣ) := by
   refine Units.continuous_iff.2 ⟨?_, ?_⟩
@@ -40,9 +40,9 @@ theorem continuous_gdet (n : ℕ) : Continuous (gdet : GL (Fin n) k → kˣ) := 
     rw [← map_inv]; exact Matrix.GeneralLinearGroup.val_det_apply _
 
 /- English proof (translation)
-Set `H : Subgroup (GL (Fin n) k)` to `GlobalTheory.SplitWeil.KO k (Fin n) ⊓ ν.ker.comap Matrix.GeneralLinearGroup.det`. Establish `hH : IsOpen (H : Set (GL (Fin n) k))` using `isOpen_KO.inter (hν.preimage (continuous_gdet (k := k) n))`. Use `continuous_of_mul_right_inv H hH _ fun g h hh => ?_` and prove the remaining obligations. Establish `h1 : ν (gdet h) = 1` using `hh.2`. Establish `h2 : apow (gdet h) z = 1` using `apow_of_valuation_eq_one (valuation_gdet_of_mem_KO hh.1) z`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [gdet_mul, map_mul, Units.val_mul, apow_mul, h1, h2, Units.val_one, mul_one]`.
+Simplify using the standard rewrite rules.
 -/
 theorem continuous_char_apow (n : ℕ) (ν : kˣ →* ℂˣ) (hν : GlobalTheory.SmGL.IsSmoothChar ν) (z : ℂ) :
     Continuous fun g : GL (Fin n) k => (ν (gdet g) : ℂ) * apow (gdet g) z := by
@@ -55,29 +55,25 @@ theorem continuous_char_apow (n : ℕ) (ν : kˣ →* ℂˣ) (hν : GlobalTheory
   simp only [gdet_mul, map_mul, Units.val_mul, apow_mul, h1, h2, Units.val_one, mul_one]
 
 /- English proof (translation)
-Take `⟨⟨hlc, hcs⟩, hrk⟩` from `hΨ`. Distinguish the cases in `hY : Y.rank = n`. Use `swap`. Establish `h0 : (fun g : GL (Fin n) k => Ψ (g.val * Y) * (ν (gdet g) : ℂ) * apow (gdet g) ((Fintype.card (Fin d) : ℂ) / 2)) = 0`. Use function extensionality and compare the values at `g`.
+Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Establish `: (g.val * Y).rank = Y.rank` using `Matrix.rank_mul_eq_right_of_isUnit_det _ _ ((Matrix.isUnit_iff_isUnit_det _).1 g.isUnit)`. Rewrite using `[hrk _ (by rw [this]; exact hY)]; simp`. Rewrite using `[h0]`. Conclude with `integrable_zero _ _ _`. Choose the witnesses or unpack the hypotheses as in `⟨R, hR⟩ : ∃ R : Matrix (Fin d) (Fin n) k, Y * R = 1 := by`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hsurj : LinearMap.range Y.mulVecLin = ⊤`. Apply `Submodule.eq_top_of_finrank_eq` to reduce the goal to its premises. Rewrite using `[Module.finrank_fin_fun]`. Conclude with `hY`. Take `⟨f, hf⟩` from `LinearMap.exists_rightInverse_of_surjective _ hsurj`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `⟨LinearMap.toMatrix' f, ?_⟩` and prove the remaining obligations. Use `congrArg LinearMap.toMatrix' hf` as an intermediate fact. Rewrite `this` using `[LinearMap.toMatrix'_comp, LinearMap.toMatrix'_id, show LinearMap.toMatrix' Y.mulVecLin = Y from LinearMap.toMatrix'_toLin' Y]`. Then use the resulting hypothesis. Establish `hsupp : tsupport Ψ = Function.support Ψ`. Use `(IsClosed.closure_eq ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use `(hlc.isOpen_fiber 0).isClosed_compl using 1` and compare the differences between its conclusion and the goal. Use extensionality with `x`. Simplify using `[Function.support]`. Establish `hrkS : ∀ X ∈ tsupport Ψ, X.rank = n` using `fun X hX => by`. Assume the negation of the conclusion as `h`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hX` using `[hsupp]`. Conclude with `hX (hrk X h)`. Use `set K' : Set (Matrix (Fin n) (Fin d) k) := tsupport Ψ ∩ {X | X * R * Y = X}`. Establish `hK' : IsCompact K'` using `hcs.inter_right (isClosed_eq ((continuous_id.matrix_mul continuous_const).matrix_mul continuous_const) continuous_id)`. Establish `hunit : ∀ X ∈ K', IsUnit (X * R)` using `fun X hX => by`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : n ≤ (X * R).rank`. Combine the equalities or inequalities in the displayed calculation. Establish `h2 : (X * R).rank = Fintype.card (Fin n)` using `le_antisymm ((Matrix.rank_le_card_width _).trans (by simp)) (by simpa using h1)`. Establish `hli : LinearIndependent k (X * R).row`. Rewrite using `[linearIndependent_iff_card_eq_finrank_span]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `h2.symm.trans (Matrix.rank_eq_finrank_span_row _)`. Conclude with `Matrix.linearIndependent_rows_iff_isUnit.1 hli`. Set `φ : Matrix (Fin n) (Fin d) k → GL (Fin n) k` to `fun X => if h : IsUnit (X * R) then h.unit else 1`. Establish `hφ : ∀ X ∈ K', (φ X).val = X * R` using `fun X hX => by simp [φ, hunit X hX]`. Establish `hφc : ContinuousOn φ K'`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[(isEmbedding_val_GL (k := k) (n := Fin n)).isInducing.continuousOn_iff]`. Conclude with `(continuous_id.matrix_mul continuous_const).continuousOn.congr fun X hX => hφ X hX`. Use `set S : Set (GL (Fin n) k) := {g | g.val * Y ∈ tsupport Ψ}`. Establish `hSsub : S ⊆ φ '' K'` using `fun g hg => by`. Establish `hX : g.val * Y ∈ K'` using `⟨hg, show g.val * Y * R * Y = g.val * Y by rw [Matrix.mul_assoc g.val Y R, hR, Matrix.mul_one]⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Use `⟨_, hX, Units.ext ?_⟩` and prove the remaining obligations. Rewrite using `[hφ _ hX, Matrix.mul_assoc, hR, Matrix.mul_one]`. Establish `hSc : IsClosed S` using `(isClosed_tsupport Ψ).preimage (Units.continuous_val.matrix_mul continuous_const)`. Establish `hS : IsCompact S` using `(hK'.image_of_continuousOn hφc).of_isClosed_subset hSc hSsub`. Establish `hcont : Continuous (fun g : GL (Fin n) k => Ψ (g.val * Y) * (ν (gdet g) : ℂ) * apow (gdet g) ((Fintype.card (Fin d) : ℂ) / 2))`.
-
-Establish `h1 : Continuous fun g : GL (Fin n) k => Ψ (g.val * Y)` using `hlc.continuous.comp (Units.continuous_val.matrix_mul continuous_const)`. Use `(h1.mul (continuous_char_apow n ν hν ((Fintype.card (Fin d) : ℂ) / 2))).congr fun g => ?_` and prove the remaining obligations. Simplify using `only [Pi.mul_apply]`. Expand and normalize the polynomial expressions, which then agree. Use `letI : MeasurableSpace (GL (Fin n) k) := Units.instMeasurableSpace`.
-
-Use `haveI : BorelSpace (GL (Fin n) k) := borel_GL`. Use `hcont.integrable_of_hasCompactSupport (μ := haarVol (GlobalTheory.SplitWeil.KO k (Fin n))) (HasCompactSupport.intro hS fun g hg => ?_)` and prove the remaining obligations. Rewrite using `[image_eq_zero_of_notMem_tsupport hg]`. Simplify using the standard rewrite rules.
+Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem integrable_fibre (n d : ℕ) (ν : kˣ →* ℂˣ) (hν : GlobalTheory.SmGL.IsSmoothChar ν)
     [MeasurableSpace k] [BorelSpace k] (Ψ : Matrix (Fin n) (Fin d) k → ℂ) (hΨ : Ψ ∈ fullRk k n d)
@@ -155,7 +151,7 @@ theorem integrable_fibre (n d : ℕ) (ν : kˣ →* ℂˣ) (hν : GlobalTheory.S
 end GlobalTheory.FullRankCoinv
 
 /- English proof (translation)
-Introduce `_ _ _ _ _ _ _ n d ν hν Ψ hΨ Y` and use `GlobalTheory.FullRankCoinv.integrable_fibre n d ν hν Ψ hΨ Y`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.FullRankCoinv.integrable_fibre_target : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     [MeasurableSpace k] [BorelSpace k] (n d : ℕ) (ν : kˣ →* ℂˣ), GlobalTheory.SmGL.IsSmoothChar ν →

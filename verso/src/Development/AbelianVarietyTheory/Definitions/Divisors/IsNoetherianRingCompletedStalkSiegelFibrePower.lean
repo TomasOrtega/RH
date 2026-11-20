@@ -76,7 +76,7 @@ def siegPull (c : SiegPre h M ζ s) (f : S' ⟶ S) (s' : S' ⟶ Sp B) (hs : f �
         (congrArg (fun q => q.left) (GlobalTheory.SiegelPull.push_secPull pb (c.lev b) (Over.mk x)).symm)).2 (g₃ a b)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨Pdiv.PullbackComparison.pφ f c.A, Pdiv.PullbackComparison.pφ₂ f c.A, Pdiv.PullbackComparison.isGrpPullback f c.A, Pdiv.PullbackComparison.isSquare f c.A, Pdiv.PullbackComparison.gen_refl _ (pull_isLB c.isLB _), fun a => GlobalTheory.SiegelPull.secPull_left (Pdiv.PullbackComparis …`.
+Supply the required witnesses or components.
 -/
 theorem siegPB_siegPull (c : SiegPre h M ζ s) (f : S' ⟶ S) (s' : S' ⟶ Sp B) (hs : f ≫ s = s') :
     SiegPB (siegPull c f s' hs) c f :=
@@ -84,7 +84,7 @@ theorem siegPB_siegPull (c : SiegPre h M ζ s) (f : S' ⟶ S) (s' : S' ⟶ Sp B)
     Pdiv.PullbackComparison.gen_refl _ (pull_isLB c.isLB _), fun a => GlobalTheory.SiegelPull.secPull_left (Pdiv.PullbackComparison.isGrpPullback f c.A) _⟩
 
 /- English proof (translation)
-The claim follows from `(GlobalTheory.siegPre_pullback h M B ζ S S' s s' f c hs).2 _ (siegPB_siegPull c f s' hs) hc`.
+A detailed English derivation is pending.
 -/
 theorem principal_siegPull (c : SiegPre h M ζ s) (f : S' ⟶ S) (s' : S' ⟶ Sp B) (hs : f ≫ s = s')
     (hc : c.Principal) : (siegPull c f s' hs).Principal :=
@@ -114,7 +114,7 @@ def lift {T : Scheme.{0}} (u : T ⟶ F.X) {r : ℕ} (p : Fin r → (T ⟶ F.univ
 
 @[reassoc]
 /- English proof (translation)
-The claim follows from `Over.w ((powIsLimit F.univ.A r).lift (Fan.mk (Over.mk u) fun i => Over.homMk (p i) (hp i))) @[reassoc]`.
+A detailed English derivation is pending.
 -/
 theorem lift_hom {T : Scheme.{0}} (u : T ⟶ F.X) {r : ℕ} (p : Fin r → (T ⟶ F.univ.A.left))
     (hp : ∀ i, p i ≫ F.univ.A.hom = u) : lift u p hp ≫ (powA F r).hom = u :=
@@ -122,14 +122,14 @@ theorem lift_hom {T : Scheme.{0}} (u : T ⟶ F.X) {r : ℕ} (p : Fin r → (T �
 
 @[reassoc]
 /- English proof (translation)
-The claim follows from `congrArg (fun q => q.left) ((powIsLimit F.univ.A r).fac (Fan.mk (Over.mk u) fun i => Over.homMk (p i) (hp i)) ⟨i⟩)`.
+A detailed English derivation is pending.
 -/
 theorem lift_coord {T : Scheme.{0}} (u : T ⟶ F.X) {r : ℕ} (p : Fin r → (T ⟶ F.univ.A.left))
     (hp : ∀ i, p i ≫ F.univ.A.hom = u) (i : Fin r) : lift u p hp ≫ (coord F i).left = p i :=
   congrArg (fun q => q.left) ((powIsLimit F.univ.A r).fac (Fan.mk (Over.mk u) fun i => Over.homMk (p i) (hp i)) ⟨i⟩)
 
 /- English proof (translation)
-Set `f' : Over.mk (f ≫ (powA F r).hom) ⟶ powA F r` to `Over.homMk f rfl`. Set `g' : Over.mk (f ≫ (powA F r).hom) ⟶ powA F r` to `Over.homMk g h₀.symm`. Establish `: f' = g'` using `(powIsLimit F.univ.A r).hom_ext fun ⟨i⟩ => Over.OverMorphism.ext (h i)`. Conclude with `congrArg (fun q => q.left) this`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem hom_ext {T : Scheme.{0}} {r : ℕ} (f g : T ⟶ (powA F r).left) (h₀ : f ≫ (powA F r).hom = g ≫ (powA F r).hom)
     (h : ∀ i, f ≫ (coord F i).left = g ≫ (coord F i).left) : f = g := by
@@ -150,7 +150,7 @@ def ptAt {T : Scheme.{0}} {r : ℕ} (f : T ⟶ (powA F r).left) (s' : T ⟶ Sp o
       rw [Category.assoc, Over.w (coord F i)]; exact (Category.id_comp _).symm)) (pullback.lift_snd _ _ _)
 
 /- English proof (translation)
-The claim follows from `pullback.lift_fst _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem ptAt_left {T : Scheme.{0}} {r : ℕ} (f : T ⟶ (powA F r).left) (s' : T ⟶ Sp o) (hs : f ≫ toO F r = s')
     (i : Fin r) : (ptAt F f s' hs i).left ≫ Pdiv.PullbackComparison.pφ (f ≫ (powA F r).hom) F.univ.A = f ≫ (coord F i).left :=
@@ -161,14 +161,14 @@ def cAt {T : Scheme.{0}} {r : ℕ} (f : T ⟶ (powA F r).left) (s' : T ⟶ Sp o)
   ∏ i, ptAt F f s' hs i ^ a i
 
 /- English proof (translation)
-Simplify using `only [cAt, Pi.add_apply, zpow_add, Finset.prod_mul_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem cAt_add {T : Scheme.{0}} {r : ℕ} (f : T ⟶ (powA F r).left) (s' : T ⟶ Sp o) (hs : f ≫ toO F r = s')
     (a b : Fin r → ℤ) : cAt F f s' hs (a + b) = cAt F f s' hs a * cAt F f s' hs b := by
   simp only [cAt, Pi.add_apply, zpow_add, Finset.prod_mul_distrib]
 
 /- English proof (translation)
-Use `show ∏ j, ptAt F f s' hs j ^ (Pi.single i 1 : Fin r → ℤ) j = _`. Rewrite using `[Finset.prod_eq_single i (fun j _ hj => by rw [Pi.single_eq_of_ne hj, zpow_zero]) (by simp), Pi.single_eq_same, zpow_one]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cAt_single {T : Scheme.{0}} {r : ℕ} (f : T ⟶ (powA F r).left) (s' : T ⟶ Sp o) (hs : f ≫ toO F r = s')
     (i : Fin r) : cAt F f s' hs (Pi.single i 1) = ptAt F f s' hs i := by
@@ -208,7 +208,7 @@ def toPow : Sp (W F y) ⟶ (powA F r).left := GlobalTheory.fromSpecCompletedStal
 def base : o →+* W F y := (Spec.preimage (toPow F y ≫ toO F r)).hom
 
 /- English proof (translation)
-Use `show Spec.map (CommRingCat.ofHom (Spec.preimage (toPow F y ≫ toO F r)).hom) = _`. Rewrite using `[CommRingCat.ofHom_hom, Spec.map_preimage]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem spMap_base : spMap (base F y) = toPow F y ≫ toO F r := by
   show Spec.map (CommRingCat.ofHom (Spec.preimage (toPow F y ≫ toO F r)).hom) = _
@@ -221,7 +221,7 @@ abbrev pt (i : Fin r) : 𝟙_ (Over (Sp (W F y))) ⟶ (sieg F y).A := ptAt F (to
 abbrev c₀ (a : Fin r → ℤ) : 𝟙_ (Over (Sp (W F y))) ⟶ (sieg F y).A := cAt F (toPow F y) _ (spMap_base F y).symm a
 
 /- English proof (translation)
-The claim follows from `principal_siegPull _ _ _ _ F.princ`.
+A detailed English derivation is pending.
 -/
 theorem principal_sieg : (sieg F y).Principal :=
   principal_siegPull _ _ _ _ F.princ
@@ -229,24 +229,24 @@ theorem principal_sieg : (sieg F y).Principal :=
 abbrev cLev (a : Fin r → ℤ) : 𝟙_ (Over (Sp (W F y))) ⟶ (sieg F y).A := c₀ F y ((n : ℤ) • a)
 
 /- English proof (translation)
-The claim follows from `cAt_add _ _ _ _ a b`.
+A detailed English derivation is pending.
 -/
 theorem c₀_add (a b : Fin r → ℤ) : c₀ F y (a + b) = c₀ F y a * c₀ F y b := cAt_add _ _ _ _ a b
 
 /- English proof (translation)
-The claim follows from `cAt_single _ _ _ _ i`.
+A detailed English derivation is pending.
 -/
 theorem c₀_single (i : Fin r) : c₀ F y (Pi.single i 1) = pt F y i := cAt_single _ _ _ _ i
 
 /- English proof (translation)
-The claim follows from `ptAt_left _ _ _ _ i`.
+A detailed English derivation is pending.
 -/
 theorem pt_left (i : Fin r) :
     (pt F y i).left ≫ Pdiv.PullbackComparison.pφ (toPow F y ≫ (powA F r).hom) F.univ.A = toPow F y ≫ (coord F i).left :=
   ptAt_left _ _ _ _ i
 
 /- English proof (translation)
-Rewrite using `[toPow, GlobalTheory.fromSpecCompletedStalk]`. Use `erw [Scheme.Hom.comp_apply]`. Establish `hc : spMap (algebraMap ((powA F r).left.presheaf.stalk y) (W F y)) (closedPoint (W F y)) = closedPoint _` using `@IsLocalRing.comap_closedPoint _ _ _ _ _ _ _ (by show IsLocalHom (algebraMap ((powA F r).left.presheaf.stalk y) (W F y)) infer_instance)`. Use `erw [hc]`. Conclude with `Scheme.fromSpecStalk_closedPoint`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem toPow_closedPoint : toPow F y (closedPoint (W F y)) = y := by
   rw [toPow, GlobalTheory.fromSpecCompletedStalk]
@@ -269,18 +269,18 @@ section Props
 variable {o : Type} [CommRing o] {ζ : o} {h n : ℕ} (F : ZM.SFam h n ζ) {r : ℕ} (y : (powA F r).left)
 
 /- English proof (translation)
-The claim follows from `inferInstance`.
+A detailed English derivation is pending.
 -/
 theorem isAdicComplete_completedStalkSiegelFibrePower [IsNoetherianRing o] : IsAdicComplete (maximalIdeal (W F y)) (W F y) := inferInstance
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.AdicNoeth.isNoetherianRing_adicCompletion _ _`.
+A detailed English derivation is pending.
 -/
 theorem isNoetherianRing_completedStalkSiegelFibrePower [IsNoetherianRing o] : IsNoetherianRing (W F y) :=
   GlobalTheory.AdicNoeth.isNoetherianRing_adicCompletion _ _
 
 /- English proof (translation)
-Establish `: IsRegularRing ((powA F r).left.presheaf.stalk y)` using `GlobalTheory.ExtendRig.isRegularRing_stalk GlobalTheory.isRegularRing_of_smooth o (toO F r) y`. Conclude with `IsRegularLocalRing.of_isRegularRing_of_isLocalRing _`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isRegularLocalRing_stalk [IsRegularRing o] : IsRegularLocalRing ((powA F r).left.presheaf.stalk y) := by
   have : IsRegularRing ((powA F r).left.presheaf.stalk y) :=
@@ -288,23 +288,23 @@ theorem isRegularLocalRing_stalk [IsRegularRing o] : IsRegularLocalRing ((powA F
   exact IsRegularLocalRing.of_isRegularRing_of_isLocalRing _
 
 /- English proof (translation)
-Use `isRegularLocalRing_stalk F y` as an intermediate fact. Conclude with `GlobalTheory.RegularCompletion.isRegularLocalRing_adicCompletion _`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isRegularLocalRing_W_of_isRegularRing [IsRegularRing o] : IsRegularLocalRing (W F y) := by
   have := isRegularLocalRing_stalk F y
   exact GlobalTheory.RegularCompletion.isRegularLocalRing_adicCompletion _
 
 /- English proof (translation)
-Use `isRegularLocalRing_W_of_isRegularRing F y` as an intermediate fact. Conclude with `(GlobalTheory.isDomain_and_isIntegrallyClosed_of_isRegularLocalRing _).1`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isDomain_W_of_isRegularRing [IsRegularRing o] : IsDomain (W F y) := by
   have := isRegularLocalRing_W_of_isRegularRing F y
   exact (GlobalTheory.isDomain_and_isIntegrallyClosed_of_isRegularLocalRing _).1
 
 /- English proof (translation)
-Take `⟨φ, hφ, -⟩` from `GlobalTheory.existsUnique_factor_stalk f hf`. Establish `hl` using `GlobalTheory.isLocalHom_of_factor_stalk hf hφ`. Use `GlobalTheory.existsUnique_factor_completedStalk' (maximalIdeal V) hφ (maximalIdeal _).fg_of_isNoetherianRing ⟨1, ?_⟩` and prove the remaining obligations. Rewrite using `[pow_one, Ideal.map_le_iff_le_comap]`. Introduce `x hx`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(mem_maximalIdeal _).2 fun hu => (mem_maximalIdeal _).1 hx (isUnit_of_map_unit φ.hom x hu)`.
+A detailed English derivation is pending.
 -/
 theorem existsUnique_factor [IsNoetherianRing o] (V : Type) [CommRing V] [IsLocalRing V]
     [IsAdicComplete (maximalIdeal V) V] (f : Sp V ⟶ (powA F r).left) (hf : f (closedPoint V) = y) :
@@ -318,7 +318,7 @@ theorem existsUnique_factor [IsNoetherianRing o] (V : Type) [CommRing V] [IsLoca
   exact (mem_maximalIdeal _).2 fun hu => (mem_maximalIdeal _).1 hx (isUnit_of_map_unit φ.hom x hu)
 
 /- English proof (translation)
-Take `⟨g, hg, -⟩` from `existsUnique_factor F y V f hf`. Take `⟨ψ, rfl⟩` from `Spec.map_surjective g`. Conclude with `⟨ψ.hom, GlobalTheory.isLocalHom_of_factor_completedStalk hf (maximalIdeal _).fg_of_isNoetherianRing hg, hg⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_local_hom [IsNoetherianRing o] (V : Type) [CommRing V] [IsLocalRing V]
     [IsAdicComplete (maximalIdeal V) V] (f : Sp V ⟶ (powA F r).left) (hf : f (closedPoint V) = y) :
@@ -340,7 +340,7 @@ open SiegelTor
 variable (n : ℕ) (hn : 3 ≤ n)
 
 /- English proof (translation)
-Rewrite using `[← cycBase_ζ (show n ≠ 0 by omega)]`. Conclude with `(cycBase (show n ≠ 0 by omega)).ζ.isUnit`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUnit_zetaAway (n : ℕ) (hn : 3 ≤ n) : IsUnit (zetaAway n) := by
   rw [← cycBase_ζ (show n ≠ 0 by omega)]
@@ -356,15 +356,15 @@ instance : IsRegularRing (cycAway n) := by
 def primeUnder {r : ℕ} (y : (powA (zeroFam n hn) r).left) : PrimeSpectrum (cycAway n) := toO (zeroFam n hn) r y
 
 /- English proof (translation)
-The claim follows from `isDomain_W_of_isRegularRing _ y`.
+A detailed English derivation is pending.
 -/
 example (r : ℕ) (y : (powA (zeroFam n hn) r).left) : IsDomain (W (zeroFam n hn) y) := isDomain_W_of_isRegularRing _ y
 /- English proof (translation)
-The claim follows from `isRegularLocalRing_W_of_isRegularRing _ y`.
+A detailed English derivation is pending.
 -/
 example (r : ℕ) (y : (powA (zeroFam n hn) r).left) : IsRegularLocalRing (W (zeroFam n hn) y) := isRegularLocalRing_W_of_isRegularRing _ y
 /- English proof (translation)
-The claim follows from `principal_sieg _ y`.
+A detailed English derivation is pending.
 -/
 example (r : ℕ) (y : (powA (zeroFam n hn) r).left) : (sieg (zeroFam n hn) y).Principal := principal_sieg _ y
 
@@ -380,9 +380,7 @@ variable {o : Type} [CommRing o] {ζ : o} {h n : ℕ} (F : ZM.SFam h n ζ) {r : 
   [IsNoetherianRing o]
 
 /- English proof (translation)
-Rewrite using `[spMap_base, toPow, GlobalTheory.fromSpecCompletedStalk]`. Establish `h₁ : Flat (Spec.map (CommRingCat.ofHom (algebraMap ((powA F r).left.presheaf.stalk y) (W F y))))`. Rewrite using `[HasRingHomProperty.Spec_iff (P := @Flat)]`. Conclude with `RingHom.flat_algebraMap_iff.2 inferInstance`. Use `GlobalTheory.LocalRingGeneralisation.flat_fromSpecStalk (powA F r).left y` as an intermediate fact.
-
-Use `infer_instance`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem flat_spMap_base : Flat (spMap (base F y)) := by
   rw [spMap_base, toPow, GlobalTheory.fromSpecCompletedStalk]
@@ -393,14 +391,14 @@ theorem flat_spMap_base : Flat (spMap (base F y)) := by
   infer_instance
 
 /- English proof (translation)
-The claim follows from `(HasRingHomProperty.Spec_iff (P := @Flat)).1 (flat_spMap_base F y)`.
+A detailed English derivation is pending.
 -/
 theorem flat_base : (base F y).Flat := (HasRingHomProperty.Spec_iff (P := @Flat)).1 (flat_spMap_base F y)
 
 /- English proof (translation)
-Rewrite using `[injective_iff_map_eq_zero]`. Introduce `a ha`. Assume the negation of the conclusion as `h0`. Use `algebraize [base F y]`. Establish `: Module.Flat o (W F y)` using `flat_base F y`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hreg` using `IsSMulRegular.of_ne_zero (M := W F y) h0`. Establish `e : a • (1 : W F y) = a • 0`. Rewrite using `[Algebra.smul_def, _root_.mul_one, smul_zero]`. Conclude with `ha`. Conclude with `one_ne_zero (hreg e)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem injective_base [IsDomain o] : Function.Injective (base F y) := by
   rw [injective_iff_map_eq_zero]
@@ -415,13 +413,13 @@ theorem injective_base [IsDomain o] : Function.Injective (base F y) := by
   exact one_ne_zero (hreg e)
 
 /- English proof (translation)
-The claim follows from `charZero_of_injective_ringHom (injective_base F y)`.
+A detailed English derivation is pending.
 -/
 theorem charZero_W_of_charZero [IsDomain o] [CharZero o] : CharZero (W F y) :=
   charZero_of_injective_ringHom (injective_base F y)
 
 /- English proof (translation)
-The claim follows from `charZero_W_of_charZero _ y`.
+A detailed English derivation is pending.
 -/
 example (n : ℕ) (hn : 3 ≤ n) (r : ℕ) (y : (powA (zeroFam n hn) r).left) : CharZero (W (zeroFam n hn) y) :=
   charZero_W_of_charZero _ y

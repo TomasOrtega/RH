@@ -13,7 +13,7 @@ open GlobalTheory.HSShort GlobalTheory.HSChoice MvPolynomial
 namespace GlobalTheory.HSShort
 
 /- English proof (translation)
-Introduce `F _ _ X E _ _ _ hn hb`. Conclude with `⟨PosBaseChange.isNef_baseChange (X.toGeo.isPullback_fst E) X.geom.alg.variety.proj hn, PosBaseChange.isBig_baseChange (X.toGeo.isPullback_fst E) X.geom.alg.variety.proj hb⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem nef_big_second_baseChange : ∀ (F : Type) [Field F] [NumberField F] (X : Data F) (E : Type) [Field E] [NumberField E] [Algebra F E], IsNef F X.L₂ → IsBig F X.L₂ → IsNef E (X.baseChange E).L₂ ∧ IsBig E (X.baseChange E).L₂ := by
   intro F _ _ X E _ _ _ hn hb

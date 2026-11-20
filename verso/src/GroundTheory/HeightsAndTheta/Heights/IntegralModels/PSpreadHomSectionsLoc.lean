@@ -16,7 +16,7 @@ noncomputable section
 namespace SpreadHomSectionsLoc
 
 /- English proof (translation)
-Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+Substitute using the available equality. Simplify using the standard rewrite rules.
 -/
 lemma map_eqToHom_symm (Z : Scheme.{0}) {A B : Z.Opens} (h : A = B) (x : Γ(Z, A)) :
     (Z.presheaf.map (eqToHom h).op).hom ((Z.presheaf.map (eqToHom h.symm).op).hom x) = x := by
@@ -24,9 +24,9 @@ lemma map_eqToHom_symm (Z : Scheme.{0}) {A B : Z.Opens} (h : A = B) (x : Γ(Z, A
   simp
 
 /- English proof (translation)
-Establish `e` using `image_morphismRestrict_preimage (baseChangeMap f (ZLoc p)) U V`. Take `⟨N, hN, hpN, c, hc⟩` from `h₁ X f p (U.ι ''ᵁ V) (hV.image_of_isOpenImmersion U.ι) (((baseChange f (ZLoc p)).presheaf.map (eqToHom e.symm).op).hom b)`. Use `⟨N, hN, hpN, c, ?_⟩` and prove the remaining obligations. Rewrite using `[morphismRestrict_app]`. Express the relevant statement in the definitionally equal form `((baseChange f (ZLoc p)).presheaf.map (eqToHom e).op).hom ((baseChangeMap f (ZLoc p)).app _ c) = N • b`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[hc, map_nsmul]`. Use `congr 1`. Conclude with `map_eqToHom_symm _ e b`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 lemma exists_app_restrict_eq_nsmul (h₁ : ZLocDenominators.Statement) {X : Scheme.{0}}
     (f : X ⟶ SpecZ) (p : Nat.Primes) (U : X.Opens) (V : (U : Scheme.{0}).Opens) (hV : IsAffineOpen V)
@@ -47,9 +47,9 @@ lemma exists_app_restrict_eq_nsmul (h₁ : ZLocDenominators.Statement) {X : Sche
 variable {Y T : Scheme.{0}} (π : T ⟶ Y) (p : ℕ)
 
 /- English proof (translation)
-Establish `hb` using `(h₂ _ _ π G W k e he).bijective_self`. Take `⟨b, rfl⟩` from `hb.2 σ`. Use `choose N hN hpN c hc using fun i => hden (b i)`. Use `⟨∏ i, N i, Finset.prod_pos fun i _ => hN i, fun h => ?_, ∑ i, ((∏ j ∈ Finset.univ.erase i, N j) • c i) • e i, ?_⟩` and prove the remaining obligations. Take `⟨i, -, hi⟩` from `(Nat.Prime.prime hp).dvd_finsetProd_iff _ |>.1 h`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hpN i hi`. Rewrite using `[pullSectionOn_sum, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_nsmul, hc i, smul_smul, Finset.prod_erase_mul _ _ (Finset.mem_univ i), smul_assoc]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma exists_pull_eq_nsmul (hp : p.Prime) (h₂ : PullbackBasis.Statement.{0}) {W : Y.Opens}
     (hden : ∀ b : Γ(T, π ⁻¹ᵁ W), ∃ N : ℕ, 0 < N ∧ ¬ p ∣ N ∧ ∃ c : Γ(Y, W), π.app W c = N • b)
@@ -68,11 +68,11 @@ lemma exists_pull_eq_nsmul (hp : p.Prime) (h₂ : PullbackBasis.Statement.{0}) {
   rw [map_nsmul, hc i, smul_smul, Finset.prod_erase_mul _ _ (Finset.mem_univ i), smul_assoc]
 
 /- English proof (translation)
-Use `choose N hN hpN τ hτ using fun i => exists_pull_eq_nsmul π p hp h₂ hden he' (φ.app _ (pullSectionOn π F _ (e i)))`. Use `⟨∏ i, N i, Finset.prod_pos fun i _ => hN i, fun h => ?_, fun V hV s => ?_⟩` and prove the remaining obligations. Take `⟨i, -, hi⟩` from `(Nat.Prime.prime hp).dvd_finsetProd_iff _ |>.1 h`. Conclude with `hpN i hi`. Take `⟨r, rfl⟩` from `(he V hV).2 s`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨∑ i, r i • (G.presheaf.map (homOfLE hV).op).hom ((∏ j ∈ Finset.univ.erase i, N j) • τ i), ?_⟩` and prove the remaining obligations. Establish `hV' : π ⁻¹ᵁ V ≤ π ⁻¹ᵁ W` using `(Opens.map π.base).monotone hV`. Rewrite using `[pullSectionOn_sum, pullSectionOn_sum, map_sum, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Scheme.Modules.Hom.app_smul, smul_comm]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Rewrite using `[pullSectionOn_res _ _ hV (homOfLE hV'), pullSectionOn_res _ _ hV (homOfLE hV'), map_nsmul, hτ, smul_smul, Finset.prod_erase_mul _ _ (Finset.mem_univ i), app_map_apply, map_nsmul]`.
+A detailed English derivation is pending.
 -/
 lemma exists_pull_eq_nsmul_hom (hp : p.Prime) (h₂ : PullbackBasis.Statement.{0}) {W : Y.Opens}
     (hden : ∀ b : Γ(T, π ⁻¹ᵁ W), ∃ N : ℕ, 0 < N ∧ ¬ p ∣ N ∧ ∃ c : Γ(Y, W), π.app W c = N • b)
@@ -98,21 +98,21 @@ lemma exists_pull_eq_nsmul_hom (hp : p.Prime) (h₂ : PullbackBasis.Statement.{0
     smul_smul, Finset.prod_erase_mul _ _ (Finset.mem_univ i), app_map_apply, map_nsmul]
 
 /- English proof (translation)
-Establish `chart : ∀ y : Y, ∃ W : Y.Opens, IsAffineOpen W ∧ y ∈ W ∧ ∃ N : ℕ, 0 < N ∧ ¬ p ∣ N ∧ ∀ V : Y.Opens, V ≤ W → ∀ s : Γ(F, V), ∃ τ : Γ(G, V), pullSectionOn π G V τ = N • φ.app (π ⁻¹ᵁ V) (pullSectionOn π F V s)`. Introduce `y`. Take `⟨U₁, -, hy₁, k, e, he⟩` from `hF y`. Take `⟨U₂, -, hy₂, k', e', he'⟩` from `hG y`. Take `⟨W, hW, hyW, hWle⟩` from `Opens.isBasis_iff_nbhd.mp Y.isBasis_affineOpens (show y ∈ U₁ ⊓ U₂ from ⟨hy₁, hy₂⟩)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨N, hN, hpN, hτ⟩` from `exists_pull_eq_nsmul_hom π p hp h₂ (hden W hW) φ (he.restrict (hWle.trans inf_le_left)) (he'.restrict (hWle.trans inf_le_right))`. Conclude with `⟨W, hW, hyW, N, hN, hpN, hτ⟩`. Use `choose W hW hyW N hN hpN hτ using chart`. Take `⟨S, hS⟩` from `isCompact_univ.elim_finite_subcover (fun y => (W y : Set Y)) (fun y => (W y).isOpen) (fun y _ => Set.mem_iUnion.2 ⟨y, hyW y⟩)`. Establish `hcov : ∀ x : Y, ∃ y : S, x ∈ W y`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x`. Take `⟨y, hy, hx⟩` from `Set.mem_iUnion₂.1 (hS (Set.mem_univ x))`. Conclude with `⟨⟨y, hy⟩, hx⟩`. Use `⟨m₀ * ∏ y ∈ S, N y, Nat.mul_pos hm₀ (Finset.prod_pos fun y _ => hN y), ?_, fun n hn hmn hpn V hV s => ?_⟩` and prove the remaining obligations. Rewrite using `[(Nat.Prime.prime hp).dvd_mul, (Nat.Prime.prime hp).dvd_finsetProd_iff]`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `(h | ⟨y, -, hy⟩)`. Use `exacts [hpm₀ h, hpN y hy]`. Establish `hinjV` using `hinj n hn (dvd_trans (dvd_mul_right _ _) hmn) hpn`. Establish `loc : ∀ y : S, ∃ t : Γ(G, V ⊓ W y), pullSectionOn π G _ t = (((Scheme.Modules.pullback π).obj G).presheaf.map (homOfLE ((Opens.map π.base).monotone (inf_le_left : V ⊓ W y ≤ V))).op).hom (φ.app (π ⁻¹ᵁ V) (pullSectionOn π F V s))`. Introduce `y`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨τ, hτy⟩` from `hτ y (V ⊓ W y) inf_le_right ((F.presheaf.map (homOfLE (inf_le_left : V ⊓ W y ≤ V)).op).hom s)`. Establish `hu : IsUnit ((N y : ℕ) : Γ(Y, V ⊓ W y))`. Establish `h1` using `isUnit_intCast_of_le_invOpen fY (n : ℤ) (V := V ⊓ W y) (inf_le_left.trans hV)`. Take `⟨c, hc⟩` from `(Finset.dvd_prod_of_mem N y.2).trans ((dvd_mul_left _ _).trans hmn)`. Rewrite `h1` using `[hc]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations. Reduce the conclusion to the remaining proof obligations.
 
-Move the coercions through the operations in `at h1`. Conclude with `isUnit_of_mul_isUnit_left h1`. Use `⟨(hu.unit⁻¹).val • τ, ?_⟩` and prove the remaining obligations. Rewrite using `[pullSectionOn_smul, hτy, ← Nat.cast_smul_eq_nsmul (R := Γ(T, π ⁻¹ᵁ (V ⊓ W y))), smul_smul, ← map_natCast (π.app (V ⊓ W y)).hom, ← map_mul, IsUnit.val_inv_mul, map_one, one_smul, pullSectionOn_res _ _ inf_le_left (homOfLE ((Opens.map π.base).monotone inf_le_left)), app_map_apply]`. Use `choose t ht using loc`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨t', ht'⟩` from `modules_exists_glue G (V := V) (fun y : S => V ⊓ W y) (fun _ => inf_le_left) (fun x _ => by obtain ⟨y, hy⟩ := hcov x; exact ⟨y, ‹_›, hy⟩) t (fun y z => by`. Apply `hinjV _ (inf_le_left.trans (inf_le_left.trans hV))` to reduce the goal to its premises. Rewrite using `[pullSectionOn_res _ _ inf_le_left (homOfLE ((Opens.map π.base).monotone inf_le_left)), pullSectionOn_res _ _ inf_le_right (homOfLE ((Opens.map π.base).monotone inf_le_right)), ht, ht, res_res _ _ _ (homOfLE ((Opens.map π.base).monotone (inf_le_left.trans inf_le_left : V ⊓ W y ⊓ …`. Use `⟨t', ?_⟩` and prove the remaining obligations. Apply `modules_eq_of_locally` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `z hz`. Take `⟨y, hy⟩` from `hcov (π.base z)`. Use `⟨π ⁻¹ᵁ (V ⊓ W y), (Opens.map _).monotone inf_le_left, ⟨hz, hy⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[← pullSectionOn_res _ _ inf_le_left (homOfLE ((Opens.map π.base).monotone inf_le_left)), ht', ht]`.
+A detailed English derivation is pending.
 -/
 theorem main (hp : p.Prime) (h₂ : PullbackBasis.Statement.{0}) (fY : Y ⟶ SpecZ) [CompactSpace Y]
     (hden : ∀ W : Y.Opens, IsAffineOpen W → ∀ b : Γ(T, π ⁻¹ᵁ W),
@@ -193,9 +193,9 @@ theorem main (hp : p.Prime) (h₂ : PullbackBasis.Statement.{0}) (fY : Y ⟶ Spe
 end SpreadHomSectionsLoc
 
 /- English proof (translation)
-Introduce `X f _ _ p U F G hF hG φ`. Take `⟨m₀, hm₀, hpm₀, hinj⟩` from `h₃ X f p U G hG`. Establish `: CompactSpace X` using `QuasiCompact.compactSpace_of_compactSpace f`. Establish `: IsLocallyNoetherian X` using `LocallyOfFiniteType.isLocallyNoetherian f`. Establish `: IsNoetherian X` using `{}`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: CompactSpace (U : Scheme.{0})` using `isCompact_iff_compactSpace.mp (NoetherianSpace.isCompact (U : Set X))`. Conclude with `SpreadHomSectionsLoc.main _ _ p.2 h₂ (U.ι ≫ f) (fun W hW b => SpreadHomSectionsLoc.exists_app_restrict_eq_nsmul h₁ f p U W hW b) hF hG φ hm₀ hpm₀ hinj`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem SpreadHomSectionsLoc.proof (h₁ : ZLocDenominators.Statement) (h₂ : PullbackBasis.Statement.{0})
     (h₃ : PullInjLoc.Statement) : SpreadHomSectionsLoc.Statement := by

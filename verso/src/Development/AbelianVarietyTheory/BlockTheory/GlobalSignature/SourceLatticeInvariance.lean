@@ -14,13 +14,13 @@ section Defs
 variable {E : Type} [Field E] [NumberField E]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨0, 1, one_notMem P, by simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem intAt_zero (P : HeightOneSpectrum (𝓞 E)) : IntAt P (0 : E) :=
   ⟨0, 1, one_notMem P, by simp⟩
 
 /- English proof (translation)
-Take `⟨r, s, hs, h⟩` from `ha`. Take `⟨r', s', hs', h'⟩` from `hb`. Use `⟨s' * r + s * r', s * s', fun hm => (P.isPrime.mem_or_mem hm).elim hs hs', ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, map_mul, map_mul, map_mul, ← h, ← h']`. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem intAt_add {P : HeightOneSpectrum (𝓞 E)} {a b : E} (ha : IntAt P a) (hb : IntAt P b) : IntAt P (a + b) := by
   obtain ⟨r, s, hs, h⟩ := ha
@@ -30,7 +30,7 @@ theorem intAt_add {P : HeightOneSpectrum (𝓞 E)} {a b : E} (ha : IntAt P a) (h
   ring
 
 /- English proof (translation)
-Take `⟨r, s, hs, h⟩` from `ha`. Take `⟨r', s', hs', h'⟩` from `hb`. Use `⟨r * r', s * s', fun hm => (P.isPrime.mem_or_mem hm).elim hs hs', ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, map_mul, ← h, ← h']`. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem intAt_mul {P : HeightOneSpectrum (𝓞 E)} {a b : E} (ha : IntAt P a) (hb : IntAt P b) : IntAt P (a * b) := by
   obtain ⟨r, s, hs, h⟩ := ha
@@ -40,14 +40,14 @@ theorem intAt_mul {P : HeightOneSpectrum (𝓞 E)} {a b : E} (ha : IntAt P a) (h
   ring
 
 /- English proof (translation)
-Take `⟨r, s, hs, h⟩` from `ha`. Conclude with `⟨-r, s, hs, by rw [map_neg, ← h]; ring⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem intAt_neg {P : HeightOneSpectrum (𝓞 E)} {a : E} (ha : IntAt P a) : IntAt P (-a) := by
   obtain ⟨r, s, hs, h⟩ := ha
   exact ⟨-r, s, hs, by rw [map_neg, ← h]; ring⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨r, 1, one_notMem P, by simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem intAt_algebraMap (P : HeightOneSpectrum (𝓞 E)) (r : 𝓞 E) : IntAt P (algebraMap (𝓞 E) E r) :=
   ⟨r, 1, one_notMem P, by simp⟩
@@ -136,7 +136,7 @@ def UnfoldedBounds : Prop :=
     unfoldAB P psi A B Psi xj ≠ 0 → Bounds P e' z' abelian₂ xj
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun _ hu _ hv l => intAt_mul hu (hv l), 0, fun v hv l => by simpa using hv l, fun v hv l => by simpa using hv l⟩`.
+Supply the required witnesses or components.
 -/
 example {E : Type} [Field E] [NumberField E] (P : HeightOneSpectrum (𝓞 E)) (N : ℕ) :
     IsLatAt P ({ carrier := {v | ∀ l, IntAt P (v l)}

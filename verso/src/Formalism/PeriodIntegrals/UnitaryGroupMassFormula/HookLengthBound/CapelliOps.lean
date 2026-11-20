@@ -13,13 +13,11 @@ theorem mulLeft_eq_lmul (N : ℕ) (p : MvPolynomial (Fin N × Fin N) ℚ) :
     LinearMap.mulLeft ℚ p = Algebra.lmul ℚ (MvPolynomial (Fin N × Fin N) ℚ) p := rfl
 
 /- English proof (translation)
-Introduce `N`. Use `⟨fun a s b t => ?_, fun a s b t => ?_⟩` and prove the remaining obligations. Use `LinearMap.ext fun p => ?_` and prove the remaining obligations. Establish `e1 : (xo N a s * xo N b t) p = X (a, s) * (X (b, t) * p)` using `rfl`. Establish `e2 : (xo N b t * xo N a s) p = X (b, t) * (X (a, s) * p)` using `rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[e1, e2]`. Conclude with `mul_left_comm _ _ _`. Use `LinearMap.ext fun p => ?_` and prove the remaining obligations. Establish `e1 : (dop N b t * xo N a s) p = pderiv (b, t) (X (a, s) * p)` using `rfl`. Establish `e2 : (xo N a s * dop N b t) p = X (a, s) * pderiv (b, t) p` using `rfl`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[LinearMap.add_apply, e1, e2, Derivation.leibniz, MvPolynomial.pderiv_X, smul_eq_mul, smul_eq_mul]`. Use `split_ifs with h`. Take `⟨rfl, rfl⟩` from `h`. Simplify using the standard rewrite rules. Rewrite using `[Pi.single_apply, if_neg (fun e => h (Prod.mk.inj e))]`.
-
-Simplify using the standard rewrite rules.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem capelli_relation : CapRel := by
   intro N
@@ -40,9 +38,9 @@ theorem capelli_relation : CapRel := by
       simp
 
 /- English proof (translation)
-Introduce `N`. Unfold `Formalism.CohomologicalDescent.HeightDescentMinors.capelli Lw`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Use `congr 2`. Use `congr 1`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Reduce the equality to equality of the corresponding arguments.
 
-Use function extensionality and compare the values at `j`. Establish `hE : polE N (σ j) j = Eop (xo N) (dop N) (σ j) (id j)` using `rfl`. Simplify using `only [Formalism.CohomologicalDescent.HeightDescentMinors.capA, hE, id]`. Use `congr 2`. Simplify using `[map_sub, map_natCast]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 -/
 theorem capelli_left_holds : CapLeft := by
   intro N
@@ -57,11 +55,11 @@ theorem capelli_left_holds : CapLeft := by
   simp [map_sub, map_natCast]
 
 /- English proof (translation)
-Establish `h : ⁅(pderiv (b, t) : Derivation ℚ (MvPolynomial (Fin N × Fin N) ℚ) (MvPolynomial (Fin N × Fin N) ℚ)), (pderiv (b', t') : Derivation ℚ (MvPolynomial (Fin N × Fin N) ℚ) (MvPolynomial (Fin N × Fin N) ℚ))⁆ = 0`. Apply `MvPolynomial.derivation_ext` to reduce the goal to its premises. Introduce `k`. Rewrite using `[Derivation.commutator_apply, pderiv_X, pderiv_X]`. Simplify using `only [Pi.single_apply]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `split_ifs <;> simp`. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `f`. Use `congrArg (fun D : Derivation ℚ (MvPolynomial (Fin N × Fin N) ℚ) (MvPolynomial (Fin N × Fin N) ℚ) => D f) h` as an intermediate fact. Simplify using `only [Derivation.commutator_apply, Derivation.zero_apply] at this`.
+Apply the first step, then apply the next step to every resulting obligation. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify `this` using `[dop, Module.End.mul_apply, sub_eq_zero]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem dop_comm (N : ℕ) (b t b' t' : Fin N) : Commute (dop N b t) (dop N b' t') := by
   have h : ⁅(pderiv (b, t) : Derivation ℚ (MvPolynomial (Fin N × Fin N) ℚ) (MvPolynomial (Fin N × Fin N) ℚ)),
@@ -78,9 +76,9 @@ theorem dop_comm (N : ℕ) (b t b' t' : Fin N) : Commute (dop N b t) (dop N b' t
   simpa [dop, Module.End.mul_apply, sub_eq_zero] using this
 
 /- English proof (translation)
-Introduce `k`. Proceed by induction on `k with`. Consider the case `zero`. Introduce `r s`. Rewrite using `[xw_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `LinearMap.ext fun p => ?_` and prove the remaining obligations. Simplify using the standard rewrite rules. Consider the case `succ k ih`. Introduce `r s`. Rewrite using `[xw_succ, ih, Fin.prod_univ_succ, map_mul]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -99,7 +97,7 @@ theorem xw_xo (N : ℕ) : ∀ (k : ℕ) (r s : Fin k → Fin N),
     rfl
 
 /- English proof (translation)
-Establish `himg : ∑ π : Equiv.Perm (Fin N), F π = ∑ s ∈ Finset.univ.image (fun π : Equiv.Perm (Fin N) => (π : Fin N → Fin N)), F s` using `(Finset.sum_image fun π _ σ _ h => Equiv.ext (congrFun h)).symm`. Rewrite using `[himg]`. Use `symm`. Use `Finset.sum_subset (Finset.subset_univ _) fun s _ hs => hF s fun hinj => hs ?_` and prove the remaining obligations. Conclude with `Finset.mem_image.2 ⟨Equiv.ofBijective s (Finite.injective_iff_bijective.1 hinj), Finset.mem_univ _, rfl⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem sum_perm_of_noninj {M : Type} [AddCommMonoid M] (N : ℕ) (F : (Fin N → Fin N) → M)
     (hF : ∀ s, ¬ Function.Injective s → F s = 0) :
@@ -115,11 +113,11 @@ theorem sum_perm_of_noninj {M : Type} [AddCommMonoid M] (N : ℕ) (F : (Fin N �
     ⟨Equiv.ofBijective s (Finite.injective_iff_bijective.1 hinj), Finset.mem_univ _, rfl⟩
 
 /- English proof (translation)
-Unfold `detD`. Rewrite using `[← Equiv.sum_comp (Equiv.inv (Equiv.Perm (Fin N)))]`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Simplify using `only [Equiv.inv_apply, Equiv.Perm.sign_inv]`. Use `congr 1`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Unfold `dw`. Establish `hp` using `Equiv.Perm.ofFn_comp_perm σ⁻¹ (fun j => dop N j (σ j))`. Establish `hc : (List.ofFn ((fun j => dop N j (σ j)) ∘ ⇑σ⁻¹)).Pairwise Commute` using `List.pairwise_ofFn.mpr fun i j _ => dop_comm N _ _ _ _`. Use `Eq.trans ?_ ((hp.prod_eq' hc).trans rfl)` and prove the remaining obligations. Use `congr 1`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Use function extensionality and compare the values at `j`. Simplify using `[dop]`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem detD_eq (N : ℕ) : detD N = ∑ π : Equiv.Perm (Fin N), ((Equiv.Perm.sign π : ℤˣ) : ℤ) •
     dw (dop N) (id : Fin N → Fin N) (fun j => π j) := by
@@ -139,15 +137,15 @@ theorem detD_eq (N : ℕ) : detD N = ∑ π : Equiv.Perm (Fin N), ((Equiv.Perm.s
   simp [dop]
 
 /- English proof (translation)
-Introduce `N`. Use `set P := MvPolynomial (Fin N × Fin N) ℚ`. Use `set M : Matrix (Fin N) (Fin N) P := Matrix.of fun a b => (X (a, b) : P) with hM`. Establish `hdet : ∀ s : Fin N → Fin N, ∑ σ : Equiv.Perm (Fin N), ((Equiv.Perm.sign σ : ℤˣ) : ℤ) • xw (xo N) (fun j => σ j) s = Algebra.lmul ℚ P (M.submatrix id s).det`. Introduce `s`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Matrix.det_apply, map_sum]`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Rewrite using `[xw_xo, Units.smul_def, map_zsmul]`. Both sides reduce to the same expression. Unfold `Pn`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Finset.smul_sum]`. Rewrite using `[Finset.sum_comm]`. Simplify using `only [← smul_mul_assoc, ← Finset.sum_mul, hdet]`. Rewrite using `[sum_perm_of_noninj N (fun s => Algebra.lmul ℚ P (M.submatrix id s).det * dw (dop N) id s)]`. Rewrite using `[detD_eq, Finset.mul_sum, mulLeft_eq_lmul]`.
+Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun π _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.det_permute', map_mul, map_intCast, mul_assoc, ← zsmul_eq_mul, mul_smul_comm]`. Both sides reduce to the same expression. Introduce `s hs`. Simplify using `only [Function.Injective, not_forall] at hs`.
+Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨i, j, hij, hne⟩` from `hs`. Rewrite using `[Matrix.det_zero_of_column_eq hne (fun k => by simp [hij]), map_zero, zero_mul]`.
+A detailed English derivation is pending.
 -/
 theorem capelli_square : CapSquare := by
   intro N
@@ -175,7 +173,7 @@ theorem capelli_square : CapSquare := by
     rw [Matrix.det_zero_of_column_eq hne (fun k => by simp [hij]), map_zero, zero_mul]
 
 /- English proof (translation)
-The claim follows from `detDetId_of capelli_absolute_value capelli_square capelli_left_holds capelli_relation`.
+A detailed English derivation is pending.
 -/
 theorem capelli_determinant_identity : PI.HookSteps.DetDetId :=
   detDetId_of capelli_absolute_value capelli_square capelli_left_holds capelli_relation

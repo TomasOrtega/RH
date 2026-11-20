@@ -17,33 +17,29 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 include he1 in
 
 /- English proof (translation)
-Take `⟨h0, -, hint⟩` from `unif_spec v ϖ hϖ`. Establish `hcomb : ∀ d : Fin a → OR (E` using `E) v, (∑ i, (d i : Fv F v ⊗[F] E) • (x : TupV (E := E) v n a) i) ∈ latLoc (E := E) v Λ := fun d => Submodule.sum_mem _ fun i _ => Orb.oSmul v Λ hL _ (d i).2 _ (memA v Λ x i)`. Rewrite using `[Fintype.linearIndependent_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `hP κ hκ i choose d hd using fun j => hπ.1 (κ j)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hw` using `hcomb d`. Establish `hz : ∀ p, π ⟨hR (Fv F v) σ J (e p) (∑ j, (d j : Fv F v ⊗[F] E) • (x : TupV (E` using `E) v n a) j), (hSD _).1 hw _ (bas_mem v Λ he p)⟩ = 0 := by`. Introduce `p`. Use `(coord_comb σ J v Λ hSD he π x d p _).trans ?_` and prove the remaining obligations. Use `congrFun hκ p` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Pi.zero_apply] at this`. Simplify `this` using `[hd]`. Take `⟨w', hw', hww⟩` from `ker_vec σ J v Λ hSD he he1 hπ hw hz`. Establish `hc` using `hP.2 (fun j => sc (E := E) v ϖ⁻¹ * d j) (by`. Establish `e2 : (∑ j, (sc (E` using `E) v ϖ⁻¹ * d j) • (x : TupV (E := E) v n a) j) = sc (E := E) v ϖ⁻¹ • ∑ j, (d j : Fv F v ⊗[F] E) • (x : TupV (E := E) v n a) j := by`.
+Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Finset.smul_sum]`. Conclude with `Finset.sum_congr rfl fun j _ => by rw [smul_smul]`. Rewrite using `[e2, hww, smul_smul, sc_mul, inv_mul_cancel₀ h0, sc_one, one_smul]`. Conclude with `hw') i`. Rewrite using `[← hd i]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Apply `(hπ.2.1 _).2` to reduce the goal to its premises. Use `⟨_, hc, ?_⟩` and prove the remaining obligations. Rewrite using `[← mul_assoc, sc_mul, mul_inv_cancel₀ h0, sc_one, one_mul]`. Introduce `hLI`. Use `⟨fun i => memA v Λ x i, fun c hc => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `key : ∀ m : ℕ, ∀ c : Fin a → Fv F v ⊗[F] E, (∑ i, c i • (x : TupV (E` using `E) v n a) i) ∈ latLoc (E := E) v Λ → (∀ i, sc (E := E) v (ϖ ^ m) * c i ∈ OEv (E := E) v) → ∀ i, c i ∈ OEv (E := E) v := by`. Introduce `m`. Proceed by induction on `m with`. Consider the case `zero => intro c _ hm i`. Simplify `hm i` using `[sc_one]`.
+Proceed by induction. Treat this case separately. Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Consider the case `succ m ih`. Introduce `c hc hm`. Apply `ih c hc` to reduce the goal to its premises. Use `set u := ∑ i, c i • (x : TupV (E := E) v n a) i with hu`. Establish `hpm : sc (E` using `E) v (ϖ ^ m) ∈ OEv (E := E) v := by`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Simplify using `using sc_mul_mem_oEv v (pow_mem hint m) (Orb.oSub (E := E) v).1`. Establish `hu' : sc (E` using `E) v (ϖ ^ m) • u ∈ latLoc (E := E) v Λ := Orb.oSmul v Λ hL _ hpm _ hc`. Set `d : Fin a → OR (E` to `E) v := fun i => ⟨_, hm i⟩`. Establish `hwe : (∑ i, (d i : Fv F v ⊗[F] E) • (x : TupV (E` using `E) v n a) i) = sc (E := E) v ϖ • (sc (E := E) v (ϖ ^ m) • u) := by`. Rewrite using `[smul_smul, sc_mul, ← pow_succ', hu, Finset.smul_sum]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Finset.sum_congr rfl fun i _ => by rw [smul_smul]`. Establish `hw` using `hcomb d`. Establish `hz : ∀ p, ∑ i, π (d i) * phi σ J v Λ hSD he π a x i p = 0`. Introduce `p`. Rewrite using `[← coord_comb σ J v Λ hSD he π x d p ((hSD _).1 hw _ (bas_mem v Λ he p))]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Apply `(hπ.2.1 _).2` to reduce the goal to its premises. Use `⟨hR (Fv F v) σ J (e p) (sc (E := E) v (ϖ ^ m) • u), (hSD _).1 hu' _ (bas_mem v Λ he p), ?_⟩` and prove the remaining obligations. Use `show hR (Fv F v) σ J (e p) (∑ i, (d i : Fv F v ⊗[F] E) • (x : TupV (E := E) v n a) i) = _`. Rewrite using `[hwe, Orb.hR_smul_right]`. Establish `hd0` using `hLI (fun i => π (d i)) (by`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `p`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Pi.zero_apply]`. Conclude with `hz p)`. Introduce `i`. Take `⟨g, hg, hge⟩` from `(hπ.2.1 (d i)).1 (hd0 i)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `: sc (E` using `E) v (ϖ ^ m) * c i = g := by`. Establish `h1 : sc (E` using `E) v ϖ * (sc (E := E) v (ϖ ^ m) * c i) = sc (E := E) v ϖ * g := by`. Rewrite using `[← mul_assoc, sc_mul, ← pow_succ']`. Conclude with `hge`. Establish `h2` using `congrArg (fun y => sc (E := E) v ϖ⁻¹ * y) h1`.
-
-Simplify using `only [← mul_assoc, sc_mul, inv_mul_cancel₀ h0, sc_one, one_mul] at h2`. Conclude with `h2`. Rewrite using `[this]`. Conclude with `hg`. Take `⟨m, hm⟩` from `exists_pow_mem v hϖ c`.
-
-Conclude with `key m c hc hm`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem prim_iff (hL : ∃ L : Submodule (𝓞 E) (Fin n → E), Submodule.IsLattice E L ∧ (L : Set (Fin n → E)) = Λ)
     {ϖ : Fv F v} (hϖ : IsUnif v ϖ) {K : Type} [CommRing K] {τ : K →+* K} {π : OR (E := E) v →+* K}

@@ -13,7 +13,7 @@ open MonoidalCategory CartesianMonoidalCategory MonObj
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Datum H} {l : Level H}
 
 /- English proof (translation)
-Proceed by induction on `L with`. Consider the case `nil => simpa using MonObj.comp_one f`. Consider the case `cons a L ih => rw [List.prod_cons, List.map_cons, List.prod_cons, MonObj.comp_mul, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem comp_list_prod {B : Scheme.{0}} {G T T' : Over B} [GrpObj G] (f : T' ⟶ T) (L : List (T ⟶ G)) :
     f ≫ L.prod = (L.map fun a => f ≫ a).prod := by
@@ -22,14 +22,14 @@ theorem comp_list_prod {B : Scheme.{0}} {G T T' : Over B} [GrpObj G] (f : T' ⟶
   | cons a L ih => rw [List.prod_cons, List.map_cons, List.prod_cons, MonObj.comp_mul, ih]
 
 /- English proof (translation)
-Apply the tactic sequence `ext s <;> simp [Formalism.L2.Pj.dualMap, TrivSqZeroExt.algebraMap_eq_inl]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem dualMap_comp_algebraMap {S F : Type} [CommRing S] [CommRing F] (ψ : S →+* F) :
     (Formalism.L2.Pj.dualMap ψ).comp (algebraMap S (DualNumber S)) = (algebraMap F (DualNumber F)).comp ψ := by
   ext s <;> simp [Formalism.L2.Pj.dualMap, TrivSqZeroExt.algebraMap_eq_inl]
 
 /- English proof (translation)
-Apply the tactic sequence `ext s <;> simp [Formalism.L2.Pj.dualMap, ReciprocityTheory.ChartRestriction.G.Geo.Tor.epsMul, GlobalTheory.CompanionTheory.Ar.epsMul, TrivSqZeroExt.algebraMap_eq_inl]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem dualMap_comp_epsMul' {S F : Type} [CommRing S] [CommRing F] (ψ : S →+* F) (a : S) :
     (Formalism.L2.Pj.dualMap ψ).comp (ReciprocityTheory.ChartRestriction.G.Geo.Tor.epsMul a) =
@@ -38,13 +38,13 @@ theorem dualMap_comp_epsMul' {S F : Type} [CommRing S] [CommRing F] (ψ : S →+
     TrivSqZeroExt.algebraMap_eq_inl]
 
 /- English proof (translation)
-Substitute `hx` using the available equality. Take `⟨u, hu, hp⟩` from `h`. Establish `hf : spMap (Formalism.L2.Pj.dualMap ψ) ≫ (Formalism.L2.Pj.tEps x).hom = (epsAt (spMap ψ ≫ x)).hom` using `by show spMap (Formalism.L2.Pj.dualMap ψ) ≫ spMap (algebraMap S (DualNumber S)) ≫ x = Spec.map (CommRingCat.ofHom (algebraMap F (DualNumber F))) ≫ spMap ψ ≫ x`. Rewrite using `[← Category.assoc, ← Category.assoc]`. Use `congr 1`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[← Spec.map_comp, ← Spec.map_comp, ← CommRingCat.ofHom_comp, ← CommRingCat.ofHom_comp, dualMap_comp_algebraMap]`. Set `f : epsAt (spMap ψ ≫ x) ⟶ Formalism.L2.Pj.tEps x` to `Over.homMk (spMap (Formalism.L2.Pj.dualMap ψ)) hf`. Use `⟨fun i => f ≫ u i, fun i => ?_, ?_⟩` and prove the remaining obligations. Use `show spMap (Formalism.L2.Pj.dualMap ψ) ≫ (u i).left = _`. Rewrite using `[hu i, hv i, ← Category.assoc, ← Category.assoc]`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Rewrite using `[← Spec.map_comp, ← Spec.map_comp, ← CommRingCat.ofHom_comp, ← CommRingCat.ofHom_comp, dualMap_comp_epsMul']`. Establish `e : (List.ofFn fun i => f ≫ u i) = (List.ofFn u).map fun a => f ≫ a`. Rewrite using `[List.map_ofFn]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, ← comp_list_prod]`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Rewrite using `[hw, ← hp]`. Both sides reduce to the same expression.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem isComb_of_isCombAt {Xo : Moduli D l} {S F : Type} [CommRing S] [CommRing F] (ψ : S →+* F)
     {x : Sp S ⟶ Xo.X} {x' : Sp F ⟶ Xo.X} (hx : x' = spMap ψ ≫ x) {m : ℕ}
@@ -78,9 +78,9 @@ theorem isComb_of_isCombAt {Xo : Moduli D l} {S F : Type} [CommRing S] [CommRing
     rfl
 
 /- English proof (translation)
-Substitute `hn` using the available equality. Use `choose cf h1 h2 h3 using h`. Use `⟨Matrix.of fun i j => ψ (cf i j), fun i => ?_, ?_⟩` and prove the remaining obligations. Conclude with `isComb_of_isCombAt ψ hx (h3 i) hv (hv' i)`. Rewrite using `[Matrix.det_of_lowerTriangular]`.
+Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `Finset.prod_congr rfl fun i _ => by simp [h1]`. Introduce `i j hij`. Establish `: i < j` using `hij`. Simplify using `[h2 i j this]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_matrix {Xo : Moduli D l} {S F : Type} [CommRing S] [Field F] (ψ : S →+* F)
     {x : Sp S ⟶ Xo.X} {x' : Sp F ⟶ Xo.X} (hx : x' = spMap ψ ≫ x) {m n : ℕ} (hn : n = m)
@@ -102,7 +102,7 @@ theorem exists_matrix {Xo : Moduli D l} {S F : Type} [CommRing S] [Field F] (ψ 
       simp [h2 i j this]
 
 /- English proof (translation)
-Take `⟨-, hc, -⟩` from `hb`. Take `⟨A, hA, dA⟩` from `exists_matrix ψ hy hp.symm (fun i => (t (some ⟨τ, i⟩) : S)) (hc τ) hv hv'`. Take `⟨B, hB, dB⟩` from `exists_matrix ψ hy hq.symm (fun i => (t (some ⟨ComplexEmbedding.conjugate τ, i⟩) : S)) (hc (ComplexEmbedding.conjugate τ)) hw hw'`. Conclude with `⟨A, B, hA, hB, dA, dB⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_triangular_at_field (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H)
     (l : Level H) (Xo : Moduli D l) (c : Coeff l) (τ : E →+* ℂ) (S : Type) [CommRing S] [Algebra c.F S]

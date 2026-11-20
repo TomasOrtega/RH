@@ -11,13 +11,13 @@ open Module
 namespace LatticeIndexBis
 
 /- English proof (translation)
-Establish `key : ∀ P₁ Q₁ : Submodule O Y, Module.length O (↥(P₁.map ι) ⧸ Submodule.comap (P₁.map ι).subtype (Q₁.map ι)) = Module.length O (↥P₁ ⧸ Submodule.comap P₁.subtype Q₁)`. Introduce `P₁ Q₁`. Set `e : P₁ ≃ₗ[O] P₁.map ι` to `Submodule.equivMapOfInjective ι hι P₁`. Establish `hm : (Submodule.comap P₁.subtype Q₁).map (e : P₁ →ₗ[O] P₁.map ι) = Submodule.comap (P₁.map ι).subtype (Q₁.map ι)`. Use extensionality with `z`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩`. Conclude with `⟨(y : Y), hy, rfl⟩`. Introduce `hz`. Take `⟨q, hq, hqz⟩` from `hz`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨p, hp, hpz⟩` from `z.2`. Use `⟨⟨p, hp⟩, ?_, Subtype.ext hpz⟩` and prove the remaining obligations. Establish `hpq : q = p` using `hι (hqz.trans hpz.symm)`. Use `show p ∈ Q₁`. Rewrite using `[← hpq]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Conclude with `hq`. Conclude with `(Submodule.Quotient.equiv _ _ e hm).length_eq.symm`. Unfold `Formalism.LatticeIndexTer.idx Formalism.LatticeIndexTer.qlen`. Rewrite using `[key P Q, key Q P]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem idx_map_inj {O Y X : Type} [CommRing O] [AddCommGroup Y] [Module O Y]
     [AddCommGroup X] [Module O X] (ι : Y →ₗ[O] X) (hι : Function.Injective ι)
@@ -47,11 +47,9 @@ theorem idx_map_inj {O Y X : Type} [CommRing O] [AddCommGroup Y] [Module O Y]
   rw [key P Q, key Q P]
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy => exact Submodule.subset_span ⟨y, hy, rfl⟩`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Proceed by induction. Treat this case separately.
 
-Consider the case `zero => rw [map_zero]`. Conclude with `Submodule.zero_mem _`. Consider the case `add y z _ _ hy hz => rw [map_add]`. Conclude with `Submodule.add_mem _ hy hz`. Consider the case `smul r y _ hy => rw [h]`.
-
-Conclude with `Submodule.smul_mem _ _ hy`. Conclude with `Submodule.span_mono (Set.image_mono Submodule.subset_span)`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem span_image_span {R S M N : Type} [Ring R] [Ring S] [AddCommGroup M] [Module R M]
     [AddCommGroup N] [Module S N] (g : M →+ N) (φ : R → S) (h : ∀ r x, g (r • x) = φ r • g x)
@@ -74,19 +72,17 @@ variable {O K V ι : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
   [IsScalarTower O K V]
 
 /- English proof (translation)
-Set `bX` to `Basis.span ha`. Set `bY` to `Basis.span hb`. Set `f : Submodule.span K (Set.range a) ≃ₗ[K] Submodule.span K (Set.range b)` to `LinearEquiv.ofEq _ _ hab`. Establish `hbX : ∀ i, ((bX i : Submodule.span K (Set.range a)) : V) = a i` using `fun i => by`. Simplify using `[bX, Basis.span_apply]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hbY : ∀ i, ((bY i : Submodule.span K (Set.range b)) : V) = b i` using `fun i => by`. Simplify using `[bY, Basis.span_apply]`. Establish `hM : LinearMap.toMatrix bX bY (f : _ →ₗ[K] _) = P`. Use extensionality with `k i`. Rewrite using `[LinearMap.toMatrix_apply]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Establish `: (f : _ →ₗ[K] _) (bX i) = ∑ k, P k i • bY k`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `[f, hbX, hbY, hP i]`. Rewrite using `[this, Basis.repr_sum_self]`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← hM]`. Conclude with `(LinearEquiv.isUnit_det f bX bY).ne_zero`. Introduce `x y hx hy hxy`. Establish `h` using `Formalism.LatticeIndexTer.idxDet O K _ _ ι bX bY f x y hx hy (by rw [hM]; exact hxy)`. Set `s : Submodule.span K (Set.range b) →ₗ[O] V` to `(Submodule.span K (Set.range b)).subtype.restrictScalars O`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hs : Function.Injective s` using `Subtype.val_injective`. Rewrite `h` using `[← idx_map_inj s hs]`. Rewrite using `[← h]`. Use `congr 1`. Rewrite using `[Submodule.map_span, ← Set.range_comp]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 2`. Use extensionality with `i`. Conclude with `(hbY i).symm`. Rewrite using `[Submodule.map_span, Submodule.map_span, ← Set.range_comp, ← Set.range_comp]`. Use `congr 2`.
-
-Use extensionality with `i`. Conclude with `(hbX i).symm`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem core [Fintype ι] [DecidableEq ι] (a b : ι → V) (ha : LinearIndependent K a)
     (hb : LinearIndependent K b)
@@ -132,19 +128,15 @@ theorem core [Fintype ι] [DecidableEq ι] (a b : ι → V) (ha : LinearIndepend
       exact (hbX i).symm
 
 /- English proof (translation)
-Use `haveI : NoZeroSMulDivisors O V := ⟨fun {o v} h => by`. Rewrite `h` using `[← algebraMap_smul K o v, smul_eq_zero]`. Break down `h with h | h` into its components or cases. Use `left`. Conclude with `(IsFractionRing.injective O K) (by rw [h, map_zero])`.
+Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `right`. Conclude with `h⟩`. Use `haveI : Module.Finite O A := Module.Finite.iff_fg.mpr hA`. Use `haveI : Module.Free O A := Module.free_of_finite_type_torsion_free'`. Set `bA` to `Module.Free.chooseBasis O A`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Set `e : Module.Free.ChooseBasisIndex O A → V` to `fun i => (bA i : V)`. Establish `hliO : LinearIndependent O e` using `bA.linearIndependent.map' A.subtype (Submodule.ker_subtype A)`. Establish `hli : LinearIndependent K e` using `by first`. Consider the case `exact (LinearIndependent.iff_fractionRing O K).1 hliO`. Consider the case `exact LinearIndependent.iff_fractionRing.1 hliO`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Establish `hAe : A = Submodule.span O (Set.range e)` using `by conv_lhs => rw [← Submodule.map_subtype_top A]`. Apply the tactic sequence `rw [← bA.span_eq, Submodule.map_span, ← Set.range_comp] <;> rfl`. Establish `hspan : Submodule.span K (Set.range e) = U`. Combine the equalities or inequalities in the displayed calculation. Establish `hcard : Fintype.card (Module.Free.ChooseBasisIndex O A) = Module.finrank K U`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← hspan, finrank_span_eq_card hli]`. Set `σ` to `Fintype.equivFinOfCardEq hcard`. Establish `hr : Set.range (e ∘ σ.symm) = Set.range e` using `by first`. Consider the case `exact EquivLike.range_comp e σ.symm`. Consider the case `exact Equiv.range_comp e σ.symm`.
-
-Consider the case `rw [Set.range_comp, σ.symm.range_eq_univ, Set.image_univ]`. Use `⟨e ∘ σ.symm, hli.comp _ σ.symm.injective, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hr]`. Conclude with `hAe`. Rewrite using `[hr]`.
-
-Conclude with `hspan`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_indep [FiniteDimensional K V] (A : Submodule O V) (hA : A.FG) (U : Submodule K V)
     (hU : Submodule.span K (A : Set V) = U) :
@@ -194,7 +186,7 @@ theorem exists_indep [FiniteDimensional K V] (A : Submodule O V) (hA : A.FG) (U 
 end Core
 
 /- English proof (translation)
-Take `⟨n, u, hu⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible hx hϖ`. Rewrite using `[IsDiscreteValuationRing.addVal_def x u hϖ n hu, IsDiscreteValuationRing.addVal_def (algebraMap O O' x) (Units.map (algebraMap O O' : O →* O') u) hϖ' n (by rw [hu]; simp)]`.
+Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem addVal_map {O O' : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
     [CommRing O'] [IsDomain O'] [IsDiscreteValuationRing O'] [Algebra O O'] (ϖ : O)
@@ -206,11 +198,11 @@ theorem addVal_map {O O' : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationR
       (by rw [hu]; simp)]
 
 /- English proof (translation)
-Establish `hs : LinearIndepOn K id (Set.range a)` using `by first`. Consider the case `exact (linearIndepOn_id_range_iff ha.injective).2 ha`. Consider the case `exact ha.to_subtype_range`. Consider the case `exact (linearIndependent_subtype_range ha.injective).2 ha`. Set `B` to `Module.Basis.extend hs`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Treat this case separately. Introduce a local definition for the expression.
 
-Set `B'` to `hj.basis B`. Establish `hB' : LinearIndependent K' (fun i : hs.extend (Set.subset_univ _) => j (i : V))`. Establish `h1` using `B'.linearIndependent`. Use `h1 using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `i`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[IsBaseChange.basis_apply, Module.Basis.coe_extend]`. Both sides reduce to the same expression. Establish `hsub : ∀ i, a i ∈ hs.extend (Set.subset_univ _)` using `fun i => hs.subset_extend _ ⟨i, rfl⟩`. Conclude with `hB'.comp (fun i => ⟨a i, hsub i⟩) (fun i i' h => ha.injective (congrArg Subtype.val h))`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem indep_baseChange {K K' V V₁ ι : Type} [Field K] [Field K'] [Algebra K K'] [AddCommGroup V]
     [Module K V] [AddCommGroup V₁] [Module K' V₁] [Module K V₁] [IsScalarTower K K' V₁]
@@ -237,31 +229,29 @@ theorem indep_baseChange {K K' V V₁ ι : Type} [Field K] [Field K'] [Algebra K
 end LatticeIndexBis
 
 /- English proof (translation)
-Introduce `O O' K K' V V₁`. Use `intros`. Name the introduced variables `j hj ϖ hϖ hϖ' A B hA hB hAB`. Take `⟨a, ha, hAa, haU⟩` from `LatticeIndexBis.exists_indep A hA (Submodule.span K (A : Set V)) rfl`. Take `⟨b, hb, hBb, hbU⟩` from `LatticeIndexBis.exists_indep B hB (Submodule.span K (A : Set V)) hAB.symm`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs and assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hmem : ∀ i, b i ∈ Submodule.span K (Set.range a)`. Introduce `i`. Rewrite using `[haU, ← hbU]`. Conclude with `Submodule.subset_span ⟨i, rfl⟩`. Establish `hc0 : ∀ i, ∃ c : Fin (Module.finrank K (Submodule.span K (A : Set V))) → K, ∑ k, c k • a k = b i`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Treat this case separately.
 
-Introduce `i`. Use `first`. Consider the case `exact (Submodule.mem_span_range_iff_exists_fun K).1 (hmem i)`. Consider the case `exact Submodule.mem_span_range_iff_exists_fun.1 (hmem i)`. Use `choose c hc using hc0`.
+Treat this case separately. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify by unfolding definitions.
 
-Set `P : Matrix (Fin (Module.finrank K (Submodule.span K (A : Set V)))) (Fin (Module.finrank K (Submodule.span K (A : Set V)))) K` to `fun k i => c i k`. Take `⟨hdet, hcore⟩` from `LatticeIndexBis.core (O := O) b a hb ha (hbU.trans haU.symm) P (fun i => (hc i).symm)`. Take `⟨⟨x, y⟩, hxy⟩` from `IsLocalization.surj (nonZeroDivisors O) P.det`. Simplify using `only at hxy`. Establish `hy0 : (y : O) ≠ 0` using `nonZeroDivisors.ne_zero y.2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hyK : algebraMap O K (y : O) ≠ 0` using `IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors y.2`. Establish `hx0 : x ≠ 0`. Introduce and unpack `rfl`. Rewrite `hxy` using `[map_zero]`. Conclude with `(mul_ne_zero hdet hyK) hxy`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hjK : ∀ (r : K) (z : V), j (r • z) = algebraMap K K' r • j z`. Introduce `r z`. Rewrite using `[map_smul, algebraMap_smul]`. Establish `hjO : ∀ (o : O) (z : V), j (o • z) = algebraMap O O' o • j z`. Introduce `o z`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[← algebraMap_smul K o z, map_smul, ← algebraMap_smul K' (algebraMap O K o) (j z), ← IsScalarTower.algebraMap_apply O K K', IsScalarTower.algebraMap_apply O O' K', algebraMap_smul]`. Establish `hspanK : ∀ f : Fin (Module.finrank K (Submodule.span K (A : Set V))) → V, Submodule.span K (Set.range f) = Submodule.span K (A : Set V) → Submodule.span K' (Set.range fun i => j (f i)) = Submodule.span K' (j '' (Submodule.span K (A : Set V) : Set V))`. Introduce `f hf`. Establish `h1` using `LatticeIndexBis.span_image_span (R := K) (S := K') j.toAddMonoidHom (algebraMap K K') (fun r z => hjK r z) (Set.range f)`. Simplify using `only [LinearMap.toAddMonoidHom_coe] at h1`.
+Chain the equalities or inequalities of the calculation. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Apply the tactic sequence `rw [← Set.range_comp] <;> rfl`. Use `_ = Submodule.span K' (j '' (Submodule.span K (Set.range f) : Set V)) := h1.symm`. Use `_ = _ := congrArg (fun s : Submodule K V => Submodule.span K' (j '' (s : Set V))) hf`. Establish `hspanO : ∀ f : Fin (Module.finrank K (Submodule.span K (A : Set V))) → V, Submodule.span O' (j '' (Submodule.span O (Set.range f) : Set V)) = Submodule.span O' (Set.range fun i => j (f i))`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `f`. Establish `h1` using `LatticeIndexBis.span_image_span (R := O) (S := O') j.toAddMonoidHom (algebraMap O O') (fun o z => hjO o z) (Set.range f)`. Simplify using `only [LinearMap.toAddMonoidHom_coe] at h1`. Rewrite using `[h1, ← Set.range_comp]`. Apply the tactic sequence `all_goals rfl`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hP' : ∀ i, j (b i) = ∑ k, (P.map (algebraMap K K')) k i • j (a k)`. Introduce `i`. Rewrite using `[← hc i, map_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, Matrix.map_apply, algebraMap_smul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `all_goals rfl`. Establish `hdetmap : (P.map (algebraMap K K')).det = algebraMap K K' P.det`. Rewrite using `[RingHom.map_det]`. Both sides reduce to the same expression. Establish `hne : ∀ z : O, z ≠ 0 → algebraMap O O' z ≠ 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Introduce `z hz h0`. Establish `hzK : algebraMap O K z ≠ 0` using `IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors (mem_nonZeroDivisors_of_ne_zero hz)`. Apply `(map_ne_zero (algebraMap K K')).2 hzK` to reduce the goal to its premises. Rewrite using `[← IsScalarTower.algebraMap_apply O K K', IsScalarTower.algebraMap_apply O O' K', h0, map_zero]`. Establish `hx'y' : algebraMap O' K' (algebraMap O O' x) = (P.map (algebraMap K K')).det * algebraMap O' K' (algebraMap O O' (y : O))`.
-
-Rewrite using `[← IsScalarTower.algebraMap_apply O O' K', ← IsScalarTower.algebraMap_apply O O' K', IsScalarTower.algebraMap_apply O K K' x, IsScalarTower.algebraMap_apply O K K' (y : O), hdetmap, ← map_mul, hxy]`. Establish `hab' : Submodule.span K' (Set.range fun i => j (b i)) = Submodule.span K' (Set.range fun i => j (a i))` using `(hspanK b hbU).trans (hspanK a haU).symm`. Take `⟨-, hcore'⟩` from `LatticeIndexBis.core (O := O') (K := K') (V := V₁) (fun i => j (b i)) (fun i => j (a i)) (LatticeIndexBis.indep_baseChange j hj b hb) (LatticeIndexBis.indep_baseChange j hj a ha) hab' (P.map (algebraMap K K')) hP'`. Rewrite using `[hAa, hBb, hspanO a, hspanO b, hcore' (algebraMap O O' x) (algebraMap O O' (y : O)) (hne x hx0) (hne _ hy0) hx'y', hcore x (y : O) hx0 hy0 hxy.symm, LatticeIndexBis.addVal_map ϖ hϖ hϖ' x hx0, LatticeIndexBis.addVal_map ϖ hϖ hϖ' (y : O) hy0]`.
+A detailed English derivation is pending.
 -/
 theorem index_baseChange_lattice : RelIndexSpanImage := by
   intro O O' K K' V V₁

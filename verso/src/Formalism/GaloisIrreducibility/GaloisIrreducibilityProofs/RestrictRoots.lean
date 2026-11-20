@@ -8,9 +8,9 @@ section SlopeTestRemainingChoices
 variable {K V : Type} [Field K] [AddCommGroup V] [Module K V] [FiniteDimensional K V]
 
 /- English proof (translation)
-Establish `hconj : (Submodule.prodEquivOfIsCompl P Q hPQ).symm.conj φ = (φ.restrict hP).prodMap (φ.restrict hQ)`. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce and unpack `⟨p, q⟩`. Simplify using `only [LinearEquiv.conj_apply, LinearMap.comp_apply, LinearEquiv.coe_coe, LinearEquiv.symm_symm, Submodule.coe_prodEquivOfIsCompl', LinearMap.prodMap_apply]`. Rewrite using `[map_add φ, ← LinearMap.restrict_coe_apply φ hP p, ← LinearMap.restrict_coe_apply φ hQ q, map_add, Submodule.prodEquivOfIsCompl_symm_apply_left, Submodule.prodEquivOfIsCompl_symm_apply_right]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Rewrite using `[← LinearEquiv.charpoly_conj (Submodule.prodEquivOfIsCompl P Q hPQ).symm φ, hconj, LinearMap.charpoly_prodMap]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 lemma rr_charpoly_compl (φ : Module.End K V) (P Q : Submodule K V) (hPQ : IsCompl P Q)
     (hP : ∀ x ∈ P, φ x ∈ P) (hQ : ∀ x ∈ Q, φ x ∈ Q) :
@@ -27,9 +27,9 @@ lemma rr_charpoly_compl (φ : Module.End K V) (P Q : Submodule K V) (hPQ : IsCom
   rw [← LinearEquiv.charpoly_conj (Submodule.prodEquivOfIsCompl P Q hPQ).symm φ, hconj, LinearMap.charpoly_prodMap]
 
 /- English proof (translation)
-Establish `h1` using `(LinearMap.isNilpotent_iff_charpoly _).mp h`. Rewrite `h1` using `[LinearMap.charpoly_sub_smul]`. Establish `h2 : B.charpoly = (Polynomial.X - Polynomial.C c) ^ finrank K V`. Establish `h3` using `congrArg (fun p => p.comp (Polynomial.X - Polynomial.C c)) h1`. Simplify using `only [Polynomial.comp_assoc, Polynomial.add_comp, Polynomial.X_comp, Polynomial.C_comp, sub_add_cancel, Polynomial.comp_X, Polynomial.pow_comp] at h3`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `h3`. Rewrite using `[h2, Polynomial.roots_pow, Polynomial.roots_X_sub_C, Multiset.nsmul_singleton]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma rr_roots_of_nilp (B : Module.End K V) (c : K) (h : IsNilpotent (B - c • 1)) :
     B.charpoly.roots = Multiset.replicate (finrank K V) c := by
@@ -45,7 +45,7 @@ lemma rr_roots_of_nilp (B : Module.End K V) (c : K) (h : IsNilpotent (B - c • 
 end SlopeTestRemainingChoices
 
 /- English proof (translation)
-Establish `hc : Commute a (algebraMap K R c)` using `(Algebra.commutes c a).symm`. Rewrite using `[map_pow, ← hc.geom_sum₂_mul]`. Use `Commute.isNilpotent_mul_left ?_ h` and prove the remaining obligations. Use `Commute.sum_left _ _ _ fun i _ => ?_` and prove the remaining obligations. Conclude with `(((Commute.refl a).sub_right hc).pow_left i).mul_left ((hc.symm.sub_right (Commute.refl _)).pow_left _)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 lemma rr_nilp_pow {R : Type} [Ring R] {K : Type} [Field K] [Algebra K R] (a : R) (c : K)
     (h : IsNilpotent (a - algebraMap K R c)) (q : ℕ) :
@@ -58,7 +58,7 @@ lemma rr_nilp_pow {R : Type} [Ring R] {K : Type} [Field K] [Algebra K R] (a : R)
     ((hc.symm.sub_right (Commute.refl _)).pow_left _)
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => simp`. Consider the case `succ k ihk`. Rewrite using `[pow_succ', pow_succ', Module.End.mul_apply, Module.End.mul_apply, LinearMap.restrict_coe_apply, ihk]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 private lemma coe_restrict_pow_apply' {K V : Type} [Field K] [AddCommGroup V] [Module K V]
     (A : Module.End K V) (S : Submodule K V) (hS : ∀ x ∈ S, A x ∈ S) (k : ℕ) (x : S) :
@@ -70,29 +70,29 @@ private lemma coe_restrict_pow_apply' {K V : Type} [Field K] [AddCommGroup V] [M
       LinearMap.restrict_coe_apply, ihk]
 
 /- English proof (translation)
-Introduce `n`. Proceed by induction on `n using Nat.strong_induction_on with`. Consider the case `_ n ih`. Introduce `V _ _ _ hn A`. Establish `hinv : ∀ (S : Submodule K V) (hS : ∀ x ∈ S, A x ∈ S) (hSq : ∀ x ∈ S, (A ^ q) x ∈ S), (A ^ q).restrict hSq = (A.restrict hS) ^ q`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `S hS hSq`. Use extensionality with `x`. Rewrite using `[LinearMap.restrict_coe_apply, coe_restrict_pow_apply']`. Break down `Nat.eq_zero_or_pos n with hn0 | hnpos` into its components or cases. Establish `hsub : Subsingleton V` using `Module.finrank_zero_iff.mp (hn.trans hn0)`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Establish `hnil : ∀ B : Module.End K V, B.charpoly = 1`. Introduce `B`. Establish `hB : IsNilpotent B` using `⟨1, LinearMap.ext fun x => Subsingleton.elim _ _⟩`. Rewrite using `[(LinearMap.isNilpotent_iff_charpoly B).mp hB, hn, hn0, pow_zero]`. Simplify using `[hnil]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `haveI : Nontrivial V := Module.finrank_pos_iff.mp (hn ▸ hnpos)`. Take `⟨μ, hμ⟩` from `Module.End.exists_eigenvalue A`. Take `⟨f, hf⟩ : ∃ f : Module.End K V, f = A - μ • 1` from `⟨_, rfl⟩`. Take `⟨N0, hN0⟩` from `Filter.eventually_atTop.mp (LinearMap.eventually_isCompl_ker_pow_range_pow f)`. Establish `hPQ` using `hN0 (N0 + 1) (Nat.le_succ _)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcomm : ∀ g : Module.End K V, Commute g f → (∀ x ∈ LinearMap.ker (f ^ (N0 + 1)), g x ∈ LinearMap.ker (f ^ (N0 + 1))) ∧ (∀ x ∈ LinearMap.range (f ^ (N0 + 1)), g x ∈ LinearMap.range (f ^ (N0 + 1)))`. Introduce `g hg`. Establish `hgN` using `(hg.pow_right (N0 + 1)).eq`. Use `⟨fun x hx => ?_, fun x hx => ?_⟩` and prove the remaining obligations. Rewrite `hx`, the goal using `[LinearMap.mem_ker]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Module.End.mul_apply, ← hgN, Module.End.mul_apply, hx, map_zero]`. Take `⟨y, rfl⟩` from `hx`. Conclude with `⟨g y, by rw [← Module.End.mul_apply, ← hgN, Module.End.mul_apply]⟩`. Establish `hAf : Commute A f`. Rewrite using `[hf]`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `(Commute.refl A).sub_right ((Commute.one_right A).smul_right μ)`. Take `⟨hP, hQ⟩` from `hcomm A hAf`. Take `⟨hPq, hQq⟩` from `hcomm (A ^ q) (hAf.pow_left q)`. Distinguish the cases in `hQb : LinearMap.range (f ^ (N0 + 1)) = ⊥`. Establish `hPt : LinearMap.ker (f ^ (N0 + 1)) = ⊤`.
+Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `h` using `hPQ.sup_eq_top`. Rewrite `h` using `[hQb, sup_bot_eq]`. Then use the resulting hypothesis. Establish `hnil : IsNilpotent f` using `⟨N0 + 1, LinearMap.ker_eq_top.mp hPt⟩`. Rewrite `hnil` using `[hf]`. Establish `hnilq : IsNilpotent (A ^ q - (μ ^ q) • 1)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `h` using `rr_nilp_pow A μ (by rw [Algebra.algebraMap_eq_smul_one]; exact hnil) q`. Rewrite `h` using `[Algebra.algebraMap_eq_smul_one]`. Then use the resulting hypothesis. Rewrite using `[rr_roots_of_nilp A μ hnil, rr_roots_of_nilp (A ^ q) (μ ^ q) hnilq, Multiset.map_replicate]`. Establish `hPb : LinearMap.ker (f ^ (N0 + 1)) ≠ ⊥`. Introduce `hPb`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result.
 
-Take `⟨v, hv⟩` from `hμ.exists_hasEigenvector`. Apply `hv.2` to reduce the goal to its premises. Establish `hfv : f v = 0`. Rewrite using `[hf, LinearMap.sub_apply, LinearMap.smul_apply, Module.End.one_apply, hv.apply_eq_smul, sub_self]`. Establish `hvP : v ∈ LinearMap.ker (f ^ (N0 + 1))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[LinearMap.mem_ker, pow_succ, Module.End.mul_apply, hfv, map_zero]`. Rewrite `hvP` using `[hPb]`. Conclude with `(Submodule.mem_bot K).mp hvP`. Establish `hdim` using `Submodule.finrank_add_eq_of_isCompl hPQ`. Establish `hP0 : finrank K (LinearMap.ker (f ^ (N0 + 1))) ≠ 0` using `fun h => hPb (Submodule.finrank_eq_zero.mp h)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hQ0 : finrank K (LinearMap.range (f ^ (N0 + 1))) ≠ 0` using `fun h => hQb (Submodule.finrank_eq_zero.mp h)`. Establish `ihP` using `ih _ (by omega) (LinearMap.ker (f ^ (N0 + 1))) rfl (A.restrict hP)`. Establish `ihQ` using `ih _ (by omega) (LinearMap.range (f ^ (N0 + 1))) rfl (A.restrict hQ)`. Establish `hne : ∀ (S : Submodule K V) (B : Module.End K S), B.charpoly ≠ 0` using `fun S B => (LinearMap.charpoly_monic B).ne_zero`. Rewrite using `[rr_charpoly_compl (A ^ q) _ _ hPQ hPq hQq, rr_charpoly_compl A _ _ hPQ hP hQ, Polynomial.roots_mul (mul_ne_zero (hne _ _) (hne _ _)), Polynomial.roots_mul (mul_ne_zero (hne _ _) (hne _ _)), hinv _ hP hPq, hinv _ hQ hQq, ihP, ihQ, Multiset.map_add]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma rr_roots_pow {K : Type} [Field K] [IsAlgClosed K] (q : ℕ) : ∀ (n : ℕ) (V : Type)
     [AddCommGroup V] [Module K V] [FiniteDimensional K V],
@@ -172,15 +172,13 @@ lemma rr_roots_pow {K : Type} [Field K] [IsAlgClosed K] (q : ℕ) : ∀ (n : ℕ
         hinv _ hP hPq, hinv _ hQ hQq, ihP, ihQ, Multiset.map_add]
 
 /- English proof (translation)
-Take `⟨Q, hWQ⟩` from `Submodule.exists_isCompl W`. Take `⟨e, he⟩ : ∃ e : (W × Q) ≃ₗ[K] V, e = Submodule.prodEquivOfIsCompl W Q hWQ` from `⟨_, rfl⟩`. Establish `he1 : ∀ x : W, e.symm (x : V) = (x, 0)` using `fun x => by`. Rewrite using `[he]`. Conclude with `Submodule.prodEquivOfIsCompl_symm_apply_left W Q hWQ x`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `he2 : ∀ x : W, e (x, 0) = (x : V)` using `fun x => by`. Rewrite using `[← he1 x, LinearEquiv.apply_symm_apply]`. Establish `bW` using `Module.finBasis K W`. Establish `bQ` using `Module.finBasis K Q`. Establish `key : ∀ j, (e.symm.conj τ) ((bW.prod bQ) (Sum.inl j)) = ((τ.restrict hτ) (bW j), 0)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `j`. Establish `hb : (bW.prod bQ) (Sum.inl j) = (bW j, 0)` using `by simp [Module.Basis.prod_apply]`. Rewrite using `[hb, LinearEquiv.conj_apply, LinearMap.comp_apply, LinearMap.comp_apply, LinearEquiv.coe_coe, LinearEquiv.coe_coe, LinearEquiv.symm_symm, he2, ← LinearMap.restrict_coe_apply τ hτ, he1]`. Establish `h21 : (LinearMap.toMatrix (bW.prod bQ) (bW.prod bQ) (e.symm.conj τ)).toBlocks₂₁ = 0`. Use extensionality with `i j`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.toBlocks₂₁, Matrix.of_apply, Matrix.zero_apply, LinearMap.toMatrix_apply, key, Module.Basis.prod_repr_inr, map_zero, Finsupp.coe_zero, Pi.zero_apply]`. Establish `h11 : (LinearMap.toMatrix (bW.prod bQ) (bW.prod bQ) (e.symm.conj τ)).toBlocks₁₁ = LinearMap.toMatrix bW bW (τ.restrict hτ)`. Use extensionality with `i j`. Simplify using `only [Matrix.toBlocks₁₁, Matrix.of_apply, LinearMap.toMatrix_apply, key, Module.Basis.prod_repr_inl]`. Rewrite using `[← LinearEquiv.charpoly_conj e.symm τ, ← LinearMap.charpoly_toMatrix (e.symm.conj τ) (bW.prod bQ), ← LinearMap.charpoly_toMatrix (τ.restrict hτ) bW, ← Matrix.fromBlocks_toBlocks (LinearMap.toMatrix (bW.prod bQ) (bW.prod bQ) (e.symm.conj τ)), h21, h11, Matrix.charpoly_fromBlocks_z …`.
-
-Conclude with `dvd_mul_right _ _`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma charpoly_restrict_dvd_charpoly {K V : Type} [Field K] [AddCommGroup V] [Module K V]
     [FiniteDimensional K V] (τ : Module.End K V) (W : Submodule K V) (hτ : ∀ v ∈ W, τ v ∈ W) :
@@ -215,15 +213,15 @@ private lemma charpoly_restrict_dvd_charpoly {K V : Type} [Field K] [AddCommGrou
   exact dvd_mul_right _ _
 
 /- English proof (translation)
-Unfold `RestrictRoots`. Introduce `K V _ _ _ _ _ τ F q hF W hτ hFW`. Establish `hFW' : ∀ v ∈ W, (F : V →ₗ[K] V) v ∈ W` using `hFW`. Establish `hinj : Function.Injective ((F : V →ₗ[K] V).restrict hFW')`. Introduce `x y hxy`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Apply `F.injective` to reduce the goal to its premises. Establish `h` using `congrArg Subtype.val hxy`. Simplify `h` using `only [LinearMap.restrict_coe_apply, LinearEquiv.coe_coe]`. Establish `hbij : Function.Bijective ((F : V →ₗ[K] V).restrict hFW')` using `⟨hinj, LinearMap.surjective_of_injective hinj⟩`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Take `⟨eW, heW⟩ : ∃ eW : W ≃ₗ[K] W, ∀ x, eW x = ((F : V →ₗ[K] V).restrict hFW') x` from `⟨LinearEquiv.ofBijective _ hbij, fun x => rfl⟩`. Establish `hconj : eW.conj (τ.restrict hτ) = (τ.restrict hτ) ^ q`. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `x`. Take `⟨y, rfl⟩` from `eW.surjective x`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite using `[LinearEquiv.conj_apply, LinearMap.comp_apply, LinearMap.comp_apply, LinearEquiv.coe_coe, LinearEquiv.coe_coe, LinearEquiv.symm_apply_apply]`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [heW, LinearMap.restrict_coe_apply, coe_restrict_pow_apply', LinearEquiv.coe_coe]`. Conclude with `hF y`. Prove the components needed by the constructor for the conclusion.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Establish an intermediate fact.
 
-Conclude with `Polynomial.roots.le_of_dvd (LinearMap.charpoly_monic τ).ne_zero (charpoly_restrict_dvd_charpoly τ W hτ)`. Establish `h1` using `rr_roots_pow q (finrank K W) W rfl (τ.restrict hτ)`. Rewrite `h1` using `[← hconj, LinearEquiv.charpoly_conj]`. Conclude with `h1.symm`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem restrict_roots_to_subfield : RestrictRoots := by
   unfold RestrictRoots

@@ -14,9 +14,9 @@ section LSE
 variable {ι : Type*} [Fintype ι]
 
 /- English proof (translation)
-Establish `hex : ∃ i, 0 < w i`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Establish `h0 : ∑ i, w i = 0` using `Finset.sum_eq_zero (fun i _ => le_antisymm (h i) (hw0 i))`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Extract witnesses or component facts from the available result.
 
-Take `⟨i, hi⟩` from `hex`. Conclude with `Finset.sum_pos' (fun j _ => mul_nonneg (hw0 j) (Real.exp_pos _).le) ⟨i, Finset.mem_univ _, mul_pos hi (Real.exp_pos _)⟩`.
+A detailed English derivation is pending.
 -/
 theorem lse_pos (w y : ι → ℝ) (hw0 : ∀ i, 0 ≤ w i) (hw1 : ∑ i, w i = 1) (t : ℝ) :
     0 < ∑ i, w i * Real.exp (t * y i) := by
@@ -30,17 +30,17 @@ theorem lse_pos (w y : ι → ℝ) (hw0 : ∀ i, 0 ≤ w i) (hw1 : ∑ i, w i = 
     ⟨i, Finset.mem_univ _, mul_pos hi (Real.exp_pos _)⟩
 
 /- English proof (translation)
-Use `⟨convex_univ, fun t1 _ t2 _ a b ha hb hab => ?_⟩` and prove the remaining obligations. Simplify using `only [smul_eq_mul]`. Use `set A := ∑ i, w i * Real.exp (t1 * y i) with hA`. Use `set B := ∑ i, w i * Real.exp (t2 * y i) with hB`. Establish `hA0 : 0 < A` using `lse_pos w y hw0 hw1 t1`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hB0 : 0 < B` using `lse_pos w y hw0 hw1 t2`. Use `set E := Real.exp (a * Real.log A + b * Real.log B) with hE`. Establish `key : ∀ i, Real.exp ((a * t1 + b * t2) * y i) ≤ (a * (Real.exp (t1 * y i) / A) + b * (Real.exp (t2 * y i) / B)) * E`. Introduce `i`. Establish `h1` using `convexOn_exp.2 (Set.mem_univ (t1 * y i - Real.log A)) (Set.mem_univ (t2 * y i - Real.log B)) ha hb hab`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [smul_eq_mul] at h1`. Establish `e1 : Real.exp (t1 * y i - Real.log A) = Real.exp (t1 * y i) / A`. Rewrite using `[Real.exp_sub, Real.exp_log hA0]`. Establish `e2 : Real.exp (t2 * y i - Real.log B) = Real.exp (t2 * y i) / B`. Rewrite using `[Real.exp_sub, Real.exp_log hB0]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h1` using `[e1, e2]`. Establish `e3 : Real.exp ((a * t1 + b * t2) * y i) = Real.exp (a * (t1 * y i - Real.log A) + b * (t2 * y i - Real.log B)) * E`. Rewrite using `[hE, ← Real.exp_add]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[e3]`. Conclude with `mul_le_mul_of_nonneg_right h1 (Real.exp_pos _).le`. Establish `hsum : ∑ i, w i * Real.exp ((a * t1 + b * t2) * y i) ≤ E`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hA, hB, Finset.sum_div, Finset.sum_div, Finset.mul_sum, Finset.mul_sum, ← Finset.sum_add_distrib, Finset.sum_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Use `Finset.sum_congr rfl (fun i _ => ?_)` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Use `_ = E := by rw [div_self hA0.ne', div_self hB0.ne', mul_one, mul_one, hab, one_mul]`. Establish `hpos` using `lse_pos w y hw0 hw1 (a * t1 + b * t2)`. Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem lse_convexOn (w y : ι → ℝ) (hw0 : ∀ i, 0 ≤ w i) (hw1 : ∑ i, w i = 1) :
     ConvexOn ℝ Set.univ (fun t : ℝ => Real.log (∑ i, w i * Real.exp (t * y i))) := by
@@ -83,7 +83,7 @@ theorem lse_convexOn (w y : ι → ℝ) (hw0 : ∀ i, 0 ≤ w i) (hw1 : ∑ i, w
     _ = a * Real.log A + b * Real.log B := Real.log_exp _
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation. Simplify using `only [mul_add, mul_one, Finset.sum_add_distrib, hw1, hw2, add_zero]`. Use `_ ≤ ∑ i, w i * Real.exp (y i) := Finset.sum_le_sum (fun i _ => mul_le_mul_of_nonneg_left (by linarith [Real.add_one_le_exp (y i)]) (hw0 i))`.
+Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem lse_one_le (w y : ι → ℝ) (hw0 : ∀ i, 0 ≤ w i) (hw1 : ∑ i, w i = 1)
     (hw2 : ∑ i, w i * y i = 0) : 1 ≤ ∑ i, w i * Real.exp (y i) := by
@@ -94,9 +94,9 @@ theorem lse_one_le (w y : ι → ℝ) (hw0 : ∀ i, 0 ≤ w i) (hw1 : ∑ i, w i
           (by linarith [Real.add_one_le_exp (y i)]) (hw0 i))
 
 /- English proof (translation)
-Establish `hpos : 0 < ∑ i, w i * Real.exp (y i)` using `by simpa using lse_pos w y hw0 hw1 1`. Establish `hle : ∑ i, w i * Real.exp (y i) ≤ 1 + ∑ i, w i * y i ^ 2`. Combine the equalities or inequalities in the displayed calculation. Establish `h` using `abs_le.mp (Real.abs_exp_sub_one_sub_id_le (hy i))`. Combine the linear relations using `[h.2]) (hw0 i))`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Use `_ = 1 + ∑ i, w i * y i ^ 2 := by`. Simplify using `only [mul_add, mul_one, Finset.sum_add_distrib, hw1, hw2, add_zero]`. Combine the equalities or inequalities in the displayed calculation.
+Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem lse_upper (w y : ι → ℝ) (hw0 : ∀ i, 0 ≤ w i) (hw1 : ∑ i, w i = 1)
     (hw2 : ∑ i, w i * y i = 0) (hy : ∀ i, |y i| ≤ 1) :
@@ -116,23 +116,23 @@ theorem lse_upper (w y : ι → ℝ) (hw0 : ∀ i, 0 ≤ w i) (hw1 : ∑ i, w i 
     _ = ∑ i, w i * y i ^ 2 := by ring
 
 /- English proof (translation)
-Use `set V := ∑ i, w i * y i ^ 2 with hV`. Establish `hD : 1 ≤ ∑ i, w i * Real.exp (y i)` using `lse_one_le w y hw0 hw1 hw2`. Establish `hV0 : 0 ≤ V` using `Finset.sum_nonneg (fun i _ => mul_nonneg (hw0 i) (sq_nonneg _))`. Establish `hVle : V ≤ ep ^ 2 / 4`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_le_sum (fun i _ => mul_le_mul_of_nonneg_left ?_ (hw0 i))` and prove the remaining obligations. Use `sq_abs (y i)` as an intermediate fact. Establish `h1` using `hy i`. Establish `h2` using `abs_nonneg (y i)`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Use `_ = ep ^ 2 / 4 := by rw [← Finset.sum_mul, hw1]; ring`. Establish `hterm : ∀ i, 1 + y i + y i ^ 2 * (1 / 2 - ep / 9) ≤ Real.exp (y i)`. Introduce `i`. Establish `hyi : |y i| ≤ 1` using `(hy i).trans (by linarith)`. Establish `hb` using `Real.exp_bound hyi (n := 3) (by norm_num)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Evaluate the numerical expressions.
 
-Simplify using `only [Finset.sum_range_succ, Finset.sum_range_zero, Nat.factorial] at hb`. Evaluate the numerical expressions using `at hb`. Establish `hb'` using `(abs_le.1 hb).1`. Establish `hc : |y i| ^ 3 ≤ ep / 2 * y i ^ 2`. Establish `: |y i| ^ 3 = |y i| * y i ^ 2` using `by rw [pow_succ, sq_abs]; ring`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 
-Rewrite using `[this]`. Conclude with `mul_le_mul_of_nonneg_right (hy i) (sq_nonneg _)`. Use the polynomial consequences of the given equalities and inequalities. Establish `hlow : 1 + V * (1 / 2 - ep / 9) ≤ ∑ i, w i * Real.exp (y i)`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `only [mul_add, mul_one, Finset.sum_add_distrib, hw1, hw2, add_zero, hV, Finset.sum_mul]`. Use `congrArg _ (Finset.sum_congr rfl (fun i _ => by ring))` and prove the remaining obligations. Use `_ ≤ _ := Finset.sum_le_sum (fun i _ => mul_le_mul_of_nonneg_left (hterm i) (hw0 i))`. Use `set c := V / 2 * (1 - ep) with hc`. Establish `hc0 : 0 ≤ c` using `mul_nonneg (by linarith) (by linarith)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `hc1 : c ≤ V / 2` using `by nlinarith`. Establish `hcabs : |c| ≤ 1` using `by rw [abs_of_nonneg hc0]; nlinarith`. Establish `hexp : Real.exp c ≤ 1 + c + c ^ 2`. Use `(abs_le.1 (Real.abs_exp_sub_one_sub_id_le hcabs)).2` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hcc : c ^ 2 ≤ V * ep ^ 2 / 8` using `by nlinarith`. Establish `hfin : 1 + c + c ^ 2 ≤ ∑ i, w i * Real.exp (y i)`. Establish `: c + c ^ 2 ≤ V * (1 / 2 - ep / 9)`. Rewrite using `[hc]`. Establish `: V * ep ^ 2 / 8 ≤ V * ep * (7 / 18)` using `by nlinarith`.
+Use the polynomial consequences of the given equalities and inequalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Use the polynomial consequences of the given equalities and inequalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hpos : 0 < ∑ i, w i * Real.exp (y i)` using `by linarith`. Rewrite using `[← Real.exp_le_exp, Real.exp_log hpos]`. Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 theorem lse_lower (w y : ι → ℝ) (hw0 : ∀ i, 0 ≤ w i) (hw1 : ∑ i, w i = 1)
     (hw2 : ∑ i, w i * y i = 0) {ep : ℝ} (he0 : 0 ≤ ep) (he1 : ep ≤ 1)

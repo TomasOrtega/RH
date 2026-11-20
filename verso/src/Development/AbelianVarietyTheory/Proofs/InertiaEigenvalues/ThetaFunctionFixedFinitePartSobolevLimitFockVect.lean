@@ -29,9 +29,9 @@ namespace GlobalTheory.FinLikeClosure
 open GlobalTheory.ChainFr GlobalTheory.Size
 
 /- English proof (translation)
-Establish `key : ∀ g : WO (Vc D i) (Wc D i) → ℂ, ((c - Finsupp.single 0 1).sum fun u z => z • heisO R.ψ (Vc D i) (Wc D i) u g) = (c.sum fun u z => z • heisO R.ψ (Vc D i) (Wc D i) u g) - g` using `fun g => by`. Rewrite using `[Finsupp.sum_sub_index (fun _ _ _ => sub_smul _ _ _), Finsupp.sum_single_index (by rw [zero_smul]), one_smul, GlobalTheory.OrientedHeis.heisO_zero]`. Establish `hs : ∀ u ∈ (c - Finsupp.single 0 1).support, u.map (infPart D) = 0` using `fun u hu => by`. Break down `Finset.mem_union.1 (Finsupp.support_sub hu) with h | h` into its components or cases. Conclude with `hc u h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.mem_singleton.1 (Finsupp.support_single_subset h)]`. Conclude with `Matrix.map_zero _ (map_zero _)`. Use `hf.2 _ hs (by rw [key, hv, sub_self])` as an intermediate fact. Rewrite `this` using `[key, sub_eq_zero]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem fix_of_finLike {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.what₂.LL G Pl0 T D.R.m}
     {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] {R : RealDat D A Ks} {i : Fin D.R.m} {t : T}
@@ -53,29 +53,27 @@ theorem fix_of_finLike {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} 
   rwa [key, sub_eq_zero] at this
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 T A Ks _ _ _ R F hG _ i t μ 𝓕 hμ f hf d δ hδ`. Establish `hC` using `hG.core`. Establish `hθ : IsInfFam R.θ` using `hC.models.inf`. Establish `hψ : IsStdChar D R.ψ (-1)` using `(hC.thP.ωP i t).std`. Set `AV` to `GlobalTheory.WeilReal.frOf (Vc D i) (fun _ => 1) (R.BV i) (fun _ => (Vc D i).rank) (hC.models.BV i)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `BW` to `Fr.ofModel (R.MW i (sg0 D A))`. Establish `cAV : AV.cart = fun _ => 1` using `GlobalTheory.WeilReal.frOf_cart (hC.models.BV i)`. Establish `oAV : AV.onb = R.BV i` using `GlobalTheory.WeilReal.frOf_onb (hC.models.BV i)`. Establish `hpt : ∀ x, ptF R.ψ R.θ AV BW x = pureTensorO R.ψ R.θ (Vc D i) (Wc D i) (fun _ => 1) (cart (R.MW i (sg0 D A))) (R.BV i) (onb (R.MW i (sg0 D A))) x` using `fun x => by rw [ptF, cAV, oAV]; rfl`. Establish `hvθ : IsThetaFunO R.ψ (Vc D i) (Wc D i) (R.vP i t)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hC.thP.pt_theta i t 1` as an intermediate fact. Unfold `RealDat.ptP pureTensorO at this`. Rewrite `this` using `[GlobalTheory.AdTh.VecFock.pureTensorL_one]`. Then use the resulting hypothesis. Establish `hvv : ∀ τ, IsFockVacAt (heisO R.ψ (Vc D i) (Wc D i)) R.θ τ (cplxO 1 (cart (R.MW i (sg0 D A)) τ)) (R.vP i t)` using `GlobalTheory.DatumFock.isFockVacAt_thPVec _ _ _ _ (fun _ => 1) _ _ _ _ _ _ _ _ _ _ (hC.thP.vP i t) hvθ`. Establish `cS : ∀ τ, IsCartanInv (gramAt D (Vc D i) τ) 1` using `fun τ => by`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Model.isCartanInv_cart AV τ` as an intermediate fact. Rewrite `this` using `[cAV]`. Then use the resulting hypothesis. Establish `cT : ∀ τ, IsCartanInv (gramAt D (Wc D i) τ) (cart (R.MW i (sg0 D A)) τ)` using `fun τ => Model.isCartanInv_cart BW τ`. Take `⟨U, hU, hfU, hdense⟩` from `GlobalTheory.FockDensity.fockDense D _ _ AV BW R.θ R.ψ hψ hθ μ 𝓕 hμ f hf.1`. Take `⟨c, hc0, hcv, hcx⟩` from `GlobalTheory.T.exists_heisenbergCombination_projects_onto_vacuum D R.ψ R.θ (Vc D i) (Wc D i) hψ hθ (fun _ => 1) (cart (R.MW i (sg0 D A))) cS cT (R.vP i t) hvθ hvv U hU`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Set `Pf : Module.End ℂ (WO (Vc D i) (Wc D i) → ℂ)` to `c.sum fun u z => z • GlobalTheory.Hk3.FiniteHeis.heisLin R.ψ (Vc D i) (Wc D i) u`. Establish `hPf : ∀ h, Pf h = c.sum fun u z => z • heisO R.ψ (Vc D i) (Wc D i) u h` using `fun h => LinearMap.finsupp_sum_apply _ _ _`. Establish `hfix : Pf f = f` using `(hPf f).trans (fix_of_finLike hf c hc0 hcv)`. Set `Lp` to `pureTensorO R.ψ R.θ (Vc D i) (Wc D i) (fun _ => 1) (cart (R.MW i (sg0 D A))) (R.BV i) (onb (R.MW i (sg0 D A))) (R.vP i t)`. Establish `hLp : ∀ P, R.ptP i t P = Lp P` using `fun _ => rfl`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `himg : ∀ g ∈ fockSpan R.ψ R.θ AV BW U, Pf g ∈ LinearMap.range Lp`. Introduce `g hg`. Proceed by induction on `hg using Submodule.span_induction with`. Consider the case `mem g hg`. Take `⟨f₀, P, h1, h2, rfl⟩` from `hg`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Establish `hv0 : ∀ τ, IsFockVacAt (heisO R.ψ (Vc D i) (Wc D i)) R.θ τ (cplxO 1 (cart (R.MW i (sg0 D A)) τ)) f₀` using `fun τ => by`. Use `h1.2 τ` as an intermediate fact. Rewrite `this` using `[cAV]`. Then use the resulting hypothesis. Take `⟨a, ha⟩` from `hcx f₀ h2 hv0`. Use `⟨a • P, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hPf, hpt, GlobalTheory.FiniteHeisComb.sum_heisO_pureTensorO D R.ψ R.θ (Vc D i) (Wc D i) hψ hθ _ _ _ _ c hc0 f₀ h1.1 P, ha, GlobalTheory.FiniteFock.pureTensorO_smul, map_smul]`. Consider the case `zero => rw [map_zero]`. Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `add_mem hx hy`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Consider the case `smul a x _ hx => rw [map_smul]`. Conclude with `Submodule.smul_mem _ a hx`. Use `set C : ENNReal := ∑ u ∈ c.support, ‖c u‖ₑ with hCdef`. Establish `hCt : C ≠ ⊤` using `ENNReal.sum_ne_top.2 fun _ _ => enorm_ne_top`. Break down `eq_or_ne C 0 with hC0 | hC0` into its components or cases.
+Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take `⟨g, hg, hgU, -⟩` from `hdense d 1 one_pos`. Take `⟨P, hP⟩` from `himg g hg`. Use `⟨P, lt_of_le_of_lt ?_ hδ⟩` and prove the remaining obligations. Establish `hb` using `GlobalTheory.HeisTranslateBound.sobO_finsupp_sum_le D R.ψ R.θ (Vc D i) (Wc D i) hψ hθ μ 𝓕 hμ c hc0 (f - g) (sub_mem hfU hgU).1 d`. Rewrite `hb` using `[← hCdef, hC0, zero_mul, ← hPf, map_sub, hfix, ← hP, ← hLp]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `hb`. Take `⟨g, hg, hgU, hgd⟩` from `hdense d (δ / C) (ENNReal.div_pos hδ.ne' hCt)`. Take `⟨P, hP⟩` from `himg g hg`. Use `⟨P, ?_⟩` and prove the remaining obligations. Establish `hb` using `GlobalTheory.HeisTranslateBound.sobO_finsupp_sum_le D R.ψ R.θ (Vc D i) (Wc D i) hψ hθ μ 𝓕 hμ c hc0 (f - g) (sub_mem hfU hgU).1 d`.
-
-Rewrite `hb` using `[← hCdef, ← hPf, map_sub, hfix, ← hP, ← hLp]`. Use `lt_of_le_of_lt hb ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem closure : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T : Type) (A : FamIn D.what₂.LL G Pl0 T D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A), GlobalTheory.LiftRows.Given R F → R.FullP → ∀ (i : Fin D.R.m) (t : T) (μ : Measure (WO (Vc D i) (Wc D i))) (𝓕 : Set (WO (Vc D i) (Wc D i))), IsCovolOne (ratL (Wc D i) (Vc D i)) μ 𝓕 → ∀ f, FinLike R i t f → ∀ (d : ℕ) (δ : ENNReal), 0 < δ → ∃ P, GlobalTheory.Size.sobO R.ψ R.θ μ 𝓕 d (f - R.ptP i t P) < δ := by
   intro D G _ _ Pl0 T A Ks _ _ _ R F hG _ i t μ 𝓕 hμ f hf d δ hδ

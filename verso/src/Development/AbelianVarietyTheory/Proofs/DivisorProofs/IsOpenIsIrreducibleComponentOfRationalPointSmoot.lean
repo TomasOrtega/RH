@@ -8,11 +8,11 @@ open scoped CategoryTheory.Obj
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `hsub : Subsingleton (Spec (CommRingCat.of k))` using `inferInstanceAs (Subsingleton (PrimeSpectrum k))`. Take `⟨p⟩ : Nonempty (Spec (CommRingCat.of k))` from `inferInstanceAs (Nonempty (PrimeSpectrum k))`. Establish `hZ : {x : X | x ∈ connectedComponentIn (f ⁻¹' {f x}) (e (f x))} = connectedComponent (e p)`. Use extensionality with `x`. Establish `h1 : (f ⁻¹' {f x} : Set X) = Set.univ` using `Set.eq_univ_of_forall fun y => Subsingleton.elim _ _`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Establish `h2 : f x = p` using `Subsingleton.elim _ _`. Rewrite using `[Set.mem_setOf_eq, h1, h2, connectedComponentIn_univ]`. Rewrite using `[hZ]`. Establish `hN : IsLocallyNoetherian X` using `LocallyOfFiniteType.isLocallyNoetherian f`. Establish `hO : IsOpen (connectedComponent (e p))` using `GlobalTheory.T.isOpen_connectedComponent_of_isLocallyNoetherian' X hN (e p)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨hO, ?_⟩` and prove the remaining obligations. Set `U : X.Opens` to `⟨connectedComponent (e p), hO⟩`. Establish `hc : ConnectedSpace U.toScheme` using `isConnected_iff_connectedSpace.mp (isConnected_connectedComponent (x := e p))`. Establish `hi : IrreducibleSpace U.toScheme` using `GlobalTheory.T.irreducibleSpace_of_smooth_over_field_of_connected k U.toScheme (U.ι ≫ f) inferInstance hc`. Conclude with `isIrreducible_iff_irreducibleSpace.mpr hi`.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isOpen_and_isIrreducible_sectionComponent_of_smooth_field
     (k : Type) [Field k] (X : Scheme.{0}) (f : X ⟶ Spec (CommRingCat.of k))

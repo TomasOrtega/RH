@@ -8,7 +8,7 @@ open NumberField MeasureTheory Formalism.MainNotions.GlobalTheoryTheory.GenusMas
 namespace GlobalTheory.ThK.ZFinDer
 
 /- English proof (translation)
-Unfold `Model.I theta`. Use `congr 1`. Use function extensionality and compare the values at `g`. Establish `: ((g, h * k) : UA σ X.J × UA σ W.J) = (g, h) * (1, k)` using `by simp`. Rewrite using `[this, map_mul, Module.End.mul_apply]`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem I_mul {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
     {n d : ℕ} {X : Spc F E n} {W : Spc F E d} (M : Model σ X W) (om : Rep σ X W) (Φ : (Fin n × Fin d → AF F) → ℂ)
@@ -19,13 +19,13 @@ theorem I_mul {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [
   rw [this, map_mul, Module.End.mul_apply]
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hσ B a a' G X om om' hK hT c hc hcc Φ hΦ l hl`. Proceed by induction on `l with`. Consider the case `nil => exact ⟨by simpa using hΦ, by simp⟩`. Consider the case `cons γ l ih`. Take `⟨hP, hE⟩` from `ih (fun γ' h' => hl γ' (List.mem_cons_of_mem _ h'))`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Establish `hγ` using `hl γ List.mem_cons_self`. Use `⟨by simpa using GlobalTheory.T.theta_integral_real_line_derivative F E σ hσ B a a' G X om om' hK hT c hc hcc _ hP γ hγ, ?_⟩` and prove the remaining obligations. Simplify using `only [List.foldr_cons, List.map_cons]`. Rewrite using `[hE]`. Use function extensionality and compare the values at `x`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [lineDer]`. Establish `: (fun t => G.M.I om ((l.map (back hσ G.W.J hc)).foldr (derR om) Φ) ((toGAd hσ G.W.J hc).symm (x * γ t))) = fun t => G.M.I om (om (1, back hσ G.W.J hc γ t) ((l.map (back hσ G.W.J hc)).foldr (derR om) Φ)) ((toGAd hσ G.W.J hc).symm x)`. Use function extensionality and compare the values at `t`. Rewrite using `[map_mul, I_mul]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[this]`. Conclude with `(GlobalTheory.T.theta_integral_real_line_smooth F E σ hσ B a a' G X om om' hK hT c hc hcc _ hP γ hγ _).deriv`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem derivs : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (hσ : ∀ x, σ (σ x) = x) (B : Base F E) (a a' : ℕ) (G : Geo σ a a') (X : Chars F E)

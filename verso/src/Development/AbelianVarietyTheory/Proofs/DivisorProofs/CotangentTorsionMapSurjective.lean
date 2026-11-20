@@ -16,15 +16,15 @@ open GlobalTheory.OpenOmega
 namespace GlobalTheory.OpenOmega
 
 /- English proof (translation)
-Introduce `p _ R _ G _ GG θ n hs hinj hspec`. Set `ε` to `Bialgebra.counitAlgHom R (GG.A n)`. Set `c : Wmod G →ₗ[R] AugCot ε` to `cnθ θ n hs`. Set `N` to `AugCot ε ⧸ LinearMap.range c`. Use `letI : Module Rᵐᵒᵖ N := GlobalTheory.SqZeroPt.opModule R N`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Equip the data with the indicated structure.
 
-Use `haveI : IsCentralScalar R N := GlobalTheory.SqZeroPt.opModule_central R N`. Set `q : AugCot ε →ₗ[R] N` to `(LinearMap.range c).mkQ`. Set `φ` to `(AugCot.sqZeroEquiv ε N).symm q`. Set `φ₀` to `(AugCot.sqZeroEquiv ε N).symm 0`. Take `⟨z, hz, ez⟩` from `hs N φ.1 φ.2`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨z₀, hz₀, ez₀⟩` from `hs N φ₀.1 φ₀.2`. Establish `e1 : z.1 = z₀.1` using `hinj N _ _ hz hz₀ fun w => by`. Use `(hspec N z hz w).trans (Eq.trans ?_ (hspec N z₀ hz₀ w).symm)` and prove the remaining obligations. Establish `a1 : (⟨θ.pt n _ z, fst_comp_pt θ n z hz⟩ : {ψ : GG.A n →ₐ[R] TrivSqZeroExt R N // (TrivSqZeroExt.fstHom R R N).comp ψ = ε}) = φ` using `Subtype.ext ez`. Establish `a2 : (⟨θ.pt n _ z₀, fst_comp_pt θ n z₀ hz₀⟩ : {ψ : GG.A n →ₐ[R] TrivSqZeroExt R N // (TrivSqZeroExt.fstHom R R N).comp ψ = ε}) = φ₀` using `Subtype.ext ez₀`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `(congrArg (fun ψ => AugCot.sqZeroEquiv ε N ψ (c w)) a1).trans (Eq.trans ?_ (congrArg (fun ψ => AugCot.sqZeroEquiv ε N ψ (c w)) a2).symm)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `AugCot.sqZeroEquiv ε N φ (c w) = AugCot.sqZeroEquiv ε N φ₀ (c w)`. Rewrite using `[Equiv.apply_symm_apply, Equiv.apply_symm_apply, LinearMap.zero_apply]`. Conclude with `(Submodule.Quotient.mk_eq_zero _).2 ⟨w, rfl⟩`. Establish `e : φ.1 = φ₀.1` using `ez.symm.trans ((congrArg (θ.pt n _) (Subtype.ext e1)).trans ez₀)`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hq : q = 0` using `(AugCot.sqZeroEquiv ε N).symm.injective (Subtype.ext e)`. Introduce `x`. Conclude with `(Submodule.Quotient.mk_eq_zero (LinearMap.range c)).1 (LinearMap.congr_fun hq x)`.
+A detailed English derivation is pending.
 -/
 theorem cnθ_surjective : ∀ (p : ℕ) [Fact p.Prime] (R : Type) [CommRing R] (G : Over (Sp R)) [GrpObj G] (GG : PDivGroup p R) (θ : TorsionMap G GG) (n : ℕ) (hs : PtSurj θ n), (∀ (M : Type) [AddCommGroup M] [Module R M] [Module Rᵐᵒᵖ M] [IsCentralScalar R M] (z z' : TM R M ⟶ G) (h : zeroSec R M ≫ z = η[G]) (h' : zeroSec R M ≫ z' = η[G]), (∀ w, Phi z h w = Phi z' h' w) → z = z') → SpecProp θ n hs → Function.Surjective (cnθ θ n hs) := by
   intro p _ R _ G _ GG θ n hs hinj hspec

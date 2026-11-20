@@ -3,21 +3,19 @@ import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.Trans
 open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComplex.HomComplex GlobalTheory.EtC UpperTheory.Gal.TranscendenceTraces
 
 /- English proof (translation)
-Introduce `hC hS hB hO Z S p _ _ _`. Use `hC p (mult p) fun A W hW => ?_` and prove the remaining obligations. Establish `: IsFinite A.r` using `A.finite`. Establish `: Flat A.r` using `MorphismProperty.of_isPullback A.pb ‹_›`. Establish `: LocallyOfFinitePresentation A.r` using `MorphismProperty.of_isPullback A.pb ‹_›`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `O : A.V.Opens` to `⟨W, hW.isOpen⟩`. Establish `: IsClosedImmersion O.ι` using `IsClosedImmersion.of_isPreimmersion O.ι (by rw [O.range_ι]; exact hW.isClosed)`. Establish `hm : mult (O.ι ≫ A.r) = (mult A.r).comap O.ι` using `hO O.ι A.r`. Establish `hm' : mult A.r = (mult p).comap A.v` using `hB A.v A.r p A.u A.pb`. Use `⟨fun u => (((O.ι ≫ A.r).finrank u : ℕ) : ℤ), ?_, ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(Scheme.Hom.isLocallyConstant_finrank (O.ι ≫ A.r)).comp _`. Introduce `Ω _ _ x`. Establish `h1` using `hS (O.ι ≫ A.r) Ω x`. Use `h1.symm.trans ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `∑ᶠ z ∈ fib (O.ι ≫ A.r) x, mult (O.ι ≫ A.r) Ω z = _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations.
 
-Use `finsum_mem_eq_of_bijOn (fun z => z ≫ O.ι) ⟨?_, ?_, ?_⟩ ?_` and prove the remaining obligations. Introduce `z hz`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(z ≫ O.ι) ≫ A.r = x`. Rewrite using `[Category.assoc]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Conclude with `hz`. Express the relevant statement in the definitionally equal form `pt (z ≫ O.ι) ∈ W`. Rewrite using `[pt_comp]`. Conclude with `(pt z).2`. Introduce `z _ z' _ e`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(cancel_mono O.ι).1 e`. Introduce and unpack `z ⟨hz, hzW⟩`. Establish `hr : Set.range z ⊆ Set.range O.ι`. Rewrite using `[O.range_ι]`. Introduce and unpack `_ ⟨t, rfl⟩`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[pt_eq]`. Conclude with `hzW`. Use `⟨IsOpenImmersion.lift O.ι z hr, ?_, IsOpenImmersion.lift_fac _ _ _⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ ≫ O.ι ≫ A.r = x`. Rewrite using `[← Category.assoc, IsOpenImmersion.lift_fac]`.
-
-Conclude with `hz`. Introduce `z _`. Rewrite using `[hm, hm']`. Simplify using `[Wt.comap]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.TranscendenceTraces.wtFlat_of :
     WtClopen → MultSum → MultBC → MultOpen → WtFlat := by

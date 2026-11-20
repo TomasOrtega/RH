@@ -9,7 +9,7 @@ open AlgebraicGeometry CategoryTheory
 namespace UpperTheory.Gal.FixZ
 
 /- English proof (translation)
-Introduce `A B C c f hc hs hf hcf`. Conclude with `GlobalTheory.etale_of_comp_of_etale_of_surjective c f`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem descEt_of : DescEt := by
   intro A B C c f hc hs hf hcf

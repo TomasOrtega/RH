@@ -15,7 +15,7 @@ variable {F : Type} [Field F] [NumberField F]
 private def rf {R : Type} [Neg R] (v : Fin 4 → R) : Fin 4 → R := Function.update v 1 (-v 1)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Distinguish the cases in `h : i = 1`. Substitute `h` using the available equality. Simplify using `[rf]`. Simplify using `[rf, h]`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 private theorem rf_rf {R : Type} [InvolutiveNeg R] (v : Fin 4 → R) : rf (rf v) = v := by
   funext i
@@ -25,13 +25,13 @@ private theorem rf_rf {R : Type} [InvolutiveNeg R] (v : Fin 4 → R) : rf (rf v)
   · simp [rf, h]
 
 /- English proof (translation)
-Simplify using `[rf, h]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem rf_ne {R : Type} [Neg R] (v : Fin 4 → R) {i : Fin 4} (h : i ≠ 1) : rf v i = v i := by
   simp [rf, h]
 
 /- English proof (translation)
-Simplify using `[rf]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem rf_one {R : Type} [Neg R] (v : Fin 4 → R) : rf v 1 = -v 1 := by
   simp [rf]
@@ -46,7 +46,7 @@ private def rfH (R : Type) [TopologicalSpace R] [AddGroup R] [IsTopologicalAddGr
   continuous_invFun := continuous_id.update 1 (continuous_apply 1).neg
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `(mem_finiteSchwartzBruhatPi F).1 hg`. Conclude with `(mem_finiteSchwartzBruhatPi F).2 ⟨h1.comp_continuous (rfH _).continuous, h2.comp_homeomorph (rfH _)⟩`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 private theorem fin_rf {g : (Fin 4 → FiniteAdeleRing (𝓞 F) F) → ℂ}
     (hg : g ∈ finiteSchwartzBruhatPi F (ι := Fin 4)) :
@@ -56,9 +56,9 @@ private theorem fin_rf {g : (Fin 4 → FiniteAdeleRing (𝓞 F) F) → ℂ}
     ⟨h1.comp_continuous (rfH _).continuous, h2.comp_homeomorph (rfH _)⟩
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Distinguish the cases in `h : i = 1`. Substitute `h` using the available equality. Rewrite using `[rf_one]`. Express the relevant statement in the definitionally equal form `(finPartPi (rf v)) 1 = -(finPartPi v 1)`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Simplify using `only [GroundTheory.Heights₂.Theta.finPartPi_eq_adeleFinHom, rf_one, map_neg]`. Rewrite using `[rf_ne _ h]`. Express the relevant statement in the definitionally equal form `(rf v i).2 = (v i).2`. Rewrite using `[rf_ne _ h]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 private theorem finPart_rf (v : V4 F) : finPartPi (rf v) = rf (finPartPi v) := by
   funext i
@@ -72,13 +72,13 @@ private theorem finPart_rf (v : V4 F) : finPartPi (rf v) = rf (finPartPi v) := b
     rw [rf_ne _ h]
 
 /- English proof (translation)
-Proceed by induction on `hp using Algebra.adjoin_induction with`. Consider the case `mem p hp`. Take `⟨i, w, rfl⟩` from `hp`. Distinguish the cases in `h : i = 1`. Substitute `h` using the available equality.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Establish `e : (fun v : V4 F => ((TR.pInf F (rf v 1) w : ℝ) : ℂ)) = (-1 : ℂ) • (fun v : V4 F => ((TR.pInf F (v 1) w : ℝ) : ℂ))`. Use function extensionality and compare the values at `v`. Simplify using `[rf_one]`. Establish `hm : (fun v : V4 F => ((TR.pInf F (v 1) w : ℝ) : ℂ)) ∈ polyFn (F` using `F) := Algebra.subset_adjoin ⟨1, w, rfl⟩`. Rewrite using `[e]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Subalgebra.smul_mem _ hm _`. Establish `e : (fun v : V4 F => ((TR.pInf F (rf v i) w : ℝ) : ℂ)) = (fun v : V4 F => ((TR.pInf F (v i) w : ℝ) : ℂ))`. Use function extensionality and compare the values at `v`. Rewrite using `[rf_ne _ h]`. Rewrite using `[e]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Conclude with `Algebra.subset_adjoin ⟨i, w, rfl⟩`. Consider the case `algebraMap r => exact Subalgebra.algebraMap_mem _ r`. Consider the case `add p q _ _ hp hq => exact add_mem hp hq`. Consider the case `mul p q _ _ hp hq => exact mul_mem hp hq`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 private theorem poly_rf [IsTotallyReal F] {p : V4 F → ℂ} (hp : p ∈ polyFn (F := F)) :
     (fun v => p (rf v)) ∈ polyFn (F := F) := by
@@ -106,7 +106,7 @@ private theorem poly_rf [IsTotallyReal F] {p : V4 F → ℂ} (hp : p ∈ polyFn 
   | mul p q _ _ hp hq => exact mul_mem hp hq
 
 /- English proof (translation)
-Establish `h0 : rf v 0 = v 0` using `rf_ne _ (by decide)`. Establish `h2 : rf v 2 = v 2` using `rf_ne _ (by decide)`. Establish `h3 : rf v 3 = v 3` using `rf_ne _ (by decide)`. Simplify using `only [gauss, h0, h2, h3, rf_one, neg_sq]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 private theorem gauss_rf [IsTotallyReal F] (δ : F) (v : V4 F) : gauss δ (rf v) = gauss δ v := by
   have h0 : rf v 0 = v 0 := rf_ne _ (by decide)
@@ -115,9 +115,9 @@ private theorem gauss_rf [IsTotallyReal F] (δ : F) (v : V4 F) : gauss δ (rf v)
   simp only [gauss, h0, h2, h3, rf_one, neg_sq]
 
 /- English proof (translation)
-Proceed by induction on `hχ using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨p, hp, g, hg, rfl⟩` from `hx`. Use `Submodule.subset_span ⟨_, poly_rf hp, _, fin_rf hg, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `v`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [gauss_rf, finPart_rf]`. Consider the case `zero => exact Submodule.zero_mem _`. Consider the case `add x y _ _ hx hy => exact Submodule.add_mem _ hx hy`. Consider the case `smul a x _ hx => exact Submodule.smul_mem _ a hx`.
+Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 private theorem fock_rf [IsTotallyReal F] {δ : F} {χ : V4 F → ℂ} (hχ : χ ∈ FockFn δ) :
     (fun v => χ (rf v)) ∈ FockFn δ := by
@@ -132,7 +132,7 @@ private theorem fock_rf [IsTotallyReal F] {δ : F} {χ : V4 F → ℂ} (hχ : χ
   | smul a x _ hx => exact Submodule.smul_mem _ a hx
 
 /- English proof (translation)
-Use `(Submodule.span_le.2 ?_) hχ` and prove the remaining obligations. Introduce and unpack `_ ⟨p, hp, g, hg, rfl⟩`. Establish `h` using `pgMem F δ hδ Real.pi Real.pi_pos p hp g hg`. Express the relevant statement in the definitionally equal form `_ ∈ schwartzBruhatPi F (Fin 4)`. Simplify `h` using `only [gauss_eq]`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem fock_le [IsTotallyReal F] {δ : F} (hδ : ∀ e : F →+* ℝ, e δ < 0) {χ : V4 F → ℂ}
     (hχ : χ ∈ FockFn δ) : χ ∈ schwartzBruhatPi F (Fin 4) := by
@@ -146,9 +146,9 @@ end UpperTheory.ConvolutionTheory.R2.G.FourierHatSurjective
 
 open UpperTheory.ConvolutionTheory.R2.G.FourierHatSurjective in
 /- English proof (translation)
-Introduce `F _ _ _ δ hδ χ hχ`. Establish `h1` using `fock_rf hχ`. Establish `h2` using `hatFock F δ _ h1`. Use `⟨⟨hat fun v => χ (rf v), fock_le hδ h2⟩, h2, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `v`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `(hatInv F ⟨fun v => χ (rf v), fock_le hδ h1⟩ v).trans (congrArg χ (rf_rf v))`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.R2.G.hatSurj :
     ∀ (F : Type) [Field F] [NumberField F] [IsTotallyReal F] (δ : F), (∀ e : F →+* ℝ, e δ < 0) → ∀ χ ∈ FockFn δ, ∃ φ ∈ Fock δ, hat φ.1 = χ := by

@@ -32,11 +32,11 @@ section Model
 open Matrix GlobalTheory.RealBessel
 
 /- English proof (translation)
-Establish `hds` using `M.ds τ`. Take `⟨hc', -, hU, hI, -⟩` from `id hds`. Rewrite using `[GlobalTheory.SmVec.sm_eq M τ]`. Establish `hgap : IsGapDS (gramAt D V τ) (M.rep τ) h`. Use `⟨M.ε τ, M.lam τ, M.fr τ, M.fr_unit τ, M.fr_gram τ, hP, hg, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e1 : (fun g => M.rep τ ((M.fr τ)⁻¹ * g * M.fr τ)) = M.σ τ`. Use function extensionality and compare the values at `g`. Establish `hu : IsUnit (M.fr τ).det` using `(Matrix.isUnit_iff_isUnit_det _).1 (M.fr_unit τ)`. Use `show M.σ τ (M.fr τ * ((M.fr τ)⁻¹ * g * M.fr τ) * (M.fr τ)⁻¹) = M.σ τ g`. Use `congr 1`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.mul_assoc, Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hu, Matrix.mul_one, ← Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hu, Matrix.one_mul]`. Rewrite using `[e1]`. Conclude with `hds`. Conclude with `hB _ _ _ _ _ _ _ _ hf hc.1 hc.2.1 hc.2.2 χ hχ _ _ (GlobalTheory.SmVec.isURepOn_trRep (M.fr_unit τ) (M.fr_gram τ) hU) (GlobalTheory.SmVec.isIrredOn_trRep (M.fr_unit τ) (M.fr_gram τ) hI) h hh hgap W π₀ hπ`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem burGap_model (hB : BurGapPos) {D : D7} {V : HSp D} {S : D.what₂.Tau → SPar}
     (M : DSModel V S) (τ : D.what₂.Tau) {m r : ℕ} {J₀ : Matrix (Fin m) (Fin m) ℂ} {F : Matrix (Fin V.rank) (Fin m) ℂ}
@@ -68,13 +68,13 @@ theorem burGap_model (hB : BurGapPos) {D : D7} {V : HSp D} {S : D.what₂.Tau �
 end Model
 
 /- English proof (translation)
-Establish `hr` using `fun τ => burGap_model hB M τ (h τ).1 (hc τ) (h τ).2.1 (hg τ).1 (hg τ).2.choose_spec.1 (hg τ).2.choose_spec.2 (h τ).2.2`. Use `choose b hb using fun τ => rank_le_one_iff.1 (hr τ)`. Use `⟨fun x v => ∏ τ, (b τ).1 (x τ) (v τ), fun β hβ => ?_⟩` and prove the remaining obligations. Take `⟨l, hl⟩` from `mul_prod_of_separately (X := fun τ => Wt τ × M.sm τ) (fun τ p => (b τ).1 p.1 p.2) (fun p => β (fun τ => (p τ).1) fun τ => (p τ).2) fun τ p => by`. Take `⟨b', hb', e'⟩` from `hβ τ (fun τ => (p τ).1) fun τ => (p τ).2`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨c, hc⟩` from `hb τ ⟨b', hb'⟩`. Use `⟨c, fun y => ?_⟩` and prove the remaining obligations. Establish `e1` using `e' y.1 y.2`. Establish `e2 : b' = c • (b τ).1` using `(congrArg Subtype.val hc).symm`. Rewrite `e1` using `[e2]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Eq.trans ?_ e1` and prove the remaining obligations. Apply the tactic sequence `congr 1 <;> funext ρ <;> by_cases hρ : ρ = τ`. Substitute `hρ` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Function.update, hρ]`.
+Apply the first step, then apply the next step to every resulting obligation. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Substitute using the available equality.
 
-Substitute `hρ` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Function.update, hρ]`. Conclude with `⟨l, fun x v => hl fun τ => (x τ, v τ)⟩`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem sepLine_gap (hB : BurGapPos) (D : D7) (V A : HSp D) (S : D.what₂.Tau → SPar) (M : DSModel V S) (r : ℕ)
     (F : D.what₂.Tau → Matrix (Fin V.rank) (Fin A.rank) ℂ) (e : D.what₂.Tau → Matrix (Fin V.rank) (Fin r) ℂ)
@@ -115,7 +115,7 @@ open scoped ComplexOrder
 variable {D : D7}
 
 /- English proof (translation)
-Establish `hp : p = n`. Take `⟨e, _, _⟩` from `h`. Simplify using `using (Fintype.card_congr e).symm`. Substitute `hp` using the available equality. Conclude with `Formalism.IndefR.Fin.Lifts.posDef_of_sig G h`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify to obtain the desired conclusion from the available facts. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem posDef_of_hasSignature_zero_negative {n p : ℕ} (G : Matrix (Fin n) (Fin n) ℂ) (h : Formalism.UG.HasSignature G p 0) : G.PosDef := by
   have hp : p = n := by
@@ -125,11 +125,11 @@ theorem posDef_of_hasSignature_zero_negative {n p : ℕ} (G : Matrix (Fin n) (Fi
   exact Formalism.IndefR.Fin.Lifts.posDef_of_sig G h
 
 /- English proof (translation)
-Establish `h1` using `congrFun (congrFun d.gram ⟨ρ, by omega⟩) ⟨ρ, by omega⟩`. Establish `h2 : antiDiagonalSignGramMatrix c ε ⟨ρ, by omega⟩ ⟨ρ, by omega⟩ = ε`. Simplify using `only [antiDiagonalSignGramMatrix, if_true]`. Rewrite using `[if_pos (by omega)]`. Rewrite `h1` using `[h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `Eq.trans ?_ (congrArg (tauE D τ) h1)` and prove the remaining obligations. Use `show star _ ⬝ᵥ _ = _`. Simplify using `only [dotProduct, mulVec, gramAt, Matrix.mul_apply, Formalism.UG.cT, transpose_apply, map_apply, map_sum, map_mul, Pi.star_apply, HermitianOrthogonalExtensionData.besDat, Finset.mul_sum, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[show (D.sp.cm.sig : D.host.E →+* D.host.E) (d.a j ⟨ρ, by omega⟩) = star (d.a j ⟨ρ, by omega⟩) from rfl, Formalism.IndefR.Eqv.tauE_star]`. Simplify using `only [RCLike.star_def]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem besselDatum_middleVector_norm_eq {A B : HSp D} {c : ℕ} {ε : D.host.E} (d : HermitianOrthogonalExtensionData A B c ε) (hε : ε ≠ 0) (ρ : ℕ)
     (h : c = 2 * ρ + 1) (τ : D.what₂.Tau) :
@@ -152,13 +152,13 @@ theorem besselDatum_middleVector_norm_eq {A B : HSp D} {c : ℕ} {ε : D.host.E}
   ring
 
 /- English proof (translation)
-Establish `hv` using `G.sp.P_is D.R.m le_rfl`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Use `show 1 ≤ (G.sp.P D.R.m).sp.rank`. Rewrite using `[hv.rank]`. Simplify using `only [rankP, nRk]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Establish `e` using `besselDatum_middleVector_norm_eq (G.rowDec 0 (by have := D.R.two_le_m; omega)) (neg_ne_zero.2 one_ne_zero) ((D.R.m - 2) / 2) (by have := D.R.two_le_m; obtain ⟨a, ha⟩ := D.R.m_even; omega) τ`. Establish `e' : (fun k => tauE D τ (G.besTop.z k)) = fun k => tauE D τ (((G.rowDec 0 (by have` using `D.R.two_le_m; omega)).besDat (neg_ne_zero.2 one_ne_zero) ((D.R.m - 2) / 2) (by have := D.R.two_le_m; obtain ⟨a, ha⟩ := D.R.m_even; omega)).z k) := rfl`. Rewrite using `[e', e]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x hx`. Establish `hs` using `hv.sigOK (tauE D τ)`. Rewrite `hs` using `[hv.sig]`. Establish `hP : (gramAt D (G.V (.top 0)) τ).PosDef` using `posDef_of_hasSignature_zero_negative _ (by`. Establish `e0 : (D.R.m - D.R.m + 1) / 2 = 0` using `by omega`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hs` using `[e0]`. Conclude with `hs)`. Conclude with `hP.re_dotProduct_pos hx`.
+A detailed English derivation is pending.
 -/
 theorem topCfg {T : Type} {L : LevCh D T} {sc : Consts} (G : GridData L sc) (τ : D.what₂.Tau) :
     IsPosCfg (gramAt D (G.V (.grid D.R.m 0)) τ) (gramAt D (G.V (.top 0)) τ) (fun k => tauE D τ (G.besTop.z k)) := by
@@ -187,9 +187,9 @@ theorem topCfg {T : Type} {L : LevCh D T} {sc : Consts} (G : GridData L sc) (τ 
 end Cfg
 
 /- English proof (translation)
-Use `⟨GlobalTheory.T.isBesselFrame_of_besselDatum_realPlace D _ _ _ (G.rowDec 0 (by have := D.R.two_le_m; omega)).isom G.besTop τ, ?_⟩` and prove the remaining obligations. Use `⟨fun j => -(4 * Real.pi : ℂ) * tauE D τ (G.besTop.c j), fun j => ?_, fun u hu a ha => ?_⟩` and prove the remaining obligations. Use `mul_ne_zero (neg_ne_zero.2 (by exact_mod_cast (by positivity : (4 * Real.pi : ℝ) ≠ 0))) ?_` and prove the remaining obligations. Conclude with `(map_ne_zero _).2 (G.besTop.c_ne j)`. Take `⟨t, h1, h2, h3, h4⟩` from `GlobalTheory.T.besselCharacter_realPlace_unipotent_eq_trace D W.θ W.θ_is W.ψ _ _ _ G.besTop τ u hu a ha show besChar W.ψ G.besTop (atTau W.θ _ τ u) = _`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h4, GlobalTheory.T.standardChar_trace_single_realPlace D W.ψ W.ψ_std W.θ W.θ_is τ t h1 h2, h3, Finset.mul_sum]`. Simplify using `only [mul_assoc]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem lastVertex_besselDatum_isFrame_isGeneric {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} (W : G.Weil) (τ : D.what₂.Tau) :
     GlobalTheory.RealBessel.IsFrame (gramAt D (G.V (.grid D.R.m 0)) τ) (gramAt D (G.V (.top 0)) τ)
@@ -209,15 +209,15 @@ theorem lastVertex_besselDatum_isFrame_isGeneric {D : D7} {T : Type} {L : LevCh 
 set_option maxHeartbeats 1600000 in
 
 /- English proof (translation)
-Introduce `D hOff T L μ0 hL sc G W M hM S MB hgap`. Establish `hθ : IsInfFam W.θ` using `W.θ_is`. Take `⟨Wt, _, _, _, π, e, hirr, heq⟩` from `hCT D (G.V (.top 0)) W.θ (coefPlus G W.θ) hθ (GlobalTheory.TopLineProof.coefPlus_is G hθ)`. Take `⟨ℓ₀, hℓ₀⟩` from `sepLine_gap hB D (G.V (.grid D.R.m 0)) (G.V (.top 0)) S MB _ _ _ (fun τ k => tauE D τ (G.besTop.z k)) _ Wt π (fun τ => ⟨(lastVertex_besselDatum_isFrame_isGeneric W τ).1, (lastVertex_besselDatum_isFrame_isGeneric W τ).2, hirr τ⟩) (fun τ => topCfg G τ) hgap`. Establish `hx : Submodule.span ℂ (Set.range fun x : ∀ τ, Wt τ => e (PiTensorProduct.tprod ℂ x)) = ⊤`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h1 : (Set.range fun x : ∀ τ, Wt τ => e (PiTensorProduct.tprod ℂ x)) = (e : (⨂[ℂ] τ, Wt τ) →ₗ[ℂ] Module.Dual ℂ (coefPlus G W.θ).W) '' Set.range (PiTensorProduct.tprod ℂ)` using `Set.range_comp _ _`. Rewrite using `[h1, Submodule.span_image, PiTensorProduct.span_tprod_eq_top, Submodule.map_top, LinearEquiv.range]`. Establish `hy : Submodule.span ℂ (Set.range fun v : MB.Vec => PiTensorProduct.tprod ℂ v) = ⊤` using `PiTensorProduct.span_tprod_eq_top`. Distinguish the cases in `h : ∃ F₀ ∈ MultT W.θ MB ∅ 1, ∃ Ψ₀ ∈ Cols G W.θ, ∃ ξ v, Bplus W M (pairVec (coefPlus G W.θ) ξ Ψ₀) (F₀ v) ≠ 0`. Take `⟨F₀, hF₀, Ψ₀, hΨ₀, ξ₀, v₀, hne⟩` from `h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Use `⟨fun ξ v => Bplus W M (pairVec (coefPlus G W.θ) ξ Ψ₀) (F₀ v), fun F' hF' Ψ hΨ => ?_⟩` and prove the remaining obligations. Take `⟨⟨b₀, hb₀⟩, hs₀⟩` from `hTS D hOff T L μ0 hL sc G W M hM S MB F₀ hF₀ Ψ₀ hΨ₀`. Take `⟨⟨b, hb⟩, hs⟩` from `hTS D hOff T L μ0 hL sc G W M hM S MB F' hF' Ψ hΨ`. Take `⟨l₀, hl₀⟩` from `hℓ₀ _ (hs₀ Wt π e heq)`. Take `⟨l, hl⟩` from `hℓ₀ _ (hs Wt π e heq)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `key` using `GlobalTheory.TopLineProof.bilin_prop _ _ hx hy b b₀ ℓ₀ l l₀ (fun x v => (hb _ _).symm.trans (hl x v)) (fun x v => (hb₀ _ _).symm.trans (hl₀ x v)) fun h0 => hne (by rw [hb₀, h0]; rfl)`. Use `⟨l / l₀, fun ξ v => ?_⟩` and prove the remaining obligations. Rewrite using `[hb]`. Use `beta_reduce`. Rewrite using `[hb₀, key, LinearMap.smul_apply, LinearMap.smul_apply, smul_eq_mul, mul_comm]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Use `push_neg at h`. Conclude with `⟨0, fun F' hF' Ψ hΨ => ⟨0, fun ξ v => by rw [h F' hF' Ψ hΨ ξ v, mul_zero]⟩⟩`.
+A detailed English derivation is pending.
 -/
 theorem topLine_gap (hB : BurGapPos) (hCT : CoefTensor) (hTS : TopSep) :
     All fun {D} _ _ _ {G} W M => ∀ (S : D.what₂.Tau → SPar) (MB : DSModel (G.V (.grid D.R.m 0)) S), HasGap MB →
@@ -254,9 +254,9 @@ theorem topLine_gap (hB : BurGapPos) (hCT : CoefTensor) (hTS : TopSep) :
     exact ⟨0, fun F' hF' Ψ hΨ => ⟨0, fun ξ v => by rw [h F' hF' Ψ hΨ ξ v, mul_zero]⟩⟩
 
 /- English proof (translation)
-Take `⟨S, MB, rfl, -, vec, hv⟩` from `hT D q s T L μ0 hμ sc hc G W M hM M₀ h₀ D.R.m le_rfl`. Take `⟨ℓ, hℓ⟩` from `topLine_gap hB hCT hTS D q T L μ0 hμ sc G W M hM _ MB fun τ => Gap.fit_gap large₂ hsz hμ hc G MB τ`. Use `⟨fun ρ ξ => ℓ ξ (vec ρ w), fun t ht Ψ hΨ Φ => ?_⟩` and prove the remaining obligations. Establish `ht' : t ∈ MultT W.θ M₀ ∅ 1` using `factor_multT_le_empty _ _ _ _ ht`. Take `⟨F', hF, hF'⟩` from `hv t ht' Φ`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨l, hl⟩` from `hℓ F' hF Ψ hΨ`. Use `⟨l, fun ρ ξ => ?_⟩` and prove the remaining obligations. Establish `e : thetaChi W M ρ Φ (t w) = F' (vec ρ w)` using `(part_m W M ρ Φ (t w)).symm.trans (hF' ρ w).2`. Rewrite using `[← hl, ← e]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem factor_gap (hB : BurGapPos) (hCT : CoefTensor) (hTS : TopSep) (hT : RowTower) (D : D7) (large₂ : SizeData₂ D)
     (hsz : SizeRows large₂) (q : OffQ D) (s : GlobalTheory.IndefiniteRowSideFullHecke.CuspAlongSmoothLifts.Sizes D) (T : Type) (L : LevCh D T) (μ0 : T) (hμ : L.Is μ0)
@@ -276,19 +276,17 @@ theorem factor_gap (hB : BurGapPos) (hCT : CoefTensor) (hTS : TopSep) (hT : RowT
   rfl
 
 /- English proof (translation)
-Introduce `hS hG hC hW ε CF hCF`. Take `⟨x₁, hx₁⟩` from `hS ε`. Take `⟨x₂, hx₂⟩` from `hW ε CF hCF`. Use `⟨max x₁ x₂, ?_⟩` and prove the remaining obligations. Introduce `D large₂ he hx hsz _ Γ _ _ Pl0 T A Ks _ _ _ R hL _ G W hO M hM w hw`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hSz : GlobalTheory.IndefiniteRowSideFullHecke.CuspAlongSmoothLifts.Sizes D` using `hx₁ D large₂ he (le_of_max_le_left hx) hsz`. Establish `hQ : OffQ D` using `offQ_of_sizeRows hsz`. Establish `hm : 0 < D.R.m` using `by have := hsz.2.2.2.1; omega`. Set `M₀ : DSModel (Yc D 0) (parB (Ptw D) 0)` to `R.MY 0`. Establish `hc : cart M₀ = W.cart (.grid 0 0)` using `(eq_of_heq (hO.cartY 0 hm)).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hWS` using `hx₂ D large₂ he (le_of_max_le_right hx) hsz T R.toLevCh A.μ0 hL G W M hM M₀ hc`. Take `⟨a, ha⟩` from `factor_gap hB hCT hTS hT D large₂ hsz hQ hSz T R.toLevCh A.μ0 hL ⟨1, CF, large₂.sc.b⟩ rfl G W M hM M₀ hc w`. Establish `hCo` using `hC D hQ hSz T R.toLevCh A.μ0 hL ⟨1, CF, large₂.sc.b⟩ rfl G W M hM M₀ hc`. Establish `hrow : ∀ t ∈ R.EEat R.triv, PiTensorProduct.lift t ∈ Rows R.toLevCh W.θ M₀`. Introduce `t ht`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hO.θ]`. Conclude with `hG D Γ Pl0 T A Ks R hL t ht`. Establish `hlift : ∀ t : Mult.MMap (R.MY 0), t ≠ 0 → PiTensorProduct.lift t ≠ 0` using `fun t hne h => hne (PiTensorProduct.lift.injective (h.trans (map_zero _).symm))`. Distinguish the cases in `h0 : ∃ t ∈ R.EEat R.triv, t ≠ 0`. Take `⟨t₀, ht₀, hne⟩` from `h0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨ρ₀, ξ₀, Ψ₀, hΨ₀, Φ₀, hf₀⟩` from `hWS _ (hrow t₀ ht₀) (hlift t₀ hne) w hw`. Take `⟨l₀, hl₀⟩` from `ha _ (hrow t₀ ht₀) Ψ₀ hΨ₀ Φ₀`. Establish `ha0 : a ρ₀ ξ₀ ≠ 0` using `fun h => hf₀ (by rw [hl₀, h, zero_mul])`. Use `⟨ρ₀, ξ₀, fun t ht htne => ?_⟩` and prove the remaining obligations. Take `⟨ρ, ξ, Ψ, hΨ, Φ, hf⟩` from `hWS _ (hrow t ht) (hlift t htne) w hw`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨l, hl⟩` from `ha _ (hrow t ht) Ψ hΨ Φ`. Establish `hl' : l ≠ 0` using `fun h => hf (by rw [hl, h, mul_zero])`. Use `⟨Ψ, hΨ, Φ, hCo _ (hrow t ht) w ρ₀ ξ₀ Ψ hΨ Φ, ?_⟩` and prove the remaining obligations. Introduce `h`. Conclude with `mul_ne_zero ha0 hl' ((hl ρ₀ ξ₀).symm.trans h)`.
-
-Use `push_neg at h0`. Conclude with `⟨Classical.arbitrary _, 0, fun t ht htne => absurd (h0 t ht) htne⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem separate_of_burGapPos (hB : BurGapPos) (hCT : CoefTensor) (hTS : TopSep) (hT : RowTower) :
     SizeGap → GoodRows → RowConv → WeakSep → GlobalTheory.IndefiniteRowSideFullHecke.LevelPlusSubgroup.FunctionalsSeparate := by

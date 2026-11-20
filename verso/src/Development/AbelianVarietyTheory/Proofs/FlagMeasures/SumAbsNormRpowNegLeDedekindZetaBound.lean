@@ -8,17 +8,17 @@ open scoped ArithmeticFunction.zeta
 namespace GlobalTheory.IdealZetaSum
 
 /- English proof (translation)
-Establish `hs1 : 0 < s - 1` using `by linarith`. Break down `Nat.eq_zero_or_pos N with rfl | hN` into its components or cases. Simplify using `only [Ioc_self, sum_empty]`. Check the signs of the components of the expression. Establish `hN1 : (1 : ℝ) ≤ N` using `by exact_mod_cast hN`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Check the signs of the components of the expression. Establish an intermediate fact.
 
-Establish `hanti : AntitoneOn (fun x : ℝ => x ^ (-s)) (Set.Icc ((1 : ℕ) : ℝ) (N : ℝ))`. Introduce `x hx y _ hxy`. Establish `: (1 : ℝ) ≤ x` using `by simpa using hx.1`. Conclude with `Real.rpow_le_rpow_of_nonpos (by linarith) hxy (by linarith)`. Establish `h` using `AntitoneOn.sum_le_integral_Ico hN hanti`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[integral_rpow (Or.inr ⟨by linarith, by`. Rewrite `h` using `[Set.uIcc_of_le (by simpa using hN1)]; simp⟩)]`. Establish `e : ∑ n ∈ Ioc 0 N, (n : ℝ) ^ (-s) = 1 + ∑ i ∈ Ico 1 N, (((i + 1 : ℕ) : ℝ)) ^ (-s)`. Rewrite using `[sum_Ico_add' (fun n : ℕ => (n : ℝ) ^ (-s)) 1 N 1]`. Establish `: Ioc 0 N = insert 1 (Ico (1 + 1) (N + 1))`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `n`. Simplify using `only [mem_Ioc, mem_insert, mem_Ico]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[this, sum_insert (by simp)]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Establish `hpos : 0 ≤ (N : ℝ) ^ (-s + 1)` using `by positivity`. Establish `h2 : ((N : ℝ) ^ (-s + 1) - ((1 : ℕ) : ℝ) ^ (-s + 1)) / (-s + 1) ≤ 1 / (s - 1)`. Rewrite using `[Nat.cast_one, Real.one_rpow, show -s + 1 = -(s - 1) by ring, div_neg, ← neg_div]`. Rewrite `hpos` using `[show -s + 1 = -(s - 1) by ring]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `div_le_div_of_nonneg_right (by linarith) hs1.le`. Establish `h3 : s / (s - 1) = 1 + 1 / (s - 1)` using `by field_simp; ring`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem sum_Ioc_rpow_neg_le {s : ℝ} (hs : 1 < s) (N : ℕ) :
     ∑ n ∈ Ioc 0 N, (n : ℝ) ^ (-s) ≤ s / (s - 1) := by
@@ -50,17 +50,17 @@ theorem sum_Ioc_rpow_neg_le {s : ℝ} (hs : 1 < s) (N : ℕ) :
   linarith
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero`. Simplify using `only [pow_zero, ArithmeticFunction.one_apply, Nat.cast_ite, Nat.cast_one, Nat.cast_zero, ite_mul, one_mul, zero_mul, sum_ite_eq']`. Apply the tactic sequence `split_ifs <;> simp`. Consider the case `succ k ih`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Treat this case separately.
 
-Rewrite using `[pow_succ (∑ n ∈ Ioc 0 N, (n : ℝ) ^ (-s))]`. Use `le_trans ?_ (mul_le_mul_of_nonneg_right ih (sum_nonneg fun n _ => by positivity))` and prove the remaining obligations. Rewrite using `[sum_mul_sum, ← sum_product', pow_succ]`. Establish `e : ∀ n ∈ Ioc 0 N, (((ζ ^ k * ζ : ArithmeticFunction ℕ) n : ℕ) : ℝ) * (n : ℝ) ^ (-s) = ∑ x ∈ (Ioc 0 N ×ˢ Ioc 0 N).filter (fun x => x.1 * x.2 = n), (((ζ ^ k : ArithmeticFunction ℕ) x.1 : ℕ) : ℝ) * (x.1 : ℝ) ^ (-s) * (x.2 : ℝ) ^ (-s)`. Introduce `n hn`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hn` using `[mem_Ioc]`. Rewrite using `[ArithmeticFunction.mul_apply, Nat.cast_sum, sum_mul]`. Use `sum_congr ?_ ?_` and prove the remaining obligations. Use extensionality with `x`. Simplify using `only [Nat.mem_divisorsAntidiagonal, mem_filter, mem_product, mem_Ioc]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h, h0⟩`. Establish `h1 : 0 < x.1` using `Nat.pos_of_ne_zero (by rintro h1; rw [h1] at h; omega)`. Establish `h2 : 0 < x.2` using `Nat.pos_of_ne_zero (by rintro h1; rw [h1] at h; omega)`. Apply the tactic sequence `refine ⟨⟨⟨h1, ?_⟩, h2, ?_⟩, h⟩ <;> nlinarith`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Introduce and unpack `⟨_, h⟩`. Conclude with `⟨h, by omega⟩`. Introduce `x hx`. Simplify using `only [mem_filter, mem_product, mem_Ioc] at hx`. Rewrite using `[← hx.2, Nat.cast_mul, Nat.cast_mul, Real.mul_rpow (by positivity) (by positivity), ArithmeticFunction.zeta_apply_ne hx.1.2.1.ne']`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[mul_assoc]`. Rewrite using `[sum_congr rfl e, sum_fiberwise_eq_sum_filter]`. Conclude with `sum_le_sum_of_subset_of_nonneg (filter_subset _ _) fun x _ _ => by positivity`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_zeta_pow_mul_rpow_le (s : ℝ) (N k : ℕ) :
     ∑ n ∈ Ioc 0 N, (((ζ ^ k : ArithmeticFunction ℕ) n : ℕ) : ℝ) * (n : ℝ) ^ (-s)
@@ -99,11 +99,11 @@ theorem sum_zeta_pow_mul_rpow_le (s : ℝ) (N k : ℕ) :
     exact sum_le_sum_of_subset_of_nonneg (filter_subset _ _) fun x _ _ => by positivity
 
 /- English proof (translation)
-Introduce `K _ _ s hs S hS`. Use `set N := S.sup (fun I => Ideal.absNorm I) with hN`. Use `le_trans ?_ (pow_le_pow_left₀ (sum_nonneg fun n _ => by positivity) (sum_Ioc_rpow_neg_le hs N) _)` and prove the remaining obligations. Use `le_trans ?_ (sum_zeta_pow_mul_rpow_le s N _)` and prove the remaining obligations. Rewrite using `[← sum_fiberwise_of_maps_to (s := S) (t := Ioc 0 N) (g := fun I => Ideal.absNorm I)]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `sum_le_sum fun n hn => ?_` and prove the remaining obligations. Rewrite using `[sum_congr rfl (g := fun _ => (n : ℝ) ^ (-s)) (fun I hI => by rw [(mem_filter.mp hI).2]), sum_const, nsmul_eq_mul]`. Use `mul_le_mul_of_nonneg_right ?_ (by positivity)` and prove the remaining obligations. Rewrite using `[Nat.cast_le]`. Use `le_trans ?_ (ncard_ideal_absNorm_eq_le K (mem_Ioc.mp hn).1.ne')` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Set.ncard_coe_finset]`. Conclude with `Set.ncard_le_ncard (fun I hI => (mem_filter.mp (mem_coe.mp hI)).2) (Ideal.finite_setOfPred_absNorm_eq n)`. Introduce `I hI`. Rewrite using `[mem_Ioc]`. Conclude with `⟨Nat.pos_of_ne_zero (by rw [Ne, Ideal.absNorm_eq_zero_iff]; exact hS I hI), le_sup (f := fun I => Ideal.absNorm I) hI⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem sum_absNorm_rpow_neg_le : ∀ (K : Type) [Field K] [NumberField K] (s : ℝ), 1 < s →
     ∀ (S : Finset (Ideal (𝓞 K))), (∀ I ∈ S, I ≠ ⊥) →

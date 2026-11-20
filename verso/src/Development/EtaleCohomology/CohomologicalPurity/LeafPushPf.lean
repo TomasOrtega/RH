@@ -18,7 +18,7 @@ def phi (α : D' ⟶ G ⋙ D) (U : Scheme.{0}ᵒᵖ) : (D'.flip.obj U).Elements 
   map_comp g g' := Subtype.ext (G.map_comp g.1 g'.1)
 
 /- English proof (translation)
-Use `CategoryTheory.Functor.ext ho (fun x y g => ?_)` and prove the remaining obligations. Apply `(CategoryOfElements.π F).map_injective` to reduce the goal to its premises. Rewrite using `[Functor.map_comp, Functor.map_comp, eqToHom_map, eqToHom_map]`. Conclude with `Functor.congr_hom hm g`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem elem_ext {X : Type} [Category X] {F : J ⥤ Type} (A B : X ⥤ F.Elements) (ho : ∀ x, A.obj x = B.obj x)
     (hm : A ⋙ CategoryOfElements.π F = B ⋙ CategoryOfElements.π F) : A = B := by
@@ -28,7 +28,7 @@ theorem elem_ext {X : Type} [Category X] {F : J ⥤ Type} (A B : X ⥤ F.Element
   exact Functor.congr_hom hm g
 
 /- English proof (translation)
-The claim follows from `elem_ext _ _ (fun e => by have h := ConcreteCategory.congr_hom ((α.app e.1).naturality f) e.2 exact Sigma.ext rfl (heq_of_eq h.symm)) rfl`.
+A detailed English derivation is pending.
 -/
 theorem phi_nat (α : D' ⟶ G ⋙ D) {U U' : Scheme.{0}ᵒᵖ} (f : U ⟶ U') :
     phi α U ⋙ CategoryOfElements.map (D.flip.map f) = CategoryOfElements.map (D'.flip.map f) ⋙ phi α U' :=
@@ -48,7 +48,7 @@ def bmap (α : D' ⟶ G ⋙ D) : hoc D' ⟶ hoc D where
     rfl
 
 /- English proof (translation)
-Use extensionality with `n U x`. Conclude with `ConcreteCategory.congr_hom (NatTrans.congr_app (h ((chn x).obj 0).1) U) ((chn x).obj 0).2`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem goal (α : D' ⟶ G ⋙ D) {Y' Y : PSh} (f : Y' ⟶ Y) (c' : ∀ j, D'.obj j ⟶ Y') (c : ∀ j, D.obj j ⟶ Y) (hc' : Coc D' c') (hc : Coc D c)
   (h : ∀ j, α.app j ≫ c (G.obj j) = c' j ≫ f) : bmap α ≫ aug c hc = aug c' hc' ≫ disc.map f := by
@@ -58,7 +58,7 @@ theorem goal (α : D' ⟶ G ⋙ D) {Y' Y : PSh} (f : Y' ⟶ Y) (c' : ∀ j, D'.o
 end PushPf
 
 /- English proof (translation)
-Introduce `_ _ _ _ _ _ _ α _ _ f c' c hc' hc h` and use `⟨PushPf.bmap α, PushPf.goal α f c' c hc' hc h⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem LeafPush_of : LeafPush := fun _ _ _ _ _ _ _ α _ _ f c' c hc' hc h => ⟨PushPf.bmap α, PushPf.goal α f c' c hc' hc h⟩
 

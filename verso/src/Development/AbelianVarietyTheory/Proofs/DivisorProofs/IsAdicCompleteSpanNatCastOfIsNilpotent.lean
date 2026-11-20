@@ -12,7 +12,7 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory
 
 /- English proof (translation)
-Take `⟨N, hN⟩` from `h`. Use `⟨N, ?_⟩` and prove the remaining obligations. Rewrite using `[Ideal.span_singleton_pow, hN, smul_eq_mul, Ideal.mul_top]`. Simplify using the standard rewrite rules.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem span_natCast_pow_eq_bot_of_isNilpotent (p : ℕ) (R : Type) [CommRing R]
     (h : IsNilpotent (p : R)) : ∃ N : ℕ, Ideal.span {(p : R)} ^ N • (⊤ : Submodule R R) = ⊥ := by
@@ -22,11 +22,11 @@ theorem span_natCast_pow_eq_bot_of_isNilpotent (p : ℕ) (R : Type) [CommRing R]
   simp
 
 /- English proof (translation)
-Introduce `p R _ h`. Take `⟨N, hN⟩` from `span_natCast_pow_eq_bot_of_isNilpotent p R h`. Use `{ haus' := ?_, prec' := ?_ }` and prove the remaining obligations. Introduce `x hx`. Use `hx N` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `this` using `[hN, SModEq.bot]`. Then use the resulting hypothesis. Introduce `f hf`. Use `⟨f N, fun n => ?_⟩` and prove the remaining obligations. Break down `le_total n N with hn | hn` into its components or cases. Conclude with `hf hn`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Establish `h1` using `hf hn`. Rewrite `h1` using `[hN, SModEq.bot]`. Rewrite using `[h1]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isAdicComplete_span_natCast_of_isNilpotent :
     ∀ (p : ℕ) (R : Type) [CommRing R], IsNilpotent (p : R) →

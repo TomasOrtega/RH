@@ -10,7 +10,7 @@ open GlobalTheory.SplitWeil ValuativeRel
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Take `⟨g, rfl⟩` from `hh`. Conclude with `(g.val a b).2`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem val_le_one_of_mem_KO {n : Type} [Fintype n] [DecidableEq n] {h : GL n k} (hh : h ∈ KO k n) (a b : n) :
     valuation k (h.val a b) ≤ 1 := by
@@ -18,7 +18,7 @@ theorem val_le_one_of_mem_KO {n : Type} [Fintype n] [DecidableEq n] {h : GL n k}
   exact (g.val a b).2
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_apply]`. Conclude with `Valuation.map_sum_lt _ one_ne_zero fun c _ => by`. Rewrite using `[map_mul]`. Conclude with `Right.mul_lt_one_of_le_of_lt (val_le_one_of_mem_KO hh a c) (hg c)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem val_col_lt {n : Type} [Fintype n] [DecidableEq n] {h g : GL n k} (hh : h ∈ KO k n) (b : n)
     (hg : ∀ c, valuation k ((g.val - 1) c b) < 1) (a : n) : valuation k ((h.val * (g.val - 1)) a b) < 1 := by
@@ -53,7 +53,7 @@ def blockChar {r t : ℕ} (χ : kˣ →* ℂˣ) (h : GL (Fin (r + t)) k) : ℂ :
   if hd : (h.val.submatrix (Fin.natAdd r) (Fin.natAdd r)).det = 0 then 0 else (χ (Units.mk0 _ hd) : ℂ)
 
 /- English proof (translation)
-Establish `hd : (h.val.submatrix (Fin.natAdd r) (Fin.natAdd r)).det ≠ 0` using `hu ▸ u.ne_zero`. Rewrite using `[blockChar, dif_neg hd]`. Use `congr 2`. Use `ext`. Simplify using `[hu]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem blockChar_eq {r t : ℕ} (χ : kˣ →* ℂˣ) (h : GL (Fin (r + t)) k) (u : kˣ)
     (hu : (u : k) = (h.val.submatrix (Fin.natAdd r) (Fin.natAdd r)).det) : blockChar χ h = χ u := by
@@ -63,11 +63,11 @@ theorem blockChar_eq {r t : ℕ} (χ : kˣ →* ℂˣ) (h : GL (Fin (r + t)) k) 
   ext; simp [hu]
 
 /- English proof (translation)
-Use `⟨hK, fun a j => ?_⟩` and prove the remaining obligations. Use `Fin.addCases (fun i => ?_) (fun i => ?_) a` and prove the remaining obligations. Use `h2 i j` as an intermediate fact. Simplify `this` using `[Matrix.sub_apply, Matrix.one_apply, Fin.castAdd_inj]`. Use `h1 i j` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hne : Fin.natAdd r i ≠ Fin.castAdd t j`. Introduce `e`. Use `congrArg Fin.val e` as an intermediate fact. Simplify using `at this`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Simplify `this` using `[Matrix.sub_apply, Matrix.one_apply, hne]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem mem_blockGrp {r t : ℕ} {h : GL (Fin (r + t)) k} (hK : h ∈ KO k (Fin (r + t)))
     (h1 : ∀ (i : Fin t) (j : Fin r), valuation k (h.val (Fin.natAdd r i) (Fin.castAdd t j)) < 1)
@@ -83,7 +83,7 @@ theorem mem_blockGrp {r t : ℕ} {h : GL (Fin (r + t)) k} (hK : h ∈ KO k (Fin 
     simpa [Matrix.sub_apply, Matrix.one_apply, hne] using this
 
 /- English proof (translation)
-Introduce `h hK h1 h2 u hu`. Rewrite using `[hv h (mem_blockGrp hK h1 h2), blockChar_eq χ h u hu]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem isBlockVec_of {r t : ℕ} {W : Type} [AddCommGroup W] [Module ℂ W] (χ : kˣ →* ℂˣ)
     (π : Representation ℂ (GL (Fin (r + t)) k) W) (v : W)
@@ -92,11 +92,11 @@ theorem isBlockVec_of {r t : ℕ} {W : Type} [AddCommGroup W] [Module ℂ W] (χ
   rw [hv h (mem_blockGrp hK h1 h2), blockChar_eq χ h u hu]
 
 /- English proof (translation)
-Introduce and unpack `_ ⟨g, hg, rfl⟩`. Use `⟨⟨g, rfl⟩, fun a j => ?_⟩` and prove the remaining obligations. Establish `hg' : ∀ a b, IsLocalRing.residue 𝒪[k] (g.val a b) = (1 : Matrix (Fin (r + t)) (Fin (r + t)) 𝓀[k]) a b`. Introduce `a b`. Use `congrArg (fun x : GL (Fin (r + t)) 𝓀[k] => x.val a b) hg` as an intermediate fact.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `using this`. Establish `hm : g.val a (Fin.castAdd t j) - (1 : Matrix (Fin (r + t)) (Fin (r + t)) 𝒪[k]) a (Fin.castAdd t j) ∈ 𝓂[k]`. Rewrite using `[← IsLocalRing.residue_eq_zero_iff, map_sub, hg']`. Apply the tactic sequence `by_cases e : a = Fin.castAdd t j <;> simp [Matrix.one_apply, e]`. Use `Valuation.Integer.not_isUnit_iff_valuation_lt_one.mp ((IsLocalRing.mem_maximalIdeal _).1 hm)` as an intermediate fact.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Establish `e : ((Matrix.GeneralLinearGroup.map (algebraMap 𝒪[k] k) g).val - 1) a (Fin.castAdd t j) = ((g.val a (Fin.castAdd t j) - (1 : Matrix (Fin (r + t)) (Fin (r + t)) 𝒪[k]) a (Fin.castAdd t j) : 𝒪[k]) : k)`. Apply the tactic sequence `by_cases e : a = Fin.castAdd t j <;> simp [Matrix.one_apply, e] <;> rfl`. Rewrite using `[e]`. Conclude with `this`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kOne_le_blockGrp (r t : ℕ) : KOne k (Fin (r + t)) ≤ blockGrp k r t := by
   rintro _ ⟨g, hg, rfl⟩
@@ -115,13 +115,13 @@ theorem kOne_le_blockGrp (r t : ℕ) : KOne k (Fin (r + t)) ≤ blockGrp k r t :
   rw [e]; exact this
 
 /- English proof (translation)
-Take `⟨g, hg, rfl⟩` from `hh`. Establish `hg' : (g.val.submatrix (Fin.natAdd r) (Fin.natAdd r)).map (IsLocalRing.residue 𝒪[k]) = 1`. Use `congrArg (fun x : GL (Fin (r + t)) 𝓀[k] => x.val) hg` as an intermediate fact. Use extensionality with `a b`. Establish `h2` using `congrArg (fun M : Matrix (Fin (r + t)) (Fin (r + t)) 𝓀[k] => M (Fin.natAdd r a) (Fin.natAdd r b)) this`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Simplify `h2` using `[Matrix.one_apply, Fin.natAdd_inj]`. Establish `hm : (g.val.submatrix (Fin.natAdd r) (Fin.natAdd r)).det - 1 ∈ 𝓂[k]`. Rewrite using `[← IsLocalRing.residue_eq_zero_iff, map_sub, RingHom.map_det, RingHom.mapMatrix_apply, hg', Matrix.det_one, map_one, sub_self]`. Establish `hv` using `Valuation.Integer.not_isUnit_iff_valuation_lt_one.mp ((IsLocalRing.mem_maximalIdeal _).1 hm)`. Establish `e : ((Matrix.GeneralLinearGroup.map (algebraMap 𝒪[k] k) g).val.submatrix (Fin.natAdd r) (Fin.natAdd r)).det = (((g.val.submatrix (Fin.natAdd r) (Fin.natAdd r)).det : 𝒪[k]) : k)`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[show ((g.val.submatrix (Fin.natAdd r) (Fin.natAdd r)).det : k) = algebraMap 𝒪[k] k (g.val.submatrix (Fin.natAdd r) (Fin.natAdd r)).det from rfl, RingHom.map_det]`. Both sides reduce to the same expression. Establish `hne : (((g.val.submatrix (Fin.natAdd r) (Fin.natAdd r)).det : 𝒪[k]) : k) ≠ 0`. Introduce `h0`. Establish `: (((g.val.submatrix (Fin.natAdd r) (Fin.natAdd r)).det - 1 : 𝒪[k]) : k) = -1` using `by push_cast; rw [h0]; ring`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `hv` using `[this, Valuation.map_neg, map_one]`. Conclude with `lt_irrefl _ hv`. Rewrite using `[blockChar_eq χ _ (Units.mk0 _ hne) e.symm, hχ (Units.mk0 _ hne) (by simpa using hv)]`. Simplify using the standard rewrite rules.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem blockChar_kOne {r t : ℕ} (χ : kˣ →* ℂˣ) (hχ : IsTame χ) {h : GL (Fin (r + t)) k}
     (hh : h ∈ KOne k (Fin (r + t))) : blockChar χ h = 1 := by

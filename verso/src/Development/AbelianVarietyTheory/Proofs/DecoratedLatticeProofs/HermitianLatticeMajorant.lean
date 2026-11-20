@@ -13,21 +13,19 @@ namespace GlobalTheory.SelfDualSlope
 open Formalism.L2.GlobalTheoryTheory.HLatOps
 
 /- English proof (translation)
-Introduce `K _ _ _ _ K0 hK0 v0 hv0 A n H e M hG hr hH0 hgram hL hdual`. Establish `hs : IsSesq (fun v (x y : Fin n → K) => Formalism.HermitianLatticesTheory.majAt A.b A.X v (e.toLinearMap x) (e.toLinearMap y))` using `isSesq_comp (isSesq_maj A.b A.X) e.toLinearMap`. Establish `hg : ∀ v : InfinitePlace K, gramOf (Pi.basisFun K (Fin n)) (fun (x y : Fin n → K) => Formalism.HermitianLatticesTheory.majAt A.b A.X v (e.toLinearMap x) (e.toLinearMap y)) = H.map v.embedding`. Introduce `v`. Use extensionality with `i j`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Simplify using `only [gramOf, Matrix.of_apply, Pi.basisFun_apply, Matrix.map_apply]`. Conclude with `hgram v i j`. Establish `hpos : ∀ v : InfinitePlace K, (H.map v.embedding).PosDef`. Introduce `v`. Rewrite using `[← hg v]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `posAt_comp A.b (Pi.basisFun K (Fin n)) (isSesq_maj A.b A.X) (posAt_maj A.b A.X hG.1) e.toLinearMap e.injective v`. Establish `hX` using `Formalism.L2.DIV.stdFrameRatHerm K K0 n H hH0 hpos`. Set `B : HLat K` to `Formalism.L2.DIV.toHLat (Formalism.L2.DIV.stdFrame H) M`. Set `I : Iso B A` to `{ e := e map_L := hL.symm norm := by`. Introduce `v x`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[normAt_eq_sqrt, normAt_eq_sqrt]`. Use `congr 2`. Establish `h1` using `sesq_eq_sum hs (Pi.basisFun K (Fin n)) v x x`. Establish `h2` using `sesq_eq_sum (isSesq_maj (Pi.basisFun K (Fin n)) (Formalism.L2.DIV.stdFrame H)) (Pi.basisFun K (Fin n)) v x x`. Rewrite `h2` using `[gramOf_maj]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h3 : ((Formalism.L2.DIV.stdFrame H v)⁻¹).conjTranspose * (Formalism.L2.DIV.stdFrame H v)⁻¹ = H.map v.embedding` using `(Formalism.L2.DIV.frameOfSpec n _ (hpos v)).2`. Rewrite `h2` using `[h3]`. Rewrite `h1` using `[hg v]`. Conclude with `h1.trans h2.symm }`. Establish `hB : B.Good` using `I.symm.good hG`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `hlat : Submodule.IsLattice K M` using `⟨hB.2.1, hB.2.2⟩`. Establish `hn : 0 < n`. Break down `Nat.eq_zero_or_pos n with h | h` into its components or cases. It suffices to derive a contradiction. Substitute `h` using the available equality.
+It suffices to derive a contradiction. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h1 : B.rank = A.rank` using `I.rank_eq`. Establish `h2 : B.rank ≤ Module.finrank K (Fin 0 → K)` using `Submodule.finrank_le (R := K) (M := Fin 0 → K) _`. Simplify using `at h2`. Use linear arithmetic over natural numbers and integers. Conclude with `h`.
-
-Establish `hmain` using `GlobalTheory.T.hermitian_self_dual_max_slope K K0 hK0 v0 hv0 n H _ hX M hlat hdual hn`. Rewrite using `[← (iso_inv_dual K B A I hB).2.1]`. Conclude with `hmain`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem muMaxDual_nonpos_of_rat_coord : ∀ (K : Type) [Field K] [NumberField K] [StarRing K] [IsTotallyComplex K] (K0 : Subfield K), IsCMSub K0 → ∀ v0 : InfinitePlace K, IsConjAt v0 → ∀ (A : HLat K) (n : ℕ) (H : Matrix (Fin n) (Fin n) K) (e : (Fin n → K) ≃ₗ[K] A.V) (M : Submodule (𝓞 K) (Fin n → K)), A.Good → 0 < A.rank → (∀ i j, H i j ∈ K0) → (∀ (v : InfinitePlace K) (i j : Fin n), Formalism.HermitianLatticesTheory.majAt A.b A.X v (e (Pi.single i 1)) (e (Pi.single j 1)) = v.embedding (H i j)) → A.L = M.map (e.toLinearMap.restrictScalars (𝓞 K)) → Formalism.HermitianLatticesTheory.dual (hform H) M ≤ M → A.muMaxDual ≤ 0 := by
   intro K _ _ _ _ K0 hK0 v0 hv0 A n H e M hG hr hH0 hgram hL hdual

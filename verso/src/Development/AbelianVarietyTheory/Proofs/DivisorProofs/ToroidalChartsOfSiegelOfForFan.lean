@@ -6,7 +6,7 @@ import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsFineIn
 namespace GlobalTheory.Published
 
 /- English proof (translation)
-Use `hF.toroidalCharts fun E _ _ _ H q => ?_` and prove the remaining obligations. Take `⟨φs, hφ, -⟩` from `hS (Module.finrank ℚ E * q + 1) (Nat.le_add_left _ _)`. Take `⟨φ, h₁, h₂, -⟩` from `GlobalTheory.PolFan.exists_fine_invariant_fan H hφ (Nat.le_succ _) ∅ (by simp)`. Conclude with `⟨φ, h₁, h₂⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem toroidalCharts_of_siegel_of_forFan (hS : GlobalTheory.Published.SiegelToroidalIntegral) (hF : GlobalTheory.Published.ToroidalChartsForFan) :
     GlobalTheory.Published.ToroidalCharts := by

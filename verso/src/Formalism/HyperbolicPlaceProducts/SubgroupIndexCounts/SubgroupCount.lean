@@ -6,11 +6,11 @@ namespace Formalism.SLP.P
 open AddSubgroup
 
 /- English proof (translation)
-Establish `hker : (AddMonoidHom.snd ℤ A).ker = (AddMonoidHom.inl ℤ A).range`. Use extensionality with `⟨x, y⟩`. Rewrite using `[AddMonoidHom.mem_ker, AddMonoidHom.mem_range]`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨x, ?_⟩` and prove the remaining obligations. Simplify using `at h`. Simplify using `[h]`. Introduce and unpack `⟨z, hz⟩`. Simplify using `[← hz]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 
-Establish `hr : (AddMonoidHom.snd ℤ A).range = ⊤` using `AddMonoidHom.range_eq_top.mpr (fun y => ⟨(0, y), rfl⟩)`. Rewrite using `[index_map, hr, index_top, mul_one, index_comap, ← hker, ← relIndex_sup_left (K := H) (H := (AddMonoidHom.snd ℤ A).ker), relIndex_mul_index le_sup_left]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 lemma index_prod_eq {A : Type*} [AddCommGroup A] (H : AddSubgroup (ℤ × A)) :
     H.index = (H.comap (AddMonoidHom.inl ℤ A)).index *
@@ -32,22 +32,22 @@ lemma index_prod_eq {A : Type*} [AddCommGroup A] (H : AddSubgroup (ℤ × A)) :
     relIndex_mul_index le_sup_left]
 
 /- English proof (translation)
-Take `⟨a, rfl⟩` from `Int.subgroup_cyclic D`. Rewrite using `[← zmultiples_eq_closure, Int.index_zmultiples, Int.zmultiples_natAbs]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 lemma eq_zmultiples_index (D : AddSubgroup ℤ) : D = zmultiples (D.index : ℤ) := by
   obtain ⟨a, rfl⟩ := Int.subgroup_cyclic D
   rw [← zmultiples_eq_closure, Int.index_zmultiples, Int.zmultiples_natAbs]
 
 /- English proof (translation)
-Introduce `h hh`. Establish `hle : H₁.map (AddMonoidHom.snd ℤ A) ≤ (H₁ ⊓ H₂).map (AddMonoidHom.snd ℤ A)`. Rewrite using `[← hv, closure_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Take `⟨x, hx⟩` from `hlift i`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨(x, v i), hx, rfl⟩`. Take `⟨t, ht, hts⟩` from `hle ⟨h, hh, rfl⟩`. Establish `hts' : t.2 = h.2` using `hts`. Establish `h1 : (h.1 - t.1, (0 : A)) ∈ H₁`. Establish `hm : h - t ∈ H₁` using `H₁.sub_mem hh ht.1`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `he : h - t = (h.1 - t.1, (0 : A))`. Use `ext`. Both sides reduce to the same expression. Simplify using `[hts']`. Rewrite `hm` using `[he]`. Then use the resulting hypothesis.
+Establish an intermediate fact. By extensionality, compare the relevant components. Both sides reduce to the same expression. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `h2 : (h.1 - t.1, (0 : A)) ∈ H₂` using `hk h1`. Establish `he : h = (h.1 - t.1, (0 : A)) + t`. Use `ext`. Simplify using the standard rewrite rules. Simplify using `[hts']`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[he]`. Conclude with `H₂.add_mem h2 ht.2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma le_of_lifts {A : Type*} [AddCommGroup A] {H₁ H₂ : AddSubgroup (ℤ × A)} {ι : Type*}
     (v : ι → A) (hv : AddSubgroup.closure (Set.range v) = H₁.map (AddMonoidHom.snd ℤ A))
@@ -77,45 +77,37 @@ lemma le_of_lifts {A : Type*} [AddCommGroup A] {H₁ H₂ : AddSubgroup (ℤ × 
   exact H₂.add_mem h2 ht.2
 
 /- English proof (translation)
-Introduce `j hj`. Use `choose V hV using hgen`. Use `set S := {H : AddSubgroup (ℤ × A) | H.index = j} with hS`. Set `dd : AddSubgroup (ℤ × A) → ℕ` to `fun H => (H.comap (AddMonoidHom.inl ℤ A)).index`. Set `cc : AddSubgroup (ℤ × A) → Fin n → ℤ` to `fun H i => if h : ∃ x : ℤ, (x, V (H.map (AddMonoidHom.snd ℤ A)) i) ∈ H then h.choose % (dd H : ℤ) else 0`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `F : AddSubgroup (ℤ × A) → ℕ × AddSubgroup A × (Fin n → ℤ)` to `fun H => (dd H, H.map (AddMonoidHom.snd ℤ A), cc H)`. Set `cube : ℕ → Finset (Fin n → ℤ)` to `fun d => Fintype.piFinset fun _ => Finset.Ico (0 : ℤ) d`. Set `T : Set (ℕ × AddSubgroup A × (Fin n → ℤ))` to `⋃ d ∈ j.divisors, ({d} : Set ℕ) ×ˢ ({H : AddSubgroup A | H.index = j / d} ×ˢ (cube d : Set (Fin n → ℤ)))`. Establish `hpos : ∀ H ∈ S, 0 < dd H ∧ H.index = dd H * (H.map (AddMonoidHom.snd ℤ A)).index`. Introduce `H hH`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hp` using `index_prod_eq H`. Use `⟨Nat.pos_of_ne_zero fun h0 => ?_, hp⟩` and prove the remaining obligations. Establish `: H.index = j` using `hH`. Simplify using `only [dd] at h0`. Rewrite `hp` using `[h0, zero_mul]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Establish `hmaps : ∀ H ∈ S, F H ∈ T`. Introduce `H hH`. Take `⟨hd, hp⟩` from `hpos H hH`. Establish `hHj : H.index = j` using `hH`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [T, Set.mem_iUnion, Set.mem_prod, Set.mem_singleton_iff]`. Use `⟨dd H, Nat.mem_divisors.mpr ⟨⟨_, hHj ▸ hp⟩, by omega⟩, rfl, ?_, ?_⟩` and prove the remaining obligations. Use `show (H.map (AddMonoidHom.snd ℤ A)).index = j / dd H`. Rewrite using `[← hHj, hp, Nat.mul_div_cancel_left _ hd]`. Simplify using `only [cube]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.mem_coe, Fintype.mem_piFinset]`. Introduce `i`. Simplify using `only [F, cc, Finset.mem_Ico]`. Establish `hd' : (0 : ℤ) < (dd H : ℤ)` using `by exact_mod_cast hd`. Use `split_ifs`.
+Establish an intermediate fact. Supply the required witnesses or components. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `⟨Int.emod_nonneg _ hd'.ne', Int.emod_lt_of_pos _ hd'⟩`. Conclude with `⟨le_rfl, hd'⟩`. Establish `hinj : Set.InjOn F S`. Introduce `H₁ hH₁ H₂ hH₂ hF`. Simplify using `only [F, Prod.mk.injEq] at hF`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨hd, hm, hc⟩` from `hF`. Establish `hD₁` using `eq_zmultiples_index (H₁.comap (AddMonoidHom.inl ℤ A))`. Establish `hD₂` using `eq_zmultiples_index (H₂.comap (AddMonoidHom.inl ℤ A))`. Establish `hDD : H₁.comap (AddMonoidHom.inl ℤ A) = H₂.comap (AddMonoidHom.inl ℤ A)`. Rewrite using `[hD₁, hD₂]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `congrArg (fun d : ℕ => zmultiples (d : ℤ)) hd`. Use `set v := V (H₁.map (AddMonoidHom.snd ℤ A)) with hvdef`. Establish `hlift : ∀ i, ∃ x : ℤ, (x, v i) ∈ H₁ ⊓ H₂`. Introduce `i`. Establish `hvi : v i ∈ H₁.map (AddMonoidHom.snd ℤ A)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← hV (H₁.map (AddMonoidHom.snd ℤ A))]`. Conclude with `subset_closure ⟨i, rfl⟩`. Establish `hex₁ : ∃ x : ℤ, (x, V (H₁.map (AddMonoidHom.snd ℤ A)) i) ∈ H₁`. Take `⟨p, hp, hps⟩` from `hvi`. Conclude with `⟨p.1, by rw [← hvdef, ← hps]; exact hp⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hex₂ : ∃ x : ℤ, (x, V (H₂.map (AddMonoidHom.snd ℤ A)) i) ∈ H₂`. Rewrite `hvi` using `[hm]`. Take `⟨p, hp, hps⟩` from `hvi`. Conclude with `⟨p.1, by rw [← hm, ← hvdef, ← hps]; exact hp⟩`. Establish `hci` using `congrFun hc i`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [cc, dif_pos hex₁, dif_pos hex₂] at hci`. Establish `hs₁` using `hex₁.choose_spec`. Establish `hkey : ∀ x : ℤ, (x, V (H₂.map (AddMonoidHom.snd ℤ A)) i) ∈ H₂ → (x, v i) ∈ H₂` using `fun x hx => by rw [hvdef, hm]; exact hx`. Establish `hs₂` using `hkey _ hex₂.choose_spec`. Use `⟨hex₁.choose, hs₁, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `hmod : (dd H₂ : ℤ) ∣ hex₂.choose - hex₁.choose`. Rewrite `hci` using `[hd]`. Conclude with `Int.ModEq.dvd hci`. Establish `hz : hex₂.choose - hex₁.choose ∈ H₂.comap (AddMonoidHom.inl ℤ A)`. Rewrite using `[hD₂]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Int.mem_zmultiples_iff.mpr hmod`. Establish `hz' : (hex₂.choose - hex₁.choose, (0 : A)) ∈ H₂` using `hz`. Establish `he : (hex₁.choose, v i) = (hex₂.choose, v i) - (hex₂.choose - hex₁.choose, (0 : A))`. Use `ext`. Simplify using the standard rewrite rules.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using the standard rewrite rules. Rewrite using `[he]`. Conclude with `H₂.sub_mem hs₂ hz'`. Apply `le_antisymm` to reduce the goal to its premises. Conclude with `le_of_lifts v (hV _) hDD.le hlift`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `le_of_lifts v (by rw [← hm]; exact hV _) hDD.ge fun i => ?_` and prove the remaining obligations. Take `⟨x, hx⟩` from `hlift i`. Conclude with `⟨x, by rwa [inf_comm]⟩`. Establish `hTfin : T.Finite`. Use `Set.Finite.biUnion (Finset.finite_toSet _) fun d hd => ?_` and prove the remaining obligations.
-
-Use `(Set.finite_singleton d).prod ((ih _ ?_).1.prod (Finset.finite_toSet _))` and prove the remaining obligations. Conclude with `Nat.div_pos (Nat.divisor_le hd) (Nat.pos_of_mem_divisors hd)`. Use `⟨Set.Finite.of_finite_image (hTfin.subset ?_) hinj, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨H, hH, rfl⟩`. Conclude with `hmaps H hH`.
-
-Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_congr rfl fun d _ => ?_` and prove the remaining obligations. Rewrite using `[Set.ncard_prod, Set.ncard_prod, Set.ncard_singleton, one_mul, Set.ncard_coe_finset]`. Simplify using `[cube, Fintype.card_piFinset, Int.card_Ico]`. Use `_ ≤ ∑ d ∈ j.divisors, (j / d) ^ n * d ^ n := by`.
-
-Use `Finset.sum_le_sum fun d hd => Nat.mul_le_mul_right _ (ih _ ?_).2` and prove the remaining obligations. Conclude with `Nat.div_pos (Nat.divisor_le hd) (Nat.pos_of_mem_divisors hd)`. Use `_ = ∑ _d ∈ j.divisors, j ^ n := by`. Use `Finset.sum_congr rfl fun d hd => ?_` and prove the remaining obligations. Rewrite using `[← mul_pow, Nat.div_mul_cancel (Nat.dvd_of_mem_divisors hd)]`.
-
-Use `_ = j.divisors.card * j ^ n := by rw [Finset.sum_const, smul_eq_mul]`. Use `_ ≤ j * j ^ n := Nat.mul_le_mul_right _ (Nat.card_divisors_le_self j)`. Use `_ = j ^ (n + 1) := by ring`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem step {A : Type*} [AddCommGroup A] (n : ℕ)
     (hgen : ∀ K : AddSubgroup A, ∃ v : Fin n → A, AddSubgroup.closure (Set.range v) = K)
@@ -234,11 +226,9 @@ theorem step {A : Type*} [AddCommGroup A] (n : ℕ)
     _ = j ^ (n + 1) := by ring
 
 /- English proof (translation)
-Introduce `j hj`. Take `⟨hfin, hcard⟩` from `h j hj`. Set `f : AddSubgroup G → AddSubgroup G'` to `fun H => H.comap e.symm.toAddMonoidHom`. Establish `hmaps : ∀ H ∈ {H : AddSubgroup G | H.index = j}, f H ∈ {H : AddSubgroup G' | H.index = j}`. Introduce `H hH`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `show (H.comap e.symm.toAddMonoidHom).index = j`. Rewrite using `[index_comap_of_surjective _ e.symm.surjective]`. Conclude with `hH`. Establish `hinj : Set.InjOn f {H : AddSubgroup G | H.index = j}` using `(comap_injective e.symm.surjective).injOn`. Use `⟨Set.Finite.of_finite_image (hfin.subset ?_) hinj, ?_⟩` and prove the remaining obligations.
-
-Introduce and unpack `_ ⟨H, hH, rfl⟩`. Conclude with `hmaps H hH`. Conclude with `(Set.ncard_le_ncard_of_injOn f hmaps hinj hfin).trans hcard`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem transfer {G G' : Type*} [AddCommGroup G] [AddCommGroup G'] (e : G ≃+ G') (n : ℕ)
     (h : ∀ j : ℕ, 1 ≤ j → {H : AddSubgroup G' | H.index = j}.Finite ∧
@@ -269,15 +259,13 @@ def consEquiv (n : ℕ) : (Fin (n + 1) → ℤ) ≃+ ℤ × (Fin n → ℤ) wher
   map_add' f g := rfl
 
 /- English proof (translation)
-Take `⟨k, b⟩` from `Submodule.basisOfPid (Pi.basisFun ℤ (Fin n)) K.toIntSubmodule`. Establish `hk : k ≤ n`. Establish `h1` using `Submodule.finrank_le K.toIntSubmodule`. Rewrite `h1` using `[Module.finrank_eq_card_basis b, Fintype.card_fin, Module.finrank_fin_fun]`. Then use the resulting hypothesis. Use `⟨fun i => if h : i.val < k then (b ⟨i, h⟩ : Fin n → ℤ) else 0, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations.
 
-Apply `AddSubgroup.toIntSubmodule.injective` to reduce the goal to its premises. Rewrite using `[AddSubgroup.toIntSubmodule_closure]`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Simplify using `only`. Use `split_ifs`. Conclude with `(b _).2`. Conclude with `Submodule.zero_mem _`. Introduce `x hx`.
+Simplify by unfolding definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h2 : x ∈ (Submodule.span ℤ (Set.range b)).map K.toIntSubmodule.subtype` using `⟨⟨x, hx⟩, by rw [b.span_eq]; trivial, rfl⟩`. Rewrite `h2` using `[Submodule.map_span]`. Use `Submodule.span_mono ?_ h2` and prove the remaining obligations. Introduce and unpack `_ ⟨_, ⟨m, rfl⟩, rfl⟩`. Use `⟨⟨m, lt_of_lt_of_le m.2 hk⟩, ?_⟩` and prove the remaining obligations.
-
-Simplify using `[m.2]`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma gen_pi (n : ℕ) (K : AddSubgroup (Fin n → ℤ)) :
     ∃ v : Fin n → (Fin n → ℤ), AddSubgroup.closure (Set.range v) = K := by
@@ -305,9 +293,9 @@ lemma gen_pi (n : ℕ) (K : AddSubgroup (Fin n → ℤ)) :
     simp [m.2]
 
 /- English proof (translation)
-Introduce `j _`. Establish `htop : ∀ H : AddSubgroup (Fin 0 → ℤ), H = ⊤` using `fun H => eq_top_iff.mpr fun x _ => by rw [Subsingleton.elim x 0]; exact H.zero_mem`. Establish `hsub : {H : AddSubgroup (Fin 0 → ℤ) | H.index = j} ⊆ {⊤}` using `fun H _ => htop H`. Use `⟨(Set.finite_singleton _).subset hsub, ?_⟩` and prove the remaining obligations. Rewrite using `[pow_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(Set.ncard_le_ncard hsub (Set.finite_singleton _)).trans (Set.ncard_singleton _).le`.
+A detailed English derivation is pending.
 -/
 lemma base : ∀ j : ℕ, 1 ≤ j → {H : AddSubgroup (Fin 0 → ℤ) | H.index = j}.Finite ∧
     {H : AddSubgroup (Fin 0 → ℤ) | H.index = j}.ncard ≤ j ^ 0 := by

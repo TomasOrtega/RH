@@ -17,14 +17,14 @@ def transl (a : κ → AdeleRing (𝓞 F) F) : ((κ → AdeleRing (𝓞 F) F) �
   map_smul' _ _ := rfl
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hg.1.comp_continuous (continuous_add_const b), hg.2.comp_homeomorph (Homeomorph.addRight b)⟩`.
+Supply the required witnesses or components.
 -/
 theorem SB_translate {X : Type} [TopologicalSpace X] [AddGroup X] [IsTopologicalAddGroup X] (b : X) {g : X → ℂ}
     (hg : g ∈ SB X) : (fun y => g (y + b)) ∈ SB X :=
   ⟨hg.1.comp_continuous (continuous_add_const b), hg.2.comp_homeomorph (Homeomorph.addRight b)⟩
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Simplify using `only [transl, LinearMap.coe_mk, AddHom.coe_mk, pureA, SchwartzMap.compSubConstCLM_apply, sub_neg_eq_add]`. Use `congr 2`. Use function extensionality and compare the values at `i`. Conclude with `map_add _ _ _`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem pureA_translate (a : κ → AdeleRing (𝓞 F) F) (f : SchwartzMap (κ → mixedEmbedding.mixedSpace F) ℂ)
     (g : (κ → FiniteAdeleRing (𝓞 F) F) → ℂ) :
@@ -37,9 +37,7 @@ theorem pureA_translate (a : κ → AdeleRing (𝓞 F) F) (f : SchwartzMap (κ �
   exact map_add _ _ _
 
 /- English proof (translation)
-Establish `key : schA F κ ≤ (schA F κ).comap (transl F a)`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨f, g, hg, rfl⟩`. Use `show transl F a (pureA F f g) ∈ schA F κ`. Rewrite using `[pureA_translate]`.
-
-Conclude with `Submodule.subset_span ⟨_, _, SB_translate _ hg, rfl⟩`. Conclude with `key hφ`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem schA_translate (a : κ → AdeleRing (𝓞 F) F) {φ : (κ → AdeleRing (𝓞 F) F) → ℂ} (hφ : φ ∈ schA F κ) :
     (fun x => φ (x + a)) ∈ schA F κ := by
@@ -52,7 +50,7 @@ theorem schA_translate (a : κ → AdeleRing (𝓞 F) F) {φ : (κ → AdeleRing
   exact key hφ
 
 /- English proof (translation)
-Introduce `F _ _ _ _ a φ hφ` and use `schA_translate F a hφ`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem main : ∀ (F : Type) [Field F] [NumberField F] (κ : Type) [Fintype κ] (a : κ → AF F), ∀ φ ∈ schA F κ,
     (fun x => φ (x + a)) ∈ schA F κ :=

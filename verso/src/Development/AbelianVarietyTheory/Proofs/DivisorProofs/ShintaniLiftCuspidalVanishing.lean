@@ -18,55 +18,49 @@ open scoped Classical
 namespace GlobalTheory.Shin
 
 /- English proof (translation)
-Introduce `F F' _ _ _ _ s hl hs ι θ hθ n k hn hnd hreg`. Use `haveI : Finite F := Finite.of_injective _ (algebraMap F F').injective`. Use `haveI := Fintype.ofFinite F`. Use `haveI := Fintype.ofFinite F'`. Use `haveI : Fact (Module.finrank F F').Prime := ⟨hl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `set l := Module.finrank F F' with hl_def`. Use `set q := Nat.card F with hq_def`. Establish `hq2 : 2 ≤ q` using `Finite.one_lt_card`. Establish `hcard' : Nat.card F' = q ^ l`. Rewrite using `[hq_def, Nat.card_eq_fintype_card, Nat.card_eq_fintype_card, Module.card_eq_pow_finrank (K := F)]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `set K := k * ∑ i ∈ Finset.range l, q ^ (n * i) with hK_def`. Take `⟨hregK, a, ha⟩` from `GlobalTheory.T.regular_pair_lift_to_prime_power_field q l n k hq2 hl hn hnd hreg`. Establish `hregK' : Reg (Nat.card F') n K` using `by rw [hcard']; exact hregK`. Take `⟨hYchar, -⟩` from `GlobalTheory.T.cuspidalCharacterGL_isCharacter_norm_one_of_regular F' θ hθ n K hn hregK'`. Establish `hYs : ∀ g, cusp θ n K (galAct F F' n s g) = cusp θ n K g`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `g`. Take `⟨⟨i, hi⟩, hi'⟩` from `(FiniteField.bijective_frobeniusAlgEquivOfAlgebraic_pow F F').2 s`. Simplify using `only at hi'`. Take `⟨r, hp, hr⟩` from `FiniteField.card F (ringChar F)`. Establish `hchar : ringChar F' = ringChar F` using `(Algebra.ringChar_eq F F').symm`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hsx : ∀ x, s.toRingEquiv x = x ^ (ringChar F' ^ ((r : ℕ) * i))`. Introduce `x`. Express the relevant statement in the definitionally equal form `s x = _`. Rewrite using `[← hi', AlgEquiv.coe_pow, FiniteField.coe_frobeniusAlgEquivOfAlgebraic_iterate, hr, hchar, pow_mul]`. Establish `h1` using `GlobalTheory.T.cuspidalCharacterGLFiniteField_frobenius_pow F' θ s.toRingEquiv ((r : ℕ) * i) hsx n K g`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Establish `hpq : ringChar F' ^ ((r : ℕ) * i) = q ^ i`. Rewrite using `[hchar, pow_mul, ← hr, hq_def, Nat.card_eq_fintype_card]`. Rewrite `h1` using `[hpq]`. Establish `hpow : ∀ j, K * q ^ j ≡ K * Nat.card F' ^ (a * j) [MOD Nat.card F' ^ n - 1]`. Introduce `j`.
+Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Proceed by induction on `j with`. Consider the case `zero => simp only [pow_zero, mul_zero, mul_one]`. Conclude with `Nat.ModEq.refl _`. Consider the case `succ j ih`. Establish `e1 : K * q ^ (j + 1) = (K * q ^ j) * q` using `by ring`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e2 : K * Nat.card F' ^ (a * (j + 1)) = (K * (q ^ l) ^ a) * Nat.card F' ^ (a * j)`. Rewrite using `[hcard']`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e1, e2]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `Nat.ModEq.mul_right` to reduce the goal to its premises. Rewrite using `[hcard']`. Conclude with `ha`. Establish `h2` using `GlobalTheory.T.cuspidalCharacterGLFiniteField_eq_of_modEq F' θ hθ n K (K * q ^ i) (a * i) hn (hpow i)`. Rewrite using `[galAct_apply]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `h1.trans (congrFun h2 g)`. Take `⟨X0, hX0, hX0a, hX0b⟩` from `GlobalTheory.T.exists_virtualCharacter_shintani_psi_lift F F' s hl hs ι θ hθ k n`. Use `set c : ℂ := (-1) ^ (n - 1) with hc_def`. Establish `hc2 : c * c = 1` using `by rw [hc_def, ← mul_pow]; simp`. Establish `hcstar : star c = c` using `by rw [hc_def]; simp`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `set X : GHat F F' n → ℂ := fun x => c * X0 x with hX_def`. Establish `hX : X ∈ Virt ℂ ℂ (GHat F F' n)`. Establish `e : X = ((-1 : ℤ) ^ (n - 1)) • X0`. Use function extensionality and compare the values at `x`. Simplify using `only [hX_def, Pi.smul_apply, zsmul_eq_mul, Int.cast_pow, Int.cast_neg, Int.cast_one, hc_def]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[e]`. Conclude with `AddSubgroup.zsmul_mem _ hX0 _`. Establish `hfun : (fun δ => X (inl δ * inr s)) = shLift s (cusp (pullθ ι θ) n k)`. Use function extensionality and compare the values at `δ`. Simplify using `only [hX_def, hX0b]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Apply the tactic sequence `by_cases h : ∃ γ, IsNorm s δ γ <;> simp [shLift, cusp, h, hc_def]`. Establish `hcl : IsCl (cusp (pullθ ι θ) n k)`. Introduce `x y`. Use `((GlobalTheory.T.twistedHarishChandraInductionGL_isTwistedClassFunction F (RingHom.id F) 0 0 n (fun _ => 0) (fun _ => 0)).2.2 (rootSum (pullθ ι θ) k)).1 x y` as an intermediate fact. Simplify using `only [cusp]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition.
 
-Rewrite using `[this]`. Establish `hinj : Function.Injective ι` using `ι.toRingHom.injective`. Establish `hθ' : ∀ x y : AlgebraicClosure F, x ≠ 0 → y ≠ 0 → pullθ ι θ x = pullθ ι θ y → x = y`. Introduce `x y hx hy h`. Apply `hinj` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `hθ _ _ ?_ ?_ h` and prove the remaining obligations. Conclude with `fun h0 => hx (hinj (h0.trans (map_zero ι).symm))`. Conclude with `fun h0 => hy (hinj (h0.trans (map_zero ι).symm))`. Take `⟨-, hnormF⟩` from `GlobalTheory.T.cuspidalCharacterGL_isCharacter_norm_one_of_regular F (pullθ ι θ) hθ' n k hn hreg`. Establish `hΓ : Nat.card (F' ≃ₐ[F] F') = l` using `IsGalois.card_aut_eq_finrank F F'`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `htop : ∀ t : F' ≃ₐ[F] F', t ∈ Subgroup.zpowers s` using `fun t => by`. Rewrite using `[zpowers_eq_top_of_prime_card hΓ hs]`. Discharge the goal by the elementary cases of `trivial`. Apply the tactic sequence `have hiso := GlobalTheory.T.shintaniLiftClassFunction_isometry F F' s htop n _ _ hcl hcl`. Rewrite `hiso` using `[hnormF]`.
+Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hnorm : ∑ᶠ g, X (inl g * inr s) * star (X (inl g * inr s)) = (Nat.card (GL (Fin n) F') : ℂ)`. Establish `e : ∀ g, X (inl g * inr s) * star (X (inl g * inr s)) = shLift s (cusp (pullθ ι θ) n k) g * star (shLift s (cusp (pullθ ι θ) n k) g)` using `fun g => by`. Rewrite using `[← congrFun hfun g]`. Rewrite using `[finsum_congr e]`. Establish `hpos : (Nat.card (GL (Fin n) F) : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 Nat.card_pos.ne'`.
+Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Apply `mul_left_cancel₀ hpos` to reduce the goal to its premises. Rewrite using `[hiso, mul_comm]`. Use `set S : F'[X] → ℂ := fun P => ∏ t : F' ≃ₐ[F] F', rootSum θ k (P.map (t : F' →+* F')) with hS_def`. Establish `hS1 : S 1 = 0`. Simplify using `only [hS_def, Polynomial.map_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Apply `Finset.prod_eq_zero (Finset.mem_univ 1)` to reduce the goal to its premises. Simplify using `[rootSum]`. Establish `hSprod : S = fun P => ∏ j : Fin l, rootSum θ (k * q ^ (j : ℕ)) P`. Use function extensionality and compare the values at `P`. Simplify using `only [hS_def]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[GlobalTheory.T.prod_rootPowerSum_map_galois_eq F F' θ k P, Fin.prod_univ_eq_prod_range (fun j => rootSum θ (k * q ^ j) P) l]`. Establish `hprim` using `GlobalTheory.T.psi_sum_eq_char_sum_against_cusp_form F' θ S n K hS1`. Establish `hprod` using `GlobalTheory.T.primitiveFunctionCharpoly_pair_prod_rootSum F' θ hθ n K l (fun j => k * q ^ (j : ℕ)) hn`. Rewrite `hprod` using `[hcard']`. Use `set cnt := (Finset.univ.filter fun a : Fin l → Fin n => K ≡ ∑ j : Fin l, k * q ^ (j : ℕ) * (q ^ l) ^ (a j : ℕ) [MOD (q ^ l) ^ n - 1]).card with hcnt_def`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `hcnt : cnt ≡ 1 [MOD l]` using `GlobalTheory.T.card_exponent_tuples_modEq_one_of_prime_not_dvd q l n k hq2 hl hn hnd hreg`. Establish `hz : ∑ᶠ g, X (inl g) * star (cusp θ n K g) = ((cnt : ℤ) : ℂ) * (Nat.card (GL (Fin n) F') : ℂ)`. Simplify using `only [finsum_eq_sum_of_fintype] at hprim hprod ⊢`. Establish `e1 : ∀ g, X (inl g) * star (cusp θ n K g) = c * (psiG S n g * star (cusp θ n K g))` using `fun g => by`. Simplify using `only [hX_def, hX0a]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Finset.sum_congr rfl (fun g _ => e1 g), ← Finset.mul_sum, hprim]`. Establish `e2 : ∀ g, chG S n g * star (cusp θ n K g) = star (cusp θ n K g * star (chG S n g))` using `fun g => by`. Rewrite using `[star_mul, star_star, mul_comm]`. Rewrite using `[Finset.sum_congr rfl (fun g _ => e2 g), ← star_sum]`.
-
-Establish `e3 : ∀ g, cusp θ n K g * star (chG S n g) = c * (psiG (rootSum θ K) n g * star (chG S n g))` using `fun g => by simp only [cusp, hc_def]; ring`. Rewrite using `[Finset.sum_congr rfl (fun g _ => e3 g), ← Finset.mul_sum, hSprod, hprod, star_mul', hcstar, ← mul_assoc, hc2, one_mul, star_mul', star_natCast, star_natCast]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hndvd : ¬ ((Nat.card (F' ≃ₐ[F] F') : ℤ) ∣ (cnt : ℤ))`.
-
-Rewrite using `[hΓ, Int.natCast_dvd_natCast]`. Introduce `h`. Establish `h1 : cnt % l = 1 % l` using `hcnt`. Rewrite `h1` using `[(Nat.dvd_iff_mod_eq_zero).1 h, Nat.mod_eq_of_lt hl.one_lt]`. Conclude with `zero_ne_one h1`.
-
-Establish `key` using `GlobalTheory.T.twisted_virtualCharacter_norm_one_support (GL (Fin n) F') (F' ≃ₐ[F] F') (galAct F F' n) s (hΓ ▸ hl) hs X hX hnorm (cusp θ n K) hYchar hYs (cnt : ℤ) hz hndvd`. Rewrite `key` using `[hfun]`. Conclude with `key`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem shLift_cusp_kills_of_not_dvd : ∀ (F F' : Type) [Field F] [Field F'] [Algebra F F'] [Finite F'] (s : F' ≃ₐ[F] F'), (Module.finrank F F').Prime → s ≠ 1 → ∀ (ι : AlgebraicClosure F →ₐ[F] AlgebraicClosure F') (θ : AlgebraicClosure F' →* ℂ), (∀ x y : AlgebraicClosure F', x ≠ 0 → y ≠ 0 → θ x = θ y → x = y) → ∀ n k : ℕ, 0 < n → ¬ Module.finrank F F' ∣ n → Reg (Nat.card F) n k → Kills (shLift s (cusp (pullθ ι θ) n k)) (cusp θ n (k * ∑ i ∈ Finset.range (Module.finrank F F'), Nat.card F ^ (n * i))) := by
   intro F F' _ _ _ _ s hl hs ι θ hθ n k hn hnd hreg

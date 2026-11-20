@@ -22,13 +22,13 @@ variable {D : Formalism.BasicNotions.D7} (Zd : LocDat D) {u u' : D.what₂.Word}
 variable (u u' F0 what₂)
 
 /- English proof (translation)
-The claim follows from `pinB_of Zd (spanOm_holds D) (pinOm_holds Zd u u' F0 what₂) (localOrthogonal_holds Zd)`.
+A detailed English derivation is pending.
 -/
 theorem pinB_holds : PinB Zd u u' F0 what₂ :=
   pinB_of Zd (spanOm_holds D) (pinOm_holds Zd u u' F0 what₂) (localOrthogonal_holds Zd)
 
 /- English proof (translation)
-The claim follows from `betaInt_of Zd (lsetB_of Zd (pinB_holds Zd u u' F0 what₂)) (iotaB_of Zd (pinB_holds Zd u u' F0 what₂))`.
+A detailed English derivation is pending.
 -/
 theorem betaInt_holds : BetaInt Zd u u' F0 what₂ :=
   betaInt_of Zd (lsetB_of Zd (pinB_holds Zd u u' F0 what₂)) (iotaB_of Zd (pinB_holds Zd u u' F0 what₂))

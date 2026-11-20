@@ -4,17 +4,15 @@ open IsLocalRing Matrix Filter UpperTheory.V.Alg UpperTheory.V.W UpperTheory.V.A
 open scoped TensorProduct
 
 /- English proof (translation)
-Introduce `Ph A B _ _ _ π π' V _ hsup`. Establish `hdec : ∀ x, π' x = 1 → ∃ k, π k = 1 ∧ ∃ v ∈ V, k * v = x`. Introduce `x hx`. Establish `hx' : x ∈ π.ker ⊔ V`. Rewrite using `[hsup]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Subgroup.mem_sup_left (MonoidHom.mem_ker.2 hx)`. Take `⟨k, hk, v, hv, hkv⟩` from `Subgroup.mem_sup_of_normal_right.1 hx'`. Conclude with `⟨k, MonoidHom.mem_ker.1 hk, v, hv, hkv⟩`. Use `⟨fun a b g ⟨g0, g0', ha, hb, hV⟩ hg => ?_, fun k hk => ?_⟩` and prove the remaining obligations. Take `⟨k, hk, v, hv, hkv⟩` from `hdec (g0'⁻¹ * g) (by rw [map_mul, map_inv, hb, hg, inv_mul_cancel])`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨g0 * k, by rw [map_mul, ha, hk, mul_one], ?_⟩` and prove the remaining obligations. Establish `hg' : g = g0' * (k * v)` using `by rw [hkv, mul_inv_cancel_left]`. Rewrite using `[hg']`. Establish `hw : g0'⁻¹ * g0 ∈ V`. Use `V.inv_mem hV` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `this` using `[_root_.mul_inv_rev, inv_inv]`. Then use the resulting hypothesis. Establish `hconj : k⁻¹ * (g0'⁻¹ * g0) * k ∈ V`. Use `(inferInstance : V.Normal).conj_mem _ hw k⁻¹` as an intermediate fact. Rewrite `this` using `[inv_inv]`. Then use the resulting hypothesis. Establish `heq : (g0' * (k * v))⁻¹ * (g0 * k) = v⁻¹ * (k⁻¹ * (g0'⁻¹ * g0) * k)` using `by group`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[heq]`. Conclude with `V.mul_mem (V.inv_mem hv) hconj`. Take `⟨k', hk', v, hv, rfl⟩` from `hdec k hk`. Use `⟨k', hk', ?_⟩` and prove the remaining obligations. Establish `heq : (k' * v)⁻¹ * k' = v⁻¹` using `by group`.
-
-Rewrite using `[heq]`. Conclude with `V.inv_mem hv`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Pa.Core.closeLift :
     ∀ (Ph A B : Type) [Group Ph] [Group A] [Group B] (π : Ph →* A) (π' : Ph →* B) (V : Subgroup Ph) [V.Normal], π.ker ⊔ V = π'.ker ⊔ V → (∀ a b g, Close π π' V a b → π' g = b → ∃ g', π g' = a ∧ g⁻¹ * g' ∈ V) ∧ ∀ k, π' k = 1 → ∃ k', π k' = 1 ∧ k⁻¹ * k' ∈ V := by

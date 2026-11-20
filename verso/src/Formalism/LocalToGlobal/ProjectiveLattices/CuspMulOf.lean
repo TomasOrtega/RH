@@ -14,7 +14,7 @@ variable {Xo : Moduli Dw l} {c : Coeff l} {r : ℕ}
 open Classical in
 
 /- English proof (translation)
-Use function extensionality and compare the values at `k x`. Use `show (if h : x ∈ (U.X k).dom then toC (evR Xo c (f * g) (U.un k ⟨x, h⟩)) else 0) = (if h : x ∈ (U.X k).dom then toC (evR Xo c f (U.un k ⟨x, h⟩)) else 0) * (if h : x ∈ (U.X k).dom then toC (evR Xo c g (U.un k ⟨x, h⟩)) else 0)`. Use `split_ifs with h`. Conclude with `evalAt_mul (K := c.F) (fun S _ _ => FrPt Xo c S) (fun φ y z => FrMap φ y z) f g (U.un k ⟨x, h⟩)`. Simplify using the standard rewrite rules.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem rdU_mul {σ : c.F →+* ℂ} (U : Unf Xo c σ r) (f g : Rul Xo c) : rdU U (f * g) = rdU U f * rdU U g := by
   funext k x
@@ -26,9 +26,9 @@ theorem rdU_mul {σ : c.F →+* ℂ} (U : Unf Xo c σ r) (f g : Rul Xo c) : rdU 
   · simp
 
 /- English proof (translation)
-Take `⟨m, rfl⟩` from `hn`. Take `⟨m', rfl⟩` from `hn'`. Establish `h1 : (m + m) / 2 = m` using `by omega`. Establish `h2 : (m' + m') / 2 = m'` using `by omega`. Establish `h3 : (m + m + (m' + m')) / 2 = m + m'` using `by omega`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `τ j`. Simplify using `only [laU, Pi.add_apply, h1, h2, h3]`. Apply the tactic sequence `split_ifs <;> push_cast <;> ring`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem laU_add {σ : c.F →+* ℂ} (U : Unf Xo c σ r) (a a' : (E →+* ℂ) × ℕ → ℕ) (n n' : ℕ) (hn : Even n)
     (hn' : Even n') (k : U.Comp) : laU U (a + a') (n + n') k = laU U a n k + laU U a' n' k := by
@@ -42,16 +42,16 @@ theorem laU_add {σ : c.F →+* ℂ} (U : Unf Xo c σ r) (a a' : (E →+* ℂ) �
   split_ifs <;> push_cast <;> ring
 
 /- English proof (translation)
-Apply the tactic sequence `first | exact UpperTheory.Reformulated.B.Qe28.holSub_mul .. | (apply UpperTheory.Reformulated.B.Qe28.holSub_mul <;> assumption) | (intros; apply UpperTheory.Reformulated.B.Qe28.holSub_mul <;> assumption) | (apply @UpperTheory.Reformulated.B.Qe28.holSub_mul <;> assumption) | (intr …`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem holSub_mul (hM : SiegelSpaceAlgebra (E := E)) {Comp : Type} {X : Comp → Data E r} {la la' : ∀ k, Wt (X k).Ψ r}
     {P Q : FDSec X} (hP : P ∈ holSub X la) (hQ : Q ∈ holSub X la') : P * Q ∈ holSub X (la + la') := by
   first | exact UpperTheory.Reformulated.B.Qe28.holSub_mul .. | (apply UpperTheory.Reformulated.B.Qe28.holSub_mul <;> assumption) | (intros; apply UpperTheory.Reformulated.B.Qe28.holSub_mul <;> assumption) | (apply @UpperTheory.Reformulated.B.Qe28.holSub_mul <;> assumption) | (intros; apply @UpperTheory.Reformulated.B.Qe28.holSub_mul <;> assumption) | (apply @UpperTheory.Reformulated.B.Qe28.holSub_mul <;> first | assumption | infer_instance) | exact @UpperTheory.Reformulated.B.Qe28.holSub_mul E ‹_› ‹_› ‹_› r hM Comp X la la' P Q hP hQ | exact @UpperTheory.Reformulated.B.Qe28.holSub_mul E ‹_› ‹_› ‹_› r hM Comp X la la' P Q hP | exact @UpperTheory.Reformulated.B.Qe28.holSub_mul E ‹_› ‹_› ‹_› r hM Comp X la la' P Q | exact @UpperTheory.Reformulated.B.Qe28.holSub_mul E ‹_› ‹_› ‹_› r hM Comp X la la' P | exact @UpperTheory.Reformulated.B.Qe28.holSub_mul E ‹_› ‹_› ‹_› r hM Comp X la la' | exact @UpperTheory.Reformulated.B.Qe28.holSub_mul E ‹_› ‹_› ‹_› r hM Comp X la | exact @UpperTheory.Reformulated.B.Qe28.holSub_mul E ‹_› ‹_› ‹_› r hM Comp X | exact @UpperTheory.Reformulated.B.Qe28.holSub_mul E ‹_› ‹_› ‹_› r hM Comp | exact @UpperTheory.Reformulated.B.Qe28.holSub_mul E ‹_› ‹_› ‹_› r hM | exact @UpperTheory.Reformulated.B.Qe28.holSub_mul E ‹_› ‹_› ‹_› r | exact @UpperTheory.Reformulated.B.Qe28.holSub_mul E ‹_› ‹_› ‹_› | exact @UpperTheory.Reformulated.B.Qe28.holSub_mul E ‹_› ‹_› | exact @UpperTheory.Reformulated.B.Qe28.holSub_mul E ‹_› | exact @UpperTheory.Reformulated.B.Qe28.holSub_mul E
 
 /- English proof (translation)
-Introduce `a a' n n' f g hd hd' hf hg`. Rewrite `hf`, `hg`, the goal using `[mem_cusp]`. Use `⟨mulC_mem_sec Xo c a a' n n' hf.1 hg.1, fun σ hσ => ?_⟩` and prove the remaining obligations. Establish `hla : laU (U σ) (a + a') (n + n') = laU (U σ) a n + laU (U σ) a' n'`. Use function extensionality and compare the values at `fun k => laU_add (U σ) a a' n n' hd.2 hd'.2 k`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `show rdU (U σ) (f * g) ∈ holSub (U σ).X (laU (U σ) (a + a') (n + n'))`. Rewrite using `[rdU_mul, hla]`. Conclude with `holSub_mul hM (hf.2 σ hσ) (hg.2 σ hσ)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cusp_mul_of_M5 (hM : SiegelSpaceAlgebra (E := E)) (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r) : CuspMul Xo c U := by
   intro a a' n n' f g hd hd' hf hg

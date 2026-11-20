@@ -18,23 +18,23 @@ variable {D : D7} (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (u' : D.what�
 abbrev XS : Submodule D.host.E (VS D).V := Submodule.span D.host.E (Set.range X.eX)
 
 /- English proof (translation)
-Use `show Submodule.span D.host.E (Set.range (X.Fu u').e) = _`. Rewrite using `[X.Fu_e]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem xsp_eq : Xsp (lf D (X.Fu u')) = XS X := by
   show Submodule.span D.host.E (Set.range (X.Fu u').e) = _
   rw [X.Fu_e]
 
 /- English proof (translation)
-Simplify using `[orth, Submodule.mem_iInf, LinearMap.mem_ker]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_orth' {U : Submodule D.host.E (VS D).V} {v : (VS D).V} :
     v ∈ orth (VS D) U ↔ ∀ y ∈ U, (VS D).hT y v = 0 := by
   simp [orth, Submodule.mem_iInf, LinearMap.mem_ker]
 
 /- English proof (translation)
-Rewrite using `[mem_orth']`. Use `⟨fun h y hy => h y (Submodule.subset_span hy), fun h y hy => ?_⟩` and prove the remaining obligations. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem y hy => exact h y hy`. Consider the case `zero => simp`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `add a b _ _ ha hb => rw [map_add, LinearMap.add_apply, ha, hb, add_zero]`. Consider the case `smul c a _ ha => rw [LinearMap.map_smulₛₗ, LinearMap.smul_apply, ha, smul_zero]`.
+Treat this case separately. Treat this case separately.
 -/
 theorem orth_span_iff {T : Set (VS D).V} {v : (VS D).V} :
     v ∈ orth (VS D) (Submodule.span D.host.E T) ↔ ∀ y ∈ T, (VS D).hT y v = 0 := by
@@ -48,15 +48,15 @@ theorem orth_span_iff {T : Set (VS D).V} {v : (VS D).V} :
 
 variable {X} in
 /- English proof (translation)
-The claim follows from `((VS D).herm.eq x y).symm`.
+A detailed English derivation is pending.
 -/
 theorem hconj (x y : (VS D).V) : (VS D).hT y x = starRingEnd D.host.E ((VS D).hT x y) :=
   ((VS D).herm.eq x y).symm
 
 /- English proof (translation)
-Rewrite using `[hconj, X.ef]`. Distinguish the cases in `h : b = a`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Establish `h' : ¬ a = b` using `fun e => h e.symm`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[h, h']`.
+Simplify using the standard rewrite rules.
 -/
 theorem fe (a b : Fin D.R.rS) : (VS D).hT (X.fY a) (X.eX b) = if a = b then 1 else 0 := by
   rw [hconj, X.ef]
@@ -66,26 +66,26 @@ theorem fe (a b : Fin D.R.rS) : (VS D).hT (X.fY a) (X.eX b) = if a = b then 1 el
     simp [h, h']
 
 /- English proof (translation)
-Rewrite using `[hconj, (X.zu_orth u' a).1, map_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem ze (a : Fin D.R.rS) : (VS D).hT (X.zu u') (X.eX a) = 0 := by
   rw [hconj, (X.zu_orth u' a).1, map_zero]
 
 /- English proof (translation)
-Rewrite using `[hconj, (X.zu_orth u' a).2, map_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem zf (a : Fin D.R.rS) : (VS D).hT (X.zu u') (X.fY a) = 0 := by
   rw [hconj, (X.zu_orth u' a).2, map_zero]
 
 /- English proof (translation)
-Rewrite using `[X.zu_norm]`. Conclude with `neg_ne_zero.2 (Nat.cast_ne_zero.2 (D.mem u').A.T_prime.ne_zero)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem zz_ne : (VS D).hT (X.zu u') (X.zu u') ≠ 0 := by
   rw [X.zu_norm]
   exact neg_ne_zero.2 (Nat.cast_ne_zero.2 (D.mem u').A.T_prime.ne_zero)
 
 /- English proof (translation)
-Simplify using `[piWL, LinearMap.sub_apply, LinearMap.sum_apply, LinearMap.smulRight_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem piW_apply (x : (VS D).V) : piWL X u' x = x - ∑ a, (VS D).hT (X.fY a) x • X.eX a -
     ∑ a, (VS D).hT (X.eX a) x • X.fY a -
@@ -93,11 +93,9 @@ theorem piW_apply (x : (VS D).V) : piWL X u' x = x - ∑ a, (VS D).hT (X.fY a) x
   simp [piWL, LinearMap.sub_apply, LinearMap.sum_apply, LinearMap.smulRight_apply]
 
 /- English proof (translation)
-Unfold `Wsp Usp`. Rewrite using `[orth_span_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `⟨fun a => h _ (Or.inl (Or.inl ⟨a, rfl⟩)), fun a => h _ (Or.inl (Or.inr ⟨a, rfl⟩)), h _ (Or.inr rfl)⟩`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Introduce and unpack `⟨h1, h2, h3⟩ y hy`. Break down `hy with (⟨a, rfl⟩ | ⟨a, rfl⟩) | hy` into its components or cases. Conclude with `h1 a`. Conclude with `h2 a`. Rewrite using `[Set.mem_singleton_iff.1 hy]`.
-
-Conclude with `h3`.
+Assume the hypotheses and unpack their components. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_W_iff {w : (VS D).V} : w ∈ Wsp X u' ↔ (∀ a, (VS D).hT (X.eX a) w = 0) ∧
     (∀ a, (VS D).hT (X.fY a) w = 0) ∧ (VS D).hT (X.zu u') w = 0 := by
@@ -113,9 +111,9 @@ theorem mem_W_iff {w : (VS D).V} : w ∈ Wsp X u' ↔ (∀ a, (VS D).hT (X.eX a)
     · rw [Set.mem_singleton_iff.1 hy]; exact h3
 
 /- English proof (translation)
-Rewrite using `[mem_W_iff, piW_apply]`. Establish `hz` using `zz_ne X u'`. Use `⟨fun b => ?_, fun b => ?_, ?_⟩` and prove the remaining obligations. Simplify using `[map_sub, map_sum, X.ee, X.ef, (X.zu_orth u' b).1, mul_ite, Finset.sum_ite_eq]`. Simplify using `[map_sub, map_sum, fe, X.ff, (X.zu_orth u' b).2, mul_ite, Finset.sum_ite_eq]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[map_sub, map_sum, ze, zf, hz]`.
+Simplify using the standard rewrite rules.
 -/
 theorem piW_mem (x : (VS D).V) : piWL X u' x ∈ Wsp X u' := by
   rw [mem_W_iff, piW_apply]
@@ -126,7 +124,7 @@ theorem piW_mem (x : (VS D).V) : piWL X u' x ∈ Wsp X u' := by
   · simp [map_sub, map_sum, ze, zf, hz]
 
 /- English proof (translation)
-Take `⟨h1, h2, h3⟩` from `(mem_W_iff X u').1 hw`. Rewrite using `[piW_apply]`. Simplify using `[h1, h2, h3]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem levi_projection_of_mem {w : (VS D).V} (hw : w ∈ Wsp X u') : piWL X u' w = w := by
   obtain ⟨h1, h2, h3⟩ := (mem_W_iff X u').1 hw
@@ -134,14 +132,14 @@ theorem levi_projection_of_mem {w : (VS D).V} (hw : w ∈ Wsp X u') : piWL X u' 
   simp [h1, h2, h3]
 
 /- English proof (translation)
-Rewrite using `[piW_apply]`. Simplify using `[fe, X.ee, ze, ite_smul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem piW_e (b : Fin D.R.rS) : piWL X u' (X.eX b) = 0 := by
   rw [piW_apply]
   simp [fe, X.ee, ze, ite_smul]
 
 /- English proof (translation)
-Establish `hz` using `zz_ne X u'`. Rewrite using `[piW_apply]`. Simplify using `[(X.zu_orth u' _).1, (X.zu_orth u' _).2, smul_smul, hz]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem levi_projection_z_eq_zero : piWL X u' (X.zu u') = 0 := by
   have hz := zz_ne X u'
@@ -151,9 +149,9 @@ theorem levi_projection_z_eq_zero : piWL X u' (X.zu u') = 0 := by
 abbrev XZ : Submodule D.host.E (VS D).V := XS X ⊔ Submodule.span D.host.E {X.zu u'}
 
 /- English proof (translation)
-Establish `: XZ X u' ≤ LinearMap.ker (piWL X u')`. Use `sup_le (Submodule.span_le.2 ?_) (Submodule.span_le.2 ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨b, rfl⟩`. Conclude with `piW_e X u' b`. Introduce `y hy`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Set.mem_singleton_iff.1 hy]`. Conclude with `levi_projection_z_eq_zero X u'`. Conclude with `this hx`.
+A detailed English derivation is pending.
 -/
 theorem piW_XZ {x : (VS D).V} (hx : x ∈ XZ X u') : piWL X u' x = 0 := by
   have : XZ X u' ≤ LinearMap.ker (piWL X u') := by
@@ -163,13 +161,13 @@ theorem piW_XZ {x : (VS D).V} (hx : x ∈ XZ X u') : piWL X u' x = 0 := by
   exact this hx
 
 /- English proof (translation)
-The claim follows from `Submodule.span_mono (fun _ h => Or.inl (Or.inl h))`.
+A detailed English derivation is pending.
 -/
 theorem xs_le_usp : XS X ≤ Usp X u' :=
   Submodule.span_mono (fun _ h => Or.inl (Or.inl h))
 
 /- English proof (translation)
-Introduce `w hw`. Rewrite using `[mem_orth']`. Introduce `y hy`. Conclude with `(mem_orth'.1 hw) y (xs_le_usp X u' hy)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem W_le_orth : Wsp X u' ≤ orth (VS D) (XS X) := by
   intro w hw
@@ -178,9 +176,7 @@ theorem W_le_orth : Wsp X u' ≤ orth (VS D) (XS X) := by
   exact (mem_orth'.1 hw) y (xs_le_usp X u' hy)
 
 /- English proof (translation)
-Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨b, rfl⟩`. Use `show X.eX b ∈ orth (VS D) (XS X)`. Rewrite using `[orth_span_iff]`. Introduce and unpack `_ ⟨a, rfl⟩`.
-
-Conclude with `X.ee a b`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem xs_le_orth : XS X ≤ orth (VS D) (XS X) := by
   refine Submodule.span_le.2 ?_
@@ -191,9 +187,9 @@ theorem xs_le_orth : XS X ≤ orth (VS D) (XS X) := by
   exact X.ee a b
 
 /- English proof (translation)
-Establish `he : ∀ a, (VS D).hT (X.eX a) x = 0` using `fun a => (mem_orth'.1 hx) _ (Submodule.subset_span ⟨a, rfl⟩)`. Rewrite using `[piW_apply]`. Simplify using `only [he, zero_smul, Finset.sum_const_zero, sub_zero]`. Establish `e : x - (x - ∑ a, (VS D).hT (X.fY a) x • X.eX a - (VS D).hT (X.zu u') x • (((VS D).hT (X.zu u') (X.zu u'))⁻¹ • X.zu u')) = ∑ a, (VS D).hT (X.fY a) x • X.eX a + ((VS D).hT (X.zu u') x * ((VS D).hT (X.zu u') (X.zu u'))⁻¹) • X.zu u'`. Rewrite using `[mul_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Normalize the expressions using the abelian group laws. Rewrite using `[e]`. Use `add_mem (Submodule.mem_sup_left (Submodule.sum_mem _ fun a _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨a, rfl⟩))) (Submodule.mem_sup_right (Submodule.smul_mem _ _ (Submodule.mem_span_singleton_self _)))` and prove the remaining obligations.
+Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem sub_piW {x : (VS D).V} (hx : x ∈ orth (VS D) (XS X)) : x - piWL X u' x ∈ XZ X u' := by
   have he : ∀ a, (VS D).hT (X.eX a) x = 0 := fun a => (mem_orth'.1 hx) _ (Submodule.subset_span ⟨a, rfl⟩)
@@ -221,9 +217,9 @@ def Gd (σ : (VS D).V ≃ₗ[D.host.E] (VS D).V) : Prop :=
 variable {X u'}
 
 /- English proof (translation)
-Establish `: XZ X u' ≤ (XS X).comap (σ.toLinearMap - LinearMap.id)`. Use `sup_le (Submodule.span_le.2 ?_) (Submodule.span_le.2 ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨b, rfl⟩`. Conclude with `hσ.2.1 b`. Introduce `y hy`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Set.mem_singleton_iff.1 hy]`. Conclude with `hσ.2.2`. Conclude with `this hx`.
+A detailed English derivation is pending.
 -/
 theorem gd_xz_sub {σ : (VS D).V ≃ₗ[D.host.E] (VS D).V} (hσ : Gd X u' σ) {x : (VS D).V} (hx : x ∈ XZ X u') :
     σ x - x ∈ XS X := by
@@ -234,7 +230,7 @@ theorem gd_xz_sub {σ : (VS D).V ≃ₗ[D.host.E] (VS D).V} (hσ : Gd X u' σ) {
   exact this hx
 
 /- English proof (translation)
-Establish `h` using `gd_xz_sub hσ (Submodule.mem_sup_left hx : x ∈ XZ X u')`. Establish `e : σ x = (σ x - x) + x` using `by abel`. Rewrite using `[e]`. Conclude with `add_mem h hx`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gd_xs {σ : (VS D).V ≃ₗ[D.host.E] (VS D).V} (hσ : Gd X u' σ) {x : (VS D).V} (hx : x ∈ XS X) :
     σ x ∈ XS X := by
@@ -243,7 +239,7 @@ theorem gd_xs {σ : (VS D).V ≃ₗ[D.host.E] (VS D).V} (hσ : Gd X u' σ) {x : 
   rw [e]; exact add_mem h hx
 
 /- English proof (translation)
-Establish `h` using `gd_xz_sub hσ hx`. Establish `e : σ x = (σ x - x) + x` using `by abel`. Rewrite using `[e]`. Conclude with `add_mem (Submodule.mem_sup_left h) hx`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gd_xz {σ : (VS D).V ≃ₗ[D.host.E] (VS D).V} (hσ : Gd X u' σ) {x : (VS D).V} (hx : x ∈ XZ X u') :
     σ x ∈ XZ X u' := by
@@ -252,7 +248,7 @@ theorem gd_xz {σ : (VS D).V ≃ₗ[D.host.E] (VS D).V} (hσ : Gd X u' σ) {x : 
   rw [e]; exact add_mem (Submodule.mem_sup_left h) hx
 
 /- English proof (translation)
-Rewrite using `[mem_orth']`. Introduce `y hy`. Establish `e : y = σ (σ⁻¹ y)` using `by rw [Formalism.L2.SG.Pf.le_inv_app, LinearEquiv.apply_symm_apply]`. Rewrite using `[e, hσ.1]`. Conclude with `(mem_orth'.1 hx) _ (gd_xs hσ' hy)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gd_orth {σ : (VS D).V ≃ₗ[D.host.E] (VS D).V} (hσ : Gd X u' σ) (hσ' : Gd X u' σ⁻¹) {x : (VS D).V}
     (hx : x ∈ orth (VS D) (XS X)) : σ x ∈ orth (VS D) (XS X) := by
@@ -263,7 +259,7 @@ theorem gd_orth {σ : (VS D).V ≃ₗ[D.host.E] (VS D).V} (hσ : Gd X u' σ) (h�
   exact (mem_orth'.1 hx) _ (gd_xs hσ' hy)
 
 /- English proof (translation)
-Establish `h0` using `hσ.1 (X.zu u') w`. Rewrite `h0` using `[((mem_W_iff X u').1 hw).2.2]`. Establish `e : σ (X.zu u') = X.zu u' + (σ (X.zu u') - X.zu u')` using `by abel`. Rewrite `h0` using `[e, map_add, LinearMap.add_apply, (mem_orth'.1 (gd_orth hσ hσ' (W_le_orth X u' hw))) _ hσ.2.2, add_zero]`. Conclude with `h0`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem levi_preserves_z_orthogonal {σ : (VS D).V ≃ₗ[D.host.E] (VS D).V} (hσ : Gd X u' σ) (hσ' : Gd X u' σ⁻¹) {w : (VS D).V}
     (hw : w ∈ Wsp X u') : (VS D).hT (X.zu u') (σ w) = 0 := by
@@ -275,9 +271,9 @@ theorem levi_preserves_z_orthogonal {σ : (VS D).V ≃ₗ[D.host.E] (VS D).V} (h
   exact h0
 
 /- English proof (translation)
-Establish `ho` using `gd_orth hσ hσ' (W_le_orth X u' hw)`. Establish `he : ∀ a, (VS D).hT (X.eX a) (σ w) = 0` using `fun a => (mem_orth'.1 ho) _ (Submodule.subset_span ⟨a, rfl⟩)`. Rewrite using `[piW_apply]`. Simplify using `only [he, zero_smul, Finset.sum_const_zero, sub_zero, levi_preserves_z_orthogonal hσ hσ' hw]`. Establish `e : σ w - (σ w - ∑ a, (VS D).hT (X.fY a) (σ w) • X.eX a) = ∑ a, (VS D).hT (X.fY a) (σ w) • X.eX a`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Normalize the expressions using the abelian group laws. Rewrite using `[e]`. Conclude with `Submodule.sum_mem _ fun a _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨a, rfl⟩)`.
+Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gd_W_sub {σ : (VS D).V ≃ₗ[D.host.E] (VS D).V} (hσ : Gd X u' σ) (hσ' : Gd X u' σ⁻¹) {w : (VS D).V}
     (hw : w ∈ Wsp X u') : σ w - piWL X u' (σ w) ∈ XS X := by
@@ -291,7 +287,7 @@ theorem gd_W_sub {σ : (VS D).V ≃ₗ[D.host.E] (VS D).V} (hσ : Gd X u' σ) (h
   exact Submodule.sum_mem _ fun a _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨a, rfl⟩)
 
 /- English proof (translation)
-Establish `hr` using `sub_piW X u' hx`. Establish `e : σ x = σ (piWL X u' x) + σ (x - piWL X u' x)` using `by rw [← map_add]; congr 1; abel`. Rewrite using `[e, map_add, piW_XZ X u' (gd_xz hσ hr), add_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem gd_piW {σ : (VS D).V ≃ₗ[D.host.E] (VS D).V} (hσ : Gd X u' σ) {x : (VS D).V}
     (hx : x ∈ orth (VS D) (XS X)) : piWL X u' (σ x) = piWL X u' (σ (piWL X u' x)) := by
@@ -310,11 +306,11 @@ theorem psiL_coe (σ : (VS D).V ≃ₗ[D.host.E] (VS D).V) (w : Wsp X u') :
     ((psiL σ w : Wsp X u') : (VS D).V) = piWL X u' (σ w) := rfl
 
 /- English proof (translation)
-Rewrite using `[psiL_coe, psiL_coe]`. Establish `h1` using `gd_W_sub hσ hσ' w.2`. Establish `h2` using `gd_W_sub hσ hσ' w'.2`. Use `set p := piWL X u' (σ w)`. Use `set p' := piWL X u' (σ w')`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hp : p ∈ orth (VS D) (XS X)` using `W_le_orth X u' (piW_mem X u' _)`. Establish `hp' : p' ∈ orth (VS D) (XS X)` using `W_le_orth X u' (piW_mem X u' _)`. Establish `e1 : σ w = p + (σ w - p)` using `by abel`. Establish `e2 : σ w' = p' + (σ w' - p')` using `by abel`. Establish `hiso` using `hσ.1 w w'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite `hiso` using `[e1, e2]`. Simplify using `only [map_add, LinearMap.add_apply] at hiso`. Rewrite `hiso` using `[(mem_orth'.1 hp') _ h1, (mem_orth'.1 (xs_le_orth X h2)) _ h1, hconj (σ w' - p') p, (mem_orth'.1 hp) _ h2, map_zero, add_zero, add_zero, add_zero]`. Conclude with `hiso`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem psiL_iso {σ : (VS D).V ≃ₗ[D.host.E] (VS D).V} (hσ : Gd X u' σ) (hσ' : Gd X u' σ⁻¹) (w w' : Wsp X u') :
     (VS D).hT (psiL σ w) (psiL σ w') = (VS D).hT w w' := by
@@ -335,7 +331,7 @@ theorem psiL_iso {σ : (VS D).V ≃ₗ[D.host.E] (VS D).V} (hσ : Gd X u' σ) (h
   exact hiso
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[psiL_coe, psiL_coe, ← gd_piW hσ' (gd_orth hσ hσ' (W_le_orth X u' w.2)), Formalism.L2.SG.Pf.le_inv_app, LinearEquiv.symm_apply_apply, levi_projection_of_mem X u' w.2]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem psiL_comp {σ : (VS D).V ≃ₗ[D.host.E] (VS D).V} (hσ : Gd X u' σ) (hσ' : Gd X u' σ⁻¹) (w : Wsp X u') :
     psiL σ⁻¹ (psiL σ w) = w := by
@@ -353,13 +349,13 @@ def psiE (σ : (VS D).V ≃ₗ[D.host.E] (VS D).V) (hσ : Gd X u' σ) (hσ' : Gd
     (LinearMap.ext fun w => psiL_comp hσ hσ' w)
 
 /- English proof (translation)
-Establish `hr` using `sub_piW X u' hx`. Establish `hw` using `piW_mem X u' x`. Establish `dec : ∀ ρ : (VS D).V ≃ₗ[D.host.E] (VS D).V, Gd X u' ρ → Gd X u' ρ⁻¹ → ρ x - (piWL X u' (ρ (piWL X u' x)) + (x - piWL X u' x)) ∈ XS X`. Introduce `ρ h1 h2`. Establish `e : ρ x - (piWL X u' (ρ (piWL X u' x)) + (x - piWL X u' x)) = (ρ (piWL X u' x) - piWL X u' (ρ (piWL X u' x))) + (ρ (x - piWL X u' x) - (x - piWL X u' x))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[map_sub ρ x]`. Normalize the expressions using the abelian group laws. Rewrite using `[e]`. Conclude with `add_mem (gd_W_sub h1 h2 hw) (gd_xz_sub h1 hr)`. Establish `h1` using `dec σ hσ hσ'`.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `dec τ hτ hτ'`. Rewrite `h1` using `[← he ⟨_, hw⟩]`. Establish `h3 : σ x - τ x ∈ XS X`. Establish `e : σ x - τ x = (σ x - (piWL X u' (τ (piWL X u' x)) + (x - piWL X u' x))) - (τ x - (piWL X u' (τ (piWL X u' x)) + (x - piWL X u' x)))` using `by abel`. Rewrite using `[e]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `sub_mem h1 h2`. Establish `e : (τ⁻¹ * σ) x - x = τ⁻¹ (σ x - τ x)`. Rewrite using `[map_sub, Formalism.L2.SG.Pf.le_mul_app, Formalism.L2.SG.Pf.le_inv_app τ (τ x), LinearEquiv.symm_apply_apply]`. Rewrite using `[e]`. Conclude with `gd_xs hτ' h3`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem key {σ τ : (VS D).V ≃ₗ[D.host.E] (VS D).V} (hσ : Gd X u' σ) (hσ' : Gd X u' σ⁻¹) (hτ : Gd X u' τ)
     (hτ' : Gd X u' τ⁻¹) (he : ∀ w : Wsp X u', piWL X u' (τ w) = piWL X u' (σ w)) {x : (VS D).V}
@@ -393,7 +389,7 @@ namespace LeviAlg
 variable {D : D7} {X : Formalism.L2.SG.HidaSetting.HidaSetting D} {u' : D.what₂.Word}
 
 /- English proof (translation)
-Introduce `w w'`. Conclude with `psiL_iso hσ hσ' w w'`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem psiE_iso {σ : (VS D).V ≃ₗ[D.host.E] (VS D).V} (hσ : Gd X u' σ) (hσ' : Gd X u' σ⁻¹) :
     psiE σ hσ hσ' ∈ Formalism.HermitianLatticesTheory.isom (hW X u') := by
@@ -401,11 +397,11 @@ theorem psiE_iso {σ : (VS D).V ≃ₗ[D.host.E] (VS D).V} (hσ : Gd X u' σ) (h
   exact psiL_iso hσ hσ' w w'
 
 /- English proof (translation)
-Unfold `LW`. Rewrite using `[Submodule.mem_comap, Submodule.mem_map]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, hxy⟩`. Rewrite `hx` using `[Submodule.mem_inf]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `⟨x, hx.1, ?_, hxy⟩` and prove the remaining obligations. Use `hx.2` as an intermediate fact. Rewrite `this` using `[Submodule.restrictScalars_mem, xsp_eq]`. Then use the resulting hypothesis. Introduce and unpack `⟨x, h1, h2, h3⟩`. Use `⟨x, Submodule.mem_inf.2 ⟨h1, ?_⟩, h3⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Submodule.restrictScalars_mem, xsp_eq]`. Conclude with `h2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_LW {Λ : Submodule (𝓞 D.host.E) (VS D).V} {y : Wsp X u'} :
     y ∈ LW X u' Λ ↔ ∃ x, x ∈ Λ ∧ x ∈ orth (VS D) (XS X) ∧ piWL X u' x = y := by
@@ -422,9 +418,9 @@ theorem mem_LW {Λ : Submodule (𝓞 D.host.E) (VS D).V} {y : Wsp X u'} :
     rw [Submodule.restrictScalars_mem, xsp_eq]; exact h2
 
 /- English proof (translation)
-Introduce and unpack `_ ⟨w, hw, rfl⟩`. Take `⟨x, hxΛ, hxo, hxw⟩` from `mem_LW.1 hw`. Establish `hσx : σ x ∈ Λ`. Rewrite using `[← hΛ]`. Conclude with `⟨x, hxΛ, rfl⟩`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Use `mem_LW.2 ⟨σ x, hσx, gd_orth hσ hσ' hxo, ?_⟩` and prove the remaining obligations. Use `show piWL X u' (σ x) = piWL X u' (σ w)`. Rewrite using `[← hxw, gd_piW hσ hxo]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem psiE_le {σ : (VS D).V ≃ₗ[D.host.E] (VS D).V} (hσ : Gd X u' σ) (hσ' : Gd X u' σ⁻¹)
     {Λ : Submodule (𝓞 D.host.E) (VS D).V} (hΛ : Formalism.HermitianLatticesTheory.gmap σ Λ = Λ) :
@@ -438,9 +434,9 @@ theorem psiE_le {σ : (VS D).V ≃ₗ[D.host.E] (VS D).V} (hσ : Gd X u' σ) (h�
   rw [← hxw, gd_piW hσ hxo]
 
 /- English proof (translation)
-Use `le_antisymm (psiE_le hσ hσ' hΛ) fun y hy => ?_` and prove the remaining obligations. Establish `hσ'' : Gd X u' σ⁻¹⁻¹` using `by rwa [inv_inv]`. Establish `h1` using `psiE_le hσ' hσ'' (Formalism.L2.SG.Pf.gmap_inv hΛ) ⟨y, hy, rfl⟩`. Use `⟨_, h1, ?_⟩` and prove the remaining obligations. Establish `h` using `psiL_comp (σ := σ⁻¹) hσ' hσ'' y`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `only [inv_inv] at h`. Conclude with `h`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem psiE_lat {σ : (VS D).V ≃ₗ[D.host.E] (VS D).V} (hσ : Gd X u' σ) (hσ' : Gd X u' σ⁻¹)
     {Λ : Submodule (𝓞 D.host.E) (VS D).V} (hΛ : Formalism.HermitianLatticesTheory.gmap σ Λ = Λ) :
@@ -454,7 +450,7 @@ theorem psiE_lat {σ : (VS D).V ≃ₗ[D.host.E] (VS D).V} (hσ : Gd X u' σ) (h
   exact h
 
 /- English proof (translation)
-Use `⟨hσ, fun a => Submodule.span_mono (Set.image_subset_range _ _) (Formalism.L2.SG.Pf.RegroupPf.StabFlagPf.flag_e X hs hS a), ?_⟩` and prove the remaining obligations. Use `hZ D X u' s σ hs hS` as an intermediate fact. Rewrite `this` using `[xsp_eq]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem gd_of_point (hZ : SratZC) {σ : (VS D).V ≃ₗ[D.host.E] (VS D).V} {s : X.B.I.GA} (hs : RatLink X s σ)
     (hσ : σ ∈ Formalism.HermitianLatticesTheory.isom (VS D).hT) (hS : s ∈ Srat X u') : Gd X u' σ := by
@@ -468,17 +464,17 @@ end LeviAlg
 open LeviAlg in
 
 /- English proof (translation)
-Introduce `D X Y u' Λ hΛ`. Set `G : Set ((VS D).V ≃ₗ[D.host.E] (VS D).V)` to `{σ | σ ∈ Formalism.HermitianLatticesTheory.isom (VS D).hT ∧ Formalism.HermitianLatticesTheory.gmap σ Λ = Λ ∧ ∃ t : X.B.I.GA, RatLink X t σ ∧ t ∈ Srat X u'}`. Establish `hG : ∀ σ ∈ G, Gd X u' σ ∧ Gd X u' σ⁻¹`. Introduce and unpack `σ ⟨hi, -, t, ht, hS⟩`. Conclude with `⟨gd_of_point hZ ht hi hS, gd_of_point hZ (ratLink_inv X ht) ((Formalism.HermitianLatticesTheory.isom _).inv_mem hi) ((Srat X u').inv_mem hS)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Set `Φ : G → (Wsp X u' ≃ₗ[D.host.E] Wsp X u')` to `fun σ => psiE σ.1 (hG σ.1 σ.2).1 (hG σ.1 σ.2).2`. Establish `hrange : Set.range Φ ⊆ {g : Wsp X u' ≃ₗ[D.host.E] Wsp X u' | g ∈ Formalism.HermitianLatticesTheory.isom (hW X u') ∧ Formalism.HermitianLatticesTheory.gmap g (LW X u' Λ) = LW X u' Λ}`. Introduce and unpack `_ ⟨σ, rfl⟩`. Conclude with `⟨psiE_iso _ _, psiE_lat _ _ σ.2.2.1⟩`. Establish `hfin : (Set.range Φ).Finite` using `(hWF D X Y u' Λ hΛ).subset hrange`.
+Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact.
 
-Set `ch : (Wsp X u' ≃ₗ[D.host.E] Wsp X u') → ((VS D).V ≃ₗ[D.host.E] (VS D).V)` to `fun g => if hg : ∃ σ : G, Φ σ = g then (hg.choose : (VS D).V ≃ₗ[D.host.E] (VS D).V) else 1`. Use `⟨hfin.toFinset.image ch, ?_, ?_⟩` and prove the remaining obligations. Introduce `τ hτ`. Take `⟨g, hg, rfl⟩` from `Finset.mem_image.1 hτ`. Establish `hg' : ∃ σ : G, Φ σ = g` using `hfin.mem_toFinset.1 hg`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Simplify using `only [ch, dif_pos hg']`. Conclude with `hg'.choose.2`. Introduce `σ s hs hσ hS hgσ`. Establish `hσG : σ ∈ G` using `⟨hσ, hgσ, s, hs, hS⟩`. Establish `hg' : ∃ ρ : G, Φ ρ = Φ ⟨σ, hσG⟩` using `⟨_, rfl⟩`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨ch (Φ ⟨σ, hσG⟩), Finset.mem_image.2 ⟨_, hfin.mem_toFinset.2 ⟨_, rfl⟩, rfl⟩, ?_⟩` and prove the remaining obligations. Simplify using `only [ch, dif_pos hg']`. Establish `hτ` using `hg'.choose_spec`. Introduce `x hx`. Rewrite `hx`, the goal using `[LeviAlg.xsp_eq]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `key (hG σ hσG).1 (hG σ hσG).2 (hG _ hg'.choose.2).1 (hG _ hg'.choose.2).2 (fun w => ?_) hx` and prove the remaining obligations. Conclude with `congrArg (fun g : Wsp X u' ≃ₗ[D.host.E] Wsp X u' => ((g w : Wsp X u') : (VS D).V)) hτ`.
+A detailed English derivation is pending.
 -/
 theorem leviStabFinC_of (hWF : LeviWFinC) (hZ : SratZC) : LeviStabFinC := by
   intro D X Y u' Λ hΛ

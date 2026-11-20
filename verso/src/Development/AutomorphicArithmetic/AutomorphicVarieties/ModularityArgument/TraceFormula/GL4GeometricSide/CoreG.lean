@@ -15,6 +15,6 @@ import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.CompactUni
 open PositivityTheory.RgBcC.RealD
 
 /- English proof (translation)
-The claim follows from `coreG_of countG_holds (multG_of_multFor multiplicity_formula_holds) GlobalTheory.CompanionTheory.SignLine.signOne`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.GSp4Splitting.coreG : CoreG := coreG_of countG_holds (multG_of_multFor multiplicity_formula_holds) GlobalTheory.CompanionTheory.SignLine.signOne

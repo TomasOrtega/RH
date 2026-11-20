@@ -34,15 +34,15 @@ variable {F E : Type} [NontriviallyNormedField F] [NontriviallyNormedField E] [N
   (A : Et F E) {r : ℕ} {τ : A.K} {p : Fin r → F}
 
 /- English proof (translation)
-Simplify using `[LinDesc.bas]`.
+Simplify using the standard rewrite rules.
 -/
 theorem bas_apply (hG : A.IsGen τ p) (i : Fin r) : LinDesc.bas A hG i = τ ^ (i : ℕ) := by
   simp [LinDesc.bas]
 
 /- English proof (translation)
-Establish `: (∑ i, c i • τ ^ (i : ℕ)) = (LinDesc.bas A hG).equivFun.symm c`. Rewrite using `[Module.Basis.equivFun_symm_apply]`. Simplify using `[bas_apply]`. Rewrite using `[this]`. Use extensionality with `i`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Rewrite using `[← Module.Basis.equivFun_apply, LinearEquiv.apply_symm_apply]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem repr_sum (hG : A.IsGen τ p) (c : Fin r → F) :
     (LinDesc.bas A hG).repr (∑ i, c i • τ ^ (i : ℕ)) = Finsupp.equivFunOnFinite.symm c := by
@@ -53,13 +53,13 @@ theorem repr_sum (hG : A.IsGen τ p) (c : Fin r → F) :
   rw [← Module.Basis.equivFun_apply, LinearEquiv.apply_symm_apply]; simp
 
 /- English proof (translation)
-Use extensionality with `i j`. Rewrite using `[Algebra.leftMulMatrix_eq_repr_mul, bas_apply, ← pow_succ']`. Simplify using `only [companion, Matrix.of_apply]`. Distinguish the cases in `hj : (j : ℕ) + 1 = r`. Rewrite using `[if_pos hj, hj]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Establish `h3 : τ ^ r = ∑ k, (-p k) • τ ^ (k : ℕ)`. Use `hG.2.2` as an intermediate fact. Simplify using `only [neg_smul, Finset.sum_neg_distrib]`. Conclude with `eq_neg_of_add_eq_zero_left this`. Rewrite using `[h3, repr_sum]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Rewrite using `[if_neg hj]`. Establish `hlt : (j : ℕ) + 1 < r` using `lt_of_le_of_ne j.2 hj`. Establish `h3 : τ ^ ((j : ℕ) + 1) = LinDesc.bas A hG ⟨(j : ℕ) + 1, hlt⟩` using `by rw [bas_apply]`. Rewrite using `[h3, Module.Basis.repr_self, Finsupp.single_apply]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hi : (i : ℕ) = (j : ℕ) + 1`. Rewrite using `[if_pos hi, if_pos (Fin.ext hi.symm)]`. Rewrite using `[if_neg hi, if_neg]`. Introduce `h; exact hi (by rw [← h])`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem leftMul_tau (hG : A.IsGen τ p) : Algebra.leftMulMatrix (LinDesc.bas A hG) τ = companion p := by
   ext i j
@@ -94,7 +94,7 @@ theorem tm_coe (hG : A.IsGen τ p) (t : A.Kˣ) :
     ((tm A hG t : GL (Fin r) F) : Matrix (Fin r) (Fin r) F) = Algebra.leftMulMatrix (bas A hG) (t : A.K) := rfl
 
 /- English proof (translation)
-Rewrite using `[← map_inv]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem tm_inv_coe (hG : A.IsGen τ p) (t : A.Kˣ) :
     (((tm A hG t)⁻¹ : GL (Fin r) F) : Matrix (Fin r) (Fin r) F) =
@@ -102,9 +102,9 @@ theorem tm_inv_coe (hG : A.IsGen τ p) (t : A.Kˣ) :
   rw [← map_inv]; rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `j`. Simplify using `only [Matrix.vecMul, dotProduct, Algebra.leftMulMatrix_eq_repr_mul]`. Establish `hx` using `(bas A hG).sum_repr (s * bas A hG j)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[map_sum]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[smul_mul_assoc, map_smul, smul_eq_mul, mul_comm, bas_apply A hG i]`. Use `_ = Algebra.trace F A.K (τ ^ (j : ℕ) * (s * c)) := by`. Rewrite using `[← Finset.sum_mul, hx, bas_apply]`. Put the polynomial expressions in normal form.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Put the polynomial expressions in normal form. A detailed English derivation is pending.
 -/
 theorem row_mul (hG : A.IsGen τ p) (s c : A.K) :
     (fun i : Fin r => Algebra.trace F A.K (τ ^ (i : ℕ) * c)) ᵥ* Algebra.leftMulMatrix (bas A hG) s =
@@ -120,11 +120,9 @@ theorem row_mul (hG : A.IsGen τ p) (s c : A.K) :
         rw [← Finset.sum_mul, hx, bas_apply]; ring_nf
 
 /- English proof (translation)
-Unfold `act pt`. Rewrite using `[tm_inv_coe, tm_coe]`. Use `Prod.ext ?_ (Prod.ext ?_ (Prod.ext ?_ rfl))` and prove the remaining obligations. Simplify using `only`. Rewrite using `[← leftMul_tau A hG, ← map_mul, ← map_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Rewrite using `[mul_comm (t : A.K) τ, mul_assoc, ← Units.val_mul, mul_inv_cancel, Units.val_one, mul_one]`. Simplify using `only`. Rewrite using `[Module.Basis.equivFun_apply, Module.Basis.equivFun_apply]`. Conclude with `Algebra.leftMulMatrix_mulVec_repr _ _ _`.
-
-Conclude with `row_mul A hG _ c`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem act_tm (hG : A.IsGen τ p) (lam : F) (t : A.Kˣ) (b c : A.K) :
     act (tm A hG t) (pt A hG lam b c) = pt A hG lam ((t : A.K) * b) (((t⁻¹ : A.Kˣ) : A.K) * c) := by
@@ -140,7 +138,7 @@ theorem act_tm (hG : A.IsGen τ p) (lam : F) (t : A.Kˣ) (b c : A.K) :
   · exact row_mul A hG _ c
 
 /- English proof (translation)
-Rewrite using `[tm_coe, Algebra.norm_eq_matrix_det (bas A hG)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem det_tm (hG : A.IsGen τ p) (t : A.Kˣ) :
     ((tm A hG t : GL (Fin r) F) : Matrix (Fin r) (Fin r) F).det = Algebra.norm F (t : A.K) := by
@@ -151,7 +149,7 @@ end GlobalTheory.JR.LinDesc
 namespace GlobalTheory.JR.LinDesc
 
 /- English proof (translation)
-Unfold `act`. Simplify using `only [_root_.mul_inv_rev, Units.val_mul, Matrix.mulVec_mulVec, Matrix.vecMul_vecMul, Matrix.mul_assoc]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem act_mul {r : ℕ} {k : Type} [CommRing k] (g h : GL (Fin r) k) (Y : Gl r k) :
     act (g * h) Y = act g (act h Y) := by
@@ -159,7 +157,7 @@ theorem act_mul {r : ℕ} {k : Type} [CommRing k] (g h : GL (Fin r) k) (Y : Gl r
   simp only [_root_.mul_inv_rev, Units.val_mul, Matrix.mulVec_mulVec, Matrix.vecMul_vecMul, Matrix.mul_assoc]
 
 /- English proof (translation)
-Unfold `act`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem act_one {r : ℕ} {k : Type} [CommRing k] (Y : Gl r k) : act 1 Y = Y := by
   unfold act; simp
@@ -168,11 +166,11 @@ end GlobalTheory.JR.LinDesc
 
 namespace GlobalTheory.JR.LinDesc
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ A r τ p hG lam a`. Unfold `LinDesc.pt sec Et.invK`. Use `congr 1`. Use `Prod.ext ?_ rfl` and prove the remaining obligations. Use function extensionality and compare the values at `i`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `h1 : (1 : A.K) = LinDesc.bas A hG ⟨0, Fin.pos i⟩`. Simplify using `[LinDesc.bas]`. Simplify using `only`. Rewrite using `[h1, Module.Basis.equivFun_self]`. Distinguish the cases in `hi : (i : ℕ) = 0`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[if_pos hi, if_pos (Fin.ext hi.symm)]`. Rewrite using `[if_neg hi, if_neg]`. Introduce `h; exact hi (by rw [← h])`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 -/
 theorem pt_one : ∀ (F E : Type) [NontriviallyNormedField F] [NontriviallyNormedField E] [NormedAlgebra F E] [StarRing E] [Unram F E] (A : Et F E) (r : ℕ) (τ : A.K) (p : Fin r → F) (hG : A.IsGen τ p) (lam : F), ∀ a : A.K, LinDesc.pt A hG lam 1 a = sec (A.invK τ p lam a) := by
   intro F E _ _ _ _ _ A r τ p hG lam a

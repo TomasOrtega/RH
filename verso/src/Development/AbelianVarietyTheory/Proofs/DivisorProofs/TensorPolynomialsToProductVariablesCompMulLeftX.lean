@@ -8,7 +8,7 @@ open NumberField Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Forma
 namespace GlobalTheory.CCRFock
 
 /- English proof (translation)
-Simplify using `[GlobalTheory.CCRFock.polMap]`.
+Simplify using the standard rewrite rules.
 -/
 theorem polMap_tprod_eq_prod_rename_mulX (W Λ : Type) [Fintype W] [DecidableEq W] (q : W → MvPolynomial Λ ℂ) :
     GlobalTheory.CCRFock.polMap W Λ (PiTensorProduct.tprod ℂ q) =
@@ -16,13 +16,13 @@ theorem polMap_tprod_eq_prod_rename_mulX (W Λ : Type) [Fintype W] [DecidableEq 
   simp [GlobalTheory.CCRFock.polMap]
 
 /- English proof (translation)
-Introduce `W Λ _ _ w l`. Apply `PiTensorProduct.ext` to reduce the goal to its premises. Apply `MultilinearMap.ext` to reduce the goal to its premises. Introduce `p`. Establish `h : GlobalTheory.RealLift.atPl (V` using `fun _ : W => MvPolynomial Λ ℂ) w (LinearMap.mulLeft ℂ (MvPolynomial.X l)) (PiTensorProduct.tprod ℂ p) = PiTensorProduct.tprod ℂ (Function.update p w (MvPolynomial.X l * p w)) := by`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Unfold `GlobalTheory.RealLift.atPl`. Rewrite using `[PiTensorProduct.map_tprod]`. Use `congr 1`. Use function extensionality and compare the values at `v`. Distinguish the cases in `hv : v = w`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails.
 
-Substitute `hv` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Function.update_of_ne hv]`. Simplify using `only [LinearMap.compMultilinearMap_apply, LinearMap.comp_apply, h, polMap_tprod_eq_prod_rename_mulX, LinearMap.mulLeft_apply]`. Rewrite using `[Fintype.prod_eq_mul_prod_compl w, Fintype.prod_eq_mul_prod_compl w (fun v => MvPolynomial.rename (Prod.mk v) (p v)), ← mul_assoc]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Simplify using the standard rewrite rules. Use `Finset.prod_congr rfl fun v hv => ?_` and prove the remaining obligations. Establish `hv' : v ≠ w` using `by simpa using hv`. Rewrite using `[Function.update_of_ne hv']`.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem polMap_comp_atPl_mulLeft_X : ∀ (W Λ : Type) [Fintype W] [DecidableEq W] (w : W) (l : Λ),
     GlobalTheory.CCRFock.polMap W Λ ∘ₗ GlobalTheory.RealLift.atPl (V := fun _ : W => MvPolynomial Λ ℂ) w

@@ -7,27 +7,25 @@ namespace GroundTheory.Heights₂.Heights.FlagBundles
 open scoped InnerProductSpace ComplexConjugate
 
 /- English proof (translation)
-Introduce `E _ _ _ S hS e he he0 f`. Establish `hne : (0 : ℝ) < ‖e‖` using `norm_pos_iff.mpr he0`. Establish `hdet : (Matrix.gram ℂ ![e, f]).det.re = ‖e‖ ^ 2 * ‖f‖ ^ 2 - ‖⟪e, f⟫_ℂ‖ ^ 2`. Rewrite using `[Matrix.det_fin_two]`. Simplify using `only [Matrix.gram_apply, Matrix.cons_val_zero, Matrix.cons_val_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← inner_conj_symm e f, inner_self_eq_norm_sq_to_K, inner_self_eq_norm_sq_to_K, mul_comm (conj _), Complex.mul_conj, Complex.normSq_eq_norm_sq]`. Simplify using `[Complex.sub_re, ← Complex.ofReal_pow, ← Complex.ofReal_mul]`. Conclude with `norm_inner_symm f e`. Establish `hee : ⟪e, e⟫_ℂ ≠ 0` using `inner_self_ne_zero.mpr he0`. Use `set c : ℂ := ⟪e, f⟫_ℂ / ⟪e, e⟫_ℂ with hc`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `set h : E := f - c • e with hh`. Establish `hce : c * ⟪e, e⟫_ℂ = ⟪e, f⟫_ℂ`. Rewrite using `[hc]`. Clear the denominators using the available nonvanishing facts. Establish `horth : ⟪e, h⟫_ℂ = 0`.
+Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hh, inner_sub_right, inner_smul_right, hce, sub_self]`. Establish `hpyth : ∀ d : ℂ, ‖h + d • e‖ ^ 2 = ‖h‖ ^ 2 + ‖d • e‖ ^ 2`. Introduce `d`. Establish `h0 : ⟪h, d • e⟫_ℂ = 0`. Rewrite using `[inner_smul_right, inner_eq_zero_symm.mp horth, mul_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify `norm_add_sq_eq_norm_sq_add_norm_sq_of_inner_eq_zero (𝕜 := ℂ) h (d • e) h0` using `[sq]`. Establish `hf : f = h + c • e` using `by rw [hh, sub_add_cancel]`. Establish `hnc : ‖c‖ * ‖e‖ ^ 2 = ‖⟪e, f⟫_ℂ‖`. Rewrite using `[← hce, norm_mul, inner_self_eq_norm_sq_to_K]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hdet' : (Matrix.gram ℂ ![e, f]).det.re = (‖e‖ * ‖h‖) ^ 2`. Establish `hf2 : ‖f‖ ^ 2 = ‖h‖ ^ 2 + (‖c‖ * ‖e‖) ^ 2`. Rewrite using `[hf, hpyth c, norm_smul]`. Rewrite using `[hdet, hf2, ← hnc]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hspan : ∀ s ∈ S, ∃ d : ℂ, d • e = s`. Introduce `s hs`. Take `⟨d, hd⟩` from `(finrank_eq_one_iff_of_nonzero' (⟨e, he⟩ : S) (by simpa using he0)).mp hS ⟨s, hs⟩`. Conclude with `⟨d, by simpa using congrArg Subtype.val hd⟩`. Establish `hmk : (Submodule.Quotient.mk h : E ⧸ S) = Submodule.Quotient.mk f`.
+Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[Submodule.Quotient.eq, hh, sub_sub_cancel_left]`. Conclude with `S.neg_mem (S.smul_mem c he)`. Establish `hq : ‖(Submodule.Quotient.mk f : E ⧸ S)‖ = ‖h‖`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[← hmk]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `Submodule.Quotient.norm_mk_le S h`. Use `le_of_forall_pos_lt_add fun ε hε => ?_` and prove the remaining obligations. Take `⟨m, hm, hmε⟩` from `Submodule.Quotient.norm_mk_lt (Submodule.Quotient.mk f : E ⧸ S) hε`. Rewrite `hm` using `[← hmk, Submodule.Quotient.eq]`. Take `⟨d, hd⟩` from `hspan _ hm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Establish `hm' : m = h + d • e` using `by rw [hd, add_sub_cancel]`. Establish `: ‖h‖ ^ 2 ≤ ‖m‖ ^ 2`. Rewrite using `[hm', hpyth d]`. Use polynomial arithmetic with `[sq_nonneg ‖d • e‖]`. Establish `: ‖h‖ ≤ ‖m‖`.
-
-Use polynomial arithmetic with `[norm_nonneg h, norm_nonneg m]`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[hdet', hq, Real.sqrt_sq (by positivity)]`.
+Use the polynomial consequences of the given equalities and inequalities. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem LineQuotientDeterminant.proof : LineQuotientDeterminant.Statement := by
   intro E _ _ _ S hS e he he0 f

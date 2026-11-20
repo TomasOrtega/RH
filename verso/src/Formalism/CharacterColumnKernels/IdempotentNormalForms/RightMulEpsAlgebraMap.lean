@@ -23,7 +23,7 @@ lemma dual_smul_apply (a : OO) (φ : EpsDual O OO Q ε) (x : epsIdeal O ε) :
     (a • φ) x = φ (rightMulEps O ε a x) := rfl
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Use `show x.1 * algebraMap O OO c = c • x.1`. Rewrite using `[Algebra.smul_def, Algebra.commutes]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma rightMulEps_algebraMap (c : O) (x : epsIdeal O ε) :
     rightMulEps O ε (algebraMap O OO c) x = c • x := by
@@ -34,7 +34,7 @@ lemma rightMulEps_algebraMap (c : O) (x : epsIdeal O ε) :
 variable {ε}
 
 /- English proof (translation)
-Take `⟨y, hy⟩` from `x.2`. Simplify using `only [LinearMap.mulLeft_apply] at hy`. Rewrite using `[← hy, ← mul_assoc, hε.eq]`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 lemma eps_mul_of_mem (hε : IsIdempotentElem ε) (x : epsIdeal O ε) : ε * x.1 = x.1 := by
   obtain ⟨y, hy⟩ := x.2
@@ -42,7 +42,7 @@ lemma eps_mul_of_mem (hε : IsIdempotentElem ε) (x : epsIdeal O ε) : ε * x.1 
   rw [← hy, ← mul_assoc, hε.eq]
 
 /- English proof (translation)
-Take `⟨y, hy⟩` from `x.2`. Simplify using `only [LinearMap.mulLeft_apply] at hy`. Use `⟨y • m, ?_⟩` and prove the remaining obligations. Use `show ε • (y • m) = x.1 • m`. Rewrite using `[← hy, mul_smul]`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma smul_mem_epsImg (x : epsIdeal O ε) (m : M) : x.1 • m ∈ epsImg O (M := M) ε := by
   obtain ⟨y, hy⟩ := x.2
@@ -52,7 +52,7 @@ lemma smul_mem_epsImg (x : epsIdeal O ε) (m : M) : x.1 • m ∈ epsImg O (M :=
   rw [← hy, mul_smul]
 
 /- English proof (translation)
-Take `⟨z, hz⟩` from `y.2`. Rewrite using `[← hz]`. Use `show ε • ε • z = ε • z`. Rewrite using `[← mul_smul, hε.eq]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma eps_smul_of_mem (hε : IsIdempotentElem ε) (y : epsImg O (M := M) ε) : ε • y.1 = y.1 := by
   obtain ⟨z, hz⟩ := y.2
@@ -105,9 +105,9 @@ def bwd : (epsImg O (M := M) ε →ₗ[O] Q) →ₗ[O] (M →ₗ[OO] EpsDual O O
 variable {ε}
 
 /- English proof (translation)
-Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `m`. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `x`. Use `show Φ (x.1 • m) (epsE ε) = Φ m x`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Φ.map_smul, dual_smul_apply]`. Use `congr 1`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show ε * x.1 = x.1`. Conclude with `eps_mul_of_mem hε x`.
+Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 lemma bwd_fwd (hε : IsIdempotentElem ε) (Φ : M →ₗ[OO] EpsDual O OO Q ε) :
     bwd ε (fwd ε Φ) = Φ := by
@@ -123,9 +123,7 @@ lemma bwd_fwd (hε : IsIdempotentElem ε) (Φ : M →ₗ[OO] EpsDual O OO Q ε) 
   exact eps_mul_of_mem hε x
 
 /- English proof (translation)
-Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `y`. Use `show ψ ⟨ε • y.1, _⟩ = ψ y`. Use `congr 1`. Apply `Subtype.ext` to reduce the goal to its premises.
-
-Conclude with `eps_smul_of_mem hε y`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 lemma fwd_bwd (hε : IsIdempotentElem ε) (ψ : epsImg O (M := M) ε →ₗ[O] Q) :
     fwd ε (bwd ε ψ) = ψ := by
@@ -170,7 +168,7 @@ def homQuotEquiv (a : O) :
     rw [Submodule.liftQ_apply, LinearMap.toSpanSingleton_apply, one_smul]
 
 /- English proof (translation)
-Rewrite using `[(homQuotEquiv a).length_eq, lenKer O Unit (fun _ _ => a)]`. Conclude with `congrArg _ (Matrix.det_unique _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma length_hom_quot (a : O) :
     Module.length O ((O ⧸ Ideal.span ({a} : Set O)) →ₗ[O] KO O) = addVal O a := by
@@ -178,7 +176,7 @@ lemma length_hom_quot (a : O) :
   exact congrArg _ (Matrix.det_unique _)
 
 /- English proof (translation)
-Assume the negation of the conclusion as `h`. Establish `hfl : IsFiniteLength O O` using `Module.length_ne_top_iff.mp h`. Rewrite `hfl` using `[isFiniteLength_iff_isNoetherian_isArtinian]`. Use `haveI : IsArtinianRing O := hfl.2`. Conclude with `IsDiscreteValuationRing.not_isField O (IsArtinianRing.isField_of_isDomain O)`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 lemma length_self_top : Module.length O O = ⊤ := by
   by_contra h
@@ -194,19 +192,17 @@ end IdempotentImageSmul
 open IdempotentImageSmul
 
 /- English proof (translation)
-Introduce `O N _ _ _ _ _ hN`. Establish `hNA` using `isFiniteLength_iff_isNoetherian_isArtinian.mp hN`. Establish `: IsNoetherian O N` using `hNA.1`. Take `⟨n, ι, _, p, -, e, ⟨f⟩⟩` from `Module.equiv_free_prod_directSum (R := O) (M := N)`. Use `set A : ι → Type _ := fun i => O ⧸ O ∙ p i ^ e i with hA`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Set `g : (DirectSum ι A) ≃ₗ[O] (Π i, A i)` to `DirectSum.linearEquivFunOnFintype O ι A`. Establish `hlenA : ∀ i, Module.length O (A i) = addVal O (p i ^ e i)` using `fun i => IdempotentNormalFormsLenFacts.length_quot_span (p i ^ e i)`. Establish `hlenH : ∀ i, Module.length O (A i →ₗ[O] KO O) = addVal O (p i ^ e i)` using `fun i => length_hom_quot (p i ^ e i)`. Establish `hN1 : Module.length O N = Module.length O (Fin n →₀ O) + ∑ i, addVal O (p i ^ e i)`. Rewrite using `[f.length_eq, Module.length_prod, g.length_eq, Module.length_pi_of_fintype]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [hlenA]`. Establish `hF : Module.length O (Fin n →₀ O) = 0`. Rewrite using `[Module.length_finsupp, length_self_top]`. Break down `Nat.eq_zero_or_pos n with hn | hn` into its components or cases. Substitute `hn` using the available equality.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. It suffices to derive a contradiction. Establish `: Module.length O N = ⊤`. Rewrite using `[hN1, Module.length_finsupp, length_self_top, ENat.card_eq_coe_fintype_card, Fintype.card_fin, ENat.mul_top (by exact_mod_cast hn.ne'), top_add]`. Conclude with `(Module.length_ne_top_iff.mpr hN) this`.
+It suffices to derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: Subsingleton (Fin n →₀ O)` using `Module.length_eq_zero_iff.mp hF`. Establish `hFH : Module.length O ((Fin n →₀ O) →ₗ[O] KO O) = 0`. Rewrite using `[Module.length_eq_zero_iff]`. Conclude with `⟨fun φ ψ => LinearMap.ext fun x => by rw [Subsingleton.elim x 0, map_zero, map_zero]⟩`. Set `h1 : (N →ₗ[O] KO O) ≃ₗ[O] ((Fin n →₀ O) × DirectSum ι A →ₗ[O] KO O)` to `f.arrowCongr (LinearEquiv.refl O (KO O))`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `h2 : (DirectSum ι A →ₗ[O] KO O) ≃ₗ[O] ((Π i, A i) →ₗ[O] KO O)` to `g.arrowCongr (LinearEquiv.refl O (KO O))`. Establish `h3 : Module.length O ((Π i, A i) →ₗ[O] KO O) = ∑ i, addVal O (p i ^ e i)`. Use `(LinearMap.lsum O A O : (Π i, A i →ₗ[O] KO O) ≃ₗ[O] _).length_eq` as an intermediate fact. Rewrite using `[← this, Module.length_pi_of_fintype]`. Simplify using `only [hlenH]`.
-
-Rewrite using `[h1.length_eq, ← (LinearMap.coprodEquiv O).length_eq, Module.length_prod, h2.length_eq, h3, hFH, hN1, hF]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem matlis : StatMatlis := by
   classical

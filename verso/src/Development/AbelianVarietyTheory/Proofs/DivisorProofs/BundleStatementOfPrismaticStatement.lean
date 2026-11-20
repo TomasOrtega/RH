@@ -10,7 +10,7 @@ open CategoryTheory AlgebraicGeometry ReciprocityTheory.ChartRestriction.G Recip
 open scoped Classical
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CovTest.BunModelEx.bunSt_holds | exact GlobalTheory.CovTest.BunModelEx.bunSt_holds | (intros; apply GlobalTheory.CovTest.BunModelEx.bunSt_holds <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.bundle_statement_of_prismatic : Hypotheses2 → HypothesesH → RegularAlteration → ScholzeWeinsteinB → PrismaticDieudonnePerfd → BunSt := by
   first | exact @GlobalTheory.CovTest.BunModelEx.bunSt_holds | exact GlobalTheory.CovTest.BunModelEx.bunSt_holds | (intros; apply GlobalTheory.CovTest.BunModelEx.bunSt_holds <;> assumption)

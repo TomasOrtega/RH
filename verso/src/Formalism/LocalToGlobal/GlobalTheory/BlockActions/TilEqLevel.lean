@@ -15,7 +15,7 @@ section IsExtAlg
 variable {z0 : Fin (D.R.N D.R.m) → D.host.E} {R : Type} [CommRing R] {φ : D.host.E →+* R}
 
 /- English proof (translation)
-Take `⟨ha1, ha2⟩` from `ha`. Take `⟨hb1, hb2⟩` from `hb`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mul_assoc, hb1, ← Matrix.mul_assoc, ha1, Matrix.mul_assoc]`. Rewrite using `[← mulVec_mulVec, hb2, ha2]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem isExt_mul {a b : Matrix (Fin (D.R.N D.R.m - 1)) (Fin (D.R.N D.R.m - 1)) R} {A B : Matrix (Fin (D.R.N D.R.m)) (Fin (D.R.N D.R.m)) R}
     (ha : IsExt D z0 φ a A) (hb : IsExt D z0 φ b B) : IsExt D z0 φ (a * b) (A * B) := by
@@ -26,7 +26,7 @@ theorem isExt_mul {a b : Matrix (Fin (D.R.N D.R.m - 1)) (Fin (D.R.N D.R.m - 1)) 
   · rw [← mulVec_mulVec, hb2, ha2]
 
 /- English proof (translation)
-Take `⟨ha1, ha2⟩` from `ha`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Use `conv_lhs => rw [← ha2]`. Rewrite using `[mulVec_mulVec, hA, one_mulVec]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isExt_inv {a a' : Matrix (Fin (D.R.N D.R.m - 1)) (Fin (D.R.N D.R.m - 1)) R} {A A' : Matrix (Fin (D.R.N D.R.m)) (Fin (D.R.N D.R.m)) R}
     (ha : IsExt D z0 φ a A) (hA : A' * A = 1) (ha' : a * a' = 1) : IsExt D z0 φ a' A' := by
@@ -39,9 +39,9 @@ theorem isExt_inv {a a' : Matrix (Fin (D.R.N D.R.m - 1)) (Fin (D.R.N D.R.m - 1))
     rw [mulVec_mulVec, hA, one_mulVec]
 
 /- English proof (translation)
-Take `⟨ha1, ha2⟩` from `ha`. Establish `hm : (iXm D).map (RingHom.id D.host.E) = iXm D` using `by ext i j; rfl`. Rewrite `ha1` using `[hm]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← Matrix.map_mul, ha1, Matrix.map_mul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hz : (fun i => (RingHom.id D.host.E) (z0 i)) = z0` using `rfl`. Rewrite `ha2` using `[hz]`. Use function extensionality and compare the values at `i`. Use `congrArg (fun w => φ (w i)) ha2` as an intermediate fact. Rewrite using `[← this, RingHom.map_mulVec]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -65,17 +65,15 @@ variable {u : D.what₂.Word} {Ch : ℕ → Type} {chOf : ∀ i, (D.mem u).C.cls
 set_option maxHeartbeats 2000000 in
 
 /- English proof (translation)
-Use `set incl : D.host.E →+* D.host.E ⊗[D.host.F] FiniteAdeleRing (𝓞 D.host.F) D.host.F := inclE (F := D.host.F) (FiniteAdeleRing (𝓞 D.host.F) D.host.F) with hincl`. Take `⟨δ, hδE, hδi⟩` from `til_eq_ext Tf hC hSD hdeg v c c' h`. Establish `hdet : ∀ d : (D.fm u).clsP, IsUnit ((Tf.clsP.y d).1.1).det` using `fun d => (Matrix.isUnit_iff_isUnit_det _).mp (Tf.clsP.y d).1.isUnit`. Establish `ext_of : ∀ d : (D.fm u).clsP, ∃ Gd : GL (Fin (D.R.N D.R.m)) (D.host.E ⊗[D.host.F] FiniteAdeleRing (𝓞 D.host.F) D.host.F), IsExt D Tf.til.z0 incl (Tf.clsP.y d).1.1 Gd.1`. Introduce `d`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨g, hg, hu⟩` from `til_ext Tf incl (Tf.clsP.y d).1.1`. Conclude with `⟨((Matrix.isUnit_iff_isUnit_det g).mpr (hu (hdet d))).unit, hg⟩`. Take `⟨Gc, hGc⟩` from `ext_of c`. Take `⟨Gc', hGc'⟩` from `ext_of c'`. Establish `e1` using `Tf.tilAd.til_ad c Gc hGc`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2` using `Tf.tilAd.til_ad c' Gc' hGc'`. Rewrite `e2` using `[← h]`. Establish `hGc1 : Gc = bc incl (Tf.til.ga c).1 * ((Tf.cls D.R.m le_rfl (Or.inr rfl)).y ((D.fm u).til c)).1 * ((Tf.tilAd.ka c).1)⁻¹` using `eq_mul_inv_of_mul_eq e1.symm`. Establish `hGc2 : Gc' = bc incl (Tf.til.ga c').1 * ((Tf.cls D.R.m le_rfl (Or.inr rfl)).y ((D.fm u).til c)).1 * ((Tf.tilAd.ka c').1)⁻¹` using `eq_mul_inv_of_mul_eq e2.symm`. Use `set Γ := bc incl (Tf.til.ga c').1 * (bc incl (Tf.til.ga c).1)⁻¹ with hΓ`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨δ, ((Tf.clsP.y c').1.1)⁻¹ * δ.map incl * (Tf.clsP.y c).1.1, Gc'⁻¹ * Γ * Gc, hδE, hδi, ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `hinv : IsExt D Tf.til.z0 incl ((Tf.clsP.y c').1.1)⁻¹ (Gc'⁻¹).1` using `isExt_inv hGc' (Units.inv_mul Gc') (Matrix.mul_nonsing_inv _ (hdet c'))`. Establish `hΓ1 : (Γ.1 : Matrix (Fin (D.R.N D.R.m)) (Fin (D.R.N D.R.m)) (D.host.E ⊗[D.host.F] FiniteAdeleRing (𝓞 D.host.F) D.host.F)) = ((Tf.til.ga c').1.1 * ((Tf.til.ga c)⁻¹).1.1).map incl`. Rewrite using `[hΓ, Units.val_mul, Matrix.map_mul]`. Use `congr 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hG : IsExt D Tf.til.z0 incl (δ.map incl) Γ.1` using `by rw [hΓ1]; exact isExt_map hδE`. Rewrite using `[Units.val_mul, Units.val_mul]`. Conclude with `isExt_mul (isExt_mul hinv hG) hGc`. Establish `: Gc'⁻¹ * Γ * Gc = (Tf.tilAd.ka c').1 * ((Tf.tilAd.ka c).1)⁻¹`. Rewrite using `[hGc1, hGc2, hΓ]`.
-
-Use `group`. Rewrite using `[this]`. Conclude with `Subgroup.mul_mem _ (Tf.tilAd.ka c').2 (Subgroup.inv_mem _ (Tf.tilAd.ka c).2)`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, Matrix.mul_nonsing_inv _ (hdet c'), Matrix.one_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem til_eq_level (Tf : FormsTiedSym D u Ch chOf) (hC : CrdFacts D)
     (hSD : ∀ c, dualSet (sigD D : D.host.E →+* D.host.E) (gramP D) (Tf.clsP.lat c) = (Tf.clsP.lat c : Set (Fin (D.R.N D.R.m - 1) → D.host.E)))

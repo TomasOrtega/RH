@@ -13,7 +13,7 @@ namespace GlobalTheory.CompanionTheory.SurjectionOntoH4.RelSup
 variable {K : Type} [Field K] {n d : ℕ}
 
 /- English proof (translation)
-Introduce `i j h`. Unfold `enumD at h`. Conclude with `RelEmbedding.injective _ (finSumFinEquiv.symm.injective h)`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem enumD_injective {a : ℕ} (D : {D : Finset (E n d) // D.card = a}) :
     Function.Injective (enumD D) := by
@@ -22,9 +22,9 @@ theorem enumD_injective {a : ℕ} (D : {D : Finset (E n d) // D.card = a}) :
   exact RelEmbedding.injective _ (finSumFinEquiv.symm.injective h)
 
 /- English proof (translation)
-Establish `h` using `Finset.orderEmbOfFin_mem (D.1.map finSumFinEquiv.toEmbedding) (by simpa using D.2) i`. Take `⟨e, he, h2⟩` from `Finset.mem_map.1 h`. Establish `h3 : enumD D i = e`. Unfold `enumD`. Rewrite using `[← h2]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Rewrite using `[h3]` and apply the resulting hypothesis.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 -/
 theorem enumD_mem {a : ℕ} (D : {D : Finset (E n d) // D.card = a}) (i : Fin a) : enumD D i ∈ D.1 := by
   have h := Finset.orderEmbOfFin_mem (D.1.map finSumFinEquiv.toEmbedding) (by simpa using D.2) i
@@ -36,23 +36,23 @@ theorem enumD_mem {a : ℕ} (D : {D : Finset (E n d) // D.card = a}) (i : Fin a)
   rwa [h3]
 
 /- English proof (translation)
-Simplify using `[hf.eq_iff]`.
+Simplify using the standard rewrite rules.
 -/
 theorem count_self {a : ℕ} {f : Fin a → E n d} (hf : Function.Injective f) (i₀ : Fin a) :
     ∑ i, (if f i = f i₀ then (1 : ℤ) else 0) = 1 := by
   simp [hf.eq_iff]
 
 /- English proof (translation)
-Simplify using `[h]`.
+Simplify using the standard rewrite rules.
 -/
 theorem count_none {a : ℕ} {f : Fin a → E n d} {e : E n d} (h : ∀ i, f i ≠ e) :
     ∑ i, (if f i = e then (1 : ℤ) else 0) = 0 := by
   simp [h]
 
 /- English proof (translation)
-Distinguish the cases in `h : ∃ i, f i = e`. Establish `hx` using `h1 h`. Take `⟨i, rfl⟩` from `h`. Rewrite using `[count_self hf]`. Use linear arithmetic over natural numbers and integers.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Use `push_neg at h`. Rewrite using `[count_none h]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem sub_count_nonneg {a : ℕ} {f : Fin a → E n d} (hf : Function.Injective f) (e : E n d) (x : ℤ)
     (h0 : 0 ≤ x) (h1 : (∃ i, f i = e) → 1 ≤ x) : 0 ≤ x - ∑ i, (if f i = e then (1 : ℤ) else 0) := by
@@ -66,15 +66,15 @@ theorem sub_count_nonneg {a : ℕ} {f : Fin a → E n d} (hf : Function.Injectiv
     omega
 
 /- English proof (translation)
-Simplify using `[oneE, Pi.single_apply, eq_comm]`.
+Simplify using the standard rewrite rules.
 -/
 theorem oneE_apply (e e' : E n d) : (oneE e : Gam n d) e' = if e = e' then 1 else 0 := by
   simp [oneE, Pi.single_apply, eq_comm]
 
 /- English proof (translation)
-Break down `e with l | j` into its components or cases. Conclude with `oneE_apply _ _`. Distinguish the cases in `hj : j = k`. Substitute `hj` using the available equality. Simplify using `[wv, oneE_apply]`.
+Separate the alternatives or extract the components of the hypothesis. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[wv, hj, ratE, oneE_apply, h.symm]`.
+A detailed English derivation is pending.
 -/
 theorem wv_apply {k : Fin d} (e e' : E n d) (h : e' ≠ Sum.inr k) :
     (wv k e : Gam n d) e' = if e = e' then 1 else 0 := by
@@ -86,28 +86,28 @@ theorem wv_apply {k : Fin d} (e e' : E n d) (h : e' ≠ Sum.inr k) :
     · simp [wv, hj, ratE, oneE_apply, h.symm]
 
 /- English proof (translation)
-Simplify using `[tdeg, Finset.sum_sub_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem tdeg_sub (g g' : Gam n d) : tdeg (g - g') = tdeg g - tdeg g' := by
   simp [tdeg, Finset.sum_sub_distrib]
 
 /- English proof (translation)
-Simplify using `only [tdeg, Finset.sum_apply]`. Conclude with `Finset.sum_comm`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem tdeg_sum {a : ℕ} (w : Fin a → Gam n d) : tdeg (∑ i, w i) = ∑ i, tdeg (w i) := by
   simp only [tdeg, Finset.sum_apply]
   exact Finset.sum_comm
 
 /- English proof (translation)
-Simplify using `[tdeg, oneE]`.
+Simplify using the standard rewrite rules.
 -/
 theorem tdeg_oneE_inl (l : Fin n) : tdeg (oneE (Sum.inl l) : Gam n d) = 0 := by
   simp [tdeg, oneE]
 
 /- English proof (translation)
-Break down `e with l | j` into its components or cases. Simplify using `[wv, tdeg_oneE_inl]`. Distinguish the cases in `hj : j = k`. Substitute `hj` using the available equality. Simplify using `[wv, tdeg_oneE_inr]`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[wv, hj, ratE, tdeg_sub, tdeg_oneE_inr]`.
+Simplify using the standard rewrite rules.
 -/
 theorem tdeg_wv (k : Fin d) (e : E n d) : tdeg (wv k e : Gam n d) = if e = Sum.inr k then 1 else 0 := by
   rcases e with l | j
@@ -118,9 +118,9 @@ theorem tdeg_wv (k : Fin d) (e : E n d) : tdeg (wv k e : Gam n d) = if e = Sum.i
     · simp [wv, hj, ratE, tdeg_sub, tdeg_oneE_inr]
 
 /- English proof (translation)
-Establish `key : ∀ s : Finset (Fin a), ∏ i ∈ s, monL K (w i) = monL K (∑ i ∈ s, w i)`. Introduce `s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp only [Finset.prod_empty, Finset.sum_empty]`. Conclude with `(monL_zero').symm`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `insert i s hi ih => rw [Finset.prod_insert hi, Finset.sum_insert hi, monL_add', ih]`. Conclude with `key _`.
+A detailed English derivation is pending.
 -/
 theorem monL_sum {a : ℕ} (w : Fin a → Gam n d) : ∏ i, monL K (w i) = monL K (∑ i, w i) := by
   have key : ∀ s : Finset (Fin a), ∏ i ∈ s, monL K (w i) = monL K (∑ i ∈ s, w i) := by
@@ -131,18 +131,18 @@ theorem monL_sum {a : ℕ} (w : Fin a → Gam n d) : ∏ i, monL K (w i) = monL 
   exact key _
 
 /- English proof (translation)
-Rewrite using `[D_monL, lam_eq_sum]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem D_eq (g : Gam n d) :
     KaehlerDifferential.D K (Lr K n d) (monL K g) = monL K g • lam K g := by
   rw [D_monL, lam_eq_sum]
 
 /- English proof (translation)
-Use `⟨form K (mon K _ hc) (fun i => mon K (w i) (hw i)), Submodule.subset_span ⟨_, _, ?_, rfl⟩, ?_⟩` and prove the remaining obligations. Break down `hrel with h | ⟨i, k, hk, h⟩` into its components or cases. Conclude with `Or.inl (monomial_mem_exceptional_ideal S _ hc h)`. Conclude with `Or.inr ⟨i, Ideal.subset_span ⟨k, hk, by simp only [h]⟩⟩`. Rewrite using `[omMap_form]`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Prove the second alternative. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [incl_mon]`. Express the relevant statement in the definitionally equal form `monL K _ • exteriorPower.ιMulti (Lr K n d) a (fun i => KaehlerDifferential.D K (Lr K n d) (monL K (w i))) = _`. Simplify using `only [D_eq]`. Establish `h` using `(exteriorPower.ιMulti (Lr K n d) a (M := Ω[Lr K n d⁄K])).toMultilinearMap.map_smul_univ (fun i => monL K (w i)) (fun i => lam K (w i))`. Establish `h' : exteriorPower.ιMulti (Lr K n d) a (fun i => monL K (w i) • lam K (w i)) = (∏ i, monL K (w i)) • exteriorPower.ιMulti (Lr K n d) a (fun i => lam K (w i))` using `h`.
+Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[h', smul_smul, monL_sum, ← monL_add', sub_add_cancel]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem core {S : Finset (Fin d)} (g : Gam n d) {a : ℕ} (w : Fin a → Gam n d)
     (hw : ∀ i, w i ∈ (cone S : AddSubmonoid (Gam n d)))
@@ -165,7 +165,7 @@ theorem core {S : Finset (Fin d)} (g : Gam n d) {a : ℕ} (w : Fin a → Gam n d
     rw [h', smul_smul, monL_sum, ← monL_add', sub_add_cancel]
 
 /- English proof (translation)
-Establish `h : j ∉ Tset g D` using `fun h => hj (hT h)`. Simplify using `only [Tset, Finset.mem_filter, Finset.mem_univ, true_and, not_or, not_and, not_lt] at h`. Use `⟨h.1, fun hD => ?_⟩` and prove the remaining obligations. Establish `h2 : g (Sum.inr j) ≠ 0` using `fun h0 => h.2 h0 hD`. Establish `h3` using `h.1`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
 Use linear arithmetic over natural numbers and integers.
 -/
@@ -179,7 +179,7 @@ theorem not_Tset {g : Gam n d} {D : Finset (E n d)} {S : Finset (Fin d)} (hT : T
   omega
 
 /- English proof (translation)
-Establish `h1` using `(hg.1 l).1`. Establish `h2 : g (Sum.inl l) ≠ 0` using `fun h0 => (hg.1 l).2 h0 hl`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem good_inl {g : Gam n d} {D : Finset (E n d)} (hg : good g D) {l : Fin n} (hl : Sum.inl l ∈ D) :
     1 ≤ g (Sum.inl l) := by
@@ -188,17 +188,15 @@ theorem good_inl {g : Gam n d} {D : Finset (E n d)} (hg : good g D) {l : Fin n} 
   omega
 
 /- English proof (translation)
-Establish `hinj` using `enumD_injective D`. Establish `hval : ∀ e, (g - ∑ i, (oneE (enumD D i) : Gam n d)) e = g e - ∑ i, (if enumD D i = e then (1 : ℤ) else 0)`. Introduce `e`. Simplify using `only [Pi.sub_apply, Finset.sum_apply, oneE_apply]`. Establish `hnn : ∀ j, 0 ≤ (g - ∑ i, (oneE (enumD D i) : Gam n d)) (Sum.inr j)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `j`. Rewrite using `[hval]`. Establish `hj` using `not_Tset hT (Finset.notMem_empty j)`. Conclude with `sub_count_nonneg hinj _ _ hj.1 fun ⟨i, hi⟩ => hj.2 (hi ▸ enumD_mem D i)`. Establish `hc : g - ∑ i, (oneE (enumD D i) : Gam n d) ∈ (cone ∅ : AddSubmonoid (Gam n d))`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun l => ?_, fun j _ => hnn j, Finset.sum_nonneg fun j _ => hnn j⟩` and prove the remaining obligations. Rewrite using `[hval]`. Conclude with `sub_count_nonneg hinj _ _ (hg.1 l).1 fun ⟨i, hi⟩ => good_inl hg (hi ▸ enumD_mem D i)`. Use `core g _ (fun i => oneE_mem ∅ _) hc ?_` and prove the remaining obligations. Distinguish the cases in `h : ∃ i k, enumD D i = Sum.inr k`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Prove the second alternative.
 
-Take `⟨i, k, hk⟩` from `h`. Conclude with `Or.inr ⟨i, k, Or.inl rfl, by rw [hk]⟩`. Use `push_neg at h left`. Rewrite using `[tdeg_sub, tdeg_sum]`. Establish `h0 : ∀ i, tdeg (oneE (enumD D i) : Gam n d) = 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules.
 
-Introduce `i`. Break down `hi : enumD D i with l | j` into its components or cases. Conclude with `tdeg_oneE_inl l`. Conclude with `absurd hi (h i j)`. Simplify using `only [h0, Finset.sum_const_zero, sub_zero]`.
-
-Conclude with `hg.2`.
+A detailed English derivation is pending.
 -/
 theorem case_empty {a : ℕ} (g : Gam n d) (D : {D : Finset (E n d) // D.card = a}) (hg : good g D.1)
     (hT : Tset g D.1 ⊆ ∅) :
@@ -233,21 +231,17 @@ theorem case_empty {a : ℕ} (g : Gam n d) (D : {D : Finset (E n d) // D.card = 
     exact hg.2
 
 /- English proof (translation)
-Distinguish the cases in `hinj : Function.Injective f`. Establish `key : ∀ e, e ≠ Sum.inr k → 0 ≤ g e → ((∃ i, f i = e) → 1 ≤ g e) → 0 ≤ (g - ∑ i, (wv k (f i) : Gam n d)) e`. Introduce `e hne h0 h1`. Establish `h2 : (g - ∑ i, (wv k (f i) : Gam n d)) e = g e - ∑ i, (if f i = e then (1 : ℤ) else 0)`. Simplify using `only [Pi.sub_apply, Finset.sum_apply, wv_apply _ _ hne]`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[h2]`. Conclude with `sub_count_nonneg hinj _ _ h0 h1`. Establish `hmem : ∀ e, e ≠ Sum.inr k → ∀ i, f i = e → e ∈ D`. Introduce `e hne i hi`. Break down `hf i with h | h` into its components or cases.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Conclude with `hi ▸ h`. Conclude with `absurd (hi.symm.trans h) hne`. Establish `ht : tdeg (g - ∑ i, (wv k (f i) : Gam n d)) = tdeg g - ∑ i, (if f i = Sum.inr k then (1 : ℤ) else 0)`. Rewrite using `[tdeg_sub, tdeg_sum]`. Simplify using `only [tdeg_wv]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hc : g - ∑ i, (wv k (f i) : Gam n d) ∈ (cone S : AddSubmonoid (Gam n d))`. Use `⟨fun l => ?_, fun j hj => ?_, ?_⟩` and prove the remaining obligations. Conclude with `key _ (by simp) (hg.1 l).1 fun ⟨i, hi⟩ => good_inl hg (hmem _ (by simp) i hi)`. Establish `hjk : j ≠ k` using `fun h => hj (h ▸ hk)`. Establish `hne : (Sum.inr j : E n d) ≠ Sum.inr k` using `fun h => hjk (Sum.inr.inj h)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1` using `not_Tset hT hj`. Conclude with `key _ hne h1.1 fun ⟨i, hi⟩ => h1.2 (hmem _ hne i hi)`. Rewrite using `[ht]`. Establish `h1` using `hg.2`. Conclude with `sub_count_nonneg hinj _ _ (by omega) fun _ => h1`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Prove the second alternative. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `core g _ (fun i => wv_mem hk _) hc ?_` and prove the remaining obligations. Distinguish the cases in `h : ∃ i, f i = Sum.inr k`. Take `⟨i, hi⟩` from `h`. Conclude with `Or.inr ⟨i, k, Or.inr hk, by rw [hi]; simp [wv]⟩`. Use `push_neg at h left`.
-
-Rewrite using `[ht, count_none h, sub_zero]`. Conclude with `hg.2`. Simplify using `only [Function.Injective, not_forall] at hinj`. Take `⟨i, j, hij, hne⟩` from `hinj`. Use `⟨0, Submodule.zero_mem _, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[map_zero, (exteriorPower.ιMulti (Lr K n d) a (M := Ω[Lr K n d⁄K])).map_eq_zero_of_eq _ (by simp only [hij]) hne, smul_zero]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem term_chart {S : Finset (Fin d)} {k : Fin d} (hk : k ∈ S) {a : ℕ} (g : Gam n d) (D : Finset (E n d))
     (hg : good g D) (hT : Tset g D ⊆ S) (f : Fin a → E n d) (hf : ∀ i, f i ∈ D ∨ f i = Sum.inr k) :
@@ -299,9 +293,9 @@ def eps (K : Type) [Field K] {n d : ℕ} (k : Fin d) : E n d → Ω[Lr K n d⁄K
   | Sum.inr j => if j = k then 0 else lam K (wv k (Sum.inr k))
 
 /- English proof (translation)
-Break down `e with l | j` into its components or cases. Conclude with `Or.inl rfl`. Distinguish the cases in `h : j = k`. Use `left`. Simplify using `[eps, h]`.
+Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use `right`. Simplify using `[eps, h]`.
+A detailed English derivation is pending.
 -/
 theorem eps_cases (k : Fin d) (e : E n d) : eps K k e = 0 ∨ eps K k e = lam K (wv k (Sum.inr k)) := by
   rcases e with l | j
@@ -311,11 +305,11 @@ theorem eps_cases (k : Fin d) (e : E n d) : eps K k e = 0 ∨ eps K k e = lam K 
     · right; simp [eps, h]
 
 /- English proof (translation)
-Break down `e with l | j` into its components or cases. Simplify using `only [wv, eps, add_zero]`. Both sides reduce to the same expression. Distinguish the cases in `h : j = k`. Substitute `h` using the available equality.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using `only [wv, eps, if_true, add_zero]`. Both sides reduce to the same expression. Simplify using `only [wv, eps, if_neg h, if_true]`. Rewrite using `[← lam_add]`. Establish `h2 : ratE k j + oneE (Sum.inr k) = (oneE (Sum.inr j) : Gam n d)` using `by simp [ratE]`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[h2]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem dl_eq (k : Fin d) (e : E n d) : (dl e : Ω[Lr K n d⁄K]) = lam K (wv k e) + eps K k e := by
   rcases e with l | j
@@ -332,13 +326,11 @@ theorem dl_eq (k : Fin d) (e : E n d) : (dl e : Ω[Lr K n d⁄K]) = lam K (wv k 
       rfl
 
 /- English proof (translation)
-Establish `h1 : exteriorPower.ιMulti R a (fun i => F (f i) + m' i) = ∑ s : Finset (Fin a), exteriorPower.ιMulti R a (s.piecewise (fun i => F (f i)) m')` using `(exteriorPower.ιMulti R a (M := M)).toMultilinearMap.map_add_univ (fun i => F (f i)) m'`. Rewrite using `[h1, Finset.smul_sum]`. Use `AddSubmonoid.sum_mem _ fun s _ => ?_` and prove the remaining obligations. Distinguish the cases in `h0 : ∃ i, i ∉ s ∧ m' i = 0`. Take `⟨i, hi, he⟩` from `h0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Establish `h2 : exteriorPower.ιMulti R a (s.piecewise (fun i => F (f i)) m') = 0` using `(exteriorPower.ιMulti R a (M := M)).map_coord_zero i (by simp [Finset.piecewise, hi, he])`. Rewrite using `[h2, smul_zero]`. Conclude with `Q.zero_mem`. Use `push_neg at h0`. Establish `h2 : s.piecewise (fun i => F (f i)) m' = fun i => F (if i ∈ s then f i else x₀)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails.
 
-Use function extensionality and compare the values at `i`. Distinguish the cases in `hi : i ∈ s`. Simplify using `[Finset.piecewise, hi]`. Simplify `(hm i).resolve_left (h0 i hi)` using `[Finset.piecewise, hi]`. Rewrite using `[h2]`.
-
-Conclude with `hQ s`.
+Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem expand {R M X : Type} [CommRing R] [AddCommGroup M] [Module R M] {a : ℕ} (c : R) (F : X → M)
     (f : Fin a → X) (x₀ : X) (m' : Fin a → M) (hm : ∀ i, m' i = 0 ∨ m' i = F x₀)
@@ -367,11 +359,11 @@ theorem expand {R M X : Type} [CommRing R] [AddCommGroup M] [Module R M] {a : �
     exact hQ s
 
 /- English proof (translation)
-Set `Q : Submodule K (Om K (Lr K n d) a)` to `((relOm K (I0 n K S) a).restrictScalars K).map (omMap (incl le_top) a)`. Establish `hfun : (fun i => (dl (enumD D i) : Ω[Lr K n d⁄K])) = fun i => lam K (wv k (enumD D i)) + eps K k (enumD D i)`. Use function extensionality and compare the values at `i`. Conclude with `dl_eq k _`. Establish `hw : monW K g D = monL K g • exteriorPower.ιMulti (Lr K n d) a (fun i => lam K (wv k (enumD D i)) + eps K k (enumD D i))` using `congrArg (fun v => monL K g • exteriorPower.ιMulti (Lr K n d) a v) hfun`.
+Introduce a local definition for the expression. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm : monW K g D ∈ Q.toAddSubmonoid`. Rewrite using `[hw]`. Use `expand (monL K g) (fun e => lam K (wv k e)) (enumD D) (Sum.inr k) (fun i => eps K k (enumD D i)) (fun i => eps_cases k _) Q.toAddSubmonoid fun s => ?_` and prove the remaining obligations. Take `⟨ω, hω, h⟩` from `term_chart (K := K) hk g D.1 hg hT (fun i => if i ∈ s then enumD D i else Sum.inr k) (fun i => by`. Distinguish the cases in `hi : i ∈ s`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Prove the first alternative.
 
-Conclude with `Or.inl (by simpa [hi] using enumD_mem D i)`. Conclude with `Or.inr (by simp [hi]))`. Conclude with `⟨ω, hω, h⟩`. Take `⟨ω, hω, h⟩` from `hm`. Conclude with `⟨ω, hω, h⟩`.
+Prove the second alternative. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem case_chart {S : Finset (Fin d)} {k : Fin d} (hk : k ∈ S) {a : ℕ} (g : Gam n d)
     (D : {D : Finset (E n d) // D.card = a}) (hg : good g D.1) (hT : Tset g D.1 ⊆ S) :
@@ -399,7 +391,7 @@ theorem case_chart {S : Finset (Fin d)} {k : Fin d} (hk : k ∈ S) {a : ℕ} (g 
   exact ⟨ω, hω, h⟩
 
 /- English proof (translation)
-Break down `S.eq_empty_or_nonempty with rfl | ⟨k, hk⟩` into its components or cases. Conclude with `case_empty g D hg hT`. Conclude with `case_chart hk g D hg hT`.
+Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem relForm_of_good {K : Type} [Field K] {n d : ℕ} (S : Finset (Fin d)) (a : ℕ) (g : Gam n d)
     (D : {D : Finset (E n d) // D.card = a}) (hg : good g D.1) (hT : Tset g D.1 ⊆ S) :

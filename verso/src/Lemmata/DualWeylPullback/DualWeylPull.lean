@@ -204,7 +204,7 @@ import Formalism.RealPlaceAnalysis.StatementC
 namespace Bl.DualWeylPullback
 
 /- English proof (translation)
-Proceed by induction on `f using MvPolynomial.induction_on with`. Consider the case `C a => simp only [MvPolynomial.aeval_C, MvPolynomial.map_C, MvPolynomial.algebraMap_eq]`. Consider the case `add p q hp hq => simp only [map_add, hp, hq]`. Consider the case `mul_X p v hp => simp only [map_mul, MvPolynomial.map_X, MvPolynomial.aeval_X, hp]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 private lemma map_aeval_nat {O K σ τ : Type} [CommRing O] [CommRing K] (φ : O →+* K)
     (h : σ → MvPolynomial τ O) (f : MvPolynomial σ O) :
@@ -216,9 +216,9 @@ private lemma map_aeval_nat {O K σ τ : Type} [CommRing O] [CommRing K] (φ : O
   | mul_X p v hp => simp only [map_mul, MvPolynomial.map_X, MvPolynomial.aeval_X, hp]
 
 /- English proof (translation)
-Unfold `Formalism.GradedWeylDivisibility.rowAct`. Rewrite using `[map_aeval_nat]`. Use `congr 1`. Use `congr 1`. Use function extensionality and compare the values at `v`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `[map_sum]`.
+Simplify using the standard rewrite rules.
 -/
 private lemma rowAct_map {O K : Type} [CommRing O] [CommRing K] (φ : O →+* K) {k n : ℕ}
     (A : Matrix (Fin k) (Fin k) O) (f : MvPolynomial (Fin k × Fin n) O) :
@@ -231,9 +231,9 @@ private lemma rowAct_map {O K : Type} [CommRing O] [CommRing K] (φ : O →+* K)
   simp [map_sum]
 
 /- English proof (translation)
-Unfold `Formalism.GradedWeylDivisibility.colAddGen`. Rewrite using `[map_aeval_nat]`. Use `congr 1`. Use `congr 1`. Use function extensionality and compare the values at `v`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Apply the tactic sequence `split_ifs <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 private lemma colAddGen_map {O K : Type} [CommRing O] [CommRing K] (φ : O →+* K) {k n : ℕ}
     (l j : Fin n) (f : MvPolynomial (Fin k × Fin n) O) :
@@ -246,11 +246,9 @@ private lemma colAddGen_map {O K : Type} [CommRing O] [CommRing K] (φ : O →+*
   split_ifs <;> simp
 
 /- English proof (translation)
-Unfold `Formalism.GradedWeylDivisibility.dualWeyl at hf ⊢`. Simplify using `only [Submodule.mem_inf, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, AlgHom.toLinearMap_apply, sub_eq_zero, MvPolynomial.mem_weightedHomogeneousSubmodule] at hf ⊢`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `d hd`. Conclude with `hf.1 (by`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[MvPolynomial.coeff_map]`. Introduce `h0`. Conclude with `hd (hφ (by rw [h0, map_zero])))`. Introduce `l j hlj`. Apply `MvPolynomial.map_injective φ hφ` to reduce the goal to its premises.
-
-Rewrite using `[colAddGen_map, MvPolynomial.map_rename]`. Conclude with `hf.2 l j hlj`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma dualWeyl_pull {O K : Type} [CommRing O] [CommRing K] (φ : O →+* K)
     (hφ : Function.Injective φ) {r n : ℕ} (ν : Fin n → ℕ) (f : MvPolynomial (Fin r × Fin n) O)
@@ -270,11 +268,11 @@ private lemma dualWeyl_pull {O K : Type} [CommRing O] [CommRing K] (φ : O →+*
     exact hf.2 l j hlj
 
 /- English proof (translation)
-Establish `hc : ∀ c : Fin k, ∃ a : Fin k → O, ∑ i, a i • (fun r => g r i) = fun r => g' r c`. Introduce `c`. Establish `h1 : (fun r => g' r c) ∈ Formalism.MainNotions.G.colSpan O g'` using `Submodule.subset_span ⟨c, rfl⟩`. Conclude with `(Submodule.mem_span_range_iff_exists_fun O).1 (h h1)`. Use `choose a ha using hc`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Use `⟨Matrix.of fun i c => a c i, ?_⟩` and prove the remaining obligations. Use extensionality with `r c`. Establish `h2` using `congrFun (ha c) r`. Simplify using `only [Finset.sum_apply, Pi.smul_apply] at h2`. Rewrite using `[← h2, Matrix.mul_apply]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `i _`. Simplify using `[Algebra.smul_def, mul_comm]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private lemma span_mat {O K : Type} [CommRing O] [Field K] [Algebra O K] {k : ℕ}
     (g g' : Matrix (Fin k) (Fin k) K) (h : Formalism.MainNotions.G.colSpan O g' ≤ Formalism.MainNotions.G.colSpan O g) :
@@ -294,11 +292,11 @@ private lemma span_mat {O K : Type} [CommRing O] [Field K] [Algebra O K] {k : �
   simp [Algebra.smul_def, mul_comm]
 
 /- English proof (translation)
-Take `⟨A, hA⟩` from `span_mat g g' h.ge`. Take `⟨B, hB⟩` from `span_mat g' g h.le`. Use `⟨A, ?_, hA⟩` and prove the remaining obligations. Establish `h1 : g * (A * B).map (algebraMap O K) = g * 1`. Rewrite using `[Matrix.map_mul, ← Matrix.mul_assoc, ← hA, ← hB, Matrix.mul_one]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : (A * B).map (algebraMap O K) = 1`. Establish `h3` using `congrArg (fun M => g⁻¹ * M) h1`. Simplify `h3` using `[← Matrix.mul_assoc, Matrix.nonsing_inv_mul g hg]`. Establish `h3 : A * B = 1`. Apply `Matrix.map_injective hφ` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `using h2`. Establish `h4 : A.det * B.det = 1` using `by rw [← Matrix.det_mul, h3, Matrix.det_one]`. Conclude with `⟨⟨A.det, B.det, h4, by rw [mul_comm]; exact h4⟩, rfl⟩`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 private lemma span_unit {O K : Type} [CommRing O] [Field K] [Algebra O K]
     (hφ : Function.Injective (algebraMap O K)) {k : ℕ} (g g' : Matrix (Fin k) (Fin k) K)
@@ -319,15 +317,15 @@ private lemma span_unit {O K : Type} [CommRing O] [Field K] [Algebra O K]
   exact ⟨⟨A.det, B.det, h4, by rw [mul_comm]; exact h4⟩, rfl⟩
 
 /- English proof (translation)
-Take `⟨b, hb⟩` from `IsLocalization.exist_integer_multiples_of_finset (nonZeroDivisors O) G.coeffs`. Establish `hb0 : (b : O) ≠ 0` using `nonZeroDivisors.coe_ne_zero b`. Take `⟨n, u, hu⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible hb0 hw`. Use `⟨n, ?_⟩` and prove the remaining obligations. Establish `hr : algebraMap O K (w ^ n) • G ∈ Set.range (MvPolynomial.map (algebraMap O K))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[MvPolynomial.mem_range_map_iff_coeffs_subset]`. Introduce `x hx`. Rewrite `hx` using `[Finset.mem_coe, MvPolynomial.mem_coeffs_iff]`. Take `⟨d, hd, rfl⟩` from `hx`. Rewrite using `[MvPolynomial.coeff_smul, smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Establish `hd' : G.coeff d ≠ 0`. Introduce `h0`. Apply `MvPolynomial.mem_support_iff.1 hd` to reduce the goal to its premises. Rewrite using `[MvPolynomial.coeff_smul, h0, smul_zero]`. Take `⟨y, hy⟩` from `hb _ (MvPolynomial.coeff_mem_coeffs _ hd')`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hu1 : algebraMap O K (↑u⁻¹ : O) * algebraMap O K (↑u : O) = 1`. Rewrite using `[← map_mul, Units.inv_mul, map_one]`. Use `⟨(↑u⁻¹ : O) * y, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, hy, Algebra.smul_def, hu, map_mul]`. Take the linear combination `(algebraMap O K (w ^ n) * G.coeff d) * hu1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Take `⟨G0, h0⟩` from `hr`. Conclude with `⟨G0, h0⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private lemma clear_den {O K : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Field K]
     [Algebra O K] [IsFractionRing O K] (w : O) (hw : Irreducible w) {σ : Type} (G : MvPolynomial σ K) :
@@ -357,17 +355,17 @@ private lemma clear_den {O K : Type} [CommRing O] [IsDomain O] [IsDiscreteValuat
   exact ⟨G0, h0⟩
 
 /- English proof (translation)
-Introduce `O K _ _ _ _ _ _ w hw m mu hmu g hg F hF`. Establish `hinj : Function.Injective (algebraMap O K)` using `IsFractionRing.injective O K`. Establish `hG : g.det ^ mu (Fin.last m) • Formalism.GradedWeylDivisibility.rowAct K g F ∈ Formalism.GradedWeylDivisibility.dualWeyl K (m + 1) (m + 1) (Formalism.MainNotions.G.nuOf mu)` using `Submodule.smul_mem _ _ (Formalism.GradedWeylDivisibility.dualWeylRowStable K _ _ _ g F hF)`. Take `⟨n, G0, hG0⟩` from `clear_den w hw (g.det ^ mu (Fin.last m) • Formalism.GradedWeylDivisibility.rowAct K g F)`. Establish `hG0m : G0 ∈ Formalism.GradedWeylDivisibility.dualWeyl O (m + 1) (m + 1) (Formalism.MainNotions.G.nuOf mu)` using `dualWeyl_pull _ hinj _ G0 (by rw [hG0]; exact Submodule.smul_mem _ _ hG)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨n, ?_⟩` and prove the remaining obligations. Unfold `Formalism.MainNotions.G.H0`. Rewrite using `[if_pos hmu]`. Simplify using `only [Submodule.mem_iInf]`. Introduce and unpack `g' ⟨hg', hspan⟩`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components.
 
-Take `⟨A, hA, rfl⟩` from `span_unit hinj g g' hg hspan`. Rewrite using `[Formalism.GradedWeylDivisibility.nablaLTwMem O K m mu _ hg']`. Take `⟨U, hU⟩` from `hA`. Use `⟨(↑(U ^ mu (Fin.last m)) : O) • Formalism.GradedWeylDivisibility.rowAct O A G0, Submodule.smul_mem _ _ (Formalism.GradedWeylDivisibility.dualWeylRowStable O _ _ _ A G0 hG0m), ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `MvPolynomial.map (algebraMap O K) ((↑(U ^ mu (Fin.last m)) : O) • Formalism.GradedWeylDivisibility.rowAct O A G0) = _`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `hz : algebraMap O K ↑(U ^ mu (Fin.last m)) = (algebraMap O K ↑U) ^ mu (Fin.last m)`. Establish `h5 : ((Units.map (algebraMap O K).toMonoidHom (U ^ mu (Fin.last m)) : Kˣ) : K) = algebraMap O K ↑(U ^ mu (Fin.last m))` using `rfl`. Rewrite using `[← h5, map_zpow, Units.val_zpow_eq_zpow_val]`. Both sides reduce to the same expression. Establish `hdet : (A.map (algebraMap O K)).det = algebraMap O K A.det`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite using `[RingHom.map_det]`. Both sides reduce to the same expression. Rewrite using `[MvPolynomial.smul_eq_C_mul, map_mul, MvPolynomial.map_C, ← MvPolynomial.smul_eq_C_mul, rowAct_map, hG0, Matrix.det_mul, hdet, ← hU, hz, ← Formalism.GradedWeylDivisibility.rowActMul K (m + 1) (m + 1) (A.map (algebraMap O K)) g, AlgHom.comp_apply, ← algebraMap_smul K (w ^ n) F]`. Simplify using `only [map_smul, smul_smul]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[mul_zpow]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem goal1 :
   ∀ {O K : Type} [inst : CommRing.{0} O] [inst_1 : IsDomain.{0} O] [IsDiscreteValuationRing.{0} O] [inst_3 : Field.{0} K]

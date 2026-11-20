@@ -5,15 +5,13 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AlgebraTools.Deter
 open Polynomial UpperTheory.V.W
 
 /- English proof (translation)
-Introduce `n A G _ _ _ _ _ A' _ _ _ ι D' S hι hinj hS hcont hmem`. Establish `hemb` using `hι.isClosedEmbedding hinj`. Establish `hall : ∀ i ≤ n, ∀ g : G, D'.lam i (MonoidAlgebra.single g 1) ∈ ι.range`. Introduce `i hi g`. Establish `hcl : IsClosed {g : G | D'.lam i (MonoidAlgebra.single g 1) ∈ ι.range}`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hr : IsClosed (Set.range ι)` using `hemb.isClosed_range`. Rewrite `hr` using `[← RingHom.coe_range]`. Conclude with `hr.preimage (hcont i hi)`. Establish `hsub : S ⊆ {g : G | D'.lam i (MonoidAlgebra.single g 1) ∈ ι.range}` using `fun g hg => hmem g hg i hi`. Establish `h1` using `closure_minimal hsub hcl`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[hS.closure_eq]`. Conclude with `h1 (Set.mem_univ g)`. Take `⟨D, hD, -⟩` from `UpperTheory.V.AlgebraTools.Det.descendLam ι D' hinj hall`. Use `⟨D, hD, fun i hi => ?_⟩` and prove the remaining obligations. Rewrite using `[hemb.isEmbedding.continuous_iff]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `heq : (⇑ι ∘ fun g : G => D.lam i (MonoidAlgebra.single g 1)) = fun g => D'.lam i (MonoidAlgebra.single g 1)`. Use function extensionality and compare the values at `g`. Simplify using `only [Function.comp]`. Rewrite using `[← (UpperTheory.V.AlgebraTools.Det.mapApi D ι).2.2.1 i g, hD]`. Rewrite using `[heq]`.
-
-Conclude with `hcont i hi`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.AlgebraTools.Det.glue :
     ∀ {n : ℕ} {A G : Type} [CommRing A] [Group G] [TopologicalSpace A] [CompactSpace A] [TopologicalSpace G] {A' : Type} [CommRing A'] [TopologicalSpace A'] [T2Space A']

@@ -6,11 +6,11 @@ open scoped Matrix
 namespace GlobalTheory.Flag
 
 /- English proof (translation)
-Take `⟨q, hq⟩` from `Submodule.exists_isCompl A`. Establish `hsup : q ⊓ B ⊔ A = B`. Rewrite using `[inf_comm, inf_sup_assoc_of_le _ hAB, sup_comm, hq.sup_eq_top, inf_top_eq]`. Use `⟨q ⊓ B, hsup, ?_⟩` and prove the remaining obligations. Establish `h1` using `Submodule.finrank_sup_add_finrank_inf_eq (q ⊓ B) A`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h2 : q ⊓ B ⊓ A = ⊥`. Use `eq_bot_iff.2 (le_trans ?_ hq.inf_eq_bot.le)` and prove the remaining obligations. Rewrite using `[inf_comm A q]`. Conclude with `inf_le_inf_right _ inf_le_left`. Rewrite `h1` using `[hsup, h2, finrank_bot]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers.
+A detailed English derivation is pending.
 -/
 theorem exists_sup_eq_finrank_sub {K V : Type} [Field K] [AddCommGroup V] [Module K V]
     [FiniteDimensional K V] {A B : Submodule K V} (hAB : A ≤ B) :
@@ -28,45 +28,43 @@ theorem exists_sup_eq_finrank_sub {K V : Type} [Field K] [AddCommGroup V] [Modul
   omega
 
 /- English proof (translation)
-Introduce `K _ n m Y hmono h0 htop`. Set `r : Fin (m + 1) → ℕ` to `fun j => Module.finrank K (Y j)`. Establish `hC : ∀ j : Fin m, ∃ C : Submodule K (Fin n → K), C ⊔ Y j.castSucc = Y j.succ ∧ Module.finrank K C = r j.succ - r j.castSucc` using `fun j => exists_sup_eq_finrank_sub (hmono (Fin.castSucc_le_succ j))`. Use `choose C hCsup hCrk using hC`. Set `d : Fin m → ℕ` to `fun j => r j.succ - r j.castSucc`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `R : ℕ → ℕ` to `fun k => r ⟨min k m, by omega⟩`. Establish `hRmono : Monotone R`. Introduce `a b hab`. Conclude with `Submodule.finrank_mono (hmono (Fin.mk_le_mk.2 (min_le_min_right m hab)))`. Establish `hsum : ∑ j, d j = n`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e1 : ∑ j, d j = ∑ k ∈ Finset.range m, (R (k + 1) - R k)`. Rewrite using `[← Fin.sum_univ_eq_sum_range]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Establish `a1 : (⟨min ((j : ℕ) + 1) m, by omega⟩ : Fin (m + 1)) = j.succ` using `Fin.ext (by simp)`. Establish `a2 : (⟨min (j : ℕ) m, by omega⟩ : Fin (m + 1)) = j.castSucc` using `Fin.ext (by simp)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [d, R, a1, a2]`. Rewrite using `[e1, Finset.sum_range_tsub hRmono]`. Establish `a3 : (⟨min m m, by omega⟩ : Fin (m + 1)) = Fin.last m` using `Fin.ext (by simp)`. Establish `a4 : (⟨min 0 m, by omega⟩ : Fin (m + 1)) = 0` using `Fin.ext (by simp)`. Establish `hRm : R m = n` using `by show Module.finrank K (Y ⟨min m m, _⟩) = n`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[a3, htop, finrank_top, Module.finrank_fin_fun]`. Establish `hR0 : R 0 = 0` using `by show Module.finrank K (Y ⟨min 0 m, _⟩) = 0`. Rewrite using `[a4, h0, finrank_bot]`. Rewrite using `[hRm, hR0, Nat.sub_zero]`. Set `B : ∀ j : Fin m, Module.Basis (Fin (d j)) K (C j)` to `fun j => Module.finBasisOfFinrankEq K (C j) (hCrk j)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `f : (Σ j : Fin m, Fin (d j)) → (Fin n → K)` to `fun p => (B p.1 p.2 : Fin n → K)`. Establish `hspanC : ∀ j : Fin m, Submodule.span K (Set.range fun i => f ⟨j, i⟩) = C j`. Introduce `j`. Establish `: (Set.range fun i => f ⟨j, i⟩) = (C j).subtype '' Set.range (B j)` using `Set.range_comp (C j).subtype (B j)`. Rewrite using `[this, Submodule.span_image, (B j).span_eq, Submodule.map_subtype_top]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hspan : ∀ k (hk : k ≤ m), Y ⟨k, by omega⟩ = Submodule.span K (f '' {p | (p.1 : ℕ) < k})`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => intro _`. Simplify using `[h0]`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Consider the case `succ k ih`. Introduce `hk`. Establish `hset : f '' {p | (p.1 : ℕ) < k + 1} = (Set.range fun i => f ⟨⟨k, hk⟩, i⟩) ∪ f '' {p | (p.1 : ℕ) < k}`. Use extensionality with `v`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 
-Introduce and unpack `⟨⟨a, i⟩, hp, rfl⟩`. Simplify using `only [Set.mem_setOf_eq] at hp`. Distinguish the cases in `ha : (a : ℕ) < k`. Conclude with `Or.inr ⟨⟨a, i⟩, ha, rfl⟩`. Take `rfl : a = ⟨k, hk⟩` from `Fin.ext (by simp; omega)`.
+Consider separately whether the proposition holds or fails. Prove the second alternative. Extract witnesses or component facts from the available result. Prove the first alternative. Assume the hypotheses and unpack their components.
 
-Conclude with `Or.inl ⟨i, rfl⟩`. Introduce and unpack `(⟨i, rfl⟩ | ⟨p, hp, rfl⟩)`. Conclude with `⟨⟨⟨k, hk⟩, i⟩, by simp, rfl⟩`. Conclude with `⟨p, by simp only [Set.mem_setOf_eq] at hp ⊢; omega, rfl⟩`. Establish `e1 : (⟨k + 1, by omega⟩ : Fin (m + 1)) = (⟨k, hk⟩ : Fin m).succ` using `rfl`.
+Supply the required witnesses or components. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e2 : (⟨k, by omega⟩ : Fin (m + 1)) = (⟨k, hk⟩ : Fin m).castSucc` using `rfl`. Rewrite using `[hset, Submodule.span_union, hspanC, ← ih (by omega), e1, e2, hCsup]`. Set `b : Fin n → (Fin n → K)` to `fun i => f ((GlobalTheory.SmGL.stdBlocks d hsum).symm i)`. Establish `hsub : ∀ j : Fin (m + 1), f '' {p | (p.1 : ℕ) < j} = b '' {i | ((GlobalTheory.SmGL.blk (GlobalTheory.SmGL.stdBlocks d hsum) i : Fin m) : ℕ) < j}`. Introduce `j`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Use extensionality with `v`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨p, hp, rfl⟩`. Conclude with `⟨(GlobalTheory.SmGL.stdBlocks d hsum) p, by simpa [GlobalTheory.SmGL.blk] using hp, by simp [b]⟩`. Introduce and unpack `⟨i, hi, rfl⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact.
 
-Conclude with `⟨(GlobalTheory.SmGL.stdBlocks d hsum).symm i, hi, rfl⟩`. Establish `htopb : ⊤ ≤ Submodule.span K (Set.range b)`. Establish `h1` using `hspan m le_rfl`. Establish `h2 : (⟨m, by omega⟩ : Fin (m + 1)) = Fin.last m` using `rfl`. Establish `h3` using `hsub (Fin.last m)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h3` using `[Fin.val_last]`. Rewrite `h1` using `[h2, htop, h3]`. Rewrite using `[h1]`. Conclude with `Submodule.span_mono (Set.image_subset_range _ _)`. Establish `hli : LinearIndependent K b`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Rewrite using `[linearIndependent_iff_card_eq_finrank_span, Set.finrank, top_unique htopb, finrank_top]`. Simplify using the standard rewrite rules. Set `Bas : Module.Basis (Fin n) K (Fin n → K)` to `Module.Basis.mk hli htopb`. Establish `hBas : ⇑Bas = b` using `Module.Basis.coe_mk hli htopb`. Set `pf` to `Pi.basisFun K (Fin n)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `g : GL (Fin n) K` to `⟨pf.toMatrix Bas, Bas.toMatrix pf, Module.Basis.toMatrix_mul_toMatrix_flip _ _, Module.Basis.toMatrix_mul_toMatrix_flip _ _⟩`. Establish `hg : ∀ y : Fin n → K, ((g⁻¹ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K) *ᵥ y = ⇑(Bas.repr y)`. Introduce `y`. Use `Module.Basis.toMatrix_mulVec_repr pf Bas y` as an intermediate fact. Establish `hy : ⇑(pf.repr y) = y` using `funext fun i => by simp [pf]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `this` using `[hy]`. Conclude with `this`. Use `⟨d, hsum, g, fun j y => ?_⟩` and prove the remaining obligations. Establish `hYj : Y j = Submodule.span K (Bas '' {i | ((GlobalTheory.SmGL.blk (GlobalTheory.SmGL.stdBlocks d hsum) i : Fin m) : ℕ) < j})`. Rewrite using `[hBas, ← hsub, ← hspan j (by omega)]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Rewrite using `[hYj, Module.Basis.mem_span_image, hg]`. Prove the components needed by the constructor for the conclusion. Introduce `hs i hi`. Assume the negation of the conclusion as `hne`. Use `hs (Finsupp.mem_support_iff.2 hne)` as an intermediate fact.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [Set.mem_setOf_eq] at this`. Use linear arithmetic over natural numbers and integers. Introduce `H i hi`. Rewrite `hi` using `[Finset.mem_coe, Finsupp.mem_support_iff]`. Assume the negation of the conclusion as `hlt`.
-
-Simplify using `only [Set.mem_setOf_eq, not_lt] at hlt`. Conclude with `hi (H i hlt)`.
+Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_gl_adapted_chain : ∀ {K : Type} [Field K] {n m : ℕ} (Y : Fin (m + 1) → Submodule K (Fin n → K)), Monotone Y → Y 0 = ⊥ → Y (Fin.last m) = ⊤ →
     ∃ (d : Fin m → ℕ) (h : ∑ j, d j = n) (g : GL (Fin n) K), ∀ (j : Fin (m + 1)) (y : Fin n → K),

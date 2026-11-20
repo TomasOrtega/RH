@@ -29,7 +29,7 @@ def leftMul (J Ji : Matrix (Fin a) (Fin a) R) (h1 : Ji * J = 1) :
     rw [← Matrix.mul_assoc, ← Matrix.transpose_mul, mul_eq_one_comm.1 h1, Matrix.transpose_one, Matrix.one_mul]
 
 /- English proof (translation)
-Rewrite using `[← Matrix.ext_iff]`. Use `forall₂_congr fun i j => ?_` and prove the remaining obligations. Simplify using `only [Matrix.smul_apply, Matrix.sub_apply, smul_eq_mul]`. Apply the tactic sequence `constructor <;> intro h <;> linear_combination -h`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem gen_supp (f : R) (g : Matrix (Fin a) (Fin a) R) :
     (∀ i j, f * (g - 1) i j = (g - 1) i j) ↔ (1 - f) • g = (1 - f) • (1 : Matrix (Fin a) (Fin a) R) := by
@@ -39,7 +39,7 @@ theorem gen_supp (f : R) (g : Matrix (Fin a) (Fin a) R) :
   constructor <;> intro h <;> linear_combination -h
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨continuous_const.matrix_mul continuous_id, continuous_const.matrix_mul continuous_id⟩`.
+Supply the required witnesses or components.
 -/
 theorem gen_cont [TopologicalSpace R] [IsTopologicalRing R] (J Ji : Matrix (Fin a) (Fin a) R) (h1 : Ji * J = 1) :
     Continuous (leftMul (b := b) J Ji h1) ∧ Continuous (leftMul (b := b) J Ji h1).symm :=
@@ -50,13 +50,13 @@ end Gen
 open GlobalTheory.IndefiniteRowSideFullHecke
 
 /- English proof (translation)
-The claim follows from `gen_supp _ _`.
+A detailed English derivation is pending.
 -/
 theorem suppAt_iff' (e : AE D) (V : HSp D) (g : GA D V) : SuppAt e V g ↔ HeisenbergWeilMatrices.IsAt (e + HeisenbergWeilMatrices.cj D e) g :=
   gen_supp _ _
 
 /- English proof (translation)
-Rewrite using `[suppAt_iff', he.sum]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem suppAt_iff {v : HeightOneSpectrum (𝓞 D.host.F)} {e : AE D} (he : HeisenbergWeilMatrices.IsSplitIdem D v e) (V : HSp D)
     (g : GA D V) : SuppAt e V g ↔ HeisenbergWeilMatrices.IsAt (HeisenbergWeilMatrices.idemFin D v) g := by

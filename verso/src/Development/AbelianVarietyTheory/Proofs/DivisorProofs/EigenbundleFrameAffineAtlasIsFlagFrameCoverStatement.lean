@@ -5,7 +5,7 @@ open AlgebraicGeometry CategoryTheory TopologicalSpace Limits NumberField Recipr
 open GlobalTheory.FlagMod.LowRank (ECh Proj str)
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.FlagMod.FieldFlag.atlas_isCover` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FEigenbundleFrameAffineAtlasIsFlagFrameCover.lean&line=64#L64)
 -/

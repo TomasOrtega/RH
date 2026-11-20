@@ -14,13 +14,11 @@ namespace GlobalTheory.TrueGeo.HorizRing
 variable {F : Type} [Field F] [NumberField F]
 
 /- English proof (translation)
-Establish `hinj : Function.Injective (algebraMap (𝓞 F) B)`. Rewrite using `[RingHom.injective_iff_ker_eq_bot]`. Use `Ideal.eq_bot_of_comap_eq_bot (R := ℤ) ?_` and prove the remaining obligations. Rewrite using `[RingHom.comap_ker, ← RingHom.injective_iff_ker_eq_bot]`. Conclude with `RingHom.injective_int _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `haveI : Algebra.IsAlgebraic (𝓞 F) B := Algebra.IsAlgebraic.extendScalars (R := ℤ) (RingHom.injective_int _)`. Use `haveI : Module.IsTorsionFree (𝓞 F) B := Module.isTorsionFree_iff_algebraMap_injective.2 hinj`. Use `haveI : Module.IsTorsionFree (𝓞 F) (AlgebraicClosure F) := by`. Rewrite using `[Module.isTorsionFree_iff_algebraMap_injective, IsScalarTower.algebraMap_eq (𝓞 F) F (AlgebraicClosure F)]`. Conclude with `(algebraMap F _).injective.comp (IsFractionRing.injective (𝓞 F) F)`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Set `ψ : B →ₐ[𝓞 F] AlgebraicClosure F` to `IsAlgClosed.lift`. Use `⟨ψ, ?_⟩` and prove the remaining obligations. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `x hx`. Assume the negation of the conclusion as `h0`.
-
-Use `Ideal.comap_ne_bot_of_algebraic_mem (R := ℤ) (I := RingHom.ker ψ.toRingHom) h0 hx (Algebra.IsAlgebraic.isAlgebraic x) ?_` and prove the remaining obligations. Rewrite using `[RingHom.comap_ker, ← RingHom.injective_iff_ker_eq_bot]`. Conclude with `RingHom.injective_int _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_embed (B : Type) [CommRing B] [IsDomain B] [Algebra (𝓞 F) B] [CharZero B] [Algebra.IsAlgebraic ℤ B] :
     ∃ ψ : B →ₐ[𝓞 F] AlgebraicClosure F, Function.Injective ψ := by
@@ -46,9 +44,7 @@ theorem exists_embed (B : Type) [CommRing B] [IsDomain B] [Algebra (𝓞 F) B] [
   exact RingHom.injective_int _
 
 /- English proof (translation)
-Introduce `h0`. Use `letI := Ideal.Quotient.field 𝔪`. Use `haveI := ReciprocityTheory.AnForm.R.IntegerToRational.isJacobsonRing_int`. Use `haveI : IsJacobsonRing (𝓞 F) := isJacobsonRing_of_isIntegral (R := ℤ)`. Use `haveI : Module.Finite (𝓞 F) (R ⧸ 𝔪) := finite_of_finite_type_of_isJacobsonRing _ _`.
-
-Establish `hinj : Function.Injective (algebraMap (𝓞 F) (R ⧸ 𝔪))`. Rewrite using `[RingHom.injective_iff_ker_eq_bot, IsScalarTower.algebraMap_eq (𝓞 F) R (R ⧸ 𝔪), ← RingHom.comap_ker, Ideal.Quotient.algebraMap_eq, Ideal.mk_ker, h0]`. Conclude with `RingOfIntegers.not_isField F ((Algebra.IsIntegral.isField_iff_isField hinj).2 (Field.toIsField _))`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem comap_ne_bot {R : Type} [CommRing R] [Algebra (𝓞 F) R] [Algebra.FiniteType (𝓞 F) R] (𝔪 : Ideal R)
     [h : 𝔪.IsMaximal] : 𝔪.comap (algebraMap (𝓞 F) R) ≠ ⊥ := by
@@ -64,13 +60,11 @@ theorem comap_ne_bot {R : Type} [CommRing R] [Algebra (𝓞 F) R] [Algebra.Finit
     ((Algebra.IsIntegral.isField_iff_isField hinj).2 (Field.toIsField _))
 
 /- English proof (translation)
-Establish `hs` using `ψ.rangeRestrict_surjective`. Establish `hc : (𝔪.map ψ.rangeRestrict).comap ψ.rangeRestrict = 𝔪`. Rewrite using `[Ideal.comap_map_of_surjective _ hs, sup_eq_left, ← RingHom.ker_eq_comap_bot, RingHom.ker_rangeRestrict]`. Conclude with `hk`. Establish `hne : 𝔪.map ψ.rangeRestrict ≠ ⊤` using `fun ht => h.ne_top (by rw [← hc, ht, Ideal.comap_top])`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨A, hA, hI⟩` from `Ideal.image_subset_nonunits_valuationSubring (A := ψ.range) _ hne`. Establish `hm : ∀ x, ψ x ∈ A` using `fun x => hA ⟨x, rfl⟩`. Use `⟨A, hm, ?_⟩` and prove the remaining obligations. Set `φ : R →+* A` to `ψ.codRestrict A hm`. Establish `hle : 𝔪 ≤ (IsLocalRing.maximalIdeal A).comap φ` using `fun x hx => by`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Ideal.mem_comap, ValuationSubring.valuation_lt_one_iff]`. Conclude with `hI ⟨_, Ideal.mem_map_of_mem _ hx, rfl⟩`. Establish `he` using `h.eq_of_le (Ideal.comap_ne_top φ (IsLocalRing.maximalIdeal.isMaximal A).ne_top) hle`. Introduce `x`. Rewrite using `[he, Ideal.mem_comap, ValuationSubring.valuation_lt_one_iff]`.
-
-Both sides reduce to the same expression.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_valuationSubring {R K : Type} [CommRing R] [Field K] (ψ : R →+* K) (𝔪 : Ideal R) [h : 𝔪.IsMaximal]
     (hk : RingHom.ker ψ ≤ 𝔪) : ∃ A : ValuationSubring K, (∀ x, ψ x ∈ A) ∧ ∀ x, A.valuation (ψ x) < 1 ↔ x ∈ 𝔪 := by
@@ -92,19 +86,19 @@ theorem exists_valuationSubring {R K : Type} [CommRing R] [Field K] (ψ : R →+
   rfl
 
 /- English proof (translation)
-Introduce `F _ _ R _ _ _ _ _ 𝔪 h𝔪 g hg`. Use `haveI : Algebra.FiniteType ℤ R := Algebra.FiniteType.trans (S := 𝓞 F) inferInstance inferInstance`. Take `⟨q, hq, hqm, hgq, hc, ha⟩` from `GlobalTheory.exists_horizontal_prime_le_of_isMaximal R 𝔪 h𝔪 g hg`. Apply the tactic sequence `obtain ⟨ψ₀, hψ₀⟩ := @exists_embed F _ _ (R ⧸ q) _ _ _ hc (by convert ha <;> first | rfl | exact Subsingleton.elim _ _)`. Set `ψ : R →ₐ[𝓞 F] AlgebraicClosure F` to `ψ₀.comp (Ideal.Quotient.mkₐ (𝓞 F) q)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hker : ∀ x, ψ x = 0 ↔ x ∈ q` using `fun x => by`. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, ← map_eq_zero_iff ψ₀ hψ₀]`. Both sides reduce to the same expression. Establish `hψ (a : 𝓞 F) : ψ (algebraMap (𝓞 F) R a) = algebraMap F (AlgebraicClosure F) (algebraMap (𝓞 F) F a)`. Rewrite using `[ψ.commutes, ← IsScalarTower.algebraMap_apply]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨A, hA, hAm⟩` from `exists_valuationSubring ψ.toRingHom 𝔪 (fun x hx => hqm ((hker x).1 hx))`. Set `v : HeightOneSpectrum (𝓞 F)` to `⟨𝔪.comap (algebraMap (𝓞 F) R), inferInstance, comap_ne_bot 𝔪⟩`. Take `⟨e⟩` from `(ExtConj.main F).1 v`. Establish `hov (x : 𝓞 F) : A.valuation (algebraMap F (AlgebraicClosure F) (x : F)) < 1 ↔ x ∈ v.asIdeal`. Use `hAm (algebraMap (𝓞 F) R x)` as an intermediate fact.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `this` using `[show ψ.toRingHom (algebraMap (𝓞 F) R x) = _ from hψ x]`. Then use the resulting hypothesis. Take `⟨σ, hσ⟩` from `ReciprocityTheory.Gal.exists_smul_eq_of_over hov (ExtConj.lies_over e)`. Establish `hm (x : R) : σ (ψ x) ∈ e.O`. Rewrite using `[← hσ]`. Conclude with `ValuationSubring.smul_mem_pointwise_smul σ _ A (hA x)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `φ : R →+* e.O` to `(σ.toRingEquiv.toRingHom.comp ψ.toRingHom).codRestrict e.O hm`. Establish `hφ (x : R) : (φ x : AlgebraicClosure F) = σ (ψ x)` using `rfl`. Use `⟨v, e, φ, fun a => ?_, ?_, fun h0 => hgq ?_⟩` and prove the remaining obligations. Rewrite using `[hφ, hψ, σ.commutes]`. Use extensionality with `x`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Ideal.mem_comap, ValuationSubring.valuation_lt_one_iff, hφ, ← hAm]`. Use `ReciprocityTheory.Gal.smul_valuation_lt_one_iff σ A (σ (ψ x))` as an intermediate fact. Rewrite `this` using `[hσ]`. Rewrite using `[this]`. Simplify using the standard rewrite rules.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `hφ g` as an intermediate fact. Rewrite `this` using `[h0]`. Conclude with `(hker g).1 (by simpa using this.symm)`.
+A detailed English derivation is pending.
 -/
 theorem main : ∀ (F : Type) [Field F] [NumberField F] (R : Type) [CommRing R] [IsDomain R] [Algebra (𝓞 F) R] [Algebra.FiniteType (𝓞 F) R] [CharZero R] (𝔪 : Ideal R), 𝔪.IsMaximal → ∀ g : R, g ≠ 0 → ∃ (v : HeightOneSpectrum (𝓞 F)) (e : Ext v) (φ : R →+* e.O), (∀ a : 𝓞 F, ((φ (algebraMap (𝓞 F) R a) : e.O) : AlgebraicClosure F) = algebraMap F (AlgebraicClosure F) (algebraMap (𝓞 F) F a)) ∧ (IsLocalRing.maximalIdeal e.O).comap φ = 𝔪 ∧ φ g ≠ 0 := by
   intro F _ _ R _ _ _ _ _ 𝔪 h𝔪 g hg

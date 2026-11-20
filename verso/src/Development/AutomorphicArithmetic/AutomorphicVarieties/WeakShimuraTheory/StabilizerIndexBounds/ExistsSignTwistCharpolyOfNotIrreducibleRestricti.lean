@@ -5,23 +5,23 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.CurveDVRSpecializa
 open IsLocalRing Polynomial Matrix UpperTheory.V
 
 /- English proof (translation)
-Set `ι : ℤˣ →* Kˣ` to `Units.map (Int.castRingHom K).toMonoidHom`. Establish `hι : ∀ u : ℤˣ, ((ι u : Kˣ) : K) = ((u : ℤ) : K)` using `fun u => rfl`. Establish `hneg : (-1 : K) ≠ 1`. Introduce `h`. Apply `h2` to reduce the goal to its premises.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Take the linear combination `-h`. Establish `hinj : Function.Injective ι`. Rewrite using `[injective_iff_map_eq_one]`. Introduce `u hu`. Break down `Int.units_eq_one_or u with h | h` into its components or cases.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `h`. It suffices to derive a contradiction. Use `congrArg Units.val hu` as an intermediate fact. Rewrite `this` using `[hι, h]`. Apply `hneg` to reduce the goal to its premises.
+It suffices to derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using this`. Establish `hex : ∀ g, ∃ u : ℤˣ, ι u = φ g`. Introduce `g`. Establish `h : (φ g : K) * (φ g : K) = 1`. Rewrite using `[← Units.val_mul, hsq, Units.val_one]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `mul_self_eq_one_iff.mp h with h | h` into its components or cases. Conclude with `⟨1, Units.ext (by rw [hι, h]; simp)⟩`. Conclude with `⟨-1, Units.ext (by rw [hι, h]; simp)⟩`. Use `choose η hη using hex`. Set `η' : G →* ℤˣ` to `MonoidHom.mk' η (fun a b => hinj (by rw [map_mul, hη, hη, hη, map_mul]))`.
+Supply the required witnesses or components. Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hη' : ∀ g, η' g = η g` using `fun g => rfl`. Use `⟨η', ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `h`. Apply `h1` to reduce the goal to its premises. Use `ext1 g`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← hη, ← hη', h]`. Simplify using the standard rewrite rules. Introduce `g hg`. Rewrite using `[MonoidHom.mem_ker]`. Apply `hinj` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hη', hη, map_one]`. Conclude with `hS hg`. Introduce `g`. Rewrite using `[hη', ← hι, hη]`. Establish `hc : e.conj (Matrix.toLin' ((φ g : K) • r g)) = Matrix.toLin' (r g)`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `v`. Take `⟨w, rfl⟩` from `e.surjective v`. Rewrite using `[LinearEquiv.conj_apply_apply, e.symm_apply_apply, Matrix.toLin'_apply, Matrix.toLin'_apply, he, Matrix.smul_mulVec, map_smul]`. Rewrite using `[← Matrix.charpoly_toLin', ← hc, LinearEquiv.charpoly_conj, Matrix.charpoly_toLin']`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem quadratic_twist_charpoly_eq {K G : Type} [Field K] [Group G] (h2 : (2 : K) ≠ 0)
     (r : G →* Matrix (Fin 4) (Fin 4) K) (S : Subgroup G) (φ : G →* Kˣ)
@@ -78,21 +78,21 @@ private theorem quadratic_twist_charpoly_eq {K G : Type} [Field K] [Group G] (h2
     rw [← Matrix.charpoly_toLin', ← hc, LinearEquiv.charpoly_conj, Matrix.charpoly_toLin']
 
 /- English proof (translation)
-Introduce `K G _ _ _ h2 r hirr S hcomm hidx hred`. Establish `hab : ∀ a b : G, a * b * a⁻¹ * b⁻¹ ∈ S` using `fun a b => hcomm (Subgroup.commutator_mem_commutator (Subgroup.mem_top a) (Subgroup.mem_top b))`. Use `haveI hN : S.Normal := ⟨fun n hn g => by`. Use `S.mul_mem (hab g n) hn` as an intermediate fact. Simplify using `using this⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `h4 : ((4 : ℕ) : K) ≠ 0`. Establish `: ((4 : ℕ) : K) = 2 * 2` using `by norm_num`. Rewrite using `[this]`. Conclude with `mul_ne_zero h2 h2`. Take `⟨m, hm⟩` from `hidx`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hiK : (S.index : K) ≠ 0`. Introduce `h`. Apply `h4` to reduce the goal to its premises. Rewrite using `[hm, Nat.cast_mul, h, zero_mul]`. Establish `hfi : S.FiniteIndex` using `⟨fun h => hiK (by rw [h, Nat.cast_zero])⟩`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `ρ : Representation K G (Fin 4 → K)` to `(Matrix.toLinAlgEquiv' (R := K) (n := Fin 4)).toMonoidHom.comp r`. Establish `hρ : ∀ g v, ρ g v = r g *ᵥ v` using `fun g v => Matrix.toLinAlgEquiv'_apply _ _`. Unfold `U3.MatIrr at hirr hred`. Use `push Not at hred`. Take `⟨φ, e, h1, hS, he⟩` from `UpperTheory.V.Pr.T.selfTwist ρ S hfi hiK hab (fun W hW => hirr W (fun g _ v hv => hρ g v ▸ hW g v hv)) (by`.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Simplify using the standard rewrite rules.
 
-Take `⟨W, hW, hb, ht⟩` from `hred`. Conclude with `⟨W, fun g hg v hv => (hρ g v).symm ▸ hW g hg v hv, hb, ht⟩)`. Simplify using `only [hρ] at he`. Distinguish the cases in `hsq : ∀ g, φ g * φ g = 1`. Conclude with `quadratic_twist_charpoly_eq h2 r S φ e h1 hS hsq he`.
+Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `quadratic_twist_charpoly_eq h2 r S (φ * φ) (e.trans e) ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `h`. Apply `hsq` to reduce the goal to its premises. Introduce `g`. Conclude with `DFunLike.congr_fun h g`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `g hg`. Establish `: φ g = 1` using `hS hg`. Rewrite using `[MonoidHom.mem_ker, MonoidHom.mul_apply, this, one_mul]`. Introduce `g`. Establish `h : φ (g ^ S.index) = 1` using `hS (S.pow_index_mem g)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `h' : φ g ^ 4 = 1` using `by rw [hm, pow_mul, ← map_pow, h, one_pow]`. Rewrite using `[MonoidHom.mul_apply, ← h']`. Simplify using `only [pow_succ, pow_zero, one_mul, mul_assoc]`. Introduce `g v`. Rewrite using `[LinearEquiv.trans_apply, LinearEquiv.trans_apply, he, he, map_smul, smul_smul, MonoidHom.mul_apply, Units.val_mul]`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Ws.exists_sign_twist_charpoly_of_not_irreducible_restriction :
     ∀ (K G : Type) [Field K] [IsAlgClosed K] [Group G], (2 : K) ≠ 0 → ∀ r : G →* Matrix (Fin 4) (Fin 4) K, U3.MatIrr ⊤ r →

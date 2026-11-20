@@ -56,11 +56,11 @@ variable {K F V : Type} [Field K] [NumberField K] [StarRing K] [Field F] [Number
   [AddCommGroup V] [Module K V] [FiniteDimensional K V] [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V]
 
 /- English proof (translation)
-Take `⟨-, -, horth, hdiag, hne⟩` from `hb`. Rewrite using `[linearIndependent_iff']`. Introduce `s g hg i hi`. Establish `h1 : h (b i) (∑ j ∈ s, g j • b j) = 0` using `by rw [hg, map_zero]`. Rewrite `h1` using `[map_sum, Finset.sum_eq_single i]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[map_smul, smul_eq_mul, hdiag]`. Break down `mul_eq_zero.mp h1 with h2 | h2` into its components or cases. Conclude with `h2`. Conclude with `absurd (by simpa using h2) (hne i)`. Introduce `j _ hji`.
+Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[map_smul, horth i j (Ne.symm hji), smul_zero]`. Introduce `hi'`. Conclude with `absurd hi hi'`.
+A detailed English derivation is pending.
 -/
 theorem linearIndependent_of_jordan {h : V →ₗ⋆[K] V →ₗ[K] K} {L : Submodule (𝓞 K) V}
     {𝔭 : Ideal (𝓞 F)} {b : Fin (finrank K (⊤ : Submodule K V)) → V}
@@ -83,15 +83,13 @@ theorem linearIndependent_of_jordan {h : V →ₗ⋆[K] V →ₗ[K] K} {L : Subm
 variable [Fact (IsFixF K F)]
 
 /- English proof (translation)
-Establish `hli` using `linearIndependent_of_jordan hb`. Establish `hcard : Fintype.card (Fin (finrank K (⊤ : Submodule K V))) = finrank K V`. Simplify using `[finrank_top]`. Establish `hB : ⇑(Basis.mk hli (le_of_eq (hli.span_eq_top_of_card_eq_finrank' hcard).symm)) = b` using `Basis.coe_mk _ _`. Establish `hH : ∀ i j, algebraMap (𝓞 K) K ((Matrix.diagonal fun i => algebraMap (𝓞 F) (𝓞 K) (a i)) i j) = h (Basis.mk hli (le_of_eq (hli.span_eq_top_of_card_eq_finrank' hcard).symm) i) (Basis.mk hli (le_of_eq (hli.span_eq_top_of_card_eq_finrank' hcard).symm) j)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `i j`. Rewrite using `[hB]`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Rewrite using `[Matrix.diagonal_apply_eq, hb.2.2.2.1 i]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[Matrix.diagonal_apply_ne _ hij, map_zero]`. Conclude with `(hb.2.2.1 i j hij).symm`. Rewrite using `[integralBasisSpans.akCount_eq h h𝔭 _ (by`. Establish `h2` using `hb.2.1`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[← hB]`. Conclude with `h2) hH k]`. Establish `hd : (Matrix.diagonal fun i => algebraMap (𝓞 F) (𝓞 K) (a i)).map (Ideal.Quotient.mk (extP K 𝔭 ^ k)) = diagQ K 𝔭 k a`. Rewrite using `[diagQ, Matrix.diagonal_map (map_zero _)]`. Rewrite using `[hd]`.
-
-Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem akCount_eq_skSet {h : V →ₗ⋆[K] V →ₗ[K] K} {L : Submodule (𝓞 K) V}
     {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal) {b : Fin (finrank K (⊤ : Submodule K V)) → V}
@@ -127,7 +125,7 @@ theorem akCount_eq_skSet {h : V →ₗ⋆[K] V →ₗ[K] K} {L : Submodule (𝓞
 end
 
 /- English proof (translation)
-Introduce `K F V _ _ _ _ _ _ _ _ _ _ _ _ hK h hsymm hpos L hL hint 𝔭 h𝔭 b a hb k hk`. Establish `ha : ∀ i, a i ≠ 0`. Take `⟨-, -, -, -, h5⟩` from `hb`. Conclude with `h5`. Rewrite using `[akCount_eq_skSet h𝔭 hb k, hO K F hK 𝔭 h𝔭 _ a ha k hk, hU K F V hK h hsymm hpos L hL hint 𝔭 h𝔭 b a hb k hk]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem discOnto_of (hU : UDModel) (hO : OrbitCount) : DiscOnto := by
   intro K F V _ _ _ _ _ _ _ _ _ _ _ _ hK h hsymm hpos L hL hint 𝔭 h𝔭 b a hb k hk

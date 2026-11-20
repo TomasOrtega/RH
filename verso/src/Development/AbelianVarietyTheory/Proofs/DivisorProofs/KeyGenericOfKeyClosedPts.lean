@@ -11,7 +11,7 @@ noncomputable section
 namespace GlobalTheory.LocAcyc
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.spread_torsor_to_etale_algebra`.
+A detailed English derivation is pending.
 -/
 private theorem spread_torsor : ∀ (T O : Type) [CommRing T] [CommRing O] [Algebra T O]
     [Algebra (Polynomial T) O] [IsScalarTower T (Polynomial T) O]
@@ -32,7 +32,7 @@ private theorem spread_torsor : ∀ (T O : Type) [CommRing T] [CommRing O] [Alge
           algebraMap O (GlobalTheory.LocAcyc.GenFib T O) (ψ e)) →
         Nonempty (D →ₐ[GlobalTheory.LocAcyc.GenFib T O] GlobalTheory.LocAcyc.GenFib T O) := GlobalTheory.T.spread_torsor_to_etale_algebra
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.exists_maximal_over_closedPoint_closedFibre`.
+A detailed English derivation is pending.
 -/
 private theorem exists_maximal_over_closedPt : ∀ (T E : Type) [CommRing T] [IsLocalRing T] [CommRing E] [Algebra (Polynomial T) E]
     [Algebra.FiniteType (Polynomial T) E] (Q : Ideal E) [Q.IsPrime],
@@ -44,7 +44,7 @@ private theorem exists_maximal_over_closedPt : ∀ (T E : Type) [CommRing T] [Is
       (y.comap (algebraMap (Polynomial T) E)).comap (Polynomial.C : T →+* Polynomial T) =
         IsLocalRing.maximalIdeal T := GlobalTheory.T.exists_maximal_over_closedPoint_closedFibre
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.exists_section_strictHenselisation_closedFibre_point`.
+A detailed English derivation is pending.
 -/
 private theorem section_at_closedPt : GlobalTheory.LocAcyc.KeyClosedPts →
     ∀ (T E : Type) [CommRing T] [IsDomain T] [IsLocalRing T] [CommRing E]
@@ -67,7 +67,7 @@ private theorem section_at_closedPt : GlobalTheory.LocAcyc.KeyClosedPts →
         ∀ e : E, s (algebraMap (GlobalTheory.LocAcyc.GenFib T E) DE (algebraMap E _ e)) =
           algebraMap S (GlobalTheory.LocAcyc.GenFib T S) (algebraMap E S e) := GlobalTheory.T.exists_section_strictHenselisation_closedFibre_point
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.exists_specialisation_to_strictlyHenselian`.
+A detailed English derivation is pending.
 -/
 private theorem specialisation_map : ∀ (R S O : Type) [CommRing R] [CommRing S] [IsLocalRing S] [CommRing O]
     [HenselianLocalRing O] [IsSepClosed (IsLocalRing.ResidueField O)] [Algebra R S] [Algebra R O]
@@ -77,23 +77,19 @@ private theorem specialisation_map : ∀ (R S O : Type) [CommRing R] [CommRing S
     Module.Flat R S → GlobalTheory.LocAcyc.LocPiecesEtale R S → Nonempty (S →ₐ[R] O) := GlobalTheory.T.exists_specialisation_to_strictlyHenselian
 
 /- English proof (translation)
-Introduce `hC T O _ _ _ _ _ _ _ _ hAIC P _ φ hφ hSH hP hPeq q hq hqu`. Rewrite using `[torsorsTrivial_iff]`. Introduce `D _ _ act hD`. Take `⟨E, _, _, _, _, _, ψ, DE, _, _, actE, hDE, hred⟩` from `spread_torsor T O P φ hφ hSH.2.2.2 q hq D act hD`. Use `set Q : Ideal E := (maximalIdeal O).comap ψ.toRingHom with hQdef`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `haveI : Q.IsPrime := Ideal.comap_isPrime _ _`. Establish `hloc : (maximalIdeal O).comap φ = maximalIdeal (Localization.AtPrime P)` using `by haveI := hSH.2.2.1`. Apply `le_antisymm` to reduce the goal to its premises. Conclude with `IsLocalRing.le_maximalIdeal (Ideal.comap_ne_top _ (Ideal.IsMaximal.ne_top inferInstance))`. Introduce `x hx`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[Ideal.mem_comap, IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]`. Introduce `hu`. Conclude with `(IsLocalRing.mem_maximalIdeal _).1 hx (isUnit_of_map_unit φ x hu)`. Establish `hQP : Q.comap (algebraMap (Polynomial T) E) = P`. Rewrite using `[hQdef, Ideal.comap_comap]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `h1 : ψ.toRingHom.comp (algebraMap (Polynomial T) E) = φ.comp (algebraMap (Polynomial T) _)`. Rewrite using `[hφ]`. Conclude with `ψ.comp_algebraMap`. Rewrite using `[h1, ← Ideal.comap_comap, hloc]`. Conclude with `Localization.AtPrime.comap_maximalIdeal (R := Polynomial T) (I := P)`.
+Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨y, hymax, hQy, hyne, hyT⟩` from `exists_maximal_over_closedPt T E Q (hQP.trans hPeq)`. Use `haveI : y.IsPrime := hymax.isPrime`. Take `⟨S, _, _, _, _, _, hSy, hSflat, hSpieces, s, hs⟩` from `section_at_closedPt hC T E hAIC y hyT hyne q hq hqu DE actE hDE`. Use `letI : Algebra E O := ψ.toRingHom.toAlgebra`. Use `haveI : HenselianLocalRing O := hSH.1`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Use `haveI : IsSepClosed (ResidueField O) := hSH.2.1`. Take `⟨σ⟩` from `specialisation_map E S O Q y hQy hSy rfl hSflat hSpieces`. Establish `hσT : ∀ t : T, σ (algebraMap T S t) = algebraMap T O t`. Introduce `t`. Rewrite using `[IsScalarTower.algebraMap_apply T E S, σ.commutes, IsScalarTower.algebraMap_apply T (Polynomial T) E]`.
+Supply the required witnesses or components. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Express the relevant statement in the definitionally equal form `ψ (algebraMap (Polynomial T) E _) = _`. Rewrite using `[ψ.commutes, ← IsScalarTower.algebraMap_apply]`. Establish `hM : Algebra.algebraMapSubmonoid S (nonZeroDivisors T) ≤ (Algebra.algebraMapSubmonoid O (nonZeroDivisors T)).comap σ.toRingHom`. Introduce and unpack `_ ⟨t, ht, rfl⟩`. Conclude with `⟨t, ht, (hσT t).symm⟩`.
-
-Set `m : GenFib T S →+* GenFib T O` to `IsLocalization.map (GenFib T O) σ.toRingHom hM`. Use `hred (m.comp s) fun e => ?_` and prove the remaining obligations. Rewrite using `[RingHom.comp_apply, hs e]`. Simplify using `only [m, IsLocalization.map_eq]`. Express the relevant statement in the definitionally equal form `algebraMap O (GenFib T O) (σ (algebraMap E S e)) = _`.
-
-Rewrite using `[σ.commutes]`. Both sides reduce to the same expression.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem keyGeneric_of_keyClosedPts : KeyClosedPts → KeyGeneric := by
   intro hC T O _ _ _ _ _ _ _ _ hAIC P _ φ hφ hSH hP hPeq q hq hqu

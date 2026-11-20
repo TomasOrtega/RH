@@ -29,7 +29,7 @@ def stabRow {A : Type} [CommRing A] {n : Type} [Fintype n] [DecidableEq n] (φ :
     rw [Matrix.vecMul_vecMul, Units.mul_inv, Matrix.vecMul_one]
 
 /- English proof (translation)
-Use extensionality with `g`. Simplify using `only [Subgroup.mem_top, iff_true]`. Use `show (0 : n → A) ᵥ* (g : Matrix n n A) = 0`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 example {A : Type} [CommRing A] {n : Type} [Fintype n] [DecidableEq n] :
     stabRow (0 : n → A) = ⊤ := by
@@ -39,7 +39,7 @@ example {A : Type} [CommRing A] {n : Type} [Fintype n] [DecidableEq n] :
   simp
 
 /- English proof (translation)
-Introduce `h`. Establish `h' : (fun _ : Fin 1 => (1 : ℚ)) ᵥ* ((-1 : GL (Fin 1) ℚ) : Matrix (Fin 1) (Fin 1) ℚ) = fun _ => 1` using `h`. Use `congrFun h' 0` as an intermediate fact. Simplify using `[Matrix.vecMul, dotProduct] at this`. Evaluate the numerical expressions using `at this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Evaluate the numerical expressions.
 -/
 example : (-1 : GL (Fin 1) ℚ) ∉ stabRow (fun _ : Fin 1 => (1 : ℚ)) := by
   intro h

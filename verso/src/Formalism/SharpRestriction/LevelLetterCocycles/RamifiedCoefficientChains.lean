@@ -94,19 +94,19 @@ def LocalBoundDegreeZero [NeZero n] (W : LocWach PD LL O v n) (C : ℝ) : Prop :
       ∃ e : ℕ, (e : ℝ) ≤ eBd 32 4 10 C PD.p (hpar n b S + η) S η ∧ F.LiftF PD (e + 3 * S)
 
 /- English proof (translation)
-Take `⟨-, hl, -, -, -, -, hJ, -, hbig, -⟩` from `hS`. Introduce `i τ hτ a ha`. Establish `hwin` using `hJ i τ hτ a ha`. Establish `hl1 : (1 : ℝ) < (PD.p : ℝ)` using `by exact_mod_cast (show 1 < PD.p by omega)`. Establish `hlam : 0 ≤ lam PD.p (hpar n b S + η)`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `lam`. Break down `Nat.eq_zero_or_pos (hpar n b S + η) with h0 | h0` into its components or cases. Rewrite using `[h0]`. Simplify using the standard rewrite rules. Establish `: (1 : ℝ) ≤ 2 * ((hpar n b S + η : ℕ) : ℝ)`.
+Replace the relevant objects with their definitions. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `: (1 : ℝ) ≤ ((hpar n b S + η : ℕ) : ℝ)` using `by exact_mod_cast h0`. Combine the linear equalities and inequalities to obtain the conclusion. Use `Real.logb_nonneg hl1 this` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `haR : 0 ≤ aR PD.p (hpar n b S + η)`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Unfold `aR`. Establish `h1 : (0 : ℝ) ≤ ((hpar n b S + η : ℕ) : ℝ) * (2 * (PD.p : ℝ) - 1) / ((PD.p : ℝ) - 1) ^ 2`. Apply `div_nonneg _ (sq_nonneg _)` to reduce the goal to its premises. Conclude with `mul_nonneg (Nat.cast_nonneg _) (by linarith)`. Combine the linear equalities and inequalities to obtain the conclusion.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `hη : η ≤ b i`. Use `hbig i` as an intermediate fact. Establish `: (η : ℝ) ≤ (b i : ℝ)` using `by linarith`. Conclude with `this` after adjusting the coercions. Unfold `JumpWinS at hwin`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
-Unfold `MiW hiW`. Use `split_ifs at hwin ⊢ with h`. Simplify using `only [Set.mem_union, Set.mem_Icc] at hwin ⊢`. Move the coercions through the operations in `at hwin ⊢`. Use linear arithmetic over natural numbers and integers.
+Move the embeddings inside the algebraic operations. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Use linear arithmetic over natural numbers and integers.
 
-Simplify using `only [Set.mem_union, Set.mem_Icc] at hwin ⊢`. Move the coercions through the operations in `at hwin ⊢`. Use linear arithmetic over natural numbers and integers.
+A detailed English derivation is pending.
 -/
 theorem jumpsLet_win [NeZero n] (W : LocWach PD LL O v n) {d : ℕ} {T₁ T₂ : LocLat G Qp LL O}
     {F : LatHom T₁.L T₂.L} {b : ZMod n → ℕ} {S η m : ℕ} (hS : SetCS W d T₁ T₂ F b S η m) :
@@ -418,7 +418,7 @@ def RealisationConstantSixteen : Prop := ∀ CR CA CB CK : ℝ, ∀ D : D7, ∀ 
     ∀ Cm : CmpOf D.loc D.locA HW F, Stmt D HW F Cm 16 CR CA CB CK
 
 /- English proof (translation)
-Introduce `CR CA CB CK` and use `⟨16, h CR CA CB CK⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem realisation_all_of_constant_sixteen (h : RealisationConstantSixteen) : RealisationStatementAll := fun CR CA CB CK => ⟨16, h CR CA CB CK⟩
 
@@ -427,73 +427,73 @@ def LiftingBoundSomeConstants : Prop :=
     admitted D HW F Cm CR CA CB CK → TheoremCConstantsRange D HW F (fun _ => True) k₁ k₂ k₃ k₄ k₅ C
 
 /- English proof (translation)
-The claim follows from `Formalism.MainNotions.DeltaInvariantLattices.thm1used_of h.1`.
+A detailed English derivation is pending.
 -/
 theorem first_hypothesis_of_lifting (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (Cm : CmpOf D.loc D.locA HW F) (h : Formalism.MainNotions.DeltaInvariantLattices.aux₃ D HW F Cm) : adm1 D HW F Cm := Formalism.MainNotions.DeltaInvariantLattices.thm1used_of h.1
 
 /- English proof (translation)
-The claim follows from `Formalism.MainNotions.DeltaInvariantLattices.gamma_semisimple_local_of_consequences h.2.1`.
+A detailed English derivation is pending.
 -/
 theorem second_hypothesis_of_lifting (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (Cm : CmpOf D.loc D.locA HW F) (h : Formalism.MainNotions.DeltaInvariantLattices.aux₃ D HW F Cm) : adm2 D HW F := Formalism.MainNotions.DeltaInvariantLattices.gamma_semisimple_local_of_consequences h.2.1
 
 /- English proof (translation)
-The claim follows from `h.2.2.1`.
+A detailed English derivation is pending.
 -/
 theorem integrality_of_commutation (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (Cm : CmpOf D.loc D.locA HW F) (h : Formalism.MainNotions.DeltaInvariantLattices.aux₃ D HW F Cm) : adm3 D HW F := h.2.2.1
 
 /- English proof (translation)
-The claim follows from `h.2.2.2`.
+A detailed English derivation is pending.
 -/
 theorem fourth_hypothesis_of_lifting (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (Cm : CmpOf D.loc D.locA HW F) (h : Formalism.MainNotions.DeltaInvariantLattices.aux₃ D HW F Cm) : ArchimedeanSignatureMatching D HW F := h.2.2.2
 
 /- English proof (translation)
-The claim follows from `h.1`.
+A detailed English derivation is pending.
 -/
 theorem sizes_bound_of_log_estimates (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) {C CA CB CK : ℝ} (h : Formalism.MainNotions.LiftingTheory.aux₃ D HW F C CA CB CK) : adm5 D HW F := h.1
 
 /- English proof (translation)
-The claim follows from `h.2.1`.
+A detailed English derivation is pending.
 -/
 theorem restriction_dimension_of_division (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) {C CA CB CK : ℝ} (h : Formalism.MainNotions.LiftingTheory.aux₃ D HW F C CA CB CK) : adm6 D HW F := h.2.1
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h.2.2.1, h.2.2.2.1, h.2.2.2.2.1⟩`.
+Supply the required witnesses or components.
 -/
 theorem level_tools_of_admitted (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) {C CA CB CK : ℝ} (h : Formalism.MainNotions.LiftingTheory.aux₃ D HW F C CA CB CK) : adm7 D HW F C :=
   ⟨h.2.2.1, h.2.2.2.1, h.2.2.2.2.1⟩
 
 /- English proof (translation)
-The claim follows from `h.2.2.2.2.2.1`.
+A detailed English derivation is pending.
 -/
 theorem lemma_M_prime_hypothesis (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) {C CA CB CK : ℝ} (h : Formalism.MainNotions.LiftingTheory.aux₃ D HW F C CA CB CK) : adm8 D HW F :=
   h.2.2.2.2.2.1
 
 /- English proof (translation)
-The claim follows from `h.2.2.2.2.2.2.1`.
+A detailed English derivation is pending.
 -/
 theorem crystalline_lift_of_theorem_c (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) {C CA CB CK : ℝ} (h : Formalism.MainNotions.LiftingTheory.aux₃ D HW F C CA CB CK) : adm9 D HW F :=
   h.2.2.2.2.2.2.1
 
 /- English proof (translation)
-The claim follows from `h.2.2.2.2.2.2.2`.
+A detailed English derivation is pending.
 -/
 theorem lifting_bounds_of_theorem_c (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) {C CA CB CK : ℝ} (h : Formalism.MainNotions.LiftingTheory.aux₃ D HW F C CA CB CK) :
     adm10 D HW F CA CB CK := h.2.2.2.2.2.2.2
 
 /- English proof (translation)
-Introduce `l _ K s LL hg T hT _` and use `(h l K s LL hg).1 T hT`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem crystalline_image_of_prop_two_a (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (h : adm3 D HW F) : adm14 D HW F :=
   fun l _ K s LL hg T hT _ => (h l K s LL hg).1 T hT
 
 /- English proof (translation)
-Introduce `CR CA CB CK` and use `(h CR CA CB CK).elim fun C hC => ⟨32, 4, 10, 4, 3 / 2, C, fun D HW F Cm hA => hC D HW F Cm hA⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem stmtAllK_of (h : RealisationStatementAll) : LiftingBoundSomeConstants := fun CR CA CB CK =>
   (h CR CA CB CK).elim fun C hC => ⟨32, 4, 10, 4, 3 / 2, C, fun D HW F Cm hA => hC D HW F Cm hA⟩
 
 /- English proof (translation)
-Introduce `l _ K LL hg _ d T₁ T₂ F b S η m hS hm`. Take `⟨e, he, _, h0⟩` from `h l K LL hg d T₁ T₂ F b S η m hS trivial`. Conclude with `⟨e, he, h0 hm⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem theorem_c_last_of_theorem_c (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (C : ℝ) (h : aux₃ D HW F C) : Conclusion2 D HW F C := by
   intro l _ K LL hg _ d T₁ T₂ F b S η m hS hm

@@ -12,19 +12,19 @@ open MeasureTheory ReciprocityTheory.AnForm ReciprocityTheory.AnForm.M GlobalThe
 open scoped ENNReal
 
 /- English proof (translation)
-Introduce `d X _ _ _ A m α Λ σ c hset L s hL hs hs1 n Y _ _ _ B hB μ hμ r W e hsnc hRD w K hw hpsh hbd`. Use `choose Bk hBk hBkA using GlobalTheory.T.snc_component_holomorphic_atlas n Y B X μ (m + 1) r (Fin.cons L Λ) (Fin.cons s σ) W e hsnc`. Use `⟨Bk, hBk, ?_⟩` and prove the remaining obligations. Establish `key : ∀ k, ∃ c : ℝ, ∀ (R : ℕ) (T : Fin n → LocPot Y), (∀ i, T i = (α + LocPot.ofFun (w R)).pullback μ hμ.1 ∨ T i = α.pullback μ hμ.1) → 1 ≤ e 0 k → -c ≤ mInt (Bk k) (fun i => (T i).pullback Subtype.val continuous_subtype_val) (fun y => w R (μ y.1))`. Introduce `k`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hk : ∃ i : Fin m, 1 ≤ e i.succ k`. Use `⟨0, fun R T hT he0 => ?_⟩ classical` and prove the remaining obligations. Set `Φ : Fin n → LocPot X` to `fun i => if T i = α.pullback μ hμ.1 then α else α + LocPot.ofFun (w R)`. Establish `hα : IsPotential A α` using `hset.1`. Establish `hΦ : ∀ i, IsPotential A (Φ i)`.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i`. Distinguish the cases in `h : T i = α.pullback μ hμ.1`. Simplify using `only [Φ, if_pos h]`. Conclude with `hα`. Simplify using `only [Φ, if_neg h]`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `isPotentialAdd A _ _ hα (isPotential_ofFun A (w R) (hw R))`. Establish `hTΦ : (fun i => (T i).pullback (Subtype.val : W k → Y) continuous_subtype_val) = fun i => ((Φ i).pullback μ hμ.1).pullback (Subtype.val : W k → Y) continuous_subtype_val`. Use function extensionality and compare the values at `i`. Distinguish the cases in `h : T i = α.pullback μ hμ.1`. Simplify using `only [Φ, if_pos h, h]`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Φ, if_neg h]`. Rewrite using `[(hT i).resolve_right h]`. Rewrite using `[hTΦ, GlobalTheory.T.snc_atlas_rank_drop_potential d n X Y A B μ hμ (m + 1) r (Fin.cons L Λ) (Fin.cons s σ) W e k (Bk k) (hBk k) (hBkA k) (hRD k he0 hk) Φ hΦ (fun y => w R (μ y.1))]`. Simplify using the standard rewrite rules. Use `push_neg at hk`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `hk' : ∀ i : Fin m, e i.succ k = 0` using `fun i => by have := hk i; omega`. Distinguish the cases in `he0 : 1 ≤ e 0 k`. Take `⟨c, hc⟩` from `GlobalTheory.T.boundary_potential_section_atlas d X A m α Λ σ c hset L s hL hs hs1 n Y B hB μ hμ r W e hsnc w K hw hpsh hbd k (Bk k) (hBk k) (hBkA k) he0 hk'`. Conclude with `⟨c, fun R T hT _ => hc R T hT⟩`. Conclude with `⟨0, fun R T hT h => absurd h he0⟩`.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Use `choose c hc using key`. Use `⟨∑ k, |c k|, fun R T hT k he0 => ?_⟩` and prove the remaining obligations. Establish `h1` using `hc k R T hT he0`. Establish `h2 : c k ≤ ∑ k, |c k|` using `(le_abs_self _).trans (Finset.single_le_sum (fun i _ => abs_nonneg (c i)) (Finset.mem_univ k))`. Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 theorem divisor_terms_bounded : ∀ (d : ℕ) (X : Type) [TopologicalSpace X] [CompactSpace X] [T2Space X]
     (A : FinHolAtlas d X) (m : ℕ) (α : LocPot X) (Λ : Fin m → LocPot X) (σ : Fin m → X → X → ℂ) (c : ℝ),

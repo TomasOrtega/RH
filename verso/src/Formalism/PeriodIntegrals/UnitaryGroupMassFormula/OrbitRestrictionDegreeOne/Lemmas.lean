@@ -18,7 +18,7 @@ def embOne (z : Pl D) (N0 N1 : ℕ) : ZMod 1 × Fin N0 × Fin N1 ↪ Pl D × Fin
   inj' _ _ h := Prod.ext (Subsingleton.elim _ _) (congrArg (fun x => x.2) h)
 
 /- English proof (translation)
-Use extensionality with `m`. Rewrite using `[MvPowerSeries.coeff_killCompl, Finsupp.embDomain_eq_mapDomain]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem restr1_eq_killCompl (p : ℕ) [Fact p.Prime] {N0 N1 : ℕ} (z : Pl D)
     (Th : MvPowerSeries (Pl D × Fin N0 × Fin N1) ℂ_[p]) :
@@ -28,9 +28,7 @@ theorem restr1_eq_killCompl (p : ℕ) [Fact p.Prime] {N0 N1 : ℕ} (z : Pl D)
   rfl
 
 /- English proof (translation)
-Use `split_ifs with h`. Establish `hv : v = embOne z N0 N1 ((0 : ZMod 1), v.2)` using `Prod.ext h rfl conv_lhs => rw [hv]`. Rewrite using `[MvPowerSeries.killCompl_X]`. Apply `MvPowerSeries.killCompl_X_eq_zero` to reduce the goal to its premises. Introduce and unpack `⟨w, hw⟩`.
-
-Conclude with `h (congrArg Prod.fst hw).symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem killCompl_X_one (p : ℕ) [Fact p.Prime] {N0 N1 : ℕ} (z : Pl D) (v : Pl D × Fin N0 × Fin N1) :
     killCompl (embOne z N0 N1) (X v : MvPowerSeries _ ℂ_[p]) =
@@ -44,7 +42,7 @@ theorem killCompl_X_one (p : ℕ) [Fact p.Prime] {N0 N1 : ℕ} (z : Pl D) (v : P
     exact h (congrArg Prod.fst hw).symm
 
 /- English proof (translation)
-Rewrite using `[killCompl_X_one]`. Use `split_ifs with h`. Conclude with `MvPowerSeries.subst_X hB _`. Rewrite using `[← MvPowerSeries.coe_substAlgHom hB, map_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem subst_killCompl_X_one (p : ℕ) [Fact p.Prime] {N0 N1 : ℕ} (z : Pl D)
     {B : ZMod 1 × Fin N0 × Fin N1 → MvPowerSeries (ZMod 1 × Fin N0 × Fin N1) ℂ_[p]} (hB : HasSubst B)
@@ -57,14 +55,12 @@ theorem subst_killCompl_X_one (p : ℕ) [Fact p.Prime] {N0 N1 : ℕ} (z : Pl D)
   · rw [← MvPowerSeries.coe_substAlgHom hB, map_zero]
 
 /- English proof (translation)
-The claim follows from `pow_ne_zero _ (pow_ne_zero _ hp.out.ne_zero)`.
+A detailed English derivation is pending.
 -/
 theorem pow_sq_pow_ne_zero (p : ℕ) [hp : Fact p.Prime] (e : ℕ) : (p ^ 2) ^ e ≠ 0 := pow_ne_zero _ (pow_ne_zero _ hp.out.ne_zero)
 
 /- English proof (translation)
-Rewrite using `[← MvPowerSeries.coeff_zero_eq_constantCoeff_apply]`. Use `show (∑ e ∈ Finset.range (JetTdeg (0 : Pl D × β →₀ ℕ) + 1), if (0 : Pl D × β →₀ ℕ) = Finsupp.single (backPl D p v.1 (2 * e), v.2) ((p ^ 2) ^ e) then ((p : ℂ_[p]) ^ e)⁻¹ else 0) = 0`. Simplify using `only [JetTdeg, Finsupp.sum_zero_index, zero_add, Finset.sum_range_one, pow_zero]`. Rewrite using `[if_neg]`. Introduce `h`.
-
-Conclude with `(Finsupp.single_ne_zero.2 one_ne_zero) h.symm`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem constantCoeff_logPl (p : ℕ) [Fact p.Prime] {β : Type} (v : Pl D × β) :
     constantCoeff (logPl D p v) = 0 := by
@@ -78,9 +74,7 @@ theorem constantCoeff_logPl (p : ℕ) [Fact p.Prime] {β : Type} (v : Pl D × β
   exact (Finsupp.single_ne_zero.2 one_ne_zero) h.symm
 
 /- English proof (translation)
-Rewrite using `[← MvPowerSeries.coeff_zero_eq_constantCoeff_apply]`. Use `show (∑ e ∈ Finset.range (JetTdeg (0 : ZMod d × β →₀ ℕ) + 1), if (0 : ZMod d × β →₀ ℕ) = Finsupp.single (v.1 - 2 * (e : ZMod d), v.2) ((p ^ 2) ^ e) then ((p : ℂ_[p]) ^ e)⁻¹ else 0) = 0`. Simplify using `only [JetTdeg, Finsupp.sum_zero_index, zero_add, Finset.sum_range_one, pow_zero]`. Rewrite using `[if_neg]`. Introduce `h`.
-
-Conclude with `(Finsupp.single_ne_zero.2 one_ne_zero) h.symm`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem constantCoeff_jetLogG (p : ℕ) [Fact p.Prime] (d : ℕ) {β : Type*} (v : ZMod d × β) :
     constantCoeff (jetLogG p d v) = 0 := by
@@ -94,13 +88,13 @@ theorem constantCoeff_jetLogG (p : ℕ) [Fact p.Prime] (d : ℕ) {β : Type*} (v
   exact (Finsupp.single_ne_zero.2 one_ne_zero) h.symm
 
 /- English proof (translation)
-Simplify using `[backPl, posPl, partner, hn]`.
+Simplify using the standard rewrite rules.
 -/
 theorem backPl₂ (p : ℕ) (hn : nP D p = 1) (y : Pl D) (e : ℕ) : backPl D p y e = y := by
   simp [backPl, posPl, partner, hn]
 
 /- English proof (translation)
-Unfold `JetTdeg`. Rewrite using `[Finsupp.sum_embDomain]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem JetTdeg_embDomain {α β : Type*} (f : α ↪ β) (m : α →₀ ℕ) :
     JetTdeg (Finsupp.embDomain f m) = JetTdeg m := by
@@ -122,15 +116,15 @@ theorem coeff_jetLogG (p : ℕ) [Fact p.Prime] (d : ℕ) {β : Type*} (v : ZMod 
       if m = Finsupp.single (v.1 - 2 * (e : ZMod d), v.2) ((p ^ 2) ^ e) then (((p : ℂ_[p]) ^ e)⁻¹) else 0 := rfl
 
 /- English proof (translation)
-Use extensionality with `m`. Rewrite using `[MvPowerSeries.coeff_killCompl, coeff_logPl, JetTdeg_embDomain]`. Use `split_ifs with h`. Rewrite using `[coeff_jetLogG]`. Use `Finset.sum_congr rfl fun e _ => ?_` and prove the remaining obligations.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[backPl₂ p hn]`. Establish `key : Finsupp.embDomain (embOne z N0 N1) m = Finsupp.single (v.1, v.2) ((p ^ 2) ^ e) ↔ m = Finsupp.single (((0 : ZMod 1), v.2).1 - 2 * (e : ZMod 1), ((0 : ZMod 1), v.2).2) ((p ^ 2) ^ e)`. Establish `hv : ((v.1, v.2) : Pl D × Fin N0 × Fin N1) = embOne z N0 N1 (((0 : ZMod 1), v.2).1 - 2 * (e : ZMod 1), ((0 : ZMod 1), v.2).2)` using `Prod.ext h rfl`. Rewrite using `[hv, ← Finsupp.embDomain_single, Finsupp.embDomain_inj]`. Simplify using `only [key]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `split_ifs <;> rfl`. Rewrite using `[map_zero]`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `e _`. Rewrite using `[if_neg]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `heq`. Rewrite `heq` using `[backPl₂ p hn]`. Establish `hk : (p ^ 2) ^ e ≠ 0` using `pow_sq_pow_ne_zero p e`. Establish `hmem : ((v.1, v.2) : Pl D × Fin N0 × Fin N1) ∈ (Finsupp.embDomain (embOne z N0 N1) m).support`. Rewrite using `[heq, Finsupp.support_single_ne_zero _ hk]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `Finset.mem_singleton_self _`. Rewrite `hmem` using `[Finsupp.support_embDomain, Finset.mem_map]`. Take `⟨w, _, hw⟩` from `hmem`. Conclude with `h (congrArg Prod.fst hw).symm`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem killCompl_logPl (p : ℕ) [Fact p.Prime] (hn : nP D p = 1) {N0 N1 : ℕ} (z : Pl D)
     (v : Pl D × Fin N0 × Fin N1) :
@@ -164,7 +158,7 @@ theorem killCompl_logPl (p : ℕ) [Fact p.Prime] (hn : nP D p = 1) {N0 N1 : ℕ}
     exact h (congrArg Prod.fst hw).symm
 
 /- English proof (translation)
-Unfold `OJ.expS PowerSeries.subst`. Rewrite using `[PI.OrbShared.killCompl_subst e (PowerSeries.HasSubst.const (PowerSeries.HasSubst.of_constantCoeff_zero hf))]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem killCompl_expS {τ υ : Type*} {K : Type*} [Field K] [CharZero K] (e : υ ↪ τ)
     (f : MvPowerSeries τ K) (hf : constantCoeff f = 0) :
@@ -173,7 +167,7 @@ theorem killCompl_expS {τ υ : Type*} {K : Type*} [Field K] [CharZero K] (e : �
   rw [PI.OrbShared.killCompl_subst e (PowerSeries.HasSubst.const (PowerSeries.HasSubst.of_constantCoeff_zero hf))]
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Establish `h0` using `h 0 (by rwa [MvPowerSeries.coeff_zero_eq_constantCoeff_apply])`. Conclude with `h0.1 (by simp [OJ.bideg])`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem constantCoeff_zero_of_jet_bound (l d : ℕ) [Fact l.Prime] [NeZero d] (be : MvPowerSeries (ZMod d) ℂ_[l])
     (h : OJ.B3 l d be) : constantCoeff be = 0 := by

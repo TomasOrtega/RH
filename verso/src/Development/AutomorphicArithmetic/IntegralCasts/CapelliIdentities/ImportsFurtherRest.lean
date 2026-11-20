@@ -3,9 +3,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.HeightAndVanishing
 import Formalism.ConjugateSelfDual.Statement
 
 /- English proof (translation)
-Introduce `l _ c x hx`. Establish `h1 : IsIntegral ℤ_[l] (⟨x, hx⟩ : c.O)` using `Algebra.IsIntegral.isIntegral _`. Establish `h2 : IsIntegral ℤ_[l] x` using `h1.map c.O.val`. Establish `h3 : IsIntegral ℚ_[l] x` using `h2.tower_top`. Rewrite using `[← PadicAlgCl.spectralNorm_eq, spectralNorm, spectralValue_le_one_iff (minpoly.monic h3), minpoly.isIntegrallyClosed_eq_field_fractions' ℚ_[l] h2]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `n`. Rewrite using `[Polynomial.coeff_map]`. Conclude with `PadicInt.norm_le_one _`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.Rb6.norm_le_one_of_mem :
     ∀ {l : ℕ} [inst : Fact (Nat.Prime l)] (c : UpperTheory.V.HV.Coef l)

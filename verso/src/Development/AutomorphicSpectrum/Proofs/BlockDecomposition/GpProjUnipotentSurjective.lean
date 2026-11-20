@@ -15,7 +15,7 @@ section Entries
 variable {k : Type} [Field k]
 
 /- English proof (translation)
-Use `show (1 + GlobalTheory.BZMir.colMat k n (Multiplicative.toAdd v)) p q = _`. Simplify using `[GlobalTheory.BZMir.colMat, hq]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem unip_apply_of_ne_last (n : ℕ) (v : Multiplicative (Fin n → k)) (p q : Fin (n + 1)) (hq : q ≠ Fin.last n) :
     ((unip k n v : GL (Fin (n + 1)) k) : Matrix (Fin (n + 1)) (Fin (n + 1)) k) p q =
@@ -24,7 +24,7 @@ theorem unip_apply_of_ne_last (n : ℕ) (v : Multiplicative (Fin n → k)) (p q 
   simp [GlobalTheory.BZMir.colMat, hq]
 
 /- English proof (translation)
-Use `show (1 + GlobalTheory.BZMir.colMat k n (Multiplicative.toAdd v)) (Fin.last n) (Fin.last n) = 1`. Simplify using `[GlobalTheory.BZMir.colMat]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem unip_apply_last_last (n : ℕ) (v : Multiplicative (Fin n → k)) :
     ((unip k n v : GL (Fin (n + 1)) k) : Matrix (Fin (n + 1)) (Fin (n + 1)) k) (Fin.last n) (Fin.last n) = 1 := by
@@ -34,7 +34,7 @@ theorem unip_apply_last_last (n : ℕ) (v : Multiplicative (Fin n → k)) :
 end Entries
 
 /- English proof (translation)
-Use `first`. Consider the case `rfl`. Consider the case `simp [GlobalTheory.BZMir.Leib.eGP, GlobalTheory.SmGL.stdSum]`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem blockIndex_false_val (m j : ℕ) (a : Fin m) : (eGP m j ⟨false, a⟩ : Fin (m + j + 1)).val = a.val := by
   first
@@ -42,7 +42,7 @@ theorem blockIndex_false_val (m j : ℕ) (a : Fin m) : (eGP m j ⟨false, a⟩ :
   | simp [GlobalTheory.BZMir.Leib.eGP, GlobalTheory.SmGL.stdSum]
 
 /- English proof (translation)
-Use `first`. Consider the case `rfl`. Consider the case `simp [GlobalTheory.BZMir.Leib.eGP, GlobalTheory.SmGL.stdSum]`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem blockIndex_true_val (m j : ℕ) (b : Fin (j + 1)) : (eGP m j ⟨true, b⟩ : Fin (m + j + 1)).val = m + b.val := by
   first
@@ -56,29 +56,27 @@ namespace GlobalTheory.CompanionTheory.BZMir
 open GpExists
 
 /- English proof (translation)
-Establish `hu' : (u : GL (Fin (j + 1)) k) ∈ GlobalTheory.BZMir.MirU k j`. Unfold `GlobalTheory.BZMir.MirUin at hu`. Conclude with `Subgroup.mem_subgroupOf.1 hu`. Unfold `GlobalTheory.BZMir.MirU at hu'`. Rewrite `hu'` using `[MonoidHom.mem_range]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨w, hw⟩` from `hu'`. Use `set v' : Multiplicative (Fin (m + j) → k) := Multiplicative.ofAdd (Fin.append (0 : Fin m → k) (Multiplicative.toAdd w)) with hv'`. Establish `hU : GlobalTheory.BZMir.unip k (m + j) v' ∈ GlobalTheory.BZMir.MirU k (m + j)`. Unfold `GlobalTheory.BZMir.MirU`. Conclude with `MonoidHom.mem_range.2 ⟨v', rfl⟩`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `hM : GlobalTheory.BZMir.unip k (m + j) v' ∈ GlobalTheory.BZMir.Mir k (m + j)` using `GlobalTheory.BZMir.MirU_le_Mir k (m + j) hU`. Establish `hP : (⟨GlobalTheory.BZMir.unip k (m + j) v', hM⟩ : GlobalTheory.BZMir.Mir k (m + j)) ∈ GlobalTheory.BZMir.Leib.MirabolicParabolic k m j`. Unfold `GlobalTheory.BZMir.Leib.MirabolicParabolic`. Rewrite using `[Subgroup.mem_comap]`. Use `show GlobalTheory.BZMir.unip k (m + j) v' ∈ _`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Use `(GlobalTheory.SmGL.mem_parab_two k).2 (fun b a => ?_)` and prove the remaining obligations. Rewrite using `[GlobalTheory.CompanionTheory.BZMir.GpExists.unip_apply_of_ne_last]`. Conclude with `Matrix.one_apply_ne (fun h => by simpa using Equiv.injective _ h)`. Conclude with `GlobalTheory.BZMir.Leib.blockIndex_false_ne_last m j a`. Use `⟨⟨⟨GlobalTheory.BZMir.unip k (m + j) v', hM⟩, hP⟩, ?_, ?_⟩` and prove the remaining obligations.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Unfold `GlobalTheory.BZMir.MirUin`. Conclude with `Subgroup.mem_subgroupOf.2 hU`. Apply `Prod.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `a a'`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `only [GlobalTheory.BZMir.Leib.gpProj, MonoidHom.prod_apply, MonoidHom.comp_apply, Pi.evalMonoidHom_apply]`. Rewrite using `[GlobalTheory.SmGL.leviProj_apply]`. Express the relevant statement in the definitionally equal form `((GlobalTheory.BZMir.unip k (m + j) v' : GL (Fin (m + j + 1)) k) : Matrix (Fin (m + j + 1)) (Fin (m + j + 1)) k) _ _ = _`. Rewrite using `[GlobalTheory.CompanionTheory.BZMir.GpExists.unip_apply_of_ne_last _ _ _ _ (GlobalTheory.BZMir.Leib.blockIndex_false_ne_last m j a')]`. Distinguish the cases in `h : a = a'`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Treat this case separately.
 
-Substitute `h` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[Matrix.one_apply_ne ((GlobalTheory.BZMir.Leib.eGP m j).injective.ne (by simpa using h)), Units.val_one, Matrix.one_apply_ne h]`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `b b'`. Use `first`. Consider the case `(show ((GlobalTheory.SmGL.leviProj k (GlobalTheory.BZMir.Leib.eGP m j) (GlobalTheory.BZMir.Leib.hgpIncl k m j ⟨⟨GlobalTheory.BZMir.unip k (m + j) v', hM⟩, hP⟩) true : GL _ k) : Matrix _ _ k) b b' = _`. Rewrite using `[GlobalTheory.SmGL.leviProj_apply])`. Consider the case `(simp only [GlobalTheory.BZMir.Leib.gpProj, MonoidHom.prod_apply, MonoidHom.codRestrict_apply, MonoidHom.coe_codRestrict, MonoidHom.comp_apply, Pi.evalMonoidHom_apply, Subgroup.coe_mk]`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately.
 
-Rewrite using `[GlobalTheory.SmGL.leviProj_apply])`. Express the relevant statement in the definitionally equal form `((GlobalTheory.BZMir.unip k (m + j) v' : GL (Fin (m + j + 1)) k) : Matrix (Fin (m + j + 1)) (Fin (m + j + 1)) k) _ _ = _`. Rewrite using `[← hw]`. Proceed by induction on `b' using Fin.lastCases with`. Consider the case `last`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[GlobalTheory.BZMir.Leib.blockIndex_true_last]`. Proceed by induction on `b using Fin.lastCases with`. Consider the case `last`. Rewrite using `[GlobalTheory.BZMir.Leib.blockIndex_true_last, GlobalTheory.CompanionTheory.BZMir.GpExists.unip_apply_last_last, GlobalTheory.CompanionTheory.BZMir.GpExists.unip_apply_last_last]`. Consider the case `cast i`.
+Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Establish `hidx : GlobalTheory.BZMir.Leib.eGP m j ⟨true, Fin.castSucc i⟩ = Fin.castSucc (Fin.natAdd m i)` using `Fin.ext (by simp [GlobalTheory.CompanionTheory.BZMir.GpExists.blockIndex_true_val])`. Rewrite using `[hidx, GlobalTheory.BZMir.unip_apply_castSucc_last, GlobalTheory.BZMir.unip_apply_castSucc_last, hv']`. Simplify using the standard rewrite rules. Consider the case `cast i`. Establish `hne : GlobalTheory.BZMir.Leib.eGP m j ⟨true, Fin.castSucc i⟩ ≠ Fin.last (m + j)` using `fun h => Fin.castSucc_ne_last i ((GlobalTheory.BZMir.Leib.blockIndex_true_eq_last_iff m j _).1 h)`.
-
-Rewrite using `[GlobalTheory.CompanionTheory.BZMir.GpExists.unip_apply_of_ne_last _ _ _ _ hne, GlobalTheory.CompanionTheory.BZMir.GpExists.unip_apply_of_ne_last _ _ _ _ (Fin.castSucc_ne_last i)]`. Distinguish the cases in `h : b = Fin.castSucc i`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[Matrix.one_apply_ne ((GlobalTheory.BZMir.Leib.eGP m j).injective.ne (by simpa using h)), Matrix.one_apply_ne h]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_gpProj_unip (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (m j : ℕ) (u : Mir k j) (hu : u ∈ MirUin k j) :

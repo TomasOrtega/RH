@@ -10,7 +10,7 @@ set_option maxSynthPendingDepth 1
 namespace GroundTheory.Heights₂.Heights.Targets
 
 /- English proof (translation)
-The claim follows from `NumberFieldBoxCount.proof LatticeImageZLattice.proof CovolumeRelIndex.proof EmbeddingSumPlaces.proof (MixedBoxCount.proof LatticeCountVolume.proof)`.
+A detailed English derivation is pending.
 -/
 theorem NumberFieldBoxCount.proof_closed : NumberFieldBoxCount.Statement :=
   NumberFieldBoxCount.proof LatticeImageZLattice.proof CovolumeRelIndex.proof EmbeddingSumPlaces.proof

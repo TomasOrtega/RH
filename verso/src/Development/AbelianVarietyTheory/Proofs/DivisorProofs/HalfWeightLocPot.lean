@@ -23,32 +23,32 @@ def HalfWeight (L : HermLB p) (g : CxPts p σ → CxPts p σ → ℝ) : Prop :=
 variable {σ} {L L' : HermLB p} {g g' : CxPts p σ → CxPts p σ → ℝ}
 
 /- English proof (translation)
-Rewrite using `[← show g = g' from funext₂ e]` and apply the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 -/
 theorem HalfWeight.congr (h : HalfWeight σ L g) (e : ∀ x z, g x z = g' x z) : HalfWeight σ L g' := by
   rwa [← show g = g' from funext₂ e]
 
 /- English proof (translation)
-Introduce `x` and use `⟨_, (L.φ σ).locPot.mem_U x, fun _ => rfl⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem halfWeight_locPot (L : HermLB p) : HalfWeight σ L (L.φ σ).locPot.φ :=
   fun x => ⟨_, (L.φ σ).locPot.mem_U x, fun _ => rfl⟩
 
 /- English proof (translation)
-Introduce `_` and use `⟨PUnit.unit, mem_ptsIn_top, fun _ => zero_div _⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem halfWeight_triv : HalfWeight σ (HermLB.triv p) fun _ _ => 0 :=
   fun _ => ⟨PUnit.unit, mem_ptsIn_top, fun _ => zero_div _⟩
 
 /- English proof (translation)
-Introduce `_` and use `⟨PUnit.unit, mem_ptsIn_top, fun _ => rfl⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem halfWeight_fnB (u : ∀ σ : k →+* ℂ, CxPts p σ → ℝ) (hu hc) :
     HalfWeight σ (fnB u hu hc) fun _ z => u σ z / 2 :=
   fun _ => ⟨PUnit.unit, mem_ptsIn_top, fun _ => rfl⟩
 
 /- English proof (translation)
-Introduce `x` and use `by obtain ⟨i, hi, e⟩ := h x obtain ⟨j, hj, e'⟩ := h' x exact ⟨(i, j), mem_ptsIn_inf.2 ⟨hi, hj⟩, fun z => (add_div _ _ _).trans (congrArg₂ (· + ·) (e z) (e' z))⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem HalfWeight.tens (h : HalfWeight σ L g) (h' : HalfWeight σ L' g') :
     HalfWeight σ (L.tens L') fun x z => g x z + g' x z := fun x => by
@@ -57,14 +57,14 @@ theorem HalfWeight.tens (h : HalfWeight σ L g) (h' : HalfWeight σ L' g') :
   exact ⟨(i, j), mem_ptsIn_inf.2 ⟨hi, hj⟩, fun z => (add_div _ _ _).trans (congrArg₂ (· + ·) (e z) (e' z))⟩
 
 /- English proof (translation)
-Introduce `x` and use `by obtain ⟨i, hi, e⟩ := h x exact ⟨i, hi, fun z => (neg_div _ _).trans (congrArg (-·) (e z))⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem HalfWeight.dual (h : HalfWeight σ L g) : HalfWeight σ L.dual fun x z => -g x z := fun x => by
   obtain ⟨i, hi, e⟩ := h x
   exact ⟨i, hi, fun z => (neg_div _ _).trans (congrArg (-·) (e z))⟩
 
 /- English proof (translation)
-Introduce `x` and use `by obtain ⟨i, hi, e⟩ := h x refine ⟨fun _ => i, CxPts.mem_pow_iff.2 hi, fun z => ?_⟩ refine (congrArg (· / 2) ((L.φ σ).zpow_φ m _ z)).trans ?_ simp only [← e z, mul_div_assoc, Int.cast_natCast]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem HalfWeight.pow (h : HalfWeight σ L g) (m : ℕ) : HalfWeight σ (L.pow m) fun x z => m * g x z := fun x => by
   obtain ⟨i, hi, e⟩ := h x
@@ -73,7 +73,7 @@ theorem HalfWeight.pow (h : HalfWeight σ L g) (m : ℕ) : HalfWeight σ (L.pow 
   simp only [← e z, mul_div_assoc, Int.cast_natCast]
 
 /- English proof (translation)
-The claim follows from `((h.pow n.toNat).tens (h.pow (-n).toNat).dual).congr fun x z => by have e : ((n.toNat : ℤ) : ℝ) - ((-n).toNat : ℤ) = n := by exact_mod_cast Int.toNat_sub_toNat_neg n rw [← e] simp only [Int.cast_natCast] ring`.
+A detailed English derivation is pending.
 -/
 theorem HalfWeight.zp (h : HalfWeight σ L g) (n : ℤ) : HalfWeight σ (zp L n) fun x z => n * g x z :=
   ((h.pow n.toNat).tens (h.pow (-n).toNat).dual).congr fun x z => by
@@ -83,7 +83,7 @@ theorem HalfWeight.zp (h : HalfWeight σ L g) (n : ℤ) : HalfWeight σ (zp L n)
     ring
 
 /- English proof (translation)
-Establish `key (l : List ι) : HalfWeight σ (l.foldr (fun i M => (zp (L i) (n i)).tens M) (HermLB.triv p)) fun x z => (l.map fun i => n i * g i x z).sum`. Proceed by induction on `l with`. Consider the case `nil => exact halfWeight_triv`. Consider the case `cons i l ih => exact ((h i).zp (n i)).tens ih`. Conclude with `(key _).congr fun x z => Finset.sum_map_toList _ _`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem halfWeight_comb {ι : Type} [Fintype ι] {L : ι → HermLB p} {g : ι → CxPts p σ → CxPts p σ → ℝ}
     (h : ∀ i, HalfWeight σ (L i) (g i)) (n : ι → ℤ) :
@@ -106,7 +106,7 @@ abbrev σ₀ : ℤ →+* ℂ := Int.castRingHom ℂ
 abbrev rd : AnRead (PSpace.str ℤ N) σ₀ N := AnRead.all _ _ N
 
 /- English proof (translation)
-The claim follows from `(rd N).isAlgAtlas_finAtlas`.
+A detailed English derivation is pending.
 -/
 theorem isAlg : IsAlgAtlas (ProjAn.finAtlas ℤ σ₀ N) := (rd N).isAlgAtlas_finAtlas
 
@@ -114,25 +114,25 @@ abbrev om : LocPot (CxPts (PSpace.str ℤ N) σ₀) :=
   ((ProjAn.fsO1 ℤ σ₀ N).pull (𝟙 _) (Category.id_comp _)).locPot
 
 /- English proof (translation)
-The claim follows from `(ProjPos.fubiniStudy_weight_pullback_isSmooth _ _ (rd N)).isPotential (isAlg N)`.
+A detailed English derivation is pending.
 -/
 theorem om_pot : IsPotential (ProjAn.finAtlas ℤ σ₀ N) (om N) :=
   (ProjPos.fubiniStudy_weight_pullback_isSmooth _ _ (rd N)).isPotential (isAlg N)
 
 /- English proof (translation)
-The claim follows from `((ProjPos.fubiniStudy_weight_pullback_isSmooth _ _ (rd N)).isPosPot_iff (isAlg N)).2 (ProjPos.fubiniStudy_weight_pullback_closed_immersion_strictPos _ _ (rd N))`.
+A detailed English derivation is pending.
 -/
 theorem om_pos : IsPosPot (ProjAn.finAtlas ℤ σ₀ N) (om N) :=
   ((ProjPos.fubiniStudy_weight_pullback_isSmooth _ _ (rd N)).isPosPot_iff (isAlg N)).2 (ProjPos.fubiniStudy_weight_pullback_closed_immersion_strictPos _ _ (rd N))
 
 /- English proof (translation)
-The claim follows from `((hermitianTwistingSheaf ℤ N).isSmooth (rd N)).isPotential (isAlg N)`.
+A detailed English derivation is pending.
 -/
 theorem fs_pot : IsPotential (ProjAn.finAtlas ℤ σ₀ N) ((hermitianTwistingSheaf ℤ N).φ σ₀).locPot :=
   ((hermitianTwistingSheaf ℤ N).isSmooth (rd N)).isPotential (isAlg N)
 
 /- English proof (translation)
-The claim follows from `Weight.sameForm_of_eq _ (isAlg N) (fs_pot N) fun x => ⟨fun _ => _, mem_ptsIn.2 (Set.mem_iInter.2 fun _ => mem_ptsIn.1 (((hermitianTwistingSheaf ℤ N).φ σ₀).locPot.mem_U x)), fun z => by refine (congrArg (· / 2) (Weight.pull_φ _ _ _ _ _)).trans ?_ have e : Points.PtsOver.map (𝟙 _) …`.
+A detailed English derivation is pending.
 -/
 theorem om_sameForm : SameForm (ProjAn.finAtlas ℤ σ₀ N) (om N) ((hermitianTwistingSheaf ℤ N).φ σ₀).locPot :=
   Weight.sameForm_of_eq _ (isAlg N) (fs_pot N) fun x =>
@@ -158,7 +158,7 @@ def man : Man N where
   κ_pos := one_pos
 
 /- English proof (translation)
-The claim follows from `(one_mul _).trans (Fin.sum_univ_one _)`.
+A detailed English derivation is pending.
 -/
 theorem man_int (P : Fin N → (man N).Pot) (u : (man N).Fun) :
     (man N).int P u = mInt (ProjAn.finAtlas ℤ σ₀ N) (fun i => P i (0 : Fin 1)) (u (0 : Fin 1)) :=
@@ -168,7 +168,7 @@ def pts (σ : ℤ →+* ℂ) : CxPts (PSpace.str ℤ N) σ → (man N).X 0 :=
   cast (congrArg (CxPts (PSpace.str ℤ N)) (Subsingleton.elim σ σ₀))
 
 /- English proof (translation)
-Rewrite using `[(isAlg N).smooth_iff (rd N), ← CxPts.cInfAt_iff_smoothOn (rd N) isOpen_univ]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem smooth_iff (u : CxPts (PSpace.str ℤ N) σ₀ → ℝ) :
     (ProjAn.finAtlas ℤ σ₀ N).Smooth u ↔ ∀ y, CInfAt u y := by
@@ -181,13 +181,13 @@ def calc₀ : Calc (man N) :=
 def cls₀ (i : Unit) : (calc₀ N).V := InhabCalc.cls (man N) _ (fun _ _ => fs_pot N) i
 
 /- English proof (translation)
-Introduce `u hs hu hc n f hf`. Use `(isArithVar_int N).compactSpace σ₀` as an intermediate fact. Use `CxPts.t2Space_cxPts_of_isProjOver σ₀ (isArithVar_int N).isProjOver` as an intermediate fact. Use `CxPts.secondCountableTopology_of_isProjOver σ₀ (isArithVar_int N).isProjOver` as an intermediate fact. Rewrite using `[one_mul, man_int, chInt, finsum_eq_single _ σ₀ fun σ h => absurd (Subsingleton.elim _ _) h]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `(ChernMA.chernInt_eq_mInt (HermLB.cInf _ _) (isAlg N) (projLine_continuous_of_smooth _ (hf 0))).trans ?_` and prove the remaining obligations. Use `SameForm.mInt_eq (fun _ => Weight.sameForm_of_eq _ (isAlg N) ((calc₀ N).firstChern_isPotential _ 0) ?_) _` and prove the remaining obligations. Use `(halfWeight_comb (σ := σ₀) (g := fun o : Option Unit => o.elim (fun _ z => u 0 z) fun _ => ((hermitianTwistingSheaf ℤ N).φ σ₀).locPot.φ) (fun o => ?_) n).congr fun x z => ?_` and prove the remaining obligations. Consider the cases of `o with`. Consider the case `none => exact (halfWeight_fnB _ hu hc).congr fun x z => mul_div_cancel_left₀ _ two_ne_zero`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Split into cases according to the possible forms of the given data. Treat this case separately.
 
-Consider the case `some i => exact halfWeight_locPot _`. Establish `e : (InhabCalc.smProj (man N) u : (man N).Fun) = u` using `InhabCalc.smProj_of_smooth _ hs`. Rewrite using `[Fintype.sum_option, Fintype.sum_unique, Fintype.sum_unique]`. Express the relevant statement in the definitionally equal form `_ = ∑ i : Unit, ((n (some ()) : ℝ) * @Pi.single Unit (fun _ => ℝ) _ (fun _ _ => Classical.propDecidable _) () 1 i + (n none : ℝ) * 0) * ((hermitianTwistingSheaf ℤ N).φ σ₀).locPot.φ x z + ((n (some ()) : ℝ) * 0 + (n none : ℝ) * (InhabCalc.smProj (man N) u : (man N).Fun) 0 z)`. Rewrite using `[e]`.
+Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[add_comm]`.
+Simplify using the standard rewrite rules.
 -/
 theorem chernOn : (calc₀ N).ChernOn (fun _ => 0) (pts N) 1 (fun _ : Unit => hermitianTwistingSheaf ℤ N) (cls₀ N) := by
   intro u hs hu hc n f hf
@@ -211,11 +211,11 @@ theorem chernOn : (calc₀ N).ChernOn (fun _ => 0) (pts N) 1 (fun _ : Unit => he
     simp [add_comm]
 
 /- English proof (translation)
-Take `⟨K, v, h₁, h₂, h₃⟩` from `H (chernOn N)`. Use `⟨man N, K, fun _ => 0, pts N, v, fun σ => ?_, ?_, isArithVar_int N, one_pos, fun σ => ?_, fun j => ⟨σ₀, Subsingleton.elim (α := Fin 1) _ _⟩, fun u hu σ => ?_, h₂, h₃⟩` and prove the remaining obligations. Take `rfl : σ = σ₀` from `Subsingleton.elim _ _`. Conclude with `Function.injective_id`. Use `lt_of_lt_of_eq (InhabCalc.int_Om_pos (man N) ⟨0, inferInstance⟩) ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[man_int, man_int]`. Use `(SameForm.mInt_eq (fun _ => om_sameForm N) _).trans (Eq.symm ?_)` and prove the remaining obligations. Use `(LeviOnly.mInt_eq_of_leviEq N ((man N).X 0) ((man N).A 0) _ _ _ (fun _ => K.firstChern_isPotential _ 0) (fun _ => (calc₀ N).firstChern_isPotential (cls₀ N ()) 0) (fun _ => h₁ () 0)).1.trans ?_` and prove the remaining obligations. Conclude with `InhabCalc.mInt_congr_φ _ (fun _ => InhabCalc.first_chern_class_potential (man N) _ (fun _ _ => fs_pot N) () 0) _`. Take `rfl : σ = σ₀` from `Subsingleton.elim _ _`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨continuous_id, Function.surjective_id⟩`. Take `rfl : σ = σ₀` from `Subsingleton.elim _ _`. Conclude with `(smooth_iff N _).1 (hu 0)`.
+A detailed English derivation is pending.
 -/
 theorem reads_proj_of (N : ℕ) (H : (calc₀ N).ChernOn (fun _ => 0) (pts N) 1 (fun _ : Unit => hermitianTwistingSheaf ℤ N) (cls₀ N) →
       ∃ (K : Calc (man N)) (v : Unit → K.V),

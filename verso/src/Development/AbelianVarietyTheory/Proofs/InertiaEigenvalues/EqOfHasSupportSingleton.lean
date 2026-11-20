@@ -13,11 +13,11 @@ namespace GlobalTheory.DZeroDegOne
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Take `⟨r, u, hu, hi, hc, e, hsub⟩` from `h`. Take `rfl : r = 1` from `by simpa using congrArg Multiset.card hu`. Take `rfl : u = fun _ => z` from `funext fun i => by`. Rewrite using `[Subsingleton.elim i 0]`. Simplify using `using hu`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Take `⟨d, c⟩` from `y`. Take `rfl : z.1 = d` from `by simpa using Fintype.card_congr e`. Establish `hd : ∑ _ : Fin 1, z.1 = z.1` using `by simp`. Take `⟨φ⟩` from `(GlobalTheory.SmGL.Placing.parInd_jac_placing k _ _ _ e (stdBlocks (fun _ : Fin 1 => z.1) hd) _).1 (piTensor fun _ => z.rep)`. Take `⟨ψ⟩` from `nonempty_equiv_prodIrr_one z hd`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Set `χ` to `φ.trans ψ.symm`. Take `⟨θ⟩` from `IsSubquotient.nonempty_equiv (hsub.trans (.of_injective χ.toIntertwiningMap χ.toLinearEquiv.injective)) hi z.2.rep.irr`. Conclude with `((IrrGL.of_rep z).symm.trans ((IrrGL.of_eq_of.2 ⟨θ⟩).trans (IrrGL.of_rep ⟨_, c⟩))).symm`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem eq_of_hasSupport_singleton {y z : IrrGL k} (h : HasSupport y.rep {z}) : y = z := by
   obtain ⟨r, u, hu, hi, hc, e, hsub⟩ := h

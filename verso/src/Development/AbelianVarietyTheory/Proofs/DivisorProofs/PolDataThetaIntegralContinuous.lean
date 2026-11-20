@@ -9,7 +9,7 @@ open GlobalTheory.Doubling (absE)
 namespace GlobalTheory.ThK
 
 /- English proof (translation)
-Introduce `hK F E _ _ _ _ _ σ B a a' G X om om' hT`. Establish `h` using `GlobalTheory.T.theta_integrals_continuous_automorphic hK F E σ B a a' G X om om' hT`. Conclude with `⟨fun Φ hΦ => (h.1 Φ hΦ).1, fun Φ' hΦ' => (h.2 Φ' hΦ').1⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem thetaIntegral_continuous : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (a a' : ℕ)
     (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W), IsTriple B G X om om' →

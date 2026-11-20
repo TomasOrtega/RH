@@ -22,7 +22,7 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 set_option synthInstance.maxHeartbeats 200000
 
 /- English proof (translation)
-Take `⟨n, a, rfl⟩` from `x.exists_rep`. Rewrite using `[WD.lpTw_mk]`. Conclude with `⟨by simp, fun s => by simp⟩`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 private theorem te_unr {L Ω : Type} [Field L] [NumberField L] [Field Ω] [Algebra L Ω] [IsAlgClosure L Ω] {w : Plc L}
     {A : ValuationSubring Ω} {h : IsPlaceOver A w} (x : WD h) (t : ℝ) :
@@ -32,19 +32,19 @@ private theorem te_unr {L Ω : Type} [Field L] [NumberField L] [Field Ω] [Algeb
   exact ⟨by simp, fun s => by simp⟩
 
 /- English proof (translation)
-Take `⟨rc, hrc⟩` from `Z.Win.exRec P h`. Establish `hsm : ∀ i, IsSmooth (h` using `h) ((χ i).comp (Subgroup.inclusion (Weil_le_Dec h))) := fun i => (ho i).preimage (f := Subgroup.inclusion (Ine_le_Dec (F := L) A)) (continuous_inclusion (Ine_le_Dec (F := L) A))`. Establish `hT` using `NZ L Ω A w h rc hrc n χ ho`. Rewrite `hT` using `[← show KO (w.adicCompletion L) (Fin n) = GlobalTheory.LFun.KGL w n from SphCompletion.KO_completion w n]`. Take `⟨d, ξ, -, hξ, hπ⟩` from `hT`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `typeLoc O _ _ GlobalTheory.SplitFlip.isCompact_KO _ d ξ hξ (fun π => ?_) fun γ σ σ' f h1 h2 hσ rc' hrc' => ?_` and prove the remaining obligations. Rewrite using `[hπ π, UpperTheory.NonzeroTypeTheory.Cond]`. Establish `e : IsTypeWD h (fun i => (χ i).comp (Subgroup.inclusion (Ine_le_Dec A))) (rc (algNorm π)) ↔ _` using `UpperTheory.isTypeWeilDeligne_iff_monodromy_zero_charpoly L Ω n w A h _ _`. Take `⟨a, ha, ε, H⟩` from `Z.Win.toV hrc`. Rewrite `e` using `[algNorm, H.nu_eq, (te_unr _ _).1]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [(te_unr _ _).2] at e`. Simplify using `only [WD.charPol_mk, WDRep.ofChars_ρ, charpoly_diagEnd]`. Use `Iff.trans e.symm ⟨fun h0 rc' hrc' => ?_, fun h0 => ?_⟩` and prove the remaining obligations. Establish `h1 : IsTypeWD h (fun i => (χ i).comp (Subgroup.inclusion (Ine_le_Dec A))) (rc (algNorm π))`. Rewrite using `[algNorm, H.nu_eq]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h0`. Establish `hg : UpperTheory.Zero.LLC.Good (algNorm π)`. Take `⟨b, hb, -, hχ⟩` from `h1`. Take `⟨z, hz, hc⟩` from `UpperTheory.Zero.LLC.abConv L Ω A w h rc (Z.Desc.P.toTL P hrc) (algNorm π) (fun j : Fin n => (χ j).comp (Subgroup.inclusion (Weil_le_Dec h))) fun t => by`. Rewrite using `[← hb, WD.charPol_mk, hχ t, Matrix.charpoly_toLin', Matrix.charpoly_diagonal]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Conclude with `⟨z, hz, fun y hy => Or.inl (hc y hy)⟩`. Rewrite using `[Z.Win.uniqRec P hrc' hrc _ hg]`. Conclude with `h1`. Use `h0 rc hrc` as an intermediate fact.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Rewrite `this` using `[algNorm, H.nu_eq]`. Then use the resulting hypothesis. Use `typeConj P L Ω n w A h rc' hrc' γ.toRingEquiv σ σ' f h1 h2 χ ho (hσ rc' hrc')` as an intermediate fact. Use `this using 2 with i` and compare the differences between its conclusion and the goal. Use extensionality with `s`. Take `⟨z, hz⟩` from `hv i (Subgroup.inclusion (Ine_le_Dec A) s)`.
+Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `(χ i _ : ℂ) = γ (χ i _ : ℂ)`. Rewrite using `[← hz, γ.commutes]`.
+A detailed English derivation is pending.
 -/
 private theorem te_loc (P : GlobalTheory.Mem.LiteralAutomorphy.LitN) (NZ : UpperTheory.NonzeroTypeTheory.NZ) {L Ω : Type} [Field L] [NumberField L] [Field Ω] [Algebra L Ω] [IsAlgClosure L Ω] (n : ℕ)
     {w : Plc L} {A : ValuationSubring Ω} (h : IsPlaceOver A w) (O : Type) [CommRing O] [IsDomain O] [IsPrincipalIdealRing O]
@@ -91,11 +91,11 @@ private theorem te_loc (P : GlobalTheory.Mem.LiteralAutomorphy.LitN) (NZ : Upper
     rw [← hz, γ.commutes]
 
 /- English proof (translation)
-Use `letI := Fintype.ofFinite (ResidueField O)`. Establish `hu : ((a * b⁻¹ : Oˣ) : O) ^ (Nat.card (ResidueField O) - 1) = 1`. Rewrite using `[← Units.val_pow_eq_pow_val, mul_pow, inv_pow, ha, hb]`. Simplify using the standard rewrite rules. Establish `hr : residue O (a * b⁻¹ : Oˣ) = 1`.
+Equip the data with the indicated structure. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[Units.val_mul, map_mul, h, ← map_mul, Units.mul_inv, map_one]`. Establish `h1` using `geom_sum_mul ((a * b⁻¹ : Oˣ) : O) (Nat.card (ResidueField O) - 1)`. Rewrite `h1` using `[hu, sub_self]`. Break down `mul_eq_zero.1 h1 with h2 | h2` into its components or cases. Establish `h3` using `congrArg (residue O) h2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Simplify using `only [map_sum, map_pow, hr, one_pow, Finset.sum_const, Finset.card_range, map_zero, nsmul_eq_mul, mul_one] at h3`. Rewrite `h3` using `[Nat.cast_sub Nat.card_pos, Nat.card_eq_fintype_card, FiniteField.cast_card_eq_zero]`. Simplify using `at h3`. Conclude with `mul_inv_eq_one.1 (Units.ext (sub_eq_zero.1 h2))`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem te_root {O : Type} [CommRing O] [IsDomain O] [IsLocalRing O] [Finite (ResidueField O)] {a b : Oˣ}
     (ha : a ^ (Nat.card (ResidueField O) - 1) = 1) (hb : b ^ (Nat.card (ResidueField O) - 1) = 1)
@@ -115,21 +115,17 @@ private theorem te_root {O : Type} [CommRing O] [IsDomain O] [IsLocalRing O] [Fi
   · exact mul_inv_eq_one.1 (Units.ext (sub_eq_zero.1 h2))
 
 /- English proof (translation)
-Introduce `P NZ l _ L Ω _ _ _ _ _ _ s n _ V _ c r ι`. Distinguish the cases in `hex : ∃ t, r.IsTeich t`. Use `swap`. Conclude with `⟨0, 1, fun t ht => absurd ⟨t, ht⟩ hex⟩`. Take `⟨t, ht⟩` from `hex`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Use `haveI : Finite (ResidueField c.O) := (UpperTheory.V.abelian₂.dvr_finite l c.O).2.1`. Set `j : c.O →+* ℂ` to `ι.toRingHom.comp (algebraMap c.O (Qbar l))`. Use `letI : Algebra c.O ℂ := j.toAlgebra`. Establish `hj : Function.Injective j` using `ι.injective.comp Subtype.val_injective`. Use `haveI : FaithfulSMul c.O ℂ := (faithfulSMul_iff_algebraMap_injective _ _).2 hj`.
+Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `haveI : Algebra.IsAlgebraic c.O ℂ := by haveI : Algebra.IsAlgebraic ℤ_[l] (Qbar l) := (IsFractionRing.comap_isAlgebraic_iff (K := ℚ_[l])).2 inferInstance haveI : Algebra.IsAlgebraic c.O (Qbar l) := Algebra.IsAlgebraic.extendScalars (R := ℤ_[l]) (FaithfulSMul.algebraMap_injective …`. Conclude with `(AlgEquiv.ofRingEquiv (f := ι) fun _ => rfl : Qbar l ≃ₐ[c.O] ℂ).isAlgebraic`. Establish `hker : ∀ i, (t i).ker = (r.chib i).ker` using `fun i => Subgroup.ext fun g => by`. Rewrite using `[MonoidHom.mem_ker, MonoidHom.mem_ker]`. Use `⟨fun h => Units.ext ?_, fun h => te_root (ht i g).2 (one_pow _) ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[← (ht i g).1, h]`. Simplify using the standard rewrite rules. Rewrite using `[(ht i g).1, h]`. Simplify using the standard rewrite rules. Establish `hloc` using `fun u : s.St => te_loc P NZ n (s.hw u) c.O (fun i => W.pushCh j ((t i).comp (V.pr.comp (Dec (F := L) (s.A u)).subtype))) (fun i => Subgroup.isOpen_mono (H₁ := (r.chib i).ker.comap (V.pr.comp (Dec (F := L) (s.A u)).subtype)) (fun g hg => by`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `h1 : t i (V.pr g) = 1`. Rewrite `hg` using `[← hker]`. Conclude with `hg`. Express the relevant statement in the definitionally equal form `Units.map _ (t i (V.pr g)) = 1`. Rewrite using `[h1, map_one])`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Use the proof step `((r.chib_open i).preimage ((V.pr_cont W.continuous_resP).comp continuous_subtype_val)))`. Use `fun i g => ⟨_, rfl⟩`. Use `choose m τ ho hτ using hloc`. Take `⟨m', τ', hk, hM⟩` from `@UpperTheory.piFamilyProdHom_bijective_characterization c.O _ j s.St _ (fun _ _ => Classical.propDecidable _) (fun u => GLw n (wt s u)) _ _ _ (fun u => KO ((wt s u).adicCompletion L) (Fin n)) m τ`. Use `⟨m', τ', fun t' ht' => ?_⟩` and prove the remaining obligations.
-
-Take `rfl : t = t'` from `funext fun i => MonoidHom.ext fun g => te_root (ht i g).2 (ht' i g).2 ((ht i g).1.trans (ht' i g).1.symm)`. Use `⟨?_, fun M _ _ _ ρ σ hσ => ?_⟩` and prove the remaining obligations. Use `Subgroup.isOpen_of_mem_nhds _ (g := 1) (Filter.mem_of_superset (IsOpen.mem_nhds (isOpen_iInter_of_finite fun u => (ho u).preimage (f := fun k : KT n (wt s) => (⟨k.1 u, k.2 u trivial⟩ : KO ((wt s u).adicCompletion L) (Fin n))) (((continuous_apply u).comp continuous_subtype_val).su …` and prove the remaining obligations. Conclude with `Set.mem_iInter.2 fun u => (τ u).ker.one_mem`. Express the relevant statement in the definitionally equal form `Matrix.GeneralLinearGroup.map _ (τ' k) = 1`.
-
-Rewrite using `[hk k (Set.mem_iInter.1 hk'), map_one]`. Conclude with `(hM M ρ σ hσ).trans (forall_congr' fun u => hτ u (σ u))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Desc.P.typeEx :
     GlobalTheory.Mem.LiteralAutomorphy.LitN → UpperTheory.NonzeroTypeTheory.NZ → ∀ (l : ℕ) [Fact l.Prime] (L Ω : Type) [Field L] [NumberField L] [IsCMField L] [Field Ω] [Algebra L Ω] [IsAlgClosure L Ω] (s : HidaSetting l L Ω) (n : ℕ), 1 ≤ n →

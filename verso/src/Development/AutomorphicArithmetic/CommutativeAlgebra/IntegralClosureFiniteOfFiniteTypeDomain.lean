@@ -8,9 +8,9 @@ open CategoryTheory Limits AlgebraicGeometry Opposite GlobalTheory.EtC LateralTh
 
 open scoped IntermediateField.algebraAdjoinAdjoin in
 /- English proof (translation)
-Introduce `Ω L _ _ _ u _ hfd`. Establish `: Algebra.FiniteType Ω (Algebra.adjoin Ω {u})` using `.adjoin_of_finite (Set.finite_singleton u)`. Use `GroundTheory.Heights₂.Heights.FieldNumbers.finite_integralClosure_of_forall_mvPolynomial Ω (Algebra.adjoin Ω {u}) (IntermediateField.adjoin Ω {u}) L ?_` and prove the remaining obligations. Introduce `s L' _ _ _ _ _`. Take `⟨p, hp⟩` from `CharP.exists Ω`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Break down `CharP.char_is_prime_or_zero Ω p with hpr | rfl` into its components or cases. Use `haveI : Fact p.Prime := ⟨hpr⟩`. Conclude with `GroundTheory.Heights₂.Heights.FieldNumbers.finite_integralClosure_mvPolynomial_of_charP Ω p s L'`. Use `haveI : CharZero Ω := CharP.charP_to_charZero Ω`. Conclude with `GroundTheory.Heights₂.Heights.FieldNumbers.finite_integralClosure_mvPolynomial_of_charZero Ω s L'`.
+Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem UpperTheory.integralClosure_finite_of_finiteType_domain :
     LateralTheory.E.LeafIntClosureAlgPf.LeafIntClFinite := by

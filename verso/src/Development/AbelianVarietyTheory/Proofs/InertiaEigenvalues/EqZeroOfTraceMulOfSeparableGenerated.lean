@@ -9,11 +9,11 @@ noncomputable section
 namespace GlobalTheory.UnitLemma.TraceNondeg
 
 /- English proof (translation)
-Set `b` to `Module.finBasis F A`. Establish `hn : IsNilpotent (Algebra.leftMulMatrix b w)`. Apply `ReciprocityTheory.L2DbarEstimates.Y.isNilpotent_of_trace_pow` to reduce the goal to its premises. Introduce `k hk _`. Rewrite using `[← map_pow, ← Algebra.trace_eq_matrix_trace]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Take `⟨j, rfl⟩ : ∃ j, k = j + 1` from `⟨k - 1, by omega⟩`. Rewrite using `[pow_succ']`. Conclude with `h _`. Take `⟨m, hm⟩` from `hn`. Rewrite `hm` using `[← map_pow, ← map_zero (Algebra.leftMulMatrix b)]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `⟨m, Algebra.leftMulMatrix_injective b hm⟩`.
+A detailed English derivation is pending.
 -/
 theorem isNilpotent_of_trace_mul {F A : Type} [Field F] [CharZero F] [CommRing A] [Algebra F A]
     [Module.Finite F A] (w : A) (h : ∀ y : A, Algebra.trace F A (w * y) = 0) : IsNilpotent w := by
@@ -31,7 +31,7 @@ theorem isNilpotent_of_trace_mul {F A : Type} [Field F] [CharZero F] [CommRing A
   exact ⟨m, Algebra.leftMulMatrix_injective b hm⟩
 
 /- English proof (translation)
-Establish `h1 : minpoly K.E (Algebra.lmul K.E B.A B.g) = minpoly K.E B.g` using `minpoly.algHom_eq (Algebra.lmul K.E B.A) (Algebra.lmul_injective) B.g`. Rewrite using `[← h1]`. Conclude with `LinearMap.minpoly_dvd_charpoly _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem minpoly_dvd_P {K : UQ} (B : InvAlg K) : minpoly K.E B.g ∣ B.P := by
   have h1 : minpoly K.E (Algebra.lmul K.E B.A B.g) = minpoly K.E B.g :=
@@ -40,11 +40,11 @@ theorem minpoly_dvd_P {K : UQ} (B : InvAlg K) : minpoly K.E B.g ∣ B.P := by
   exact LinearMap.minpoly_dvd_charpoly _
 
 /- English proof (translation)
-Introduce `K B hP hgen w hw`. Take `⟨m, hm⟩` from `isNilpotent_of_trace_mul w hw`. Take `⟨f, rfl⟩` from `hgen w`. Establish `hd : minpoly K.E B.g ∣ f ^ m` using `minpoly.dvd K.E B.g (by rw [map_pow]; exact hm)`. Establish `hsq : Squarefree (minpoly K.E B.g)` using `(hP.of_dvd (minpoly_dvd_P B)).squarefree`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Break down `Nat.eq_zero_or_pos m with h0 | h0` into its components or cases. Substitute `h0` using the available equality. Rewrite `hm` using `[pow_zero]`. Conclude with `(subsingleton_of_zero_eq_one hm.symm).elim _ _`. Establish `hf : minpoly K.E B.g ∣ f` using `(hsq.dvd_pow_iff_dvd h0.ne').mp hd`.
+Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨q, rfl⟩` from `hf`. Rewrite using `[map_mul, minpoly.aeval, zero_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_trace_mul_eq_zero : ∀ (K : UQ) (B : InvAlg K), B.P.Separable →
     (∀ a : B.A, ∃ f : K.E[X], a = aeval B.g f) →

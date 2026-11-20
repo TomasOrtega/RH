@@ -11,7 +11,7 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 set_option synthInstance.maxHeartbeats 200000
 
 /- English proof (translation)
-Use extensionality with `x`. Conclude with `(s.hw v (algebraMap (𝓞 (Lp L)) (𝓞 L) x)).symm.trans (s.hA v x)`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 private theorem w_under {l : ℕ} [Fact l.Prime] {L Ω : Type} [Field L] [NumberField L] [IsCMField L] [Field Ω] [Algebra L Ω]
     [IsAlgClosure L Ω] (s : HidaSetting l L Ω) (v : Plc (Lp L)) : (s.w v).under (𝓞 (Lp L)) = v := by
@@ -19,14 +19,14 @@ private theorem w_under {l : ℕ} [Fact l.Prime] {L Ω : Type} [Field L] [Number
   exact (s.hw v (algebraMap (𝓞 (Lp L)) (𝓞 L) x)).symm.trans (s.hA v x)
 
 /- English proof (translation)
-The claim follows from `MonoidHom.mem_ker.1 (Subgroup.mem_iInf.1 (Subgroup.mem_iInf.1 (Subgroup.mem_inf.1 hx).2 u) hu)`.
+A detailed English derivation is pending.
 -/
 private theorem cLoc_ne {L : Type} [Field L] [NumberField L] [IsCMField L] {n : ℕ} {w u : Plc L}
     {x : UA L n} (hx : x ∈ locU n w) (hu : u.under (𝓞 (Lp L)) ≠ w.under (𝓞 (Lp L))) : cLoc u x = 1 :=
   MonoidHom.mem_ker.1 (Subgroup.mem_iInf.1 (Subgroup.mem_iInf.1 (Subgroup.mem_inf.1 hx).2 u) hu)
 
 /- English proof (translation)
-Unfold `CaseU.cmp`. Rewrite using `[dif_pos h]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem cmp_of {l : ℕ} [Fact l.Prime] {L : Type} [Field L] [NumberField L] [IsCMField L] {n : ℕ} {w : Plc L}
     (h : ((l : ℕ) : 𝓞 L) ∉ w.asIdeal) (x : UA L n) : cmp n w ((away l L n).rangeRestrict x) = cLoc w x := by
@@ -35,9 +35,9 @@ private theorem cmp_of {l : ℕ} [Fact l.Prime] {L : Type} [Field L] [NumberFiel
   rfl
 
 /- English proof (translation)
-Distinguish the cases in `h : ((l : ℕ) : 𝓞 L) ∉ u.asIdeal`. Rewrite using `[cmp_of h]`. Conclude with `cLoc_ne hx hu`. Unfold `CaseU.cmp`. Rewrite using `[dif_neg h]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 private theorem cmp_loc {l : ℕ} [Fact l.Prime] {L : Type} [Field L] [NumberField L] [IsCMField L] {n : ℕ} {w u : Plc L}
     {x : UA L n} (hx : x ∈ locU n w) (hu : u.under (𝓞 (Lp L)) ≠ w.under (𝓞 (Lp L))) :
@@ -55,13 +55,11 @@ variable {l : ℕ} [Fact l.Prime] {L Ω : Type} [Field L] [NumberField L] [IsCMF
   [IsAlgClosure L Ω] (s : HidaSetting l L Ω) {n : ℕ}
 
 /- English proof (translation)
-Take `⟨hb, h1, h2⟩` from `(secU l L Ω s n hn w hw).2 hS`. Establish `hl : ((l : ℕ) : 𝓞 L) ∉ w.asIdeal` using `fun h => hS <| Or.inl <| by`. Express the relevant statement in the definitionally equal form `algebraMap (𝓞 (Lp L)) (𝓞 L) (l : 𝓞 (Lp L)) ∈ w.asIdeal`. Rewrite using `[map_natCast]` and apply the resulting hypothesis. Establish `hU : (away l L n).rangeRestrict x ∈ Ub n s`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Use `Subgroup.mem_inf.2 ⟨Subgroup.mem_iInf.2 fun u => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Subgroup.mem_comap, cmp_loc hx (by`. Rewrite using `[w_under]`. Conclude with `fun h => hS (Or.inr (Or.inl (h ▸ u.2))))]`. Conclude with `one_mem _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Subgroup.mem_comap, cmp_loc hx (by`. Rewrite using `[w_under]`. Conclude with `fun h => hS (Or.inr (Or.inr h.symm)))]`. Conclude with `one_mem _`. Establish `hA : (⟨_, hU⟩ : Ub n s) ∈ locA n s w` using `Subgroup.mem_iInf.2 fun u => Subgroup.mem_iInf.2 fun hu => MonoidHom.mem_ker.2 (cmp_loc hx hu)`.
-
-Establish `h3 : (⟨_, h2 (cLoc w x)⟩ : locA n s w) = ⟨_, hA⟩` using `hb.1 ((h1 _).trans (cmp_of hl x).symm)`. Conclude with `congrArg (fun y : locA n s w => (y.1 : Ga l L n)) h3`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem sec_eq (hn : 1 ≤ n) {w : Plc L} (hw : IsSplitAt w) (hS : w.under (𝓞 (Lp L)) ∉ s.S) {x : UA L n}
     (hx : x ∈ locU n w) : ((sec n s w (cLoc w x) : Ub n s) : Ga l L n) = (away l L n).rangeRestrict x := by
@@ -85,7 +83,7 @@ private theorem sec_eq (hn : 1 ≤ n) {w : Plc L} (hw : IsSplitAt w) (hS : w.und
   exact congrArg (fun y : locA n s w => (y.1 : Ga l L n)) h3
 
 /- English proof (translation)
-Take `⟨-, -, h2⟩` from `(secU l L Ω s n hn w hw).2 hS`. Use `Subtype.ext (funext fun u => ?_)` and prove the remaining obligations. Conclude with `MonoidHom.mem_ker.1 (Subgroup.mem_iInf.1 (Subgroup.mem_iInf.1 (h2 g) (s.w u)) (by`. Rewrite using `[w_under]`. Conclude with `fun h => hS (Or.inr (Or.inl (h ▸ u.2)))))`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
 -/
 private theorem toKT_sec (hn : 1 ≤ n) {w : Plc L} (hw : IsSplitAt w) (hS : w.under (𝓞 (Lp L)) ∉ s.S) (g : GLw n w) :
     toKT n s (sec n s w g) = 1 := by
@@ -96,9 +94,9 @@ private theorem toKT_sec (hn : 1 ≤ n) {w : Plc L} (hw : IsSplitAt w) (hS : w.u
     exact fun h => hS (Or.inr (Or.inl (h ▸ u.2)))))
 
 /- English proof (translation)
-Establish `h1 : ∀ τ : L →+* ℂ, cEmb τ k = 1` using `fun τ => by`. Express the relevant statement in the definitionally equal form `Matrix.GeneralLinearGroup.map (coord τ) (cInf k) = 1`. Rewrite using `[MonoidHom.mem_ker.1 hk, map_one]`. Express the relevant statement in the definitionally equal form `PiTensorProduct.mapMonoidHom (fun y : Emb l (fun v : V.frame.Vl => s.w v.1) => GlobalTheory.Branching.sqRep ℂ n (lam y.res) (cEmb (ι.toRingHom.comp y.res) k)) = 1`. Simplify using `only [h1, map_one]`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 
-Conclude with `map_one _`.
+A detailed English derivation is pending.
 -/
 private theorem infRep_fin {s : HidaSetting l L Ω} (V : s.Lev) (ι : Qbar l ≃+* ℂ) (lam : Wt L l n) {k : UA L n}
     (hk : k ∈ finU L n) : infRep (V := V) ι lam k = 1 := by
@@ -113,7 +111,7 @@ private theorem infRep_fin {s : HidaSetting l L Ω} (V : s.Lev) (ι : Qbar l ≃
 end
 
 /- English proof (translation)
-Use function extensionality and compare the values at `k`. Express the relevant statement in the definitionally equal form `X.ra τ u (fun g j => F j g k) x i = _`. Rewrite using `[X.ra_apply, hu, Units.val_one, Matrix.one_mulVec]`.
+Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 private theorem raF_one {Γ Ga Gp : Type} [Group Γ] [Group Ga] [Group Gp] (X : Frame Γ Ga Gp) {d m : ℕ}
     (τ : X.Ub →* GL (Fin m) ℂ) (u : X.Ub) (hu : τ u = 1) (F : Fin m → X.Fn ℂ d) (i : Fin m) (x : Ga × Gp) :
@@ -123,15 +121,15 @@ private theorem raF_one {Γ Ga Gp : Type} [Group Γ] [Group Ga] [Group Gp] (X : 
   rw [X.ra_apply, hu, Units.val_one, Matrix.one_mulVec]
 
 /- English proof (translation)
-Introduce `l _ L Ω _ _ _ _ _ _ s n hn V Q c ι m τ₀ lam d e ξ _ w hw hS j hj1 hj2 F g i ℓ`. Use function extensionality and compare the values at `x`. Establish `h1 : (hset Q τ₀).τC ι (sec n s w g) = 1`. Express the relevant statement in the definitionally equal form `Matrix.GeneralLinearGroup.map (ι.toRingHom.comp (algebraMap c.O (Qbar l))) (τ₀ (toKT n s (sec n s w g))) = 1`. Rewrite using `[toKT_sec s hn hw hS, map_one, map_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : ((sec n s w g : Ub n s) : Ga l L n) = (away l L n).rangeRestrict (j g)`. Use `sec_eq s hn hw hS (hj1 g)` as an intermediate fact. Rewrite `this` using `[hj2]`. Then use the resulting hypothesis. Establish `h3 : ∀ v : V.frame.Vl, cLoc (s.w v.1) (j g) = 1` using `fun v => cLoc_ne (hj1 g) (by`. Rewrite using `[w_under]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `fun h => hS (Or.inl (h ▸ v.2)))`. Establish `h4 : infRep (V` using `V) ι lam (x * j g)⁻¹ = infRep (V := V) ι lam x⁻¹ := by`. Rewrite using `[mul_inv_rev, map_mul, infRep_fin V ι lam ((finU L n).inv_mem (Subgroup.mem_inf.1 (hj1 g)).1), one_mul]`. Establish `h5 : (show Ga l L n × GV n (fun v : V.frame.Vl => s.w v.1) from ((away l L n).rangeRestrict x, fun v : V.frame.Vl => cLoc (s.w v.1) x)) * (show Ga l L n × GV n (fun v : V.frame.Vl => s.w v.1) from (((sec n s w g : Ub n s) : Ga l L n), 1)) = ((away l L n).rangeRestrict (x * j g), …`. Use `Prod.ext ?_ (funext fun v => ?_)` and prove the remaining obligations.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Express the relevant statement in the definitionally equal form `(away l L n).rangeRestrict x * ((sec n s w g : Ub n s) : Ga l L n) = (away l L n).rangeRestrict (x * j g)`. Rewrite using `[h2, map_mul]`. Express the relevant statement in the definitionally equal form `cLoc (s.w v.1) x * 1 = cLoc (s.w v.1) (x * j g)`. Rewrite using `[map_mul, h3]`. Establish `h6` using `(raF_one (hset Q τ₀).X ((hset Q τ₀).τC ι) (sec n s w g) h1 F i ((away l L n).rangeRestrict x, fun v : V.frame.Vl => cLoc (s.w v.1) x)).trans (congrArg (F i) h5)`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `_ = ℓ (infRep ι lam (x * j g)⁻¹ (e _))`. Rewrite using `[h4]`. Conclude with `congrArg (fun y => ℓ (infRep (V := V) ι lam x⁻¹ (e y))) h6`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Hi.partUR2AtW :
     ∀ (l : ℕ) [Fact l.Prime] (L Ω : Type) [Field L] [NumberField L] [IsCMField L] [Field Ω] [Algebra L Ω] [IsAlgClosure L Ω] (s : HidaSetting l L Ω) (n : ℕ), 1 ≤ n →

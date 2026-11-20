@@ -15,7 +15,7 @@ namespace GlobalTheory.CompanionTheory.KunGlue.Right
 variable {K : Type} [Field K]
 
 /- English proof (translation)
-Substitute `hu` using the available equality. Conclude with `(hs K Z Z Y p (𝟙 Z) u).2.2.2.2.1 V T`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem inU_pre (hs : SiteLaws) {Z Y : Scheme.{0}} {p : Z ⟶ Spec (CommRingCat.of K)} {r : Y ⟶ Spec (CommRingCat.of K)}
     (u : Y ⟶ Z) (hu : u ≫ p = r) (V : Z.Opens) (T) : inU r (u ⁻¹ᵁ V) T ↔ inU p V ((smS u hu).G.obj T) := by
@@ -23,9 +23,9 @@ theorem inU_pre (hs : SiteLaws) {Z Y : Scheme.{0}} {p : Z ⟶ Spec (CommRingCat.
   exact (hs K Z Z Y p (𝟙 Z) u).2.2.2.2.1 V T
 
 /- English proof (translation)
-Take `⟨-, -, htop, hinf, -, -⟩` from `hs K Z Z Z q (𝟙 Z) (𝟙 Z)`. Rewrite using `[← Finset.inf_eq_iInf]`. Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty => simpa using htop T`. Consider the case `insert a s ha ih`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Rewrite using `[Finset.inf_insert, hinf, ih]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem inU_biInf (hs : SiteLaws) {Z : Scheme.{0}} (q : Z ⟶ Spec (CommRingCat.of K)) {κ : Type} (V : κ → Z.Opens)
     (S : Finset κ) (T) : inU q (⨅ α ∈ S, V α) T ↔ ∀ α ∈ S, inU q (V α) T := by
@@ -39,7 +39,7 @@ theorem inU_biInf (hs : SiteLaws) {Z : Scheme.{0}} (q : Z ⟶ Spec (CommRingCat.
     simp
 
 /- English proof (translation)
-Use function extensionality and compare the values at `T`. Use `propext ⟨fun hT => (h T).2 hT.2, fun hT => ?_⟩` and prove the remaining obligations. Take `⟨α, hα⟩` from `hS`. Conclude with `⟨⟨α, (h T).1 hT α hα⟩, (h T).1 hT⟩`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem capU_of_forall {C : Type 1} [Category.{0} C] {ι : Type} [DecidableEq ι] (U : ι → ObjectProperty C)
     (Q : ObjectProperty C) (S : Finset ι) (hS : S.Nonempty) (h : ∀ T, Q T ↔ ∀ α ∈ S, U α T) : capU U S = Q := by
@@ -49,7 +49,7 @@ theorem capU_of_forall {C : Type 1} [Category.{0} C] {ι : Type} [DecidableEq ι
   exact ⟨⟨α, (h T).1 hT α hα⟩, (h T).1 hT⟩
 
 /- English proof (translation)
-Use function extensionality and compare the values at `T`. Conclude with `propext ⟨fun h => ⟨h, fun α hα => absurd hα (Finset.notMem_empty α)⟩, fun h => h.1⟩`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem capU_empty_eq {C : Type 1} [Category.{0} C] {ι : Type} [DecidableEq ι] (U : ι → ObjectProperty C) :
     (fun T => ∃ α, U α T) = capU U ∅ := by
@@ -57,7 +57,7 @@ theorem capU_empty_eq {C : Type 1} [Category.{0} C] {ι : Type} [DecidableEq ι]
   exact propext ⟨fun h => ⟨h, fun α hα => absurd hα (Finset.notMem_empty α)⟩, fun h => h.1⟩
 
 /- English proof (translation)
-Establish `h : ∀ x, (resU F k).pull n x = x`. Introduce `x`. Take `⟨a, ha, rfl⟩` from `CrystallineSemistableComparison.CechClassBoundaries.clsSurj x`. Both sides reduce to the same expression. Conclude with `⟨fun a b e => by rwa [h, h] at e, fun y => ⟨y, h y⟩⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Both sides reduce to the same expression. Supply the required witnesses or components.
 -/
 theorem res_self_bij {R : Type} [CommRing R] {C : Type 1} [Category.{0} C] (F : C ⥤ ModuleCat.{0} R) (U : ObjectProperty C)
     (k : U ≤ U) (n : ℕ) : Function.Bijective ((resU F k).pull n) := by
@@ -68,7 +68,7 @@ theorem res_self_bij {R : Type} [CommRing R] {C : Type 1} [Category.{0} C] (F : 
   exact ⟨fun a b e => by rwa [h, h] at e, fun y => ⟨y, h y⟩⟩
 
 /- English proof (translation)
-Substitute `e` using the available equality. Conclude with `hb`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem res_bij_of_eq {R : Type} [CommRing R] {C : Type 1} [Category.{0} C] (F : C ⥤ ModuleCat.{0} R)
     {U Q Q' : ObjectProperty C} (e : Q = Q') (h : Q ≤ U) (h' : Q' ≤ U) (n : ℕ)
@@ -77,7 +77,7 @@ theorem res_bij_of_eq {R : Type} [CommRing R] {C : Type 1} [Category.{0} C] (F :
   exact hb
 
 /- English proof (translation)
-Substitute `e₂ e₃` using the available equality. Conclude with `h`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem kun_congr (E : XD K) {U₁ : ObjectProperty E.C₁} {U₂ U₂' : ObjectProperty E.C₂} {U₃ U₃' : ObjectProperty E.D}
     (e₂ : U₂ = U₂') (e₃ : U₃ = U₃') (h₁ : ∀ T, U₃ T → U₁ (E.L₁.obj T)) (h₂ : ∀ T, U₃ T → U₂ (E.L₂.obj T))
@@ -87,23 +87,21 @@ theorem kun_congr (E : XD K) {U₁ : ObjectProperty E.C₁} {U₂ U₂' : Object
   exact h
 
 /- English proof (translation)
-Introduce `hs hmv hcd hz hA hK K _ _ X X' P q q' _ _ p₁ p₂ hP V d cV h₁ h₂`. Take `⟨U⟩` from `(cov_ex q').1 inferInstance`. Establish `hw : p₂ ≫ q' = p₁ ≫ q` using `hP.w.symm`. Take `⟨hcosP, -, htopP, hinfP, -, -⟩` from `hs K P P P (p₁ ≫ q) (𝟙 P) (𝟙 P)`. Take `⟨hcos', -, htop', -, -, -⟩` from `hs K X' X' X' q' (𝟙 X') (𝟙 X')`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `l₁ : ∀ (D : X'.Opens) T, inU (p₁ ≫ q) (p₁ ⁻¹ᵁ V ⊓ p₂ ⁻¹ᵁ D) T → inU q V ((smS p₁ rfl).G.obj T)` using `fun D T hT => (inU_pre hs p₁ rfl V T).1 ((hinfP _ _ T).1 hT).1`. Establish `l₂ : ∀ (D : X'.Opens) T, inU (p₁ ≫ q) (p₁ ⁻¹ᵁ V ⊓ p₂ ⁻¹ᵁ D) T → inU q' D ((smS p₂ hw).G.obj T)` using `fun D T hT => (inU_pre hs p₂ hw D T).1 ((hinfP _ _ T).1 hT).2`. Set `E` to `hodgeXD q q' p₁ p₂ hw`. Set `Vv : U.ι → ObjectProperty E.C₂` to `fun α => inU q' (U.U α)`. Set `Ww : U.ι → ObjectProperty E.D` to `fun α => inU (p₁ ≫ q) (p₁ ⁻¹ᵁ V ⊓ p₂ ⁻¹ᵁ U.U α)`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `g₁ : ∀ (S : Finset U.ι) T, capU Ww S T → inU q V (E.L₁.obj T)`. Introduce and unpack `S T ⟨⟨α, hα⟩, -⟩`. Conclude with `l₁ _ T hα`. Establish `g₂ : ∀ (S : Finset U.ι) T, capU Ww S T → capU Vv S (E.L₂.obj T)`. Introduce and unpack `S T ⟨⟨α, hα⟩, hS⟩`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Conclude with `⟨⟨α, l₂ _ T hα⟩, fun β hβ => l₂ _ T (hS β hβ)⟩`. Establish `eV : ∀ S : Finset U.ι, S.Nonempty → capU Vv S = inU q' (⨅ α ∈ S, U.U α)` using `fun S hS => capU_of_forall _ _ S hS fun T => inU_biInf hs q' U.U S T`. Establish `eW : ∀ S : Finset U.ι, S.Nonempty → capU Ww S = inU (p₁ ≫ q) (p₁ ⁻¹ᵁ V ⊓ p₂ ⁻¹ᵁ ⨅ α ∈ S, U.U α)` using `fun S hS => capU_of_forall _ _ S hS fun T => by`. Take `⟨α₀, hα₀⟩` from `hS`. Rewrite using `[hinfP, inU_pre hs p₂ hw, inU_biInf hs q' U.U S]`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun h α hα => (hinfP _ _ T).2 ⟨h.1, (inU_pre hs p₂ hw _ T).2 (h.2 α hα)⟩, fun h => ⟨((hinfP _ _ T).1 (h α₀ hα₀)).1, fun α hα => (inU_pre hs p₂ hw _ T).1 ((hinfP _ _ T).1 (h α hα)).2⟩⟩` and prove the remaining obligations. Establish `hS : ∀ S : Finset U.ι, S.Nonempty → E.Kun (inU q V) (capU Vv S) (capU Ww S) (g₁ S) (g₂ S)`. Introduce `S hne`. Take `⟨α₀, hα₀⟩` from `id hne`. Take `⟨c', -⟩` from `coord_res (U.c α₀) (iInf₂_le α₀ hα₀) (U.inter S hne)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `kun_congr E (eV S hne).symm (eW S hne).symm (l₁ _) (l₂ _) _ _ (GlobalTheory.T.kuenneth_product_local_coords hs hA hK K X X' P q q' p₁ p₂ hP V _ d _ cV ⟨c'⟩ (l₁ _) (l₂ _))`. Establish `hglue` using `GlobalTheory.T.kuenneth_mayer_vietoris_left hmv hcd E (inU q V) Vv Ww (fun α => hcos' _) (fun α => hcosP _) g₁ g₂ hS`. Establish `k₂ : capU Vv ∅ ≤ inU q' ⊤` using `fun T _ => htop' T`. Establish `k₃ : capU Ww ∅ ≤ inU (p₁ ≫ q) (p₁ ⁻¹ᵁ V ⊓ p₂ ⁻¹ᵁ ⊤)`. Introduce and unpack `T ⟨⟨α, hα⟩, -⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(hinfP _ _ T).2 ⟨((hinfP _ _ T).1 hα).1, (inU_pre hs p₂ hw _ T).2 (htop' _)⟩`. Establish `sup₃ : (⨆ α, p₁ ⁻¹ᵁ V ⊓ p₂ ⁻¹ᵁ U.U α) = p₁ ⁻¹ᵁ V ⊓ p₂ ⁻¹ᵁ ⊤`. Rewrite using `[← inf_iSup_eq, ← U.cover]`. Use `congr 1`. Use extensionality with `x`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Simplify using `[TopologicalSpace.Opens.mem_iSup]`. Use `(GlobalTheory.T.kuenneth_of_restrict_bijective E h₁ h₂ (g₁ ∅) (g₂ ∅) (le_refl _) k₂ k₃ ?_ ?_ ?_).2 hglue` and prove the remaining obligations. Conclude with `fun a n => res_self_bij _ _ _ n`. Introduce `a n`. Conclude with `res_bij_of_eq (G q' a) (capU_empty_eq Vv) (fun _ _ => htop' _) k₂ n (hz K X' q' U.ι ⊤ U.U U.cover _ a n)`.
-
-Introduce `a n`. Use `res_bij_of_eq (G (p₁ ≫ q) a) (capU_empty_eq Ww) (fun T hT => k₃ T ((capU_empty_eq Ww ▸ hT : capU Ww ∅ T))) k₃ n (hz K P (p₁ ≫ q) U.ι _ (fun α => p₁ ⁻¹ᵁ V ⊓ p₂ ⁻¹ᵁ U.U α) sup₃ _ a n)` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem kun_right : SiteLaws → MVBij → CovDesc → ZarAbs → AffOm → KunAff → ∀ (K : Type) [Field K] [CharZero K] (X X' P : Scheme.{0}) (q : X ⟶ Spec (CommRingCat.of K)) (q' : X' ⟶ Spec (CommRingCat.of K)) [IsProper q'] [Smooth q'] (p₁ : P ⟶ X) (p₂ : P ⟶ X') (hP : IsPullback p₁ p₂ q q') (V : X.Opens) (d : ℕ), Nonempty (Coord q V d) → ∀ (h₁ : ∀ T, inU (p₁ ≫ q) (p₁ ⁻¹ᵁ V ⊓ p₂ ⁻¹ᵁ ⊤) T → inU q V ((hodgeXD q q' p₁ p₂ hP.w.symm).L₁.obj T)) (h₂ : ∀ T, inU (p₁ ≫ q) (p₁ ⁻¹ᵁ V ⊓ p₂ ⁻¹ᵁ ⊤) T → inU q' ⊤ ((hodgeXD q q' p₁ p₂ hP.w.symm).L₂.obj T)), (hodgeXD q q' p₁ p₂ hP.w.symm).Kun (inU q V) (inU q' ⊤) (inU (p₁ ≫ q) (p₁ ⁻¹ᵁ V ⊓ p₂ ⁻¹ᵁ ⊤)) h₁ h₂ := by
   intro hs hmv hcd hz hA hK K _ _ X X' P q q' _ _ p₁ p₂ hP V d cV h₁ h₂

@@ -10,7 +10,7 @@ namespace PositivityTheory.Rg.Rs.ChordArithmetic
 variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E]
 
 /- English proof (translation)
-Use `Subtype.ext (funext fun m => ?_)` and prove the remaining obligations. Rewrite using `[mulChi_apply, mulChi_apply, ExponentTwist.chiDet_absC_val, ExponentTwist.chiDet_absC_val, mul_assoc, ← Complex.exp_add]`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem mulChi_absC_cancel (a : ℕ) (z : ℂ) (ψ : Sm E a) :
     mulChi a (Model.absC E z) (mulChi a (Model.absC E (-z)) ψ) = ψ := by
@@ -19,9 +19,9 @@ theorem mulChi_absC_cancel (a : ℕ) (z : ℂ) (ψ : Sm E a) :
   simp
 
 /- English proof (translation)
-Introduce `t m`. Rewrite using `[mulChi_apply, mulChi_apply, map_mul, Units.val_mul, hψ, ExponentTwist.splitCentre_eq, ExponentTwist.chiDet_aT le_rfl]`. Establish `e1 : Complex.exp (e * t) * Complex.exp (w * a * (Module.finrank ℚ E : ℂ) * t) = 1`. Rewrite using `[← Complex.exp_add, ← Complex.exp_zero]`. Use `congr 1`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Take the linear combination `(t : ℂ) * h`. Take the linear combination `(ψ.1 m * ((chiDet a (Model.absC E w) m : ℂˣ) : ℂ)) * e1`.
+Take a linear combination of the given relations to obtain the conclusion. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem central_twist {a : ℕ} (w e : ℂ) (h : e + w * a * (Module.finrank ℚ E : ℂ) = 0) (ψ : Sm E a)
     (hψ : ∀ (t : ℝ) m, ψ.1 (splitCentre E a t * m) = Complex.exp (e * t) * ψ.1 m) :
@@ -35,9 +35,9 @@ theorem central_twist {a : ℕ} (w e : ℂ) (h : e + w * a * (Module.finrank ℚ
   linear_combination (ψ.1 m * ((chiDet a (Model.absC E w) m : ℂˣ) : ℂ)) * e1
 
 /- English proof (translation)
-Establish `hr' : (r : ℂ) ≠ 0` using `by exact_mod_cast hr`. Establish `hd' : (d : ℂ) ≠ 0` using `by exact_mod_cast hd`. Establish `e : c₁ - -(c / (r * d)) * r₁ * d = c₁ + (((r₁ : ℝ) / r : ℝ) : ℂ) * c`. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, Complex.add_re, Complex.re_ofReal_mul]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 -/
 theorem left_eq (c c₁ : ℂ) (r r₁ d : ℕ) (hr : r ≠ 0) (hd : d ≠ 0) :
     (c₁ - -(c / (r * d)) * r₁ * d).re = c₁.re + (r₁ : ℝ) / r * c.re := by
@@ -50,9 +50,9 @@ theorem left_eq (c c₁ : ℂ) (r r₁ d : ℕ) (hr : r ≠ 0) (hd : d ≠ 0) :
   rw [e, Complex.add_re, Complex.re_ofReal_mul]
 
 /- English proof (translation)
-Establish `hs' : (s : ℂ) ≠ 0` using `by exact_mod_cast hs`. Establish `hd' : (d : ℂ) ≠ 0` using `by exact_mod_cast hd`. Establish `e : c + (c₂ - -(-c / (s * d)) * r₂ * d) = c₂ + ((((s : ℝ) - r₂) / s : ℝ) : ℂ) * c`. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, Complex.add_re, Complex.re_ofReal_mul]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 -/
 theorem right_eq (c c₂ : ℂ) (s r₂ d : ℕ) (hs : s ≠ 0) (hd : d ≠ 0) :
     (c + (c₂ - -(-c / (s * d)) * r₂ * d)).re = c₂.re + ((s : ℝ) - r₂) / s * c.re := by
@@ -65,7 +65,7 @@ theorem right_eq (c c₂ : ℂ) (s r₂ d : ℕ) (hs : s ≠ 0) (hd : d ≠ 0) :
   rw [e, Complex.add_re, Complex.re_ofReal_mul]
 
 /- English proof (translation)
-Establish `hY : y / d = r * s / 2 - lam * (r * s)` using `by linarith`. Establish `e : (x + r₁ / r * y) / d = x / d + r₁ / r * (y / d)` using `by ring`. Establish `e2 : r₁ / r * (r * s / 2 - lam * (r * s)) = r₁ * s / 2 - lam * (r₁ * s)` using `by field_simp`. Rewrite `hb` using `[e, hY, e2]`. Use polynomial arithmetic with `[mul_pos hlam (mul_pos h1 (sub_pos.2 h2))]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem left_arith (r s r₁ d lam x y : ℝ) (hr : 0 < r) (h1 : 0 < r₁) (h2 : r₁ < r) (hlam : 0 < lam)
     (hp : y / d - r * (r + s - r) / 2 = -lam * (r * s))
@@ -78,9 +78,9 @@ theorem left_arith (r s r₁ d lam x y : ℝ) (hr : 0 < r) (h1 : 0 < r₁) (h2 :
   nlinarith [mul_pos hlam (mul_pos h1 (sub_pos.2 h2))]
 
 /- English proof (translation)
-Establish `hY : y / d = r * s / 2 - lam * (r * s)` using `by linarith`. Establish `e : (x + (s - r₂) / s * y) / d = x / d + (s - r₂) / s * (y / d)` using `by ring`. Establish `e2 : (s - r₂) / s * (r * s / 2 - lam * (r * s)) = r * (s - r₂) / 2 - lam * (r * (s - r₂))`. Clear the denominators using the available nonvanishing facts. Rewrite `hb` using `[e, hY, e2]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Rewrite the indicated hypotheses using the stated equalities.
 
-Use polynomial arithmetic with `[mul_pos hlam (mul_pos h1 (sub_pos.2 h2))]`.
+Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem right_arith (r s r₂ d lam x y : ℝ) (hs : 0 < s) (h1 : 0 < r₂) (h2 : r₂ < s) (hlam : 0 < lam)
     (hp : y / d - r * (r + s - r) / 2 = -lam * (r * s))

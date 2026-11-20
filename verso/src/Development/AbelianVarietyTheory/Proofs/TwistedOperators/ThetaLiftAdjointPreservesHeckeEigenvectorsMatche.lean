@@ -25,13 +25,13 @@ open GlobalTheory.Hk3
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 T A Ks _ _ _ R F hC t h hh hhn P hg cX c0 hM x l hx`. Establish `injE : Function.Injective R.HE.e` using `hC.models.HE.1`. Establish `hX01` using `(GlobalTheory.DefiniteOps.definite_ops R F hC.lev hC.fam hC.models).1 t`. Break down `hX01 with ⟨hX, hXo, hXn⟩` into its components or cases. Establish `comm : ∀ y, R.Th t (hX P cX y) = h P c0 (R.Th t y)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Introduce `y`. Apply `injE` to reduce the goal to its premises. Conclude with `(hM y (hX P cX y) (hXo P hg cX y)).trans (hh P hg c0 (R.Th t y)).symm`. Establish `eX : LinearMap.adjoint (hX P cX) = hX P (dualC (Finsupp.mapRange star (star_zero ℂ) cX))` using `hXn.2 P hg cX`. Establish `cX' : Commute (hX P cX) (hX P (dualC (Finsupp.mapRange star (star_zero ℂ) cX)))` using `hXn.1 P P hg hg _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `nX : Commute (hX P cX) (LinearMap.adjoint (hX P cX))` using `@Eq.subst (Module.End ℂ (R.HX t).H) (fun B => Commute (hX P cX) B) _ _ eX.symm cX'`. Establish `eE : LinearMap.adjoint (h P c0) = h P (dualC (Finsupp.mapRange star (star_zero ℂ) c0))` using `hhn.2 P hg c0`. Establish `cE : Commute (h P c0) (h P (dualC (Finsupp.mapRange star (star_zero ℂ) c0)))` using `hhn.1 P P hg hg _ _`. Establish `nE : Commute (h P c0) (LinearMap.adjoint (h P c0))` using `@Eq.subst (Module.End ℂ R.HE.H) (fun B => Commute (h P c0) B) _ _ eE.symm cE`. Establish `up : hX P cX (LinearMap.adjoint (R.Th t) x) = l • LinearMap.adjoint (R.Th t) x` using `GlobalTheory.T.eigenvector_adjoint_intertwiner_normal_operators (R.Th t) (fun _ : Unit => hX P cX) (fun _ : Unit => h P c0) (fun _ u => comm u) (fun _ => nX) (fun _ => nE) () l x hx`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `c1` using `comm (LinearMap.adjoint (R.Th t) x)`. Establish `c2 : R.Th t (hX P cX (LinearMap.adjoint (R.Th t) x)) = l • R.Th t (LinearMap.adjoint (R.Th t) x)`. Conclude with `(congrArg (R.Th t) up).trans ((R.Th t).map_smul l _)`. Conclude with `c1.symm.trans c2`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.Hk3.SysE.matched_keeps_eigen : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.what₂.LL G Pl0 T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A), GlobalTheory.Hk3.Core R F → ∀ (t : T) (h : Pl D.host.E → (List ℤ →₀ ℂ) → Module.End ℂ R.HE.H), (∀ P, GlobalTheory.Hk3.Good R t P → ∀ c x, R.HE.e (h P c x) = postOn (R.MY 0) (GlobalTheory.Hk3.hk (Yc D 0) P c) (R.HE.e x)) → GlobalTheory.Hk3.NormalFam (GlobalTheory.Hk3.Good R t) h → ∀ P, GlobalTheory.Hk3.Good R t P → ∀ (cX c0 : List ℤ →₀ ℂ), GlobalTheory.Hk3.MatchE R t P cX c0 → ∀ (x : R.HE.H) (l : ℂ), h P c0 x = l • x → h P c0 (R.Th t (LinearMap.adjoint (R.Th t) x)) = l • R.Th t (LinearMap.adjoint (R.Th t) x) := by
   intro D G _ _ Pl0 T A Ks _ _ _ R F hC t h hh hhn P hg cX c0 hM x l hx

@@ -22,13 +22,11 @@ variable {O K : Type} [CommRing O] [NormedField K] [IsUltrametricDist K] [Algebr
   [_root_.GlobalTheory.BK.IsUnitBall O K] {l e a : ℕ} {ι : Type} [Fintype ι] [DecidableEq ι]
   [Fact l.Prime] [NormedAlgebra ℚ_[l] K] [NeZero a] [_root_.GlobalTheory.BK.TameDescentExponentData K l e a] in
 /- English proof (translation)
-Use `set f : ZMod a → K⟦X⟧ := fun ρ => if ρ = σ then 0 else 1 with hf`. Establish `hfx : f • _root_.GlobalTheory.BK.cst x = _root_.GlobalTheory.BK.cst x`. Apply `funext` to reduce the goal to its premises. Introduce `ρ`. Apply `funext` to reduce the goal to its premises.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i`. Use `show f ρ * PowerSeries.C (x ρ i) = PowerSeries.C (x ρ i)`. Distinguish the cases in `h : ρ = σ`. Simplify using `[h, hx]`. Simplify using `[hf, h]`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `key : Δ.actD g x = _root_.GlobalTheory.BK.red (Δ.act g (_root_.GlobalTheory.BK.cst x))` using `rfl`. Rewrite using `[key, ← hfx, _root_.GlobalTheory.BK.Descent.act_smul_tot]`. Use function extensionality and compare the values at `i`. Use `show constantCoeff ((_root_.GlobalTheory.BK.ringAct g f (σ + g.shift)) * (Δ.act g (_root_.GlobalTheory.BK.cst x)) (σ + g.shift) i) = 0`. Rewrite using `[_root_.GlobalTheory.BK.ringAct_apply]`.
-
-Simplify using `[hf]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private lemma actD_apply_shift_eq_zero_of_apply_eq_zero {P : _root_.GlobalTheory.BK.PhiMod O K l e a ι}
     (Δ : _root_.GlobalTheory.BK.Descent P) (g : _root_.GlobalTheory.BK.TameGal K l e a) {x : P.D} {σ : ZMod a}
@@ -54,7 +52,7 @@ variable {O K : Type} [CommRing O] [NormedField K] [IsUltrametricDist K] [Algebr
   [_root_.GlobalTheory.BK.IsUnitBall O K] {l e a : ℕ} {ι : Type} [Fintype ι] [DecidableEq ι]
   [Fact l.Prime] [NormedAlgebra ℚ_[l] K] [NeZero a] [_root_.GlobalTheory.BK.TameDescentExponentData K l e a] in
 /- English proof (translation)
-Establish `hxy` using `actD_apply_shift_eq_zero_of_apply_eq_zero Δ g (x := x - y) (σ := σ) (by simp [h])`. Rewrite `hxy` using `[map_sub, Pi.sub_apply, sub_eq_zero]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 private lemma actD_apply_shift_eq_of_apply_eq {P : _root_.GlobalTheory.BK.PhiMod O K l e a ι}
     (Δ : _root_.GlobalTheory.BK.Descent P) (g : _root_.GlobalTheory.BK.TameGal K l e a) {x y : P.D} {σ : ZMod a}
@@ -67,9 +65,9 @@ variable {O K : Type} [CommRing O] [NormedField K] [IsUltrametricDist K] [Algebr
   [_root_.GlobalTheory.BK.IsUnitBall O K] {l e a : ℕ} {ι : Type} [Fintype ι] [DecidableEq ι]
   [Fact l.Prime] [NormedAlgebra ℚ_[l] K] [NeZero a] [_root_.GlobalTheory.BK.TameDescentExponentData K l e a] in
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero`. Rewrite using `[pow_zero, map_one, pow_zero]`. Conclude with `_root_.GlobalTheory.BK.TameGal.root_one τ`. Consider the case `succ n ih`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[pow_succ, map_mul, _root_.GlobalTheory.BK.TameGal.root_mul, _root_.GlobalTheory.BK.TameGal.shift_inertia, sub_zero, ih, pow_succ]`.
+A detailed English derivation is pending.
 -/
 private lemma tameGal_inertia_root_pow (ζ : rootsOfUnity e K) (n : ℕ) (τ : ZMod a) :
     (_root_.GlobalTheory.BK.TameGal.inertia (l := l) (ζ ^ n)).root τ =
@@ -87,13 +85,13 @@ variable {O K : Type} [CommRing O] [NormedField K] [IsUltrametricDist K] [Algebr
   [_root_.GlobalTheory.BK.IsUnitBall O K] {l e a : ℕ} {ι : Type} [Fintype ι] [DecidableEq ι]
   [Fact l.Prime] [NormedAlgebra ℚ_[l] K] [NeZero a] [_root_.GlobalTheory.BK.TameDescentExponentData K l e a] in
 /- English proof (translation)
-Introduce and unpack `c ⟨x, hx0, hx⟩`. Use `set F : _root_.GlobalTheory.BK.TameGal K l e a := _root_.GlobalTheory.BK.TameGal.fr with hF`. Establish `hFs : F.shift = 1` using `_root_.GlobalTheory.BK.TameGal.shift_fr`. Establish `hFis : (F⁻¹).shift = -1`. Establish `hs` using `_root_.GlobalTheory.BK.TameGal.shift_mul F⁻¹ F`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hs` using `[inv_mul_cancel, _root_.GlobalTheory.BK.TameGal.shift_one, hFs]`. Take the linear combination `-hs`. Use `⟨Δ.actD F⁻¹ x, fun h => hx0 ?_, fun ζ => ?_⟩` and prove the remaining obligations. Establish `hb` using `actD_apply_shift_eq_of_apply_eq Δ F (x := Δ.actD F⁻¹ x) (y := 0) (σ := τ) (by rw [h]; rfl)`. Rewrite `hb` using `[← Module.End.mul_apply, ← map_mul, mul_inv_cancel, map_one, Module.End.one_apply, map_zero, hFs]`. Then use the resulting hypothesis.
+Take a linear combination of the given relations to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `hcomm : _root_.GlobalTheory.BK.TameGal.inertia ζ * F⁻¹ = F⁻¹ * _root_.GlobalTheory.BK.TameGal.inertia (ζ ^ l)`. Rewrite using `[eq_inv_mul_iff_mul_eq, ← mul_assoc, hF, _root_.GlobalTheory.BK.TameGal.fr_mul_inertia, mul_assoc, mul_inv_cancel, mul_one]`. Establish `hroot : (_root_.GlobalTheory.BK.TameGal.inertia (l` using `l) (ζ ^ l)).root (τ + 1) ^ c.val = (_root_.GlobalTheory.BK.TameGal.inertia (l := l) ζ).root τ ^ c.val := by`. Rewrite using `[tameGal_inertia_root_pow, ← _root_.GlobalTheory.BK.TameGal.root_sub_one, add_sub_cancel_right]`. Establish `hb` using `actD_apply_shift_eq_of_apply_eq Δ F⁻¹ (σ := τ + 1) (x := Δ.actD (_root_.GlobalTheory.BK.TameGal.inertia (ζ ^ l)) x) (y := (_root_.GlobalTheory.BK.TameGal.inertia (l := l) ζ).root τ ^ c.val • x) (by rw [hx, hroot]; rfl)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hb` using `[hFis, add_neg_cancel_right, map_smul]`. Rewrite using `[← Module.End.mul_apply, ← map_mul, hcomm, map_mul, Module.End.mul_apply, hb, Pi.smul_apply]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma chars_succ_subset_chars {P : _root_.GlobalTheory.BK.PhiMod O K l e a ι}
     (Δ : _root_.GlobalTheory.BK.Descent P) (τ : ZMod a) :
@@ -130,13 +128,13 @@ variable {O K : Type} [CommRing O] [NormedField K] [IsUltrametricDist K] [Algebr
   [_root_.GlobalTheory.BK.IsUnitBall O K] {l e a : ℕ} {ι : Type} [Fintype ι] [DecidableEq ι]
   [Fact l.Prime] [NormedAlgebra ℚ_[l] K] [NeZero a] [_root_.GlobalTheory.BK.TameDescentExponentData K l e a] in
 /- English proof (translation)
-Take `⟨d, hd0, hd⟩` from `hc`. Use `⟨P.phiD d, fun h => hd0 ?_, fun ζ => ?_⟩` and prove the remaining obligations. Establish `heq : P.phiD (Function.update (0 : P.D) τ (d τ)) = P.phiD 0`. Use function extensionality and compare the values at `σ`. Rewrite using `[_root_.GlobalTheory.BK.PhiMod.phiD_apply, map_zero]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hσ : σ - 1 = τ`. Take `rfl` from `eq_add_of_sub_eq hσ`. Rewrite using `[add_sub_cancel_right, Function.update_self, Pi.zero_apply]`. Rewrite `h` using `[_root_.GlobalTheory.BK.PhiMod.phiD_apply, add_sub_cancel_right]`. Conclude with `h`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[Function.update_of_ne hσ]`. Simplify using `using congrFun (P.phiD.injective heq) τ`. Rewrite using `[_root_.GlobalTheory.BK.Descent.actD_phiD, _root_.GlobalTheory.BK.PhiMod.phiD_apply, _root_.GlobalTheory.BK.PhiMod.phiD_apply, add_sub_cancel_right, hd, mulVec_smul]`. Use `congr 1`. Establish `hr : (_root_.GlobalTheory.BK.TameGal.inertia (l` using `l) ζ).root τ = (_root_.GlobalTheory.BK.TameGal.inertia (l := l) ζ).root (τ + 1) ^ l := by`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← _root_.GlobalTheory.BK.TameGal.root_sub_one, add_sub_cancel_right]`. Establish `he` using `_root_.GlobalTheory.BK.TameGal.root_pow (_root_.GlobalTheory.BK.TameGal.inertia (l := l) ζ) (τ + 1)`. Rewrite using `[hr, ← pow_mul, pow_eq_pow_mod _ he, pow_eq_pow_mod ((l : ZMod e) * c).val he, ZMod.val_mul, ZMod.val_natCast, Nat.mod_mod, Nat.mod_mul_mod]`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma prime_mul_mem_chars_succ_of_mem [NeZero e] {P : _root_.GlobalTheory.BK.PhiMod O K l e a ι}
     (Δ : _root_.GlobalTheory.BK.Descent P) {τ : ZMod a} {c : ZMod e}
@@ -171,11 +169,11 @@ variable {O K : Type} [CommRing O] [NormedField K] [IsUltrametricDist K] [Algebr
   [Fact l.Prime] [NormedAlgebra ℚ_[l] K] [NeZero a] [_root_.GlobalTheory.BK.TameDescentExponentData K l e a] in
 
 /- English proof (translation)
-Establish `hle : ∀ (τ : ZMod a) (n : ℕ), Δ.chars (τ + n) ⊆ Δ.chars τ`. Introduce `τ n`. Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Use `push_cast`. Rewrite using `[← add_assoc]`. Conclude with `(chars_succ_subset_chars Δ _).trans ih`. Establish `hsub : ∀ τ σ : ZMod a, Δ.chars τ ⊆ Δ.chars σ`. Introduce `τ σ`.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hs` using `hle σ (τ - σ).val`. Rewrite `hs` using `[ZMod.natCast_zmod_val, add_sub_cancel]`. Then use the resulting hypothesis. Conclude with `⟨fun τ σ => (hsub τ σ).antisymm (hsub σ τ), fun τ c hc => hsub (τ + 1) τ (prime_mul_mem_chars_succ_of_mem Δ hc)⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.BK.chars_eq_and_mul_mem (O K : Type) [CommRing O] [NormedField K]
     [IsUltrametricDist K] [Algebra O K]

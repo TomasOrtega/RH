@@ -7,17 +7,17 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.Member.character_quotient_values_in_embedding_field
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 T0 A Ks _ _ _ R i k _ σ h v hv`. Establish `hE : R.C.eta.UnrAt v` using `R.C.isEta.unr v`. Establish `hM : (R.C.mu0 i).UnrAt v`. Introduce `x hx`. Establish `h1` using `hv x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h2` using `hE x hx`. Establish `h3 : ((R.C.mu0 i * R.C.eta⁻¹).loc v) x = (R.C.mu0 i).loc v x * (R.C.eta.loc v x)⁻¹` using `rfl`. Rewrite `h1` using `[h3, h2, inv_one, mul_one]`. Conclude with `h1`. Take `⟨y1, hy1⟩` from `h.1 v hM`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨y2, hy2⟩` from `h.2 v hE`. Establish `hN : ((Ideal.absNorm v.asIdeal : ℕ) : ℂ) ≠ 0`. Establish `: Ideal.absNorm v.asIdeal ≠ 0`. Rewrite using `[Ne, Ideal.absNorm_eq_zero_iff]`. Conclude with `v.ne_bot`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `this` after adjusting the coercions. Establish `hval : ((R.C.mu0 i * R.C.eta⁻¹).val v : ℂ) = ((R.C.mu0 i).val v : ℂ) * ((R.C.eta.val v : ℂ))⁻¹`. Establish `: (R.C.mu0 i * R.C.eta⁻¹).val v = (R.C.mu0 i).val v * (R.C.eta.val v)⁻¹` using `rfl`. Rewrite using `[this, Units.val_mul, Units.val_inv_eq_inv_val]`. Establish `hy2' : σ y2 ≠ 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hy2, Formalism.L2.Host.HChar.valTw]`. Conclude with `mul_ne_zero (Units.ne_zero _) ((Complex.cpow_ne_zero_iff_of_exponent_ne_zero (by norm_num)).2 hN)`. Use `⟨y1 / y2, ?_⟩` and prove the remaining obligations. Rewrite using `[map_div₀, hy1, hy2]`. Simplify using `only [Formalism.L2.Host.HChar.valTw, hval]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Simplify using the standard rewrite rules.
 
-Establish `e1 : (-((-1 / 2 : ℝ) : ℂ)) = -(-((1 / 2 : ℝ) : ℂ))` using `by push_cast; ring`. Rewrite using `[e1, Complex.cpow_neg _ (-((1/2 : ℝ) : ℂ))]`. Use `push_cast`. Simplify using `only [neg_zero, Complex.cpow_zero, mul_one]`. Clear the denominators using the available nonvanishing facts.
+Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem small_quot_values : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T0 : Type) (A : FamIn D.what₂.LL G Pl0 T0 D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (i : Fin D.R.m) (k : Type) [Field k] (σ : k →+* ℂ), SmallIn R i σ → (R.C.mu0 i * R.C.eta⁻¹).ValuesIn (-1 / 2) σ := by
   intro D G _ _ Pl0 T0 A Ks _ _ _ R i k _ σ h v hv

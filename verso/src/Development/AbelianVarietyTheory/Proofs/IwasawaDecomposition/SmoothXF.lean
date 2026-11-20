@@ -7,7 +7,7 @@ open ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestrictio
 namespace GlobalTheory.ShFam.Pad.RelDim
 
 /- English proof (translation)
-Use `haveI := smoothOfRelativeDimension_isStableUnderBaseChange Dw.dim`. Conclude with `MorphismProperty.of_isPullback (IsPullback.of_hasPullback _ _) Xo.smooth`.
+A detailed English derivation is pending.
 -/
 theorem smooth_XF {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H}
     {l : Level H} (Xo : Moduli Dw l) (c : Coeff l) :

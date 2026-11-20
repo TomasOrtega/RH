@@ -24,11 +24,11 @@ open GlobalTheory.DownLift
 namespace GlobalTheory.GenRealSchur
 
 /- English proof (translation)
-Take `⟨c, hc⟩` from `Module.End.exists_eigenvalue T₀`. Use `⟨c, ?_⟩` and prove the remaining obligations. Establish `hU : ∀ a, P a → (T₀.eigenspace c).map a ≤ T₀.eigenspace c`. Introduce `a ha`. Introduce and unpack `_ ⟨v, hv, rfl⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the hypotheses and unpack their components.
 
-Rewrite `hv` using `[SetLike.mem_coe, Module.End.mem_eigenspace_iff]`. Rewrite using `[Module.End.mem_eigenspace_iff, ← Module.End.mul_apply, ← hT a ha, Module.End.mul_apply, hv, map_smul]`. Break down `hirr _ hU with h | h` into its components or cases. Conclude with `absurd h (Module.End.hasEigenvalue_iff.1 hc)`. Use `LinearMap.ext fun v => ?_` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hv : v ∈ T₀.eigenspace c` using `h ▸ Submodule.mem_top`. Rewrite `hv` using `[Module.End.mem_eigenspace_iff]`. Rewrite using `[hv]`. Both sides reduce to the same expression.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem schur_scalar {W : Type} [AddCommGroup W] [Module ℂ W] [FiniteDimensional ℂ W] [Nontrivial W]
     (P : Module.End ℂ W → Prop) (hirr : ∀ U : Submodule ℂ W, (∀ a, P a → U.map a ≤ U) → U = ⊥ ∨ U = ⊤)
@@ -52,7 +52,7 @@ variable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.w
   {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL]
 
 /- English proof (translation)
-Unfold `downInt`. Rewrite using `[← integral_add hf hf']`. Use `congr 1`. Use function extensionality and compare the values at `h`. Simplify using `only [thetaKO, map_add, Pi.add_apply, add_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem downInt_add_datum (R : RealDat D A Ks) (i : Fin D.R.m) (t : T) (y : (R.HV i t).H) (f f' : WO (Vc D i) (Wc D i) → ℂ)
     (l : (R.cV i).W →ₗ[ℂ] ℂ) (g : GA D (Wc D i))
@@ -66,7 +66,7 @@ theorem downInt_add_datum (R : RealDat D A Ks) (i : Fin D.R.m) (t : T) (y : (R.H
   simp only [thetaKO, map_add, Pi.add_apply, add_mul]
 
 /- English proof (translation)
-Unfold `downInt`. Rewrite using `[← integral_const_mul]`. Use `congr 1`. Use function extensionality and compare the values at `h`. Simplify using `only [thetaKO, map_smul, Pi.smul_apply, smul_eq_mul, mul_assoc]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem downInt_smul_datum (R : RealDat D A Ks) (i : Fin D.R.m) (t : T) (y : (R.HV i t).H) (c : ℂ)
     (f : WO (Vc D i) (Wc D i) → ℂ) (l : (R.cV i).W →ₗ[ℂ] ℂ) (g : GA D (Wc D i)) :
@@ -78,9 +78,9 @@ theorem downInt_smul_datum (R : RealDat D A Ks) (i : Fin D.R.m) (t : T) (y : (R.
   simp only [thetaKO, map_smul, Pi.smul_apply, smul_eq_mul, mul_assoc]
 
 /- English proof (translation)
-Establish `e : ∀ h, θ h * l (F h) = ∑ k, l (b k) * (θ h * b.coord k (F h))`. Introduce `h`. Use `conv_lhs => rw [← b.sum_repr (F h)]`. Rewrite using `[map_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_smul, smul_eq_mul, Module.Basis.coord_apply]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[show (fun h => θ h * l (F h)) = fun h => ∑ k, l (b k) * (θ h * b.coord k (F h)) from funext e, integral_finset_sum _ fun k _ => (hf k).const_mul (l (b k))]`. Conclude with `Finset.sum_congr rfl fun k _ => integral_const_mul _ _`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integral_expand {H W ι : Type} [MeasurableSpace H] (ν : Measure H) (s : Set H) [AddCommGroup W] [Module ℂ W]
     [Fintype ι] (b : Module.Basis ι ℂ W) (θ : H → ℂ) (F : H → W)
@@ -98,7 +98,7 @@ theorem integral_expand {H W ι : Type} [MeasurableSpace H] (ν : Measure H) (s 
   exact Finset.sum_congr rfl fun k _ => integral_const_mul _ _
 
 /- English proof (translation)
-The claim follows from `integral_expand (R.νV i t) (R.fdV i t) b (fun h => thetaKO (R.ωP i t) h g f) (R.extV i t y) hf l`.
+A detailed English derivation is pending.
 -/
 theorem downInt_expand (R : RealDat D A Ks) (i : Fin D.R.m) (t : T) (y : (R.HV i t).H) (f : WO (Vc D i) (Wc D i) → ℂ)
     (g : GA D (Wc D i)) {ι : Type} [Fintype ι] (b : Module.Basis ι ℂ (R.cV i).W)
@@ -115,9 +115,9 @@ variable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.w
   {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL]
 
 /- English proof (translation)
-Use `hc.2.2.2.2 U fun h => ?_` and prove the remaining obligations. Take `⟨k, hk, hkh⟩` from `GlobalTheory.TraceIncl.exists_fin V ((finHom V).rangeRestrict h)`. Establish `hfin : finHom V k = finHom V h` using `congrArg Subtype.val hkh`. Establish `hu : k⁻¹ * h ∈ GinfC V`. Express the relevant statement in the definitionally equal form `finHom V (k⁻¹ * h) = 1`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[map_mul, map_inv, hfin, inv_mul_cancel]`. Establish `e : c.ρ h = c.ρ (k⁻¹ * h)`. Rewrite using `[← one_mul (c.ρ (k⁻¹ * h)), ← hc.1 k hk, ← map_mul, mul_inv_cancel_left]`. Rewrite using `[e]`. Conclude with `hU _ hu`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem irr_real {V : HSp D} (c : CoefA V) (hc : c.Is) (U : Submodule ℂ c.W)
     (hU : ∀ u ∈ GinfC V, U.map (c.ρ u) ≤ U) : U = ⊥ ∨ U = ⊤ := by
@@ -146,19 +146,19 @@ variable (R : RealDat D A Ks) (i : Fin D.R.m) (t : T) (y : (R.HV i t).H) (g : GA
 abbrev phi (x : LowT (R.MW i (sg0 D A))) (w : (R.cV i).W) : WO (Vc D i) (Wc D i) → ℂ := R.ptP i t (R.ioP i x w)
 
 /- English proof (translation)
-The claim follows from `LinearMap.map_add _ P Q`.
+A detailed English derivation is pending.
 -/
 theorem pureTensor_add (P Q : PolF D (Wc D i).rank (Vc D i).rank) : R.ptP i t (P + Q) = R.ptP i t P + R.ptP i t Q :=
   LinearMap.map_add _ P Q
 
 /- English proof (translation)
-The claim follows from `LinearMap.map_smul _ c P`.
+A detailed English derivation is pending.
 -/
 theorem pureTensor_smul (c : ℂ) (P : PolF D (Wc D i).rank (Vc D i).rank) : R.ptP i t (c • P) = c • R.ptP i t P :=
   LinearMap.map_smul _ c P
 
 /- English proof (translation)
-The claim follows from `map_sum (pureTensorO R.ψ R.θ (Vc D i) (Wc D i) (fun _ => 1) (cart (R.MW i (sg0 D A))) (R.BV i) (onb (R.MW i (sg0 D A))) (R.vP i t)) P s`.
+A detailed English derivation is pending.
 -/
 theorem pureTensor_sum {ι : Type} (s : Finset ι) (P : ι → PolF D (Wc D i).rank (Vc D i).rank) :
     R.ptP i t (∑ k ∈ s, P k) = ∑ k ∈ s, R.ptP i t (P k) :=
@@ -166,7 +166,7 @@ theorem pureTensor_sum {ι : Type} (s : Finset ι) (P : ι → PolF D (Wc D i).r
     (onb (R.MW i (sg0 D A))) (R.vP i t)) P s
 
 /- English proof (translation)
-Unfold `phi`. Rewrite using `[map_add, pureTensor_add]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem phi_add_w (x : LowT (R.MW i (sg0 D A))) (w w' : (R.cV i).W) :
     phi R i t x (w + w') = phi R i t x w + phi R i t x w' := by
@@ -174,7 +174,7 @@ theorem phi_add_w (x : LowT (R.MW i (sg0 D A))) (w w' : (R.cV i).W) :
   rw [map_add, pureTensor_add]
 
 /- English proof (translation)
-Unfold `phi`. Rewrite using `[map_smul, pureTensor_smul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem phi_smul_w (x : LowT (R.MW i (sg0 D A))) (c : ℂ) (w : (R.cV i).W) :
     phi R i t x (c • w) = c • phi R i t x w := by
@@ -182,7 +182,7 @@ theorem phi_smul_w (x : LowT (R.MW i (sg0 D A))) (c : ℂ) (w : (R.cV i).W) :
   rw [map_smul, pureTensor_smul]
 
 /- English proof (translation)
-Unfold `phi`. Rewrite using `[map_add, LinearMap.add_apply, pureTensor_add]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem fockVectorOfTensor_add_tensor (x x' : LowT (R.MW i (sg0 D A))) (w : (R.cV i).W) :
     phi R i t (x + x') w = phi R i t x w + phi R i t x' w := by
@@ -190,7 +190,7 @@ theorem fockVectorOfTensor_add_tensor (x x' : LowT (R.MW i (sg0 D A))) (w : (R.c
   rw [map_add, LinearMap.add_apply, pureTensor_add]
 
 /- English proof (translation)
-Unfold `phi`. Rewrite using `[map_smul, LinearMap.smul_apply, pureTensor_smul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem fockVectorOfTensor_smul_tensor (c : ℂ) (x : LowT (R.MW i (sg0 D A))) (w : (R.cV i).W) :
     phi R i t (c • x) w = c • phi R i t x w := by
@@ -198,7 +198,7 @@ theorem fockVectorOfTensor_smul_tensor (c : ℂ) (x : LowT (R.MW i (sg0 D A))) (
   rw [map_smul, LinearMap.smul_apply, pureTensor_smul]
 
 /- English proof (translation)
-Use `conv_lhs => rw [← b.sum_repr w]`. Unfold `phi`. Rewrite using `[map_sum, pureTensor_sum, thetaKO_eq_lin, map_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, pureTensor_smul, map_smul, smul_eq_mul, mul_comm, Module.Basis.coord_apply, ← thetaKO_eq_lin]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem theta_expand (x : LowT (R.MW i (sg0 D A))) {ι : Type} [Fintype ι] (b : Module.Basis ι ℂ (R.cV i).W)
     (h : GA D (Vc D i)) (w : (R.cV i).W) :
@@ -212,13 +212,13 @@ theorem theta_expand (x : LowT (R.MW i (sg0 D A))) {ι : Type} [Fintype ι] (b :
 variable {R i t y g}
 
 /- English proof (translation)
-Set `b` to `Module.finBasis ℂ (R.cV i).W`. Establish `hadd : ∀ w w' l, downInt R i t y (phi R i t x (w + w')) l g = downInt R i t y (phi R i t x w) l g + downInt R i t y (phi R i t x w') l g`. Introduce `w w' l`. Rewrite using `[phi_add_w]`. Conclude with `downInt_add_datum R i t y _ _ l g (hint _ l (hth _)) (hint _ l (hth _))`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hsm : ∀ (c : ℂ) w l, downInt R i t y (phi R i t x (c • w)) l g = c * downInt R i t y (phi R i t x w) l g`. Introduce `c w l`. Rewrite using `[phi_smul_w]`. Conclude with `downInt_smul_datum R i t y c _ l g`. Use `⟨{ toFun := fun w => ∑ k, downInt R i t y (phi R i t x w) (b.coord k) g • b k, map_add' := ?_, map_smul' := ?_ }, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `w w'`. Simplify using `only [hadd, add_smul, Finset.sum_add_distrib]`. Introduce `c w`. Simplify using `only [hsm, mul_smul, RingHom.id_apply, Finset.smul_sum]`. Introduce `w l show l (∑ k, downInt R i t y (phi R i t x w) (b.coord k) g • b k) = _`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_sum, downInt_expand R i t y _ g b (fun k => hint _ _ (hth _)) l]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, smul_eq_mul, mul_comm]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_op
     (hint : ∀ (f : WO (Vc D i) (Wc D i) → ℂ) (l : (R.cV i).W →ₗ[ℂ] ℂ), IsThetaFunO R.ψ (Vc D i) (Wc D i) f →
@@ -248,7 +248,7 @@ theorem exists_op
     rw [map_smul, smul_eq_mul, mul_comm]
 
 /- English proof (translation)
-Establish `hF` using `(SetLike.ext_iff.1 (hM.HV i t).2.1 ((R.HV i t).e y)).1 (LinearMap.mem_range_self _ y)`. Establish `e` using `GlobalTheory.Proof.RealFockActionTwistedOperators.form_rat (R.cV i) hF hγ h`. Establish `e2 : ∀ z, (R.cV i).ρ (γ * h)⁻¹ ((R.cV i).ρ γ z) = (R.cV i).ρ h⁻¹ z` using `fun z => by`. Rewrite using `[← Module.End.mul_apply, ← map_mul, _root_.mul_inv_rev, inv_mul_cancel_right]`. Conclude with `e.trans (e2 _)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem extV_left' (hM : R.IsModels) {γ : GA D (Vc D i)} (hγ : γ ∈ GQ (Vc D i)) (h : GA D (Vc D i)) :
     R.extV i t y (γ * h) = R.extV i t y h := by
@@ -259,7 +259,7 @@ theorem extV_left' (hM : R.IsModels) {γ : GA D (Vc D i)} (hγ : γ ∈ GQ (Vc D
   exact e.trans (e2 _)
 
 /- English proof (translation)
-Establish `e` using `GlobalTheory.Proof.RealFockActionTwistedOperators.ext_mul_real (R.cV i) ((R.HV i t).e y) hu h`. Establish `e2 : ∀ z, (R.cV i).ρ u ((R.cV i).ρ (h * u)⁻¹ z) = (R.cV i).ρ h⁻¹ z` using `fun z => by`. Rewrite using `[← Module.End.mul_apply, ← map_mul, _root_.mul_inv_rev, mul_inv_cancel_left]`. Conclude with `(congrArg ((R.cV i).ρ u) e).trans (e2 _)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem extV_real {u : GA D (Vc D i)} (hu : u ∈ GinfC (Vc D i)) (h : GA D (Vc D i)) :
     (R.cV i).ρ u (R.extV i t y (h * u)) = R.extV i t y h := by
@@ -269,11 +269,11 @@ theorem extV_real {u : GA D (Vc D i)} (hu : u ∈ GinfC (Vc D i)) (h : GA D (Vc 
   exact (congrArg ((R.cV i).ρ u) e).trans (e2 _)
 
 /- English proof (translation)
-Establish `hD` using `hM.νV i t`. Establish `hHaar : (R.νV i t).IsHaarMeasure` using `hD.1.1`. Establish `hΦ : ∀ γ ∈ GQ (Vc D i), ∀ h, thetaKO (R.ωP i t) (γ * h) g (phi R i t x w) * (l ∘ₗ (R.cV i).ρ u) (R.extV i t y (γ * h)) = thetaKO (R.ωP i t) h g (phi R i t x w) * (l ∘ₗ (R.cV i).ρ u) (R.extV i t y h)`. Introduce `γ hγ h`. Establish `a1` using `GlobalTheory.Proof.RealFockActionTwistedOperators.thetaKO_rat_mul (hP.ωP i t) (hP.pt_theta i t (R.ioP i x w)) hγ h g`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `a2` using `extV_left' (y := y) hM hγ h`. Conclude with `congrArg₂ (· * ·) a1 (congrArg _ a2)`. Establish `e : ∀ h, thetaKO (R.ωP i t) h g (phi R i t x ((R.cV i).ρ u w)) * l (R.extV i t y h) = thetaKO (R.ωP i t) (h * u) g (phi R i t x w) * (l ∘ₗ (R.cV i).ρ u) (R.extV i t y (h * u))`. Introduce `h`. Establish `e1 : phi R i t x ((R.cV i).ρ u w) = R.ωP i t (u, 1) (phi R i t x w)` using `((hP.ioP i t).1 u hu x w).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e3` using `(GlobalTheory.Proof.RealFockActionTwistedOperators.thetaKO_mul_right (R.ωP i t) (phi R i t x w) h u g).symm`. Establish `e2` using `extV_real (y := y) hu h`. Conclude with `congrArg₂ (· * ·) ((congrArg _ e1).trans e3) (congrArg l e2.symm)`. Establish `key` using `GlobalTheory.ChainOnto.setIntegral_fd_mul_right D (Vc D i) (R.νV i t) (R.fdV i t) hHaar hD.2 (fun h => thetaKO (R.ωP i t) h g (phi R i t x w) * (l ∘ₗ (R.cV i).ρ u) (R.extV i t y h)) hΦ u`. Conclude with `(integral_congr_ae (Filter.Eventually.of_forall e)).trans key`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem downInt_real (hM : R.IsModels) (hP : R.IsThP) (x : LowT (R.MW i (sg0 D A))) (w : (R.cV i).W)
     (l : (R.cV i).W →ₗ[ℂ] ℂ) {u : GA D (Vc D i)} (hu : u ∈ GinfC (Vc D i)) :
@@ -308,7 +308,7 @@ variable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.w
   {R : RealDat D A Ks} {i : Fin D.R.m} {t : T} {y : (R.HV i t).H} {g : GA D (Wc D i)}
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.TraceIncl.thF_eq_integral hP y v g]`. Establish `e : ∀ h, thetaKO (R.ωP i t) h g (R.ptP i t (R.ioP i (PiTensorProduct.tprod ℂ v) (R.extV i t y h))) = ∑ k, thetaKO (R.ωP i t) h g (phi R i t (PiTensorProduct.tprod ℂ v) (b k)) * b.coord k (R.extV i t y h)` using `fun h => theta_expand R i t g _ b h _`. Rewrite using `[show (fun h => thetaKO (R.ωP i t) h g (R.ptP i t (R.ioP i (PiTensorProduct.tprod ℂ v) (R.extV i t y h)))) = fun h => ∑ k, thetaKO (R.ωP i t) h g (phi R i t (PiTensorProduct.tprod ℂ v) (b k)) * b.coord k (R.extV i t y h) from funext e, integral_finset_sum _ fun k _ => hint _ _ (h …`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem thF_eq_sum (hP : R.IsThP)
     (hint : ∀ (f : WO (Vc D i) (Wc D i) → ℂ) (l : (R.cV i).W →ₗ[ℂ] ℂ), IsThetaFunO R.ψ (Vc D i) (Wc D i) f →
@@ -331,19 +331,19 @@ end GlobalTheory.GenRealSchur
 open GlobalTheory.GenRealSchur in
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 T A Ks _ _ _ R F hG hF i t y hy x w l g`. Establish `hM` using `hG.core.models`. Establish `hP` using `hG.core.thP`. Establish `hth : ∀ P, IsThetaFunO R.ψ (Vc D i) (Wc D i) (R.ptP i t P)` using `hP.pt_theta i t`. Establish `hint : ∀ (f : WO (Vc D i) (Wc D i) → ℂ) (l : (R.cV i).W →ₗ[ℂ] ℂ), IsThetaFunO R.ψ (Vc D i) (Wc D i) f → IntegrableOn (fun h => thetaKO (R.ωP i t) h g f * l (R.extV i t y h)) (R.fdV i t) (R.νV i t)` using `fun f l hf => GlobalTheory.T.integrableOn_downwardThetaLift_integrand D G Pl0 T A Ks R F hG hF i t y f l g hf`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : Nontrivial (R.cV i).W := (hM.cV i).2.2.2.1`. Establish `hpure : ∀ v : ∀ ρ, lowT (R.MW i (sg0 D A)) ρ, ∀ w l, downInt R i t y (phi R i t (PiTensorProduct.tprod ℂ v) w) l g = 0`. Introduce `v`. Take `⟨T₀, hT₀⟩` from `exists_op hint hth (PiTensorProduct.tprod ℂ v)`. Set `b` to `Module.finBasis ℂ (R.cV i).W`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hcomm : ∀ a, (∃ u ∈ GinfC (Vc D i), a = (R.cV i).ρ u) → a * T₀ = T₀ * a`. Introduce and unpack `a ⟨u, hu, rfl⟩`. Use `LinearMap.ext fun w => b.ext_elem fun k => ?_` and prove the remaining obligations. Rewrite using `[← b.coord_apply, ← b.coord_apply, Module.End.mul_apply, Module.End.mul_apply, hT₀, ← LinearMap.comp_apply (b.coord k) ((R.cV i).ρ u), hT₀, downInt_real hM hP _ _ _ hu]`. Take `⟨c, hc⟩` from `schur_scalar (fun a => ∃ u ∈ GinfC (Vc D i), a = (R.cV i).ρ u) (fun U hU => irr_real (R.cV i) (hM.cV i) U fun u hu => hU _ ⟨u, hu, rfl⟩) T₀ hcomm`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `htr : LinearMap.trace ℂ _ T₀ = 0`. Rewrite using `[LinearMap.trace_eq_matrix_trace ℂ b, Matrix.trace]`. Simplify using `only [Matrix.diag, LinearMap.toMatrix_apply, ← b.coord_apply, hT₀]`. Rewrite using `[← thF_eq_sum hP hint hth v b, hy]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hc0 : c = 0`. Rewrite `htr` using `[hc, map_smul, LinearMap.trace_one, smul_eq_mul]`. Conclude with `(mul_eq_zero.1 htr).resolve_right (Nat.cast_ne_zero.2 Module.finrank_pos.ne')`. Introduce `w l`. Rewrite using `[← hT₀, hc, hc0, zero_smul, LinearMap.zero_apply, map_zero]`.
+Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `PiTensorProduct.induction_on (motive := fun x => downInt R i t y (R.ptP i t (R.ioP i x w)) l g = 0) x ?_ ?_` and prove the remaining obligations. Introduce `r v`. Express the relevant statement in the definitionally equal form `downInt R i t y (phi R i t (r • PiTensorProduct.tprod ℂ v) w) l g = 0`. Rewrite using `[fockVectorOfTensor_smul_tensor, downInt_smul_datum, hpure, mul_zero]`. Introduce `a a' ha ha'`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `downInt R i t y (phi R i t (a + a') w) l g = 0`. Rewrite using `[fockVectorOfTensor_add_tensor, downInt_add_datum R i t y _ _ l g (hint _ l (hth _)) (hint _ l (hth _))]`. Express the relevant statement in the definitionally equal form `downInt R i t y (phi R i t a w) l g + downInt R i t y (phi R i t a' w) l g = 0`. Rewrite using `[ha, ha', add_zero]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.GenRealSchur.lift_vanish_single : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T : Type) (A : FamIn D.what₂.LL G Pl0 T D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A), GlobalTheory.LiftRows.Given R F → R.FullP → ∀ (i : Fin D.R.m) (t : T) (y : (R.HV i t).H), R.thF i t y = 0 → ∀ (x : LowT (R.MW i (sg0 D A))) (w : (R.cV i).W) (l : (R.cV i).W →ₗ[ℂ] ℂ) (g : GA D (Wc D i)), downInt R i t y (R.ptP i t (R.ioP i x w)) l g = 0 := by
   intro D G _ _ Pl0 T A Ks _ _ _ R F hG hF i t y hy x w l g

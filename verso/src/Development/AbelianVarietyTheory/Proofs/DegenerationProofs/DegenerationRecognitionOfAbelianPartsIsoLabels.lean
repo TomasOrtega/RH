@@ -15,9 +15,9 @@ open GlobalTheory GlobalTheory.Ex
 namespace GlobalTheory.Ex.Recognition
 
 /- English proof (translation)
-Introduce `hC R _ _ D D' h1 h2 h3 h4 C _ _ _ _ _ N N' ν ν' q q' n hp ho hn hi hi' ht ht' mt`. Take `⟨hA, hg⟩` from `GlobalTheory.T.thetaRecognition_matched_parts_dim_eq C N N' q q' n _ _ hp ho hn hi hi' ht ht' mt`. Take `⟨e, hB, hT⟩` from `GlobalTheory.T.thetaRecognition_lattice_iso_and_terms_agree C N N' q q' n _ _ hp ho hn hi hi' ht ht' mt hA`. Take `⟨I, hOB, hl, hG⟩` from `hC R D D' h1 h2 h3 h4 C N N' ν ν' q q' n hp ho hn hi hi' ht ht' mt hA hg e hB hT`. Take `⟨J, hJ, hJe, hOG⟩` from `GlobalTheory.T.exists_numD_iso_onG_of_allMatch C N N' q q' n _ _ hp ho hn hi hi' ht ht' mt hA e hB hT I hOB`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Substitute `hJ hJe` using the available equality. Conclude with `⟨J, GlobalTheory.T.thetaRecognition_labels_agree_of_iso C N N' q q' n _ _ hp ho hn hi hi' ht ht' mt hA J hB hOG hl, hG⟩`.
+Substitute using the available equality. Supply the required witnesses or components.
 -/
 theorem urec_of_abelian : UrCSt → URecSt := by
   intro hC R _ _ D D' h1 h2 h3 h4 C _ _ _ _ _ N N' ν ν' q q' n hp ho hn hi hi' ht ht' mt

@@ -14,11 +14,9 @@ noncomputable section
 namespace SliceLelongError
 
 /- English proof (translation)
-Establish `hloc : deriv Real.smoothTransition =ᶠ[𝓝 s] fun _ => (0 : ℝ)`. Break down `hs with hs | hs` into its components or cases. Use `filter_upwards [Iio_mem_nhds hs] with r hr`. Establish `hc : Real.smoothTransition =ᶠ[𝓝 r] fun _ => (0 : ℝ)` using `by filter_upwards [Iio_mem_nhds (show r < 0 from hr)] with q hq`. Conclude with `Real.smoothTransition.zero_of_nonpos (le_of_lt hq)`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hc.deriv_eq, deriv_const]`. Use `filter_upwards [Ioi_mem_nhds hs] with r hr`. Establish `hc : Real.smoothTransition =ᶠ[𝓝 r] fun _ => (1 : ℝ)` using `by filter_upwards [Ioi_mem_nhds (show 1 < r from hr)] with q hq`. Conclude with `Real.smoothTransition.one_of_one_le (le_of_lt hq)`. Rewrite using `[hc.deriv_eq, deriv_const]`.
-
-Conclude with `⟨hloc.eq_of_nhds, by rw [hloc.deriv_eq, deriv_const]⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem deriv_smoothTransition_eq_zero {s : ℝ} (hs : s < 0 ∨ 1 < s) :
     deriv Real.smoothTransition s = 0 ∧ deriv (deriv Real.smoothTransition) s = 0 := by
@@ -37,7 +35,7 @@ theorem deriv_smoothTransition_eq_zero {s : ℝ} (hs : s < 0 ∨ 1 < s) :
   exact ⟨hloc.eq_of_nhds, by rw [hloc.deriv_eq, deriv_const]⟩
 
 /- English proof (translation)
-Establish `h1` using `contDiff_infty_iff_deriv.mp (Real.smoothTransition.contDiff (n := ⊤))`. Conclude with `⟨h1.2.continuous, (contDiff_infty_iff_deriv.mp h1.2).2.continuous⟩`.
+Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem continuous_derivs :
     Continuous (deriv Real.smoothTransition) ∧ Continuous (deriv (deriv Real.smoothTransition)) := by
@@ -45,9 +43,9 @@ theorem continuous_derivs :
   exact ⟨h1.2.continuous, (contDiff_infty_iff_deriv.mp h1.2).2.continuous⟩
 
 /- English proof (translation)
-Establish `hsupp : ∀ f : ℝ → ℝ, (∀ s, s < 0 ∨ 1 < s → f s = 0) → HasCompactSupport f` using `fun f hf => HasCompactSupport.intro (isCompact_Icc (a := (0 : ℝ)) (b := 1)) fun s hs => hf s (by`. Rewrite `hs` using `[Set.mem_Icc, not_and_or, not_le, not_le]`. Conclude with `hs)`. Take `⟨M₁, hM₁⟩` from `continuous_derivs.1.bounded_above_of_compact_support (hsupp _ fun s hs => (deriv_smoothTransition_eq_zero hs).1)`. Take `⟨M₂, hM₂⟩` from `continuous_derivs.2.bounded_above_of_compact_support (hsupp _ fun s hs => (deriv_smoothTransition_eq_zero hs).2)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨M₁, M₂, fun s => by simpa [Real.norm_eq_abs] using hM₁ s, fun s => by simpa [Real.norm_eq_abs] using hM₂ s⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_bound_derivs : ∃ M₁ M₂ : ℝ, (∀ s, |deriv Real.smoothTransition s| ≤ M₁) ∧
     ∀ s, |deriv (deriv Real.smoothTransition) s| ≤ M₂ := by
@@ -62,7 +60,7 @@ theorem exists_bound_derivs : ∃ M₁ M₂ : ℝ, (∀ s, |deriv Real.smoothTra
     fun s => by simpa [Real.norm_eq_abs] using hM₂ s⟩
 
 /- English proof (translation)
-The claim follows from `|-(k + 1)⁻¹ * P + (k + 1)⁻¹ ^ 2 * Q| ≤ (|A| + 2 * |B|) / (k + 1) := by have hk1 : 0 < k + 1 := by linarith have ha : 0 < (k + 1)⁻¹ := inv_pos.mpr hk1 have ha1 : (k + 1)⁻¹ * (k + 1) = 1 := inv_mul_cancel₀ hk1.ne' have hale : (k + 1)⁻¹ ≤ 1 := inv_le_one_of_one_le₀ (by linarith) hav …`.
+A detailed English derivation is pending.
 -/
 theorem bound_aux {P Q A B k : ℝ} (hk : 0 ≤ k) (hP : |P| ≤ A)
     (hQ : |Q| ≤ B * (2 * (k + 1) - (k + 1) + 1)) :
@@ -86,13 +84,13 @@ theorem bound_aux {P Q A B k : ℝ} (hk : 0 ≤ k) (hP : |P| ≤ A)
         nlinarith [mul_le_mul_of_nonneg_left key (abs_nonneg B), abs_nonneg A]
 
 /- English proof (translation)
-Introduce `n e h J F u ℓ hJ hF hu hℓ hℓW`. Take `⟨M₁, M₂, hM₁, hM₂⟩` from `exists_bound_derivs`. Take `⟨C₂, hC₂⟩` from `h₂ n e h J F u ℓ hJ hF hu hℓ`. Take `⟨C₃, hC₃⟩` from `h₃ n e h J F u ℓ hJ hF hu hℓ hℓW`. Establish `hL : Measurable fun x : Fin n → ℂ => Real.log (h.dualNorm x)` using `Real.measurable_log.comp (SliceCut.continuous_dualNorm h).measurable`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `squeeze_zero_norm (a := fun k : ℕ => (|C₂ * M₁| + 2 * |C₃ * M₂|) / ((k : ℝ) + 1)) (fun k => ?_) (tendsto_const_nhds.div_atTop (tendsto_natCast_atTop_atTop.atTop_add tendsto_const_nhds))` and prove the remaining obligations. Establish `hk : (0 : ℝ) < (k : ℝ) + 1` using `by positivity`. Establish `hw : Measurable fun x : Fin n → ℂ => 2 - Real.log (h.dualNorm x) / ((k : ℝ) + 1)` using `measurable_const.sub (hL.div_const _)`. Establish `e1` using `hC₂ (fun x => deriv Real.smoothTransition (2 - Real.log (h.dualNorm x) / ((k : ℝ) + 1))) M₁ (continuous_derivs.1.measurable.comp hw) fun x => hM₁ _`. Establish `e2` using `hC₃ (fun x => deriv (deriv Real.smoothTransition) (2 - Real.log (h.dualNorm x) / ((k : ℝ) + 1))) M₂ ((k : ℝ) + 1) (2 * ((k : ℝ) + 1)) (continuous_derivs.2.measurable.comp hw) (fun x => hM₂ _) (by linarith) fun x hx => by`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hb`. Rewrite `hb` using `[not_and_or, not_le, not_le]`. Use `hx (deriv_smoothTransition_eq_zero ?_).2` and prove the remaining obligations. Break down `hb with hb | hb` into its components or cases. Establish `: Real.log (h.dualNorm x) / ((k : ℝ) + 1) < 1` using `(div_lt_one hk).mpr hb right`.
+Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `: 2 < Real.log (h.dualNorm x) / ((k : ℝ) + 1)` using `(lt_div_iff₀ hk).mpr hb left`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[Real.norm_eq_abs, h₁ n e h J F u ℓ k hJ hF hu hℓ]`. Conclude with `bound_aux (Nat.cast_nonneg k) e1 e2`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem proof (h₁ : SliceCutChain.Statement) (h₂ : SliceWeightBound.Statement)
     (h₃ : SliceBandEnergy.Statement) : SliceLelongError.Statement := by

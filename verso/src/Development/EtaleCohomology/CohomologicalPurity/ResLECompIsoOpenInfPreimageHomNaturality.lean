@@ -6,11 +6,11 @@ open CategoryTheory Limits AlgebraicGeometry Opposite GlobalTheory.EtC
 namespace LateralTheory.CohomologicalPurity
 
 /- English proof (translation)
-Establish `hba : ∀ j, b j ≫ (α j).inv = α0.inv ≫ a j` using `fun j => by`. Rewrite using `[Iso.comp_inv_eq, Category.assoc, hab, Iso.inv_hom_id_assoc]`. Use `⟨fun x => ?_, fun j y hy => ?_⟩` and prove the remaining obligations. Take `⟨j, y, hy⟩` from `H.1 (pull _ α0.hom (tw q i) n x)`. Use `⟨j, pull _ (α j).inv (tw q i) n y, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← pull_comp, hba, pull_comp, hy, ← pull_comp, Iso.inv_hom_id, pull_id]`. Establish `h0 : pull _ (a j) (tw q i) n (pull _ (α j).hom (tw q i) n y) = 0`. Rewrite using `[← pull_comp, hab, pull_comp, hy, map_zero]`. Take `⟨k, f, hk⟩` from `H.2 j _ h0`. Use `⟨k, f, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: pull _ (mb f) (tw q i) n y = pull _ (α k).inv (tw q i) n (pull _ (ma f) (tw q i) n (pull _ (α j).hom (tw q i) n y))`. Rewrite using `[← pull_comp, ← pull_comp, Category.assoc, hm, Iso.inv_hom_id_assoc]`. Rewrite using `[this, hk, map_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem ht_transport (q : ℕ) {J : Type} [SmallCategory J] (X Y : J → Spc) (X0 Y0 : Spc) (a : ∀ j, X0 ⟶ X j)
     (b : ∀ j, Y0 ⟶ Y j) (ma : ∀ {j k : J} (_ : j ⟶ k), X k ⟶ X j) (mb : ∀ {j k : J} (_ : j ⟶ k), Y k ⟶ Y j)
@@ -35,7 +35,7 @@ theorem ht_transport (q : ℕ) {J : Type} [SmallCategory J] (X Y : J → Spc) (X
     rw [this, hk, map_zero]
 
 /- English proof (translation)
-Unfold `oj`. Rewrite using `[Ideal.map_sup, off_sup]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem oj_sup_eq {A : Type} [CommRing A] {J : Type} [SmallCategory J] (D : J ⥤ CommRingCat.{0})
     (s : (Functor.const J).obj (CommRingCat.of A) ⟶ D) (I1 I2 : Ideal A) (j : J) :
@@ -43,7 +43,7 @@ theorem oj_sup_eq {A : Type} [CommRing A] {J : Type} [SmallCategory J] (D : J �
   unfold oj; rw [Ideal.map_sup, off_sup]
 
 /- English proof (translation)
-Rewrite using `[← Functor.map_comp, ← Functor.map_comp]`. Use `congr 1`. Rewrite using `[← cancel_mono W.ι]`. Simplify using `only [Category.assoc, Scheme.isoOfEq_hom_ι, Scheme.Hom.resLE_comp_ι, Scheme.isoOfEq_hom_ι_assoc]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem sq_iso {X' X : Scheme.{0}} (f : X' ⟶ X) (V W : X.Opens) (V' W' : X'.Opens) (e : V = W) (e' : V' = W')
     (h1 : V' ≤ f ⁻¹ᵁ V) (h2 : W' ≤ f ⁻¹ᵁ W) :
@@ -54,9 +54,9 @@ theorem sq_iso {X' X : Scheme.{0}} (f : X' ⟶ X) (V W : X.Opens) (V' W' : X'.Op
   simp only [Category.assoc, Scheme.isoOfEq_hom_ι, Scheme.Hom.resLE_comp_ι, Scheme.isoOfEq_hom_ι_assoc]
 
 /- English proof (translation)
-Introduce `q A B _ _ φ I1 I2 J _ _ D s t hc he n i H`. Establish `T` using `ht_transport q (fun j => sch.obj (oj D s I1 j ⊔ oj D s I2 j).toScheme) (fun j => sch.obj (oj D s (I1 ⊔ I2) j).toScheme) (sch.obj (off B (I1.map φ) ⊔ off B (I2.map φ)).toScheme) (sch.obj (off B ((I1 ⊔ I2).map φ)).toScheme) (fun j => (conB φ I1 I2 D s t he j).right) (fun j => (opnM …`. Use `⟨fun x => ?_, fun j h y hy => ?_⟩` and prove the remaining obligations. Take `⟨j, y, hy⟩` from `T.1 x`. Conclude with `⟨j, (oinf_pre φ D s t (I1 ⊔ I2) he j).le, y, hy⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨k, f, hk⟩` from `T.2 j y hy`. Conclude with `⟨k, f, (oj_pre D s (I1 ⊔ I2) f).le, hk⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem ocg_BR : OCG_BR := by
   intro q A B _ _ φ I1 I2 J _ _ D s t hc he n i H
@@ -77,7 +77,7 @@ theorem ocg_BR : OCG_BR := by
     exact ⟨k, f, (oj_pre D s (I1 ⊔ I2) f).le, hk⟩
 
 /- English proof (translation)
-Rewrite using `[← Functor.map_comp, ← Functor.map_comp]`. Use `congr 1`. Rewrite using `[← cancel_mono (Scheme.Opens.ι _), ← cancel_mono (Scheme.Opens.ι _)]`. Simplify using `only [Category.assoc, Scheme.Hom.resLE_comp_ι, Scheme.Hom.resLE_comp_ι_assoc, Scheme.Opens.isoOfLE_inv_ι, Scheme.Opens.isoOfLE_inv_ι_assoc]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem sq_le {X' X : Scheme.{0}} (f : X' ⟶ X) (U V : X.Opens) (U' V' : X'.Opens) (hUV : U ≤ V) (hUV' : U' ≤ V')
     (h1 : U' ≤ f ⁻¹ᵁ U) (hV : V' ≤ f ⁻¹ᵁ V) (h3 : V'.ι ⁻¹ᵁ U' ≤ (f.resLE V V' hV) ⁻¹ᵁ (V.ι ⁻¹ᵁ U)) :
@@ -90,7 +90,7 @@ theorem sq_le {X' X : Scheme.{0}} (f : X' ⟶ X) (U V : X.Opens) (U' V' : X'.Ope
     Scheme.Opens.isoOfLE_inv_ι_assoc]
 
 /- English proof (translation)
-Introduce `q A B _ _ φ I1 I2 J _ _ D s t hc he m i H`. Establish `T` using `ht_transport q (fun j => sch.obj (oj D s I1 j).toScheme) (fun j => ((sysB I1 I2 D s).obj (op j)).left) (sch.obj (off B (I1.map φ)).toScheme) (limB φ I1 I2).left (fun j => (opnMap (Spec.map (t.app j)) _ _ (oinf_pre φ D s t I1 he j).le).left) (fun j => (conB φ I1 I2 D s t he j).lef …`. Conclude with `T`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem ocg_BL : OCG_BL := by
   intro q A B _ _ φ I1 I2 J _ _ D s t hc he m i H
@@ -108,9 +108,9 @@ theorem ocg_BL : OCG_BL := by
   exact T
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Introduce `x hx`. Conclude with `hx.1`. Introduce `x hx`. Use `⟨hx, ?_⟩` and prove the remaining obligations.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `V.ι x ∈ (V : Set X)`. Rewrite using `[← Scheme.Opens.range_ι]`. Conclude with `⟨x, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem pre_inf {X : Scheme.{0}} (U V : X.Opens) : V.ι ⁻¹ᵁ (U ⊓ V) = V.ι ⁻¹ᵁ U := by
   apply le_antisymm
@@ -122,7 +122,7 @@ theorem pre_inf {X : Scheme.{0}} (U V : X.Opens) : V.ι ⁻¹ᵁ (U ⊓ V) = V.�
     exact ⟨x, rfl⟩
 
 /- English proof (translation)
-Unfold `oj`. Rewrite using `[Ideal.map_mul, off_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem oj_mul_eq {A : Type} [CommRing A] {J : Type} [SmallCategory J] (D : J ⥤ CommRingCat.{0})
     (s : (Functor.const J).obj (CommRingCat.of A) ⟶ D) (I1 I2 : Ideal A) (j : J) :
@@ -133,14 +133,14 @@ def isoW {X : Scheme.{0}} (U V W : X.Opens) (e : W = U ⊓ V) : W.toScheme ≅ (
   X.isoOfEq e ≪≫ (Scheme.Opens.isoOfLE (inf_le_right : U ⊓ V ≤ V)).symm ≪≫ Scheme.isoOfEq _ (pre_inf U V)
 
 /- English proof (translation)
-Simplify using `[isoW]`.
+Simplify using the standard rewrite rules.
 -/
 theorem isoW_ι {X : Scheme.{0}} (U V W : X.Opens) (e : W = U ⊓ V) :
     (isoW U V W e).hom ≫ (V.ι ⁻¹ᵁ U).ι ≫ V.ι = W.ι := by
   simp [isoW]
 
 /- English proof (translation)
-Rewrite using `[← Functor.map_comp, ← Functor.map_comp]`. Use `congr 1`. Rewrite using `[← cancel_mono (Scheme.Opens.ι _), ← cancel_mono (Scheme.Opens.ι _)]`. Simplify using `only [Category.assoc, Scheme.Hom.resLE_comp_ι, Scheme.Hom.resLE_comp_ι_assoc, isoW_ι]`. Rewrite using `[← Category.assoc (isoW U' V' W' e').hom, ← Category.assoc ((isoW U' V' W' e').hom ≫ _), Category.assoc (isoW U' V' W' e').hom, isoW_ι]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem resLE_comp_isoOpenInfPreimage_hom_naturality {X' X : Scheme.{0}} (f : X' ⟶ X) (U V W : X.Opens) (U' V' W' : X'.Opens) (e : W = U ⊓ V)
     (e' : W' = U' ⊓ V') (h1 : W' ≤ f ⁻¹ᵁ W) (hV : V' ≤ f ⁻¹ᵁ V) (h3 : V'.ι ⁻¹ᵁ U' ≤ (f.resLE V V' hV) ⁻¹ᵁ (V.ι ⁻¹ᵁ U)) :
@@ -153,7 +153,7 @@ theorem resLE_comp_isoOpenInfPreimage_hom_naturality {X' X : Scheme.{0}} (f : X'
   rw [← Category.assoc (isoW U' V' W' e').hom, ← Category.assoc ((isoW U' V' W' e').hom ≫ _), Category.assoc (isoW U' V' W' e').hom, isoW_ι]
 
 /- English proof (translation)
-Introduce `q A B _ _ φ I1 I2 J _ _ D s t hc he m i H`. Establish `T` using `ht_transport q (fun j => sch.obj (oj D s (I1 * I2) j).toScheme) (fun j => ((sysA I1 I2 D s).obj (op j)).left) (sch.obj (off B ((I1 * I2).map φ)).toScheme) (limA φ I1 I2).left (fun j => (opnMap (Spec.map (t.app j)) _ _ (oinf_pre φ D s t (I1 * I2) he j).le).left) (fun j => (conA φ …`. Conclude with `T`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem ocg_AL : OCG_AL := by
   intro q A B _ _ φ I1 I2 J _ _ D s t hc he m i H
@@ -171,7 +171,7 @@ theorem ocg_AL : OCG_AL := by
   exact T
 
 /- English proof (translation)
-The claim follows from `OffChaseGeo_of ocg_AL ocg_BL ocg_BR`.
+A detailed English derivation is pending.
 -/
 theorem OffChaseGeo_full : OffChaseGeo := OffChaseGeo_of ocg_AL ocg_BL ocg_BR
 

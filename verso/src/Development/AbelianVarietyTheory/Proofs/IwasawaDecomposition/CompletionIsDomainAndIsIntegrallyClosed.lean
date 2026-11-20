@@ -12,29 +12,23 @@ namespace GlobalTheory.AnalyticNormality
 open IsLocalRing
 
 /- English proof (translation)
-Establish `hnoeth` using `GlobalTheory.T.isNoetherianRing_adicCompletion_of_noetherian`. Establish `hquot` using `GlobalTheory.T.nonempty_adicCompletion_quotient_ringEquiv`. Establish `hengine` using `GlobalTheory.T.associated_prime_localization_dvr`. Establish `hclosed` using `GlobalTheory.T.isIntegrallyClosed_of_integral_mul_mem_of_assocPrimes`. Establish `hdom` using `GlobalTheory.T.isDomain_of_isIntegrallyClosed_of_isReduced_local`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hred` using `GlobalTheory.T.adic_completion_reduced_of_jacobson`. Establish `hcond` using `GlobalTheory.T.exists_conductor_adicCompletion_essFiniteType`. Introduce `A _ _ _ _ _ _`. Use `haveI : IsNoetherianRing A := Algebra.EssFiniteType.isNoetherianRing ℤ A`. Use `set m := maximalIdeal A with hm`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Set `R` to `AdicCompletion m A`. Use `haveI : IsNoetherianRing R := hnoeth A m`. Use `haveI : Module.Flat A R := AdicCompletion.flat_of_isNoetherian m`. Use `haveI : IsReduced R := hred A m (IsLocalRing.maximalIdeal_le_jacobson _)`. Take `⟨x, hx0, hx⟩` from `hcond A`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hxR : algebraMap A R x ∈ nonZeroDivisors R`. Establish `hxA : IsSMulRegular A x` using `IsSMulRegular.of_ne_zero hx0`. Establish `h : IsSMulRegular R (algebraMap A R x)` using `hxA.of_flat`. Rewrite using `[mem_nonZeroDivisors_iff_right]`. Introduce `y hy`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `h ?_` and prove the remaining obligations. Simplify `hy` using `[smul_eq_mul, mul_comm]`. Establish `hredq : ∀ q : Ideal A, q.IsPrime → x ∈ q → IsReduced (R ⧸ q.map (algebraMap A R))`. Introduce `q hq _`. Take `⟨e⟩` from `hquot A m q`.
+Equip the data with the indicated structure. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `haveI : IsDomain (A ⧸ q) := Ideal.Quotient.isDomain q`. Use `haveI : Algebra.EssFiniteType A (A ⧸ q) := inferInstance`. Use `haveI hess : @Algebra.EssFiniteType ℤ (A ⧸ q) _ _ (Ring.toIntAlgebra _) := by`. Use `letI := Ring.toIntAlgebra (A ⧸ q)`. Use `haveI : IsScalarTower ℤ A (A ⧸ q) := .of_algebraMap_eq fun z => by simp`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Algebra.EssFiniteType.comp ℤ A (A ⧸ q)`. Establish `hj : m.map (Ideal.Quotient.mk q) ≤ Ideal.jacobson (⊥ : Ideal (A ⧸ q))` using `by haveI : IsLocalRing (A ⧸ q) := IsLocalRing.of_surjective' (Ideal.Quotient.mk q) Ideal.Quotient.mk_surjective`. Rewrite using `[Ideal.map_le_iff_le_comap]`. Introduce `a ha`. Use `Ideal.mem_comap.mpr (IsLocalRing.maximalIdeal_le_jacobson _ ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]`. Introduce `hu`. Take `⟨b, hb⟩` from `Ideal.Quotient.mk_surjective (hu.unit⁻¹ : (A ⧸ q)ˣ).1`. Establish `h1 : Ideal.Quotient.mk q (a * b) = 1`. Rewrite using `[map_mul, hb]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `hu.mul_val_inv`. Establish `h2 : a * b - 1 ∈ q`. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, map_sub, h1, map_one, sub_self]`. Establish `h3 : a * b - 1 ∈ m` using `IsLocalRing.le_maximalIdeal hq.ne_top h2`. Establish `h4 : (1 : A) ∈ m`.
-
-Use `m.sub_mem (m.mul_mem_right b ha) h3` as an intermediate fact. Simplify using `using this`. Conclude with `(Ideal.ne_top_iff_one m).mp (IsLocalRing.maximalIdeal.isMaximal A).ne_top h4`. Use `haveI := hred (A ⧸ q) _ hj`. Conclude with `isReduced_of_injective e.toRingHom e.injective`.
-
-Establish `hcl : IsIntegrallyClosed R`. Use `hclosed R (algebraMap A R x) hxR ?_ hx` and prove the remaining obligations. Introduce `P _ hP`. Take `⟨h1, h2⟩` from `hengine A R x hx0 hredq P hP`. Conclude with `⟨h1, inferInstance⟩`.
-
-Conclude with `⟨hdom R hcl, hcl⟩`.
+Supply the required witnesses or components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem completion_isDomain_and_isIntegrallyClosed :
     ∀ (A : Type) [CommRing A] [IsDomain A] [IsLocalRing A] [IsIntegrallyClosed A] [CharZero A]

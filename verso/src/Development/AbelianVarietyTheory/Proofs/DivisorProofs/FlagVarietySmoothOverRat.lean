@@ -10,7 +10,7 @@ open CategoryTheory.Limits
 namespace GlobalTheory.FlagQ
 
 /- English proof (translation)
-Establish `h` using `(GlobalTheory.FlagZ.smooth_dim_isArithVar_part ι (ι × Fin (N + 1)) N Prod.fst Prod.snd).1`. Rewrite `h` using `[(GlobalTheory.FlagZ.Count.card_cellVar ι N).1]`. Conclude with `(smoothOfRelativeDimension_isStableUnderBaseChange _).of_isPullback (IsPullback.of_hasPullback (GlobalTheory.FlagZ.flStr ι N) (spMap (algebraMap ℤ ℚ))) h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem smoothOfRelativeDimension_genericFibre (ι : Type) [Fintype ι] (N : ℕ) :
     SmoothOfRelativeDimension (dimFl ι N) (pullback.snd (GlobalTheory.FlagZ.flStr ι N) (spMap (algebraMap ℤ ℚ))) := by

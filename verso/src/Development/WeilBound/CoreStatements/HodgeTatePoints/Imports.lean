@@ -13,7 +13,7 @@ import GroundTheory.HeightsAndTheta.Heights.KleimanAmpleness.PInterNumRestrict
 namespace PositivityTheory.HtPt.Ktw
 
 /- English proof (translation)
-The claim follows from `(GroundTheory.Heights₂.Heights.Kleiman.TranslateEq.SerreVanish.equiv GroundTheory.Heights₂.Heights.Swarm.GradedCech.proof).mpr GroundTheory.Heights₂.Heights.KeyFormula.serreVanishing_graded_holds`.
+A detailed English derivation is pending.
 -/
 theorem a1 :
     GroundTheory.Heights₂.Heights.Kleiman.SerreVanish.Statement.{0, 0} :=
@@ -22,14 +22,14 @@ theorem a1 :
     GroundTheory.Heights₂.Heights.KeyFormula.serreVanishing_graded_holds
 
 /- English proof (translation)
-The claim follows from `GroundTheory.Heights₂.Heights.Kleiman.TildeVanish.proof a1`.
+A detailed English derivation is pending.
 -/
 theorem a2 :
     GroundTheory.Heights₂.Heights.Kleiman.TildeVanish.Statement.{0, 0, 0} :=
   GroundTheory.Heights₂.Heights.Kleiman.TildeVanish.proof a1
 
 /- English proof (translation)
-The claim follows from `GroundTheory.Heights₂.Heights.Kleiman.SurjectiveClosed.proof GroundTheory.Heights₂.Heights.Kleiman.Extension.proof GroundTheory.Heights₂.Heights.Kleiman.IdealTwistFamily.proof a2`.
+A detailed English derivation is pending.
 -/
 theorem a3 :
     GroundTheory.Heights₂.Heights.Kleiman.SurjectiveClosed.Statement.{0, 0} :=
@@ -38,7 +38,7 @@ theorem a3 :
     GroundTheory.Heights₂.Heights.Kleiman.IdealTwistFamily.proof a2
 
 /- English proof (translation)
-The claim follows from `GroundTheory.Heights₂.Heights.Kleiman.RestrLenRestrict.proof a3 GroundTheory.Heights₂.Heights.Kleiman.PrimeFiltration.RestrictQuot.proof`.
+A detailed English derivation is pending.
 -/
 theorem a4 :
     GroundTheory.Heights₂.Heights.Kleiman.RestrLenRestrict.Statement.{0, 0} :=
@@ -46,7 +46,7 @@ theorem a4 :
     GroundTheory.Heights₂.Heights.Kleiman.PrimeFiltration.RestrictQuot.proof
 
 /- English proof (translation)
-The claim follows from `GroundTheory.Heights₂.Heights.Kleiman.InterNumRestrict.proof a4`.
+A detailed English derivation is pending.
 -/
 theorem a5 :
     GroundTheory.Heights₂.Heights.Kleiman.InterNumRestrict.Statement.{0, 0} :=

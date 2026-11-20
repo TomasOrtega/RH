@@ -9,7 +9,7 @@ open GlobalTheory.PRep GlobalTheory.SplitWeil GlobalTheory.SmGL GlobalTheory.Loc
 namespace GlobalTheory.CompanionTheory.Dblock
 
 /- English proof (translation)
-Rewrite using `[← Representation.Equiv.conj_apply_self g φ, LinearEquiv.conj_apply]`. Simplify using `[h]`. Use `congr 1`. Conclude with `φ.right_inv w`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem smul_of_equiv_nu {G V W : Type} [Group G] [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W]
     {π : Representation ℂ G V} {σ : Representation ℂ G W} (φ : π.Equiv σ) (g : G) (c : ℂ)
@@ -20,9 +20,9 @@ theorem smul_of_equiv_nu {G V W : Type} [Group G] [AddCommGroup V] [Module ℂ V
   exact φ.right_inv w
 
 /- English proof (translation)
-Introduce `k _ _ _ _ x s t c hx v`. Establish `hdet : Matrix.GeneralLinearGroup.det (Matrix.GeneralLinearGroup.scalar (Fin x.1) t) = t ^ x.1`. Use `ext`. Simplify using `[Matrix.GeneralLinearGroup.scalar]`. Use `smul_of_equiv_nu (x.twEquiv (absPow k s) (isSmoothChar_absPow s)) (Matrix.GeneralLinearGroup.scalar (Fin x.1) t) _ (fun u => ?_) v` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[GlobalTheory.SmGL.twist_apply, GlobalTheory.SmGL.detChar_apply, hx u, smul_smul, hdet, mul_comm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem scalarBy_nu : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (x : IrrGL k) (s : ℂ) (t : kˣ) (c : ℂ), Zl.ScalarBy x t c →

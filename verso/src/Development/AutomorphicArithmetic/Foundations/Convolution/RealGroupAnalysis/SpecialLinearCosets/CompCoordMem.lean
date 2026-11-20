@@ -13,16 +13,16 @@ variable {K : Type} [Field K] [ValuativeRel K] [TopologicalSpace K] [IsNonarchim
 private def ptMat (c c' : Fin 2 → K) : Matrix (Fin 2) (Fin 2) K := !![c 0, c' 0; c 1, c' 1]
 
 /- English proof (translation)
-Use `continuous_matrix fun i j => ?_` and prove the remaining obligations. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [ptMat] <;> first | exact continuous_const | exact continuous_apply _`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem ptMat_cont (c : Fin 2 → K) : Continuous (ptMat c) := by
   refine continuous_matrix fun i j => ?_
   fin_cases i <;> fin_cases j <;> simp [ptMat] <;> first | exact continuous_const | exact continuous_apply _
 
 /- English proof (translation)
-Establish `hl : Function.LeftInverse (fun X : Matrix (Fin 2) (Fin 2) K => (![X 0 1, X 1 1] : Fin 2 → K)) (ptMat c)`. Introduce `c'`. Use extensionality with `i`. Apply the tactic sequence `fin_cases i <;> simp [ptMat]`. Establish `hg : Continuous (fun X : Matrix (Fin 2) (Fin 2) K => (![X 0 1, X 1 1] : Fin 2 → K))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Use `continuous_pi fun i => ?_` and prove the remaining obligations. Use `fin_cases i`. Conclude with `continuous_id.matrix_elem 0 1`. Conclude with `continuous_id.matrix_elem 1 1`. Conclude with `⟨ha.1.comp_continuous (ptMat_cont c), ha.2.comp_isClosedEmbedding (hl.isClosedEmbedding hg (ptMat_cont c))⟩`.
+Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem slice_mem {a : Matrix (Fin 2) (Fin 2) K → ℂ}
     (ha : a ∈ GroundTheory.LocalField.schwartzBruhat (Matrix (Fin 2) (Fin 2) K)) (c : Fin 2 → K) :
@@ -41,7 +41,7 @@ private theorem slice_mem {a : Matrix (Fin 2) (Fin 2) K → ℂ}
     ha.2.comp_isClosedEmbedding (hl.isClosedEmbedding hg (ptMat_cont c))⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hf.1.comp_continuous (matrixCoordHomeomorph (Fin 2) K).continuous, hf.2.comp_homeomorph (matrixCoordHomeomorph (Fin 2) K)⟩`.
+Supply the required witnesses or components.
 -/
 private theorem comp_coord_mem {f : (Fin 2 × Fin 2 → K) → ℂ} (hf : f ∈ localSchwartzBruhatPi K) :
     f ∘ matrixCoordHomeomorph (Fin 2) K ∈ GroundTheory.LocalField.schwartzBruhat (Matrix (Fin 2) (Fin 2) K) :=
@@ -55,7 +55,7 @@ private noncomputable def PG (ψ : AddChar K Circle) (a : Matrix (Fin 2) (Fin 2)
   localFourierPi ψ (fun c' => a (ptMat (fun i => X i 1) c')) ![-X 1 0, X 0 0]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `X`. Conclude with `congrFun (localFourierPi_add hψ (integrable_of_mem_localSchwartzBruhatPi (slice_mem ha _)) (integrable_of_mem_localSchwartzBruhatPi (slice_mem hb _))) _`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 private theorem PG_add {ψ : AddChar K Circle} (hψ : Continuous ψ)
     {a b : Matrix (Fin 2) (Fin 2) K → ℂ}
@@ -68,7 +68,7 @@ private theorem PG_add {ψ : AddChar K Circle} (hψ : Continuous ψ)
     (integrable_of_mem_localSchwartzBruhatPi (slice_mem hb _))) _
 
 /- English proof (translation)
-Use function extensionality and compare the values at `X`. Conclude with `congrFun (localFourierPi_smul (ψ := ψ) s (fun c' => a (ptMat (fun i => X i 1) c'))) _`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 private theorem PG_smul (ψ : AddChar K Circle) (s : ℂ) (a : Matrix (Fin 2) (Fin 2) K → ℂ) :
     PG ψ (s • a) = s • PG ψ a := by
@@ -80,9 +80,9 @@ private noncomputable def outF (ψ : AddChar K Circle) (g : Fin 2 × Fin 2 → K
     ![fun x => GroundTheory.LocalField.localFourier (GroundTheory.LocalField.selfDualMeasure ψ) ψ (g (0, 1)) (-x), g (1, 0)]] p.1 p.2
 
 /- English proof (translation)
-Use function extensionality and compare the values at `X`. Establish `hs : (fun c' : Fin 2 → K => (localTensor g ∘ matrixCoordHomeomorph (Fin 2) K) (ptMat (fun i => X i 1) c')) = (g (0, 0) (X 0 1) * g (1, 0) (X 1 1)) • localTensor ![g (0, 1), g (1, 1)]`. Use function extensionality and compare the values at `c'`. Simplify using `[localTensor, Fintype.prod_prod_type, Fin.prod_univ_two, ptMat, coe_matrixCoordHomeomorph, matrixCoord]`. Expand and normalize the polynomial expressions, which then agree.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[PG, hs, localFourierPi_smul, localFourierPi_localTensor]`. Simplify using `[localTensor, Fintype.prod_prod_type, Fin.prod_univ_two, outF, coe_matrixCoordHomeomorph, matrixCoord]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem PG_tensor (ψ : AddChar K Circle) (g : Fin 2 × Fin 2 → K → ℂ) :
     PG ψ (localTensor g ∘ matrixCoordHomeomorph (Fin 2) K) =
@@ -98,17 +98,15 @@ private theorem PG_tensor (ψ : AddChar K Circle) (g : Fin 2 × Fin 2 → K → 
   ring
 
 /- English proof (translation)
-Rewrite `hf` using `[localSchwartzBruhatPi_eq_span]`. Proceed by induction on `hf using Submodule.span_induction with`. Consider the case `mem g hg`. Take `⟨⟨N, a⟩, rfl⟩` from `hg`. Rewrite using `[PG_tensor]`.
+Rewrite the indicated hypotheses using the stated equalities. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use `comp_coord_mem (localTensor_mem fun p => ?_)` and prove the remaining obligations. Establish `h1 : ∀ {u : K → ℂ}, u ∈ GroundTheory.LocalField.schwartzBruhat K → GroundTheory.LocalField.localFourier (GroundTheory.LocalField.selfDualMeasure ψ) ψ u ∈ GroundTheory.LocalField.schwartzBruhat K` using `fun hu => GroundTheory.LocalField.localFourier_mem_schwartzBruhat _ hψ hψ1 hu`. Establish `h0 : ∀ q : Fin 2 × Fin 2, cosetInd (GroundTheory.LocalField.valBall K N) (a q) ∈ GroundTheory.LocalField.schwartzBruhat K` using `fun q => cosetInd_valBall_mem N (a q)`. Take `⟨i, j⟩` from `p`. Apply the tactic sequence `fin_cases i <;> fin_cases j`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation.
 
-Conclude with `h1 (h0 _)`. Conclude with `h0 _`. Use `h1 (h0 (0, 1))` as an intermediate fact. Conclude with `⟨this.1.comp_continuous continuous_neg, this.2.comp_homeomorph (Homeomorph.neg K)⟩`. Conclude with `h0 _`.
+Establish an intermediate fact. Supply the required witnesses or components. Treat this case separately. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Consider the case `zero`. Establish `: (0 : (Fin 2 × Fin 2 → K) → ℂ) ∘ matrixCoordHomeomorph (Fin 2) K = (0 : ℂ) • (0 : Matrix (Fin 2) (Fin 2) K → ℂ)`. Use function extensionality and compare the values at `X`. Simplify using the standard rewrite rules. Rewrite using `[this, PG_smul, zero_smul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `zero_mem _`. Consider the case `add g h hg hh ihg ihh`. Rewrite `hg`, `hh` using `[← localSchwartzBruhatPi_eq_span]`. Establish `: (g + h) ∘ matrixCoordHomeomorph (Fin 2) K = g ∘ matrixCoordHomeomorph (Fin 2) K + h ∘ matrixCoordHomeomorph (Fin 2) K` using `rfl`. Rewrite using `[this, PG_add hψ (comp_coord_mem hg) (comp_coord_mem hh)]`.
-
-Conclude with `add_mem ihg ihh`. Consider the case `smul c g _ ih`. Establish `: (c • g) ∘ matrixCoordHomeomorph (Fin 2) K = c • (g ∘ matrixCoordHomeomorph (Fin 2) K)` using `rfl`. Rewrite using `[this, PG_smul]`. Conclude with `Submodule.smul_mem _ c ih`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem PG_mem {ψ : AddChar K Circle} (hψ : Continuous ψ) (hψ1 : ψ ≠ 1)
     {f : (Fin 2 × Fin 2 → K) → ℂ} (hf : f ∈ localSchwartzBruhatPi K) :
@@ -149,9 +147,9 @@ private theorem PG_mem {ψ : AddChar K Circle} (hψ : Continuous ψ) (hψ1 : ψ 
     exact Submodule.smul_mem _ c ih
 
 /- English proof (translation)
-Establish `hf : a ∘ (matrixCoordHomeomorph (Fin 2) K).symm ∈ localSchwartzBruhatPi K` using `⟨ha.1.comp_continuous (matrixCoordHomeomorph (Fin 2) K).symm.continuous, ha.2.comp_homeomorph (matrixCoordHomeomorph (Fin 2) K).symm⟩`. Establish `h` using `PG_mem hψ hψ1 hf`. Establish `he : (a ∘ (matrixCoordHomeomorph (Fin 2) K).symm) ∘ matrixCoordHomeomorph (Fin 2) K = a`. Use function extensionality and compare the values at `X`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Rewrite `h` using `[he]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 private theorem PG_mem' {ψ : AddChar K Circle} (hψ : Continuous ψ) (hψ1 : ψ ≠ 1)
     {a : Matrix (Fin 2) (Fin 2) K → ℂ}
@@ -169,9 +167,9 @@ private theorem PG_mem' {ψ : AddChar K Circle} (hψ : Continuous ψ) (hψ1 : ψ
 end Gen
 
 /- English proof (translation)
-Use function extensionality and compare the values at `X`. Unfold `Pt PG localFourierPi`. Use `integral_congr_ae (Eventually.of_forall fun c' => ?_)` and prove the remaining obligations. Establish `h : X 0 0 * c' 1 - X 1 0 * c' 0 = ∑ i, c' i * (![-X 1 0, X 0 0] : Fin 2 → Kv v) i`. Simplify using `[Fin.sum_univ_two]`.
+Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Simplify using `only [ψl, h]`. Both sides reduce to the same expression.
+Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 private theorem Pt_eq_PG {F : Type} [Field F] [NumberField F] (v : P F) (a : M2 v → ℂ) :
     Pt a = PG (localAdelicChar F v) a := by
@@ -185,13 +183,11 @@ private theorem Pt_eq_PG {F : Type} [Field F] [NumberField F] (v : P F) (a : M2 
   rfl
 
 /- English proof (translation)
-Introduce `F _ _ v`. Establish `hc` using `continuous_localAdelicChar (K := F) v`. Establish `h1` using `localAdelicChar_ne_one (K := F) (v := v)`. Use `⟨{ toFun := fun a => ⟨Pt a.1, ?_⟩, map_add' := ?_, map_smul' := ?_ }, fun a => rfl⟩` and prove the remaining obligations. Rewrite using `[Pt_eq_PG]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `PG_mem' hc h1 a.2`. Introduce `a b`. Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `Pt (a.1 + b.1) = Pt a.1 + Pt b.1`. Rewrite using `[Pt_eq_PG, Pt_eq_PG, Pt_eq_PG]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `PG_add hc a.2 b.2`. Introduce `s a`. Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `Pt (s • a.1) = s • Pt a.1`. Rewrite using `[Pt_eq_PG, Pt_eq_PG]`.
-
-Conclude with `PG_smul _ s a.1`.
+Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.R2.I.ptMem :
     ∀ (F : Type) [Field F] [NumberField F] (v : P F), ∃ T : SB (M2 v) →ₗ[ℂ] SB (M2 v), ∀ a, (T a).1 = Pt a.1 := by

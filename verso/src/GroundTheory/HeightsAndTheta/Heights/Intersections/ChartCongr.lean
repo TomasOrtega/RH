@@ -15,7 +15,7 @@ namespace GroundTheory.Heights₂.Heights.Inter
 open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.AI.I1 ReciprocityTheory.ChartRestriction.G.AI.I4
 
 /- English proof (translation)
-Substitute `h` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem VerticalDegreeAfterAdjoining.chart_congr {K' Ω : Type*} {ι' : K' → Type*} (x' : (Σ k', ι' k') → Ω)
     (i' : ∀ k', ι' k') {a b : K'} (h : a = b) : x' ⟨a, i' a⟩ = x' ⟨b, i' b⟩ := by
@@ -23,37 +23,33 @@ theorem VerticalDegreeAfterAdjoining.chart_congr {K' Ω : Type*} {ι' : K' → T
   rfl
 
 /- English proof (translation)
-Introduce `K _ ι _ K' _ ι' _ κ v p _ W' n i' hv hp hW _ hc G'`. Establish `hpΩ : ((p : ℕ) : G'.Φ') = 0`. Establish `h : ((p : ℕ) : MRing ι') ∈ RingHom.ker (aeval G'.x' : MRing ι' →ₐ[ℤ] G'.Φ')` using `G'.genericFibre_ker_target.symm ▸ hp`. Rewrite `h` using `[RingHom.mem_ker, map_natCast]`. Then use the resulting hypothesis. Establish `: CharP G'.Φ' p` using `(CharP.charP_iff_prime_eq_zero Fact.out).2 hpΩ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `: CharP G'.Φ p` using `((algebraMap G'.Φ G'.Φ').charP_iff_charP p).2 inferInstance`. Set `: Algebra (ZMod p) G'.Φ'` to `ZMod.algebra _ p`. Set `: Algebra (ZMod p) G'.Φ` to `ZMod.algebra _ p`. Establish `: IsScalarTower (ZMod p) G'.Φ G'.Φ'` using `IsScalarTower.of_algebraMap_eq' (RingHom.ext_zmod _ _)`. Establish `hker : RingHom.ker (aeval G'.x' : MRingOver (ZMod p) ι' →ₐ[ZMod p] G'.Φ') = W'.map (MvPolynomial.map (Int.castRingHom (ZMod p)))`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use extensionality with `g`. Take `⟨f, rfl⟩` from `PointVertical.red_surjective (ι := ι') p g`. Establish `e : aeval G'.x' (MvPolynomial.map (Int.castRingHom (ZMod p)) f) = aeval G'.x' f`. Rewrite using `[← algebraMap_int_eq, MvPolynomial.aeval_map_algebraMap]`. Rewrite using `[PointVertical.mem_map_red_iff p hp, RingHom.mem_ker, e, ← RingHom.mem_ker, G'.genericFibre_ker_target]`.
+By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hW`, `hc`, the goal using `[← hker]`. Establish `hx : ∀ k', G'.x' ⟨k', i' k'⟩ ≠ 0` using `fun k' h => hc k' (by rw [RingHom.mem_ker, aeval_X, h])`. Establish `hmh` using `hW.1.2.1`. Set `y' : (Σ k', ι' k') → G'.Φ'` to `fun q => G'.x' q / G'.x' ⟨q.1, i' q.1⟩`. Set `t : K → G'.Φ'` to `fun k => G'.x' ⟨κ k, i' (κ k)⟩`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `Φ₁` to `(IsScalarTower.toAlgHom (ZMod p) G'.Φ G'.Φ').fieldRange`. Set `L₀` to `IntermediateField.adjoin (ZMod p) (Set.range (y' ∘ v))`. Set `L` to `IntermediateField.adjoin (ZMod p) (Set.range y')`. Set `E` to `IntermediateField.adjoin (ZMod p) (Set.range t)`. Establish `mono : ∀ {A B : Set G'.Φ'}, A ⊆ B → IntermediateField.adjoin (ZMod p) A ≤ IntermediateField.adjoin (ZMod p) B` using `fun h => IntermediateField.adjoin_le_iff.2 (h.trans (IntermediateField.subset_adjoin _ _))`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hchart : ∀ q : Σ k, ι k, G'.x' ⟨(v q).1, i' (v q).1⟩ = t q.1` using `fun q => VerticalDegreeAfterAdjoining.chart_congr G'.x' i' (hv.2.2.1 q)`. Establish `hmem : ∀ c, algebraMap G'.Φ G'.Φ' c ∈ Φ₁` using `fun c => AlgHom.mem_fieldRange.2 ⟨c, rfl⟩`. Establish `ht1 : ∀ k, t k ∈ Φ₁` using `fun k => by`. Take `⟨p₀, h⟩` from `hv.2.2.2 ⟨κ k, i' (κ k)⟩ ⟨k, rfl⟩`. Use `show G'.x' ⟨κ k, i' (κ k)⟩ ∈ Φ₁`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← h, G'.compat]`. Conclude with `hmem _`. Establish `hyv : ∀ q, y' (v q) ∈ Φ₁` using `fun q => by show G'.x' (v q) / G'.x' ⟨(v q).1, i' (v q).1⟩ ∈ Φ₁`. Rewrite using `[hchart, G'.compat]`. Conclude with `div_mem (hmem _) (ht1 q.1)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Establish `hL₀E : L₀ ⊔ E = Φ₁`. Use `le_antisymm (sup_le (IntermediateField.adjoin_le_iff.2 ?_) (IntermediateField.adjoin_le_iff.2 ?_)) ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨q, rfl⟩`. Conclude with `hyv q`. Introduce and unpack `_ ⟨k, rfl⟩`.
+Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `ht1 k`. Introduce `z hz`. Take `⟨c, rfl⟩` from `AlgHom.mem_fieldRange.1 hz`. Take `⟨f, g, -, rfl⟩` from `G'.gen c`. Establish `hpoly : ∀ f : MRing ι, algebraMap G'.Φ G'.Φ' (aeval G'.x f) ∈ L₀ ⊔ E`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Introduce `f`. Proceed by induction on `f using MvPolynomial.induction_on with`. Consider the case `C a`. Rewrite using `[aeval_C, ← IsScalarTower.algebraMap_apply, algebraMap_int_eq, eq_intCast]`. Conclude with `intCast_mem _ a`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Consider the case `add f g hf hg`. Rewrite using `[map_add, map_add]`. Conclude with `add_mem hf hg`. Consider the case `mul_X f q hf`. Rewrite using `[map_mul, map_mul, aeval_X, ← G'.compat]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `mul_mem hf ?_` and prove the remaining obligations. Establish `hq : G'.x' (v q) = y' (v q) * t q.1` using `by show _ = G'.x' (v q) / G'.x' ⟨(v q).1, i' (v q).1⟩ * t q.1`. Rewrite using `[hchart, div_mul_cancel₀ _ (hx (κ q.1))]`. Rewrite using `[hq]`. Conclude with `mul_mem ((le_sup_left : L₀ ≤ L₀ ⊔ E) (IntermediateField.subset_adjoin _ _ ⟨q, rfl⟩)) ((le_sup_right : E ≤ L₀ ⊔ E) (IntermediateField.subset_adjoin _ _ ⟨q.1, rfl⟩))`.
+Assume the hypotheses and unpack their components. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `show IsScalarTower.toAlgHom (ZMod p) G'.Φ G'.Φ' (aeval G'.x f / aeval G'.x g) ∈ L₀ ⊔ E`. Rewrite using `[map_div₀]`. Conclude with `div_mem (hpoly f) (hpoly g)`. Establish `hLE : L ⊔ E = Φ₁ ⊔ IntermediateField.adjoin (ZMod p) (Set.range fun q : Σ k : FibreBlock κ, ι' k.1 => G'.x' ⟨q.1.1, q.2⟩ / G'.x' ⟨q.1.1, i' q.1.1⟩)`. Use `le_antisymm (sup_le (IntermediateField.adjoin_le_iff.2 ?_) (((le_sup_right : E ≤ L₀ ⊔ E).trans hL₀E.le).trans le_sup_left)) (sup_le ?_ ?_)` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `_ ⟨q, rfl⟩`. Distinguish the cases in `hq : q.1 ∈ Set.range κ`. Take `⟨r, rfl⟩` from `hv.2.2.2 q hq`. Conclude with `(le_sup_left : Φ₁ ≤ _) (hyv r)`. Conclude with `(le_sup_right : IntermediateField.adjoin _ _ ≤ _) (IntermediateField.subset_adjoin _ _ ⟨⟨⟨q.1, hq⟩, q.2⟩, rfl⟩)`.
-
-Rewrite using `[← hL₀E]`. Conclude with `sup_le_sup_right (mono (Set.range_comp_subset_range v y')) E`. Use `(mono ?_).trans le_sup_left` and prove the remaining obligations. Introduce and unpack `_ ⟨q, rfl⟩`. Conclude with `⟨⟨q.1.1, q.2⟩, rfl⟩`.
-
-Establish `hindep : AlgebraicIndependent L t` using `(hT (ZMod p) G'.Φ' K' ι' G'.x' i' hx hmh).comp κ hv.1`. Use `Eq.trans (hB (ZMod p) G'.Φ' K ι K' ι' v G'.x' i' hx hmh) (Eq.trans (hA (ZMod p) G'.Φ' _ _ (Set.range_comp_subset_range v y')) ?_)` and prove the remaining obligations. Rewrite using `[← hC (ZMod p) G'.Φ' L₀ L K t (mono (Set.range_comp_subset_range v y')) hindep, hD (ZMod p) G'.Φ G'.Φ']`. Express the relevant statement in the definitionally equal form `IntermediateField.relfinrank (L₀ ⊔ E) (L ⊔ E) = _`. Rewrite using `[hL₀E, hLE]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem VerticalDegreeAfterAdjoining.proof (hA : RankAdjoinFrac.Statement) (hB : FnDegAdjoin.Statement)
     (hT : ChartScalingIndep.Statement) (hC : AdjoinIndepRelfinrank.Statement)

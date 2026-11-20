@@ -12,11 +12,11 @@ section ThetaExt
 variable {D : D7} {m n : ℕ}
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h i j`. Establish `h1` using `h i j`. Establish `h2` using `hx i j`. Simplify using `only [Matrix.add_apply, mul_add] at h1`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Take the linear combination `h1 - h2`. Introduce `h i j`. Establish `h1` using `h i j`. Establish `h2` using `hx i j`. Simplify using `only [Matrix.add_apply, mul_add]`.
+Take a linear combination of the given relations to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Take the linear combination `h1 + h2`.
+Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem isHalf_add_right_iff {e : AE D} {t x : Mx D m n} (hx : IsHalf e x) :
     IsHalf e (t + x) ↔ IsHalf e t := by
@@ -33,7 +33,7 @@ theorem isHalf_add_right_iff {e : AE D} {t x : Mx D m n} (hx : IsHalf e x) :
     linear_combination h1 + h2
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [Matrix.smul_apply, smul_eq_mul]`. Conclude with `hx i j`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem smul_of_isHalf {e : AE D} {x : Mx D m n} (hx : IsHalf e x) : e • x = x := by
   ext i j
@@ -41,7 +41,7 @@ theorem smul_of_isHalf {e : AE D} {x : Mx D m n} (hx : IsHalf e x) : e • x = x
   exact hx i j
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [Matrix.smul_apply, smul_eq_mul, Matrix.zero_apply]`. Rewrite using `[← hx i j, ← mul_assoc, h, zero_mul]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem smul_eq_zero_of_isHalf {e e' : AE D} (h : e' * e = 0) {x : Mx D m n} (hx : IsHalf e x) : e' • x = 0 := by
   ext i j
@@ -49,7 +49,7 @@ theorem smul_eq_zero_of_isHalf {e e' : AE D} (h : e' * e = 0) {x : Mx D m n} (hx
   rw [← hx i j, ← mul_assoc, h, zero_mul]
 
 /- English proof (translation)
-Introduce `i j`. Simplify using `only [Matrix.smul_apply, smul_eq_mul]`. Rewrite using `[← mul_assoc, he]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem isHalf_smul_idem {e : AE D} (he : e * e = e) (t : Mx D m n) : IsHalf e (e • t) := by
   intro i j
@@ -68,9 +68,9 @@ def extLin (e₀ e₁ : AE D) (Λ : AddSubgroup (Mx D m n)) : (Mx D m n → ℂ)
     split_ifs <;> ring
 
 /- English proof (translation)
-Use function extensionality and compare the values at `t`. Establish `hx' : IsHalf (e₀ + e₁) x`. Rewrite using `[add_comm]`. Conclude with `GlobalTheory.VecProd.half_add_of_right h10 hx`. Simplify using `only [extFn]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[isHalf_add_right_iff hx', smul_add, smul_add, smul_of_isHalf hx, smul_eq_zero_of_isHalf h10 hx, add_zero]`.
+A detailed English derivation is pending.
 -/
 theorem extFn_shift {e₀ e₁ : AE D} (h10 : e₁ * e₀ = 0) (Λ : AddSubgroup (Mx D m n)) (Φ : Mx D m n → ℂ)
     {x : Mx D m n} (hx : IsHalf e₀ x) :
@@ -82,9 +82,9 @@ theorem extFn_shift {e₀ e₁ : AE D} (h10 : e₁ * e₀ = 0) (Λ : AddSubgroup
   rw [isHalf_add_right_iff hx', smul_add, smul_add, smul_of_isHalf hx, smul_eq_zero_of_isHalf h10 hx, add_zero]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `t`. Simplify using `only [extFn]`. Use `split_ifs with h`. Rewrite using `[hg t h]`. Expand and normalize the polynomial expressions, which then agree.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem extFn_modul {e₀ e₁ : AE D} (Λ : AddSubgroup (Mx D m n)) (Φ : Mx D m n → ℂ) (g : Mx D m n → ℂ)
     (hg : ∀ t, IsHalf (e₀ + e₁) t → g t = g (e₀ • t)) :
@@ -96,15 +96,15 @@ theorem extFn_modul {e₀ e₁ : AE D} (Λ : AddSubgroup (Mx D m n)) (Φ : Mx D 
   · ring
 
 /- English proof (translation)
-Use function extensionality and compare the values at `t`. Simplify using `only [extFn, halfInd]`. Distinguish the cases in `ht : IsHalf (e₀ + e₁) t`. Establish `hdec : t = e₀ • t + e₁ • t`. Rewrite using `[← add_smul, smul_of_isHalf ht]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hiff : (e₀ • t ∈ Λ ∧ e₁ • t ∈ Λ) ↔ t ∈ Λ`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h0, h1⟩`. Rewrite using `[hdec]`. Conclude with `Λ.add_mem h0 h1`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Conclude with `⟨hΛ0 t h, hΛ1 t h⟩`. Establish `a0` using `isHalf_smul_idem h00 t`. Establish `a1` using `isHalf_smul_idem h11 t`. Rewrite using `[if_pos ht]`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `by_cases h0 : e₀ • t ∈ Λ <;> by_cases h1 : e₁ • t ∈ Λ`. Rewrite using `[if_pos ⟨h0, a0⟩, if_pos ⟨h1, a1⟩, if_pos ⟨hiff.1 ⟨h0, h1⟩, ht⟩, one_mul]`. Rewrite using `[if_pos ⟨h0, a0⟩, if_neg (fun h => h1 h.1), if_neg (fun h => h1 (hiff.2 h.1).2), mul_zero]`. Rewrite using `[if_neg (fun h => h0 h.1), if_pos ⟨h1, a1⟩, if_neg (fun h => h0 (hiff.2 h.1).1), zero_mul]`. Rewrite using `[if_neg (fun h => h0 h.1), if_neg (fun h => h1 h.1), if_neg (fun h => h0 (hiff.2 h.1).1), zero_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [if_neg ht]`. Rewrite using `[if_neg (fun h => ht h.2)]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem extFn_halfInd {e₀ e₁ : AE D} (h00 : e₀ * e₀ = e₀) (h11 : e₁ * e₁ = e₁) {Λ : AddSubgroup (Mx D m n)}
     (hΛ0 : ∀ u ∈ Λ, e₀ • u ∈ Λ) (hΛ1 : ∀ u ∈ Λ, e₁ • u ∈ Λ) :
@@ -130,15 +130,15 @@ theorem extFn_halfInd {e₀ e₁ : AE D} (h00 : e₀ * e₀ = e₀) (h11 : e₁ 
     rw [if_neg (fun h => ht h.2)]
 
 /- English proof (translation)
-Introduce `D m n ψ B hs Λ e₀ e₁ f₀ Φ f h00 h11 h01 hΛ0 hΛ1 hB hex h`. Establish `h10 : e₁ * e₀ = 0` using `by rw [mul_comm]; exact h01`. Establish `hsb : ∀ Ψ, IsSBHalf e₀ Λ Ψ → IsSBHalf (e₀ + e₁) Λ (extFn e₀ e₁ Λ Ψ)` using `fun Ψ hΨ => GlobalTheory.T.isSBHalf_halfExtensionLatticeIndicatorFn h00 h11 h01 hΛ0 hΛ1 hΨ`. Use `⟨hex, fun T hT => ?_⟩` and prove the remaining obligations. Establish `hT₀ : IsPlaceModel ψ B hs e₀ Λ 1 f₀ (T ∘ₗ extLin e₀ e₁ Λ)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨fun Ψ hΨ x hx => ?_, fun Ψ hΨ y hy => ?_, ?_⟩` and prove the remaining obligations. Establish `hx' : IsHalf (e₀ + e₁) x`. Rewrite using `[add_comm]`. Conclude with `GlobalTheory.VecProd.half_add_of_right h10 hx`. Simplify using `only [LinearMap.comp_apply]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `T (extFn e₀ e₁ Λ (fun t => Ψ (t + x))) = hs x (T (extFn e₀ e₁ Λ Ψ))`. Rewrite using `[extFn_shift h10 Λ Ψ hx]`. Conclude with `hT.trans _ (hsb Ψ hΨ) x hx'`. Establish `hy' : IsHalf (cA D (e₀ + e₁)) y`. Rewrite using `[add_comm]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition.
 
-Conclude with `GlobalTheory.VecProd.half_conj_add_of_right h10 hy`. Simplify using `only [LinearMap.comp_apply]`. Express the relevant statement in the definitionally equal form `T (extFn e₀ e₁ Λ (fun t => ψ (B t y) * Ψ t)) = hs y (T (extFn e₀ e₁ Λ Ψ))`. Rewrite using `[extFn_modul Λ Ψ (fun t => ψ (B t y)) (fun t ht => by simp only [hB t y ht hy])]`. Conclude with `hT.modul _ (hsb Ψ hΨ) y hy'`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `only [LinearMap.comp_apply, one_smul]`. Express the relevant statement in the definitionally equal form `T (extFn e₀ e₁ Λ (halfInd e₀ Λ)) = f₀`. Rewrite using `[extFn_halfInd h00 h11 hΛ0 hΛ1]`. Simplify using `using hT.vac`. Conclude with `h.2 _ hT₀`.
+A detailed English derivation is pending.
 -/
 theorem isThetaAt_extFn : ∀ {D : D7} {m n : ℕ} {ψ : AddChar (AF D.host.F) ℂ} {B : Mx D m n → Mx D m n → AF D.host.F} {hs : Mx D m n → (Mx D m n → ℂ) → (Mx D m n → ℂ)} {Λ : AddSubgroup (Mx D m n)} {e₀ e₁ : AE D} {f₀ Φ f : Mx D m n → ℂ}, e₀ * e₀ = e₀ → e₁ * e₁ = e₁ → e₀ * e₁ = 0 → (∀ u ∈ Λ, e₀ • u ∈ Λ) → (∀ u ∈ Λ, e₁ • u ∈ Λ) → (∀ t y, IsHalf (e₀ + e₁) t → IsHalf (cA D e₀) y → B t y = B (e₀ • t) y) → (∃ T, IsPlaceModel ψ B hs (e₀ + e₁) Λ 1 f₀ T) → IsThetaAt ψ B hs e₀ Λ 1 f₀ Φ f → IsThetaAt ψ B hs (e₀ + e₁) Λ 1 f₀ (GlobalTheory.CosetRow.extFn e₀ e₁ Λ Φ) f := by
   intro D m n ψ B hs Λ e₀ e₁ f₀ Φ f h00 h11 h01 hΛ0 hΛ1 hB hex h

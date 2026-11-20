@@ -22,7 +22,7 @@ open GlobalTheory.BigDat
 variable {D : D7} {T : Type} {L : LevCh D T} {sc : GlobalTheory.ChiGrid.Consts} {G : GridData L sc} {μ₀ : T}
 
 /- English proof (translation)
-Take `⟨_, ⟨es, hes, -⟩, -⟩` from `GlobalTheory.FunObj.LocTensor.exists_idemSum_locPl hL G t`. Establish `h` using `hes w hw`. Rewrite using `[← GlobalTheory.IdemAtPl.eq_atPl_of_isIdemAt h]`. Conclude with `⟨⟨fun _ => es w, fun P hP => by rw [Finset.mem_singleton.1 hP]; exact h, by simp⟩, h.1.2.1⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem isIdemSum_atPl (hL : L.Is μ₀) (t : T) {w : Pl D.host.E} (hw : w ∈ locPl G t) : IsIdemSum (atPl w 1) {w} := by
   obtain ⟨_, ⟨es, hes, -⟩, -⟩ := GlobalTheory.FunObj.LocTensor.exists_idemSum_locPl hL G t
@@ -31,7 +31,7 @@ theorem isIdemSum_atPl (hL : L.Is μ₀) (t : T) {w : Pl D.host.E} (hw : w ∈ l
   exact ⟨⟨fun _ => es w, fun P hP => by rw [Finset.mem_singleton.1 hP]; exact h, by simp⟩, h.1.2.1⟩
 
 /- English proof (translation)
-Establish `h` using `hst.2 w hw`. Rewrite `h` using `[Nat.cast_mul]`. Conclude with `GlobalTheory.AAUnit.aa_unit D w (fun h' => h (w.asIdeal.mul_mem_right _ h')) fun h' => h (w.asIdeal.mul_mem_left _ h')`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem aa_unit_of_standing {t : T} (hst : SquareStanding G t) {w : Pl D.host.E} (hw : w ∈ locPl G t) :
     (∀ a ∈ D.host.AA, Valued.v (algebraMap D.host.E (Kw w) a) ≤ 1) ∧
@@ -41,7 +41,7 @@ theorem aa_unit_of_standing {t : T} (hst : SquareStanding G t) {w : Pl D.host.E}
   exact GlobalTheory.AAUnit.aa_unit D w (fun h' => h (w.asIdeal.mul_mem_right _ h')) fun h' => h (w.asIdeal.mul_mem_left _ h')
 
 /- English proof (translation)
-Establish `e : z.map (atW w) = (z.map (toEAf D)).map (cpt (D` using `D) w) := rfl`. Rewrite using `[e, Comparison₂.coord_map]`. Use `⟨fun H a b => ?_, fun H a b => H _ _⟩` and prove the remaining obligations. Use `H (b.cast (rank_vertex G t w hY).symm) (a.cast (rank_vertex G t w hX).symm)` as an intermediate fact. Simplify `this` using `only [Matrix.transpose_apply, Matrix.submatrix_apply, Fin.cast_cast, Fin.cast_eq_self]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem coord_int_iff (B : Frames G) (t : T) (w : Pl D.host.E) {X Y : ℕ × ℕ}
     (hX : X.1 ≤ D.R.m ∧ X.2 ≤ D.R.m) (hY : Y.1 ≤ D.R.m ∧ Y.2 ≤ D.R.m)
@@ -55,15 +55,13 @@ theorem coord_int_iff (B : Frames G) (t : T) (w : Pl D.host.E) {X Y : ℕ × ℕ
   simpa only [Matrix.transpose_apply, Matrix.submatrix_apply, Fin.cast_cast, Fin.cast_eq_self] using this
 
 /- English proof (translation)
-Establish `hI` using `isIdemSum_atPl hL t hw`. Establish `hA : ∀ w' ∈ ({w} : Finset (Pl D.host.E)), ((∀ a ∈ D.host.AA, Valued.v (algebraMap D.host.E (Kw w') a) ≤ 1) ∧ ∃ a ∈ D.host.AA, Valued.v (algebraMap D.host.E (Kw w') a) = 1)` using `fun w' hw' => by`. Rewrite using `[Finset.mem_singleton.1 hw']`. Conclude with `aa_unit_of_standing hst hw`. Establish `hT₁ : IsSelfDualC (spW G i j) (G.Λ (.grid ((i : ℕ) + 1) ((j : ℕ) + 1)))` using `(node_isV G hL (X := .grid ((i : ℕ) + 1) ((j : ℕ) + 1)) ⟨i.2, j.2⟩).sd`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hS : IsSelfDualC (negSp (spW G i j)) (G.Λ (.grid ((i : ℕ) + 1) ((j : ℕ) + 1)))` using `isSelfDualC_neg hT₁`. Establish `hT : IsSelfDualC (spV G i j) (G.Λ (.grid (i : ℕ) ((j : ℕ) + 1)))` using `(node_isV G hL (X := .grid (i : ℕ) ((j : ℕ) + 1)) ⟨i.2.le, j.2⟩).sd`. Establish `hS₁ : IsSelfDualC (spV₁ G i j) (G.Λ (.grid ((i : ℕ) + 1) (j : ℕ)))` using `(node_isV G hL (X := .grid ((i : ℕ) + 1) (j : ℕ)) ⟨i.2, j.2.le⟩).sd`. Establish `fW` using `B.isFrame_β hL (i := (i : ℕ) + 1) (j := (j : ℕ) + 1) i.2 j.2`. Establish `fV` using `B.isFrame_β hL (i := (i : ℕ)) (j := (j : ℕ) + 1) i.2.le j.2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `fV₁` using `B.isFrame_β hL (i := (i : ℕ) + 1) (j := (j : ℕ)) i.2 j.2.le`. Establish `k₁` using `GlobalTheory.ColLatDict.mem_latO_iff_intM hS hT fW fV hI hA (mapV e x) hx.1`. Establish `k₂` using `GlobalTheory.ColLatDict.mem_latO_iff_intM hS₁ hT₁ fV₁ fW hI hA (mapW e x) hx.2`. Simplify using `only [Finset.mem_singleton, forall_eq] at k₁ k₂`. Establish `c₁` using `coord_int_iff B t w (X := (i, j + 1)) (Y := (i + 1, j + 1)) ⟨i.2.le, j.2⟩ ⟨i.2, j.2⟩ (mapV e x)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `c₂` using `coord_int_iff B t w (X := (i + 1, j + 1)) (Y := (i + 1, j)) ⟨i.2, j.2⟩ ⟨i.2, j.2.le⟩ (mapW e x)`. Use `(and_congr (k₁.trans c₁.symm) (k₂.trans c₂.symm)).trans ?_` and prove the remaining obligations. Rewrite using `[mixCo_eq]`. Use `⟨fun H r s => ?_, fun H => ⟨fun r s => H r (.inl s), fun r s => H s (.inr r)⟩⟩` and prove the remaining obligations. Break down `s with s | s` into its components or cases.
-
-Conclude with `H.1 r s`. Conclude with `H.2 s r`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem mem_lat_iff (hL : L.Is μ₀) (B : Frames G) (t : T) (hst : SquareStanding G t) {i j : Fin D.R.m} (e : Num G i j)
     {w : Pl D.host.E} (hw : w ∈ locPl G t) {x : Pt G i j} (hx : x ∈ mixHalf e (atPl w 1)) :
@@ -99,11 +97,11 @@ theorem mem_lat_iff (hL : L.Is μ₀) (B : Frames G) (t : T) (hst : SquareStandi
 set_option maxHeartbeats 800000 in
 
 /- English proof (translation)
-Introduce `D T L sc G μ₀ hL W B t i j M hst e Bs Γ X om om' h hT hti w hw ι hι`. Establish `hG : Γ.M.IsGood W.ψ` using `h.ψ ▸ hT.geo.hM`. Take `⟨hid, -⟩` from `GlobalTheory.IdemAtPl.main hL (G := G) t`. Establish `hh` using `GlobalTheory.BigDat.halves_split hL W i j e Γ h.JW h.JWW _ _ (hid w hw).1 (hid w hw).2`. Establish `hco` using `GlobalTheory.BigDat.mixCo_spec B t i j e`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hv` using `GlobalTheory.BigDat.lagr_vac hι (hG.vac _).1 (hG.vac _).2.1 (latPt e (w.under (𝓞 D.host.F)) : Set _) (fun γ hγ hγ' => GlobalTheory.BigDat.VacFix.vac_fixed W M t i j e Bs Γ X om om' h hT _ (GlobalTheory.BigDat.latPt_le_latAtV t i j e Bs Γ X hti _) γ (.inr ⟨hγ, hγ'.elim (fun h => ⟨ …`. Use function extensionality and compare the values at `z`. Take `⟨x, hx, rfl⟩` from `(hco w).2.1 z`. Establish `key` using `mem_lat_iff hL B t hst e hw hx`. Rewrite using `[hv.2 x hx, Pi.smul_apply, smul_eq_mul]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hl : mapV e x ∈ latV G i j ∧ mapW e x ∈ latW G i j`. Rewrite using `[Set.indicator_of_mem (show x ∈ (latPt e (w.under (𝓞 D.host.F)) : Set _) from ⟨hh.1 x hx, hl⟩), Set.indicator_of_mem (show mixCo B t e w x ∈ {Z : MatA G t i j w | ∀ r s, Z r s ∈ (ValuativeRel.valuation (Kw w)).integer} from key.1 hl), Pi.one_apply, mul_one]`. Rewrite using `[Set.indicator_of_notMem (show x ∉ (latPt e (w.under (𝓞 D.host.F)) : Set _) from fun h' => hl h'.2), Set.indicator_of_notMem (show mixCo B t e w x ∉ {Z : MatA G t i j w | ∀ r s, Z r s ∈ (ValuativeRel.valuation (Kw w)).integer} from fun h' => hl (key.2 h')), mul_zero]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem mix_vac : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : GlobalTheory.ChiGrid.Consts} {G : GridData L sc} {μ₀ : T}, L.Is μ₀ → ∀ (W : G.Weil) (B : Frames G) (t : T) (i j : Fin D.R.m) (M : Vol G), SquareStanding G t →
     ∀ (e : Num G i j) (Bs : Base D.host.F D.host.E) (Γ : GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.Geo G i j) (X : Chars D.host.F D.host.E)

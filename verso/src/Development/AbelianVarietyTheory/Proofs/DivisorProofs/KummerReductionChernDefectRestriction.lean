@@ -6,11 +6,11 @@ open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComp
 namespace GlobalTheory.EtC.RedChern
 
 /- English proof (translation)
-Introduce `Q q _ hqQ V U g v hQ`. Establish `hq0 : q ≠ 0`. Introduce and unpack `rfl`. Conclude with `NeZero.ne Q (zero_dvd_iff.mp hqQ)`. Use `haveI : NeZero q := ⟨hq0⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hqU : IsUnit (q : Γ(U, ⊤))`. Take `⟨k, hk⟩` from `hqQ`. Rewrite `hQ` using `[hk, Nat.cast_mul]`. Conclude with `isUnit_of_mul_isUnit_left hQ`. Unfold `defect`.
+Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Sec.res, map_sub]`. Express the relevant statement in the definitionally equal form `Sec.res g _ - Sec.res g _ = _`. Rewrite using `[(redMap Q q 1).nat g 0, (GlobalTheory.T.isKummerTorsorSplitting_kummerTorsorSplitting Q).1 V U g v hQ, (GlobalTheory.T.isKummerTorsorSplitting_kummerTorsorSplitting q).1 V U g _ hqU, map_pow]`.
+A detailed English derivation is pending.
 -/
 theorem res_defect : ∀ (Q q : ℕ) [NeZero Q], q ∣ Q → ∀ (V U : Scheme.{0}) (g : V ⟶ U) (v : (Γ(U, ⊤))ˣ),
     IsUnit (Q : Γ(U, ⊤)) → Sec.res g (GlobalTheory.EtC.RedChern.defect Q q U v) =

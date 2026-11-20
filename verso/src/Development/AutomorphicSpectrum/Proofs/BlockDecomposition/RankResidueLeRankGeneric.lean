@@ -5,13 +5,13 @@ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.KvFintype
 namespace GlobalTheory.CompanionTheory.Jp
 
 /- English proof (translation)
-Introduce `O L _ _ _ _ _ _ n T`. Take `⟨S, τ, hdet⟩` from `GlobalTheory.exists_submatrix_det_ne_zero_of_le_rank (IsLocalRing.ResidueField O) (Fin n) (Fin n) _ (T.map (IsLocalRing.residue O)) le_rfl`. Establish `hres : IsLocalRing.residue O (T.submatrix S τ).det = ((T.map (IsLocalRing.residue O)).submatrix S τ).det`. Rewrite using `[RingHom.map_det]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hfrac : algebraMap O L (T.submatrix S τ).det = ((T.map (algebraMap O L)).submatrix S τ).det`. Rewrite using `[RingHom.map_det]`. Both sides reduce to the same expression. Establish `hO : (T.submatrix S τ).det ≠ 0`. Introduce `h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `hdet` to reduce the goal to its premises. Rewrite using `[← hres, h, map_zero]`. Establish `hL : ((T.map (algebraMap O L)).submatrix S τ).det ≠ 0`. Rewrite using `[← hfrac]`. Introduce `h`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hO (IsFractionRing.injective O L (h.trans (map_zero _).symm))`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.rank_of_isUnit _ ((Matrix.isUnit_iff_isUnit_det _).mpr (isUnit_iff_ne_zero.mpr hL)), Fintype.card_fin]`. Use `_ ≤ (T.map (algebraMap O L)).rank := Matrix.rank_submatrix_le _ _ _`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rank_residue_map_le_rank_fraction_map :
     ∀ (O L : Type) [CommRing O] [IsDomain O] [IsLocalRing O] [Field L] [Algebra O L]

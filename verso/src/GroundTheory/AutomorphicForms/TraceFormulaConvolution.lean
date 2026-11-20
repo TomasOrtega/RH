@@ -18,7 +18,7 @@ def convFun (f₁ f₂ : CompactlySupportedContinuousMap G ℂ) (x : G) : ℂ :=
   ∫ g, f₁ g * f₂ (g⁻¹ * x) ∂μ
 
 /- English proof (translation)
-Rewrite using `[convFun, setIntegral_eq_integral_of_forall_compl_eq_zero]`. Introduce `g hg`. Rewrite using `[image_eq_zero_of_notMem_tsupport hg, zero_mul]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem convFun_eq_setIntegral (f₁ f₂ : CompactlySupportedContinuousMap G ℂ) (x : G) :
     convFun μ f₁ f₂ x = ∫ g in tsupport f₁, f₁ g * f₂ (g⁻¹ * x) ∂μ := by
@@ -29,7 +29,7 @@ theorem convFun_eq_setIntegral (f₁ f₂ : CompactlySupportedContinuousMap G �
 variable [IsTopologicalGroup G] [LocallyCompactSpace G] [SecondCountableTopology G]
   [BorelSpace G] [IsFiniteMeasureOnCompacts μ] in
 /- English proof (translation)
-Establish `h : convFun μ f₁ f₂ = fun x => ∫ g in tsupport f₁, f₁ g * f₂ (g⁻¹ * x) ∂μ`. Use function extensionality and compare the values at `(convFun_eq_setIntegral μ f₁ f₂)`. Rewrite using `[h]`. Conclude with `continuous_parametric_integral_of_continuous (f := fun x g => f₁ g * f₂ (g⁻¹ * x)) (by fun_prop) f₁.hasCompactSupport`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_convFun (f₁ f₂ : CompactlySupportedContinuousMap G ℂ) :
     Continuous (convFun μ f₁ f₂) := by
@@ -40,9 +40,9 @@ theorem continuous_convFun (f₁ f₂ : CompactlySupportedContinuousMap G ℂ) :
     (by fun_prop) f₁.hasCompactSupport
 
 /- English proof (translation)
-Rewrite using `[convFun]`. Use `integral_eq_zero_of_ae (Eventually.of_forall fun g => ?_)` and prove the remaining obligations. Distinguish the cases in `h1 : g ∈ tsupport f₁`. Establish `h2 : g⁻¹ * x ∉ tsupport f₂` using `fun h2 => hx ⟨g, h1, g⁻¹ * x, h2, by simp only [mul_inv_cancel_left]⟩`. Simplify using `[image_eq_zero_of_notMem_tsupport h2]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[image_eq_zero_of_notMem_tsupport h1]`.
+Simplify using the standard rewrite rules.
 -/
 theorem convFun_eq_zero (f₁ f₂ : CompactlySupportedContinuousMap G ℂ) {x : G}
     (hx : x ∉ tsupport f₁ * tsupport f₂) : convFun μ f₁ f₂ x = 0 := by
@@ -56,7 +56,7 @@ theorem convFun_eq_zero (f₁ f₂ : CompactlySupportedContinuousMap G ℂ) {x :
 
 variable [IsTopologicalGroup G] [T2Space G] in
 /- English proof (translation)
-The claim follows from `HasCompactSupport.intro (f₁.hasCompactSupport.mul f₂.hasCompactSupport) fun _ hx => convFun_eq_zero μ f₁ f₂ hx`.
+A detailed English derivation is pending.
 -/
 theorem hasCompactSupport_convFun (f₁ f₂ : CompactlySupportedContinuousMap G ℂ) :
     HasCompactSupport (convFun μ f₁ f₂) :=
@@ -90,7 +90,7 @@ omit [IsTopologicalGroup G] [LocallyCompactSpace G] [SecondCountableTopology G] 
   [BorelSpace G] in
 
 /- English proof (translation)
-Establish `hcl : IsClosed (Γ : Set G)` using `Subgroup.isClosed_of_discrete`. Conclude with `(hcl.isClosedEmbedding_subtypeVal.isProperMap.isCompact_preimage hC).finite_of_discrete`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem finite_setOf_mem_of_isCompact [IsTopologicalGroup G] {C : Set G} (hC : IsCompact C) :
     {δ : Γ | (δ : G) ∈ C}.Finite := by
@@ -102,23 +102,21 @@ section Kernel
 variable (μ : Measure G) [μ.IsMulLeftInvariant] [IsFiniteMeasureOnCompacts μ]
 
 /- English proof (translation)
-Take `⟨a, rfl⟩` from `mk_surjective Γ x`. Take `⟨b, rfl⟩` from `mk_surjective Γ z`. Set `φ : C(RightCosetSpace Γ, ℂ)` to `⟨fun y => quotientKernel Γ f₂ (y, mk Γ b), (continuous_quotientKernel Γ f₂).comp (continuous_id.prodMk continuous_const)⟩`. Establish `hφ` using `integral_mul_rightMul_eq Γ μ f₁ φ (mk Γ a)`. Simplify using `only [φ, ContinuousMap.coe_mk] at hφ`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[← hφ]`. Use `set C : Set G := a • ((tsupport f₁ * tsupport f₂) * {b⁻¹}) with hC`. Establish `hCc : IsCompact C` using `((f₁.hasCompactSupport.mul f₂.hasCompactSupport).mul isCompact_singleton).smul a`. Establish `hfin` using `finite_setOf_mem_of_isCompact Γ hCc`. Use `set S := hfin.toFinset`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `hmem : ∀ δ : Γ, (∃ g, f₁ g * f₂ (g⁻¹ * (a⁻¹ * δ * b)) ≠ 0) → δ ∈ S`. Introduce and unpack `δ ⟨g, hg⟩`. Rewrite using `[Finite.mem_toFinset]`. Establish `h1 : g ∈ tsupport f₁` using `subset_tsupport _ (left_ne_zero_of_mul hg)`. Establish `h2 : g⁻¹ * (a⁻¹ * δ * b) ∈ tsupport f₂` using `subset_tsupport _ (right_ne_zero_of_mul hg)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `⟨(a⁻¹ * δ * b) * b⁻¹, ⟨a⁻¹ * δ * b, ⟨g, h1, _, h2, by group⟩, b⁻¹, rfl, rfl⟩, ?_⟩` and prove the remaining obligations. Simplify using `only [smul_eq_mul]`. Use `group`. Establish `hsupp' : (support fun δ : Γ => conv μ f₁ f₂ (a⁻¹ * δ * b)) ⊆ S`. Introduce `δ hδ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Assume the negation of the conclusion and derive a contradiction.
 
-Rewrite `hδ` using `[mem_support, conv_apply]`. Assume the negation of the conclusion as `hS`. Conclude with `hδ (integral_eq_zero_of_ae (Eventually.of_forall fun g => by`. Assume the negation of the conclusion as `h`. Conclude with `hS (hmem δ ⟨g, h⟩)))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hint : ∀ δ : Γ, Integrable (fun g => f₁ g * f₂ (g⁻¹ * (a⁻¹ * δ * b))) μ` using `fun δ => (by fun_prop : Continuous fun g => f₁ g * f₂ (g⁻¹ * (a⁻¹ * δ * b))).integrable_of_hasCompactSupport f₁.hasCompactSupport.mul_right`. Rewrite using `[quotientKernel_mk, finsum_eq_sum_of_support_subset _ hsupp']`. Simplify using `only [conv_apply]`. Rewrite using `[← integral_finsetSum _ fun δ _ => hint δ]`. Use `integral_congr_ae (Eventually.of_forall fun g => ?_)` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [rightMul_mk, quotientKernel_mk]`. Distinguish the cases in `hg : f₁ g = 0`. Simplify using `[hg]`. Rewrite using `[finsum_eq_sum_of_support_subset _ (s := S) ?_, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun δ _ => ?_` and prove the remaining obligations.
+Reduce the equality to equality of the corresponding arguments. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `congr 2`. Use `group`. Introduce `δ hδ`. Use `hmem δ ⟨g, mul_ne_zero hg ?_⟩` and prove the remaining obligations. Rewrite `hδ` using `[mem_support]`.
-
-Establish `: g⁻¹ * (a⁻¹ * δ * b) = (a * g)⁻¹ * δ * b` using `by group`. Rewrite using `[this]` and apply the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem quotientKernel_conv (f₁ f₂ : CompactlySupportedContinuousMap G ℂ)
     (x z : RightCosetSpace Γ) :
@@ -187,7 +185,7 @@ Both sides reduce to the same expression.
 variable [CompactSpace (RightCosetSpace Γ)]
 
 /- English proof (translation)
-Use extensionality with `⟨x, z⟩`. Rewrite using `[compKernel_apply, quotientKernelC_apply, quotientKernel_conv Γ μ f₁ f₂ x z]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem quotientKernelC_conv (f₁ f₂ : CompactlySupportedContinuousMap G ℂ) :
     quotientKernelC Γ (conv μ f₁ f₂) =
@@ -211,7 +209,7 @@ theorem kernelOperator_eq_contKernelOp (f : CompactlySupportedContinuousMap G �
   rfl
 
 /- English proof (translation)
-Rewrite using `[integrated_rightRegularRep_eq_kernelOperator, integrated_rightRegularRep_eq_kernelOperator, integrated_rightRegularRep_eq_kernelOperator, kernelOperator_eq_contKernelOp, kernelOperator_eq_contKernelOp, kernelOperator_eq_contKernelOp, quotientKernelC_conv, contKernelOp_comp]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem integrated_conv (f₁ f₂ : CompactlySupportedContinuousMap G ℂ) :
     (rightRegularRep Γ μ).integrated μ (UnitaryRep.ccToL1 μ (conv μ f₁ f₂)) =
@@ -223,7 +221,7 @@ theorem integrated_conv (f₁ f₂ : CompactlySupportedContinuousMap G ℂ) :
     contKernelOp_comp]
 
 /- English proof (translation)
-Rewrite using `[integrated_conv]`. Conclude with `isTraceClass_comp (isHilbertSchmidt_integrated_rightRegularRep Γ μ f₁) (isHilbertSchmidt_integrated_rightRegularRep Γ μ f₂)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isTraceClass_integrated_conv (f₁ f₂ : CompactlySupportedContinuousMap G ℂ) :
     IsTraceClass ((rightRegularRep Γ μ).integrated μ (UnitaryRep.ccToL1 μ (conv μ f₁ f₂))) := by
@@ -258,11 +256,11 @@ theorem indicatorOne_apply (K : OpenSubgroup G) (hK : IsCompact (K : Set G)) (x 
 variable (μ : Measure G) [μ.IsMulLeftInvariant] [IsFiniteMeasureOnCompacts μ]
 
 /- English proof (translation)
-Rewrite using `[conv_apply]`. Establish `h : (fun g => f g * indicatorOne K hK (g⁻¹ * x)) = (x • (K : Set G)).indicator (fun _ => f x)`. Use function extensionality and compare the values at `g`. Distinguish the cases in `hg : g ∈ x • (K : Set G)`. Take `⟨k, hk, rfl⟩` from `mem_smul_set.1 hg`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Establish `hk' : (x • k)⁻¹ * x ∈ (K : Set G)`. Rewrite using `[smul_eq_mul, mul_inv_rev, inv_mul_cancel_right]`. Conclude with `inv_mem hk`. Rewrite using `[indicatorOne_apply, indicator_of_mem hk', indicator_of_mem hg, smul_eq_mul, hf x k hk, Pi.one_apply, mul_one]`. Establish `hx : g⁻¹ * x ∉ (K : Set G)` using `fun h => hg (mem_smul_set.2 ⟨(g⁻¹ * x)⁻¹, inv_mem h, by rw [smul_eq_mul, mul_inv_rev, inv_inv, mul_inv_cancel_left]⟩)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[indicatorOne_apply, indicator_of_notMem hx, indicator_of_notMem hg, mul_zero]`. Rewrite using `[h, integral_indicator_const _ ((K.isOpen.smul x).measurableSet)]`. Establish `hvol : μ.real (x • (K : Set G)) = μ.real (K : Set G)`. Simplify using `[Measure.real, measure_smul]`. Rewrite using `[hvol, Complex.real_smul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conv_indicatorOne (K : OpenSubgroup G) (hK : IsCompact (K : Set G))
     (f : CompactlySupportedContinuousMap G ℂ) (hf : ∀ g, ∀ k ∈ K, f (g * k) = f g) (x : G) :
@@ -289,9 +287,9 @@ theorem conv_indicatorOne (K : OpenSubgroup G) (hK : IsCompact (K : Set G))
 variable [TotallyDisconnectedSpace G]
 
 /- English proof (translation)
-Establish `hmem : (f : G → ℂ) ∈ locallyConstantCompactSupport G ℂ ℂ` using `⟨hf, f.hasCompactSupport⟩`. Take `⟨K, hKc, hK⟩` from `exists_forall_mul_right hmem`. Establish `hpos : 0 < μ.real (K : Set G)` using `ENNReal.toReal_pos (K.isOpen.measure_pos μ ⟨1, K.one_mem⟩).ne' hKc.measure_lt_top.ne`. Use `set c : ℂ := (((μ.real (K : Set G))⁻¹ : ℝ) : ℂ)`. Use `⟨c • f, indicatorOne K hKc, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Use extensionality with `x`. Rewrite using `[conv_indicatorOne μ K hKc (c • f) (fun g k hk => by`. Simplify using `only [CompactlySupportedContinuousMap.smul_apply, hK g k hk]) x]`. Simplify using `only [CompactlySupportedContinuousMap.smul_apply, smul_eq_mul, c]`. Rewrite using `[← mul_assoc, ← Complex.ofReal_mul, mul_inv_cancel₀ hpos.ne', Complex.ofReal_one, one_mul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_eq_conv_of_isLocallyConstant [μ.IsOpenPosMeasure]
     (f : CompactlySupportedContinuousMap G ℂ) (hf : IsLocallyConstant (f : G → ℂ)) :
@@ -319,7 +317,7 @@ variable {G : Type*} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [Loca
   (μ : Measure G) [μ.IsHaarMeasure] [μ.IsMulRightInvariant]
 
 /- English proof (translation)
-Take `⟨f₁, f₂, rfl⟩` from `exists_eq_conv_of_isLocallyConstant μ f hf`. Conclude with `isTraceClass_integrated_conv Γ μ f₁ f₂`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem isTraceClass_integrated_of_isLocallyConstant (f : CompactlySupportedContinuousMap G ℂ)
     (hf : IsLocallyConstant (f : G → ℂ)) :

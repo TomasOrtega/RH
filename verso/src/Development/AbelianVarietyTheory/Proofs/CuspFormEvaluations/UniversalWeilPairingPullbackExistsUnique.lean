@@ -13,11 +13,11 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.UnivPairing
 
 /- English proof (translation)
-Take `⟨hex, hmul, -, -⟩` from `hW S P k T`. Take `⟨c₁, hc₁, hu⟩` from `hex 1 y (one_pow k) hy`. Establish `h₂` using `hmul 1 1 y c₁ c₁ hc₁ hc₁`. Rewrite `h₂` using `[_root_.mul_one]`. Take `rfl : c₁ = 1` from `mul_eq_left.1 (hu _ h₂)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hpow : ∀ j : ℕ, WeilIs P.A P.L k (x ^ j) y (c ^ j)` using `fun j => by`. Proceed by induction on `j with`. Consider the case `zero => rw [pow_zero, pow_zero]`. Conclude with `hc₁`. Consider the case `succ j ih => rw [pow_succ, pow_succ]`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Conclude with `hmul _ _ _ _ _ ih hc`. Establish `h` using `hpow k`. Rewrite `h` using `[hx]`. Conclude with `hu _ h`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem weilIs_pow_eq_one (hW : WeilSt) {S : Scheme.{0}} [IsLocallyNoetherian S] (P : PolAV S) (k : ℕ)
     {T : Over S} (x y : T ⟶ P.A) (hx : x ^ k = 1) (hy : y ^ k = 1) (c : Γ(T.left, ⊤)ˣ)
@@ -36,7 +36,7 @@ theorem weilIs_pow_eq_one (hW : WeilSt) {S : Scheme.{0}} [IsLocallyNoetherian S]
   exact hu _ h
 
 /- English proof (translation)
-Use `nilpotent_iff_mem_prime.2 fun J hJ => ?_` and prove the remaining obligations. Establish `e` using `h (AlgebraicClosure (FractionRing (B ⧸ J))) (((algebraMap (FractionRing (B ⧸ J)) _).comp (algebraMap (B ⧸ J) (FractionRing (B ⧸ J)))).comp (Ideal.Quotient.mk J))`. Rewrite `e` using `[RingHom.comp_apply, RingHom.comp_apply, map_eq_zero, map_eq_zero_iff _ (IsFractionRing.injective (B ⧸ J) _)]`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.1 e`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isNilpotent_of_geometric {B : Type} [CommRing B] {b : B}
     (h : ∀ (K : Type) [Field K] [IsAlgClosed K] (χ : B →+* K), χ b = 0) : IsNilpotent b := by
@@ -49,9 +49,9 @@ theorem isNilpotent_of_geometric {B : Type} [CommRing B] {b : B}
   exact Ideal.Quotient.eq_zero_iff_mem.1 e
 
 /- English proof (translation)
-Establish `hn : IsNilpotent ((∑ i ∈ Finset.range k, u ^ i) - k)` using `isNilpotent_of_geometric fun K _ _ χ => by`. Simplify using `[h K χ]`. Establish `hs : IsUnit (∑ i ∈ Finset.range k, u ^ i)`. Use `hn.isUnit_add_right_of_commute hk (Commute.all _ _)` as an intermediate fact. Rewrite `this` using `[sub_add_cancel]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `e` using `geom_sum_mul u k`. Rewrite `e` using `[hu, sub_self]`. Conclude with `sub_eq_zero.1 (hs.mul_right_eq_zero.1 e)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_one_of_geometric (B : Type) [CommRing B] (u : B) (k : ℕ) (hk : IsUnit (k : B)) (hu : u ^ k = 1)
     (h : ∀ (K : Type) [Field K] [IsAlgClosed K] (χ : B →+* K), χ u = 1) : u = 1 := by
@@ -65,9 +65,9 @@ theorem eq_one_of_geometric (B : Type) [CommRing B] (u : B) (k : ℕ) (hk : IsUn
   exact sub_eq_zero.1 (hs.mul_right_eq_zero.1 e)
 
 /- English proof (translation)
-Introduce `hL E _ _ _ H Dw l Xo N _`. Use `UnivPol.isLocallyNoetherian Xo` as an intermediate fact. Use `⟨fun T T' h x y e _ _ he => ?_, fun T x y hx hy => ?_, eq_one_of_geometric⟩` and prove the remaining obligations. Conclude with `CommPairing.weilIs_pull hL.globalFns (UnivPol.pol Xo).isAb (UnivPol.pol Xo).isLB h he`. Rewrite using `[← Nat.cast_pow]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨e, he, hu⟩` from `(hL.weil Xo.X (UnivPol.pol Xo) (N ^ 2) T).1 x y hx hy`. Conclude with `⟨e, he, weilIs_pow_eq_one hL.weil (UnivPol.pol Xo) (N ^ 2) x y hx hy e he, hu⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem weilIs_univ_pull_exists_unique : Laws → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (N : ℕ), 0 < N → (∀ (T T' : Over Xo.X) (h : T' ⟶ T) (x y : T ⟶ Xo.univ.t.G) (e : Γ(T.left, ⊤)ˣ), x ^ (N ^ 2) = 1 → y ^ (N ^ 2) = 1 → WeilIs Xo.univ.t.G Xo.univ.t.PP.L ((N : ℤ) ^ 2) x y e → WeilIs Xo.univ.t.G Xo.univ.t.PP.L ((N : ℤ) ^ 2) (h ≫ x) (h ≫ y) (Units.map h.left.appTop.hom.toMonoidHom e)) ∧ (∀ (T : Over Xo.X) (x y : T ⟶ Xo.univ.t.G), x ^ (N ^ 2) = 1 → y ^ (N ^ 2) = 1 → ∃ e : Γ(T.left, ⊤)ˣ, WeilIs Xo.univ.t.G Xo.univ.t.PP.L ((N : ℤ) ^ 2) x y e ∧ e ^ (N ^ 2) = 1 ∧ ∀ e', WeilIs Xo.univ.t.G Xo.univ.t.PP.L ((N : ℤ) ^ 2) x y e' → e' = e) ∧ ∀ (B : Type) [CommRing B] (u : B) (k : ℕ), IsUnit (k : B) → u ^ k = 1 → (∀ (K : Type) [Field K] [IsAlgClosed K] (χ : B →+* K), χ u = 1) → u = 1 := by
   intro hL E _ _ _ H Dw l Xo N _

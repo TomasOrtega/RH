@@ -13,7 +13,7 @@ open Classical
 namespace GlobalTheory.KeyVals
 
 /- English proof (translation)
-Introduce `_ G _ _ L _ _ ξ h` and use `CubePf.sym_pull (cubeMapOf (isGrpPullback_pullback G ξ)) L (bL L ξ).isLB (bL L ξ).rigGen h`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isSymmetric_bL : ∀ (S : Scheme.{0}) (G : Over S) [GrpObj G] [IsCommMonObj G] (L : RigLB G) (R : Type) [CommRing R] (ξ : Sp R ⟶ S),
     L.IsSymmetric → (KeyVals.bL L ξ).IsSymmetric :=

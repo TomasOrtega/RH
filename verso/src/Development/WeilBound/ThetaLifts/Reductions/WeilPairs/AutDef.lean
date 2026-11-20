@@ -32,14 +32,14 @@ variable (F E) in
 def finIdem : AEF F E := algebraMap (AF F) (AEF F E) (pairA F 0 1)
 
 /- English proof (translation)
-Use `show Algebra.TensorProduct.map (fstA F) (AlgHom.id F E) (pairA F 0 1 ⊗ₜ 1) = 0`. Rewrite using `[Algebra.TensorProduct.map_tmul, show fstA F (pairA F 0 1) = 0 from rfl, TensorProduct.zero_tmul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem infPartF_finIdem : infPartF F E (finIdem F E) = 0 := by
   show Algebra.TensorProduct.map (fstA F) (AlgHom.id F E) (pairA F 0 1 ⊗ₜ 1) = 0
   rw [Algebra.TensorProduct.map_tmul, show fstA F (pairA F 0 1) = 0 from rfl, TensorProduct.zero_tmul]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i j`. Use `show infPartF F E (finIdem F E * x i j) = 0`. Rewrite using `[map_mul, infPartF_finIdem, zero_mul]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finIdem_smul_fin {nS nT : ℕ} (x : WOF F E nS nT) : (finIdem F E • x).map (infPartF F E) = 0 := by
   funext i j

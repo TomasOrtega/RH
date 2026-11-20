@@ -17,9 +17,9 @@ open scoped InnerProductSpace ContDiff
 namespace GlobalTheory.NearMod
 
 /- English proof (translation)
-Establish `hE : IsTotallyComplex I.E` using `I.cm.cmUnram.1`. Establish `hdeg : Module.finrank ℚ I.E = Module.finrank ℚ I.F * 2`. Rewrite using `[← I.cm.deg2, Module.finrank_mul_finrank]`. Establish `hc` using `NumberField.InfinitePlace.card_add_two_mul_card_eq_rank I.E`. Establish `hr : NumberField.InfinitePlace.nrRealPlaces I.E = 0` using `NumberField.nrRealPlaces_eq_zero_iff.mpr hE`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `Formalism.HermitianLatticesTheory.fDeg AutInst.f`. Rewrite using `[NumberField.InfinitePlace.card_eq_nrRealPlaces_add_nrComplexPlaces]`. Use linear arithmetic over natural numbers and integers.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem fDeg_eq (I : AutInst) : Formalism.HermitianLatticesTheory.fDeg I.E = I.f := by
 
@@ -34,7 +34,7 @@ theorem fDeg_eq (I : AutInst) : Formalism.HermitianLatticesTheory.fDeg I.E = I.f
   omega
 
 /- English proof (translation)
-Unfold `Formalism.HermitianLatticesTheory.vInv AutInst.rd`. Rewrite using `[fDeg_eq]`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem two_vInv_eq (I : AutInst) : 2 * Formalism.HermitianLatticesTheory.vInv I.E = I.rd := by
   unfold Formalism.HermitianLatticesTheory.vInv AutInst.rd
@@ -42,11 +42,11 @@ theorem two_vInv_eq (I : AutInst) : 2 * Formalism.HermitianLatticesTheory.vInv I
   ring
 
 /- English proof (translation)
-Establish `hYa : Y ^ a ≤ Real.exp (a * (1 / 8 * L))`. Rewrite using `[Real.exp_nat_mul]`. Conclude with `pow_le_pow_left₀ hY0 hY a`. Establish `hYa0 : 0 ≤ Y ^ a` using `pow_nonneg hY0 a`. Break down `lt_or_ge κ 0 with hκ0 | hκ0` into its components or cases.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Establish `: κ * Y ^ a ≤ 0` using `mul_nonpos_of_nonpos_of_nonneg hκ0.le hYa0`. Use polynomial arithmetic with `[Real.exp_pos (-(3 / 8) * L)]`. Establish `h1 : κ * Y ^ a ≤ Real.exp (-(1 / 2 * J * L)) * Real.exp (a * (1 / 8 * L))` using `mul_le_mul hκ hYa hYa0 (Real.exp_pos _).le`. Rewrite `h1` using `[← Real.exp_add]`. Establish `hJ' : (1 : ℝ) ≤ J` using `by exact_mod_cast hJ`.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ha' : (a : ℝ) ≤ J` using `by exact_mod_cast haJ`. Establish `h2 : -(1 / 2 * J * L) + a * (1 / 8 * L) ≤ -(3 / 8) * L`. Use polynomial arithmetic with `[mul_nonneg (sub_nonneg.2 ha') hL, mul_nonneg (sub_nonneg.2 hJ') hL]`. Establish `h3` using `Real.exp_le_exp.2 h2`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem one_type_arith (L κ Y : ℝ) (a J : ℕ) (hL : 0 ≤ L) (hJ : 1 ≤ J) (haJ : a ≤ J)
     (hκ : κ ≤ Real.exp (-(1 / 2 * J * L))) (hY0 : 0 ≤ Y) (hY : Y ≤ Real.exp (1 / 8 * L)) :
@@ -70,31 +70,29 @@ theorem one_type_arith (L κ Y : ℝ) (a J : ℕ) (hL : 0 ≤ L) (hJ : 1 ≤ J) 
     nlinarith
 
 /- English proof (translation)
-Introduce `hFM hCB hNU hPB`. Unfold `GlobalTheory.IndefiniteRowSideFullHecke.NearNonzeroTerms.NearModerate`. Introduce `Cg hCg`. Take `⟨n₁, hn₁⟩` from `GlobalTheory.moderate_log_factor_absorbed Cg`. Use `⟨max n₁ (3 ^ 15), ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `B d p q b hq hC`. Establish `h8 : 8 ≤ max n₁ (3 ^ 15)` using `le_trans (by norm_num) (le_max_right _ _)`. Take `⟨-, hrd, hf, -, hpq, -, -, hmin, hd, hX, -, -, h, -, hgap, -, -, -, h120, -⟩` from `GlobalTheory.Dec.countHyp_numerics B Cg _ d p q b h8 hC`. Take `⟨hDS, hSig, hn₀, hq2, hlrd, hlf, hb, hlb, -, hg1, hgb, -⟩` from `id hC`. Establish `hPt` using `hPB B d p q h hDS hSig hgap (by rw [hmin]; exact h120)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hm : 0 ≤ mainTerm B d` using `by show 0 ≤ (∏ v, d v) * B.I.vol B.μf B.fund * (B.e 1).re`. Conclude with `mul_nonneg (mul_nonneg hd.le ENNReal.toReal_nonneg) hPt.2.2.2.2.1`. Establish `hn3 : 3 ^ 15 ≤ B.I.n` using `(le_max_right _ _).trans hn₀`. Establish `hn1 : 1 ≤ B.I.n` using `le_trans (by norm_num) hn3`. Establish `hlogn : 15 ≤ Real.log B.I.n`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : Real.exp 15 ≤ (B.I.n : ℝ)`. Establish `e1 : Real.exp 1 ≤ 3` using `by linarith [Real.exp_one_lt_d9]`. Combine the equalities or inequalities in the displayed calculation. Use `Real.log_le_log (Real.exp_pos 15) h3` as an intermediate fact. Rewrite `this` using `[Real.log_exp]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `hL : 0 ≤ (B.I.n : ℝ) * B.I.f * Real.log B.I.n`. Establish `: (0 : ℝ) ≤ Real.log B.I.n` using `by linarith`. Check the signs of the components of the expression. Establish `hY` using `hn₁ B.I.n B.I.f q B.I.rd (B.g : ℝ) b ((le_max_left _ _).trans hn₀) hf hq hq2 hrd hlrd hlf hb hlb (by exact_mod_cast hg1) hgb`. Establish `hlX : 0 ≤ Real.log (bigX B b)` using `Real.log_nonneg (by linarith)`.
+Establish an intermediate fact. Check the signs of the components of the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hY0 : 0 ≤ 2 * (B.I.f : ℝ) * q * (11 * q * Real.log (bigX B b))` using `mul_nonneg (by positivity) (mul_nonneg (by positivity) hlX)`. Establish `hY1 : 2 * (B.I.f : ℝ) * q * (11 * q * Real.log (bigX B b)) ≤ Real.exp (1 / 8 * ((B.I.n : ℝ) * B.I.f * Real.log B.I.n))` using `hY.1.trans_eq (by congr 1; ring)`. Establish `hA` using `GlobalTheory.T.nearTerms_moderate_points_one_type_bound hFM hNU hPB B Cg _ d p q b h8 hq hC`. Establish `hper : ∀ J ∈ Finset.Icc 1 q, ∀ c : Composition J, ∫⁻ x in {x | ∃ τ, HasType B.I x c.blocksFun τ} ∩ B.fund, {x | tauStar B q b ≤ least B.I x}.indicator (GlobalTheory.IndefiniteRowSideFullHecke.NearNonzeroTerms.nearAbs B d) x ∂(B.I.muA B.μf) ≤ ENNReal.ofReal (mainTerm B d * (2 * Re …`. Introduce `J hJmem c`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hJ` using `Finset.mem_Icc.1 hJmem`. Establish `hsum : ∑ i, c.blocksFun i = J` using `c.sum_blocksFun`. Establish `ha : 1 ≤ c.length` using `c.length_pos_of_pos (by omega)`. Establish `hj1 : ∀ i, 1 ≤ c.blocksFun i` using `fun i => c.one_le_blocksFun i`. Use `(hA.2 c.length c.blocksFun ha hj1 (by rw [hsum]; exact hJ.2)).trans ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `ENNReal.ofReal_le_ofReal` to reduce the goal to its premises. Apply `mul_le_mul_of_nonneg_left _ hm` to reduce the goal to its premises. Establish `hκ` using `hCB B.I.E B.I.cm.cmUnram p q c.length c.blocksFun hj1 (by rw [hsum]; exact hJ.2) (by rw [hpq]; exact hlogn) (by rw [hpq]; exact hq2) (by rw [two_vInv_eq, hpq]; exact hlrd) (by rw [fDeg_eq, hpq]; exact hlf)`. Rewrite `hκ` using `[hsum, hpq, fDeg_eq]`. Conclude with `one_type_arith _ _ _ c.length J hL hJ.1 c.length_le (hκ.trans_eq (by congr 1; ring)) hY0 hY1`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hSm : MeasurableSet {x : B.I.GA | tauStar B q b ≤ least B.I x}` using `measurableSet_le measurable_const (GlobalTheory.LeastVar.continuous_least B.I hn1).measurable`. Establish `hΦ0 : ∀ x, 1 / 2 ≤ least B.I x → {x | tauStar B q b ≤ least B.I x}.indicator (GlobalTheory.IndefiniteRowSideFullHecke.NearNonzeroTerms.nearAbs B d) x = 0` using `fun x hx => Set.indicator_apply_eq_zero.2 (fun _ => hA.1 x hx)`. Use `set M : ℝ := mainTerm B d * (2 * Real.exp (-(3 / 8) * ((B.I.n : ℝ) * B.I.f * Real.log B.I.n))) with hM`. Establish `h2q : (2 : ENNReal) ^ q = ENNReal.ofReal (2 ^ q)`. Rewrite using `[ENNReal.ofReal_pow (by norm_num)]; simp`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[lintegral_indicator hSm, Measure.restrict_restrict hSm, Set.inter_comm]`. Both sides reduce to the same expression. Use `_ ≤ ∑ J ∈ Finset.Icc 1 q, ∑ c : Composition J, ∫⁻ x in {x | ∃ τ, HasType B.I x c.blocksFun τ} ∩ B.fund, {x | tauStar B q b ≤ least B.I x}.indicator (GlobalTheory.IndefiniteRowSideFullHecke.NearNonzeroTerms.nearAbs B d) x ∂(B.I.muA B.μf) := GlobalTheory.TypeDecomp.lintegral_le_sum …`. Use `_ ≤ ∑ J ∈ Finset.Icc 1 q, ∑ _c : Composition J, ENNReal.ofReal M := Finset.sum_le_sum fun J hJ => Finset.sum_le_sum fun c _ => hper J hJ c`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Use `_ = ((∑ J ∈ Finset.Icc 1 q, Fintype.card (Composition J) : ℕ) : ENNReal) * ENNReal.ofReal M := by`. Rewrite using `[Nat.cast_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun J _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_const, Finset.card_univ, nsmul_eq_mul]`. Use `_ ≤ (2 : ENNReal) ^ q * ENNReal.ofReal M := by gcongr`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Conclude with `(GlobalTheory.sum_card_composition_lt q).le` after adjusting the coercions. Use `_ = ENNReal.ofReal (2 ^ q * M) := by`. Rewrite using `[h2q]; exact (ENNReal.ofReal_mul (by positivity)).symm`. Use `_ ≤ ENNReal.ofReal (GlobalTheory.IndefiniteRowSideFullHecke.NearNonzeroTerms.nearBound B d) := by`. Apply `ENNReal.ofReal_le_ofReal` to reduce the goal to its premises.
-
-Establish `e2 : Real.exp (-(1 / 4 * (B.I.n : ℝ) * (B.I.f : ℝ) * Real.log (B.I.n : ℝ))) = Real.exp (-(1 / 4) * B.I.n * B.I.f * Real.log B.I.n)` using `by congr 1; ring`. Establish `e1 : Real.exp (-(3 / 8) * ((B.I.n : ℝ) * B.I.f * Real.log B.I.n)) = Real.exp (-(3 / 8) * B.I.n * B.I.f * Real.log B.I.n)` using `by congr 1; ring`. Unfold `GlobalTheory.IndefiniteRowSideFullHecke.NearNonzeroTerms.nearBound`. Rewrite using `[e2, hM, e1]`. Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem nearModerate : GlobalTheory.FlagMeas.FlagMeasureBound → GlobalTheory.FlagMeas.ConstantBound → GlobalTheory.Dec.NearUnip →
     GlobalTheory.Deep.PtBound → GlobalTheory.IndefiniteRowSideFullHecke.NearNonzeroTerms.NearModerate := by

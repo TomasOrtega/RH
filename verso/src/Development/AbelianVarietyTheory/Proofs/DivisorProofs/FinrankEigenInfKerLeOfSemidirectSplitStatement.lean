@@ -4,7 +4,7 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.BadElt
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.ArithmeticCylinders GlobalTheory.BadCount Module
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.BadCount.finrank_eig_inf_ker_le_of_isSplit` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FFinrankEigenInfKerLeOfSemidirectSplit.lean&line=139#L139)
 -/

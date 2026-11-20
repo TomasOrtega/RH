@@ -20,7 +20,7 @@ def pairDens {r : ℕ} (X : Data E r) (P f0 : Frame X.Ψ r → ℂ) (W : Frame X
   fun y => X.dom.piecewise (fun y => P y * (starRingEnd ℂ) (f0 y)) 0 y * ((W y).toReal : ℂ)
 
 /- English proof (translation)
-Simplify using `[pairDens, Set.piecewise, hx]`.
+Simplify using the standard rewrite rules.
 -/
 theorem pairDens_dom {r : ℕ} (X : Data E r) (P f0 : Frame X.Ψ r → ℂ) (W : Frame X.Ψ r → ℝ≥0∞)
     {x : Frame X.Ψ r} (hx : x ∈ X.dom) :
@@ -28,7 +28,7 @@ theorem pairDens_dom {r : ℕ} (X : Data E r) (P f0 : Frame X.Ψ r → ℂ) (W :
   simp [pairDens, Set.piecewise, hx]
 
 /- English proof (translation)
-Unfold `pairDens`. Conclude with `(ContinuousOn.measurable_piecewise (hP.mul (Complex.continuous_conj.comp_continuousOn hf)) continuousOn_const (FourierCoefficientDomain.isOpen_dom X).measurableSet).mul (Complex.measurable_ofReal.comp hW.ennreal_toReal)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem pairDens_meas {r : ℕ} (X : Data E r) {P f0 : Frame X.Ψ r → ℂ} {W : Frame X.Ψ r → ℝ≥0∞}
     (hP : ContinuousOn P X.dom) (hf : ContinuousOn f0 X.dom) (hW : Measurable W) :
@@ -41,9 +41,9 @@ theorem pairDens_meas {r : ℕ} (X : Data E r) {P f0 : Frame X.Ψ r → ℂ} {W 
     (Complex.measurable_ofReal.comp hW.ennreal_toReal)
 
 /- English proof (translation)
-Introduce `x hx b hb`. Establish `h0` using `OntoE.bchar_ne X la hb`. Establish `h1 : (starRingEnd ℂ) (bchar la b) ≠ 0` using `by simpa using h0`. Rewrite using `[pairDens_dom X P f0 W (OntoS.dom_rmul X hx hb), pairDens_dom X P f0 W hx, hP x hx b hb, hf x hx b hb, hW.2.1 x hx b hb, ENNReal.toReal_div, ENNReal.toReal_ofReal (sq_nonneg _), map_mul]`. Use `push_cast`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[← Complex.mul_conj']`. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 -/
 theorem pairDens_rmul {r : ℕ} (X : Data E r) {la : Wt X.Ψ r} {P f0 : Frame X.Ψ r → ℂ}
     {W : Frame X.Ψ r → ℝ≥0∞}
@@ -61,7 +61,7 @@ theorem pairDens_rmul {r : ℕ} (X : Data E r) {la : Wt X.Ψ r} {P f0 : Frame X.
   field_simp
 
 /- English proof (translation)
-Rewrite using `[pairDens_dom X P f0 W (OntoS.dom_lact X hγ hx), hf γ hγ x hx, hW.2.2 γ hγ x hx, map_mul, Complex.inv_eq_conj (OntoE.chi_norm X la hγ)]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem pairDens_lact {r : ℕ} (X : Data E r) {la : Wt X.Ψ r} {P f0 : Frame X.Ψ r → ℂ}
     {W : Frame X.Ψ r → ℝ≥0∞}
@@ -74,7 +74,7 @@ theorem pairDens_lact {r : ℕ} (X : Data E r) {la : Wt X.Ψ r} {P f0 : Frame X.
   ring
 
 /- English proof (translation)
-Unfold `kaF rhF`. Use `Real.measurable_exp.comp (measurable_const.mul (Measurable.neg ?_))` and prove the remaining obligations. Use `Finset.measurable_fun_sum _ fun τ _ => Real.measurable_log.comp ?_` and prove the remaining obligations. Conclude with `(OntoB.cd_dmin X x0 τ _).continuous.norm.measurable`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem kaF_meas {r : ℕ} (X : Data E r) (x0 : Frame X.Ψ r) (bb : ℝ) : Measurable (kaF X x0 bb) := by
   unfold kaF rhF
@@ -83,9 +83,9 @@ theorem kaF_meas {r : ℕ} (X : Data E r) (x0 : Frame X.Ψ r) (bb : ℝ) : Measu
   exact (OntoB.cd_dmin X x0 τ _).continuous.norm.measurable
 
 /- English proof (translation)
-Establish `h1` using `OntoG.amgm (x := ‖u‖) (y := ‖g‖) hk`. Establish `h2 : ‖u‖ * ‖g‖ ≤ ‖u‖ ^ 2 / k + k * ‖g‖ ^ 2`. Establish `: 0 ≤ ‖u‖ * ‖g‖` using `by positivity`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[← ofReal_norm_eq_enorm, norm_mul, norm_mul, RCLike.norm_conj, Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg ENNReal.toReal_nonneg, ENNReal.ofReal_mul (by positivity), ← mul_assoc, ← ENNReal.ofReal_mul hk.le, ← add_mul, ← ENNReal.ofReal_add (by positivity) (by positivity)]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_le_mul' (ENNReal.ofReal_le_ofReal h2) ENNReal.ofReal_toReal_le`.
+A detailed English derivation is pending.
 -/
 theorem enorm_le {k : ℝ} (hk : 0 < k) (u g : ℂ) (w : ℝ≥0∞) :
     ‖u * (starRingEnd ℂ) g * (w.toReal : ℂ)‖ₑ ≤
@@ -101,21 +101,19 @@ theorem enorm_le {k : ℝ} (hk : 0 < k) (u g : ℂ) (w : ℝ≥0∞) :
   exact mul_le_mul' (ENNReal.ofReal_le_ofReal h2) ENNReal.ofReal_toReal_le
 
 /- English proof (translation)
-Introduce `hU hKa r X x0 hx0 hPD la W bb hW _ hbb F P _ hIn hP hPF FF hFF f0 hf0 hfF`. Establish `hsec` using `hf0.1.1`. Take `⟨C, hCt, hC⟩` from `hKa r X x0 hx0 hPD FF hFF bb hbb`. Establish `hφm` using `OntoE.phiF_meas X hsec.1.continuousOn hW.1`. Establish `hφ` using `hC (OntoE.phiF X f0 W) hφm (OntoE.phiF_B X hsec.2.1 hW) (OntoE.phiF_G X hsec.2.2 hW)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hFFeq : ∫⁻ z in FF, OntoE.phiF X f0 W (cpt X x0 z) ∂muF X x0 = ∫⁻ z in FF, ENNReal.ofReal (‖f0 (cpt X x0 z)‖ ^ 2) * W (cpt X x0 z) ∂muF X x0` using `setLIntegral_congr_fun hFF.1 (fun z hz => OntoE.phiF_dom X f0 W (hFF.2.1 hz))`. Establish `hI : ∫⁻ z, ENNReal.ofReal (kaF X x0 bb z) * OntoE.phiF X f0 W (cpt X x0 z) ∂muF X x0 < ⊤`. Use `hφ.trans_lt (ENNReal.mul_lt_top hCt ?_)` and prove the remaining obligations. Rewrite using `[hFFeq]`. Conclude with `hfF`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hcm : Measurable (cpt X x0)` using `(FundSetPf.cont_cpt X x0).measurable`. Establish `hae` using `FundSetPf.ae_OmF' X x0`. Establish `hm` using `pairDens_meas X hP.1.continuousOn hsec.1.continuousOn hW.1`. Establish `hint : Integrable (fun z => pairDens X P f0 W (cpt X x0 z)) (muF X x0)`. Use `⟨(hm.comp hcm).aestronglyMeasurable, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Unfold `HasFiniteIntegral`. Combine the equalities or inequalities in the displayed calculation. Use `lintegral_mono_ae (hae.mono fun z hz => ?_)` and prove the remaining obligations. Rewrite using `[pairDens_dom X P f0 W hz, OntoE.phiF_dom X f0 W hz, hPF z hz]`. Conclude with `enorm_le (Real.exp_pos _) _ _ _`.
+Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `_ < ⊤ := by`. Establish `hB : Measurable fun z => ENNReal.ofReal (kaF X x0 bb z) * OntoE.phiF X f0 W (cpt X x0 z)` using `(ENNReal.measurable_ofReal.comp (kaF_meas X x0 bb)).mul (hφm.comp hcm)`. Rewrite using `[lintegral_add_right _ hB]`. Conclude with `ENNReal.add_lt_top.2 ⟨hIn, hI⟩`. Establish `key` using `hU r X x0 hx0 FF hFF _ hm (pairDens_rmul X hP.2 hsec.2.1 hW) hint`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Combine the equalities or inequalities in the displayed calculation. Use `setIntegral_congr_fun hFF.1 fun z hz => ?_` and prove the remaining obligations. Establish `hz' : cpt X x0 z ∈ X.dom` using `hFF.2.1 hz`. Simplify using `only [poin]`. Rewrite using `[mul_assoc, ← tsum_mul_right]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `tsum_congr fun γ => (pairDens_lact X hsec.2.2 hW γ.2 hz').symm`. Use `_ = _ := by`. Rewrite using `[← key]`. Use `integral_congr_ae (hae.mono fun z hz => ?_)` and prove the remaining obligations. Simplify using `only`.
-
-Rewrite using `[pairDens_dom X P f0 W hz, hPF z hz]`.
+A detailed English derivation is pending.
 -/
 theorem pairUnfold_of_unfold :
     (∀ (r : ℕ) (X : Data E r) (x0 : Frame X.Ψ r), IsOrth X x0 → ∀ FF, IsFundSet X x0 FF → ∀ h : Frame X.Ψ r → ℂ, Measurable h → (∀ x ∈ X.dom, ∀ b ∈ Bor X.Ψ r, h (rmul x b) = h x) → Integrable (fun z => h (cpt X x0 z)) (muF X x0) → ∫ z, h (cpt X x0 z) ∂muF X x0 = ∫ z in FF, ∑' γ : X.Γ, h (lact γ.1 (cpt X x0 z)) ∂muF X x0) → (KaUnfoldStatement (E := E)) → (PairUnfoldStatement (E := E)) := by

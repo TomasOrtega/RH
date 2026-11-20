@@ -20,7 +20,7 @@ namespace PositivityTheory.HtPt.Ppic
 open GlobalTheory.CechPic GlobalTheory.PrimitiveOverValuationRing
 
 /- English proof (translation)
-Use `⟨(toUnit A ≫ x)⁻¹ * 𝟙 A, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[MonObj.comp_mul, Category.comp_id, GrpObj.comp_inv, ← Category.assoc, comp_toUnit, inv_mul_cancel_left]`. Rewrite using `[MonObj.comp_mul, Category.comp_id, ← Category.assoc, comp_toUnit, mul_inv_cancel_left]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem isIso_transl {S : Scheme.{0}} {A : Over S} [GrpObj A] (x : 𝟙_ (Over S) ⟶ A) :
     IsIso ((toUnit A ≫ x) * 𝟙 A) := by
@@ -30,7 +30,7 @@ theorem isIso_transl {S : Scheme.{0}} {A : Over S} [GrpObj A] (x : 𝟙_ (Over S
   · rw [MonObj.comp_mul, Category.comp_id, ← Category.assoc, comp_toUnit, mul_inv_cancel_left]
 
 /- English proof (translation)
-The claim follows from `cls_pair hL _ _ h`.
+A detailed English derivation is pending.
 -/
 theorem cls_translDiff {S : Scheme.{0}} {A : Over S} [GrpObj A] {L : LB A.left} (hL : L.IsLB) {T : Over S} (y : T ⟶ A)
     (h : (Out.translDiff A L y).IsLB) :
@@ -38,19 +38,17 @@ theorem cls_translDiff {S : Scheme.{0}} {A : Over S} [GrpObj A] {L : LB A.left} 
   cls_pair hL _ _ h
 
 /- English proof (translation)
-Establish `hτ : ((toUnit A ≫ x)⁻¹ * 𝟙 A) ≫ ((toUnit A ≫ x) * 𝟙 A) = 𝟙 A`. Rewrite using `[MonObj.comp_mul, Category.comp_id, ← Category.assoc, comp_toUnit, mul_inv_cancel_left]`. Establish `hcM : cls M hM = GlobalTheory.CechPic.pull ((toUnit A ≫ x) * 𝟙 A).left (cls L hL)`. Rewrite using `[(cls_eq_iff hM (LB.isLB_pull hL _)).mpr h, cls_pull hL]`. Introduce `R _ t y hy`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `hK R t y` to reduce the goal to its premises. Introduce `p`. Take `⟨V, hpV, c, hc⟩` from `hy p`. Use `⟨V, hpV, ?_⟩` and prove the remaining obligations. Establish `hLy : (Out.translDiff A L y).IsLB` using `LB.isLB_linComb hL _ _`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hMy : (Out.translDiff A M y).IsLB` using `LB.isLB_linComb hM _ _`. Establish `hc0` using `(cls_eq_zero_iff (LB.isLB_pull hMy _)).mpr ⟨c, hc⟩`. Rewrite `hc0` using `[cls_pull hMy, cls_translDiff hM, hcM, ← GlobalTheory.CechPic.pull_comp, ← GlobalTheory.CechPic.pull_comp, ← Over.comp_left, ← Over.comp_left]`. Establish `hm : (fst (Over.mk t) A ≫ y * snd (Over.mk t) A) ≫ ((toUnit A ≫ x) * 𝟙 A) = lift (fst (Over.mk t) A) (snd (Over.mk t) A ≫ ((toUnit A ≫ x) * 𝟙 A)) ≫ (fst (Over.mk t) A ≫ y * snd (Over.mk t) A)`. Rewrite using `[MonObj.comp_mul, Category.comp_id, ← Category.assoc, comp_toUnit, MonObj.comp_mul, ← Category.assoc, lift_fst, lift_snd, MonObj.comp_mul, Category.comp_id, ← Category.assoc, comp_toUnit, mul_left_comm]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hs : snd (Over.mk t) A ≫ ((toUnit A ≫ x) * 𝟙 A) = lift (fst (Over.mk t) A) (snd (Over.mk t) A ≫ ((toUnit A ≫ x) * 𝟙 A)) ≫ snd (Over.mk t) A` using `(lift_snd _ _).symm`. Rewrite `hc0` using `[hs, hm, Over.comp_left, Over.comp_left, GlobalTheory.CechPic.pull_comp, GlobalTheory.CechPic.pull_comp, ← map_sub]`. Establish `hψφ : lift (fst (Over.mk t) A) (snd (Over.mk t) A ≫ ((toUnit A ≫ x)⁻¹ * 𝟙 A)) ≫ lift (fst (Over.mk t) A) (snd (Over.mk t) A ≫ ((toUnit A ≫ x) * 𝟙 A)) = 𝟙 _`. Use `ext`. Rewrite using `[Category.assoc, lift_fst, lift_fst, Category.id_comp]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Category.assoc, lift_snd, ← Category.assoc, lift_snd, Category.assoc, hτ, Category.comp_id, Category.id_comp]`. Establish `hψf : (lift (fst (Over.mk t) A) (snd (Over.mk t) A ≫ ((toUnit A ≫ x)⁻¹ * 𝟙 A))).left ≫ (fst (Over.mk t) A).left = (fst (Over.mk t) A).left`. Rewrite using `[← Over.comp_left, lift_fst]`. Establish `key` using `pull_eq_zero_of_mem _ ((Over.Hom.left (fst (Over.mk t) A) ⁻¹ᵁ V).ι ≫ (lift (fst (Over.mk t) A) (snd (Over.mk t) A ≫ ((toUnit A ≫ x)⁻¹ * 𝟙 A))).left) (fun z => by`. Rewrite using `[Scheme.Hom.mem_preimage, ← Scheme.Hom.comp_apply, Category.assoc, hψf, Scheme.Hom.comp_apply, ← Scheme.Hom.mem_preimage]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(Scheme.Opens.range_ι _).le (Set.mem_range_self z)) hc0`. Establish `e : ∀ D, GlobalTheory.CechPic.pull (lift (fst (Over.mk t) A) (snd (Over.mk t) A ≫ ((toUnit A ≫ x)⁻¹ * 𝟙 A))).left (GlobalTheory.CechPic.pull (lift (fst (Over.mk t) A) (snd (Over.mk t) A ≫ ((toUnit A ≫ x) * 𝟙 A))).left D) = D`. Introduce `D`. Rewrite using `[← GlobalTheory.CechPic.pull_comp, ← Over.comp_left, hψφ, Over.id_left, GlobalTheory.CechPic.pull_id]`. Rewrite `key` using `[GlobalTheory.CechPic.pull_comp, e]`.
-
-Conclude with `(cls_eq_zero_iff (LB.isLB_pull hLy _)).mp (by rw [cls_pull hLy, cls_translDiff hL]; exact key)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kTriv_transl {S : Scheme.{0}} {A : Over S} [GrpObj A] [IsCommMonObj A] {L M : LB A.left} (hL : L.IsLB)
     (hM : M.IsLB) (x : 𝟙_ (Over S) ⟶ A) (h : LBIso M (L.pull ((toUnit A ≫ x) * 𝟙 A).left)) (hK : Out.KTriv A L) :
@@ -105,9 +103,9 @@ theorem kTriv_transl {S : Scheme.{0}} {A : Over S} [GrpObj A] [IsCommMonObj A] {
   exact (cls_eq_zero_iff (LB.isLB_pull hLy _)).mp (by rw [cls_pull hLy, cls_translDiff hL]; exact key)
 
 /- English proof (translation)
-Introduce `Q M hM x h`. Use `Q.isAb.comm` as an intermediate fact. Use `⟨?_, kTriv_transl Q.isLB hM x h Q.ktriv⟩` and prove the remaining obligations. Take `⟨w, hw⟩` from `h`. Use `isIso_transl x` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `: IsIso ((toUnit Q.A ≫ x) * 𝟙 Q.A).left` using `inferInstanceAs (IsIso ((Over.forget (Sp ℂ)).map ((toUnit Q.A ≫ x) * 𝟙 Q.A)))`. Establish `sq : IsPullback ((toUnit Q.A ≫ x) * 𝟙 Q.A).left Q.A.hom Q.A.hom (𝟙 _)` using `IsPullback.of_horiz_isIso ⟨by rw [Over.w, Category.comp_id]⟩`. Conclude with `relAmple_pull sq Q.isLB hM ((isGen_iff w).1 hw) ⊤ (isAffineOpen_top _) (fun _ => trivial) Q.ample`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem transl : ∀ (Q : Out.PolAV (Sp ℂ)) (M : LB Q.A.left), M.IsLB → ∀ x : 𝟙_ (Over (Sp ℂ)) ⟶ Q.A, LBIso M (Q.L.pull ((toUnit Q.A ≫ x) * 𝟙 Q.A).left) → Out.RelAmple Q.A M ∧ Out.KTriv Q.A M := by
   intro Q M hM x h

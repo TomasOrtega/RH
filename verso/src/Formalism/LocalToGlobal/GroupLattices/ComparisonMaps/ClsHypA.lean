@@ -13,7 +13,7 @@ variable {T K : Type} [CommRing T] [CommRing K] {n : Type} [Fintype n] [Decidabl
 
 include hσ in
 /- English proof (translation)
-Simplify using `[hform, map_sum, map_mul, Prod.fst_sum, hσ, swapR]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hform_fst (z y : n → T) :
     (φ (hform σ J z y)).1 = ∑ i, ∑ j, (φ (z i)).2 * (φ (J i j)).1 * (φ (y j)).1 := by
@@ -21,7 +21,7 @@ theorem hform_fst (z y : n → T) :
 
 include hσ in
 /- English proof (translation)
-Simplify using `[hform, map_sum, map_mul, Prod.snd_sum, hσ, swapR]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hform_snd (z y : n → T) :
     (φ (hform σ J z y)).2 = ∑ i, ∑ j, (φ (z i)).1 * (φ (J i j)).2 * (φ (y j)).2 := by
@@ -30,19 +30,19 @@ theorem hform_snd (z y : n → T) :
 include hσ hS hΛ in
 
 /- English proof (translation)
-Establish `key : ∀ (K' : Matrix n n T) (a b : n → T), hform σ K' a b = (fun i => σ (a i)) ᵥ* K' ⬝ᵥ b`. Introduce `K' a b`. Simplify using `only [hform, Matrix.vecMul, dotProduct, Finset.sum_mul]`. Conclude with `Finset.sum_comm`. Establish `hgen : ∀ (M : Matrix n n T) (a b : n → T), hform σ J (M *ᵥ a) (M *ᵥ b) = hform σ (cT σ M * J * M) a b`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `M a b`. Establish `hmap : (fun i => σ ((M *ᵥ a) i)) = (M.map σ) *ᵥ (fun i => σ (a i))`. Use function extensionality and compare the values at `i`. Simplify using `[Matrix.mulVec, dotProduct, map_sum, map_mul]`. Rewrite using `[key, key, hmap, Matrix.dotProduct_mulVec, ← Matrix.vecMul_transpose, Matrix.vecMul_vecMul, Matrix.vecMul_vecMul]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.mul_assoc]`. Both sides reduce to the same expression. Establish `hU : cT σ (x : Matrix n n T) * J * (x : Matrix n n T) = J` using `hx`. Establish `hz' : ∀ z : n → T, z = (x : Matrix n n T) *ᵥ (((x⁻¹ : GL n T) : Matrix n n T) *ᵥ z)`. Introduce `z`.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.mulVec_mulVec, Units.mul_inv, Matrix.one_mulVec]`. Rewrite using `[hΛ]`. Introduce `z hz`. Rewrite using `[hS]`. Establish `hinv : hform σ J z ((x : Matrix n n T) *ᵥ y) = hform σ J (((x⁻¹ : GL n T) : Matrix n n T) *ᵥ z) y` using `by nth_rewrite 1 [hz' z]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hgen, hU]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Take `⟨y', hy'Λ, hy'⟩` from `h1 y hy`. Establish `e : (φ (hform σ J z ((x : Matrix n n T) *ᵥ y))).1 = (φ (hform σ J z y')).1`. Rewrite using `[hform_fst φ σ hσ J, hform_fst φ σ hσ J]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [hy']`. Rewrite using `[e]`. Conclude with `((hS _).1 ((hΛ y').1 hy'Λ z hz)).1`. Take `⟨z', hz'Λ, hz'e⟩` from `h2 z hz`. Establish `e : (φ (hform σ J z ((x : Matrix n n T) *ᵥ y))).2 = (φ (hform σ J z' y)).2`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hinv, hform_snd φ σ hσ J, hform_snd φ σ hσ J]`. Simplify using `only [hz'e]`. Rewrite using `[e]`. Conclude with `((hS _).1 ((hΛ y).1 hy z' hz'Λ)).2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_of_first (x : GL n T) (hx : x ∈ UJ σ J)
     (h1 : ∀ y ∈ Λ, ∃ y' ∈ Λ, ∀ a, (φ (y' a)).1 = (φ (((x : Matrix n n T) *ᵥ y) a)).1)
@@ -90,9 +90,9 @@ theorem map_of_first (x : GL n T) (hx : x ∈ UJ σ J)
 include hσ hS hΛ in
 
 /- English proof (translation)
-Use `show ∀ y : n → T, y ∈ Λ ↔ (x : Matrix n n T) *ᵥ y ∈ Λ`. Introduce `y`. Prove the components needed by the constructor for the conclusion. Conclude with `map_of_first φ σ hσ Ov S hS J Λ hΛ x hx h1 h2 y`. Introduce `hxy`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hxi : x⁻¹ ∈ UJ σ J` using `inv_mem hx`. Use `map_of_first φ σ hσ Ov S hS J Λ hΛ x⁻¹ hxi h2 (by simpa using h1) _ hxy` as an intermediate fact. Rewrite `this` using `[Matrix.mulVec_mulVec, Units.inv_mul, Matrix.one_mulVec]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem stab_of_first (x : GL n T) (hx : x ∈ UJ σ J)
     (h1 : ∀ y ∈ Λ, ∃ y' ∈ Λ, ∀ a, (φ (y' a)).1 = (φ (((x : Matrix n n T) *ᵥ y) a)).1)
@@ -108,15 +108,15 @@ theorem stab_of_first (x : GL n T) (hx : x ∈ UJ σ J)
     rwa [Matrix.mulVec_mulVec, Units.inv_mul, Matrix.one_mulVec] at this
 
 /- English proof (translation)
-Establish `hmat : ∀ t : n → K, ((fr⁻¹ : GL n K) : Matrix n n K) *ᵥ ((g : Matrix n n K) *ᵥ t) = ((fr⁻¹ * g * fr : GL n K) : Matrix n n K) *ᵥ (((fr⁻¹ : GL n K) : Matrix n n K) *ᵥ t)`. Introduce `t`. Simplify using `only [Units.val_mul, Matrix.mulVec_mulVec, Matrix.mul_assoc, Units.mul_inv, Matrix.mul_one]`. Prove the components needed by the constructor for the conclusion. Introduce `H a b`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `he : ((fr⁻¹ : GL n K) : Matrix n n K) *ᵥ ((fr : Matrix n n K) *ᵥ Pi.single b 1) = Pi.single b 1`. Rewrite using `[Matrix.mulVec_mulVec, Units.inv_mul, Matrix.one_mulVec]`. Establish `h0 : ∀ c, (((fr⁻¹ : GL n K) : Matrix n n K) *ᵥ ((fr : Matrix n n K) *ᵥ Pi.single b 1)) c ∈ Ov`. Introduce `c`. Rewrite using `[he]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hc : c = b`. Substitute `hc` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Pi.single_apply, hc]`. Use `H _ h0 a` as an intermediate fact.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite `this` using `[hmat, he]`. Simplify `this` using `[Matrix.mulVec_single]`. Introduce `H t ht a`. Rewrite using `[hmat]`. Simplify using `only [Matrix.mulVec, dotProduct]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `sum_mem fun b _ => mul_mem (H a b) (ht b)`.
+A detailed English derivation is pending.
 -/
 theorem int_conj_iff {K : Type} [CommRing K] {n : Type} [Fintype n] [DecidableEq n] (Ov : Subring K) (fr g : GL n K) :
     (∀ t : n → K, (∀ a, (((fr⁻¹ : GL n K) : Matrix n n K) *ᵥ t) a ∈ Ov) →

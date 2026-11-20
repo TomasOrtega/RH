@@ -79,7 +79,7 @@ instance towFm (i : C.Tw) (j : ℕ) (b : Bool) : IsScalarTower (C.O i) (Fraction
   IsScalarTower.of_algebraMap_smul fun _ _ => rfl
 
 /- English proof (translation)
-The claim follows from `(inferInstance : Module.Finite (KB C i b) (KB C i b ⊗[C.Ks] FmK C j))`.
+A detailed English derivation is pending.
 -/
 theorem finiteDimensional_Fm (i : C.Tw) (j : ℕ) (b : Bool) [FiniteDimensional C.Ks (FmK C j)] :
     FiniteDimensional (FractionRing (C.O i)) (Fm C i j b) :=
@@ -143,7 +143,7 @@ def Bgood (i : C.Tw) (j : ℕ) (b : Bool) (hst : RhoStab C j) (U : Subgroup C.G)
   Bsup C i j b ⊓ ((Fm0 C i j b hst U psiU) ⊓ (V0 C i j b hst U psiU eC)).restrictScalars (C.O i)
 
 /- English proof (translation)
-Rewrite using `[map_mul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem actG_mul_apply (i : C.Tw) (j : ℕ) (b : Bool) (hst : RhoStab C j) (g h : C.G) (x : Fm C i j b) :
     actG C i j b hst (g * h) x = actG C i j b hst g (actG C i j b hst h x) := by
@@ -151,9 +151,9 @@ theorem actG_mul_apply (i : C.Tw) (j : ℕ) (b : Bool) (hst : RhoStab C j) (g h 
   rfl
 
 /- English proof (translation)
-Unfold `eEnd`. Rewrite using `[LinearMap.sum_apply, LinearMap.sum_apply, map_sum]`. Simplify using `only [LinearMap.smul_apply, LinearEquiv.coe_coe, map_smul]`. Rewrite using `[← (MulAut.conj u).toEquiv.sum_comp]`. Use `Finset.sum_congr rfl fun g _ => ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [MulEquiv.toEquiv_eq_coe, MulEquiv.coe_toEquiv, MulAut.conj_apply, hcl]`. Rewrite using `[← actG_mul_apply, ← actG_mul_apply]`. Use `congr 2`. Use `group`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem eEnd_actG (i : C.Tw) (j : ℕ) (b : Bool) (hst : RhoStab C j) (eC : C.G → C.L0)
     (hcl : ∀ u g, eC (u * g * u⁻¹) = eC g) (u : C.G) (x : Fm C i j b) :
@@ -169,11 +169,11 @@ theorem eEnd_actG (i : C.Tw) (j : ℕ) (b : Bool) (hst : RhoStab C j) (eC : C.G 
   group
 
 /- English proof (translation)
-Introduce and unpack `y ⟨x, hx, rfl⟩`. Rewrite `hx` using `[SetLike.mem_coe, Fm0, Submodule.mem_iInf]`. Rewrite using `[Fm0, Submodule.mem_iInf]`. Introduce `u`. Establish `h` using `hx u`.
+Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `h` using `[LinearMap.mem_ker, LinearMap.sub_apply, sub_eq_zero, LinearMap.smul_apply, LinearMap.id_apply]`. Rewrite using `[LinearMap.mem_ker, LinearMap.sub_apply, sub_eq_zero, LinearMap.smul_apply, LinearMap.id_apply]`. Express the relevant statement in the definitionally equal form `actG C i j b hst u (eEnd C i j b hst eC x) = _`. Rewrite using `[← eEnd_actG C i j b hst eC hcl]`. Express the relevant statement in the definitionally equal form `eEnd C i j b hst eC ((actG C i j b hst u : Fm C i j b →ₗ[FractionRing (C.O i)] Fm C i j b) x) = _`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[h, map_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem goodPart_le_typeSubspace (i : C.Tw) (j : ℕ) (b : Bool) (hst : RhoStab C j) (U : Subgroup C.G)
     (psiU : U →* (FractionRing (C.O i))ˣ) (eC : C.G → C.L0) (hcl : ∀ u g, eC (u * g * u⁻¹) = eC g) :
@@ -212,7 +212,7 @@ def IsThOf (j : ℕ) (σ0 : C.L0 →+* ℂ) (thC : C.W j σ0) (x : C.L0 ⊗[C.Ks
   (C.A j).j σ0 (inWL C j x) = thC
 
 /- English proof (translation)
-The claim follows from `hinj (hx.trans hy.symm)`.
+A detailed English derivation is pending.
 -/
 theorem IsThOf.unique {j : ℕ} {σ0 : C.L0 →+* ℂ} {thC : C.W j σ0} {x y : C.L0 ⊗[C.Ks] FmK C j}
     (hinj : Function.Injective fun z : C.L0 ⊗[C.Ks] FmK C j => (C.A j).j σ0 (inWL C j z))
@@ -227,7 +227,7 @@ def thK {Dat : Type} (j : ℕ) (σ0 : C.L0 →+* ℂ) (thC : Dat → C.W j σ0) 
   (h d).choose
 
 /- English proof (translation)
-The claim follows from `(h d).choose_spec`.
+A detailed English derivation is pending.
 -/
 theorem thK_spec {Dat : Type} (j : ℕ) (σ0 : C.L0 →+* ℂ) (thC : Dat → C.W j σ0) (h : ThExists C j σ0 thC)
     (d : Dat) : IsThOf C j σ0 (thC d) (thK C j σ0 thC h d) :=

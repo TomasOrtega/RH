@@ -6,7 +6,7 @@ namespace GlobalTheory.WittBound
 open Matrix
 
 /- English proof (translation)
-Establish `hs : star (P *ᵥ x) = P.map star *ᵥ star x`. Use function extensionality and compare the values at `i`. Simplify using `[Matrix.mulVec, dotProduct, star_sum, mul_comm]`. Rewrite using `[hs, ← Matrix.vecMul_transpose P x, Matrix.mulVec_mulVec, Matrix.dotProduct_mulVec, Matrix.dotProduct_mulVec, Matrix.vecMul_vecMul, Matrix.mul_assoc]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem quad_mulVec {n k : Type} [Fintype n] [Fintype k] (M : Matrix n n ℂ) (P : Matrix n k ℂ) (x : k → ℂ) :
     (P *ᵥ x) ⬝ᵥ (M *ᵥ star (P *ᵥ x)) = x ⬝ᵥ ((P.transpose * M * P.map star) *ᵥ star x) := by
@@ -16,16 +16,16 @@ theorem quad_mulVec {n k : Type} [Fintype n] [Fintype k] (M : Matrix n n ℂ) (P
     Matrix.vecMul_vecMul, Matrix.mul_assoc]
 
 /- English proof (translation)
-Simplify using `[star_neg, Matrix.mulVec_neg]`.
+Simplify using the standard rewrite rules.
 -/
 theorem quad_neg {n : Type} [Fintype n] (M : Matrix n n ℂ) (u : n → ℂ) :
     (-u) ⬝ᵥ (M *ᵥ star (-u)) = u ⬝ᵥ (M *ᵥ star u) := by
   simp [star_neg, Matrix.mulVec_neg]
 
 /- English proof (translation)
-Establish `h' : ∑ i, Complex.normSq (y i) = 0`. Establish `: ((∑ i, Complex.normSq (y i) : ℝ) : ℂ) = 0`. Rewrite using `[Complex.ofReal_sum]`. Simplify `h` using `[Complex.mul_conj]`. Conclude with `this` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `i`. Use `(Finset.sum_eq_zero_iff_of_nonneg (fun j _ => Complex.normSq_nonneg (y j))).1 h' i (Finset.mem_univ _)` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem sum_mul_star_eq_zero {p : Type} [Fintype p] (y : p → ℂ) (h : ∑ i, y i * star (y i) = 0) : y = 0 := by
   have h' : ∑ i, Complex.normSq (y i) = 0 := by
@@ -43,11 +43,11 @@ namespace GlobalTheory.WittBound
 open Matrix
 
 /- English proof (translation)
-Set `f : ((Fin r → ℂ) × (Fin m → ℂ)) →ₗ[ℂ] (Fin n → ℂ)` to `LinearMap.coprod V.mulVecLin (A.mulVecLin ∘ₗ e)`. Establish `hf : Function.Injective f`. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce and unpack `⟨x, y⟩ hxy`. Establish `h1 : V *ᵥ x + A *ᵥ e y = 0` using `by simpa [f] using hxy`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `h2 : A *ᵥ e y = -(V *ᵥ x)` using `eq_neg_of_add_eq_zero_right h1`. Establish `hy : y = 0`. Apply `he` to reduce the goal to its premises. Rewrite using `[← quad_mulVec, h2, quad_neg, quad_mulVec, hV]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Substitute `hy` using the available equality. Establish `hx : x = 0` using `hinj x (by simpa using h1)`. Simplify using `[hx]`. Use `LinearMap.finrank_le_finrank_of_injective hf` as an intermediate fact. Simplify `this` using `[Module.finrank_prod, Module.finrank_fin_fun]`.
+Substitute using the available equality. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem add_le {n r m : ℕ} {ι : Type} [Fintype ι] (M : Matrix (Fin n) (Fin n) ℂ) (V : Matrix (Fin n) (Fin r) ℂ)
     (hV : V.transpose * M * V.map star = 0) (hinj : ∀ x, V *ᵥ x = 0 → x = 0)
@@ -86,11 +86,11 @@ def inrVec (p q : ℕ) : (Fin q → ℂ) →ₗ[ℂ] (Fin p ⊕ Fin q → ℂ) w
   map_smul' c y := by funext i; cases i <;> simp
 
 /- English proof (translation)
-Take `⟨hn, A, hA⟩` from `hM`. Prove the components needed by the constructor for the conclusion. Use `add_le M V hV hinj A (inrVec p q) (fun y hy => by` as an intermediate fact. Rewrite `hy` using `[hA]`. Apply `sum_mul_star_eq_zero` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Prove the components needed by the constructor for the conclusion. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `: -(∑ i, y i * star (y i)) = 0`. Simplify `hy` using `[inrVec, Matrix.fromBlocks_mulVec, dotProduct, Fintype.sum_sum_type, Function.comp_def, Pi.star_apply, Matrix.neg_mulVec, Matrix.one_mulVec, Finset.sum_neg_distrib]`. Simplify using `using this)`. Use linear arithmetic over natural numbers and integers. Use `add_le M V hV hinj A (inlVec p q) (fun y hy => by` as an intermediate fact.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Rewrite `hy` using `[hA]`. Apply `sum_mul_star_eq_zero` to reduce the goal to its premises. Simplify `hy)` using `[inlVec, Matrix.fromBlocks_mulVec, dotProduct, Fintype.sum_sum_type]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts. Use linear arithmetic over natural numbers and integers.
 -/
 theorem sig_bound {n r p q : ℕ} (M : Matrix (Fin n) (Fin n) ℂ) (hM : HasSig M p q) (V : Matrix (Fin n) (Fin r) ℂ)
     (hV : V.transpose * M * V.map star = 0) (hinj : ∀ x, V *ᵥ x = 0 → x = 0) : r ≤ p ∧ r ≤ q := by
@@ -117,21 +117,19 @@ namespace GlobalTheory.WittBound
 open Matrix
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B n W r' s' hB hW c hc _ r Xf Yf hfr`. Take `⟨w⟩ : Nonempty (InfinitePlace F)` from `inferInstance`. Use `set τ : E →+* ℂ := (B.emb w).1 with hτdef`. Establish `hτσ : ∀ x, τ (σ x) = star (τ x)` using `fun x => hB.cm.2.2.2 τ x`. Use `set τ' : E →+* ℂ := (starRingEnd ℂ).comp τ with hτ'def`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hτ'σ : ∀ x, τ' (σ x) = τ x` using `by intro x; simp [τ', hτσ]`. Use `set V : Matrix (Fin n) (Fin r) ℂ := Xf.map τ with hVdef`. Establish `hT : (Formalism.UG.cT (σ : E →+* E) Xf).map τ' = V.transpose`. Use extensionality with `i j`. Simplify using `[Formalism.UG.cT, V, hτ'σ]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Establish `hJ : (c • W.J.map σ).map τ' = τ' c • W.J.map τ`. Use extensionality with `i j`. Simplify using `[hτ'σ]`. Establish `hX : Xf.map τ' = V.map star`. Use extensionality with `i j`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `[V, τ']`. Establish `h0 : V.transpose * (τ' c • W.J.map τ) * V.map star = 0`. Use `congrArg (fun M => M.map τ') hfr.xx` as an intermediate fact. Rewrite `this` using `[Matrix.map_mul, Matrix.map_mul, hT, hJ, hX, Matrix.map_zero _ (map_zero τ')]`. Conclude with `this`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hc' : τ' c ≠ 0`. Introduce `h; exact hc (τ'.injective (by simpa using h))`. Establish `hK : V.transpose * W.J.map τ * V.map star = 0`. Rewrite `h0` using `[Matrix.mul_smul, Matrix.smul_mul]`. Conclude with `(smul_eq_zero.1 h0).resolve_left hc'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hV : V.transpose * (Complex.I • W.J.map τ) * V.map star = 0`. Rewrite using `[Matrix.mul_smul, Matrix.smul_mul, hK, smul_zero]`. Establish `h1 : V.transpose * ((c • W.J.map σ).map τ' * Yf.map τ') = 1`. Use `congrArg (fun M => M.map τ') hfr.xy` as an intermediate fact. Rewrite `this` using `[Matrix.map_mul, Matrix.map_mul, hT, Matrix.map_one _ (map_zero τ') (map_one τ'), Matrix.mul_assoc]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Conclude with `this`. Establish `hinj : ∀ x, V *ᵥ x = 0 → x = 0`. Introduce `x hx`. Establish `h2` using `congrArg Matrix.transpose h1`. Rewrite `h2` using `[Matrix.transpose_mul, Matrix.transpose_transpose, Matrix.transpose_one]`.
-
-Combine the equalities or inequalities in the displayed calculation. Establish `hsig` using `hW.sig w`. Use `sig_bound _ hsig V hV hinj` as an intermediate fact. Conclude with `⟨this.1, this.2⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem wittIndex_le : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : Base F E) (n : ℕ) (W : Spc F E n) (r' s' : ℕ), B.IsGood σ → W.IsSkew σ B r' s' →

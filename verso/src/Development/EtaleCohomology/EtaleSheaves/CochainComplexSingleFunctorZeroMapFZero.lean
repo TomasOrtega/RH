@@ -8,9 +8,9 @@ namespace LateralTheory.E.trunc0Pf
 variable {C : Type*} [Category C] [Preadditive C] [HasZeroObject C]
 
 /- English proof (translation)
-Break down `lt_or_gt_of_ne hi with h | h` into its components or cases. Apply `HomologicalComplex.isZero_stupidTrunc_X` to reduce the goal to its premises. Introduce `j`. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
+Separate the alternatives or extract the components of the hypothesis. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Conclude with `(K.isZero_of_isStrictlyLE 0 i h).of_iso (K.stupidTruncXIso (ComplexShape.embeddingUpIntGE 0) (i := i.toNat) (by simp; omega))`.
+A detailed English derivation is pending.
 -/
 lemma isZero_tr (K : CochainComplex C ℤ) [K.IsStrictlyLE 0] (i : ℤ) (hi : i ≠ 0) :
     IsZero ((K.stupidTrunc (ComplexShape.embeddingUpIntGE 0)).X i) := by
@@ -21,7 +21,7 @@ lemma isZero_tr (K : CochainComplex C ℤ) [K.IsStrictlyLE 0] (i : ℤ) (hi : i 
       (K.stupidTruncXIso (ComplexShape.embeddingUpIntGE 0) (i := i.toNat) (by simp; omega))
 
 /- English proof (translation)
-The claim follows from `HomologicalComplex.single_map_f_self _ _ f`.
+A detailed English derivation is pending.
 -/
 lemma cochainComplex_singleFunctor_zero_map_f_zero {A B : C} (f : A ⟶ B) :
     ((CochainComplex.singleFunctor C 0).map f).f 0 =
@@ -45,7 +45,7 @@ def eIso (K : CochainComplex C ℤ) [K.IsStrictlyLE 0] :
       · exact (HomologicalComplex.isZero_single_obj_X _ 0 _ j hj).eq_of_tgt _ _)
 
 /- English proof (translation)
-Apply the tactic sequence `simp [eIso] <;> rfl`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma stupidTruncGEZeroIsoSingle_hom_f_zero (K : CochainComplex C ℤ) [K.IsStrictlyLE 0] :
     (eIso K).hom.f 0 = (K.stupidTruncXIso (ComplexShape.embeddingUpIntGE 0) (i := 0) (by simp)).hom ≫
@@ -53,9 +53,9 @@ lemma stupidTruncGEZeroIsoSingle_hom_f_zero (K : CochainComplex C ℤ) [K.IsStri
   simp [eIso] <;> rfl
 
 /- English proof (translation)
-Use extensionality with `i`. Distinguish the cases in `h : i = 0`. Substitute `h` using the available equality. Simplify using `only [HomologicalComplex.comp_f, stupidTruncGEZeroIsoSingle_hom_f_zero, cochainComplex_singleFunctor_zero_map_f_zero, Category.assoc, Iso.inv_hom_id_assoc]`. Use `erw [HomologicalComplex.stupidTruncMap_stupidTruncXIso_hom_assoc]`.
+By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Treat this case separately.
 
-Use `first`. Consider the case `(apply Eq.symm; refine (Category.assoc _ _ _).trans ?_; congr 1; exact Iso.inv_hom_id_assoc _ _)`. Consider the case `(dsimp only [CochainComplex.singleFunctor, CochainComplex.singleFunctors] at *; simp)`. Conclude with `(HomologicalComplex.isZero_single_obj_X _ 0 _ i h).eq_of_tgt _ _`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 lemma nat {K L : CochainComplex C ℤ} [K.IsStrictlyLE 0] [L.IsStrictlyLE 0] (g : K ⟶ L) :
     HomologicalComplex.stupidTruncMap g (ComplexShape.embeddingUpIntGE 0) ≫ (eIso L).hom =
@@ -71,7 +71,7 @@ lemma nat {K L : CochainComplex C ℤ} [K.IsStrictlyLE 0] [L.IsStrictlyLE 0] (g 
   · exact (HomologicalComplex.isZero_single_obj_X _ 0 _ i h).eq_of_tgt _ _
 
 /- English proof (translation)
-Introduce `R _ K L _ _ g`. Conclude with `⟨eIso K, eIso L, nat g⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem trunc0_of : LateralTheory.E.stupidPf.trunc0 := by
   intro R _ K L _ _ g

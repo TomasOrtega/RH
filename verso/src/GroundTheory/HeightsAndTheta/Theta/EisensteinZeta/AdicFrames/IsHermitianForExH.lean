@@ -317,7 +317,7 @@ def exH : Matrix (Fin 3) (Fin 3) GaussQ := Matrix.diagonal ![1, -1, 1]
 def exX : Matrix (Fin 3) (Fin 1) GaussQ := Matrix.of fun i _ ↦ ![1, 1, 0] i
 
 /- English proof (translation)
-Use `Matrix.ext fun i j ↦ ?_` and prove the remaining obligations. Apply the tactic sequence `fin_cases i <;> fin_cases j <;>`. Simplify using `[exH, Matrix.diagonal_apply, Matrix.transpose_apply, Matrix.map_apply]`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem isHermitianFor_exH : IsHermitianFor (conjHom ℚ GaussQ) exH := by
   refine Matrix.ext fun i j ↦ ?_
@@ -325,14 +325,14 @@ theorem isHermitianFor_exH : IsHermitianFor (conjHom ℚ GaussQ) exH := by
     simp [exH, Matrix.diagonal_apply, Matrix.transpose_apply, Matrix.map_apply]
 
 /- English proof (translation)
-Rewrite using `[exH, Matrix.det_diagonal, Fin.prod_univ_three]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem isUnit_det_exH : IsUnit exH.det := by
   rw [exH, Matrix.det_diagonal, Fin.prod_univ_three]
   simp
 
 /- English proof (translation)
-Use `⟨?_, Matrix.of fun _ j ↦ ![1, 0, 0] j, ?_⟩` and prove the remaining obligations. Use `Matrix.ext fun i j ↦ ?_ fin_cases i fin_cases j` and prove the remaining obligations. Simplify using `[exX, exH, Matrix.mul_apply, Fin.sum_univ_three, Matrix.diagonal_apply]`. Use `Matrix.ext fun i j ↦ ?_ fin_cases i fin_cases j` and prove the remaining obligations. Simplify using `[exX, Matrix.mul_apply, Fin.sum_univ_three]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem exX_mem_ratIso : exX ∈ ratIso ℚ exH 1 := by
   refine ⟨?_, Matrix.of fun _ j ↦ ![1, 0, 0] j, ?_⟩

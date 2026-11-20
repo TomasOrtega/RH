@@ -18,7 +18,7 @@ def projB (P : PlaceMap F K) : AF F ⊗[F] E →ₐ[F] K ⊗[F] E :=
   Algebra.TensorProduct.map P.proj (AlgHom.id F E)
 
 /- English proof (translation)
-Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a b => simp [projB, sigR]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem projB_sigR (P : PlaceMap F K) (σ : E →ₐ[F] E) (y : AF F ⊗[F] E) :
     projB P (sigR (AF F) σ y) = sigR K σ (projB P y) := by
@@ -28,13 +28,13 @@ theorem projB_sigR (P : PlaceMap F K) (σ : E →ₐ[F] E) (y : AF F ⊗[F] E) :
   | add x y hx hy => simp only [map_add, hx, hy]
 
 /- English proof (translation)
-Simplify using `[projB, inclR]`.
+Simplify using the standard rewrite rules.
 -/
 theorem projB_inclR (P : PlaceMap F K) (e : E) : projB P (inclR (AF F) e) = inclR K e := by
   simp [projB, inclR]
 
 /- English proof (translation)
-Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a b`. Simplify using `[projB, iB, P.inj_proj, Algebra.TensorProduct.algebraMap_apply]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy, mul_add]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 -/
 theorem iB_projB (P : PlaceMap F K) (y : AF F ⊗[F] E) :
     iB P (projB P y) = algebraMap (AF F) (AF F ⊗[F] E) (P.inj 1) * y := by
@@ -45,7 +45,7 @@ theorem iB_projB (P : PlaceMap F K) (y : AF F ⊗[F] E) :
   | add x y hx hy => simp only [map_add, hx, hy, mul_add]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[Formalism.UG.cT, projB_sigR]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem cT_map_projB (P : PlaceMap F K) (σ : E →ₐ[F] E) {M : ℕ}
     (A : Matrix (Fin M) (Fin M) (AF F ⊗[F] E)) :
@@ -54,7 +54,7 @@ theorem cT_map_projB (P : PlaceMap F K) (σ : E →ₐ[F] E) {M : ℕ}
   simp [Formalism.UG.cT, projB_sigR]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[JR, projB_inclR]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem JR_map_projB (P : PlaceMap F K) {M : ℕ} (J : Matrix (Fin M) (Fin M) E) :
     (JR (F := F) (AF F) J).map (projB P) = JR (F := F) K J := by
@@ -64,19 +64,17 @@ theorem JR_map_projB (P : PlaceMap F K) {M : ℕ} (J : Matrix (Fin M) (Fin M) E)
 end Component
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ _ M J K _ _ P L hL g hg`. Take `⟨hdet, hsupp⟩` from `hg`. Establish `hdet'` using `StrongApprox.mem_SUAdelic.1 hdet`. Use `set G : Matrix (Fin M) (Fin M) (AF F ⊗[F] E) := ((HA.mat (AF F) σ J g).1 : _) with hG`. Set `X : GL (Fin M) (K ⊗[F] E)` to `Formalism.UG.bc (projB P).toRingHom (HA.mat (AF F) σ J g)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hXG : (X : Matrix (Fin M) (Fin M) (K ⊗[F] E)) = G.map (projB P)` using `rfl`. Establish `hg0 : Formalism.UG.cT (sigR (AF F) σ) G * JR (F` using `F) (AF F) J * G = JR (F := F) (AF F) J := g.2`. Establish `hX : X ∈ HR K σ J`. Express the relevant statement in the definitionally equal form `Formalism.UG.cT (sigR K σ) (X : Matrix (Fin M) (Fin M) (K ⊗[F] E)) * JR (F := F) K J * (X : Matrix (Fin M) (Fin M) (K ⊗[F] E)) = JR (F := F) K J`. Establish `h1` using `congrArg (fun A => (projB P).toRingHom.mapMatrix A) hg0`.
+Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_mul] at h1`. Rewrite using `[hXG, cT_map_projB, ← JR_map_projB P J]`. Conclude with `h1`. Set `x : HA K σ J` to `(⟨X, hX⟩ : HR K σ J)`. Establish `hxm : ((HA.mat K σ J x).1 : Matrix (Fin M) (Fin M) (K ⊗[F] E)) = G.map (projB P)` using `rfl`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨x, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hxm]`. Establish `h2` using `RingHom.map_det (projB P).toRingHom G`. Rewrite `h2` using `[hdet']`. Simplify using `using h2.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `hm : ((HA.mat (AF F) σ J (L x)).1 : Matrix (Fin M) (Fin M) (AF F ⊗[F] E)) = G`. Use extensionality with `i j`. Establish `h3` using `hL x i j`. Establish `h4 : (((HA.mat K σ J x).1 : Matrix (Fin M) (Fin M) (K ⊗[F] E)) - 1) i j = projB P ((G - 1) i j)`. Rewrite using `[hxm]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Matrix.one_apply_ne hij]`. Rewrite `h3` using `[h4, iB_projB, hsupp i j]`.
-
-Conclude with `sub_left_injective h3`. Conclude with `Subtype.ext (Units.ext hm)`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_lift_of_mem_supp : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ {M : ℕ} (J : Matrix (Fin M) (Fin M) E),

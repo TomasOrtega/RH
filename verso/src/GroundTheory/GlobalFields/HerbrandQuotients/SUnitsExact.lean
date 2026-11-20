@@ -11,7 +11,7 @@ variable {G A B C : Type*} [Group G] [Fintype G] [AddCommGroup A] [AddCommGroup 
   [AddCommGroup C]
 
 /- English proof (translation)
-The claim follows from `hasCyclicHerbrand_of_finite ρ hσ`.
+A detailed English derivation is pending.
 -/
 theorem hasHerbrandQuotient_cycSubOne_of_finite [Module.Finite ℤ A] (ρ : Representation ℤ G A)
     {σ : G} (hσ : ∀ g, g ∈ Subgroup.zpowers σ) :
@@ -19,13 +19,13 @@ theorem hasHerbrandQuotient_cycSubOne_of_finite [Module.Finite ℤ A] (ρ : Repr
   hasCyclicHerbrand_of_finite ρ hσ
 
 /- English proof (translation)
-Establish `hfS : ∀ x ∈ p.range, cycSubOne ρC σ x ∈ p.range`. Introduce and unpack `_ ⟨b, rfl⟩`. Conclude with `⟨cycSubOne ρB σ b, by rw [cycSubOne_apply, cycSubOne_apply, map_sub, hpG]⟩`. Establish `hgS : ∀ x ∈ p.range, cycNorm ρC x ∈ p.range`. Introduce and unpack `_ ⟨b, rfl⟩`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨cycNorm ρB b, by rw [cycNorm_apply, cycNorm_apply, map_sum]; simp only [hpG]⟩`. Establish `: p.range.FiniteIndex` using `AddSubgroup.finiteIndex_of_finite_quotient`. Establish `hR` using `(hasHerbrandQuotient_restrictEnd_iff p.range hfS hgS (cycSubOne_cycNorm ρC σ) (cycNorm_cycSubOne ρC σ)).2 hC`. Establish `hex' : Function.Exact i p.rangeRestrict`. Introduce `b`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← hex b]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Simplify using `using congrArg Subtype.val h`. Introduce `h`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Subtype.ext (by simpa using h)`. Rewrite using `[cycHerbrand, cycHerbrand, cycHerbrand, ← herbrandQuotient_restrictEnd p.range hfS hgS (cycSubOne_cycNorm ρC σ) (cycNorm_cycSubOne ρC σ)]`. Conclude with `herbrandQuotient_eq_mul_of_shortExact hi p.rangeRestrict_surjective hex' (fun a => by rw [cycSubOne_apply, cycSubOne_apply, map_sub, hiG]) (fun a => by rw [cycNorm_apply, cycNorm_apply, map_sum]; simp only [hiG]) (fun b => Subtype.ext (by simp [cycSubOne_apply, hpG])) (fun b => S …`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cycHerbrand_eq_mul_of_exact (ρA : Representation ℤ G A) (ρB : Representation ℤ G B)
     (ρC : Representation ℤ G C) (σ : G) {i : A →+ B} {p : B →+ C} (hi : Function.Injective i)
@@ -61,13 +61,13 @@ theorem cycHerbrand_eq_mul_of_exact (ρA : Representation ℤ G A) (ρB : Repres
     (cycSubOne_cycNorm ρB σ) (cycNorm_cycSubOne ρB σ) hA hR
 
 /- English proof (translation)
-Establish `hfK : ∀ x ∈ p.ker, cycSubOne ρB σ x ∈ p.ker`. Introduce `x hx`. Rewrite `hx`, the goal using `[AddMonoidHom.mem_ker]`. Rewrite using `[cycSubOne_apply, map_sub, hpG, hx, map_zero, sub_zero]`. Establish `hgK : ∀ x ∈ p.ker, cycNorm ρB x ∈ p.ker`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `x hx`. Rewrite `hx`, the goal using `[AddMonoidHom.mem_ker]`. Rewrite using `[cycNorm_apply, map_sum]`. Simplify using `[hpG, hx]`. Establish `hfgK : ∀ x, restrictEnd (cycSubOne ρB σ) p.ker hfK (restrictEnd (cycNorm ρB) p.ker hgK x) = 0` using `fun x => Subtype.ext (by simp [cycSubOne_cycNorm])`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hgfK : ∀ x, restrictEnd (cycNorm ρB) p.ker hgK (restrictEnd (cycSubOne ρB σ) p.ker hfK x) = 0` using `fun x => Subtype.ext (by simp [cycNorm_cycSubOne])`. Establish `hA : HasHerbrandQuotient (restrictEnd (cycSubOne ρB σ) p.ker hfK) (restrictEnd (cycNorm ρB) p.ker hgK)` using `hasHerbrandQuotient_of_finite _ _`. Establish `hex : Function.Exact p.ker.subtype p`. Introduce `b`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Rewrite using `[cycHerbrand, cycHerbrand, herbrandQuotient_eq_mul_of_shortExact p.ker.subtype_injective hp hex (fun _ => rfl) (fun _ => rfl) (fun b => by rw [cycSubOne_apply, cycSubOne_apply, map_sub, hpG]) (fun b => by rw [cycNorm_apply, cycNorm_apply, map_sum]; simp only [hpG]) (cycSubOne_cyc …`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem cycHerbrand_eq_of_surjective_of_finite_ker (ρB : Representation ℤ G B)
     (ρC : Representation ℤ G C) (σ : G) {p : B →+ C} (hp : Function.Surjective p)
@@ -103,11 +103,11 @@ theorem cycHerbrand_eq_of_surjective_of_finite_ker (ρB : Representation ℤ G B
     herbrandQuotient_eq_one_of_finite hfgK hgfK, one_mul]
 
 /- English proof (translation)
-Establish `: Finite (B ⧸ (AddMonoidHom.snd A B).range)`. Rewrite using `[AddMonoidHom.range_eq_top.2 (fun b => ⟨(0, b), rfl⟩)]`. Use `infer_instance`. Use `cycHerbrand_eq_mul_of_exact ρA (ρA.prod ρB) ρB σ (i := AddMonoidHom.inl A B) (p := AddMonoidHom.snd A B) (fun a a' h => congrArg Prod.fst h) ?_ (fun g a => ?_) (fun g b => rfl) hA hB` and prove the remaining obligations. Introduce and unpack `⟨a, b⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 
-Simplify using `only [AddMonoidHom.coe_snd, Set.mem_range, AddMonoidHom.inl_apply, Prod.ext_iff]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `rfl`. Conclude with `⟨a, rfl, rfl⟩`. Introduce and unpack `⟨a', -, rfl⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Conclude with `Prod.ext rfl (map_zero (ρB g)).symm`.
+A detailed English derivation is pending.
 -/
 theorem cycHerbrand_prod (ρA : Representation ℤ G A) (ρB : Representation ℤ G B) (σ : G)
     (hA : HasHerbrandQuotient (cycSubOne ρA σ) (cycNorm ρA))

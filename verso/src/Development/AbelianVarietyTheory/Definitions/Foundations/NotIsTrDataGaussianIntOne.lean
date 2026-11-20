@@ -35,7 +35,7 @@ open GlobalTheory.K5
 variable {p : ℕ} [Fact p.Prime] {Ω : Type*} [Field Ω] [Algebra (O0 p) Ω]
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simpa using T.q0`. Consider the case `succ n ih => rw [pow_succ', pow_mul, T.qpow, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem qq_pow (T : Tower p Ω) (n : ℕ) : T.qq n ^ (p ^ n) = algebraMap (O0 p) Ω (qO p) := by
   induction n with
@@ -70,34 +70,34 @@ section General
 variable {A S M : Type*} [CommRing A] [CommRing S] [Algebra A S] [AddCommGroup M] [Module S M]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun x _ y _ => D.map_add x y, fun x _ y _ => D.leibniz x y, fun a => D.map_algebraMap a⟩`.
+Supply the required witnesses or components.
 -/
 theorem isDerOn_derivation [Module A M] (D : Derivation A S M) (B : Subalgebra A S) :
     IsDerOn B (D : S → M) :=
   ⟨fun x _ y _ => D.map_add x y, fun x _ y _ => D.leibniz x y, fun a => D.map_algebraMap a⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun _ _ _ _ => by simp, fun _ _ _ _ => by simp, fun _ => rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem isDerOn_zero (B : Subalgebra A S) : IsDerOn B (fun _ : S => (0 : M)) :=
   ⟨fun _ _ _ _ => by simp, fun _ _ _ _ => by simp, fun _ => rfl⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun x hx y hy => hD.add x (h hx) y (h hy), fun x hx y hy => hD.mul x (h hx) y (h hy), hD.alg⟩`.
+Supply the required witnesses or components.
 -/
 theorem isDerOn_mono {B C : Subalgebra A S} (h : B ≤ C) {D : S → M} (hD : IsDerOn C D) :
     IsDerOn B D :=
   ⟨fun x hx y hy => hD.add x (h hx) y (h hy), fun x hx y hy => hD.mul x (h hx) y (h hy), hD.alg⟩
 
 /- English proof (translation)
-Rewrite using `[hD.mul _ (B.algebraMap_mem a) x hx, hD.alg, smul_zero, add_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem isDerOn_algebraMap_mul {B : Subalgebra A S} {D : S → M} (hD : IsDerOn B D) (a : A)
     {x : S} (hx : x ∈ B) : D (algebraMap A S a * x) = algebraMap A S a • D x := by
   rw [hD.mul _ (B.algebraMap_mem a) x hx, hD.alg, smul_zero, add_zero]
 
 /- English proof (translation)
-The claim follows from `le_rfl e_mem := B.one_mem a_mem := fun _ => B.one_mem b_mem := fun _ => B.one_mem tr_mem := fun _ hx => hx tr_add := fun _ _ _ _ => rfl tr_mul := fun _ _ _ _ => rfl left := fun _ _ => by simp right := fun _ _ => by simp sum := by simp`.
+A detailed English derivation is pending.
 -/
 theorem isTrData_self (B : Subalgebra A S) :
     IsTrData B B id (fun _ : Fin 1 => (1 : S)) (fun _ => 1) 1 where
@@ -113,7 +113,7 @@ theorem isTrData_self (B : Subalgebra A S) :
   sum := by simp
 
 /- English proof (translation)
-The claim follows from `{ h with a_mem := h.b_mem b_mem := h.a_mem left := h.right right := h.left sum := by rw [← h.sum]; exact Finset.sum_congr rfl fun i _ => mul_comm _ _ }`.
+A detailed English derivation is pending.
 -/
 theorem isTrData_symm {B C : Subalgebra A S} {tr : S → S} {n : ℕ} {a b : Fin n → S} {e : S}
     (h : IsTrData B C tr a b e) : IsTrData B C tr b a e :=
@@ -129,7 +129,7 @@ end General
 section Examples
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨isDerOn_derivation (Polynomial.derivative' : Derivation ℚ (Polynomial ℚ) (Polynomial ℚ)) ⊤, Polynomial.derivative_X⟩`.
+Supply the required witnesses or components.
 -/
 theorem isDerOn_derivative :
     IsDerOn (⊤ : Subalgebra ℚ (Polynomial ℚ))
@@ -139,7 +139,7 @@ theorem isDerOn_derivative :
     Polynomial.derivative_X⟩
 
 /- English proof (translation)
-Introduce `h`. Simplify using `using h.alg 1`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem not_isDerOn_id :
     ¬ IsDerOn (⊤ : Subalgebra ℚ (Polynomial ℚ)) (id : Polynomial ℚ → Polynomial ℚ) := by
@@ -147,7 +147,7 @@ theorem not_isDerOn_id :
   simpa using h.alg 1
 
 /- English proof (translation)
-The claim follows from `bot_le e_mem := Subalgebra.one_mem _ a_mem := fun _ => trivial b_mem := fun _ => trivial tr_mem := fun x _ => by rw [Algebra.mem_bot]; exact ⟨x.1 + x.2, by ext <;> simp⟩ tr_add := fun x _ y _ => by ext <;> simp <;> ring tr_mul := fun β hβ x _ => by rw [Algebra.mem_bot] at hβ; obt …`.
+A detailed English derivation is pending.
 -/
 theorem isTrData_prod :
     IsTrData (⊥ : Subalgebra ℤ (ℤ × ℤ)) ⊤ (fun x => (x.1 + x.2, x.1 + x.2))
@@ -167,7 +167,7 @@ theorem isTrData_prod :
   sum := by ext <;> simp [Fin.sum_univ_two]
 
 /- English proof (translation)
-The claim follows from `bot_le e_mem := by rw [Algebra.mem_bot]; exact ⟨2, by simp⟩ a_mem := fun _ => trivial b_mem := fun _ => trivial tr_mem := fun x _ => by rw [Algebra.mem_bot]; exact ⟨2 * x.re, by ext <;> simp <;> ring⟩ tr_add := fun x _ y _ => by rw [star_add]; ring tr_mul := fun β hβ x _ => by rw …`.
+A detailed English derivation is pending.
 -/
 theorem isTrData_gaussianInt :
     IsTrData (⊥ : Subalgebra ℤ GaussianInt) ⊤ (fun x => x + star x)
@@ -187,7 +187,7 @@ theorem isTrData_gaussianInt :
   sum := by ext <;> simp [Fin.sum_univ_two]
 
 /- English proof (translation)
-Introduce `h`. Establish `hi : (⟨0, 1⟩ : GaussianInt) ∈ (⊥ : Subalgebra ℤ GaussianInt)` using `h ▸ trivial`. Rewrite `hi` using `[Algebra.mem_bot]`. Take `⟨n, hn⟩` from `hi`. Simplify using `using congrArg Zsqrtd.im hn`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem bot_ne_top_gaussianInt : (⊥ : Subalgebra ℤ GaussianInt) ≠ ⊤ := by
   intro h
@@ -197,9 +197,9 @@ theorem bot_ne_top_gaussianInt : (⊥ : Subalgebra ℤ GaussianInt) ≠ ⊤ := b
   simpa using congrArg Zsqrtd.im hn
 
 /- English proof (translation)
-Introduce `h`. Establish `h1` using `h.left 1 trivial`. Establish `h2 : (2 : GaussianInt) ∣ 1 * 1`. Rewrite using `[← h1]`. Use `Finset.dvd_sum fun i _ => Dvd.dvd.mul_left (Dvd.intro (((b i * 1).re : ℤ) : GaussianInt) ?_) _` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Apply the tactic sequence `ext <;> simp <;> ring`. Take `⟨c, hc⟩` from `h2`. Use `congrArg Zsqrtd.re hc` as an intermediate fact. Simplify using `at this`. Use linear arithmetic over natural numbers and integers.
+Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem not_isTrData_gaussianInt_one {n : ℕ} (a b : Fin n → GaussianInt) :
     ¬ IsTrData (⊥ : Subalgebra ℤ GaussianInt) ⊤ (fun x => x + star x) a b 1 := by
@@ -233,33 +233,31 @@ Both sides reduce to the same expression.
 theorem coe_qS (T : Tower p Ω) (n : ℕ) : (qS T n : Ω) = T.qq n := rfl
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (T.ζpow n)`.
+A detailed English derivation is pending.
 -/
 theorem zS_succ_pow (T : Tower p Ω) (n : ℕ) : zS T (n + 1) ^ p = zS T n :=
   Subtype.ext (T.ζpow n)
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (T.qpow n)`.
+A detailed English derivation is pending.
 -/
 theorem qS_succ_pow (T : Tower p Ω) (n : ℕ) : qS T (n + 1) ^ p = qS T n :=
   Subtype.ext (T.qpow n)
 
 /- English proof (translation)
-The claim follows from `Algebra.subset_adjoin (by simp)`.
+A detailed English derivation is pending.
 -/
 theorem zS_mem (T : Tower p Ω) (n : ℕ) : zS T n ∈ levelAlg T n :=
   Algebra.subset_adjoin (by simp)
 
 /- English proof (translation)
-The claim follows from `Algebra.subset_adjoin (by simp)`.
+A detailed English derivation is pending.
 -/
 theorem qS_mem (T : Tower p Ω) (n : ℕ) : qS T n ∈ levelAlg T n :=
   Algebra.subset_adjoin (by simp)
 
 /- English proof (translation)
-Use `monotone_nat_of_le_succ fun n => Algebra.adjoin_le ?_` and prove the remaining obligations. Introduce and unpack `x (rfl | rfl)`. Rewrite using `[← zS_succ_pow]`. Conclude with `Subalgebra.pow_mem _ (zS_mem T _) _`. Rewrite using `[← qS_succ_pow]`.
-
-Conclude with `Subalgebra.pow_mem _ (qS_mem T _) _`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem levelAlg_mono (T : Tower p Ω) : Monotone (levelAlg T) := by
   refine monotone_nat_of_le_succ fun n => Algebra.adjoin_le ?_
@@ -268,9 +266,9 @@ theorem levelAlg_mono (T : Tower p Ω) : Monotone (levelAlg T) := by
   · rw [← qS_succ_pow]; exact Subalgebra.pow_mem _ (qS_mem T _) _
 
 /- English proof (translation)
-Use `le_antisymm (Algebra.adjoin_le ?_) (iSup_le fun n => Algebra.adjoin_mono ?_)` and prove the remaining obligations. Introduce and unpack `x (⟨n, rfl⟩ | ⟨n, rfl⟩)`. Conclude with `le_iSup (levelAlg T) n (zS_mem T n)`. Conclude with `le_iSup (levelAlg T) n (qS_mem T n)`. Introduce and unpack `x (rfl | rfl)`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components. Prove the first alternative. Prove the second alternative.
 
-Conclude with `Or.inl ⟨n, rfl⟩`. Conclude with `Or.inr ⟨n, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem towerAlg_eq_iSup (T : Tower p Ω) : towerAlg T = ⨆ n, levelAlg T n := by
   refine le_antisymm (Algebra.adjoin_le ?_) (iSup_le fun n => Algebra.adjoin_mono ?_)
@@ -282,7 +280,7 @@ theorem towerAlg_eq_iSup (T : Tower p Ω) : towerAlg T = ⨆ n, levelAlg T n := 
     · exact Or.inr ⟨n, rfl⟩
 
 /- English proof (translation)
-Rewrite using `[Submodule.Quotient.mk_eq_zero]`. Conclude with `⟨fun ⟨y, hy⟩ => hy ▸ y.2, fun h => ⟨⟨x, h⟩, rfl⟩⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem frac_mk_eq_zero_iff (x : Ω) :
     (Submodule.Quotient.mk x : Frac p Ω) = 0 ↔ IsInt p x := by
@@ -290,7 +288,7 @@ theorem frac_mk_eq_zero_iff (x : Ω) :
   exact ⟨fun ⟨y, hy⟩ => hy ▸ y.2, fun h => ⟨⟨x, h⟩, rfl⟩⟩
 
 /- English proof (translation)
-Use `haveI := GlobalTheory.K5.Basic.charZero_of_isClo h`. Rewrite using `[Ne, frac_mk_eq_zero_iff]`. Introduce `hi`. Use `GlobalTheory.K5.Basic.not_cong_one_zero h 1 one_ne_zero ⟨_, hi, ?_⟩` and prove the remaining obligations. Rewrite using `[pow_one, mul_inv_cancel₀ (by exact_mod_cast (Fact.out : p.Prime).ne_zero), sub_zero]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem frac_mk_inv_p_ne_zero (h : IsClo p Ω) :
     (Submodule.Quotient.mk ((p : Ω)⁻¹) : Frac p Ω) ≠ 0 := by

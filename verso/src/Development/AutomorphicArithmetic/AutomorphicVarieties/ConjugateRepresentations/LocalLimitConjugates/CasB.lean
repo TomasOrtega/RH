@@ -8,17 +8,17 @@ open UpperTheory.V.Cj UpperTheory.V.Cj.H
 open scoped ComplexOrder
 
 /- English proof (translation)
-Introduce `E _ _ _ a n e he Ξ r`. Take `⟨c, hc⟩` from `casXi E a n e he Ξ (-r)`. Take `⟨G, hG, hadj⟩` from `admEx E a Ξ`. Establish `hell : ∀ X : Matrix (Fin a) (Fin a) (Cinf E), ell E a (toL (star X)) = ell E a (toL X)` using `fun X => by show (∑ w : InfinitePlace E, ∑ i, ((star X) i i w).re) / _ = (∑ w : InfinitePlace E, ∑ i, (X i i w).re) / _`. Simplify using `[Matrix.star_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hS : ∀ X : Matrix (Fin a) (Fin a) (Cinf E), (shift Ξ.dmat (-r) (toL X))ᴴ * G = G * shift Ξ.dmat (-r) (toL (star X))` using `fun X => by`. Rewrite using `[shift_apply, shift_apply, hell, conjTranspose_add, add_mul, mul_add, hadj, conjTranspose_smul, conjTranspose_one, star_trivial (_ : ℝ), smul_mul_assoc, mul_smul_comm, one_mul, mul_one]`. Establish `hQ : ∀ X : Matrix (Fin a) (Fin a) (Cinf E), (shift Ξ.dmat (-r) (toL X) * shift Ξ.dmat (-r) (toL X))ᴴ * G = G * (shift Ξ.dmat (-r) (toL (star X)) * shift Ξ.dmat (-r) (toL (star X)))` using `fun X => by`. Rewrite using `[conjTranspose_mul, mul_assoc, hS, ← mul_assoc, hS, mul_assoc]`. Establish `h : (cas (shift Ξ.dmat (-r)) e)ᴴ * G = G * cas (shift Ξ.dmat (-r)) e`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Unfold `cas`. Rewrite using `[conjTranspose_sum, Finset.sum_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Establish `h1 : star (e j).1 = (e j).1` using `(e j).2`. Establish `h2 : star (Complex.I • (e j).1) = -(Complex.I • (e j).1)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[star_smul, h1]`. Simplify using the standard rewrite rules. Establish `h3 : toL (-(Complex.I • (e j).1)) = -toL (Complex.I • (e j).1)` using `rfl`. Rewrite using `[conjTranspose_sub, sub_mul, hQ, hQ, h1, h2, h3, map_neg, neg_mul_neg, mul_sub]`. Rewrite `h` using `[hc, conjTranspose_smul, conjTranspose_one, smul_mul_assoc, one_mul, mul_smul_comm, mul_one]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `⟨c.re, ?_⟩` and prove the remaining obligations. Unfold `HasCas`. Rewrite using `[hc]`. Use extensionality with `i j`. Establish `hi` using `congrFun (congrFun h i) i`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Establish `hp : G i i ≠ 0` using `(hG.diag_pos (i := i)).ne'`. Simplify using `only [Matrix.smul_apply, smul_eq_mul] at hi`. Establish `hs : star c = c` using `mul_right_cancel₀ hp hi`. Rewrite using `[← Complex.conj_eq_iff_re.1 hs]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem UpperTheory.V.Cj.H.casB :
     UpperTheory.V.Cj.H.CasB := by

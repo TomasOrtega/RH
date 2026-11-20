@@ -18,9 +18,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.BotFormula
 
 /- English proof (translation)
-Distinguish the cases in `hs : (Function.support f).Finite`. Conclude with `map_finsum (starRingEnd ℂ) hs`. Establish `hs' : ¬ (Function.support fun a => starRingEnd ℂ (f a)).Finite`. Establish `: (Function.support fun a => starRingEnd ℂ (f a)) = Function.support f` using `by ext a; simp`. Rewrite using `[this]` and apply the resulting hypothesis.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[finsum_of_infinite_support hs, finsum_of_infinite_support hs', map_zero]`.
+A detailed English derivation is pending.
 -/
 theorem conj_finsum {α : Type*} (f : α → ℂ) : starRingEnd ℂ (∑ᶠ a, f a) = ∑ᶠ a, starRingEnd ℂ (f a) := by
   by_cases hs : (Function.support f).Finite
@@ -35,21 +35,19 @@ end GlobalTheory.BotFormula
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Introduce `hPr hK hM hI hB`. Take `⟨cA, hA⟩` from `GlobalTheory.T.bottom_triangle_nonzero_period hPr hK hM hI hB`. Take `⟨cB, hB'⟩` from `GlobalTheory.T.bottom_triangle_exists_nonzero hPr hK hM hI hB`. Use `⟨max cA cB, fun ε CF hCF => ?_⟩` and prove the remaining obligations. Take `⟨CA, xA, hA⟩` from `hA ε CF (le_trans (le_max_left _ _) hCF)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨CB, xB, hB'⟩` from `hB' ε CF (le_trans (le_max_right _ _) hCF)`. Use `⟨max CA CB, max xA xB, fun C hC0 D large₂ he hx hR T Lc μ₀ hL G => ?_⟩` and prove the remaining obligations. Establish `hA` using `hA C (le_trans (le_max_left _ _) hC0) D large₂ he (le_trans (le_max_left _ _) hx) hR T Lc μ₀ hL G`. Establish `hB'` using `hB' C (le_trans (le_max_right _ _) hC0) D large₂ he (le_trans (le_max_right _ _) hx) hR T Lc μ₀ hL G`. Introduce `W hψ i j A A' WW X δ t0 hX hβ`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨Ω₀, hΩ₀, HK⟩` from `hA W hψ i j A A' WW X δ t0 hX hβ`. Take `⟨v, hv, HC⟩` from `hB' W hψ i j A A' WW X δ t0 hX`. Use `⟨(v * Ω₀)⁻¹, inv_ne_zero (mul_ne_zero hv hΩ₀), fun s Q P P' hP => ?_⟩` and prove the remaining obligations. Take `⟨u, hu, huQ, huU, HK⟩` from `HK s Q P P' hP`. Establish `huQ' : u⁻¹ ∈ Qbar` using `inv_mem huQ`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨u⁻¹, inv_ne_zero hu, huQ', fun p _ hp lam => ?_, fun ea ed h g hg T => ?_⟩` and prove the remaining obligations. Establish `h1` using `GlobalTheory.BotFormula.lamC_mul lam huQ huQ'`. Rewrite `h1` using `[mul_inv_cancel₀ hu]`. Establish `h2 : lamC lam (1 : ℂ) = 1`. Unfold `lamC`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[dif_pos (one_mem Qbar)]`. Conclude with `(congrArg lam (Subtype.ext rfl : (⟨1, one_mem Qbar⟩ : Qbar) = 1)).trans (map_one lam)`. Rewrite `h1` using `[h2]`. Establish `h3` using `congrArg norm h1`. Rewrite `h3` using `[norm_mul, huU p hp lam, one_mul, norm_one]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `h3.symm`. Establish `pts : ∀ x : GA D P.a, ∃ y : GA D A, GlobalTheory.BotFormula.IsFinPt A y x` using `fun x => GlobalTheory.T.exists_finiteAdelicPoint_unitaryGroup_gramOne A hX.std.1 x ea.symm`. Use `choose pt hpt using pts`. Rewrite using `[HC s Q P P' hP ea ed g pt hpt T]`. Repeatedly rewrite using `[HK ea ed h g _ (pt _) hg (hpt _) T]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[GlobalTheory.NormSum.Pair.coord, GlobalTheory.BotFormula.conj_finsum]`. Establish `e1 : ∀ x : GlobalTheory.NormSum.Cls D P.a (GlobalTheory.NormSum.intG D P.a), ((GlobalTheory.NormSum.gam D (GlobalTheory.NormSum.intG D P.a) x.out : ℂ))⁻¹ * (Ω₀ * u * starRingEnd ℂ (P.term x.out h T)) = (Ω₀ * u) * starRingEnd ℂ (((GlobalTheory.NormSum.gam D (GlobalTheory.NormSum.i …`. Introduce `x`. Rewrite using `[map_mul, map_inv₀, map_natCast]`. Expand and normalize the polynomial expressions, which then agree.
-
-Repeatedly rewrite using `[e1, ← mul_finsum]`. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion repeatedly using the stated equalities. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.BotFormula.bottom_big : GlobalTheory.FunPr.Hypotheses₂ → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.ThetaIntegralsAgree → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.LocalMatching →
     (∀ D, GlobalTheory.NormSum.Inp D) → GlobalTheory.SqTop.BotSmall →

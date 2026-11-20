@@ -18,7 +18,7 @@ namespace CurveVerticalPointChart
 variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {Ω : Type} [Field Ω]
 
 /- English proof (translation)
-Rewrite using `[← Finset.prod_mul_distrib]`. Conclude with `Finset.prod_congr rfl fun k _ => by rw [Pi.add_apply, pow_add]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem prod_pow_add (y : (Σ k, ι k) → Ω) (c : ∀ k, ι k) (e f : K → ℕ) :
     ∏ k, y ⟨k, c k⟩ ^ (e + f) k = (∏ k, y ⟨k, c k⟩ ^ e k) * ∏ k, y ⟨k, c k⟩ ^ f k := by
@@ -26,7 +26,7 @@ theorem prod_pow_add (y : (Σ k, ι k) → Ω) (c : ∀ k, ι k) (e f : K → �
   exact Finset.prod_congr rfl fun k _ => by rw [Pi.add_apply, pow_add]
 
 /- English proof (translation)
-Introduce `m hm k`. Break down `Finset.mem_union.mp (support_add hm) with h | h` into its components or cases. Conclude with `hf m h k`. Conclude with `hg m h k`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem form_add {f g : MRing ι} {a : K → ℕ} (hf : IsMultiHomog f a) (hg : IsMultiHomog g a) :
     IsMultiHomog (f + g) a := by
@@ -37,7 +37,7 @@ theorem form_add {f g : MRing ι} {a : K → ℕ} (hf : IsMultiHomog f a) (hg : 
   · exact hg m h k
 
 /- English proof (translation)
-Rewrite using `[sub_eq_add_neg]`. Use `form_add hf ?_` and prove the remaining obligations. Introduce `m hm`. Rewrite `hm` using `[support_neg]`. Conclude with `hg m hm`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem form_sub {f g : MRing ι} {a : K → ℕ} (hf : IsMultiHomog f a) (hg : IsMultiHomog g a) :
     IsMultiHomog (f - g) a := by
@@ -48,7 +48,7 @@ theorem form_sub {f g : MRing ι} {a : K → ℕ} (hf : IsMultiHomog f a) (hg : 
   exact hg m hm
 
 /- English proof (translation)
-Introduce `m hm k`. Rewrite `hm` using `[C_apply]`. Establish `: m = 0` using `Finset.mem_singleton.mp (support_monomial_subset hm)`. Substitute `this` using the available equality. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Substitute using the available equality. Simplify using the standard rewrite rules.
 -/
 theorem form_C (n : ℤ) : IsMultiHomog (C n : MRing ι) 0 := by
   classical
@@ -59,7 +59,7 @@ theorem form_C (n : ℤ) : IsMultiHomog (C n : MRing ι) 0 := by
   simp
 
 /- English proof (translation)
-Substitute `haa` using the available equality. Establish `h0 : f - g ∈ mCoordIdeal y` using `HilbertSamuel.SmallSectionsNonzero.mem_mCoordIdeal_of_aeval_eq_zero y (form_sub hf hg) (by rw [map_sub, he, sub_self])`. Establish `h1` using `W.sub_mem hfW (hPW h0)`. Rewrite `h1` using `[sub_sub_cancel]`. Then use the resulting hypothesis.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem mem_of_aeval_eq (y : (Σ k, ι k) → Ω) {W : Ideal (MRing ι)} (hPW : mCoordIdeal y ≤ W)
     {f g : MRing ι} {a a' : K → ℕ} (hf : IsMultiHomog f a) (hg : IsMultiHomog g a') (haa : a = a')
@@ -72,7 +72,7 @@ theorem mem_of_aeval_eq (y : (Σ k, ι k) → Ω) {W : Ideal (MRing ι)} (hPW : 
   rwa [sub_sub_cancel] at h1
 
 /- English proof (translation)
-Rewrite using `[HilbertSamuel.SmallSectionsNonzero.chartMono, Ideal.IsPrime.prod_mem_iff]`. Introduce and unpack `⟨k, -, hk⟩`. Conclude with `hc k (hWp.mem_of_pow_mem _ hk)`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem chartMono_notMem {W : Ideal (MRing ι)} (hWp : W.IsPrime) {c : ∀ k, ι k}
     (hc : ∀ k, (X ⟨k, c k⟩ : MRing ι) ∉ W) (e : K → ℕ) :
@@ -83,7 +83,7 @@ theorem chartMono_notMem {W : Ideal (MRing ι)} (hWp : W.IsPrime) {c : ∀ k, ι
   exact hc k (hWp.mem_of_pow_mem _ hk)
 
 /- English proof (translation)
-The claim follows from `(hWp.mem_or_mem h).resolve_left (chartMono_notMem hWp hc e)`.
+A detailed English derivation is pending.
 -/
 theorem mem_of_chartMono_mul {W : Ideal (MRing ι)} (hWp : W.IsPrime) {c : ∀ k, ι k}
     (hc : ∀ k, (X ⟨k, c k⟩ : MRing ι) ∉ W) {e : K → ℕ} {f : MRing ι}
@@ -91,7 +91,7 @@ theorem mem_of_chartMono_mul {W : Ideal (MRing ι)} (hWp : W.IsPrime) {c : ∀ k
   (hWp.mem_or_mem h).resolve_left (chartMono_notMem hWp hc e)
 
 /- English proof (translation)
-Take `⟨e, k, hk, he⟩` from `HilbertSamuel.SmallSectionsNonzero.exists_form_of_mem_chartRingZ y c hyc hr`. Conclude with `⟨e, k, hk, he.symm⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_rep (y : (Σ k, ι k) → Ω) {c : ∀ k, ι k} (hyc : ∀ k, y ⟨k, c k⟩ ≠ 0) {r : Ω}
     (hr : r ∈ chartRingZ y c) :
@@ -101,7 +101,7 @@ theorem exists_rep (y : (Σ k, ι k) → Ω) {c : ∀ k, ι k} (hyc : ∀ k, y �
   exact ⟨e, k, hk, he.symm⟩
 
 /- English proof (translation)
-The claim follows from `mem_curveRing.mp b.2 c hyc`.
+A detailed English derivation is pending.
 -/
 theorem mem_chart (y : (Σ k, ι k) → Ω) {c : ∀ k, ι k} (hyc : ∀ k, y ⟨k, c k⟩ ≠ 0) (b : curveRing y) :
     (b : Ω) ∈ chartRingZ y c :=
@@ -111,9 +111,9 @@ def chartPrime (y : (Σ k, ι k) → Ω) (c : ∀ k, ι k) (W : Ideal (MRing ι)
   {r | ∃ (e : K → ℕ) (g : MRing ι), IsMultiHomog g e ∧ g ∈ W ∧ r * ∏ k, y ⟨k, c k⟩ ^ e k = aeval y g}
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨d, g, hg, hgW, hd⟩`. Apply `mem_of_chartMono_mul hWp hc (e := d)` to reduce the goal to its premises. Use `mem_of_aeval_eq y hPW (Inter.AvoidRing.isMultiHomog_mul (HilbertSamuel.SmallSectionsNonzero.isMultiHomog_chartMono c e) hg) (Inter.AvoidRing.isMultiHomog_mul (HilbertSamuel.SmallSectionsNonzero.isMultiHomog_chartMono c d) hk) (add_comm e d) ?_ (W.mul_mem_left _ hgW)` and prove the remaining obligations. Simplify using `only [map_mul, HilbertSamuel.SmallSectionsNonzero.aeval_chartMono]`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Take the linear combination `(-(∏ k, y ⟨k, c k⟩ ^ e k)) * hd + (∏ k, y ⟨k, c k⟩ ^ d k) * hr`. Introduce `hkW`. Conclude with `⟨e, k, hk, hkW, hr⟩`.
+Take a linear combination of the given relations to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem mem_chartPrime_iff (y : (Σ k, ι k) → Ω) {c : ∀ k, ι k} {W : Ideal (MRing ι)}
     (hPW : mCoordIdeal y ≤ W) (hWp : W.IsPrime) (hc : ∀ k, (X ⟨k, c k⟩ : MRing ι) ∉ W) {r : Ω}
@@ -132,9 +132,9 @@ theorem mem_chartPrime_iff (y : (Σ k, ι k) → Ω) {c : ∀ k, ι k} {W : Idea
     exact ⟨e, k, hk, hkW, hr⟩
 
 /- English proof (translation)
-Take `⟨d, g, hg, hgW, hd⟩` from `hr`. Take `⟨e, g', hg', hg'W, he⟩` from `hr'`. Establish `h1` using `Inter.AvoidRing.isMultiHomog_mul hg (HilbertSamuel.SmallSectionsNonzero.isMultiHomog_chartMono c e)`. Establish `h2` using `Inter.AvoidRing.isMultiHomog_mul hg' (HilbertSamuel.SmallSectionsNonzero.isMultiHomog_chartMono c d)`. Rewrite `h2` using `[add_comm e d]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `⟨d + e, _, form_add h1 h2, W.add_mem (W.mul_mem_right _ hgW) (W.mul_mem_right _ hg'W), ?_⟩` and prove the remaining obligations. Simplify using `only [map_add, map_mul, HilbertSamuel.SmallSectionsNonzero.aeval_chartMono]`. Rewrite using `[prod_pow_add]`. Take the linear combination `(∏ k, y ⟨k, c k⟩ ^ e k) * hd + (∏ k, y ⟨k, c k⟩ ^ d k) * he`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem chartPrime_add (y : (Σ k, ι k) → Ω) {c : ∀ k, ι k} {W : Ideal (MRing ι)} {r r' : Ω}
     (hr : r ∈ chartPrime y c W) (hr' : r' ∈ chartPrime y c W) : r + r' ∈ chartPrime y c W := by
@@ -149,7 +149,7 @@ theorem chartPrime_add (y : (Σ k, ι k) → Ω) {c : ∀ k, ι k} {W : Ideal (M
   linear_combination (∏ k, y ⟨k, c k⟩ ^ e k) * hd + (∏ k, y ⟨k, c k⟩ ^ d k) * he
 
 /- English proof (translation)
-Take `⟨d, g, hg, hgW, hd⟩` from `hr`. Take `⟨e, k, hk, hae⟩` from `exists_rep y hyc ha`. Use `⟨e + d, k * g, Inter.AvoidRing.isMultiHomog_mul hk hg, W.mul_mem_left _ hgW, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, prod_pow_add]`. Take the linear combination `(r * ∏ k, y ⟨k, c k⟩ ^ d k) * hae + (aeval y k) * hd`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem chartPrime_mul (y : (Σ k, ι k) → Ω) {c : ∀ k, ι k} (hyc : ∀ k, y ⟨k, c k⟩ ≠ 0)
     {W : Ideal (MRing ι)} {a r : Ω} (ha : a ∈ chartRingZ y c) (hr : r ∈ chartPrime y c W) :
@@ -172,18 +172,18 @@ def chartPrimeB (y : (Σ k, ι k) → Ω) (c : ∀ k, ι k) (W : Ideal (MRing ι
     exact chartPrime_mul y hyc (mem_chart y hyc a) hb
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_chartPrimeB {y : (Σ k, ι k) → Ω} {c : ∀ k, ι k} {W : Ideal (MRing ι)}
     {hyc : ∀ k, y ⟨k, c k⟩ ≠ 0} {b : curveRing y} : b ∈ chartPrimeB y c W hyc ↔ (b : Ω) ∈ chartPrime y c W :=
   Iff.rfl
 
 /- English proof (translation)
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Ideal.ne_top_iff_one]`. Introduce `h`. Establish `h1` using `(mem_chartPrime_iff y hPW hWp hc (r := ((1 : curveRing y) : Ω)) (e := 0) (k := 1) Inter.AvoidRing.isMultiHomog_one (by simp)).mp (mem_chartPrimeB.mp h)`. Conclude with `hWp.ne_top ((Ideal.eq_top_iff_one W).mpr h1)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a b hab`. Take `⟨e, k, hk, ha⟩` from `exists_rep y hyc (mem_chart y hyc a)`. Take `⟨e', k', hk', hb⟩` from `exists_rep y hyc (mem_chart y hyc b)`. Establish `hkk : k * k' ∈ W` using `(mem_chartPrime_iff y hPW hWp hc (r := ((a * b : curveRing y) : Ω)) (Inter.AvoidRing.isMultiHomog_mul hk hk') (by`. Rewrite using `[Subring.coe_mul, map_mul, prod_pow_add]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `((b : Ω) * ∏ k, y ⟨k, c k⟩ ^ e' k) * ha + (aeval y k) * hb)).mp`. Use the proof step `(mem_chartPrimeB.mp hab)`. Break down `hWp.mem_or_mem hkk with h | h` into its components or cases. Conclude with `Or.inl ⟨e, k, hk, h, ha⟩`. Conclude with `Or.inr ⟨e', k', hk', h, hb⟩`.
+Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Prove the second alternative. A detailed English derivation is pending.
 -/
 theorem chartPrimeB_isPrime (y : (Σ k, ι k) → Ω) {c : ∀ k, ι k} {W : Ideal (MRing ι)}
     (hPW : mCoordIdeal y ≤ W) (hWp : W.IsPrime) (hc : ∀ k, (X ⟨k, c k⟩ : MRing ι) ∉ W)
@@ -207,11 +207,11 @@ theorem chartPrimeB_isPrime (y : (Σ k, ι k) → Ω) {c : ∀ k, ι k} {W : Ide
     · exact Or.inr ⟨e', k', hk', h, hb⟩
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[curvePtIdeal, Ideal.span_le]`. Introduce and unpack `b ⟨δ, g, h, hg, hh, hgW, hhW, hb⟩`. Take `⟨e, k, hk, hbk⟩` from `exists_rep y hyc (mem_chart y hyc b)`. Establish `hkh : k * h ∈ W` using `mem_of_aeval_eq y hPW (Inter.AvoidRing.isMultiHomog_mul (HilbertSamuel.SmallSectionsNonzero.isMultiHomog_chartMono c e) hg) (Inter.AvoidRing.isMultiHomog_mul hk hh) rfl (by`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Simplify using `only [map_mul, HilbertSamuel.SmallSectionsNonzero.aeval_chartMono]`. Take the linear combination `(-(∏ k, y ⟨k, c k⟩ ^ e k)) * hb + (aeval y h) * hbk)`. Use the proof step `(W.mul_mem_left _ hgW)`. Conclude with `⟨e, k, hk, (hWp.mem_or_mem hkh).resolve_right hhW, hbk⟩`. Introduce `b hb`.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨d, g, hg, hgW, hd⟩` from `mem_chartPrimeB.mp hb`. Apply `Ideal.subset_span` to reduce the goal to its premises. Use `⟨d, g, HilbertSamuel.SmallSectionsNonzero.chartMono c d, hg, HilbertSamuel.SmallSectionsNonzero.isMultiHomog_chartMono c d, hgW, chartMono_notMem hWp hc d, ?_⟩` and prove the remaining obligations. Rewrite using `[HilbertSamuel.SmallSectionsNonzero.aeval_chartMono]`. Conclude with `hd`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem curvePtIdeal_eq (y : (Σ k, ι k) → Ω) {c : ∀ k, ι k} {W : Ideal (MRing ι)}
     (hPW : mCoordIdeal y ≤ W) (hWp : W.IsPrime) (hc : ∀ k, (X ⟨k, c k⟩ : MRing ι) ∉ W)
@@ -237,11 +237,11 @@ theorem curvePtIdeal_eq (y : (Σ k, ι k) → Ω) {c : ∀ k, ι k} {W : Ideal (
     exact hd
 
 /- English proof (translation)
-Use `chartPrimeB_isPrime y hPW hWp hc hyc` as an intermediate fact. Establish `hnm : (n : curveRing y) ∈ chartPrimeB y c W hyc`. Use `mem_chartPrimeB.mpr ⟨0, C n, form_C n, hnW, ?_⟩` and prove the remaining obligations. Simplify using the standard rewrite rules. Establish `: Module.Finite ℤ (curveRing y ⧸ chartPrimeB y c W hyc)` using `Module.Finite.of_surjective (Ideal.Quotient.mkₐ ℤ (chartPrimeB y c W hyc)).toLinearMap Ideal.Quotient.mk_surjective`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `htor : Module.IsTorsion ℤ (curveRing y ⧸ chartPrimeB y c W hyc)`. Introduce `x`. Use `⟨⟨n, mem_nonZeroDivisors_of_ne_zero hn⟩, ?_⟩` and prove the remaining obligations. Take `⟨b, rfl⟩` from `Ideal.Quotient.mk_surjective x`. Use `show n • Ideal.Quotient.mk _ b = 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[zsmul_eq_mul, ← map_intCast (Ideal.Quotient.mk (chartPrimeB y c W hyc)), ← map_mul, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `Ideal.mul_mem_right _ _ hnm`. Establish `: Finite (curveRing y ⧸ chartPrimeB y c W hyc)` using `Module.finite_of_fg_torsion _ htor`. Conclude with `Ideal.Quotient.maximal_of_isField _ (Finite.isField_of_domain _)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem chartPrimeB_isMaximal (y : (Σ k, ι k) → Ω) {c : ∀ k, ι k} {W : Ideal (MRing ι)}
     (hB : Module.Finite ℤ (curveRing y))
@@ -287,16 +287,16 @@ def locSub (y : (Σ k, ι k) → Ω) (m : Ideal (curveRing y)) (hm : m.IsPrime) 
     linear_combination -h
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_locSub {y : (Σ k, ι k) → Ω} {m : Ideal (curveRing y)} {hm : m.IsPrime} {r : Ω} :
     r ∈ locSub y m hm ↔ ∃ a b : curveRing y, b ∉ m ∧ (b : Ω) * r = a :=
   Iff.rfl
 
 /- English proof (translation)
-Rewrite `hr` using `[chartRingZ]`. Proceed by induction on `hr using Algebra.adjoin_induction with`. Consider the case `mem x hx`. Take `⟨p, rfl⟩` from `hx`. Conclude with `h p`.
+Rewrite the indicated hypotheses using the stated equalities. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately.
 
-Consider the case `algebraMap n`. Rewrite using `[algebraMap_int_eq, eq_intCast]`. Conclude with `intCast_mem _ n`. Consider the case `add x x' _ _ hx hx' => exact add_mem hx hx'`. Consider the case `mul x x' _ _ hx hx' => exact mul_mem hx hx'`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem chart_le_locSub (y : (Σ k, ι k) → Ω) (m : Ideal (curveRing y)) (hm : m.IsPrime) (c : ∀ k, ι k)
     (h : ∀ p : Σ k, ι k, y p / y ⟨p.1, c p.1⟩ ∈ locSub y m hm) {r : Ω} (hr : r ∈ chartRingZ y c) :

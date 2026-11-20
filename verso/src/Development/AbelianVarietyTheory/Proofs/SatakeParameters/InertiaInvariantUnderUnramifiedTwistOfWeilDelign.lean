@@ -14,11 +14,11 @@ namespace GlobalTheory.IneUnrTwist
 open Formalism.MainNotions Formalism.ConjugateSelfDual GlobalTheory.WeilDeligne ReciprocityTheory.Gal NumberField IsDedekindDomain TensorProduct
 
 /- English proof (translation)
-Proceed by induction on `a using WD.ind with | hP n a => ?_`. Proceed by induction on `χ using WD.ind with | hP m c => ?_`. Rewrite `h1` using `[WD.lpDim_mk]`. Rewrite `hu` using `[WD.unr_mk]`. Rewrite using `[WD.lpChar_mk, WD.inePol_of_mem_Ine _ hs, WD.inePol_of_mem_Ine _ hs, WD.charPol_mk, WD.charPol_mk, WDRep.tensor_ρ, hu.2]`.
+Proceed by induction. Proceed by induction. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Set `e : (Fin m → ℂ) ≃ₗ[ℂ] ℂ` to `LinearEquiv.ofFinrankEq _ _ (by simpa using h1)`. Set `E'` to `(TensorProduct.congr (LinearEquiv.refl ℂ (Fin n → ℂ)) e).trans (TensorProduct.rid ℂ _)`. Rewrite using `[← LinearEquiv.charpoly_conj E']`. Use `congr 1`. Use `LinearMap.ext fun v => ?_` and prove the remaining obligations.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[E', LinearEquiv.conj_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem wd_inePol_twist {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω]
     {B : ValuationSubring Ω} {w : HeightOneSpectrum (𝓞 E)} {h : IsPlaceOver B w} (a χ : WD h) (h1 : χ.lpDim = 1)
@@ -37,7 +37,7 @@ theorem wd_inePol_twist {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Alge
   simp [E', LinearEquiv.conj_apply]
 
 /- English proof (translation)
-Introduce `D T w a χ h1 hu s hs` and use `by rw [T.inePol w _ s hs, T.inePol w _ s hs, T.char w a χ h1] exact wd_inePol_twist _ _ ((T.dim w χ).trans h1) ((T.unr w χ).1 hu) hs`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem main : ∀ (D : D7), GlobalTheory.RowTie.WDTie D.nd D.naut → IneUnr D := fun D T w a χ h1 hu s hs => by
   rw [T.inePol w _ s hs, T.inePol w _ s hs, T.char w a χ h1]

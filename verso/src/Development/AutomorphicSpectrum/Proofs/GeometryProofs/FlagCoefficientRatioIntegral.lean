@@ -6,17 +6,17 @@ open GlobalTheory.CompanionTheory.Ar
 namespace GlobalTheory.CompanionTheory.Ar
 
 /- English proof (translation)
-Distinguish the cases in `ht0 : t = 0`. Rewrite using `[ht0, div_zero, mul_zero]`. Conclude with `W.zero_mem`. Take `⟨u, hu_def⟩ : ∃ u : Ω, u = t' / t` from `⟨_, rfl⟩`. Rewrite using `[← hu_def]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hu : u * t = t'` using `by rw [hu_def, div_mul_cancel₀ t' ht0]`. Establish `hF : N • b' k - (N * u) • b k ∈ flagStep Ω b k`. Rewrite using `[hbf]`. Establish `h1` using `Submodule.sub_mem _ (Submodule.smul_mem _ N ht') (Submodule.smul_mem _ (N * u) ht)`. Rewrite `h1` using `[← hu]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use `h1 using 1` and compare the differences between its conclusion and the goal. Use `module`. Take `⟨w, hw⟩` from `(Submodule.mem_span_range_iff_exists_fun W).mp (hN k)`. Rewrite `hF` using `[← hw]`. Establish `hF' : (∑ i, w i • b i) - (N * u) • b k ∈ Submodule.span Ω (b '' {j : Fin r | (j : ℕ) < k})` using `hF`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨l, hl, hlc⟩` from `(Finsupp.mem_span_image_iff_linearCombination Ω).mp hF'`. Establish `hsum : Finsupp.linearCombination Ω b (Finsupp.equivFunOnFinite.symm fun i => (w i : Ω) - if i = k then N * u else 0) = (∑ i, w i • b i) - (N * u) • b k`. Rewrite using `[Finsupp.linearCombination_apply, Finsupp.sum_fintype _ (fun i a => a • b i) (fun i => zero_smul Ω _)]`. Simplify using `only [Finsupp.coe_equivFunOnFinite_symm, sub_smul, Finset.sum_sub_distrib, ite_smul, zero_smul, Finset.sum_ite_eq', Finset.mem_univ, if_true, Subring.smul_def]`. Establish `h0 : Finsupp.linearCombination Ω b ((Finsupp.equivFunOnFinite.symm fun i => (w i : Ω) - if i = k then N * u else 0) - l) = 0`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[map_sub, hsum, hlc, sub_self]`. Establish `hl0` using `sub_eq_zero.mp (linearIndependent_iff.mp hb _ h0)`. Establish `hk` using `DFunLike.congr_fun hl0 k`. Simplify using `only [Finsupp.coe_equivFunOnFinite_symm, ↓reduceIte] at hk`. Establish `hlk : l k = 0` using `(Finsupp.mem_supported' Ω l).mp hl k (by simp)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hk` using `[hlk, sub_eq_zero]`. Rewrite using `[← hk]`. Conclude with `(w k).2`.
+A detailed English derivation is pending.
 -/
 theorem leadCoef_ratio_mem (Ω : Type) [Field Ω] (Li : Type) [AddCommGroup Li] [Module Ω Li] (W : Subring Ω) (r : ℕ)
     (b₀ b b' : Fin r → Li) (N : Ω) (k : Fin r) (t t' : Ω) (hb : LinearIndependent Ω b)

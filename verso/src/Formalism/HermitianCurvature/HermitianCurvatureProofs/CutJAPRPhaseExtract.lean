@@ -5,13 +5,13 @@ open scoped ComplexConjugate
 namespace Formalism.FourierDecayAlt.P.CutMP.JA.SSn.Rep.Core.TC.PR
 
 /- English proof (translation)
-Proceed by induction on `p using MvPolynomial.induction_on' with`. Consider the case `monomial u a`. Break down `Nat.even_or_odd' (u 0 + u 1) with ⟨j, hj | hj⟩` into its components or cases. Use `⟨Polynomial.C (2 * a) * (Polynomial.X ^ 2 + Polynomial.C c) ^ j * Polynomial.X ^ (u 2), fun t s h => ?_⟩` and prove the remaining obligations. Simplify using `only [MvPolynomial.eval_monomial, Finsupp.prod_fintype _ _ (fun _ => pow_zero _), Fin.prod_univ_three, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two, Matrix.head_cons, Matrix.tail_cons, Polynomial.eval_mul, Polynomial.eval_pow, Polynomial.eval_add, Polynomial.eva …`.
+Proceed by induction. Treat this case separately. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[← pow_add, ← pow_add, hj, pow_mul, pow_mul, neg_sq, h]`. Expand and normalize the polynomial expressions, which then agree. Use `⟨0, fun t s h => ?_⟩` and prove the remaining obligations. Simplify using `only [MvPolynomial.eval_monomial, Finsupp.prod_fintype _ _ (fun _ => pow_zero _), Fin.prod_univ_three, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two, Matrix.head_cons, Matrix.tail_cons, Polynomial.eval_zero]`. Rewrite using `[← pow_add, ← pow_add, hj, Odd.neg_pow ⟨j, rfl⟩]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Consider the case `add p₁ p₂ h₁ h₂`. Take `⟨q₁, hq₁⟩` from `h₁`. Take `⟨q₂, hq₂⟩` from `h₂`. Use `⟨q₁ + q₂, fun t s h => ?_⟩` and prove the remaining obligations.
+Expand and normalize the polynomial expressions, which then agree. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_add, map_add, Polynomial.eval_add, ← hq₁ t s h, ← hq₂ t s h]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem evenPart_poly (c : ℂ) (p : MvPolynomial (Fin 3) ℂ) :
     ∃ q : Polynomial ℂ, ∀ t s : ℂ, t ^ 2 = s ^ 2 + c →
@@ -39,21 +39,21 @@ theorem evenPart_poly (c : ℂ) (p : MvPolynomial (Fin 3) ℂ) :
     ring
 
 /- English proof (translation)
-Introduce `TT f _ hPS hrot`. Take `⟨m, p, hp⟩` from `hPS`. Take `⟨q, hq⟩` from `evenPart_poly (TT : ℂ) p`. Use `⟨m, Polynomial.C (1 / 2) * q, fun ζ hζ => ?_⟩` and prove the remaining obligations. Establish `hn : Complex.normSq ((‖ζ‖ : ℝ) : ℂ) = Complex.normSq ζ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[Complex.normSq_ofReal, Complex.normSq_eq_norm_sq]`. Expand and normalize the polynomial expressions, which then agree. Establish `hn' : Complex.normSq (-((‖ζ‖ : ℝ) : ℂ)) = Complex.normSq ζ`. Rewrite using `[Complex.normSq_neg, hn]`. Establish `h1 : f ζ = f ((‖ζ‖ : ℝ) : ℂ)`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `hrot (Complex.arg ζ) ((‖ζ‖ : ℝ) : ℂ) (by rw [hn]; exact hζ)` as an intermediate fact. Rewrite using `[← this]`. Use `congr 1`. Unfold `rot`. Rewrite using `[mul_comm, Complex.norm_mul_exp_arg_mul_I]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : f ζ = f (-((‖ζ‖ : ℝ) : ℂ))`. Use `hrot Real.pi ((‖ζ‖ : ℝ) : ℂ) (by rw [hn]; exact hζ)` as an intermediate fact. Rewrite using `[h1, ← this]`. Use `congr 1`. Unfold `rot`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Replace the relevant objects with their definitions.
 
-Rewrite using `[Complex.exp_pi_mul_I]`. Expand and normalize the polynomial expressions, which then agree. Establish `e1` using `hp ((‖ζ‖ : ℝ) : ℂ) (by rw [hn]; exact hζ)`. Establish `e2` using `hp (-((‖ζ‖ : ℝ) : ℂ)) (by rw [hn']; exact hζ)`. Establish `g1 : gg TT ((‖ζ‖ : ℝ) : ℂ) = gg TT ζ` using `by unfold gg; rw [hn]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `g2 : gg TT (-((‖ζ‖ : ℝ) : ℂ)) = gg TT ζ` using `by unfold gg; rw [hn']`. Establish `s1 : sig TT ((‖ζ‖ : ℝ) : ℂ) = sig TT ζ` using `by unfold sig; rw [hn]`. Establish `s2 : sig TT (-((‖ζ‖ : ℝ) : ℂ)) = sig TT ζ` using `by unfold sig; rw [hn']`. Rewrite `e1` using `[g1, s1, ← h1, Complex.conj_ofReal]`. Rewrite `e2` using `[g2, s2, ← h2, map_neg, Complex.conj_ofReal]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hcurve : (((‖ζ‖ : ℝ) : ℂ)) ^ 2 = sig TT ζ ^ 2 + (TT : ℂ)`. Unfold `sig`. Rewrite using `[← Complex.ofReal_pow, ← Complex.ofReal_pow, Real.sq_sqrt (by linarith), ← Complex.ofReal_add, Complex.normSq_eq_norm_sq]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 
-Use `hq _ _ hcurve` as an intermediate fact. Rewrite `this` using `[← e1, ← e2]`. Rewrite using `[Polynomial.eval_mul, Polynomial.eval_C, ← this]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem phase_extraction_holds : PhaseExtract := by
   intro TT f _ hPS hrot

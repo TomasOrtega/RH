@@ -11,14 +11,14 @@ variable {E H₁ H₂ : Type*} [AddCommGroup E] [Module ℂ E]
     [NormedAddCommGroup H₂] [InnerProductSpace ℂ H₂]
 
 /- English proof (translation)
-Introduce `g`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem weakAdj_zero (ι : E →ₗ[ℂ] H₁) (t : E →ₗ[ℂ] H₂) : WeakAdj ι t 0 0 := by
   intro g
   simp
 
 /- English proof (translation)
-Introduce `g`. Rewrite using `[inner_add_right, inner_add_right, h g, h' g]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem WeakAdj.add {ι : E →ₗ[ℂ] H₁} {t : E →ₗ[ℂ] H₂} {f f' : H₂} {w w' : H₁}
     (h : WeakAdj ι t f w) (h' : WeakAdj ι t f' w') : WeakAdj ι t (f + f') (w + w') := by
@@ -26,7 +26,7 @@ theorem WeakAdj.add {ι : E →ₗ[ℂ] H₁} {t : E →ₗ[ℂ] H₂} {f f' : H
   rw [inner_add_right, inner_add_right, h g, h' g]
 
 /- English proof (translation)
-Introduce `g`. Rewrite using `[inner_smul_right, inner_smul_right, h g]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem WeakAdj.smul {ι : E →ₗ[ℂ] H₁} {t : E →ₗ[ℂ] H₂} {f : H₂} {w : H₁}
     (h : WeakAdj ι t f w) (a : ℂ) : WeakAdj ι t (a • f) (a • w) := by
@@ -34,7 +34,7 @@ theorem WeakAdj.smul {ι : E →ₗ[ℂ] H₁} {t : E →ₗ[ℂ] H₂} {f : H�
   rw [inner_smul_right, inner_smul_right, h g]
 
 /- English proof (translation)
-Introduce `g`. Rewrite using `[inner_sub_right, inner_sub_right, h g, h' g]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem WeakAdj.sub {ι : E →ₗ[ℂ] H₁} {t : E →ₗ[ℂ] H₂} {f f' : H₂} {w w' : H₁}
     (h : WeakAdj ι t f w) (h' : WeakAdj ι t f' w') : WeakAdj ι t (f - f') (w - w') := by
@@ -50,9 +50,9 @@ def weakAdjGraph (ι : E →ₗ[ℂ] H₁) (t : E →ₗ[ℂ] H₂) : Submodule 
 end WeakAdjLemmas
 
 /- English proof (translation)
-Introduce `ι t K hK hrange f w hfw`. Use `haveI : CompleteSpace K := hK.completeSpace_coe`. Take `⟨f₁, hf₁, f₂, hf₂, rfl⟩` from `K.exists_add_mem_mem_orthogonal f`. Establish `h2 : WeakAdj ι t f₂ 0`. Introduce `g`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[inner_zero_right]`. Conclude with `Submodule.inner_right_of_mem_orthogonal (hrange (LinearMap.mem_range_self t g)) hf₂`. Use `⟨f₁, f₂, rfl, hf₁, hf₂, ?_, h2⟩` and prove the remaining obligations. Establish `h1` using `hfw.sub h2`. Simplify using `using h1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem split (E H₁ H₂ : Type*) [AddCommGroup E] [Module ℂ E]
     [NormedAddCommGroup H₁] [InnerProductSpace ℂ H₁]
@@ -70,11 +70,11 @@ theorem split (E H₁ H₂ : Type*) [AddCommGroup E] [Module ℂ E]
   simpa using h1
 
 /- English proof (translation)
-Introduce `ι t K hK hrange v A hA hv hbound`. Set `G : Submodule ℂ (H₂ × H₁)` to `weakAdjGraph ι t ⊓ K.comap (LinearMap.fst ℂ H₂ H₁)`. Establish `hG : ∀ p : G, WeakAdj ι t (p : H₂ × H₁).1 (p : H₂ × H₁).2 ∧ (p : H₂ × H₁).1 ∈ K` using `fun p => ⟨(Submodule.mem_inf.mp p.2).1, (Submodule.mem_inf.mp p.2).2⟩`. Take `⟨u, -, hu, huv⟩` from `rieszOnRange G H₁ ((LinearMap.snd ℂ H₂ H₁).comp G.subtype) ((innerₛₗ ℂ v).comp ((LinearMap.fst ℂ H₂ H₁).comp G.subtype)) A hA (by`. Introduce `p`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨h1, h2⟩` from `hG p`. Simplify using `using hbound _ h2 _ h1)`. Use `⟨u, hu, fun f w hfw => ?_⟩` and prove the remaining obligations. Take `⟨f₁, f₂, rfl, hf₁, hf₂, hw1, -⟩` from `split E H₁ H₂ ι t K hK hrange f w hfw`. Establish `hmem : ((f₁, w) : H₂ × H₁) ∈ G` using `Submodule.mem_inf.mpr ⟨hw1, hf₁⟩`.
+Extract witnesses or component facts from the available result. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h3` using `huv ⟨(f₁, w), hmem⟩`. Simplify using `only [LinearMap.coe_comp, Function.comp_apply, Submodule.coe_subtype, LinearMap.snd_apply, LinearMap.fst_apply] at h3`. Rewrite using `[inner_add_right, Submodule.inner_right_of_mem_orthogonal hv hf₂, add_zero]`. Conclude with `h3`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hormanderLemma (E H₁ H₂ : Type*) [AddCommGroup E] [Module ℂ E]
     [NormedAddCommGroup H₁] [InnerProductSpace ℂ H₁] [CompleteSpace H₁]

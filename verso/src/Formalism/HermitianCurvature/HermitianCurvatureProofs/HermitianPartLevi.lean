@@ -12,23 +12,23 @@ namespace Formalism.FourierDecayAlt.P.WirtingerOperators.LeviExponential
 open Formalism.REAL Formalism.QuantumDeterminants Formalism.FourierDecayAlt Formalism.FourierDecayAlt.Q Formalism.FourierDecayAlt.P.LevelPointCoordinates
 
 /- English proof (translation)
-Simplify using `only [D.castM, Matrix.reindex_apply, Matrix.submatrix_mul_equiv]`.
+Simplify using the standard rewrite rules.
 -/
 theorem castM_mul' {k a b : ℕ} (h : a = b) (g g' : B.Mat k a) :
     D.castM h (g * g') = D.castM h g * D.castM h g' := by
   simp only [D.castM, Matrix.reindex_apply, Matrix.submatrix_mul_equiv]
 
 /- English proof (translation)
-Unfold `D.castM`. Conclude with `exp_reindex _ M`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem exp_castM {k a b : ℕ} (h : a = b) (M : B.Mat k a) :
     NormedSpace.exp (D.castM h M) = D.castM h (NormedSpace.exp M) := by
   unfold D.castM; exact exp_reindex _ M
 
 /- English proof (translation)
-Unfold `U.blk3`. Rewrite using `[exp_reindex]`. Establish `h1 : Matrix.fromRows (0 : Matrix (Fin j) (Fin j) ℂ) (0 : Matrix (Fin (2 * ρ + k + 1)) (Fin j) ℂ) = 0`. Apply the tactic sequence `ext i l; rcases i with i | i <;> rfl`. Establish `h2 : Matrix.fromCols (0 : Matrix (Fin j) (Fin j) ℂ) (0 : Matrix (Fin j) (Fin (2 * ρ + k + 1)) ℂ) = 0`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Apply the tactic sequence `ext i l; rcases l with l | l <;> rfl`. Rewrite using `[h1, h2, exp_fromBlocks, exp_fromBlocks]`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 -/
 theorem exp_block_three_diagonal {k j ρ : ℕ} (A : Matrix (Fin j) (Fin j) ℂ) (Bm : B.Mat k ρ) (C : Matrix (Fin j) (Fin j) ℂ) :
     NormedSpace.exp (U.blk3 A 0 0 0 Bm 0 0 0 C) =
@@ -42,7 +42,7 @@ theorem exp_block_three_diagonal {k j ρ : ℕ} (A : Matrix (Fin j) (Fin j) ℂ)
   rw [h1, h2, exp_fromBlocks, exp_fromBlocks]
 
 /- English proof (translation)
-Unfold `U.blk2`. Rewrite using `[exp_reindex, exp_fromBlocks]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem exp_block_two_diagonal {p s : ℕ} (A : Matrix (Fin p) (Fin p) ℂ) (Dd : Matrix (Fin s) (Fin s) ℂ) :
     NormedSpace.exp (U.blk2 A 0 0 Dd) = U.blk2 (NormedSpace.exp A) 0 0 (NormedSpace.exp Dd) := by
@@ -50,13 +50,13 @@ theorem exp_block_two_diagonal {p s : ℕ} (A : Matrix (Fin p) (Fin p) ℂ) (Dd 
   rw [exp_reindex, exp_fromBlocks]
 
 /- English proof (translation)
-Simplify using `[U.blk2]`.
+Simplify using the standard rewrite rules.
 -/
 theorem symmetricScalarBlockMatrix_one_zero {p s : ℕ} : U.blk2 (1 : Matrix (Fin p) (Fin p) ℂ) 0 0 (1 : Matrix (Fin s) (Fin s) ℂ) = 1 := by
   simp [U.blk2]
 
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using `only [Matrix.conjTranspose_apply, block_two_apply]`. Apply the tactic sequence `split_ifs <;> simp [Matrix.one_apply, Fin.ext_iff, eq_comm]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem block_two_identity_conjTranspose {p s : ℕ} (A : Matrix (Fin p) (Fin p) ℂ) :
     (U.blk2 A 0 0 (1 : Matrix (Fin s) (Fin s) ℂ))ᴴ = U.blk2 Aᴴ 0 0 1 := by
@@ -65,13 +65,13 @@ theorem block_two_identity_conjTranspose {p s : ℕ} (A : Matrix (Fin p) (Fin p)
   split_ifs <;> simp [Matrix.one_apply, Fin.ext_iff, eq_comm]
 
 /- English proof (translation)
-The claim follows from `Matrix.inv_eq_left_inv (Ux4.wMat_mul_self d)`.
+A detailed English derivation is pending.
 -/
 theorem w_inv (d : ℕ) : (G.wMat d)⁻¹ = G.wMat d :=
   Matrix.inv_eq_left_inv (Ux4.wMat_mul_self d)
 
 /- English proof (translation)
-Establish `hu : IsUnit (G.wMat d)` using `⟨⟨G.wMat d, G.wMat d, Ux4.wMat_mul_self d, Ux4.wMat_mul_self d⟩, rfl⟩`. Establish `e` using `Matrix.exp_conj (G.wMat d) M hu`. Rewrite `e` using `[w_inv]`. Conclude with `e`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exp_w_conj (d : ℕ) (M : Matrix (Fin d) (Fin d) ℂ) :
     NormedSpace.exp (G.wMat d * M * G.wMat d) = G.wMat d * NormedSpace.exp M * G.wMat d := by
@@ -81,9 +81,9 @@ theorem exp_w_conj (d : ℕ) (M : Matrix (Fin d) (Fin d) ℂ) :
   exact e
 
 /- English proof (translation)
-Rewrite using `[block_two_identity_conjTranspose]`. Apply `Matrix.inv_eq_left_inv` to reduce the goal to its premises. Rewrite using `[Ux4.symmetricScalarBlockMatrix_mul]`. Simplify using `only [Matrix.mul_zero, Matrix.zero_mul, add_zero, zero_add, Matrix.mul_one]`. Establish `hu : IsUnit (NormedSpace.exp yᴴ).det` using `(Matrix.isUnit_iff_isUnit_det _).mp (Matrix.isUnit_exp _)`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[Matrix.exp_neg, ← Matrix.exp_conjTranspose, Matrix.nonsing_inv_mul _ hu, symmetricScalarBlockMatrix_one_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem block_two_exp_conjTranspose_inv {j : ℕ} (y : MJ j) :
     (U.blk2 (NormedSpace.exp y) 0 0 (1 : Matrix (Fin 1) (Fin 1) ℂ))ᴴ⁻¹ = U.blk2 (NormedSpace.exp (-yᴴ)) 0 0 1 := by
@@ -95,9 +95,9 @@ theorem block_two_exp_conjTranspose_inv {j : ℕ} (y : MJ j) :
   rw [Matrix.exp_neg, ← Matrix.exp_conjTranspose, Matrix.nonsing_inv_mul _ hu, symmetricScalarBlockMatrix_one_zero]
 
 /- English proof (translation)
-Establish `hs : (t : ℂ) • levi k r j x = levi k r j ((t : ℂ) • x)`. Use extensionality with `p q`. Simplify using `only [levi, Matrix.of_apply, Matrix.smul_apply, smul_eq_mul]`. Apply the tactic sequence `split_ifs <;> simp [Complex.conj_ofReal]`. Rewrite using `[hs, levi_eq hj, exp_castM, exp_block_three_diagonal, exp_w_conj, exp_block_two_diagonal, exp_block_two_diagonal]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [NormedSpace.exp_zero]`. Unfold `U.muP`. Rewrite using `[block_two_exp_conjTranspose_inv]`.
+Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem exp_levi {k r j : ℕ} (hj : j + 1 ≤ r) (x : MJ j) (t : ℝ) :
     NormedSpace.exp ((t : ℂ) • levi k r j x) = D.castM (by omega : j + 1 + (r - (j + 1)) = r)
@@ -112,7 +112,7 @@ theorem exp_levi {k r j : ℕ} (hj : j + 1 ≤ r) (x : MJ j) (t : ℝ) :
   rw [block_two_exp_conjTranspose_inv]
 
 /- English proof (translation)
-Unfold `zfull`. Rewrite using `[Ux4.symmetricScalarBlockMatrix_mul]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem zfull_mul {j : ℕ} (Z E : MJ j) (τ : ℂ) :
     zfull Z τ * U.blk2 E 0 0 (1 : Matrix (Fin 1) (Fin 1) ℂ) = zfull (Z * E) τ := by
@@ -121,7 +121,7 @@ theorem zfull_mul {j : ℕ} (Z E : MJ j) (τ : ℂ) :
   simp
 
 /- English proof (translation)
-Introduce `k r j hj Z τ γ x t`. Rewrite using `[exp_levi hj]`. Unfold `x0`. Rewrite using `[← castM_mul', Ux4.mMap_mul_muP, zfull_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem curveLevi : CurveLevi := by
   intro k r j hj Z τ γ x t
@@ -132,11 +132,11 @@ theorem curveLevi : CurveLevi := by
 end Formalism.FourierDecayAlt.P.WirtingerOperators.LeviExponential
 
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.WirtingerOperators.LeviExponential.curveLevi`.
+A detailed English derivation is pending.
 -/
 theorem Formalism.FourierDecayAlt.P.levi_curve : Formalism.FourierDecayAlt.P.WirtingerOperators.CurveLevi := Formalism.FourierDecayAlt.P.WirtingerOperators.LeviExponential.curveLevi
 
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.WirtingerOperators.LeviExponential.hpartLevi`.
+A detailed English derivation is pending.
 -/
 theorem Formalism.FourierDecayAlt.P.hermitian_part_levi : Formalism.FourierDecayAlt.P.WirtingerOperators.HpartLevi := Formalism.FourierDecayAlt.P.WirtingerOperators.LeviExponential.hpartLevi

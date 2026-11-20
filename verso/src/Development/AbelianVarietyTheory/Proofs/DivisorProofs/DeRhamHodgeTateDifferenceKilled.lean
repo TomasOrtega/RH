@@ -11,11 +11,9 @@ namespace GlobalTheory.HTVert
 open MvPolynomial Formalism.BasicNotions.DV
 
 /- English proof (translation)
-Proceed by induction on `Q using MvPolynomial.induction_on with`. Consider the case `C a => rw [← MvPolynomial.algebraMap_eq, f.commutes, g.commutes, sub_self]`. Conclude with `zero_mem _`. Consider the case `add P Q hP hQ => rw [map_add, map_add, add_sub_add_comm]`. Conclude with `Ideal.add_mem _ hP hQ`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Consider the case `mul_X P i hP`. Establish `e : f (P * X i) - g (P * X i) = (f P - g P) * f (X i) + g P * (f (X i) - g (X i))`. Simplify using `only [map_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`.
-
-Conclude with `Ideal.add_mem _ (Ideal.mul_mem_right _ _ hP) (Ideal.mul_mem_left _ _ (Ideal.subset_span ⟨i, rfl⟩))`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sub_mem_span_range {σ A : Type} [CommRing A] [Algebra ℝ A] (f g : MvPolynomial σ ℝ →ₐ[ℝ] A)
     (Q : MvPolynomial σ ℝ) : f Q - g Q ∈ Ideal.span (Set.range fun i => f (X i) - g (X i)) := by
@@ -29,7 +27,7 @@ theorem sub_mem_span_range {σ A : Type} [CommRing A] [Algebra ℝ A] (f g : MvP
     exact Ideal.add_mem _ (Ideal.mul_mem_right _ _ hP) (Ideal.mul_mem_left _ _ (Ideal.subset_span ⟨i, rfl⟩))
 
 /- English proof (translation)
-Take `⟨c, hc⟩` from `Ideal.mem_span_range_iff_exists_fun.1 (sub_mem_span_range (tagDR Tau N) (tagHT Tau N) Q)`. Use `⟨c, hc.symm.trans (Finset.sum_congr rfl fun y _ => ?_)⟩` and prove the remaining obligations. Simplify using `[tagDR, tagHT, mul_comm]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem tagDR_sub_tagHT (Tau : Type) [Fintype Tau] (N : ℕ) (Q : MvPolynomial (Rt Tau N) ℝ) :
     ∃ c : Rt Tau N → MvPolynomial (Vm Tau N) ℝ,
@@ -43,7 +41,7 @@ end GlobalTheory.HTVert
 open MvPolynomial Formalism.BasicNotions.DV in
 
 /- English proof (translation)
-Introduce `h2 hH D O hO _ A T H h Sx R p hp τ k hk Q`. Take `⟨c, hc⟩` from `GlobalTheory.HTVert.tagDR_sub_tagHT D.what₂.Tau O.Y.N Q`. Rewrite using `[hc, GlobalTheory.T.arithmetic_mixed_volume_parameter_max_two D O hO, Finset.mul_sum, map_sum]`. Conclude with `Finset.sum_eq_zero fun y _ => GlobalTheory.T.arithmetic_mixed_volume_kills_difference h2 hH D O hO Sx _ (le_max_right _ _) p hp τ k hk y (c y)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.HTVert.onObj_aux1tAt_of_knownResults : Hypotheses2 → HypothesesH → OnObj fun _ O _ _ _ _ => DeRhamHodgeTateDifferenceKilledAt O.Y := by
   intro h2 hH D O hO _ A T H h Sx R p hp τ k hk Q

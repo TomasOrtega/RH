@@ -30,11 +30,11 @@ section Algebra
 variable {G U : Type} [CommGroup G] [CommGroup U]
 
 /- English proof (translation)
-Set `M : Submonoid (G × U)` to `{ carrier := {q | R q.1 q.2}, one_mem' := h₁, mul_mem' := fun {q q'} H H' => hm _ _ _ _ H H' }`. Establish `key : ∀ i, ((p i, z ^ m i) : G × U) ^ a i ∈ M` using `fun i => by`. Establish `f : IsOfFinOrder ((p i, z ^ m i) : G × U)` using `isOfFinOrder_iff_pow_eq_one.2 ⟨k, hk, Prod.ext (hp i) (by show (z ^ m i) ^ k = 1`. Rewrite using `[← zpow_natCast, ← zpow_mul, mul_comm, zpow_mul, zpow_natCast, hz, one_zpow])⟩`. Conclude with `(Submonoid.powers_le.2 (show ((p i, z ^ m i) : G × U) ∈ M from h i)) (f.mem_powers_iff_mem_zpowers.2 (Subgroup.zpow_mem_zpowers _ _))`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `M.prod_mem (t := Finset.univ) fun i _ => key i` as an intermediate fact. Establish `e : ∏ i, ((p i, z ^ m i) : G × U) ^ a i = (∏ i, p i ^ a i, z ^ ∑ i, a i * m i)`. Use `Prod.ext (by simp [Prod.fst_prod]) ?_` and prove the remaining obligations. Establish `s` using `map_prod (zpowersHom U z) (fun i => Multiplicative.ofAdd (a i * m i)) Finset.univ`. Rewrite `s` using `[← ofAdd_sum]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Eq.trans ?_ s.symm` and prove the remaining obligations. Simplify using `[Prod.snd_prod, ← zpow_mul, mul_comm]`. Rewrite `this` using `[e]`. Conclude with `this`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rel_prod (R : G → U → Prop) (h₁ : R 1 1) (hm : ∀ x x' c c', R x c → R x' c' → R (x * x') (c * c'))
     {k : ℕ} (hk : 1 ≤ k) {z : U} (hz : z ^ k = 1) {I : Type} [Fintype I] (p : I → G) (hp : ∀ i, p i ^ k = 1)
@@ -58,9 +58,9 @@ theorem rel_prod (R : G → U → Prop) (h₁ : R 1 1) (hm : ∀ x x' c c', R x 
   exact this
 
 /- English proof (translation)
-Establish `e₁ : ∀ j, R (∏ i, p i ^ a i) (p j) (z ^ ∑ i, a i * ω i j)` using `fun j => rel_prod (fun x c => R x (p j) c) (h₀ _ _ _ (h j j)) (fun _ _ _ _ => hm _ _ _ _ _) hk hz p hp _ (fun i => h i j) a`. Establish `e₀ : R (∏ i, p i ^ a i) 1 (z ^ ∑ i, a i * 0)` using `rel_prod (fun x c => R x 1 c) h₁ (fun _ _ _ _ => hm _ _ _ _ _) hk hz p hp _ (fun i => by simpa using hs _ _ _ (h₀ _ _ _ (h i i))) a`. Establish `e₂` using `rel_prod (fun y c => R y (∏ i, p i ^ a i) c) (by simpa using hs _ _ _ e₀) (fun _ _ _ _ => hm _ _ _ _ _) hk hz p hp (fun j => -∑ i, a i * ω i j) (fun j => by simpa using hs _ _ _ (e₁ j)) b`. Establish `e₃` using `hs _ _ _ e₂`. Rewrite `e₃` using `[← zpow_neg]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `e₃ using 2` and compare the differences between its conclusion and the goal. Rewrite using `[Finset.sum_comm, ← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[mul_neg, neg_neg, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => by ring`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rel_bilin (R : G → G → U → Prop) (h₁ : R 1 1 1) (h₀ : ∀ x y c, R x y c → R 1 y 1)
     (hm : ∀ x x' y c c', R x y c → R x' y c' → R (x * x') y (c * c')) (hs : ∀ x y c, R x y c → R y x c⁻¹)
@@ -84,9 +84,9 @@ theorem rel_bilin (R : G → G → U → Prop) (h₁ : R 1 1 1) (h₀ : ∀ x y 
   exact Finset.sum_congr rfl fun i _ => by ring
 
 /- English proof (translation)
-Set `B : La →+ La →+ ℤ` to `AddMonoidHom.mk' (fun x => AddMonoidHom.mk' (EF x) (hr x)) (fun x x' => AddMonoidHom.ext fun y => hl x x' y)`. Establish `d : ∀ w : Fin n → ℤ, bas w = ∑ i, w i • bas (Pi.single i 1)` using `fun w => by conv_lhs => rw [pi_eq_sum_univ' w]`. Simplify using `only [map_sum, map_smul]`. Use `show B (bas u) (bas v) = ∑ i, ∑ j, u i * v j * B (bas (Pi.single i 1)) (bas (Pi.single j 1))`. Rewrite using `[d u, d v]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_sum, map_zsmul, AddMonoidHom.finset_sum_apply, AddMonoidHom.smul_apply, smul_eq_mul, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem form_coord {La : Type} [AddCommGroup La] (EF : La → La → ℤ) {n : ℕ} (bas : (Fin n → ℤ) ≃ₗ[ℤ] La)
     (hl : ∀ x x' y, EF (x + x') y = EF x y + EF x' y) (hr : ∀ x y y', EF x (y + y') = EF x y + EF x y')
@@ -104,7 +104,7 @@ theorem form_coord {La : Type} [AddCommGroup La] (EF : La → La → ℤ) {n : �
   exact Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring
 
 /- English proof (translation)
-Rewrite using `[List.prod_ofFn]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← zpow_natCast, ZMod.val_intCast, ← zpow_eq_zpow_emod' _ (hp i)]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem prod_val {k : ℕ} [NeZero k] {n : ℕ} (p : Fin n → G) (hp : ∀ i, p i ^ k = 1) (a : Fin n → ℤ) :
     (List.ofFn fun i => p i ^ ((a i : ZMod k)).val).prod = ∏ i, p i ^ a i := by
@@ -119,7 +119,7 @@ section Classes
 variable {S : Scheme.{0}} {A : Over S} [GrpObj A] {L : LB A.left}
 
 /- English proof (translation)
-Establish `e : pull (eSec A) (cls L hL) = 0` using `(cls_eq_zero_iff (pull_isLB hL _)).2 hr`. Establish `e' : (1 : T ⟶ A).left = (toUnit T).left ≫ eSec A` using `rfl`. Rewrite using `[e', pull_comp, e, map_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem pull_one (hL : L.IsLB) (hr : Out.Rigidified A L) (T : Over S) :
     pull (1 : T ⟶ A).left (cls L hL) = 0 := by
@@ -129,7 +129,7 @@ theorem pull_one (hL : L.IsLB) (hr : Out.Rigidified A L) (T : Over S) :
 
 omit [GrpObj A] in
 /- English proof (translation)
-The claim follows from `(pull_comp _ _ _).symm`.
+A detailed English derivation is pending.
 -/
 theorem pull_pull {T T' : Over S} (f : T' ⟶ T) (a : T ⟶ A) (c : Pic A.left) :
     pull f.left (pull a.left c) = pull (f ≫ a).left c := (pull_comp _ _ _).symm
@@ -137,16 +137,16 @@ theorem pull_pull {T T' : Over S} (f : T' ⟶ T) (a : T ⟶ A) (c : Pic A.left) 
 variable [IsCommMonObj A]
 
 /- English proof (translation)
-The claim follows from `LB.isLB_linComb hL _ _`.
+A detailed English derivation is pending.
 -/
 theorem isLB_lam (hL : L.IsLB) : (abelian₂ A L).IsLB := LB.isLB_linComb hL _ _
 
 /- English proof (translation)
-Use `(cls_linComb hL _ _ (isLB_lam hL)).trans ?_` and prove the remaining obligations. Use `(Fintype.sum_equiv (Equiv.ulift : ULift.{0} (Finset (Fin 2)) ≃ Finset (Fin 2)) _ (fun I => ((-1 : ℤ) ^ (2 - I.card)) • pull (psum A (x2 A) I).left (cls L hL)) (fun I => rfl)).trans ?_` and prove the remaining obligations. Rewrite using `[show (Finset.univ : Finset (Finset (Fin 2))) = {∅, {0}, {1}, {0, 1}} by decide, Finset.sum_insert (by decide), Finset.sum_insert (by decide), Finset.sum_insert (by decide), Finset.sum_singleton]`. Establish `p₀ : psum A (x2 A) ∅ = 1` using `rfl`. Establish `p₁ : psum A (x2 A) {0} = fst A A` using `_root_.mul_one (fst A A)`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `p₂ : psum A (x2 A) {1} = snd A A` using `_root_.mul_one (snd A A)`. Establish `p₃ : psum A (x2 A) {0, 1} = fst A A * snd A A` using `congrArg (fst A A * ·) (_root_.mul_one (snd A A))`. Establish `q₀ : (-1 : ℤ) ^ (2 - (∅ : Finset (Fin 2)).card) = 1` using `by decide`. Establish `q₁ : ∀ i : Fin 2, (-1 : ℤ) ^ (2 - ({i} : Finset (Fin 2)).card) = -1` using `by decide`. Establish `q₃ : (-1 : ℤ) ^ (2 - ({0, 1} : Finset (Fin 2)).card) = 1` using `by decide`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[p₀, p₁, p₂, p₃, q₀, q₁, q₁, q₃]`. Simplify using `only [neg_smul, one_smul]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 theorem cls_lam (hL : L.IsLB) :
     cls _ (isLB_lam hL) = pull (fst A A * snd A A).left (cls L hL) - pull (fst A A).left (cls L hL) -
@@ -169,7 +169,7 @@ theorem cls_lam (hL : L.IsLB) :
   abel
 
 /- English proof (translation)
-Rewrite using `[cls_lam hL, pull_one hL hr, add_zero, map_sub, map_sub, pull_pull, pull_pull, pull_pull, MonObj.comp_mul, lift_fst, lift_snd]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem pull_lam (hL : L.IsLB) (hr : Out.Rigidified A L) {T : Over S} (a b : T ⟶ A) :
     pull (lift a b).left (cls _ (isLB_lam hL)) =
@@ -184,7 +184,7 @@ section Pairing
 variable {S : Scheme.{0}} {A : Over S} [GrpObj A] {L M : LB A.left}
 
 /- English proof (translation)
-Establish `e` using `cls_linComb hL (K := Fin 2) ![(snd T A).left, (Out.translPt A x).left] ![k, -k] (LB.isLB_linComb hL _ _)`. Rewrite `e` using `[Fin.sum_univ_two]`. Simplify using `only [Matrix.cons_val_zero, Matrix.cons_val_one, neg_smul, ← sub_eq_add_neg] at e`. Rewrite using `[← e, cls_eq_zero_iff]`. Conclude with `⟨fun ⟨θ, h⟩ => h ▸ ⟨θ.φ, θ.isGen⟩, fun ⟨t, ht⟩ => ⟨⟨x, t, ht⟩, rfl⟩⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem exists_theta_iff (hL : L.IsLB) (k : ℤ) {T : Over S} (x : T ⟶ A) :
     (∃ θ : Out.ThetaGrp A L k T, θ.pt = x) ↔
@@ -196,7 +196,7 @@ theorem exists_theta_iff (hL : L.IsLB) (k : ℤ) {T : Over S} (x : T ⟶ A) :
   exact ⟨fun ⟨θ, h⟩ => h ▸ ⟨θ.φ, θ.isGen⟩, fun ⟨t, ht⟩ => ⟨⟨x, t, ht⟩, rfl⟩⟩
 
 /- English proof (translation)
-Establish `e : Out.translPt A (1 : T ⟶ A) = snd T A` using `by show (fst T A ≫ 1) * snd T A = _`. Rewrite using `[MonObj.comp_one, _root_.one_mul]`. Rewrite using `[exists_theta_iff hL, e, sub_self]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_theta_one (hL : L.IsLB) (k : ℤ) (T : Over S) : ∃ θ : Out.ThetaGrp A L k T, θ.pt = 1 := by
   have e : Out.translPt A (1 : T ⟶ A) = snd T A := by
@@ -205,11 +205,11 @@ theorem exists_theta_one (hL : L.IsLB) (k : ℤ) (T : Over S) : ∃ θ : Out.The
   rw [exists_theta_iff hL, e, sub_self]
 
 /- English proof (translation)
-Establish `up : ∀ (T' : Over S) (u : T' ⟶ A), (∃ θ : Out.ThetaGrp A L k T', θ.pt = u) → ∃ θ : Out.ThetaGrp A M k T', θ.pt = u` using `fun T' u H => by`. Rewrite `H` using `[exists_theta_iff hL]`. Rewrite using `[exists_theta_iff hM, e, map_nsmul, map_nsmul, smul_comm k d, smul_comm k d, ← smul_sub, H, smul_zero]`. Take `⟨c', hc'⟩` from `CommutatorPairing.exists_weilIs (k := k) (x := x) (y := y) hG hA hM (fun p => by`. Take `⟨V, hV, ⟨θ, -, H, -⟩, -⟩` from `h p`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨V, hV, up _ _ ⟨θ, H⟩⟩)`. Use the proof step `(fun p => by`. Take `⟨V, hV, ⟨-, θ, -, H⟩, -⟩` from `h p`. Conclude with `⟨V, hV, up _ _ ⟨θ, H⟩⟩)`. Establish `iso : LBIso (lbPow L d) (M.pull (𝟙 A : A ⟶ A).left)` using `(cls_eq_iff (isLB_lbPow hL d) (pull_isLB hM _)).1 (by`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[cls_lbPow hL, cls_pull hM, Over.id_left, pull_id, e])`. Use `(weilIs_along_hom hG S A A (𝟙 A) L M d k T x y c c' hA hA hL hM inferInstance iso (by simpa using hc')).2 h` as an intermediate fact. Conclude with `this ▸ hc'`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem weilIs_of_pow (hG : Out.GlobalFnsSt) (hA : IsAbelianScheme A) (hL : L.IsLB) (hM : M.IsLB) (d : ℕ)
     (e : cls M hM = d • cls L hL) {k : ℤ} {T : Over S} {x y : T ⟶ A} {c : Γ(T.left, ⊤)ˣ}
@@ -233,7 +233,7 @@ theorem weilIs_of_pow (hG : Out.GlobalFnsSt) (hA : IsAbelianScheme A) (hL : L.Is
   exact this ▸ hc'
 
 /- English proof (translation)
-Take `⟨c, hc⟩` from `CommutatorPairing.exists_weilIs (k := k) (x := 1) (y := y) hG P.isAb P.isLB (fun p => ⟨⊤, trivial, by rw [MonObj.comp_one]; exact exists_theta_one P.isLB _ _⟩) hy`. Establish `h₂` using `weilIs_mul_left hG S P k T 1 1 y c c hc hc`. Rewrite `h₂` using `[_root_.mul_one]`. Use `CommutatorPairing.weilIs_unique hG P.isAb P.isLB h₂ hc` as an intermediate fact. Rewrite `hc` using `[mul_eq_left.1 this]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem weilIs_one (hG : Out.GlobalFnsSt) (P : Out.PolAV S) (k : ℕ) {T : Over S} {y : T ⟶ P.A}
     (hy : ∀ p : T.left, ∃ V : T.left.Opens, p ∈ V ∧
@@ -247,7 +247,7 @@ theorem weilIs_one (hG : Out.GlobalFnsSt) (P : Out.PolAV S) (k : ℕ) {T : Over 
   rwa [mul_eq_left.1 this] at hc
 
 /- English proof (translation)
-The claim follows from `rel_bilin (fun (x y : T ⟶ P.A) c => Out.WeilIs P.A P.L k x y c) (weilIs_one hG P k fun p => ⟨⊤, trivial, by rw [MonObj.comp_one]; exact exists_theta_one P.isLB _ _⟩) (fun x y c H => weilIs_one hG P k fun q => by obtain ⟨V, hV, ⟨-, θ, -, H'⟩, -⟩ := H q exact ⟨V, hV, θ, H'⟩) (fun x …`.
+A detailed English derivation is pending.
 -/
 theorem weilIs_bilin (hG : Out.GlobalFnsSt) (P : Out.PolAV S) [IsCommMonObj P.A] {k : ℕ} (hk : 1 ≤ k) {T : Over S}
     {z : Γ(T.left, ⊤)ˣ} (hz : z ^ k = 1) {I : Type} [Fintype I] (p : I → (T ⟶ P.A)) (hp : ∀ i, p i ^ k = 1)
@@ -268,9 +268,9 @@ section Principal
 variable {S : Scheme.{0}}
 
 /- English proof (translation)
-Establish `h` using `(cls_eq_zero_iff (LB.isLB_linComb P.isLB _ _)).2 ((MulPull.mulPull_of_cube_of_symm hc (exists_gen_negLB hG)).1 S P 2)`. Rewrite `h` using `[cls_linComb P.isLB, Fin.sum_univ_two]`. Simplify using `only [Matrix.cons_val_zero, Matrix.cons_val_one, pull_id] at h`. Establish `e : Out.mulA P.A 2 = 𝟙 P.A * 𝟙 P.A` using `pow_two _`. Rewrite `h` using `[e]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[cls_pull (isLB_lam P.isLB), pull_lam P.isLB P.rigid, Over.id_left, pull_id]`. Rewrite using `[← sub_eq_zero, ← neg_eq_zero, ← h]`. Use `push_cast`. Use `module`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. A detailed English derivation is pending.
 -/
 theorem cls_diag (hG : Out.GlobalFnsSt)
     (hc : ∀ (S : Scheme.{0}) (P : Out.PolAV S) (M : LB P.A.left), M.IsLB → ∃ t : LB.Gen (Theta P.A M), t.IsGen)
@@ -288,7 +288,7 @@ theorem cls_diag (hG : Out.GlobalFnsSt)
   module
 
 /- English proof (translation)
-Use `hA.proper` as an intermediate fact. Rewrite `h` using `[relAmple_iff_isAmpleLB A hL]`. Use `relAmple_of_isAmpleLB A hM fun U hU => ?_` and prove the remaining obligations. Use `(isAmpleLB_congr (isLB_lbPow (pull_isLB hL _) d) (pull_isLB hM _) ((cls_eq_iff (isLB_lbPow (pull_isLB hL _) d) (pull_isLB hM _)).1 ?_)).1 ((isAmpleLB_pow_iff (pull_isLB hL _) hd).2 (h U hU))` and prove the remaining obligations. Rewrite using `[cls_lbPow (pull_isLB hL _), cls_pull hL, cls_pull hM, e, map_nsmul]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem relAmple_of_pow {A : Over S} [GrpObj A] (hA : IsAbelianScheme A) {L M : LB A.left} (hL : L.IsLB)
     (hM : M.IsLB) {d : ℕ} (hd : 1 ≤ d) (e : cls M hM = d • cls L hL) (h : Out.RelAmple A L) : Out.RelAmple A M := by
@@ -300,11 +300,11 @@ theorem relAmple_of_pow {A : Over S} [GrpObj A] (hA : IsAbelianScheme A) {L M : 
   rw [cls_lbPow (pull_isLB hL _), cls_pull hL, cls_pull hM, e, map_nsmul]
 
 /- English proof (translation)
-Take `⟨i, hi⟩` from `exists_chart hL (x.left p)`. Use `⟨x.left ⁻¹ᵁ L.U i, hi, ?_⟩` and prove the remaining obligations. Establish `hD : (Out.translDiff A L x).IsLB` using `LB.isLB_linComb hL _ _`. Rewrite using `[← cls_eq_zero_iff (pull_isLB hD _), cls_pull hD]`. Rewrite `h` using `[pull_lam hL hr]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e₂ : cls _ hD = pull (fst T A ≫ x).left (cls L hL)`. Use `(cls_linComb hL _ _ hD).trans ?_` and prove the remaining obligations. Rewrite using `[Fin.sum_univ_two]`. Simplify using `only [Matrix.cons_val_zero, Matrix.cons_val_one, one_smul, neg_smul]`. Rewrite using `[← sub_eq_zero, ← h, ← Hom.mul_def]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Normalize the expressions using the abelian group laws. Rewrite using `[e₂, ← pull_comp, ← cls_pull hL _ (pull_isLB hL _), cls_eq_zero_iff]`. Conclude with `ChartRig.exists_gen_pull _ _ i hL fun q _ => q.2`.
+Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem translDiff_local {A : Over S} [GrpObj A] [IsCommMonObj A] {L : LB A.left} (hL : L.IsLB)
     (hr : Out.Rigidified A L) {T : Over S} (x : T ⟶ A)
@@ -325,11 +325,9 @@ theorem translDiff_local {A : Over S} [GrpObj A] [IsCommMonObj A] {L : LB A.left
   exact ChartRig.exists_gen_pull _ _ i hL fun q _ => q.2
 
 /- English proof (translation)
-Establish `h₀` using `(cls_eq_zero_iff (pull_isLB (isLB_lam P.isLB) _)).2 h`. Rewrite `h₀` using `[cls_pull (isLB_lam P.isLB)]`. Establish `loc : ∀ (T' : Over S) (u : T' ⟶ T), pull (lift (fst T' P.A ≫ u ≫ x) (snd T' P.A)).left (cls _ (isLB_lam P.isLB)) = 0` using `fun T' u => by`. Establish `e₁` using `congrArg (pull (lift (snd T' P.A) (fst T' P.A ≫ u)).left) h₀`. Rewrite `e₁` using `[map_zero, ← pull_comp, ← Over.comp_left, comp_lift, lift_fst, lift_snd_assoc, Category.assoc]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `aff : ∀ (R : CommRingCat.{0}) (f : Spec R ⟶ T.left), f ≫ x.left = f ≫ (1 : T ⟶ P.A).left` using `fun R f => by`. Set `u : Over.mk (f ≫ T.hom) ⟶ T` to `Over.homMk f rfl`. Establish `key` using `P.ktriv R (f ≫ T.hom) (u ≫ x) (translDiff_local P.isLB P.rigid (u ≫ x) (loc _ u))`. Establish `key' : u ≫ x = u ≫ 1` using `key.trans (MonObj.comp_one u).symm`. Conclude with `congrArg CommaMorphism.left key'`.
-
-Conclude with `Over.OverMorphism.ext (T.left.affineOpenCover.openCover.hom_ext _ _ fun i => aff _ _)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem eq_one_of_lam (P : Out.PolAV S) [IsCommMonObj P.A] (T : Over S) (x : T ⟶ P.A)
     (h : ∃ t : ((abelian₂ P.A P.L).pull (lift (snd P.A T ≫ x) (fst P.A T)).left).Gen, t.IsGen) : x = 1 := by
@@ -353,7 +351,7 @@ section Level
 variable {o : Type} [CommRing o] {S : Scheme.{0}} {g k : ℕ} {J : Type} {b : TBase o k} {s : S ⟶ Sp o}
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Conclude with `congrArg (fun q => q.hom c.val) (Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom i))`.
+Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem unitOn_map {K Ω : Type} [CommRing K] [CommRing Ω] (i : K →+* Ω) (c : Kˣ) :
     unitOn (Units.map i.toMonoidHom c) = Units.map (spMap i).appTop.hom.toMonoidHom (unitOn c) := by
@@ -361,7 +359,7 @@ theorem unitOn_map {K Ω : Type} [CommRing K] [CommRing Ω] (i : K →+* Ω) (c 
   exact congrArg (fun q => q.hom c.val) (Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom i))
 
 /- English proof (translation)
-Rewrite using `[unitOn_map, ← h]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem map_unitS {K : Type} [CommRing K] (x : Sp K ⟶ S) (β : o →+* K) (h : x ≫ s = spMap β) (u : oˣ) :
     Units.map x.appTop.hom.toMonoidHom (unitS s u) = unitOn (Units.map β.toMonoidHom u) := by
@@ -369,15 +367,15 @@ theorem map_unitS {K : Type} [CommRing K] (x : Sp K ⟶ S) (β : o →+* K) (h :
   rfl
 
 /- English proof (translation)
-Establish `: NeZero k` using `⟨by omega⟩`. Establish `tor : ∀ i, q i ^ k = 1` using `fun i => by rw [hq, ← MonObj.comp_pow, t.torsion, MonObj.comp_one]`. Establish `bij : ∀ y : Over.mk x ⟶ t.A, y ^ k = 1 → ∃! c : Ix g k, (List.ofFn fun i => q i ^ (c i).val).prod = y`. Take `rfl` from `funext hq`. Conclude with `t.bij K x`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun a => ⟨fun ha => ?_, ?_⟩, fun y hy => ?_, fun a c => ?_⟩` and prove the remaining obligations. Establish `e` using `(bij 1 (one_pow k)).unique (y₁ := fun i => (a i : ZMod k)) (y₂ := 0) ((prod_val q tor a).trans ha) (by simp) choose c hc using fun i => (ZMod.intCast_zmod_eq_zero_iff_dvd (a i) k).1 (congrFun e i)`. Conclude with `⟨c, funext fun i => by simpa using hc i⟩`. Introduce and unpack `⟨c, rfl⟩`. Use `Finset.prod_eq_one fun i _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Pi.smul_apply, nsmul_eq_mul, zpow_mul, zpow_natCast, tor, one_zpow]`. Take `⟨c, hc, -⟩` from `bij y hy`. Use `⟨fun i => (c i).val, ?_⟩` and prove the remaining obligations. Rewrite using `[← hc, List.prod_ofFn]`. Simplify using `only [zpow_natCast]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hz : unitOn (Units.map β.toMonoidHom b.ζ) ^ k = 1`. Establish `: Units.map β.toMonoidHom b.ζ ^ k = 1` using `Units.ext (b.prim K β).pow_eq_one`. Unfold `unitOn`. Rewrite using `[← map_pow, this, map_one]`. Use `@weilIs_bilin _ hG t.pol ‹_› k hk (Over.mk x) _ hz _ _ q tor _ (fun i j => ?_) a c` and prove the remaining obligations.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `H` using `CommPairing.weilIs_pull hG t.ab t.isLB (Over.homMk x (by simp) : Over.mk x ⟶ Out.baseOver S) (t.pairing i j)`. Rewrite `H` using `[← hq, ← hq, map_zpow]`. Rewrite using `[← map_unitS x β h]`. Conclude with `H`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem comb_geom (hG : Out.GlobalFnsSt) (t : TObj g k J b s) [IsCommMonObj t.A] (hk : 1 ≤ k) {K : Type} [Field K]
     [IsAlgClosed K] (x : Sp K ⟶ S) (β : o →+* K) (h : x ≫ s = spMap β) (q : Fin (2 * g) → (Over.mk x ⟶ t.A))
@@ -417,27 +415,23 @@ theorem comb_geom (hG : Out.GlobalFnsSt) (t : TObj g k J b s) [IsCommMonObj t.A]
 end Level
 
 /- English proof (translation)
-Introduce `hL _ hc g k J La _ EF bas bas' hl hr hb hb' o B _ _ b ζ S s s' t hk hζ`. Establish `hG` using `hL.globalFns`. Use `haveI := t.ab.comm`. Establish `hΛ : (abelian₂ t.A t.L).IsLB` using `isLB_lam t.isLB`. Establish `diag : cls _ (pull_isLB hΛ (lift (𝟙 t.A) (𝟙 t.A)).left) = 2 • cls t.L t.isLB` using `@cls_diag _ hG hc t.pol ‹_›`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `e : (Fin g ⊕ Fin g → ℤ) ≃ₗ[ℤ] (Fin (2 * g) → ℤ)` to `bas'.trans bas.symm`. Set `p : Fin (2 * g) → (𝟙_ (Over S) ⟶ t.A)` to `t.pt`. Establish `tor : ∀ i, p i ^ k = 1` using `t.torsion`. Establish `form : ∀ u v, ∑ i, ∑ j, e u i * e v j * Out.stdSymp g i j = omegaStd u v` using `fun u v => by`. Rewrite using `[← hb', ← bas.apply_symm_apply (bas' u), ← bas.apply_symm_apply (bas' v), form_coord EF bas hl hr]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [hb]`. Both sides reduce to the same expression. Use `⟨{ A := t.A ab := t.ab P := abelian₂ t.A t.L isLB := hΛ rig₁ := ?_ rig₂ := ?_` and prove the remaining obligations. Use symmetry as in `:= ?_`. Use `lev := fun a => ∏ i, p i ^ e a i`.
+Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Use symmetry to reverse the relation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `lev_add := fun a a' => by simp only [map_add, Pi.add_apply, zpow_add, Finset.prod_mul_distrib]`. Use `lev_tors := fun a => ?_`. Use `geom := fun K _ _ x β' z hx hz => ?_ }, ⟨?_, ?_⟩, Iso.refl _, (inferInstance : IsMonHom (𝟙 t.A)), ?_, fun i => ?_⟩`. Rewrite using `[← cls_eq_zero_iff (pull_isLB hΛ _), cls_pull hΛ, pull_lam t.isLB t.rigid, pull_one t.isLB t.rigid, _root_.one_mul, sub_zero, sub_self]`. Rewrite using `[← cls_eq_zero_iff (pull_isLB hΛ _), cls_pull hΛ, pull_lam t.isLB t.rigid, pull_one t.isLB t.rigid, _root_.mul_one, sub_zero, sub_self]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← cls_eq_iff hΛ (pull_isLB hΛ _), cls_pull hΛ, pull_lam t.isLB t.rigid, cls_lam t.isLB, pull_one t.isLB t.rigid, add_zero, mul_comm (snd t.A t.A), sub_right_comm]`. Rewrite using `[← Finset.prod_pow]`. Use `Finset.prod_eq_one fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← zpow_natCast, ← zpow_mul, mul_comm, zpow_mul, zpow_natCast, tor, one_zpow]`. Take `⟨β, hβ⟩ : ∃ β : o →+* K, x ≫ s = spMap β` from `⟨(Spec.preimage (x ≫ s)).hom, (Spec.map_preimage _).symm⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Establish `hz' : Units.map β.toMonoidHom b.ζ = z` using `Units.ext ((hζ K x β β' hβ hx).trans hz.symm)`. Establish `cmp : ∀ a : Fin (2 * g) → ℤ, toUnit (Over.mk x) ≫ ∏ i, p i ^ a i = ∏ i, (toUnit (Over.mk x) ≫ p i) ^ a i` using `fun a => by`. Set `F : (𝟙_ (Over S) ⟶ t.A) →* (Over.mk x ⟶ t.A)` to `MonoidHom.mk' (fun y => toUnit (Over.mk x) ≫ y) (MonObj.comp_mul _)`. Conclude with `(map_prod F _ _).trans (Finset.prod_congr rfl fun i _ => map_zpow F _ _)`. Take `⟨h₁, h₂, h₃⟩` from `comb_geom hG t hk x β hβ (fun i => toUnit (Over.mk x) ≫ p i) (fun i => congrArg (· ≫ p i) (toUnit_unique _ _))`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Simplify using `only [cmp]`. Use `⟨fun a => (h₁ _).trans ⟨fun ⟨c, hc⟩ => ⟨e.symm c, ?_⟩, fun ⟨c, hc⟩ => ⟨e c, ?_⟩⟩, fun y hy => ?_, fun a a' => ?_⟩` and prove the remaining obligations. Rewrite using `[← map_nsmul, ← hc, e.symm_apply_apply]`. Rewrite using `[hc, map_nsmul]`. Take `⟨a, ha⟩` from `h₂ y hy`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨e.symm a, by rwa [e.apply_symm_apply]⟩`. Establish `H` using `weilIs_of_pow hG t.ab t.isLB (pull_isLB hΛ _) 2 diag (h₃ (e a) (e a'))`. Rewrite `H` using `[form, hz']`. Establish `e' : unitOn (z ^ (2 * omegaStd a a')) = (unitOn z ^ omegaStd a a') ^ 2`. Unfold `unitOn`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[map_zpow, mul_comm, zpow_mul, zpow_ofNat]`. Rewrite using `[e']`. Conclude with `H`. Conclude with `relAmple_of_pow t.ab t.isLB (pull_isLB hΛ _) one_le_two diag t.ample`. Conclude with `@eq_one_of_lam _ t.pol ‹_›`.
-
-Use `(cls_eq_iff hΛ (pull_isLB hΛ _)).1 ?_` and prove the remaining obligations. Rewrite using `[cls_pull hΛ]`. Simplify using `[pull_id]`. Establish `: e (bas'.symm (bas (Pi.single i 1))) = Pi.single i 1` using `by simp [e] show ((∏ j, p j ^ e (bas'.symm (bas (Pi.single i 1))) j) ≫ 𝟙 t.A).left = (p i).left`. Rewrite using `[this, Category.comp_id, Finset.prod_eq_single i (fun j _ hj => by simp [hj]) (by simp)]`.
-
-Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_siegPre : Out.Laws → Out.Laws2 → (∀ (S : Scheme.{0}) (P : Out.PolAV S) (M : LB P.A.left), M.IsLB → ∃ t : LB.Gen (Theta P.A M), t.IsGen) → ∀ (g k : ℕ) (J La : Type) [AddCommGroup La] (EF : La → La → ℤ) (bas : (Fin (2 * g) → ℤ) ≃ₗ[ℤ] La) (bas' : (Fin g ⊕ Fin g → ℤ) ≃ₗ[ℤ] La), (∀ x x' y, EF (x + x') y = EF x y + EF x' y) → (∀ x y y', EF x (y + y') = EF x y + EF x y') → (∀ i j, EF (bas (Pi.single i 1)) (bas (Pi.single j 1)) = Out.stdSymp g i j) → (∀ x y, EF (bas' x) (bas' y) = omegaStd x y) → ∀ (o B : Type) [CommRing o] [CommRing B] (b : TBase o k) (ζ : B) (S : Scheme.{0}) (s : S ⟶ Sp o) (s' : S ⟶ Sp B) (t : TObj g k J b s), 1 ≤ k → (∀ (K : Type) [Field K] (x : Sp K ⟶ S) (β : o →+* K) (β' : B →+* K), x ≫ s = spMap β → x ≫ s' = spMap β' → β (b.ζ : o) = β' ζ) → ∃ c : SiegPre g k ζ s', c.Principal ∧ TSieg bas bas' t c := by
   intro hL _ hc g k J La _ EF bas bas' hl hr hb hb' o B _ _ b ζ S s s' t hk hζ

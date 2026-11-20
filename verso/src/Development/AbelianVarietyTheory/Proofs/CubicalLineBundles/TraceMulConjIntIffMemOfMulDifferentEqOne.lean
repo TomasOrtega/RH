@@ -9,9 +9,9 @@ namespace GlobalTheory
 open NumberField in
 open scoped Matrix in
 /- English proof (translation)
-Establish `key : ∀ d : FractionalIdeal (nonZeroDivisors (𝓞 E)) E, (↑d : Submodule (𝓞 E) E) • L = L → d ≤ 1`. Introduce `d hd a ha`. Establish `hint : IsIntegral (𝓞 E) a` using `isIntegral_of_smul_mem_submodule L hL hfg a fun n hn => hd ▸ Submodule.smul_mem_smul ha hn`. Take `⟨y, rfl⟩` from `IsIntegrallyClosed.isIntegral_iff.1 hint`. Conclude with `(FractionalIdeal.mem_one_iff _).2 ⟨y, rfl⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h1 : c ≤ 1` using `key c h`. Establish `h2 : c⁻¹ ≤ 1` using `key c⁻¹ (by conv_rhs => rw [← _root_.GlobalTheory.fractionalIdeal_inv_smul_smul hc L]`. Rewrite using `[h])`. Use `le_antisymm h1 ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 private theorem fractionalIdeal_eq_one_of_smul_submodule_eq_self {E : Type} [Field E] [NumberField E]
     {r : ℕ} {c : FractionalIdeal (nonZeroDivisors (𝓞 E)) E} (hc : c ≠ 0)
@@ -38,35 +38,31 @@ open NumberField in
 open scoped Matrix in
 
 /- English proof (translation)
-Introduce `E _ _ _ r X 𝔄 hr h𝔄 hΛ x`. Use `haveI : NeZero r := ⟨hr.ne'⟩`. Establish `hξ : X.ξ0 ≠ 0` using `X.ξ0_ne`. Establish `hlat : _root_.ReciprocityTheory.MultiplicativeHeights.IsLattice X.Λ` using `⟨X.Λ_fg, X.Λ_span⟩`. Establish `hself : _root_.GlobalTheory.traceFormDual X.ξ0 X.Gm X.Λ = X.Λ` using `(_root_.GlobalTheory.perfect_iff_traceFormDual_eq hξ X.Gm_det hlat).1 ⟨X.EF_int, X.EF_perf⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hL : _root_.GlobalTheory.hermDual X.Gm X.L' = X.L'` using `_root_.GlobalTheory.hermDual_eq_self_iff.2 ⟨X.L'_int, X.L'_dual⟩`. Establish `hΛ' : X.Λ = (↑𝔄 : Submodule (𝓞 E) E) • X.L'`. Rewrite using `[hΛ]`. Use `le_antisymm ?_ ?_` and prove the remaining obligations. Use `Submodule.span_le.2 ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `v ⟨a, ha, u, hu, rfl⟩`. Conclude with `Submodule.smul_mem_smul ha hu`. Conclude with `Submodule.smul_le.2 fun a ha u hu => Submodule.subset_span ⟨a, ha, u, hu, rfl⟩`. Establish `hLne : X.L' ≠ ⊥`. Introduce `hbot`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hspan` using `X.Λ_span`. Rewrite `hspan` using `[hΛ', hbot, Submodule.smul_bot, Submodule.bot_coe, Submodule.span_zero_singleton]`. Conclude with `bot_ne_top hspan`. Use `set 𝔇 : FractionalIdeal (nonZeroDivisors (𝓞 E)) E := FractionalIdeal.spanSingleton (nonZeroDivisors (𝓞 E)) X.ξ0 * ↑(differentIdeal ℤ (𝓞 E)) with h𝔇`. Establish `hconj0 : _root_.GlobalTheory.conjFrac 𝔄 ≠ 0` using `_root_.GlobalTheory.conjFrac_ne_zero h𝔄`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hsp0 : FractionalIdeal.spanSingleton (nonZeroDivisors (𝓞 E)) X.ξ0 ≠ 0` using `FractionalIdeal.spanSingleton_ne_zero_iff.2 hξ`. Establish `hd0` using `_root_.GlobalTheory.coe_different_ne_zero (E := E)`. Establish `h𝔇0 : 𝔇 ≠ 0` using `mul_ne_zero hsp0 hd0`. Establish `heq : (↑𝔄 : Submodule (𝓞 E) E) • X.L' = (↑(𝔇⁻¹ * (_root_.GlobalTheory.conjFrac 𝔄)⁻¹) : Submodule (𝓞 E) E) • X.L'`. Rewrite using `[← hΛ', ← hself, _root_.GlobalTheory.traceFormDual_eq hξ, hΛ', _root_.GlobalTheory.hermDual_smul h𝔄, hL, _root_.GlobalTheory.fractionalIdeal_mul_smul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Establish `h𝔅 : 𝔇⁻¹ * (_root_.GlobalTheory.conjFrac 𝔄)⁻¹ = 𝔄`. Establish `hc` using `fractionalIdeal_eq_one_of_smul_submodule_eq_self (c := 𝔄⁻¹ * (𝔇⁻¹ * (_root_.GlobalTheory.conjFrac 𝔄)⁻¹)) (mul_ne_zero (inv_ne_zero h𝔄) (mul_ne_zero (inv_ne_zero h𝔇0) (inv_ne_zero hconj0))) hLne X.L'_fg (by`. Rewrite using `[_root_.GlobalTheory.fractionalIdeal_mul_smul, ← heq, _root_.GlobalTheory.fractionalIdeal_inv_smul_smul h𝔄])`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← mul_assoc, mul_inv_cancel₀ h𝔄, one_mul]`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `_ = 𝔄 := by rw [hc, mul_one]`. Establish `hmain : 𝔄 * (FractionalIdeal.spanSingleton (nonZeroDivisors (𝓞 E)) X.ξ0 * _root_.GlobalTheory.conjFrac 𝔄) = (↑(differentIdeal ℤ (𝓞 E)))⁻¹`. Rewrite using `[show 𝔄 * (FractionalIdeal.spanSingleton (nonZeroDivisors (𝓞 E)) X.ξ0 * _root_.GlobalTheory.conjFrac 𝔄) = (𝔇⁻¹ * (_root_.GlobalTheory.conjFrac 𝔄)⁻¹) * (FractionalIdeal.spanSingleton (nonZeroDivisors (𝓞 E)) X.ξ0 * _root_.GlobalTheory.conjFrac 𝔄) by rw [h𝔅], h𝔇, mul_inv]`. Combine the equalities or inequalities in the displayed calculation. Establish `hcc : ∀ w : E, _root_.ReciprocityTheory.ChartRestriction.G.FD.cc (_root_.ReciprocityTheory.ChartRestriction.G.FD.cc w) = w`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `w`. Unfold `_root_.ReciprocityTheory.ChartRestriction.G.FD.cc`. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Introduce `hx set K := FractionalIdeal.spanSingleton (nonZeroDivisors (𝓞 E)) X.ξ0 * _root_.GlobalTheory.conjFrac 𝔄 with hK`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Establish `hK0 : K ≠ 0` using `mul_ne_zero hsp0 hconj0`. Establish `hle : FractionalIdeal.spanSingleton (nonZeroDivisors (𝓞 E)) x * K ≤ (↑(differentIdeal ℤ (𝓞 E)))⁻¹`. Rewrite using `[hK, ← mul_assoc, FractionalIdeal.spanSingleton_mul_spanSingleton, FractionalIdeal.mul_le]`. Introduce `i hi j hj`. Take `⟨z, rfl⟩` from `(FractionalIdeal.mem_spanSingleton _).1 hi`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite using `[_root_.GlobalTheory.mem_inv_different_iff]`. Introduce `a ha`. Establish `h1 : (z : E) * a ∈ (1 : FractionalIdeal (nonZeroDivisors (𝓞 E)) E)` using `_root_.GlobalTheory.mem_one_fractionalIdeal_iff.2 ((RingOfIntegers.isIntegral_coe z).mul ha)`. Establish `hw : (z : E) * a * j ∈ _root_.GlobalTheory.conjFrac 𝔄`. Use `FractionalIdeal.mul_mem_mul h1 hj` as an intermediate fact.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite `this` using `[one_mul]`. Then use the resulting hypothesis. Take `⟨n, hn⟩` from `hx (_root_.ReciprocityTheory.ChartRestriction.G.FD.cc ((z : E) * a * j)) (_root_.GlobalTheory.mem_conjFrac.1 hw)`. Use `⟨n, ?_⟩` and prove the remaining obligations. Rewrite using `[← hn, hcc]`. Use `congr 1`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Express the relevant statement in the definitionally equal form `(z : E) * (x * X.ξ0) * j * a = _`. Expand and normalize the polynomial expressions, which then agree. Establish `hsub : FractionalIdeal.spanSingleton (nonZeroDivisors (𝓞 E)) x ≤ 𝔄`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_assoc, mul_inv_cancel₀ hK0, mul_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Expand and normalize the polynomial expressions, which then agree.
 
-Use `_ ≤ (↑(differentIdeal ℤ (𝓞 E)))⁻¹ * K⁻¹ := by gcongr`. Use `_ = 𝔄 := by rw [← hmain, mul_assoc, mul_inv_cancel₀ hK0, mul_one]`. Conclude with `FractionalIdeal.spanSingleton_le_iff_mem.1 hsub`. Introduce `hx y hy`. Establish `hmem : X.ξ0 * x * _root_.ReciprocityTheory.ChartRestriction.G.FD.cc y ∈ (↑(differentIdeal ℤ (𝓞 E)) : FractionalIdeal (nonZeroDivisors (𝓞 E)) E)⁻¹`.
-
-Rewrite using `[← hmain]`. Use `FractionalIdeal.mul_mem_mul hx (FractionalIdeal.mul_mem_mul (FractionalIdeal.mem_spanSingleton_self _ X.ξ0) (_root_.GlobalTheory.cc_mem_conjFrac.2 hy))` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree. Take `⟨k, hk⟩` from `(_root_.GlobalTheory.mem_inv_different_iff.1 hmem) 1 isIntegral_one`.
-
-Conclude with `⟨k, by simpa using hk⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.trace_xi_mul_conj_int_iff_mem :
     ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (X : _root_.ReciprocityTheory.ChartRestriction.G.FD.DataX E r) (𝔄 : FractionalIdeal (nonZeroDivisors (𝓞 E)) E), 0 < r → 𝔄 ≠ 0 → X.Λ = Submodule.span (𝓞 E) {v | ∃ a ∈ 𝔄, ∃ u ∈ X.L', v = a • u} → ∀ x : E, (∀ y ∈ 𝔄, ∃ n : ℤ, Algebra.trace ℚ E (X.ξ0 * x * _root_.ReciprocityTheory.ChartRestriction.G.FD.cc y) = n) ↔ x ∈ 𝔄 := by

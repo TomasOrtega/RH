@@ -3,15 +3,15 @@ import Mathlib
 namespace GlobalTheory.NonzeroSmulMemSpan
 
 /- English proof (translation)
-Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy => exact ⟨1, one_ne_zero, by simpa using hy⟩`. Consider the case `zero => exact ⟨1, one_ne_zero, by simp⟩`. Consider the case `add y z _ _ hy hz`. Take `⟨a, ha, hay⟩` from `hy`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨b, hb, hbz⟩` from `hz`. Use `⟨a * b, mul_ne_zero ha hb, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_add]`. Use `A.add_mem ?_ ?_` and prove the remaining obligations. Rewrite using `[mul_comm, mul_smul]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `A.smul_mem b hay`. Rewrite using `[mul_smul]`. Conclude with `A.smul_mem a hbz`. Consider the case `smul c y _ hy`. Take `⟨a, ha, hay⟩` from `hy`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨⟨p, q⟩, hpq⟩` from `IsLocalization.surj (nonZeroDivisors (NumberField.RingOfIntegers E)) c`. Use `⟨(q : NumberField.RingOfIntegers E) * a, mul_ne_zero (nonZeroDivisors.ne_zero q.2) ha, ?_⟩` and prove the remaining obligations. Establish `key : ((q : NumberField.RingOfIntegers E) * a) • c • y = p • a • y`. Rewrite using `[← algebraMap_smul E ((q : NumberField.RingOfIntegers E) * a), ← algebraMap_smul E p, ← algebraMap_smul E a y, smul_smul, smul_smul, map_mul]`. Simplify using `only at hpq`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[← hpq]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[key]`. Conclude with `A.smul_mem p hay`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_ne_zero_smul_mem_of_mem_span {E : Type} [Field E] [NumberField E] {n : ℕ}
     (A : Submodule (NumberField.RingOfIntegers E) (Fin n → E)) {x : Fin n → E}

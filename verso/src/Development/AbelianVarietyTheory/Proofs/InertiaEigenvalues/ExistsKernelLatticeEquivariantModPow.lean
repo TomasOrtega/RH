@@ -20,9 +20,9 @@ def kerMod {d d' : ℕ} (P : Matrix (Fin d) (Fin d') ℤ_[l]) (n : ℕ) : Submod
     rw [Matrix.mulVec_smul]; exact Dvd.dvd.mul_left (hv i) c
 
 /- English proof (translation)
-Introduce `i`. Establish `e : P *ᵥ (A *ᵥ v) = (P * A - B * P) *ᵥ v + B *ᵥ (P *ᵥ v)`. Rewrite using `[Matrix.sub_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec]`. Normalize the expressions using the abelian group laws. Rewrite using `[e, Pi.add_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities.
 
-Use `dvd_add ?_ ?_` and prove the remaining obligations. Use `show _ ∣ ∑ j, (P * A - B * P) i j * v j`. Conclude with `Finset.dvd_sum fun j _ => dvd_mul_of_dvd_left (h i j) _`. Use `show _ ∣ ∑ j, B i j * (P *ᵥ v) j`. Conclude with `Finset.dvd_sum fun j _ => dvd_mul_of_dvd_right (hv j) _`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem mulVec_mem_kerMod {d d' n : ℕ} {P : Matrix (Fin d) (Fin d') ℤ_[l]}
     {A : Matrix (Fin d') (Fin d') ℤ_[l]} {B : Matrix (Fin d) (Fin d) ℤ_[l]}
@@ -39,17 +39,17 @@ theorem mulVec_mem_kerMod {d d' n : ℕ} {P : Matrix (Fin d) (Fin d') ℤ_[l]}
     exact Finset.dvd_sum fun j _ => dvd_mul_of_dvd_right (hv j) _
 
 /- English proof (translation)
-The claim follows from `pow_ne_zero _ (by exact_mod_cast (Fact.out : l.Prime).ne_zero)`.
+A detailed English derivation is pending.
 -/
 theorem pow_ne_zero' (n : ℕ) : ((l : ℤ_[l]) ^ n) ≠ 0 :=
   pow_ne_zero _ (by exact_mod_cast (Fact.out : l.Prime).ne_zero)
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation. Establish `hm : ∀ v : Fin d' → ℤ_[l], ((l : ℤ_[l]) ^ n • LinearMap.id : (Fin d' → ℤ_[l]) →ₗ[ℤ_[l]] _) v ∈ kerMod P n`. Introduce `v i`. Simplify using `only [LinearMap.smul_apply, LinearMap.id_apply, Matrix.mulVec_smul, Pi.smul_apply, smul_eq_mul]`.
+Reduce the claim to the hypotheses of an applicable result. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Conclude with `dvd_mul_right _ _`. Set `φ : (Fin d' → ℤ_[l]) →ₗ[ℤ_[l]] kerMod P n` to `LinearMap.codRestrict (kerMod P n) ((l : ℤ_[l]) ^ n • LinearMap.id) hm`. Establish `hinj : Function.Injective φ`. Introduce `a b hab`. Establish `h2` using `congrArg Subtype.val hab`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [φ, LinearMap.codRestrict_apply, LinearMap.smul_apply, LinearMap.id_apply] at h2`. Conclude with `smul_right_injective _ (pow_ne_zero' n) h2`. Use `LinearMap.finrank_le_finrank_of_injective hinj` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem finrank_kerMod {d d' n : ℕ} (P : Matrix (Fin d) (Fin d') ℤ_[l]) :
     Module.finrank ℤ_[l] (kerMod P n) = d' := by
@@ -86,7 +86,7 @@ noncomputable def kerMat {d d' : ℕ} (P : Matrix (Fin d) (Fin d') ℤ_[l]) (n :
   Matrix.of fun i j => ((kerBasis P n j : kerMod P n) : Fin d' → ℤ_[l]) i
 
 /- English proof (translation)
-Use extensionality with `i`. Simplify using `[kerMat, Matrix.mulVec, dotProduct, Submodule.coe_sum, Finset.sum_apply, mul_comm]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem kerMat_mulVec {d d' : ℕ} (P : Matrix (Fin d) (Fin d') ℤ_[l]) (n : ℕ) (w : Fin d' → ℤ_[l]) :
     kerMat P n *ᵥ w = ((∑ j, w j • kerBasis P n j : kerMod P n) : Fin d' → ℤ_[l]) := by
@@ -94,25 +94,23 @@ theorem kerMat_mulVec {d d' : ℕ} (P : Matrix (Fin d) (Fin d') ℤ_[l]) (n : �
   simp [kerMat, Matrix.mulVec, dotProduct, Submodule.coe_sum, Finset.sum_apply, mul_comm]
 
 /- English proof (translation)
-Introduce `l _ Γ _ d d' n ρ ρ' P hP`. Use `set b := kerBasis P n`. Use `set f := kerMat P n`. Establish `hf : ∀ w, f *ᵥ w = ((∑ j, w j • b j : kerMod P n) : Fin d' → ℤ_[l])` using `kerMat_mulVec P n`. Establish `hiff : ∀ v, v ∈ kerMod P n ↔ ∃ w, v = f *ᵥ w`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion.
 
-Introduce `v`. Prove the components needed by the constructor for the conclusion. Introduce `hv`. Use `⟨b.repr ⟨v, hv⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[hf, b.sum_repr]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `⟨w, rfl⟩`. Rewrite using `[hf]`. Conclude with `Submodule.coe_mem _`. Establish `hinj : ∀ w, f *ᵥ w = 0 → w = 0`. Introduce `w hw`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite `hw` using `[hf]`. Establish `h0 : (∑ j, w j • b j) = 0` using `Subtype.ext hw`. Use function extensionality and compare the values at `j`. Conclude with `Fintype.linearIndependent_iff.mp b.linearIndependent w h0 j`. Establish `hdet : f.det ≠ 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h0`. Take `⟨w, hw0, hw⟩` from `Matrix.exists_mulVec_eq_zero_iff.mpr h0`. Conclude with `hw0 (hinj w hw)`. Establish `hcancel : ∀ X Y : Matrix (Fin d') (Fin d') ℤ_[l], f * X = f * Y → X = Y`. Introduce `X Y h`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h2` using `congrArg (fun M => f.adjugate * M) h`. Simplify using `only [← Matrix.mul_assoc, Matrix.adjugate_mul] at h2`. Use extensionality with `i j`. Establish `h3` using `congrFun (congrFun h2 i) j`. Simplify using `only [Matrix.smul_mul, Matrix.one_mul, Matrix.smul_apply, smul_eq_mul] at h3`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Introduce a local definition for the expression.
 
-Conclude with `mul_left_cancel₀ hdet h3`. Establish `hcol : ∀ g j, ∃ w, (ρ' g).val *ᵥ (fun i => f i j) = f *ᵥ w`. Introduce `g j`. Apply `(hiff _).mp` to reduce the goal to its premises. Apply `mulVec_mem_kerMod (A := (ρ' g).val) (B := (ρ g).val) (hP.equi g)` to reduce the goal to its premises.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `Submodule.coe_mem (b j)`. Use `choose W hW using hcol`. Set `R : Γ → Matrix (Fin d') (Fin d') ℤ_[l]` to `fun g => Matrix.of fun i j => W g j i`. Establish `hR : ∀ g, f * R g = (ρ' g).val * f`. Introduce `g`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Use extensionality with `i j`. Use `congrFun (hW g j) i` as an intermediate fact. Simplify using `only [Matrix.mulVec, dotProduct] at this`. Simplify using `only [Matrix.mul_apply, R, Matrix.of_apply]`. Conclude with `this.symm`.
-
-Establish `hR1 : R 1 = 1` using `hcancel _ _ (by rw [hR, map_one, Units.val_one, Matrix.one_mul, Matrix.mul_one])`. Establish `hRm : ∀ g h, R (g * h) = R g * R h` using `fun g h => hcancel _ _ (by`. Rewrite using `[hR, map_mul, Units.val_mul, Matrix.mul_assoc, ← hR h, ← Matrix.mul_assoc, ← hR g, Matrix.mul_assoc])`. Set `Rm : Γ →* Matrix (Fin d') (Fin d') ℤ_[l]` to `{ toFun := R, map_one' := hR1, map_mul' := hRm }`. Use `⟨f, Rm.toHomUnits, hdet, fun g => hR g, fun v => hiff v⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_kernel_lattice : ∀ (l : ℕ) [Fact l.Prime] (Γ : Type) [Group Γ] (d d' n : ℕ) (ρ : Γ →* GL (Fin d) ℤ_[l]) (ρ' : Γ →* GL (Fin d') ℤ_[l]) (Pi : Matrix (Fin d) (Fin d') (ℤ_[l])), Onto (fun g => (ρ g).val) (fun g => (ρ' g).val) Pi n → ∃ (f : Matrix (Fin d') (Fin d') (ℤ_[l])) (ρ'' : Γ →* GL (Fin d') ℤ_[l]), f.det ≠ 0 ∧ (∀ g, f * (ρ'' g).val = (ρ' g).val * f) ∧ ∀ v : Fin d' → ℤ_[l], (∀ i, (l : ℤ_[l]) ^ n ∣ (Pi *ᵥ v) i) ↔ ∃ w, v = f *ᵥ w := by
   intro l _ Γ _ d d' n ρ ρ' P hP

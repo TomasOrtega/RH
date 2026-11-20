@@ -22,14 +22,14 @@ def mulL (X : Matrix (Fin n) (Fin n) ℂ) : Matrix (Fin n) (Fin n) ℂ →L[ℂ]
   LinearMap.toContinuousLinearMap (LinearMap.mulLeft ℂ X)
 
 /- English proof (translation)
-Conclude with `(hg.contDiffAt (hV.mem_nhds hz)).differentiableAt (by simp)`.
+A detailed English derivation is pending.
 -/
 lemma dAt {V : Set (Matrix (Fin n) (Fin n) ℂ)} (hV : IsOpen V) {g : Matrix (Fin n) (Fin n) ℂ → E}
     (hg : ContDiffOn ℂ ∞ g V) {z : Matrix (Fin n) (Fin n) ℂ} (hz : z ∈ V) : DifferentiableAt ℂ g z := by
   exact (hg.contDiffAt (hV.mem_nhds hz)).differentiableAt (by simp)
 
 /- English proof (translation)
-Use `show fderiv ℂ f z (X * z) = fderiv ℂ g z (X * z)`. Rewrite using `[(h.eventuallyEq_of_mem (hV.mem_nhds hz)).fderiv_eq]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma lhol_congr {V : Set (Matrix (Fin n) (Fin n) ℂ)} (hV : IsOpen V) {f g : Matrix (Fin n) (Fin n) ℂ → E}
     (h : Set.EqOn f g V) (X : Matrix (Fin n) (Fin n) ℂ) {z : Matrix (Fin n) (Fin n) ℂ} (hz : z ∈ V) :
@@ -38,7 +38,7 @@ lemma lhol_congr {V : Set (Matrix (Fin n) (Fin n) ℂ)} (hV : IsOpen V) {f g : M
   rw [(h.eventuallyEq_of_mem (hV.mem_nhds hz)).fderiv_eq]
 
 /- English proof (translation)
-Use `show fderiv ℂ f z ((∑ i ∈ s, X i) * z) = ∑ i ∈ s, fderiv ℂ f z (X i * z)`. Rewrite using `[Finset.sum_mul, map_sum]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma lhol_sumX {ι : Type*} (s : Finset ι) (X : ι → Matrix (Fin n) (Fin n) ℂ)
     (f : Matrix (Fin n) (Fin n) ℂ → E) (z : Matrix (Fin n) (Fin n) ℂ) :
@@ -47,7 +47,7 @@ lemma lhol_sumX {ι : Type*} (s : Finset ι) (X : ι → Matrix (Fin n) (Fin n) 
   rw [Finset.sum_mul, map_sum]
 
 /- English proof (translation)
-Use `show fderiv ℂ f z ((c • X) * z) = c • fderiv ℂ f z (X * z)`. Rewrite using `[Matrix.smul_mul, map_smul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma lhol_smulX (c : ℂ) (X : Matrix (Fin n) (Fin n) ℂ) (f : Matrix (Fin n) (Fin n) ℂ → E)
     (z : Matrix (Fin n) (Fin n) ℂ) : Lhol (c • X) f z = c • Lhol X f z := by
@@ -55,7 +55,7 @@ lemma lhol_smulX (c : ℂ) (X : Matrix (Fin n) (Fin n) ℂ) (f : Matrix (Fin n) 
   rw [Matrix.smul_mul, map_smul]
 
 /- English proof (translation)
-Use `show fderiv ℂ (fun y => ∑ i ∈ s, g i y) z (X * z) = ∑ i ∈ s, fderiv ℂ (g i) z (X * z)`. Use `erw [fderiv_fun_sum hg]`. Conclude with `map_sum ({ toFun := fun L => L (X * z), map_zero' := rfl, map_add' := fun _ _ => rfl } : (Matrix (Fin n) (Fin n) ℂ →L[ℂ] E) →+ E) _ _`.
+A detailed English derivation is pending.
 -/
 lemma lhol_fsum {ι : Type*} (s : Finset ι) (g : ι → Matrix (Fin n) (Fin n) ℂ → E)
     (X : Matrix (Fin n) (Fin n) ℂ) {z : Matrix (Fin n) (Fin n) ℂ}
@@ -67,7 +67,7 @@ lemma lhol_fsum {ι : Type*} (s : Finset ι) (g : ι → Matrix (Fin n) (Fin n) 
     (Matrix (Fin n) (Fin n) ℂ →L[ℂ] E) →+ E) _ _
 
 /- English proof (translation)
-Use `show fderiv ℂ (fun y => c • g y) z (X * z) = c • fderiv ℂ g z (X * z)`. Apply the tactic sequence `erw [fderiv_fun_const_smul hg c] <;> rfl`.
+Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 lemma lhol_fsmul (c : ℂ) (g : Matrix (Fin n) (Fin n) ℂ → E) (X : Matrix (Fin n) (Fin n) ℂ)
     {z : Matrix (Fin n) (Fin n) ℂ} (hg : DifferentiableAt ℂ g z) :
@@ -76,7 +76,7 @@ lemma lhol_fsmul (c : ℂ) (g : Matrix (Fin n) (Fin n) ℂ → E) (X : Matrix (F
   erw [fderiv_fun_const_smul hg c] <;> rfl
 
 /- English proof (translation)
-Establish `h2 : ContDiffOn ℂ ∞ (fun y : Matrix (Fin n) (Fin n) ℂ => X * y) V` using `(mulL X).contDiff.contDiffOn`. Conclude with `((contDiffOn_infty_iff_fderiv_of_isOpen hV).mp hf).2.clm_apply h2`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 lemma sm_lhol {V : Set (Matrix (Fin n) (Fin n) ℂ)} (hV : IsOpen V) {f : Matrix (Fin n) (Fin n) ℂ → E}
     (hf : ContDiffOn ℂ ∞ f V) (X : Matrix (Fin n) (Fin n) ℂ) : ContDiffOn ℂ ∞ (Lhol X f) V := by
@@ -84,11 +84,9 @@ lemma sm_lhol {V : Set (Matrix (Fin n) (Fin n) ℂ)} (hV : IsOpen V) {f : Matrix
   exact ((contDiffOn_infty_iff_fderiv_of_isOpen hV).mp hf).2.clm_apply h2
 
 /- English proof (translation)
-Proceed by induction on `m generalizing a b with`. Consider the case `zero`. Simplify using `only [opPow]`. Use `split_ifs`. Conclude with `hf`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Simplify using the standard rewrite rules.
 
-Conclude with `contDiffOn_const (c := (0 : E))`. Consider the case `succ k ih`. Simplify using `only [opPow]`. Establish `e : (∑ c, Lhol (M a c) (opPow (fun a b => Lhol (M a b)) k c b f)) = fun x => ∑ c, Lhol (M a c) (opPow (fun a b => Lhol (M a b)) k c b f) x`. Use function extensionality and compare the values at `x`.
-
-Conclude with `Finset.sum_apply x _ _`. Rewrite using `[e]`. Conclude with `ContDiffOn.sum fun c _ => sm_lhol hV (ih c b) (M a c)`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma sm_opPow {V : Set (Matrix (Fin n) (Fin n) ℂ)} (hV : IsOpen V) (M : Fin n → Fin n → Matrix (Fin n) (Fin n) ℂ)
     {f : Matrix (Fin n) (Fin n) ℂ → E} (hf : ContDiffOn ℂ ∞ f V) (m : ℕ) (a b : Fin n) :
@@ -108,19 +106,17 @@ lemma sm_opPow {V : Set (Matrix (Fin n) (Fin n) ℂ)} (hV : IsOpen V) (M : Fin n
     exact ContDiffOn.sum fun c _ => sm_lhol hV (ih c b) (M a c)
 
 /- English proof (translation)
-Establish `hq : ∀ d' c, ∑ e, Q d' e * P e c = if d' = c then 1 else 0`. Introduce `d' c`. Establish `h` using `congrFun (congrFun hQP d') c`. Rewrite `h` using `[Matrix.mul_apply, Matrix.one_apply]`. Then use the resulting hypothesis. Simplify using `only [Finset.smul_sum, smul_smul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Simplify using the standard rewrite rules.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun c' _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun d' _ => ?_` and prove the remaining obligations.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`. Use `_ = ∑ c', ∑ d', ∑ c, if d' = c then ∑ d, (P a c' * Q d b) • T c' d' c d else 0 := by`. Use `Finset.sum_congr rfl fun c' _ => Finset.sum_congr rfl fun d' _ => Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `key : ∀ d, ∑ e, (P a c' * Q d' e * (P e c * Q d b)) • T c' d' c d = (if d' = c then P a c' * Q d b else 0) • T c' d' c d`. Introduce `d`. Rewrite using `[← Finset.sum_smul]`. Use `congr 1`. Combine the equalities or inequalities in the displayed calculation.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.mul_sum]; exact Finset.sum_congr rfl fun e _ => by ring`. Apply the tactic sequence `_ = _ := by rw [hq]; split_ifs <;> simp`. Simplify using `only [key]`. Apply the tactic sequence `split_ifs <;> simp`. Use `_ = ∑ c', ∑ d', ∑ d, (P a c' * Q d b) • T c' d' d' d := by`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun c' _ => Finset.sum_congr rfl fun d' _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_ite_eq]`. Simplify using the standard rewrite rules. Use `_ = ∑ c, ∑ d, ∑ e, (P a c * Q d b) • T c e e d := by`. Use `Finset.sum_congr rfl fun c' _ => ?_` and prove the remaining obligations.
-
-Rewrite using `[Finset.sum_comm]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma tele_alg (P Q : Matrix (Fin n) (Fin n) ℂ) (hQP : Q * P = 1) (T : Fin n → Fin n → Fin n → Fin n → E)
     (a b : Fin n) :
@@ -161,13 +157,13 @@ lemma tele_alg (P Q : Matrix (Fin n) (Fin n) ℂ) (hQP : Q * P = 1) (T : Fin n �
         rw [Finset.sum_comm]
 
 /- English proof (translation)
-Establish `hq : ∀ d c, ∑ a, Q d a * P a c = if d = c then 1 else 0`. Introduce `d c`. Establish `h` using `congrFun (congrFun hQP d) c`. Rewrite `h` using `[Matrix.mul_apply, Matrix.one_apply]`. Then use the resulting hypothesis. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`. Use `_ = ∑ c, ∑ d, (if d = c then S c d else 0) := by`. Use `Finset.sum_congr rfl fun c _ => Finset.sum_congr rfl fun d _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Finset.sum_smul]`. Establish `e : ∑ a, P a c * Q d a = if d = c then 1 else 0`. Rewrite using `[← hq]`. Conclude with `Finset.sum_congr rfl fun a _ => mul_comm _ _`. Apply the tactic sequence `rw [e]; split_ifs <;> simp`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `_ = ∑ c, S c c := by`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_ite_eq']`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma gel_alg (P Q : Matrix (Fin n) (Fin n) ℂ) (hQP : Q * P = 1) (S : Fin n → Fin n → E) :
     ∑ a, ∑ c, ∑ d, (P a c * Q d a) • S c d = ∑ c, S c c := by
@@ -188,19 +184,19 @@ lemma gel_alg (P Q : Matrix (Fin n) (Fin n) ℂ) (hQP : Q * P = 1) (S : Fin n �
         rw [Finset.sum_ite_eq']; simp
 
 /- English proof (translation)
-Proceed by induction on `m with`. Consider the case `zero`. Introduce `a b z _`. Simplify using `only [opPow]`. Establish `hp` using `congrFun (congrFun hPQ a) b`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite `hp` using `[Matrix.mul_apply, Matrix.one_apply]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.sum_smul]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_eq_single c]`.
+Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Introduce `d _ hd`. Simplify using `[Ne.symm hd]`. Simplify using the standard rewrite rules. Consider the case `succ k ih`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Treat this case separately.
 
-Introduce `a b z hz`. Establish `hsm : ∀ c d, ContDiffOn ℂ ∞ (opPow (fun a b => Lhol (M a b)) k c d f) V` using `fun c d => sm_opPow hV M hf k c d`. Establish `hd1 : ∀ c d, DifferentiableAt ℂ (opPow (fun a b => Lhol (M a b)) k c d f) z` using `fun c d => dAt hV (hsm c d) hz`. Establish `s2 : ∀ e (X : Matrix (Fin n) (Fin n) ℂ), Lhol X (opPow (fun a b => Lhol (N a b)) k e b f) z = ∑ c, ∑ d, (P e c * Q d b) • Lhol X (opPow (fun a b => Lhol (M a b)) k c d f) z`. Introduce `e X`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hd2 : ∀ c, DifferentiableAt ℂ (fun y => ∑ d, (P e c * Q d b) • opPow (fun a b => Lhol (M a b)) k c d f y) z` using `fun c => DifferentiableAt.fun_sum fun d _ => (hd1 c d).fun_const_smul _`. Rewrite using `[lhol_congr hV (g := fun y => ∑ c, ∑ d, (P e c * Q d b) • opPow (fun a b => Lhol (M a b)) k c d f y) (fun y hy => ih e b y hy) X hz]`. Rewrite using `[lhol_fsum _ _ X (fun c _ => hd2 c)]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[lhol_fsum _ _ X (fun d _ => (hd1 c d).fun_const_smul _)]`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.sum_congr rfl fun d _ => lhol_fsmul _ _ X (hd1 c d)`. Simplify using `only [opPow, Finset.sum_apply]`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_congr rfl fun e _ => ?_` and prove the remaining obligations. Rewrite using `[hN a e, lhol_sumX]`.
+Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun c' _ => ?_` and prove the remaining obligations. Rewrite using `[lhol_sumX]`. Use `Finset.sum_congr rfl fun d' _ => ?_` and prove the remaining obligations. Rewrite using `[lhol_smulX, s2]`. Use `_ = _ := tele_alg P Q hQP (fun c' d' c d => Lhol (M c' d') (opPow (fun a b => Lhol (M a b)) k c d f) z) a b`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma opPow_tele {V : Set (Matrix (Fin n) (Fin n) ℂ)} (hV : IsOpen V)
     (M N : Fin n → Fin n → Matrix (Fin n) (Fin n) ℂ) (P Q : Matrix (Fin n) (Fin n) ℂ)
@@ -268,9 +264,9 @@ def conjLE (A B : Matrix (Fin n) (Fin n) ℂ) (hAB : A * B = 1) (hBA : B * A = 1
     rw [hAB, Matrix.one_mul, Matrix.mul_assoc, hAB, Matrix.mul_one]
 
 /- English proof (translation)
-Set `L : Matrix (Fin n) (Fin n) ℂ ≃L[ℂ] Matrix (Fin n) (Fin n) ℂ` to `(conjLE A B hAB hBA).toContinuousLinearEquiv`. Establish `h1 : (fun y => f (A * y * B)) = f ∘ L` using `rfl`. Use `show fderiv ℂ (fun y => f (A * y * B)) z (X * z) = fderiv ℂ f (A * z * B) (A * X * B * (A * z * B))`. Rewrite using `[h1]`. Use `erw [L.comp_right_fderiv]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Use `show fderiv ℂ f (A * z * B) (A * (X * z) * B) = _`. Use `congr 1`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc B A, hBA, Matrix.one_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma lhol_conj (A B : Matrix (Fin n) (Fin n) ℂ) (hAB : A * B = 1) (hBA : B * A = 1)
     (X : Matrix (Fin n) (Fin n) ℂ) (f : Matrix (Fin n) (Fin n) ℂ → E) (z : Matrix (Fin n) (Fin n) ℂ) :
@@ -287,11 +283,11 @@ lemma lhol_conj (A B : Matrix (Fin n) (Fin n) ℂ) (hAB : A * B = 1) (hBA : B * 
   rw [← Matrix.mul_assoc B A, hBA, Matrix.one_mul]
 
 /- English proof (translation)
-Proceed by induction on `m generalizing a b with`. Consider the case `zero`. Use function extensionality and compare the values at `y`. Simplify using `only [opPow]`. Apply the tactic sequence `split_ifs <;> rfl`.
+Proceed by induction. Treat this case separately. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Consider the case `succ k ih`. Use function extensionality and compare the values at `y`. Simplify using `only [opPow, Finset.sum_apply]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[ih c b]`.
+Treat this case separately. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `lhol_conj A B hAB hBA (M a c) (opPow (fun a b => Lhol (A * M a b * B)) k c b f) y`.
+A detailed English derivation is pending.
 -/
 lemma opPow_conj (M : Fin n → Fin n → Matrix (Fin n) (Fin n) ℂ) (A B : Matrix (Fin n) (Fin n) ℂ)
     (hAB : A * B = 1) (hBA : B * A = 1) (f : Matrix (Fin n) (Fin n) ℂ → E) (m : ℕ) (a b : Fin n) :
@@ -310,9 +306,9 @@ lemma opPow_conj (M : Fin n → Fin n → Matrix (Fin n) (Fin n) ℂ) (A B : Mat
     exact lhol_conj A B hAB hBA (M a c) (opPow (fun a b => Lhol (A * M a b * B)) k c b f) y
 
 /- English proof (translation)
-Unfold `opGelfand`. Simplify using `only [Finset.sum_apply]`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[opPow_conj M A B hAB hBA f m a a]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `_ = ∑ a, ∑ c, ∑ d, (P a c * Q d a) • opPow (fun a b => Lhol (M a b)) m c d f (A * z * B) := by`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Conclude with `opPow_tele hV M (fun a b => A * M a b * B) P Q hN hPQ hQP hf m a a (A * z * B) hz`. Use `_ = ∑ c, opPow (fun a b => Lhol (M a b)) m c c f (A * z * B) := gel_alg P Q hQP (fun c d => opPow (fun a b => Lhol (M a b)) m c d f (A * z * B))`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem gelfand_conj {V : Set (Matrix (Fin n) (Fin n) ℂ)} (hV : IsOpen V)
     (M : Fin n → Fin n → Matrix (Fin n) (Fin n) ℂ) (A B : Matrix (Fin n) (Fin n) ℂ)

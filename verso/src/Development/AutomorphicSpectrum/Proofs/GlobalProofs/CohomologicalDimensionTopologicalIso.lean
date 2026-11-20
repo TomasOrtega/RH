@@ -40,19 +40,17 @@ def placeEquiv (f : R ≃+* R') : HeightOneSpectrum R ≃ HeightOneSpectrum R' w
 end Places
 
 /- English proof (translation)
-Introduce `P' hP' hlie`. Set `P : Ideal A` to `P'.comap g`. Use `haveI : P.IsPrime := Ideal.comap_isPrime _ _`. Establish `hP : P.LiesOver p` using `⟨by`. Use extensionality with `r`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Establish `h1` using `hlie.over`. Establish `h2 : f r ∈ p.comap f.symm ↔ f r ∈ P'.under R'` using `by rw [← h1]`. Simplify using `only [Ideal.mem_comap, RingEquiv.symm_apply_apply] at h2`. Rewrite using `[h2, Ideal.under_def]`. Express the relevant statement in the definitionally equal form `_ ↔ g (algebraMap R A r) ∈ P'`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h]⟩`. Establish `hU : Algebra.FormallyUnramified R (Localization.AtPrime P)` using `H P this hP`. Use `letI : Algebra R R' := f.toRingHom.toAlgebra`. Use `letI : Algebra R (Localization.AtPrime P') := ((algebraMap R' (Localization.AtPrime P')).comp f.toRingHom).toAlgebra`. Use `haveI : IsScalarTower R R' (Localization.AtPrime P') := IsScalarTower.of_algebraMap_eq fun _ => rfl`.
+Establish an intermediate fact. Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `hM : Submonoid.map g.toMonoidHom P.primeCompl = P'.primeCompl`. Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, rfl⟩`. Conclude with `hx`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hy`. Use `⟨g.symm y, ?_, by simp⟩` and prove the remaining obligations. Introduce `hmem`. Apply `hy` to reduce the goal to its premises. Simplify `hmem` using `[P, Ideal.mem_comap]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 
-Set `E : Localization.AtPrime P ≃+* Localization.AtPrime P'` to `IsLocalization.ringEquivOfRingEquiv (M := P.primeCompl) (T := P'.primeCompl) (Localization.AtPrime P) (Localization.AtPrime P') g hM`. Set `Ea : Localization.AtPrime P ≃ₐ[R] Localization.AtPrime P'` to `AlgEquiv.ofRingEquiv (f := E) (fun r => by`. Rewrite using `[IsScalarTower.algebraMap_apply R A (Localization.AtPrime P)]`. Simplify using `only [E]`. Rewrite using `[IsLocalization.ringEquivOfRingEquiv_eq, h]`.
-
-Conclude with `(IsScalarTower.algebraMap_apply R' A' (Localization.AtPrime P') (f r)).symm)`. Use `haveI := Algebra.FormallyUnramified.of_equiv Ea`. Conclude with `Algebra.FormallyUnramified.of_restrictScalars R R' _`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUnramifiedIn_transport {R R' A A' : Type*} [CommRing R] [CommRing R'] [CommRing A]
     [CommRing A'] [Algebra R A] [Algebra R' A'] (f : R ≃+* R') (g : A ≃+* A')
@@ -121,7 +119,7 @@ def tr (ψ : F ≃+* F') (e : Ω ≃+* Ω') (he : ∀ x, e (algebraMap F Ω x) =
     exact E.algebraMap_mem _)
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `_ ↔ e.symm (e x) ∈ E`. Simplify using the standard rewrite rules.
+Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 -/
 theorem mem_tr (ψ : F ≃+* F') (e : Ω ≃+* Ω')
     (he : ∀ x, e (algebraMap F Ω x) = algebraMap F' Ω' (ψ x)) (E : IntermediateField F Ω) (x : Ω) :
@@ -130,7 +128,7 @@ theorem mem_tr (ψ : F ≃+* F') (e : Ω ≃+* Ω')
   simp
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (he x)`.
+A detailed English derivation is pending.
 -/
 theorem resEquiv_algebraMap (ψ : F ≃+* F') (e : Ω ≃+* Ω')
     (he : ∀ x, e (algebraMap F Ω x) = algebraMap F' Ω' (ψ x)) (E : IntermediateField F Ω)
@@ -139,7 +137,7 @@ theorem resEquiv_algebraMap (ψ : F ≃+* F') (e : Ω ≃+* Ω')
   Subtype.ext (he x)
 
 /- English proof (translation)
-The claim follows from `Module.Finite.of_equiv_equiv ψ (resEquiv e E E' h) (by ext x exact (congrArg Subtype.val (resEquiv_algebraMap ψ e he E E' h x)).symm)`.
+A detailed English derivation is pending.
 -/
 theorem finite_of_resEquiv (ψ : F ≃+* F') (e : Ω ≃+* Ω')
     (he : ∀ x, e (algebraMap F Ω x) = algebraMap F' Ω' (ψ x)) (E : IntermediateField F Ω)
@@ -157,7 +155,7 @@ variable {F F' L L' : Type*} [Field F] [Field F'] [Field L] [Field L'] [Algebra 
   [Algebra F' L']
 
 /- English proof (translation)
-Rewrite using `[RingEquiv.symm_apply_eq, he, RingEquiv.apply_symm_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem symm_compat (ψ : F ≃+* F') (e : L ≃+* L')
     (he : ∀ x, e (algebraMap F L x) = algebraMap F' L' (ψ x)) (x : F') :
@@ -186,13 +184,13 @@ def galEquiv (ψ : F ≃+* F') (e : L ≃+* L')
   map_mul' σ τ := AlgEquiv.ext fun x => by simp [galMap_apply]
 
 /- English proof (translation)
-Apply `continuous_of_continuousAt_one` to reduce the goal to its premises. Introduce `s hs`. Rewrite `hs` using `[map_one, krullTopology_mem_nhds_one_iff]`. Take `⟨E', hE', hs⟩` from `hs`. Set `E : IntermediateField F L` to `tr ψ.symm e.symm (symm_compat ψ e he) E'`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `hmem : ∀ x, x ∈ E ↔ e x ∈ E'` using `fun x => by`. Express the relevant statement in the definitionally equal form `e.symm.symm x ∈ E' ↔ _`. Both sides reduce to the same expression. Establish `hmem' : ∀ y, y ∈ E' ↔ e.symm y ∈ E` using `mem_tr ψ.symm e.symm (symm_compat ψ e he) E'`. Establish `hfin : FiniteDimensional F E` using `finite_of_resEquiv ψ.symm e.symm (symm_compat ψ e he) E' E hmem'`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Filter.mem_map]`. Use `Filter.mem_of_superset ((IntermediateField.fixingSubgroup_isOpen E).mem_nhds (Subgroup.one_mem _)) fun σ hσ => hs ?_` and prove the remaining obligations. Rewrite using `[SetLike.mem_coe, IntermediateField.mem_fixingSubgroup_iff]`. Introduce `y hy`. Establish `h1` using `(IntermediateField.mem_fixingSubgroup_iff _ _).1 hσ (e.symm y) ((hmem' y).1 hy)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `e (σ (e.symm y)) = y`. Rewrite using `[h1, RingEquiv.apply_symm_apply]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem continuous_galEquiv (ψ : F ≃+* F') (e : L ≃+* L')
     (he : ∀ x, e (algebraMap F L x) = algebraMap F' L' (ψ x)) :
@@ -242,7 +240,7 @@ def Corr (ψ : F ≃+* F') (S : Set (HeightOneSpectrum (𝓞 F))) (S' : Set (Hei
   ∀ v, v ∈ S ↔ placeEquiv (RingOfIntegers.mapRingEquiv ψ) v ∈ S'
 
 /- English proof (translation)
-Introduce `w`. Rewrite using `[placeEquiv_symm_map, h, Equiv.apply_symm_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem Corr.symm {ψ : F ≃+* F'} {S : Set (HeightOneSpectrum (𝓞 F))}
     {S' : Set (HeightOneSpectrum (𝓞 F'))} (h : Corr ψ S S') : Corr ψ.symm S' S := by
@@ -250,9 +248,9 @@ theorem Corr.symm {ψ : F ≃+* F'} {S : Set (HeightOneSpectrum (𝓞 F))}
   rw [placeEquiv_symm_map, h, Equiv.apply_symm_apply]
 
 /- English proof (translation)
-Introduce `w hw`. Use `set f := RingOfIntegers.mapRingEquiv ψ with hf`. Use `set v := (placeEquiv f).symm w with hv`. Establish `hvS : v ∉ S` using `fun h => hw (by`. Establish `h2 : placeEquiv f v ∈ S'` using `(hS v).1 h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Rewrite using `[hv, Equiv.apply_symm_apply] at h2)` and apply the resulting hypothesis. Establish `hcompat : ∀ r : 𝓞 F, RingOfIntegers.mapRingEquiv (resEquiv e E (tr ψ e he E) (mem_tr ψ e he E)) (algebraMap (𝓞 F) (𝓞 E) r) = algebraMap (𝓞 F') (𝓞 (tr ψ e he E)) (f r)` using `fun r => Subtype.ext (Subtype.ext (he (r : F)))`. Establish `h1` using `isUnramifiedIn_transport f _ hcompat v.asIdeal (hE v hvS)`. Establish `hw' : v.asIdeal.comap f.symm = w.asIdeal` using `congrArg HeightOneSpectrum.asIdeal ((placeEquiv f).apply_symm_apply w)`. Rewrite `h1` using `[hw']`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem unram_tr (ψ : F ≃+* F') (e : Ω ≃+* Ω')
     (he : ∀ x, e (algebraMap F Ω x) = algebraMap F' Ω' (ψ x))
@@ -276,7 +274,7 @@ theorem unram_tr (ψ : F ≃+* F') (e : Ω ≃+* Ω')
 variable [NumberField F] [NumberField F'] [IsGalois F Ω] [IsGalois F' Ω']
 
 /- English proof (translation)
-Take `⟨E, hf, hu, hxE⟩` from `(mem_maxUnramifiedOutside_iff S).1 hx`. Conclude with `(mem_maxUnramifiedOutside_iff S').2 ⟨tr ψ e he E, finite_of_resEquiv ψ e he E _ (mem_tr ψ e he E), unram_tr ψ e he hS hu, (mem_tr ψ e he E x).1 hxE⟩`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem mem_max (ψ : F ≃+* F') (e : Ω ≃+* Ω')
     (he : ∀ x, e (algebraMap F Ω x) = algebraMap F' Ω' (ψ x))
@@ -288,7 +286,7 @@ theorem mem_max (ψ : F ≃+* F') (e : Ω ≃+* Ω')
     (mem_tr ψ e he E x).1 hxE⟩
 
 /- English proof (translation)
-Establish `hiff : ∀ x, x ∈ maxUnramifiedOutside F Ω S ↔ e x ∈ maxUnramifiedOutside F' Ω' S'` using `fun x => ⟨mem_max ψ e he hS, fun h => by`. Simplify using `using mem_max ψ.symm e.symm (symm_compat ψ e he) hS.symm h⟩`. Conclude with `⟨galHomeo ψ (resEquiv e _ _ hiff) (resEquiv_algebraMap ψ e he _ _ hiff)⟩`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Supply the required witnesses or components.
 -/
 theorem nonempty_gal (ψ : F ≃+* F') (e : Ω ≃+* Ω')
     (he : ∀ x, e (algebraMap F Ω x) = algebraMap F' Ω' (ψ x))
@@ -303,11 +301,9 @@ theorem nonempty_gal (ψ : F ≃+* F') (e : Ω ≃+* Ω')
 end NumberFields
 
 /- English proof (translation)
-Use `haveI : CharZero Ω := charZero_of_injective_algebraMap (algebraMap F Ω).injective`. Use `haveI : IsAlgClosed Ω := IsAlgClosure.isAlgClosed F`. Use `haveI : Algebra.IsAlgebraic F Ω := IsAlgClosure.isAlgebraic`. Use `haveI : IsAlgClosure ℚ Ω := ⟨inferInstance, Algebra.IsAlgebraic.trans ℚ F Ω⟩`. Set `e : Ω ≃ₐ[ℚ] AlgebraicClosure ℚ` to `IsAlgClosure.equiv ℚ (AlgebraicClosure ℚ) Ω |>.symm`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Set `φ : F →ₐ[ℚ] AlgebraicClosure ℚ` to `e.toAlgHom.comp (IsScalarTower.toAlgHom ℚ F Ω)`. Set `ψ0 : F →+* φ.fieldRange` to `{ toFun := fun x => ⟨φ x, x, rfl⟩ map_one' := Subtype.ext (map_one φ) map_mul' := fun x y => Subtype.ext (map_mul φ x y) map_zero' := Subtype.ext (map_zero φ) map_add' := fun x y => Subtype.ext (map_add φ x y) }`. Set `ψ : F ≃+* φ.fieldRange` to `RingEquiv.ofBijective ψ0 ⟨ψ0.injective, fun y => by`. Take `⟨y, x, rfl⟩` from `y`. Conclude with `⟨x, rfl⟩⟩`.
-
-Establish `hfin : FiniteDimensional ℚ φ.fieldRange` using `Module.Finite.of_equiv_equiv (RingEquiv.refl ℚ) ψ (Subsingleton.elim _ _)`. Conclude with `⟨⟨φ.fieldRange, hfin⟩, ψ, e.toRingEquiv, fun _ => rfl⟩`.
+Supply the required witnesses or components. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_embedded (F Ω : Type) [Field F] [NumberField F] [Field Ω] [Algebra F Ω]
     [IsAlgClosure F Ω] : ∃ (K : FiniteSubfield) (ψ : F ≃+* K.1) (e : Ω ≃+* AlgebraicClosure ℚ),
@@ -333,11 +329,11 @@ theorem exists_embedded (F Ω : Type) [Field F] [NumberField F] [Field Ω] [Alge
   exact ⟨⟨φ.fieldRange, hfin⟩, ψ, e.toRingEquiv, fun _ => rfl⟩
 
 /- English proof (translation)
-Introduce `F Ω _ _ _ _ _ l S hS`. Use `haveI : IsGalois F Ω := IsAlgClosure.isGalois F Ω`. Take `⟨K, ψ, e, he⟩` from `exists_embedded F Ω`. Use `⟨K, S.map (placeEquiv (RingOfIntegers.mapRingEquiv ψ)).toEmbedding, ?_, nonempty_gal ψ e he ?_⟩` and prove the remaining obligations. Introduce `w hw`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hv : (placeEquiv (RingOfIntegers.mapRingEquiv ψ)).symm w ∈ S`. Apply `hS` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `RingOfIntegers.mapRingEquiv ψ (l : 𝓞 F) ∈ w.asIdeal`. Rewrite using `[map_natCast]`. Conclude with `hw`.
+Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Conclude with `Finset.mem_map.2 ⟨_, hv, (placeEquiv _).apply_symm_apply w⟩`. Introduce `v`. Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem exists_gs_transport : ∀ (F Ω : Type) [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] (l : ℕ) (S : Finset (HeightOneSpectrum (𝓞 F))), ContainsAbove S l → ∃ (K : FiniteSubfield) (S' : Finset (HeightOneSpectrum (𝓞 K.1))), ContainsAbove S' l ∧ Nonempty (galUnramifiedOutside F Ω (S : Set (HeightOneSpectrum (𝓞 F))) ≃ₜ* Gs K S') := by
   intro F Ω _ _ _ _ _ l S hS

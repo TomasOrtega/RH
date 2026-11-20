@@ -12,7 +12,7 @@ noncomputable section
 namespace GlobalTheory.CenOAct
 
 /- English proof (translation)
-Apply `MonoidAlgebra.ext` to reduce the goal to its premises. Use extensionality with `g`. Simplify using `[mapCoef, MonoidAlgebra.coeff_mapRingHom]`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem mapCoef_eq {A B M : Type} [Semiring A] [Semiring B] [Monoid M] (f : A →+* B) (z : MonoidAlgebra A M) :
     mapCoef f z = MonoidAlgebra.mapRingHom M f z := by
@@ -21,11 +21,11 @@ theorem mapCoef_eq {A B M : Type} [Semiring A] [Semiring B] [Monoid M] (f : A �
   simp [mapCoef, MonoidAlgebra.coeff_mapRingHom]
 
 /- English proof (translation)
-Rewrite `hz`, the goal using `[Subalgebra.mem_center_iff]`. Introduce `b`. Rewrite using `[mapCoef_eq]`. Proceed by induction on `b using MonoidAlgebra.induction_on with`. Consider the case `of k`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately.
 
-Establish `h` using `congrArg (MonoidAlgebra.mapRingHom G f) (hz (MonoidAlgebra.of A G k))`. Rewrite `h` using `[map_mul, map_mul]`. Establish `hs : MonoidAlgebra.mapRingHom G f (MonoidAlgebra.of A G k) = MonoidAlgebra.of B G k`. Simplify using `[MonoidAlgebra.of_apply]`. Rewrite `h` using `[hs]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Consider the case `add x y hx hy => rw [add_mul, mul_add, hx, hy]`. Consider the case `smul r x hx => rw [smul_mul_assoc, mul_smul_comm, hx]`.
+Treat this case separately. Treat this case separately.
 -/
 theorem mapCoef_mem_center {A B G : Type} [CommSemiring A] [CommSemiring B] [Group G] (f : A →+* B)
     (z : MonoidAlgebra A G) (hz : z ∈ Subalgebra.center A (MonoidAlgebra A G)) :
@@ -46,7 +46,7 @@ theorem mapCoef_mem_center {A B G : Type} [CommSemiring A] [CommSemiring B] [Gro
 variable {D : D7}
 
 /- English proof (translation)
-Unfold `Formalism.BasicNotions.NTypes.onMt`. Rewrite using `[dif_pos h]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem onMt_of_mem (μ : D.what₂.Tup) (j : ℕ) (z : MonoidAlgebra ℂ (G0g D.nd))
     (h : z ∈ Subalgebra.center ℂ (MonoidAlgebra ℂ (G0g D.nd))) :
@@ -64,7 +64,7 @@ def psi (i : D.nd.Loc) (z : MonoidAlgebra (D.nd.O i) (G0g D.nd)) :
   D.ntypes.onMt (D.nd.mu i) (D.nd.j i) (mapCoef (iotaO D.nd D.naut i) z)
 
 /- English proof (translation)
-Establish `ha'` using `mapCoef_mem_center (iotaO D.nd D.naut i) a ha`. Establish `hb'` using `mapCoef_mem_center (iotaO D.nd D.naut i) b hb`. Unfold `psi`. Rewrite using `[mapCoef_eq, map_mul, ← mapCoef_eq, ← mapCoef_eq, onMt_of_mem _ _ _ (Subalgebra.mul_mem _ ha' hb'), onMt_of_mem _ _ _ ha', onMt_of_mem _ _ _ hb', ← map_mul]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem psi_mul (i : D.nd.Loc) (a b : MonoidAlgebra (D.nd.O i) (G0g D.nd)) (ha : a ∈ CenR D i)
     (hb : b ∈ CenR D i) : psi D i (a * b) = psi D i a * psi D i b := by
@@ -76,7 +76,7 @@ theorem psi_mul (i : D.nd.Loc) (a b : MonoidAlgebra (D.nd.O i) (G0g D.nd)) (ha :
   rfl
 
 /- English proof (translation)
-Establish `ha'` using `mapCoef_mem_center (iotaO D.nd D.naut i) a ha`. Establish `hb'` using `mapCoef_mem_center (iotaO D.nd D.naut i) b hb`. Unfold `psi`. Rewrite using `[mapCoef_eq, map_add, ← mapCoef_eq, ← mapCoef_eq, onMt_of_mem _ _ _ (Subalgebra.add_mem _ ha' hb'), onMt_of_mem _ _ _ ha', onMt_of_mem _ _ _ hb', ← map_add]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem psi_add (i : D.nd.Loc) (a b : MonoidAlgebra (D.nd.O i) (G0g D.nd)) (ha : a ∈ CenR D i)
     (hb : b ∈ CenR D i) : psi D i (a + b) = psi D i a + psi D i b := by
@@ -88,9 +88,9 @@ theorem psi_add (i : D.nd.Loc) (a b : MonoidAlgebra (D.nd.O i) (G0g D.nd)) (ha :
   rfl
 
 /- English proof (translation)
-Establish `ha'` using `mapCoef_mem_center (iotaO D.nd D.naut i) a ha`. Establish `hs : mapCoef (iotaO D.nd D.naut i) (c • a) = iotaO D.nd D.naut i c • mapCoef (iotaO D.nd D.naut i) a`. Rewrite using `[mapCoef_eq, mapCoef_eq, Algebra.smul_def, Algebra.smul_def, map_mul]`. Use `congr 1`. Simplify using `[MonoidAlgebra.coe_algebraMap, MonoidAlgebra.mapRingHom_single]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Unfold `psi`. Rewrite using `[hs, onMt_of_mem _ _ _ (Subalgebra.smul_mem _ ha' _), onMt_of_mem _ _ _ ha', ← map_smul]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem psi_smul (i : D.nd.Loc) (c : D.nd.O i) (a : MonoidAlgebra (D.nd.O i) (G0g D.nd)) (ha : a ∈ CenR D i) :
     psi D i (c • a) = iotaO D.nd D.naut i c • psi D i a := by
@@ -104,7 +104,7 @@ theorem psi_smul (i : D.nd.Loc) (c : D.nd.O i) (a : MonoidAlgebra (D.nd.O i) (G0
   rfl
 
 /- English proof (translation)
-Unfold `psi`. Rewrite using `[mapCoef_eq, map_one, onMt_of_mem _ _ _ (Subalgebra.one_mem _)]`. Conclude with `map_one _`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem psi_one (i : D.nd.Loc) : psi D i 1 = 1 := by
   unfold psi
@@ -112,7 +112,7 @@ theorem psi_one (i : D.nd.Loc) : psi D i 1 = 1 := by
   exact map_one _
 
 /- English proof (translation)
-Unfold `psi`. Rewrite using `[mapCoef_eq, map_zero, onMt_of_mem _ _ _ (Subalgebra.zero_mem _)]`. Conclude with `map_zero _`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem psi_zero (i : D.nd.Loc) : psi D i 0 = 0 := by
   unfold psi
@@ -120,7 +120,7 @@ theorem psi_zero (i : D.nd.Loc) : psi D i 0 = 0 := by
   exact map_zero _
 
 /- English proof (translation)
-Rewrite using `[Algebra.algebraMap_eq_smul_one, psi_smul i c 1 (Subalgebra.one_mem _), psi_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem psi_algebraMap (i : D.nd.Loc) (c : D.nd.O i) :
     psi D i (algebraMap (D.nd.O i) (MonoidAlgebra (D.nd.O i) (G0g D.nd)) c) = iotaO D.nd D.naut i c • 1 := by
@@ -132,13 +132,13 @@ def J (S : Sec D i) (m : D.nd.Mt i) : D.what₂.Mt (D.nd.mu i) (D.nd.j i) :=
   S.Φ ((1 : KK D.nd i) ⊗ₜ[D.nd.O i] m)
 
 /- English proof (translation)
-Simplify using `[J, TensorProduct.tmul_add]`.
+Simplify using the standard rewrite rules.
 -/
 theorem J_add (S : Sec D i) (m m' : D.nd.Mt i) : J S (m + m') = J S m + J S m' := by
   simp [J, TensorProduct.tmul_add]
 
 /- English proof (translation)
-Rewrite using `[← algebraMap_smul (KK D.nd i) c v, S.semi]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem smul_tmul_eq (S : Sec D i) (c : D.nd.O i) (v : TensorProduct (D.nd.O i) (KK D.nd i) (D.nd.Mt i)) :
     S.Φ (c • v) = iotaO D.nd D.naut i c • S.Φ v := by
@@ -146,16 +146,16 @@ theorem smul_tmul_eq (S : Sec D i) (c : D.nd.O i) (v : TensorProduct (D.nd.O i) 
   rfl
 
 /- English proof (translation)
-Unfold `J`. Rewrite using `[TensorProduct.tmul_smul, smul_tmul_eq]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem J_smul (S : Sec D i) (c : D.nd.O i) (m : D.nd.Mt i) : J S (c • m) = iotaO D.nd D.naut i c • J S m := by
   unfold J
   rw [TensorProduct.tmul_smul, smul_tmul_eq]
 
 /- English proof (translation)
-Establish `h` using `Module.Flat.rTensor_preserves_injective_linearMap (M := D.nd.Mt i) (Algebra.linearMap (D.nd.O i) (KK D.nd i)) (IsFractionRing.injective (D.nd.O i) (KK D.nd i))`. Introduce `m m' hm`. Establish `e : ∀ m : D.nd.Mt i, (1 : KK D.nd i) ⊗ₜ[D.nd.O i] m = LinearMap.rTensor (D.nd.Mt i) (Algebra.linearMap (D.nd.O i) (KK D.nd i)) ((TensorProduct.lid (D.nd.O i) (D.nd.Mt i)).symm m)`. Introduce `m`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only at hm`. Rewrite `hm` using `[e, e]`. Conclude with `(TensorProduct.lid (D.nd.O i) (D.nd.Mt i)).symm.injective (h hm)`.
+Simplify by unfolding definitions. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mk_one_inj : Function.Injective (fun m : D.nd.Mt i => (1 : KK D.nd i) ⊗ₜ[D.nd.O i] m) := by
   have h := Module.Flat.rTensor_preserves_injective_linearMap (M := D.nd.Mt i)
@@ -170,7 +170,7 @@ theorem mk_one_inj : Function.Injective (fun m : D.nd.Mt i => (1 : KK D.nd i) �
   exact (TensorProduct.lid (D.nd.O i) (D.nd.Mt i)).symm.injective (h hm)
 
 /- English proof (translation)
-Introduce `_ _ h` and use `mk_one_inj (S.inj h)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem J_inj (S : Sec D i) : Function.Injective (J S) := fun _ _ h => mk_one_inj (S.inj h)
 
@@ -193,13 +193,13 @@ def zL (z : CenR D i) : Module.End (D.nd.O i) (D.nd.Mt i) where
     rw [h1, J_smul S c m, J_smul, h2, map_smul])
 
 /- English proof (translation)
-The claim follows from `(hL z z.2 m).choose_spec`.
+A detailed English derivation is pending.
 -/
 theorem zL_spec (z : CenR D i) (m : D.nd.Mt i) : J S (zL S hL z m) = psi D i z (J S m) :=
   (hL z z.2 m).choose_spec
 
 /- English proof (translation)
-The claim follows from `LinearMap.ext fun m => J_inj S (h m)`.
+A detailed English derivation is pending.
 -/
 theorem end_ext (A B : Module.End (D.nd.O i) (D.nd.Mt i)) (h : ∀ m, J S (A m) = J S (B m)) : A = B :=
   LinearMap.ext fun m => J_inj S (h m)
@@ -230,9 +230,9 @@ def zA : CenR D i →ₐ[D.nd.O i] Module.End (D.nd.O i) (D.nd.Mt i) where
     rfl
 
 /- English proof (translation)
-Proceed by induction on `v using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul k m`. Rewrite using `[LinearMap.baseChange_tmul]`. Establish `e : ∀ n : D.nd.Mt i, k ⊗ₜ[D.nd.O i] n = k • ((1 : KK D.nd i) ⊗ₜ[D.nd.O i] n)` using `fun n => by`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[TensorProduct.smul_tmul', smul_eq_mul, mul_one]`. Rewrite using `[e, e, S.semi, S.semi, map_smul]`. Use `congr 1`. Conclude with `zL_spec S hL z m`. Consider the case `add v w hv hw => rw [map_add, map_add, hv, hw, map_add, map_add]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem zA_bc (z : CenR D i) (v : TensorProduct (D.nd.O i) (KK D.nd i) (D.nd.Mt i)) :
     S.Φ ((zA S hL z).baseChange (KK D.nd i) v) = psi D i z (S.Φ v) := by
@@ -255,15 +255,15 @@ variable (S : Sec D i)
   (hL : ∀ z ∈ CenR D i, ∀ m : D.nd.Mt i, ∃ m' : D.nd.Mt i, J S m' = psi D i z (J S m))
 
 /- English proof (translation)
-Establish `key : ∀ v, (zA S hL z).baseChange (KK D.nd i) ((D.nd.act i f).baseChange (KK D.nd i) v) = (D.nd.act i f).baseChange (KK D.nd i) ((zA S hL z).baseChange (KK D.nd i) v)`. Introduce `v`. Establish `hv : v ∈ (⨆ x, heckeEig (D.nd.T i) (D.nd.act i) x)`. Rewrite using `[Formalism.MainNotions.TruncatedSeriesCountingIdentities.Br.EigSpan_holds D.nd i]`. Discharge the goal by the elementary cases of `trivial`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition.
 
-Use `Submodule.iSup_induction _ (motive := fun v => (zA S hL z).baseChange (KK D.nd i) ((D.nd.act i f).baseChange (KK D.nd i) v) = (D.nd.act i f).baseChange (KK D.nd i) ((zA S hL z).baseChange (KK D.nd i) v)) hv ?_ ?_ ?_` and prove the remaining obligations. Introduce `x u hu`. Establish `hw` using `h4 _ x u _ hu (zA_bc S hL z u)`. Establish `e1` using `(Submodule.mem_iInf _).1 hu f`. Establish `e2` using `(Submodule.mem_iInf _).1 hw f`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `e1`, `e2` using `[Module.End.mem_eigenspace_iff]`. Rewrite using `[e1, e2, map_smul]`. Simplify using the standard rewrite rules. Introduce `v w hv hw`. Rewrite using `[map_add, map_add, hv, hw, map_add, map_add]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Apply `end_ext S` to reduce the goal to its premises. Introduce `m`. Simplify using `only [Module.End.mul_apply]`. Unfold `J`. Establish `e : ∀ (A : Module.End (D.nd.O i) (D.nd.Mt i)) (n : D.nd.Mt i), (1 : KK D.nd i) ⊗ₜ[D.nd.O i] A n = A.baseChange (KK D.nd i) ((1 : KK D.nd i) ⊗ₜ[D.nd.O i] n)` using `fun A n => by rw [LinearMap.baseChange_tmul]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Rewrite using `[e, e (D.nd.act i f) m, e (D.nd.act i f), e (zA S hL z) m, key]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem zA_comm (h4 : ∀ (c : MonoidAlgebra ℂ (G0g D.nd)) (x : D.nd.X i)
       (u w : TensorProduct (D.nd.O i) (KK D.nd i) (D.nd.Mt i)), u ∈ heckeEig (D.nd.T i) (D.nd.act i) x →
@@ -296,7 +296,7 @@ theorem zA_comm (h4 : ∀ (c : MonoidAlgebra ℂ (G0g D.nd)) (x : D.nd.X i)
   rw [e, e (D.nd.act i f) m, e (D.nd.act i f), e (zA S hL z) m, key]
 
 /- English proof (translation)
-The claim follows from `S.inj (by rw [h1 _ x y hxy, zA_bc]; rfl)`.
+A detailed English derivation is pending.
 -/
 theorem zA_act (h1 : ∀ (c : MonoidAlgebra ℂ (G0g D.nd)) (x y : D.what₂.MtL (D.nd.mu i) (D.nd.j i)),
       D.what₂.jMt _ _ y = D.ntypes.onMt (D.nd.mu i) (D.nd.j i) c (D.what₂.jMt _ _ x) →
@@ -310,17 +310,17 @@ theorem zA_act (h1 : ∀ (c : MonoidAlgebra ℂ (G0g D.nd)) (x y : D.what₂.MtL
 end Laws
 
 /- English proof (translation)
-Introduce `z hz`. Use `(Submodule.span_induction (p := fun z _ => z ∈ CenR D i ∧ ∀ m : D.nd.Mt i, ∃ m' : D.nd.Mt i, J S m' = psi D i z (J S m)) ?_ ?_ ?_ ?_ (hcls z hz)).2` and prove the remaining obligations. Introduce and unpack `_ ⟨c, hc, rfl⟩`. Establish `hc' : c ∈ Subalgebra.center ℤ (MonoidAlgebra ℤ (G0g D.nd))` using `Subalgebra.mem_center_iff.2 fun b => (hc b).symm`. Use `⟨?_, fun m => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← mapCoef_eq]`. Conclude with `mapCoef_mem_center _ c hc'`. Take `⟨m', hm'⟩` from `hlat c hc m`. Use `⟨m', ?_⟩` and prove the remaining obligations. Rewrite using `[hm']`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e : mapCoef (iotaO D.nd D.naut i) (MonoidAlgebra.mapRingHom (G0g D.nd) (Int.castRingHom (D.nd.O i)) c) = mapCoef (Int.castRingHom ℂ) c`. Rewrite using `[mapCoef_eq, mapCoef_eq, ← RingHom.comp_apply, ← MonoidAlgebra.mapRingHom_comp]`. Use `congr 2`. Conclude with `Subsingleton.elim _ _`. Unfold `psi`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[e]`. Use `⟨Subalgebra.zero_mem _, fun m => ⟨0, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[psi_zero, LinearMap.zero_apply]`. Simplify using `[J]`. Introduce and unpack `a b _ _ ⟨ha, fa⟩ ⟨hb, fb⟩`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨Subalgebra.add_mem _ ha hb, fun m => ?_⟩` and prove the remaining obligations. Take `⟨ma, hma⟩` from `fa m`. Take `⟨mb, hmb⟩` from `fb m`. Conclude with `⟨ma + mb, by rw [J_add, hma, hmb, psi_add i a b ha hb, LinearMap.add_apply]⟩`. Introduce and unpack `r a _ ⟨ha, fa⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨Subalgebra.smul_mem _ ha r, fun m => ?_⟩` and prove the remaining obligations. Take `⟨ma, hma⟩` from `fa m`. Conclude with `⟨r • ma, by rw [J_smul, hma, psi_smul i r a ha, LinearMap.smul_apply]⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem hL_of (S : Sec D i)
     (hlat : ∀ (c : MonoidAlgebra ℤ (G0g D.nd)), (∀ a, c * a = a * c) → ∀ m : D.nd.Mt i, ∃ m' : D.nd.Mt i,
@@ -365,9 +365,9 @@ end GlobalTheory.CenOAct
 namespace GlobalTheory.CenOAct
 
 /- English proof (translation)
-Introduce `D hS _ hInt hTy`. Use `haveI : ∀ k : Fin 2, NeZero (D.host.g k) := fun k => ⟨(D.host.g_prime k).ne_zero⟩`. Use `haveI : Finite (G0g D.nd) := inferInstance`. Establish `S : ∀ i, Sec D i` using `fun i => (hS i).some`. Establish `hint : ∀ (i : D.nd.Loc) (a : 𝓞 D.what₂.LL), D.nd.embK i (a : D.what₂.LL) ∈ (algebraMap (D.nd.O i) (FractionRing (D.nd.O i))).range` using `fun i a => (D.nd.embK_w i a).1 (GlobalTheory.T.addValuation_nonneg_ringOfIntegers_numberField D.what₂.LL (D.what₂.places.val (D.nd.w i)) a)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 
-Establish `hL : ∀ i, ∀ z ∈ CenR D i, ∀ m : D.nd.Mt i, ∃ m' : D.nd.Mt i, J (S i) m' = psi D i z (J (S i) m)` using `fun i => hL_of (S i) (GlobalTheory.T.centralIntegral_preserves_localisedLatticeImage D i (S i) (hint i) (GlobalTheory.T.comparisonMap_intertwines_groupAlgebra_action D i (S i) hTy) hInt) (fun z hz => GlobalTheory.T.center_monoidAlgebra_le_span_centralIntegral (D.nd.O i) (G0g D.nd …`. Conclude with `⟨{ zO := fun i => zA (S i) (hL i) zO_comm := fun i z f => zA_comm (S i) (hL i) (GlobalTheory.T.mem_heckeEig_of_image_moved_by_centre D i (S i) hTy) z f zO_act := fun i z x y h => zA_act (S i) (hL i) (GlobalTheory.T.comparisonMap_intertwines_groupAlgebra_action D i (S i) hTy) z x …`.
+A detailed English derivation is pending.
 -/
 theorem cenO_nonempty : ∀ D : D7, (∀ i, Nonempty (Sec D i)) → ZLStable D → CenInt D → OnMtPreservesTypeV D → Nonempty (CenO D) := by
   intro D hS _ hInt hTy

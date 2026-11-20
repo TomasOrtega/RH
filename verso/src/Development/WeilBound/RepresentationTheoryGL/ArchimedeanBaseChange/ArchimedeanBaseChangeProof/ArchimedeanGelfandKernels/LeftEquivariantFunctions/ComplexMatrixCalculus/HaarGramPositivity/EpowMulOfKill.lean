@@ -15,25 +15,25 @@ attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 variable {n : ℕ}
 
 /- English proof (translation)
-The claim follows from `isOpen_ne_fun (continuous_id.matrix_det) continuous_const`.
+A detailed English derivation is pending.
 -/
 theorem isOpen_GLs : IsOpen (GLs n) :=
   isOpen_ne_fun (continuous_id.matrix_det) continuous_const
 
 /- English proof (translation)
-Conclude with `(le_top : (1 : ℕ∞) ≤ ⊤)` after adjusting the coercions.
+A detailed English derivation is pending.
 -/
 theorem one_le_inf : (1 : WithTop ℕ∞) ≤ ∞ := by exact_mod_cast (le_top : (1 : ℕ∞) ≤ ⊤)
 
 /- English proof (translation)
-Use `show (((⊤ : ℕ∞) : WithTop ℕ∞) + 1) ≤ ((⊤ : ℕ∞) : WithTop ℕ∞)`. Conclude with `(le_top : ((⊤ : ℕ∞) + 1) ≤ ⊤)` after adjusting the coercions.
+A detailed English derivation is pending.
 -/
 theorem inf_add_one_le : (∞ : WithTop ℕ∞) + 1 ≤ ∞ := by
   show (((⊤ : ℕ∞) : WithTop ℕ∞) + 1) ≤ ((⊤ : ℕ∞) : WithTop ℕ∞)
   exact_mod_cast (le_top : ((⊤ : ℕ∞) + 1) ≤ ⊤)
 
 /- English proof (translation)
-The claim follows from `(hf.differentiableOn (by simp)).differentiableAt (isOpen_GLs.mem_nhds hg)`.
+A detailed English derivation is pending.
 -/
 theorem diffAt {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V] {f : Mat n → V}
     (hf : ContDiffOn ℝ ∞ f (GLs n)) {g : Mat n} (hg : g ∈ GLs n) : DifferentiableAt ℝ f g :=
@@ -52,14 +52,14 @@ Both sides reduce to the same expression.
 theorem mulR_apply (X g : Mat n) : mulR X g = g * X := rfl
 
 /- English proof (translation)
-Conclude with `(hf.fderiv_of_isOpen isOpen_GLs inf_add_one_le).clm_apply (mulR X).contDiff.contDiffOn`.
+A detailed English derivation is pending.
 -/
 theorem rd_contDiffOn {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V] {f : Mat n → V}
     (hf : ContDiffOn ℝ ∞ f (GLs n)) (X : Mat n) : ContDiffOn ℝ ∞ (Rd X f) (GLs n) := by
   exact (hf.fderiv_of_isOpen isOpen_GLs inf_add_one_le).clm_apply (mulR X).contDiff.contDiffOn
 
 /- English proof (translation)
-Unfold `Eu`. Conclude with `((rd_contDiffOn hf _).add ((rd_contDiffOn hf _).const_smul _)).const_smul _`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem eu_contDiffOn {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V] {f : Mat n → V}
     (hf : ContDiffOn ℝ ∞ f (GLs n)) (s : Bool) (b c : Fin n) : ContDiffOn ℝ ∞ (Eu s b c f) (GLs n) := by
@@ -67,11 +67,11 @@ theorem eu_contDiffOn {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V] {f :
   exact ((rd_contDiffOn hf _).add ((rd_contDiffOn hf _).const_smul _)).const_smul _
 
 /- English proof (translation)
-Introduce `m`. Proceed by induction on `m with`. Consider the case `zero`. Introduce `b c`. Simplify using `only [Epow]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Use `split_ifs`. Conclude with `hf`. Conclude with `contDiffOn_const`. Consider the case `succ m ih`. Introduce `b c`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Establish `e : Epow s (m + 1) b c f = fun x => ∑ d, Eu s b d (Epow s m d c f) x`. Use function extensionality and compare the values at `x`. Simplify using `only [Epow, Finset.sum_apply]`. Rewrite using `[e]`. Conclude with `ContDiffOn.sum fun d _ => eu_contDiffOn (ih d c) s b d`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem epow_contDiffOn {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V] {f : Mat n → V}
     (hf : ContDiffOn ℝ ∞ f (GLs n)) (s : Bool) : ∀ m b c, ContDiffOn ℝ ∞ (Epow s m b c f) (GLs n) := by
@@ -91,16 +91,16 @@ theorem epow_contDiffOn {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V] {f
     exact ContDiffOn.sum fun d _ => eu_contDiffOn (ih d c) s b d
 
 /- English proof (translation)
-Simplify using `only [Eu, Rd, Pi.smul_apply, Pi.add_apply, h.fderiv_eq]`.
+Simplify using the standard rewrite rules.
 -/
 theorem eu_congr {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V] {f₁ f₂ : Mat n → V} {g : Mat n}
     (h : f₁ =ᶠ[𝓝 g] f₂) (s : Bool) (b c : Fin n) : Eu s b c f₁ g = Eu s b c f₂ g := by
   simp only [Eu, Rd, Pi.smul_apply, Pi.add_apply, h.fderiv_eq]
 
 /- English proof (translation)
-Establish `hm : fderiv ℝ (fun x => F x * a x) g = F g • fderiv ℝ a g + a g • fderiv ℝ F g` using `(hF.hasFDerivAt.fun_mul ha.hasFDerivAt).fderiv`. Establish `key : ∀ X : Mat n, Rd X (fun x => F x * a x) g = F g * Rd X a g + a g * Rd X F g`. Introduce `X`. Rewrite using `[rd_std, rd_std, rd_std, hm]`. Simplify using `[smul_eq_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Eu, Pi.smul_apply, Pi.add_apply, key, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem eu_mul {F a : Mat n → ℂ} {g : Mat n} (hF : DifferentiableAt ℝ F g) (ha : DifferentiableAt ℝ a g)
     (s : Bool) (b c : Fin n) :
@@ -115,11 +115,11 @@ theorem eu_mul {F a : Mat n → ℂ} {g : Mat n} (hF : DifferentiableAt ℝ F g)
   ring
 
 /- English proof (translation)
-Establish `key : ∀ X : Mat n, Rd X (fun x => ∑ i, ψ i x • v i) g = ∑ i, Rd X (ψ i) g • v i`. Introduce `X`. Simplify using `only [rd_std]`. Establish `h : HasFDerivAt (fun x => ∑ i, ψ i x • v i) (∑ i, (fderiv ℝ (ψ i) g).smulRight (v i)) g` using `HasFDerivAt.fun_sum fun i _ => (hψ i).hasFDerivAt.smul_const (v i)`. Unfold `Rd`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[h.fderiv]`. Simplify using `[ContinuousLinearMap.smulRight_apply]`. Simplify using `only [Eu, Pi.smul_apply, Pi.add_apply, key, Finset.smul_sum, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[smul_smul _ (Rd (Matrix.single b c Complex.I) (ψ i) g), ← add_smul, smul_smul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`.
+Reduce the equality to equality of the corresponding arguments.
 -/
 theorem eu_sum_smul {ι V : Type} [Fintype ι] [NormedAddCommGroup V] [NormedSpace ℂ V] (ψ : ι → Mat n → ℂ) (v : ι → V)
     {g : Mat n} (hψ : ∀ i, DifferentiableAt ℝ (ψ i) g) (s : Bool) (b c : Fin n) :
@@ -138,11 +138,11 @@ theorem eu_sum_smul {ι V : Type} [Fintype ι] [NormedAddCommGroup V] [NormedSpa
   congr 1
 
 /- English proof (translation)
-Introduce `m`. Proceed by induction on `m with`. Consider the case `zero`. Introduce `b c g _`. Simplify using `only [Epow]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `split_ifs <;> simp`. Consider the case `succ m ih`. Introduce `b c g hg`. Simplify using `only [Epow, Finset.sum_apply, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun d _ => ?_` and prove the remaining obligations.
+Apply the first step, then apply the next step to every resulting obligation. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Establish `he : Epow s m d c (fun x => F x * G x) =ᶠ[𝓝 g] fun x => F x * Epow s m d c G x` using `Filter.eventuallyEq_of_mem (isOpen_GLs.mem_nhds hg) fun x hx => ih d c x hx`. Rewrite using `[eu_congr he, eu_mul (diffAt hF hg) (diffAt (epow_contDiffOn hG s m d c) hg), hk g hg, mul_zero, add_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem epow_mul_of_kill {F G : Mat n → ℂ} (hF : ContDiffOn ℝ ∞ F (GLs n)) (hG : ContDiffOn ℝ ∞ G (GLs n)) (s : Bool)
     (hk : ∀ g ∈ GLs n, ∀ b c, Eu s b c F g = 0) :
@@ -162,13 +162,13 @@ theorem epow_mul_of_kill {F G : Mat n → ℂ} (hF : ContDiffOn ℝ ∞ F (GLs n
     rw [eu_congr he, eu_mul (diffAt hF hg) (diffAt (epow_contDiffOn hG s m d c) hg), hk g hg, mul_zero, add_zero]
 
 /- English proof (translation)
-Introduce `m`. Proceed by induction on `m with`. Consider the case `zero`. Introduce `b c g _`. Simplify using `only [Epow]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `split_ifs <;> simp`. Consider the case `succ m ih`. Introduce `b c g hg`. Simplify using `only [Epow, Finset.sum_apply]`. Establish `step : ∀ d, Eu s b d (Epow s m d c fun x => ∑ i, φ i x • v i) g = ∑ i, Eu s b d (Epow s m d c (φ i)) g • v i`.
+Apply the first step, then apply the next step to every resulting obligation. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `d`. Establish `he : (Epow s m d c fun x => ∑ i, φ i x • v i) =ᶠ[𝓝 g] fun x => ∑ i, Epow s m d c (φ i) x • v i` using `Filter.eventuallyEq_of_mem (isOpen_GLs.mem_nhds hg) fun x hx => ih d c x hx`. Rewrite using `[eu_congr he, eu_sum_smul _ _ (fun i => diffAt (epow_contDiffOn (hφ i) s m d c) hg)]`. Simplify using `only [step]`. Rewrite using `[Finset.sum_comm]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_smul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem epow_sum_smul {ι V : Type} [Fintype ι] [NormedAddCommGroup V] [NormedSpace ℂ V] (φ : ι → Mat n → ℂ) (v : ι → V)
     (hφ : ∀ i, ContDiffOn ℝ ∞ (φ i) (GLs n)) (s : Bool) :
@@ -203,17 +203,17 @@ open PositivityTheory.RgBcC.Cxeeig
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
 /- English proof (translation)
-Introduce `n χ ι V _ _ _ h a v hh ha hhe hae`. Establish `hφ : ∀ i, ContDiffOn ℝ ∞ (fun x => h i x * a i x) (GLs n)` using `fun i => (hh i).mul (ha i)`. Introduce `s m g hg`. Establish `hsum : gel s m (fun x => ∑ i, (h i x * a i x) • v i) g = ∑ i, gel s m (fun x => h i x * a i x) g • v i`. Simplify using `only [gel, Finset.sum_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.sum_congr rfl fun b _ => epow_sum_smul (fun i x => h i x * a i x) v hφ s m b b g hg, Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_smul]`. Establish `hone : ∀ i, gel s m (fun x => h i x * a i x) g = GlobalTheory.Dec.gelfVal (χ s) m * (h i g * a i g)`. Introduce `i`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Consider the cases of `s with`. Consider the case `true`. Establish `e : (fun x => h i x * a i x) = fun x => a i x * h i x` using `by funext x; ring`. Simplify using `only [gel, Finset.sum_apply]`. Rewrite using `[e, Finset.sum_congr rfl fun b _ => epow_mul_of_kill (ha i) (hh i) true (fun g hg b c => (hae i g hg).2 b c) m b b g hg, ← Finset.mul_sum]`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `(hhe i g hg).1 m` as an intermediate fact. Simplify using `only [gel, Finset.sum_apply] at this`. Rewrite using `[this]`. Expand and normalize the polynomial expressions, which then agree. Consider the case `false`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Treat this case separately.
 
-Simplify using `only [gel, Finset.sum_apply]`. Rewrite using `[Finset.sum_congr rfl fun b _ => epow_mul_of_kill (hh i) (ha i) false (fun g hg b c => (hhe i g hg).2 b c) m b b g hg, ← Finset.mul_sum]`. Use `(hae i g hg).1 m` as an intermediate fact. Simplify using `only [gel, Finset.sum_apply] at this`. Rewrite using `[this]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hsum, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[hone i, smul_smul]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem eigProd : EigProd := by
   intro n χ ι V _ _ _ h a v hh ha hhe hae

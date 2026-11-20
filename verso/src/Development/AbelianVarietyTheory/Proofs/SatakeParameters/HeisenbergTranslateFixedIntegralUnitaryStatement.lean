@@ -6,7 +6,7 @@ import Development.AbelianVarietyTheory.Proofs.SatakeParameters.MemIntMat
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.LatticeModelVacuumTranslateClassesIndependentStatement
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.Hk3.class_fixed_phase` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FSatakeParameters%2FHeisenbergTranslateFixedIntegralUnitary.lean&line=129#L129)
 -/

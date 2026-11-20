@@ -15,23 +15,21 @@ open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalC
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.UPel.HT GlobalTheory.UPel.HT.LieLin
 
 /- English proof (translation)
-Introduce `p _ D R _ b B _ βB n M`. Use `set J := lieIdeal b βB M with hJdef`. Set `P : Fin D.a → Matrix (Fin n) (Fin n) (B ⧸ J)` to `fun i => (projMat b βB M i).map (Ideal.Quotient.mk J)`. Establish `hJmk : J ≤ RingHom.ker (Ideal.Quotient.mk J)` using `fun a ha => by`. Rewrite using `[RingHom.mem_ker]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Ideal.Quotient.eq_zero_iff_mem.2 ha`. Establish `hrange : ∀ (K : Type) [CommRing K] (g : B →+* K), J ≤ RingHom.ker g → ∀ i : Fin D.a, (eigSub (matAct M g) ((g.comp βB).comp (b.t i)) : Set (Fin n → K)) = LinearMap.range ((projMat b βB M i).map g).mulVecLin`. Introduce `K _ g hg i`. Use extensionality with `v`. Simplify using `only [SetLike.mem_coe, mem_eigSub, matAct_apply, LinearMap.mem_range, Matrix.mulVecLin_apply, RingHom.coe_comp, Function.comp_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Prove the components needed by the constructor for the conclusion. Introduce `hv`. Conclude with `⟨v, GlobalTheory.T.eigenPartProjectionMatrix_map_mulVec_of_eigenvector p D R b B βB n M K g i v hv⟩`. Introduce and unpack `⟨w, rfl⟩ c`. Rewrite using `[Matrix.mulVec_mulVec, GlobalTheory.T.map_mul_eigenPartProjectionMatrix_eq_scalar p D R b B βB n M K g hg i c, Matrix.smul_mulVec]`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hidem : ∀ i, P i * P i = P i`. Introduce `i`. Apply `(Matrix.toLin' (R := B ⧸ J) (m := Fin n) (n := Fin n)).injective` to reduce the goal to its premises. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `v`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Matrix.toLin'_apply]`. Rewrite using `[← Matrix.mulVec_mulVec]`. Apply `GlobalTheory.T.eigenPartProjectionMatrix_map_mulVec_of_eigenvector p D R b B βB n M _ (Ideal.Quotient.mk J) i` to reduce the goal to its premises. Introduce `c`. Rewrite using `[Matrix.mulVec_mulVec, GlobalTheory.T.map_mul_eigenPartProjectionMatrix_eq_scalar p D R b B βB n M _ _ hJmk i c, Matrix.smul_mulVec]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨x, hx⟩` from `GlobalTheory.T.exists_rank_ideal_of_idempotent' (B ⧸ J) (Fin D.a) n P hidem D.m`. Take `⟨x', rfl⟩` from `Ideal.Quotient.mk_surjective x`. Use `⟨Ideal.span {x'}, fun T _ f hf => ?_⟩` and prove the remaining obligations. Establish `hfa : ∀ a ∈ J, f a = 0` using `fun a ha => RingHom.mem_ker.1 (hf ha)`. Set `fb : B ⧸ J →+* T` to `Ideal.Quotient.lift J f hfa`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hfb : fb.comp (Ideal.Quotient.mk J) = f` using `Ideal.Quotient.lift_comp_mk _ _ _`. Rewrite using `[Ideal.span_singleton_le_iff_mem, RingHom.mem_ker]`. Establish `hx'` using `hx T fb`. Rewrite `hx'` using `[show fb (Ideal.Quotient.mk J x') = f x' from Ideal.Quotient.lift_mk _ _ _]`. Rewrite using `[← hx']`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `forall_congr' fun k => forall_congr' fun _ => forall_congr' fun _ => forall_congr' fun h => forall_congr' fun i => ?_` and prove the remaining obligations. Establish `e1 : eigSub (matAct M (h.comp f)) ((h.comp (f.comp βB)).comp (b.t i)) = LinearMap.range ((P i).map (h.comp fb)).mulVecLin`. Apply `SetLike.coe_injective` to reduce the goal to its premises. Use `show (eigSub (matAct M (h.comp f)) (((h.comp f).comp βB).comp (b.t i)) : Set (Fin n → k)) = _`. Rewrite using `[hrange k (h.comp f) (fun a ha => by simp [hfa a ha]) i]`.
-
-Use `congr 3`. Rewrite using `[e1, GlobalTheory.T.finrank_range_map_idempotent_eq_rankAtStalk (B ⧸ J) n (P i) (hidem i) k (h.comp fb)]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_ideal_rank_iff : ∀ (p : ℕ) [Fact p.Prime] (D : Datum p) (R : Type) [CommRing R] (b : Base D R) (B : Type) [CommRing B]
   (βB : R →+* B) (n : ℕ) (M : 𝓞 D.F →+* Matrix (Fin n) (Fin n) B),

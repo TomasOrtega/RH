@@ -12,7 +12,7 @@ section Alg
 variable {k : Type} [Field k]
 
 /- English proof (translation)
-Unfold `uM`. Rewrite using `[← map_mul]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem uM_mul_uM (n : ℕ) (x y : Fin n → k) : uM n x * uM n y = uM n (x + y) := by
   unfold uM
@@ -20,11 +20,11 @@ theorem uM_mul_uM (n : ℕ) (x y : Fin n → k) : uM n x * uM n y = uM n (x + y)
   rfl
 
 /- English proof (translation)
-Establish `hrow : ∀ j : Fin n, GlobalTheory.BZMir.glEmbMat k n A (Fin.last n) (Fin.castSucc j) = 0`. Introduce `j`. Simplify using `[GlobalTheory.BZMir.glEmbMat]`. Establish `hcorner : GlobalTheory.BZMir.glEmbMat k n A (Fin.last n) (Fin.last n) = 1`. Simplify using `[GlobalTheory.BZMir.glEmbMat]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hminor : (GlobalTheory.BZMir.glEmbMat k n A).submatrix (Fin.last n).succAbove (Fin.last n).succAbove = A`. Use extensionality with `i j`. Simplify using `[GlobalTheory.BZMir.glEmbMat, Fin.succAbove_last]`. Establish `hsign : ((-1 : k) ^ ((Fin.last n : ℕ) + (Fin.last n : ℕ))) = 1`. Rewrite using `[Fin.val_last, ← two_mul, pow_mul]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Rewrite using `[Matrix.det_succ_row (GlobalTheory.BZMir.glEmbMat k n A) (Fin.last n), Fin.sum_univ_castSucc]`. Simplify using `only [hrow, hcorner, hminor, hsign, mul_zero, zero_mul, Finset.sum_const_zero, zero_add, one_mul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem det_glEmbMat (n : ℕ) (A : Matrix (Fin n) (Fin n) k) : (glEmbMat k n A).det = A.det := by
   have hrow : ∀ j : Fin n, GlobalTheory.BZMir.glEmbMat k n A (Fin.last n) (Fin.castSucc j) = 0 := by
@@ -42,11 +42,11 @@ theorem det_glEmbMat (n : ℕ) (A : Matrix (Fin n) (Fin n) k) : (glEmbMat k n A)
   simp only [hrow, hcorner, hminor, hsign, mul_zero, zero_mul, Finset.sum_const_zero, zero_add, one_mul]
 
 /- English proof (translation)
-Rewrite using `[Matrix.det_of_upperTriangular]`. Apply `Finset.prod_eq_one` to reduce the goal to its premises. Introduce `i _`. Distinguish the cases in `hi : i = Fin.last n`. Substitute `hi` using the available equality.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using `[GlobalTheory.BZMir.colMat]`. Simplify using `[GlobalTheory.BZMir.colMat, hi]`. Introduce `i j hji`. Express the relevant statement in the definitionally equal form `j < i at hji`. Establish `hj : j ≠ Fin.last n`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact.
 
-Introduce `h`. Substitute `h` using the available equality. Conclude with `absurd hji (not_lt.mpr (Fin.le_last i))`. Rewrite using `[Matrix.add_apply, Matrix.one_apply_ne (ne_of_gt hji)]`. Simplify using `[GlobalTheory.BZMir.colMat, hj]`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem det_one_add_colMat (n : ℕ) (v : Fin n → k) : (1 + colMat k n v).det = 1 := by
   rw [Matrix.det_of_upperTriangular]
@@ -66,7 +66,7 @@ theorem det_one_add_colMat (n : ℕ) (v : Fin n → k) : (1 + colMat k n v).det 
     simp [GlobalTheory.BZMir.colMat, hj]
 
 /- English proof (translation)
-Use `ext`. Rewrite using `[Matrix.GeneralLinearGroup.val_det_apply, Units.val_one]`. Conclude with `GlobalTheory.CompanionTheory.MirPair.det_one_add_colMat n y`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem det_uM (n : ℕ) (y : Fin n → k) :
     GeneralLinearGroup.det ((uM n y : Mir k n) : GL (Fin (n + 1)) k) = 1 := by
@@ -75,7 +75,7 @@ theorem det_uM (n : ℕ) (y : Fin n → k) :
   exact GlobalTheory.CompanionTheory.MirPair.det_one_add_colMat n y
 
 /- English proof (translation)
-Use `ext`. Rewrite using `[Matrix.GeneralLinearGroup.val_det_apply, Matrix.GeneralLinearGroup.val_det_apply]`. Conclude with `GlobalTheory.CompanionTheory.MirPair.det_glEmbMat n (g : Matrix (Fin n) (Fin n) k)`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem det_levi (n : ℕ) (g : GL (Fin n) k) :
     GeneralLinearGroup.det ((levi k n g : Mir k n) : GL (Fin (n + 1)) k) = GeneralLinearGroup.det g := by
@@ -84,9 +84,9 @@ theorem det_levi (n : ℕ) (g : GL (Fin n) k) :
   exact GlobalTheory.CompanionTheory.MirPair.det_glEmbMat n (g : Matrix (Fin n) (Fin n) k)
 
 /- English proof (translation)
-Establish `h` using `GlobalTheory.BZMir.glEmb_mul_unip' k n g (Multiplicative.ofAdd (((g⁻¹ : GL (Fin n) k) : Matrix (Fin n) (Fin n) k) *ᵥ x))`. Establish `hx : (g : Matrix (Fin n) (Fin n) k) *ᵥ (Multiplicative.toAdd (Multiplicative.ofAdd (((g⁻¹ : GL (Fin n) k) : Matrix (Fin n) (Fin n) k) *ᵥ x))) = x`. Rewrite using `[toAdd_ofAdd, Matrix.mulVec_mulVec, Units.mul_inv, Matrix.one_mulVec]`. Rewrite `h` using `[hx]`. Apply `Subtype.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[Subgroup.coe_mul, Subgroup.coe_mul]`. Conclude with `h.symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem uM_mul_levi (n : ℕ) (g : GL (Fin n) k) (x : Fin n → k) :
     uM n x * levi k n g =
@@ -109,13 +109,13 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
   {n : ℕ} {V V' : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup V'] [Module ℂ V']
 
 /- English proof (translation)
-Unfold `GlobalTheory.CompanionTheory.MirPair.TwInv at hB`. Establish `hT : ∀ (a b : GlobalTheory.BZMir.Mir k (n + 1)) (w : V), T a (T b w) = T (a * b) w`. Introduce `a b w`. Rewrite using `[map_mul, Module.End.mul_apply]`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `y x v v'`. Simplify using `only [GlobalTheory.CompanionTheory.MirPair.coef]`. Rewrite using `[hT, GlobalTheory.CompanionTheory.MirPair.uM_mul_uM]`. Introduce `y x v v'`. Simplify using `only [GlobalTheory.CompanionTheory.MirPair.coef]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `hxy : y + (x - y) = x` using `by abel`. Establish `h` using `hB (GlobalTheory.CompanionTheory.MirPair.uM (n + 1) y) (T (GlobalTheory.CompanionTheory.MirPair.uM (n + 1) (x - y)) v) v'`. Rewrite `h` using `[GlobalTheory.SmGL.detChar_apply, GlobalTheory.CompanionTheory.MirPair.det_uM, map_one, Units.val_one, one_mul, hT, GlobalTheory.CompanionTheory.MirPair.uM_mul_uM, hxy]`. Conclude with `h`. Introduce `g x v v'`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [GlobalTheory.CompanionTheory.MirPair.coef]`. Rewrite using `[hT, GlobalTheory.CompanionTheory.MirPair.uM_mul_levi, ← hT, hB, GlobalTheory.SmGL.detChar_apply, GlobalTheory.SmGL.detChar_apply, GlobalTheory.CompanionTheory.MirPair.det_levi]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coef_rules (T : Representation ℂ (Mir k (n + 1)) V) (T' : Representation ℂ (Mir k (n + 1)) V')
     (B : V →ₗ[ℂ] V' →ₗ[ℂ] ℂ) (s : ℕ) (hB : TwInv T T' B s) :

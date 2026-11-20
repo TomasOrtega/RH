@@ -18,7 +18,7 @@ open scoped CategoryTheory.Obj LaurentSeries PowerSeries
 namespace GlobalTheory.ArcPts
 
 /- English proof (translation)
-Introduce `U f`. Take `⟨h1, h2⟩` from `hy U f`. Conclude with `⟨h1.preimage φ.continuous, h2.comp φ.differentiable.differentiableOn fun _ hz => hz⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem isHolTo_comp_clm {V V' : Type} [NormedAddCommGroup V] [NormedSpace ℂ V] [NormedAddCommGroup V']
     [NormedSpace ℂ V'] {X : Scheme.{0}} {y : V → (Sp ℂ ⟶ X)} (hy : IsHolTo Set.univ y) (φ : V' →L[ℂ] V) :
@@ -28,29 +28,25 @@ theorem isHolTo_comp_clm {V V' : Type} [NormedAddCommGroup V] [NormedSpace ℂ V
   exact ⟨h1.preimage φ.continuous, h2.comp φ.differentiable.differentiableOn fun _ hz => hz⟩
 
 /- English proof (translation)
-Introduce `hL hL2 E _ _ _ H _ D l Xo c O _ β Y _ _ bF a χ W Λ C Γ Ψ g ty Fu laA laM K hrat hA hM lin cst T₁ hfib`. Take `⟨hadd, honto, hlin⟩` from `ex0_additive_surjective_equivariant hL hL2 E H D l c O β _ a Λ`. Take `⟨hb, hchi⟩` from `analyticDictionaryExp_holomorphic_over_unif E H D l c O β _ a Λ`. Take `⟨hker, hiota, htor, -⟩` from `GtKer.ker_iota_torus E H D l c O β _ a Λ`. Establish `hfin : AnFin Λ.A` using `(ArcThetaSpaces.sections_theta hL hL2 E H D l c O β _ a Λ).2.1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hrie` using `gtAn_orth_ker_iff hL hL2 E H D l c O β _ a Λ`. Establish `hpt` using `ArcPoint.point_sumsAt E H D l Xo c O β Y bF a χ W Λ C Γ Ψ g ty Fu laA laM K`. Establish `hdiff` using `GlobalTheory.T.exponentialFamily_deriv_sumsAt_period hL hL2 E H D l Xo c O β Y bF a χ W Λ C Γ Ψ g ty Fu laA laM K hfin hrat`. Take `⟨T₂, hth⟩` from `GlobalTheory.T.arc_levelOne_section_eq_kappa_theta hL hL2 E H D l Xo c O β Y bF a χ W Λ C Γ Ψ g ty Fu laA laM K hfin lin cst T₁ hfib`. Establish `hrep` using `GlobalTheory.T.exists_latticeVector_rep_and_shift hL hL2 E H D l c O β _ a Λ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hsm : ∀ (s : ℂ) (v : Λ.A.V), K.h.symm (s • K.h v) = s • v` using `fun s v => by`. Rewrite using `[map_smul, K.h.symm_apply_apply]`. Use `⟨{ i := K.i T := max K.T T₂ P₀ := (K.h.toLinearEquiv.toAddEquiv.toAddMonoidHom.comp Λ.A.P0).comp K.gam.toAddEquiv.toAddMonoidHom N := (K.h.toLinearEquiv.toAddEquiv.toAddMonoidHom.comp Λ.A.N).comp K.gam.toAddEquiv.toAddMonoidHom Pw := K.Pw Pw_eq := fun w v => ?_ y := Λ.ε.toLinearM …` and prove the remaining obligations. Use `show K.Pw w v = K.h (Λ.A.P0 (K.gam v)) + w • K.h (Λ.A.N (K.gam v))`. Rewrite using `[K.Pw_eq, AnArc.Pw_apply, map_add, map_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_add]`. Conclude with `hadd _ _`. Establish `: K.h.symm (fun k => ty k (x : E) * z k) = Λ.A.actV x (K.h.symm z)`. Apply `K.h.injective` to reduce the goal to its premises. Use function extensionality and compare the values at `k`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[K.h_act, K.h.apply_symm_apply, K.h.apply_symm_apply]`. Rewrite using `[this]`. Conclude with `hlin x _`. Use `(hker _).trans ⟨?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨la, h0, hz⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨v, rfl⟩` from `K.gam.surjective la`. Use `⟨v, ?_, ?_⟩` and prove the remaining obligations. Use `show Λ.ε (K.gam v).y = 0`. Rewrite using `[h0, map_zero]`. Use `show z = K.h (Λ.A.P0 (K.gam v))`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hz, K.h.apply_symm_apply]`. Introduce and unpack `⟨v, h0, hz⟩`. Use `⟨K.gam v, (map_eq_zero_iff _ Λ.ε.injective).1 h0, ?_⟩` and prove the remaining obligations. Rewrite using `[hz]`. Conclude with `K.h.symm_apply_apply _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `show Out.GtPtF.IsIota (Λ.ε (K.gam v).y) (Λ.ex0 (K.h.symm (K.h (Λ.A.P0 (K.gam v)))))`. Rewrite using `[K.h.symm_apply_apply]`. Conclude with `hiota _`. Use `show IsTorusPt (Λ.ex0 (K.h.symm (w • K.h (Λ.A.N (K.gam v))))) (fun x => eTwoPi (w * a.be (Λ.ε (K.gam v).y) x))`. Establish `h1 : w • Λ.A.N (K.gam v) = ((w • Λ.A.N (K.gam v)).1, 0)` using `Prod.ext rfl (by simp)`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hsm, h1]`. Use `htor (w • Λ.A.N (K.gam v)).1 using 3 with x` and compare the differences between its conclusion and the goal. Use `show _ = w * ((Λ.A.be (K.gam v).y (Λ.ε.symm x) : ℤ) : ℂ)`. Rewrite using `[Λ.be_eq, Λ.ε.apply_symm_apply]`. Take `⟨e, he⟩` from `K.levA v`.
+Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Take `⟨q, h1, h2, h3⟩` from `(hrep l.A l.A_pos).2 _ _ e (hA v)`. Rewrite `h1`, `h2` using `[← he]`. Conclude with `⟨q, h1, h2.trans (congrArg Λ.ex0 (hsm _ _).symm), h3⟩`. Take `⟨e, he⟩` from `K.levM v hv`. Take `⟨q, h1, h2, h3⟩` from `(hrep l.M (le_trans (by norm_num) l.three_le)).2 _ _ e (hM v)`.
-
-Rewrite `h1`, `h2` using `[← he]`. Conclude with `⟨q, h1, h2.trans (congrArg Λ.ex0 (hsm _ _).symm), h3⟩`. Use `show (∀ v', Λ.ε (K.gam v').y = 0 → (Fu.Di K.i).EF v v' = 0) ↔ (Λ.ε (K.gam v).y = 0 ∧ ∀ s : ℂ, ∃ x, IsTorusPt (Λ.ex0 (K.h.symm (s • K.h (Λ.A.P0 (K.gam v))))) x ∧ ∀ v', x (Λ.ε (K.gam v').y) = eTwoPi (-(s * (Fu.Di K.i).EF v v')))`. Simplify using `only [hsm, ← K.EF_eq]`. Use `hrie (K.gam v)` as an intermediate fact.
-
-Simplify using `only [K.gam.surjective.forall] at this`. Conclude with `this`.
+A detailed English derivation is pending.
 -/
 theorem nonempty_holArc : Out.Laws → Out.Laws2 → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) [StarRing (𝓞 E)] (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Y : Model Xo c β) [Algebra (FractionRing ℂ) ℂ] [IsScalarTower ℂ (FractionRing ℂ) ℂ] (bF : c.F →+* ℂ) (a : ArcIn D l β ℂ (bF.comp β)) (χ : Sp ℂ⟦X⟧ ⟶ Y.X) (W : ArcWit Y a (Ideal.span {PowerSeries.X}) (PowerSeries.C (R := ℂ)) PowerSeries.X χ) (Λ : GtAn a) (C : Chain W Λ) (Γ : Germs) (Ψ : SpecPts C.Φ Γ) (g : ℕ) (ty : Fin g → (E →+* ℂ)) (Fu : FamilyUnif Xo (bF.comp (IntermediateField.inclusion c.le).toRingHom) ty) (laA laM : D.La → Λ.A.La) (K : Cmp Fu Λ.A Ψ.yw Ψ.pi laA laM), C.Φ.Rational → (∀ v, Λ.Rep l.A (a.etaA v) (laA v)) → (∀ v, Λ.Rep l.M (a.eta v) (laM v)) → ∀ lin cst (T₁ : ℝ), (∀ w : ℂ, T₁ < w.im → IsFibAt Λ.A Xo.univ.t lin cst w (Ψ.yw w) (Ψ.pi w) (Ψ.fr w)) → Nonempty (HolArc Y bF a χ W Fu) := by
   intro hL hL2 E _ _ _ H _ D l Xo c O _ β Y _ _ bF a χ W Λ C Γ Ψ g ty Fu laA laM K hrat hA hM lin cst T₁ hfib

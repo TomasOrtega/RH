@@ -18,9 +18,9 @@ section Abstract
 variable {A B : Type} [CommRing A] [CommRing B] {n : Type} [Fintype n] [DecidableEq n]
 
 /- English proof (translation)
-Establish `hg' : Formalism.UG.cT σ (g : Matrix n n A) * J * (g : Matrix n n A) = J` using `hg`. Establish `key : Formalism.UG.cT τ ((g : Matrix n n A).map φ) = (Formalism.UG.cT σ (g : Matrix n n A)).map φ`. Unfold `Formalism.UG.cT`. Use extensionality with `i j`. Simplify using `[h]`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Substitute `hJ` using the available equality. Express the relevant statement in the definitionally equal form `Formalism.UG.cT τ ((g : Matrix n n A).map φ) * J.map φ * (g : Matrix n n A).map φ = J.map φ`. Rewrite using `[key, ← Matrix.map_mul, ← Matrix.map_mul, hg']`.
+Substitute using the available equality. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem bc_mem_UJ (φ : A →+* B) {σ : A →+* A} {τ : B →+* B} (h : ∀ x, φ (σ x) = τ (φ x))
     {J : Matrix n n A} {J' : Matrix n n B} (hJ : J.map φ = J') {g : GL n A} (hg : g ∈ Formalism.UG.UJ σ J) :
@@ -40,9 +40,9 @@ open Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes (topTens)
 open scoped Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Topology
 
 /- English proof (translation)
-Establish `hcc : ∀ z : E ⊗[F] Af F, Algebra.TensorProduct.comm F (Af F) E (Algebra.TensorProduct.comm F E (Af F) z) = z`. Introduce `z`. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a b => simp`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `add a b ha hb => simp [ha, hb]`. Establish `key` using `GlobalTheory.AdelicLatticeSwap.mem_latHat_iff_comm_mem_lamAf F E n L (fun i => Algebra.TensorProduct.comm F E (Af F) (y i))`. Simplify using `only [hcc] at key`. Conclude with `key.symm`.
+Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mem_lamAf_iff {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {n : ℕ}
     (L : Submodule (𝓞 E) (Fin n → E)) (y : Fin n → E ⊗[F] Af F) :
@@ -61,7 +61,7 @@ theorem mem_lamAf_iff {F E : Type} [Field F] [NumberField F] [Field E] [NumberFi
   exact key.symm
 
 /- English proof (translation)
-Proceed by induction on `a using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul x y => simp [Formalism.UG.sigR, Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 private theorem tensorComm_sigR_eq_sigR_tensorComm (I : AutInst) (a : I.E ⊗[I.F] Af I.F) :
     Algebra.TensorProduct.comm I.F I.E (Af I.F) (Formalism.UG.sigR I.cm.sig (Af I.F) a) =
@@ -72,7 +72,7 @@ private theorem tensorComm_sigR_eq_sigR_tensorComm (I : AutInst) (a : I.E ⊗[I.
   | add x y hx hy => simp only [map_add, hx, hy]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[Formalism.UG.inclE, Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.JR, Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.inclR]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 private theorem J_map_inclE_comm (I : AutInst) :
     (I.J.map (Formalism.UG.inclE (F := I.F) (Af I.F))).map (Algebra.TensorProduct.comm I.F I.E (Af I.F)) =
@@ -81,7 +81,7 @@ private theorem J_map_inclE_comm (I : AutInst) :
   simp [Formalism.UG.inclE, Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.JR, Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.inclR]
 
 /- English proof (translation)
-Use extensionality with `i`. Simplify using `[Matrix.mulVec, dotProduct, map_sum]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 private theorem tensorComm_mulVec_map_eq (I : AutInst) (M : Matrix (Fin I.n) (Fin I.n) (I.E ⊗[I.F] Af I.F))
     (v : Fin I.n → I.E ⊗[I.F] Af I.F) :
@@ -92,7 +92,7 @@ private theorem tensorComm_mulVec_map_eq (I : AutInst) (M : Matrix (Fin I.n) (Fi
   simp [Matrix.mulVec, dotProduct, map_sum]
 
 /- English proof (translation)
-Unfold `GlobalTheory.AdLat.hat Formalism.MainNotions.StandardLattice.latHat`. Use `congr 1`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments.
 -/
 private theorem adLat_hat_eq_latHat (F E : Type) [Field F] [NumberField F] [Field E] [Algebra F E] {m : ℕ}
     (L : Set (Fin m → E)) : GlobalTheory.AdLat.hat F L = Formalism.MainNotions.StandardLattice.latHat F E L := by
@@ -100,11 +100,11 @@ private theorem adLat_hat_eq_latHat (F E : Type) [Field F] [NumberField F] [Fiel
   congr 1
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h z`. Establish `h1` using `h (fun i => (Algebra.TensorProduct.comm I.F I.E (Af I.F)).symm (z i))`. Establish `e1 : (fun i => Algebra.TensorProduct.comm I.F I.E (Af I.F) ((Algebra.TensorProduct.comm I.F I.E (Af I.F)).symm (z i))) = z`. Use function extensionality and compare the values at `fun i => AlgEquiv.apply_symm_apply _ _`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `e2 : M.map (Algebra.TensorProduct.comm I.F I.E (Af I.F)) *ᵥ z = fun i => Algebra.TensorProduct.comm I.F I.E (Af I.F) ((M *ᵥ fun i => (Algebra.TensorProduct.comm I.F I.E (Af I.F)).symm (z i)) i)`. Rewrite using `[← tensorComm_mulVec_map_eq I M]`. Use `congr 1`. Conclude with `e1.symm`. Rewrite `h1` using `[mem_lamAf_iff, mem_lamAf_iff, e1, ← e2]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `h1`. Introduce `h y`. Rewrite using `[mem_lamAf_iff, mem_lamAf_iff, ← tensorComm_mulVec_map_eq I M]`. Conclude with `h _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem stabilizes_lamAf_iff (I : AutInst) (M : Matrix (Fin I.n) (Fin I.n) (I.E ⊗[I.F] Af I.F)) :
     (∀ y, y ∈ lamAf (F := I.F) I.L ↔ M *ᵥ y ∈ lamAf (F := I.F) I.L) ↔
@@ -129,43 +129,39 @@ private theorem stabilizes_lamAf_iff (I : AutInst) (M : Matrix (Fin I.n) (Fin I.
     exact h _
 
 /- English proof (translation)
-Introduce `I`. Take `⟨hT2, -, -, -, hKo, ⟨K0, hK0⟩, -⟩` from `GlobalTheory.CongTop.adelic_topology I`. Establish `hone : (1 : I.Gf) ∈ I.Kset`. Establish `h1 : (1 : I.Gf) ∈ (K0 : Set I.Gf)` using `K0.one_mem`. Rewrite `h1` using `[hK0]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `haveI : IsModuleTopology (Af I.F) (Af I.F ⊗[I.F] I.E) := ⟨rfl⟩`. Use `haveI : IsTopologicalRing (Af I.F ⊗[I.F] I.E) := IsModuleTopology.isTopologicalRing (Af I.F) _`. Use `haveI : IsTopologicalGroup (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.HA (Af I.F) I.cm.sig I.J) := inferInstanceAs (IsTopologicalGroup (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.HR (Af I.F) I.cm.sig I.J))`. Take `⟨KH, hKH, hKHo, hKHc⟩` from `GlobalTheory.Mem.Vol.StabGroup.exists_compact_open_stab I.F I.E I.cm.sig I.n I.J I.L I.L_fg I.L_span`. Set `φ : I.E ⊗[I.F] Af I.F →+* Af I.F ⊗[I.F] I.E` to `(Algebra.TensorProduct.comm I.F I.E (Af I.F)).toRingEquiv.toRingHom`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `ψ : Af I.F ⊗[I.F] I.E →+* I.E ⊗[I.F] Af I.F` to `(Algebra.TensorProduct.comm I.F I.E (Af I.F)).symm.toRingEquiv.toRingHom`. Establish `hψφ : ∀ a, ψ (φ a) = a` using `fun a => (Algebra.TensorProduct.comm I.F I.E (Af I.F)).symm_apply_apply a`. Establish `hφψ : ∀ b, φ (ψ b) = b` using `fun b => (Algebra.TensorProduct.comm I.F I.E (Af I.F)).apply_symm_apply b`. Establish `hsig : ∀ a, φ (Formalism.UG.sigR I.cm.sig (Af I.F) a) = Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR (Af I.F) I.cm.sig (φ a)` using `fun a => tensorComm_sigR_eq_sigR_tensorComm I a`. Establish `hsig' : ∀ b, ψ (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR (Af I.F) I.cm.sig b) = Formalism.UG.sigR I.cm.sig (Af I.F) (ψ b)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `b`. Establish `h2` using `congrArg ψ (hsig (ψ b))`. Rewrite `h2` using `[hψφ, hφψ]`. Conclude with `h2.symm`. Establish `hJ : (I.J.map (Formalism.UG.inclE (F` using `I.F) (Af I.F))).map φ = Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.JR (Af I.F) I.J := J_map_inclE_comm I`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Establish `hJ' : (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.JR (Af I.F) I.J).map ψ = I.J.map (Formalism.UG.inclE (F` using `I.F) (Af I.F)) := by`. Rewrite using `[← hJ, Matrix.map_map]`. Use extensionality with `i j`. Simplify using `only [Matrix.map_apply, Function.comp_apply, hψφ]`. Establish `hmem : ∀ x : I.Gf, Formalism.UG.bc φ (x : GL (Fin I.n) (I.E ⊗[I.F] Af I.F)) ∈ Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.HR (Af I.F) I.cm.sig I.J` using `fun x => bc_mem_UJ φ hsig hJ x.2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Establish `hmem' : ∀ h : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.HA (Af I.F) I.cm.sig I.J, Formalism.UG.bc ψ (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.HA.mat (Af I.F) I.cm.sig I.J h) ∈ Formalism.UG.UPts I.cm.sig I.J (Af I.F)` using `fun h => bc_mem_UJ ψ hsig' hJ' (Subtype.property (p := fun g => g ∈ Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.HR (Af I.F) I.cm.sig I.J) h)`. Establish `hl : ∀ g : GL (Fin I.n) (I.E ⊗[I.F] Af I.F), Formalism.UG.bc ψ (Formalism.UG.bc φ g) = g`. Introduce `g`. Use extensionality with `i j`. Simplify using `[Formalism.UG.bc, hψφ]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Establish `hr : ∀ g : GL (Fin I.n) (Af I.F ⊗[I.F] I.E), Formalism.UG.bc φ (Formalism.UG.bc ψ g) = g`. Introduce `g`. Use extensionality with `i j`. Simplify using `[Formalism.UG.bc, hφψ]`. Set `e₀ : I.Gf ≃* Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.HA (Af I.F) I.cm.sig I.J` to `{ toFun := fun x => (⟨Formalism.UG.bc φ (x : GL (Fin I.n) (I.E ⊗[I.F] Af I.F)), hmem x⟩ : ↥(Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.HR (Af I.F) I.cm.sig I.J)) invFun := fun h => ⟨Formalism.UG.bc ψ (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.HA.mat …`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hK : ∀ x : I.Gf, x ∈ I.Kset ↔ GlobalTheory.Mem.Vol.StabHat I.F (I.L : Set (Fin I.n → I.E)) ((I.fmat x).map (Algebra.TensorProduct.comm I.F I.E (Af I.F)))` using `fun x => stabilizes_lamAf_iff I (I.fmat x)`. Establish `hKe : ∀ x : I.Gf, x ∈ I.Kset ↔ e₀ x ∈ KH` using `fun x => (hK x).trans (hKH (e₀ x)).symm`. Establish `hmat : ∀ x : I.Gf, ((Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.HA.mat (Af I.F) I.cm.sig I.J (e₀ x) : GL (Fin I.n) (Af I.F ⊗[I.F] I.E)) : Matrix (Fin I.n) (Fin I.n) (Af I.F ⊗[I.F] I.E)) = (I.fmat x).map (Algebra.TensorProduct.comm I.F I.E (Af I.F))` using `fun x => rfl`. Establish `hcont_inv : Continuous (e₀.symm : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.HA (Af I.F) I.cm.sig I.J → I.Gf)`. Apply `continuous_of_continuousAt_one e₀.symm` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Rewrite using `[ContinuousAt, Filter.tendsto_def]`. Introduce `W hW`. Simplify using `only [map_one] at hW`. Take `⟨g, hg1, hgW⟩` from `I.topf_basis W hW`. Establish `hN` using `GlobalTheory.Mem.Vol.StabGroup.congr_mem_nhds I.F I.E I.n I.L I.L_fg I.L_span g hg1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `hmatc : Continuous (fun h : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.HA (Af I.F) I.cm.sig I.J => ((Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.HA.mat (Af I.F) I.cm.sig I.J h : GL (Fin I.n) (Af I.F ⊗[I.F] I.E)) : Matrix (Fin I.n) (Fin I.n) (Af I.F ⊗[ …` using `Units.continuous_val.comp continuous_subtype_val`. Establish `h1` using `hmatc.continuousAt (x := 1) |>.preimage_mem_nhds hN`. Use `filter_upwards [h1, hKHo.mem_nhds KH.one_mem] with h hh hk`. Apply `hgW` to reduce the goal to its premises. Establish `hx : (I.fmat (e₀.symm h)).map (Algebra.TensorProduct.comm I.F I.E (Af I.F)) = ((Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.HA.mat (Af I.F) I.cm.sig I.J h : GL (Fin I.n) (Af I.F ⊗[I.F] I.E)) : Matrix (Fin I.n) (Fin I.n) (Af I.F ⊗[I.F] I.E))`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← hmat, MulEquiv.apply_symm_apply]`. Use `⟨(hK (e₀.symm h)).2 (hx ▸ (hKH h).1 hk), ?_⟩` and prove the remaining obligations. Introduce `y hy`. Establish `hy'` using `(mem_lamAf_iff I.L y).1 hy`. Rewrite `hy'` using `[← adLat_hat_eq_latHat]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Take `⟨w, hw, hwe⟩` from `hh _ hy'`. Use `⟨fun i => (Algebra.TensorProduct.comm I.F I.E (Af I.F)).symm (w i), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[mem_lamAf_iff]`. Establish `e1 : (fun i => Algebra.TensorProduct.comm I.F I.E (Af I.F) ((Algebra.TensorProduct.comm I.F I.E (Af I.F)).symm (w i))) = w`. Use function extensionality and compare the values at `fun i => AlgEquiv.apply_symm_apply _ _`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[e1, ← adLat_hat_eq_latHat]`. Conclude with `hw`. Use function extensionality and compare the values at `i`. Apply `(Algebra.TensorProduct.comm I.F I.E (Af I.F)).injective` to reduce the goal to its premises. Establish `e3` using `congrFun hwe i`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Use `beta_reduce at e3`. Rewrite `e3` using `[← hx, tensorComm_mulVec_map_eq]`. Simplify using `only [Pi.sub_apply, Pi.smul_apply, nsmul_eq_mul] at e3`. Simplify using `only [Matrix.sub_mulVec, Matrix.one_mulVec, Pi.sub_apply, Pi.smul_apply, map_sub, smul_eq_mul, map_mul, map_natCast, AlgEquiv.apply_symm_apply, e3]`. Establish `hcont : Continuous (e₀ : I.Gf → Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.HA (Af I.F) I.cm.sig I.J)`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `continuous_of_continuousAt_one e₀` to reduce the goal to its premises. Rewrite using `[ContinuousAt, Filter.tendsto_def]`. Introduce `V hV`. Simplify using `only [map_one] at hV`. Take `⟨V', hV'V, hV'o, hV'1⟩` from `mem_nhds_iff.1 hV`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hC : IsCompact ((KH : Set (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.HA (Af I.F) I.cm.sig I.J)) \ V')` using `hKHc.diff hV'o`. Establish `hCi : IsClosed (e₀.symm '' ((KH : Set (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.HA (Af I.F) I.cm.sig I.J)) \ V'))` using `(hC.image hcont_inv).isClosed`. Establish `hO : IsOpen (I.Kset ∩ (e₀.symm '' ((KH : Set (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.HA (Af I.F) I.cm.sig I.J)) \ V'))ᶜ)` using `hKo.inter hCi.isOpen_compl`. Establish `h1O : (1 : I.Gf) ∈ I.Kset ∩ (e₀.symm '' ((KH : Set (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.HA (Af I.F) I.cm.sig I.J)) \ V'))ᶜ`. Use `⟨hone, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce and unpack `⟨c, ⟨-, hcV⟩, hc1⟩`. Apply `hcV` to reduce the goal to its premises. Establish `hc : c = 1` using `by simpa using congrArg e₀ hc1`. Rewrite using `[hc]`. Conclude with `hV'1`.
-
-Use `Filter.mem_of_superset (hO.mem_nhds h1O) ?_` and prove the remaining obligations. Introduce and unpack `x ⟨hxK, hxC⟩`. Use `show e₀ x ∈ V`. Apply `hV'V` to reduce the goal to its premises. Assume the negation of the conclusion as `hxV`.
-
-Conclude with `hxC ⟨e₀ x, ⟨(hKe x).1 hxK, hxV⟩, e₀.symm_apply_apply x⟩`. Conclude with `⟨{ toMulEquiv := e₀, continuous_toFun := hcont, continuous_invFun := hcont_inv }, fun x => rfl, hK⟩`.
+Assume the negation of the conclusion and derive a contradiction. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_continuousMulEquiv_adelic : ∀ (I : AutInst), ∃ e : I.Gf ≃ₜ* Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.HA (Af I.F) I.cm.sig I.J, (∀ x, ((Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.HA.mat (Af I.F) I.cm.sig I.J (e x) : GL (Fin I.n) _) : Matrix (Fin I.n) (Fin I.n) _) = (I.fmat x).map (Algebra.TensorProduct.comm I.F I.E (Af I.F))) ∧ ∀ x, x ∈ I.Kset ↔ GlobalTheory.Mem.Vol.StabHat I.F (I.L : Set (Fin I.n → I.E)) ((I.fmat x).map (Algebra.TensorProduct.comm I.F I.E (Af I.F))) := by
   intro I

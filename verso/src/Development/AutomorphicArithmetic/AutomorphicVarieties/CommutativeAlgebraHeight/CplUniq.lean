@@ -7,11 +7,11 @@ import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.LevelOf
 open IsLocalRing UpperTheory.V.Alg UpperTheory.V.CA ReciprocityTheory.CA
 
 /- English proof (translation)
-Apply `DFunLike.coe_injective` to reduce the goal to its premises. Apply `IsHausdorff.funext' J` to reduce the goal to its premises. Introduce `n r`. Take `⟨c, hc⟩` from `h.dense n r`. Establish `h1 : F (r - algebraMap C R c) ∈ J ^ n` using `Ideal.le_comap_pow F n (Ideal.pow_right_mono hF n hc)`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h2 : G (r - algebraMap C R c) ∈ J ^ n` using `Ideal.le_comap_pow G n (Ideal.pow_right_mono hG n hc)`. Establish `h3 : F (algebraMap C R c) = G (algebraMap C R c)` using `RingHom.congr_fun e c`. Rewrite using `[Ideal.Quotient.eq]`. Use `sub_mem h1 h2` as an intermediate fact. Rewrite `this` using `[map_sub, map_sub, h3]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `using this`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem cu_uniq {C R : Type} [CommRing C] [CommRing R] [Algebra C R] [IsLocalRing R] {x : Ideal C}
     (h : IsCplAt x R) {T : Type} [CommRing T] (J : Ideal T) [IsAdicComplete J T] (F G : R →+* T)
@@ -32,7 +32,7 @@ private theorem cu_uniq {C R : Type} [CommRing C] [CommRing R] [Algebra C R] [Is
   simpa using this
 
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.LevelOfCongruence.cu_ex h J f hf`.
+A detailed English derivation is pending.
 -/
 private theorem cu_ex {C R : Type} [CommRing C] [CommRing R] [Algebra C R] [IsLocalRing R] {x : Ideal C}
     (h : IsCplAt x R) {T : Type} [CommRing T] (J : Ideal T) [IsAdicComplete J T] (f : C →+* T)
@@ -41,7 +41,7 @@ private theorem cu_ex {C R : Type} [CommRing C] [CommRing R] [Algebra C R] [IsLo
   _root_.UpperTheory.Reformulated.B.LevelOfCongruence.cu_ex h J f hf
 
 /- English proof (translation)
-Use `h.comap_pow 1` as an intermediate fact. Rewrite `this` using `[pow_one, pow_one]`. Conclude with `this.ge`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem cu_le {C R : Type} [CommRing C] [CommRing R] [Algebra C R] [IsLocalRing R] {x : Ideal C}
     (h : IsCplAt x R) : x ≤ (maximalIdeal R).comap (algebraMap C R) := by
@@ -50,13 +50,11 @@ private theorem cu_le {C R : Type} [CommRing C] [CommRing R] [Algebra C R] [IsLo
   exact this.ge
 
 /- English proof (translation)
-Use `haveI := h.noeth`. Use `le_antisymm (Ideal.map_le_iff_le_comap.2 (cu_le h)) ?_` and prove the remaining obligations. Use `Submodule.le_of_le_smul_of_le_jacobson_bot (I := maximalIdeal R) (IsNoetherian.noetherian _) (maximalIdeal_le_jacobson _) fun r hr => ?_` and prove the remaining obligations. Take `⟨c, hc⟩` from `h.dense 2 r`. Establish `h1 : algebraMap C R c ∈ maximalIdeal R`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `sub_mem hr (Ideal.pow_le_self two_ne_zero hc)` as an intermediate fact. Simplify using `using this`. Establish `h2 : c ∈ x`. Use `h.comap_pow 1` as an intermediate fact. Rewrite `this` using `[pow_one, pow_one]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← this]`. Conclude with `h1`. Establish `h3 : r = algebraMap C R c + (r - algebraMap C R c)` using `by ring`. Rewrite using `[h3]`. Use `Submodule.add_mem_sup (Ideal.mem_map_of_mem _ h2) ?_` and prove the remaining obligations.
-
-Rewrite using `[smul_eq_mul, ← pow_two]`. Conclude with `hc`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem cu_map {C R : Type} [CommRing C] [CommRing R] [Algebra C R] [IsLocalRing R] {x : Ideal C}
     (h : IsCplAt x R) : x.map (algebraMap C R) = maximalIdeal R := by
@@ -79,9 +77,9 @@ private theorem cu_map {C R : Type} [CommRing C] [CommRing R] [Algebra C R] [IsL
   exact hc
 
 /- English proof (translation)
-Use `haveI := h.complete`. Use `haveI := h'.complete`. Take `⟨F, hF1, hF2⟩` from `cu_ex h (maximalIdeal S) (algebraMap C S) (cu_le h')`. Take `⟨G, hG1, hG2⟩` from `cu_ex h' (maximalIdeal R) (algebraMap C R) (cu_le h)`. Establish `e1 : G.comp F = RingHom.id R` using `cu_uniq h (maximalIdeal R) _ _ (by rw [RingHom.comp_assoc, hF1, hG1, RingHom.id_comp]) (fun r hr => hG2 (hF2 hr)) (fun r hr => hr)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 
-Establish `e2 : F.comp G = RingHom.id S` using `cu_uniq h' (maximalIdeal S) _ _ (by rw [RingHom.comp_assoc, hG1, hF1, RingHom.id_comp]) (fun r hr => hF2 (hG2 hr)) (fun r hr => hr)`. Conclude with `⟨AlgEquiv.ofRingEquiv (f := RingEquiv.ofRingHom F G e2 e1) fun c => RingHom.congr_fun hF1 c⟩`.
+A detailed English derivation is pending.
 -/
 private theorem cu_equiv {C R S : Type} [CommRing C] [CommRing R] [Algebra C R] [IsLocalRing R]
     [CommRing S] [Algebra C S] [IsLocalRing S] {x : Ideal C}
@@ -99,9 +97,9 @@ private theorem cu_equiv {C R S : Type} [CommRing C] [CommRing R] [Algebra C R] 
   exact ⟨AlgEquiv.ofRingEquiv (f := RingEquiv.ofRingHom F G e2 e1) fun c => RingHom.congr_fun hF1 c⟩
 
 /- English proof (translation)
-Introduce `C R _ _ _ _ _ x _ h`. Use `⟨fun T _ J _ f hf => ?_, ?_, cu_map h⟩` and prove the remaining obligations. Take `⟨F, hF⟩` from `cu_ex h J f hf`. Conclude with `⟨F, hF, fun G hG => cu_uniq h J G F (hG.1.trans hF.1.symm) hG.2 hF.2⟩`. Take `⟨_, h'⟩` from `cpl_is C x`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Conclude with `cu_equiv h h'`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.CA.cpl_uniq :
     ∀ {C R : Type} [CommRing C] [IsNoetherianRing C] [CommRing R] [Algebra C R] [IsLocalRing R] (x : Ideal C) [x.IsMaximal], IsCplAt x R → (∀ (T : Type) [CommRing T] (J : Ideal T) [IsAdicComplete J T] (f : C →+* T), x ≤ J.comap f → ∃! F : R →+* T, F.comp (algebraMap C R) = f ∧ maximalIdeal R ≤ J.comap F) ∧ Nonempty (R ≃ₐ[C] Cpl x) ∧ x.map (algebraMap C R) = maximalIdeal R := by

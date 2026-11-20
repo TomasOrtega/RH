@@ -12,25 +12,23 @@ namespace GlobalTheory
 namespace Katz
 
 /- English proof (translation)
-Introduce `p _ k _ _ _ σ τ _ u u' hu0 hu`. Establish `hinj : Function.Injective (algebraMap (WittVector p k) (Fr p k))` using `IsFractionRing.injective _ _`. Establish `hu1 : ∀ i (α : τ →₀ ℕ), ∃ w : WittVector p k, coeff α (u i) = algebraMap _ (Fr p k) w ∧ WittVector.constantCoeff w = coeff α (u' i)` using `hu`. Use `choose U hU using hu1`. Set `V : σ → MvPowerSeries τ (WittVector p k)` to `U`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hV : ∀ i α, coeff α (V i) = U i α` using `fun _ _ => rfl`. Establish `hmap : u = fun i => map (algebraMap (WittVector p k) (Fr p k)) (V i)`. Use function extensionality and compare the values at `i`. Use extensionality with `α`. Rewrite using `[coeff_map, hV, (hU i α).1]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hmap' : u' = fun i => map (WittVector.constantCoeff (p` using `p) (R := k)) (V i) := by`. Use function extensionality and compare the values at `i`. Use extensionality with `α`. Rewrite using `[coeff_map, hV, (hU i α).2]`. Establish `hV0 : ∀ i, constantCoeff (V i) = 0`.
+Apply function extensionality and compare values at an arbitrary argument. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i`. Apply `hinj` to reduce the goal to its premises. Rewrite using `[map_zero, ← hu0 i, ← coeff_zero_eq_constantCoeff_apply, ← coeff_zero_eq_constantCoeff_apply, hV, (hU i 0).1]`. Establish `hVs : HasSubst V` using `hasSubst_of_constantCoeff_zero hV0`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `f f' hf`. Establish `hf1 : ∀ α, ∃ w : WittVector p k, coeff α f = algebraMap _ (Fr p k) w ∧ WittVector.constantCoeff w = coeff α f'` using `hf`. Use `choose F hF using hf1`. Set `G : MvPowerSeries σ (WittVector p k)` to `F`. Establish `e1 : f = map (algebraMap (WittVector p k) (Fr p k)) G`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `α`. Rewrite using `[coeff_map]`. Conclude with `(hF α).1`. Establish `e2 : f' = map (WittVector.constantCoeff (p` using `p) (R := k)) G := by`. Use extensionality with `α`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[coeff_map]`. Conclude with `(hF α).2.symm`. Rewrite using `[e1, e2, hmap, hmap', ← map_subst hVs, ← map_subst hVs]`. Introduce `α`. Conclude with `⟨coeff α (subst V G), by rw [coeff_map], by rw [coeff_map]⟩`.
+Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `c f hf`. Establish `hf1 : ∀ α, ∃ w : WittVector p k, coeff α f = algebraMap _ (Fr p k) (c * w)` using `hf`. Use `choose F hF using hf1`. Set `G : MvPowerSeries σ (WittVector p k)` to `F`. Establish `e1 : f = algebraMap (WittVector p k) (Fr p k) c • map (algebraMap (WittVector p k) (Fr p k)) G`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use extensionality with `α`. Rewrite using `[coeff_smul, coeff_map, hF α, map_mul]`. Both sides reduce to the same expression. Rewrite using `[e1, hmap, subst_smul (hVs.map _), ← map_subst hVs]`. Introduce `α`.
-
-Conclude with `⟨coeff α (subst V G), by rw [coeff_smul, coeff_map, map_mul]⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem red_subst : ∀ (p : ℕ) [Fact p.Prime] (k : Type) [Field k] [CharP k p] [PerfectRing k p]
     (σ τ : Type) [Finite σ] (u : σ → MvPowerSeries (τ) (Fr p k)) (u' : σ → MvPowerSeries τ k),

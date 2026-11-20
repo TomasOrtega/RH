@@ -22,17 +22,17 @@ set_option maxHeartbeats 800000
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.BigOn.Exp
 /- English proof (translation)
-Introduce `p1 p2 p3 p4`. Establish `hA` using `_root_.GlobalTheory.T.expAlg_of_cusp_decay_and_reciprocity p1 p2 p3 p4`. Establish `hB` using `_root_.GlobalTheory.T.real_datum_rational_normalization_alt p1 p2 p3 p4`. Unfold `_root_.GlobalTheory.BigOn.Exp.ExpAlgAlt at hA`. Unfold `_root_.GlobalTheory.BigOn.Exp.TwistConditions _root_.GlobalTheory.BigOn.AtPtsAlt at *`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions.
 
-Use `(Formalism.MainNotions.Closed.and hA hB).imp fun Fm CH _ h => ?_` and prove the remaining obligations. Take `⟨x0, hx0⟩` from `h.1.and h.2`. Use `⟨x0, fun x hx hle i p hp hm w hw j ρ ρ' hρ hρ' ν ν' hpin hlev hpin' hSB hN hN' hR0 hR0' s h P hd hP f hf => ?_⟩` and prove the remaining obligations. Take `⟨a1, a2⟩` from `hx0 x hx hle i p hp`. Take `⟨n, a, g, hfe, halg⟩` from `a1 hm w hw j ρ hρ ν hpin hN hR0 s h P hd hP f hf`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨τ, hτ⟩` from `exists_aut_alg (ρ.e ((Fm.ex x hx i).nch.twI w) ((Fm.ex x hx i).nch.sd w)) (ρ'.e ((Fm.ex x hx i).nch.twI w) ((Fm.ex x hx i).nch.sd w))`. Establish `hfix : ∀ y, τ (Formalism.L2.Host.embLL0 (Fm.D x i) y) = Formalism.L2.Host.embLL0 (Fm.D x i) y`. Introduce `y`. Establish `h1` using `hρ.e_LL0 ((Fm.ex x hx i).nch.twI w) ((Fm.ex x hx i).nch.sd w) y`. Establish `h2` using `hρ'.e_LL0 ((Fm.ex x hx i).nch.twI w) ((Fm.ex x hx i).nch.sd w) y`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hy : IsAlgebraic ℚ (Formalism.L2.Host.embLL0 (Fm.D x i) y)` using `((Algebra.IsAlgebraic.isAlgebraic y).algHom (Formalism.L2.Host.embLL0 (Fm.D x i)).toRatAlgHom)`. Rewrite `hy`, the goal using `[← h1]`. Rewrite using `[hτ _ hy, h2, h1]`. Take `⟨c, hc, hsum⟩` from `a2 hm w hw j ρ hρ ν hpin hlev hN hR0 s h P hd hP f hf n a g hfe τ hfix`. Use `⟨c, hc, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← hf]`. Establish `key : ∀ (ρ₀ : Setup (Fm.D x i).ntw) (hρ₀ : ρ₀.Good), rdAt p w j hρ₀ ν f = ν⁻¹ • ∑ k, ρ₀.e ((Fm.ex x hx i).nch.twI w) ((Fm.ex x hx i).nch.sd w) (a k) • evW p.nexp p.v₀ j (g k).val`. Introduce `ρ₀ hρ₀`. Express the relevant statement in the definitionally equal form `ν⁻¹ • evK p.nexp p.v₀ hρ₀ _ j _ (p.nexp.eF _ _ _ (Nat.le_add_left _ _) j.2 f) = _`. Rewrite using `[hfe, map_sum]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[key ρ' hρ', key ρ hρ, smul_comm, ← hsum]`. Use `congr 1`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[hτ _ (halg k)]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem conjRoot_alt : GlobalTheory.Published.CuspRapidDecay → GlobalTheory.Published.GlobalArtinReciprocity → GlobalTheory.Published.RayClassFieldSt → GlobalTheory.SerStd.SeriesRatS → _root_.GlobalTheory.BigOn.Exp.TwistConditions fun Fm x hx i p w j => ∀ (ρ ρ' : Setup (Fm.D x i).ntw) (hρ : ρ.Good) (hρ' : ρ'.Good) (ν ν' : ℂ),
   RealPin p.R p.cG ρ → ρ.LevelOf (Fm.D x i).nexp → RealPin p.R p.cG ρ' → SameBut ρ ρ' →

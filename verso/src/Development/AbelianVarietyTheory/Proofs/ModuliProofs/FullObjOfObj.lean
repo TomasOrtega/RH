@@ -13,7 +13,7 @@ namespace GlobalTheory.Models
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E}
 
 /- English proof (translation)
-Establish `h2 : ((2 : RZ H S A) : ℂ) = 2` using `map_ofNat (RZ H S A).subtype 2`. Unfold `RZ.rt`. Use `push_cast`. Rewrite using `[h2]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem RZ.rt_coe (S A : ℕ) : ((RZ.rt H S A : RZ H S A) : ℂ) = H.rt0 := by
   have h2 : ((2 : RZ H S A) : ℂ) = 2 := map_ofNat (RZ H S A).subtype 2
@@ -23,17 +23,15 @@ theorem RZ.rt_coe (S A : ℕ) : ((RZ.rt H S A : RZ H S A) : ℂ) = H.rt0 := by
   ring
 
 /- English proof (translation)
-Unfold `IsInc at hβ`. Establish `hρ : β (RZ.rt H n l.A) = (baseKA l).ρ`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show ((β (RZ.rt H n l.A) : ℂ)) = H.rt0`. Rewrite using `[← RZ.rt_coe (H := H) n l.A]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hβ (RZ.rt H n l.A)`. Establish `hze : β (RZ.ze H n l.A) = (baseKA l).ζ`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show ((β (RZ.ze H n l.A) : ℂ)) = zeta l.A`. Conclude with `hβ (RZ.ze H n l.A)`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨o.proper, o.ample, o.ktriv, o.etaA_add, o.etaA_ker, ?_⟩` and prove the remaining obligations. Introduce `k _ _ _ x β' hx`. Choose the witnesses or unpack the hypotheses as in `⟨g0, hg0⟩ : ∃ g0 : KA l →+* k, x ≫ s = spMap g0 := by`. Use `⟨(Spec.preimage (x ≫ s)).hom, ?_⟩` and prove the remaining obligations. Unfold `spMap`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[CommRingCat.ofHom_hom, Spec.map_preimage]`. Establish `hb : β' = g0.comp β`. Establish `h1 : Spec.map (CommRingCat.ofHom β') = Spec.map (CommRingCat.ofHom (g0.comp β))`. Unfold `spMap at hx hg0`. Rewrite using `[← hx, ← Category.assoc, hg0, ← Spec.map_comp, CommRingCat.ofHom_comp]`.
+Rewrite the conclusion using the stated equalities. Substitute using the available equality. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `congrArg CommRingCat.Hom.hom (Spec.map_injective h1)`. Substitute `hb` using the available equality. Take `⟨hdet, I, hI1, hI2, -⟩` from `o.geom k x g0 hg0`. Use `⟨?_, I, ?_, hI2⟩` and prove the remaining obligations. Rewrite using `[RingHom.comp_apply, hρ]`.
-
-Conclude with `hdet`. Rewrite using `[RingHom.comp_apply, hze]`. Conclude with `hI1`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fullObj_of_obj {D : Datum H} {l : Level H} {n : ℕ} {S : Scheme.{0}} (s : S ⟶ Sp (KA l))
     (o : Obj D l (baseKA l) s) (β : RZ H n l.A →+* KA l) (hβ : IsInc (RZ H n l.A).subtype (KA l).val.toRingHom β) :

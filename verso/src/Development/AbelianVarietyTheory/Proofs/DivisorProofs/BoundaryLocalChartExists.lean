@@ -13,9 +13,9 @@ namespace GlobalTheory.AdaptedChart
 variable {D : ℕ} {Y : Type} [TopologicalSpace Y]
 
 /- English proof (translation)
-Introduce `y hy`. Take `⟨j, hj⟩` from `A.cover y`. Establish `hT : IsOpen ((A.chart j).target ∩ (A.chart j).symm ⁻¹' U)` using `(A.chart j).isOpen_inter_preimage_symm hU`. Establish `hmem : A.chart j y ∈ (A.chart j).target ∩ (A.chart j).symm ⁻¹' U` using `⟨(A.chart j).map_source hj, by simpa [(A.chart j).left_inv hj] using hy⟩`. Establish `h1 : ContinuousAt (f ∘ (A.chart j).symm) (A.chart j y)` using `(hf j).continuousAt (hT.mem_nhds hmem)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : ContinuousAt ((f ∘ (A.chart j).symm) ∘ A.chart j) y` using `h1.comp ((A.chart j).continuousAt hj)`. Establish `h3 : (f ∘ (A.chart j).symm) ∘ A.chart j =ᶠ[𝓝 y] f` using `by filter_upwards [(A.chart j).open_source.mem_nhds hj] with z hz`. Simplify using `[(A.chart j).left_inv hz]`. Conclude with `(h2.congr h3).continuousWithinAt`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem continuousOn_of_charts {E : Type} [TopologicalSpace E] (A : FinHolAtlas D Y) {U : Set Y}
     (hU : IsOpen U) {f : Y → E}
@@ -46,7 +46,7 @@ theorem aff_apply (c : Fin D → ℂ) (δ : ℝ) (hδ : δ ≠ 0) (z : Fin D →
     aff c δ hδ z = (δ : ℂ)⁻¹ • (z - c) := rfl
 
 /- English proof (translation)
-Simplify using `[aff, Homeomorph.smulOfNeZero, Units.smul_def]`.
+Simplify using the standard rewrite rules.
 -/
 theorem aff_symm_apply (c : Fin D → ℂ) (δ : ℝ) (hδ : δ ≠ 0) (w : Fin D → ℂ) :
     (aff c δ hδ).symm w = (δ : ℂ) • w + c := by
@@ -57,21 +57,21 @@ def rescale (ψ : OpenPartialHomeomorph Y (Fin D → ℂ)) (c : Fin D → ℂ) (
   ((ψ.trans (aff c δ hδ).toOpenPartialHomeomorph).symm.restrOpen (ball 0 1) isOpen_ball).symm
 
 /- English proof (translation)
-Simplify using `[rescale, aff_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem rescale_apply (ψ : OpenPartialHomeomorph Y (Fin D → ℂ)) (c : Fin D → ℂ) (δ : ℝ)
     (hδ : δ ≠ 0) (y : Y) : rescale ψ c δ hδ y = (δ : ℂ)⁻¹ • (ψ y - c) := by
   simp [rescale, aff_apply]
 
 /- English proof (translation)
-Simplify using `[rescale, aff_symm_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem rescale_symm_apply (ψ : OpenPartialHomeomorph Y (Fin D → ℂ)) (c : Fin D → ℂ) (δ : ℝ)
     (hδ : δ ≠ 0) (w : Fin D → ℂ) : (rescale ψ c δ hδ).symm w = ψ.symm ((δ : ℂ) • w + c) := by
   simp [rescale, aff_symm_apply]
 
 /- English proof (translation)
-Rewrite using `[mem_ball, mem_ball, dist_zero_right, dist_eq_norm, norm_smul, norm_inv, Complex.norm_real, Real.norm_eq_abs, abs_of_pos hδ, inv_mul_lt_iff₀ hδ, mul_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mem_ball_aff {c z : Fin D → ℂ} {δ : ℝ} (hδ : 0 < δ) :
     (δ : ℂ)⁻¹ • (z - c) ∈ ball (0 : Fin D → ℂ) 1 ↔ z ∈ ball c δ := by
@@ -79,7 +79,7 @@ theorem mem_ball_aff {c z : Fin D → ℂ} {δ : ℝ} (hδ : 0 < δ) :
     Real.norm_eq_abs, abs_of_pos hδ, inv_mul_lt_iff₀ hδ, mul_one]
 
 /- English proof (translation)
-Use extensionality with `y`. Establish `: y ∈ (rescale ψ c δ hδ.ne').source ↔ y ∈ ψ.source ∧ (δ : ℂ)⁻¹ • (ψ y - c) ∈ ball 0 1`. Simplify using `[rescale, aff_apply]`. Rewrite using `[this, mem_ball_aff hδ]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem rescale_source (ψ : OpenPartialHomeomorph Y (Fin D → ℂ)) (c : Fin D → ℂ) {δ : ℝ}
     (hδ : 0 < δ) : (rescale ψ c δ hδ.ne').source = ψ.source ∩ ψ ⁻¹' ball c δ := by
@@ -89,9 +89,9 @@ theorem rescale_source (ψ : OpenPartialHomeomorph Y (Fin D → ℂ)) (c : Fin D
   rw [this, mem_ball_aff hδ]; rfl
 
 /- English proof (translation)
-Use extensionality with `w`. Establish `: w ∈ (rescale ψ c δ hδ.ne').target ↔ (δ : ℂ) • w + c ∈ ψ.target ∧ w ∈ ball 0 1`. Simplify using `[rescale, aff_symm_apply]`. Rewrite using `[this]`. Use `⟨fun h => h.2, fun h => ⟨hsub ?_, h⟩⟩` and prove the remaining obligations.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hw : (δ : ℂ)⁻¹ • (((δ : ℂ) • w + c) - c) = w`. Rewrite using `[add_sub_cancel_right, smul_smul, inv_mul_cancel₀ (by exact_mod_cast hδ.ne'), one_smul]`. Rewrite using `[← mem_ball_aff hδ, hw]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rescale_target (ψ : OpenPartialHomeomorph Y (Fin D → ℂ)) (c : Fin D → ℂ) {δ : ℝ}
     (hδ : 0 < δ) (hsub : ball c δ ⊆ ψ.target) : (rescale ψ c δ hδ.ne').target = ball 0 1 := by
@@ -105,14 +105,14 @@ theorem rescale_target (ψ : OpenPartialHomeomorph Y (Fin D → ℂ)) (c : Fin D
   rw [← mem_ball_aff hδ, hw]; exact h
 
 /- English proof (translation)
-Use `fun_prop`.
+A detailed English derivation is pending.
 -/
 theorem analyticAt_aff (c : Fin D → ℂ) (a : ℂ) (w : Fin D → ℂ) :
     AnalyticAt ℂ (fun z : Fin D → ℂ => a • (z - c)) w := by
   fun_prop
 
 /- English proof (translation)
-Use `fun_prop`.
+A detailed English derivation is pending.
 -/
 theorem analyticAt_aff' (c : Fin D → ℂ) (a : ℂ) (w : Fin D → ℂ) :
     AnalyticAt ℂ (fun z : Fin D → ℂ => a • z + c) w := by
@@ -121,95 +121,83 @@ theorem analyticAt_aff' (c : Fin D → ℂ) (a : ℂ) (w : Fin D → ℂ) :
 open GlobalTheory.IndefiniteRowSideFullHecke.QuasiPlurisubharmonic in
 
 /- English proof (translation)
-Introduce `D Y _ _ _ A L s m W hB y₀ N hN hy₀N`. Establish `hrad` using `fun y => exp_one_le_rad hB y`. Take `⟨hPot, hSec, hSNC, -⟩` from `hB`. Take `⟨ψ, hψc, hy₀ψ, hψU, σ, hσinj, -, u, hu, hu0, hsu⟩` from `hSNC y₀`. Use `set c := ψ y₀ with hc`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Set `fac : Fin m → Y → ℂ` to `fun k y => (σ k).elim 1 (fun i => ψ y i)`. Establish `hfac_some : ∀ k i y, σ k = some i → fac k y = ψ y i`. Introduce `k i y h`. Simplify using `[fac, h]`. Establish `hfac_ne : ∀ k y, fac k y ≠ 0 ↔ ∀ i, σ k = some i → ψ y i ≠ 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `k y`. Break down `h : σ k with _ | i` into its components or cases. Simplify using `[fac, h]`. Simplify using `[fac, h]`. Establish `hsu' : ∀ y ∈ ψ.source, s y₀ y = u y * ∏ k, fac k y`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `y hy`. Rewrite using `[hsu y hy]`. Use `congr 1`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Apply the tactic sequence `rcases h : σ k with _ | i <;> simp [fac, h]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Use `set V : Set (Fin D → ℂ) := {z | ∀ i, c i ≠ 0 → z i ≠ 0} with hVdef`. Establish `hV : IsOpen V`. Establish `: V = ⋂ i, {z : Fin D → ℂ | c i ≠ 0 → z i ≠ 0}` using `by ext z; simp [V]`. Rewrite using `[this]`. Use `isOpen_iInter_of_finite fun i => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `hci : c i = 0`. Simplify using `[hci]`. Simplify `isOpen_ne_fun (continuous_apply i) continuous_const` using `[hci]`. Use `set T := ψ.target ∩ ψ.symm ⁻¹' N ∩ V with hTdef`. Establish `hT : IsOpen T` using `(ψ.isOpen_inter_preimage_symm hN).inter hV`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hcT : c ∈ T` using `⟨⟨ψ.map_source hy₀ψ, by simp [c, ψ.left_inv hy₀ψ, hy₀N]⟩, fun i h => h⟩`. Take `⟨ε, hε, hεT⟩` from `Metric.isOpen_iff.1 hT c hcT`. Use `set δ := ε / 2 with hδdef`. Establish `hδ : 0 < δ` using `by positivity`. Establish `hδT : closedBall c δ ⊆ T` using `(closedBall_subset_ball (by linarith)).trans hεT`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hballT : ball c δ ⊆ ψ.target` using `fun z hz => (hδT (ball_subset_closedBall hz)).1.1`. Use `set Φ := rescale ψ c δ hδ.ne' with hΦdef`. Establish `hΦapp : ∀ y, Φ y = (δ : ℂ)⁻¹ • (ψ y - c)` using `rescale_apply ψ c δ hδ.ne'`. Establish `hΦsymm : ∀ w, Φ.symm w = ψ.symm ((δ : ℂ) • w + c)` using `rescale_symm_apply ψ c δ hδ.ne'`. Establish `hΦsrc : Φ.source = ψ.source ∩ ψ ⁻¹' ball c δ` using `rescale_source ψ c hδ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hΦtgt : Φ.target = ball 0 1` using `rescale_target ψ c hδ hballT`. Establish `hδC : (δ : ℂ) ≠ 0` using `by exact_mod_cast hδ.ne'`. Establish `hΦS : ∀ y i, c i = 0 → Φ y i = (δ : ℂ)⁻¹ * ψ y i`. Introduce `y i hci`. Rewrite using `[hΦapp]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Simplify using `[hci]`. Use `set K := ψ.symm '' closedBall c δ with hKdef`. Establish `hKψ : K ⊆ ψ.source`. Introduce and unpack `_ ⟨z, hz, rfl⟩`. Conclude with `ψ.map_target (hδT hz).1.1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hKV : ∀ y ∈ K, ψ y ∈ V`. Introduce and unpack `_ ⟨z, hz, rfl⟩`. Rewrite using `[ψ.right_inv (hδT hz).1.1]`. Conclude with `(hδT hz).2`. Establish `hK : IsCompact K` using `(isCompact_closedBall c δ).image_of_continuousOn (ψ.continuousOn_symm.mono fun z hz => (hδT hz).1.1)`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hsrcK : Φ.source ⊆ K`. Introduce `y hy`. Rewrite `hy` using `[hΦsrc]`. Conclude with `⟨ψ y, ball_subset_closedBall hy.2, ψ.left_inv hy.1⟩`. Establish `hsrcψ : ∀ y ∈ Φ.source, y ∈ ψ.source` using `fun y hy => by rw [hΦsrc] at hy; exact hy.1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `set S : Finset (Fin D) := Finset.univ.filter (fun i => ∃ k, σ k = some i ∧ c i = 0) with hSdef`. Establish `hnz : ∀ y ∈ ψ.source, (s y y ≠ 0 ↔ s y₀ y ≠ 0)`. Introduce `y hy`. Establish `hn` using `hSec.2 y₀ y y ⟨hψU hy, L.mem_U y⟩`. Establish `e1` using `Real.exp_pos (-L.φ y y)`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `e2` using `Real.exp_pos (-L.φ y₀ y)`. Rewrite using `[ne_eq, ne_eq, ← norm_eq_zero, ← norm_eq_zero (a := s y₀ y)]`. Prove the components needed by the constructor for the conclusion. Introduce `h h0`. Apply `h` to reduce the goal to its premises.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `: ‖s y y‖ * Real.exp (-L.φ y y) = 0` using `by rw [← hn, h0, zero_mul]`. Conclude with `(mul_eq_zero.1 this).resolve_right e1.ne'`. Introduce `h h0`. Apply `h` to reduce the goal to its premises. Establish `: ‖s y₀ y‖ * Real.exp (-L.φ y₀ y) = 0` using `by rw [hn, h0, zero_mul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(mul_eq_zero.1 this).resolve_right e2.ne'`. Establish `hopn : ∀ y ∈ ψ.source, (y ∈ opn s ↔ ∀ k, fac k y ≠ 0)`. Introduce `y hy`. Express the relevant statement in the definitionally equal form `s y y ≠ 0 ↔ _`. Rewrite using `[hnz y hy, hsu' y hy, mul_ne_zero_iff, Finset.prod_ne_zero_iff]`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `[hu0 y hy]`. Establish `hdiv : ∀ y ∈ Φ.source, (y ∈ opn s ↔ Φ y ∉ ReciprocityTheory.AnForm.A.coordDiv S)`. Introduce `y hy`. Establish `hyψ` using `hsrcψ y hy`. Establish `hyV : ψ y ∈ V` using `hKV y (hsrcK hy)`.
+Separate the alternatives or extract the components of the hypothesis. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[hopn y hyψ]`. Simplify using `only [ReciprocityTheory.AnForm.A.coordDiv, Set.mem_setOf_eq, not_exists, not_and]`. Prove the components needed by the constructor for the conclusion. Introduce `h i hi h0`. Take `⟨k, hk, hci⟩` from `(Finset.mem_filter.1 hi).2`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h0` using `[hΦS y i hci, mul_eq_zero]`. Break down `h0 with h0 | h0` into its components or cases. Conclude with `inv_ne_zero hδC h0`. Conclude with `(hfac_ne k y).1 (h k) i hk h0`. Introduce `h k`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hfac_ne]`. Introduce `i hk`. Distinguish the cases in `hci : c i = 0`. Establish `hiS : i ∈ S` using `Finset.mem_filter.2 ⟨Finset.mem_univ _, k, hk, hci⟩`. Introduce `h0`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `h i hiS` to reduce the goal to its premises. Rewrite using `[hΦS y i hci, h0, mul_zero]`. Conclude with `hyV i hci`. Establish `hcompat : IsCompatChart A Φ`. Introduce `j`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Prove the components needed by the constructor for the conclusion. Introduce `z hz`. Establish `hz' : z ∈ (A.chart j).target ∩ (A.chart j).symm ⁻¹' ψ.source` using `⟨hz.1, hsrcψ _ hz.2⟩`. Establish `h1` using `(hψc j).1 z hz'`. Establish `: Φ ∘ (A.chart j).symm = (fun w : Fin D → ℂ => (δ : ℂ)⁻¹ • (w - c)) ∘ (ψ ∘ (A.chart j).symm)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `w`. Simplify using `[hΦapp]`. Rewrite using `[this]`. Conclude with `(analyticAt_aff c _ _).comp h1`. Introduce `w hw`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hwb : w ∈ ball (0 : Fin D → ℂ) 1` using `hΦtgt ▸ hw.1`. Establish `hmem : (δ : ℂ) • w + c ∈ ψ.target ∩ ψ.symm ⁻¹' (A.chart j).source`. Use `⟨hballT ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← mem_ball_aff hδ, add_sub_cancel_right, smul_smul, inv_mul_cancel₀ hδC, one_smul]`. Conclude with `hwb`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `hw.2` as an intermediate fact. Simplify using `only [Set.mem_preimage, hΦsymm] at this`. Conclude with `this`. Establish `h2` using `(hψc j).2 _ hmem`. Establish `: A.chart j ∘ Φ.symm = (A.chart j ∘ ψ.symm) ∘ (fun w : Fin D → ℂ => (δ : ℂ) • w + c)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use function extensionality and compare the values at `w`. Simplify using `[hΦsymm]`. Rewrite using `[this]`. Conclude with `AnalyticAt.comp (g := A.chart j ∘ ψ.symm) (f := fun w : Fin D → ℂ => (δ : ℂ) • w + c) h2 (analyticAt_aff' c _ w)`. Establish `huc : ContinuousOn u ψ.source` using `continuousOn_of_charts A ψ.open_source fun j => (hu j).continuousOn`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hφc : ContinuousOn (L.φ y₀) (L.U y₀)` using `continuousOn_of_charts A (L.isOpen_U y₀) fun j => (hPot.1 y₀ j).continuousOn`. Establish `hfacc : ∀ k, ContinuousOn (fac k) ψ.source`. Introduce `k`. Break down `h : σ k with _ | i` into its components or cases. Simplify using `only [fac, h, Option.elim]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Conclude with `continuousOn_const`. Simplify using `only [fac, h, Option.elim]`. Conclude with `(continuous_apply i).comp_continuousOn ψ.continuousOn`. Use `set kS : Finset (Fin m) := Finset.univ.filter (fun k => ∃ i, σ k = some i ∧ c i = 0) with hkS`. Use `set kN : Finset (Fin m) := Finset.univ.filter (fun k => ¬ ∃ i, σ k = some i ∧ c i = 0) with hkN`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `F : Y → ℝ` to `fun y => -2 * Real.log ‖u y‖ + 2 * L.φ y₀ y - 2 * ∑ k ∈ kN, Real.log ‖fac k y‖`. Establish `hFc : ContinuousOn F K`. Use `((continuousOn_const.mul ((huc.mono hKψ).norm.log fun y hy => norm_ne_zero_iff.2 (hu0 y (hKψ hy)))).add (continuousOn_const.mul (hφc.mono fun y hy => hψU (hKψ hy)))).sub (continuousOn_const.mul (continuousOn_finset_sum _ fun k hk => ((hfacc k).mono hKψ).norm.log fun y hy => ?_))` and prove the remaining obligations. Rewrite using `[ne_eq, norm_eq_zero, ← ne_eq, hfac_ne]`. Introduce `i hi`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `hci : c i ≠ 0` using `fun h0 => (Finset.mem_filter.1 hk).2 ⟨i, hi, h0⟩`. Conclude with `hKV y hy i hci`. Take `⟨B, hBd⟩` from `hK.exists_bound_of_continuousOn hFc`. Use `set B' := max 0 (B - 2 * (S.card * Real.log δ)) with hB'def`. Establish `hB'0 : 0 ≤ B'` using `le_max_left _ _`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hB'1 : B - 2 * (S.card * Real.log δ) ≤ B'` using `le_max_right _ _`. Establish `he : (1 : ℝ) ≤ Real.exp 1` using `by linarith [Real.add_one_le_exp (1 : ℝ)]`. Establish `hlog2 : 0 ≤ Real.log (2 + B')` using `Real.log_nonneg (by linarith)`. Use `⟨Φ, S, K, Real.log (2 + B') + 1, hcompat, ?_, ?_, hΦtgt, hK, hsrcK, ?_, hdiv, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hΦsrc]; exact ⟨hy₀ψ, by simp [c, hδ]⟩`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hΦapp]`. Simplify using `[c]`. Introduce and unpack `_ ⟨z, hz, rfl⟩`. Conclude with `(hδT hz).1.2`. Combine the linear equalities and inequalities to obtain the conclusion.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `y hy hyo`. Establish `hyψ` using `hsrcψ y hy`. Establish `hfk : ∀ k, fac k y ≠ 0` using `(hopn y hyψ).1 hyo`. Establish `hsy : s y₀ y ≠ 0` using `(hnz y hyψ).1 hyo`. Establish `hn` using `hSec.2 y₀ y y ⟨hψU hyψ, L.mem_U y⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hlog : logNormSec L s y = Real.log ‖u y‖ + ∑ k, Real.log ‖fac k y‖ - L.φ y₀ y`. Unfold `logNormSec`. Rewrite using `[← hn, Real.log_mul (norm_ne_zero_iff.2 hsy) (Real.exp_pos _).ne', Real.log_exp, hsu' y hyψ, norm_mul, norm_prod, Real.log_mul (norm_ne_zero_iff.2 (hu0 y hyψ)) (Finset.prod_ne_zero_iff.2 fun k _ => norm_ne_zero_iff.2 (hfk k)), Real.log_prod (fun k _ => norm_ne_zero_iff.2 (hfk k)) …`. Expand and normalize the polynomial expressions, which then agree. Establish `hsplit : ∑ k ∈ kS, Real.log ‖fac k y‖ + ∑ k ∈ kN, Real.log ‖fac k y‖ = ∑ k, Real.log ‖fac k y‖` using `Finset.sum_filter_add_sum_filter_not _ _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hval : ∀ i, c i = 0 → ψ y i ≠ 0 → Real.log ‖ψ y i‖ = Real.log δ - Real.log ‖Φ y i‖⁻¹`. Introduce `i hci hne`. Establish `h1 : ψ y i = (δ : ℂ) * Φ y i`. Rewrite using `[hΦS y i hci, ← mul_assoc, mul_inv_cancel₀ hδC, one_mul]`. Establish `hΦne : Φ y i ≠ 0` using `by rw [hΦS y i hci]; exact mul_ne_zero (inv_ne_zero hδC) hne`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Rewrite using `[h1, norm_mul, Complex.norm_real, Real.norm_eq_abs, abs_of_pos hδ, Real.log_mul hδ.ne' (norm_ne_zero_iff.2 hΦne), Real.log_inv]`. Expand and normalize the polynomial expressions, which then agree. Establish `hsum : ∑ k ∈ kS, Real.log ‖fac k y‖ = ∑ i ∈ S, (Real.log δ - Real.log ‖Φ y i‖⁻¹)`. Use `Finset.sum_bij (fun k hk => Classical.choose (Finset.mem_filter.1 hk).2) ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `k hk`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨h1, h2⟩` from `Classical.choose_spec (Finset.mem_filter.1 hk).2`. Conclude with `Finset.mem_filter.2 ⟨Finset.mem_univ _, k, h1, h2⟩`. Introduce `k₁ hk₁ k₂ hk₂ h`. Establish `e1` using `(Classical.choose_spec (Finset.mem_filter.1 hk₁).2).1`. Establish `e2` using `(Classical.choose_spec (Finset.mem_filter.1 hk₂).2).1`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `e1` using `[h]`. Conclude with `hσinj k₁ k₂ _ e1 e2`. Introduce `i hi`. Take `⟨k, hk, hci⟩` from `(Finset.mem_filter.1 hi).2`. Establish `hkmem : k ∈ kS` using `Finset.mem_filter.2 ⟨Finset.mem_univ _, i, hk, hci⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Use `⟨k, hkmem, ?_⟩` and prove the remaining obligations. Establish `e1` using `(Classical.choose_spec (Finset.mem_filter.1 hkmem).2).1`. Conclude with `(Option.some_injective _ (hk.symm.trans e1)).symm`. Introduce `k hk`. Take `⟨h1, h2⟩` from `Classical.choose_spec (Finset.mem_filter.1 hk).2`.
-
-Rewrite using `[hfac_some k _ y h1]`. Conclude with `hval _ h2 ((hfac_ne k y).1 (hfk k) _ h1)`. Establish `hFy : F y ≤ B` using `le_trans (le_abs_self _) (by simpa [Real.norm_eq_abs] using hBd y (hsrcK hy))`. Use `set Λ := ∑ i ∈ S, Real.log ‖Φ y i‖⁻¹ with hΛdef`. Establish `hradeq : rad L s y = Real.exp 1 + F y - 2 * (S.card * Real.log δ) + 2 * Λ`.
-
-Unfold `rad`. Rewrite using `[hlog, ← hsplit, hsum, Finset.sum_sub_distrib, Finset.sum_const, nsmul_eq_mul]`. Simplify using `only [F]`. Expand and normalize the polynomial expressions, which then agree. Establish `hΦball : ‖Φ y‖ < 1`.
-
-Use `Φ.map_source hy` as an intermediate fact. Rewrite `this` using `[hΦtgt, mem_ball, dist_zero_right]`. Then use the resulting hypothesis. Establish `hΛ : 0 ≤ Λ` using `Finset.sum_nonneg fun i _ => by`. Establish `hlt : ‖Φ y i‖ < 1` using `lt_of_le_of_lt (norm_le_pi_norm (Φ y) i) hΦball`. Rewrite using `[Real.log_inv]`.
-
-Combine the linear relations using `[Real.log_nonpos (norm_nonneg (Φ y i)) hlt.le]`. Establish `hT1 : Real.exp 1 ≤ Real.exp 1 + Λ` using `by linarith`. Establish `hlogT : 1 ≤ Real.log (Real.exp 1 + Λ)`. Use `Real.log_le_log (Real.exp_pos 1) hT1` as an intermediate fact. Rewrite `this` using `[Real.log_exp]`. Then use the resulting hypothesis.
-
-Establish `hr_le : rad L s y ≤ (2 + B') * (Real.exp 1 + Λ)`. Rewrite using `[hradeq]`. Use polynomial arithmetic with `[mul_nonneg hB'0 (sub_nonneg.2 he), mul_nonneg hB'0 hΛ]`. Establish `hrpos : 0 < rad L s y` using `lt_of_lt_of_le (Real.exp_pos 1) (hrad y)`. Combine the equalities or inequalities in the displayed calculation.
-
-Use polynomial arithmetic with `[mul_nonneg hlog2 (sub_nonneg.2 hlogT)]`.
+Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem exists_adapted : ∀ (D : ℕ) (Y : Type) [TopologicalSpace Y] [T2Space Y] [CompactSpace Y] (A : ReciprocityTheory.AnForm.M.FinHolAtlas D Y) (L : ReciprocityTheory.AnForm.M.LocPot Y) (s : Y → Y → ℂ) (m : ℕ) (W : Fin m → Set Y), GlobalTheory.IndefiniteRowSideFullHecke.QuasiPlurisubharmonic.IsBoundary A L s W → ∀ (y₀ : Y) (N : Set Y), IsOpen N → y₀ ∈ N → ∃ (Φ : OpenPartialHomeomorph Y (Fin D → ℂ)) (S : Finset (Fin D)) (K : Set Y) (a : ℝ), ReciprocityTheory.AnForm.M.IsCompatChart A Φ ∧ y₀ ∈ Φ.source ∧ Φ y₀ = 0 ∧ Φ.target = Metric.ball 0 1 ∧ IsCompact K ∧ Φ.source ⊆ K ∧ K ⊆ N ∧ (∀ y ∈ Φ.source, y ∈ GlobalTheory.IndefiniteRowSideFullHecke.QuasiPlurisubharmonic.opn s ↔ Φ y ∉ ReciprocityTheory.AnForm.A.coordDiv S) ∧ 0 ≤ a ∧ ∀ y ∈ Φ.source, y ∈ GlobalTheory.IndefiniteRowSideFullHecke.QuasiPlurisubharmonic.opn s → Real.log (GlobalTheory.IndefiniteRowSideFullHecke.QuasiPlurisubharmonic.rad L s y) ≤ a * Real.log (Real.exp 1 + ∑ i ∈ S, Real.log ‖Φ y i‖⁻¹) := by
   intro D Y _ _ _ A L s m W hB y₀ N hN hy₀N

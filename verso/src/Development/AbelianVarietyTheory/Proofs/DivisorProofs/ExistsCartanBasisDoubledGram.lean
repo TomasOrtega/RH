@@ -16,11 +16,11 @@ noncomputable section
 namespace GlobalTheory.SkewDblIwasawa
 
 /- English proof (translation)
-Take `⟨w⟩ : Nonempty (InfinitePlace E)` from `inferInstance`. Establish `hw : w.IsComplex` using `hcm.2.1.isComplex w`. Establish `hτ : ¬ ComplexEmbedding.IsReal w.embedding` using `InfinitePlace.isComplex_iff.1 hw`. Establish `hx : ∃ x : E, σ x ≠ x`. Assume the negation of the conclusion as `h`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Use `push Not at h`. Apply `hτ` to reduce the goal to its premises. Rewrite using `[ComplexEmbedding.isReal_iff]`. Use extensionality with `x`. Use `hcm.2.2.2 w.embedding x` as an intermediate fact.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[h x]`. Conclude with `this.symm`. Take `⟨x, hx⟩` from `hx`. Establish `hσσ : σ (σ x) = x` using `w.embedding.injective (by rw [hcm.2.2.2, hcm.2.2.2, star_star])`. Conclude with `⟨x - σ x, sub_ne_zero.2 hx.symm, by rw [map_sub, hσσ, neg_sub]⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_imaginary {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     {σ : E →ₐ[F] E} (hcm : IsCMExt F E σ) : ∃ δ : E, δ ≠ 0 ∧ σ δ = -δ := by
@@ -41,7 +41,7 @@ theorem exists_imaginary {F E : Type} [Field F] [NumberField F] [Field E] [Numbe
   exact ⟨x - σ x, sub_ne_zero.2 hx.symm, by rw [map_sub, hσσ, neg_sub]⟩
 
 /- English proof (translation)
-Use `⟨h.1, ?_, fun x hx => ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mul_smul, Matrix.smul_mul, h.2.1]`. Rewrite using `[Matrix.smul_mulVec, dotProduct_smul, smul_eq_mul, Complex.re_ofReal_mul]`. Conclude with `mul_pos ht (h.2.2 x hx)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isCartan_smul_pos {n : ℕ} {M θ : Matrix (Fin n) (Fin n) ℂ} (h : IsCartan M θ) {t : ℝ} (ht : 0 < t) :
     IsCartan ((t : ℂ) • M) θ := by
@@ -51,7 +51,7 @@ theorem isCartan_smul_pos {n : ℕ} {M θ : Matrix (Fin n) (Fin n) ℂ} (h : IsC
     exact mul_pos ht (h.2.2 x hx)
 
 /- English proof (translation)
-Use `⟨by rw [neg_mul_neg, h.1], ?_, fun x hx => ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.transpose_neg, Matrix.map_neg _ (fun a => star_neg a), neg_mul_neg, Matrix.mul_neg, h.2.1]`. Rewrite using `[Matrix.neg_mulVec, Matrix.neg_mulVec, neg_dotProduct, dotProduct_neg, neg_neg]`. Conclude with `h.2.2 x hx`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isCartan_neg {n : ℕ} {M θ : Matrix (Fin n) (Fin n) ℂ} (h : IsCartan M θ) : IsCartan (-M) (-θ) := by
   refine ⟨by rw [neg_mul_neg, h.1], ?_, fun x hx => ?_⟩
@@ -60,7 +60,7 @@ theorem isCartan_neg {n : ℕ} {M θ : Matrix (Fin n) (Fin n) ℂ} (h : IsCartan
     exact h.2.2 x hx
 
 /- English proof (translation)
-Use extensionality with `i j`. Apply the tactic sequence `obtain ⟨i | i, rfl⟩ := finSumFinEquiv.surjective i <;> obtain ⟨j | j, rfl⟩ := finSumFinEquiv.surjective j <;>`. Simplify using `only [blkMat, Matrix.submatrix_apply, Equiv.symm_apply_apply, Matrix.fromBlocks_apply₁₁, Matrix.fromBlocks_apply₁₂, Matrix.fromBlocks_apply₂₁, Matrix.fromBlocks_apply₂₂, Matrix.zero_apply, Matrix.neg_apply, neg_zero]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem blkMat_neg_neg {n : ℕ} (x y : Matrix (Fin n) (Fin n) ℂ) :
     blkMat finSumFinEquiv (-x) (-y) = -blkMat finSumFinEquiv x y := by
@@ -71,7 +71,7 @@ theorem blkMat_neg_neg {n : ℕ} (x y : Matrix (Fin n) (Fin n) ℂ) :
       Matrix.zero_apply, Matrix.neg_apply, neg_zero]
 
 /- English proof (translation)
-Rewrite using `[Subgroup.comap_comap, stabArch]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem stabArch_eq_comap {F E : Type} [Field F] [Field E] [Algebra F E] (σ : E →ₐ[F] E) {m : ℕ}
     (Q : Matrix (Fin m) (Fin m) E) (w : InfinitePlace F) (b : GL (Fin m) (w.Completion ⊗[F] E)) :
@@ -80,7 +80,7 @@ theorem stabArch_eq_comap {F E : Type} [Field F] [Field E] [Algebra F E] (σ : E
   rw [Subgroup.comap_comap, stabArch]
 
 /- English proof (translation)
-Rewrite `h`, the goal using `[stabArch_eq_comap]`. Conclude with `hasIwasawa_of_smul σ c hc Q _ h`.
+Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasIwasawa_stabArch_of_smul {F E : Type} [Field F] [Field E] [Algebra F E] (σ : E →ₐ[F] E) {n : ℕ}
     (c : E) (hc : c ≠ 0) (Q : Matrix (Fin (n + n)) (Fin (n + n)) E) (w : InfinitePlace F)
@@ -90,7 +90,7 @@ theorem hasIwasawa_stabArch_of_smul {F E : Type} [Field F] [Field E] [Algebra F 
   exact hasIwasawa_of_smul σ c hc Q _ h
 
 /- English proof (translation)
-Rewrite using `[stabArch_eq_comap, stabArch_eq_comap, Subgroup.mem_comap, Subgroup.mem_comap (f := GlobalTheory.AdelicU.matHom _ _ Q'), e]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mem_stabArch_congr {F E : Type} [Field F] [Field E] [Algebra F E] (σ : E →ₐ[F] E) {m : ℕ}
     {Q Q' : Matrix (Fin m) (Fin m) E} (w : InfinitePlace F) (b : GL (Fin m) (w.Completion ⊗[F] E))
@@ -100,21 +100,19 @@ theorem mem_stabArch_congr {F E : Type} [Field F] [Field E] [Algebra F E] (σ : 
   rw [stabArch_eq_comap, stabArch_eq_comap, Subgroup.mem_comap, Subgroup.mem_comap (f := GlobalTheory.AdelicU.matHom _ _ Q'), e]
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hcm B n J θ hJ hθ Q hQ`. Take `⟨δ, hδ0, hδ⟩` from `exists_imaginary hcm`. Establish `ht : ∀ w : InfinitePlace F, ∃ t : ℝ, t ≠ 0 ∧ (B.emb w).1 δ = (t : ℂ) * Complex.I` using `fun w => by`. Establish `h1` using `hcm.2.2.2 (B.emb w).1 δ`. Rewrite `h1` using `[hδ, map_neg]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2 : ((B.emb w).1 δ).re = 0`. Use `congrArg Complex.re h1` as an intermediate fact. Simplify using `only [Complex.neg_re, Complex.star_def, Complex.conj_re] at this`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h3 : (B.emb w).1 δ = (((B.emb w).1 δ).im : ℂ) * Complex.I` using `by conv_lhs => rw [← Complex.re_add_im ((B.emb w).1 δ), h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Use `⟨_, fun h0 => ?_, h3⟩` and prove the remaining obligations. Rewrite `h3` using `[h0]`. Conclude with `hδ0 ((B.emb w).1.injective (by simpa using h3))`. Use `choose t ht0 ht using ht`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hJ' : ∀ i j, σ ((δ • J) j i) = (δ • J) i j` using `fun i j => by`. Simplify using `only [Matrix.smul_apply, smul_eq_mul, map_mul, hδ, hJ, neg_mul_neg]`. Establish `hmap : ∀ w, (δ • J).map (B.emb w).1 = (t w : ℂ) • (Complex.I • J.map (B.emb w).1)` using `fun w => by`. Use extensionality with `i j`. Simplify using `only [Matrix.map_apply, Matrix.smul_apply, smul_eq_mul, map_mul, ht, mul_assoc]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hθ' : ∀ w, IsCartan ((δ • J).map (B.emb w).1) (if 0 < t w then θ w else -θ w)` using `fun w => by`. Rewrite using `[hmap]`. Use `split_ifs with h`. Conclude with `isCartan_smul_pos (hθ w) h`. Establish `h' : 0 < -t w` using `neg_pos.2 (lt_of_le_of_ne (not_lt.1 h) (ht0 w))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `isCartan_smul_pos (isCartan_neg (hθ w)) h'` as an intermediate fact. Rewrite `this` using `[Complex.ofReal_neg, neg_smul, smul_neg, neg_neg]`. Then use the resulting hypothesis. Establish `hQ' : δ • Q = dblGram finSumFinEquiv (δ • J)ᵀ`. Rewrite using `[Matrix.transpose_smul, dblGram_smul, hQ]`. Take `⟨a, hmaj, harch⟩` from `GlobalTheory.DblIwasawa.arch hcm B (δ • J) (fun w => if 0 < t w then θ w else -θ w) hJ' hθ' hQ'`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨a, fun w => ⟨?_, fun k => ?_⟩⟩` and prove the remaining obligations. Take `⟨ε, hε⟩` from `hmaj w`. Conclude with `hasIwasawa_stabArch_of_smul σ δ hδ0 Q w _ (GlobalTheory.Core.Rk.IwArch.hasIwasawa_KArch hcm hQ' w _ ε hε)`. Take `⟨k', e⟩ : ∃ k' : GArch σ (δ • Q) w, GlobalTheory.AdelicU.matHom w.Completion σ Q k = GlobalTheory.AdelicU.matHom w.Completion σ (δ • Q) k'` from `⟨⟨k.1, (mem_hR_smul_iff _ σ δ hδ0 Q k.1).2 k.2⟩, rfl⟩`. Use `(mem_stabArch_congr σ w _ e).trans ((harch w k').trans ?_)` and prove the remaining obligations.
-
-Rewrite using `[← e]`. Use `split_ifs with h0`. Both sides reduce to the same expression. Rewrite using `[blkMat_neg_neg, Commute.neg_right_iff]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem arch : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E),
     IsCMExt F E σ → ∀ (B : Base F E) (n : ℕ) (J : Matrix (Fin n) (Fin n) E) (θ : InfinitePlace F → Matrix (Fin n) (Fin n) ℂ),

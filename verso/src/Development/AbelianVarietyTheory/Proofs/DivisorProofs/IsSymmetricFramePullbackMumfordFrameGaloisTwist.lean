@@ -11,7 +11,7 @@ open GlobalTheory.Mum GlobalTheory.Mum.Conj
 namespace GlobalTheory.Mum.Conj
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[gm_val (f ≫ g) z U h, Units.coe_map, gm_val g (f z) U h]`. Conclude with `(Scheme.Hom.germ_stalkMap_apply f (g ⁻¹ᵁ U) z h ((g.app U).hom a.val)).symm`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gm_comp_stalkMap {X Y Z : Scheme.{0}} (f : Z ⟶ Y) (g : Y ⟶ X) (z : Z) (U : X.Opens) (h : g (f z) ∈ U)
     (a : Γ(X, U)ˣ) : gm (f ≫ g) z U a = Units.map (f.stalkMap z).hom.toMonoidHom (gm g (f z) U a) := by
@@ -20,7 +20,7 @@ theorem gm_comp_stalkMap {X Y Z : Scheme.{0}} (f : Z ⟶ Y) (g : Y ⟶ X) (z : Z
   exact (Scheme.Hom.germ_stalkMap_apply f (g ⁻¹ᵁ U) z h ((g.app U).hom a.val)).symm
 
 /- English proof (translation)
-Rewrite using `[val_of t (f ≫ r) z J (fun k => J (f ≫ r ≫ φ k)) (fun k => by rw [Category.assoc])]`. Conclude with `gm_comp_stalkMap f r z _ (Set.mem_iInter.2 fun k => hJ (f ≫ r ≫ φ k)) _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem val_comp_stalkMap {X Y Z W : Scheme.{0}} {L : LB X} {K : Type} [Fintype K] {φ : K → (Y ⟶ X)} {ε : K → ℤ}
     (t : LB.Gen (LB.LinComb L φ ε)) (f : Z ⟶ W) (r : W ⟶ Y) (z : Z) (J : (Z ⟶ X) → L.ι) (hJ : Good L z J) :
@@ -29,7 +29,7 @@ theorem val_comp_stalkMap {X Y Z W : Scheme.{0}} {L : LB X} {K : Type} [Fintype 
   exact gm_comp_stalkMap f r z _ (Set.mem_iInter.2 fun k => hJ (f ≫ r ≫ φ k)) _
 
 /- English proof (translation)
-Introduce `ψ` and use `hJ (f ≫ ψ)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem good_comp {X Z W : Scheme.{0}} {L : LB X} (f : Z ⟶ W) {z : Z} {J : (Z ⟶ X) → L.ι} (hJ : Good L z J) :
     Good L (f z) (fun ψ => J (f ≫ ψ)) := fun ψ => hJ (f ≫ ψ)
@@ -39,17 +39,13 @@ end GlobalTheory.Mum.Conj
 namespace GlobalTheory.Mum.Conj
 
 /- English proof (translation)
-Introduce and unpack `⟨hg, h2, hN⟩`. Use `set f : (TF (R := R) (Kb R)).left ⟶ (TF (R := R) (Kb R)).left := spMap τ.toRingHom with hf`. Establish `hfr : ∀ (z : (TF (R` using `R) (Kb R)).left) (J), Good D.P.L z J → val (frTw D τ h w) (𝟙 _) z J = Units.map (f.stalkMap z).hom.toMonoidHom (val w (𝟙 _) (f z) (fun ψ => J (f ≫ ψ))) := by`. Introduce `z J hJ`. Rewrite using `[frTw, val_genCast, val_pull hJ, Category.id_comp, ← Category.comp_id f]`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `val_comp_stalkMap w f (𝟙 _) z J hJ`. Establish `hsy : ∀ (z : (TF (R` using `R) (Kb R)).left) (J), Good D.P.L z J → val (p₀.g.s p₀.y) (𝟙 _) z J = Units.map (f.stalkMap z).hom.toMonoidHom (val (p.g.s p.y) (𝟙 _) (f z) (fun ψ => J (f ≫ ψ))) := by`. Introduce `z J hJ`. Rewrite using `[h.1, val_corr hJ (h.2.2 p.y), val_pull hJ, Category.id_comp, ← Category.comp_id f]`. Conclude with `val_comp_stalkMap _ f (𝟙 _) z J hJ`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `⟨genCast_isGen _ (ReciprocityTheory.ChartRestriction.G.DVR.pullGen_isGen D.P.L _ _ w hg _), ?_, ?_⟩` and prove the remaining obligations. Introduce `ν hν z J hJ`. Rewrite using `[hfr z J hJ, hsy z J hJ, h.2.1, val_comp_stalkMap ν f _ z J hJ, ← map_pow, ← map_mul, h2 ν hν (f z) _ (good_comp f hJ)]`. Introduce `κ hκ z J hJ`. Establish `hpsi : val (D.psi p₀.y) (jFK (R` using `R) (Kb R)) z J = Units.map (f.stalkMap z).hom.toMonoidHom (val (D.psi p.y) (jFK (R := R) (Kb R)) (f z) (fun ψ => J (f ≫ ψ))) := by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e` using `val_comp_stalkMap (D.psi p.y) f (jFK (R := R) (Kb R)) z J hJ`. Rewrite using `[h.1]`. Use `Eq.trans ?_ e` and prove the remaining obligations. Conclude with `congrArg (fun r => val (D.psi p.y) r z J) (spMap_jFK τ).symm`. Establish `hrig : GlobalTheory.UT.rigV D (TF (R` using `R) (Kb R)).hom z J = Units.map (f.stalkMap z).hom.toMonoidHom (GlobalTheory.UT.rigV D (TF (R := R) (Kb R)).hom (f z) (fun ψ => J (f ≫ ψ))) := by`.
-
-Unfold `GlobalTheory.UT.rigV`. Rewrite using `[← val_comp_stalkMap _ f _ z J hJ]`. Conclude with `congrArg (fun r => val D.rig r z J) (spMap_jFKR τ).symm`. Rewrite using `[id_eq, hfr z J hJ, hpsi, hrig, h.2.1, val_comp_stalkMap κ f _ z J hJ, ← map_pow, ← map_mul, ← map_mul,`. Use the proof step `]`.
-
-Conclude with `congrArg _ (hN κ hκ (f z) _ (good_comp f hJ))`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem txFrame_frTw (R : Type) [CommRing R] [IsDomain R] (D : DegPre R) (N : ℕ)
     (τ : Kb R →ₐ[FractionRing R] Kb R) (p p₀ : QkPt D (Kb R) N) (h : QkExt τ.toRingHom p p₀)

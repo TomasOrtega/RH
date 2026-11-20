@@ -12,7 +12,7 @@ namespace Formalism.NormUnitaryCountingLemmas
 namespace WeightCompositions
 
 /- English proof (translation)
-Simplify using `only [Finsupp.weight_apply, Finsupp.sum, map_sum, map_nsmul]`.
+Simplify using the standard rewrite rules.
 -/
 lemma weight_hom {σ M M' : Type*} [AddCommMonoid M] [AddCommMonoid M'] (g : M →+ M')
     (w : σ → M) (d : σ →₀ ℕ) :
@@ -20,7 +20,7 @@ lemma weight_hom {σ M M' : Type*} [AddCommMonoid M] [AddCommMonoid M'] (g : M �
   simp only [Finsupp.weight_apply, Finsupp.sum, map_sum, map_nsmul]
 
 /- English proof (translation)
-Rewrite using `[Finsupp.weight_apply, Finsupp.weight_apply, Finsupp.sum_mapDomain_index]`. Use `intro`. Simplify using the standard rewrite rules. Use `intros`. Conclude with `add_smul _ _ _`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs and assume the hypotheses. A detailed English derivation is pending.
 -/
 lemma weight_mapDomain {σ τ M : Type*} [AddCommMonoid M] (f : σ → τ) (w : τ → M)
     (d : σ →₀ ℕ) :
@@ -32,7 +32,7 @@ lemma weight_mapDomain {σ τ M : Type*} [AddCommMonoid M] (f : σ → τ) (w : 
 variable {N n : ℕ}
 
 /- English proof (translation)
-Simplify using `only [Finsupp.weight_eq_sum, Finset.sum_apply, coordWt, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations. Simplify using `[Pi.single_apply]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 lemma sum_coordWt (d : (Fin N × Fin n) →₀ ℕ) :
     ∑ k, Finsupp.weight (coordWt N n) d k = ∑ p, d p := by
@@ -42,7 +42,7 @@ lemma sum_coordWt (d : (Fin N × Fin n) →₀ ℕ) :
   simp [Pi.single_apply]
 
 /- English proof (translation)
-Simplify using `only [Finsupp.weight_eq_sum, Finset.sum_apply, blockWt, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations. Simplify using `[Pi.single_apply]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 lemma sum_blockWt (d : (Fin N × Fin n) →₀ ℕ) :
     ∑ j, Finsupp.weight (blockWt N n) d j = ∑ p, d p := by
@@ -52,14 +52,14 @@ lemma sum_blockWt (d : (Fin N × Fin n) →₀ ℕ) :
   simp [Pi.single_apply]
 
 /- English proof (translation)
-Simplify using `[Finsupp.weight_eq_sum]`.
+Simplify using the standard rewrite rules.
 -/
 lemma weight_one (d : (Fin N × Fin n) →₀ ℕ) :
     Finsupp.weight (fun _ : Fin N × Fin n => (1 : ℕ)) d = ∑ p, d p := by
   simp [Finsupp.weight_eq_sum]
 
 /- English proof (translation)
-Simplify using `only [Finsupp.weight_eq_sum, Finset.sum_apply, coordWt, coordKWt, Pi.smul_apply, smul_eq_mul]`. Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations. Simplify using `[Pi.single_apply, eq_comm]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 lemma weight_coordKWt (k : Fin n) (d : (Fin N × Fin n) →₀ ℕ) :
     Finsupp.weight (coordKWt N n k) d = Finsupp.weight (coordWt N n) d k := by
@@ -69,9 +69,9 @@ lemma weight_coordKWt (k : Fin n) (d : (Fin N × Fin n) →₀ ℕ) :
   simp [Pi.single_apply, eq_comm]
 
 /- English proof (translation)
-Rewrite using `[map_sum]`. Rewrite using `[Finset.sum_congr rfl fun m' _ => weightedHomogeneousComponent_of_mem (m := (m : M)) (hg m')]`. Rewrite using `[Finset.sum_eq_single m]`. Simplify using the standard rewrite rules. Introduce `b _ hb`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[if_neg]`. Conclude with `fun h => hb (Subtype.ext h.symm)`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Simplify using the standard rewrite rules.
 -/
 lemma comp_sum_components {σ M K : Type*} [Field K] [AddCommMonoid M] [DecidableEq M]
     (φ : σ → M) (S : Finset M) (g : S → MvPolynomial σ K)
@@ -87,17 +87,17 @@ lemma comp_sum_components {σ M K : Type*} [Field K] [AddCommMonoid M] [Decidabl
   · simp
 
 /- English proof (translation)
-Set `W : S → Submodule K (MvPolynomial σ K)` to `fun m => V ⊓ weightedHomogeneousSubmodule K φ (m : M)`. Establish `: ∀ m : S, FiniteDimensional K (W m)` using `fun m => Submodule.finiteDimensional_of_le inf_le_left`. Set `Φ : V →ₗ[K] (∀ m : S, W m)` to `LinearMap.pi fun m => { toFun := fun F => ⟨weightedHomogeneousComponent φ (m : M) (F : MvPolynomial σ K), hcomp F F.2 m, weightedHomogeneousComponent_mem _ _ _⟩ map_add' := by intro a b; ext1; simp map_smul' := by intro c a; ext1; simp }`. Establish `hΦ : ∀ F m, ((Φ F m : W m) : MvPolynomial σ K) = weightedHomogeneousComponent φ (m : M) (F : MvPolynomial σ K)` using `fun F m => rfl`. Establish `hinj : Function.Injective Φ`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[injective_iff_map_eq_zero]`. Introduce `F hF`. Establish `h0 : ∀ m, weightedHomogeneousComponent φ m (F : MvPolynomial σ K) = 0`. Introduce `m`. Distinguish the cases in `hm : m ∈ S`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Use `congrArg Subtype.val (congrFun hF ⟨m, hm⟩)` as an intermediate fact. Rewrite `this` using `[hΦ]`. Simplify using `using this`. Conclude with `hS F F.2 m hm`. Apply `Subtype.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components.
 
-Use extensionality with `d`. Use `congrArg (coeff d) (h0 (Finsupp.weight φ d))` as an intermediate fact. Rewrite `this` using `[coeff_weightedHomogeneousComponent, if_pos rfl]`. Simplify using `using this`. Establish `hsurj : Function.Surjective Φ`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `g`. Use `⟨⟨∑ m : S, ((g m : W m) : MvPolynomial σ K), Submodule.sum_mem _ fun m _ => (g m).2.1⟩, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `m`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[hΦ]`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `comp_sum_components φ S (fun m : S => ((g m : W m) : MvPolynomial σ K)) (fun m : S => (g m).2.2) m`. Rewrite using `[(LinearEquiv.ofBijective Φ ⟨hinj, hsurj⟩).finrank_eq, Module.finrank_pi_fintype]`. Conclude with `Finset.sum_coe_sort S (fun m => Module.finrank K ↥(V ⊓ weightedHomogeneousSubmodule K φ m))`.
+A detailed English derivation is pending.
 -/
 lemma finrank_eq_sum_components {σ M K : Type*} [Field K] [AddCommMonoid M] [DecidableEq M]
     (φ : σ → M) (V : Submodule K (MvPolynomial σ K)) [FiniteDimensional K V] (S : Finset M)
@@ -147,7 +147,7 @@ lemma finrank_eq_sum_components {σ M K : Type*} [Field K] [AddCommMonoid M] [De
 variable {K : Type u} [Field K] (ν : Fin N → ℕ)
 
 /- English proof (translation)
-Unfold `H at hF`. Conclude with `(Submodule.mem_inf.mp hF).1`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 lemma mem_block {F : MvPolynomial (Fin N × Fin n) K} (hF : F ∈ H K ν) :
     F ∈ weightedHomogeneousSubmodule K (blockWt N n) ν := by
@@ -155,7 +155,7 @@ lemma mem_block {F : MvPolynomial (Fin N × Fin n) K} (hF : F ∈ H K ν) :
   exact (Submodule.mem_inf.mp hF).1
 
 /- English proof (translation)
-Introduce `F hF`. Establish `hb` using `mem_block ν hF`. Rewrite `hb`, the goal using `[mem_weightedHomogeneousSubmodule]`. Introduce `d hd`. Rewrite using `[weight_one, ← sum_blockWt, hb hd]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 lemma H_le_total :
     H K (n := n) ν ≤
@@ -177,7 +177,7 @@ def S0 (n s : ℕ) : Finset (Fin n → ℕ) :=
   (Fintype.piFinset fun _ : Fin n => Finset.range (s + 1)).filter (fun w => ∑ k, w k = s)
 
 /- English proof (translation)
-Simplify using `only [S0, Finset.mem_filter, Fintype.mem_piFinset, Finset.mem_range]`. Use `⟨fun k => ?_, h⟩` and prove the remaining obligations. Rewrite using `[← h]`. Conclude with `Nat.lt_succ_of_le (Finset.single_le_sum (fun _ _ => Nat.zero_le _) (Finset.mem_univ k))`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma mem_S0_of_sum_eq {s : ℕ} {w : Fin n → ℕ} (h : ∑ k, w k = s) : w ∈ S0 n s := by
   simp only [S0, Finset.mem_filter, Fintype.mem_piFinset, Finset.mem_range]
@@ -186,13 +186,13 @@ lemma mem_S0_of_sum_eq {s : ℕ} {w : Fin n → ℕ} (h : ∑ k, w k = s) : w �
   exact Nat.lt_succ_of_le (Finset.single_le_sum (fun _ _ => Nat.zero_le _) (Finset.mem_univ k))
 
 /- English proof (translation)
-The claim follows from `(Finset.mem_filter.mp h).2`.
+A detailed English derivation is pending.
 -/
 lemma sum_eq_of_mem_weightCompositions {s : ℕ} {w : Fin n → ℕ} (h : w ∈ S0 n s) : ∑ k, w k = s :=
   (Finset.mem_filter.mp h).2
 
 /- English proof (translation)
-Use `(Finset.mem_filter.mp h).1` as an intermediate fact. Rewrite `this` using `[Fintype.mem_piFinset]`. Conclude with `Finset.mem_range.mp (this k)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 lemma lt_succ_of_mem_weightCompositions {s : ℕ} {w : Fin n → ℕ} (h : w ∈ S0 n s) (k : Fin n) : w k < s + 1 := by
   have := (Finset.mem_filter.mp h).1
@@ -200,9 +200,9 @@ lemma lt_succ_of_mem_weightCompositions {s : ℕ} {w : Fin n → ℕ} (h : w ∈
   exact Finset.mem_range.mp (this k)
 
 /- English proof (translation)
-Apply `weightedHomogeneousComponent_eq_zero'` to reduce the goal to its premises. Introduce `d hd hdw`. Apply `hw` to reduce the goal to its premises. Establish `hb : Finsupp.weight (blockWt N n) d = ν` using `mem_block ν hF (mem_support_iff.mp hd)`. Apply `mem_S0_of_sum_eq` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[← hdw, sum_coordWt, ← sum_blockWt, hb]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma comp_eq_zero {F : MvPolynomial (Fin N × Fin n) K} (hF : F ∈ H K ν) (w : Fin n → ℕ)
     (hw : w ∉ S0 n (∑ j, ν j)) : weightedHomogeneousComponent (coordWt N n) w F = 0 := by
@@ -214,17 +214,17 @@ lemma comp_eq_zero {F : MvPolynomial (Fin N × Fin n) K} (hF : F ∈ H K ν) (w 
   rw [← hdw, sum_coordWt, ← sum_blockWt, hb]
 
 /- English proof (translation)
-Set `f : Fin N × Fin n → Fin N × Fin n` to `fun p => (p.1, σ p.2)`. Establish `hf : Function.Injective f`. Introduce `a b h`. Simplify using `only [f, Prod.mk.injEq] at h`. Conclude with `Prod.ext h.1 (σ.injective h.2)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Set `g : (Fin n → ℕ) →+ (Fin n → ℕ)` to `{ toFun := fun v => v ∘ σ.symm, map_zero' := rfl, map_add' := fun _ _ => rfl }`. Establish `hg : (fun i => coordWt N n (f i)) = fun i => g (coordWt N n i)`. Use function extensionality and compare the values at `i k`. Simplify using `only [coordWt, f, g, AddMonoidHom.coe_mk, ZeroHom.coe_mk, Function.comp_apply, Pi.single_apply, Equiv.symm_apply_eq]`. Establish `hmem : ∀ F ∈ H K ν ⊓ weightedHomogeneousSubmodule K (coordWt N n) w, rename f F ∈ H K ν ⊓ weightedHomogeneousSubmodule K (coordWt N n) (w ∘ σ.symm)`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `F hF`. Rewrite `hF`, the goal using `[Submodule.mem_inf]`. Use `⟨h3p K N n ν σ F hF.1, ?_⟩` and prove the remaining obligations. Establish `hw` using `hF.2`. Rewrite `hw`, the goal using `[mem_weightedHomogeneousSubmodule]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `d hd`. Assume the negation of the conclusion as `hne`. Apply `hd` to reduce the goal to its premises. Apply `coeff_rename_eq_zero` to reduce the goal to its premises. Introduce `u hu`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hu0`. Apply `hne` to reduce the goal to its premises. Rewrite using `[← hu, weight_mapDomain, hg, weight_hom, hw hu0]`. Both sides reduce to the same expression. Establish `: FiniteDimensional K ↥(H K ν ⊓ weightedHomogeneousSubmodule K (coordWt N n) (w ∘ σ.symm))` using `Submodule.finiteDimensional_of_le inf_le_left`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `L : ↥(H K ν ⊓ weightedHomogeneousSubmodule K (coordWt N n) w) →ₗ[K] ↥(H K ν ⊓ weightedHomogeneousSubmodule K (coordWt N n) (w ∘ σ.symm))` to `{ toFun := fun F => ⟨rename f F, hmem F F.2⟩ map_add' := by intros; ext1; simp map_smul' := by intros; ext1; simp }`. Apply `LinearMap.finrank_le_finrank_of_injective (f := L)` to reduce the goal to its premises. Introduce `a b hab`. Apply `Subtype.ext` to reduce the goal to its premises. Conclude with `rename_injective f hf (congrArg Subtype.val hab)`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 lemma finrank_Hw_le (h3p : NormUnitaryPermutationInvariance.{u}) (σ : Equiv.Perm (Fin n)) (w : Fin n → ℕ) :
     Module.finrank K ↥(H K ν ⊓ weightedHomogeneousSubmodule K (coordWt N n) w) ≤
@@ -270,9 +270,9 @@ lemma finrank_Hw_le (h3p : NormUnitaryPermutationInvariance.{u}) (σ : Equiv.Per
   exact rename_injective f hf (congrArg Subtype.val hab)
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Establish `h` using `finrank_Hw_le (K := K) ν h3p σ (w ∘ σ)`. Establish `e : (w ∘ σ) ∘ σ.symm = w` using `by funext k; simp`. Rewrite `h` using `[e]`. Then use the resulting hypothesis. Establish `h` using `finrank_Hw_le (K := K) ν h3p σ.symm w`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Rewrite `h` using `[Equiv.symm_symm]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 lemma finrank_Hw_perm (h3p : NormUnitaryPermutationInvariance.{u}) (σ : Equiv.Perm (Fin n)) (w : Fin n → ℕ) :
     Module.finrank K ↥(H K ν ⊓ weightedHomogeneousSubmodule K (coordWt N n) (w ∘ σ)) =
@@ -288,7 +288,7 @@ def Dw (K : Type u) [Field K] (ν : Fin N → ℕ) (w : Fin n → ℕ) : ℕ :=
   Module.finrank K ↥(H K ν ⊓ weightedHomogeneousSubmodule K (coordWt N n) w)
 
 /- English proof (translation)
-Rewrite `hG`, the goal using `[mem_weightedHomogeneousSubmodule]`. Introduce `d hd`. Rewrite using `[weight_coordKWt, hG hd]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 lemma coordWt_to_coordKWt (k : Fin n) {w : Fin n → ℕ} {G : MvPolynomial (Fin N × Fin n) K}
     (hG : G ∈ weightedHomogeneousSubmodule K (coordWt N n) w) :
@@ -298,13 +298,13 @@ lemma coordWt_to_coordKWt (k : Fin n) {w : Fin n → ℕ} {G : MvPolynomial (Fin
   rw [weight_coordKWt, hG hd]
 
 /- English proof (translation)
-Use `split_ifs with h`. Establish `heq : (H K ν ⊓ weightedHomogeneousSubmodule K (coordKWt N n k) i) ⊓ weightedHomogeneousSubmodule K (coordWt N n) w = H K ν ⊓ weightedHomogeneousSubmodule K (coordWt N n) w`. Apply `le_antisymm` to reduce the goal to its premises. Conclude with `inf_le_inf_right _ inf_le_left`. Introduce `F hF`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hF` using `[Submodule.mem_inf]`. Rewrite using `[Submodule.mem_inf, Submodule.mem_inf]`. Conclude with `⟨⟨hF.1, h ▸ coordWt_to_coordKWt k hF.2⟩, hF.2⟩`. Rewrite using `[heq]`. Both sides reduce to the same expression.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `heq : (H K ν ⊓ weightedHomogeneousSubmodule K (coordKWt N n k) i) ⊓ weightedHomogeneousSubmodule K (coordWt N n) w = ⊥`. Rewrite using `[Submodule.eq_bot_iff]`. Introduce `F hF`. Assume the negation of the conclusion as `hne`. Rewrite `hF` using `[Submodule.mem_inf, Submodule.mem_inf]`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `h` to reduce the goal to its premises. Conclude with `IsWeightedHomogeneous.inj_right hne (coordWt_to_coordKWt k hF.2) hF.1.2`. Rewrite using `[heq]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma finrank_T_inf (k : Fin n) (i : ℕ) (w : Fin n → ℕ) :
     Module.finrank K ↥((H K ν ⊓ weightedHomogeneousSubmodule K (coordKWt N n k) i) ⊓
@@ -334,9 +334,9 @@ lemma finrank_T_inf (k : Fin n) (i : ℕ) (w : Fin n → ℕ) :
     simp
 
 /- English proof (translation)
-Introduce `F hF w`. Rewrite `hF`, the goal using `[Submodule.mem_inf]`. Use `⟨h3w K N n ν F hF.1 w, ?_⟩` and prove the remaining obligations. Establish `hi` using `hF.2`. Rewrite `hi`, the goal using `[mem_weightedHomogeneousSubmodule]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Introduce `d hd`. Apply `hi` to reduce the goal to its premises. Introduce `h0`. Apply `hd` to reduce the goal to its premises. Rewrite using `[coeff_weightedHomogeneousComponent, h0]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/
@@ -358,21 +358,19 @@ lemma T_comp (h3w : NormUnitaryWeight.{u}) (k : Fin n) (i : ℕ) :
   simp
 
 /- English proof (translation)
-Use `set s := ∑ j, ν j with hs`. Establish `hT : ∀ i, Module.finrank K ↥(H K ν ⊓ weightedHomogeneousSubmodule K (coordKWt N n k) i) = ∑ w ∈ S0 n s, if w k = i then Dw K ν w else 0`. Introduce `i`. Establish `: FiniteDimensional K ↥(H K ν ⊓ weightedHomogeneousSubmodule K (coordKWt N n k) i)` using `Submodule.finiteDimensional_of_le inf_le_left`. Rewrite using `[finrank_eq_sum_components (coordWt N n) _ (S0 n s) (T_comp ν h3w k i) (fun F hF w hw => comp_eq_zero ν (Submodule.mem_inf.mp hF).1 w hw)]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Finset.sum_congr rfl fun w _ => finrank_T_inf ν k i w`. Establish `hH : Module.finrank K (H K (n` using `n) ν) = ∑ w ∈ S0 n s, Dw K ν w := finrank_eq_sum_components (coordWt N n) _ (S0 n s) (fun F hF w => h3w K N n ν F hF w) (fun F hF w hw => comp_eq_zero ν hF w hw)`. Establish `hL : ∑ i ∈ Finset.range (s + 1), i * Module.finrank K ↥(H K ν ⊓ weightedHomogeneousSubmodule K (coordKWt N n k) i) = ∑ w ∈ S0 n s, w k * Dw K ν w`. Simplify using `only [hT, Finset.mul_sum, mul_ite, mul_zero]`. Rewrite using `[Finset.sum_comm]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun w hw => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_ite_eq, if_pos (Finset.mem_range.mpr (lt_succ_of_mem_weightCompositions hw k))]`. Establish `hA : ∀ k', ∑ w ∈ S0 n s, w k' * Dw K ν w = ∑ w ∈ S0 n s, w k * Dw K ν w`. Introduce `k'`. Set `σ` to `Equiv.swap k k'`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the claim to the hypotheses of an applicable result.
 
-Set `e : (Fin n → ℕ) ≃ (Fin n → ℕ)` to `{ toFun := fun w => w ∘ σ, invFun := fun w => w ∘ σ.symm, left_inv := fun w => by funext x; simp, right_inv := fun w => by funext x; simp }`. Apply `Finset.sum_equiv e` to reduce the goal to its premises. Introduce `w`. Prove the components needed by the constructor for the conclusion. Introduce `hw`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `mem_S0_of_sum_eq` to reduce the goal to its premises. Rewrite using `[← sum_eq_of_mem_weightCompositions hw]`. Conclude with `Equiv.sum_comp σ w`. Introduce `hw`. Apply `mem_S0_of_sum_eq` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← sum_eq_of_mem_weightCompositions hw]`. Conclude with `(Equiv.sum_comp σ w).symm`. Introduce `w _ show w k' * Dw K ν w = (w ∘ σ) k * Dw K ν (w ∘ σ)`. Rewrite using `[Function.comp_apply, Equiv.swap_apply_left]`. Unfold `Dw`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[finrank_Hw_perm ν h3p σ w]`. Rewrite using `[hL]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.sum_congr rfl (fun k' _ => hA k'), Finset.sum_const, Finset.card_univ, Fintype.card_fin, smul_eq_mul]`. Use `_ = ∑ w ∈ S0 n s, (∑ k', w k') * Dw K ν w := by`.
-
-Rewrite using `[Finset.sum_comm]`. Simplify using `only [Finset.sum_mul]`. Use `_ = ∑ w ∈ S0 n s, s * Dw K ν w := Finset.sum_congr rfl fun w hw => by rw [sum_eq_of_mem_weightCompositions hw]`. Use `_ = s * Module.finrank K (H K (n := n) ν) := by rw [← Finset.mul_sum, hH]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem count (h3p : NormUnitaryPermutationInvariance.{u}) (h3w : NormUnitaryWeight.{u}) (ν : Fin N → ℕ) (k : Fin n) :
     n * ∑ i ∈ Finset.range (∑ j, ν j + 1),

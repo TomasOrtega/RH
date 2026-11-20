@@ -5,27 +5,25 @@ open Filter Topology
 namespace GlobalTheory.CompanionTheory.HolFamily
 
 /- English proof (translation)
-Introduce and unpack `⟨p0, z0⟩ ⟨-, hz0⟩`. Simplify using `only at hz0`. Take `⟨e, he, hball⟩` from `Metric.isOpen_iff.1 hU z0 hz0`. Establish `hR : 0 < e / 3` using `by positivity`. Use `set R := e / 3 with hRdef`.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hKU : Metric.closedBall z0 (2 * R) ⊆ U`. Use `(Metric.closedBall_subset_ball ?_).trans hball` and prove the remaining obligations. Rewrite using `[hRdef]`. Combine the linear equalities and inequalities to obtain the conclusion. Set `K : Set ℂ` to `Metric.closedBall z0 (2 * R)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `haveI : CompactSpace K := isCompact_iff_compactSpace.1 (isCompact_closedBall z0 (2 * R))`. Establish `hFc : Continuous (fun x : P × K => H x.1 x.2)`. Establish `: Continuous (fun x : P × K => ((x.1, (x.2 : ℂ)) : P × ℂ))` using `by fun_prop`. Conclude with `hc.comp_continuous this (fun x => ⟨Set.mem_univ _, hKU x.2.2⟩)`. Set `F : C(P × K, ℂ)` to `⟨fun x => H x.1 x.2, hFc⟩`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `G : C(P, C(K, ℂ))` to `F.curry`. Rewrite using `[ContinuousWithinAt, Metric.tendsto_nhds]`. Introduce `ε hε`. Establish `hGc : Tendsto G (𝓝 p0) (𝓝 (G p0))` using `G.continuous.tendsto p0`. Establish `h1 : ∀ᶠ p in 𝓝 p0, dist (G p) (G p0) < ε / 2 * R / 2` using `(Metric.tendsto_nhds.1 hGc) _ (by positivity)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdc : ContinuousAt (deriv (H p0)) z0` using `((hd p0).deriv hU).continuousOn.continuousAt (hU.mem_nhds hz0)`. Establish `h2 : ∀ᶠ z in 𝓝 z0, dist (deriv (H p0) z) (deriv (H p0) z0) < ε / 2` using `(Metric.tendsto_nhds.1 hdc) _ (by positivity)`. Establish `h3 : ∀ᶠ z in 𝓝 z0, z ∈ Metric.ball z0 R` using `Metric.ball_mem_nhds z0 hR`. Establish `h4` using `h1.prod_nhds (h2.and h3)`. Use `filter_upwards [nhdsWithin_le_nhds h4]`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce and unpack `⟨p, z⟩ ⟨hp, hz, hzR⟩`. Simplify using `only at hp hz hzR ⊢`. Establish `hsub : Metric.closedBall z R ⊆ K`. Introduce `w hw`. Rewrite `hw`, the goal using `[Metric.mem_closedBall]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Rewrite `hzR` using `[Metric.mem_ball]`. Use `dist_triangle w z z0` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hfd : DifferentiableOn ℂ (fun w => H p w - H p0 w) U` using `(hd p).sub (hd p0)`. Establish `hzU : z ∈ U` using `hKU (hsub (Metric.mem_closedBall_self hR.le))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hnh : U ∈ 𝓝 z` using `hU.mem_nhds hzU`. Establish `hderiv : deriv (fun w => H p w - H p0 w) z = deriv (H p) z - deriv (H p0) z` using `deriv_fun_sub ((hd p).differentiableAt hnh) ((hd p0).differentiableAt hnh)`. Establish `hbound : ∀ w ∈ Metric.sphere z R, ‖H p w - H p0 w‖ ≤ ε / 2 * R / 2`. Introduce `w hw`. Establish `hwK : w ∈ K` using `hsub (Metric.sphere_subset_closedBall hw)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `ContinuousMap.dist_apply_le_dist (f := G p) (g := G p0) (⟨w, hwK⟩ : K)` as an intermediate fact. Establish `h5 : dist (G p ⟨w, hwK⟩) (G p0 ⟨w, hwK⟩) = ‖H p w - H p0 w‖`. Rewrite using `[dist_eq_norm]`. Both sides reduce to the same expression. Rewrite using `[← h5]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Conclude with `this.trans hp.le`. Establish `hcauchy : ‖deriv (fun w => H p w - H p0 w) z‖ ≤ ε / 2 * R / 2 / R` using `Complex.norm_deriv_le_of_forall_mem_sphere_norm_le hR (hfd.diffContOnCl_ball (hsub.trans hKU)) hbound`. Establish `hval : ε / 2 * R / 2 / R = ε / 4` using `by field_simp; ring`. Rewrite `hcauchy` using `[hval, hderiv]`. Combine the equalities or inequalities in the displayed calculation.
-
-Rewrite using `[dist_eq_norm (deriv (H p) z)]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem continuousOn_deriv_family (P : Type) [TopologicalSpace P] (U : Set ℂ) (hU : IsOpen U)
     (H : P → ℂ → ℂ) (hc : ContinuousOn (fun q : P × ℂ => H q.1 q.2) (Set.univ ×ˢ U))
@@ -92,11 +90,11 @@ theorem continuousOn_deriv_family (P : Type) [TopologicalSpace P] (U : Set ℂ) 
         linarith
 
 /- English proof (translation)
-Introduce `P _ U hU H hc hd r`. Establish `hdiff : ∀ (r : ℕ) (p : P), DifferentiableOn ℂ (iteratedDeriv r (H p)) U`. Introduce `r p`. Proceed by induction on `r with`. Consider the case `zero => simpa [iteratedDeriv_zero] using hd p`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `succ r ih`. Rewrite using `[iteratedDeriv_succ]`. Conclude with `ih.deriv hU`. Proceed by induction on `r with`. Consider the case `zero => simpa [iteratedDeriv_zero] using hc`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `succ r ih`. Simplify using `only [iteratedDeriv_succ]`. Conclude with `continuousOn_deriv_family P U hU (fun p => iteratedDeriv r (H p)) ih (hdiff r)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem continuousOn_iteratedDeriv_family :
     ∀ (P : Type) [TopologicalSpace P] (U : Set ℂ), IsOpen U → ∀ H : P → ℂ → ℂ,

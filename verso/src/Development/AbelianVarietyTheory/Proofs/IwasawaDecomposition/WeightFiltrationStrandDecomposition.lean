@@ -10,7 +10,7 @@ variable {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAl
 variable {V : Type} [AddCommGroup V] [Module ℂ V] [FiniteDimensional ℂ V]
 
 /- English proof (translation)
-Proceed by induction on `j with`. Consider the case `zero => simp`. Consider the case `succ j ih`. Rewrite using `[pow_succ', Module.End.mul_apply, a.comm_apply, ih, map_smul, smul_smul, Module.End.mul_apply, pow_succ']`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem rho_pow_N_apply (a : WDRep h V) (σ : Weil h) (j : ℕ) (v : V) :
     a.ρ σ ((a.N ^ j) v) = (((normV w : ℕ) : ℂ) ^ deg σ) ^ j • (a.N ^ j) (a.ρ σ v) := by
@@ -21,9 +21,9 @@ theorem rho_pow_N_apply (a : WDRep h V) (σ : Weil h) (j : ℕ) (v : V) :
       Module.End.mul_apply, pow_succ']
 
 /- English proof (translation)
-Establish `h1` using `rho_pow_N_apply a σ⁻¹ j (a.ρ σ v)`. Establish `h2 : a.ρ σ⁻¹ (a.ρ σ v) = v`. Rewrite using `[← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply]`. Rewrite `h1` using `[h2, hv, smul_zero]`. Establish `h3 : a.ρ σ (a.ρ σ⁻¹ ((a.N ^ j) (a.ρ σ v))) = (a.N ^ j) (a.ρ σ v)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Module.End.mul_apply, ← map_mul, mul_inv_cancel, map_one, Module.End.one_apply]`. Rewrite using `[← h3, h1, map_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem rho_mem_ker_pow (a : WDRep h V) (σ : Weil h) (j : ℕ) (v : V) (hv : (a.N ^ j) v = 0) :
     (a.N ^ j) (a.ρ σ v) = 0 := by
@@ -36,9 +36,9 @@ theorem rho_mem_ker_pow (a : WDRep h V) (σ : Weil h) (j : ℕ) (v : V) (hv : (a
   rw [← h3, h1, map_zero]
 
 /- English proof (translation)
-Proceed by induction on `j with`. Consider the case `zero => simpa using hv`. Consider the case `succ j ih`. Establish `e : k + 2 * ((j + 1 : ℕ) : ℤ) = (k + 2 * (j : ℤ)) + 2` using `by push_cast; ring`. Rewrite using `[e, pow_succ', Module.End.mul_apply]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hN _ _ ih`.
+A detailed English derivation is pending.
 -/
 theorem pow_N_mem_wtSpace (a : WDRep h V)
     (hN : ∀ (k : ℤ), ∀ v ∈ wtSpace a k, a.N v ∈ wtSpace a (k + 2)) (j : ℕ) (k : ℤ) (v : V)
@@ -51,19 +51,15 @@ theorem pow_N_mem_wtSpace (a : WDRep h V)
     exact hN _ _ ih
 
 /- English proof (translation)
-Introduce `E Ω _ _ _ _ _ A w h V _ _ _ a m hρ hN htop`. Use `⟨⟨fun σ => ?_, ?_⟩, ⟨fun σ => ?_, ?_⟩⟩` and prove the remaining obligations. Use `show strand a.N (wtSpace a (-(m : ℤ))) m ≤ (strand a.N (wtSpace a (-(m : ℤ))) m).comap (a.ρ σ)`. Use `iSup_le fun j => ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨s, hs, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Submodule.mem_comap]`. Rewrite using `[rho_pow_N_apply]`. Use `Submodule.smul_mem _ _ (Submodule.mem_iSup_of_mem j ⟨a.ρ σ s, hρ _ σ s hs, rfl⟩)` and prove the remaining obligations. Use `show strand a.N (wtSpace a (-(m : ℤ))) m ≤ (strand a.N (wtSpace a (-(m : ℤ))) m).comap a.N`. Use `iSup_le fun j => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `_ ⟨s, hs, rfl⟩`. Rewrite using `[Submodule.mem_comap]`. Rewrite using `[← Module.End.mul_apply, ← pow_succ']`. Distinguish the cases in `hj : (j : ℕ) < m`. Conclude with `Submodule.mem_iSup_of_mem (⟨(j : ℕ) + 1, by omega⟩ : Fin (m + 1)) ⟨s, hs, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hjm : (j : ℕ) = m` using `by have := j.isLt; omega`. Establish `hmem` using `pow_N_mem_wtSpace a hN ((j : ℕ) + 1) _ s hs`. Rewrite `hmem` using `[htop _ (by push_cast; omega), Submodule.mem_bot]`. Rewrite using `[hmem]`. Conclude with `Submodule.zero_mem _`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Use `show lowPart (wtSpace a) a.N m ≤ (lowPart (wtSpace a) a.N m).comap (a.ρ σ)`. Use `iSup_le fun k => ?_` and prove the remaining obligations. Introduce and unpack `v ⟨hv1, hv2⟩`. Conclude with `Submodule.mem_iSup_of_mem k ⟨hρ k σ v hv1, rho_mem_ker_pow a σ _ v hv2⟩`. Use `show lowPart (wtSpace a) a.N m ≤ (lowPart (wtSpace a) a.N m).comap a.N`.
-
-Use `iSup_le fun k => ?_` and prove the remaining obligations. Introduce and unpack `v ⟨hv1, hv2⟩`. Use `Submodule.mem_iSup_of_mem (k + 2) ⟨hN k v hv1, ?_⟩` and prove the remaining obligations. Use `show (a.N ^ (((m : ℤ) - (k + 2) + 1) / 2).toNat) (a.N v) = 0`. Establish `hv2' : (a.N ^ (((m : ℤ) - k + 1) / 2).toNat) v = 0` using `hv2`.
-
-Establish `hle : (((m : ℤ) - k + 1) / 2).toNat ≤ (((m : ℤ) - (k + 2) + 1) / 2).toNat + 1` using `by omega`. Rewrite using `[← Module.End.mul_apply, ← pow_succ, ← Nat.sub_add_cancel hle, pow_add, Module.End.mul_apply, hv2', map_zero]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem strand_and_lowPart_stable : ∀ (E Ω : Type) [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω] (A : ValuationSubring Ω) (w : HeightOneSpectrum (𝓞 E)) (h : IsPlaceOver A w) (V : Type) [AddCommGroup V] [Module ℂ V] [FiniteDimensional ℂ V] (a : WDRep h V) (m : ℕ), (∀ (k : ℤ) (σ : Weil h), ∀ v ∈ wtSpace a k, a.ρ σ v ∈ wtSpace a k) → (∀ (k : ℤ), ∀ v ∈ wtSpace a k, a.N v ∈ wtSpace a (k + 2)) → (∀ k : ℤ, (m : ℤ) < k → wtSpace a k = ⊥) → IsSubWD a (strand a.N (wtSpace a (-(m : ℤ))) m) ∧ IsSubWD a (lowPart (wtSpace a) a.N m) := by
   intro E Ω _ _ _ _ _ A w h V _ _ _ a m hρ hN htop

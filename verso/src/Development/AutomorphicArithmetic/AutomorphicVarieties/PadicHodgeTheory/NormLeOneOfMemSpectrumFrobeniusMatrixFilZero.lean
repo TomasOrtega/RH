@@ -20,7 +20,7 @@ private noncomputable def filS {l : ℕ} [Fact l.Prime] (K : FinExt l) : Subring
     rw [map_neg, map_neg]; exact Submodule.neg_mem _ (ha k)
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => rfl`. Consider the case `succ k ih`. Rewrite using `[Function.iterate_succ_apply', Function.iterate_succ_apply', ih, ← (PP l).PD_φ K, ((PP l).PD K).φ_K₀]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 private theorem frobenius_iterate_unramified {l : ℕ} [Fact l.Prime] (K : FinExt l) (k : ℕ) (c : ↥(K0 K)) :
     ((PP l).φB)^[k] (algebraMap ↥(K0 K) (Bcr l) c) =
@@ -32,7 +32,7 @@ private theorem frobenius_iterate_unramified {l : ℕ} [Fact l.Prime] (K : FinEx
       ((PP l).PD K).φ_K₀]
 
 /- English proof (translation)
-Introduce `k`. Rewrite using `[AlgHom.coe_pow, frobenius_iterate_unramified, ← (PP l).PD_ι K, AlgHom.commutes, Algebra.algebraMap_eq_smul_one, ← algebraMap_smul ↥K.1]`. Conclude with `Submodule.smul_mem _ _ ((PP l).PD K).one_mem`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem K0_mem {l : ℕ} [Fact l.Prime] (K : FinExt l) (c : ↥(K0 K)) :
     algebraMap ↥(K0 K) (Bcr l) c ∈ filS K := by
@@ -42,7 +42,7 @@ private theorem K0_mem {l : ℕ} [Fact l.Prime] (K : FinExt l) (c : ↥(K0 K)) :
   exact Submodule.smul_mem _ _ ((PP l).PD K).one_mem
 
 /- English proof (translation)
-Take `⟨T⟩` from `tiedP l`. Rewrite using `[T.fil, T.fil]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 private theorem fil_iff {l : ℕ} [Fact l.Prime] (K K' : FinExt l) (x : Bdr l) :
     x ∈ ((PP l).PD K).Fil 0 ↔ x ∈ ((PP l).PD K').Fil 0 := by
@@ -50,21 +50,19 @@ private theorem fil_iff {l : ℕ} [Fact l.Prime] (K K' : FinExt l) (x : Bdr l) :
   rw [T.fil, T.fil]
 
 /- English proof (translation)
-Introduce `l _ K f hf hσ d M M' F hM hFil hφ a ha`. Take `⟨T⟩` from `tiedP l`. Use `haveI : IsDomain (Bcr l) := GlobalTheory.RegularRing.isDomain_of_tied T K`. Take `⟨r, Y, Z, F', hr, hZY, hFY, hdet⟩` from `UpperTheory.exists_invariant_block_det_norm_eq_pow_of_mem_spectrum (K0 K) F a ha`. Use `set j : ↥(K0 K) →+* Bcr l := algebraMap ↥(K0 K) (Bcr l) with hj`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `ψ : Bcr l →+* Bcr l` to `(((PP l).φB ^ f : Bcr l →ₐ[ℚ_[l]] Bcr l) : Bcr l →+* Bcr l)`. Establish `hψ : (ψ : Bcr l → Bcr l) = ((PP l).φB)^[f]` using `AlgHom.coe_pow _ _`. Take `⟨X, hXd⟩ : ∃ X : Matrix (Fin d) (Fin r) (Bcr l), X = M * Y.map j` from `⟨_, rfl⟩`. Establish `hZX : (Z.map j * M') * X = 1`. Rewrite using `[hXd]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Matrix.mul_assoc, ← Matrix.mul_assoc M', hM, Matrix.one_mul, ← Matrix.map_mul, hZY, Matrix.map_one _ (map_zero j) (map_one j)]`. Establish `hYψ : (Y.map j).map ψ = Y.map j`. Use extensionality with `i k`. Simplify using `only [Matrix.map_apply]`. Rewrite using `[hψ, hj, frobenius_iterate_unramified, hσ]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hX : X.map ψ = X * F'.map j`. Rewrite using `[hXd]`. Rewrite using `[Matrix.map_mul, hYψ, hψ, hφ, Matrix.mul_assoc, ← Matrix.map_mul, hFY, Matrix.map_mul, Matrix.mul_assoc]`. Take `⟨s, hs⟩` from `UpperTheory.exists_square_submatrix_det_ne_zero_of_left_inverse X _ hZX`. Establish `hXS : ∀ i k, X i k ∈ filS K`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `i k`. Simplify using `only [hXd, Matrix.mul_apply, Matrix.map_apply]`. Use `Subring.sum_mem _ fun c _ => Subring.mul_mem _ (fun n => ?_) (K0_mem K _)` and prove the remaining obligations. Rewrite using `[AlgHom.coe_pow]`. Conclude with `(fil_iff _ _ _).1 (hFil n i c)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hbS : (X.submatrix s id).det ∈ filS K`. Rewrite using `[Matrix.det_apply']`. Conclude with `Subring.sum_mem _ fun p _ => Subring.mul_mem _ (intCast_mem _ _) (Subring.prod_mem _ fun i _ => hXS _ _)`. Establish `hb : ((PP l).φB)^[f] (X.submatrix s id).det = j F'.det * (X.submatrix s id).det`. Establish `h1 : (X.submatrix s id).map ψ = X.submatrix s id * F'.map j`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `i k`. Use `congrFun (congrFun hX (s i)) k` as an intermediate fact. Simplify `this` using `[Matrix.mul_apply]`. Rewrite using `[← hψ, RingHom.map_det, RingHom.mapMatrix_apply, h1, Matrix.det_mul, mul_comm, RingHom.map_det, RingHom.mapMatrix_apply]`. Establish `hle` using `UpperTheory.norm_le_one_of_frobenius_pow_eigenvector_mem_fil_zero K f hf hσ _ F'.det hs hb fun i => by`.
-
-Use `hbS i` as an intermediate fact. Rewrite `this` using `[AlgHom.coe_pow]`. Conclude with `(fil_iff _ _ _).1 this`. Rewrite `hle` using `[hdet]`. Conclude with `(pow_le_one_iff_of_nonneg (norm_nonneg a) hr.ne').1 hle`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.norm_le_one_of_mem_spectrum_frobenius_matrix_fil_zero :
     ∀ {l : ℕ} [Fact l.Prime] (K : FinExt l) (f : ℕ), 0 < f → (∀ x : ↥(K0 K), (((PP l).PD K).σ)^[f] x = x) → ∀ {d : ℕ} (M M' : Matrix (Fin d) (Fin d) (Bcr l)) (F : Matrix (Fin d) (Fin d) ↥(K0 K)), M' * M = 1 → (∀ (k : ℕ) i j, (PP l).ιB (((PP l).φB)^[k] (M i j)) ∈ ((PP l).PD (botExt l)).Fil 0) → M.map (((PP l).φB)^[f]) = M * F.map (algebraMap ↥(K0 K) (Bcr l)) → ∀ a ∈ spectrum (Om l) (F.map (algebraMap ↥(K0 K) (Om l))), ‖a‖ ≤ 1 := by

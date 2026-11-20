@@ -19,7 +19,7 @@ def FibreMahlerForms.Statement : Prop :=
             (harmonic (Module.finrank (𝓞 F) W - 1) : ℝ) / 2)
 
 /- English proof (translation)
-The claim follows from `HermitianMetric.standard ℚ (Fin 2)`.
+A detailed English derivation is pending.
 -/
 example : HermitianMetric ℚ (Fin 2 → 𝓞 ℚ) := HermitianMetric.standard ℚ (Fin 2)
 

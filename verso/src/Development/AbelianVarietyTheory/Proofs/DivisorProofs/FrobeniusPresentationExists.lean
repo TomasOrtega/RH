@@ -26,12 +26,12 @@ abbrev pwN (L : LB X) (n : ℕ) : LB X := ⟨L.ι, L.U, fun i j => L.g i j ^ (n 
 variable {L M N : LB X} (n : ℕ)
 
 /- English proof (translation)
-The claim follows from `AbLaw.isLB_pw hL n`.
+A detailed English derivation is pending.
 -/
 theorem isLB_pwN (hL : L.IsLB) : (pwN L n).IsLB := AbLaw.isLB_pw hL n
 
 /- English proof (translation)
-Rewrite using `[← map_pow]`. Conclude with `congrArg _ ((congrArg Units.val (zpow_natCast (L.g i j) n)).trans (Units.val_pow_eq_pow_val _ _))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem resG_pw_g (i j : L.ι) {W : X.Opens} (h : W ≤ L.U i ⊓ L.U j) :
     resG X h ((pwN L n).g i j).val =
@@ -54,7 +54,7 @@ theorem coord_powSec {V : X.Opens} (s : Γ(toMod L, V)) (i : L.ι) :
     coord (L := pwN L n) (powSec n s) i = coord s i ^ n := rfl
 
 /- English proof (translation)
-The claim follows from `sec_ext fun i => by change (resG X _ a * coord s i) ^ n = resG X _ (a ^ n) * coord s i ^ n rw [mul_pow, map_pow]`.
+A detailed English derivation is pending.
 -/
 theorem powSec_smul {V : X.Opens} (a : Γ(X, V)) (s : Γ(toMod L, V)) :
     powSec n (a • s) = a ^ n • powSec n s :=
@@ -63,7 +63,7 @@ theorem powSec_smul {V : X.Opens} (a : Γ(X, V)) (s : Γ(toMod L, V)) :
     rw [mul_pow, map_pow]
 
 /- English proof (translation)
-The claim follows from `sec_ext fun i => (map_pow (resG X (inf_le_inf_right (L.U i) h)) _ _).symm`.
+A detailed English derivation is pending.
 -/
 theorem powSec_map {V W : X.Opens} (h : W ≤ V) (s : Γ(toMod L, V)) :
     powSec n ((toMod L).presheaf.map (homOfLE h).op s) =
@@ -71,7 +71,7 @@ theorem powSec_map {V W : X.Opens} (h : W ≤ V) (s : Γ(toMod L, V)) :
   sec_ext fun i => (map_pow (resG X (inf_le_inf_right (L.U i) h)) _ _).symm
 
 /- English proof (translation)
-The claim follows from `sec_ext fun j => (resG_pw_g (L := L) n j i _).symm`.
+A detailed English derivation is pending.
 -/
 theorem powSec_chartSec (hL : L.IsLB) (i : L.ι) :
     powSec n (LB.chartSec hL i) = LB.chartSec (isLB_pwN n hL) i :=
@@ -86,9 +86,9 @@ def powHom (hL : L.IsLB) (φ : toMod L ⟶ toMod M) : toMod (pwN L n) ⟶ toMod 
     exact h.trans (congrArg (· • _) e.symm)
 
 /- English proof (translation)
-Use `modSec_ext_of_cover (fun i => V ⊓ L.U i) (fun _ => inf_le_left) (le_iSup_inf hL.cover V) fun i => ?_` and prove the remaining obligations. Rewrite using `[← app_modRes, ← powSec_map, ← powSec_map, ← app_modRes]`. Take `⟨a, ha⟩` from `(bijective_smul_chartSec hL i _ (inf_le_right : V ⊓ L.U i ≤ L.U i)).2 ((toMod L).presheaf.map (homOfLE (inf_le_left : V ⊓ L.U i ≤ V)).op s)`. Rewrite using `[← ha]`. Simplify using `only []`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[powSec_smul, Scheme.Modules.Hom.app_smul, Scheme.Modules.Hom.app_smul, powSec_smul, powSec_map, app_modRes, app_modRes, powSec_map, powSec_chartSec]`. Conclude with `congrArg (fun t => a ^ n • (toMod (pwN M n)).presheaf.map _ t) (homOfFrames_app_chartSec (isLB_pwN n hL) _ i)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem powHom_app_powSec (hL : L.IsLB) (φ : toMod L ⟶ toMod M) {V : X.Opens}
     (s : Γ(toMod L, V)) : (powHom n hL φ).app V (powSec n s) = powSec n (φ.app V s) := by
@@ -105,9 +105,9 @@ theorem powHom_app_powSec (hL : L.IsLB) (φ : toMod L ⟶ toMod M) {V : X.Opens}
     (homOfFrames_app_chartSec (isLB_pwN n hL) _ i)
 
 /- English proof (translation)
-Use `hom_ext_chartSec (isLB_pwN n hL) fun i => ?_` and prove the remaining obligations. Rewrite using `[← powSec_chartSec n hL i, smulHom_app_apply, map_pow]`. Express the relevant statement in the definitionally equal form `(powHom n hM ψ).app (L.U i) ((powHom n hL φ).app (L.U i) (powSec n (LB.chartSec hL i))) = _`. Rewrite using `[powHom_app_powSec, powHom_app_powSec]`. Use `Eq.trans ?_ (powSec_smul n _ _)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `congrArg (fun χ : toMod L ⟶ toMod L => powSec n (χ.app (L.U i) (LB.chartSec hL i))) h`.
+A detailed English derivation is pending.
 -/
 theorem powHom_comp (hL : L.IsLB) (hM : M.IsLB) (φ : toMod L ⟶ toMod M) (ψ : toMod M ⟶ toMod L)
     (g : Γ(X, ⊤)) (h : φ ≫ ψ = smulHom _ g) :
@@ -130,7 +130,7 @@ def pullMap (hL : L.IsLB) (hM : M.IsLB) (f : Y ⟶ X) (φ : toMod L ⟶ toMod M)
   (pullbackIso hL f).inv ≫ (Scheme.Modules.pullback f).map φ ≫ (pullbackIso hM f).hom
 
 /- English proof (translation)
-Establish `h : toPushforward L f ≫ (Scheme.Modules.pushforward f).map (pullMap hL hM f φ) = φ ≫ toPushforward M f`. Rewrite using `[← unit_comp_pullbackHom, ← unit_comp_pullbackHom, Category.assoc, ← Functor.map_comp, ← pullbackIso_hom hL, pullMap, Iso.hom_inv_id_assoc, Functor.map_comp, pullbackIso_hom]`. Conclude with `((Scheme.Modules.pullbackPushforwardAdjunction f).unit_naturality_assoc φ _)`. Conclude with `congrArg (fun χ => χ.app V s) h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pullMap_app_pullSec (hL : L.IsLB) (hM : M.IsLB) (f : Y ⟶ X) (φ : toMod L ⟶ toMod M)
     {V : X.Opens} (s : Γ(toMod L, V)) :
@@ -143,9 +143,9 @@ theorem pullMap_app_pullSec (hL : L.IsLB) (hM : M.IsLB) (f : Y ⟶ X) (φ : toMo
   exact congrArg (fun χ => χ.app V s) h
 
 /- English proof (translation)
-Substitute `hU` using the available equality. Choose the witnesses or unpack the hypotheses as in `rfl : g = g' := by`. Use function extensionality and compare the values at `i j`. Use `hg i j _ le_rfl le_rfl` as an intermediate fact. Rewrite `this` using `[resG_self, resG_self]`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `Units.ext this`. Conclude with `⟨Iso.refl _, fun _ _ _ _ _ _ => rfl⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_iso_of_charts {ι : Type} {U U' : ι → Y.Opens} (g : ∀ i j, Γ(Y, U i ⊓ U j)ˣ)
     (g' : ∀ i j, Γ(Y, U' i ⊓ U' j)ˣ) (hU : U = U')
@@ -170,11 +170,11 @@ variable (n : ℕ) {π ι : Y ⟶ X} (hpre : ∀ V : X.Opens, π ⁻¹ᵁ V = ι
 include hpow in
 
 /- English proof (translation)
-Establish `hU : (L.pull π).U = ((pwN L n).pull ι).U` using `funext fun j => (pull_U π j).trans ((hpre _).trans (pull_U (L := pwN L n) ι j).symm)`. Take `⟨e, he⟩` from `exists_iso_of_charts (L.pull π).g ((pwN L n).pull ι).g hU fun i j W h h' => by`. Use `(resG_pull_g π i j h).trans (Eq.trans ?_ (resG_pull_g (L := pwN L n) ι i j h').symm)` and prove the remaining obligations. Use `(hpow (L.U (i PUnit.unit) ⊓ L.U (j PUnit.unit)) W _ (h'.trans (inf_le_inf (pull_U_le (L := pwN L n) ι i) (pull_U_le (L := pwN L n) ι j))) _).trans ((map_pow _ _ _).symm.trans ?_)` and prove the remaining obligations. Establish `e` using `resG_pw_g (L := L) n (i PUnit.unit) (j PUnit.unit) le_rfl`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `e` using `[resG_self, resG_self]`. Conclude with `congrArg _ e.symm`. Use `⟨e, fun V s => sec_ext fun j => ?_⟩` and prove the remaining obligations. Establish `h` using `he (π ⁻¹ᵁ V) (pullSec L π V s) j _ (inf_le_inf_left _ (congrFun hU j).ge) le_rfl`. Rewrite `h` using `[resG_self]`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `h.trans ?_` and prove the remaining obligations. Rewrite using `[coord_map, coord_pullSec, coord_powSec, map_pow, map_pow, resG_appLE]`. Conclude with `(resG_appLE π _ _ _).trans (hpow _ _ _ _ _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_iso_pull (L : LB X) :
     ∃ e : toMod (L.pull π) ≅ toMod ((pwN L n).pull ι), ∀ (V : X.Opens) (s : Γ(toMod L, V)),
@@ -201,9 +201,9 @@ theorem exists_iso_pull (L : LB X) :
 include hpre hpow in
 
 /- English proof (translation)
-Take `⟨eL, hL'⟩` from `exists_iso_pull n hpre hpow L`. Take `⟨eM, hM'⟩` from `exists_iso_pull n hpre hpow M`. Establish `nat : pullMap hL hM π φ ≫ eM.hom = eL.hom ≫ pullMap (isLB_pwN n hL) (isLB_pwN n hM) ι (powHom n hL φ)`. Use `(bijective_toPushforward_comp hL π _).1 ?_` and prove the remaining obligations. Use extensionality with `V s`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Express the relevant statement in the definitionally equal form `eM.hom.app (π ⁻¹ᵁ V) ((pullMap hL hM π φ).app (π ⁻¹ᵁ V) (pullSec L π V s)) = (pullMap (isLB_pwN n hL) (isLB_pwN n hM) ι (powHom n hL φ)).app (π ⁻¹ᵁ V) (eL.hom.app (π ⁻¹ᵁ V) (pullSec L π V s))`. Rewrite using `[pullMap_app_pullSec, hM', hL', app_modRes, pullMap_app_pullSec, powHom_app_powSec]`. Establish `e₁ : (Scheme.Modules.pullback π).obj (cokernel φ) ≅ cokernel (pullMap hL hM π φ)` using `PreservesCokernel.iso (Scheme.Modules.pullback π) _ ≪≫ cokernel.mapIso _ _ (pullbackIso hL π) (pullbackIso hM π) (by rw [pullMap, Iso.hom_inv_id_assoc])`. Establish `e₂ : (Scheme.Modules.pullback ι).obj (cokernel (powHom n hL φ)) ≅ cokernel (pullMap (isLB_pwN n hL) (isLB_pwN n hM) ι (powHom n hL φ))` using `PreservesCokernel.iso (Scheme.Modules.pullback ι) _ ≪≫ cokernel.mapIso _ _ (pullbackIso (isLB_pwN n hL) ι) (pullbackIso (isLB_pwN n hM) ι) (by rw [pullMap, Iso.hom_inv_id_assoc])`. Conclude with `⟨e₂ ≪≫ (cokernel.mapIso _ _ eL eM nat).symm ≪≫ e₁.symm⟩`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem nonempty_pullback_cokernel_pow (hL : L.IsLB) (hM : M.IsLB) (φ : toMod L ⟶ toMod M) :
     Nonempty ((Scheme.Modules.pullback ι).obj (cokernel (powHom n hL φ)) ≅
@@ -237,13 +237,11 @@ namespace GlobalTheory.FrobFilt
 open GlobalTheory.Vert GlobalTheory.MixedLocalChains GlobalTheory.FrobPow
 
 /- English proof (translation)
-Establish `hp` using `FrobQuot.natCast_eq_zero_fibI p B`. Use `⟨hp, ?_⟩` and prove the remaining obligations. Establish `hC : smulHom (cokernel (powHom p hL ψ)) (g ^ p) = 0` using `(cancel_epi (cokernel.π _)).1 (by`. Rewrite using `[comp_zero, ← smulHom_comp, ← powHom_comp p hM hL φ ψ g h, Category.assoc, cokernel.condition, comp_zero])`. Establish `hCp : smulHom (cokernel (powHom p hL ψ)) (p : Γ(B.X, ⊤)) = 0`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨u, hu⟩` from `hg`. Establish `e : (p : Γ(B.X, ⊤)) = (u⁻¹).val * g ^ p` using `by rw [hu, Units.inv_mul_cancel_left]`. Rewrite using `[e, smulHom_mul, hC, zero_comp]`. Use `haveI := isQuasicoherent_toMod (isLB_pwN p hL)`. Use `haveI := isQuasicoherent_toMod (isLB_pwN p hM)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hI` using `FrobQuot.isIso_unit_fibI p B (cokernel (powHom p hL ψ)) hCp`. Take `⟨e₃⟩` from `nonempty_pullback_cokernel_pow p (π := GlobalTheory.SS.FrobField.absFrob _ p 1 Fact.out hp ≫ (fibI p B).subschemeι) (ι := (fibI p B).subschemeι) (fun _ => rfl) (fun U W e e' a => by`. Rewrite using `[← Scheme.Hom.appLE_comp_appLE (GlobalTheory.SS.FrobField.absFrob _ p 1 Fact.out hp) (fibI p B).subschemeι U W W e' le_rfl, CommRingCat.hom_comp, RingHom.comp_apply]`. Conclude with `(GlobalTheory.SS.FrobField.absFrob_appLE _ p 1 Fact.out hp W le_rfl _).trans (by rw [pow_one]))`. Use `hL hM ψ`.
-
-Establish `e₄` using `@asIso _ _ _ _ ((Scheme.Modules.pullbackPushforwardAdjunction (fibI p B).subschemeι).unit.app (cokernel (powHom p hL ψ))) hI`. Conclude with `⟨e₄ ≪≫ (Scheme.Modules.pushforward (fibI p B).subschemeι).mapIso e₃⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isFrob_cokernel_powHom {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
     (p : ℕ) [Fact p.Prime] {B : GlobalTheory.Vert.Model O} {L M : LB B.X} (hL : L.IsLB) (hM : M.IsLB)
@@ -274,17 +272,15 @@ theorem isFrob_cokernel_powHom {O : Type} [CommRing O] [IsDomain O] [IsDiscreteV
   exact ⟨e₄ ≪≫ (Scheme.Modules.pushforward (fibI p B).subschemeι).mapIso e₃⟩
 
 /- English proof (translation)
-Introduce `O _ _ _ p _ _ _ B g hg R hr hk`. Establish `hmono` using `Pres.mono_ψ O B R`. Take `⟨r, E, E', vb, vb', ψ, iso⟩` from `R`. Take `rfl : r = 1` from `hr`. Establish `hM` using `vb.isLB_det`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hL` using `vb'.isLB_det`. Set `ψ₀ : toMod (VB.det E' 1) ⟶ toMod (VB.det E 1)` to `vb'.isoDet.inv ≫ ψ ≫ vb.isoDet.hom`. Use `haveI : Mono ψ := hmono`. Use `haveI : Mono ψ₀ := inferInstance`. Establish `e : cokernel ψ ≅ cokernel ψ₀` using `cokernel.mapIso _ _ vb'.isoDet vb.isoDet (by rw [Iso.hom_inv_id_assoc])`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hk₀ : smulHom (cokernel ψ₀) g = 0` using `kills_of_iso hk e`. Set `φ : toMod (VB.det E 1) ⟶ toMod (VB.det E' 1)` to `Abelian.monoLift ψ₀ (smulHom _ g) (by rw [smulHom_comp, hk₀, comp_zero])`. Establish `h₁ : φ ≫ ψ₀ = smulHom _ g` using `Abelian.monoLift_comp _ _ _`. Establish `h₂ : ψ₀ ≫ φ = smulHom _ g`. Rewrite using `[← cancel_mono ψ₀, Category.assoc, h₁, smulHom_comp]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hroot : IsRootOfP p (g ^ p) 1`. Take `⟨u, hu⟩` from `hg`. Conclude with `⟨u, by rw [pow_one, hu]⟩`. Establish `i₁` using `FlagRoot.isIso_genRes_smulHom one_pos hroot (toMod (pwN (VB.det E 1) p))`. Establish `i₂` using `FlagRoot.isIso_genRes_smulHom one_pos hroot (toMod (pwN (VB.det E' 1) p))`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `i₁` using `[← powHom_comp p hM hL φ ψ₀ g h₁, Functor.map_comp]`. Rewrite `i₂` using `[← powHom_comp p hL hM ψ₀ φ g h₂, Functor.map_comp]`. Use `haveI : Epi (B.genRes.map (powHom p hL ψ₀)) := epi_of_epi (B.genRes.map (powHom p hM φ)) _`. Use `haveI : Mono (B.genRes.map (powHom p hL ψ₀)) := mono_of_mono _ (B.genRes.map (powHom p hM φ))`. Use `⟨⟨1, _, _, VB.isVB_toMod (isLB_pwN p hM), VB.isVB_toMod (isLB_pwN p hL), powHom p hL ψ₀, isIso_of_mono_of_epi _⟩, ?_⟩` and prove the remaining obligations.
-
-Take `⟨f⟩` from `isFrob_iff.1 (isFrob_cokernel_powHom p hL hM ψ₀ φ hg h₁)`. Conclude with `isFrob_iff.2 ⟨f ≪≫ (frob p B).mapIso e.symm⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exists_pres_isFrob_of_rank_one : ∀ (O : Type) [CommRing O] [IsDomain O]
     [IsDiscreteValuationRing O] (p : ℕ) [Fact p.Prime] [CharZero O] [CharP (ResidueField O) p]

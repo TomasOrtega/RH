@@ -20,15 +20,15 @@ abbrev rd (ρ : Reading i k b v) : D.ntw.Ok i k →+* FractionRing ρ.Oe :=
   (algebraMap ρ.Oe (FractionRing ρ.Oe)).comp (algebraMap (D.ntw.Ok i k) ρ.Oe)
 
 /- English proof (translation)
-The claim follows from `(IsFractionRing.injective ρ.Oe (FractionRing ρ.Oe)).comp ρ.inj`.
+A detailed English derivation is pending.
 -/
 theorem rd_injective (ρ : Reading i k b v) : Function.Injective (rd ρ) :=
   (IsFractionRing.injective ρ.Oe (FractionRing ρ.Oe)).comp ρ.inj
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `he`. Apply `Units.ext` to reduce the goal to its premises. Apply `ρ.emb.injective` to reduce the goal to its premises. Rewrite using `[h g, h g', he]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Introduce `he`. Apply `Units.ext` to reduce the goal to its premises. Apply `rd_injective ρ` to reduce the goal to its premises. Rewrite using `[← h g, ← h g', he]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem eq_iff_of_reads {ρ : Reading i k b v} {χ : G D.host.E D.nd.Om →* (D.ntw.Ok i k)ˣ}
     {ψ₀ : G D.host.E D.nd.Om →* (D.what₂.LL)ˣ}
@@ -45,7 +45,7 @@ theorem eq_iff_of_reads {ρ : Reading i k b v} {χ : G D.host.E D.nd.Om →* (D.
     rw [← h g, ← h g', he]
 
 /- English proof (translation)
-Simplify using `using eq_iff_of_reads h g 1`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem one_iff_of_reads {ρ : Reading i k b v} {χ : G D.host.E D.nd.Om →* (D.ntw.Ok i k)ˣ}
     {ψ₀ : G D.host.E D.nd.Om →* (D.what₂.LL)ˣ}
@@ -54,13 +54,11 @@ theorem one_iff_of_reads {ρ : Reading i k b v} {χ : G D.host.E D.nd.Om →* (D
   simpa using eq_iff_of_reads h g 1
 
 /- English proof (translation)
-Establish `hker : (χ.ker : Set (G D.host.E D.nd.Om)) = ψ₀.ker` using `Set.ext fun g => by`. Simplify using `only [SetLike.mem_coe, MonoidHom.mem_ker]`. Conclude with `one_iff_of_reads h g`. Use `⟨hs, hd, hker ▸ ho, fun g g' hg => ?_, fun g => ?_, fun w A hA => ?_, fun w hw A hA σ hσ => ?_⟩` and prove the remaining obligations. Rewrite using `[← map_inv, eq_iff_of_reads h, map_inv]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `ha g g' hg`. Establish `h1 : χ g ^ (D.ntw.l i ^ k) = 1`. Rewrite using `[← map_pow, one_iff_of_reads h, map_pow]`. Conclude with `hp g`. Establish `h2 : ((χ g : (D.ntw.Ok i k)ˣ) : D.ntw.Ok i k) ^ (D.ntw.l i ^ k) = 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← Units.val_pow_eq_pow_val, h1, Units.val_one]`. Take `⟨a, -, h3⟩` from `(D.ntw.zk_prim i k).eq_pow_of_pow_eq_one h2`. Use `Subgroup.mem_zpowers_iff.2 ⟨(a : ℤ), ?_⟩` and prove the remaining obligations. Rewrite using `[zpow_natCast]`. Conclude with `Units.ext (by rw [Units.val_pow_eq_pow_val]; exact h3)`.
-
-Rewrite using `[← hr w A hA]`. Simplify using `only [ne_eq, one_iff_of_reads h]`. Conclude with `(one_iff_of_reads h σ).2 (ht w hw A hA σ hσ)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem twOK_of_reads {ρ : Reading i k b v} {Q : Finset (PlE D.host)} {χ : G D.host.E D.nd.Om →* (D.ntw.Ok i k)ˣ}
     {ψ₀ : G D.host.E D.nd.Om →* (D.what₂.LL)ˣ}
@@ -89,11 +87,11 @@ theorem twOK_of_reads {ρ : Reading i k b v} {Q : Finset (PlE D.host)} {χ : G D
   · exact (one_iff_of_reads h σ).2 (ht w hw A hA σ hσ)
 
 /- English proof (translation)
-Establish `hz : IsPrimitiveRoot (rd ρ (D.ntw.zk i k : D.ntw.Ok i k)) (D.ntw.l i ^ k)` using `(D.ntw.zk_prim i k).map_of_injective (rd_injective ρ)`. Establish `hx : ∀ g, ∃ a : ℕ, rd ρ (((D.ntw.zk i k) ^ a : (D.ntw.Ok i k)ˣ) : D.ntw.Ok i k) = ρ.emb ((ψ₀ g : (D.what₂.LL)ˣ) : D.what₂.LL)` using `fun g => by`. Establish `h1 : (ρ.emb ((ψ₀ g : (D.what₂.LL)ˣ) : D.what₂.LL)) ^ (D.ntw.l i ^ k) = 1`. Rewrite using `[← map_pow, ← Units.val_pow_eq_pow_val, hp g, Units.val_one, map_one]`. Take `⟨a, -, ha⟩` from `hz.eq_pow_of_pow_eq_one h1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨a, by rw [Units.val_pow_eq_pow_val, map_pow]; exact ha⟩`. Use `choose a ha using hx`. Set `χ : G D.host.E D.nd.Om →* (D.ntw.Ok i k)ˣ` to `MonoidHom.mk' (fun g => D.ntw.zk i k ^ a g) fun g g' => by`. Apply `Units.ext` to reduce the goal to its premises. Apply `rd_injective ρ` to reduce the goal to its premises.
+Supply the required witnesses or components. Introduce a local definition for the expression. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[ha (g * g'), map_mul ψ₀, Units.val_mul, map_mul ρ.emb, Units.val_mul, map_mul (rd ρ), ha, ha]`. Use `⟨χ, fun g => ⟨(a g : ℤ), by simp [χ]⟩, fun g => (ha g).symm⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_reads {ρ : Reading i k b v} (ψ₀ : G D.host.E D.nd.Om →* (D.what₂.LL)ˣ)
     (hp : ∀ g, ψ₀ g ^ (D.ntw.l i ^ k) = 1) :
@@ -115,17 +113,15 @@ theorem exists_reads {ρ : Reading i k b v} (ψ₀ : G D.host.E D.nd.Om →* (D.
   refine ⟨χ, fun g => ⟨(a g : ℤ), by simp [χ]⟩, fun g => (ha g).symm⟩
 
 /- English proof (translation)
-Introduce `D i k b v ρ Q ψ₀ hs hd ho ha hp hr ht`. Use `⟨?_, fun ψ hψ => twOK_of_reads (ρ := ρ) (fun g => hψ g) hs hd ho ha hp hr ht⟩` and prove the remaining obligations. Take `⟨χ, hv, hχ⟩` from `exists_reads (ρ := ρ) ψ₀ hp`. Establish `hfin : IsOfFinOrder (D.ntw.zk i k)` using `isOfFinOrder_iff_pow_eq_one.2 ⟨_, pow_pos (D.ntw.lPrime i).out.pos k, (IsPrimitiveRoot.coe_units_iff.mp (D.ntw.zk_prim i k)).pow_eq_one⟩`. Use `haveI : Finite (Subgroup.zpowers (D.ntw.zk i k)) := (finite_zpowers.2 hfin).to_subtype`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hker : (χ.ker : Set (G D.host.E D.nd.Om)) = ψ₀.ker` using `Set.ext fun g => by`. Simplify using `only [SetLike.mem_coe, MonoidHom.mem_ker]`. Conclude with `one_iff_of_reads hχ g`. Take `⟨f, hf⟩` from `D.ntw.art_univ i Q (fun u hu hl => Finset.disjoint_left.1 hd hu (D.ntw.twistExcludedPlaces_contains_residueChar i hl)) (Subgroup.zpowers (D.ntw.zk i k)) (by`. Introduce and unpack `⟨x, n, rfl⟩`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Use `⟨k, Subtype.ext ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(D.ntw.zk i k ^ n) ^ (D.ntw.l i ^ k) = 1`. Rewrite using `[← zpow_natCast, ← zpow_mul, mul_comm, zpow_mul, zpow_natCast, (IsPrimitiveRoot.coe_units_iff.mp (D.ntw.zk_prim i k)).pow_eq_one, one_zpow])`. Use the proof step `(χ.codRestrict _ hv) (by rw [MonoidHom.ker_codRestrict, hker]; exact ho)`. Use the proof step `(fun g g' h => Subtype.ext (by`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `χ g' = (χ g)⁻¹`. Rewrite using `[← map_inv, eq_iff_of_reads hχ, map_inv]`. Conclude with `ha g g' h))`. Use the proof step `(fun u hu A hA σ hσ => Subtype.ext (by`. Express the relevant statement in the definitionally equal form `χ σ = 1`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[one_iff_of_reads hχ]`. Assume the negation of the conclusion as `hne`. Conclude with `hu ((hr u A hA).1 ⟨σ, hσ, hne⟩)))`. Use `⟨(Subgroup.zpowers (D.ntw.zk i k)).subtype.comp f, fun g => ?_⟩` and prove the remaining obligations. Establish `h1 : f (D.ntw.art i Q g) = χ.codRestrict _ hv g` using `by rw [← hf]; rfl`.
-
-Express the relevant statement in the definitionally equal form `ρ.emb _ = rd ρ (((f (D.ntw.art i Q g) : Subgroup.zpowers (D.ntw.zk i k)) : (D.ntw.Ok i k)ˣ) : D.ntw.Ok i k)`. Rewrite using `[h1]`. Conclude with `hχ g`.
+A detailed English derivation is pending.
 -/
 theorem exists_pulls_twOK : ∀ (D : D7) (i : D.ntw.Tw) (k : ℕ) (b : Bool) (v : D.what₂.places.Pl) (ρ : Reading i k b v) (Q : Finset (PlE D.host)) (ψ₀ : G D.host.E D.nd.Om →* (D.what₂.LL)ˣ), (∀ u ∈ Q, IsSplitPl D.host u) → Disjoint Q (D.ntw.S0 i) → IsOpen (ψ₀.ker : Set (G D.host.E D.nd.Om)) → AntiHom D.ntw.cc ψ₀ → (∀ g, ψ₀ g ^ (D.ntw.l i ^ k) = 1) → RamExactly ψ₀ (↑Q : Set (PlE D.host)) → BlochKatoReduction.Gen.TrivAbove ψ₀ (D.ntw.l i) → (∃ ψ : D.ntw.RCG i Q →* (D.ntw.Ok i k)ˣ, ρ.Pulls ψ ψ₀) ∧ ∀ ψ : D.ntw.RCG i Q →* (D.ntw.Ok i k)ˣ, ρ.Pulls ψ ψ₀ → IntegralHeckeForms.TwOK i k Q (ψ.comp (D.ntw.art i Q)) := by
   intro D i k b v ρ Q ψ₀ hs hd ho ha hp hr ht

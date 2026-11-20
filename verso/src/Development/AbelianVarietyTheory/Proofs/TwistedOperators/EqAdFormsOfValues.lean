@@ -24,19 +24,19 @@ variable {G Γ W Cl ι : Type} [Group G] [Group Γ] [NormedAddCommGroup W] [Inne
 open Classical in
 
 /- English proof (translation)
-Establish `: Fintype Cl` using `Fintype.ofFinite _`. Use `le_antisymm hS fun F hF => ?_` and prove the remaining obligations. Set `ev : (G → W) →ₗ[ℂ] (Cl → W)` to `LinearMap.pi fun c => LinearMap.proj (y c)`. Establish `hev : ∀ f c, ev f c = f (y c)` using `fun _ _ => rfl`. Establish `hinj : ∀ f ∈ Bridge.AdForms ιG ρ J 1, ev f = 0 → f = 0`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `f hf h0`. Use function extensionality and compare the values at `g`. Take `⟨γ, c, k, rfl⟩` from `hdec g`. Establish `h1 : f (y c) = 0` using `congrFun h0 c`. Establish `h2` using `hf γ (y c) k`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[h2, h1, map_zero, smul_zero]`. Both sides reduce to the same expression. Establish `hsurj : S.map ev = ⊤`. Use `eq_top_iff.2 fun f _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.univ_sum_single f]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Submodule.sum_mem _ fun c _ => ?_` and prove the remaining obligations. Establish `hfc : f c ∈ Submodule.span ℂ (Set.range w)` using `by rw [hw]; trivial`. Establish `e : Pi.single c (f c) = LinearMap.single ℂ (fun _ : Cl => W) c (f c)` using `rfl`. Rewrite using `[e]`. Use `Submodule.mem_comap.1 (((Submodule.span_le (p := (S.map ev).comap (LinearMap.single ℂ (fun _ : Cl => W) c))).2 ?_) hfc)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `_ ⟨i, rfl⟩`. Take `⟨s, hs, hsv⟩` from `hsingle c i`. Use `Submodule.mem_comap.2 ⟨s, hs, funext fun c' => ?_⟩` and prove the remaining obligations. Rewrite using `[hev, hsv]`. Distinguish the cases in `h : c' = c`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[h]`. Take `⟨s, hs, hse⟩ : ev F ∈ S.map ev` from `by rw [hsurj]; trivial`. Establish `h0 : F - s = 0` using `hinj _ (sub_mem hF (hS hs)) (by rw [map_sub, hse, sub_self])`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[sub_eq_zero.1 h0]` and apply the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 -/
 theorem eq_adForms_of_values (ιG : Γ →* G) (ρ : Γ →* Module.End ℂ W) (J : Subgroup G) (y : Cl → G)
     (hdec : ∀ g, ∃ (γ : Γ) (c : Cl) (k : J), g = ιG γ * y c * k) (S : Submodule ℂ (G → W))
@@ -81,15 +81,13 @@ section Reps
 variable {T' : Type} {L : LevCh D T'} {sc : Consts} {G : GridData L sc}
 
 /- English proof (translation)
-Take `⟨hfin, -, -, -, hcl⟩` from `GlobalTheory.DefFree.AdelCls.adelic_classes D (G.V (.top 0))`. Use `choose h _ hh using fun c => hfin (rp.x c)`. Use `⟨fun c => (finHom (G.V (.top 0))).rangeRestrict (h c), fun c => ?_, fun g => ?_⟩` and prove the remaining obligations. Use `congrArg Subtype.val (hh c)` as an intermediate fact. Conclude with `this`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hg0 : ∃ h0 : GA D (G.V (.top 0)), finHom (G.V (.top 0)) h0 = g.1` using `g.2`. Take `⟨h0, hg⟩` from `hg0`. Establish `hc : GlobalTheory.DefFree.clsA (G.V (.top 0)) G.Kplus (h (GlobalTheory.DefFree.clsA (G.V (.top 0)) G.Kplus h0)) = GlobalTheory.DefFree.clsA (G.V (.top 0)) G.Kplus h0` using `by show (Quotient.mk'' (GlobalTheory.DefFree.finU (G.V (.top 0)) (h (GlobalTheory.DefFree.clsA (G.V (.top 0)) G.Kplus h0))) : Cl D.sp.cm (G.V (.top 0)).gram G.Kplus) = _`. Rewrite using `[hh]`. Conclude with `rp.classRepresentative_mk _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hx` using `(hcl G.Kplus (h (GlobalTheory.DefFree.clsA (G.V (.top 0)) G.Kplus h0)) h0).1 hc`. Take `⟨γ, hγ, hx⟩` from `hx`. Take `⟨κ, hκ, k, hk, e⟩` from `hx`. Establish `hκ' : (finHom (G.V (.top 0))).rangeRestrict κ ∈ levPlus G` using `by show Formalism.UG.bc (Lev.swapAE D) (finHom (G.V (.top 0)) κ) ∈ G.Kplus`. Conclude with `hκ.2`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `⟨⟨γ, hγ⟩, GlobalTheory.DefFree.clsA (G.V (.top 0)) G.Kplus h0, ⟨_, hκ'⟩, Subtype.ext ?_⟩` and prove the remaining obligations. Establish `hk1 : finHom (G.V (.top 0)) k = 1` using `hk`. Use `show g.1 = finHom (G.V (.top 0)) γ * finHom (G.V (.top 0)) (h (GlobalTheory.DefFree.clsA (G.V (.top 0)) G.Kplus h0)) * finHom (G.V (.top 0)) κ`. Establish `e2` using `congrArg (finHom (G.V (.top 0))) e`. Simplify using `only [map_mul (finHom (G.V (.top 0))), hk1, mul_one] at e2`.
-
-Conclude with `hg.symm.trans e2`.
+A detailed English derivation is pending.
 -/
 theorem exists_gf_reps (rp : ClassReps G) :
     ∃ y : G.ClPlus → Bridge.Gf (G.V (.top 0)),
@@ -126,11 +124,11 @@ theorem exists_gf_reps (rp : ClassReps G) :
 open Classical in
 
 /- English proof (translation)
-Take `⟨y, hy, hdec⟩` from `exists_gf_reps rp`. Establish `hspan : Submodule.span ℂ (Set.range fun i => GlobalTheory.CoefModel.toHilb (LaP G) (posDef_dual G) (GlobalTheory.CoefModel.mapVV D.what₂.embLL (LaP G) (bVV D.what₂.LL (LaP G) i))) = ⊤`. Use `congrArg (Submodule.map (GlobalTheory.CoefModel.toHilb (LaP G) (posDef_dual G)).toLinearMap) (GlobalTheory.CoefModel.span_mapVV D.what₂.embLL (LaP G))` as an intermediate fact. Rewrite `this` using `[Submodule.map_span, Submodule.map_top, LinearEquiv.range, ← Set.range_comp]`. Conclude with `this`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `eq_adForms_of_values (W := (coefPlus G θ).W) (Bridge.ratF (G.V (.top 0))) (coefPlus G θ).coef.ρ (levPlus G) y hdec _ ?_ _ hspan fun c i => ?_` and prove the remaining obligations. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨a, -, rfl⟩`. Conclude with `colOf_mem hθ (psi_left _ _ a) fun g _ hk => psi_right _ _ a g hk`. Use `⟨colOf θ (psi rp e (e.symm ((Φ, c), i))), Submodule.subset_span ⟨_, ?_, rfl⟩, fun c' => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Use `show (e (e.symm ((Φ, c), i))).1.1 = Φ`. Rewrite using `[Equiv.apply_symm_apply]`. Unfold `colOf psi`. Rewrite using `[hy c', Equiv.apply_symm_apply, rp.gridClassReps_delta_apply_rep (ClassReps.neat rp)]`. Apply the tactic sequence `by_cases h : c' = c <;> simp [h] <;> rfl`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem span_colOf_psi {θ : InfFam D} (hθ : IsInfFam θ) (rp : ClassReps G) {n : ℕ} (e : Fin n ≃ TestIx G × VVIdx (LaP G))
     (Φ : G.Datum) :
@@ -160,7 +158,7 @@ end Reps
 variable (ch : Choice R)
 
 /- English proof (translation)
-The claim follows from `span_colOf_psi ch.W.θ_is ch.rp ch.e Φ`.
+A detailed English derivation is pending.
 -/
 theorem span_col_eq_cols (Φ : ch.G.Datum) :
     Submodule.span ℂ (ch.col '' {a | ch.Phi a = Φ}) = Cols ch.G ch.W.θ :=

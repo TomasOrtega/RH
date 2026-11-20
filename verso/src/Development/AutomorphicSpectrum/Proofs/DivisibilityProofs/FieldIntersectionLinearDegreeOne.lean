@@ -16,7 +16,7 @@ def linForm : (σ → F) →ₗ[F] MvPolynomial σ F :=
   Fintype.linearCombination F (fun p => (X p : MvPolynomial σ F))
 
 /- English proof (translation)
-Simplify using `[linForm, Fintype.linearCombination_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem linForm_apply (c : σ → F) : linForm c = ∑ p, c p • (X p : MvPolynomial σ F) := by
   simp [linForm, Fintype.linearCombination_apply]
@@ -25,7 +25,7 @@ def lin (U : Submodule F (σ → F)) : Ideal (MvPolynomial σ F) :=
   Ideal.span (linForm '' (U : Set (σ → F)))
 
 /- English proof (translation)
-The claim follows from `Ideal.subset_span ⟨c, h, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem linForm_mem {U : Submodule F (σ → F)} {c : σ → F} (h : c ∈ U) : linForm c ∈ lin U :=
   Ideal.subset_span ⟨c, h, rfl⟩
@@ -33,7 +33,7 @@ theorem linForm_mem {U : Submodule F (σ → F)} {c : σ → F} (h : c ∈ U) : 
 variable [DecidableEq σ]
 
 /- English proof (translation)
-Rewrite using `[linForm_apply, Finset.sum_eq_single p]`. Simplify using the standard rewrite rules. Introduce `b _ hb`. Simplify using `[Pi.single_apply, hb]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem linForm_single (p : σ) : linForm (Pi.single p (1 : F)) = (X p : MvPolynomial σ F) := by
   rw [linForm_apply, Finset.sum_eq_single p]
@@ -42,14 +42,14 @@ theorem linForm_single (p : σ) : linForm (Pi.single p (1 : F)) = (X p : MvPolyn
   · simp
 
 /- English proof (translation)
-Use extensionality with `q`. Simplify using `[Finset.sum_apply, Pi.single_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem eq_sum_single (c : σ → F) : c = ∑ p, c p • (Pi.single p (1 : F) : σ → F) := by
   ext q
   simp [Finset.sum_apply, Pi.single_apply]
 
 /- English proof (translation)
-Use `conv_rhs => rw [eq_sum_single c, map_sum]`. Rewrite using `[linForm_apply, map_sum]`. Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations. Simplify using `[smul_eval]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem eval_linForm (l : (σ → F) →ₗ[F] F) (c : σ → F) :
     eval (fun q => l (Pi.single q 1)) (linForm c) = l c := by
@@ -59,7 +59,7 @@ theorem eval_linForm (l : (σ → F) →ₗ[F] F) (c : σ → F) :
   simp [smul_eval]
 
 /- English proof (translation)
-Use `Ideal.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨c, hc, rfl⟩`. Express the relevant statement in the definitionally equal form `eval _ _ = 0`. Rewrite using `[eval_linForm]`. Conclude with `h hc`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lin_le_ker {U : Submodule F (σ → F)} (l : (σ → F) →ₗ[F] F) (h : U ≤ LinearMap.ker l) :
     lin U ≤ RingHom.ker (eval fun q => l (Pi.single q 1)) := by
@@ -70,7 +70,7 @@ theorem lin_le_ker {U : Submodule F (σ → F)} (l : (σ → F) →ₗ[F] F) (h 
   exact h hc
 
 /- English proof (translation)
-Take `⟨l, hl, hU⟩` from `Submodule.exists_le_ker_of_notMem h`. Introduce `hX`. Use `lin_le_ker l hU hX` as an intermediate fact. Rewrite `this` using `[RingHom.mem_ker, eval_X]`. Conclude with `hl this`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem X_notMem_lin {U : Submodule F (σ → F)} {p : σ} (h : (Pi.single p (1 : F) : σ → F) ∉ U) :
     (X p : MvPolynomial σ F) ∉ lin U := by
@@ -81,15 +81,15 @@ theorem X_notMem_lin {U : Submodule F (σ → F)} {p : σ} (h : (Pi.single p (1 
   exact hl this
 
 /- English proof (translation)
-Introduce `h'` and use `h (linForm_single (F := F) p ▸ linForm_mem h')`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem single_notMem {U : Submodule F (σ → F)} {p : σ} (h : (X p : MvPolynomial σ F) ∉ lin U) :
     (Pi.single p (1 : F) : σ → F) ∉ U := fun h' => h (linForm_single (F := F) p ▸ linForm_mem h')
 
 /- English proof (translation)
-Use `le_antisymm (Ideal.span_le.2 ?_) (sup_le (Ideal.span_mono (Set.image_mono ?_)) ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨c, hc, rfl⟩`. Take `⟨u, hu, v, hv, rfl⟩` from `Submodule.mem_sup.1 hc`. Take `⟨a, rfl⟩` from `Submodule.mem_span_singleton.1 hv`. Rewrite using `[map_add, map_smul, linForm_single, smul_eq_C_mul]`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `add_mem (Ideal.mem_sup_left (linForm_mem hu)) (Ideal.mul_mem_left _ _ (Ideal.mem_sup_right (Ideal.mem_span_singleton_self _)))`. Conclude with `SetLike.coe_subset_coe.2 le_sup_left`. Rewrite using `[Ideal.span_singleton_le_iff_mem, ← linForm_single (F := F) p]`. Conclude with `linForm_mem (Submodule.mem_sup_right (Submodule.mem_span_singleton_self _))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lin_sup (U : Submodule F (σ → F)) (p : σ) :
     lin (U ⊔ Submodule.span F {(Pi.single p (1 : F) : σ → F)}) = lin U ⊔ Ideal.span {X p} := by
@@ -105,9 +105,9 @@ theorem lin_sup (U : Submodule F (σ → F)) (p : σ) :
     exact linForm_mem (Submodule.mem_sup_right (Submodule.mem_span_singleton_self _))
 
 /- English proof (translation)
-Establish `he : e ≠ 0` using `fun h0 => h (h0 ▸ U.zero_mem)`. Establish `h1` using `Submodule.finrank_quotient_add_finrank U`. Establish `h2` using `Submodule.finrank_quotient_add_finrank (U ⊔ Submodule.span F {e})`. Establish `h3` using `Submodule.finrank_sup_add_finrank_inf_eq U (Submodule.span F {e})`. Establish `h4 : U ⊓ Submodule.span F {e} = ⊥` using `((Submodule.disjoint_span_singleton' he).2 h).eq_bot`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h3` using `[h4, finrank_bot, finrank_span_singleton he]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem finrank_quot_succ (U : Submodule F (σ → F)) {e : σ → F} (h : e ∉ U) :
     Module.finrank F ((σ → F) ⧸ (U ⊔ Submodule.span F {e})) + 1 =
@@ -135,7 +135,7 @@ def toY : MvPolynomial σ F →ₐ[F] MvPolynomial (Fin (Module.finrank F ((σ �
   aeval fun p => linForm ((qb U).equivFun (U.mkQ (Pi.single p 1)))
 
 /- English proof (translation)
-Rewrite using `[linForm_apply c, map_sum]`. Use `conv_rhs => rw [eq_sum_single c]`. Simplify using `only [map_sum, map_smul, toY, aeval_X]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem toY_linForm (c : σ → F) : toY U (linForm c) = linForm ((qb U).equivFun (U.mkQ c)) := by
   rw [linForm_apply c, map_sum]
@@ -143,9 +143,9 @@ theorem toY_linForm (c : σ → F) : toY U (linForm c) = linForm ((qb U).equivFu
   simp only [map_sum, map_smul, toY, aeval_X]
 
 /- English proof (translation)
-Introduce `a ha`. Establish `: lin U ≤ RingHom.ker (toY U)`. Use `Ideal.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨c, hc, rfl⟩`. Express the relevant statement in the definitionally equal form `toY U _ = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `h0 : U.mkQ c = 0` using `by simpa using hc`. Rewrite using `[toY_linForm, h0]`. Simplify using the standard rewrite rules. Conclude with `this ha`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem toY_kill : ∀ a ∈ lin U, toY U a = 0 := by
   intro a ha
@@ -162,7 +162,7 @@ def sec (t : Fin (Module.finrank F ((σ → F) ⧸ U))) : σ → F :=
   Function.surjInv (Submodule.mkQ_surjective U) (qb U t)
 
 /- English proof (translation)
-The claim follows from `Function.surjInv_eq _ _`.
+A detailed English derivation is pending.
 -/
 theorem mkQ_sec (t : Fin (Module.finrank F ((σ → F) ⧸ U))) : U.mkQ (sec U t) = qb U t :=
   Function.surjInv_eq _ _
@@ -171,7 +171,7 @@ def fromY : MvPolynomial (Fin (Module.finrank F ((σ → F) ⧸ U))) F →ₐ[F]
   aeval fun t => Ideal.Quotient.mkₐ F (lin U) (linForm (sec U t))
 
 /- English proof (translation)
-Rewrite using `[linForm_apply w, map_sum, map_sum, map_sum]`. Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations. Simplify using `only [map_smul, fromY, aeval_X]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem fromY_linForm (w : Fin (Module.finrank F ((σ → F) ⧸ U)) → F) :
     fromY U (linForm w) = Ideal.Quotient.mkₐ F (lin U) (linForm (∑ t, w t • sec U t)) := by
@@ -211,7 +211,7 @@ instance lin_isPrime : (lin U).IsPrime := by
   exact (quotEquiv U).toRingEquiv.toMulEquiv.isDomain
 
 /- English proof (translation)
-Rewrite using `[ringKrullDim_eq_of_ringEquiv (quotEquiv U).toRingEquiv, MvPolynomial.ringKrullDim_of_isNoetherianRing, ringKrullDim_eq_zero_of_field, zero_add]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem lin_dim :
     ringKrullDim (MvPolynomial σ F ⧸ lin U) = (Module.finrank F ((σ → F) ⧸ U) : WithBot ℕ∞) := by
@@ -226,9 +226,9 @@ section Block
 variable {F : Type*} [Field F] {K : Type*} [Fintype K] {ι : K → Type*} [∀ k, Fintype (ι k)]
 
 /- English proof (translation)
-Introduce `m hm k`. Rewrite `hm` using `[linForm_apply]`. Take `⟨q, -, hq⟩` from `Finset.mem_biUnion.1 (MvPolynomial.support_sum hm)`. Establish `hq' : m ∈ (X q : MRingOver F ι).support` using `support_smul hq`. Use `inh_homog_X (F := F) q m hq' k` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[this, (hK k).trans (hK q.1).symm]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem homog_linForm (k₀ : K) (hK : ∀ a : K, a = k₀) (c : (Σ k, ι k) → F) :
     IsMultiHomog (linForm c : MRingOver F ι) fun _ => 1 := by
@@ -242,21 +242,19 @@ theorem homog_linForm (k₀ : K) (hK : ∀ a : K, a = k₀) (c : (Σ k, ι k) �
   simp
 
 /- English proof (translation)
-Establish `hsupp : ∀ m ∈ f.support, ∃ q : Σ k, ι k, m = Finsupp.single q 1`. Introduce `m hm`. Establish `hs : ∑ i, m ⟨k₀, i⟩ = 1` using `hf m hm k₀`. Take `⟨a, -, ha0⟩` from `Finset.exists_ne_zero_of_sum_ne_zero (s := Finset.univ) (f := fun i => m ⟨k₀, i⟩) (by rw [hs]; exact one_ne_zero)`. Establish `hsplit` using `Finset.add_sum_erase Finset.univ (fun i => m ⟨k₀, i⟩) (Finset.mem_univ a)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `ha : m ⟨k₀, a⟩ = 1` using `by omega`. Establish `hrest : ∑ x ∈ Finset.univ.erase a, m ⟨k₀, x⟩ = 0` using `by omega`. Establish `h0 : ∀ b, b ≠ a → m ⟨k₀, b⟩ = 0` using `fun b hb => Finset.sum_eq_zero_iff.1 hrest b (Finset.mem_erase.2 ⟨hb, Finset.mem_univ _⟩)`. Use `⟨⟨k₀, a⟩, ?_⟩` and prove the remaining obligations. Use extensionality with `⟨k, b⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Establish `hk` using `hK k`. Substitute `hk` using the available equality. Distinguish the cases in `hb : b = a`. Substitute `hb` using the available equality. Simplify using `[ha]`.
+Establish an intermediate fact. Substitute using the available equality. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Rewrite using `[h0 b hb, Finsupp.single_apply, if_neg]`. Introduce `h`. Conclude with `hb (sigma_mk_injective h).symm`. Use extensionality with `m`. Rewrite using `[linForm_apply, coeff_sum]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [coeff_smul, coeff_X', smul_eq_mul, mul_ite, mul_one, mul_zero]`. Distinguish the cases in `hm : m ∈ f.support`. Take `⟨q, rfl⟩` from `hsupp m hm`. Rewrite using `[Finset.sum_eq_single q]`. Simplify using the standard rewrite rules.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `b _ hb`. Rewrite using `[if_neg]`. Introduce `h`. Conclude with `hb (Finsupp.single_left_injective one_ne_zero h)`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation.
 
-Rewrite using `[notMem_support_iff.1 hm]`. Use `symm`. Use `Finset.sum_eq_zero fun p _ => ?_` and prove the remaining obligations. Use `split_ifs with h`. Substitute `h` using the available equality.
-
-Conclude with `notMem_support_iff.1 hm`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Substitute using the available equality. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem eq_linForm (k₀ : K) (hK : ∀ a : K, a = k₀) {f : MRingOver F ι}
     (hf : IsMultiHomog f fun _ => 1) :
@@ -302,21 +300,19 @@ theorem eq_linForm (k₀ : K) (hK : ∀ a : K, a = k₀) {f : MRingOver F ι}
     · rfl
 
 /- English proof (translation)
-Use `set p0 : Σ k, ι k := ⟨k₀, i k₀⟩ with hp0`. Use `set e0 : (Σ k, ι k) → F := Pi.single p0 1 with he0`. Establish `h0 : e0 ∉ U` using `single_notMem (hi k₀)`. Take `⟨l, hl, hU⟩` from `Submodule.exists_le_ker_of_notMem h0`. Use `set l' : ((Σ k, ι k) → F) →ₗ[F] F := (l e0)⁻¹ • l with hl'`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hl1 : l' e0 = 1` using `by simp [hl', inv_mul_cancel₀ hl]`. Establish `hU' : U ≤ LinearMap.ker l'` using `fun u hu => by`. Establish `: l u = 0` using `hU hu`. Simplify using `[hl', this]`. Establish `hne : U.mkQ e0 ≠ 0` using `by simpa using h0`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hq : ∀ q : Σ k, ι k, ∃ c : F, c • e0 - Pi.single q 1 ∈ U`. Introduce `q`. Take `⟨c, hc⟩` from `(finrank_eq_one_iff_of_nonzero' _ hne).1 hd (U.mkQ (Pi.single q 1))`. Use `⟨c, (Submodule.Quotient.eq U).1 ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `U.mkQ _ = U.mkQ _`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_smul, hc]`. Establish `hrange : (X p0 - 1 : MRingOver F ι) ∈ chartIdeal (lin U) i` using `Ideal.mem_sup_right (Ideal.subset_span ⟨k₀, rfl⟩)`. Use `inh_finrank_quot (chartIdeal (lin U) i) (fun q => l' (Pi.single q 1)) ?_ ?_` and prove the remaining obligations. Use `sup_le (lin_le_ker l' hU') (Ideal.span_le.2 ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨k, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Substitute using the available equality. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `hk` using `hK k`. Substitute `hk` using the available equality. Express the relevant statement in the definitionally equal form `eval _ _ = 0`. Simplify `sub_eq_zero.2 hl1` using `[map_sub, eval_X]`. Introduce `q`.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨c, hc⟩` from `hq q`. Establish `hlc : l' (Pi.single q 1) = c`. Establish `: l' (c • e0 - Pi.single q 1) = 0` using `hU' hc`. Rewrite `this` using `[map_sub, map_smul, hl1, smul_eq_mul, mul_one, sub_eq_zero]`. Conclude with `this.symm`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hlc]`. Establish `hmem : (linForm (c • e0 - Pi.single q 1) : MRingOver F ι) ∈ chartIdeal (lin U) i` using `Ideal.mem_sup_left (linForm_mem hc)`. Establish `heq : (X q - C c : MRingOver F ι) = C c * (X p0 - 1) - linForm (c • e0 - Pi.single q 1)`. Rewrite using `[map_sub, map_smul, linForm_single, linForm_single, smul_eq_C_mul]`. Expand and normalize the polynomial expressions, which then agree.
-
-Rewrite using `[heq]`. Conclude with `sub_mem (Ideal.mul_mem_left _ _ hrange) hmem`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ptDeg_eq_one [DecidableEq (Σ k, ι k)] (k₀ : K) (hK : ∀ a : K, a = k₀)
     (U : Submodule F ((Σ k, ι k) → F))
@@ -364,9 +360,9 @@ theorem ptDeg_eq_one [DecidableEq (Σ k, ι k)] (k₀ : K) (hK : ∀ a : K, a = 
     exact sub_mem (Ideal.mul_mem_left _ _ hrange) hmem
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Establish `htop : U = ⊤`. Use `(Submodule.eq_top_iff').2 fun c => ?_` and prove the remaining obligations. Rewrite using `[eq_sum_single c]`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Substitute using the available equality.
 
-Conclude with `U.sum_mem fun p _ => U.smul_mem _ (hcon p)`. Substitute `htop` using the available equality. Establish `: Subsingleton (((Σ k, ι k) → F) ⧸ (⊤ : Submodule F ((Σ k, ι k) → F)))` using `Submodule.Quotient.subsingleton_iff.2 rfl`. Rewrite `hd` using `[Module.finrank_zero_of_subsingleton]`. Conclude with `lt_irrefl _ hd`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_single_notMem [DecidableEq (Σ k, ι k)] (U : Submodule F ((Σ k, ι k) → F))
     (hd : 0 < Module.finrank F (((Σ k, ι k) → F) ⧸ U)) :
@@ -384,27 +380,25 @@ theorem exists_single_notMem [DecidableEq (Σ k, ι k)] (U : Submodule F ((Σ k,
   exact lt_irrefl _ hd
 
 /- English proof (translation)
-Establish `hcard : Fintype.card K = 1` using `Fintype.card_eq_one_iff.2 ⟨k₀, hK⟩`. Establish `hdim : ∀ (r : ℕ) (U : Submodule F ((Σ k, ι k) → F)), IsProjVarF (lin U) r → Module.finrank F (((Σ k, ι k) → F) ⧸ U) = r + 1`. Introduce `r U hV`. Establish `h` using `hV.2`. Rewrite `h` using `[lin_dim, hcard]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h` after adjusting the coercions. Introduce `r`. Proceed by induction on `r with`. Consider the case `zero`. Introduce `U hV`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hd` using `hdim 0 U hV`. Use `choose i hi using hV.1.2.2`. Rewrite using `[hJ.1 (lin U) _ i hV hi, ptDeg_eq_one k₀ hK U (by simpa using hd) i hi]`. Both sides reduce to the same expression. Consider the case `succ r ih`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `U hV`. Establish `hd` using `hdim (r + 1) U hV`. Take `⟨i0, hi0⟩` from `hV.1.2.2 k₀`. Use `set p : Σ k, ι k := ⟨k₀, i0⟩ with hp`. Establish `he : (Pi.single p (1 : F) : (Σ k, ι k) → F) ∉ U` using `single_notMem hi0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Use `set U' := U ⊔ Submodule.span F {(Pi.single p (1 : F) : (Σ k, ι k) → F)} with hU'`. Establish `hd' : Module.finrank F (((Σ k, ι k) → F) ⧸ U') = r + 1`. Establish `h1 : Module.finrank F (((Σ k, ι k) → F) ⧸ U') + 1 = _` using `finrank_quot_succ U he`. Use linear arithmetic over natural numbers and integers. Establish `hsup : lin U ⊔ Ideal.span {(X p : MRingOver F ι)} = lin U'` using `(lin_sup U p).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hrel : IsRelevant (lin U')`. Take `⟨q, hq⟩` from `exists_single_notMem U' (by omega)`. Take `⟨k', j⟩` from `q`. Introduce `k`. Establish `hk : k = k'` using `(hK k).trans (hK k').symm`.
+Establish an intermediate fact. Substitute using the available equality. Supply the required witnesses or components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Substitute `hk` using the available equality. Conclude with `⟨j, X_notMem_lin hq⟩`. Establish `hV' : IsProjVarF (lin U') r`. Use `⟨⟨inferInstance, ⟨_, ?_, rfl⟩, hrel⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨c, -, rfl⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `⟨_, homog_linForm k₀ hK c⟩`. Rewrite using `[lin_dim, hd', hcard]`. Establish `hrat : IsRatSection (lin U) (fun _ => 1) (X p) 1`. Use `⟨fun _ => 1, 0, ?_, inh_homog_one, hi0, ?_, fun k => by simp⟩` and prove the remaining obligations. Use `inh_homog_X (F := F) p` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `h1 : (Pi.single p.1 1 : K → ℕ) = fun _ => 1`. Use extensionality with `k`. Rewrite using `[(hK k).trans (hK p.1).symm]`. Simplify using the standard rewrite rules. Rewrite `this` using `[h1]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 
-Conclude with `(Ideal.ne_top_iff_one _).1 hV.1.1.ne_top`. Establish `hb` using `hJ.2 (lin U) r (fun _ _ => 1) (fun _ => 1) (X p) 1 hV hrat`. Establish `hsn : Fin.snoc (α` using `fun _ => K → ℤ) (fun _ _ => (1 : ℤ)) (fun _ => 1) = fun (_ : Fin (r + 1)) _ => 1 := by`. Use function extensionality and compare the values at `j`. Apply the tactic sequence `refine Fin.lastCases ?_ (fun j => ?_) j <;> simp`.
-
-Rewrite `hb` using `[hsn]`. Rewrite using `[hb, ratDiv, inh_divCycle_prime (lin U) (X p) (lin U') hsup hrel, inh_divCycle_one]`. Simplify using `[Finsupp.mapRange_single, inh_cycEval_single, ih U' hV']`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem degree_lin (k₀ : K) (hK : ∀ a : K, a = k₀) (J : IFamily F ι) (hJ : IsFieldIntersection J) :
     ∀ (r : ℕ) (U : Submodule F ((Σ k, ι k) → F)), IsProjVarF (lin U) r →
@@ -476,11 +470,9 @@ open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.Cha
   GroundTheory.Heights₂.Heights.LowerBoundFree GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.Top
 
 /- English proof (translation)
-Introduce `F _ K _ ι _ k₀ hK J hJ S hS r hV`. Use `set U : Submodule F ((Σ k, ι k) → F) := ((Ideal.span S).restrictScalars F).comap LinDeg.linForm with hU`. Establish `hlin : Ideal.span S = LinDeg.lin U`. Use `le_antisymm (Ideal.span_le.2 fun f hf => ?_) (Ideal.span_le.2 ?_)` and prove the remaining obligations. Rewrite using `[LinDeg.eq_linForm k₀ hK (hS f hf)]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `LinDeg.linForm_mem ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `LinDeg.linForm _ ∈ Ideal.span S`. Rewrite using `[← LinDeg.eq_linForm k₀ hK (hS f hf)]`. Conclude with `Ideal.subset_span hf`. Introduce and unpack `_ ⟨c, hc, rfl⟩`.
-
-Conclude with `hc`. Rewrite `hV`, the goal using `[hlin]`. Conclude with `LinDeg.degree_lin k₀ hK J hJ r U hV`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem linear_subspace_degree_one : ∀ (F : Type) [Field F] (K : Type) [Fintype K] (ι : K → Type)
     [∀ k, Fintype (ι k)] (k₀ : K), (∀ a : K, a = k₀) → ∀ (J : IFamily F ι), IsFieldIntersection J →

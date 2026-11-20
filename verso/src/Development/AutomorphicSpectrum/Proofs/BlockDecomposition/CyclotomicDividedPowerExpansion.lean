@@ -11,15 +11,15 @@ open CategoryTheory AlgebraicGeometry Polynomial DividedPowers GlobalTheory.LogC
 namespace GlobalTheory.CompanionTheory.QPd
 
 /- English proof (translation)
-Use `haveI : Fact p.Prime := ⟨hp⟩`. Establish `hmod : ((X - 1 : (ZMod p)[X]) ^ (p - 1) - ∑ i ∈ Finset.range p, (X : (ZMod p)[X]) ^ i) = 0`. Establish `h1 : (X - 1 : (ZMod p)[X]) ^ p = X ^ p - 1`. Simplify using `using sub_pow_char (X : (ZMod p)[X]) 1`. Establish `h2 : (X - 1 : (ZMod p)[X]) * ∑ i ∈ Finset.range p, (X : (ZMod p)[X]) ^ i = X ^ p - 1` using `mul_geom_sum _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : (X - 1 : (ZMod p)[X]) ≠ 0`. Simplify using `using Polynomial.X_sub_C_ne_zero (1 : ZMod p)`. Establish `h4 : (X - 1 : (ZMod p)[X]) * ((X - 1) ^ (p - 1) - ∑ i ∈ Finset.range p, (X : (ZMod p)[X]) ^ i) = 0`. Rewrite using `[mul_sub, h2, ← pow_succ', Nat.sub_add_cancel hp.one_lt.le, h1, sub_self]`. Conclude with `(mul_eq_zero.1 h4).resolve_left h3`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdvd : C (p : ℤ) ∣ ((X - 1 : ℤ[X]) ^ (p - 1) - ∑ i ∈ Finset.range p, (X : ℤ[X]) ^ i)`. Establish `hmap : ((X - 1 : ℤ[X]) ^ (p - 1) - ∑ i ∈ Finset.range p, (X : ℤ[X]) ^ i).map (Int.castRingHom (ZMod p)) = 0`. Simplify `hmod` using `[Polynomial.map_sum]`. Rewrite using `[Polynomial.C_dvd_iff_dvd_coeff]`. Introduce `i`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h5` using `congrArg (fun f ↦ coeff f i) hmap`. Simplify using `only [coeff_map, coeff_zero] at h5`. Conclude with `(ZMod.intCast_zmod_eq_zero_iff_dvd _ p).1 (by simpa using h5)`. Take `⟨g, hg⟩` from `hdvd`. Use `⟨-aeval x g, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use `congrArg (aeval x) hg` as an intermediate fact. Simplify using `only [map_sub, map_pow, aeval_X, map_one, map_sum, map_mul, aeval_C] at this`. Simplify using `only [algebraMap_int_eq, eq_intCast, Int.cast_natCast] at this`. Take the linear combination `this`.
+Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem exists_sub_one_pow {p : ℕ} (hp : p.Prime) {B : Type} [CommRing B] (x : B) :
     ∃ z : B, (x - 1) ^ (p - 1) = (∑ i ∈ Finset.range p, x ^ i) - (p : B) * z := by
@@ -51,11 +51,11 @@ theorem exists_sub_one_pow {p : ℕ} (hp : p.Prime) {B : Type} [CommRing B] (x :
   linear_combination this
 
 /- English proof (translation)
-Use `haveI : Fact p.Prime := ⟨hp⟩`. Establish `h` using `Choose.choose_modEq_choose_mod_mul_choose_div_nat (p := p) (n := a * p + c) (k := c)`. Establish `h1 : (a * p + c) % p = c`. Apply the tactic sequence `rw [Nat.mul_add_mod_of_lt hc] <;> simp`. Establish `h2 : c % p = c` using `Nat.mod_eq_of_lt hc`.
+Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : c / p = 0` using `Nat.div_eq_of_lt hc`. Rewrite `h` using `[h1, h2, h3]`. Simplify using `only [Nat.choose_self, Nat.choose_zero_right, mul_one] at h`. Introduce `hd`. Establish `h0` using `(Nat.modEq_zero_iff_dvd.2 hd).symm.trans h`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(Nat.modEq_iff_dvd.1 h0)` as an intermediate fact. Simplify using `at this`. Establish `h5 : p ∣ 1` using `by exact_mod_cast this`. Conclude with `hp.one_lt.ne' (Nat.dvd_one.1 h5)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem not_dvd_choose {p : ℕ} (hp : p.Prime) (a c : ℕ) (hc : c < p) :
     ¬ p ∣ (a * p + c).choose c := by
@@ -75,9 +75,9 @@ theorem not_dvd_choose {p : ℕ} (hp : p.Prime) (a c : ℕ) (hc : c < p) :
   exact hp.one_lt.ne' (Nat.dvd_one.1 h5)
 
 /- English proof (translation)
-Proceed by induction on `a with`. Consider the case `zero => simpa [Nat.uniformBell_zero_left] using hp.one_lt.ne'`. Consider the case `succ a ih`. Rewrite using `[Nat.uniformBell_succ_left]`. Introduce `h`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Break down `(hp.dvd_mul).1 h with h | h` into its components or cases. Use `not_dvd_choose hp a (p - 1) (Nat.sub_lt hp.pos one_pos) ?_` and prove the remaining obligations. Establish `h6 : a * p + (p - 1) = a * p + p - 1` using `by have := hp.pos; omega`. Rewrite using `[h6]` and apply the resulting hypothesis. Conclude with `ih h`.
+Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem not_dvd_uniformBell {p : ℕ} (hp : p.Prime) (a : ℕ) : ¬ p ∣ Nat.uniformBell a p := by
   induction a with
@@ -92,11 +92,11 @@ theorem not_dvd_uniformBell {p : ℕ} (hp : p.Prime) (a : ℕ) : ¬ p ∣ Nat.un
     · exact ih h
 
 /- English proof (translation)
-Take `⟨e, he⟩` from `hnil`. Establish `hc : IsCoprime (N : ℤ) ((p : ℤ) ^ e)`. Apply `IsCoprime.pow_right` to reduce the goal to its premises. Rewrite using `[Nat.isCoprime_iff_coprime]`. Conclude with `((Nat.Prime.coprime_iff_not_dvd hp).2 h).symm`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨s, t, hst⟩` from `hc`. Use `⟨s, ?_⟩` and prove the remaining obligations. Use `congrArg (Int.cast : ℤ → B) hst` as an intermediate fact. Move the coercions through the operations in `at this`. Rewrite `this` using `[he]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using this`.
+A detailed English derivation is pending.
 -/
 theorem exists_inv {B : Type} [CommRing B] {p N : ℕ} (hp : p.Prime) (hnil : IsNilpotent (p : B))
     (h : ¬ p ∣ N) : ∃ v : B, v * N = 1 := by
@@ -113,7 +113,7 @@ theorem exists_inv {B : Type} [CommRing B] {p N : ℕ} (hp : p.Prime) (hnil : Is
   simpa using this
 
 /- English proof (translation)
-Proceed by induction on `e with`. Consider the case `zero => simp`. Consider the case `succ e ih`. Rewrite using `[pow_succ, Nat.mul_succ]`. Conclude with `(mul_dvd_mul ih (Nat.dvd_factorial hp.pos le_rfl)).trans (Nat.factorial_mul_factorial_dvd_factorial_add _ _)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pow_dvd_factorial {p : ℕ} (hp : p.Prime) (e : ℕ) : p ^ e ∣ (p * e).factorial := by
   induction e with
@@ -124,9 +124,9 @@ theorem pow_dvd_factorial {p : ℕ} (hp : p.Prime) (e : ℕ) : p ^ e ∣ (p * e)
       (Nat.factorial_mul_factorial_dvd_factorial_add _ _)
 
 /- English proof (translation)
-Take `⟨e, he⟩` from `hnil`. Use `⟨p * e, fun y hy ↦ ?_⟩` and prove the remaining obligations. Take `⟨k, hk⟩` from `pow_dvd_factorial hp e`. Rewrite using `[← δ.factorial_mul_dpow_eq_pow hy, hk]`. Use `push_cast`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[he]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem exists_pow_eq_zero {B : Type} [CommRing B] {J : Ideal B} (δ : DividedPowers J) {p : ℕ}
     (hp : p.Prime) (hnil : IsNilpotent (p : B)) : ∃ n : ℕ, ∀ y ∈ J, y ^ n = 0 := by
@@ -139,9 +139,7 @@ theorem exists_pow_eq_zero {B : Type} [CommRing B] {J : Ideal B} (δ : DividedPo
   simp
 
 /- English proof (translation)
-Rewrite using `[Nat.choose_symm_add]`. Introduce `h`. Break down `(hp.dvd_mul).1 h with h | h` into its components or cases. Break down `(hp.dvd_mul).1 h with h | h` into its components or cases. Conclude with `not_dvd_uniformBell hp a h`.
-
-Conclude with `not_dvd_choose hp a c hc h`. Conclude with `absurd ((hp.dvd_factorial).1 h) (not_le.2 hc)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem not_dvd_coeff {p : ℕ} (hp : p.Prime) (a c : ℕ) (hc : c < p) :
     ¬ p ∣ Nat.uniformBell a p * (a * p + c).choose (a * p) * c.factorial := by
@@ -157,9 +155,9 @@ section
 variable {B : Type} [CommRing B] {J : Ideal B} (δ : DividedPowers J)
 
 /- English proof (translation)
-Establish `h1 : (Nat.uniformBell a p : B) * δ.dpow (a * p) μ = μ ^ a * δ.dpow a w`. Rewrite using `[← δ.dpow_comp hp.ne_zero hμ, h, δ.dpow_mul hw]`. Establish `h2` using `δ.mul_dpow (m := a * p) (n := c) hμ`. Establish `h3` using `δ.factorial_mul_dpow_eq_pow (n := c) hμ`. Use `push_cast`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[pow_add]`. Take the linear combination `(-(Nat.uniformBell a p : B) * (c.factorial : B)) * h2 + (c.factorial : B) * δ.dpow c μ * h1 + μ ^ a * δ.dpow a w * h3`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem coeff_mul_dpow {p : ℕ} (hp : p.Prime) {μ w : B} (hμ : μ ∈ J) (hw : w ∈ J)
     (h : δ.dpow p μ = μ * w) (a c : ℕ) :
@@ -175,11 +173,11 @@ theorem coeff_mul_dpow {p : ℕ} (hp : p.Prime) {μ w : B} (hμ : μ ∈ J) (hw 
     (c.factorial : B) * δ.dpow c μ * h1 + μ ^ a * δ.dpow a w * h3
 
 /- English proof (translation)
-Take `⟨q, rfl⟩ : ∃ q, p = q + 1` from `⟨p - 1, (Nat.sub_add_cancel hp.one_lt.le).symm⟩`. Simplify using `only [Nat.add_sub_cancel] at *`. Use `set ξ := ∑ i ∈ Finset.range (q + 1), x ^ i with hξdef`. Take `⟨z, hz⟩` from `exists_sub_one_pow hp x`. Simplify using `only [Nat.add_sub_cancel, ← hξdef] at hz`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Take `⟨u, hu⟩` from `exists_inv (N := q.factorial) hp hnil (fun h ↦ absurd ((hp.dvd_factorial).1 h) (by omega))`. Establish `hμ : x ^ (q + 1) - 1 = (x - 1) * ξ` using `(mul_geom_sum x (q + 1)).symm`. Establish `h2` using `δ.factorial_mul_dpow_eq_pow (n := q + 1) hξ`. Rewrite `h2` using `[Nat.factorial_succ]`. Move the coercions through the operations in `at h2 hz`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨δ.dpow (q + 1) ξ - z * u * ξ ^ q, ?_, ?_⟩` and prove the remaining obligations. Use `Ideal.sub_mem _ (GlobalTheory.Cris.ExpBij.dpFil_anti δ (Nat.le_succ q) (GlobalTheory.Cris.ExpBij.dpow_mem_dpFil δ hξ _)) (Ideal.mul_mem_left _ _ ?_)` and prove the remaining obligations. Simplify using `using GlobalTheory.Cris.ExpBij.pow_mem_dpFil δ (GlobalTheory.Cris.ExpBij.mem_dpFil_one δ hξ) q`. Rewrite using `[hμ, δ.dpow_mul hξ, pow_succ]`. Take the linear combination `(x - 1) * δ.dpow (q + 1) ξ * hz + (x - 1) * z * ((q : B) + 1) * δ.dpow (q + 1) ξ * hu - (x - 1) * z * u * h2`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem exists_dpow_prime_eq {p : ℕ} (hp : p.Prime) (hnil : IsNilpotent (p : B)) (x : B)
     (hξ : (∑ i ∈ Finset.range p, x ^ i) ∈ J) :
@@ -206,25 +204,23 @@ theorem exists_dpow_prime_eq {p : ℕ} (hp : p.Prime) (hnil : IsNilpotent (p : B
 end
 
 /- English proof (translation)
-Introduce `B _ J δ p hp hnil x hξ`. Establish `hμJ : x ^ p - 1 ∈ J`. Rewrite using `[← mul_geom_sum]`. Conclude with `J.mul_mem_left _ hξ`. Take `⟨n, hn⟩` from `exists_pow_eq_zero δ hp hnil`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨w, hwf, hw⟩` from `exists_dpow_prime_eq δ hp hnil x hξ`. Establish `hp2` using `hp.two_le`. Establish `hp1 : 1 ≤ p - 1` using `by omega`. Establish `hwJ : w ∈ J` using `GlobalTheory.Cris.ExpBij.dpFil_le δ hp1 hwf`. Generalize the expression as in `x ^ p - 1 = μ at hμJ hw ⊢`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact.
 
-Establish `key : ∀ m, ∃ b : B, (m = 1 → b = 1) ∧ (1 ≤ m → δ.dpow m μ = μ * b ∧ b ∈ GlobalTheory.Cris.ExpBij.dpFil δ (m - 1)) ∧ (p * (n + 2) ≤ m → b = 0)`. Introduce `m`. Break down `Nat.lt_or_ge m 2 with h | h` into its components or cases. Use `interval_cases m`. Conclude with `⟨0, by simp, by simp, fun _ ↦ rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Use the polynomial consequences of the given equalities and inequalities.
 
-Use `⟨1, fun _ ↦ rfl, fun _ ↦ ⟨by rw [δ.dpow_one hμJ, mul_one], GlobalTheory.Cris.ExpBij.mem_dpFil_zero δ 1⟩, fun h ↦ ?_⟩` and prove the remaining obligations. Use the polynomial consequences of the given equalities and inequalities. Take `⟨a, c, hc, rfl⟩ : ∃ a c, c < p ∧ a * p + c = m` from `⟨m / p, m % p, Nat.mod_lt _ hp.pos, Nat.div_add_mod' m p⟩`. Take `⟨v, hv⟩` from `exists_inv hp hnil (not_dvd_coeff hp a c hc)`. Establish `hco` using `coeff_mul_dpow δ hp hμJ hwJ hw a c`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Choose the witnesses or unpack the hypotheses as in `⟨k, hk⟩ : ∃ k, a + c = k + 1 := by`. Use `⟨a + c - 1, ?_⟩` and prove the remaining obligations. Break down `Nat.eq_zero_or_pos a with rfl | ha` into its components or cases. Simplify using `only [zero_mul, zero_add] at h ⊢`. Use linear arithmetic over natural numbers and integers.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result.
 
-Use linear arithmetic over natural numbers and integers. Take `⟨q, rfl⟩ : ∃ q, p = q + 1` from `⟨p - 1, by omega⟩`. Use `⟨v * (μ ^ k * δ.dpow a w), fun h1 ↦ by omega, fun _ ↦ ⟨?_, ?_⟩, fun hM ↦ ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Establish `h5` using `GlobalTheory.Cris.ExpBij.mul_mem_dpFil δ (GlobalTheory.Cris.ExpBij.pow_mem_dpFil δ (GlobalTheory.Cris.ExpBij.mem_dpFil_one δ hμJ) k) (GlobalTheory.Cris.ExpBij.dpow_mem_dpFil_mul δ hp1 hwf a)`.
+Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e : a * (q + 1) + c - 1 = k * 1 + a * (q + 1 - 1)`. Rewrite using `[Nat.add_sub_cancel, Nat.mul_succ]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[e]`. Conclude with `Ideal.mul_mem_left _ _ h5`.
+Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `h6 : n + 2 ≤ a`. Assume the negation of the conclusion as `hlt`. Establish `h7 : a + 1 ≤ n + 2` using `by omega`. Establish `h8` using `Nat.mul_le_mul_left (q + 1) h7`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h9 : μ ^ k = 0` using `pow_eq_zero_of_le (by omega : n ≤ k) (hn μ hμJ)`. Simplify using `[h9]`. Use `choose ν h1 h2 h3 using key`. Use `⟨⟨n, hn _ hμJ⟩, ν, h1 1 rfl, fun m ↦ (h2 (m + 1) (by omega)).1, fun m ↦ ?_, fun m hm ↦ ?_, p * (n + 2), fun m hm ↦ h3 m hm⟩` and prove the remaining obligations. Establish `h` using `(h2 (m + 1) (by omega)).2`.
-
-Rewrite `h` using `[Nat.add_sub_cancel]`. Conclude with `h`. Conclude with `⟨n, hn _ (GlobalTheory.Cris.ExpBij.dpFil_le δ (show 1 ≤ m - 1 by omega) (h2 m (by omega)).2)⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem dpow_pow_sub_one : ∀ {B : Type} [CommRing B] {J : Ideal B} (δ : DividedPowers J) (p : ℕ), p.Prime → IsNilpotent (p : B) → ∀ x : B, (∑ i ∈ Finset.range p, x ^ i) ∈ J → IsNilpotent (x ^ p - 1) ∧ ∃ ν : ℕ → B, ν 1 = 1 ∧ (∀ m, δ.dpow (m + 1) (x ^ p - 1) = (x ^ p - 1) * ν (m + 1)) ∧ (∀ m, ν (m + 1) ∈ fil δ m) ∧ (∀ m, 2 ≤ m → IsNilpotent (ν m)) ∧ ∃ M, ∀ m, M ≤ m → ν m = 0 := by
   intro B _ J δ p hp hnil x hξ

@@ -3,22 +3,22 @@ import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.Archim
 namespace PositivityTheory.Rg.BcB.E1
 
 /- English proof (translation)
-The claim follows from `cellCover_of cover_holds (conjCpt_of admissible_le_holds)`.
+A detailed English derivation is pending.
 -/
 theorem cellCover_holds : CellCover := cellCover_of cover_holds (conjCpt_of admissible_le_holds)
 
 /- English proof (translation)
-The claim follows from `cutBox_of (degCell_of h1 h2 h3 torNorm_holds)`.
+A detailed English derivation is pending.
 -/
 theorem cutBox_of' (h1 : DegBasis) (h2 : DegAdelic) (h3 : DegBdd) : CutBox := cutBox_of (degCell_of h1 h2 h3 torNorm_holds)
 
 open PositivityTheory.Rg.Rs GlobalTheory.CuspRep in
 /- English proof (translation)
-Introduce `E _ _ _ n c`. Take `⟨Ω₀, hΩ, hc⟩` from `cellCover_holds E n`. Take `⟨C, -, hC⟩` from `cutBox_of' h1 h2 h3 E n Ω₀ hΩ`. Use `⟨(fun p : (Fin n → ℝ) × GA E n => An.tor E p.1 * p.2) '' (Metric.closedBall 0 (C * (1 + |c|)) ×ˢ Ω₀), ((isCompact_closedBall _ _).prod hΩ).image ((JSqIntGlue.continuous_tor.comp continuous_fst).mul continuous_snd), fun g a1 a2 => ?_⟩` and prove the remaining obligations. Take `⟨γ, m, o, ho, e⟩` from `hc g`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨ratGL E n γ⁻¹, ⟨_, rfl⟩, _, ⟨(_, o), ⟨mem_closedBall_zero_iff.2 (hC (fun i => (m i : ℝ)) o ho _ (abs_nonneg c) (fun W hW => ?_) ?_), ho⟩, rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[← e, ← img_img_inv γ W, h4]`. Conclude with `(a1 _ (by rw [finrank_img, hW])).trans (le_abs_self c)`. Rewrite using `[← e, ← img_top γ, h4]`. Combine the linear relations using `[le_abs_self c, (abs_le.1 a2).1]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Simplify using the standard rewrite rules.
 
-Simplify using `only [← e, map_inv, inv_mul_cancel_left]`.
+A detailed English derivation is pending.
 -/
 theorem mahlerC_of_deg (h1 : DegBasis) (h2 : DegAdelic) (h3 : DegBdd) (h4 : DegRat) : D1.MahlerC := by
   intro E _ _ _ n c

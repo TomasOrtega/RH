@@ -17,7 +17,7 @@ open UpperTheory.V.Hi.LvR
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 attribute [local instance 2000] UpperTheory.V.W.coefLocal
 /- English proof (citation)
-Apply `UpperTheory.V.Hi.level_of_isJ_unitaryHeckeData` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAutomorphicArithmetic%2FAutomorphicVarieties%2FModularityArgument%2FThresholdArguments%2FDenseThresholdCases%2FBaseObjectHomExt.lean&line=129#L129)
 -/

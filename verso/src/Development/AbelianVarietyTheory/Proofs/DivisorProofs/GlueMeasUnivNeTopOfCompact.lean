@@ -7,19 +7,15 @@ open scoped ENNReal
 namespace GlobalTheory
 
 /- English proof (translation)
-Use `set μ := GlobalTheory.ChartGlue.glueMeas e (fun i y => ENNReal.ofReal (r i (e i y))) with hμ`. Establish `hρ : ∀ i j y, y ∈ (e i).source → y ∈ (e j).source → ENNReal.ofReal (r i (e i y)) = ENNReal.ofReal (‖GlobalTheory.ChartGlue.transDet (e i) (e j) y‖ ^ 2) * ENNReal.ofReal (r j (e j y))`. Introduce `i j y hi hj`. Rewrite using `[← ENNReal.ofReal_mul (sq_nonneg _), hc i j y hi hj]`. Establish `hloc : ∀ y : M, ∃ U : Set M, IsOpen U ∧ y ∈ U ∧ μ U < ∞`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `y`. Take `⟨i, hi⟩` from `hcov y`. Establish `hT : (e i).target ∈ nhds ((e i) y)` using `(e i).open_target.mem_nhds ((e i).map_source hi)`. Take `⟨δ, hδ, hδs⟩` from `Metric.nhds_basis_closedBall.mem_iff.1 hT`. Use `set U := (e i).source ∩ (e i) ⁻¹' Metric.ball ((e i) y) δ with hUdef`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hUo : IsOpen U` using `(e i).continuousOn.isOpen_inter_preimage (e i).open_source Metric.isOpen_ball`. Establish `hUs : U ⊆ (e i).source` using `inter_subset_left`. Establish `himg : (e i) '' U ⊆ Metric.closedBall ((e i) y) δ`. Introduce and unpack `_ ⟨z, hz, rfl⟩`. Conclude with `Metric.ball_subset_closedBall hz.2`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take `⟨C, hC⟩` from `(isCompact_closedBall ((e i) y) δ).exists_bound_of_continuousOn ((hr i).mono hδs)`. Use `⟨U, hUo, ⟨hi, Metric.mem_ball_self hδ⟩, ?_⟩` and prove the remaining obligations. Establish `hm` using `GlobalTheory.ChartGlue.measurableSet_image (e i) hUo.measurableSet hUs`. Rewrite using `[hμ, GlobalTheory.ChartGlue.glueMeas_apply e _ hd hρ i hUo.measurableSet hUs, GlobalTheory.ChartGlue.chartMeas_apply_of_subset _ _ hUo.measurableSet hUs]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `setLIntegral_mono' hm fun v hv => ENNReal.ofReal_le_ofReal ?_` and prove the remaining obligations. Rewrite using `[(e i).right_inv (hδs (himg hv))]`. Use `hC v (himg hv)` as an intermediate fact. Rewrite `this` using `[Real.norm_eq_abs]`. Conclude with `(le_abs_self _).trans this`.
-
-Use `_ = ENNReal.ofReal C * volume ((e i) '' U) := setLIntegral_const _ _`. Use `_ ≤ ENNReal.ofReal C * volume (Metric.closedBall ((e i) y) δ) := by gcongr`. Use `_ < ∞ := ENNReal.mul_lt_top ENNReal.ofReal_lt_top measure_closedBall_lt_top`. Use `choose U hUo hyU hUf using hloc`. Take `⟨t, ht⟩` from `isCompact_univ.elim_finite_subcover U hUo (fun y _ => mem_iUnion.2 ⟨y, hyU y⟩)`.
-
-Use `ne_of_lt (lt_of_le_of_lt (measure_mono ht) ?_)` and prove the remaining obligations. Conclude with `(measure_biUnion_finset_le t U).trans_lt (ENNReal.sum_lt_top.2 fun y _ => hUf y)`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem glueMeas_univ_ne_top_of_compact {M : Type} [TopologicalSpace M] [CompactSpace M]
     [MeasurableSpace M] [BorelSpace M] [SecondCountableTopology M] {n : ℕ} {ι : Type}

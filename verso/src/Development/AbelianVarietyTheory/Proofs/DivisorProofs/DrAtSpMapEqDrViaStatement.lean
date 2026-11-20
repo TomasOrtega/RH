@@ -10,7 +10,7 @@ open scoped ENNReal
 open AlgebraicGeometry CategoryTheory
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CovHt.Link.drAt_spMap_comp | exact GlobalTheory.CovHt.Link.drAt_spMap_comp | (intros; apply GlobalTheory.CovHt.Link.drAt_spMap_comp <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.drAt_spMap_eq_drVia : ∀ (D : D7) (A : Amb D) (N j : ℕ) (S : Sig A N j) (κ : Lv A) (s : FinalTheorems S κ) (Φ : s.Flag) (k : s.Comp) (la : AllWt.Weight S.Dw) (p : ℕ) [Fact p.Prime] (K : Type) [Field K] (φ : K →+* ℂ_[p]) (y : Sp K ⟶ (Φ.C k).Y.X) (f : (Φ.C k).Y.Fn), drAt Φ k la p (spMap φ ≫ y) f = drVia Φ k la p y φ f := by
   first | exact @GlobalTheory.CovHt.Link.drAt_spMap_comp | exact GlobalTheory.CovHt.Link.drAt_spMap_comp | (intros; apply GlobalTheory.CovHt.Link.drAt_spMap_comp <;> assumption)

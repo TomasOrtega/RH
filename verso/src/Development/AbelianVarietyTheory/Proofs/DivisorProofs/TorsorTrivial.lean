@@ -12,7 +12,7 @@ open IsLocalRing Polynomial
 namespace GlobalTheory.LocAcyc
 
 /- English proof (translation)
-Introduce `T O _ _ _ _ _ _ _ _ hA P _ φ hφ hsh hP _ q hq hu`. Distinguish the cases in `h : P = (maximalIdeal T).map (Polynomial.C : T →+* Polynomial T)`. Conclude with `h2 T O hA P φ hφ hsh hP h q hq hu`. Conclude with `h1 T O hA P φ hφ hsh hP h q hq hu`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. A detailed English derivation is pending.
 -/
 theorem keyLocal_of (h1 : KeyClosedPts) (h2 : KeyGeneric) : KeyLocal := by
   intro T O _ _ _ _ _ _ _ _ hA P _ φ hφ hsh hP _ q hq hu
@@ -21,7 +21,7 @@ theorem keyLocal_of (h1 : KeyClosedPts) (h2 : KeyGeneric) : KeyLocal := by
   · exact h1 T O hA P φ hφ hsh hP h q hq hu
 
 /- English proof (translation)
-Introduce `T O _ _ _ _ _ _ _ hA P _ φ hφ hsh q hq hu D _ _ hfin hproj hff act hbij`. Establish `hO : KeyOrigin` using `GlobalTheory.T.torsor_trivial_strict_henselisation_origin`. Establish `hAll : KeyAll` using `GlobalTheory.T.torsorTrivialGenericFibre_of_strictHenselClosedFibre (keyLocal_of (GlobalTheory.T.torsorTrivialClosedPoints_of_origin_closedFibre hO) (GlobalTheory.T.keyGeneric_of_keyClosedPts' (GlobalTheory.T.torsorTrivialClosedPoints_of_origin_closedFibre hO)))`. Conclude with `hAll T O hA P φ hφ hsh q hq hu D hfin hproj hff act hbij`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem torsor_trivial : ∀ (T O : Type) [CommRing T] [IsDomain T] [CommRing O] [IsLocalRing O] [Algebra T O]
     [Algebra (Polynomial T) O] [IsScalarTower T (Polynomial T) O],

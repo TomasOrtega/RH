@@ -16,7 +16,7 @@ section Ring
 variable {R S : Type} [CommRing R] [CommRing S] {a : ℕ}
 
 /- English proof (translation)
-Use extensionality with `i j`. Conclude with `h _`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem map_map_comm (p : R →+* S) (c : R →+* R) (c' : S →+* S) (h : ∀ x, p (c x) = c' (p x)) (g : GL (Fin a) R) :
     GeneralLinearGroup.map p (GeneralLinearGroup.map c g) =
@@ -25,14 +25,14 @@ theorem map_map_comm (p : R →+* S) (c : R →+* R) (c' : S →+* S) (h : ∀ x
   exact h _
 
 /- English proof (translation)
-The claim follows from `Continuous.units_map _ (continuous_matrix fun i j => h.comp (continuous_id.matrix_elem i j))`.
+A detailed English derivation is pending.
 -/
 theorem continuous_mapGL [TopologicalSpace R] [IsTopologicalRing R] (c : R →+* R) (h : Continuous c) :
     Continuous (GeneralLinearGroup.map (n := Fin a) c) :=
   Continuous.units_map _ (continuous_matrix fun i j => h.comp (continuous_id.matrix_elem i j))
 
 /- English proof (translation)
-Use extensionality with `i j`. Express the relevant statement in the definitionally equal form `c ((1 + nilM x : Matrix (Fin a) (Fin a) R) i j) = (1 + nilM fun p => c (x p) : Matrix (Fin a) (Fin a) R) i j`. Simplify using `only [nilM, Matrix.add_apply, Matrix.of_apply, Matrix.one_apply, map_add]`. Apply the tactic sequence `split_ifs <;> simp`.
+By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem map_unip {r : ℕ} (c : R →+* R) (x : BlockIx a r → R) :
     GeneralLinearGroup.map c (unip x) = unip fun p => c (x p) := by
@@ -59,14 +59,14 @@ variable (E a) in
 def barA : GA E a →* GA E a := GeneralLinearGroup.map (conjAd E)
 
 /- English proof (translation)
-Use extensionality with `i j : 2`. Conclude with `conjAd_conjAd _`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem barA_barA (g : GA E a) : barA E a (barA E a g) = g := by
   ext i j : 2
   exact conjAd_conjAd _
 
 /- English proof (translation)
-The claim follows from `ga_ext (by rw [barA, map_map_comm _ _ _ pInf_conjAd, pInf_infGL, pInf_infGL]) (by rw [barA, map_map_comm _ _ _ pFin_conjAd, pFin_infGL, pFin_infGL, map_one])`.
+A detailed English derivation is pending.
 -/
 theorem barA_infGL (y : GL (Fin a) (Cinf E)) :
     barA E a (infGL E a y) = infGL E a (GeneralLinearGroup.map (starRingEnd (Cinf E)) y) :=
@@ -74,14 +74,14 @@ theorem barA_infGL (y : GL (Fin a) (Cinf E)) :
     (by rw [barA, map_map_comm _ _ _ pFin_conjAd, pFin_infGL, pFin_infGL, map_one])
 
 /- English proof (translation)
-The claim follows from `ga_ext (by rw [barA, map_map_comm _ _ _ pInf_conjAd, pInf_finGL, pInf_finGL, map_one]) (by rw [barA, map_map_comm _ _ _ pFin_conjAd, pFin_finGL, pFin_finGL])`.
+A detailed English derivation is pending.
 -/
 theorem barA_finGL (k : GL (Fin a) (Af E)) : barA E a (finGL E a k) = finGL E a (GeneralLinearGroup.map (cFin E) k) :=
   ga_ext (by rw [barA, map_map_comm _ _ _ pInf_conjAd, pInf_finGL, pInf_finGL, map_one])
     (by rw [barA, map_map_comm _ _ _ pFin_conjAd, pFin_finGL, pFin_finGL])
 
 /- English proof (translation)
-The claim follows from `(map_map_comm _ _ _ (fun x => (conjAd_algebraMap x).symm) γ).symm`.
+A detailed English derivation is pending.
 -/
 theorem barA_ratGL (γ : GL (Fin a) E) :
     barA E a (ratGL E a γ) =
@@ -89,7 +89,7 @@ theorem barA_ratGL (γ : GL (Fin a) E) :
   (map_map_comm _ _ _ (fun x => (conjAd_algebraMap x).symm) γ).symm
 
 /- English proof (translation)
-Take `⟨u, hu⟩` from `id hx`. Take `rfl : x = toL u.val` from `hu.symm`. Rewrite using `[show barL (toL u.val) = toL (GeneralLinearGroup.map (starRingEnd (Cinf E)) u).val from rfl, chart_val, chart_val, map_mul, barA_infGL]`. Conclude with `⟨rfl, val_mem_invSet _⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem chart_bar (φ : GA E a → ℂ) (g : GA E a) {x : Lie E a} (hx : x ∈ invSet E a) :
     chart (fun g => φ (barA E a g)) g x = chart φ (barA E a g) (barL x) ∧ barL x ∈ invSet E a := by
@@ -100,7 +100,7 @@ theorem chart_bar (φ : GA E a → ℂ) (g : GA E a) {x : Lie E a} (hx : x ∈ i
   exact ⟨rfl, val_mem_invSet _⟩
 
 /- English proof (translation)
-Introduce `g` and use `((hφ (barA E a g)).comp (barL (E := E) (a := a)).contDiff.contDiffOn fun _ hx => (chart_bar φ g hx).2).congr fun _ hx => (chart_bar φ g hx).1`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem bar_mem_Sm {φ : GA E a → ℂ} (hφ : φ ∈ Sm E a) : (fun g => φ (barA E a g)) ∈ Sm E a := fun g =>
   ((hφ (barA E a g)).comp (barL (E := E) (a := a)).contDiff.contDiffOn
@@ -122,20 +122,20 @@ Both sides reduce to the same expression.
 theorem pull_apply (φ : Sm E a) (g : GA E a) : (pull E a φ).1 g = φ.1 (barA E a g) := rfl
 
 /- English proof (translation)
-The claim follows from `(pull E a).left_inv φ`.
+A detailed English derivation is pending.
 -/
 theorem pull_pull (φ : Sm E a) : pull E a (pull E a φ) = φ := (pull E a).left_inv φ
 
 /- English proof (translation)
-The claim follows from `Subtype.ext <| funext fun g => congrArg φ.1 (map_mul (barA E a) g h)`.
+A detailed English derivation is pending.
 -/
 theorem rt_pull (h : GA E a) (φ : Sm E a) : rt E a h (pull E a φ) = pull E a (rt E a (barA E a h) φ) :=
   Subtype.ext <| funext fun g => congrArg φ.1 (map_mul (barA E a) g h)
 
 /- English proof (translation)
-Use `Subtype.ext <| funext fun g => ?_` and prove the remaining obligations. Establish `e : chart (pull E a φ).1 g =ᶠ[𝓝 (oneL E a)] chart φ.1 (barA E a g) ∘ barL` using `Filter.eventually_of_mem (isOpen_invSet.mem_nhds isUnit_one) fun x hx => (chart_bar φ.1 g hx).1`. Establish `h1 : barL (oneL E a) = oneL E a`. Use function extensionality and compare the values at `i j`. Express the relevant statement in the definitionally equal form `star ((1 : Matrix (Fin a) (Fin a) (Cinf E)) i j) = (1 : Matrix (Fin a) (Fin a) (Cinf E)) i j`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`. Establish `h2` using `HasFDerivAt.comp (oneL E a) (f := barL) (by rw [h1]; exact (differentiableAt_chart φ.2 (barA E a g)).hasFDerivAt) barL.hasFDerivAt`. Express the relevant statement in the definitionally equal form `fderiv ℝ _ _ X = fderiv ℝ _ _ _`. Rewrite using `[e.fderiv_eq, h2.fderiv]`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -155,9 +155,9 @@ theorem lie_pull (X : Lie E a) (φ : Sm E a) : lie E a X (pull E a φ) = pull E 
   rfl
 
 /- English proof (translation)
-Consider the cases of `o with`. Consider the case `fin k => exact (rt_pull _ φ).trans (by rw [barA_finGL]; rfl)`. Consider the case `cpt k`. Establish `e : GeneralLinearGroup.map (starRingEnd (Cinf E)) (Unitary.toUnits k) = Unitary.toUnits (barK k)` using `Units.ext rfl`. Conclude with `(rt_pull (infGL E a (Unitary.toUnits k)) φ).trans (by rw [barA_infGL, e]; rfl)`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Establish an intermediate fact. Treat this case separately.
 
-Consider the case `lie X => exact lie_pull X φ`.
+A detailed English derivation is pending.
 -/
 theorem act_pull (o : Op E a) (φ : Sm E a) : act o (pull E a φ) = pull E a (act (conjOp o) φ) := by
   cases o with
@@ -169,17 +169,17 @@ theorem act_pull (o : Op E a) (φ : Sm E a) : act o (pull E a φ) = pull E a (ac
   | lie X => exact lie_pull X φ
 
 /- English proof (translation)
-Use `conv_lhs => rw [← pull_pull φ, act_pull, pull_pull]`.
+A detailed English derivation is pending.
 -/
 theorem pull_act (o : Op E a) (φ : Sm E a) : pull E a (act o φ) = act (conjOp o) (pull E a φ) := by
   conv_lhs => rw [← pull_pull φ, act_pull, pull_pull]
 
 /- English proof (translation)
-Establish `h2 : ∀ z, lieS E a i j (atEmb τ z) (pull E a φ) = pull E a (lieS E a i j (atEmb (ComplexEmbedding.conjugate τ) z) φ)` using `fun z => by`. Establish `e : star (atEmb τ z) = atEmb (ComplexEmbedding.conjugate τ) z` using `by classical`. Rewrite using `[atEmb_conj]`. Unfold `atEmb`. Rewrite using `[Pi.star_single]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `split_ifs <;> rfl`. Establish `e' : barL (toL (Matrix.single i j (atEmb τ z))) = toL (Matrix.single i j (star (atEmb τ z)))`. Use function extensionality and compare the values at `k l`. Express the relevant statement in the definitionally equal form `star (Matrix.single i j (atEmb τ z) k l) = Matrix.single i j (star (atEmb τ z)) k l`. Rewrite using `[Matrix.single_apply, Matrix.single_apply]`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `split_ifs <;> simp`. Rewrite using `[lieS_apply, lie_pull, e', e, lieS_apply]`. Simplify using `only [Eop, LinearMap.smul_apply, LinearMap.sub_apply, h2, map_smul, map_sub]`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem Eop_pull (τ : E →+* ℂ) (i j : Fin a) (φ : Sm E a) :
     Eop τ i j (pull E a φ) = pull E a (Eop (ComplexEmbedding.conjugate τ) i j φ) := by
@@ -200,11 +200,11 @@ theorem Eop_pull (τ : E →+* ℂ) (i j : Fin a) (φ : Sm E a) :
   simp only [Eop, LinearMap.smul_apply, LinearMap.sub_apply, h2, map_smul, map_sub]
 
 /- English proof (translation)
-Establish `h` using `map_qdet ((pull E a).conjAlgEquiv ℂ).toAlgHom (Eop (ComplexEmbedding.conjugate τ)) (u + ((a : ℂ) - 1) / 2)`. Establish `e : (fun i j => ((pull E a).conjAlgEquiv ℂ).toAlgHom (Eop (ComplexEmbedding.conjugate τ) i j)) = Eop τ`. Use function extensionality and compare the values at `i j`. Use `LinearMap.ext fun ψ => ?_` and prove the remaining obligations. Take `⟨ψ, rfl⟩` from `(pull E a).surjective ψ`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Rewrite using `[Eop_pull]`. Express the relevant statement in the definitionally equal form `pull E a (Eop (ComplexEmbedding.conjugate τ) i j ((pull E a).symm (pull E a ψ))) = _`. Rewrite using `[LinearEquiv.symm_apply_apply]`. Rewrite `h` using `[e]`. Rewrite using `[cap, ← h, cap]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Generalize the expression as in `Formalism.REAL.qdet (Eop (a := a) (ComplexEmbedding.conjugate τ)) (u + ((a : ℂ) - 1) / 2) = z`. Express the relevant statement in the definitionally equal form `pull E a (z ((pull E a).symm (pull E a φ))) = _`. Rewrite using `[LinearEquiv.symm_apply_apply]`.
+Replace the chosen expression with an arbitrary variable. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem cap_pull (τ : E →+* ℂ) (u : ℂ) (φ : Sm E a) :
     cap τ u (pull E a φ) = pull E a (cap (ComplexEmbedding.conjugate τ) u φ) := by
@@ -224,11 +224,11 @@ theorem cap_pull (τ : E →+* ℂ) (u : ℂ) (φ : Sm E a) :
   rw [LinearEquiv.symm_apply_apply]
 
 /- English proof (translation)
-Proceed by induction on `hz using Algebra.adjoin_induction with`. Consider the case `mem x hx`. Take `⟨τ, u, rfl⟩` from `hx`. Conclude with `⟨_, Algebra.subset_adjoin ⟨_, _, rfl⟩, cap_pull τ u⟩`. Consider the case `algebraMap c => exact ⟨_, Subalgebra.algebraMap_mem _ c, fun φ => by simp⟩`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately.
 
-Consider the case `add x y _ _ hx hy`. Take `⟨x', h1, h2⟩` from `hx`. Take `⟨y', h3, h4⟩` from `hy`. Conclude with `⟨x' + y', add_mem h1 h3, fun φ => by simp [h2, h4]⟩`. Consider the case `mul x y _ _ hx hy`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately.
 
-Take `⟨x', h1, h2⟩` from `hx`. Take `⟨y', h3, h4⟩` from `hy`. Conclude with `⟨x' * y', mul_mem h1 h3, fun φ => by simp [h2, h4]⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem Zalg_pull {z : Module.End ℂ (Sm E a)} (hz : z ∈ Zalg E a) :
     ∃ z' ∈ Zalg E a, ∀ φ, z (pull E a φ) = pull E a (z' φ) := by
@@ -249,7 +249,7 @@ theorem Zalg_pull {z : Module.End ℂ (Sm E a)} (hz : z ∈ Zalg E a) :
 omit [IsCMField E] in
 
 /- English proof (translation)
-Establish `h1 : ∀ y : GL (Fin a) (Cinf E), ‖toL (GeneralLinearGroup.map (starRingEnd (Cinf E)) y).val‖ = ‖toL y.val‖` using `fun y => norm_star (toL y.val)`. Unfold `height`. Rewrite using `[← map_inv, h1, h1]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem height_bar (y : GL (Fin a) (Cinf E)) :
     height (GeneralLinearGroup.map (starRingEnd (Cinf E)) y) = height y := by
@@ -259,13 +259,13 @@ theorem height_bar (y : GL (Fin a) (Cinf E)) :
   rw [← map_inv, h1, h1]
 
 /- English proof (translation)
-Rewrite using `[pull_apply, map_mul, barA_ratGL, h.left, pull_apply] level := by`. Use `h.level.preimage (continuous_mapGL (cFin E) (continuous_conjFin _)) using 1` and compare the differences between its conclusion and the goal. Use extensionality with `k`. Conclude with `(Eq.congr_left (act_pull (.fin k) φ)).trans (pull E a).injective.eq_iff`. Use `kfin := by`.
+Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `h.kfin` as an intermediate fact. Use `Submodule.finiteDimensional_of_le (S₂ := (Submodule.span ℂ (Set.range fun k => cptRep E a k φ)).map (pull E a).toLinearMap) (Submodule.span_le.2 ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨k, rfl⟩`. Conclude with `⟨_, Submodule.subset_span ⟨_, rfl⟩, (act_pull (.cpt k) φ).symm⟩`. Use `zfin := by`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Use `h.zfin` as an intermediate fact. Use `Submodule.finiteDimensional_of_le (S₂ := (Submodule.span ℂ ((fun z : Module.End ℂ (Sm E a) => z φ) '' Zalg E a)).map (pull E a).toLinearMap) (Submodule.span_le.2 ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨z, hz, rfl⟩`. Take `⟨z', h1, h2⟩` from `Zalg_pull hz`. Conclude with `⟨_, Submodule.subset_span ⟨z', h1, rfl⟩, (h2 φ).symm⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `growth g := by`. Take `⟨C, N, h1⟩` from `h.growth (barA E a g)`. Use `⟨C, N, fun y => ?_⟩` and prove the remaining obligations. Rewrite using `[pull_apply, map_mul, barA_infGL, ← height_bar]`. Conclude with `h1 _`.
+A detailed English derivation is pending.
 -/
 theorem isAutForm_pull {φ : Sm E a} (h : IsAutForm φ) : IsAutForm (pull E a φ) where
   left γ g := by rw [pull_apply, map_mul, barA_ratGL, h.left, pull_apply]
@@ -293,7 +293,7 @@ theorem isAutForm_pull {φ : Sm E a} (h : IsAutForm φ) : IsAutForm (pull E a φ
     exact h1 _
 
 /- English proof (translation)
-Take `⟨y, rfl⟩` from `hx`. Conclude with `⟨fun p => IsCMField.complexConj E (y p), funext fun p => (conjAd_algebraMap (y p)).symm⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem bar_mem_ratN {r : ℕ} {x : BlockIx a r → Ad E} (hx : x ∈ ratN E a r) :
     (fun p => conjAd E (x p)) ∈ ratN E a r := by
@@ -303,11 +303,11 @@ theorem bar_mem_ratN {r : ℕ} {x : BlockIx a r → Ad E} (hx : x ∈ ratN E a r
 open MeasureTheory in
 
 /- English proof (translation)
-Introduce `r h0 h1 _ _ μ 𝓕 hμ hF g`. Set `β : (BlockIx a r → Ad E) ≃ₜ+ (BlockIx a r → Ad E)` to `{ toFun := fun x p => conjAd E (x p) invFun := fun x p => conjAd E (x p) left_inv := fun x => funext fun p => conjAd_conjAd _ right_inv := fun x => funext fun p => conjAd_conjAd _ map_add' := fun x y => funext fun p => map_add (conjAd E) _ _ continuous_toFun := continuous_pi fun …`. Set `e : ratN E a r ≃ ratN E a r` to `{ toFun := fun y => ⟨β.symm y, bar_mem_ratN y.2⟩ invFun := fun x => ⟨β x, bar_mem_ratN x.2⟩ left_inv := fun y => Subtype.ext (β.apply_symm_apply y) right_inv := fun x => Subtype.ext (β.symm_apply_apply x) }`. Set `m` to `β.toHomeomorph.toMeasurableEquiv`. Establish `h2` using `hφ r h0 h1 (μ.map m) (m '' 𝓕) (β.isAddHaarMeasure_map μ) (hF.image_of_equiv m.toEquiv (MeasurePreserving.symm m ⟨m.measurable, rfl⟩).quasiMeasurePreserving e fun y x => by`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `β (β.symm y + x) = y + β x`. Rewrite using `[map_add, β.apply_symm_apply]) (barA E a g)`. Rewrite `h2` using `[m.measurableEmbedding.setIntegral_map, m.injective.preimage_image]`. Rewrite using `[← h2]`. Use `congr 1`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use function extensionality and compare the values at `x`. Use `beta_reduce`. Rewrite using `[map_mul, barA, map_unip]`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem isCuspidal_pull {φ : GA E a → ℂ} (hφ : IsCuspidal φ) : IsCuspidal fun g => φ (barA E a g) := by
   intro r h0 h1 _ _ μ 𝓕 hμ hF g

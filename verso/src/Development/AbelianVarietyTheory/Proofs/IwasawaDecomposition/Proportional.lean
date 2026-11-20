@@ -20,7 +20,7 @@ def Proportional (σ : Fin (m + 1) → L.Sec) (g : W ⟶ X) (ψ : W ⟶ PSpace R
     (g.appLE (L.U k) A hk).hom ((σ j).f k) = pullRatio ψ A i hi j * (g.appLE (L.U k) A hk).hom ((σ i).f k)
 
 /- English proof (translation)
-Introduce `A k hk i hi j`. Establish `hA : A ≤ d ⁻¹ᵁ (g ⁻¹ᵁ L.U k ⊓ ψ ⁻¹ᵁ chart R m i)` using `fun x hx => ⟨hk hx, hi hx⟩`. Use `congrArg (d.appLE _ A hA).hom (h _ k inf_le_left i inf_le_right j)` as an intermediate fact. Rewrite `this` using `[map_mul, appLE_appLE, appLE_appLE, appLE_pullRatio]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem Proportional.comp {σ : Fin (m + 1) → L.Sec} {g : W ⟶ X} {ψ : W ⟶ PSpace R m} (h : Proportional σ g ψ)
     (d : T ⟶ W) : Proportional σ (d ≫ g) (d ≫ ψ) := by
@@ -30,7 +30,7 @@ theorem Proportional.comp {σ : Fin (m + 1) → L.Sec} {g : W ⟶ X} {ψ : W ⟶
   rwa [map_mul, appLE_appLE, appLE_appLE, appLE_pullRatio] at this
 
 /- English proof (translation)
-Introduce `A k hk i hi j`. Apply `d.app_injective A` to reduce the goal to its premises. Rewrite using `[Scheme.Hom.app_eq_appLE, map_mul, appLE_appLE, appLE_appLE, appLE_pullRatio]`. Conclude with `h _ k _ i _ j`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Proportional.of_comp {σ : Fin (m + 1) → L.Sec} {g : W ⟶ X} {ψ : W ⟶ PSpace R m} (d : T ⟶ W)
     [IsSchemeTheoreticallyDominant d] [QuasiCompact d] (h : Proportional σ (d ≫ g) (d ≫ ψ)) :

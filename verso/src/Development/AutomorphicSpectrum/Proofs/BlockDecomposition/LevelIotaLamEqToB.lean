@@ -11,7 +11,7 @@ open GroundTheory.PAdicHodge Formalism.Per6 DividedPowers CrystallineSemistableC
 namespace GlobalTheory.CompanionTheory.LatC
 
 /- English proof (translation)
-The claim follows from `congrArg Subtype.val ((RingEquiv.ofBijective (algebraMap (BdRp l) (BdR l)).rangeRestrict ⟨fun x y h => IsPerfectoidField.algebraMap_bDeRham_injective (K := ℂ_[l]) (p := l) (congrArg Subtype.val h), RingHom.rangeRestrict_surjective _⟩).apply_symm_apply z)`.
+A detailed English derivation is pending.
 -/
 theorem algebraMap_pInv {l : ℕ} [Fact l.Prime] (z : ↥(algebraMap (BdRp l) (BdR l)).range) :
     algebraMap (BdRp l) (BdR l) (pInv l z) = z.1 :=
@@ -20,9 +20,9 @@ theorem algebraMap_pInv {l : ℕ} [Fact l.Prime] (z : ↥(algebraMap (BdRp l) (B
       RingHom.rangeRestrict_surjective _⟩).apply_symm_apply z)
 
 /- English proof (translation)
-Introduce `c y hy`. Establish `h1 : (lev h k).ι ((lev h k).lam c) = pk l k (ACris.iota ℂ_[l] l c)` using `rfl`. Establish `h2 : (lev h k).toB y = pk l k (pInv l y)` using `rfl`. Rewrite using `[h1, h2]`. Use `congr 1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Apply `IsPerfectoidField.algebraMap_bDeRham_injective (K := ℂ_[l]) (p := l)` to reduce the goal to its premises. Conclude with `hy.symm.trans (algebraMap_pInv y).symm`.
+Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem iota_lam_eq_toB {l : ℕ} [Fact l.Prime] {K : IntermediateField ℚ_[l] (PadicAlgCl l)} {M : ℕ} (h : LevHyp l K M) (k : ℕ) :
     ∀ (c : (per l K).A) (y : (per l K).P), (y : (per l K).B) = (per l K).i c →

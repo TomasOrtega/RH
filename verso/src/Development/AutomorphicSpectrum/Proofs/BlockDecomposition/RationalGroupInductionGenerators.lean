@@ -17,58 +17,58 @@ section Field
 variable {F₀ : Type} [Field F₀] {n : ℕ}
 
 /- English proof (translation)
-Rewrite using `[blk4, blk4, ← Matrix.fromBlocks_map]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem block_matrix_map {R R' : Type} [CommRing R] [CommRing R'] (f : R →+* R') (A B C E : Matrix (Fin n) (Fin n) R) :
     (blk4 A B C E).map f = blk4 (A.map f) (B.map f) (C.map f) (E.map f) := by
   rw [blk4, blk4, ← Matrix.fromBlocks_map]; rfl
 
 /- English proof (translation)
-Simplify using `only [blk4, Matrix.transpose_submatrix, Matrix.fromBlocks_transpose]`.
+Simplify using the standard rewrite rules.
 -/
 theorem blockMatrixTwoByTwoFin_transpose {R : Type} (A B C E : Matrix (Fin n) (Fin n) R) :
     (blk4 A B C E)ᵀ = blk4 Aᵀ Cᵀ Bᵀ Eᵀ := by
   simp only [blk4, Matrix.transpose_submatrix, Matrix.fromBlocks_transpose]
 
 /- English proof (translation)
-Simplify using `only [cT, Matrix.map_mul, Matrix.transpose_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem cT_mul (σ : F₀ →+* F₀) {N : ℕ} (g h : Matrix (Fin N) (Fin N) F₀) : cT σ (g * h) = cT σ h * cT σ g := by
   simp only [cT, Matrix.map_mul, Matrix.transpose_mul]
 
 /- English proof (translation)
-Simplify using `only [cT, block_matrix_map, blockMatrixTwoByTwoFin_transpose]`.
+Simplify using the standard rewrite rules.
 -/
 theorem cT_blk4 (σ : F₀ →+* F₀) (A B C E : Matrix (Fin n) (Fin n) F₀) :
     cT σ (blk4 A B C E) = blk4 (cT σ A) (cT σ C) (cT σ B) (cT σ E) := by
   simp only [cT, block_matrix_map, blockMatrixTwoByTwoFin_transpose]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[cT]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem cT_zero (σ : F₀ →+* F₀) : cT σ (0 : Matrix (Fin n) (Fin n) F₀) = 0 := by
   ext i j; simp [cT]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[cT, Matrix.one_apply, eq_comm]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem cT_one (σ : F₀ →+* F₀) : cT σ (1 : Matrix (Fin n) (Fin n) F₀) = 1 := by
   ext i j; simp [cT, Matrix.one_apply, eq_comm]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[cT]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem cT_neg (σ : F₀ →+* F₀) (x : Matrix (Fin n) (Fin n) F₀) : cT σ (-x) = -cT σ x := by
   ext i j; simp [cT]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[cT, hσ]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem cT_cT {σ : F₀ →+* F₀} (hσ : ∀ x, σ (σ x) = x) (x : Matrix (Fin n) (Fin n) F₀) : cT σ (cT σ x) = x := by
   ext i j; simp [cT, hσ]
 
 /- English proof (translation)
-Establish `e : (cT σ a).det = σ a.det`. Rewrite using `[cT, Matrix.det_transpose, RingHom.map_det]`. Both sides reduce to the same expression. Rewrite using `[e]`. Conclude with `ha.map σ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUnit_det_cT (σ : F₀ →+* F₀) {a : Matrix (Fin n) (Fin n) F₀} (ha : IsUnit a.det) : IsUnit (cT σ a).det := by
   have e : (cT σ a).det = σ a.det := by
@@ -76,7 +76,7 @@ theorem isUnit_det_cT (σ : F₀ →+* F₀) {a : Matrix (Fin n) (Fin n) F₀} (
   rw [e]; exact ha.map σ
 
 /- English proof (translation)
-Use `Matrix.isUnit_det_of_right_inverse (B := blk4 a⁻¹ 0 0 (cT σ a)) ?_` and prove the remaining obligations. Establish `h1 : a * a⁻¹ = 1` using `Matrix.mul_nonsing_inv _ ha`. Establish `h2 : (cT σ a)⁻¹ * cT σ a = 1` using `Matrix.nonsing_inv_mul _ (isUnit_det_cT σ ha)`. Rewrite using `[mA, submatrix_fromBlocks_mul]`. Simplify using `[h1, h2, block_matrix_one]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem mA_isUnit_det (σ : F₀ →+* F₀) {a : Matrix (Fin n) (Fin n) F₀} (ha : IsUnit a.det) : IsUnit (mA σ a).det := by
   refine Matrix.isUnit_det_of_right_inverse (B := blk4 a⁻¹ 0 0 (cT σ a)) ?_
@@ -86,7 +86,7 @@ theorem mA_isUnit_det (σ : F₀ →+* F₀) {a : Matrix (Fin n) (Fin n) F₀} (
   simp [h1, h2, block_matrix_one]
 
 /- English proof (translation)
-Use `Matrix.isUnit_det_of_right_inverse (B := blk4 1 (-b) 0 1) ?_` and prove the remaining obligations. Rewrite using `[nB, submatrix_fromBlocks_mul]`. Simplify using `[block_matrix_one]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem nB_isUnit_det (b : Matrix (Fin n) (Fin n) F₀) : IsUnit (nB b).det := by
   refine Matrix.isUnit_det_of_right_inverse (B := blk4 1 (-b) 0 1) ?_
@@ -94,7 +94,7 @@ theorem nB_isUnit_det (b : Matrix (Fin n) (Fin n) F₀) : IsUnit (nB b).det := b
   simp [block_matrix_one]
 
 /- English proof (translation)
-Use `Matrix.isUnit_det_of_right_inverse (B := blk4 0 (-1) 1 0) ?_` and prove the remaining obligations. Rewrite using `[EC.Jm, submatrix_fromBlocks_mul]`. Simplify using `[block_matrix_one]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem Jm_isUnit_det : IsUnit (EC.Jm F₀ n).det := by
   refine Matrix.isUnit_det_of_right_inverse (B := blk4 0 (-1) 1 0) ?_
@@ -102,9 +102,9 @@ theorem Jm_isUnit_det : IsUnit (EC.Jm F₀ n).det := by
   simp [block_matrix_one]
 
 /- English proof (translation)
-Establish `h1 : cT σ a * (cT σ a)⁻¹ = 1` using `Matrix.mul_nonsing_inv _ (isUnit_det_cT σ ha)`. Establish `h2 : cT σ (cT σ a)⁻¹ * a = 1`. Establish `h` using `congrArg (cT σ) h1`. Rewrite `h` using `[cT_mul, cT_cT hσ, cT_one]`. Then use the resulting hypothesis. Unfold `IsUnitary EC.Jm mA`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Replace the relevant objects with their definitions.
 
-Rewrite using `[cT_blk4, submatrix_fromBlocks_mul, submatrix_fromBlocks_mul]`. Simplify using `[cT_zero, h1, h2]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem mA_isUnitary {σ : F₀ →+* F₀} (hσ : ∀ x, σ (σ x) = x) {a : Matrix (Fin n) (Fin n) F₀} (ha : IsUnit a.det) :
     IsUnitary σ (EC.Jm F₀ n) (mA σ a) := by
@@ -117,7 +117,7 @@ theorem mA_isUnitary {σ : F₀ →+* F₀} (hσ : ∀ x, σ (σ x) = x) {a : Ma
   simp [cT_zero, h1, h2]
 
 /- English proof (translation)
-Unfold `IsUnitary EC.Jm nB`. Rewrite using `[cT_blk4, submatrix_fromBlocks_mul, submatrix_fromBlocks_mul]`. Simplify using `[cT_zero, cT_one, hb]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem nB_isUnitary {σ : F₀ →+* F₀} {b : Matrix (Fin n) (Fin n) F₀} (hb : cT σ b = b) :
     IsUnitary σ (EC.Jm F₀ n) (nB b) := by
@@ -126,7 +126,7 @@ theorem nB_isUnitary {σ : F₀ →+* F₀} {b : Matrix (Fin n) (Fin n) F₀} (h
   simp [cT_zero, cT_one, hb]
 
 /- English proof (translation)
-Unfold `IsUnitary EC.Jm`. Rewrite using `[cT_blk4, submatrix_fromBlocks_mul, submatrix_fromBlocks_mul]`. Simplify using `[cT_zero, cT_one, cT_neg]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem Jm_isUnitary (σ : F₀ →+* F₀) : IsUnitary σ (EC.Jm F₀ n) (EC.Jm F₀ n) := by
   unfold IsUnitary EC.Jm
@@ -134,7 +134,7 @@ theorem Jm_isUnitary (σ : F₀ →+* F₀) : IsUnitary σ (EC.Jm F₀ n) (EC.Jm
   simp [cT_zero, cT_one, cT_neg]
 
 /- English proof (translation)
-Unfold `IsUnitary at *`. Rewrite using `[cT_mul]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = J := by rw [hg, hh]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isUnitary_mul {σ : F₀ →+* F₀} {N : ℕ} {J g h : Matrix (Fin N) (Fin N) F₀} (hg : IsUnitary σ J g)
     (hh : IsUnitary σ J h) : IsUnitary σ J (g * h) := by
@@ -149,7 +149,7 @@ end Field
 variable {D : D7} {n : ℕ}
 
 /- English proof (translation)
-The claim follows from `star_star x`.
+A detailed English derivation is pending.
 -/
 theorem sig_sig (x : D.host.E) :
     (D.sp.cm.sig : D.host.E →+* D.host.E) ((D.sp.cm.sig : D.host.E →+* D.host.E) x) = x :=
@@ -162,7 +162,7 @@ theorem cT_sig_eq {a b : ℕ} (M : Matrix (Fin a) (Fin b) D.host.E) :
     cT (D.sp.cm.sig : D.host.E →+* D.host.E) M = Mᴴ := rfl
 
 /- English proof (translation)
-Rewrite using `[mA, block_matrix_map, cT_sig_eq, ← Matrix.conjTranspose_nonsing_inv, ← rat_conjTranspose]`. Simplify using `only [Matrix.map_zero _ (map_zero (incA D))]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem map_mA (a : Matrix (Fin n) (Fin n) D.host.E) :
     (mA (D.sp.cm.sig : D.host.E →+* D.host.E) a).map (incA D) =
@@ -172,7 +172,7 @@ theorem map_mA (a : Matrix (Fin n) (Fin n) D.host.E) :
   rfl
 
 /- English proof (translation)
-Rewrite using `[nB, block_matrix_map]`. Use `show blk4 (rat 1) (rat b) (rat 0) (rat 1) = _`. Rewrite using `[rat_one, rat_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_nB (b : Matrix (Fin n) (Fin n) D.host.E) :
     (nB b).map (incA D) = blk4 1 (rat b) 0 1 := by
@@ -181,7 +181,7 @@ theorem map_nB (b : Matrix (Fin n) (Fin n) D.host.E) :
   rw [rat_one, rat_zero]
 
 /- English proof (translation)
-Rewrite using `[EC.Jm, block_matrix_map]`. Use `show blk4 (rat 0) (rat 1) (rat (-1)) (rat 0) = _`. Rewrite using `[rat_zero, rat_one, rat_neg, rat_one]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_Jm : (EC.Jm D.host.E n).map (incA D) = blk4 0 1 (-1) 0 := by
   rw [EC.Jm, block_matrix_map]
@@ -189,15 +189,15 @@ theorem map_Jm : (EC.Jm D.host.E n).map (incA D) = blk4 0 1 (-1) 0 := by
   rw [rat_zero, rat_one, rat_neg, rat_one]
 
 /- English proof (translation)
-Introduce `hR D n hF S hmul hm hn hw γ hγ`. Take `⟨h1, h2, -⟩` from `hR D n`. Take `⟨g, hgu, hgU, hg⟩` from `h1 γ hγ`. Set `T : Matrix (Fin (n + n)) (Fin (n + n)) D.host.E → Prop` to `fun M => IsUnit M.det ∧ IsUnitary (D.sp.cm.sig : D.host.E →+* D.host.E) (EC.Jm D.host.E n) M ∧ ∀ γ' : G D n, mat γ' = M.map (incA D) → S γ'`. Establish `hprod : ∀ M₁ M₂, T M₁ → T M₂ → T (M₁ * M₂)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce and unpack `M₁ M₂ ⟨u₁, U₁, s₁⟩ ⟨u₂, U₂, s₂⟩`. Use `⟨by rw [Matrix.det_mul]; exact u₁.mul u₂, isUnitary_mul U₁ U₂, fun γ' e => ?_⟩` and prove the remaining obligations. Take `⟨γ₁, -, e₁⟩` from `h2 M₁ u₁ U₁`. Take `⟨γ₂, -, e₂⟩` from `h2 M₂ u₂ U₂`. Establish `e' : γ' = γ₁ * γ₂` using `mat_injective' (by rw [e, mat_mul', e₁, e₂, Matrix.map_mul])`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[e']`. Conclude with `hmul _ _ (s₁ _ e₁) (s₂ _ e₂)`. Establish `hmA : ∀ a : Matrix (Fin n) (Fin n) D.host.E, IsUnit a.det → T (mA (D.sp.cm.sig : D.host.E →+* D.host.E) a)`. Introduce `a ha`. Use `⟨mA_isUnit_det _ ha, mA_isUnitary sig_sig ha, fun γ' e => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression.
 
-Set `a' : GL (Fin n) (AE D)` to `⟨rat a, rat a⁻¹, by rw [← rat_mul, Matrix.mul_nonsing_inv _ ha, rat_one], by rw [← rat_mul, Matrix.nonsing_inv_mul _ ha, rat_one]⟩`. Conclude with `hm γ' a' (e.trans (map_mA a))`. Establish `hnB : ∀ b : Matrix (Fin n) (Fin n) D.host.E, cT (D.sp.cm.sig : D.host.E →+* D.host.E) b = b → T (nB b)`. Introduce `b hb`. Use `⟨nB_isUnit_det b, nB_isUnitary hb, fun γ' e => hn γ' (rat b) ?_ (e.trans (map_nB b))⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← rat_conjTranspose]`. Conclude with `congrArg rat hb`. Establish `hJ : T (EC.Jm D.host.E n)` using `⟨Jm_isUnit_det, Jm_isUnitary _, fun γ' e => hw γ' (e.trans map_Jm)⟩`. Conclude with `(hF T hprod hmA hnB hJ g hgu hgU).2.2 γ hg`.
+A detailed English derivation is pending.
 -/
 theorem ratPts_transfer : RatPts → ∀ (D : D7) (n : ℕ), FieldGen D.host.E (D.sp.cm.sig : D.host.E →+* D.host.E) n → ∀ S : G D n → Prop, (∀ g h, S g → S h → S (g * h)) → (∀ (g : G D n) (a : GL (Fin n) (AE D)), mat g = blk4 a.1 0 0 (adj (a⁻¹).1) → S g) → (∀ (g : G D n) (b : Mx D n n), adj b = b → mat g = blk4 1 b 0 1 → S g) → (∀ g : G D n, mat g = blk4 0 1 (-1) 0 → S g) → ∀ γ ∈ GF D n, S γ := by
   intro hR D n hF S hmul hm hn hw γ hγ

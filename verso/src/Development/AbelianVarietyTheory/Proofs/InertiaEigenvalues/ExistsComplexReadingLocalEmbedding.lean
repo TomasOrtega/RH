@@ -9,11 +9,11 @@ open GlobalTheory.TripleGal Formalism Formalism.BasicNotions Formalism.BasicNoti
 namespace GlobalTheory.ReadEmbEx
 
 /- English proof (translation)
-Set `f : FractionRing O →+* ↥B.LL.1` to `IsFractionRing.lift (GlobalTheory.EmbInj.toLL_inj B)`. Establish `hf : ∀ a : O, f (algebraMap O (FractionRing O) a) = B.toLL a` using `fun a => IsFractionRing.lift_algebraMap _ a`. Establish `hb : Function.Bijective f`. Use `⟨f.injective, fun y => ?_⟩` and prove the remaining obligations. Take `⟨n, d, hd, e⟩` from `GlobalTheory.EmbInj.exists_frac B y`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `hd' : B.toLL d ≠ 0` using `fun h0 => hd (GlobalTheory.EmbInj.toLL_inj B (h0.trans (map_zero _).symm))`. Use `⟨algebraMap O _ n / algebraMap O _ d, ?_⟩` and prove the remaining obligations. Rewrite using `[map_div₀, hf, hf, ← e, mul_div_cancel_left₀ _ hd']`. Set `e` to `RingEquiv.ofBijective f hb`. Use `⟨ι.comp e.symm.toRingHom, fun a => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← hf]`. Conclude with `congrArg ι (e.symm_apply_apply _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_read {l : ℕ} [Fact l.Prime] {E Ω : Type} [Field E] [Field Ω] [Algebra E Ω] {Gw : Subgroup (Ω ≃ₐ[E] Ω)}
     {O : Type} [CommRing O] [IsDomain O] [Algebra ℤ_[l] O] [TopologicalSpace O] (B : LocBridge l E Ω Gw O)
@@ -34,9 +34,9 @@ theorem exists_read {l : ℕ} [Fact l.Prime] {E Ω : Type} [Field E] [Field Ω] 
   exact congrArg ι (e.symm_apply_apply _)
 
 /- English proof (translation)
-Introduce `D bkP i ι v hv τ`. Take `⟨φ, hφ⟩` from `exists_read (bkP.br i v hv) ι`. Set `c : D.host.E →+* ↥(bkP.br i v hv).Kw.1` to `((bkP.br i v hv).j.comp (algebraMap D.host.E D.nd.Om)).codRestrict (bkP.br i v hv).Kw.1 (bkP.br i v hv).j_E`. Establish `h : ReadEmb bkP i ι v hv τ ((φ.comp (AlgHom.toRingHom τ)).comp c)`. Introduce `x n d hx`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `congrArg φ hx.2` as an intermediate fact. Rewrite `this` using `[map_mul, hφ, hφ]`. Conclude with `this`. Conclude with `⟨_, h, fun v' hv' τ' hc x n d hx => h _ n d ((hc x n d).1 hx)⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_readEmb : ∀ (D : D7) (bkP : BlochKatoReduction.BK D) (i : D.ntw.Tw) (ι : FractionRing (D.ntw.O0 i) →+* ℂ) (v : HeightOneSpectrum (𝓞 D.host.E)) (hv : v ∈ placesOver D.host.E (D.ntw.l i)) (τ : EmbV bkP i v hv), ∃ τc : D.host.E →+* ℂ, ReadEmb bkP i ι v hv τ τc ∧ ∀ (v' : HeightOneSpectrum (𝓞 D.host.E)) (hv' : v' ∈ placesOver D.host.E (D.ntw.l i)) (τ' : EmbV bkP i v' hv'), IsConjEmb bkP i v v' hv hv' τ τ' → ReadEmb bkP i ι v' hv' τ' (τc.comp (cj D)) := by
   intro D bkP i ι v hv τ

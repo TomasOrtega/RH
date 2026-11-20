@@ -9,27 +9,25 @@ namespace GroundTheory.Heights₂.Heights.FourB
 open IsDedekindDomain NumberField
 
 /- English proof (translation)
-Distinguish the cases in `hb : b = 0`. Use `⟨⊥, Ideal.isPrime_bot, 1, ?_, 0, (⊥ : Ideal A).zero_mem, by simp [hb]⟩` and prove the remaining obligations. Rewrite using `[Submodule.mem_bot]`. Conclude with `one_ne_zero`. Set `N : Submodule A (A ⧸ Ideal.span {b})` to `Submodule.span A {Ideal.Quotient.mk _ a}`.
+Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `n₀ : N` to `⟨Ideal.Quotient.mk _ a, Submodule.subset_span rfl⟩`. Establish `hn₀ : n₀ ≠ 0`. Introduce `h`. Apply `hab` to reduce the goal to its premises. Establish `: Ideal.Quotient.mk (Ideal.span {b}) a = 0` using `congrArg Subtype.val h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `this` using `[Ideal.Quotient.eq_zero_iff_mem, Ideal.mem_span_singleton]`. Then use the resulting hypothesis. Take `⟨P, hP, -⟩` from `exists_le_isAssociatedPrime_of_isNoetherianRing A n₀ hn₀`. Take `⟨hPp, ⟨m, hm⟩, hPy⟩` from `isAssociatedPrime_iff.1 hP`. Take `⟨x, rfl⟩` from `Submodule.mem_span_singleton.1 hm`. Take `⟨y, hy⟩ : ∃ y, y = x * a` from `⟨_, rfl⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hmem : ∀ r, r ∈ P ↔ b ∣ r * y`. Introduce `r`. Rewrite using `[hPy, Submodule.mem_colon_singleton, Submodule.mem_bot, ← Subtype.coe_inj]`. Use `show r • (x • Ideal.Quotient.mk (Ideal.span {b}) a) = 0 ↔ b ∣ r * y`. Rewrite using `[smul_smul, GroundTheory.Arith.Toric.smul_mk_eq_zero_iff, hy, mul_assoc]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Establish `hbP : b ∈ P` using `(hmem b).2 (dvd_mul_right b y)`. Distinguish the cases in `hcase : ∀ r s : A, r ∈ P → r * y = b * s → s ∈ P`. It suffices to derive a contradiction. Set `K` to `FractionRing A`. Establish `hinj : Function.Injective (algebraMap A K)` using `IsFractionRing.injective A K`.
+It suffices to derive a contradiction. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `M : Submodule A K` to `Submodule.map (Algebra.linearMap A K) P`. Establish `hMfg : M.FG` using `(IsNoetherian.noetherian P).map _`. Establish `hM0 : M ≠ ⊥`. Introduce `h`. Establish `: algebraMap A K b ∈ M` using `Submodule.mem_map.2 ⟨b, hbP, rfl⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `this` using `[h, Submodule.mem_bot]`. Conclude with `hb (hinj (by rw [this, map_zero]))`. Establish `hbK : algebraMap A K b ≠ 0` using `fun h => hb (hinj (by rw [h, map_zero]))`. Establish `hint : IsIntegral A (algebraMap A K y / algebraMap A K b)`. Use `isIntegral_of_smul_mem_submodule M hM0 hMfg _ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Introduce `n hn`. Take `⟨r, hr, rfl⟩` from `Submodule.mem_map.1 hn`. Take `⟨s, hs⟩` from `(hmem r).1 hr`. Use `Submodule.mem_map.2 ⟨s, hcase r s hr hs, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `algebraMap A K s = (algebraMap A K y / algebraMap A K b) * algebraMap A K r`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[div_mul_eq_mul_div, eq_div_iff hbK, ← map_mul, ← map_mul, mul_comm y r, hs, mul_comm]`. Take `⟨z, hz⟩` from `IsIntegrallyClosed.isIntegral_iff.1 hint`. Establish `hyz : y = b * z`. Apply `hinj` to reduce the goal to its premises. Rewrite using `[map_mul, hz, mul_div_cancel₀ _ hbK]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Apply `hPp.ne_top` to reduce the goal to its premises. Rewrite using `[Ideal.eq_top_iff_one, hmem, one_mul, hyz]`. Conclude with `dvd_mul_right b z`. Use `push Not at hcase`. Take `⟨r₀, s₀, hr₀, hrs, hs₀⟩` from `hcase`.
-
-Use `⟨P, hPp, s₀, hs₀, r₀ * x, P.mul_mem_right x hr₀, ?_⟩` and prove the remaining obligations. Rewrite using `[mul_assoc, ← hy, hrs, mul_comm]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_prime_mul_eq_of_not_dvd {A : Type*} [CommRing A] [IsDomain A] [IsNoetherianRing A]
     [IsIntegrallyClosed A] {a b : A} (hab : ¬ b ∣ a) :
@@ -89,17 +87,15 @@ theorem exists_prime_mul_eq_of_not_dvd {A : Type*} [CommRing A] [IsDomain A] [Is
     rw [mul_assoc, ← hy, hrs, mul_comm]
 
 /- English proof (translation)
-Introduce `F _ _ R _ _ _ _ _ _ r g s ⟨hs, hg, hpts⟩`. Establish `: IsNoetherianRing R` using `Algebra.FiniteType.isNoetherianRing (𝓞 F) R`. Assume the negation of the conclusion as `hndvd`. Establish `hnd : ¬ algebraMap (𝓞 F) R s ∣ r` using `fun ⟨r', h⟩ => hndvd ⟨r', h⟩`. Take `⟨P, hP, w, hw, c, hc, hwc⟩` from `exists_prime_mul_eq_of_not_dvd hnd`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hsP : algebraMap (𝓞 F) R s ∈ P`. Establish `: w * algebraMap (𝓞 F) R s ∈ P` using `hwc ▸ P.mul_mem_right r hc`. Conclude with `(hP.mem_or_mem this).resolve_left hw`. Establish `hpP : (P.comap (algebraMap (𝓞 F) R)).IsPrime` using `Ideal.comap_isPrime _ P`. Establish `hp0 : P.comap (algebraMap (𝓞 F) R) ≠ ⊥`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Establish `: s ∈ P.comap (algebraMap (𝓞 F) R)` using `hsP`. Rewrite `this` using `[h, Submodule.mem_bot]`. Conclude with `hs this`. Set `v : HeightOneSpectrum (𝓞 F)` to `⟨P.comap (algebraMap (𝓞 F) R), hpP, hp0⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨L, _, _, _, y, hcomp, hint, hyg, ⟨bw, hbw, hbwint⟩, hPnon⟩` from `hpt F R v P w g ⟨hP, rfl, hw, hg⟩`. Establish `hys : y (algebraMap (𝓞 F) R s) ≠ 0`. Rewrite using `[← RingHom.comp_apply, hcomp]`. Simplify using `only [RingHom.comp_apply, ne_eq, map_eq_zero, FaithfulSMul.algebraMap_eq_zero_iff]`. Conclude with `hs`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `hyr` using `hpts v L y hcomp hint hyg`. Apply `hPnon c hc (y r / y (algebraMap (𝓞 F) R s) * bw) _ (RingHom.IsIntegralElem.mul _ hyr hbwint)` to reduce the goal to its premises. Establish `h1 : y w * y (algebraMap (𝓞 F) R s) = y c * y r` using `by rw [← map_mul, ← map_mul, hwc]`. Combine the equalities or inequalities in the displayed calculation. Establish `hyw : y w ≠ 0` using `fun h0 => by simp [h0] at hbw`.
-
-Clear the denominators using the available nonvanishing facts. Use `_ = 1 := by rw [hbw, ← h1, div_self (mul_ne_zero (fun h0 => by simp [h0] at hbw) hys), one_mul]`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem IntegralOnModel.proof (hpt : IntegralPointThroughPrime.Statement) :
     IntegralOnModel.Statement := by

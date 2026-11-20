@@ -14,18 +14,18 @@ open GlobalTheory.Mum
 namespace GlobalTheory.TensPair
 
 /- English proof (translation)
-Apply the tactic sequence `fin_cases l <;> simp [GlobalTheory.PolDeg.lamPts, ← Over.comp_left, MonObj.comp_mul]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem lamPts_comp {S : Scheme.{0}} {B T T' : Over S} [GrpObj B] (f : T' ⟶ T) (x y : T ⟶ B) (l : Fin 4) :
     f.left ≫ GlobalTheory.PolDeg.lamPts x y l = GlobalTheory.PolDeg.lamPts (f ≫ x) (f ≫ y) l := by
   fin_cases l <;> simp [GlobalTheory.PolDeg.lamPts, ← Over.comp_left, MonObj.comp_mul]
 
 /- English proof (translation)
-Establish `h1 : (lift (fst D.P.A D.P.A ≫ T.inc i₀) (snd D.P.A D.P.A ≫ T.inc i₀ ≫ T.act m) : G2 D.P.A ⟶ G2 D'.P.A) ≫ fst D'.P.A D'.P.A ≫ T.pr i = if i = i₀ then fst D.P.A D.P.A else 1`. Rewrite using `[lift_fst_assoc, Category.assoc, T.inc_pr']`. Apply the tactic sequence `split_ifs <;> simp`. Establish `h2 : (lift (fst D.P.A D.P.A ≫ T.inc i₀) (snd D.P.A D.P.A ≫ T.inc i₀ ≫ T.act m) : G2 D.P.A ⟶ G2 D'.P.A) ≫ snd D'.P.A D'.P.A ≫ T.pr j = snd D.P.A D.P.A ^ m j i₀`. Rewrite using `[lift_snd_assoc, Category.assoc, Category.assoc, T.act_pr]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e : ∀ k, (snd D.P.A D.P.A ≫ T.inc i₀) ≫ T.pr k = if k = i₀ then snd D.P.A D.P.A else 1` using `fun k => by`. Apply the tactic sequence `rw [Category.assoc, T.inc_pr']; split_ifs <;> simp`. Rewrite using `[← Category.assoc]`. Express the relevant statement in the definitionally equal form `preHom (snd D.P.A D.P.A ≫ T.inc i₀) (∏ k, T.pr k ^ m j k) = _`. Rewrite using `[map_prod]`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [map_zpow]`. Express the relevant statement in the definitionally equal form `∏ k, ((snd D.P.A D.P.A ≫ T.inc i₀) ≫ T.pr k) ^ m j k = _`. Simplify using `only [e]`. Rewrite using `[Finset.prod_eq_single i₀ (fun k _ hk => by rw [if_neg hk, one_zpow]) (by simp), if_pos rfl]`. Rewrite using `[lamPts_comp, h1, h2]`.
+Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem lamPts_pull {R : Type} [CommRing R] [IsDomain R] {D D' : DegPre R} {r : ℕ} {W : Matrix (Fin r) (Fin r) ℤ}
     (T : Tens D D' W) (i₀ : Fin r) (m : Matrix (Fin r) (Fin r) ℤ) (i j : Fin r) (l : Fin 4) :
@@ -51,14 +51,14 @@ theorem lamPts_pull {R : Type} [CommRing R] [IsDomain R] {D D' : DegPre R} {r : 
   rw [lamPts_comp, h1, h2]
 
 /- English proof (translation)
-Simplify using `[Tens.xi, Pi.single_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem xe_xi {R : Type} [CommRing R] [IsDomain R] {D D' : DegPre R} {r : ℕ} {W : Matrix (Fin r) (Fin r) ℤ}
     (T : Tens D D' W) (i₀ i : Fin r) (a : D.X) : T.xe (T.xi i₀ a) i = if i = i₀ then a else 0 := by
   simp [Tens.xi, Pi.single_apply]
 
 /- English proof (translation)
-Set `φ : D.X →+ Additive (𝟙_ (Over (Spec (CommRingCat.of R))) ⟶ D.P.A)` to `AddMonoidHom.mk' (fun x => Additive.ofMul (D.c x)) (fun a b => by show Additive.ofMul (D.c (a + b)) = Additive.ofMul (D.c a * D.c b)`. Rewrite using `[D.c_add]`. Use the proof step `rfl)`. Conclude with `congrArg Additive.toMul (map_zsmul φ n b)`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem c_zsmul {R : Type} [CommRing R] [IsDomain R] (D : DegPre R) (n : ℤ) (b : D.X) : D.c (n • b) = D.c b ^ n := by
   let φ : D.X →+ Additive (𝟙_ (Over (Spec (CommRingCat.of R))) ⟶ D.P.A) :=
@@ -68,15 +68,15 @@ theorem c_zsmul {R : Type} [CommRing R] [IsDomain R] (D : DegPre R) (n : ℤ) (b
   exact congrArg Additive.toMul (map_zsmul φ n b)
 
 /- English proof (translation)
-Establish `c0 : D.c 0 = 1`. Use `c_zsmul D 0 a` as an intermediate fact. Rewrite `this` using `[zero_smul, zpow_zero]`. Then use the resulting hypothesis. Rewrite using `[comp_lift, lift_fst_assoc, lift_snd_assoc]`. Use `congr 1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `T.lim.hom_ext fun ⟨i⟩ => ?_` and prove the remaining obligations. Simplify using `only [Fan.mk_π_app, Category.assoc]`. Rewrite using `[T.c_pr, ha, T.inc_pr']`. Apply the tactic sequence `split_ifs <;> simp [c0]`. Use `T.lim.hom_ext fun ⟨i⟩ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Fan.mk_π_app, Category.assoc]`. Rewrite using `[T.c_pr, hb, c_zsmul, T.act_pr]`. Establish `e : ∀ k, (toUnit (TK R) ≫ D.c b ≫ T.inc i₀) ≫ T.pr k = if k = i₀ then toUnit (TK R) ≫ D.c b else 1` using `fun k => by`. Apply the tactic sequence `rw [Category.assoc, Category.assoc, T.inc_pr']; split_ifs <;> simp`. Combine the equalities or inequalities in the displayed calculation.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Chain the equalities or inequalities of the calculation.
 
-Simplify using `only [e]`. Rewrite using `[Finset.prod_eq_single i₀ (fun k _ hk => by rw [if_neg hk, one_zpow]) (by simp), if_pos rfl]`. Use `_ = (toUnit (TK R) ≫ D.c b ≫ T.inc i₀) ≫ ∏ k, T.pr k ^ m i k := by`. Express the relevant statement in the definitionally equal form `_ = preHom (toUnit (TK R) ≫ D.c b ≫ T.inc i₀) (∏ k, T.pr k ^ m i k)`. Rewrite using `[map_prod]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_zpow]`. Both sides reduce to the same expression. Use `_ = _ := by simp only [Category.assoc]`.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem pt_pull {R : Type} [CommRing R] [IsDomain R] {D D' : DegPre R} {r : ℕ} {W : Matrix (Fin r) (Fin r) ℤ}
     (T : Tens D D' W) (i₀ : Fin r) (m : Matrix (Fin r) (Fin r) ℤ) (a b : D.X) (a' b' : D'.X)

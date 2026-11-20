@@ -7,17 +7,15 @@ open scoped Matrix
 namespace GlobalTheory.CoordVanish
 
 /- English proof (translation)
-Use `set Q : Pol n K := ∑ i, c i • map (Int.castRingHom K) (intVec la i) with hQ`. Establish `hQe : ∀ y : Matrix (Fin n) (Fin n) K, DualWeyl.evalAt y Q = ∑ i, c i * DualWeyl.evalAt y (map (Int.castRingHom K) (intVec la i))`. Introduce `y`. Simplify using `[hQ, map_sum, smul_eq_mul]`. Use `set D : Pol n K := (Matrix.of fun a b : Fin n => (X (a, b) : Pol n K)).det with hD`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hDe : ∀ y : Matrix (Fin n) (Fin n) K, DualWeyl.evalAt y D = y.det`. Introduce `y`. Rewrite using `[hD, AlgHom.map_det]`. Use `congr 1`. Use extensionality with `a b`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Establish `hev : ∀ (v : Fin n × Fin n → K) (p : Pol n K), eval v p = DualWeyl.evalAt (Matrix.of fun a b => v (a, b)) p`. Introduce `v p`. Simplify using `[DualWeyl.evalAt, aeval_eq_eval]`. Establish `hQD : Q * D = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `MvPolynomial.funext fun v => ?_` and prove the remaining obligations. Rewrite using `[hev, map_mul, hDe, map_zero]`. Distinguish the cases in `hd : (Matrix.of fun a b => v (a, b)).det = 0`. Rewrite using `[hd, mul_zero]`. Rewrite using `[hQe, h _ hd, zero_mul]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hD0 : D ≠ 0`. Introduce `h0`. Use `hDe 1` as an intermediate fact. Rewrite `this` using `[h0, map_zero, Matrix.det_one]`. Conclude with `zero_ne_one this`.
-
-Establish `hQ0 : Q = 0` using `(mul_eq_zero.mp hQD).resolve_right hD0`. Use function extensionality and compare the values at `i`. Conclude with `Fintype.linearIndependent_iff.mp (intVec_spec la K).1 c hQ0 i`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem coeff_eq_zero_of_evalAt {n : ℕ} (la : Fin n → ℕ) (K : Type) [Field K] [CharZero K] (c : Idx la → K)
     (h : ∀ y : Matrix (Fin n) (Fin n) K, y.det ≠ 0 →
@@ -55,21 +53,21 @@ theorem coeff_eq_zero_of_evalAt {n : ℕ} (la : Fin n → ℕ) (K : Type) [Field
   exact Fintype.linearIndependent_iff.mp (intVec_spec la K).1 c hQ0 i
 
 /- English proof (translation)
-Establish `key : ∀ S : Finset T, ∀ x : (∀ t, ι t) → K, (∀ a : ∀ t, A t, ∑ I, x I * ∏ t ∈ S, g t (I t) (a t) = 0) → ∀ I : ∀ t, ι t, ∑ I' ∈ Finset.univ.filter (fun I' : ∀ t, ι t => ∀ t ∈ S, I' t = I t), x I' = 0`. Introduce `S`. Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty`. Introduce `x hx I`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `using hx a0`. Consider the case `insert s S hs IH`. Introduce `x hx I`. Establish `step : ∀ i : ι s, ∀ a : ∀ t, A t, ∑ I', (if I' s = i then x I' else 0) * ∏ t ∈ S, g t (I' t) (a t) = 0`. Introduce `i a`.
+Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hc` using `H s (fun i => ∑ I', (if I' s = i then x I' else 0) * ∏ t ∈ S, g t (I' t) (a t)) (fun b => by`. Establish `h1` using `hx (Function.update a s b)`. Establish `h2 : ∀ I' : ∀ t, ι t, ∏ t ∈ S, g t (I' t) (Function.update a s b t) = ∏ t ∈ S, g t (I' t) (a t)`. Introduce `I'`. Use `Finset.prod_congr rfl fun t ht => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: t ≠ s` using `fun h => hs (h ▸ ht)`. Rewrite using `[Function.update_of_ne this]`. Simplify using `only [Finset.prod_insert hs, Function.update_self, h2] at h1`. Use `Eq.trans ?_ h1` and prove the remaining obligations. Simplify using `only [Finset.sum_mul, ite_mul, zero_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun I' _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_ite_eq]`. Simplify using `only [Finset.mem_univ, if_true]`. Use the proof step `ring)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `congrFun hc i`. Establish `h3` using `IH _ (step (I s)) I`. Rewrite `h3` using `[Finset.sum_filter]`. Rewrite using `[Finset.sum_filter]`. Use `Eq.trans (Finset.sum_congr rfl fun I' _ => ?_) h3` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Simplify using `only [Finset.forall_mem_insert]`. Apply the tactic sequence `by_cases h4 : I' s = I s <;> by_cases h5 : ∀ t ∈ S, I' t = I t <;> simp [h4, h5]`. Use function extensionality and compare the values at `I`. Establish `h` using `key Finset.univ x (by simpa using hx) I`. Establish `h6 : Finset.univ.filter (fun I' : ∀ t, ι t => ∀ t ∈ (Finset.univ : Finset T), I' t = I t) = {I}`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use extensionality with `I'`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_singleton, forall_const]`. Conclude with `⟨fun h => funext h, fun h t => h ▸ rfl⟩`. Rewrite `h` using `[h6, Finset.sum_singleton]`. Conclude with `h`.
+Supply the required witnesses or components. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_prod {T : Type} [Fintype T] [DecidableEq T] {ι : T → Type} [∀ t, Fintype (ι t)]
     {A : T → Type} {K : Type} [Field K] (g : ∀ t, ι t → A t → K) (a0 : ∀ t, A t)
@@ -121,7 +119,7 @@ theorem eq_zero_of_prod {T : Type} [Fintype T] [DecidableEq T] {ι : T → Type}
   exact h
 
 /- English proof (translation)
-Introduce `T _ _ N la K _ _ x hx`. Conclude with `eq_zero_of_prod (ι := fun t => Idx (la t)) (A := fun t => {M : Matrix (Fin (N t)) (Fin (N t)) K // M.det ≠ 0}) (fun t i M => DualWeyl.evalAt M.1 (map (Int.castRingHom K) (intVec (la t) i))) (fun t => ⟨1, by simp⟩) (fun t c hc => coeff_eq_zero_of_evalAt (la t) K c fun y hy => hc ⟨ …`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_tval_invertible : ∀ (T : Type) [Fintype T] [DecidableEq T] (N : T → ℕ) (la : ∀ t, Fin (N t) → ℕ)
     (K : Type) [Field K] [CharZero K] (x : TIdx la → K),

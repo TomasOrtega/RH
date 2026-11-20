@@ -15,21 +15,21 @@ def comp (η : Y →ₗ[ℤ] ℝ) (σ : E →+* ℂ) (a : Y) : ℂ :=
   ∑ i, (η (RingOfIntegers.basis E i • a) : ℂ) * σ (ed E i)
 
 /- English proof (translation)
-Simplify using `only [comp, smul_add, map_add, Complex.ofReal_add, add_mul, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem comp_add (η : Y →ₗ[ℤ] ℝ) (σ : E →+* ℂ) (a b : Y) :
     comp η σ (a + b) = comp η σ a + comp η σ b := by
   simp only [comp, smul_add, map_add, Complex.ofReal_add, add_mul, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Simplify using `only [comp, LinearMap.add_apply, Complex.ofReal_add, add_mul, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem comp_fadd (η ζ : Y →ₗ[ℤ] ℝ) (σ : E →+* ℂ) (a : Y) :
     comp (η + ζ) σ a = comp η σ a + comp ζ σ a := by
   simp only [comp, LinearMap.add_apply, Complex.ofReal_add, add_mul, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Simplify using `only [comp, LinearMap.smul_apply, smul_eq_mul, Complex.ofReal_mul, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => by ring`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem comp_fsmul (r : ℝ) (η : Y →ₗ[ℤ] ℝ) (σ : E →+* ℂ) (a : Y) :
     comp (r • η) σ a = r * comp η σ a := by
@@ -47,9 +47,9 @@ Both sides reduce to the same expression.
 theorem compL_apply (σ : E →+* ℂ) (a : Y) (η : Y →ₗ[ℤ] ℝ) : compL σ a η = comp η σ a := rfl
 
 /- English proof (translation)
-Use `conv_rhs => rw [← (ed E).sum_repr (ed E j * (u : E))]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `hr : (ed E).repr (ed E j * (u : E)) i = ((RingOfIntegers.basis E).repr (RingOfIntegers.basis E i * u) j : ℚ)`. Rewrite using `[ed, LinearMap.BilinForm.dualBasis_repr_apply, ← ed, Algebra.traceForm_apply, ← tr_ed_int, integralBasis_apply]`. Use `congr 1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Simplify using `only [RingOfIntegers.coe_eq_algebraMap, map_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hr, Algebra.smul_def]`. Simplify using the standard rewrite rules.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem key_exp (u : 𝓞 E) (j : Free.ChooseBasisIndex ℤ (𝓞 E)) :
     ∑ i, (((RingOfIntegers.basis E).repr (RingOfIntegers.basis E i * u) j : ℤ) : E) * ed E i =
@@ -67,7 +67,7 @@ theorem key_exp (u : 𝓞 E) (j : Free.ChooseBasisIndex ℤ (𝓞 E)) :
   simp
 
 /- English proof (translation)
-Rewrite using `[← mul_smul]`. Use `conv_lhs => rw [← (RingOfIntegers.basis E).sum_repr (RingOfIntegers.basis E i * u)]`. Rewrite using `[Finset.sum_smul]`. Conclude with `Finset.sum_congr rfl fun j _ => smul_assoc _ _ _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem smul_expand (u : 𝓞 E) (i : Free.ChooseBasisIndex ℤ (𝓞 E)) (a : Y) :
     RingOfIntegers.basis E i • u • a = ∑ j, (RingOfIntegers.basis E).repr
@@ -78,11 +78,11 @@ theorem smul_expand (u : 𝓞 E) (i : Free.ChooseBasisIndex ℤ (𝓞 E)) (a : Y
   exact Finset.sum_congr rfl fun j _ => smul_assoc _ _ _
 
 /- English proof (translation)
-Establish `hk : ∀ j, ∑ i, (((RingOfIntegers.basis E).repr (RingOfIntegers.basis E i * u) j : ℤ) : ℂ) * σ (ed E i) = σ (ed E j) * σ (u : E)` using `fun j => by`. Use `congrArg σ (key_exp u j)` as an intermediate fact. Simplify `this` using `[map_sum, map_mul, map_intCast]`. Unfold `comp`. Repeatedly rewrite using `[smul_expand u _ a, map_sum, map_zsmul, zsmul_eq_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Replace the relevant objects with their definitions. Rewrite the conclusion repeatedly using the stated equalities.
 
-Use `push_cast`. Repeatedly rewrite using `[Finset.sum_mul]`. Rewrite using `[Finset.sum_comm, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[mul_left_comm, mul_comm (σ (u : E)), ← hk j, Finset.mul_sum]`.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.sum_congr rfl fun i _ => by ring`.
+A detailed English derivation is pending.
 -/
 theorem comp_smul (η : Y →ₗ[ℤ] ℝ) (σ : E →+* ℂ) (u : 𝓞 E) (a : Y) :
     comp η σ (u • a) = σ (u : E) * comp η σ a := by
@@ -100,11 +100,11 @@ theorem comp_smul (η : Y →ₗ[ℤ] ℝ) (σ : E →+* ℂ) (u : 𝓞 E) (a : 
   exact Finset.sum_congr rfl fun i _ => by ring
 
 /- English proof (translation)
-Establish `htr : ∀ x : E, ∑ σ : E →+* ℂ, σ x = ((Algebra.trace ℚ E x : ℚ) : ℂ)`. Introduce `x`. Rewrite using `[← eq_ratCast (algebraMap ℚ ℂ), trace_eq_sum_embeddings ℂ]`. Conclude with `Fintype.sum_equiv (RingHom.equivRatAlgHom E ℂ) _ _ (fun σ => rfl)`. Establish `h1 : ∑ i, (RingOfIntegers.basis E).repr 1 i • (RingOfIntegers.basis E i • a) = a`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities.
 
-Repeatedly rewrite using `[← smul_assoc, ← Finset.sum_smul, (RingOfIntegers.basis E).sum_repr, one_smul]`. Establish `htr1 : ∀ i, Algebra.trace ℚ E (ed E i) = ((RingOfIntegers.basis E).repr 1 i : ℚ)` using `fun i => by`. Rewrite using `[← tr_ed_int]`. Simplify using the standard rewrite rules. Unfold `comp`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_comm]`. Repeatedly rewrite using `[← Finset.mul_sum, htr, htr1]`. Use `conv_rhs => rw [← h1]`. Simplify using `only [map_sum, map_zsmul, zsmul_eq_mul, Complex.ofReal_sum, Complex.ofReal_mul, Complex.ofReal_intCast, Rat.cast_intCast]`. Conclude with `Finset.sum_congr rfl fun i _ => by ring`.
+Rewrite the conclusion repeatedly using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sum_comp (η : Y →ₗ[ℤ] ℝ) (a : Y) : ∑ σ : E →+* ℂ, comp η σ a = (η a : ℂ) := by
   have htr : ∀ x : E, ∑ σ : E →+* ℂ, σ x = ((Algebra.trace ℚ E x : ℚ) : ℂ) := by
@@ -129,7 +129,7 @@ def smulZ (u : 𝓞 E) : Y →ₗ[ℤ] Y where
   map_smul' n y := smul_comm u n y
 
 /- English proof (translation)
-Rewrite using `[← comp_smul]`. Unfold `comp`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [LinearMap.comp_apply, smulZ, LinearMap.coe_mk, AddHom.coe_mk]`. Rewrite using `[smul_comm]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem comp_pre (η : Y →ₗ[ℤ] ℝ) (σ : E →+* ℂ) (u : 𝓞 E) (a : Y) :
     comp (η ∘ₗ smulZ u) σ a = σ (u : E) * comp η σ a := by
@@ -145,7 +145,7 @@ def Pf (η ζ : Y →ₗ[ℤ] ℝ) (a c : Y) : ℝ :=
   (∑ σ : E →+* ℂ, (comp η σ a * conj (comp ζ σ c) + comp ζ σ a * conj (comp η σ c))).re
 
 /- English proof (translation)
-Simplify using `only [Pf, comp_add, Complex.re_sum, Complex.add_re, Complex.add_im, Complex.mul_re, Complex.mul_im, Complex.conj_re, Complex.conj_im, ← Finset.sum_add_distrib]`. Conclude with `Finset.sum_congr rfl fun σ _ => by ring`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem Pf_add_left (η ζ : Y →ₗ[ℤ] ℝ) (a b c : Y) :
     Pf E η ζ (a + b) c = Pf E η ζ a c + Pf E η ζ b c := by
@@ -153,7 +153,7 @@ theorem Pf_add_left (η ζ : Y →ₗ[ℤ] ℝ) (a b c : Y) :
   exact Finset.sum_congr rfl fun σ _ => by ring
 
 /- English proof (translation)
-Simplify using `only [Pf, comp_add, map_add, Complex.re_sum, Complex.add_re, Complex.add_im, Complex.mul_re, Complex.mul_im, Complex.conj_re, Complex.conj_im, ← Finset.sum_add_distrib]`. Conclude with `Finset.sum_congr rfl fun σ _ => by ring`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem Pf_add_right (η ζ : Y →ₗ[ℤ] ℝ) (a b c : Y) :
     Pf E η ζ a (b + c) = Pf E η ζ a b + Pf E η ζ a c := by
@@ -161,21 +161,21 @@ theorem Pf_add_right (η ζ : Y →ₗ[ℤ] ℝ) (a b c : Y) :
   exact Finset.sum_congr rfl fun σ _ => by ring
 
 /- English proof (translation)
-Simplify using `only [Pf, Complex.re_sum, Complex.add_re, Complex.add_im, Complex.mul_re, Complex.mul_im, Complex.conj_re, Complex.conj_im]`. Conclude with `Finset.sum_congr rfl fun σ _ => by ring`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem Pf_symm (η ζ : Y →ₗ[ℤ] ℝ) (a c : Y) : Pf E η ζ a c = Pf E η ζ c a := by
   simp only [Pf, Complex.re_sum, Complex.add_re, Complex.add_im, Complex.mul_re, Complex.mul_im, Complex.conj_re, Complex.conj_im]
   exact Finset.sum_congr rfl fun σ _ => by ring
 
 /- English proof (translation)
-Simplify using `only [Pf, Complex.re_sum, Complex.add_re, Complex.add_im, Complex.mul_re, Complex.mul_im, Complex.conj_re, Complex.conj_im]`. Conclude with `Finset.sum_congr rfl fun σ _ => by ring`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem Pf_comm (η ζ : Y →ₗ[ℤ] ℝ) (a c : Y) : Pf E η ζ a c = Pf E ζ η a c := by
   simp only [Pf, Complex.re_sum, Complex.add_re, Complex.add_im, Complex.mul_re, Complex.mul_im, Complex.conj_re, Complex.conj_im]
   exact Finset.sum_congr rfl fun σ _ => by ring
 
 /- English proof (translation)
-Simplify using `only [Pf, comp_fadd, map_add, Complex.re_sum, Complex.add_re, Complex.add_im, Complex.mul_re, Complex.mul_im, Complex.conj_re, Complex.conj_im, ← Finset.sum_add_distrib]`. Conclude with `Finset.sum_congr rfl fun σ _ => by ring`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem Pf_fadd (η η' ζ : Y →ₗ[ℤ] ℝ) (a c : Y) :
     Pf E (η + η') ζ a c = Pf E η ζ a c + Pf E η' ζ a c := by
@@ -183,7 +183,7 @@ theorem Pf_fadd (η η' ζ : Y →ₗ[ℤ] ℝ) (a c : Y) :
   exact Finset.sum_congr rfl fun σ _ => by ring
 
 /- English proof (translation)
-Simplify using `only [Pf, comp_fsmul, map_mul, Complex.conj_ofReal, Complex.re_sum, Complex.add_re, Complex.add_im, Complex.mul_re, Complex.mul_im, Complex.conj_re, Complex.conj_im, Complex.ofReal_re, Complex.ofReal_im, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun σ _ => by ring`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem Pf_fsmul (r : ℝ) (η ζ : Y →ₗ[ℤ] ℝ) (a c : Y) :
     Pf E (r • η) ζ a c = r * Pf E η ζ a c := by
@@ -192,7 +192,7 @@ theorem Pf_fsmul (r : ℝ) (η ζ : Y →ₗ[ℤ] ℝ) (a c : Y) :
   exact Finset.sum_congr rfl fun σ _ => by ring
 
 /- English proof (translation)
-Simplify using `only [Pf, Complex.re_sum, Complex.add_re, Complex.add_im, Complex.mul_re, Complex.mul_im, Complex.conj_re, Complex.conj_im, Complex.normSq_apply, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun σ _ => by ring`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem Pf_self (η : Y →ₗ[ℤ] ℝ) (a : Y) :
     Pf E η η a a = 2 * ∑ σ : E →+* ℂ, Complex.normSq (comp η σ a) := by
@@ -200,7 +200,7 @@ theorem Pf_self (η : Y →ₗ[ℤ] ℝ) (a : Y) :
   exact Finset.sum_congr rfl fun σ _ => by ring
 
 /- English proof (translation)
-Rewrite using `[Pf_self]`. Conclude with `mul_nonneg zero_le_two (Finset.sum_nonneg fun _ _ => Complex.normSq_nonneg _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Pf_self_nonneg (η : Y →ₗ[ℤ] ℝ) (a : Y) : 0 ≤ Pf E η η a a := by
   rw [Pf_self]
@@ -212,9 +212,9 @@ variable {cj : E → E} (hcj : ∀ (φ : E →+* ℂ) (z : E), φ (cj z) = star 
 include hcj
 
 /- English proof (translation)
-Establish `hs : ∀ σ : E →+* ℂ, conj (σ (c' : E)) = σ (c : E)` using `fun σ => by`. Rewrite using `[h, hcj]`. Simplify using the standard rewrite rules. Simplify using `only [Pf, comp_smul, map_mul, hs]`. Use `congr 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Conclude with `Finset.sum_congr rfl fun σ _ => by ring`.
+A detailed English derivation is pending.
 -/
 theorem Pf_bal (η ζ : Y →ₗ[ℤ] ℝ) (c c' : 𝓞 E) (h : (c' : E) = cj (c : E)) (a b : Y) :
     Pf E η ζ (c • a) b = Pf E η ζ a (c' • b) := by
@@ -233,7 +233,7 @@ def PfB (η ζ : Y →ₗ[ℤ] ℝ) : Y →ₗ[ℤ] Y →ₗ[ℤ] ℝ :=
     (fun a b => LinearMap.ext fun c => Pf_add_left η ζ a b c)).toIntLinearMap
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun a b => Pf_symm η ζ a b, fun c c' h a b => Pf_bal hcj η ζ c c' h a b⟩`.
+Supply the required witnesses or components.
 -/
 theorem PfB_mem (η ζ : Y →ₗ[ℤ] ℝ) : PfB E η ζ ∈ SymB cj Y :=
   ⟨fun a b => Pf_symm η ζ a b, fun c c' h a b => Pf_bal hcj η ζ c c' h a b⟩
@@ -256,18 +256,18 @@ theorem Pm_apply (η ζ : Y →ₗ[ℤ] ℝ) (a c : Y) :
     ((Pm hcj η ζ : SymB cj Y) : Y →ₗ[ℤ] Y →ₗ[ℤ] ℝ) a c = Pf E η ζ a c := rfl
 
 /- English proof (translation)
-The claim follows from `Pf_self_nonneg η a`.
+A detailed English derivation is pending.
 -/
 theorem Pm_psd (η : Y →ₗ[ℤ] ℝ) (a : Y) :
     0 ≤ ((Pm hcj η η : SymB cj Y) : Y →ₗ[ℤ] Y →ₗ[ℤ] ℝ) a a :=
   Pf_self_nonneg η a
 
 /- English proof (translation)
-Introduce `h0`. Apply `hη` to reduce the goal to its premises. Use extensionality with `a`. Establish `hP : Pf E η η a a = 0`. Use `congrArg (fun β : SymB cj Y => (β : Y →ₗ[ℤ] Y →ₗ[ℤ] ℝ) a a) h0` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify `this` using `[Pm_apply]`. Rewrite `hP` using `[Pf_self]`. Establish `hsum : ∑ σ : E →+* ℂ, Complex.normSq (comp η σ a) = 0` using `by linarith`. Establish `hc : ∀ σ : E →+* ℂ, comp η σ a = 0` using `fun σ => Complex.normSq_eq_zero.mp ((Finset.sum_eq_zero_iff_of_nonneg (fun _ _ => Complex.normSq_nonneg _)).mp hsum σ (Finset.mem_univ σ))`. Use `sum_comp (E := E) η a` as an intermediate fact.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [hc, Finset.sum_const_zero] at this`. Simplify using `only [LinearMap.zero_apply]`. Conclude with `this.symm` after adjusting the coercions.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem Pm_ne_zero {η : Y →ₗ[ℤ] ℝ} (hη : η ≠ 0) : Pm hcj η η ≠ 0 := by
   intro h0
@@ -289,7 +289,7 @@ theorem Pm_ne_zero {η : Y →ₗ[ℤ] ℝ} (hη : η ≠ 0) : Pm hcj η η ≠ 
 omit hcj in
 
 /- English proof (translation)
-Establish `hs : ∀ σ : E →+* ℂ, conj (σ (θ : E)) = -σ (θ : E)` using `hθ`. Simplify using `only [Pf, comp_pre, map_mul, hs]`. Rewrite using `[← Complex.neg_re, ← Finset.sum_neg_distrib]`. Use `congr 1`. Conclude with `Finset.sum_congr rfl fun σ _ => by ring`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem Pf_skew (θ : 𝓞 E) (hθ : ∀ σ : E →+* ℂ, star (σ (θ : E)) = -σ (θ : E))
     (η ζ : Y →ₗ[ℤ] ℝ) (a c : Y) :

@@ -25,9 +25,9 @@ Both sides reduce to the same expression.
 private theorem coe_sub_oc (a b : OC l) : ((a - b : OC l) : ℂ_[l]) = (a : ℂ_[l]) - (b : ℂ_[l]) := rfl
 
 /- English proof (translation)
-Assume the negation of the conclusion as `h0`. Establish `hu : IsUnit (r.s (r.ρ d))` using `(IsUnit.mk0 _ h0).map r.s`. Establish `h1` using `(IsPerfectoidField.isUnit_iff_norm_untilt (K := ℂ_[l]) l).1 hu`. Establish `h2` using `r.hs d`. Rewrite `h2` using `[coe_sub_oc]`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h3 : ‖((PreTilt.untilt (r.s (r.ρ d)) : OC l) : ℂ_[l])‖ < 1`. Establish `e : ((PreTilt.untilt (r.s (r.ρ d)) : OC l) : ℂ_[l]) = (((PreTilt.untilt (r.s (r.ρ d)) : OC l) : ℂ_[l]) - ((okToOC l K d : OC l) : ℂ_[l])) + ((okToOC l K d : OC l) : ℂ_[l])` using `by ring`. Rewrite using `[e]`. Conclude with `(IsUltrametricDist.norm_add_le_max _ _).trans_lt (max_lt h2 h)`. Conclude with `absurd h1 h3.ne`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem rho_zero (r : Res l K) (d : OK l K) (h : ‖((okToOC l K d : OC l) : ℂ_[l])‖ < 1) : r.ρ d = 0 := by
   by_contra h0
@@ -43,11 +43,11 @@ private theorem rho_zero (r : Res l K) (d : OK l K) (h : ‖((okToOC l K d : OC 
   exact absurd h1 h3.ne
 
 /- English proof (translation)
-Take `⟨x, rfl⟩` from `r.surj a`. Establish `hc : ‖((x : K) : PadicAlgCl l)‖ ≤ 1` using `mem_normInteger.1 x.2`. Take `⟨k₀, k₁, hlt, hn⟩` from `exists_lt_norm_pow_sub_lt hc one_pos (fun k => l ^ k)`. Establish `hd` using `rho_zero r (x ^ l ^ k₁ - x ^ l ^ k₀) (by`. Establish `e : ((okToOC l K (x ^ l ^ k₁ - x ^ l ^ k₀) : OC l) : ℂ_[l]) = clToC l (((x : K) : PadicAlgCl l) ^ l ^ k₁ - ((x : K) : PadicAlgCl l) ^ l ^ k₀)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `[okToOC]`. Rewrite using `[e, norm_clToC]`. Conclude with `hn)`. Rewrite `hd` using `[map_sub, map_pow, map_pow, sub_eq_zero]`. Use `⟨k₁ - k₀, by omega, ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h0 : ((r.ρ x) ^ l ^ (k₁ - k₀) - r.ρ x) ^ l ^ k₀ = 0`. Rewrite using `[sub_pow_char_pow, ← pow_mul, ← pow_add, Nat.sub_add_cancel hlt.le, hd, sub_self]`. Conclude with `sub_eq_zero.1 (pow_eq_zero_iff (pow_ne_zero _ (Fact.out : l.Prime).ne_zero) |>.1 h0)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem pow_fix (r : Res l K) (a : r.k) : ∃ f : ℕ, 0 < f ∧ a ^ l ^ f = a := by
   obtain ⟨x, rfl⟩ := r.surj a
@@ -66,7 +66,7 @@ private theorem pow_fix (r : Res l K) (a : r.k) : ∃ f : ℕ, 0 < f ∧ a ^ l ^
   exact sub_eq_zero.1 (pow_eq_zero_iff (pow_ne_zero _ (Fact.out : l.Prime).ne_zero) |>.1 h0)
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih => rw [pow_succ, pow_succ, untilt_mul]`. Simplify using `[ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules.
 -/
 private theorem untilt_pow' (x : Ob l) (n : ℕ) :
     ((PreTilt.untilt (x ^ n) : OC l) : ℂ_[l]) = ((PreTilt.untilt x : OC l) : ℂ_[l]) ^ n := by
@@ -75,21 +75,19 @@ private theorem untilt_pow' (x : Ob l) (n : ℕ) :
   | succ n ih => rw [pow_succ, pow_succ, untilt_mul]; simp [ih]
 
 /- English proof (translation)
-Take `⟨f, hf, haf⟩` from `pow_fix r a`. Take `⟨x, rfl⟩` from `r.surj a`. Establish `hq : 1 < l ^ f` using `Nat.one_lt_pow hf.ne' (Fact.out : l.Prime).one_lt`. Establish `hu : (r.s (r.ρ x)) ^ l ^ f = r.s (r.ρ x)` using `by rw [← map_pow, haf]`. Establish `hv : (EigenWitt.galFlat g (r.s (r.ρ x))) ^ l ^ f = EigenWitt.galFlat g (r.s (r.ρ x))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← map_pow, hu]`. Assume the negation of the conclusion as `hne`. Take `⟨u, hudef⟩ : ∃ u, u = r.s (r.ρ x)` from `⟨_, rfl⟩`. Take `⟨v, hvdef⟩ : ∃ v, v = EigenWitt.galFlat g u` from `⟨_, rfl⟩`. Rewrite `hu`, `hv`, `hne` using `[← hudef]`.
+Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hv`, `hne` using `[← hvdef]`. Establish `he0 : v - u ≠ 0` using `sub_ne_zero.2 hne`. Establish `hee : (v - u) ^ l ^ f = v - u` using `by rw [sub_pow_char_pow, hu, hv]`. Establish `hc : ‖((PreTilt.untilt u : OC l) : ℂ_[l]) - ((okToOC l K x : OC l) : ℂ_[l])‖ < 1`. Use `r.hs x` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[coe_sub_oc, ← hudef]`. Conclude with `this`. Establish `hsv : ((PreTilt.untilt v : OC l) : ℂ_[l]) = g • ((PreTilt.untilt u : OC l) : ℂ_[l])`. Rewrite using `[hvdef]`. Conclude with `AInf.coe_untilt_gal g u`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hgx : g • ((okToOC l K x : OC l) : ℂ_[l]) = ((okToOC l K x : OC l) : ℂ_[l])` using `congrArg Subtype.val (galOC_okToOC g x)`. Establish `hc' : ‖((PreTilt.untilt v : OC l) : ℂ_[l]) - ((okToOC l K x : OC l) : ℂ_[l])‖ < 1`. Rewrite using `[hsv, ← hgx, ← smul_sub]`. Establish `h5` using `norm_galCp g (((PreTilt.untilt u : OC l) : ℂ_[l]) - ((okToOC l K x : OC l) : ℂ_[l]))`. Conclude with `(show ‖g • (((PreTilt.untilt u : OC l) : ℂ_[l]) - ((okToOC l K x : OC l) : ℂ_[l]))‖ = _ from h5).trans_lt hc`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hl : ‖(l : ℂ_[l])‖ < 1` using `norm_natCast_p_lt_one`. Establish `h1` using `norm_untilt_add_sub_le (K := ℂ_[l]) (p := l) (v - u) u`. Rewrite `h1` using `[sub_add_cancel]`. Establish `h2 : ‖((PreTilt.untilt (v - u) : OC l) : ℂ_[l])‖ < 1`. Establish `e : ((PreTilt.untilt (v - u) : OC l) : ℂ_[l]) = (((PreTilt.untilt v : OC l) : ℂ_[l]) - ((okToOC l K x : OC l) : ℂ_[l])) - (((PreTilt.untilt u : OC l) : ℂ_[l]) - ((okToOC l K x : OC l) : ℂ_[l])) - (((PreTilt.untilt v : OC l) : ℂ_[l]) - (((PreTilt.untilt (v - u) : OC l) : ℂ_[l]) + …` using `by ring`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[e]`. Use `(norm_sub_le_max_of_ultrametric _ _).trans_lt (max_lt ((norm_sub_le_max_of_ultrametric _ _).trans_lt (max_lt hc' hc)) (h1.trans_lt hl))` and prove the remaining obligations. Establish `h3 : ‖((PreTilt.untilt (v - u) : OC l) : ℂ_[l])‖ ^ l ^ f = ‖((PreTilt.untilt (v - u) : OC l) : ℂ_[l])‖`. Rewrite using `[← norm_pow, ← untilt_pow', hee]`. Establish `h4 : 0 < ‖((PreTilt.untilt (v - u) : OC l) : ℂ_[l])‖`.
-
-Use `norm_pos_iff.2 fun h => he0 ((IsPerfectoidField.untilt_eq_zero_iff (K := ℂ_[l]) l).1 (Subtype.ext h))` and prove the remaining obligations. Conclude with `absurd h3 (pow_lt_self_of_lt_one₀ h4 h2 hq).ne`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem gfix (r : Res l K) (g : Gal(PadicAlgCl l/K)) (a : r.k) : EigenWitt.galFlat g (r.s a) = r.s a := by
   obtain ⟨f, hf, haf⟩ := pow_fix r a
@@ -134,25 +132,23 @@ private theorem gfix (r : Res l K) (g : Gal(PadicAlgCl l/K)) (a : r.k) : EigenWi
   exact absurd h3 (pow_lt_self_of_lt_one₀ h4 h2 hq).ne
 
 /- English proof (translation)
-Establish `hs : ∀ x : Z, ∃ (a : k) (x' : Z), (x : OC l) = τ (WittVector.teichmuller l a) + (l : OC l) * x'` using `fun x => by`. Take `⟨a, x', h, e⟩` from `hstep x x.2`. Conclude with `⟨a, ⟨x', h⟩, e⟩`. Use `choose A N hAN using hs`. Set `E : Z → WittVector l k` to `fun x => WittVector.mk l (fun i => A (N^[i] x) ^ l ^ i)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hcoeff : ∀ x i, (E x).coeff i = A (N^[i] x) ^ l ^ i` using `fun x i => rfl`. Establish `hE : ∀ x, E x = WittVector.teichmuller l (A x) + (l : WittVector l k) * E (N x)`. Introduce `x`. Rewrite using `[mul_comm (l : WittVector l k), ← WittVector.verschiebung_frobenius]`. Use extensionality with `n`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[WittVector.coeff_add_of_disjoint]`. Consider the cases of `n with`. Consider the case `zero => simp [hcoeff, WittVector.teichmuller_coeff_zero]`. Consider the case `succ n`. Rewrite using `[WittVector.teichmuller_coeff_pos _ _ _ (Nat.succ_pos n), WittVector.verschiebung_coeff_succ, WittVector.coeff_frobenius_charP, hcoeff, hcoeff, zero_add, Function.iterate_succ_apply, pow_succ, pow_mul]`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `n`. Consider the cases of `n with`. Consider the case `zero => right`. Simplify using the standard rewrite rules. Consider the case `succ n => left`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Establish an intermediate fact.
 
-Conclude with `WittVector.teichmuller_coeff_pos _ _ _ (Nat.succ_pos n)`. Establish `hdiv : ∀ (n : ℕ) (x : Z), ∃ y : OC l, (x : OC l) - τ (E x) = (l : OC l) ^ n * y`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => exact fun x => ⟨(x : OC l) - τ (E x), by simp⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Consider the case `succ n ih`. Introduce `x`. Take `⟨y, hy⟩` from `ih (N x)`. Use `⟨y, ?_⟩` and prove the remaining obligations. Establish `h1` using `hAN x`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : τ (E x) = τ (WittVector.teichmuller l (A x)) + (l : OC l) * τ (E (N x))` using `by conv_lhs => rw [hE x]`. Rewrite using `[map_add, map_mul, map_natCast]`. Rewrite using `[h2, h1, pow_succ']`. Take the linear combination `(l : OC l) * hy`. Introduce `x hx`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction.
 
-Use `⟨E ⟨x, hx⟩, ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hne`. Establish `hpos : 0 < ‖((x - τ (E ⟨x, hx⟩) : OC l) : ℂ_[l])‖` using `norm_pos_iff.2 fun h => hne (sub_eq_zero.1 (Subtype.ext h)).symm`. Take `⟨n, hn⟩` from `exists_pow_lt_of_lt_one hpos (norm_natCast_p_lt_one (p := l))`. Take `⟨y, hy⟩` from `hdiv n ⟨x, hx⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : ‖((x - τ (E ⟨x, hx⟩) : OC l) : ℂ_[l])‖ ≤ ‖(l : ℂ_[l])‖ ^ n`. Establish `hy' : x - τ (E ⟨x, hx⟩) = (l : OC l) ^ n * y` using `hy`. Rewrite using `[hy']`. Establish `e : (((l : OC l) ^ n * y : OC l) : ℂ_[l]) = (l : ℂ_[l]) ^ n * (y : ℂ_[l])` using `by simp`. Rewrite using `[e, norm_mul, norm_pow]`.
-
-Conclude with `mul_le_of_le_one_right (pow_nonneg (norm_nonneg _) _) (mem_normInteger.1 y.2)`. Conclude with `absurd h1 (not_le.2 hn)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem wexp {k : Type} [Field k] [CharP k l] [PerfectRing k l] (τ : WittVector l k →+* OC l) (Z : Set (OC l))
     (hstep : ∀ x ∈ Z, ∃ (a : k) (x' : OC l), x' ∈ Z ∧ x = τ (WittVector.teichmuller l a) + (l : OC l) * x') :
@@ -217,7 +213,7 @@ private def fB : Acris l →+* ACris.BCris (untilt_epsilon (p := l)) :=
     (algebraMap (Acris l) (ACris.BCrisPlus ℂ_[l] l))
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `ACris.iotaB hE hZ (algebraMap (ACris.BCrisPlus ℂ_[l] l) _ (algebraMap (Acris l) _ a)) = _`. Rewrite using `[ACris.iotaB_algebraMap, ACris.iotaPlus_algebraMap]`. Both sides reduce to the same expression.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem iB_fB (a : Acris l) : ACris.iotaB hE hZ (fB l a) = DeRhamPotentiallySemistable.DRPst.iC l a := by
   change ACris.iotaB hE hZ (algebraMap (ACris.BCrisPlus ℂ_[l] l) _ (algebraMap (Acris l) _ a)) = _
@@ -225,28 +221,28 @@ private theorem iB_fB (a : Acris l) : ACris.iotaB hE hZ (fB l a) = DeRhamPotenti
   rfl
 
 /- English proof (translation)
-The claim follows from `(IsFractionRing.injective (BDeRhamPlus (normInteger ℂ_[l]) l) (BDeRham (normInteger ℂ_[l]) l)).comp (ACris.iota_injective (K := ℂ_[l]) (p := l))`.
+A detailed English derivation is pending.
 -/
 private theorem iC_inj : Function.Injective (DeRhamPotentiallySemistable.DRPst.iC l) :=
   (IsFractionRing.injective (BDeRhamPlus (normInteger ℂ_[l]) l) (BDeRham (normInteger ℂ_[l]) l)).comp
     (ACris.iota_injective (K := ℂ_[l]) (p := l))
 
 /- English proof (translation)
-The claim follows from `IsLocalization.Away.algebraMap_isUnit (S := ACris.BCris (untilt_epsilon (p := l))) (algebraMap (ACris.ACris ℂ_[l] l) (ACris.BCrisPlus ℂ_[l] l) (ACris.periodT (untilt_epsilon (p := l))))`.
+A detailed English derivation is pending.
 -/
 private theorem fB_t_unit : IsUnit (fB l (tA l)) :=
   IsLocalization.Away.algebraMap_isUnit (S := ACris.BCris (untilt_epsilon (p := l)))
     (algebraMap (ACris.ACris ℂ_[l] l) (ACris.BCrisPlus ℂ_[l] l) (ACris.periodT (untilt_epsilon (p := l))))
 
 /- English proof (translation)
-Rewrite using `[← iB_fB]`. Conclude with `fB_t_unit.map _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem iC_t_unit : IsUnit (DeRhamPotentiallySemistable.DRPst.iC l (tA l)) := by
   rw [← iB_fB]
   exact fB_t_unit.map _
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `ACris.galB hE σ (algebraMap (ACris.BCrisPlus ℂ_[l] l) _ (algebraMap (Acris l) _ a)) = _`. Rewrite using `[ACris.galB_algebraMap]`. Conclude with `congrArg _ (ACris.galPlus_algebraMap σ a)`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem galB_fB (σ : Gal(PadicAlgCl l/K)) (a : Acris l) :
     ACris.galB hE σ (fB l a) = fB l (ACris.galCris σ a) := by
@@ -255,9 +251,9 @@ private theorem galB_fB (σ : Gal(PadicAlgCl l/K)) (a : Acris l) :
   exact congrArg _ (ACris.galPlus_algebraMap σ a)
 
 /- English proof (translation)
-Establish `h : σ • (WittVector.map r.s w) = WittVector.map r.s w`. Use extensionality with `n`. Rewrite using `[AInf.gal_smul_coeff, WittVector.map_coeff]`. Conclude with `gfix r σ _`. Establish `h2` using `ACris.gal_smul_algebraMap σ (WittVector.map r.s w)`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[h]`. Conclude with `h2`.
+A detailed English derivation is pending.
 -/
 private theorem galCris_w (r : Res l K) (σ : Gal(PadicAlgCl l/K)) (w : WittVector l r.k) :
     ACris.galCris σ (r.w w) = r.w w := by
@@ -273,18 +269,18 @@ private def tau (r : Res l K) : WittVector l r.k →+* OC l :=
   (WittVector.fontaineTheta (OC l) l).comp (WittVector.map r.s)
 
 /- English proof (translation)
-Rewrite using `[tau, RingHom.comp_apply, WittVector.map_teichmuller, WittVector.fontaineTheta_teichmuller]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem tau_teich (r : Res l K) (a : r.k) :
     tau r (WittVector.teichmuller l a) = PreTilt.untilt (r.s a) := by
   rw [tau, RingHom.comp_apply, WittVector.map_teichmuller, WittVector.fontaineTheta_teichmuller]
 
 /- English proof (translation)
-Take `⟨k, hk, h⟩` from `ACris.bCris_fixed_mem_maxUnramified hE hZ (K := K) (fB l (r.w w)) (fun σ => by`. Rewrite using `[galB_fB, galCris_w])`. Rewrite `h` using `[iB_fB]`. Use `⟨k, hk, h, ?_⟩` and prove the remaining obligations. Establish `h1 : ACris.iota ℂ_[l] l (r.w w) = algClToBdR l k` using `IsFractionRing.injective (BDeRhamPlus (normInteger ℂ_[l]) l) (BDeRham (normInteger ℂ_[l]) l) h`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h2` using `congrArg (thetaAlgHom l) h1`. Rewrite `h2` using `[thetaAlgHom_algClToBdR]`. Establish `h3 : r.w w = algebraMap (Ainf l) (Acris l) (WittVector.map r.s w)` using `rfl`. Rewrite `h2` using `[h3, ACris.iota_algebraMap]`. Establish `h4 : thetaAlgHom l (wittToBDeRhamPlus (normInteger ℂ_[l]) l (WittVector.map r.s w)) = ((tau r w : OC l) : ℂ_[l])` using `IsPerfectoidField.thetaBDeRhamPlusField_wittToBDeRhamPlus l (WittVector.map r.s w)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `h2.symm.trans h4`.
+A detailed English derivation is pending.
 -/
 private theorem hT [FiniteDimensional ℚ_[l] K] (r : Res l K) (w : WittVector l r.k) :
     ∃ k ∈ maxUnramified l K,
@@ -305,7 +301,7 @@ private theorem hT [FiniteDimensional ℚ_[l] K] (r : Res l K) (w : WittVector l
   exact h2.symm.trans h4
 
 /- English proof (translation)
-Establish `h1 : i a = q k * i t ^ n`. Rewrite using `[← hk, ← hji a, ← hji t, ← map_pow, ← map_mul, mul_assoc, ← mul_pow, mul_comm T, hT, one_pow, mul_one]`. Rewrite using `[map_mul, map_mul, map_pow, map_pow, map_natCast, hW, h1, map_mul, map_pow, map_natCast]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem pullback_fin_relation {A F D P : Type*} [CommRing A] [CommRing F] [CommRing D] [CommRing P] (f : A →+* F) (j : F →+* D)
     (i : A →+* D) (q : P →+* D) (hji : ∀ u, j (f u) = i u) {t a W : A} {T : F} {n e L : ℕ} {k : P}
@@ -317,7 +313,7 @@ private theorem pullback_fin_relation {A F D P : Type*} [CommRing A] [CommRing F
   ring
 
 /- English proof (translation)
-Apply `ut.mul_left_cancel` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation.
+Reduce the claim to the hypotheses of an applicable result. Chain the equalities or inequalities of the calculation.
 -/
 private theorem fin2 {A C : Type*} [CommRing A] [CommRing C] (c : A →+* C) {t a W : A} {x : C} {n e L : ℕ}
     (ut : IsUnit (c t ^ n)) (hna : c t ^ n * x = c a) (hA : (L : A) ^ e * a = t ^ n * W) :
@@ -329,9 +325,9 @@ private theorem fin2 {A C : Type*} [CommRing A] [CommRing C] (c : A →+* C) {t 
     _ = c t ^ n * c W := by rw [map_mul, map_pow]
 
 /- English proof (translation)
-Establish `hs : f (s t) * G T = 1`. Rewrite using `[← hG, ← map_mul, hT, map_one]`. Establish `I2` using `congrArg f I1`. Simplify using `only [map_mul, map_pow] at I2`. Rewrite using `[map_mul, map_pow, hG]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 private theorem fix_aux {A F : Type*} [CommRing A] [CommRing F] (f : A →+* F) (G : F →+* F) (s : A →+* A)
     {t a : A} {T : F} {n : ℕ} (hG : ∀ u, G (f u) = f (s u)) (hT : f t * T = 1)
@@ -348,25 +344,25 @@ private theorem fix_aux {A F : Type*} [CommRing A] [CommRing F] (f : A →+* F) 
     _ = f a * T ^ n := by rw [hs, one_pow, mul_one]
 
 /- English proof (translation)
-Set `Z : Set (OC l)` to `{x | ∃ k ∈ maxUnramified l K, (x : ℂ_[l]) = clToC l k}`. Establish `hstep : ∀ x ∈ Z, ∃ (a : r.k) (x' : OC l), x' ∈ Z ∧ x = tau r (WittVector.teichmuller l a) + (l : OC l) * x'`. Introduce and unpack `x ⟨k, hk, hx⟩`. Establish `hk1 : ‖k‖ ≤ 1`. Rewrite using `[← norm_clToC, ← hx]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mem_normInteger.1 x.2`. Establish `hkK : k ∈ K` using `(mem_maxUnramified.1 hk).1`. Set `xo : OK l K` to `⟨⟨k, hkK⟩, mem_normInteger.2 hk1⟩`. Take `⟨k₀, hk₀, -, hk₀τ⟩` from `hT r (WittVector.teichmuller l (r.ρ xo))`. Rewrite `hk₀τ` using `[tau_teich]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hlt : ‖k - k₀‖ < 1`. Establish `h2` using `r.hs xo`. Rewrite `h2` using `[coe_sub_oc, ← hk₀τ]`. Establish `e : ((okToOC l K xo : OC l) : ℂ_[l]) = clToC l k` using `rfl`. Rewrite `h2` using `[e, ← map_sub, norm_clToC, norm_sub_rev]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `h2`. Establish `hy : k - k₀ ∈ maxUnramified l K` using `sub_mem hk hk₀`. Establish `hl0 : (l : PadicAlgCl l) ≠ 0` using `Nat.cast_ne_zero.2 (Fact.out : l.Prime).ne_zero`. Establish `hy' : (k - k₀) / (l : PadicAlgCl l) ∈ maxUnramified l K` using `div_mem hy (natCast_mem _ l)`. Establish `hn : ‖(k - k₀) / (l : PadicAlgCl l)‖ ≤ 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `h0 : k - k₀ = 0`. Simplify using `[h0]`. Take `⟨D, hD⟩` from `ACris.exists_norm_eq_zpow_maxUnramified (K := K) (x := ⟨k - k₀, hy⟩) (fun h => h0 (congrArg Subtype.val h))`. Establish `hD' : ‖k - k₀‖ = ‖(l : PadicAlgCl l)‖ ^ D` using `hD`. Establish `hlpos` using `ACris.norm_p_algCl_pos (p := l)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hl1 : ‖(l : PadicAlgCl l)‖ < 1` using `norm_natCast_p_algCl_lt_one`. Establish `hD1 : 1 ≤ D`. Assume the negation of the conclusion as `hcon`. Establish `h3 : D ≤ 0` using `by omega`. Establish `h4 : 1 ≤ ‖(l : PadicAlgCl l)‖ ^ D` using `one_le_zpow_of_nonpos₀ hlpos hl1.le h3`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Rewrite `hlt` using `[hD']`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[norm_div, hD', div_le_one hlpos]`. Combine the equalities or inequalities in the displayed calculation. Use `⟨r.ρ xo, ⟨clToC l ((k - k₀) / (l : PadicAlgCl l)), mem_normInteger.2 (by rw [norm_clToC]; exact hn)⟩, ⟨_, hy', rfl⟩, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[tau_teich]`. Express the relevant statement in the definitionally equal form `(x : ℂ_[l]) = ((PreTilt.untilt (r.s (r.ρ xo)) : OC l) : ℂ_[l]) + (l : ℂ_[l]) * clToC l ((k - k₀) / (l : PadicAlgCl l))`. Rewrite using `[hx, ← hk₀τ, ← map_natCast (clToC l) l, ← map_mul, ← map_add]`. Use `congr 1`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 
-Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish `hx : (⟨clToC l k, mem_normInteger.2 (by rw [norm_clToC]; exact h1)⟩ : OC l) ∈ Z` using `⟨k, hk, rfl⟩`. Take `⟨w, hw⟩` from `wexp (tau r) Z hstep _ hx`. Take `⟨k₁, -, h2, h3⟩` from `hT r w`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h3` using `[hw]`. Establish `e : k₁ = k` using `(clToC l).injective h3`. Conclude with `⟨w, e ▸ h2⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem hK [FiniteDimensional ℚ_[l] K] (r : Res l K) {k : PadicAlgCl l} (hk : k ∈ maxUnramified l K) (h1 : ‖k‖ ≤ 1) :
     ∃ w : WittVector l r.k, DeRhamPotentiallySemistable.DRPst.iC l (r.w w) =
@@ -427,19 +423,19 @@ private theorem hK [FiniteDimensional ℚ_[l] K] (r : Res l K) {k : PadicAlgCl l
   exact ⟨w, e ▸ h2⟩
 
 /- English proof (translation)
-Use `⟨fun g w => galCris_w r _ w, fun x hx => ?_⟩` and prove the remaining obligations. Establish `hcinj : ∀ u v : Acris l, B₀.c u = B₀.c v → u = v`. Introduce `u v h`. Take `⟨m, hm⟩` from `B₀.ker (u - v) (by rw [map_sub, h, sub_self])`. Establish `h1` using `congrArg (DeRhamPotentiallySemistable.DRPst.iC l) hm`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `h1` using `[map_mul, map_pow, map_zero]`. Establish `h2` using `((iC_t_unit.pow m).mul_right_eq_zero).1 h1`. Rewrite `h2` using `[map_sub, sub_eq_zero]`. Conclude with `iC_inj h2`. Take `⟨n, a, hna⟩` from `B₀.loc x`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨T, hT1⟩` from `fB_t_unit (l := l) |>.exists_right_inv`. Establish `hy : ∀ σ : Gal(PadicAlgCl l/K), ACris.galB hE σ (fB l a * T ^ n) = fB l a * T ^ n`. Introduce `σ`. Establish `hσ : IntermediateField.fixingSubgroupEquiv K ((IntermediateField.fixingSubgroupEquiv K).symm σ) = σ` using `MulEquiv.apply_symm_apply _ σ`. Establish `hsc : ∀ u, B₀.σ ((IntermediateField.fixingSubgroupEquiv K).symm σ) (B₀.c u) = B₀.c (ACris.galCris σ u)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `u`. Rewrite using `[B₀.σ_c, galA, hσ]`. Establish `hg` using `hx ((IntermediateField.fixingSubgroupEquiv K).symm σ)`. Use `fix_aux (fB l) (ACris.galB hE σ) (ACris.galCris σ) (galB_fB σ) hT1 (hcinj _ _ ?_)` and prove the remaining obligations. Establish `h1` using `congrArg (B₀.σ ((IntermediateField.fixingSubgroupEquiv K).symm σ)) hna`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[map_mul, map_pow, hg, hsc, hsc]`. Rewrite using `[map_mul, map_mul, map_pow, map_pow, ← h1, ← hna]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨k, hk, hky⟩` from `ACris.bCris_fixed_mem_maxUnramified hE hZ (K := K) _ hy`. Choose the witnesses or unpack the hypotheses as in `⟨e, he⟩ : ∃ e : ℕ, ‖(l : PadicAlgCl l) ^ e * k‖ ≤ 1 := by`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hl1 : ‖(l : PadicAlgCl l)‖ < 1` using `norm_natCast_p_algCl_lt_one`. Take `⟨e, he⟩` from `exists_pow_lt_of_lt_one (show 0 < (‖k‖ + 1)⁻¹ by positivity) hl1`. Use `⟨e, ?_⟩` and prove the remaining obligations. Rewrite using `[norm_mul, norm_pow]`. Establish `h1 : 0 < ‖k‖ + 1` using `by positivity`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Take `⟨w, hw⟩` from `hK r (mul_mem (pow_mem (natCast_mem _ l) e) hk) he`. Use `⟨e, w, ?_⟩` and prove the remaining obligations. Establish `hA : (l : Acris l) ^ e * a = tA l ^ n * r.w w` using `iC_inj (pullback_fin_relation (fB l) (ACris.iotaB hE hZ) (DeRhamPotentiallySemistable.DRPst.iC l) ((algebraMap (BDeRhamPlus (normInteger ℂ_[l]) l) (BDeRham (normInteger ℂ_[l]) l)).comp (algClToBdR l : PadicAlgCl l →+* BDeRhamPlus (normInteger ℂ_[l]) l)) iB_fB hT1 hky hw)`. Conclude with `fin2 B₀.c (B₀.t_unit.pow n) hna hA`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem mainC [FiniteDimensional ℚ_[l] K] (B₀ : PB l K) (r : Res l K) : InvC B₀ r := by
   refine ⟨fun g w => galCris_w r _ w, fun x hx => ?_⟩
@@ -487,7 +483,7 @@ private theorem mainC [FiniteDimensional ℚ_[l] K] (B₀ : PB l K) (r : Res l K
 end UpperTheory.Ru.crystallineComparison.PBI
 
 /- English proof (translation)
-Introduce `_ _ _ _ B₀ r` and use `UpperTheory.Ru.crystallineComparison.PBI.mainC B₀ r`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Ru.crystallineComparison.pbInv :
     ∀ (l : ℕ) [Fact l.Prime] (K : IntermediateField ℚ_[l] (PadicAlgCl l)) [FiniteDimensional ℚ_[l] K] (B₀ : PB l K) (r : Res l K), InvC B₀ r :=

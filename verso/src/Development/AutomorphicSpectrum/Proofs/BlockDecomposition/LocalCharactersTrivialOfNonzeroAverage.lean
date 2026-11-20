@@ -30,27 +30,27 @@ def ctH : LM c v → (Qv v)ˣ →* ℂˣ
   | LM.ns .. => 1
 
 /- English proof (translation)
-Apply the tactic sequence `cases L <;> rfl`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem ctH_coe (L : LM c v) (x : (Qv v)ˣ) : ((ctH L x : ℂˣ) : ℂ) = L.ct x := by
   cases L <;> rfl
 
 /- English proof (translation)
-Rewrite using `[← ctH_coe, map_one]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem ct_one (L : LM c v) : L.ct 1 = 1 := by
   rw [← ctH_coe, map_one]; rfl
 
 /- English proof (translation)
-Simplify using `only [← ctH_coe, map_mul, Units.val_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem ct_mul (L : LM c v) (x y : (Qv v)ˣ) : L.ct (x * y) = L.ct x * L.ct y := by
   simp only [← ctH_coe, map_mul, Units.val_mul]
 
 /- English proof (translation)
-Introduce `e he`. Establish `h1` using `(measurePreserving_mulLeft_unQ v e he).integral_comp' (fun x => L.ct x)`. Establish `h2 : ∀ x, L.ct (MeasurableEquiv.mulLeft e x) = L.ct e * L.ct x` using `fun x => ct_mul L e x`. Rewrite `h1` using `[h2]`. Rewrite `h1` using `[integral_const_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses repeatedly using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `mul_right_cancel₀ h (by rw [h1, one_mul])`.
+A detailed English derivation is pending.
 -/
 theorem ct_unit_of_integral_ne (L : LM c v) (h : ∫ x in unQ v, L.ct x ∂multHaar (Qv v) ≠ 0) :
     ∀ e ∈ unQ v, L.ct e = 1 := by
@@ -62,11 +62,11 @@ theorem ct_unit_of_integral_ne (L : LM c v) (h : ∫ x in unQ v, L.ct x ∂multH
   exact mul_right_cancel₀ h (by rw [h1, one_mul])
 
 /- English proof (translation)
-Introduce `e he`. Consider the cases of `L with`. Consider the case `ns w σ η Φ => rfl`. Consider the case `sp w₁ w₂ Φ`. Break down `h with h | hU` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `absurd trivial h`. Establish `r₁ : IsUnramifiedChar (cAt c v w₁)` using `GlobalTheory.CompanionTheory.SphTheta.isUnramifiedChar_comp_unitsMap (Qv v) (Kv K w₁) (localChar c w₁) (hU w₁).1`. Establish `r₂ : IsUnramifiedChar (cAt c v w₂)` using `GlobalTheory.CompanionTheory.SphTheta.isUnramifiedChar_comp_unitsMap (Qv v) (Kv K w₂) (localChar c w₂) (hU w₂).1`. Establish `hmem : e ∈ unitFiltrationUnits (Qv v) 0`. Use `he` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[unQ_eq_ordShell, ordShell_zero]`. Conclude with `this`. Establish `he₁ : cAt c v w₁ e = 1` using `MonoidHom.mem_ker.1 (r₁ hmem)`. Establish `he₂ : cAt c v w₂ e = 1` using `MonoidHom.mem_ker.1 (r₂ hmem)`. Simplify using `[LM.ct, he₁, he₂]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem ct_unit_of_unr (L : LM c v) (h : ¬ L.IsSp ∨ Unr c v) : ∀ e ∈ unQ v, L.ct e = 1 := by
   intro e he
@@ -88,9 +88,9 @@ theorem ct_unit_of_unr (L : LM c v) (h : ¬ L.IsSp ∨ Unr c v) : ∀ e ∈ unQ 
     simp [LM.ct, he₁, he₂]
 
 /- English proof (translation)
-Establish `hu : unifUnit (Qv v) ^ (-ord (x : Qv v)) * x ∈ unQ v`. Rewrite using `[mem_unQ_iff_ord_eq_zero, ord_units_mul, ord_unifUnit_zpow]`. Use linear arithmetic over natural numbers and integers. Establish `hx : x = unifUnit (Qv v) ^ ord (x : Qv v) * (unifUnit (Qv v) ^ (-ord (x : Qv v)) * x)`. Rewrite using `[← mul_assoc, ← zpow_add, add_neg_cancel, zpow_zero, one_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `conv_rhs => rw [hx]`. Rewrite using `[ct_mul, hU _ hu, mul_one]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ct_eq_zpow_ord (L : LM c v) (hU : ∀ e ∈ unQ v, L.ct e = 1) (x : (Qv v)ˣ) :
     L.ct (unifUnit (Qv v) ^ ord (x : Qv v)) = L.ct x := by
@@ -105,9 +105,9 @@ theorem ct_eq_zpow_ord (L : LM c v) (hU : ∀ e ∈ unQ v, L.ct e = 1) (x : (Qv 
 open Classical in
 
 /- English proof (translation)
-Establish `h1 : ctM M Sv m u = ∏ v ∈ m.support ∪ Sv, ((M v).ct (unifUnit (Qv v) ^ (m v)) * (M v).ct (if h : v ∈ Sv then u ⟨v, h⟩ else 1))` using `Finset.prod_congr rfl fun v _ => ct_mul _ _ _`. Rewrite using `[h1, Finset.prod_mul_distrib]`. Use `congr 1`. Establish `h2 : ∏ v ∈ m.support ∪ Sv, (M v).ct (if h : v ∈ Sv then u ⟨v, h⟩ else 1) = ∏ v ∈ Sv, (M v).ct (if h : v ∈ Sv then u ⟨v, h⟩ else 1)`. Use `symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Use symmetry to reverse the relation.
 
-Use `Finset.prod_subset Finset.subset_union_right fun v _ hv => ?_` and prove the remaining obligations. Rewrite using `[dif_neg hv, ct_one]`. Rewrite using `[h2, ← Finset.prod_coe_sort]`. Use `Finset.prod_congr rfl fun v _ => ?_` and prove the remaining obligations. Rewrite using `[dif_pos v.2]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem ctM_eq (M : ∀ v : Pl, LM c v) (Sv : Finset Pl) (m : Pl →₀ ℤ) (u : ∀ v : Sv, (Qv v.1)ˣ) :
     ctM M Sv m u = (∏ v ∈ m.support ∪ Sv, (M v).ct (unifUnit (Qv v) ^ (m v))) *
@@ -132,7 +132,7 @@ instance finiteU (v : Pl) : IsFiniteMeasure ((multHaar (Qv v)).restrict (unQ v))
 def chi (M : ∀ v : Pl, LM c v) (m : Pl →₀ ℤ) : ℂ := ∏ᶠ v, (M v).ct (unifUnit (Qv v) ^ (m v))
 
 /- English proof (translation)
-Introduce `v hv`. Assume the negation of the conclusion as `h`. Establish `h0 : m v = 0` using `by simpa using h`. Conclude with `hv (by simp only [h0, zpow_zero, ct_one])`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem chi_support (M : ∀ v : Pl, LM c v) (m : Pl →₀ ℤ) :
     (Function.mulSupport fun v => (M v).ct (unifUnit (Qv v) ^ (m v))) ⊆ (m.support : Set Pl) := by
@@ -143,7 +143,7 @@ theorem chi_support (M : ∀ v : Pl, LM c v) (m : Pl →₀ ℤ) :
 
 open Classical in
 /- English proof (translation)
-The claim follows from `finprod_eq_prod_of_mulSupport_subset _ (by refine (chi_support M m).trans ?_ intro v hv simp only [Finset.coe_union, Set.mem_union] exact Or.inl hv)`.
+A detailed English derivation is pending.
 -/
 theorem chi_eq (M : ∀ v : Pl, LM c v) (Sv : Finset Pl) (m : Pl →₀ ℤ) :
     chi M m = ∏ v ∈ m.support ∪ Sv, (M v).ct (unifUnit (Qv v) ^ (m v)) :=
@@ -155,7 +155,7 @@ theorem chi_eq (M : ∀ v : Pl, LM c v) (Sv : Finset Pl) (m : Pl →₀ ℤ) :
       exact Or.inl hv)
 
 /- English proof (translation)
-Unfold `chi`. Rewrite using `[← finprod_mul_distrib ((a.support.finite_toSet).subset (chi_support M a)) ((b.support.finite_toSet).subset (chi_support M b))]`. Use `finprod_congr fun v => ?_` and prove the remaining obligations. Rewrite using `[Finsupp.add_apply, zpow_add, ct_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem chi_add (M : ∀ v : Pl, LM c v) (a b : Pl →₀ ℤ) : chi M (a + b) = chi M a * chi M b := by
   unfold chi
@@ -165,7 +165,7 @@ theorem chi_add (M : ∀ v : Pl, LM c v) (a b : Pl →₀ ℤ) : chi M (a + b) =
   rw [Finsupp.add_apply, zpow_add, ct_mul]
 
 /- English proof (translation)
-Repeatedly rewrite using `[ctM_eq, ← chi_eq]`. Rewrite using `[integral_const_mul]`. Use `congr 1`. Conclude with `integral_fintype_prod_eq_prod (𝕜 := ℂ) (fun (v : Sv) (x : (Qv v.1)ˣ) => (M v.1).ct x)`.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem integral_ctM (M : ∀ v : Pl, LM c v) (Sv : Finset Pl) (m : Pl →₀ ℤ) :
     ∫ u, ctM M Sv m u ∂muU Sv =
@@ -198,25 +198,23 @@ def LgK (K : Type) [Field K] [NumberField K] {c : HeckeCharacter K} (M : ∀ v :
     exact neg_eq_of_add_eq_zero_right h.symm
 
 /- English proof (translation)
-Introduce `K _ _ h2 _ c M hM R hR Sv hS hk hsum v x`. Take `⟨hord, hmem, hadd⟩` from `GlobalTheory.T.valuation_vector_homomorphism K h2 c M hM`. Rewrite `hsum` using `[integral_ctM]`. Rewrite `hsum` using `[← Finset.sum_mul]`. Establish `hχ : ∑ r ∈ R, chi M r ≠ 0` using `left_ne_zero_of_mul hsum`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses repeatedly using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hP` using `right_ne_zero_of_mul hsum`. Establish `hU : ∀ v, ∀ e ∈ unQ v, (M v).ct e = 1`. Introduce `v`. Distinguish the cases in `hv : v ∈ Sv`. Conclude with `ct_unit_of_integral_ne _ (Finset.prod_ne_zero_iff.mp hP ⟨v, hv⟩ (Finset.mem_univ _))`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations.
 
-Use `ct_unit_of_unr _ ?_` and prove the remaining obligations. Distinguish the cases in `hs : (M v).IsSp`. Conclude with `Or.inr (hS.2 v hv hs).1`. Conclude with `Or.inl hs`. Establish `hone : ∀ m ∈ Tm M, chi M m = 1`.
+Consider separately whether the proposition holds or fails. Prove the second alternative. Prove the first alternative. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `GlobalTheory.T.character_trivial_of_nonzero_sum (Tm M) (LgK K M hadd) R (chi M) (fun a _ b _ => chi_add M a b) ?_ hR.1 ?_ hχ` and prove the remaining obligations. Introduce and unpack `_ ⟨κ, hκ, rfl⟩`. Use `⟨hmem κ, ?_⟩` and prove the remaining obligations. Rewrite using `[← hk κ hκ]`. Use `finprod_congr fun v => ?_` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hord κ v]`. Conclude with `ct_eq_zpow_ord _ (hU v) _`. Introduce `m hm`. Take `⟨r, ⟨hr, κ, hκ, e⟩, huniq⟩` from `hR.2 m hm`. Use `⟨r, ⟨hr, vK M κ, ⟨κ, hκ, rfl⟩, e⟩, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Introduce and unpack `r' ⟨hr', _, ⟨κ', hκ', rfl⟩, e'⟩`. Conclude with `huniq r' ⟨hr', κ', hκ', e'⟩`. Establish `hpi : (M v).ct (unifUnit (Qv v)) = 1`. Distinguish the cases in `hs : (M v).IsSp`. Establish `hm : Finsupp.single v (1 : ℤ) ∈ Tm M`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Introduce `w hw`. Distinguish the cases in `hwv : w = v`. Conclude with `hwv ▸ hs`. Conclude with `absurd (Finsupp.single_eq_of_ne hwv) hw`. Establish `h` using `hone _ hm`.
+Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Unfold `chi at h`. Rewrite `h` using `[finprod_eq_single _ v ?_]`. Simplify using `using h`. Introduce `w hw`. Rewrite using `[Finsupp.single_eq_of_ne hw, zpow_zero, ct_one]`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Use `revert hs`. Consider the cases of `M v with`. Consider the case `sp w₁ w₂ Φ => intro hs`. Conclude with `absurd trivial hs`. Consider the case `ns w σ η Φ => intro _`.
-
-Both sides reduce to the same expression. Rewrite using `[← ct_eq_zpow_ord _ (hU v) x, ← ctH_coe, map_zpow]`. Establish `: ctH (M v) (unifUnit (Qv v)) = 1` using `Units.ext (by rw [ctH_coe, hpi]; rfl)`. Rewrite using `[this, one_zpow]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem weights_trivial : ∀ (K : Type) [Field K] [NumberField K], Module.finrank ℚ K = 2 → IsTotallyComplex K → ∀ (c : HeckeCharacter K)
   (M : ∀ v : Pl, LM c v), AdmM M → ∀ R : Finset (Pl →₀ ℤ), IsReps M R → ∀ Sv : Finset Pl, GoodSv M Sv →

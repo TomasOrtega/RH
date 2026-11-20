@@ -37,9 +37,9 @@ open NumberField
 
 open CategoryTheory UpperTheory.V.Af.BA in
 /- English proof (translation)
-Introduce `Γ I _ _ K hx ho hs`. Take `⟨hst, D, hD⟩` from `UpperTheory.adelic_rep_dimension_bounded Γ I K (ho 1) hs`. Take `⟨h0, h1, h2⟩` from `UpperTheory.exactCOf_of_exactBase UpperTheory.exactBase_integral_to_complex Γ I K hx`. Take `⟨P, hP, he⟩` from `UpperTheory.repResolution_exists Γ (fun p => PC Γ (K.Tup p)) K.d (augC Γ (K.Tup 0)) (fun p => UpperTheory.projPerm_of_liftEquiv UpperTheory.pins_of_closed_subgroup_padic_character_inv Γ _ (hst p)) h0 h1 h2`. Take `⟨a0, aD⟩` from `UpperTheory.rep_hom_alternating_sum_eq_zero Γ I K`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨e, he1, he2⟩` from `he K.alt (by rw [a0, Category.id_comp]) (UpperTheory.altChain_of_permSplit UpperTheory.perm_split_fin_succ Γ I K)`. Use `UpperTheory.adelic_rep_bounded_of_degree_bounded Γ (fun q => ?_) ⟨D, fun q hq A => UpperTheory.ext_vanishing_of_resolution_endo Γ P e he1 q (he2 q (aD q (hD q hq))) A⟩` and prove the remaining obligations. Take `⟨c, hc⟩` from `UpperTheory.permutation_module_homology_rank Γ _ (ho q)`. Conclude with `⟨c, fun A => (UpperTheory.rankCohHom_of_rankHomology UpperTheory.cohomology_rank_eq_homology_rank Γ P q _ (hP q) A).trans (hc A)⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private theorem UpperTheory.V.Af.bddArith_cx : BddCx := by
   intro Γ I _ _ K hx ho hs
@@ -55,7 +55,7 @@ private theorem UpperTheory.V.Af.bddArith_cx : BddCx := by
 
 open UpperTheory.V.Af.BA in
 /- English proof (translation)
-The claim follows from `have hg : GoodRe := UpperTheory.good_real_form_of_real_part_of_real_involution UpperTheory.adelicBaseChange_realPart UpperTheory.adelic_realPart_invariant have ha : ActRe := UpperTheory.real_structure_action_of_real_involution UpperTheory.adelic_realPart_invariant have hs : SpanR …`.
+A detailed English derivation is pending.
 -/
 private theorem UpperTheory.V.Af.bddArith_fix : BddFix :=
   have hg : GoodRe := UpperTheory.good_real_form_of_real_part_of_real_involution UpperTheory.adelicBaseChange_realPart UpperTheory.adelic_realPart_invariant
@@ -65,11 +65,9 @@ private theorem UpperTheory.V.Af.bddArith_fix : BddFix :=
     (UpperTheory.orbRe_of_minimal_vector_stabilizer UpperTheory.fixedOrbits_finite_representatives UpperTheory.adelic_realPart_invariant ha hs UpperTheory.minimal_orbit_representatives UpperTheory.minimal_vector_stabilizer_property) UpperTheory.minimal_vector_stabilizer_property
 
 /- English proof (translation)
-Introduce `F _ _ hF n Γ hΓ`. Establish `hO : UpperTheory.V.Af.CohB.Bdd (GL (Fin n) (𝓞 F))`. Break down `hF with hF | hF` into its components or cases. Conclude with `UpperTheory.bounded_complex_of_bounded_simplicial_complex UpperTheory.V.Af.bddArith_cx F n`. Take `⟨L, _, _, _, i, σ, hσ, hi, hf⟩` from `UpperTheory.exists_CM_integral_of_exists_CM UpperTheory.exists_CM_extension F`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `UpperTheory.cohomology_bounded_equiv _ _ (UpperTheory.building_fixed_points_equiv _ _ i σ n hi hf) (UpperTheory.V.Af.bddArith_fix L n σ hσ)`. Establish `hinj : Function.Injective (Matrix.GeneralLinearGroup.map (n` using `Fin n) (algebraMap (𝓞 F) F)) := by`. Introduce `g k e`. Use `Units.ext (Matrix.ext fun a b => ?_)` and prove the remaining obligations. Conclude with `RingOfIntegers.coe_injective (congrArg (fun u : GL (Fin n) F => (u : Matrix (Fin n) (Fin n) F) a b) e)`.
-
-Conclude with `UpperTheory.adelic_rep_bounded_comm_of_bounded_equiv UpperTheory.cohomology_bounded_equiv UpperTheory.adelic_rep_bounded_of_subgroup_bounded (UpperTheory.adelic_rep_bounded_over_of_sum_bound_coind_retract UpperTheory.cohomology_sum_bound UpperTheory.coind_retract_of_finite_index) …`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Af.bddArith :
     ∀ (F : Type) [Field F] [NumberField F], (IsTotallyComplex F ∨ IsTotallyReal F) → ∀ (n : ℕ) (Γ : Subgroup (GL (Fin n) F)), Subgroup.Commensurable Γ (Matrix.GeneralLinearGroup.map (n := Fin n) (algebraMap (𝓞 F) F)).range → UpperTheory.V.Af.CohB.Bdd ↥Γ := by

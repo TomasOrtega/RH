@@ -14,26 +14,26 @@ namespace C
 variable {E : Type} [Field E] [NumberField E] {r s : ℕ}
 
 /- English proof (translation)
-Simplify using `[Fin.sum_univ_two]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hsum (r s : ℕ) : ∑ i, ![r, s] i = r + s := by simp [Fin.sum_univ_two]
 
 abbrev eC (r s : ℕ) : (Σ i, Fin (![r, s] i)) ≃ Fin (r + s) := GlobalTheory.SmGL.stdBlocks ![r, s] (hsum r s)
 
 /- English proof (translation)
-The claim follows from `Fin.ext ((GlobalTheory.SmGL.stdBlocks_val ![r, s] (hsum r s) 0 i).trans (by simp))`.
+A detailed English derivation is pending.
 -/
 theorem eC_zero (i : Fin r) : eC r s ⟨0, i⟩ = Fin.castAdd s i :=
   Fin.ext ((GlobalTheory.SmGL.stdBlocks_val ![r, s] (hsum r s) 0 i).trans (by simp))
 
 /- English proof (translation)
-The claim follows from `Fin.ext ((GlobalTheory.SmGL.stdBlocks_val ![r, s] (hsum r s) 1 j).trans (by simp))`.
+A detailed English derivation is pending.
 -/
 theorem eC_one (j : Fin s) : eC r s ⟨1, j⟩ = Fin.natAdd r j :=
   Fin.ext ((GlobalTheory.SmGL.stdBlocks_val ![r, s] (hsum r s) 1 j).trans (by simp))
 
 /- English proof (translation)
-Introduce `i j hi hj`. Establish `h` using `GlobalTheory.SmGL.mem_parab_iff.1 hp 1 0 (show Fin s from ⟨i - r, by omega⟩) (show Fin r from ⟨j, hj⟩) (by decide)`. Rewrite `h` using `[eC_one, eC_zero]`. Apply the tactic sequence `convert h using 2 <;> apply Fin.ext <;> simp; omega`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem lowLeft {p : GL (Fin (r + s)) (Cinf E)} (hp : p ∈ parab (Cinf E) (eC r s)) :
     ∀ i j : Fin (r + s), r ≤ (i : ℕ) → (j : ℕ) < r → (p : Matrix _ _ (Cinf E)) i j = 0 := by
@@ -44,7 +44,7 @@ theorem lowLeft {p : GL (Fin (r + s)) (Cinf E)} (hp : p ∈ parab (Cinf E) (eC r
   convert h using 2 <;> apply Fin.ext <;> simp; omega
 
 /- English proof (translation)
-The claim follows from `IwaFin.exists_unip_mul_lev r s p.1 (lowLeft p.2) (lowLeft (inv_mem p.2))`.
+A detailed English derivation is pending.
 -/
 theorem decomp (p : parab (Cinf E) (eC r s)) :
     ∃ (u : BlockIx (r + s) r → Cinf E) (m : GL (Fin r) (Cinf E) × GL (Fin s) (Cinf E)),
@@ -52,14 +52,14 @@ theorem decomp (p : parab (Cinf E) (eC r s)) :
   IwaFin.exists_unip_mul_lev r s p.1 (lowLeft p.2) (lowLeft (inv_mem p.2))
 
 /- English proof (translation)
-The claim follows from `contDiff_pi.2 fun i => contDiff_pi.2 fun j => (contDiff_apply ℝ (Cinf E) (Fin.castAdd s j)).comp (contDiff_apply ℝ (Fin (r + s) → Cinf E) (Fin.castAdd s i))`.
+A detailed English derivation is pending.
 -/
 theorem contDiff_cc : ContDiff ℝ ∞ fun M : Lie E (r + s) => (fun i j => M (Fin.castAdd s i) (Fin.castAdd s j) : Lie E r) :=
   contDiff_pi.2 fun i => contDiff_pi.2 fun j =>
     (contDiff_apply ℝ (Cinf E) (Fin.castAdd s j)).comp (contDiff_apply ℝ (Fin (r + s) → Cinf E) (Fin.castAdd s i))
 
 /- English proof (translation)
-The claim follows from `contDiff_pi.2 fun i => contDiff_pi.2 fun j => (contDiff_apply ℝ (Cinf E) (Fin.natAdd r j)).comp (contDiff_apply ℝ (Fin (r + s) → Cinf E) (Fin.natAdd r i))`.
+A detailed English derivation is pending.
 -/
 theorem contDiff_nn : ContDiff ℝ ∞ fun M : Lie E (r + s) => (fun i j => M (Fin.natAdd r i) (Fin.natAdd r j) : Lie E s) :=
   contDiff_pi.2 fun i => contDiff_pi.2 fun j =>
@@ -69,17 +69,15 @@ end C
 
 open C in
 /- English proof (translation)
-Take `⟨p, k, hp, hk, hp1, hk1, hpk⟩` from `GlobalTheory.SmoothIwasawaNear.exists_local_iwasawa E ![r, s] (eC r s)`. Use `choose u m hm using fun y => decomp (E := E) (p y)`. Establish `e1 : ∀ y, toL (m y).1.val = (fun i j => toL (p y).1.val (Fin.castAdd s i) (Fin.castAdd s j) : Lie E r)` using `fun y => by`. Use function extensionality and compare the values at `i j`. Express the relevant statement in the definitionally equal form `((m y).1 : Matrix _ _ (Cinf E)) i j = ((p y).1 : Matrix _ _ (Cinf E)) (Fin.castAdd s i) (Fin.castAdd s j)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hm y, unip_lev_cc]`. Establish `e2 : ∀ y, toL (m y).2.val = (fun i j => toL (p y).1.val (Fin.natAdd r i) (Fin.natAdd r j) : Lie E s)` using `fun y => by`. Use function extensionality and compare the values at `i j`. Express the relevant statement in the definitionally equal form `((m y).2 : Matrix _ _ (Cinf E)) i j = ((p y).1 : Matrix _ _ (Cinf E)) (Fin.natAdd r i) (Fin.natAdd r j)`. Rewrite using `[hm y, unip_lev_nn]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun y => (m y).1, fun y => (m y).2, k, u, ?_, ?_, hk, ?_, ?_, hk1, ?_⟩` and prove the remaining obligations. Simplify using `only [e1]`. Conclude with `contDiff_cc.contDiffAt.comp _ hp`. Simplify using `only [e2]`. Conclude with `contDiff_nn.contDiffAt.comp _ hp`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Use `Units.ext (Matrix.ext fun i j => ?_)` and prove the remaining obligations. Use `congrFun (congrFun (e1 (oneL E (r + s))) i) j` as an intermediate fact. Express the relevant statement in the definitionally equal form `((m _).1 : Matrix _ _ (Cinf E)) i j = _ at this`. Rewrite using `[this, hp1]`. Simplify using `[Matrix.one_apply, Fin.castAdd_inj]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Use `Units.ext (Matrix.ext fun i j => ?_)` and prove the remaining obligations. Use `congrFun (congrFun (e2 (oneL E (r + s))) i) j` as an intermediate fact. Express the relevant statement in the definitionally equal form `((m _).2 : Matrix _ _ (Cinf E)) i j = _ at this`. Rewrite using `[this, hp1]`. Simplify using `[Matrix.one_apply, Fin.natAdd_inj]`.
-
-Use `filter_upwards [hpk] with y hy`. Rewrite using `[hy, hm y]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_local (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (r s : ℕ) :
     ∃ (b₁ : Lie E (r + s) → GL (Fin r) (Cinf E)) (b₂ : Lie E (r + s) → GL (Fin s) (Cinf E))

@@ -29,17 +29,17 @@ def RestClear : Prop :=
       ∃ e : ℕ, ((p : ℚ_[p]) ^ e) • F ∈ Formalism.GM.M.YZ p (r := r) LL J M
 
 /- English proof (translation)
-Introduce `p _ N r _ LL q J M F hF`. Take `⟨e, he⟩ : ∃ e : ℕ, ∀ m, ‖(p : ℚ_[p]) ^ e * F.coeff m‖ ≤ 1` from `by set B : ℝ := ∑ m ∈ F.support, ‖F.coeff m‖ with hB`. Establish `hp1 : (1 : ℝ) < p` using `by exact_mod_cast (Fact.out : p.Prime).one_lt`. Take `⟨e, he⟩` from `pow_unbounded_of_one_lt B hp1`. Use `⟨e, fun m => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[norm_mul, Padic.norm_p_pow]`. Establish `hcm : ‖F.coeff m‖ ≤ B`. Distinguish the cases in `hm : m ∈ F.support`. Conclude with `Finset.single_le_sum (f := fun m => ‖F.coeff m‖) (fun _ _ => norm_nonneg _) hm`. Rewrite using `[MvPolynomial.notMem_support_iff.1 hm, norm_zero]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Finset.sum_nonneg (fun _ _ => norm_nonneg _)`. Establish `hp0 : (0 : ℝ) < (p : ℝ) ^ e` using `by positivity`. Rewrite using `[zpow_neg, zpow_natCast, inv_mul_le_iff₀ hp0, mul_one]`. Combine the linear equalities and inequalities to obtain the conclusion. Use `⟨e, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hY : ((p : ℚ_[p]) ^ e) • F ∈ Formalism.GM.M.Y p (r` using `r) LL J M := Submodule.smul_mem _ _ hF`. Establish `hPol : ((p : ℚ_[p]) ^ e) • F ∈ Formalism.GM.M.Pol p r LL` using `(Submodule.mem_inf.1 hY).1`. Establish `hInt : ((p : ℚ_[p]) ^ e) • F ∈ Formalism.GM.M.IntPol p (Fin N × Fin r)`. Establish `hr : ((p : ℚ_[p]) ^ e) • F ∈ Set.range (MvPolynomial.map (algebraMap ℤ_[p] ℚ_[p]))`. Rewrite using `[MvPolynomial.mem_range_map_iff_coeffs_subset]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `c hc`. Choose the witnesses or unpack the hypotheses as in `⟨m, -, rfl⟩ : ∃ m ∈ (((p : ℚ_[p]) ^ e) • F).support, c = (((p : ℚ_[p]) ^ e) • F).coeff m := by`. Simplify `hc` using `[MvPolynomial.coeffs, eq_comm]`. Rewrite using `[MvPolynomial.coeff_smul, smul_eq_mul]`. Conclude with `⟨⟨_, he m⟩, rfl⟩`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨G, hG⟩` from `hr`. Conclude with `⟨G, hG⟩`. Conclude with `Submodule.mem_inf.2 ⟨hY, Submodule.mem_inf.2 ⟨hPol, hInt⟩⟩`.
+A detailed English derivation is pending.
 -/
 theorem restClear_proved : RestClear := by
   intro p _ N r _ LL q J M F hF
@@ -74,11 +74,11 @@ theorem restClear_proved : RestClear := by
   exact Submodule.mem_inf.2 ⟨hY, Submodule.mem_inf.2 ⟨hPol, hInt⟩⟩
 
 /- English proof (translation)
-Introduce `O _ _ p _ ι N r _ LL q J M y hy`. Establish `hyK : y ∈ Yjt (KK O) (r` using `r) LL J M := hy.1`. Take `⟨n, b, f, hf, hdec⟩` from `hD O p ι _ y`. Rewrite using `[hdec]`. Use `Submodule.sum_mem _ fun k _ => Submodule.smul_mem _ _ ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1` using `hF O p ι N r LL q J M (f k) (hf k) y hyK`. Take `⟨e, he⟩` from `hC p N r (gmL LL) q J M _ h1`. Establish `hp0 : ((p : ℚ_[p]) ^ e) ≠ 0` using `pow_ne_zero _ (Nat.cast_ne_zero.2 (Fact.out : p.Prime).ne_zero)`. Establish `e1 : map ι (cmap (f k) y) = (ι ((p : ℚ_[p]) ^ e))⁻¹ • map ι (((p : ℚ_[p]) ^ e) • cmap (f k) y)`. Rewrite using `[MvPolynomial.smul_eq_C_mul (a := (ι ((p : ℚ_[p]) ^ e))⁻¹), MvPolynomial.smul_eq_C_mul (a := (p : ℚ_[p]) ^ e), map_mul, map_C, ← mul_assoc, ← C_mul, inv_mul_cancel₀ ((map_ne_zero ι).2 hp0), C_1, one_mul]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e1]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨_, he, rfl⟩)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem restYbc_of (hF : RestFunY) (hD : RestDecomp) (hC : RestClear) : RestYbc := by
   intro O _ _ p _ ι N r _ LL q J M y hy
@@ -96,9 +96,9 @@ theorem restYbc_of (hF : RestFunY) (hD : RestDecomp) (hC : RestClear) : RestYbc 
   exact Submodule.smul_mem _ _ (Submodule.subset_span ⟨_, he, rfl⟩)
 
 /- English proof (translation)
-Unfold `cmap`. Rewrite using `[coeff_sum]`. Simplify using `only [coeff_monomial]`. Rewrite using `[Finset.sum_ite_eq']`. Use `split_ifs with h`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Rewrite using `[MvPolynomial.notMem_support_iff.1 h, map_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coeff_cmap {K L σ : Type} [CommRing K] [CommRing L] (f : K →+ L) (y : MvPolynomial σ K) (m : σ →₀ ℕ) :
     coeff m (cmap f y) = f (y.coeff m) := by
@@ -112,17 +112,15 @@ theorem coeff_cmap {K L σ : Type} [CommRing K] [CommRing L] (f : K →+ L) (y :
   · rw [MvPolynomial.notMem_support_iff.1 h, map_zero]
 
 /- English proof (translation)
-Introduce `O _ _ p _ ι σ y`. Use `letI : Algebra ℚ_[p] (KK O) := ι.toAlgebra`. Set `V : Submodule ℚ_[p] (KK O)` to `Submodule.span ℚ_[p] (y.coeffs : Set (KK O))`. Set `bV` to `Module.finBasis ℚ_[p] V`. Take `⟨rV, hrV⟩` from `LinearMap.exists_leftInverse_of_injective V.subtype V.ker_subtype`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Use `⟨Module.finrank ℚ_[p] V, fun k => (bV k : KK O), fun k => ((bV.coord k).comp rV).toAddMonoidHom, ?_, ?_⟩` and prove the remaining obligations. Introduce `k a x`. Establish `hx : ι a * x = a • x` using `by rw [Algebra.smul_def]; rfl`. Use `show ((bV.coord k).comp rV) (ι a * x) = a * ((bV.coord k).comp rV) x`. Rewrite using `[hx, map_smul, smul_eq_mul]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Use extensionality with `m`. Establish `hc : y.coeff m ∈ V`. Distinguish the cases in `h0 : y.coeff m = 0`. Rewrite using `[h0]`. Conclude with `V.zero_mem`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Submodule.subset_span (MvPolynomial.coeff_mem_coeffs _ h0)`. Establish `hrc : rV (y.coeff m) = ⟨y.coeff m, hc⟩`. Use `LinearMap.congr_fun hrV ⟨y.coeff m, hc⟩` as an intermediate fact. Simplify using `using this`. Rewrite using `[MvPolynomial.coeff_sum]`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [MvPolynomial.coeff_smul, MvPolynomial.coeff_map, coeff_cmap, smul_eq_mul]`. Establish `hsum` using `congrArg Subtype.val (bV.sum_repr ⟨y.coeff m, hc⟩)`. Simplify using `only [Submodule.coe_sum, Submodule.coe_smul] at hsum`. Use `conv_lhs => rw [← hsum]`. Use `Finset.sum_congr rfl (fun k _ => ?_)` and prove the remaining obligations.
-
-Use `show (bV.repr ⟨y.coeff m, hc⟩ k) • (bV k : KK O) = (bV k : KK O) * ι ((bV.coord k) (rV (y.coeff m)))`. Rewrite using `[hrc, Module.Basis.coord_apply, Algebra.smul_def, mul_comm]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem restDecomp_proved : RestDecomp := by
   intro O _ _ p _ ι σ y
@@ -156,7 +154,7 @@ theorem restDecomp_proved : RestDecomp := by
     rfl
 
 /- English proof (translation)
-The claim follows from `restYbc_of hF restDecomp_proved restClear_proved`.
+A detailed English derivation is pending.
 -/
 theorem restYbc_of_funY (hF : RestFunY) : RestYbc := restYbc_of hF restDecomp_proved restClear_proved
 

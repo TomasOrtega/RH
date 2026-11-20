@@ -11,13 +11,13 @@ open Formalism.GradedWeylDivisibility
 open Formalism.L2.G.Model.TS (fockR)
 
 /- English proof (translation)
-Unfold `RE`. Simplify using `only [pderiv_X]`. Distinguish the cases in `h : v.1 = b`. Rewrite using `[if_pos h, Finset.sum_eq_single v.2]`. Establish `: ((b, v.2) : Fin k × Fin k) = v` using `Prod.ext h.symm rfl`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[this, Pi.single_eq_same, mul_one]`. Introduce `t _ ht`. Rewrite using `[Pi.single_eq_of_ne, mul_zero]`. Introduce `hv`. Apply `ht` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[hv]`. Simplify using the standard rewrite rules. Rewrite using `[if_neg h]`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `t _`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Pi.single_eq_of_ne, mul_zero]`. Introduce `hv`. Apply `h` to reduce the goal to its premises. Rewrite using `[hv]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem RE_X (K : Type) [CommRing K] (k : ℕ) (a b : Fin k) (v : Fin k × Fin k) :
     RE K k a b (X v) = if v.1 = b then X (a, v.2) else 0 := by
@@ -42,16 +42,16 @@ theorem RE_X (K : Type) [CommRing K] (k : ℕ) (a b : Fin k) (v : Fin k × Fin k
     rw [hv]
 
 /- English proof (translation)
-Unfold `RE`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem RE_C (K : Type) [CommRing K] (k : ℕ) (a b : Fin k) (r : K) : RE K k a b (C r) = 0 := by
   unfold RE
   simp
 
 /- English proof (translation)
-Proceed by induction on `f using MvPolynomial.induction_on with`. Consider the case `C r => simp [rowGen, Polynomial.algebraMap_apply, MvPolynomial.algebraMap_eq]`. Consider the case `add p q hp hq => rw [map_add, Polynomial.coeff_add, hp, hq]`. Consider the case `mul_X p v hp`. Rewrite using `[map_mul, Polynomial.mul_coeff_zero, hp]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Simplify using `only [rowGen, aeval_X]`. Apply the tactic sequence `split_ifs <;> simp`.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem rowGen_coeff_zero (K : Type) [CommRing K] (k : ℕ) (a b : Fin k) (f : MvPolynomial (Fin k × Fin k) K) :
     (rowGen K a b f).coeff 0 = f := by
@@ -65,11 +65,11 @@ theorem rowGen_coeff_zero (K : Type) [CommRing K] (k : ℕ) (a b : Fin k) (f : M
     split_ifs <;> simp
 
 /- English proof (translation)
-Unfold `rowDiv`. Proceed by induction on `f using MvPolynomial.induction_on with`. Consider the case `C r => rw [RE_C]`. Simplify using `[rowGen, Polynomial.algebraMap_apply, MvPolynomial.algebraMap_eq, Polynomial.coeff_C]`. Consider the case `add p q hp hq => rw [RE_add, map_add, Polynomial.coeff_add, hp, hq]`.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 
-Consider the case `mul_X p v hp`. Rewrite using `[RE_mul, map_mul, Polynomial.mul_coeff_one, rowGen_coeff_zero, rowGen_coeff_zero, hp, RE_X]`. Establish `: (rowGen K a b (X v)).coeff 1 = if v.1 = b then X (a, v.2) else 0`. Simplify using `only [rowGen, aeval_X]`. Apply the tactic sequence `split_ifs <;> simp [Polynomial.coeff_C]`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[this]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem RE_eq_rowDiv (K : Type) [CommRing K] (k : ℕ) (a b : Fin k) (f : MvPolynomial (Fin k × Fin k) K) :
     RE K k a b f = rowDiv K a b 1 f := by
@@ -86,7 +86,7 @@ theorem RE_eq_rowDiv (K : Type) [CommRing K] (k : ℕ) (a b : Fin k) (f : MvPoly
     ring
 
 /- English proof (translation)
-Introduce `K _ k a b P Q`. Rewrite using `[RE_eq_rowDiv, RE_eq_rowDiv]`. Conclude with `Formalism.L2.G.Model.TS.Top.fockRRowDivAdj K k k a b 1 P Q`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem restAdj : RestAdj := by
   intro K _ k a b P Q
@@ -94,7 +94,7 @@ theorem restAdj : RestAdj := by
   exact Formalism.L2.G.Model.TS.Top.fockRRowDivAdj K k k a b 1 P Q
 
 /- English proof (translation)
-Introduce `K _ _ k ν a b P hP`. Rewrite using `[RE_eq_rowDiv]`. Conclude with `rowDivStable K k k ν a b 1 P hP`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem restStab : RestStab := by
   intro K _ _ k ν a b P hP

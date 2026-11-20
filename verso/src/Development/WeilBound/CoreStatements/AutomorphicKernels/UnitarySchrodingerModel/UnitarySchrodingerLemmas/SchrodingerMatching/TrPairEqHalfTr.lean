@@ -23,7 +23,7 @@ theorem trPair_eq_halfTr (S T : Mx D n n) :
     PositivityTheory.PfSWUS.Loc.trPair (AF D.host.F) S T = halfTr (Matrix.trace (HMul.hMul S T : Mx D n n)) := rfl
 
 /- English proof (translation)
-Use extensionality with `a c`. Conclude with `hR_tup V y y a c`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem gramR_tupInv (V : HSp D) (y : Mx D V.rank n) :
     HeckeCharacterZeroLocus.SiegelWeilU.gramR (AF D.host.F) D.sp.cm.sig (HSpace.gram V) (tupInv y) = GlobalTheory.StdUnn.inner V y y := by
@@ -31,7 +31,7 @@ theorem gramR_tupInv (V : HSp D) (y : Mx D V.rank n) :
   exact hR_tup V y y a c
 
 /- English proof (translation)
-Unfold `GlobalTheory.StdUnn.inner`. Rewrite using `[adj_mul]`. Simplify using `only [Matrix.mul_assoc]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem inner_mul_right (V : HSp D) (y : Mx D V.rank n) (a : Mx D n n) :
     GlobalTheory.StdUnn.inner V (HMul.hMul y a : Mx D V.rank n) (HMul.hMul y a : Mx D V.rank n) =
@@ -44,11 +44,11 @@ set_option maxHeartbeats 1000000 in
 set_option synthInstance.maxHeartbeats 400000 in
 
 /- English proof (translation)
-Take `⟨k1, -, -, -, -, -⟩` from `lattice_Mx D V.rank n`. Establish `: IsTopologicalAddGroup (Mx D V.rank n)` using `k1`. Establish `: BorelSpace (Mx D V.rank n)` using `⟨rfl⟩`. Establish `: BorelSpace (Fin n → Fin V.rank → AE D)` using `borel_tup`. Take `⟨j1, -⟩` from `Formalism.IndefR.Eqv.ae_facts D`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Unfold `Jt`. Rewrite using `[← GlobalTheory.RightMulJac.integral_mul_right D V.rank n μ 𝓕 hμ a]`. Use `(integral_map_of tupInv tupOf tupOf_tupInv tupInv_tupOf tupInv_add continuous_tupInv continuous_tupOf μ (fun Y => φ (HMul.hMul (tupOf Y) a.1) * ψ (PositivityTheory.PfSWUS.Loc.trPair (AF D.host.F) (conjH a c).1 (HeckeCharacterZeroLocus.SiegelWeilU.gramR (AF D.host.F) D.sp.cm.sig ( …` and prove the remaining obligations. Use `integral_congr_ae (Filter.Eventually.of_forall fun y => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `φ (HMul.hMul y a.1) * ψ (PositivityTheory.PfSWUS.Loc.trPair (AF D.host.F) (conjH a c).1 (HeckeCharacterZeroLocus.SiegelWeilU.gramR (AF D.host.F) D.sp.cm.sig (HSpace.gram V) (tupInv y))) = φ (HMul.hMul y a.1) * ψ (halfTr (Matrix.trace (HMul.hMul c.1 (GlobalTheory.StdUnn.inner V (H …`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[gramR_tupInv, trPair_eq_halfTr, inner_mul_right]`. Establish `e : Matrix.trace (a.1 * c.1 * adj a.1 * GlobalTheory.StdUnn.inner V y y) = Matrix.trace (c.1 * (adj a.1 * GlobalTheory.StdUnn.inner V y y * a.1))`. Rewrite using `[← Matrix.mul_assoc c.1, Matrix.trace_mul_comm _ a.1]`. Simplify using `only [Matrix.mul_assoc]`. Conclude with `congrArg (fun z => φ (HMul.hMul y a.1) * ψ (halfTr z)) e`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem jt_conj (V : HSp D) (ψ : AddChar (AF D.host.F) ℂ) (μ : Measure (Mx D V.rank n)) (𝓕 : Set (Mx D V.rank n))
     (hμ : IsCovolOne (ratMx D V.rank n) μ 𝓕) (a : GL (Fin n) (AE D)) (φ : Mx D V.rank n → ℂ) (c : hermA D n) :
@@ -78,7 +78,7 @@ theorem jt_conj (V : HSp D) (ψ : AddChar (AF D.host.F) ℂ) (μ : Measure (Mx D
   exact congrArg (fun z => φ (HMul.hMul y a.1) * ψ (halfTr z)) e
 
 /- English proof (translation)
-Establish `e : Matrix.trace (β.1.map (incA D) * (a.1 * c.1 * adj a.1)) = Matrix.trace (adj a.1 * β.1.map (incA D) * a.1 * c.1)`. Rewrite using `[← Matrix.mul_assoc, Matrix.trace_mul_comm _ (adj a.1)]`. Simplify using `only [Matrix.mul_assoc]`. Conclude with `congrArg (fun z => ψ (-z)) ((trPair_eq_halfTr (D := D) (β.1.map (incA D)) (a.1 * c.1 * adj a.1)).trans (congrArg halfTr e))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem char_conj (ψ : AddChar (AF D.host.F) ℂ) (β : HermE D n) (a : GL (Fin n) (AE D)) (c : hermA D n) :
     ψ (-PositivityTheory.PfSWUS.Loc.trPair (AF D.host.F) (β.1.map (HeckeCharacterZeroLocus.SiegelWeilU.inclR (AF D.host.F))) (hermTo (conjH a c)).1) =

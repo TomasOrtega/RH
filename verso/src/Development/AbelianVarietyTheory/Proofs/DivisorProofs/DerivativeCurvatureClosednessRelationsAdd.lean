@@ -7,17 +7,17 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.G
 attribute [local instance] Over.cartesianMonoidalCategory
 
 /- English proof (translation)
-Introduce `R _ C _ F`. Establish `hw : ∀ {n n' : ℕ} (u v : Fin n → Glob1 F) (u' v' : Fin n' → Glob1 F) (T : C), wsum F (Fin.append u u') (Fin.append v v') T = wsum F u v T + wsum F u' v' T`. Introduce `n n' u v u' v' T`. Simplify using `only [wsum, Fin.sum_univ_add, Fin.append_left, Fin.append_right]`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `x x' n n' y w y' w' ⟨f, g, ω, hf, hg, he⟩ ⟨f', g', ω', hf', hg', he'⟩`. Use `⟨f + f', Fin.append g g', ω + ω', by rw [map_add, hf, hf'], ?_, ?_⟩` and prove the remaining obligations. Introduce `k`. Use `Fin.addCases (fun i ↦ ?_) (fun i ↦ ?_) k` and prove the remaining obligations. Simplify using `only [Fin.append_left]`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Conclude with `hg i`. Simplify using `only [Fin.append_right]`. Conclude with `hg' i`. Introduce `T T' φ`. Establish `e1` using `he φ`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `e2` using `he' φ`. Simplify using `only [Fin.sum_univ_add, Fin.append_left, Fin.append_right, Submodule.coe_add, Pi.add_apply, map_add]`. Rewrite using `[e1, e2]`. Normalize the expressions using the abelian group laws. Introduce and unpack `x x' n n' u v u' v' ⟨f, ω, hf, hc, hd⟩ ⟨f', ω', hf', hc', hd'⟩`.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨f + f', ω + ω', by rw [map_add, hf, hf'], ?_, ?_⟩` and prove the remaining obligations. Introduce `T T' φ`. Simplify using `only [Submodule.coe_add, Pi.add_apply, map_add]`. Rewrite using `[hc φ, hc' φ]`. Normalize the expressions using the abelian group laws.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `T`. Simplify using `only [Pi.add_apply, map_add, hw, hd T, hd' T]`. Introduce `w w' n n' u v u' v' h h' T`. Simplify using `only [Submodule.coe_add, Pi.add_apply, map_add, hw, h T, h' T]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.AbCoh.rel_add : ∀ (R : Type) [CommRing R] (C : Type) [Category.{0} C] (F : C ⥤ CommAlgCat.{0} R), (∀ (x x' : GlobalTheory.CatCoh.H1 F) (n n' : ℕ) (y : Fin n → GlobalTheory.CatCoh.H1 F) (w : Fin n → Glob1 F) (y' : Fin n' → GlobalTheory.CatCoh.H1 F) (w' : Fin n' → Glob1 F), DRel F x y w → DRel F x' y' w' → DRel F (x + x') (Fin.append y y') (Fin.append w w')) ∧ (∀ (x x' : GlobalTheory.CatCoh.H1 F) (n n' : ℕ) (u v : Fin n → Glob1 F) (u' v' : Fin n' → Glob1 F), ObRel F x u v → ObRel F x' u' v' → ObRel F (x + x') (Fin.append u u') (Fin.append v v')) ∧ ∀ (w w' : Glob1 F) (n n' : ℕ) (u v : Fin n → Glob1 F) (u' v' : Fin n' → Glob1 F), ClRel F w u v → ClRel F w' u' v' → ClRel F (w + w') (Fin.append u u') (Fin.append v v') := by
   intro R _ C _ F

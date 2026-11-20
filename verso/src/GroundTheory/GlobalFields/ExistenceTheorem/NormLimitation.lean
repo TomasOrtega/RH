@@ -33,7 +33,7 @@ instance isMulCommutative_maxAbelian : IsMulCommutative Gal(maxAbelian K M/K) :=
 instance isAbelianGalois_maxAbelian : IsAbelianGalois K (maxAbelian K M) where
 
 /- English proof (translation)
-Establish `h1` using `Module.finrank_mul_finrank K (maxAbelian K M) M`. Rewrite `h1` using `[maxAbelian, finrank_fixedField_eq_card, ← IsGalois.card_aut_eq_finrank K M, ← (commutator Gal(M/K)).card_mul_index]`. Establish `hpos : 0 < Nat.card (commutator Gal(M/K))` using `Nat.card_pos`. Rewrite `h1` using `[mul_comm]`. Conclude with `Nat.eq_of_mul_eq_mul_left hpos h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finrank_maxAbelian :
     Module.finrank K (maxAbelian K M) = Nat.card (Abelianization Gal(M/K)) := by
@@ -54,11 +54,11 @@ variable (K L : FiniteSubfield) [hKL : Fact (K ≤ L)]
   [(L.1.fixingSubgroup.subgroupOf K.1.fixingSubgroup).Normal]
 
 /- English proof (translation)
-Introduce `c hc`. Rewrite `hc` using `[MonoidHom.mem_ker, abstractSymbol_apply]`. Establish `hinj : Function.Injective (Abelianization.map (quotientGaloisEquiv K L).toMonoidHom)` using `fun a b hab ↦ (quotientGaloisEquiv K L).abelianizationCongr.injective hab`. Rewrite `hc` using `[← map_one (Abelianization.map (quotientGaloisEquiv K L).toMonoidHom), hinj.eq_iff, ← map_one (reciprocityEquiv K L).symm, (reciprocityEquiv K L).symm.injective.eq_iff]`. Express the relevant statement in the definitionally equal form `(QuotientGroup.mk (fixedEquiv K c) : tateZero IdeleClassLimit (K.openSubgroup : Subgroup (ℚ̄ ≃ₐ[ℚ] ℚ̄)) L.openSubgroup) = 1 at hc`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite `hc` using `[QuotientGroup.eq_one_iff]`. Take `⟨b, hb⟩` from `hc`. Take `⟨d, rfl⟩` from `(fixedEquiv L).surjective b`. Use `⟨d, (fixedEquiv K).injective ?_⟩` and prove the remaining obligations. Rewrite using `[← norm_fixedEquiv hKL.out d]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hb`.
+A detailed English derivation is pending.
 -/
 theorem ker_abstractSymbol_le :
     (abstractSymbol K L).ker ≤ (FiniteSubfield.ideleClassNorm hKL.out).range := by
@@ -78,7 +78,7 @@ theorem ker_abstractSymbol_le :
   exact hb
 
 /- English proof (translation)
-Use `(Subgroup.index_dvd_of_le (ker_abstractSymbol_le K L)).trans ?_` and prove the remaining obligations. Rewrite using `[Subgroup.index_ker]`. Conclude with `Subgroup.card_subgroup_dvd_card (abstractSymbol K L).range`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem index_range_ideleClassNorm_dvd :
     (FiniteSubfield.ideleClassNorm hKL.out).range.index ∣
@@ -92,23 +92,21 @@ end IdeleClassLimit
 section Transport
 
 /- English proof (translation)
-Set `K'` to `baseField K M`. Set `M'` to `topField M`. Set `_ : Algebra K K'.1` to `(rangeMap (baseEmbedding K M)).toAlgebra`. Set `_ : Algebra M M'.1` to `(rangeMap (embedding M)).toAlgebra`. Set `_ : Algebra K M'.1` to `((rangeMap (embedding M)).comp (algebraMap K M)).toAlgebra`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `: IsScalarTower K K'.1 M'.1` using `IsScalarTower.of_algebraMap_eq fun _ ↦ rfl`. Establish `: IsScalarTower K M M'.1` using `IsScalarTower.of_algebraMap_eq fun _ ↦ rfl`. Establish `hK : Function.Bijective (algebraMap K K'.1)` using `rangeMap_bijective _`. Establish `hM : Function.Bijective (algebraMap M M'.1)` using `rangeMap_bijective _`. Establish `: IsGalois K M'.1` using `IsGalois.of_algEquiv (AlgEquiv.ofBijective (IsScalarTower.toAlgHom K M M'.1) hM)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsGalois K'.1 M'.1` using `IsGalois.tower_top_of_isGalois K K'.1 M'.1`. Use `FiniteSubfield.normal_subgroupOf_of_isGalois (F := K') (E := M')` as an intermediate fact. Establish `h1` using `IdeleClassLimit.index_range_ideleClassNorm_dvd K' M'`. Establish `hrange : (ideleClassNorm K M).range = (ideleClassNorm K'.1 M'.1).range.map (ideleClassNorm K K'.1)`. Use extensionality with `c`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨d, rfl⟩`. Use `⟨ideleClassNorm K'.1 M'.1 (ideleClassMap M M'.1 d), ⟨_, rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[ideleClassNorm_ideleClassNorm, ← ideleClassNorm_ideleClassNorm (L := M), ideleClassNorm_ideleClassMap, finrank_eq_one_of_bijective hM, pow_one]`. Introduce and unpack `⟨_, ⟨d, rfl⟩, rfl⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨ideleClassNorm M M'.1 d, by`. Rewrite using `[ideleClassNorm_ideleClassNorm, ideleClassNorm_ideleClassNorm]⟩`. Establish `hsurj : Function.Surjective (ideleClassNorm K K'.1)` using `fun c ↦ ⟨ideleClassMap K K'.1 c, by`. Rewrite using `[ideleClassNorm_ideleClassMap, finrank_eq_one_of_bijective hK, pow_one]⟩`. Establish `hcard : Nat.card (Abelianization Gal(M'.1/K'.1)) = Nat.card (Abelianization Gal(M/K))`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Set `f : Gal(M'.1/K'.1) →* Gal(M/K)` to `(AlgEquiv.restrictNormalHom (F := K) (K₁ := M'.1) M).comp (restrictScalarsHom K)`. Establish `hinj : Function.Injective f`. Rewrite using `[injective_iff_map_eq_one]`. Introduce `σ hσ`. Conclude with `restrictNormal_restrictScalars_eq_one (K := K) hM hσ`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hc : Nat.card Gal(M'.1/K'.1) = Nat.card Gal(M/K)`. Rewrite using `[IsGalois.card_aut_eq_finrank, IsGalois.card_aut_eq_finrank]`. Establish `e1` using `Module.finrank_mul_finrank K K'.1 M'.1`. Establish `e2` using `Module.finrank_mul_finrank K M M'.1`. Rewrite `e1` using `[finrank_eq_one_of_bijective hK, one_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e2` using `[finrank_eq_one_of_bijective hM, mul_one]`. Rewrite using `[e1, e2]`. Establish `hbij : Function.Bijective f` using `hinj.bijective_of_nat_card_le hc.ge`. Conclude with `Nat.card_congr (MulEquiv.ofBijective f hbij).abelianizationCongr.toEquiv`. Rewrite using `[hrange, ← hcard]`.
-
-Conclude with `(Subgroup.index_map_dvd _ hsurj).trans h1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem index_range_ideleClassNorm_dvd_card_abelianization {K M : Type*} [Field K] [NumberField K]
     [Field M] [NumberField M] [Algebra K M] [IsGalois K M] :
@@ -166,11 +164,11 @@ variable {K M : Type u} [Field K] [NumberField K] [Field M] [NumberField M] [Alg
   [IsGalois K M]
 
 /- English proof (translation)
-Establish `hle : (ideleClassNorm K M).range ≤ (ideleClassNorm K (maxAbelian K M)).range`. Introduce and unpack `_ ⟨c, rfl⟩`. Conclude with `⟨ideleClassNorm (maxAbelian K M) M c, ideleClassNorm_ideleClassNorm c⟩`. Establish `hE : (ideleClassNorm K (maxAbelian K M)).range.index = Nat.card (Abelianization Gal(M/K))`. Rewrite using `[index_range_ideleClassNorm_eq_finrank_of_isMulCommutative, finrank_maxAbelian]`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hne : (ideleClassNorm K (maxAbelian K M)).range.index ≠ 0`. Rewrite using `[index_range_ideleClassNorm_eq_finrank_of_isMulCommutative]`. Conclude with `Module.finrank_pos.ne'`. Establish `heq : (ideleClassNorm K M).range.index = (ideleClassNorm K (maxAbelian K M)).range.index` using `Nat.dvd_antisymm (hE ▸ index_range_ideleClassNorm_dvd_card_abelianization) (Subgroup.index_dvd_of_le hle)`. Establish `hrel` using `Subgroup.relIndex_mul_index hle`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hrel` using `[heq]`. Establish `h1 : (ideleClassNorm K M).range.relIndex (ideleClassNorm K (maxAbelian K M)).range = 1`. Use `Nat.eq_of_mul_eq_mul_right (Nat.pos_of_ne_zero hne) (hrel.trans (one_mul _).symm)` as an intermediate fact. Conclude with `this`. Conclude with `le_antisymm (Subgroup.relIndex_eq_one.1 h1) hle`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem range_ideleClassNorm_maxAbelian :
     (ideleClassNorm K (maxAbelian K M)).range = (ideleClassNorm K M).range := by
@@ -194,7 +192,7 @@ theorem range_ideleClassNorm_maxAbelian :
   exact le_antisymm (Subgroup.relIndex_eq_one.1 h1) hle
 
 /- English proof (translation)
-Rewrite using `[← range_ideleClassNorm_maxAbelian, index_range_ideleClassNorm_eq_finrank_of_isMulCommutative, finrank_maxAbelian]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem index_range_ideleClassNorm_eq_card_abelianization :
     (ideleClassNorm K M).range.index = Nat.card (Abelianization Gal(M/K)) := by
@@ -204,9 +202,9 @@ theorem index_range_ideleClassNorm_eq_card_abelianization :
 omit [IsGalois K M] in
 
 /- English proof (translation)
-Set `Ω` to `AlgebraicClosure L`. Establish `: Algebra.IsAlgebraic K Ω` using `Algebra.IsAlgebraic.trans K L Ω`. Establish `: IsAlgClosure K Ω` using `⟨AlgebraicClosure.isAlgClosed L, inferInstance⟩`. Set `N` to `normalClosure K L Ω`. Establish `: IsGalois K N` using `⟨⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `: NumberField N` using `NumberField.of_module_finite K N`. Use `⟨maxAbelian K N, inferInstance, inferInstance, inferInstance, inferInstance, ?_⟩` and prove the remaining obligations. Rewrite using `[range_ideleClassNorm_maxAbelian]`. Introduce and unpack `_ ⟨c, rfl⟩`. Conclude with `⟨ideleClassNorm L N c, ideleClassNorm_ideleClassNorm c⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem exists_isAbelianGalois_range_ideleClassNorm_le (L : Type u) [Field L] [NumberField L]
     [Algebra K L] :

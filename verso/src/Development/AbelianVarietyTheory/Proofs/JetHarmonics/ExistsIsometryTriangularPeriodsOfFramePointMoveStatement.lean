@@ -11,7 +11,7 @@ open GlobalTheory.FrameNorm (IsUnitFr)
 open scoped Matrix
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.LevelCusp.exists_isometry_tri_of_frMove` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FJetHarmonics%2FExistsIsometryTriangularPeriodsOfFramePointMove.lean&line=37#L37)
 -/

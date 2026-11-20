@@ -37,7 +37,7 @@ def LocStructSt (G : GlobalFamilyData (xplus X E hM) ka wL wF) (la : HeightOneSp
               ↑(isUnit_of_lift_ne (fun ζ => (hw ζ).toSecPt) hd).unit⁻¹)))
 
 /- English proof (translation)
-Introduce `y hw g0 hC hg0` and use `⟨h1 y hw g0 hC hg0, h2 y hw g0 hC hg0⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem locRing_of {G : GlobalFamilyData (xplus X E hM) ka wL wF} {la : HeightOneSpectrum (𝓞 B.KO)}
     (h1 : ESecSt G la) (h2 : LocStructSt G la) : LocRingSt G la :=

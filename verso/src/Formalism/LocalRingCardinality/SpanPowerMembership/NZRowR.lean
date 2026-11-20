@@ -36,7 +36,7 @@ def projSide : RowSide D EE where
 local notation "PS" => (projSide D c χ0 h0 hm b a n1 hn h1)
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => rfl`. Consider the case `succ k ih => show ((PS).downTo μ (k + 1)).comp (LinearMap.id : En a →ₗ[ℂ] En a) = _`. Rewrite using `[ih]`. Both sides reduce to the same expression.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem projSide_downTo (μ) (k : ℕ) : (PS).downTo μ (k + 1) = prB b a (hn.trans h1) := by
   induction k with
@@ -46,7 +46,7 @@ theorem projSide_downTo (μ) (k : ℕ) : (PS).downTo μ (k + 1) = prB b a (hn.tr
     rw [ih]; rfl
 
 /- English proof (translation)
-The claim follows from `| 0, h => absurd rfl h | k + 1, _ => by rw [projSide_downTo]; rfl`.
+A detailed English derivation is pending.
 -/
 theorem projSide_down_cast (μ) : ∀ (j : ℕ) (h : j ≠ 0),
     (PS).downTo μ j ∘ₗ (castTop EE (En a) j h).symm.toLinearEquiv.toLinearMap = prB b a (hn.trans h1)
@@ -55,13 +55,13 @@ theorem projSide_down_cast (μ) : ∀ (j : ℕ) (h : j ≠ 0),
     rw [projSide_downTo]; rfl
 
 /- English proof (translation)
-The claim follows from `LinearMap.ext fun x => LinearMap.congr_fun (projSide_down_cast D c χ0 h0 hm b a n1 hn h1 μ D.R.m hm) x`.
+A detailed English derivation is pending.
 -/
 theorem projSide_iota (μ) : (PS).iota μ = prB b a (hn.trans h1) :=
   LinearMap.ext fun x => LinearMap.congr_fun (projSide_down_cast D c χ0 h0 hm b a n1 hn h1 μ D.R.m hm) x
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, rfl⟩`. Conclude with `LinearMap.congr_fun (projection_idem a n1) y`. Introduce `h`. Conclude with `⟨x, h⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem projectionSide_mem_iff (μ) (x : En a) : x ∈ (PS).V0 μ ↔ eP a n1 x = x := by
   constructor
@@ -71,9 +71,7 @@ theorem projectionSide_mem_iff (μ) (x : En a) : x ∈ (PS).V0 μ ↔ eP a n1 x 
     exact ⟨x, h⟩
 
 /- English proof (translation)
-Use `⟨fun y => ?_, fun y => (projectionSide_mem_iff D c χ0 h0 hm b a n1 hn h1 μ _).mpr (eP_secB b a n1 hn y), fun y u hu => ?_, inner_secB b a (hn.trans h1)⟩` and prove the remaining obligations. Rewrite using `[projSide_iota]`. Conclude with `prB_secB b a _ y`. Establish `h2 : (PS).iota μ u = 0` using `hu.2`. Rewrite `h2` using `[projSide_iota]`.
-
-Conclude with `inner_secB_of_ker b a _ h2 y`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem projSide_sec (μ) : (∀ y, (PS).iota μ (secB b a y) = y) ∧ (∀ y, secB b a y ∈ (PS).V0 μ) ∧
     (∀ y, ∀ u ∈ (PS).Usp μ, inner ℂ u (secB b a y) = 0) ∧
@@ -86,15 +84,15 @@ theorem projSide_sec (μ) : (∀ y, (PS).iota μ (secB b a y) = y) ∧ (∀ y, s
     exact inner_secB_of_ker b a _ h2 y
 
 /- English proof (translation)
-Introduce `hb`. Establish `hi : n < a` using `lt_of_lt_of_le hlt h1`. Establish `hmem : eb a ⟨n, hi⟩ ∈ (PS).Usp μ`. Use `⟨(projectionSide_mem_iff D c χ0 h0 hm b a n1 hn h1 μ _).mpr ?_, ?_⟩` and prove the remaining obligations. Use extensionality with `i`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Rewrite using `[eP_apply]`. Distinguish the cases in `h : (i : ℕ) < n1`. Rewrite using `[if_pos h]`. Rewrite using `[if_neg h]`. Establish `: i ≠ ⟨n, hi⟩` using `fun e => h (by rw [e]; exact hlt)`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `[this]`. Use `show (PS).iota μ (eb a ⟨n, hi⟩) = 0`. Rewrite using `[projSide_iota]`. Use `show ∑ k : Fin n, (eb a ⟨n, hi⟩) (Fin.castLE _ k) • b k = 0`. Use `Finset.sum_eq_zero fun k _ => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: (Fin.castLE (hn.trans h1) k : Fin a) ≠ ⟨n, hi⟩` using `fun e => by`. Use `congrArg Fin.val e` as an intermediate fact. Simplify using `at this`. Use linear arithmetic over natural numbers and integers. Simplify using `[this]`.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hmem` using `[hb]`. Establish `hz : eb a ⟨n, hi⟩ = 0` using `(Submodule.mem_bot ℂ).mp hmem`. Conclude with `(eb a).toBasis.ne_zero ⟨n, hi⟩ (by simpa using hz)`.
+A detailed English derivation is pending.
 -/
 theorem projSide_Usp_ne (μ) (hlt : n < n1) : (PS).Usp μ ≠ ⊥ := by
   intro hb
@@ -122,7 +120,7 @@ theorem projSide_Usp_ne (μ) (hlt : n < n1) : (PS).Usp μ ≠ ⊥ := by
   exact (eb a).toBasis.ne_zero ⟨n, hi⟩ (by simpa using hz)
 
 /- English proof (translation)
-Introduce `h`. Establish `h' : eP a n1 = LinearMap.id` using `h`. Establish `h2` using `congrArg (fun f : En a →ₗ[ℂ] En a => f (eb a ⟨n1, hlt⟩) ⟨n1, hlt⟩) h'`. Simplify using `[eP_apply] at h2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem projSide_eOp_ne (μ) (hlt : n1 < a) : (PS).eOp μ ≠ LinearMap.id := by
   intro h
@@ -135,13 +133,13 @@ variable (hO : OFull D)
 omit [FiniteDimensional ℂ EE] in
 
 /- English proof (translation)
-Rewrite using `[mem_stdL]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, ⟨hx, -⟩, e⟩ k`. Take `⟨cx, rfl⟩` from `(mem_oB (eb a) _ x).mp hx`. Use `(hf (y k)).mp ⟨cx (Fin.castLE h k), σ.injective ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h2` using `congrArg (fun z => b.repr z k) e`. Rewrite `h2` using `[sum_smul_eb]`. Establish `h3 : prB b a h (WithLp.toLp 2 fun i => (σ.comp f) (cx i)) = jB σ b (fun k => f (cx (Fin.castLE h k)))` using `rfl`. Simplify using `only [h3, repr_jB] at h2`. Conclude with `h2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hy`. Establish `h'` using `fun k => (hf (y k)).mpr (hy k)`. Use `choose cy hcy using h'`. Use `⟨secB b a (jB σ b y), ⟨(mem_oB (eb a) _ _).mpr ⟨fun i => if hi : (i : ℕ) < n then cy ⟨i, hi⟩ else 0, ?_⟩, hV _⟩, prB_secB b a _ _⟩` and prove the remaining obligations. Rewrite using `[sum_smul_eb]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `i`. Rewrite using `[secB_apply]`. Distinguish the cases in `hi : (i : ℕ) < n`. Simplify using `only [dif_pos hi, repr_jB, RingHom.comp_apply, hcy]`. Simplify using `[dif_neg hi]`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem img_lemma {K : Type} [Field K] [NumberField K] [StarRing K] (σ : K →+* ℂ)
     {O : Type} [CommRing O] (f : O →+* K) (hf : ∀ z : K, (∃ y, f y = z) ↔ ∃ c : 𝓞 K, z = (c : K))
@@ -173,7 +171,7 @@ theorem img_lemma {K : Type} [Field K] [NumberField K] [StarRing K] (σ : K →+
 include hO in
 
 /- English proof (translation)
-Use `rrDef_of _ (stdH D.what₂.LL n).L (fun w y => ?_) rfl` and prove the remaining obligations. Rewrite using `[RRset_gen, projSide_iota]`. Conclude with `img_lemma b a D.what₂.embLL D.what₂.OtoLL hO (hn.trans h1) _ (fun z => (projectionSide_mem_iff D c χ0 h0 hm b a n1 hn h1 _ _).mpr (eP_secB b a n1 hn z)) y`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem projSide_rrDef : (PS).RRDef := by
   refine rrDef_of _ (stdH D.what₂.LL n).L (fun w y => ?_) rfl
@@ -182,16 +180,16 @@ theorem projSide_rrDef : (PS).RRDef := by
     (fun z => (projectionSide_mem_iff D c χ0 h0 hm b a n1 hn h1 _ _).mpr (eP_secB b a n1 hn z)) y
 
 /- English proof (translation)
-The claim follows from `(stdH_good D.what₂.LL n).2`.
+A detailed English derivation is pending.
 -/
 theorem projSide_rrFull : (PS).RRFull := (stdH_good D.what₂.LL n).2
 
 def projSide_amb : AmbForm D PS := ambOf D _ (fun _ => a) (fun _ => eb a) (fun _ => rfl)
 
 /- English proof (translation)
-Use `⟨fun μ => ?_, one_pos, fun _ => 1, rfl, fun _ => one_pos, Formalism.BasicNotions.DV.rhoUnit_one D, fun μ σ => ?_⟩` and prove the remaining obligations. Take `⟨s1, s2, s3, -⟩` from `projSide_sec D c χ0 h0 hm b a n1 hn h1 μ`. Conclude with `iotaQ_bij' (PS) (μ := μ) (secB b a) s1 s2 s3`. Take `⟨s1, s2, s3, s4⟩` from `projSide_sec D c χ0 h0 hm b a n1 hn h1 μ`. Establish `hadj` using `iotaQ_adj' (PS) (μ := μ) (secB b a) s1 s2 s3 s4`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hp : ((1 * 1 * ∏ j ∈ Finset.Icc 1 D.R.m, D.what₂.lamP μ j (ty σ) : ℝ) : ℂ) = 1` using `by simp [hl]`. Rewrite using `[hadj, hp, one_smul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem projectionSide_latticeBound (ty : Fin n → D.what₂.FT) (hl : ∀ μ j π, D.what₂.lamP μ j π = 1) : (PS).RowLatticeBoundForBasis b ty 1 := by
   refine ⟨fun μ => ?_, one_pos, fun _ => 1, rfl, fun _ => one_pos, Formalism.BasicNotions.DV.rhoUnit_one D, fun μ σ => ?_⟩

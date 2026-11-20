@@ -39,7 +39,7 @@ def ThinH : Prop :=
       H.ChebyshevCharacterBound x eps c
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h.pair, h.coprime, fun ξ i j hij N _ χ hχ y a b => h.bounds ξ i j hij N χ hχ y a (b.trans hX), h.boxes⟩`.
+Supply the required witnesses or components.
 -/
 theorem PairGood.mono {M : ℕ} {eps Y X X' : ℝ} {q d : ℕ} (h : PairGood M eps Y X q d) (hX : X' ≤ X) : PairGood M eps Y X' q d :=
   ⟨h.pair, h.coprime, fun ξ i j hij N _ χ hχ y a b => h.bounds ξ i j hij N χ hχ y a (b.trans hX), h.boxes⟩

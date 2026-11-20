@@ -35,7 +35,7 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 open UpperTheory.V.Af.Gu
 
 /- English proof (translation)
-Establish `h0 : Ideal.span {((l : ℕ) : 𝓞 K)} ≠ 0`. Rewrite using `[Ne, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot]`. Conclude with `(Fact.out : l.Prime).ne_zero` after adjusting the coercions. Conclude with `(Ideal.finite_factors h0).subset fun v hv => Ideal.dvd_span_singleton.mpr (not_not.1 hv)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem ev_notMem {K : Type} [Field K] [NumberField K] (l : ℕ) [Fact l.Prime] :
     ∀ᶠ v : HeightOneSpectrum (𝓞 K) in Filter.cofinite, ((l : ℕ) : 𝓞 K) ∉ v.asIdeal := by
@@ -45,19 +45,17 @@ private theorem ev_notMem {K : Type} [Field K] [NumberField K] (l : ℕ) [Fact l
   exact (Ideal.finite_factors h0).subset fun v hv => Ideal.dvd_span_singleton.mpr (not_not.1 hv)
 
 /- English proof (translation)
-Introduce `E Ω _ _ _ _ _ _ hE l _ _ ι n hn π hπ`. Take `⟨c, a, d, hsum, P, ρ, m, σ, hP, hS, hsplit⟩` from `GlobalTheory.BcSpeh.bcSpeh_of_baseChange (GlobalTheory.BaseChangeBridge.main H.litN.aut.bc H.litN.loc.bern) (GlobalTheory.SpehInfChar.discreteSpectrumGL_of_residual H.litN.aut.mw) E hE n hn π hπ`. Establish `hc : 1 ≤ c`. Break down `c with _ | c` into its components or cases. Simplify using `at hsum`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules.
 
-Use linear arithmetic over natural numbers and integers. Use linear arithmetic over natural numbers and integers. Establish `hint : ∀ i (k : Fin (d i)) τ, (m i τ).Nodup ∧ ∀ z ∈ m i τ, ∃ j : ℤ, z + (ex n (d i) k : ℂ) / 2 = j` using `fun i k τ => by`. Take `⟨lam, hl⟩` from `GlobalTheory.T.exists_algebraicWeight_of_automorphic_definiteUnitary E n hn π hπ τ`. Conclude with `(hStr n c d (m · τ) lam (hP.weight τ lam hl)).1 i k`.
+Use linear arithmetic over natural numbers and integers. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `choose r₀ HT₀ h₀ hw₀ using fun i (k : Fin (d i)) => hHalf E Ω l ι (a i) (hP.pos i).1 (P i) (hP.csd i) (ρ i) (hP.loc i) (m i) (hP.inf i) (ex n (d i) k) (hint i k)`. Use `choose r₁ h₁ hi₁ using fun i => hFam E Ω l ι (d i) (hP.pos i).2 (fun _ => a i) (fun _ => (hP.pos i).1) (d i * a i) (by simp) (r₀ i) _ (HT₀ i) (h₀ i)`. Take `⟨r, hr, hi⟩` from `hFam E Ω l ι c hc (fun i => d i * a i) (fun i => Nat.mul_pos (hP.pos i).2 (hP.pos i).1) n hsum r₁ _ _ h₁`. Establish `hpar : ∀ w, ParAt ι r w (totPar n d (ρ · w))` using `hr.par`. Establish `hF : ∀ w : HeightOneSpectrum (𝓞 E), ((l : ℕ) : 𝓞 E) ∉ w.asIdeal → ∀ S : Fin c → Multiset ℂˣ, (∀ i, (CG.mk (P i)).HasSat w (S i)) → FrobEig ι r w (algSat n (normV w) (satTot w d S))` using `fun w hw S hS => hFrob E Ω l ι n c a d r hr.cont w hw (ρ · w) S (fun i => ((hLink E _ (P i)).1 w _ (hP.loc i w) _).1 (hS i)) (hpar w)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hev : ∀ᶠ w : HeightOneSpectrum (𝓞 E) in Filter.cofinite, ((l : ℕ) : 𝓞 E) ∉ w.asIdeal ∧ ∃ S : Fin c → Multiset ℂˣ, ∀ i, (CG.mk (P i)).HasSat w (S i)` using `by filter_upwards [ev_notMem (K := E) l, Filter.eventually_all.2 fun i => (hLink E _ (P i)).2] with w h1 h2`. Conclude with `⟨h1, Classical.skolem.1 h2⟩`. Use `⟨r, _, hr.cont, hr.ss, fun w hw hu A hA => ?_, hr.ht, fun τ lam hl => ?_, fun w hw τ hτ => ?_, ?_, fun hirr => ?_⟩` and prove the remaining obligations. Use `choose S hSat using fun i => (satLoc H.toClassicalTheorems E (a i) w (ρ i w)).1 (by`. Take `⟨x, hx, h0⟩` from `(Submodule.ne_bot_iff _).1 (GlobalTheory.SphBC.isSpherical_of_isUnramU E hE n π hπ c a d hsum P ρ m σ hP hS hsplit w hu i (ρ i w) (hP.loc i w))`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Conclude with `⟨x, h0, GlobalTheory.LGrp.mem_fixed.1 hx⟩)`. Conclude with `(hFrob E Ω l ι n c a d r hr.cont w hw (ρ · w) S hSat (hpar w) A hA).1`. Rewrite using `[← (hStr n c d (m · (ι.toRingHom.comp τ)) lam (hP.weight _ lam hl)).2]`. Simplify using `only [← hw₀]`. Simplify using `only [← Multiset.coe_mapAddMonoidHom, map_sum]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components.
 
-Conclude with `(locGlob_iff ι r w τ).2 ((hpar w).congr (hRec E Ω n c a d hsum P w (ρ · w) (σ · w) hP.pos (hP.loc · w) (hS · w) τ (hUni E n π hπ w hw _ _ _ _ hτ (hsplit w hw))))`. Use `hPol E Ω l ι n r hr.cont hr.ss ?_ filter_upwards [hev, (conjSrc_injective (IsCMField.complexConj E).toRingEquiv).tendsto_cofinite.eventually hev] with w ⟨hw, _⟩ ⟨hw', S, hS'⟩` and prove the remaining obligations. Use `⟨satTot (Bc.cPl w) d S, ?_, hF _ hw' S hS'⟩` and prove the remaining obligations. Rewrite using `[← (hConj E w).2 c d S]`. Conclude with `hF w hw _ fun i => (hConj E w).1 _ (P i) (hP.csd i) _ (hS' i)`.
-
-Use `hIrr E Ω l ι n hn π hπ c a d hsum P ρ m hP (hi hirr).1 (fun i => (hi₁ i ((hi hirr).2 i)).1) r hr.ss ?_ filter_upwards [hev] with w ⟨hw, S, hS'⟩` and prove the remaining obligations. Conclude with `⟨S, hS', hF w hw S hS'⟩`.
+A detailed English derivation is pending.
 -/
 private theorem assemble (H : HypothesesH) (hFam : SumFam) (hHalf : Half) (hStr : Strings) (hUni : CompUnique) (hRec : RecTot)
     (hFrob : FrobTot) (hPol : PolOfFrob) (hLink : SatLink) (hConj : SatConj) (hIrr : IrrCase) : GalUnitary := by
@@ -107,7 +105,7 @@ private theorem assemble (H : HypothesesH) (hFam : SumFam) (hHalf : Half) (hStr 
     exact ⟨S, hS', hF w hw S hS'⟩
 
 /- English proof (translation)
-Introduce `H` and use `assemble H (UpperTheory.sum_family_of_reductions (UpperTheory.sum_two_of_hodge_tate H UpperTheory.galoisRep_direct_sum_away_from_places UpperTheory.sum_hodge_tate) UpperTheory.finiteSum_reduction) (UpperTheory.half_of_compatible_polarization H UpperTheory.eta_condition UpperTheor …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Af.galUnitary :
     UpperTheory.V.Af.HypothesesH → UpperTheory.V.Af.GalUnitary := fun H =>

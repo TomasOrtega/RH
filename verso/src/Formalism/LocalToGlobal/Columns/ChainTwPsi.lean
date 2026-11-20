@@ -13,7 +13,7 @@ section TwPsi
 variable {X : Fields} {P : HeightOneSpectrum (𝓞 X.E)}
 
 /- English proof (translation)
-The claim follows from `| 0, b, _ => by simp | D + 1, b, h => by have hq0 : (qOf P : X.E) ≠ 0 := by exact_mod_cast hq.ne_zero have h1 : IntAt P ((b : X.E) / (qOf P : X.E) ^ D) := by have e : (b : X.E) / (qOf P : X.E) ^ D = (qOf P : X.E) * ((b : X.E) / (qOf P : X.E) ^ (D + 1)) := by field_simp ring rw [e …`.
+A detailed English derivation is pending.
 -/
 theorem twDvd_of_intAt (hq : (qOf P).Prime) : ∀ (D : ℕ) (b : ℤ), IntAt P ((b : X.E) / (qOf P : X.E) ^ D) → ((qOf P : ℤ) ^ D) ∣ b
   | 0, b, _ => by simp
@@ -43,7 +43,7 @@ theorem twDvd_of_intAt (hq : (qOf P).Prime) : ∀ (D : ℕ) (b : ℤ), IntAt P (
       exact ⟨c, by ring⟩
 
 /- English proof (translation)
-The claim follows from `| 0, y, hy => ⟨0, by simpa using hy⟩ | D + 1, y, hy => by have hq0 : (qOf P : X.E) ≠ 0 := by exact_mod_cast hq.ne_zero obtain ⟨b0, hb0⟩ := owedC_exists_int (A := 𝓞 X.E ⧸ P.asIdeal) hq (ciCard P) (redP P y) have hz : IntAt P ((y - b0) / (qOf P : X.E)) := ciIntAt_div (ciQ_mem P) hu …`.
+A detailed English derivation is pending.
 -/
 theorem twRes_exists (hq : (qOf P).Prime) (hu : ((qOf P : ℕ) : 𝓞 X.E) ∉ P.asIdeal ^ 2) :
     ∀ (D : ℕ) (y : X.E), IntAt P y → ∃ b : ℤ, IntAt P ((y - b) / (qOf P : X.E) ^ D)
@@ -67,7 +67,7 @@ theorem twRes_exists (hq : (qOf P).Prime) (hu : ((qOf P : ℕ) : 𝓞 X.E) ∉ P
 variable {σ₀ : X.K →+* ℂ} {xi0 : X.E} {D : ℕ}
 
 /- English proof (translation)
-Rewrite using `[map_zpow₀, hz, ← Complex.exp_int_mul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem twZeta_pow (hz : σ₀ (twZeta σ₀ (qOf P ^ D)) = Complex.exp (2 * Real.pi * Complex.I / ((qOf P ^ D : ℕ) : ℂ)))
     (hq : (qOf P).Prime) (b : ℤ) : σ₀ (twZeta σ₀ (qOf P ^ D) ^ b) = Complex.exp (2 * Real.pi * Complex.I * b / ((qOf P ^ D : ℕ) : ℂ)) := by
@@ -76,7 +76,7 @@ theorem twZeta_pow (hz : σ₀ (twZeta σ₀ (qOf P ^ D)) = Complex.exp (2 * Rea
   ring
 
 /- English proof (translation)
-Introduce `h`. Rewrite `hz` using `[h, map_zero]`. Conclude with `Complex.exp_ne_zero _ hz.symm`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem twZeta_ne (hz : σ₀ (twZeta σ₀ (qOf P ^ D)) = Complex.exp (2 * Real.pi * Complex.I / ((qOf P ^ D : ℕ) : ℂ))) :
     twZeta σ₀ (qOf P ^ D) ≠ 0 := by
@@ -85,11 +85,11 @@ theorem twZeta_ne (hz : σ₀ (twZeta σ₀ (qOf P ^ D)) = Complex.exp (2 * Real
   exact Complex.exp_ne_zero _ hz.symm
 
 /- English proof (translation)
-Apply `σ₀.injective` to reduce the goal to its premises. Rewrite using `[twZeta_pow hz hq, twZeta_pow hz hq]`. Take `⟨k, hk⟩` from `h`. Establish `hN : ((qOf P ^ D : ℕ) : ℂ) ≠ 0` using `by exact_mod_cast pow_ne_zero _ hq.ne_zero`. Establish `e : 2 * Real.pi * Complex.I * (b : ℂ) / ((qOf P ^ D : ℕ) : ℂ) = 2 * Real.pi * Complex.I * (b' : ℂ) / ((qOf P ^ D : ℕ) : ℂ) + (k : ℂ) * (2 * Real.pi * Complex.I)`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb : (b : ℂ) = (b' : ℂ) + ((qOf P ^ D : ℕ) : ℂ) * k`. Use `congrArg (fun z : ℤ => (z : ℂ)) hk` as an intermediate fact. Move the coercions through the operations in `at this ⊢`. Take the linear combination `this`. Rewrite using `[hb]`.
+Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 
-Clear the denominators using the available nonvanishing facts. Rewrite using `[e, Complex.exp_add, Complex.exp_int_mul_two_pi_mul_I, mul_one]`.
+Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities.
 -/
 theorem twZeta_zpow_congr (hz : σ₀ (twZeta σ₀ (qOf P ^ D)) = Complex.exp (2 * Real.pi * Complex.I / ((qOf P ^ D : ℕ) : ℂ)))
     (hq : (qOf P).Prime) {b b' : ℤ} (h : ((qOf P : ℤ) ^ D) ∣ b - b') :
@@ -111,11 +111,11 @@ theorem twZeta_zpow_congr (hz : σ₀ (twZeta σ₀ (qOf P ^ D)) = Complex.exp (
 open Classical in
 
 /- English proof (translation)
-Establish `hex : ∃ b : ℤ, IntAt P ((qOf P : X.E) ^ D * a) ∧ IntAt P (xi0 * a - (b : X.E) / (qOf P : X.E) ^ D)` using `⟨b, ha, hb⟩`. Unfold `twPsiQ`. Rewrite using `[dif_pos hex]`. Establish `hc` using `hex.choose_spec.2`. Apply `twZeta_zpow_congr hz hq` to reduce the goal to its premises.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `twDvd_of_intAt hq D` to reduce the goal to its premises. Establish `e : ((hex.choose - b : ℤ) : X.E) / (qOf P : X.E) ^ D = (xi0 * a - (b : X.E) / (qOf P : X.E) ^ D) - (xi0 * a - (hex.choose : X.E) / (qOf P : X.E) ^ D)`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Conclude with `ciIntAt_sub hb hc`.
+A detailed English derivation is pending.
 -/
 theorem twPsiQ_eq (hz : σ₀ (twZeta σ₀ (qOf P ^ D)) = Complex.exp (2 * Real.pi * Complex.I / ((qOf P ^ D : ℕ) : ℂ)))
     (hq : (qOf P).Prime) {a : X.E} (ha : IntAt P ((qOf P : X.E) ^ D * a)) {b : ℤ}
@@ -135,9 +135,9 @@ theorem twPsiQ_eq (hz : σ₀ (twZeta σ₀ (qOf P ^ D)) = Complex.exp (2 * Real
   exact ciIntAt_sub hb hc
 
 /- English proof (translation)
-Establish `hq0 : (qOf P : X.E) ≠ 0` using `by exact_mod_cast hq.ne_zero`. Take `⟨b, hb⟩` from `twRes_exists hq hu D _ (hxi.mul ha)`. Use `⟨b, ?_⟩` and prove the remaining obligations. Establish `e : xi0 * a - (b : X.E) / (qOf P : X.E) ^ D = (xi0 * ((qOf P : X.E) ^ D * a) - b) / (qOf P : X.E) ^ D`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts.
 
-Rewrite using `[e]`. Conclude with `hb`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem twPsiQ_exists (hq : (qOf P).Prime) (hu : ((qOf P : ℕ) : 𝓞 X.E) ∉ P.asIdeal ^ 2) (hxi : IntAt P xi0) {a : X.E}
     (ha : IntAt P ((qOf P : X.E) ^ D * a)) : ∃ b : ℤ, IntAt P (xi0 * a - (b : X.E) / (qOf P : X.E) ^ D) := by
@@ -157,29 +157,27 @@ variable {X : Fields} {Pr : Primes X} {R : Ranks} {sel : HeightOneSpectrum (𝓞
   {mu : Tup X.F X.E X.K S} {G : ChGlob X R.m}
 
 /- English proof (translation)
-Establish `h2` using `R.two_le_m`. Establish `hzz : ∀ P : rowSG Pr sel mu, P.1 ∉ Pr.vGs → G.σ₀ (twZeta G.σ₀ (qOf P.1 ^ (2 * R.m))) = Complex.exp (2 * Real.pi * Complex.I / ((qOf P.1 ^ (2 * R.m) : ℕ) : ℂ))` using `fun P hP => Classical.epsilon_spec (hz P hP)`. Establish `hqD : ∀ P : rowSG Pr sel mu, P.1 ∉ Pr.vGs → ∀ x : X.E, IntAt P.1 x → IntAt P.1 ((qOf P.1 : X.E) ^ (2 * R.m) * x)` using `fun P _ x hx => by`. Establish `e : (qOf P.1 : X.E) ^ (2 * R.m) = algebraMap (𝓞 X.E) X.E ((qOf P.1 : 𝓞 X.E) ^ (2 * R.m))` using `by simp`. Rewrite using `[e]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(IntAt.coe P.1 _).mul hx`. Use `⟨fun P hP x y hx hy => ?_, fun P hP x hx => ?_, fun P hP => ?_, fun P hP => Classical.epsilon_spec (hs P hP), fun P hP a b ha hab => ?_, hxi⟩` and prove the remaining obligations. Take `⟨hq, hu⟩` from `hd P hP`. Take `⟨bx, hbx⟩` from `twPsiQ_exists hq hu (hxi P hP).1 hx`. Take `⟨by', hby⟩` from `twPsiQ_exists hq hu (hxi P hP).1 hy`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hxy : IntAt P.1 ((qOf P.1 : X.E) ^ (2 * R.m) * (x + y))` using `by rw [mul_add]; exact hx.add hy`. Establish `hbxy : IntAt P.1 (G.xi0 * (x + y) - ((bx + by' : ℤ) : X.E) / (qOf P.1 : X.E) ^ (2 * R.m))`. Establish `e : G.xi0 * (x + y) - ((bx + by' : ℤ) : X.E) / (qOf P.1 : X.E) ^ (2 * R.m) = (G.xi0 * x - (bx : X.E) / (qOf P.1 : X.E) ^ (2 * R.m)) + (G.xi0 * y - (by' : X.E) / (qOf P.1 : X.E) ^ (2 * R.m))`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `hbx.add hby`. Rewrite using `[twPsiQ_eq (hzz P hP) hq hxy hbxy, twPsiQ_eq (hzz P hP) hq hx hbx, twPsiQ_eq (hzz P hP) hq hy hby, zpow_add₀ (twZeta_ne (hzz P hP))]`. Take `⟨hq, -⟩` from `hd P hP`. Establish `h0 : IntAt P.1 (G.xi0 * x - ((0 : ℤ) : X.E) / (qOf P.1 : X.E) ^ (2 * R.m))`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Simplify using `using (hxi P hP).1.mul hx`. Rewrite using `[twPsiQ_eq (hzz P hP) hq (hqD P hP x hx) h0, zpow_zero]`. Take `⟨hq, hu⟩` from `hd P hP`. Establish `hq0 : (qOf P.1 : X.E) ≠ 0` using `by exact_mod_cast hq.ne_zero`. Establish `ha : IntAt P.1 ((qOf P.1 : X.E) ^ (2 * R.m) * (qOf P.1 : X.E)⁻¹)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `e : (qOf P.1 : X.E) ^ (2 * R.m) * (qOf P.1 : X.E)⁻¹ = algebraMap (𝓞 X.E) X.E ((qOf P.1 : 𝓞 X.E) ^ (2 * R.m - 1))`. Rewrite using `[map_pow, map_natCast, ← pow_sub_one_mul (by omega : 2 * R.m ≠ 0)]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[e]`. Conclude with `IntAt.coe P.1 _`.
+Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨b, hb⟩` from `twPsiQ_exists hq hu (hxi P hP).1 ha`. Rewrite using `[twPsiQ_eq (hzz P hP) hq ha hb]`. Introduce `h1`. Establish `h2` using `congrArg G.σ₀ h1`. Rewrite `h2` using `[twZeta_pow (hzz P hP) hq, map_one, Complex.exp_eq_one_iff]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨n, hn⟩` from `h2`. Establish `hN : ((qOf P.1 ^ (2 * R.m) : ℕ) : ℂ) ≠ 0` using `by exact_mod_cast pow_ne_zero _ hq.ne_zero`. Establish `hbn : (b : ℂ) = (n : ℂ) * ((qOf P.1 ^ (2 * R.m) : ℕ) : ℂ)`. Establish `hpi : (2 * Real.pi * Complex.I : ℂ) ≠ 0` using `by simp [Real.pi_ne_zero, Complex.I_ne_zero]`. Clear denominators, using `at hn` for the nonvanishing conditions.
+Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Take the linear combination `hn`. Establish `hbn' : b = n * ((qOf P.1 ^ (2 * R.m) : ℕ) : ℤ)` using `by exact_mod_cast hbn`. Establish `hdiv : IntAt P.1 (G.xi0 / (qOf P.1 : X.E))`. Establish `e : G.xi0 / (qOf P.1 : X.E) = (G.xi0 * (qOf P.1 : X.E)⁻¹ - (b : X.E) / (qOf P.1 : X.E) ^ (2 * R.m)) + (n : X.E)`. Rewrite using `[hbn']`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 
-Use `push_cast`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `hb.add (ciIntAt_intCast n)`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Apply `(hxi P hP).2` to reduce the goal to its premises. Establish `e : G.xi0 = (qOf P.1 : X.E) * (G.xi0 / (qOf P.1 : X.E))` using `by field_simp`. Rewrite using `[e, reduction_mul (ciIntAt_q (P := P.1) (q := qOf P.1)) hdiv, redP_natCast_eq_zero (ciQ_mem P.1), zero_mul]`. Take `⟨hq, -⟩` from `hd P hP`. Rewrite using `[twPsiQ_eq (hzz P hP) hq ha hab, twZeta_pow (hzz P hP) hq]`.
-
-Use `push_cast`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem twCstQ_of (hd : ∀ P : rowSG Pr sel mu, P.1 ∉ Pr.vGs → TwDegOne X P.1)
     (hz : ∀ P : rowSG Pr sel mu, P.1 ∉ Pr.vGs →
@@ -257,9 +255,9 @@ section TwFin
 variable {X : Fields} {Pr : Primes X} {R : Ranks}
 
 /- English proof (translation)
-Establish `e : lamYat (Pr` using `Pr) (R := R) j P = LocE.lamY P (qOf P) (R.N j) (cOf R j) 0 := by`. Unfold `lamYat`. Rewrite using `[if_neg hP]`. Rewrite using `[e]`. Unfold `LocE.lamY`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[ciMem_sclLat]`. Establish `h0 : ∀ l : ℕ, LocE.scE (R.N j) 0 l = 0` using `fun l => by`. Unfold `LocE.scE`. Apply the tactic sequence `split_ifs <;> rfl`. Simplify using `only [h0, zpow_zero, inv_one, one_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem twLamQ_mem {j : ℕ} {P : HeightOneSpectrum (𝓞 X.E)} (hP : P ∉ Pr.vGs) (v : Sp X.E (R.N j + cOf R j)) :
     v ∈ lamYat (Pr := Pr) (R := R) j P ↔ ∀ l, IntAt P (v l) := by
@@ -275,13 +273,13 @@ theorem twLamQ_mem {j : ℕ} {P : HeightOneSpectrum (𝓞 X.E)} (hP : P ∉ Pr.v
   simp only [h0, zpow_zero, inv_one, one_mul]
 
 /- English proof (translation)
-The claim follows from `ciMem_stdAt P v`.
+A detailed English derivation is pending.
 -/
 theorem twStd_mem {E : Type} [Field E] [NumberField E] [StarRing E] {P : HeightOneSpectrum (𝓞 E)} {n : ℕ} (v : Sp E n) :
     v ∈ stdAt E n P ↔ ∀ l, IntAt P (v l) := ciMem_stdAt P v
 
 /- English proof (translation)
-Unfold `LocE.parL`. Rewrite using `[ciMem_sclLat]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem twParL_mem {E : Type} [Field E] [NumberField E] [StarRing E] {P : HeightOneSpectrum (𝓞 E)} {q kj n c : ℕ} (v : Sp E (n + c)) :
     v ∈ LocE.parL P q kj n c ↔ ∀ l : Fin (n + c), IntAt P (((q : E) ^ (if kj ≤ l.1 ∧ l.1 < n then (1 : ℤ) else 0))⁻¹ * v l) := by
@@ -291,7 +289,7 @@ theorem twParL_mem {E : Type} [Field E] [NumberField E] [StarRing E] {P : Height
 def twE {E : Type} [Field E] {N : ℕ} (s : Fin N) : Sp E N := fun l => if s = l then 1 else 0
 
 /- English proof (translation)
-Unfold `twE`. Use `split_ifs`. Conclude with `⟨1, 1, one_notMem P, by simp⟩`. Conclude with `⟨0, 1, one_notMem P, by simp⟩`.
+Replace the relevant objects with their definitions. Supply the required witnesses or components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem twE_int {E : Type} [Field E] [NumberField E] {P : HeightOneSpectrum (𝓞 E)} {N : ℕ} (s : Fin N) (l : Fin N) :
     IntAt P (twE (E := E) s l) := by
@@ -301,7 +299,7 @@ theorem twE_int {E : Type} [Field E] [NumberField E] {P : HeightOneSpectrum (�
   · exact ⟨0, 1, one_notMem P, by simp⟩
 
 /- English proof (translation)
-Rewrite using `[LinearMap.pi_apply_eq_sum_univ f v, Finset.sum_apply]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem twApply_coord {E : Type} [Field E] {N M : ℕ} (f : Sp E N →ₗ[E] Sp E M) (v : Sp E N) (l : Fin M) :
     f v l = ∑ s, v s * f (twE s) l := by
@@ -309,38 +307,34 @@ theorem twApply_coord {E : Type} [Field E] {N M : ℕ} (f : Sp E N →ₗ[E] Sp 
   rfl
 
 /- English proof (translation)
-The claim follows from `Finset.sum_induction f (IntAt P) (fun _ _ ha hb => ha.add hb) ⟨0, 1, one_notMem P, by simp⟩ (fun s _ => h s)`.
+A detailed English derivation is pending.
 -/
 theorem twIntAt_sum {E : Type} [Field E] [NumberField E] {P : HeightOneSpectrum (𝓞 E)} {N : ℕ} (f : Fin N → E)
     (h : ∀ s, IntAt P (f s)) : IntAt P (∑ s, f s) :=
   Finset.sum_induction f (IntAt P) (fun _ _ ha hb => ha.add hb) ⟨0, 1, one_notMem P, by simp⟩ (fun s _ => h s)
 
 /- English proof (translation)
-Rewrite using `[twJat_Q sharp j hP]`. Use `set q : X.E := (qOf P : X.E) with hqdef`. Set `w : Sp X.E (R.N j + cOf R j) → Sp X.E (R.N j + cOf R j)` to `fun v => q⁻¹ • (h' v - h v)`. Establish `hw : ∀ v, (∀ l, IntAt P (v l)) → ∀ l, IntAt P (w v l)` using `fun v hv l => by show IntAt P ((q⁻¹ • (h' v - h v)) l)`. Simplify `he v hv l` using `[Pi.smul_apply, smul_eq_mul, Pi.sub_apply]`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hκ : ∀ v, (h⁻¹ * h') v = v + q • h⁻¹ (w v)` using `fun v => by show h⁻¹ (h' v) = _`. Establish `: h' v = h v + q • w v` using `by show h' v = h v + q • (q⁻¹ • (h' v - h v))`. Rewrite using `[smul_smul, mul_inv_cancel₀ hq0, one_smul, add_sub_cancel]`. Rewrite using `[this, map_add, map_smul]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hκi : ∀ v, (h⁻¹ * h')⁻¹ v = v - q • h'⁻¹ (w v)` using `fun v => by show (h'⁻¹ * h) v = _ show h'⁻¹ (h v) = _`. Establish `: h v = h' v - q • w v` using `by show h v = h' v - q • (q⁻¹ • (h' v - h v))`. Rewrite using `[smul_smul, mul_inv_cancel₀ hq0, one_smul, sub_sub_cancel]`. Rewrite using `[this, map_sub, map_smul]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hqI : IntAt P q` using `ciIntAt_q`. Establish `stdF : ∀ v, (∀ l, IntAt P (v l)) → ∀ l, IntAt P ((h⁻¹ * h') v l)` using `fun v hv l => by`. Rewrite using `[hκ]`. Conclude with `(hv l).add (hqI.mul (hb _ (hw v hv) l))`. Establish `stdB : ∀ v, (∀ l, IntAt P (v l)) → ∀ l, IntAt P ((h⁻¹ * h')⁻¹ v l)` using `fun v hv l => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hκi]`. Conclude with `ciIntAt_sub (hv l) (hqI.mul (hb' _ (hw v hv) l))`. Use `⟨fun v => ?_, fun v => ?_⟩` and prove the remaining obligations. Rewrite using `[twStd_mem, twStd_mem]`. Prove the components needed by the constructor for the conclusion.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce `h1`. Use `stdB _ h1` as an intermediate fact. Simplify using `using this`. Conclude with `stdF v`. Establish `sub_std : ∀ u : Sp X.E (R.N j + cOf R j), u ∈ LocE.parL P (qOf P) (R.k + j) (R.N j) (cOf R j) → ∀ l, IntAt P (u l)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `u hu l`. Establish `h1` using `(twParL_mem u).1 hu l`. Use `split_ifs at h1`. Establish `e : u l = q * ((q ^ (1 : ℤ))⁻¹ * u l)` using `by rw [zpow_one]; field_simp`. Rewrite using `[e]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hqI.mul h1`. Simplify using `using h1`. Establish `q_par : ∀ u : Sp X.E (R.N j + cOf R j), (∀ l, IntAt P (u l)) → ∀ l : Fin (R.N j + cOf R j), IntAt P (((qOf P : X.E) ^ (if R.k + j ≤ l.1 ∧ l.1 < R.N j then (1 : ℤ) else 0))⁻¹ * (q * u l))`. Introduce `u hu l`. Use `split_ifs`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `e : (((qOf P : X.E) ^ (1 : ℤ))⁻¹ * (q * u l)) = u l` using `by rw [zpow_one, ← hqdef]; field_simp`. Rewrite using `[e]`. Conclude with `hu l`. Simplify using `using hqI.mul (hu l)`. Establish `parF : ∀ v, v ∈ LocE.parL P (qOf P) (R.k + j) (R.N j) (cOf R j) → (h⁻¹ * h') v ∈ LocE.parL P (qOf P) (R.k + j) (R.N j) (cOf R j)` using `fun v hv => by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hκ]`. Use `Submodule.add_mem _ hv ?_` and prove the remaining obligations. Rewrite using `[twParL_mem]`. Introduce `l`. Use `q_par (h⁻¹ (w v)) (hb _ (hw v (sub_std v hv))) l` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `this` using `[Pi.smul_apply, smul_eq_mul]`. Establish `parB : ∀ v, v ∈ LocE.parL P (qOf P) (R.k + j) (R.N j) (cOf R j) → (h⁻¹ * h')⁻¹ v ∈ LocE.parL P (qOf P) (R.k + j) (R.N j) (cOf R j)` using `fun v hv => by`. Rewrite using `[hκi]`. Use `Submodule.sub_mem _ hv ?_` and prove the remaining obligations. Rewrite using `[twParL_mem]`.
-
-Introduce `l`. Use `q_par (h'⁻¹ (w v)) (hb' _ (hw v (sub_std v hv))) l` as an intermediate fact. Simplify `this` using `[Pi.smul_apply, smul_eq_mul]`. Prove the components needed by the constructor for the conclusion. Introduce `h1`.
-
-Use `parB _ h1` as an intermediate fact. Simplify using `using this`. Conclude with `parF v`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem twJ_of_close (sharp : Bool) {j : ℕ} {P : HeightOneSpectrum (𝓞 X.E)} (hP : P ∉ Pr.vGs) (hq0 : (qOf P : X.E) ≠ 0)
     (h h' : AutY X R j) (hb : ∀ v, (∀ l, IntAt P (v l)) → ∀ l, IntAt P (h⁻¹ v l))
@@ -424,14 +418,14 @@ theorem twJ_of_close (sharp : Bool) {j : ℕ} {P : HeightOneSpectrum (𝓞 X.E)}
     · exact parF v
 
 /- English proof (translation)
-The claim follows from `twApply_coord f.toLinearMap v l`.
+A detailed English derivation is pending.
 -/
 theorem twApply_coordE {E : Type} [Field E] {N : ℕ} (f : Sp E N ≃ₗ[E] Sp E N) (v : Sp E N) (l : Fin N) :
     f v l = ∑ s, v s * f (twE s) l :=
   twApply_coord f.toLinearMap v l
 
 /- English proof (translation)
-Establish `hb : (b' : E) = b + q ^ (j + 1) * k` using `by linear_combination hk`. Rewrite using `[hb]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem twAlg {E : Type} [Field E] {q y y' : E} {j : ℕ} {b b' k : ℤ} (hq : q ≠ 0) (hk : (b' : E) - b = q ^ (j + 1) * k) :
     q⁻¹ * (y' - y) = (q ^ j * y' - b') / q ^ (j + 1) - (q ^ j * y - b) / q ^ (j + 1) + k := by
@@ -446,7 +440,7 @@ def twDig (P : HeightOneSpectrum (𝓞 X.E)) (N : ℕ) (y : X.E) : ℤ :=
   if h : ∃ b : ℤ, IntAt P ((y - b) / (qOf P : X.E) ^ N) then h.choose else 0
 
 /- English proof (translation)
-Establish `hex` using `twRes_exists hq hu N y hy`. Unfold `twDig`. Rewrite using `[dif_pos hex]`. Conclude with `hex.choose_spec`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem twDig_spec {P : HeightOneSpectrum (𝓞 X.E)} (hq : (qOf P).Prime) (hu : ((qOf P : ℕ) : 𝓞 X.E) ∉ P.asIdeal ^ 2) (N : ℕ)
     {y : X.E} (hy : IntAt P y) : IntAt P ((y - twDig P N y) / (qOf P : X.E) ^ N) := by
@@ -456,23 +450,21 @@ theorem twDig_spec {P : HeightOneSpectrum (𝓞 X.E)} (hq : (qOf P).Prime) (hu :
   exact hex.choose_spec
 
 /- English proof (translation)
-Take `⟨hq, hu⟩` from `hd`. Establish `hq0 : (qOf P : X.E) ≠ 0` using `by exact_mod_cast hq.ne_zero`. Establish `: NeZero (qOf P ^ (j + 1))` using `⟨pow_ne_zero _ hq.ne_zero⟩`. Set `rep : Quotient (twSetoid (Pr` to `Pr) (R := R) sharp j P) → AutY X R j := fun D => @Classical.epsilon _ ⟨1⟩ (fun h => Quotient.mk _ h = D ∧ TwBdd (Pr := Pr) j P h)`. Set `Φ : AutY X R j → (Fin (R.N j + cOf R j) → Fin (R.N j + cOf R j) → ZMod (qOf P ^ (j + 1)))` to `fun h l s => ((twDig P (j + 1) ((qOf P : X.E) ^ j * h (twE s) l) : ℤ) : ZMod (qOf P ^ (j + 1)))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Use `Set.Finite.of_finite_image (f := fun D => Φ (rep D)) (Set.toFinite _) ?_` and prove the remaining obligations. Introduce `D hD D' hD' heq`. Establish `s1 : Quotient.mk _ (rep D) = D ∧ TwBdd (Pr` using `Pr) j P (rep D) := Classical.epsilon_spec hD`. Establish `s2 : Quotient.mk _ (rep D') = D' ∧ TwBdd (Pr` using `Pr) j P (rep D') := Classical.epsilon_spec hD'`. Rewrite using `[← s1.1, ← s2.1]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Apply `Quotient.sound` to reduce the goal to its premises. Establish `hbI : ∀ h : AutY X R j, TwBdd (Pr` using `Pr) j P h → ∀ v, (∀ l, IntAt P (v l)) → ∀ l, IntAt P (h⁻¹ v l) := fun h hb v hv => by`. Use `(hb v ((twLamQ_mem hP v).2 hv)).1` as an intermediate fact. Conclude with `(twLamQ_mem hP _).1 this`. Establish `hqI : ∀ h : AutY X R j, TwBdd (Pr` using `Pr) j P h → ∀ s l, IntAt P ((qOf P : X.E) ^ j * h (twE s) l) := fun h hb s l => by`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(hb (twE s) ((twLamQ_mem hP _).2 (fun l => twE_int s l))).2` as an intermediate fact. Establish `h2` using `(twLamQ_mem hP _).1 this l`. Simplify `h2` using `[Pi.smul_apply, smul_eq_mul]`. Establish `hcl : ∀ s l, IntAt P ((qOf P : X.E)⁻¹ * (rep D' (twE s) l - rep D (twE s) l))` using `fun s l => by`. Establish `hy` using `hqI _ s1.2 s l`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hy'` using `hqI _ s2.2 s l`. Establish `d1` using `twDig_spec hq hu (j + 1) hy`. Establish `d2` using `twDig_spec hq hu (j + 1) hy'`. Establish `hE` using `congrFun (congrFun heq l) s`. Establish `hdv` using `(ZMod.intCast_eq_intCast_iff_dvd_sub _ _ _).1 hE`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨k, hk⟩` from `hdv`. Establish `hk' : ((twDig P (j + 1) ((qOf P : X.E) ^ j * rep D' (twE s) l) : ℤ) : X.E) - ((twDig P (j + 1) ((qOf P : X.E) ^ j * rep D (twE s) l) : ℤ) : X.E) = (qOf P : X.E) ^ (j + 1) * k`. Use `congrArg (fun z : ℤ => (z : X.E)) hk` as an intermediate fact. Move the coercions through the operations in `at this`. Conclude with `this`.
+Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e` using `twAlg (y := rep D (twE s) l) (y' := rep D' (twE s) l) hq0 hk'`. Rewrite using `[e]`. Conclude with `(ciIntAt_sub d2 d1).add (ciIntAt_intCast k)`. Establish `he : ∀ v, (∀ l, IntAt P (v l)) → ∀ l, IntAt P ((qOf P : X.E)⁻¹ * (rep D' v l - rep D v l))` using `fun v hv l => by`. Rewrite using `[twApply_coordE (rep D') v l, twApply_coordE (rep D) v l, ← Finset.sum_sub_distrib, Finset.mul_sum]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Apply `twIntAt_sum` to reduce the goal to its premises. Introduce `s`. Establish `e : (qOf P : X.E)⁻¹ * (v s * rep D' (twE s) l - v s * rep D (twE s) l) = v s * ((qOf P : X.E)⁻¹ * (rep D' (twE s) l - rep D (twE s) l))` using `by ring`. Rewrite using `[e]`. Conclude with `(hv s).mul (hcl s l)`.
-
-Use `⟨1, (Loc.R1 X.E (R.N j) (cOf R j)).one_mem, (rep D)⁻¹ * rep D', twJ_of_close sharp hP hq0 (rep D) (rep D') (hbI _ s1.2) (hbI _ s2.2) he, by simp⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem twFin_bdd (sharp : Bool) {j : ℕ} {P : HeightOneSpectrum (𝓞 X.E)} (hP : P ∉ Pr.vGs) (hd : TwDegOne X P) :
     {D : Quotient (twSetoid (Pr := Pr) (R := R) sharp j P) | ∃ h, Quotient.mk _ h = D ∧ TwBdd (Pr := Pr) j P h}.Finite := by
@@ -531,7 +523,7 @@ section TwFin2
 variable {X : Fields} {Pr : Primes X} {R : Ranks}
 
 /- English proof (translation)
-Introduce `_ _ hP hd` and use `twFin_bdd sharp hP hd`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem finiteness_bounded_holds (sharp : Bool) : TwFinQ X Pr R sharp := fun _ _ hP hd => twFin_bdd sharp hP hd
 

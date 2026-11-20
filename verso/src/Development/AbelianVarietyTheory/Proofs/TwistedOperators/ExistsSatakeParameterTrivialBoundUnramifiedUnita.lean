@@ -17,13 +17,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.LFun.SatCompare in
 
 /- English proof (translation)
-Introduce `L _ _ _ ϖ σ q n hU V _ _ ρ hρ x hx0 hxK hxH`. Take `⟨ho, hc⟩` from `GlobalTheory.LFun.IntPtsUnitary.isOpen_isCompact_KU L ϖ σ q n hU`. Take `⟨U, hU', hxU, hirr, hun, hline⟩` from `GlobalTheory.T.spherical_eigenvector_generates_irreducible_subrepresentation ρ (KU σ n) ho (Formalism.UG.P.isCommensurated_integral_unitary_of_unramified hU n) hρ x hx0 hxK hxH`. Use `set π := GlobalTheory.PRep.sub ρ U hU'`. Use `set x' : U := ⟨x, hxU⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hx'0 : x' ≠ 0` using `fun h => hx0 (congrArg Subtype.val h)`. Establish `hx'K : x' ∈ fixed π (KU σ n)` using `GlobalTheory.LGrp.mem_fixed.2 fun k hk => Subtype.ext (GlobalTheory.LGrp.mem_fixed.1 hxK k hk)`. Establish `hs : GlobalTheory.LGrp.IsSpherical π (KU σ n)` using `(Submodule.ne_bot_iff _).2 ⟨x', hx'K, hx'0⟩`. Establish `hf : FiniteDimensional ℂ (fixed π (KU σ n))`. Establish `hle : fixed π (KU σ n) ≤ Submodule.span ℂ {x'}` using `fun y hy => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨c, rfl⟩` from `hline y hy`. Conclude with `Submodule.smul_mem _ c (Submodule.subset_span rfl)`. Conclude with `Submodule.finiteDimensional_of_le hle`. Take `⟨α, hα⟩` from `exists_hasSatU hU hirr hf hs`. Use `⟨α, ?_, GlobalTheory.T.satakeTrivialBound_inertPlace_unitarisable_spherical L ϖ σ q n hU U π α hirr hun hα⟩` and prove the remaining obligations.
-
-Use `(hα.2 x' hx'K hx'0).map hU U.subtype (fun g y => rfl) hx0` as an intermediate fact. Conclude with `this`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.Twist.satParam_exists_trivialBound : ∀ (L : Type) [Field L] [Valued L (WithZero (Multiplicative ℤ))] [CompleteSpace L] (ϖ : L) (σ : L →+* L) (q n : ℕ), IsUnramInv ϖ σ q → ∀ (V : Type) [AddCommGroup V] [Module ℂ V] (ρ : Representation ℂ (GU σ n) V), IsUnitarisable ρ → ∀ x : V, x ≠ 0 → x ∈ fixed ρ (KU σ n) → (∀ h ∈ Hecke ℂ (KU σ n), ∃ c : ℂ, heckeVec ρ (KU σ n) h x = c • x) → ∃ α, IsSatVecU ϖ q ρ x α ∧ GlobalTheory.IndefiniteRowSideFullHecke.TrivialParameterBound.TrivialBound q n α := by
   intro L _ _ _ ϖ σ q n hU V _ _ ρ hρ x hx0 hxK hxH

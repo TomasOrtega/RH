@@ -18,15 +18,15 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Introduce `hPr hK hM hI hB`. Take `⟨cA, hA⟩` from `GlobalTheory.T.bottom_triangle_nonzero_constant_first hPr hK hM hI hB`. Take `⟨cB, hB'⟩` from `GlobalTheory.T.bottom_triangle_nonzero_constant_second hPr hK hM hI hB`. Use `⟨max cA cB, fun ε CF hCF => ?_⟩` and prove the remaining obligations. Take `⟨CA, xA, hA⟩` from `hA ε CF (le_trans (le_max_left _ _) hCF)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨CB, xB, hB'⟩` from `hB' ε CF (le_trans (le_max_right _ _) hCF)`. Use `⟨max CA CB, max xA xB, fun C hC0 D large₂ he hx hR T Lc μ₀ hL G => ?_⟩` and prove the remaining obligations. Establish `hA` using `hA C (le_trans (le_max_left _ _) hC0) D large₂ he (le_trans (le_max_left _ _) hx) hR T Lc μ₀ hL G`. Establish `hB'` using `hB' C (le_trans (le_max_right _ _) hC0) D large₂ he (le_trans (le_max_right _ _) hx) hR T Lc μ₀ hL G`. Introduce `W hψ i j A A' WW X δ t0 hX hβ`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨Ω₁, h1, HA⟩` from `hA W hψ i j A A' WW X δ t0 hX`. Take `⟨Ω₂, h2, HB⟩` from `hB' W hψ i j A A' WW X δ t0 hX hβ`. Use `⟨Ω₁ * Ω₂, mul_ne_zero h1 h2, fun s Q P P' hP => ?_⟩` and prove the remaining obligations. Take `⟨u, hu, huQ, huU, HB⟩` from `HB s Q P P' hP`. Use `⟨u, hu, huQ, huU, fun ea ed h g hg T' => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hgx : ∀ x : GlobalTheory.NormSum.Cls D P'.a (GlobalTheory.NormSum.intG D P'.a), ∃ g', GlobalTheory.BotFormula.IsFinPt A' g' x.out` using `fun x => GlobalTheory.BotFormula.exists_isFinPt_of_gram_one A' hX.std'.1 x.out ea.symm`. Use `choose gx hgx using hgx`. Rewrite using `[HA s Q P P' hP ea ed h g hg gx hgx T', Pair.coord]`. Establish `e : ∀ x : GlobalTheory.NormSum.Cls D P'.a (GlobalTheory.NormSum.intG D P'.a), ((GlobalTheory.NormSum.gam D (GlobalTheory.NormSum.intG D P'.a) x.out : ℂ))⁻¹ * X.ker' W.ψ W.θ s (GlobalTheory.BotFormula.minorF ea ed T') g (gx x) = (Ω₂ * u) * (((GlobalTheory.NormSum.gam D (GlobalTheo …`. Introduce `x`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[HB ea ed h g hg x.out (gx x) (hgx x) T']`. Expand and normalize the polynomial expressions, which then agree. Repeatedly rewrite using `[e]`. Rewrite using `[← mul_finsum]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.BotFormula.bottom_formula_small : GlobalTheory.FunPr.Hypotheses₂ → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.ThetaIntegralsAgree → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.LocalMatching →
     (∀ D, GlobalTheory.NormSum.Inp D) → GlobalTheory.SqTop.BotSmall →

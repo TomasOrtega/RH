@@ -11,11 +11,11 @@ noncomputable section
 namespace GlobalTheory.PdPlace
 
 /- English proof (translation)
-Establish `hnu : ¬ IsUnit ((p : ℕ) : 𝓞 E)`. Introduce `hu`. Establish `h1` using `hu.map (Algebra.norm ℤ : 𝓞 E →* ℤ)`. Rewrite `h1` using `[show ((p : ℕ) : 𝓞 E) = algebraMap ℤ (𝓞 E) (p : ℤ) by simp, Algebra.norm_algebraMap]`. Establish `h2` using `Int.isUnit_iff_natAbs_eq.1 h1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h3 : 0 < Module.finrank ℤ (𝓞 E)` using `Module.finrank_pos`. Rewrite `h2` using `[Int.natAbs_pow, Int.natAbs_natCast]`. Break down `Nat.pow_eq_one.1 h2 with h | h` into its components or cases. Conclude with `hp.one_lt.ne' h`. Conclude with `h3.ne' h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨M, hM, hle⟩` from `Ideal.exists_le_maximal (Ideal.span {((p : ℕ) : 𝓞 E)}) (by rwa [Ne, Ideal.span_singleton_eq_top])`. Establish `hmem : ((p : ℕ) : 𝓞 E) ∈ M` using `hle (Ideal.subset_span rfl)`. Use `⟨⟨M, hM.isPrime, fun h => ?_⟩, hmem⟩` and prove the remaining obligations. Rewrite `hmem` using `[h, Ideal.mem_bot]`. Conclude with `hp.ne_zero (by exact_mod_cast hmem)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_place_over_prime (E : Type) [Field E] [NumberField E] (p : ℕ) (hp : p.Prime) :
     (Formalism.BasicNotions.placesOver E p).Nonempty := by
@@ -37,7 +37,7 @@ theorem exists_place_over_prime (E : Type) [Field E] [NumberField E] (p : ℕ) (
   exact hp.ne_zero (by exact_mod_cast hmem)
 
 /- English proof (translation)
-Introduce `D T i`. Establish `hp : (if T.l i = D.host.pde then D.host.pde' else D.host.pde).Prime` using `by split_ifs exacts [D.host.pde'_prime, D.host.pde_prime]`. Take `⟨v, hv⟩` from `exists_place_over_prime D.host.E _ hp`. Rewrite `hv` using `[← T.pD_eq i]`. Conclude with `⟨v, hv⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 -/
 theorem pD_nonempty : ∀ (D : D7) (T : TwR D.LL0 D.nd) (i : T.Tw), (T.pD i).Nonempty := by
   intro D T i

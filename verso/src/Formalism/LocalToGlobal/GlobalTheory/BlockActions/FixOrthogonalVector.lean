@@ -10,49 +10,45 @@ open NumberField Formalism.UG Matrix
 variable {E : Type} [Field E] [NumberField E]
 
 /- English proof (translation)
-Simplify using `[map_inv₀, map_natCast]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sig_natInv (σ : E →+* E) (T : ℕ) : σ ((T : E)⁻¹) = (T : E)⁻¹ := by
   simp [map_inv₀, map_natCast]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨⟨σ (r : E), (r.2).map σ.toIntAlgHom⟩, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem galois_image_integers (σ : E →+* E) (r : 𝓞 E) : σ (r : E) ∈ (algebraMap (𝓞 E) E).range :=
   ⟨⟨σ (r : E), (r.2).map σ.toIntAlgHom⟩, rfl⟩
 
 /- English proof (translation)
-Establish `hT1 : 1 < T` using `hTp.one_lt`. Establish `hT0 : (T : E) ≠ 0` using `by exact_mod_cast hTp.ne_zero`. Use `set z' : Fin N → E := (T : E)⁻¹ • z0 with hz'`. Establish `hz0 : z0 = (T : E) • z'` using `by rw [hz', smul_smul, mul_inv_cancel₀ hT0, one_smul]`. Establish `hzz' : (T : E) * hform σ J z' z' = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hz', hform_smul_left, hform_smul_right, hzz, sig_natInv]`. Clear the denominators using the available nonvanishing facts. Establish `hz0z' : hform σ J z0 z' = 1`. Rewrite using `[hz', hform_smul_right, hzz]`. Clear the denominators using the available nonvanishing facts.
+Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact.
 
-Establish `memL : ∀ (L : Submodule (𝓞 E) (Fin N' → E)) w, w ∈ L.map (ι.restrictScalars (𝓞 E)) ⊔ Submodule.span (𝓞 E) {z0} → ∃ l ∈ L, ∃ r : 𝓞 E, w = ι l + (r : E) • z0`. Introduce `L w hw`. Take `⟨a, ha, b, hb, rfl⟩` from `Submodule.mem_sup.1 hw`. Take `⟨l, hl, rfl⟩` from `Submodule.mem_map.1 ha`. Take `⟨r, rfl⟩` from `Submodule.mem_span_singleton.1 hb`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨l, hl, r, by rw [← algebraMap_smul E r z0]; rfl⟩`. Establish `hd1 : ∀ w ∈ L1.map (ι.restrictScalars (𝓞 E)) ⊔ Submodule.span (𝓞 E) {z0}, hform σ J w z' ∈ (algebraMap (𝓞 E) E).range`. Introduce `w hw`. Take `⟨l, _, r, rfl⟩` from `memL L1 w hw`. Rewrite using `[hform_add_left, hform_smul_left, hz', hform_smul_right, hform_smul_right, (horth l).1, hzz]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: (T : E)⁻¹ * 0 + σ (r : E) * ((T : E)⁻¹ * (T : E)) = σ (r : E)`. Rewrite using `[mul_zero, zero_add, inv_mul_cancel₀ hT0, mul_one]`. Rewrite using `[this]`. Conclude with `galois_image_integers σ r`. Establish `hd2 : ∀ w ∈ L2.map (ι.restrictScalars (𝓞 E)) ⊔ Submodule.span (𝓞 E) {z0}, hform σ J w (γ *ᵥ z') ∈ (algebraMap (𝓞 E) E).range`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `w hw`. Rewrite `hw` using `[← hlat]`. Take `⟨w1, hw1, rfl⟩` from `Submodule.mem_map.1 hw`. Use `show hform σ J (γ *ᵥ w1) (γ *ᵥ z') ∈ _`. Rewrite using `[hγ]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `hd1 w1 hw1`. Take `⟨y1, s, hys⟩` from `hspan (γ *ᵥ z')`. Establish `hy1 : y1 ∈ L2`. Apply `hsd2.1` to reduce the goal to its premises. Introduce `x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result.
 
-Establish `hmem : ι x ∈ L2.map (ι.restrictScalars (𝓞 E)) ⊔ Submodule.span (𝓞 E) {z0}` using `Submodule.mem_sup_left (Submodule.mem_map.2 ⟨x, hx, rfl⟩)`. Use `hd2 _ hmem` as an intermediate fact. Rewrite `this` using `[hys, hform_add_right, hform_smul_right, (horth x).1, mul_zero, add_zero, hiso]`. Then use the resulting hypothesis. Choose the witnesses or unpack the hypotheses as in `⟨t, ht⟩ : ∃ t : 𝓞 E, (t : E) = s * T := by`. Establish `hmem : z0 ∈ L2.map (ι.restrictScalars (𝓞 E)) ⊔ Submodule.span (𝓞 E) {z0}` using `Submodule.mem_sup_right (Submodule.mem_span_singleton_self z0)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use `hd2 _ hmem` as an intermediate fact. Rewrite `this` using `[hys, hform_add_right, hform_smul_right, (horth y1).2, hzz, zero_add]`. Take `⟨t, ht⟩` from `this`. Conclude with `⟨t, ht⟩`. Establish `hyt : γ *ᵥ z' = ι y1 + (t : E) • z'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hys, ht, hz0, smul_smul]`. Establish `hγzz : (T : E) * hform σ J (γ *ᵥ z') (γ *ᵥ z') = 1` using `by rw [hγ]; exact hzz'`. Establish `hmemy : γ *ᵥ z' ∈ L2.map (ι.restrictScalars (𝓞 E)) ⊔ Submodule.span (𝓞 E) {z'}`. Rewrite using `[hyt]`. Use `Submodule.add_mem_sup (Submodule.mem_map.2 ⟨y1, hy1, rfl⟩) ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h` using `Submodule.smul_mem (Submodule.span (𝓞 E) {z'}) t (Submodule.mem_span_singleton_self z')`. Rewrite `h` using `[← algebraMap_smul E t z']`. Conclude with `h`. Establish `hint : ∀ x ∈ L2.map (ι.restrictScalars (𝓞 E)), ∃ a : 𝓞 E, (a : E) = hform σ J x x`. Introduce `x hx`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨l, hl, rfl⟩` from `Submodule.mem_map.1 hx`. Take `⟨a, ha⟩` from `hsd2.2 l hl l hl`. Use `⟨a, ?_⟩` and prove the remaining obligations. Use `show (a : E) = hform σ J (ι l) (ι l)`. Rewrite using `[hiso]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `ha`. Establish `hzL : ∀ x ∈ L2.map (ι.restrictScalars (𝓞 E)), hform σ J x z' = 0 ∧ hform σ J z' x = 0`. Introduce `x hx`. Take `⟨l, _, rfl⟩` from `Submodule.mem_map.1 hx`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `show hform σ J (ι l) z' = 0`. Rewrite using `[hz', hform_smul_right, (horth l).1, mul_zero]`. Use `show hform σ J z' (ι l) = 0`. Rewrite using `[hz', hform_smul_left, (horth l).2, mul_zero]`. Take `⟨b, ⟨k, hk, hbk⟩, hb⟩` from `length_inverse_bound σ hσ J hdef (L2.map (ι.restrictScalars (𝓞 E))) hint z' hzL T hT1 hzz' (γ *ᵥ z') hmemy hγzz`.
-
-Establish `hbP : b - 1 ∈ P`. Establish `h1` using `hres z' hd1 1 b (by rw [hz0z']; simp) (by rw [hb, hform_smul_right, hz0z', mul_one])`. Establish `: b - 1 = -(1 - b)` using `by ring`. Rewrite using `[this]`. Conclude with `P.neg_mem h1`.
-
-Establish `hb1 : b = 1` using `root_eq_one P T k b hTp hP hTP hk hbk hbP hdeg`. Rewrite `hb` using `[hb1]`. Establish `: γ *ᵥ z' = z'` using `by rw [hb]; simp`. Rewrite using `[hz0, Matrix.mulVec_smul, this]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fix_orthogonal_vector {N N' : ℕ} (σ : E →+* E) (hσ : ∀ (φ : E →+* ℂ) (x : E), φ (σ x) = (starRingEnd ℂ) (φ x))
     (J : Matrix (Fin N) (Fin N) E) (J' : Matrix (Fin N') (Fin N') E)
@@ -161,15 +157,15 @@ theorem fix_orthogonal_vector {N N' : ℕ} (σ : E →+* E) (hσ : ∀ (φ : E �
   rw [hz0, Matrix.mulVec_smul, this]
 
 /- English proof (translation)
-Establish `hrange : ∀ x, γ *ᵥ ι x ∈ LinearMap.range ι`. Introduce `x`. Take `⟨x', s, hs⟩` from `hspan (γ *ᵥ ι x)`. Establish `h0 : hform σ J (γ *ᵥ ι x) z0 = 0` using `by conv_lhs => rw [← hfix]`. Rewrite using `[hγ]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(horth x).1`. Rewrite `h0` using `[hs, hform_add_left, hform_smul_left, (horth x').1, zero_add]`. Establish `hs0 : σ s = 0` using `(mul_eq_zero.1 h0).resolve_right hzz`. Establish `: s = 0` using `(map_eq_zero σ).1 hs0`. Rewrite using `[hs, this, zero_smul, add_zero]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `⟨x', rfl⟩`. Set `e` to `LinearEquiv.ofInjective ι hinj`. Set `g : (Fin N' → E) →ₗ[E] LinearMap.range ι` to `LinearMap.codRestrict (LinearMap.range ι) ((Matrix.mulVecLin γ).comp ι) hrange`. Set `f : (Fin N' → E) →ₗ[E] (Fin N' → E)` to `e.symm.toLinearMap.comp g`. Establish `hf : ∀ x, ι (f x) = γ *ᵥ ι x`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x`. Establish `h1 : (e (f x) : Fin N → E) = ι (f x)` using `rfl`. Rewrite using `[← h1]`. Use `show ((e (e.symm (g x)) : LinearMap.range ι) : Fin N → E) = _`. Rewrite using `[LinearEquiv.apply_symm_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations.
 
-Both sides reduce to the same expression. Use `⟨LinearMap.toMatrix' f, fun x => ?_, fun x y => ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.toMatrix'_mulVec, hf]`. Rewrite using `[LinearMap.toMatrix'_mulVec, LinearMap.toMatrix'_mulVec, ← hiso, hf, hf, hγ, hiso]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fix_restrict {N N' : ℕ} (σ : E →+* E) (J : Matrix (Fin N) (Fin N) E) (J' : Matrix (Fin N') (Fin N') E)
     (ι : (Fin N' → E) →ₗ[E] (Fin N → E)) (hinj : Function.Injective ι) (z0 : Fin N → E)

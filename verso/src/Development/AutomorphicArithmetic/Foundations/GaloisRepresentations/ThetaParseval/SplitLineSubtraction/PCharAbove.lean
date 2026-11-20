@@ -13,17 +13,17 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 open UpperTheory.Gal.TP.Sub
 
 /- English proof (translation)
-Introduce `H hD hW hP hC E Ω _ _ _ _ _ l _ ι art ha χ n μ h1 h2 h3 w hu P AI hT A h O _ _ _ Bw hj`. Take `⟨a, ha'⟩` from `GlobalTheory.localArtinExists_holds E Ω A w h`. Establish `hξ` using `GlobalTheory.Published.ParamAboveModel.isComp_loc (w := w) χ`. Establish `d` using `hD E Ω l P AI hT ι art ha χ n μ h1 h2 h3 w A h O Bw hj`. Establish `hc : Continuous ((rk1 μ).comp (Dec (F` using `E) A).subtype) := ((hC (G E Ω) (Qbar l) 0 0).2.2.2 μ h2).comp continuous_subtype_val`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hr` using `hP l P AI hT E Ω A O Bw 1 _ hc d.1`. Establish `e` using `hW E Ω l P AI hT ι art ha χ n μ h1 h2 h3 w A h O Bw hj _ hξ a ha'`. Establish `hun` using `(GlobalTheory.Published.CharCrysModel.isUnram_iff χ w).2 hu`. Use `⟨?_, d.1, d.2, fun g => ?_⟩` and prove the remaining obligations. Rewrite using `[← GlobalTheory.PstLaws.unr_wdAt_iff Bw h hj P ι _ hr, e, GlobalTheory.LocLanglands.Test.unr_lpOfChar_iff ha' hξ.1]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hun`. Establish `hv : (χ.loc w (a g) : ℂ) = ((χ.val w : ℂˣ) : ℂ) ^ (-deg g)`. Establish `ho : GlobalTheory.SmGL.ord (w.adicCompletion E) (atFin w (unif w)) = 1`. Rewrite using `[GlobalTheory.SmGL.SphCompletion.ord_completion, show Valued.v ((atFin w (unif w) : (w.adicCompletion E)ˣ) : w.adicCompletion E) = _ from unif_spec w]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h1 : ∀ x : (w.adicCompletion E)ˣ, χ.loc w x = χ.val w ^ GlobalTheory.SmGL.ord (w.adicCompletion E) x` using `fun x => by`. Establish `h0 : GlobalTheory.SmGL.ord (w.adicCompletion E) (x * (atFin w (unif w) ^ GlobalTheory.SmGL.ord (w.adicCompletion E) x)⁻¹) = 0`. Establish `hz : ∀ (y : (w.adicCompletion E)ˣ), GlobalTheory.SmGL.unrChar (w.adicCompletion E) (Units.mk0 2 two_ne_zero) y = (Units.mk0 (2:ℂ) two_ne_zero) ^ GlobalTheory.SmGL.ord _ y` using `fun _ => rfl`. Set `φ : (w.adicCompletion E)ˣ →* Multiplicative ℤ` to `MonoidHom.mk' (fun y => Multiplicative.ofAdd (GlobalTheory.SmGL.ord _ y)) fun y z => by rw [GlobalTheory.SmGL.ord_mul, ofAdd_add]`. Establish `: φ (x * (atFin w (unif w) ^ GlobalTheory.SmGL.ord (w.adicCompletion E) x)⁻¹) = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul, map_inv, map_zpow]`. Simplify using `[φ, ho, ← ofAdd_zsmul]`. Conclude with `this`. Use `hun _ ((GlobalTheory.SmGL.ord_eq_zero_iff).1 h0)` as an intermediate fact. Rewrite `this` using `[map_mul, map_inv, map_zpow, mul_inv_eq_one]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `this`. Rewrite using `[h1, ha'.ord_eq, Units.val_zpow_eq_zpow_val]`. Rewrite using `[e, WD.charPol_eq_prod, GlobalTheory.LocLanglands.eig_lpOfChar]`. Simplify using `[unrPol, hv]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.TP.Sub.charAbove_holds :
     GlobalTheory.Published.HeckeLAdicCharacter → GlobalTheory.Published.HeckeLAdicCharacterDeRham → GlobalTheory.Published.AlgebraicCharacterWD → PstOfDR → ContLeft → CharAbove := by

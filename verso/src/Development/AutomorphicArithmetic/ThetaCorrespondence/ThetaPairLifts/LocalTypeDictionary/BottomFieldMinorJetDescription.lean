@@ -14,33 +14,31 @@ open GlobalTheory.RowEx MeasureTheory
 noncomputable section
 namespace GlobalTheory.BottomFieldDict
 /- English proof (translation)
-Introduce `D T _ L μ₀ sc G W i j A A' WW X _ _ _ hX n`. Take `⟨δ, hc, hδ⟩` from `GlobalTheory.FunObj.exists_delta D`. Take `⟨t0, ht0⟩` from `(GlobalTheory.TwoTorsionPt.exists_point D D.host.ccK δ hc).1`. Establish `hd : Even WW.rank`. Rewrite using `[← hX.is.rank, hX.rank, hX.rank']`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨h1, h2, h3⟩` from `SqNum.ranks_exact D i j`. Conclude with `⟨SqNum.halfRank D i j - (D.R.m - (j + 1)) / 2 - (D.R.m - j) / 2, by omega⟩`. Take `⟨e0, he0, he0ne⟩` from `GlobalTheory.Vacuum.exists_vacuum D D.host.ccK δ hc t0 ht0 A'.rank WW.rank (hd.mul_left _)`. Establish `hon : ∀ {V : HSp D}, V.gram = 1 → Formalism.UG.cT (D.sp.cm.sig : D.host.E →+* D.host.E) (1 : GL (Fin V.rank) D.host.E).1 * V.gram * (1 : GL (Fin V.rank) D.host.E).1 = 1`. Introduce `V hV`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hV]`. Simplify using `[Formalism.UG.cT]`. Establish `hfr : ∀ {V : HSp D} {r : GlobalTheory.IndefiniteRowSideFullHecke.UnitCharTriangle.Rig V}, r.IsStd → r.B = GlobalTheory.FockPos.frAt (1 : GL (Fin V.rank) D.host.E)`. Introduce `V r hr`. Use function extensionality and compare the values at `τ`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[(hr.2.2 τ).2]`. Simplify using `[GlobalTheory.FockPos.frAt]`. Establish `hS` using `hon hX.std'.1`. Establish `hT` using `hon hX.stdW.1`. Establish `hcS` using `fun τ => (hX.is.rigA'.2.2 τ).1`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcT` using `fun τ => (hX.is.rigW.2.2 τ).1`. Establish `hv` using `hX.is.isVac'`. Establish `hv1` using `hv`. Rewrite `hv1` using `[lat_eq_colLat hX.std', lat_eq_colLat hX.stdW]`. Take `⟨Θ, hΘ, hΘ0, hj⟩` from `GlobalTheory.FockPos.fock_jets_eq_theta W.ψ W.θ A' WW _ _ 1 1 hS hT hcS hcT δ hc hδ _ hv1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hG1` using `(GlobalTheory.InducedType.induced_type D).1`. Take `⟨c, hce⟩` from `(GlobalTheory.ThetaLine.theta_line D hG1 _ δ hc _ _ _ (Or.inr ⟨_, _, GlobalTheory.FinWeil.Vacuum.sd_std D _, GlobalTheory.FinWeil.Vacuum.sd_std D _, rfl⟩)).1 Θ hΘ e0 he0.1 he0ne`. Establish `hc0 : c ≠ 0`. Introduce and unpack `rfl`. Conclude with `hΘ0 (by rw [hce, zero_smul])`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Use `set p : ℂ := δ * (((Real.sqrt (2 * Real.pi * Formalism.L2.Pj.xiR D) : ℝ) : ℂ)⁻¹) with hp`. Establish `hper : ∀ τ : D.what₂.Tau, GlobalTheory.FunObj.period δ τ = p` using `fun τ => by`. Rewrite using `[GlobalTheory.FunObj.period, GlobalTheory.AdTh.Fock.norm_embedding_hostFormConstant_eq, div_eq_mul_inv]`. Establish `hp0 : p ≠ 0`. Use `mul_ne_zero hδ (inv_ne_zero ?_)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hx : 0 < Formalism.L2.Pj.xiR D` using `GlobalTheory.SupDict.xiR_pos D`. Conclude with `(Real.sqrt_pos.2 (by positivity)).ne'` after adjusting the coercions. Establish `hprod : ∀ k : GL3Theta.Idx D A'.rank WW.rank →₀ ℕ, (k.prod fun v e => GlobalTheory.FunObj.period δ v.1 ^ e) = p ^ (k.sum fun _ e => e)` using `fun k => by`. Simplify using `only [hper, Finsupp.prod, Finsupp.sum]`. Conclude with `Finset.prod_pow_eq_pow_sum _ _ _`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `⟨c * p ^ (A'.rank * ∑ τ, n τ), mul_ne_zero hc0 (pow_ne_zero _ hp0), D.host.ccK, δ, t0, e0, hc, ht0, he0, fun U => GlobalTheory.NormSum.minorPol D U, fun U α => minorPol_coeff_isAlgebraic U α, ?_⟩` and prove the remaining obligations. Introduce and unpack `w - ⟨m, hm, hw⟩`. Rewrite `hv`, `hw` using `[lat_eq_inV hX.std', lat_eq_inV hX.stdW]`. Take `⟨ζ, s, hζ, hs, hk⟩` from `GlobalTheory.HeisTrans.core W.ψ W.θ A' WW _ _ 1 1 hS hT hcS hcT _ _ (GlobalTheory.FinWeil.Vacuum.sd_std D _) (GlobalTheory.FinWeil.Vacuum.sd_std D _) δ hδ e0 he0.1.1 c X.vac' hv (fun k => by`. Establish `h` using `hj k`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Rewrite `h` using `[hce, GlobalTheory.FunObj.TopJet.applyAt0_monomial, GlobalTheory.FunObj.TopJet.taylor_const_smul D e0 he0.1.1]`. Rewrite using `[GlobalTheory.FunObj.TopJet.applyAt0_monomial]`. Use `h.trans ?_` and prove the remaining obligations. Use the proof step `ring) m hm w hw`. Take `⟨ζ', hζ', -⟩` from `GlobalTheory.HeisTrans.qbar_of_root hζ`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Use `⟨ζ, s, hζ' ▸ mem_algebraicClosure_iff.1 ζ'.2, ⟨m, hm, hs⟩, fun U => ?_⟩` and prove the remaining obligations. Establish `hUd : Differentiable ℂ (TaylorLogMetric.U D (TaylorLogMetric.tor0 D D.host.ccK δ) s e0)`. Establish `h : Differentiable ℂ (fun z : TaylorLogMetric.VC D A'.rank WW.rank => TaylorLogMetric.Hf D (TaylorLogMetric.tor0 D D.host.ccK δ) z s)`. Unfold `TaylorLogMetric.Hf`. Use `fun_prop`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h0 : Differentiable ℂ e0` using `he0.1.1`. Unfold `TaylorLogMetric.U`. Use `fun_prop`. Rewrite using `[hfr hX.std', hfr hX.stdW]`. Use `apply_minorPol U ((LinearMap.proj (0 : WO A' WW)).comp (pureTensorO W.ψ W.θ A' WW X.rA'.s X.rW.s (GlobalTheory.FockPos.frAt 1) (GlobalTheory.FockPos.frAt 1) (heisO W.ψ A' WW w X.vac'))) c p ζ _ fun k => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `h` using `hk k`. Rewrite `h` using `[hprod k, GlobalTheory.FunObj.TopJet.applyAt0_monomial]`. Establish `e : (fun z => ζ * TaylorLogMetric.U D (TaylorLogMetric.tor0 D D.host.ccK δ) s e0 z) = ζ • TaylorLogMetric.U D (TaylorLogMetric.tor0 D D.host.ccK δ) s e0` using `rfl`. Rewrite `h` using `[e, GlobalTheory.FunObj.TopJet.taylor_const_smul D _ hUd]`. Rewrite using `[GlobalTheory.FunObj.TopJet.applyAt0_monomial]`.
-
-Use `h.trans ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem vacuum_translate_minor_jet_alt : ∀ {D : D7} {T : Type} [Finite T] {L : LevCh D T} {μ₀ : T} {sc : Consts} {G : GridData L sc} {W : G.Weil}
     {i j : Fin D.R.m} {A A' WW : HSp D} {X : Tri T A A' WW}, _root_.GlobalTheory.FunPr.ThetaLocalInputs → (∀ D, GlobalTheory.NormSum.Inp D) → L.Is μ₀ → IsBottomTri W i j X →
@@ -128,13 +126,13 @@ theorem vacuum_translate_minor_jet_alt : ∀ {D : D7} {T : Type} [Finite T] {L :
   refine h.trans ?_
   ring
 /- English proof (translation)
-Introduce `D T _ L μ₀ sc G W i j A A' WW X hP hI hL hX n`. Take `⟨Ω, hΩ, cc, δ, t0, e0, hc, ht0, he0, Qf, hQf, H⟩` from `_root_.GlobalTheory.BottomFieldDict.vacuum_translate_minor_jet_alt hP hI hL hX n`. Use `⟨Ω, hΩ, fun t x hx h hh => ?_⟩` and prove the remaining obligations. Take `⟨k, c, w, hca, hwf, hwl, hexp⟩` from `_root_.GlobalTheory.BotExpand.kernel_eq_sum_of_jets hP hI hL hX t x hx h hh`. Use `choose ζ s hζ hs hζeq using fun l => H (w l) (hwf l) (hwl l)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hd : Differentiable ℂ e0` using `he0.1.1`. Establish `hU : ∀ l, Differentiable ℂ (TaylorLogMetric.U D (TaylorLogMetric.tor0 D cc δ) (s l) e0)` using `fun l => by`. Establish `h1 : Differentiable ℂ (fun z : TaylorLogMetric.VC D A'.rank WW.rank => TaylorLogMetric.Hf D (TaylorLogMetric.tor0 D cc δ) z (s l))`. Unfold `TaylorLogMetric.Hf`. Use `fun_prop`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Unfold `TaylorLogMetric.U`. Use `fun_prop`. Use `⟨cc, δ, t0, e0, k, fun l => c l * ζ l, s, hc, ht0, he0, fun l => (hca l).mul (hζ l), hs, fun U => ⟨Qf U, hQf U, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[hexp]`. Unfold `StandardLatticesGL3.comb`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[GlobalTheory.LiftTypePrime.Jets.applyAt0_comb Finset.univ _ _ hU, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[hζeq l U]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem kernel_minor_polynomial_eq_jet : ∀ {D : D7} {T : Type} [Finite T] {L : LevCh D T} {μ₀ : T} {sc : Consts} {G : GridData L sc} {W : G.Weil}
     {i j : Fin D.R.m} {A A' WW : HSp D} {X : Tri T A A' WW}, _root_.GlobalTheory.FunPr.ThetaLocalInputs → (∀ D, GlobalTheory.NormSum.Inp D) → L.Is μ₀ →
@@ -181,7 +179,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.RowEx MeasureTheory
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.BottomFieldDict.kernel_minor_polynomial_eq_jet | exact _root_.GlobalTheory.BottomFieldDict.kernel_minor_polynomial_eq_jet | (intros; apply _root_.GlobalTheory.BottomFieldDict.kernel_minor_polynomial_eq_jet <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.bottom_field_minor_jet_description : ∀ {D : D7} {T : Type} [Finite T] {L : LevCh D T} {μ₀ : T} {sc : Consts} {G : GridData L sc} {W : G.Weil}
     {i j : Fin D.R.m} {A A' WW : HSp D} {X : Tri T A A' WW}, _root_.GlobalTheory.FunPr.ThetaLocalInputs → (∀ D, GlobalTheory.NormSum.Inp D) → L.Is μ₀ →

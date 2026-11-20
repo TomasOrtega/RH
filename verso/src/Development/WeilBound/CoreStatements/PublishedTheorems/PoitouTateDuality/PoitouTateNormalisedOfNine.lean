@@ -9,26 +9,26 @@ open NumberField IsDedekindDomain Representation Formalism.ConjugateSelfDual Rec
 namespace PositivityTheory.PTN
 
 /- English proof (translation)
-The claim follows from `PositivityTheory.PTNLoc.locHyp`.
+A detailed English derivation is pending.
 -/
 theorem locHyp_holds : LocHyp := PositivityTheory.PTNLoc.locHyp
 
 /- English proof (translation)
-The claim follows from `poitouTateNormalised_of hfs locHyp_holds hvan`.
+A detailed English derivation is pending.
 -/
 theorem poitouTateNormalised_of_ptfs (hfs : PtfsHyp) (hvan : VanishAll) :
     PoitouTateNormalised :=
   poitouTateNormalised_of hfs locHyp_holds hvan
 
 /- English proof (translation)
-The claim follows from `poitouTateNormalised_of_ptfs (PositivityTheory.Lit1.PTN.ptfsHyp_of_cmp hN hS) PositivityTheory.Lit1.GFVanish.vanishAll`.
+A detailed English derivation is pending.
 -/
 theorem poitouTateNormalised_of_cmp (hN : PositivityTheory.Lit1.PTN.NineCmpFS) (hS : PositivityTheory.Lit1.PTN.ShaCmpFS) :
     PoitouTateNormalised :=
   poitouTateNormalised_of_ptfs (PositivityTheory.Lit1.PTN.ptfsHyp_of_cmp hN hS) PositivityTheory.Lit1.GFVanish.vanishAll
 
 /- English proof (translation)
-The claim follows from `poitouTateNormalised_of_cmp hN PositivityTheory.Lit1.PTN.shaCmpFS'`.
+A detailed English derivation is pending.
 -/
 theorem poitouTateNormalised_of_nine (hN : PositivityTheory.Lit1.PTN.NineCmpFS) : PoitouTateNormalised :=
   poitouTateNormalised_of_cmp hN PositivityTheory.Lit1.PTN.shaCmpFS'

@@ -12,9 +12,9 @@ noncomputable section
 namespace VerticalPointLength
 
 /- English proof (translation)
-Take `⟨t, ht⟩` from `hW.2 ()`. Take `⟨hmax, hrat, hmem⟩` from `hCh T K' y s hP hs hsP W hW t ht`. Establish `hsW : s ∈ W` using `hW.1.1.2 (Ideal.mem_sup_right (Ideal.mem_span_singleton_self s))`. Take `⟨a, b, -, hb, hab⟩` from `(hmem 1 s hs).mp hsW`. Rewrite `hab` using `[pow_one]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `⟨hmax, ?_⟩` and prove the remaining obligations. Rewrite using `[hMC T K' y s hP hs hsP W hW t ht a b hb hab, hSQ T K' y s hP hs hsP _ t hmax.isPrime hrat a b hb hab]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem maximal_and_mult_eq (hCh : VertPointChart.Statement) (hMC : VertPointMultChart.Statement)
     (hSQ : SectionQuotLocal.Statement) {T : Type} [Fintype T] {K' : Type} [Field K'] [NumberField K']
@@ -35,7 +35,7 @@ theorem maximal_and_mult_eq (hCh : VertPointChart.Statement) (hMC : VertPointMul
 end VerticalPointLength
 
 /- English proof (translation)
-Introduce `T _ K' _ _ y s hP hs hsP`. Use `⟨⟨fun W hW => ?_, hInj T K' y s hP hs hsP, fun m hm => hSurj T K' y s hP hs hsP m hm.1 hm.2⟩, fun W hW => (VerticalPointLength.maximal_and_mult_eq hCh hMC hSQ hP hs hsP hW).2⟩` and prove the remaining obligations. Take `⟨hmax, hmult⟩` from `VerticalPointLength.maximal_and_mult_eq hCh hMC hSQ hP hs hsP hW`. Conclude with `⟨hmax, hmult ▸ (IndefiniteRowSideFullHecke.Inter.multAt_pos_of_mem_divSupp hW).ne'⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem VertPointLength.proof (hCh : VertPointChart.Statement)
     (hInj : VertPointInj.Statement) (hSurj : VertPointSurj.Statement)

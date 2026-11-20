@@ -24,11 +24,11 @@ def comL (L : LevCh D Unit) (θ : InfFam D) (ψ : AddChar (AF D.host.F) ℂ) (P 
   ⟨θ, ψ, L.mu (), L.eta, L.Pg, P, L.chi⟩
 
 /- English proof (translation)
-Unfold `Com.S`. Rewrite using `[Finset.mem_image]`. Break down `GlobalTheory.ConjOverQuad.div_or_conj_div D L.C.P k Q hk with h1 | ⟨Q', h1, hc⟩` into its components or cases. Conclude with `⟨Q, (hL.Pg Q).2 ⟨k, h1⟩, rfl⟩`. Use `⟨Q', (hL.Pg Q').2 ⟨k, h1⟩, ?_⟩` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Use extensionality with `x`. Use `show algebraMap _ _ x ∈ Q'.asIdeal ↔ algebraMap _ _ x ∈ Q.asIdeal`. Rewrite using `[hc, Formalism.L2.Col.mem_conjIdeal]`. Establish `: Formalism.L2.Col.cO D.host.E (algebraMap (𝓞 D.host.F) (𝓞 D.host.E) x) = algebraMap _ _ x`. Apply `RingOfIntegers.ext` to reduce the goal to its premises.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(D.sp.cm.fixed _).2 ⟨x, rfl⟩`. Rewrite using `[this]`.
+A detailed English derivation is pending.
 -/
 theorem mem_S {L : LevCh D Unit} (hL : L.Is ()) (θ ψ P) (k : Fin 2) (Q : Pl D.host.E)
     (hk : ((D.host.g k : ℕ) : 𝓞 D.host.E) ∈ Q.asIdeal) : Q.under (𝓞 D.host.F) ∈ (comL L θ ψ P).S := by
@@ -47,11 +47,9 @@ theorem mem_S {L : LevCh D Unit} (hL : L.Is ()) (θ ψ P) (k : Fin 2) (Q : Pl D.
     rw [this]
 
 /- English proof (translation)
-Establish `hμ : ∀ j : Fin D.R.m, ChrEq (L.mu () ((j : ℕ) + 1)) (L.C.mu0 j)` using `fun j => by`. Use `GlobalTheory.Mem.TupChar.chrEq_mul (hL.mu0 j) (hL.xi ())` as an intermediate fact. Rewrite `this` using `[hL.xi_base, mul_one]`. Conclude with `this`. Use `⟨hθ, hψ, ⟨hL.eta.1, GlobalTheory.Mem.TupChar.unramEverywhere hL.eta L.C.isEta.unr, GlobalTheory.HeckeCharacterRestriction.resEta_eta hL, fun τ => ?_, fun j hj => ?_⟩, fun j τ => ?_, fun j w hw => ?_, fun j => ⟨_, hμ j, hL.chi j⟩, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `GlobalTheory.HeckeInfExp.hasInfExp_of_chrEq D _ _ _ hL.eta (GlobalTheory.InnerSteps.hasInfQ_tauE (a := fun _ => 1 / 2) ⟨fun _ => 1, fun _ => by norm_num, L.C.isEta.inf⟩) τ`. Take `⟨h1, h2⟩` from `Finset.mem_Icc.1 hj`. Take `⟨i, rfl⟩ : ∃ i, j = i + 1` from `⟨j - 1, by omega⟩`. Conclude with `⟨GlobalTheory.HeckeCharacterRestriction.isHecke_mu hL () ⟨i, by omega⟩, GlobalTheory.HeckeCharacterRestriction.resEta_mu hL () ⟨i, by omega⟩⟩`. Establish `h1` using `GlobalTheory.HeckeInfExp.hasInfExp_of_chrEq D _ _ _ (hμ j) (GlobalTheory.InnerSteps.hasInfQ_tauE (L.C.isMu0 j).inf) τ`.
-
-Simplify using `only [Formalism.L2.Host.eExp, Equiv.symm_apply_apply] at h1`. Conclude with `h1`. Conclude with `(GlobalTheory.LFun.unrAt_iff_of_chrEq (hμ j) w).2 ((L.C.isMu0 j).unr w fun k hk => hw (mem_S hL θ ψ P k w hk))`. Conclude with `GlobalTheory.CentralShift.exists_idemSum _ fun Q hQ Q' hQ' => GlobalTheory.HeckeCharacterRestriction.not_isConjPl_union hL () (Or.inl hQ) (Or.inl hQ')`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem comL_is {L : LevCh D Unit} (hL : L.Is ()) {θ : InfFam D} (hθ : IsInfFam θ) {ψ : AddChar (AF D.host.F) ℂ}
     (hψ : IsStdChar D ψ (-1)) (P : LevelP L.Pg D.R.r ℂ) : (comL L θ ψ P).Is := by
@@ -73,9 +71,9 @@ theorem comL_is {L : LevCh D Unit} (hL : L.Is ()) {θ : InfFam D} (hθ : IsInfFa
   · exact GlobalTheory.CentralShift.exists_idemSum _ fun Q hQ Q' hQ' => GlobalTheory.HeckeCharacterRestriction.not_isConjPl_union hL () (Or.inl hQ) (Or.inl hQ')
 
 /- English proof (translation)
-Take `⟨⟨W, hW, hWQ⟩⟩` from `(inferInstance : Nonempty ((L.C.P.pb 0).asIdeal.primesOver (𝓞 D.host.E)))`. Establish `hne : W ≠ ⊥`. Introduce and unpack `rfl`. Use `hWQ.over` as an intermediate fact. Rewrite `this` using `[Ideal.under_def, Ideal.comap_bot_of_injective _ (FaithfulSMul.algebraMap_injective _ _)]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(L.C.P.pb 0).ne_bot this`. Conclude with `⟨⟨W, hW, hne⟩, (hL.Pg _).2 ⟨0, HeightOneSpectrum.ext hWQ.over.symm⟩⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem pg_nonempty {L : LevCh D Unit} (hL : L.Is ()) : L.Pg.Nonempty := by
   obtain ⟨⟨W, hW, hWQ⟩⟩ := (inferInstance : Nonempty ((L.C.P.pb 0).asIdeal.primesOver (𝓞 D.host.E)))
@@ -87,7 +85,7 @@ theorem pg_nonempty {L : LevCh D Unit} (hL : L.Is ()) : L.Pg.Nonempty := by
   exact ⟨⟨W, hW, hne⟩, (hL.Pg _).2 ⟨0, HeightOneSpectrum.ext hWQ.over.symm⟩⟩
 
 /- English proof (translation)
-Take `⟨L, -, hL⟩` from `GlobalTheory.LevelChoices.exists_levCh_unit D C`. Take `⟨θ, hθ⟩` from `GlobalTheory.Member.exists_isInfFam_family D`. Take `⟨ψ, hψ⟩` from `GlobalTheory.StdAdelicChar.exists_isStdChar D`. Conclude with `⟨comL L θ ψ L.triv, pg_nonempty hL, fun P => comL_is hL hθ hψ P⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_com (C : Formalism.L2.Host.CharFrame D) :
     ∃ c : Com D, c.Pg.Nonempty ∧ ∀ P : LevelP c.Pg D.R.r ℂ, Com.Is { c with P := P } := by
@@ -97,9 +95,9 @@ theorem exists_com (C : Formalism.L2.Host.CharFrame D) :
   exact ⟨comL L θ ψ L.triv, pg_nonempty hL, fun P => comL_is hL hθ hψ P⟩
 
 /- English proof (translation)
-Use `(GlobalTheory.MemberAdelicTop.locallyCompact_secondCountable_t2 D V).1` as an intermediate fact. Establish `: BorelSpace (GA D V)` using `⟨rfl⟩`. Establish `: IsModuleTopology (AF D.host.F) (AF D.host.F ⊗[D.host.F] D.host.E)` using `⟨rfl⟩`. Establish `: Module.Finite D.host.F D.host.E` using `Module.Finite.of_restrictScalars_finite ℚ _ _`. Establish `: IsTopologicalRing (AF D.host.F ⊗[D.host.F] D.host.E)` using `IsModuleTopology.isTopologicalRing (AF D.host.F) _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsTopologicalGroup (GA D V)` using `inferInstanceAs (IsTopologicalGroup (HR (AF D.host.F) D.sp.cm.sig V.gram))`. Take `⟨𝓖, h⟩` from `GlobalTheory.FundDomDiscrete.exists_fundDom D V Measure.haar inferInstance`. Conclude with `⟨Measure.haar, 𝓖, inferInstance, h⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_haar (V : HSp D) :
     ∃ (ν : Measure (GA D V)) (𝓖 : Set (GA D V)), ν.IsHaarMeasure ∧ IsFundamentalDomain (GQ V) 𝓖 ν := by
@@ -115,9 +113,9 @@ theorem exists_haar (V : HSp D) :
   exact ⟨Measure.haar, 𝓖, inferInstance, h⟩
 
 /- English proof (translation)
-Take `⟨M⟩` from `GlobalTheory.Published.dsExists_of_discreteSeriesExists hN D _ _ (D.sp.Y_sig j) (GlobalTheory.ChainModels.goodPar_parB D j hj)`. Take `⟨β, n, hβ⟩` from `GlobalTheory.T.exists_selfDual_adelic_frame_level_one D (D.sp.Y j) _ (GlobalTheory.LevelChoices.coe_crdLat _) (GlobalTheory.LevelChoices.dualL_crdLat _)`. Rewrite `hβ` using `[one_pow]`. Take `⟨ν, fd, hν, hfd⟩` from `exists_haar (D := D) (D.sp.Y j)`. Establish `hr : D.R.r ≤ (D.sp.Y j).rank` using `by rw [D.sp.Y_rank j hj]; exact Nat.le_add_right _ _`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨⟨D.sp.Y j, _, M, _, β, Lev.datY _ D.R.r D.R.t j hr c.Pg ∅ c.P c.chi (fun _ => 1) Lev.Frm.B, ν, fd⟩, rfl, D.sp.Y_rank j hj, D.sp.Y_sig j, D.Y_sigval j hj, rfl, GlobalTheory.Mem.EasyInputs.selfDualOK D _ _ _ _ hβ, hβ.1, ⟨1, hβ, fun P _ h => P.isPrime.ne_top ((Ideal.eq_top_iff_one …` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations.
 -/
 theorem exists_stage (hN : GlobalTheory.Published.DiscreteSeriesExists) (c : Com D) (j : ℕ) (hj : j ≤ D.R.m) :
     ∃ s : PiLocalization₂ D, s.V = D.sp.Y j ∧ s.Is c j := by
@@ -131,9 +129,9 @@ theorem exists_stage (hN : GlobalTheory.Published.DiscreteSeriesExists) (c : Com
     ⟨1, hβ, fun P _ h => P.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 (by simpa using h))⟩, ⟨hr, _, rfl⟩, hν, hfd⟩
 
 /- English proof (translation)
-Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => exact fun _ => ⟨s₀, h₀, _, Reach.zero⟩`. Consider the case `succ k ih`. Introduce `hk`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨s, hs, Θ, hΘ⟩` from `ih (by omega)`. Take `⟨s', -, hs'⟩` from `exists_stage hN c (k + 1) hk`. Take `⟨p, hp⟩` from `hstep k (by omega) s s' hs hs'`. Conclude with `⟨s', hs', _, hΘ.step hs' p hp⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_reach (hN : GlobalTheory.Published.DiscreteSeriesExists) (c : Com D)
     (hstep : ∀ k < D.R.m, ∀ s s' : PiLocalization₂ D, s.Is c k → s'.Is c (k + 1) → ∃ p : Step c s s', p.Is (k + 1))
@@ -149,12 +147,12 @@ theorem exists_reach (hN : GlobalTheory.Published.DiscreteSeriesExists) (c : Com
     exact ⟨s', hs', _, hΘ.step hs' p hp⟩
 
 /- English proof (translation)
-The claim follows from `h.it.ne`.
+A detailed English derivation is pending.
 -/
 theorem it_ne_zero {c : Com D} {s s' : PiLocalization₂ D} {p : Step c s s'} {j : ℕ} (h : p.Is j) : p.It ≠ 0 := h.it.ne
 
 /- English proof (translation)
-Simplify using `only [chainPar_succ, stepPar, Multiset.card_add, Multiset.card_map, GlobalTheory.LFun.seg, Finset.card_val, Finset.card_range]`. Use `show (B w).card + _ + _ = _`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem chainPar_two (c : Com D) (B : GlobalTheory.LFun.Fam D.host.E) (w) :
     (chainPar c B 2 w).card = (B w).card + 2 * D.R.t := by

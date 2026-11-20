@@ -22,19 +22,17 @@ noncomputable section
 namespace GlobalTheory.AbDual
 
 /- English proof (translation)
-Introduce `R _ _ G _ hA P hP h0l h0r hsym T a ha`. Establish `hs : (swap P).IsLB` using `pull_isLB hP _`. Establish `hadd` using `(isAdditive_iff hP).1 (CubeNoeth.isAdditive_of_triv_axes hA hA hP h0l h0r)`. Establish `hadd'` using `(isAdditive_iff hs).1 (CubeNoeth.isAdditive_swap_of_triv_axes hA hA hP h0l h0r)`. Establish `hadd2 : ∀ (Y : Over (Sp R)) (u v w : Y ⟶ G), evc hP u (v * w) = evc hP u v + evc hP u w`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `Y u v w`. Rewrite using `[← evc_swap hP hs, ← evc_swap hP hs, ← evc_swap hP hs]`. Conclude with `hadd' Y v w u`. Establish `hc : cls P hP = cls (swap P) hs` using `(cls_eq_iff hP hs).2 hsym`. Establish `hsymm : ∀ (Y : Over (Sp R)) (u v : Y ⟶ G), evc hP u v = evc hP v u`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `Y u v`. Rewrite using `[← evc_swap hP hs u v]`. Simplify using `only [evc, hc]`. Establish `hL : (P.pull (lift (𝟙 G) (𝟙 G)).left).IsLB` using `pull_isLB hP _`. Establish `hcL : ∀ (Y : Over (Sp R)) (u : Y ⟶ G), CechPic.pull u.left (cls _ hL) = evc hP u u`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `Y u`. Rewrite using `[cls_ev hP, pull_evc, Category.comp_id]`. Establish `hx0 : evc hP (fst T G ≫ a) (snd T G) = 0`. Establish `e` using `congrArg (CechPic.pull (lift (snd T G) (fst T G)).left) ((triv_ev_iff hP _ _).1 ha)`. Rewrite `e` using `[pull_evc, map_zero, lift_snd_assoc, lift_fst]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `hD : (Out.translDiff G _ a).IsLB` using `LB.isLB_linComb hL _ _`. Introduce `p`. Take `⟨V, hV, hc'⟩` from `exists_pull_eq_zero (evc hP a a) p`. Use `⟨V, hV, (cls_eq_zero_iff (pull_isLB hD _)).1 ?_⟩` and prove the remaining obligations. Establish `e₁` using `pull_translDiff hL a hD (fst T G) (snd T G)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e₁` using `[lift_fst_snd, Over.id_left, pull_id, hcL, hcL]`. Establish `e₂ : cls _ hD = CechPic.pull (fst T G).left (evc hP a a)`. Rewrite using `[e₁, pull_evc, hadd, hadd2, hadd2, hsymm _ (snd T G) (fst T G ≫ a), hx0]`. Normalize the expressions using the abelian group laws. Rewrite using `[cls_pull hD, e₂, ← pull_comp]`.
-
-Conclude with `pull_eq_zero_of_mem V (((fst T G).left ⁻¹ᵁ V).ι ≫ (fst T G).left) (fun z ↦ z.2) hc'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem memKL_diag_of_triv_ev_of_symm : ∀ (R : Type) [CommRing R] [IsNoetherianRing R] (G : Over (Sp R)) [GrpObj G], IsAbelianScheme G → ∀ P : LB (G ⊗ G).left, P.IsLB → (∃ t : (P.pull (lift (1 : G ⟶ G) (𝟙 G)).left).Gen, t.IsGen) → (∃ t : (P.pull (lift (𝟙 G) (1 : G ⟶ G)).left).Gen, t.IsGen) → LBIso P (P.pull (lift (snd G G) (fst G G)).left) → ∀ (T : Over (Sp R)) (a : T ⟶ G), (∃ t : (P.pull (lift (snd G T ≫ a) (fst G T)).left).Gen, t.IsGen) → GlobalTheory.MemKL G (P.pull (lift (𝟙 G) (𝟙 G)).left) a := by
   intro R _ _ G _ hA P hP h0l h0r hsym T a ha

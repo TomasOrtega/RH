@@ -18,17 +18,13 @@ open ReciprocityTheory.L2DbarEstimates (V)
 namespace GlobalTheory.GoodTop
 
 /- English proof (translation)
-Introduce `F _ σ X m E O H H₀ hH hG hH₀ t ht`. Rewrite `ht`, the goal using `[hasChernIntegral_iff]`. Use `haveI := X.smooth_str`. Use `haveI : SecondCountableTopology (CxPts X.str σ) := inferInstance`. Establish `hp : ∀ y : CxPts X.str σ, ∃ e S A W c, y ∈ W ∧ GoodPatch E O H e S A W c` using `fun y => by`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Distinguish the cases in `hy : y ∈ ptsIn X.str σ O`. Conclude with `GlobalTheory.T.exists_goodPatch_of_complexPoint_openPart E O H hH y hy`. Conclude with `GlobalTheory.T.exists_poincareGoodPatch_outside_open E O H hG y hy`. Use `choose e S A W c hyW hP using hp`. Take `⟨s, ρ, hρ, hsupp, hsum⟩` from `GlobalTheory.T.exists_smooth_partition_of_unity_complexPoints W fun y => (hP y).isOpen.mem_nhds (hyW y)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `choose a b ha hb hab using fun i : s => GlobalTheory.T.transgression_topChernForm_goodPatch E O H H₀ hH hH₀ (hP i) (hρ i) (hsupp i)`. Establish `hd : ∀ i j : AlgChart X.str σ X.dim, DifferentiableOn ℂ (j.e ∘ i.e.symm) (i.e.target ∩ i.e.symm ⁻¹' j.e.source)` using `fun i j => i.holo_trans j`. Establish `hcov : ∀ y, ∃ i : AlgChart X.str σ X.dim, y ∈ i.e.source` using `fun y => AlgChart.exists_mem_source y`. Establish `hm : ∀ U : X.X.Opens, MeasurableSet (ptsIn X.str σ U)` using `fun U => (isOpen_ptsIn U).measurableSet`. Establish `hc : ∀ i, Continuous (ρ i)` using `fun i => continuous_iff_continuousAt.2 fun y => (hρ i y).continuousAt`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `h₁ : HasInt (fun c : AlgChart X.str σ X.dim => c.e) (topDens E H) (ptsIn X.str σ O) (∑ i, a i)`. Use `GlobalTheory.T.hasTopFormChartIntegral_congr_on _ (hm O) (fun i y _ _ => ?_) (GlobalTheory.T.integral_finite_sum_topForms _ hd hcov (hm O) (fun i => GlobalTheory.T.continuous_mul_top_chern_form_isTopDegree E O H hH (hc i)) ha)` and prove the remaining obligations. Rewrite using `[← Finset.sum_mul, hsum, one_mul]`. Establish `h₂ : HasInt (fun c : AlgChart X.str σ X.dim => c.e) (topDens E H₀) (ptsIn X.str σ ⊤) (∑ i, b i)`. Use `GlobalTheory.T.hasTopFormChartIntegral_congr_on _ (hm ⊤) (fun i y _ _ => ?_) (GlobalTheory.T.integral_finite_sum_topForms _ hd hcov (hm ⊤) (fun i => GlobalTheory.T.continuous_mul_top_chern_form_isTopDegree E ⊤ H₀ hH₀ (hc i)) hb)` and prove the remaining obligations.
-
-Rewrite using `[← Finset.sum_mul, hsum, one_mul]`. Establish `h₃ : HasInt (fun c : AlgChart X.str σ X.dim => c.e) (fun _ _ => 0) (ptsIn X.str σ O) (∑ i, (a i - b i))` using `GlobalTheory.T.hasTopFormChartIntegral_congr_on _ (hm O) (fun i y _ hy => GlobalTheory.T.sum_transgression_densities_partition_unity_eq_zero E O H H₀ ρ hρ hsum i y hy) (GlobalTheory.T.integral_finite_sum_topForms _ hd hcov (hm O) (fun i => GlobalTheory.T.transgression_correction_ …`. Establish `e₂ : ∑ i, b i = t` using `h₂.2.symm.trans ht.2`. Establish `e₃ : ∑ i, (a i - b i) = 0` using `h₃.2.symm.trans (GlobalTheory.T.hasTopFormChartIntegral_zero _ _).2`. Rewrite `e₃` using `[Finset.sum_sub_distrib, sub_eq_zero, e₂]`.
-
-Conclude with `e₃ ▸ h₁`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem goodTopChernForm : GlobalTheory.Published.GoodTopChernForm := by
   intro F _ σ X m E O H H₀ hH hG hH₀ t ht

@@ -14,7 +14,7 @@ noncomputable section
 namespace GlobalTheory.CompHS
 
 /- English proof (translation)
-Use `GlobalTheory.TangentOrigin.eq_spec_fromSpec hU _ h` as an intermediate fact. Rewrite `this` using `[cancel_mono]`. Use `Spec.map_injective this` as an intermediate fact. Conclude with `(congrArg CommRingCat.Hom.hom this).symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem evalPt_spMap_fromSpec {X : Scheme.{0}} {U : X.Opens} (hU : IsAffineOpen U) {R : Type} [CommRing R]
     (ψ : Γ(X, U) →+* R) (h : ⊤ ≤ (spMap ψ ≫ (show Sp Γ(X, U) ⟶ X from hU.fromSpec)) ⁻¹ᵁ U) :
@@ -25,27 +25,23 @@ theorem evalPt_spMap_fromSpec {X : Scheme.{0}} {U : X.Opens} (hU : IsAffineOpen 
   exact (congrArg CommRingCat.Hom.hom this).symm
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c Y X Z la σ m hm W hW i p hi hdom hsm hp hbd`. Establish `hPW : (Y₀ X Z).basicOpen p ≤ W` using `(Y₀ X Z).basicOpen_le p`. Establish `hPU : (Y₀ X Z).basicOpen p ≤ U₀ X Z` using `fun y hy => by`. Assume the negation of the conclusion as `h`. Conclude with `(hbd y (hPW hy)).1 h hy`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `hPL : (Y₀ X Z).basicOpen p ≤ U₀ X Z ⊓ (L₀ X Z la).U i` using `le_inf hPU (hPW.trans hi)`. Use `hW.isLocalization_basicOpen p` as an intermediate fact. Take `⟨⟨a, _, M, rfl⟩, e⟩` from `IsLocalization.surj (Submonoid.powers p) (resG _ hPL (m.loc i))`. Establish `e' : resG _ hPL (m.loc i) * resG _ hPW (p ^ M) = resG _ hPW a` using `e`. Establish `hφ : Spec.map (Spec.preimage ((show Sp Γ(Y₀ X Z, W) ⟶ Y₀ X Z from hW.fromSpec) ≫ str₀ X Z)) = (show Sp Γ(Y₀ X Z, W) ⟶ Y₀ X Z from hW.fromSpec) ≫ str₀ X Z` using `Spec.map_preimage _`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Equip the data with the indicated structure.
 
-Use `letI : Algebra c.F Γ(Y₀ X Z, W) := (Spec.preimage ((show Sp Γ(Y₀ X Z, W) ⟶ Y₀ X Z from hW.fromSpec) ≫ str₀ X Z)).hom.toAlgebra`. Take `⟨b, hab, hb⟩` from `exists_eq_mul_pow_of_tendsto_zero c.F Γ(Y₀ X Z, W) hsm σ p a M hp fun ψ r hψ hσ h0 h1 => by`. Establish `hlim` using `hm W hW i hi ψ r hψ (fun u hu => by`. Rewrite using `[← hσ u hu]`. Conclude with `(congrArg (spMap (ψ u) ≫ ·) hφ.symm).trans (Spec.map_comp _ _).symm)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use the proof step `(fun s => (hbd _ (spMap_fromSpec_mem hW _ s)).2 fun h => (spMap_fromSpec_mem_basicOpen hW _ p s).1 h h0)`. Use the proof step `(fun u hu hu0 s _ => hPU ((spMap_fromSpec_mem_basicOpen hW _ p s).2 (h1 u hu hu0)))`. Rewrite using `[Metric.tendsto_nhds]`. Introduce `ε hε`. Establish `hball : Metric.ball (0 : ℂ) r ∈ 𝓝 (0 : ℂ)` using `Metric.ball_mem_nhds _ hψ.1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `filter_upwards [hlim ε hε, mem_nhdsWithin_of_mem_nhds hball, self_mem_nhdsWithin] with u hu hub hu0`. Establish `hWx : ⊤ ≤ (spMap (ψ u) ≫ (show Sp Γ(Y₀ X Z, W) ⟶ Y₀ X Z from hW.fromSpec)) ⁻¹ᵁ W` using `fun s _ => spMap_fromSpec_mem hW _ s`. Establish `hPx : ⊤ ≤ (spMap (ψ u) ≫ (show Sp Γ(Y₀ X Z, W) ⟶ Y₀ X Z from hW.fromSpec)) ⁻¹ᵁ (Y₀ X Z).basicOpen p` using `fun s _ => (spMap_fromSpec_mem_basicOpen hW _ p s).2 (h1 u hub hu0)`. Establish `hO : ⊤ ≤ (spMap (ψ u) ≫ (show Sp Γ(Y₀ X Z, W) ⟶ Y₀ X Z from hW.fromSpec)) ⁻¹ᵁ U₀ X Z` using `fun s hs => hPU (hPx hs)`. Establish `hiu : ⊤ ≤ (spMap (ψ u) ≫ (show Sp Γ(Y₀ X Z, W) ⟶ Y₀ X Z from hW.fromSpec)) ⁻¹ᵁ (L₀ X Z la).U i` using `fun s hs => hi (hWx hs)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hev` using `evalPt_spMap_fromSpec hW (ψ u) hWx`. Establish `hpu : ψ u (p ^ M) ≠ 0`. Rewrite using `[map_pow]`. Conclude with `pow_ne_zero _ (h1 u hub hu0)`. Establish `hmul : H0.val (spMap (ψ u) ≫ (show Sp Γ(Y₀ X Z, W) ⟶ Y₀ X Z from hW.fromSpec)) i hO hiu m * ψ u (p ^ M) = ψ u a`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `e₁` using `congrArg (GlobalTheory.TangentOrigin.evalPt _ _ hPx) e'`. Rewrite `e₁` using `[map_mul, GlobalTheory.TangentOrigin.evalPt_res _ hPL (GlobalTheory.TopForm.le_preimage_inf hO hiu) hPx, GlobalTheory.TangentOrigin.evalPt_res _ hPW hWx hPx, GlobalTheory.TangentOrigin.evalPt_res _ hPW hWx hPx, hev]`. Conclude with `e₁`. Rewrite using `[dist_zero_right, ← hmul, mul_div_cancel_right₀ _ hpu]`. Conclude with `hu hO hiu`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `⟨b, fun y' h h' => ?_, fun y' h hy => ?_⟩` and prove the remaining obligations. Establish `hyP : y' ∈ (Y₀ X Z).basicOpen p`. Assume the negation of the conclusion as `hn`. Conclude with `(hbd y' h).2 hn h'`. Establish `hunit : IsUnit (ger y' h p)` using `((Y₀ X Z).mem_basicOpen p y' h).1 hyP`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hunit' : IsUnit (ger y' h (p ^ M))`. Rewrite using `[map_pow]`. Conclude with `hunit.pow M`. Establish `e₁` using `congrArg (ger y' hyP) e'`. Rewrite `e₁` using `[map_mul, ger_resG, ger_resG, ger_resG, hab, map_mul]`.
-
-Conclude with `(hunit'.mul_right_cancel e₁).symm`. Establish `hyP : y' ∉ (Y₀ X Z).basicOpen p` using `(hbd y' h).1 hy`. Rewrite using `[IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]`. Introduce `hu`. Take `⟨n, hn⟩` from `hb`.
-
-Take `⟨d, hd⟩` from `Ideal.mem_span_singleton'.1 hn`. Use `hyP (((Y₀ X Z).mem_basicOpen p y' h).2 ?_)` and prove the remaining obligations. Establish `h₂` using `hu.pow n`. Rewrite `h₂` using `[← map_pow, ← hd, map_mul]`. Conclude with `isUnit_of_mul_isUnit_right h₂`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_extension_of_arcZero : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (Y : Model Xo c (RingHom.id c.F)) (X : FlagCover Y) (Z : Comp Xo c) (la : GlobalTheory.AllWt.Weight Dw) (σ : c.F →+* ℂ) (m : H0 (str₀ X Z) (L₀ X Z la) (U₀ X Z)), ArcZero X Z la σ m → ∀ (W : (Y₀ X Z).Opens) (hW : IsAffineOpen W) (i : (L₀ X Z la).ι) (p : Γ(Y₀ X Z, W)) (hi : W ≤ (L₀ X Z la).U i), IsDomain Γ(Y₀ X Z, W) → RingHom.Smooth (Spec.preimage ((show Sp Γ(Y₀ X Z, W) ⟶ Y₀ X Z from hW.fromSpec) ≫ str₀ X Z)).hom → p ≠ 0 → (∀ y' ∈ W, (y' ∈ bd₀ X Z ↔ y' ∉ (Y₀ X Z).basicOpen p)) → ∃ b : Γ(Y₀ X Z, W), (∀ y' (h : y' ∈ W) (h' : y' ∈ U₀ X Z), ger y' h b = H0.germ i y' h' (hi h) m) ∧ ∀ y' (h : y' ∈ W), y' ∈ bd₀ X Z → ger y' h b ∈ IsLocalRing.maximalIdeal ((Y₀ X Z).presheaf.stalk y') := by
   intro E _ _ _ H Dw l Xo c Y X Z la σ m hm W hW i p hi hdom hsm hp hbd

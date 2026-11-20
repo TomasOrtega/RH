@@ -11,7 +11,7 @@ set_option autoImplicit false
 namespace GlobalTheory.DegCmp
 
 /- English proof (authored)
-Let W be the range of ev. Induct on the construction of t as an element of Wᵈ. In degree zero, a ground scalar gives a constant polynomial, which lies in the algebra. Addition of elements of Wᵈ corresponds to addition of their degree-d monomials. In the multiplication step write the new coefficient as ev(v)t′, with t′ in the preceding power. Its monomial is the product of X·C(ev(v)) and the monomial for t′. The first factor is a generator of coneAlg and the second belongs by induction.
+Let W be the range of ev. Induct on the construction of t as an element of Wᵈ. In degree zero, a ground scalar gives a constant polynomial, which lies in the algebra. Addition of elements of Wᵈ corresponds to addition of their degree-d monomials. In the multiplication step write the new coefficient as ev(v)t′, with t′ in the preceding power. Its monomial is the product of X·C(ev(v)) and the monomial for t′. The first factor is a generator of the cone algebra and the second belongs by induction.
 -/
 theorem X_pow_mul_C_mem_coneAlg {K V Ω : Type} [Field K] [AddCommGroup V] [Module K V] [Field Ω] [Algebra K Ω]
     (ev : V →ₗ[K] Ω) (d : ℕ) (t : Ω) (ht : t ∈ ((LinearMap.range ev) ^ d : Submodule K Ω)) :
@@ -35,7 +35,7 @@ theorem X_pow_mul_C_mem_coneAlg {K V Ω : Type} [Field K] [AddCommGroup V] [Modu
 /- English proof (authored)
 Write W for the range of ev. For the forward direction, the condition that the coefficient of degree d belongs to Wᵈ is preserved by the operations generating the algebra. The generator X·C(ev(v)) has its only possibly nonzero coefficient in degree one, where it lies in W. Ground scalars contribute only in degree zero, where W⁰ is the ground-scalar submodule. The condition is closed under addition degree by degree. In a product, each contribution to degree d is a product of coefficients from degrees i and j with i+j=d, so it belongs to WⁱWʲ = Wᵈ. The sum of these contributions also belongs.
 
-Conversely, expand p as the finite sum of its coefficient monomials. The preceding lemma puts each monomial Xᵈ·C(p_d) in the algebra because p_d belongs to Wᵈ. Closure under finite addition gives p in coneAlg.
+Conversely, expand p as the finite sum of its coefficient monomials. The preceding lemma puts each monomial Xᵈ·C(p_d) in the algebra because p_d belongs to Wᵈ. Closure under finite addition gives p in the cone algebra.
 -/
 theorem mem_coneAlg_iff_coeff : ∀ (K V Ω : Type) [Field K] [AddCommGroup V] [Module K V] [Field Ω] [Algebra K Ω] (ev : V →ₗ[K] Ω) (p : Polynomial Ω), p ∈ coneAlg ev ↔ ∀ d : ℕ, p.coeff d ∈ ((LinearMap.range ev) ^ d : Submodule K Ω) := by
   intro K V Ω _ _ _ _ _ ev p

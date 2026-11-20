@@ -14,19 +14,19 @@ variable {O K : Type} [CommRing O] [NormedField K] [IsUltrametricDist K] [Algebr
   {ι : Type} [Fintype ι] [DecidableEq ι]
 
 /- English proof (translation)
-The claim follows from `le_away _ _ (A_le_Rpi l e (pow_mem (E_mem l e (A O K)) N))`.
+A detailed English derivation is pending.
 -/
 theorem E_pow_mem_RpiE (N : ℕ) : E K l e ^ N ∈ RpiE O K l e :=
   le_away _ _ (A_le_Rpi l e (pow_mem (E_mem l e (A O K)) N))
 
 /- English proof (translation)
-The claim follows from `le_away _ _ (A_le_Rpi l e (E_mem l e (A O K)))`.
+A detailed English derivation is pending.
 -/
 theorem E_mem_RpiE : E K l e ∈ RpiE O K l e :=
   le_away _ _ (A_le_Rpi l e (E_mem l e (A O K)))
 
 /- English proof (translation)
-Proceed by induction on `N with`. Consider the case `zero => simpa using (hat_coe (O := O) (K := K) l e 1).trans (map_one _)`. Consider the case `succ n ih`. Rewrite using `[pow_succ, hat_mul l e (E_pow_mem_RpiE n) E_mem_RpiE, ih, hat_E, pow_succ]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem hat_E_pow (N : ℕ) :
     hat O l e (E K l e ^ N) = algebraMap (Ahat O K l e) (AhatE O K l e) (Ehat O K l e) ^ N := by
@@ -36,9 +36,9 @@ theorem hat_E_pow (N : ℕ) :
     rw [pow_succ, hat_mul l e (E_pow_mem_RpiE n) E_mem_RpiE, ih, hat_E, pow_succ]
 
 /- English proof (translation)
-Use `choose n hn using fun p : ZMod a × ι × ι => mem_away.1 (P.mxInv_mem p.1 p.2.1 p.2.2)`. Establish `hN : ∀ p : ZMod a × ι × ι, E K l e ^ Finset.univ.sup n * P.mxInv p.1 p.2.1 p.2.2 ∈ A O K`. Introduce `p`. Take `⟨c, hc⟩` from `Nat.exists_eq_add_of_le' (Finset.le_sup (f := n) (Finset.mem_univ p))`. Rewrite using `[hc, pow_add, mul_assoc]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `mul_mem (pow_mem (E_mem l e _) c) (by simpa using hn p)`. Use `⟨Finset.univ.sup n, fun τ j i => ofA O K l e ⟨_, hN (τ, j, i)⟩, fun τ j i => ?_⟩` and prove the remaining obligations. Rewrite using `[← hat_coe_A, hat_mul l e (E_pow_mem_RpiE _) (invE_A_le_RpiE l e (P.mxInv_mem τ j i)), hat_E_pow]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem main [NeZero a] (P : PhiMod O K l e a ι) :
     ∃ (β : ℕ) (y : ZMod a → ι → ι → Ahat O K l e), ∀ τ j i,
@@ -59,7 +59,7 @@ end GlobalTheory.BK.CoordInv
 
 open GlobalTheory.BK.CoordInv in
 /- English proof (translation)
-Introduce `l _ a e _ _ _ LL _ _ ι _ _ P`. Conclude with `main P`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.BK.coordE_mxInv : ∀ (l : ℕ) [Fact l.Prime] (a e : ℕ) [NeZero a] [NeZero e] (ϖ : PiSys l e) (LL : FinExt l) [HasUnr a LL] [TameDescentExponentData ↥LL.1 l e a] (ι : Type) [Fintype ι] [DecidableEq ι] (P : PhiMod ↥(OL LL) ↥LL.1 l e a ι), ∃ (β : ℕ) (y : ZMod a → ι → ι → Ahat ↥(OL LL) ↥LL.1 l e), ∀ τ j i, algebraMap (Ahat ↥(OL LL) ↥LL.1 l e) (AhatE ↥(OL LL) ↥LL.1 l e) (y τ j i) = algebraMap (Ahat ↥(OL LL) ↥LL.1 l e) (AhatE ↥(OL LL) ↥LL.1 l e) (Ehat ↥(OL LL) ↥LL.1 l e) ^ β * hat ↥(OL LL) l e (P.mxInv τ j i) := by
   intro l _ a e _ _ _ LL _ _ ι _ _ P

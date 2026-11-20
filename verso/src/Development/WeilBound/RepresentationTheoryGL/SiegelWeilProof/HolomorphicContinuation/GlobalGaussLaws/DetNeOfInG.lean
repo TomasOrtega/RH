@@ -11,7 +11,7 @@ open PositivityTheory.Rg.Sw PositivityTheory.Rg.Sw.Glob
 variable {n : ℕ}
 
 /- English proof (translation)
-Rewrite using `[JJ, fromBlocks_multiply]`. Simplify using `only [Matrix.zero_mul, Matrix.one_mul, Matrix.mul_zero, Matrix.mul_one, zero_add, add_zero, Matrix.neg_mul, Matrix.mul_neg]`. Rewrite using `[← Matrix.fromBlocks_one, Matrix.fromBlocks_neg, neg_zero]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem JJ_mul_JJ : JJ n * JJ n = -1 := by
   rw [JJ, fromBlocks_multiply]
@@ -20,7 +20,7 @@ theorem JJ_mul_JJ : JJ n * JJ n = -1 := by
   rw [← Matrix.fromBlocks_one, Matrix.fromBlocks_neg, neg_zero]
 
 /- English proof (translation)
-Introduce `h`. Use `congrArg Matrix.det (JJ_mul_JJ (n := n))` as an intermediate fact. Rewrite `this` using `[Matrix.det_mul, h, zero_mul, Matrix.det_neg]`. Simplify using `at this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem det_JJ_ne : (JJ n).det ≠ 0 := by
   intro h
@@ -29,7 +29,7 @@ theorem det_JJ_ne : (JJ n).det ≠ 0 := by
   simp at this
 
 /- English proof (translation)
-Introduce `h0`. Use `congrArg Matrix.det h` as an intermediate fact. Rewrite `this` using `[Matrix.det_mul, Matrix.det_mul, h0, mul_zero]`. Conclude with `det_JJ_ne this.symm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem det_ne_of_inG {g : M2 n} (h : InG g) : g.det ≠ 0 := by
   intro h0
@@ -45,19 +45,19 @@ Both sides reduce to the same expression.
 @[simp] theorem mR_mkG (g : M2 n) (h : InG g) : mR (mkG g h) = g := rfl
 
 /- English proof (translation)
-Simplify using `[InG, nU, JJ, Matrix.fromBlocks_conjTranspose, Matrix.fromBlocks_multiply, hb]`.
+Simplify using the standard rewrite rules.
 -/
 theorem inG_nU (b : Matrix (Fin n) (Fin n) ℂ) (hb : bᴴ = b) : InG (nU b) := by
   simp [InG, nU, JJ, Matrix.fromBlocks_conjTranspose, Matrix.fromBlocks_multiply, hb]
 
 /- English proof (translation)
-Simplify using `[InG, nbar, JJ, Matrix.fromBlocks_conjTranspose, Matrix.fromBlocks_multiply, hc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem inG_nbar (c : Matrix (Fin n) (Fin n) ℂ) (hc : cᴴ = c) : InG (nbar c) := by
   simp [InG, nbar, JJ, Matrix.fromBlocks_conjTranspose, Matrix.fromBlocks_multiply, hc]
 
 /- English proof (translation)
-Establish `hu : IsUnit aᴴ.det`. Rewrite using `[Matrix.det_conjTranspose]`. Conclude with `ha.star`. Simplify using `[InG, mM, JJ, Matrix.fromBlocks_conjTranspose, Matrix.fromBlocks_multiply, Matrix.conjTranspose_nonsing_inv, Matrix.mul_nonsing_inv _ hu, Matrix.nonsing_inv_mul _ ha]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem inG_mM (a : Matrix (Fin n) (Fin n) ℂ) (ha : IsUnit a.det) : InG (mM a) := by
   have hu : IsUnit aᴴ.det := by
@@ -71,19 +71,19 @@ def kth (θ : Fin n → ℝ) : M2 n :=
     (-diagonal fun j => (Real.sin (θ j) : ℂ)) (diagonal fun j => (Real.cos (θ j) : ℂ))
 
 /- English proof (translation)
-Establish `hcs : ∀ j : Fin n, (Real.cos (θ j) : ℂ) * Real.cos (θ j) + (Real.sin (θ j) : ℂ) * Real.sin (θ j) = 1`. Introduce `j`. Rewrite using `[← Complex.ofReal_mul, ← Complex.ofReal_mul, ← Complex.ofReal_add]`. Rewrite using `[← sq, ← sq, Real.cos_sq_add_sin_sq, Complex.ofReal_one]`. Establish `hsc : ∀ j : Fin n, (Real.sin (θ j) : ℂ) * Real.sin (θ j) + (Real.cos (θ j) : ℂ) * Real.cos (θ j) = 1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `j`. Rewrite using `[add_comm]`. Conclude with `hcs j`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Simplify using `[InG, kth, JJ, Matrix.fromBlocks_conjTranspose, Matrix.fromBlocks_multiply, Matrix.diagonal_conjTranspose, Matrix.diagonal_mul_diagonal, -Complex.ofReal_cos, -Complex.ofReal_sin, Complex.conj_ofReal, hcs, hsc]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Rewrite using `[Pi.zero_apply]`. Expand and normalize the polynomial expressions, which then agree. Use extensionality with `i j`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.diagonal_apply, Matrix.neg_apply, Matrix.one_apply]`. Use `split_ifs`. Take the linear combination `-(hcs i)`. Simplify using the standard rewrite rules. Use function extensionality and compare the values at `i`.
+Take a linear combination of the given relations to obtain the conclusion. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[Pi.zero_apply]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `[kth, Matrix.fromBlocks_conjTranspose, Matrix.fromBlocks_multiply, Matrix.diagonal_conjTranspose, Matrix.diagonal_mul_diagonal, -Complex.ofReal_cos, -Complex.ofReal_sin, Complex.conj_ofReal, hcs, hsc]`. Establish `h0 : (Matrix.diagonal fun i : Fin n => (Real.cos (θ i) : ℂ) * Real.sin (θ i) + -((Real.sin (θ i) : ℂ) * Real.cos (θ i))) = 0`. Rewrite using `[← Matrix.diagonal_zero]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `congr 1`. Use function extensionality and compare the values at `i`. Expand and normalize the polynomial expressions, which then agree. Establish `h1 : (Matrix.diagonal fun i : Fin n => (Real.sin (θ i) : ℂ) * Real.cos (θ i) + -((Real.cos (θ i) : ℂ) * Real.sin (θ i))) = 0`. Rewrite using `[← Matrix.diagonal_zero]`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `congr 1`. Use function extensionality and compare the values at `i`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h0, h1, Matrix.fromBlocks_one]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inK_kth (θ : Fin n → ℝ) : InK (kth θ) := by
   have hcs : ∀ j : Fin n, (Real.cos (θ j) : ℂ) * Real.cos (θ j) + (Real.sin (θ j) : ℂ) * Real.sin (θ j) = 1 := by

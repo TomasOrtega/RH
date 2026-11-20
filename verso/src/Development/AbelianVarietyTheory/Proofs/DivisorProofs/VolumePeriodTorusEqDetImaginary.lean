@@ -8,9 +8,9 @@ namespace GlobalTheory.PerVol
 def reIm {g : ℕ} (z : Fin g → ℂ) : Fl g := Sum.elim (fun i => (z i).im) (fun i => (z i).re)
 
 /- English proof (translation)
-Establish `h1 : MeasurePreserving (fun (z : Fin g → ℂ) (i : Fin g) => Complex.measurableEquivRealProd (z i)) volume volume` using `volume_preserving_pi (fun _ : Fin g => Complex.volume_preserving_equiv_real_prod)`. Establish `h2` using `volume_measurePreserving_arrowProdEquivProdArrow ℝ ℝ (Fin g)`. Establish `h3 : MeasurePreserving (Prod.swap : (Fin g → ℝ) × (Fin g → ℝ) → _) volume volume` using `Measure.measurePreserving_swap`. Establish `h4` using `volume_measurePreserving_sumPiEquivProdPi_symm (fun _ : Fin g ⊕ Fin g => ℝ)`. Use `h4.comp (h3.comp (h2.comp h1))` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `z i`. Apply the tactic sequence `cases i <;> rfl`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem reIm_mp {g : ℕ} : MeasurePreserving (reIm (g := g)) volume volume := by
   have h1 : MeasurePreserving (fun (z : Fin g → ℂ) (i : Fin g) => Complex.measurableEquivRealProd (z i))
@@ -26,7 +26,7 @@ theorem reIm_mp {g : ℕ} : MeasurePreserving (reIm (g := g)) volume volume := b
   cases i <;> rfl
 
 /- English proof (translation)
-Introduce `z w h`. Use function extensionality and compare the values at `i`. Apply `Complex.ext` to reduce the goal to its premises. Conclude with `congrFun h (Sum.inr i)`. Conclude with `congrFun h (Sum.inl i)`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem reIm_injective {g : ℕ} : Function.Injective (reIm (g := g)) := by
   intro z w h
@@ -39,9 +39,9 @@ def perMat {g : ℕ} (τ0 : Matrix (Fin g) (Fin g) ℂ) : Matrix (Fin g ⊕ Fin 
   Matrix.fromBlocks (τ0.map Complex.im)ᵀ 0 (τ0.map Complex.re)ᵀ 1
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Consider the cases of `i with`. Consider the case `inl i`. Simplify using `[reIm, per, perMat, Matrix.vecMul, dotProduct, Matrix.mulVec, Fintype.sum_sum_type, Matrix.fromBlocks, Complex.im_sum, Complex.re_sum, mul_comm]`. Consider the case `inr i`.
+Apply function extensionality and compare values at an arbitrary argument. Split into cases according to the possible forms of the given data. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 
-Simplify using `[reIm, per, perMat, Matrix.vecMul, dotProduct, Matrix.mulVec, Fintype.sum_sum_type, Matrix.fromBlocks, Complex.im_sum, Complex.re_sum, mul_comm, Matrix.one_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem reIm_per {g : ℕ} (τ0 : Matrix (Fin g) (Fin g) ℂ) (x : Fl g) :
     reIm (per τ0 x) = Matrix.toLin' (perMat τ0) x := by
@@ -55,7 +55,7 @@ theorem reIm_per {g : ℕ} (τ0 : Matrix (Fin g) (Fin g) ℂ) (x : Fl g) :
       Matrix.fromBlocks, Complex.im_sum, Complex.re_sum, mul_comm, Matrix.one_apply]
 
 /- English proof (translation)
-Simplify using `[perMat, Matrix.det_fromBlocks_zero₁₂]`.
+Simplify using the standard rewrite rules.
 -/
 theorem det_perMat {g : ℕ} (τ0 : Matrix (Fin g) (Fin g) ℂ) :
     (perMat τ0).det = (τ0.map Complex.im).det := by
@@ -66,11 +66,11 @@ end GlobalTheory.PerVol
 namespace GlobalTheory.PerVol
 
 /- English proof (translation)
-Use `set L : Fl g →ₗ[ℝ] Fl g := Matrix.toLin' (perMat τ0)`. Establish `hset : per τ0 '' Set.Icc (0 : Fl g) 1 = reIm ⁻¹' (L '' Set.Icc (0 : Fl g) 1)`. Use extensionality with `z`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, rfl⟩`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Conclude with `⟨x, hx, (reIm_per τ0 x).symm⟩`. Introduce and unpack `⟨x, hx, hxz⟩`. Use `⟨x, hx, reIm_injective ?_⟩` and prove the remaining obligations. Rewrite using `[reIm_per]`. Conclude with `hxz`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hmeas : MeasurableSet (L '' Set.Icc (0 : Fl g) 1)` using `(isCompact_Icc.image (LinearMap.continuous_of_finiteDimensional L)).measurableSet`. Rewrite using `[hset, reIm_mp.measure_preimage hmeas.nullMeasurableSet, MeasureTheory.Measure.addHaar_image_linearMap, Real.volume_Icc_pi]`. Simplify using `[L, LinearMap.det_toLin', det_perMat]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem volume_per_image_Icc {g : ℕ} (τ0 : Matrix (Fin g) (Fin g) ℂ) :
     volume (per τ0 '' Set.Icc (0 : Fl g) 1) = ENNReal.ofReal |(τ0.map Complex.im).det| := by

@@ -9,7 +9,7 @@ namespace PositivityTheory.HtPt.Gh
 open Module NumberField GlobalTheory.CompanionTheory.Ar
 
 /- English proof (translation)
-Simplify using `[GlobalTheory.CompanionTheory.Ar.eigSp, Submodule.mem_iInf, sub_eq_zero]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_eig {R V O : Type} [CommRing R] [AddCommGroup V] [Module R V] [CommRing O]
     {ρ : O →+* Module.End R V} {χ : O →+* R} {x : V} :
@@ -17,9 +17,9 @@ theorem mem_eig {R V O : Type} [CommRing R] [AddCommGroup V] [Module R V] [CommR
   simp [GlobalTheory.CompanionTheory.Ar.eigSp, Submodule.mem_iInf, sub_eq_zero]
 
 /- English proof (translation)
-Establish `hinj : Function.Injective χ`. Rewrite using `[RingHom.injective_iff_ker_eq_bot]`. Use `Ideal.eq_bot_of_comap_eq_bot (R := ℤ) ?_` and prove the remaining obligations. Rewrite using `[eq_bot_iff]`. Introduce `n hn`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `: (n : K) = 0` using `by simpa using hn`. Conclude with `this` after adjusting the coercions. Conclude with `⟨IsFractionRing.lift hinj, fun a => IsFractionRing.lift_algebraMap hinj a⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_lift {E : Type} [Field E] [NumberField E] {K : Type} [Field K] [CharZero K] (χ : 𝓞 E →+* K) :
     ∃ σ : E →+* K, ∀ a : 𝓞 E, σ (a : E) = χ a := by
@@ -33,15 +33,15 @@ theorem exists_lift {E : Type} [Field E] [NumberField E] {K : Type} [Field K] [C
   exact ⟨IsFractionRing.lift hinj, fun a => IsFractionRing.lift_algebraMap hinj a⟩
 
 /- English proof (translation)
-Take `⟨m, hm⟩` from `IsLocalization.exist_integer_multiples_of_finite (nonZeroDivisors ℤ) (fun q : Module.Free.ChooseBasisIndex ℤ (𝓞 E) × Module.Free.ChooseBasisIndex ℤ (𝓞 E) => (integralBasis E).repr (HT.dualInt E q.1) q.2)`. Use `choose n hn using hm`. Establish `ha : ∀ k, ((∑ j, n (k, j) • RingOfIntegers.basis E j : 𝓞 E) : E) = ((m : ℤ) : E) * HT.dualInt E k`. Introduce `k`. Use `conv_rhs => rw [← (integralBasis E).sum_repr (HT.dualInt E k)]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[RingOfIntegers.coe_eq_algebraMap, map_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Establish `h` using `hn (k, j)`. Simplify using `only [eq_intCast, zsmul_eq_mul] at h`. Rewrite using `[map_zsmul, ← integralBasis_apply, ← Int.cast_smul_eq_zsmul ℚ, h, mul_smul, Int.cast_smul_eq_zsmul, zsmul_eq_mul]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨m, fun k => ∑ j, n (k, j) • RingOfIntegers.basis E j, nonZeroDivisors.coe_ne_zero m, ?_⟩` and prove the remaining obligations. Introduce `K V _ _ _ _ ρ χ`. Take `⟨σ, hσ⟩` from `exists_lift χ`. Establish `he : ∀ x, x ∈ GlobalTheory.CompanionTheory.Ar.eigSp ρ χ ↔ x ∈ HT.eigSp ρ σ` using `fun x => by`. Rewrite using `[mem_eig, HT.LatBasic.mem_eigSp]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [hσ]`. Establish `hT : ∀ x, ∑ k, χ (∑ j, n (k, j) • RingOfIntegers.basis E j) • ρ (RingOfIntegers.basis E k) x = ((m : ℤ) : K) • HT.eigProj ρ σ x` using `fun x => by`. Simplify using `only [HT.eigProj, LinearMap.sum_apply, LinearMap.smul_apply, Finset.smul_sum, smul_smul]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[← hσ, ha, map_mul, map_intCast]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨fun x => ?_, fun x hx => ?_⟩` and prove the remaining obligations. Rewrite using `[hT]`. Conclude with `Submodule.smul_mem _ _ ((he _).2 (HT.LatBasic.eigProj_mem ρ σ x))`. Rewrite using `[hT, HT.LatBasic.eigProj_of_mem ((he _).1 hx)]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_int_proj (E : Type) [Field E] [NumberField E] :
     ∃ (m : ℤ) (a : Module.Free.ChooseBasisIndex ℤ (𝓞 E) → 𝓞 E), m ≠ 0 ∧
@@ -78,9 +78,9 @@ theorem exists_int_proj (E : Type) [Field E] [NumberField E] :
   · rw [hT, HT.LatBasic.eigProj_of_mem ((he _).1 hx)]
 
 /- English proof (translation)
-Set `B : Basis (Fin r) K (Module.Dual K V)` to `Basis.mk hli hsp.ge`. Set `F` to `B.dualBasis.map (Module.evalEquiv K V).symm`. Use `⟨F, fun i j => ?_, fun e => ?_⟩` and prove the remaining obligations. Establish `: b i = B i` using `by simp [B]`. Rewrite using `[this]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [F, Basis.map_apply, Module.apply_evalEquiv_symm_apply, Basis.dualBasis_apply_self]`. Use `conv_lhs => rw [← F.sum_repr e]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Use `congr 1`. Simplify using `[F, B, Basis.dualBasis_repr]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_predual {K V : Type} [Field K] [AddCommGroup V] [Module K V] [FiniteDimensional K V] {r : ℕ}
     (b : Fin r → Module.Dual K V) (hli : LinearIndependent K b) (hsp : Submodule.span K (Set.range b) = ⊤) :
@@ -97,53 +97,47 @@ theorem exists_predual {K V : Type} [Field K] [AddCommGroup V] [Module K V] [Fin
     simp [F, B, Basis.dualBasis_repr]
 
 /- English proof (translation)
-Use `haveI : CharZero A' := ψ.charZero`. Use `haveI : CharZero Ω := charZero_of_injective_ringHom hg`. Establish `vuniq : ∀ e x x', Val e x → Val e x' → x = x'`. Introduce `e x x' h h'`. Take `⟨c, h1, rfl⟩` from `(hVal _ _).1 h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨c', h2, rfl⟩` from `(hVal _ _).1 h'`. Establish `: c = c'` using `funext fun i => hg (by`. Use `congrArg (fun y => β.repr y i) (h1.symm.trans h2)` as an intermediate fact. Simplify `this)` using `[Finsupp.single_apply]`. Rewrite using `[this]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `vzero : Val 0 0` using `(hVal _ _).2 ⟨0, by simp, by simp⟩`. Establish `vadd : ∀ e x e' x', Val e x → Val e' x' → Val (e + e') (x + x')`. Introduce `e x e' x' h h'`. Take `⟨c, rfl, rfl⟩` from `(hVal _ _).1 h`. Take `⟨c', rfl, rfl⟩` from `(hVal _ _).1 h'`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(hVal _ _).2 ⟨c + c', by simp [add_smul, Finset.sum_add_distrib], by simp [add_smul, Finset.sum_add_distrib]⟩`. Establish `vsmul : ∀ (a : A') e x, Val e x → Val (g a • e) (ψ a • x)`. Introduce `a e x h`. Take `⟨c, rfl, rfl⟩` from `(hVal _ _).1 h`. Conclude with `(hVal _ _).2 ⟨fun i => a * c i, by simp [mul_smul, Finset.smul_sum], by simp [mul_smul, Finset.smul_sum]⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Establish `vsum : ∀ {I : Type} (s : Finset I) (e : I → Li) (x : I → EC), (∀ i, Val (e i) (x i)) → Val (∑ i ∈ s, e i) (∑ i ∈ s, x i)`. Introduce `I s e x h`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using vzero`. Consider the case `insert i s hi ih => rw [Finset.sum_insert hi, Finset.sum_insert hi]`.
+Treat this case separately. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `vadd _ _ _ _ (h i) ih`. Establish `vbas : ∀ i, Val (β i) (γ i)` using `fun i => (hVal _ _).2 ⟨Pi.single i 1, by`. Apply the tactic sequence `rw [Finset.sum_eq_single i] <;> simp +contextual, by rw [Finset.sum_eq_single i] <;> simp +contextual⟩`. Establish `vchi : ∀ a e x, Val e x → Val (χ a • e) (((algebraMap R C).comp σ) a • x)`. Introduce `a e x h`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨s, h1, h2⟩` from `hχ a`. Use `vsmul (k s) e x h` as an intermediate fact. Rewrite `this` using `[h1, hψ, h2]`. Then use the resulting hypothesis. Establish `veig : ∀ e x, Val e x → e ∈ GlobalTheory.CompanionTheory.Ar.eigSp ρ χ → x ∈ GlobalTheory.CompanionTheory.Ar.eigSp ρC ((algebraMap R C).comp σ)`. Introduce `e x h he`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `mem_eig.2 fun a => vuniq _ _ _ (hact a e x h) ?_` and prove the remaining obligations. Rewrite using `[mem_eig.1 he]`. Conclude with `vchi a e x h`. Use `choose t ht using fun j i => hwL j (β i) (hβ i)`. Use `choose xf hxf using hfv`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Set `wC : Fin r → Module.Dual C EC` to `fun j => γ.constr C fun i => ψ (k (t j i))`. Establish `hwC : ∀ j e x, Val e x → ∃ c, g c = w j e ∧ ψ c = wC j x`. Introduce `j e x h`. Take `⟨c, rfl, rfl⟩` from `(hVal _ _).1 h`. Conclude with `⟨∑ i, c i * k (t j i), by simp [ht], by simp [wC]⟩`.
+Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hwR : ∀ j e x, Val e x → (∃ a, g (k a) = w j e) → ∃ o, algebraMap R C o = wC j x`. Introduce and unpack `j e x h ⟨a, ha⟩`. Take `⟨c, h1, h2⟩` from `hwC j e x h`. Conclude with `⟨φ a, by rw [← hψ, hg (ha.trans h1.symm), h2]⟩`. Establish `hP : ∀ e x, Val e x → e ∈ GlobalTheory.CompanionTheory.Ar.eigSp ρ χ → x = ∑ j, wC j x • xf j`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Introduce `e x h he`. Use `choose c h1 h2 using fun j => hwC j e x h`. Use `vuniq _ _ _ h ?_` and prove the remaining obligations. Use `vsum Finset.univ _ _ fun j => vsmul (c j) _ _ (hxf j)` as an intermediate fact. Simplify using `only [h1, h2] at this`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite `this` using `[← hexp e he]`. Then use the resulting hypothesis. Establish `hPC : ∀ x ∈ GlobalTheory.CompanionTheory.Ar.eigSp ρC ((algebraMap R C).comp σ), x = ∑ j, wC j x • xf j`. Take `⟨m, a, hm, hT⟩` from `exists_int_proj E`. Set `T : EC →ₗ[C] EC` to `∑ q, ((algebraMap R C).comp σ) (a q) • ρC (RingOfIntegers.basis E q)`. Establish `hTa : ∀ x, T x = ∑ q, ((algebraMap R C).comp σ) (a q) • ρC (RingOfIntegers.basis E q) x` using `fun x => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [T, LinearMap.sum_apply, LinearMap.smul_apply]`. Set `P : EC →ₗ[C] EC` to `∑ j, (wC j).smulRight (xf j)`. Establish `hPa : ∀ x, P x = ∑ j, wC j x • xf j` using `fun x => by`. Simplify using `only [P, LinearMap.sum_apply, LinearMap.smulRight_apply]`. Establish `hPT : P ∘ₗ T = T` using `γ.ext fun i => by`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[LinearMap.comp_apply, hPa]`. Use `(hP _ _ ?_ ((hT Ω Li ρ χ).1 (β i))).symm` and prove the remaining obligations. Rewrite using `[hTa]`. Conclude with `vsum _ _ _ fun q => vchi _ _ _ (hact _ _ _ (vbas i))`. Introduce `x hx`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1` using `LinearMap.congr_fun hPT x`. Rewrite `h1` using `[LinearMap.comp_apply, hTa, (hT C EC ρC _).2 x hx, map_smul]`. Rewrite using `[← hPa]`. Conclude with `(smul_right_injective EC (Int.cast_ne_zero.2 hm) h1).symm`. Establish `hcomb : ∀ x, x = ∑ j, wC j x • xf j → (∀ j, ∃ o, algebraMap R C o = wC j x) → x ∈ Submodule.span R (Set.range xf)`.
+Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Introduce `x h1 h2`. Use `choose o ho using h2`. Rewrite using `[h1]`. Use `Submodule.sum_mem _ fun j _ => ?_` and prove the remaining obligations. Rewrite using `[← ho, algebraMap_smul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨j, rfl⟩)`. Establish `hWz : Submodule.span R {x | ∃ e ∈ W, Val e x} = Submodule.span R (Set.range xf)`. Use `le_antisymm (Submodule.span_le.2 ?_) (Submodule.span_mono ?_)` and prove the remaining obligations. Introduce and unpack `x ⟨e, he, h⟩`. Conclude with `hcomb x (hP e x h (hW e he).1) fun j => hwR j e x h ((hW e he).2 j)`.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Introduce and unpack `_ ⟨j, rfl⟩`. Conclude with `⟨f j, hf j, hxf j⟩`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `x ⟨hx1, hx2⟩`. Rewrite using `[hWz]`.
+Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Use `hcomb x (hPC x hx2) fun j => ?_` and prove the remaining obligations. Use `clear hx2`. Proceed by induction on `hx1 using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨e, he, h⟩` from `hx`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hwR j e x h (hwL j e he)`. Consider the case `zero => exact ⟨0, by simp⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨o, ho⟩` from `hx`. Take `⟨o', ho'⟩` from `hy`.
+Supply the required witnesses or components. Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨o + o', by rw [map_add, map_add, ho, ho']⟩`. Consider the case `smul c x _ hx`. Take `⟨o, ho⟩` from `hx`. Conclude with `⟨c * o, by rw [map_mul, ho, ← algebraMap_smul C c x, map_smul, smul_eq_mul]⟩`. Introduce `x hx`.
-
-Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨e, he, h⟩` from `hx`. Take `⟨s, h1, h2⟩` from `hκ`. Use `vsmul (k s) e x h` as an intermediate fact.
-
-Rewrite `this` using `[h1, hψ, h2, algebraMap_smul]`. Conclude with `⟨Submodule.subset_span ⟨_, hκW e he, this⟩, Submodule.smul_mem ((GlobalTheory.CompanionTheory.Ar.eigSp ρC ((algebraMap R C).comp σ)).restrictScalars R) κz (veig e x h (hW e he).1)⟩`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [smul_add]`. Conclude with `Submodule.add_mem _ hx hy`.
-
-Consider the case `smul c x _ hx => rw [smul_comm]`. Conclude with `Submodule.smul_mem _ c hx`. Rewrite using `[hWz]`. Conclude with `Submodule.fg_span (Set.finite_range _)`.
+A detailed English derivation is pending.
 -/
 theorem alg_main {E : Type} [Field E] [NumberField E] {Ω C R A A' : Type} [Field Ω] [Field C] [CharZero C]
     [CommRing R] [Algebra R C] [CommRing A] [CommRing A'] {Li EC : Type} [AddCommGroup Li] [Module Ω Li]

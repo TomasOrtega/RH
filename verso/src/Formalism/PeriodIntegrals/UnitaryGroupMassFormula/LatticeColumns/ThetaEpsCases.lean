@@ -12,7 +12,7 @@ open scoped Matrix TensorProduct
 variable {D : D7}
 
 /- English proof (translation)
-Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul e a`. Simplify using `only [PI.FinKW.psiV, sigA, Formalism.UG.sigR, Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, AlgHom.comp_apply, AlgEquiv.toAlgHom_eq_coe, AlgHom.coe_coe, AlgEquiv.coe_algHom, Algebra.TensorProduct.map_tmul, Algebra.Tensor …`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 -/
 theorem psiV_sigA (X : HidaSetting D) (p : TypX X) (t : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) :
     PI.FinKW.psiV X.B.I p.1 (sigA X.B.I t) =
@@ -26,15 +26,13 @@ theorem psiV_sigA (X : HidaSetting D) (p : TypX X) (t : X.B.I.E ⊗[X.B.I.F] Af 
   | add x y hx hy => simp only [map_add, hx, hy]
 
 /- English proof (translation)
-Establish `hs` using `hθ (epsP X p)`. Establish `h1 : sigR (FpX X p) X.B.I.cm.sig (epsP X p) = 1 - epsP X p`. Rewrite using `[imA_eps'_eq]`. Conclude with `(psiV_sigA X p X.ew).symm`. Rewrite `hs` using `[h1, map_sub, map_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hi : θ (epsP X p) * θ (epsP X p) = θ (epsP X p)` using `by rw [← map_mul, imA_eps_idem]`. Generalize the expression as in `θ (epsP X p) = q at hs hi ⊢`. Take `⟨a, b⟩` from `q`. Establish `ha : 1 - a = b` using `congrArg Prod.fst hs`. Establish `hb : a * a = a` using `congrArg Prod.fst hi`.
+Replace the chosen expression with an arbitrary variable. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0 : a * (a - 1) = 0` using `by linear_combination hb`. Break down `mul_eq_zero.mp h0 with h | h` into its components or cases. Use `right`. Substitute `h` using the available equality. Rewrite using `[← ha]`.
+Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Use `left`. Establish `: a = 1` using `by linear_combination h`. Substitute `this` using the available equality. Rewrite using `[← ha]`.
-
-Simplify using the standard rewrite rules.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem theta_eps_cases (X : HidaSetting D) (p : TypX X) (θ : TpX X p ≃ₐ[FpX X p] FpX X p × FpX X p)
     (hθ : IsSplitEquiv X p θ) : θ (epsP X p) = (1, 0) ∨ θ (epsP X p) = (0, 1) := by

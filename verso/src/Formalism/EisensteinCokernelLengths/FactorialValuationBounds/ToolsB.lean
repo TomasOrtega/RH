@@ -5,23 +5,21 @@ namespace Formalism.ZetaNonvanishing.EisensteinCokernelLengthsFacts.FactorialVal
 open Formalism.WachCohomologyFacts
 
 /- English proof (translation)
-Use `set I' := I.comap Z.subtype`. Use `set J' := (Z₀ ⊔ I).comap Z.subtype`. Use `set I₀ := I.comap Z₀.subtype`. Establish `hIJ : I' ≤ J'` using `Submodule.comap_mono le_sup_right`. Set `f : ↥Z₀ →ₗ[O] ↥Z ⧸ I'` to `I'.mkQ ∘ₗ Submodule.inclusion hZ₀Z`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Establish `hker : LinearMap.ker f = I₀`. Use extensionality with `x`. Simplify using `only [f, LinearMap.mem_ker, LinearMap.coe_comp, Function.comp_apply, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero, I', I₀, Submodule.mem_comap, Submodule.subtype_apply, Submodule.coe_inclusion]`. Set `f'` to `I₀.liftQ f hker.ge`. Set `g` to `I'.mapQ J' LinearMap.id hIJ`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hf' : Function.Injective f'`. Rewrite using `[← LinearMap.ker_eq_bot]`. Conclude with `Submodule.ker_liftQ_eq_bot _ _ _ hker.le`. Establish `hg : Function.Surjective g`. Introduce `y`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `y using Submodule.Quotient.induction_on with`. Consider the case `H z => exact ⟨Submodule.Quotient.mk z, rfl⟩`. Establish `hex : Function.Exact f' g`. Introduce `y`. Proceed by induction on `y using Submodule.Quotient.induction_on with`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Consider the case `H z`. Simplify using `only [g, Submodule.mapQ_apply, LinearMap.id_apply, Submodule.Quotient.mk_eq_zero, J', Submodule.mem_comap, Submodule.subtype_apply, Submodule.mem_sup]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, ha, b, hb, hab⟩`. Use `⟨Submodule.Quotient.mk ⟨a, ha⟩, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [f', Submodule.liftQ_apply, f, LinearMap.coe_comp, Function.comp_apply, Submodule.mkQ_apply]`. Rewrite using `[Submodule.Quotient.eq]`. Simplify using `only [I', Submodule.mem_comap, Submodule.subtype_apply, Submodule.coe_sub, Submodule.coe_inclusion]`. Establish `: (a : M) - z = -b` using `by rw [← hab]; abel`. Rewrite using `[this]`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules.
 
-Conclude with `I.neg_mem hb`. Introduce and unpack `⟨w, hw⟩`. Proceed by induction on `w using Submodule.Quotient.induction_on with`. Consider the case `H a`. Simplify using `only [f', Submodule.liftQ_apply, f, LinearMap.coe_comp, Function.comp_apply, Submodule.mkQ_apply] at hw`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite `hw` using `[Submodule.Quotient.eq]`. Simplify using `only [I', Submodule.mem_comap, Submodule.subtype_apply, Submodule.coe_sub, Submodule.coe_inclusion] at hw`. Use `⟨a, a.2, (z : M) - a, ?_, by abel⟩` and prove the remaining obligations. Use `I.neg_mem hw` as an intermediate fact. Simplify using `using this`.
-
-Conclude with `Module.length_eq_add_of_exact f' g hf' hg hex`.
+A detailed English derivation is pending.
 -/
 theorem key {O M : Type} [CommRing O] [AddCommGroup M] [Module O M] (Z Z₀ I : Submodule O M)
     (hZ₀Z : Z₀ ≤ Z) :
@@ -74,9 +72,9 @@ theorem key {O M : Type} [CommRing O] [AddCommGroup M] [Module O M] (Z Z₀ I : 
   exact Module.length_eq_add_of_exact f' g hf' hg hex
 
 /- English proof (translation)
-Introduce `O M _ _ _ ℓ g g₀ e e' Z Bc I s s₀ hs hZ hBc hs₀ hs₀Z hke hke'`. Establish `hZ₀Z : Submodule.span O (s₀ : Set M) ≤ Z` using `Submodule.span_le.mpr hs₀Z`. Establish `h1` using `quotientLengthBound_holds O M ℓ g e Z Bc (Submodule.span O (s₀ : Set M) ⊔ I) s hs hZ (hBc.trans le_sup_right) hke`. Establish `h2` using `quotientLengthBound_holds O M ℓ g₀ e' (Submodule.span O (s₀ : Set M)) ⊥ I s₀ hs₀ (by simp) bot_le hke'`. Rewrite using `[key Z _ I hZ₀Z]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem lenBound2 : Formalism.ZetaNonvanishing.EisensteinCokernelLengthsFacts.LenBound2 := by
   intro O M _ _ _ ℓ g g₀ e e' Z Bc I s s₀ hs hZ hBc hs₀ hs₀Z hke hke'

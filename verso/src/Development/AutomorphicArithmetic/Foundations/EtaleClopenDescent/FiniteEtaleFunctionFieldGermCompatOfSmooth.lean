@@ -9,15 +9,13 @@ open scoped TensorProduct
 namespace UpperTheory
 
 /- English proof (translation)
-Use `⟨fun s hs => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hne`. Choose the witnesses or unpack the hypotheses as in `⟨φ, hφ⟩ : ∃ φ : Module.Dual R S, φ s ≠ 0 := by`. Assume the negation of the conclusion as `h`. Use `push_neg at h`.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Conclude with `hne ((Module.forall_dual_apply_eq_zero_iff R s).1 h)`. Establish `hnil : φ s ∉ nilradical R`. Rewrite using `[nilradical_eq_zero]`. Simplify using `using hφ`. Rewrite `hnil` using `[nilradical_eq_sInf, Ideal.mem_sInf]`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Use `push_neg at hnil`. Take `⟨p, hp, hsp⟩` from `hnil`. Use `haveI : p.IsPrime := hp`. Set `κ` to `p.ResidueField`. Use `haveI : IsReduced (κ ⊗[R] S) := Algebra.FormallyUnramified.isReduced_of_field κ (κ ⊗[R] S)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h0 : (1 : κ) ⊗ₜ[R] s = 0`. Establish `: IsNilpotent ((Algebra.TensorProduct.includeRight : S →ₐ[R] κ ⊗[R] S) s)` using `hs.map _`. Simplify using `using this.eq_zero`. Establish `h1` using `congrArg ((TensorProduct.rid R κ).toLinearMap ∘ₗ LinearMap.lTensor κ φ) h0`. Simplify using `at h1`.
-
-Rewrite `h1` using `[Algebra.smul_def, mul_one]`. Conclude with `hsp (Ideal.algebraMap_residueField_eq_zero.1 h1)`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem reduced_of_etale_proj (R S : Type) [CommRing R] [CommRing S] [Algebra R S] [IsReduced R]
     [Algebra.Etale R S] [Module.Projective R S] : IsReduced S := by
@@ -44,7 +42,7 @@ private theorem reduced_of_etale_proj (R S : Type) [CommRing R] [CommRing S] [Al
   exact hsp (Ideal.algebraMap_residueField_eq_zero.1 h1)
 
 /- English proof (translation)
-Use `haveI : IsReduced ((B ⧸ I) ⊗[B] B') := reduced_of_etale_proj (B ⧸ I) ((B ⧸ I) ⊗[B] B')`. Establish `e` using `Algebra.TensorProduct.quotIdealMapEquivTensorQuot B' I`. Use `haveI : IsReduced (B' ⊗[B] (B ⧸ I)) := isReduced_of_injective (Algebra.TensorProduct.comm B B' (B ⧸ I)).toRingEquiv (Algebra.TensorProduct.comm B B' (B ⧸ I)).injective`. Conclude with `isReduced_of_injective e.toRingEquiv e.injective`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem reduced_quot (B B' : Type) [CommRing B] [CommRing B'] [Algebra B B'] [Algebra.Etale B B']
     [Module.Projective B B'] (I : Ideal B) [IsReduced (B ⧸ I)] : IsReduced (B' ⧸ I.map (algebraMap B B')) := by
@@ -54,13 +52,11 @@ private theorem reduced_quot (B B' : Type) [CommRing B] [CommRing B'] [Algebra B
   exact isReduced_of_injective e.toRingEquiv e.injective
 
 /- English proof (translation)
-Set `J : Ideal A` to `Ideal.span (Set.range fun j => eA.symm (t j))`. Establish `hJ : Ideal.span (Set.range t) = J.map (eA : A →+* B)`. Simplify using `only [J, Ideal.map_span, ← Set.range_comp]`. Use `congr 2`. Use extensionality with `j`.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Simplify using the standard rewrite rules. Establish `eq1 : (A ⧸ J) ≃+* (B ⧸ Ideal.span (Set.range t))` using `Ideal.quotientEquiv J _ eA hJ`. Use `haveI : IsReduced (A ⧸ J) := isReduced_of_injective eq1 eq1.injective`. Use `haveI := reduced_quot A A' J`. Establish `hJ' : Ideal.span (Set.range t') = (J.map (algebraMap A A')).map (eA' : A' →+* B')`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Simplify using `only [J, Ideal.map_span, ← Set.range_comp]`. Use `congr 2`. Use extensionality with `j`. Simplify using `[ht]`. Establish `eq2` using `Ideal.quotientEquiv (J.map (algebraMap A A')) _ eA' hJ'`.
-
-Conclude with `isReduced_of_injective eq2.symm eq2.symm.injective`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem transfer {A A' B B' ι : Type} [CommRing A] [CommRing A'] [CommRing B] [CommRing B'] [Algebra A A']
     [Algebra.Etale A A'] [Module.Projective A A'] (eA : A ≃+* B) (eA' : A' ≃+* B') (t : ι → B) (t' : ι → B')
@@ -84,7 +80,7 @@ private theorem transfer {A A' B B' ι : Type} [CommRing A] [CommRing A'] [CommR
   exact isReduced_of_injective eq2.symm eq2.symm.injective
 
 /- English proof (translation)
-Establish `key : ∀ (V : X.Opens) (_ : V = ({i} : Finset ι).inf U), IsAffineOpen V ∧ ∃ hg : genericPoint X ∈ V, ∀ y, y ∈ B {i} ↔ ∃ f : Γ(X, V), (X.presheaf.germ V (genericPoint X) hg).hom f = y`. Introduce and unpack `V rfl`. Conclude with `⟨h.affine _ (Finset.singleton_nonempty i), h.ne _, h.ring _ (Finset.singleton_nonempty i)⟩`. Conclude with `key (U i) Finset.inf_singleton.symm`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem cover_ring {k : Type} [Field k] {X : Scheme.{0}} [IsIntegral X] {p : X ⟶ Sp k}
     [Algebra k X.functionField] {ι : Type} [DecidableEq ι] {U : ι → X.Opens}
@@ -113,13 +109,11 @@ private noncomputable def chartEquiv {k : Type} [Field k] {X : Scheme.{0}} [IsIn
 end UpperTheory
 
 /- English proof (translation)
-Introduce `d Z Y _ _ s s' _ _ c1 hc hfin het inst inst' _ _ _ _ hcomp F _ _ _ _ _ _ _ x U _ hZ hY hred`. Take `⟨hW, hg, hring⟩` from `cover_ring hZ 0`. Take `⟨-, hg', hring'⟩` from `cover_ring hY 0`. Use `letI : Algebra Γ(Z, U 0) Γ(Y, c1 ⁻¹ᵁ U 0) := (c1.app (U 0)).hom.toAlgebra`. Use `haveI : Module.Finite Γ(Z, U 0) Γ(Y, c1 ⁻¹ᵁ U 0) := sec_finite (s := s) (s' := s') (f := c1) hW`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Introduce a local definition for the expression.
 
-Use `haveI : Algebra.Etale Γ(Z, U 0) Γ(Y, c1 ⁻¹ᵁ U 0) := sec_etale (s := s) (s' := s') (f := c1) hW`. Use `haveI := projective_of_etale Γ(Z, U 0) Γ(Y, c1 ⁻¹ᵁ U 0)`. Set `eZ` to `chartEquiv (U 0) hg _ hring`. Set `eY` to `chartEquiv (c1 ⁻¹ᵁ U 0) hg' _ hring'`. Use `transfer eZ eY _ _ (fun j => ?_) hred` and prove the remaining obligations.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Take `⟨f, hf⟩` from `eZ.surjective ⟨_, tco_mem ℂ Z.functionField x j⟩`. Rewrite using `[← hf, RingEquiv.symm_apply_apply]`. Establish `h1 : (Z.presheaf.germ (U 0) (genericPoint Z) hg).hom f = algebraMap F Z.functionField (x j.succ / x 0)` using `congrArg Subtype.val hf`. Establish `h2` using `hcomp (U 0) hg hg' f`.
-
-Rewrite `h2` using `[h1, ← IsScalarTower.algebraMap_apply]`. Conclude with `h2.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Cb.finite_etale_function_field_germ_compat_of_smooth :
     ∀ (d : ℕ) (Z Y : Scheme.{0}) [IsIntegral Z] [IsIntegral Y] (s : Z ⟶ Sp ℂ) (s' : Y ⟶ Sp ℂ) [SmoothOfRelativeDimension d s] [SmoothOfRelativeDimension d s'] (c1 : Y ⟶ Z), c1 ≫ s = s' → IsFinite c1 → Etale c1 → ∀ [inst : Algebra ℂ Z.functionField] [inst' : Algebra ℂ Y.functionField], inst = ffAlg s → inst' = ffAlg s' → ∀ [Algebra Z.functionField Y.functionField] [IsScalarTower ℂ Z.functionField Y.functionField], (∀ (V : Z.Opens) (hV : genericPoint Z ∈ V) (hV' : genericPoint Y ∈ c1 ⁻¹ᵁ V) (g : Γ(Z, V)), algebraMap Z.functionField Y.functionField ((Z.presheaf.germ V (genericPoint Z) hV).hom g) = (Y.presheaf.germ (c1 ⁻¹ᵁ V) (genericPoint Y) hV').hom (c1.app V g)) → ∀ (F : Type) [Field F] [Algebra ℂ F] [Algebra F Z.functionField] [IsScalarTower ℂ F Z.functionField] [Algebra F Y.functionField] [IsScalarTower F Z.functionField Y.functionField] [IsScalarTower ℂ F Y.functionField] (x : Fin (d + 1) → F) (U : Fin (d + 1) → Z.Opens), IsFinCover ℂ Z.functionField x → IsAffCover s U (rB ℂ Z.functionField x) → IsAffCover s' (fun i => c1 ⁻¹ᵁ U i) (rB ℂ Y.functionField x) → IsReduced ((rB ℂ Z.functionField x {0}) ⧸ (Ideal.span (Set.range fun j : Fin d => (⟨_, tco_mem ℂ Z.functionField x j⟩ : rB ℂ Z.functionField x {0})))) → IsReduced ((rB ℂ Y.functionField x {0}) ⧸ (Ideal.span (Set.range fun j : Fin d => (⟨_, tco_mem ℂ Y.functionField x j⟩ : rB ℂ Y.functionField x {0})))) := by

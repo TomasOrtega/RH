@@ -5,15 +5,15 @@ namespace GlobalTheory.CardQuotientPow
 open Module Submodule
 
 /- English proof (translation)
-Establish `key : ∀ I : Ideal R, Nat.card (R ⧸ I) = I.toAddSubgroup.index` using `fun I => rfl`. Proceed by induction on `k with`. Consider the case `zero => rw [key]`. Simplify using the standard rewrite rules. Consider the case `succ k ih`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 
-Rewrite using `[pow_succ (Nat.card (R ⧸ Ideal.span {p})) k, ← ih, key, key, key]`. Establish `hle : (Ideal.span {p ^ (k+1)}).toAddSubgroup ≤ (Ideal.span {p ^ k}).toAddSubgroup`. Introduce `x hx`. Conclude with `Ideal.span_singleton_le_span_singleton.mpr (pow_dvd_pow p (Nat.le_succ k)) hx`. Rewrite using `[← AddSubgroup.relIndex_mul_index hle, mul_comm]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Set `f : R →+ R` to `AddMonoidHom.mulLeft (p ^ k)`. Establish `hr : f.range = (Ideal.span {p ^ k}).toAddSubgroup`. Use extensionality with `x`. Simplify using `only [AddMonoidHom.mem_range, Submodule.mem_toAddSubgroup, Ideal.mem_span_singleton', f, AddMonoidHom.coe_mulLeft]`.
+Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, rfl⟩`. Conclude with `⟨y, mul_comm _ _⟩`. Introduce and unpack `⟨y, rfl⟩`. Conclude with `⟨y, mul_comm _ _⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `hc : (Ideal.span {p ^ (k+1)}).toAddSubgroup.comap f = (Ideal.span {p}).toAddSubgroup`. Use extensionality with `x`. Simplify using `only [AddSubgroup.mem_comap, Submodule.mem_toAddSubgroup, Ideal.mem_span_singleton, f, AddMonoidHom.coe_mulLeft]`. Rewrite using `[pow_succ, mul_dvd_mul_iff_left (pow_ne_zero _ hp.ne_zero)]`. Rewrite using `[← hr, ← AddSubgroup.index_comap, hc]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_quot_pow {R : Type} [CommRing R] [IsDomain R] {p : R} (hp : Irreducible p) (k : ℕ) :
     Nat.card (R ⧸ Ideal.span {p ^ k}) = Nat.card (R ⧸ Ideal.span {p}) ^ k := by
@@ -43,19 +43,17 @@ theorem card_quot_pow {R : Type} [CommRing R] [IsDomain R] {p : R} (hp : Irreduc
     rw [← hr, ← AddSubgroup.index_comap, hc]
 
 /- English proof (translation)
-Use `set N := LinearMap.range φ with hN`. Set `e : M ≃ₗ[R] N` to `LinearEquiv.ofInjective φ hφ`. Establish `h : finrank R N = finrank R M` using `e.finrank_eq.symm`. Set `a` to `smithNormalFormCoeffs b h`. Set `b'` to `smithNormalFormTopBasis b h`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `ab` to `smithNormalFormBotBasis b h`. Establish `ab_eq` using `smithNormalFormBotBasis_def b h`. Set `f : M →ₗ[R] M` to `N.subtype ∘ₗ (b'.equiv ab (Equiv.refl _) : M →ₗ[R] N)`. Establish `ha : ∀ i, f (b' i) = a i • b' i`. Introduce `i`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [f, LinearMap.comp_apply, LinearEquiv.coe_coe, b'.equiv_apply, Equiv.refl_apply, Submodule.subtype_apply]`. Conclude with `ab_eq i`. Establish `hdetf : LinearMap.det f = ∏ i, a i`. Rewrite using `[← LinearMap.det_toMatrix b', ← Matrix.det_diagonal]`. Use `congr 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `i j`. Rewrite using `[LinearMap.toMatrix_apply, ha, map_smul, Basis.repr_self, Finsupp.smul_single, smul_eq_mul, mul_one]`. Distinguish the cases in `hij : i = j`. Rewrite using `[hij, Matrix.diagonal_apply_eq, Finsupp.single_eq_same]`. Rewrite using `[Matrix.diagonal_apply_ne _ hij, Finsupp.single_eq_of_ne hij]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hφf : Associated (LinearMap.det φ) (LinearMap.det f)`. Establish `: φ = N.subtype ∘ₗ (e : M →ₗ[R] N)` using `by ext x; rfl`. Rewrite using `[this]`. Conclude with `LinearMap.associated_det_comp_equiv _ _ _`. Use `choose k hk using fun i => IsDiscreteValuationRing.associated_pow_irreducible (smithNormalFormCoeffs_ne_zero b h i) hp`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨∑ i, k i, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← Finset.prod_pow_eq_pow_sum]`. Use `hφf.trans ?_` and prove the remaining obligations. Rewrite using `[hdetf]`. Conclude with `Associated.prod _ _ _ fun i _ => hk i`.
-
-Rewrite using `[Nat.card_congr (quotientEquivPiSpan N b h).toEquiv, Nat.card_pi, ← Finset.prod_pow_eq_pow_sum]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← card_quot_pow hp, Ideal.span_singleton_eq_span_singleton.mpr (hk i)]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem main {R M ι : Type} [CommRing R] [IsDomain R] [IsDiscreteValuationRing R]
     [AddCommGroup M] [Module R M] [Fintype ι] (b : Module.Basis ι R M) {p : R}

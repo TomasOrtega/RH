@@ -21,21 +21,21 @@ theorem evalLin_apply {ι : Type} {a : ℕ} (y : ι → Matrix (Fin a) (Fin a) �
     evalLin y F = evalAt y F := rfl
 
 /- English proof (translation)
-Use `set V := Vn lam n with hV`. Use `haveI : FiniteDimensional ℂ V := (GlobalTheory.T.weylDeterminantTwistTensor_finiteDimensional_stable ι a lam n).1`. Establish `hsep : ∀ F : PY ι a, (∀ y, IsInv y → evalAt y F = 0) → F = 0` using `(GlobalTheory.T.fockSubstitution_identities ι a a le_rfl).2.2.2.2.2.2.1`. Set `S : Set (Module.Dual ℂ V)` to `{φ | ∃ y : ι → Matrix (Fin a) (Fin a) ℂ, IsInv y ∧ φ = (evalLin y).comp V.subtype}`. Take `⟨f, hfS, hspan, -⟩` from `Submodule.exists_fun_fin_finrank_span_eq ℂ S`.
+Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `choose y hy hfy using hfS`. Set `Φ` to `LinearMap.pi f`. Establish `hinj : LinearMap.ker Φ = ⊥`. Rewrite using `[LinearMap.ker_eq_bot']`. Introduce `F hF`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h0 : ∀ φ ∈ Submodule.span ℂ S, φ F = 0`. Introduce `φ hφ`. Rewrite `hφ` using `[← hspan]`. Proceed by induction on `hφ using Submodule.span_induction with`. Consider the case `mem x hx`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately.
 
-Take `⟨j, rfl⟩` from `hx`. Conclude with `congrFun hF j`. Consider the case `zero => simp`. Consider the case `add x z _ _ hx hz => simp [hx, hz]`. Consider the case `smul c x _ hx => simp [hx]`.
+Treat this case separately. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hF0 : (F : PY ι a) = 0`. Apply `hsep` to reduce the goal to its premises. Introduce `z hz`. Use `h0 ((evalLin z).comp V.subtype) (Submodule.subset_span ⟨z, hz, rfl⟩)` as an intermediate fact. Simplify `this` using `[evalLin_apply]`.
+Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `Subtype.ext hF0`. Take `⟨L, hL⟩` from `LinearMap.exists_leftInverse_of_injective Φ hinj`. Use `⟨_, y, fun j => T (L (Pi.single j 1) : PY ι a), hy, ?_⟩` and prove the remaining obligations. Introduce `F hF`. Establish `hΦ : Φ ⟨F, hF⟩ = ∑ j, evalAt (y j) F • (Pi.single j 1 : Fin _ → ℂ)`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Use extensionality with `i`. Simplify using `only [Φ, LinearMap.pi_apply, Finset.sum_apply, Pi.smul_apply, Pi.single_apply, smul_eq_mul, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq, Finset.mem_univ, if_true]`. Rewrite using `[hfy i]`. Both sides reduce to the same expression. Establish `key : (⟨F, hF⟩ : V) = L (Φ ⟨F, hF⟩)`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← LinearMap.comp_apply, hL]`. Both sides reduce to the same expression. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hΦ, map_sum]`. Simplify using `[map_smul, Submodule.coe_sum, Submodule.coe_smul]`.
+A detailed English derivation is pending.
 -/
 theorem exists_evalAt_span (ι : Type) [Fintype ι] (a : ℕ) (lam : ι → DomWeight a) (n : ι → ℕ)
     (W : Type) [AddCommGroup W] [Module ℂ W] (T : PY ι a →ₗ[ℂ] W) :

@@ -7,15 +7,15 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.TwV.DelB
 
 /- English proof (translation)
-The claim follows from `(RingHom.map_det f M).symm`.
+A detailed English derivation is pending.
 -/
 theorem det_map_ringHom {n : Type*} [Fintype n] [DecidableEq n] {R S : Type*} [CommRing R] [CommRing S] (f : R →+* S)
     (M : Matrix n n R) : (M.map f).det = f M.det := (RingHom.map_det f M).symm
 
 /- English proof (translation)
-Introduce `j La v`. Simplify using `only [fdOfCharts]`. Rewrite using `[Matrix.det_submatrix_equiv_self, det_map_ringHom]`. Apply `IsUnit.map` to reduce the goal to its premises. Rewrite using `[Matrix.det_mul, LinearMap.det_toMatrix']`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `IsUnit.mul (LinearEquiv.isUnit_det' _) (Matrix.isUnits_det_units _)`.
+A detailed English derivation is pending.
 -/
 theorem frInv_fdOfCharts {p : ℕ} [Fact p.Prime] {X : Sys p} {D : D7} (cp : ChartPts X D) (a : 𝓞 D.host.E)
     (bad : Finset (HeightOneSpectrum (𝓞 D.host.F))) : FrInv (fdOfCharts cp a bad) := by
@@ -27,9 +27,7 @@ theorem frInv_fdOfCharts {p : ℕ} [Fact p.Prime] {X : Sys p} {D : D7} (cp : Cha
   exact IsUnit.mul (LinearEquiv.isUnit_det' _) (Matrix.isUnits_det_units _)
 
 /- English proof (translation)
-Introduce `D L hT Gi Gl Kc Dx cX ex u μ w hg Lv I H X _ std t J S`. Establish `h1 : FrInv (J.fd std)` using `frInv_fdOfCharts _ _ _`. Use `⟨h1, fun d j La v => ?_⟩` and prove the remaining obligations. Use `show IsUnit (((star (d.eM j La)).map (J.rho std v)) * (J.fd std).frM j La v).det`. Rewrite using `[Matrix.det_mul, det_map_ringHom]`.
-
-Conclude with `IsUnit.mul (IsUnit.map _ (Matrix.isUnit_det_of_left_inverse (GlobalTheory.T.decomposition_unitary_mul_star_eq_one S d j La))) (h1 j La v)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem frames_invertible : AllSites (fun {D L hT Gi Gl Kc Dx cX ex u μ w hg Lv I H X} [Fact (D.what₂.places.resChar w).Prime] {std t J} S =>
     FrInv (J.fd std) ∧ ∀ d : Dec J std, FrInv d.fd2) := by

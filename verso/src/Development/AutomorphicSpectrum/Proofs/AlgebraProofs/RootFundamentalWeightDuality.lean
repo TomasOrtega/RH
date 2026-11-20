@@ -11,7 +11,7 @@ open ReciprocityTheory.ChartRestriction.G.AI.I4 (IsPullHerm imageZ blockFnField)
 namespace GlobalTheory.CompanionTheory.Ar.Cmp
 
 /- English proof (translation)
-The claim follows from `@PositivityTheory.UnitarySelfGeneration.h_fundinv`.
+A detailed English derivation is pending.
 -/
 theorem rootOnFund_mul_fundOnRoot_inverse : ∀ (Ψ : Type) [Fintype Ψ] [DecidableEq Ψ] (N : ℕ) (r r' : Ψ × Fin N), (∑ a, rootOnFund r a * fundOnRoot a r' = if r = r' then 1 else 0) ∧ (∀ π : Ψ ≃ Ψ, rootOnFund (π r.1, r.2) (π r'.1, r'.2) = rootOnFund r r' ∧ fundOnRoot (π r.1, r.2) (π r'.1, r'.2) = fundOnRoot r r') :=
   @PositivityTheory.UnitarySelfGeneration.h_fundinv

@@ -30,12 +30,12 @@ def IsTheta.polAV {P : PPAS S} {L : LB P.A.left} (h : IsTheta P L) : Out.PolAV S
 def dbl (P : PPAS S) : P.A.left ⟶ P.A.left := (Out.mulA P.A 2).left
 
 /- English proof (translation)
-The claim follows from `Over.w _`.
+A detailed English derivation is pending.
 -/
 theorem dbl_hom (P : PPAS S) : dbl P ≫ P.A.hom = P.A.hom := Over.w _
 
 /- English proof (translation)
-Rewrite using `[← Category.assoc, dbl_hom]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem dbl_comp (P : PPAS S) (p : S ⟶ Sp k) : dbl P ≫ (P.A.hom ≫ p) = P.A.hom ≫ p := by
   rw [← Category.assoc, dbl_hom]
@@ -68,9 +68,7 @@ def sdens (τ Z : Matrix (Fin g) (Fin g) ℂ) : ℝ :=
   ((τ.map fun t => (t.im : ℂ))⁻¹ * Z * (τ.map fun t => (t.im : ℂ))⁻¹ * Z.map star).trace.re
 
 /- English proof (translation)
-Establish `e : ((Matrix.diagonal fun _ : Fin 1 => Complex.I).map fun t => (t.im : ℂ)) = 1`. Use extensionality with `i j`. Use `fin_cases i`. Use `fin_cases j`. Simplify using the standard rewrite rules.
-
-Simplify using `[sdens, e]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 example : sdens (g := 1) (Matrix.diagonal fun _ => Complex.I) 1 = 1 := by
   have e : ((Matrix.diagonal fun _ : Fin 1 => Complex.I).map fun t => (t.im : ℂ)) = 1 := by

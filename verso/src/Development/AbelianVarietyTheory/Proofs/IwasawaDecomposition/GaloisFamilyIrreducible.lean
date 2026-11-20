@@ -10,23 +10,21 @@ section Fixed
 variable {L : Type} [Field L] [NumberField L] [IsCMField L] {n : ℕ} {W : Type} [AddCommGroup W] [Module ℂ W]
 
 /- English proof (translation)
-Proceed by induction on `t using Finset.induction_on with`. Consider the case `empty`. Introduce `_ f hf hf0 _`. Simplify using `only [Finset.notMem_empty, iSup_false, iSup_bot, Submodule.mem_bot] at hf`. Conclude with `absurd hf hf0`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Treat this case separately.
 
-Consider the case `insert S t hS ih`. Introduce `ht f hf hf0 hfix`. Establish `ht' : ∀ S' ∈ t, NG.IsIrrRep ρ S'` using `fun S' h => ht S' (Finset.mem_insert_of_mem h)`. Establish `hSi` using `ht S (Finset.mem_insert_self _ _)`. Establish `hNst : ∀ h, ∀ g ∈ ⨆ S' ∈ t, S', NG.rt L n h g ∈ ⨆ S' ∈ t, S'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Establish `hle : (⨆ S' ∈ t, S') ≤ (⨆ S' ∈ t, S').comap (NG.rt L n h)`. Use `iSup₂_le fun S' hS' g hg => ?_` and prove the remaining obligations. Conclude with `(le_iSup₂ (f := fun (S'' : Submodule ℂ (GAf L n → W)) (_ : S'' ∈ t) => S'') S' hS') ((ht' S' hS').1.stable h g hg)`. Conclude with `fun g hg => hle hg`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite `hf` using `[Finset.iSup_insert]`. Distinguish the cases in `hd : S ⊓ (⨆ S' ∈ t, S') = ⊥`. Take `⟨a, ha, b, hb, rfl⟩` from `Submodule.mem_sup.1 hf`. Establish `hfa : ∀ κ ∈ K, NG.rt L n κ a = a ∧ NG.rt L n κ b = b`. Introduce `κ hκ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e` using `hfix κ hκ`. Rewrite `e` using `[map_add]`. Establish `h1 : NG.rt L n κ a - a = b - NG.rt L n κ b`. Rewrite using `[sub_eq_sub_iff_add_eq_add, e, add_comm]`. Establish `hm : NG.rt L n κ a - a ∈ S ⊓ (⨆ S' ∈ t, S')` using `⟨S.sub_mem (hSi.1.stable κ a ha) ha, h1 ▸ Submodule.sub_mem _ hb (hNst κ b hb)⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `hm` using `[hd, Submodule.mem_bot]`. Use `⟨sub_eq_zero.1 hm, ?_⟩` and prove the remaining obligations. Rewrite `h1` using `[hm]`. Conclude with `(sub_eq_zero.1 h1.symm).symm`. Distinguish the cases in `ha0 : a = 0`.
+Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Substitute `ha0` using the available equality. Rewrite `hf0` using `[zero_add]`. Take `⟨S', hS', g, hg, hg0, hgf⟩` from `ih ht' b hb hf0 fun κ hκ => (hfa κ hκ).2`. Conclude with `⟨S', Finset.mem_insert_of_mem hS', g, hg, hg0, hgf⟩`. Conclude with `⟨S, Finset.mem_insert_self _ _, a, ha, ha0, fun κ hκ => (hfa κ hκ).1⟩`.
+Supply the required witnesses or components. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsub : NG.IsSubrep ρ (S ⊓ (⨆ S' ∈ t, S'))` using `⟨inf_le_left.trans hSi.1.le, fun h g hg => ⟨hSi.1.stable h g hg.1, hNst h g hg.2⟩⟩`. Establish `heq : S ⊓ (⨆ S' ∈ t, S') = S` using `(hSi.2.2 _ hsub inf_le_left).resolve_left hd`. Establish `hSN : S ≤ ⨆ S' ∈ t, S'` using `heq ▸ inf_le_right`. Establish `hfN : f ∈ ⨆ S' ∈ t, S'` using `(sup_le hSN le_rfl) hf`. Take `⟨S', hS', g, hg, hg0, hgf⟩` from `ih ht' f hfN hf0 hfix`.
-
-Conclude with `⟨S', Finset.mem_insert_of_mem hS', g, hg, hg0, hgf⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_fixed_of_mem_biSup (ρ : Representation ℂ (GQ L n) W) (K : Set (GAf L n))
     (t : Finset (Submodule ℂ (GAf L n → W))) :
@@ -79,13 +77,11 @@ theorem exists_fixed_of_mem_biSup (ρ : Representation ℂ (GQ L n) W) (K : Set 
       exact ⟨S', Finset.mem_insert_of_mem hS', g, hg, hg0, hgf⟩
 
 /- English proof (translation)
-Unfold `NG.isoTyp at hf`. Take `⟨s, hs, hfs⟩` from `Submodule.mem_sSup_iff_exists_finset.1 hf`. Take `⟨S', hS', g, hg, hg0, hgf⟩` from `exists_fixed_of_mem_biSup ρ K s (fun S' h => (hs h).1) f hfs hf0 hfix`. Take `⟨T, hT⟩` from `(hs hS').2`. Use `⟨(T.symm ⟨g, hg⟩ : S), (T.symm ⟨g, hg⟩).2, ?_, fun κ hκ => ?_⟩` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `h0`. Apply `hg0` to reduce the goal to its premises. Establish `h1 : T.symm ⟨g, hg⟩ = 0` using `Subtype.ext h0`. Establish `h2` using `congrArg T h1`. Rewrite `h2` using `[LinearEquiv.apply_symm_apply, map_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `congrArg Subtype.val h2`. Use `set a := T.symm ⟨g, hg⟩`. Establish `e` using `hT κ a ⟨NG.rt L n κ (a : GAf L n → W), hS κ _ a.2⟩ rfl`. Establish `hTa : ((T a : _) : GAf L n → W) = g` using `by simp [a]`. Rewrite `e` using `[hTa, hgf κ hκ]`.
-
-Establish `e2 : T ⟨NG.rt L n κ (a : GAf L n → W), hS κ _ a.2⟩ = T a` using `Subtype.ext (e.trans hTa.symm)`. Conclude with `congrArg Subtype.val (T.injective e2)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_fixed_of_isoTyp (ρ : Representation ℂ (GQ L n) W) {S : Submodule ℂ (GAf L n → W)}
     (hS : ∀ h, ∀ f ∈ S, NG.rt L n h f ∈ S) (K : Set (GAf L n)) {f : GAf L n → W} (hf : f ∈ NG.isoTyp ρ S)
@@ -116,7 +112,7 @@ end GlobalTheory.AutUnr
 namespace GlobalTheory.AutUnr
 
 /- English proof (translation)
-Establish `h1 : ((p : ℕ) : 𝓞 (maximalRealSubfield D.host.E)) ∈ v.asIdeal`. Rewrite using `[← hw', Ideal.mem_comap, map_natCast]`. Conclude with `h`. Rewrite `h1` using `[← hw, Ideal.mem_comap, map_natCast]`. Conclude with `h1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_placesOver_of_overPl {D : D7} {p : ℕ} {w w' : PlE D.host}
     {v : HeightOneSpectrum (𝓞 (maximalRealSubfield D.host.E))} (hw : NG.OverPl w v) (hw' : NG.OverPl w' v)
@@ -127,9 +123,9 @@ theorem mem_placesOver_of_overPl {D : D7} {p : ℕ} {w w' : PlE D.host}
   exact h1
 
 /- English proof (translation)
-Take `⟨s, -, h, -⟩` from `GlobalTheory.SplitConjPlace.splitEx_all D w hw`. Use `⟨GlobalTheory.SplitConjPlace.conjSP s, HeightOneSpectrum.ext (Ideal.ext fun x => ?_)⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.SplitConjPlace.mem_conj_w]`. Use `(h x _ ?_).symm` and prove the remaining obligations. Rewrite using `[IsCMField.coe_ringOfIntegersComplexConj]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `D.host.φ₀.injective (by`. Rewrite using `[NumberField.IsCMField.complexEmbedding_complexConj, Formalism.HC.HostAx.conjE_apply])`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_splitPlace_eq (D : D7) (w : PlE D.host) (hw : IsSplitPl D.host w) :
     ∃ s : SplitPlace D.host.E, s.w = w := by
@@ -145,23 +141,21 @@ set_option maxHeartbeats 4000000 in
 set_option synthInstance.maxHeartbeats 400000 in
 
 /- English proof (translation)
-Introduce `D cf jE A low Pq S hL eig θ Bs M C tp hCS hMI hstar hE hsp hCh big X T Sp i ι _ F irr hinj hsurj hne hind htop P w hw hQ hg hp`. Take `⟨s, hsw⟩` from `exists_splitPlace_eq D w hw`. Establish `hov : NG.OverPl w s.v` using `hsw ▸ s.w_under`. Establish `hjf : X.nd.j i - 1 + 1 = X.nd.j i` using `by have := X.nd.j_range i; omega`. Set `jf : Fin D.R.m` to `⟨X.nd.j i - 1, by have := X.nd.j_range i; omega⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `h0` using `hMI.hyp (X.nd.w i) jf`. Establish `hyp : NG.HypOutside (mlX M X i).J (mlX M X i).χ (gPl D ∪ qPl D (tp.tup (D.what₂.muTw (X.nd.w i)) jf))` using `GlobalTheory.FitHecke.hypOutside_transport' (M := M) (X.nd.mu_w i).symm hjf _ _ (X.nd.j_range i).1 (X.nd.j_range i).2 _ h0`. Establish `hi : i ∈ X.nd.locs (X.nd.j i) (X.nd.w i)` using `(X.nd.locs_mem _ _ i).2 ⟨rfl, rfl⟩`. Establish `hQe : C.Q (X.nd.w i) = Sp.B.Qc (X.nd.j i) (X.nd.w i)` using `(Sp.Qc_eq _ _).symm`. Establish `hvB : s.v ∉ gPl D ∪ qPl D (tp.tup (D.what₂.muTw (X.nd.w i)) jf)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce and unpack `(⟨w', hov', k, hk⟩ | hq)`. Conclude with `hg k (mem_placesOver_of_overPl hov hov' hk)`. Take `⟨w', hov', hw'⟩` from `GlobalTheory.FitHecke.qPl_sub tp (X.nd.w i) (X.nd.w_tw i) jf hq`. Break down `hw' with hQ' | hp'` into its components or cases. Rewrite `hQ'` using `[hQe]`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hwQ : w ∈ Sp.B.Qc (X.nd.j i) (X.nd.w i)` using `Sp.B.Qc_over _ _ w' w hQ' ⟨s.v, hov', hov⟩`. Rewrite `hwQ` using `[← Sp.Q_eq _ _ i hi]`. Conclude with `hQ hwQ`. Rewrite `hp'` using `[X.nd.w_l i]`. Conclude with `hp (mem_placesOver_of_overPl hov hov' hp')`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Take `⟨y, hy, hy0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot (hne P)`. Establish `hfix : ∀ κ ∈ {κ : GAf D.host.E D.R.nV | κ ∈ Umax D.host.E D.R.nV ∧ TrivOutside {s.v} κ}, NG.rt D.host.E D.R.nV κ ((mlX M X i).real y) = (mlX M X i).real y`. Introduce and unpack `κ ⟨hU, htr⟩`. Establish `htr' : TrivOutside (gPl D ∪ qPl D (tp.tup (D.what₂.muTw (X.nd.w i)) jf))ᶜ κ`. Introduce `v hv`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Apply `htr v` to reduce the goal to its premises. Introduce and unpack `rfl`. Conclude with `hv hvB`. Take `⟨hJ, hχ⟩` from `hyp κ htr'`. Establish `hκ : κ ∈ (mlX M X i).J` using `hJ.2 hU`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `hmem : (mlX M X i).real y ∈ NG.TypeSp (mlX M X i).wt.ρ (mlX M X i).J (mlX M X i).χ`. Rewrite using `[← (mlX M X i).real_range]`. Conclude with `⟨y, rfl⟩`. Establish `e` using `hmem.2 ⟨κ, hκ⟩`. Rewrite `e` using `[hχ hκ]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Simplify using `using e`. Establish `hr0 : (mlX M X i).real y ≠ 0` using `fun h => hy0 ((mlX M X i).real_inj (h.trans (map_zero _).symm))`. Take `⟨f, hf, hf0, hff⟩` from `exists_fixed_of_isoTyp (mlX M X i).wt.ρ (irr P).1.stable _ hy hr0 hfix`. Establish `hsph : NG.AutRep.SphAt { (mlX M X i).wt with S` using `F P, irrS := irr P } s.v := ⟨f, hf, hf0, fun κ hU htr => hff κ ⟨hU, htr⟩⟩`. Rewrite using `[← hsw]`.
-
-Conclude with `A.au.locUnr _ _ _ _ s hsph`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem locV_unr : ∀ (D : D7) (cf : CharFrame D) (jE : D.host.E →+* Qb) (A : SideA D cf jE) (low : Finset ℕ) (Pq : HeightOneSpectrum (𝓞 (maximalRealSubfield D.host.E)) → PlE D.host) (S : RatDat D.ntw) (hL : ∀ j, ℕ → PlE D.host → Module.End D.what₂.LL (S.WL j)) (eig : ℕ → D.what₂.FT → ℕ → PlE D.host → ↥D.LL0) (θ : ∀ kk : Fin 2, Multiplicative (ZMod (D.host.g kk)) →* (↥D.LL0)ˣ) (Bs : SideB D cf A.row low Pq S hL eig θ) (M : MtFam D) (C : NChoice D) (tp : TupTied D cf C) (hCS : ChoiceSide D cf M Bs.exp C tp) (hMI : MtInput D M tp.tup C.Q) (hstar : ∀ x : D.LL0, star (x : D.what₂.LL) ∈ D.LL0) (hE : ∀ j g, ∃ z : ℤ, eExp D j g = z) (hsp : ∀ v, v ∈ placesOver D.host.E D.host.pde ∨ v ∈ placesOver D.host.E D.host.pde' → IsSplitPl D.host v) (hCh : GlobalTheory.RowTie.ChebSplit D.nd) (big : D.what₂.places.Pl → Finset ℂ) (X : LocNd (lay0 D)) (T : LocTw X) (Sp : NdSpec A.pl M C big X T) (i : X.nd.Loc) (ι : Type) [Finite ι] (F : ι → Submodule ℂ (GAf D.host.E D.R.nV → (mlX M X i).wt.W)) (irr : ∀ P, NG.IsIrrRep (mlX M X i).wt.ρ (F P)) (hinj : ∀ P P', NG.IsoRep (F P) (F P') → P = P') (hsurj : ∀ S', NG.IsIrrRep (mlX M X i).wt.ρ S' → (NG.isoTyp (mlX M X i).wt.ρ S').comap (mlX M X i).real ≠ ⊥ → ∃ P, NG.IsoRep (F P) S') (hne : ∀ P, (NG.isoTyp (mlX M X i).wt.ρ (F P)).comap (mlX M X i).real ≠ ⊥) (hind : iSupIndep (fun P => (NG.isoTyp (mlX M X i).wt.ρ (F P)).comap (mlX M X i).real)) (htop : ⨆ P, (NG.isoTyp (mlX M X i).wt.ρ (F P)).comap (mlX M X i).real = ⊤) (P : ι) (w : PlE D.host), IsSplitPl D.host w → w ∉ X.nd.Q i → (∀ k, w ∉ placesOver D.host.E (D.host.g k)) → w ∉ placesOver D.host.E (if X.nd.l i = D.host.pde then D.host.pde' else D.host.pde) → D.naut.unr (D.nbc.locAU (X.nd.j i) (A.au.cls (X.nd.j i) (X.nd.j_range i).1 (X.nd.j_range i).2 { (mlX M X i).wt with S := F P, irrS := irr P }) w) := by
   intro D cf jE A low Pq S hL eig θ Bs M C tp hCS hMI hstar hE hsp hCh big X T Sp i ι _ F irr hinj hsurj hne hind htop P w hw hQ hg hp

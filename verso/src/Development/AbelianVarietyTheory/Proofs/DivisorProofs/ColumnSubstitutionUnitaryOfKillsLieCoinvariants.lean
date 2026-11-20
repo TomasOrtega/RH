@@ -32,9 +32,9 @@ noncomputable section
 namespace GlobalTheory.LieInt
 
 /- English proof (translation)
-Establish `hJ : ReciprocityTheory.ChartRestriction.DS.Jm (fun _ : Fin a => true) = 1`. Simplify using `[ReciprocityTheory.ChartRestriction.DS.Jm]`. Take `⟨Z, ⟨hG, -⟩, hZ⟩` from `ReciprocityTheory.ChartRestriction.DS.exists_exp_eq_of_mem_Kset (ε := fun _ : Fin a => true) (k := (u : Matrix (Fin a) (Fin a) ℂ)) ⟨u.2, by rw [hJ, Matrix.mul_one, Matrix.one_mul]⟩`. Use `⟨Z, ?_, hZ⟩` and prove the remaining obligations. Unfold `ReciprocityTheory.ChartRestriction.DS.inG at hG`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Rewrite `hG` using `[hJ, Matrix.mul_one, Matrix.one_mul]`. Conclude with `eq_neg_of_add_eq_zero_left hG`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_exp_unitary {a : ℕ} (u : Matrix.unitaryGroup (Fin a) ℂ) :
     ∃ S : Matrix (Fin a) (Fin a) ℂ, S.conjTranspose = -S ∧ NormedSpace.exp S = u := by
@@ -48,14 +48,14 @@ theorem exists_exp_unitary {a : ℕ} (u : Matrix.unitaryGroup (Fin a) ℂ) :
   exact eq_neg_of_add_eq_zero_left hG
 
 /- English proof (translation)
-Simplify using `[GlobalTheory.ColLie.colDer, Finset.sum_neg_distrib, neg_smul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem colDer_neg {ι : Type} [DecidableEq ι] {d a : ℕ} (τ : ι) (S : Matrix (Fin a) (Fin a) ℂ) :
     (GlobalTheory.ColLie.colDer (d := d) τ (-S)) = -GlobalTheory.ColLie.colDer τ S := by
   simp [GlobalTheory.ColLie.colDer, Finset.sum_neg_distrib, neg_smul]
 
 /- English proof (translation)
-Establish `h : (S.map (starRingEnd ℂ)).trace = S.conjTranspose.trace`. Simplify using `[Matrix.trace, Matrix.diag, Matrix.conjTranspose_apply]`. Rewrite using `[h, hS, Matrix.trace_neg]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem trace_map_conj {a : ℕ} (S : Matrix (Fin a) (Fin a) ℂ) (hS : S.conjTranspose = -S) :
     (S.map (starRingEnd ℂ)).trace = -S.trace := by
@@ -64,31 +64,29 @@ theorem trace_map_conj {a : ℕ} (S : Matrix (Fin a) (Fin a) ℂ) (hS : S.conjTr
   rw [h, hS, Matrix.trace_neg]
 
 /- English proof (translation)
-Use `set F := A.fr τ with hF`. Establish `hFu : IsUnit F` using `A.fr_unit τ`. Establish `hFd : IsUnit F.det` using `(Matrix.isUnit_iff_isUnit_det F).1 hFu`. Establish `hFFi : F * F⁻¹ = 1` using `Matrix.mul_nonsing_inv F hFd`. Establish `hFiF : F⁻¹ * F = 1` using `Matrix.nonsing_inv_mul F hFd`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hJ : Formalism.REAL.Jm (A.ε τ) = 1`. Use extensionality with `i j`. Simplify using `[Formalism.REAL.Jm, Matrix.diagonal_apply, Matrix.one_apply, hA τ]`. Establish `hG : gramAt D M τ = F.conjTranspose * F`. Rewrite using `[← A.fr_gram τ, hJ, Matrix.mul_one]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `set Zf : Matrix (Fin M.rank) (Fin M.rank) ℂ := if ε then S else S.map (starRingEnd ℂ) with hZf`. Establish `hZfs : Zf.conjTranspose = -Zf`. Break down `ε with _ | _` into its components or cases. Simplify using `only [hZf, if_false, Bool.false_eq_true]`. Use extensionality with `i j`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `congrFun (congrFun hS j) i` as an intermediate fact. Simplify using `[Matrix.conjTranspose_apply] at this ⊢`. Rewrite using `[this, neg_neg]`. Simplify `hS` using `[hZf]`. Use `⟨F⁻¹ * Zf * F, ?_, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `show (F⁻¹ * Zf * F).conjTranspose * gramAt D M τ + gramAt D M τ * (F⁻¹ * Zf * F) = 0`. Rewrite using `[hG, Matrix.conjTranspose_mul, Matrix.conjTranspose_mul, hZfs]`. Establish `h1 : (F⁻¹).conjTranspose * F.conjTranspose = 1`. Rewrite using `[← Matrix.conjTranspose_mul, hFFi, Matrix.conjTranspose_one]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hconj : F * (F⁻¹ * Zf * F) * F⁻¹ = Zf`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, hFFi, Matrix.one_mul, Matrix.mul_assoc, hFFi, Matrix.mul_one]`. Establish `htr : (F⁻¹ * Zf * F).trace = Zf.trace`. Rewrite using `[Matrix.trace_mul_comm, ← Matrix.mul_assoc, hFFi, Matrix.one_mul]`. Establish `hsg : (GlobalTheory.SquareComm.frSgn ε A).ε τ = fun _ => !ε`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `j`. Simplify using `[GlobalTheory.SquareComm.frSgn, hA τ j]`. Establish `hn' : ((n₀ τ : ℕ) : ℂ) = (((if ε then eT τ else -eT τ) : ℚ) : ℂ) - (X.rank : ℂ) / 2`. Use `congrArg (fun x : ℚ => (x : ℂ)) (hn τ)` as an intermediate fact. Move the coercions through the operations in `at this ⊢`.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `this`. Unfold `GlobalTheory.RealQuot.actS`. Rewrite using `[hsg, hconj, htr]`. Break down `ε with _ | _` into its components or cases. Establish `h2` using `GlobalTheory.T.fockSourceGlActionSymmetrised_same_signs (D := D) τ (fun _ : Fin M.rank => !false) (B.ε τ) (Zf.map (starRingEnd ℂ)) (fun i j => by simp [hB τ i])`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[h2]`. Establish `hY : Zf.map (starRingEnd ℂ) = S`. Use extensionality with `i j`. Simplify using `[hZf]`. Establish `hZt : Zf.trace = -S.trace`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
-Simplify using `only [hZf, Bool.false_eq_true, if_false]`. Conclude with `trace_map_conj S hS`. Rewrite using `[hY, hZt, hn']`. Simplify using `only [Bool.false_eq_true, if_false]`. Use `push_cast`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Use `module`. Establish `h1` using `GlobalTheory.T.fockSourceGlActionSymmetrised_opposite_signs (D := D) τ (fun _ : Fin M.rank => !true) (B.ε τ) (Zf.map (starRingEnd ℂ)) (fun i j => by simp [hB τ i])`. Rewrite using `[h1]`. Establish `hY : (Zf.map (starRingEnd ℂ)).transpose = -S`. Rewrite using `[← hS]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `i j`. Simplify using `[hZf, Matrix.conjTranspose_apply]`. Establish `hYt : (Zf.map (starRingEnd ℂ)).trace = -S.trace`. Simplify using `only [hZf, if_true]`. Conclude with `trace_map_conj S hS`.
-
-Establish `hZt : Zf.trace = S.trace` using `by simp [hZf]`. Rewrite using `[hY, hYt, hZt, hn', colDer_neg]`. Simplify using `only [if_true]`. Use `push_cast`. Use `module`.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. A detailed English derivation is pending.
 -/
 theorem act_eq (D : D7) (ε : Bool) (M X : HSp D) (A : GlobalTheory.ChainFr.Fr M) (B : GlobalTheory.ChainFr.Fr X)
     (eT : D.what₂.Tau → ℚ) (n₀ : D.what₂.Tau → ℕ) (hA : ∀ τ j, A.ε τ j = true) (hB : ∀ τ i, B.ε τ i = true)
@@ -168,19 +166,19 @@ theorem act_eq (D : D7) (ε : Bool) (M X : HSp D) (A : GlobalTheory.ChainFr.Fr M
       module
 
 /- English proof (translation)
-Introduce `D ε M X A B eT n₀ Q _ _ q hA hB hn hker`. Establish `hS : ∀ τ (S : Matrix (Fin M.rank) (Fin M.rank) ℂ), S.conjTranspose = -S → ∀ P : PolF D X.rank M.rank, q (GlobalTheory.ColLie.colDer τ S P) = (((n₀ τ : ℕ) : ℂ) * S.trace) • q P`. Introduce `τ S hS P`. Take `⟨Z, hZ, he⟩` from `act_eq D ε M X A B eT n₀ hA hB hn τ S hS`. Establish `hmem : GlobalTheory.RealQuot.actS ε A B eT τ Z P ∈ GlobalTheory.RealQuot.coinv ε A B eT` using `Submodule.subset_span ⟨τ, Z, hZ, P, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h0` using `hker hmem`. Rewrite `h0` using `[LinearMap.mem_ker, he, LinearMap.sub_apply, LinearMap.smul_apply, Module.End.one_apply, map_sub, map_smul, sub_eq_zero]`. Conclude with `h0`. Establish `h1 : ∀ τ (u : Matrix.unitaryGroup (Fin M.rank) ℂ) (P : PolF D X.rank M.rank), q (GlobalTheory.MinorFrame.colSub (GlobalTheory.ColLie.atPl τ (u : Matrix (Fin M.rank) (Fin M.rank) ℂ)) P) = ((u : Matrix (Fin M.rank) (Fin M.rank) ℂ).det ^ n₀ τ) • q P`. Introduce `τ u P`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨S, hS', he⟩` from `exists_exp_unitary u`. Rewrite using `[← he]`. Conclude with `GlobalTheory.T.fockColumnSubstitution_exp_of_columnDerivation _ _ τ (n₀ τ) Q q (GlobalTheory.T.hasDerivAt_coeff_fockColumnSubstitution_exp _ _ τ) (hS τ) S hS' P`. Introduce `g P`. Establish `key : ∀ s : Finset D.what₂.Tau, ∀ P : PolF D X.rank M.rank, q (GlobalTheory.MinorFrame.colSub (fun τ => if τ ∈ s then (g τ : Matrix (Fin M.rank) (Fin M.rank) ℂ) else 1) P) = (∏ τ ∈ s, (g τ : Matrix (Fin M.rank) (Fin M.rank) ℂ).det ^ n₀ τ) • q P`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Introduce `s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Introduce `P`. Simplify using `only [Finset.notMem_empty, if_false, Finset.prod_empty, one_smul]`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Rewrite using `[GlobalTheory.MinorFrame.colSub_one, AlgHom.id_apply]`. Consider the case `insert τ s hτ ih`. Introduce `P`. Establish `hsplit : (fun σ => if σ ∈ insert τ s then (g σ : Matrix (Fin M.rank) (Fin M.rank) ℂ) else 1) = fun σ => GlobalTheory.ColLie.atPl τ (g τ : Matrix (Fin M.rank) (Fin M.rank) ℂ) σ * (if σ ∈ s then (g σ : Matrix (Fin M.rank) (Fin M.rank) ℂ) else 1)`. Use function extensionality and compare the values at `σ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Distinguish the cases in `h : σ = τ`. Substitute `h` using the available equality. Simplify using `[GlobalTheory.ColLie.atPl, hτ]`. Simplify using `[GlobalTheory.ColLie.atPl, h, Function.update_of_ne h]`. Rewrite using `[hsplit, GlobalTheory.MinorFrame.colSub_mul, h1, ih, smul_smul, Finset.prod_insert hτ]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `key Finset.univ P` as an intermediate fact. Simplify using `only [Finset.mem_univ, if_true] at this`. Rewrite using `[this]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem colSub_unitary_of_coinv : ∀ (D : D7) (ε : Bool) (M X : HSp D) (A : GlobalTheory.ChainFr.Fr M) (B : GlobalTheory.ChainFr.Fr X) (eT : D.what₂.Tau → ℚ)
     (n₀ : D.what₂.Tau → ℕ) (Q : Type) [AddCommGroup Q] [Module ℂ Q] (q : PolF D X.rank M.rank →ₗ[ℂ] Q),

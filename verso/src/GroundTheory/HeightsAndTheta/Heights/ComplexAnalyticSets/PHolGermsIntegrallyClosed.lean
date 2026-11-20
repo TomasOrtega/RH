@@ -10,7 +10,7 @@ open Topology Filter
 noncomputable section
 
 /- English proof (translation)
-Introduce `d y`. Use `hU (Fin d) y` as an intermediate fact. Conclude with `⟨HolGermsDomain.proof (Fin d) y, inferInstance⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem HolGermsIntegrallyClosed.proof (hU : HolGermsUFD.Statement) : HolGermsIntegrallyClosed.Statement := by
   intro d y

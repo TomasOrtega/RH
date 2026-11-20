@@ -11,13 +11,13 @@ namespace ReciprocityTheory.ChartRestriction.G.TB.LogPf
 variable {k : Type} [CommRing k] {d : ℕ}
 
 /- English proof (translation)
-Establish `hL : MvPowerSeries.HasSubst L` using `by first`. Consider the case `exact MvPowerSeries.HasSubst.of_constantCoeff_zero hL0`. Consider the case `exact MvPowerSeries.hasSubst_of_constantCoeff_zero hL0`. Consider the case `exact MvPowerSeries.HasSubst.of_constantCoeff_nilpotent (fun p => by rw [hL0 p]; exact IsNilpotent.zero)`. Consider the case `exact MvPowerSeries.hasSubst_of_constantCoeff_nilpotent (fun p => by rw [hL0 p]; exact IsNilpotent.zero)`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Rewrite using `[MvPowerSeries.constantCoeff_subst hL, finsum_eq_single _ 0]`. Simplify using `[MvPowerSeries.coeff_zero_eq_constantCoeff_apply]`. Introduce `e he`. Choose the witnesses or unpack the hypotheses as in `⟨p, hp⟩ : ∃ p, e p ≠ 0 := by`. Assume the negation of the conclusion as `hn`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction.
 
-Use `push_neg at hn`. Conclude with `he (Finsupp.ext hn)`. Establish `hz : constantCoeff (e.prod fun s n => L s ^ n) = 0`. Rewrite using `[Finsupp.prod, map_prod]`. Apply `Finset.prod_eq_zero (Finsupp.mem_support_iff.mpr hp)` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_pow, hL0, zero_pow hp]`. Rewrite using `[hz, smul_zero]`.
+A detailed English derivation is pending.
 -/
 private theorem cc_subst_lemma {σ τ : Type} [Fintype σ] {L : σ → MvPowerSeries τ k}
     (hL0 : ∀ p, constantCoeff (L p) = 0) (F : MvPowerSeries σ k) :
@@ -43,7 +43,7 @@ private theorem cc_subst_lemma {σ τ : Type} [Fintype σ] {L : σ → MvPowerSe
     rw [hz, smul_zero]
 
 /- English proof (translation)
-Unfold `ev`. Conclude with `cc_subst_lemma (σ := Fin m × Fin d) (τ := Fin n × Fin d) (L := fun p => a p.1 p.2) (fun p => ha p.1 p.2) f`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem cc_ev {m n : ℕ} {a : Fin m → Pt k n d} (ha : CZ a) (f : PS k m d) :
     constantCoeff (ev a f) = constantCoeff f := by
@@ -53,18 +53,18 @@ theorem cc_ev {m n : ℕ} {a : Fin m → Pt k n d} (ha : CZ a) (f : PS k m d) :
 variable (G : FGLaw k d)
 
 /- English proof (translation)
-Introduce `j i`. Apply the tactic sequence `fin_cases j <;> simp [pt]`.
+Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem formalFamilyConstantCoeffZero_zero_secondVar : CZ (![0, pt k (n := 1) d 0] : Fin 2 → Pt k 1 d) := by
   intro j i
   fin_cases j <;> simp [pt]
 
 /- English proof (translation)
-Establish `hE : CZ (![pt k (n` using `1) d 0, 0] : Fin 2 → Pt k 1 d) := by`. Introduce `j i`. Apply the tactic sequence `fin_cases j <;> simp [pt]`. Establish `h` using `congrArg (pderiv k ((0 : Fin 1), b)) (G.unit i)`. Rewrite `h` using `[pderiv_ev formalFamilyConstantCoeffZero_zero_secondVar, Fintype.sum_prod_type, Fin.sum_univ_two]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `[pt, MvPowerSeries.pderiv_X, Pi.single_apply] at h`. Establish `h2` using `congrArg constantCoeff h`. Rewrite `h2` using `[cc_ev formalFamilyConstantCoeffZero_zero_secondVar]`. Use `show constantCoeff (ev (n := 1) ![pt k d 0, 0] (pderiv k ((1 : Fin 2), b) (G.F i))) = _`. Rewrite using `[cc_ev hE, h2]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hib : i = b`. Substitute `hib` using the available equality. Simplify using the standard rewrite rules. Simplify using `[hib, Ne.symm hib]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cc_jac (i b : Fin d) : constantCoeff (Jac G i b) = if i = b then 1 else 0 := by
   have hE : CZ (![pt k (n := 1) d 0, 0] : Fin 2 → Pt k 1 d) := by
@@ -87,14 +87,14 @@ def JM : Matrix (Fin d) (Fin d) (PS k 1 d) := Matrix.of (Jac G)
 def Om : Matrix (Fin d) (Fin d) (PS k 1 d) := (JM G)⁻¹
 
 /- English proof (translation)
-Use extensionality with `i b`. Simplify using `[JM, Matrix.one_apply, cc_jac]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem jm_map_cc : (JM G).map constantCoeff = 1 := by
   ext i b
   simp [JM, Matrix.one_apply, cc_jac]
 
 /- English proof (translation)
-Rewrite using `[MvPowerSeries.isUnit_iff_constantCoeff, RingHom.map_det]`. Establish `h : (constantCoeff : PS k 1 d →+* k).mapMatrix (JM G) = 1` using `jm_map_cc G`. Rewrite using `[h, Matrix.det_one]`. Conclude with `isUnit_one`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUnit_det_jm : IsUnit (JM G).det := by
   rw [MvPowerSeries.isUnit_iff_constantCoeff, RingHom.map_det]
@@ -103,17 +103,17 @@ theorem isUnit_det_jm : IsUnit (JM G).det := by
   exact isUnit_one
 
 /- English proof (translation)
-The claim follows from `Matrix.nonsing_inv_mul _ (isUnit_det_jm G)`.
+A detailed English derivation is pending.
 -/
 theorem om_mul : Om G * JM G = 1 := Matrix.nonsing_inv_mul _ (isUnit_det_jm G)
 
 /- English proof (translation)
-The claim follows from `Matrix.mul_nonsing_inv _ (isUnit_det_jm G)`.
+A detailed English derivation is pending.
 -/
 theorem mul_om : JM G * Om G = 1 := Matrix.mul_nonsing_inv _ (isUnit_det_jm G)
 
 /- English proof (translation)
-Set `f : PS k m d →+* PS k n d` to `{ toFun := ev a map_one' := by simpa using ev_C ha (1 : k) map_mul' := ev_mul ha map_zero' := by simpa using ev_C ha (0 : k) map_add' := ev_add ha }`. Conclude with `Matrix.map_mul (f := f)`.
+Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem map_ev_mul {m n : ℕ} {a : Fin m → Pt k n d} (ha : CZ a) (M N : Matrix (Fin d) (Fin d) (PS k m d)) :
     (M * N).map (ev a) = M.map (ev a) * N.map (ev a) := by
@@ -126,14 +126,14 @@ theorem map_ev_mul {m n : ℕ} {a : Fin m → Pt k n d} (ha : CZ a) (M N : Matri
   exact Matrix.map_mul (f := f)
 
 /- English proof (translation)
-Conclude with `Matrix.map_one (ev a) (by simpa using ev_C ha (0 : k)) (by simpa using ev_C ha (1 : k))`.
+A detailed English derivation is pending.
 -/
 theorem map_ev_one {m n : ℕ} {a : Fin m → Pt k n d} (ha : CZ a) :
     (1 : Matrix (Fin d) (Fin d) (PS k m d)).map (ev a) = 1 := by
   exact Matrix.map_one (ev a) (by simpa using ev_C ha (0 : k)) (by simpa using ev_C ha (1 : k))
 
 /- English proof (translation)
-Establish `h` using `congrArg (fun M => M.map (constantCoeff : PS k 1 d →+* k)) (om_mul G)`. Simplify using `only [Matrix.map_mul] at h`. Use `first`. Consider the case `(rw [jm_map_cc, mul_one, Matrix.map_one _ (map_zero _) (map_one _)] at h; exact h)`. Consider the case `(simpa [jm_map_cc] using h)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem cc_om : (Om G).map constantCoeff = 1 := by
   have h := congrArg (fun M => M.map (constantCoeff : PS k 1 d →+* k)) (om_mul G)
@@ -143,17 +143,15 @@ theorem cc_om : (Om G).map constantCoeff = 1 := by
     | (simpa [jm_map_cc] using h)
 
 /- English proof (translation)
-Establish `hF : CZ (![G.F] : Fin 1 → Pt k 2 d)`. Introduce `j i`. Use `fin_cases j`. Simplify using `using G.const i`. Establish `hY : CZ (![pt k (n` using `2) d 1] : Fin 1 → Pt k 2 d) := by`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `j i`. Use `fin_cases j`. Simplify using `[pt]`. Establish `hJ : (JM G).map (ev (n` using `2) ![G.F]) = Matrix.of (Ar G) * (JM G).map (ev (n := 2) ![pt k d 1]) := by`. Use `Matrix.ext fun i b => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Matrix.mul_apply]`. Conclude with `jac_F G i b`. Establish `h1 : (Om G).map (ev (n` using `2) ![G.F]) * (JM G).map (ev (n := 2) ![G.F]) = 1 := by`. Rewrite using `[← map_ev_mul hF, om_mul, map_ev_one hF]`. Establish `h2 : (JM G).map (ev (n` using `2) ![pt k d 1]) * (Om G).map (ev (n := 2) ![pt k d 1]) = 1 := by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[← map_ev_mul hY, mul_om, map_ev_one hY]`. Establish `h3 : (Om G).map (ev (n` using `2) ![G.F]) * Matrix.of (Ar G) = (Om G).map (ev (n := 2) ![pt k d 1]) := by`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[h2, Matrix.mul_one]`. Use `_ = (Om G).map (ev (n := 2) ![G.F]) * (JM G).map (ev (n := 2) ![G.F]) * (Om G).map (ev (n := 2) ![pt k d 1]) := by`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hJ]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = (Om G).map (ev (n := 2) ![pt k d 1]) := by`. Rewrite using `[h1, Matrix.one_mul]`. Establish `h4` using `congrFun (congrFun h3 i) b`.
-
-Rewrite `h4` using `[Matrix.mul_apply]`. Use `first`. Consider the case `exact h4`. Consider the case `simpa using h4`.
+Rewrite the indicated hypotheses using the stated equalities. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem om_Q (i b : Fin d) : ∑ j, ev (n := 2) ![G.F] (Om G i j) * Ar G j b = ev (n := 2) ![pt k d 1] (Om G i b) := by
   have hF : CZ (![G.F] : Fin 1 → Pt k 2 d) := by
@@ -190,22 +188,22 @@ theorem om_Q (i b : Fin d) : ∑ j, ev (n := 2) ![G.F] (Om G i j) * Ar G j b = e
     | simpa using h4
 
 /- English proof (translation)
-Introduce `j i`. Apply the tactic sequence `fin_cases j <;> simp [pt]`.
+Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem czSw : CZ (![pt k (n := 2) d 1, pt k d 0] : Fin 2 → Pt k 2 d) := by
   intro j i
   fin_cases j <;> simp [pt]
 /- English proof (translation)
-Introduce `j i`. Apply the tactic sequence `fin_cases j <;> simp [pt]`.
+Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem czX : CZ (![pt k (n := 2) d 0] : Fin 1 → Pt k 2 d) := by
   intro j i
   fin_cases j <;> simp [pt]
 
 /- English proof (translation)
-Establish `hF : CZ (![G.F] : Fin 1 → Pt k 2 d)`. Introduce `j i`. Use `fin_cases j`. Simplify using `using G.const i`. Rewrite using `[ev_ev czSw hF]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Use function extensionality and compare the values at `j i`. Use `fin_cases j`. Simplify using `using G.comm i`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem sw_F (h : PS k 1 d) : ev (n := 2) ![pt k d 1, pt k d 0] (ev (n := 2) ![G.F] h) = ev (n := 2) ![G.F] h := by
   have hF : CZ (![G.F] : Fin 1 → Pt k 2 d) := by
@@ -219,11 +217,9 @@ theorem sw_F (h : PS k 1 d) : ev (n := 2) ![pt k d 1, pt k d 0] (ev (n := 2) ![G
   simpa using G.comm i
 
 /- English proof (translation)
-Establish `hY : CZ (![pt k (n` using `2) d 1] : Fin 1 → Pt k 2 d) := by`. Introduce `j i`. Use `fin_cases j`. Simplify using `[pt]`. Rewrite using `[ev_ev czSw hY]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Use function extensionality and compare the values at `j i`. Use `fin_cases j`. Use `first`. Consider the case `exact ev_X czSw 1 i`.
-
-Consider the case `(simp only [Matrix.cons_val_zero]; exact ev_X czSw 1 i)`. Consider the case `simp [pt, ev_X czSw]`.
+Apply function extensionality and compare values at an arbitrary argument. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem sw_y (h : PS k 1 d) :
     ev (n := 2) ![pt k d 1, pt k d 0] (ev (n := 2) ![pt k d 1] h) = ev (n := 2) ![pt k d 0] h := by
@@ -241,9 +237,9 @@ theorem sw_y (h : PS k 1 d) :
     | simp [pt, ev_X czSw]
 
 /- English proof (translation)
-Establish `h` using `congrArg (pderiv k ((0 : Fin 2), b)) (G.comm j)`. Rewrite `h` using `[pderiv_ev czSw, Fintype.sum_prod_type, Fin.sum_univ_two]`. Simplify using `[pt, MvPowerSeries.pderiv_X, Pi.single_apply] at h`. Use `first`. Consider the case `exact h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately.
 
-Consider the case `simpa using h`.
+A detailed English derivation is pending.
 -/
 theorem sw_dF (j b : Fin d) :
     ev (n := 2) ![pt k d 1, pt k d 0] (pderiv k ((1 : Fin 2), b) (G.F j)) = pderiv k ((0 : Fin 2), b) (G.F j) := by
@@ -255,9 +251,9 @@ theorem sw_dF (j b : Fin d) :
     | simpa using h
 
 /- English proof (translation)
-Establish `h` using `congrArg (ev (n := 2) ![pt k d 1, pt k d 0]) (om_Q G i a)`. Set `f : PS k 2 d →+* PS k 2 d` to `{ toFun := ev (n := 2) ![pt k d 1, pt k d 0] map_one' := by simpa using ev_C czSw (1 : k) map_mul' := ev_mul czSw map_zero' := by simpa using ev_C czSw (0 : k) map_add' := ev_add czSw }`. Establish `hs : ∀ (s : Finset (Fin d)) (g : Fin d → PS k 2 d), ev (n` using `2) ![pt k d 1, pt k d 0] (∑ j ∈ s, g j) = ∑ j ∈ s, ev (n := 2) ![pt k d 1, pt k d 0] (g j) := fun s g => map_sum f g s`. Rewrite `h` using `[hs, sw_y]`. Simplify using `only [ev_mul czSw, sw_F, Ar, sw_dF] at h`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `h`.
+A detailed English derivation is pending.
 -/
 theorem om_P (i a : Fin d) :
     ∑ j, ev (n := 2) ![G.F] (Om G i j) * pderiv k ((0 : Fin 2), a) (G.F j) = ev (n := 2) ![pt k d 0] (Om G i a) := by
@@ -276,9 +272,9 @@ theorem om_P (i a : Fin d) :
   exact h
 
 /- English proof (translation)
-Establish `hF : CZ (![G.F] : Fin 1 → Pt k 2 d)`. Introduce `j i`. Use `fin_cases j`. Simplify using `using G.const i`. Rewrite using `[pderiv_ev hF, Fintype.sum_prod_type]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem d_evF (h : PS k 1 d) (v : Fin 2 × Fin d) :
     pderiv k v (ev (n := 2) ![G.F] h) = ∑ c, ev (n := 2) ![G.F] (pderiv k ((0 : Fin 1), c) h) * pderiv k v (G.F c) := by
@@ -290,14 +286,14 @@ theorem d_evF (h : PS k 1 d) (v : Fin 2 × Fin d) :
   simp
 
 /- English proof (translation)
-Introduce `j i`. Apply the tactic sequence `fin_cases j <;> simp [pt]`.
+Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem CZ_pt_vector : CZ (![pt k (n := 1) d 0, 0] : Fin 2 → Pt k 1 d) := by
   intro j i
   fin_cases j <;> simp [pt]
 
 /- English proof (translation)
-Introduce `j i`. Use `fin_cases j`. Simplify using `using G.const i`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 private theorem CZ_singleton_F : CZ (![G.F] : Fin 1 → Pt k 2 d) := by
   intro j i
@@ -305,11 +301,9 @@ private theorem CZ_singleton_F : CZ (![G.F] : Fin 1 → Pt k 2 d) := by
   simpa using G.const i
 
 /- English proof (translation)
-Rewrite using `[← G.comm i, ev_ev CZ_pt_vector czSw]`. Establish `e : (fun j i' => ev (n` using `1) ![pt k d 0, 0] ((![pt k d 1, pt k d 0] : Fin 2 → Pt k 2 d) j i')) = (![0, pt k d 0] : Fin 2 → Pt k 1 d) := by`. Use function extensionality and compare the values at `j i'`. Use `fin_cases j`. Use `first`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Treat this case separately. Treat this case separately.
 
-Consider the case `exact ev_X CZ_pt_vector 1 i'`. Consider the case `simp [pt, ev_X CZ_pt_vector]`. Use `first`. Consider the case `exact ev_X CZ_pt_vector 0 i'`. Consider the case `simp [pt, ev_X CZ_pt_vector]`.
-
-Rewrite using `[e, G.unit i]`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem ev_coordinate_F (i : Fin d) :
     ev (n := 1) ![pt k d 0, 0] (G.F i) = (X ((0 : Fin 1), i) : PS k 1 d) := by
@@ -327,9 +321,7 @@ private theorem ev_coordinate_F (i : Fin d) :
   rw [e, G.unit i]
 
 /- English proof (translation)
-Rewrite using `[ev_ev CZ_pt_vector (CZ_singleton_F G)]`. Establish `e : (fun j i => ev (n` using `1) ![pt k d 0, 0] ((![G.F] : Fin 1 → Pt k 2 d) j i)) = fun j => pt k (n := 1) d j := by`. Use function extensionality and compare the values at `j i`. Use `fin_cases j`. Conclude with `ev_coordinate_F G i`.
-
-Rewrite using `[e, ev_pt]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ez_F (h : PS k 1 d) : ev (n := 1) ![pt k d 0, 0] (ev (n := 2) ![G.F] h) = h := by
   rw [ev_ev CZ_pt_vector (CZ_singleton_F G)]
@@ -341,9 +333,9 @@ theorem ez_F (h : PS k 1 d) : ev (n := 1) ![pt k d 0, 0] (ev (n := 2) ![G.F] h) 
   rw [e, ev_pt]
 
 /- English proof (translation)
-Establish `h` using `congrArg (pderiv k ((0 : Fin 1), a)) (ev_coordinate_F G j)`. Rewrite `h` using `[pderiv_ev CZ_pt_vector, Fintype.sum_prod_type, Fin.sum_univ_two]`. Simplify using `[pt, MvPowerSeries.pderiv_X, Pi.single_apply] at h`. Use `first`. Consider the case `exact h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately.
 
-Consider the case `simpa [eq_comm] using h`.
+A detailed English derivation is pending.
 -/
 theorem ez_dx (j a : Fin d) :
     ev (n := 1) ![pt k d 0, 0] (pderiv k ((0 : Fin 2), a) (G.F j)) = if j = a then 1 else 0 := by
@@ -360,9 +352,9 @@ Both sides reduce to the same expression.
 theorem ez_dy (c b : Fin d) : ev (n := 1) ![pt k d 0, 0] (pderiv k ((1 : Fin 2), b) (G.F c)) = Jac G c b := rfl
 
 /- English proof (translation)
-Use extensionality with `n`. Rewrite using `[MvPowerSeries.coeff_pderiv, MvPowerSeries.coeff_pderiv, MvPowerSeries.coeff_pderiv, MvPowerSeries.coeff_pderiv]`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Both sides reduce to the same expression.
 
-Rewrite using `[add_right_comm n (Finsupp.single i 1) (Finsupp.single j 1)]`. Simplify using `only [Finsupp.coe_add, Pi.add_apply, Finsupp.single_apply, if_neg hij, if_neg (Ne.symm hij), add_zero]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem mvPowerSeries_pderiv_comm {σ : Type} (i j : σ) (f : MvPowerSeries σ k) :
     pderiv k i (pderiv k j f) = pderiv k j (pderiv k i f) := by
@@ -378,17 +370,17 @@ private theorem mvPowerSeries_pderiv_comm {σ : Type} (i j : σ) (f : MvPowerSer
     ring
 
 /- English proof (translation)
-Establish `hE` using `CZ_pt_vector (k := k) (d := d)`. Set `fE : PS k 2 d →+* PS k 1 d` to `{ toFun := ev (n := 1) ![pt k d 0, 0] map_one' := by simpa using ev_C hE (1 : k) map_mul' := ev_mul hE map_zero' := by simpa using ev_C hE (0 : k) map_add' := ev_add hE }`. Establish `hsE : ∀ g : Fin d → PS k 2 d, ev (n` using `1) ![pt k d 0, 0] (∑ j, g j) = ∑ j, ev (n := 1) ![pt k d 0, 0] (g j) := fun g => map_sum fE g Finset.univ`. Establish `hz0 : ev (n` using `1) ![pt k d 0, 0] (0 : PS k 2 d) = 0 := map_zero fE`. Establish `hdJ : ∀ j, pderiv k ((0 : Fin 1), a) (Jac G j b) = ev (n` using `1) ![pt k d 0, 0] (pderiv k ((0 : Fin 2), a) (pderiv k ((1 : Fin 2), b) (G.F j))) := by`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `j`. Use `show pderiv k ((0 : Fin 1), a) (ev (n := 1) ![pt k d 0, 0] (pderiv k ((1 : Fin 2), b) (G.F j))) = _`. Rewrite using `[pderiv_ev hE, Fintype.sum_prod_type, Fin.sum_univ_two]`. Simplify using `[pt, MvPowerSeries.pderiv_X, Pi.single_apply]`. Establish `hR : pderiv k ((1 : Fin 2), b) (ev (n` using `2) ![pt k d 0] (Om G i a)) = 0 := by`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[pderiv_ev czX, Fintype.sum_prod_type]`. Simplify using `[pt, MvPowerSeries.pderiv_X, Pi.single_apply]`. Establish `hP` using `congrArg (⇑(pderiv k ((1 : Fin 2), b))) (om_P G i a)`. Rewrite `hP` using `[hR, map_sum]`. Simplify using `only [Derivation.leibniz, smul_eq_mul, d_evF] at hP`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hP2` using `congrArg (ev (n := 1) ![pt k d 0, 0]) hP`. Simplify using `only [hsE, hz0, ev_mul hE, ev_add hE, ez_F, ez_dx, ez_dy, mvPowerSeries_pderiv_comm ((1 : Fin 2), b) ((0 : Fin 2), a), ← hdJ] at hP2`. Rewrite `hP2` using `[Finset.sum_add_distrib]`. Simplify using `only [ite_mul, one_mul, zero_mul, Finset.sum_ite_eq', Finset.mem_univ, if_true] at hP2`. Establish `hM` using `congrFun (congrFun (om_mul G) i) b`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hM` using `[Matrix.mul_apply]`. Simplify using `only [JM, Matrix.of_apply] at hM`. Establish `hM2` using `congrArg (⇑(pderiv k ((0 : Fin 1), a))) hM`. Establish `hone : pderiv k ((0 : Fin 1), a) ((1 : Matrix (Fin d) (Fin d) (PS k 1 d)) i b) = 0`. Rewrite using `[Matrix.one_apply]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `split_ifs <;> simp`. Rewrite `hM2` using `[hone, map_sum]`. Simplify using `only [Derivation.leibniz, smul_eq_mul] at hM2`. Rewrite `hM2` using `[Finset.sum_add_distrib]`. Take the linear combination `hM2 - hP2`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem om_key (i a b : Fin d) :
     ∑ j, Jac G j b * pderiv k ((0 : Fin 1), a) (Om G i j) = ∑ c, pderiv k ((0 : Fin 1), c) (Om G i a) * Jac G c b := by

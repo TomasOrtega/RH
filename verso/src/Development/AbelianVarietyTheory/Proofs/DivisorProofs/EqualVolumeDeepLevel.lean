@@ -31,11 +31,11 @@ open scoped TensorProduct
 namespace GlobalTheory.CompEqVol
 
 /- English proof (translation)
-Introduce `hP2 hS hKS hSA D T hT j hp hq hf hj Y e o hY`. Establish `hr : 1 ≤ (T.Q.Dw j).p + (T.Q.Dw j).q` using `by omega`. Take `⟨M, hs, hb, hk, hc⟩` from `hKS.exists_model_charts hS hr Y.d.Xo₂ Y.d.c₂`. Take `⟨TF, hTF⟩` from `GlobalTheory.CompProport.exists_torFlag_charts hr M hs hb hk hc`. Establish `hσ : GoodEmb Y.d.c₂ Y.d.c₂.F.val.toRingHom` using `rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨-, q, -, hv⟩` from `GlobalTheory.CompProport.vZero_eq_covol (GlobalTheory.T.stronger_published_hypotheses_imply hP2) hP2.q7 hSA hY hf TF hTF hσ`. Establish `hg0 : ∀ p : ℕ, p.Prime → T.Q.l.GoodAt p` using `Formalism.L2.Pj.goodAt_of_two_primes hT.pins.2.1.1 (D.host.g_prime 0) (D.host.g_prime 1) D.host.g_ne`. Establish `hg : ∀ p : ℕ, p.Prime → Y.d.l₂.GoodAt p` using `GlobalTheory.LawsDeep.goodAt_of_mul _ _ _ hY.lev.1.2.1 hg0`. Establish `hcov` using `GlobalTheory.T.complexUniformisation_components_covolume_eq _ _ _ _ _ _ _ _ (Formalism.L2.PjFree.Unf.ofPj (Y.U Y.d.c₂.F.val.toRingHom)) hσ ((Formalism.L2.PjFree.isUnf_ofPj _).2 (hY.unf _ hσ)) hg hp hq`. Introduce `Z Z'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨k, rfl⟩` from `q.surjective Z`. Take `⟨k', rfl⟩` from `q.surjective Z'`. Rewrite using `[hv, hv]`. Conclude with `congrArg (fun x => x * _ / _) (hcov k k')`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eqVolume_good : Hypotheses2 → GlobalTheory.Published.SiegelToroidalIntegral → GlobalTheory.Published.ToroidalForFanKS → GlobalTheory.Published.SemiAbelianLieSeminegative → ∀ (D : D7) (T : CoreJ D), LawsJ T → ∀ j : ℕ, 1 ≤ (T.Q.Dw j).p → 1 ≤ (T.Q.Dw j).q → 2 < Module.finrank ℚ D.host.E / 2 → InR D j → ∀ (Y : Deep T.toCore j) (e : ℕ) (o : ℝ), Y.Good e o → EqVolume Y.U := by
   intro hP2 hS hKS hSA D T hT j hp hq hf hj Y e o hY

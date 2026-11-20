@@ -23,26 +23,26 @@ abbrev Fr (l : ℕ) [Fact l.Prime] (n : ℕ) : Ainf l →+* Ainf l :=
   (WittVector.frobenius : Ainf l →+* Ainf l) ^ n
 
 /- English proof (translation)
-Rewrite using `[Fr, pow_succ']`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem Fr_succ (n : ℕ) (a : Ainf l) : Fr l (n + 1) a = WittVector.frobenius (Fr l n a) := by
   rw [Fr, pow_succ']; rfl
 
 /- English proof (translation)
-Rewrite using `[Fr, pow_succ]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem Fr_succ' (n : ℕ) (a : Ainf l) : Fr l (n + 1) a = Fr l n (WittVector.frobenius a) := by
   rw [Fr, pow_succ]; rfl
 
 /- English proof (translation)
-Rewrite using `[WittVector.frobenius_eq_map_frobenius, WittVector.map_teichmuller, frobenius_def, map_pow]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem frob_teich (x : OCb l) :
     WittVector.frobenius (WittVector.teichmuller l x) = WittVector.teichmuller l x ^ l := by
   rw [WittVector.frobenius_eq_map_frobenius, WittVector.map_teichmuller, frobenius_def, map_pow]
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simp [Fr]`. Consider the case `succ n ih => rw [Fr_succ, ih, map_pow, frob_teich, ← pow_mul, pow_succ']`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem Fr_teich (n : ℕ) (x : OCb l) :
     Fr l n (WittVector.teichmuller l x) = WittVector.teichmuller l x ^ l ^ n := by
@@ -51,7 +51,7 @@ theorem Fr_teich (n : ℕ) (x : OCb l) :
   | succ n ih => rw [Fr_succ, ih, map_pow, frob_teich, ← pow_mul, pow_succ']
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simpa [Fr] using h`. Consider the case `succ n ih`. Rewrite using `[Fr_succ, pow_succ']`. Conclude with `ih.frob`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lifts_Fr {w : Ainf l} {c : ↥(K0 K)} (h : Lifts AI K w c) (n : ℕ) :
     Lifts AI K (Fr l n w) ((frK P K ^ n) c) := by
@@ -62,7 +62,7 @@ theorem lifts_Fr {w : Ainf l} {c : ↥(K0 K)} (h : Lifts AI K w c) (n : ℕ) :
     exact ih.frob
 
 /- English proof (translation)
-Unfold `Lifts at h ⊢`. Rewrite using `[map_sum, map_sum]`. Conclude with `Finset.sum_congr rfl h`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lifts_sum {ι : Type} (T : Finset ι) (w : ι → Ainf l) (c : ι → ↥(K0 K))
     (h : ∀ i ∈ T, Lifts AI K (w i) (c i)) : Lifts AI K (∑ i ∈ T, w i) (∑ i ∈ T, c i) := by
@@ -81,14 +81,14 @@ theorem oK_apply (c : ↥(K0 K)) : oK P K c = oB P (c : Om l) := rfl
 def u (P : LocPrime l) (j : ℕ) : P.R.BdR := qB P ((j.factorial : ℚ_[l])⁻¹) * tD P ^ j
 
 /- English proof (translation)
-Use `qB_mul_mem _ (FilB_anti ?_ (FilB_pow tD_mem j))` and prove the remaining obligations. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem u_mem (j : ℕ) : u P j ∈ FilB P 0 := by
   refine qB_mul_mem _ (FilB_anti ?_ (FilB_pow tD_mem j))
   simp
 
 /- English proof (translation)
-Establish `h` using `GlobalTheory.T.teichmullerEpsilonRoot_pow_sub_zeta_exp_mem_filtration l P AI hT 0 m M`. Rewrite `h` using `[P.ζQ_zero, one_pow, map_one, one_mul]`. Use `h using 3 with j hj` and compare the differences between its conclusion and the goal. Both sides reduce to the same expression. Rewrite using `[pow_zero, div_one, div_eq_mul_inv, map_mul, map_pow, map_natCast, u, mul_assoc]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 -/
 theorem taylor0 (hT : LocTied l P AI) (m M : ℕ) :
     io AI (WittVector.teichmuller l AI.ε ^ m) - ∑ j ∈ Finset.range M, (m : P.R.BdR) ^ j * u P j ∈
@@ -100,9 +100,9 @@ theorem taylor0 (hT : LocTied l P AI) (m M : ℕ) :
   · rw [pow_zero, div_one, div_eq_mul_inv, map_mul, map_pow, map_natCast, u, mul_assoc]
 
 /- English proof (translation)
-Take `⟨x, y, rfl⟩` from `Ideal.mem_span_pair.mp ha`. Use `⟨x, ?_⟩` and prove the remaining obligations. Establish `h` using `FilB_zero_mul (io_mem AI y) (FilB_pow (io_ξ_mem AI) M)`. Rewrite `h` using `[mul_one]`. Use `h using 1` and compare the differences between its conclusion and the goal.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Simplify using `only [map_add, map_mul, map_pow]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem span_mem_Lat {M n : ℕ} {a : Ainf l}
     (ha : a ∈ Ideal.span {((l : ℕ) : Ainf l) ^ n, AI.ξ ^ M}) : io AI a ∈ Lat AI M n := by
@@ -115,45 +115,43 @@ theorem span_mem_Lat {M n : ℕ} {a : Ainf l}
   ring
 
 /- English proof (translation)
-Establish `hD : ∀ j, ∃ D : Ainf l, j < M → Lifts AI K D (d j)`. Introduce `j`. Distinguish the cases in `hj : j < M`. Take `⟨D, hD⟩` from `GlobalTheory.T.exists_lifts_of_norm_le_one_alt l P AI hT K (d j) (hd j hj).1`. Conclude with `⟨D, fun _ => hD⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨0, fun h => absurd h hj⟩`. Use `choose D hD using hD`. Establish `h0 : D 0 - WittVector.frobenius (D 0) = ∑ i ∈ T, w i`. Establish `h1` using `(hD 0 hM).sub (hD 0 hM).frob`. Establish `h2` using `(hd 0 hM).2`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [pow_zero, one_mul, mul_one] at h2`. Rewrite `h1` using `[h2]`. Conclude with `h1.unique (lifts_sum T w c hw)`. Choose the witnesses or unpack the hypotheses as in `⟨q, hq⟩ : AI.μ ∣ ∑ i ∈ T, w i * (WittVector.teichmuller l AI.ε ^ m i - 1) := by`. Use `Finset.dvd_sum fun i _ => Dvd.dvd.mul_left ?_ _` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `sub_dvd_pow_sub_pow (WittVector.teichmuller l AI.ε) 1 (m i)` as an intermediate fact. Rewrite `this` using `[one_pow]`. Then use the resulting hypothesis. Take `⟨hc1, hc2⟩` from `GlobalTheory.T.ainf_mu_frobenius_equation_solvable_and_tendsto l P AI`. Take `⟨y', hy'⟩` from `hc1 q`. Establish `hy : (D 0 + AI.μ * y') - WittVector.frobenius (D 0 + AI.μ * y') = ∑ i ∈ T, w i * WittVector.teichmuller l AI.ε ^ m i`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [mul_sub, mul_one, Finset.sum_sub_distrib] at hq`. Rewrite using `[map_add]`. Take the linear combination `h0 + hy' - hq`. Use `⟨D 0 + AI.μ * y', hy, ?_⟩` and prove the remaining obligations. Use `set y := D 0 + AI.μ * y' with hydef`.
+Take a linear combination of the given relations to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `E : ℕ → P.R.BdR` to `fun n => io AI (Fr l n y) - ∑ j ∈ Finset.range M, (l : P.R.BdR) ^ (j * n) * oK P K ((frK P K ^ n) (d j)) * u P j`. Establish `hstep : ∀ n, E n - E (n + 1) ∈ FilB P (M : ℤ)`. Introduce `n`. Establish `h1 : io AI (Fr l n y) - io AI (Fr l (n + 1) y) = ∑ i ∈ T, oK P K ((frK P K ^ n) (c i)) * io AI (WittVector.teichmuller l AI.ε ^ (m i * l ^ n))`. Rewrite using `[Fr_succ', ← map_sub, ← map_sub, hy, map_sum, map_sum]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `Finset.sum_congr rfl fun i hi => ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_mul, (lifts_Fr (hw i hi) n).io_eq, map_pow (Fr l n), Fr_teich, ← pow_mul, mul_comm (l ^ n), oK_apply]`. Establish `h2 : ∀ j ∈ Finset.range M, (l : P.R.BdR) ^ (j * n) * oK P K ((frK P K ^ n) (d j)) * u P j - (l : P.R.BdR) ^ (j * (n + 1)) * oK P K ((frK P K ^ (n + 1)) (d j)) * u P j = ∑ i ∈ T, oK P K ((frK P K ^ n) (c i)) * (((m i * l ^ n : ℕ) : P.R.BdR) ^ j * u P j)`. Introduce `j hj`. Establish `h3` using `congrArg (fun x => oK P K ((frK P K ^ n) x)) (hd j (Finset.mem_range.mp hj)).2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [map_sub, map_mul, map_pow, map_natCast, map_sum] at h3`. Establish `h4 : (frK P K ^ (n + 1)) (d j) = (frK P K ^ n) (frK P K (d j))`. Rewrite using `[pow_succ]`. Both sides reduce to the same expression. Establish `h5 : ∑ i ∈ T, oK P K ((frK P K ^ n) (c i)) * (((m i * l ^ n : ℕ) : P.R.BdR) ^ j * u P j) = (l : P.R.BdR) ^ (j * n) * u P j * ∑ i ∈ T, oK P K ((frK P K ^ n) (c i)) * (m i : P.R.BdR) ^ j`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h4, h5, ← h3]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `h6 : E n - E (n + 1) = ∑ i ∈ T, oK P K ((frK P K ^ n) (c i)) * (io AI (WittVector.teichmuller l AI.ε ^ (m i * l ^ n)) - ∑ j ∈ Finset.range M, ((m i * l ^ n : ℕ) : P.R.BdR) ^ j * u P j)`. Simplify using `only [mul_sub, Finset.sum_sub_distrib, Finset.mul_sum]`. Rewrite using `[← h1, Finset.sum_comm, ← Finset.sum_congr rfl h2, Finset.sum_sub_distrib]`. Simplify using `only [E]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h6]`. Use `Submodule.sum_mem _ fun i hi => FilB_zero_mul ?_ (taylor0 hT _ _)` and prove the remaining obligations. Rewrite using `[oK_apply, ← (lifts_Fr (hw i hi) n).io_eq]`. Conclude with `io_mem AI _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Establish `htel : ∀ n, E 0 - E n ∈ FilB P (M : ℤ)`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih`.
+Treat this case separately. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `add_mem ih (hstep n)` as an intermediate fact. Rewrite `this` using `[sub_add_sub_cancel]`. Then use the resulting hypothesis. Establish `hE0 : E 0 ∈ FilB P (M : ℤ)`. Use `GlobalTheory.T.mem_deRhamFiltration_of_forall_ainfLattice l P AI hT M _ fun r => ?_` and prove the remaining obligations. Take `⟨k₀, hk₀⟩` from `hc2 M r`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hk : ∀ j, ∃ k : ℕ, (l : P.R.BdR) ^ k * u P j ∈ Lat AI M r` using `fun j => (GlobalTheory.T.bounded_and_eventually_sub_mem_Lat_alt l P AI hT _ (u_mem j) M r).1`. Use `choose k hk using hk`. Use `set n := k₀ + ∑ j ∈ Finset.range M, k j with hn`. Establish `hEn : E n ∈ Lat AI M r`. Take `⟨M', rfl⟩` from `Nat.exists_eq_add_of_le' hM`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `e0 : oK P K ((frK P K ^ n) (d 0)) = io AI (Fr l n (D 0))`. Rewrite using `[oK_apply, (lifts_Fr (hD 0 hM) n).io_eq]`. Establish `e1 : E n = io AI (Fr l n y') * io AI (Fr l n AI.μ) - ∑ j ∈ Finset.range M', (l : P.R.BdR) ^ ((j + 1) * n) * oK P K ((frK P K ^ n) (d (j + 1))) * u P (j + 1)`. Simplify using `only [E, hydef]`. Rewrite using `[Finset.sum_range_succ', e0]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Simplify using `only [map_add, map_mul, u, zero_mul, pow_zero, Nat.factorial_zero, Nat.cast_one, inv_one, map_one]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e1]`. Use `sub_mem (io_mul_mem_Lat AI _ (span_mem_Lat ?_)) (sum_mem fun j hj => ?_)` and prove the remaining obligations. Use `hk₀ n (Nat.le_add_right _ _)` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Rewrite `this` using `[← RingHom.coe_pow]`. Then use the resulting hypothesis. Establish `hj' : j + 1 < M' + 1` using `Nat.succ_lt_succ (Finset.mem_range.mp hj)`. Establish `hle : k (j + 1) ≤ (j + 1) * n`. Establish `a1 : k (j + 1) ≤ ∑ j ∈ Finset.range (M' + 1), k j` using `Finset.single_le_sum (f := k) (fun _ _ => Nat.zero_le _) (Finset.mem_range.mpr hj')`. Establish `a2 : n ≤ (j + 1) * n` using `Nat.le_mul_of_pos_left _ (Nat.succ_pos j)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Use linear arithmetic over natural numbers and integers. Take `⟨e, he⟩` from `Nat.exists_eq_add_of_le hle`. Use `io_mul_mem_Lat AI (((l : ℕ) : Ainf l) ^ e * Fr l n (D (j + 1))) (hk (j + 1))` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Rewrite using `[he, oK_apply, ← (lifts_Fr (hD _ hj') n).io_eq, map_mul, map_pow, map_natCast]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Expand and normalize the polynomial expressions, which then agree. Use `add_mem (FilB_le_Lat AI (n := r) (htel n)) hEn` as an intermediate fact. Rewrite `this` using `[sub_add_cancel]`. Then use the resulting hypothesis. Use `hE0 using 1` and compare the differences between its conclusion and the goal. Simplify using `only [E, Fr, pow_zero, mul_zero, one_mul]`.
-
-Use `congr 1`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[u, oK_apply, AlgHom.one_apply]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem tail (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P) (hT : LocTied l P AI)
     (K : FinExt l) (ι : Type) (T : Finset ι) (w : ι → Ainf l) (c : ι → ↥(K0 K)) (m : ι → ℕ) (M : ℕ)

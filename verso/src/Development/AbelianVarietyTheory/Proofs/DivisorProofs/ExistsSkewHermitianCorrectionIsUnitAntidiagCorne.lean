@@ -6,37 +6,33 @@ open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.Genus
 open scoped TensorProduct Matrix
 
 /- English proof (translation)
-Introduce `O _ c h2 hcore n JL G G' hJL hdet hGG' hG`. Take `⟨a, ha⟩ : ∃ a : O, a * 2 = 1` from `⟨↑(h2.unit⁻¹), by simp⟩`. Establish `ha' : (2 : O) * a = 1` using `by rw [mul_comm, ha]`. Establish `hca : c a = a`. Establish `h1 : c a * 2 = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `congrArg c ha` as an intermediate fact. Rewrite `this` using `[map_mul, map_one, map_ofNat]`. Then use the resulting hypothesis. Combine the equalities or inequalities in the displayed calculation. Use `set Δ : Matrix (Fin n ⊕ Fin n) (Fin n) O := Matrix.fromRows (1 : Matrix (Fin n) (Fin n) O) 1 with hΔ`. Use `set Nb : Matrix (Fin n ⊕ Fin n) (Fin n) O := Matrix.fromRows (1 : Matrix (Fin n) (Fin n) O) (-1) with hNb`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Use `set T : Matrix (Fin n ⊕ Fin n) (Fin n ⊕ Fin n) O := Matrix.fromCols Δ Nb with hTdef`. Establish `hT : T = Matrix.fromBlocks 1 1 1 (-1)`. Apply the tactic sequence `ext i j; rcases i with i | i <;> rcases j with j | j <;> simp [T, Δ, Nb]`. Establish `hTt : Tᵀ = T`. Rewrite using `[hT, Matrix.fromBlocks_transpose]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Establish `hTc : T.map c = T`. Rewrite using `[hT, Matrix.fromBlocks_map]`. Simplify using the standard rewrite rules. Apply the tactic sequence `ext i j; by_cases h : i = j <;> simp [Matrix.one_apply, h]`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hTT : T * T = (2 : O) • 1`. Rewrite using `[hT, Matrix.fromBlocks_multiply, ← Matrix.fromBlocks_one, Matrix.fromBlocks_smul]`. Simplify using `[two_smul]`. Use `set J : Matrix (Fin n) (Fin n) O := (2 : O) • JL with hJ`. Use `set K : Matrix (Fin n ⊕ Fin n) (Fin n ⊕ Fin n) O := Matrix.fromBlocks 0 J J 0 with hK`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Supply the required witnesses or components. Establish an intermediate fact.
 
-Use `set D : Matrix (Fin n ⊕ Fin n) (Fin n ⊕ Fin n) O := Matrix.fromBlocks JL 0 0 (-JL) with hD`. Establish `hTKT : T * K * T = (4 : O) • D`. Rewrite using `[hT, Matrix.fromBlocks_multiply, Matrix.fromBlocks_multiply, Matrix.fromBlocks_smul]`. Simplify using `[J]`. Conclude with `⟨by rw [← add_smul]; norm_num, by rw [← neg_add, ← add_smul]; norm_num⟩`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hTDT : T * D * T = K`. Rewrite using `[hT, Matrix.fromBlocks_multiply, Matrix.fromBlocks_multiply]`. Simplify using `[K, J, two_smul]`. Establish `h4 : a * a * 4 = (1 : O)` using `by linear_combination (2 * a + 1) * ha`. Use `set g : Matrix (Fin n ⊕ Fin n) (Fin n ⊕ Fin n) O := a • (Tᵀ * G * T) with hg`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hmapsmul : ∀ (b : O) (M : Matrix (Fin n ⊕ Fin n) (Fin n ⊕ Fin n) O), (b • M).map c = c b • M.map c`. Introduce `b M`. Use extensionality with `i j`. Simplify using the standard rewrite rules. Establish `hgt : gᵀ = a • (T * Gᵀ * T)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules.
 
-Simplify using `only [hg, Matrix.transpose_smul, Matrix.transpose_mul, Matrix.transpose_transpose, hTt, Matrix.mul_assoc]`. Establish `hgc : g.map c = a • (T * G.map c * T)`. Rewrite using `[hg, hTt, hmapsmul, Matrix.map_mul, Matrix.map_mul, hTc, hca]`. Establish `hgK : gᵀ * K * g.map c = K`. Rewrite using `[hgt, hgc]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.smul_mul, Matrix.mul_smul, smul_smul, Matrix.mul_assoc]`. Use `_ = (a * a * 4) • (T * (Gᵀ * D * G.map c) * T) := by`. Rewrite using `[hTKT]`. Simplify using `only [Matrix.smul_mul, Matrix.mul_smul, smul_smul, Matrix.mul_assoc]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `_ = K := by rw [hG, h4, one_smul, hTDT]`. Establish `hgdet : g * (a • (T * G' * T)) = 1`. Rewrite using `[hg, hTt]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.smul_mul, Matrix.mul_smul, smul_smul, Matrix.mul_assoc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `_ = (a * a * 2) • (T * (G * G') * T) := by`. Rewrite using `[hTT]`. Simplify using `only [Matrix.smul_mul, Matrix.mul_smul, smul_smul, Matrix.mul_assoc, Matrix.one_mul]`. Use `_ = 1 := by`. Rewrite using `[hGG', Matrix.mul_one, hTT, smul_smul, show a * a * 2 * 2 = (1 : O) by linear_combination (2 * a + 1) * ha, one_smul]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hJherm : ∀ i j, c (J j i) = J i j` using `by intro i j; simp only [J, Matrix.smul_apply, smul_eq_mul, map_mul, map_ofNat, hJL]`. Establish `hJdet : IsUnit J.det`. Rewrite using `[hJ, Matrix.det_smul]`. Conclude with `(h2.pow _).mul hdet`. Take `⟨Z, hZ1, hZ2⟩` from `hcore n J hJherm hJdet g (Matrix.isUnit_det_of_right_inverse hgdet) hgK`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `⟨Z, ?_, ?_⟩` and prove the remaining obligations. Establish `h` using `congrArg (fun M => a • M) hZ1`. Simplify using `only [J, Matrix.mul_smul, Matrix.smul_mul, ← smul_add, smul_smul, ha, one_smul, smul_zero] at h`. Conclude with `h`. Establish `hblk : Tᵀ * G * T = Matrix.fromBlocks (Δᵀ * G * Δ) (Δᵀ * G * Nb) (Nbᵀ * G * Δ) (Nbᵀ * G * Nb)`.
-
-Rewrite using `[hTdef, Matrix.transpose_fromCols, Matrix.fromRows_mul, Matrix.fromRows_mul_fromCols]`. Establish `h21 : g.toBlocks₂₁ = a • (Nbᵀ * G * Δ)`. Rewrite using `[hg, hblk, Matrix.fromBlocks_smul, Matrix.toBlocks_fromBlocks₂₁]`. Establish `h22 : g.toBlocks₂₂ = a • (Nbᵀ * G * Nb)`. Rewrite using `[hg, hblk, Matrix.fromBlocks_smul, Matrix.toBlocks_fromBlocks₂₂]`.
-
-Establish `hE : Nbᵀ * G * Nb + Nbᵀ * G * Δ * Z = (2 : O) • (g.toBlocks₂₁ * Z + g.toBlocks₂₂)`. Rewrite using `[h21, h22, Matrix.smul_mul, ← smul_add, smul_smul, ha', one_smul, add_comm]`. Rewrite using `[hE, Matrix.det_smul]`. Conclude with `(h2.pow _).mul hZ2`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.HermBlockChange.exists_unit_lower_block : ∀ (O : Type) [CommRing O] (c : O →+* O), IsUnit (2 : O) →
     (∀ (n : ℕ) (J : Matrix (Fin n) (Fin n) O), (∀ i j, c (J j i) = J i j) → IsUnit J.det →

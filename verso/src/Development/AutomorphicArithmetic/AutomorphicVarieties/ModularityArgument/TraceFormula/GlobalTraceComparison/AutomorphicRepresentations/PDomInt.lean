@@ -16,7 +16,7 @@ namespace UpperTheory.V.Z.Tf.GlobalTraceComparison.Pi
 attribute [local instance] borelH
 
 /- English proof (translation)
-Establish `h` using `Real.pow_div_factorial_le_exp (1 + r) (by linarith) N`. Rewrite `h` using `[div_le_iff₀ (by exact_mod_cast N.factorial_pos)]`. Establish `e : Real.exp r * Real.exp (-r) = 1` using `by rw [← Real.exp_add]; simp`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 private theorem pow_mul_exp_neg_le (N : ℕ) {r : ℝ} (hr : 0 ≤ r) :
     (1 + r) ^ N * Real.exp (-r) ≤ N.factorial * Real.exp 1 := by
@@ -29,27 +29,25 @@ private theorem pow_mul_exp_neg_le (N : ℕ) {r : ℝ} (hr : 0 ≤ r) :
     _ = N.factorial * Real.exp 1 := by rw [e, mul_one]
 
 /- English proof (translation)
-Take `⟨h1, h2, -⟩` from `hB E n hn`. Take `⟨c, hc0, hc⟩` from `hS E n hn`. Establish `hA` using `hθ.1 ψ hψ`. Take `⟨C₀, hC₀⟩` from `Dcy.cp_decay ψ (π.cusp ψ hψ) hA 0 (L + 1)`. Use `set a : ℝ := redSize (1 : GA E 0) with ha`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `ha0 : 0 ≤ a` using `Dcy.redSize_nonneg _`. Use `set c₁ : ℝ := 2 + a + c with hc₁`. Establish `hc₁0 : 0 ≤ c₁` using `by positivity`. Use `set C : ℝ := max C₀ 0 with hC`. Establish `hC0 : 0 ≤ C` using `le_max_right _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `set K : ℝ := ((2 * M).factorial : ℝ) * Real.exp 1 with hK`. Establish `hK0 : 0 ≤ K` using `by positivity`. Use `⟨C * c₁ ^ (2 * M) * K, by positivity, fun R ρ hR x hx hρ => ?_⟩` and prove the remaining obligations. Take `⟨hs, -, hr⟩` from `hc x`. Use `set r : ℝ := r0 x with hrdef`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set y : H E n 0 := ac E n (-ldet x) * x with hy`. Establish `hy0 : ldet y = 0` using `by rw [hy, h2, h1]; ring`. Establish `hψy : ψ.1 y.1 = ψ.1 x.1` using `hA _ _`. Establish `hdec : ‖ψ.1 x.1‖ ≤ C * Real.exp (-((L + 1) * r))`. Establish `h` using `hC₀ y.1 (by`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: |ldet y| ≤ 0` using `by rw [hy0]; simp`. Conclude with `this)`. Rewrite `h` using `[hψy]`. Conclude with `h.trans (mul_le_mul_of_nonneg_right (le_max_left _ _) (Real.exp_pos _).le)`. Establish `hx2 : x.2 = 1` using `Units.ext (Subsingleton.elim _ _)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hw : wt x = 1 + redSize x.1 + a` using `by rw [wt, hx2]`. Establish `hrs` using `Dcy.redSize_nonneg x.1`. Establish `hw1 : 1 ≤ wt x` using `by rw [hw]; linarith`. Establish `hP : 1 ≤ (1 + r) * (1 + R)` using `by nlinarith [mul_nonneg hr hR]`. Establish `hwle : wt x ≤ c₁ * ((1 + r) * (1 + R))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Establish `h3 : c * (1 + |ldet x|) ≤ c * (1 + R)` using `mul_le_mul_of_nonneg_left (by linarith) hc0`. Establish `h4 : 1 + R ≤ (1 + r) * (1 + R)` using `by nlinarith [mul_nonneg hr hR]`. Establish `h5 : 1 + r ≤ (1 + r) * (1 + R)` using `by nlinarith [mul_nonneg hr hR]`. Establish `h6 : c * (1 + R) ≤ c * ((1 + r) * (1 + R))` using `mul_le_mul_of_nonneg_left h4 hc0`. Establish `h7 : (1 + a) * 1 ≤ (1 + a) * ((1 + r) * (1 + R))` using `mul_le_mul_of_nonneg_left hP (by linarith)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hw, hc₁]`. Use the polynomial consequences of the given equalities and inequalities. Establish `hexp : Real.exp (-((L + 1) * r)) ≤ Real.exp (-(L * ρ)) * Real.exp (-r)`. Rewrite using `[← Real.exp_add]`. Use `Real.exp_le_exp.2 ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left hρ hL]`. Establish `hpow : wt x ^ (2 * M) ≤ c₁ ^ (2 * M) * ((1 + r) ^ (2 * M) * (1 + R) ^ (2 * M))`. Rewrite using `[← mul_pow, ← mul_pow]`. Conclude with `pow_le_pow_left₀ (by linarith) hwle _`. Establish `hwpos : 0 < wt x ^ (2 * M)` using `pow_pos (by linarith) _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Establish `hz : wt x ^ (-(2 * M : ℤ)) = (wt x ^ (2 * M))⁻¹`. Rewrite using `[_root_.zpow_neg]`. Use `congr 1`. Establish `hr1 : 0 ≤ 1 + r` using `by linarith`. Establish `hR1 : 0 ≤ 1 + R` using `by linarith`.
-
-Establish `hmain : ‖ψ.1 x.1‖ * wt x ^ (2 * M) ≤ C * c₁ ^ (2 * M) * K * (1 + R) ^ (2 * M) * Real.exp (-(L * ρ))`. Establish `hq` using `pow_mul_exp_neg_le (2 * M) hr`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hz, ← div_eq_mul_inv, le_div_iff₀ hwpos]`. Conclude with `hmain`.
+A detailed English derivation is pending.
 -/
 private theorem point_bound {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ} (hB : Basic) (hS : Sizes)
     (hn : 1 ≤ n) {π : CuspSub E n} (hθ : ThetaFix π) {ψ : Sm E n} (hψ : ψ ∈ π.V) (M : ℕ) (L : ℝ) (hL : 0 ≤ L) :
@@ -118,13 +116,11 @@ private theorem point_bound {E : Type} [Field E] [NumberField E] [IsCMField E] {
   exact hmain
 
 /- English proof (translation)
-Introduce `hB hS E _ _ _ n hn D π hθ ψ hψ Ω hΩ`. Use `⟨2 * (2 * n), fun L hL => ?_⟩` and prove the remaining obligations. Take `⟨A, hA0, hA⟩` from `point_bound hB hS hn hθ hψ (2 * n) L hL`. Establish `hI` using `wtCount E n 0 D Ω hΩ (2 * n) (by omega)`. Use `set I : ℝ≥0∞ := ∫⁻ x, ENNReal.ofReal (wt x ^ (-(2 * ((2 * n : ℕ) : ℤ)))) * cnt (ratH E n 0) Ω x ∂D.ν with hIdef`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨A * I.toReal, mul_nonneg hA0 ENNReal.toReal_nonneg, fun R ρ hR => ?_⟩` and prove the remaining obligations. Use `set B : ℝ := A * (1 + R) ^ (2 * (2 * n)) * Real.exp (-(L * ρ)) with hBdef`. Establish `hR1 : 0 ≤ 1 + R` using `by linarith`. Establish `hB0 : 0 ≤ B` using `by positivity`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Use `lintegral_mono fun x => ?_` and prove the remaining obligations. Distinguish the cases in `hx : x ∈ {x : H E n 0 | |ldet x| ≤ R ∧ ρ ≤ r0 x}`. Rewrite using `[Set.indicator_of_mem hx, ← mul_assoc, ← ENNReal.ofReal_mul hB0, ← ofReal_norm]`. Conclude with `mul_le_mul_left (ENNReal.ofReal_le_ofReal (hA R ρ hR x hx.1 hx.2)) _`. Rewrite using `[Set.indicator_of_notMem hx]`.
-
-Conclude with `zero_le`. Use `_ = ENNReal.ofReal B * I := lintegral_const_mul' _ _ ENNReal.ofReal_ne_top`. Use `_ = ENNReal.ofReal (A * I.toReal * (1 + R) ^ (2 * (2 * n)) * Real.exp (-(L * ρ))) := by`. Rewrite using `[show A * I.toReal * (1 + R) ^ (2 * (2 * n)) * Real.exp (-(L * ρ)) = B * I.toReal by rw [hBdef]; ring, ENNReal.ofReal_mul hB0, ENNReal.ofReal_toReal hI]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem domInt_pf : Basic → Sizes → DomInt := by
   intro hB hS E _ _ _ n hn D π hθ ψ hψ Ω hΩ

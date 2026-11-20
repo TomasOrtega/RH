@@ -12,15 +12,13 @@ open scoped TensorProduct ENNReal NNReal Matrix
 namespace GlobalTheory.CompanionTheory.SW.Proper
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hσ M J hJ n X hX Ω hΩ`. Take `⟨⟨hlc, hsc, ht2⟩, -⟩` from `GlobalTheory.CompanionTheory.AdeleTop.adele_top F`. Use `haveI := hlc`. Use `haveI := hsc`. Use `haveI := ht2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨htg, hlcH, hscH, ht2H, -, hact⟩` from `GlobalTheory.T.adelic_unitary_group_locally_compact F E σ hσ M J hJ (AF F)`. Use `haveI := htg`. Use `haveI := hlcH`. Use `haveI := hscH`. Use `haveI := ht2H`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion.
 
-Take `⟨-, hlcK, -, ht2K, -, -, -, -, -, hgram⟩` from `GlobalTheory.CompanionTheory.SW.TopK.topTens_props F E σ hσ (AF F)`. Use `haveI := hlcK`. Use `haveI := ht2K`. Take `⟨hcont, h1, hmul, hinv⟩` from `hact n`. Take `⟨-, hrat, -⟩` from `GlobalTheory.T.rational_gram_adelic_compact_finite F E σ hσ M J hJ`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `hZ : IsClosed {Y : Fin n → Fin M → AF F ⊗[F] E | gramR (AF F) σ J Y = (gramE σ J X).map (inclR (AF F))}` using `isClosed_eq (hgram n M J) continuous_const`. Establish `hZx : ∀ Y : Fin n → Fin M → AF F ⊗[F] E, Y ∈ {Y : Fin n → Fin M → AF F ⊗[F] E | gramR (AF F) σ J Y = (gramE σ J X).map (inclR (AF F))} ↔ ∃ g : HA (AF F) σ J, actW (AF F) σ J g (ratTup (AF F) X) = Y`. Introduce `Y`. Prove the components needed by the constructor for the conclusion. Introduce `hY`.
-
-Conclude with `GlobalTheory.T.witt_extension_rational_to_adelic F E σ hσ M J hJ n X Y hX hY`. Introduce and unpack `⟨g, rfl⟩ show gramR (AF F) σ J _ = _`. Rewrite using `[hinv, hrat]`. Take `⟨C, hC, hCY⟩` from `GlobalTheory.CompanionTheory.Adelic.compact_part_closed_orbit (HA (AF F) σ J) (Fin n → Fin M → AF F ⊗[F] E) (fun g Y => actW (AF F) σ J g Y) hcont h1 hmul _ (ratTup (AF F) X) hZ hZx Ω hΩ`. Conclude with `⟨C, hC, fun Y hY hg => hCY Y hY hg⟩`.
+A detailed English derivation is pending.
 -/
 theorem compact_gram_fibre :
     ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E),

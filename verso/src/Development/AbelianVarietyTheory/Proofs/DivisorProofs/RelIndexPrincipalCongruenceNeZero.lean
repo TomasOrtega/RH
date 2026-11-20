@@ -8,7 +8,7 @@ open Matrix NumberField GlobalTheory.LKTrip GlobalTheory.LKRes GlobalTheory.LKMi
 open scoped TensorProduct Classical
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.LKDef.Regroup.regroup_main GlobalTheory.LKDef.DFormPos.sim_pos GlobalTheory.T.bi_invariant_conjugacy_classes_finite GlobalTheory.T.definitePair_term_eq_centraliser_orbit_sum`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.LKDef.Regroup.regroup :
     ∀ (p : ℕ) [Fact p.Prime] (G : HTGroup p), G.a = 1 → ∀ (wt : Polynomial G.F → ℂ)

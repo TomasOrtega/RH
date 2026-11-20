@@ -9,37 +9,33 @@ open GlobalTheory.FlatPlace GlobalTheory.LocMod GlobalTheory.SplitWeil
 namespace GlobalTheory.LocMod.Witness
 
 /- English proof (translation)
-Introduce `D k _ _ _ _ p ψ hψ S T ΛS ΛT hS hT Y Y' _ _ _ _ FS FT hlat f₀ φ f hf₀ hφ hθ`. Take `⟨⟨T₀, h₀⟩, hall⟩` from `hθ`. Establish `hf : f = T₀ φ` using `hall T₀ h₀`. Establish `hNk : ∀ N : ℕ, 0 < N → (N : k) ≠ 0` using `fun N hN h => by`. Establish `h1 : prH p (N : D.host.E) = 0` using `by rw [map_natCast]; exact h`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : (N : D.host.E) ≠ 0` using `Nat.cast_ne_zero.2 hN.ne'`. Conclude with `h2 ((map_eq_zero (prH p)).1 h1)`. Take `⟨N, hN, hinv, hsupp⟩` from `hφ.2`. Establish `hN0` using `hNk N hN`. Establish `hA` using `lat_compact p FS FT hS hT`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hAo` using `lat_open p FS FT hS hT`. Generalize the expression as in `hAd : ((latO S T (ΛS : Set _) (ΛT : Set _) fun _ => True).comap (upH p FS FT) : AddSubgroup _) = A at hA hAo`. Establish `memA : ∀ x, x ∈ A ↔ p.up FS FT x ∈ (latO S T (ΛS : Set _) (ΛT : Set _) fun _ => True)` using `fun x => by`. Rewrite using `[← hAd]`. Both sides reduce to the same expression.
+Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hup_smul : ∀ x : Matrix Y Y' k, p.up FS FT (N • x) = N • p.up FS FT x` using `fun x => map_nsmul (upH p FS FT) N x`. Establish `hNx : ∀ x : Matrix Y Y' k, (N : k) • x = N • x` using `fun x => Nat.cast_smul_eq_nsmul k N x`. Set `g : Matrix Y Y' k → ℂ` to `fun x => φ (p.up FS FT x)`. Establish `hlc : IsLocallyConstant g`. Rewrite using `[IsLocallyConstant.iff_eventually_eq]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x`. Establish `hU : IsOpen ((fun y : Matrix Y Y' k => (N : k)⁻¹ • (y - x)) ⁻¹' (A : Set (Matrix Y Y' k)))` using `hAo.preimage ((continuous_const_smul ((N : k)⁻¹)).comp (continuous_id.sub continuous_const))`. Establish `hx : x ∈ ((fun y : Matrix Y Y' k => (N : k)⁻¹ • (y - x)) ⁻¹' (A : Set (Matrix Y Y' k)))`. Simplify using `only [Set.mem_preimage, sub_self, smul_zero]`. Conclude with `A.zero_mem`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `filter_upwards [hU.mem_nhds hx] with y hy`. Establish `hy' : (N : k)⁻¹ • (y - x) ∈ A` using `hy`. Establish `e1 : y = x + N • ((N : k)⁻¹ • (y - x))`. Rewrite using `[← hNx, smul_smul, mul_inv_cancel₀ hN0, one_smul, add_sub_cancel]`. Express the relevant statement in the definitionally equal form `φ (p.up FS FT y) = φ (p.up FS FT x)`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[e1, up_add, hup_smul]`. Conclude with `hinv _ ((memA _).1 hy') (up_half p FS FT _) _`. Establish `hcs : HasCompactSupport g`. Use `HasCompactSupport.intro (hA.image (continuous_const_smul (N : k)⁻¹)) fun x hx => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `h`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Apply `hx` to reduce the goal to its premises. Establish `h1` using `hsupp _ h`. Rewrite `h1` using `[← hup_smul, ← memA]`. Use `⟨N • x, h1, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(N : k)⁻¹ • (N • x) = x`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← hNx, smul_smul, inv_mul_cancel₀ hN0, one_smul]`. Set `Φ : SB (Matrix Y Y' k)` to `⟨g, hlc, hcs⟩`. Establish `hext : ∀ Ψ : SB (Matrix Y Y' k), IsSBHalf p.e (latO S T (ΛS : Set _) (ΛT : Set _) fun _ => True) (ext p FS FT Ψ)` using `ext_sb p FS FT hS hT`. Use `⟨T₀.comp (ext p FS FT), ⟨fun Ψ => ?_, fun x Ψ Ψ' h => ?_, fun y hy Ψ Ψ' h => ?_⟩, fun O hO => ?_, Φ, fun x => rfl, ?_⟩` and prove the remaining obligations. Conclude with `GlobalTheory.SchrTheta.isTheta_placeModel D ψ hψ S T _ _ hS hT p.e p.split.1 (GlobalTheory.PlaceCoord.infPart_split p.split) _ hf₀ T₀ h₀ _ (hext Ψ)`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `Eq.trans (congrArg T₀ ?_) (h₀.trans _ (hext Ψ) _ (up_half p FS FT x))` and prove the remaining obligations. Use function extensionality and compare the values at `t`. Rewrite using `[ext_apply, ext_apply, down_add, down_up, h]`. Conclude with `if_congr (half_add (up_half p FS FT x)).symm rfl rfl`. Use `Eq.trans (congrArg T₀ ?_) (h₀.modul _ (hext Ψ) _ hy)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `t`. Rewrite using `[ext_apply, ext_apply, h]`. Use `split_ifs with ht`. Rewrite using `[up_down p FS FT ht]`. Rewrite using `[mul_zero]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `e1 : ext p FS FT O = (1 : ℂ) • halfInd p.e (latO S T (ΛS : Set _) (ΛT : Set _) fun _ => True)`. Use function extensionality and compare the values at `t`. Rewrite using `[one_smul, ext_apply, halfInd]`. Distinguish the cases in `ht : IsHalf p.e t`. Rewrite using `[if_pos ht, hO, Set.indicator_apply]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Use `if_congr ?_ rfl rfl` and prove the remaining obligations. Rewrite using `[and_iff_left ht, ← up_down p FS FT ht, down_up, hlat]`. Both sides reduce to the same expression. Rewrite using `[if_neg ht, if_neg fun h => ht h.2]`. Express the relevant statement in the definitionally equal form `T₀ (ext p FS FT O) = f₀`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[e1]`. Conclude with `h₀.vac`. Express the relevant statement in the definitionally equal form `T₀ (ext p FS FT Φ) = f`. Rewrite using `[hf]`. Use `congr 1`.
-
-Use function extensionality and compare the values at `t`. Rewrite using `[ext_apply]`. Use `split_ifs with ht`. Express the relevant statement in the definitionally equal form `φ (p.up FS FT (p.down FS FT t)) = φ t`. Rewrite using `[up_down p FS FT ht]`.
-
-Assume the negation of the conclusion as `h`. Conclude with `ht (hφ.1 t (Ne.symm h))`.
+Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem exists_isModel_of_isThetaAt : ∀ (D : D7) (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (p : Place D k) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ (S T : HSp D) (ΛS : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E)) (ΛT : Submodule (𝓞 D.host.E) (Fin T.rank → D.host.E)), IsSelfDualC S ΛS → IsSelfDualC T ΛT → ∀ (Y Y' : Type) [Fintype Y] [DecidableEq Y] [Fintype Y'] [DecidableEq Y'] (FS : Frame k S.rank Y') (FT : Frame k T.rank Y), (∀ x, p.up FS FT x ∈ latO S T (ΛS : Set _) (ΛT : Set _) (fun _ => True) ↔ ∀ a b, x a b ∈ Valuation.integer (ValuativeRel.valuation k)) → ∀ f₀ φ f : WO S T → ℂ, IsThetaFunO ψ S T f₀ → IsSBHalf p.e (latO S T (ΛS : Set _) (ΛT : Set _) fun _ => True) φ → IsThetaAt ψ (symplO S T) (heisO ψ S T) p.e (latO S T (ΛS : Set _) (ΛT : Set _) fun _ => True) 1 f₀ φ f → ∃ Tm, p.IsModel ψ FS FT Tm ∧ (∀ O, IsOne O → Tm O = f₀) ∧ ∃ Φ : SB (Matrix Y Y' k), (∀ x, Φ.1 x = φ (p.up FS FT x)) ∧ Tm Φ = f := by
   classical

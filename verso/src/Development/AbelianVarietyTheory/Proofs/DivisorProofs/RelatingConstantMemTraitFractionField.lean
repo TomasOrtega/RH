@@ -15,9 +15,9 @@ namespace GlobalTheory.Mum.RatConst
 open scoped TensorProduct
 
 /- English proof (translation)
-Take `⟨l, hl⟩` from `Module.Projective.exists_dual_eq_one K ht`. Establish `e` using `congrArg (fun v => TensorProduct.rid K F (LinearMap.lTensor F l v)) h`. Simplify using `only [LinearMap.lTensor_tmul, TensorProduct.rid_tmul, hl, one_smul, Algebra.smul_def] at e`. Use `⟨(l u)⁻¹, ?_⟩` and prove the remaining obligations. Rewrite using `[map_inv₀]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `inv_eq_of_mul_eq_one_right (by simpa using e.symm)`.
+A detailed English derivation is pending.
 -/
 theorem mem_range_of_tmul_eq {K F O : Type} [Field K] [Field F] [Algebra K F] [AddCommGroup O] [Module K O]
     {t u : O} {c : F} (ht : t ≠ 0) (h : (1 : F) ⊗ₜ[K] t = c ⊗ₜ[K] u) : ∃ x : K, algebraMap K F x = c := by
@@ -29,7 +29,7 @@ theorem mem_range_of_tmul_eq {K F O : Type} [Field K] [Field F] [Algebra K F] [A
   exact inv_eq_of_mul_eq_one_right (by simpa using e.symm)
 
 /- English proof (translation)
-Establish `e` using `congrArg (fun q => q.hom x) (Scheme.ΓSpecIso_inv_naturality h)`. Simplify using `only [CommRingCat.hom_comp, RingHom.comp_apply] at e`. Rewrite using `[e]`. Conclude with `((gs_pull (𝟙 _) (Spec.map h) y ⊤ trivial _).trans (by rw [Category.id_comp])).symm`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gs_spec {A B : CommRingCat.{0}} (h : A ⟶ B) (y : Spec B) (x : A) :
     gs (Spec.map h) y ⊤ ((Scheme.ΓSpecIso A).inv.hom x) = gs (𝟙 _) y ⊤ ((Scheme.ΓSpecIso B).inv.hom (h.hom x)) := by
@@ -39,7 +39,7 @@ theorem gs_spec {A B : CommRingCat.{0}} (h : A ⟶ B) (y : Spec B) (x : A) :
   exact ((gs_pull (𝟙 _) (Spec.map h) y ⊤ trivial _).trans (by rw [Category.id_comp])).symm
 
 /- English proof (translation)
-Establish `: Z.fromSpecStalk z y ⤳ z`. Use `Set.mem_range_self (f := Z.fromSpecStalk z) y` as an intermediate fact. Rewrite `this` using `[Scheme.range_fromSpecStalk]`. Then use the resulting hypothesis. Conclude with `(this.map f.continuous).mem_open U.isOpen hz`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem mem_of_stalk {X Z : Scheme.{0}} (f : Z ⟶ X) (z : Z) (U : X.Opens) (hz : f z ∈ U) (y : Spec (Z.presheaf.stalk z)) :
     f (Z.fromSpecStalk z y) ∈ U := by
@@ -49,7 +49,7 @@ theorem mem_of_stalk {X Z : Scheme.{0}} (f : Z ⟶ X) (z : Z) (U : X.Opens) (hz 
   exact (this.map f.continuous).mem_open U.isOpen hz
 
 /- English proof (translation)
-Establish `m` using `mem_of_stalk f z U hz (Spec.map h y)`. Rewrite using `[← gs_spec, ← Category.assoc, ← gs_pull _ f y U m, ← gs_pull _ (Z.fromSpecStalk z) y _ m, Scheme.fromSpecStalk_app (U := f ⁻¹ᵁ U) hz, gs_eq f z U hz]`. Conclude with `gs_res (Spec.map h) y le_top m _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gs_stalk {X Z : Scheme.{0}} (f : Z ⟶ X) (z : Z) (U : X.Opens) (hz : f z ∈ U) (a : Γ(X, U)) {B : CommRingCat.{0}}
     (h : Z.presheaf.stalk z ⟶ B) (y : Spec B) :
@@ -60,27 +60,25 @@ theorem gs_stalk {X Z : Scheme.{0}} (f : Z ⟶ X) (z : Z) (U : X.Opens) (hz : f 
   exact gs_res (Spec.map h) y le_top m _
 
 /- English proof (translation)
-Introduce `R _ _ _ _ D C k W _ _ _ T F _ _ _ hF σ s c H ⟨Z, p, p', h₁, h₂, z, J, hJ, hne⟩`. Set `O` to `Z.presheaf.stalk z`. Take `⟨ρ, hρ⟩ : ∃ ρ : CommRingCat.of F ⟶ O, Spec.map ρ = Z.fromSpecStalk z ≫ p' ≫ (fst (TFK (R` from `R) F) C.A.A).left := ⟨Spec.preimage _, Spec.map_preimage _⟩`. Use `letI : Algebra (FractionRing W) O := (ρ.hom.comp (algebraMap (FractionRing W) F)).toAlgebra`. Set `B` to `CommRingCat.of (F ⊗[FractionRing W] O)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Introduce a local definition for the expression.
 
-Set `iL : CommRingCat.of F ⟶ B` to `CommRingCat.ofHom Algebra.TensorProduct.includeLeftRingHom`. Set `iR : O ⟶ B` to `CommRingCat.ofHom (Algebra.TensorProduct.includeRight (R := FractionRing W) (A := F) (B := O)).toRingHom`. Establish `hK : ∀ x : FractionRing W, iR.hom (ρ.hom (algebraMap _ F x)) = iL.hom (algebraMap _ F x)` using `fun x => ((Algebra.TensorProduct.includeRight (R := FractionRing W) (A := F) (B := O)).commutes x).trans rfl`. Set `g : Spec B ⟶ Z` to `Spec.map iR ≫ Z.fromSpecStalk z`. Establish `hg : g ≫ p' ≫ (fst (TFK (R` using `R) F) C.A.A).left = Spec.map (ρ ≫ iR) := by`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[Spec.map_comp, hρ, Category.assoc]`. Establish `w : (g ≫ p' ≫ (snd (TFK (R` using `R) F) C.A.A).left) ≫ C.A.A.hom = Spec.map iL ≫ jFK (R := R) F := by`. Establish `e : (snd (TFK (R` using `R) F) C.A.A).left ≫ C.A.A.hom = (fst (TFK (R := R) F) C.A.A).left ≫ jFK (R := R) F := (Over.w _).trans (Over.w (fst (TFK (R := R) F) C.A.A)).symm`. Establish `e' : (g ≫ p' ≫ (snd (TFK (R` using `R) F) C.A.A).left) ≫ C.A.A.hom = (g ≫ p' ≫ (fst (TFK (R := R) F) C.A.A).left) ≫ jFK (R := R) F := by simp only [Category.assoc, e]`. Rewrite using `[e', hg]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `(Spec.map_comp _ _).symm.trans (Eq.trans (congrArg Spec.map ?_) (Spec.map_comp _ _))` and prove the remaining obligations. Use `CommRingCat.hom_ext (IsLocalization.ringHom_ext (nonZeroDivisors R) (RingHom.ext fun r => ?_))` and prove the remaining obligations. Conclude with `(congrArg (fun q => iR.hom (ρ.hom q)) (hF r)).trans ((hK _).trans (congrArg iL.hom (hF r).symm))`. Take `⟨q, q₁, q₂⟩ : ∃ q : Spec B ⟶ (TFK (R` from `R) F ⊗ C.A.A).left, q ≫ (fst (TFK (R := R) F) C.A.A).left = Spec.map iL ∧ q ≫ (snd (TFK (R := R) F) C.A.A).left = g ≫ p' ≫ (snd (TFK (R := R) F) C.A.A).left := by`. Set `T' : Over (Sp (FractionRing R))` to `Over.mk (Spec.map iL ≫ jFK (R := R) F)`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `a : T' ⟶ TFK (R` to `R) F := Over.homMk (Spec.map iL) rfl`. Set `b : T' ⟶ C.A.A` to `Over.homMk (g ≫ p' ≫ (snd (TFK (R := R) F) C.A.A).left) w`. Conclude with `⟨(lift a b).left, congrArg (·.left) (lift_fst a b), congrArg (·.left) (lift_snd a b)⟩`. Establish `k₁ : (g ≫ p) ≫ T.β = q ≫ (snd (TFK (R` using `R) F) C.A.A).left ≫ C.α := by`. Rewrite using `[← Category.assoc q, q₂, Category.assoc, h₁]`.
+Introduce a local definition for the expression. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Category.assoc]`. Establish `k₂ : (g ≫ p) ≫ T.G.hom = q ≫ (fst (TFK (R` using `R) F) C.A.A).left ≫ spMap ((algebraMap (FractionRing W) F).comp (algebraMap W _)) := by`. Rewrite using `[← Category.assoc q, q₁, Category.assoc, h₂, ← Category.assoc p', ← Category.assoc g, hg]`. Use `(Spec.map_comp _ _).symm.trans (Eq.trans (congrArg Spec.map ?_) (Spec.map_comp _ _))` and prove the remaining obligations. Conclude with `CommRingCat.hom_ext (RingHom.ext fun r => hK _)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `u : O` to `sval s (p' ≫ (snd (TFK (R := R) F) C.A.A).left) z J`. Set `t : O` to `sval σ p z J`. Establish `key : iR.hom t = iL.hom c * iR.hom u`. Apply `(Scheme.ΓSpecIso B).symm.commRingCatIsoToRingEquiv.injective` to reduce the goal to its premises. Use `fn_ext (V := ⊤) fun y _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨J', hJ', e⟩` from `exists_good C.P.L.L C.P.L.isLB y (K := Unit) (fun _ => (g ≫ p) ≫ T.β) (fun _ => J (p ≫ T.β)) (fun _ _ _ => rfl) (fun _ => mem_of_stalk (p ≫ T.β) z _ (hJ _) (Spec.map iR y))`. Establish `e` using `e ()`. Use `H _ (g ≫ p) q k₁ k₂ y J' hJ'` as an intermediate fact. Rewrite using `[sval_of σ _ y J' (fun _ => J (p ≫ T.β)) (fun _ => e), sval_of s _ y J' (fun _ => J ((p' ≫ (snd (TFK (R := R) F) C.A.A).left) ≫ C.α)) (fun _ => by`. Rewrite using `[Category.assoc, ← k₁, Category.assoc p', ← h₁]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `e), q₁, q₂] at this`. Establish `a₁` using `gs_stalk p z _ (hJ.mem (fun _ : Fin 1 => T.β) p) (σ.f fun _ => J (p ≫ T.β)) iR y`. Establish `a₂` using `gs_stalk (p' ≫ (snd (TFK (R := R) F) C.A.A).left) z _ (hJ.mem (fun _ : Fin 1 => C.α) (p' ≫ (snd (TFK (R := R) F) C.A.A).left)) (s.f fun _ => J ((p' ≫ (snd (TFK (R := R) F) C.A.A).left) ≫ C.α)) iR y`. Establish `a₃` using `gs_spec iL y c`. Simplify using `only [g, Category.assoc] at this a₁ a₂`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `a₁.symm.trans (this.trans (Eq.trans (congrArg₂ (· * ·) a₃ a₂) ?_))` and prove the remaining obligations. Use `(gs_mul _ y ⊤ trivial _ _).symm.trans (congrArg _ ?_)` and prove the remaining obligations. Simplify using `only [u, sval, Category.assoc]`. Conclude with `(map_mul _ _ _).symm`. Use `mem_range_of_tmul_eq (O := O) (t := t) (u := u) hne (key.trans ?_)` and prove the remaining obligations.
-
-Conclude with `(Algebra.TensorProduct.tmul_mul_tmul c 1 1 u).trans (by rw [_root_.mul_one, _root_.one_mul])`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem main : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], Base R → ∀ (D : DegData R (maximalIdeal R)) (C : LabCover D) (k : ℕ) (W : Type) [CommRing W] [IsDomain W] [IsLocalRing W] (T : Trait C W) (F : Type) [Field F] [Algebra (FractionRing R) F] [Algebra (FractionRing W) F], (∀ r, algebraMap (FractionRing R) F (algebraMap R _ r) = algebraMap (FractionRing W) F (algebraMap W _ (T.φ r))) → ∀ (σ : SecK C.P.L.L T.β k) (s : SecK C.P.L.L C.α k) (c : F), (∀ (Z : Scheme.{0}) (p : Z ⟶ T.G.left) (p' : Z ⟶ (TFK (R := R) F ⊗ C.A.A).left), p ≫ T.β = p' ≫ (snd (TFK (R := R) F) C.A.A).left ≫ C.α → p ≫ T.G.hom = p' ≫ (fst (TFK (R := R) F) C.A.A).left ≫ spMap ((algebraMap (FractionRing W) F).comp (algebraMap W _)) → ∀ z J, Good C.P.L.L z J → sval σ p z J = gs (p' ≫ (fst (TFK (R := R) F) C.A.A).left) z ⊤ (fnF F c) * sval s (p' ≫ (snd (TFK (R := R) F) C.A.A).left) z J) → (∃ (Z : Scheme.{0}) (p : Z ⟶ T.G.left) (p' : Z ⟶ (TFK (R := R) F ⊗ C.A.A).left) (_ : p ≫ T.β = p' ≫ (snd (TFK (R := R) F) C.A.A).left ≫ C.α) (_ : p ≫ T.G.hom = p' ≫ (fst (TFK (R := R) F) C.A.A).left ≫ spMap ((algebraMap (FractionRing W) F).comp (algebraMap W _))) (z : Z) (J : (Z ⟶ C.G.left) → C.P.L.L.ι), Good C.P.L.L z J ∧ sval σ p z J ≠ 0) → ∃ x : FractionRing W, algebraMap (FractionRing W) F x = c := by
   intro R _ _ _ _ D C k W _ _ _ T F _ _ _ hF σ s c H ⟨Z, p, p', h₁, h₂, z, J, hJ, hne⟩

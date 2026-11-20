@@ -6,9 +6,9 @@ open NumberField IsDedekindDomain UniqueFactorizationMonoid
 namespace GlobalTheory.CompanionTheory.Different
 
 /- English proof (translation)
-Introduce `E _ _ _ p hp P hP hpP`. Establish `hd : (discr E).natAbs ≠ 0` using `Int.natAbs_ne_zero.2 (discr_ne_zero E)`. Establish `hdecomp : (discr E).natAbs = p ^ padicValNat p (discr E).natAbs * ((discr E).natAbs / p ^ (discr E).natAbs.factorization p)` using `by conv_lhs => rw [← Nat.ordProj_mul_ordCompl_eq_self (discr E).natAbs p]`. Rewrite using `[Nat.factorization_def _ hp.out]`. Establish `hnd : ¬ p ∣ (discr E).natAbs / p ^ (discr E).natAbs.factorization p` using `Nat.not_dvd_ordCompl hp.out hd`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h` using `ReciprocityTheory.ChartRestriction.G.PullbackSections.Pf.diffExp E p _ _ hp.out hnd hdecomp P hP hpP`. Rewrite using `[h]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem padicValInt_discr_mul_count_eq :
     ∀ (E : Type) [Field E] [NumberField E] [IsGalois ℚ E] (p : ℕ) [Fact p.Prime] (P : Ideal (𝓞 E)),

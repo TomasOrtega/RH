@@ -13,9 +13,9 @@ open ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestrictio
 namespace GlobalTheory.AmpleFibres
 
 /- English proof (translation)
-Establish `hφ : (pullbackRestrictIsoRestrict B.hom U).inv ≫ pullback.fst B.hom U.ι = (B.hom ⁻¹ᵁ U).ι` using `pullbackRestrictIsoRestrict_inv_fst B.hom U`. Establish `hsq : IsPullback (pullbackRestrictIsoRestrict B.hom U).inv (Over.mk (B.hom ∣_ U)).hom ((Over.pullback U.ι).obj B).hom (𝟙 U.toScheme)`. Use `IsPullback.of_horiz_isIso ⟨?_⟩` and prove the remaining obligations. Simplify using `[← pullbackRestrictIsoRestrict_hom_morphismRestrict]`. Establish `hL₁ : (L.pull (pullback.fst B.hom U.ι)).IsLB` using `ReciprocityTheory.ChartRestriction.G.Geo.Tor.pull_isLB hL _`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hL₂ : (L.pull (B.hom ⁻¹ᵁ U).ι).IsLB` using `ReciprocityTheory.ChartRestriction.G.Geo.Tor.pull_isLB hL _`. Establish `hw : LBIso (L.pull (B.hom ⁻¹ᵁ U).ι) ((L.pull (pullback.fst B.hom U.ι)).pull (pullbackRestrictIsoRestrict B.hom U).inv)`. Conclude with `GenSpread.lbIso_pull_pull hL (pullbackRestrictIsoRestrict B.hom U).inv hφ.symm`. Conclude with `GlobalTheory.AmpleLocalBase.relAmple_baseChange hsq hL₁ hL₂ hw h`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem relAmple_restrict {S : Scheme.{0}} (U : S.Opens) [IsAffine U.toScheme] (B : Over S) {L : LB B.left}
     (hL : L.IsLB)

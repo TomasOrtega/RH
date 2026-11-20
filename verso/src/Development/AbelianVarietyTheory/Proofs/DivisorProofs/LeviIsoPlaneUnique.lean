@@ -12,13 +12,13 @@ namespace GlobalTheory.LeviUniqueCartan
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {n' : ℕ}
 
 /- English proof (translation)
-Introduce `hd`. Take `⟨v, hv, hJv⟩` from `Matrix.exists_mulVec_eq_zero_iff.mpr hd`. Establish `hx : star (fun i => e (v i)) ≠ 0`. Introduce `h0`. Apply `hv` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Use function extensionality and compare the values at `i`. Use `congrFun h0 i` as an intermediate fact. Simplify using `using this`. Establish `hpos` using `h.2.2 _ hx`. Establish `hz : (Complex.I • J.map e) *ᵥ star (star (fun i => e (v i))) = 0`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[star_star, Matrix.smul_mulVec]`. Establish `: J.map e *ᵥ (fun i => e (v i)) = 0`. Use function extensionality and compare the values at `i`. Use `RingHom.map_mulVec e J v i` as an intermediate fact. Rewrite `this` using `[hJv]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify `this.symm` using `[Function.comp_def]`. Rewrite using `[this, smul_zero]`. Rewrite `hpos` using `[hz]`. Simplify using `at hpos`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem det_ne_zero_of_isCartan {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (e : E →+* ℂ) (θ : Matrix (Fin n) (Fin n) ℂ)
     (h : IsCartan (Complex.I • J.map e) θ) : J.det ≠ 0 := by
@@ -43,7 +43,7 @@ theorem det_ne_zero_of_isCartan {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (e : E 
   simp at hpos
 
 /- English proof (translation)
-Simplify using `only [form, dotProduct, Matrix.mulVec, map_sum, map_mul, hσ, hJ, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm, ← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -57,19 +57,19 @@ theorem form_swap (σ : E →ₐ[F] E) (hσ : ∀ x, σ (σ x) = x) {n : ℕ} (J
   ring
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `[incV]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem incV_add (a b : Fin n' → E) : incV F (a + b) = incV F a + incV F b := by
   funext i; simp [incV]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `[incV]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem incV_smul (s : E) (a : Fin n' → E) : incV F (s • a) = inclR (F := F) (AF F) s • incV F a := by
   funext i; simp [incV]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Conclude with `RingHom.map_mulVec (inclR (F := F) (AF F)) M u i`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem incV_mulVec {k : ℕ} (M : Matrix (Fin n') (Fin k) E) (u : Fin k → E) :
     incV F (M *ᵥ u) = incM F M *ᵥ incV F u := by
@@ -77,7 +77,7 @@ theorem incV_mulVec {k : ℕ} (M : Matrix (Fin n') (Fin k) E) (u : Fin k → E) 
   exact RingHom.map_mulVec (inclR (F := F) (AF F)) M u i
 
 /- English proof (translation)
-Use function extensionality and compare the values at `k`. Distinguish the cases in `hk : k = j`. Substitute `hk` using the available equality. Simplify using `[incV]`. Simplify using `[incV, Pi.single_apply, hk]`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem incV_single (j : Fin n') : incV F (Pi.single j (1 : E)) = Pi.single j 1 := by
   funext k
@@ -86,25 +86,25 @@ theorem incV_single (j : Fin n') : incV F (Pi.single j (1 : E)) = Pi.single j 1 
   · simp [incV, Pi.single_apply, hk]
 
 /- English proof (translation)
-Take `⟨hn, hxx, hyy, hxy, horth, hgram, -, hcart⟩` from `hP`. Substitute `hn` using the available equality. Establish `hadd : ∀ a b c, form σ Y.J (a + b) c = form σ Y.J a c + form σ Y.J b c` using `fun a b c => by`. Simplify using `[form, add_dotProduct]`. Establish `hsmul : ∀ (s : E) a c, form σ Y.J (s • a) c = s * form σ Y.J a c` using `fun s a c => by`.
+Extract witnesses or component facts from the available result. Substitute using the available equality. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[form, smul_dotProduct]`. Establish `hzero : ∀ c, form σ Y.J 0 c = 0` using `fun c => by simp [form]`. Establish `hyx : form σ Y.J H.y H.x = -1`. Use `form_swap σ hσ Y.J hJ H.x H.y` as an intermediate fact. Rewrite `this` using `[hxy, map_one]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take the linear combination `this`. Establish `hdet : Y₁.J.det ≠ 0`. Take `⟨w⟩` from `(inferInstance : Nonempty (InfinitePlace F))`. Conclude with `det_ne_zero_of_isCartan _ _ _ (hcart w)`. Set `Φ : E × (Fin n₁ → E) × E →ₗ[E] (Fin (n₁ + 2) → E)` to `(LinearMap.smulRight LinearMap.id H.x).comp (LinearMap.fst E E ((Fin n₁ → E) × E)) + (Matrix.mulVecLin H.ι).comp ((LinearMap.fst E (Fin n₁ → E) E).comp (LinearMap.snd E E ((Fin n₁ → E) × E))) + (LinearMap.smulRight LinearMap.id H.y).comp ((LinearMap.snd E (Fin n₁ → E) E).comp (Li …`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hΦ : ∀ s u r, Φ (s, u, r) = s • H.x + H.ι *ᵥ u + r • H.y` using `fun s u r => by`. Simplify using `[Φ]`. Establish `hinj : Function.Injective Φ`. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce and unpack `⟨s, u, r⟩ h`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[hΦ]`. Establish `e1` using `congrArg (fun z => form σ Y.J z H.y) h`. Simplify using `only [hadd, hsmul, hxy, hyy, (horth u).2, hzero] at e1`. Establish `hs : s = 0` using `by simpa using e1`. Substitute `hs` using the available equality.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact.
 
-Establish `e2` using `congrArg (fun z => form σ Y.J z H.x) h`. Simplify using `only [hadd, hsmul, hxx, hyx, (horth u).1, hzero] at e2`. Establish `hr : r = 0` using `by simpa using e2`. Substitute `hr` using the available equality. Establish `hu0 : H.ι *ᵥ u = 0` using `by simpa using h`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hu : u ᵥ* Y₁.J = 0`. Rewrite using `[← hgram, Matrix.mul_assoc, ← Matrix.vecMul_vecMul, Matrix.vecMul_transpose, hu0, Matrix.zero_vecMul]`. Establish `: u = 0`. Assume the negation of the conclusion as `hne`. Conclude with `hdet (Matrix.exists_vecMul_eq_zero_iff.mp ⟨u, hne, hu⟩)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Substitute using the available equality. Both sides reduce to the same expression.
 
-Substitute `this` using the available equality. Both sides reduce to the same expression. Establish `hsurj : Function.Surjective Φ` using `(LinearMap.injective_iff_surjective_of_finrank_eq_finrank (by simp; omega)).mp hinj`. Establish `key : ∀ z, mat m *ᵥ incV F z = mat m' *ᵥ incV F z`. Introduce `z`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨⟨s, u, r⟩, rfl⟩` from `hsurj z`. Rewrite using `[hΦ, incV_add, incV_add, incV_smul, incV_smul, incV_mulVec]`. Simplify using `only [Matrix.mulVec_add, Matrix.mulVec_smul, Matrix.mulVec_mulVec, hm.1, hm.2.1, hm.2.2, hm'.1, hm'.2.1, hm'.2.2]`. Establish `hmat : mat m = mat m'`. Use extensionality with `i j`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `congrFun (key (Pi.single j 1)) i` as an intermediate fact. Rewrite `this` using `[incV_single, Matrix.mulVec_single_one, Matrix.mulVec_single_one]`. Simplify using `using this`. Conclude with `Subtype.ext (Units.ext hmat)`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem levi_unique {σ : E →ₐ[F] E} (B : Base F E) {n n₁ : ℕ} (Y : Spc F E n) (Y₁ : Spc F E n₁) (H : Plane E n n₁)
     (hσ : ∀ x, σ (σ x) = x) (hJ : ∀ i j, σ (Y.J j i) = -Y.J i j) (hP : IsIsoPlane σ B H Y Y₁)

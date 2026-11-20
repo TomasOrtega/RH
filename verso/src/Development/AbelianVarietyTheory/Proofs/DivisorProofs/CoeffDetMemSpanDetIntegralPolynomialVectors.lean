@@ -7,7 +7,7 @@ open GlobalTheory GlobalTheory.ChowHt GlobalTheory.Adelic GlobalTheory.HermTools
 namespace GlobalTheory.DetCoeff
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert j s hj ih => rw [Finset.prod_insert hj, ih, monomial_mul, Finset.sum_insert hj, Finset.prod_insert hj]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem prod_monomial_eq {τ R ι : Type} [CommSemiring R] (s : Finset ι) (f : ι → τ →₀ ℕ) (a : ι → R) :
     ∏ i ∈ s, monomial (f i) (a i) = monomial (∑ i ∈ s, f i) (∏ i ∈ s, a i) := by
@@ -18,13 +18,13 @@ theorem prod_monomial_eq {τ R ι : Type} [CommSemiring R] (s : Finset ι) (f : 
 
 open Classical in
 /- English proof (translation)
-Establish `hP : ∀ i k, P i k = ∑ n ∈ s, monomial n (coeff n (P i k))`. Introduce `i k`. Use `conv_lhs => rw [(P i k).as_sum]`. Conclude with `Finset.sum_subset (hs i k) (fun n _ hn => by simp [MvPolynomial.notMem_support_iff.mp hn])`. Establish `hprod : ∀ σ : Equiv.Perm (Fin d), ∏ k, P (σ k) k = ∑ g ∈ Fintype.piFinset (fun _ : Fin d => s), monomial (∑ k, g k) (∏ k, coeff (g k) (P (σ k) k))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `σ`. Rewrite using `[Finset.prod_congr rfl (fun k _ => hP (σ k) k), Finset.prod_univ_sum]`. Conclude with `Finset.sum_congr rfl (fun g _ => prod_monomial_eq _ _ _)`. Rewrite using `[Matrix.det_apply]`. Repeatedly rewrite using `[hprod, Finset.smul_sum, coeff_sum]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl (fun g _ => ?_)` and prove the remaining obligations. Rewrite using `[Matrix.det_apply]`. Use `split_ifs with h`. Substitute `h` using the available equality.
+Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl (fun σ _ => ?_)` and prove the remaining obligations. Simplify using `only [Units.smul_def, coeff_smul, coeff_monomial, if_pos rfl]`. Both sides reduce to the same expression. Use `Finset.sum_eq_zero (fun σ _ => ?_)` and prove the remaining obligations. Simplify using `only [Units.smul_def, coeff_smul, coeff_monomial, if_neg h, smul_zero]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem coeff_det_eq {F τ : Type} [Field F] {d : ℕ} (P : Matrix (Fin d) (Fin d) (MvPolynomial τ F))
     (s : Finset (τ →₀ ℕ)) (hs : ∀ i k, (P i k).support ⊆ s) (m : τ →₀ ℕ) :
@@ -58,11 +58,11 @@ end GlobalTheory.DetCoeff
 namespace GlobalTheory.DetCoeff
 
 /- English proof (translation)
-Introduce `F V _ _ _ _ _ _ M d b τ P hP m`. Establish `hs : ∀ i k, (P i k).support ⊆ Finset.univ.biUnion (fun ik : Fin d × Fin d => (P ik.1 ik.2).support)` using `fun i k => Finset.subset_biUnion_of_mem (fun ik : Fin d × Fin d => (P ik.1 ik.2).support) (Finset.mem_univ (i, k))`. Rewrite using `[coeff_det_eq P _ hs m]`. Use `Submodule.sum_mem _ (fun g _ => ?_)` and prove the remaining obligations. Use `split_ifs`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Submodule.subset_span` to reduce the goal to its premises. Use `⟨fun k => ∑ i, coeff (g k) (P i k) • b i, fun k => hP k (g k), ?_⟩` and prove the remaining obligations. Rewrite using `[Module.Basis.det_apply]`. Use `congr 1`. Use extensionality with `i k`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `[Module.Basis.toMatrix_apply, Finsupp.finset_sum_apply, Finsupp.single_apply]`. Conclude with `Submodule.zero_mem _`.
+A detailed English derivation is pending.
 -/
 theorem coeff_det_mem_span_det : ∀ (F V : Type) [Field F] [NumberField F] [AddCommGroup V] [Module F V] [Module (𝓞 F) V] [IsScalarTower (𝓞 F) F V] (M : Submodule (𝓞 F) V) (d : ℕ) (b : Module.Basis (Fin d) F V) (τ : Type) (P : Matrix (Fin d) (Fin d) (MvPolynomial τ F)), (∀ k m, ∑ i, coeff m (P i k) • b i ∈ M) → ∀ m, coeff m P.det ∈ Submodule.span (𝓞 F) {y | ∃ v : Fin d → V, (∀ i, v i ∈ M) ∧ y = b.det v} := by
   intro F V _ _ _ _ _ _ M d b τ P hP m

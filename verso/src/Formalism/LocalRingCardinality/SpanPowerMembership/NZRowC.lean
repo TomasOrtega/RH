@@ -24,9 +24,9 @@ variable {R : Ranks} (LL : Type) [Field LL] [NumberField LL] (embLL : LL →+* �
   (eta : ℕ → P.Pl → ℚ) (heta : ∀ j w, 0 ≤ eta j w)
 
 /- English proof (translation)
-Break down `Nat.eq_zero_or_pos Dall with h | h` into its components or cases. Substitute `h` using the available equality. Establish `: d = 0` using `by omega`. Substitute `this` using the available equality. Simplify using the standard rewrite rules.
+Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Establish an intermediate fact. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Establish `: (Dall : ℝ) ≠ 0` using `by exact_mod_cast h.ne'`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem rank_eq_ratio_identity (d Dall : ℕ) (hd : d ≤ Dall) : (d : ℝ) = (1 - (1 - (d : ℝ) / Dall)) * Dall := by
   rcases Nat.eq_zero_or_pos Dall with h | h
@@ -130,7 +130,7 @@ local notation "RN" => (rowsN (R := R) LL embLL P Tau hTau Dst sha hsha cg hcg k
   per eta heta)
 
 /- English proof (translation)
-Proceed by induction on `j with`. Consider the case `zero => rfl`. Consider the case `succ j ih => show ((RN).downTo μ j).comp (LinearMap.id : En d →ₗ[ℂ] En d) = _`. Rewrite using `[ih]`. Both sides reduce to the same expression.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem rowsN_downTo (μ : Bool) (j : ℕ) : (RN).downTo μ j = (LinearMap.id : En d →ₗ[ℂ] En d) := by
   induction j with
@@ -140,22 +140,22 @@ theorem rowsN_downTo (μ : Bool) (j : ℕ) : (RN).downTo μ j = (LinearMap.id : 
     rw [ih]; rfl
 
 /- English proof (translation)
-Use `show (LinearMap.id : En d →ₗ[ℂ] En d) ∘ₗ (RN).downTo μ R.m ∘ₗ (LinearMap.id : En d →ₗ[ℂ] En d) = _`. Rewrite using `[rowsN_downTo]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem rowsN_iota (μ : Bool) : (RN).iota μ = (LinearMap.id : En d →ₗ[ℂ] En d) := by
   show (LinearMap.id : En d →ₗ[ℂ] En d) ∘ₗ (RN).downTo μ R.m ∘ₗ (LinearMap.id : En d →ₗ[ℂ] En d) = _
   rw [rowsN_downTo]; rfl
 
 /- English proof (translation)
-The claim follows from `LinearMap.adjoint_id`.
+A detailed English derivation is pending.
 -/
 theorem rowsN_thetaT (μ : Bool) (j : ℕ) : (RN).thetaT μ j = (LinearMap.id : En d0 →ₗ[ℂ] En d0) :=
   LinearMap.adjoint_id
 
 /- English proof (translation)
-Establish `hZ : (RN).Zj μ j = ⊤`. Unfold `Rows.Data.Zj`. Rewrite using `[rowsN_thetaT]`. Conclude with `LinearMap.range_id`. Establish `hp : ∀ x, ((RN).Zj μ j).starProjection x = x` using `fun x => Submodule.starProjection_eq_self_iff.mpr (by rw [hZ]; trivial)`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `Rows.Data.TjSet`. Use extensionality with `x`. Simplify using `only [hp, Set.mem_image]`. Conclude with `⟨fun ⟨y, hy, e⟩ => e ▸ hy, fun h => ⟨x, h, rfl⟩⟩`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem rowsN_TjSet (μ : Bool) (j : ℕ) :
     (RN).TjSet μ j = (oB (eb d0) (embLL.comp (algebraMap (𝓞 LL) LL))).carrier := by
@@ -175,25 +175,25 @@ section Gen
 variable {R : Ranks} (D : Rows.Data R)
 
 /- English proof (translation)
-Unfold `Rows.Data.V0`. Rewrite using `[he]`. Conclude with `LinearMap.range_id`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem recordBaseSubspace_top {μ} (he : D.eOp μ = LinearMap.id) : D.V0 μ = ⊤ := by
   unfold Rows.Data.V0; rw [he]; exact LinearMap.range_id
 
 /- English proof (translation)
-Unfold `Rows.Data.Usp`. Rewrite using `[recordBaseSubspace_top D he, LinearMap.ker_eq_bot.mpr hi, inf_bot_eq]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem rUsp_bot {μ} (he : D.eOp μ = LinearMap.id) (hi : Function.Injective (D.iota μ)) : D.Usp μ = ⊥ := by
   unfold Rows.Data.Usp; rw [recordBaseSubspace_top D he, LinearMap.ker_eq_bot.mpr hi, inf_bot_eq]
 
 /- English proof (translation)
-Unfold `Rows.Data.Qsp`. Rewrite using `[recordBaseSubspace_top D he, rUsp_bot D he hi, Submodule.bot_orthogonal_eq_top, inf_top_eq]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem rQsp_top {μ} (he : D.eOp μ = LinearMap.id) (hi : Function.Injective (D.iota μ)) : D.Qsp μ = ⊤ := by
   unfold Rows.Data.Qsp; rw [recordBaseSubspace_top D he, rUsp_bot D he hi, Submodule.bot_orthogonal_eq_top, inf_top_eq]
 
 /- English proof (translation)
-Introduce `u φ x`. Take `⟨F, rfl⟩` from `hi.2 x`. Rewrite using `[D.sec_iota _ F (by rw [rQsp_top D he hi.1]; trivial), h]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem buDefQ_of (he : D.eOp D.mu0 = LinearMap.id) (hi : Function.Bijective (D.iota D.mu0))
     (h : ∀ u φ F, D.Bu u φ (D.iota D.mu0 F) = D.perCol u D.mu0 φ F) : Rows.BuDefQ D := by
@@ -204,9 +204,9 @@ theorem buDefQ_of (he : D.eOp D.mu0 = LinearMap.id) (hi : Function.Bijective (D.
 end Gen
 
 /- English proof (translation)
-Use `buDefQ_of _ rfl ?_ ?_` and prove the remaining obligations. Rewrite using `[rowsN_iota]`. Conclude with `Function.bijective_id`. Introduce `u φ F`. Rewrite using `[rowsN_iota]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem rowsN_buDefQ {R : Ranks} (LL : Type) [Field LL] [NumberField LL] (embLL : LL →+* ℂ) (P : Rows.Places LL)
     (Tau : Type) [Fintype Tau] (hTau : Fintype.card Tau = R.f) (Dst : ℝ)

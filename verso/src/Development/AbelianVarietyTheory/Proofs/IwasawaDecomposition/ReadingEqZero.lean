@@ -26,7 +26,7 @@ def BarAtOne {D : D7} (T : CoreJ D) (j : ℕ) (w : WeightFamilies.Wt D j) (s : T
         (fun f g => starRingEnd ℂ (phiC T hV (wtA w) (f : T.R j) g))) → Z)
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem barTie_iff {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : FamIn D.what₂.LL G Pl0 T0 D.R.m}
     {T : CoreJ D} [Algebra T.Q.c.F D.what₂.LL] {R : RealDat D A T.Q.c.F} {κ : ∀ i : Fin D.R.m, WeightFamilies.Wt D ((i : ℕ) + 1)}
@@ -35,21 +35,21 @@ theorem barTie_iff {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A 
   Iff.rfl
 
 /- English proof (translation)
-Take `⟨⟨⟨H, l, c, Dw, Xo, eO⟩, U, V, dict, mu, Kf, pb⟩, cE, chiW, x₀, iota⟩` from `T`. Take `⟨⟨⟨H', l', c', Dw', Xo', eO'⟩, U', V', dict', mu', Kf', pb'⟩, cE', chiW', x₀', iota'⟩` from `T'`. Simplify using `only at h1 h2 h3 h4 h5 h6 h7 h8 h9 h10`. Consider the cases of `h1`. Consider the cases of `h2`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify by unfolding definitions. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data.
 
-Consider the cases of `h3`. Consider the cases of `h4`. Consider the cases of `h5`. Consider the cases of `h6`. Consider the cases of `h7`.
+Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data.
 
-Consider the cases of `h8`. Consider the cases of `h9`. Consider the cases of `h10`. Take `⟨aP, aM, _, _, n, _⟩` from `w`. Take `⟨aP', aM', _, _, n', _⟩` from `w'`.
+Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Simplify using `only at hP hM hn`. Consider the cases of `hP`. Consider the cases of `hM`. Consider the cases of `hn`. Establish `hs' : s' = s` using `RingHom.ext fun y => hs y y rfl`.
+Simplify by unfolding definitions. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Establish an intermediate fact.
 
-Substitute `hs'` using the available equality. Take `⟨X, σ, lam, ε, fr, _, _, _, _⟩` from `M`. Take `⟨X', σ', lam', ε', fr', _, _, _, _⟩` from `M'`. Take `⟨m1, m2, m3, m4, m5, m6, m7⟩` from `hMM`. Simplify using `only at m1 m2 m3 m4 m5 m6 m7`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify by unfolding definitions.
 
-Consider the cases of `m1`. Consider the cases of `m2`. Consider the cases of `m3`. Consider the cases of `m4`. Consider the cases of `m5`.
+Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data.
 
-Consider the cases of `m6`. Consider the cases of `m7`. Establish `hH' : Hm' = Hm` using `eq_of_heq hH`. Substitute `hH'` using the available equality. Establish `hj' : jf' = jf` using `funext fun f => eq_of_heq (hj f f HEq.rfl)`.
+Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact.
 
-Substitute `hj'` using the available equality. Introduce `h hg hV`. Conclude with `⟨(h hg hV).1, fun h' => hZ ((h hg hV).2 h')⟩`.
+Substitute using the available equality. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem BarAtOne.congr {D : D7} (T T' : CoreJ D) (h1 : HEq T'.Q.H T.Q.H) (h2 : HEq T'.Q.l T.Q.l) (h3 : HEq T'.Q.c T.Q.c)
     (h4 : HEq T'.Q.Dw T.Q.Dw) (h5 : HEq T'.Q.Xo T.Q.Xo) (h6 : HEq T'.U T.U) (h7 : HEq T'.V T.V) (h8 : HEq T'.dict T.dict)
@@ -101,11 +101,11 @@ theorem BarAtOne.congr {D : D7} (T T' : CoreJ D) (h1 : HEq T'.Q.H T.Q.H) (h2 : H
   exact ⟨(h hg hV).1, fun h' => hZ ((h hg hV).2 h')⟩
 
 /- English proof (translation)
-Substitute `hn` using the available equality. Substitute `h0` using the available equality. Establish `hz : HEq (j' 0) (0 : A)` using `h 0 0 ⟨rfl, fun k k' _ => (map_zero ι).symm⟩`. Establish `hk : ∀ k, j' (Pi.single k 1) = 0` using `fun k => by`. Establish `h1 : HEq (j' (Pi.single k 1)) (0 : A)` using `h (Pi.single k 1) (Pi.single k 1) ⟨rfl, fun a b hab => by`.
+Substitute using the available equality. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `rfl : a = b` from `Fin.ext hab`. Distinguish the cases in `hak : a = k`. Substitute `hak` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Pi.single_apply, hak]⟩`.
+Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Conclude with `(eq_of_heq (h1.trans hz.symm)).trans (map_zero j')`. Use `LinearMap.ext fun x => ?_` and prove the remaining obligations. Rewrite using `[pi_eq_sum_univ' x, map_sum]`. Use `Finset.sum_eq_zero fun k _ => ?_` and prove the remaining obligations. Rewrite using `[map_smulₛₗ, hk, smul_zero]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem reading_eq_zero {L L' : Type} [Field L] [Field L'] (ι : L →+* L') (σ' : L' →+* ℂ) {n n' : ℕ} (hn : n = n')
     {A A' : Type} [AddCommGroup A] [Module ℂ A] [AddCommGroup A'] [Module ℂ A']
@@ -128,21 +128,21 @@ theorem reading_eq_zero {L L' : Type} [Field L] [Field L'] (ι : L →+* L') (σ
   rw [map_smulₛₗ, hk, smul_zero]
 
 /- English proof (translation)
-Introduce `B B' f f' T T' w w' Z Z' hX hX' Wt Wt' z hE hpx core' alg' halg hc Xg tr R' cG' hpins hRS κ' hκ v₀' fw' hcrd hMW`. Use `letI := alg'`. Use `letI := z.alg`. Establish `hK : B'.Ks.map B'.embLL.toRatAlgHom = B.Ks.map B.embLL.toRatAlgHom` using `SetLike.coe_injective hE.2.1`. Establish `hm : (w'.st Z').toD7.R.m = (w.st Z).toD7.R.m` using `(by with_unfolding_all exact ((congrArg (fun P : Pre => P.R.m) hE.1) :))`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(barTie_iff fw').2 fun i' σ' => ?_` and prove the remaining obligations. Set `i : Fin (w.st Z).toD7.R.m` to `⟨i'.1, hm ▸ i'.2⟩`. Establish `hi : (i : ℕ) = i'` using `rfl`. Set `ι : (w.st Z).toD7.what₂.LL →+* (w'.st Z').toD7.what₂.LL` to `(by with_unfolding_all exact ((enlEmb hE.2.2.2) :))`. Establish `hι : ∀ x, (w'.st Z').toD7.what₂.embLL (ι x) = (w.st Z).toD7.what₂.embLL x` using `(by with_unfolding_all exact ((enlEmb_spec hE.2.2.2) :))`.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hb` using `(barTie_iff z.geo.fw).1 z.geo.bar i (σ'.comp ι)`. Establish `hMM` using `hMW i i' hi ι hι σ'`. Establish `hnW` using `hRS.1.2.2.2.2.2.1`. Establish `hcl` using `((hRS.1.2.2.2.2.2.2.2.2.2.2.2.2.1 i i' hi).2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2 ι hι).1 σ'`. Establish `hH` using `hcl.2.1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hjj` using `hcl.2.2.2`. Establish `hs : ∀ (y : z.core.Q.c.F) (y' : core'.Q.c.F), (y' : ℂ) = (y : ℂ) → res core' σ' y' = res z.core (σ'.comp ι) y` using `fun y y' hy => congrArg σ' ((w'.st Z').toD7.what₂.embLL.injective (((by with_unfolding_all exact ((halg y') :)) : (w'.st Z').toD7.what₂.embLL (algebraMap core'.Q.c.F (w'.st Z').toD7.what₂.LL y') = (y' : ℂ)).trans (hy.trans ((hι _).trans ((by with_unfolding_all exact ((z.alg_eq y) …`. Establish `hgen : ∀ {m m' : ℕ} (_ : m' = m) (a : Fin m → ℕ) (a' : Fin m' → ℕ), HEq a' a → ∀ (k : Fin m) (k' : Fin m'), (k : ℕ) = k' → a k = a' k'`. Introduce `m m' h a a' ha k k' hk`. Substitute `h` using the available equality.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality.
 
-Consider the cases of `ha`. Rewrite using `[Fin.ext hk]`. Establish `hn : z.R.nW i = R'.nW i'` using `hgen hm _ _ hnW i i' hi`. Establish `hj : ∀ φ φ', HEq φ' φ → HEq (fw'.jK i' σ' φ') (z.geo.fw.jK i (σ'.comp ι) φ)` using `fun φ φ' hφ => hjj _ _ ⟨hn, fun k k' hk => (w'.st Z').toD7.what₂.embLL.injective ((hcrd i i' hi φ φ' hφ k k' hk).trans (hι _).symm)⟩`. Establish `hZ : (z.R.FW i).j (σ'.comp ι) = 0 → (R'.FW i').j σ' = 0` using `reading_eq_zero ι σ' hn _ _ hjj`.
+Split into cases according to the possible forms of the given data. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨hP, hM, hnn⟩` from `hκ i i' hi`. Take `⟨c1, c2, c3, c4, c5, c6, c7, c8, c9, -, c10, -⟩` from `hc`. Establish `h1` using `hE.1`. Break down `B' with ⟨P'⟩` into its components or cases. Express the relevant statement in the definitionally equal form `P' = B.toPre at h1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Express the relevant assertion in an equivalent form by its definition.
 
-Substitute `h1` using the available equality. Set `Q₀ : Formalism.L2.Pj.Par (w'.st Z').toD7` to `{ H := (by with_unfolding_all exact (z.core.Q.H :)), l := (by with_unfolding_all exact (z.core.Q.l :)), c := (by with_unfolding_all exact (z.core.Q.c :)), Dw := (by with_unfolding_all exact (z.core.Q.Dw :)), Xo := (by with_unfolding_all exact (z.core.Q.Xo :)), eO := (by with_unfo …`. Set `core₀ : Formalism.L2.Pj.CoreJ (w'.st Z').toD7` to `{ toCore := { Q := Q₀, U := (by with_unfolding_all exact (z.core.U :)), V := (by with_unfolding_all exact (z.core.V :)), dict := (by with_unfolding_all exact (z.core.dict :)), mu := (by with_unfolding_all exact (z.core.mu :)), Kf := (by with_unfolding_all exact (z.core.Kf :)), pb …`. Set `κ₀ : WeightFamilies.Wt (w'.st Z').toD7 ((i' : ℕ) + 1)` to `{ aP := (by with_unfolding_all exact ((z.geo.κ i).aP :)), aM := (by with_unfolding_all exact ((z.geo.κ i).aM :)), aPlus_antitone := (by with_unfolding_all exact ((z.geo.κ i).aPlus_antitone :)), aM_anti := (by with_unfolding_all exact ((z.geo.κ i).aM_anti :)), n := (z.geo.κ i).n, …`. Set `S₀ : (w'.st Z').toD7.what₂.Tau → SPar` to `(by with_unfolding_all exact ((parAt (Wc (w.st Z).toD7 i) (σ'.comp ι)) :))`.
+Substitute using the available equality. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `M₀ : DSModel (Wc (w'.st Z').toD7 i') S₀` to `@DSModel.mk _ _ _ ((by with_unfolding_all exact ((z.R.MW i (σ'.comp ι)).H :))) ((by with_unfolding_all exact ((z.R.MW i (σ'.comp ι)).nacg :))) ((by with_unfolding_all exact ((z.R.MW i (σ'.comp ι)).ips :))) ((by with_unfolding_all exact ((z.R.MW i (σ'.comp ι)).σ :))) ((by with_unf …`. Set `H₀ : Links.HMod (MMap M₀)` to `(by with_unfolding_all exact ((z.R.HW i (σ'.comp ι)) :))`. Set `s₀ : core₀.Q.c.F →+* ℂ` to `(by with_unfolding_all exact ((res z.core (σ'.comp ι)) :))`. Set `j₀ : core₀.cuspA ((i' : ℕ) + 1) (wtA κ₀) κ₀.n → H₀.H` to `(by with_unfolding_all exact ((fun φ => z.geo.fw.jK i (σ'.comp ι) φ) :))`. Conclude with `BarAtOne.congr core₀ core' ((by with_unfolding_all exact (c1 :))) ((by with_unfolding_all exact (c2 :))) ((by with_unfolding_all exact (c3 :))) ((by with_unfolding_all exact (c4 :))) ((by with_unfolding_all exact (c5 :))) ((by with_unfolding_all exact (c6 :))) ((by with_unfolding …`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem barTie_enl : ∀ {B B' : Base} {f : Fr B.toPre} {f' : Fr B'.toPre} {T : TwDat B} {T' : TwDat B'} (w : ColW B f T) (w' : ColW B' f' T')
     (Z : w.Lt) (Z' : w'.Lt) (hX : B.fields.Ok) (hX' : B'.fields.Ok) (Wt : Set B.places.Pl) (Wt' : Set B'.places.Pl)

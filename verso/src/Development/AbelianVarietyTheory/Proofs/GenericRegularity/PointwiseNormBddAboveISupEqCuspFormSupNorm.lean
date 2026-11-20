@@ -19,13 +19,13 @@ open NumberField IsDedekindDomain ReciprocityTheory.ChartRestriction.G Reciproci
 namespace GlobalTheory.FrameNorm.SupNorm
 
 /- English proof (translation)
-Establish `hle : ∀ b, h b ≤ (⨆ b, ENNReal.ofReal (h b)).toReal` using `fun b => (ENNReal.ofReal_le_iff_le_toReal hfin).1 (le_iSup (fun b => ENNReal.ofReal (h b)) b)`. Establish `hr : Set.range g = Set.range fun b => C * h b`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Take `⟨b, hb⟩` from `h1 a`. Conclude with `⟨b, hb.symm⟩`. Introduce and unpack `⟨b, rfl⟩`. Conclude with `h2 b`. Use `⟨⟨C * (⨆ b, ENNReal.ofReal (h b)).toReal, ?_⟩, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hr]`. Introduce and unpack `_ ⟨b, rfl⟩`. Conclude with `mul_le_mul_of_nonneg_left (hle b) hC`. Rewrite using `[ENNReal.toReal_iSup (fun b => ENNReal.ofReal_ne_top), Real.mul_iSup_of_nonneg hC]`. Unfold `iSup`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hr]`. Simplify using `only [ENNReal.toReal_ofReal (hh _)]`.
+A detailed English derivation is pending.
 -/
 theorem bdd_and_iSup_eq {α β : Type} (g : α → ℝ) (h : β → ℝ) (C : ℝ) (hC : 0 ≤ C) (hh : ∀ b, 0 ≤ h b)
     (h1 : ∀ a, ∃ b, g a = C * h b) (h2 : ∀ b, ∃ a, g a = C * h b)
@@ -51,17 +51,15 @@ theorem bdd_and_iSup_eq {α β : Type} (g : α → ℝ) (h : β → ℝ) (C : �
     simp only [ENNReal.toReal_ofReal (hh _)]
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c r U hU xR fn hx hfn a n hd f hf`. Take `⟨-, htie, hconj⟩` from `GlobalTheory.T.pointwise_norm_section_eq_flagDomain_norm E H Dw l Xo c r U hU xR fn hx hfn`. Establish `hs : f ∈ sec Xo c a n` using `Formalism.L2.PjFree.cusp_le_sec Xo c U a n hf`. Establish `hB : Out.SecBaseChangeSt` using `GlobalTheory.abelianSchemeLaws_all.1.secBaseChange`. Set `N : ∀ σ : c.F →+* ℂ, FrPt Xo c (CAt σ) → ℝ` to `fun σ => ptNorm (K := c.F) (fun S _ _ => FrPt Xo c S) (fun φ y z => FrMap φ y z) σ (fn σ) (ex Dw a n) f`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hgood : ∀ σ, Formalism.L2.PjFree.GoodEmb c σ → BddAbove (Set.range (N σ)) ∧ (⨆ y, N σ y) = Formalism.L2.PjFree.supC Xo c U xR σ a n f`. Introduce `σ hσ`. Use `bdd_and_iSup_eq (N σ) (fun p : Formalism.L2.PjFree.FPt (U σ).X => ((U σ).X p.1).pnorm (Formalism.L2.PjFree.laU (U σ) a n p.1) (Formalism.L2.PjFree.rdU (U σ) f p.1) p.2) (Formalism.L2.PjFree.lieFac Dw xR a) (Formalism.L2.PjFree.lieFac_pos Dw xR a).le (fun p => mul_nonneg (norm_non …` and prove the remaining obligations. Take `⟨k, x, t, ht⟩` from `(hU σ hσ).2.2.1 y`. Conclude with `⟨⟨k, x⟩, htie σ hσ k x t y ht a n hd f hs⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨(U σ).un p.1 p.2, htie σ hσ p.1 p.2 1 _ ((GlobalTheory.Reg.BorelGroupoid.frBor_groupoid E H Dw l Xo c (CAt σ)).1 _) a n hd f hs⟩`. Establish `hsub : ∀ σ τ : c.F →+* ℂ, τ = (starRingEnd ℂ).comp σ → Set.range (N σ) ⊆ Set.range (N τ)`. Introduce and unpack `σ τ rfl _ ⟨y, rfl⟩`. Take `⟨z, hz⟩` from `GlobalTheory.Frames.FramedBaseChange.exists_frMap hB E H Dw l Xo c _ _ (conjAlg σ) y`. Conclude with `⟨z, hconj σ y z hz a n f hs⟩`.
+Supply the required witnesses or components. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `hr : ∀ σ : c.F →+* ℂ, Set.range (N σ) = Set.range (N (Formalism.L2.PjFree.goodOf c σ))`. Introduce `σ`. Distinguish the cases in `hσ : Formalism.L2.PjFree.GoodEmb c σ`. Establish `e : Formalism.L2.PjFree.goodOf c σ = σ` using `if_pos hσ`. Conclude with `(hsub _ _ rfl).trans (hsub _ _ (by rw [e]; ext x; simp)) |>.antisymm ((hsub _ _ rfl).trans (hsub _ _ (by rw [e]; ext x; simp)))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : Formalism.L2.PjFree.goodOf c σ = (starRingEnd ℂ).comp σ` using `if_neg hσ`. Conclude with `(hsub _ _ e).antisymm (hsub _ _ (by rw [e]; ext x; simp))`. Use `⟨fun σ => ?_, fun σ => ?_⟩` and prove the remaining obligations. Use `show BddAbove (Set.range (N σ))`. Rewrite using `[hr σ]`.
-
-Conclude with `(hgood _ (Formalism.L2.PjFree.goodEmb_goodOf c σ)).1`. Use `show sSup (Set.range (N σ)) = _`. Rewrite using `[hr σ]`. Conclude with `(hgood _ (Formalism.L2.PjFree.goodEmb_goodOf c σ)).2`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem supBdd_and_supR_eq : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l), ∀ (r : ℕ) (U : ∀ σ : c.F →+* ℂ, Formalism.L2.PjFree.Unf Xo c σ r), (∀ σ, Formalism.L2.PjFree.GoodEmb c σ → Formalism.L2.PjFree.IsUnf (U σ)) → ∀ (xR : ℝ) (fn : ∀ σ : c.F →+* ℂ, FrPt Xo c (CAt σ) → Ix Dw → ℝ), 0 < xR → FnPin U xR fn → ∀ a n, Dom a n → ∀ f ∈ Formalism.L2.PjFree.cusp Xo c U a n, SupBdd Xo c fn a n f ∧ ∀ σ, supR Xo c fn σ a n f = Formalism.L2.PjFree.supC Xo c U xR (Formalism.L2.PjFree.goodOf c σ) a n f := by
   intro E _ _ _ H Dw l Xo c r U hU xR fn hx hfn a n hd f hf

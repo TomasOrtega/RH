@@ -13,15 +13,15 @@ open GlobalTheory.PRep GlobalTheory.SmGL Matrix
 namespace DiscreteGroups.sglob.DzType
 
 /- English proof (translation)
-Introduce `H k _ _ _ _ m`. Take `⟨E⟩` from `GlobalTheory.LocGL.DetQuot.nonempty_equiv_multiProd (k := k) (eOne m) (θ := fun _ : Fin m => (1 : kˣ →* ℂˣ)) (Θ := (1 : Levi k (fun _ : Fin m => Fin 1) →* ℂˣ)) (fun g => by simp)`. Establish `hs1 : IsSmoothChar (detChar (Fin 1) (1 : kˣ →* ℂˣ))` using `by show IsOpen ((detChar (Fin 1) (1 : kˣ →* ℂˣ)).ker : Set (GL (Fin 1) k))`. Use `isOpen_univ` and compare the differences between its conclusion and the goal. Use extensionality with `g`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components.
 
-Simplify using the standard rewrite rules. Establish `hs : ∀ _ : Fin m, IsSmooth (detRep (Fin 1) (1 : kˣ →* ℂˣ))` using `fun _ => (isSmooth_ofChar_iff _).2 hs1`. Establish `hi : ∀ _ : Fin m, (detRep (Fin 1) (1 : kˣ →* ℂˣ)).IsIrreducible` using `fun _ => isIrreducible_ofChar _`. Establish `hu : ∀ _ : Fin m, IsUnitarisable (detRep (Fin 1) (1 : kˣ →* ℂˣ))` using `fun _ => (isUnitarisable_ofChar_iff _).2 fun g => by simp`. Establish `hirr` using `GlobalTheory.SmGL.MultiIrr.isIrreducible_multiProd H (eOne m) (σ := fun _ : Fin m => detRep (Fin 1) (1 : kˣ →* ℂˣ)) hs hi hu`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨(GlobalTheory.SmGL.MultiIrr.isIrreducible_iff_of_equiv E).2 hirr, ?_, ?_⟩` and prove the remaining obligations. Take `⟨f, hf, hf1⟩` from `GlobalTheory.SatInd.exists_fixed_apply_one (eOne m) (ρ := ofChar (1 : Levi k (fun _ : Fin m => Fin 1) →* ℂˣ)) (x := (1 : ℂ)) fun g _ => by simp`. Use `show fixed (parInd (eOne m) (ofChar (1 : Levi k (fun _ : Fin m => Fin 1) →* ℂˣ))) (GlobalTheory.SplitWeil.KO k (Fin m)) ≠ ⊥`. Introduce `hbot`. Establish `h0 : f ∈ (⊥ : Submodule ℂ _)` using `hbot ▸ hf`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h0` using `[Submodule.mem_bot]`. Rewrite `hf1` using `[h0]`. Conclude with `absurd hf1 (by simp)`. Establish `hc : HasCentralChar (multiProd (eOne m) fun _ : Fin m => detRep (Fin 1) (1 : kˣ →* ℂˣ)) 1`. Introduce `z f`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[GlobalTheory.BoundaryMaps.multiProd_scalar (eOne m) _ (fun _ => (1 : kˣ →* ℂˣ)) (fun _ => by simpa using GlobalTheory.BoundaryMaps.hasCentralChar_detRep (k := k) 1 (1 : kˣ →* ℂˣ)) z f]`. Simplify using the standard rewrite rules. Conclude with `GlobalTheory.LocGL.hasCentralChar_of_equiv E.symm hc`.
+A detailed English derivation is pending.
 -/
 theorem genA : GenA := by
   intro H k _ _ _ _ m

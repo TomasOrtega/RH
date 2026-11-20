@@ -4,11 +4,11 @@ open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.
 
 open scoped Pointwise in
 /- English proof (translation)
-Take `⟨g, hg⟩` from `exists_smul_eq_of_isPlaceOver (F := k) hA hB`. Establish `hm : ∀ x, g x ∈ B ↔ x ∈ A` using `fun x => by show g • x ∈ B ↔ _`. Rewrite using `[← hg]`. Conclude with `ValuationSubring.smul_mem_pointwise_smul_iff`. Establish `hv : ∀ x, B.valuation (g x) < 1 ↔ A.valuation x < 1` using `fun x => by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[valuation_lt_one_iff' (Ω := Ω), valuation_lt_one_iff' (Ω := Ω), hm, ← map_inv₀, hm, map_eq_zero_iff _ g.injective]`. Use `⟨g, fun t ht => ⟨?_, fun x hx => ?_⟩⟩` and prove the remaining obligations. Use `show (g⁻¹ * t * g) • A = A`. Establish `h1 : t • B = B` using `ht.1`. Rewrite using `[mul_smul, mul_smul, hg, h1, ← hg, inv_smul_smul]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← hv, map_sub]`. Establish `e : g ((g⁻¹ * t * g) x) = t (g x)` using `mul_inv_apply _`. Rewrite using `[e]`. Conclude with `ht.2 _ ((B.valuation_le_one_iff _).2 ((hm x).2 ((A.valuation_le_one_iff _).1 hx)))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem conj_ine {k Ω : Type} [Field k] [NumberField k] [Field Ω] [Algebra k Ω] [IsAlgClosure k Ω]
     {A B : ValuationSubring Ω} {v : HeightOneSpectrum (𝓞 k)} (hA : IsPlaceOver A v) (hB : IsPlaceOver B v) :
@@ -32,13 +32,13 @@ private theorem conj_ine {k Ω : Type} [Field k] [NumberField k] [Field Ω] [Alg
 
 open scoped Pointwise in
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 private theorem res_ine {L Ω : Type} [Field L] [NumberField L] [IsCMField L] [Field Ω] [Algebra L Ω] [IsAlgClosure L Ω]
     (A : ValuationSubring Ω) (g : G L Ω) : resP L Ω g ∈ Ine (F := Lp L) A ↔ g ∈ Ine (F := L) A := Iff.rfl
 
 /- English proof (translation)
-Use `(QuotientGroup.eq_one_iff t).2 (Subgroup.le_topologicalClosure _ (Subgroup.subset_normalClosure ?_))` and prove the remaining obligations. Simplify using `only [Set.mem_iUnion]`. Conclude with `⟨v, hv, A, hA, ht⟩`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 private theorem ine_NS {k Ω : Type} [Field k] [NumberField k] [Field Ω] [Algebra k Ω]
     {S : Set (HeightOneSpectrum (𝓞 k))} {A : ValuationSubring Ω} {v : HeightOneSpectrum (𝓞 k)} (hv : v ∉ S)
@@ -48,7 +48,7 @@ private theorem ine_NS {k Ω : Type} [Field k] [NumberField k] [Field Ω] [Algeb
   exact ⟨v, hv, A, hA, ht⟩
 
 /- English proof (translation)
-Use `⟨fun x hx g => ?_⟩` and prove the remaining obligations. Unfold `PL at hx ⊢`. Simplify using `only [Subgroup.mem_iInf] at hx ⊢`. Introduce `U hU`. Conclude with `U.isNormal'.conj_mem _ (hx U hU) g`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 private theorem PL_normal (l : ℕ) {Γ : Type} [Group Γ] [TopologicalSpace Γ] (H : Subgroup Γ) : (PL l H).Normal := by
   refine ⟨fun x hx g => ?_⟩
@@ -58,25 +58,21 @@ private theorem PL_normal (l : ℕ) {Γ : Type} [Group Γ] [TopologicalSpace Γ]
   exact U.isNormal'.conj_mem _ (hx U hU) g
 
 /- English proof (translation)
-Introduce `l _ L Ω _ _ _ _ _ _ s V0 V O _ _ _ n r h H q v B τ hp hS hj`. Establish `h1 : ∀ j, ∀ g ∈ Ine (F` using `L) (B j), h.p (V.pr g : GS Ω V.S') = 1 := fun j g hg => (hp (resP L Ω g)).trans (ine_NS (hj j).1 (hj j).2.1 ((res_ine _ _).2 hg))`. Set `π : G (Lp L) Ω →* (globOf r V).Γ` to `toGS Ω V.S'`. Establish `hπ : Continuous π` using `continuous_toGS Ω V.S'`. Establish `h2 : ∀ j, ∀ g ∈ GlobalTheory.TameQuot.ineKer L (B j) l, ((V.pr g : GS Ω V.S') : (globOf r V).Γ) ∈ PL l (H.comap h.p)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce and unpack `j _ ⟨g, hg, rfl⟩`. Use `prokerPL l (globOf r V).Γ (Ine (F := L) (B j)) (π.comp ((resP L Ω).comp (Ine (F := L) (B j)).subtype)) (H.comap h.p) (hπ.comp (continuous_resP.comp continuous_subtype_val)) (fun x => ?_) g hg` and prove the remaining obligations. Establish `: h.p (π (resP L Ω x)) = 1` using `h1 j x x.2`. Use `show h.p (π (resP L Ω x)) ∈ H`. Rewrite using `[this]`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `H.one_mem`. Use `⟨h1, h2, ?_⟩` and prove the remaining obligations. Use `haveI := PL_normal l (H.comap h.p)`. Use `set N : Subgroup (globOf r V).Γ := Subgroup.normalClosure (Set.range fun j => ((V.pr (τ j) : GS Ω V.S') : (globOf r V).Γ)) ⊔ PL l (H.comap h.p) with hN`. Use `haveI : N.Normal := by rw [hN]; infer_instance`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `haveI hK : N.topologicalClosure.Normal := Subgroup.is_normal_topologicalClosure _`. Establish `hc : IsClosed ((N.topologicalClosure.comap π : Subgroup (G (Lp L) Ω)) : Set (G (Lp L) Ω))` using `(Subgroup.isClosed_topologicalClosure N).preimage hπ`. Establish `h3 : ∀ j, ∀ g ∈ Ine (F` using `L) (B j), π (resP L Ω g) ∈ N.topologicalClosure := fun j g hg => by`. Establish `hc' : IsClosed (((N.topologicalClosure.comap π).comap (resP L Ω) : Subgroup (G L Ω)) : Set (G L Ω))` using `hc.preimage continuous_resP`. Use `Subgroup.topologicalClosure_minimal _ (sup_le ?_ ?_) hc' ((hj j).2.2.2.2 hg)` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Rewrite using `[Subgroup.zpowers_le]`. Conclude with `Subgroup.le_topologicalClosure N ((le_sup_left : _ ≤ N) (Subgroup.subset_normalClosure ⟨j, rfl⟩))`. Introduce `x hx`. Conclude with `Subgroup.le_topologicalClosure N ((le_sup_right : _ ≤ N) (h2 j x hx))`. Establish `h4 : NS Ω V0.S' ≤ N.topologicalClosure.comap π`.
+Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `Subgroup.topologicalClosure_minimal _ (Subgroup.normalClosure_le_normal ?_) hc` and prove the remaining obligations. Introduce `t ht`. Simplify using `only [Set.mem_iUnion] at ht`. Take `⟨u, hu, A, hA, ht⟩` from `ht`. Distinguish the cases in `hu' : u ∈ V.S'`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hu'` using `[hS]`. Take `⟨j, rfl⟩` from `hu'.resolve_left hu`. Take `⟨g, hg⟩` from `conj_ine (hj j).2.1 hA`. Establish `h5` using `hg t ht`. Take `⟨x, hx⟩` from `(hj j).2.2.1 (Ine_le_Dec _ h5)`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `h6 : g⁻¹ * t * g ∈ N.topologicalClosure.comap π`. Rewrite `h5`, the goal using `[← hx]`. Conclude with `h3 j x ((res_ine _ _).1 h5)`. Establish `h7` using `(hK.comap π).conj_mem _ h6 g`. Rewrite `h7` using `[show g * (g⁻¹ * t * g) * g⁻¹ = t by group]`. Then use the resulting hypothesis.
-
-Establish `: π t = 1` using `ine_NS hu' hA ht show π t ∈ N.topologicalClosure`. Rewrite using `[this]`. Conclude with `one_mem _`. Introduce `x hx`. Take `⟨g, rfl⟩ : ∃ g, π g = x` from `QuotientGroup.mk_surjective x`.
-
-Establish `h8 : toGS Ω V0.S' g = 1` using `(hp g).symm.trans hx`. Conclude with `h4 ((QuotientGroup.eq_one_iff g).1 h8)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Pa.kerLe :
     ∀ (l : ℕ) [Fact l.Prime] (L Ω : Type) [Field L] [NumberField L] [IsCMField L] [Field Ω] [Algebra L Ω] [IsAlgClosure L Ω] (s : HidaSetting l L Ω) (V0 V : s.Lev) (O : Type) [CommRing O] [IsLocalRing O] [Algebra ℤ_[l] O] (n : ℕ) (r : Resid V0.frame O n) (h : (globOf r V).Hom (globOf r V0)) (H : Subgroup (globOf r V0).Γ) (q : ℕ) (v : Fin q → Plc (Lp L)) (B : Fin q → ValuationSubring Ω) (τ : Fin q → G L Ω), (∀ g, h.p (toGS Ω V.S' g) = toGS Ω V0.S' g) → V.S' = V0.S' ∪ Set.range v → (∀ j, v j ∉ V0.S' ∧ IsPlaceOver (B j) (v j) ∧ Dec (F := Lp L) (B j) ≤ (resP L Ω).range ∧ GlobalTheory.TameQuot.IsProGen L (B j) l (τ j)) → (∀ j, ∀ g ∈ Ine (F := L) (B j), h.p (V.pr g : GS Ω V.S') = 1) ∧ (∀ j, ∀ g ∈ GlobalTheory.TameQuot.ineKer L (B j) l, ((V.pr g : GS Ω V.S') : (globOf r V).Γ) ∈ PL l (H.comap h.p)) ∧ h.p.ker ≤ (Subgroup.normalClosure (Set.range fun j => ((V.pr (τ j) : GS Ω V.S') : (globOf r V).Γ)) ⊔ PL l (H.comap h.p)).topologicalClosure := by

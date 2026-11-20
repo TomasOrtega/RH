@@ -10,15 +10,15 @@ open Formalism.BasicNotions Formalism.MainNotions.product_first_zeroth_parts For
 def ratO (D : D7) : Subring ℂ := (⊤ : Subring D.what₂.LL).map D.what₂.embLL
 
 /- English proof (translation)
-The claim follows from `Subring.mem_map.2 ⟨r, Subring.mem_top _, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem ratO_mem (D : D7) (r : D.what₂.LL) : D.what₂.embLL r ∈ ratO D :=
   Subring.mem_map.2 ⟨r, Subring.mem_top _, rfl⟩
 
 /- English proof (translation)
-Introduce `r s c m hc hm hsum`. Assume the negation of the conclusion as `hno`. Establish `h0 : ∀ i ∈ s, m i = 0`. Introduce `i hi`. Assume the negation of the conclusion as `hne`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Take `⟨q, -, hq⟩` from `Subring.mem_map.1 (hm i)`. Use `hno ⟨i, hi, D.what₂.embLL q⁻¹, ratO_mem D _, ?_⟩` and prove the remaining obligations. Rewrite using `[map_inv₀, hq, mul_inv_cancel₀ hne]`. Rewrite `hsum` using `[Finset.sum_eq_zero (fun i hi => by rw [h0 i hi, mul_zero])]`. Conclude with `zero_ne_one hsum`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ratO_loc (D : D7) : bwE_Loc (ratO D) := by
   intro r s c m hc hm hsum
@@ -33,13 +33,13 @@ theorem ratO_loc (D : D7) : bwE_Loc (ratO D) := by
   exact zero_ne_one hsum
 
 /- English proof (translation)
-Establish `hM'M : M' * M = 1` using `mul_eq_one_comm.1 hMM'`. Establish `hEO : M ∈ bwA_EO (ratO D) n` using `bwE_elim (ratO_loc D) M hM ⟨M', hM', hM'M⟩`. Establish `hg' : MvPolynomial.map (Int.castRingHom ℂ) g ∈ bwA_span (ratO D) le_rfl ν.natW` using `Submodule.subset_span ⟨g, hg, rfl⟩`. Establish `hrow` using `bwA_span_closure (ratO D) le_rfl ν.natW M hEO _ hg'`. Establish `hdet : M.det * M'.det = 1` using `by rw [← Matrix.det_mul, hMM', Matrix.det_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdM : M.det ∈ ratO D` using `bwE_det_mem hM`. Establish `hdM' : M'.det ∈ ratO D` using `bwE_det_mem hM'`. Establish `hds : M.det ^ s ∈ ratO D`. Break down `s with k | k` into its components or cases. Rewrite using `[Int.ofNat_eq_natCast, zpow_natCast]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Conclude with `pow_mem hdM k`. Establish `e : M.det ^ (Int.negSucc k) = M'.det ^ (k + 1)`. Rewrite using `[zpow_negSucc, ← inv_pow]`. Use `congr 1`. Conclude with `inv_eq_of_mul_eq_one_right hdet`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[e]`. Conclude with `pow_mem hdM' _`. Establish `e : M.det ^ s • Formalism.GradedWeylDivisibility.rowAct ℂ M (MvPolynomial.map (Int.castRingHom ℂ) g) = (⟨M.det ^ s, hds⟩ : ratO D) • Formalism.GradedWeylDivisibility.rowAct ℂ M (MvPolynomial.map (Int.castRingHom ℂ) g)` using `rfl`. Rewrite using `[e]`. Conclude with `Submodule.smul_mem _ _ hrow`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ratGLStab (D : D7) {n : ℕ} (ν : DomWeight n) (s : ℤ) (M M' : Matrix (Fin n) (Fin n) ℂ) (hMM' : M * M' = 1)
     (hM : ∀ a b, M a b ∈ ratO D) (hM' : ∀ a b, M' a b ∈ ratO D) (g : MvPolynomial (Fin n × Fin n) ℤ)
@@ -70,9 +70,9 @@ theorem ratGLStab (D : D7) {n : ℕ} (ν : DomWeight n) (s : ℤ) (M M' : Matrix
   exact Submodule.smul_mem _ _ hrow
 
 /- English proof (translation)
-Proceed by induction on `hP using AddSubgroup.closure_induction with`. Consider the case `mem p hp`. Take `⟨r', f, hf, rfl⟩` from `hp`. Conclude with `AddSubgroup.subset_closure ⟨r * r', f, hf, by rw [smul_smul, map_mul]⟩`. Consider the case `zero => rw [smul_zero]`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately.
 
-Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy => rw [smul_add]`. Conclude with `add_mem hx hy`. Consider the case `neg x _ hx => rw [smul_neg]`. Conclude with `neg_mem hx`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem ratSpan_smul (D : D7) {N : ℕ} (lam : D.what₂.Tau → DomWeight N) (r : D.what₂.LL)
     (P : MvPolynomial (D.what₂.Tau × Fin N × Fin N) ℂ) (hP : P ∈ Formalism.L2.Forms.RatSpan D lam) :
@@ -88,19 +88,17 @@ theorem ratSpan_smul (D : D7) {N : ℕ} (lam : D.what₂.Tau → DomWeight N) (r
 open Classical in
 
 /- English proof (translation)
-Proceed by induction on `hq using Submodule.span_induction generalizing r with`. Consider the case `mem x hx`. Take `⟨g, hg, rfl⟩` from `hx`. Apply `AddSubgroup.subset_closure` to reduce the goal to its premises. Use `⟨r, Function.update f τv g, fun τ => ?_, ?_⟩` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Distinguish the cases in `h : τ = τv`. Substitute `h` using the available equality. Rewrite using `[Function.update_self]`. Conclude with `hg`. Rewrite using `[Function.update_of_ne h]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Conclude with `hf τ`. Use `congr 1`. Use `congr 1`. Use function extensionality and compare the values at `τ`. Distinguish the cases in `h : τ = τv`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Substitute `h` using the available equality. Rewrite using `[Function.update_self, Function.update_self]`. Rewrite using `[Function.update_of_ne h, Function.update_of_ne h]`. Consider the case `zero`. Rewrite using `[bwA_ten_update]`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately.
 
-Simplify using the standard rewrite rules. Consider the case `add x y _ _ hx hy`. Establish `e : Formalism.L2.Forms.ten (Function.update (fun τ => MvPolynomial.map (Int.castRingHom ℂ) (f τ)) τv (x + y)) = Formalism.L2.Forms.ten (Function.update (fun τ => MvPolynomial.map (Int.castRingHom ℂ) (f τ)) τv x) + Formalism.L2.Forms.ten (Function.update (fun τ => MvPolynomial.map …`. Rewrite using `[bwA_ten_update, bwA_ten_update, bwA_ten_update, map_add, add_mul]`. Rewrite using `[e, smul_add]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Conclude with `AddSubgroup.add_mem _ (hx r) (hy r)`. Consider the case `smul o x _ hx`. Take `⟨r', -, ho⟩` from `Subring.mem_map.1 o.2`. Establish `e : Formalism.L2.Forms.ten (Function.update (fun τ => MvPolynomial.map (Int.castRingHom ℂ) (f τ)) τv (o • x)) = (o : ℂ) • Formalism.L2.Forms.ten (Function.update (fun τ => MvPolynomial.map (Int.castRingHom ℂ) (f τ)) τv x)`. Rewrite using `[bwA_ten_update, bwA_ten_update]`.
-
-Use `show MvPolynomial.rename _ ((o : ℂ) • x) * _ = _`. Rewrite using `[map_smul, smul_mul_assoc]`. Rewrite using `[e, smul_smul, ← ho, ← map_mul]`. Conclude with `hx (r * r')`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ratSpan_ten (D : D7) {N : ℕ} (lam : D.what₂.Tau → DomWeight N) (τv : D.what₂.Tau)
     (f : D.what₂.Tau → MvPolynomial (Fin N × Fin N) ℤ) (hf : ∀ τ, f τ ∈ delSq ℤ N (lam τ))
@@ -144,13 +142,13 @@ theorem ratSpan_ten (D : D7) {N : ℕ} (lam : D.what₂.Tau → DomWeight N) (τ
 open Classical in
 
 /- English proof (translation)
-Proceed by induction on `hP using AddSubgroup.closure_induction with`. Consider the case `mem p hp`. Take `⟨r, f, hf, rfl⟩` from `hp`. Use `set F : D.what₂.Tau → MvPolynomial (Fin N × Fin N) ℂ := fun τ => MvPolynomial.map (Int.castRingHom ℂ) (f τ) with hF`. Establish `h1 : (fun τ => Formalism.GradedWeylDivisibility.rowAct ℂ (o τ) (F τ)) = Function.update F τv (Formalism.GradedWeylDivisibility.rowAct ℂ (o τv) (F τv))`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `τ`. Distinguish the cases in `h : τ = τv`. Substitute `h` using the available equality. Rewrite using `[Function.update_self]`. Rewrite using `[Function.update_of_ne h, ho τ h, bwA_rowAct_one]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e : c • subP o (D.what₂.embLL r • Formalism.L2.Forms.ten F) = D.what₂.embLL r • Formalism.L2.Forms.ten (Function.update F τv (c • Formalism.GradedWeylDivisibility.rowAct ℂ (o τv) (F τv)))`. Rewrite using `[map_smul, substitution_tensor, h1, smul_comm, bwA_ten_update, bwA_ten_update, map_smul, smul_mul_assoc]`. Rewrite using `[e]`. Conclude with `ratSpan_ten D lam τv f hf _ (hB (f τv) (hf τv)) r`. Consider the case `zero => rw [map_zero, smul_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy => rw [map_add, smul_add]`. Conclude with `add_mem hx hy`. Consider the case `neg x _ hx => rw [map_neg, smul_neg]`. Conclude with `neg_mem hx`.
+A detailed English derivation is pending.
 -/
 theorem ratSpan_subP (D : D7) {N : ℕ} (lam : D.what₂.Tau → DomWeight N) (τv : D.what₂.Tau)
     (o : D.what₂.Tau → Matrix (Fin N) (Fin N) ℂ) (ho : ∀ τ, τ ≠ τv → o τ = 1) (c : ℂ)
@@ -178,19 +176,17 @@ theorem ratSpan_subP (D : D7) {N : ℕ} (lam : D.what₂.Tau → DomWeight N) (�
   | neg x _ hx => rw [map_neg, smul_neg]; exact neg_mem hx
 
 /- English proof (translation)
-Establish `key : ∀ S : Finset D.what₂.Tau, MvPolynomial.C (∏ τ ∈ S, (N τ).det ^ s τ) * subP (fun τ => if τ ∈ S then N τ else 1) Q ∈ Formalism.L2.Forms.RatSpan D lam`. Introduce `S`. Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty`. Simplify using `only [Finset.prod_empty, map_one, one_mul, Finset.notMem_empty, if_false]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules.
 
-Rewrite using `[substitution_one]`. Conclude with `hQ`. Consider the case `insert τ0 S h0 ih => set U : D.what₂.Tau → Matrix (Fin n) (Fin n) ℂ := Function.update 1 τ0 (N τ0) with hU`. Establish `hU1 : ∀ τ, τ ≠ τ0 → U τ = 1` using `fun τ hτ => by rw [hU, Function.update_of_ne hτ]; rfl`. Establish `hUτ : U τ0 = N τ0` using `by rw [hU, Function.update_self]`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcomp : (fun τ => (if τ ∈ S then N τ else 1) * U τ) = fun τ => if τ ∈ insert τ0 S then N τ else 1`. Use function extensionality and compare the values at `τ`. Distinguish the cases in `hτ : τ = τ0`. Substitute `hτ` using the available equality. Rewrite using `[if_neg h0, if_pos (Finset.mem_insert_self _ _), one_mul, hUτ]`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hU1 τ hτ, mul_one]`. Distinguish the cases in `hS : τ ∈ S`. Rewrite using `[if_pos hS, if_pos (Finset.mem_insert_of_mem hS)]`. Rewrite using `[if_neg hS, if_neg (by simp [hτ, hS])]`. Establish `e : MvPolynomial.C (∏ τ ∈ insert τ0 S, (N τ).det ^ s τ) * subP (fun τ => if τ ∈ insert τ0 S then N τ else 1) Q = (N τ0).det ^ s τ0 • subP U (MvPolynomial.C (∏ τ ∈ S, (N τ).det ^ s τ) * subP (fun τ => if τ ∈ S then N τ else 1) Q)`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hC : ∀ x, subP U (MvPolynomial.C x) = MvPolynomial.C x` using `fun x => by`. Rewrite using `[← MvPolynomial.algebraMap_eq, AlgHom.commutes]`. Rewrite using `[map_mul, substitution_substitution, hcomp, Finset.prod_insert h0, map_mul, MvPolynomial.smul_eq_C_mul, hC, mul_assoc]`. Rewrite using `[e]`. Use `ratSpan_subP D lam τ0 U hU1 _ ?_ _ ih` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `g hg`. Rewrite using `[hUτ]`. Conclude with `hB τ0 g hg`. Establish `h` using `key Finset.univ`. Simplify using `only [Finset.mem_univ, if_true] at h`.
-
-Conclude with `h`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem ratSpan_allSubP (D : D7) {n : ℕ} (lam : D.what₂.Tau → DomWeight n)
     (N : D.what₂.Tau → Matrix (Fin n) (Fin n) ℂ) (s : D.what₂.Tau → ℤ)
@@ -241,7 +237,7 @@ def RatC (T : Forms0 D u) (h : (D.mem u).C.Y 0 → ℂ) : Prop :=
   ∃ P ∈ Formalism.L2.Forms.RatSpan D ((D.fm u).lam 0), ∀ z, h z = fnOf _ (shiftOf (lamT u 0)) 1 P (T.val0.eY z)
 
 /- English proof (translation)
-Use `choose! P hP hPe using hh`. Use `⟨∑ i ∈ s, P i, AddSubgroup.sum_mem _ fun i hi => hP i hi, fun z => ?_⟩` and prove the remaining obligations. Rewrite using `[map_sum, Finset.sum_apply, Finset.sum_apply]`. Conclude with `Finset.sum_congr rfl fun i hi => hPe i hi z`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ratC_sum (T : Forms0 D u) {ι : Type} (s : Finset ι) (h : ι → (D.mem u).C.Y 0 → ℂ)
     (hh : ∀ i ∈ s, RatC T (h i)) : RatC T (∑ i ∈ s, h i) := by
@@ -251,7 +247,7 @@ theorem ratC_sum (T : Forms0 D u) {ι : Type} (s : Finset ι) (h : ι → (D.mem
   exact Finset.sum_congr rfl fun i hi => hPe i hi z
 
 /- English proof (translation)
-Simplify using `only [fnOf, LinearMap.coe_mk, AddHom.coe_mk, frameTranslate, Matrix.mul_assoc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem fnOf_trR (s : D.what₂.Tau → ℤ) (M : D.what₂.Tau → Matrix (Fin (D.R.N 0)) (Fin (D.R.N 0)) ℂ)
     (P : MvPolynomial (D.what₂.Tau × Fin (D.R.N 0) × Fin (D.R.N 0)) ℂ) (g : GL (Fin (D.R.N 0)) D.host.E)
@@ -262,7 +258,7 @@ theorem fnOf_trR (s : D.what₂.Tau → ℤ) (M : D.what₂.Tau → Matrix (Fin 
   simp only [fnOf, LinearMap.coe_mk, AddHom.coe_mk, frameTranslate, Matrix.mul_assoc]
 
 /- English proof (translation)
-Use `show embT D τ (M a b) ∈ ratO D`. Rewrite using `[bwA_embT_eq]`. Conclude with `ratO_mem D _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem atInf_ratO (M : Matrix (Fin (D.R.N 0)) (Fin (D.R.N 0)) D.host.E) (τ : D.what₂.Tau) (a b : Fin (D.R.N 0)) :
     atInf (embT D) M τ a b ∈ ratO D := by
@@ -273,13 +269,13 @@ theorem atInf_ratO (M : Matrix (Fin (D.R.N 0)) (Fin (D.R.N 0)) D.host.E) (τ : D
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Take `⟨P, hP, hPe⟩` from `hh`. Take `⟨n, -, hc⟩` from `hC`. Take `⟨-, r, hr⟩` from `hc 0 (Nat.zero_le _) rfl κ`. Use `set N : D.what₂.Tau → Matrix (Fin (D.R.N 0)) (Fin (D.R.N 0)) ℂ := fun τ => atInf (embT D) ((γ.1⁻¹ : GL (Fin (D.R.N 0)) D.host.E) : Matrix (Fin (D.R.N 0)) (Fin (D.R.N 0)) D.host.E) τ with hNdef`. Establish `hNN' : ∀ τ, N τ * atInf (embT D) ((γ.1 : GL (Fin (D.R.N 0)) D.host.E) : Matrix (Fin (D.R.N 0)) (Fin (D.R.N 0)) D.host.E) τ = 1` using `fun τ => mul_eq_one_comm.1 (LocalLatticeBases.at_infinity_mul_inv _ γ.1 τ)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : ∀ z, h (T.val0.eY.symm (frameTranslate (embT D) (fun τ x => embedding_conj_compat D τ x) γ.1⁻¹ ((UJ (sigD D : D.host.E →+* D.host.E) (gramN D 0 (Nat.zero_le _))).inv_mem γ.2) (T.val0.eY z))) = fnOf _ (shiftOf (lamT u 0)) (fun τ => N τ * (1 : D.what₂.Tau → Matrix (Fin (D.R.N …`. Introduce `z`. Rewrite using `[hPe, Equiv.apply_symm_apply, fnOf_trR]`. Simplify using `only [hNdef, Pi.one_apply, one_mul, mul_one]`. Establish `e2 : ((((T.cls0.lev.chi κ)⁻¹ : ℂˣ)) : ℂ) = D.what₂.embLL r⁻¹`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_inv₀, Units.val_inv_eq_inv_val]`. Conclude with `congrArg _ hr.symm`. Use `⟨D.what₂.embLL r⁻¹ • (MvPolynomial.C (∏ τ, (N τ).det ^ shiftOf (lamT u 0) τ) * subP N P), ratSpan_smul D _ r⁻¹ _ (ratSpan_allSubP D _ N _ (fun τ q hq => ratGLStab D _ _ (N τ) _ (hNN' τ) (atInf_ratO _ τ) (atInf_ratO _ τ) q hq) P hP), fun z => ?_⟩` and prove the remaining obligations. Establish `e3` using `e1 z`. Rewrite `e3` using `[LocalLatticeBases.fnOf_mul]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `((((T.cls0.lev.chi κ)⁻¹ : ℂˣ)) : ℂ) * h (T.val0.eY.symm (frameTranslate (embT D) (fun τ x => embedding_conj_compat D τ x) γ.1⁻¹ ((UJ (sigD D : D.host.E →+* D.host.E) (gramN D 0 (Nat.zero_le _))).inv_mem γ.2) (T.val0.eY z))) = _`. Rewrite using `[e3, e2, LinearMap.map_smul, Pi.smul_apply, smul_eq_mul]`.
+A detailed English derivation is pending.
 -/
 theorem ratC_tr (T : Forms0 D u) (hC : LocalLatticeBases.ChiFin0 T)
     (γ : UJ (sigD D : D.host.E →+* D.host.E) (gramN D 0 (Nat.zero_le _))) (κ : T.cls0.lev.U)
@@ -315,11 +311,9 @@ theorem ratC_tr (T : Forms0 D u) (hC : LocalLatticeBases.ChiFin0 T)
   rw [e3, e2, LinearMap.map_smul, Pi.smul_apply, smul_eq_mul]
 
 /- English proof (translation)
-Establish `hx` using `(T.val0.rat ((D.fm u).emb 0 x)).1 ⟨x, rfl⟩`. Use `(T.val0.rat _).2 ⟨Formalism.L2.GlobalTheoryTheory.LocalLatticeBases.S0.U_op_preserves_forms_zero T v _ hx.1, fun c => ?_⟩` and prove the remaining obligations. Use `show RatC T _`. Rewrite using `[uop_apply]`. Use `ratC_sum T _ _ fun y hy => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨z, rfl⟩` from `T.lv0.pr_surj v c y`. Take `⟨γ, η, κ, -, -, -, -, -, h6⟩` from `T.up_natural_level_zero v c z (Finset.mem_filter.1 hy).2`. Establish `e : (D.fm u).upT 0 v c (T.lv0.pr v c z) ((D.fm u).emb 0 x ((D.fm u).up 0 v c (T.lv0.pr v c z))) = fun s => ((((T.cls0.lev.chi κ)⁻¹ : ℂˣ)) : ℂ) * (D.fm u).emb 0 x ((D.fm u).up 0 v c (T.lv0.pr v c z)) (T.val0.eY.symm (frameTranslate (embT D) (fun τ x => embedding_conj_compat D τ x) …`. Use function extensionality and compare the values at `fun s => h6 _ s _ (Formalism.L2.GlobalTheoryTheory.LocalLatticeBases.S0.is_translate_inverse T γ s)`. Rewrite using `[e]`.
-
-Conclude with `ratC_tr T hC γ κ _ (hx.2 _)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem up_operator_preserves_rational_form (T : Forms0 D u) (hC : LocalLatticeBases.ChiFin0 T) (v : (D.mem u).A.vT) (x : Vl D u 0) :
     ∃ y, (D.fm u).emb 0 y = Uop D u 0 v ((D.fm u).emb 0 x) := by
@@ -339,11 +333,11 @@ theorem up_operator_preserves_rational_form (T : Forms0 D u) (hC : LocalLatticeB
   exact ratC_tr T hC γ κ _ (hx.2 _)
 
 /- English proof (translation)
-Establish `hx` using `(T.val0.rat ((D.fm u).emb 0 x)).1 ⟨x, rfl⟩`. Use `(T.val0.rat _).2 ⟨Formalism.L2.GlobalTheoryTheory.LocalLatticeBases.S0.D_op_preserves_forms_zero T v _ hx.1, fun c => ?_⟩` and prove the remaining obligations. Use `show RatC T _`. Rewrite using `[dop_apply]`. Use `ratC_sum T _ _ fun g hg => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hg0 : g ≠ 0`. Introduce `h0`. Establish `h1` using `(Finset.mem_filter.1 hg).2`. Rewrite `h1` using `[h0, LinearMap.zero_apply]`. Conclude with `zero_ne_one h1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨γ, η, κ, -, -, -, -, h5⟩` from `T.down_natural_level_zero v c g hg0`. Establish `e : (D.fm u).dnT 0 v c g ((D.fm u).emb 0 x ((D.fm u).dn 0 v c g)) = fun s => ((((T.cls0.lev.chi κ)⁻¹ : ℂˣ)) : ℂ) * (D.fm u).emb 0 x ((D.fm u).dn 0 v c g) (T.val0.eY.symm (frameTranslate (embT D) (fun τ x => embedding_conj_compat D τ x) γ.1⁻¹ ((UJ (sigD D : D.host.E →+* D.host.E) …`. Use function extensionality and compare the values at `fun s => h5 _ s _ (Formalism.L2.GlobalTheoryTheory.LocalLatticeBases.S0.is_translate_inverse T γ s)`. Rewrite using `[e]`. Conclude with `ratC_tr T hC γ κ _ (hx.2 _)`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem down_operator_preserves_rational_form (T : Forms0 D u) (hC : LocalLatticeBases.ChiFin0 T) (v : (D.mem u).A.vT) (x : Vl D u 0) :
     ∃ y, (D.fm u).emb 0 y = Dop D u 0 v ((D.fm u).emb 0 x) := by
@@ -367,7 +361,7 @@ theorem down_operator_preserves_rational_form (T : Forms0 D u) (hC : LocalLattic
   exact ratC_tr T hC γ κ _ (hx.2 _)
 
 /- English proof (translation)
-Introduce `v x` and use `⟨up_operator_preserves_rational_form T hC v x, down_operator_preserves_rational_form T hC v x⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem rationality_of_finite_character (T : Forms0 D u) (hC : LocalLatticeBases.ChiFin0 T) : Formalism.L2.GlobalTheoryTheory.LocalLatticeBases.HeckeRationalLevelZero D u :=
   fun v x => ⟨up_operator_preserves_rational_form T hC v x, down_operator_preserves_rational_form T hC v x⟩

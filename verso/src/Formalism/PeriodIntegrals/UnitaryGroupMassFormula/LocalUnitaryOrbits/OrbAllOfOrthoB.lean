@@ -35,7 +35,7 @@ def colM (Z : Fin n → Fin n → Fv F v ⊗[F] E) : Matrix (Fin n) (Fin n) (Fv 
   fun i p => Z p i
 
 /- English proof (translation)
-Use extensionality with `p q`. Simplify using `only [gramR, hR, hform, cT, colM, Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply, Finset.sum_mul]`. Conclude with `Finset.sum_comm`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem gram_eq_colM (Z : Fin n → Fin n → Fv F v ⊗[F] E) :
     gramR (Fv F v) σ J Z = cT (sigR (Fv F v) σ) (colM v Z) * JR (Fv F v) J * colM v Z := by
@@ -45,7 +45,7 @@ theorem gram_eq_colM (Z : Fin n → Fin n → Fv F v ⊗[F] E) :
   exact Finset.sum_comm
 
 /- English proof (translation)
-Use extensionality with `j`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, colM, mulVec, dotProduct]`. Conclude with `Finset.sum_congr rfl (fun i _ => mul_comm _ _)`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sum_eq_colM (Z : Fin n → Fin n → Fv F v ⊗[F] E) (c : Fin n → Fv F v ⊗[F] E) :
     ∑ i, c i • Z i = colM v Z *ᵥ c := by
@@ -54,7 +54,7 @@ theorem sum_eq_colM (Z : Fin n → Fin n → Fv F v ⊗[F] E) (c : Fin n → Fv 
   exact Finset.sum_congr rfl (fun i _ => mul_comm _ _)
 
 /- English proof (translation)
-Rewrite using `[mulVec_single_one]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem col_eq_colM (Z : Fin n → Fin n → Fv F v ⊗[F] E) (p : Fin n) :
     Z p = colM v Z *ᵥ Pi.single p 1 := by
@@ -62,14 +62,14 @@ theorem col_eq_colM (Z : Fin n → Fin n → Fv F v ⊗[F] E) (p : Fin n) :
   rfl
 
 /- English proof (translation)
-Rewrite using `[gT, det_reindex_self, det_fromBlocks_zero₂₁, det_one, mul_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem det_gT {a : ℕ} (h : a ≤ n) (T : Matrix (Fin a) (Fin a) (Fv F v ⊗[F] E)) :
     (gT v h T).det = T.det := by
   rw [gT, det_reindex_self, det_fromBlocks_zero₂₁, det_one, mul_one]
 
 /- English proof (translation)
-Establish `h1` using `congrArg Matrix.det hZ`. Rewrite `h1` using `[gram_eq_colM, det_gT, det_mul, det_mul]`. Rewrite `hT` using `[← h1]`. Conclude with `isUnit_of_mul_isUnit_right hT`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUnit_det_colM {a : ℕ} (h : a ≤ n) (T : Matrix (Fin a) (Fin a) (Fv F v ⊗[F] E)) (hT : IsUnit T.det)
     (Z : Fin n → Fin n → Fv F v ⊗[F] E) (hZ : gramR (Fv F v) σ J Z = gT v h T) : IsUnit (colM v Z).det := by
@@ -79,27 +79,23 @@ theorem isUnit_det_colM {a : ℕ} (h : a ≤ n) (T : Matrix (Fin a) (Fin a) (Fv 
   exact isUnit_of_mul_isUnit_right hT
 
 /- English proof (translation)
-Introduce `hG X hX hXY`. Establish `h : a ≤ n` using `hG.2.2.2.2.1`. Establish `hYL : Y ∈ LamT v Λ a` using `hG.2.2.2.2.2.1.1`. Take `⟨w, -, -, hw⟩` from `hG.2.2.2.2.2.2`. Establish `hT : IsUnit (gramR (Fv F v) σ J Y).det` using `⟨⟨_, w, hw, by rw [mul_comm]; exact hw⟩, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨ZX, hbX, heX, hgX⟩` from `hE h hG X hX hXY`. Take `⟨ZY, hbY, heY, hgY⟩` from `hE h hG Y hYL rfl`. Establish `hdX` using `isUnit_det_colM σ J v h _ hT ZX hgX`. Establish `hdY` using `isUnit_det_colM σ J v h _ hT ZY hgY`. Use `set uX := Matrix.nonsingInvUnit (colM v ZX) hdX with huX`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set uY := Matrix.nonsingInvUnit (colM v ZY) hdY with huY`. Use `set k : GL (Fin n) (Fv F v ⊗[F] E) := uX * uY⁻¹ with hk`. Establish `hkY : (k : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E)) * colM v ZY = colM v ZX`. Establish `: k * uY = uX` using `by rw [hk, inv_mul_cancel_right]`. Conclude with `congrArg Units.val this`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hYN : colM v ZY * ((uY⁻¹ : GL (Fin n) (Fv F v ⊗[F] E)) : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E)) = 1`. Establish `: uY * uY⁻¹ = 1` using `mul_inv_cancel uY`. Conclude with `congrArg Units.val this`. Establish `hkval : (k : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E)) = colM v ZX * ((uY⁻¹ : GL (Fin n) (Fv F v ⊗[F] E)) : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E))` using `rfl`. Establish `hgXY : cT (sigR (Fv F v) σ) (colM v ZX) * JR (Fv F v) J * colM v ZX = cT (sigR (Fv F v) σ) (colM v ZY) * JR (Fv F v) J * colM v ZY`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← gram_eq_colM, ← gram_eq_colM, hgX, hgY]`. Establish `hkU : k ∈ HR (Fv F v) σ J` using `by show cT (sigR (Fv F v) σ) (k : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E)) * JR (Fv F v) J * (k : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E)) = JR (Fv F v) J`. Rewrite using `[hkval]`. Use `set N := ((uY⁻¹ : GL (Fin n) (Fv F v ⊗[F] E)) : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E))`. Combine the equalities or inequalities in the displayed calculation.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Rewrite using `[cT_mul]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = cT (sigR (Fv F v) σ) N * (cT (sigR (Fv F v) σ) (colM v ZY) * JR (Fv F v) J * colM v ZY) * N := by`. Rewrite using `[hgXY]`. Use `_ = cT (sigR (Fv F v) σ) (colM v ZY * N) * JR (Fv F v) J * (colM v ZY * N) := by`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[cT_mul]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = JR (Fv F v) J := by rw [hYN, cT_one, Matrix.one_mul, Matrix.mul_one]`. Set `g : HA (Fv F v) σ J` to `(⟨k, hkU⟩ : ↥(HR (Fv F v) σ J))`. Establish `hgm : ((HA.mat (Fv F v) σ J g : GL (Fin n) (Fv F v ⊗[F] E)) : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E)) = (k : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E))` using `rfl`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hinv : ((k⁻¹ : GL (Fin n) (Fv F v ⊗[F] E)) : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E)) * (k : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E)) = 1` using `congrArg Units.val (inv_mul_cancel k)`. Use `⟨g, ?_, ?_⟩` and prove the remaining obligations. Use `show ∀ x, x ∈ latLoc (E := E) v Λ ↔ Matrix.mulVec ((HA.mat (Fv F v) σ J g : GL (Fin n) (Fv F v ⊗[F] E)) : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E)) x ∈ latLoc (E := E) v Λ`. Introduce `x`. Rewrite using `[hgm]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Prove the components needed by the constructor for the conclusion. Introduce `hx`. Take `⟨c, hc, rfl⟩` from `(hbY x).1 hx`. Use `(hbX _).2 ⟨c, hc, ?_⟩` and prove the remaining obligations. Rewrite using `[sum_eq_colM, sum_eq_colM, mulVec_mulVec, hkY]`.
-
-Introduce `hx`. Take `⟨c, hc, hxc⟩` from `(hbX _).1 hx`. Use `(hbY x).2 ⟨c, hc, ?_⟩` and prove the remaining obligations. Rewrite `hxc`, the goal using `[sum_eq_colM]`. Rewrite `hxc` using `[← hkY, ← mulVec_mulVec]`.
-
-Use `congrArg (fun y => ((k⁻¹ : GL (Fin n) (Fv F v ⊗[F] E)) : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E)) *ᵥ y) hxc` as an intermediate fact. Simplify `this` using `only [mulVec_mulVec, ← Matrix.mul_assoc, hinv, one_mulVec, Matrix.one_mul]`. Use function extensionality and compare the values at `i show X i = ((HA.mat (Fv F v) σ J g : GL (Fin n) (Fv F v ⊗[F] E)) : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E)) *ᵥ Y i`. Rewrite using `[hgm, ← heX i, ← heY i, col_eq_colM v ZX, col_eq_colM v ZY, mulVec_mulVec, hkY]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem orbAll_of (a : ℕ) (Y : TupV (E := E) v n a) (hE : ExtOrth σ J ψ v Λ a Y) :
     OrbAll σ J ψ v Λ a Y := by
@@ -190,18 +186,18 @@ def OSmul : Prop :=
     ∀ c ∈ OEv (E := E) v, ∀ x ∈ latLoc (E := E) v Λ, c • x ∈ latLoc (E := E) v Λ
 
 /- English proof (translation)
-The claim follows from `Submodule.add_mem _ hx hy`.
+A detailed English derivation is pending.
 -/
 theorem oev_add {x y : Fv F v ⊗[F] E} (hx : x ∈ OEv (E := E) v) (hy : y ∈ OEv (E := E) v) :
     x + y ∈ OEv (E := E) v := Submodule.add_mem _ hx hy
 
 /- English proof (translation)
-The claim follows from `Submodule.zero_mem _`.
+A detailed English derivation is pending.
 -/
 theorem oev_zero : (0 : Fv F v ⊗[F] E) ∈ OEv (E := E) v := Submodule.zero_mem _
 
 /- English proof (translation)
-The claim follows from `Submodule.neg_mem _ hx`.
+A detailed English derivation is pending.
 -/
 theorem oev_neg {x : Fv F v ⊗[F] E} (hx : x ∈ OEv (E := E) v) : -x ∈ OEv (E := E) v := Submodule.neg_mem _ hx
 
@@ -214,9 +210,9 @@ def oRing (hS : OSub (E := E) v) : Subring (Fv F v ⊗[F] E) where
   neg_mem' := fun hx => oev_neg v hx
 
 /- English proof (translation)
-Simplify using `only [hR, hform, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Finset.mul_sum]`. Use `conv_rhs => rw [Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem hR_sum_right {a : ℕ} (x : Fin n → Fv F v ⊗[F] E) (c : Fin a → Fv F v ⊗[F] E)
     (y : Fin a → Fin n → Fv F v ⊗[F] E) :
@@ -229,16 +225,16 @@ theorem hR_sum_right {a : ℕ} (x : Fin n → Fv F v ⊗[F] E) (c : Fin a → Fv
   ring
 
 /- English proof (translation)
-Simplify using `only [hR, hform, Pi.sub_apply, mul_sub, Finset.sum_sub_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hR_sub_right (x y z : Fin n → Fv F v ⊗[F] E) :
     hR (Fv F v) σ J x (y - z) = hR (Fv F v) σ J x y - hR (Fv F v) σ J x z := by
   simp only [hR, hform, Pi.sub_apply, mul_sub, Finset.sum_sub_distrib]
 
 /- English proof (translation)
-Set `T' : Matrix (Fin a) (Fin a) (oRing v hS)` to `fun i j => ⟨T i j, hT i j⟩`. Establish `h2 : ((oRing v hS).subtype.mapMatrix T').adjugate i j = (oRing v hS).subtype (T'.adjugate i j)`. Rewrite using `[← RingHom.map_adjugate]`. Both sides reduce to the same expression. Establish `h3 : (oRing v hS).subtype.mapMatrix T' = T` using `rfl`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite using `[← h3, h2]`. Conclude with `(T'.adjugate i j).2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem adj_mem (hS : OSub (E := E) v) {a : ℕ} (T : Matrix (Fin a) (Fin a) (Fv F v ⊗[F] E))
     (hT : ∀ i j, T i j ∈ OEv (E := E) v) (i j : Fin a) : T.adjugate i j ∈ OEv (E := E) v := by
@@ -250,15 +246,13 @@ theorem adj_mem (hS : OSub (E := E) v) {a : ℕ} (T : Matrix (Fin a) (Fin a) (Fv
   exact (T'.adjugate i j).2
 
 /- English proof (translation)
-Use `set T := gramR (Fv F v) σ J X with hTdef`. Establish `hTO : ∀ i j, T i j ∈ OEv (E` using `E) v := fun i j => (hsd (X j)).1 (hX j) (X i) (hX i)`. Set `b : Fin a → Fv F v ⊗[F] E` to `fun j => hR (Fv F v) σ J (X j) x`. Establish `hbO : ∀ j, b j ∈ OEv (E` using `E) v := fun j => (hsd x).1 hx (X j) (hX j)`. Set `c : Fin a → Fv F v ⊗[F] E` to `w • (T.adjugate *ᵥ b)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hcO : ∀ k, c k ∈ OEv (E` using `E) v := by`. Introduce `k`. Use `show w * ∑ j, T.adjugate k j * b j ∈ OEv (E := E) v`. Use `hS.2 _ hw0 _ ?_` and prove the remaining obligations. Conclude with `Submodule.sum_mem _ fun j _ => hS.2 _ (adj_mem v hS T hTO k j) _ (hbO j)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hTc : T *ᵥ c = b` using `by show T *ᵥ (w • (T.adjugate *ᵥ b)) = b`. Rewrite using `[mulVec_smul, mulVec_mulVec, mul_adjugate, smul_mulVec, one_mulVec, smul_smul, mul_comm, hw, one_smul]`. Use `⟨c, hcO, ?_, ?_⟩` and prove the remaining obligations. Conclude with `Submodule.sub_mem _ hx (Submodule.sum_mem _ fun k _ => hM _ (hcO k) _ (hX k))`. Introduce `i`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hR_sub_right, hR_sum_right]`. Establish `h1 : ∑ k, c k * hR (Fv F v) σ J (X i) (X k) = (T *ᵥ c) i`. Simplify using `only [mulVec, dotProduct, hTdef, gramR]`. Conclude with `Finset.sum_congr rfl fun k _ => mul_comm _ _`. Rewrite using `[h1, hTc]`.
-
-Conclude with `sub_self _`.
+A detailed English derivation is pending.
 -/
 theorem split (hS : OSub (E := E) v)
     (hM : ∀ c ∈ OEv (E := E) v, ∀ y ∈ latLoc (E := E) v Λ, c • y ∈ latLoc (E := E) v Λ)
@@ -291,25 +285,21 @@ theorem split (hS : OSub (E := E) v)
     exact sub_self _
 
 /- English proof (translation)
-Introduce `h hG X hX hXY`. Take `⟨e, hePerp, heX, hee, hspan⟩` from `hO h hG X hX hXY`. Establish `hM'` using `hM hG.2.1`. Establish `hsd : IsSDLoc σ J v Λ` using `hG.2.2.1`. Take `⟨w, hw0, -, hw⟩` from `hG.2.2.2.2.2.2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite `hw` using `[← hXY]`. Set `Z : Fin n → Fin n → Fv F v ⊗[F] E` to `fun p => Sum.elim X e ((eSp h).symm p)`. Establish `hsum : ∀ c : Fin n → Fv F v ⊗[F] E, ∑ p, c p • Z p = ∑ i, c (eSp h (Sum.inl i)) • X i + ∑ j, c (eSp h (Sum.inr j)) • e j`. Introduce `c`. Rewrite using `[← (eSp h).sum_comp, Fintype.sum_sum_type]`.
+Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[Z]`. Use `⟨Z, ?_, fun i => by simp [Z], ?_⟩` and prove the remaining obligations. Introduce `x`. Prove the components needed by the constructor for the conclusion. Introduce `hx`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨c, hcO, hperp⟩` from `split σ J v Λ hS hM' hsd X hX w hw0 hw x hx`. Take `⟨d, hdO, hd⟩` from `hspan _ hperp`. Use `⟨fun p => Sum.elim c d ((eSp h).symm p), fun p => ?_, ?_⟩` and prove the remaining obligations. Use `show Sum.elim c d ((eSp h).symm p) ∈ OEv (E := E) v`. Generalize the expression as in `(eSp h).symm p = s`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Replace the chosen expression with an arbitrary variable. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `s with i | j` into its components or cases. Conclude with `hcO i`. Conclude with `hdO j`. Rewrite using `[hsum]`. Simplify using `only [Equiv.symm_apply_apply, Sum.elim_inl, Sum.elim_inr]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Assume the hypotheses and unpack their components.
 
-Rewrite using `[← hd]`. Normalize the expressions using the abelian group laws. Introduce and unpack `⟨c, hcO, rfl⟩`. Use `Submodule.sum_mem _ fun p _ => hM' _ (hcO p) _ ?_` and prove the remaining obligations. Use `show Sum.elim X e ((eSp h).symm p) ∈ latLoc (E := E) v Λ`.
+Reduce the conclusion to the remaining proof obligations. Replace the chosen expression with an arbitrary variable. Separate the alternatives or extract the components of the hypothesis. By extensionality, compare the relevant components. Replace the chosen expression with an arbitrary variable.
 
-Generalize the expression as in `(eSp h).symm p = s`. Break down `s with i | j` into its components or cases. Conclude with `hX i`. Conclude with `(hePerp j).1`. Use extensionality with `p q show hR (Fv F v) σ J (Sum.elim X e ((eSp h).symm p)) (Sum.elim X e ((eSp h).symm q)) = Matrix.fromBlocks (gramR (Fv F v) σ J Y) 0 0 1 ((eSp h).symm p) ((eSp h).symm q)`.
+Replace the chosen expression with an arbitrary variable. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Simplify using the standard rewrite rules.
 
-Generalize the expression as in `(eSp h).symm p = s`. Generalize the expression as in `(eSp h).symm q = t`. Apply the tactic sequence `rcases s with i | i <;> rcases t with j | j`. Simplify using `only [Sum.elim_inl, fromBlocks_apply₁₁, ← hXY]`. Both sides reduce to the same expression.
-
-Simplify using `only [Sum.elim_inl, Sum.elim_inr, fromBlocks_apply₁₂]`. Conclude with `(hePerp j).2 i`. Simplify using `only [Sum.elim_inl, Sum.elim_inr, fromBlocks_apply₂₁]`. Conclude with `heX j i`. Simplify using `only [Sum.elim_inr, fromBlocks_apply₂₂]`.
-
-Conclude with `congrFun (congrFun hee i) j`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem extOrth_of (a : ℕ) (Y : TupV (E := E) v n a) (hS : OSub (E := E) v) (hM : OSmul v Λ)
     (hO : OrthoB σ J ψ v Λ a Y) : ExtOrth σ J ψ v Λ a Y := by
@@ -364,7 +354,7 @@ theorem extOrth_of (a : ℕ) (Y : TupV (E := E) v n a) (hS : OSub (E := E) v) (h
       exact congrFun (congrFun hee i) j
 
 /- English proof (translation)
-The claim follows from `orbAll_of σ J ψ v Λ a Y (extOrth_of σ J ψ v Λ a Y hS hM hO)`.
+A detailed English derivation is pending.
 -/
 theorem orbAll_of_orthoB (a : ℕ) (Y : TupV (E := E) v n a) (hS : OSub (E := E) v) (hM : OSmul v Λ)
     (hO : OrthoB σ J ψ v Λ a Y) : OrbAll σ J ψ v Λ a Y :=

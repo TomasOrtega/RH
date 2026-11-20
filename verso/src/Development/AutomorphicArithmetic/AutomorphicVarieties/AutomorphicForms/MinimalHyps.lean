@@ -32,7 +32,7 @@ structure MinimalHyps : Prop where
   ssR : CuspSemisimpleReal
 
 /- English proof (translation)
-The claim follows from `{ litN := h.litN, cohC := h.cohC, conjC := h.conjC, borelC := h.borelC, galR := Z.Bc.galoisRepRankTwoReal_of h.galR, smoR := h.smoR, gkR := h.gkR, admR := h.admR, bc := Br.quadBC0_of_quadBaseChange h.bc, newform := newformRepOf h.ssR h.admR }`.
+A detailed English derivation is pending.
 -/
 theorem MinimalHyps.toClassicalTheorems (h : MinimalHyps) : Hypotheses₂ :=
   { litN := h.litN, cohC := h.cohC, conjC := h.conjC, borelC := h.borelC,

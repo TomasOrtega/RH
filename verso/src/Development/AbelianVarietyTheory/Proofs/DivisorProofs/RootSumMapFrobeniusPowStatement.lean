@@ -5,7 +5,7 @@ open Polynomial GlobalTheory.CuspGL GlobalTheory.BI GlobalTheory.Shin Semidirect
 open scoped Classical
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | (exact @GlobalTheory.Shin.rootSum_map_frobeniusPow) | (exact GlobalTheory.Shin.rootSum_map_frobeniusPow) | (intros; apply GlobalTheory.Shin.rootSum_map_frobeniusPow <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.rootSum_map_frobenius_pow_eq_rootSum_mul : ∀ (F : Type) [Field F] [Finite F] (θ : AlgebraicClosure F →* ℂ) (t : F →+* F) (j : ℕ), (∀ x, t x = x ^ (ringChar F ^ j)) → ∀ (k : ℕ) (P : F[X]), rootSum θ k (P.map t) = rootSum θ (k * ringChar F ^ j) P := by
   first | (exact @GlobalTheory.Shin.rootSum_map_frobeniusPow) | (exact GlobalTheory.Shin.rootSum_map_frobeniusPow) | (intros; apply GlobalTheory.Shin.rootSum_map_frobeniusPow  <;> assumption)

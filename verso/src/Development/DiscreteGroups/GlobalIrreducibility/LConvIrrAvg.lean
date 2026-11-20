@@ -18,21 +18,21 @@ def fixSub (K : Subgroup G) : Submodule ℂ M where
 
 include hinv in
 /- English proof (translation)
-Set `_ : TopologicalSpace M` to `⊥`. Establish `: DiscreteTopology M` using `⟨rfl⟩`. Establish `hf : Continuous fun g : G => ρ g z`. Use `continuous_discrete_rng.2 fun b => isOpen_iff_forall_mem_open.2 fun g hg => ?_` and prove the remaining obligations. Use `⟨(fun h => g⁻¹ * h) ⁻¹' {h | ρ h z = z}, fun h hh => ?_, (continuous_mul_left g⁻¹).isOpen_preimage _ (hsm z), ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Set.mem_preimage, Set.mem_setOf_eq, Set.mem_singleton_iff] at hh hg ⊢`. Rewrite using `[← hg, show h = g * (g⁻¹ * h) by group, rho_mul, hh]`. Simplify using `only [Set.mem_preimage, Set.mem_setOf_eq, inv_mul_cancel, rho_one]`. Establish `hfin : ((fun g : G => ρ g z) '' (K : Set G)).Finite` using `(hKc.image hf).finite_of_discrete`. Use `set O := hfin.toFinset with hO`.
+Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmem : ∀ m, m ∈ O ↔ ∃ k ∈ K, ρ k z = m` using `fun m => by`. Rewrite using `[hO, Set.Finite.mem_toFinset]`. Both sides reduce to the same expression. Establish `hzO : z ∈ O` using `(hmem z).2 ⟨1, K.one_mem, rho_one ρ z⟩`. Establish `hcard : (O.card : ℝ) ≠ 0` using `Nat.cast_ne_zero.2 (Finset.card_ne_zero.2 ⟨z, hzO⟩)`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcardC : (O.card : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 (Finset.card_ne_zero.2 ⟨z, hzO⟩)`. Use `⟨(O.card : ℂ)⁻¹ • ∑ m ∈ O, m, Z.smul_mem _ (Z.sum_mem fun m hm => ?_), fun κ hκ => ?_, ?_⟩` and prove the remaining obligations. Take `⟨k, _, rfl⟩` from `(hmem m).1 hm`. Conclude with `hZ k z hz`. Rewrite using `[map_smul, map_sum]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Use `congr 1`. Use `Finset.sum_nbij' (fun m => ρ κ m) (fun m => ρ κ⁻¹ m) (fun m hm => ?_) (fun m hm => ?_) (fun m _ => rho_inv ρ κ m) (fun m _ => ?_) (fun _ _ => rfl)` and prove the remaining obligations. Take `⟨k, hk, rfl⟩` from `(hmem m).1 hm`. Conclude with `(hmem _).2 ⟨κ * k, K.mul_mem hκ hk, rho_mul ρ κ k z⟩`. Take `⟨k, hk, rfl⟩` from `(hmem m).1 hm`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(hmem _).2 ⟨κ⁻¹ * k, K.mul_mem (K.inv_mem hκ) hk, rho_mul ρ κ⁻¹ k z⟩`. Simplify using the standard rewrite rules. Establish `hdist : ∀ m ∈ O, ‖iota B hB x - iota B hB m‖ = ‖iota B hB x - iota B hB z‖`. Introduce `m hm`. Take `⟨k, hk, rfl⟩` from `(hmem m).1 hm`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e : iota B hB x - iota B hB (ρ k z) = pi B hB ρ hinv k (iota B hB x - iota B hB z)`. Rewrite using `[map_sub, pi_iota, pi_iota, hx k hk]`. Rewrite using `[e, norm_pi]`. Establish `hsum : iota B hB x - iota B hB ((O.card : ℂ)⁻¹ • ∑ m ∈ O, m) = (O.card : ℂ)⁻¹ • ∑ m ∈ O, (iota B hB x - iota B hB m)`. Rewrite using `[Finset.sum_sub_distrib, Finset.sum_const, smul_sub, map_smul, map_sum, ← Nat.cast_smul_eq_nsmul ℂ, smul_smul, inv_mul_cancel₀ hcardC, one_smul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[dist_eq_norm, dist_eq_norm, hsum, norm_smul]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.sum_congr rfl hdist, Finset.sum_const, nsmul_eq_mul]`. Use `_ = ‖iota B hB x - iota B hB z‖ := by`. Rewrite using `[norm_inv, Complex.norm_natCast, ← mul_assoc, inv_mul_cancel₀ hcard, one_mul]`.
+A detailed English derivation is pending.
 -/
 theorem avg_exists [TopologicalSpace G] [IsTopologicalGroup G] (hsm : IsSmooth ρ) (Z : Submodule ℂ M)
     (hZ : ∀ g, ∀ z ∈ Z, ρ g z ∈ Z) (K : Subgroup G) (hKc : IsCompact (K : Set G)) (x : M)

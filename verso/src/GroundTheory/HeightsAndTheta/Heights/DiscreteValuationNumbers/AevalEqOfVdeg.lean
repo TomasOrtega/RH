@@ -12,7 +12,7 @@ noncomputable section
 namespace SegreFlagDegreeZero
 
 /- English proof (translation)
-Rewrite using `[Finsupp.weight_apply, Finsupp.sum, Finset.sum_apply]`. Use `le_trans (le_of_eq ?_) (Finset.single_le_sum (f := fun x => (c x • blockWeight τ x) p.1) (fun _ _ => Nat.zero_le _) hp)` and prove the remaining obligations. Simplify using `[blockWeight]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem le_weight_block {κ : Type} [DecidableEq κ] {τ : κ → Type} (c : (Σ o, τ o) →₀ ℕ) {p : Σ o, τ o}
     (hp : p ∈ c.support) : c p ≤ Finsupp.weight (blockWeight τ) c p.1 := by
@@ -22,11 +22,9 @@ theorem le_weight_block {κ : Type} [DecidableEq κ] {τ : κ → Type} (c : (Σ
   simp [blockWeight]
 
 /- English proof (translation)
-Rewrite using `[aeval_def, aeval_def]`. Apply `eval₂_congr` to reduce the goal to its premises. Introduce `p c' hp hc`. Take `⟨o, i⟩` from `p`. Establish `key` using `le_weight_block c' hp`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `key` using `[hG hc]`. Break down `o with _ | _ | k` into its components or cases. Simplify using `[GenericProjClosureDivisor.vdeg] at key`. Conclude with `absurd key (Finsupp.mem_support_iff.mp hp)`. Simplify using `[GenericProjClosureDivisor.vdeg] at key`.
-
-Conclude with `absurd key (Finsupp.mem_support_iff.mp hp)`. Conclude with `h k i`.
+Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem aeval_eq_of_vdeg {K : Type} [DecidableEq K] {ι : K → Type} {O : Type} [CommRing O] {M M' : ℕ}
     {Φ : Type} [Field Φ] [Algebra O Φ] {z z' : (Σ o, bundleIdx (bundleIdx ι M) M' o) → Φ}
@@ -47,15 +45,15 @@ theorem aeval_eq_of_vdeg {K : Type} [DecidableEq K] {ι : K → Type} {O : Type}
   · exact h k i
 
 /- English proof (translation)
-Set `θ : Module.Dual Ω E` to `∑ j : Fin N, (if (j : ℕ) < k then χ (w j) else 0) • w.coord j`. Establish `hθe : ∀ i, θ (e i) = ∑ j : Fin N, (if (j : ℕ) < k then χ (w j) else 0) * w.repr (e i) j`. Introduce `i`. Simplify using `only [θ, LinearMap.sum_apply, LinearMap.smul_apply, Module.Basis.coord_apply, smul_eq_mul]`. Establish `hθ : θ = 0`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `e.ext fun i => ?_` and prove the remaining obligations. Establish `key` using `Fintype.linearIndependent_iff.1 ht (fun i => θ (e i)) (by`. Rewrite using `[← h0]`. Simplify using `only [hθe, Algebra.smul_def, map_sum, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Simplify using `only [flagCoord]`. Use `split_ifs`. Rewrite using `[Finset.sum_mul]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul]`. Expand and normalize the polynomial expressions, which then agree. Use the proof step `simp)`. Simplify using `using key i`. Establish `h` using `congrArg (fun f : Module.Dual Ω E => f (w j)) hθ`.
+Expand and normalize the polynomial expressions, which then agree. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [θ, LinearMap.sum_apply, LinearMap.smul_apply, Module.Basis.coord_apply, Module.Basis.repr_self, LinearMap.zero_apply] at h`. Rewrite `h` using `[Finset.sum_eq_single j (fun j' _ hj' => by simp [hj']) (by simp)]`. Simplify `h` using `[hj]`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem flag_eq_zero {Ω : Type*} [Field Ω] {E : Type*} [AddCommGroup E] [Module Ω E]
     {Φ : Type*} [Field Φ] [Algebra Ω Φ] {N : ℕ} (w e : Module.Basis (Fin N) Ω E)
@@ -92,45 +90,41 @@ end SegreFlagDegreeZero
 open GenericProjClosureDivisor SegreFlagClosureModel SegreFlagDegreeZero in
 
 /- English proof (translation)
-Introduce `O _ _ _ ϖ hϖ Ω _ _ K _ _ ι _ y d hV N E _ _ B B' hB w w' x x' f g hfl M M' a₀ a₀' φ φ' hφ hφ' Φ _ _ _ _ e t ht k hkN`. Take `⟨hZ, f₀, g₀, hD₀, hv₀⟩` from `hModel O ϖ hϖ Ω K ι y d hV N E B B' hB w w' x x' f g hfl M M' a₀ a₀' φ φ' hφ hφ' Φ e t ht (k + 1) (by omega) (by omega)`. Break down `Nat.eq_zero_or_pos k with rfl | hk` into its components or cases. Conclude with `⟨f₀, g₀, hD₀, hv₀, fun h => absurd h (lt_irrefl 0)⟩`. Unfold `flagClosurePt at hZ hD₀ hv₀ ⊢`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Replace the relevant objects with their definitions.
 
-Establish `hne : ∀ κ, ∃ j, y ⟨κ, j⟩ ≠ 0` using `fun κ => by`. Take `⟨j, hj⟩` from `hV.multiProj.relevant κ`. Use `⟨j, fun h0 => hj ?_⟩` and prove the remaining obligations. Rewrite using `[pointIdeal, RingHom.mem_ker]`. Simplify using `[pointConeMap, h0]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `choose c hc using hne`. Establish `hyc : segreVec y c ≠ 0` using `Finset.prod_ne_zero_iff.mpr fun κ _ => hc κ`. Establish `hli` using `ht.linearIndependent`. Take `⟨m, hm⟩` from `exists_flag_ne_zero w e hli φ' (TwistedDualGensSpan.proof O Ω K ι y N E B' a₀' M' φ' hφ' c hyc) (by omega) hkN.le`. Establish `hϖΩ : algebraMap O Ω ϖ ≠ 0`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h0`. Establish `hy : ϖ ∈ (pointIdeal O y).comap (C : O →+* MRing ι O)`. Rewrite using `[Ideal.mem_comap, pointIdeal, RingHom.mem_ker, pointConeMap, aeval_C, MvPolynomial.algebraMap_apply, h0, map_zero]`. Rewrite `hy` using `[hV.noTorsion]`. Conclude with `hϖ.ne_zero (by simpa using hy)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨n, r, hr, hx⟩` from `TwistedDualGensExpress.proof O ϖ Ω K ι y N E B B' hB a₀ a₀' M M' φ φ' hφ hφ' c hyc m`. Take `⟨bG, bH, G, hG, hdeg, hval⟩` from `express_forms (M := M) (M' := M') y w φ φ' (flagCoord w e t (k + 1)) c hyc ϖ φ (φ' m) a₀ a₀' n r hr hx`. Take `⟨H, hHdef⟩ : ∃ H : MRing (bundleIdx (bundleIdx ι M) M') O, H = C (ϖ ^ n) * chartMonoZ O M M' c bH` from `⟨_, rfl⟩`. Rewrite `hval` using `[← hHdef]`. Establish `hHhom : IsMultiHomog H (vdeg bH)`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `(isWeightedHomogeneous_C (blockWeight (bundleIdx (bundleIdx ι M) M')) (ϖ ^ n)).mul (chartMonoZ_homog (O := O) (M := M) (M' := M') c bH)` as an intermediate fact. Rewrite using `[hHdef]`. Rewrite `this` using `[zero_add]`. Then use the resulting hypothesis. Take `⟨y₀, hy₀⟩ : ∃ y₀ : (Σ o, bundleIdx (bundleIdx ι M) M' o) → Ω, ∀ (κ : K) (i : ι κ), y₀ ⟨some (some κ), i⟩ = y ⟨κ, i⟩` from `⟨pairProjCoord y w φ φ' (0 : Fin N → Ω), fun κ i => by`. Simplify using `[pairProjCoord, projCoord]⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hV' : ∀ {β : K → ℕ} {F : MRing (bundleIdx (bundleIdx ι M) M') O}, IsMultiHomog F (vdeg β) → ∀ u : Fin N → Φ, aeval (pairProjCoord y w φ φ' u) F = algebraMap Ω Φ (aeval y₀ F)`. Introduce `β F hF u`. Rewrite using `[← MvPolynomial.aeval_algebraMap_apply]`. Conclude with `aeval_eq_of_vdeg (fun κ i => by simp [pairProjCoord, projCoord, hy₀]) hF`. Take `⟨χ, hχ⟩ : ∃ χ : Module.Dual Ω E, χ = aeval y₀ H • φ' m - ∑ l, aeval y₀ (G l) • φ l` from `⟨_, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hχgen : ∀ u : Fin N → Φ, genVal w u χ = algebraMap Ω Φ (aeval y₀ H) * genVal w u (φ' m) - ∑ l, algebraMap Ω Φ (aeval y₀ (G l)) * genVal w u (φ l)`. Introduce `u`. Establish `hsub : ∀ ψ₁ ψ₂ : Module.Dual Ω E, genVal w u (ψ₁ - ψ₂) = genVal w u ψ₁ - genVal w u ψ₂`. Introduce `ψ₁ ψ₂`. Simplify using `only [genVal, LinearMap.sub_apply, map_sub, mul_sub, Finset.sum_sub_distrib]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[hχ, hsub, genVal_smul]`. Simplify using `only [genVal_sum_smul]`. Establish `h1 : genVal w (flagCoord w e t (k + 1)) χ = 0`. Simplify using `only [hV' hHhom, hV' (hG _)] at hval`. Rewrite using `[hχgen, hval, sub_self]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hχw` using `flag_eq_zero w e hli χ h1`. Establish `hvanish : ∀ ψ : Module.Dual Ω E, (∀ j : Fin N, (j : ℕ) < k + 1 → ψ (w j) = 0) → genVal w (flagCoord w e t k) ψ = 0`. Introduce `ψ hψ`. Use `Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations. Simplify using `only [flagCoord]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `split_ifs with hj`. Rewrite using `[hψ j (by omega), map_zero, mul_zero]`. Rewrite using `[zero_mul]`. Establish `hid : ∀ u : Fin N → Φ, genVal w u χ = 0 → aeval (pairProjCoord y w φ φ' u) H * genVal w u (φ' m) = ∑ l, aeval (pairProjCoord y w φ φ' u) (G l) * genVal w u (φ l)`. Introduce `u hu`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hu` using `[hχgen, sub_eq_zero]`. Simplify using `only [hV' hHhom, hV' (hG _)]`. Conclude with `hu`. Establish `hval3 : ∀ u : Fin N → Φ, genVal w u χ = 0 → aeval (pairProjCoord y w φ φ' u) (∑ l, X ⟨some none, l⟩ * G l) = aeval (pairProjCoord y w φ φ' u) (X ⟨none, m⟩ * H)` using `fun u hu => val_pair (z := pairProjCoord y w φ φ' u) (v := fun l => genVal w u (φ l)) (w := genVal w u (φ' m)) (fun l => aeval_X _ _) G (aeval_X _ _) H (hid u hu)`. Establish `hHne : ∀ u : Fin N → Φ, aeval (pairProjCoord y w φ φ' u) H ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `u`. Rewrite using `[hHdef, map_mul, aeval_C, aeval_chartMonoZ, IsScalarTower.algebraMap_apply O Ω Φ]`. Use `mul_ne_zero ((map_ne_zero _).mpr (by rw [map_pow]; exact pow_ne_zero _ hϖΩ)) ((map_ne_zero _).mpr (Finset.prod_ne_zero_iff.mpr fun κ _ => pow_ne_zero _ (hc κ)))` and prove the remaining obligations. Establish `hgv : ∀ u : Fin N → Φ, genVal w u (φ' m) ≠ 0 → aeval (pairProjCoord y w φ φ' u) (X ⟨none, m⟩ * H) ≠ 0`. Introduce `u hu`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[map_mul, aeval_X]`. Conclude with `mul_ne_zero hu (hHne u)`. Establish `hs₁ : genVal w (flagCoord w e t (k + 1)) (φ' m) ≠ 0`. Introduce `h0`. Conclude with `hm (hvanish (φ' m) (flag_eq_zero w e hli (φ' m) h0))`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hout : ∀ u : Fin N → Φ, genVal w u χ = 0 → genVal w u (φ' m) ≠ 0 → (∑ l, X ⟨some none, l⟩ * G l) ∉ pointIdeal O (pairProjCoord y w φ φ' u) ∧ X ⟨none, m⟩ * H ∉ pointIdeal O (pairProjCoord y w φ φ' u)`. Introduce `u hu hu'`. Use `⟨fun hm' => hgv u hu' ?_, fun hm' => hgv u hu' (aeval_eq_zero_of_mem hm')⟩` and prove the remaining obligations. Rewrite using `[← hval3 u hu]`. Conclude with `aeval_eq_zero_of_mem hm'`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `hdeg3 : ∃ bf bg : Option (Option K) → ℕ, IsMultiHomog (∑ l, X ⟨some none, l⟩ * G l) bf ∧ IsMultiHomog (X ⟨none, m⟩ * H) bg ∧ (fun o => (bf o : ℤ) - bg o) = zetaFirst a₀ - zetaSecond a₀'`. Use `⟨Pi.single (some none) 1 + vdeg bG, Pi.single none 1 + vdeg bH, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `IsWeightedHomogeneous.sum _ _ _ fun l _ => IsWeightedHomogeneous.mul (isWeightedHomogeneous_X O _ _) (hG l)`. Conclude with `IsWeightedHomogeneous.mul (isWeightedHomogeneous_X O (blockWeight (bundleIdx (bundleIdx ι M) M')) ⟨none, m⟩) hHhom`. Use function extensionality and compare the values at `o`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Break down `o with _ | _ | κ` into its components or cases. Simplify using `[vdeg, zetaFirst, zetaSecond]`. Simplify using `[vdeg, zetaFirst, zetaSecond]`. Simplify using `[vdeg, zetaFirst, zetaSecond]`. Combine the linear relations using `[hdeg κ]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `hP1 : (pointIdeal O (pairProjCoord y w φ φ' (flagCoord w e t (k + 1)))).IsPrime` using `hZ.multiProj.isPrime`. Establish `hcross` using `IsZPair.cross (⟨hD₀.degrees, hv₀⟩ : IsZPair a₀ a₀' _ f₀ g₀) (⟨hdeg3, hval3 _ h1⟩ : IsZPair a₀ a₀' _ _ _)`. Take `⟨hf1, hg1⟩` from `hout _ h1 hs₁`. Take `⟨hf0, hg0⟩` from `hout _ (hvanish χ hχw) hm`. Use `⟨_, _, IsVerticalDivisor.of_unit_off_special hdeg3 hf1 hg1 ?_, hval3 _ h1, fun _ => ⟨hf0, hg0, hval3 _ (hvanish χ hχw)⟩⟩` and prove the remaining obligations.
-
-Introduce `W hW hPW hWr hϖW`. Take `⟨u, v, hu, hv, huv⟩` from `hD₀.unit_off_special W hW hPW hWr hϖW`. Use `⟨u, v, hu, hv, ?_⟩` and prove the remaining obligations. Establish `hmem : g₀ * (u * (∑ l, X ⟨some none, l⟩ * G l) - v * (X ⟨none, m⟩ * H)) ∈ pointIdeal O (pairProjCoord y w φ φ' (flagCoord w e t (k + 1)))`. Rewrite using `[show g₀ * (u * (∑ l, X ⟨some none, l⟩ * G l) - v * (X ⟨none, m⟩ * H)) = (X ⟨none, m⟩ * H) * (u * f₀ - v * g₀) - u * (f₀ * (X ⟨none, m⟩ * H) - (∑ l, X ⟨some none, l⟩ * G l) * g₀) by ring]`.
-
-Conclude with `Ideal.sub_mem _ (Ideal.mul_mem_left _ _ huv) (Ideal.mul_mem_left _ _ hcross)`. Conclude with `(hP1.mem_or_mem hmem).resolve_left hD₀.den_not_mem`.
+A detailed English derivation is pending.
 -/
 theorem SegreFlagDegreeZero.proof (hModel : SegreFlagClosureModel.Statement) : SegreFlagDegreeZero.Statement := by
   intro O _ _ _ ϖ hϖ Ω _ _ K _ _ ι _ y d hV N E _ _ B B' hB w w' x x' f g hfl M M' a₀ a₀' φ φ' hφ hφ'

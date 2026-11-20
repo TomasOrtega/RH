@@ -3,17 +3,17 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument
 open QuadraticAlgebra UpperTheory.V.Z.Sym UpperTheory.V.Z.Sym.Loc UpperTheory.V.Z.Sym.Loc.PK
 
 /- English proof (translation)
-Introduce `O K _ _ _ τ a y`. Use `set G := Gu O τ`. Use `set H := (Hu O y).subgroupOf G`. Establish `key : ∀ g₁ g₂ : G, PS.ml (a * (g₁ : (Etau K τ)ˣ)) (PK.Ord O y) = PS.ml (a * (g₂ : (Etau K τ)ˣ)) (PK.Ord O y) ↔ g₁⁻¹ * g₂ ∈ H`. Introduce `g₁ g₂`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Subgroup.mem_subgroupOf]`. Use `show _ ↔ PS.ml (((g₁⁻¹ * g₂ : G)) : (Etau K τ)ˣ) (PK.Ord O y) = PK.Ord O y`. Rewrite using `[PS.ml_mul, PS.ml_mul, (PS.ml_inj a).eq_iff, Subgroup.coe_mul, Subgroup.coe_inv, PS.ml_mul]`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← h, ← PS.ml_mul, inv_mul_cancel, PS.ml_one]`. Introduce `h conv_lhs => rw [← h]`. Rewrite using `[← PS.ml_mul, mul_inv_cancel, PS.ml_one]`. Set `f : G ⧸ H → Set (Etau K τ)` to `Quotient.lift (fun g : G => PS.ml (a * (g : (Etau K τ)ˣ)) (PK.Ord O y)) (fun g₁ g₂ hg => (key g₁ g₂).2 (QuotientGroup.leftRel_apply.1 hg))`. Establish `hf : Function.Injective f`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Introduce `q₁ q₂ hq`. Take `⟨g₁, rfl⟩` from `QuotientGroup.mk_surjective q₁`. Take `⟨g₂, rfl⟩` from `QuotientGroup.mk_surjective q₂`. Conclude with `QuotientGroup.eq.2 ((key _ _).1 hq)`. Establish `hrange : {S : Set (Etau K τ) | ∃ u ∈ G, S = PS.ml (a * u) (PK.Ord O y)} = Set.range f`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Use extensionality with `S`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u, hu, rfl⟩`. Conclude with `⟨((⟨u, hu⟩ : G) : G ⧸ H), rfl⟩`. Introduce and unpack `⟨q, rfl⟩`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Take `⟨g, rfl⟩` from `QuotientGroup.mk_surjective q`. Conclude with `⟨g, g.2, rfl⟩`. Rewrite using `[hrange, Set.ncard_range_of_injective hf]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.ncard_unit_translates_order_eq_relIndex :
     ∀ (O K : Type) [CommRing O] [Field K] [Algebra O K] (τ : K) (a : (Etau K τ)ˣ) (y : Etau K τ), {S : Set (Etau K τ) | ∃ u ∈ Gu O τ, S = PS.ml (a * u) (Ord O y)}.ncard = (Hu O y).relIndex (Gu O τ) := by

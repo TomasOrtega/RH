@@ -15,33 +15,29 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.LabPi
 namespace GlobalTheory.LabFix
 
 /- English proof (translation)
-Introduce `D X red sec hred hsec t ht f hf hsum`. Establish `hg : 1 ≤ X.B.g`. Rewrite using `[X.g_eq]`. Conclude with `Nat.one_le_iff_ne_zero.2 (mul_ne_zero (D.host.g_prime 0).ne_zero (D.host.g_prime 1).ne_zero)`. Set `ρ : GlobalTheory.RowLev.Red X.B.I X.B.g (G0g D.nd)` to `{ toFun := red, map_mul := hred.2.1, ker := hred.2.2.2, surj := hred.2.2.1 }`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Take `⟨hcoef, hcent⟩` from `GlobalTheory.LabIdem.ES_single_coeff_central D t ht`. Establish `hegA : egA X (ES {t}) = ρ.lift X.B.μf (ES {t})`. Use function extensionality and compare the values at `x`. Rewrite using `[egA, GlobalTheory.coeff_chosenRed_eq_redHom D X red hred _ hcent x]`. Distinguish the cases in `hx : x ∈ X.B.I.Kset`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_pos hx, GlobalTheory.RowLev.Red.lift_of_mem ρ _ _ hx]`. Rewrite using `[if_neg hx, GlobalTheory.RowLev.Red.lift_of_notMem ρ _ _ hx]`. Take `⟨h1R, hm, hn, -⟩` from `GlobalTheory.RightRegProps.rightReg_unitary_mul_continuous X.B.I X.B.μf X.B.fund X.B.fund_spec X.B.R X.B.R_spec`. Take `⟨huniq, -, -, hprod, -⟩` from `GlobalTheory.WeakConv.rightConv_unique_add_smul_mul_comm X.B.I X.B.μf X.B.fund X.B.R X.B.fund_spec X.B.R_spec`. Take `⟨hQ, -, -, -, -, hinfl, -, -, -⟩` from `GlobalTheory.InflBasic.inflation_basic X.B.I X.B.g (G0g D.nd) ρ X.B.μf hg`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Equip the data with the indicated structure.
 
-Use `letI : Fintype (G0g D.nd) := Fintype.ofFinite _`. Take `⟨hlint, hlloc, -⟩` from `hinfl (ES {t})`. Take `⟨Ta, hTa⟩` from `(GlobalTheory.AutInst_exists_isRConvF_and_isRConv X.B.I X.B.μf X.B.fund X.B.fund_spec X.B.R X.B.R_spec).1 _ hlint`. Establish `he` using `X.B.e_adm`. Establish `hecont : Continuous X.B.e` using `he.1.continuous`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hReRe : X.B.Re.comp X.B.Re = X.B.Re`. Establish `h` using `hprod _ _ _ _ hecont hecont X.B.Re_spec X.B.Re_spec`. Rewrite `h` using `[he.2.1]`. Conclude with `huniq _ _ _ h X.B.Re_spec`. Establish `hRT : X.B.I.IsRConvF X.B.μf X.B.fund X.B.R (eT X {t}) (X.B.Re.comp Ta)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `eT`. Rewrite using `[hegA]`. Conclude with `hprod _ _ _ _ hecont hlloc.continuous X.B.Re_spec hTa`. Establish `hReT : ReT X {t} = X.B.Re.comp Ta`. Establish `hex : ∃ T, X.B.I.IsRConvF X.B.μf X.B.fund X.B.R (eT X {t}) T` using `⟨_, hRT⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Unfold `ReT`. Rewrite using `[dif_pos hex]`. Conclude with `huniq _ _ _ (Classical.choose_spec hex) hRT`. Take `⟨z, hz⟩` from `LinearMap.mem_range.1 hf`. Establish `hRef : X.B.Re f = f`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← hz]`. Use `show X.B.Re (X.B.Re (X.Rph z)) = X.B.Re (X.Rph z)`. Rewrite using `[← ContinuousLinearMap.comp_apply X.B.Re X.B.Re, hReRe]`. Establish `p1 : (fun g : X.B.I.Gf => X.B.R (1, g)) 1 = 1` using `h1R`. Establish `pm : ∀ a b : X.B.I.Gf, X.B.R (1, a * b) = X.B.R (1, a) * X.B.R (1, b)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `a b`. Rewrite using `[ContinuousLinearMap.mul_def, ← hm]`. Simplify using the standard rewrite rules. Establish `pn : ∀ (g : X.B.I.Gf) v, ‖X.B.R (1, g) v‖ = ‖v‖` using `fun g v => hn _ v`. Establish `hone : (1 : X.B.I.Gf) ∈ X.B.I.Kg X.B.g`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨(Formalism.UG.stabGL X.B.I.Lf).one_mem, fun y _ => ⟨0, X.B.I.Lf.zero_mem, ?_⟩⟩` and prove the remaining obligations. Establish `: X.B.I.fmat 1 = 1` using `rfl`. Simplify using `[this]`. Use `haveI : SecondCountableTopology X.B.I.Gf := GlobalTheory.CongTop.secondCountable_finiteAdelicPoints X.B.I`. Establish `hfix : ∀ k ∈ X.B.I.Kg X.B.g, X.B.R (1, k) f = f`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `k hk`. Establish `h` using `GlobalTheory.IdemProj.op_fixed X.B.μf (fun g => X.B.R (1, g)) p1 pm pn X.B.e X.B.Re X.B.Re_spec.2 k (fun x => by simpa using he.2.2.2.2.2.1 x k hk 1 hone)`. Rewrite using `[← hRef, ← ContinuousLinearMap.comp_apply]`. Conclude with `DFunLike.congr_fun h f`. Establish `hTaf : Ta f = f`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Apply `ext_inner_left ℂ` to reduce the goal to its premises. Introduce `v`. Rewrite using `[hTa.2, GlobalTheory.LevelIdem.integral_lift ρ X.B.μf hg (ES {t}) sec hsec (fun x => ⟪v, X.B.R (1, x) f⟫_ℂ) ?_]`. Use `conv_rhs => rw [← hsum]`. Rewrite using `[finsum_eq_sum_of_fintype, inner_sum]`.
-
-Simplify using `only [inner_smul_right, hcoef]`. Introduce `x k hk show ⟪v, X.B.R (1, x * k) f⟫_ℂ = ⟪v, X.B.R (1, x) f⟫_ℂ`. Rewrite using `[show ((1 : X.B.I.Ginf), x * k) = ((1, x) : X.B.I.GA) * (1, k) by simp, hm, ContinuousLinearMap.comp_apply, hfix k hk]`. Use `Submodule.mem_inf.2 ⟨hf, ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.mem_ker, LinearMap.sub_apply, sub_eq_zero]`.
-
-Use `show ReT X {t} f = f`. Rewrite using `[hReT, ContinuousLinearMap.comp_apply, hTaf, hRef]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_VT_of_sum_fixed : ∀ (D : D7) (X : HidaSetting D) (red : X.B.I.Gf → G0g D.nd) (sec : G0g D.nd → X.B.I.Gf), IsRedHom X red → IsSec X red sec → ∀ (t : Tup2 D), (∀ k v, IsLabel D k (t k v)) → ∀ f ∈ HHX X, ∑ᶠ γ, serCoef t γ • X.B.R ((1, sec γ) : X.B.I.GA) f = f → f ∈ VT X t := by
   intro D X red sec hred hsec t ht f hf hsum

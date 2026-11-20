@@ -7,7 +7,7 @@ noncomputable section
 open NumberField
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CayleyUnitary.cayley_mem_UJ | exact GlobalTheory.CayleyUnitary.cayley_mem_UJ | (intros; apply GlobalTheory.CayleyUnitary.cayley_mem_UJ <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.cayleyTransform_skew_mem_unitaryGroup : ∀ {E : Type} [Field E] (σ : E →+* E) {n : ℕ} (J S : Matrix (Fin n) (Fin n) E),
     J.det ≠ 0 → Formalism.UG.cT σ S * J + J * S = 0 → (1 - S).det ≠ 0 →

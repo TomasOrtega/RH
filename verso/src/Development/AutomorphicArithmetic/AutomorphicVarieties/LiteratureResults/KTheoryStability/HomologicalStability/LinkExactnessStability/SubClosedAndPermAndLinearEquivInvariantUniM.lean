@@ -6,15 +6,15 @@ open GlobalTheory.SeqCx Matrix
 namespace GlobalTheory.UniSeqBasic
 
 /- English proof (translation)
-Proceed by induction on `h with`. Consider the case `nil => intro γ hγ`. Conclude with `⟨γ, List.Perm.refl _, hγ⟩`. Consider the case `cons x _ ih`. Introduce `γ hγ`.
+Proceed by induction. Treat this case separately. Supply the required witnesses or components. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Break down `γ with _ | ⟨a, γ⟩` into its components or cases. Simplify using `at hγ`. Simplify using `only [List.map_cons, List.cons.injEq] at hγ`. Take `⟨γ', h1, h2⟩` from `ih γ hγ.2`. Conclude with `⟨a :: γ', h1.cons a, by simp [h2, hγ.1]⟩`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Consider the case `swap x y l`. Introduce `γ hγ`. Break down `γ with _ | ⟨a, _ | ⟨b, γ⟩⟩` into its components or cases. Simplify using `at hγ`. Simplify using `at hγ`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [List.map_cons, List.cons.injEq] at hγ`. Conclude with `⟨b :: a :: γ, List.Perm.swap _ _ _, by simp [hγ.1, hγ.2.1, hγ.2.2]⟩`. Consider the case `trans _ _ ih1 ih2`. Introduce `γ hγ`. Take `⟨γ1, p1, e1⟩` from `ih1 γ hγ`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨γ2, p2, e2⟩` from `ih2 γ1 e1`. Conclude with `⟨γ2, p1.trans p2, e2⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem perm_lift {α β : Type} (f : α → β) {l l' : List β} (h : l.Perm l') :
     ∀ γ : List α, γ.map f = l → ∃ γ' : List α, γ.Perm γ' ∧ γ'.map f = l' := by
@@ -44,21 +44,19 @@ def Orth (R M : Type) [CommRing R] [AddCommGroup M] [Module R M]
     (a b : M × (M →ₗ[R] R)) : Prop := a.2 b.1 = 0 ∧ b.2 a.1 = 0
 
 /- English proof (translation)
-Introduce `_ _ h` and use `⟨h.2, h.1⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem orth_symm (R M : Type) [CommRing R] [AddCommGroup M] [Module R M] :
     Symmetric (Orth R M) := fun _ _ h => ⟨h.2, h.1⟩
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨f, hf⟩`. Use `⟨(List.finRange l.length).map (fun i => (l.get i, f i)), ?_, ?_, ?_⟩` and prove the remaining obligations. Apply the tactic sequence `apply List.ext_getElem <;> simp`. Introduce `p hp`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨i, -, rfl⟩` from `List.mem_map.mp hp`. Simplify using `using hf i i`. Rewrite using `[List.pairwise_map]`. Use `(List.pairwise_lt_finRange l.length).imp fun {i j} hij => ?_` and prove the remaining obligations. Establish `hne : i ≠ j` using `ne_of_lt hij`.
+Extract witnesses or component facts from the available result. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `⟨by simpa [hne] using hf i j, by simpa [hne.symm] using hf j i⟩`. Introduce and unpack `⟨γ, rfl, hone, hpw⟩`. Use `⟨fun i => (γ[i.1]'(by simpa using i.2)).2, fun i j => ?_⟩` and prove the remaining obligations. Establish `hi : i.1 < γ.length` using `by simpa using i.2`. Establish `hj : j.1 < γ.length` using `by simpa using j.2`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hpw` using `[List.pairwise_iff_getElem]`. Simplify using `only [List.get_eq_getElem, List.getElem_map]`. Use `split_ifs with hij`. Substitute `hij` using the available equality. Conclude with `hone _ (List.getElem_mem _)`.
-
-Break down `lt_or_gt_of_ne (Fin.val_ne_of_ne hij) with h | h` into its components or cases. Conclude with `(hpw _ _ hi hj h).1`. Conclude with `(hpw _ _ hj hi h).2`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Substitute using the available equality. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem mem_uniM_iff (R M : Type) [CommRing R] [AddCommGroup M] [Module R M] (l : List M) :
     l ∈ uniM R M ↔ ∃ γ : List (M × (M →ₗ[R] R)), γ.map Prod.fst = l ∧
@@ -88,17 +86,15 @@ theorem mem_uniM_iff (R M : Type) [CommRing R] [AddCommGroup M] [Module R M] (l 
       · exact (hpw _ _ hj hi h).2
 
 /- English proof (translation)
-Introduce `R M _ _ _`. Establish `key : ∀ (ψ : M ≃ₗ[R] M) (l : List M), l ∈ uniM R M → l.map ψ ∈ uniM R M`. Introduce `ψ l hl`. Take `⟨γ, rfl, hone, hpw⟩` from `(mem_uniM_iff R M l).mp hl`. Use `(mem_uniM_iff R M _).mpr ⟨γ.map (fun p => (ψ p.1, p.2 ∘ₗ (ψ.symm : M →ₗ[R] M))), ?_, ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[List.map_map, Function.comp_def]`. Introduce `p hp`. Take `⟨q, hq, rfl⟩` from `List.mem_map.mp hp`. Simplify using `using hone q hq`. Rewrite using `[List.pairwise_map]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Use `hpw.imp fun {a b} h => ?_` and prove the remaining obligations. Simplify `h` using `[Orth]`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `l hl l' hsub`. Take `⟨γ, rfl, hone, hpw⟩` from `(mem_uniM_iff R M l).mp hl`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨γ', hγ', rfl⟩` from `List.sublist_map_iff.mp hsub`. Conclude with `(mem_uniM_iff R M _).mpr ⟨γ', rfl, fun p hp => hone p (hγ'.subset hp), hpw.sublist hγ'⟩`. Introduce `l l' hperm hl`. Take `⟨γ, hγ, hone, hpw⟩` from `(mem_uniM_iff R M l).mp hl`. Take `⟨γ', hp, hm⟩` from `perm_lift Prod.fst hperm γ hγ`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(mem_uniM_iff R M _).mpr ⟨γ', hm, fun p hq => hone p (hp.symm.subset hq), hpw.perm hp (fun {_ _} h => orth_symm R M h)⟩`. Introduce `ψ l`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `key ψ.symm _ h` as an intermediate fact.
-
-Simplify `this` using `[List.map_map, Function.comp_def]`. Conclude with `key ψ l`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem main : ∀ (R M : Type) [CommRing R] [AddCommGroup M] [Module R M], SubClosed (uniM R M) ∧ (∀ l l' : List M, l.Perm l' → l ∈ uniM R M → l' ∈ uniM R M) ∧ ∀ (ψ : M ≃ₗ[R] M) (l : List M), l.map ψ ∈ uniM R M ↔ l ∈ uniM R M := by
   intro R M _ _ _
@@ -136,7 +132,7 @@ end GlobalTheory.UniSeqBasic
 section
 open GlobalTheory.SeqCx Matrix
 /- English proof (translation)
-Use `first`. Consider the case `exact @GlobalTheory.UniSeqBasic.main`. Consider the case `exact @GlobalTheory.UniSeqBasic.mem_uniM_iff`. Consider the case `exact @GlobalTheory.UniSeqBasic.orth_symm`. Consider the case `exact @GlobalTheory.UniSeqBasic.perm_lift`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.T.subClosed_and_perm_and_linearEquiv_invariant_uniM : ∀ (R M : Type) [CommRing R] [AddCommGroup M] [Module R M], SubClosed (uniM R M) ∧ (∀ l l' : List M, l.Perm l' → l ∈ uniM R M → l' ∈ uniM R M) ∧ ∀ (ψ : M ≃ₗ[R] M) (l : List M), l.map ψ ∈ uniM R M ↔ l ∈ uniM R M := by
   first

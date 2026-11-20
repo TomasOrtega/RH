@@ -4,9 +4,9 @@ open Polynomial
 namespace GlobalTheory.CompanionTheory.KillSum
 
 /- English proof (translation)
-Proceed by induction on `P using Multiset.induction_on with`. Consider the case `empty => exact ⟨0, by simp⟩`. Consider the case `cons a s ih`. Take `⟨q, hq⟩` from `ih`. Use `⟨(s.map f).prod + f a * q + w * q, ?_⟩` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Multiset.map_cons, Multiset.prod_cons, hq]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem prod_map_add_eq {R α : Type*} [CommRing R] (P : Multiset α) (f : α → R) (w : R) :
     ∃ q, (P.map fun a => f a + w).prod = (P.map f).prod + w * q := by
@@ -19,13 +19,13 @@ theorem prod_map_add_eq {R α : Type*} [CommRing R] (P : Multiset α) (f : α �
     ring
 
 /- English proof (translation)
-Establish `key : ∀ b : ℂ, ∃ q, (P.map fun a => (x + y) - algebraMap ℂ R (a + b)).prod = (y - algebraMap ℂ R b) * q`. Introduce `b`. Take `⟨q, hq⟩` from `prod_map_add_eq P (fun c => x - algebraMap ℂ R c) (y - algebraMap ℂ R b)`. Use `⟨q, ?_⟩` and prove the remaining obligations. Rewrite `hq` using `[hP, zero_add]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← hq]`. Use `congr 1`. Apply `Multiset.map_congr rfl` to reduce the goal to its premises. Introduce `a _`. Simplify using `only [map_add]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Use `choose q hq using key`. Rewrite using `[Multiset.map_bind, Multiset.prod_bind]`. Simplify using `only [Multiset.map_map, Function.comp_def]`. Simplify using `only [hq]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Multiset.prod_map_mul, hQ, zero_mul]`.
+A detailed English derivation is pending.
 -/
 theorem add_killed {R : Type*} [CommRing R] [Algebra ℂ R] (x y : R) (P Q : Multiset ℂ)
     (hP : (P.map fun c => x - algebraMap ℂ R c).prod = 0)
@@ -50,9 +50,9 @@ theorem add_killed {R : Type*} [CommRing R] [Algebra ℂ R] (x y : R) (P Q : Mul
   rw [Multiset.prod_map_mul, hQ, zero_mul]
 
 /- English proof (translation)
-Proceed by induction on `T using Finset.induction_on with`. Consider the case `empty => exact ⟨{0}, by simp, fun R _ _ h _ => by simp⟩`. Consider the case `insert τ s hτ ih`. Take `⟨l0, hc, hk⟩` from `ih`. Use `⟨l0.bind fun b => (l τ).map fun a => a + b, ?_, ?_⟩` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Finset.prod_insert hτ, ← hc]`. Simplify using `[Multiset.card_bind, mul_comm]`. Introduce `R _ _ h hh`. Rewrite using `[Finset.sum_insert hτ]`. Conclude with `add_killed _ _ _ _ (hh τ (Finset.mem_insert_self _ _)) (hk R h fun t ht => hh t (Finset.mem_insert_of_mem ht))`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_killed {ι : Type} (T : Finset ι) (l : ι → Multiset ℂ) :
     ∃ l' : Multiset ℂ, Multiset.card l' = ∏ τ ∈ T, Multiset.card (l τ) ∧

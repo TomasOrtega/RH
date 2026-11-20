@@ -15,17 +15,15 @@ variable {D : D7} (M : ∀ p : PlF D, Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep) {
   (hker : ∀ x : UP p, πa x = 1 ↔ ((x : GG p).1 : GLp p).val ∈ Va p a) (g : UP p)
 
 /- English proof (translation)
-Introduce `X Y hXY`. Proceed by induction on `X using Quotient.inductionOn with`. Consider the case `h x`. Proceed by induction on `Y using Quotient.inductionOn with`. Consider the case `h y`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Proceed by induction. Treat this case separately.
 
-Apply `Quotient.sound` to reduce the goal to its premises. Take `⟨⟨l, hl, e1⟩, ⟨ρ, hρ, e2⟩⟩` from `Quotient.exact hXY`. Establish `e1' : (((y : UP p) : GG p).1 : GLp p).val = l * (((x : UP p) : GG p).1 : GLp p).val` using `e1`. Establish `e2' : ((((y : UP p) : GG p).2.unop : GLp p)).val = ((((x : UP p) : GG p).2.unop : GLp p)).val * ρ` using `e2`. Use `⟨⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations.
+Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `show Formalism.MainNotions.S.TieN.IntLow (M p) ((((y : UP p) * (x : UP p)⁻¹ : UP p) : GG p).1 : GLp p).val`. Rewrite using `[first_value_mul]`. Establish `: (((((x : UP p)⁻¹ : UP p) : GG p).1 : GLp p)).val * (((x : UP p) : GG p).1 : GLp p).val = 1`. Rewrite using `[← first_value_mul, inv_mul_cancel]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e1', Matrix.mul_assoc]`. Rewrite using `[show (((x : UP p) : GG p).1 : GLp p).val * (((((x : UP p)⁻¹ : UP p) : GG p).1 : GLp p)).val = 1 by`. Rewrite using `[← first_value_mul, mul_inv_cancel]`. Use the proof step `rfl, Matrix.mul_one]`. Conclude with `hl`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `show Formalism.MainNotions.S.TieN.IntUp (M p) (((((y : UP p) * (x : UP p)⁻¹ : UP p) : GG p).2.unop : GLp p)).val`. Rewrite using `[second_value_mul, e2', ← Matrix.mul_assoc]`. Rewrite using `[show ((((((x : UP p)⁻¹ : UP p) : GG p).2.unop : GLp p))).val * ((((x : UP p) : GG p).2.unop : GLp p)).val = 1 by rw [← second_value_mul, mul_inv_cancel]; rfl, Matrix.one_mul]`. Conclude with `hρ`. Use `show (y : UP p) * (x : UP p)⁻¹ ∈ πa.ker`.
-
-Rewrite using `[MonoidHom.mem_ker, map_mul, map_inv, MonoidHom.mem_ker.1 x.2.1, MonoidHom.mem_ker.1 y.2.1, inv_one, mul_one]`.
+A detailed English derivation is pending.
 -/
 theorem fC_inj : Function.Injective (fC M a πa hker g) := by
   intro X Y hXY

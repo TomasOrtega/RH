@@ -12,7 +12,7 @@ section Lat
 variable {L : Type} [NontriviallyNormedField L] {V : Type} [AddCommGroup V] [Module L V]
 
 /- English proof (translation)
-Take `⟨m, b, hb⟩` from `hΛ`. Rewrite `hx`, the goal using `[hb]`. Introduce `i`. Simplify using `only [map_smul, Finsupp.smul_apply, smul_eq_mul, norm_mul]`. Conclude with `mul_le_one₀ ha (norm_nonneg _) (hx i)`.
+Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem lat_smul_mem {Λ : AddSubgroup V} (hΛ : IsLat L Λ) {a : L} (ha : ‖a‖ ≤ 1) {x : V}
     (hx : x ∈ Λ) : a • x ∈ Λ := by
@@ -23,13 +23,13 @@ theorem lat_smul_mem {Λ : AddSubgroup V} (hΛ : IsLat L Λ) {a : L} (ha : ‖a�
   exact mul_le_one₀ ha (norm_nonneg _) (hx i)
 
 /- English proof (translation)
-Take `⟨m, b, hb⟩` from `hΛ`. Use `set C : ℝ := 1 + ∑ i, ∑ j, ‖b.repr (v i) j‖ with hC`. Establish `hC1 : 1 ≤ C`. Establish `: 0 ≤ ∑ i, ∑ j, ‖b.repr (v i) j‖` using `Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => norm_nonneg _`. Combine the linear equalities and inequalities to obtain the conclusion.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `hC0 : 0 < C` using `by linarith`. Take `⟨c, hc0, hc⟩` from `NormedField.exists_norm_lt L (inv_pos.2 hC0)`. Use `⟨c, norm_pos_iff.1 hc0, hc.le.trans (inv_le_one_of_one_le₀ hC1), fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[hb]`. Introduce `j`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_smul, Finsupp.smul_apply, smul_eq_mul, norm_mul]`. Establish `h1 : ‖b.repr (v i) j‖ ≤ C`. Establish `h2 : ‖b.repr (v i) j‖ ≤ ∑ j, ‖b.repr (v i) j‖` using `Finset.single_le_sum (f := fun j => ‖b.repr (v i) j‖) (fun _ _ => norm_nonneg _) (Finset.mem_univ j)`. Establish `h3 : ∑ j, ‖b.repr (v i) j‖ ≤ ∑ i, ∑ j, ‖b.repr (v i) j‖` using `Finset.single_le_sum (f := fun i => ∑ j, ‖b.repr (v i) j‖) (fun _ _ => Finset.sum_nonneg fun _ _ => norm_nonneg _) (Finset.mem_univ i)`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem lat_absorb {Λ : AddSubgroup V} (hΛ : IsLat L Λ) {ι : Type} [Fintype ι] (v : ι → V) :
     ∃ c : L, c ≠ 0 ∧ ‖c‖ ≤ 1 ∧ ∀ i, c • v i ∈ Λ := by
@@ -58,9 +58,9 @@ theorem lat_absorb {Λ : AddSubgroup V} (hΛ : IsLat L Λ) {ι : Type} [Fintype 
     _ = 1 := inv_mul_cancel₀ hC0.ne'
 
 /- English proof (translation)
-Take `⟨m, b, hb⟩` from `hΛ`. Take `⟨c, hc0, hc1, hc⟩` from `lat_absorb hΛ₀ (fun i => P (b i))`. Use `⟨c, hc0, hc1, fun x hx => ?_⟩` and prove the remaining obligations. Establish `hx'` using `(hb x).1 hx`. Establish `key : c • P x = ∑ i, b.repr x i • (c • P (b i))` using `by conv_lhs => rw [← b.sum_repr x]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [map_sum, map_smul, Finset.smul_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => smul_comm _ _ _`. Rewrite using `[key]`. Conclude with `AddSubgroup.sum_mem _ fun i _ => lat_smul_mem hΛ₀ (hx' i) (hc i)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lat_bdd {V' : Type} [AddCommGroup V'] [Module L V'] {Λ : AddSubgroup V}
     {Λ₀ : AddSubgroup V'} (hΛ : IsLat L Λ) (hΛ₀ : IsLat L Λ₀) (P : V →ₗ[L] V') :
@@ -87,7 +87,7 @@ def latOf {m : ℕ} (b : Module.Basis (Fin m) L V) : AddSubgroup V where
   neg_mem' := fun {x} hx i => by simpa using hx i
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨m, b, fun _ => Iff.rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem latOf_isLat {m : ℕ} (b : Module.Basis (Fin m) L V) : IsLat L (latOf b) :=
   ⟨m, b, fun _ => Iff.rfl⟩
@@ -119,13 +119,13 @@ variable {L : Type} [NontriviallyNormedField L] {V : Type} [AddCommGroup V] [Mod
   {s : L →+* L} {h : V → V → L}
 
 /- English proof (translation)
-Rewrite using `[hh.2.2.1 z (x + y), hh.1, map_add, ← hh.2.2.1, ← hh.2.2.1]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem herm_add_left (hh : IsHerm s h) (x y z : V) : h (x + y) z = h x z + h y z := by
   rw [hh.2.2.1 z (x + y), hh.1, map_add, ← hh.2.2.1, ← hh.2.2.1]
 
 /- English proof (translation)
-Rewrite using `[hh.2.2.1 y (a • x), hh.2.1, map_mul, ← hh.2.2.1]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem herm_smul_left (hh : IsHerm s h) (a : L) (x y : V) : h (a • x) y = s a * h x y := by
   rw [hh.2.2.1 y (a • x), hh.2.1, map_mul, ← hh.2.2.1]
@@ -158,14 +158,14 @@ Both sides reduce to the same expression.
 theorem cb_apply (hh : IsHerm s h) (δ : L) (e x : V) : cb hh δ e x = δ⁻¹ * h e x := rfl
 
 /- English proof (translation)
-Simplify using `[pr]`.
+Simplify using the standard rewrite rules.
 -/
 theorem pr_apply (hh : IsHerm s h) (δ : L) (e f x : V) :
     pr hh δ e f x = x - ca hh δ f x • e - cb hh δ e x • f := by
   simp [pr]
 
 /- English proof (translation)
-Rewrite using `[pr_apply]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem decomp (hh : IsHerm s h) (δ : L) (e f x : V) :
     x = ca hh δ f x • e + cb hh δ e x • f + pr hh δ e f x := by
@@ -174,17 +174,17 @@ theorem decomp (hh : IsHerm s h) (δ : L) (e f x : V) :
 variable {δ : L} {e f : V}
 
 /- English proof (translation)
-Rewrite using `[hh.2.2.1 e f, hef]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem h_fe (hh : IsHerm s h) (hef : h e f = δ) : h f e = s δ := by
   rw [hh.2.2.1 e f, hef]
 
 /- English proof (translation)
-Establish `hsδ : s δ ≠ 0` using `(map_ne_zero s).2 hδ`. Establish `hfe` using `h_fe hh hef`. Prove the components needed by the constructor for the conclusion. Express the relevant statement in the definitionally equal form `hlin hh e _ = 0`. Rewrite using `[pr_apply, map_sub, map_sub, map_smul, map_smul]`.
+Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [hlin_apply, he, hef, cb_apply, smul_eq_mul]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Express the relevant statement in the definitionally equal form `hlin hh f _ = 0`. Rewrite using `[pr_apply, map_sub, map_sub, map_smul, map_smul]`.
+Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [hlin_apply, hf, hfe, ca_apply, smul_eq_mul]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem pr_orth (hh : IsHerm s h) (hδ : δ ≠ 0) (he : h e e = 0) (hf : h f f = 0)
     (hef : h e f = δ) (x : V) : h e (pr hh δ e f x) = 0 ∧ h f (pr hh δ e f x) = 0 := by
@@ -203,11 +203,11 @@ theorem pr_orth (hh : IsHerm s h) (hδ : δ ≠ 0) (he : h e e = 0) (hf : h f f 
     ring
 
 /- English proof (translation)
-Establish `hsδ : s δ ≠ 0` using `(map_ne_zero s).2 hδ`. Establish `hfe` using `h_fe hh hef`. Establish `h1 : ca hh δ f (a • e + b • f + w) = a`. Rewrite using `[ca_apply, hh.1, hh.1, hh.2.1, hh.2.1, hf, hfe, hfw]`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Simplify using the standard rewrite rules. Establish `h2 : cb hh δ e (a • e + b • f + w) = b`. Rewrite using `[cb_apply, hh.1, hh.1, hh.2.1, hh.2.1, he, hef, hew]`. Clear the denominators using the available nonvanishing facts. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Simplify using the standard rewrite rules.
 
-Use `⟨h1, h2, ?_⟩` and prove the remaining obligations. Rewrite using `[pr_apply, h1, h2]`. Normalize the expressions using the abelian group laws.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem coef_eq (hh : IsHerm s h) (hδ : δ ≠ 0) (he : h e e = 0) (hf : h f f = 0)
     (hef : h e f = δ) (a b : L) {w : V} (hew : h e w = 0) (hfw : h f w = 0) :
@@ -228,7 +228,7 @@ theorem coef_eq (hh : IsHerm s h) (hδ : δ ≠ 0) (he : h e e = 0) (hf : h f f 
   abel
 
 /- English proof (translation)
-Establish `hfe` using `h_fe hh hef`. Establish `hwe : h w e = 0` using `by rw [hh.2.2.1 e w, hew, map_zero]`. Establish `hwf : h w f = 0` using `by rw [hh.2.2.1 f w, hfw, map_zero]`. Simplify using `only [herm_add_left hh, hh.1, herm_smul_left hh, hh.2.1, he, hf, hef, hfe, hew, hfw, hwe, hwf, mul_zero, zero_add, add_zero, map_mul, hs.1]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem norm_form (hs : IsInv s) (hh : IsHerm s h) (he : h e e = 0) (hf : h f f = 0)
     (hef : h e f = δ) (a b : L) {w : V} (hew : h e w = 0) (hfw : h f w = 0) :
@@ -248,9 +248,9 @@ variable {L : Type} [NontriviallyNormedField L] [IsUltrametricDist L]
   {V : Type} [AddCommGroup V] [Module L V] {s : L →+* L} {h : V → V → L} {δ : L} {e f : V}
 
 /- English proof (translation)
-Establish `hn : 0 < ‖δ‖` using `norm_pos_iff.2 hδ`. Establish `h1 : ‖ca hh δ f x‖ ≤ 1`. Rewrite using `[ca_apply, norm_mul, norm_inv, hs.2.1]`. Conclude with `inv_mul_le_one_of_le₀ (hpair f hfΛ x hx) hn.le`. Establish `h2 : ‖cb hh δ e x‖ ≤ 1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[cb_apply, norm_mul, norm_inv]`. Conclude with `inv_mul_le_one_of_le₀ (hpair e heΛ x hx) hn.le`. Use `⟨h1, h2, ?_⟩` and prove the remaining obligations. Rewrite using `[pr_apply]`. Conclude with `Λ.sub_mem (Λ.sub_mem hx (lat_smul_mem hΛ h1 heΛ)) (lat_smul_mem hΛ h2 hfΛ)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coef_int (hs : IsInv s) (hδ : δ ≠ 0) (hh : IsHerm s h) {Λ : AddSubgroup V}
     (hΛ : IsLat L Λ) (hpair : ∀ x ∈ Λ, ∀ y ∈ Λ, ‖h x y‖ ≤ ‖δ‖) (heΛ : e ∈ Λ) (hfΛ : f ∈ Λ)
@@ -274,9 +274,9 @@ def prU (hh : IsHerm s h) (hδ : δ ≠ 0) (he : h e e = 0) (hf : h f f = 0) (he
   LinearMap.codRestrict U (pr hh δ e f) fun x => (hU _).2 (pr_orth hh hδ he hf hef x)
 
 /- English proof (translation)
-Use `⟨fun x y z => hh.1 _ _ _, fun a x y => hh.2.1 a _ _, fun x y => hh.2.2.1 _ _, fun x hx => Subtype.ext (hh.2.2.2 _ fun y => ?_)⟩` and prove the remaining obligations. Establish `hx'` using `(hU x).1 x.2`. Establish `hxe : h x e = 0` using `by rw [hh.2.2.1 e x, hx'.1, map_zero]`. Establish `hxf : h x f = 0` using `by rw [hh.2.2.1 f x, hx'.2, map_zero]`. Establish `hxp : h x (pr hh δ e f y) = 0` using `hx ⟨_, (hU _).2 (pr_orth hh hδ he hf hef y)⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[decomp hh δ e f y, hh.1, hh.1, hh.2.1, hh.2.1, hxe, hxf, hxp]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem herm_restrict (hh : IsHerm s h) (hδ : δ ≠ 0) (he : h e e = 0) (hf : h f f = 0)
     (hef : h e f = δ) (hU : ∀ x, x ∈ U ↔ h e x = 0 ∧ h f x = 0) :
@@ -291,11 +291,11 @@ theorem herm_restrict (hh : IsHerm s h) (hδ : δ ≠ 0) (he : h e e = 0) (hf : 
   simp
 
 /- English proof (translation)
-Establish `lat0` using `latOf_isLat (Module.finBasis L U)`. Take `⟨c, hc0, -, hc⟩` from `lat_bdd hΛ lat0 (prU hh hδ he hf hef hU)`. Use `hS L U _ _ c lat0 hc0 (fun x hx => ?_) (fun x => ?_) (fun a ha x hx => ?_)` and prove the remaining obligations. Establish `hx'` using `(hU x).1 x.2`. Establish `hp : prU hh hδ he hf hef hU (x : V) = x`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Use `(coef_eq hh hδ he hf hef 0 0 hx'.1 hx'.2).2.2` as an intermediate fact. Simplify `this` using `[prU]`. Use `hc x hx` as an intermediate fact. Rewrite `this` using `[hp]`. Then use the resulting hypothesis.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Take `⟨a, ha0, -, ha⟩` from `lat_absorb hΛ (fun _ : Unit => (x : V))`. Conclude with `⟨a, ha0, ha ()⟩`. Conclude with `lat_smul_mem hΛ ha hx`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem restrict_isLat (hS : StSandwich) [ProperSpace L] [FiniteDimensional L V]
     (hh : IsHerm s h) (hδ : δ ≠ 0) (he : h e e = 0) (hf : h f f = 0) (hef : h e f = δ)
@@ -316,25 +316,21 @@ theorem restrict_isLat (hS : StSandwich) [ProperSpace L] [FiniteDimensional L V]
   · exact lat_smul_mem hΛ ha hx
 
 /- English proof (translation)
-Establish `hδ0` using `hδ.1`. Establish `hlatU` using `restrict_isLat hS hh hδ0 he hf hef hU hΛ.1`. Use `⟨hlatU, fun x hx => hΛ.2.1 _ hx, fun N hN hNint hle => ?_⟩` and prove the remaining obligations. Use `set P := prU hh hδ0 he hf hef hU with hP`. Establish `hPv : ∀ x, ((P x : U) : V) = pr hh δ e f x` using `fun _ => rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set M := bigLat (ca hh δ f) (cb hh δ e) P N with hM`. Establish `hΛM : Λ ≤ M` using `fun x hx => by`. Take `⟨h1, h2, h3⟩` from `coef_int hs hδ0 hh hΛ.1 hpair heΛ hfΛ hx`. Conclude with `⟨h1, h2, hle h3⟩`. Take `⟨c, hc0, hc1, hc⟩` from `lat_bdd hN hlatU (LinearMap.id : U →ₗ[L] U)`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hMlat : IsLat L M`. Use `hS L V Λ M c hΛ.1 hc0 (fun x hx => ?_) (fun x => ?_) (fun a ha x hx => ?_)` and prove the remaining obligations. Take `⟨h1, h2, h3⟩` from `hx`. Establish `h4 : c • pr hh δ e f x ∈ Λ` using `hc _ h3`. Rewrite using `[decomp hh δ e f x, smul_add, smul_add]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `Λ.add_mem (Λ.add_mem (lat_smul_mem hΛ.1 hc1 (lat_smul_mem hΛ.1 h1 heΛ)) (lat_smul_mem hΛ.1 hc1 (lat_smul_mem hΛ.1 h2 hfΛ))) h4`. Take `⟨a, ha0, -, ha⟩` from `lat_absorb hΛ.1 (fun _ : Unit => x)`. Conclude with `⟨a, ha0, hΛM (ha ())⟩`. Take `⟨h1, h2, h3⟩` from `hx`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_smul, smul_eq_mul, norm_mul]`. Conclude with `mul_le_one₀ ha (norm_nonneg _) h1`. Rewrite using `[map_smul, smul_eq_mul, norm_mul]`. Conclude with `mul_le_one₀ ha (norm_nonneg _) h2`. Rewrite using `[map_smul]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `lat_smul_mem hN ha h3`. Establish `hMint : ∀ x ∈ M, ‖h x x‖ ≤ 1` using `fun x hx => by`. Take `⟨h1, h2, h3⟩` from `hx`. Take `⟨o1, o2⟩` from `pr_orth hh hδ0 he hf hef x`. Establish `hq` using `norm_form hs hh he hf hef (ca hh δ f x) (cb hh δ e x) o1 o2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `hq` using `[← decomp hh δ e f x]`. Rewrite using `[hq]`. Establish `ht : ‖δ * (s (ca hh δ f x) * cb hh δ e x) + s (δ * (s (ca hh δ f x) * cb hh δ e x))‖ ≤ 1` using `((hδ.2.1 δ).2 le_rfl) _ (by`. Rewrite using `[norm_mul, hs.2.1]`. Conclude with `mul_le_one₀ h1 (norm_nonneg _) h2)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le ht (hNint _ h3))`. Establish `hMeq : M = Λ` using `hΛ.2.2 M hMlat hMint hΛM`. Use `le_antisymm (fun x hx => ?_) hle` and prove the remaining obligations. Establish `hx'` using `(hU x).1 x.2`. Take `⟨c1, c2, c3⟩` from `coef_eq hh hδ0 he hf hef 0 0 hx'.1 hx'.2`.
-
-Simplify using `only [zero_smul, zero_add] at c1 c2 c3`. Establish `hxM : (x : V) ∈ M`. Use `⟨by simp [c1], by simp [c2], ?_⟩` and prove the remaining obligations. Establish `: P (x : V) = x` using `Subtype.ext c3`. Rewrite using `[this]` and apply the resulting hypothesis.
-
-Rewrite `hxM` using `[hMeq]`. Conclude with `hxM`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem restrict_isMax (hS : StSandwich) [ProperSpace L] [FiniteDimensional L V] (hs : IsInv s)
     (hδ : IsDelta s δ) (hh : IsHerm s h) (he : h e e = 0) (hf : h f f = 0) (hef : h e f = δ)
@@ -392,9 +388,9 @@ theorem restrict_isMax (hS : StSandwich) [ProperSpace L] [FiniteDimensional L V]
   exact hxM
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hx`. Take `⟨c1, c2, c3⟩` from `coef_eq hh hδ he hf hef a b hew hfw`. Use `coef_int hs hδ hh hΛ hpair heΛ hfΛ hx` as an intermediate fact. Rewrite `this` using `[c1, c2, c3]`. Then use the resulting hypothesis.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Introduce and unpack `⟨h1, h2, h3⟩`. Conclude with `Λ.add_mem (Λ.add_mem (lat_smul_mem hΛ h1 heΛ) (lat_smul_mem hΛ h2 hfΛ)) h3`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem split_mem_iff (hs : IsInv s) (hδ : δ ≠ 0) (hh : IsHerm s h) (he : h e e = 0)
     (hf : h f f = 0) (hef : h e f = δ) {Λ : AddSubgroup V} (hΛ : IsLat L Λ)
@@ -412,9 +408,9 @@ theorem split_mem_iff (hs : IsInv s) (hδ : δ ≠ 0) (hh : IsHerm s h) (he : h 
 end Main
 
 /- English proof (translation)
-Introduce `hS hP L _ _ _ _ s hs δ hδ V _ _ _ h hh e f U he hf hef hU`. Establish `hδ0` using `hδ.1`. Use `⟨herm_restrict hh hδ0 he hf hef hU, fun x => ⟨_, _, _, (hU _).2 (pr_orth hh hδ0 he hf hef x), decomp hh δ e f x⟩, ?_, fun Λ hΛ heΛ hfΛ => ?_⟩` and prove the remaining obligations. Introduce and unpack `rfl`. Conclude with `hδ0 (hef ▸ ((hU f).1 Submodule.mem_top).1)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `hpair` using `(hP L s hs δ hδ V h hh Λ hΛ).1`. Use `⟨restrict_isMax hS hs hδ hh he hf hef hU hΛ hpair heΛ hfΛ, fun a b w hw => ?_⟩` and prove the remaining obligations. Establish `hw'` using `(hU w).1 hw`. Conclude with `split_mem_iff hs hδ0 hh he hf hef hΛ.1 hpair heΛ hfΛ a b hw'.1 hw'.2`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem stSplit : StSandwich → StPairing → StSplit := by
   intro hS hP L _ _ _ _ s hs δ hδ V _ _ _ h hh e f U he hf hef hU

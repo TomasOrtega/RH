@@ -9,7 +9,7 @@ section Ring
 variable {R n : Type} [CommRing R] [Fintype n] [DecidableEq n] [LinearOrder n]
 
 /- English proof (translation)
-Rewrite using `[Units.val_mul, Matrix.mul_apply, Finset.sum_eq_single i]`. Introduce `l _ hl`. Break down `lt_or_gt_of_ne hl with h | h` into its components or cases. Rewrite using `[(mem_borel R).1 ha i l h, zero_mul]`. Rewrite using `[(mem_borel R).1 hb l i h, mul_zero]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/
@@ -23,7 +23,7 @@ private theorem q_diag_mul {a b : GL n R} (ha : a ∈ borel R n) (hb : b ∈ bor
   · simp
 
 /- English proof (translation)
-Set `D0 : n → (borel R n →* R)` to `fun i => { toFun := fun g => ((g : GL n R) : Matrix n n R) i i map_one' := by simp map_mul' := fun a b => q_diag_mul a.2 b.2 i }`. Conclude with `⟨MonoidHom.pi fun i => (D0 i).toHomUnits, fun g i => rfl⟩`.
+Introduce a local definition for the expression. Supply the required witnesses or components.
 -/
 private theorem q_exD : ∃ D : borel R n →* (n → Rˣ),
     ∀ (g : borel R n) (i : n), (D g i : R) = ((g : GL n R) : Matrix n n R) i i := by
@@ -34,9 +34,7 @@ private theorem q_exD : ∃ D : borel R n →* (n → Rˣ),
   exact ⟨MonoidHom.pi fun i => (D0 i).toHomUnits, fun g i => rfl⟩
 
 /- English proof (translation)
-Use extensionality with `i j`. Use `show f ((diagT R n d : Matrix n n R) i j) = _`. Rewrite using `[val_diagT, val_diagT, diagonal_apply, diagonal_apply]`. Use `split_ifs`. Both sides reduce to the same expression.
-
-Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem q_map_diagT {S : Type} [CommRing S] (f : R →+* S) (d : n → Rˣ) :
     GeneralLinearGroup.map (n := n) f (diagT R n d) = diagT S n fun i => Units.map f.toMonoidHom (d i) := by
@@ -54,13 +52,13 @@ section Loc
 variable (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (n : ℕ)
 
 /- English proof (translation)
-Establish `hinj : Function.Injective (algebraMap 𝒪[k] k)` using `Subtype.val_injective`. Establish `hinj2 : Function.Injective (GeneralLinearGroup.map (n` using `Fin n) (algebraMap 𝒪[k] k)) := by`. Introduce `a b hab`. Use `Units.ext (Matrix.ext fun i j => ?_)` and prove the remaining obligations. Conclude with `hinj (congrArg (fun g : GL (Fin n) k => (g : Matrix (Fin n) (Fin n) k) i j) hab)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨D, hD⟩` from `q_exD (R := 𝓀[k]) (n := Fin n)`. Set `r` to `GeneralLinearGroup.map (n := Fin n) (IsLocalRing.residue 𝒪[k])`. Set `H` to `(borel 𝓀[k] (Fin n)).comap r`. Establish `hle : iwC k n ⊤ ≤ H.map (GeneralLinearGroup.map (n` using `Fin n) (algebraMap 𝒪[k] k)) := le_of_eq (memIwC k n ⊤).2.1`. Set `e` to `H.equivMapOfInjective _ hinj2`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨D.comp ((r.subgroupComap _).comp (e.symm.toMonoidHom.comp (Subgroup.inclusion hle))), fun h hh i => ?_⟩` and prove the remaining obligations. Establish `hH : h ∈ H`. Take `⟨h', h1, h2⟩` from `hle hh`. Rewrite using `[← hinj2 h2]` and apply the resulting hypothesis. Establish `: e.symm (Subgroup.inclusion hle ⟨_, hh⟩) = ⟨h, hH⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[MulEquiv.symm_apply_eq]`. Both sides reduce to the same expression. Use `show (D (r.subgroupComap _ (e.symm (Subgroup.inclusion hle ⟨_, hh⟩))) i : 𝓀[k]) = _`. Rewrite using `[this, hD]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 private theorem q_exF : ∃ F : iwC k n ⊤ →* (Fin n → 𝓀[k]ˣ), ∀ (h : GL (Fin n) 𝒪[k])
     (hh : GeneralLinearGroup.map (n := Fin n) (algebraMap 𝒪[k] k) h ∈ iwC k n ⊤) (i : Fin n),
@@ -92,29 +90,25 @@ end Loc
 end UpperTheory.V.AlgebraTools
 
 /- English proof (translation)
-Introduce `k _ _ _ _ n C`. Establish `hinj : Function.Injective (algebraMap 𝒪[k] k)` using `Subtype.val_injective`. Take `⟨F, hF⟩` from `q_exF k n`. Set `f : iwC k n ⊤ →* (Fin n → 𝓀[k]ˣ ⧸ C)` to `MonoidHom.pi fun i => (QuotientGroup.mk' C).comp ((Pi.evalMonoidHom _ i).comp F)`. Establish `hf : ∀ g i, f g i = ((F g i : 𝓀[k]ˣ) : 𝓀[k]ˣ ⧸ C)` using `fun _ _ => rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `h3 : ∀ (u : Fin n → 𝒪[k]ˣ) (h : diagT k (Fin n) (fun i => Units.map (algebraMap 𝒪[k] k).toMonoidHom (u i)) ∈ iwC k n ⊤) (i : Fin n), f ⟨_, h⟩ i = ((Units.map (IsLocalRing.residue 𝒪[k]).toMonoidHom (u i) : 𝓀[k]ˣ) : 𝓀[k]ˣ ⧸ C)`. Introduce `u h i`. Establish `e` using `q_map_diagT (algebraMap 𝒪[k] k) u`. Establish `h' : GeneralLinearGroup.map (n` using `Fin n) (algebraMap 𝒪[k] k) (diagT _ _ u) ∈ iwC k n ⊤ := e ▸ h`. Establish `e2 : (⟨_, h⟩ : iwC k n ⊤) = ⟨_, h'⟩` using `Subtype.ext e.symm`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hf, e2]`. Use `congr 1`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[hF, val_diagT, diagonal_apply_eq]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `⟨f, fun y => ?_, fun g => ?_, h3⟩` and prove the remaining obligations. Establish `h1 : ∀ i, ∃ u : 𝒪[k]ˣ, ((Units.map (IsLocalRing.residue 𝒪[k]).toMonoidHom u : 𝓀[k]ˣ) : 𝓀[k]ˣ ⧸ C) = y i`. Introduce `i`. Take `⟨c, hc⟩` from `QuotientGroup.mk_surjective (y i)`. Take `⟨x, hx⟩` from `IsLocalRing.residue_surjective (R := 𝒪[k]) (c : 𝓀[k])`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hu : IsUnit x`. Rewrite using `[← IsLocalRing.residue_ne_zero_iff_isUnit, hx]`. Conclude with `c.ne_zero`. Take `⟨u, rfl⟩` from `hu`. Use `⟨u, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hc]`. Use `congr 1`. Conclude with `Units.ext hx`. Use `choose u hu using h1`. Establish `h : diagT k (Fin n) (fun i => Units.map (algebraMap 𝒪[k] k).toMonoidHom (u i)) ∈ iwC k n ⊤` using `Subgroup.mem_sup_right ⟨_, fun i _ => ⟨u i, trivial, rfl⟩, rfl⟩`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `⟨⟨_, h⟩, funext fun i => (h3 u h i).trans (hu i)⟩`. Take `⟨g, hg⟩` from `g`. Establish `hg' : g ∈ iwahori k (Fin n)` using `(memIwC k n C).2.1 ▸ hg`. Take `⟨h, hh, rfl⟩` from `id hg'`. Rewrite using `[(memIwC k n C).1, and_iff_right hg', funext_iff]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `forall_congr' fun i => ?_` and prove the remaining obligations. Rewrite using `[hf, Pi.one_apply, QuotientGroup.eq_one_iff]`. Establish `e` using `hF h hg i`. Prove the components needed by the constructor for the conclusion. Introduce `hc`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hu : IsUnit ((h : Matrix (Fin n) (Fin n) 𝒪[k]) i i)`. Rewrite using `[← IsLocalRing.residue_ne_zero_iff_isUnit, ← e]`. Conclude with `Units.ne_zero _`. Take `⟨d, hd⟩` from `hu`. Use `⟨_, ⟨d, ?_, rfl⟩, congrArg (algebraMap 𝒪[k] k) hd⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Rewrite `e` using `[← hd]`. Establish `: Units.map (IsLocalRing.residue 𝒪[k]).toMonoidHom d = F ⟨_, hg⟩ i` using `Units.ext e.symm`. Use `show Units.map (IsLocalRing.residue 𝒪[k]).toMonoidHom d ∈ C`. Rewrite using `[this]`. Conclude with `hc`.
-
-Introduce and unpack `⟨_, ⟨d, hd, rfl⟩, e1⟩`. Establish `e' : (d : 𝒪[k]) = (h : Matrix (Fin n) (Fin n) 𝒪[k]) i i` using `hinj e1`. Rewrite `e` using `[← e']`. Establish `: Units.map (IsLocalRing.residue 𝒪[k]).toMonoidHom d = F ⟨_, hg⟩ i` using `Units.ext e.symm`. Rewrite using `[← this]`.
-
-Conclude with `hd`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.AlgebraTools.iwQuot :
     ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (n : ℕ) (C : Subgroup 𝓀[k]ˣ), ∃ f : iwC k n ⊤ →* (Fin n → 𝓀[k]ˣ ⧸ C), Function.Surjective f ∧ (∀ g : iwC k n ⊤, f g = 1 ↔ (g : GL (Fin n) k) ∈ iwC k n C) ∧ ∀ (u : Fin n → 𝒪[k]ˣ) (h : diagT k (Fin n) (fun i => Units.map (algebraMap 𝒪[k] k).toMonoidHom (u i)) ∈ iwC k n ⊤) (i : Fin n), f ⟨_, h⟩ i = ((Units.map (IsLocalRing.residue 𝒪[k]).toMonoidHom (u i) : 𝓀[k]ˣ) : 𝓀[k]ˣ ⧸ C) := by

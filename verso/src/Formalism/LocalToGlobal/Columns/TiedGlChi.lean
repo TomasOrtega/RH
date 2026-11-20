@@ -17,16 +17,16 @@ variable {X : Fields} {Pr : Primes X} {hc : Formalism.BasicNotions.CMData X.F X.
   (Ch : Chars X Pr m) (σ₀ : X.K →+* ℂ) (hCh : Ch.Ok)
 
 /- English proof (translation)
-The claim follows from `dif_pos ha`.
+A detailed English derivation is pending.
 -/
 theorem glc_extChi {κ K : Type} [CommRing κ] [Field K] {m : ℕ} (χ : Fin m → κˣ →* Kˣ) {a : ℕ} (ha : a < m) : extChi χ a = χ ⟨a, ha⟩ :=
   dif_pos ha
 
 include hPr in
 /- English proof (translation)
-Establish `: Nontrivial (kP w)` using `Ideal.Quotient.nontrivial_iff.2 w.isPrime.ne_top`. Rewrite using `[CharP.charP_iff_prime_eq_zero (hPr.g_prime i)]`. Establish `h1 : ((Ideal.absNorm w.asIdeal : ℕ) : 𝓞 X.E) ∈ w.asIdeal` using `Ideal.absNorm_mem _`. Rewrite `h1` using `[hPr.vG_norm i w hw]`. Use `Ideal.Quotient.eq_zero_iff_mem.2 h1` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `this` using `[map_natCast]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem glc_charP (i : Fin 2) {w : Pl X.E} (hw : w ∈ Pr.vG i) : CharP (kP w) (Pr.g i) := by
   have : Nontrivial (kP w) := Ideal.Quotient.nontrivial_iff.2 w.isPrime.ne_top
@@ -37,17 +37,15 @@ theorem glc_charP (i : Fin 2) {w : Pl X.E} (hw : w ∈ Pr.vG i) : CharP (kP w) (
   rwa [map_natCast] at this
 
 /- English proof (translation)
-Use `set om : MulChar (ZMod g) ℂ := MulChar.ofUnitHom ((Units.map σ₀.toMonoidHom).comp om₀) with hom`. Establish `hpow : ∀ k : ℕ, om ^ k = 1 ↔ ∀ x : (ZMod g)ˣ, x ^ k = 1`. Introduce `k`. Prove the components needed by the constructor for the conclusion. Introduce `h x`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h1` using `DFunLike.congr_fun h (x : ZMod g)`. Rewrite `h1` using `[MulChar.pow_apply_coe, MulChar.one_apply_coe, hom, MulChar.ofUnitHom_coe]`. Establish `h2 : σ₀ ((om₀ (x ^ k) : Kˣ) : K) = σ₀ 1`. Rewrite using `[map_pow, Units.val_pow_eq_pow_val, map_pow, map_one]`. Conclude with `h1`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h3 : om₀ (x ^ k) = om₀ 1`. Rewrite using `[map_one]`. Conclude with `Units.ext (σ₀.injective h2)`. Conclude with `hinj h3`. Introduce `h`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `x`. Rewrite using `[MulChar.pow_apply_coe, MulChar.one_apply_coe, hom, MulChar.ofUnitHom_coe, ← Units.val_pow_eq_pow_val, ← map_pow, h x, map_one, Units.val_one]`. Establish `hcard : Monoid.exponent (ZMod g)ˣ = g - 1`. Rewrite using `[IsCyclic.exponent_eq_card, Nat.card_eq_fintype_card, ZMod.card_units]`. Apply `Nat.dvd_antisymm` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[orderOf_dvd_iff_pow_eq_one, hpow]`. Introduce `x`. Rewrite using `[← hcard]`. Conclude with `Monoid.pow_exponent_eq_one x`. Rewrite using `[← hcard]`.
-
-Conclude with `Monoid.exponent_dvd_of_forall_pow_eq_one ((hpow _).1 (pow_orderOf_eq_one om))`.
+A detailed English derivation is pending.
 -/
 theorem glc_order {g : ℕ} [Fact g.Prime] {K : Type} [Field K] (σ₀ : K →+* ℂ) (om₀ : (ZMod g)ˣ →* Kˣ) (hinj : Function.Injective om₀) :
     orderOf (MulChar.ofUnitHom ((Units.map σ₀.toMonoidHom).comp om₀) : MulChar (ZMod g) ℂ) = g - 1 := by
@@ -80,17 +78,15 @@ theorem glc_order {g : ℕ} [Fact g.Prime] {K : Type} [Field K] (σ₀ : K →+*
     exact Monoid.exponent_dvd_of_forall_pow_eq_one ((hpow _).1 (pow_orderOf_eq_one om))
 
 /- English proof (translation)
-Use `haveI : Fact (Pr.g i).Prime := ⟨hPr.g_prime i⟩`. Take `⟨om₀, hinj, hom⟩` from `hCh.chi_om i`. Use `⟨MulChar.ofUnitHom ((Units.map σ₀.toMonoidHom).comp om₀), glc_order σ₀ om₀ hinj, ?_⟩` and prove the remaining obligations. Introduce `v h a n ha`. Use `haveI := glc_charP hPr i (gwOf_mem hc hPr i v h)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Establish `hcast : (n : kv X.F v) = S.eK hPr i v h (n : kP (gwOf hc hPr i v h).1)` using `(map_intCast _ n).symm`. Use `show glmChi (S.eK hPr i v h) σ₀ (extChi (fun s => Ch.chi s (gwOf hc hPr i v h)) a) (n : kv X.F v) = _`. Distinguish the cases in `hn : ((Pr.g i : ℕ) : ℤ) ∣ n`. Establish `h1 : (n : ZMod (Pr.g i)) = 0` using `(CharP.intCast_eq_zero_iff _ (Pr.g i) n).2 hn`. Establish `h2 : (n : kP (gwOf hc hPr i v h).1) = 0` using `(CharP.intCast_eq_zero_iff _ (Pr.g i) n).2 hn`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hcast, h1, h2, map_zero, MulChar.map_zero, MulChar.map_zero]`. Establish `h1 : (n : ZMod (Pr.g i)) ≠ 0` using `fun h0 => hn ((CharP.intCast_eq_zero_iff _ (Pr.g i) n).1 h0)`. Establish `h2 : (n : kP (gwOf hc hPr i v h).1) ≠ 0` using `fun h0 => hn ((CharP.intCast_eq_zero_iff _ (Pr.g i) n).1 h0)`. Establish `h3 : (n : kv X.F v) ≠ 0`. Rewrite using `[hcast]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Conclude with `fun h0 => h2 ((map_eq_zero_iff _ (S.eK hPr i v h).injective).1 h0)`. Set `a' : (ZMod (Pr.g i))ˣ` to `Units.mk0 _ h1`. Set `x : (kP (gwOf hc hPr i v h).1)ˣ` to `Units.map (S.eK hPr i v h).symm.toRingHom.toMonoidHom (Units.mk0 _ h3)`. Establish `hx : (x : kP (gwOf hc hPr i v h).1) = (n : kP (gwOf hc hPr i v h).1)` using `by show (S.eK hPr i v h).symm (n : kv X.F v) = _`. Rewrite using `[hcast, RingEquiv.symm_apply_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hval : (x : kP (gwOf hc hPr i v h).1) = (((a' : ZMod (Pr.g i)).val : ℕ) : kP (gwOf hc hPr i v h).1)`. Rewrite using `[hx, ZMod.natCast_val]`. Conclude with `(map_intCast (ZMod.castHom (dvd_refl (Pr.g i)) (kP (gwOf hc hPr i v h).1)) n).symm`. Establish `h4` using `hom (gwOf hc hPr i v h) (gwOf_mem hc hPr i v h) ⟨a, ha⟩ a' x hval`. Rewrite using `[hcast, ← hx, glmChi_apply, glc_extChi _ ha, h4]`.
-
-Establish `h5 : (n : ZMod (Pr.g i)) = (a' : ZMod (Pr.g i))` using `rfl`. Rewrite using `[h5, MulChar.pow_apply_coe, MulChar.ofUnitHom_coe, Units.val_pow_eq_pow_val, map_pow]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem glc_pow (i : Fin 2) : ∃ om : MulChar (ZMod (Pr.g i)) ℂ, orderOf om = Pr.g i - 1 ∧
     ∀ v h a (n : ℤ), a < m → (tieGLoc hPr S Ch σ₀ hCh).chiB i v h a (n : kv X.F v) = (om ^ (2 * (a + 1))) (n : ZMod (Pr.g i)) := by
@@ -125,11 +121,9 @@ theorem glc_pow (i : Fin 2) : ∃ om : MulChar (ZMod (Pr.g i)) ℂ, orderOf om =
     rfl
 
 /- English proof (translation)
-Establish `h1 : Ch.chi ⟨a, ha⟩ (gwOf hc hPr i v h) = Ch.chi ⟨b, hb⟩ (gwOf hc hPr i v h)`. Use extensionality with `x`. Establish `h2` using `DFunLike.congr_fun e (S.eK hPr i v h (x : kP (gwOf hc hPr i v h).1))`. Express the relevant statement in the definitionally equal form `glmChi (S.eK hPr i v h) σ₀ (extChi (fun s => Ch.chi s (gwOf hc hPr i v h)) a) _ = glmChi (S.eK hPr i v h) σ₀ (extChi (fun s => Ch.chi s (gwOf hc hPr i v h)) b) _ at h2`. Rewrite `h2` using `[glmChi_apply, glmChi_apply, glc_extChi _ ha, glc_extChi _ hb]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `σ₀.injective h2`. Establish `h3` using `hCh.chi_inj (gwOf hc hPr i v h) h1`. Conclude with `congrArg Fin.val h3`. Use `same i v h v' h' a n ha := by`. Take `⟨om, -, hom⟩` from `glc_pow hPr S Ch σ₀ hCh i`.
-
-Rewrite using `[hom v h a n ha, hom v' h' a n ha]`. Use `pow i := glc_pow hPr S Ch σ₀ hCh i`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tieGLoc_chiTied : Formalism.L2.Forms.CharacterCompatible (tieGLoc hPr S Ch σ₀ hCh) m where
   dist i v h a b ha hb e := by

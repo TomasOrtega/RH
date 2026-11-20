@@ -11,15 +11,13 @@ open MeasureTheory in
 open scoped ENNReal in
 
 /- English proof (translation)
-Establish `h1 : μ.inv = Measure.haarScalarFactor μ.inv μ • μ` using `Measure.isMulLeftInvariant_eq_smul μ.inv μ`. Use `set c := Measure.haarScalarFactor μ.inv μ with hc`. Establish `h2 : μ = (c * c) • μ`. Combine the equalities or inequalities in the displayed calculation. Use extensionality with `s _`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `[Measure.inv_apply]`. Use `_ = (c * c) • μ := by rw [h1, smul_smul]`. Take `⟨K, hK, hK1⟩` from `exists_compact_mem_nhds (1 : G)`. Establish `hpos : 0 < μ K` using `Measure.measure_pos_of_mem_nhds μ hK1`. Establish `hfin : μ K < ∞` using `hK.measure_lt_top`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h3 : ((c * c : NNReal) : ℝ≥0∞) * μ K = 1 * μ K`. Rewrite using `[one_mul]`. Use `conv_rhs => rw [h2]`. Both sides reduce to the same expression. Establish `h4 : ((c * c : NNReal) : ℝ≥0∞) = 1` using `(ENNReal.mul_left_inj hpos.ne' hfin.ne).1 h3`.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h5 : ((c : ℝ) * c) = 1` using `by exact_mod_cast h4`. Establish `h6 : c = 1`. Establish `hc0 : (0 : ℝ) ≤ c` using `c.2`. Establish `: (c : ℝ) = 1` using `by nlinarith`. Conclude with `this` after adjusting the coercions.
-
-Conclude with `⟨by rw [h1, h6, one_smul]⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.QuotDiscrete.isInvInvariant_of_isMulRightInvariant {G : Type} [Group G] [TopologicalSpace G]
     [IsTopologicalGroup G] [LocallyCompactSpace G] [SecondCountableTopology G]
@@ -55,11 +53,11 @@ open MeasureTheory in
 open scoped ENNReal in
 
 /- English proof (translation)
-Take `⟨γ, hγ, huniq⟩` from `hF (h * g)`. Use `⟨⟨⟨γ, hΓ γ.2⟩, Subgroup.mem_subgroupOf.2 γ.2⟩, ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [Set.mem_setOf_eq, Subgroup.smul_def, smul_eq_mul, Subgroup.coe_mul] at hγ ⊢`. Simplify `hγ` using `[mul_assoc]`. Introduce `δ hδ`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hδ' : (⟨((δ : H) : G), Subgroup.mem_subgroupOf.1 δ.2⟩ : Γ) • ((h : G) * g) ∈ F`. Simplify using `only [Set.mem_setOf_eq, Subgroup.smul_def, smul_eq_mul, Subgroup.coe_mul] at hδ ⊢`. Simplify `hδ` using `[mul_assoc]`. Use `huniq _ hδ'` as an intermediate fact. Establish `h2 : ((δ : H) : G) = (γ : G)` using `congrArg Subtype.val this`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Subtype.ext (Subtype.ext h2)`.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.QuotDiscrete.existsUnique_subgroupOf {G : Type} [Group G] {Γ H : Subgroup G} (hΓ : Γ ≤ H) {F : Set G}
     (hF : ∀ x : G, ∃! γ : Γ, γ • x ∈ F) (g : G) (h : H) :
@@ -80,23 +78,19 @@ open MeasureTheory in
 open scoped ENNReal in
 
 /- English proof (translation)
-Unfold `_root_.GlobalTheory.IndefiniteRowSideFullHecke.InvariantRadonFibre.DiscreteClause`. Introduce `G _ _ _ _ _ _ _ _ H _ _ _ _ hH hG hHu dg _ ν _ μ hμ hQ Γ hΓ hd`. Use `haveI : Countable Γ := (TopologicalSpace.separableSpace_iff_countable).1 inferInstance`. Use `haveI : Countable (Γ.subgroupOf H) := Countable.of_equiv _ (Subgroup.subgroupOfEquivOfLe hΓ).toEquiv.symm`. Use `haveI : LocallyCompactSpace H := hH.isClosedEmbedding_subtypeVal.locallyCompactSpace`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : SecondCountableTopology H := TopologicalSpace.Subtype.secondCountableTopology _`. Use `haveI : ν.IsMulRightInvariant := hHu ν inferInstance`. Use `haveI : ν.IsInvInvariant := _root_.GlobalTheory.QuotDiscrete.isInvInvariant_of_isMulRightInvariant ν`. Use `haveI : dg.IsMulRightInvariant := hG dg inferInstance`. Use `haveI : dg.IsInvInvariant := _root_.GlobalTheory.QuotDiscrete.isInvInvariant_of_isMulRightInvariant dg`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨F, hFm, hF⟩` from `_root_.GlobalTheory.FundDomDiscrete.exists_measurable_section Γ`. Establish `hFg : ∀ g : G, MeasurableSet {h : H | (h : G) * g ∈ F}` using `fun g => hFm.preimage (measurable_subtype_coe.mul_const g)`. Establish `hFD : IsFundamentalDomain Γ F dg` using `IsFundamentalDomain.mk' hFm.nullMeasurableSet hF`. Establish `hFD' : ∀ g : G, IsFundamentalDomain (Γ.subgroupOf H) {h : H | (h : G) * g ∈ F} ν` using `fun g => IsFundamentalDomain.mk' (hFg g).nullMeasurableSet (_root_.GlobalTheory.QuotDiscrete.existsUnique_subgroupOf hΓ hF g)`. Use `⟨⟨F, hFm, hFD⟩, ⟨_, hFg 1, hFD' 1⟩, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `D D' hD hD' f hf hinv`. Establish `hFi : Measurable (F.indicator f)` using `hf.indicator hFm`. Establish `hK : Measurable (fun x : G => F.indicator f x⁻¹)` using `hFi.comp measurable_inv`. Take `⟨hcm, hcint⟩` from `hQ _ hK`. Establish `he : Continuous (QuotientGroup.quotientRightRelEquivQuotientLeftRel H)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `(Topology.IsQuotientMap.continuous_iff isQuotientMap_quotient_mk').2 ?_` and prove the remaining obligations. Establish `hc : Continuous fun g : G => ((g⁻¹ : G) : G ⧸ H)` using `continuous_quotient_mk'.comp continuous_inv`. Conclude with `hc`. Use `⟨fun q => _root_.GlobalTheory.IndefiniteRowSideFullHecke.InvariantRadonFibre.fibreIntegral H ν (fun x : G => F.indicator f x⁻¹) (QuotientGroup.quotientRightRelEquivQuotientLeftRel H q), hcm.comp he.measurable, ?_, ?_⟩` and prove the remaining obligations. Introduce `g show _root_.GlobalTheory.IndefiniteRowSideFullHecke.InvariantRadonFibre.fibreIntegral H ν (fun x : G => F.indicator f x⁻¹) ((g⁻¹ : G) : G ⧸ H) = _`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[_root_.GlobalTheory.IndefiniteRowSideFullHecke.InvariantRadonFibre.fibreIntegral_mk]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← lintegral_inv_eq_self (μ := ν) (fun h : H => F.indicator f ((h : G) * g))]`. Use `congr 1`. Use function extensionality and compare the values at `h`.
+Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Chain the equalities or inequalities of the calculation. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `[mul_inv_rev]`. Use `_ = ∫⁻ h in {h : H | (h : G) * g ∈ F}, f ((h : G) * g) ∂ν := by`. Rewrite using `[← lintegral_indicator (hFg g)]`. Use `congr 1`. Use `_ = ∫⁻ h in D', f ((h : G) * g) ∂ν := by`.
-
-Use `(hFD' g).setLIntegral_eq hD' (fun h : H => f ((h : G) * g)) (fun γ h => ?_)` and prove the remaining obligations. Simplify using `only [Subgroup.smul_def, smul_eq_mul, Subgroup.coe_mul, mul_assoc]`. Conclude with `hinv _ (Subgroup.mem_subgroupOf.1 γ.2) _`. Unfold `_root_.GlobalTheory.IndefiniteRowSideFullHecke.InvariantRadonFibre.rightMeasure`. Combine the equalities or inequalities in the displayed calculation.
-
-Use `congr 1`. Use function extensionality and compare the values at `q`. Rewrite using `[show _root_.GlobalTheory.IndefiniteRowSideFullHecke.InvariantRadonFibre.invCoset H q = (QuotientGroup.quotientRightRelEquivQuotientLeftRel H).symm q from rfl, Equiv.apply_symm_apply]`. Use `_ = _ := (lintegral_map (hcm.comp he.measurable) (_root_.GlobalTheory.IndefiniteRowSideFullHecke.InvariantRadonFibre.continuous_invCoset H).measurable).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.QuotDiscrete.discreteClause : _root_.GlobalTheory.IndefiniteRowSideFullHecke.InvariantRadonFibre.DiscreteClause := by
   unfold _root_.GlobalTheory.IndefiniteRowSideFullHecke.InvariantRadonFibre.DiscreteClause

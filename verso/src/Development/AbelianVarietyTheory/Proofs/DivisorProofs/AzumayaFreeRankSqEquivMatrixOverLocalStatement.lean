@@ -3,7 +3,7 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AzumayaFreeRankSqEq
 import Mathlib
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | (exact @GlobalTheory.AzumayaLocal.azumaya_local_matrix) | (exact GlobalTheory.AzumayaLocal.azumaya_local_matrix) | (intros; apply GlobalTheory.AzumayaLocal.azumaya_local_matrix <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.azumaya_free_rank_sq_equiv_matrix_over_local : ∀ (ℓ : ℕ) [Fact ℓ.Prime] (A : Type) [CommRing A] [IsLocalRing A] [Algebra ℤ_[ℓ] A]
     [Module.Finite ℤ_[ℓ] A] (Λ : Type) [Ring Λ] [Algebra A Λ] [IsAzumaya A Λ] [Module.Free A Λ]

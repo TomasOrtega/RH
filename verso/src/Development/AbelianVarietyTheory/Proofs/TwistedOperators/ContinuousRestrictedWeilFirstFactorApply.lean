@@ -14,13 +14,9 @@ namespace GlobalTheory.ResFirstCont
 open GlobalTheory.IndefiniteRowSideFullHecke.AdjointIsotropicDecomposition
 
 /- English proof (translation)
-Introduce `D V V' W r C B ψ χS χT ω hω μ 𝓨 h𝓨 f hf x`. Use `haveI : BorelSpace (Mx D W.rank r) := ⟨rfl⟩`. Use `haveI := (GlobalTheory.MemberAdelicTop.locallyCompact_secondCountable_t2 D V).1`. Use `haveI : IsFiniteMeasure (μ.restrict 𝓨) := ⟨by rw [Measure.restrict_apply_univ, h𝓨.2.2]; exact ENNReal.one_lt_top⟩`. Establish `hy : Continuous fun y : Mx D W.rank r => isoPart V W C y + midPart V V' W B x`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Unfold `isoPart`. Conclude with `(continuous_id.matrix_mul continuous_const).add continuous_const`. Use `continuous_iff_continuousAt.2 fun m₀ => ?_` and prove the remaining obligations. Take `⟨K, hK, hKn⟩` from `exists_compact_mem_nhds m₀`. Take `⟨c, hc⟩` from `GlobalTheory.WeilSupBound.exists_sup_bound D ψ V W χS χT ω hω f hf (K ×ˢ {1}) (hK.prod isCompact_singleton)`.
-
-Unfold `res`. Use `continuousAt_of_dominated (bound := fun _ => c) ?_ ?_ (integrable_const c) ?_` and prove the remaining obligations. Conclude with `Filter.Eventually.of_forall fun m => ((hω.om_pres (m, 1) f hf).cont.comp hy).aestronglyMeasurable`. Use `filter_upwards [hKn] with m hm`. Conclude with `Filter.Eventually.of_forall fun y => hc (m, 1) ⟨hm, rfl⟩ _`.
-
-Use `Filter.Eventually.of_forall fun y => ?_` and prove the remaining obligations. Conclude with `((hω.om_cont f hf _).comp (Continuous.prodMk_left 1)).continuousAt`.
+Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuous_res_left : ∀ (D : D7) (V V' W : HSp D) (r : ℕ) (C : Matrix (Fin V.rank) (Fin r) D.host.E) (B : Matrix (Fin V.rank) (Fin V'.rank) D.host.E) (ψ : AddChar (AF D.host.F) ℂ) (χS χT : (AE D)ˣ →* Circle) (ω : GA D V × GA D W →* Module.End ℂ (WO V W → ℂ)), IsWeilDatumO ψ V W χS χT ω → ∀ (μ : Measure (Mx D W.rank r)) (𝓨 : Set (Mx D W.rank r)), IsCovolOne (GlobalTheory.IndefiniteRowSideFullHecke.AdjointIsotropicDecomposition.ratMx D W.rank r) μ 𝓨 → ∀ (f : WO V W → ℂ), IsThetaFunO ψ V W f → ∀ x, Continuous fun m : GA D V => GlobalTheory.IndefiniteRowSideFullHecke.AdjointIsotropicDecomposition.res V V' W C B μ 𝓨 (ω (m, 1) f) x := by
   intro D V V' W r C B ψ χS χT ω hω μ 𝓨 h𝓨 f hf x

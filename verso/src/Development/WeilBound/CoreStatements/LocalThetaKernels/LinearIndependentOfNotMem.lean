@@ -8,20 +8,20 @@ namespace PositivityTheory.ThKH.Locrep
 open Filter Topology
 
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.Yhd7.main h`.
+A detailed English derivation is pending.
 -/
 theorem eq_one_of_pow_near {R : Type} [NormedRing R] [NormedAlgebra ℂ R] {a : R} (h : ∀ p : ℕ, ‖a ^ p - 1‖ < 1 / 2) :
     a = 1 :=
   _root_.UpperTheory.Reformulated.B.Yhd7.main h
 
 /- English proof (translation)
-Rewrite using `[linearIndependent_iff']`. Introduce `s g`. Proceed by induction on `s using Finset.induction_on_max with`. Consider the case `empty => simp`. Consider the case `insert a s hs ih`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Introduce `hsum`. Establish `ha : a ∉ s` using `fun h => lt_irrefl _ (hs a h)`. Rewrite `hsum` using `[Finset.sum_insert ha]`. Establish `h0 : g a = 0`. Assume the negation of the conclusion as `hne`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Use `h2 a ((Submodule.smul_mem_iff _ hne).1 ?_)` and prove the remaining obligations. Rewrite using `[eq_neg_of_add_eq_zero_left hsum]`. Conclude with `neg_mem (Submodule.sum_mem _ fun i hi => Submodule.smul_mem _ _ (Submodule.subset_span (h1 i a (hs i hi))))`. Rewrite `hsum` using `[h0, zero_smul, zero_add]`. Introduce `i hi`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `Finset.mem_insert.1 hi with rfl | hi` into its components or cases. Conclude with `h0`. Conclude with `ih hsum i hi`.
+A detailed English derivation is pending.
 -/
 theorem linearIndependent_of_notMem {V : Type} [AddCommGroup V] [Module ℂ V] (u : ℕ → V) (T : ℕ → Set V)
     (h1 : ∀ m n, m < n → u m ∈ T n) (h2 : ∀ n, u n ∉ Submodule.span ℂ (T n)) : LinearIndependent ℂ u := by
@@ -47,13 +47,11 @@ theorem linearIndependent_of_notMem {V : Type} [AddCommGroup V] [Module ℂ V] (
     · exact ih hsum i hi
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Use `push Not at hne`. Use `choose c hc hc' using hne`. Take `⟨T, hT⟩ : ∃ T : ℕ → Finset V, ∀ n, T (n + 1) = insert (f (c n (T n))) (T n)` from `⟨fun n => Nat.rec ∅ (fun n t => insert (f (c n t)) t) n, fun _ => rfl⟩`. Establish `hli : LinearIndependent ℂ fun n => f (c n (T n))`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Proceed by induction.
 
-Use `linearIndependent_of_notMem (fun n => f (c n (T n))) (fun n => (T n : Set V)) (fun m n hmn => ?_) fun n => hc' n (T n)` and prove the remaining obligations. Use `beta_reduce`. Proceed by induction on `n, hmn using Nat.le_induction with`. Consider the case `base => rw [Nat.succ_eq_add_one, hT]`. Conclude with `Finset.mem_coe.2 (Finset.mem_insert_self _ _)`.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Consider the case `succ n _ ih => rw [hT]`. Conclude with `Finset.mem_coe.2 (Finset.mem_insert_of_mem ih)`. Take `⟨l, hl⟩` from `LinearMap.exists_extend ((Module.Basis.span hli).constr ℂ fun _ => (1 : ℂ))`. Establish `hl1 : ∀ n, l (f (c n (T n))) = 1` using `fun n => by`. Use `congrArg (fun L => L (Module.Basis.span hli n)) hl` as an intermediate fact.
-
-Simplify using `only [Module.Basis.constr_basis] at this`. Simplify `this` using `[Module.Basis.span_apply]`. Establish `hU : {g | l (f g) ≠ 1} ∈ 𝓝 (1 : G)` using `(isOpen_ne_fun (hcont l) continuous_const).mem_nhds (by simp [h1])`. Take `⟨n, hn⟩` from `hbasis _ hU`. Conclude with `hn (hc n (T n)) (hl1 n)`.
+Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exists_finite_orbit {G V : Type} [Group G] [TopologicalSpace G] [AddCommGroup V] [Module ℂ V]
     (K : ℕ → Subgroup G) (hanti : Antitone K) (hbasis : ∀ U ∈ 𝓝 (1 : G), ∃ n, (K n : Set G) ⊆ U)
@@ -83,27 +81,25 @@ theorem exists_finite_orbit {G V : Type} [Group G] [TopologicalSpace G] [AddComm
   exact hn (hc n (T n)) (hl1 n)
 
 /- English proof (translation)
-Introduce `φ hφ`. Take `⟨n, s, hs⟩` from `exists_finite_orbit K hanti hbasis (fun g => ω g φ - φ) (by simp [hone φ hφ]) fun l => by`. Simplify using `only [map_sub]`. Conclude with `(hcont l φ hφ).sub continuous_const`. Establish `h0 : ∀ k ∈ K n, k ∈ K 0` using `fun k hk => hanti (Nat.zero_le n) hk`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `V₀ : Submodule ℂ V` to `Submodule.span ℂ ((fun k => ω k φ) '' (K n : Set G))`. Establish `hW : V₀ ≤ W` using `Submodule.span_le.2 (by rintro _ ⟨k, hk, rfl⟩; exact hpres k (h0 k hk) φ hφ)`. Establish `hφ₀ : φ ∈ V₀` using `Submodule.subset_span ⟨1, (K n).one_mem, hone φ hφ⟩`. Establish `hinv : ∀ k ∈ K n, ∀ x ∈ V₀, ω k x ∈ V₀` using `fun k hk x hx => by`. Establish `: V₀ ≤ V₀.comap (ω k)` using `Submodule.span_le.2 (by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ ⟨k', hk', rfl⟩`. Conclude with `Submodule.subset_span ⟨k * k', (K n).mul_mem hk hk', hmul k (h0 k hk) k' (h0 k' hk') φ hφ⟩)`. Conclude with `this hx`. Establish `: FiniteDimensional ℂ V₀`. Establish `hle : V₀ ≤ Submodule.span ℂ ((insert φ s : Finset V) : Set V)` using `Submodule.span_le.2 (by`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Introduce and unpack `_ ⟨k, hk, rfl⟩`. Establish `e : ω k φ = (ω k φ - φ) + φ` using `by abel`. Express the relevant statement in the definitionally equal form `ω k φ ∈ Submodule.span ℂ _`. Rewrite using `[e]`. Conclude with `add_mem (Submodule.span_mono (by simp) (hs k hk)) (Submodule.subset_span (by simp)))`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `Submodule.finiteDimensional_of_le hle`. Set `b` to `(Module.finBasis ℂ V₀).equivFun`. Take `⟨π, hπ⟩` from `LinearMap.exists_extend (b : V₀ →ₗ[ℂ] (Fin (Module.finrank ℂ V₀) → ℂ))`. Set `j : (Fin (Module.finrank ℂ V₀) → ℂ) →ₗ[ℂ] V` to `V₀.subtype ∘ₗ (b.symm : _ →ₗ[ℂ] V₀)`. Establish `hj : ∀ x, j x ∈ V₀` using `fun x => (b.symm x).2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Establish `hπ' : ∀ y : V₀, π y = b y` using `fun y => congrArg (fun L => L y) hπ`. Establish `hjπ : ∀ x ∈ V₀, j (π x) = x` using `fun x hx => by`. Rewrite using `[hπ' ⟨x, hx⟩]`. Express the relevant statement in the definitionally equal form `((b.symm (b ⟨x, hx⟩) : V₀) : V) = x`. Rewrite using `[b.symm_apply_apply]`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hπj : ∀ x, π (j x) = x` using `fun x => by`. Express the relevant statement in the definitionally equal form `π (b.symm x : V₀) = x`. Rewrite using `[hπ', b.apply_symm_apply]`. Set `A : G → (Fin (Module.finrank ℂ V₀) → ℂ) →L[ℂ] (Fin (Module.finrank ℂ V₀) → ℂ)` to `fun g => LinearMap.toContinuousLinearMap (π ∘ₗ ω g ∘ₗ j)`. Establish `hA : ∀ g x, A g x = π (ω g (j x))` using `fun _ _ => rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hAc : Continuous A` using `continuous_clm_apply.2 fun x => continuous_pi fun i => hcont (LinearMap.proj i ∘ₗ π) (j x) (hW (hj x))`. Establish `hA1 : A 1 = 1` using `by ext1 x`. Rewrite using `[hA, hone _ (hW (hj x)), hπj]`. Both sides reduce to the same expression. Establish `hAp : ∀ k ∈ K n, ∀ p : ℕ, A (k ^ p) = A k ^ p` using `fun k hk p => by`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Proceed by induction on `p with`. Consider the case `zero => rw [pow_zero, pow_zero, hA1]`. Consider the case `succ p ih => ext1 x`. Rewrite using `[pow_succ', pow_succ', ← ih, mul_apply_eq_comp, hA, hA, hA, hjπ _ (hinv _ ((K n).pow_mem hk p) _ (hj x)), hmul k (h0 k hk) _ (h0 _ ((K n).pow_mem hk p)) _ (hW (hj x))]`. Establish `hU : {g | ‖A g - 1‖ < 1 / 2} ∈ 𝓝 (1 : G)` using `(isOpen_lt (hAc.sub continuous_const).norm continuous_const).mem_nhds (by simp [hA1])`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨m, hm⟩` from `hbasis _ hU`. Use `⟨max n m, fun k hk => ?_⟩` and prove the remaining obligations. Establish `hkn : k ∈ K n` using `hanti (le_max_left n m) hk`. Establish `hkm : k ∈ K m` using `hanti (le_max_right n m) hk`. Establish `hk1 : A k = 1` using `eq_one_of_pow_near fun p => by`.
-
-Rewrite using `[← hAp k hkn]`. Conclude with `hm ((K m).pow_mem hkm p)`. Use `hA k (π φ)` as an intermediate fact. Rewrite `this` using `[hk1, hjπ φ hφ₀, one_apply_eq_self]`. Rewrite using `[← hjπ _ (hinv k hkn φ hφ₀), ← this, hjπ φ hφ₀]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem smooth_of_weak {G V : Type} [Group G] [TopologicalSpace G] [AddCommGroup V] [Module ℂ V] (W : Submodule ℂ V)
     (K : ℕ → Subgroup G) (hanti : Antitone K) (hbasis : ∀ U ∈ 𝓝 (1 : G), ∃ n, (K n : Set G) ⊆ U)

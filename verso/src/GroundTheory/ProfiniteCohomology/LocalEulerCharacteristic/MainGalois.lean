@@ -19,27 +19,27 @@ noncomputable abbrev restrictFixed : Gal(Ksep/K) →* Gal(fixedField (V : Subgro
   AlgEquiv.restrictNormalHom (fixedField (V : Subgroup Gal(Ksep/K)))
 
 /- English proof (translation)
-The claim follows from `AlgEquiv.restrictNormalHom_surjective Ksep`.
+A detailed English derivation is pending.
 -/
 theorem restrictFixed_surjective : Function.Surjective (restrictFixed V) :=
   AlgEquiv.restrictNormalHom_surjective Ksep
 
 /- English proof (translation)
-The claim follows from `AlgEquiv.restrictNormal_commutes σ _ x`.
+A detailed English derivation is pending.
 -/
 theorem restrictFixed_apply (σ : Gal(Ksep/K)) (x : fixedField (V : Subgroup Gal(Ksep/K))) :
     ((restrictFixed V σ x : fixedField (V : Subgroup Gal(Ksep/K))) : Ksep) = σ x :=
   AlgEquiv.restrictNormal_commutes σ _ x
 
 /- English proof (translation)
-Rewrite using `[restrictFixed, IntermediateField.restrictNormalHom_ker, fixingSubgroup_fixedField_openNormalSubgroup]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem ker_restrictFixed : (restrictFixed V).ker = (V : Subgroup Gal(Ksep/K)) := by
   rw [restrictFixed, IntermediateField.restrictNormalHom_ker,
     fixingSubgroup_fixedField_openNormalSubgroup]
 
 /- English proof (translation)
-Rewrite using `[← MonoidHom.mem_ker]`. Conclude with `(SetLike.ext_iff.1 (ker_restrictFixed V) σ).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_V_iff_restrictFixed_eq_one (σ : Gal(Ksep/K)) :
     σ ∈ (V : Subgroup Gal(Ksep/K)) ↔ restrictFixed V σ = 1 := by
@@ -58,7 +58,7 @@ variable {V}
 
 @[simp]
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_preimageOpen {S : Subgroup Gal(fixedField (V : Subgroup Gal(Ksep/K))/K)} {σ : Gal(Ksep/K)} :
     σ ∈ (preimageOpen V S : Subgroup Gal(Ksep/K)) ↔ restrictFixed V σ ∈ S :=
@@ -72,7 +72,7 @@ theorem coe_preimageOpen (S : Subgroup Gal(fixedField (V : Subgroup Gal(Ksep/K))
   rfl
 
 /- English proof (translation)
-Introduce `σ hσ` and use `by rw [mem_preimageOpen, (mem_V_iff_restrictFixed_eq_one V σ).1 hσ] exact S.one_mem`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem le_preimageOpen (S : Subgroup Gal(fixedField (V : Subgroup Gal(Ksep/K))/K)) :
     (V : Subgroup Gal(Ksep/K)) ≤ preimageOpen V S := fun σ hσ => by
@@ -80,7 +80,7 @@ theorem le_preimageOpen (S : Subgroup Gal(fixedField (V : Subgroup Gal(Ksep/K))/
   exact S.one_mem
 
 /- English proof (translation)
-Introduce `_ hσ` and use `h hσ`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem preimageOpen_le_preimageOpen {S S' : Subgroup Gal(fixedField (V : Subgroup Gal(Ksep/K))/K)}
     (h : S ≤ S') : preimageOpen V S ≤ preimageOpen V S' := fun _ hσ => h hσ
@@ -90,7 +90,7 @@ instance preimageOpen_normal (S : Subgroup Gal(fixedField (V : Subgroup Gal(Ksep
   Subgroup.Normal.comap inferInstance _
 
 /- English proof (translation)
-Use extensionality with `σ`. Rewrite using `[coe_preimageOpen, Subgroup.mem_comap, Subgroup.mem_bot, mem_V_iff_restrictFixed_eq_one]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 -/
 theorem preimageOpen_bot :
     ((preimageOpen V ⊥ : OpenSubgroup Gal(Ksep/K)) : Subgroup Gal(Ksep/K)) = V := by
@@ -98,7 +98,7 @@ theorem preimageOpen_bot :
   rw [coe_preimageOpen, Subgroup.mem_comap, Subgroup.mem_bot, mem_V_iff_restrictFixed_eq_one]
 
 /- English proof (translation)
-Rewrite using `[coe_preimageOpen, coe_preimageOpen, Subgroup.relIndex_comap, Subgroup.map_comap_eq_self_of_surjective (restrictFixed_surjective V)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem relIndex_preimageOpen (S S' : Subgroup Gal(fixedField (V : Subgroup Gal(Ksep/K))/K)) :
     ((preimageOpen V S : OpenSubgroup Gal(Ksep/K)) : Subgroup Gal(Ksep/K)).relIndex
@@ -107,7 +107,7 @@ theorem relIndex_preimageOpen (S S' : Subgroup Gal(fixedField (V : Subgroup Gal(
     Subgroup.map_comap_eq_self_of_surjective (restrictFixed_surjective V)]
 
 /- English proof (translation)
-Establish `h` using `relIndex_preimageOpen (V := V) ⊥ S`. Rewrite `h` using `[preimageOpen_bot, Subgroup.relIndex_bot_left]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem relIndex_V_preimageOpen (S : Subgroup Gal(fixedField (V : Subgroup Gal(Ksep/K))/K)) :
     (V : Subgroup Gal(Ksep/K)).relIndex (preimageOpen V S) = Nat.card S := by
@@ -116,7 +116,7 @@ theorem relIndex_V_preimageOpen (S : Subgroup Gal(fixedField (V : Subgroup Gal(K
   exact h
 
 /- English proof (translation)
-Rewrite using `[coe_preimageOpen]`. Conclude with `Subgroup.index_comap_of_surjective S (restrictFixed_surjective V)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem index_preimageOpen (S : Subgroup Gal(fixedField (V : Subgroup Gal(Ksep/K))/K)) :
     ((preimageOpen V S : OpenSubgroup Gal(Ksep/K)) : Subgroup Gal(Ksep/K)).index = S.index := by
@@ -135,7 +135,7 @@ noncomputable def quotientPreimageOpenEquiv (S : Subgroup Gal(fixedField (V : Su
       ((QuotientGroup.mk'_surjective S).comp (restrictFixed_surjective V)))
 
 /- English proof (translation)
-The claim follows from `isCyclic_of_surjective (quotientPreimageOpenEquiv S).symm.toMonoidHom (quotientPreimageOpenEquiv S).symm.surjective`.
+A detailed English derivation is pending.
 -/
 theorem isCyclic_quotient_preimageOpen (S : Subgroup Gal(fixedField (V : Subgroup Gal(Ksep/K))/K))
     [S.Normal] [IsCyclic (Gal(fixedField (V : Subgroup Gal(Ksep/K))/K) ⧸ S)] :
@@ -144,7 +144,7 @@ theorem isCyclic_quotient_preimageOpen (S : Subgroup Gal(fixedField (V : Subgrou
     (quotientPreimageOpenEquiv S).symm.surjective
 
 /- English proof (translation)
-The claim follows from `Nat.card_congr (quotientPreimageOpenEquiv S).toEquiv`.
+A detailed English derivation is pending.
 -/
 theorem card_quotient_preimageOpen (S : Subgroup Gal(fixedField (V : Subgroup Gal(Ksep/K))/K))
     [S.Normal] :
@@ -153,9 +153,9 @@ theorem card_quotient_preimageOpen (S : Subgroup Gal(fixedField (V : Subgroup Ga
   Nat.card_congr (quotientPreimageOpenEquiv S).toEquiv
 
 /- English proof (translation)
-Establish `hζV : ζ ∈ fixedField (V : Subgroup Gal(Ksep/K))` using `(mem_fixedField_iff _ _).2 fun σ hσ => hV σ hσ ζ hζ`. Use `set ζ' : fixedField (V : Subgroup Gal(Ksep/K)) := ⟨ζ, hζV⟩`. Establish `hζ' : ζ' ^ n = 1` using `Subtype.ext (by simp [ζ', hζ])`. Establish `h` using `(mem_fixedField_iff _ _).1 (hS ζ' hζ')`. Use `(mem_fixedField_iff _ _).2 fun σ hσ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `congrArg (fun y : fixedField (V : Subgroup Gal(Ksep/K)) => (y : Ksep)) (h _ hσ)` as an intermediate fact. Simplify `this` using `[ζ', restrictFixed_apply]`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem pow_eq_one_mem_fixedField_preimageOpen {n : ℕ}
     (hV : ∀ σ ∈ (V : Subgroup Gal(Ksep/K)), ∀ ζ : Ksep, ζ ^ n = 1 → σ ζ = ζ)
@@ -182,9 +182,9 @@ variable {K Ksep : Type} [Field K] [ValuativeRel K] [TopologicalSpace K] [IsNona
   {V : OpenNormalSubgroup Gal(Ksep/K)}
 
 /- English proof (translation)
-Establish `hx'1 : valuation (fixedField (V : Subgroup Gal(Ksep/K))) ⟨x, hx⟩ ≤ 1` using `(valuation_le_one_iff_coe _ ⟨x, hx⟩).2 hx1`. Establish `h` using `hS hσ ⟨⟨x, hx⟩, hx'1⟩`. Simplify using `only [zero_add, Int.toNat_one, pow_one] at h`. Establish `h2` using `mem_maximalIdeal_integer_iff.1 h`. Establish `h3` using `(valuation_lt_one_iff_coe _ _).1 h2`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify `h3` using `[restrictFixed_apply]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem valuation_sub_lt_one_of_mem_preimageOpen
     {S : Subgroup Gal(fixedField (V : Subgroup Gal(Ksep/K))/K)}

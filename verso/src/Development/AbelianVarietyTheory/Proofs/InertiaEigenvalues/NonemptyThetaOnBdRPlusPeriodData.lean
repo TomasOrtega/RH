@@ -18,7 +18,7 @@ open scoped Formalism.Per
 variable {l : ℕ} [Fact l.Prime]
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih => rw [pow_succ', pow_mul, ← add_assoc, AI.ζ_succ, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem zeta_pow {P : LocPrime l} (AI : LocAinf l P) (m n : ℕ) : AI.ζ (m + n) ^ l ^ n = AI.ζ m := by
   induction n with
@@ -26,11 +26,11 @@ theorem zeta_pow {P : LocPrime l} (AI : LocAinf l P) (m n : ℕ) : AI.ζ (m + n)
   | succ n ih => rw [pow_succ', pow_mul, ← add_assoc, AI.ζ_succ, ih]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Use `Perfection.teichmuller_spec (I := Ideal.span {(l : Per.OC l)}) fun n => ?_` and prove the remaining obligations. Use `⟨AI.ζ n, (AI.ε_coeff n).symm, ?_⟩` and prove the remaining obligations. Use `zeta_pow AI 0 n` as an intermediate fact. Rewrite `this` using `[zero_add, AI.ζ_zero]`.
+Prove the components needed by the constructor for the conclusion. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[this]`. Establish `: ((frobeniusEquiv (Per.Fl l) l).symm AI.ε).untilt = AI.ζ 1`. Use `Perfection.teichmuller_spec (I := Ideal.span {(l : Per.OC l)}) fun n => ?_` and prove the remaining obligations. Use `⟨AI.ζ (1 + n), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[add_comm]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(AI.ε_coeff (n + 1)).symm.trans (PreTilt.coeff_frobeniusEquiv_symm n _).symm`. Rewrite using `[zeta_pow AI 1 n]`. Rewrite using `[this]`. Conclude with `AI.ζ_one`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isEps {P : LocPrime l} (AI : LocAinf l P) : IsEps (l := l) AI.ε := by
   constructor
@@ -49,14 +49,14 @@ theorem isEps {P : LocPrime l} (AI : LocAinf l P) : IsEps (l := l) AI.ε := by
     exact AI.ζ_one
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.RingIface.ev_alg l n a`.
+A detailed English derivation is pending.
 -/
 theorem ev_alg (n : ℕ) (a : Per.AinfP l) :
     Per.ev l n (algebraMap (Per.AinfP l) (Per.BdRp l) a) = Ideal.Quotient.mk _ a :=
   GlobalTheory.RingIface.ev_alg l n a
 
 /- English proof (translation)
-Establish `: Subsingleton (Per.AinfP l ⧸ Per.kerP l ^ 0)`. Rewrite using `[pow_zero, Ideal.one_eq_top]`. Use `infer_instance`. Conclude with `(GlobalTheory.RingIface.mem_filtration_iff_mem_kerTheta_pow l 0 y).2 (Subsingleton.elim _ _)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_filtration_zero' (y : Per.BdRp l) : y ∈ Per.FilP l 0 := by
   have : Subsingleton (Per.AinfP l ⧸ Per.kerP l ^ 0) := by
@@ -64,7 +64,7 @@ theorem mem_filtration_zero' (y : Per.BdRp l) : y ∈ Per.FilP l 0 := by
   exact (GlobalTheory.RingIface.mem_filtration_iff_mem_kerTheta_pow l 0 y).2 (Subsingleton.elim _ _)
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Conclude with `GlobalTheory.RingIface.exists_of_mem_FilD_nat l`. Introduce and unpack `⟨z, hz, rfl⟩`. Conclude with `GlobalTheory.RingIface.alg_mem_FilD_nat l hz`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem mem_filD_nat (n : ℕ) (x : Per.BdR l) :
     x ∈ Per.FilD l n ↔ ∃ z ∈ Per.FilP l n, algebraMap (Per.BdRp l) (Per.BdR l) z = x := by
@@ -74,7 +74,7 @@ theorem mem_filD_nat (n : ℕ) (x : Per.BdR l) :
     exact GlobalTheory.RingIface.alg_mem_FilD_nat l hz
 
 /- English proof (translation)
-Establish `_` using `he`. Conclude with `(GlobalTheory.T.bdRPlus_isDomain_bdR_isField l).2.1`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem alg_inj {e : Per.Fl l} (he : IsEps e) :
     Function.Injective (algebraMap (Per.BdRp l) (Per.BdR l)) := by
@@ -82,7 +82,7 @@ theorem alg_inj {e : Per.Fl l} (he : IsEps e) :
   exact (GlobalTheory.T.bdRPlus_isDomain_bdR_isField l).2.1
 
 /- English proof (translation)
-Establish `hc : Continuous (AI.actC g)` using `(AddMonoidHomClass.isometry_of_norm (AI.actC g) (AI.actC_norm g)).continuous`. Proceed by induction on `x using UniformSpace.Completion.induction_on with`. Consider the case `hp => exact isClosed_eq hc (GlobalTheory.RingIface.sigC_cont l g)`. Consider the case `ih a => exact (AI.actC_ext g a).trans (GlobalTheory.RingBasics.σC_coe g a).symm`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem actC_eq {P : LocPrime l} (AI : LocAinf l P) (g : GQ l) (x : ℂ_[l]) :
     AI.actC g x = Per.σC g x := by
@@ -93,13 +93,13 @@ theorem actC_eq {P : LocPrime l} (AI : LocAinf l P) (g : GQ l) (x : ℂ_[l]) :
   | ih a => exact (AI.actC_ext g a).trans (GlobalTheory.RingBasics.σC_coe g a).symm
 
 /- English proof (translation)
-Establish `hm : algebraMap (Per.Ainf l) (Per.AinfP l) (Per.tm e - 1) ∈ Per.kerP l`. Use `GlobalTheory.RingIface.alg_mem_kerP l ?_` and prove the remaining obligations. Rewrite using `[map_sub, WittVector.fontaineTheta_teichmuller, he.1, map_one, sub_self]`. Establish `h` using `GlobalTheory.CrisIncl.factorial_mul_ev l e y he.1 hy 2`. Rewrite using `[GlobalTheory.RingIface.mem_filtration_iff_mem_kerTheta_pow]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `Per.ev l 2 (algebraMap (Per.AinfP l) (Per.BdRp l) (algebraMap (Per.Ainf l) (Per.AinfP l) (Per.tm e - 1)) - y) = 0`. Rewrite using `[map_sub, ev_alg]`. Generalize the expression as in `algebraMap (Per.Ainf l) (Per.AinfP l) (Per.tm e - 1) = m at hm h ⊢`. Establish `h2 : Ideal.Quotient.mk (Per.kerP l ^ 2) (m ^ 2) = 0` using `Ideal.Quotient.eq_zero_iff_mem.2 (Ideal.pow_mem_pow hm 2)`. Establish `hu : IsUnit ((2 : ℕ) : Per.AinfP l ⧸ Per.kerP l ^ 2)`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(GlobalTheory.RingBasics.isUnit_nat l 2 two_ne_zero).map (Ideal.Quotient.mk (Per.kerP l ^ 2))` as an intermediate fact. Rewrite `this` using `[map_natCast]`. Then use the resulting hypothesis. Establish `hs : (∑ k ∈ Finset.range 2, (-1) ^ k * (((2 : ℕ).factorial / (k + 1) : ℕ) : Per.AinfP l) * m ^ (k + 1)) = ((2 : ℕ) : Per.AinfP l) * m - m ^ 2`. Simplify using `[Finset.sum_range_succ, Nat.factorial]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite `h` using `[hs, map_sub, h2, sub_zero, map_mul, map_natCast]`. Rewrite using `[sub_eq_zero]`. Conclude with `(hu.mul_left_cancel h).symm`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem log_mu {e : Per.Fl l} (he : IsEps e) {y : Per.BdRp l} (hy : Per.IsLog l e y) :
     aDp l (mu e) - y ∈ Per.FilP l 2 := by
@@ -128,7 +128,7 @@ theorem log_mu {e : Per.Fl l} (he : IsEps e) {y : Per.BdRp l} (hy : Per.IsLog l 
 variable {P : LocPrime l} {AI : LocAinf l P} (T : LocTied l P AI)
 
 /- English proof (translation)
-Establish `h` using `GlobalTheory.CrisIncl.incl_aB l _ T.incl a`. Rewrite `h` using `[← T.ιA]`. Use `Eq.trans ?_ h` and prove the remaining obligations. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem eD_ιA (a : Ainf l) :
     T.eD (P.ιB (AI.ιA a)) = algebraMap (Per.BdRp l) (Per.BdR l) (aDp l a) := by
@@ -138,14 +138,14 @@ theorem eD_ιA (a : Ainf l) :
   simp
 
 /- English proof (translation)
-The claim follows from `(T.fil _ _ _).trans (mem_filD_nat n _)`.
+A detailed English derivation is pending.
 -/
 theorem fil_nat (n : ℕ) (x : P.R.BdR) : x ∈ (P.PD (botExt l)).Fil n ↔
     ∃ z ∈ Per.FilP l n, algebraMap (Per.BdRp l) (Per.BdR l) z = T.eD x :=
   (T.fil _ _ _).trans (mem_filD_nat n _)
 
 /- English proof (translation)
-The claim follows from `(fil_nat T 0 x).trans ⟨fun ⟨z, _, h⟩ => ⟨z, h⟩, fun ⟨z, h⟩ => ⟨z, mem_filtration_zero' z, h⟩⟩`.
+A detailed English derivation is pending.
 -/
 theorem fil_zero (x : P.R.BdR) : x ∈ (P.PD (botExt l)).Fil 0 ↔
     ∃ z, algebraMap (Per.BdRp l) (Per.BdR l) z = T.eD x :=
@@ -155,7 +155,7 @@ def th (x : P.R.BdR) : ℂ_[l] :=
   Per.θD l (Function.invFun (algebraMap (Per.BdRp l) (Per.BdR l)) (T.eD x))
 
 /- English proof (translation)
-Rewrite using `[th, ← h, Function.leftInverse_invFun (alg_inj (isEps AI))]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem th_eq {x : P.R.BdR} {z : Per.BdRp l}
     (h : algebraMap (Per.BdRp l) (Per.BdR l) z = T.eD x) : th T x = Per.θD l z := by
@@ -163,17 +163,17 @@ theorem th_eq {x : P.R.BdR} {z : Per.BdRp l}
 
 include T in
 /- English proof (translation)
-Take `⟨h1, -, -, -⟩` from `GlobalTheory.T.bdRPlus_filtration_eq_fontaineXi_pow l _ (isEps AI)`. Take `⟨-, hk, hun, -, -⟩` from `GlobalTheory.T.thetaBdRPlus_surjective_ker_units_equivariant l`. Establish `hu` using `(P.PD (botExt l)).t_unit`. Establish `t1` using `(P.PD (botExt l)).mem_filtration_one`. Establish `t2` using `(P.PD (botExt l)).not_mem_filtration_two`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `t1`, `t2` using `[P.PD_ι, P.period_datum_t_eq]`. Rewrite `hu` using `[P.period_datum_t_eq]`. Take `⟨s, hs⟩` from `(hu.map P.ιB).exists_right_inv`. Use `⟨s, ?_, hs⟩` and prove the remaining obligations. Take `⟨z, hz, ez⟩` from `(fil_nat T 1 _).1 t1`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨u, rfl⟩` from `(h1 1 z).1 hz`. Establish `huu : IsUnit u` using `hun u fun h0 => by`. Take `⟨w, rfl⟩` from `(h1 1 u).1 ((hk u).1 h0)`. Conclude with `t2 ((fil_nat T 2 _).2 ⟨_, (h1 2 _).2 ⟨w, by ring⟩, ez⟩)`. Take `⟨v, hv⟩` from `huu.exists_right_inv`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[T.fil, GlobalTheory.T.mem_deRhamFiltration_iff_xi_pow l _ (isEps AI)]`. Use `⟨v, ?_⟩` and prove the remaining obligations. Establish `e1 : T.eD (P.ιB P.tB) * T.eD s = 1` using `by rw [← map_mul, hs, map_one]`. Establish `e2` using `congrArg (algebraMap (Per.BdRp l) (Per.BdR l)) hv`. Rewrite `e1` using `[← ez]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[show (- (-1 : ℤ)).toNat = 1 from rfl, show (-1 : ℤ).toNat = 0 from rfl]`. Simplify using `only [map_mul, map_one, pow_one, pow_zero, one_mul] at e1 e2 ⊢`. Generalize the expression as in `algebraMap (Per.BdRp l) (Per.BdR l) (aDp l (xi AI.ε)) = X at e1 ⊢`. Generalize the expression as in `algebraMap (Per.BdRp l) (Per.BdR l) u = U at e1 e2 ⊢`. Generalize the expression as in `algebraMap (Per.BdRp l) (Per.BdR l) v = V at e2 ⊢`.
+Simplify using the standard rewrite rules. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `V * e1 - (T.eD s * X) * e2`.
+A detailed English derivation is pending.
 -/
 theorem exists_inverse_fontaineElement_mem_fil_neg_one : ∃ s ∈ (P.PD (botExt l)).Fil (-1), P.ιB P.tB * s = 1 := by
   obtain ⟨h1, -, -, -⟩ := GlobalTheory.T.bdRPlus_filtration_eq_fontaineXi_pow l _ (isEps AI)
@@ -261,7 +261,7 @@ def thetaL : ThetaL P AI where
     rfl
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨thetaL (D.locT l)⟩`.
+Supply the required witnesses or components.
 -/
 theorem nonempty_thetaL (D : Formalism.BasicNotions.D7) (l : ℕ) [Fact l.Prime] :
     Nonempty (ThetaL (D.loc l) (D.locA l)) :=

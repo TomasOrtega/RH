@@ -9,7 +9,7 @@ import ReciprocityTheory.AnalyticForms.PotentialTheory.PshShiftA
 
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.BdryChart.psh_near_boundary` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FBoundarySmoothBoundPotential.lean&line=19#L19)
 -/

@@ -14,7 +14,7 @@ variable {V : Type} [AddCommGroup V] [Module K V] [FiniteDimensional K V] [Modul
   [IsScalarTower (𝓞 K) K V]
 
 /- English proof (translation)
-Conclude with `BallSum.sum_ballCount hK hF hs hd hL hLi hsr hT`.
+A detailed English derivation is pending.
 -/
 theorem sum_ballCount_eq (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF : IsFixF K F)
     {h : V →ₗ⋆[K] V →ₗ[K] K} (hs : h.IsSymm) (hd : IsTotPosDef h) {L : Submodule (𝓞 K) V}
@@ -25,7 +25,7 @@ theorem sum_ballCount_eq (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (h
   exact BallSum.sum_ballCount hK hF hs hd hL hLi hsr hT
 
 /- English proof (translation)
-Use extensionality with `n`. Simplify using `only [Set.mem_setOf_eq, Set.mem_empty_iff_false, iff_false, not_and]`. Introduce `hn hb`. Use `BoxCube.absNorm_le_pow hK hF hn hb` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem box_inter_eq_empty (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF : IsFixF K F) {b : Ideal (𝓞 F)}
     {T : ℝ} (hbT : T ^ Formalism.HermitianLatticesTheory.fDeg K < (Ideal.absNorm b : ℝ)) :

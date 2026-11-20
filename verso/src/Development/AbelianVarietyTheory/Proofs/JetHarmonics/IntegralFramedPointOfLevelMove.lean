@@ -20,7 +20,7 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 attribute [local instance] Over.cartesianMonoidalCategory
 
 /- English proof (translation)
-Establish `hz : r z ∈ (L.pull F).U (fun _ => j) ⊓ L'.U k` using `⟨mem_pull.2 hj, hk⟩`. Establish `a` using `congrArg (gs r z _) (h (fun _ => j) k)`. Conclude with `(gs_res _ z _ hz _).symm.trans (a.trans ((gs_mul _ z _ hz _ _).trans (congrArg₂ (· * ·) (gs_unit _ z _ hz _) (gs_res _ z _ hz _))))`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem gs_of_isoMaps {X X' : Scheme.{0}} {L : LB X} {L' : LB X'} {F : X' ⟶ X} {w : LB.Iso L' (L.pull F)}
     {σ : LB.Sec L'} {s : LB.Sec (L.pull F)} (h : IsoMaps w σ s) (Z : Scheme.{0}) (r : Z ⟶ X') (z : Z) (j : L.ι)
@@ -32,19 +32,19 @@ theorem gs_of_isoMaps {X X' : Scheme.{0}} {L : LB X} {L' : LB X'} {F : X' ⟶ X}
     (congrArg₂ (· * ·) (gs_unit _ z _ hz _) (gs_res _ z _ hz _))))
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c gl T io`. Use `letI := io.toAlgebra`. Introduce and unpack `y y' ⟨ρ, ν, -, -, hx, hu, pm, w, p₁, p₂, hw, hs⟩ ⟨G, t', m1, m2, ⟨ub, b₁, b₂, b₃, b₄⟩, θ, hθ, w1, w2, σ, s1, θ2, r₁, r₂, i₁, i₂, hp, hg⟩`. Take `⟨n, hn, w', hw', tri⟩` from `exists_comp_rig ν m1 y'.x hx ⟨hw.1, hw.2.1⟩ r₁`. Establish `g'` using `(isGen_iff w').1 hw'.1`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨s', hs'⟩` from `thf_secUp g' Xo.univ.t.PP.isLB t'.PP.isLB σ`. Use `⟨G, t', n, m2, ⟨ub, b₁, b₂, b₃, fun τ i => ?_⟩, θ, hθ, w', w2, σ, s', θ2, hw', r₂, ?_, i₂, hp, ?_⟩` and prove the remaining obligations. Take `⟨u', h₁, h₂⟩` from `b₄ τ i`. Conclude with `⟨u', by rw [hn, ← Category.assoc, h₁, hu], h₂⟩`. Conclude with `fun (i : PUnit → Xo.univ.t.PP.L.ι) k => fn_ext fun p hp => (gs_res _ p _ hp _).trans ((hs' _ (𝟙 _) p i k hp.1 hp.2).trans (Eq.symm ((gs_mul _ p _ hp _ _).trans (congrArg₂ (· * ·) (gs_unit (𝟙 _) p _ hp _) (gs_res _ p _ hp _)))))`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Introduce `q e₁ e₂ (J : PUnit → Xo.univ.t.PP.L.ι) hJ`. Use `fn_ext fun p hp => ?_` and prove the remaining obligations. Take `⟨k, hk⟩` from `exists_chart t'.PP.isLB p`. Take `⟨i, hi⟩` from `exists_chart Xo.univ.t.PP.isLB (m1.φ p)`. Establish `hp' : ν.φ (m1.φ p) ∈ Xo.univ.t.PP.L.U (J PUnit.unit)` using `(congrArg (fun q => q p ∈ Xo.univ.t.PP.L.U (J PUnit.unit)) hn).mp (mem_pull.1 hp)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `eg : 𝟙 _ ≫ q = (𝟙 _ ≫ toGx m1) ≫ pm`. Rewrite using `[Category.id_comp, Category.id_comp]`. Apply `FramedBaseChange.pulledGroup_hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, p₂, e₁, hn, ← Category.assoc, toGx_snd]`. Rewrite using `[Category.assoc, p₁, e₂, toGx_fst]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Set `W : (Gx y.x).Opens` to `(snd (Over.mk y.x) Xo.univ.t.G).left ⁻¹ᵁ ((LB.div (Xo.univ.t.PP.L.pull ν.cm.F) Xo.univ.t.PP.L).U ((fun _ => J PUnit.unit), i))`. Establish `h₁ : W ≤ pm ⁻¹ᵁ (PPx y'.x).U (fun _ => J PUnit.unit)` using `fun z hz => Set.mem_iInter.2 fun _ => (congrArg (fun u => u z ∈ Xo.univ.t.PP.L.U (J PUnit.unit)) p₂).mpr (mem_pull.1 hz.1)`. Establish `h₂ : W ≤ (PPx y.x).U (fun _ => i)` using `fun z hz => Set.mem_iInter.2 fun _ => hz.2`. Establish `es : (𝟙 _ ≫ toGx m1) ≫ (snd (Over.mk y.x) Xo.univ.t.G).left = 𝟙 _ ≫ m1.φ`. Rewrite using `[Category.assoc, toGx_snd]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hz₀ : (𝟙 _ ≫ m1.φ) p ∈ (LB.div (Xo.univ.t.PP.L.pull ν.cm.F) Xo.univ.t.PP.L).U ((fun _ => J PUnit.unit), i)` using `⟨mem_pull.2 hp', hi⟩`. Establish `hz : (𝟙 _ ≫ toGx m1) p ∈ W` using `(congrArg (fun u => u p ∈ (LB.div (Xo.univ.t.PP.L.pull ν.cm.F) Xo.univ.t.PP.L).U ((fun _ => J PUnit.unit), i)) es).mpr hz₀`. Establish `e` using `congrArg (gs (𝟙 _ ≫ toGx m1) p W) (hs (J PUnit.unit) i W rfl le_rfl h₁ h₂)`. Rewrite `e` using `[gs_appLE pm _ _ h₁ _ p hz, gs_mul _ p W hz, gs_appLE _ _ _ _ _ p hz, gs_res _ p h₂ hz, es, gs_unit _ p _ hz₀]`. Establish `le : (Xo.univ.t.PP.L.pull m1.φ).U (fun _ => i) ≤ toGx m1 ⁻¹ᵁ (PPx y.x).U (fun _ => i)` using `fun z hz => le_toGx m1 i (mem_pull.1 hz)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `k₂ : gs (𝟙 _) p _ (s1.f (fun _ => i)) = gs (𝟙 _ ≫ toGx m1) p ((PPx y.x).U (fun _ => i)) (y.s.f (fun _ => i))` using `(congrArg (gs (𝟙 _) p _) (hg (toGx m1) (toGx_snd m1) (toGx_fst m1) (fun _ => i) le)).trans (gs_appLE (toGx m1) _ _ le (𝟙 _) p (mem_pull.2 hi) _)`. Establish `k₃` using `gs_of_isoMaps i₁ _ (𝟙 _) p i k hi hk`. Rewrite using `[hs' _ (𝟙 _) p J k hp hk, gs_appLE q _ _ hJ (𝟙 _) p hp, eg, e, ← k₂, k₃, tri _ (𝟙 _) p _ i k hp' hi hk, Units.val_mul, _root_.mul_assoc]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem integral_of_levR : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (g : (Dw.La →ₗ[𝓞 E] Dw.La) × (Dw.La →ₗ[𝓞 E] Dw.La)) (T : CDVR) (io : c.F →+* T.Fr), letI := io.toAlgebra; ∀ y y' : FrPt Xo c T.Fr, levR (Xo := Xo) (c := c) g y y' → Integral T io y → Integral T io y' := by
   intro E _ _ _ H Dw l Xo c gl T io

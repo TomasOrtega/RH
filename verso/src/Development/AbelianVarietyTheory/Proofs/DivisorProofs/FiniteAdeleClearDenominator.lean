@@ -8,11 +8,11 @@ open NumberField IsDedekindDomain GlobalTheory.CMVal
 namespace GlobalTheory.CMVal.IntMult
 
 /- English proof (translation)
-Introduce `E _ _ _ c hc a`. Take `⟨b, hb0, hb⟩` from `GlobalTheory.Idele.exists_mul_integral (R := 𝓞 E) (K := E) a`. Establish `hN : Ideal.absNorm c ≠ 0` using `fun h => hc (Ideal.absNorm_eq_zero_iff.1 h)`. Establish `hnc : ((Ideal.absNorm c : ℕ) : OF E) ∈ c` using `Ideal.absNorm_mem c`. Establish `hy : ∀ v : HeightOneSpectrum (𝓞 E), (algebraMap E (Af E) (algebraMap (𝓞 E) E b) * a) v ∈ v.adicCompletionIntegers E` using `fun v => (HeightOneSpectrum.mem_adicCompletionIntegers _ _ _).2 (hb v)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `PicFin.mul_mem_hatO hnc hy`. Use `⟨algebraMap (OF E) E ((Ideal.absNorm c : ℕ) : OF E) * algebraMap (𝓞 E) E b, ?_, ?_⟩` and prove the remaining obligations. Use `mul_ne_zero ?_ ?_` and prove the remaining obligations. Rewrite using `[map_natCast]`. Conclude with `hN` after adjusting the coercions.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using hb0`. Rewrite using `[map_mul, mul_assoc]` and apply the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem exists_mul_mem_hatO : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (c : Ideal (OF E)), c ≠ ⊥ →
     ∀ a : Af E, ∃ m : E, m ≠ 0 ∧ algebraMap E (Af E) m * a ∈ hatO c := by

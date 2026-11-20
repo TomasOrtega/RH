@@ -16,11 +16,11 @@ open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalC
 open scoped CategoryTheory.Obj TensorProduct in
 
 /- English proof (translation)
-Introduce `E _ _ _ H D g ty hty`. Take `⟨P₀, hP₀⟩` from `_root_.GlobalTheory.PeriodNonempty.exists_isPeriod E H D g ty hty`. Take `⟨m, B, P, hm, hB, hBc, -, -, hP, huniq⟩` from `_root_.GlobalTheory.PeriodChart.period_chart E H D g ty hty P₀ hP₀`. Establish `hdim : m = D.dim`. Establish `h2 : Module.finrank ℚ E = 2 * InfinitePlace.nrComplexPlaces E` using `IsTotallyComplex.finrank E`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Datum.dim`. Rewrite `hm`, the goal using `[h2]`. Rewrite using `[Nat.mul_div_cancel_left _ two_pos]`. Combine the linear equalities and inequalities to obtain the conclusion. Substitute `hdim` using the available equality.
+Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Substitute using the available equality.
 
-Conclude with `⟨B, P, hB, hBc, hP, huniq⟩`.
+Supply the required witnesses or components.
 -/
 theorem _root_.GlobalTheory.exists_period_domain_param :
     ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (D : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Datum H) (g : ℕ) (ty : Fin g → (E →+* ℂ)), _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsTypeFn H D.p D.q ty → ∃ (B : Set (Fin D.dim → ℂ)) (P : (Fin D.dim → ℂ) → (D.La →+ (Fin g → ℂ))), IsOpen B ∧ Convex ℝ B ∧ _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsHolPeriods D ty B P ∧ ∀ P', _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsPeriod D ty P' → ∃! b, b ∈ B ∧ ∃ h : (Fin g → ℂ) ≃ₗ[ℂ] (Fin g → ℂ), ∀ a, P' a = h (P b a) := by

@@ -52,7 +52,7 @@ def ArchOn (M : TwoLevels E r U C) (ka : Wt M.Ψ r) (T : ℕ) : Prop :=
 def sOf (M : TwoLevels E r U C) : ℕ := 2 * r + 50 * r ^ 2 * M.dimX + 2
 
 /- English proof (translation)
-Take `⟨Xa, rfl, rfl, rfl, hm, ⟨Fl⟩⟩` from `h`. Conclude with `⟨Xa, Fl, rfl, rfl, rfl, hm, fun m f hf hi => GlobalTheory.UpperModel.upper E r X Xa Fl m f (fun q => (hf q).1) hi⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem ArchOne.upper {X : Data E r} {L Fp : Wt X.Ψ r} {T : ℕ} (h : ArchOne X L Fp T) :
     ∃ (Xa : ArchInM X) (Fl : FlatM X Xa), Xa.L = L ∧ Xa.Fp = Fp ∧ Xa.T = T ∧ GlobalTheory.Shares.Margins X Xa ∧
@@ -63,7 +63,7 @@ theorem ArchOne.upper {X : Data E r} {L Fp : Wt X.Ψ r} {T : ℕ} (h : ArchOne X
   exact ⟨Xa, Fl, rfl, rfl, rfl, hm, fun m f hf hi => GlobalTheory.UpperModel.upper E r X Xa Fl m f (fun q => (hf q).1) hi⟩
 
 /- English proof (translation)
-Take `⟨Xa, h1, h2, h3, hm, ⟨Fl⟩⟩` from `h`. Conclude with `⟨Xa, h1, h2, h3, hm, Fl, GlobalTheory.UpTie.jetInj E r X Xa Fl⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem ArchOne.jetInjAt {X : Data E r} {L Fp : Wt X.Ψ r} {T : ℕ} (h : ArchOne X L Fp T) :
     ∃ Xa : ArchInM X, Xa.L = L ∧ Xa.Fp = Fp ∧ Xa.T = T ∧ GlobalTheory.Shares.Margins X Xa ∧ ∃ Fl : FlatM X Xa, JetInjAt X Xa Fl := by
@@ -71,19 +71,19 @@ theorem ArchOne.jetInjAt {X : Data E r} {L Fp : Wt X.Ψ r} {T : ℕ} (h : ArchOn
   exact ⟨Xa, h1, h2, h3, hm, Fl, GlobalTheory.UpTie.jetInj E r X Xa Fl⟩
 
 /- English proof (translation)
-Take `⟨X, Xa, Fl, -, -, hm⟩` from `GlobalTheory.Shares.Model.relIn_margins_lines (E := E) (RingHom.id ℂ) h`. Conclude with `⟨X, Xa.L, Xa.Fp, Xa.T, Xa, rfl, rfl, rfl, hm, ⟨Fl⟩⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_archOne (h : Module.finrank ℚ E = 4) : ∃ (X : Data E 2) (L Fp : Wt X.Ψ 2) (T : ℕ), ArchOne X L Fp T := by
   obtain ⟨X, Xa, Fl, -, -, hm⟩ := GlobalTheory.Shares.Model.relIn_margins_lines (E := E) (RingHom.id ℂ) h
   exact ⟨X, Xa.L, Xa.Fp, Xa.T, Xa, rfl, rfl, rfl, hm, ⟨Fl⟩⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨r + 25 * (r ^ 2 * M.dimX) + 1, by unfold sOf; ring⟩`.
+Supply the required witnesses or components.
 -/
 theorem even_sOf (M : TwoLevels E r U C) : Even (sOf M) := ⟨r + 25 * (r ^ 2 * M.dimX) + 1, by unfold sOf; ring⟩
 
 /- English proof (translation)
-The claim follows from `Nat.le_succ _`.
+A detailed English derivation is pending.
 -/
 theorem le_sOf (M : TwoLevels E r U C) : 2 * r + 50 * r ^ 2 * M.dimX + 1 ≤ sOf M := Nat.le_succ _
 
@@ -98,7 +98,7 @@ Both sides reduce to the same expression.
 theorem cusp_sub (M : TwoLevels E r U C) (H : Subgroup U) (la : Wt M.Ψ r) : (sub M H).cusp la = M.cusp la := rfl
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `h`. Conclude with `⟨fun u c => a u c, fun u F hF c x => ha u F hF c x⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem IsPullRep.restrict {M : TwoLevels E r U C} {la : Wt M.Ψ r} {ρ : Representation ℂ U (M.cusp la)} (h : IsPullRep M la ρ)
     (H : Subgroup U) : IsPullRep (sub M H) la (ρ.comp H.subtype) := by
@@ -106,9 +106,9 @@ theorem IsPullRep.restrict {M : TwoLevels E r U C} {la : Wt M.Ψ r} {ρ : Repres
   exact ⟨fun u c => a u c, fun u F hF c x => ha u F hF c x⟩
 
 /- English proof (translation)
-Establish `h0 : deMul M.Ψ r M.p0 0 = 0`. Use function extensionality and compare the values at `τ i`. Simplify using `[deMul]`. Unfold `Ranks`. Rewrite using `[h0, smul_zero, add_zero, sub_zero ka]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨h, h, by simp, by simp, h⟩`.
+Supply the required witnesses or components.
 -/
 theorem ranks_zero (M : TwoLevels E r U C) (ka : Wt M.Ψ r) (h : Module.Finite ℂ (M.cusp ka)) : Ranks M ka 0 0 1 := by
   have h0 : deMul M.Ψ r M.p0 0 = 0 := by

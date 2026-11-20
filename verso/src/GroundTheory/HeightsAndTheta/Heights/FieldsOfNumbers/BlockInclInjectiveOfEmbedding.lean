@@ -15,7 +15,7 @@ noncomputable section
 universe u
 
 /- English proof (translation)
-Use `show (((a : ℤ) : WithTop ℤ) : WithBot (WithTop ℤ)) < (((b : ℤ) : WithTop ℤ) : WithBot (WithTop ℤ))`. Conclude with `WithBot.coe_lt_coe.mpr (WithTop.coe_lt_coe.mpr (by exact_mod_cast h))`.
+A detailed English derivation is pending.
 -/
 theorem PFContracted.natCast_lt_withBotWithTop {a b : ℕ} (h : a < b) :
     ((a : ℕ) : WithBot (WithTop ℤ)) < ((b : ℕ) : WithBot (WithTop ℤ)) := by
@@ -23,7 +23,7 @@ theorem PFContracted.natCast_lt_withBotWithTop {a b : ℕ} (h : a < b) :
   exact WithBot.coe_lt_coe.mpr (WithTop.coe_lt_coe.mpr (by exact_mod_cast h))
 
 /- English proof (translation)
-Introduce and unpack `⟨k₁, x₁⟩ ⟨k₂, x₂⟩ h`. Take `⟨h1, h2⟩` from `Sigma.mk.inj_iff.mp h`. Consider the cases of `j.injective h1`. Consider the cases of `eq_of_heq h2`. Both sides reduce to the same expression.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Both sides reduce to the same expression.
 -/
 theorem PFContracted.blockIncl_injective_of_embedding {K K' : Type} (j : K ↪ K') (ι' : K' → Type) :
     Function.Injective (blockIncl j ι') := by

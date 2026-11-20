@@ -49,7 +49,7 @@ def Good (Bs : B.RealPlaceData k r Wp Wq) (ε : Fin (2 * r + k + 1) → Bool) (l
 end JDat
 
 /- English proof (translation)
-Use function extensionality and compare the values at `g`. Establish `hs : A.scal μG = 0`. Unfold `JDat.scal`. Apply the tactic sequence `rcases h0 with h | h <;> simp [h]`. Simplify using `[JDat.coef, hs]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem coef_eq_zero_of (μG : Measure (Formalism.QuantumDeterminants.Mt k r)) (A : JDat k r Wp Wq) (h0 : A.l A.w0 = 0 ∨ A.l' A.w0 = 0) :
     A.coef μG = 0 := by
@@ -60,7 +60,7 @@ theorem coef_eq_zero_of (μG : Measure (Formalism.QuantumDeterminants.Mt k r)) (
   simp [JDat.coef, hs]
 
 /- English proof (translation)
-Use `show ((A.scal μG : ℝ) : ℂ) • (⟪A.l' A.w0, x⟫_ℂ • (⟪A.w0, A.σ g A.w0⟫_ℂ • A.l A.w0)) = _`. Rewrite using `[smul_smul, smul_smul, mul_assoc]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coef_apply (μG : Measure (Formalism.QuantumDeterminants.Mt k r)) (A : JDat k r Wp Wq) (g : B.Mat k r) (x : Wq) :
     A.coef μG g x = (((A.scal μG : ℝ) : ℂ) * (⟪A.l' A.w0, x⟫_ℂ * ⟪A.w0, A.σ g A.w0⟫_ℂ)) • A.l A.w0 := by
@@ -68,9 +68,9 @@ theorem coef_apply (μG : Measure (Formalism.QuantumDeterminants.Mt k r)) (A : J
   rw [smul_smul, smul_smul, mul_assoc]
 
 /- English proof (translation)
-Establish `h1 : ‖A.l A.w0‖ ≠ 0` using `norm_ne_zero_iff.2 hl`. Establish `h2 : ‖A.l' A.w0‖ ≠ 0` using `norm_ne_zero_iff.2 hl'`. Establish `h3 : ((‖A.l A.w0‖ : ℂ)) ^ 2 * (‖A.l' A.w0‖ : ℂ) ^ 2 ≠ 0` using `by simp [h1, h2]`. Simplify using `only [ContinuousLinearMap.smulRight_apply, innerSL_apply_apply, inner_smul_right, inner_self_eq_norm_sq_to_K]`. Use `push_cast`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[inv_mul_eq_one₀ h3]`. Conclude with `mul_comm _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inner_rank_one_normalized (A : JDat k r Wp Wq) (hl : A.l A.w0 ≠ 0) (hl' : A.l' A.w0 ≠ 0) :
     ⟪A.l A.w0, (((‖A.l A.w0‖ ^ 2 * ‖A.l' A.w0‖ ^ 2)⁻¹ : ℝ) : ℂ) •
@@ -104,7 +104,7 @@ def J (Bs : B.RealPlaceData k r Wp Wq) (F : JFam k r Wp Wq) (μ : Fin (2 * r + k
   if Formalism.QuantumDeterminants.IsHCParam (lamOf F.sh μ) then (F.A μ).coef Bs.μG else 0
 
 /- English proof (translation)
-Unfold `J`. Rewrite using `[if_pos h]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem J_of_hc (Bs : B.RealPlaceData k r Wp Wq) (F : JFam k r Wp Wq) (μ : Fin (2 * r + k + 1) → ℤ)
     (h : Formalism.QuantumDeterminants.IsHCParam (lamOf F.sh μ)) : F.J Bs μ = (F.A μ).coef Bs.μG := by
@@ -113,7 +113,7 @@ theorem J_of_hc (Bs : B.RealPlaceData k r Wp Wq) (F : JFam k r Wp Wq) (μ : Fin 
   rw [if_pos h]
 
 /- English proof (translation)
-Unfold `J`. Rewrite using `[if_neg h]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem J_of_not_hc (Bs : B.RealPlaceData k r Wp Wq) (F : JFam k r Wp Wq) (μ : Fin (2 * r + k + 1) → ℤ)
     (h : ¬ Formalism.QuantumDeterminants.IsHCParam (lamOf F.sh μ)) : F.J Bs μ = 0 := by
@@ -152,7 +152,7 @@ def JmuPin : Prop :=
       B.JF Bs (A.coef Bs.μG) γ = ((A.deg Bs.μG : ℝ) : ℂ) • Mop Bs.μG A.σ A.w0 A.l A.l' γ
 
 /- English proof (translation)
-Take `⟨l, hl, hbe, -⟩` from `hDD hI k r ε lam h H σ w0 Wp Bs.z _ u Bs.π Bs.μW Bs.μN Bs.μG νq hs`. Take `⟨l', hl', hbe', -⟩` from `hDD hI k r ε lam h H σ w0 Wq Bs.z' _ u' Bs.π' Bs.μW' Bs.μN Bs.μG νq' hs'`. Conclude with `⟨l, l', hs, hs', hl, hl', fun x hx y hy => (hbe x hx y hy).2, fun x hx y hy => (hbe' x hx y hy).2⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_good (hDD : DDFormOne) (hI : Inputs) [CompleteSpace Wp] [FiniteDimensional ℂ Wp] [CompleteSpace Wq]
     [FiniteDimensional ℂ Wq] (Bs : B.RealPlaceData k r Wp Wq) (ε : Fin (2 * r + k + 1) → Bool)

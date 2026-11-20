@@ -17,9 +17,9 @@ namespace GlobalTheory.SkewFund
 open GlobalTheory.HomCovolume
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hlt`. Rewrite `hlt` using `[not_le]`. Establish `: Countable A.toAddSubgroup` using `inferInstanceAs (Countable A)`. Establish `hF : IsAddFundamentalDomain A.toAddSubgroup (latticeDomain A) volume` using `isAddFundamentalDomain_latticeDomain A volume`. Take `⟨x, hx0, hx⟩` from `exists_ne_zero_mem_lattice_of_measure_mul_two_pow_lt_measure hF (s := Metric.ball 0 1) (fun x hx => by simpa using hx) (convex_ball _ _) (by`.
+Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[measure_latticeDomain, Real.volume_pi_ball _ one_pos, Module.finrank_fintype_fun_eq_card, mul_one, ENNReal.ofReal_pow zero_le_two, ENNReal.ofReal_ofNat]`. Combine the equalities or inequalities in the displayed calculation. Conclude with `absurd (h x x.2 (fun h0 => hx0 (Subtype.ext h0))) (by simpa using hx)`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem one_le_covolume {ι : Type} [Fintype ι] (A : Submodule ℤ (ι → ℝ)) [DiscreteTopology A] [IsZLattice ℝ A]
     (h : ∀ x ∈ A, x ≠ 0 → 1 ≤ ‖x‖) : 1 ≤ ZLattice.covolume A volume := by
@@ -38,19 +38,17 @@ theorem one_le_covolume {ι : Type} [Fintype ι] (A : Submodule ℤ (ι → ℝ)
   exact absurd (h x x.2 (fun h0 => hx0 (Subtype.ext h0))) (by simpa using hx)
 
 /- English proof (translation)
-Apply the tactic sequence `let e : ((ι → ℝ) × (ι → ℝ)) ≃L[ℝ] (ι → ℂ) := LinearEquiv.toContinuousLinearEquiv { toFun := fun p v => ⟨p.1 v, p.2 v⟩ invFun := fun z => (fun v => (z v).re, fun v => (z v).im) map_add' := fun p q => by ext v; apply Complex.ext <;> simp map_smul' := fun c p => by ext v; apply Comp …`. Establish `he : ∀ p v, e p v = ⟨p.1 v, p.2 v⟩` using `fun _ _ => rfl`. Establish `hmp : MeasurePreserving e (Measure.prod volume volume) volume` using `(volume_preserving_pi (ι := ι) fun _ => Complex.volume_preserving_equiv_real_prod.symm).comp (volume_measurePreserving_arrowProdEquivProdArrow ℝ ℝ ι).symm`. Set `M : Submodule ℤ ((ι → ℝ) × (ι → ℝ))` to `L.comap (e.toLinearMap.restrictScalars ℤ)`. Establish `hM : ∀ p, p ∈ M ↔ e p ∈ L` using `fun _ => Iff.rfl`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `: ((volume : Measure (ι → ℝ)).prod (volume : Measure (ι → ℝ))).IsAddHaarMeasure` using `Measure.prod.instIsAddHaarMeasure _ _`. Take `⟨_, _, hcM⟩` from `HasCov.of_measurePreserving e hmp hM hc`. Set `A : Submodule ℤ (ι → ℝ)` to `M.comap (LinearMap.inl ℤ _ _)`. Set `B : Submodule ℤ (ι → ℝ)` to `M.comap (LinearMap.inr ℤ _ _)`. Take `⟨⟨_, _⟩, ⟨_, _⟩, h⟩` from `GlobalTheory.ReImLattice.reflection_stable volume M (fun p hp => by`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Rewrite `hp`, the goal using `[hM]`. Use `hs _ hp using 1` and compare the differences between its conclusion and the goal. Apply the tactic sequence `ext v; apply Complex.ext <;> simp [he]) A B (fun _ => Iff.rfl) (fun _ => Iff.rfl)`. Establish `key : ∀ (x : ι → ℝ) (z : ι → ℂ), z ∈ L → (∀ v, ‖z v‖ = ‖x v‖) → x ≠ 0 → 1 ≤ ‖x‖`. Introduce `x z hz hzx hx`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1 : ‖z‖ = ‖x‖`. Use `le_antisymm ((pi_norm_le_iff_of_nonneg (norm_nonneg _)).2 fun v => ?_) ((pi_norm_le_iff_of_nonneg (norm_nonneg _)).2 fun v => ?_)` and prove the remaining obligations. Rewrite using `[hzx]`. Conclude with `norm_le_pi_norm x v`. Rewrite using `[← hzx]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `norm_le_pi_norm z v`. Rewrite using `[← h1]`. Conclude with `hn z hz (by rw [← norm_ne_zero_iff, h1]; exact norm_ne_zero_iff.2 hx)`. Establish `hA : 1 ≤ ZLattice.covolume A volume` using `one_le_covolume A fun x hx => key x (e (x, 0)) hx fun v => by`. Establish `: e (x, 0) v = (x v : ℂ)` using `rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[this, Complex.norm_real]`. Establish `hB : 1 ≤ ZLattice.covolume B volume` using `one_le_covolume B fun x hx => key x (e (0, x)) hx fun v => by`. Apply the tactic sequence `have : e (0, x) v = (x v : ℂ) * Complex.I := by apply Complex.ext <;> simp [he]`. Rewrite using `[this, norm_mul, Complex.norm_I, mul_one, Complex.norm_real]`. Use `⟨B, fun _ => Iff.rfl, _, ⟨inferInstance, inferInstance, rfl⟩, hB, ?_⟩` and prove the remaining obligations.
-
-Rewrite `h` using `[hcM, Module.finrank_fintype_fun_eq_card]`. Conclude with `(le_mul_of_one_le_left (zero_le_one.trans hB) hA).trans h`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem imag_covolume {ι : Type} [Fintype ι] (L : Submodule ℤ (ι → ℂ)) {c : ℝ} (hc : HasCov volume L c)
     (hs : ∀ z ∈ L, (fun v => starRingEnd ℂ (z v)) ∈ L) (hn : ∀ z ∈ L, z ≠ 0 → 1 ≤ ‖z‖) :
@@ -100,7 +98,7 @@ theorem imag_covolume {ι : Type} [Fintype ι] (L : Submodule ℤ (ι → ℂ)) 
   exact (le_mul_of_one_le_left (zero_le_one.trans hB) hA).trans h
 
 /- English proof (translation)
-Rewrite using `[← InfinitePlace.prod_eq_abs_norm]`. Use `Fintype.prod_bijective _ ((Function.bijective_iff_existsUnique _).2 hσ) _ _ fun v => ?_` and prove the remaining obligations. Rewrite using `[InfinitePlace.mult_isComplex ⟨_, hK.isComplex _⟩, InfinitePlace.apply]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem prod_norm_sq (K : Type) [Field K] [NumberField K] (hK : IsTotallyComplex K) {ι : Type} [Fintype ι]
     (σ : ι → (K →+* ℂ)) (hσ : ∀ w : InfinitePlace K, ∃! v, InfinitePlace.mk (σ v) = w) (t : K) :
@@ -110,35 +108,33 @@ theorem prod_norm_sq (K : Type) [Field K] [NumberField K] (hK : IsTotallyComplex
   rw [InfinitePlace.mult_isComplex ⟨_, hK.isComplex _⟩, InfinitePlace.apply]
 
 /- English proof (translation)
-Introduce `K _ _ _ hK ι _ σ hσ 𝔡 n h𝔡 hs hN hv`. Use `set v₀ := Formalism.HermitianLatticesTheory.vInv K with hv₀`. Use `set c : ℝ := (2 * v₀) ^ (2 * n) with hc`. Establish `hc0 : 0 < c` using `by positivity`. Establish `h0 : (𝔡 : FractionalIdeal (𝓞 K)⁰ K) ≠ 0` using `FractionalIdeal.coeIdeal_ne_zero.2 h𝔡`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨L₀, hL₀, hcov⟩` from `GlobalTheory.IdealFund.exists_lat K hK.1 ι σ hσ.2 _ (zpow_ne_zero (-(2 * (n : ℤ))) h0)`. Establish `hNa : ((FractionalIdeal.absNorm ((𝔡 : FractionalIdeal (𝓞 K)⁰ K) ^ (-(2 * (n : ℤ)))) : ℚ) : ℝ) = c⁻¹ ^ (2 * Fintype.card ι)`. Rewrite using `[map_zpow₀, FractionalIdeal.coeIdeal_absNorm]`. Use `push_cast`. Rewrite using `[hN, _root_.zpow_neg, inv_pow, hc, show (2 * (n : ℤ)) = ((2 * n : ℕ) : ℤ) by push_cast; rfl, _root_.zpow_natCast, ← pow_mul, ← pow_mul, mul_comm (2 * n)]`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the hypotheses and the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `f : (ι → ℂ) →ₗ[ℝ] (ι → ℂ)` to `c⁻¹ • LinearMap.id`. Establish `hf : ∀ z v, f z v = (c : ℂ)⁻¹ * z v` using `fun _ _ => by simp [f]`. Establish `hdet : LinearMap.det f = c⁻¹ ^ (2 * Fintype.card ι)`. Rewrite using `[LinearMap.det_smul, LinearMap.det_id, mul_one, Module.finrank_pi_fintype]`. Simplify using `[mul_comm]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hpos : 0 < c⁻¹ ^ (2 * Fintype.card ι)` using `by positivity`. Set `L : Submodule ℤ (ι → ℂ)` to `L₀.comap (f.restrictScalars ℤ)`. Establish `h` using `HasCov.of_det f (L := L) (by rw [hdet]; exact hpos.ne') (fun _ => Iff.rfl) hcov`. Rewrite `h` using `[hNa, hdet, abs_of_pos hpos, mul_div_cancel_left₀ _ hpos.ne']`. Establish `hcc : (c : ℂ) ≠ 0` using `by exact_mod_cast hc0.ne'`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hL : ∀ z, z ∈ L ↔ ∃ t ∈ ipow 𝔡 (-(2 * (n : ℤ))), z = fun v => c * σ v t`. Introduce `z`. Express the relevant statement in the definitionally equal form `f z ∈ L₀ ↔ _`. Rewrite using `[hL₀]`. Use `exists_congr fun y => and_congr Iff.rfl ⟨fun h => funext fun v => ?_, fun h v => ?_⟩` and prove the remaining obligations.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← h, hf, mul_inv_cancel_left₀ hcc]`. Rewrite using `[hf, h, inv_mul_cancel_left₀ hcc]`. Take `⟨B, hB, b, ⟨_, _, hb⟩, hb1, hb2⟩` from `imag_covolume L h (fun z hz => by`. Take `⟨t, ht, rfl⟩` from `(hL z).1 hz`. Conclude with `(hL _).2 ⟨star t, IdealPow.star_mem h𝔡 hs ht, funext fun v => by simp [hσ.1]⟩) (fun z hz hz0 => by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨t, ht, rfl⟩` from `(hL z).1 hz`. Establish `ht0 : t ≠ 0` using `by rintro rfl; exact hz0 (funext fun v => by simp)`. Establish `h1 : c⁻¹ ^ (2 * Fintype.card ι) ≤ ∏ v, ‖σ v t‖ ^ 2`. Rewrite using `[← hNa, prod_norm_sq K hK.1 σ hσ.2]`. Conclude with `GlobalTheory.absNorm_le_abs_norm_of_mem ht ht0` after adjusting the coercions.
+Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Assume the negation of the conclusion as `hlt`. Rewrite `hlt` using `[not_le, pi_norm_lt_iff one_pos]`. Take `⟨u, -⟩` from `(hσ.2 (Classical.arbitrary _)).exists`. Use `absurd h1 (not_le.2 ?_)` and prove the remaining obligations. Rewrite using `[pow_mul, ← Finset.card_univ, ← Finset.prod_const]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 
-Use `Finset.prod_lt_prod_of_nonempty (fun v _ => pow_pos (norm_pos_iff.2 ((map_ne_zero _).2 ht0)) _) (fun v _ => pow_lt_pow_left₀ ?_ (norm_nonneg _) two_ne_zero) ⟨u, Finset.mem_univ _⟩` and prove the remaining obligations. Use `hlt v` as an intermediate fact. Rewrite `this` using `[norm_mul, Complex.norm_real, Real.norm_of_nonneg hc0.le]`. Rewrite using `[← one_mul c⁻¹, lt_mul_inv_iff₀ hc0, mul_comm])` and apply the resulting hypothesis. Take `⟨u, -⟩` from `(hσ.2 (Classical.arbitrary _)).exists`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `hre : ∀ t : K, t + star t = 0 → ∀ v, (σ v t).re = 0` using `fun t ht v => by`. Use `congrArg (fun x => (σ v x).re) ht` as an intermediate fact. Simplify using `only [map_add, hσ.1, map_zero, Complex.add_re, Complex.conj_re, Complex.zero_re] at this`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hB' : ∀ y, y ∈ B ↔ ∃ t : K, (t ∈ ipow 𝔡 (-(2 * (n : ℤ))) ∧ t + star t = 0) ∧ y = fun v => c * (σ v t).im`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Introduce `y`. Rewrite using `[hB, hL]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨t, ht, hy⟩`. Use `⟨t, ⟨ht, (σ u).injective ?_⟩, funext fun v => by simpa using congrArg Complex.im (congrFun hy v)⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Assume the hypotheses and unpack their components.
 
-Establish `h1 : (σ u t).re = 0` using `by simpa [hc0.ne'] using congrArg Complex.re (congrFun hy u)`. Rewrite using `[map_add, hσ.1, map_zero]`. Apply the tactic sequence `apply Complex.ext <;> simp [h1]`. Introduce and unpack `⟨t, ⟨ht, ht'⟩, rfl⟩`. Apply the tactic sequence `exact ⟨t, ht, funext fun v => by apply Complex.ext <;> simp [hre t ht']⟩`.
+Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨latticeDomain B, measurableSet_latticeDomain B, fun a => ?_, ?_, ?_⟩` and prove the remaining obligations. Take `⟨z, hz, hu⟩` from `existsUnique_add_mem_latticeDomain B a`. Take `⟨t, ht, hzt⟩` from `(hB' z).1 z.2`. Use `⟨t, ⟨ht, by rw [← hzt, add_comm]; exact hz⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `t' ⟨ht', h'⟩`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `h1` using `hu ⟨_, (hB' _).2 ⟨t', ht', rfl⟩⟩ (by rw [add_comm] at h'; exact h')`. Establish `h2` using `congrFun ((congrArg Subtype.val h1).trans hzt) u`. Conclude with `(σ u).injective (Complex.ext (by rw [hre t ht.2, hre t' ht'.2]) (mul_left_cancel₀ hc0.ne' h2))`. Rewrite using `[measure_latticeDomain, hb]`. Conclude with `ENNReal.ofReal_le_ofReal ((Real.rpow_le_one_of_one_le_of_nonpos (by linarith) (by simp)).trans hb1)`.
-
-Rewrite using `[measure_latticeDomain, hb, Real.rpow_natCast]`. Use `ENNReal.ofReal_le_ofReal (hb2.trans ?_)` and prove the remaining obligations. Rewrite using `[← mul_pow]`. Conclude with `pow_le_pow_left₀ (by linarith) (by linarith) _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_fund_skew : ∀ (K : Type) [Field K] [NumberField K] [StarRing K], Formalism.HermitianLatticesTheory.IsCMUnram K → ∀ (ι : Type) [Fintype ι] (σ : ι → (K →+* ℂ)), IsPlaces σ → ∀ (𝔡 : Ideal (𝓞 K)) (n : ℕ), 𝔡 ≠ ⊥ → (∀ x ∈ 𝔡, ∃ y ∈ 𝔡, (y : K) = star (x : K)) → (Ideal.absNorm 𝔡 : ℝ) = (2 * Formalism.HermitianLatticesTheory.vInv K) ^ (2 * Fintype.card ι) → 1 ≤ Formalism.HermitianLatticesTheory.vInv K → ∃ F : Set (ι → ℝ), MeasurableSet F ∧ (∀ a : ι → ℝ, ∃! t : K, (t ∈ ipow 𝔡 (-(2 * (n : ℤ))) ∧ t + star t = 0) ∧ ((fun v => (2 * Formalism.HermitianLatticesTheory.vInv K) ^ (2 * n) * (σ v t).im) + a) ∈ F) ∧ ENNReal.ofReal ((8 * Formalism.HermitianLatticesTheory.vInv K) ^ (-(Fintype.card ι : ℝ))) ≤ volume F ∧ volume F ≤ ENNReal.ofReal ((8 * Formalism.HermitianLatticesTheory.vInv K) ^ (Fintype.card ι : ℝ)) := by
   intro K _ _ _ hK ι _ σ hσ 𝔡 n h𝔡 hs hN hv

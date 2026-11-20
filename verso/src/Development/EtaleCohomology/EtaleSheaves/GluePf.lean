@@ -6,11 +6,11 @@ open CategoryTheory Limits AlgebraicGeometry Opposite GlobalTheory.EtC LateralTh
 namespace LateralTheory.E.GluePf
 
 /- English proof (translation)
-Establish `hb : (⊥ : Sieve X) ∈ Scheme.etaleTopology X` using `Scheme.bot_mem_grothendieckTopology X`. Establish `h1 : (𝟙 (F.obj.obj (op X))) = 0`. Apply `((F.cond (F.obj.obj (op X))) _ hb).isSeparatedFor.ext` to reduce the goal to its premises. Introduce `Y f hf`. Conclude with `hf.elim`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce `a b`. Establish `ha : a = 0`. Use `congrArg (fun φ => (φ : F.obj.obj (op X) ⟶ _).hom a) h1` as an intermediate fact. Simplify using `using this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hb' : b = 0`. Use `congrArg (fun φ => (φ : F.obj.obj (op X) ⟶ _).hom b) h1` as an intermediate fact. Simplify using `using this`. Rewrite using `[ha, hb']`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sec_sub {R : Type} [CommRing R] (F : Shv R) (X : Scheme.{0}) [IsEmpty X] : Subsingleton (Sec F X) := by
   have hb : (⊥ : Sieve X) ∈ Scheme.etaleTopology X := Scheme.bot_mem_grothendieckTopology X
@@ -29,7 +29,7 @@ theorem sec_sub {R : Type} [CommRing R] (F : Shv R) (X : Scheme.{0}) [IsEmpty X]
   rw [ha, hb']
 
 /- English proof (translation)
-Establish `e : hX.to Y ≫ f = 𝟙 X` using `hX.hom_ext _ _`. Establish `: x = pull R (sch.map (hX.to Y ≫ f)) F n x` using `by rw [e, CategoryTheory.Functor.map_id, pull_id]`. Rewrite using `[this, Functor.map_comp, pull_comp, hx, map_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem pull_inj_of_initial {R : Type} [CommRing R] {F : Shv R} {X Y : Scheme.{0}} (hX : IsInitial X) (f : Y ⟶ X) (n : ℤ)
     (x : H R (sch.obj X) F n) (hx : pull R (sch.map f) F n x = 0) : x = 0 := by
@@ -38,11 +38,11 @@ theorem pull_inj_of_initial {R : Type} [CommRing R] {F : Shv R} {X Y : Scheme.{0
   rw [this, Functor.map_comp, pull_comp, hx, map_zero]
 
 /- English proof (translation)
-Break down `lt_trichotomy n 0 with h | rfl | h` into its components or cases. Conclude with `(H.a9 (ZMod q) (tw q i)).1 _ n h`. Take `⟨e, -⟩` from `(H.a9 (ZMod q) (tw q i)).2`. Use `sec_sub (tw q i) X` as an intermediate fact. Conclude with `⟨fun a b => (e X).symm.injective (Subsingleton.elim _ _)⟩`.
+Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Establish `key : ∀ x : Ht q (sch.obj X) n i, x = 0`. Introduce `x`. Take `⟨Y, f, -, -, hf⟩` from `H.a5 (ZMod q) X (tw q i) n h x`. Conclude with `pull_inj_of_initial (isInitialOfIsEmpty) f n x hf`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `a b`. Rewrite using `[key a, key b]`.
+A detailed English derivation is pending.
 -/
 theorem ht_sub (H : Hyp) (q : ℕ) (i n : ℤ) (X : Scheme.{0}) [IsEmpty X] : Subsingleton (Ht q (sch.obj X) n i) := by
   rcases lt_trichotomy n 0 with h | rfl | h
@@ -60,14 +60,14 @@ theorem ht_sub (H : Hyp) (q : ℕ) (i n : ℤ) (X : Scheme.{0}) [IsEmpty X] : Su
 def cmp {X : Scheme.{0}} (O : X.Opens) (hO : IsClosed (O : Set X)) : X.Opens := ⟨(O : Set X)ᶜ, hO.isOpen_compl⟩
 
 /- English proof (translation)
-Establish `: U.ι p ∈ Set.range U.ι` using `⟨p, rfl⟩`. Rewrite `this` using `[Scheme.Opens.range_ι]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem mem_ι {X : Scheme.{0}} (U : X.Opens) (p : U) : U.ι p ∈ U := by
   have : U.ι p ∈ Set.range U.ι := ⟨p, rfl⟩
   rwa [Scheme.Opens.range_ι] at this
 
 /- English proof (translation)
-Rewrite using `[← IsOpenImmersion.lift_fac u g hg, CategoryTheory.Functor.map_comp, pull_comp, hv, map_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem vanish_of_range {R : Type} [CommRing R] {F : Shv R} {X U Z : Scheme.{0}} (u : U ⟶ X) [IsOpenImmersion u] (g : Z ⟶ X)
     (hg : Set.range g ⊆ Set.range u) (n : ℤ) (v : H R (sch.obj X) F n) (hv : pull R (sch.map u) F n v = 0) :
@@ -75,9 +75,9 @@ theorem vanish_of_range {R : Type} [CommRing R] {F : Shv R} {X U Z : Scheme.{0}}
   rw [← IsOpenImmersion.lift_fac u g hg, CategoryTheory.Functor.map_comp, pull_comp, hv, map_zero]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `p`. Establish `h` using `congrArg (fun φ => φ p) (pullback.condition (f := O1.ι) (g := O2.ι))`. Simplify using `only [Scheme.Hom.comp_apply] at h`. Establish `a` using `mem_ι O1 (pullback.fst O1.ι O2.ι p)`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `b` using `mem_ι O2 (pullback.snd O1.ι O2.ι p)`. Rewrite `b` using `[← h]`. Conclude with `hd _ a b`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem empty_pb' {X : Scheme.{0}} (O1 O2 : X.Opens) (hd : ∀ p, p ∈ O1 → p ∉ O2) :
     IsEmpty ((pullback O1.ι O2.ι : Scheme.{0})) := by
@@ -90,7 +90,7 @@ theorem empty_pb' {X : Scheme.{0}} (O1 O2 : X.Opens) (hd : ∀ p, p ∈ O1 → p
   exact hd _ a b
 
 /- English proof (translation)
-Rewrite using `[Scheme.Opens.range_ι, Scheme.Opens.range_ι]`. Use extensionality with `p`. Simplify using `only [Set.mem_union, Set.mem_univ, iff_true]`. Conclude with `hc p`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cover' {X : Scheme.{0}} (O1 O2 : X.Opens) (hc : ∀ p, p ∈ O1 ∨ p ∈ O2) :
     Set.range O1.ι ∪ Set.range O2.ι = Set.univ := by
@@ -98,9 +98,9 @@ theorem cover' {X : Scheme.{0}} (O1 O2 : X.Opens) (hc : ∀ p, p ∈ O1 ∨ p �
   ext p; simp only [Set.mem_union, Set.mem_univ, iff_true]; exact hc p
 
 /- English proof (translation)
-Take `⟨m, rfl⟩ : ∃ m, n = m + 1` from `⟨n - 1, by ring⟩`. Take `⟨δ, hex, -⟩` from `hM H (ZMod q) (tw q i)`. Take `⟨w, rfl⟩` from `((hex O1.ι O2.ι (cover' O1 O2 hc) m).2.2 x).1 ⟨h1, h2⟩`. Use `empty_pb' O1 O2 hd` as an intermediate fact. Use `ht_sub H q i m (pullback O1.ι O2.ι)` as an intermediate fact.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Subsingleton.elim w 0, map_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem two_inj' (hM : MV) (H : Hyp) (q : ℕ) (i : ℤ) {X : Scheme.{0}} (O1 O2 : X.Opens) (hd : ∀ p, p ∈ O1 → p ∉ O2)
     (hc : ∀ p, p ∈ O1 ∨ p ∈ O2) (n : ℤ)
@@ -113,15 +113,15 @@ theorem two_inj' (hM : MV) (H : Hyp) (q : ℕ) (i : ℤ) {X : Scheme.{0}} (O1 O2
   rw [Subsingleton.elim w 0, map_zero]
 
 /- English proof (translation)
-Introduce `k`. Proceed by induction on `k with`. Consider the case `zero`. Introduce `X O _ hc x _`. Establish `: IsEmpty X` using `⟨fun p => (hc p).elim fun j _ => j.elim0⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `ht_sub H q i n X` as an intermediate fact. Conclude with `Subsingleton.elim _ _`. Consider the case `succ k ih`. Introduce `X O hO hc x hx`. Set `A` to `O (Fin.last k)`.
+Establish an intermediate fact. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `C` to `cmp A (hO _)`. Use `two_inj' hM H q i A C (fun p h1 h2 => h2 h1) (fun p => by by_cases h : p ∈ A; exacts [Or.inl h, Or.inr h]) n x (hx _) ?_` and prove the remaining obligations. Use `ih (fun j => C.ι ⁻¹ᵁ O j.castSucc) (fun j => (hO _).preimage C.ι.continuous) ?_ _ ?_` and prove the remaining obligations. Introduce `p`. Take `⟨j, hj⟩` from `hc (C.ι p)`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hpc` using `mem_ι C p`. Consider the cases of `j using Fin.lastCases with`. Consider the case `last => exact absurd hj hpc`. Consider the case `cast j' => exact ⟨j', hj⟩`. Introduce `j`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← pull_comp, ← CategoryTheory.Functor.map_comp]`. Use `vanish_of_range (O j.castSucc).ι _ ?_ n x (hx _)` and prove the remaining obligations. Introduce and unpack `_ ⟨p, rfl⟩`. Rewrite using `[Scheme.Opens.range_ι]`. Conclude with `mem_ι _ p`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inj_fin (hM : MV) (H : Hyp) (q : ℕ) (i n : ℤ) : ∀ (k : ℕ) {X : Scheme.{0}} (O : Fin k → X.Opens),
     (∀ j, IsClosed (O j : Set X)) → (∀ p : X, ∃ j, p ∈ O j) → ∀ x : Ht q (sch.obj X) n i,
@@ -154,7 +154,7 @@ theorem inj_fin (hM : MV) (H : Hyp) (q : ℕ) (i n : ℤ) : ∀ (k : ℕ) {X : S
       exact mem_ι _ p
 
 /- English proof (translation)
-Take `⟨δ, hex, -⟩` from `hM H (ZMod q) (tw q i)`. Use `empty_pb' O1 O2 hd` as an intermediate fact. Use `ht_sub H q i n (pullback O1.ι O2.ι)` as an intermediate fact. Conclude with `(hex O1.ι O2.ι (cover' O1 O2 hc) n).1 a b (Subsingleton.elim _ _)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem two_glue' (hM : MV) (H : Hyp) (q : ℕ) (i : ℤ) {X : Scheme.{0}} (O1 O2 : X.Opens) (hd : ∀ p, p ∈ O1 → p ∉ O2)
     (hc : ∀ p, p ∈ O1 ∨ p ∈ O2) (n : ℤ) (a : Ht q (sch.obj O1) n i) (b : Ht q (sch.obj O2) n i) :
@@ -165,21 +165,19 @@ theorem two_glue' (hM : MV) (H : Hyp) (q : ℕ) (i : ℤ) {X : Scheme.{0}} (O1 O
   exact (hex O1.ι O2.ι (cover' O1 O2 hc) n).1 a b (Subsingleton.elim _ _)
 
 /- English proof (translation)
-Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => intro O _ _`. Conclude with `⟨0, fun j => j.elim0⟩`. Consider the case `succ k ih`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Supply the required witnesses or components. Treat this case separately.
 
-Introduce `O hO hW`. Take `⟨x, hx⟩` from `ih (fun j => O j.castSucc) (fun j => hO _) (fun j => hW _)`. Set `A` to `O (Fin.last k)`. Set `C` to `cmp A (hO _)`. Take `⟨w, hw⟩` from `hW (Fin.last k)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Take `⟨x', h1, h2⟩` from `two_glue' hM H q i A C (fun p h1 h2 => h2 h1) (fun p => by by_cases h : p ∈ A; exacts [Or.inl h, Or.inr h]) n w (pull _ (sch.map C.ι) _ _ x)`. Establish `agreeA : pull _ (sch.map (φ ⁻¹ᵁ A).ι) _ _ (pull _ (sch.map φ) _ _ x') = pull _ (sch.map (φ ⁻¹ᵁ A).ι) _ _ z`. Rewrite using `[← pull_comp, ← CategoryTheory.Functor.map_comp, ← morphismRestrict_ι, CategoryTheory.Functor.map_comp, pull_comp, h1]`. Conclude with `hw`. Use `⟨x', fun j => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Split into cases according to the possible forms of the given data.
 
-Consider the cases of `j using Fin.lastCases with`. Consider the case `last => exact agreeA`. Consider the case `cast j'`. Rewrite using `[← sub_eq_zero, ← map_sub]`. Set `V` to `φ ⁻¹ᵁ O j'.castSucc`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Use `two_inj' hM H q i (V.ι ⁻¹ᵁ (φ ⁻¹ᵁ A)) (V.ι ⁻¹ᵁ (φ ⁻¹ᵁ C)) (fun p h1 h2 => h2 h1) (fun p => by by_cases h : p ∈ V.ι ⁻¹ᵁ (φ ⁻¹ᵁ A); exacts [Or.inl h, Or.inr h]) n _ ?_ ?_` and prove the remaining obligations. Rewrite using `[← pull_comp, ← CategoryTheory.Functor.map_comp]`. Use `vanish_of_range (φ ⁻¹ᵁ A).ι _ ?_ n _ (by rw [map_sub, agreeA, sub_self])` and prove the remaining obligations. Introduce and unpack `_ ⟨p, rfl⟩`. Rewrite using `[Scheme.Opens.range_ι]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Scheme.Hom.comp_apply]`. Conclude with `mem_ι _ p`. Establish `e : pull _ (sch.map φ) _ _ x' - z = pull _ (sch.map φ) _ _ (x' - x) + (pull _ (sch.map φ) _ _ x - z)`. Rewrite using `[map_sub]`. Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[e, map_add, map_add, map_sub (pull _ (sch.map V.ι) _ _), hx j', sub_self, map_zero, add_zero, ← pull_comp, ← pull_comp, ← CategoryTheory.Functor.map_comp, ← CategoryTheory.Functor.map_comp]`. Use `vanish_of_range C.ι _ ?_ n _ (by rw [map_sub, h2, sub_self])` and prove the remaining obligations. Introduce and unpack `_ ⟨p, rfl⟩`. Rewrite using `[Scheme.Opens.range_ι]`. Simplify using `only [Scheme.Hom.comp_apply]`.
-
-Conclude with `mem_ι _ p`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem surj_fin (hM : MV) (H : Hyp) (q : ℕ) (i n : ℤ) {X P : Scheme.{0}} (φ : P ⟶ X) (z : Ht q (sch.obj P) n i) :
     ∀ (k : ℕ) (O : Fin k → X.Opens), (∀ j, IsClosed (O j : Set X)) →
@@ -225,13 +223,13 @@ theorem surj_fin (hM : MV) (H : Hyp) (q : ℕ) (i n : ℤ) {X P : Scheme.{0}} (�
         exact mem_ι _ p
 
 /- English proof (translation)
-Take `⟨w, hw⟩` from `h`. Establish `hr : Set.range O.ι ⊆ Set.range u` using `by rw [Scheme.Opens.range_ι, hO]`. Set `r` to `IsOpenImmersion.lift u O.ι hr`. Establish `hr' : r ≫ u = O.ι` using `IsOpenImmersion.lift_fac _ _ _`. Establish `hr'' : ∀ {Z : Scheme.{0}} (t : Y ⟶ Z), r ≫ u ≫ t = O.ι ≫ t`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `Z t`. Rewrite using `[← Category.assoc, hr']`. Set `e : ((pullback.fst g (cpt A) ⁻¹ᵁ O : Scheme.{0})) ⟶ pullback (u ≫ g) (cpt A)` to `pullback.lift ((pullback.fst g (cpt A) ∣_ O) ≫ r) ((pullback.fst g (cpt A) ⁻¹ᵁ O).ι ≫ pullback.snd g (cpt A)) (by rw [Category.assoc, hr'', morphismRestrict_ι_assoc, pullback.condition, Category.assoc])`. Establish `he : e ≫ fm u g = (pullback.fst g (cpt A) ⁻¹ᵁ O).ι`. Unfold `fm`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Apply `pullback.hom_ext` to reduce the goal to its premises. Simplify using `only [e, Category.assoc, pullback.lift_fst, pullback.lift_fst_assoc, hr', morphismRestrict_ι, pullback.map]`. Simplify using `only [e, Category.assoc, pullback.lift_snd, Category.comp_id, pullback.map]`. Use `⟨pull _ (sch.map r) _ _ w, ?_⟩` and prove the remaining obligations. Establish `h2 : (pullback.fst g (cpt A) ∣_ O) ≫ r = e ≫ pullback.fst (u ≫ g) (cpt A)` using `(pullback.lift_fst _ _ _).symm`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[← pull_comp, ← CategoryTheory.Functor.map_comp, h2, CategoryTheory.Functor.map_comp, pull_comp, hw, ← pull_comp, ← CategoryTheory.Functor.map_comp, he]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem hit_opens (q : ℕ) (i n : ℤ) {A : Type} [CommRing A] [IsLocalRing A] {U Y : Scheme.{0}}
     (g : Y ⟶ Spec (CommRingCat.of A)) (z : Ht q (sch.obj (pullback g (cpt A))) n i) (u : U ⟶ Y) [IsOpenImmersion u]
@@ -258,7 +256,7 @@ theorem hit_opens (q : ℕ) (i n : ℤ) {A : Type} [CommRing A] [IsLocalRing A] 
     ← CategoryTheory.Functor.map_comp, he]
 
 /- English proof (translation)
-Take `⟨t, ht⟩` from `isCompact_univ.elim_finite_subcover (fun y => (O y : Set Y)) (fun y => (O y).isOpen) (fun p _ => Set.mem_iUnion.2 ⟨p, hO p⟩)`. Use `⟨t.card, fun j => (t.equivFin.symm j).1, fun p => ?_⟩` and prove the remaining obligations. Take `⟨y, hy, hp⟩` from `Set.mem_iUnion₂.1 (ht (Set.mem_univ p))`. Conclude with `⟨t.equivFin ⟨y, hy⟩, by simpa using hp⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem fin_cover {Y : Scheme.{0}} [CompactSpace Y] (O : Y → Y.Opens) (hO : ∀ y, y ∈ O y) :
     ∃ (k : ℕ) (f : Fin k → Y), ∀ p, ∃ j, p ∈ O (f j) := by
@@ -271,19 +269,19 @@ theorem fin_cover {Y : Scheme.{0}} [CompactSpace Y] (O : Y → Y.Opens) (hO : �
 def rg {U Y : Scheme.{0}} (u : U ⟶ Y) (h : IsOpenImmersion u) : Y.Opens := ⟨Set.range u, u.isOpenEmbedding.isOpen_range⟩
 
 /- English proof (translation)
-The claim follows from `u.isClosedEmbedding.isClosed_range`.
+A detailed English derivation is pending.
 -/
 theorem rg_closed {U Y : Scheme.{0}} (u : U ⟶ Y) (h : IsOpenImmersion u) (h' : IsClosedImmersion u) :
     IsClosed (rg u h : Set Y) := u.isClosedEmbedding.isClosed_range
 
 /- English proof (translation)
-Introduce `hM H q i A _ _ hq Y _ _ g n hI hS`. Prove the components needed by the constructor for the conclusion. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `x hx`. Use `choose U u hu using hI x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨k, f, hf⟩` from `fin_cover (fun y => rg (u y) (hu y).1) (fun y => (hu y).2.2.1)`. Use `inj_fin hM H q i n k (fun j => rg (u (f j)) (hu (f j)).1) (fun j => rg_closed (u (f j)) (hu (f j)).1 (hu (f j)).2.1) hf x ?_` and prove the remaining obligations. Introduce `j`. Use `(hu (f j)).1` as an intermediate fact. Conclude with `vanish_of_range (u (f j)) _ (by rw [Scheme.Opens.range_ι]; exact fun _ h => h) n x (hu (f j)).2.2.2`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `z choose U u hu using hS z`. Take `⟨k, f, hf⟩` from `fin_cover (fun y => rg (u y) (hu y).1) (fun y => (hu y).2.2.1)`. Take `⟨x, hx⟩` from `surj_fin hM H q i n (pullback.fst g (cpt A)) z k (fun j => rg (u (f j)) (hu (f j)).1) (fun j => rg_closed (u (f j)) (hu (f j)).1 (hu (f j)).2.1) (fun j => by have := (hu (f j)).1; exact hit_opens q i n g z (u (f j)) _ rfl (hu (f j)).2.2.2)`. Use `⟨x, ?_⟩` and prove the remaining obligations. Rewrite using `[← sub_eq_zero]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `inj_fin hM H q i n k (fun j => pullback.fst g (cpt A) ⁻¹ᵁ rg (u (f j)) (hu (f j)).1) (fun j => (rg_closed (u (f j)) (hu (f j)).1 (hu (f j)).2.1).preimage (pullback.fst g (cpt A)).continuous) (fun p => hf _) _ ?_` and prove the remaining obligations. Introduce `j`. Rewrite using `[map_sub, hx j, sub_self]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem glue_of : Glue := by
   intro hM H q i A _ _ hq Y _ _ g n hI hS

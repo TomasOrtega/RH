@@ -6,14 +6,14 @@ noncomputable section
 namespace Formalism.L2.SG.Pf
 
 /- English proof (translation)
-The claim follows from `Fact.out`.
+A detailed English derivation is pending.
 -/
 theorem WB.rhsWLim' [Fact Formalism.L2.SG.Pf.WB.RhsWLim] : WB.RhsWLim := Fact.out
 
 variable [Fact Formalism.L2.SG.Pf.WB.RhsWLim] in
 
 /- English proof (translation)
-The claim follows from `jacGauge_of_rhsW WB.rhsWLim'`.
+A detailed English derivation is pending.
 -/
 theorem jacGauge : JacGauge := jacGauge_of_rhsW WB.rhsWLim'
 

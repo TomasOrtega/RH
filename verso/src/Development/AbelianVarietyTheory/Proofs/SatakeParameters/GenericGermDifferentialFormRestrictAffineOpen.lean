@@ -8,11 +8,11 @@ set_option autoImplicit false
 namespace GlobalTheory.HodgeCoh
 
 /- English proof (translation)
-Introduce `Z _ p`. Use `letI := algΓ p`. Introduce `inst hinst j V V' hV hV' hη hη' h y`. Substitute `hinst` using the available equality. Use `letI := ffAlg p`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Equip the data with the indicated structure.
 
-Establish `key : (toOmEquiv p j hV').symm (sectionsOn.toΓ _ _ (sectionsOn.res ℂ (Omega p j) h y)) = formRes p h j ((toOmEquiv p j hV).symm (sectionsOn.toΓ _ _ y))`. Apply `(toOmEquiv p j hV').injective` to reduce the goal to its premises. Rewrite using `[LinearEquiv.apply_symm_apply, toOmEquiv_apply, ← res_toOm, ← toOmEquiv_apply p j hV, LinearEquiv.apply_symm_apply, sectionsOn.toΓ_res]`. Express the relevant statement in the definitionally equal form `(semiHom_germSec p hη').mDR ((toOmEquiv p j hV').symm (sectionsOn.toΓ _ _ (sectionsOn.res ℂ (Omega p j) h y)) : DR ℂ (Sec p V')) = (semiHom_germSec p hη).mDR ((toOmEquiv p j hV).symm (sectionsOn.toΓ _ _ y) : DR ℂ (Sec p V))`. Rewrite using `[key]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Conclude with `congrArg Subtype.val (SemiHom.mOm_mOm (SemiHom.of_algHom (Sec.res p h)) (semiHom_germSec p hη') (semiHom_germSec p hη) (fun b ↦ by`. Express the relevant statement in the definitionally equal form `(Z.presheaf.germ V' (genericPoint Z) hη').hom ((Z.presheaf.map (homOfLE h).op).hom b) = (Z.presheaf.germ V (genericPoint Z) hη).hom b`. Conclude with `congrArg (fun f ↦ f.hom (show Γ(Z, V) from b)) (TopCat.Presheaf.germ_res Z.presheaf (homOfLE h) (genericPoint Z) hη')) _)`.
+Express the relevant assertion in an equivalent form by its definition. A detailed English derivation is pending.
 -/
 theorem formGermI_res : ∀ (Z : Scheme.{0}) [IsIntegral Z] (p : Z ⟶ Sp ℂ),
     letI := algΓ p

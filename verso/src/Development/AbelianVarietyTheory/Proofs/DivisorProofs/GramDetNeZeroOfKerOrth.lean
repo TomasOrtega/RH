@@ -2,21 +2,21 @@ import Mathlib
 open Matrix Polynomial
 
 /- English proof (translation)
-Introduce `hdet`. Take `⟨c, hc0, hGc⟩` from `Matrix.exists_mulVec_eq_zero_iff.mpr hdet`. Use `set x : Fin n → K := ∑ j, c j • u j with hxdef`. Establish `hx0 : x ≠ 0`. Introduce `hx`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hc0` to reduce the goal to its premises. Use function extensionality and compare the values at `j`. Conclude with `Fintype.linearIndependent_iff.mp hli c hx j`. Establish `hxspan : x ∈ Submodule.span K (Set.range u)` using `Submodule.sum_mem _ fun j _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨j, rfl⟩)`. Establish `hAx : A *ᵥ x = 0`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hxspan` using `[hsp, LinearMap.mem_ker, Matrix.toLin'_apply]`. Conclude with `hxspan`. Establish `hu : ∀ i, ∑ k, σ (u i k) * x k = 0`. Introduce `i`. Use `congrFun hGc i` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite `this` using `[Matrix.mulVec, dotProduct]`. Simplify using `only [Matrix.of_apply, Pi.zero_apply] at this`. Rewrite using `[← this]`. Simplify using `only [hxdef, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Finset.mul_sum, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun k _ => by ring` and prove the remaining obligations. Establish `hy : ∀ y ∈ LinearMap.ker (Matrix.toLin' A), ∑ k, σ (y k) * x k = 0`. Introduce `y hy`. Rewrite `hy` using `[← hsp]`. Take `⟨d, rfl⟩` from `(Submodule.mem_span_range_iff_exists_fun K).mp hy`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, map_sum, map_mul, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Establish `: ∀ i, ∑ k, σ (d i) * σ (u i k) * x k = σ (d i) * ∑ k, σ (u i k) * x k`. Introduce `i; rw [Finset.mul_sum]; exact Finset.sum_congr rfl fun k _ => by ring`. Simplify using `[this, hu]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hall : ∀ v : Fin n → K, ∑ k, σ (v k) * x k = 0`. Introduce `v`. Take `⟨z, y, hAy, rfl⟩` from `hdec v`. Establish `h1` using `horth x z hAx`. Establish `h2` using `hy y (by rw [LinearMap.mem_ker, Matrix.toLin'_apply]; exact hAy)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [Pi.add_apply, map_add, add_mul, Finset.sum_add_distrib, h1, h2, add_zero]`. Apply `hx0` to reduce the goal to its premises. Use function extensionality and compare the values at `k`. Use `hall (Pi.single k 1)` as an intermediate fact. Simplify `this` using `[Pi.single_apply]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.gram_det_ne_zero_of_ker_orth {K : Type} [Field K] (σ : K →+* K) {n : ℕ} (A : Matrix (Fin n) (Fin n) K) {ι : Type} [Fintype ι] [DecidableEq ι] (u : ι → Fin n → K) (hli : LinearIndependent K u) (hsp : Submodule.span K (Set.range u) = LinearMap.ker (Matrix.toLin' A)) (horth : ∀ x z, A *ᵥ x = 0 → ∑ k, σ ((A *ᵥ z) k) * x k = 0) (hdec : ∀ v, ∃ z y, A *ᵥ y = 0 ∧ v = A *ᵥ z + y) : (Matrix.of fun i j => ∑ k, σ (u i k) * u j k).det ≠ 0 := by
   intro hdet

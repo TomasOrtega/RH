@@ -23,29 +23,25 @@ noncomputable section
 namespace GlobalTheory.CellVanish
 
 /- English proof (translation)
-Introduce `E _ _ _ m S J w hwS hψ ϖ hϖ W hWN hWK l hl p hp`. Use `set t := GlobalTheory.CellDec.tl (m + 1) ϖ l with ht`. Use `set D : GL (Fin (m + 1)) (w.adicCompletion E) := GlobalTheory.CellDec.compV E (m + 1) w t with hD`. Establish `hDv : (D : Matrix (Fin (m + 1)) (Fin (m + 1)) (w.adicCompletion E)) = Matrix.diagonal fun a => ((ϖ w ^ l w a : (w.adicCompletion E)ˣ) : w.adicCompletion E)`. Rewrite using `[hD, ht, GlobalTheory.CellDec.tl, GlobalTheory.CellDec.compV_finGL]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `pLoc E w (((GlobalTheory.SmGL.diagT (Af E) (Fin (m + 1)) _ : GL (Fin (m + 1)) (Af E)) : Matrix (Fin (m + 1)) (Fin (m + 1)) (Af E)) i j) = _`. Rewrite using `[GlobalTheory.SmGL.val_diagT]`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition.
 
-Simplify using `only [Matrix.diagonal_apply_eq]`. Express the relevant statement in the definitionally equal form `((ϖ w ^ (Finsupp.mapRange (fun x : Fin (m + 1) → ℤ => x i) rfl l) w : (w.adicCompletion E)ˣ) : w.adicCompletion E) = _`. Simplify using the standard rewrite rules. Simplify using `[Matrix.diagonal_apply_ne _ hij]`. Use `set t' := t * (finGL E (m + 1) (locGL E (m + 1) w D))⁻¹ with ht'`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Establish `ht'w : Matrix.GeneralLinearGroup.map ((pLoc E w).comp (pFin E)) t' = 1`. Express the relevant statement in the definitionally equal form `GlobalTheory.CellDec.compV E (m + 1) w t' = 1`. Rewrite using `[ht', map_mul, map_inv, GlobalTheory.CellDec.compV_finGL_locGL_same, ← hD, mul_inv_cancel]`. Establish `htt : t' * finGL E (m + 1) (locGL E (m + 1) w D) = t` using `by rw [ht', inv_mul_cancel_right]`. Establish `hlev : ∀ k ∈ GlobalTheory.LFun.KGL w (m + 1), locGL E (m + 1) w k ∈ GlobalTheory.RSLocalPart.levelAt (m + 1) S J`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Introduce `k hk`. Use `⟨fun v => ?_, fun v hv i j => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hvw : v = w`. Substitute `hvw` using the available equality. Rewrite using `[pLoc_locGL]`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hk`. Rewrite using `[pLoc_locGL_of_ne hvw]`. Conclude with `one_mem _`. Establish `hvw : v ≠ w` using `fun h => hwS (h ▸ hv)`. Establish `h1` using `congrArg (fun x : GL (Fin (m + 1)) (v.adicCompletion E) => (x : Matrix (Fin (m + 1)) (Fin (m + 1)) (v.adicCompletion E)) i j) (pLoc_locGL_of_ne hvw k)`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Establish `h0 : ((locGL E (m + 1) w k).val - 1) i j v = 0`. Express the relevant statement in the definitionally equal form `pLoc E v (((locGL E (m + 1) w k).val - 1) i j) = 0`. Rewrite using `[Matrix.sub_apply, map_sub]`. Express the relevant statement in the definitionally equal form `(Matrix.GeneralLinearGroup.map (pLoc E v) (locGL E (m + 1) w k)).val i j - _ = 0`. Rewrite using `[h1]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[Matrix.one_apply]`. Rewrite using `[h0, map_zero]`. Conclude with `zero_le'`. Set `f : GL (Fin (m + 1)) (w.adicCompletion E) → ℂ` to `fun g => W (p * t' * finGL E (m + 1) (locGL E (m + 1) w g))`. Establish `hfD : f D = W (p * t)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [f]`. Rewrite using `[mul_assoc, htt]`. Establish `hpt : Matrix.GeneralLinearGroup.map ((pLoc E w).comp (pFin E)) (p * t') = 1`. Rewrite using `[map_mul, hp, ht'w, mul_one]`. Establish `hfN : ∀ u ∈ GlobalTheory.SmGL.unipB (w.adicCompletion E) (Fin (m + 1)), ∀ g, f (u * g) = GlobalTheory.JSW.psiLocChar w (GlobalTheory.Whittaker.superDiag u) * f g`.
+Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `u hu g`. Simplify using `only [f]`. Rewrite using `[map_mul, map_mul, ← mul_assoc (p * t'), GlobalTheory.JSW.commute_finGL_locGL w hpt, mul_assoc, hWN _ (GlobalTheory.JSW.CutTransfer.finGL_locGL_mem_NA' w hu), GlobalTheory.JSW.CutTransfer.psiN_finGL_locGL]`. Both sides reduce to the same expression. Establish `hfK : ∀ g, ∀ k ∈ GlobalTheory.LFun.KGL w (m + 1), f (g * k) = f g`.
-
-Introduce `g k hk`. Simplify using `only [f]`. Rewrite using `[map_mul, map_mul, ← mul_assoc]`. Conclude with `hWK _ (hlev k hk) _`. Establish `h` using `GlobalTheory.WhitTorus.eq_zero_of_not_antitone_int E w (m + 1) (GlobalTheory.JSW.psiLocChar w) hψ f hfN hfK (ϖ w) hϖ (l w) hl D hDv`.
-
-Rewrite `h` using `[hfD]`. Then use the resulting hypothesis.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_not_antitone : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (m : ℕ)
     (S : Finset (HeightOneSpectrum (𝓞 E))) (J : (FractionalIdeal (𝓞 E)⁰ E)ˣ) (w : HeightOneSpectrum (𝓞 E)), w ∉ S →

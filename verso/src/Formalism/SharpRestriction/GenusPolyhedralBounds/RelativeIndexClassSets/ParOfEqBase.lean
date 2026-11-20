@@ -14,7 +14,7 @@ variable {R : Ranks} (H : Host R) (T0 : ℕ) [hT0 : Fact T0.Prime] (pz0 : 𝓞 H
   (hpz0 : (pz0 : H.E) * H.conj (pz0 : H.E) = (T0 : H.E))
 
 /- English proof (translation)
-Set `_` to `H.cmStar`. Simplify using `only [parOf, hostPar, Par.mk.injEq, and_true]`. Conclude with `⟨signature_eq_conjugation H T0 pz0 hpz0, gram_matrix_zero_eq_one H T0 pz0 hpz0⟩`.
+Introduce a local definition for the expression. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 theorem parOf_eq_base (T : ℕ) (pz : 𝓞 H.E) (piG : Fin 2 → 𝓞 H.E) :
     (letI := H.cmStar; parOf (hostSpacesOfNorm H T0 pz0 hpz0) H.g T pz (fun i => H.conj (piG i : H.E))) = hostPar H T pz piG := by
@@ -40,25 +40,21 @@ end HostC
 set_option maxHeartbeats 800000 in
 
 /- English proof (translation)
-Introduce `R H W _ u0 T hT hlev hpde pz hK hpz hcong hpi`. Use `letI := H.cmStar`. Use `choose piG hpiK hpiN using hpi`. Establish `hd : 0 < minkM (2 * R.f * R.N R.m)` using `asm_minkM_pos _`. Distinguish the cases in `hg : ∀ k, (placesOver H.E (H.g k)).ncard = Module.finrank ℚ H.E`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Establish `hyp : ∀ u, LevHyp H (T u) (pz u) piG` using `fun u => ⟨(hT u).out, hK u, hpz u, hcong u, hpiK, hpiN, hg⟩`. Establish `ok : ∀ u, (parOf (hostSpacesOfNorm H (T u0) (pz u0) (hpz u0)) H.g (T u) (pz u) (fun i => H.conj (piG i : H.E))).AllOK (2 * R.f)`. Introduce `u`. Rewrite using `[parOf_eq_base]`. Conclude with `⟨⟨fun i v h => Classical.choice (h1 H (T u) (pz u) piG (hyp u) i v h)⟩, h2 H (T u) (pz u) piG (hyp u), h3 H (T u) (pz u) piG (hyp u), h4 H (T u) (pz u) piG (hyp u), h5 H (T u) (pz u) piG (hyp u), h6 H (T u) (pz u) piG (hyp u), h7 H (T u) (pz u) piG (hyp u), h8 H (T u) (pz u) piG …`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `hS : ∀ u, Nonempty (parOf (hostSpacesOfNorm H (T u0) (pz u0) (hpz u0)) H.g (T u) (pz u) (fun i => H.conj (piG i : H.E))).Splits` using `fun u => (ok u).splits`. Set `S` to `fun u => Classical.choice (hS u)`. Use `haveI : ∀ u, Finite ((parOf (hostSpacesOfNorm H (T u0) (pz u0) (hpz u0)) H.g (T u) (pz u) (fun i => H.conj (piG i : H.E))).Cls (S u)) := fun u => (ok u).fin (S u)`. Establish `heT : ∀ u, Nonempty (Fin R.f ≃ PlT H (T u))` using `fun u => h10 H (T u) (pz u) piG (hyp u)`. Set `eT` to `fun u => Classical.choice (heT u)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hTg : ∀ u i, Nat.Coprime (T u) (H.g i)` using `fun u i => (Nat.coprime_primes (hT u).out (H.g_prime i)).2 (h9 H (T u) (pz u) piG (hyp u) i)`. Establish `htau0 : ∀ u (w : HeightOneSpectrum (𝓞 H.E)), ∃ e : Fin R.f ≃ ↥(R.Psi), PlacesToy.resCharW w = T u → ∀ (v : Fin R.f) (x : 𝓞 H.F), x ∈ (eT u v).1.asIdeal ↔ (0 : WithTop ℤ) < PlacesToy.valW w (H.sigmaOf (e v : R.GG) (algebraMap H.F H.E (x : H.F)))`. Introduce `u w`. Distinguish the cases in `h : PlacesToy.resCharW w = T u`. Take `⟨e, he⟩` from `h11 H (T u) (pz u) piG (hyp u) w (h ▸ PlacesToy.resCharW_mem w)`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Conclude with `⟨(eT u).trans e, fun _ v x => (he (eT u v) x).trans (valW_pos_iff _ _).symm⟩`. Conclude with `⟨Fintype.equivOfCardEq (by rw [Fintype.card_fin, card_realPlaces_eq_degree]), fun hh => absurd hh h⟩`. Use `choose tauF htau using htau0`. Use `⟨fun u => clsPkg ((parOf (hostSpacesOfNorm H (T u0) (pz u0) (hpz u0)) H.g (T u) (pz u) (fun i => H.conj (piG i : H.E))).Cls (S u)) (minkM (2 * R.f * R.N R.m)) hd, fun _ _ => ⟨fun c => Empty.elim c⟩, fun _ => rfl, fun u => latOfBase H (T u0) (pz u0) (hpz u0) (T u) (pz u) _ (S u) ( …` and prove the remaining obligations. Introduce `u i c match i, c with`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Consider the case `0, c`. Conclude with `latBack_isLattice _ _ (Formalism.UG.P.global_lattice_isLattice_holds H.F H.E (Fin R.k) _ (ok u).lb.fin (ok u).lb.span _)`. Consider the case `_ + 1, c => exact Empty.elim c`. Introduce `hcW hv0 hb0 he0 hf0 hl0 Del hDel hgap lt hlt hlet cdS hcdS dsg hdsg etaF hv vol hvol Dst hD du hdu Gam hG hwin hg' ht G kb ks tw htw`. Use `levGapD_gen _ pz piG ?_ ?_ ?_ ?_ ?_ ?_ S (fun _ => Equiv.refl _) ?_ ?_ ?_ eT tauF ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hK`. Conclude with `hpz`. Conclude with `hcong`. Conclude with `hpiK`. Conclude with `hpiN`.
+Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Treat this case separately. Treat this case separately.
 
-Conclude with `ok`. Conclude with `fun _ _ => inferInstanceAs (Subsingleton Unit)`. Conclude with `fun _ c => crdLat0_latBack _ _`. Conclude with `hTg`. Conclude with `fun u w hw v x => htau u w hw v x`.
-
-Use `⟨fun _ => clsPkg Empty (minkM (2 * R.f * R.N R.m)) hd, fun _ _ => ⟨fun c => Empty.elim c⟩, fun _ => rfl, fun _ i => match i with` and prove the remaining obligations. Consider the case `0 => fun c => Empty.elim c`. Consider the case `_ + 1 => fun c => Empty.elim c, ?_, ?_⟩`. Introduce `_ i c match i, c with`. Consider the case `0, c => exact Empty.elim c`.
-
-Consider the case `_ + 1, c => exact Empty.elim c`. Introduce `hcW hv0 hb0 he0 hf0 hl0 Del hDel hgap lt hlt hlet cdS hcdS dsg hdsg etaF hv vol hvol Dst hD du hdu Gam hG hwin hg' ht G kb ks tw htw`. Conclude with `absurd hg' hg`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem levGap5_of (h1 : FactSplitG) (h2 : FactLb) (h3 : FactFMCard) (h4 : FactIwLe) (h5 : FactUCompact)
     (h6 : FactUOpen) (h7 : FactClsFinite) (h8 : FactStabTriv) (h9 : FactTNeG) (h10 : FactPlacesT)
@@ -131,7 +127,7 @@ theorem levGap5_of (h1 : FactSplitG) (h2 : FactLb) (h3 : FactFMCard) (h4 : FactI
       exact absurd hg' hg
 
 /- English proof (translation)
-The claim follows from `levGap5_of factSplitG Formalism.MainNotions.Gaps.LevGap.factLb factFMCard factIwLe Formalism.MainNotions.Gaps.LevGap.factUCompact Formalism.MainNotions.Gaps.LevGap.factUOpen factClsFinite factStabTriv Formalism.MainNotions.Gaps.LevGap.factTNeG Formalism.MainNotions.Gaps.LevGap.fa …`.
+A detailed English derivation is pending.
 -/
 theorem levGap5 : Formalism.MainNotions.Inhab.LevelGap :=
   levGap5_of factSplitG Formalism.MainNotions.Gaps.LevGap.factLb factFMCard factIwLe Formalism.MainNotions.Gaps.LevGap.factUCompact

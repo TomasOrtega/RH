@@ -35,7 +35,7 @@ def Transposable (T : (Lie E a → ℂ) → Lie E a → ℂ) : Prop :=
       ∀ G, ContDiffOn ℝ ∞ G (invSet E a) → ∫ y, β y * T G y ∂ν = ∫ y, γ y * G y ∂ν
 
 /- English proof (translation)
-Use `⟨fun G hG => hS.1 _ (hT.1 G hG), fun β hβ => ?_⟩` and prove the remaining obligations. Take `⟨γ₁, h₁, e₁⟩` from `hS.2 β hβ`. Take `⟨γ₂, h₂, e₂⟩` from `hT.2 γ₁ h₁`. Conclude with `⟨γ₂, h₂, fun G hG => (e₁ _ (hT.1 G hG)).trans (e₂ G hG)⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem Transposable.comp {S T : (Lie E a → ℂ) → Lie E a → ℂ} (hS : Transposable ν S) (hT : Transposable ν T) :
     Transposable ν (S ∘ T) := by
@@ -45,9 +45,9 @@ theorem Transposable.comp {S T : (Lie E a → ℂ) → Lie E a → ℂ} (hS : Tr
   exact ⟨γ₂, h₂, fun G hG => (e₁ _ (hT.1 G hG)).trans (e₂ G hG)⟩
 
 /- English proof (translation)
-Use `⟨fun G hG => (hS.1 G hG).add (hT.1 G hG), fun β hβ => ?_⟩` and prove the remaining obligations. Take `⟨γ₁, h₁, e₁⟩` from `hS.2 β hβ`. Take `⟨γ₂, h₂, e₂⟩` from `hT.2 β hβ`. Use `⟨γ₁ + γ₂, h₁.add h₂, fun G hG => ?_⟩` and prove the remaining obligations. Establish `i1` using `hβ.integrable_mul ν isOpen_invSet (hS.1 G hG).continuousOn`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `i2` using `hβ.integrable_mul ν isOpen_invSet (hT.1 G hG).continuousOn`. Establish `j1` using `h₁.integrable_mul ν isOpen_invSet hG.continuousOn`. Establish `j2` using `h₂.integrable_mul ν isOpen_invSet hG.continuousOn`. Simplify using `only [Pi.add_apply, mul_add, add_mul]`. Rewrite using `[integral_add i1 i2, integral_add j1 j2, e₁ G hG, e₂ G hG]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem Transposable.add {S T : (Lie E a → ℂ) → Lie E a → ℂ} (hS : Transposable ν S) (hT : Transposable ν T) :
     Transposable ν (fun G => S G + T G) := by
@@ -63,9 +63,9 @@ theorem Transposable.add {S T : (Lie E a → ℂ) → Lie E a → ℂ} (hS : Tra
   rw [integral_add i1 i2, integral_add j1 j2, e₁ G hG, e₂ G hG]
 
 /- English proof (translation)
-Use `⟨fun G hG => (hT.1 G hG).const_smul c, fun β hβ => ?_⟩` and prove the remaining obligations. Take `⟨γ, h, e⟩` from `hT.2 β hβ`. Use `⟨fun x => γ x * c, h.mul contDiff_const, fun G hG => ?_⟩` and prove the remaining obligations. Establish `e1 : (fun y => β y * (c • T G) y) = fun y => c * (β y * T G y)`. Use function extensionality and compare the values at `y`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `e2 : (fun y => γ y * c * G y) = fun y => c * (γ y * G y)` using `by funext y; ring`. Rewrite using `[e1, e2, integral_const_mul, integral_const_mul, e G hG]`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem Transposable.smul {T : (Lie E a → ℂ) → Lie E a → ℂ} (hT : Transposable ν T) (c : ℂ) :
     Transposable ν (fun G => c • T G) := by
@@ -85,7 +85,7 @@ noncomputable section
 namespace GlobalTheory.HCParam
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.exists_testFunction_reproducing_laplacianPoly_solutions`.
+A detailed English derivation is pending.
 -/
 theorem reproduce : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ) (ν : Measure (Lie E a)),
     ν.IsAddHaarMeasure → ∀ p : Polynomial ℂ, p ≠ 0 → ∃ α : Lie E a → ℂ, IsTest (invSet E a) α ∧

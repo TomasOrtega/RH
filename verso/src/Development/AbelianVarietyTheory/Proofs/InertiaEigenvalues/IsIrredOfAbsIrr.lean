@@ -6,29 +6,27 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N
 namespace GlobalTheory.IrredOfAbsIrred
 
 /- English proof (translation)
-Introduce `k Γ _ _ a ρ h`. Take `⟨h0, -, h2⟩` from `h`. Use `set K := AlgebraicClosure k`. Use `set f := algebraMap k K with hf`. Establish `hinj : Function.Injective f` using `f.injective`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨fun hb => h0 ?_, fun U hU => ?_⟩` and prove the remaining obligations. Rewrite using `[hb, Submodule.span_eq_bot]`. Introduce and unpack `_ ⟨v, hv, rfl⟩`. Establish `: v = 0` using `by simpa using hv`. Substitute `this` using the available equality.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Substitute using the available equality. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use extensionality with `x`. Simplify using the standard rewrite rules. Establish `hst : IsInv (mapRep f ρ) (Submodule.span K ((fun v : Fin a → k => f ∘ v) '' (U : Set (Fin a → k))))`. Introduce `g v hv`. Proceed by induction on `hv using Submodule.span_induction with`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Consider the case `mem x hx`. Take `⟨u, hu, rfl⟩` from `hx`. Use `Submodule.subset_span ⟨(ρ g : Matrix (Fin a) (Fin a) k).mulVec u, hU g u hu, ?_⟩` and prove the remaining obligations. Use extensionality with `p`. Conclude with `RingHom.map_mulVec f _ u p`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [Matrix.mulVec_add]`. Conclude with `Submodule.add_mem _ hx hy`. Consider the case `smul c x _ hx => rw [Matrix.mulVec_smul]`. Conclude with `Submodule.smul_mem _ _ hx`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Break down `h2 _ (Submodule.span_mono (Set.image_mono (fun _ _ => trivial))) hst with h1 | h1` into its components or cases. Use `left`. Rewrite `h1` using `[Submodule.span_eq_bot]`. Rewrite using `[eq_bot_iff]`. Introduce `v hv`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts. Assume the negation of the conclusion and derive a contradiction.
 
-Use `h1 _ ⟨v, hv, rfl⟩` as an intermediate fact. Rewrite using `[Submodule.mem_bot]`. Use extensionality with `p`. Apply `hinj` to reduce the goal to its premises. Simplify using `using congrFun this p`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `right`. Assume the negation of the conclusion as `hne`. Take `⟨φ, hφ0, hφ⟩` from `Submodule.exists_le_ker_of_lt_top _ (lt_top_iff_ne_top.2 hne)`. Set `F : (Fin a → K) →ₗ[K] K` to `{ toFun := fun X => ∑ i, X i * f (φ (Pi.single i 1)) map_add' := fun X Y => by simp [add_mul, Finset.sum_add_distrib] map_smul' := fun c X => by`. Simplify using `only [Pi.smul_apply, smul_eq_mul, RingHom.id_apply, mul_assoc]`.
+Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(Finset.mul_sum _ _ _).symm }`. Establish `hF : ∀ X : Fin a → k, F (f ∘ X) = f (φ X)`. Introduce `X`. Use `conv_rhs => rw [← Finset.univ_sum_single X]`. Simplify using `only [map_sum]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `∑ i, f (X i) * f (φ (Pi.single i 1)) = _`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `: Pi.single i (X i) = X i • (Pi.single i (1 : k) : Fin a → k)`. Rewrite using `[← Pi.single_smul, smul_eq_mul, mul_one]`. Rewrite using `[this, map_smul, smul_eq_mul, map_mul]`.
+Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hker : Submodule.span K ((fun v : Fin a → k => f ∘ v) '' (U : Set (Fin a → k))) ≤ LinearMap.ker F`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨u, hu, rfl⟩`. Establish `: φ u = 0` using `hφ hu`. Simplify using `only [SetLike.mem_coe, LinearMap.mem_ker, hF, this, map_zero]`.
-
-Apply `hφ0` to reduce the goal to its premises. Use `LinearMap.ext fun X => ?_` and prove the remaining obligations. Establish `h3 : F (f ∘ X) = 0` using `hker (by rw [h1]; exact Submodule.subset_span ⟨X, trivial, rfl⟩)`. Rewrite `h3` using `[hF]`. Conclude with `hinj (by rw [h3]; simp)`.
+A detailed English derivation is pending.
 -/
 theorem isIrred_of_absIrrSub :
     ∀ {k Γ : Type} [Field k] [Group Γ] {a : ℕ} (ρ : Γ →* GL (Fin a) k), AbsIrrSub ρ ⊤ → GlobalTheory.IndefiniteRowSideFullHecke.SemisimplificationConstituents.IsIrred (matRep ((Units.coeHom _).comp ρ)) := by

@@ -14,15 +14,15 @@ variable {K : Type} [Fintype K] [DecidableEq K] {ι : K → Type} [∀ k, Fintyp
   {W : Ideal (MvPolynomial (Σ k, ι k) ℂ)} {e : ℕ} (R : GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.Inter.Res ι W e)
 
 /- English proof (translation)
-Introduce `x`. Use `set i := R.idx x`. Take `⟨n, g, hg⟩` from `(Submodule.fg_iff_exists_fin_generating_family).mp (IsNoetherian.noetherian (R.R.bd i))`. Use `⟨R.R.src i, R.R.isOpen_alt_bis i, R.mem_src_idx x, n, fun l y => eval (R.R.coord i y) (g l), fun l => R.isGoodAtlas.1 i (g l), ?_⟩` and prove the remaining obligations. Use extensionality with `y`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `only [Set.mem_inter_iff, Set.mem_ofPred_eq]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hyD, hy⟩`. Use `⟨hy, fun l => ?_⟩` and prove the remaining obligations. Establish `hz` using `(R.R.zero_bd i y hy).mpr ((pt_mem_D_iff R hy).mp hyD)`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hgl : g l ∈ R.R.bd i`. Rewrite using `[← hg]`. Conclude with `Submodule.subset_span ⟨l, rfl⟩`. Conclude with `hz _ hgl`. Introduce and unpack `⟨hy, hz⟩`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Proceed by induction.
 
-Use `⟨(pt_mem_D_iff R hy).mpr ((R.R.zero_bd i y hy).mp fun h hh => ?_), hy⟩` and prove the remaining obligations. Rewrite `hh` using `[← hg]`. Proceed by induction on `hh using Submodule.span_induction with`. Consider the case `mem a ha`. Take `⟨l, rfl⟩` from `ha`.
+Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Conclude with `hz l`. Consider the case `zero => simp`. Consider the case `add a b _ _ ha hb => simp [ha, hb]`. Consider the case `smul a b _ hb => simp [smul_eq_mul, hb]`.
+A detailed English derivation is pending.
 -/
 theorem isAnalyticSubset_D :
     R.atlas.IsAnalyticSubset {x | R.pt x ∈ ReciprocityTheory.AnForm.R.conePts R.D} := by
@@ -54,17 +54,15 @@ theorem isAnalyticSubset_D :
     | smul a b _ hb => simp [smul_eq_mul, hb]
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Take `⟨x, hx⟩` from `Set.nonempty_iff_ne_empty.mpr hne`. Use `set i := R.idx x`. Establish `hxi : x ∈ R.R.src i` using `R.mem_src_idx x`. Use `set sd := R.R.sncAt i x hxi`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcont : ContinuousOn (fun y => eval (R.R.coord i y) sd.h) (R.R.src i)` using `(MvPolynomial.continuous_eval sd.h).comp_continuousOn (continuousOn_iff_continuous_domRestrict.mpr (R.R.isEmbedding i).continuous)`. Use `set O := interior {x | R.pt x ∈ ReciprocityTheory.AnForm.R.conePts R.D} ∩ (R.R.src i ∩ (fun y => eval (R.R.coord i y) sd.h) ⁻¹' {0}ᶜ) with hOdef`. Establish `hO : IsOpen O` using `isOpen_interior.inter (hcont.isOpen_inter_preimage (R.R.isOpen_alt_bis i) isOpen_compl_singleton)`. Establish `hxO : x ∈ O` using `⟨hx, hxi, sd.eval_h⟩`. Take `⟨ψ, -, hxψ, hsub, hform⟩` from `R.isGoodAtlas.2 i x hxi sd.r sd.span_eq O hO hxO`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hnull : volume ψ.target = 0`. Use `measure_mono_null (t := ⋃ l : Fin e, {u : Fin e → ℂ | u l = 0}) ?_ (measure_iUnion_null fun l => ?_)` and prove the remaining obligations. Introduce `u hu`. Establish `hy : ψ.symm u ∈ ψ.source` using `ψ.map_target hu`. Establish `hyO` using `hsub hy`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hyD : R.pt (ψ.symm u) ∈ ReciprocityTheory.AnForm.R.conePts R.D` using `(interior_subset (s := {x | R.pt x ∈ ReciprocityTheory.AnForm.R.conePts R.D}) hyO.1.1 :)`. Establish `hbd` using `(R.R.zero_bd i (ψ.symm u) hyO.2).mpr ((pt_mem_D_iff R (x := x) hyO.2).mp hyD)`. Establish `h0` using `hbd _ sd.mem_bd`. Rewrite `h0` using `[map_mul, map_prod]`. Establish `hprod` using `(mul_eq_zero.mp h0).resolve_left hyO.1.2.2`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨l, -, hl0⟩` from `Finset.prod_eq_zero_iff.mp hprod`. Establish `hu' : u = ReciprocityTheory.AnForm.R.evalFam sd.r (R.R.coord i (ψ.symm u))` using `(ψ.right_inv hu).symm.trans (hform _ hy)`. Conclude with `Set.mem_iUnion.mpr ⟨l, (congrFun hu' l).trans hl0⟩`. Rewrite using `[MeasureTheory.volume_pi]`. Conclude with `Measure.pi_hyperplane _ l 0`.
-
-Conclude with `(ψ.open_target.measure_pos volume ⟨ψ x, ψ.map_source hxψ⟩).ne' hnull`.
+A detailed English derivation is pending.
 -/
 theorem interior_D : interior {x | R.pt x ∈ ReciprocityTheory.AnForm.R.conePts R.D} = ∅ := by
   by_contra hne
@@ -102,7 +100,7 @@ theorem interior_D : interior {x | R.pt x ∈ ReciprocityTheory.AnForm.R.conePts
   exact (ψ.open_target.measure_pos volume ⟨ψ x, ψ.map_source hxψ⟩).ne' hnull
 
 /- English proof (translation)
-Use `measure_mono_null ?_ (ReciprocityTheory.AnForm.M.analyticNull R.atlas _ (isAnalyticSubset_D R) (interior_D R) j)` and prove the remaining obligations. Introduce and unpack `u ⟨hu, hD⟩`. Conclude with `⟨(R.atlas.chart j).symm u, ⟨hD, (R.atlas.chart j).map_target hu⟩, (R.atlas.chart j).right_inv hu⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem D_null (j : Fin R.atlas.n) :
     volume ((R.atlas.chart j).target ∩
@@ -113,11 +111,9 @@ theorem D_null (j : Fin R.atlas.n) :
   exact ⟨(R.atlas.chart j).symm u, ⟨hD, (R.atlas.chart j).map_target hu⟩, (R.atlas.chart j).right_inv hu⟩
 
 /- English proof (translation)
-Rewrite using `[isOpen_iff_mem_nhds]`. Introduce and unpack `u1 ⟨hu1, hB1⟩`. Use `set x1 := (R.atlas.chart j).symm u1`. Establish `hV : (R.atlas.chart j).target ∩ (R.atlas.chart j).symm ⁻¹' R.R.src (R.idx x1) ∈ 𝓝 u1` using `((R.atlas.chart j).isOpen_inter_preimage_symm (R.R.isOpen_alt_bis _)).mem_nhds ⟨hu1, R.mem_src_idx x1⟩`. Establish `hnot : ¬ ∀ f ∈ R.D, eval (R.liftAt x1 x1) f = 0` using `fun h => hB1 ⟨(GroundTheory.Heights₂.Heights.Inter.res_mem R x1 (R.mem_src_idx x1)).1, h⟩`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `push Not at hnot`. Take `⟨f, hfD, hf0⟩` from `hnot`. Establish `hcont : ContinuousAt (fun u => eval (R.liftAt x1 ((R.atlas.chart j).symm u)) f) u1` using `(MvPolynomial.continuous_eval _).continuousAt.comp (R.analyticAt_liftAt_pi x1 j ⟨hu1, R.mem_src_idx x1⟩).continuousAt`. Use `filter_upwards [hV, hcont.eventually_ne hf0] with u hu hne`. Use `⟨hu.1, fun hB => ?_⟩` and prove the remaining obligations.
-
-Conclude with `hne (((pt_mem_D_iff R hu.2).mp hB).2 f hfD)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isOpen_chart_notD (j : Fin R.atlas.n) :
     IsOpen ((R.atlas.chart j).target ∩
@@ -140,13 +136,13 @@ theorem isOpen_chart_notD (j : Fin R.atlas.n) :
   exact hne (((pt_mem_D_iff R hu.2).mp hB).2 f hfD)
 
 /- English proof (translation)
-Use `set O' := O ∩ ((R.atlas.chart j).target ∩ (R.atlas.chart j).symm ⁻¹' {x | R.pt x ∉ ReciprocityTheory.AnForm.R.conePts R.D}) with hO'def`. Establish `hO' : IsOpen O'` using `hO.inter (isOpen_chart_notD R j)`. Establish `hne' : O'.Nonempty`. Assume the negation of the conclusion as `h`. Rewrite `h` using `[Set.not_nonempty_iff_eq_empty]`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨u, hu⟩` from `hne`. Take `⟨r, hr, hball⟩` from `Metric.isOpen_iff.mp hO u hu`. Establish `hsub : Metric.ball u r ⊆ (R.atlas.chart j).target ∩ (R.atlas.chart j).symm ⁻¹' {x | R.pt x ∈ ReciprocityTheory.AnForm.R.conePts R.D}`. Introduce `v hv`. Establish `hvO` using `hball hv`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨hOt hvO, ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hB`. Establish `: v ∈ O'` using `⟨hvO, hOt hvO, hB⟩`. Rewrite `this` using `[h]`. Conclude with `this`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(Metric.measure_ball_pos volume u hr).ne' (measure_mono_null hsub (D_null R j))`. Take `⟨y, hy⟩` from `exists_infinite_fibre hO' hne' (han.mono inter_subset_left) (fun u hu => hdet u hu.1)`. Use `(resFib_finite R hP hW Ψ hΨ y).not_infinite ((Set.Infinite.image ((R.atlas.chart j).symm.injOn.mono fun u hu => hOt hu.1.1) hy).mono ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨u, ⟨huO, hqu⟩, rfl⟩`. Conclude with `⟨hqu, huO.2.2, h0 u huO.1⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem not_flat {P : Ideal (MRing ι)} (hP : IsArithVar P (e + 1))
     (hW : W ∈ (P.map (MvPolynomial.map (Int.castRingHom ℂ))).minimalPrimes)

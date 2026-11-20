@@ -11,9 +11,9 @@ noncomputable section
 namespace GlobalTheory.CovTest.BCFlag
 
 /- English proof (translation)
-Use `NatTrans.congr_app (Scheme.Modules.pseudofunctor_associativity f g h) M` as an intermediate fact. Simplify using `at this`. Establish `e2` using `congrArg (fun x => (Scheme.Modules.pullback f).map ((Scheme.Modules.pullbackComp g h).hom.app M) ≫ (Scheme.Modules.pullbackComp f (g ≫ h)).hom.app M ≫ x) this`. Simplify using `only [Iso.hom_inv_id_app_assoc, ← CategoryTheory.Functor.map_comp_assoc, Iso.hom_inv_id_app] at e2`. Use `erw [CategoryTheory.Functor.map_id, Category.id_comp] at e2`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e2]`. Simplify using `[Scheme.Modules.pullbackCongr, eqToHom_app]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem pc_assoc {X Y Z W : Scheme.{0}} (f : X ⟶ Y) (g : Y ⟶ Z) (h : Z ⟶ W) (M : W.Modules) :
     (Scheme.Modules.pullbackComp f g).hom.app ((Scheme.Modules.pullback h).obj M) ≫
@@ -31,7 +31,7 @@ theorem pc_assoc {X Y Z W : Scheme.{0}} (f : X ⟶ Y) (g : Y ⟶ Z) (h : Z ⟶ W
   simp [Scheme.Modules.pullbackCongr, eqToHom_app]
 
 /- English proof (translation)
-Substitute `c h₁` using the available equality. Simplify using `[Scheme.Modules.pullbackCongr]`.
+Substitute using the available equality. Simplify using the standard rewrite rules.
 -/
 theorem pc_congr {T P B : Scheme.{0}} (f : T ⟶ P) {u v : P ⟶ B} (c : u = v) {k : T ⟶ B} (h₁ : f ≫ u = k)
     (h₂ : f ≫ v = k) (M : B.Modules) :
@@ -42,7 +42,7 @@ theorem pc_congr {T P B : Scheme.{0}} (f : T ⟶ P) {u v : P ⟶ B} (c : u = v) 
   simp [Scheme.Modules.pullbackCongr]
 
 /- English proof (translation)
-Substitute `c d` using the available equality. Simplify using `[Scheme.Modules.pullbackCongr]`.
+Substitute using the available equality. Simplify using the standard rewrite rules.
 -/
 theorem congr_trans' {T B : Scheme.{0}} {u v k : T ⟶ B} (c : u = v) (d : v = k) (M : B.Modules) :
     (Scheme.Modules.pullbackCongr c).hom.app M ≫ (Scheme.Modules.pullbackCongr d).hom.app M =
@@ -51,9 +51,9 @@ theorem congr_trans' {T B : Scheme.{0}} {u v k : T ⟶ B} (c : u = v) (d : v = k
   simp [Scheme.Modules.pullbackCongr]
 
 /- English proof (translation)
-Substitute `ha hb` using the available equality. Establish `e1 : (Scheme.Modules.pullbackCongr (rfl : f ≫ a = f ≫ a)).hom.app ((Scheme.Modules.pullback π).obj E) = 𝟙 _`. Simplify using `[Scheme.Modules.pullbackCongr]`. Establish `e2 : (Scheme.Modules.pullbackCongr (rfl : f ≫ b = f ≫ b)).hom.app ((Scheme.Modules.pullback g).obj E) = 𝟙 _`. Simplify using `[Scheme.Modules.pullbackCongr]`.
+Substitute using the available equality. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[e1, e2, Category.id_comp, Category.id_comp, reassoc_of% (pc_assoc f a π E), pc_assoc f b g E, congr_trans']`. Simplify using `only [CategoryTheory.Functor.map_comp, Category.assoc]`. Rewrite using `[← CategoryTheory.Functor.map_comp_assoc (Scheme.Modules.pullback f) ((Scheme.Modules.pullbackComp b g).inv.app E)]`. Use `erw [Iso.inv_hom_id_app, CategoryTheory.Functor.map_id, Category.id_comp]`. Rewrite using `[pc_congr f cond _ (Category.assoc f b g).symm]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pc_coh {T P Y B' B : Scheme.{0}} (f : T ⟶ P) (a : P ⟶ Y) (b : P ⟶ B') (π : Y ⟶ B) (g : B' ⟶ B)
     (cond : a ≫ π = b ≫ g) (h : T ⟶ Y) (t : T ⟶ B') (ha : f ≫ a = h) (hb : f ≫ b = t) (w : h ≫ π = t ≫ g)
@@ -79,7 +79,7 @@ theorem pc_coh {T P Y B' B : Scheme.{0}} (f : T ⟶ P) (a : P ⟶ Y) (b : P ⟶ 
   rw [pc_congr f cond _ (Category.assoc f b g).symm]
 
 /- English proof (translation)
-Rewrite using `[← (Scheme.Modules.pullbackCongr ha).hom.naturality_assoc, ← (Scheme.Modules.pullbackComp f (pullback.fst π g)).hom.naturality_assoc, pc_coh f (pullback.fst π g) (pullback.snd π g) π g pullback.condition h t ha hb w E]`. Simplify using `only [bcIso, Iso.trans_hom, Iso.app_hom, Iso.symm_hom, Iso.app_inv, CategoryTheory.Functor.map_comp, Category.assoc, Functor.comp_map]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem step_key {T Y B' B : Scheme.{0}} (π : Y ⟶ B) (g : B' ⟶ B) (f : T ⟶ pullback π g) (h : T ⟶ Y) (t : T ⟶ B')
     (ha : f ≫ pullback.fst π g = h) (hb : f ≫ pullback.snd π g = t) (w : h ≫ π = t ≫ g) (E : B.Modules)
@@ -98,7 +98,7 @@ theorem step_key {T Y B' B : Scheme.{0}} (π : Y ⟶ B) (g : B' ⟶ B) (f : T �
     Category.assoc, Functor.comp_map]
 
 /- English proof (translation)
-Rewrite using `[← cancel_mono ((Scheme.Modules.pullbackComp t g).hom.app E)]`. Simplify using `only [Iso.trans_hom, Iso.app_hom, Category.assoc]`. Rewrite using `[hee, step_key π g f h t ha hb w E F ιF]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem step_exists {T Y B' B : Scheme.{0}} (π : Y ⟶ B) (g : B' ⟶ B) (f : T ⟶ pullback π g) (h : T ⟶ Y) (t : T ⟶ B')
     (ha : f ≫ pullback.fst π g = h) (hb : f ≫ pullback.snd π g = t) (w : h ≫ π = t ≫ g) (E : B.Modules)
@@ -118,9 +118,9 @@ theorem step_exists {T Y B' B : Scheme.{0}} (π : Y ⟶ B) (g : B' ⟶ B) (f : T
   rw [hee, step_key π g f h t ha hb w E F ιF]
 
 /- English proof (translation)
-Establish `k` using `step_key π g f _ t rfl hb w E F ιF`. Establish `e1 : (Scheme.Modules.pullbackCongr (rfl : f ≫ pullback.fst π g = f ≫ pullback.fst π g)).hom.app F = 𝟙 _`. Simplify using `[Scheme.Modules.pullbackCongr]`. Establish `hee'` using `congrArg (· ≫ (Scheme.Modules.pullbackComp t g).hom.app E) hee`. Simplify using `only [Category.assoc] at hee'`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite `k` using `[e1, Category.id_comp, ← hee']`. Simplify using `only [Iso.trans_hom, Iso.symm_hom, Iso.app_inv, Category.assoc] at k ⊢`. Rewrite using `[k]`. Simplify using the standard rewrite rules.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem step_unique {T Y B' B : Scheme.{0}} (π : Y ⟶ B) (g : B' ⟶ B) (f : T ⟶ pullback π g) (t : T ⟶ B')
     (hb : f ≫ pullback.snd π g = t) (w : (f ≫ pullback.fst π g) ≫ π = t ≫ g) (E : B.Modules)
@@ -147,11 +147,11 @@ theorem step_unique {T Y B' B : Scheme.{0}} (π : Y ⟶ B) (g : B' ⟶ B) (f : T
   simp
 
 /- English proof (translation)
-Introduce `B Y B' π g ι E n fl H T t fl''`. Take `⟨h, ⟨w, he⟩, hu⟩` from `H T (t ≫ g) (fun a => (fl'' a).ofIso ((Scheme.Modules.pullbackComp t g).app (E a)))`. Use `⟨pullback.lift h t w, ⟨pullback.lift_snd _ _ _, fun a i => ?_⟩, ?_⟩` and prove the remaining obligations. Take `⟨e, hee⟩` from `he a i`. Conclude with `⟨_, step_exists π g (pullback.lift h t w) h t (pullback.lift_fst h t w) (pullback.lift_snd h t w) w (E a) ((fl a).F i) ((fl a).ι i) ((fl'' a).F i) ((fl'' a).ι i) e hee⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Introduce and unpack `y ⟨w'', he''⟩`. Establish `w₁ : (y ≫ pullback.fst π g) ≫ π = t ≫ g`. Rewrite using `[Category.assoc, pullback.condition, ← Category.assoc, w'']`. Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[pullback.lift_fst]`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Use `hu _ ⟨w₁, fun a i => ?_⟩` and prove the remaining obligations. Take `⟨e, hee⟩` from `he'' a i`. Conclude with `⟨_, step_unique π g y t w'' w₁ (E a) ((fl a).F i) ((fl a).ι i) ((fl'' a).F i) ((fl'' a).ι i) e hee⟩`. Rewrite using `[pullback.lift_snd, w'']`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 -/
 theorem isFlagBundle_baseChange : ∀ (B Y B' : Scheme.{0}) (π : Y ⟶ B) (g : B' ⟶ B) (ι : Type) (E : ι → B.Modules) (n : ι → ℕ)
     (fl : ∀ a, Vert.Flag ((Scheme.Modules.pullback π).obj (E a)) (n a)), IsFlagBundle π E n fl →

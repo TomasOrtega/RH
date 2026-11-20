@@ -22,14 +22,14 @@ namespace GlobalTheory.ArchRec.Direct
 def barRev {n : ℕ} (g : Mn n) : Mn n := (g.map (starRingEnd ℂ)).submatrix Fin.rev Fin.rev
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[barRev]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem barRev_barRev {n : ℕ} (g : Mn n) : barRev (barRev g) = g := by
   ext i j
   simp [barRev]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [barRev, Matrix.submatrix_apply, Matrix.map_apply, Matrix.mul_apply, map_sum, map_mul]`. Conclude with `(Fintype.sum_equiv Fin.revPerm _ _ (fun x => by simp [Fin.revPerm_apply])).symm`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem barRev_mul {n : ℕ} (g h : Mn n) : barRev (g * h) = barRev g * barRev h := by
   ext i j
@@ -37,9 +37,9 @@ theorem barRev_mul {n : ℕ} (g h : Mn n) : barRev (g * h) = barRev g * barRev h
   exact (Fintype.sum_equiv Fin.revPerm _ _ (fun x => by simp [Fin.revPerm_apply])).symm
 
 /- English proof (translation)
-Use extensionality with `i j`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify using `[barRev]`. Establish `h' : i.rev ≠ j.rev` using `fun h'' => h (Fin.rev_injective h'')`.
+By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[barRev, Matrix.one_apply, h, h']`.
+Simplify using the standard rewrite rules.
 -/
 theorem barRev_one {n : ℕ} : barRev (1 : Mn n) = 1 := by
   ext i j
@@ -49,16 +49,16 @@ theorem barRev_one {n : ℕ} : barRev (1 : Mn n) = 1 := by
     simp [barRev, Matrix.one_apply, h, h']
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[barRev, Matrix.conjTranspose_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem barRev_conjTranspose {n : ℕ} (g : Mn n) : barRev gᴴ = (barRev g)ᴴ := by
   ext i j
   simp [barRev, Matrix.conjTranspose_apply]
 
 /- English proof (translation)
-Use extensionality with `i j`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Apply the tactic sequence `by_cases hε : ε i.rev <;> simp [barRev, Formalism.REAL.Jm, hε]`. Establish `h' : i.rev ≠ j.rev` using `fun h'' => h (Fin.rev_injective h'')`.
+By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Simplify using `[barRev, Formalism.REAL.Jm, Matrix.diagonal_apply, h, h']`.
+Simplify using the standard rewrite rules.
 -/
 theorem barRev_Jm {n : ℕ} (ε : Fin n → Bool) : barRev (Formalism.REAL.Jm ε) = Formalism.REAL.Jm (fun a => ε a.rev) := by
   ext i j
@@ -69,9 +69,9 @@ theorem barRev_Jm {n : ℕ} (ε : Fin n → Bool) : barRev (Formalism.REAL.Jm ε
     simp [barRev, Formalism.REAL.Jm, Matrix.diagonal_apply, h, h']
 
 /- English proof (translation)
-Simplify using `only [Formalism.REAL.Kset, Set.mem_setOf_eq] at hg ⊢`. Take `⟨hu, hc⟩` from `hg`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite `hu`, the goal using `[Matrix.mem_unitaryGroup_iff]`. Rewrite using `[Matrix.star_eq_conjTranspose, ← barRev_conjTranspose, ← barRev_mul, ← Matrix.star_eq_conjTranspose, hu, barRev_one]`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← barRev_Jm, ← barRev_mul, hc, barRev_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem barRev_mem_K {n : ℕ} {ε : Fin n → Bool} {g : Mn n} (hg : g ∈ Formalism.REAL.Kset ε) :
     barRev g ∈ Formalism.REAL.Kset (fun a => ε a.rev) := by
@@ -84,9 +84,9 @@ theorem barRev_mem_K {n : ℕ} {ε : Fin n → Bool} {g : Mn n} (hg : g ∈ Form
   · rw [← barRev_Jm, ← barRev_mul, hc, barRev_mul]
 
 /- English proof (translation)
-Establish `hK : ∀ g ∈ Formalism.REAL.Kset (fun a => ε a.rev), barRev g ∈ Formalism.REAL.Kset ε`. Introduce `g hg`. Simplify `barRev_mem_K hg` using `only [Fin.rev_rev]`. Simplify using `only [IsKFin, IsKStableOn]`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨S, hS, hx, hst⟩`. Use `⟨S, hS, hx, fun g hg v hv => ?_⟩` and prove the remaining obligations. Simplify `hst (barRev g) (barRev_mem_K hg) v hv` using `only [barRev_barRev]`. Introduce and unpack `⟨S, hS, hx, hst⟩`. Conclude with `⟨S, hS, hx, fun g hg v hv => hst (barRev g) (hK g hg) v hv⟩`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem isKFin_barRev {n : ℕ} {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] (ε : Fin n → Bool)
     (σ : Mn n → (H →L[ℂ] H)) (x : H) :
@@ -103,11 +103,11 @@ theorem isKFin_barRev {n : ℕ} {H : Type} [NormedAddCommGroup H] [InnerProductS
     exact ⟨S, hS, hx, fun g hg v hv => hst (barRev g) (hK g hg) v hv⟩
 
 /- English proof (translation)
-Take `⟨hanti, r, hr, hS⟩` from `h`. Use `⟨fun a b hab => ?_, fun a => -r a.rev, fun a => by simp [hr], ?_⟩` and prove the remaining obligations. Establish `hba : b.rev < a.rev` using `Fin.rev_lt_rev.mpr hab`. Simplify using `using hanti hba`. Rewrite using `[show dualPar S = S.image fun x => (-x.1, x.2) from rfl, hS, Finset.image_image]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `x`. Simplify using `only [Finset.mem_image, Finset.mem_univ, true_and, Function.comp_apply]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, rfl⟩`. Conclude with `⟨a.rev, by simp⟩`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `⟨a, rfl⟩`. Conclude with `⟨a.rev, rfl⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem isEnum_rev {n : ℕ} {S : SPar} {lam : Fin n → ℝ} {ε : Fin n → Bool} (h : IsEnum S lam ε) :
     IsEnum (dualPar S) (fun a => -lam a.rev) (fun a => ε a.rev) := by
@@ -125,9 +125,9 @@ theorem isEnum_rev {n : ℕ} {S : SPar} {lam : Fin n → ℝ} {ε : Fin n → Bo
       exact ⟨a.rev, rfl⟩
 
 /- English proof (translation)
-Use extensionality with `i j`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify using `[Formalism.REAL.Jm]`. Establish `h' : i.rev ≠ j.rev` using `fun h'' => h (Fin.rev_injective h'')`.
+By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[Formalism.REAL.Jm, Matrix.diagonal_apply, h, h']`.
+Simplify using the standard rewrite rules.
 -/
 theorem Jm_rev {n : ℕ} (ε : Fin n → Bool) :
     Formalism.REAL.Jm (fun a => ε a.rev) = (Formalism.REAL.Jm ε).submatrix Fin.revPerm Fin.revPerm := by
@@ -156,7 +156,7 @@ def barModel {D : D7} {V : HSp D} {S : D.what₂.Tau → SPar} (M : DSModel V S)
     rfl
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[barRev, barMat, plainMat, Matrix.reindex_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem barRev_barMat {p q n : ℕ} (e : Ix p q ≃ Fin n) (g : Mat p q) :
     barRev (barMat (e.trans Fin.revPerm) g) = plainMat e g := by
@@ -164,7 +164,7 @@ theorem barRev_barMat {p q n : ℕ} (e : Ix p q ≃ Fin n) (g : Mat p q) :
   simp [barRev, barMat, plainMat, Matrix.reindex_apply]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[barRev, barMat, plainMat, Matrix.reindex_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem barRev_plainMat {p q n : ℕ} (e : Ix p q ≃ Fin n) (g : Mat p q) :
     barRev (plainMat (e.trans Fin.revPerm) g) = barMat e g := by
@@ -172,19 +172,17 @@ theorem barRev_plainMat {p q n : ℕ} (e : Ix p q ≃ Fin n) (g : Mat p q) :
   simp [barRev, barMat, plainMat, Matrix.reindex_apply]
 
 /- English proof (translation)
-Introduce `D hB X V S M τ p q l₁ l₂ c hpq h₁ h₂ hpar hhas hS`. Take `⟨hsrc, htgt⟩` from `hB`. Establish `hds : ∀ τ, letI` using `M.nacg τ`. Use `letI := M.ips τ IsDS (fun a => M.ε τ a.rev) (fun a => -M.lam τ a.rev) (fun g => M.σ τ (barRev g)) := fun τ => GlobalTheory.T.isDiscreteSeries_conjugate_reverse_contragredient _ _ _ _ _ (M.ds τ)`. Establish `hset : GlobalTheory.IndefiniteRowSideFullHecke.BarMatrix.HidaSetting X p q l₁ l₂ c (fun τ => dualPar (S τ)) τ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Use `⟨hpq, h₁, h₂, hpar, hhas, ?_⟩` and prove the remaining obligations. Use `show dualPar (S τ) = _`. Rewrite using `[hS]`. Take `⟨-, m, hm, hU⟩` from `hsrc X V _ (barModel M hds) τ p q l₁ l₂ c hset`. Take `⟨-, m', hm', hU'⟩` from `htgt X V _ (barModel M hds) τ p q l₁ l₂ c hset`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `rfl : m' = m` from `by exact_mod_cast hm'.trans hm.symm`. Use `⟨m', hm', fun e he b => ?_⟩` and prove the remaining obligations. Establish `he' : SignCompat ((barModel M hds).ε τ) (e.trans Fin.revPerm)`. Introduce `a`. Express the relevant statement in the definitionally equal form `M.ε τ ((e.trans Fin.revPerm) a).rev = a.isLeft`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 
-Simplify using `[he a]`. Consider the cases of `b`. Take `⟨U, hUm⟩` from `hU _ he'`. Use `⟨U, ⟨fun x y => map_add U x y, fun z x => ?_, U.bijective, fun x => U.norm_map x, fun g x => ?_, fun x => ?_⟩⟩` and prove the remaining obligations. Conclude with `U.map_smul z x`.
+Split into cases according to the possible forms of the given data. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `hg` using `hUm.grp g x`. Express the relevant statement in the definitionally equal form `_ = _ • U (M.σ τ (barRev (barMat (e.trans Fin.revPerm) _)) x) at hg`. Rewrite `hg` using `[barRev_barMat]`. Simplify `hg` using `[phi]`. Conclude with `(isKFin_barRev (M.ε τ) (M.σ τ) x).symm.trans (hUm.kfin x)`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take `⟨U, hUm⟩` from `hU' _ he'`. Use `⟨U, ⟨fun x y => map_add U x y, fun z x => ?_, U.bijective, fun x => U.norm_map x, fun g x => ?_, fun x => ?_⟩⟩` and prove the remaining obligations. Conclude with `U.map_smulₛₗ z x`. Establish `hg` using `hUm.grp g x`. Express the relevant statement in the definitionally equal form `_ = _ • U (M.σ τ (barRev (plainMat (e.trans Fin.revPerm) _)) x) at hg`.
-
-Rewrite `hg` using `[barRev_plainMat]`. Simplify `hg` using `[phi]`. Conclude with `(isKFin_barRev (M.ε τ) (M.σ τ) x).symm.trans (hUm.kfin x)`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem directBridge : ∀ D : D7, GlobalTheory.IndefiniteRowSideFullHecke.BarMatrix.ModelsAreCoverSeries D → DirectBridge D := by
   intro D hB X V S M τ p q l₁ l₂ c hpq h₁ h₂ hpar hhas hS

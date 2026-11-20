@@ -25,15 +25,15 @@ namespace GlobalTheory.CompanionTheory.MixZ.ExRat
 variable {m : ℕ} {n : Fin (m + 1) → ℕ}
 
 /- English proof (translation)
-Simplify using `only [dehomog, coe_eval₂Hom, eval₂_X, pullRatio_self, map_one]`.
+Simplify using the standard rewrite rules.
 -/
 theorem dehomog_X_chart (c : ∀ k, Bk n k) (k : Fin (m + 1)) : dehomog c (X ⟨k, c k⟩) = 1 := by
   simp only [dehomog, coe_eval₂Hom, eval₂_X, pullRatio_self, map_one]
 
 /- English proof (translation)
-Introduce `v`. Establish `hle : Subring.closure (Set.range (SmoothRep.rt c)) ≤ (dehomog c).range`. Rewrite using `[Subring.closure_le]`. Introduce and unpack `_ ⟨q, rfl⟩`. Conclude with `⟨X q, by simp [dehomog, SmoothRep.rt]⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Conclude with `hle ((SmoothRep.gen m n c).2 ▸ Subring.mem_top v)`.
+A detailed English derivation is pending.
 -/
 theorem dehomog_surjective (c : ∀ k, Bk n k) : Function.Surjective (dehomog c) := by
   intro v
@@ -44,9 +44,9 @@ theorem dehomog_surjective (c : ∀ k, Bk n k) : Function.Surjective (dehomog c)
   exact hle ((SmoothRep.gen m n c).2 ▸ Subring.mem_top v)
 
 /- English proof (translation)
-Introduce `e he k`. Establish `h0 : e = 0`. Assume the negation of the conclusion as `h`. Rewrite `he` using `[MvPolynomial.mem_support_iff, coeff_C, if_neg (Ne.symm h)]`. Conclude with `he rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality.
 
-Substitute `h0` using the available equality. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isMultiHomog_C (r : ℤ) : IsMultiHomog (C r : Pol n) 0 := by
   intro e he k
@@ -58,7 +58,7 @@ theorem isMultiHomog_C (r : ℤ) : IsMultiHomog (C r : Pol n) 0 := by
   simp
 
 /- English proof (translation)
-Proceed by induction on `e with`. Consider the case `zero => simpa using isMultiHomog_C (n := n) 1`. Consider the case `succ e ih`. Rewrite using `[pow_succ, succ_nsmul]`. Conclude with `mhMul ih (isMultiHomog_X p)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isMultiHomog_X_pow (p : Σ k, Bk n k) (e : ℕ) :
     IsMultiHomog (X p ^ e : Pol n) (e • fun k => if k = p.1 then 1 else 0) := by
@@ -71,11 +71,11 @@ theorem isMultiHomog_X_pow (p : Σ k, Bk n k) (e : ℕ) :
 def mono (c : ∀ k, Bk n k) (d : Fin (m + 1) → ℕ) : Pol n := ∏ k, X ⟨k, c k⟩ ^ d k
 
 /- English proof (translation)
-Establish `h : ∀ s : Finset (Fin (m + 1)), IsMultiHomog (∏ k ∈ s, (X ⟨k, c k⟩ : Pol n) ^ d k) (∑ k ∈ s, d k • fun l => if l = k then 1 else 0)`. Introduce `s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using isMultiHomog_C (n := n) 1`. Consider the case `insert a s ha ih`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Rewrite using `[Finset.prod_insert ha, Finset.sum_insert ha]`. Conclude with `mhMul (isMultiHomog_X_pow _ _) ih`. Establish `e : (∑ k, d k • fun l : Fin (m + 1) => if l = k then 1 else 0) = d`. Use function extensionality and compare the values at `l`. Simplify using `[Finset.sum_apply]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `h Finset.univ` as an intermediate fact. Rewrite `this` using `[e]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem isMultiHomog_mono (c : ∀ k, Bk n k) (d : Fin (m + 1) → ℕ) : IsMultiHomog (mono c d) d := by
   have h : ∀ s : Finset (Fin (m + 1)), IsMultiHomog (∏ k ∈ s, (X ⟨k, c k⟩ : Pol n) ^ d k)
@@ -93,17 +93,17 @@ theorem isMultiHomog_mono (c : ∀ k, Bk n k) (d : Fin (m + 1) → ℕ) : IsMult
   rwa [e] at this
 
 /- English proof (translation)
-Simplify using `[mono, map_prod, map_pow, dehomog_X_chart]`.
+Simplify using the standard rewrite rules.
 -/
 theorem dehomog_mono (c : ∀ k, Bk n k) (d : Fin (m + 1) → ℕ) : dehomog c (mono c d) = 1 := by
   simp [mono, map_prod, map_pow, dehomog_X_chart]
 
 /- English proof (translation)
-Proceed by induction on `F using MvPolynomial.induction_on with`. Consider the case `C r => exact ⟨0, C r, isMultiHomog_C r, rfl⟩`. Consider the case `add p q hp hq`. Take `⟨a, p', hp', ep⟩` from `hp`. Take `⟨b, q', hq', eq⟩` from `hq`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨a + b, p' * mono c b + q' * mono c a, mhAdd (mhMul hp' (isMultiHomog_mono c b)) ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[add_comm a b]`. Conclude with `mhMul hq' (isMultiHomog_mono c a)`. Simplify using `[dehomog_mono, ep, eq]`. Consider the case `mul_X p q hp`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨a, p', hp', ep⟩` from `hp`. Conclude with `⟨_, p' * X q, mhMul hp' (isMultiHomog_X q), by simp [ep]⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_homog (c : ∀ k, Bk n k) (F : Pol n) :
     ∃ (a : Fin (m + 1) → ℕ) (F' : Pol n), IsMultiHomog F' a ∧ dehomog c F' = dehomog c F := by
@@ -128,7 +128,7 @@ def fnI (V : (MP ℤ m n).Opens) (h : genericPoint X ∈ i ⁻¹ᵁ V) : Γ(MP �
   (fnOf (i ⁻¹ᵁ V) h).comp (i.app V).hom
 
 /- English proof (translation)
-Establish `e₁ : (i.app W).hom (resG _ e s) = resG X (i.preimage_mono e) ((i.app V).hom s)` using `congr($(i.naturality (homOfLE e).op) s)`. Use `show fnOf (i ⁻¹ᵁ W) h ((i.app W).hom (resG _ e s)) = _`. Rewrite using `[e₁, fnOf_resG]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem fnI_resG {V W : (MP ℤ m n).Opens} (e : W ≤ V) (h : genericPoint X ∈ i ⁻¹ᵁ W)
     (hV : genericPoint X ∈ i ⁻¹ᵁ V) (s : Γ(MP ℤ m n, V)) :
@@ -143,7 +143,7 @@ def yc (c : ∀ k, Bk n k) (hc : genericPoint X ∈ i ⁻¹ᵁ mchart c) (q : Σ
   fnAt i c hc (MvPolynomial.X q)
 
 /- English proof (translation)
-Establish `e : (fnI i (mchart c) hc).comp (dehomog c) = (aeval (yc i c hc) : Pol n →ₐ[ℤ] _).toRingHom` using `MvPolynomial.ringHom_ext (fun r => by simp) (fun p => by simp [yc, fnAt, fnI])`. Conclude with `congrArg (fun φ => φ s) e`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem fnAt_eq_aeval (c : ∀ k, Bk n k) (hc : genericPoint X ∈ i ⁻¹ᵁ mchart c) (s : Pol n) :
     fnAt i c hc s = aeval (yc i c hc) s := by
@@ -152,7 +152,7 @@ theorem fnAt_eq_aeval (c : ∀ k, Bk n k) (hc : genericPoint X ∈ i ⁻¹ᵁ mc
   exact congrArg (fun φ => φ s) e
 
 /- English proof (translation)
-Establish `e₁ : yc i c hc ⟨k, j⟩ = fnI i (mchart c) hc (pullRatio (prB n k) (mchart c) (c k) (mchart_le c k) j)` using `by show fnI i (mchart c) hc (dehomog c (MvPolynomial.X ⟨k, j⟩)) = _`. Simplify using `only [dehomog, coe_eval₂Hom, eval₂_X]`. Rewrite using `[resG_pullRatio]`. Rewrite using `[e₁, ← fnI_resG i e h hc, resG_pullRatio]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem fnI_pullRatio (c : ∀ k, Bk n k) (hc : genericPoint X ∈ i ⁻¹ᵁ mchart c) {W : (MP ℤ m n).Opens}
     (e : W ≤ mchart c) (h : genericPoint X ∈ i ⁻¹ᵁ W) (k : Fin (m + 1)) (hW : W ≤ prB n k ⁻¹ᵁ chart ℤ (n k) (c k))
@@ -164,14 +164,14 @@ theorem fnI_pullRatio (c : ∀ k, Bk n k) (hc : genericPoint X ∈ i ⁻¹ᵁ mc
   rw [e₁, ← fnI_resG i e h hc, resG_pullRatio]
 
 /- English proof (translation)
-Simplify using `[yc, fnAt, dehomog_X_chart]`.
+Simplify using the standard rewrite rules.
 -/
 theorem yc_self (c : ∀ k, Bk n k) (hc : genericPoint X ∈ i ⁻¹ᵁ mchart c) (k : Fin (m + 1)) :
     yc i c hc ⟨k, c k⟩ = 1 := by
   simp [yc, fnAt, dehomog_X_chart]
 
 /- English proof (translation)
-Establish `h : genericPoint X ∈ i ⁻¹ᵁ (mchart c ⊓ mchart c')` using `⟨hc, hc'⟩`. Establish `e₁ : (mchart c ⊓ mchart c') ≤ prB n k ⁻¹ᵁ chart ℤ (n k) (c k)` using `inf_le_left.trans (mchart_le c k)`. Establish `e₂ : (mchart c ⊓ mchart c') ≤ prB n k ⁻¹ᵁ chart ℤ (n k) (c' k)` using `inf_le_right.trans (mchart_le c' k)`. Rewrite using `[← fnI_pullRatio i c hc inf_le_left h k e₁, ← fnI_pullRatio i c hc inf_le_left h k e₁, ← fnI_pullRatio i c' hc' inf_le_right h k e₂, ← map_mul, pullRatio_mul_pullRatio]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem yc_mul (c c' : ∀ k, Bk n k) (hc : genericPoint X ∈ i ⁻¹ᵁ mchart c) (hc' : genericPoint X ∈ i ⁻¹ᵁ mchart c')
     (k : Fin (m + 1)) (j : Bk n k) : yc i c hc ⟨k, j⟩ = yc i c hc ⟨k, c' k⟩ * yc i c' hc' ⟨k, j⟩ := by
@@ -182,7 +182,7 @@ theorem yc_mul (c c' : ∀ k, Bk n k) (hc : genericPoint X ∈ i ⁻¹ᵁ mchart
     ← fnI_pullRatio i c' hc' inf_le_right h k e₂, ← map_mul, pullRatio_mul_pullRatio]
 
 /- English proof (translation)
-Introduce `h`. Use `yc_mul i c c' hc hc' k (c k)` as an intermediate fact. Rewrite `this` using `[yc_self, h, zero_mul]`. Conclude with `one_ne_zero this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem yc_ne_zero (c c' : ∀ k, Bk n k) (hc : genericPoint X ∈ i ⁻¹ᵁ mchart c) (hc' : genericPoint X ∈ i ⁻¹ᵁ mchart c')
     (k : Fin (m + 1)) : yc i c hc ⟨k, c' k⟩ ≠ 0 := by
@@ -192,7 +192,7 @@ theorem yc_ne_zero (c c' : ∀ k, Bk n k) (hc : genericPoint X ∈ i ⁻¹ᵁ mc
   exact one_ne_zero this
 
 /- English proof (translation)
-Rewrite using `[fnAt_eq_aeval, fnAt_eq_aeval, ← BlockImageInverse.aeval_smul hs]`. Use `congr 2`. Use function extensionality and compare the values at `p`. Conclude with `yc_mul i c c' hc hc' p.1 p.2`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem fnAt_change (c c' : ∀ k, Bk n k) (hc : genericPoint X ∈ i ⁻¹ᵁ mchart c)
     (hc' : genericPoint X ∈ i ⁻¹ᵁ mchart c') {s : Pol n} {a : Fin (m + 1) → ℕ} (hs : IsMultiHomog s a) :
@@ -205,11 +205,9 @@ theorem fnAt_change (c c' : ∀ k, Bk n k) (hc : genericPoint X ∈ i ⁻¹ᵁ m
 variable [IsClosedImmersion i]
 
 /- English proof (translation)
-Establish `hA : IsAffineOpen (i ⁻¹ᵁ mchart c)` using `(SmoothRep.gen m n c).1.preimage i`. Use `haveI : Nonempty (i ⁻¹ᵁ mchart c : X.Opens) := ⟨⟨_, hc⟩⟩`. Use `functionField_isFractionRing_of_isAffineOpen X _ hA` as an intermediate fact. Take `⟨a, d, hd, rfl⟩` from `IsFractionRing.div_surjective (A := Γ(X, i ⁻¹ᵁ mchart c)) e`. Take `⟨a', rfl⟩` from `i.app_surjective _ (SmoothRep.gen m n c).1 a`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨d', rfl⟩` from `i.app_surjective _ (SmoothRep.gen m n c).1 d`. Take `⟨F, rfl⟩` from `dehomog_surjective c a'`. Take `⟨G, rfl⟩` from `dehomog_surjective c d'`. Establish `hd0 : algebraMap Γ(X, i ⁻¹ᵁ mchart c) X.functionField ((i.app _).hom (dehomog c G)) ≠ 0` using `IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors hd`. Use `⟨F, G, hd0, ?_⟩` and prove the remaining obligations.
-
-Conclude with `div_mul_cancel₀ _ hd0`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_quot (c : ∀ k, Bk n k) (hc : genericPoint X ∈ i ⁻¹ᵁ mchart c) (e : X.functionField) :
     ∃ F G : Pol n, fnAt i c hc G ≠ 0 ∧ e * fnAt i c hc G = fnAt i c hc F := by
@@ -227,9 +225,9 @@ theorem exists_quot (c : ∀ k, Bk n k) (hc : genericPoint X ∈ i ⁻¹ᵁ mcha
   exact div_mul_cancel₀ _ hd0
 
 /- English proof (translation)
-Introduce `hmem`. Apply `h` to reduce the goal to its premises. Establish `hx : i (genericPoint X) ∈ mchart (ptChart (i (genericPoint X)))` using `hc`. Establish `h1` using `(mem_ptIdeal_iff_aeval_ptCoord m n _ f a hf).1 hmem`. Rewrite `h1` using `[FnForm.aeval_ptCoord_eq_mul _ _ hx hf]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [ptCoord_ptChart, one_pow, Finset.prod_const_one, one_mul] at h1`. Establish `h2` using `Scheme.evaluation_naturality_apply i (genericPoint X) hx (dehomog (ptChart (i (genericPoint X))) f)`. Rewrite `h2` using `[h1, map_zero]`. Establish `h3 : (X.residue (genericPoint X)).hom (fnAt i _ hc f) = 0` using `h2.symm`. Conclude with `(RingHom.injective ((X.residue (genericPoint X)).hom : X.functionField →+* _)) (h3.trans (map_zero _).symm)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem notMem_of_fnAt_ne_zero (hc : genericPoint X ∈ i ⁻¹ᵁ mchart (ptChart (i (genericPoint X))))
     {f : Pol n} {a : Fin (m + 1) → ℕ} (hf : IsMultiHomog f a)
@@ -254,7 +252,7 @@ variable {M : HermLB (mpStr ℤ m n)} {A : HermLine (Bk n)}
   {u : ∀ (b : M.B.ι) (c : ∀ k, Bk n k), Γ(MP ℤ m n, M.B.U b ⊓ mchart c)ˣ}
 
 /- English proof (translation)
-The claim follows from `fnI_resG i e h hV s.val`.
+A detailed English derivation is pending.
 -/
 theorem fnI_res {V W : (MP ℤ m n).Opens} (e : W ≤ V) (h : genericPoint X ∈ i ⁻¹ᵁ W)
     (hV : genericPoint X ∈ i ⁻¹ᵁ V) (s : Γ(MP ℤ m n, V)ˣ) :
@@ -262,7 +260,7 @@ theorem fnI_res {V W : (MP ℤ m n).Opens} (e : W ≤ V) (h : genericPoint X ∈
   fnI_resG i e h hV s.val
 
 /- English proof (translation)
-Establish `hW : genericPoint X ∈ i ⁻¹ᵁ (M.B.U a ⊓ M.B.U b ⊓ mchart c)` using `⟨⟨ha.1, hb.1⟩, ha.2⟩`. Establish `e` using `congrArg (fun v : Γ(MP ℤ m n, M.B.U a ⊓ M.B.U b ⊓ mchart c)ˣ => fnI i _ hW v.val) (hu.1 a b c)`. Use `beta_reduce at e`. Rewrite `e` using `[Units.val_mul, map_mul, fnI_res i _ hW hb, fnI_res i _ hW (show genericPoint X ∈ i ⁻¹ᵁ (M.B.U a ⊓ M.B.U b) from ⟨ha.1, hb.1⟩), fnI_res i _ hW ha]`. Conclude with `e`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rule_frame (hu : RepBy M A u) (a b : M.B.ι) (c : ∀ k, Bk n k)
     (ha : genericPoint X ∈ i ⁻¹ᵁ (M.B.U a ⊓ mchart c)) (hb : genericPoint X ∈ i ⁻¹ᵁ (M.B.U b ⊓ mchart c)) :
@@ -275,11 +273,9 @@ theorem rule_frame (hu : RepBy M A u) (a b : M.B.ι) (c : ∀ k, Bk n k)
   exact e
 
 /- English proof (translation)
-Establish `hW : genericPoint X ∈ i ⁻¹ᵁ (M.B.U b ⊓ (mchart c ⊓ mchart c'))` using `⟨hb.1, hb.2, hb'.2⟩`. Set `Φ : Γ(MP ℤ m n, M.B.U b ⊓ (mchart c ⊓ mchart c'))ˣ →* X.functionFieldˣ` to `Units.map (fnI i _ hW : Γ(MP ℤ m n, M.B.U b ⊓ (mchart c ⊓ mchart c')) →* X.functionField)`. Establish `hval : ∀ (k : Fin (m + 1)) (h : M.B.U b ⊓ (mchart c ⊓ mchart c') ≤ prB n k ⁻¹ᵁ (chart ℤ (n k) (c k) ⊓ chart ℤ (n k) (c' k))), ((Φ (blockUnit (c k) (c' k) h) : X.functionFieldˣ) : X.functionField) = yc i c hc ⟨k, c' k⟩`. Introduce `k h`. Use `show fnI i _ hW (blockUnit (c k) (c' k) h).val = _`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Inhab.val_blockUnit]`. Conclude with `fnI_pullRatio i c hc (inf_le_right.trans inf_le_left) hW k _ (c' k)`. Establish `e` using `congrArg (fun v => ((Φ v : X.functionFieldˣ) : X.functionField)) (hu.2.1 b c c')`. Use `beta_reduce at e`. Simplify using `only [map_mul, map_prod, map_zpow, Units.val_mul, Units.coe_prod, Units.val_zpow_eq_zpow_val] at e`.
-
-Use `(fnI_res i _ hW hb _).symm.trans (e.trans ?_)` and prove the remaining obligations. Conclude with `congrArg₂ (· * ·) (fnI_res i _ hW hb' _) (Finset.prod_congr rfl fun k _ => congrArg (· ^ A.a k) (hval k _))`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem rule_chart (hu : RepBy M A u) (b : M.B.ι) (c c' : ∀ k, Bk n k)
     (hb : genericPoint X ∈ i ⁻¹ᵁ (M.B.U b ⊓ mchart c)) (hb' : genericPoint X ∈ i ⁻¹ᵁ (M.B.U b ⊓ mchart c'))
@@ -302,7 +298,7 @@ theorem rule_chart (hu : RepBy M A u) (b : M.B.ι) (c c' : ∀ k, Bk n k)
   exact congrArg₂ (· * ·) (fnI_res i _ hW hb' _) (Finset.prod_congr rfl fun k _ => congrArg (· ^ A.a k) (hval k _))
 
 /- English proof (translation)
-Establish `h : genericPoint X ∈ (M.B.pull i).U (fun _ => a) ⊓ (M.B.pull i).U (fun _ => b)` using `⟨(GlobalTheory.DvrModel.pull_U M.B i _).ge ha, (GlobalTheory.DvrModel.pull_U M.B i _).ge hb⟩`. Use `(hr (fun _ => a) (fun _ => b) h).trans (congrArg (· * _) ?_)` and prove the remaining obligations. Use `show fnOf _ h ((M.B.pull i).g (fun _ => a) (fun _ => b) : Γ(X, (M.B.pull i).U (fun _ => a) ⊓ (M.B.pull i).U (fun _ => b))) = _`. Rewrite using `[GlobalTheory.DvrModel.coe_pull_g]`. Conclude with `fnOf_resG _ h _`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rat_rule {r : (M.restr i).B.ι → X.functionFieldˣ} (hr : IsRatSec (M.restr i).B r) (a b : M.B.ι)
     (ha : genericPoint X ∈ i ⁻¹ᵁ M.B.U a) (hb : genericPoint X ∈ i ⁻¹ᵁ M.B.U b) :
@@ -316,13 +312,13 @@ theorem rat_rule {r : (M.restr i).B.ι → X.functionFieldˣ} (hr : IsRatSec (M.
   exact fnOf_resG _ h _
 
 /- English proof (translation)
-Establish `hbc : genericPoint X ∈ i ⁻¹ᵁ (M.B.U b' ⊓ mchart c)` using `⟨hb'.1, hc⟩`. Establish `s1 : fnI i _ hbc (u b' c).val * (r (fun _ => b') : X.functionField) = fnI i _ hb (u b c).val * (r (fun _ => b) : X.functionField)`. Rewrite using `[rule_frame i hu b b' c hb hbc, rat_rule i hr b b' hb.1 hb'.1]`. Expand and normalize the polynomial expressions, which then agree. Establish `s2` using `rule_chart i hu b' c c' hbc hb' hc`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Rewrite `e` using `[← s1, s2, fnAt_change i c c' hc hc' hg, fnAt_change i c c' hc hc' hf]`. Establish `hPQ : (∏ k, yc i c hc ⟨k, c' k⟩ ^ α k) = (∏ k, yc i c hc ⟨k, c' k⟩ ^ A.a k) * ∏ k, yc i c hc ⟨k, c' k⟩ ^ β k`. Rewrite using `[← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Establish `h1 : (α k : ℤ) = A.a k + β k`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `hd k` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite using `[← zpow_natCast (yc i c hc ⟨k, c' k⟩) (α k), h1, zpow_add₀ (yc_ne_zero i c c' hc hc' k), zpow_natCast]`. Establish `hne : (∏ k, yc i c hc ⟨k, c' k⟩ ^ A.a k) * ∏ k, yc i c hc ⟨k, c' k⟩ ^ β k ≠ 0` using `mul_ne_zero (Finset.prod_ne_zero_iff.2 fun k _ => zpow_ne_zero _ (yc_ne_zero i c c' hc hc' k)) (Finset.prod_ne_zero_iff.2 fun k _ => pow_ne_zero _ (yc_ne_zero i c c' hc hc' k))`. Apply `mul_left_cancel₀ hne` to reduce the goal to its premises.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `e' : fnI i _ hb' (u b' c').val = fnOf _ hb' (i.app _ (u b' c').val)` using `rfl`. Rewrite `e` using `[e']`. Take the linear combination `e + fnAt i c' hc' f * hPQ`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem fnOf_mul_r_mul_fnAt_eq (hu : RepBy M A u) {r : (M.restr i).B.ι → X.functionFieldˣ} (hr : IsRatSec (M.restr i).B r)
     {f g : Pol n} {α β : Fin (m + 1) → ℕ} (hf : IsMultiHomog f α) (hg : IsMultiHomog g β)
@@ -358,15 +354,15 @@ theorem fnOf_mul_r_mul_fnAt_eq (hu : RepBy M A u) {r : (M.restr i).B.ι → X.fu
 end Rules
 
 /- English proof (translation)
-Introduce `m n M A hA X _ i _ r hr`. Take `⟨u, hu⟩` from `(isHermRep_iff M A).1 hA`. Establish `hx : ∀ k, i (genericPoint X) ∈ blockChart n k (ptChart (i (genericPoint X)) k)` using `fun k => mem_ptChart _ k`. Establish `hc : genericPoint X ∈ i ⁻¹ᵁ mchart (ptChart (i (genericPoint X)))` using `Set.mem_iInter.2 hx`. Take `⟨b, hbU⟩ : ∃ b, i (genericPoint X) ∈ M.B.U b` from `Opens.mem_iSup.1 (M.isLB.cover.ge (Set.mem_univ (i (genericPoint X))))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hb : genericPoint X ∈ i ⁻¹ᵁ (M.B.U b ⊓ mchart (ptChart (i (genericPoint X))))` using `⟨hbU, hc⟩`. Take `⟨F₀, G₀, hG₀, hq⟩` from `exists_quot i _ hc (fnI i _ hb (u b _).val * (r (fun _ => b) : X.functionField))`. Take `⟨α₀, F₁, hF₁, eF⟩` from `exists_homog (ptChart (i (genericPoint X))) F₀`. Take `⟨β₀, G₁, hG₁, eG⟩` from `exists_homog (ptChart (i (genericPoint X))) G₀`. Set `δ : Fin (m + 1) → ℤ` to `fun k => A.a k - α₀ k + β₀ k`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `hfm` using `mhMul hF₁ (isMultiHomog_mono (ptChart (i (genericPoint X))) fun k => (δ k).toNat)`. Establish `hgm` using `mhMul hG₁ (isMultiHomog_mono (ptChart (i (genericPoint X))) fun k => (-δ k).toNat)`. Establish `ef : fnAt i _ hc (F₁ * mono (ptChart (i (genericPoint X))) fun k => (δ k).toNat) = fnAt i _ hc F₀`. Simplify using `only [fnAt, map_mul, dehomog_mono, eF, map_one, mul_one]`. Establish `eg : fnAt i _ hc (G₁ * mono (ptChart (i (genericPoint X))) fun k => (-δ k).toNat) = fnAt i _ hc G₀`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [fnAt, map_mul, dehomog_mono, eG, map_one, mul_one]`. Establish `he : fnI i _ hb (u b _).val * (r (fun _ => b) : X.functionField) ≠ 0` using `mul_ne_zero ((u b _).isUnit.map (fnI i _ hb)).ne_zero (r _).ne_zero`. Establish `hF₀ : fnAt i _ hc F₀ ≠ 0` using `hq ▸ mul_ne_zero he hG₀`. Establish `hd : ∀ k, (((α₀ + fun k => (δ k).toNat) k : ℕ) : ℤ) - ((β₀ + fun k => (-δ k).toNat) k : ℕ) = A.a k`. Introduce `k`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [Pi.add_apply, δ]`. Use linear arithmetic over natural numbers and integers. Use `⟨_, _, ⟨_, _, hfm, hgm, notMem_of_fnAt_ne_zero i hc hfm (ef ▸ hF₀), notMem_of_fnAt_ne_zero i hc hgm (eg ▸ hG₀), hd⟩, u, hu, fun b' c' hc' hb' => ?_⟩` and prove the remaining obligations. Conclude with `fnOf_mul_r_mul_fnAt_eq i hu hr hfm hgm hd b _ hc hb (by rw [ef, eg]; exact hq) b' c' hc' hb'`.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem existsRat : ExistsRat := by
   intro m n M A hA X _ i _ r hr

@@ -13,19 +13,17 @@ def LatHaar : Prop :=
     ∀ s : Set V, IsAddFundamentalDomain Γ s μ → μ s ≠ 0 → μ s ≠ ⊤ → μ.map φ = μ
 
 /- English proof (translation)
-Unfold `LatHaar`. Introduce `V _ _ _ _ _ _ _ _ μ _ Γ _ φ hΓ s hs hs0 hstop`. Establish `hmeas : Measurable φ` using `φ.continuous.measurable`. Establish `: (μ.map φ).IsAddHaarMeasure` using `inferInstance`. Establish `hc` using `Measure.isAddLeftInvariant_eq_smul (μ.map φ) μ`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hqmp : Measure.QuasiMeasurePreserving φ μ μ`. Use `⟨hmeas, fun t ht => ?_⟩` and prove the remaining obligations. Rewrite using `[hc, Measure.smul_apply, ht, smul_zero]`. Set `e : Γ → Γ` to `fun g => ⟨φ.symm g, (hΓ _).1 (by simp)⟩`. Establish `he : Function.Bijective e`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Prove the components needed by the constructor for the conclusion. Introduce `g g' h`. Establish `h2 : φ (φ.symm (g : V)) = φ (φ.symm (g' : V))` using `congrArg (fun x : Γ => φ (x : V)) h`. Conclude with `Subtype.ext (by simpa using h2)`. Introduce `g`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Conclude with `⟨⟨φ g, (hΓ g).2 g.2⟩, Subtype.ext (by simp [e])⟩`. Establish `hef : ∀ g : Γ, Function.Semiconj φ (e g +ᵥ ·) (g +ᵥ ·)`. Introduce `g x`. Use `show φ ((e g : V) + x) = (g : V) + φ x`. Rewrite using `[map_add]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[e]`. Establish `hs' : IsAddFundamentalDomain Γ (φ ⁻¹' s) μ` using `hs.preimage_of_equiv hqmp he hef`. Establish `heq : μ (φ ⁻¹' s) = μ s` using `hs'.measure_eq hs`. Establish `hνs : (μ.map φ) s = μ s`. Rewrite using `[← heq]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(φ.toHomeomorph.toMeasurableEquiv).map_apply s`. Rewrite `hνs` using `[hc, Measure.coe_nnreal_smul_apply]`. Establish `h1 : ((Measure.addHaarScalarFactor (μ.map φ) μ : NNReal) : ENNReal) = 1`. Establish `h3 : ((Measure.addHaarScalarFactor (μ.map φ) μ : NNReal) : ENNReal) * μ s = 1 * μ s`. Rewrite using `[one_mul]`.
-
-Conclude with `hνs`. Conclude with `(ENNReal.mul_left_inj hs0 hstop).1 h3`. Establish `h2 : Measure.addHaarScalarFactor (μ.map φ) μ = 1` using `by exact_mod_cast h1`. Rewrite using `[hc, h2, one_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem latHaar : LatHaar := by
   unfold LatHaar

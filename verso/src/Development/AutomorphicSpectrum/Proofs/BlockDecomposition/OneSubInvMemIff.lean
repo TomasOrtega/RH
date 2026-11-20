@@ -19,9 +19,9 @@ namespace GlobalTheory.CompanionTheory.KirTorus
 variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F]
 
 /- English proof (translation)
-Establish `h1 : normalizedValuation F (x - 1) < 1`. Use `lt_of_le_of_lt (mem_valBall.mp hx) ?_` and prove the remaining obligations. Rewrite using `[← WithZero.exp_zero, WithZero.exp_lt_exp]`. Establish `: (1 : ℤ) ≤ n` using `by exact_mod_cast hn`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Use `Valuation.map_one_add_of_lt (normalizedValuation F) h1` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem val_eq_one {x : F} {n : ℕ} (hn : 1 ≤ n) (hx : x - 1 ∈ valBall F (n : ℤ)) :
     normalizedValuation F x = 1 := by
@@ -34,7 +34,7 @@ theorem val_eq_one {x : F} {n : ℕ} (hn : 1 ≤ n) (hx : x - 1 ∈ valBall F (n
   simpa using this
 
 /- English proof (translation)
-Establish `hv` using `val_eq_one hn hx`. Establish `e : x⁻¹ - 1 = -(x - 1) * x⁻¹` using `by field_simp; ring`. Rewrite using `[e, mem_valBall, map_mul, Valuation.map_neg, map_inv₀, hv, inv_one, mul_one]`. Conclude with `mem_valBall.mp hx`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inv_sub_one_mem {x : F} {n : ℕ} (hn : 1 ≤ n) (hx0 : x ≠ 0)
     (hx : x - 1 ∈ valBall F (n : ℤ)) : x⁻¹ - 1 ∈ valBall F (n : ℤ) := by
@@ -44,9 +44,9 @@ theorem inv_sub_one_mem {x : F} {n : ℕ} (hn : 1 ≤ n) (hx0 : x ≠ 0)
   exact mem_valBall.mp hx
 
 /- English proof (translation)
-Establish `hv` using `val_eq_one hn hy`. Establish `e : x * y - 1 = (x - 1) * y + (y - 1)` using `by ring`. Rewrite using `[e]`. Use `add_mem ?_ hy` and prove the remaining obligations. Rewrite using `[mem_valBall, map_mul, hv, mul_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mem_valBall.mp hx`.
+A detailed English derivation is pending.
 -/
 theorem mul_sub_one_mem {x y : F} {n : ℕ} (hn : 1 ≤ n) (hx : x - 1 ∈ valBall F (n : ℤ))
     (hy : y - 1 ∈ valBall F (n : ℤ)) : x * y - 1 ∈ valBall F (n : ℤ) := by
@@ -60,9 +60,9 @@ theorem mul_sub_one_mem {x y : F} {n : ℕ} (hn : 1 ≤ n) (hx : x - 1 ∈ valBa
 variable [MeasurableSpace F] [BorelSpace F]
 
 /- English proof (translation)
-Take `⟨hc, h1, h0⟩` from `hψ`. Establish `key` using `localFourier_indicator_valBall (selfDualMeasure ψ) hc h1 (-(n : ℤ)) (1 + y)`. Rewrite `key` using `[h0, zero_sub, neg_neg]`. Rewrite using `[← key]`. Unfold `localFourier`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Use `congr 1`. Use function extensionality and compare the values at `x`. Distinguish the cases in `hx : x ∈ (valBall F (-(n : ℤ)) : Set F)`. Rewrite using `[torG, Set.indicator_of_mem hx, Set.indicator_of_mem hx, mul_add, mul_one, AddChar.map_add_eq_mul, Circle.coe_mul, one_mul]`. Rewrite using `[torG, Set.indicator_of_notMem hx, Set.indicator_of_notMem hx, zero_mul, zero_mul]`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem localFourier_torG {ψ : AddChar F Circle} (hψ : IsStd ψ) (n : ℕ) (y : F) :
     localFourier (selfDualMeasure ψ) ψ (torG ψ n) y =
@@ -81,11 +81,11 @@ theorem localFourier_torG {ψ : AddChar F Circle} (hψ : IsStd ψ) (n : ℕ) (y 
   · rw [torG, Set.indicator_of_notMem hx, Set.indicator_of_notMem hx, zero_mul, zero_mul]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hh`. Establish `h2 : ((h⁻¹ : Fˣ) : F) - 1 ∈ valBall F (n : ℤ)`. Use `neg_mem hh` as an intermediate fact. Rewrite `this` using `[show -(1 + -((h⁻¹ : Fˣ) : F)) = ((h⁻¹ : Fˣ) : F) - 1 by ring]`. Then use the resulting hypothesis.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `inv_sub_one_mem hn (h⁻¹).ne_zero h2` as an intermediate fact. Simplify using `using this`. Introduce `hh`. Establish `h2` using `inv_sub_one_mem hn h.ne_zero hh`. Use `neg_mem h2` as an intermediate fact.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[show -((h : F)⁻¹ - 1) = 1 + -((h⁻¹ : Fˣ) : F) by simp; ring]`. Conclude with `this`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem one_sub_inv_mem_iff {n : ℕ} (hn : 1 ≤ n) (h : Fˣ) :
     (1 + -((h⁻¹ : Fˣ) : F)) ∈ valBall F (n : ℤ) ↔ (h : F) - 1 ∈ valBall F (n : ℤ) := by
@@ -103,21 +103,19 @@ theorem one_sub_inv_mem_iff {n : ℕ} (hn : 1 ≤ n) (h : Fˣ) :
     exact this
 
 /- English proof (translation)
-Introduce `F _ _ _ _ _ _ ψ hψ ν n hn hν a`. Use `set V : ℂ := (((selfDualMeasure ψ).real (valBall F (-(n : ℤ)) : Set F) : ℝ) : ℂ) with hV`. Use `set H : Set Fˣ := {h : Fˣ | (h : F) - 1 ∈ valBall F (n : ℤ)} with hH`. Establish `hfour : ∀ h : Fˣ, localFourier (selfDualMeasure ψ) ψ (torG ψ n) (-((h⁻¹ : Fˣ) : F)) = H.indicator (fun _ => V) h`. Introduce `h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[localFourier_torG hψ]`. Distinguish the cases in `hh : h ∈ H`. Rewrite using `[Set.indicator_of_mem hh, Set.indicator_of_mem (show (1 + -((h⁻¹ : Fˣ) : F)) ∈ (valBall F (n : ℤ) : Set F) from (one_sub_inv_mem_iff hn h).mpr hh), mul_one]`. Rewrite using `[Set.indicator_of_notMem hh, Set.indicator_of_notMem (show (1 + -((h⁻¹ : Fˣ) : F)) ∉ (valBall F (n : ℤ) : Set F) from fun h' => hh ((one_sub_inv_mem_iff hn h).mp h')), mul_zero]`. Establish `hmeas : MeasurableSet H` using `((isOpen_valBall (n : ℤ)).preimage ((Units.continuous_val).sub continuous_const)).measurableSet`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨fun ha => ?_, fun ha => ?_⟩` and prove the remaining obligations. Establish `e : ∀ h : Fˣ, (((ν h)⁻¹ * ν⁻¹ h : ℂˣ) : ℂ) * torF F n ((h : F) * a) * localFourier (selfDualMeasure ψ) ψ (torG ψ n) (-((h⁻¹ : Fˣ) : F)) = H.indicator (fun _ => V) h`. Introduce `h`. Rewrite using `[hfour]`. Distinguish the cases in `hh : h ∈ H`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hνh : ν h = 1` using `hν h hh`. Establish `hm : (h : F) * a ∈ {x : F | x - 1 ∈ valBall F (n : ℤ)}` using `mul_sub_one_mem hn hh ha`. Rewrite using `[Set.indicator_of_mem hh, torF, Set.indicator_of_mem hm, MonoidHom.inv_apply, hνh]`. Simplify using the standard rewrite rules. Rewrite using `[Set.indicator_of_notMem hh, mul_zero]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Repeatedly rewrite using `[e]`. Rewrite using `[integral_indicator_const _ hmeas, Complex.real_smul, mul_comm]`. Establish `e : ∀ h : Fˣ, (((ν h)⁻¹ * ν⁻¹ h : ℂˣ) : ℂ) * torF F n ((h : F) * a) * localFourier (selfDualMeasure ψ) ψ (torG ψ n) (-((h⁻¹ : Fˣ) : F)) = 0`. Introduce `h`. Rewrite using `[hfour]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Distinguish the cases in `hh : h ∈ H`. Establish `hm : (h : F) * a ∉ {x : F | x - 1 ∈ valBall F (n : ℤ)}`. Introduce `hm`. Apply `ha` to reduce the goal to its premises. Establish `h2` using `inv_sub_one_mem hn h.ne_zero hh`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `mul_sub_one_mem hn h2 hm` as an intermediate fact. Rewrite `this` using `[inv_mul_cancel_left₀ h.ne_zero]`. Then use the resulting hypothesis. Rewrite using `[torF, Set.indicator_of_notMem hm, mul_zero, zero_mul]`. Rewrite using `[Set.indicator_of_notMem hh, mul_zero]`. Repeatedly rewrite using `[e]`.
-
-Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem torus_integral : ∀ (F : Type) [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] [MeasurableSpace F] [BorelSpace F] (ψ : AddChar F Circle), IsStd ψ → ∀ (ν : Fˣ →* ℂˣ) (n : ℕ), 1 ≤ n → (∀ a : Fˣ, (a : F) - 1 ∈ valBall F (n : ℤ) → ν a = 1) →
   ∀ a : Fˣ,

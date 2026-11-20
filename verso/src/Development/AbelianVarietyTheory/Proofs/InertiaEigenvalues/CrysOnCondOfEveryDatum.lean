@@ -6,7 +6,7 @@ open Formalism Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotion
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `D HW _ l _ K s LL h Y hY` and use `GlobalTheory.CrysOnLevel.isCrysOn_of_isCrys D HW l K s LL h Y hY`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem crysOnCond_all : ∀ (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW), CrysOnCond D HW F :=
   fun D HW _ l _ K s LL h Y hY => GlobalTheory.CrysOnLevel.isCrysOn_of_isCrys D HW l K s LL h Y hY

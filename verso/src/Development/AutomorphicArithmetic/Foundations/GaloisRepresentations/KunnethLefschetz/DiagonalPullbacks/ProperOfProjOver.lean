@@ -7,7 +7,7 @@ open CategoryTheory Limits AlgebraicGeometry Opposite GlobalTheory.EtC LateralTh
 open ReciprocityTheory.ChartRestriction.G.Geo.Tor (IsProjOver PSpace Sp)
 
 /- English proof (translation)
-Take `⟨N, i, hi, rfl⟩` from `h`. Use `haveI := ReciprocityTheory.ChartRestriction.G.Geo.Tor.isProper_str R N`. Use `infer_instance`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 private theorem proper_of_projOver {R : Type} [CommRing R] {X : Scheme.{0}} {p : X ⟶ Sp R} (h : IsProjOver p) :
     IsProper p := by
@@ -16,31 +16,29 @@ private theorem proper_of_projOver {R : Type} [CommRing R] {X : Scheme.{0}} {p :
   infer_instance
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.ProjSpace.isProjOver_pullback_snd (OK l K).subtype h.1.1`.
+A detailed English derivation is pending.
 -/
 private theorem gen_proj {l : ℕ} [Fact l.Prime] {K : IntermediateField ℚ_[l] (PadicAlgCl l)} (M : Model l K)
     (h : M.Sm) : IsProjOver M.q :=
   GlobalTheory.ProjSpace.isProjOver_pullback_snd (OK l K).subtype h.1.1
 
 /- English proof (translation)
-The claim follows from `proper_of_projOver (gen_proj M h)`.
+A detailed English derivation is pending.
 -/
 private theorem gen_proper {l : ℕ} [Fact l.Prime] {K : IntermediateField ℚ_[l] (PadicAlgCl l)} (M : Model l K)
     (h : M.Sm) : IsProper M.q :=
   proper_of_projOver (gen_proj M h)
 
 /- English proof (translation)
-Introduce `l _ K`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `M d hM hd haveI := gen_proper M hM`. Establish `stab` using `smoothOfRelativeDimension_isStableUnderBaseChange (n := d)`. Establish `hq : SmoothOfRelativeDimension d M.q` using `stab.of_isPullback (IsPullback.of_hasPullback _ _) hd`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨⟨inferInstance, stab.of_isPullback (IsPullback.of_hasPullback _ _) hq⟩, ?_⟩` and prove the remaining obligations. Conclude with `GlobalTheory.ProjSpace.isProjOver_pullback_snd (algebraMap (↥K) (PadicAlgCl l)) (gen_proj M hM)`. Introduce `M N u hu hM hN haveI := gen_proper M hM haveI := gen_proper N hN haveI : IsProper (Model.genMap u hu ≫ N.q) := by`. Rewrite using `[Model.genMap_q u hu]`. Use `infer_instance`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `IsProper.of_comp _ N.q`. Introduce `M P p₁ p₂ h₁ h₂ H set j := Spec.map (CommRingCat.ofHom (OK l K).subtype)`. Establish `sqM : IsPullback (pullback.fst M.p j) M.q M.p j` using `IsPullback.of_hasPullback _ _`. Establish `sqP : IsPullback (pullback.fst P.p j) P.q P.p j` using `IsPullback.of_hasPullback _ _`. Establish `hfst : ∀ (u : P.X ⟶ M.X) (hu : u ≫ M.p = P.p), Model.genMap u hu ≫ pullback.fst M.p j = pullback.fst P.p j ≫ u`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Introduce `u hu`. Unfold `Model.genMap`. Conclude with `pullback.lift_fst _ _ _`. Establish `side : ∀ (u : P.X ⟶ M.X) (hu : u ≫ M.p = P.p), IsPullback (Model.genMap u hu) (pullback.fst P.p j) (pullback.fst M.p j) u`. Introduce `u hu`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `IsPullback.of_right ?_ (hfst u hu) sqM.flip` and prove the remaining obligations. Rewrite using `[Model.genMap_q u hu, hu]`. Conclude with `sqP.flip`. Establish `big` using `(side p₁ h₁).paste_vert H`. Use `IsPullback.of_bot ?_ ?_ sqM.flip` and prove the remaining obligations.
-
-Rewrite using `[hfst p₂ h₂, ← sqM.w]`. Conclude with `big`. Rewrite using `[Model.genMap_q, Model.genMap_q]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.KunnethLefschetz.Di.geoM_holds :
     UpperTheory.Gal.KunnethLefschetz.Di.GeoM := by

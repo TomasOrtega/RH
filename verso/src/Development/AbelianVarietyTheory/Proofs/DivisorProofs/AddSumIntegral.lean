@@ -3,11 +3,9 @@ import Mathlib
 namespace GlobalTheory.IntegralAddSum
 
 /- English proof (translation)
-Take `⟨n, c, b, hb, rfl⟩` from `hx`. Take `⟨n', c', b', hb', rfl⟩` from `hy`. Use `⟨n + n', Fin.append c c', Fin.append b b', ?_, ?_⟩` and prove the remaining obligations. Introduce `m`. Use `Fin.addCases (fun i => ?_) (fun i => ?_) m` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Fin.append_left]`. Conclude with `hb i`. Rewrite using `[Fin.append_right]`. Conclude with `hb' i`. Rewrite using `[Fin.sum_univ_add]`.
-
-Simplify using `only [Fin.append_left, Fin.append_right]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem add_sum_integral {A C K B : Type} [CommRing A] [CommRing C] [CommRing K] [CommRing B]
     (φ : A →+* K) (gc : C →+* B) (gk : K →+* B) {x y : B}

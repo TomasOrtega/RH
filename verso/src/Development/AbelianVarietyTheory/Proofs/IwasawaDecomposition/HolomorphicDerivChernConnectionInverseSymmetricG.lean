@@ -9,9 +9,9 @@ namespace GlobalTheory.HermFrame
 open Filter
 
 /- English proof (translation)
-Establish `h` using `GlobalTheory.differentiableAt_fderiv_of_contDiffAt_two hu`. Establish `h1 : ∀ a, DifferentiableAt ℝ (fun x => fderiv ℝ u x a) z` using `fun a => h.clm_apply (differentiableAt_const _)`. Establish `hs` using `hu.isSymmSndFDerivAt (by simp)`. Establish `e : ∀ w, (fun x => GlobalTheory.del u x w) = fun x => (1 / 2 : ℂ) • (fderiv ℝ u x w - Complex.I • fderiv ℝ u x (Complex.I • w))` using `fun w => funext fun x => GlobalTheory.del_apply u x w`. Establish `d : ∀ w, GlobalTheory.del (fun x => (1 / 2 : ℂ) • (fderiv ℝ u x w - Complex.I • fderiv ℝ u x (Complex.I • w))) z = (1 / 2 : ℂ) • (GlobalTheory.del (fun x => fderiv ℝ u x w) z - Complex.I • GlobalTheory.del (fun x => fderiv ℝ u x (Complex.I • w)) z)` using `fun w => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[GlobalTheory.del_const_smul _ ((h1 _).fun_sub ((h1 _).fun_const_smul Complex.I)), GlobalTheory.del_sub (h1 _) ((h1 _).fun_const_smul Complex.I), GlobalTheory.del_const_smul _ (h1 _)]`. Rewrite using `[e w, e v, d w, d v]`. Simplify using `only [ContinuousLinearMap.smul_apply, ContinuousLinearMap.sub_apply, GlobalTheory.del_apply, GlobalTheory.fderiv_fderiv_apply hu]`. Rewrite using `[hs.eq v w, hs.eq (Complex.I • v) w, hs.eq v (Complex.I • w), hs.eq (Complex.I • v) (Complex.I • w)]`. Apply the tactic sequence `match_scalars <;> ring`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem del_del_comm {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] [NormedSpace ℝ E]
     [IsScalarTower ℝ ℂ E] {u : E → ℂ} {z : E} (hu : ContDiffAt ℝ 2 u z) (v w : E) :
@@ -36,7 +36,7 @@ theorem del_del_comm {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] [Norm
   match_scalars <;> ring
 
 /- English proof (translation)
-Use extensionality with `a b`. Conclude with `del_del_comm (h a b) ξ η`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem mdel_mdel_comm {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] [NormedSpace ℝ E]
     [IsScalarTower ℝ ℂ E] {m n : Type*} {A : E → Matrix m n ℂ} {z : E} (h : MContDiffAt 2 A z)
@@ -45,9 +45,9 @@ theorem mdel_mdel_comm {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] [No
   exact del_del_comm (h a b) ξ η
 
 /- English proof (translation)
-Establish `h1 : MContDiffAt 1 H z` using `h2.of_le one_le_two`. Establish `hloc : ∀ ζ, (fun x => conn (fun y => (H y)⁻¹) x ζ) =ᶠ[𝓝 z] fun x => -((H x)⁻¹ * mdel H x ζ)ᵀ` using `fun ζ => by filter_upwards [h2.eventually_two, h2.eventually_isUnit hu, hs.eventually_nhds] with x hx2 hxu hxs`. Establish `e : (fun y => (H y)⁻¹) =ᶠ[𝓝 x] fun y => GlobalTheory.HermFrame.dualGram (H y)` using `hxs.mono fun y hy => by`. Express the relevant statement in the definitionally equal form `(H y)⁻¹ = (H y)⁻¹ᵀ`. Rewrite using `[transpose_nonsing_inv, hy.eq]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[conn_congr e, conn_dual (hx2.of_le one_le_two) hxu, conn_eq_of_isSymm hxs]`. Establish `hP : ∀ ζ, MContDiffAt 1 (fun x => mdel H x ζ) z` using `fun ζ => h2.mdel (by norm_num) ζ`. Rewrite using `[mdel_congr (hloc η), mdel_congr (hloc ξ), mdel_neg, mdel_neg, mdel_transpose (fun x => (H x)⁻¹ * mdel H x η), mdel_transpose (fun x => (H x)⁻¹ * mdel H x ξ), mdel_mul (h1.inv hu) (hP η), mdel_mul (h1.inv hu) (hP ξ), mdel_inv h1 hu, mdel_inv h1 hu, mdel_mdel_comm h2 ξ η, conn_eq_ …`. Establish `key : (H z)⁻¹ * mdel (fun x => mdel H x ξ) z η + -((H z)⁻¹ * mdel H z ξ * (H z)⁻¹) * mdel H z η - ((H z)⁻¹ * mdel (fun x => mdel H x ξ) z η + -((H z)⁻¹ * mdel H z η * (H z)⁻¹) * mdel H z ξ) = (H z)⁻¹ * mdel H z η * ((H z)⁻¹ * mdel H z ξ) - (H z)⁻¹ * mdel H z ξ * ((H z)⁻¹ * mdel H …` using `by noncomm_ring`. Rewrite using `[← key, transpose_sub]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
 Normalize the expressions using the abelian group laws.
 -/

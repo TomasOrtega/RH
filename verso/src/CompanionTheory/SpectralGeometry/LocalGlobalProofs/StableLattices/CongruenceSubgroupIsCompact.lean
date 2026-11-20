@@ -6,11 +6,11 @@ open Matrix
 namespace GlobalTheory.CompanionTheory.CartGL
 
 /- English proof (translation)
-Establish `h : IsCompact (Set.univ.pi fun i : Fin n => Set.univ.pi fun j : Fin n => Metric.closedBall ((1 : Matrix (Fin n) (Fin n) L) i j) r)` using `isCompact_univ_pi fun i => isCompact_univ_pi fun j => isCompact_closedBall _ _`. Establish `e : {M : Matrix (Fin n) (Fin n) L | ∀ i j, ‖(M - 1) i j‖ ≤ r} = (Set.univ.pi fun i : Fin n => Set.univ.pi fun j : Fin n => Metric.closedBall ((1 : Matrix (Fin n) (Fin n) L) i j) r)`. Use extensionality with `M`. Prove the components needed by the constructor for the conclusion. Introduce `hM i _ j _`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `hM i j` as an intermediate fact. Rewrite `this` using `[Matrix.sub_apply]`. Conclude with `mem_closedBall_iff_norm.2 this`. Introduce `hM i j`. Use `mem_closedBall_iff_norm.1 (hM i (Set.mem_univ _) j (Set.mem_univ _))` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.sub_apply]`. Conclude with `this`. Rewrite using `[e]`. Conclude with `h`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isCompact_entryBall (L : Type) [NontriviallyNormedField L] [ProperSpace L] (n : ℕ) (r : ℝ) :
     IsCompact {M : Matrix (Fin n) (Fin n) L | ∀ i j, ‖(M - 1) i j‖ ≤ r} := by
@@ -34,9 +34,9 @@ theorem isCompact_entryBall (L : Type) [NontriviallyNormedField L] [ProperSpace 
   exact h
 
 /- English proof (translation)
-Establish `hS` using `isCompact_entryBall L n r`. Establish `hS'` using `hS.image MulOpposite.continuous_op`. Establish `h` using `Units.isClosedEmbedding_embedProduct.isCompact_preimage (hS.prod hS')`. Establish `e : (congK L n r h0 h1 : Set (GL (Fin n) L)) = Units.embedProduct (Matrix (Fin n) (Fin n) L) ⁻¹' ({M : Matrix (Fin n) (Fin n) L | ∀ i j, ‖(M - 1) i j‖ ≤ r} ×ˢ (MulOpposite.op '' {M : Matrix (Fin n) (Fin n) L | ∀ i j, ‖(M - 1) i j‖ ≤ r}))`. Use extensionality with `k`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `only [SetLike.mem_coe, mem_congK, Set.mem_preimage, Set.mem_prod, Units.embedProduct_apply, Set.mem_image, Set.mem_setOf_eq, MulOpposite.op_inj, exists_eq_right]`. Conclude with `⟨fun hk => ⟨fun i j => (hk i j).1, fun i j => (hk i j).2⟩, fun hk i j => ⟨hk.1 i j, hk.2 i j⟩⟩`. Rewrite using `[e]`. Conclude with `h`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isCompact_congK (L : Type) [NontriviallyNormedField L] [IsUltrametricDist L] [ProperSpace L]
     (n : ℕ) (r : ℝ) (h0 : 0 ≤ r) (h1 : r ≤ 1) :

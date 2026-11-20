@@ -17,11 +17,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.TypeR
 noncomputable section
 namespace GlobalTheory.GalLoc.PsiLvl
 /- English proof (translation)
-Introduce `_ _ hL`. Use `_root_.GlobalTheory.GalLoc.PsiLvl.atMem_of_forall' fun K B f T w Z Wt p0 t nch n c => ?_` and prove the remaining obligations. Take `⟨θ, hθ, hR⟩` from `exists_theta_of_eq c.a.nt.eq c.a.nt.θ (_root_.GlobalTheory.GalLoc.PsiLvl.psiRead_withLoc_alt c.a.nt.toNBuilt)`. Use `⟨θ, hθ, fun g => ?_, fun u hu => ?_⟩` and prove the remaining obligations. Conclude with `(c.row.grp.lvl0 g).trans (SetLike.ext_iff.mp c.a.all.exp.U_eq _)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hu0 : (t.r.z.R.eG.trans t.r.z.cG) u ∈ (w.D Z).nexp.U` using `(c.row.grp.lvl0 u).1 u.2`. Choose the witnesses or unpack the hypotheses as in `⟨i⟩ : Nonempty (w.D Z).ntw.Tw := by`. Take `⟨P, hP⟩` from `Ideal.exists_maximal (𝓞 (w.D Z).what₂.LL)`. Conclude with `⟨nch.twI ((w.D Z).plEq.symm ⟨P, hP.isPrime, Ring.ne_bot_of_isMaximal_of_not_isField hP (RingOfIntegers.not_isField _)⟩)⟩`. Take `⟨x, hx, hx'⟩` from `c.row.grp.psi0 u hu0 i true`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h2` using `hR i _ hu0 hu`. Establish `h3 : IsFractionRing.map (A` using `(w.D Z).ntw.O0 i) (B := (w.D Z).ntw.O i) (K := FractionRing ((w.D Z).ntw.O0 i)) (L := FractionRing ((w.D Z).ntw.O i)) ((w.D Z).ntw.O_inj i) ((w.D Z).ntw.emb0 i x) = IsFractionRing.map (A := (w.D Z).ntw.O0 i) (B := (w.D Z).ntw.O i) (K := FractionRing ((w.D Z).ntw.O0 i)) (L := Frac …`. Establish `h4` using `(IsFractionRing.map (A := (w.D Z).ntw.O0 i) (B := (w.D Z).ntw.O i) (K := FractionRing ((w.D Z).ntw.O0 i)) (L := FractionRing ((w.D Z).ntw.O i)) ((w.D Z).ntw.O_inj i)).injective h3`. Establish `h5` using `((w.D Z).ntw.emb0 i).injective h4`. Conclude with `(congrArg (fun z : ↥(w.D Z).LL0 => (z : (w.D Z).what₂.LL)) h5).symm.trans hx`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem localGalois_psi_level_at_place_alt : _root_.GlobalTheory.HeightCounting.Up.PublishedInputsThirdLayerAlt → SerN → ∀ hL : _root_.UpperTheory.Zero.LLC.RecTExists, _root_.GlobalTheory.HeightCounting.Up.MemberAtLayerPoint hL fun _ _ _ _ w Z _ _ t _ _ c =>
     ∃ θ : ∀ kk : Fin 2, Multiplicative (ZMod ((w.D Z).host.g kk)) →* (↥(w.D Z).LL0)ˣ, HEq θ c.a.nt.θ ∧
@@ -56,7 +56,7 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formal
 attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.TypeRec.factG
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.GalLoc.PsiLvl.localGalois_psi_level_at_place_alt | exact _root_.GlobalTheory.GalLoc.PsiLvl.localGalois_psi_level_at_place_alt | (intros; apply _root_.GlobalTheory.GalLoc.PsiLvl.localGalois_psi_level_at_place_alt <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.exists_theta_heq_lvlPsi_at_members : _root_.GlobalTheory.HeightCounting.Up.PublishedInputsThirdLayerAlt → SerN → ∀ hL : _root_.UpperTheory.Zero.LLC.RecTExists, _root_.GlobalTheory.HeightCounting.Up.MemberAtLayerPoint hL fun _ _ _ _ w Z _ _ t _ _ c =>
     ∃ θ : ∀ kk : Fin 2, Multiplicative (ZMod ((w.D Z).host.g kk)) →* (↥(w.D Z).LL0)ˣ, HEq θ c.a.nt.θ ∧

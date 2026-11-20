@@ -13,15 +13,13 @@ open Formalism.MainNotions.N
 namespace GlobalTheory.IndexTwoPatch
 
 /- English proof (translation)
-Distinguish the cases in `h1 : η = 1`. Conclude with `Or.inl h1`. Use `right`. Choose the witnesses or unpack the hypotheses as in `⟨t, ht⟩ : ∃ t, η t ≠ 1 := by`. Assume the negation of the conclusion as `hc`.
+Consider separately whether the proposition holds or fails. Prove the first alternative. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Use `push_neg at hc`. Conclude with `h1 (MonoidHom.ext fun x => by simpa using hc x)`. Establish `ht' : η t = -1` using `(Int.units_eq_one_or _).resolve_left ht`. Establish `h0t : η₀ t = -1`. Break down `Int.units_eq_one_or (η₀ t) with h2 | h2` into its components or cases.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Conclude with `absurd (h t h2) ht`. Conclude with `h2`. Use `MonoidHom.ext fun s => ?_` and prove the remaining obligations. Break down `Int.units_eq_one_or (η₀ s) with h2 | h2` into its components or cases. Rewrite using `[h2, h s h2]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the decidable proposition. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h5 : η₀ (s * t) = 1`. Rewrite using `[map_mul, h2, h0t]`. Evaluate the decidable proposition. Establish `h3` using `h (s * t) h5`. Rewrite `h3` using `[map_mul, ht']`.
-
-Rewrite using `[h2]`. Break down `Int.units_eq_one_or (η s) with h4 | h4` into its components or cases. Rewrite `h3` using `[h4]`. Conclude with `absurd h3 (by decide)`. Conclude with `h4`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_one_or_eq_of_ker {Γ : Type} [Group Γ] (η₀ η : Γ →* ℤˣ) (h : ∀ s, η₀ s = 1 → η s = 1) :
     η = 1 ∨ η = η₀ := by
@@ -52,13 +50,13 @@ theorem eq_one_or_eq_of_ker {Γ : Type} [Group Γ] (η₀ η : Γ →* ℤˣ) (h
     · exact h4
 
 /- English proof (translation)
-Take `⟨P, hP⟩` from `GlobalTheory.T.conj_on_inter_quadraticKernels_of_trace_eq Γ k n ρ₀ ρj η₀ η h0 hj htr`. Establish `hs : ∃ s, η₀ s = 1 ∧ η s = -1`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Establish `h4 : ∀ s, η₀ s = 1 → η s = 1` using `fun s hs => (Int.units_eq_one_or (η s)).resolve_right (hc s hs)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `eq_one_or_eq_of_ker η₀ η h4 with h | h` into its components or cases. Conclude with `hne1 h`. Conclude with `hne2 h`. Take `⟨s, hs0, hs1⟩` from `hs`. Establish `hY` using `GlobalTheory.T.intertwiner_zero_of_character_twist Γ k n ρ₀ η₀ η hB1 hB2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Take `⟨ρ, hρ0, hρ1⟩` from `GlobalTheory.T.exists_rep_agreeing_on_kernels Γ k n ρ₀ ρj η₀ η P s hs0 hs1 hP (fun Y hYc => hY Y hYc s hs0)`. Use `⟨ρ, hρ0, ?_, ?_⟩` and prove the remaining obligations. Apply `GlobalTheory.IndexTwoExt.isSSRep_of_ker η₀ t ht` to reduce the goal to its premises. Establish `he : ρ.comp η₀.ker.subtype = ρ₀.comp η₀.ker.subtype`. Use `MonoidHom.ext fun x => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hρ0 x x.2`. Rewrite using `[he]`. Conclude with `GlobalTheory.QuadKernelConj.isSSRep_ker ρ₀ η₀ h0`. Introduce `g hg`. Rewrite using `[hρ1 g hg, Units.val_mul, Units.val_mul, Matrix.trace_mul_comm, ← mul_assoc, Units.inv_mul, one_mul]`.
+A detailed English derivation is pending.
 -/
 private theorem exists_ne_zero_smul_mem_of_mem_span' {Γ k : Type} [Group Γ] [Field k] [CharZero k] (n : ℕ)
     (ρ₀ ρj : Γ →* GL (Fin n) k) (η₀ η : Γ →* ℤˣ) (t : Γ) (ht : η₀ t = -1)
@@ -94,35 +92,27 @@ private theorem exists_ne_zero_smul_mem_of_mem_span' {Γ k : Type} [Group Γ] [F
     rw [hρ1 g hg, Units.val_mul, Units.val_mul, Matrix.trace_mul_comm, ← mul_assoc, Units.inv_mul, one_mul]
 
 /- English proof (translation)
-Introduce `Γ k _ _ _ _ _ _ _ _ n ι _ η hinj hopen r hr hconj hcomp`. Establish `hext : ∀ i, ∃ ρ : Γ →* GL (Fin n) k, Continuous ρ ∧ IsSSRep ρ ∧ ∀ h : (η i).ker, ρ h = r i h` using `fun i => GlobalTheory.T.exists_extension_rep_index_two_of_trace_invariant Γ k n (η i) (hopen i) (r i) (hr i).1 (hr i).2 (hconj i)`. Use `choose ρe hρc hρs hρr using hext`. Choose the witnesses or unpack the hypotheses as in `⟨i₀, hi₀⟩ : ∃ i, η i ≠ 1 := by`. Assume the negation of the conclusion as `hc`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Use `push_neg at hc`. Take `⟨a, b, hab⟩` from `exists_pair_ne ι`. Conclude with `hab (hinj ((hc a).trans (hc b).symm))`. Choose the witnesses or unpack the hypotheses as in `⟨t, ht⟩ : ∃ t, η i₀ t = -1 := by`. Assume the negation of the conclusion as `hc`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `push_neg at hc`. Conclude with `hi₀ (MonoidHom.ext fun x => by simpa using (Int.units_eq_one_or _).resolve_right (hc x))`. Take `⟨B, hBdef⟩ : ∃ B : Set (Γ →* ℤˣ), B = {χ | ∃ X : Matrix (Fin n) (Fin n) k, X ≠ 0 ∧ ∀ g, ((ρe i₀ g : GL (Fin n) k) : Matrix (Fin n) (Fin n) k) * X = (((χ g : ℤˣ) : ℤ) : k) • (X * ((ρe i₀ g : GL (Fin n) k) : Matrix (Fin n) (Fin n) k))}` from `⟨_, rfl⟩`. Establish `hB : B.Finite`. Rewrite using `[hBdef]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `GlobalTheory.T.finite_quadratic_characters_in_adjoint' Γ k n (ρe i₀)`. Establish `notB : ∀ χ : Γ →* ℤˣ, χ ∉ B → ∀ X : Matrix (Fin n) (Fin n) k, (∀ g, ((ρe i₀ g : GL (Fin n) k) : Matrix (Fin n) (Fin n) k) * X = (((χ g : ℤˣ) : ℤ) : k) • (X * ((ρe i₀ g : GL (Fin n) k) : Matrix (Fin n) (Fin n) k))) → X = 0`. Introduce `χ hχ X hX`. Assume the negation of the conclusion as `hX0`. Rewrite `hχ` using `[hBdef]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hχ ⟨X, hX0, hX⟩`. Establish `htrc : ∀ i j (g : Γ), η i g = 1 → η j g = 1 → ((ρe i g : GL (Fin n) k) : Matrix (Fin n) (Fin n) k).trace = ((ρe j g : GL (Fin n) k) : Matrix (Fin n) (Fin n) k).trace`. Introduce `i j g gi gj`. Establish `e1 : ρe i g = r i ⟨g, gi⟩` using `hρr i ⟨g, gi⟩`. Establish `e2 : ρe j g = r j ⟨g, gj⟩` using `hρr j ⟨g, gj⟩`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative.
 
-Rewrite using `[e1, e2]`. Conclude with `hcomp i j ⟨g, gi⟩ ⟨g, gj⟩ rfl`. Establish `hS1 : {χ : Γ →* ℤˣ | ¬ (χ ∉ B ∧ χ * η i₀ ∉ B ∧ χ ≠ 1 ∧ χ ≠ η i₀)}.Finite`. Apply `((hB.union (Set.Finite.preimage (f := fun χ => χ * η i₀) (fun _ _ _ _ h => mul_right_cancel h) hB)).union (Set.toFinite {1, η i₀})).subset` to reduce the goal to its premises. Introduce `χ hχ`.
+Prove the first alternative. Prove the second alternative. Prove the second alternative. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Simplify using `only [Set.mem_setOf_eq, not_and_or, not_not] at hχ`. Break down `hχ with h | h | h | h` into its components or cases. Conclude with `Or.inl (Or.inl h)`. Conclude with `Or.inl (Or.inr h)`. Conclude with `Or.inr (by simp [h])`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Conclude with `Or.inr (by simp [h])`. Take `⟨j₁, hj₁⟩` from `(Set.Finite.preimage (f := η) (fun _ _ _ _ h => hinj h) hS1).infinite_compl.nonempty`. Establish `P1 : η j₁ ∉ B ∧ η j₁ * η i₀ ∉ B ∧ η j₁ ≠ 1 ∧ η j₁ ≠ η i₀` using `not_not.mp hj₁`. Establish `hS2 : {χ : Γ →* ℤˣ | ¬ ((χ ∉ B ∧ χ * η i₀ ∉ B ∧ χ ≠ 1 ∧ χ ≠ η i₀) ∧ η j₁ * χ ∉ B ∧ η j₁ * χ * η i₀ ∉ B)}.Finite`. Apply `((hS1.union (Set.Finite.preimage (f := fun χ => η j₁ * χ) (fun _ _ _ _ h => mul_left_cancel h) hB)).union (Set.Finite.preimage (f := fun χ => η j₁ * χ * η i₀) (fun _ _ _ _ h => mul_left_cancel (mul_right_cancel h)) hB)).subset` to reduce the goal to its premises.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Prove the second alternative. Prove the first alternative.
 
-Introduce `χ hχ`. Simplify using `only [Set.mem_setOf_eq] at hχ`. Distinguish the cases in `h1 : (χ ∉ B ∧ χ * η i₀ ∉ B ∧ χ ≠ 1 ∧ χ ≠ η i₀)`. Distinguish the cases in `h2 : η j₁ * χ ∉ B`. Establish `h3 : η j₁ * χ * η i₀ ∈ B`.
+Prove the first alternative. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Assume the negation of the conclusion as `h3`. Conclude with `hχ ⟨h1, h2, h3⟩`. Conclude with `Or.inr h3`. Conclude with `Or.inl (Or.inr (not_not.mp h2))`. Conclude with `Or.inl (Or.inl h1)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Separate the alternatives or extract the components of the hypothesis. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hev : ∀ᶠ j in Filter.cofinite, ((η j ∉ B ∧ η j * η i₀ ∉ B ∧ η j ≠ 1 ∧ η j ≠ η i₀) ∧ η j₁ * η j ∉ B ∧ η j₁ * η j * η i₀ ∉ B)` using `Filter.eventually_cofinite.2 (Set.Finite.preimage (f := η) (fun _ _ _ _ h => hinj h) hS2)`. Take `⟨ρ₁, hρ1a, hρ1s, hρ1t⟩` from `exists_ne_zero_smul_mem_of_mem_span' n (ρe i₀) (ρe j₁) (η i₀) (η j₁) t ht (hρs i₀) (hρs j₁) (fun g g0 g1 => htrc i₀ j₁ g g0 g1) P1.2.2.1 P1.2.2.2 (notB _ P1.1) (notB _ P1.2.1)`. Use `⟨ρ₁, ?_, hρ1s, ?_⟩` and prove the remaining obligations. Conclude with `GlobalTheory.IndexTwoExt.continuous_of_open (η i₀).ker (hopen i₀) ρ₁ ((ρe i₀).comp (η i₀).ker.subtype) ((hρc i₀).comp continuous_subtype_val) (fun x => hρ1a x x.2)`. Use `filter_upwards [hev] with j hj`.
-
-Take `⟨ρj, hρja, hρjs, hρjt⟩` from `exists_ne_zero_smul_mem_of_mem_span' n (ρe i₀) (ρe j) (η i₀) (η j) t ht (hρs i₀) (hρs j) (fun g g0 g1 => htrc i₀ j g g0 g1) hj.1.2.2.1 hj.1.2.2.2 (notB _ hj.1.1) (notB _ hj.1.2.1)`. Establish `hall` using `GlobalTheory.T.intertwiner_zero_of_quadratic_twists Γ k n (ρe i₀) ρ₁ ρj (η i₀) (η j₁) (η j) hρ1a hρja hρ1s hρjs (by`. Introduce `c hc`. Apply `notB` to reduce the goal to its premises. Break down `hc with rfl | rfl | rfl | rfl | rfl | rfl` into its components or cases.
-
-Conclude with `P1.1`. Conclude with `hj.1.1`. Conclude with `hj.2.1`. Conclude with `P1.2.1`. Conclude with `hj.1.2.1`.
-
-Conclude with `hj.2.2)`. Use the proof step `(by`. Introduce `g g1 gj`. Rewrite using `[hρ1t g g1, hρjt g gj]`. Conclude with `htrc j₁ j g g1 gj)`.
-
-Introduce `h`. Rewrite using `[hall h, hρjt h h.2, hρr j h]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem main : ∀ (Γ k : Type) [Group Γ] [TopologicalSpace Γ] [IsTopologicalGroup Γ] [Field k] [CharZero k] [IsAlgClosed k] [TopologicalSpace k] [IsTopologicalRing k] (n : ℕ) (ι : Type) [Infinite ι] (η : ι → (Γ →* ℤˣ)), Function.Injective η → (∀ i, IsOpen ((η i).ker : Set Γ)) → ∀ r : ∀ i, (η i).ker →* GL (Fin n) k, (∀ i, Continuous (r i) ∧ IsSSRep (r i)) → (∀ i (g : Γ) (h h' : (η i).ker), (h' : Γ) = g * h * g⁻¹ → ((r i h' : GL (Fin n) k) : Matrix (Fin n) (Fin n) k).trace = ((r i h : GL (Fin n) k) : Matrix (Fin n) (Fin n) k).trace) → (∀ i j (h : (η i).ker) (h' : (η j).ker), (h : Γ) = h' → ((r i h : GL (Fin n) k) : Matrix (Fin n) (Fin n) k).trace = ((r j h' : GL (Fin n) k) : Matrix (Fin n) (Fin n) k).trace) → ∃ ρ : Γ →* GL (Fin n) k, Continuous ρ ∧ IsSSRep ρ ∧ ∀ᶠ j in Filter.cofinite, ∀ h : (η j).ker, ((ρ (h : Γ) : GL (Fin n) k) : Matrix (Fin n) (Fin n) k).trace = ((r j h : GL (Fin n) k) : Matrix (Fin n) (Fin n) k).trace := by
   intro Γ k _ _ _ _ _ _ _ _ n ι _ η hinj hopen r hr hconj hcomp

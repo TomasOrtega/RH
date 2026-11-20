@@ -13,9 +13,9 @@ set_option autoImplicit false
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `K _ _ R h`. Use `letI : Algebra ℂ R := ((algebraMap ℂ K).codRestrict R h.const_mem).toAlgebra`. Use `haveI : Algebra.EssFiniteType ℂ R := h.essFiniteType`. Use `haveI : IsScalarTower ℂ R K := IsScalarTower.of_algebraMap_eq fun _ => rfl`. Use `haveI : IsFractionRing R K := IsFractionRing.of_field R K fun z => by`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Take `⟨a, ha, b, hb, hb0, e⟩` from `h.frac z`. Conclude with `⟨⟨a, ha⟩, ⟨b, hb⟩, by show z = a / b`. Rewrite using `[eq_div_iff hb0, e]⟩`. Use `haveI : Algebra.EssFiniteType R K := Algebra.EssFiniteType.of_isLocalization K (nonZeroDivisors R)`. Conclude with `Algebra.EssFiniteType.comp ℂ R K`.
+A detailed English derivation is pending.
 -/
 theorem essFiniteType_of_isLocModel : ∀ {K : Type} [Field K] [Algebra ℂ K] (R : Subring K),
     IsLocModel (algebraMap ℂ K) R → Algebra.EssFiniteType ℂ K := by

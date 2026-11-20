@@ -19,15 +19,13 @@ section UnitsMk
 variable {K : Type*} [Field K] [ValuativeRel K] [TopologicalSpace K] [IsNonarchimedeanLocalField K]
 
 /- English proof (translation)
-Break down `Nat.eq_zero_or_pos n with rfl | hn` into its components or cases. Introduce `v`. Use `⟨1, ?_⟩` and prove the remaining obligations. Establish `: Subsingleton (𝒪[K] ⧸ Ideal.span {π ^ 0})`. Rewrite using `[pow_zero, Ideal.span_singleton_one]`.
+Separate the alternatives or extract the components of the hypothesis. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Ideal.Quotient.subsingleton_iff.mpr rfl`. Conclude with `Subsingleton.elim _ _`. Apply `IsLocalRing.surjective_units_map_of_local_ringHom _ Ideal.Quotient.mk_surjective` to reduce the goal to its premises. Prove the components needed by the constructor for the conclusion. Introduce `a ha`.
+Reduce the claim to the hypotheses of an applicable result. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `h`. Establish `hm : a ∈ 𝓂[K]` using `(IsLocalRing.mem_maximalIdeal a).2 h`. Take `⟨b, rfl⟩` from `(mem_maximalIdeal_iff_dvd hπ).1 hm`. Establish `hnil : IsNilpotent (Ideal.Quotient.mk (Ideal.span {π ^ n}) (π * b))`. Use `⟨n, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← map_pow, Ideal.Quotient.eq_zero_iff_mem, mul_pow]`. Conclude with `Ideal.mul_mem_right _ _ (Ideal.mem_span_singleton_self _)`. Establish `hne : Nontrivial (𝒪[K] ⧸ Ideal.span {π ^ n})`. Rewrite using `[Ideal.Quotient.nontrivial_iff, Ne, Ideal.span_singleton_eq_top]`. Conclude with `fun hu => hπ.not_isUnit (isUnit_of_dvd_unit (dvd_pow_self π hn.ne') hu)`.
-
-Conclude with `hnil.not_isUnit ha`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
 -/
 theorem unitsMk_surjective {π : 𝒪[K]} (hπ : Irreducible π) (n : ℕ) :
     Function.Surjective (unitsMk π n) := by
@@ -63,9 +61,9 @@ variable {Ω : Type*} [Field Ω] [ValuativeRel Ω] [TopologicalSpace Ω] [IsValu
 variable {π : 𝒪[K]} (hπ : Irreducible π) {f : PowerSeries 𝒪[K]}
 
 /- English proof (translation)
-Take `⟨y, hy⟩` from `exists_integer_eq (val_mem_lubinTateField hπ hf hl) l.valuation_lt_one`. Establish `hirr` using `irreducible_of_primitive hπ hf hl hl' hy`. Establish `h` using `ordRat_algebraMap_of_finite (K := K) (Ω := Ω) (L := lubinTateField Ω hπ hf n) (y : _)`. Rewrite `h` using `[ord_uniformizer hirr]`. Rewrite using `[← hy]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `using h`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem ordRat_primitive (hf : IsLubinTateSeries π f) {n : ℕ}
     {l : IdealPoint Ω (lubinTateFormalGroup hπ hf)} (hl : l ∈ lubinTateTorsion Ω hf n)
@@ -79,9 +77,9 @@ theorem ordRat_primitive (hf : IsLubinTateSeries π f) {n : ℕ}
   simpa using h
 
 /- English proof (translation)
-Establish `hspec` using `(primitive_spec hπ hf hl hl').1`. Rewrite `hl` using `[mem_lubinTateTorsion]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[mem_lubinTateTorsion, smul_smul, ← mul_assoc, ← pow_add, Nat.sub_add_cancel hk.le, mul_comm, mul_smul, hl, smul_zero]`. Rewrite using `[mem_lubinTateTorsion, smul_smul, ← mul_assoc, ← pow_add, show n - k - 1 + k = n - 1 by omega, hspec, Ideal.mem_span_singleton]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `h`. Apply `hw` to reduce the goal to its premises. Establish `e : π ^ n = π ^ (n - 1) * π` using `by rw [← pow_succ, Nat.sub_add_cancel (by omega)]`. Rewrite `h` using `[e]`. Conclude with `(mul_dvd_mul_iff_left (pow_ne_zero _ hπ.ne_zero)).1 h`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem smul_primitive (hf : IsLubinTateSeries π f) {n k : ℕ} (hk : k < n)
     {l : IdealPoint Ω (lubinTateFormalGroup hπ hf)} (hl : l ∈ lubinTateTorsion Ω hf n)
@@ -104,7 +102,7 @@ theorem smul_primitive (hf : IsLubinTateSeries π f) {n k : ℕ} (hk : k < n)
 omit [IsSepClosed Ω] in
 
 /- English proof (translation)
-Use `adjoin_eq_top_of_residue_of_addVal_eq_one K ?_ (Algebra.self_mem_adjoin_singleton _ _) (addVal_uniformizer hx)` and prove the remaining obligations. Establish `h1 : Module.finrank 𝓀[K] 𝓀[L] = 1` using `by rw [← residueDegree_eq_finrank K L]; exact h`. Rewrite using `[eq_top_iff, ← Subalgebra.bot_eq_top_of_finrank_eq_one h1]`. Conclude with `bot_le`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem adjoin_eq_top_of_irreducible_of_residueDegree_eq_one {L : Type*} [Field L] [ValuativeRel L]
     [TopologicalSpace L] [IsNonarchimedeanLocalField L] [Algebra K L] [ValuativeExtension K L]
@@ -119,7 +117,7 @@ theorem adjoin_eq_top_of_irreducible_of_residueDegree_eq_one {L : Type*} [Field 
 include hπ in
 
 /- English proof (translation)
-Rewrite `hu`, `hu'` using `[mem_unitFiltration, mem_maximalIdeal_pow_iff hπ]`. Take `⟨w, hw⟩` from `hu`. Use `⟨w, hw, fun hdvd => hu' ?_⟩` and prove the remaining obligations. Rewrite using `[hw, pow_succ]`. Conclude with `mul_dvd_mul_left _ hdvd`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_sub_one_eq_pow_mul {k : ℕ} {u : 𝒪[K]ˣ} (hu : u ∈ unitFiltration K k)
     (hu' : u ∉ unitFiltration K (k + 1)) : ∃ w : 𝒪[K], (u : 𝒪[K]) - 1 = π ^ k * w ∧ ¬ π ∣ w := by
@@ -130,27 +128,23 @@ theorem exists_sub_one_eq_pow_mul {k : ℕ} {u : 𝒪[K]ˣ} (hu : u ∈ unitFilt
   exact mul_dvd_mul_left _ hdvd
 
 /- English proof (translation)
-Establish `hn : 0 < n` using `by omega`. Take `⟨l, hl, hl'⟩` from `exists_primitive hπ hf hn (Ω := Ω)`. Take `⟨x, hx⟩` from `exists_integer_eq (val_mem_lubinTateField hπ hf hl) l.valuation_lt_one`. Establish `hxirr` using `irreducible_of_primitive hπ hf hl hl' hx`. Rewrite using `[lowerIndex_eq_addVal_of_adjoin_eq_top (adjoin_eq_top_of_irreducible_of_residueDegree_eq_one (residueDegree_lubinTateField hπ hf hn) hxirr) σ]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨w, hw, hwπ⟩` from `exists_sub_one_eq_pow_mul hπ hu hu'`. Use `set μ := (π ^ k * w) • l with hμdef`. Establish `hμ` using `smul_primitive hπ hf hk hl hl' hwπ`. Establish `hσx : ((integerAlgEquiv K (lubinTateField Ω hπ hf n) σ x : lubinTateField Ω hπ hf n) : Ω) = ((u : 𝒪[K]) • l).val`. Rewrite using `[coe_integerAlgEquiv_apply]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e : (x : lubinTateField Ω hπ hf n) = ⟨l.val, val_mem_lubinTateField hπ hf hl⟩` using `Subtype.ext hx`. Rewrite using `[e]`. Conclude with `lubinTateGalEquiv_spec hf n σ l hl (u : 𝒪[K]) (by rw [hσ]; rfl)`. Establish `hul : (u : 𝒪[K]) • l = l + μ`. Rewrite using `[hμdef, ← hw, sub_smul, one_smul, add_sub_cancel]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `set z := integerAlgEquiv K (lubinTateField Ω hπ hf n) σ x - x with hzdef`. Establish `hz : ((z : lubinTateField Ω hπ hf n) : Ω) = psEval (lubinTateFormalGroup hπ hf).toPowerSeries ![l.val, μ.val] - l.val`. Rewrite using `[hzdef]`. Use `push_cast`. Rewrite using `[hσx, hul, IdealPoint.val_add, hx]`.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hvz : valuation Ω ((z : lubinTateField Ω hπ hf n) : Ω) = valuation Ω μ.val`. Rewrite using `[hz]`. Conclude with `valuation_psEval_sub_left _ l.valuation_lt_one μ.valuation_lt_one`. Establish `hz0 : z ≠ 0`. Introduce `h0`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite `hvz` using `[h0]`. Simplify using `only [ZeroMemClass.coe_zero, map_zero] at hvz`. Establish `h1 : μ.val = 0` using `(Valuation.zero_iff _).1 hvz.symm`. Apply `hμ.2` to reduce the goal to its premises. Rewrite using `[← hμdef, show μ = 0 from IdealPoint.ext (by rw [h1, IdealPoint.val_zero])]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Submodule.zero_mem _`. Take `⟨j, hj⟩` from `exists_addVal_eq_coe hz0`. Rewrite using `[hj]`. Establish `hordj` using `ord_eq_of_addVal_eq hz0 hj`. Establish `h2` using `ordRat_algebraMap_of_finite (K := K) (Ω := Ω) (L := lubinTateField Ω hπ hf n) (z : lubinTateField Ω hπ hf n)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `h3 : ordRat K ((z : lubinTateField Ω hπ hf n) : Ω) = 1 / (ramificationIndex K (lubinTateField Ω hπ hf (n - k)) : ℚ)`. Rewrite using `[ordRat_congr hvz, hμdef]`. Conclude with `ordRat_primitive hπ hf hμ.1 hμ.2`. Establish `he : ramificationIndex K (lubinTateField Ω hπ hf n) = ramificationIndex K (lubinTateField Ω hπ hf (n - k)) * Nat.card 𝓀[K] ^ k`. Rewrite using `[ramificationIndex_lubinTateField hπ hf hn, ramificationIndex_lubinTateField hπ hf (by omega : 0 < n - k), finrank_lubinTateField hπ hf hn, finrank_lubinTateField hπ hf (by omega : 0 < n - k), mul_assoc, ← pow_add]`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Check the signs of the components of the expression.
 
-Use `congr 2`. Use linear arithmetic over natural numbers and integers. Establish `heM : (0 : ℚ) < ramificationIndex K (lubinTateField Ω hπ hf (n - k))`. Conclude with `ramificationIndex_pos K _` after adjusting the coercions. Establish `hq : (0 : ℚ) < (Nat.card 𝓀[K] : ℚ) ^ k`.
-
-Establish `: 0 < Nat.card 𝓀[K]` using `Nat.card_pos`. Check the signs of the components of the expression. Rewrite `h2` using `[IntermediateField.algebraMap_apply, h3, hordj, he]`. Move the coercions through the operations in `at h2`. Clear denominators, using `at h2` for the nonvanishing conditions.
-
-Establish `hjq : (j : ℚ) = ((Nat.card 𝓀[K] ^ k : ℕ) : ℚ)` using `by push_cast; linarith`. Conclude with `hjq` after adjusting the coercions.
+Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem lowerIndex_lubinTateField (hf : IsLubinTateSeries π f) {n k : ℕ} (hk : k < n)
     (σ : lubinTateField Ω hπ hf n ≃ₐ[K] lubinTateField Ω hπ hf n) (u : 𝒪[K]ˣ)
@@ -222,9 +216,9 @@ def lubinTateUnitSubgroup (hf : IsLubinTateSeries π f) (n j : ℕ) :
   ((unitFiltration K j).map (unitsMk π n)).comap (lubinTateGalEquiv hπ hf n).toMonoidHom
 
 /- English proof (translation)
-Rewrite using `[lubinTateUnitSubgroup, Subgroup.mem_comap, MulEquiv.coe_toMonoidHom, hσ, Subgroup.mem_map]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u', hu', he⟩`. Establish `h1 : unitsMk π n (u'⁻¹ * u) = 1` using `by rw [map_mul, map_inv, he, inv_mul_cancel]`. Rewrite `h1` using `[unitsMk_eq_one_iff hπ]`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2` using `unitFiltration_antitone K hj h1`. Simplify using `using (unitFiltration K j).mul_mem hu' h2`. Introduce `hu`. Conclude with `⟨u, hu, rfl⟩`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem mem_lubinTateUnitSubgroup_iff (hf : IsLubinTateSeries π f) {n j : ℕ} (hj : j ≤ n)
     (σ : lubinTateField Ω hπ hf n ≃ₐ[K] lubinTateField Ω hπ hf n) (u : 𝒪[K]ˣ)
@@ -241,21 +235,17 @@ theorem mem_lubinTateUnitSubgroup_iff (hf : IsLubinTateSeries π f) {n j : ℕ} 
     exact ⟨u, hu, rfl⟩
 
 /- English proof (translation)
-Take `⟨u, hu⟩` from `unitsMk_surjective hπ n (lubinTateGalEquiv hπ hf n σ)`. Distinguish the cases in `hun : u ∈ unitFiltration K n`. Use `left`. Apply `(lubinTateGalEquiv hπ hf n).injective` to reduce the goal to its premises. Rewrite using `[← hu, map_one, unitsMk_eq_one_iff hπ]`.
+Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hun`. Use `right`. Establish `hex : ∃ m, u ∉ unitFiltration K (m + 1)`. Break down `n with _ | n` into its components or cases. Conclude with `absurd (by rw [unitFiltration_zero]; trivial) hun`.
+Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `⟨n, hun⟩`. Use `set m := Nat.find hex with hm`. Establish `hm1 : u ∉ unitFiltration K (m + 1)` using `Nat.find_spec hex`. Establish `hm0 : u ∈ unitFiltration K m`. Break down `Nat.eq_zero_or_pos m with h0 | hpos` into its components or cases.
+Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[h0, unitFiltration_zero]`. Discharge the goal by the elementary cases of `trivial`. Use `Nat.find_min hex (show m - 1 < m by omega)` as an intermediate fact. Rewrite `this` using `[not_not, Nat.sub_add_cancel hpos]`. Conclude with `this`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hmn : m < n`. Assume the negation of the conclusion as `h`. Conclude with `hun (unitFiltration_antitone K (by omega) hm0)`. Use `⟨m, hmn, lowerIndex_lubinTateField hπ hf hmn σ u hu.symm hm0 hm1, fun j => ?_⟩` and prove the remaining obligations. Establish `hq : 1 < Nat.card 𝓀[K]` using `Finite.one_lt_card`.
+Assume the negation of the conclusion and derive a contradiction. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Prove the components needed by the constructor for the conclusion. Introduce `hj`. Assume the negation of the conclusion as `hjm`. Break down `le_or_gt j n with hjn | hjn` into its components or cases. Rewrite `hj` using `[mem_lubinTateUnitSubgroup_iff hπ hf hjn σ u hu.symm]`.
-
-Conclude with `hm1 (unitFiltration_antitone K (by omega) hj)`. Establish `hj' : σ ∈ lubinTateUnitSubgroup hπ hf n n` using `Subgroup.comap_mono (Subgroup.map_mono (unitFiltration_antitone K hjn.le)) hj`. Rewrite `hj'` using `[mem_lubinTateUnitSubgroup_iff hπ hf le_rfl σ u hu.symm]`. Conclude with `hun hj'`. Introduce `hjm`.
-
-Rewrite using `[mem_lubinTateUnitSubgroup_iff hπ hf (by omega) σ u hu.symm]`. Conclude with `unitFiltration_antitone K hjm hm0`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lowerIndex_lubinTateField_cases (hf : IsLubinTateSeries π f) {n : ℕ}
     (σ : lubinTateField Ω hπ hf n ≃ₐ[K] lubinTateField Ω hπ hf n) :
@@ -301,7 +291,7 @@ theorem lowerIndex_lubinTateField_cases (hf : IsLubinTateSeries π f) {n : ℕ}
     exact unitFiltration_antitone K hjm hm0
 
 /- English proof (translation)
-Establish `h1` using `Subgroup.index_comap_of_surjective (H := (unitFiltration K j).map (unitsMk π n)) (f := (lubinTateGalEquiv (Ω := Ω) hπ hf n).toMonoidHom) (lubinTateGalEquiv (Ω := Ω) hπ hf n).surjective`. Use `h1.trans (Subgroup.index_map_eq _ (unitsMk_surjective hπ n) ?_)` and prove the remaining obligations. Introduce `u hu`. Rewrite `hu` using `[MonoidHom.mem_ker, unitsMk_eq_one_iff hπ]`. Conclude with `unitFiltration_antitone K hj hu`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem index_lubinTateUnitSubgroup (hf : IsLubinTateSeries π f) {n j : ℕ} (hj : j ≤ n) :
     (lubinTateUnitSubgroup hπ hf n j : Subgroup (lubinTateField Ω hπ hf n ≃ₐ[K] _)).index =
@@ -314,21 +304,21 @@ theorem index_lubinTateUnitSubgroup (hf : IsLubinTateSeries π f) {n j : ℕ} (h
   exact unitFiltration_antitone K hj hu
 
 /- English proof (translation)
-Establish `hq : 1 ≤ Nat.card 𝓀[K]` using `Finite.one_lt_card.le`. Establish `hqR : (1 : ℝ) ≤ Nat.card 𝓀[K]` using `by exact_mod_cast hq`. Proceed by induction on `k with`. Consider the case `zero`. Establish `h1 : ∀ σ : lubinTateField Ω hπ hf n ≃ₐ[K] lubinTateField Ω hπ hf n, enatMin (lowerIndex K (lubinTateField Ω hπ hf n) σ) ((Nat.card 𝓀[K] : ℝ) ^ 0) = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Proceed by induction. Treat this case separately. Establish an intermediate fact.
 
-Introduce `σ`. Break down `lowerIndex_lubinTateField_cases hπ hf σ with rfl | ⟨m, -, hi, -⟩` into its components or cases. Simplify using the standard rewrite rules. Rewrite using `[hi, enatMin_coe, pow_zero]`. Use `push_cast`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Conclude with `min_eq_right (one_le_pow₀ hqR)`. Repeatedly rewrite using `[h1]`. Simplify using `[Nat.card_eq_fintype_card]`. Consider the case `succ k ih`. Establish `h1 : ∀ σ : lubinTateField Ω hπ hf n ≃ₐ[K] lubinTateField Ω hπ hf n, enatMin (lowerIndex K (lubinTateField Ω hπ hf n) σ) ((Nat.card 𝓀[K] : ℝ) ^ (k + 1)) = enatMin (lowerIndex K (lubinTateField Ω hπ hf n) σ) ((Nat.card 𝓀[K] : ℝ) ^ k) + (if σ ∈ lubinTateUnitSubgroup hπ hf n (k + 1) …`.
+Rewrite the conclusion repeatedly using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `σ`. Break down `lowerIndex_lubinTateField_cases hπ hf σ with rfl | ⟨m, -, hi, hS⟩` into its components or cases. Simplify using `[(lubinTateUnitSubgroup hπ hf n (k + 1)).one_mem]`. Rewrite using `[hi, enatMin_coe, enatMin_coe, hS]`. Use `push_cast`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hkm : k + 1 ≤ m`. Rewrite using `[if_pos hkm, min_eq_right (pow_le_pow_right₀ hqR hkm), min_eq_right (pow_le_pow_right₀ hqR (by omega))]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[if_neg hkm, min_eq_left (pow_le_pow_right₀ hqR (by omega)), min_eq_left (pow_le_pow_right₀ hqR (by omega))]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion repeatedly using the stated equalities.
 
-Repeatedly rewrite using `[h1]`. Rewrite using `[Finset.sum_add_distrib, ih (by omega), ← Finset.sum_mul, Finset.sum_boole, card_filter_mem]`. Establish `hidx` using `index_lubinTateUnitSubgroup hπ hf (show k + 1 ≤ n by omega) (Ω := Ω)`. Rewrite `hidx` using `[index_unitFiltration K (by omega : 1 ≤ k + 1)]`. Establish `hc` using `Subgroup.card_mul_index (lubinTateUnitSubgroup hπ hf n (k + 1) (Ω := Ω))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hc` using `[hidx]`. Establish `hcR : (Nat.card (lubinTateUnitSubgroup hπ hf n (k + 1) (Ω` using `Ω)) : ℝ) * (((Nat.card 𝓀[K] : ℝ) - 1) * (Nat.card 𝓀[K] : ℝ) ^ k) = Nat.card (lubinTateField Ω hπ hf n ≃ₐ[K] lubinTateField Ω hπ hf n) := by`. Rewrite using `[← hc]`. Move the coercions through the operations in `[Nat.cast_sub hq]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[show (Nat.card 𝓀[K] : ℝ) ^ (k + 1) - (Nat.card 𝓀[K] : ℝ) ^ k = ((Nat.card 𝓀[K] : ℝ) - 1) * (Nat.card 𝓀[K] : ℝ) ^ k by ring, hcR]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem sum_enatMin_lowerIndex_lubinTateField (hf : IsLubinTateSeries π f) {n k : ℕ} (hk : k < n) :
     ∑ σ : lubinTateField Ω hπ hf n ≃ₐ[K] lubinTateField Ω hπ hf n,
@@ -385,9 +375,9 @@ theorem sum_enatMin_lowerIndex_lubinTateField (hf : IsLubinTateSeries π f) {n k
     ring
 
 /- English proof (translation)
-Establish `hn : 0 < n` using `by omega`. Establish `hq : 1 ≤ Nat.card 𝓀[K]` using `Finite.one_lt_card.le`. Establish `hqk : (1 : ℝ) ≤ ((Nat.card 𝓀[K] ^ k : ℕ) : ℝ)` using `by exact_mod_cast Nat.one_le_pow _ _ hq`. Rewrite using `[herbrandPhi_eq_sum_lowerIndex (by linarith), sub_add_cancel]`. Use `push_cast`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[sum_enatMin_lowerIndex_lubinTateField hπ hf hk, card_lowerRamificationGroup_zero, ramificationIndex_lubinTateField hπ hf hn, ← IsGalois.card_aut_eq_finrank]`. Establish `hG : (0 : ℝ) < Nat.card (lubinTateField Ω hπ hf n ≃ₐ[K] lubinTateField Ω hπ hf n)`. Conclude with `Nat.card_pos` after adjusting the coercions. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem herbrandPhi_lubinTateField (hf : IsLubinTateSeries π f) {n k : ℕ} (hk : k < n) :
     herbrandPhi K (lubinTateField Ω hπ hf n) (((Nat.card 𝓀[K] ^ k : ℕ) : ℝ) - 1) = k := by
@@ -404,7 +394,7 @@ theorem herbrandPhi_lubinTateField (hf : IsLubinTateSeries π f) {n k : ℕ} (hk
   ring
 
 /- English proof (translation)
-Use extensionality with `σ`. Break down `lowerIndex_lubinTateField_cases hπ hf σ with rfl | ⟨m, hmn, hi, hS⟩` into its components or cases. Simplify using `only [Subgroup.one_mem]`. Rewrite using `[mem_upperRamificationGroup_iff_of_lowerIndex_eq hi, herbrandPhi_lubinTateField hπ hf hmn, hS, Int.toNat_le, Int.ceil_le]`. Use `push_cast`.
+By extensionality, compare the relevant components. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
 Both sides reduce to the same expression.
 -/

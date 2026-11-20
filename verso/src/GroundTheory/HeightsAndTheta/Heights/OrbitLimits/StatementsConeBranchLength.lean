@@ -66,9 +66,7 @@ def ptZeroOne : (Σ k : Unit, PBlk 2 k) → ℂ := fun q => if q.2 = 0 then 0 el
 def lineFun (t : Fin 2 → ℂ) : (Σ k : Unit, PBlk 2 k) → ℂ := fun q => if q.2 = 0 then t 0 else 1 + t 1
 
 /- English proof (translation)
-Use `differentiable_pi.2 fun q => ?_` and prove the remaining obligations. Distinguish the cases in `h : q.2 = 0`. Simplify using `only [lineFun, h, if_true]`. Conclude with `differentiable_apply 0`. Simplify using `only [lineFun, h, if_false]`.
-
-Conclude with `(differentiable_const 1).add (differentiable_apply 1)`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem differentiable_lineFun : Differentiable ℂ lineFun := by
   refine differentiable_pi.2 fun q => ?_
@@ -79,11 +77,11 @@ theorem differentiable_lineFun : Differentiable ℂ lineFun := by
     exact (differentiable_const 1).add (differentiable_apply 1)
 
 /- English proof (translation)
-Rewrite `hv` using `[Metric.mem_ball, dist_pi_lt_iff (by norm_num)]`. Establish `h0` using `hv ⟨(), 0⟩`. Establish `h1` using `hv ⟨(), 1⟩`. Simplify using `only [ptZeroOne, dist_eq_norm] at h0 h1`. Use `⟨![v ⟨(), 0⟩, v ⟨(), 1⟩ - 1], ?_, ?_, rfl⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[mem_ball_zero_iff, pi_norm_lt_iff (by norm_num)]`. Introduce `i`. Use `fin_cases i`. Simplify using `using h0`. Simplify using `using h1`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `q`. Take `⟨⟨⟩, i⟩` from `q`. Apply the tactic sequence `fin_cases i <;> simp [lineFun]`.
+Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem lineFun_cover (v : (Σ k : Unit, PBlk 2 k) → ℂ) (hv : v ∈ Metric.ball ptZeroOne (1 / 2)) :
     ∃ t ∈ Metric.ball (0 : Fin 2 → ℂ) (1 / 2), lineFun t = v ∧ t 0 = v ⟨(), 0⟩ := by
@@ -133,9 +131,9 @@ def lineBranch : ConeBranch (⊥ : Ideal (MRing (PBlk 2))) 2 ptZeroOne where
       simp [hf]
 
 /- English proof (translation)
-Use `⟨?_, fun k => ⟨1, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[bot_sup_eq]`. Establish `: (Ideal.span {(Xc 2 0 : MRing (PBlk 2))}).IsPrime` using `(Ideal.span_singleton_prime (X_ne_zero _)).mpr X_prime`. Rewrite using `[Ideal.minimalPrimes_eq_subsingleton_self]`. Conclude with `Set.mem_singleton _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨⟩` from `k`. Introduce `h`. Take `⟨g, hg⟩` from `Ideal.mem_span_singleton.mp h`. Use `congrArg (MvPolynomial.eval (fun q : Σ k : Unit, PBlk 2 k => if q.2 = 0 then (0 : ℤ) else 1)) hg` as an intermediate fact. Simplify using `[Xc] at this`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem span_Xc_mem_divSupp :
     (Ideal.span {Xc 2 0} : Ideal (MRing (PBlk 2))) ∈ divSupp (⊥ : Ideal (MRing (PBlk 2))) (Xc 2 0) := by
@@ -152,11 +150,11 @@ theorem span_Xc_mem_divSupp :
     simp [Xc] at this
 
 /- English proof (translation)
-Use `⟨fun _ => ⟨1, by simp [ptZeroOne]⟩, ?_, ⟨Metric.ball ptZeroOne (1 / 2), Metric.ball_mem_nhds _ (by norm_num), ?_⟩, fun j j' h => absurd (Subsingleton.elim j j') h, ⟨Metric.ball ptZeroOne (1 / 2), Metric.ball_mem_nhds _ (by norm_num), ?_⟩, fun _ => ⟨fun _ => 1, differentiableOn_co …` and prove the remaining obligations. Introduce `f hf`. Take `⟨g, rfl⟩` from `Ideal.mem_span_singleton.mp hf`. Simplify using `[ptZeroOne]`. Introduce and unpack `v ⟨-, hv⟩`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components.
 
-Take `⟨t, ht, htv, -⟩` from `lineFun_cover v hv`. Conclude with `Set.mem_iUnion.mpr ⟨0, t, ht, htv⟩`. Introduce and unpack `_ v ⟨hv0, hv⟩`. Take `⟨t, ht, htv, ht0⟩` from `lineFun_cover v hv`. Establish `h0 : v ⟨(), 0⟩ = 0`.
+Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using hv0 _ (Ideal.subset_span (Set.mem_singleton _))`. Conclude with `⟨t, ⟨ht, by simp [ht0, h0]⟩, htv⟩`. Simplify using `[lineBranch, lineFun, Xc]`.
+Supply the required witnesses or components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem lineBranch_branchesAt :
     ConeBranchesAt (⊥ : Ideal (MRing (PBlk 2))) (Xc 2 0) (Ideal.span {X ⟨(), 0⟩}) (d := 1) ptZeroOne
@@ -180,7 +178,7 @@ theorem lineBranch_branchesAt :
   · simp [lineBranch, lineFun, Xc]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨1, fun _ => lineBranch, fun _ => 1, isArithVar_projLine, isMultiHomog_Xc 2 0, by rw [Submodule.mem_bot]; exact X_ne_zero _, span_Xc_mem_divSupp, DivPushMultComplex.hyps_inhabited.2.1, DivPushMultComplex.hyps_inhabited.2.2, lineBranch_branchesAt⟩`.
+Supply the required witnesses or components.
 -/
 theorem ConeBranchLength.hyps_inhabited :
     ∃ (b : ℕ) (γ : Fin b → ConeBranch (⊥ : Ideal (MRing (PBlk 2))) (0 + Fintype.card Unit + 1) ptZeroOne)

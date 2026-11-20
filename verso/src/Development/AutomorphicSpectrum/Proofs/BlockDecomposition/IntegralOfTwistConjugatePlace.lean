@@ -36,21 +36,21 @@ Both sides reduce to the same expression.
 theorem atH_apply (w : Pl E) (y : Gf E a b) : atH a b w y = atW w y := rfl
 
 /- English proof (translation)
-Simplify using `only [KK, Subgroup.mem_prod, Kf, Subgroup.mem_iInf, Subgroup.mem_comap]`. Conclude with `⟨fun h u => ⟨h.1 u, h.2 u⟩, fun h => ⟨fun u => (h u).1, fun u => (h u).2⟩⟩`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 theorem mem_KK_iff (g : Gf E a b) : g ∈ KK E a b ↔ ∀ u : Pl E, atH a b u g ∈ K2 a b u := by
   simp only [KK, Subgroup.mem_prod, Kf, Subgroup.mem_iInf, Subgroup.mem_comap]
   exact ⟨fun h u => ⟨h.1 u, h.2 u⟩, fun h => ⟨fun u => (h u).1, fun u => (h u).2⟩⟩
 
 /- English proof (translation)
-The claim follows from `Prod.ext (GlobalTheory.EulerTwRestr.gl_ext fun u => congrArg Prod.fst (H u)) (GlobalTheory.EulerTwRestr.gl_ext fun u => congrArg Prod.snd (H u))`.
+A detailed English derivation is pending.
 -/
 theorem ext_atH {g h : Gf E a b} (H : ∀ u : Pl E, atH a b u g = atH a b u h) : g = h :=
   Prod.ext (GlobalTheory.EulerTwRestr.gl_ext fun u => congrArg Prod.fst (H u))
     (GlobalTheory.EulerTwRestr.gl_ext fun u => congrArg Prod.snd (H u))
 
 /- English proof (translation)
-Establish `h1 : ∀ᶠ w in cofinite, ∀ i j, pLoc E w (x.1 i j) ∈ (w : Pl E).adicCompletionIntegers E` using `eventually_all.2 fun i => eventually_all.2 fun j => (x.1 i j).2`. Establish `h2 : ∀ᶠ w in cofinite, ∀ i j, pLoc E w ((x⁻¹).1 i j) ∈ (w : Pl E).adicCompletionIntegers E` using `eventually_all.2 fun i => eventually_all.2 fun j => ((x⁻¹).1 i j).2`. Use `filter_upwards [h1, h2] with w h1 h2`. Conclude with `GlobalTheory.EulerTwRestr.mem_KGL_iff.2 ⟨fun i j => by rw [GlobalTheory.EulerTwRestr.loc_val]; exact h1 i j, fun i j => by rw [GlobalTheory.EulerTwRestr.loc_inv_val]; exact h2 i j⟩`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem ae_mem_GL {n : ℕ} (x : GL (Fin n) (Af E)) :
     ∀ᶠ w in cofinite, GeneralLinearGroup.map (pLoc E w) x ∈ GlobalTheory.LFun.KGL w n := by
@@ -63,16 +63,16 @@ theorem ae_mem_GL {n : ℕ} (x : GL (Fin n) (Af E)) :
     fun i j => by rw [GlobalTheory.EulerTwRestr.loc_inv_val]; exact h2 i j⟩
 
 /- English proof (translation)
-Use `filter_upwards [ae_mem_GL g.1, ae_mem_GL g.2] with u h1 h2`. Conclude with `⟨h1, h2⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem ae_mem (g : Gf E a b) : ∀ᶠ u in cofinite, atH a b u g ∈ K2 a b u := by
   filter_upwards [ae_mem_GL g.1, ae_mem_GL g.2] with u h1 h2
   exact ⟨h1, h2⟩
 
 /- English proof (translation)
-Set `M : Matrix (Fin n) (Fin n) (Af E)` to `Matrix.of fun i j => ⟨fun w => (z w).1 i j, hz.mono fun w h => (GlobalTheory.EulerTwRestr.mem_KGL_iff.1 h).1 i j⟩`. Set `M' : Matrix (Fin n) (Fin n) (Af E)` to `Matrix.of fun i j => ⟨fun w => ((z w)⁻¹).1 i j, hz.mono fun w h => (GlobalTheory.EulerTwRestr.mem_KGL_iff.1 h).2 i j⟩`. Establish `hloc : ∀ P Q : Matrix (Fin n) (Fin n) (Af E), (∀ w : Pl E, P.map (pLoc E w) = Q.map (pLoc E w)) → P = Q` using `fun P Q h => Matrix.ext fun i j => Subtype.ext (funext fun w => congrFun (congrFun (h w) i) j)`. Establish `hMM' : M * M' = 1` using `hloc _ _ fun w => by`. Rewrite using `[Matrix.map_mul, Matrix.map_one _ (map_zero _) (map_one _)]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(z w).mul_inv`. Establish `hM'M : M' * M = 1` using `hloc _ _ fun w => by`. Rewrite using `[Matrix.map_mul, Matrix.map_one _ (map_zero _) (map_one _)]`. Conclude with `(z w).inv_mul`. Conclude with `⟨⟨M, M', hMM', hM'M⟩, fun u => Units.ext (Matrix.ext fun i j => rfl)⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_GL_of_family {n : ℕ} (z : ∀ u : Pl E, GLw n u) (hz : ∀ᶠ u in cofinite, z u ∈ GlobalTheory.LFun.KGL u n) :
     ∃ g : GL (Fin n) (Af E), ∀ u, GeneralLinearGroup.map (pLoc E u) g = z u := by
@@ -92,7 +92,7 @@ theorem exists_GL_of_family {n : ℕ} (z : ∀ u : Pl E, GLw n u) (hz : ∀ᶠ u
   exact ⟨⟨M, M', hMM', hM'M⟩, fun u => Units.ext (Matrix.ext fun i j => rfl)⟩
 
 /- English proof (translation)
-Take `⟨g₁, h₁⟩` from `exists_GL_of_family (fun u => (z u).1) (hz.mono fun u h => h.1)`. Take `⟨g₂, h₂⟩` from `exists_GL_of_family (fun u => (z u).2) (hz.mono fun u h => h.2)`. Conclude with `⟨(g₁, g₂), fun u => Prod.ext (h₁ u) (h₂ u)⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_of_family (z : ∀ u : Pl E, GLw a u × GLw b u) (hz : ∀ᶠ u in cofinite, z u ∈ K2 a b u) :
     ∃ g : Gf E a b, ∀ u, atH a b u g = z u := by
@@ -101,15 +101,15 @@ theorem exists_of_family (z : ∀ u : Pl E, GLw a u × GLw b u) (hz : ∀ᶠ u i
   exact ⟨(g₁, g₂), fun u => Prod.ext (h₁ u) (h₂ u)⟩
 
 /- English proof (translation)
-The claim follows from `Prod.ext (GlobalTheory.EulerTw.Comm.thF_thF y.1) (GlobalTheory.EulerTw.Comm.thF_thF y.2)`.
+A detailed English derivation is pending.
 -/
 theorem thP_thP (y : Gf E a b) : thP E a b (thP E a b y) = y :=
   Prod.ext (GlobalTheory.EulerTw.Comm.thF_thF y.1) (GlobalTheory.EulerTw.Comm.thF_thF y.2)
 
 /- English proof (translation)
-Substitute `huv` using the available equality. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `GeneralLinearGroup.map (pLoc E u) (thF E a g.1) = GeneralLinearGroup.map (pLoc E u) (thF E a h.1)`. Rewrite using `[GlobalTheory.EulerTw.IntRead.map_thF, GlobalTheory.EulerTw.IntRead.map_thF]`. Conclude with `congrArg _ (congrArg Prod.fst H)`.
+Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `GeneralLinearGroup.map (pLoc E u) (thF E b g.2) = GeneralLinearGroup.map (pLoc E u) (thF E b h.2)`. Rewrite using `[GlobalTheory.EulerTw.IntRead.map_thF, GlobalTheory.EulerTw.IntRead.map_thF]`. Conclude with `congrArg _ (congrArg Prod.snd H)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem atH_thP_congr {u v : Pl E} (huv : GlobalTheory.EulerTw.cPl E u = v) {g h : Gf E a b}
     (H : atH a b v g = atH a b v h) : atH a b u (thP E a b g) = atH a b u (thP E a b h) := by
@@ -123,9 +123,9 @@ theorem atH_thP_congr {u v : Pl E} (huv : GlobalTheory.EulerTw.cPl E u = v) {g h
     exact congrArg _ (congrArg Prod.snd H)
 
 /- English proof (translation)
-Use `⟨GlobalTheory.EulerTw.IntRead.mem_KGL_of_thAt u _ ?_, GlobalTheory.EulerTw.IntRead.mem_KGL_of_thAt u _ ?_⟩` and prove the remaining obligations. Use `H.1` as an intermediate fact. Express the relevant statement in the definitionally equal form `GeneralLinearGroup.map (pLoc E u) (thF E a g.1) ∈ _ at this`. Rewrite `this` using `[GlobalTheory.EulerTw.IntRead.map_thF]`. Then use the resulting hypothesis. Use `H.2` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `GeneralLinearGroup.map (pLoc E u) (thF E b g.2) ∈ _ at this`. Rewrite `this` using `[GlobalTheory.EulerTw.IntRead.map_thF]`. Then use the resulting hypothesis.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem integral_of_twist_conjugate_place (u : Pl E) {g : Gf E a b} (H : atH a b u (thP E a b g) ∈ K2 a b u) :
     atH a b (GlobalTheory.EulerTw.cPl E u) g ∈ K2 a b (GlobalTheory.EulerTw.cPl E u) := by
@@ -138,9 +138,9 @@ theorem integral_of_twist_conjugate_place (u : Pl E) {g : Gf E a b} (H : atH a b
     rwa [GlobalTheory.EulerTw.IntRead.map_thF] at this
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.EulerTw.IntRead.map_thF]`. Use `Units.ext (Matrix.ext fun i j => ?_)` and prove the remaining obligations. Establish `h2` using `GlobalTheory.ThetaPull.thetaGL_apply (a := n) (cj w) (GeneralLinearGroup.map (pLoc E w) g) i j`. Establish `e : thL n w = thetaGL n (cj w)` using `if_neg hw`. Rewrite using `[e, h2, GlobalTheory.EulerTw.IntRead.thAt_apply, GlobalTheory.EulerTwRestr.loc_inv_val, GlobalTheory.EulerTwRestr.loc_inv_val]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Conclude with `GlobLev.conjLoc_eq_cj hw _`.
+Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem map_thF_of_not_split {n : ℕ} {w : Pl E} (hw : ¬ IsSplitAt w) (g : GL (Fin n) (Af E)) :
     GeneralLinearGroup.map (pLoc E w) (thF E n g) = thL n w (GeneralLinearGroup.map (pLoc E w) g) := by
@@ -153,20 +153,20 @@ theorem map_thF_of_not_split {n : ℕ} {w : Pl E} (hw : ¬ IsSplitAt w) (g : GL 
   exact GlobLev.conjLoc_eq_cj hw _
 
 /- English proof (translation)
-The claim follows from `Prod.ext (map_thF_of_not_split hw g.1) (map_thF_of_not_split hw g.2)`.
+A detailed English derivation is pending.
 -/
 theorem usage₇ {w : Pl E} (hw : ¬ IsSplitAt w) (g : Gf E a b) :
     atH a b w (thP E a b g) = thW a b w (atH a b w g) :=
   Prod.ext (map_thF_of_not_split hw g.1) (map_thF_of_not_split hw g.2)
 
 /- English proof (translation)
-Simplify using `[thL, hw]`.
+Simplify using the standard rewrite rules.
 -/
 theorem thW_of_split {w : Pl E} (hw : IsSplitAt w) (y : GLw a w × GLw b w) : thW a b w y = y := by
   simp [thL, hw]
 
 /- English proof (translation)
-Use `Prod.ext ?_ ?_` and prove the remaining obligations. Simplify using `only [locEl, if_neg hw]`. Both sides reduce to the same expression. Simplify using `only [locEl, if_neg hw]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem atH_dG_of_not_split {w : Pl E} (hw : ¬ IsSplitAt w) (δ₁ : GL (Fin a) E) (δ₂ : GL (Fin b) E) :
     atH a b w (dG δ₁ δ₂) = dW w δ₁ δ₂ := by
@@ -175,9 +175,9 @@ theorem atH_dG_of_not_split {w : Pl E} (hw : ¬ IsSplitAt w) (δ₁ : GL (Fin a)
   · simp only [locEl, if_neg hw]; rfl
 
 /- English proof (translation)
-Use `Prod.ext ?_ ?_` and prove the remaining obligations. Simplify using `only [locEl, if_pos hw]`. Express the relevant statement in the definitionally equal form `GeneralLinearGroup.map (pLoc E w) (ratF E a δ₁ * thF E a (ratF E a δ₁)) = _`. Rewrite using `[← GlobalTheory.EulerTw.Comm.thF_ratF, ← map_mul]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Simplify using `only [locEl, if_pos hw]`. Express the relevant statement in the definitionally equal form `GeneralLinearGroup.map (pLoc E w) (ratF E b δ₂ * thF E b (ratF E b δ₂)) = _`. Rewrite using `[← GlobalTheory.EulerTw.Comm.thF_ratF, ← map_mul]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem atH_norm_of_split {w : Pl E} (hw : IsSplitAt w) (δ₁ : GL (Fin a) E) (δ₂ : GL (Fin b) E) :
     atH a b w (dG δ₁ δ₂ * thP E a b (dG δ₁ δ₂)) = dW w δ₁ δ₂ := by
@@ -190,7 +190,7 @@ theorem atH_norm_of_split {w : Pl E} (hw : IsSplitAt w) (δ₁ : GL (Fin a) E) (
     rw [← GlobalTheory.EulerTw.Comm.thF_ratF, ← map_mul]; rfl
 
 /- English proof (translation)
-Take `⟨v, ⟨hv, hvu⟩, -⟩` from `hS u`. Break down `GlobLev.eq_or_eq_conjSrc hvu.symm with h | h` into its components or cases. Conclude with `Or.inl (h ▸ hv)`. Conclude with `Or.inr ⟨v, hv, h⟩`.
+Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Prove the second alternative.
 -/
 theorem mem_or_conj {S : Set (Pl E)} (hS : IsSection S) (u : Pl E) : u ∈ S ∨ ∃ v ∈ S, u = GlobalTheory.EulerTw.cPl E v := by
   obtain ⟨v, ⟨hv, hvu⟩, -⟩ := hS u
@@ -199,21 +199,21 @@ theorem mem_or_conj {S : Set (Pl E)} (hS : IsSection S) (u : Pl E) : u ∈ S ∨
   · exact Or.inr ⟨v, hv, h⟩
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hv`. Conclude with `h (GlobLev.conjSrc_eq_of_not_split hv)`.
+Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem split_of_conj_ne {v : Pl E} (h : GlobalTheory.EulerTw.cPl E v ≠ v) : IsSplitAt v := by
   by_contra hv
   exact h (GlobLev.conjSrc_eq_of_not_split hv)
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.ThetaPull.conjSrc_conjSrc _`.
+A detailed English derivation is pending.
 -/
 theorem cPl_cPl (v : Pl E) : GlobalTheory.EulerTw.cPl E (GlobalTheory.EulerTw.cPl E v) = v := GlobalTheory.ThetaPull.conjSrc_conjSrc _
 
 /- English proof (translation)
-Introduce `hc`. Take `⟨u, hne, hu⟩` from `h`. Establish `h1 : (GlobalTheory.EulerTw.cPl E v).under (𝓞 (maximalRealSubfield E)) = v.under (𝓞 (maximalRealSubfield E))` using `(GlobalTheory.EulerTwRestr.mem_orb_iff v _).1 (by simp [GlobalTheory.EulerTw.orb])`. Establish `h2 : GlobalTheory.EulerTw.cPl E v = v` using `(hS v).unique ⟨hc, h1⟩ ⟨hv, rfl⟩`. Break down `GlobLev.eq_or_eq_conjSrc hu with h3 | h3` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `hne h3`. Conclude with `hne (h3.trans h2)`.
+A detailed English derivation is pending.
 -/
 theorem conj_not_mem {S : Set (Pl E)} (hS : IsSection S) {v : Pl E} (hv : v ∈ S) (h : IsSplitAt v) :
     GlobalTheory.EulerTw.cPl E v ∉ S := by

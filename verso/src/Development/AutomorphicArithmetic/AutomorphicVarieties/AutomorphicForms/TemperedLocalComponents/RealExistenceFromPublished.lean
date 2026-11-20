@@ -15,11 +15,9 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 namespace UpperTheory.V.Af
 
 /- English proof (translation)
-Take `⟨p, hp⟩` from `id hi`. Use `⟨continuous_of_iso H.cont hi, hs, fun w hw A h rc hrc σ hσ => ?_, fun w hw A h => ?_, H.weights, H.weights_sym, fun Q AI hT w A h O _ _ _ Bw hj => ?_⟩` and prove the remaining obligations. Conclude with `(H.away w hw A h rc hrc σ hσ).of_conj hw p fun g => by rw [hp, inv_mul_cancel_right]`. Take `⟨x, h1, h2⟩` from `H.pure w hw A h`. Conclude with `⟨x, h1.of_conj hw p fun g => by rw [hp, inv_mul_cancel_right], h2⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `⟨h1, h2, h3, h4⟩` from `H.above Q AI hT w A h O Bw hj`. Establish `hc : ∀ g : ↥(Dec (F` using `F) A), r'.comp (Dec (F := F) A).subtype g = p * r.comp (Dec (F := F) A).subtype g * p⁻¹ := fun g => hp g`. Take `⟨k1, k2, -, k4⟩` from `GlobalTheory.T.padicHodgeProperties_conj_invariant l Q F Ω O _ Bw n _ _ p hc`. Use `⟨k1 h1, fun τ LL' τ' hτ => k4 τ _ (h2 τ LL' τ' hτ), fun σ hσ hI => ⟨isSstAt_conj Q Bw p hc (h3 σ hσ hI).1, fun rc hrc => ?_⟩, fun σ hσ hS => k2 (h4 σ hσ hS)⟩` and prove the remaining obligations. Take `⟨T⟩` from `hT`.
-
-Conclude with `(GlobalTheory.PstConj.main F Ω l ι n Q AI ⟨T⟩ w A h O Bw hj _ _ p hc (P.litN.aut.berger.isPstAt T Bw _ (Units.continuous_val.comp (H.cont.comp continuous_subtype_val)) h1)).2.trans ((h3 σ hσ hI).2 rc hrc)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 private theorem galRepOfR_iso (P : Hypotheses₂) {F Ω : Type} [Field F] [NumberField F] [IsTotallyReal F] [Field Ω] [Algebra F Ω]
     [IsAlgClosure F Ω] {l : ℕ} [Fact l.Prime] {ι : Qbar l ≃+* ℂ} {n : ℕ} {π : TR.CuspSub F n}
@@ -45,13 +43,11 @@ private theorem galRepOfR_iso (P : Hypotheses₂) {F Ω : Type} [Field F] [Numbe
 end UpperTheory.V.Af
 
 /- English proof (translation)
-Introduce `P F Ω _ _ _ _ _ _ l _ ι n _ hn π χ hreg hpol`. Take `⟨r, wt, HT, H⟩` from `P.galR F Ω l ι n hn π χ hreg hpol`. Establish `key : ∀ w : HeightOneSpectrum (𝓞 F), ((l : ℕ) : 𝓞 F) ∉ w.asIdeal → ∀ B, π.HasSat w B → FrobEig ι r w (algSat n (normV w) B)` using `fun w hw B hB => by`. Take `⟨⟨σ, hσ⟩, hiso⟩` from `locCompR P F n π w`. Conclude with `satFrob P F Ω l ι n r H.cont w hw σ B (((satLoc P F n w σ).2 _ π.finPart (hiso σ hσ) B).1 hB) fun A h rc hrc => H.away w hw A h rc hrc σ hσ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hsm : GlobalTheory.PRep.IsSmooth π.finPart` using `fun v => by`. Use `(π.cusp v.1 v.2).1.level using 1` and compare the differences between its conclusion and the goal. Use extensionality with `k`. Conclude with `Subtype.ext_iff`. Establish `: Nontrivial π.V` using `Submodule.nontrivial_iff_ne_bot.2 π.ne_bot`.
+Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression.
 
-Use `⟨r, wt, HT, H, ⟨H.ss, ?_⟩, fun r' hr' ha => galRepOfR_iso P H ha.1 ?_⟩` and prove the remaining obligations. Use `filter_upwards [sat_ae_of_smooth (satLoc P) π.finPart hsm fun w =>`. Set `⟨⟨σ, hσ⟩, hiso⟩` to `locCompR P F n π w`. Use the proof step `⟨σ, hiso σ hσ⟩, eventually_not_mem F l] with w ⟨B, hB⟩ hw`. Conclude with `⟨B, hB, key w hw B hB⟩`.
-
-Use `isoOfFrob P F Ω l ι n r r' H.cont hr' H.ss ha.1 ?_ filter_upwards [ha.2, eventually_not_mem F l] with w ⟨B, hB, hf⟩ hw` and prove the remaining obligations. Conclude with `⟨_, key w hw B hB, hf⟩`.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Af.realExistence_from_published :
     UpperTheory.V.Af.Hypotheses₂ → UpperTheory.V.Af.ExR := by
@@ -77,7 +73,7 @@ theorem UpperTheory.V.Af.realExistence_from_published :
     exact ⟨_, key w hw B hB, hf⟩
 
 /- English proof (translation)
-Introduce `PH` and use `UpperTheory.V.Af.realExistence_from_published PH.toClassicalTheorems`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Af.exR :
     UpperTheory.V.Af.HypothesesH → UpperTheory.V.Af.ExR := fun PH => UpperTheory.V.Af.realExistence_from_published PH.toClassicalTheorems

@@ -3,19 +3,17 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.HeightTheory.NormLin
 namespace ReciprocityTheory.ChartRestriction.G.T0
 
 /- English proof (translation)
-Introduce `a`. Proceed by induction on `a with`. Consider the case `zero => simp`. Consider the case `succ a ih`. Establish `hA` using `Nat.add_one_mul_choose_eq (n + a) a`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Establish `hB` using `Nat.add_one_mul_choose_eq (p + a) a`. Establish `eA : n + (a + 1) = (n + a + 1)` using `by omega`. Establish `eB : p + (a + 1) = (p + a + 1)` using `by omega`. Rewrite using `[eA, eB]`. Establish `hA' : (((n + a + 1).choose (a + 1) : ℕ) : ℝ) * ((a : ℝ) + 1) = ((n : ℝ) + a + 1) * (((n + a).choose a : ℕ) : ℝ)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `congrArg (fun t : ℕ => (t : ℝ)) hA` as an intermediate fact. Simplify using `only [Nat.cast_mul, Nat.succ_eq_add_one, Nat.cast_add, Nat.cast_one] at this`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hB' : (((p + a + 1).choose (a + 1) : ℕ) : ℝ) * ((a : ℝ) + 1) = ((p : ℝ) + a + 1) * (((p + a).choose a : ℕ) : ℝ)`. Use `congrArg (fun t : ℕ => (t : ℝ)) hB` as an intermediate fact.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Nat.cast_mul, Nat.succ_eq_add_one, Nat.cast_add, Nat.cast_one] at this`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `ha1 : (0 : ℝ) < (a : ℝ) + 1` using `by positivity`. Establish `hpn : (p : ℝ) ≤ n` using `by exact_mod_cast hp`. Establish `hkey : ((n : ℝ) + a + 1) * ((p : ℝ) + 1) ≤ ((p : ℝ) + a + 1) * ((n : ℝ) + 1)`.
+Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use polynomial arithmetic with `[(Nat.cast_nonneg a : (0:ℝ) ≤ a)]`. Establish `hX : 0 ≤ (((n + a).choose a : ℕ) : ℝ) * ((p : ℝ) + 1) ^ a` using `by positivity`. Establish `hY : 0 ≤ (((p + a).choose a : ℕ) : ℝ) * ((n : ℝ) + 1) ^ a` using `by positivity`. Rewrite using `[← mul_le_mul_iff_of_pos_right ha1]`. Combine the equalities or inequalities in the displayed calculation.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[pow_succ]`. Take the linear combination `((p : ℝ) + 1) ^ a * ((p : ℝ) + 1) * hA'`. Use `_ ≤ (((p : ℝ) + a + 1) * ((n : ℝ) + 1)) * ((((p + a).choose a : ℕ) : ℝ) * ((n : ℝ) + 1) ^ a) := mul_le_mul hkey ih hX (by positivity)`. Use `_ = (((p + a + 1).choose (a + 1) : ℕ) : ℝ) * ((n : ℝ) + 1) ^ (a + 1) * ((a : ℝ) + 1) := by`. Rewrite using `[pow_succ]`.
-
-Take the linear combination `-(((n : ℝ) + 1) ^ a * ((n : ℝ) + 1)) * hB'`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem hups_choose_ratio (n p : ℕ) (hp : p ≤ n) : ∀ a : ℕ,
     (((n + a).choose a : ℕ) : ℝ) * ((p : ℝ) + 1) ^ a ≤
@@ -57,20 +55,20 @@ theorem hups_choose_ratio (n p : ℕ) (hp : p ≤ n) : ∀ a : ℕ,
           rw [pow_succ]; linear_combination -(((n : ℝ) + 1) ^ a * ((n : ℝ) + 1)) * hB'
 
 /- English proof (translation)
-Rewrite using `[Real.exp_nat_mul]`. Conclude with `pow_le_pow_left₀ (by linarith) (by linarith [Real.add_one_le_exp x]) k`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hups_pow_exp (x : ℝ) (hx : 0 ≤ x) (k : ℕ) : (1 + x) ^ k ≤ Real.exp (k * x) := by
   rw [Real.exp_nat_mul]
   exact pow_le_pow_left₀ (by linarith) (by linarith [Real.add_one_le_exp x]) k
 
 /- English proof (translation)
-Establish `h1` using `hups_choose_ratio n p hp a`. Establish `hp1 : (0 : ℝ) < (p : ℝ) + 1` using `by positivity`. Establish `hcast : (((n - p : ℕ) : ℝ)) = (n : ℝ) - p` using `by rw [Nat.cast_sub hp]`. Establish `hx : 0 ≤ (((n - p : ℕ) : ℝ)) / ((p : ℝ) + 1)` using `by positivity`. Establish `h2` using `hups_pow_exp _ hx a`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : 1 + (((n - p : ℕ) : ℝ)) / ((p : ℝ) + 1) = ((n : ℝ) + 1) / ((p : ℝ) + 1)`. Rewrite using `[hcast]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite `h2` using `[e, div_pow]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hpa : (0 : ℝ) < ((p : ℝ) + 1) ^ a` using `by positivity`. Establish `hB : (0 : ℝ) ≤ (((p + a).choose a : ℕ) : ℝ)` using `by positivity`. Establish `h3 : (((p + a).choose a : ℕ) : ℝ) * ((n : ℝ) + 1) ^ a / ((p : ℝ) + 1) ^ a ≤ (((p + a).choose a : ℕ) : ℝ) * Real.exp (a * (((n - p : ℕ) : ℝ) / ((p : ℝ) + 1)))`. Rewrite using `[mul_div_assoc]`. Conclude with `mul_le_mul_of_nonneg_left h2 hB`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `le_trans ?_ h3` and prove the remaining obligations. Rewrite using `[le_div_iff₀ hpa]`. Conclude with `h1`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hups_choose_exp (n p a : ℕ) (hp : p ≤ n) :
     (((n + a).choose a : ℕ) : ℝ) ≤
@@ -95,53 +93,49 @@ theorem hups_choose_exp (n p a : ℕ) (hp : p ≤ n) :
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Establish `hdel1 : 1 ≤ del` using `le_trans h1 hdel`. Establish `hM1 : D + 2 ≤ (D + 2) * (N + 1)` using `Nat.le_mul_of_pos_right _ (Nat.succ_pos N)`. Establish `hbig : del ≤ n`. Establish `: 1 ≤ 8 * ((D + 2) * (N + 1)) ^ 2 * (D + 1)` using `Nat.succ_le_of_lt (by positivity)`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `haN : deF ≤ n` using `le_trans hdel hbig`. Establish `huN : u ≤ n'`. Establish `hn1 : 1 ≤ n` using `le_trans hdel1 hbig`. Establish `: 1 ≤ 8 * n * ((D + 2) * (N + 1))` using `Nat.succ_le_of_lt (Nat.mul_pos (Nat.mul_pos (by norm_num) (by omega)) (by positivity))`. Rewrite using `[hn']`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hA` using `hups_choose_exp n (n - deF) (D + 1) (Nat.sub_le n deF)`. Establish `hB` using `hups_choose_exp n' (n' - u) ((D + 2) * (N + 1)) (Nat.sub_le n' u)`. Rewrite `hA` using `[Nat.sub_sub_self haN]`. Rewrite `hB` using `[Nat.sub_sub_self huN]`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hc1 : (cardUX D N n n' : ℝ) = (((n + (D + 1)).choose (D + 1) : ℕ) : ℝ) * (((n' + (D + 2) * (N + 1)).choose ((D + 2) * (N + 1)) : ℕ) : ℝ)`. Simplify using `only [cardUX, Nat.cast_mul]`. Rewrite using `[show n + D + 1 = n + (D + 1) by omega]`. Establish `hc2 : (cardUX D N (n - deF) (n' - u) : ℝ) = (((n - deF + (D + 1)).choose (D + 1) : ℕ) : ℝ) * (((n' - u + (D + 2) * (N + 1)).choose ((D + 2) * (N + 1)) : ℕ) : ℝ)`. Simplify using `only [cardUX, Nat.cast_mul]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[show n - deF + D + 1 = n - deF + (D + 1) by omega]`. Use `set K : ℝ := ((D + 1 : ℕ) : ℝ) with hK`. Use `set Mr : ℝ := (((D + 2) * (N + 1) : ℕ) : ℝ) with hMr`. Use `set a : ℝ := (deF : ℝ) with ha`. Use `set nr : ℝ := (n : ℝ) with hnr`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `set dl : ℝ := (del : ℝ) with hdl`. Use `set ur : ℝ := (u : ℝ) with hur`. Use `set n'r : ℝ := (n' : ℝ) with hn'r`. Establish `hK1 : 1 ≤ K` using `by rw [hK]; exact_mod_cast Nat.le_add_left 1 D`. Establish `hMK : K + 1 ≤ Mr`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hK, hMr]; exact_mod_cast (show D + 1 + 1 ≤ (D + 2) * (N + 1) by omega)`. Establish `ha1 : 1 ≤ a` using `by rw [ha]; exact_mod_cast h1`. Establish `had : a ≤ dl` using `by rw [ha, hdl]; exact_mod_cast hdel`. Establish `hud : ur ≤ K * dl` using `by rw [hur, hK, hdl]; exact_mod_cast hu`. Establish `hnbig : 8 * Mr ^ 2 * K * dl ≤ nr`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hnr, hMr, hK, hdl]`. Conclude with `hn` after adjusting the coercions. Establish `hn'eq : n'r = 8 * nr * Mr * K * dl`. Rewrite using `[hn'r, hnr, hMr, hK, hdl, hn']`. Use `push_cast`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hsub1 : (((n - deF : ℕ) : ℝ)) = nr - a` using `by rw [Nat.cast_sub haN]`. Establish `hsub2 : (((n' - u : ℕ) : ℝ)) = n'r - ur` using `by rw [Nat.cast_sub huN]`. Rewrite `hA` using `[hsub1]`. Rewrite `hB` using `[hsub2]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hK0 : 0 ≤ K` using `by linarith`. Establish `ha0 : 0 ≤ a` using `by linarith`. Establish `hdl1 : 1 ≤ dl` using `by linarith`. Establish `hMr1 : 1 ≤ Mr` using `by linarith`. Establish `hur0 : 0 ≤ ur` using `by rw [hur]; exact Nat.cast_nonneg u`.
+Chain the equalities or inequalities of the calculation. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hnr_ge : 8 * (K + 1) ^ 2 * K * a ≤ nr`. Establish `hsq : (K + 1) ^ 2 ≤ Mr ^ 2` using `pow_le_pow_left₀ (by linarith) hMK 2`. Establish `h8 : 8 * (K + 1) ^ 2 * K * a ≤ 8 * Mr ^ 2 * K * dl`. Combine the equalities or inequalities in the displayed calculation. Combine the linear equalities and inequalities to obtain the conclusion.
+Chain the equalities or inequalities of the calculation. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hKa_le : (K + 1) * a ≤ nr`. Establish `h8 : 1 ≤ 8 * (K + 1) * K` using `by nlinarith`. Establish `: (K + 1) * a ≤ 8 * (K + 1) ^ 2 * K * a`. Combine the equalities or inequalities in the displayed calculation. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `hnr1 : 1 ≤ nr` using `by nlinarith`. Use `set y1 : ℝ := K * (a / (nr - a + 1)) with hy1`. Use `set y2 : ℝ := Mr * (ur / (n'r - ur + 1)) with hy2`. Use `set S : ℝ := nr + (K + 1) * a with hS`. Establish `hKa_pos : 0 < (K + 1) * a` using `mul_pos (by linarith) (by linarith)`.
+Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hSpos : 0 < S` using `by rw [hS]; linarith`. Establish `hd1 : 0 < nr - a + 1` using `by nlinarith`. Establish `hnrMr : 1 ≤ nr * Mr` using `by nlinarith`. Establish `hKdl0 : 0 ≤ K * dl` using `mul_nonneg hK0 (by linarith)`. Establish `hq : K * dl ≤ nr * Mr * K * dl`.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hd2 : 0 < n'r - ur + 1` using `by rw [hn'eq]; nlinarith`. Establish `hpoly : K * (K + 2) + 3 / 16 ≤ 3 / 2 * (K + 1) ^ 2 * K`. Use polynomial arithmetic with `[mul_nonneg (sub_nonneg.2 hK1) (sub_nonneg.2 hK1), mul_nonneg (mul_nonneg (sub_nonneg.2 hK1) (sub_nonneg.2 hK1)) (sub_nonneg.2 hK1)]`. Establish `e1 : K * (K + 2) * a + 3 * a / 16 ≤ 3 * nr / 16`.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `mul_le_mul_of_nonneg_right hpoly ha0` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish `hy1S : y1 * S ≤ K * a + 3 * a / 16`. Establish `: y1 * S = K * a * S / (nr - a + 1)`. Rewrite using `[hy1, ← mul_div_assoc, div_mul_eq_mul_div]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[this, div_le_iff₀ hd1, hS]`. Establish `h2` using `mul_le_mul_of_nonneg_left e1 ha0`. Use the polynomial consequences of the given equalities and inequalities. Establish `hy2S : y2 * S ≤ 1 / 2`. Establish `: y2 * S = Mr * ur * S / (n'r - ur + 1)`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hy2, ← mul_div_assoc, div_mul_eq_mul_div]`. Rewrite using `[this, div_le_iff₀ hd2, hn'eq]`. Establish `hS2 : S ≤ 2 * nr` using `by rw [hS]; linarith`. Establish `p1 : Mr * ur * S ≤ Mr * (K * dl) * (2 * nr)` using `mul_le_mul (mul_le_mul_of_nonneg_left hud (by linarith)) hS2 hSpos.le (mul_nonneg (by linarith) hKdl0)`. Establish `e2 : Mr * (K * dl) * (2 * nr) = 2 * (nr * Mr * K * dl)` using `by ring`.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e3 : 8 * nr * Mr * K * dl = 8 * (nr * Mr * K * dl)` using `by ring`. Rewrite `p1` using `[e2]`. Rewrite using `[e3]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hyS : (y1 + y2) * S ≤ (K + 1) * a`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e4 : (K + 1) * a = K * a + a` using `by ring`. Rewrite using `[add_mul, e4]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hny : nr ≤ S * (1 - (y1 + y2))`. Establish `: S * (1 - (y1 + y2)) = S - (y1 + y2) * S` using `by ring`.
+Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Rewrite using `[this]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hexp : Real.exp (y1 + y2) * (1 - (y1 + y2)) ≤ 1`. Establish `h0` using `Real.add_one_le_exp (-(y1 + y2))`. Establish `h2 : Real.exp (y1 + y2) * Real.exp (-(y1 + y2)) = 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[← Real.exp_add]`. Simplify using the standard rewrite rules. Combine the equalities or inequalities in the displayed calculation. Establish `hmain : nr * Real.exp (y1 + y2) ≤ S`. Combine the equalities or inequalities in the displayed calculation.
-
-Establish `hX0 : 0 ≤ (cardUX D N (n - deF) (n' - u) : ℝ)` using `Nat.cast_nonneg _`. Establish `hprod : (cardUX D N n n' : ℝ) ≤ (cardUX D N (n - deF) (n' - u) : ℝ) * Real.exp (y1 + y2)`. Rewrite using `[hc1, hc2, Real.exp_add]`. Combine the equalities or inequalities in the displayed calculation. Establish `hnr0 : 0 ≤ nr` using `by linarith`.
-
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hS, hK, ha, hnr]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem hups_ratio (D N n n' deF u del : ℕ) (h1 : 1 ≤ deF) (hdel : deF ≤ del)
     (hu : u ≤ (D + 1) * del) (hn : 8 * ((D + 2) * (N + 1)) ^ 2 * (D + 1) * del ≤ n)

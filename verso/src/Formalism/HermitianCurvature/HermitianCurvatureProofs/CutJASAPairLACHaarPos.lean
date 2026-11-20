@@ -12,19 +12,15 @@ namespace Formalism.FourierDecayAlt.P.CutMP.JA.SA
 variable {k r : ℕ}
 
 /- English proof (translation)
-Rewrite using `[pos_iff_ne_zero]`. Introduce `h0`. Set `W : B.Mat k r → Set (Mt k r)` to `fun u => lmulM u⁻¹ ⁻¹' V`. Establish `hWo : ∀ u ∈ U, IsOpen (W u)` using `fun u _ => hV.preimage (Formalism.FourierDecayAlt.P.B2x1.lmulM_cont _)`. Establish `hW0 : ∀ u ∈ U, μ (W u) = 0`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `u hu`. Establish `e` using `h.left u⁻¹ (hinv u hu)`. Use `Measure.map_apply (μ := μ) (Formalism.FourierDecayAlt.P.B2x1.lmulM_cont (k := k) (r := r) u⁻¹).measurable hV.measurableSet` as an intermediate fact. Rewrite `this` using `[e]`. Use `show μ (lmulM u⁻¹ ⁻¹' V) = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← this]`. Conclude with `h0`. Establish `hcov : (U : Set (Mt k r)) ⊆ ⋃ u ∈ U, W u`. Introduce `x hx`. Use `Set.mem_iUnion₂.2 ⟨x, hx, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e : (lmulM x⁻¹ x : Mt k r) = ((1 : B.Mat k r) : Mt k r)` using `by show x⁻¹ * x = 1`. Conclude with `Matrix.nonsing_inv_mul x (hunit x hx)`. Use `show lmulM x⁻¹ x ∈ V`. Rewrite using `[e]`. Conclude with `h1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨T, hTU, hTc, hTeq⟩` from `TopologicalSpace.isOpen_biUnion_countable U W hWo`. Establish `hU0 : μ (U : Set (Mt k r)) = 0`. Use `measure_mono_null (hcov.trans hTeq.symm.le) ?_` and prove the remaining obligations. Conclude with `(measure_biUnion_null_iff hTc).2 fun u hu => hW0 u (hTU hu)`. Establish `huniv : μ Set.univ = 0`.
-
-Use `measure_mono_null ?_ (measure_union_null hU0 h.conc)` and prove the remaining obligations. Introduce `x _`. Distinguish the cases in `hx : x ∈ (U : Set (Mt k r))`. Conclude with `Or.inl hx`. Conclude with `Or.inr hx`.
-
-Conclude with `h.ne_zero (Measure.measure_univ_eq_zero.1 huniv)`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Prove the first alternative. Prove the second alternative. A detailed English derivation is pending.
 -/
 theorem haar_pos_nhds_one {U : Set (B.Mat k r)} {μ : Measure (Mt k r)} (h : B.IsHaarOn U μ)
     (hinv : ∀ u ∈ U, u⁻¹ ∈ U) (hunit : ∀ u ∈ U, IsUnit u.det) {V : Set (Mt k r)} (hV : IsOpen V)
@@ -61,15 +57,13 @@ theorem haar_pos_nhds_one {U : Set (B.Mat k r)} {μ : Measure (Mt k r)} (h : B.I
   exact h.ne_zero (Measure.measure_univ_eq_zero.1 huniv)
 
 /- English proof (translation)
-Introduce `k r Wp Wq _ _ _ _ D O hO h1`. Use `Formalism.FourierDecayAlt.P.B5.haar_sigmaFinite D.haarW` as an intermediate fact. Use `Formalism.FourierDecayAlt.P.B5.haar_sigmaFinite D.haarN` as an intermediate fact. Use `Formalism.FourierDecayAlt.P.B5.haar_sigmaFinite D.haarW'` as an intermediate fact. Take `⟨A, B', hA, hB, hoA, hoB, hAB⟩` from `isOpen_prod_iff.1 hO oneP.1 oneP.2 h1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨V1, V2, hV1, hV2, ho1, ho2, h12⟩` from `isOpen_prod_iff.1 hA oneP.1.1 oneP.1.2 hoA`. Take `⟨V3, V4, hV3, hV4, ho3, ho4, h34⟩` from `isOpen_prod_iff.1 hB oneP.2.1 oneP.2.2 hoB`. Establish `hsub : (V1 ×ˢ V2) ×ˢ (V3 ×ˢ V4) ⊆ O` using `(Set.prod_mono h12 h34).trans hAB`. Establish `uwI : ∀ (w : Fin (2 * r + k + 1) → ℂ), ∀ u ∈ UWset k r w, u⁻¹ ∈ UWset k r w` using `fun w u hu => Formalism.FourierDecayAlt.P.BigCellInversePair.uw_inv hu`. Establish `uwU : ∀ (w : Fin (2 * r + k + 1) → ℂ), ∀ u ∈ UWset k r w, IsUnit u.det` using `fun w u hu => WeylGroupFacts.isUnit_of_uh hu.1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `nI : ∀ u ∈ Nset k r, u⁻¹ ∈ Nset k r` using `fun u hu => WeylGroupFacts.mem_n_inv hu`. Establish `nU : ∀ u ∈ Nset k r, IsUnit u.det` using `fun u hu => WeylGroupFacts.isUnit_of_uh hu.1`. Establish `p1` using `haar_pos_nhds_one D.haarW (uwI _) (uwU _) hV1 ho1`. Establish `p2` using `haar_pos_nhds_one D.haarN nI nU hV2 ho2`. Establish `p3` using `haar_pos_nhds_one D.haarW' (uwI _) (uwU _) hV3 ho3`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `p4` using `haar_pos_nhds_one D.haarN nI nU hV4 ho4`. Use `lt_of_lt_of_le ?_ (measure_mono hsub)` and prove the remaining obligations. Use `show 0 < ((D.μW.prod D.μN).prod (D.μW'.prod D.μN)) ((V1 ×ˢ V2) ×ˢ (V3 ×ˢ V4))`. Rewrite using `[Measure.prod_prod, Measure.prod_prod, Measure.prod_prod]`. Rewrite `p1`, `p2`, `p3`, `p4`, the goal using `[pos_iff_ne_zero]`.
-
-Conclude with `mul_ne_zero (mul_ne_zero p1 p2) (mul_ne_zero p3 p4)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem averaging_haar_positivity : ACHaarPos := by
   intro k r Wp Wq _ _ _ _ D O hO h1

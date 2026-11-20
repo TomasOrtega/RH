@@ -11,17 +11,17 @@ open MvPolynomial ComplexSets Filter Topology
 open scoped NNReal ENNReal
 
 /- English proof (translation)
-Set `ι : ℂ → (Fin 1 → ℂ)` to `fun τ _ ↦ τ`. Establish `hι : ∀ τ : ℂ, ‖ι τ‖ = ‖τ‖` using `fun τ ↦ by simp [ι, pi_norm_const]`. Establish `himg : c.image = (c.toFun ∘ ι) '' Metric.ball 0 c.radius`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨t, ht, rfl⟩`. Use `⟨t 0, ?_, ?_⟩` and prove the remaining obligations. Establish `h0 : ‖t 0‖ ≤ ‖t‖` using `norm_le_pi_norm t 0`. Rewrite `ht`, the goal using `[Metric.mem_ball, dist_zero_right]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Simplify using `only [Function.comp, ι]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Rewrite using `[Subsingleton.elim i 0]`. Introduce and unpack `⟨τ, hτ, rfl⟩`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Use `⟨ι τ, ?_, rfl⟩` and prove the remaining obligations. Rewrite `hτ`, the goal using `[Metric.mem_ball, dist_zero_right]`. Rewrite using `[hι]` and apply the resulting hypothesis. Establish `hd : DifferentiableOn ℂ (c.toFun ∘ ι) (Metric.ball 0 c.radius)`. Establish `hιd : Differentiable ℂ ι` using `differentiable_pi.2 fun _ ↦ differentiable_id`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `c.differentiableOn.comp hιd.differentiableOn fun τ hτ ↦ ?_` and prove the remaining obligations. Rewrite `hτ`, the goal using `[Metric.mem_ball, dist_zero_right]`. Rewrite using `[hι]` and apply the resulting hypothesis. Establish `hcd : ContDiffOn ℝ 1 (c.toFun ∘ ι) (Metric.ball 0 c.radius)` using `(hd.contDiffOn Metric.isOpen_ball).restrict_scalars ℝ`. Rewrite using `[himg]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem VarBranch.dimH_image_le_two {n : ℕ} {I : Ideal (MvPolynomial (Fin n) ℂ)} {q : Fin n → ℂ}
     (c : VarBranch I 1 q) : dimH c.image ≤ 2 := by
@@ -57,29 +57,27 @@ theorem VarBranch.dimH_image_le_two {n : ℕ} {I : Ideal (MvPolynomial (Fin n) �
     _ = 2 := by rw [Real.dimH_univ_eq_finrank ℂ, Complex.finrank_real_complex]; norm_num
 
 /- English proof (translation)
-Introduce `n I q m c hm ⟨N, hN, hcov⟩`. Set `c₀` to `c ⟨0, hm⟩`. Establish `hq : q ∈ zeroSet I` using `c₀.map_zero ▸ c₀.mapsTo (Metric.mem_ball_self c₀.radius_pos)`. Establish `hdimH : dimH (zeroSet I ∩ N) ≤ 2` using `(dimH_mono hcov).trans ((dimH_iUnion _).le.trans (iSup_le fun b ↦ (c b).dimH_image_le_two))`. Apply `le_antisymm` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Take `⟨W, hW, hIW, hqW, hle⟩` from `h₀ n I q hq`. Establish `hup : ringKrullDim (MvPolynomial (Fin n) ℂ ⧸ W) ≤ (n : ℕ)`. Use `(ringKrullDim_quotient_le W).trans (le_of_eq ?_)` and prove the remaining obligations. Rewrite using `[MvPolynomial.ringKrullDim_of_isNoetherianRing, ringKrullDim_eq_zero_of_field, zero_add, Nat.card_eq_fintype_card, Fintype.card_fin]`. Establish `hnn : (0 : WithBot ℕ∞) ≤ ringKrullDim (MvPolynomial (Fin n) ℂ ⧸ W)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `hW` as an intermediate fact. Conclude with `ringKrullDim_nonneg_of_nontrivial`. Take `⟨d, hd⟩ : ∃ d : ℕ, ringKrullDim (MvPolynomial (Fin n) ℂ ⧸ W) = d` from `by revert hnn hup`. Generalize the expression as in `ringKrullDim (MvPolynomial (Fin n) ℂ ⧸ W) = x`. Introduce `hup hnn`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Replace the chosen expression with an arbitrary variable. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Proceed by induction on `x using WithBot.recBotCoe with`. Consider the case `bot => exact absurd hnn (by simp)`. Consider the case `coe e`. Proceed by induction on `e using ENat.recTopCoe with`. Consider the case `top => exact absurd hup (not_le.2 (WithBot.coe_lt_coe.2 (ENat.natCast_lt_top n)))`.
+Treat this case separately. Treat this case separately. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `coe d => exact ⟨d, rfl⟩`. Rewrite `hle` using `[hd]`. Use `hle.trans ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hlt`. Establish `h2 : 2 ≤ d`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `h`. Conclude with `hlt (by exact_mod_cast (by omega : d ≤ 1))`. Establish `hpos` using `h₂ n d W hW hd q (interior N) isOpen_interior (mem_interior_iff_mem_nhds.2 hN) hqW`. Establish `hsub : zeroSet W ∩ interior N ⊆ zeroSet I ∩ N` using `fun x hx ↦ ⟨fun f hf ↦ hx.1 f (hIW hf), interior_subset hx.2⟩`. Establish `hlt' : dimH (zeroSet W ∩ interior N) < (((2 * d : ℕ) : ℝ≥0) : ℝ≥0∞)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `((dimH_mono hsub).trans hdimH).trans_lt ?_` and prove the remaining obligations. Rewrite using `[ENNReal.coe_natCast]`. Conclude with `(by omega : 2 < 2 * d)` after adjusting the coercions. Establish `h0` using `hausdorffMeasure_of_dimH_lt hlt'`. Rewrite `h0` using `[NNReal.coe_natCast]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable.
 
-Conclude with `hpos.ne' h0`. Assume the negation of the conclusion as `hlt`. Establish `h0 : ringKrullDim (curveLocalRing I q) ≤ 0`. Generalize the expression as in `ringKrullDim (curveLocalRing I q) = x at hlt`. Proceed by induction on `x using WithBot.recBotCoe with`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Consider the case `bot => exact bot_le`. Consider the case `coe e`. Establish `he : e < 1`. Assume the negation of the conclusion as `h'`. Conclude with `hlt (by exact_mod_cast not_lt.1 h')`.
+Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `he` using `[Order.lt_one_iff]`. Substitute `he` using the available equality. Conclude with `le_rfl`. Take `⟨N', hN', hiso⟩` from `h₁ n I q h0`. Establish `hcont : ContinuousAt c₀.toFun 0` using `c₀.differentiableOn.continuousOn.continuousAt (Metric.ball_mem_nhds 0 c₀.radius_pos)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hN'' : N' ∈ 𝓝 (c₀.toFun 0)` using `by rw [c₀.map_zero]; exact hN'`. Establish `hev : ∀ᶠ t in 𝓝 (0 : Fin 1 → ℂ), t ∈ Metric.ball 0 c₀.radius ∧ c₀.toFun t ∈ N'` using `Filter.Eventually.and (Metric.ball_mem_nhds 0 c₀.radius_pos) (hcont hN'')`. Establish `hne : (𝓝[≠] (0 : Fin 1 → ℂ)).NeBot` using `inferInstance`. Establish `hev' : ∀ᶠ t in 𝓝[≠] (0 : Fin 1 → ℂ), (t ∈ Metric.ball 0 c₀.radius ∧ c₀.toFun t ∈ N') ∧ t ≠ 0` using `(Filter.Eventually.filter_mono nhdsWithin_le_nhds hev).and self_mem_nhdsWithin`. Take `⟨t, ⟨ht, htN⟩, ht0⟩` from `hev'.exists`.
-
-Establish `hx : c₀.toFun t = q` using `hiso ⟨c₀.mapsTo ht, htN⟩`. Conclude with `ht0 (c₀.injOn ht (Metric.mem_ball_self c₀.radius_pos) (hx.trans c₀.map_zero.symm))`.
+A detailed English derivation is pending.
 -/
 theorem BranchGermDimOne.proof (h₀ : LocalDimComponentBound.Statement) (h₁ : ZeroDimIsolated.Statement)
     (h₂ : IndefiniteRowSideFullHecke.ComplexSets.ZeroSetOpenMass.Statement) : BranchGermDimOne.Statement := by

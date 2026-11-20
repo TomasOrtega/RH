@@ -32,25 +32,23 @@ variable {r : Y → H → Y} (hc : ∀ y, Continuous (r y)) (ho : ∀ y, IsOpenM
 include h1 hm in
 
 /- English proof (translation)
-Take `⟨s, hs⟩` from `Φ.2.2.isCompact.elim_finite_subcover (fun y => r y '' K) (fun y => ho y _ hK1) (fun y _ => Set.mem_iUnion.2 ⟨y, 1, K.one_mem, h1 y⟩)`. Establish `hs' : ∀ z, Φ.1 z ≠ 0 → ∃ y ∈ s, z ∈ r y '' K` using `fun z hz => by`. Simplify using `using hs (subset_tsupport _ hz)`. Use `clear hs`. Proceed by induction on `s using Finset.induction_on generalizing Φ with`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Proceed by induction. Treat this case separately.
 
-Consider the case `empty`. Use `⟨∅, by simp, Subtype.ext (funext fun z => ?_)⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hz`. Simplify using `using hs' z hz`. Consider the case `insert y s _ ih`.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Establish an intermediate fact.
 
-Establish `hval : ∀ z ∈ r y '' K, Φ.1 z = Φ.1 y`. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Conclude with `hΦ y x hx`. Establish `hinv : ∀ z, ∀ x ∈ K, (r z x ∈ r y '' K ↔ z ∈ r y '' K)`. Introduce `z x hx`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u, hu, e⟩`. Conclude with `⟨u * x⁻¹, K.mul_mem hu (K.inv_mem hx), by rw [hm, e, ← hm, mul_inv_cancel, h1]⟩`. Introduce and unpack `⟨u, hu, rfl⟩`. Conclude with `⟨u * x, K.mul_mem hu hx, hm _ _ _⟩`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set Ψ : SB Y := Φ - Φ.1 y • orbInd r hc ho y hK1 hK2 with hΨ`. Establish `hΨv : ∀ z, Ψ.1 z = Φ.1 z - Φ.1 y * (r y '' K).indicator (fun _ => (1 : ℂ)) z` using `fun _ => rfl`. Establish `hin : ∀ z ∈ r y '' K, Ψ.1 z = 0` using `fun z hz => by`. Rewrite using `[hΨv, Set.indicator_of_mem hz, hval z hz, mul_one, sub_self]`. Establish `hout : ∀ z ∉ r y '' K, Ψ.1 z = Φ.1 z` using `fun z hz => by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[hΨv, Set.indicator_of_notMem hz, mul_zero, sub_zero]`. Take `⟨t, ht, e⟩` from `ih Ψ (fun z x hx => by`. Distinguish the cases in `hz : z ∈ r y '' K`. Rewrite using `[hin z hz, hin _ ((hinv z x hx).2 hz)]`. Rewrite using `[hout z hz, hout _ (mt (hinv z x hx).1 hz), hΦ z x hx])`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis.
 
-Use the proof step `(fun z hz => by`. Establish `hz' : z ∉ r y '' K` using `fun h => hz (hin z h)`. Take `⟨u, hu, h⟩` from `hs' z (by rwa [← hout z hz'])`. Break down `Finset.mem_insert.1 hu with rfl | hu` into its components or cases. Conclude with `absurd h hz'`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `⟨u, hu, h⟩)`. Establish `ht' : ∀ z ∈ t, Ψ.1 z = Φ.1 z` using `fun z hz => hout z fun h => ht z hz (hin z h)`. Establish `e' : Ψ = ∑ z ∈ t, Φ.1 z • orbInd r hc ho z hK1 hK2` using `e.trans (Finset.sum_congr rfl fun z hz => by rw [ht' z hz])`. Distinguish the cases in `hy : Φ.1 y = 0`. Use `⟨t, fun z hz => ht' z hz ▸ ht z hz, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← e', hΨ, hy, zero_smul, sub_zero]`. Establish `hyt : y ∉ t` using `fun h => ht y h (hin y ⟨1, K.one_mem, h1 y⟩)`. Use `⟨insert y t, fun z hz => ?_, ?_⟩` and prove the remaining obligations. Break down `Finset.mem_insert.1 hz with rfl | hz` into its components or cases. Conclude with `hy`.
-
-Conclude with `ht' z hz ▸ ht z hz`. Rewrite using `[Finset.sum_insert hyt, ← e', hΨ, add_sub_cancel]`.
+A detailed English derivation is pending.
 -/
 theorem exists_sum_orbInd {K : Subgroup H} (hK1 : IsOpen (K : Set H)) (hK2 : IsCompact (K : Set H)) (Φ : SB Y)
     (hΦ : ∀ y, ∀ x ∈ K, Φ.1 (r y x) = Φ.1 y) :
@@ -111,11 +109,11 @@ variable {M : Type} [AddCommGroup M] [Module ℂ M] (c : H →* ℂˣ) (l : SB Y
 
 include h1 hm hl in
 /- English proof (translation)
-Rewrite using `[← map_smul]`. Use `(hl h _ _ fun z => ?_).symm` and prove the remaining obligations. Use `show (c h : ℂ) * (r y '' K').indicator (fun _ => (1 : ℂ)) z = (c h : ℂ) * (r (r y h) '' K).indicator (fun _ => (1 : ℂ)) (r z h)`. Establish `: z ∈ r y '' K' ↔ r z h ∈ r (r y h) '' K`. Prove the components needed by the constructor for the conclusion.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨u, hu, rfl⟩`. Conclude with `⟨_, (hKK u).1 hu, by rw [← hm, ← hm]; congr 1; group⟩`. Introduce and unpack `⟨u, hu, e⟩`. Use `⟨h * u * h⁻¹, (hKK _).2 (by simpa [mul_assoc] using hu), ?_⟩` and prove the remaining obligations. Rewrite using `[hm, hm, e, ← hm, mul_inv_cancel, h1]`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hz : z ∈ r y '' K'`. Rewrite using `[Set.indicator_of_mem hz, Set.indicator_of_mem (this.1 hz)]`. Rewrite using `[Set.indicator_of_notMem hz, Set.indicator_of_notMem (mt this.2 hz)]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_orbInd_translate (y : Y) (h : H) {K K' : Subgroup H} (hK1 : IsOpen (K : Set H))
     (hK2 : IsCompact (K : Set H)) (hK1' : IsOpen (K' : Set H)) (hK2' : IsCompact (K' : Set H))
@@ -138,17 +136,17 @@ theorem map_orbInd_translate (y : Y) (h : H) {K K' : Subgroup H} (hK1 : IsOpen (
 
 include h1 hm hl in
 /- English proof (translation)
-Establish `hv : ∀ z, (orbInd r hc ho y hK1 hK2).1 z = (r y '' K).indicator (fun _ => (1 : ℂ)) z` using `fun _ => rfl`. Take `⟨t, ht, e⟩` from `exists_sum_orbInd hc ho h1 hm hJ1 hJ2 (orbInd r hc ho y hK1 hK2) (fun z x hx => by`. Establish `: r z x ∈ r y '' K ↔ z ∈ r y '' K`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u, hu, e⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨u * x⁻¹, K.mul_mem hu (K.inv_mem (hJK hx)), by rw [hm, e, ← hm, mul_inv_cancel, h1]⟩`. Introduce and unpack `⟨u, hu, rfl⟩`. Conclude with `⟨u * x, K.mul_mem hu (hJK hx), hm _ _ _⟩`. Rewrite using `[hv, hv]`. Distinguish the cases in `hz : z ∈ r y '' K`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[Set.indicator_of_mem hz, Set.indicator_of_mem (this.2 hz)]`. Rewrite using `[Set.indicator_of_notMem hz, Set.indicator_of_notMem (mt this.1 hz)])`. Use `⟨t.card, ?_, ?_⟩` and prove the remaining obligations. Introduce `h0`. Establish `: t = ∅` using `Finset.card_eq_zero.1 (by exact_mod_cast h0)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `e` using `[this, Finset.sum_empty]`. Establish `h2` using `hv y`. Rewrite `h2` using `[e, Set.indicator_of_mem (show y ∈ r y '' K from ⟨1, K.one_mem, h1 y⟩)]`. Conclude with `zero_ne_one h2`. Rewrite using `[e, map_sum, Finset.sum_congr rfl (g := fun _ => l (orbInd r hc ho y hJ1 hJ2)), Finset.sum_const, Nat.cast_smul_eq_nsmul]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `z hz`. Establish `hz' : z ∈ r y '' K` using `Set.mem_of_indicator_ne_zero (hv z ▸ ht z hz)`. Rewrite using `[hv, Set.indicator_of_mem hz', one_smul]`. Take `⟨u, hu, rfl⟩` from `hz'`. Rewrite using `[map_orbInd_translate hc ho h1 hm c l hl y u hJ1 hJ2 hJ1 hJ2 fun x => ⟨fun hx => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `hn _ hu _ hx⟩, hKc u hu]` using `using hn _ (K.inv_mem hu) x hx, fun hx => by simpa [mul_assoc]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem map_orbInd_normal (y : Y) {K J : Subgroup H} (hK1 : IsOpen (K : Set H))
     (hK2 : IsCompact (K : Set H)) (hJ1 : IsOpen (J : Set H)) (hJ2 : IsCompact (J : Set H))
@@ -185,11 +183,11 @@ theorem map_orbInd_normal (y : Y) {K J : Subgroup H} (hK1 : IsOpen (K : Set H))
 
 include h1 hm hl in
 /- English proof (translation)
-Set `N : Subgroup H` to `{ carrier := {x | ∀ u ∈ K, u * x * u⁻¹ ∈ J} one_mem' := fun u _ => by simp mul_mem' := fun {x x'} hx hx' u hu => by`. Simplify `J.mul_mem (hx u hu) (hx' u hu)` using `[mul_assoc]`. Use the proof step `inv_mem' := fun {x} hx u hu => by simpa [mul_assoc] using J.inv_mem (hx u hu) }`. Establish `hNJ : N ≤ J` using `fun x hx => by simpa using hx 1 K.one_mem`. Establish `hN1 : IsOpen (N : Set H)`.
+Introduce a local definition for the expression. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `N.isOpen_of_mem_nhds (g := 1) (hK2.eventually_forall_of_forall_eventually (P := fun x u => u * x * u⁻¹ ∈ J) fun u _ => ?_)` and prove the remaining obligations. Conclude with `(hJ1.preimage (f := fun z : H × H => z.2 * z.1 * z.2⁻¹) (by fun_prop)).mem_nhds (by simp)`. Establish `hN2 : IsCompact (N : Set H)` using `hJ2.of_isClosed_subset (N.isClosed_of_isOpen hN1) hNJ`. Establish `hn : ∀ x ∈ K, ∀ j ∈ N, x * j * x⁻¹ ∈ N` using `fun x hx j hj u hu => by`. Simplify `hj _ (K.mul_mem hu hx)` using `[mul_assoc]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨a, ha, e⟩` from `map_orbInd_normal hc ho h1 hm c l hl y hK1 hK2 hN1 hN2 hKc (hNJ.trans hJK) hn`. Take `⟨b, hb, e'⟩` from `map_orbInd_normal hc ho h1 hm c l hl y hJ1 hJ2 hN1 hN2 (fun x hx => hKc x (hJK hx)) hNJ fun x hx => hn x (hJK hx)`. Conclude with `⟨a / b, div_ne_zero ha hb, by rw [e, e', smul_smul, div_mul_cancel₀ _ hb]⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem map_orbInd_le [IsTopologicalGroup H] (y : Y) {K J : Subgroup H} (hK1 : IsOpen (K : Set H))
     (hK2 : IsCompact (K : Set H)) (hJ1 : IsOpen (J : Set H)) (hJ2 : IsCompact (J : Set H))
@@ -218,23 +216,21 @@ omit hc ho in
 include h1 hm hl in
 
 /- English proof (translation)
-Break down `isEmpty_or_nonempty Y with hY | ⟨⟨y₀⟩⟩` into its components or cases. Conclude with `⟨0, fun Φ => by rw [show Φ = 0 from Subtype.ext (funext fun y => hY.elim y), map_zero]; exact zero_mem _⟩`. Establish `hc : ∀ y, Continuous (r y)` using `fun y => hcc.comp (Continuous.prodMk_right y)`. Establish `ho : ∀ y, IsOpenMap (r y)`. Use `letI : MulAction H Y := { smul := fun g y => r y g⁻¹ one_smul := fun y => by show r y 1⁻¹ = y; rw [inv_one, h1] mul_smul := fun g h y => by show r y (g * h)⁻¹ = r (r y h⁻¹) g⁻¹; rw [_root_.mul_inv_rev, hm] }`.
+Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Equip the data with the indicated structure.
 
-Use `haveI : ContinuousSMul H Y := ⟨hcc.comp (continuous_snd.prodMk continuous_fst.inv)⟩`. Use `haveI : MulAction.IsPretransitive H Y := ⟨fun y y' => by`. Take `⟨h, e⟩` from `htr y y'`. Conclude with `⟨h⁻¹, by show r y h⁻¹⁻¹ = y'; rw [inv_inv, e]⟩⟩`. Introduce `y`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use `(isOpenMap_smul_of_sigmaCompact (G := H) y).comp (Homeomorph.inv H).isOpenMap` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `g`. Use `show r y g = r y g⁻¹⁻¹`. Rewrite using `[inv_inv]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hker : (c.ker : Set H) ∈ 𝓝 1` using `IsOpen.mem_nhds hcs c.ker.one_mem`. Take `⟨K₀, a1, a2, a3⟩` from `hb _ hker`. Use `⟨l (orbInd r hc ho y₀ a1 a2), fun Φ => ?_⟩` and prove the remaining obligations. Take `⟨K, b1, b2, b3⟩` from `hb _ (Filter.inter_mem hker (GlobalTheory.schwartzBruhat_eventually_invariant_of_continuous_action H Y r h1 hm hcc Φ))`. Take `⟨t, -, e⟩` from `exists_sum_orbInd hc ho h1 hm b1 b2 Φ fun y x hx => (b3 hx).2 y`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, map_sum]`. Use `Submodule.sum_mem _ fun y _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul]`. Use `Submodule.smul_mem _ _ ?_` and prove the remaining obligations. Take `⟨h, rfl⟩` from `htr y₀ y`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `φ : H ≃ₜ H` to `(Homeomorph.mulLeft h⁻¹).trans (Homeomorph.mulRight h)`. Set `K' : Subgroup H` to `K.comap (MulAut.conj h⁻¹).toMonoidHom`. Establish `hK' : (K' : Set H) = φ ⁻¹' K` using `by ext x; simp [K', φ]`. Establish `c1 : IsOpen (K' : Set H)` using `hK' ▸ b1.preimage φ.continuous`. Establish `c2 : IsCompact (K' : Set H)` using `hK' ▸ φ.isCompact_preimage.2 b2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `c3 : ∀ x ∈ K', c x = 1` using `fun x hx => by`. Establish `: c (h⁻¹ * x * h) = 1` using `(b3 (show h⁻¹ * x * h ∈ K by simpa [K'] using hx)).1`. Simplify `this` using `[mul_comm]`. Rewrite using `[map_orbInd_translate hc ho h1 hm c l hl y₀ h b1 b2 c1 c2 fun x => by simp [K']]`. Use `Submodule.smul_mem _ _ ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `d1 : IsOpen ((K' ⊓ K₀ : Subgroup H) : Set H)` using `c1.inter a1`. Establish `d2 : IsCompact ((K' ⊓ K₀ : Subgroup H) : Set H)` using `c2.of_isClosed_subset (Subgroup.isClosed_of_isOpen _ d1) Set.inter_subset_left`. Take `⟨a, -, e1⟩` from `map_orbInd_le hc ho h1 hm c l hl y₀ c1 c2 d1 d2 c3 inf_le_left`. Take `⟨b, hb0, e2⟩` from `map_orbInd_le hc ho h1 hm c l hl y₀ a1 a2 d1 d2 (fun x hx => a3 hx) inf_le_right`. Rewrite using `[e1, e2]`.
-
-Conclude with `Submodule.mem_span_singleton.2 ⟨a / b, by rw [smul_smul, div_mul_cancel₀ _ hb0]⟩`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_generator [IsTopologicalGroup H] [SigmaCompactSpace H] [LocallyCompactSpace Y]
     (hcc : Continuous fun p : Y × H => r p.1 p.2) (htr : ∀ y y', ∃ h, r y h = y')
@@ -298,7 +294,7 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
   [Fintype d] [DecidableEq d]
 
 /- English proof (translation)
-The claim follows from `h.comp (Continuous.prodMk_left g)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_slice {X G : Type} [TopologicalSpace X] [TopologicalSpace G] (r : X → G → X)
     (h : Continuous fun p : X × G => r p.1 p.2) (g : G) : Continuous fun x => r x g :=
@@ -309,7 +305,7 @@ def embL (e : c ⊕ d ≃ a) : Levi k (Two c d) →* parabLower k (two e) :=
 
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Use extensionality with `i j`. Conclude with `leviEmb_apply_same k (two e) g x i j`.
+Apply function extensionality and compare values at an arbitrary argument. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem proj_embL (e : c ⊕ d ≃ a) (g : Levi k (Two c d)) : leviProjLower k (two e) (embL e g) = g := by
   funext x
@@ -318,7 +314,7 @@ theorem proj_embL (e : c ⊕ d ≃ a) (g : Levi k (Two c d)) : leviProjLower k (
 
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
 /- English proof (translation)
-Rewrite using `[← pAct_eq, proj_embL, pAct_eq]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem pAct_embL (e : c ⊕ d ≃ a) (s : Set ℕ) (y : ColZero k b e s) (p : parabLower k (two e)) :
     pAct e s y (embL e (leviProjLower k (two e) p)) = pAct e s y p := by
@@ -326,7 +322,7 @@ theorem pAct_embL (e : c ⊕ d ≃ a) (s : Set ℕ) (y : ColZero k b e s) (p : p
 
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
 /- English proof (translation)
-Rewrite using `[det_leviEmb]`. Conclude with `(det_parab k (opp (two e)) p).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem det_embL (e : c ⊕ d ≃ a) (p : parabLower k (two e)) :
     GeneralLinearGroup.det (leviEmb k (two e) (leviProjLower k (two e) p)) =
@@ -339,12 +335,12 @@ variable (k a b) in
 def rChar : GL a k →* ℂˣ := (omChar a b 1).comp (MonoidHom.inl _ _)
 
 /- English proof (translation)
-Unfold `IsSmoothChar`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem isSmoothChar_one : IsSmoothChar (1 : kˣ →* ℂˣ) := by unfold IsSmoothChar; simp
 
 /- English proof (translation)
-The claim follows from `(isSmoothChar_omChar isSmoothChar_one).comp _ (continuous_id.prodMk continuous_const)`.
+A detailed English derivation is pending.
 -/
 theorem isSmoothChar_rChar : IsSmoothChar (rChar k a b) :=
   (isSmoothChar_omChar isSmoothChar_one).comp _ (continuous_id.prodMk continuous_const)
@@ -366,7 +362,7 @@ theorem levRep_apply (e : c ⊕ d ≃ a) (s : Set ℕ) (g : Levi k (Two c d)) (�
       ((deltaHalf k (Two c d) g * rChar k a b (leviEmb k (two e) g) : ℂˣ) : ℂ) * Φ.1 (pAct e s y (embL e g)) := rfl
 
 /- English proof (translation)
-Use `isSmooth_twist (isSmooth_of_nhds fun Φ => ?_) ((isSmoothChar_deltaHalf k).mul (isSmoothChar_rChar.comp _ (continuous_leviEmb k _)))` and prove the remaining obligations. Use `(GlobalTheory.schwartzBruhat_eventually_invariant_of_continuous_action _ (ColZero k b e s) (fun y g => pAct e s y (embL e g)) (fun y => Subtype.ext (by rw [map_one]; exact rAct_one s y.1)) (fun y g h => Subtype.ext (by rw [map_mul]; exact rAct_mul s y.1 _ _)) (((continuous_rAct s …` and prove the remaining obligations. Conclude with `Subtype.ext (funext hu)`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isSmooth_levRep (e : c ⊕ d ≃ a) (s : Set ℕ) : IsSmooth (levRep k b e s) := by
   refine isSmooth_twist (isSmooth_of_nhds fun Φ => ?_)
@@ -381,7 +377,7 @@ theorem isSmooth_levRep (e : c ⊕ d ≃ a) (s : Set ℕ) : IsSmooth (levRep k b
 
 omit [Fintype d] [DecidableEq d] [DecidableEq c] [Fintype c] [DecidableEq a] [DecidableEq b] in
 /- English proof (translation)
-Take `⟨_, _⟩` from `SplitWeil.Model.secondCountable_and_t2_local_field (k := k)`. Simplify using `only [Set.setOf_forall]`. Conclude with `isClosed_iInter fun i => isClosed_iInter fun j => isClosed_eq (continuous_subtype_val.matrix_elem _ _) continuous_const`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isClosed_colZero (e : c ⊕ d ≃ a) (s : Set ℕ) :
     IsClosed {x : RankIn k a b s | ∀ i j, x.1 i (e (.inr j)) = 0} := by
@@ -391,13 +387,11 @@ theorem isClosed_colZero (e : c ⊕ d ≃ a) (s : Set ℕ) :
     isClosed_eq (continuous_subtype_val.matrix_elem _ _) continuous_const
 
 /- English proof (translation)
-Take `⟨_, _⟩` from `SplitWeil.Model.secondCountable_and_t2_local_field (k := k)`. Take `⟨-, -, -, -, -, -, -, -, hPK⟩` from `LeviInt.levi_integral_facts k _ a _ (opp (two e))`. Conclude with `GlobalTheory.SBInduced.sb_induced (GL a k) (RankIn k a b {κ}) (ColZero k b e {κ}) (SB (ColZero k b e {κ})) (rAct {κ}) (rAct_one _) (rAct_mul _) (continuous_rAct _) Subtype.val (isClosed_colZero e _).isClosedEmbedding_subtypeVal (parabLower k (two e)) (KO k a) SplitFlip.isCompact_ …`. Take `⟨g, hg⟩` from `GlobalTheory.T.exists_GL_mul_rightColumns_eq_zero_of_rank k b c d a e x.1 (x.2.trans hκ)`. Take `⟨p, hp', w, hw, h⟩` from `hPK g⁻¹`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨pAct e _ ⟨rAct _ x g, by rwa [rAct_val]⟩ ⟨p, hp'⟩, w, hw, ?_⟩` and prove the remaining obligations. Use `show x = rAct _ (rAct _ (rAct _ x g) p) w`. Rewrite using `[← rAct_mul, ← rAct_mul, ← h, mul_inv_cancel, rAct_one])`. Use the proof step `(pAct e _) (fun _ _ => rfl)`. Use the proof step `(fun y y' g h => (mem_parabLower_two k).2 fun i j => by`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `congrFun (GlobalTheory.T.leftColumns_mulVec_injective_of_rank_eq_card k b c d a e y.1.1 (y.1.2.trans hκ) y.2 (fun m => g.val (e (.inl m)) (e (.inr j))) (funext fun l => ?_)) i` and prove the remaining obligations. Use `y'.2 l j` as an intermediate fact. Rewrite `this` using `[← h, rAct_val, mul_apply_of_cols e y.2]`. Conclude with `this)`. Use the proof step `(rChar k a b) isSmoothChar_rChar _ (LinearEquiv.refl ℂ _)`.
-
-Use the proof step `(fun p w y => by show (((deltaHalf k (Two c d) (leviProjLower k (two e) p))⁻¹ : ℂˣ) : ℂ) * (((deltaHalf k (Two c d) (leviProjLower k (two e) p) * rChar k a b (leviEmb k (two e) (leviProjLower k (two e) p)) : ℂˣ) : ℂ) * w.1 (pAct e _ y (embL e (leviProjLower k (two e) p)))) = _ * …`. Establish `: rChar k a b (leviEmb k (two e) (leviProjLower k (two e) p)) = rChar k a b p`. Simplify using `only [rChar, omChar, MonoidHom.comp_apply, MonoidHom.mul_apply, detChar_apply, MonoidHom.inl_apply, MonoidHom.coe_fst, MonoidHom.coe_snd, det_embL]`. Rewrite using `[pAct_embL, this, ← mul_assoc, ← Units.val_mul, inv_mul_cancel_left])`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_indEquiv (e : c ⊕ d ≃ a) {κ : ℕ} (hκ : κ = Fintype.card c) :
     ∃ E : SB (RankIn k a b {κ}) ≃ₗ[ℂ] IndSpLower (two e) (levRep k b e {κ}),
@@ -437,7 +431,7 @@ def colL (e : c ⊕ d ≃ a) (s : Set ℕ) (y : ColZero k b e s) (h : GL b k) : 
 
 omit [Fintype c] [DecidableEq c] [Fintype d] [DecidableEq d] in
 /- English proof (translation)
-The claim follows from `((continuous_lAct s).comp ((continuous_subtype_val.comp continuous_fst).prodMk continuous_snd)).subtype_mk _`.
+A detailed English derivation is pending.
 -/
 theorem continuous_colL (e : c ⊕ d ≃ a) (s : Set ℕ) :
     Continuous fun p : ColZero k b e s × GL b k => colL e s p.1 p.2 :=
@@ -445,13 +439,13 @@ theorem continuous_colL (e : c ⊕ d ≃ a) (s : Set ℕ) :
 
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [DecidableEq d] in
 /- English proof (translation)
-Establish `inj : ∀ z : ColZero k b e {κ}, Function.Injective (z.1.1.submatrix id fun i => e (.inl i)).mulVecLin` using `fun z => (injective_iff_map_eq_zero _).2 (GlobalTheory.T.leftColumns_mulVec_injective_of_rank_eq_card k b c d a e z.1.1 (z.1.2.trans hκ) z.2)`. Take `⟨φ, hφ⟩` from `Submodule.exists_linearEquiv_restrict_eq ((LinearEquiv.ofInjective _ (inj y)).symm.trans (LinearEquiv.ofInjective _ (inj y')))`. Establish `hφ' : ∀ v, φ ((y.1.1.submatrix id fun i => e (.inl i)) *ᵥ v) = (y'.1.1.submatrix id fun i => e (.inl i)) *ᵥ v` using `fun v => by`. Use `hφ (LinearEquiv.ofInjective _ (inj y) v)` as an intermediate fact. Rewrite `this` using `[LinearEquiv.trans_apply, LinearEquiv.symm_apply_apply]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this.symm`. Set `g : GL b k` to `⟨LinearMap.toMatrix' φ.toLinearMap, LinearMap.toMatrix' φ.symm.toLinearMap, by rw [← LinearMap.toMatrix'_comp]; simp, by rw [← LinearMap.toMatrix'_comp]; simp⟩`. Use `⟨g⁻¹, Subtype.ext (Subtype.ext ?_)⟩` and prove the remaining obligations. Use `show (lAct _ y.1 g⁻¹).1 = _`. Rewrite using `[lAct_val, inv_inv]`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result.
 
-Use extensionality with `i l`. Take `⟨l | l, rfl⟩` from `e.surjective l`. Establish `h1` using `congrFun (hφ' (Pi.single l 1)) i`. Rewrite `h1` using `[← LinearEquiv.coe_coe, ← LinearMap.toMatrix'_mulVec]`. Simplify `h1` using `[mul_apply, mulVec, dotProduct, g, Pi.single_apply]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[y'.2, mul_apply]`. Simplify using `[y.2]`.
+A detailed English derivation is pending.
 -/
 theorem colL_transitive (e : c ⊕ d ≃ a) {κ : ℕ} (hκ : κ = Fintype.card c) (y y' : ColZero k b e {κ}) :
     ∃ h, colL e _ y h = y' := by
@@ -511,7 +505,7 @@ def rel (e : c ⊕ d ≃ a) (s : Set ℕ) (ψ : GL b k →* ℂˣ) : Submodule �
   Submodule.span ℂ {y | ∃ h z, y = leftOp e s ψ h z - z}
 
 /- English proof (translation)
-The claim follows from `Submodule.span_le.2 (by rintro _ ⟨h, z, rfl⟩ refine Submodule.subset_span ⟨h, levRep k b e s g z, ?_⟩ rw [map_sub, (leftOp e s ψ h).isIntertwining])`.
+A detailed English derivation is pending.
 -/
 theorem rel_le (e : c ⊕ d ≃ a) (s : Set ℕ) (ψ : GL b k →* ℂˣ) (g : Levi k (Two c d)) :
     rel e s ψ ≤ (rel e s ψ).comap (levRep k b e s g) := Submodule.span_le.2 (by
@@ -529,30 +523,30 @@ def coinvMk (e : c ⊕ d ≃ a) (s : Set ℕ) (ψ : GL b k →* ℂˣ) :
   isIntertwining' _ := rfl
 
 /- English proof (translation)
-The claim follows from `(rel e s ψ).mkQ_surjective`.
+A detailed English derivation is pending.
 -/
 theorem coinvMk_surjective (e : c ⊕ d ≃ a) (s : Set ℕ) (ψ : GL b k →* ℂˣ) :
     Function.Surjective (coinvMk e s ψ) := (rel e s ψ).mkQ_surjective
 
 /- English proof (translation)
-The claim follows from `(Submodule.Quotient.mk_eq_zero (rel e s ψ)).1 hx`.
+A detailed English derivation is pending.
 -/
 theorem mem_rel_of_coinvMk (e : c ⊕ d ≃ a) (s : Set ℕ) (ψ : GL b k →* ℂˣ) (x : SB (ColZero k b e s))
     (hx : coinvMk e s ψ x = 0) : x ∈ Submodule.span ℂ {y | ∃ h z, y = leftOp e s ψ h z - z} :=
   (Submodule.Quotient.mk_eq_zero (rel e s ψ)).1 hx
 
 /- English proof (translation)
-The claim follows from `(IsSubquotient.of_surjective (coinvMk e s ψ) (rel e s ψ).mkQ_surjective).isSmooth (isSmooth_levRep e s)`.
+A detailed English derivation is pending.
 -/
 theorem isSmooth_coinvRep (e : c ⊕ d ≃ a) (s : Set ℕ) (ψ : GL b k →* ℂˣ) : IsSmooth (coinvRep e s ψ) :=
   (IsSubquotient.of_surjective (coinvMk e s ψ) (rel e s ψ).mkQ_surjective).isSmooth (isSmooth_levRep e s)
 
 /- English proof (translation)
-Take `⟨_, _⟩` from `SplitWeil.Model.secondCountable_and_t2_local_field (k := k)`. Establish `: LocallyCompactSpace (Matrix b a k)` using `inferInstanceAs (LocallyCompactSpace (b → a → k))`. Establish `hlc : IsLocallyClosed {x : Matrix b a k | x.rank ∈ ({κ} : Set ℕ)}`. Use `⟨_, _, isOpen_le_rank κ, isClosed_rank_lt (κ + 1), Set.ext fun x => ?_⟩` and prove the remaining obligations. Simplify using `only [Set.mem_singleton_iff, Set.mem_inter_iff, Set.mem_setOf_eq]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use linear arithmetic over natural numbers and integers. Establish `: LocallyCompactSpace (RankIn k a b {κ})` using `hlc.locallyCompactSpace`. Establish `: LocallyCompactSpace (ColZero k b e {κ})` using `(isClosed_colZero e _).locallyCompactSpace`. Take `⟨v, hv⟩` from `exists_generator (r := colL e {κ}) (fun y => Subtype.ext (lAct_one _ y.1)) (fun y g h => Subtype.ext (lAct_mul _ y.1 g h)) ψ (rel e {κ} ψ).mkQ (fun h Φ Φ' hΦ => (Submodule.Quotient.eq _).2 (Submodule.subset_span ⟨h, Φ, congrArg (· - Φ) (Subtype.ext (funext hΦ))⟩)) (continuous_col …`. Take `⟨J, h1, h2, h3, -⟩` from `exists_open_normalised_subgroup_subset k b U hU`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨J, h1, SplitFlip.isCompact_KO.of_isClosed_subset (J.isClosed_of_isOpen h1) h3, h2⟩) hψ`. Establish `h2 : Submodule.span ℂ {v} = ⊤` using `eq_top_iff.2 fun x _ => by`. Take `⟨Φ, rfl⟩` from `(rel e {κ} ψ).mkQ_surjective x`. Conclude with `hv Φ`. Conclude with `⟨h2 ▸ Submodule.fg_span_singleton v⟩`.
+Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem finiteDimensional_coinv (e : c ⊕ d ≃ a) {κ : ℕ} (hκ : κ = Fintype.card c) {ψ : GL b k →* ℂˣ}
     (hψ : IsSmoothChar ψ) : FiniteDimensional ℂ (SB (ColZero k b e {κ}) ⧸ rel e {κ} ψ) := by
@@ -577,7 +571,7 @@ theorem finiteDimensional_coinv (e : c ⊕ d ≃ a) {κ : ℕ} (hκ : κ = Finty
   exact ⟨h2 ▸ Submodule.fg_span_singleton v⟩
 
 /- English proof (translation)
-Take `⟨-, -, -, -, -, hcont, hP, -, hPK⟩` from `LeviInt.levi_integral_facts k _ a _ (opp (two e))`. Take `⟨h1, h2⟩` from `IndCoinv.smInd_coinvariants (GL a k) (parabLower k (two e)) (KO k a) hP SplitFlip.isCompact_KO hPK (exists_open_normalised_subgroup_subset k a) _ _ _ _ (isSmooth_comp (isSmooth_twist hσ (isSmoothChar_deltaHalf k).inv) (leviProjLower k (two e)) hcont) (compMap (twistMap A (deltaHa …`. Use `⟨(smIndMap (compMap (twistMap A (deltaHalf k _)⁻¹) (leviProjLower k (two e)))).toLinearMap, h1, fun _ _ => rfl, fun f hf => Submodule.span_mono ?_ (h2 f hf)⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨γ, z, rfl⟩`. Conclude with `⟨γ, z, fun _ => rfl⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem exists_indLower_coinv (e : c ⊕ d ≃ a) {V U Γ : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup U]
     [Module ℂ U] {σ : Representation ℂ (Levi k (Two c d)) V} {τ : Representation ℂ (Levi k (Two c d)) U}
@@ -599,17 +593,15 @@ theorem exists_indLower_coinv (e : c ⊕ d ≃ a) {V U Γ : Type} [AddCommGroup 
   exact ⟨γ, z, fun _ => rfl⟩
 
 /- English proof (translation)
-Use `haveI := finiteDimensional_coinv e hκ hψ`. Use `⟨_, _, _, coinvRep e {κ} ψ, isSmooth_coinvRep _ _ _, FinitenessModel.hasFiniteLength_of_finiteDimensional _, ?_⟩` and prove the remaining obligations. Use `(exists_indEquiv (k := k) (b := b) e hκ).elim fun E hE => ?_` and prove the remaining obligations. Use `(exists_indLower_coinv e (isSmooth_levRep (k := k) (b := b) e {κ}) (coinvMk e {κ} ψ) (leftOp e {κ} ψ) (coinvMk_surjective e {κ} ψ) (mem_rel_of_coinvMk e {κ} ψ)).elim fun q hh => ?_` and prove the remaining obligations. Establish `h1` using `hh.1`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hq` using `hh.2.1`. Establish `h2` using `hh.2.2`. Use `⟨q ∘ₗ E.toLinearMap, h1.comp E.surjective, fun g Φ Φ' h => ?_, fun Φ hΦ => ?_⟩` and prove the remaining obligations. Establish `: E Φ' = parIndLower (two e) (levRep k b e {κ}) g (E Φ)` using `Subtype.ext (Subtype.ext (funext fun x => Subtype.ext (funext fun y => by`. Rewrite using `[parIndLower_apply, hE, hE, h, map_mul, rAct_mul, Units.val_mul, mul_assoc])))`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(congrArg q this).trans (hq _ _)`. Establish `h3` using `h2 (E Φ) hΦ`. Rewrite using `[← E.symm_apply_apply Φ]`. Use `Submodule.mem_comap.1 (Submodule.span_le.2 ?_ h3 : E Φ ∈ Submodule.comap E.symm.toLinearMap _)` and prove the remaining obligations. Introduce and unpack `w ⟨h, z, hw⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Take `⟨Ψ, rfl⟩` from `E.surjective z`. Set `Ψ' : SB (RankIn k a b {κ})` to `twist (sbRep (lAct {κ}) (lAct_one _) (lAct_mul _) (continuous_slice (lAct {κ}) (continuous_lAct _))) ψ h Ψ`. Establish `hΨ' : ∀ x, Ψ'.1 x = (ψ h : ℂ) * Ψ.1 (lAct _ x h)` using `fun _ => rfl`. Use `clear_value Ψ'`. Establish `: w = E (Ψ' - Ψ)` using `Subtype.ext (Subtype.ext (funext fun x => Subtype.ext (funext fun y => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `h4 : rAct _ (colL e {κ} y h).1 x = lAct _ (rAct _ y.1 x) h` using `Subtype.ext (by show (rAct _ (lAct _ y.1 h) _).1 = _`. Rewrite using `[rAct_val, lAct_val, lAct_val, rAct_val, Matrix.mul_assoc])`. Rewrite using `[hw, Submodule.coe_sub, Pi.sub_apply, leftOp_apply, hE, hE, hE, Submodule.coe_sub, Pi.sub_apply, hΨ', h4]`. Use the proof step `ring)))`. Use `Submodule.subset_span ⟨h, Ψ, fun x => ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[this, LinearEquiv.coe_coe, E.symm_apply_apply, Submodule.coe_sub, Pi.sub_apply, hΨ']`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_coinvMap (e : c ⊕ d ≃ a) {κ : ℕ} (hκ : κ = Fintype.card c) {ψ : GL b k →* ℂˣ}
     (hψ : IsSmoothChar ψ) :
@@ -673,9 +665,9 @@ def res (ρ : ℕ) : rkSub k n m ρ →ₗ[ℂ] SB (RankIn k (Fin m) (Fin n) {ρ
   map_smul' _ _ := rfl
 
 /- English proof (translation)
-Introduce `f`. Take `⟨_, _⟩` from `SplitWeil.Model.secondCountable_and_t2_local_field (k := k)`. Establish `: NonarchimedeanAddGroup k` using `⟨fun V hV => by`. Take `⟨s, hs⟩` from `SplitWeil.exists_cball_subset hV`. Conclude with `⟨⟨⟨⟨⟨SplitWeil.cball s, SplitWeil.add_mem_cball⟩, by simp [SplitWeil.cball]⟩, SplitWeil.neg_mem_cball⟩, SplitWeil.isOpen_cball s⟩, hs⟩⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `: TotallyDisconnectedSpace k` using `inferInstance`. Establish `: TotallyDisconnectedSpace (Matrix (Fin n) (Fin m) k)` using `inferInstanceAs (TotallyDisconnectedSpace (Fin n → Fin m → k))`. Establish `: LocallyCompactSpace (Matrix (Fin n) (Fin m) k)` using `inferInstanceAs (LocallyCompactSpace (Fin n → Fin m → k))`. Take `⟨G, hG, hG0⟩` from `GlobalTheory.SBExtend.exists_extension (Matrix (Fin n) (Fin m) k) {x | ρ ≤ x.rank} {x | x.rank ∈ ({ρ} : Set ℕ)} (isOpen_le_rank ρ) (fun x hx => le_of_eq (Eq.symm hx)) f`. Conclude with `⟨⟨G.1, G.2, fun x hx => hG0 x (not_le.2 hx)⟩, Subtype.ext (funext hG)⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem res_surjective (ρ : ℕ) : Function.Surjective (res k n m ρ) := by
   intro f
@@ -694,7 +686,7 @@ theorem res_surjective (ρ : ℕ) : Function.Surjective (res k n m ρ) := by
   exact ⟨⟨G.1, G.2, fun x hx => hG0 x (not_le.2 hx)⟩, Subtype.ext (funext hG)⟩
 
 /- English proof (translation)
-Use `⟨Φ.2.1, fun x hx => ?_⟩` and prove the remaining obligations. Distinguish the cases in `h1 : x.rank < ρ`. Conclude with `Φ.2.2 x h1`. Conclude with `congrFun (congrArg Subtype.val h) ⟨x, le_antisymm (Nat.le_of_lt_succ hx) (not_lt.1 h1)⟩`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. A detailed English derivation is pending.
 -/
 theorem mem_of_res_eq_zero {ρ : ℕ} {Φ : rkSub k n m ρ} (h : res k n m ρ Φ = 0) : Φ.1 ∈ rkSub k n m (ρ + 1) := by
   refine ⟨Φ.2.1, fun x hx => ?_⟩
@@ -703,7 +695,7 @@ theorem mem_of_res_eq_zero {ρ : ℕ} {Φ : rkSub k n m ρ} (h : res k n m ρ Φ
   · exact congrFun (congrArg Subtype.val h) ⟨x, le_antisymm (Nat.le_of_lt_succ hx) (not_lt.1 h1)⟩
 
 /- English proof (translation)
-Use `congrFun (omega_eq_om 1 g h ⟨Φ, hΦ⟩) x` as an intermediate fact. Rewrite `this` using `[inv_one]`. Conclude with `this.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem om_apply (g : GL (Fin m) k) (h : GL (Fin n) k) {Φ : Matrix (Fin n) (Fin m) k → ℂ}
     (hΦ : Φ ∈ SB (Matrix (Fin n) (Fin m) k)) (x : Matrix (Fin n) (Fin m) k) :
@@ -713,17 +705,17 @@ theorem om_apply (g : GL (Fin m) k) (h : GL (Fin n) k) {Φ : Matrix (Fin n) (Fin
   exact this.symm
 
 /- English proof (translation)
-Introduce `k _ _ _ _ n m χ hχ ρ t h`. Set `ψ : GL (Fin n) k →* ℂˣ` to `(omChar (Fin m) (Fin n) 1).comp (MonoidHom.inr _ _) * χ⁻¹`. Establish `hψ : IsSmoothChar ψ` using `((isSmoothChar_omChar isSmoothChar_one).comp _ (continuous_const.prodMk continuous_id)).mul (IsSmoothChar.inv hχ)`. Establish `hρ : ρ = Fintype.card (Fin ρ)` using `(Fintype.card_fin ρ).symm`. Take `⟨W, _, _, τ, hτ, hτ', q, hq, hqg, hq0⟩` from `exists_coinvMap (stdSum h) hρ hψ`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨W, _, _, τ, hτ, hτ', ?_⟩` and prove the remaining obligations. Use `set C := aug m χ ⊔ rkSub k n m (ρ + 1)`. Establish `hker : ∀ Φ : rkSub k n m ρ, q (res k n m ρ Φ) = 0 → Φ.1 ∈ C`. Introduce `Φ hΦ`. Establish `h1 : res k n m ρ Φ ∈ (C.comap (rkSub k n m ρ).subtype).map (res k n m ρ)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `Submodule.span_le.2 ?_ (hq0 _ hΦ)` and prove the remaining obligations. Introduce and unpack `w ⟨γ, Ψ, hw⟩`. Take `⟨Ψ, rfl⟩` from `res_surjective ρ Ψ`. Establish `h2 : om 1 (1 : GL (Fin m) k) γ Ψ.1 ∈ rkSub k n m ρ` using `⟨Model.om_mem_SB 1 1 γ Ψ.2.1, fun x hx => by`. Rewrite using `[om_apply _ _ Ψ.2.1, Ψ.2.2 _ (by rwa [rank_act]), mul_zero]⟩`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨((χ γ)⁻¹ : ℂˣ).val • (⟨_, h2⟩ - (χ γ : ℂ) • Ψ), ?_, Subtype.ext (funext fun x => ?_)⟩` and prove the remaining obligations. Conclude with `Submodule.mem_sup_left (Submodule.smul_mem _ _ (Submodule.subset_span ⟨γ, Ψ.1, Ψ.2.1, rfl⟩))`. Rewrite using `[hw] show ((χ γ)⁻¹ : ℂˣ).val * (om 1 (1 : GL (Fin m) k) γ Ψ.1 x.1 - (χ γ : ℂ) * Ψ.1 x.1) = ((omChar (Fin m) (Fin n) 1 (1, γ) * (χ γ)⁻¹ : ℂˣ) : ℂ) * Ψ.1 (act x.1 (1, γ)) - Ψ.1 x.1`. Rewrite using `[om_apply _ _ Ψ.2.1, mul_sub, Units.inv_mul_cancel_left, Units.val_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨Ψ, hΨ, e⟩` from `h1`. Establish `h3 : (Φ - Ψ).1 ∈ rkSub k n m (ρ + 1)` using `mem_of_res_eq_zero (by rw [map_sub, e, sub_self])`. Simplify using `using C.add_mem (Submodule.mem_sup_right h3) hΨ`. Take `⟨S, hS⟩` from `LinearMap.exists_rightInverse_of_surjective (q ∘ₗ res k n m ρ) (LinearMap.range_eq_top.2 (hq.comp (res_surjective ρ)))`. Establish `hS' : ∀ v, q (res k n m ρ (S v)) = v` using `fun v => LinearMap.congr_fun hS v`.
+Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨(rkSub k n m ρ).subtype ∘ₗ S, fun g v => ?_, fun Φ hΦ => ?_⟩` and prove the remaining obligations. Use `hker (S (parIndLower _ _ g v) - ⟨_, om_mem_rkSub ρ g (S v).2⟩) ?_` and prove the remaining obligations. Rewrite using `[map_sub, map_sub, hS', hqg g (res k n m ρ (S v)) _ fun x => om_apply g 1 (S v).2.1 x.1, hS', sub_self]`. Establish `h1` using `hker (⟨Φ, hΦ⟩ - S (q (res k n m ρ ⟨Φ, hΦ⟩))) (by rw [map_sub, map_sub, hS', sub_self])`. Simplify using `using Submodule.add_mem_sup h1 (LinearMap.mem_range_self ((rkSub k n m ρ).subtype ∘ₗ S) (q (res k n m ρ ⟨Φ, hΦ⟩)))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem layer_cover : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (n m : ℕ) (χ : GL (Fin n) k →* ℂˣ), IsOpen {g | χ g = 1} → ∀ (ρ t : ℕ) (h : ρ + t = m),

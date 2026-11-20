@@ -16,15 +16,15 @@ variable {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace �
   [InnerProductSpace ℂ Wq]
 
 /- English proof (translation)
-Take `⟨θ, hθ, hint⟩` from `Formalism.FourierDecayAlt.P.orbital_integral_converges.choose_spec k r Wp Wq B γ w d A₀ F hGV hRel hd hZ hGf hA hCC`. Establish `hMu` using `Formalism.FourierDecayAlt.P.radial_measure_is_haar k r Wp Wq B γ w d hGV hd hZ`. Take `⟨c, hc⟩` from `Formalism.FourierDecayAlt.P.haar_measure_unique_up_to_scalar k r (Formalism.FourierDecayAlt.C6.Rset γ) (Formalism.FourierDecayAlt.D.muR B γ w) μ (Formalism.FourierDecayAlt.P.Dx2.OrbJ.closedR (Formalism.FourierDecayAlt.P.Dx2.OrbJ.isUnit_of_G hGV)) hMu hH.1 hH.2.1 hH.2.2.1`. Establish `hc0 : c ≠ 0`. Introduce `h0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `hH.2.2.2` to reduce the goal to its premises. Rewrite using `[hc, h0, zero_smul]`. Establish `hcpos : (0 : ℝ) < (c : ℝ)`. Use `NNReal.coe_pos.mpr (pos_iff_ne_zero.mpr hc0)` as an intermediate fact. Conclude with `this`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hμ : μ = ENNReal.ofReal (c : ℝ) • Formalism.FourierDecayAlt.D.muR B γ w`. Rewrite using `[hc, ENNReal.ofReal_coe_nnreal]`. Both sides reduce to the same expression. Use `⟨fun p => θ p / (c : ℝ), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hμ, Formalism.L2.SG.Pf.Bridge.isNormCut_smul B γ _ hcpos]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e : (fun p => (c : ℝ) * (θ p / (c : ℝ))) = θ`. Use function extensionality and compare the values at `p`. Clear the denominators using the available nonvanishing facts. Rewrite using `[e]`. Conclude with `hθ`.
+Apply function extensionality and compare values at an arbitrary argument. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `e : (fun p => (θ p / (c : ℝ)) • Formalism.FourierDecayAlt.D.orbIntegrand B γ F p) = fun p => ((c : ℝ)⁻¹ : ℝ) • (θ p • Formalism.FourierDecayAlt.D.orbIntegrand B γ F p)`. Use function extensionality and compare the values at `p`. Rewrite using `[smul_smul, div_eq_inv_mul]`. Rewrite using `[e]`. Conclude with `hint.smul ((c : ℝ)⁻¹ : ℝ)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cut_of_haar (B : Formalism.FourierDecayAlt.B.RealPlaceData k r Wp Wq) (γ : Formalism.FourierDecayAlt.B.Mat k r) (μ : Measure (Formalism.QuantumDeterminants.Mt k r))
     (F : Formalism.FourierDecayAlt.B.Mat k r → (Wq →L[ℂ] Wp)) (A₀ : ℝ)
@@ -94,7 +94,7 @@ def FrameAt (u u' : D.what₂.Word) (τ : D.what₂.Tau) : Prop :=
         (Formalism.L2.SG.Pf.BaseOf.Qic X C (vOf X τ)) x)))
 
 /- English proof (translation)
-Introduce `γ μRv ν hP`. Take `⟨hGV, ⟨w, d, hd, hZ⟩, hGf, hH⟩` from `hF γ μRv ν hP`. Conclude with `Formalism.L2.SG.Pf.Carrier.CarPinCut.cut_of_haar _ _ _ _ A₀ hA hCC hGV hP.2.2.1 w d hd hZ hGf hH`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem cutAt_of (u u' : D.what₂.Word) (τ : D.what₂.Tau) (a b : X.B.H (vOf X τ)) (ξ : X.Vloc u (vOf X τ))
     (ξ' : X.Vloc u' (vOf X τ)) (c : ℂ) (hF : FrameAt C u u' τ) (A₀ : ℝ)
@@ -106,7 +106,7 @@ theorem cutAt_of (u u' : D.what₂.Word) (τ : D.what₂.Tau) (a b : X.B.H (vOf 
   exact Formalism.L2.SG.Pf.Carrier.CarPinCut.cut_of_haar _ _ _ _ A₀ hA hCC hGV hP.2.2.1 w d hd hZ hGf hH
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(Formalism.L2.SG.Pf.BaseOf.transpC X C (vOf X τ)).1, (Formalism.L2.SG.Pf.BaseOf.transpC X C (vOf X τ)).2.1, (Formalism.L2.SG.Pf.BaseOf.transpC X C (vOf X τ)).2.2.1, fun a => ((Formalism.L2.SG.Pf.BaseOf.transpC X C (vOf X τ)).2.2.2 a a rfl).1, fun a => ((Formalism.L2.SG.Pf.BaseOf …`.
+Supply the required witnesses or components.
 -/
 theorem trHyp_Qc (u : D.what₂.Word) (τ : D.what₂.Tau) :
     Formalism.L2.SG.Pf.Bridge.TrHyp (Formalism.L2.SG.RealObj.InfCut.PtRepPf.frU X u (vOf X τ))
@@ -128,9 +128,9 @@ def HaarAtC (u u' : D.what₂.Word) (τ : D.what₂.Tau) : Prop :=
 set_option maxHeartbeats 2000000 in
 
 /- English proof (translation)
-Introduce `γ μRv ν hP`. Take `⟨hG, hM, -, -, -⟩` from `id hP`. Use `⟨Formalism.L2.SG.Pf.Bridge.delta_GV (trHyp_Qc C u τ) (Formalism.L2.SG.Pf.Carrier.uMat_unitary γ), ?_, gf_pos_tr (trHyp_Qc C u τ) (trHyp_Qc C u' τ) (uMat γ) hG, hH γ μRv ν hP⟩` and prove the remaining obligations. Establish `hz : Formalism.QuantumDeterminants.Zhat D.R.k D.R.rS (Formalism.L2.SG.Pf.BaseOf.baseOf X C u u' (vOf X τ)).z (Formalism.L2.SG.Pf.BaseOf.baseOf X C u u' (vOf X τ)).z' (trG (Formalism.L2.SG.Pf.BaseOf.Qc X C (vOf X τ)) (Formalism.L2.SG.Pf.BaseOf.Qic X C (vOf X τ)) γ) = Matrix.diagon …` using `Formalism.L2.SG.Pf.Bridge.zhat_cs (trHyp_Qc C u τ) (trHyp_Qc C u' τ) one_ne_zero (uMat γ)`. Establish `hm` using `mono_scale hM (fun i => star_ne_zero.mpr (Formalism.L2.SG.Pf.Bridge.lam_ne (trHyp_Qc C u τ) one_ne_zero i)) (fun i => Formalism.L2.SG.Pf.Bridge.lam_ne (trHyp_Qc C u τ) one_ne_zero i)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hm` using `[← hz]`. Take `⟨w, d, hd, hwd⟩` from `hm`. Conclude with `⟨w, d, hd, hwd⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem frameAt_of (u u' : D.what₂.Word) (τ : D.what₂.Tau) (hH : HaarAtC C u u' τ) : FrameAt C u u' τ := by
   intro γ μRv ν hP
@@ -153,7 +153,7 @@ theorem frameAt_of (u u' : D.what₂.Word) (τ : D.what₂.Tau) (hH : HaarAtC C 
   exact ⟨w, d, hd, hwd⟩
 
 /- English proof (translation)
-The claim follows from `cutAt_of C u u' τ a b ξ ξ' c (frameAt_of C u u' τ hH) A₀ hA hCC`.
+A detailed English derivation is pending.
 -/
 theorem cutAt_of_haar (u u' : D.what₂.Word) (τ : D.what₂.Tau) (a b : X.B.H (vOf X τ)) (ξ : X.Vloc u (vOf X τ))
     (ξ' : X.Vloc u' (vOf X τ)) (c : ℂ) (hH : HaarAtC C u u' τ) (A₀ : ℝ)

@@ -18,7 +18,7 @@ namespace GlobalTheory.HeckePullLevel
 open GlobalTheory.CechPic
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => rw [pow_zero, Hom.one_def]`. Use `infer_instance`. Consider the case `succ n ih => rw [pow_succ, Hom.mul_def]`. Use `infer_instance`.
+Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem isMonHom_id_pow {S : Scheme.{0}} (G : Over S) [GrpObj G] [IsCommMonObj G] (n : ℕ) :
     IsMonHom ((𝟙 G) ^ n : G ⟶ G) := by
@@ -27,23 +27,21 @@ theorem isMonHom_id_pow {S : Scheme.{0}} (G : Over S) [GrpObj G] [IsCommMonObj G
   | succ n ih => rw [pow_succ, Hom.mul_def]; infer_instance
 
 /- English proof (translation)
-Introduce `S A _ _ H₀ P hA hH hamp hP h₁ h₂ m a b n T x₁ x₂ y₁ y₂ c h`. Establish `hG : Out.GlobalFnsSt` using `GlobalTheory.globalFns_holds`. Establish `hAA : IsAbelianScheme (G2 A)` using `ReciprocityTheory.ChartRestriction.G.Geo.Tor.AbelianSchemeGerms.isAbelianScheme_tensor A A hA hA`. Establish `hB : ∀ (T : Over S) (x x' y : T ⟶ A), DiagPairing.pc hP (x * x') y = DiagPairing.pc hP x y + DiagPairing.pc hP x' y` using `fun T x x' y => by`. Take `⟨t, ht⟩` from `(GlobalTheory.Biadditive.biadditive_of_triv_axes hG S A H₀ hA hH hamp P hP h₁ h₂ T x x' y).1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `e` using `(cls_eq_zero_iff (LB.isLB_linComb hP _ _)).2 ⟨t, ht⟩`. Rewrite `e` using `[cls_linComb hP, Fin.sum_univ_three]`. Simplify using `only [Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two, Matrix.head_cons, Matrix.tail_cons, one_smul, neg_smul] at e`. Unfold `DiagPairing.pc`. Rewrite using `[← sub_eq_zero, ← e]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Normalize the expressions using the abelian group laws. Establish `hB' : ∀ (T : Over S) (x y y' : T ⟶ A), DiagPairing.pc hP x (y * y') = DiagPairing.pc hP x y + DiagPairing.pc hP x y'` using `fun T x y y' => by`. Take `⟨t, ht⟩` from `(GlobalTheory.Biadditive.biadditive_of_triv_axes hG S A H₀ hA hH hamp P hP h₁ h₂ T y y' x).2`. Establish `e` using `(cls_eq_zero_iff (LB.isLB_linComb hP _ _)).2 ⟨t, ht⟩`. Rewrite `e` using `[cls_linComb hP, Fin.sum_univ_three]`.
+Normalize the expressions using the abelian group laws. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two, Matrix.head_cons, Matrix.tail_cons, one_smul, neg_smul] at e`. Unfold `DiagPairing.pc`. Rewrite using `[← sub_eq_zero, ← e]`. Normalize the expressions using the abelian group laws. Use `haveI := isMonHom_id_pow A a`.
+Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Introduce a local definition for the expression.
 
-Use `haveI := isMonHom_id_pow A b`. Set `ψ : G2 A ⟶ G2 A` to `lift (fst A A ≫ (𝟙 A) ^ a) (snd A A ≫ (𝟙 A) ^ b)`. Establish `e : ∀ {T : Over S} (u v : T ⟶ A), lift u v ≫ ψ = lift (u ^ a) (v ^ b)` using `fun u v => by`. Simplify using `only [ψ, comp_lift, ← Category.assoc, MonObj.comp_pow, Category.comp_id, lift_fst, lift_snd]`. Establish `hM : (GlobalTheory.UPel.HT.Hecke.lbPow P m).IsLB` using `LB.isLB_linComb hP _ _`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hψ : pull ψ.left (cls P hP) = (a * b) • cls P hP`. Establish `e₀ : ψ = lift (fst A A ^ a) (snd A A ^ b)`. Rewrite using `[← e (fst A A) (snd A A), lift_fst_snd, Category.id_comp]`. Rewrite using `[e₀]`. Express the relevant statement in the definitionally equal form `DiagPairing.pc hP (fst A A ^ a) (snd A A ^ b) = _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[DiagPairing.pc_pow_left hP hB, DiagPairing.pc_pow_right hP hB', DiagPairing.pc, lift_fst_snd, Over.id_left, pull_id, smul_smul, mul_comm]`. Establish `hw : LBIso (lbPow P (m * a * b)) ((GlobalTheory.UPel.HT.Hecke.lbPow P m).pull ψ.left)`. Use `(cls_eq_iff (LB.isLB_linComb hP _ _) (pull_isLB hM _)).1 ?_` and prove the remaining obligations. Establish `hc : cls _ hM = m • cls P hP`. Use `(cls_linComb hP (K := Fin m) (fun _ => 𝟙 (G2 A).left) (fun _ => 1) hM).trans ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [pull_id, one_smul, Finset.sum_const, Finset.card_univ, Fintype.card_fin]`. Rewrite using `[cls_lbPow hP, cls_pull hM, hc, map_nsmul, hψ, smul_smul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Establish `h' : Out.WeilIs (G2 A) (GlobalTheory.UPel.HT.Hecke.lbPow P m) n (lift x₁ x₂ ≫ ψ) (lift y₁ y₂ ≫ ψ) c`.
-
-Rewrite using `[e, e]`. Conclude with `h`. Conclude with `WeilIsogeny.weilIs_pull_hom hG hAA hP hM ψ hw h'`.
+Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem weilIs_powPull : ∀ (S : Scheme.{0}) (A : Over S) [GrpObj A] [IsCommMonObj A] (H₀ : LB A.left) (P : LB (G2 A).left), IsAbelianScheme A → H₀.IsLB → Out.RelAmple A H₀ → P.IsLB → (∃ t : (P.pull (lift (1 : A ⟶ A) (𝟙 A)).left).Gen, t.IsGen) → (∃ t : (P.pull (lift (𝟙 A) (1 : A ⟶ A)).left).Gen, t.IsGen) → ∀ (m a b : ℕ) (n : ℤ) (T : Over S) (x₁ x₂ y₁ y₂ : T ⟶ A) (c : Γ(T.left, ⊤)ˣ), Out.WeilIs (G2 A) (GlobalTheory.UPel.HT.Hecke.lbPow P m) n (lift (x₁ ^ a) (x₂ ^ b)) (lift (y₁ ^ a) (y₂ ^ b)) c → Out.WeilIs (G2 A) P (n * ((m * a * b : ℕ) : ℤ)) (lift x₁ x₂) (lift y₁ y₂) c := by
   intro S A _ _ H₀ P hA hH hamp hP h₁ h₂ m a b n T x₁ x₂ y₁ y₂ c h

@@ -44,7 +44,7 @@ section Lemmas
 variable {D : D7}
 
 /- English proof (translation)
-Introduce `u μ` and use `⟨fun u' μ' i hi x => by rw [h.one u μ, ← h.one u' μ'] exact (D.chTw u' μ').dvd_DGam i hi x, h.one u μ⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem ColLay.dGamDef {lev : LevelData D} {eX : ErrX D} (h : ColLay D lev eX) : DGamDef D := fun u μ =>
   ⟨fun u' μ' i hi x => by
@@ -52,13 +52,13 @@ theorem ColLay.dGamDef {lev : LevelData D} {eX : ErrX D} (h : ColLay D lev eX) :
     exact (D.chTw u' μ').dvd_DGam i hi x, h.one u μ⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨Y.piG_lev, Y.piT_lev, Y.seen, Y.tauOf, fun u μ => (Y.dgam u μ).2, hR.mink, hR.atT⟩`.
+Supply the required witnesses or components.
 -/
 theorem ColLay.ofLay {s : Scale} {C : FC} {cD : ℝ} (Y : Lay D) (hR : RecOK s C cD D) : ColLay D Y.lev Y.errX :=
   ⟨Y.piG_lev, Y.piT_lev, Y.seen, Y.tauOf, fun u μ => (Y.dgam u μ).2, hR.mink, hR.atT⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h => ⟨h.mink, h.atT⟩, fun h => ⟨Y.piG_lev, Y.piT_lev, Y.seen, Y.tauOf, fun u μ => (Y.dgam u μ).2, h.1, h.2⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem ColLay.iff_lay (Y : Lay D) : ColLay D Y.lev Y.errX ↔ DGamChoice_at D ∧
     ∀ u (w : D.what₂.places.Pl), D.what₂.places.resChar w = (D.mem u).A.T → ∃ n : ℕ, n ≠ 0 ∧
@@ -67,32 +67,32 @@ theorem ColLay.iff_lay (Y : Lay D) : ColLay D Y.lev Y.errX ↔ DGamChoice_at D �
   ⟨fun h => ⟨h.mink, h.atT⟩, fun h => ⟨Y.piG_lev, Y.piT_lev, Y.seen, Y.tauOf, fun u μ => (Y.dgam u μ).2, h.1, h.2⟩⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨Y.vram, Y.fills_all, fun L a b c X d e g h => ((hL L a b c).2 X d e g h).1⟩`.
+Supply the required witnesses or components.
 -/
 theorem GyLay.ofLay {K : Ctx} (Y : Lay D) (hL : LedOK K.s K.C K.cD K.ch Y K.a K.b) : GyLay K D Y.gatT Y.cmp Y.Gy :=
   ⟨Y.vram, Y.fills_all, fun L a b c X d e g h => ((hL L a b c).2 X d e g h).1⟩
 
 /- English proof (translation)
-Introduce `u w hg` and use `(h u w hg).2.trans (he _).symm`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem GatNum.epTie {L : SizeData₂ D} {X : G.Inst D L} (h : GatNum L.sc D) (he : G.EpDef X 1) : EpTie X := fun u w hg =>
   (h u w hg).2.trans (he _).symm
 
 /- English proof (translation)
-Introduce `u w hg` and use `⟨(hl u w hg).2.2.2.1, (ht u w hg).trans (he _)⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem GatNum.ofTied {L : SizeData₂ D} {X : G.Inst D L} {Gt : GatTies D} {Gy : G.LatInst D} (hl : G.LatTied Gt X Gy)
     (ht : EpTie X) (he : G.EpDef X 1) : GatNum L.sc D := fun u w hg =>
   ⟨(hl u w hg).2.2.2.1, (ht u w hg).trans (he _)⟩
 
 /- English proof (translation)
-The claim follows from `GatNum.ofTied p.ta.latTied p.xa.ex.ep_tie (hC ▸ p.xa.ex.ep_def)`.
+A detailed English derivation is pending.
 -/
 theorem GatNum.ofPt {C : FC} (hC : C.cX.Ce = 1) (p : Pt C) : GatNum p.L.sc p.D :=
   GatNum.ofTied p.ta.latTied p.xa.ex.ep_tie (hC ▸ p.xa.ex.ep_def)
 
 /- English proof (translation)
-Use `K.std.1` as an intermediate fact. Unfold `FC.Fixed at this`. The claim follows by propositional logic.
+Establish an intermediate fact. Replace the relevant objects with their definitions. The claim follows by propositional logic.
 -/
 theorem Ctx.Ce_eq_one (K : Ctx) : K.C.cX.Ce = 1 := by
   have := K.std.1
@@ -100,7 +100,7 @@ theorem Ctx.Ce_eq_one (K : Ctx) : K.C.cX.Ce = 1 := by
   tauto
 
 /- English proof (translation)
-The claim follows from `have h := (hL L hs hW hV).2 X hX he hk hf hs ▸ GatNum.ofTied h.1 h.2.1 (K.Ce_eq_one ▸ he)`.
+A detailed English derivation is pending.
 -/
 theorem GatNum.ofLay {K : Ctx} (Y : Lay D) (hL : LedOK K.s K.C K.cD K.ch Y K.a K.b) {L : SizeData₂ D} (hs : L.sc = K.s)
     (hW : WtEq L K.a K.b) (hV : Val K.C K.cD K.ch L) {X : G.Inst D L} (hX : CanonInst X) (he : G.EpDef X K.C.cX.Ce)
@@ -111,9 +111,9 @@ theorem GatNum.ofLay {K : Ctx} (Y : Lay D) (hL : LedOK K.s K.C K.cD K.ch Y K.a K
 open Classical in
 
 /- English proof (translation)
-Take `⟨N0, S, hp, hs⟩` from `h`. Establish `key : ∀ i : D.ntw.Tw, ∃ (Q : Finset (PlE D.host)) (k : ℕ) (ψ : D.ntw.RCG i Q →* (D.ntw.Ok i k)ˣ), (D.ntw.NonzeroIndexPlace i ∧ BlochKatoReduction.Gen.SetHyp (BlochKatoReduction.bk0 D) i ∧ TwIn.Ok (⟨twEOf xd, N0, S⟩ : TwIn D) i) → ∀ a : ℤ, IsCoprime a (D.ntw.l i : ℤ) → IntegralHec …`. Introduce `i`. Distinguish the cases in `hi : D.ntw.NonzeroIndexPlace i ∧ BlochKatoReduction.Gen.SetHyp (BlochKatoReduction.bk0 D) i ∧ TwIn.Ok (⟨twEOf xd, N0, S⟩ : TwIn D) i`. Take `⟨Q, k, ψ, hG⟩` from `hp i hi.1 hi.2.1 _ (twEps_pos D i) hi.2.2.1 _ hi.2.2.2 (A i)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨Q, k, ψ, fun _ => hG⟩`. Conclude with `⟨∅, 0, 1, fun h => absurd h hi⟩`. Use `choose Q k ψ hG using key`. Conclude with `⟨N0, S, Q, k, ψ, fun w hw => ⟨(hs w hw).2, hG _ ⟨hW w hw, hs w hw⟩⟩⟩`.
+Supply the required witnesses or components. Supply the required witnesses or components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem ExportAt.exists_good {nch : NChoice D} {xd : ThData D} (h : ExportAt D nch xd)
     (hW : ∀ w, D.what₂.muAt w ≠ D.what₂.mu0 → D.ntw.NonzeroIndexPlace (nch.twI w)) (A : D.ntw.Tw → Finset (PlE D.host)) :
@@ -137,7 +137,7 @@ theorem ExportAt.exists_good {nch : NChoice D} {xd : ThData D} (h : ExportAt D n
   exact ⟨N0, S, Q, k, ψ, fun w hw => ⟨(hs w hw).2, hG _ ⟨hW w hw, hs w hw⟩⟩⟩
 
 /- English proof (translation)
-Unfold `ExportAt at h ⊢`. Rewrite using `[e]`. Conclude with `h`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ExportAt.congr {nch nch' : NChoice D} {xd : ThData D} (e : nch'.twI = nch.twI) (h : ExportAt D nch xd) :
     ExportAt D nch' xd := by
@@ -146,13 +146,13 @@ theorem ExportAt.congr {nch nch' : NChoice D} {xd : ThData D} (e : nch'.twI = nc
   exact h
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun _ => 0, fun _ _ _ => ∅, fun i hi => absurd hi (h1 i), fun w hw => absurd (h2 w) hw⟩`.
+Supply the required witnesses or components.
 -/
 example (nch : NChoice D) (xd : ThData D) (h1 : ∀ i, ¬ D.ntw.NonzeroIndexPlace i) (h2 : ∀ w, D.what₂.muAt w = D.what₂.mu0) : ExportAt D nch xd :=
   ⟨fun _ => 0, fun _ _ _ => ∅, fun i hi => absurd hi (h1 i), fun w hw => absurd (h2 w) hw⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(h u w hg).1.trans (if_neg (not_lt.2 hp)), by rw [(h u w hg).2, (h u' w' hg').2, e]⟩`.
+Supply the required witnesses or components.
 -/
 example {s : Scale} (h : GatNum s D) (u u') (w w') (hg hg') (e : D.what₂.places.resChar w' = D.what₂.places.resChar w)
     (hp : s.p0 D.R.k ≤ (D.what₂.places.resChar w : ℝ)) :
@@ -160,7 +160,7 @@ example {s : Scale} (h : GatNum s D) (u u') (w w') (hg hg') (e : D.what₂.place
   ⟨(h u w hg).1.trans (if_neg (not_lt.2 hp)), by rw [(h u w hg).2, (h u' w' hg').2, e]⟩
 
 /- English proof (translation)
-Introduce `H` and use `h ((H.one u μ).trans (H.one u' μ').symm)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 example (lev : LevelData D) (eX : ErrX D) (u μ u' μ') (h : (D.chTw u μ).DGam ≠ (D.chTw u' μ').DGam) : ¬ ColLay D lev eX :=
   fun H => h ((H.one u μ).trans (H.one u' μ').symm)

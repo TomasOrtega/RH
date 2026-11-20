@@ -22,7 +22,7 @@ theorem qr_eq (c : R →+* R) (Jm : Matrix (Fin M) (Fin M) R) (a : Fin M → R) 
     qr c Jm a k = 1 + k • vecMulVec a (wv c Jm a) := rfl
 
 /- English proof (translation)
-Simplify using `only [Formalism.UG.hform, wv, dotProduct, Finset.sum_mul]`. Conclude with `Finset.sum_comm`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hform_eq (c : R →+* R) (Jm : Matrix (Fin M) (Fin M) R) (x y : Fin M → R) :
     Formalism.UG.hform c Jm x y = wv c Jm x ⬝ᵥ y := by
@@ -30,7 +30,7 @@ theorem hform_eq (c : R →+* R) (Jm : Matrix (Fin M) (Fin M) R) (x y : Fin M �
   exact Finset.sum_comm
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [Matrix.mul_apply, vecMulVec_apply, mulVec, dotProduct, Finset.sum_mul, mul_assoc]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem mat_mul_vmv (A : Matrix (Fin M) (Fin M) R) (u v : Fin M → R) :
     A * vecMulVec u v = vecMulVec (A *ᵥ u) v := by
@@ -38,7 +38,7 @@ theorem mat_mul_vmv (A : Matrix (Fin M) (Fin M) R) (u v : Fin M → R) :
   simp only [Matrix.mul_apply, vecMulVec_apply, mulVec, dotProduct, Finset.sum_mul, mul_assoc]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [Matrix.mul_apply, vecMulVec_apply, vecMul, dotProduct, Finset.mul_sum, mul_assoc]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem vmv_mul_mat (A : Matrix (Fin M) (Fin M) R) (u v : Fin M → R) :
     vecMulVec u v * A = vecMulVec u (v ᵥ* A) := by
@@ -46,7 +46,7 @@ theorem vmv_mul_mat (A : Matrix (Fin M) (Fin M) R) (u v : Fin M → R) :
   simp only [Matrix.mul_apply, vecMulVec_apply, vecMul, dotProduct, Finset.mul_sum, mul_assoc]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [Matrix.mul_apply, vecMulVec_apply, dotProduct, Matrix.smul_apply, smul_eq_mul, Finset.sum_mul, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun l _ => by ring`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem vmv_mul_vmv (u v x y : Fin M → R) :
     vecMulVec u v * vecMulVec x y = (v ⬝ᵥ x) • vecMulVec u y := by
@@ -56,7 +56,7 @@ theorem vmv_mul_vmv (u v x y : Fin M → R) :
   exact Finset.sum_congr rfl fun l _ => by ring
 
 /- English proof (translation)
-Simplify using `only [qr_eq]`. Establish `h` using `vmv_mul_vmv a (wv c Jm a) a (wv c Jm a)`. Rewrite `h` using `[← hform_eq]`. Rewrite using `[add_mul, mul_add, mul_add, one_mul, mul_one, one_mul, smul_mul_smul_comm, h]`. Use `module`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem qr_mul (c : R →+* R) (Jm : Matrix (Fin M) (Fin M) R) (a : Fin M → R) (k₁ k₂ : R) :
     qr c Jm a k₁ * qr c Jm a k₂ = qr c Jm a (k₁ + k₂ + k₁ * k₂ * Formalism.UG.hform c Jm a a) := by
@@ -67,13 +67,13 @@ theorem qr_mul (c : R →+* R) (Jm : Matrix (Fin M) (Fin M) R) (a : Fin M → R)
   module
 
 /- English proof (translation)
-Simplify using `[qr_eq]`.
+Simplify using the standard rewrite rules.
 -/
 theorem qr_zero (c : R →+* R) (Jm : Matrix (Fin M) (Fin M) R) (a : Fin M → R) : qr c Jm a 0 = 1 := by
   simp [qr_eq]
 
 /- English proof (translation)
-Establish `h : k • vecMulVec a (wv c Jm a) = replicateCol Unit (k • a) * replicateRow Unit (wv c Jm a)`. Rewrite using `[← vecMulVec_eq]`. Use extensionality with `i j`. Simplify using `[vecMulVec_apply, mul_assoc]`. Rewrite using `[qr_eq, h, det_one_add_replicateCol_mul_replicateRow, hform_eq, dotProduct_smul, smul_eq_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem det_qr (c : R →+* R) (Jm : Matrix (Fin M) (Fin M) R) (a : Fin M → R) (k : R) :
     (qr c Jm a k).det = 1 + k * Formalism.UG.hform c Jm a a := by
@@ -85,11 +85,11 @@ theorem det_qr (c : R →+* R) (Jm : Matrix (Fin M) (Fin M) R) (a : Fin M → R)
   rw [qr_eq, h, det_one_add_replicateCol_mul_replicateRow, hform_eq, dotProduct_smul, smul_eq_mul]
 
 /- English proof (translation)
-Establish `h1 : Formalism.UG.cT c (g : Matrix (Fin M) (Fin M) R) * Jm = Jm * ((g⁻¹ : GL (Fin M) R) : Matrix (Fin M) (Fin M) R)`. Establish `hg' : Formalism.UG.cT c (g : Matrix (Fin M) (Fin M) R) * Jm * (g : Matrix (Fin M) (Fin M) R) = Jm` using `hg`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.mul_one]`. Use `_ = _ := by rw [← Matrix.mul_assoc, hg']`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : ∀ x : Fin M → R, wv c Jm x = (fun i => c (x i)) ᵥ* Jm` using `fun x => by`. Use extensionality with `j`. Simplify using `[wv, vecMul, dotProduct]`. Establish `h3 : (fun i => c (((g : Matrix (Fin M) (Fin M) R) *ᵥ a) i)) = (fun i => c (a i)) ᵥ* Formalism.UG.cT c (g : Matrix (Fin M) (Fin M) R)`. Use extensionality with `i`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `[mulVec, vecMul, dotProduct, Formalism.UG.cT, map_sum, mul_comm]`. Rewrite using `[h2, h2, h3, vecMul_vecMul, h1, vecMul_vecMul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem wv_mulVec (c : R →+* R) (Jm : Matrix (Fin M) (Fin M) R) (g : GL (Fin M) R)
     (hg : g ∈ Formalism.UG.UJ c Jm) (a : Fin M → R) :
@@ -110,7 +110,7 @@ theorem wv_mulVec (c : R →+* R) (Jm : Matrix (Fin M) (Fin M) R) (g : GL (Fin M
   rw [h2, h2, h3, vecMul_vecMul, h1, vecMul_vecMul]
 
 /- English proof (translation)
-Rewrite using `[qr_eq, qr_eq, wv_mulVec c Jm g hg, mul_add, add_mul, Matrix.mul_one, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.mul_smul, Matrix.smul_mul, mat_mul_vmv, vmv_mul_mat]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem conj_qr (c : R →+* R) (Jm : Matrix (Fin M) (Fin M) R) (g : GL (Fin M) R)
     (hg : g ∈ Formalism.UG.UJ c Jm) (a : Fin M → R) (k : R) :
@@ -120,7 +120,7 @@ theorem conj_qr (c : R →+* R) (Jm : Matrix (Fin M) (Fin M) R) (g : GL (Fin M) 
     Units.val_one, Matrix.mul_smul, Matrix.smul_mul, mat_mul_vmv, vmv_mul_mat]
 
 /- English proof (translation)
-Rewrite using `[hform_eq, hform_eq, wv_mulVec c Jm g hg, ← dotProduct_mulVec, mulVec_mulVec, ← Units.val_mul, inv_mul_cancel, Units.val_one, one_mulVec]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem hform_mulVec (c : R →+* R) (Jm : Matrix (Fin M) (Fin M) R) (g : GL (Fin M) R)
     (hg : g ∈ Formalism.UG.UJ c Jm) (a : Fin M → R) :
@@ -130,7 +130,7 @@ theorem hform_mulVec (c : R →+* R) (Jm : Matrix (Fin M) (Fin M) R) (g : GL (Fi
     inv_mul_cancel, Units.val_one, one_mulVec]
 
 /- English proof (translation)
-Simplify using `only [Formalism.UG.hform, map_sum, map_mul, hc, hJ]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hform_self_fixed (c : R →+* R) (hc : ∀ x, c (c x) = x) (Jm : Matrix (Fin M) (Fin M) R)
     (hJ : ∀ i j, c (Jm j i) = Jm i j) (a : Fin M → R) :
@@ -140,15 +140,13 @@ theorem hform_self_fixed (c : R →+* R) (hc : ∀ x, c (c x) = x) (Jm : Matrix 
   exact Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring
 
 /- English proof (translation)
-Use `set w := wv c Jm a with hw`. Use `set u := Jm *ᵥ a with hu`. Establish `hcT : Formalism.UG.cT c (qr c Jm a k) = 1 + c k • vecMulVec u (fun i => c (a i))`. Use extensionality with `i j`. Establish `hcw : c (w i) = u i`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Simplify using `only [hw, hu, wv, map_sum, map_mul, hc, hJ, mulVec, dotProduct]`. Conclude with `Finset.sum_congr rfl fun l _ => mul_comm _ _`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Simplify using `[Formalism.UG.cT, qr_eq, ← hw, vecMulVec_apply, hcw, mul_assoc, mul_comm]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hji : j ≠ i` using `fun h => hij h.symm`. Simplify using `[Formalism.UG.cT, qr_eq, ← hw, vecMulVec_apply, hcw, Matrix.one_apply, hij, hji, mul_assoc, mul_comm]`. Establish `hw' : (fun i => c (a i)) ᵥ* Jm = w`. Use extensionality with `j`. Simplify using `[hw, wv, vecMul, dotProduct]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : vecMulVec u (fun i => c (a i)) * Jm = vecMulVec u w` using `by rw [vmv_mul_mat, hw']`. Establish `h2 : Jm * vecMulVec a w = vecMulVec u w` using `by rw [mat_mul_vmv]`. Establish `h3 : vecMulVec u w * vecMulVec a w = Formalism.UG.hform c Jm a a • vecMulVec u w`. Rewrite using `[vmv_mul_vmv, hw, ← hform_eq]`. Rewrite using `[hcT, qr_eq, ← hw, add_mul, one_mul, Matrix.smul_mul, h1, add_mul, mul_add, Matrix.mul_one, Matrix.mul_smul, h2, Matrix.smul_mul, mul_add, Matrix.mul_one, Matrix.mul_smul, h3]`.
-
-Establish `: Jm + k • vecMulVec u w + c k • (vecMulVec u w + k • Formalism.UG.hform c Jm a a • vecMulVec u w) = Jm + (k + c k + c k * k * Formalism.UG.hform c Jm a a) • vecMulVec u w` using `by module`. Rewrite using `[this, hk, zero_smul, add_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem qr_unitary (c : R →+* R) (hc : ∀ x, c (c x) = x) (Jm : Matrix (Fin M) (Fin M) R)
     (hJ : ∀ i j, c (Jm j i) = Jm i j) (a : Fin M → R) (k : R)
@@ -179,7 +177,7 @@ theorem qr_unitary (c : R →+* R) (hc : ∀ x, c (c x) = x) (Jm : Matrix (Fin M
   rw [this, hk, zero_smul, add_zero]
 
 /- English proof (translation)
-Establish `h1 : c k * n = c l - 1`. Use `congrArg c hk` as an intermediate fact. Rewrite `this` using `[map_mul, hcn, map_sub, map_one]`. Then use the resulting hypothesis. Apply `hn.mul_right_cancel` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the claim to the hypotheses of an applicable result. Chain the equalities or inequalities of the calculation.
 -/
 theorem num_cond (c : R →+* R) {n k l : R} (hn : IsUnit n) (hcn : c n = n) (hl : l * c l = 1)
     (hk : k * n = l - 1) : k + c k + c k * k * n = 0 := by
@@ -192,9 +190,9 @@ theorem num_cond (c : R →+* R) {n k l : R} (hn : IsUnit n) (hcn : c n = n) (hl
     _ = 0 * n := by rw [hl]; ring
 
 /- English proof (translation)
-Establish `hz : (μ - 1) * n' + (c μ - 1) * n' + (μ - 1) * n' * ((c μ - 1) * n') * Formalism.UG.hform c Jm a₀ a₀ = 0`. Take the linear combination `n' * hμ + n' * (μ - 1) * (c μ - 1) * hn'`. Establish `hz' : (c μ - 1) * n' + (μ - 1) * n' + (c μ - 1) * n' * ((μ - 1) * n') * Formalism.UG.hform c Jm a₀ a₀ = 0`. Take the linear combination `n' * hμ + n' * (μ - 1) * (c μ - 1) * hn'`. Establish `hu : IsUnit (Formalism.UG.hform c Jm a₀ a₀)` using `IsUnit.of_mul_eq_one n' (by rw [mul_comm]; exact hn')`.
+Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Use `⟨⟨qr c Jm a₀ ((μ - 1) * n'), qr c Jm a₀ ((c μ - 1) * n'), ?_, ?_⟩, ?_, rfl, rfl⟩` and prove the remaining obligations. Rewrite using `[qr_mul, hz, qr_zero]`. Rewrite using `[qr_mul, hz', qr_zero]`. Use `qr_unitary c hc Jm hJ a₀ _ (num_cond c hu (hform_self_fixed c hc Jm hJ a₀) hμ ?_)` and prove the remaining obligations. Take the linear combination `(μ - 1) * hn'`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem tau_exists (c : R →+* R) (hc : ∀ x, c (c x) = x) (Jm : Matrix (Fin M) (Fin M) R)
     (hJ : ∀ i j, c (Jm j i) = Jm i j) (a₀ : Fin M → R) (n' : R)
@@ -214,21 +212,21 @@ theorem tau_exists (c : R →+* R) (hc : ∀ x, c (c x) = x) (Jm : Matrix (Fin M
     linear_combination (μ - 1) * hn'
 
 /- English proof (translation)
-Establish `hu : IsUnit (Formalism.UG.hform c Jm a₀ a₀)` using `IsUnit.of_mul_eq_one n' (by rw [mul_comm]; exact hn')`. Proceed by induction on `l using List.reverseRecOn with`. Consider the case `nil`. Use `⟨1, H.one_mem, by simp, 1, by simp, 1, one_mem _, ?_, by simp⟩` and prove the remaining obligations. Simplify using `[qr_zero]`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Consider the case `append_singleton l y ih`. Take `⟨h, hhH, hdet, μ, hμ, g, hgU, hg, hprod⟩` from `ih (fun z hz => hl z (List.mem_append_left _ hz))`. Take `⟨hyU, a, lam, k, ha, hlam, hk, hy⟩` from `hl y (by simp)`. Take `⟨gl, hglU, hgl, hgli⟩` from `tau_exists c hc Jm hJ a₀ n' hn' lam hlam`. Establish `hBU : g * y * gl⁻¹ * g⁻¹ ∈ Formalism.UG.UJ c Jm` using `mul_mem (mul_mem (mul_mem hgU hyU) (inv_mem hglU)) (inv_mem hgU)`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hBmat : ((g * y * gl⁻¹ * g⁻¹ : GL (Fin M) R) : Matrix (Fin M) (Fin M) R) = qr c Jm ((g : Matrix (Fin M) (Fin M) R) *ᵥ a) k * qr c Jm ((g : Matrix (Fin M) (Fin M) R) *ᵥ a₀) ((c lam - 1) * n')`. Rewrite using `[← conj_qr c Jm g hgU, ← conj_qr c Jm g hgU, ← hy, ← hgli]`. Establish `: g * y * gl⁻¹ * g⁻¹ = (g * y * g⁻¹) * (g * gl⁻¹ * g⁻¹)` using `by group`. Rewrite using `[this]`. Simplify using `only [Units.val_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hk' : k * Formalism.UG.hform c Jm ((g : Matrix (Fin M) (Fin M) R) *ᵥ a) ((g : Matrix (Fin M) (Fin M) R) *ᵥ a) = lam - 1`. Rewrite using `[hform_mulVec c Jm g hgU]`. Conclude with `hk`. Establish `hkb : (c lam - 1) * n' * Formalism.UG.hform c Jm ((g : Matrix (Fin M) (Fin M) R) *ᵥ a₀) ((g : Matrix (Fin M) (Fin M) R) *ᵥ a₀) = c lam - 1`. Rewrite using `[hform_mulVec c Jm g hgU]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `(c lam - 1) * hn'`. Establish `hBH : g * y * gl⁻¹ * g⁻¹ ∈ H`. Use `hH _ hBU ⟨_, _, lam, k, (c lam - 1) * n', ?_, ?_, hlam, hk', hkb, hBmat⟩` and prove the remaining obligations. Rewrite using `[hform_mulVec c Jm g hgU]`. Conclude with `ha`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hform_mulVec c Jm g hgU]`. Conclude with `hu`. Establish `hBdet : ((g * y * gl⁻¹ * g⁻¹ : GL (Fin M) R) : Matrix (Fin M) (Fin M) R).det = 1`. Rewrite using `[hBmat, Matrix.det_mul, det_qr, det_qr, hk', hkb]`. Take the linear combination `hlam`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `⟨h * (g * y * gl⁻¹ * g⁻¹), mul_mem hhH hBH, ?_, μ * lam, ?_, g * gl, mul_mem hgU hglU, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Units.val_mul, Matrix.det_mul, hdet, hBdet, one_mul]`. Rewrite using `[map_mul]`. Take the linear combination `(lam * c lam) * hμ + hlam`. Rewrite using `[Units.val_mul, hg, hgl, qr_mul]`.
+Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Take the linear combination `n' * (μ - 1) * (lam - 1) * hn'`. Rewrite using `[List.prod_append, hprod, List.prod_singleton] group`.
+A detailed English derivation is pending.
 -/
 theorem prod_claim (c : R →+* R) (hc : ∀ x, c (c x) = x) (Jm : Matrix (Fin M) (Fin M) R)
     (hJ : ∀ i j, c (Jm j i) = Jm i j) (a₀ : Fin M → R) (n' : R)
@@ -279,11 +277,11 @@ theorem prod_claim (c : R →+* R) (hc : ∀ x, c (c x) = x) (Jm : Matrix (Fin M
       group
 
 /- English proof (translation)
-Introduce `R _ c hc M Jm hJ a₀ ha₀ H hH l hl hdet`. Take `⟨n', hn'⟩` from `ha₀.exists_left_inv`. Take `⟨h, hhH, hdh, μ, hμ, g, hgU, hg, hprod⟩` from `prod_claim c hc Jm hJ a₀ n' hn' H hH l hl`. Establish `hμ1 : μ = 1`. Rewrite `hdet` using `[hprod, Units.val_mul, Matrix.det_mul, hdh, one_mul, hg, det_qr]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take the linear combination `hdet - (μ - 1) * hn'`. Establish `hg1 : g = 1`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[hg, hμ1, sub_self, zero_mul, qr_zero, Units.val_one]`. Rewrite using `[hprod, hg1, mul_one]`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hhH`.
+A detailed English derivation is pending.
 -/
 theorem pair_of_list : ∀ {R : Type} [CommRing R] (c : R →+* R), (∀ x, c (c x) = x) → ∀ {M : ℕ} (Jm : Matrix (Fin M) (Fin M) R), (∀ i j, c (Jm j i) = Jm i j) → ∀ a₀ : Fin M → R, IsUnit (Formalism.UG.hform c Jm a₀ a₀) → ∀ H : Subgroup (GL (Fin M) R), (∀ y ∈ Formalism.UG.UJ c Jm, IsQPair c Jm (y : Matrix (Fin M) (Fin M) R) → y ∈ H) → ∀ l : List (GL (Fin M) R), (∀ y ∈ l, y ∈ Formalism.UG.UJ c Jm ∧ IsQR c Jm (y : Matrix (Fin M) (Fin M) R)) → ((l.prod : GL (Fin M) R) : Matrix (Fin M) (Fin M) R).det = 1 → l.prod ∈ H := by
   intro R _ c hc M Jm hJ a₀ ha₀ H hH l hl hdet

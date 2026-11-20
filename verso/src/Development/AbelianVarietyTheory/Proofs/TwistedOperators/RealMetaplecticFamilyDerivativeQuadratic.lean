@@ -22,21 +22,19 @@ namespace GlobalTheory.QuadFam
 open GlobalTheory.RealWeil
 
 /- English proof (translation)
-Take `⟨hs, hgrp, h0⟩` from `GlobalTheory.T.symplectic_and_flow_of_intertwining_unitary l A T hT hT0 hI hiso`. Consider the cases of `isEmpty_or_nonempty l with`. Consider the case `inl hl`. Establish `hq : ∀ f y, quad (0 : Matrix (l ⊕ l) (l ⊕ l) ℝ) f y = 0` using `fun f y => by simp [quad]`. Take `⟨c, hc⟩` from `GlobalTheory.T.isometryFamilies_derivatives_differ_by_scalar_at_zero l (fun t w => A t w) T (fun _ => LinearMap.id) (fun f y => quad 0 f y) hT hT0 (fun _ _ _ => rfl) (fun _ => rfl) hgrp h0 hI (fun t w f f₁ h => by`.
+Extract witnesses or component facts from the available result. Split into cases according to the possible forms of the given data. Treat this case separately. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[LinearMap.id_apply, LinearMap.id_apply, h, Subsingleton.elim (A t w) w]) hiso`. Use the proof step `(fun _ _ => rfl) hpt (fun f y => by rw [hq]; exact hasDerivAt_const _ _)`. Conclude with `⟨0, c, hc⟩`. Consider the case `inr hl`. Set `M : ℝ → Matrix (l ⊕ l) (l ⊕ l) ℝ` to `fun t => LinearMap.toMatrix' (A t)`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Treat this case separately. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hM : ∀ t w, M t *ᵥ w = A t w` using `fun t w => LinearMap.toMatrix'_mulVec (A t) w`. Establish `hMc : Continuous M`. Use `continuous_pi fun i => continuous_pi fun j => ?_` and prove the remaining obligations. Simplify using `only [M, LinearMap.toMatrix'_apply]`. Conclude with `(continuous_apply i).comp (hA _)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hM0 : M 0 = 1`. Establish `: A 0 = LinearMap.id` using `LinearMap.ext h0`. Simplify using `only [M, this, LinearMap.toMatrix'_id]`. Establish `hMm : ∀ s t, M (s + t) = M s * M t`. Introduce `s t`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `: A (s + t) = (A s).comp (A t)` using `LinearMap.ext (hgrp s t)`. Simplify using `only [M, this, LinearMap.toMatrix'_comp]`. Take `⟨X, hX⟩` from `GlobalTheory.T.continuous_matrix_oneParameterGroup_eq_exp _ M hMc hM0 hMm`. Establish `hsp : X ∈ LieAlgebra.Symplectic.sp l ℝ`. Use `GlobalTheory.T.mem_symplecticLieAlgebra_of_exp_smul_mem_symplecticGroup l X fun t => ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨N, hN⟩` from `GlobalTheory.exists_symplecticGroup_of_sympl l (A t) (hs t)`. Establish `e : Matrix.toLin' (N : Matrix (l ⊕ l) (l ⊕ l) ℝ) = A t` using `LinearMap.ext fun w => by`. Rewrite using `[Matrix.toLin'_apply, hN]`. Establish `e2 : (N : Matrix (l ⊕ l) (l ⊕ l) ℝ) = M t`. Simplify using `only [M, ← e, LinearMap.toMatrix'_toLin']`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← hX t, ← e2]`. Conclude with `N.2`. Take `⟨U, hU, hU0, hUI, hUiso, hUd⟩` from `GlobalTheory.T.metaplectic_oneParameter_schwartz_intertwining hP l X hsp`. Establish `hB : ∀ t w, NormedSpace.exp (t • X) *ᵥ w = A t w` using `fun t w => by rw [← hX, hM]`. Take `⟨c, hc⟩` from `GlobalTheory.T.isometryFamilies_derivatives_differ_by_scalar_at_zero l (fun t w => A t w) T U (fun f y => quad X f y) hT hT0 hU hU0 hgrp h0 hI (fun t w f f₁ h => by rw [hUI t w f f₁ h, hB]) hiso hUiso hpt hUd`.
-
-Conclude with `⟨X, c, hc⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem coordAll (hP : GlobalTheory.Published.RealMetaplecticRepresentation) (l : Type) [Fintype l] [DecidableEq l]
     (A : ℝ → (l ⊕ l → ℝ) →ₗ[ℝ] (l ⊕ l → ℝ)) (T : ℝ → Sch l →ₗ[ℂ] Sch l)
@@ -85,7 +83,7 @@ theorem coordAll (hP : GlobalTheory.Published.RealMetaplecticRepresentation) (l 
     exact ⟨X, c, hc⟩
 
 /- English proof (translation)
-Introduce `hP V _ _ _ _ _ μ hμ P hp A T hA hT hT0 hI hiso hpt _`. Conclude with `GlobalTheory.T.realPairingSpace_result_of_schrodingerCoordinates V μ hμ P hp _ rfl (fun A' T' => coordAll hP (Fin _) A' T') A T hA hT hT0 hI hiso hpt`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem deriv_quad : GlobalTheory.Published.RealMetaplecticRepresentation → ∀ (V : Type) [NormedAddCommGroup V] [NormedSpace ℝ V] [FiniteDimensional ℝ V]
     [MeasurableSpace V] [BorelSpace V] (μ : Measure V), μ.IsAddHaarMeasure → ∀ (P : V → V → ℝ), IsPairing P →

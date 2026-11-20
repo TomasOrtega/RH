@@ -9,9 +9,9 @@ namespace GlobalTheory.LocFlat.CFac
 def prodFn {X Y : Type} (f : X → ℂ) (g : Y → ℂ) : X × Y → ℂ := fun p => f p.1 * g p.2
 
 /- English proof (translation)
-Use `⟨(hf.1.comp_continuous continuous_fst).mul (hg.1.comp_continuous continuous_snd), ?_⟩` and prove the remaining obligations. Use `HasCompactSupport.intro' (IsCompact.prod hf.2 hg.2) ((isClosed_tsupport _).prod (isClosed_tsupport _)) ?_` and prove the remaining obligations. Introduce `p hp`. Simplify using `only [Set.mem_prod, not_and_or] at hp`. Break down `hp with h | h` into its components or cases.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis.
 
-Simplify using `[prodFn, image_eq_zero_of_notMem_tsupport h]`. Simplify using `[prodFn, image_eq_zero_of_notMem_tsupport h]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem prodFn_mem_SB {X Y : Type} [TopologicalSpace X] [TopologicalSpace Y] {f : X → ℂ} {g : Y → ℂ}
     (hf : f ∈ SB X) (hg : g ∈ SB Y) : prodFn f g ∈ SB (X × Y) := by

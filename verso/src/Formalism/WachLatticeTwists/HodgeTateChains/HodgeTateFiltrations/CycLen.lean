@@ -8,15 +8,13 @@ noncomputable section
 namespace Formalism.RepresentationBoundsCohomology.TorsionBoundCyclotomic
 
 /- English proof (translation)
-Set `φ : O →ₗ[O] Cy` to `LinearMap.toSpanSingleton O Cy c0`. Take `⟨b, hb⟩` from `(IsPrincipalIdealRing.principal (P.comap φ : Ideal O)).principal`. Establish `hbmem : b • c0 ∈ P`. Establish `: b ∈ (P.comap φ : Ideal O)` using `by rw [hb]; exact Submodule.mem_span_singleton_self b`. Conclude with `this`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `ψ : O →ₗ[O] P` to `LinearMap.toSpanSingleton O P ⟨b • c0, hbmem⟩`. Establish `hψ : Function.Surjective ψ`. Introduce and unpack `⟨p, hp⟩`. Take `⟨r, rfl⟩` from `hc0 p`. Establish `hr : r ∈ (P.comap φ : Ideal O)` using `hp`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hr` using `[hb, Submodule.mem_span_singleton]`. Take `⟨r', rfl⟩` from `hr`. Use `⟨r', Subtype.ext ?_⟩` and prove the remaining obligations. Simplify using `[ψ, LinearMap.toSpanSingleton_apply, smul_smul]`. Establish `hker : (Ideal.span {a} : Submodule O O) ≤ LinearMap.ker ψ`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Ideal.span, Submodule.span_le, Set.singleton_subset_iff]`. Use `show ψ a = 0`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify `hP _ hbmem` using `[ψ, LinearMap.toSpanSingleton_apply]`. Conclude with `Module.length_le_of_surjective (Submodule.liftQ _ ψ hker) (fun p => by`.
-
-Take `⟨r, hr⟩` from `hψ p`. Conclude with `⟨Submodule.Quotient.mk r, by rw [Submodule.liftQ_apply]; exact hr⟩)`.
+Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 lemma cyc_len (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (Cy : Type)
     [AddCommGroup Cy] [Module O Cy] (c0 : Cy) (hc0 : ∀ y : Cy, ∃ a : O, y = a • c0)
@@ -47,21 +45,19 @@ lemma cyc_len (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (
       exact ⟨Submodule.Quotient.mk r, by rw [Submodule.liftQ_apply]; exact hr⟩)
 
 /- English proof (translation)
-Introduce `O _ _ _ n _ Q Cy _ _ _ _ ι π hι hex ⟨c0, hc0⟩ N ℓ c hN`. Set `N1 : Submodule O (n → Formalism.NG.KO O)` to `N.comap ι`. Establish `hN1 : ∀ x ∈ N1, ((ℓ : O) ^ c) • x = 0`. Introduce `x hx`. Apply `hι` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[map_smul, map_zero]`. Conclude with `hN _ hx`. Establish `hl1` using `Formalism.RepresentationBoundsCohomology.submoduleLengthBound_statement O n N1 ℓ c hN1`. Set `f : N1 →ₗ[O] N` to `(ι.comp N1.subtype).codRestrict N (fun x => x.2)`. Set `πN : N →ₗ[O] Cy` to `π.comp N.subtype`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `g : N →ₗ[O] LinearMap.range πN` to `πN.rangeRestrict`. Establish `hf : Function.Injective f`. Introduce `x y hxy`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `hι` to reduce the goal to its premises.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Conclude with `congrArg Subtype.val hxy`. Establish `hg : Function.Surjective g` using `LinearMap.surjective_rangeRestrict _`. Establish `hfg : Function.Exact f g`. Introduce `x`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `hx`. Establish `hx' : π x.1 = 0` using `congrArg Subtype.val hx`. Take `⟨t, ht⟩` from `(hex _).1 hx'`. Conclude with `⟨⟨t, by show ι t ∈ N; rw [ht]; exact x.2⟩, Subtype.ext ht⟩`. Introduce and unpack `⟨t, rfl⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Conclude with `(hex _).2 ⟨t.1, rfl⟩`. Establish `hadd` using `Module.length_eq_add_of_exact f g hf hg hfg`. Establish `hl2 : Module.length O (LinearMap.range πN) ≤ Module.length O (O ⧸ Ideal.span {(ℓ : O) ^ c})`. Apply `cyc_len O Cy c0 hc0` to reduce the goal to its premises.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce and unpack `_ ⟨x, rfl⟩`. Rewrite using `[← map_smul]`. Establish `: ((ℓ : O) ^ c) • x = 0` using `Subtype.ext (hN _ x.2)`. Rewrite using `[this, map_zero]`. Establish `hl3 : Module.length O (O ⧸ Ideal.span {(ℓ : O) ^ c}) = (c : ℕ∞) * Module.length O (O ⧸ Ideal.span {(ℓ : O)})`.
-
-Rewrite using `[Formalism.NG.IdempotentNormalFormsLenFacts.length_quot_span, Formalism.NG.IdempotentNormalFormsLenFacts.length_quot_span, addVal_pow, nsmul_eq_mul]`. Rewrite using `[hadd, add_mul, one_mul]`. Conclude with `add_le_add hl1 (hl3 ▸ hl2)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tbLen : StatTBLen := by
   intro O _ _ _ n _ Q Cy _ _ _ _ ι π hι hex ⟨c0, hc0⟩ N ℓ c hN

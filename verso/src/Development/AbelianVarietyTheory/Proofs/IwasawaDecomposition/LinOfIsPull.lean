@@ -28,7 +28,7 @@ def jC {R W V : Type} [CommRing R] [CommRing W] [CommRing V] (φ : R →+* W) (g
     rw [← Spec.map_comp]; rfl)
 
 /- English proof (translation)
-Use `ext1`. Use `show Spec.map (CommRingCat.ofHom g) ≫ Spec.map (CommRingCat.ofHom φ) = Spec.map (CommRingCat.ofHom (g.comp φ))`. Rewrite using `[← Spec.map_comp]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem jC_toBase {R W V : Type} [CommRing R] [CommRing W] [CommRing V] (φ : R →+* W) (g : W →+* V) :
     jC φ g ≫ toBase φ = toBase (g.comp φ) := by
@@ -37,7 +37,7 @@ theorem jC_toBase {R W V : Type} [CommRing R] [CommRing W] [CommRing V] (φ : R 
   rw [← Spec.map_comp]; rfl
 
 /- English proof (translation)
-The claim follows from `map_one _`.
+A detailed English derivation is pending.
 -/
 theorem fnR_one (R : Type) [CommRing R] : GlobalTheory.OneBasis.fnR (1 : R) = 1 := map_one _
 
@@ -46,14 +46,14 @@ variable {S : Scheme.{0}} {G : Over S} {L : LB G.left} {N : ℕ} {T T' : Over S}
   {b : Fin n → LB.Sec (LPow G L (N : ℤ) T)} {c : Fin n → Γ(T'.left, ⊤)} {s : LB.Sec (LPow G L (N : ℤ) T')}
 
 /- English proof (translation)
-Use `forall_congr' fun z => forall_congr' fun J => imp_congr_right fun _ => ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.FramePull.gs_one, _root_.one_mul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem lin_iff_linA : Lin G L N h b c s ↔ LinA G L N h b c 1 s := by
   refine forall_congr' fun z => forall_congr' fun J => imp_congr_right fun _ => ?_
   rw [GlobalTheory.FramePull.gs_one, _root_.one_mul]
 
 /- English proof (translation)
-Introduce `z J hJ`. Rewrite using `[H z J hJ, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[gs_eq _ z ⊤ trivial, gs_eq _ z ⊤ trivial, gs_eq _ z ⊤ trivial, map_mul, map_mul, _root_.mul_assoc]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem linA_scale (a : Γ(T'.left, ⊤)) (H : Lin G L N h b c s) : LinA G L N h b (fun i => a * c i) a s := by
   intro z J hJ
@@ -66,9 +66,9 @@ end
 open GlobalTheory.FramePull in
 
 /- English proof (translation)
-Establish `hp` using `isPull_of_lin hs`. Rewrite `H`, the goal using `[lin_iff]`. Introduce `W r z J hJ`. Rewrite using `[hp W r z J hJ, H W _ z J hJ]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[comp_whiskerRight, Over.comp_left, Category.assoc, Category.assoc, ← Over.comp_left, whiskerRight_fst, Over.comp_left, ← Category.assoc]`. Conclude with `congrArg (· * _) (gs_pull _ u.left z ⊤ trivial _).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lin_comp {S : Scheme.{0}} {G : Over S} {L : LB G.left} {N : ℕ} {T T' T'' : Over S} (h : T' ⟶ T) (u : T'' ⟶ T')
     {n : ℕ} {b : Fin n → LB.Sec (LPow G L (N : ℤ) T)} {c : Fin n → Γ(T'.left, ⊤)} {s : LB.Sec (LPow G L (N : ℤ) T')}
@@ -87,7 +87,7 @@ theorem lin_comp {S : Scheme.{0}} {G : Over S} {L : LB G.left} {N : ℕ} {T T' T
 open GlobalTheory.FramePull in
 
 /- English proof (translation)
-Rewrite using `[lin_iff]`. Introduce `W r z J hJ`. Rewrite using `[H W r z J hJ, Fin.sum_univ_one, gs_one, _root_.one_mul]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem lin_of_isPull {S : Scheme.{0}} {G : Over S} {L : LB G.left} {N : ℕ} {T T' : Over S} {u : T' ⟶ T}
     {s : LB.Sec (LPow G L (N : ℤ) T)} {s' : LB.Sec (LPow G L (N : ℤ) T')} (H : IsPull u s s') :

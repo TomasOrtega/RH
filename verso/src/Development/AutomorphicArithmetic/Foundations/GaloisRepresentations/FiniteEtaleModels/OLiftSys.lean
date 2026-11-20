@@ -15,24 +15,24 @@ section Congruences
 variable {M : Type} [AddCommGroup M]
 
 /- English proof (translation)
-The claim follows from `Exists.intro z h`.
+Supply the required witnesses or components.
 -/
 private theorem cg_mk {n : ℕ} {x y : M} (z : M) (h : x = y + n • z) : Cg n x y := Exists.intro z h
 
 /- English proof (translation)
-The claim follows from `cg_mk 0 (by simp)`.
+A detailed English derivation is pending.
 -/
 private theorem cg_refl (n : ℕ) (x : M) : Cg n x x := cg_mk 0 (by simp)
 
 /- English proof (translation)
-Take `⟨z, hz⟩` from `h`. Conclude with `⟨-z, by rw [hz]; simp⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private theorem cg_symm {n : ℕ} {x y : M} (h : Cg n x y) : Cg n y x := by
   obtain ⟨z, hz⟩ := h
   exact ⟨-z, by rw [hz]; simp⟩
 
 /- English proof (translation)
-Take `⟨z, hz⟩` from `h`. Take `⟨z', hz'⟩` from `k`. Conclude with `⟨z' + z, by rw [hz, hz', smul_add]; abel⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private theorem cg_trans {n : ℕ} {x y w : M} (h : Cg n x y) (k : Cg n y w) : Cg n x w := by
   obtain ⟨z, hz⟩ := h
@@ -40,14 +40,14 @@ private theorem cg_trans {n : ℕ} {x y w : M} (h : Cg n x y) (k : Cg n y w) : C
   exact ⟨z' + z, by rw [hz, hz', smul_add]; abel⟩
 
 /- English proof (translation)
-Take `⟨z, hz⟩` from `h`. Conclude with `⟨f z, by rw [hz, map_add, map_nsmul]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private theorem cg_hom {n : ℕ} (f : M →+ M) {x y : M} (h : Cg n x y) : Cg n (f x) (f y) := by
   obtain ⟨z, hz⟩ := h
   exact ⟨f z, by rw [hz, map_add, map_nsmul]⟩
 
 /- English proof (translation)
-Take `⟨z, hz⟩` from `h`. Conclude with `⟨c • z, by rw [hz, smul_add, smul_comm c n z]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private theorem cg_smul {O : Type} [Ring O] [Module O M] {n : ℕ} (c : O) {x y : M} (h : Cg n x y) :
     Cg n (c • x) (c • y) := by
@@ -55,7 +55,7 @@ private theorem cg_smul {O : Type} [Ring O] [Module O M] {n : ℕ} (c : O) {x y 
   exact ⟨c • z, by rw [hz, smul_add, smul_comm c n z]⟩
 
 /- English proof (translation)
-Take `⟨d, hd⟩` from `h`. Take `⟨z, hz⟩` from `k`. Conclude with `⟨d • z, by rw [hz, hd, mul_smul]⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private theorem cg_of_dvd {a b : ℕ} (h : a ∣ b) {x y : M} (k : Cg b x y) : Cg a x y := by
   obtain ⟨d, hd⟩ := h
@@ -63,7 +63,7 @@ private theorem cg_of_dvd {a b : ℕ} (h : a ∣ b) {x y : M} (k : Cg b x y) : C
   exact ⟨d • z, by rw [hz, hd, mul_smul]⟩
 
 /- English proof (translation)
-Establish `h` using `Nat.gcd_eq_gcd_ab a b`. Rewrite `h` using `[Nat.Coprime.gcd_eq_one hc]`. Move the coercions through the operations in `at h`. Conclude with `h.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations. A detailed English derivation is pending.
 -/
 private theorem bezout {a b : ℕ} (hc : a.Coprime b) : (a : ℤ) * Nat.gcdA a b + b * Nat.gcdB a b = 1 := by
   have h := Nat.gcd_eq_gcd_ab a b
@@ -72,9 +72,9 @@ private theorem bezout {a b : ℕ} (hc : a.Coprime b) : (a : ℤ) * Nat.gcdA a b
   exact h.symm
 
 /- English proof (translation)
-Take `⟨z₁, h1⟩` from `h₁`. Take `⟨z₂, h2⟩` from `h₂`. Use `⟨Nat.gcdA a b • z₂ + Nat.gcdB a b • z₁, ?_⟩` and prove the remaining obligations. Establish `e1 : (a : ℤ) • z₁ = x - y` using `by rw [h1, natCast_zsmul]; abel`. Establish `e2 : (b : ℤ) • z₂ = x - y` using `by rw [h2, natCast_zsmul]; abel`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← natCast_zsmul]`. Use `push_cast`. Establish `key : ((a : ℤ) * b) • (Nat.gcdA a b • z₂ + Nat.gcdB a b • z₁) = ((a : ℤ) * Nat.gcdA a b) • ((b : ℤ) • z₂) + ((b : ℤ) * Nat.gcdB a b) • ((a : ℤ) • z₁)` using `by module`. Rewrite using `[key, e1, e2, ← add_smul, bezout hc, one_smul]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 private theorem cg_mul {a b : ℕ} (hc : a.Coprime b) {x y : M} (h₁ : Cg a x y) (h₂ : Cg b x y) :
     Cg (a * b) x y := by
@@ -92,9 +92,9 @@ private theorem cg_mul {a b : ℕ} (hc : a.Coprime b) {x y : M} (h₁ : Cg a x y
   abel
 
 /- English proof (translation)
-Establish `hb` using `bezout hc`. Establish `h' : (b : ℤ) * Nat.gcdB a b = 1 - a * Nat.gcdA a b` using `by linarith`. Use `⟨⟨Nat.gcdA a b • (x₂ - x₁), ?_⟩, ⟨Nat.gcdB a b • (x₁ - x₂), ?_⟩⟩` and prove the remaining obligations. Rewrite using `[← natCast_zsmul, h'] module`. Establish `h'' : (a : ℤ) * Nat.gcdA a b = 1 - b * Nat.gcdB a b` using `by linarith`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← natCast_zsmul, h'']`. Use `module`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem crt_elt {a b : ℕ} (hc : a.Coprime b) (x₁ x₂ : M) :
     Cg a (((b : ℤ) * Nat.gcdB a b) • x₁ + ((a : ℤ) * Nat.gcdA a b) • x₂) x₁ ∧
@@ -109,7 +109,7 @@ private theorem crt_elt {a b : ℕ} (hc : a.Coprime b) (x₁ x₂ : M) :
     module
 
 /- English proof (translation)
-Set `k : M →+ M` to `{ toFun := fun x => ((b : ℤ) * Nat.gcdB a b) • f x + ((a : ℤ) * Nat.gcdA a b) • x map_zero' := by simp map_add' := by`. Introduce `x y`. Simplify using `only [map_add, smul_add]`. Use `abel }`. Conclude with `⟨k, fun x => crt_elt hc (f x) x⟩`.
+Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Supply the required witnesses or components.
 -/
 private theorem exists_mix {a b : ℕ} (hc : a.Coprime b) (f : M →+ M) :
     ∃ k : M →+ M, ∀ x, Cg a (k x) (f x) ∧ Cg b (k x) x := by
@@ -123,7 +123,7 @@ private theorem exists_mix {a b : ℕ} (hc : a.Coprime b) (f : M →+ M) :
   exact ⟨k, fun x => crt_elt hc (f x) x⟩
 
 /- English proof (translation)
-Take `⟨u, rfl⟩` from `hx`. Take `⟨v, rfl⟩` from `hy`. Use `⟨B x' v + B u y' + n * B u v, ?_⟩` and prove the remaining obligations. Simplify using `[nsmul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem cg_bil {n : ℕ} (B : LinearMap.BilinForm ℤ M) {x x' y y' : M} (hx : Cg n x x')
     (hy : Cg n y y') : (n : ℤ) ∣ B x y - B x' y' := by
@@ -136,20 +136,20 @@ private theorem cg_bil {n : ℕ} (B : LinearMap.BilinForm ℤ M) {x x' y y' : M}
 end Congruences
 
 /- English proof (translation)
-The claim follows from `Nat.Coprime.pow_left _ (Nat.coprime_ordCompl hq hn)`.
+A detailed English derivation is pending.
 -/
 private theorem cop_pow {q n : ℕ} (hq : q.Prime) (hn : n ≠ 0) :
     (q ^ n.factorization q).Coprime (n / q ^ n.factorization q) :=
   Nat.Coprime.pow_left _ (Nat.coprime_ordCompl hq hn)
 
 /- English proof (translation)
-The claim follows from `Nat.ordProj_mul_ordCompl_eq_self n q`.
+A detailed English derivation is pending.
 -/
 private theorem prod_eq (q n : ℕ) : q ^ n.factorization q * (n / q ^ n.factorization q) = n :=
   Nat.ordProj_mul_ordCompl_eq_self n q
 
 /- English proof (translation)
-Establish `h` using `cg_mul (cop_pow hq hn) h₁ h₂`. Rewrite `h` using `[prod_eq]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 private theorem cg_split {M : Type} [AddCommGroup M] {q n : ℕ} (hq : q.Prime) (hn : n ≠ 0) {x y : M}
     (h₁ : Cg (q ^ n.factorization q) x y) (h₂ : Cg (n / q ^ n.factorization q) x y) : Cg n x y := by
@@ -157,33 +157,29 @@ private theorem cg_split {M : Type} [AddCommGroup M] {q n : ℕ} (hq : q.Prime) 
   rwa [prod_eq] at h
 
 /- English proof (translation)
-Establish `hmix : ∀ n : ℕ, ∃ k : M →+ M, n ≠ 0 → ∀ x, Cg (q ^ n.factorization q) (k x) (G (n.factorization q) x) ∧ Cg (n / q ^ n.factorization q) (k x) x`. Introduce `n`. Distinguish the cases in `hn : n = 0`. Conclude with `⟨0, fun h => absurd hn h⟩`. Take `⟨k, hk⟩` from `exists_mix (cop_pow hq hn) (G (n.factorization q))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨k, fun _ => hk⟩`. Use `choose g hg using hmix`. Establish `htow' : ∀ e j x, Cg (q ^ e) (G (e + j) x) (G e x)`. Introduce `e j`. Proceed by induction on `j with`.
+Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `zero => intro x`. Conclude with `cg_refl _ _`. Consider the case `succ j ih`. Introduce `x`. Establish `h1 : Cg (q ^ e) (G (e + j + 1) x) (G (e + j) x)` using `cg_of_dvd (pow_dvd_pow q (Nat.le_add_right e j)) (htow (e + j) x)`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `cg_trans h1 (ih x)`. Establish `hdiv : ∀ n, n ≠ 0 → ∀ D : ℤ, ((q ^ n.factorization q : ℕ) : ℤ) ∣ D → ((n / q ^ n.factorization q : ℕ) : ℤ) ∣ D → (n : ℤ) ∣ D`. Introduce `n hn D h1 h2`. Establish `hc` using `Nat.isCoprime_iff_coprime.mpr (cop_pow hq hn)`. Establish `h` using `hc.mul_dvd h1 h2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `h` using `[← Nat.cast_mul, prod_eq]`. Then use the resulting hypothesis. Use `⟨g, ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `n hn c x`. Establish `hn0 : n ≠ 0` using `hn.ne'`. Conclude with `cg_split hq hn0 (cg_trans (hg n hn0 (c • x)).1 (cg_trans (hlin _ c x) (cg_smul c (cg_symm (hg n hn0 x).1)))) (cg_trans (hg n hn0 (c • x)).2 (cg_smul c (cg_symm (hg n hn0 x).2)))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Introduce `n hn x`. Establish `hn0 : n ≠ 0` using `hn.ne'`. Take `⟨y₁, hy₁⟩` from `honto (n.factorization q) x`. Take `⟨hw1, hw2⟩` from `crt_elt (cop_pow hq hn0) y₁ x`. Establish `key : ∀ w : M, Cg (q ^ n.factorization q) w y₁ → Cg (n / q ^ n.factorization q) w x → Cg n (g n w) x` using `fun w h1 h2 => cg_split hq hn0 (cg_trans (hg n hn0 w).1 (cg_trans (cg_hom _ h1) hy₁)) (cg_trans (hg n hn0 w).2 h2)`.
+Establish an intermediate fact. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `⟨_, key _ hw1 hw2⟩`. Introduce `n hn x z hz`. Establish `hn0 : n ≠ 0` using `hn.ne'`. Establish `h0 : Cg n (g n x) 0` using `⟨z, by rw [hz, zero_add]⟩`. Establish `ha : Cg (q ^ n.factorization q) (g n x) 0` using `cg_of_dvd (Nat.ordProj_dvd n q) h0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hb : Cg (n / q ^ n.factorization q) (g n x) 0` using `cg_of_dvd (Nat.div_dvd_of_dvd (Nat.ordProj_dvd n q)) h0`. Establish `h1 : Cg (q ^ n.factorization q) x 0` using `hinj _ x (cg_trans (cg_symm (hg n hn0 x).1) ha)`. Establish `h2 : Cg (n / q ^ n.factorization q) x 0` using `cg_trans (cg_symm (hg n hn0 x).2) hb`. Take `⟨v, hv⟩` from `cg_split hq hn0 h1 h2`. Conclude with `⟨v, by rw [hv, zero_add]⟩`.
+Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Introduce `n hn x y`. Establish `hn0 : n ≠ 0` using `hn.ne'`. Apply `hdiv n hn0` to reduce the goal to its premises. Establish `h1` using `cg_bil B (hg n hn0 x).1 (hg n hn0 y).1`. Establish `h2` using `hiso (n.factorization q) x y`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[show B (g n x) (g n y) - B x y = (B (g n x) (g n y) - B (G (n.factorization q) x) (G (n.factorization q) y)) + (B (G (n.factorization q) x) (G (n.factorization q) y) - B x y) by ring]`. Conclude with `dvd_add h1 h2`. Conclude with `cg_bil B (hg n hn0 x).2 (hg n hn0 y).2`. Introduce `n m hn hm x`. Establish `hn0 : n ≠ 0` using `hn.ne'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hnm0 : n * m ≠ 0` using `(Nat.mul_pos hn hm).ne'`. Establish `hle : n.factorization q ≤ (n * m).factorization q` using `(Nat.factorization_le_iff_dvd hn0 hnm0).mpr (dvd_mul_right n m) q`. Establish `ha : Cg (q ^ n.factorization q) (g (n * m) x) (g n x)`. Establish `e1` using `cg_of_dvd (pow_dvd_pow q hle) (hg (n * m) hnm0 x).1`. Take `⟨j, hj⟩` from `Nat.exists_eq_add_of_le hle`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e2 : Cg (q ^ n.factorization q) (G ((n * m).factorization q) x) (G (n.factorization q) x)`. Rewrite using `[hj]`. Conclude with `htow' _ j x`. Conclude with `cg_trans e1 (cg_trans e2 (cg_symm (hg n hn0 x).1))`. Establish `hb : Cg (n / q ^ n.factorization q) (g (n * m) x) (g n x)`.
-
-Establish `e1` using `(hg (n * m) hnm0 x).2`. Rewrite `e1` using `[Nat.ordCompl_mul]`. Conclude with `cg_trans (cg_of_dvd (dvd_mul_right _ _) e1) (cg_symm (hg n hn0 x).2)`. Conclude with `cg_split hq hn0 ha hb`. Introduce `n hn x`.
-
-Conclude with `(hg n hn.ne' x).1`. Introduce `n hn x`. Conclude with `(hg n hn.ne' x).2`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 private theorem sys_of {O M : Type} [Ring O] [AddCommGroup M] [Module O M] (B : LinearMap.BilinForm ℤ M)
     {q : ℕ} (hq : q.Prime) (G : ℕ → M →+ M)
@@ -278,11 +274,9 @@ private theorem sys_of {O M : Type} [Ring O] [AddCommGroup M] [Module O M] (B : 
     exact (hg n hn.ne' x).2
 
 /- English proof (translation)
-Establish `hcop : c.Coprime (q ^ f)` using `Nat.Coprime.pow_right f hc`. Establish `hz` using `bezout hcop`. Establish `hA : (c : A) * (Nat.gcdA c (q ^ f) : A) + (q : A) ^ f * (Nat.gcdB c (q ^ f) : A) = 1`. Establish `h` using `congrArg (Int.cast : ℤ → A) hz`. Move the coercions through the operations in `at h`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Conclude with `h`. Move the coercions through the operations in `at hn`. Establish `e : (q : A) ^ a = ((q : A) ^ a * c) * (Nat.gcdA c (q ^ f) : A) + (q : A) ^ f * ((q : A) ^ a * (Nat.gcdB c (q ^ f) : A))`. Take the linear combination `(-(q : A) ^ a) * hA`. Rewrite using `[e]`.
-
-Conclude with `I.add_mem (I.mul_mem_right _ hn) (I.mul_mem_right _ hf)`.
+Move the embeddings inside the algebraic operations. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem pow_mem_of {A : Type} [CommRing A] (I : Ideal A) {q a c f : ℕ} (hc : c.Coprime q)
     (hn : ((q ^ a * c : ℕ) : A) ∈ I) (hf : (q : A) ^ f ∈ I) : (q : A) ^ a ∈ I := by
@@ -303,17 +297,17 @@ end UpperTheory.Gal.FiniteEtaleModels.O
 
 open UpperTheory.Gal.FiniteEtaleModels.O GlobalTheory.UPel.HT.EtLev GlobalTheory.UPel.HT NumberField in
 /- English proof (translation)
-Introduce `q _ D hm r hr 𝔞 N₀ hpow hcop g₀`. Establish `hq : q.Prime` using `Fact.out`. Take `⟨G, hG⟩` from `qSys q D hm r hr 𝔞 hpow g₀`. Take `⟨g, h1, h2, h3, h4, h5, h6, h7⟩` from `sys_of (O := D.O) D.EF hq G (fun e => (hG e).1) (fun e => (hG e).2.1) (fun e => (hG e).2.2.1) (fun e x => ((adj q D e).2.2 (G e) (hG e).2.1).1 x) (fun e x => ((adj q D e).2.2 (G e) (hG e).2.1).2 x)`. Use `⟨g, h1, h2, h3, h4, h5, ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hnd : ¬ q ∣ N₀` using `(Nat.Prime.coprime_iff_not_dvd hq).mp hcop.symm`. Establish `hN : N₀ ≠ 0` using `fun h => hnd (h ▸ dvd_zero q)`. Establish `hv : N₀.factorization q = 0` using `Nat.factorization_eq_zero_of_not_dvd hnd`. Introduce `x`. Establish `h` using `h7 N₀ (Nat.pos_of_ne_zero hN) x`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `h` using `[hv, pow_zero, Nat.div_one]`. Conclude with `h`. Introduce `n hn hmem x`. Establish `hn0 : n ≠ 0` using `hn.ne'`. Take `⟨f, hf⟩` from `hpow`.
+Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hqf : (q : 𝓞 D.F) ^ f ∈ 𝔞` using `hf (Ideal.pow_mem_pow (GlobalTheory.UPel.HT.ES.p_mem_uIdeal D r) f)`. Establish `hn' : ((q ^ n.factorization q * (n / q ^ n.factorization q) : ℕ) : 𝓞 D.F) ∈ 𝔞`. Rewrite using `[prod_eq]`. Conclude with `hmem`. Establish `hqa : (q : 𝓞 D.F) ^ n.factorization q ∈ 𝔞` using `pow_mem_of 𝔞 (Nat.coprime_ordCompl hq hn0).symm hn' hqf`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← (hG (n.factorization q)).2.2.2 hqa x]`. Take `⟨z, hz⟩` from `h6 n hn x`. Establish `hzero : (wSub D 𝔞 1).mkQ (q ^ n.factorization q • z) = 0`. Rewrite using `[Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero, ← Nat.cast_smul_eq_nsmul D.O]`. Apply `Submodule.subset_span` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨((q ^ n.factorization q : ℕ) : 𝓞 D.F), ?_, z, ?_⟩` and prove the remaining obligations. Rewrite using `[pow_one]`. Conclude with `hqa` after adjusting the coercions. Rewrite using `[map_natCast]`. Rewrite using `[hz, map_add, hzero, add_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.FiniteEtaleModels.O.liftSys :
     UpperTheory.Gal.FiniteEtaleModels.LiftSys := by

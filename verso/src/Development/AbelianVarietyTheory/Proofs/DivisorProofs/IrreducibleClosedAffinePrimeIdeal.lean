@@ -20,11 +20,11 @@ open CategoryTheory AlgebraicGeometry TopologicalSpace Topology
 namespace GlobalTheory.IrrSmooth
 
 /- English proof (translation)
-Use `set Z : Set (PrimeSpectrum Γ(Y, V)) := hV.fromSpec ⁻¹' T`. Establish `hZc : IsClosed Z` using `hT.preimage hV.fromSpec.continuous`. Establish `hZi : IsIrreducible Z`. Take `⟨y, hyT, hyV⟩` from `hne`. Rewrite `hyV` using `[← hV.range_fromSpec]`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨z, rfl⟩` from `hyV`. Conclude with `⟨⟨z, hyT⟩, hirr.2.preimage hV.fromSpec.isOpenEmbedding⟩`. Take `⟨ξ, hξ⟩` from `QuasiSober.sober hZi hZc`. Use `⟨ξ, ?_, fun x => ?_⟩` and prove the remaining obligations. Establish `: ξ ∈ Z` using `by rw [← hξ.def]; exact subset_closure rfl`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `this`. Establish `h1 : (x : Y) ∈ T ↔ hV.primeIdealOf x ∈ Z` using `by show _ ↔ hV.fromSpec (hV.primeIdealOf x) ∈ T`. Rewrite using `[hV.fromSpec_primeIdealOf]`. Rewrite using `[h1, ← hξ.def, ← PrimeSpectrum.le_iff_mem_closure]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_prime_cut {Y : Scheme.{0}} {V : Y.Opens} (hV : IsAffineOpen V) {T : Set Y}
     (hT : IsClosed T) (hirr : IsIrreducible T) (hne : (T ∩ (V : Set Y)).Nonempty) :
@@ -48,15 +48,15 @@ theorem exists_prime_cut {Y : Scheme.{0}} {V : Y.Opens} (hV : IsAffineOpen V) {T
   rfl
 
 /- English proof (translation)
-Establish `hdisj : Disjoint (Submonoid.powers t : Set R) (Q : Set R)`. Rewrite using `[Set.disjoint_left]`. Introduce and unpack `_ ⟨n, rfl⟩ hn`. Conclude with `ht (‹Q.IsPrime›.mem_of_pow_mem n hn)`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨_, n, rfl⟩`. Simplify using `only [map_pow, Ideal.Quotient.algebraMap_quotient_map_quotient]`. Conclude with `((IsLocalization.Away.algebraMap_isUnit t).map (Ideal.Quotient.mk _)).pow n`. Introduce `z`. Take `⟨w, rfl⟩` from `Ideal.Quotient.mk_surjective z`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨⟨a, ⟨_, n, rfl⟩⟩, h⟩` from `IsLocalization.surj (Submonoid.powers t) w`. Use `⟨⟨Ideal.Quotient.mk Q a, ⟨_, n, rfl⟩⟩, ?_⟩` and prove the remaining obligations. Simplify using `only [map_pow, Ideal.Quotient.algebraMap_quotient_map_quotient]`. Rewrite using `[← map_pow, ← map_mul, ← map_pow, h]`. Introduce `x y hxy`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨a, rfl⟩` from `Ideal.Quotient.mk_surjective x`. Take `⟨b, rfl⟩` from `Ideal.Quotient.mk_surjective y`. Use `⟨1, ?_⟩` and prove the remaining obligations. Simplify using `only [Ideal.Quotient.algebraMap_quotient_map_quotient, Ideal.Quotient.eq] at hxy`. Rewrite `hxy` using `[← map_sub]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: a - b ∈ Q`. Rewrite using `[← IsLocalization.comap_map_of_isPrime_disjoint (Submonoid.powers t) S ‹_› hdisj]`. Conclude with `hxy`. Simplify using `[Ideal.Quotient.eq.2 this]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isLocalization_away_quotient {R S : Type*} [CommRing R] [CommRing S] [Algebra R S] (t : R)
     [IsLocalization.Away t S] (Q : Ideal R) [Q.IsPrime] (ht : t ∉ Q) :
@@ -89,27 +89,21 @@ theorem isLocalization_away_quotient {R S : Type*} [CommRing R] [CommRing S] [Al
 open Limits ReciprocityTheory.ChartRestriction.G.Geo.Tor in
 
 /- English proof (translation)
-Introduce `k _ X p _ σ T hT hirr`. Use `set Y : Scheme.{0} := pullback p (spMap σ)`. Use `set q : Y ⟶ Sp ℂ := pullback.snd p (spMap σ)`. Establish `hft : ∀ U : Y.Opens, IsAffineOpen U → (ReciprocityTheory.ChartRestriction.G.DVR.FlatBC.algX q U).FiniteType` using `fun U hU => (HasRingHomProperty.appLE @LocallyOfFiniteType q inferInstance ⟨⊤, isAffineOpen_top _⟩ ⟨U, hU⟩ _).comp (RingHom.FiniteType.of_surjective _ (ConcreteCategory.bijective_of_isIso (Scheme.ΓSpecIso (CommRingCat.of ℂ)).inv).2)`. Take `⟨y, hy⟩` from `hirr.nonempty`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨V, hV, hyV, -⟩` from `Opens.isBasis_iff_nbhd.1 Y.isBasis_affineOpens (show y ∈ (⊤ : Y.Opens) from trivial)`. Use `replace hV : IsAffineOpen V := hV`. Take `⟨ξ, hξT, hQT⟩` from `exists_prime_cut hV hT hirr ⟨y, hy, hyV⟩`. Use `set Q := ξ.asIdeal`. Use `letI : Algebra ℂ Γ(Y, V) := (ReciprocityTheory.ChartRestriction.G.DVR.FlatBC.algX q V).toAlgebra`.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `haveI : Algebra.FiniteType ℂ Γ(Y, V) := hft V hV`. Use `haveI : Algebra.FiniteType ℂ (Γ(Y, V) ⧸ Q) := Algebra.FiniteType.of_surjective (Ideal.Quotient.mkₐ ℂ Q) Ideal.Quotient.mk_surjective`. Take `⟨d, hd, -⟩` from `GlobalTheory.exists_ringKrullDim_eq_and_trdeg_eq ℂ (Γ(Y, V) ⧸ Q)`. Take `⟨s, hs0, hsm⟩` from `GlobalTheory.AffinePoints.exists_ne_zero_isStandardSmoothOfRelativeDimension (K := ℂ) hd`. Take `⟨t, rfl⟩` from `Ideal.Quotient.mk_surjective s`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ht : t ∉ Q` using `fun h => hs0 (Ideal.Quotient.eq_zero_iff_mem.2 h)`. Establish `hW : IsAffineOpen (Y.basicOpen t)` using `hV.basicOpen t`. Establish `hWV : Y.basicOpen t ≤ V` using `Y.basicOpen_le t`. Establish `hloc` using `hV.isLocalization_basicOpen t`. Use `set W := Y.basicOpen t`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hres : algebraMap Γ(Y, V) Γ(Y, W) = (Y.presheaf.map (homOfLE hWV).op).hom` using `rfl`. Use `set P := Q.map (algebraMap Γ(Y, V) Γ(Y, W))`. Establish `hdisj : Disjoint (Submonoid.powers t : Set Γ(Y, V)) (Q : Set Γ(Y, V))`. Rewrite using `[Set.disjoint_left]`. Introduce and unpack `_ ⟨n, rfl⟩ hn`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `ht (ξ.2.mem_of_pow_mem n hn)`. Use `haveI hP : P.IsPrime := IsLocalization.isPrime_of_isPrime_disjoint (Submonoid.powers t) _ Q ξ.2 hdisj`. Use `⟨W, hW, ⟨hV.fromSpec ξ, hξT, ?_⟩, P, hP, fun x => ?_, ?_⟩` and prove the remaining obligations. Establish `: ξ ∈ hV.fromSpec ⁻¹ᵁ Y.basicOpen t`. Rewrite using `[hV.fromSpec_preimage_basicOpen]`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `ht`. Conclude with `this`. Establish `hxV : (x : Y) ∈ V` using `hWV x.2`. Establish `hc` using `IsAffineOpen.comap_primeIdealOf_appLE (f := 𝟙 Y) V hV W hW hWV x.2`. Rewrite using `[hQT ⟨x, hxV⟩, Ideal.map_le_iff_le_comap]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact.
 
-Establish `hc'` using `congrArg PrimeSpectrum.asIdeal hc`. Simplify using `only [PrimeSpectrum.comap_asIdeal] at hc'`. Use `Iff.rfl using 2` and compare the differences between its conclusion and the goal. Rewrite using `[hres]`. Use `hc' using 3` and compare the differences between its conclusion and the goal.
-
-Apply the tactic sequence `all_goals first | rfl | simp [Scheme.Hom.appLE]`. Use `letI : Algebra ℂ Γ(Y, W) := (ReciprocityTheory.ChartRestriction.G.DVR.FlatBC.algX q W).toAlgebra haveI : Algebra.FiniteType ℂ Γ(Y, W) := hft W hW`. Use `⟨Algebra.FiniteType.of_surjective (Ideal.Quotient.mkₐ ℂ P) Ideal.Quotient.mk_surjective, d, ?_⟩` and prove the remaining obligations. Use `haveI := isLocalization_away_quotient (S := Γ(Y, W)) t Q ht`. Use `haveI : IsScalarTower ℂ (Γ(Y, V) ⧸ Q) (Γ(Y, W) ⧸ P) := IsScalarTower.of_algebraMap_eq fun c => by`.
-
-Rewrite using `[IsScalarTower.algebraMap_apply ℂ Γ(Y, W) (Γ(Y, W) ⧸ P), IsScalarTower.algebraMap_apply ℂ Γ(Y, V) (Γ(Y, V) ⧸ Q), Ideal.Quotient.algebraMap_eq, Ideal.Quotient.algebraMap_eq, Ideal.Quotient.algebraMap_quotient_map_quotient]`. Use `congr 1`. Simplify using `only [RingHom.algebraMap_toAlgebra, hres, ReciprocityTheory.ChartRestriction.G.DVR.FlatBC.algX, RingHom.comp_apply]`. Express the relevant statement in the definitionally equal form `_ = ((Scheme.ΓSpecIso (CommRingCat.of ℂ)).inv ≫ q.appLE ⊤ V _ ≫ Y.presheaf.map (homOfLE hWV).op).hom c`. Establish `e1 : q.appLE ⊤ V (by simp) ≫ Y.presheaf.map (homOfLE hWV).op = q.appLE ⊤ W (by simp)` using `Scheme.Hom.appLE_map ..`.
-
-Rewrite using `[e1]`. Both sides reduce to the same expression. Set `e` to `(IsLocalization.algEquiv (Submonoid.powers (Ideal.Quotient.mk Q t)) (Localization.Away (Ideal.Quotient.mk Q t)) (Γ(Y, W) ⧸ P)).restrictScalars ℂ`. Use `haveI := Algebra.IsStandardSmoothOfRelativeDimension.of_algEquiv (n := d) (e := e)`. Conclude with `GlobalTheory.AffinePoints.hasAlgebraicCharts_of_isStandardSmooth`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem exists_affine_smooth_prime : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) (p : X ⟶ Sp k) [LocallyOfFiniteType p] (σ : k →+* ℂ) (T : Set (Limits.pullback p (spMap σ) : Scheme.{0})), IsClosed T → IsIrreducible T → ∃ (W : (Limits.pullback p (spMap σ) : Scheme.{0}).Opens) (hW : IsAffineOpen W), (T ∩ (W : Set (Limits.pullback p (spMap σ) : Scheme.{0}))).Nonempty ∧ ∃ P : Ideal Γ((Limits.pullback p (spMap σ) : Scheme.{0}), W), P.IsPrime ∧ (∀ x : W, (x : (Limits.pullback p (spMap σ) : Scheme.{0})) ∈ T ↔ P ≤ (hW.primeIdealOf x).asIdeal) ∧ letI : Algebra ℂ Γ((Limits.pullback p (spMap σ) : Scheme.{0}), W) := (ReciprocityTheory.ChartRestriction.G.DVR.FlatBC.algX (Limits.pullback.snd p (spMap σ)) W).toAlgebra; Algebra.FiniteType ℂ (Γ((Limits.pullback p (spMap σ) : Scheme.{0}), W) ⧸ P) ∧ ∃ d' : ℕ, GlobalTheory.AffinePoints.HasAlgebraicCharts ℂ (Γ((Limits.pullback p (spMap σ) : Scheme.{0}), W) ⧸ P) d' := by
   intro k _ X p _ σ T hT hirr

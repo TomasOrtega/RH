@@ -14,7 +14,7 @@ variable {K : Type*} [Field K] [ValuativeRel K] [TopologicalSpace K] [IsNonarchi
 omit [TopologicalSpace K] [IsNonarchimedeanLocalField K] in
 
 /- English proof (translation)
-Rewrite using `[Ideal.span_singleton_eq_top.2 ha]`. Establish `: Subsingleton (𝒪[K] ⧸ (⊤ : Ideal 𝒪[K]))` using `Ideal.Quotient.subsingleton_iff.2 rfl`. Conclude with `Nat.card_unique`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem card_quotient_span_eq_one_of_isUnit {a : 𝒪[K]} (ha : IsUnit a) :
     Nat.card (𝒪[K] ⧸ Ideal.span {a}) = 1 := by
@@ -23,9 +23,9 @@ theorem card_quotient_span_eq_one_of_isUnit {a : 𝒪[K]} (ha : IsUnit a) :
   exact Nat.card_unique
 
 /- English proof (translation)
-Take `⟨π, hπ⟩` from `IsDiscreteValuationRing.exists_irreducible 𝒪[K]`. Take `⟨i, u, rfl⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible ha hπ`. Take `⟨j, w, rfl⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible hb hπ`. Establish `key : ∀ (v : 𝒪[K]ˣ) (n : ℕ), Ideal.span {(v : 𝒪[K]) * π ^ n} = Ideal.span {π ^ n}` using `fun v n => Ideal.span_singleton_mul_left_unit v.isUnit _`. Establish `hab : (u : 𝒪[K]) * π ^ i * ((w : 𝒪[K]) * π ^ j) = ((u * w : 𝒪[K]ˣ) : 𝒪[K]) * π ^ (i + j)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hab, key, key, key, FormalGroup.card_quotient_span_pow hπ, FormalGroup.card_quotient_span_pow hπ, FormalGroup.card_quotient_span_pow hπ, pow_add]`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 -/
 theorem card_quotient_span_mul {a b : 𝒪[K]} (ha : a ≠ 0) (hb : b ≠ 0) :
     Nat.card (𝒪[K] ⧸ Ideal.span {a * b}) =
@@ -45,7 +45,7 @@ theorem card_quotient_span_mul {a b : 𝒪[K]} (ha : a ≠ 0) (hb : b ≠ 0) :
 omit [TopologicalSpace K] [IsNonarchimedeanLocalField K] in
 
 /- English proof (translation)
-Introduce `h`. Apply `hm` to reduce the goal to its premises. Use `congrArg (fun x : 𝒪[K] => (x : K)) h` as an intermediate fact. Simplify using `using this`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem natCast_integer_ne_zero {m : ℕ} (hm : (m : K) ≠ 0) : (m : 𝒪[K]) ≠ 0 := by
   intro h
@@ -54,7 +54,7 @@ theorem natCast_integer_ne_zero {m : ℕ} (hm : (m : K) ≠ 0) : (m : 𝒪[K]) �
   simpa using this
 
 /- English proof (translation)
-Rewrite using `[Nat.cast_mul]`. Conclude with `card_quotient_span_mul (natCast_integer_ne_zero hm) (natCast_integer_ne_zero hn)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_quotient_span_natCast_mul {m n : ℕ} (hm : (m : K) ≠ 0) (hn : (n : K) ≠ 0) :
     Nat.card (𝒪[K] ⧸ Ideal.span {((m * n : ℕ) : 𝒪[K])}) =
@@ -63,9 +63,9 @@ theorem card_quotient_span_natCast_mul {m n : ℕ} (hm : (m : K) ≠ 0) (hn : (n
   exact card_quotient_span_mul (natCast_integer_ne_zero hm) (natCast_integer_ne_zero hn)
 
 /- English proof (translation)
-Proceed by induction on `d with`. Consider the case `zero`. Rewrite using `[pow_zero, pow_zero, Nat.cast_one]`. Conclude with `card_quotient_span_eq_one_of_isUnit isUnit_one`. Consider the case `succ d ih`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact.
 
-Establish `hmd : ((m ^ d : ℕ) : K) ≠ 0`. Rewrite using `[Nat.cast_pow]`. Conclude with `pow_ne_zero _ hm`. Rewrite using `[pow_succ, card_quotient_span_natCast_mul hmd hm, ih, pow_succ]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_quotient_span_natCast_pow {m : ℕ} (hm : (m : K) ≠ 0) (d : ℕ) :
     Nat.card (𝒪[K] ⧸ Ideal.span {((m ^ d : ℕ) : 𝒪[K])}) =
@@ -81,7 +81,7 @@ theorem card_quotient_span_natCast_pow {m : ℕ} (hm : (m : K) ≠ 0) (d : ℕ) 
     rw [pow_succ, card_quotient_span_natCast_mul hmd hm, ih, pow_succ]
 
 /- English proof (translation)
-Apply `card_quotient_span_eq_one_of_isUnit` to reduce the goal to its premises. Assume the negation of the conclusion as `h`. Apply `hm` to reduce the goal to its premises. Rewrite using `[← map_natCast (IsLocalRing.residue 𝒪[K]), IsLocalRing.residue_eq_zero_iff]`. Conclude with `(IsLocalRing.mem_maximalIdeal _).2 h`.
+Reduce the claim to the hypotheses of an applicable result. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_quotient_span_natCast_eq_one {m : ℕ} (hm : (m : 𝓀[K]) ≠ 0) :
     Nat.card (𝒪[K] ⧸ Ideal.span {(m : 𝒪[K])}) = 1 := by
@@ -100,21 +100,19 @@ variable {K L : Type*} [Field K] [ValuativeRel K] [TopologicalSpace K] [IsNonarc
   [ValuativeExtension K L] [FiniteDimensional K L]
 
 /- English proof (translation)
-Set `ι` to `Module.Free.ChooseBasisIndex 𝒪[K] 𝒪[L]`. Set `b : Module.Basis ι 𝒪[K] 𝒪[L]` to `Module.Free.chooseBasis 𝒪[K] 𝒪[L]`. Set `I : Ideal 𝒪[K]` to `Ideal.span {(m : 𝒪[K])}`. Set `ψ : 𝒪[L] →ₗ[𝒪[K]] (ι → 𝒪[K] ⧸ I)` to `LinearMap.pi fun i => I.mkQ ∘ₗ (LinearMap.proj i ∘ₗ b.equivFun.toLinearMap)`. Establish `hψ : ∀ x i, ψ x i = Submodule.Quotient.mk (b.equivFun x i)` using `fun _ _ => rfl`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hsmul : ∀ y : 𝒪[L], (m : 𝒪[K]) • y = (m : 𝒪[L]) * y` using `fun y => by`. Rewrite using `[Algebra.smul_def, map_natCast]`. Establish `hsurj : Function.Surjective ψ`. Introduce `v`. Use `⟨b.equivFun.symm fun i => Quotient.out (v i), ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use function extensionality and compare the values at `i`. Rewrite using `[hψ, LinearEquiv.apply_symm_apply]`. Conclude with `Quotient.out_eq (v i)`. Establish `hker : LinearMap.ker ψ = (Ideal.span {(m : 𝒪[L])}).restrictScalars 𝒪[K]`. Use extensionality with `x`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[LinearMap.mem_ker, Submodule.restrictScalars_mem, Ideal.mem_span_singleton']`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Establish `hc : ∀ i, ∃ c : 𝒪[K], c * (m : 𝒪[K]) = b.equivFun x i` using `fun i => by`. Use `congrFun hx i` as an intermediate fact.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[hψ, Pi.zero_apply, Submodule.Quotient.mk_eq_zero]`. Conclude with `Ideal.mem_span_singleton'.1 this`. Use `choose c hc using hc`. Use `⟨b.equivFun.symm c, ?_⟩` and prove the remaining obligations. Rewrite using `[mul_comm, ← hsmul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Apply `b.equivFun.injective` to reduce the goal to its premises. Rewrite using `[map_smul, LinearEquiv.apply_symm_apply]`. Use function extensionality and compare the values at `i`. Rewrite using `[Pi.smul_apply, smul_eq_mul, ← hc i, mul_comm]`. Introduce and unpack `⟨a, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `i`. Rewrite using `[hψ, Pi.zero_apply, Submodule.Quotient.mk_eq_zero, mul_comm, ← hsmul, map_smul, Pi.smul_apply, smul_eq_mul]`. Conclude with `Ideal.mul_mem_right _ _ (Ideal.mem_span_singleton_self _)`. Establish `e1 : (𝒪[L] ⧸ (Ideal.span {(m : 𝒪[L])}).restrictScalars 𝒪[K]) ≃ₗ[𝒪[K]] (ι → 𝒪[K] ⧸ I)` using `(Submodule.quotEquivOfEq _ _ hker.symm).trans (ψ.quotKerEquivOfSurjective hsurj)`. Establish `e2` using `Submodule.Quotient.restrictScalarsEquiv 𝒪[K] (Ideal.span {(m : 𝒪[L])})`.
-
-Rewrite using `[← Nat.card_congr e2.toEquiv, Nat.card_congr e1.toEquiv, Nat.card_fun, ← Module.finrank_eq_nat_card_basis b, finrank_integer]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_quotient_span_natCast_finiteExtension (m : ℕ) :
     Nat.card (𝒪[L] ⧸ Ideal.span {(m : 𝒪[L])}) =
@@ -166,7 +164,7 @@ end Extension
 section Groups
 
 /- English proof (translation)
-Establish `hP : IsPGroup l (Multiplicative A)` using `fun x => ⟨1, by`. Rewrite using `[pow_one]`. Conclude with `congrArg Multiplicative.ofAdd (h (Multiplicative.toAdd x))⟩`. Take `⟨n, hn⟩` from `IsPGroup.iff_card.1 hP`. Conclude with `⟨n, hn⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_card_eq_prime_pow_of_nsmul {A : Type*} [AddCommGroup A] [Finite A] {l : ℕ}
     [Fact l.Prime] (h : ∀ a : A, l • a = 0) : ∃ d, Nat.card A = l ^ d := by
@@ -177,13 +175,13 @@ theorem exists_card_eq_prime_pow_of_nsmul {A : Type*} [AddCommGroup A] [Finite A
   exact ⟨n, hn⟩
 
 /- English proof (translation)
-Set `H` to `W.map (Representation.asGroupHom M.ρ)`. Establish `hH : IsPGroup l H`. Introduce and unpack `⟨_, g, hg, rfl⟩`. Take `⟨n, hn⟩` from `hW g hg`. Use `⟨n, Subtype.ext (Units.ext (LinearMap.ext fun a => ?_))⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [SubmonoidClass.coe_pow, Subgroup.coe_one, Units.val_one, Module.End.one_apply]`. Rewrite using `[← map_pow, Representation.asGroupHom_apply, hT _ hn]`. Take `⟨d, hd⟩` from `exists_card_eq_prime_pow_of_nsmul hl`. Establish `hd0 : d ≠ 0`. Introduce and unpack `rfl`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `h1` using `(Finite.one_lt_card_iff_nontrivial (α := M)).2 inferInstance`. Rewrite `h1` using `[hd, pow_zero]`. Conclude with `lt_irrefl _ h1`. Establish `hcard : l ∣ Nat.card M` using `hd ▸ dvd_pow_self l hd0`. Establish `h0 : (0 : M) ∈ MulAction.fixedPoints H M` using `fun h => by show (h : (M →ₗ[k] M)ˣ) • (0 : M) = 0`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `smul_zero _`. Take `⟨b, hb, hb0⟩` from `hH.exists_fixed_point_of_prime_dvd_card_of_fixed_point M hcard h0`. Conclude with `⟨b, hb0.symm, fun g hg => hb ⟨_, g, hg, rfl⟩⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_ne_zero_forall_mem_eq {k G : Type*} [CommRing k] [Group G] {l : ℕ} [Fact l.Prime]
     (M : Rep k G) [Finite M] [Nontrivial M] (hl : ∀ m : M, l • m = 0) (W T : Subgroup G)

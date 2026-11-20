@@ -25,11 +25,11 @@ open Formalism.IndefR.FWT Formalism.L2.Pj Formalism.IndefR.Mult GlobalTheory.Rea
 namespace GlobalTheory.FWKapMove
 
 /- English proof (translation)
-Introduce `B B' f f' T T' w w' hPre Z hX Wt z Z' hX' Wt' core' alg' halg hcore hlaws Xg tr R' hRS hmu ι hι κ' hκ' i τ`. Take `⟨P'⟩` from `B'`. Simplify using `only at hPre`. Substitute `hPre` using the available equality. Take `⟨h1, h2, h3⟩` from `hκ' i i rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify by unfolding definitions. Substitute using the available equality. Extract witnesses or component facts from the available result.
 
-Establish `h1'` using `eq_of_heq h1`. Establish `h2'` using `eq_of_heq h2`. Take `⟨k1, k2, k3⟩` from `z.geo.fw.kap i τ`. Use `⟨fun k => ?_, fun k => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[h1']`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `k1 k`. Rewrite using `[h2']`. Conclude with `k2 k`. Rewrite using `[h3]`. Conclude with `k3`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kap_moved : ∀ (B B' : Base) (f : Fr B.toPre) (f' : Fr B'.toPre) (T : TwDat B) (T' : TwDat B') (w : ColW B f T) (w' : ColW B' f' T'),
     B'.toPre = B.toPre → ∀ (Z : w.Lt) (hX : B.fields.Ok) (Wt : Set B.places.Pl) (z : Dat (w.st Z) w.I hX T Wt) (Z' : w'.Lt) (hX' : B'.fields.Ok)

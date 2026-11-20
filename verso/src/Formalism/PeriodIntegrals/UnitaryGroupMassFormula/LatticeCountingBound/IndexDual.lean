@@ -46,19 +46,17 @@ theorem absNorm_eq_index {S : Type} [CommRing S] [IsDedekindDomain S] [Module.Fr
     (I : Ideal S) : Ideal.absNorm I = I.toAddSubgroup.index := rfl
 
 /- English proof (translation)
-Establish `hle : Ideal.span {a} ≤ qI 𝔞 a`. Introduce `y hy c _`. Take `⟨z, rfl⟩` from `Ideal.mem_span_singleton'.mp hy`. Rewrite using `[Ideal.mem_span_singleton']`. Conclude with `⟨c * z, by ring⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Establish `hmul : 𝔞 * qI 𝔞 a ≤ Ideal.span {a}` using `Ideal.mul_le.mpr fun r hr s hs => hs r hr`. Establish `hq0 : qI 𝔞 a ≠ ⊥`. Introduce `h`. Establish `: a ∈ qI 𝔞 a` using `hle (Ideal.mem_span_singleton_self a)`. Rewrite `this` using `[h, Ideal.mem_bot]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `ha0 this`. Establish `hNq : Ideal.absNorm (qI 𝔞 a) ≠ 0` using `fun h => hq0 (Ideal.absNorm_eq_zero_iff.mp h)`. Establish `hNa : Ideal.absNorm (Ideal.span {a}) ≠ 0`. Introduce `h`. Rewrite `h` using `[Ideal.absNorm_eq_zero_iff, Ideal.span_singleton_eq_bot]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `ha0 h`. Establish `hN𝔞 : Ideal.absNorm 𝔞 ≠ 0` using `fun h => h𝔞 (Ideal.absNorm_eq_zero_iff.mp h)`. Establish `hrel : (Ideal.span {a}).toAddSubgroup.relIndex (qI 𝔞 a).toAddSubgroup * Ideal.absNorm (qI 𝔞 a) = Ideal.absNorm (Ideal.span {a})`. Rewrite using `[absNorm_eq_index, absNorm_eq_index]`. Conclude with `AddSubgroup.relIndex_mul_index ((Submodule.toAddSubgroup_le _ _).mpr hle)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `hdvd : Ideal.absNorm (Ideal.span {a}) ∣ Ideal.absNorm 𝔞 * Ideal.absNorm (qI 𝔞 a)`. Use `Ideal.absNorm_dvd_absNorm_of_le hmul` as an intermediate fact. Rewrite `this` using `[map_mul]`. Then use the resulting hypothesis. Establish `hr0 : (Ideal.span {a}).toAddSubgroup.relIndex (qI 𝔞 a).toAddSubgroup ≠ 0`. Introduce `h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `hrel` using `[h, zero_mul]`. Conclude with `hNa hrel.symm`. Use `⟨hle, hr0, ?_⟩` and prove the remaining obligations. Establish `h1 : (Ideal.span {a}).toAddSubgroup.relIndex (qI 𝔞 a).toAddSubgroup * Ideal.absNorm (qI 𝔞 a) ≤ Ideal.absNorm 𝔞 * Ideal.absNorm (qI 𝔞 a)`. Rewrite using `[hrel]`.
-
-Conclude with `Nat.le_of_dvd (Nat.pos_of_ne_zero (mul_ne_zero hN𝔞 hNq)) hdvd`. Conclude with `Nat.le_of_mul_le_mul_right h1 (Nat.pos_of_ne_zero hNq)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem quot_le (K : Type) [Field K] [NumberField K] (𝔞 : Ideal (𝓞 K)) (h𝔞 : 𝔞 ≠ ⊥) (a : 𝓞 K)
     (ha0 : a ≠ 0) :
@@ -101,14 +99,14 @@ theorem quot_le (K : Type) [Field K] [NumberField K] (𝔞 : Ideal (𝓞 K)) (h�
   exact Nat.le_of_mul_le_mul_right h1 (Nat.pos_of_ne_zero hNq)
 
 /- English proof (translation)
-Introduce `_ ht s hs` and use `ht s (h hs)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem dualL_anti {K : Type} [Field K] [NumberField K] {k : ℕ} {X Y : Submodule (𝓞 K) (Fin k → K)}
     (h : X ≤ Y) : dualL Y ≤ dualL X :=
   fun _ ht s hs => ht s (h hs)
 
 /- English proof (translation)
-Simplify using `only [dotProduct, Pi.smul_apply, Algebra.smul_def, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => by ring` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem smul_dot {K : Type} [Field K] [NumberField K] {k : ℕ} (c : 𝓞 K) (x t : Fin k → K) :
     (c • x) ⬝ᵥ t = algebraMap (𝓞 K) K c * (x ⬝ᵥ t) := by
@@ -116,35 +114,31 @@ theorem smul_dot {K : Type} [Field K] [NumberField K] {k : ℕ} (c : 𝓞 K) (x 
   refine Finset.sum_congr rfl fun i _ => by ring
 
 /- English proof (translation)
-Establish `hX1Y : X ⊔ Submodule.span (𝓞 K) {x} ≤ Y` using `sup_le hXY ((Submodule.span_singleton_le_iff_mem _ _).mpr hxY)`. Establish `hxX1 : x ∈ X ⊔ Submodule.span (𝓞 K) {x}` using `Submodule.mem_sup_right (Submodule.mem_span_singleton_self x)`. Establish `hneX1 : X.toAddSubgroup.relIndex (X ⊔ Submodule.span (𝓞 K) {x}).toAddSubgroup ≠ 0` using `fun h => hne (AddSubgroup.relIndex_eq_zero_of_le_right ((Submodule.toAddSubgroup_le _ _).mpr hX1Y) h)`. Set `g : 𝓞 K →+ (Fin k → K)` to `AddMonoidHom.mk' (fun c => c • x) (fun c c' => add_smul c c' x)`. Establish `e1 : (aI X x).toAddSubgroup = X.toAddSubgroup.comap g`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use extensionality with `c`. Conclude with `Iff.rfl`. Establish `hrange : g.range ≤ (X ⊔ Submodule.span (𝓞 K) {x}).toAddSubgroup`. Introduce and unpack `_ ⟨c, rfl⟩`. Conclude with `(X ⊔ Submodule.span (𝓞 K) {x}).smul_mem c hxX1`.
+By extensionality, compare the relevant components. Unfold both sides to obtain the same proposition, which implies itself. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `hN : Ideal.absNorm (aI X x) = X.toAddSubgroup.relIndex g.range`. Rewrite using `[absNorm_eq_index, e1, AddSubgroup.index_comap]`. Establish `hNne : Ideal.absNorm (aI X x) ≠ 0`. Rewrite using `[hN]`. Conclude with `fun h => hneX1 (AddSubgroup.relIndex_eq_zero_of_le_right hrange h)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact.
 
-Establish `hNle : Ideal.absNorm (aI X x) ≤ X.toAddSubgroup.relIndex (X ⊔ Submodule.span (𝓞 K) {x}).toAddSubgroup`. Rewrite using `[hN]`. Conclude with `AddSubgroup.relIndex_le_of_le_right hrange hneX1`. Establish `h𝔞 : aI X x ≠ ⊥`. Introduce `h`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `hNne` using `[h, Ideal.absNorm_bot]`. Conclude with `hNne rfl`. Take `⟨a, ha, ha0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot h𝔞`. Establish `hax : a • x ∈ X` using `ha`. Take `⟨hle, hq0, hqle⟩` from `quot_le K (aI X x) h𝔞 a ha0`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `ψ : (Fin k → K) →+ K` to `AddMonoidHom.mk' (fun t => algebraMap (𝓞 K) K a * (x ⬝ᵥ t)) (fun t t' => by simp only [dotProduct_add, mul_add])`. Set `mO : 𝓞 K →+ K` to `(algebraMap (𝓞 K) K).toAddMonoidHom`. Establish `hinj : Function.Injective mO` using `IsFractionRing.injective (𝓞 K) K`. Establish `ha0K : algebraMap (𝓞 K) K a ≠ 0` using `fun h => ha0 (hinj (h.trans (map_zero _).symm))`. Establish `claim1 : (dualL (X ⊔ Submodule.span (𝓞 K) {x})).toAddSubgroup = ((Ideal.span {a}).toAddSubgroup.map mO).comap ψ ⊓ (dualL X).toAddSubgroup`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Use extensionality with `t`. Prove the components needed by the constructor for the conclusion. Introduce `ht`. Use `⟨?_, dualL_anti le_sup_left ht⟩` and prove the remaining obligations. Take `⟨o, ho⟩` from `ht x hxX1`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Use `⟨a * o, Ideal.mul_mem_right o _ (Ideal.mem_span_singleton_self a), ?_⟩` and prove the remaining obligations. Use `show algebraMap (𝓞 K) K (a * o) = algebraMap (𝓞 K) K a * (x ⬝ᵥ t)`. Rewrite using `[map_mul, ho]`. Introduce and unpack `⟨⟨r, hr, hrt⟩, htX⟩`. Take `⟨o, rfl⟩` from `Ideal.mem_span_singleton'.mp hr`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hrt' : algebraMap (𝓞 K) K a * algebraMap (𝓞 K) K o = algebraMap (𝓞 K) K a * (x ⬝ᵥ t)`. Rewrite using `[← map_mul, mul_comm a o]`. Conclude with `hrt`. Establish `hxt : x ⬝ᵥ t = algebraMap (𝓞 K) K o` using `(mul_left_cancel₀ ha0K hrt').symm`. Introduce `s hs`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Take `⟨s0, hs0, s1, hs1, rfl⟩` from `Submodule.mem_sup.mp hs`. Take `⟨c, rfl⟩` from `Submodule.mem_span_singleton.mp hs1`. Rewrite using `[add_dotProduct, smul_dot, hxt, ← map_mul]`. Conclude with `add_mem (htX s0 hs0) ⟨c * o, rfl⟩`. Establish `claim2 : (dualL X).toAddSubgroup.map ψ ≤ (qI (aI X x) a).toAddSubgroup.map mO`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce and unpack `_ ⟨t, ht, rfl⟩`. Take `⟨o, ho⟩` from `(show t ∈ dualL X from ht) (a • x) hax`. Use `⟨o, ?_, ?_⟩` and prove the remaining obligations. Introduce `c hc`. Take `⟨o', ho'⟩` from `(show t ∈ dualL X from ht) (c • x) hc`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Establish `: c * o = o' * a`. Apply `hinj` to reduce the goal to its premises. Use `show algebraMap (𝓞 K) K (c * o) = algebraMap (𝓞 K) K (o' * a)`. Rewrite using `[map_mul, map_mul, ho, ho', smul_dot, smul_dot]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[this, Ideal.mem_span_singleton']`. Conclude with `⟨o', rfl⟩`. Use `show algebraMap (𝓞 K) K o = algebraMap (𝓞 K) K a * (x ⬝ᵥ t)`. Rewrite using `[ho, smul_dot]`. Establish `hmapQ : ((Ideal.span {a}).toAddSubgroup.map mO).relIndex ((qI (aI X x) a).toAddSubgroup.map mO) = (Ideal.span {a}).toAddSubgroup.relIndex (qI (aI X x) a).toAddSubgroup` using `AddSubgroup.relIndex_map_map_of_injective _ _ hinj`.
-
-Establish `hrel : (dualL (X ⊔ Submodule.span (𝓞 K) {x})).toAddSubgroup.relIndex (dualL X).toAddSubgroup = ((Ideal.span {a}).toAddSubgroup.map mO).relIndex ((dualL X).toAddSubgroup.map ψ)`. Rewrite using `[claim1, AddSubgroup.inf_relIndex_right, AddSubgroup.relIndex_comap]`. Establish `hQne : ((Ideal.span {a}).toAddSubgroup.map mO).relIndex ((qI (aI X x) a).toAddSubgroup.map mO) ≠ 0`. Rewrite using `[hmapQ]`. Conclude with `hq0`.
-
-Rewrite using `[hrel]`. Use `⟨fun h => hQne (AddSubgroup.relIndex_eq_zero_of_le_right claim2 h), ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem step (K : Type) [Field K] [NumberField K] (k : ℕ) (X Y : Submodule (𝓞 K) (Fin k → K)) (hXY : X ≤ Y)
     (hne : X.toAddSubgroup.relIndex Y.toAddSubgroup ≠ 0) (x : Fin k → K) (hxY : x ∈ Y) :
@@ -243,23 +237,21 @@ end DIdx
 
 open DIdx in
 /- English proof (translation)
-Introduce `K _ _ k X Y hXY hne`. It suffices to establish `H : ∀ m : ℕ, ∀ X Y : Submodule (𝓞 K) (Fin k → K), X ≤ Y → X.toAddSubgroup.relIndex Y.toAddSubgroup = m → m ≠ 0 → (dualL Y).toAddSubgroup.relIndex (dualL X).toAddSubgroup ≠ 0 ∧ (dualL Y).toAddSubgroup.relIndex (dualL X).toAddSubgroup ≤ X.toAddSubgroup.relIndex Y.toAddSubgroup from …`. Introduce `m`. Proceed by induction on `m using Nat.strong_induction_on with`. Consider the case `_ m ih`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the argument to an intermediate assertion. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Introduce `X Y hXY hm hm0`. Distinguish the cases in `hYX : Y ≤ X`. Establish `e : X = Y` using `le_antisymm hXY hYX`. Substitute `e` using the available equality. Rewrite using `[AddSubgroup.relIndex_self, AddSubgroup.relIndex_self]`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨one_ne_zero, le_rfl⟩`. Take `⟨x, hxY, hxX⟩` from `Set.not_subset.mp hYX`. Establish `hX1Y : X ⊔ Submodule.span (𝓞 K) {x} ≤ Y` using `sup_le hXY ((Submodule.span_singleton_le_iff_mem _ _).mpr hxY)`. Establish `hXX1 : X ≤ X ⊔ Submodule.span (𝓞 K) {x}` using `le_sup_left`. Establish `hxX1 : x ∈ X ⊔ Submodule.span (𝓞 K) {x}` using `Submodule.mem_sup_right (Submodule.mem_span_singleton_self x)`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨h0, hle⟩` from `step K k X Y hXY (by rw [hm]; exact hm0) x hxY`. Establish `hmul` using `AddSubgroup.relIndex_mul_relIndex _ _ _ ((Submodule.toAddSubgroup_le _ _).mpr hXX1) ((Submodule.toAddSubgroup_le _ _).mpr hX1Y)`. Rewrite `hmul` using `[hm]`. Establish `hb0 : (X ⊔ Submodule.span (𝓞 K) {x}).toAddSubgroup.relIndex Y.toAddSubgroup ≠ 0`. Introduce `h`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hmul` using `[h, mul_zero]`. Conclude with `hm0 hmul.symm`. Establish `ha0 : X.toAddSubgroup.relIndex (X ⊔ Submodule.span (𝓞 K) {x}).toAddSubgroup ≠ 0`. Introduce `h`. Rewrite `hmul` using `[h, zero_mul]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hm0 hmul.symm`. Establish `ha1 : X.toAddSubgroup.relIndex (X ⊔ Submodule.span (𝓞 K) {x}).toAddSubgroup ≠ 1`. Introduce `h`. Rewrite `h` using `[AddSubgroup.relIndex_eq_one]`. Conclude with `hxX (h hxX1)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hlt : (X ⊔ Submodule.span (𝓞 K) {x}).toAddSubgroup.relIndex Y.toAddSubgroup < m`. Rewrite using `[← hmul]`. Establish `h2 : 2 ≤ X.toAddSubgroup.relIndex (X ⊔ Submodule.span (𝓞 K) {x}).toAddSubgroup` using `by omega`. Establish `hbpos` using `Nat.pos_of_ne_zero hb0`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨ih0, ihle⟩` from `ih _ hlt (X ⊔ Submodule.span (𝓞 K) {x}) Y hX1Y rfl hb0`. Establish `hdmul` using `AddSubgroup.relIndex_mul_relIndex _ _ _ ((Submodule.toAddSubgroup_le _ _).mpr (DIdx.dualL_anti hX1Y)) ((Submodule.toAddSubgroup_le _ _).mpr (DIdx.dualL_anti hXX1))`. Rewrite using `[← hdmul, hm, ← hmul]`. Use `⟨mul_ne_zero ih0 h0, ?_⟩` and prove the remaining obligations. Rewrite using `[mul_comm (X.toAddSubgroup.relIndex _)]`.
-
-Conclude with `Nat.mul_le_mul ihle hle`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dual_index_formula : DualIdx := by
   intro K _ _ k X Y hXY hne

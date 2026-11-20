@@ -12,7 +12,7 @@ open MvPolynomial MeasureTheory Filter Matrix ComplexSets
 noncomputable section
 
 /- English proof (translation)
-Establish `hl : Measurable (logAbsSq Q)` using `Real.measurable_log.comp ((MvPolynomial.continuous_eval Q).norm.pow 2).measurable`. Conclude with `Measurable.ite (measurableSet_le hl measurable_const) ((hl.pow_const 2).inv) measurable_const`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem measurable_tubeWeight {m : ℕ} (Q : MvPolynomial (Fin m) ℂ) : Measurable (tubeWeight Q) := by
   have hl : Measurable (logAbsSq Q) :=
@@ -20,7 +20,7 @@ theorem measurable_tubeWeight {m : ℕ} (Q : MvPolynomial (Fin m) ℂ) : Measura
   exact Measurable.ite (measurableSet_le hl measurable_const) ((hl.pow_const 2).inv) measurable_const
 
 /- English proof (translation)
-Establish `hAm : Measurable fun x : Fin n → ℂ => A *ᵥ x` using `(LinearMap.toContinuousLinearMap (Matrix.mulVecLin A)).continuous.measurable`. Establish `hw : Measurable ((Metric.closedBall (0 : Fin n → ℂ) R).indicator fun x => tubeWeight P (A *ᵥ x))` using `((measurable_tubeWeight P).comp hAm).indicator measurableSet_closedBall`. Conclude with `SheetSumMeasurable.measurable_sheetSum hA (fun a b => |a * b|) (continuous_abs.comp continuous_mul).measurable hw _`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem measurable_tubeDens {n d : ℕ} {J : Ideal (MvPolynomial (Fin n) ℂ)}
     {A : Matrix (Fin (d + 1)) (Fin n) ℂ} (hA : IsFiniteProjection J A) (P : MvPolynomial (Fin (d + 1)) ℂ)
@@ -34,7 +34,7 @@ theorem measurable_tubeDens {n d : ℕ} {J : Ideal (MvPolynomial (Fin n) ℂ)}
     (continuous_abs.comp continuous_mul).measurable hw _
 
 /- English proof (translation)
-The claim follows from `finsum_nonneg fun _ => finsum_nonneg fun _ => by split_ifs <;> positivity`.
+A detailed English derivation is pending.
 -/
 theorem tubeDens_nonneg {n d : ℕ} (J : Ideal (MvPolynomial (Fin n) ℂ))
     (A : Matrix (Fin (d + 1)) (Fin n) ℂ) (P : MvPolynomial (Fin (d + 1)) ℂ) (R : ℝ)
@@ -42,7 +42,7 @@ theorem tubeDens_nonneg {n d : ℕ} (J : Ideal (MvPolynomial (Fin n) ℂ))
   finsum_nonneg fun _ => finsum_nonneg fun _ => by split_ifs <;> positivity
 
 /- English proof (translation)
-Introduce `n d J A P R φ hJ hdim hA hP hφ`. Take `⟨C, hCle⟩` from `hC n d J A P R φ hJ hdim hA hφ`. Use `Integrable.mono' ((hE n d J A P R hJ hdim hA hP).const_mul C) (measurable_tubeDens hA P R φ).aestronglyMeasurable (Eventually.of_forall fun y => ?_)` and prove the remaining obligations. Rewrite using `[Real.norm_of_nonneg (tubeDens_nonneg J A P R φ y)]`. Conclude with `hCle y`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem CutOffTube.proof (hC : TubeFormCompare.Statement) (hE : TubeEuclMass.Statement) :
     CutOffTube.Statement := by

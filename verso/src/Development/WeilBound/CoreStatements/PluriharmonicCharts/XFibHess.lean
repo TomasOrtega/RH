@@ -20,25 +20,25 @@ Both sides reduce to the same expression.
 theorem tl_apply (d : ℕ) (z : Fin (d + 1) → ℂ) : tl d z = Fin.tail z := rfl
 
 /- English proof (translation)
-Use extensionality with `i`. Simplify using `[tl]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem tl_cons (d : ℕ) (a : ℂ) (y : Fin d → ℂ) : tl d (Fin.cons a y) = y := by
   ext i; simp [tl]
 
 /- English proof (translation)
-Use extensionality with `i`. Simplify using `[tl]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem tl_zero (d : ℕ) : tl d (Pi.single 0 1) = 0 := by
   ext i; simp [tl]
 
 /- English proof (translation)
-Use extensionality with `i`. Simplify using `[tl]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem tl_zero' (d : ℕ) : tl d (Complex.I • Pi.single 0 1) = 0 := by
   ext i; simp [tl]
 
 /- English proof (translation)
-Rewrite using `[tl_apply]`. Use extensionality with `i`. Simplify using `[Fin.tail, Pi.single_apply]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem tl_succ (d : ℕ) (j : Fin d) : tl d (Pi.single j.succ 1) = Pi.single j 1 := by
   rw [tl_apply]
@@ -46,7 +46,7 @@ theorem tl_succ (d : ℕ) (j : Fin d) : tl d (Pi.single j.succ 1) = Pi.single j 
   simp [Fin.tail, Pi.single_apply]
 
 /- English proof (translation)
-Rewrite using `[tl_apply]`. Use extensionality with `i`. Simplify using `[Fin.tail, Pi.single_apply]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem tl_succ' (d : ℕ) (j : Fin d) :
     tl d (Complex.I • Pi.single j.succ 1) = Complex.I • Pi.single j 1 := by
@@ -55,9 +55,9 @@ theorem tl_succ' (d : ℕ) (j : Fin d) :
   simp [Fin.tail, Pi.single_apply]
 
 /- English proof (translation)
-Establish `h1 : (herm2 G ![1, a] ![1, a]).re = (G 0 0).re + a.re * ((G 0 1).re + (G 1 0).re) + a.im * ((G 1 0).im + -(G 0 1).im) + (a.re * a.re + a.im * a.im) * (G 1 1).re`. Simplify using `[herm2, dotProduct, Matrix.mulVec, Fin.sum_univ_two]`. Expand and normalize the polynomial expressions, which then agree. Establish `h2 : G.det.re = (G 0 0).re * (G 1 1).re + -((G 0 0).im * (G 1 1).im) + -((G 0 1).re * (G 1 0).re) + (G 0 1).im * (G 1 0).im`. Simplify using `[Matrix.det_fin_two]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[xiPot, h1, h2]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 -/
 theorem xi_eq (G : Matrix (Fin 2) (Fin 2) ℂ) (a : ℂ) :
     xiPot G a = -Real.log ((G 0 0).re + a.re * ((G 0 1).re + (G 1 0).re)
@@ -75,19 +75,19 @@ theorem xi_eq (G : Matrix (Fin 2) (Fin 2) ℂ) (a : ℂ) :
   rw [xiPot, h1, h2]
 
 /- English proof (translation)
-Establish `hT : tl d (Fin.cons a y) = y` using `tl_cons d a y`. Establish `hJ : ∀ (l : ℂ →L[ℝ] ℝ) (p q : Fin 2), J (fun z : Fin (d + 1) → ℂ => l (G (tl d z) p q)) (Fin.cons a y) (l (G y p q)) (fun _ => 0) (fun u w => fderiv ℝ (fderiv ℝ fun y' => l (G y' p q)) y (tl d u) (tl d w))`. Introduce `l p q`. Use `J.comp (tl d) (f := fun y' => l (G y' p q)) (v := l (G y p q)) (L := fun _ => 0) (B := fun u w => fderiv ℝ (fderiv ℝ fun y' => l (G y' p q)) y u w) ?_` and prove the remaining obligations. Rewrite using `[hT]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `J.atom (hC p q) (h0 p q) l`. Establish `hRe : ∀ p q, J (fun z : Fin (d + 1) → ℂ => Complex.reCLM (G (tl d z) p q)) (Fin.cons a y) (if p = q then 1 else 0) (fun _ => 0) (fun u w => A p q (tl d u) (tl d w))`. Introduce `p q`. Use `(hJ Complex.reCLM p q).congr ?_ (fun _ => rfl) ?_` and prove the remaining obligations. Rewrite using `[h1]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `h : p = q`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[h, Matrix.one_apply_ne h]`. Introduce `u w`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hA]`. Both sides reduce to the same expression. Establish `hIm : ∀ p q, J (fun z : Fin (d + 1) → ℂ => Complex.imCLM (G (tl d z) p q)) (Fin.cons a y) 0 (fun _ => 0) (fun u w => B p q (tl d u) (tl d w))`. Introduce `p q`. Use `(hJ Complex.imCLM p q).congr ?_ (fun _ => rfl) ?_` and prove the remaining obligations.
+Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1]`. Distinguish the cases in `h : p = q`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Matrix.one_apply_ne h]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `u w`. Rewrite using `[hB]`. Both sides reduce to the same expression. Establish `hx : J (fun z : Fin (d + 1) → ℂ => (Complex.reCLM.comp (ContinuousLinearMap.proj (R` using `ℝ) (φ := fun _ : Fin (d + 1) => ℂ) 0)) z) (Fin.cons a y) a.re (fun u => (u 0).re) (fun _ _ => 0) := (J.clm _ _).congr (by simp) (fun u => by simp) (fun _ _ => rfl)`. Establish `hw : J (fun z : Fin (d + 1) → ℂ => (Complex.imCLM.comp (ContinuousLinearMap.proj (R` using `ℝ) (φ := fun _ : Fin (d + 1) => ℂ) 0)) z) (Fin.cons a y) a.im (fun u => (u 0).im) (fun _ _ => 0) := (J.clm _ _).congr (by simp) (fun u => by simp) (fun _ _ => rfl)`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key` using `main_jet hx hw (by simpa using hRe 0 0) (by simpa using hRe 0 1) (by simpa using hRe 1 0) (by simpa using hRe 1 1) (hIm 0 0) (hIm 0 1) (hIm 1 0) (hIm 1 1) (φ := fun z : Fin (d + 1) → ℂ => xiPot (G (Fin.tail z)) (z 0)) (fun z => by`. Simplify using `only [tl_apply, ContinuousLinearMap.comp_apply, Complex.reCLM_apply, Complex.imCLM_apply, ContinuousLinearMap.proj_apply]`. Conclude with `xi_eq _ _)`. Conclude with `key`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem jet (d : ℕ) (G : (Fin d → ℂ) → Matrix (Fin 2) (Fin 2) ℂ) (y : Fin d → ℂ)
     (hC : ∀ p q, ContDiffAt ℝ 2 (fun y' => G y' p q) y) (h1 : G y = 1)

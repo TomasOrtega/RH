@@ -13,9 +13,7 @@ open PositivityTheory.Rg.Sw IwaPf
 variable {n : ℕ}
 
 /- English proof (translation)
-Introduce `n y`. Establish `hg : InG (mR y)` using `y.2`. Use `⟨det_ne (mR y) hg Complex.I (by norm_num [Complex.ext_iff]), ?_⟩` and prove the remaining obligations. Use `show (-(Complex.I • toBlocks₂₁ (mR y)) + toBlocks₂₂ (mR y)).det ≠ 0`. Rewrite using `[← neg_smul]`.
-
-Conclude with `det_ne (mR y) hg (-Complex.I) (by norm_num [Complex.ext_iff])`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem detU1 : CayleyBlocksInvertible := by
   intro n y
@@ -26,9 +24,9 @@ theorem detU1 : CayleyBlocksInvertible := by
   exact det_ne (mR y) hg (-Complex.I) (by norm_num [Complex.ext_iff])
 
 /- English proof (translation)
-Establish `hr` using `inG_rows g h`. Rewrite `hr` using `[← fromBlocks_toBlocks g]`. Simplify using `only [JJ, fromBlocks_conjTranspose, fromBlocks_multiply] at hr`. Establish `h22` using `congrArg Matrix.toBlocks₂₂ hr`. Simplify using `at h22`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `(neg_add_eq_zero.mp h22).symm`.
+A detailed English derivation is pending.
 -/
 theorem rows_blocks (g : M2 n) (h : InG g) : g.toBlocks₂₁ * g.toBlocks₂₂ᴴ = g.toBlocks₂₂ * g.toBlocks₂₁ᴴ := by
   have hr := inG_rows g h
@@ -43,7 +41,7 @@ def kmat (U1 U2 : Matrix (Fin n) (Fin n) ℂ) : M2 n :=
     ((1 / 2 : ℂ) • (U1 + U2))
 
 /- English proof (translation)
-Simplify using `only [kmat, fromBlocks_conjTranspose, fromBlocks_multiply, conjTranspose_smul, conjTranspose_add, conjTranspose_sub, conjTranspose_neg, Matrix.mul_add, Matrix.add_mul, Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_neg, Matrix.neg_mul, Matrix.smul_mul, Matrix.mul_smul, smul_smul, h1, …`. Simplify using `only [Complex.star_def, map_div₀, map_one, map_ofNat, Complex.conj_I]`. Rewrite using `[← fromBlocks_one]`. Use `congr 1`. Apply the tactic sequence `all_goals (match_scalars <;> ring_nf <;> simp only [Complex.I_sq] <;> ring_nf)`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem kmat_unit (U1 U2 : Matrix (Fin n) (Fin n) ℂ) (h1 : U1ᴴ * U1 = 1) (h2 : U2ᴴ * U2 = 1) :
     (kmat U1 U2)ᴴ * kmat U1 U2 = 1 := by
@@ -57,7 +55,7 @@ theorem kmat_unit (U1 U2 : Matrix (Fin n) (Fin n) ℂ) (h1 : U1ᴴ * U1 = 1) (h2
   all_goals (match_scalars <;> ring_nf <;> simp only [Complex.I_sq] <;> ring_nf)
 
 /- English proof (translation)
-Unfold `InG JJ`. Simplify using `only [kmat, fromBlocks_conjTranspose, fromBlocks_multiply, conjTranspose_smul, conjTranspose_add, conjTranspose_sub, conjTranspose_neg, Matrix.mul_add, Matrix.add_mul, Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_neg, Matrix.neg_mul, Matrix.smul_mul, Matrix.mul_smul, smul_smul, Mat …`. Simplify using `only [Complex.star_def, map_div₀, map_one, map_ofNat, Complex.conj_I]`. Use `congr 1`. Apply the tactic sequence `all_goals (match_scalars <;> ring_nf <;> simp only [Complex.I_sq] <;> ring_nf)`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem kmat_inG (U1 U2 : Matrix (Fin n) (Fin n) ℂ) (h1 : U1ᴴ * U1 = 1) (h2 : U2ᴴ * U2 = 1) : InG (kmat U1 U2) := by
   unfold InG JJ
@@ -71,7 +69,7 @@ theorem kmat_inG (U1 U2 : Matrix (Fin n) (Fin n) ℂ) (h1 : U1ᴴ * U1 = 1) (h2 
   all_goals (match_scalars <;> ring_nf <;> simp only [Complex.I_sq] <;> ring_nf)
 
 /- English proof (translation)
-Establish `hr` using `rows_blocks g h`. Simplify using `only [u1, u2, conjTranspose_add, conjTranspose_neg, conjTranspose_smul, Matrix.mul_add, Matrix.add_mul, Matrix.mul_neg, Matrix.neg_mul, Matrix.smul_mul, Matrix.mul_smul, smul_smul, ← hr]`. Simplify using `only [Complex.star_def, Complex.conj_I]`. Use `module`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem mul_inv_mul_proj_of_ker_iff (g : M2 n) (h : InG g) : u1 g * (u1 g)ᴴ = u2 g * (u2 g)ᴴ := by
   have hr := rows_blocks g h
@@ -81,7 +79,7 @@ private theorem mul_inv_mul_proj_of_ker_iff (g : M2 n) (h : InG g) : u1 g * (u1 
   module
 
 /- English proof (translation)
-Rewrite using `[← fromBlocks_toBlocks Y]`. Simplify using `only [u1, u2, kmat, fromBlocks_conjTranspose, fromBlocks_multiply, toBlocks_fromBlocks₂₁, toBlocks_fromBlocks₂₂, conjTranspose_smul, conjTranspose_add, conjTranspose_sub, conjTranspose_neg, Matrix.mul_add, Matrix.add_mul, Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_neg, Matrix.neg …`. Simplify using `only [Complex.star_def, map_div₀, map_one, map_ofNat, Complex.conj_I]`. Apply the tactic sequence `match_scalars <;> ring_nf <;> simp only [Complex.I_sq] <;> ring_nf`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem proj_mul_mul_proj_of_ker_iff (U1 U2 : Matrix (Fin n) (Fin n) ℂ) (Y : M2 n) :
     toBlocks₂₁ (Y * (kmat U1 U2)ᴴ) =
@@ -95,9 +93,9 @@ private theorem proj_mul_mul_proj_of_ker_iff (U1 U2 : Matrix (Fin n) (Fin n) ℂ
   match_scalars <;> ring_nf <;> simp only [Complex.I_sq] <;> ring_nf
 
 /- English proof (translation)
-Establish `hbu : IsUnit b.det` using `isUnit_iff_ne_zero.mpr h2d`. Establish `hbH : IsUnit bᴴ.det`. Rewrite using `[det_conjTranspose]`. Conclude with `isUnit_iff_ne_zero.mpr (star_ne_zero.mpr h2d)`. Establish `haV : a * (b⁻¹ * a)ᴴ = b`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[conjTranspose_mul, conjTranspose_nonsing_inv, ← Matrix.mul_assoc, hab, Matrix.mul_assoc, mul_nonsing_inv _ hbH, Matrix.mul_one]`. Use `⟨?_, haV⟩` and prove the remaining obligations. Rewrite using `[Matrix.mul_assoc, haV, nonsing_inv_mul b hbu]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem inv_mul_unitary_of_mul_conjTranspose_eq (a b : Matrix (Fin n) (Fin n) ℂ) (hab : a * aᴴ = b * bᴴ) (h2d : b.det ≠ 0) :
     (b⁻¹ * a) * (b⁻¹ * a)ᴴ = 1 ∧ a * (b⁻¹ * a)ᴴ = b := by
@@ -112,13 +110,13 @@ private theorem inv_mul_unitary_of_mul_conjTranspose_eq (a b : Matrix (Fin n) (F
   rw [Matrix.mul_assoc, haV, nonsing_inv_mul b hbu]
 
 /- English proof (translation)
-Introduce `n y`. Establish `hg : InG (mR y)` using `y.2`. Take `⟨_, h2d⟩` from `detU1 n y`. Take `⟨hVV, haV⟩` from `inv_mul_unitary_of_mul_conjTranspose_eq (u1 (mR y)) (u2 (mR y)) (mul_inv_mul_proj_of_ker_iff (mR y) hg) h2d`. Establish `hVu` using `mul_eq_one_comm.mp hVV`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h1' : (1 : Matrix (Fin n) (Fin n) ℂ)ᴴ * 1 = 1` using `by simp`. Establish `hK` using `kmat_unit _ 1 hVu h1'`. Establish `hK'` using `mul_eq_one_comm.mp hK`. Set `kGL : GL (Fin n ⊕ Fin n) ℂ` to `⟨kmat ((u2 (mR y))⁻¹ * u1 (mR y)) 1, _, hK', hK⟩`. Establish `hkG : kGL ∈ GR n` using `kmat_inG _ 1 hVu h1'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `k : GR n` to `⟨kGL, hkG⟩`. Establish `hkK : k ∈ KR n` using `by show InK (kmat ((u2 (mR y))⁻¹ * u1 (mR y)) 1)`. Conclude with `⟨kmat_inG _ 1 hVu h1', hK⟩`. Use `⟨y * k⁻¹, k, ?_, hkK, (inv_mul_cancel_right y k).symm⟩` and prove the remaining obligations. Use `show toBlocks₂₁ (mR (y * k⁻¹)) = 0`.
+Introduce a local definition for the expression. Establish an intermediate fact. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hm : mR (y * k⁻¹) = mR y * (kmat ((u2 (mR y))⁻¹ * u1 (mR y)) 1)ᴴ` using `rfl`. Rewrite using `[hm, proj_mul_mul_proj_of_ker_iff, Matrix.smul_mul, Matrix.smul_mul, haV, conjTranspose_one, Matrix.mul_one]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem iwa : Iwa := by
   intro n y

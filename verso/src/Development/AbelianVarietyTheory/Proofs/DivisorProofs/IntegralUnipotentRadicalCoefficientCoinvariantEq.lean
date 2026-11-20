@@ -15,26 +15,26 @@ def box (a b : ℕ) (s : kˣ) : Set (Fin a → Fin b → k) :=
   Set.univ.pi fun _ => Set.univ.pi fun _ => cball s
 
 /- English proof (translation)
-Simplify using `[box, Set.mem_univ_pi]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_box {a b : ℕ} {s : kˣ} {X : Fin a → Fin b → k} :
     X ∈ box a b s ↔ ∀ p q, X p q ∈ cball s := by
   simp [box, Set.mem_univ_pi]
 
 /- English proof (translation)
-The claim follows from `isOpen_set_pi Set.finite_univ fun _ _ => isOpen_set_pi Set.finite_univ fun _ _ => isOpen_cball s`.
+A detailed English derivation is pending.
 -/
 theorem isOpen_box (a b : ℕ) (s : kˣ) : IsOpen (box a b s) :=
   isOpen_set_pi Set.finite_univ fun _ _ => isOpen_set_pi Set.finite_univ fun _ _ => isOpen_cball s
 
 /- English proof (translation)
-The claim follows from `isCompact_univ_pi fun _ => isCompact_univ_pi fun _ => isCompact_cball s`.
+A detailed English derivation is pending.
 -/
 theorem isCompact_box (a b : ℕ) (s : kˣ) : IsCompact (box a b s) :=
   isCompact_univ_pi fun _ => isCompact_univ_pi fun _ => isCompact_cball s
 
 /- English proof (translation)
-Introduce `X hX`. Rewrite `hX`, the goal using `[mem_box]`. Introduce `p q`. Conclude with `le_trans (show valuation k (X p q) ≤ valuation k (s : k) from hX p q) h`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem box_mono {a b : ℕ} {s t : kˣ} (h : valuation k (s : k) ≤ valuation k (t : k)) :
     box a b s ⊆ box a b t := by
@@ -44,9 +44,9 @@ theorem box_mono {a b : ℕ} {s t : kˣ} (h : valuation k (s : k) ≤ valuation 
   exact le_trans (show valuation k (X p q) ≤ valuation k (s : k) from hX p q) h
 
 /- English proof (translation)
-Rewrite `hY` using `[mem_box]`. Simplify using `only [mem_box, Pi.add_apply]`. Prove the components needed by the constructor for the conclusion. Introduce `h p q`. Simplify using `using add_mem_cball (h p q) (neg_mem_cball (hY p q))`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce `h p q`. Conclude with `add_mem_cball (h p q) (hY p q)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem add_mem_box_iff {a b : ℕ} {s : kˣ} {X Y : Fin a → Fin b → k} (hY : Y ∈ box a b s) :
     X + Y ∈ box a b s ↔ X ∈ box a b s := by
@@ -59,11 +59,9 @@ theorem add_mem_box_iff {a b : ℕ} {s : kˣ} {X Y : Fin a → Fin b → k} (hY 
     exact add_mem_cball (h p q) (hY p q)
 
 /- English proof (translation)
-Use `set γ : ValueGroupWithZero k := ∏ pq : Fin a × Fin b, max 1 (valuation k (X pq.1 pq.2)) with hγ`. Establish `h1 : ∀ pq ∈ (Finset.univ : Finset (Fin a × Fin b)), 1 ≤ max 1 (valuation k (X pq.1 pq.2))` using `fun _ _ => le_max_left _ _`. Establish `hγ1 : 1 ≤ γ` using `Finset.one_le_prod' h1`. Take `⟨y, hy⟩` from `ValuativeRel.valuation_surjective γ`. Establish `hy0 : y ≠ 0`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `rfl`. Rewrite `hy` using `[map_zero]`. Conclude with `absurd (hy ▸ hγ1) (by simp)`. Use `⟨Units.mk0 y hy0, mem_box.mpr fun p q => ?_⟩` and prove the remaining obligations. Use `show valuation k (X p q) ≤ valuation k y`.
-
-Rewrite using `[hy]`. Conclude with `(le_max_right _ _).trans (Finset.single_le_prod' h1 (Finset.mem_univ (p, q)))`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_mem_box {a b : ℕ} (X : Fin a → Fin b → k) : ∃ s : kˣ, X ∈ box a b s := by
   set γ : ValueGroupWithZero k := ∏ pq : Fin a × Fin b, max 1 (valuation k (X pq.1 pq.2)) with hγ
@@ -81,7 +79,7 @@ theorem exists_mem_box {a b : ℕ} (X : Fin a → Fin b → k) : ∃ s : kˣ, X 
   exact (le_max_right _ _).trans (Finset.single_le_prod' h1 (Finset.mem_univ (p, q)))
 
 /- English proof (translation)
-Introduce `s t`. Break down `le_total (valuation k (s : k)) (valuation k (t : k)) with h | h` into its components or cases. Conclude with `⟨t, box_mono h, subset_rfl⟩`. Conclude with `⟨s, subset_rfl, box_mono h⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Supply the required witnesses or components.
 -/
 theorem directed_box (a b : ℕ) : Directed (· ⊆ ·) (box (k := k) a b) := by
   intro s t
@@ -90,7 +88,7 @@ theorem directed_box (a b : ℕ) : Directed (· ⊆ ·) (box (k := k) a b) := by
   · exact ⟨s, subset_rfl, box_mono h⟩
 
 /- English proof (translation)
-The claim follows from `hK.elim_directed_cover _ (isOpen_box a b) (fun X _ => Set.mem_iUnion.mpr (exists_mem_box X)) (directed_box a b)`.
+A detailed English derivation is pending.
 -/
 theorem exists_subset_box {a b : ℕ} {K : Set (Fin a → Fin b → k)} (hK : IsCompact K) :
     ∃ s : kˣ, K ⊆ box a b s :=
@@ -101,35 +99,31 @@ section Meas
 variable [MeasurableSpace k] [BorelSpace k]
 
 /- English proof (translation)
-Introduce `N V _ _ π hπ a b μ hμ u hu hadd l w hw F hF hFw`. Use `haveI := secondCountable k`. Use `haveI := t2Space k`. Use `haveI : OpensMeasurableSpace (Fin b → k) := inferInstance`. Use `haveI : OpensMeasurableSpace (Fin a → Fin b → k) := inferInstance`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hu0 : u 0 = 1`. Establish `h` using `hadd 0 0`. Rewrite `h` using `[add_zero]`. Conclude with `mul_left_cancel (h.symm.trans (mul_one _).symm)`. Establish `hcont : ∀ y : V, Continuous fun X => l (π (u X) y)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `y`. Establish `hlc : IsLocallyConstant fun X => π (u X) y`. Use `(IsLocallyConstant.iff_eventually_eq _).mpr fun X₀ => ?_` and prove the remaining obligations. Establish `hO : IsOpen ((fun X => u (X - X₀)) ⁻¹' {g | π g y = y})` using `(hπ y).preimage (hu.comp (continuous_id.sub continuous_const))`. Establish `hX₀ : X₀ ∈ (fun X => u (X - X₀)) ⁻¹' {g | π g y = y}`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `[hu0]`. Use `filter_upwards [hO.mem_nhds hX₀] with X hX`. Establish `hX' : π (u (X - X₀)) y = y` using `hX`. Establish `e : X = X₀ + (X - X₀)` using `by abel`. Rewrite using `[e, hadd, map_mul, Module.End.mul_apply, hX']`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(hlc.comp l).continuous`. Establish `hmeas : ∀ s : kˣ, MeasurableSet (box a b s)` using `fun s => (isOpen_box a b s).measurableSet`. Establish `hint : ∀ (y : V) (s : kˣ), IntegrableOn (fun X => l (π (u X) y)) (box a b s) μ` using `fun y s => (hcont y).continuousOn.integrableOn_compact (isCompact_box a b s)`. Establish `hshift : ∀ (y : V) (s : kˣ) (Y : Fin a → Fin b → k), Y ∈ box a b s → ∫ X in box a b s, l (π (u (X + Y)) y) ∂μ = ∫ X in box a b s, l (π (u X) y) ∂μ`. Introduce `y s Y hY`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← integral_indicator (hmeas s), ← integral_indicator (hmeas s)]`. Establish `: ∀ X, (box a b s).indicator (fun X => l (π (u (X + Y)) y)) X = (box a b s).indicator (fun X => l (π (u X) y)) (X + Y)`. Introduce `X`. Distinguish the cases in `hX : X ∈ box a b s`. Rewrite using `[Set.indicator_of_mem hX, Set.indicator_of_mem ((add_mem_box_iff hY).mpr hX)]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Rewrite using `[Set.indicator_of_notMem hX, Set.indicator_of_notMem (fun h => hX ((add_mem_box_iff hY).mp h))]`. Simplify using `only [this]`. Conclude with `integral_add_right_eq_self (μ := μ) (fun X => (box a b s).indicator (fun X => l (π (u X) y)) X) Y`. Establish `key : ∀ w' ∈ Submodule.span ℂ {x | ∃ (Y : Fin a → Fin b → k) (y : V), x = π (u Y) y - y}, ∃ s₀ : kˣ, ∀ s : kˣ, valuation k (s₀ : k) ≤ valuation k (s : k) → ∫ X in box a b s, l (π (u X) w') ∂μ = 0`. Introduce `w' hw'`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `hw' using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨Y, y, rfl⟩` from `hx`. Take `⟨s₀, hs₀⟩` from `exists_mem_box Y`. Use `⟨s₀, fun s hs => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Establish `hY : Y ∈ box a b s` using `box_mono hs hs₀`. Establish `e : ∀ X, l (π (u X) (π (u Y) y - y)) = l (π (u (X + Y)) y) - l (π (u X) y)`. Introduce `X`. Rewrite using `[map_sub, map_sub, hadd, map_mul, Module.End.mul_apply]`. Simplify using `only [e]`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hi2 : IntegrableOn (fun X => l (π (u (X + Y)) y)) (box a b s) μ` using `((hcont y).comp (continuous_id.add continuous_const)).continuousOn.integrableOn_compact (isCompact_box a b s)`. Rewrite using `[integral_sub hi2 (hint y s), hshift y s Y hY, sub_self]`. Consider the case `zero => exact ⟨1, fun s _ => by simp⟩`. Consider the case `add x z _ _ hx hz`. Take `⟨s₁, h₁⟩` from `hx`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Take `⟨s₂, h₂⟩` from `hz`. Break down `le_total (valuation k (s₁ : k)) (valuation k (s₂ : k)) with h | h` into its components or cases. Use `⟨s₂, fun s hs => ?_⟩` and prove the remaining obligations. Simplify using `only [map_add]`. Rewrite using `[integral_add (hint x s) (hint z s), h₁ s (h.trans hs), h₂ s hs, add_zero]`.
+Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `⟨s₁, fun s hs => ?_⟩` and prove the remaining obligations. Simplify using `only [map_add]`. Rewrite using `[integral_add (hint x s) (hint z s), h₁ s hs, h₂ s (h.trans hs), add_zero]`. Consider the case `smul c x _ hx`. Take `⟨s₀, h₀⟩` from `hx`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components.
 
-Use `⟨s₀, fun s hs => ?_⟩` and prove the remaining obligations. Simplify using `only [map_smul, smul_eq_mul]`. Rewrite using `[integral_const_mul, h₀ s hs, mul_zero]`. Take `⟨s₀, hs₀⟩` from `key w hw`. Take `⟨s₁, hs₁⟩` from `exists_subset_box hF`.
-
-Choose the witnesses or unpack the hypotheses as in `⟨s, hs0, hs1⟩ : ∃ s : kˣ, valuation k (s₀ : k) ≤ valuation k (s : k) ∧ box a b s₁ ⊆ box a b s := by`. Break down `le_total (valuation k (s₀ : k)) (valuation k (s₁ : k)) with h | h` into its components or cases. Conclude with `⟨s₁, h, subset_rfl⟩`. Conclude with `⟨s₀, le_rfl, box_mono h⟩`. Rewrite using `[← setIntegral_eq_integral_of_forall_compl_eq_zero (s := box a b s) (fun X hX => image_eq_zero_of_notMem_tsupport (fun h => hX (hs1 (hs₁ h))))]`.
-
-Simplify using `only [hFw]`. Conclude with `hs₀ s hs0`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem main : ∀ (N : ℕ) (V : Type) [AddCommGroup V] [Module ℂ V] (π : Representation ℂ (GL (Fin N) k) V), GlobalTheory.PRep.IsSmooth π → ∀ (a b : ℕ) (μ : Measure (Fin a → Fin b → k)), μ.IsAddHaarMeasure → ∀ u : (Fin a → Fin b → k) → GL (Fin N) k, Continuous u → (∀ X Y, u (X + Y) = u X * u Y) → ∀ (l : Module.Dual ℂ V) (w : V), w ∈ Submodule.span ℂ {x | ∃ (Y : Fin a → Fin b → k) (y : V), x = π (u Y) y - y} → ∀ F : (Fin a → Fin b → k) → ℂ, HasCompactSupport F → (∀ X, F X = l (π (u X) w)) → ∫ X, F X ∂μ = 0 := by
   intro N V _ _ π hπ a b μ hμ u hu hadd l w hw F hF hFw
@@ -221,7 +215,7 @@ theorem main : ∀ (N : ℕ) (V : Type) [AddCommGroup V] [Module ℂ V] (π : Re
 end Meas
 
 /- English proof (translation)
-Introduce `k _ _ _ _ _ _`. Conclude with `main`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem integral_coef_eq_zero : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [MeasurableSpace k] [BorelSpace k] (N : ℕ) (V : Type) [AddCommGroup V] [Module ℂ V] (π : Representation ℂ (GL (Fin N) k) V), GlobalTheory.PRep.IsSmooth π → ∀ (a b : ℕ) (μ : Measure (Fin a → Fin b → k)), μ.IsAddHaarMeasure → ∀ u : (Fin a → Fin b → k) → GL (Fin N) k, Continuous u → (∀ X Y, u (X + Y) = u X * u Y) → ∀ (l : Module.Dual ℂ V) (w : V), w ∈ Submodule.span ℂ {x | ∃ (Y : Fin a → Fin b → k) (y : V), x = π (u Y) y - y} → ∀ F : (Fin a → Fin b → k) → ℂ, HasCompactSupport F → (∀ X, F X = l (π (u X) w)) → ∫ X, F X ∂μ = 0 := by
   intro k _ _ _ _ _ _

@@ -16,7 +16,7 @@ variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
 omit [Fintype K] [∀ k, Fintype (ι k)] [Fintype K'] [∀ k, Fintype (ι' k)] in
 
 /- English proof (translation)
-Establish `h' : W'.comap (C : ℤ →+* MRing ι') = ⊥` using `h`. Use `show (imageZ v W').comap (C : ℤ →+* MRing ι) = ⊥`. Rewrite using `[← h']`. Use extensionality with `c`. Simplify using `[imageZ, Ideal.mem_comap]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isHorizontal_imageZ {v : (Σ k, ι k) → (Σ k', ι' k')} {W' : Ideal (MRing ι')} (h : IsHorizontal W') :
     IsHorizontal (imageZ v W') := by
@@ -27,7 +27,7 @@ theorem isHorizontal_imageZ {v : (Σ k, ι k) → (Σ k', ι' k')} {W' : Ideal (
   simp [imageZ, Ideal.mem_comap]
 
 /- English proof (translation)
-Establish `e` using `h.2.2.2.symm.trans h'.2.2.2`. Establish `e2 : d + Fintype.card K = d' + Fintype.card K` using `by exact_mod_cast e`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem dim_eq {P : Ideal (MRing ι)} {d d' : ℕ} (h : IsArithVar P d) (h' : IsArithVar P d') : d = d' := by
   have e := h.2.2.2.symm.trans h'.2.2.2
@@ -35,9 +35,9 @@ theorem dim_eq {P : Ideal (MRing ι)} {d d' : ℕ} (h : IsArithVar P d) (h' : Is
   omega
 
 /- English proof (translation)
-Establish `hr : Ideal.Quotient.mk Q x ∈ nonZeroDivisors (R ⧸ Q)` using `mem_nonZeroDivisors_of_ne_zero (by rwa [Ne, Ideal.Quotient.eq_zero_iff_mem])`. Use `le_trans ?_ (ringKrullDim_quotient_succ_le_of_nonZeroDivisor hr)` and prove the remaining obligations. Use `gcongr`. Use `ringKrullDim_le_of_surjective (Ideal.Quotient.lift _ (Ideal.Quotient.factor hle) ?_) (Ideal.Quotient.lift_surjective_of_surjective _ _ (Ideal.Quotient.factor_surjective hle))` and prove the remaining obligations. Introduce `y hy`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨c, rfl⟩` from `Ideal.mem_span_singleton'.1 hy`. Rewrite using `[map_mul]`. Take `⟨c', rfl⟩` from `Ideal.Quotient.mk_surjective c`. Simplify using `only [Ideal.Quotient.factor_mk, Ideal.Quotient.eq_zero_iff_mem.2 hx, mul_zero]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem dim_add_one_le {R : Type*} [CommRing R] {Q Q₂ : Ideal R} [Q.IsPrime] (hle : Q ≤ Q₂)
     {x : R} (hx : x ∈ Q₂) (hxQ : x ∉ Q) : ringKrullDim (R ⧸ Q₂) + 1 ≤ ringKrullDim (R ⧸ Q) := by
@@ -56,19 +56,19 @@ theorem dim_add_one_le {R : Type*} [CommRing R] {Q Q₂ : Ideal R} [Q.IsPrime] (
 omit [Fintype K] [∀ k, Fintype (ι k)] in
 
 /- English proof (translation)
-Introduce `k` and use `let ⟨i, hi⟩ := hZ k; ⟨i, fun h => hi (hY h)⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isRelevant_of_le {Y Z : Ideal (MRing ι)} (hZ : IsRelevant Z) (hY : Y ≤ Z) : IsRelevant Y :=
   fun k => let ⟨i, hi⟩ := hZ k; ⟨i, fun h => hi (hY h)⟩
 
 /- English proof (translation)
-Establish `hQp : Q.IsPrime` using `hQ.2.1.1`. Use `⟨⟨hQp, hJQ⟩, fun q hq hqQ => ?_⟩` and prove the remaining obligations. Establish `: q.IsPrime` using `hq.1`. Take `⟨M, hM, hMq⟩` from `Ideal.exists_minimalPrimes_le hq.2`. Establish `hMQ : M ≤ Q` using `hMq.trans hqQ`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hQh : Q.comap (C : ℤ →+* MRing ι) = ⊥` using `hQ.2.2.1`. Establish `hMh : IsHorizontal M` using `by show M.comap (C : ℤ →+* MRing ι) = ⊥`. Rewrite using `[eq_bot_iff, ← hQh]`. Conclude with `Ideal.comap_mono hMQ`. Establish `hMn` using `hdim M hM (isRelevant_of_le hQ.2.1.2.2 hMQ) hMh`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: M.IsPrime` using `hM.1.1`. Use `le_trans ?_ hMq` and prove the remaining obligations. Assume the negation of the conclusion as `hQM`. Take `⟨x, hxQ, hxM⟩` from `Set.not_subset.1 hQM`. Establish `h` using `dim_add_one_le hMQ hxQ hxM`.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[hQ.2.2.2, hMn.2.2.2]`. Establish `h2 : n + Fintype.card K + 1 ≤ n + Fintype.card K` using `by exact_mod_cast h`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem mem_minimalPrimes {J Q : Ideal (MRing ι)} {n : ℕ} (hQ : IsArithVar Q n) (hJQ : J ≤ Q)
     (hdim : ∀ M ∈ J.minimalPrimes, IsRelevant M → IsHorizontal M → IsArithVar M n) :
@@ -97,7 +97,7 @@ omit [Fintype K] [∀ k, Fintype (ι k)] in
 open Classical in
 
 /- English proof (translation)
-Rewrite using `[Fintype.sum_sigma, Finset.sum_eq_single k']`. Simplify using the standard rewrite rules. Introduce `b _ hb`. Simplify using `[hb]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem sum_block (F : (Σ k', ι' k') → ℕ) (k' : K') :
     ∑ i, F ⟨k', i⟩ = ∑ q, if q.1 = k' then F q else 0 := by
@@ -109,15 +109,15 @@ theorem sum_block (F : (Σ k', ι' k') → ℕ) (k' : K') :
   · simp
 
 /- English proof (translation)
-Introduce `m' hm' k'`. Rewrite `hm'` using `[support_rename_of_injective hv.2.1, Finset.mem_image]`. Take `⟨m, hm, rfl⟩` from `hm'`. Rewrite using `[sum_block]`. Establish `h1 : (∑ q, if q.1 = k' then Finsupp.mapDomain v m q else 0) = ∑ p, if κ p.1 = k' then m p else 0`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `Finsupp.sum_mapDomain_index_inj (h := fun (q : Σ k', ι' k') (n : ℕ) => if q.1 = k' then n else 0) (s := m) hv.2.1` as an intermediate fact. Rewrite `this` using `[Finsupp.sum_fintype _ _ (by simp), Finsupp.sum_fintype _ _ (by simp)]`. Simplify `this` using `[hv.2.2.1]`. Establish `h2 : (∑ p : Σ k, ι k, if κ p.1 = k' then m p else 0) = ∑ k, if κ k = k' then α k else 0`. Rewrite using `[Fintype.sum_sigma]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Use `split_ifs with hk`. Conclude with `hs m hm k`. Simplify using the standard rewrite rules. Use `h1.trans h2` and compare the differences between its conclusion and the goal.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Apply an available result and prove the equalities needed to match it to the conclusion. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Distinguish the cases in `h : ∃ k, κ k = k'`. Take `⟨k, rfl⟩` from `h`. Rewrite using `[hv.1.extend_apply, Finset.sum_eq_single k]`. Simplify using the standard rewrite rules. Introduce `b _ hb`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[hv.1.ne hb]`. Simplify using the standard rewrite rules. Rewrite using `[Function.extend_apply' _ _ _ h]`. Use `(Finset.sum_eq_zero fun k _ => ?_).symm` and prove the remaining obligations. Rewrite using `[if_neg fun hk => h ⟨k, hk⟩]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isMultiHomog_rename {κ : K → K'} {v : (Σ k, ι k) → (Σ k', ι' k')} (hv : IsBlockMap κ v)
     {s : MRing ι} {α : K → ℕ} (hs : IsMultiHomog s α) :
@@ -156,15 +156,13 @@ end ArithmeticIntersectionHorizontal
 open ArithmeticIntersectionHorizontal in
 
 /- English proof (translation)
-Introduce `I hI n hn K _ ι _ K' _ ι' _ κ v P' L L' s α W' hv hP' hP hL hLL' hs hsP hW' hh`. Set `A : HermLine ι` to `HermLine.ofMetrics (fun k => maxMetric ℂ (ι k)) (fun k => (α k : ℤ))`. Set `A' : HermLine ι'` to `HermLine.ofMetrics (fun k => maxMetric ℂ (ι' k)) (fun k => ((Function.extend κ α 0 : K' → ℕ) k : ℤ))`. Establish `hsec : IsSectionOn (imageZ v P') A s` using `⟨α, fun _ => rfl, hs, hsP⟩`. Establish `hsec' : IsSectionOn P' A' (rename v s)` using `⟨Function.extend κ α 0, fun _ => rfl, isMultiHomog_rename hv hs, fun h => hsP (Ideal.mem_comap.mpr h)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hW'n : IsArithVar W' n` using `(hDiv K' ι' P' n A' (rename v s) W' hP' hsec' hW').1 hh`. Establish `hhQ : IsHorizontal (imageZ v W')` using `isHorizontal_imageZ hh`. Take `⟨d, hdn, hQd⟩` from `hIm K ι K' ι' κ v W' n hP.1 hv hW'n`. Break down `hdn.lt_or_eq with hlt | heq` into its components or cases. Use `right`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun hm => ?_, hP0 I hI K ι K' ι' κ v W' d n L L' hv hW'n hQd hlt hL hLL'⟩` and prove the remaining obligations. Use `dim_eq hQd ((hDiv K ι (imageZ v P') n A s _ hP hsec hm).1 hhQ)` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Use `left`. Rewrite `hQd` using `[heq]`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hle` using `hW'.1.1.2`. Establish `hm : imageZ v W' ∈ divSupp (imageZ v P') s`. Use `⟨mem_minimalPrimes hQd ?_ fun M hM hMr hMh => (hDiv K ι (imageZ v P') n A s M hP hsec ⟨hM, hMr⟩).1 hMh, hQd.2.1.2.2⟩` and prove the remaining obligations. Use `sup_le (Ideal.comap_mono (le_sup_left.trans hle)) ?_` and prove the remaining obligations. Rewrite using `[Ideal.span_le, Set.singleton_subset_iff]`.
-
-Conclude with `Ideal.mem_comap.mpr (hle (Ideal.mem_sup_right (Ideal.mem_span_singleton_self _)))`. Conclude with `⟨hm, fun G' J' hJ' => hn K ι K' ι' κ v W' G' J' L L' hv hW'n hQd hJ' hL hLL'⟩`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem ArithmeticIntersectionHorizontal.proof (hDiv : DivSuppArithStatement) (hIm : ImageArithStatement)
     (hP0 : GroundTheory.Heights₂.Heights.Inter.PushforwardProjectivePoint.Statement) : ArithmeticIntersectionHorizontal.Statement := by

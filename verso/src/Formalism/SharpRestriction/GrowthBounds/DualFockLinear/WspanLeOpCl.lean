@@ -18,11 +18,9 @@ def WSpan (l : List (Fin n' × (Fin k × Fin k))) (h : MvPolynomial (Fin n' × F
   Submodule.span R {y | ∃ l' : List (Fin n' × (Fin k × Fin k)), l'.map Prod.fst = l.map Prod.fst ∧ y = opWord l' h}
 
 /- English proof (translation)
-Unfold `WSpan at hz ⊢`. Proceed by induction on `hz using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨l', hl', rfl⟩` from `hy`. Conclude with `Submodule.subset_span ⟨(s, (c, c')) :: l', by simp [hl'], rfl⟩`.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately.
 
-Consider the case `zero => simp`. Consider the case `add a b _ _ ha hb`. Rewrite using `[map_add, mul_add]`. Conclude with `Submodule.add_mem _ ha hb`. Consider the case `smul a y _ hy`.
-
-Rewrite using `[Derivation.map_smul, mul_smul_comm]`. Conclude with `Submodule.smul_mem _ a hy`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem wspan_op (l : List (Fin n' × (Fin k × Fin k))) (h : MvPolynomial (Fin n' × Fin k) R) (s : Fin n')
     (x : Fin k × Fin k) (c c' : Fin k) {z : MvPolynomial (Fin n' × Fin k) R} (hz : z ∈ WSpan l h) :
@@ -41,11 +39,11 @@ theorem wspan_op (l : List (Fin n' × (Fin k × Fin k))) (h : MvPolynomial (Fin 
     exact Submodule.smul_mem _ a hy
 
 /- English proof (translation)
-Introduce `l`. Proceed by induction on `l with`. Consider the case `nil => exact Submodule.subset_span ⟨[], rfl, rfl⟩`. Consider the case `cons y l ih`. Take `⟨s, a, b⟩` from `y`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Use `show Lin N (X (s, a) * pderiv (s, b) (opWord l f)) ∈ _`. Rewrite using `[map_mul, Lin_X, Lin_pderiv N N' h, Finset.sum_mul]`. Use `Submodule.sum_mem _ fun b' _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`. Use `Submodule.sum_mem _ fun c _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_smul_comm, MvPolynomial.C_mul', smul_mul_assoc]`. Conclude with `Submodule.smul_mem _ _ (Submodule.smul_mem _ _ (wspan_op l _ s (a, b) b' c ih))`.
+A detailed English derivation is pending.
 -/
 theorem Lin_word (N N' : Fin n' → Matrix (Fin k) (Fin k) R) (h : ∀ s, N s * N' s = 1)
     (f : MvPolynomial (Fin n' × Fin k) R) :
@@ -64,11 +62,11 @@ theorem Lin_word (N N' : Fin n' → Matrix (Fin k) (Fin k) R) (h : ∀ s, N s * 
     exact Submodule.smul_mem _ _ (Submodule.smul_mem _ _ (wspan_op l _ s (a, b) b' c ih))
 
 /- English proof (translation)
-Rewrite using `[WSpan, Submodule.span_le]`. Introduce and unpack `y ⟨l', hl', rfl⟩`. Use `Submodule.subset_span ⟨h, hh, l', ?_, ?_, rfl⟩` and prove the remaining obligations. Introduce `z hz`. Establish `hz' : z.1 ∈ l.map Prod.fst` using `hl' ▸ List.mem_map_of_mem hz`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Take `⟨z', hz'', e⟩` from `List.mem_map.1 hz'`. Conclude with `e ▸ h1 z' hz''`. Introduce `s`. Establish `e : ∀ L : List (Fin n' × (Fin k × Fin k)), (L.filter fun z => decide (z.1 = s)).length = ((L.map Prod.fst).filter fun t => decide (t = s)).length`. Introduce `L`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[List.filter_map, List.length_map]`. Both sides reduce to the same expression. Rewrite using `[e, hl', ← e]`. Conclude with `h2 s`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem wspan_le_OpCl (TT : Finset (Fin n')) (c : ℕ) (M : Submodule R (MvPolynomial (Fin n' × Fin k) R))
     (l : List (Fin n' × (Fin k × Fin k))) (h1 : ∀ z ∈ l, z.1 ∈ TT) (h2 : ∀ s, (l.filter fun z => z.1 = s).length ≤ c)
@@ -90,11 +88,9 @@ theorem wspan_le_OpCl (TT : Finset (Fin n')) (c : ℕ) (M : Submodule R (MvPolyn
     exact h2 s
 
 /- English proof (translation)
-Introduce `f hf`. Unfold `OpCl at hf`. Proceed by induction on `hf using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨f0, hf0, l, h1, h2, rfl⟩` from `hy`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Conclude with `wspan_le_OpCl TT c M' l h1 h2 (hM f0 hf0) (Lin_word N N' h f0 l)`. Consider the case `zero => rw [map_zero]`. Conclude with `Submodule.zero_mem _`. Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `Submodule.add_mem _ hx hy`.
-
-Consider the case `smul a x _ hx => rw [map_smul]`. Conclude with `Submodule.smul_mem _ _ hx`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem Lin_OpCl (N N' : Fin n' → Matrix (Fin k) (Fin k) R) (h : ∀ s, N s * N' s = 1) (TT : Finset (Fin n')) (c : ℕ)
     (M M' : Submodule R (MvPolynomial (Fin n' × Fin k) R)) (hM : ∀ f ∈ M, Lin N f ∈ M') :

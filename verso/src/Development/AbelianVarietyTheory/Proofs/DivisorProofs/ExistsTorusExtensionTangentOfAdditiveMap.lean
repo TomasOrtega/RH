@@ -20,11 +20,11 @@ noncomputable section
 namespace GlobalTheory.MBLow.TorVec
 
 /- English proof (translation)
-Introduce `R _ _ D l`. Take `⟨ν, hb, hv⟩` from `GlobalTheory.TorusTangent.exists_pt (D := D) (T := epsR R) (fun x => GlobalTheory.TorusTangent.oneAdd (l x)) fun x y => by rw [map_add, GlobalTheory.TorusTangent.oneAdd_add]`. Use `⟨ν, ?_, hb, fun χ Z q z J hJ => ?_⟩` and prove the remaining obligations. Take `⟨g₀, h₀, v₀⟩` from `GlobalTheory.TorusTangent.exists_pt (D := D) (T := baseOver (Sp R)) (fun _ => 1) fun _ _ => (_root_.mul_one _).symm`. Use `⟨g₀, ⟨h₀, fun x => corr_of_val D.P.isLB fun y J hJ => ?_⟩, ?_, fun x => corr_of_val D.P.isLB fun y J hJ => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[v₀ x _ _ y J hJ, map_one, val_one]`. Rewrite using `[h₀, hb, GlobalTheory.TorusTangent.zeroT_left, GlobalTheory.TorusTangent.zeroT_left, ← Category.assoc]`. Conclude with `congrArg (· ≫ eSec D.P.A) GlobalTheory.TorusTangent.fst_inl.symm`. Use `(v₀ x _ _ y J hJ).trans (Units.ext (Eq.trans ?_ (GlobalTheory.TorusTangent.hasVal_spMap (hv x) (TrivSqZeroExt.fstHom R R R).toRingHom hJ).symm))` and prove the remaining obligations. Rewrite using `[GlobalTheory.TorusTangent.valR_oneAdd, map_one]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Rewrite using `[hv χ Z q z J hJ, ← gs_unit q z ⊤ trivial]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_torus_tangent : ∀ (R : Type) [CommRing R] [IsDomain R] (D : DegPre R) (l : D.X →+ R), ∃ gm : GtPt D (epsR R), GtTan gm ∧ gm.b = DegPre.zeroT D (epsR R) ∧ ∀ (χ : D.X) (Z : Scheme.{0}) (q : Z ⟶ (epsR R).left) (z : Z) (J : (Z ⟶ D.P.A.left) → D.P.L.ι), ReciprocityTheory.ChartRestriction.G.Geo.Tor.Good D.P.L z J → (ReciprocityTheory.ChartRestriction.G.Geo.Tor.val (gm.s χ) q z J).val = ReciprocityTheory.ChartRestriction.G.Geo.Tor.gs q z ⊤ ((Scheme.ΓSpecIso (CommRingCat.of (DualNumber R))).inv.hom (1 + TrivSqZeroExt.inr (l χ))) := by
   intro R _ _ D l

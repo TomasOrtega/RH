@@ -8,11 +8,11 @@ noncomputable section
 namespace GlobalTheory.FockAnalytic
 
 /- English proof (translation)
-Use `Finset.sup_le fun m hm => ?_` and prove the remaining obligations. Establish `hc : coeff (m + Finsupp.single i 1) Q ≠ 0`. Rewrite `hm` using `[mem_support_iff, coeff_pderiv]`. Introduce `h`. Rewrite `hm` using `[h, zero_mul]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hm rfl`. Establish `h1` using `le_totalDegree (mem_support_iff.2 hc)`. Establish `h2 : ((m + Finsupp.single i 1).sum fun _ e => e) = (m.sum fun _ e => e) + 1`. Rewrite using `[Finsupp.sum_add_index' (fun _ => rfl) (fun _ _ _ => rfl), Finsupp.sum_single_index rfl]`. Rewrite `h1` using `[h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Use `show (m.sum fun _ e => e) ≤ Q.totalDegree`. Use linear arithmetic over natural numbers and integers.
+A detailed English derivation is pending.
 -/
 theorem totalDegree_pderiv_le_self {σ : Type} (i : σ) (Q : MvPolynomial σ ℂ) :
     (pderiv i Q).totalDegree ≤ Q.totalDegree := by
@@ -40,7 +40,7 @@ variable {σ : Type} [DecidableEq σ] {H : Type} [NormedAddCommGroup H] [InnerPr
   {ι : MvPolynomial σ ℂ →ₗ[ℂ] H}
 
 /- English proof (translation)
-Introduce `d P hP`. Use `⟨?_, (GlobalTheory.T.fock_norm_bounds_mul_X_pderiv σ H ι h i d P hP).1⟩` and prove the remaining obligations. Rewrite using `[LinearMap.mulLeft_apply]`. Use `(totalDegree_mul _ _).trans ?_` and prove the remaining obligations. Rewrite using `[totalDegree_X]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
 Use linear arithmetic over natural numbers and integers.
 -/
@@ -52,7 +52,7 @@ theorem oneStep_mul (h : IsFockIP ι) (i : σ) : OneStep ι (LinearMap.mulLeft �
   rw [totalDegree_X]; omega
 
 /- English proof (translation)
-Introduce `d P hP`. Use `⟨((totalDegree_pderiv_le_self i P).trans hP).trans (Nat.le_succ _), ?_⟩` and prove the remaining obligations. Use `(GlobalTheory.T.fock_norm_bounds_mul_X_pderiv σ H ι h i d P hP).2` as an intermediate fact. Establish `h2` using `sq_nonneg ‖ι P‖`. Express the relevant statement in the definitionally equal form `‖ι (pderiv i P)‖ ^ 2 ≤ _`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
 Use the polynomial consequences of the given equalities and inequalities.
 -/
@@ -66,7 +66,7 @@ theorem oneStep_pderiv (h : IsFockIP ι) (i : σ) : OneStep ι (pderiv i).toLine
 
 omit [DecidableEq σ] in
 /- English proof (translation)
-Introduce `d P hP`. Simplify using `using h d P hP`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem OneStep.neg {A : Module.End ℂ (MvPolynomial σ ℂ)} (h : OneStep ι A) : OneStep ι (-A) := by
   intro d P hP
@@ -74,9 +74,9 @@ theorem OneStep.neg {A : Module.End ℂ (MvPolynomial σ ℂ)} (h : OneStep ι A
 
 omit [DecidableEq σ] in
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `hB d P hP`. Take `⟨h3, h4⟩` from `hA (d + 1) _ h1`. Use `⟨h3, ?_⟩` and prove the remaining obligations. Establish `hd : (0 : ℝ) ≤ d` using `Nat.cast_nonneg d`. Use `(pow_le_pow_iff_left₀ (norm_nonneg _) (by positivity) two_ne_zero).1 ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Move the coercions through the operations in `at h4`. Establish `h5` using `mul_le_mul_of_nonneg_left h2 (show (0 : ℝ) ≤ (d : ℝ) + 1 + 1 by positivity)`. Establish `h6` using `sq_nonneg ‖ι P‖`. Express the relevant statement in the definitionally equal form `‖ι (A (B P))‖ ^ 2 ≤ _`. Use the polynomial consequences of the given equalities and inequalities.
+Move the embeddings inside the algebraic operations. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem OneStep.comp {A B : Module.End ℂ (MvPolynomial σ ℂ)} (hA : OneStep ι A) (hB : OneStep ι B)
     (d : ℕ) (P : MvPolynomial σ ℂ) (hP : P.totalDegree ≤ d) :
@@ -98,15 +98,13 @@ variable {p q r s : ℕ} {H : Type} [NormedAddCommGroup H] [InnerProductSpace �
   {ι : Pol p q r s →ₗ[ℂ] H}
 
 /- English proof (translation)
-Establish `hA : OneStep ι (raiB l)`. Unfold `raiB`. Use `split_ifs`. Use `exacts [oneStep_mul h l, (oneStep_pderiv h l).neg]`. Establish `hB : OneStep ι (lowB l')`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result.
 
-Unfold `lowB`. Use `split_ifs`. Use `exacts [oneStep_pderiv h l', oneStep_mul h l']`. Take `⟨h1, h2⟩` from `hA.comp hB d P hP`. Establish `hn` using `norm_nonneg (ι P)`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Unfold `omE`. Use `split_ifs`. Rewrite using `[LinearMap.add_apply, LinearMap.smul_apply, Module.End.one_apply]`. Use `⟨(totalDegree_add _ _).trans (max_le h1 ((totalDegree_smul_le _ _).trans (by omega))), ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, map_smul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Use `(norm_add_le _ _).trans ?_` and prove the remaining obligations. Rewrite using `[norm_smul]`. Establish `: ‖(1 / 2 : ℂ)‖ = 1 / 2` using `by simp`. Rewrite using `[this]`. Combine the linear equalities and inequalities to obtain the conclusion.
-
-Rewrite using `[add_zero]`. Conclude with `⟨h1, by linarith⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem omE_bound (h : IsFockIP ι) (l l' : Ln p q r s) (d : ℕ) (P : Pol p q r s)
     (hP : P.totalDegree ≤ d) :
@@ -133,11 +131,11 @@ theorem omE_bound (h : IsFockIP ι) (l l' : Ln p q r s) (d : ℕ) (P : Pol p q r
     exact ⟨h1, by linarith⟩
 
 /- English proof (translation)
-Establish `e : omAct p q r s Y P = ∑ l, ∑ l', Y l l' • omE l l' P`. Simplify using `[omAct, LinearMap.sum_apply]`. Rewrite using `[e]`. Prove the components needed by the constructor for the conclusion. Use `(totalDegree_finsetSum _ _).trans (Finset.sup_le fun l _ => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Reduce the conclusion to the remaining proof obligations.
 
-Use `(totalDegree_finsetSum _ _).trans (Finset.sup_le fun l' _ => ?_)` and prove the remaining obligations. Conclude with `(totalDegree_smul_le _ _).trans (omE_bound h l l' d P hP).1`. Rewrite using `[map_sum, Finset.sum_mul]`. Use `norm_sum_le_of_le _ fun l _ => ?_` and prove the remaining obligations. Rewrite using `[map_sum, Finset.sum_mul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `norm_sum_le_of_le _ fun l' _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, norm_smul]`. Conclude with `mul_le_mul_of_nonneg_left (omE_bound h l l' d P hP).2 (norm_nonneg _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem omAct_bound (h : IsFockIP ι) (Y : Matrix (Ln p q r s) (Ln p q r s) ℂ) (d : ℕ)
     (P : Pol p q r s) (hP : P.totalDegree ≤ d) :
@@ -158,11 +156,11 @@ theorem omAct_bound (h : IsFockIP ι) (Y : Matrix (Ln p q r s) (Ln p q r s) ℂ)
     exact mul_le_mul_of_nonneg_left (omE_bound h l l' d P hP).2 (norm_nonneg _)
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => simpa using hP`. Consider the case `succ k ih`. Rewrite using `[pow_succ', Module.End.mul_apply]`. Take `⟨h1, h2⟩` from `omAct_bound h Y _ _ ih.1`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `⟨by omega, h2.trans ?_⟩` and prove the remaining obligations. Establish `hS : (0 : ℝ) ≤ ∑ l, ∑ l', ‖Y l l'‖` using `by positivity`. Establish `hm' : (d : ℝ) ≤ 2 * m` using `by exact_mod_cast hm`. Rewrite using `[Nat.ascFactorial_succ]`. Use `push_cast`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Combine the equalities or inequalities in the displayed calculation. Use `mul_le_mul_of_nonneg_left ?_ hS` and prove the remaining obligations. Conclude with `mul_le_mul (by linarith) ih.2 (norm_nonneg _) (by positivity)`. Use `_ = _ := by ring`.
+Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem omAct_pow_bound (h : IsFockIP ι) (Y : Matrix (Ln p q r s) (Ln p q r s) ℂ) (d m : ℕ)
     (hm : d ≤ 2 * m) (P : Pol p q r s) (hP : P.totalDegree ≤ d) (k : ℕ) :
@@ -187,13 +185,13 @@ theorem omAct_pow_bound (h : IsFockIP ι) (Y : Matrix (Ln p q r s) (Ln p q r s) 
 end
 
 /- English proof (translation)
-Introduce `p q r s H _ _ ι h Y d k P hP`. Take `⟨h1, h2⟩` from `omAct_pow_bound h Y d ((d + 1) / 2) (by omega) P hP k`. Use `⟨h1, h2.trans (mul_le_mul_of_nonneg_right ?_ (norm_nonneg _))⟩` and prove the remaining obligations. Use `set m := (d + 1) / 2 with hm`. Establish `hS : (0 : ℝ) ≤ ∑ l, ∑ l', ‖Y l l'‖` using `by positivity`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable.
 
-Generalize the expression as in `(∑ l, ∑ l', ‖Y l l'‖) = S at hS`. Establish `hm1 : (m : ℝ) ≤ (d : ℝ) / 2 + 1`. Establish `: 2 * m ≤ d + 2` using `by omega`. Establish `: (2 * m : ℝ) ≤ d + 2` using `by exact_mod_cast this`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `h3 : (2 : ℝ) ^ m ≤ (2 : ℝ) ^ ((d : ℝ) / 2 + 1)`. Rewrite using `[← Real.rpow_natCast]`. Conclude with `Real.rpow_le_rpow_of_exponent_le one_le_two hm1`. Establish `h4 : (((m + k).choose k : ℕ) : ℝ) ≤ 2 ^ (m + k)`. Conclude with `Nat.choose_le_two_pow (m + k) k` after adjusting the coercions.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[Nat.ascFactorial_eq_factorial_mul_choose]`. Use `push_cast`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[show (4 : ℝ) * S = 2 * (2 * S) by ring, mul_pow 2 (2 * S), pow_add]; ring`. Use `_ ≤ _ := by gcongr`.
+Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem omAct_pow_norm_le : ∀ (p q r s : ℕ) (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H] (ι : Pol p q r s →ₗ[ℂ] H), IsFockIP ι → ∀ (Y : Matrix (Ln p q r s) (Ln p q r s) ℂ) (d k : ℕ) (P : Pol p q r s), P.totalDegree ≤ d → ((omAct p q r s Y ^ k) P).totalDegree ≤ d + 2 * k ∧ ‖ι ((omAct p q r s Y ^ k) P)‖ ≤ (4 * ∑ l, ∑ l', ‖Y l l'‖) ^ k * (k.factorial : ℝ) * (2 : ℝ) ^ ((d : ℝ) / 2 + 1) * ‖ι P‖ := by
   intro p q r s H _ _ ι h Y d k P hP

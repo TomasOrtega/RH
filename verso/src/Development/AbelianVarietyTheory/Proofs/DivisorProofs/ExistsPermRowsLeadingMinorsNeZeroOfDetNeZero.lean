@@ -7,21 +7,21 @@ open ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.FlagZ GlobalTheor
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `N`. Proceed by induction on `N with`. Consider the case `zero`. Introduce `A _`. Use `⟨1, fun k hk => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Take `rfl : k = 0` from `by omega`. Simplify using the standard rewrite rules. Consider the case `succ n ih`. Introduce `A hA`. Establish `h1 : ∃ i : Fin (n + 1), (A.submatrix i.succAbove (Fin.last n).succAbove).det ≠ 0`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `h`. Use `push_neg at h`. Apply `hA` to reduce the goal to its premises. Rewrite using `[Matrix.det_succ_column A (Fin.last n)]`. Simplify using `only [h, mul_zero, Finset.sum_const_zero]`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Take `⟨i, hi⟩` from `h1`. Take `⟨w', hw'⟩` from `ih _ hi`. Set `w : Equiv.Perm (Fin (n + 1))` to `(finSuccEquiv' (Fin.last n)).trans ((Equiv.optionCongr w').trans (finSuccEquiv' i).symm)`. Establish `hw : ∀ j : Fin n, w ((Fin.last n).succAbove j) = i.succAbove (w' j)`. Introduce `j`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [w, Equiv.trans_apply, finSuccEquiv'_succAbove, Equiv.optionCongr_apply, Option.map_some, finSuccEquiv'_symm_some]`. Use `⟨w, fun k hk => ?_⟩` and prove the remaining obligations. Break down `Nat.lt_or_ge n k with hlt | hle` into its components or cases. Take `rfl : k = n + 1` from `by omega`. Establish `: (Fin.castLE hk : Fin (n + 1) → Fin (n + 1)) = id`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `x`. Simplify using the standard rewrite rules. Rewrite using `[this, Matrix.submatrix_id_id, Matrix.det_permute]`. Use `mul_ne_zero ?_ hA` and prove the remaining obligations. Apply the tactic sequence `rcases Int.units_eq_one_or (Equiv.Perm.sign w) with h | h <;> simp [h]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Establish `hc : ∀ x : Fin k, (Fin.castLE hk x : Fin (n + 1)) = (Fin.last n).succAbove (Fin.castLE hle x)`. Introduce `x`. Rewrite using `[Fin.succAbove_last]`. Both sides reduce to the same expression. Use `hw' k hle using 2` and compare the differences between its conclusion and the goal.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components.
 
-Use extensionality with `a b`. Simplify using `only [Matrix.submatrix_apply, id, hc, hw]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_perm_rows_leading_minors_ne_zero_of_det_ne_zero (K : Type) [Field K] :
     ∀ (N : ℕ) (A : Matrix (Fin N) (Fin N) K), A.det ≠ 0 →
@@ -69,7 +69,7 @@ theorem exists_perm_rows_leading_minors_ne_zero_of_det_ne_zero (K : Type) [Field
       simp only [Matrix.submatrix_apply, id, hc, hw]
 
 /- English proof (translation)
-Introduce `K _ N g`. Conclude with `exists_perm_rows_leading_minors_ne_zero_of_det_ne_zero K N g.1 (Matrix.GeneralLinearGroup.det_ne_zero g)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem GL_exists_perm_rows_leading_minors_ne_zero :
     ∀ (K : Type) [Field K] (N : ℕ) (g : GL (Fin N) K), ∃ w : Equiv.Perm (Fin N),

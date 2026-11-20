@@ -12,11 +12,11 @@ namespace GlobalTheory.Harm
 section General
 
 /- English proof (translation)
-Establish `hw (m : σ →₀ ℕ) : Finsupp.weight w (m.mapDomain f) = Finsupp.weight (w ∘ f) m`. Simplify using `only [Finsupp.weight_apply]`. Rewrite using `[Finsupp.sum_mapDomain_index (by simp) (by simp [add_smul])]`. Both sides reduce to the same expression. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Prove the components needed by the constructor for the conclusion.
 
-Introduce `h m hm`. Rewrite using `[← hw]`. Conclude with `h (by rwa [coeff_rename_mapDomain f hf])`. Introduce `h m hm`. Take `⟨u, rfl, hu⟩` from `coeff_rename_ne_zero f P m hm`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hw, h hu]`.
+A detailed English derivation is pending.
 -/
 theorem isWeightedHomogeneous_rename_iff {R σ τ M : Type*} [CommSemiring R] [AddCommMonoid M]
     {f : σ → τ} (hf : Function.Injective f) (w : τ → M) (P : MvPolynomial σ R) (d : M) :
@@ -37,31 +37,29 @@ theorem isWeightedHomogeneous_rename_iff {R σ τ M : Type*} [CommSemiring R] [A
 variable {T κ : Type*} [Fintype κ] {p q : ℕ}
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hlt`. Rewrite `hlt` using `[not_le]`. Set `K` to `FractionRing R`. Establish `hinj : Function.Injective (algebraMap R K)` using `IsFractionRing.injective R K`. Use `haveI : CharZero K := charZero_of_injective_algebraMap hinj`.
+Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hinv (s : K) : rowAdd t r r' s (map (algebraMap R K) P) = map (algebraMap R K) P` using `rowAdd_eq_self_of_forall_int (fun s => by`. Rewrite using `[← map_intCast (algebraMap R K), ← map_rowAdd, h]) s`. Establish `hmap {w : Var T p q κ → ℕ} {e : ℕ} (he : IsWeightedHomogeneous w P e) : IsWeightedHomogeneous w (map (algebraMap R K) P) e` using `fun m hm => he fun e => hm (by rw [coeff_map, e, map_zero])`. Establish `hQ : map (algebraMap R K) P ≠ 0` using `fun e => hP (map_injective _ hinj (by rw [e, map_zero]))`. Use `replace hd := hmap hd`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Reduce the conclusion to the remaining proof obligations.
 
-Use `replace hd' := hmap hd'`. Generalize the expression as in `map (algebraMap R K) P = Q at hinv hQ hd hd'`. Use `hQ (MvPolynomial.funext fun z => ?_)` and prove the remaining obligations. Set `f : Var T p q κ → Polynomial K` to `fun v => Polynomial.C (z v) + if v.1 = t ∧ v.2.1 = r then Polynomial.C (z (t, r', v.2.2)) * Polynomial.X else 0`. Set `g : Var T p q κ → Polynomial K` to `fun v => if v.1 = t ∧ v.2.1 = r' then Polynomial.C (z (t, r, v.2.2)) else f v`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `hev (u : Var T p q κ → Polynomial K) (s : K) : (aeval u Q).eval s = eval (fun v => (u v).eval s) Q`. Rewrite using `[← Polynomial.coe_aeval_eq_eval, ← coe_aeval_eq_eval]`. Express the relevant statement in the definitionally equal form `Polynomial.aeval s (aeval u Q) = aeval _ Q`. Rewrite using `[comp_aeval_apply]`. Establish `hscale (c : K) (x : Var T p q κ → K) : eval (fun v => c ^ rowInd t r' v * x v) Q = c ^ d' * eval x Q`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[eval_eq, eval_eq, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun m hm => ?_` and prove the remaining obligations. Rewrite using `[← hd' (mem_support_iff.1 hm), Finsupp.weight_apply, Finsupp.sum]`. Simplify using `only [mul_pow, Finset.prod_mul_distrib, ← pow_mul, Finset.prod_pow_eq_pow_sum, smul_eq_mul, mul_comm (m _)]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hid : Polynomial.X ^ d' * aeval f Q = Polynomial.C ((-1) ^ d') * aeval g Q`. Use `Polynomial.eq_of_infinite_eval_eq _ _ (((Set.finite_singleton (0 : K)).infinite_compl).mono fun s hs => ?_)` and prove the remaining obligations. Establish `hs : s ≠ 0` using `hs`. Establish `h1 : eval (fun v => (f v).eval s) Q = (-s⁻¹) ^ d' * eval (fun v => (g v).eval s) Q`. Rewrite using `[← hscale]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use `conv_lhs => rw [← hinv (-s⁻¹), eval_rowAdd]`. Use `congr 2`. Use function extensionality and compare the values at `⟨t', r'', k⟩`. Rewrite using `[rowInd_apply]`. Distinguish the cases in `e : t' = t ∧ r'' = r'`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Simplify using the standard rewrite rules.
 
-Take `⟨rfl, rfl⟩` from `e`. Simplify using `only [f, g, hr.symm, and_self, and_false, if_true, if_false, Polynomial.eval_add, Polynomial.eval_mul, Polynomial.eval_C, Polynomial.eval_X, add_zero, pow_one]`. Take the linear combination `(-z (t', r'', k)) * mul_inv_cancel₀ hs`. Simplify using `[g, e]`. Rewrite using `[Set.mem_setOf_eq, Polynomial.eval_mul, Polynomial.eval_mul, hev, hev, h1, Polynomial.eval_pow, Polynomial.eval_X, Polynomial.eval_C, ← mul_assoc, ← mul_pow, mul_neg, mul_inv_cancel₀ hs]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Establish `hg (v : Var T p q κ) : (g v).natDegree ≤ rowInd t r v`. Rewrite using `[rowInd_apply]`. Simplify using `only [g, f]`. Use `split_ifs`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using the standard rewrite rules. Use `compute_degree`. Simplify using the standard rewrite rules. Establish `hdeg : (aeval g Q).natDegree ≤ d`. Rewrite using `[aeval_def, eval₂_eq]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `Polynomial.natDegree_sum_le_of_forall_le _ _ fun m hm => ?_` and prove the remaining obligations. Rewrite using `[← hd (mem_support_iff.1 hm), Finsupp.weight_apply, Finsupp.sum]`. Use `(Polynomial.natDegree_C_mul_le _ _).trans ((Polynomial.natDegree_prod_le _ _).trans (Finset.sum_le_sum fun v _ => Polynomial.natDegree_pow_le.trans ?_))` and prove the remaining obligations. Conclude with `Nat.mul_le_mul_left _ (hg v)`. Use `congrArg (fun F : Polynomial K => F.coeff d') hid` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Simplify using `only [Polynomial.coeff_C_mul, Polynomial.coeff_eq_zero_of_natDegree_lt (hdeg.trans_lt hlt), mul_zero] at this`. Rewrite `this` using `[Polynomial.coeff_X_pow_mul', if_pos le_rfl, Nat.sub_self, Polynomial.coeff_zero_eq_eval_zero, hev]`. Rewrite using `[map_zero, ← this]`. Use `congr 2`. Use function extensionality and compare the values at `v`.
-
-Simplify using `only [f]`. Apply the tactic sequence `split_ifs <;> simp`.
+A detailed English derivation is pending.
 -/
 theorem rowDegree_le_of_rowAdd_eq {R : Type*} [CommRing R] [IsDomain R] [CharZero R] {t : T}
     {r r' : Fin p ⊕ Fin q} (hr : r ≠ r') {P : Poly R T p q κ} (hP : P ≠ 0) {d d' : ℕ}
@@ -215,7 +213,7 @@ theorem conjEmb_eq_conjugate (τ : E →+* ℂ) : Tor.conjEmb τ = ComplexEmbedd
 omit [NumberField E] [IsCMField E] in
 
 /- English proof (translation)
-The claim follows from `ComplexEmbedding.involutive_conjugate E τ`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem conjEmb_conjEmb (τ : E →+* ℂ) : Tor.conjEmb (Tor.conjEmb τ) = τ :=
   ComplexEmbedding.involutive_conjugate E τ
@@ -225,16 +223,16 @@ abbrev HostType (H : Tor.Host E) : Type := {τ : E →+* ℂ // τ (H.rt : E) = 
 variable (H : Tor.Host E)
 
 /- English proof (translation)
-Use `congrArg (fun a : 𝓞 E => τ (a : E)) H.rt_sq` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem emb_rt_sq (τ : E →+* ℂ) : τ (H.rt : E) ^ 2 = -(H.d : ℂ) := by
   have := congrArg (fun a : 𝓞 E => τ (a : E)) H.rt_sq
   simpa using this
 
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.ConjugateEmbeddingSquareRoot.conjEmb_rt`. Consider the case `exact _root_.GlobalTheory.ConjugateEmbeddingSquareRoot.conjEmb_rt`. Consider the case `(apply _root_.GlobalTheory.ConjugateEmbeddingSquareRoot.conjEmb_rt <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.ConjugateEmbeddingSquareRoot.conjEmb_rt <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.ConjugateEmbeddingSquareRoot.conjEmb_rt <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.ConjugateEmbeddingSquareRoot.conjEmb_rt ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem conjEmb_rt (τ : E →+* ℂ) : Tor.conjEmb τ (H.rt : E) = -τ (H.rt : E) := by
   first
@@ -246,9 +244,9 @@ theorem conjEmb_rt (τ : E →+* ℂ) : Tor.conjEmb τ (H.rt : E) = -τ (H.rt : 
   | (intros; exact _root_.GlobalTheory.ConjugateEmbeddingSquareRoot.conjEmb_rt ..)
 
 /- English proof (translation)
-Rewrite using `[conjEmb_rt]`. Establish `h` using `(emb_rt_sq H τ).trans H.sqrt_neg_disc_sq.symm`. Prove the components needed by the constructor for the conclusion. Introduce `hne`. Rewrite using `[(sq_eq_sq_iff_eq_or_eq_neg.1 h).resolve_left hne, neg_neg]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `h1 h2`. Establish `h0 : H.rt0 = 0` using `by linear_combination (-1 / 2 : ℂ) * (h1 + h2)`. Use `H.sqrt_neg_disc_sq` as an intermediate fact. Rewrite `this` using `[h0, zero_pow two_ne_zero, eq_comm, neg_eq_zero, Nat.cast_eq_zero]`. Conclude with `H.d_prime.ne_zero this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem not_mem_hostType_iff (τ : E →+* ℂ) :
     ¬ τ (H.rt : E) = H.rt0 ↔ Tor.conjEmb τ (H.rt : E) = H.rt0 := by
@@ -266,12 +264,12 @@ theorem not_mem_hostType_iff (τ : E →+* ℂ) :
 variable {H} (D : Tor.Datum H)
 
 /- English proof (translation)
-The claim follows from `if_pos h`.
+A detailed English derivation is pending.
 -/
 theorem mult_of_mem {τ : E →+* ℂ} (h : τ (H.rt : E) = H.rt0) : D.mult τ = D.p := if_pos h
 
 /- English proof (translation)
-The claim follows from `if_neg fun e => (not_mem_hostType_iff H τ).2 e h`.
+A detailed English derivation is pending.
 -/
 theorem mult_conjEmb_of_mem {τ : E →+* ℂ} (h : τ (H.rt : E) = H.rt0) :
     D.mult (Tor.conjEmb τ) = D.q := if_neg fun e => (not_mem_hostType_iff H τ).2 e h

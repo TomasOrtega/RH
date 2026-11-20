@@ -9,7 +9,7 @@ import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ApplyMemTwKerOfN
 namespace UpperTheory.Gal.TypesAndIwahori
 
 /- English proof (translation)
-Establish `geo` using `UpperTheory.Lit.Mix.geometricLemma`. Establish `bz` using `GlobalTheory.bernsteinZelevinskyFiniteness_holds`. Establish `zel` using `UpperTheory.Lit.Mix.polynomialRing`. Establish `seg` using `PositivityTheory.RgGu.segmentRepresentation`. Conclude with `{ bz := bz geo := geo zel := zel disj := PositivityTheory.SlGl.totallyDisjointProductIrreducible_of_parts geo seg (PositivityTheory.Groth.grothendieckRingPolynomial_of_seg seg) mp := GlobalTheory.CompanionTheory.MoyPrasadTop.moyPrasadJacquetIso dzi := GlobalTheory.DepthZeroPass.d …`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem loc_holds : Loc := by
   have geo := UpperTheory.Lit.Mix.geometricLemma

@@ -6,7 +6,7 @@ open NumberField IsDedekindDomain Matrix Formalism.BasicNotions Formalism.UG For
 open scoped TensorProduct
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.TwV.latAd_mul_ratA` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FSatakeParameters%2FAdelicPointLatticeMulRationalGL.lean&line=31#L31)
 -/

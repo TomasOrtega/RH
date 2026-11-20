@@ -21,7 +21,7 @@ section Germ
 variable {X X' Y Y' Z Z' : Scheme.{0}}
 
 /- English proof (translation)
-Use `first`. Consider the case `rfl`. Consider the case `(ext1; simp [pullU])`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 lemma pullU_comp (a : Z ⟶ Y) (h : Y ⟶ X) (U : X.Opens) (u : Γ(X, U)ˣ) :
     pullU (a ≫ h) U u = pullU a (h ⁻¹ᵁ U) (pullU h U u) := by
@@ -30,7 +30,7 @@ lemma pullU_comp (a : Z ⟶ Y) (h : Y ⟶ X) (U : X.Opens) (u : Γ(X, U)ˣ) :
     | (ext1; simp [pullU])
 
 /- English proof (translation)
-Use `first`. Consider the case `exact (congrArg (gU z hz) (pullU_comp a h U u)).symm`. Consider the case `exact (congrArg (gU z hz') (pullU_comp a h U u)).symm`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 lemma gU_pullU_comp (a : Z ⟶ Y) (h : Y ⟶ X) (U : X.Opens) (u : Γ(X, U)ˣ) (z : Z)
     (hz : z ∈ a ⁻¹ᵁ (h ⁻¹ᵁ U)) (hz' : z ∈ (a ≫ h) ⁻¹ᵁ U) :
@@ -40,7 +40,7 @@ lemma gU_pullU_comp (a : Z ⟶ Y) (h : Y ⟶ X) (U : X.Opens) (u : Γ(X, U)ˣ) (
     | exact (congrArg (gU z hz') (pullU_comp a h U u)).symm
 
 /- English proof (translation)
-Rewrite using `[gU_res, gU_pullU_res a hV (pullU h U u) z (hW hz) (hV (hW hz))]`. Conclude with `gU_pullU_comp a h U u z _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma gU_rp_rp (a : Z ⟶ Y) (h : Y ⟶ X) {U : X.Opens} {V : Y.Opens} (hV : V ≤ h ⁻¹ᵁ U)
     {W : Z.Opens} (hW : W ≤ a ⁻¹ᵁ V) (u : Γ(X, U)ˣ) (z : Z) (hz : z ∈ W) :
@@ -50,7 +50,7 @@ lemma gU_rp_rp (a : Z ⟶ Y) (h : Y ⟶ X) {U : X.Opens} {V : Y.Opens} (hV : V �
   exact gU_pullU_comp a h U u z _ _
 
 /- English proof (translation)
-Take `⟨a⟩` from `a`. Take `⟨b⟩` from `b`. Use `congr 1`. Use function extensionality and compare the values at `j`. Conclude with `unit_ext _ _ (h j)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 lemma gen_ext {M : LB Y} (a b : LB.Gen M)
     (h : ∀ j (y : Y) (hy : y ∈ M.U j), gU y hy (a.s j) = gU y hy (b.s j)) : a = b := by
@@ -63,7 +63,7 @@ lemma gen_ext {M : LB Y} (a b : LB.Gen M)
 variable (L : LB X) {K K' : Type} [Fintype K] [Fintype K']
 
 /- English proof (translation)
-Apply `gen_ext` to reduce the goal to its premises. Introduce `jj y hy`. Conclude with `(gU_rp_rp a h _ _ _ y hy).trans ((gU_pullU_congr hab _ _ y _ _).trans (gU_rp_rp h2 b _ _ _ y hy).symm)`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 lemma pullGen_pullAlong (F : X' ⟶ X) (h : Y' ⟶ Y) (φ : K → (Y ⟶ X)) (ε : K → ℤ)
     (ψ : K → (Y' ⟶ X')) (hψ : ∀ k, ψ k ≫ F = h ≫ φ k) (t : LB.Gen (LB.LinComb L φ ε))
@@ -77,9 +77,9 @@ lemma pullGen_pullAlong (F : X' ⟶ X) (h : Y' ⟶ Y) (φ : K → (Y ⟶ X)) (ε
     ((gU_pullU_congr hab _ _ y _ _).trans (gU_rp_rp h2 b _ _ _ y hy).symm)
 
 /- English proof (translation)
-Establish `hy2 : y ∈ LB.wchart L φ j ⊓ LB.wchart L φ j'` using `hy`. Establish `e : @Eq (Γ(Y, LB.wchart L φ j ⊓ LB.wchart L φ j')ˣ) ((LB.LinComb L φ ε).g j j') (∏ k, (@res Y (φ k ⁻¹ᵁ (L.U (j k) ⊓ L.U (j' k))) (LB.wchart L φ j ⊓ LB.wchart L φ j') (le_inf (inf_le_left.trans (LB.wchart_le L φ j k)) (inf_le_right.trans (LB.wchart_le L φ j' k))) (pullU (φ k) (L.U …` using `rfl`. Use `show gU y hy2 _ = _`. Rewrite using `[e, map_prod]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_zpow]`. Conclude with `congrArg (· ^ ε k) (gU_res _ y hy2 _)`.
+A detailed English derivation is pending.
 -/
 lemma gU_lcg (φ : K → (Y ⟶ X)) (ε : K → ℤ) (j j' : K → L.ι) (y : Y)
     (hy : y ∈ (LB.LinComb L φ ε).U j ⊓ (LB.LinComb L φ ε).U j') :
@@ -99,7 +99,7 @@ lemma gU_lcg (φ : K → (Y ⟶ X)) (ε : K → ℤ) (j j' : K → L.ι) (y : Y)
   exact congrArg (· ^ ε k) (gU_res _ y hy2 _)
 
 /- English proof (translation)
-Rewrite using `[gU_pullU, gU_lcg L (fun _ => F) (fun _ => 1) i j (a.base y) hy]`. Simplify using `only [Fintype.prod_unique, zpow_one]`. Conclude with `(gU_pullU a _ y _ _).symm.trans (gU_pullU_comp a F _ _ y _ hy')`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma gU_pull_g (F : X' ⟶ X) (a : Y ⟶ X') (i j : PUnit → L.ι) (y : Y)
     (hy : y ∈ a ⁻¹ᵁ ((L.pull F).U i ⊓ (L.pull F).U j))
@@ -110,7 +110,7 @@ lemma gU_pull_g (F : X' ⟶ X) (a : Y ⟶ X') (i j : PUnit → L.ι) (y : Y)
   exact (gU_pullU a _ y _ _).symm.trans (gU_pullU_comp a F _ _ y _ hy')
 
 /- English proof (translation)
-Conclude with `(gU_res _ y hy _).trans (gU_pullU h _ y _ _)`.
+A detailed English derivation is pending.
 -/
 lemma gU_pullAlong (F : X' ⟶ X) (h : Y' ⟶ Y) (φ : K → (Y ⟶ X)) (ε : K → ℤ)
     (ψ : K → (Y' ⟶ X')) (hψ : ∀ k, ψ k ≫ F = h ≫ φ k) (t : LB.Gen (LB.LinComb L φ ε))
@@ -121,7 +121,7 @@ lemma gU_pullAlong (F : X' ⟶ X) (h : Y' ⟶ Y) (φ : K → (Y ⟶ X)) (ε : K 
   exact (gU_res _ y hy _).trans (gU_pullU h _ y _ _)
 
 /- English proof (translation)
-Conclude with `(map_mul (gU y hy) _ _).trans (congrArg₂ (· * ·) (gU_res _ y hy _) (gU_res _ y hy _))`.
+A detailed English derivation is pending.
 -/
 lemma gU_mulGen (φ : K → (Y ⟶ X)) (ε : K → ℤ) (φ' : K' → (Y ⟶ X)) (ε' : K' → ℤ)
     (t : LB.Gen (LB.LinComb L φ ε)) (t' : LB.Gen (LB.LinComb L φ' ε')) (j : K ⊕ K' → L.ι) (y : Y)
@@ -132,9 +132,9 @@ lemma gU_mulGen (φ : K → (Y ⟶ X)) (ε : K → ℤ) (φ' : K' → (Y ⟶ X))
   exact (map_mul (gU y hy) _ _).trans (congrArg₂ (· * ·) (gU_res _ y hy _) (gU_res _ y hy _))
 
 /- English proof (translation)
-Apply `gen_ext` to reduce the goal to its premises. Introduce `jj y hy`. Use `(gU_pullAlong L F h (Sum.elim φ φ') (Sum.elim ε ε') (Sum.elim ψ ψ') hψS _ jj y hy).trans ?_` and prove the remaining obligations. Use `((congrArg (Units.map (h.stalkMap y).hom.toMonoidHom) (gU_mulGen L φ ε φ' ε' t t' _ (h.base y) _)).trans (map_mul _ _ _)).trans ?_` and prove the remaining obligations. Use `Eq.trans ?_ (gU_mulGen (L.pull F) ψ ε ψ' ε' _ _ jj y hy).symm` and prove the remaining obligations.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `congrArg₂ (· * ·) (gU_pullAlong L F h φ ε ψ hψ t (jj ∘ Sum.inl) y _).symm (gU_pullAlong L F h φ' ε' ψ' hψ' t' (jj ∘ Sum.inr) y _).symm`.
+A detailed English derivation is pending.
 -/
 lemma mulGen_pullAlong (F : X' ⟶ X) (h : Y' ⟶ Y) (φ : K → (Y ⟶ X)) (ε : K → ℤ)
     (φ' : K' → (Y ⟶ X)) (ε' : K' → ℤ) (ψ : K → (Y' ⟶ X')) (ψ' : K' → (Y' ⟶ X'))
@@ -155,7 +155,7 @@ lemma mulGen_pullAlong (F : X' ⟶ X) (h : Y' ⟶ Y) (φ : K → (Y ⟶ X)) (ε 
     (gU_pullAlong L F h φ' ε' ψ' hψ' t' (jj ∘ Sum.inr) y _).symm
 
 /- English proof (translation)
-Apply `gen_ext` to reduce the goal to its premises. Introduce `jj y hy`. Use `(gU_pullAlong L F h φ (fun k => - ε k) ψ hψ _ jj y hy).trans ?_` and prove the remaining obligations. Use `((congrArg (Units.map (h.stalkMap y).hom.toMonoidHom) (map_inv (@gU Y (LB.wchart L φ (fun k => jj k ⟨⟩)) (h.base y) (GeneratorPullback.pullAlong_le L F h φ ψ hψ jj hy)) (t.s (fun k => jj k ⟨⟩)))).trans (map_inv _ _)).trans ?_` and prove the remaining obligations. Conclude with `((map_inv (gU y hy) _).trans (congrArg (·⁻¹) (gU_pullAlong L F h φ ε ψ hψ t jj y hy))).symm`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 lemma invGen_pullAlong (F : X' ⟶ X) (h : Y' ⟶ Y) (φ : K → (Y ⟶ X)) (ε : K → ℤ)
     (ψ : K → (Y' ⟶ X')) (hψ : ∀ k, ψ k ≫ F = h ≫ φ k) (t : LB.Gen (LB.LinComb L φ ε)) :
@@ -170,7 +170,7 @@ lemma invGen_pullAlong (F : X' ⟶ X) (h : Y' ⟶ Y) (φ : K → (Y ⟶ X)) (ε 
   exact ((map_inv (gU y hy) _).trans (congrArg (·⁻¹) (gU_pullAlong L F h φ ε ψ hψ t jj y hy))).symm
 
 /- English proof (translation)
-Apply `gen_ext` to reduce the goal to its premises. Introduce `jj y hy`. Use `(gU_pullAlong L F h PEmpty.elim PEmpty.elim PEmpty.elim hψ (LB.oneGen L) jj y hy).trans ?_` and prove the remaining obligations. Conclude with `((congrArg (Units.map (h.stalkMap y).hom.toMonoidHom) (map_one (@gU Y (LB.wchart L (PEmpty.elim : PEmpty → (Y ⟶ X)) (fun k => jj k ⟨⟩)) (h.base y) (GeneratorPullback.pullAlong_le L F h PEmpty.elim PEmpty.elim hψ jj hy)))).trans (map_one _)).trans (map_one (gU y hy)).symm`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 lemma oneGen_pullAlong (F : X' ⟶ X) (h : Y' ⟶ Y) (hψ : ∀ k : PEmpty, (PEmpty.elim k : Y' ⟶ X') ≫ F =
       h ≫ (PEmpty.elim k : Y ⟶ X)) :
@@ -185,7 +185,7 @@ lemma oneGen_pullAlong (F : X' ⟶ X) (h : Y' ⟶ Y) (hψ : ∀ k : PEmpty, (PEm
     (map_one _)).trans (map_one (gU y hy)).symm
 
 /- English proof (translation)
-Establish `h1 : y ∈ (ψk ≫ F) ⁻¹ᵁ (L.U (i ⟨⟩) ⊓ L.U (j ⟨⟩))`. Rewrite using `[hk]`. Conclude with `hy'`. Rewrite using `[gU_pull_g L F ψk i j y hy h1, gU_pullU_congr hk (L.U (i ⟨⟩) ⊓ L.U (j ⟨⟩)) (L.g (i ⟨⟩) (j ⟨⟩)) y h1 hy', ← gU_pullU_comp h φk (L.U (i ⟨⟩) ⊓ L.U (j ⟨⟩)) (L.g (i ⟨⟩) (j ⟨⟩)) y hy' hy']`. Conclude with `gU_pullU h _ y _ _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma gU_pull_g_lemma_2 (F : X' ⟶ X) (h : Y' ⟶ Y) (φk : Y ⟶ X) (ψk : Y' ⟶ X')
     (hk : ψk ≫ F = h ≫ φk) (i j : PUnit → L.ι) (y : Y')
@@ -201,11 +201,11 @@ private lemma gU_pull_g_lemma_2 (F : X' ⟶ X) (h : Y' ⟶ Y) (φk : Y ⟶ X) (�
   exact gU_pullU h _ y _ _
 
 /- English proof (translation)
-Unfold `LB.Gen.IsGen at ht ⊢`. Introduce `i j`. Apply `unit_ext` to reduce the goal to its premises. Introduce `y hy`. Establish `hb : h.base y ∈ (LB.LinComb L φ ε).U (fun k => i k ⟨⟩) ⊓ (LB.LinComb L φ ε).U (fun k => j k ⟨⟩)` using `⟨GeneratorPullback.pullAlong_le L F h φ ψ hψ i hy.1, GeneratorPullback.pullAlong_le L F h φ ψ hψ j hy.2⟩`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `kk` using `(gU_res _ (h.base y) hb _).symm.trans ((congrArg (gU (h.base y) hb) (ht (fun k => i k ⟨⟩) (fun k => j k ⟨⟩))).trans ((map_mul _ _ _).trans (congrArg₂ (· * ·) (gU_lcg L φ ε _ _ (h.base y) hb) (gU_res _ (h.base y) hb _))))`. Use `((gU_res _ y hy _).trans (gU_pullAlong L F h φ ε ψ hψ t i y _)).trans ?_` and prove the remaining obligations. Use `Eq.trans ?_ ((map_mul (gU y hy) _ _).trans (congrArg₂ (· * ·) (gU_lcg (L.pull F) ψ ε i j y hy) ((gU_res _ y hy _).trans (gU_pullAlong L F h φ ε ψ hψ t j y _)))).symm` and prove the remaining obligations. Use `(congrArg (Units.map (h.stalkMap y).hom.toMonoidHom) kk).trans ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_prod]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `congrArg₂ (fun a b => a * b) (Finset.prod_congr rfl fun k _ => ?_) rfl` and prove the remaining obligations. Rewrite using `[map_zpow]`. Conclude with `congrArg (· ^ ε k) (gU_pull_g_lemma_2 L F h (φ k) (ψ k) (hψ k) (i k) (j k) y _ _).symm`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma isGen_pullAlong (F : X' ⟶ X) (h : Y' ⟶ Y) (φ : K → (Y ⟶ X)) (ε : K → ℤ)
     (ψ : K → (Y' ⟶ X')) (hψ : ∀ k, ψ k ≫ F = h ≫ φ k) (t : LB.Gen (LB.LinComb L φ ε))
@@ -231,11 +231,11 @@ lemma isGen_pullAlong (F : X' ⟶ X) (h : Y' ⟶ Y) (φ : K → (Y ⟶ X)) (ε :
   exact congrArg (· ^ ε k) (gU_pull_g_lemma_2 L F h (φ k) (ψ k) (hψ k) (i k) (j k) y _ _).symm
 
 /- English proof (translation)
-Unfold `LB.Gen.Corr at hc ⊢`. Introduce `j j' hj hj' hjj`. Establish `c1 : LB.Coh L φ (fun k => j k ⟨⟩)` using `fun k₁ k₂ e => congrFun (hj k₁ k₂ (hinj (Sum.inl k₁) (Sum.inl k₂) (by show ψ k₁ ≫ F = ψ k₂ ≫ F`. Rewrite using `[hψ, hψ, e]))) ⟨⟩`. Establish `c2 : LB.Coh L φ' (fun k => j' k ⟨⟩)` using `fun k₁ k₂ e => congrFun (hj' k₁ k₂ (hinj (Sum.inr k₁) (Sum.inr k₂) (by show ψ' k₁ ≫ F = ψ' k₂ ≫ F`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hψ', hψ', e]))) ⟨⟩`. Establish `c3 : ∀ k k', φ k = φ' k' → j k ⟨⟩ = j' k' ⟨⟩` using `fun k k' e => congrFun (hjj k k' (hinj (Sum.inl k) (Sum.inr k') (by show ψ k ≫ F = ψ' k' ≫ F`. Rewrite using `[hψ, hψ', e]))) ⟨⟩`. Establish `key` using `hc (fun k => j k ⟨⟩) (fun k => j' k ⟨⟩) c1 c2 c3`. Apply `unit_ext` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `y hy`. Establish `hb : h.base y ∈ LB.wchart L φ (fun k => j k ⟨⟩) ⊓ LB.wchart L φ' (fun k => j' k ⟨⟩)` using `⟨GeneratorPullback.pullAlong_le L F h φ ψ hψ j hy.1, GeneratorPullback.pullAlong_le L F h φ' ψ' hψ' j' hy.2⟩`. Establish `kk` using `(gU_res _ (h.base y) hb _).symm.trans ((congrArg (gU (h.base y) hb) key).trans (gU_res _ (h.base y) hb _))`. Conclude with `((gU_res _ y hy _).trans (gU_pullAlong L F h φ ε ψ hψ t j y _)).trans ((congrArg (Units.map (h.stalkMap y).hom.toMonoidHom) kk).trans ((gU_res _ y hy _).trans (gU_pullAlong L F h φ' ε' ψ' hψ' t' j' y _)).symm)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 lemma corr_pullAlong (F : X' ⟶ X) (h : Y' ⟶ Y) (φ : K → (Y ⟶ X)) (ε : K → ℤ)
     (φ' : K' → (Y ⟶ X)) (ε' : K' → ℤ) (ψ : K → (Y' ⟶ X')) (ψ' : K' → (Y' ⟶ X'))
@@ -272,13 +272,13 @@ lemma corr_pullAlong (F : X' ⟶ X) (h : Y' ⟶ Y) (φ : K → (Y ⟶ X)) (ε : 
       ((gU_res _ y hy _).trans (gU_pullAlong L F h φ' ε' ψ' hψ' t' j' y _)).symm)
 
 /- English proof (translation)
-Introduce `_ hy` and use `Set.mem_iInter.2 fun k => Set.mem_iInter.1 hy k`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 lemma wpl {X Y Z : Scheme.{0}} (L : LB X) {K : Type} [Fintype K] (φ : K → (Y ⟶ X)) (h : Z ⟶ Y)
     (j : K → L.ι) : LB.wchart L (fun k => h ≫ φ k) j ≤ h ⁻¹ᵁ LB.wchart L φ j := fun _ hy => Set.mem_iInter.2 fun k => Set.mem_iInter.1 hy k
 
 /- English proof (translation)
-Substitute `h₁` using the available equality. Substitute `h₂` using the available equality. Conclude with `h`.
+Substitute using the available equality. Substitute using the available equality. A detailed English derivation is pending.
 -/
 lemma corr_of_eq {M : LB X} {K K' : Type} [Fintype K] [Fintype K'] {φ : K → (Y ⟶ X)} {ε : K → ℤ}
     {φ' : K' → (Y ⟶ X)} {ε' : K' → ℤ} {t₁ t₁' : LB.Gen (LB.LinComb M φ ε)}

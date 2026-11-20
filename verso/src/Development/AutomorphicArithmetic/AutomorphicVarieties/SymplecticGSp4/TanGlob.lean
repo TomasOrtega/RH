@@ -15,16 +15,16 @@ variable {H K : Type} [Group H] [Field K] (θ : H →* K) (z : H → K) (hz : �
 include hz
 
 /- English proof (translation)
-Use `hz 1 1` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem coc_one : z 1 = 0 := by
   have := hz 1 1
   simpa using this
 
 /- English proof (translation)
-Take `⟨m, hm⟩` from `h`. Use `⟨θ t * m - z t, fun x hx => ?_⟩` and prove the remaining obligations. Establish `h1` using `hm _ (ht x hx)`. Establish `h2` using `hz t (t⁻¹ * x * t)`. Establish `h3 : θ t * θ (t⁻¹ * x * t) = θ x * θ t` using `by rw [← map_mul, ← map_mul]; congr 1; group`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h2` using `[show t * (t⁻¹ * x * t) = x * t by group, hz, h1]`. Take the linear combination `h2 + m * h3`.
+Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 private theorem cob_conj (I J : Subgroup H) (t : H) (ht : ∀ x ∈ J, t⁻¹ * x * t ∈ I)
     (h : ∃ m, ∀ g ∈ I, z g = θ g * m - m) : ∃ m, ∀ g ∈ J, z g = θ g * m - m := by
@@ -37,15 +37,15 @@ private theorem cob_conj (I J : Subgroup H) (t : H) (ht : ∀ x ∈ J, t⁻¹ * 
   linear_combination h2 + m * h3
 
 /- English proof (translation)
-Establish `key : ∀ x ∈ I, θ x = 1 → z x = 0` using `fun x hx h1 => by`. Take `⟨n, hn, -, hxn⟩` from `Subgroup.exists_pow_mem_of_index_ne_zero hU x`. Establish `hp : ∀ k : ℕ, z (x ^ k) = k * z x` using `fun k => by`. Proceed by induction on `k with`. Consider the case `zero => simp [coc_one θ z hz]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Proceed by induction. Treat this case separately.
 
-Consider the case `succ k ih => rw [pow_succ', hz, ih, h1]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Use `h _ (pow_mem hx n) hxn` as an intermediate fact. Rewrite `this` using `[hp]`.
+Treat this case separately. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(mul_eq_zero.1 this).resolve_left (Nat.cast_ne_zero.2 hn.ne')`. Distinguish the cases in `h1 : ∀ s ∈ I, θ s = 1`. Conclude with `⟨0, fun g hg => by rw [key g hg (h1 g hg)]; simp⟩`. Use `push Not at h1`. Take `⟨s, hs, hs1⟩` from `h1`.
+Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨z s / (θ s - 1), fun g hg => ?_⟩` and prove the remaining obligations. Establish `hc : θ ((s * g)⁻¹ * (g * s)) = 1`. Rewrite using `[map_mul, map_mul, mul_comm (θ g), ← map_mul, ← map_mul, inv_mul_cancel, map_one]`. Establish `h2` using `hz (s * g) ((s * g)⁻¹ * (g * s))`. Rewrite `h2` using `[key _ (mul_mem (inv_mem (mul_mem hs hg)) (mul_mem hg hs)) hc, mul_inv_cancel_left, hz, hz]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts.
 
-Use `sub_ne_zero.2 hs1` as an intermediate fact. Clear the denominators using the available nonvanishing facts. Take the linear combination `-h2`.
+Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 private theorem cob_fin [CharZero K] (I U : Subgroup H) (hU : U.index ≠ 0) (h : ∀ g ∈ I, g ∈ U → z g = 0) :
     ∃ m, ∀ g ∈ I, z g = θ g * m - m := by
@@ -74,9 +74,9 @@ private theorem cob_fin [CharZero K] (I U : Subgroup H) (hU : U.index ≠ 0) (h 
 end Coc
 
 /- English proof (translation)
-Rewrite using `[continuous_iff_continuousAt]`. Introduce `g₀`. Rewrite using `[ContinuousAt, Metric.tendsto_nhds]`. Introduce `ε hε`. Take `⟨n, hn⟩` from `exists_pow_lt_of_lt_one hε ha1`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `filter_upwards [(hf n).eventually_eq g₀] with g hg`. Rewrite using `[dist_eq_norm, ← map_sub]`. Conclude with `lt_of_le_of_lt (hy n _ (Ideal.Quotient.eq.1 hg)) hn`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem cont_of_adic {Γ R K : Type} [TopologicalSpace Γ] [CommRing R] [NormedRing K] (I : Ideal R)
     (y : R →+* K) (a : ℝ) (ha1 : a < 1) (hy : ∀ n, ∀ x ∈ I ^ n, ‖y x‖ ≤ a ^ n)
@@ -91,15 +91,15 @@ private theorem cont_of_adic {Γ R K : Type} [TopologicalSpace Γ] [CommRing R] 
   exact lt_of_le_of_lt (hy n _ (Ideal.Quotient.eq.1 hg)) hn
 
 /- English proof (translation)
-Establish `h0 : ∀ x ∈ maximalIdeal R, (y x).fst ∈ maximalIdeal O` using `fun x hx => by`. Rewrite `hx`, the goal using `[← res_eq_zero_iff O]`. Conclude with `(res_map ((TrivSqZeroExt.fstHom O O O).comp y) x).trans hx`. Establish `h1 : ∀ n : ℕ, ∀ x ∈ maximalIdeal R ^ (n + 1), (y x).fst ∈ maximalIdeal O ^ (n + 1) ∧ (y x).snd ∈ maximalIdeal O ^ n`. Introduce `n`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Proceed by induction on `n with`. Consider the case `zero => intro x hx; simpa using h0 x (by simpa using hx)`. Consider the case `succ n ih`. Introduce `x hx`. Rewrite `hx` using `[pow_succ]`.
+Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Submodule.mul_induction_on hx (fun a ha b hb => ?_) (fun a b ha hb => ?_)` and prove the remaining obligations. Take `⟨a1, a2⟩` from `ih a ha`. Rewrite using `[map_mul, TrivSqZeroExt.fst_mul, DualNumber.snd_mul]`. Use `⟨by rw [pow_succ]; exact Ideal.mul_mem_mul a1 (h0 b hb), add_mem (Ideal.mul_mem_right _ _ a1) ?_⟩` and prove the remaining obligations. Rewrite using `[pow_succ]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Ideal.mul_mem_mul a2 (h0 b hb)`. Rewrite using `[map_add]`. Conclude with `⟨add_mem ha.1 hb.1, add_mem ha.2 hb.2⟩`. Introduce `N`. Rewrite using `[IsLocallyConstant.iff_eventually_eq]`.
+Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `g₀`. Use `filter_upwards [(hf (N + 1)).eventually_eq g₀] with g hg`. Use `(h1 N _ (Ideal.Quotient.eq.1 hg)).2` as an intermediate fact. Rewrite `this` using `[map_sub, TrivSqZeroExt.snd_sub]`. Conclude with `Ideal.Quotient.eq.2 this`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem snd_adic {O R Γ : Type} [CommRing O] [IsLocalRing O] [IsNoetherianRing O] [IsAdicComplete (maximalIdeal O) O]
     [CommRing R] [Algebra O R] [IsCO O R] [TopologicalSpace Γ] (y : R →ₐ[O] DualNumber O) (f : Γ → R)
@@ -133,11 +133,9 @@ private theorem snd_adic {O R Γ : Type} [CommRing O] [IsLocalRing O] [IsNoether
 variable {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω]
 
 /- English proof (translation)
-Use `haveI : IsGalois ℚ Ω := {}`. Set `δ : G ℚ Ω →* Multiplicative K` to `MonoidHom.mk' (fun g => Multiplicative.ofAdd (z g)) fun a b => by rw [hz]; rfl`. Establish `hcl : IsClosed (δ.ker : Set (G ℚ Ω))` using `show IsClosed {g | z g = 0} from isClosed_eq hc continuous_const`. Establish `key : δ.ker = _` using `ProfiniteGrp.closedSubgroup_eq_sInf_open (G := G ℚ Ω) ⟨δ.ker, hcl⟩`. Use `show g ∈ δ.ker`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Rewrite using `[key, Subgroup.mem_sInf]`. Introduce and unpack `U ⟨hU, hle⟩`. Establish `hle' : δ.ker ≤ U` using `hle`. Establish `hn : U.Normal` using `Subgroup.Normal.of_commutator_le _ ((Abelianization.commutator_subset_ker _).trans hle')`. Rewrite using `[B3.minkowski Ω U hn hU fun B x hx => hle' (h B x hx)]`.
-
-Discharge the goal by the elementary cases of `trivial`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. A detailed English derivation is pending.
 -/
 private theorem hom_zero {K : Type} [Field K] [TopologicalSpace K] [T2Space K] (z : G ℚ Ω → K) (hc : Continuous z)
     (hz : ∀ g h, z (g * h) = z g + z h) (h : ∀ A : ValuationSubring Ω, ∀ g ∈ Ine (F := ℚ) A, z g = 0) (g : G ℚ Ω) : z g = 0 := by
@@ -156,13 +154,11 @@ private theorem hom_zero {K : Type} [Field K] [TopologicalSpace K] [T2Space K] (
 variable {l : ℕ} [Fact l.Prime] {c : Coef l}
 
 /- English proof (translation)
-Use `haveI : IsGalois ℚ Ω := {}`. Take `⟨f1, -, -, -, -, -, -, -, -, -, -, f12, -⟩` from `facts D hD`. Take `⟨-, -, -, -, -, -, -, b8, -, b10⟩` from `ML.placeBasic Ω`. Establish `hI : ∀ U : Subgroup (G ℚ Ω), IsOpen (U : Set (G ℚ Ω)) → U.index ≠ 0` using `fun U hU => by haveI : Finite (G ℚ Ω ⧸ U) := U.quotient_finite_of_isOpen hU`. Conclude with `Subgroup.index_ne_zero_of_finite`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `hA : Raw.Away D.T A`. Conclude with `cob_fin θ z hz _ _ (hI _ f12) (h1 A hA)`. Simplify using `only [Raw.Away, not_forall, not_not] at hA`. Take `⟨p, hp, hv⟩` from `hA`. Establish `hpp : p.Prime`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Break down `Finset.mem_insert.1 hp with rfl | hp` into its components or cases. Use `exacts [Fact.out, (f1 p hp).1]`. Take `⟨t, rfl⟩` from `b8 (D.pl p) A p hpp (hD.pl_over p hpp) hv`. Use `cob_conj θ z hz (D.Ip p) _ t (fun x hx => ((b10 _ t).2.1 x).1 hx) ?_` and prove the remaining obligations. Break down `Finset.mem_insert.1 hp with rfl | hp` into its components or cases.
-
-Use `exacts [h3, cob_fin θ z hz _ _ (hI _ hD.psi_open) (h2 p hp)]`.
+Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 private theorem unr_all (D : Raw Ω c) (hD : D.Good) {K : Type} [Field K] [CharZero K] (θ : G ℚ Ω →* K) (z : G ℚ Ω → K)
     (hz : ∀ g h, z (g * h) = z g + θ g * z h) (h1 : D.UnrT z 0) (h2 : ∀ p ∈ D.Sb, ∀ g ∈ D.Ip p, g ∈ D.ψ.ker → z g = 0)
@@ -189,20 +185,20 @@ private noncomputable def zOf (D : Raw Ω c) (r' : G ℚ Ω →* M4 (DualNumber 
   Matrix.of fun i j => (r' g i j).snd * (D.ps j g⁻¹ : c.O)
 
 /- English proof (translation)
-Rewrite using `[map_inv, Units.inv_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem ps_inv (D : Raw Ω c) (j : Fin 4) (g : G ℚ Ω) : (D.ps j g⁻¹ : c.O) * D.ps j g = 1 := by
   rw [map_inv, Units.inv_mul]
 
 /- English proof (translation)
-Rewrite using `[zOf, Matrix.of_apply, mul_assoc, ps_inv, mul_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem snd_eq (D : Raw Ω c) (r' : G ℚ Ω →* M4 (DualNumber c.O)) (g : G ℚ Ω) (i j : Fin 4) :
     (r' g i j).snd = zOf D r' g i j * D.ps j g := by
   rw [zOf, Matrix.of_apply, mul_assoc, ps_inv, mul_one]
 
 /- English proof (translation)
-Simplify using `only [Matrix.mul_apply, TrivSqZeroExt.snd_sum, DualNumber.snd_mul, hX, hY, Matrix.diagonal_apply]`. Simplify using `[Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 private theorem snd_mul_diag {O : Type} [CommRing O] (X Y : M4 (DualNumber O)) (a b : Fin 4 → O)
     (hX : ∀ i j, (X i j).fst = Matrix.diagonal a i j) (hY : ∀ i j, (Y i j).fst = Matrix.diagonal b i j) (i j : Fin 4) :
@@ -211,7 +207,7 @@ private theorem snd_mul_diag {O : Type} [CommRing O] (X Y : M4 (DualNumber O)) (
   simp [Finset.sum_add_distrib]
 
 /- English proof (translation)
-Establish `h1` using `snd_mul_diag (r' g) (r' h) _ _ (hf g) (hf h) i j`. Rewrite `h1` using `[← map_mul]`. Simplify using `only [zOf, Matrix.of_apply, h1, mul_inv_rev, map_mul (D.ps j), Units.val_mul]`. Take the linear combination `(r' g i j).snd * (D.ps j g⁻¹ : c.O) * ps_inv D j h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 private theorem zOf_coc (D : Raw Ω c) (r' : G ℚ Ω →* M4 (DualNumber c.O)) (hf : ∀ g i j, (r' g i j).fst = D.r0 g i j)
     (g h : G ℚ Ω) (i j : Fin 4) :
@@ -222,13 +218,13 @@ private theorem zOf_coc (D : Raw Ω c) (r' : G ℚ Ω →* M4 (DualNumber c.O)) 
   linear_combination (r' g i j).snd * (D.ps j g⁻¹ : c.O) * ps_inv D j h
 
 /- English proof (translation)
-Establish `hs : ∀ i, sgn i * sgn i = 1` using `by decide`. Use `show adj _ = -_`. Use function extensionality and compare the values at `i j`. Establish `h1` using `snd_mul_diag (adj (r' g)) (r' g) (fun i => D.ps i.rev g) _ (fun a b => by`. Rewrite using `[adj_apply, TrivSqZeroExt.fst_smul, hf]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Use `show _ • Matrix.diagonal _ _ _ = _`. Distinguish the cases in `h : a = b`. Substitute `h` using the available equality. Simplify using `[hs]`. Rewrite using `[Matrix.diagonal_apply_ne _ h, Matrix.diagonal_apply_ne _ fun e => h (Fin.rev_injective e).symm, smul_zero]) (hf g) i j`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : ((adj (r' g) * r' g) i j).snd = 0`. Rewrite using `[hm g, Matrix.smul_apply, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp [TrivSqZeroExt.algebraMap_eq_inl]`. Rewrite `h1` using `[h2, adj_apply, TrivSqZeroExt.snd_smul, snd_eq D, snd_eq D, zsmul_eq_mul]`. Rewrite using `[adj_apply, Matrix.neg_apply, zsmul_eq_mul]`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `mul_left_cancel₀ ((D.ps i.rev g * D.ps j g).ne_zero) ?_` and prove the remaining obligations. Rewrite using `[Units.val_mul]`. Take the linear combination `-h1`.
+Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 private theorem zOf_sp (D : Raw Ω c) (hD : D.Good) (r' : G ℚ Ω →* M4 (DualNumber c.O))
     (hf : ∀ g i j, (r' g i j).fst = D.r0 g i j) (hm : D.Mult r') (g : G ℚ Ω) : zOf D r' g ∈ sp4 c.O := by
@@ -252,9 +248,9 @@ private theorem zOf_sp (D : Raw Ω c) (hD : D.Good) (r' : G ℚ Ω →* M4 (Dual
   linear_combination -h1
 
 /- English proof (translation)
-Take `⟨R, _, _, _, ρ, y, -, rfl⟩` from `hr`. Take `⟨-, -, -, -, -, -, -, -, -, -, f11, -⟩` from `facts D hD`. Introduce `N`. Establish `h1` using `snd_adic y _ (ρ.cont i j) N`. Establish `h2` using `(f11 j N).comp_continuous continuous_inv`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [zOf, Matrix.of_apply, map_mul]`. Conclude with `h1.comp₂ h2 fun a b => a * b`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem zOf_adic (D : Raw Ω c) (hD : D.Good) (r' : G ℚ Ω →* M4 (DualNumber c.O)) (hr : D.PtIn _ r') (i j : Fin 4) :
     AdicCont (maximalIdeal c.O) fun g => zOf D r' g i j := by
@@ -267,9 +263,9 @@ private theorem zOf_adic (D : Raw Ω c) (hD : D.Good) (r' : G ℚ Ω →* M4 (Du
   exact h1.comp₂ h2 fun a b => a * b
 
 /- English proof (translation)
-Take `⟨p1, -, -, p4, -⟩` from `ptIn D hD _ r' hr`. Use `⟨fun g => ⟨zOf_sp D hD r' hf p1 g, ?_⟩, fun i j N => (zOf_adic D hD r' hr i j N).comp_continuous continuous_subtype_val, _, p4, fun g i j => ⟨hf g i j, ?_⟩⟩` and prove the remaining obligations. Simplify using `only [SetLike.mem_coe, Submodule.mem_iInf]`. Introduce `i j h`. Use `show (r' g i j).snd * _ = 0`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hw _ _ _ h, zero_mul]`. Rewrite using `[show D.r0 g = Matrix.diagonal fun i => (D.ps i g : c.O) from rfl, Matrix.mul_diagonal]`. Conclude with `snd_eq D r' g i j`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem zOf_tan (D : Raw Ω c) (hD : D.Good) (r' : G ℚ Ω →* M4 (DualNumber c.O)) (hr : D.PtIn _ r')
     (hf : ∀ g i j, (r' g i j).fst = D.r0 g i j) (w : ℤ × ℤ) (hw : ∀ g i j, wt i j ≠ w → (r' g i j).snd = 0) :
@@ -285,9 +281,9 @@ private theorem zOf_tan (D : Raw Ω c) (hD : D.Good) (r' : G ℚ Ω →* M4 (Dua
     exact snd_eq D r' g i j
 
 /- English proof (translation)
-Take `⟨-, p2, -, -, p5, -⟩` from `ptIn D hD _ r' hr`. Establish `h0 : ∀ g, r' g = 1 → (zOf D r' g i j : PadicAlgCl l) = 0` using `fun g h => by`. Rewrite using `[zOf, Matrix.of_apply, h, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`. Take `⟨-, a, ha1, -, hy⟩` from `(coPt c c.O).1 (IsScalarTower.toAlgHom c.O c.O (PadicAlgCl l))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨cont_of_adic _ (algebraMap c.O (PadicAlgCl l)) a ha1 hy _ (zOf_adic D hD r' hr i j), fun A hA g hg h1 => h0 g (p2 A hA g hg h1), fun p hp g hg h1 => h0 g ((p5 p hp).2 ⟨g, Ine_le_Dec _ hg⟩ ⟨hg, h1⟩)⟩`.
+Supply the required witnesses or components.
 -/
 private theorem zOf_unr (D : Raw Ω c) (hD : D.Good) (r' : G ℚ Ω →* M4 (DualNumber c.O)) (hr : D.PtIn _ r') (i j : Fin 4) :
     (Continuous fun g => (zOf D r' g i j : PadicAlgCl l)) ∧ D.UnrT (fun g => (zOf D r' g i j : PadicAlgCl l)) 0 ∧
@@ -301,9 +297,9 @@ private theorem zOf_unr (D : Raw Ω c) (hD : D.Good) (r' : G ℚ Ω →* M4 (Dua
     fun A hA g hg h1 => h0 g (p2 A hA g hg h1), fun p hp g hg h1 => h0 g ((p5 p hp).2 ⟨g, Ine_le_Dec _ hg⟩ ⟨hg, h1⟩)⟩
 
 /- English proof (translation)
-Take `⟨u1, u2, u3⟩` from `zOf_unr D hD r' hr i i`. Establish `hz : ∀ g h, (zOf D r' (g * h) i i : PadicAlgCl l) = zOf D r' g i i + zOf D r' h i i` using `fun g h => by`. Rewrite using `[zOf_coc D r' hf, mul_comm (D.ps i g : c.O), ps_inv, one_mul, Subalgebra.coe_add]`. Establish `hl` using `(tanLz D hD).2 _ (zOf_tan D hD r' hr hf 0 hw)`. Use `Subtype.ext (hom_zero _ u1 hz (fun A x hx => ?_) g)` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨m, hm⟩` from `unr_all D hD 1 _ (fun g h => by rw [hz, MonoidHom.one_apply, one_mul]) u2 u3 ⟨0, fun s hs => by`. Establish `h : zOf D r' s = 0` using `hl ⟨s, Ine_le_Dec _ hs⟩ hs`. Rewrite using `[h]`. Use the proof step `simp⟩ A`. Rewrite using `[hm x hx, MonoidHom.one_apply, one_mul, sub_self]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem wt_zero (D : Raw Ω c) (hD : D.Good) (r' : G ℚ Ω →* M4 (DualNumber c.O)) (hr : D.PtIn _ r')
     (hf : ∀ g i j, (r' g i j).fst = D.r0 g i j) (hw : ∀ g i j, wt i j ≠ 0 → (r' g i j).snd = 0) (g : G ℚ Ω) (i : Fin 4) :
@@ -321,29 +317,27 @@ private theorem wt_zero (D : Raw Ω c) (hD : D.Good) (r' : G ℚ Ω →* M4 (Dua
   rw [hm x hx, MonoidHom.one_apply, one_mul, sub_self]
 
 /- English proof (translation)
-Take `⟨u1, u2, u3⟩` from `zOf_unr D hD r' hr 2 0`. Take `⟨-, -, ⟨-, -, p3⟩, -⟩` from `ptIn D hD _ r' hr`. Take `⟨-, -, -, -, -, -, -, b8, -, b10⟩` from `ML.placeBasic Ω`. Set `f : c.O →+* PadicAlgCl l` to `algebraMap c.O (PadicAlgCl l)`. Establish `hfi : Function.Injective f` using `Subtype.val_injective`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `θ : G ℚ Ω →* PadicAlgCl l` to `f.toMonoidHom.comp ((Units.coeHom c.O).comp D.Psi⁻¹)`. Establish `hθ : ∀ g, θ g = f ((D.Psi⁻¹ g : c.Oˣ) : c.O)` using `fun _ => rfl`. Establish `hP : ∀ g, ((D.Psi⁻¹ g : c.Oˣ) : c.O) = D.ps 2 g * D.ps 0 g⁻¹` using `fun g => by`. Rewrite using `[← Units.val_mul, show D.ps 2 = D.al from rfl, show D.ps 0 = D.al * D.Psi from rfl]`. Simplify using the standard rewrite rules.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hz : ∀ g h, f (zOf D r' (g * h) 2 0) = f (zOf D r' g 2 0) + θ g * f (zOf D r' h 2 0)` using `fun g h => by`. Rewrite using `[zOf_coc D r' hf, hθ, hP, map_add, map_mul]`. Establish `hl : ∃ m, ∀ g ∈ D.Gp l, f (zOf D r' g 2 0) = θ g * m - m`. Take `⟨a, m, ha, hm⟩` from `(tanLz D hD).1 _ (zOf_tan D hD r' hr hf _ hw)`. Establish `ha' : f a ≠ 0` using `(map_ne_zero_iff f hfi).2 ha`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨f m / f a, fun s hs => ?_⟩` and prove the remaining obligations. Establish `h` using `congrFun (congrFun (hm ⟨s, hs⟩) 2) 0`. Rewrite `h` using `[Matrix.smul_apply, Matrix.smul_apply, show Xm c.O 2 0 = 1 by simp [Xm], smul_eq_mul, smul_eq_mul, mul_one]`. Establish `h'` using `congrArg f h`. Rewrite `h'` using `[map_mul, map_sub, map_mul, ← hθ]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Clear the denominators using the available nonvanishing facts. Take the linear combination `h'`. Take `⟨m, hm⟩` from `hS ((Units.map f.toMonoidHom).comp D.ψ) (Subgroup.isOpen_mono (fun x hx => by`. Rewrite `hx`, the goal using `[MonoidHom.mem_ker]`. Rewrite using `[MonoidHom.comp_apply, hx, map_one]) hD.psi_open) D.e (le_trans one_le_two hD.two_le) θ`.
+Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion. Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `(fun g => by`. Establish `h : ((D.Psi⁻¹ g : c.Oˣ) : c.O) * D.ψ g * algebraMap ℤ_[l] c.O (cycZ ℚ Ω l g : ℤ_[l]) ^ D.e = 1`. Establish `h1 : (D.Psi g : c.O) = algebraMap ℤ_[l] c.O (cycZ ℚ Ω l g : ℤ_[l]) ^ D.e * D.ψ g`. Simplify using `[Raw.Psi, Chr.Psi, chiO]`. Rewrite using `[mul_assoc, mul_comm (D.ψ g : c.O), ← h1, MonoidHom.inv_apply, Units.inv_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h'` using `congrArg f h`. Rewrite `h'` using `[map_mul, map_mul, map_pow, map_one]`. Conclude with `h')`. Use the proof step `(fun g => f (zOf D r' g 2 0)) u1 hz`. Use the proof step `(unr_all D hD θ _ hz u2 u3 (hl.imp fun m hm s hs => hm s (Ine_le_Dec _ hs)))`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use the proof step `(fun A hA => by`. Take `⟨t, rfl⟩` from `b8 (D.pl l) A l Fact.out (hD.pl_over l Fact.out) hA`. Conclude with `cob_conj θ _ hz (D.Gp l) _ t (fun x hx => ((b10 _ t).1 x).1 hx) hl)`. Establish `h1 : (r' D.g0 2 0).snd + D.th D.g0 * (r' D.g0⁻¹ 2 0).snd = 0`. Establish `h` using `congrArg TrivSqZeroExt.snd p3`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h` using `[Raw.hEl, Matrix.add_apply, Matrix.smul_apply, TrivSqZeroExt.snd_add, smul_eq_mul, ← Algebra.smul_def, TrivSqZeroExt.snd_smul, smul_eq_mul]`. Conclude with `h`. Rewrite `h1` using `[snd_eq D, snd_eq D]`. Establish `h2` using `congrArg f h1`. Establish `e0 : f (D.ps 0 D.g0) = f (D.al D.g0) * f (D.Psi D.g0)` using `map_mul f _ _`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e1 : f (D.ps 0 D.g0⁻¹) * f (D.ps 0 D.g0) = 1` using `by rw [← map_mul, ps_inv, map_one]`. Establish `e2 : θ D.g0 * f (D.Psi D.g0) = 1` using `by rw [hθ, ← map_mul, MonoidHom.inv_apply, Units.inv_mul, map_one]`. Establish `e3 : θ D.g0⁻¹ = f (D.Psi D.g0)` using `by rw [hθ, MonoidHom.inv_apply, map_inv, inv_inv]`. Rewrite `h2` using `[map_add, map_mul, map_mul, map_mul, map_zero, hm, hm, e3, show D.th = D.ps 0 from rfl]`. Establish `n : ∀ γ : G ℚ Ω →* c.Oˣ, Raw.bar γ D.g0 ≠ 1 → f (γ D.g0) - 1 ≠ 0` using `fun γ hγ h => hγ (by`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `h' : (γ D.g0 : c.O) = 1` using `hfi ((sub_eq_zero.1 h).trans (map_one f).symm)`. Rewrite using `[Raw.bar, h', map_one])`. Establish `h3 : m * ((f (D.al D.g0) - 1) * (f (D.Psi D.g0) - 1)) = 0`. Rewrite `h2`, `e1` using `[e0]`. Take the linear combination `-h2 + (f (D.Psi D.g0) * m - m) * e1 + m * f (D.al D.g0) * e2`.
-
-Establish `h4` using `(mul_eq_zero.1 h3).resolve_right (mul_ne_zero (n _ hD.genElt_alpha) (n _ hD.genElt_Psi))`. Apply `hfi` to reduce the goal to its premises. Rewrite using `[hm, h4, map_zero, mul_zero, sub_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem wt_neg (D : Raw Ω c) (hD : D.Good) (hS : SoV Ω l) (r' : G ℚ Ω →* M4 (DualNumber c.O)) (hr : D.PtIn _ r')
     (hf : ∀ g i j, (r' g i j).fst = D.r0 g i j) (hw : ∀ g i j, wt i j ≠ -wPs → (r' g i j).snd = 0) (g : G ℚ Ω) :
@@ -413,13 +407,11 @@ end UpperTheory.V.GradeZeroInterpolatingElement.TangentGlobal
 
 open UpperTheory.V.GradeZeroInterpolatingElement.TangentGlobal in
 /- English proof (translation)
-Introduce `Ω _ _ _ l _ c D hD hS r' hr hf w hw h g i j`. Distinguish the cases in `hij : wt i j = w`. Use `swap`. Conclude with `h g i j hij`. Rewrite using `[snd_eq D]`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis.
 
-Use `mul_eq_zero_of_left ?_ _` and prove the remaining obligations. Break down `hw with rfl | rfl` into its components or cases. Establish `h1` using `wt_neg D hD hS r' hr hf h g`. Establish `h2 : (i = 2 ∧ j = 0) ∨ (i = 3 ∧ j = 1)` using `by revert i j; decide`. Break down `h2 with ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩` into its components or cases.
+Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h1`. Establish `h3` using `congrFun (congrFun (zOf_sp D hD r' hf (ptIn D hD _ r' hr).1 g) 2) 0`. Rewrite `h3` using `[adj_apply, Matrix.neg_apply, h1]`. Simplify `h3` using `[sgn, Fin.rev]`. Take `rfl` from `(wt_eq_zero i j).1 hij`.
-
-Conclude with `wt_zero D hD r' hr hf h g i`.
+Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.GradeZeroInterpolatingElement.tanGlob :
     ∀ {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime] {c : Coef l} (D : Raw Ω c), D.Good → SoV Ω l → ∀ r' : G ℚ Ω →* M4 (DualNumber c.O), D.PtIn _ r' → (∀ g i j, (r' g i j).fst = D.r0 g i j) → ∀ w, w = -wPs ∨ w = 0 → (∀ g i j, wt i j ≠ w → (r' g i j).snd = 0) → ∀ g i j, (r' g i j).snd = 0 := by

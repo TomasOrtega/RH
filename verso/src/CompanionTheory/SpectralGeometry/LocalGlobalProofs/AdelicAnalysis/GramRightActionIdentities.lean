@@ -13,7 +13,7 @@ variable {A : Type} [CommRing A] {M n : ℕ}
 def colM (X : Fin n → Fin M → A) : Matrix (Fin M) (Fin n) A := fun i a => X a i
 
 /- English proof (translation)
-Introduce `X Y h`. Use function extensionality and compare the values at `a i`. Conclude with `congrFun (congrFun h i) a`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem colM_injective : Function.Injective (colM : (Fin n → Fin M → A) → _) := by
   intro X Y h
@@ -21,7 +21,7 @@ theorem colM_injective : Function.Injective (colM : (Fin n → Fin M → A) → 
   exact congrFun (congrFun h i) a
 
 /- English proof (translation)
-Simplify using `only [hform, Matrix.mul_apply, cT, colM, Matrix.transpose_apply, Matrix.map_apply, Finset.sum_mul]`. Conclude with `Finset.sum_comm`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hform_eq_entry (s : A →+* A) (J : Matrix (Fin M) (Fin M) A) (X : Fin n → Fin M → A)
     (a b : Fin n) :
@@ -31,7 +31,7 @@ theorem hform_eq_entry (s : A →+* A) (J : Matrix (Fin M) (Fin M) A) (X : Fin n
   exact Finset.sum_comm
 
 /- English proof (translation)
-Simplify using `only [Matrix.mul_assoc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mul_shape {p q r s t u : Type} [Fintype q] [Fintype r] [Fintype s] [Fintype t]
     (a : Matrix p q A) (b : Matrix q r A) (c : Matrix r s A) (d : Matrix s t A) (e : Matrix t u A) :
@@ -40,7 +40,7 @@ theorem mul_shape {p q r s t u : Type} [Fintype q] [Fintype r] [Fintype s] [Fint
   simp only [Matrix.mul_assoc]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[cT, hs]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem cT_cT (s : A →+* A) (hs : ∀ x, s (s x) = x) {m p : Type} (B : Matrix m p A) :
     cT s (cT s B) = B := by
@@ -54,7 +54,7 @@ section Conj
 variable {F E : Type} [Field F] [Field E] [Algebra F E]
 
 /- English proof (translation)
-Set `τ : E →+* ℂ` to `(IsAlgClosed.lift : E →ₐ[ℚ] ℂ).toRingHom`. Apply `τ.injective` to reduce the goal to its premises. Rewrite using `[hσ.2.2.2 τ, hσ.2.2.2 τ, star_star]`.
+Introduce a local definition for the expression. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem sigma_invol [NumberField F] [NumberField E] {σ : E →ₐ[F] E} (hσ : IsCMExt F E σ) (x : E) :
     σ (σ x) = x := by
@@ -65,7 +65,7 @@ theorem sigma_invol [NumberField F] [NumberField E] {σ : E →ₐ[F] E} (hσ : 
 variable (R : Type) [CommRing R] [Algebra F R]
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul r e => simp [sigR, h]`. Consider the case `add a b ha hb => simp only [map_add, ha, hb]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem sigR_invol {σ : E →ₐ[F] E} (h : ∀ x, σ (σ x) = x) (x : R ⊗[F] E) :
     sigR R σ (sigR R σ x) = x := by
@@ -77,7 +77,7 @@ theorem sigR_invol {σ : E →ₐ[F] E} (h : ∀ x, σ (σ x) = x) (x : R ⊗[F]
 variable {M n : ℕ}
 
 /- English proof (translation)
-Use extensionality with `a b`. Apply the tactic sequence `exact hform_eq_entry _ _ X a b`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem gramR_eq (σ : E →ₐ[F] E) (J : Matrix (Fin M) (Fin M) E) (X : Fin n → Fin M → R ⊗[F] E) :
     gramR R σ J X =
@@ -86,7 +86,7 @@ theorem gramR_eq (σ : E →ₐ[F] E) (J : Matrix (Fin M) (Fin M) E) (X : Fin n 
   exact hform_eq_entry _ _ X a b
 
 /- English proof (translation)
-Use extensionality with `i a`. Simplify using `[colM, rmul, Matrix.mul_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem colM_rmul (X : Fin n → Fin M → R ⊗[F] E) (g : Matrix (Fin n) (Fin n) (R ⊗[F] E)) :
     colM (rmul R X g) = colM X * g := by
@@ -94,7 +94,7 @@ theorem colM_rmul (X : Fin n → Fin M → R ⊗[F] E) (g : Matrix (Fin n) (Fin 
   simp [colM, rmul, Matrix.mul_apply]
 
 /- English proof (translation)
-Use extensionality with `i a`. Simplify using `[colM, actTup, Matrix.mulVec, dotProduct, Matrix.mul_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem colM_actTup (g : GL (Fin M) (R ⊗[F] E)) (X : Fin n → Fin M → R ⊗[F] E) :
     colM (actTup R g X) = (g : Matrix (Fin M) (Fin M) (R ⊗[F] E)) * colM X := by
@@ -104,15 +104,13 @@ theorem colM_actTup (g : GL (Fin M) (R ⊗[F] E)) (X : Fin n → Fin M → R ⊗
 end Conj
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hσ M J _ R _ _ n`. Establish `hs : ∀ x : R ⊗[F] E, sigR R σ (sigR R σ x) = x` using `sigR_invol R (sigma_invol hσ)`. Use `⟨?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `X g`. Rewrite using `[gramR_eq, gramR_eq, colM_rmul, cT_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_shape _ _ _ _ _`. Introduce `X g g'`. Apply `colM_injective` to reduce the goal to its premises. Rewrite using `[colM_rmul, colM_rmul, colM_rmul, Matrix.mul_assoc]`. Introduce `X`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `colM_injective` to reduce the goal to its premises. Rewrite using `[colM_rmul, Matrix.mul_one]`. Introduce `S g`. Establish `hS : cT (sigR R σ) (S : Matrix (Fin n) (Fin n) (R ⊗[F] E)) = S`. Use extensionality with `a b`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Conclude with `S.2 a b`. Establish `key : cT (sigR R σ) (cT (sigR R σ) g * (S : Matrix (Fin n) (Fin n) (R ⊗[F] E)) * g) = cT (sigR R σ) g * (S : Matrix (Fin n) (Fin n) (R ⊗[F] E)) * g`. Rewrite using `[cT_mul, cT_mul, cT_cT _ hs, hS, Matrix.mul_assoc]`. Introduce `a b`. Conclude with `congrFun (congrFun key a) b`.
-
-Introduce `J' g hJ X`. Rewrite using `[gramR_eq, gramR_eq, colM_actTup, cT_mul, hJ]`. Conclude with `mul_shape _ _ _ _ _`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gram_algebra : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (M : ℕ) (J : Matrix (Fin M) (Fin M) E), IsHermND σ J → ∀ (R : Type) [CommRing R] [Algebra F R] (n : ℕ), (∀ (X : Fin n → Fin M → R ⊗[F] E) (g : Matrix (Fin n) (Fin n) (R ⊗[F] E)), gramR R σ J (rmul R X g) = cT (sigR R σ) g * gramR R σ J X * g) ∧ (∀ (X : Fin n → Fin M → R ⊗[F] E) (g g' : Matrix (Fin n) (Fin n) (R ⊗[F] E)), rmul R (rmul R X g) g' = rmul R X (g * g')) ∧ (∀ X : Fin n → Fin M → R ⊗[F] E, rmul R X 1 = X) ∧ (∀ (S : HermR R σ n) (g : Matrix (Fin n) (Fin n) (R ⊗[F] E)), cT (sigR R σ) g * (S : Matrix (Fin n) (Fin n) (R ⊗[F] E)) * g ∈ HermR R σ n) ∧ ∀ (J' : Matrix (Fin M) (Fin M) E) (g : GL (Fin M) (R ⊗[F] E)), JR R J' = cT (sigR R σ) (g : Matrix (Fin M) (Fin M) (R ⊗[F] E)) * JR R J * (g : Matrix (Fin M) (Fin M) (R ⊗[F] E)) → ∀ X : Fin n → Fin M → R ⊗[F] E, gramR R σ J (actTup R g X) = gramR R σ J' X := by
   intro F E _ _ _ _ _ σ hσ M J _ R _ _ n

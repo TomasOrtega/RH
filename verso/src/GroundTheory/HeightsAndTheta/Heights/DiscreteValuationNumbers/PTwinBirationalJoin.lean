@@ -17,7 +17,7 @@ variable {O : Type} [CommRing O] {Ω : Type} [Field Ω] [Algebra O Ω]
 omit [Fintype K] in
 
 /- English proof (translation)
-Unfold `segreVec`. Rewrite using `[← Finset.prod_div_distrib]`. Use `Subfield.prod_mem _ fun k _ => ?_` and prove the remaining obligations. Apply `Subfield.subset_closure` to reduce the goal to its premises. Use `Or.inr ⟨⟨Sum.inr k, c₁ k, c₂ k⟩, rfl⟩` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem BirationalJoin.segre_ratio_mem_fnField (y : (Σ k, ι k) → Ω) (w : (Σ k, ι₂ k) → Ω)
     (c₁ c₂ : ∀ k, ι₂ k) : segreVec w c₁ / segreVec w c₂ ∈ fnField O (joinCoord y w) := by
@@ -28,9 +28,9 @@ theorem BirationalJoin.segre_ratio_mem_fnField (y : (Σ k, ι k) → Ω) (w : (�
   refine Or.inr ⟨⟨Sum.inr k, c₁ k, c₂ k⟩, rfl⟩
 
 /- English proof (translation)
-Unfold `segreVec`. Establish `hf : (fun l => y ⟨l, Function.update c k i l⟩) = Function.update (fun l => y ⟨l, c l⟩) k (y ⟨k, i⟩)`. Use function extensionality and compare the values at `l`. Distinguish the cases in `hl : l = k`. Substitute `hl` using the available equality.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using the standard rewrite rules. Simplify using `[Function.update_of_ne hl]`. Rewrite using `[hf, Finset.prod_update_of_mem (Finset.mem_univ k)]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem BirationalJoin.segreVec_update [DecidableEq K] (y : (Σ k, ι k) → Ω) (c : ∀ k, ι k) (k : K)
     (i : ι k) :
@@ -46,13 +46,11 @@ theorem BirationalJoin.segreVec_update [DecidableEq K] (y : (Σ k, ι k) → Ω)
   rw [hf, Finset.prod_update_of_mem (Finset.mem_univ k)]
 
 /- English proof (translation)
-Use `Subfield.closure_le.mpr ?_` and prove the remaining obligations. Introduce and unpack `x (⟨a, rfl⟩ | ⟨⟨k, i, j⟩, rfl⟩)`. Conclude with `Subfield.subset_closure (Subalgebra.algebraMap_mem _ a)`. Establish `hk : y ⟨k, c k⟩ ≠ 0` using `Finset.prod_ne_zero_iff.mp hc k (Finset.mem_univ k) set P := ∏ l ∈ Finset.univ \ {k}, y ⟨l, c l⟩ with hP`. Establish `hcP : segreVec y c = y ⟨k, c k⟩ * P`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `BirationalJoin.segreVec_update y c k (c k)`. Rewrite `h` using `[Function.update_eq_self]`. Then use the resulting hypothesis. Establish `hP0 : P ≠ 0`. Introduce `h0`. Apply `hc` to reduce the goal to its premises.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hcP, h0, mul_zero]`. Establish `hmem : ∀ m : ι k, segreVec y (Function.update c k m) / segreVec y c ∈ Subfield.closure (chartRing O (segreVec y) c : Set Ω)` using `fun m => Subfield.subset_closure (Algebra.subset_adjoin ⟨Function.update c k m, rfl⟩)`. Establish `key : y ⟨k, i⟩ / y ⟨k, j⟩ = (segreVec y (Function.update c k i) / segreVec y c) / (segreVec y (Function.update c k j) / segreVec y c)`. Rewrite using `[div_div_div_cancel_right₀ hc, BirationalJoin.segreVec_update, BirationalJoin.segreVec_update, mul_div_mul_right _ _ hP0]`. Use `show y ⟨k, i⟩ / y ⟨k, j⟩ ∈ _`.
-
-Rewrite using `[key]`. Conclude with `Subfield.div_mem _ (hmem i) (hmem j)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem BirationalJoin.fnField_le_closure_chartRing (y : (Σ k, ι k) → Ω) (c : ∀ k, ι k)
     (hc : segreVec y c ≠ 0) :
@@ -82,9 +80,9 @@ theorem BirationalJoin.fnField_le_closure_chartRing (y : (Σ k, ι k) → Ω) (c
     exact Subfield.div_mem _ (hmem i) (hmem j)
 
 /- English proof (translation)
-Establish `hS : Subring.closure (S : Set Ω) = S.toSubring`. Rewrite using `[← Subalgebra.coe_toSubring]`. Conclude with `Subring.closure_eq _`. Take `⟨a, ha, b, hb, rfl⟩` from `Subfield.mem_closure_iff.mp hx`. Rewrite `ha`, `hb` using `[hS]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `⟨a, ha, b, hb, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem BirationalJoin.exists_div_of_mem_closure (S : Subalgebra O Ω) {x : Ω}
     (hx : x ∈ Subfield.closure (S : Set Ω)) : ∃ a ∈ S, ∃ b ∈ S, x = a / b := by
@@ -98,9 +96,9 @@ theorem BirationalJoin.exists_div_of_mem_closure (S : Subalgebra O Ω) {x : Ω}
 end Proof
 
 /- English proof (translation)
-Introduce `O _ _ _ Ω _ _ K _ ι _ y K₂ _ ι₂ _ w h c hc c₁ c₂ hc₂`. Establish `hr : segreVec w c₁ / segreVec w c₂ ∈ fnField O y` using `h ▸ BirationalJoin.segre_ratio_mem_fnField y w c₁ c₂`. Take `⟨a, ha, b, hb, hab⟩` from `BirationalJoin.exists_div_of_mem_closure _ (BirationalJoin.fnField_le_closure_chartRing y c hc hr)`. Distinguish the cases in `hb0 : b = 0`. Establish `hw : segreVec w c₁ = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Rewrite `hab` using `[hb0, div_zero, div_eq_zero_iff]`. Conclude with `hab.resolve_right hc₂`. Conclude with `⟨0, Subalgebra.zero_mem _, 1, Subalgebra.one_mem _, one_ne_zero, by rw [hw, zero_mul, zero_mul]⟩`. Conclude with `⟨a, ha, b, hb, hb0, (div_eq_div_iff hc₂ hb0).mp hab⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem BirationalJoin.proof : BirationalJoin.Statement := by
   intro O _ _ _ Ω _ _ K _ ι _ y K₂ _ ι₂ _ w h c hc c₁ c₂ hc₂

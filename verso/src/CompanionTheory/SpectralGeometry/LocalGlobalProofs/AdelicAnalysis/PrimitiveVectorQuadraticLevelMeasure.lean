@@ -16,12 +16,12 @@ section SlopeTestRemainingChoices
 variable {F : Type} [Field F] [NumberField F] {v : HeightOneSpectrum (𝓞 F)}
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_int {x : Fv F v} : x ∈ v.adicCompletionIntegers F ↔ Valued.v x ≤ 1 := Iff.rfl
 
 /- English proof (translation)
-Establish `: x = (x - y) + y` using `by ring`. Rewrite using `[this]`. Conclude with `(Valuation.map_add _ _ _).trans (max_le h.le hy)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem v_le_of_close {x y : Fv F v} (hy : Valued.v y ≤ 1) (h : Valued.v (x - y) < 1) :
     Valued.v x ≤ 1 := by
@@ -32,7 +32,7 @@ theorem v_le_of_close {x y : Fv F v} (hy : Valued.v y ≤ 1) (h : Valued.v (x - 
 variable {ι : Type} [Fintype ι] [DecidableEq ι]
 
 /- English proof (translation)
-Use `Valuation.map_sum_le _ fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul]`. Conclude with `mul_le_one' (hB k j) (hx j)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mulVec_le {B : Matrix ι ι (Fv F v)} (hB : ∀ i j, Valued.v (B i j) ≤ 1)
     {x : ι → Fv F v} (hx : ∀ i, Valued.v (x i) ≤ 1) (k : ι) : Valued.v ((B *ᵥ x) k) ≤ 1 := by
@@ -41,7 +41,7 @@ theorem mulVec_le {B : Matrix ι ι (Fv F v)} (hB : ∀ i j, Valued.v (B i j) �
   exact mul_le_one' (hB k j) (hx j)
 
 /- English proof (translation)
-Use `Valuation.map_sum_lt _ one_ne_zero fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul]`. Conclude with `lt_of_le_of_lt (mul_le_of_le_one_left' (hB k j)) (hx j)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mulVec_lt {B : Matrix ι ι (Fv F v)} (hB : ∀ i j, Valued.v (B i j) ≤ 1)
     {x : ι → Fv F v} (hx : ∀ i, Valued.v (x i) < 1) (k : ι) : Valued.v ((B *ᵥ x) k) < 1 := by
@@ -50,11 +50,11 @@ theorem mulVec_lt {B : Matrix ι ι (Fv F v)} (hB : ∀ i j, Valued.v (B i j) �
   exact lt_of_le_of_lt (mul_le_of_le_one_left' (hB k j)) (hx j)
 
 /- English proof (translation)
-Establish `hx : ∀ i, Valued.v (x i) ≤ 1` using `fun i => v_le_of_close (hy i) (h i)`. Establish `e : x ⬝ᵥ (B *ᵥ x) - y ⬝ᵥ (B *ᵥ y) = (x - y) ⬝ᵥ (B *ᵥ x) + y ⬝ᵥ (B *ᵥ (x - y))`. Rewrite using `[Matrix.mulVec_sub, dotProduct_sub, sub_dotProduct]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Use `Valuation.map_add_lt _ ?_ ?_` and prove the remaining obligations. Use `Valuation.map_sum_lt _ one_ne_zero fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul]`. Conclude with `lt_of_le_of_lt (mul_le_of_le_one_right' (mulVec_le hB hx j)) (h j)`. Use `Valuation.map_sum_lt _ one_ne_zero fun j _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul]`. Conclude with `lt_of_le_of_lt (mul_le_of_le_one_left' (hy j)) (mulVec_lt hB (x := x - y) h j)`.
+A detailed English derivation is pending.
 -/
 theorem dot_close {B : Matrix ι ι (Fv F v)} (hB : ∀ i j, Valued.v (B i j) ≤ 1)
     {x y : ι → Fv F v} (hy : ∀ i, Valued.v (y i) ≤ 1) (h : ∀ i, Valued.v (x i - y i) < 1) :
@@ -72,13 +72,13 @@ theorem dot_close {B : Matrix ι ι (Fv F v)} (hB : ∀ i j, Valued.v (B i j) �
     exact lt_of_le_of_lt (mul_le_of_le_one_left' (hy j)) (mulVec_lt hB (x := x - y) h j)
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Establish `hlt : ∀ i, Valued.v ((B *ᵥ x) i) < 1` using `fun i => lt_of_le_of_ne (mulVec_le hB hx i) (hcon i)`. Take `⟨i, hi⟩` from `hp`. Set `O` to `v.adicCompletionIntegers F`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `B' : Matrix ι ι O` to `fun a b => ⟨B a b, hB a b⟩`. Establish `hmap : B = (O.subtype : O →+* Fv F v).mapMatrix B'`. Use extensionality with `a b`. Both sides reduce to the same expression. Establish `hadj : ∀ a b, Valued.v (B.adjugate a b) ≤ 1`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a b`. Rewrite using `[hmap, ← RingHom.map_adjugate]`. Conclude with `(B'.adjugate a b).2`. Establish `h1 : (B.adjugate *ᵥ (B *ᵥ x)) i = B.det * x i`. Rewrite using `[Matrix.mulVec_mulVec, Matrix.adjugate_mul, Matrix.smul_mulVec, Matrix.one_mulVec]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Establish `h2` using `mulVec_lt hadj hlt i`. Rewrite `h2` using `[h1, map_mul, hdet, hi, one_mul]`. Conclude with `lt_irrefl _ h2`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_unit_coord {B : Matrix ι ι (Fv F v)} (hB : ∀ i j, Valued.v (B i j) ≤ 1)
     (hdet : Valued.v B.det = 1) {x : ι → Fv F v} (hx : ∀ i, Valued.v (x i) ≤ 1)
@@ -104,11 +104,11 @@ theorem exists_unit_coord {B : Matrix ι ι (Fv F v)} (hB : ∀ i j, Valued.v (B
   exact lt_irrefl _ h2
 
 /- English proof (translation)
-Establish `hv : x ᵥ* B = B *ᵥ x` using `by conv_lhs => rw [← hs.eq]`. Conclude with `Matrix.vecMul_transpose B x`. Establish `h1 : x ⬝ᵥ (B *ᵥ Pi.single i s) = (B *ᵥ x) i * s`. Rewrite using `[Matrix.dotProduct_mulVec, hv, dotProduct_single]`. Establish `h2 : (Pi.single i s : ι → Fv F v) ⬝ᵥ (B *ᵥ x) = (B *ᵥ x) i * s`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[single_dotProduct, mul_comm]`. Establish `h3 : (Pi.single i s : ι → Fv F v) ⬝ᵥ (B *ᵥ Pi.single i s) = B i i * s ^ 2`. Rewrite using `[single_dotProduct]`. Simplify using `[Matrix.mulVec_single]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.mulVec_add, dotProduct_add, add_dotProduct, add_dotProduct, h1, h2, h3]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem dot_add_single {B : Matrix ι ι (Fv F v)} (hs : B.IsSymm) (x : ι → Fv F v) (i : ι)
     (s : Fv F v) :
@@ -133,24 +133,24 @@ section Meas
 variable {lam : Measure (Fv F v)}
 
 /- English proof (translation)
-Simplify using `using Valued.isOpen_ball (Fv F v) 1`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem isOpen_maxIdeal : IsOpen {t : Fv F v | Valued.v t < 1} := by
   simpa using Valued.isOpen_ball (Fv F v) 1
 
 /- English proof (translation)
-Use `haveI : BorelSpace (Fv F v) := ⟨rfl⟩`. Conclude with `(isOpen_maxIdeal.preimage (continuous_sub_right b)).measurableSet`.
+A detailed English derivation is pending.
 -/
 theorem measurableSet_close (b : Fv F v) : MeasurableSet {t : Fv F v | Valued.v (t - b) < 1} := by
   haveI : BorelSpace (Fv F v) := ⟨rfl⟩
   exact (isOpen_maxIdeal.preimage (continuous_sub_right b)).measurableSet
 
 /- English proof (translation)
-Use `haveI : BorelSpace (Fv F v) := ⟨rfl⟩`. Take `⟨htop, hlc, hsc, -⟩` from `GlobalTheory.T.completion_is_local_ring F v`. Use `haveI := hstd.1`. Establish `hA' : MeasurableSet ((fun h => q + h) ⁻¹' A)` using `(measurable_const_add q) hA`. Establish `key` using `GlobalTheory.T.local_haar_quadratic_substitution_invariant F v lam hstd h2 a c ha hc _ hA'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `e1 : {t | Valued.v (t - b) < 1 ∧ q + a * (t - b) + c * (t - b) ^ 2 ∈ A} = (fun h => -b + h) ⁻¹' {t | Valued.v t < 1 ∧ a * t + c * t ^ 2 ∈ (fun h => q + h) ⁻¹' A}`. Use extensionality with `t`. Simplify using `only [Set.mem_setOf_eq, Set.mem_preimage, neg_add_eq_sub, add_assoc]`. Establish `e2 : (fun h => q + h) ⁻¹' A ∩ {s | Valued.v s < 1} = (fun h => q + h) ⁻¹' (A ∩ {s | Valued.v (s - q) < 1})`. Use extensionality with `t`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Rewrite using `[e1, measure_preimage_add, key, e2, measure_preimage_add]`.
+A detailed English derivation is pending.
 -/
 theorem slice (hstd : IsStdV v lam) (h2 : Valued.v (2 : Fv F v) = 1) {a c : Fv F v}
     (ha : Valued.v a = 1) (hc : c ∈ v.adicCompletionIntegers F) (q b : Fv F v)
@@ -179,9 +179,7 @@ section Main
 variable {lam : Measure (Fv F v)}
 
 /- English proof (translation)
-Use `haveI : BorelSpace (Fv F v) := ⟨rfl⟩`. Take `⟨htop, hlc, hsc, -⟩` from `GlobalTheory.T.completion_is_local_ring F v`. Establish `: Continuous fun x : ι → Fv F v => (2 : Fv F v)⁻¹ * (x ⬝ᵥ (B *ᵥ x))`. Simplify using `only [dotProduct, Matrix.mulVec]`. Use `fun_prop`.
-
-Conclude with `this.measurable`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem measurable_form (B : Matrix ι ι (Fv F v)) :
     Measurable fun x : ι → Fv F v => (2 : Fv F v)⁻¹ * (x ⬝ᵥ (B *ᵥ x)) := by
@@ -193,27 +191,25 @@ theorem measurable_form (B : Matrix ι ι (Fv F v)) :
   exact this.measurable
 
 /- English proof (translation)
-Use `set x' : ι → Fv F v := Function.update x i (x₀ i) with hx'def`. Establish `hclose : ∀ j, Valued.v (x' j - x₀ j) < 1`. Introduce `j`. Distinguish the cases in `hj : j = i`. Substitute `hj` using the available equality.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[x']`. Simplify `hx j hj` using `[x', Function.update_of_ne hj]`. Establish `h2ne : (2 : Fv F v) ≠ 0`. Introduce `h`. Rewrite `h2` using `[h, map_zero]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `zero_ne_one h2`. Establish `hinv : Valued.v ((2 : Fv F v)⁻¹) = 1` using `by rw [map_inv₀, h2, inv_one]`. Establish `hupd : ∀ t, Function.update x i t = x' + Pi.single i (t - x₀ i)`. Introduce `t`. Use extensionality with `j`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Distinguish the cases in `hj : j = i`. Substitute `hj` using the available equality. Simplify using `[x']`. Simplify using `[x', Function.update_of_ne hj, Pi.single_eq_of_ne hj]`. Establish `ha : Valued.v ((B *ᵥ x') i) = 1`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hd : Valued.v ((B *ᵥ x') i - (B *ᵥ x₀) i) < 1`. Use `mulVec_lt hB (x := x' - x₀) hclose i` as an intermediate fact. Simplify `this` using `[Matrix.mulVec_sub]`. Establish `: (B *ᵥ x') i = (B *ᵥ x') i - (B *ᵥ x₀) i + (B *ᵥ x₀) i` using `by ring`. Rewrite using `[this, Valuation.map_add_eq_of_lt_right _ (by rwa [hi]), hi]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hc : (2 : Fv F v)⁻¹ * B i i ∈ v.adicCompletionIntegers F`. Rewrite using `[mem_int, map_mul, hinv, one_mul]`. Conclude with `hB i i`. Establish `hq : Valued.v ((2 : Fv F v)⁻¹ * (x' ⬝ᵥ (B *ᵥ x')) - (2 : Fv F v)⁻¹ * (x₀ ⬝ᵥ (B *ᵥ x₀))) < 1`. Rewrite using `[← mul_sub, map_mul, hinv, one_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Conclude with `dot_close hB hx₀ hclose`. Establish `e1 : {t | Function.update x i t ∈ {y : ι → Fv F v | (∀ j, Valued.v (y j - x₀ j) < 1) ∧ (2 : Fv F v)⁻¹ * (y ⬝ᵥ (B *ᵥ y)) ∈ A}} = {t | Valued.v (t - x₀ i) < 1 ∧ (2 : Fv F v)⁻¹ * (x' ⬝ᵥ (B *ᵥ x')) + (B *ᵥ x') i * (t - x₀ i) + ((2 : Fv F v)⁻¹ * B i i) * (t - x₀ i) ^ 2 ∈ A}`. Use extensionality with `t`. Establish `hform : (2 : Fv F v)⁻¹ * (Function.update x i t ⬝ᵥ (B *ᵥ Function.update x i t)) = (2 : Fv F v)⁻¹ * (x' ⬝ᵥ (B *ᵥ x')) + (B *ᵥ x') i * (t - x₀ i) + ((2 : Fv F v)⁻¹ * B i i) * (t - x₀ i) ^ 2`. Rewrite using `[hupd t, dot_add_single hs]`.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Clear the denominators using the available nonvanishing facts. Simplify using `only [Set.mem_setOf_eq, hform]`. Use `and_congr_left fun _ => ⟨fun h => by simpa using h i, fun h j => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hj : j = i`. Substitute `hj` using the available equality.
+Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `using h`. Simplify `hx j hj` using `[Function.update_of_ne hj]`. Establish `e2 : {s | Valued.v (s - (2 : Fv F v)⁻¹ * (x' ⬝ᵥ (B *ᵥ x'))) < 1} = {s | Valued.v (s - (2 : Fv F v)⁻¹ * (x₀ ⬝ᵥ (B *ᵥ x₀))) < 1}`. Use extensionality with `s`. Simplify using `only [Set.mem_setOf_eq]`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `: s - (2 : Fv F v)⁻¹ * (x₀ ⬝ᵥ (B *ᵥ x₀)) = (s - (2 : Fv F v)⁻¹ * (x' ⬝ᵥ (B *ᵥ x'))) + ((2 : Fv F v)⁻¹ * (x' ⬝ᵥ (B *ᵥ x')) - (2 : Fv F v)⁻¹ * (x₀ ⬝ᵥ (B *ᵥ x₀)))` using `by ring`. Rewrite using `[this]`. Conclude with `Valuation.map_add_lt _ h hq`.
-
-Introduce `h`. Establish `: s - (2 : Fv F v)⁻¹ * (x' ⬝ᵥ (B *ᵥ x')) = (s - (2 : Fv F v)⁻¹ * (x₀ ⬝ᵥ (B *ᵥ x₀))) - ((2 : Fv F v)⁻¹ * (x' ⬝ᵥ (B *ᵥ x')) - (2 : Fv F v)⁻¹ * (x₀ ⬝ᵥ (B *ᵥ x₀)))` using `by ring`. Rewrite using `[this]`. Conclude with `Valuation.map_sub_lt _ h hq`. Rewrite using `[e1, slice hstd h2 ha hc _ _ hA, e2]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem slice_form (hstd : IsStdV v lam) (h2 : Valued.v (2 : Fv F v) = 1)
     {B : Matrix ι ι (Fv F v)} (hs : B.IsSymm) (hB : ∀ i j, Valued.v (B i j) ≤ 1)
@@ -284,15 +280,15 @@ theorem slice_form (hstd : IsStdV v lam) (h2 : Valued.v (2 : Fv F v) = 1)
   rw [e1, slice hstd h2 ha hc _ _ hA, e2]
 
 /- English proof (translation)
-Establish `hf : Measurable (S.indicator (1 : (ι → Fv F v) → ℝ≥0∞))` using `measurable_one.indicator hS`. Establish `hg : Measurable (E.indicator (1 : (ι → Fv F v) → ℝ≥0∞))` using `measurable_one.indicator hE`. Establish `hU : (Finset.univ : Finset ι) = Finset.univ.erase i ∪ {i}`. Apply the tactic sequence `ext j; by_cases hj : j = i <;> simp [hj]`. Establish `hdis : Disjoint (Finset.univ.erase i) ({i} : Finset ι)` using `by simp`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Establish `hin : (∫⋯∫⁻_{i}, S.indicator 1 ∂(fun _ : ι => lam)) = fun x => C * E.indicator (1 : (ι → Fv F v) → ℝ≥0∞) x`. Rewrite using `[lmarginal_singleton]`. Use extensionality with `x`. Establish `hsl : ∫⁻ t, S.indicator (1 : (ι → Fv F v) → ℝ≥0∞) (Function.update x i t) ∂lam = lam {t | Function.update x i t ∈ S}`. Establish `hm : MeasurableSet {t | Function.update x i t ∈ S}` using `measurable_update x hS`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← lintegral_indicator_one hm]`. Use `lintegral_congr fun t => ?_` and prove the remaining obligations. Distinguish the cases in `ht : Function.update x i t ∈ S`. Rewrite using `[Set.indicator_of_mem ht, Set.indicator_of_mem (show t ∈ {t | Function.update x i t ∈ S} from ht)]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[Set.indicator_of_notMem ht, Set.indicator_of_notMem (show t ∉ {t | Function.update x i t ∈ S} from ht)]`. Rewrite using `[hsl]`. Distinguish the cases in `hx : x ∈ E`. Simplify using `[h1 x hx, hx]`. Simplify using `[h0 x hx, hx]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← lmarginal_union _ _ hf hdis, ← hU]`. Use `_ = C * (∫⋯∫⁻_(Finset.univ.erase i), E.indicator 1 ∂(fun _ : ι => lam)) x₀ := by`. Rewrite using `[hin]`. Conclude with `lintegral_const_mul C (hg.comp measurable_updateFinset)`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pi_eq_mul [SigmaFinite lam] (i : ι) {S E : Set (ι → Fv F v)} (hS : MeasurableSet S)
     (hE : MeasurableSet E) (C : ℝ≥0∞) (hC : C ≠ ⊤) (x₀ : ι → Fv F v)
@@ -337,29 +333,25 @@ end Main
 end SlopeTestRemainingChoices
 
 /- English proof (translation)
-Introduce `F _ _ v lam hstd h2 ι _ _ B hs hB hdet x₀ hx₀ hp A hA`. Use `haveI : BorelSpace (Fv F v) := ⟨rfl⟩`. Take `⟨htop, hlc, hsc, -⟩` from `GlobalTheory.T.completion_is_local_ring F v`. Use `haveI := hstd.1`. Establish `hB' : ∀ i j, Valued.v (B i j) ≤ 1` using `hB`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hx₀' : ∀ i, Valued.v (x₀ i) ≤ 1` using `hx₀`. Take `⟨i, hi⟩` from `exists_unit_coord hB' hdet hx₀' hp`. Use `set Nn : ℝ≥0∞ := (Ideal.absNorm v.asIdeal : ℝ≥0∞)⁻¹ with hNn`. Establish `hvol : lam {t | Valued.v t < 1} = Nn` using `(GlobalTheory.T.standard_local_haar_properties F v lam hstd).1`. Establish `hball : ∀ b : Fv F v, lam {s | Valued.v (s - b) < 1} = Nn`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Introduce `b`. Establish `: {s | Valued.v (s - b) < 1} = (fun h => -b + h) ⁻¹' {t | Valued.v t < 1}`. Use extensionality with `s`. Simplify using `only [Set.mem_setOf_eq, Set.mem_preimage, neg_add_eq_sub]`. Rewrite using `[this, measure_preimage_add, hvol]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hN0 : Nn ≠ 0` using `ENNReal.inv_ne_zero.mpr (ENNReal.natCast_ne_top _)`. Establish `hNt : Nn ≠ ⊤`. Rewrite using `[← hvol]`. Use `ne_top_of_le_ne_top (b := 1) ENNReal.one_ne_top ?_` and prove the remaining obligations. Rewrite using `[← hstd.2]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `measure_mono fun t ht => show t ∈ v.adicCompletionIntegers F from mem_int.2 (le_of_lt ht)`. Use `set E : Set (ι → Fv F v) := {x | ∀ j, j ≠ i → Valued.v (x j - x₀ j) < 1} with hEdef`. Establish `hsec : ∀ j, MeasurableSet {y : ι → Fv F v | Valued.v (y j - x₀ j) < 1}` using `fun j => (measurable_pi_apply (X := fun _ : ι => Fv F v) j) (measurableSet_close (x₀ j))`. Establish `hE : MeasurableSet E`. Simplify using `only [hEdef, Set.setOf_forall]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `MeasurableSet.iInter fun j => MeasurableSet.iInter fun _ => hsec j`. Establish `hD : MeasurableSet {y : ι → Fv F v | ∀ j, Valued.v (y j - x₀ j) < 1}`. Simplify using `only [Set.setOf_forall]`. Conclude with `MeasurableSet.iInter hsec`. Establish `hform : ∀ A' : Set (Fv F v), MeasurableSet A' → (Measure.pi fun _ : ι => lam) {y : ι → Fv F v | (∀ j, Valued.v (y j - x₀ j) < 1) ∧ (2 : Fv F v)⁻¹ * (y ⬝ᵥ (B *ᵥ y)) ∈ A'} = lam (A' ∩ {s | Valued.v (s - (2 : Fv F v)⁻¹ * (x₀ ⬝ᵥ (B *ᵥ x₀))) < 1}) * (∫⋯∫⁻_(Finset.univ.erase i), E.indi …`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `A' hA'`. Establish `hS : MeasurableSet {y : ι → Fv F v | (∀ j, Valued.v (y j - x₀ j) < 1) ∧ (2 : Fv F v)⁻¹ * (y ⬝ᵥ (B *ᵥ y)) ∈ A'}` using `hD.inter ((measurable_form B) hA')`. Use `pi_eq_mul i hS hE _ ?_ x₀ ?_ ?_` and prove the remaining obligations. Use `ne_top_of_le_ne_top hNt ?_` and prove the remaining obligations. Rewrite using `[← hball ((2 : Fv F v)⁻¹ * (x₀ ⬝ᵥ (B *ᵥ x₀)))]`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Conclude with `measure_mono Set.inter_subset_right`. Introduce `x hx`. Conclude with `slice_form hstd h2 hs hB' hx₀' hi hA' hx`. Introduce `x hx`. Simplify using `only [hEdef, Set.mem_setOf_eq, not_forall] at hx`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Take `⟨j, hj, hjx⟩` from `hx`. Establish `: {t | Function.update x i t ∈ {y : ι → Fv F v | (∀ j, Valued.v (y j - x₀ j) < 1) ∧ (2 : Fv F v)⁻¹ * (y ⬝ᵥ (B *ᵥ y)) ∈ A'}} = ∅`. Use extensionality with `t`. Simplify using `only [Set.mem_setOf_eq, Set.mem_empty_iff_false, iff_false, not_and]`. Introduce `h`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `absurd (by simpa [Function.update_of_ne hj] using h j) hjx`. Rewrite using `[this, measure_empty]`. Establish `hpi : (Measure.pi fun _ : ι => lam) {y : ι → Fv F v | (∀ j, Valued.v (y j - x₀ j) < 1) ∧ (2 : Fv F v)⁻¹ * (y ⬝ᵥ (B *ᵥ y)) ∈ Set.univ} = Nn ^ Fintype.card ι`. Establish `: {y : ι → Fv F v | (∀ j, Valued.v (y j - x₀ j) < 1) ∧ (2 : Fv F v)⁻¹ * (y ⬝ᵥ (B *ᵥ y)) ∈ Set.univ} = Set.univ.pi fun j => {t | Valued.v (t - x₀ j) < 1}`. Use extensionality with `y`.
-
-Simplify using the standard rewrite rules. Rewrite using `[this, Measure.pi_pi]`. Simplify using `[hball]`. Establish `hW : (∫⋯∫⁻_(Finset.univ.erase i), E.indicator 1 ∂(fun _ : ι => lam)) x₀ = Nn ^ (Fintype.card ι - 1)`. Establish `h` using `hform Set.univ MeasurableSet.univ`.
-
-Rewrite `h` using `[hpi, Set.univ_inter, hball]`. Establish `hcard : Fintype.card ι = (Fintype.card ι - 1) + 1` using `(Nat.sub_add_cancel (Fintype.card_pos_iff.mpr ⟨i⟩)).symm`. Rewrite `h` using `[hcard, pow_succ']`. Conclude with `((ENNReal.mul_right_inj hN0 hNt).mp h).symm`. Rewrite using `[hform A hA, hW, mul_comm]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem measure_residue_class : ∀ (F : Type) [Field F] [NumberField F] (v : HeightOneSpectrum (𝓞 F)) (lam : Measure (Fv F v)), IsStdV v lam → Valued.v (2 : Fv F v) = 1 → ∀ (ι : Type) [Fintype ι] [DecidableEq ι] (B : Matrix ι ι (Fv F v)), B.IsSymm → (∀ i j, B i j ∈ v.adicCompletionIntegers F) → Valued.v B.det = 1 → ∀ x₀ : ι → Fv F v, (∀ i, x₀ i ∈ v.adicCompletionIntegers F) → (∃ i, Valued.v (x₀ i) = 1) → ∀ A : Set (Fv F v), MeasurableSet A → (Measure.pi fun _ : ι => lam) {x | (∀ i, Valued.v (x i - x₀ i) < 1) ∧ (2 : Fv F v)⁻¹ * (x ⬝ᵥ (B *ᵥ x)) ∈ A} = (Ideal.absNorm v.asIdeal : ℝ≥0∞)⁻¹ ^ (Fintype.card ι - 1) * lam (A ∩ {s | Valued.v (s - (2 : Fv F v)⁻¹ * (x₀ ⬝ᵥ (B *ᵥ x₀))) < 1}) := by
   intro F _ _ v lam hstd h2 ι _ _ B hs hB hdet x₀ hx₀ hp A hA

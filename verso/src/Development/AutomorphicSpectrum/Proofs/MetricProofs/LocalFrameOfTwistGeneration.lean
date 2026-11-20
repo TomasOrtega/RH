@@ -11,21 +11,19 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.Ar.PB.FMX.Frm
 
 /- English proof (translation)
-Introduce `X Ω _ ξ E _ _ κ x L m n r V φ cc hV hli hsp hG P c₁ hc`. Take `⟨U, hPU, b, hbV, hfr⟩` from `(show L.IsVBOn Set.univ r V from hV) P (Set.mem_univ _)`. Establish `hbP : L.IsFrameAt b P` using `hfr P (Set.mem_univ _) hPU`. Take `⟨B, hBreg, hCreg, hBC⟩` from `GlobalTheory.CompanionTheory.Ar.FlagBun.twist_left_inverse X Ω ξ E κ x L m n r φ hG P c₁ hc b hbP`. Establish `hmem : ∀ a, ∃ t : Fin r → Ω, ∑ l, t l • cc l = b a`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `a`. Establish `hba : b a ∈ Submodule.span Ω (Set.range cc)`. Rewrite using `[hsp, ← hbV]`. Conclude with `Submodule.subset_span ⟨a, rfl⟩`. Conclude with `(Submodule.mem_span_range_iff_exists_fun Ω).1 hba`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `choose t ht using hmem`. Use `⟨Matrix.of fun l a => t a l, Matrix.of (fun j a => φ j (b a) / x c₁ ^ m), B, ?_, ?_, hBC, ?_, hBreg⟩` and prove the remaining obligations. Introduce `hdet`. Take `⟨v, hv0, hv⟩` from `Matrix.exists_mulVec_eq_zero_iff.2 hdet`. Establish `hli_b` using `hbP.1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite `hli_b` using `[Fintype.linearIndependent_iff]`. Establish `hcol : ∀ l, ∑ a, t a l * v a = 0` using `fun l => by`. Simplify `congrFun hv l` using `[Matrix.mulVec, dotProduct]`. Establish `hsum : ∑ a, v a • b a = 0`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Simplify using `only [Finset.smul_sum, smul_smul, Finset.sum_smul]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun l _ => Finset.sum_congr rfl fun a _ => by rw [mul_comm]`. Use `_ = 0 := by simp [hcol]`. Conclude with `hv0 (funext fun a => hli_b v hsum a)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `j a`. Simplify using `only [Matrix.mul_apply, Matrix.of_apply, Matrix.smul_apply, smul_eq_mul]`. Establish `h1 : ∑ l, φ j (cc l) * t a l = φ j (b a)`. Rewrite using `[← ht a, map_sum]`. Simplify using `only [map_smul, smul_eq_mul]`.
+Consider separately whether the proposition holds or fails. It suffices to derive a contradiction. Establish an intermediate fact. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts.
 
-Conclude with `Finset.sum_congr rfl fun l _ => mul_comm _ _`. Rewrite using `[h1]`. Distinguish the cases in `hx : x c₁ ^ m = 0`. It suffices to derive a contradiction. Establish `h2` using `congrFun (congrFun hBC a) a`.
-
-Simplify using `[Matrix.mul_apply, hx, Matrix.one_apply] at h2`. Clear the denominators using the available nonvanishing facts. Introduce `j a`. Conclude with `hCreg j a`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem frames_at_point : ∀ {X : Scheme.{0}} {Ω : Type} [Field Ω] (ξ : Spec (CommRingCat.of Ω) ⟶ X) {E : Type} [AddCommGroup E]
     [Module Ω E] {κ : Type} (x : κ → Ω) (L : GlobalTheory.CompanionTheory.Ar.Lat ξ E) (m n r : ℕ) (V : Submodule Ω E)

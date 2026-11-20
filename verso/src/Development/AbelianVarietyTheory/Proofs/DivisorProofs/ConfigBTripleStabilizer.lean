@@ -19,7 +19,7 @@ namespace GlobalTheory.ConeFinSupp
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a e => show a ⊗ₜ[F] σ (σ e) = a ⊗ₜ[F] e`. Rewrite using `[GlobalTheory.XTermSupp.invol hcm]`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 -/
 theorem cA_cA (hcm : IsCMExt F E σ) (x : AE F E) : cA σ (cA σ x) = x := by
   induction x using TensorProduct.induction_on with
@@ -30,7 +30,7 @@ theorem cA_cA (hcm : IsCMExt F E σ) (x : AE F E) : cA σ (cA σ x) = x := by
   | add x y hx hy => rw [map_add, map_add, hx, hy]
 
 /- English proof (translation)
-Rewrite using `[← smul_assoc, symp, shiftB, GlobalTheory.XTermSupp.hTens_vv, GlobalTheory.XTermSupp.form_inc, GlobalTheory.XTermSupp.form_inc, hH, GlobalTheory.XTermSupp.form_skew hcm hJ, hH', cA_cA hcm, ← smul_eq_mul a, ← map_smul (Algebra.trace (AF F) (AE F E))]`. Use `congr 1`. Simplify using `[mul_comm]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 -/
 theorem symp_shiftB (hcm : IsCMExt F E σ) {n d n₁ d₁ : ℕ} {JX : Matrix (Fin n) (Fin n) E} {JW : Matrix (Fin d) (Fin d) E}
     (hJ : ∀ i j, σ (JW j i) = -JW i j) (H : Plane E n n₁) (H' : Plane E d d₁) (hH : form σ JX H.x H.y = 1)
@@ -44,24 +44,22 @@ theorem symp_shiftB (hcm : IsCMExt F E σ) {n d n₁ d₁ : ℕ} {JX : Matrix (F
   simp [mul_comm]
 
 /- English proof (translation)
-Simplify using `[Model.I, theta, thetaSum]`.
+Simplify using the standard rewrite rules.
 -/
 theorem I_zero {n d : ℕ} {X : Spc F E n} {W : Spc F E d} (M : Model σ X W) (om : Rep σ X W) (h : UA σ W.J) :
     M.I om 0 h = 0 := by
   simp [Model.I, theta, thetaSum]
 
 /- English proof (translation)
-Introduce `hKP F E _ _ _ _ _ σ B a b G G₁ H H' hC e he K hK X om om' om₁ om₁' hT _ Φ hΦ h`. Establish `hstd` using `hT.base.std`. Establish `hΦ' : Φ ∈ schA F (Fin (b + 2) × Fin (a + (b + 2)))`. Use `(Submodule.span_le.2 ?_ : PolData B G.M' ≤ _) hΦ.1` and prove the remaining obligations. Introduce and unpack `Φ ⟨f, -, φ, hSB, hvac, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Conclude with `GlobalTheory.TensUniq.pure_mem_schA f φ hSB ((hvac.and hT.geo.hM'.std).mono fun v hv => hv.1.trans hv.2)`. Establish `hKc : IsCompact (K : Set (UA σ G.V'.J))`. Take `⟨K', -, -, hK', hc, -⟩` from `GlobalTheory.StabHaar.stabEx hKP.base F E σ B (b + 2) G.V' _ _ hT.base hT.geo.hV'`. Establish `: K = K'` using `Subgroup.ext fun g => (hK g).trans (hK' g).symm`. Rewrite using `[this]` and apply the resulting hypothesis.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Use `choose c hc using GlobalTheory.XTermSupp.trace_mul_dual (F := F) (E := E)`. Establish `hO` using `fun i => GlobalTheory.XTermSupp.rho_om_fixed G.M' B.ψ hstd.1 hT.weil' hKc h Φ hΦ' (inclR (F := F) (AF F) (c i) • Matrix.vecMulVec (incV F H.x) (incV F H'.y))`. Take `⟨U, hU, hUm⟩` from `GlobalTheory.ScalarAnnih.exists_compact_annihilator_finiteAdeles_traceChar F B.ψ hstd.1 (GlobalTheory.PsiNontriv.isStd_fin_rat hstd) _ (Filter.eventually_all.2 hO)`. Use `⟨Set.pi Set.univ fun _ => U, isCompact_univ_pi fun _ => hU, fun k l hl => ?_⟩` and prove the remaining obligations. It suffices to establish `h0 : e (G.M'.co.rho B.ψ (shiftB σ H H' l) (om' (k.1, h) Φ)) = 0 by rw [h0, I_zero]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the argument to an intermediate assertion. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations.
 
-Assume the negation of the conclusion as `hne`. Use `hl fun i _ => hUm _ fun t ht => ?_` and prove the remaining obligations. Establish `hfix` using `ht i k.1 k.2`. Establish `hΨ : om' (k.1, h) Φ ∈ schA F (Fin (b + 2) × Fin (a + (b + 2)))` using `(IsUWeilPair.isUSplitting hT.weil').pres _ _ hΦ'`. Establish `h1` using `congrArg e (GlobalTheory.XTermSupp.rho_comm G.M'.co B.ψ (pairA F 0 t • inclR (F := F) (AF F) (c i) • Matrix.vecMulVec (incV F H.x) (incV F H'.y)) (shiftB σ H H' l) (om' (k.1, h) Φ))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hfix, map_smul, he.inv _ (Or.inl ⟨pairA F 0 t • inclR (F := F) (AF F) (c i) • incV F H'.y, by`. Rewrite using `[Matrix.vecMulVec_smul, Matrix.vecMulVec_smul]⟩) _ (GlobalTheory.HeisSchA.rho_mem_schA G.M' B.ψ hstd _ _ hΨ),`. Use `symp_shiftB hT.base.cm hT.geo.hW.skew H H' hC.hH.xy hC.hH'.xy, hc] at h1`. Establish `h2 : pairA F 0 t * GlobalTheory.XTermMaj.crd F E (l : AE F E) i = pairA F 0 (t * (GlobalTheory.XTermMaj.crd F E (l : AE F E) i).2)` using `Prod.ext (zero_mul _) rfl`. Rewrite `h1` using `[h2]`.
-
-Conclude with `(smul_left_injective ℂ hne (h1.symm.trans (one_smul ℂ _).symm))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finsupp : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (a b : ℕ)
     (G : Geo σ a (b + 2)) (G₁ : Geo σ a b) (H : Plane E (b + 2) b) (H' : Plane E (a + (b + 2)) (a + b)), CfgB B G G₁ H H' →

@@ -5,13 +5,13 @@ namespace Formalism.MainNotions.N.FrobeniusPowerSeries.DYAb
 open Finset
 
 /- English proof (translation)
-Establish `hπ : π = q + (-l)` using `by rw [hq]; ring`. Establish `h1 : π ^ (r + 1) * q ^ (e * (r + 1)) = π * q ^ (e * (r + 1)) * (q + (-l)) ^ r`. Rewrite using `[← hπ]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h1, add_pow, Finset.mul_sum, ← Finset.sum_filter_add_sum_filter_not (range (r + 1)) (fun k => k + e * (r + 1) < B), Finset.mul_sum]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Use `congr 1`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[neg_pow]`. Expand and normalize the polynomial expressions, which then agree. Use `Finset.sum_congr rfl fun k hk => ?_` and prove the remaining obligations.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hk' : B ≤ k + e * (r + 1)`. Simplify using `only [Finset.mem_filter] at hk`. Use linear arithmetic over natural numbers and integers. Establish `hq' : q ^ (k + e * (r + 1)) = q ^ B * q ^ (k + e * (r + 1) - B)`. Rewrite using `[← pow_add]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use linear arithmetic over natural numbers and integers. Rewrite using `[neg_pow]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hq']`.
+Reduce the equality to equality of the corresponding arguments. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -43,9 +43,9 @@ theorem split {R : Type*} [CommRing R] (π q l : R) (hq : q = π + l) (e B r : �
         rw [hq']; ring
 
 /- English proof (translation)
-Establish `he0 : (0 : ℝ) < e` using `by exact_mod_cast he`. Establish `h1 : ((r - k : ℕ) : ℝ) = (r : ℝ) - k` using `by rw [Nat.cast_sub hk]`. Establish `hB' : (k : ℝ) + e * (r + 1) + 1 ≤ B` using `by exact_mod_cast hB`. Rewrite using `[h1, div_le_iff₀ he0]`. Establish `h2 : (B : ℝ) ≤ σ * e` using `by rwa [div_le_iff₀ he0] at hσ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `push_cast`. Establish `hkr : (k : ℝ) ≤ r` using `by exact_mod_cast hk`. Establish `he1 : (1 : ℝ) ≤ e` using `by exact_mod_cast he`. Use polynomial arithmetic with `[mul_nonneg (sub_nonneg.2 hkr) (sub_nonneg.2 he1)]`.
+Move the embeddings inside the algebraic operations. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem count (e B r k : ℕ) (he : 1 ≤ e) (hk : k ≤ r) (hB : k + e * (r + 1) < B) (σ : ℝ)
     (hσ : (B : ℝ) / e ≤ σ) : ((r + 1 : ℕ) : ℝ) * (e + 1) / e ≤ σ + (r - k : ℕ) := by

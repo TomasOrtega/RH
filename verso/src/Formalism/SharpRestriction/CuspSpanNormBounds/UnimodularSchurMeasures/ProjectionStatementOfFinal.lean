@@ -16,9 +16,9 @@ def cu.LocGrowth (X : CData) : Prop :=
       ‖coefOn (X.σ v) (X.w v) (X.w v) g‖ * Real.exp (s * cartanDistance (X.I.ε v) g)) (Formalism.REAL.muG (X.I.ε v))
 
 /- English proof (translation)
-Introduce `s hs hrate`. Establish `he : Integrable X.e X.μf` using `hX.2.1.2.2.2.2.2.2.1`. Establish `h1 : Integrable (fun g : X.I.Ginf => ∏ v, (‖coefOn (X.σ v) (X.w v) (X.w v) (g v)‖ * Real.exp (s * cartanDistance (X.I.ε v) (g v)))) (Measure.pi fun v => Formalism.REAL.muG (X.I.ε v))` using `Integrable.fintype_prod_dep (μ := fun v => Formalism.REAL.muG (X.I.ε v)) (f := fun v g => ‖coefOn (X.σ v) (X.w v) (X.w v) g‖ * Real.exp (s * cartanDistance (X.I.ε v) g)) (fun v => hL v s hs (hrate v))`. Establish `h2` using `(h1.const_mul (fdegAll X.I X.σ X.w)).mul_prod he.norm`. Use `h2.congr (Filter.Eventually.of_forall fun g => ?_)` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `show fdegAll X.I X.σ X.w * (∏ v, (‖coefOn (X.σ v) (X.w v) (X.w v) (g.1 v)‖ * Real.exp (s * cartanDistance (X.I.ε v) (g.1 v)))) * ‖X.e g.2‖ = ‖X.φ g‖ * cu_wt X s g`. Unfold `CData.φ phe phOf cu_wt`. Rewrite using `[norm_mul, norm_mul, norm_star, norm_prod, Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg X.fdegAll_nonneg, Finset.prod_mul_distrib, Finset.mul_sum, Real.exp_sum]`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem cu_haarGrowth_of (X : CData) {n₀ : ℕ} {A : ℝ} (hX : X.HypB n₀ A) (hL : cu.LocGrowth X) : cu.HaarGrowth X := by
   intro s hs hrate
@@ -42,7 +42,7 @@ def cu.Last (X : CData) : Prop :=
     UnimodA X
 
 /- English proof (translation)
-Take `⟨sU, sL, ⟨S, a1, a2, a3, a4, a5⟩, sK, sA⟩` from `h`. Conclude with `⟨sU, cu_haarGrowth_of X hX sL, cu_sizeStep_of X (le_trans hn₀ hX.1.1) S a1 a2 a3 a4 a5, sK, sA⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem cu_core_of_last (X : CData) {n₀ : ℕ} {A : ℝ} (hn₀ : 1 ≤ n₀) (hX : X.HypB n₀ A) (h : cu.Last X) : cu.Core X := by
   obtain ⟨sU, sL, ⟨S, a1, a2, a3, a4, a5⟩, sK, sA⟩ := h
@@ -52,7 +52,7 @@ def cu_StepsLast (n₀ : ℕ) (A C : ℝ) : Prop :=
   ∀ X : CData, X.HypB n₀ A → X.GapAboveThreeHalvesPower → X.GapAboveSquareRootThreshold C → cu.Last X
 
 /- English proof (translation)
-The claim follows from `cuspidal_range_of_reduced_facts X D hdec hn₀ hC hX h1 h2 hE hF (cu_core_of_last X hn₀ hX hS)`.
+A detailed English derivation is pending.
 -/
 theorem cuspidal_range_of_final_facts (X : CData) (D : Formalism.BasicNotions.D7) (hdec : DiscreteSeriesDecayBound D) {n₀ : ℕ} {A C : ℝ} (hn₀ : 1 ≤ n₀)
     (hC : 46 ≤ C) (hX : X.HypB n₀ A) (h1 : X.GapAboveThreeHalvesPower) (h2 : X.GapAboveSquareRootThreshold C) (hE : X.LowProj) (hF : cu.FinStep X)

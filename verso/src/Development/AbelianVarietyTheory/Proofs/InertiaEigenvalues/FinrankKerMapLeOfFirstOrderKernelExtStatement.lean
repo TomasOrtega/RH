@@ -4,7 +4,7 @@ import Mathlib
 open Polynomial
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.finrank_ker_map_le_of_first_order_kernel` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FFinrankKerMapLeOfFirstOrderKernelExt.lean&line=61#L61)
 -/

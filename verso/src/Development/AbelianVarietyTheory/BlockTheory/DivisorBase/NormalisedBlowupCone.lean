@@ -42,7 +42,7 @@ def IsPolarisation (q : ℕ) (ψ : ConeFn H) : Prop :=
       ∀ (β : PosForm H X) (β₁ : PosForm H X₁), (∀ y z, β.form y z = β₁.form (r y) (r z)) → ψ X β = ψ X₁ β₁
 
 /- English proof (translation)
-Take `⟨-, ℓ, h1, -⟩` from `h.1 X hX β`. Rewrite `h1` using `[e, map_zero]`. Use linear arithmetic over natural numbers and integers.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem IsPolarisation.zero {q : ℕ} {ψ : ConeFn H} (h : IsPolarisation q ψ) {X : Type} [AddCommGroup X]
     [Module (𝓞 E) X] (hX : IsCuspLattice E q X) {β : PosForm H X} (e : β.1 = 0) : ψ X β = 0 := by
@@ -78,7 +78,7 @@ def idealAlong {X : Scheme.{0}} (J : X.IdealSheafData) {R : Type} [CommRing R] (
   ((J.comap χ).ideal ⟨⊤, isAffineOpen_top _⟩).map (Scheme.ΓSpecIso (CommRingCat.of R)).hom.hom
 
 /- English proof (translation)
-Simplify using `[idealAlong, Ideal.map_top]`.
+Simplify using the standard rewrite rules.
 -/
 example {X : Scheme.{0}} {R : Type} [CommRing R] (χ : Sp R ⟶ X) : idealAlong ⊤ χ = ⊤ := by
   simp [idealAlong, Ideal.map_top]

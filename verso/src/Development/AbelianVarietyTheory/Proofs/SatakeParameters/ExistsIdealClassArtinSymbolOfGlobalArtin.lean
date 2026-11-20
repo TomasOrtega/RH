@@ -10,23 +10,19 @@ open Neutral.B1 Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.L2.H
 namespace GlobalTheory.IdealArtinSymbol
 
 /- English proof (translation)
-Introduce `H E Ω _ _ _ _ _`. Take `⟨art, ha⟩` from `H E Ω`. Take `⟨cl, hclo, hclk, hunit, hunif⟩` from `GlobalTheory.T.exists_ideleClassGroupHom_open_kernel E`. Establish `hker : art.ker ≤ cl.ker`. Rewrite using `[ha.ker]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Subgroup.topologicalClosure_minimal _ hclk (Subgroup.isClosed_of_isOpen _ hclo)`. Set `ρ` to `art.liftOfSurjective ha.quot.surjective ⟨cl, hker⟩`. Establish `hρ : ∀ x, ρ (art x) = cl x` using `fun x => art.liftOfRightInverse_comp_apply _ _ ⟨cl, hker⟩ x`. Establish `hρo : IsOpen (ρ.ker : Set (Gab E Ω))`. Rewrite using `[← ha.quot.isQuotientMap.isOpen_preimage]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use `hclo using 1` and compare the differences between its conclusion and the goal. Use extensionality with `x`. Rewrite using `[Set.mem_preimage, SetLike.mem_coe, SetLike.mem_coe, MonoidHom.mem_ker, hρ, MonoidHom.mem_ker]`. Set `ψ : (Ω ≃ₐ[E] Ω) →* ClassGroup (𝓞 E)` to `ρ.comp (toAb E Ω)`. Establish `hlies : ∀ (v : HeightOneSpectrum (𝓞 E)) (A : ValuationSubring Ω), LiesAbove A v → IsPlaceOver A v` using `fun v A h x => by rw [← h x, A.mem_nonunits_iff]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨ψ⁻¹, ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `e : ((ψ⁻¹).ker : Set (Ω ≃ₐ[E] Ω)) = toAb E Ω ⁻¹' (ρ.ker : Set (Gab E Ω))`. Use extensionality with `σ`. Simplify using `[ψ, MonoidHom.mem_ker]`. Rewrite using `[e]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hρo.preimage QuotientGroup.continuous_mk`. Introduce `A g hg`. Break down `GlobalTheory.T.inertiaElement_eq_one_or_liesAbove_finitePlace E Ω A g hg with rfl | ⟨v, hv⟩` into its components or cases. Conclude with `map_one _`. Establish `hI : g ∈ Ine (F` using `E) A := ⟨hg.1, fun x hx => by`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[← A.mem_nonunits_iff]`. Conclude with `hg.2 x ((A.valuation_le_one_iff x).1 hx)⟩`. Take `⟨x, _, hx⟩` from `(ha.ine v A (hlies v A hv) (toAb E Ω g)).2 ⟨g, hI, rfl⟩`. Establish `: ψ g = 1` using `by show ρ (toAb E Ω g) = 1`. Rewrite using `[← hx, hρ]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hunit v x ‹_›`. Rewrite using `[MonoidHom.inv_apply, this, inv_one]`. Introduce `v A φ hv hφ`. Establish `hF : IsFrob (F` using `E) A (normV v) φ := ⟨hφ.1, fun x hx => by`. Rewrite using `[← A.mem_nonunits_iff]`.
-
-Conclude with `hφ.2 x ((A.valuation_le_one_iff x).1 hx)⟩`. Take `⟨x, hxu, hx⟩` from `(ha.frob v A (hlies v A hv) (toAb E Ω φ⁻¹)).2 ⟨φ, hF, rfl⟩`. Rewrite using `[MonoidHom.inv_apply, ← map_inv]`. Use `show ρ (toAb E Ω φ⁻¹) = _`. Rewrite using `[← hx, hρ]`.
-
-Conclude with `hunif v x hxu`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_artinSymbol : GlobalTheory.Published.GlobalArtinReciprocity → ∀ (E Ω : Type) [Field E] [NumberField E] [Field Ω]
     [Algebra E Ω] [IsAlgClosure E Ω], ∃ art : (Ω ≃ₐ[E] Ω) →* ClassGroup (𝓞 E),

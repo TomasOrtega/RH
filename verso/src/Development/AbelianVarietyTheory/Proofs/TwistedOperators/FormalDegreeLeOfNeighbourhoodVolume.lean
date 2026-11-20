@@ -12,13 +12,13 @@ open scoped ContDiff
 namespace GlobalTheory.SepReal
 
 /- English proof (translation)
-Establish `hX' : Xᴴ * Formalism.REAL.Jm ε + Formalism.REAL.Jm ε * X = 0` using `hX`. Establish `hJJ` using `Formalism.REAL.Jm_mul_self ε`. Establish `hJinv : (Formalism.REAL.Jm ε)⁻¹ = Formalism.REAL.Jm ε` using `Matrix.inv_eq_right_inv hJJ`. Establish `hJu : IsUnit (Formalism.REAL.Jm ε)` using `⟨⟨Formalism.REAL.Jm ε, Formalism.REAL.Jm ε, hJJ, hJJ⟩, rfl⟩`. Establish `hXh : Xᴴ = -(Formalism.REAL.Jm ε * X * Formalism.REAL.Jm ε)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : Xᴴ * Formalism.REAL.Jm ε = -(Formalism.REAL.Jm ε * X)` using `eq_neg_of_add_eq_zero_left hX'`. Combine the equalities or inequalities in the displayed calculation. Use `show (NormedSpace.exp (t • X))ᴴ * Formalism.REAL.Jm ε * NormedSpace.exp (t • X) = Formalism.REAL.Jm ε`. Establish `hc : (t • X)ᴴ = Formalism.REAL.Jm ε * (-(t • X)) * (Formalism.REAL.Jm ε)⁻¹`. Rewrite using `[Matrix.conjTranspose_smul, hXh, hJinv]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[Matrix.mul_smul, Matrix.smul_mul]`. Rewrite using `[← Matrix.exp_conjTranspose, hc, Matrix.exp_conj _ _ hJu, hJinv]`. Establish `hcomm : Commute (-(t • X)) (t • X)` using `(Commute.refl _).neg_left`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_assoc (Formalism.REAL.Jm ε * _) (Formalism.REAL.Jm ε) (Formalism.REAL.Jm ε), hJJ, mul_one, mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `_ = Formalism.REAL.Jm ε := by`. Rewrite using `[← Matrix.exp_add_of_commute _ _ hcomm, neg_add_cancel, NormedSpace.exp_zero, mul_one]`.
+A detailed English derivation is pending.
 -/
 theorem expS_mem_UJset {m : ℕ} {ε : Fin m → Bool} {X : Mat m} (hX : X ∈ GlobalTheory.Ell.lieOf (Formalism.REAL.Jm ε)) (t : ℝ) :
     NormedSpace.exp (t • X) ∈ Formalism.MainNotions.S.UJset ε := by
@@ -43,17 +43,17 @@ theorem expS_mem_UJset {m : ℕ} {ε : Fin m → Bool} {X : Mat m} (hX : X ∈ G
         rw [← Matrix.exp_add_of_commute _ _ hcomm, neg_add_cancel, NormedSpace.exp_zero, mul_one]
 
 /- English proof (translation)
-Use `set f : ℝ → H := fun s => π (NormedSpace.exp (s • X)) v with hf`. Establish `hcd : ContDiff ℝ ∞ f`. Establish `h1` using `hv 1 (fun _ => X) (fun _ => hX)`. Establish `h2 : ContDiff ℝ ∞ (fun s : ℝ => (fun _ : Fin 1 => s))` using `contDiff_pi.2 fun _ => contDiff_id`. Establish `h3` using `h1.comp h2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use `h3 using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `s`. Simplify using `[f, List.ofFn_succ]`. Establish `hdiff : Differentiable ℝ f` using `hcd.differentiable (by simp)`. Establish `hder : ∀ t : ℝ, HasDerivAt f (π (NormedSpace.exp (t • X)) (dR π X v)) t`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `t`. Use `set Lt := π (NormedSpace.exp (t • X)) with hLt`. Establish `h0 : HasDerivAt f (dR π X v) 0` using `(hdiff 0).hasDerivAt`. Establish `h1 : HasDerivAt (fun u : ℝ => (Lt.restrictScalars ℝ) (f u)) ((Lt.restrictScalars ℝ) (dR π X v)) (t - t)`. Rewrite using `[sub_self]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(Lt.restrictScalars ℝ).hasFDerivAt.comp_hasDerivAt 0 h0`. Establish `h2` using `h1.comp_sub_const t t`. Establish `hfun : f = fun s : ℝ => (Lt.restrictScalars ℝ) (f (s - t))`. Use function extensionality and compare the values at `s`. Establish `he : NormedSpace.exp (s • X) = NormedSpace.exp (t • X) * NormedSpace.exp ((s - t) • X)`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[← Matrix.exp_add_of_commute _ _ (((Commute.refl X).smul_left _).smul_right _), ← add_smul]`. Use `congr 2`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [f, he, hπ.1.2 _ (expS_mem_UJset hX t) _ (expS_mem_UJset hX (s - t))]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[hfun]`. Conclude with `h2`. Establish `hb` using `norm_image_sub_le_of_norm_deriv_le_segment_01' (f := f) (f' := fun t => π (NormedSpace.exp (t • X)) (dR π X v)) (C := ‖dR π X v‖) (fun t _ => (hder t).hasDerivWithinAt) (fun t _ => le_of_eq (hπ.2.1 _ (expS_mem_UJset hX t) _))`. Simplify `hb` using `[f, hπ.1.1]`.
+A detailed English derivation is pending.
 -/
 theorem orbit_sub_le {m : ℕ} {ε : Fin m → Bool} {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     {π : Mat m → (H →L[ℂ] H)} (hπ : IsURepOn (Formalism.MainNotions.S.UJset ε) π) {X : Mat m}
@@ -94,9 +94,9 @@ end GlobalTheory.SepReal
 namespace GlobalTheory.SepReal
 
 /- English proof (translation)
-Take `⟨S, hS⟩` from `hds.2.2.2.2.2.1`. Take `⟨v, hvS, hv0, -⟩` from `hS.2.2.2.1`. Use `⟨((‖v‖ : ℂ))⁻¹ • v, ?_, ?_⟩` and prove the remaining obligations. Establish `: ‖v‖ ≠ 0` using `norm_ne_zero_iff.2 hv0`. Simplify using `[norm_smul, this]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `(le_sSup hS : S ≤ lowKSub ε lam π) (S.smul_mem _ hvS)`.
+A detailed English derivation is pending.
 -/
 theorem exists_lowUnit {m : ℕ} {ε : Fin m → Bool} {lam : Fin m → ℝ} {H : Type} [NormedAddCommGroup H]
     [InnerProductSpace ℂ H] {π : Mat m → (H →L[ℂ] H)} (hds : IsDS ε lam π) : ∃ v, IsLowUnit ε lam π v := by
@@ -108,11 +108,11 @@ theorem exists_lowUnit {m : ℕ} {ε : Fin m → Bool} {lam : Fin m → ℝ} {H 
   · exact (le_sSup hS : S ≤ lowKSub ε lam π) (S.smul_mem _ hvS)
 
 /- English proof (translation)
-Establish `i0 : 0 < m` using `by omega`. Establish `i1 : 1 < m` using `by omega`. Establish `hlt : lam ⟨1, i1⟩ < lam ⟨0, i0⟩` using `hlam.1 (show (⟨0, i0⟩ : Fin m) < ⟨1, i1⟩ from by simp [Fin.lt_def])`. Take `⟨k0, hk0⟩` from `hlam.2 ⟨0, i0⟩`. Take `⟨k1, hk1⟩` from `hlam.2 ⟨1, i1⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hk : (k1 : ℝ) < k0` using `by linarith`. Establish `hk' : k1 < k0` using `by exact_mod_cast hk`. Establish `hk'' : (k1 : ℝ) + 1 ≤ k0` using `by exact_mod_cast hk'`. Establish `h0` using `hB ⟨0, i0⟩`. Establish `h1` using `hB ⟨1, i1⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h0`, `h1` using `[abs_le]`. Establish `hB2 : 1 / 2 ≤ B` using `by linarith`. Establish `hm' : (3 : ℝ) ≤ m` using `by exact_mod_cast hm`. Use the polynomial consequences of the given equalities and inequalities.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem one_le_eightMB {m : ℕ} {lam : Fin m → ℝ} {B : ℝ} (hm : 3 ≤ m) (hlam : IsHCParam lam)
     (hB : ∀ a, |lam a| ≤ B) : 1 ≤ 8 * (m : ℝ) * B := by
@@ -132,31 +132,29 @@ theorem one_le_eightMB {m : ℕ} {lam : Fin m → ℝ} {B : ℝ} (hm : 3 ≤ m) 
   nlinarith
 
 /- English proof (translation)
-Unfold `DegUpper ForDS`. Introduce `m ε lam B hm hlam hgap hB H _ _ π hds d hd`. Take `⟨v₀, hv₀⟩` from `exists_lowUnit hds`. Take `⟨hsm, hbd⟩` from `hlie m ε lam B hm hlam hgap hB H π hds v₀ hv₀`. Establish `hπ : IsURepOn (Formalism.MainNotions.S.UJset ε) π` using `hds.2.2.1`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hB1` using `one_le_eightMB hm hlam hB`. Use `set c : ℝ := (8 * (m : ℝ) * B) ^ 2 with hc`. Establish `hc1 : 1 ≤ c` using `by rw [hc]; nlinarith`. Establish `hcpos : 0 < c` using `by linarith`. Use `set δ : ℝ := 1 / (4 * c) with hδ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hδ4 : δ ≤ 1 / 4`. Rewrite using `[hδ]; apply one_div_le_one_div_of_le (by norm_num); linarith`. Establish `hv1 : ‖v₀‖ = 1` using `hv₀.1`. Establish `key : ∀ g ∈ nbh ε δ, (1 / 4 : ℝ) ≤ ‖coefOn π v₀ v₀ g‖ ^ 2`. Introduce `g hg`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hgU : umat g ∈ Formalism.MainNotions.S.UJset ε` using `g.2`. Take `⟨X, hX, hXn, hXe⟩` from `hlog m ε δ hδ4 (umat g) hgU hg`. Establish `h1` using `hbd [X] (by simpa using hX) (by simp)`. Simplify using `only [List.foldr_cons, List.foldr_nil, List.map_cons, List.map_nil, List.prod_cons, List.prod_nil, mul_one] at h1`. Establish `h2 : ‖dR π X v₀‖ ≤ 1 / 2`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `h3 : ‖π (umat g) v₀ - v₀‖ ≤ 1 / 2`. Rewrite using `[← hXe]`. Conclude with `(orbit_sub_le hπ hX hsm).trans h2`. Establish `h4 : coefOn π v₀ v₀ g = 1 + ⟪v₀, π (umat g) v₀ - v₀⟫_ℂ`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `only [coefOn, inner_sub_right, inner_self_eq_norm_sq_to_K, hv1]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `h5 : ‖⟪v₀, π (umat g) v₀ - v₀⟫_ℂ‖ ≤ 1 / 2`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h6 : 1 / 2 ≤ ‖coefOn π v₀ v₀ g‖`. Rewrite using `[h4]`. Use `norm_sub_norm_le (1 : ℂ) (-⟪v₀, π (umat g) v₀ - v₀⟫_ℂ)` as an intermediate fact. Rewrite `this` using `[sub_neg_eq_add, norm_neg, norm_one]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Use the polynomial consequences of the given equalities and inequalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use the polynomial consequences of the given equalities and inequalities. Take `⟨hdpos, hI⟩` from `hd`. Take `⟨hint, hval⟩` from `hI v₀ v₀ v₀ v₀`. Establish `hpt : ∀ g : UJ ε, coefOn π v₀ v₀ g * star (coefOn π v₀ v₀ g) = ((‖coefOn π v₀ v₀ g‖ ^ 2 : ℝ) : ℂ)`. Introduce `g`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Complex.star_def, Complex.mul_conj, Complex.normSq_eq_norm_sq]`. Establish `hint' : Integrable (fun g => ‖coefOn π v₀ v₀ g‖ ^ 2) (muG ε)`. Use `hint.re` as an intermediate fact. Use `this.congr (Filter.Eventually.of_forall fun g => ?_)` and prove the remaining obligations. Simplify using `only [hpt, RCLike.re_to_complex, Complex.ofReal_re]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hval' : ∫ g, ‖coefOn π v₀ v₀ g‖ ^ 2 ∂muG ε = 1 / d`. Establish `h` using `hval`. Simplify using `only [hpt, inner_self_eq_norm_sq_to_K, hv1] at h`. Rewrite `h` using `[integral_complex_ofReal]`. Establish `h' : ((∫ g, ‖coefOn π v₀ v₀ g‖ ^ 2 ∂muG ε : ℝ) : ℂ) = ((1 / d : ℝ) : ℂ)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[h]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Conclude with `h'` after adjusting the coercions. Establish `hlint : ENNReal.ofReal (1 / 4) * muG ε (nbh ε δ) ≤ ENNReal.ofReal (1 / d)`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Introduce `g hg`. Conclude with `ENNReal.ofReal_le_ofReal (key g hg)`. Use `_ ≤ ∫⁻ g, ENNReal.ofReal (‖coefOn π v₀ v₀ g‖ ^ 2) ∂muG ε := mul_meas_ge_le_lintegral₀ hint'.aestronglyMeasurable.aemeasurable.ennreal_ofReal _`. Use `_ = ENNReal.ofReal (1 / d) := by`.
-
-Rewrite using `[← hval', ofReal_integral_eq_lintegral_ofReal hint' (Filter.Eventually.of_forall fun g => by positivity)]`. Establish `ht` using `ENNReal.toReal_mono ENNReal.ofReal_ne_top hlint`. Rewrite `ht` using `[ENNReal.toReal_mul, ENNReal.toReal_ofReal (by norm_num), ENNReal.toReal_ofReal (by positivity)]`. Establish `: (muG ε (nbh ε δ)).toReal ≤ 4 * (1 / d)` using `by linarith`. Rewrite `this` using `[mul_one_div]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem degUpper_of (hlog : LogNear) (hlie : LieBound) (_hvol : VolBall) : DegUpper := by
   unfold DegUpper ForDS

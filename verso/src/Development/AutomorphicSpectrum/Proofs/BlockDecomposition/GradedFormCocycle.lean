@@ -16,29 +16,25 @@ local macro "fa" : tactic =>
   `(tactic| (simp only [sa_val, Fin.val_castSucc, Fin.val_succ, Fin.val_last, Fin.val_zero]; split_ifs <;> omega))
 
 /- English proof (translation)
-Use `set u : Fin j → B := fun k => w k k.succ.castSucc - w k k.castSucc.castSucc with hu`. Use `set v : Fin j → B := fun k => w k k.succ.succ - w k k.succ.castSucc with hv`. Use `set P : ℕ → B := fun n => ∏ k : Fin j, if (k : ℕ) < n then u k else v k with hP`. Use `set T : Fin (j + 2) → B := fun i => ∏ k : Fin j, (w k (i.succAbove k.succ) - w k (i.succAbove k.castSucc)) with hT`. Establish `cg : ∀ (k : Fin j) {p q p' q' : Fin (j + 2)}, (p : ℕ) = p' → (q : ℕ) = q' → w k p - w k q = w k p' - w k q'`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `k p q p' q' h h'`. Rewrite using `[Fin.ext h, Fin.ext h']`. Establish `hT0 : T (Fin.castSucc 0) = P 0`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Simplify using `only [Nat.not_lt_zero, if_false]`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `refine cg k ?_ ?_ <;> fa`. Establish `hTl : T (Fin.last (j + 1)) = P j`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Simplify using `only [k.2, if_true]`. Apply the tactic sequence `refine cg k ?_ ?_ <;> fa`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hTi : ∀ i : Fin j, T i.succ.castSucc = P (i + 1) + P i`. Introduce `i`. Establish `hPa : P (i + 1) = u i * ∏ k ∈ Finset.univ.erase i, (if (k : ℕ) < i + 1 then u k else v k)`. Use `Finset.mul_prod_erase Finset.univ (fun k : Fin j => if (k : ℕ) < i + 1 then u k else v k) (Finset.mem_univ i)` as an intermediate fact. Simplify using `only [Nat.lt_add_one, if_true] at this`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `this.symm`. Establish `hPb : P i = v i * ∏ k ∈ Finset.univ.erase i, (if (k : ℕ) < i then u k else v k)`. Use `Finset.mul_prod_erase Finset.univ (fun k : Fin j => if (k : ℕ) < i then u k else v k) (Finset.mem_univ i)` as an intermediate fact. Simplify using `only [lt_irrefl, if_false] at this`. Conclude with `this.symm`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hTa : T i.succ.castSucc = (u i + v i) * ∏ k ∈ Finset.univ.erase i, (if (k : ℕ) < i then u k else v k)`. Use `Finset.mul_prod_erase Finset.univ (fun k : Fin j => w k (i.succ.castSucc.succAbove k.succ) - w k (i.succ.castSucc.succAbove k.castSucc)) (Finset.mem_univ i)` as an intermediate fact. Use `this.symm.trans ?_` and prove the remaining obligations. Use `congr 1`. Establish `e : u i + v i = w i i.succ.succ - w i i.castSucc.castSucc`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[hu, hv]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Apply the tactic sequence `refine cg i ?_ ?_ <;> fa`. Use `Finset.prod_congr rfl fun k hk => ?_` and prove the remaining obligations.
+Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hki : (k : ℕ) ≠ i` using `fun h => Finset.ne_of_mem_erase hk (Fin.ext h)`. Use `split_ifs with h`. Apply the tactic sequence `refine cg k ?_ ?_ <;> fa`. Apply the tactic sequence `refine cg k ?_ ?_ <;> fa`. Establish `hE : ∏ k ∈ Finset.univ.erase i, (if (k : ℕ) < i + 1 then u k else v k) = ∏ k ∈ Finset.univ.erase i, (if (k : ℕ) < i then u k else v k)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Express the relevant assertion in an equivalent form by its definition.
 
-Use `Finset.prod_congr rfl fun k hk => ?_` and prove the remaining obligations. Establish `hki : (k : ℕ) ≠ i` using `fun h => Finset.ne_of_mem_erase hk (Fin.ext h)`. Establish `: (k : ℕ) < i + 1 ↔ (k : ℕ) < i` using `by omega`. Simplify using `only [this]`. Rewrite using `[hTa, hPa, hPb, hE]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Express the relevant statement in the definitionally equal form `∑ i : Fin (j + 2), (-1 : B) ^ (i : ℕ) * T i = 0`. Rewrite using `[Fin.sum_univ_castSucc, Fin.sum_univ_succ]`. Establish `hint : ∑ i : Fin j, (-1 : B) ^ ((i.succ.castSucc : Fin (j + 2)) : ℕ) * T i.succ.castSucc = ∑ m ∈ Finset.range j, (-1 : B) ^ (m + 1) * (P (m + 1) + P m)`. Rewrite using `[← Fin.sum_univ_eq_sum_range (fun m => (-1 : B) ^ (m + 1) * (P (m + 1) + P m)) j]`.
-
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[hTi]`. Simplify using `only [Fin.val_castSucc, Fin.val_succ]`. Rewrite using `[hint, hT0, hTl]`. Simplify using `only [Fin.val_castSucc, Fin.val_zero, Fin.val_last, pow_zero]`.
-
-Take the linear combination `tele P j`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem alt_sum {B : Type*} [CommRing B] {j : ℕ} (w : Fin j → Fin (j + 2) → B) :
     ∑ i : Fin (j + 2), (-1 : B) ^ (i : ℕ) *
@@ -112,7 +108,7 @@ def vt (c : ∀ T : C, Φ.A.obj T) {n : ℕ} (s : ComposableArrows C n) (p : Fin
   (Φ.A.map (s.map (homOfLE (Fin.le_last p)))).hom (c (s.obj p))
 
 /- English proof (translation)
-Substitute `hp` using the available equality. Establish `: (homOfLE (Fin.le_last (Fin.last n)) : Fin.last n ⟶ Fin.last n) = 𝟙 _` using `Subsingleton.elim _ _`. Unfold `vt`. Rewrite using `[this, s.map_id]`. Simplify using the standard rewrite rules.
+Substitute using the available equality. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem vt_last (c : ∀ T : C, Φ.A.obj T) {n : ℕ} (s : ComposableArrows C n) (p : Fin (n + 1))
     (hp : p = Fin.last n) : vt c s p = c (s.obj (Fin.last n)) := by
@@ -129,11 +125,11 @@ theorem face_vt (c : ∀ T : C, Φ.A.obj T) {j : ℕ} (s : ComposableArrows C (j
     (Φ.A.map (toLast i s)).hom (c ((face i s).obj (Fin.last j))) = vt c s (i.succAbove (Fin.last j)) := rfl
 
 /- English proof (translation)
-Unfold `wz`. Rewrite using `[map_prod]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.CompanionTheory.CocProd.map_map]`. Establish `e : (face i s).map (homOfLE (Fin.le_last k.succ)) ≫ toLast i s = s.map (homOfLE (Fin.le_last (i.succAbove k.succ)))`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `s.map _ ≫ s.map _ = _`. Rewrite using `[← s.map_comp]`. Both sides reduce to the same expression. Rewrite using `[e, map_sub, GlobalTheory.CompanionTheory.CocProd.map_map]`. Establish `e2 : (face i s).map (homOfLE (Fin.castSucc_lt_succ (i` using `k)).le) ≫ s.map (homOfLE (Fin.le_last (i.succAbove k.succ))) = s.map (homOfLE (Fin.le_last (i.succAbove k.castSucc))) := by`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `s.map _ ≫ s.map _ = _`. Rewrite using `[← s.map_comp]`. Both sides reduce to the same expression. Rewrite using `[e2]`. Both sides reduce to the same expression.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem face_wz {d j : ℕ} (u : Fin d → ∀ T : C, Φ.A.obj T) (I : Fin j → Fin d)
     (s : ComposableArrows C (j + 1)) (i : Fin (j + 2)) :
@@ -157,25 +153,23 @@ theorem face_wz {d j : ℕ} (u : Fin d → ∀ T : C, Φ.A.obj T) (I : Fin j →
   rfl
 
 /- English proof (translation)
-Use `set Y := y (s.obj (Fin.last (j + 1))) with hY`. Use `set T : Fin (j + 2) → Φ.A.obj (s.obj (Fin.last (j + 1))) := fun i => ∏ k : Fin j, (vt (u (I k)) s (i.succAbove k.succ) - vt (u (I k)) s (i.succAbove k.castSucc)) with hT`. Use `set V : Fin (j + 2) → Φ.A.obj (s.obj (Fin.last (j + 1))) := fun i => vt y s (i.succAbove (Fin.last j)) with hV`. Establish `hVY : ∀ i : Fin (j + 1), V i.castSucc = Y`. Introduce `i`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `vt_last y s _ (Fin.ext ?_)` and prove the remaining obligations. Use `i.2` as an intermediate fact. Rewrite using `[sa_val]`. Simplify using `only [Fin.val_last, Fin.val_castSucc]`. Apply the tactic sequence `split_ifs <;> omega`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hsum : ∑ i : Fin (j + 2), (-1 : ℤ) ^ (i : ℕ) • (Φ.A.map (toLast i s)).hom (wz u I (face i s) * y ((face i s).obj (Fin.last j))) = (-1) ^ j * (T (Fin.last (j + 1)) * (Y - V (Fin.last (j + 1))))`. Establish `hterm : ∀ i : Fin (j + 2), (-1 : ℤ) ^ (i : ℕ) • (Φ.A.map (toLast i s)).hom (wz u I (face i s) * y ((face i s).obj (Fin.last j))) = (-1) ^ (i : ℕ) * (T i * V i)`. Introduce `i`. Rewrite using `[map_mul, face_wz, face_vt, zsmul_eq_mul]`. Use `push_cast`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Both sides reduce to the same expression. Establish `h0` using `alt_sum (B := Φ.A.obj (s.obj (Fin.last (j + 1)))) (j := j) (fun k p => vt (u (I k)) s p)`. Express the relevant statement in the definitionally equal form `∑ i : Fin (j + 2), (-1) ^ (i : ℕ) * T i = 0 at h0`. Rewrite `h0` using `[Fin.sum_univ_castSucc]`. Rewrite using `[Finset.sum_congr rfl fun i _ => hterm i, Fin.sum_univ_castSucc]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1 : ∑ i : Fin (j + 1), (-1) ^ ((i.castSucc : Fin (j + 2)) : ℕ) * (T i.castSucc * V i.castSucc) = (∑ i : Fin (j + 1), (-1) ^ ((i.castSucc : Fin (j + 2)) : ℕ) * T i.castSucc) * Y`. Rewrite using `[Finset.sum_mul]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[hVY]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 
-Rewrite using `[h1]`. Simplify using `only [Fin.val_last] at h0 ⊢`. Take the linear combination `Y * h0`. Rewrite using `[hsum]`. Use `Ideal.mul_mem_left _ _ ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `hA : T (Fin.last (j + 1)) ∈ (Fil (j : ℤ)).S _`. Use `(Fil (j : ℤ)).map_mem (toLast (Fin.last (j + 1)) s) (wz_mem hF u hu I (face (Fin.last (j + 1)) s))` as an intermediate fact. Rewrite `this` using `[face_wz]`. Then use the resulting hypothesis. Establish `hB : Y - V (Fin.last (j + 1)) ∈ (Fil ((1 : ℕ) : ℤ)).S _`. Establish `e : (((1 : ℕ) : ℤ)) = 1` using `rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[e, hF.one]`. Establish `h` using `hy (s.map (homOfLE (show (Fin.last j).castSucc ≤ Fin.last (j + 1) from Fin.le_last _)))`. Establish `e2 : V (Fin.last (j + 1)) = (Φ.A.map (s.map (homOfLE (show (Fin.last j).castSucc ≤ Fin.last (j + 1) from Fin.le_last _)))).hom (y (s.obj (Fin.last j).castSucc))`. Establish `: (Fin.last (j + 1)).succAbove (Fin.last j) = (Fin.last j).castSucc` using `Fin.succAbove_last_apply _`. Simplify using `only [hV, vt]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[this]`. Rewrite using `[e2]`. Conclude with `h`. Establish `h` using `hF.mul j 1 _ hA hB`. Establish `e : ((j + 1 : ℕ) : ℤ) = (j : ℤ) + 1` using `by push_cast; ring`.
-
-Rewrite `h` using `[e]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem d_mem {Fil : ℤ → IdF Φ.A} (hF : IsFil Φ Fil) {d j : ℕ} (u : Fin d → ∀ T : C, Φ.A.obj T)
     (hu : ∀ i {T T' : C} (φ : T ⟶ T'), u i T' - (Φ.A.map φ).hom (u i T) ∈ Φ.J.S T')
@@ -242,9 +236,9 @@ end GlobalTheory.CompanionTheory.GrForm.Coc
 open GlobalTheory.CompanionTheory.GrForm.Coc in
 
 /- English proof (translation)
-Introduce `R _ C _ Φ Fil hF d j u hu y hy I`. Set `z : Q Φ.A j` to `fun s => (wz u I s * y (s.obj (Fin.last j)) : Φ.A.obj (s.obj (Fin.last j)))`. Establish `hz : Vals (Fil j) z` using `fun s => Ideal.mul_mem_right _ _ (wz_mem hF u hu I s)`. Use `⟨cl (Fil j) (Fil ((j : ℤ) + 1)) z hz, ?_, fun s => rfl⟩` and prove the remaining obligations. Rewrite using `[d_cl]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `s`. Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `Ideal.Quotient.mk _ (val (dQ Φ.A j z) s) = 0`. Rewrite using `[dQ_apply]`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.2 (d_mem hF u hu y hy I s)`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.CompanionTheory.GrForm.stCocycle : GlobalTheory.CompanionTheory.GrForm.StCocycle := by
   intro R _ C _ Φ Fil hF d j u hu y hy I

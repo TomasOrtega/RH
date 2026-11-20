@@ -8,7 +8,7 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.CapelliAntipode
 
 /- English proof (translation)
-The claim follows from `| 0, f => by simp | t + 1, f => by rw [List.ofFn_succ, List.prod_cons, MulOpposite.unop_mul, unop_ofFn_prod (fun i => f i.succ), List.ofFn_succ' (fun i : Fin (t + 1) => MulOpposite.unop (f i.rev)), List.prod_concat] simp only [Fin.rev_last, Fin.rev_castSucc]`.
+A detailed English derivation is pending.
 -/
 theorem unop_ofFn_prod {A : Type*} [Ring A] : ∀ {t : ℕ} (f : Fin t → Aᵐᵒᵖ),
     MulOpposite.unop (List.ofFn f).prod = (List.ofFn fun i => MulOpposite.unop (f i.rev)).prod
@@ -19,7 +19,7 @@ theorem unop_ofFn_prod {A : Type*} [Ring A] : ∀ {t : ℕ} (f : Fin t → Aᵐ�
     simp only [Fin.rev_last, Fin.rev_castSucc]
 
 /- English proof (translation)
-The claim follows from `| 0, g => by simp | t + 1, g => by rw [List.ofFn_succ, List.prod_cons, ofFn_prod_neg (fun k => g k.succ), List.ofFn_succ (f := g), List.prod_cons, pow_succ, mul_comm, mul_smul, neg_mul, mul_smul_comm, neg_one_smul]`.
+A detailed English derivation is pending.
 -/
 theorem ofFn_prod_neg {A : Type*} [Ring A] [Algebra ℂ A] : ∀ {t : ℕ} (g : Fin t → A),
     (List.ofFn fun k => -g k).prod = ((-1 : ℂ) ^ t) • (List.ofFn g).prod
@@ -29,7 +29,7 @@ theorem ofFn_prod_neg {A : Type*} [Ring A] [Algebra ℂ A] : ∀ {t : ℕ} (g : 
       List.prod_cons, pow_succ, mul_comm, mul_smul, neg_mul, mul_smul_comm, neg_one_smul]
 
 /- English proof (translation)
-Unfold `Tm`. Distinguish the cases in `h : i = j`. Simplify using `[h, MulOpposite.algebraMap_apply, add_comm]`. Simplify using `[h]`.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem Tm_op_neg {A : Type} [Ring A] [Algebra ℂ A] {n : ℕ} (X : Fin n → Fin n → A) (w : ℂ)
     (i j : Fin n) :
@@ -40,7 +40,7 @@ theorem Tm_op_neg {A : Type} [Ring A] [Algebra ℂ A] {n : ℕ} (X : Fin n → F
   · simp [h]
 
 /- English proof (translation)
-Establish `hj` using `j.isLt`. Rewrite using `[Fin.val_rev, Nat.cast_sub (by omega : (j : ℕ) + 1 ≤ t)]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem arg_rev {t : ℕ} (v : ℂ) (j : Fin t) :
     -(v - (((Fin.rev j : Fin t) : ℕ) : ℂ)) = ((t : ℂ) - 1 - v) - ((j : ℕ) : ℂ) := by
@@ -50,7 +50,7 @@ theorem arg_rev {t : ℕ} (v : ℂ) (j : Fin t) :
   ring
 
 /- English proof (translation)
-Rewrite using `[MulOpposite.unop_mul, MulOpposite.unop_intCast, unop_ofFn_prod]`. Simplify using `only [Tm_op_neg, MulOpposite.unop_op, id, arg_rev]`. Rewrite using `[ofFn_prod_neg, smul_mul_assoc, ← Int.cast_comm]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem unop_term {A : Type} [Ring A] [Algebra ℂ A] {n : ℕ} (X : Fin n → Fin n → A) (v : ℂ)
     (σ : Equiv.Perm (Fin n)) :
@@ -65,7 +65,7 @@ theorem unop_term {A : Type} [Ring A] [Algebra ℂ A] {n : ℕ} (X : Fin n → F
   rw [ofFn_prod_neg, smul_mul_assoc, ← Int.cast_comm]
 
 /- English proof (translation)
-Unfold `qminor`. Rewrite using `[Finset.mul_sum]`. Use `(Fintype.sum_equiv (Equiv.mulRight (Fin.revPerm : Equiv.Perm (Fin n))) _ _ (fun σ => ?_)).symm` and prove the remaining obligations. Simplify using `only [Equiv.coe_mulRight, Equiv.Perm.sign_mul, Equiv.Perm.mul_apply, Fin.revPerm_apply, Function.comp_apply, id, Units.val_mul, Int.cast_mul]`. Rewrite using `[← mul_assoc, Int.cast_comm]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem qminor_id_rev {A : Type} [Ring A] [Algebra ℂ A] {n : ℕ} (X : Fin n → Fin n → A) (w : ℂ) :
     qminor X id (id ∘ (Fin.revPerm : Equiv.Perm (Fin n))) w =
@@ -80,11 +80,11 @@ theorem qminor_id_rev {A : Type} [Ring A] [Algebra ℂ A] {n : ℕ} (X : Fin n �
   rw [← mul_assoc, Int.cast_comm]
 
 /- English proof (translation)
-Establish `hs` using `quantumMinorColSkew_holds A n n X hX id id (Fin.revPerm : Equiv.Perm (Fin n)) ((n : ℂ) - 1 - v)`. Rewrite `hs` using `[qminor_id_rev]`. Establish `hu : (((Equiv.Perm.sign (Fin.revPerm : Equiv.Perm (Fin n)) : ℤˣ) : ℤ) : A) * (((Equiv.Perm.sign (Fin.revPerm : Equiv.Perm (Fin n)) : ℤˣ) : ℤ) : A) = 1`. Rewrite using `[← Int.cast_mul, ← Units.val_mul, Int.units_mul_self, Units.val_one, Int.cast_one]`. Establish `h2` using `congrArg (fun x => (((Equiv.Perm.sign (Fin.revPerm : Equiv.Perm (Fin n)) : ℤˣ) : ℤ) : A) * x) hs`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [← mul_assoc, hu, one_mul] at h2`. Establish `h3 : qdet X ((n : ℂ) - 1 - v) = _` using `h2.symm`. Rewrite using `[h3]`. Unfold `qdet qminor`. Rewrite using `[Finset.unop_sum, Finset.smul_sum]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.sum_congr rfl fun σ _ => unop_term X v σ`.
+A detailed English derivation is pending.
 -/
 theorem unop_qdet_op_neg (A : Type) [Ring A] [Algebra ℂ A] (n : ℕ) (X : Fin n → Fin n → A)
     (hX : GlRel X) (v : ℂ) :

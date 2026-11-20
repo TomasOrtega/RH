@@ -19,7 +19,7 @@ namespace GlobalTheory.IdemPairCpt
 open GlobalTheory.StdFrames
 
 /- English proof (translation)
-Establish `h1 : cpt (D` using `D) (GlobalTheory.IdemSupport.cP w) (1 - toEAf D e) = 0 := by`. Rewrite using `[map_sub, map_one, GlobalTheory.OffPartLattice.cpt_idemSum he, if_pos hw, sub_self]`. Establish `h2` using `cpt_sg_eq_zero h1`. Rewrite `h2` using `[map_sub, map_one, map_sub, map_one]`. Conclude with `(sub_eq_zero.mp h2).symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cpt_sg_eq_one_of_cP_mem {D : D7} {e : AE D} {P : Finset (Pl D.host.E)} (he : IsIdemSum e P)
     (w : Pl D.host.E) (hw : GlobalTheory.IdemSupport.cP w ∈ P) : cpt (D := D) w (sg D (toEAf D e)) = 1 := by
@@ -30,7 +30,7 @@ theorem cpt_sg_eq_one_of_cP_mem {D : D7} {e : AE D} {P : Finset (Pl D.host.E)} (
   exact (sub_eq_zero.mp h2).symm
 
 /- English proof (translation)
-Establish `h1 : cpt (D` using `D) (GlobalTheory.IdemSupport.cP w) (toEAf D e) = 0 := by`. Rewrite using `[GlobalTheory.OffPartLattice.cpt_idemSum he, if_neg hw]`. Conclude with `cpt_sg_eq_zero h1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cpt_sg_eq_zero_of_cP_notMem {D : D7} {e : AE D} {P : Finset (Pl D.host.E)} (he : IsIdemSum e P)
     (w : Pl D.host.E) (hw : GlobalTheory.IdemSupport.cP w ∉ P) : cpt (D := D) w (sg D (toEAf D e)) = 0 := by
@@ -39,11 +39,11 @@ theorem cpt_sg_eq_zero_of_cP_notMem {D : D7} {e : AE D} {P : Finset (Pl D.host.E
   exact cpt_sg_eq_zero h1
 
 /- English proof (translation)
-Introduce `D e P he w`. Establish `hsplit : GlobalTheory.StdFrames.cpt (D` using `D) w (toEAf D (e + cA D e)) = cpt (D := D) w (toEAf D e) + cpt (D := D) w (sg D (toEAf D e)) := by`. Rewrite using `[map_add, toEAf_cA, map_add]`. Use `⟨fun h => ?_, fun h1 h2 => ?_⟩` and prove the remaining obligations. Rewrite using `[hsplit]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hw : w ∈ P`. Establish `hc : GlobalTheory.IdemSupport.cP w ∉ P` using `fun hc => GlobalTheory.IdemSumBranch.conjPrime_ne he hc hw rfl`. Rewrite using `[GlobalTheory.OffPartLattice.cpt_idemSum he, if_pos hw, cpt_sg_eq_zero_of_cP_notMem he w hc, add_zero]`. Establish `hc : GlobalTheory.IdemSupport.cP w ∈ P` using `h.resolve_left hw`. Rewrite using `[GlobalTheory.OffPartLattice.cpt_idemSum he, if_neg hw, cpt_sg_eq_one_of_cP_mem he w hc, zero_add]`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hsplit, GlobalTheory.OffPartLattice.cpt_idemSum he, if_neg h1, cpt_sg_eq_zero_of_cP_notMem he w h2, add_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem cpt_add_cA_idemSum : ∀ {D : D7} {e : AE D} {P : Finset (Pl D.host.E)}, IsIdemSum e P → ∀ w : Pl D.host.E,
     ((w ∈ P ∨ GlobalTheory.IdemSupport.cP w ∈ P) → GlobalTheory.StdFrames.cpt (D := D) w (toEAf D (e + cA D e)) = 1) ∧
@@ -62,7 +62,7 @@ theorem cpt_add_cA_idemSum : ∀ {D : D7} {e : AE D} {P : Finset (Pl D.host.E)},
   · rw [hsplit, GlobalTheory.OffPartLattice.cpt_idemSum he, if_neg h1, cpt_sg_eq_zero_of_cP_notMem he w h2, add_zero]
 
 /- English proof (translation)
-The claim follows from `@cpt_add_cA_idemSum`.
+A detailed English derivation is pending.
 -/
 example : ∀ {D : D7} {e : AE D} {P : Finset (Pl D.host.E)}, IsIdemSum e P → ∀ w : Pl D.host.E,
     ((w ∈ P ∨ GlobalTheory.IdemSupport.cP w ∈ P) → GlobalTheory.StdFrames.cpt (D := D) w (toEAf D (e + cA D e)) = 1) ∧

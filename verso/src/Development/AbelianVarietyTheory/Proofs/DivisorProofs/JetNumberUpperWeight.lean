@@ -21,13 +21,13 @@ namespace GlobalTheory.RefSum.JetsUb
 open GlobalTheory.AllWt GlobalTheory.CompHS
 
 /- English proof (translation)
-Establish `hij' : (i : ℕ) ≤ j` using `hij`. Establish `e1 : floorGaps a m v i - floorGaps a m v j = ∑ k ∈ Finset.Ico (i : ℕ) j, gap v k / m`. Simplify using `only [floorGaps, ofGaps]`. Rewrite using `[← Finset.sum_range_add_sum_Ico _ hij']`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `e2 : v i - v j = ∑ k ∈ Finset.Ico (i : ℕ) j, gap v k`. Establish `h1` using `ofGaps_gap v i i`. Establish `h2` using `ofGaps_gap v i j`. Simplify using `only [ofGaps] at h1 h2`. Rewrite `h2` using `[← Finset.sum_range_add_sum_Ico _ hij']`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[e1, e2]`. Use `Finset.sum_le_sum fun k hk => ?_` and prove the remaining obligations. Establish `hk'` using `Finset.mem_Ico.1 hk`. Establish `hN : k + 1 < N` using `by have := j.2; omega`.
+Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0 : 0 ≤ gap v k`. Rewrite using `[gap, dif_pos hN]`. Use `hv (show (⟨k, by omega⟩ : Fin N) ≤ ⟨k + 1, hN⟩ from Fin.mk_le_mk.2 (by omega))` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Conclude with `Int.ediv_le_self _ h0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem floorGaps_sub_le {N : ℕ} (a : ℕ) (m : ℤ) (v : Fin N → ℤ) (hv : Antitone v) {i j : Fin N} (hij : i ≤ j) :
     floorGaps a m v i - floorGaps a m v j ≤ v i - v j := by
@@ -55,11 +55,11 @@ theorem floorGaps_sub_le {N : ℕ} (a : ℕ) (m : ℤ) (v : Fin N → ℤ) (hv :
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H}
 
 /- English proof (translation)
-Establish `hd : ∀ τ (i j : Fin (Dw.p + Dw.q)), i ≤ j → P.ub τ i - P.ub τ j ≤ P.u₁ τ i - P.u₁ τ j` using `fun τ i j h => floorGaps_sub_le _ _ _ (hu τ) h`. Use `show (thExpZ Dw P.ub n x).toNat ≤ (thExpZ Dw P.u₁ n x).toNat`. Apply `Int.toNat_le_toNat` to reduce the goal to its premises. Take `⟨σ, i⟩` from `x`. Break down `psi_or_conj (H := H) σ with ⟨τ, rfl⟩ | ⟨τ, rfl⟩` into its components or cases.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hi : i < Dw.p`. Rewrite using `[thExpZ_big _ n τ i hi, thExpZ_big _ n τ i hi]`. Use `hd τ ⟨i, by omega⟩ ⟨Dw.p - 1, by omega⟩ (Fin.mk_le_mk.2 (by omega))` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite using `[thExpZ_big_ge _ n τ i (by omega), thExpZ_big_ge _ n τ i (by omega)]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hi : i < Dw.q`. Rewrite using `[thExpZ_small _ n hp τ i hi, thExpZ_small _ n hp τ i hi]`. Use `hd τ ⟨Dw.p - 1, by omega⟩ ⟨Dw.p + (Dw.q - 1 - i), by omega⟩ (Fin.mk_le_mk.2 (by omega))` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite using `[thExpZ_small_ge _ n τ i (by omega), thExpZ_small_ge _ n τ i (by omega)]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem thA_ub_le (P : WtPar Dw) (n : ℕ) (hp : 0 < Dw.p) (hu : ∀ τ, Antitone (P.u₁ τ)) (x : (E →+* ℂ) × ℕ) :
     thA Dw P.ub n x ≤ thA Dw P.u₁ n x := by
@@ -81,7 +81,7 @@ theorem thA_ub_le (P : WtPar Dw) (n : ℕ) (hp : 0 < Dw.p) (hu : ∀ τ, Antiton
     · rw [thExpZ_small_ge _ n τ i (by omega), thExpZ_small_ge _ n τ i (by omega)]
 
 /- English proof (translation)
-Unfold `Formalism.L2.Pj.DF`. Conclude with `Finset.sum_le_sum fun τ _ => Finset.sum_le_sum fun i _ => thA_ub_le P n hp hu (τ, i)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem DF_ub_le (P : WtPar Dw) (n : ℕ) (hp : 0 < Dw.p) (hu : ∀ τ, Antitone (P.u₁ τ)) :
     Formalism.L2.Pj.DF Dw (thA Dw P.ub n) ≤ Formalism.L2.Pj.DF Dw (thA Dw P.u₁ n) := by
@@ -91,7 +91,7 @@ theorem DF_ub_le (P : WtPar Dw) (n : ℕ) (hp : 0 < Dw.p) (hu : ∀ τ, Antitone
 end GlobalTheory.RefSum.JetsUb
 
 /- English proof (translation)
-Introduce `k` and use `by obtain ⟨h1, h2, h3⟩ := h k have hd' : (d' : ℝ) ≤ d := by exact_mod_cast hd have hr : 0 ≤ GlobalTheory.PtTie.rr0 D := by unfold GlobalTheory.PtTie.rr0; positivity refine ⟨by omega, ?_, le_trans ?_ h3⟩ · exact lt_of_le_of_lt (mul_le_mul_of_nonneg_right hd' (by positivity)) h2 · …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.RefSum.JetNum.of_le {D : Formalism.BasicNotions.D7} {d d' : ℕ} {c : ℝ} (h : GlobalTheory.RefSum.JetNum D d c) (hd : d' ≤ d) :
     GlobalTheory.RefSum.JetNum D d' c := fun k => by
@@ -106,11 +106,11 @@ theorem GlobalTheory.RefSum.JetNum.of_le {D : Formalism.BasicNotions.D7} {d d' :
     linarith
 
 /- English proof (translation)
-Introduce `hS`. Use `Formalism.MainNotions.Closed.imp (Formalism.MainNotions.Closed.and (Formalism.MainNotions.Closed.and hS (GlobalTheory.T.weight_parameter_strict_antitone hS)) (GlobalTheory.RefSum.NumPt.numbers_at_point hS)) ?_` and prove the remaining obligations. Introduce and unpack `eps Fm CH - ⟨⟨⟨_, _, hA⟩, ⟨_, _, hB⟩⟩, ⟨_, _, hC⟩⟩`. Take `⟨x0, h⟩` from `GlobalTheory.CovTop.EvTied.and (GlobalTheory.CovTop.EvTied.and hA hB) hC`. Use `⟨0, le_rfl, x0, fun x hx hle ι p hp i hi => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨⟨hA, hB⟩, hC⟩` from `h x hx hle ι p hp`. Take `⟨⟨u1, hu⟩, -⟩` from `(hA i).2.2.2.2.2.2 hi`. Take `⟨hp1, -, -, hq, hanti, -⟩` from `hB i hi`. Establish `j` using `(hC i hi u1 hu).1`. Rewrite `j` using `[hq u1 hu]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `j.of_le (GlobalTheory.RefSum.JetsUb.DF_ub_le _ _ hp1 fun τ => (hanti τ).1.antitone)`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.RefSum.JetsUb.jetNum_ub : Size → Lifts fun Fm x _ ι p i PP _ => (i : ℕ) + 1 < (Fm.D x ι).R.m → GlobalTheory.RefSum.JetNum (Fm.D x ι) (DF (dat p i) (GlobalTheory.RefSum.thA (dat p i) (⟨uW p i, cZero (Fm.D x ι) ((i : ℕ) + 1), (Fm.D x ι).R.k - 2, lenT p i PP⟩ : WtPar (dat p i)).ub (GlobalTheory.RefSum.nCol (dat p i)))) (1 / 2500) := by
   intro hS

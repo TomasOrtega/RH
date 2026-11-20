@@ -12,22 +12,20 @@ private def evAt (L : Type) [Field L] [NumberField L] (w : HeightOneSpectrum (�
   map_mul' _ _ := rfl
 
 /- English proof (translation)
-The claim follows from `(RestrictedProduct.continuous_eval w).comp continuous_snd`.
+A detailed English derivation is pending.
 -/
 private theorem evAt_continuous (L : Type) [Field L] [NumberField L] (w : HeightOneSpectrum (𝓞 L)) :
     Continuous (evAt L w) :=
   (RestrictedProduct.continuous_eval w).comp continuous_snd
 
 /- English proof (translation)
-Distinguish the cases in `hv : ((l : ℕ) : 𝓞 F) ∈ v.asIdeal`. Use `swap`. Conclude with `⟨1, continuous_const, fun h => absurd h hv⟩`. Establish `hl : ∀ w : HeightOneSpectrum (𝓞 L), w.under (𝓞 F) = v → ((l : ℕ) : 𝓞 L) ∈ w.asIdeal` using `fun w hw => by`. Rewrite `hv` using `[← hw]`.
+Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `: algebraMap (𝓞 F) (𝓞 L) ((l : ℕ) : 𝓞 F) ∈ w.asIdeal` using `hv`. Rewrite `this` using `[map_natCast]`. Then use the resulting hypothesis. Take `⟨w, w', hw, hne, hw', hin⟩ : ∃ w w' : HeightOneSpectrum (𝓞 L), w.under (𝓞 F) = v ∧ w' ≠ w ∧ w'.under (𝓞 F) = w.under (𝓞 F) ∧ w ∈ Φ` from `by haveI := v.isPrime`. Take `⟨⟨P, hP, hP'⟩⟩` from `(inferInstance : Nonempty (v.asIdeal.primesOver (𝓞 L)))`. Set `u : HeightOneSpectrum (𝓞 L)` to `⟨P, hP, Ideal.ne_bot_of_liesOver_of_ne_bot v.ne_bot P⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hu : u.under (𝓞 F) = v` using `HeightOneSpectrum.ext hP'.over.symm`. Take `⟨u', h1, h3, h4⟩` from `hΦ u (hl u hu)`. Distinguish the cases in `hin : u ∈ Φ`. Conclude with `⟨u, u', hu, h1, h3, hin⟩`. Conclude with `⟨u', u, h3.trans hu, h1.symm, h3.symm, by_contra fun h => hin (h4.2 h)⟩`.
+Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `hlw` using `hl w hw`. Substitute `hw` using the available equality. Take `⟨r, hr, hr'⟩` from `UpperTheory.V.Af.Tw.splitIso F L h2 w w' hne hw'`. Use `⟨Units.map (r.toMonoidHom.comp (evAt L w)), Continuous.units_map _ (hr.comp (evAt_continuous L w)), fun _ => ⟨fun a => hr' _, fun x hx => Units.ext ?_⟩⟩` and prove the remaining obligations. Use `show r (x.val.2 w) = 1`.
-
-Rewrite using `[hx w hlw hin, map_one]`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem exists_local (F L : Type) [Field F] [NumberField F] [Field L] [NumberField L] [Algebra F L]
     (h2 : Module.finrank F L = 2) (l : ℕ) (Φ : Set (HeightOneSpectrum (𝓞 L))) (hΦ : UpperTheory.V.Af.Tw.IsType F l Φ)
@@ -61,15 +59,13 @@ private theorem exists_local (F L : Type) [Field F] [NumberField F] [Field L] [N
   rw [hx w hlw hin, map_one]
 
 /- English proof (translation)
-Introduce `F L _ _ _ _ _ h2 l hl Φ hΦ`. Use `choose q hq hq' using exists_local F L h2 l Φ hΦ`. Establish `hfin : {v : HeightOneSpectrum (𝓞 F) | ((l : ℕ) : 𝓞 F) ∈ v.asIdeal}.Finite`. Establish `h0 : Ideal.span {((l : ℕ) : 𝓞 F)} ≠ 0`. Rewrite using `[Ne, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Nat.cast_ne_zero.2 hl`. Use `(Ideal.finite_factors h0).subset fun v hv => ?_` and prove the remaining obligations. Conclude with `Ideal.dvd_span_singleton.2 hv`. Set `p : Ideles L →* Ideles F` to `∏ v ∈ hfin.toFinset, (GlobalTheory.Mem.Chr.localIdele F v).comp (q v)`. Establish `hp : ∀ x, p x = ∏ v ∈ hfin.toFinset, GlobalTheory.Mem.Chr.localIdele F v (q v x)` using `fun x => MonoidHom.finset_prod_apply _ _ x`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hc : ∀ x u, (p x).val.2 u = ∏ v ∈ hfin.toFinset, (GlobalTheory.Mem.Chr.localIdele F v (q v x)).val.2 u` using `fun x u => by`. Rewrite using `[hp]`. Conclude with `map_prod ((evAt F u).comp (Units.coeHom _)) _ _`. Use `⟨p, ?_, fun a v hv => ?_, fun x v hv => ?_, fun x hx => ?_⟩` and prove the remaining obligations. Rewrite using `[show (p : Ideles L → Ideles F) = _ from funext hp]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Conclude with `continuous_finset_prod _ fun v _ => (localIdele_continuous F v).comp (hq v)`. Rewrite using `[hc, Finset.prod_eq_single_of_mem v (hfin.mem_toFinset.2 hv) fun u _ hu => localIdele_snd_ne F u v hu.symm _, GlobalTheory.Mem.Chr.Model.localIdele_snd_self, (hq' v hv).1]`. Rewrite using `[hc]`. Use `Finset.prod_eq_one fun u hu => localIdele_snd_ne F u v ?_ _` and prove the remaining obligations. Introduce and unpack `rfl`.
-
-Conclude with `hv (hfin.mem_toFinset.1 hu)`. Rewrite using `[hp]`. Conclude with `Finset.prod_eq_one fun u hu => by rw [(hq' u (hfin.mem_toFinset.1 hu)).2 x hx, map_one]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Af.Tw.phiPart :
     UpperTheory.V.Af.Tw.PhiPart := by

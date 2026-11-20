@@ -11,27 +11,25 @@ noncomputable section
 
 open Vertical.SecPointSeparable in
 /- English proof (translation)
-Introduce `F _ _ n e K L _ _ _ _ _ _ u t η hu hK hη hrel hT htr`. Take `⟨j₀, hj₀⟩ : ∃ j₀, η j₀ ≠ 0` from `by by_contra! h0`. Simplify using `[h0] at hT`. Use `set z : Fin n → L := fun m => η m * (η j₀)⁻¹ with hz`. Take `⟨hind, halg⟩` from `h F n e K L u t η hu hK hη hrel hT j₀ hj₀ (htr j₀ hj₀)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨r, hre, b, hb⟩` from `Vertical.DerivSpanTrdeg.full F L (Fin n) z e (htr j₀ hj₀)`. Establish `hfin : Module.Finite K L`. Establish `h1 : FiniteDimensional K (IntermediateField.adjoin K (Set.range η))` using `IntermediateField.finiteDimensional_adjoin fun x _ => (Algebra.IsAlgebraic.isAlgebraic x).isIntegral`. Rewrite `h1` using `[hη]`. Conclude with `Module.Finite.equiv IntermediateField.topEquiv.toLinearEquiv`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hadj : Algebra.adjoin K (Set.range η) = ⊤`. Rewrite using `[← IntermediateField.adjoin_toSubalgebra_of_isAlgebraic (fun x _ => Algebra.IsAlgebraic.isAlgebraic x), hη, IntermediateField.top_toSubalgebra]`. Apply `isSeparable_of_derivation_eq_zero` to reduce the goal to its premises. Introduce `D`. Take `⟨c, hc⟩` from `hb (D.restrictScalars F)`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc' : ∀ j, D (z j) = ∑ m, c m * (b m j : L)` using `hc`. Establish `hlin : ∀ (a : K) (y : L), D (algebraMap K L a * y) = algebraMap K L a * D y`. Introduce `a y`. Rewrite using `[D.leibniz, D.map_algebraMap, smul_zero, add_zero, smul_eq_mul]`. Establish `hDz₀ : D (z j₀) = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [z, mul_inv_cancel₀ hj₀, Derivation.map_one_eq_zero]`. Establish `hUDz : ∀ i : Fin e, ∑ j, algebraMap K L (u (i, j)) * D (z j) = 0`. Introduce `i`. Establish `h0 : ∑ j, algebraMap K L (u (i, j)) * z j = 0`. Simplify using `only [z, ← mul_assoc, ← Finset.sum_mul, hrel i, zero_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `congrArg D h0` as an intermediate fact. Rewrite `this` using `[map_sum, map_zero]`. Rewrite using `[← this]`. Conclude with `Finset.sum_congr rfl fun j _ => (hlin _ _).symm`. Establish `hDz : ∀ j, D (z j) = 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Establish `key` using `Vertical.GenericFormsKer.full (IntermediateField.adjoin F (Set.range z)) L {j : Fin n // j ≠ j₀} e r hre (fun p => algebraMap K L (u (p.1, p.2.1))) hind (fun m j => b m j.1) c (fun i => ?_)`. Introduce `j`. Distinguish the cases in `hj : j = j₀`. Rewrite using `[hj, hDz₀]`. Rewrite using `[hc' j]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `key ⟨j, hj⟩`. Use `hUDz i` as an intermediate fact. Rewrite `this` using `[Fintype.sum_eq_add_sum_subtype_ne _ j₀, hDz₀, mul_zero, zero_add]`. Rewrite using `[← this]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hc' j.1]`. Both sides reduce to the same expression. Establish `hη₀ : D (η j₀) = 0`. Establish `hs : ∑ m, algebraMap F L (t m) * z m = (η j₀)⁻¹`. Simplify using `only [z, ← mul_assoc, ← Finset.sum_mul, hT, one_mul]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1` using `congrArg D hs`. Rewrite using `[map_sum, Finset.sum_eq_zero fun m _ => by`. Rewrite using `[IsScalarTower.algebraMap_apply F K L, hlin, hDz, mul_zero],`. Use the proof step `Derivation.leibniz_inv, eq_comm, smul_eq_mul, neg_mul, neg_eq_zero, mul_eq_zero] at h1`. Conclude with `h1.resolve_left (pow_ne_zero _ (inv_ne_zero hj₀))`.
-
-Establish `hηj : ∀ j, D (η j) = 0`. Introduce `j`. Establish `hηz : η j = z j * η j₀` using `by simp only [z, mul_assoc, inv_mul_cancel₀ hj₀, mul_one]`. Rewrite using `[hηz, D.leibniz, hη₀, hDz, smul_zero, smul_zero, add_zero]`. Conclude with `Derivation.ext_of_adjoin_eq_top (Set.range η) hadj (by rintro _ ⟨j, rfl⟩; simpa using hηj j)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ChartPointSeparable.proof (h : ChartFreeParAlgIndep.Statement) : ChartPointSeparable.Statement := by
   intro F _ _ n e K L _ _ _ _ _ _ u t η hu hK hη hrel hT htr

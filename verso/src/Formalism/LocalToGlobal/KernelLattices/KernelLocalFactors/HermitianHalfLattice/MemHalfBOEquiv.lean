@@ -17,15 +17,15 @@ variable {E : Type} [Field E] [NumberField E] [StarRing E]
 variable {W : Type} [AddCommGroup W] [Module E W] [Module (𝓞 E) W] [IsScalarTower (𝓞 E) E W]
 
 /- English proof (translation)
-Rewrite using `[← algebraMap_smul E r x, map_smul, algebraMap_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem equiv_osmulW (φ : W ≃ₗ[E] W) (r : 𝓞 E) (x : W) : φ (r • x) = r • φ x := by
   rw [← algebraMap_smul E r x, map_smul, algebraMap_smul]
 
 /- English proof (translation)
-Rewrite using `[mem_locP, mem_locP]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨s, hs, h⟩`. Use `⟨s, hs, ?_⟩` and prove the remaining obligations. Rewrite using `[← equiv_osmulW]`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(hM _).1 h`. Introduce and unpack `⟨s, hs, h⟩`. Use `⟨s, hs, (hM _).2 ?_⟩` and prove the remaining obligations. Rewrite using `[equiv_osmulW]`. Conclude with `h`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_localization_equiv (φ : W ≃ₗ[E] W) {M M' : Submodule (𝓞 E) W} (hM : ∀ y, y ∈ M' ↔ φ.symm y ∈ M)
     (Q : HeightOneSpectrum (𝓞 E)) (y : W) : y ∈ localization₂ Q.asIdeal M' ↔ φ.symm y ∈ localization₂ Q.asIdeal M := by
@@ -41,7 +41,7 @@ theorem mem_localization_equiv (φ : W ≃ₗ[E] W) {M M' : Submodule (𝓞 E) W
     exact h
 
 /- English proof (translation)
-Rewrite using `[mem_twO, mem_twO]`. Use `forall_congr' fun Q => ?_` and prove the remaining obligations. Rewrite using `[mem_localization_equiv φ hM Q, map_smul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem mem_twO_equiv (φ : W ≃ₗ[E] W) {M M' : Submodule (𝓞 E) W} (hM : ∀ y, y ∈ M' ↔ φ.symm y ∈ M)
     (c : ℕ) (e : HeightOneSpectrum (𝓞 E) → ℤ) (y : W) : y ∈ twist₂ M' c e ↔ φ.symm y ∈ twist₂ M c e := by
@@ -50,7 +50,7 @@ theorem mem_twO_equiv (φ : W ≃ₗ[E] W) {M M' : Submodule (𝓞 E) W} (hM : �
   rw [mem_localization_equiv φ hM Q, map_smul]
 
 /- English proof (translation)
-The claim follows from `mem_twO_equiv φ hM c _ y`.
+A detailed English derivation is pending.
 -/
 theorem mem_halfAO_equiv {a b : ℕ} (φ : HomE E a b ≃ₗ[E] HomE E a b) {M M' : Submodule (𝓞 E) (HomE E a b)}
     (hM : ∀ y, y ∈ M' ↔ φ.symm y ∈ M) (SS : Finset (HeightOneSpectrum (𝓞 E))) (c : ℕ) (y : HomE E a b) :
@@ -58,7 +58,7 @@ theorem mem_halfAO_equiv {a b : ℕ} (φ : HomE E a b ≃ₗ[E] HomE E a b) {M M
   mem_twO_equiv φ hM c _ y
 
 /- English proof (translation)
-The claim follows from `mem_twO_equiv φ hM c _ y`.
+A detailed English derivation is pending.
 -/
 theorem mem_halfBO_equiv {a b : ℕ} (φ : HomE E a b ≃ₗ[E] HomE E a b) {M M' : Submodule (𝓞 E) (HomE E a b)}
     (hM : ∀ y, y ∈ M' ↔ φ.symm y ∈ M) (SS : Finset (HeightOneSpectrum (𝓞 E))) (c : ℕ) (y : HomE E a b) :
@@ -66,9 +66,9 @@ theorem mem_halfBO_equiv {a b : ℕ} (φ : HomE E a b ≃ₗ[E] HomE E a b) {M M
   mem_twO_equiv φ hM c _ y
 
 /- English proof (translation)
-Simplify using `only [mulLat, Submodule.mem_map, LinearMap.smul_apply, LinearMap.id_apply]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z, hz, rfl⟩`. Conclude with `⟨φ.symm z, (hM z).1 hz, by rw [equiv_osmulW]⟩`. Introduce and unpack `⟨z, hz, hzy⟩`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Use `⟨φ z, (hM _).2 (by simpa using hz), ?_⟩` and prove the remaining obligations. Rewrite using `[← equiv_osmulW, hzy, LinearEquiv.apply_symm_apply]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem mem_mulLat_equiv (φ : W ≃ₗ[E] W) {M M' : Submodule (𝓞 E) W} (hM : ∀ y, y ∈ M' ↔ φ.symm y ∈ M)
     (c : ℕ) (y : W) : y ∈ mulLat c M' ↔ φ.symm y ∈ mulLat c M := by
@@ -87,9 +87,9 @@ section Lat
 variable {E : Type} [Field E] [NumberField E] [StarRing E] {a b : ℕ}
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(∀ v ∈ gmap γ N, y v ∈ gmap γ' N') ↔ ∀ u ∈ N, ((conjH γ γ').symm y) u ∈ N'`. Prove the components needed by the constructor for the conclusion. Introduce `h u hu`. Use `h (γ u) ((mem_gmap γ N _).2 (by simpa using hu))` as an intermediate fact. Rewrite `this` using `[mem_gmap]`.
+Express the relevant assertion in an equivalent form by its definition. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify `this` using `[conjH_symm_apply]`. Introduce `h v hv`. Rewrite using `[mem_gmap]`. Use `h (γ.symm v) ((mem_gmap γ N v).1 hv)` as an intermediate fact. Simplify `this` using `[conjH_symm_apply]`.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem mem_homO_gmap (γ : Sp E a ≃ₗ[E] Sp E a) (γ' : Sp E b ≃ₗ[E] Sp E b) (N : Submodule (𝓞 E) (Sp E a))
     (N' : Submodule (𝓞 E) (Sp E b)) (y : HomE E a b) : y ∈ homO (gmap γ N) (gmap γ' N') ↔ (conjH γ γ').symm y ∈ homO N N' := by
@@ -105,13 +105,13 @@ theorem mem_homO_gmap (γ : Sp E a ≃ₗ[E] Sp E a) (γ' : Sp E b ≃ₗ[E] Sp 
     simpa [conjH_symm_apply] using this
 
 /- English proof (translation)
-Establish `key : perO AA (gmap γ N) (gmap γ' N') = (perO AA N N').map (conjE γ γ' : HomE E a b →ₗ[𝓞 E] HomE E a b)`. Unfold `perO`. Rewrite using `[Submodule.map_span]`. Use `congr 1`. Use extensionality with `z`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Simplify using `only [Set.mem_ofPred_eq, Set.mem_image]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨r, hr, x, hx, rfl⟩`. Use `⟨r • (conjE γ γ').symm x, ⟨r, hr, _, (mem_homO_gmap γ γ' N N' x).1 hx, rfl⟩, ?_⟩` and prove the remaining obligations. Use `show conjH γ γ' (r • (conjH γ γ').symm x) = r • x`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_smul, LinearEquiv.apply_symm_apply]`. Introduce and unpack `⟨w, ⟨r, hr, x, hx, rfl⟩, rfl⟩`. Use `⟨r, hr, conjE γ γ' x, (mem_homO_gmap γ γ' N N' _).2 ?_, ?_⟩` and prove the remaining obligations. Use `show (conjH γ γ').symm (conjH γ γ' x) ∈ homO N N'`. Rewrite using `[LinearEquiv.symm_apply_apply]`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hx`. Use `show conjH γ γ' (r • x) = r • conjH γ γ' x`. Rewrite using `[map_smul]`. Rewrite using `[key, Submodule.mem_map_equiv]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem mem_perO_gmap (AA : Submodule (𝓞 E) E) (γ : Sp E a ≃ₗ[E] Sp E a) (γ' : Sp E b ≃ₗ[E] Sp E b) (N : Submodule (𝓞 E) (Sp E a))
     (N' : Submodule (𝓞 E) (Sp E b)) (y : HomE E a b) : y ∈ perO AA (gmap γ N) (gmap γ' N') ↔ (conjH γ γ').symm y ∈ perO AA N N' := by
@@ -136,7 +136,7 @@ theorem mem_perO_gmap (AA : Submodule (𝓞 E) E) (γ : Sp E a ≃ₗ[E] Sp E a)
   rfl
 
 /- English proof (translation)
-Rewrite using `[homAt_gmap, Submodule.mem_map_equiv]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem mem_homAt_gmap (S : Finset (HeightOneSpectrum (𝓞 E))) (γ : Sp E a ≃ₗ[E] Sp E a) (γ' : Sp E b ≃ₗ[E] Sp E b)
     (N : Submodule (𝓞 E) (Sp E a)) (N' : Submodule (𝓞 E) (Sp E b)) (y : HomE E a b) :
@@ -151,7 +151,7 @@ section Lift
 variable {X : Fields} (A : Amb X) {a b : ℕ}
 
 /- English proof (translation)
-Take `⟨⟨c', hc', hs⟩, hx⟩` from `h`. Use `⟨⟨c', hc', (mem_halfAO_equiv (conjH γ γ') (mem_perO_gmap A.AA γ γ' N N') S c' s').1 hs⟩, ?_⟩` and prove the remaining obligations. Use `(mem_mulLat_equiv (conjH γ γ') (mem_homAt_gmap S γ γ' N N') c _).1 hx` as an intermediate fact. Rewrite `this` using `[map_sub, LinearEquiv.symm_apply_apply]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem isLift_conj (S : Finset (HeightOneSpectrum (𝓞 X.E))) (γ : Sp X.E a ≃ₗ[X.E] Sp X.E a) (γ' : Sp X.E b ≃ₗ[X.E] Sp X.E b)
     (N : Submodule (𝓞 X.E) (Sp X.E a)) (N' : Submodule (𝓞 X.E) (Sp X.E b)) (c : ℕ) (x s' : HomE X.E a b)

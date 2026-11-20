@@ -20,7 +20,7 @@ def pSeries (F : 𝓞 K → ℂ) (φ : I → K →+* ℂ) (n : I → ℤ) (s : �
     (haveI := J.2.2; pval F φ n J.1) * ((Ideal.absNorm J.1 : ℕ) : ℂ) ^ (-s)
 
 /- English proof (translation)
-Unfold `wt`. Rewrite using `[← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, norm_mul, Complex.ofReal_mul, mul_div_mul_comm, mul_zpow]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem wt_mul (φ : I → K →+* ℂ) (n : I → ℤ) (a b : K) : wt φ n (a * b) = wt φ n a * wt φ n b := by
   unfold wt
@@ -29,7 +29,7 @@ theorem wt_mul (φ : I → K →+* ℂ) (n : I → ℤ) (a b : K) : wt φ n (a *
   rw [map_mul, norm_mul, Complex.ofReal_mul, mul_div_mul_comm, mul_zpow]
 
 /- English proof (translation)
-Unfold `wt`. Rewrite using `[norm_prod]`. Use `Finset.prod_eq_one fun i _ => ?_` and prove the remaining obligations. Establish `h : φ i a ≠ 0` using `(map_ne_zero _).2 ha`. Rewrite using `[norm_zpow, norm_div, Complex.norm_real, Real.norm_eq_abs, abs_norm, div_self (norm_ne_zero_iff.2 h), one_zpow]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem norm_wt (φ : I → K →+* ℂ) (n : I → ℤ) {a : K} (ha : a ≠ 0) : ‖wt φ n a‖ = 1 := by
   unfold wt

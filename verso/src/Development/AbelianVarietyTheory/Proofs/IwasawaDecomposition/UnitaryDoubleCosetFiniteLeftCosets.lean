@@ -8,9 +8,9 @@ namespace GlobalTheory.SatInd.DCoset
 variable {K : Type} [Field K] [Valued K (WithZero (Multiplicative ℤ))]
 
 /- English proof (translation)
-Proceed by induction on `y using WithZero.recZeroCoe with`. Consider the case `zero => exact zero_le'`. Consider the case `coe a`. Rewrite `h` using `[← WithZero.coe_one, WithZero.coe_lt_coe]`. Rewrite using `[WithZero.coe_le_coe]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `h' : Multiplicative.toAdd a < 0` using `h`. Use `show Multiplicative.toAdd a ≤ -1`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem le_ofAdd_neg_one_of_lt_one {y : WithZero (Multiplicative ℤ)} (h : y < 1) :
     y ≤ ((Multiplicative.ofAdd (-1 : ℤ) : Multiplicative ℤ) : WithZero (Multiplicative ℤ)) := by
@@ -24,13 +24,13 @@ theorem le_ofAdd_neg_one_of_lt_one {y : WithZero (Multiplicative ℤ)} (h : y < 
     omega
 
 /- English proof (translation)
-Use `set v := (Valued.v : Valuation K (WithZero (Multiplicative ℤ)))`. Establish `hfin : Finite (v.integer ⧸ IsLocalRing.maximalIdeal v.valuationSubring)` using `Nat.finite_of_card_ne_zero (by rw [hcard]; positivity)`. Use `haveI : Finite (v.valuationSubring ⧸ IsLocalRing.maximalIdeal v.valuationSubring) := hfin`. Set `f : v.valuationSubring ⧸ IsLocalRing.maximalIdeal v.valuationSubring → K` to `fun c => ((Ideal.Quotient.mk_surjective c).choose : K)`. Use `⟨Set.range f, Set.finite_range f, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `_ ⟨c, rfl⟩ show _ ∈ v.integer`. Rewrite using `[Valuation.mem_integer_iff]`. Conclude with `(Valuation.mem_valuationSubring_iff _ _).1 (Ideal.Quotient.mk_surjective c).choose.2`. Introduce `x hx`. Establish `hx' : x ∈ v.valuationSubring` using `(Valuation.mem_valuationSubring_iff _ _).2 ((Valuation.mem_integer_iff _ _).1 hx)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Set `xs : v.valuationSubring` to `⟨x, hx'⟩`. Set `c` to `Ideal.Quotient.mk (IsLocalRing.maximalIdeal v.valuationSubring) xs`. Use `⟨f c, ⟨c, rfl⟩, ?_⟩` and prove the remaining obligations. Establish `hspec` using `(Ideal.Quotient.mk_surjective c).choose_spec`. Establish `hmem : xs - (Ideal.Quotient.mk_surjective c).choose ∈ IsLocalRing.maximalIdeal v.valuationSubring` using `Ideal.Quotient.eq.1 (hspec.symm)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite `hmem` using `[ValuationSubring.valuation_lt_one_iff]`. Use `(Valuation.isEquiv_valuation_valuationSubring v).lt_one_iff_lt_one.2 hmem` as an intermediate fact. Simplify `this` using `[xs, f]`.
+A detailed English derivation is pending.
 -/
 theorem exists_residue_reps {q : ℕ} (hq : 2 ≤ q)
     (hcard : Nat.card ((Valued.v : Valuation K (WithZero (Multiplicative ℤ))).integer ⧸
@@ -68,21 +68,19 @@ namespace GlobalTheory.SatInd.DCoset
 variable {K : Type} [Field K] [Valued K (WithZero (Multiplicative ℤ))]
 
 /- English proof (translation)
-Use `set v := (Valued.v : Valuation K (WithZero (Multiplicative ℤ)))`. Establish `h0 : v ϖ ≠ 0` using `by rw [hϖ]; exact WithZero.coe_ne_zero`. Establish `hϖ0 : ϖ ≠ 0` using `fun h => h0 (by rw [h, map_zero])`. Establish `hϖ1 : v ϖ ≤ 1`. Rewrite using `[hϖ, ← WithZero.coe_one, WithZero.coe_le_coe]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 
-Use `show (-1 : ℤ) ≤ 0`. Evaluate the numerical expressions. Establish `hϖO : ϖ ∈ intL K` using `(Valuation.mem_integer_iff _ _).2 hϖ1`. Introduce `N`. Proceed by induction on `N with`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations.
 
-Consider the case `zero`. Use `⟨{0}, Set.finite_singleton 0, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ rfl`. Conclude with `(intL K).zero_mem`. Introduce `x hx`.
+Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Use `⟨0, rfl, ?_⟩` and prove the remaining obligations. Rewrite using `[sub_zero, pow_zero]`. Conclude with `(Valuation.mem_integer_iff _ _).1 hx`. Consider the case `succ N ih`. Take `⟨T, hTf, hTO, hT⟩` from `ih`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `⟨Set.image2 (fun r t => r + ϖ * t) R T, hRf.image2 _ hTf, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨r, hr, t, ht, rfl⟩`. Conclude with `(intL K).add_mem (hRO hr) ((intL K).mul_mem hϖO (hTO ht))`. Introduce `x hx`. Take `⟨r, hr, hxr⟩` from `hR x hx`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Establish `hle : v (x - r) ≤ v ϖ` using `hϖ ▸ le_ofAdd_neg_one_of_lt_one hxr`. Use `set y := (x - r) * ϖ⁻¹ with hy`. Establish `hyO : y ∈ intL K`. Apply `(Valuation.mem_integer_iff _ _).2` to reduce the goal to its premises. Rewrite using `[hy, map_mul, map_inv₀]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Combine the equalities or inequalities in the displayed calculation. Take `⟨t, ht, hyt⟩` from `hT y hyO`. Use `⟨r + ϖ * t, ⟨r, hr, t, ht, rfl⟩, ?_⟩` and prove the remaining obligations. Establish `he : x - (r + ϖ * t) = ϖ * (y - t)`. Rewrite using `[hy]`.
-
-Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[he, map_mul, pow_succ']`. Conclude with `mul_le_mul' le_rfl hyt`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_trunc (ϖ : K)
     (hϖ : (Valued.v : Valuation K (WithZero (Multiplicative ℤ))) ϖ =
@@ -131,11 +129,9 @@ theorem exists_trunc (ϖ : K)
       exact mul_le_mul' le_rfl hyt
 
 /- English proof (translation)
-Rewrite using `[hϖ]`. Generalize the expression as in `(Valued.v : Valuation K (WithZero (Multiplicative ℤ))) x = y`. Proceed by induction on `y using WithZero.recZeroCoe with`. Consider the case `zero => exact ⟨0, zero_le'⟩`. Consider the case `coe c`.
+Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Use `⟨(Multiplicative.toAdd c).toNat, ?_⟩` and prove the remaining obligations. Rewrite using `[← WithZero.coe_inv, ← WithZero.coe_pow, WithZero.coe_le_coe]`. Use `show Multiplicative.toAdd c ≤ Multiplicative.toAdd ((Multiplicative.ofAdd (-1 : ℤ))⁻¹ ^ (Multiplicative.toAdd c).toNat)`. Rewrite using `[toAdd_pow, toAdd_inv, toAdd_ofAdd]`. Simplify using `only [neg_neg, nsmul_eq_mul, mul_one]`.
-
-Conclude with `Int.self_le_toNat _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_le_inv_pow (ϖ : K)
     (hϖ : (Valued.v : Valuation K (WithZero (Multiplicative ℤ))) ϖ =
@@ -161,7 +157,7 @@ namespace GlobalTheory.SatInd.DCoset
 variable {K : Type} [Field K] [Valued K (WithZero (Multiplicative ℤ))]
 
 /- English proof (translation)
-Introduce `i j`. Rewrite using `[Matrix.mul_apply]`. Conclude with `Valuation.map_sum_le _ (fun k _ => by rw [map_mul]; exact mul_le_mul' (hA i k) (hB k j))`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem entry_mul_le {n : ℕ} {A B : Matrix (Fin n) (Fin n) K} {α β : WithZero (Multiplicative ℤ)}
     (hA : ∀ i j, (Valued.v : Valuation K (WithZero (Multiplicative ℤ))) (A i j) ≤ α)
@@ -172,7 +168,7 @@ theorem entry_mul_le {n : ℕ} {A B : Matrix (Fin n) (Fin n) K} {α β : WithZer
   exact Valuation.map_sum_le _ (fun k _ => by rw [map_mul]; exact mul_le_mul' (hA i k) (hB k j))
 
 /- English proof (translation)
-Rewrite `ha` using `[KU, Subgroup.mem_subgroupOf, intPts, Subgroup.mem_inf]`. Take `⟨g, hg⟩` from `ha.2`. Establish `h : ((a : GL (Fin n) K) : Matrix (Fin n) (Fin n) K) i j = ((g : Matrix (Fin n) (Fin n) (intL K)) i j : K)` using `by rw [← hg]; rfl`. Rewrite using `[h]`. Conclude with `(Valuation.mem_integer_iff _ _).1 (((g : Matrix (Fin n) (Fin n) (intL K)) i j).2)`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem entry_le_one_of_mem_KU {σ : K →+* K} {n : ℕ} {a : GU σ n} (ha : a ∈ KU σ n) (i j : Fin n) :
     (Valued.v : Valuation K (WithZero (Multiplicative ℤ)))
@@ -185,13 +181,11 @@ theorem entry_le_one_of_mem_KU {σ : K →+* K} {n : ℕ} {a : GU σ n} (ha : a 
   exact (Valuation.mem_integer_iff _ _).1 (((g : Matrix (Fin n) (Fin n) (intL K)) i j).2)
 
 /- English proof (translation)
-Rewrite using `[KU, Subgroup.mem_subgroupOf, intPts, Subgroup.mem_inf]`. Use `⟨g.2, ?_⟩` and prove the remaining obligations. Set `A : Matrix (Fin n) (Fin n) (intL K)` to `fun i j => ⟨_, (Valuation.mem_integer_iff _ _).2 (h1 i j)⟩`. Set `B : Matrix (Fin n) (Fin n) (intL K)` to `fun i j => ⟨_, (Valuation.mem_integer_iff _ _).2 (h2 i j)⟩`. Establish `hA : A.map (intL K).subtype = ((g : GL (Fin n) K) : Matrix (Fin n) (Fin n) K)` using `by ext; rfl`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hB : B.map (intL K).subtype = (((g⁻¹ : GU σ n) : GL (Fin n) K) : Matrix (Fin n) (Fin n) K)` using `by ext; rfl`. Establish `hAB : A * B = 1`. Apply `Matrix.map_injective Subtype.val_injective` to reduce the goal to its premises. Use `show (A * B).map (intL K).subtype = (1 : Matrix (Fin n) (Fin n) (intL K)).map (intL K).subtype`. Rewrite using `[Matrix.map_mul, hA, hB, Matrix.map_one _ (map_zero _) (map_one _)]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Units.mul_inv (g : GL (Fin n) K)`. Establish `hBA : B * A = 1`. Apply `Matrix.map_injective Subtype.val_injective` to reduce the goal to its premises. Use `show (B * A).map (intL K).subtype = (1 : Matrix (Fin n) (Fin n) (intL K)).map (intL K).subtype`. Rewrite using `[Matrix.map_mul, hA, hB, Matrix.map_one _ (map_zero _) (map_one _)]`.
-
-Conclude with `Units.inv_mul (g : GL (Fin n) K)`. Use `⟨⟨A, B, hAB, hBA⟩, ?_⟩` and prove the remaining obligations. Apply `Units.ext` to reduce the goal to its premises. Conclude with `hA`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem mem_KU_of_entries {σ : K →+* K} {n : ℕ} (g : GU σ n)
     (h1 : ∀ i j, (Valued.v : Valuation K (WithZero (Multiplicative ℤ)))
@@ -227,9 +221,9 @@ namespace GlobalTheory.SatInd.DCoset
 variable {K : Type} [Field K] [Valued K (WithZero (Multiplicative ℤ))]
 
 /- English proof (translation)
-Establish `e : Si * Ai' * A * S = 1 + Si * Ai' * (A - A') * S`. Establish `h1 : Si * Ai' * A' * S = 1` using `by rw [Matrix.mul_assoc Si, hA', Matrix.mul_one, hSi]`. Rewrite using `[Matrix.mul_sub, Matrix.sub_mul, h1]`. Normalize the expressions using the abelian group laws. Establish `hX` using `entry_mul_le (entry_mul_le (entry_mul_le hSi' hAi) (show ∀ i j, (Valued.v : Valuation K (WithZero (Multiplicative ℤ))) ((A - A') i j) ≤ ε from fun i j => by rw [Matrix.sub_apply]; exact hD i j)) hS`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact.
 
-Introduce `i j`. Rewrite using `[e, Matrix.add_apply]`. Use `Valuation.map_add_le _ ?_ ((hX i j).trans hCε)` and prove the remaining obligations. Rewrite using `[Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem conj_entry_le_one {n : ℕ} {S Si A A' Ai' : Matrix (Fin n) (Fin n) K}
     {C ε : WithZero (Multiplicative ℤ)} (hSi : Si * S = 1) (hA' : Ai' * A' = 1)
@@ -253,27 +247,23 @@ theorem conj_entry_le_one {n : ℕ} {S Si A A' Ai' : Matrix (Fin n) (Fin n) K}
   split_ifs <;> simp
 
 /- English proof (translation)
-Introduce `K _ _ ϖ σ q n hU s`. Take `⟨-, -, -, hϖ, -, hq, hcard⟩` from `hU`. Take `⟨R, hRf, hRO, hR⟩` from `exists_residue_reps hq hcard`. Use `set v := (Valued.v : Valuation K (WithZero (Multiplicative ℤ))) with hv`. Establish `h0 : v ϖ ≠ 0` using `by rw [hϖ]; exact WithZero.coe_ne_zero`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `mat : GU σ n → Matrix (Fin n) (Fin n) K` to `fun g => ((g : GL (Fin n) K) : Matrix (Fin n) (Fin n) K)`. Establish `hx` using `exists_le_inv_pow ϖ hϖ`. Use `set C := (v ϖ)⁻¹ with hCdef`. Establish `hC1 : 1 ≤ C`. Rewrite using `[hCdef, hϖ, ← WithZero.coe_inv, ← WithZero.coe_one, WithZero.coe_le_coe]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Use `show (0 : ℤ) ≤ Multiplicative.toAdd (Multiplicative.ofAdd (-1 : ℤ))⁻¹`. Simplify using the standard rewrite rules. Set `f : Fin n × Fin n → ℕ` to `fun p => (hx (mat s p.1 p.2)).choose + (hx (mat s⁻¹ p.1 p.2)).choose`. Use `set M := Finset.univ.sup f with hM`. Establish `hfM : ∀ i j, f (i, j) ≤ M` using `fun i j => Finset.le_sup (f := f) (Finset.mem_univ (i, j))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hs : ∀ i j, v (mat s i j) ≤ C ^ M` using `fun i j => (hx (mat s i j)).choose_spec.trans (pow_le_pow_right' hC1 ((Nat.le_add_right _ _).trans (hfM i j)))`. Establish `hsi : ∀ i j, v (mat s⁻¹ i j) ≤ C ^ M` using `fun i j => (hx (mat s⁻¹ i j)).choose_spec.trans (pow_le_pow_right' hC1 ((Nat.le_add_left _ _).trans (hfM i j)))`. Take `⟨T, hTf, hTO, hT⟩` from `exists_trunc ϖ hϖ hRf hRO hR (M + M)`. Establish `hCε : C ^ M * 1 * (v ϖ) ^ (M + M) * C ^ M ≤ 1`. Apply `le_of_eq` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Chain the equalities or inequalities of the calculation. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_one, pow_add, ← mul_assoc, mul_assoc (C ^ M * v ϖ ^ M), mul_pow, mul_pow]`. Use `_ = 1 := by rw [hCdef, inv_mul_cancel₀ h0, mul_inv_cancel₀ h0, one_pow, one_mul]`. Establish `hent : ∀ a : KU σ n, ∀ i j, mat (a : GU σ n) i j ∈ intL K` using `fun a i j => (Valuation.mem_integer_iff _ _).2 (entry_le_one_of_mem_KU a.2 i j)`. Set `F : KU σ n → (Fin n → Fin n → T)` to `fun a i j => ⟨(hT _ (hent a i j)).choose, (hT _ (hent a i j)).choose_spec.1⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hF : ∀ (a : KU σ n) i j, v (mat (a : GU σ n) i j - (F a i j : K)) ≤ v ϖ ^ (M + M)` using `fun a i j => (hT _ (hent a i j)).choose_spec.2`. Establish `half : ∀ a a' : KU σ n, F a = F a' → ∀ i j, v ((mat s⁻¹ * mat ((a' : GU σ n)⁻¹) * mat (a : GU σ n) * mat s) i j) ≤ 1`. Introduce `a a' haa'`. Use `conj_entry_le_one (Units.inv_mul (s : GL (Fin n) K)) (Units.inv_mul ((a' : GU σ n) : GL (Fin n) K)) hs hsi (entry_le_one_of_mem_KU (inv_mem a'.2)) (fun i j => ?_) hCε` and prove the remaining obligations. Establish `e : mat (a : GU σ n) i j - mat (a' : GU σ n) i j = (mat (a : GU σ n) i j - (F a i j : K)) - (mat (a' : GU σ n) i j - (F a' i j : K))`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[haa']`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `Valuation.map_sub_le _ (hF a i j) (hF a' i j)`. Establish `key : ∀ a a' : KU σ n, F a = F a' → (((a' : GU σ n) * s : GU σ n) : GU σ n ⧸ KU σ n) = (((a : GU σ n) * s : GU σ n) : GU σ n ⧸ KU σ n)`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `a a' haa'`. Apply `QuotientGroup.eq.2` to reduce the goal to its premises. Apply `mem_KU_of_entries` to reduce the goal to its premises. Establish `hg : ((a' : GU σ n) * s)⁻¹ * ((a : GU σ n) * s) = s⁻¹ * (a' : GU σ n)⁻¹ * (a : GU σ n) * s` using `by group`. Rewrite using `[hg]`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `half a a' haa'`. Establish `hg : (((a' : GU σ n) * s)⁻¹ * ((a : GU σ n) * s))⁻¹ = s⁻¹ * (a : GU σ n)⁻¹ * (a' : GU σ n) * s` using `by group`. Rewrite using `[hg]`. Conclude with `half a' a haa'.symm`. Use `haveI : Finite T := hTf.to_subtype`.
-
-Set `G : (Fin n → Fin n → T) → GU σ n ⧸ KU σ n` to `fun τ => if h : ∃ a, F a = τ then (((h.choose : GU σ n) * s : GU σ n) : GU σ n ⧸ KU σ n) else ((1 : GU σ n) : GU σ n ⧸ KU σ n)`. Apply `(Set.finite_range G).subset` to reduce the goal to its premises. Introduce and unpack `c ⟨a, ha, rfl⟩`. Use `⟨F ⟨a, ha⟩, ?_⟩` and prove the remaining obligations. Establish `h : ∃ a', F a' = F ⟨a, ha⟩` using `⟨_, rfl⟩`.
-
-Simplify using `only [G, dif_pos h]`. Conclude with `key ⟨a, ha⟩ h.choose h.choose_spec.symm`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem finite_dcoset : ∀ {K : Type} [Field K] [Valued K (WithZero (Multiplicative ℤ))] (ϖ : K)
     (σ : K →+* K) (q n : ℕ), IsUnramInv ϖ σ q → ∀ s : GU σ n,

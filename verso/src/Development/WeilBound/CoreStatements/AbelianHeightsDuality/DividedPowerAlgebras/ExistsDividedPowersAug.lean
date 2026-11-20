@@ -14,11 +14,11 @@ namespace FubiniStudyChowHeightFormula₂.Adr
 open PowerSeries
 
 /- English proof (translation)
-Establish `h1` using `Nat.uniformBell_mul_eq n hN`. Establish `h2` using `Nat.uniformBell_mul_eq m (Nat.mul_ne_zero hn hN)`. Establish `h3` using `Nat.uniformBell_mul_eq m hn`. Establish `h4` using `Nat.uniformBell_mul_eq (m * n) hN`. Establish `hpos : 0 < N.factorial ^ (m * n) * n.factorial ^ m * m.factorial` using `by positivity`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `Nat.eq_of_mul_eq_mul_right hpos` to reduce the goal to its premises. Establish `e1 : n.uniformBell N ^ m * m.uniformBell (n * N) * (N.factorial ^ (m * n) * n.factorial ^ m * m.factorial) = (m * (n * N)).factorial`. Rewrite using `[← h2, ← h1]`. Expand and normalize the polynomial expressions, which then agree. Establish `e2 : m.uniformBell n * (m * n).uniformBell N * (N.factorial ^ (m * n) * n.factorial ^ m * m.factorial) = (m * n * N).factorial`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Rewrite using `[← h4, ← h3]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e1, e2, mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 -/
 theorem uniformBell_comp_coeff (m : ℕ) {n N : ℕ} (hn : n ≠ 0) (hN : N ≠ 0) :
     n.uniformBell N ^ m * m.uniformBell (n * N) = m.uniformBell n * (m * n).uniformBell N := by
@@ -39,11 +39,11 @@ theorem uniformBell_comp_coeff (m : ℕ) {n N : ℕ} (hn : n ≠ 0) (hN : N ≠ 
   rw [e1, e2, mul_assoc]
 
 /- English proof (translation)
-Introduce `B _ Q`. Take `⟨η, hpre, hη⟩` from `pre_aug B Q`. Take `⟨δ, hδ⟩` from `dp_of_pre Q.P Q.aug η (Set.range fun n : ℕ => Q.e (n + 1)) hpre rfl (by`. Introduce and unpack `x ⟨k, rfl⟩ m n hn`. Use `show η m (η n (Q.e (k + 1))) = _ * η (m * n) (Q.e (k + 1))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Take `⟨j, hj⟩ : ∃ j, n * (k + 1) = j + 1` from `⟨n * (k + 1) - 1, by`. Establish `: 0 < n * (k + 1)` using `Nat.mul_pos (Nat.pos_of_ne_zero hn) k.succ_pos`. Use the proof step `omega⟩`. Establish `hc` using `congrArg (Nat.cast : ℕ → Q.P) (uniformBell_comp_coeff m hn (N := k + 1) (by omega))`. Move the coercions through the operations in `at hc`.
+Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hη n k, hj, hpre.mul m _ _ (Q.e_succ_mem_aug j), hη m j, hη (m * n) k, ← hj, show m * (n * (k + 1)) = m * n * (k + 1) by ring, ← mul_assoc, ← mul_assoc, hc])`. Use `⟨δ, fun n => ?_⟩` and prove the remaining obligations. Rewrite using `[hδ]`. Simplify `hη n 0` using `[Nat.uniformBell_one_right]`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem exists_dividedPowers_aug : ∀ (B : Type) [CommRing B] (Q : PDPoly B),
     ∃ η : DividedPowers Q.aug, ∀ n : ℕ, η.dpow n (Q.e 1) = Q.e n := by
@@ -65,9 +65,9 @@ theorem exists_dividedPowers_aug : ∀ (B : Type) [CommRing B] (Q : PDPoly B),
   simpa [Nat.uniformBell_one_right] using hη n 0
 
 /- English proof (translation)
-Use extensionality with `n`. Simplify using `only [PowerSeries.coeff_mk, PowerSeries.coeff_mul]`. Rewrite using `[(Commute.all a b).add_pow', Finset.sum_mul]`. Use `Finset.sum_congr rfl fun k hk => ?_` and prove the remaining obligations. Rewrite `hk` using `[Finset.HasAntidiagonal.mem_antidiagonal]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h` using `κ.mul_dpow (m := k.1) (n := k.2) hr`. Rewrite `h` using `[hk]`. Rewrite using `[show a ^ k.1 * algebraMap R A (κ.dpow k.1 r) * (b ^ k.2 * algebraMap R A (κ.dpow k.2 r)) = a ^ k.1 * b ^ k.2 * algebraMap R A (κ.dpow k.1 r * κ.dpow k.2 r) by rw [map_mul]; ring, h, map_mul, map_natCast, nsmul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem dpowSeries_add_base_eq_mul {R A : Type} [CommRing R] [CommRing A] [Algebra R A] {I : Ideal R}
     (κ : DividedPowers I) {r : R} (hr : r ∈ I) (a b : A) :
@@ -87,7 +87,7 @@ private theorem dpowSeries_add_base_eq_mul {R A : Type} [CommRing R] [CommRing A
   ring
 
 /- English proof (translation)
-Use extensionality with `n`. Simplify using `only [PowerSeries.coeff_mk]`. Rewrite using `[κ.dpow_mul hr, map_mul, map_pow]`. Expand and normalize the polynomial expressions, which then agree.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem dpowSeries_algebraMap_mul_base_eq_smul_arg {R A : Type} [CommRing R] [CommRing A] [Algebra R A] {I : Ideal R}
     (κ : DividedPowers I) {r : R} (hr : r ∈ I) (s : R) (y : A) :
@@ -99,9 +99,9 @@ private theorem dpowSeries_algebraMap_mul_base_eq_smul_arg {R A : Type} [CommRin
   ring
 
 /- English proof (translation)
-Use extensionality with `n`. Simplify using `only [PowerSeries.coeff_mk, PowerSeries.coeff_mul]`. Rewrite using `[κ.dpow_add hr hr', map_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun k hk => ?_` and prove the remaining obligations. Rewrite `hk` using `[Finset.HasAntidiagonal.mem_antidiagonal]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← hk, pow_add, map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem dpowSeries_add_arg_eq_mul {R A : Type} [CommRing R] [CommRing A] [Algebra R A] {I : Ideal R}
     (κ : DividedPowers I) {r r' : R} (hr : r ∈ I) (hr' : r' ∈ I) (y : A) :
@@ -117,7 +117,7 @@ private theorem dpowSeries_add_arg_eq_mul {R A : Type} [CommRing R] [CommRing A]
   ring
 
 /- English proof (translation)
-Use extensionality with `n`. Break down `n with _ | n` into its components or cases. Simplify using `[κ.dpow_zero I.zero_mem]`. Simplify using `[κ.dpow_eval_zero (Nat.succ_ne_zero n)]`.
+By extensionality, compare the relevant components. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 private theorem dpowSeries_zero_arg_eq_one {R A : Type} [CommRing R] [CommRing A] [Algebra R A] {I : Ideal R}
     (κ : DividedPowers I) (y : A) :
@@ -128,7 +128,7 @@ private theorem dpowSeries_zero_arg_eq_one {R A : Type} [CommRing R] [CommRing A
   · simp [κ.dpow_eval_zero (Nat.succ_ne_zero n)]
 
 /- English proof (translation)
-Use extensionality with `n`. Break down `n with _ | n` into its components or cases. Simplify using `[κ.dpow_zero hr]`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 private theorem dpowSeries_zero_base_eq_one {R A : Type} [CommRing R] [CommRing A] [Algebra R A] {I : Ideal R}
     (κ : DividedPowers I) {r : R} (hr : r ∈ I) :
@@ -139,7 +139,7 @@ private theorem dpowSeries_zero_base_eq_one {R A : Type} [CommRing R] [CommRing 
   · simp
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using dpowSeries_zero_base_eq_one κ hr`. Consider the case `insert j s hj ih => rw [Finset.sum_insert hj, Finset.prod_insert hj, dpowSeries_add_base_eq_mul κ hr, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 private theorem dpowSeries_sum_base_eq_prod {R A : Type} [CommRing R] [CommRing A] [Algebra R A] {I : Ideal R}
     (κ : DividedPowers I) {r : R} (hr : r ∈ I) {ι : Type} (s : Finset ι) (v : ι → A) :
@@ -151,7 +151,7 @@ private theorem dpowSeries_sum_base_eq_prod {R A : Type} [CommRing R] [CommRing 
   | insert j s hj ih => rw [Finset.sum_insert hj, Finset.prod_insert hj, dpowSeries_add_base_eq_mul κ hr, ih]
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using dpowSeries_zero_arg_eq_one κ y`. Consider the case `insert j s hj ih`. Rewrite using `[Finset.sum_insert hj, Finset.prod_insert hj, dpowSeries_add_arg_eq_mul κ (hv j) (I.sum_mem fun i _ => hv i), ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 private theorem dpowSeries_sum_arg_eq_prod {R A : Type} [CommRing R] [CommRing A] [Algebra R A] {I : Ideal R}
     (κ : DividedPowers I) (y : A) {ι : Type} (s : Finset ι) (v : ι → R) (hv : ∀ i, v i ∈ I) :
@@ -165,19 +165,17 @@ private theorem dpowSeries_sum_arg_eq_prod {R A : Type} [CommRing R] [CommRing A
       dpowSeries_add_arg_eq_mul κ (hv j) (I.sum_mem fun i _ => hv i), ih]
 
 /- English proof (translation)
-Take `⟨γ, hpre, hγ⟩` from `pre_of_gens A I (fun i : I => algebraMap R A i) (fun i n => algebraMap R A (κ.dpow n i)) (fun i => by simp [κ.dpow_zero i.2]) (fun i => by simp [κ.dpow_one i.2]) (fun i n hn => Ideal.subset_span ⟨⟨κ.dpow n i, κ.dpow_mem hn i.2⟩, rfl⟩) (fun i m n => by rw [← map_mul, κ.mul_dpow i. …`. Introduce `c hc`. Establish `hrel : ∑ i : c.support, ((i : I) : R) • c i = 0`. Rewrite using `[Finset.sum_coe_sort c.support (fun i => ((i : I) : R) • c i)]`. Simplify `hc` using `[Finsupp.sum, Algebra.smul_def, mul_comm]`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Take `⟨k, a, y, hca, hsum⟩` from `Module.Flat.isTrivialRelation_of_sum_smul_eq_zero (R := R) (M := A) (f := fun i : c.support => ((i : I) : R)) (x := fun i => c i) hrel`. Rewrite using `[Finsupp.prod, ← Finset.prod_coe_sort]`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[show (c i : A) = ∑ j, a i j • y j from hca i, dpowSeries_sum_base_eq_prod κ (i : I).2]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.prod_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Algebra.smul_def, dpowSeries_algebraMap_mul_base_eq_smul_arg κ (i : I).2]`. Use `_ = ∏ j, ∏ i : c.support, PowerSeries.mk fun n => y j ^ n * algebraMap R A (κ.dpow n (a i j * ((i : I) : R))) := Finset.prod_comm`. Use `_ = ∏ j, PowerSeries.mk fun n => y j ^ n * algebraMap R A (κ.dpow n (∑ i : c.support, a i j * ((i : I) : R))) := by`. Use `Finset.prod_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `(dpowSeries_sum_arg_eq_prod κ (y j) Finset.univ (fun i : c.support => a i j * ((i : I) : R)) fun i => I.mul_mem_left _ (i : I).2).symm`. Use `_ = 1 := by`. Use `Finset.prod_eq_one fun j _ => ?_` and prove the remaining obligations. Establish `h0 : ∑ i : c.support, a i j * ((i : I) : R) = 0`. Rewrite using `[← hsum j]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Conclude with `Finset.sum_congr rfl fun i _ => mul_comm _ _`. Rewrite using `[h0, dpowSeries_zero_arg_eq_one κ (y j)])`. Establish `hspan : I.map (algebraMap R A) = Ideal.span (Set.range fun i : I => algebraMap R A i)`. Rewrite using `[Ideal.map, Set.image_eq_range]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨δ, hδ⟩` from `dp_of_pre A (I.map (algebraMap R A)) γ (Set.range fun i : I => algebraMap R A i) (hspan ▸ hpre) hspan (by`. Introduce and unpack `_ ⟨i, rfl⟩ m n hn`. Use `show γ m (γ n (algebraMap R A i)) = _ * γ (m * n) (algebraMap R A i)`. Rewrite using `[hγ i n, hγ ⟨κ.dpow n i, κ.dpow_mem hn i.2⟩ m, hγ i (m * n)]`. Use `show algebraMap R A (κ.dpow m (κ.dpow n i)) = _`.
-
-Rewrite using `[κ.dpow_comp hn i.2, map_mul, map_natCast])`. Use `⟨δ, ⟨le_rfl, fun {n} a ha => ?_⟩⟩` and prove the remaining obligations. Rewrite using `[hδ]`. Conclude with `hγ ⟨a, ha⟩ n`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem flatExt (R A : Type) [CommRing R] [CommRing A] [Algebra R A] [Module.Flat R A] (I : Ideal R)
     (κ : DividedPowers I) : ∃ δ : DividedPowers (I.map (algebraMap R A)), IsDPMorphism κ δ (algebraMap R A) := by
@@ -232,9 +230,9 @@ theorem flatExt (R A : Type) [CommRing R] [CommRing A] [Algebra R A] [Module.Fla
   exact hγ ⟨a, ha⟩ n
 
 /- English proof (translation)
-Take `⟨η, hη⟩` from `exists_dividedPowers_aug B Q`. Take `⟨-, ε, hε⟩` from `exists_lift_and_aug B Q`. Take `⟨θ, hθ, hθη⟩` from `dp_split B J δ Q.P ε Q.aug η hε`. Use `⟨θ, ⟨hθ, fun n => ?_⟩⟩` and prove the remaining obligations. Rewrite using `[hθη n _ (Q.e_succ_mem_aug 0)]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hη n`.
+A detailed English derivation is pending.
 -/
 theorem exists_std (B : Type) [CommRing B] (J : Ideal B) (δ : DividedPowers J) (Q : PDPoly B) :
     ∃ η : DividedPowers (Q.ext J), Q.IsStd δ η := by

@@ -4,27 +4,25 @@ open scoped InnerProductSpace
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `hdiag : ∀ x, ⟪f x, f x⟫_ℂ = (K : ℂ) * ∏ i, ⟪x i, x i⟫_ℂ`. Introduce `x`. Simplify using `only [inner_self_eq_norm_sq_to_K]`. Establish `h` using `congrArg (fun r : ℝ => (r : ℂ)) (hf x)`. Simplify using `only [Complex.ofReal_mul, Complex.ofReal_pow, Complex.ofReal_prod] at h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `h`. Establish `hprod : ∀ (x y : ∀ i, Xs i) (j : ι) (u v : Xs j), ∏ i, ⟪Function.update x j u i, Function.update y j v i⟫_ℂ = ⟪u, v⟫_ℂ * ∏ i ∈ Finset.univ.erase j, ⟪x i, y i⟫_ℂ`. Introduce `x y j u v`. Rewrite using `[← Finset.mul_prod_erase Finset.univ _ (Finset.mem_univ j)]`. Simplify using `only [Function.update_self]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Use `Finset.prod_congr rfl fun i hi => ?_` and prove the remaining obligations. Rewrite using `[Function.update_of_ne (Finset.ne_of_mem_erase hi), Function.update_of_ne (Finset.ne_of_mem_erase hi)]`. Establish `key : ∀ s : Finset ι, ∀ x y : (∀ i, Xs i), (∀ i ∉ s, x i = y i) → ⟪f x, f y⟫_ℂ = (K : ℂ) * ∏ i, ⟪x i, y i⟫_ℂ`. Introduce `s`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Introduce `x y h`. Establish `hxy : x = y` using `funext fun i => h i (Finset.notMem_empty i)`. Substitute `hxy` using the available equality.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Substitute using the available equality. Treat this case separately.
 
-Conclude with `hdiag x`. Consider the case `insert j s hj ih`. Introduce `x y hxy`. Use `set C := ∏ i ∈ Finset.univ.erase j, ⟪x i, y i⟫_ℂ with hC`. Establish `hd : ∀ u : Xs j, ⟪f (Function.update x j u), f (Function.update y j u)⟫_ℂ = (K : ℂ) * (⟪u, u⟫_ℂ * C)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `u`. Rewrite using `[ih _ _ ?_, hprod]`. Introduce `i hi`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Rewrite using `[Function.update_of_ne hij, Function.update_of_ne hij]`. Conclude with `hxy i (by simp [hij, hi])`. Establish `hab : ∀ a b : Xs j, ⟪f (Function.update x j a), f (Function.update y j b)⟫_ℂ = (K : ℂ) * (⟪a, b⟫_ℂ * C)`. Introduce `a b`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ha` using `hd a`. Establish `hb` using `hd b`. Establish `h1` using `hd (a + b)`. Establish `h2` using `hd (a + Complex.I • b)`. Simplify using `only [MultilinearMap.map_update_add, MultilinearMap.map_update_smul, inner_add_left, inner_add_right, inner_smul_left, inner_smul_right, Complex.conj_I] at h1 h2`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion.
 
-Establish `e1 : ⟪f (Function.update x j a), f (Function.update y j b)⟫_ℂ + ⟪f (Function.update x j b), f (Function.update y j a)⟫_ℂ = (K : ℂ) * C * (⟪a, b⟫_ℂ + ⟪b, a⟫_ℂ)`. Take the linear combination `h1 - ha - hb`. Establish `e2 : Complex.I * (⟪f (Function.update x j a), f (Function.update y j b)⟫_ℂ - ⟪f (Function.update x j b), f (Function.update y j a)⟫_ℂ - (K : ℂ) * C * (⟪a, b⟫_ℂ - ⟪b, a⟫_ℂ)) = 0`. Take the linear combination `h2 - ha + Complex.I * Complex.I * hb`. Establish `e3` using `(mul_eq_zero.mp e2).resolve_left Complex.I_ne_zero`.
+Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Take the linear combination `(e1 + e3) / 2`. Use `hab (x j) (y j)` as an intermediate fact. Simplify using `only [Function.update_eq_self] at this`. Rewrite using `[this, ← hprod x y j (x j) (y j)]`. Simplify using `only [Function.update_eq_self]`.
-
-Introduce `x y`. Conclude with `key Finset.univ x y (fun i hi => absurd (Finset.mem_univ i) hi)`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem MultilinearMap.inner_map_eq_const_mul_prod_inner
     {ι : Type} [Fintype ι] {Xs : ι → Type} [∀ i, NormedAddCommGroup (Xs i)]

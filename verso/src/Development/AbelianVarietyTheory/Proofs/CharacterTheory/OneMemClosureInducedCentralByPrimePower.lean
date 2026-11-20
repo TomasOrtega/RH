@@ -11,27 +11,25 @@ open Polynomial GlobalTheory.CuspGL GlobalTheory.BI
 namespace GlobalTheory.BI
 
 /- English proof (translation)
-Introduce `G _ _`. Use `set A : Set (G → ℂ) := {f : G → ℂ | ∃ (E : Subgroup G) (ψ : E → ℂ), (∃ l : ℕ, l.Prime ∧ ∀ y : E, ∃ j : ℕ, y ^ l ^ j ∈ Subgroup.center E) ∧ ψ ∈ Virt ℂ ℂ E ∧ f = ind E ψ} with hA`. Take `⟨hmul, hpull, hclass, hind, -⟩` from `GlobalTheory.T.virtualCharacters_mul_comap_conj_ind_linear G`. Establish `hAV : ∀ f ∈ A, f ∈ Virt ℂ ℂ G`. Introduce and unpack `f ⟨E, ψ, -, hψ, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Conclude with `hind E ψ hψ`. Establish `hJV : AddSubgroup.closure A ≤ Virt ℂ ℂ G` using `(AddSubgroup.closure_le _).2 hAV`. Establish `hAA : ∀ f ∈ A, ∀ g ∈ A, f * g ∈ A`. Introduce `f hf g hg`. Establish `hgV` using `hAV g hg`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨E, ψ, hE, hψ, rfl⟩` from `hf`. Use `⟨E, fun h => ψ h * g h, hE, ?_, ind_mul_classFun_eq_ind_mul_restrict G E ψ g (hclass g hgV)⟩` and prove the remaining obligations. Conclude with `(GlobalTheory.T.virtualCharacters_mul_comap_conj_ind_linear E).1 ψ hψ _ (hpull g hgV E E.subtype)`. Set `R` to `integralClosure ℤ ℂ`. Set `J : Submodule R (G → ℂ)` to `Submodule.span R A`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Establish `hJJ : ∀ f ∈ J, ∀ g ∈ J, f * g ∈ J`. Introduce `f hf g hg`. Proceed by induction on `hf, hg using Submodule.span_induction₂ with`. Consider the case `mem_mem x y hx hy => exact Submodule.subset_span (hAA x hx y hy)`. Consider the case `zero_left y hy => simp`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `zero_right x hx => simp`. Consider the case `add_left x y z hx hy hz h1 h2 => rw [add_mul]`. Conclude with `J.add_mem h1 h2`. Consider the case `add_right x y z hx hy hz h1 h2 => rw [mul_add]`. Conclude with `J.add_mem h1 h2`.
+Treat this case separately. Treat this case separately. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Consider the case `smul_left r x y hx hy h => rw [smul_mul_assoc]`. Conclude with `J.smul_mem r h`. Consider the case `smul_right r x y hx hy h => rw [mul_smul_comm]`. Conclude with `J.smul_mem r h`. Set `c : (G → ℤ) →+* (G → ℂ)` to `(Int.castRingHom ℂ).compLeft G`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Set `S : AddSubgroup (G → ℤ)` to `J.toAddSubgroup.comap c.toAddMonoidHom`. Establish `hS : ∀ f, f ∈ S ↔ c f ∈ J` using `fun f => Iff.rfl`. Establish `h1 : (1 : G → ℤ) ∈ S`. Use `GlobalTheory.one_mem_of_mul_mem_of_forall_prime_not_dvd G S ?_ ?_` and prove the remaining obligations. Introduce `f hf g hg`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hf`, `hg`, the goal using `[hS]`. Rewrite using `[map_mul]`. Conclude with `hJJ _ hf _ hg`. Introduce `x p hp`. Take `⟨E, f, ι, _, r, lam, hE, hf, hr, hsum⟩` from `GlobalTheory.T.exists_integral_comb_induced_linear_not_dvd G x p hp`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components.
 
-Use `⟨f, ?_, hf⟩` and prove the remaining obligations. Rewrite using `[hS]`. Establish `: c f = ∑ i, (⟨r i, hr i⟩ : R) • ind E (fun e => (lam i e : ℂ))`. Use function extensionality and compare the values at `g`. Rewrite using `[Finset.sum_apply]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hsum g`. Rewrite using `[this]`. Use `J.sum_mem fun i _ => J.smul_mem _ (Submodule.subset_span ?_)` and prove the remaining obligations. Conclude with `⟨E, _, hE, (GlobalTheory.T.virtualCharacters_mul_comap_conj_ind_linear E).2.2.2.2 (lam i), rfl⟩`. Rewrite `h1` using `[hS, map_one]`.
-
-Take `⟨n, r, s, hsum⟩` from `Submodule.mem_span_set'.1 h1`. Use `GlobalTheory.T.one_mem_virtualCharacters_of_integral_combination G _ hJV (Fin n) (fun i => (r i : ℂ)) (fun i => (s i : G → ℂ)) (fun i => (r i).2) (fun i => AddSubgroup.subset_closure (s i).2) fun g => ?_` and prove the remaining obligations. Use `congrFun hsum g` as an intermediate fact. Rewrite `this` using `[Finset.sum_apply]`. Conclude with `this`.
+A detailed English derivation is pending.
 -/
 theorem one_mem_closure_ind_centralByPrime :
     ∀ (G : Type) [Group G] [Finite G], (1 : G → ℂ) ∈ AddSubgroup.closure {f : G → ℂ | ∃ (E : Subgroup G) (ψ : E → ℂ), (∃ l : ℕ, l.Prime ∧ ∀ y : E, ∃ j : ℕ, y ^ l ^ j ∈ Subgroup.center E) ∧ ψ ∈ Virt ℂ ℂ E ∧ f = ind E ψ} := by

@@ -18,7 +18,7 @@ namespace GlobalTheory.OrbQuotProd
 open Formalism.L2.SG.RealObj Formalism.L2.SG.RealObj.InfCut.JacobianCoordinates
 
 /- English proof (translation)
-Unfold `Formalism.L2.SG.TermOp.rk1`. Rewrite using `[ContinuousLinearMap.norm_smulRight_apply, innerSL_apply_norm, mul_comm]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem norm_rankOneInnerOperator {V V' : Type*} [NormedAddCommGroup V] [InnerProductSpace ℂ V] [NormedAddCommGroup V']
     [InnerProductSpace ℂ V'] (a : V) (b : V') : ‖Formalism.L2.SG.TermOp.rk1 a b‖ = ‖a‖ * ‖b‖ := by
@@ -26,7 +26,7 @@ theorem norm_rankOneInnerOperator {V V' : Type*} [NormedAddCommGroup V] [InnerPr
   rw [ContinuousLinearMap.norm_smulRight_apply, innerSL_apply_norm, mul_comm]
 
 /- English proof (translation)
-Unfold `Formalism.L2.SG.TermOp.rk1`. Establish `h1 : Continuous fun y => innerSL ℂ (g y)` using `(innerSL ℂ).continuous.comp hg`. Conclude with `((ContinuousLinearMap.smulRightL ℂ V' V).continuous.comp h1).clm_apply hf`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem continuous_rankOneOperator {Y V V' : Type*} [TopologicalSpace Y] [NormedAddCommGroup V] [InnerProductSpace ℂ V]
     [NormedAddCommGroup V'] [InnerProductSpace ℂ V'] {f : Y → V} {g : Y → V'} (hf : Continuous f)
@@ -54,7 +54,7 @@ def stG {n r : ℕ} (ε : Fin n → Bool) (e : Fin r → Fin n → ℂ) (z z' : 
     rw [h]; exact this⟩
 
 /- English proof (translation)
-Establish `h1` using `Formalism.L2.SG.RealObj.InfCut.NilradicalHermitianFrames.NH.NG_closed ε e z`. Establish `h2` using `Formalism.L2.SG.RealObj.InfCut.NilradicalHermitianFrames.NH.NG_closed ε e z'`. Establish `hc : Continuous fun y : Formalism.REAL.UJ ε => γ⁻¹ * y * γ` using `by fun_prop`. Conclude with `h1.inter (h2.preimage hc)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem stG_closed {n r : ℕ} (ε : Fin n → Bool) (e : Fin r → Fin n → ℂ) (z z' : Fin n → ℂ) (γ : Formalism.REAL.UJ ε) :
     IsClosed (stG ε e z z' γ : Set (Formalism.REAL.UJ ε)) := by
@@ -71,9 +71,9 @@ open Formalism.L2.SG.RealObj Formalism.L2.SG.RealObj.InfCut.JacobianCoordinates
 open scoped InnerProductSpace NNReal
 
 /- English proof (translation)
-Establish `hb' : Measurable fun x => (b x : ℝ≥0∞)` using `hb.coe_nnreal_ennreal`. Establish `hm : Measurable fun x => (b x : ℝ≥0∞) * f x` using `hb'.mul hf`. Rewrite using `[hν _ hm]`. Use `lintegral_congr fun x => ?_` and prove the remaining obligations. Establish `e : ∫⁻ s, (b (s * x) : ℝ≥0∞) * f (s * x) ∂μ = ∫⁻ s, (b (s * x) : ℝ≥0∞) * f x ∂μ`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `lintegral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [hi] with s hs`. Rewrite using `[hs x]`. Rewrite using `[e, lintegral_mul_const (f := fun s => (b (s * x) : ℝ≥0∞)) _ (hb'.comp (measurable_mul_const x)), h1, one_mul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lint_eq {G : Type} [Group G] [MeasurableSpace G] [MeasurableMul G] (μG μ ν : Measure G) {b : G → ℝ≥0}
     (hb : Measurable b) (h1 : ∀ g, ∫⁻ s, (b (s * g) : ℝ≥0∞) ∂μ = 1)
@@ -91,19 +91,17 @@ theorem lint_eq {G : Type} [Group G] [MeasurableSpace G] [MeasurableMul G] (μG 
   rw [e, lintegral_mul_const (f := fun s => (b (s * x) : ℝ≥0∞)) _ (hb'.comp (measurable_mul_const x)), h1, one_mul]
 
 /- English proof (translation)
-Establish `: ∀ i, SigmaFinite (μl i)` using `fun i => (hH i).1`. Use `choose b hb h1 using fun i => GlobalTheory.SnMass.ProdQuot.exists_cutoff (R i) (μl i) (hR i) (hH i).2.1 (hH i).2.2.1 (fun s hs => ⟨(hH i).2.2.2 s hs, hr i s hs⟩)`. Establish `hbm : Measurable fun x : (∀ i, Formalism.REAL.UJ (ε i)) => ∏ i, b i (x i)` using `Finset.measurable_prod _ fun i _ => (hb i).comp (measurable_pi_apply i)`. Establish `hB : ∀ g : (∀ i, Formalism.REAL.UJ (ε i)), ∫⁻ s, ((fun x => ∏ i, b i (x i)) (s * g) : ℝ≥0∞) ∂(Measure.pi μl) = 1` using `fun g => by`. Use `GlobalTheory.SnMass.Push.lintegral_fintype_prod (μ := μl) (fun i s => (b i (s * g i) : ℝ≥0∞)) fun i => (hb i).coe_nnreal_ennreal.comp (measurable_mul_const (g i))` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `this` using `[h1]`. Establish `hmem : ∀ i, ∀ᵐ s ∂(μl i), s ∈ (R i : Set (Formalism.REAL.UJ (ε i)))` using `fun i => (hH i).2.2.1`. Use `⟨fun F hF hFi => ?_, fun F hF hFi => ?_⟩` and prove the remaining obligations. Establish `hl` using `fun i => lint_eq (Formalism.REAL.muG (ε i)) (μl i) (νl i) (hb i) (h1 i) (hQl i) (hF i) (by filter_upwards [hmem i] with s hs using hFi i s hs)`. Establish `hg` using `lint_eq (Measure.pi fun i => Formalism.REAL.muG (ε i)) (Measure.pi μl) ν hbm hB hQ (f := fun x => ∏ i, F i (x i)) (Finset.measurable_prod _ fun i _ => (hF i).comp (measurable_pi_apply i)) (by`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: ∀ᵐ s ∂(Measure.pi μl), ∀ i, s i ∈ (R i : Set (Formalism.REAL.UJ (ε i)))` using `Filter.eventually_all.2 fun i => (Measure.tendsto_eval_ae_ae (μ := μl) (i := i)).eventually (hmem i)`. Use `filter_upwards [this] with s hs x`. Conclude with `Finset.prod_congr rfl fun i _ => hFi i (s i) (hs i) (x i))`. Rewrite using `[hg]`. Establish `e : (fun x : (∀ i, Formalism.REAL.UJ (ε i)) => ((∏ i, b i (x i) : ℝ≥0) : ℝ≥0∞) * ∏ i, F i (x i)) = fun x => ∏ i, ((b i (x i) : ℝ≥0∞) * F i (x i))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Use extensionality with `x`. Rewrite using `[Finset.prod_mul_distrib]`. Use `push_cast`. Both sides reduce to the same expression. Rewrite using `[e, GlobalTheory.SnMass.Push.lintegral_fintype_prod (fun i y => (b i y : ℝ≥0∞) * F i y) fun i => (hb i).coe_nnreal_ennreal.mul (hF i)]`.
+Both sides reduce to the same expression. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Finset.prod_congr rfl fun i _ => (hl i).symm`. Establish `hl` using `fun i => GlobalTheory.SnMass.ProdQuot.integral_eq (Formalism.REAL.muG (ε i)) (μl i) (νl i) (hb i) (h1 i) (hQl i) (hF i) (by filter_upwards [hmem i] with s hs using hFi i s hs)`. Establish `hg` using `GlobalTheory.SnMass.ProdQuot.integral_eq (Measure.pi fun i => Formalism.REAL.muG (ε i)) (Measure.pi μl) ν hbm hB hQ (F := fun x => ∏ i, F i (x i)) (Finset.measurable_prod _ fun i _ => (hF i).comp (measurable_pi_apply i)) (by`. Establish `: ∀ᵐ s ∂(Measure.pi μl), ∀ i, s i ∈ (R i : Set (Formalism.REAL.UJ (ε i)))` using `Filter.eventually_all.2 fun i => (Measure.tendsto_eval_ae_ae (μ := μl) (i := i)).eventually (hmem i)`. Use `filter_upwards [this] with s hs x`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression.
 
-Conclude with `Finset.prod_congr rfl fun i _ => hFi i (s i) (hs i) (x i))`. Establish `e : (fun x : (∀ i, Formalism.REAL.UJ (ε i)) => ((∏ i, b i (x i) : ℝ≥0) : ℂ) * ∏ i, F i (x i)) = fun x => ∏ i, ((b i (x i) : ℂ) * F i (x i))`. Use extensionality with `x`. Rewrite using `[Finset.prod_mul_distrib]`. Use `push_cast`.
-
-Both sides reduce to the same expression. Rewrite using `[hg.1, e, integral_fintype_prod_eq_prod fun i y => (b i y : ℂ) * F i y]`. Conclude with `Finset.prod_congr rfl fun i _ => (hl i).1.symm`.
+Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem quot_prod {ι : Type} [Fintype ι] {n : ℕ} (ε : ι → Fin n → Bool) (R : ∀ i, Subgroup (Formalism.REAL.UJ (ε i)))
     (μl νl : ∀ i, Measure (Formalism.REAL.UJ (ε i))) (ν : Measure (∀ i, Formalism.REAL.UJ (ε i)))
@@ -173,7 +171,7 @@ open Formalism.L2.SG.RealObj Formalism.L2.SG.RealObj.InfCut.JacobianCoordinates
 open scoped InnerProductSpace NNReal
 
 /- English proof (translation)
-Unfold `Formalism.MainNotions.S.hsNormSq Formalism.MainNotions.S.hsInner Formalism.L2.SG.RealObj.hs2`. Rewrite using `[Complex.re_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[inner_self_eq_norm_sq_to_K]`. Use `norm_cast`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Put the expressions in a common number system so they can be compared.
 -/
 theorem hsNormSq_eq_hs2 {V V' : Type*} [NormedAddCommGroup V] [InnerProductSpace ℂ V] [NormedAddCommGroup V']
     [InnerProductSpace ℂ V'] [FiniteDimensional ℂ V'] (A : V' →L[ℂ] V) :
@@ -185,7 +183,7 @@ theorem hsNormSq_eq_hs2 {V V' : Type*} [NormedAddCommGroup V] [InnerProductSpace
   norm_cast
 
 /- English proof (translation)
-Rewrite using `[hsNormSq_eq_hs2]`. Unfold `Formalism.L2.SG.RealObj.hs2`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem hsNormSq_zero {V V' : Type*} [NormedAddCommGroup V] [InnerProductSpace ℂ V] [NormedAddCommGroup V']
     [InnerProductSpace ℂ V'] [FiniteDimensional ℂ V'] : Formalism.MainNotions.S.hsNormSq (0 : V' →L[ℂ] V) = 0 := by
@@ -194,9 +192,9 @@ theorem hsNormSq_zero {V V' : Type*} [NormedAddCommGroup V] [InnerProductSpace �
   simp
 
 /- English proof (translation)
-Take `⟨hon, hsp⟩` from `Formalism.L2.SG.RealObj.EnergyCut.tens_onb X u'`. Set `B` to `OrthonormalBasis.mk hon hsp`. Establish `hB : ∀ i, B i = X.tensU u' (fun v => stdOrthonormalBasis ℂ (X.Vloc u' v) (i v))` using `fun i => by simp [B]`. Rewrite using `[hsNormSq_eq_hs2]`. Simplify using `only [hsNormSq_eq_hs2]`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Unfold `hs2`. Rewrite using `[Formalism.L2.SG.RealObj.InfCut.hsb_indep (stdOrthonormalBasis ℂ (X.Vpi u')) B]`. Simplify using `only [hB, hA, Formalism.L2.SG.RealObj.RankOneTensors.norm_tens (X.tensU u) (X.tensU_inner u), ← Finset.prod_pow]`. Rewrite using `[Fintype.prod_sum]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem hs_tens {D : D7} (X : HidaSetting D) (u u' : D.what₂.Word) (A : X.Vpi u' →L[ℂ] X.Vpi u)
     (J : ∀ v, X.Vloc u' v →L[ℂ] X.Vloc u v) (hA : ∀ y, A (X.tensU u' y) = X.tensU u (fun v => J v (y v))) :
@@ -219,45 +217,39 @@ open Formalism.L2.SG.RealObj Formalism.L2.SG.RealObj.InfCut.JacobianCoordinates
 open scoped InnerProductSpace NNReal
 
 /- English proof (translation)
-Introduce `D X u u' γ μl νl ν hH hQl hQ hinv`. Set `R : ∀ v, Subgroup (Formalism.REAL.UJ (X.B.I.ε v))` to `fun v => stG (X.B.I.ε v) (fun a => rv X.B.I v (X.eR a)) (rv X.B.I v (X.zR u)) (rv X.B.I v (X.zR u')) (γ v)`. Establish `hRc : ∀ v, IsClosed (R v : Set (Formalism.REAL.UJ (X.B.I.ε v)))` using `fun v => stG_closed _ _ _ _ _`. Establish `hr : ∀ v, ∀ s ∈ R v, (μl v).map (fun x => x * s) = μl v` using `fun v s hs => GlobalTheory.T.unipotent_subgroup_UJ_haar_right_invariant (X.B.I.ε v) (2 * D.R.rS + 1) (R v) (hRc v) (fun g hg => GlobalTheory.T.realPlaceFlagUnipotentRadical_isUnipotent _ _ _ g hg.1) (μl v) (hH v) s hs`. Establish `hq` using `quot_prod X.B.I.ε R μl νl ν hRc hH hr hQl hQ`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `ψ : ∀ v, Formalism.REAL.UJ (X.B.I.ε v) → (X.Vloc u' v →L[ℂ] X.Vloc u v)` to `fun v z => Formalism.L2.SG.TermOp.rk1 (X.Wloc u v z) (X.Wloc u' v ((γ v)⁻¹ * z))`. Set `Φ : X.B.I.Ginf → (X.Vpi u' →L[ℂ] X.Vpi u)` to `fun x => Formalism.L2.SG.TermOp.rk1 (X.Wu u x) (X.Wu u' (γ⁻¹ * x))`. Establish `hψc : ∀ v, Continuous (ψ v)` using `fun v => continuous_rankOneOperator (X.Wloc_cont u v) ((X.Wloc_cont u' v).comp (continuous_const.mul continuous_id))`. Establish `hΦc : Continuous Φ` using `continuous_rankOneOperator (X.Wu_spec u).2.2.1 ((X.Wu_spec u').2.2.1.comp (continuous_const.mul continuous_id))`. Establish `hψi : ∀ v, ∀ s ∈ R v, ∀ x, ψ v (s * x) = ψ v x` using `fun v s hs x => hinv v s hs x`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hΦr : ∀ x, ‖Φ x‖ = ∏ v, ‖ψ v (x v)‖`. Introduce `x`. Simplify using `only [Φ, ψ, norm_rankOneInnerOperator, X.Wu_tens, Formalism.L2.SG.RealObj.RankOneTensors.norm_tens (X.tensU u) (X.tensU_inner u), Formalism.L2.SG.RealObj.RankOneTensors.norm_tens (X.tensU u') (X.tensU_inner u'), ← Finset.prod_mul_distrib]`. Both sides reduce to the same expression. Establish `hΦn : ∀ x, ‖Φ x‖ₑ = ∏ v, ‖ψ v (x v)‖ₑ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Introduce `x`. Rewrite using `[← ofReal_norm, hΦr, ENNReal.ofReal_prod_of_nonneg fun v _ => norm_nonneg _]`. Simplify using `only [ofReal_norm]`. Establish `hL : ∫⁻ x, ‖Φ x‖ₑ ∂ν = ∏ v, ∫⁻ z, ‖ψ v z‖ₑ ∂(νl v)`. Repeatedly rewrite using `[hΦn]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities.
 
-Conclude with `hq.1 (fun v z => ‖ψ v z‖ₑ) (fun v => (hψc v).measurable.enorm) fun v s hs x => by`. Simplify using `only [hψi v s hs x]`. Establish `hOO : Formalism.L2.SG.TermOp.OO ν Set.univ (X.Wu u) (X.Wu u') γ = ∫ x, Φ x ∂ν`. Unfold `Formalism.L2.SG.TermOp.OO`. Rewrite using `[Measure.restrict_univ]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hJv : ∀ v, Formalism.L2.SG.RealObj.Jv (νl v) (X.Wloc u v) (X.Wloc u' v) (γ v) = ∫ z, ψ v z ∂(νl v)`. Introduce `v`. Unfold `Formalism.L2.SG.RealObj.Jv Formalism.L2.SG.TermOp.OO`. Rewrite using `[Measure.restrict_univ]`. Rewrite using `[hOO]`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [hJv]`. Distinguish the cases in `h0 : ∃ v, ∫⁻ z, ‖ψ v z‖ₑ ∂(νl v) = 0`. Take `⟨v0, hv0⟩` from `h0`. Establish `hrhs : ∏ v, Formalism.MainNotions.S.hsNormSq (∫ z, ψ v z ∂(νl v)) = 0`. Use `Finset.prod_eq_zero (Finset.mem_univ v0) ?_` and prove the remaining obligations.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hz : ψ v0 =ᵐ[νl v0] 0`. Use `(lintegral_eq_zero_iff (hψc v0).measurable.enorm).1 hv0` as an intermediate fact. Use `filter_upwards [this] with z hz`. Simplify using `using hz`. Rewrite using `[integral_eq_zero_of_ae hz, hsNormSq_zero]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlhs : ∫ x, Φ x ∂ν = 0`. Establish `hg : ∫⁻ x, ‖Φ x‖ₑ ∂ν = 0`. Rewrite using `[hL]`. Conclude with `Finset.prod_eq_zero (Finset.mem_univ v0) hv0`. Establish `hz : Φ =ᵐ[ν] 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Use `(lintegral_eq_zero_iff hΦc.measurable.enorm).1 hg` as an intermediate fact. Use `filter_upwards [this] with z hz`. Simplify using `using hz`. Conclude with `integral_eq_zero_of_ae hz`. Rewrite using `[hrhs, hlhs, hsNormSq_zero]`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `push_neg at h0`. Distinguish the cases in `hT : ∃ v, ∫⁻ z, ‖ψ v z‖ₑ ∂(νl v) = ⊤`. Take `⟨v0, hv0⟩` from `hT`. Establish `hrhs : ∏ v, Formalism.MainNotions.S.hsNormSq (∫ z, ψ v z ∂(νl v)) = 0`. Use `Finset.prod_eq_zero (Finset.mem_univ v0) ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hni : ¬ Integrable (ψ v0) (νl v0)` using `fun hi => hi.2.ne hv0`. Rewrite using `[integral_undef hni, hsNormSq_zero]`. Establish `hg : ∫⁻ x, ‖Φ x‖ₑ ∂ν = ⊤`. Rewrite using `[hL, ← Finset.mul_prod_erase _ _ (Finset.mem_univ v0), hv0]`. Conclude with `ENNReal.top_mul (Finset.prod_ne_zero_iff.2 fun v _ => h0 v)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hlhs : ∫ x, Φ x ∂ν = 0` using `integral_undef fun hi => hi.2.ne hg`. Rewrite using `[hrhs, hlhs, hsNormSq_zero]`. Use `push_neg at hT`. Establish `hψI : ∀ v, Integrable (ψ v) (νl v)` using `fun v => ⟨(hψc v).aestronglyMeasurable, lt_top_iff_ne_top.2 (hT v)⟩`. Establish `hΦI : Integrable Φ ν` using `⟨hΦc.aestronglyMeasurable, by show ∫⁻ x, ‖Φ x‖ₑ ∂ν < ⊤`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hL]`. Conclude with `ENNReal.prod_lt_top fun v _ => lt_top_iff_ne_top.2 (hT v)⟩`. Use `hs_tens X u u' _ _ fun y => ?_` and prove the remaining obligations. Establish `hent : ∀ e : ∀ v, X.Vloc u v, ⟪X.tensU u e, (∫ x, Φ x ∂ν) (X.tensU u' y)⟫_ℂ = ⟪X.tensU u e, X.tensU u (fun v => (∫ z, ψ v z ∂(νl v)) (y v))⟫_ℂ`. Introduce `e`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Rewrite using `[X.tensU_inner]`. Set `L : (X.Vpi u' →L[ℂ] X.Vpi u) →L[ℂ] ℂ` to `(innerSL ℂ (X.tensU u e)).comp (ContinuousLinearMap.apply ℂ (X.Vpi u) (X.tensU u' y))`. Establish `h1 : L (∫ x, Φ x ∂ν) = ∫ x, L (Φ x) ∂ν` using `(L.integral_comp_comm hΦI).symm`. Establish `h2 : ∀ v, ⟪e v, (∫ z, ψ v z ∂(νl v)) (y v)⟫_ℂ = ∫ z, ⟪e v, ψ v z (y v)⟫_ℂ ∂(νl v)`. Introduce `v`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `Lv : (X.Vloc u' v →L[ℂ] X.Vloc u v) →L[ℂ] ℂ` to `(innerSL ℂ (e v)).comp (ContinuousLinearMap.apply ℂ (X.Vloc u v) (y v))`. Conclude with `(Lv.integral_comp_comm (hψI v)).symm`. Establish `h3 : ∀ x, L (Φ x) = ∏ v, ⟪e v, ψ v (x v) (y v)⟫_ℂ`. Introduce `x`. Use `show ⟪X.tensU u e, Φ x (X.tensU u' y)⟫_ℂ = _`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Simplify using `only [Φ, ψ, Formalism.L2.SG.TermOp.rankOneInnerOperator_apply, inner_smul_right, X.Wu_tens, X.tensU_inner, ← Finset.prod_mul_distrib]`. Both sides reduce to the same expression. Establish `h4` using `hq.2 (fun v z => ⟪e v, ψ v z (y v)⟫_ℂ) (fun v => (continuous_const.inner ((hψc v).clm_apply continuous_const)).measurable) (fun v s hs x => by simp only [hψi v s hs x])`. Use `show L (∫ x, Φ x ∂ν) = _`. Rewrite using `[h1, integral_congr_ae (Filter.Eventually.of_forall h3), h4]`.
-
-Conclude with `Finset.prod_congr rfl fun v _ => (h2 v).symm`. Use `set d := (∫ x, Φ x ∂ν) (X.tensU u' y) - X.tensU u (fun v => (∫ z, ψ v z ∂(νl v)) (y v)) with hd`. Establish `hw : ∀ w ∈ Submodule.span ℂ (Set.range (X.tensU u)), ⟪w, d⟫_ℂ = 0`. Introduce `w hw`. Proceed by induction on `hw using Submodule.span_induction with`.
-
-Consider the case `mem w hw`. Take `⟨e, rfl⟩` from `hw`. Rewrite using `[hd, inner_sub_right, hent, sub_self]`. Consider the case `zero => exact inner_zero_left _`. Consider the case `add a b _ _ ha hb => rw [inner_add_left, ha, hb, add_zero]`.
-
-Consider the case `smul c a _ ha => rw [inner_smul_left, ha, mul_zero]`. Use `hw d (by rw [X.tensU_span u]; exact Submodule.mem_top)` as an intermediate fact. Conclude with `sub_eq_zero.1 (inner_self_eq_zero.1 this)`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem oo_quot : ∀ (D : D7) (X : HidaSetting D) (u u' : D.what₂.Word) (γ : X.B.I.Ginf) (μl νl : ∀ v, Measure (Formalism.REAL.UJ (X.B.I.ε v))) (ν : Measure X.B.I.Ginf), (∀ v, Formalism.L2.SG.RealObj.IsHaarLoc (Formalism.L2.SG.RealObj.StSet (Formalism.L2.SG.RealObj.InfCut.JacobianCoordinates.NLoc (X.B.I.ε v) (fun a => rv X.B.I v (X.eR a)) (rv X.B.I v (X.zR u))) (Formalism.L2.SG.RealObj.InfCut.JacobianCoordinates.NLoc (X.B.I.ε v) (fun a => rv X.B.I v (X.eR a)) (rv X.B.I v (X.zR u'))) (γ v)) (μl v)) → (∀ v, Formalism.L2.SG.RealObj.IsQuotLoc (μl v) (νl v)) → IsQuotMeasS X.B.I (Measure.pi μl) ν → (∀ v, ∀ s ∈ Formalism.L2.SG.RealObj.StSet (Formalism.L2.SG.RealObj.InfCut.JacobianCoordinates.NLoc (X.B.I.ε v) (fun a => rv X.B.I v (X.eR a)) (rv X.B.I v (X.zR u))) (Formalism.L2.SG.RealObj.InfCut.JacobianCoordinates.NLoc (X.B.I.ε v) (fun a => rv X.B.I v (X.eR a)) (rv X.B.I v (X.zR u'))) (γ v), ∀ x, Formalism.L2.SG.TermOp.rk1 (X.Wloc u v (s * x)) (X.Wloc u' v ((γ v)⁻¹ * (s * x))) = Formalism.L2.SG.TermOp.rk1 (X.Wloc u v x) (X.Wloc u' v ((γ v)⁻¹ * x))) → hsNormSq (haveI := FiniteDimensional.complete ℂ (X.Vpi u); Formalism.L2.SG.TermOp.OO ν Set.univ (X.Wu u) (X.Wu u') γ) = ∏ v, hsNormSq (haveI := FiniteDimensional.complete ℂ (X.Vloc u v); Formalism.L2.SG.RealObj.Jv (νl v) (X.Wloc u v) (X.Wloc u' v) (γ v)) := by
   intro D X u u' γ μl νl ν hH hQl hQ hinv

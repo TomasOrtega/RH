@@ -13,14 +13,14 @@ section Form
 variable {K : Type} [CommRing K] {M : ℕ}
 
 /- English proof (translation)
-The claim follows from `Fin.cases h0 (fun i => Fin.cases h1 (fun i => h2 i) i) i`.
+A detailed English derivation is pending.
 -/
 theorem fin_three {P : Fin (M + 2) → Prop} (h0 : P 0) (h1 : P 1) (h2 : ∀ i : Fin M, P i.succ.succ)
     (i : Fin (M + 2)) : P i :=
   Fin.cases h0 (fun i => Fin.cases h1 (fun i => h2 i) i) i
 
 /- English proof (translation)
-Rewrite using `[Fin.sum_univ_succ, Fin.sum_univ_succ]`. Conclude with `(add_assoc _ _ _).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_three (f : Fin (M + 2) → K) : ∑ i, f i = f 0 + f 1 + ∑ i : Fin M, f i.succ.succ := by
   rw [Fin.sum_univ_succ, Fin.sum_univ_succ]
@@ -29,7 +29,7 @@ theorem sum_three (f : Fin (M + 2) → K) : ∑ i, f i = f 0 + f 1 + ∑ i : Fin
 variable (s : K →+* K) (A : Matrix (Fin M) (Fin M) K)
 
 /- English proof (translation)
-Simplify using `only [hform, sum_three, hypOne_zero_zero, hypOne_zero_one, hypOne_one_zero, hypOne_one_one, hypOne_zero_rest, hypOne_one_rest, hypOne_rest_zero, hypOne_rest_one, hypOne_rest_rest, tailH]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem hform_hypOne (x y : Fin (M + 2) → K) :
     hform s (hypOne A) x y = s (x 0) * y 1 + s (x 1) * y 0 + hform s A (tailH x) (tailH y) := by
@@ -38,21 +38,21 @@ theorem hform_hypOne (x y : Fin (M + 2) → K) :
   simp
 
 /- English proof (translation)
-Simplify using `only [hform, Pi.add_apply, mul_add, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hform_add_right (x y y' : Fin M → K) :
     hform s A x (y + y') = hform s A x y + hform s A x y' := by
   simp only [hform, Pi.add_apply, mul_add, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Simplify using `only [hform, Pi.add_apply, map_add, add_mul, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hform_add_left (x x' y : Fin M → K) :
     hform s A (x + x') y = hform s A x y + hform s A x' y := by
   simp only [hform, Pi.add_apply, map_add, add_mul, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Simplify using `only [hform, Pi.smul_apply, smul_eq_mul, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hform_smul_right (c : K) (x y : Fin M → K) :
     hform s A x (c • y) = c * hform s A x y := by
@@ -60,7 +60,7 @@ theorem hform_smul_right (c : K) (x y : Fin M → K) :
   exact Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring
 
 /- English proof (translation)
-Simplify using `only [hform, Pi.smul_apply, smul_eq_mul, map_mul, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hform_smul_left (c : K) (x y : Fin M → K) :
     hform s A (c • x) y = s c * hform s A x y := by
@@ -68,7 +68,7 @@ theorem hform_smul_left (c : K) (x y : Fin M → K) :
   exact Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring
 
 /- English proof (translation)
-Simplify using `only [hform, map_sum, map_mul, hs]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by rw [hA]; ring`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hform_conj (hs : ∀ e, s (s e) = e) (hA : ∀ i j, s (A j i) = A i j) (x y : Fin M → K) :
     s (hform s A x y) = hform s A y x := by
@@ -115,11 +115,11 @@ def cvL (c : K) (x : Fin (M + 2) → K) : (Fin (M + 2) → K) →ₗ[K] (Fin (M 
       ring
 
 /- English proof (translation)
-Establish `hsa : IsUnit (s (x 0))` using `hx.map s`. Establish `hab : s (x 0) * Ring.inverse (s (x 0)) = 1` using `Ring.mul_inverse_cancel _ hsa`. Establish `hba : s (Ring.inverse (s (x 0))) * x 0 = 1`. Use `congrArg s hab` as an intermediate fact. Rewrite `this` using `[map_mul, hs, map_one, mul_comm]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `htail : ∀ w : Fin (M + 2) → K, tailH (cvK s A c x w) = w 0 • tailH x + tailH w` using `fun _ => rfl`. Rewrite using `[hform_hypOne, hform_hypOne s A u v, htail, htail, hform_add_left, hform_add_right, hform_add_right, hform_smul_left, hform_smul_left, hform_smul_right, hform_smul_right]`. Rewrite `hc` using `[hform_hypOne]`. Establish `hconj` using `hform_conj s A hs hA (tailH x) (tailH u)`. Establish `e0 : ∀ w : Fin (M + 2) → K, cvK s A c x w 0 = x 0 * w 0` using `fun _ => rfl`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : ∀ w : Fin (M + 2) → K, cvK s A c x w 1 = w 0 * x 1 + Ring.inverse (s (x 0)) * (w 1 - c * w 0 - hform s A (tailH x) (tailH w))` using `fun _ => rfl`. Rewrite using `[e0, e0, e1, e1]`. Simplify using `only [map_add, map_sub, map_mul, hconj]`. Take the linear combination `(s (u 0) * (v 1 - c * v 0 - hform s A (tailH x) (tailH v))) * hab + (v 0 * (s (u 1) - s c * s (u 0) - hform s A (tailH u) (tailH x))) * hba - (s (u 0) * v 0) * hc`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem hform_cvK (hs : ∀ e, s (s e) = e) (hA : ∀ i j, s (A j i) = A i j) (c : K)
     (x : Fin (M + 2) → K) (hx : IsUnit (x 0)) (hc : c + s c = hform s (hypOne A) x x)
@@ -145,11 +145,11 @@ theorem hform_cvK (hs : ∀ e, s (s e) = e) (hA : ∀ i j, s (A j i) = A i j) (c
     (s (u 0) * v 0) * hc
 
 /- English proof (translation)
-Introduce `w`. Establish `ha : x 0 * Ring.inverse (x 0) = 1` using `Ring.mul_inverse_cancel _ hx`. Establish `hb : Ring.inverse (s (x 0)) * s (x 0) = 1` using `Ring.inverse_mul_cancel _ hs`. Use `set α := Ring.inverse (x 0) * w 0 with hα`. Use `set U : Fin M → K := fun i => w i.succ.succ - α * x i.succ.succ with hU`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `⟨vH α (s (x 0) * (w 1 - α * x 1) + c * α + hform s A (tailH x) U) U, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Use `fin_three (P := fun i => cvK s A c x (vH α (s (x 0) * (w 1 - α * x 1) + c * α + hform s A (tailH x) U) U) i = w i) ?_ ?_ ?_ i` and prove the remaining obligations. Use `show x 0 * α = w 0`. Rewrite using `[hα, ← mul_assoc, ha, one_mul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `show α * x 1 + Ring.inverse (s (x 0)) * (s (x 0) * (w 1 - α * x 1) + c * α + hform s A (tailH x) U - c * α - hform s A (tailH x) U) = w 1`. Take the linear combination `(w 1 - α * x 1) * hb`. Introduce `i show α * x i.succ.succ + U i = w i.succ.succ`. Rewrite using `[hU]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem cvK_surjective (c : K) (x : Fin (M + 2) → K) (hx : IsUnit (x 0)) (hs : IsUnit (s (x 0))) :
     Function.Surjective (cvK s A c x) := by
@@ -173,7 +173,7 @@ theorem cvK_surjective (c : K) (x : Fin (M + 2) → K) (hx : IsUnit (x 0)) (hs :
     ring
 
 /- English proof (translation)
-Simplify using `only [Matrix.mul_apply, Formalism.UG.cT, Matrix.transpose_apply, Matrix.map_apply, hform, Finset.sum_mul]`. Conclude with `Finset.sum_comm`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cT_mul_apply (H C : Matrix (Fin M) (Fin M) K) (i j : Fin M) :
     (Formalism.UG.cT s C * H * C) i j = hform s H (fun k => C k i) (fun k => C k j) := by
@@ -182,20 +182,20 @@ theorem cT_mul_apply (H C : Matrix (Fin M) (Fin M) K) (i j : Fin M) :
   exact Finset.sum_comm
 
 /- English proof (translation)
-Simplify using `[hform, Pi.single_apply, apply_ite s]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hform_single (H : Matrix (Fin M) (Fin M) K) (i j : Fin M) :
     hform s H (Pi.single i 1) (Pi.single j 1) = H i j := by
   simp [hform, Pi.single_apply, apply_ite s]
 
 /- English proof (translation)
-Use `set C := LinearMap.toMatrix' (cvL s A c x) with hC`. Establish `hmul : ∀ v, C.mulVec v = cvK s A c x v` using `fun v => by`. Rewrite using `[hC, LinearMap.toMatrix'_mulVec]`. Both sides reduce to the same expression. Establish `hunit : IsUnit C`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Matrix.mulVec_surjective_iff_isUnit]`. Introduce `w`. Take `⟨v, hv⟩` from `cvK_surjective s A c x hx (hx.map s) w`. Conclude with `⟨v, (hmul v).trans hv⟩`. Take `⟨g, hg⟩` from `hunit`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨g, ?_, fun v => by rw [hg, hmul]⟩` and prove the remaining obligations. Use `show Formalism.UG.cT s (g : Matrix (Fin (M + 2)) (Fin (M + 2)) K) * hypOne A * g = hypOne A`. Rewrite using `[hg]`. Use extensionality with `i j`. Rewrite using `[cT_mul_apply]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hcol : ∀ k, (fun l => C l k) = cvK s A c x (Pi.single k 1)` using `fun k => by`. Rewrite using `[← hmul, Matrix.mulVec_single_one]`. Both sides reduce to the same expression. Rewrite using `[hcol, hcol, hform_cvK s A hs hA c x hx hc, hform_single]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_unitary (hs : ∀ e, s (s e) = e) (hA : ∀ i j, s (A j i) = A i j) (c : K)
     (x : Fin (M + 2) → K) (hx : IsUnit (x 0)) (hc : c + s c = hform s (hypOne A) x x) :
@@ -228,20 +228,20 @@ section Tensor
 variable {F E : Type} [Field F] [Field E] [Algebra F E] (R : Type) [CommRing R] [Algebra F R]
 
 /- English proof (translation)
-Simplify using `[sigR, inclR]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sigR_inclR_apply (σ : E →ₐ[F] E) (e : E) :
     sigR R σ (inclR (F := F) R e) = inclR R (σ e) := by
   simp [sigR, inclR]
 
 /- English proof (translation)
-Use extensionality with `i j`. Use `fin_three (P := fun i => JR (F := F) R (hypOne J) i j = hypOne (JR (F := F) R J) i j) ?_ ?_ ?_ i` and prove the remaining obligations. Use `fin_three (P := fun j => JR (F := F) R (hypOne J) 0 j = hypOne (JR (F := F) R J) 0 j) ?_ ?_ ?_ j` and prove the remaining obligations. Simplify using `[JR, hypOne_zero_zero]`. Simplify using `[JR, hypOne_zero_one]`.
+By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Introduce `j`. Simplify using `[JR, hypOne_zero_rest]`. Use `fin_three (P := fun j => JR (F := F) R (hypOne J) 1 j = hypOne (JR (F := F) R J) 1 j) ?_ ?_ ?_ j` and prove the remaining obligations. Simplify using `[JR, hypOne_one_zero]`. Simplify using `[JR, hypOne_one_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Introduce `j`. Simplify using `[JR, hypOne_one_rest]`. Introduce `i`. Use `fin_three (P := fun j => JR (F := F) R (hypOne J) i.succ.succ j = hypOne (JR (F := F) R J) i.succ.succ j) ?_ ?_ ?_ j` and prove the remaining obligations. Simplify using `[JR, hypOne_rest_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `[JR, hypOne_rest_one]`. Introduce `j`. Simplify using `[JR, hypOne_rest_rest]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem JR_hypOne {M : ℕ} (J : Matrix (Fin M) (Fin M) E) :
     JR R (hypOne J) = hypOne (JR (F := F) R J) := by
@@ -265,15 +265,15 @@ theorem JR_hypOne {M : ℕ} (J : Matrix (Fin M) (Fin M) E) :
 end Tensor
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hcm M J hJ R _ _ x hx`. Establish `hinv` using `sig_invol σ hcm`. Establish `hs : ∀ e, sigR R σ (sigR R σ e) = e` using `sigR_sigR R σ hinv`. Establish `hA : ∀ i j, sigR R σ (JR (F` using `F) R J j i) = JR (F := F) R J i j := fun i j => by show sigR R σ (inclR R (J j i)) = inclR R (J i j)`. Rewrite using `[sigR_inclR_apply, hJ.1]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `ht : hR R σ (hypOne J) x x = hform (sigR R σ) (hypOne (JR (F` using `F) R J)) x x := by`. Rewrite using `[hR, JR_hypOne]`. Establish `htc : sigR R σ (hR R σ (hypOne J) x x) = hR R σ (hypOne J) x x`. Rewrite using `[ht, hform_hypOne]`. Simplify using `only [map_add, map_mul, hs, hform_conj (sigR R σ) (JR (F := F) R J) hs hA]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hhalf : sigR R σ (halfR (F` using `F) (E := E) R) = halfR (F := F) (E := E) R := by`. Rewrite using `[halfR, sigR_inclR_apply, AlgHom.commutes]`. Establish `h2 : halfR (F` using `F) (E := E) R + halfR (F := F) (E := E) R = 1 := by`. Rewrite using `[halfR, ← map_add, ← map_add]`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Evaluate the numerical expressions. Establish `hc : tHalf R σ J x + sigR R σ (tHalf R σ J x) = hform (sigR R σ) (hypOne (JR (F` using `F) R J)) x x := by`. Rewrite using `[tHalf, map_mul, hhalf, htc, ← ht]`. Take the linear combination `(hR R σ (hypOne J) x x) * h2`. Take `⟨g, hg, hv⟩` from `exists_unitary (sigR R σ) (JR (F := F) R J) hs hA (tHalf R σ J x) x hx hc`.
+Evaluate the numerical expressions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Extract witnesses or component facts from the available result.
 
-Use `⟨⟨g, ?_⟩, hv⟩` and prove the remaining obligations. Use `show g ∈ Formalism.UG.UJ (sigR R σ) (JR R (hypOne J))`. Rewrite using `[JR_hypOne]`. Conclude with `hg`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cvec_unitary : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (M : ℕ) (J : Matrix (Fin M) (Fin M) E), IsHermND σ J → ∀ (R : Type) [CommRing R] [Algebra F R] (x : Fin (M + 2) → R ⊗[F] E), IsUnit (x 0) → ∃ g : HA R σ (hypOne J), ∀ v : Fin (M + 2) → R ⊗[F] E, ((HA.mat R σ (hypOne J) g : GL (Fin (M + 2)) (R ⊗[F] E)) : Matrix (Fin (M + 2)) (Fin (M + 2)) (R ⊗[F] E)).mulVec v = cvec R σ J x v := by
   intro F E _ _ _ _ _ σ hcm M J hJ R _ _ x hx

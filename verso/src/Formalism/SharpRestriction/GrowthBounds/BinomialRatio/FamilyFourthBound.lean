@@ -34,9 +34,9 @@ def RestExt (D : Formalism.BasicNotions.D7) : Prop :=
     HerrExtensionClass D C0 CYb Cde Ck CD Cb CE1 CE2 Cm Ckap Ct Cc
 
 /- English proof (translation)
-Apply `closed_of_thr` to reduce the goal to its premises. Use `TransportedAlt.mono ?_ ((((((hF.and hA1).and h2).and hA3).and hR).and hA2).and hE)` and prove the remaining obligations. Introduce and unpack `C0 CYb Cde Ck CD Cb CE1 CE2 Cm Cc ⟨⟨⟨⟨⟨⟨f, a1⟩, k2⟩, ⟨Ct0, hCt0, a3⟩⟩, r2⟩, ⟨Ck0, hCk0, a2⟩⟩, ⟨Ck1, Ct1, hCk1, hCt1, e⟩⟩`. Take `⟨Cs, hCs, k2⟩` from `k2 (max Ck0 Ck1) (lt_max_of_lt_left hCk0)`. Use `⟨max Ck0 Ck1, max Ct0 Ct1, Cs, lt_max_of_lt_left hCk0, lt_max_of_lt_left hCt0, hCs, ?_⟩` and prove the remaining obligations.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `⟨e _ _ (le_max_right _ _) (le_max_right _ _), k2, h3 _ _ _, r2.toExtendedDigitRankBound.toDigitRankBound, a1, a2 _ (le_max_left _ _), a3 _ (le_max_left _ _), r2.toExtendedDigitRankBound, r2, f⟩`.
+Supply the required witnesses or components.
 -/
 theorem closed_of_rests {D : Formalism.BasicNotions.D7} (h3 : FamilyFifthBound D) (hF : RestFree D) (hA1 : RemainderSegmentBoundFirst D) (h2 : FamilyFourthBound D)
     (hA3 : RemainderSegmentBoundThird D) (hR : RootMultiplicityTwoBeyond D) (hA2 : RemainderSegmentBoundSecond D) (hE : RestExt D) : Closed (ExtendedAllConclusions D) := by

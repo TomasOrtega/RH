@@ -13,9 +13,9 @@ section Exists
 variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
 
 /- English proof (translation)
-Distinguish the cases in `hσ : IsURepOn (UJset ε) σ`. Use `⟨SmDerA.smSub ε σ, fun a b => SmDerA.EcL hσ (Matrix.single a b 1), fun v => Iff.rfl, fun _ => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Introduce `v a b show ((SmDerA.EcL hσ (Matrix.single a b 1) v : SmDerA.smSub ε σ) : H) = _`. Rewrite using `[SmDerA.EcL_apply, LinearMap.add_apply, LinearMap.smul_apply, Submodule.coe_add, Submodule.coe_smul, SmDerA.Tm_apply hσ (SmDerA.inG_cpart1 ε _), SmDerA.Tm_apply hσ (SmDerA.inG_cpart2 ε _)]`. Use `⟨SmDerA.EcL_glRep hσ, fun k hk v hv => IsSmoothVecU.kStable hσ hk hv, fun X hX v => ?_⟩` and prove the remaining obligations.
+Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[SmDerA.actM_EcL hσ X, SmDerA.EcL_inG hσ hX, SmDerA.Tm_apply hσ hX]`. Conclude with `hasDerivAt_dS hσ hX v.2`. Conclude with `⟨SmDerA.smSub ε σ, fun _ _ => 0, fun v => Iff.rfl, fun h => absurd h hσ⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_smoothDerived (ε : Fin n → Bool) (σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)) :
     ∃ (D : Submodule ℂ H) (E : Fin n → Fin n → Module.End ℂ D),
@@ -47,14 +47,14 @@ def smE (ε : Fin n → Bool) (σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] 
   (exists_smoothDerived ε σ).choose_spec.choose
 
 /- English proof (translation)
-The claim follows from `(exists_smoothDerived ε σ).choose_spec.choose_spec.1 v`.
+A detailed English derivation is pending.
 -/
 theorem mem_smD_iff (ε : Fin n → Bool) (σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)) (v : H) :
     v ∈ smD ε σ ↔ IsSmoothVecU ε σ v :=
   (exists_smoothDerived ε σ).choose_spec.choose_spec.1 v
 
 /- English proof (translation)
-The claim follows from `((exists_smoothDerived ε σ).choose_spec.choose_spec.2 hσ).1 v a b`.
+A detailed English derivation is pending.
 -/
 theorem smE_apply {ε : Fin n → Bool} {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)}
     (hσ : IsURepOn (UJset ε) σ) (v : smD ε σ) (a b : Fin n) :
@@ -64,7 +64,7 @@ theorem smE_apply {ε : Fin n → Bool} {σ : Matrix (Fin n) (Fin n) ℂ → (H 
   ((exists_smoothDerived ε σ).choose_spec.choose_spec.2 hσ).1 v a b
 
 /- English proof (translation)
-The claim follows from `((exists_smoothDerived ε σ).choose_spec.choose_spec.2 hσ).2`.
+A detailed English derivation is pending.
 -/
 theorem isDerivedOn_smE {ε : Fin n → Bool} {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)}
     (hσ : IsURepOn (UJset ε) σ) : IsDerivedOn ε σ (smD ε σ) (smE ε σ) :=
@@ -78,7 +78,7 @@ variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] {ε : Fin 
   {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} {D : Submodule ℂ H} {E : Fin n → Fin n → Module.End ℂ D}
 
 /- English proof (translation)
-Unfold `dS`. Conclude with `(hD.deriv X hX v).deriv`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem dS_eq_actM (hD : IsDerivedOn ε σ D E) {X : Matrix (Fin n) (Fin n) ℂ} (hX : inG ε X) (v : D) :
     dS σ X v = ((actM E X v : D) : H) := by
@@ -86,9 +86,9 @@ theorem dS_eq_actM (hD : IsDerivedOn ε σ D E) {X : Matrix (Fin n) (Fin n) ℂ}
   exact (hD.deriv X hX v).deriv
 
 /- English proof (translation)
-Establish `h1 : ∀ p, dS σ (casGen ε p) (dS σ (casGen ε p) (v : H)) = ((actM E (casGen ε p) (actM E (casGen ε p) v) : D) : H)`. Introduce `p`. Rewrite using `[dS_eq_actM hD (SmDerA.inG_casGen ε p) v, dS_eq_actM hD (SmDerA.inG_casGen ε p)]`. Simplify using `only [casU, h1]`. Rewrite using `[SmDerA.casimir_eq E ε]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[LinearMap.neg_apply, Submodule.coe_neg, LinearMap.sum_apply, Submodule.coe_sum]`. Simplify using `only [LinearMap.smul_apply, Submodule.coe_smul, Module.End.mul_apply]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem casU_eq_casimir (hD : IsDerivedOn ε σ D E) (v : D) :
     casU ε σ v = ((casimir E v : D) : H) := by

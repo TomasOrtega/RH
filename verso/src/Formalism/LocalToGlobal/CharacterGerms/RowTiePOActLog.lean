@@ -13,9 +13,9 @@ open PartialDerivEval LogEx
 variable {C : Type} [Field C] [CharZero C] {d : ℕ}
 
 /- English proof (translation)
-Establish `h0 : ∀ j, constantCoeff ((0 : Pt C n d) j) = 0` using `fun j => by simp`. Apply `pderiv.ext` to reduce the goal to its premises. Introduce `q`. Rewrite using `[pderiv_eval_single (0 : Pt C n d) h0 g q, pderiv_C]`. Conclude with `Finset.sum_eq_zero fun b _ => by simp`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[constantCoeff_ev (z0_1 _ h0), constantCoeff_C]`.
+A detailed English derivation is pending.
 -/
 theorem ev_zero_pt {n : ℕ} (g : PS C 1 d) : ev (n := n) ![(0 : Pt C n d)] g = MvPowerSeries.C (constantCoeff g) := by
   have h0 : ∀ j, constantCoeff ((0 : Pt C n d) j) = 0 := fun j => by simp
@@ -26,7 +26,7 @@ theorem ev_zero_pt {n : ℕ} (g : PS C 1 d) : ev (n := n) ![(0 : Pt C n d)] g = 
   · rw [constantCoeff_ev (z0_1 _ h0), constantCoeff_C]
 
 /- English proof (translation)
-Rewrite using `[← coeff_zero_eq_constantCoeff_apply, coeff_pderiv]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem cc_pderiv {σ : Type} (i : σ) (f : MvPowerSeries σ C) :
     constantCoeff (pderiv C i f) = coeff (Finsupp.single i 1) f := by
@@ -34,13 +34,13 @@ theorem cc_pderiv {σ : Type} (i : σ) (f : MvPowerSeries σ C) :
   simp
 
 /- English proof (translation)
-Establish `hrow : ∀ k, ∑ b, Mm G b k * pderiv C ((0 : Fin 1), b) Q = 0`. Introduce `k`. Establish `D` using `congrArg (fun g => ev (n := 1) ![pt C d 0, 0] (pderiv C ((1 : Fin 2), k) g)) hQ`. Simplify using `only [map_add, pderiv_eval_single G.F G.const, pderiv_eval_single (pt C d 0) (coordinate_point_constantCoeff 0), pderiv_eval_single (pt C d 1) (coordinate_point_constantCoeff 1), sum_d_pt_other (0 : Fin 2) 1 (by decide), sum_d_pt_self, zero_add] at D`. Rewrite `D` using `[ev_sum constant_zero_first_zero]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [ev_mul constant_zero_first_zero, eval_group_law_at_zero G, log_jacobian_at_zero G] at D`. Rewrite `D` using `[eval_eval_single (z0_1 (pt C d 1) (coordinate_point_constantCoeff 1)) constant_zero_first_zero (a' := (0 : Pt C 1 d)) (fun j => ev_X constant_zero_first_zero 1 j), ev_zero_pt, cc_pderiv, hlin k, map_zero]`. Rewrite using `[← D]`. Conclude with `Finset.sum_congr rfl fun b _ => mul_comm _ _`. Establish `hd : ∀ b, pderiv C ((0 : Fin 1), b) Q = 0`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `b`. Rewrite using `[← vec_cancel G (fun c => pderiv C ((0 : Fin 1), c) Q) b]`. Conclude with `Finset.sum_eq_zero fun k _ => by rw [hrow k, zero_mul]`. Apply `pderiv.ext` to reduce the goal to its premises. Introduce `q`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨q1, q2⟩` from `q`. Use `fin_cases q1`. Rewrite using `[map_zero]`. Conclude with `hd q2`. Rewrite using `[hc, map_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem add_zero_of (G : FGLaw C d) (Q : PS C 1 d)
     (hQ : ev (n := 2) ![G.F] Q = ev (n := 2) ![pt C d 0] Q + ev (n := 2) ![pt C d 1] Q)
@@ -71,9 +71,9 @@ theorem add_zero_of (G : FGLaw C d) (Q : PS C 1 d)
 def linM (φ : Pt C 1 d) (i j : Fin d) : C := coeff (Finsupp.single ((0 : Fin 1), j) 1) (φ i)
 
 /- English proof (translation)
-Rewrite using `[hlin j _ (by rw [Finsupp.degree_single]), coeff_X]`. Distinguish the cases in `h : b = j`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[if_neg h, if_neg]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Introduce `e`. Conclude with `h (congrArg Prod.snd ((Finsupp.single_left_inj one_ne_zero).mp e))`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem linN_coeff {lg : Pt C 1 d} (hlin : LinN lg) (j b : Fin d) :
     coeff (Finsupp.single ((0 : Fin 1), b) 1) (lg j) = if b = j then 1 else 0 := by
@@ -85,25 +85,21 @@ theorem linN_coeff {lg : Pt C 1 d} (hlin : LinN lg) (j b : Fin d) :
     exact h (congrArg Prod.snd ((Finsupp.single_left_inj one_ne_zero).mp e))
 
 /- English proof (translation)
-Establish `haddF : addOf G.F (pt C d 0) (pt C d 1) = (G.F : Pt C 2 d)` using `funext fun j => eval_points_two (G.F j)`. Establish `hF : ∀ j, ev (n` using `2) ![G.F] (lg j) = ev (n := 2) ![pt C d 0] (lg j) + ev (n := 2) ![pt C d 1] (lg j) := by`. Introduce `j`. Rewrite using `[← haddF]`. Conclude with `hadd j`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hφ1 : Z0 (![φ] : Fin 1 → Pt C 1 d)` using `z0_1 φ hφ0`. Establish `hFz : Z0 (![G.F] : Fin 1 → Pt C 2 d)` using `z0_1 G.F G.const`. Establish `hP0 : Z0 (![pt C d 0] : Fin 1 → Pt C 2 d)` using `z0_1 _ (coordinate_point_constantCoeff 0)`. Establish `hP1 : Z0 (![pt C d 1] : Fin 1 → Pt C 2 d)` using `z0_1 _ (coordinate_point_constantCoeff 1)`. Use `set A : Pt C 2 d := comp1 φ (pt C (n := 2) d 0) with hA`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set B : Pt C 2 d := comp1 φ (pt C (n := 2) d 1) with hB`. Establish `hA0 : ∀ j, constantCoeff (A j) = 0` using `fun j => const_ev hP0 (hφ0 j)`. Establish `hB0 : ∀ j, constantCoeff (B j) = 0` using `fun j => const_ev hP1 (hφ0 j)`. Establish `hAB : Z0 (![A, B] : Fin 2 → Pt C 2 d)`. Introduce `k j`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `fin_cases k`. Conclude with `hA0 j`. Conclude with `hB0 j`. Establish `hlgAB : ∀ j, ev (n` using `2) ![addOf G.F A B] (lg j) = ev (n := 2) ![A] (lg j) + ev (n := 2) ![B] (lg j) := by`. Introduce `j`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `congrArg (ev (n := 2) ![A, B]) (hF j)`. Establish `hFc : ∀ k, constantCoeff (G.F k) = 0` using `G.const`. Rewrite `h` using `[ev_add hAB, eval_eval_single hFz hAB (a' := addOf G.F A B) (fun k => rfl), eval_eval_single hP0 hAB (a' := A) (fun k => ev_X hAB 0 k), eval_eval_single hP1 hAB (a' := B) (fun k => ev_X hAB 1 k)]`. Conclude with `h`. Establish `hcomp : ev (n` using `2) ![G.F] (comp1 lg φ i) = ev (n := 2) ![pt C d 0] (comp1 lg φ i) + ev (n := 2) ![pt C d 1] (comp1 lg φ i) := by`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e1 : ev (n` using `2) ![G.F] (comp1 lg φ i) = ev (n := 2) ![comp1 φ G.F] (lg i) := eval_eval_single hφ1 hFz (a' := comp1 φ G.F) (fun k => rfl) (lg i)`. Establish `e2 : comp1 φ G.F = addOf G.F A B`. Combine the equalities or inequalities in the displayed calculation. Establish `e3 : ev (n` using `2) ![pt C d 0] (comp1 lg φ i) = ev (n := 2) ![A] (lg i) := eval_eval_single hφ1 hP0 (a' := A) (fun k => rfl) (lg i)`. Establish `e4 : ev (n` using `2) ![pt C d 1] (comp1 lg φ i) = ev (n := 2) ![B] (lg i) := eval_eval_single hφ1 hP1 (a' := B) (fun k => rfl) (lg i)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[e1, e2, e3, e4, hlgAB]`. Establish `hQ` using `add_zero_of G (comp1 lg φ i - ∑ j, MvPowerSeries.C (linM φ i j) * lg j) (by`. Rewrite using `[ev_sub hFz, ev_sub hP0, ev_sub hP1, ev_sum hFz, ev_sum hP0, ev_sum hP1, hcomp]`. Simplify using `only [ev_mul hFz, ev_mul hP0, ev_mul hP1, ev_C, hF, mul_add, Finset.sum_add_distrib]`. Use the proof step `ring)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use the proof step `(by`. Introduce `k`. Rewrite using `[map_sub, map_sum]`. Simplify using `only [coeff_C_mul, linN_coeff hlin, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Rewrite using `[← cc_pderiv, show comp1 lg φ i = ev ![φ] (lg i) from rfl, pderiv_eval_single φ hφ0, map_sum]`.
-
-Simplify using `only [map_mul, constantCoeff_ev hφ1, cc_pderiv, linN_coeff hlin, ite_mul, one_mul, zero_mul, Finset.sum_ite_eq, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Unfold `linM`. Use the proof step `ring)`. Use the proof step `(by`. Rewrite using `[map_sub, map_sum, show comp1 lg φ i = ev ![φ] (lg i) from rfl, constantCoeff_ev hφ1, linN_const hlin]`.
-
-Simplify using `[linN_const hlin])`. Conclude with `sub_eq_zero.mp hQ`.
+A detailed English derivation is pending.
 -/
 theorem log_endo (G : FGLaw C d) (lg : Pt C 1 d) (hlin : LinN lg)
     (hadd : ∀ i, ev (n := 2) ![addOf G.F (pt C d 0) (pt C d 1)] (lg i) =

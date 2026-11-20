@@ -16,9 +16,9 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 def conjO (σ : E →ₐ[F] E) : 𝓞 E →+* 𝓞 E := RingOfIntegers.mapRingHom (σ : E →+* E)
 
 /- English proof (translation)
-Introduce `x hx`. Rewrite `*` using `[Submonoid.mem_comap, mem_nonZeroDivisors_iff_ne_zero]`. Introduce `h`. Apply `hx` to reduce the goal to its premises. Establish `h' : σ (x : E) = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Simplify `congrArg (fun y : 𝓞 E => (y : E)) h` using `[conjO, RingOfIntegers.mapRingHom_apply]`. Conclude with `RingOfIntegers.coe_eq_zero_iff.1 ((map_eq_zero_iff σ σ.toRingHom.injective).1 h')`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem conjO_le (σ : E →ₐ[F] E) : (𝓞 E)⁰ ≤ Submonoid.comap (conjO σ) (𝓞 E)⁰ := by
   intro x hx
@@ -55,7 +55,7 @@ variable (F) in
 def kaZero (a' : ℕ) (𝔠 : FractionalIdeal (𝓞 E)⁰ E) : ℝ := (nrm 𝔠 * |(discr F : ℝ)|) ^ (-(a' : ℝ) / 2)
 
 /- English proof (translation)
-Unfold `nrm`. Use `FractionalIdeal.absNorm_nonneg 𝔞` as an intermediate fact. Establish `h2 : FractionalIdeal.absNorm 𝔞 ≠ 0`. Rewrite using `[Ne, FractionalIdeal.absNorm_eq_zero_iff]` and apply the resulting hypothesis. Conclude with `lt_of_le_of_ne this (Ne.symm h2)` after adjusting the coercions.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem nrm_pos {𝔞 : FractionalIdeal (𝓞 E)⁰ E} (h : 𝔞 ≠ 0) : 0 < nrm 𝔞 := by
   unfold nrm
@@ -65,11 +65,11 @@ theorem nrm_pos {𝔞 : FractionalIdeal (𝓞 E)⁰ E} (h : 𝔞 ≠ 0) : 0 < nr
   exact_mod_cast lt_of_le_of_ne this (Ne.symm h2)
 
 /- English proof (translation)
-Establish `hϖ` using `Formalism.L2.Host.unif_spec w`. Unfold `Formalism.L2.Host.IsUnifAt at hϖ`. Use `set ϖ := Formalism.L2.Host.atFin w (Formalism.L2.Host.unif w)`. Establish `hu : Formalism.L2.Host.IsUnitAt w (b * ϖ⁻¹ ^ k)`. Unfold `Formalism.L2.Host.IsUnitAt`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Units.val_mul, Units.val_zpow_eq_zpow_val, map_mul, map_zpow₀, Units.val_inv_eq_inv_val, map_inv₀, hb, hϖ, ← WithZero.exp_neg, ← WithZero.exp_zsmul, ← WithZero.exp_add]`. Simplify using the standard rewrite rules. Establish `h1` using `h _ hu`. Rewrite `h1` using `[map_mul, map_zpow, map_inv]`. Establish `h2 : val ν w = locChar ν w ϖ` using `rfl`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h2]`. Rewrite `h1` using `[inv_zpow, mul_inv_eq_one]`. Conclude with `h1`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem locChar_eq_val_zpow {ν : Chr F E} {w : HeightOneSpectrum (𝓞 E)} (h : UnrAt ν w)
     {b : (w.adicCompletion E)ˣ} {k : ℤ} (hb : Valued.v (b : w.adicCompletion E) = WithZero.exp (-k)) :
@@ -90,9 +90,9 @@ theorem locChar_eq_val_zpow {ν : Chr F E} {w : HeightOneSpectrum (𝓞 E)} (h :
   exact h1
 
 /- English proof (translation)
-Use `FractionalIdeal.extended_ne_zero E (conjO_le σ) ?_ h (zero_notMem_nonZeroDivisors)` and prove the remaining obligations. Introduce `x y hxy`. Apply `RingOfIntegers.ext` to reduce the goal to its premises. Establish `: σ (x : E) = σ (y : E)`. Simplify `congrArg (fun z : 𝓞 E => (z : E)) hxy` using `[conjO, RingOfIntegers.mapRingHom_apply]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Conclude with `σ.toRingHom.injective this`.
+A detailed English derivation is pending.
 -/
 theorem conjI_ne_zero (σ : E →ₐ[F] E) {𝔠 : FractionalIdeal (𝓞 E)⁰ E} (h : 𝔠 ≠ 0) : conjI σ 𝔠 ≠ 0 := by
   refine FractionalIdeal.extended_ne_zero E (conjO_le σ) ?_ h (zero_notMem_nonZeroDivisors)
@@ -103,16 +103,14 @@ theorem conjI_ne_zero (σ : E →ₐ[F] E) {𝔠 : FractionalIdeal (𝓞 E)⁰ E
   exact σ.toRingHom.injective this
 
 /- English proof (translation)
-The claim follows from `FractionalIdeal.coeIdeal_ne_zero.2 differentIdeal_ne_bot`.
+A detailed English derivation is pending.
 -/
 theorem diffE_ne_zero : diffE E ≠ 0 := FractionalIdeal.coeIdeal_ne_zero.2 differentIdeal_ne_bot
 
 /- English proof (translation)
-Establish `hα` using `hX.resα x`. Establish `hβ` using `hX.resβ x`. Establish `hp : ((-1 : ℂ)) ^ a' = (-1) ^ a`. Establish `h1 : ((-1 : ℂ)) ^ a * (-1) ^ a' = 1` using `by rw [← pow_add, he.neg_one_pow]`. Establish `h2 : ((-1 : ℂ)) ^ a * (-1) ^ a = 1` using `by rw [← pow_add, ← two_mul, pow_mul]; simp`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `mul_left_cancel₀ (pow_ne_zero _ (by norm_num)) (h1.trans h2.symm)`. Rewrite using `[Chars.ν, MonoidHom.div_apply, div_eq_one]`. Apply `Circle.coe_injective` to reduce the goal to its premises. Rewrite using `[hα, hβ]`. Use `split_ifs`.
-
-Both sides reduce to the same expression. Conclude with `hp`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem nu_triv (B : Base F E) {a a' : ℕ} (X : Chars F E) (hX : X.IsGood B a a') (he : Even (a + a')) (x : (AF F)ˣ) :
     X.ν (Units.map (algebraMap (AF F) (AE F E) : AF F →* AE F E) x) = 1 := by
@@ -130,9 +128,9 @@ theorem nu_triv (B : Base F E) {a a' : ℕ} (X : Chars F E) (hX : X.IsGood B a a
   · exact hp
 
 /- English proof (translation)
-Unfold `idealVal`. Repeatedly rewrite using `[FractionalIdeal.count_mul E _ hI hJ, zpow_add]`. Apply `finprod_mul_distrib` to reduce the goal to its premises. Use `(Filter.eventually_cofinite.1 (FractionalIdeal.finite_factors I)).subset fun w hw => ?_` and prove the remaining obligations. Introduce `h0`.
+Replace the relevant objects with their definitions. Rewrite the conclusion repeatedly using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hw (by simp [h0])`. Use `(Filter.eventually_cofinite.1 (FractionalIdeal.finite_factors J)).subset fun w hw => ?_` and prove the remaining obligations. Introduce `h0`. Conclude with `hw (by simp [h0])`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem idealVal_mul (ν : Chr F E) {I J : FractionalIdeal (𝓞 E)⁰ E} (hI : I ≠ 0) (hJ : J ≠ 0) :
     idealVal ν (I * J) = idealVal ν I * idealVal ν J := by
@@ -147,7 +145,7 @@ theorem idealVal_mul (ν : Chr F E) {I J : FractionalIdeal (𝓞 E)⁰ E} (hI : 
     exact hw (by simp [h0])
 
 /- English proof (translation)
-Unfold `idealVal`. Repeatedly rewrite using `[FractionalIdeal.count_inv, zpow_neg]`. Conclude with `finprod_inv_distrib _`.
+Replace the relevant objects with their definitions. Rewrite the conclusion repeatedly using the stated equalities. A detailed English derivation is pending.
 -/
 theorem idealVal_inv (ν : Chr F E) (I : FractionalIdeal (𝓞 E)⁰ E) : idealVal ν I⁻¹ = (idealVal ν I)⁻¹ := by
   unfold idealVal

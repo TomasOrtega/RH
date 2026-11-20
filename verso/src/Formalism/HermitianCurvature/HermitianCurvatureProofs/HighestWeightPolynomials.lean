@@ -11,9 +11,9 @@ namespace Formalism.FourierDecayAlt.P.HighestWeightPolynomials
 open Formalism.REAL Formalism.FourierDecayAlt.Q Formalism.FourierDecayAlt.Qr
 
 /- English proof (translation)
-Establish `key : ∀ (f : Fin n → ℂ) (w : ℂ), cpol f w = Polynomial.eval w ((Multiset.map (fun a => Polynomial.X - Polynomial.C a) (Multiset.map (fun j => - f j) univ.val)).prod)`. Introduce `f w`. Rewrite using `[Multiset.map_map, Polynomial.eval_multiset_prod, Multiset.map_map]`. Simplify using `[cpol, Finset.prod, Function.comp_def]`. Establish `hp : (Multiset.map (fun a => Polynomial.X - Polynomial.C a) (Multiset.map (fun j => - m j) univ.val)).prod = (Multiset.map (fun a => Polynomial.X - Polynomial.C a) (Multiset.map (fun j => - m' j) univ.val)).prod` using `Polynomial.funext (fun w => by rw [← key, ← key, h])`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hr` using `congrArg Polynomial.roots hp`. Rewrite `hr` using `[Polynomial.roots_multiset_prod_X_sub_C, Polynomial.roots_multiset_prod_X_sub_C]`. Establish `h2` using `congrArg (Multiset.map (fun z : ℂ => -z)) hr`. Simplify `h2` using `[Multiset.map_map, Function.comp_def]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem map_eq_of_cpol {n : ℕ} (m m' : Fin n → ℂ) (h : ∀ w, cpol m w = cpol m' w) :
     Multiset.map m univ.val = Multiset.map m' univ.val := by
@@ -31,9 +31,9 @@ theorem map_eq_of_cpol {n : ℕ} (m m' : Fin n → ℂ) (h : ∀ w, cpol m w = c
   simpa [Multiset.map_map, Function.comp_def] using h2
 
 /- English proof (translation)
-Introduce `a b hab`. Take `⟨N, hN⟩` from `hm a b hab`. Establish `h` using `congrArg Complex.re hN`. Simplify using `only [Complex.sub_re, Complex.add_re, Complex.natCast_re, Complex.one_re] at h`. Establish `hN0 : (0 : ℝ) ≤ N` using `Nat.cast_nonneg N`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `show (m b).re < (m a).re`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem sdec_re {n : ℕ} {m : Fin n → ℂ} (hm : SDec m) : StrictAnti fun a => (m a).re := by
   intro a b hab
@@ -45,16 +45,16 @@ theorem sdec_re {n : ℕ} {m : Fin n → ℂ} (hm : SDec m) : StrictAnti fun a =
   linarith
 
 /- English proof (translation)
-Introduce `a b hab`. Conclude with `(sdec_re hm).injective (congrArg Complex.re hab)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem sdec_inj {n : ℕ} {m : Fin n → ℂ} (hm : SDec m) : Function.Injective m := by
   intro a b hab
   exact (sdec_re hm).injective (congrArg Complex.re hab)
 
 /- English proof (translation)
-Introduce `a b hab`. Take `⟨N, hN⟩` from `h a b hab`. Take `⟨d, hd⟩` from `Nat.exists_eq_add_of_lt (Fin.lt_def.1 hab)`. Use `⟨N + d, ?_⟩` and prove the remaining obligations. Establish `h1 : ν a = ν b + N` using `by rw [← hN]; ring`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `show ν a - ((a : ℕ) : ℂ) - (ν b - ((b : ℕ) : ℂ)) = _`. Rewrite using `[hd, h1]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem sdec_shift {n : ℕ} {ν : Fin n → ℂ} (h : ∀ a b : Fin n, a < b → ∃ N : ℕ, ν a - ν b = (N : ℂ)) :
     SDec fun k => ν k - ((k : ℕ) : ℂ) := by
@@ -69,9 +69,9 @@ theorem sdec_shift {n : ℕ} {ν : Fin n → ℂ} (h : ∀ a b : Fin n, a < b �
   ring
 
 /- English proof (translation)
-Introduce `a b hab`. Establish `h` using `hM hab`. Use `⟨(M a - M b - 1).toNat, ?_⟩` and prove the remaining obligations. Establish `h1 : (((M a - M b - 1).toNat : ℤ) : ℂ) = ((M a - M b - 1 : ℤ) : ℂ)`. Rewrite using `[Int.toNat_of_nonneg (by omega)]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h1` using `[Int.cast_natCast]`. Rewrite using `[h1]`. Simplify using `only [shf]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem sdec_shf {n : ℕ} (β : ℂ) {M : Fin n → ℤ} (hM : StrictAnti M) : SDec (shf β M) := by
   intro a b hab
@@ -86,9 +86,9 @@ theorem sdec_shf {n : ℕ} (β : ℂ) {M : Fin n → ℤ} (hM : StrictAnti M) : 
   ring
 
 /- English proof (translation)
-Unfold `hval`. Establish `h : ∀ c : Fin n, ((n : ℝ) - ((c : ℕ) : ℝ)) * (ν c + (if c = a then 1 else 0) - (if c = b then 1 else 0) : ℂ).re = ((n : ℝ) - ((c : ℕ) : ℝ)) * (ν c).re + (if c = a then ((n : ℝ) - ((c : ℕ) : ℝ)) else 0) - (if c = b then ((n : ℝ) - ((c : ℕ) : ℝ)) else 0)`. Introduce `c`. Apply the tactic sequence `split_ifs <;> simp <;> ring`. Repeatedly rewrite using `[h]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion repeatedly using the stated equalities.
 
-Rewrite using `[Finset.sum_sub_distrib, Finset.sum_add_distrib, Finset.sum_ite_eq', Finset.sum_ite_eq']`. Simplify using `only [Finset.mem_univ, if_true]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem hval_shift {n : ℕ} (ν : Fin n → ℂ) (a b : Fin n) :
     hval (fun c => ν c + (if c = a then 1 else 0) - (if c = b then 1 else 0)) =
@@ -110,16 +110,16 @@ section mod
 variable {V : Type} [AddCommGroup V] [Module ℂ V]
 
 /- English proof (translation)
-Apply the tactic sequence `first | exact Bl.general_b_fact_second_ter_form.goal1 .. | (apply Bl.general_b_fact_second_ter_form.goal1 <;> assumption) | (intros; apply Bl.general_b_fact_second_ter_form.goal1 <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem indep_char {ι : Type*} (C : ℂ → Module.End ℂ V) (χ : ι → ℂ → ℂ) (hχ : Function.Injective χ)
     (p : ι → Submodule ℂ V) (hp : ∀ i v, v ∈ p i ↔ ∀ w, C w v = χ i w • v) : iSupIndep p := by
   first | exact Bl.general_b_fact_second_ter_form.goal1 .. | (apply Bl.general_b_fact_second_ter_form.goal1 <;> assumption) | (intros; apply Bl.general_b_fact_second_ter_form.goal1 <;> assumption)
 
 /- English proof (translation)
-Establish `h1` using `quantumDetHighestWeight_holds V n E ν v hE hw w`. Rewrite `h1` using `[mem_CapSp.1 hv w]`. Establish `h2` using `smul_left_injective ℂ hv0 h1`. Rewrite using `[h2]`. Unfold `cpol`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem hw_cpol {n : ℕ} {E : Fin n → Fin n → Module.End ℂ V} {m ν : Fin n → ℂ} {v : V} (hE : GlRel E)
     (hv : v ∈ CapSp E m) (hv0 : v ≠ 0) (hw : IsHW E ν v) (w : ℂ) :
@@ -141,19 +141,19 @@ namespace Formalism.FourierDecayAlt.P
 open Formalism.REAL Formalism.FourierDecayAlt.Q Formalism.FourierDecayAlt.Qr HighestWeightPolynomials
 
 /- English proof (translation)
-Introduce `n m m' h hm'`. Establish `hmap` using `map_eq_of_cpol m m' h`. Establish `hnd : (Multiset.map m univ.val).Nodup`. Rewrite using `[hmap]`. Conclude with `Multiset.Nodup.map (sdec_inj hm') univ.nodup`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun a b hab => Multiset.inj_on_of_nodup_map hnd a (Finset.mem_univ a) b (Finset.mem_univ b) hab, ?_⟩` and prove the remaining obligations. Introduce `hm`. Establish `hmem : ∀ a, ∃ b, m' b = m a`. Introduce `a`. Establish `h1 : m a ∈ Multiset.map m univ.val` using `Multiset.mem_map_of_mem m (Finset.mem_univ a)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[hmap, Multiset.mem_map]`. Take `⟨b, _, hb⟩` from `h1`. Conclude with `⟨b, hb⟩`. Establish `hmem' : ∀ a, ∃ b, m b = m' a`. Introduce `a`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h1 : m' a ∈ Multiset.map m' univ.val` using `Multiset.mem_map_of_mem m' (Finset.mem_univ a)`. Rewrite `h1` using `[← hmap, Multiset.mem_map]`. Take `⟨b, _, hb⟩` from `h1`. Conclude with `⟨b, hb⟩`. Establish `hr : (fun a => (m a).re) = fun a => (m' a).re`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← StrictAnti.range_inj (sdec_re hm) (sdec_re hm')]`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, rfl⟩`. Take `⟨b, hb⟩` from `hmem a`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨b, by simp only [hb]⟩`. Introduce and unpack `⟨a, rfl⟩`. Take `⟨b, hb⟩` from `hmem' a`. Conclude with `⟨b, by simp only [hb]⟩`. Use function extensionality and compare the values at `a`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result.
 
-Take `⟨b, hb⟩` from `hmem a`. Establish `h1 : (m' b).re = (m' a).re` using `by rw [hb]; exact congrFun hr a`. Rewrite using `[← hb, (sdec_re hm').injective h1]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem separating_polynomials : Qr.SepPoly := by
   intro n m m' h hm'
@@ -191,11 +191,11 @@ theorem separating_polynomials : Qr.SepPoly := by
   rw [← hb, (sdec_re hm').injective h1]
 
 /- English proof (translation)
-Introduce `V _ _ n E m hE`. Use `⟨fun a b v hv => ?_, fun X hX v hv => ?_⟩` and prove the remaining obligations. Rewrite `hv`, the goal using `[mem_CapSp]`. Introduce `w`. Establish `h` using `qDetCentral_of quantumMinorRowSkew_holds quantumMinorColSkew_holds (Module.End ℂ V) n E hE w a b`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h2` using `LinearMap.congr_fun h v`. Simplify using `only [Module.End.mul_apply] at h2`. Rewrite using `[h2, hv w, map_smul]`. Rewrite `hv`, the goal using `[mem_CapSp]`. Introduce `w`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h : Commute X (qdet E w)` using `QuantumMinorCommutation.commute_qminor E id id w X (fun s s' => hX _ _)`. Establish `h2` using `LinearMap.congr_fun h.eq v`. Simplify using `only [Module.End.mul_apply] at h2`. Rewrite using `[← h2, hv w, map_smul]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem capelli_stabilizer : Qr.CapStab := by
   intro V _ _ n E m hE
@@ -214,9 +214,9 @@ theorem capelli_stabilizer : Qr.CapStab := by
     rw [← h2, hv w, map_smul]
 
 /- English proof (translation)
-Introduce `V _ _ _ n E m hE hne`. Take `⟨ν, v, hv, hv0, hw, _⟩` from `hX V n E hE (CapSp E m) (capelli_stabilizer V n E m hE).1 hne`. Use `⟨(separating_polynomials n m _ (hw_cpol hE hv hv0 hw) (sdec_shift (hD V n E ν v hE hw hv0))).1, ?_⟩` and prove the remaining obligations. Introduce `hm ν' v' hv' hv0' hw' j`. Establish `h` using `(separating_polynomials n m _ (hw_cpol hE hv' hv0' hw') (sdec_shift (hD V n E ν' v' hE hw' hv0'))).2 hm`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h2 : m j = ν' j - ((j : ℕ) : ℂ)` using `congrFun h j`. Rewrite using `[h2]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem qr_capSing_of (hD : Qr.SingDom) (hX : Qr.ExistsSingMax) : Qr.CapSing := by
   intro V _ _ _ n E m hE hne
@@ -229,19 +229,17 @@ theorem qr_capSing_of (hD : Qr.SingDom) (hX : Qr.ExistsSingMax) : Qr.CapSing := 
   ring
 
 /- English proof (translation)
-Introduce `V _ _ _ n E m hE hm x hx hw`. Use `⟨hw, fun a b hab => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hne`. Establish `hstab` using `(capelli_stabilizer V n E m hE).1`. Establish `hx' : E a b x ∈ CapSp E m` using `hstab a b x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hbot : CapSp E m ≠ ⊥` using `fun h => hne (by rw [h] at hx'; exact (Submodule.mem_bot ℂ).1 hx')`. Take `⟨ν, v, hv, hv0, hhw, hmax⟩` from `hX V n E hE (CapSp E m) hstab hbot`. Establish `hν` using `(hS V n E m hE hbot).2 hm ν v hv hv0 hhw`. Establish `hwt : ∀ c, E c c (E a b x) = (ν c + (if c = a then 1 else 0) - (if c = b then 1 else 0)) • E a b x`. Introduce `c`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h` using `LinearMap.congr_fun (hE c c a b) x`. Simplify using `only [LinearMap.sub_apply, Module.End.mul_apply] at h`. Rewrite `h` using `[hw c, map_smul, sub_eq_iff_eq_add]`. Rewrite using `[h, hν c]`. Distinguish the cases in `h1 : c = a`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Substitute `h1` using the available equality. Establish `h2 : ¬ (b = c)` using `fun h => (ne_of_gt hab) h`. Establish `h3 : ¬ (c = b)` using `fun h => h2 h.symm`. Simplify using `only [if_true, if_neg h2, if_neg h3, LinearMap.zero_apply]`. Use `module`.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `h2 : b = c`. Substitute `h2` using the available equality. Simplify using `only [if_true, if_neg h1, LinearMap.zero_apply]`. Use `module`. Establish `h3 : ¬ (c = b)` using `fun h => h2 h.symm`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [if_neg h1, if_neg h2, if_neg h3, LinearMap.zero_apply]`. Use `module`. Establish `h` using `hmax _ (E a b x) hx' hne hwt`. Rewrite `h` using `[hval_shift]`. Establish `h2 : ((a : ℕ) : ℝ) < ((b : ℕ) : ℝ)` using `Nat.cast_lt.2 (Fin.lt_def.1 hab)`.
-
-Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem qr_topWeightSing_of (hX : Qr.ExistsSingMax) (hS : Qr.CapSing) : Qr.TopWeightSing := by
   intro V _ _ _ n E m hE hm x hx hw
@@ -277,9 +275,9 @@ theorem qr_topWeightSing_of (hX : Qr.ExistsSingMax) (hS : Qr.CapSing) : Qr.TopWe
   linarith
 
 /- English proof (translation)
-Introduce `V _ _ n E β`. Use `indep_char (qdet E) (fun M : {M : Fin n → ℤ // StrictAnti M} => cpol (shf β M.1)) ?_ _ (fun M v => mem_CapSp)` and prove the remaining obligations. Introduce `M M' h`. Establish `h1` using `(separating_polynomials n (shf β M.1) (shf β M'.1) (fun w => congrFun h w) (sdec_shf β M'.2)).2 (sdec_shf β M.2)`. Apply `Subtype.ext` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Use function extensionality and compare the values at `j`. Establish `h2` using `congrFun h1 j`. Simplify using `only [shf, add_right_inj] at h2`. Conclude with `h2` after adjusting the coercions.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem capelli_independence : Qr.CapIndep := by
   intro V _ _ n E β

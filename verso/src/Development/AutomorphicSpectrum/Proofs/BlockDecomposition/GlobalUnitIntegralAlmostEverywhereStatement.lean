@@ -14,7 +14,7 @@ open GlobalTheory.CompanionTheory.FexTheta
 
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.CompanionTheory.KUnit.unit_almost_everywhere` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FGlobalUnitIntegralAlmostEverywhere.lean&line=39#L39)
 -/

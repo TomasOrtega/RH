@@ -8,7 +8,7 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 namespace GlobalTheory.GramAdapted
 
 /- English proof (translation)
-Simplify using `only [form, Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply, dotProduct, Matrix.mulVec, Finset.sum_mul, Finset.mul_sum, mul_assoc]`. Conclude with `Finset.sum_comm`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem gram_apply {F E : Type} [Field F] [Field E] [Algebra F E] (σ : E →ₐ[F] E) {k : ℕ} {m : Type} [Fintype m]
     (J : Matrix (Fin k) (Fin k) E) (P : Matrix (Fin k) m E) (a b : m) :
@@ -18,7 +18,7 @@ theorem gram_apply {F E : Type} [Field F] [Field E] [Algebra F E] (σ : E →ₐ
   exact Finset.sum_comm
 
 /- English proof (translation)
-Simplify using `only [form, dotProduct, Matrix.mulVec, map_sum, map_mul, hσ, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[hJ j i]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem form_swap {F E : Type} [Field F] [Field E] [Algebra F E] (σ : E →ₐ[F] E) {k : ℕ}
     (J : Matrix (Fin k) (Fin k) E) (hσ : ∀ a, σ (σ a) = a) (hJ : ∀ i j, σ (J j i) = J i j) (u v : Fin k → E) :
@@ -30,7 +30,7 @@ theorem form_swap {F E : Type} [Field F] [Field E] [Algebra F E] (σ : E →ₐ[
   ring
 
 /- English proof (translation)
-Use function extensionality and compare the values at `r`. Simplify using `[Matrix.mulVec, dotProduct, Pi.single_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem col_eq {E : Type} [Field E] {k n : ℕ} (ι : Matrix (Fin k) (Fin n) E) (i : Fin n) :
     (fun r => ι r i) = ι *ᵥ Pi.single i 1 := by
@@ -38,29 +38,25 @@ theorem col_eq {E : Type} [Field E] {k n : ℕ} (ι : Matrix (Fin k) (Fin n) E) 
   simp [Matrix.mulVec, dotProduct, Pi.single_apply]
 
 /- English proof (translation)
-Introduce `hσ hJ hJ₁ hxx hyy hxy horth hgram hPι hPx hPy`. Establish `cι : ∀ i, (fun r => P r (Fin.castAdd 2 i)) = ι *ᵥ Pi.single i 1` using `fun i => by`. Rewrite using `[← col_eq]`. Use function extensionality and compare the values at `r`. Conclude with `hPι r i`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Establish `cx : (fun r => P r (Fin.natAdd n₁ 0)) = x` using `funext hPx`. Establish `cy : (fun r => P r (Fin.natAdd n₁ 1)) = y` using `funext hPy`. Establish `hyx : form σ J y x = 1` using `by rw [form_swap σ J hσ hJ, hxy, map_one]`. Establish `hCC : ∀ i i', (Pᵀ * J * P.map σ) (Fin.castAdd 2 i) (Fin.castAdd 2 i') = J₁ i i'` using `fun i i' => by`. Rewrite using `[← hgram, gram_apply, gram_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `congr 1 <;> funext r <;> exact hPι r _`. Establish `hCN : ∀ i t, (Pᵀ * J * P.map σ) (Fin.castAdd 2 i) (Fin.natAdd n₁ t) = 0` using `fun i t => by`. Rewrite using `[gram_apply, cι]`. Use `fin_cases t`. Simplify using `only [Fin.zero_eta]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[cx]`. Conclude with `(horth _).1`. Simplify using `only [Fin.mk_one]`. Rewrite using `[cy]`. Conclude with `(horth _).2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hNC : ∀ t i, (Pᵀ * J * P.map σ) (Fin.natAdd n₁ t) (Fin.castAdd 2 i) = 0` using `fun t i => by`. Rewrite using `[gram_apply, form_swap σ J hσ hJ, ← gram_apply, hCN, map_zero]`. Establish `h00 : (Pᵀ * J * P.map σ) (Fin.natAdd n₁ 0) (Fin.natAdd n₁ 0) = 0` using `by rw [gram_apply, cx, hxx]`. Establish `h11 : (Pᵀ * J * P.map σ) (Fin.natAdd n₁ 1) (Fin.natAdd n₁ 1) = 0` using `by rw [gram_apply, cy, hyy]`. Establish `h01 : (Pᵀ * J * P.map σ) (Fin.natAdd n₁ 0) (Fin.natAdd n₁ 1) = 1` using `by rw [gram_apply, cx, cy, hxy]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `h10 : (Pᵀ * J * P.map σ) (Fin.natAdd n₁ 1) (Fin.natAdd n₁ 0) = 1` using `by rw [gram_apply, cx, cy, hyx]`. Use `⟨?_, hCC, hCN, hNC, h00, h11, h01, h10⟩` and prove the remaining obligations. Introduce `hdet`. Take `⟨v, hv0, hv⟩` from `Matrix.exists_mulVec_eq_zero_iff.mpr hdet`. Use `set G := Pᵀ * J * P.map σ with hG`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hw : v ᵥ* G = 0`. Rewrite using `[hG, ← Matrix.vecMul_vecMul, ← Matrix.vecMul_vecMul, Matrix.vecMul_transpose, hv, Matrix.zero_vecMul, Matrix.zero_vecMul]`. Establish `hent : ∀ b, ∑ i : Fin n₁, v (Fin.castAdd 2 i) * G (Fin.castAdd 2 i) b + ∑ t : Fin 2, v (Fin.natAdd n₁ t) * G (Fin.natAdd n₁ t) b = 0` using `fun b => by`. Use `congr_fun hw b` as an intermediate fact. Rewrite `this` using `[Matrix.vecMul, dotProduct, Fin.sum_univ_add]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `this`. Establish `hv1 : v (Fin.natAdd n₁ 1) = 0`. Use `hent (Fin.natAdd n₁ 0)` as an intermediate fact. Simplify `this` using `[hCN, h00, h10, Fin.sum_univ_two]`. Establish `hv0' : v (Fin.natAdd n₁ 0) = 0`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `hent (Fin.natAdd n₁ 1)` as an intermediate fact. Simplify `this` using `[hCN, h11, h01, Fin.sum_univ_two]`. Establish `hvJ : (fun i => v (Fin.castAdd 2 i)) ᵥ* J₁ = 0`. Use function extensionality and compare the values at `i'`. Use `hent (Fin.castAdd 2 i')` as an intermediate fact.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [hCC, hNC, mul_zero, Finset.sum_const_zero, add_zero] at this`. Simplify `this` using `[Matrix.vecMul, dotProduct]`. Establish `hvC : (fun i => v (Fin.castAdd 2 i)) = 0`. Assume the negation of the conclusion as `hne`. Conclude with `hJ₁ (Matrix.exists_vecMul_eq_zero_iff.mp ⟨_, hne, hvJ⟩)`.
-
-Apply `hv0` to reduce the goal to its premises. Use function extensionality and compare the values at `a`. Use `Fin.addCases (fun i => ?_) (fun t => ?_) a` and prove the remaining obligations. Conclude with `congr_fun hvC i`. Use `fin_cases t`.
-
-Conclude with `hv0'`. Conclude with `hv1`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem gram_adapted {F E : Type} [Field F] [Field E] [Algebra F E] (σ : E →ₐ[F] E) (n₁ : ℕ) (J : Matrix (Fin (n₁ + 2)) (Fin (n₁ + 2)) E)
     (J₁ : Matrix (Fin n₁) (Fin n₁) E) (x y : Fin (n₁ + 2) → E) (ι : Matrix (Fin (n₁ + 2)) (Fin n₁) E)

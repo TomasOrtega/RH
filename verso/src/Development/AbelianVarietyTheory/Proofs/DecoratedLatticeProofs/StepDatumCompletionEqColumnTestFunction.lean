@@ -12,9 +12,9 @@ namespace GlobalTheory.SymBridge.LastStepProof
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Use `hν.1` as an intermediate fact. Use `secondCountable k` as an intermediate fact. Establish `hs : ∀ z ∈ box n (1 : kˣ), ∀ x, cosetInd (box n (1 : kˣ)) (Submodule.Quotient.mk y₀) (x + z) = cosetInd (box n (1 : kˣ)) (Submodule.Quotient.mk y₀) x` using `fun z hz x => by`. Establish `: (Submodule.Quotient.mk (x + z) : (n → k) ⧸ box n (1 : kˣ)) = Submodule.Quotient.mk x` using `(Submodule.Quotient.eq _).2 (by simpa using hz)`. Simplify using `only [cosetInd, Set.indicator_apply, Set.mem_setOf_eq, this]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `Eq.trans ?_ (FourierPi.fourier_eq_zero_pi (Measure.pi fun _ => ν) hψ (s := 1) (fun z hz x => hs z (fun i => hz i trivial) x) (y := ε • η) fun h' => hη fun i => ?_)` and prove the remaining obligations. Simplify using `only [hat, dotProduct_smul, smul_eq_mul, dotProduct_comm]`. Simplify `h' i trivial` using `[cball, hε, Valuation.mem_integer_iff]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem hat_coset_of_not [MeasurableSpace k] [BorelSpace k] {n : Type} [Fintype n] [DecidableEq n]
     {ψ : AddChar k Circle} (hψ : HasConductor ψ 1) {ν : Measure k} (hν : IsUnitVol ν) {ε : k}
@@ -35,41 +35,37 @@ theorem hat_coset_of_not [MeasurableSpace k] [BorelSpace k] {n : Type} [Fintype 
   · simpa [cball, hε, Valuation.mem_integer_iff] using h' i trivial
 
 /- English proof (translation)
-Introduce `X Pr R Ch sel S₀ mu cst σ₀ P k _ _ _ _ ι s S _ _ ν hν hA e' e he' he`. Use `⟨1, one_ne_zero, fun y y' hy' => ?_⟩` and prove the remaining obligations. Establish `hm : R.m = s + 2` using `hA.steps`. Establish `hT` using `hA.tie`. Establish `hint : ∀ a : X.E, ι a ∈ 𝒪[k] ↔ IntAt P.1 a` using `hT.compl.int`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlast : (e (Sum.inr ())).val = R.N R.m - 1` using `he (Sum.inr ())`. Establish `hNpos : R.N R.m - 1 < R.N R.m` using `by have := (e (Sum.inr ())).isLt; omega`. Establish `hq : (qOf P.1 : X.E) ≠ 0`. Rewrite using `[Nat.cast_ne_zero, qOf, Ne, Ideal.absNorm_eq_zero_iff]`. Conclude with `P.1.ne_bot`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `set η' := atNL X.E (R.N R.m) (R.N R.m - 1) ∘ₗ y with hη'`. Establish `hη'v : ∀ v, η' v = y v (e (Sum.inr ()))` using `fun v => by`. Simplify using `only [hη', LinearMap.comp_apply, atNL, dif_pos hNpos, LinearMap.proj_apply]`. Rewrite using `[show (⟨R.N R.m - 1, hNpos⟩ : Fin (R.N R.m)) = e (Sum.inr ()) from Fin.ext hlast.symm]`. Establish `hrow : (toLoc ι e e' y) (Sum.inr ()) = fun a => ι (η' (Pi.single (e' a) 1))`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `a`. Simplify using `[toLoc, hη'v]`. Establish `hsum : η' y' = ∑ i, y' i * η' (Pi.single i 1)`. Establish `: y' = ∑ i, y' i • Pi.single i (1 : X.E)` using `by ext j; simp [Pi.single_apply]`. Use `conv_lhs => rw [this]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[map_sum, map_smul]`. Establish `hdot : (fun a => ι (η' (Pi.single (e' a) 1))) ⬝ᵥ (fun a => ι (y' (e' a))) = ι (η' y')`. Rewrite using `[hsum, map_sum, dotProduct]`. Conclude with `Fintype.sum_equiv e' _ _ (fun a => by simp [mul_comm])`. Establish `hB : hat S.ψ ν (-1) (cosetInd (box _ (1 : kˣ)) (Submodule.Quotient.mk fun a => ι (y' (e' a)))) ((toLoc ι e e' y) (Sum.inr ())) = σ₀ (ftY sel mu cst P η' y')`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hrow, ftY, if_pos hA.mem]`. Distinguish the cases in `hη : ∀ i : Fin (R.N (s + 1)), IntAt P.1 (η' (Pi.single i 1))`. Rewrite using `[if_pos hη, GlobalTheory.StepData.Model.hat_coset S.cond hν (neg_mem (one_mem _)) _ (fun a => (hint _).2 (hη _)), hdot]`. Establish `hi : IntAt P.1 ((qOf P.1 : X.E) * ((epsSg : X.E) * η' y'))`. Rewrite using `[← hint, hsum]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Put the polynomial expressions in normal form. Simplify using the standard rewrite rules.
 
-Establish `: (qOf P.1 : X.E) * ((epsSg : X.E) * ∑ i, y' i * η' (Pi.single i 1)) = -∑ i, ((qOf P.1 : X.E) * y' i) * η' (Pi.single i 1)`. Simplify using `only [epsSg, Int.cast_neg, Int.cast_one, Finset.mul_sum]`. Put the polynomial expressions in normal form. Simplify using `[Finset.sum_neg_distrib]`. Rewrite using `[this, map_neg, map_sum]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `neg_mem (sum_mem fun i _ => by rw [map_mul]; exact mul_mem ((hint _).2 (hy' i)) ((hint _).2 (hη i)))`. Establish `h1` using `hT.psi _ hi`. Establish `h2` using `hA.psi0 _ hi`. Rewrite `h1`, `h2` using `[mul_div_cancel_left₀ _ hq]`. Rewrite using `[h2, ← h1]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `[epsSg]`. Rewrite using `[if_neg hη, map_zero]`. Conclude with `LastStepProof.hat_coset_of_not S.cond hν (by simp) _ fun h => hη fun i => by simpa using (hint _).1 (h (e'.symm i))`. Establish `hc : cOf R (s + 1) = 0` using `by unfold cOf; omega`. Establish `hρ : R.rS = S.ρ` using `by have := S.odd; unfold Ranks.rS; omega`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Establish `hr : R.r = R.k + s + 1` using `by unfold Ranks.r; omega`. Establish `hN : R.N R.m - 1 = R.k + s + 1 + (s + 2) * R.t`. Unfold `Ranks.N`. Rewrite using `[hm]`. Establish `: (s + 2) * (R.t + 1) = (s + 2) * R.t + (s + 2)` using `by ring`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Set `E1' : XIx (Fin R.k) (Fin R.t) (s + 1) ⊕ Fin 0 ≃ Fin (R.N (s + 1) + cOf R (s + 1))` to `(Equiv.sumEmpty _ _).trans (e'.trans (finCongr (by omega)))`. Establish `hbd : ∀ z, (e (Sum.inl z)).val < R.N R.m - 1 + 0` using `fun z => by`. Establish `h1` using `(e (Sum.inl z)).isLt`. Establish `h2 : e (Sum.inl z) ≠ e (Sum.inr ())` using `e.injective.ne (by simp)`.
+Use linear arithmetic over natural numbers and integers. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h3 : (e (Sum.inl z)).val ≠ R.N R.m - 1` using `fun h => h2 (Fin.ext (h.trans hlast.symm))`. Use linear arithmetic over natural numbers and integers. Set `f1 : Ix (Fin R.k ⊕ Fin (s + 1)) (Fin R.t) (s + 2) → Fin (R.N R.m - 1 + 0)` to `fun z => ⟨(e (Sum.inl z)).val, hbd z⟩`. Establish `hf1 : Function.Bijective f1`. Use `(Fintype.bijective_iff_injective_and_card _).2 ⟨fun z z' h => ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `h'` using `Fin.val_eq_of_eq h`. Establish `: e (Sum.inl z) = e (Sum.inl z')` using `Fin.ext h'`. Conclude with `Sum.inl_injective (e.injective this)`. Simplify using `only [Fintype.card_sum, Fintype.card_prod, Fintype.card_fin]`. Use linear arithmetic over natural numbers and integers.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Set `E1` to `Equiv.ofBijective f1 hf1`. Establish `hE1' : IsOrd (yPos xPos (R.N (s + 1))) E1'`. Introduce and unpack `(a | a)`. Conclude with `he' a`. Conclude with `a.elim0`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Establish `hE1 : IsOrd zPos E1` using `fun z => he (Sum.inl z)`. Establish `hPT` using `GlobalTheory.T.lastStep_testFunctions_agree_rationalPoints X.E X.K k P.1 (qOf P.1) ι σ₀ (psi0P Ch P.1) (chiP Ch P.1) s R.k S hT R.t (R.N (s + 1)) (cOf R (s + 1)) (R.N R.m - 1) rfl hc hN E1' E1 hE1' hE1`. Establish `hmat : fromCols (toLoc ι e e' y).toRows₁ 0 = toLoc ι E1 E1' (prXp X.E R ∘ₗ y ∘ₗ LinearMap.funLeft X.E X.E (Fin.castAdd (cOf R (s + 1))))`. Use extensionality with `z c`. Break down `c with c | c` into its components or cases.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [fromCols_apply_inl, toRows₁_apply, toLoc, LinearMap.comp_apply, prXp, LinearMap.funLeft_apply]`. Establish `hs : LinearMap.funLeft X.E X.E (Fin.castAdd (cOf R (s + 1))) (Pi.single (E1' (Sum.inl c)) 1) = Pi.single (e' c) 1`. Use function extensionality and compare the values at `i`. Simplify using `[E1', Pi.single_apply, Fin.ext_iff]`. Rewrite using `[hs]`.
-
-Both sides reduce to the same expression. Conclude with `c.elim0`. Establish `hkey : ∀ c' n' c n : ℕ, LocE.PhiGS (qOf P.1) (psi0P Ch P.1) (chiP Ch P.1) R.k R.rS R.r R.t R.m c' n' c n = LocE.PhiGS (qOf P.1) (psi0P Ch P.1) (chiP Ch P.1) R.k S.ρ (R.k + s + 1) R.t (s + 2) c' n' c n`. Introduce `c' n' c n`. Rewrite using `[hρ, hr, hm]`.
-
-Establish `hA' : (S.T (Fin R.t)).PhiTop (fromCols (toLoc ι e e' y).toRows₁ 0) = σ₀ (PhiTop Ch mu cst.sharp s P.1 (prXp X.E R ∘ₗ y ∘ₗ LinearMap.funLeft X.E X.E (Fin.castAdd (cOf R (s + 1)))))`. Rewrite using `[hmat, hPT, PhiTop, if_pos hA.mem, hA.sharp, if_pos rfl, hkey]`. Simplify using `only [Chain.xiTop]`. Rewrite using `[one_mul, map_mul, hA', hB]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem topAgree : ∀ (X : Fields) (Pr : Primes X) (R : Ranks) (Ch : Chars X Pr R.m)
     (sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)) (S₀ : Set ℕ) (mu : Tup X.F X.E X.K S₀)

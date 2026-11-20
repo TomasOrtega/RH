@@ -14,11 +14,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.QPl.OneComb
 
 /- English proof (translation)
-Distinguish the cases in `h : IsOpen ((L.lam.ker.map L.J.subtype : Subgroup (GL Y k)) : Set (GL Y k))`. Use `⟨(L.lam.ker.map L.J.subtype).comap (MulAut.conj α⁻¹).toMonoidHom, h.preimage ((continuous_const.mul continuous_id).mul continuous_const), fun A _ _ σ _ v hv u hu => ?_⟩` and prove the remaining obligations. Take `⟨j, hj, e⟩` from `hu`. Establish `e' : u * α = α * j`. Establish `e2 : (j : GL Y k) = α⁻¹ * u * α⁻¹⁻¹` using `e`.
+Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `[e2, mul_assoc]`. Rewrite using `[← Module.End.mul_apply, ← map_mul, e', map_mul, Module.End.mul_apply, hv, show L.lam j = 1 from hj, Units.val_one, one_smul]`. Use `⟨⊤, isOpen_univ, fun A _ _ σ hσ v hv u _ => ?_⟩` and prove the remaining obligations. Choose the witnesses or unpack the hypotheses as in `rfl : v = 0 := by`. Assume the negation of the conclusion as `v0`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction.
 
-Use `h (Subgroup.isOpen_of_mem_nhds _ (g := 1) (Filter.mem_of_superset ((hL.inter (hσ v)).mem_nhds ⟨L.J.one_mem, by simp⟩) fun g hg => ⟨⟨g, hg.1⟩, Units.ext ?_, rfl⟩))` and prove the remaining obligations. Conclude with `smul_left_injective ℂ v0 (((hv ⟨g, hg.1⟩).symm.trans hg.2).trans (one_smul ℂ v).symm)`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_open_fix' {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] {Y : Type} [Fintype Y] [DecidableEq Y]
     (L : Level (GL Y k)) (hL : IsOpen (L.J : Set (GL Y k))) (α : GL Y k) :
@@ -41,9 +41,9 @@ theorem exists_open_fix' {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace
     simp
 
 /- English proof (translation)
-Introduce `k _ _ _ _ _ _ n _ _ c P h1 hP ψ hψc hψ1 ν hν L hL α`. Take `⟨U, hU, h⟩` from `exists_open_fix' L hL.1 α`. Take `⟨e, e', he⟩` from `GlobalTheory.T.exchangeToPositionOne_uniform_in_level k n c P h1 hP ψ hψc hψ1 ν hν U hU`. Use `⟨e.mapDomain (· * α), fun A _ _ σ hσ l hl v hv => ?_⟩` and prove the remaining obligations. Rewrite using `[(he A σ hσ l _ hl (h A σ hσ v hv)).1, GlobalTheory.PosOne.comb, GlobalTheory.PosOne.comb, Finsupp.sum_mapDomain_index (by simp) (fun _ _ _ => add_mul _ _ _)]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [map_mul, Module.End.mul_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem exists_isOneComb : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [MeasurableSpace k] [BorelSpace k] (n : Type) [Fintype n] [DecidableEq n] (c P : ℕ), 1 ≤ P → P ≤ c → ∀ (ψ : AddChar k Circle), Continuous ψ → ψ ≠ 1 → ∀ ν : Measure k, IsSelfDual ψ ν → ∀ (L : Level (GL (n ⊕ Fin c) k)), IsCO L.J → ∀ α, ∃ e, IsOneComb ψ ν P L α e := by
   intro k _ _ _ _ _ _ n _ _ c P h1 hP ψ hψc hψ1 ν hν L hL α

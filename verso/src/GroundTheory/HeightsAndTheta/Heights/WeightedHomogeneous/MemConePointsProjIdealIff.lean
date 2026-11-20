@@ -14,15 +14,15 @@ variable {ι : Type} [Fintype ι] [DecidableEq ι] {n : ι → ℕ}
 omit [Fintype ι] in
 
 /- English proof (translation)
-Establish `hw0 : BlockNonzero w ↔ w () ≠ 0` using `⟨fun h ↦ h (), fun h u ↦ by cases u; exact h⟩`. Set `σ : Fin (n k₀ + 1) → Coord (fun _ : Unit ↦ n k₀)` to `fun i ↦ ⟨(), i⟩`. Set `τ : Coord (fun _ : Unit ↦ n k₀) → Fin (n k₀ + 1)` to `fun v ↦ v.2`. Establish `hev : ∀ f, eval₂ (Int.castRingHom ℂ) (w ()) f = evalCone w (rename σ f)`. Introduce `f`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[evalCone, eval₂_rename]`. Both sides reduce to the same expression. Establish `hev' : ∀ f, evalCone w f = eval₂ (Int.castRingHom ℂ) (w ()) (rename τ f)`. Introduce `f`. Rewrite using `[evalCone, eval₂_rename]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Simplify using `only [GroundTheory.Heights₂.Heights.conePoints, oneBlockPoints, Set.mem_ofPred_eq]`. Rewrite using `[hw0]`. Use `and_congr_right fun _ ↦ ⟨fun h f hf ↦ ?_, fun h f hf ↦ ?_⟩` and prove the remaining obligations. Rewrite using `[hev]`.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Apply `h` to reduce the goal to its premises. Rewrite using `[ArithVariety.projIdeal, Ideal.mem_comap, rename_rename]`. Conclude with `Ideal.mem_comap.1 hf`. Rewrite using `[hev']`. Apply `h` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[oneBlockIdeal, Ideal.mem_comap, rename_rename]`. Conclude with `Ideal.mem_comap.1 hf`.
+A detailed English derivation is pending.
 -/
 theorem mem_conePoints_projIdeal_iff (P : ArithVariety n) (k₀ : ι)
     (w : Cone (fun _ : Unit ↦ n k₀) ℂ) :
@@ -51,15 +51,15 @@ theorem mem_conePoints_projIdeal_iff (P : ArithVariety n) (k₀ : ι)
     exact Ideal.mem_comap.1 hf
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h ι _ _ n P k₀`. Establish `hA` using `h ι n P k₀`. Use extensionality with `v`. Prove the components needed by the constructor for the conclusion.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨z, hz, rfl⟩`. Establish `hz' : projBlock k₀ z ∈ GroundTheory.Heights₂.Heights.conePoints (P.projIdeal k₀) ℂ` using `hA ▸ ⟨z, hz, rfl⟩`. Conclude with `(mem_conePoints_projIdeal_iff P k₀ _).1 hz'`. Introduce `hv`. Establish `hv' : (fun _ : Unit ↦ v) ∈ GroundTheory.Heights₂.Heights.conePoints (P.projIdeal k₀) ℂ` using `(mem_conePoints_projIdeal_iff P k₀ _).2 hv`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hv'` using `[← hA]`. Take `⟨z, hz, hzv⟩` from `hv'`. Conclude with `⟨z, hz, congrFun hzv ()⟩`. Introduce `h ι _ _ n P k₀`. Establish `hB` using `h ι n P k₀`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `w`. Rewrite using `[mem_conePoints_projIdeal_iff]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z, hz, rfl⟩`. Conclude with `hB ▸ ⟨z, hz, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `hw`. Rewrite `hw` using `[← hB]`. Take `⟨z, hz, hzw⟩` from `hw`. Conclude with `⟨z, hz, funext fun u ↦ by cases u; exact hzw⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem BlockSurjectivity.equiv :
     GroundTheory.Heights₂.Heights.BlockSurjectivity.Statement ↔ GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.Close.BlockSurjectivity.Statement := by

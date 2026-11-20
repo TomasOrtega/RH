@@ -5,14 +5,14 @@ open scoped BigOperators
 namespace GlobalTheory
 
 /- English proof (translation)
-Rewrite using `[add_pow_char_pow, one_pow, add_sub_cancel_left]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private lemma one_add_X_pow_prime_pow_sub_one {k : Type} [Field k] (l : ℕ) [Fact l.Prime] [CharP k l]
     (m : ℕ) : (1 + Polynomial.X : Polynomial k) ^ (l ^ m) - 1 = Polynomial.X ^ (l ^ m) := by
   rw [add_pow_char_pow, one_pow, add_sub_cancel_left]
 
 /- English proof (translation)
-Proceed by induction on `p using MvPolynomial.induction_on with`. Consider the case `C a => simp`. Consider the case `add p r hp hr => simp [hp, hr]`. Consider the case `mul_X p q hp => classical`. Rewrite using `[map_mul, MvPolynomial.aeval_X, Polynomial.mul_coeff_zero, hg, mul_zero, MvPolynomial.coeff_mul_X']`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/
@@ -29,13 +29,13 @@ private lemma coeff_zero_aeval_of_coeff_zero_eq_zero {k σ : Type} [Field k] (g 
     simp
 
 /- English proof (translation)
-Introduce `k σ _ _ l M _ _ D u n e hu hD hlt`. Establish `hl : 0 < l` using `(Fact.out : l.Prime).pos`. Establish `hgX : ∀ q, ((1 + Polynomial.X : Polynomial k) ^ (l ^ e q) - 1) = Polynomial.X ^ (l ^ e q)` using `fun q => one_add_X_pow_prime_pow_sub_one l (e q)`. Simplify using `only [hgX]`. Establish `hideal : ∀ r ∈ Ideal.span (Set.range fun q : σ => (MvPolynomial.X q : MvPolynomial σ k) ^ (l ^ M)), (Polynomial.X : Polynomial k) ^ (l ^ M) ∣ MvPolynomial.aeval (fun q => (Polynomial.X : Polynomial k) ^ (l ^ e q)) r`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `r hr`. Establish `hle : Ideal.span (Set.range fun q : σ => (MvPolynomial.X q : MvPolynomial σ k) ^ (l ^ M)) ≤ Ideal.comap (MvPolynomial.aeval (fun q => (Polynomial.X : Polynomial k) ^ (l ^ e q))) (Ideal.span {(Polynomial.X : Polynomial k) ^ (l ^ M)})`. Rewrite using `[Ideal.span_le]`. Introduce and unpack `_ ⟨q, rfl⟩`. Rewrite using `[SetLike.mem_coe, Ideal.mem_comap, map_pow, MvPolynomial.aeval_X, ← pow_mul, pow_mul', Ideal.mem_span_singleton]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `dvd_pow_self _ (pow_pos hl _).ne'`. Conclude with `Ideal.mem_span_singleton.mp (hle hr)`. Take `⟨r, hr, rfl⟩ : ∃ r ∈ Ideal.span (Set.range fun q : σ => (MvPolynomial.X q : MvPolynomial σ k) ^ (l ^ M)), D = u * ∏ q, MvPolynomial.X q ^ n q + r` from `⟨_, hD, by ring⟩`. Rewrite using `[map_add, Polynomial.coeff_add, (Polynomial.X_pow_dvd_iff.mp (hideal r hr)) _ hlt, add_zero, map_mul, map_prod]`. Simplify using `only [map_pow, MvPolynomial.aeval_X, ← pow_mul, Finset.prod_pow_eq_pow_sum]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hsum : ∑ q, l ^ e q * n q = ∑ q, n q * l ^ e q` using `Finset.sum_congr rfl fun q _ => mul_comm _ _`. Rewrite using `[hsum, Polynomial.coeff_mul_X_pow', if_pos le_rfl, Nat.sub_self, coeff_zero_aeval_of_coeff_zero_eq_zero _ _ u]`. Conclude with `hu`. Introduce `q`. Rewrite using `[Polynomial.coeff_X_pow, if_neg (pow_pos hl _).ne]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coeff_aeval_one_add_X_pow_sub_one_ne_zero :
     ∀ (k σ : Type) [Field k] [Fintype σ] (l M : ℕ) [Fact l.Prime] [CharP k l] (D u : MvPolynomial σ k) (n e : σ → ℕ), u.coeff 0 ≠ 0 → D - u * ∏ q, MvPolynomial.X q ^ n q ∈ Ideal.span (Set.range fun q : σ => (MvPolynomial.X q : MvPolynomial σ k) ^ (l ^ M)) → ∑ q, n q * l ^ e q < l ^ M → (MvPolynomial.aeval (fun q => (1 + Polynomial.X : Polynomial k) ^ (l ^ e q) - 1) D).coeff (∑ q, n q * l ^ e q) ≠ 0 := by

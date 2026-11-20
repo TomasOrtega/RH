@@ -18,11 +18,9 @@ def cubeTen {S : Scheme.{0}} {G T : Over S} [GrpObj G] (x a b c : T ⟶ G) : Lis
   [x * a, x * a⁻¹, a, a⁻¹, x * b, x * c, x * (b * c)⁻¹, b, c, (b * c)⁻¹]
 
 /- English proof (translation)
-Establish `: farSet β s = (β '' (secNz s : Set Z)ᶜ)ᶜ`. Use extensionality with `v`. Simplify using `only [farSet, Set.mem_setOf_eq, Set.mem_compl_iff, Set.mem_image, not_exists, not_and]`. Prove the components needed by the constructor for the conclusion. Introduce `h g hg hgv`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hg (h g hgv)`. Introduce `h g hgv`. Assume the negation of the conclusion as `hg`. Conclude with `h g hg hgv`. Rewrite using `[this, isOpen_compl_iff]`.
-
-Conclude with `hβ _ (secNz s).isOpen.isClosed_compl`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isOpen_farSet {Z Y : Scheme.{0}} (β : Z ⟶ Y) (hβ : IsClosedMap β) {L : LB Z} (s : L.Sec) :
     IsOpen (farSet β s) := by

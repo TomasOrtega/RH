@@ -21,25 +21,23 @@ noncomputable section
 namespace GlobalTheory.ThK.Bot.Euler
 
 /- English proof (translation)
-Take `⟨ν, ⟨-, -, hν, hc⟩, -⟩` from `h.existsUnique_isHaarProd (fun _ => μa) μf (Eventually.of_forall h1)`. Establish `hμ` using `Measure.isMulLeftInvariant_eq_smul μ ν`. Establish `hc0` using `(Measure.haarScalarFactor_pos_of_isHaarMeasure μ ν).ne'`. Use `⟨_, hc0, fun S₀ G ga gf A a b mga mgf ma mb hga hgf ha0 hb1 hg1 hG hA hfin => ?_⟩` and prove the remaining obligations. Generalize the expression as in `Measure.haarScalarFactor μ ν = c at hμ hc0 ⊢`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the chosen expression with an arbitrary variable.
 
-Substitute `hμ` using the available equality. Establish `hfin' : ∫⁻ x, A x ∂ν ≠ ⊤` using `fun e => hfin (by`. Rewrite using `[lintegral_smul_measure, e, ENNReal.smul_def, smul_eq_mul, ENNReal.mul_top (by simpa using hc0)])`. Establish `ha : ∀ _ : Unit, Measurable pa` using `fun w => (h.continuous_pa w).measurable`. Establish `hf : ∀ v, Measurable (pf v)` using `fun v => (h.continuous_pf v).measurable`.
+Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hK : ∀ v, MeasurableSet (K v : Set (Yf v))` using `fun v => (h.isOpen_K v).measurableSet`. Establish `hA' : ∀ x, A x = (∏ _w : Unit, a (pa x)) * ∏ᶠ v, b v (pf v x)` using `fun x => by`. Take `⟨T, hT⟩` from `GlobalTheory.RestrMeas.exists_finset_of_eventually (h.eventually_mem x)`. Rewrite using `[hA T x hT, GlobalTheory.RestrMeas.finprod_eq_prod_of_mem (K := fun v => (K v : Set (Yf v))) (pf := fun v => pf v) (S := T) (fun v _ => hb1 v) hT, Finset.univ_unique, Finset.prod_singleton]`. Establish `hG' : G = fun x => (∏ _w : Unit, ga (pa x)) * ∏ᶠ v, gf v (pf v x)` using `funext fun x => by`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨T, hT⟩` from `GlobalTheory.RestrMeas.exists_finset_of_eventually (h.eventually_mem x)`. Establish `hT' : ∀ v ∉ S₀ ∪ T, pf v x ∈ K v` using `fun v hv => hT v fun e => hv (Finset.mem_union_right _ e)`. Rewrite using `[hG (S₀ ∪ T) x Finset.subset_union_left hT', GlobalTheory.RestrMeas.finprod_eq_prod_of_mem (K := fun v => (K v : Set (Yf v))) (pf := fun v => pf v) (S := S₀ ∪ T) (fun v hv => hg1 v fun e => hv (Finset.mem_union_left _ e)) hT', Finset.univ_unique, Finset.prod_singleton]`. Use `set L := ∫⁻ x, A x ∂ν with hL`. Use `set I := ∫⁻ y, a y ∂μa with hI`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hbd : ∀ T : Finset V, I * ∏ v ∈ T, ∫⁻ y, b v y ∂μf v ≤ L` using `fun T => by`. Use `hc.setLIntegral_tensor ha hf hK (fa := fun _ => a) (ff := b) (S := T) (fun v _ => h1 v) (fun v _ => hb1 v) (fun _ => ma.aemeasurable) (fun v _ => (mb v).aemeasurable)` as an intermediate fact. Rewrite `this` using `[Finset.univ_unique, Finset.prod_singleton]`. Rewrite using `[← this, hL]`. Use `(setLIntegral_le_lintegral _ _).trans (le_of_eq (lintegral_congr fun x => ?_))` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hA' x, Finset.univ_unique]`. Establish `hI0 : I ≠ 0` using `fun e => by`. Use `(lintegral_eq_zero_iff ma).1 e` as an intermediate fact. Take `⟨y, hy⟩` from `this.exists`. Conclude with `ha0 y hy`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hItop : I ≠ ⊤` using `ne_top_of_le_ne_top hfin' (by simpa using hbd ∅)`. Establish `hbd' : ∀ T : Finset V, ∏ v ∈ T, ∫⁻ y, b v y ∂μf v ≤ L / I` using `fun T => (ENNReal.le_div_iff_mul_le (Or.inl hI0) (Or.inl hItop)).2 (by rw [mul_comm]; exact hbd T)`. Establish `hLI : L / I ≠ ⊤` using `ENNReal.div_ne_top hfin' hI0`. Establish `hbtop : ∀ v, ∫⁻ y, b v y ∂μf v ≠ ⊤` using `fun v => ne_top_of_le_ne_top hLI (by simpa using hbd' {v})`. Establish `iga : Integrable ga μa` using `⟨mga.aestronglyMeasurable, (lintegral_mono hga).trans_lt hItop.lt_top⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `igf : ∀ v, Integrable (gf v) (μf v)` using `fun v => ⟨(mgf v).aestronglyMeasurable, (lintegral_mono (hgf v)).trans_lt (hbtop v).lt_top⟩`. Establish `hC : ∀ S : Finset V, S₀ ⊆ S → ∏ v ∈ S, ∫ y, ‖gf v y‖ ∂μf v ≤ (L / I).toReal` using `fun S _ => by`. Use `le_trans ?_ (ENNReal.toReal_mono hLI (hbd' S))` and prove the remaining obligations. Rewrite using `[ENNReal.toReal_prod]`. Use `Finset.prod_le_prod (fun v _ => integral_nonneg fun _ => norm_nonneg _) fun v _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[integral_norm_eq_lintegral_enorm (igf v).1]`. Conclude with `ENNReal.toReal_mono (hbtop v) (lintegral_mono (hgf v))`. Establish `hm` using `GlobalTheory.RestrMeas.multipliable_integral (K := fun v => (K v : Set (Yf v))) hK (fun v _ => h1 v) hg1 igf hC`. Establish `he` using `hc.integral_tensor_eq_tprod ha hf hK (fa := fun _ => ga) h.eventually_mem (fun v _ => h1 v) hg1 (fun _ => iga) igf hC`. Use `⟨_, hm.hasProd, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[integral_smul_nnreal_measure, hG', he, Finset.univ_unique, Finset.prod_singleton, mul_assoc]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem euler_of_majorant {X V Ya : Type} {Yf : V → Type} [Group X] [Group Ya] [∀ v, Group (Yf v)]
     [TopologicalSpace X] [TopologicalSpace Ya] [∀ v, TopologicalSpace (Yf v)] [Countable V]
@@ -117,7 +115,7 @@ theorem euler_of_majorant {X V Ya : Type} {Yf : V → Type} [Group X] [Group Ya]
   rfl
 
 /- English proof (translation)
-Proceed by induction on `T using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert v T hv ih`. Rewrite using `[Finset.prod_insert hv, Finset.prod_insert hv, NNReal.coe_mul, Complex.ofReal_mul, Complex.mul_cpow_ofReal_nonneg (NNReal.coe_nonneg _) (NNReal.coe_nonneg _), ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem cpow_prod {ι : Type} (T : Finset ι) (a : ι → ℝ≥0) (z : ℂ) :
     (((∏ v ∈ T, a v : ℝ≥0) : ℝ) : ℂ) ^ z = ∏ v ∈ T, ((a v : ℝ) : ℂ) ^ z := by
@@ -129,43 +127,35 @@ theorem cpow_prod {ι : Type} (T : Finset ι) (a : ι → ℝ≥0) (z : ℂ) :
       Complex.mul_cpow_ofReal_nonneg (NNReal.coe_nonneg _) (NNReal.coe_nonneg _), ih]
 
 /- English proof (translation)
-Introduce `hKP F E _ _ _ _ _ σ B n d X W M χX χW om r s' r₁ s₁ hP _ _ _ _ _ X₂ i K₂ hD _ _ m hm K hK f _ φ hSB hvac hne μ μi μv hμ hμi hμv`. Use `haveI : BorelSpace (UA σ X.J) := ⟨rfl⟩`. Take `⟨hTG, hLC, hSC, hT2⟩` from `GlobalTheory.UnitaryAdelicTop.lcsc_UA F E σ n X.J`. Use `haveI := GlobalTheory.AdelicUnitaryTop.countable_heightOneSpectrum F`. Use `haveI : LocallyCompactSpace (UAtSub σ X (evI F)) := (isClosed_UAtSub X _).locallyCompactSpace`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `haveI : ∀ v : Pl F, LocallyCompactSpace (UAtSub σ X (evFin F v)) := fun v => (isClosed_UAtSub X _).locallyCompactSpace`. Use `haveI : ∀ v : Pl F, BorelSpace (UAtSub σ X (evFin F v)) := fun v => inferInstance`. Use `haveI : ∀ v : Pl F, IsTopologicalGroup (UAtSub σ X (evFin F v)) := fun v => inferInstance`. Use `haveI : ∀ v : Pl F, SecondCountableTopology (UAtSub σ X (evFin F v)) := fun v => inferInstance`. Use `haveI := fun v => (hμv v).1`.
+Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Supply the required witnesses or components.
 
-Establish `hR` using `GlobalTheory.T.restricted_product_unitary_group F E σ B n r s' X hP.base hP.herm K hK`. Establish `hΦ : pure f φ ∈ schA F (Fin n × Fin d)` using `GlobalTheory.ConeMeasV.pure_mem_schA hP.good f φ hSB hvac`. Take `⟨hc1, hcb, hcm⟩` from `GlobalTheory.T.theta_lift_haar_integral_formula F E σ B n d X W M χX χW om r s' r₁ s₁ hP m hm _ hΦ hne`. Establish `hcf` using `GlobalTheory.T.theta_lift_haar_integral_convergent hKP F E σ B n d X W M χX χW om r s' r₁ s₁ hP m hm f φ hSB hvac hc1`. Establish `hcpt : IsCompact {k : UA σ X.J | compArch σ X.J k = 1 ∧ ∀ v, compAt σ X.J v k ∈ K}`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Use `hR.isCompact_level (fun _ => {1}) (fun _ => isCompact_singleton) using 1` and compare the differences between its conclusion and the goal. Use extensionality with `k`. Conclude with `⟨fun h => ⟨fun _ => Subtype.ext h.1, h.2⟩, fun h => ⟨congrArg Subtype.val (h.1 ()), h.2⟩⟩`. Take `⟨S₀, hfix⟩` from `GlobalTheory.T.theta_lift_schwartz_compact_invariant hKP F E σ B n d X W M χX χW om r s' r₁ s₁ hP K hcpt _ hΦ`. Take `⟨hH1, hHm⟩` from `GlobalTheory.T.doubling_height_function_invariant F E σ B n r s' X hP.base hP.herm X₂ i K₂ hD K hK`.
+Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Take `⟨hHc, R, hHi⟩` from `GlobalTheory.T.doubling_height_function_continuous F E σ B n r s' X hP.base hP.herm X₂ i K₂ hD`. Use `set Φ := pure f φ with hΦdef`. Establish `hHpos : ∀ g : UA σ X.J, 0 < hgtOf finSumFinEquiv (UG (cA σ) (incM F X₂.J)).subtype (absE F E) K₂ (i (g, 1))` using `fun g => hgtOf_pos _`. Unfold `zetaOn`. Generalize the expression as in `hHdef : (fun g : UA σ X.J => hgtOf finSumFinEquiv (UG (cA σ) (incM F X₂.J)).subtype (absE F E) K₂ (i (g, 1))) = H at hHc`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Establish `hHe : ∀ g : UA σ X.J, hgtOf finSumFinEquiv (UG (cA σ) (incM F X₂.J)).subtype (absE F E) K₂ (i (g, 1)) = H g` using `fun g => congrFun hHdef g`. Simplify using `only [hHe] at hH1 hHm hHi hHpos ⊢`. Establish `hmul : ∀ g k : UA σ X.J, om (k, 1) Φ = Φ → coef m om Φ (g * k) = coef m om Φ g` using `fun g k hk => by`. Unfold `coef`. Rewrite using `[show (g * k, (1 : UA σ W.J)) = (g, 1) * (k, 1) by simp, map_mul, Module.End.mul_apply, hk]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hcK : ∀ v ∉ S₀, ∀ k ∈ K, k ∈ UAt σ X (evFin F v) → coef m om Φ k = coef m om Φ 1` using `fun v hv k hk hkv => by`. Take `⟨h1, h2, h3⟩` from `(SuppOne.comp_of_supp F E σ n X k).1 v hkv`. Use `hmul 1 k (hfix k h2 (fun w => by` as an intermediate fact. Distinguish the cases in `e : w = v`. Rewrite using `[e, h1]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hk`. Rewrite using `[h3 w e]`. Conclude with `one_mem _) fun w hw => h3 w fun e => hv (e ▸ hw))`. Rewrite `this` using `[one_mul]`. Then use the resulting hypothesis. Establish `hcT : ∀ (T : Finset (Pl F)) (g : UA σ X.J), S₀ ⊆ T → (∀ v ∉ T, compAt σ X.J v g ∈ K) → coef m om Φ g / coef m om Φ 1 = coef m om Φ (compArch σ X.J g) / coef m om Φ 1 * ∏ v ∈ T, coef m om Φ (compAt σ X.J v g) / coef m om Φ 1` using `fun T g hT hg => by`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Take `⟨x, hxa, hxf⟩` from `hR.exists_eq (fun _ => ⟨compArch σ X.J g, compArch_mem g⟩) (fun v => if v ∈ T then ⟨compAt σ X.J v g, compAt_mem v g⟩ else 1) (GlobalTheory.RestrMeas.eventually_of_finset T fun v hv => by rw [if_neg hv]; exact one_mem _)`. Establish `ea : compArch σ X.J x = compArch σ X.J g` using `congrArg Subtype.val (hxa ())`. Establish `e1 : ∀ v ∈ T, compAt σ X.J v x = compAt σ X.J v g` using `fun v hv => by`. Use `hxf v` as an intermediate fact. Rewrite `this` using `[if_pos hv]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `congrArg Subtype.val this`. Establish `e2 : ∀ v ∉ T, compAt σ X.J v x = 1` using `fun v hv => by`. Use `hxf v` as an intermediate fact. Rewrite `this` using `[if_neg hv]`. Conclude with `congrArg Subtype.val this`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `hk` using `hfix (x⁻¹ * g) (by rw [map_mul, map_inv, ea, inv_mul_cancel]) (fun v => by`. Distinguish the cases in `hv : v ∈ T`. Rewrite using `[map_mul, map_inv, e1 v hv, inv_mul_cancel]`. Conclude with `one_mem _`. Rewrite using `[map_mul, map_inv, e2 v hv, inv_one, one_mul]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hg v hv)`. Use `fun v hv => by rw [map_mul, map_inv, e1 v (hT hv), inv_mul_cancel]`. Use `hmul x _ hk` as an intermediate fact. Rewrite `this` using `[mul_inv_cancel_left]`. Rewrite using `[this, hcf T x e2, ea]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Conclude with `congrArg _ (Finset.prod_congr rfl fun v hv => by rw [e1 v hv])`. Establish `hemb : MeasurableEmbedding (Subtype.val : (⊤ : Subgroup (UA σ X.J)) → UA σ X.J)` using `MeasurableEmbedding.subtype_coe (s := ((⊤ : Subgroup (UA σ X.J)) : Set (UA σ X.J))) MeasurableSet.univ`. Use `haveI hμ' : (μ.map (Subtype.val : (⊤ : Subgroup (UA σ X.J)) → UA σ X.J)).IsHaarMeasure := MulEquiv.isHaarMeasure_map μ (Subgroup.topEquiv (G := UA σ X.J)) continuous_subtype_val (continuous_id.subtype_mk _)`. Take `⟨c, hc0, hE⟩` from `euler_of_majorant hR (μ.map Subtype.val) μi μv (fun v => (hμv v).2)`. Use `⟨c, R + ((d : ℝ) - n) / 2, by exact_mod_cast hc0, fun s hs => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `set z := s - ((d : ℂ) - (n : ℂ)) / 2 with hz`. Establish `hzre : R < z.re`. Establish `: z.re = s.re - ((d : ℝ) - n) / 2` using `by simp [hz]`. Combine the linear equalities and inequalities to obtain the conclusion. Set `G : UA σ X.J → ℂ` to `fun g => coef m om Φ g / coef m om Φ 1 * (((H g : ℝ≥0) : ℝ) : ℂ) ^ z`.
+Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Set `A : UA σ X.J → ℝ≥0∞` to `fun g => ENNReal.ofReal ((H g : ℝ) ^ z.re)`. Establish `hp : ∀ g, (0 : ℝ) < H g` using `hHpos`. Establish `mH : Measurable fun g => (H g : ℝ)` using `(NNReal.continuous_coe.comp hHc).measurable`. Establish `mG : Measurable G` using `(hcm.div_const _).mul ((Complex.measurable_ofReal.comp mH).pow_const _)`. Establish `mA : Measurable A` using `(mH.pow_const _).ennreal_ofReal`.
-
-Establish `hGA : ∀ g, ‖G g‖ₑ ≤ A g` using `fun g => by`. Rewrite using `[← ofReal_norm_eq_enorm]`. Use `ENNReal.ofReal_le_ofReal ?_` and prove the remaining obligations. Simplify using `only [G]`. Rewrite using `[norm_mul, Complex.norm_cpow_eq_rpow_re_of_pos (hp g), norm_div]`.
-
-Conclude with `mul_le_of_le_one_left (Real.rpow_nonneg (hp g).le _) (div_le_one_of_le₀ (hcb g) (norm_nonneg _))`. Take `⟨P, hP1, hP2⟩` from `hE S₀ G (fun y => G y.1) (fun v y => G y.1) A (fun y => A y.1) (fun v y => A y.1) (mG.comp measurable_subtype_coe) (fun v => mG.comp measurable_subtype_coe) (mA.comp measurable_subtype_coe) (fun v => mA.comp measurable_subtype_coe) (fun y => hGA _) (fun v y => hGA _) (fun y => (E …`. Express the relevant statement in the definitionally equal form `G x = G (compArch σ X.J x) * ∏ v ∈ T, G (compAt σ X.J v x)`. Simplify using `only [G]`. Rewrite using `[hcT T x hT hx, hHm T x hx, Finset.prod_mul_distrib, NNReal.coe_mul, Complex.ofReal_mul, Complex.mul_cpow_ofReal_nonneg (NNReal.coe_nonneg _) (NNReal.coe_nonneg _), cpow_prod]`.
-
-Use the proof step `ring)`. Use the proof step `(fun T x hx => by`. Express the relevant statement in the definitionally equal form `A x = A (compArch σ X.J x) * ∏ v ∈ T, A (compAt σ X.J v x)`. Simplify using `only [A]`. Rewrite using `[hHm T x hx, NNReal.coe_mul, Real.mul_rpow (NNReal.coe_nonneg _) (NNReal.coe_nonneg _), ENNReal.ofReal_mul (Real.rpow_nonneg (NNReal.coe_nonneg _) _), NNReal.coe_prod, ← Real.finset_prod_rpow _ _ (fun _ _ => NNReal.coe_nonneg _), ENNReal.ofReal_prod_of_nonneg fun _ _ => Real.rpow …`.
-
-Use the proof step `(hHi _ hμ' _ hzre).lintegral_lt_top.ne`. Use `⟨P, hP1, ?_⟩` and prove the remaining obligations. Rewrite `hP2` using `[hemb.integral_map]`. Conclude with `hP2`.
+A detailed English derivation is pending.
 -/
 theorem zeta_euler : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (n d : ℕ) (X : Spc F E n) (W : Spc F E d) (M : Model σ X W) (χX χW : Chr F E) (om : Rep σ X W) (r s' r₁ s₁ : ℕ),
     IsPair B M χX χW om r s' r₁ s₁ → min r s' = 0 → min r₁ s₁ = 0 → 1 ≤ n → n < d → Even d →

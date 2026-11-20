@@ -12,27 +12,27 @@ namespace GlobalTheory.CompanionTheory.Ar.Fan.StarDepthOnCell
 open GlobalTheory.PolFan.StarOnCell in
 
 /- English proof (translation)
-Introduce `O _ _ _ _ bar _hb q ψ w _ hc X _ _ _ _ hX m γ hγ β₀ hβ₀ hβ₀p hw hin m' s h hf hpos`. Establish `huniq : ∀ v ∈ balForms bar X, (∀ y, 0 ≤ v y y) → w.evalZ v = 1 → InRCone γ v → v = β₀` using `fun v hv hvp hwv hvin => (hc X hX).2.2 m γ hγ v hv hvp β₀ hβ₀ hβ₀p hwv hw hvin hin`. Establish `hne : β₀ ≠ 0`. Introduce and unpack `rfl`. Use `(hc X hX).2.1 0 hβ₀ hβ₀p hw 2 0 (by simp)` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Establish `hpos' : (0 : ℝ) < h β₀` using `by exact_mod_cast hpos`. Establish `hI : ∀ β, InRCone γ β → (h β₀ : ℝ) * (starDepth bar ψ w).evalZ β ≤ h β` using `fun β hβ => mul_starDepth_le hγ huniq h hf.1 hpos hβ`. Use `⟨fun β _ _ hβ => hI β hβ, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `le_antisymm ?_ ?_` and prove the remaining obligations.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `hI β₀ hin` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish `hl` using `GlobalTheory.T.centreDepth_le_starDepth_of_cell O bar ψ w X m γ (toReal β₀) β₀ 1 hγ (by`. Take `⟨c, hc0, e⟩` from `hin`. Conclude with `⟨c, hc0, e⟩) hβ₀ hβ₀p hw hin hne huniq zero_le_one`.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use the proof step `(by rw [one_smul, sub_self]; exact ⟨0, fun _ => le_rfl, by simp⟩)`. Rewrite `hl` using `[evalR_toReal]`. Then use the resulting hypothesis. Introduce `j`. Establish `h0 : h (γ (s j)) = 0` using `(hf.2 (s j)).2 ⟨j, rfl⟩`. Use `hI (γ (s j)) (inRCone_self γ (s j))` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[h0, Int.cast_zero]`. Establish `hnn : 0 ≤ (starDepth bar ψ w).evalZ (γ (s j))` using `starDepth_eval_nonneg _`. Use the polynomial consequences of the given equalities and inequalities. Introduce `β _ _ hβ heq`. Establish `hβr : toReal β ∈ rcone γ` using `by obtain ⟨c, hc0, e⟩ := hβ; exact ⟨c, hc0, e⟩`.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨m'', s'', h'', hf'', hpos'', t, ht, e⟩` from `GlobalTheory.StarCover.star_cover X m γ β₀ (toReal β) (fun i => (hγ.mem i).1) hγ.nonneg hne hin hβr`. Establish `hpos''' : (0 : ℝ) < h'' β₀` using `by exact_mod_cast hpos''`. Establish `r2` using `ell_of_eq h'' e`. Rewrite `r2` using `[Fin.sum_univ_succ]`. Simplify using `only [Fin.cons_zero, Fin.cons_succ] at r2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `z2 : ∀ j, (h'' (γ (s'' j)) : ℝ) = 0` using `fun j => by`. Rewrite using `[(hf''.2 (s'' j)).2 ⟨j, rfl⟩, Int.cast_zero]`. Simplify using `only [z2, mul_zero, Finset.sum_const_zero, add_zero] at r2`. Establish `hle : (starDepth bar ψ w).evalZ β ≤ t 0`. Use `mul_starDepth_le hγ huniq h'' hf''.1 hpos'' hβ` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[r2]`. Use the polynomial consequences of the given equalities and inequalities. Establish `r1` using `ell_of_eq h e`. Rewrite `r1` using `[Fin.sum_univ_succ]`. Simplify using `only [Fin.cons_zero, Fin.cons_succ] at r1`.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hnn : ∀ j ∈ Finset.univ, 0 ≤ t j.succ * (h (γ (s'' j)) : ℝ)` using `fun j _ => mul_nonneg (ht _) (by exact_mod_cast hf.1 _)`. Establish `hsum : ∑ j, t j.succ * (h (γ (s'' j)) : ℝ) = 0`. Use `le_antisymm ?_ (Finset.sum_nonneg hnn)` and prove the remaining obligations. Use the polynomial consequences of the given equalities and inequalities. Establish `hz` using `(Finset.sum_eq_zero_iff_of_nonneg hnn).1 hsum`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcone : InRCone (Fin.cons β₀ fun j => γ (s j) : Fin (m' + 1) → LinearMap.BilinForm ℤ X) β`. Use `inRCone_of_sum t ht e fun i hi => ?_` and prove the remaining obligations. Use `Fin.cases (fun _ => ?_) (fun j hj => ?_) i hi` and prove the remaining obligations. Simplify using `using inRCone_self (Fin.cons β₀ fun j => γ (s j) : Fin (m' + 1) → LinearMap.BilinForm ℤ X) 0`. Establish `h0 : (h (γ (s'' j)) : ℝ) = 0` using `(mul_eq_zero.1 (hz j (Finset.mem_univ _))).resolve_left hj`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0' : h (γ (s'' j)) = 0` using `by exact_mod_cast h0`. Take `⟨k, hk⟩` from `(hf.2 (s'' j)).1 h0'`. Simplify `inRCone_self (Fin.cons β₀ fun j => γ (s j) : Fin (m' + 1) → LinearMap.BilinForm ℤ X) k.succ` using `[hk]`. Conclude with `exists_nat_of_inRCone _ β hcone`.
+Extract witnesses or component facts from the available result. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem starDepth_on_cell : ∀ (O : Type) [CommRing O] [IsDedekindDomain O] [CharZero O] [Module.Finite ℤ O] (bar : O → O), CMOrd O bar → ∀ (q : ℕ) (ψ w : InvFun O), IsPolyFan bar q ψ → IsCentreSet bar q ψ w → ∀ (X : Type) [AddCommGroup X] [Module O X] [Module.Finite O X] [Module.Projective O X], Module.finrank O X ≤ q → ∀ (m : ℕ) (γ : Fin m → LinearMap.BilinForm ℤ X), IsCell bar ψ γ → ∀ β₀ ∈ balForms bar X, (∀ y, 0 ≤ β₀ y y) → w.evalZ β₀ = 1 → InRCone γ β₀ → ∀ (m' : ℕ) (s : Fin m' ↪ Fin m) (h : LinearMap.BilinForm ℤ X →ₗ[ℤ] ℤ), IsFaceCut γ s h → 0 < h β₀ → (∀ β ∈ balForms bar X, (∀ y, 0 ≤ β y y) → InRCone γ β → (h β₀ : ℝ) * (starDepth bar ψ w).evalZ β ≤ h β) ∧ (starDepth bar ψ w).evalZ β₀ = 1 ∧ (∀ j, (starDepth bar ψ w).evalZ (γ (s j)) = 0) ∧ ∀ β ∈ balForms bar X, (∀ y, 0 ≤ β y y) → InRCone γ β → (h β₀ : ℝ) * (starDepth bar ψ w).evalZ β = h β → ∃ (k : ℕ) (c : Fin (m' + 1) → ℕ), 0 < k ∧ k • β = ∑ i, c i • (Fin.cons β₀ fun j => γ (s j) : Fin (m' + 1) → LinearMap.BilinForm ℤ X) i := by
   intro O _ _ _ _ bar _hb q ψ w _ hc X _ _ _ _ hX m γ hγ β₀ hβ₀ hβ₀p hw hin m' s h hf hpos

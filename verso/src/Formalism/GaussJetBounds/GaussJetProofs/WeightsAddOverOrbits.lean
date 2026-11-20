@@ -12,7 +12,7 @@ namespace Formalism.DworkPowerSeriesWeights
 open Formalism.IncomingBounds
 
 /- English proof (translation)
-Unfold `dot`. Conclude with `Finsupp.sum_fintype _ _ (by simp)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem coreL_dot_fintype {ι : Type v} [Fintype ι] (n : ι →₀ ℕ) (r : ι → ℝ) :
     dot n r = ∑ i, (n i : ℝ) * r i := by

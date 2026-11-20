@@ -5,17 +5,17 @@ namespace GlobalTheory.MonicSeparableProduct
 open Polynomial
 
 /- English proof (translation)
-Introduce `n`. Proceed by induction on `n with`. Consider the case `zero`. Introduce `f hf h0`. Conclude with `⟨0, by simpa using (hf.natDegree_eq_zero).1 h0⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Consider the case `succ n ih`. Introduce `f hf hn`. Establish `hinj : Function.Injective (algebraMap W F)` using `Subtype.val_injective`. Establish `hdeg : f.degree ≠ 0`. Rewrite using `[degree_eq_natDegree hf.ne_zero, hn]`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Nat.succ_ne_zero n` after adjusting the coercions. Take `⟨x, hx⟩` from `IsAlgClosed.exists_eval₂_eq_zero_of_injective (algebraMap W F) hinj f hdeg`. Establish `hint : IsIntegral W x` using `⟨f, hf, hx⟩`. Take `⟨r, hr⟩` from `IsIntegrallyClosed.algebraMap_eq_of_integral hint`. Establish `hroot : f.IsRoot r`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hinj` to reduce the goal to its premises. Rewrite using `[map_zero, ← hx, ← hr, eval₂_at_apply]`. Establish `hfac` using `mul_divByMonic_eq_iff_isRoot.2 hroot`. Establish `hq : (f /ₘ (X - C r)).Monic`. Apply `Monic.of_mul_monic_left (monic_X_sub_C r)` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hfac]`. Conclude with `hf`. Establish `hqd : (f /ₘ (X - C r)).natDegree = n`. Rewrite using `[natDegree_divByMonic f (monic_X_sub_C r), hn, natDegree_X_sub_C]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨M, hM⟩` from `ih _ hq hqd`. Use `⟨r ::ₘ M, ?_⟩` and prove the remaining obligations. Rewrite using `[Multiset.map_cons, Multiset.prod_cons, ← hM, hfac]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem monic_eq_prod {F : Type} [Field F] [IsAlgClosed F] (W : ValuationSubring F) :
     ∀ (n : ℕ) (f : W[X]), f.Monic → f.natDegree = n →
@@ -49,31 +49,29 @@ theorem monic_eq_prod {F : Type} [Field F] [IsAlgClosed F] (W : ValuationSubring
     rw [Multiset.map_cons, Multiset.prod_cons, ← hM, hfac]
 
 /- English proof (translation)
-Take `⟨f, hf, hft⟩ : IsIntegral W t` from `Algebra.IsIntegral.isIntegral t`. Take `⟨M, hM⟩` from `monic_eq_prod W _ f hf rfl`. Establish `h0 : (M.map (fun r => t - algebraMap W A r)).prod = 0`. Establish `: aeval t f = 0` using `hft`. Rewrite `this` using `[hM, map_multiset_prod, Multiset.map_map]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `using this`. Use `set s : A := ((M.filter (fun r => IsUnit r)).map (fun r => t - algebraMap W A r)).prod with hs`. Use `set g : A := ((M.filter (fun r => ¬ IsUnit r)).map (fun r => t - algebraMap W A r)).prod with hg`. Establish `hsg : s * g = 0`. Rewrite using `[hs, hg, ← Multiset.prod_add, ← Multiset.map_add, Multiset.filter_add_not, h0]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hcop : IsCoprime s g`. Rewrite using `[hs]`. Use `Multiset.prod_induction (fun x => IsCoprime x g) _ (fun a b ha hb => ha.mul_left hb) isCoprime_one_left ?_` and prove the remaining obligations. Introduce `x hx`. Take `⟨r, hr, rfl⟩` from `Multiset.mem_map.1 hx`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hru : IsUnit r` using `(Multiset.mem_filter.1 hr).2`. Rewrite using `[hg]`. Use `Multiset.prod_induction (fun y => IsCoprime (t - algebraMap W A r) y) _ (fun a b ha hb => ha.mul_right hb) isCoprime_one_right ?_` and prove the remaining obligations. Introduce `y hy`. Take `⟨r', hr', rfl⟩` from `Multiset.mem_map.1 hy`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hru' : ¬ IsUnit r'` using `(Multiset.mem_filter.1 hr').2`. Establish `hd : IsUnit (r - r')`. Assume the negation of the conclusion as `hnu`. Establish `h1 : r - r' ∈ IsLocalRing.maximalIdeal W` using `hnu`. Establish `h2 : r' ∈ IsLocalRing.maximalIdeal W` using `hru'`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h3 : r ∈ IsLocalRing.maximalIdeal W`. Simplify using `using add_mem h1 h2`. Conclude with `h3 hru`. Take `⟨u, hu⟩` from `hd.exists_left_inv`. Use `⟨-algebraMap W A u, algebraMap W A u, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Use `congrArg (algebraMap W A) hu` as an intermediate fact. Rewrite `this` using `[map_mul, map_sub, map_one]`. Take the linear combination `this`. Take `⟨b, a, hab⟩` from `hcop`. Use `⟨s, b, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hs, map_multiset_prod]`. Use `Multiset.prod_induction IsUnit _ (fun a b ha hb => ha.mul hb) isUnit_one ?_` and prove the remaining obligations. Introduce `x hx`. Rewrite `hx` using `[Multiset.map_map]`. Take `⟨r, hr, rfl⟩` from `Multiset.mem_map.1 hx`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hru : IsUnit r` using `(Multiset.mem_filter.1 hr).2`. Establish `: aug (t - algebraMap W A r) = -r`. Rewrite using `[map_sub, ht, AlgHom.commutes]`. Simplify using the standard rewrite rules. Use `show IsUnit (aug (t - algebraMap W A r))`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[this]`. Conclude with `hru.neg`. Take the linear combination `(-s) * hab + a * hsg`. Introduce `P hP hpP hsP`. Establish `hgP : g ∈ P`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `: s * g ∈ P` using `by rw [hsg]; exact P.zero_mem`. Conclude with `(hP.mem_or_mem this).resolve_left hsP`. Rewrite `hgP` using `[hg]`. Take `⟨y, hy, hyP⟩` from `(hP.multiset_prod_mem_iff_exists_mem _).1 hgP`. Take `⟨r, hr, rfl⟩` from `Multiset.mem_map.1 hy`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Take `⟨n, hn⟩` from `hp r (Multiset.mem_filter.1 hr).2`. Take `⟨c, hc⟩` from `Ideal.mem_span_singleton'.1 hn`. Establish `: algebraMap W A r ^ n ∈ P`. Rewrite using `[← map_pow, ← hc, map_mul]`. Conclude with `P.mul_mem_left _ hpP`.
-
-Establish `h2` using `hP.mem_of_pow_mem n this`. Simplify using `using add_mem hyP h2`.
+A detailed English derivation is pending.
 -/
 theorem exists_sep {F : Type} [Field F] [IsAlgClosed F] (W : ValuationSubring F) (p : W)
     (hp : ∀ a : W, ¬IsUnit a → ∃ n : ℕ, a ^ n ∈ Ideal.span {p})
@@ -146,39 +144,35 @@ theorem exists_sep {F : Type} [Field F] [IsAlgClosed F] (W : ValuationSubring F)
     simpa using add_mem hyP h2
 
 /- English proof (translation)
-Introduce `F _ _ W p hp A _ _ _ aug`. Take `⟨S, hS⟩ : (⊤ : Submodule W A).FG` from `Module.Finite.fg_top`. Set `τ : A → A` to `fun a => a - algebraMap W A (aug a)`. Establish `hτ : ∀ a, aug (τ a) = 0`. Introduce `a`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [τ]`. Rewrite using `[map_sub, AlgHom.commutes]`. Simplify using the standard rewrite rules. Use `choose σ β h1 h2 h3 using fun a => exists_sep W p hp A aug (τ a) (hτ a)`. Establish `hker : RingHom.ker aug = Ideal.span ((S.image τ : Finset A) : Set A)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `le_antisymm` to reduce the goal to its premises. Introduce `x hx`. Establish `key : ∀ y ∈ Submodule.span W (S : Set A), τ y ∈ Ideal.span ((S.image τ : Finset A) : Set A)`. Introduce `y hy`. Proceed by induction on `hy using Submodule.span_induction with`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `mem y hy`. Apply `Ideal.subset_span` to reduce the goal to its premises. Simplify using `only [Finset.coe_image]`. Conclude with `⟨y, hy, rfl⟩`. Consider the case `zero => simp [τ]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Supply the required witnesses or components. Treat this case separately. Treat this case separately.
 
-Consider the case `add y z _ _ hy hz`. Establish `: τ (y + z) = τ y + τ z` using `by simp only [τ, map_add]; ring`. Rewrite using `[this]`. Conclude with `add_mem hy hz`. Consider the case `smul c y _ hy`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `: τ (c • y) = algebraMap W A c * τ y`. Simplify using `only [τ]`. Rewrite using `[map_smul, smul_eq_mul, map_mul, Algebra.smul_def]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Ideal.mul_mem_left _ _ hy`. Use `key x (by rw [hS]; trivial)` as an intermediate fact. Establish `hx0 : aug x = 0` using `hx`. Simplify `this` using `[τ, hx0]`. Rewrite using `[Ideal.span_le]`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Introduce `x hx`. Simplify using `only [Finset.coe_image] at hx`. Take `⟨y, -, rfl⟩` from `hx`. Conclude with `hτ y`. Use `set s : A := ∏ a ∈ S, σ a with hs`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hsu : IsUnit (aug s)`. Rewrite using `[hs, map_prod]`. Conclude with `Finset.prod_induction _ IsUnit (fun a b ha hb => ha.mul hb) isUnit_one (fun a _ => h1 a)`. Establish `hsb : s = (∏ a ∈ S, β a) * s ^ 2`. Rewrite using `[hs, ← Finset.prod_pow, ← Finset.prod_mul_distrib]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `Finset.prod_congr rfl (fun a _ => h2 a)`. Use `set b : A := ∏ a ∈ S, β a with hb`. Establish `hLu : IsUnit (algebraMap A (Localization.Away s) s)` using `IsLocalization.Away.algebraMap_isUnit s`. Use `⟨s, ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `hinv : algebraMap A (Localization.Away s) s * algebraMap A (Localization.Away s) b = 1`.
+Take a linear combination of the given relations to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Apply `hLu.mul_left_cancel` to reduce the goal to its premises. Use `congrArg (algebraMap A (Localization.Away s)) hsb` as an intermediate fact. Rewrite `this` using `[map_mul, map_pow]`. Take the linear combination `-this`. Introduce `z`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Take `⟨n, a, ha⟩` from `IsLocalization.Away.surj s z`. Use `⟨a * b ^ n, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, map_pow, ← ha, mul_assoc, ← mul_pow, hinv, one_pow, mul_one]`. Apply `Ideal.exists_pow_le_of_le_radical_of_fg` to reduce the goal to its premises. Rewrite using `[hker, Ideal.map_span, Ideal.span_le]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `_ ⟨x, hx, rfl⟩`. Simplify using `only [Finset.coe_image] at hx`. Take `⟨y, hy, rfl⟩` from `hx`. Rewrite using `[Ideal.radical_eq_sInf]`. Use `Ideal.mem_sInf.2 ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Introduce and unpack `P ⟨hle, hP⟩`. Use `h3 y (P.comap (algebraMap A (Localization.Away s))) inferInstance ?_ ?_` and prove the remaining obligations. Rewrite using `[Ideal.mem_comap, ← IsScalarTower.algebraMap_apply]`. Conclude with `hle (Ideal.mem_span_singleton_self _)`. Introduce `hmem`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hsm : s ∈ P.comap (algebraMap A (Localization.Away s))` using `Ideal.mem_of_dvd _ (Finset.dvd_prod_of_mem σ hy) hmem`. Conclude with `hP.ne_top (Ideal.eq_top_of_isUnit_mem _ hsm hLu)`. Apply `Ideal.FG.map` to reduce the goal to its premises. Rewrite using `[hker]`. Conclude with `⟨_, rfl⟩`.
-
-Introduce `R _ _ w hw`. Establish `hn` using `hw (τ s) (hτ s)`. Establish `hu : IsUnit (algebraMap W R (aug s))` using `hsu.map _`. Establish `: w s = algebraMap W R (aug s) + w (τ s)`. Simplify using `only [τ]`.
-
-Rewrite using `[map_sub, AlgHom.commutes]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`. Conclude with `hn.isUnit_add_left_of_commute hu (Commute.all _ _)`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem main : ∀ (F : Type) [inst : Field F] [IsAlgClosed F] (W : ValuationSubring F) (p : ↥W), (∀ (a : ↥W), ¬IsUnit a → ∃ (n : ℕ), a ^ n ∈ Ideal.span {p}) → ∀ (A : Type) [inst_2 : CommRing A] [inst_3 : Algebra (↥W) A] [Module.Finite (↥W) A] (aug : A →ₐ[↥W] ↥W), ∃ (s : A), Function.Surjective (⇑(Algebra.algebraMap A (Localization.Away s)) : A → Localization.Away s) ∧ (∃ (m : ℕ), Ideal.map (Algebra.algebraMap A (Localization.Away s)) (RingHom.ker aug) ^ m ≤ Ideal.span {(Algebra.algebraMap (↥W) (Localization.Away s) : ↥W → Localization.Away s) p}) ∧ ∀ (R : Type) [inst_5 : CommRing R] [inst_6 : Algebra (↥W) R] (w : A →ₐ[↥W] R), (∀ t ∈ RingHom.ker aug, IsNilpotent ((w : A → R) t)) → IsUnit ((w : A → R) s) := by
   intro F _ _ W p hp A _ _ _ aug

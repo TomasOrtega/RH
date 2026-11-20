@@ -13,7 +13,7 @@ namespace GlobalTheory.TorusDict
 open GlobalTheory.AdelicU
 
 /- English proof (translation)
-Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `θ τ (infPart D (Formalism.L2.Theta.mt V a i j)) = _`. Rewrite using `[eq_infProj hθ (embOverOf D τ) rfl]`. Conclude with `GlobalTheory.Doubling.infProj_fst (embOverOf D τ) _`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem compAt_mt {D : D7} {θ : InfFam D} (hθ : IsInfFam θ) (V : HSp D) (a : GA D V) (τ : D.what₂.Tau) :
     Formalism.IndefR.Datum.compAt θ τ (Formalism.L2.Theta.mt V a) =
@@ -24,7 +24,7 @@ theorem compAt_mt {D : D7} {θ : InfFam D} (hθ : IsInfFam θ) (V : HSp D) (a : 
   exact GlobalTheory.Doubling.infProj_fst (embOverOf D τ) _
 
 /- English proof (translation)
-Introduce `D θ hθ V r X Y t a ha`. Use `⟨congrArg Units.val (MonoidHom.mem_ker.1 ha.1), fun τ => ?_⟩` and prove the remaining obligations. Rewrite using `[compAt_mt hθ V a τ]`. Conclude with `ha.2 (placeOf D τ) (embOverOf D τ)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem torus_dict : ∀ (D : D7) (θ : InfFam D), IsInfFam θ → ∀ (V : HSp D) (r : ℕ) (X Y : Matrix (Fin V.rank) (Fin r) D.host.E) (t : Fin r → ℝ) (a : GA D V), GlobalTheory.SiegelSet.IsTorusElt D.sp.cm.sig V.gram X Y t a → (Formalism.L2.Theta.mt V a).map (finPart D) = 1 ∧ ∀ τ, Formalism.IndefR.Datum.compAt θ τ (Formalism.L2.Theta.mt V a) * X.map (tauE D τ) = X.map (tauE D τ) * Matrix.diagonal (fun i => ((t i : ℝ) : ℂ)) ∧ Formalism.IndefR.Datum.compAt θ τ (Formalism.L2.Theta.mt V a) * Y.map (tauE D τ) = Y.map (tauE D τ) * Matrix.diagonal (fun i => ((t i : ℝ) : ℂ)⁻¹) ∧ ∀ z : Fin V.rank → D.host.E, (Formalism.UG.cT (D.sp.cm.sig : D.host.E →+* D.host.E) X * V.gram) *ᵥ z = 0 → (Formalism.UG.cT (D.sp.cm.sig : D.host.E →+* D.host.E) Y * V.gram) *ᵥ z = 0 → Formalism.IndefR.Datum.compAt θ τ (Formalism.L2.Theta.mt V a) *ᵥ (fun i => tauE D τ (z i)) = fun i => tauE D τ (z i) := by
   intro D θ hθ V r X Y t a ha

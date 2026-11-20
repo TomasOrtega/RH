@@ -13,19 +13,15 @@ noncomputable section
 namespace GlobalTheory.FormalAlg
 
 /- English proof (translation)
-Introduce `R _ I W f a hA t ht hp`. Use `set ι := a.subschemeι with hι`. Establish `hbase : ∀ J : Ideal R, (baseIdeal f J).comap ι = baseIdeal (ι ≫ f) J` using `fun J => GlobalTheory.T.baseIdealSheafOfIdeal_comap_specMap_support.1 R W a.subscheme f ι J`. Establish `hms` using `GlobalTheory.T.idealSheafData_map_sup_comap_closedImmersion a.subscheme W ι inferInstance`. Set `s : ℕ → a.subscheme.IdealSheafData` to `fun e => (t e).comap ι`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hs : IsSystem (ι ≫ f) I s` using `fun e => by`. Simplify using `only [s]`. Rewrite using `[ht e, Scheme.IdealSheafData.comap_sup, hbase]`. Establish `hsp : ∀ e, IsProper ((s e).subschemeι ≫ ι ≫ f)` using `fun e => by`. Establish `H : t e ≤ (s e).map ι` using `Scheme.IdealSheafData.le_map_comap _ _`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Category.assoc, ← Scheme.IdealSheafData.subschemeMap_subschemeι (s e) (t e) ι H, Category.assoc]`. Use `haveI := hp e`. Use `haveI : IsClosedImmersion (Scheme.IdealSheafData.subschemeMap (s e) (t e) ι H) := by haveI : IsClosedImmersion (Scheme.IdealSheafData.subschemeMap (s e) (t e) ι H ≫ (t e).subschemeι) := by`. Rewrite using `[Scheme.IdealSheafData.subschemeMap_subschemeι]`. Use `infer_instance`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `IsClosedImmersion.of_comp_isClosedImmersion _ (t e).subschemeι`. Use `infer_instance`. Take `⟨T₀, hT₀p, hT₀r⟩` from `hA s hs hsp`. Use `⟨T₀.map ι, ?_, fun e => ?_⟩` and prove the remaining obligations. Set `g` to `T₀.subschemeι ≫ ι`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hk : (T₀.map ι).subschemeι.ker = g.ker`. Rewrite using `[Scheme.IdealSheafData.ker_subschemeι]`. Both sides reduce to the same expression. Use `haveI := IsClosedImmersion.isIso_lift _ _ hk`. Establish `hfac : (T₀.map ι).subschemeι = inv (IsClosedImmersion.lift (T₀.map ι).subschemeι g hk.le) ≫ g`.
-
-Rewrite using `[IsIso.eq_inv_comp, IsClosedImmersion.lift_fac]`. Rewrite using `[hfac, Category.assoc]`. Use `haveI : IsProper (g ≫ f) := by simpa [g, Category.assoc] using hT₀p`. Use `infer_instance`. Combine the equalities or inequalities in the displayed calculation.
-
-Rewrite using `[(hms ⊥ (t e)).1, Scheme.IdealSheafData.map_bot, hι, Scheme.IdealSheafData.ker_subschemeι, sup_comm]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem alg_of_closedSubscheme : ∀ (R : Type) [CommRing R] (I : Ideal R) (W : Scheme.{0})
     (f : W ⟶ Spec (CommRingCat.of R)) (a : W.IdealSheafData), Alg (a.subschemeι ≫ f) I →

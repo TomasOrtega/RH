@@ -16,7 +16,7 @@ variable {C : Type u} [Category.{v} C] [CartesianMonoidalCategory C] {A A' H : C
   {q : A ⟶ A'} [IsMonHom q] {i : H ⟶ A}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun _ _ e => hp.hom_ext e (toUnit_unique _ _)⟩`.
+Supply the required witnesses or components.
 -/
 theorem mono_of_isKernel (hp : IsPullback i (toUnit H) q η[A']) : Mono i :=
   ⟨fun _ _ e => hp.hom_ext e (toUnit_unique _ _)⟩
@@ -26,14 +26,14 @@ def kerLift (hp : IsPullback i (toUnit H) q η[A']) {W : C} (f : W ⟶ A) (hf : 
 
 @[reassoc (attr := simp)]
 /- English proof (translation)
-The claim follows from `hp.lift_fst ..`.
+A detailed English derivation is pending.
 -/
 theorem kerLift_comp (hp : IsPullback i (toUnit H) q η[A']) {W : C} (f : W ⟶ A) (hf : f ≫ q = 1) :
     kerLift hp f hf ≫ i = f :=
   hp.lift_fst ..
 
 /- English proof (translation)
-Rewrite using `[Category.assoc, hp.w, ← Category.assoc, toUnit_unique (x ≫ toUnit H) (toUnit W), Hom.one_def]`. Use the proof step `@[instance_reducible]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem comp_kills (hp : IsPullback i (toUnit H) q η[A']) {W : C} (x : W ⟶ H) : (x ≫ i) ≫ q = 1 := by
   rw [Category.assoc, hp.w, ← Category.assoc, toUnit_unique (x ≫ toUnit H) (toUnit W), Hom.one_def]
@@ -73,7 +73,7 @@ def grpObjOfIsKernel (hp : IsPullback i (toUnit H) q η[A']) : GrpObj H :=
       exact mul_inv_cancel i }
 
 /- English proof (translation)
-Use `letI := grpObjOfIsKernel hp`. Use `{ one_hom := kerLift_comp hp _ _, mul_hom := ?_ }` and prove the remaining obligations. Use `(kerLift_comp hp _ _).trans ?_` and prove the remaining obligations. Rewrite using `[Hom.mul_def]`. Simplify using the standard rewrite rules.
+Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem isMonHom_of_isKernel (hp : IsPullback i (toUnit H) q η[A']) :
     letI := grpObjOfIsKernel hp
@@ -85,7 +85,7 @@ theorem isMonHom_of_isKernel (hp : IsPullback i (toUnit H) q η[A']) :
   simp
 
 /- English proof (translation)
-Use `letI := grpObjOfIsKernel hp`. Use `mono_of_isKernel hp` as an intermediate fact. Use `isMonHom_of_isKernel hp` as an intermediate fact. Use `(isCommMonObj_iff_isMulCommutative _).mpr fun T => ⟨⟨fun x y => ?_⟩⟩` and prove the remaining obligations. Rewrite using `[← cancel_mono i, MonObj.mul_comp, MonObj.mul_comp, mul_comm]`.
+Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem isCommMonObj_of_isKernel [BraidedCategory C] [IsCommMonObj A]
     (hp : IsPullback i (toUnit H) q η[A']) :
@@ -100,11 +100,9 @@ theorem isCommMonObj_of_isKernel [BraidedCategory C] [IsCommMonObj A]
 end General
 
 /- English proof (translation)
-Introduce `k _ A A' _ _ hA q hq hf`. Use `hA.comm` as an intermediate fact. Establish `hp : IsPullback (pullback.fst q η[A']) (toUnit (pullback q η[A'])) q η[A']`. Rewrite using `[toUnit_unique (toUnit _) (pullback.snd q η[A'])]`. Conclude with `IsPullback.of_hasPullback _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨pullback q η[A'], grpObjOfIsKernel hp, isCommMonObj_of_isKernel hp, pullback.fst _ _, isMonHom_of_isKernel hp, ?_, hp⟩` and prove the remaining obligations. Establish `hl` using `hp.map (Over.forget _)`. Establish `h1 : IsFinite (toUnit (pullback q η[A'])).left` using `MorphismProperty.of_isPullback (P := @IsFinite) hl hf`. Establish `h2 : (pullback q η[A']).hom = (toUnit (pullback q η[A'])).left ≫ (𝟙_ (Over (Sp k))).hom` using `(Over.w _).symm`. Rewrite using `[h2]`.
-
-Conclude with `inferInstanceAs (IsFinite (_ ≫ 𝟙 _))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_finite_kernel : ∀ (k : Type) [Field k] (A A' : Over (Sp k)) [GrpObj A] [GrpObj A'], IsAbelianScheme A → ∀ (q : A ⟶ A'), IsMonHom q → IsFinite q.left →
     ∃ (H : Over (Sp k)) (_ : GrpObj H) (_ : IsCommMonObj H) (i : H ⟶ A), IsMonHom i ∧ IsFinite H.hom ∧

@@ -19,9 +19,9 @@ namespace GlobalTheory.ArchRec.SpanMod
 variable {r s : ℕ}
 
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.RealPartAdjointAction.main`. Consider the case `exact _root_.GlobalTheory.RealPartAdjointAction.main`. Consider the case `(apply _root_.GlobalTheory.RealPartAdjointAction.main <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.RealPartAdjointAction.main <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.RealPartAdjointAction.main <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.RealPartAdjointAction.main ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem exists_unitary_span (r s : ℕ) (W U I : Type) [AddCommGroup W] [Module ℂ W] [NormedAddCommGroup U]
     [InnerProductSpace ℂ U] (a : Mat r s →ₗ[ℂ] Module.End ℂ W) (b : Mat r s → Module.End ℂ U)

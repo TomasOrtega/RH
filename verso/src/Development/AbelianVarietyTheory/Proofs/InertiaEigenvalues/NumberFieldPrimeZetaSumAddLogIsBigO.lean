@@ -11,11 +11,11 @@ namespace GlobalTheory.ChebCyc
 open NumberField IsDedekindDomain NumberField.mixedEmbedding Filter Topology Asymptotics Polynomial in
 open scoped ContDiff Classical in
 /- English proof (translation)
-Establish `hT` using `(tendsto_sub_one_mul_dedekindZeta_nhdsGT K).norm`. Establish `hr : ‖((dedekindZeta_residue K : ℝ) : ℂ)‖ ≠ 0`. Simplify using `[dedekindZeta_residue_ne_zero]`. Establish `hL` using `((Real.continuousAt_log hr).tendsto.comp hT).isBigO_one ℝ`. Use `hL.congr' ?_ EventuallyEq.rfl` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `filter_upwards [self_mem_nhdsWithin] with s (hs : 1 < s)`. Simplify using `only [Function.comp_apply]`. Rewrite using `[norm_mul, _root_.GlobalTheory.Mem.ZetaPole.norm_dedekindZeta_eq_exp K hs]`. Establish `hs1 : ‖(s : ℂ) - 1‖ = s - 1`. Rewrite using `[← Complex.ofReal_one, ← Complex.ofReal_sub, Complex.norm_real, Real.norm_of_nonneg (by linarith)]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hs1, Real.log_mul (sub_ne_zero.2 hs.ne') (Real.exp_pos _).ne', Real.log_exp]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 private theorem tsum_logFactor_add_log_sub_one_isBigO_one (K : Type) [Field K] [NumberField K] :
     (fun s : ℝ => (∑' P : HeightOneSpectrum (𝓞 K),
@@ -38,11 +38,11 @@ private theorem tsum_logFactor_add_log_sub_one_isBigO_one (K : Type) [Field K] [
 open NumberField IsDedekindDomain NumberField.mixedEmbedding Filter Topology Asymptotics Polynomial in
 open scoped ContDiff Classical in
 /- English proof (translation)
-Establish `hN : ∀ P : HeightOneSpectrum (𝓞 K), 2 ≤ Ideal.absNorm P.asIdeal` using `fun P => _root_.GlobalTheory.Mem.RayPrimes.two_le_absNorm P`. Establish `hC` using `_root_.GlobalTheory.Mem.RayPrimes.logSum_sub_bounded (fun P : HeightOneSpectrum (𝓞 K) => Ideal.absNorm P.asIdeal) hN (fun _ => 1) (fun _ => by simp) (fun s hs => ((_root_.GlobalTheory.countable_ideal_and_summable_absNorm_rpow K).2 s hs).2)`. Establish `hC' : (fun s : ℝ => (((∑' P : HeightOneSpectrum (𝓞 K), _root_.GlobalTheory.Mem.ZetaPole.logFactor (Ideal.absNorm P.asIdeal) s) - ∑' P : HeightOneSpectrum (𝓞 K), ((Ideal.absNorm P.asIdeal : ℕ) : ℝ) ^ (-s) : ℝ) : ℂ)) =O[𝓝[>] 1] (fun _ => (1 : ℝ))`. Use `hC.congr' ?_ EventuallyEq.rfl` and prove the remaining obligations. Use `filter_upwards [self_mem_nhdsWithin] with s (hs : 1 < s)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Complex.ofReal_sub, Complex.ofReal_tsum, Complex.ofReal_tsum]`. Use `congr 1`. Use `tsum_congr fun P => ?_` and prove the remaining obligations. Rewrite using `[_root_.GlobalTheory.Mem.ZetaPole.ofReal_logFactor (by linarith [hN P]) (by linarith), one_mul]`. Use `tsum_congr fun P => ?_` and prove the remaining obligations.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Complex.ofReal_cpow (Nat.cast_nonneg _), one_mul, Complex.ofReal_natCast, Complex.ofReal_neg]`. Rewrite using `[← isBigO_norm_left]`. Conclude with `hC'.norm_left.congr_left fun s => Complex.norm_real _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem tsum_logFactor_sub_tsum_absNorm_rpow_isBigO_one (K : Type) [Field K]
     [NumberField K] :
@@ -75,7 +75,7 @@ open NumberField IsDedekindDomain NumberField.mixedEmbedding Filter Topology Asy
 open scoped ContDiff Classical in
 
 /- English proof (translation)
-Introduce `K _ _`. Use `((tsum_logFactor_add_log_sub_one_isBigO_one K).sub (tsum_logFactor_sub_tsum_absNorm_rpow_isBigO_one K)).congr_left fun s => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem _root_.GlobalTheory.ChebCyc.primeSum_add_log_isBigO : ∀ (K : Type) [Field K] [NumberField K], (fun s : ℝ => (∑' P : HeightOneSpectrum (𝓞 K), ((Ideal.absNorm P.asIdeal : ℕ) : ℝ) ^ (-s)) + Real.log (s - 1)) =O[𝓝[>] 1] (fun _ => (1 : ℝ)) := by
   intro K _ _

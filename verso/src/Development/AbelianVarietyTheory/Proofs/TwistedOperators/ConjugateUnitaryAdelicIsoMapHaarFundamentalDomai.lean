@@ -17,9 +17,9 @@ noncomputable section
 namespace GlobalTheory.HaarConjImage
 
 /- English proof (translation)
-Introduce `D S c J hJ hc ν 𝓕 h`. Use `Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.topGroupHA D.sp.cm.sig S.gram` as an intermediate fact. Use `Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.borelHA D.sp.cm.sig S.gram` as an intermediate fact. Establish `: BorelSpace (GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.UB J)` using `⟨rfl⟩`. Establish `c1 : Continuous (GlobalTheory.HaarConj.conjE S c hc hJ)` using `GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.continuous_conjU S c hJ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `c2 : Continuous (GlobalTheory.HaarConj.conjE S c hc hJ).symm` using `GlobalTheory.HaarConj.continuous_conjInv S c hc hJ`. Use `haveI := h.1`. Conclude with `⟨MulEquiv.isHaarMeasure_map ν (GlobalTheory.HaarConj.conjE S c hc hJ) c1 c2, GlobalTheory.HaarConj.isFundamentalDomain_image (GlobalTheory.HaarConj.conjE S c hc hJ) c1.measurable c2.measurable (GQ S) _ (GlobalTheory.HaarConj.mem_ratU_iff S c hc hJ) ν 𝓕 h.2⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem map_isHaarFD : ∀ (D : D7) (S : HSp D) (c : D.host.E) {J : Matrix (Fin S.rank) (Fin S.rank) D.host.E} (hJ : J = c • S.gram), c ≠ 0 →
     ∀ (ν : Measure (GA D S)) (𝓕 : Set (GA D S)), IsHaarFD S ν 𝓕 →

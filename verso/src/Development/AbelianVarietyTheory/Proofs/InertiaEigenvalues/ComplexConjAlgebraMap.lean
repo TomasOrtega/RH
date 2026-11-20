@@ -15,7 +15,7 @@ noncomputable section
 namespace GlobalTheory.IndDataDown
 
 /- English proof (translation)
-Set `φ : K' →+* ℂ` to `Classical.choice (inferInstance : Nonempty _)`. Apply `φ.injective` to reduce the goal to its premises. Rewrite using `[IsCMField.complexEmbedding_complexConj, ← RingHom.comp_apply φ (algebraMap K K'), ← IsCMField.complexEmbedding_complexConj K (φ.comp (algebraMap K K')) t]`. Both sides reduce to the same expression.
+Introduce a local definition for the expression. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem complexConj_algebraMap (K K' : Type) [Field K] [NumberField K] [IsCMField K] [Field K'] [NumberField K']
     [IsCMField K'] [Algebra K K'] (t : K) :
@@ -27,15 +27,13 @@ theorem complexConj_algebraMap (K K' : Type) [Field K] [NumberField K] [IsCMFiel
   rfl
 
 /- English proof (translation)
-Introduce `heq`. Take `⟨u, hne, hu⟩` from `hx`. Use `set c := IsCMField.ringOfIntegersComplexConj K`. Establish `hcc : ∀ a : 𝓞 K, c (c a) = a` using `fun a => by`. Use `ext`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `[c, IsCMField.complexConj_apply_apply]`. Establish `hle : u.asIdeal ≤ x.asIdeal`. Introduce `a ha`. Establish `h1 : a * c a ∈ u.asIdeal` using `u.asIdeal.mul_mem_right _ ha`. Establish `h2 : c (a * c a) = a * c a` using `by rw [map_mul, hcc, mul_comm]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨y, hy⟩` from `(IsCMField.ringOfIntegersComplexConj_eq_self_iff K _).1 h2`. Establish `h3 : y ∈ (u.under (𝓞 (maximalRealSubfield K))).asIdeal` using `by show algebraMap _ _ y ∈ u.asIdeal`. Rewrite using `[hy]`. Conclude with `h1`. Rewrite `h3` using `[hu]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h4 : a * c a ∈ x.asIdeal`. Establish `: algebraMap _ _ y ∈ x.asIdeal` using `h3`. Rewrite `this` using `[hy]`. Then use the resulting hypothesis. Break down `x.isPrime.mem_or_mem h4 with h5 | h5` into its components or cases. Conclude with `h5`.
-
-Rewrite using `[← heq]`. Conclude with `h5`. Conclude with `hne (HeightOneSpectrum.ext (u.isMaximal.eq_of_le x.isPrime.ne_top hle))`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem comap_conj_ne (K : Type) [Field K] [NumberField K] [IsCMField K] (x : HeightOneSpectrum (𝓞 K))
     (hx : GlobalTheory.UnitaryBC.IsSplitAt x) :
@@ -65,15 +63,13 @@ theorem comap_conj_ne (K : Type) [Field K] [NumberField K] [IsCMField K] (x : He
   exact hne (HeightOneSpectrum.ext (u.isMaximal.eq_of_le x.isPrime.ne_top hle))
 
 /- English proof (translation)
-Introduce `hxx hx`. Use `set c := IsCMField.ringOfIntegersComplexConj K`. Use `set c' := IsCMField.ringOfIntegersComplexConj K'`. Establish `hcomm : ∀ a : 𝓞 K, c' (algebraMap (𝓞 K) (𝓞 K') a) = algebraMap (𝓞 K) (𝓞 K') (c a)` using `fun a => by`. Use `ext`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `complexConj_algebraMap K K' (a : K)`. Use `haveI := x'.isPrime`. Establish `hbot : x'.asIdeal.comap (c' : 𝓞 K' →+* 𝓞 K') ≠ ⊥`. Take `⟨b, hb, hb0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot x'.ne_bot`. Introduce `h0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: c'.symm b ∈ x'.asIdeal.comap (c' : 𝓞 K' →+* 𝓞 K')` using `by show c' (c'.symm b) ∈ x'.asIdeal`. Rewrite using `[AlgEquiv.apply_symm_apply]`. Conclude with `hb`. Rewrite `this` using `[h0, Ideal.mem_bot]`. Conclude with `hb0 (by simpa using congrArg c' this)`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `⟨⟨x'.asIdeal.comap (c' : 𝓞 K' →+* 𝓞 K'), Ideal.comap_isPrime _ _, hbot⟩, fun heq => ?_, ?_⟩` and prove the remaining obligations. Apply `comap_conj_ne K x hx` to reduce the goal to its premises. Establish `heq' : x'.asIdeal.comap (c' : 𝓞 K' →+* 𝓞 K') = x'.asIdeal` using `congrArg HeightOneSpectrum.asIdeal heq`. Use extensionality with `a`. Rewrite using `[← hxx]`.
-
-Use `show algebraMap (𝓞 K) (𝓞 K') (c a) ∈ x'.asIdeal ↔ algebraMap (𝓞 K) (𝓞 K') a ∈ x'.asIdeal`. Rewrite using `[← hcomm]`. Conclude with `Ideal.ext_iff.1 heq' _`. Use extensionality with `b show c' (algebraMap _ _ b) ∈ x'.asIdeal ↔ algebraMap _ _ b ∈ x'.asIdeal`. Rewrite using `[AlgEquiv.commutes]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isSplitAt_of_under (K K' : Type) [Field K] [NumberField K] [IsCMField K] [Field K'] [NumberField K']
     [IsCMField K'] [Algebra K K'] (x : HeightOneSpectrum (𝓞 K)) (x' : HeightOneSpectrum (𝓞 K')) :

@@ -31,7 +31,7 @@ def MuOneR (B : Cd.Base D cc δ) : Prop :=
         (TaylorLogMetric.La D B.tor (StandardLatticesGL3.stdL D N) L'') S₂ S₃ = 1
 
 /- English proof (translation)
-The claim follows from `formV_herm' _ _ _ _ sd₁ := (hL.1 N N' _ _ a1).1 sd₂ := (hL.1 N N' _ _ a2).1 sd₃ := (hL.1 N N' _ _ a3).1 sc₁ := (hL.1 N N' _ _ a1).2 sc₂ := (hL.1 N N' _ _ a2).2 sc₃ := (hL.1 N N' _ _ a3).2 i₁₂ := (hL.2 N N' _ _ _ _ a1 a2).1 i₂₁ := (hL.2 N N' _ _ _ _ a1 a2).2 i₁₃ := (hL.2 N N' _ _ …`.
+A detailed English derivation is pending.
 -/
 theorem tripleData_of {B : Cd.Base D cc δ} (hL : B.LatAll) {N N' : ℕ}
     {L₁ L₂ L₃ : Submodule (𝓞 D.host.E) (Fin N → D.host.E)} {L₁' L₂' L₃' : Submodule (𝓞 D.host.E) (Fin N' → D.host.E)}
@@ -53,11 +53,11 @@ theorem tripleData_of {B : Cd.Base D cc δ} (hL : B.LatAll) {N N' : ℕ}
   i₃₂ := (hL.2 N N' _ _ _ _ a2 a3).2
 
 /- English proof (translation)
-Introduce `N N' L L₁ hN hN' hSL hSL1 G hG`. Take `⟨S₂, S₃, h2, h3, hmu⟩` from `hM N N' L L₁ hN hN' hSL hSL1`. Establish `hA0 : TaylorLogMetric.admitted D N N' (StandardLatticesGL3.stdL D N) (StandardLatticesGL3.stdL D N')` using `⟨hN, hN', sd0 N, sd0 N'⟩`. Establish `hA1 : TaylorLogMetric.admitted D N N' L (StandardLatticesGL3.stdL D N')` using `⟨hN, hN', hSL, sd0 N'⟩`. Establish `hA2 : TaylorLogMetric.admitted D N N' L₁ (StandardLatticesGL3.stdL D N')` using `⟨hN, hN', hSL1, sd0 N'⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hT` using `tripleData_of hL hA0 hA1 hA2`. Use function extensionality and compare the values at `v`. Establish `h5` using `tripleFormula _ _ _ _ _ _ hT S₂ S₃ h2 h3 G hG.2 v`. Rewrite `h5` using `[hmu, one_mul]`. Simplify using `only [Cd.Iop_eq]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `h5`.
+A detailed English derivation is pending.
 -/
 theorem left_move_triangles_of_unit {B : Cd.Base D cc δ} (hL : B.LatAll) (hM : MuOneL B) : Tr0L D B.tor := by
   intro N N' L L₁ hN hN' hSL hSL1 G hG
@@ -73,11 +73,11 @@ theorem left_move_triangles_of_unit {B : Cd.Base D cc δ} (hL : B.LatAll) (hM : 
   exact h5
 
 /- English proof (translation)
-Introduce `N N' L' L'' hN hN' hSL hSL1 G hG`. Take `⟨S₂, S₃, h2, h3, hmu⟩` from `hM N N' L' L'' hN hN' hSL hSL1`. Establish `hA0 : TaylorLogMetric.admitted D N N' (StandardLatticesGL3.stdL D N) (StandardLatticesGL3.stdL D N')` using `⟨hN, hN', sd0 N, sd0 N'⟩`. Establish `hA1 : TaylorLogMetric.admitted D N N' (StandardLatticesGL3.stdL D N) L'` using `⟨hN, hN', sd0 N, hSL⟩`. Establish `hA2 : TaylorLogMetric.admitted D N N' (StandardLatticesGL3.stdL D N) L''` using `⟨hN, hN', sd0 N, hSL1⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hT` using `tripleData_of hL hA0 hA1 hA2`. Use function extensionality and compare the values at `v`. Establish `h5` using `tripleFormula _ _ _ _ _ _ hT S₂ S₃ h2 h3 G hG.2 v`. Rewrite `h5` using `[hmu, one_mul]`. Simplify using `only [Cd.Iop_eq]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `h5`.
+A detailed English derivation is pending.
 -/
 theorem right_move_triangles_of_unit {B : Cd.Base D cc δ} (hL : B.LatAll) (hM : MuOneR B) : Tr0R D B.tor := by
   intro N N' L' L'' hN hN' hSL hSL1 G hG

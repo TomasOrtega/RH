@@ -7,7 +7,7 @@ open MeasureTheory NumberField Formalism.BasicNotions Formalism.MainNotions.S Fo
 namespace GlobalTheory.ProdFactor
 
 /- English proof (translation)
-Introduce `D X hX v`. Establish `hU : ∀ v, IsURepOn (UJset (X.B.I.ε v)) (X.B.σ v)` using `fun v => (X.ds v).2.2.1`. Establish `hw : ∀ v, ‖X.B.w v‖ = 1` using `fun v => (X.low v).1`. Establish `hd : ∀ v, X.dv v ≠ 0` using `fun v => (fdegOf_pos (hU v) (X.ds v).2.2.2.2.1 (hw v)).ne'`. Conclude with `integrable_factor' X.B.I.ε X.B.σ X.B.w X.dv hU hw hd hX v`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem integrable_phLoc_of_integrable_ph : ∀ (D : D7) (X : HidaSetting D), Integrable X.ph (Formalism.L2.SG.ProjRows.muInf X.B.I) → ∀ v, Integrable (Formalism.L2.SG.ProjRows.phLoc (ε := X.B.I.ε v) (X.B.σ v) (X.B.w v) (fdegOf (Formalism.REAL.muG (X.B.I.ε v)) (X.B.σ v) (X.B.w v))) (Formalism.REAL.muG (X.B.I.ε v)) := by
   intro D X hX v

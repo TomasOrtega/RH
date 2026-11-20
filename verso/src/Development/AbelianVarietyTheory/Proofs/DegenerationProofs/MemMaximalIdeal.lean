@@ -21,9 +21,9 @@ variable {V : Type} [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] {D : D
   [IsCommMonObj G]
 
 /- English proof (translation)
-Use `U.smooth` as an intermediate fact. Establish `: Flat G.hom` using `inferInstance`. Establish `h` using `GlobalTheory.ExtUnique.spec_fractionRing V (FractionRing V)`. Establish `h₁ : IsSchemeTheoreticallyDominant (jK V)` using `h.2`. Establish `h₂ : QuasiCompact (jK V)` using `h.1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsSchemeTheoreticallyDominant (pullback.fst G.hom (jK V))` using `inferInstance`. Conclude with `GlobalTheory.ConstFam.pullOver_injective_of_dominant _ _ _ _`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem toGen_injective (U : UnifPre (maximalIdeal V) D A G) (k : ℕ) : Function.Injective (toGen U k) := by
   have := U.smooth
@@ -35,7 +35,7 @@ theorem toGen_injective (U : UnifPre (maximalIdeal V) D A G) (k : ℕ) : Functio
   exact GlobalTheory.ConstFam.pullOver_injective_of_dominant _ _ _ _
 
 /- English proof (translation)
-The claim follows from `map_sum (chartLin p M j) (fun i => c i • x i) _`.
+A detailed English derivation is pending.
 -/
 theorem chart_sum {Y : Scheme.{0}} {p : Y ⟶ Spec (CommRingCat.of V)} {M : LB Y} {J : Type} [Fintype J]
     (c : J → V) (x : J → SecOver p M) (j : M.ι) :
@@ -45,11 +45,11 @@ theorem chart_sum {Y : Scheme.{0}} {p : Y ⟶ Spec (CommRingCat.of V)} {M : LB Y
 open Classical in
 
 /- English proof (translation)
-Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible V`. Take `⟨g, hg⟩` from `(GlobalTheory.ExtDiv.main V ϖ hϖ D A G U 0 k (cls i₀) _).1 (hW V _ D A G U 0 k _ _ h (expandsAt_sum U 0 k σ f hE c) (cls i₀))`. Take `⟨a, ha, -⟩` from `hB i₀ g`. Set `β : {i // cls i = cls i₀} → SecAb D.toPre k (cls i₀)` to `fun i => f i (cls i₀)`. Establish `e₁ : (show SecAb D.toPre k (cls i₀) from g) = ∑ i, a i • β i` using `SecOver.ext _ _ fun j => (ha j).trans (chart_sum a β j).symm`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `e₂ : (∑ i, c i • f i (cls i₀) : SecAb D.toPre k (cls i₀)) = ϖ ^ (0 + 1) • (show SecAb D.toPre k (cls i₀) from g)` using `SecOver.ext _ _ hg`. Establish `e₃ : (∑ i, c i • f i (cls i₀) : SecAb D.toPre k (cls i₀)) = ∑ i : {i // cls i = cls i₀}, c i • β i`. Rewrite using `[← Fintype.sum_subtype_add_sum_subtype (fun i => cls i = cls i₀), Finset.sum_eq_zero (s := (Finset.univ : Finset {i // ¬ cls i = cls i₀})) (fun i _ => by rw [hz i i₀ i.2, smul_zero]), add_zero]`. Establish `e₄ : (∑ i : {i // cls i = cls i₀}, c i • β i) = ∑ i, (ϖ ^ (0 + 1) * a i) • β i`. Rewrite using `[← e₃, e₂, e₁, Finset.smul_sum]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.sum_congr rfl fun i _ => smul_smul _ _ _`. Establish `e₅` using `(hB i₀ (∑ i : {i // cls i = cls i₀}, c i • β i : SecAb D.toPre k (cls i₀))).unique (y₁ := fun i => c i) (y₂ := fun i => ϖ ^ (0 + 1) * a i) (fun j => chart_sum _ β j) (fun j => by rw [e₄]; exact chart_sum _ β j)`. Establish `e₆ : c i₀ = ϖ ^ (0 + 1) * a ⟨i₀, rfl⟩` using `congrFun e₅ ⟨i₀, rfl⟩`. Rewrite using `[e₆, zero_add, pow_one]`. Conclude with `Ideal.mul_mem_right _ _ hϖ.not_isUnit`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_maximalIdeal (hW : WeightIndepSt) (U : UnifPre (maximalIdeal V) D A G) {k : ℕ} {J : Type} [Fintype J]
     (σ : J → SecG U k) (cls : J → D.toPre.X) (f : J → ∀ α, SecAb D.toPre k α)
@@ -81,13 +81,11 @@ theorem mem_maximalIdeal (hW : WeightIndepSt) (U : UnifPre (maximalIdeal V) D A 
   exact Ideal.mul_mem_right _ _ hϖ.not_isUnit
 
 /- English proof (translation)
-Introduce `hL V _ _ _ D Q A G _ _ U k hk r cls mu f ⟨⟨_, h₂, h₃, _⟩, h₅, h₆, h₇⟩`. Establish `ex : ∀ i, ∃ σ : SecG U.toUnifPre k, ∀ e, U.ExpandsAt e k σ (f i)` using `fun i => by`. Take `⟨s, hs⟩` from `h₅ i`. Conclude with `GlobalTheory.IntegralExpansion.main hL.1 V D A G U k hk s (f i) hs`. Use `choose σ hσ using ex`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨σ, hσ, fun s => ?_⟩` and prove the remaining obligations. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible V`. Use `U.smooth` as an intermediate fact. Establish `: Flat G.hom` using `inferInstance`. Take `⟨a, ha⟩` from `AdaptedSpan.exists_comb hL.1.globalFns U hk σ cls f h₂ h₃ hσ h₅ h₆ h₇ (toGen U.toUnifPre k s)`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨d, b, hd, hb⟩` from `exists_denom a`. Establish `e : (d • (show SecG U.toUnifPre k from s)) = ∑ i, b i • σ i` using `toGen_injective U.toUnifPre k (by`. Rewrite using `[map_smulₛₗ, map_sum, ha, Finset.smul_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => by rw [map_smulₛₗ, smul_smul, hb])`. Use `GlobalTheory.SaturatedSections.existsUnique_comb (A := fun j => Γ(G.left, (LB.LinComb U.LG.L (K := Fin 1) (fun _ => 𝟙 G.left) (fun _ => (k : ℤ))).U j)) (fun j => GlobalTheory.SaturatedSections.cst G.hom _) hϖ (fun j x hx => GlobalTheory.SaturatedSections.eq_zero_of_cst_mul G.hom …` and prove the remaining obligations.
-
-Use `(GlobalTheory.ThickDiv.app_eq_zero_iff hϖ G 0 _ _).2 ⟨y j, ?_⟩` and prove the remaining obligations. Rewrite using `[zero_add, pow_one]`. Conclude with `(chart_sum c σ j).trans (hy j).symm`. Conclude with `(congrArg (fun t : SecG U.toUnifPre k => LB.Sec.f t j) e).trans (chart_sum b σ j)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem main : LL → ∀ (V : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] (D : DegData V (maximalIdeal V)) (Q : D.toPre.X → ℤ) (A : PolAV (Spec (CommRingCat.of (FractionRing V)))) (G : Over (Spec (CommRingCat.of V))) [GrpObj G] [IsCommMonObj G] (U : Unif (maximalIdeal V) D A G) (k : ℕ), 1 ≤ k → ∀ (r : ℕ) (cls : Fin r → D.toPre.X) (mu : ℕ) (f : Fin r → ∀ α, D.toPre.SecB k α), AdFam D Q k cls mu f → ∃ σ : Fin r → H0 U.LG.L k, (∀ i e, U.ExpandsAt e k (σ i) (f i)) ∧ IsBasisH σ := by
   intro hL V _ _ _ D Q A G _ _ U k hk r cls mu f ⟨⟨_, h₂, h₃, _⟩, h₅, h₆, h₇⟩

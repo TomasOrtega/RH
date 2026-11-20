@@ -10,11 +10,9 @@ namespace Formalism.DworkPowerSeriesWeights
 open Formalism.IncomingBounds
 
 /- English proof (translation)
-Unfold `lw`. Establish `hl : ((l : ℤ) : ZMod (l + 1)) = -1`. Rewrite using `[Int.cast_natCast]`. Establish `h : ((l + 1 : ℕ) : ZMod (l + 1)) = 0` using `ZMod.natCast_self _`. Rewrite `h` using `[Nat.cast_add, Nat.cast_one]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take the linear combination `h`. Use `split_ifs with h`. Rewrite using `[Int.cast_mul, Int.cast_one, one_mul, Int.cast_pow, hl]`. Conclude with `Even.neg_one_pow (Nat.even_iff.mpr h)`. Rewrite using `[Int.cast_mul, Int.cast_neg, Int.cast_one, Int.cast_pow, hl, Odd.neg_one_pow (Nat.odd_iff.mpr (by omega))]`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem lw_cast_succ (l d : ℕ) (s : ZMod d) : ((lw l s : ℤ) : ZMod (l + 1)) = 1 := by
   unfold lw
@@ -31,11 +29,11 @@ theorem lw_cast_succ (l d : ℕ) (s : ZMod d) : ((lw l s : ℤ) : ZMod (l + 1)) 
     ring
 
 /- English proof (translation)
-Establish `hl' : ((l : ℕ) : ZMod (l + 1)) = -1`. Establish `h : ((l + 1 : ℕ) : ZMod (l + 1)) = 0` using `ZMod.natCast_self _`. Rewrite `h` using `[Nat.cast_add, Nat.cast_one]`. Take the linear combination `h`. Establish `h1 : ((l ^ d - 1 : ℕ) : ZMod (l + 1)) = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Rewrite using `[Nat.cast_sub (Nat.one_le_pow _ _ (by omega)), Nat.cast_pow, hl', hd.neg_one_pow, Nat.cast_one, sub_self]`. Take `⟨c, hc⟩` from `h`. Rewrite using `[← ZMod.intCast_zmod_eq_zero_iff_dvd]`. Establish `h2` using `congrArg (fun z : ℤ => (z : ZMod (l + 1))) hc`. Simplify using `only [Int.cast_mul, Int.cast_sum, Int.cast_natCast, lw_cast_succ, mul_one, h1, zero_mul] at h2`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[Int.cast_sum]`. Simplify `h2` using `only [Int.cast_natCast]`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem succ_dvd_total {l d : ℕ} (hl : 1 ≤ l) (hd : Even d) {ι : Type*} (n : ι →₀ ℕ)
     (f : ι → ZMod d)
@@ -56,34 +54,32 @@ theorem succ_dvd_total {l d : ℕ} (hl : 1 ≤ l) (hd : Even d) {ι : Type*} (n 
   simpa only [Int.cast_natCast] using h2
 
 /- English proof (translation)
-Simplify using `only [dot, Finsupp.sum, Finset.sum_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem dot_const_wt {ι : Type*} (n : ι →₀ ℕ) (c : ℝ) :
     dot n (fun _ => c) = (∑ x ∈ n.support, (n x : ℝ)) * c := by
   simp only [dot, Finsupp.sum, Finset.sum_mul]
 
 /- English proof (translation)
-Unfold `Quant`. Introduce `K _ l d _ hl hd2 hd hl1 hl0 K0 hK0 c hc n hdiv hmono`. Establish `hl2 : 2 ≤ l` using `hl.two_le`. Take `⟨m, hm⟩` from `succ_dvd_total (f := fun x : V2 d => x.2) (by omega) hd n hdiv`. Unfold `MonoWtGe at hmono ⊢`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions.
 
-Rewrite `hmono`, the goal using `[dot_const_wt]`. Establish `hL : (2 : ℝ) ≤ l` using `by exact_mod_cast hl2`. Establish `hNm : (∑ x ∈ n.support, (n x : ℝ)) = ((l : ℝ) + 1) * m`. Establish `h` using `congrArg (fun z : ℤ => (z : ℝ)) hm`. Move the coercions through the operations in `at h`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Conclude with `h`. Rewrite `hmono`, the goal using `[hNm]`. Distinguish the cases in `hc0 : c = 0`. Rewrite using `[hc0, norm_zero]`. Conclude with `Real.rpow_nonneg hl0.le _`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Take `⟨k, hk⟩` from `hK0 c hc hc0`. Rewrite `hmono`, the goal using `[hk, ← Real.rpow_intCast]`. Rewrite `hmono`, the goal using `[Real.rpow_le_rpow_left_iff_of_base_lt_one hl0 hl1]`. Unfold `rho at hmono ⊢`. Establish `hL2 : (0 : ℝ) < (l : ℝ) ^ 2 - 1` using `by nlinarith`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hL1 : (0 : ℝ) < (l : ℝ) - 1` using `by linarith`. Use `set ρ := 1 / ((l : ℝ) ^ 2 - 1) with hρ`. Use `set q := 1 / ((l : ℝ) - 1) with hq`. Establish `hρ1 : ρ * ((l : ℝ) ^ 2 - 1) = 1` using `by rw [hρ]; exact one_div_mul_cancel hL2.ne'`. Establish `hq1 : q * ((l : ℝ) - 1) = 1` using `by rw [hq]; exact one_div_mul_cancel hL1.ne'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hq0 : 0 < q` using `by rw [hq]; exact one_div_pos.mpr hL1`. Establish `e1 : ((l : ℝ) + 1) * ρ = q`. Rewrite using `[hρ, hq, mul_one_div, div_eq_div_iff hL2.ne' hL1.ne']`. Expand and normalize the polynomial expressions, which then agree. Establish `h1 : 1 - ((l : ℝ) + 1) * m ≤ k * ((l : ℝ) ^ 2 - 1)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `h` using `mul_le_mul_of_nonneg_right hmono hL2.le`. Establish `e : (ρ - ((l : ℝ) + 1) * m * ρ) * ((l : ℝ) ^ 2 - 1) = 1 - ((l : ℝ) + 1) * m`. Take the linear combination `(1 - ((l : ℝ) + 1) * m) * hρ1`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h2 : (1 : ℝ) ≤ ((l : ℝ) + 1) * (k * ((l : ℝ) - 1) + m)` using `by nlinarith`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨z, hz⟩ : ∃ z : ℤ, z = k * ((l : ℤ) - 1) + m` from `⟨_, rfl⟩`. Establish `h3 : (1 : ℤ) ≤ ((l : ℤ) + 1) * z`. Rewrite using `[hz]`. Conclude with `h2` after adjusting the coercions. Establish `h4 : 1 ≤ z`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hz1`. Establish `hz0 : z ≤ 0` using `by omega`. Use the polynomial consequences of the given equalities and inequalities. Establish `h5 : (1 : ℝ) ≤ k * ((l : ℝ) - 1) + m`. Establish `h` using `h4`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Rewrite `h` using `[hz]`. Conclude with `h` after adjusting the coercions. Establish `h6` using `mul_le_mul_of_nonneg_left h5 hq0.le`. Establish `e2 : q * (k * ((l : ℝ) - 1) + m) = k + q * m` using `by linear_combination k * hq1`. Establish `e3 : ((l : ℝ) + 1) * m * ρ = q * m` using `by linear_combination m * e1`.
-
-Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 theorem weightQuantization : Quant.{u} := by
   unfold Quant
@@ -139,7 +135,7 @@ theorem weightQuantization : Quant.{u} := by
   linarith
 
 /- English proof (translation)
-Rewrite `h` using `[Nat.cast_add]`. Take the linear combination `h`.
+Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 private theorem cancel_lemma {d : ℕ} {s s' : ZMod d} {a i : ℕ}
     (h : s + ((a + i : ℕ) : ZMod d) = s' + (a : ZMod d)) : s + (i : ZMod d) = s' := by
@@ -147,23 +143,23 @@ private theorem cancel_lemma {d : ℕ} {s s' : ZMod d} {a i : ℕ}
   linear_combination h
 
 /- English proof (translation)
-Take `⟨k, hk⟩` from `h`. Conclude with `⟨k - a, by omega⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private theorem odd_of_odd_add_add_self {a i : ℕ} (h : Odd (a + i + a)) : Odd i := by
   obtain ⟨k, hk⟩ := h
   exact ⟨k - a, by omega⟩
 
 /- English proof (translation)
-Take `⟨k, hk⟩` from `h`. Conclude with `⟨k - a, by omega⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private theorem odd_of_odd_self_add_add {a i : ℕ} (h : Odd (a + (a + i))) : Odd i := by
   obtain ⟨k, hk⟩ := h
   exact ⟨k - a, by omega⟩
 
 /- English proof (translation)
-Establish `hle : dTop d TT s ≤ (i : ℕ∞)`. Unfold `dTop`. Conclude with `iInf₂_le i ⟨hi, hm⟩`. Take `⟨e, he⟩` from `ENat.ne_top_iff_exists.mp (ne_top_of_le_ne_top (ENat.natCast_ne_top i) hle)`. Use `⟨e, he.symm, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hle` using `[← he]`. Conclude with `hle` after adjusting the coercions.
+A detailed English derivation is pending.
 -/
 private theorem exists_dTop_eq_le_of_odd_of_mem {d : ℕ} [NeZero d] {TT : Finset (ZMod d)} {s : ZMod d} {i : ℕ} (hi : Odd i)
     (hm : s + (i : ZMod d) ∈ TT) : ∃ e : ℕ, dTop d TT s = e ∧ e ≤ i := by
@@ -176,33 +172,31 @@ private theorem exists_dTop_eq_le_of_odd_of_mem {d : ℕ} [NeZero d] {TT : Finse
   exact_mod_cast hle
 
 /- English proof (translation)
-Unfold `ThmARadii`. Introduce `l d _ hl hd2 hd TT sig eps hdual hsig heps hT`. Unfold `IsDualAll at hdual`. Establish `hL : (1 : ℝ) ≤ l` using `by exact_mod_cast (by omega : 1 ≤ l)`. Establish `hL0 : (0 : ℝ) < l` using `by linarith`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `s s' α β τ τ' hτ hτ' hodd heq`. Break down `le_total β α with h | h` into its components or cases. Take `⟨i, rfl⟩` from `Nat.exists_eq_add_of_le h`. Establish `hi` using `odd_of_odd_add_add_self hodd`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hs` using `cancel_lemma heq`. Establish `hD` using `hdual s i hi`. Rewrite `hD` using `[hs]`. Establish `hb : (1 : ℝ) ≤ (l : ℝ) ^ β` using `one_le_pow₀ hL`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Take `⟨i, rfl⟩` from `Nat.exists_eq_add_of_le h`. Establish `hi` using `odd_of_odd_self_add_add hodd`. Establish `hs` using `cancel_lemma heq.symm`. Establish `hD` using `hdual s' i hi`. Rewrite `hD` using `[hs]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hb : (1 : ℝ) ≤ (l : ℝ) ^ α` using `one_le_pow₀ hL`. Combine the equalities or inequalities in the displayed calculation. Introduce `s β j τ _ hτ`. Establish `hb : (1 : ℝ) ≤ (l : ℝ) ^ β` using `one_le_pow₀ hL`. Establish `h1` using `mul_le_mul_of_nonneg_left hτ (by positivity : (0 : ℝ) ≤ (l : ℝ) ^ β)`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[pow_add]`. Use the polynomial consequences of the given equalities and inequalities. Introduce `s α j τ _ hτ`. Establish `hb : (1 : ℝ) ≤ (l : ℝ) ^ α` using `one_le_pow₀ hL`. Establish `hj0 : (0 : ℝ) < (l : ℝ) ^ j` using `by positivity`.
+Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `mul_le_mul_of_nonneg_left hτ (by positivity : (0 : ℝ) ≤ (l : ℝ) ^ α * (l : ℝ) ^ j)`. Establish `e : (l : ℝ) ^ α * (l : ℝ) ^ j * ((l : ℝ) ^ j)⁻¹ = (l : ℝ) ^ α`. Rewrite using `[mul_assoc, mul_inv_cancel₀ hj0.ne', mul_one]`. Establish `h2 : 0 ≤ (l : ℝ) ^ α * eps s` using `mul_nonneg (by positivity) (heps s)`. Rewrite using `[pow_add]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Introduce `s hs s' hs' α β hodd heq`. Break down `le_total β α with h | h` into its components or cases. Take `⟨i, rfl⟩` from `Nat.exists_eq_add_of_le h`. Establish `hi` using `odd_of_odd_add_add_self hodd`.
+Combine the linear equalities and inequalities to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hss` using `cancel_lemma heq`. Take `⟨e, he, hei⟩` from `exists_dTop_eq_le_of_odd_of_mem (TT := TT) hi (hss ▸ hs')`. Establish `hε` using `hT s hs e he`. Establish `hpe : (0 : ℝ) < (l : ℝ) ^ e` using `by positivity`. Establish `hei' : (l : ℝ) ^ e ≤ (l : ℝ) ^ i` using `pow_le_pow_right₀ hL hei`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : (l : ℝ) ^ (β + i) * ((l : ℝ) ^ e)⁻¹ ≤ (l : ℝ) ^ (β + i) * eps s` using `mul_le_mul_of_nonneg_left hε (by positivity)`. Establish `h2 : (l : ℝ) ^ β ≤ (l : ℝ) ^ (β + i) * ((l : ℝ) ^ e)⁻¹`. Rewrite using `[pow_add, mul_assoc, le_mul_iff_one_le_right (by positivity), le_mul_inv_iff₀ hpe, one_mul]`. Conclude with `hei'`. Establish `hb : (1 : ℝ) ≤ (l : ℝ) ^ β` using `one_le_pow₀ hL`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : 0 ≤ (l : ℝ) ^ β * eps s'` using `mul_nonneg (by positivity) (heps s')`. Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨i, rfl⟩` from `Nat.exists_eq_add_of_le h`. Establish `hi` using `odd_of_odd_self_add_add hodd`. Establish `hss` using `cancel_lemma heq.symm`.
+Combine the linear equalities and inequalities to obtain the conclusion. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨e, he, hei⟩` from `exists_dTop_eq_le_of_odd_of_mem (TT := TT) hi (hss ▸ hs)`. Establish `hε` using `hT s' hs' e he`. Establish `hpe : (0 : ℝ) < (l : ℝ) ^ e` using `by positivity`. Establish `hei' : (l : ℝ) ^ e ≤ (l : ℝ) ^ i` using `pow_le_pow_right₀ hL hei`. Establish `h1 : (l : ℝ) ^ (α + i) * ((l : ℝ) ^ e)⁻¹ ≤ (l : ℝ) ^ (α + i) * eps s'` using `mul_le_mul_of_nonneg_left hε (by positivity)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : (l : ℝ) ^ α ≤ (l : ℝ) ^ (α + i) * ((l : ℝ) ^ e)⁻¹`. Rewrite using `[pow_add, mul_assoc, le_mul_iff_one_le_right (by positivity), le_mul_inv_iff₀ hpe, one_mul]`. Conclude with `hei'`. Establish `hb : (1 : ℝ) ≤ (l : ℝ) ^ α` using `one_le_pow₀ hL`. Establish `h3 : 0 ≤ (l : ℝ) ^ α * eps s` using `mul_nonneg (by positivity) (heps s)`.
-
-Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem dualRadiiInequalities : ThmARadii := by
   unfold ThmARadii
@@ -289,15 +283,15 @@ theorem dualRadiiInequalities : ThmARadii := by
       linarith
 
 /- English proof (translation)
-Unfold `OneLetterRadius`. Introduce `l hl`. Establish `hL : (3 : ℝ) ≤ l` using `by exact_mod_cast hl`. Establish `hL1 : (1 : ℝ) ≤ l` using `by linarith`. Use `⟨fun α β hodd => ?_, ?_⟩` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[le_div_iff₀ (by positivity), one_mul]`. Break down `Nat.eq_zero_or_pos α with ha | ha` into its components or cases. Substitute `ha` using the available equality. Establish `hb : 1 ≤ β`. Break down `hodd with ⟨k, hk⟩` into its components or cases.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Use linear arithmetic over natural numbers and integers. Establish `h1 : (l : ℝ) ^ 1 ≤ (l : ℝ) ^ β` using `pow_le_pow_right₀ hL1 hb`. Rewrite using `[pow_zero]`. Rewrite `h1` using `[pow_one]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `h1 : (l : ℝ) ^ 1 ≤ (l : ℝ) ^ α` using `pow_le_pow_right₀ hL1 ha`. Establish `h2 : (1 : ℝ) ≤ (l : ℝ) ^ β` using `one_le_pow₀ hL1`. Rewrite `h1` using `[pow_one]`. Combine the linear equalities and inequalities to obtain the conclusion. Unfold `gam rho`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Replace the relevant objects with their definitions.
 
-Establish `h1 : (l : ℝ) ^ 2 - 1 ≠ 0` using `by nlinarith`. Establish `h2 : (l : ℝ) + 1 ≠ 0` using `by linarith`. Rewrite using `[div_sub_div _ _ h1 h2, div_eq_div_iff (mul_ne_zero h1 h2) h1]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem oneLetterRadiusIdentity : OneLetterRadius := by
   unfold OneLetterRadius

@@ -24,9 +24,9 @@ section Helpers
 variable {k G : Type u} [CommRing k] [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
 
 /- English proof (translation)
-Introduce `x y hxy`. Establish `e` using `fun z => congrArg (fun φ => φ.hom z) (cohomologyMap_zero_comp_H0Iso_hom f)`. Establish `hx` using `e x`. Establish `hy` using `e y`. Simplify using `only [ModuleCat.hom_comp, LinearMap.comp_apply] at hx hy`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h : ((Rep.invariantsFunctor k G).map f).hom ((H0Iso A).hom.hom x) = ((Rep.invariantsFunctor k G).map f).hom ((H0Iso A).hom.hom y)`. Rewrite using `[← hx, ← hy, hxy]`. Establish `h' : (H0Iso A).hom.hom x = (H0Iso A).hom.hom y` using `Subtype.ext (hf (congrArg Subtype.val h))`. Rewrite using `[← H0Iso_inv_hom_apply A x, ← H0Iso_inv_hom_apply A y, h']`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem injective_cohomologyMap_zero {A B : Rep.{u} k G} [IsDiscreteRep A] [IsDiscreteRep B]
     (f : A ⟶ B) (hf : Function.Injective f.hom) : Function.Injective (cohomologyMap f 0).hom := by
@@ -50,9 +50,9 @@ variable {G : Type u} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
   {D : Rep.{u} (ULift.{u} ℤ) G} [IsDiscreteRep D] {n : ℕ} {t : cohomology D 2 →+ ZMod n}
 
 /- English proof (translation)
-Rewrite using `[dualityMap_apply, dualityMap_apply, ← map_neg]`. Use `congr 1`. Use `cupPairing_δ_eq (S := S) (T := dualShortComplex D S) (p := 0) (p' := 1) (q := 1) (q' := 2) (n := 2) (evalPairing D S.X₁) (evalPairing D S.X₂) (evalPairing D S.X₃) (tensorHom_evalPairing D S.f) (tensorHom_evalPairing D S.g).symm hS hT rfl rfl rfl rfl x y` as an intermediate fact. Establish `h1 : ((-1 : ULift.{u} ℤ) ^ (0 + 1)) = -1` using `by norm_num`. Rewrite `this` using `[h1, neg_one_smul]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this`.
+A detailed English derivation is pending.
 -/
 theorem dualityMap_δ {S : ShortComplex (Rep.{u} (ULift.{u} ℤ) G)} [IsDiscreteRep S.X₁]
     [IsDiscreteRep S.X₂] [IsDiscreteRep S.X₃] [Finite S.X₁] [Finite S.X₂] [Finite S.X₃]
@@ -97,7 +97,7 @@ variable {n : ℕ} [NeZero n] {D : Rep.{u} (ULift.{u} ℤ) Γ} [IsDiscreteRep D]
 
 include H in
 /- English proof (translation)
-The claim follows from `finite_of_nonempty_addEquiv H.nonempty_addEquiv`.
+A detailed English derivation is pending.
 -/
 theorem finite_D : Finite D :=
   finite_of_nonempty_addEquiv H.nonempty_addEquiv
@@ -105,7 +105,7 @@ theorem finite_D : Finite D :=
 omit [NeZero n] in
 include H in
 /- English proof (translation)
-The claim follows from `nsmul_eq_zero_of_nonempty_addEquiv H.nonempty_addEquiv d`.
+A detailed English derivation is pending.
 -/
 theorem nsmul_D (d : D) : n • d = 0 :=
   nsmul_eq_zero_of_nonempty_addEquiv H.nonempty_addEquiv d
@@ -113,13 +113,13 @@ theorem nsmul_D (d : D) : n • d = 0 :=
 include H in
 
 /- English proof (translation)
-Take `⟨W, J, _, i, hi⟩` from `exists_injective_biproduct_coind (n := n) M hM`. Establish `hφ : ∀ {r s : ℕ} (h : r + s = 2), r ≤ 1 → Function.Bijective (dualityMap D h t (⨁ fun _ : J => Rep.coind (W : Subgroup Γ).subtype (zmodRep.{u} (W : Subgroup Γ) n) : Rep.{u} (ULift.{u} ℤ) Γ))` using `fun h hr => bijective_dualityMap_biproduct D _ h t fun _ => bijective_dualityMap_coind D H.nonempty_addEquiv t W (H.bijective_cores W) (H.isPerfectPairing W) h hr`. Establish `hnI : ∀ x : ((⨁ fun _ : J => Rep.coind (W : Subgroup Γ).subtype (zmodRep.{u} (W : Subgroup Γ) n) : Rep.{u} (ULift.{u} ℤ) Γ) : Type u), n • x = 0`. Introduce `x`. Rewrite using `[biproduct_eq_sum _ x, Finset.smul_sum]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations. Rewrite using `[← map_nsmul, nsmul_coind_zmodRep_eq_zero W, map_zero]`. Establish `hmono : Mono i` using `(Rep.mono_iff_injective i).2 hi`. Set `S` to `ShortComplex.mk i (cokernel.π i) (cokernel.condition i)`. Establish `hS : S.ShortExact` using `ShortComplex.ShortExact.mk' (S.exact_of_g_is_cokernel (cokernelIsCokernel i)) hmono (inferInstance : Epi (cokernel.π i))`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hQd : IsDiscreteRep (cokernel i)` using `isDiscreteRep_X₃_of_shortExact hS`. Establish `hsurj : Function.Surjective (cokernel.π i).hom` using `(Rep.epi_iff_surjective _).1 inferInstance`. Establish `hQf : Finite ((cokernel i : Rep.{u} (ULift.{u} ℤ) Γ) : Type u)` using `Finite.of_surjective _ hsurj`. Use `⟨_, cokernel i, inferInstance, hQd, inferInstance, hQf, i, cokernel.π i, cokernel.condition i, hS, hnI, fun x => ?_, hφ rfl (by norm_num), hφ rfl le_rfl⟩` and prove the remaining obligations. Take `⟨y, rfl⟩` from `hsurj x`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← map_nsmul, hnI, map_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_devissage (M : Rep.{u} (ULift.{u} ℤ) Γ) [IsDiscreteRep M] [Finite M]
     (hM : ∀ m : M, n • m = 0) :
@@ -173,11 +173,11 @@ variable (H : GroupDualityHypotheses n D t)
 include H in
 
 /- English proof (translation)
-Use `H.finite_D` as an intermediate fact. Take `⟨I, Q, _, _, _, _, i, p, w, hS, hnI, hnQ, hI0, hI1⟩` from `H.exists_devissage M hM`. Establish `hi : Function.Injective i.hom` using `(Rep.mono_iff_injective i).1 hS.mono_f`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `x hx`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1 : dualityMap D (rfl : 0 + 2 = 2) t I ((cohomologyMap i 0).hom x) = 0`. Use extensionality with `y`. Rewrite using `[dualityMap_cohomologyMap D (rfl : 0 + 2 = 2) t i x y, hx]`. Both sides reduce to the same expression. Establish `h2 : (cohomologyMap i 0).hom x = 0` using `(injective_iff_map_eq_zero _).1 hI0.1 _ h1`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Conclude with `(injective_iff_map_eq_zero _).1 (injective_cohomologyMap_zero i hi) x h2`.
+A detailed English derivation is pending.
 -/
 theorem injective_zero (M : Rep.{u} (ULift.{u} ℤ) Γ) [IsDiscreteRep M] [Finite M]
     (hM : ∀ m : M, n • m = 0) : Function.Injective (dualityMap D (rfl : 0 + 2 = 2) t M) := by
@@ -196,15 +196,15 @@ theorem injective_zero (M : Rep.{u} (ULift.{u} ℤ) Γ) [IsDiscreteRep M] [Finit
 include H in
 
 /- English proof (translation)
-Use `H.finite_D` as an intermediate fact. Take `⟨I, Q, _, _, _, _, i, p, w, hS, hnI, hnQ, hI0, hI1⟩` from `H.exists_devissage M hM`. Set `S` to `ShortComplex.mk i p w`. Establish `hT : (dualShortComplex D S).ShortExact` using `dualShortComplex_shortExact H.nonempty_addEquiv hS hnI`. Establish `hsurj : Function.Surjective (cohomologyMap (dualMap D i) 2).hom`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `y`. Establish `: Subsingleton (cohomology (dualRep D Q) 3)` using `H.subsingleton_three (dualRep D Q) (nsmul_dualRep_eq_zero H.nsmul_D)`. Conclude with `(ShortComplex.moduleCat_exact_iff _).1 (cohomology_exact₃ hT 2 3 rfl) y (Subsingleton.elim _ _)`. Introduce `l`. Take `⟨v, hv⟩` from `hI0.2 (l.comp (cohomologyMap (dualMap D i) 2).hom.toAddMonoidHom)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hpv : (cohomologyMap p 0).hom v = 0`. Apply `(injective_iff_map_eq_zero _).1 (H.injective_zero Q hnQ)` to reduce the goal to its premises. Use extensionality with `y`. Rewrite using `[dualityMap_cohomologyMap D (rfl : 0 + 2 = 2) t p v y, hv]`. Express the relevant statement in the definitionally equal form `l ((cohomologyMap (dualMap D p) 2 ≫ cohomologyMap (dualMap D i) 2).hom y) = 0`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← cohomologyMap_comp, ← dualMap_comp, w, dualMap_zero, cohomologyMap_zero]`. Conclude with `map_zero l`. Take `⟨m, hm⟩` from `(ShortComplex.moduleCat_exact_iff _).1 (cohomology_exact₂ hS 0) v hpv`. Use `⟨m, ?_⟩` and prove the remaining obligations. Use extensionality with `y`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨z, rfl⟩` from `hsurj y`. Rewrite using `[← dualityMap_cohomologyMap D (rfl : 0 + 2 = 2) t i m z]`. Express the relevant statement in the definitionally equal form `dualityMap D (rfl : 0 + 2 = 2) t I ((cohomologyMap S.f 0).hom m) z = _`. Rewrite using `[hm, hv]`. Both sides reduce to the same expression.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem surjective_zero (M : Rep.{u} (ULift.{u} ℤ) Γ) [IsDiscreteRep M] [Finite M]
     (hM : ∀ m : M, n • m = 0) : Function.Surjective (dualityMap D (rfl : 0 + 2 = 2) t M) := by
@@ -239,7 +239,7 @@ theorem surjective_zero (M : Rep.{u} (ULift.{u} ℤ) Γ) [IsDiscreteRep M] [Fini
 
 include H in
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨H.injective_zero M hM, H.surjective_zero M hM⟩`.
+Supply the required witnesses or components.
 -/
 theorem bijective_zero (M : Rep.{u} (ULift.{u} ℤ) Γ) [IsDiscreteRep M] [Finite M]
     (hM : ∀ m : M, n • m = 0) : Function.Bijective (dualityMap D (rfl : 0 + 2 = 2) t M) :=
@@ -248,17 +248,17 @@ theorem bijective_zero (M : Rep.{u} (ULift.{u} ℤ) Γ) [IsDiscreteRep M] [Finit
 include H in
 
 /- English proof (translation)
-Use `H.finite_D` as an intermediate fact. Take `⟨I, Q, _, _, _, _, i, p, w, hS, hnI, hnQ, hI0, hI1⟩` from `H.exists_devissage M hM`. Set `S` to `ShortComplex.mk i p w`. Establish `hT : (dualShortComplex D S).ShortExact` using `dualShortComplex_shortExact H.nonempty_addEquiv hS hnI`. Rewrite using `[injective_iff_map_eq_zero]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `x hx`. Establish `h1 : dualityMap D (rfl : 1 + 1 = 2) t I ((cohomologyMap i 1).hom x) = 0`. Use extensionality with `y`. Rewrite using `[dualityMap_cohomologyMap D (rfl : 1 + 1 = 2) t i x y, hx]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hix : (cohomologyMap i 1).hom x = 0` using `(injective_iff_map_eq_zero _).1 hI1.1 _ h1`. Take `⟨q, hq⟩` from `(ShortComplex.moduleCat_exact_iff _).1 (cohomology_exact₁ hS 0 1 rfl) x hix`. Establish `hker : ((cohomologyMap (dualMap D p) 2).hom.toAddMonoidHom).ker ≤ (dualityMap D (rfl : 0 + 2 = 2) t Q q).ker`. Introduce `z hz`. Take `⟨y, hy⟩` from `(ShortComplex.moduleCat_exact_iff _).1 (cohomology_exact₁ hT 1 2 rfl) z hz`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite using `[AddMonoidHom.mem_ker]`. Rewrite using `[← hy]`. Establish `e` using `dualityMap_δ (t := t) hS hT q y`. Express the relevant statement in the definitionally equal form `dualityMap D (rfl : 1 + 1 = 2) t M ((δ hS 0 1 rfl).hom q) y = _ at e`. Rewrite `e` using `[hq, hx]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `neg_eq_zero.1 e.symm`. Take `⟨ψ, hψ⟩` from `zmod_exists_comp_eq_of_ker_le (nsmul_cohomology_eq_zero _ (nsmul_dualRep_eq_zero H.nsmul_D) 2) _ _ hker`. Take `⟨v, hv⟩` from `hI0.2 ψ`. Establish `hpv : (cohomologyMap p 0).hom v = q`. Apply `H.injective_zero Q hnQ` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components.
 
-Use extensionality with `z`. Rewrite using `[dualityMap_cohomologyMap D (rfl : 0 + 2 = 2) t p v z, hv, ← hψ]`. Both sides reduce to the same expression. Rewrite using `[← hq, ← hpv]`. Conclude with `congrArg (fun φ => φ.hom v) (comp_δ hS 0 1 rfl)`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem injective_one (M : Rep.{u} (ULift.{u} ℤ) Γ) [IsDiscreteRep M] [Finite M]
     (hM : ∀ m : M, n • m = 0) : Function.Injective (dualityMap D (rfl : 1 + 1 = 2) t M) := by
@@ -299,19 +299,19 @@ theorem injective_one (M : Rep.{u} (ULift.{u} ℤ) Γ) [IsDiscreteRep M] [Finite
 include H in
 
 /- English proof (translation)
-Use `H.finite_D` as an intermediate fact. Take `⟨I, Q, _, _, _, _, i, p, w, hS, hnI, hnQ, hI0, hI1⟩` from `H.exists_devissage M hM`. Set `S` to `ShortComplex.mk i p w`. Establish `hT : (dualShortComplex D S).ShortExact` using `dualShortComplex_shortExact H.nonempty_addEquiv hS hnI`. Introduce `l`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨v, hv⟩` from `hI1.2 (l.comp (cohomologyMap (dualMap D i) 1).hom.toAddMonoidHom)`. Establish `hpv : (cohomologyMap p 1).hom v = 0`. Apply `(injective_iff_map_eq_zero _).1 (H.injective_one Q hnQ)` to reduce the goal to its premises. Use extensionality with `y`. Rewrite using `[dualityMap_cohomologyMap D (rfl : 1 + 1 = 2) t p v y, hv]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `l ((cohomologyMap (dualMap D p) 1 ≫ cohomologyMap (dualMap D i) 1).hom y) = 0`. Rewrite using `[← cohomologyMap_comp, ← dualMap_comp, w, dualMap_zero, cohomologyMap_zero]`. Conclude with `map_zero l`. Take `⟨x', hx'⟩` from `(ShortComplex.moduleCat_exact_iff _).1 (cohomology_exact₂ hS 1) v hpv`. Use `set ν := l - dualityMap D (rfl : 1 + 1 = 2) t M x' with hν`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hker : ((δ hT 1 2 rfl).hom.toAddMonoidHom).ker ≤ ν.ker`. Introduce `y hy`. Take `⟨z, hz⟩` from `(ShortComplex.moduleCat_exact_iff _).1 (cohomology_exact₃ hT 1 2 rfl) y hy`. Rewrite using `[AddMonoidHom.mem_ker, ← hz, hν, AddMonoidHom.sub_apply, sub_eq_zero]`. Express the relevant statement in the definitionally equal form `l ((cohomologyMap (dualMap D i) 1).hom z) = dualityMap D (rfl : 1 + 1 = 2) t M x' ((cohomologyMap (dualMap D i) 1).hom z)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[← dualityMap_cohomologyMap D (rfl : 1 + 1 = 2) t i x' z]`. Express the relevant statement in the definitionally equal form `_ = dualityMap D (rfl : 1 + 1 = 2) t I ((cohomologyMap S.f 1).hom x') z`. Rewrite using `[hx', hv]`. Both sides reduce to the same expression. Take `⟨ψ, hψ⟩` from `zmod_exists_comp_eq_of_ker_le (nsmul_cohomology_eq_zero _ (nsmul_dualRep_eq_zero H.nsmul_D) 2) _ _ hker`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨q, hq⟩` from `(H.bijective_zero Q hnQ).2 ψ`. Use `⟨x' - (δ hS 0 1 rfl).hom q, ?_⟩` and prove the remaining obligations. Use extensionality with `y`. Establish `e` using `dualityMap_δ (t := t) hS hT q y`. Express the relevant statement in the definitionally equal form `dualityMap D (rfl : 1 + 1 = 2) t M ((δ hS 0 1 rfl).hom q) y = _ at e`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[map_sub, AddMonoidHom.sub_apply, e, hq, sub_neg_eq_add]`. Establish `hψy : ψ ((δ hT 1 2 rfl).hom y) = ν y` using `congrArg (fun f => f y) hψ`. Express the relevant statement in the definitionally equal form `_ + ψ ((δ hT 1 2 rfl).hom y) = l y`. Rewrite using `[hψy, hν, AddMonoidHom.sub_apply, add_sub_cancel]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem surjective_one (M : Rep.{u} (ULift.{u} ℤ) Γ) [IsDiscreteRep M] [Finite M]
     (hM : ∀ m : M, n • m = 0) : Function.Surjective (dualityMap D (rfl : 1 + 1 = 2) t M) := by
@@ -355,7 +355,7 @@ theorem surjective_one (M : Rep.{u} (ULift.{u} ℤ) Γ) [IsDiscreteRep M] [Finit
 
 include H in
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨H.injective_one M hM, H.surjective_one M hM⟩`.
+Supply the required witnesses or components.
 -/
 theorem bijective_one (M : Rep.{u} (ULift.{u} ℤ) Γ) [IsDiscreteRep M] [Finite M]
     (hM : ∀ m : M, n • m = 0) : Function.Bijective (dualityMap D (rfl : 1 + 1 = 2) t M) :=
@@ -374,7 +374,7 @@ omit [TopologicalSpace Γ] [IsTopologicalGroup Γ] [CompactSpace Γ] [TotallyDis
   [IsDiscreteRep D] in
 
 /- English proof (translation)
-Use extensionality with `x`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero]`. Consider the case `tmul f m => rfl`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+By extensionality, compare the relevant components. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem tensorHom_toDualDual_evalPairing (M : Rep.{u} k Γ) :
     (𝟙 (dualRep D M) ⊗ₘ toDualDual D M) ≫ evalPairing D (dualRep D M) =
@@ -386,11 +386,9 @@ theorem tensorHom_toDualDual_evalPairing (M : Rep.{u} k Γ) :
   | add x y hx hy => simp only [map_add, hx, hy]
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[cohomologyMap_id]`. Both sides reduce to the same expression. Use `_ = cupPairing ((𝟙 (dualRep D M) ⊗ₘ toDualDual D M) ≫ evalPairing D (dualRep D M)) (rfl : 0 + 2 = 2) y x := cupPairing_cohomologyMap _ _ _ _ _ _`. Use `_ = cupPairing ((β_ (dualRep D M) M).hom ≫ evalPairing D M) (rfl : 0 + 2 = 2) y x := by`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[tensorHom_toDualDual_evalPairing]`. Use `_ = cohomologyMap (evalPairing D M) 2 (cohomologyMap (β_ (dualRep D M) M).hom 2 (cup (rfl : 0 + 2 = 2) y x)) := by`. Rewrite using `[cupPairing_apply, cohomologyMap_comp]`. Both sides reduce to the same expression. Use `_ = cupPairing (evalPairing D M) (rfl : 2 + 0 = 2) x y := by`.
-
-Rewrite using `[cohomologyMap_braiding_cup (rfl : 0 + 2 = 2) (rfl : 2 + 0 = 2) y x, zero_mul, pow_zero, one_smul]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem cupPairing_toDualDual (M : Rep.{u} k Γ) [IsDiscreteRep M] [IsDiscreteRep (dualRep D M)]
     [IsDiscreteRep (dualRep D (dualRep D M))] (x : cohomology M 2)
@@ -428,7 +426,7 @@ variable {Γ : Type u} [Group Γ] [TopologicalSpace Γ] [IsTopologicalGroup Γ] 
 omit [NeZero n] in
 
 /- English proof (translation)
-Rewrite using `[dualityMap_apply, dualityMap_apply, cupPairing_toDualDual]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem dualityMap_two_eq (M : Rep.{u} (ULift.{u} ℤ) Γ) [IsDiscreteRep M] [Finite M]
     [IsDiscreteRep (dualRep D (dualRep D M))] (x : cohomology M 2)
@@ -445,19 +443,19 @@ variable (H : GroupDualityHypotheses n D t)
 include H in
 
 /- English proof (translation)
-Use `H.finite_D` as an intermediate fact. Establish `: Finite (cohomology M 2)` using `H.finite_two M hM`. Establish `hbij` using `bijective_toDualDual H.nonempty_addEquiv hM`. Establish `: IsDiscreteRep (dualRep D (dualRep D M))` using `isDiscreteRep_dualRep _ _`. Set `e : M ≅ dualRep D (dualRep D M)` to `Rep.isoOfBijective (toDualDual D M) hbij`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `he1 : ∀ z, (cohomologyMap e.inv 2).hom ((cohomologyMap (toDualDual D M) 2).hom z) = z` using `fun z => by`. Express the relevant statement in the definitionally equal form `(cohomologyMap e.hom 2 ≫ cohomologyMap e.inv 2).hom z = z`. Rewrite using `[← cohomologyMap_comp, e.hom_inv_id, cohomologyMap_id]`. Both sides reduce to the same expression. Establish `he2 : ∀ z, (cohomologyMap (toDualDual D M) 2).hom ((cohomologyMap e.inv 2).hom z) = z` using `fun z => by`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `(cohomologyMap e.inv 2 ≫ cohomologyMap e.hom 2).hom z = z`. Rewrite using `[← cohomologyMap_comp, e.inv_hom_id, cohomologyMap_id]`. Both sides reduce to the same expression. Establish `h0` using `H.bijective_zero (dualRep D M) (nsmul_dualRep_eq_zero H.nsmul_D)`. Use `bijective_of_bijective_flip (nsmul_cohomology_eq_zero _ hM 2) (bilinAddHom (cupPairing (evalPairing D M) (rfl : 2 + 0 = 2))) t ?_` and prove the remaining obligations.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Set `c` to `(cohomologyMap (toDualDual D M) 2).hom.toAddMonoidHom`. Set `c'` to `(cohomologyMap e.inv 2).hom.toAddMonoidHom`. Establish `hpre : Function.Bijective fun χ : cohomology (dualRep D (dualRep D M)) 2 →+ ZMod n => χ.comp c`. Prove the components needed by the constructor for the conclusion. Introduce `χ χ' h`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Use extensionality with `z`. Use `congrArg (fun f : cohomology M 2 →+ ZMod n => f ((c' z))) h` as an intermediate fact. Simplify `this` using `[c, c', he2]`. Introduce `ξ`. Use `⟨ξ.comp c', ?_⟩` and prove the remaining obligations.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use extensionality with `z`. Simplify using `[c, c', he1]`. Establish `hfun : (fun y => t.comp ((bilinAddHom (cupPairing (evalPairing D M) (rfl : 2 + 0 = 2))).flip y)) = fun y => (dualityMap D (rfl : 0 + 2 = 2) t (dualRep D M) y).comp c`. Use function extensionality and compare the values at `y`. Use extensionality with `x`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. By extensionality, compare the relevant components.
 
-Conclude with `dualityMap_two_eq M x y`. Rewrite using `[hfun]`. Conclude with `hpre.comp h0`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bijective_two (M : Rep.{u} (ULift.{u} ℤ) Γ) [IsDiscreteRep M] [Finite M]
     (hM : ∀ m : M, n • m = 0) : Function.Bijective (dualityMap D (rfl : 2 + 0 = 2) t M) := by
@@ -504,7 +502,7 @@ theorem bijective_two (M : Rep.{u} (ULift.{u} ℤ) Γ) [IsDiscreteRep M] [Finite
 include H in
 
 /- English proof (translation)
-Take `⟨rfl, rfl⟩ | ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩ : (r = 0 ∧ s = 2) ∨ (r = 1 ∧ s = 1) ∨ (r = 2 ∧ s = 0)` from `by omega`. Conclude with `H.bijective_zero M hM`. Conclude with `H.bijective_one M hM`. Conclude with `H.bijective_two M hM`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem bijective_dualityMap (M : Rep.{u} (ULift.{u} ℤ) Γ) [IsDiscreteRep M] [Finite M]
     (hM : ∀ m : M, n • m = 0) {r s : ℕ} (h : r + s = 2) :

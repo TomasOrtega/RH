@@ -16,14 +16,14 @@ open GlobalTheory.MomOne.LiftChange
 variable {g : ℕ} {q : ℕ} [Fact q.Prime]
 
 /- English proof (translation)
-Simplify using `only [hf, Pi.add_apply, map_add, mul_add, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hf_add_right (Hm : Matrix (Fin g) (Fin g) ℂ) (x y y' : Fin g → ℂ) :
     hf Hm x (y + y') = hf Hm x y + hf Hm x y' := by
   simp only [hf, Pi.add_apply, map_add, mul_add, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Establish `h` using `hf_smul_right Hm (-1) x y`. Rewrite `h` using `[neg_one_smul, map_neg, map_one, neg_one_mul]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hf_neg_right (Hm : Matrix (Fin g) (Fin g) ℂ) (x y : Fin g → ℂ) : hf Hm x (-y) = -hf Hm x y := by
   have h := hf_smul_right Hm (-1) x y
@@ -31,23 +31,23 @@ theorem hf_neg_right (Hm : Matrix (Fin g) (Fin g) ℂ) (x y : Fin g → ℂ) : h
   exact h
 
 /- English proof (translation)
-Rewrite using `[sub_eq_add_neg, hf_add_right, hf_neg_right, ← sub_eq_add_neg]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem hf_sub_right (Hm : Matrix (Fin g) (Fin g) ℂ) (x y y' : Fin g → ℂ) :
     hf Hm x (y - y') = hf Hm x y - hf Hm x y' := by
   rw [sub_eq_add_neg, hf_add_right, hf_neg_right, ← sub_eq_add_neg]
 
 /- English proof (translation)
-Rewrite using `[sub_eq_add_neg, hf_add_left, ← neg_one_smul ℂ x', hf_smul_left]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem hf_sub_left (Hm : Matrix (Fin g) (Fin g) ℂ) (x x' y : Fin g → ℂ) :
     hf Hm (x - x') y = hf Hm x y - hf Hm x' y := by
   rw [sub_eq_add_neg, hf_add_left, ← neg_one_smul ℂ x', hf_smul_left]; ring
 
 /- English proof (translation)
-Establish `: ∀ s : Finset (Fin r), hf Hm x (∑ i ∈ s, y i) = ∑ i ∈ s, hf Hm x (y i)`. Introduce `s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp [hf]`. Consider the case `insert a s ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, hf_add_right, ih]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Conclude with `this _`.
+A detailed English derivation is pending.
 -/
 theorem hf_sum_right (Hm : Matrix (Fin g) (Fin g) ℂ) {r : ℕ} (x : Fin g → ℂ) (y : Fin r → Fin g → ℂ) :
     hf Hm x (∑ i, y i) = ∑ i, hf Hm x (y i) := by
@@ -59,20 +59,20 @@ theorem hf_sum_right (Hm : Matrix (Fin g) (Fin g) ℂ) {r : ℕ} (x : Fin g → 
   exact this _
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.MomOne.zc, norm_algebraMap']`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem norm_zc (a : ℤ_[q]) : ‖GlobalTheory.MomOne.zc a‖ = ‖a‖ := by
   rw [GlobalTheory.MomOne.zc, norm_algebraMap']; rfl
 
 /- English proof (translation)
-Establish `: (N : ℂ_[q]) = GlobalTheory.MomOne.zc (N : ℤ_[q])` using `by simp [GlobalTheory.MomOne.zc]`. Rewrite using `[this, norm_zc]`. Conclude with `PadicInt.norm_le_one _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_natCast_le (N : ℕ) : ‖(N : ℂ_[q])‖ ≤ 1 := by
   have : (N : ℂ_[q]) = GlobalTheory.MomOne.zc (N : ℤ_[q]) := by simp [GlobalTheory.MomOne.zc]
   rw [this, norm_zc]; exact PadicInt.norm_le_one _
 
 /- English proof (translation)
-Establish `: (q : ℂ_[q]) = algebraMap ℚ_[q] ℂ_[q] (q : ℚ_[q])` using `by simp`. Rewrite using `[norm_pow, this, norm_algebraMap', Padic.norm_p, zpow_neg, zpow_natCast, inv_pow]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem norm_q_pow (n : ℕ) : ‖(q : ℂ_[q]) ^ n‖ = (q : ℝ) ^ (-(n : ℤ)) := by
   have : (q : ℂ_[q]) = algebraMap ℚ_[q] ℂ_[q] (q : ℚ_[q]) := by simp
@@ -87,111 +87,101 @@ open scoped ComplexOrder
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Introduce `q _ lam g S r b e t hS hsp hb he N₀ hN₀ hcop hNt n y hy`. Establish `hqp : q.Prime` using `Fact.out`. Establish `hq1 : (1 : ℝ) ≤ q` using `by exact_mod_cast hqp.one_le`. Establish `hd4 : S.d % 4 = 3` using `by have := hS.2.1; omega`. Take `⟨ι, hι⟩` from `GlobalTheory.PadicComplexIso.exists_ringEquiv_extending q lam`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨⟨-, -, hcl⟩, hZ, hdiv, hid, -, -, -⟩` from `GlobalTheory.MomOne.okArith S.d q ι hS.1 hS.2.1 hsp`. Take `⟨H1, -, -, H4, H5, H6⟩` from `GlobalTheory.HeisOps.heisenberg g S.d S.Hm hS.1.pos hS.2.2.1.isHermitian`. Establish `hlam : ∀ x : ℂ, x ∈ Qbar → lamA lam x = ι x` using `fun x hx => by`. Rewrite using `[lamA, dif_pos hx]`. Conclude with `(hι ⟨x, hx⟩).symm`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hOK1 : ∀ α ∈ OK S.d, ‖ι α‖ ≤ 1` using `fun α hα => by`. Take `⟨⟨a, ha⟩, -⟩` from `hZ α hα`. Rewrite using `[ha, norm_zc]`. Conclude with `PadicInt.norm_le_one a`. Establish `hbOK : ∀ x ∈ S.La, ∀ y ∈ S.La, beta S.d S.Hm x y ∈ OK S.d` using `hS.2.2.2.2.2.2.1`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `himI : ∀ x ∈ S.La, ∀ y ∈ S.La, ∃ k : ℤ, (hf S.Hm x y).im = k` using `fun x hx y hy => by`. Take `⟨u, v, huv⟩` from `hbOK x hx y hy`. Conclude with `⟨v, H5 _ _ _ _ huv⟩`. Establish `hnat : ∀ N : ℕ, ‖ι (N : ℂ)‖ ≤ 1` using `fun N => by rw [map_natCast]; exact norm_natCast_le N`. Establish `hnat1 : ∀ N : ℕ, Nat.Coprime N q → ‖ι (N : ℂ)‖ = 1` using `fun N h => by`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[map_natCast]`. Conclude with `GlobalTheory.MomOne.Basic.norm_nat_eq_one h.symm`. Establish `hqn : ‖ι ((q : ℂ) ^ n)‖ = (q : ℝ) ^ (-(n : ℤ))` using `by rw [map_pow, map_natCast]; exact norm_q_pow n`. Establish `hconjOK : ∀ α ∈ OK S.d, conj α ∈ OK S.d` using `fun α h => (hcl α α h h).2.2.2`. Establish `hmulOK : ∀ α β, α ∈ OK S.d → β ∈ OK S.d → α * β ∈ OK S.d` using `fun α β h h' => (hcl α β h h').2.1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hnatOK : ∀ N : ℕ, (N : ℂ) ∈ OK S.d` using `fun N => ⟨N, 0, by simp⟩`. Establish `hconjB : ∀ x y, beta S.d S.Hm y x = conj (beta S.d S.Hm x y)` using `fun x y => by`. Rewrite using `[beta, beta, H4 x y, map_mul, Complex.conj_ofReal]`. Establish `hpow_le : (q : ℝ) ^ (-(2 * n : ℤ)) ≤ (q : ℝ) ^ (-(n : ℤ))` using `zpow_le_zpow_right₀ hq1 (by omega)`. Establish `hpos : ∀ k : ℤ, (0 : ℝ) ≤ (q : ℝ) ^ k` using `fun k => by positivity`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `bsr : ∀ (a : ℂ) x y, beta S.d S.Hm x (a • y) = conj a * beta S.d S.Hm x y` using `fun a x y => by`. Rewrite using `[beta, beta, hf_smul_right]`. Expand and normalize the polynomial expressions, which then agree. Establish `bsl : ∀ (a : ℂ) x y, beta S.d S.Hm (a • x) y = a * beta S.d S.Hm x y` using `fun a x y => by`. Rewrite using `[beta, beta, hf_smul_left]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `bar : ∀ x y y', beta S.d S.Hm x (y + y') = beta S.d S.Hm x y + beta S.d S.Hm x y'` using `fun x y y' => by`. Rewrite using `[beta, beta, beta, hf_add_right]`. Expand and normalize the polynomial expressions, which then agree. Establish `bsubr : ∀ x y y', beta S.d S.Hm x (y - y') = beta S.d S.Hm x y - beta S.d S.Hm x y'` using `fun x y y' => by`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Rewrite using `[beta, beta, beta, hf_sub_right]`. Expand and normalize the polynomial expressions, which then agree. Establish `bsubl : ∀ x x' y, beta S.d S.Hm (x - x') y = beta S.d S.Hm x y - beta S.d S.Hm x' y` using `fun x x' y => by`. Rewrite using `[beta, beta, beta, hf_sub_left]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `bnr : ∀ x y, beta S.d S.Hm x (-y) = -beta S.d S.Hm x y` using `fun x y => by`. Rewrite using `[beta, beta, hf_neg_right]`. Expand and normalize the polynomial expressions, which then agree. Establish `bsumr : ∀ x (y : Fin r → Fin g → ℂ), beta S.d S.Hm x (∑ j, y j) = ∑ j, beta S.d S.Hm x (y j)` using `fun x y => by`. Rewrite using `[beta, hf_sum_right, Finset.mul_sum]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `bsuml : ∀ (x : Fin r → Fin g → ℂ) y, beta S.d S.Hm (∑ j, x j) y = ∑ j, beta S.d S.Hm (x j) y` using `fun x y => by`. Rewrite using `[beta, hf_sum_left, Finset.mul_sum]`. Both sides reduce to the same expression. Establish `usub : ∀ a b : ℂ_[q], ‖a - b‖ ≤ max ‖a‖ ‖b‖` using `fun a b => by`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Rewrite using `[sub_eq_add_neg]`. Simplify using `using IsUltrametricDist.norm_add_le_max a (-b)`. Establish `hN0r : conj (N₀ : ℂ) = N₀` using `map_natCast _ _`. Establish `hqr : conj ((q : ℂ) ^ n) = (q : ℂ) ^ n` using `by rw [map_pow, map_natCast]`. Establish `hqnC : (q : ℂ) ^ n ≠ 0` using `pow_ne_zero _ (by exact_mod_cast hqp.ne_zero)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Proceed by induction. Treat this case separately.
 
-Establish `step1 : ∃ v ∈ S.La, y = ((N₀ : ℂ) / (q : ℂ) ^ n) • v ∧ ∀ x ∈ S.La, ‖ι (beta S.d S.Hm x v)‖ ≤ (q : ℝ) ^ (-(2 * n : ℤ))`. Proceed by induction on `hy using AddSubgroup.closure_induction with`. Consider the case `mem y hy'`. Take `⟨κ, hκ, hκs, x0, hx0, rfl⟩` from `hy'`. Use `⟨κ • x0, GlobalTheory.MomOne.LiftChange.smul_mem S hS hκ hx0, by rw [smul_smul]; congr 1; ring, fun x hx => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Treat this case separately.
 
-Rewrite using `[bsr, map_mul, norm_mul, ← hlam _ (GlobalTheory.MomOne.LiftChange.norm_int hd4 hκ).2.1]`. Combine the equalities or inequalities in the displayed calculation. Consider the case `zero => exact ⟨0, zero_mem _, by simp, fun x hx => by simp [beta, hf]; positivity⟩`. Consider the case `add y1 y2 _ _ ih1 ih2`. Take `⟨v1, hv1, rfl, h1⟩` from `ih1`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨v2, hv2, rfl, h2⟩` from `ih2`. Use `⟨v1 + v2, add_mem hv1 hv2, (smul_add _ _ _).symm, fun x hx => ?_⟩` and prove the remaining obligations. Rewrite using `[bar, map_add]`. Conclude with `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le (h1 x hx) (h2 x hx))`. Consider the case `neg y1 _ ih`.
+Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨v1, hv1, rfl, h1⟩` from `ih`. Use `⟨-v1, neg_mem hv1, (smul_neg _ _).symm, fun x hx => ?_⟩` and prove the remaining obligations. Rewrite using `[bnr, map_neg, norm_neg]`. Conclude with `h1 x hx`. Take `⟨v, hv, rfl, hvs⟩` from `step1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hre : ∃ z : ℤ, (beta S.d S.Hm (((N₀ : ℂ) / (q : ℂ) ^ n) • v) (((N₀ : ℂ) / (q : ℂ) ^ n) • v)).re = z`. Establish `hα : beta S.d S.Hm v v ∈ OK S.d` using `hbOK v hv v hv`. Establish `hαc : conj (beta S.d S.Hm v v) = beta S.d S.Hm v v` using `(hconjB v v).symm`. Establish `hγ : GlobalTheory.MomOne.InOK S.d (beta S.d S.Hm v v / (q : ℂ) ^ (2 * n))` using `hdiv _ (2 * n) hα (by push_cast; exact hvs v hv) (by rw [hαc]; push_cast; exact hvs v hv)`. Take `⟨u, w', hu⟩` from `hγ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hγc : conj (beta S.d S.Hm v v / (q : ℂ) ^ (2 * n)) = beta S.d S.Hm v v / (q : ℂ) ^ (2 * n)`. Rewrite using `[map_div₀, hαc, map_pow, map_natCast]`. Establish `hw'0 : w' = 0`. Establish `him` using `congrArg Complex.im hu`. Establish `hc` using `congrArg Complex.im hγc`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite `hc` using `[Complex.conj_im]`. Establish `h0 : (beta S.d S.Hm v v / (q : ℂ) ^ (2 * n)).im = 0` using `by linarith`. Rewrite `him` using `[h0]`. Establish `hs : Real.sqrt S.d ≠ 0` using `by have := hS.1.pos; positivity`. Simplify using `[GlobalTheory.MomOne.wK, hs] at him`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Conclude with `him` after adjusting the coercions. Rewrite `hu` using `[hw'0, Int.cast_zero, zero_mul, add_zero, div_eq_iff (pow_ne_zero _ (by exact_mod_cast hqp.ne_zero))]`. Use `⟨N₀ ^ 2 * u, ?_⟩` and prove the remaining obligations. Establish `: beta S.d S.Hm (((N₀ : ℂ) / (q : ℂ) ^ n) • v) (((N₀ : ℂ) / (q : ℂ) ^ n) • v) = ((N₀ ^ 2 * u : ℤ) : ℂ)`. Rewrite using `[bsl, bsr, map_div₀, hN0r, hqr, hu]`.
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `push_cast`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this, Complex.intCast_re]`. Take `⟨e0, he0, he0a, he0b⟩` from `hid (2 * n) N₀ hcop`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Establish `he0' : e0 ∈ OK S.d` using `he0`. Establish `he0b' : ‖ι (conj e0)‖ ≤ (q : ℝ) ^ (-(2 * n : ℤ))` using `by have := he0b; push_cast at this; exact this`. Establish `he0a' : ‖ι ((N₀ : ℂ) * e0 - 1)‖ ≤ (q : ℝ) ^ (-(2 * n : ℤ))`. Rewrite using `[map_sub, map_one]`. Use `he0a` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Move the coercions through the operations in `at this`. Conclude with `this`. Establish `hepsOK : (N₀ : ℂ) * e0 ∈ OK S.d` using `hmulOK _ _ (hnatOK N₀) he0'`. Establish `hidem : IsIdem lam S.d (2 * n) ((N₀ : ℂ) * e0)`. Use `⟨hepsOK, ?_, ?_⟩` and prove the remaining obligations.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[hlam _ (GlobalTheory.MomOne.LiftChange.norm_int hd4 hepsOK).1]`. Conclude with `he0a`. Rewrite using `[hlam _ (GlobalTheory.MomOne.LiftChange.norm_int hd4 hepsOK).2.1, map_mul, hN0r, map_mul, norm_mul]`. Combine the equalities or inequalities in the displayed calculation. Establish `htI : ∀ i, ∃ z : ℤ, (hf S.Hm (((N₀ : ℂ) * e0) • b i) t).im = z` using `fun i => by`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `: hf S.Hm (((N₀ : ℂ) * e0) • b i) t = hf S.Hm (e0 • b i) ((N₀ : ℂ) • t)`. Rewrite using `[hf_smul_left, hf_smul_left, hf_smul_right, hN0r]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`. Conclude with `himI _ (GlobalTheory.MomOne.LiftChange.smul_mem S hS he0' (hb.1 i)) _ hNt`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Take `⟨s, c, hs, hc, hbc, hexp⟩` from `GlobalTheory.T.exists_dualBasis_of_unimodular_lattice_at_prime q g S r b hS hb`. Use `choose a ha using fun j => (hZ _ (hbOK v hv (c j) (hc j))).1`. Use `haveI : NeZero (q ^ n) := ⟨pow_ne_zero _ hqp.ne_zero⟩`. Set `A : Fin r → ZMod (q ^ n)` to `fun j => PadicInt.toZModPow n (a j) * (N₀ : ZMod (q ^ n)) * ((s : ZMod (q ^ n)))⁻¹`. Set `yt : Fin r → Fin (q ^ n)` to `fun j => ⟨(A j).val, ZMod.val_lt _⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Establish `hyt : ∀ j, ‖ι ((N₀ : ℂ) * beta S.d S.Hm v (c j) - (s : ℂ) * ((yt j : ℕ) : ℂ))‖ ≤ (q : ℝ) ^ (-(n : ℤ))`. Introduce `j`. Establish `e1 : ι ((N₀ : ℂ) * beta S.d S.Hm v (c j) - (s : ℂ) * ((yt j : ℕ) : ℂ)) = GlobalTheory.MomOne.zc ((N₀ : ℤ_[q]) * a j - (s : ℤ_[q]) * ((yt j : ℕ) : ℤ_[q]))`. Rewrite using `[map_sub, map_mul, map_mul, ha j, map_natCast, map_natCast, map_natCast]`. Simplify using `[GlobalTheory.MomOne.zc]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Rewrite using `[e1, norm_zc, PadicInt.norm_le_pow_iff_mem_span_pow, ← PadicInt.ker_toZModPow, RingHom.mem_ker]`. Establish `hinv : (s : ZMod (q ^ n)) * (s : ZMod (q ^ n))⁻¹ = 1` using `ZMod.coe_mul_inv_eq_one s (Nat.Coprime.pow_right n hs)`. Establish `hv' : (((yt j : ℕ)) : ZMod (q ^ n)) = A j` using `ZMod.natCast_zmod_val (A j)`. Simplify using `only [map_sub, map_mul, map_natCast, hv', A]`. Take the linear combination `(-(PadicInt.toZModPow n (a j) * (N₀ : ZMod (q ^ n)))) * hinv`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion.
 
-Use `set B : Fin g → ℂ := ∑ i, ((yt i : ℕ) : ℂ) • b i with hBdef`. Establish `hB : B ∈ S.La` using `Submodule.sum_mem _ fun i _ => by`. Rewrite using `[Nat.cast_smul_eq_nsmul]`. Conclude with `nsmul_mem (hb.1 i) _`. Use `set w := v - e0 • B with hwdef`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Establish `hw : w ∈ S.La` using `sub_mem hv (GlobalTheory.MomOne.LiftChange.smul_mem S hS he0' hB)`. Establish `hbc' : ∀ i j, beta S.d S.Hm (b i) (c j) = if i = j then (s : ℂ) else 0` using `fun i j => by`. Apply the tactic sequence `rw [hconjB (c j) (b i), hbc]; split_ifs <;> simp`. Establish `hBc : ∀ j, beta S.d S.Hm B (c j) = ((yt j : ℕ) : ℂ) * s` using `fun j => by`. Rewrite using `[hBdef, bsuml]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[bsl, hbc']`. Establish `hkey : ∀ x ∈ S.La, ‖ι (beta S.d S.Hm x w)‖ ≤ (q : ℝ) ^ (-(2 * n : ℤ)) ∧ ‖ι (conj (beta S.d S.Hm x w))‖ ≤ (q : ℝ) ^ (-(n : ℤ))`. Introduce `x hx`. Prove the components needed by the constructor for the conclusion. Rewrite using `[hwdef, bsubr, bsr, map_sub, map_mul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `(usub _ _).trans (max_le (hvs x hx) ?_)` and prove the remaining obligations. Rewrite using `[norm_mul]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← hconjB x w]`. Establish `hsum : (s : ℂ) * beta S.d S.Hm w x = ∑ j, beta S.d S.Hm (b j) x * (beta S.d S.Hm v (c j) - e0 * (((yt j : ℕ) : ℂ) * s))`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `h1 : (s : ℂ) * beta S.d S.Hm w x = beta S.d S.Hm w ((s : ℂ) • x)` using `by rw [bsr, map_natCast]`. Rewrite using `[h1, hexp x hx, bsumr]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[bsr, ← hconjB, hwdef, bsubl, bsl, hBc]`. Establish `hterm : ∀ j, ‖ι (beta S.d S.Hm v (c j) - e0 * (((yt j : ℕ) : ℂ) * s))‖ ≤ (q : ℝ) ^ (-(n : ℤ))`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Introduce `j`. Establish `hdecomp : (N₀ : ℂ) * (beta S.d S.Hm v (c j) - e0 * (((yt j : ℕ) : ℂ) * s)) = ((N₀ : ℂ) * beta S.d S.Hm v (c j) - (s : ℂ) * ((yt j : ℕ) : ℂ)) - ((N₀ : ℂ) * e0 - 1) * (((yt j : ℕ) : ℂ) * s)` using `by ring`. Establish `h2 : ‖ι (beta S.d S.Hm v (c j) - e0 * (((yt j : ℕ) : ℂ) * s))‖ = ‖ι ((N₀ : ℂ) * (beta S.d S.Hm v (c j) - e0 * (((yt j : ℕ) : ℂ) * s)))‖`. Rewrite using `[map_mul, norm_mul, hnat1 N₀ hcop, one_mul]`. Rewrite using `[h2, hdecomp, map_sub]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `(usub _ _).trans (max_le (hyt j) ?_)` and prove the remaining obligations. Rewrite using `[map_mul, norm_mul]`. Combine the equalities or inequalities in the displayed calculation. Establish `h3 : ‖ι (beta S.d S.Hm w x)‖ = ‖ι ((s : ℂ) * beta S.d S.Hm w x)‖`. Rewrite using `[map_mul, norm_mul, hnat1 s hs, one_mul]`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[h3, hsum, map_sum]`. Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg (hpos _) fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, norm_mul]`. Combine the equalities or inequalities in the displayed calculation. Use `set L := ((q : ℂ) ^ n)⁻¹ • w with hLdef`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hbL : ∀ x, beta S.d S.Hm x L = beta S.d S.Hm x w / (q : ℂ) ^ n` using `fun x => by`. Rewrite using `[hLdef, bsr, map_inv₀, hqr, div_eq_inv_mul]`. Establish `hLOK : ∀ x ∈ S.La, beta S.d S.Hm x L ∈ OK S.d` using `fun x hx => by`. Rewrite using `[hbL]`. Conclude with `hdiv _ n (hbOK x hx w hw) ((hkey x hx).1.trans hpow_le) (hkey x hx).2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hL : L ∈ S.La` using `hS.2.2.2.2.2.2.2 L fun x hx => by`. Take `⟨u, v', h⟩` from `hLOK x hx`. Conclude with `⟨v', H5 _ _ _ _ h⟩`. Establish `hLs : ∀ x ∈ S.La, ‖ι (beta S.d S.Hm x L)‖ ≤ (q : ℝ) ^ (-(n : ℤ))` using `fun x hx => by`. Establish `h` using `(hkey x hx).1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `e2 : beta S.d S.Hm x w = (q : ℂ) ^ n * beta S.d S.Hm x L` using `by rw [hbL]; field_simp`. Rewrite `h` using `[e2, map_mul, norm_mul, hqn]`. Establish `hp : (0 : ℝ) < (q : ℝ) ^ (-(n : ℤ))` using `by positivity`. Establish `: (q : ℝ) ^ (-(2 * n : ℤ)) = (q : ℝ) ^ (-(n : ℤ)) * (q : ℝ) ^ (-(n : ℤ))`. Rewrite using `[← zpow_add₀ (by positivity)]; ring_nf`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite `h` using `[this]`. Conclude with `le_of_mul_le_mul_left h hp`. Use `set lamV := (N₀ : ℂ) • L with hlamV`. Establish `hlamL : lamV ∈ S.La` using `by rw [hlamV, Nat.cast_smul_eq_nsmul]; exact nsmul_mem hL _`. Establish `hliftY : liftY q n ((N₀ : ℂ) * e0) b yt = (((N₀ : ℂ) * e0) / (q : ℂ) ^ n) • B` using `rfl`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hysplit : ((N₀ : ℂ) / (q : ℂ) ^ n) • v = liftY q n ((N₀ : ℂ) * e0) b yt + lamV`. Rewrite using `[hliftY, hlamV, hLdef, hwdef]`. Simplify using `only [smul_sub, smul_smul]`. Rewrite using `[div_eq_mul_inv, div_eq_mul_inv]`. Use `module`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hkapt : kap S.Hm lamV t = 1`. Take `⟨k, hk⟩` from `himI L hL _ hNt`. Use `kap_eq_one _ _ _ k ?_` and prove the remaining obligations. Rewrite using `[hlamV, hf_smul_left, ← hk, hf_smul_right, hN0r]`. Establish `hWl : opW S.d S.Hm lamV (opU S.Hm t e) = opU S.Hm t e`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h1` using `(H1 lamV t e).2.1`. Use `conv_rhs => rw [← he.2 lamV hlamL]`. Use function extensionality and compare the values at `z`. Rewrite using `[opW, h1, hkapt]`. Simplify using `only [opU, opW]`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hβ : beta S.d S.Hm (liftY q n ((N₀ : ℂ) * e0) b yt) lamV ∈ OK S.d`. Establish `hγOK : (N₀ : ℂ) * (N₀ : ℂ) * e0 * beta S.d S.Hm B L ∈ OK S.d` using `hmulOK _ _ (hmulOK _ _ (hmulOK _ _ (hnatOK _) (hnatOK _)) he0') (hLOK B hB)`. Establish `e3 : beta S.d S.Hm (liftY q n ((N₀ : ℂ) * e0) b yt) lamV = (N₀ : ℂ) * (N₀ : ℂ) * e0 * beta S.d S.Hm B L / (q : ℂ) ^ n`. Rewrite using `[hliftY, hlamV, bsl, bsr, hN0r]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e3]`. Use `hdiv _ n hγOK ?_ ?_` and prove the remaining obligations. Rewrite using `[map_mul, norm_mul]`. Establish `h4 : ‖ι ((N₀ : ℂ) * (N₀ : ℂ) * e0)‖ ≤ 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion.
 
-Rewrite using `[map_mul, map_mul, norm_mul, norm_mul]`. Conclude with `mul_le_one₀ (mul_le_one₀ (hnat _) (norm_nonneg _) (hnat _)) (norm_nonneg _) (hOK1 _ he0')`. Combine the equalities or inequalities in the displayed calculation. Establish `h5` using `hOK1 _ (hconjOK _ (hLOK B hB))`. Establish `h6` using `hnat N₀`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [map_mul, hN0r, norm_mul]`. Combine the equalities or inequalities in the displayed calculation. Establish `hWeq : opW S.d S.Hm (((N₀ : ℂ) / (q : ℂ) ^ n) • v) (opU S.Hm t e) = opW S.d S.Hm (liftY q n ((N₀ : ℂ) * e0) b yt) (opU S.Hm t e)`. Rewrite using `[hysplit, ← (H1 _ lamV _).2.2 hβ, hWl]`. Establish `hkap : ∀ a : Fin r → ℕ, kap S.Hm (∑ i, (a i : ℂ) • b i) (((N₀ : ℂ) / (q : ℂ) ^ n) • v) = kap S.Hm (vecA n b fun i => (a i : ℤ_[q])) (liftY q n ((N₀ : ℂ) * e0) b yt)`.
+Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `a`. Use `set D : Fin g → ℂ := ∑ i, (((a i / q ^ n : ℕ)) : ℂ) • b i with hD`. Establish `hDL : D ∈ S.La` using `Submodule.sum_mem _ fun i _ => by`. Rewrite using `[Nat.cast_smul_eq_nsmul]`. Conclude with `nsmul_mem (hb.1 i) _`.
-
-Establish `hsplitA : ∑ i, (a i : ℂ) • b i = vecA n b (fun i => (a i : ℤ_[q])) + (q : ℂ) ^ n • D`. Rewrite using `[vecA, hD, Finset.smul_sum, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_natCast, ZMod.val_natCast, smul_smul, ← add_smul]`. Use `congr 1`.
-
-Establish `h : ((a i % q ^ n + q ^ n * (a i / q ^ n) : ℕ) : ℂ) = (a i : ℂ)` using `by rw [Nat.mod_add_div]`. Move the coercions through the operations in `at h`. Take the linear combination `-h`. Establish `hkD : kap S.Hm ((q : ℂ) ^ n • D) (liftY q n ((N₀ : ℂ) * e0) b yt) = 1`. Take `⟨k, hk⟩` from `himI D hDL _ (GlobalTheory.MomOne.LiftChange.smul_mem S hS hepsOK hB)`.
-
-Use `kap_eq_one _ _ _ k ?_` and prove the remaining obligations. Establish `: hf S.Hm ((q : ℂ) ^ n • D) (liftY q n ((N₀ : ℂ) * e0) b yt) = hf S.Hm D (((N₀ : ℂ) * e0) • B)`. Rewrite using `[hf_smul_left, hliftY, hf_smul_right, hf_smul_right, map_div₀, hqr]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[this]`.
-
-Conclude with `hk`. Establish `hsumL : ∑ i, (a i : ℂ) • b i ∈ S.La` using `Submodule.sum_mem _ fun i _ => by`. Rewrite using `[Nat.cast_smul_eq_nsmul]`. Conclude with `nsmul_mem (hb.1 i) _`. Establish `hkl : kap S.Hm (∑ i, (a i : ℂ) • b i) lamV = 1`.
-
-Take `⟨k, hk⟩` from `himI _ hsumL lamV hlamL`. Conclude with `kap_eq_one _ _ _ k hk`. Rewrite using `[hysplit, (H6 _ _ _).1, hkl, mul_one, hsplitA, (H6 _ _ _).2, hkD, mul_one]`. Conclude with `⟨hre, 2 * n, (N₀ : ℂ) * e0, yt, hidem, le_rfl, htI, hWeq, hkap⟩`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem goodLift_eq : ∀ (q : ℕ) [Fact q.Prime] (lam : Qbar →+* ℂ_[q]) (g : ℕ) (S : Setup g) (r : ℕ) (b : Fin r → Fin g → ℂ) (e : (Fin g → ℂ) → ℂ) (t : Fin g → ℂ), S.Ok → GlobalTheory.MomOne.Split S.d q → S.NNBasis q b → S.IsTheta e → ∀ N₀ : ℕ, 0 < N₀ → Nat.Coprime N₀ q → (N₀ : ℂ) • t ∈ S.La → ∀ (n : ℕ), ∀ y ∈ AddSubgroup.closure {y : Fin g → ℂ | ∃ κ ∈ OK S.d, ‖lamA lam (conj κ)‖ ≤ (q : ℝ) ^ (-(2 * n : ℤ)) ∧ ∃ x ∈ S.La, y = (κ * (N₀ : ℂ) / (q : ℂ) ^ n) • x}, (∃ z : ℤ, (beta S.d S.Hm y y).re = z) ∧ ∃ (m : ℕ) (eps : ℂ) (yt : Fin r → Fin (q ^ n)), IsIdem lam S.d m eps ∧ 2 * n ≤ m ∧ (∀ i, ∃ z : ℤ, (hf S.Hm (eps • b i) t).im = z) ∧ opW S.d S.Hm y (opU S.Hm t e) = opW S.d S.Hm (liftY q n eps b yt) (opU S.Hm t e) ∧ ∀ a : Fin r → ℕ, kap S.Hm (∑ i, (a i : ℂ) • b i) y = kap S.Hm (vecA n b fun i => (a i : ℤ_[q])) (liftY q n eps b yt) := by
   intro q _ lam g S r b e t hS hsp hb he N₀ hN₀ hcop hNt n y hy

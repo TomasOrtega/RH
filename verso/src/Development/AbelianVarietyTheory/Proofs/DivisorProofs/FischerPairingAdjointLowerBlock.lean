@@ -10,11 +10,11 @@ open MvPolynomial Formalism.BasicNotions.TH GlobalTheory.CharPair GlobalTheory.D
 namespace GlobalTheory.CharPair.SecondBlockS
 
 /- English proof (translation)
-Proceed by induction on `f using MvPolynomial.induction_on' with`. Consider the case `monomial α c`. Proceed by induction on `g using MvPolynomial.induction_on' with`. Consider the case `monomial β d`. Rewrite using `[pair_monomial, pair_monomial, coeff_monomial, coeff_monomial]`.
+Proceed by induction. Treat this case separately. Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `h : α = β`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Simplify using `[h, Ne.symm h]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
 
-Consider the case `add g g' h h' => simp only [map_add, LinearMap.add_apply, h, h']`. Consider the case `add f f' h h' => simp only [map_add, LinearMap.add_apply, h, h']`.
+Treat this case separately. Treat this case separately.
 -/
 theorem pair_symm' {σ : Type} [Fintype σ] (f g : MvPolynomial σ ℂ) : pair f g = pair g f := by
   classical
@@ -30,7 +30,7 @@ theorem pair_symm' {σ : Type} [Fintype σ] (f g : MvPolynomial σ ℂ) : pair f
   | add f f' h h' => simp only [map_add, LinearMap.add_apply, h, h']
 
 /- English proof (translation)
-Rewrite using `[mul_comm, pair_mul_X, pair_symm', ← pair_mul_X, pair_symm', mul_comm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem pair_X_pderiv {σ : Type} [Fintype σ] (f g : MvPolynomial σ ℂ) (u v : σ) :
     pair (X u * pderiv v f) g = pair f (X v * pderiv u g) := by
@@ -42,7 +42,7 @@ def rowD (b b' : Fin Q) : Derivation ℂ (Pol P Q 0 S) (Pol P Q 0 S) :=
   ∑ c : Fin S, (X (Sum.inr b', Sum.inr c) : Pol P Q 0 S) • pderiv (Sum.inr b, Sum.inr c)
 
 /- English proof (translation)
-Rewrite using `[rowD, PI.RL.W.derivation_sum_apply]`. Simplify using `[Derivation.smul_apply, smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem rowD_apply (b b' : Fin Q) (g : Pol P Q 0 S) :
     rowD b b' g = ∑ c : Fin S, X (Sum.inr b', Sum.inr c) * pderiv (Sum.inr b, Sum.inr c) g := by
@@ -50,9 +50,9 @@ theorem rowD_apply (b b' : Fin Q) (g : Pol P Q 0 S) :
   simp [Derivation.smul_apply, smul_eq_mul]
 
 /- English proof (translation)
-Rewrite using `[rowD_apply]`. Simplify using `only [pderiv_X, Pi.single_apply, Prod.mk.injEq, mul_ite, mul_one, mul_zero, Sum.inr.injEq]`. Distinguish the cases in `h : i = b`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[h]`.
+Simplify using the standard rewrite rules.
 -/
 theorem rowD_X_inr_inr (b b' i : Fin Q) (c : Fin S) :
     rowD b b' (X (Sum.inr i, Sum.inr c) : Pol P Q 0 S) =
@@ -65,7 +65,7 @@ theorem rowD_X_inr_inr (b b' i : Fin Q) (c : Fin S) :
   · simp [h]
 
 /- English proof (translation)
-Rewrite using `[rowD_apply]`. Simplify using `[pderiv_X, Pi.single_apply]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem rowD_u (b b' : Fin Q) (a : Fin P) (c : Fin S) :
     rowD b b' (X (Sum.inl a, Sum.inr c) : Pol P Q 0 S) = 0 := by
@@ -73,7 +73,7 @@ theorem rowD_u (b b' : Fin Q) (a : Fin P) (c : Fin S) :
   simp [pderiv_X, Pi.single_apply]
 
 /- English proof (translation)
-Simplify using `only [mS, map_sum, Derivation.leibniz, rowD_X_inr_inr, rowD_u, smul_zero, add_zero, smul_eq_mul]`. Apply the tactic sequence `split_ifs <;> simp`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem rowD_mS (b b' i : Fin Q) (a : Fin P) :
     rowD b b' (mS P Q S a i) = if i = b then mS P Q S a b' else 0 := by
@@ -81,9 +81,9 @@ theorem rowD_mS (b b' i : Fin Q) (a : Fin P) :
   split_ifs <;> simp
 
 /- English proof (translation)
-Rewrite using `[detS, PI.RL.W.derivation_det, Finset.sum_eq_single b]`. Simplify using `only [Matrix.of_apply, rowD_X_inr_inr, if_true] split_ifs with hb`. Substitute `hb` using the available equality. Use `congr 1`. Conclude with `Matrix.updateRow_eq_self _ b`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Substitute using the available equality. Reduce the equality to equality of the corresponding arguments. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Matrix.det_updateRow_eq_zero (M := Matrix.of fun b c : Fin Q => (X (Sum.inr b, Sum.inr (Fin.castLE h c)) : Pol P Q 0 S)) (Ne.symm hb)`. Introduce `i _ hi`. Simplify using `only [Matrix.of_apply, rowD_X_inr_inr, if_neg hi]`. Conclude with `Matrix.det_eq_zero_of_row_eq_zero i (by simp)`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem rowD_detS (h : Q ≤ S) (b b' : Fin Q) :
     rowD b b' (detS P Q S h) = if b = b' then detS P Q S h else 0 := by
@@ -101,13 +101,13 @@ theorem rowD_detS (h : Q ≤ S) (b b' : Fin Q) :
   · simp
 
 /- English proof (translation)
-Proceed by induction on `G using MvPolynomial.induction_on with`. Consider the case `C c => simp`. Consider the case `add G G' h h' => simp only [map_add, h, h', mul_add, Finset.sum_add_distrib]`. Consider the case `mul_X G v h`. Take `⟨a, i⟩` from `v`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Rewrite using `[map_mul, Derivation.leibniz, h, aeval_X, rowD_mS]`. Simplify using `only [Derivation.leibniz, smul_eq_mul, mul_add, Finset.sum_add_distrib, map_add, map_sum, map_mul, aeval_X, pderiv_X, Pi.single_apply, Prod.mk.injEq, Finset.mul_sum]`. Use `congrArg₂ (· + ·) ?_ ?_` and prove the remaining obligations. Distinguish the cases in `hi : i = b`. Substitute `hi` using the available equality.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Rewrite using `[Finset.sum_eq_single a]`. Simplify using `[mul_comm]`. Introduce `x _ hx`. Simplify using `[Ne.symm hx]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[hi]`. Conclude with `Finset.sum_congr rfl fun _ _ => by ring`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem rowD_aeval (b b' : Fin Q) (G : Mdl P Q) :
     rowD b b' (aeval (fun ab : Fin P × Fin Q => mS P Q S ab.1 ab.2) G) =
@@ -132,9 +132,9 @@ theorem rowD_aeval (b b' : Fin Q) (G : Mdl P Q) :
     · exact Finset.sum_congr rfl fun _ _ => by ring
 
 /- English proof (translation)
-Simplify using `only [embS, LinearMap.comp_apply, LinearMap.mulRight_apply, AlgHom.toLinearMap_apply]`. Rewrite using `[Derivation.leibniz, rowD_aeval, Derivation.leibniz_pow, rowD_detS, smul_eq_mul, smul_eq_mul, smul_eq_mul, add_comm, mul_comm]`. Use `congr 1`. Use `split_ifs`. Break down `k' with _ | k` into its components or cases.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Rewrite using `[Nat.cast_smul_eq_nsmul, mul_smul_comm, Nat.add_sub_cancel, ← pow_succ]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem rowD_embS (h : Q ≤ S) (k' : ℕ) (b b' : Fin Q) (G : Mdl P Q) :
     rowD b b' (embS P Q S h k' G) = embS P Q S h k' (∑ a, X (a, b') * pderiv (a, b) G) +
@@ -150,11 +150,11 @@ theorem rowD_embS (h : Q ≤ S) (k' : ℕ) (b b' : Fin Q) (G : Mdl P Q) :
   · simp
 
 /- English proof (translation)
-Establish `e : embS P Q S h k' (opS P Q S k' (Sum.inr b) (Sum.inr b') G) = rowD b b' (embS P Q S h k' G) + (if b = b' then (S : ℂ) / 2 else 0) • embS P Q S h k' G`. Rewrite using `[rowD_embS, opS]`. Simplify using `only [LinearMap.add_apply, LinearMap.sum_apply, Module.End.mul_apply, LinearMap.smul_apply, Module.End.one_apply, map_add, map_smul, LinearMap.mulLeft_apply, Derivation.coeFn_coe]`. Use `split_ifs`. Rewrite using `[add_smul, add_assoc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Rewrite using `[e, fockAct1_Eab, LinearMap.sum_apply, Fintype.sum_sum_type, rowD_apply]`. Simplify using `only [GlobalTheory.CompactHarm.omE_pp (Sum.inr _, Sum.inr _) (Sum.inr _, Sum.inr _) rfl rfl, Finset.univ_eq_empty, Finset.sum_empty, zero_add, map_sum, map_add, map_smul, LinearMap.sum_apply, LinearMap.add_apply, LinearMap.smul_apply, pair_X_pderiv, Finset.sum_add_distrib, Prod.m …`. Use `congrArg₂ (· + ·) rfl ?_` and prove the remaining obligations. Use `split_ifs`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem pair_fockAct1_inr_inr_embS (P Q S : ℕ) (h : Q ≤ S) (k' : ℕ) (b b' : Fin Q) (G : Mdl P Q)
     (f : Pol P Q 0 S) :

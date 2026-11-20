@@ -11,7 +11,7 @@ namespace GlobalTheory.TwU
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.G Formalism.MainNotions.FormalGroupSystem Formalism.FrobeniusOrbits GlobalTheory.TwU Classical
 
 /- English proof (translation)
-Establish `h : Formalism.MainNotions.FormalGroupSystem.Pf.en_L p (K0 p) = logF p`. Use extensionality with `k`. Simplify using `[Formalism.MainNotions.FormalGroupSystem.Pf.en_L]`. Unfold `inParam Formalism.MainNotions.FormalGroupSystem.Pf.en_aL`. Rewrite using `[h]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem inParam_eq_subst_log (p : ℕ) [Fact p.Prime] {ι : Type} (f : MvPowerSeries ι (K0 p)) :
     inParam p f = MvPowerSeries.subst (Formalism.MainNotions.FormalGroupSystem.Pf.en_aL p (K0 p)) f := by
@@ -21,13 +21,13 @@ theorem inParam_eq_subst_log (p : ℕ) [Fact p.Prime] {ι : Type} (f : MvPowerSe
   rw [h]
 
 /- English proof (translation)
-Introduce `p _ ι _ n`. Establish `hs` using `Formalism.MainNotions.FormalGroupSystem.Pf.en_Ec_hs p (K0 p) (ι := ι)`. Establish `hl` using `Formalism.MainNotions.FormalGroupSystem.Pf.en_aL_hs p (K0 p) (ι := ι)`. Use `⟨MvPowerSeries.subst (Formalism.MainNotions.FormalGroupSystem.Pf.en_Ec p (K0 p)) (MvPowerSeries.monomial n (1 : K0 p)), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[inParam_eq_subst_log, MvPowerSeries.subst_comp_subst_apply hs hl]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Formalism.MainNotions.FormalGroupSystem.Pf.en_aL_Ec]`. Rewrite using `[MvPowerSeries.subst_self]`. Both sides reduce to the same expression. Introduce `m hm`. Apply `MvPowerSeries.coeff_of_lt_order` to reduce the goal to its premises.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Use `lt_of_lt_of_le (Nat.cast_lt.mpr hm) ?_` and prove the remaining obligations. Rewrite using `[MvPowerSeries.subst_monomial hs, map_one, one_mul, Finsupp.prod]`. Use `le_trans ?_ (MvPowerSeries.le_order_prod _ _)` and prove the remaining obligations. Establish `hd : n.degree = ∑ i ∈ n.support, n i` using `rfl`. Rewrite using `[hd, Nat.cast_sum]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.sum_le_sum fun s _ => MvPowerSeries.le_order_pow_of_constantCoeff_eq_zero _ (Formalism.MainNotions.FormalGroupSystem.Pf.en_Ec_zero p (K0 p) s)`.
+A detailed English derivation is pending.
 -/
 theorem monomial_param_as_log_series : ∀ (p : ℕ) [Fact p.Prime] (ι : Type) [Fintype ι] (n : ι →₀ ℕ),
     ∃ U : MvPowerSeries ι (K0 p), inParam p U = MvPowerSeries.monomial n 1 ∧

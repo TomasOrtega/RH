@@ -5,11 +5,11 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AlgebraTools.FrobF
 open Matrix Filter NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal UpperTheory.V.Alg UpperTheory.V.W UpperTheory.V.Pa
 
 /- English proof (translation)
-Establish `hspec` using `PadicInt.toZMod_spec a`. Rewrite `hspec` using `[PadicInt.maximalIdeal_eq_span_p, Ideal.mem_span_singleton']`. Take `⟨c, hc⟩` from `hspec`. Establish `ha : a = c * (l : ℤ_[l]) + ((PadicInt.toZMod a).val : ℤ_[l])`. Rewrite using `[hc, ZMod.cast_eq_val]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `key : φ a * y = ((PadicInt.toZMod a).val : R) * y`. Establish `e : φ a = φ c * (l : R) + ((PadicInt.toZMod a).val : R)`. Rewrite using `[← map_natCast φ l, ← map_natCast φ, ← map_mul, ← map_add, ← ha]`. Rewrite using `[e, add_mul, mul_assoc, ← nsmul_eq_mul l y, h y, mul_zero, zero_add]`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[key, ← nsmul_eq_mul, map_nsmul, nsmul_eq_mul, ZMod.natCast_zmod_val]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem linearMap_comp_eq_on_smul_of_eq (l : ℕ) [Fact l.Prime] (R : Type) [CommRing R] (φ : ℤ_[l] →+* R)
     (h : ∀ y : R, l • y = 0) (τ : R →+ ZMod l) (a : ℤ_[l]) (y : R) :
@@ -27,9 +27,9 @@ private theorem linearMap_comp_eq_on_smul_of_eq (l : ℕ) [Fact l.Prime] (R : Ty
   rw [key, ← nsmul_eq_mul, map_nsmul, nsmul_eq_mul, ZMod.natCast_zmod_val]
 
 /- English proof (translation)
-Consider the cases of `m with`. Consider the case `zero`. Use `⟨0, fun y _ => ?_⟩` and prove the remaining obligations. Establish `htop : Ideal.span {(PowerSeries.X : PowerSeries k) ^ 0} = ⊤`. Rewrite using `[pow_zero, Ideal.span_singleton_one]`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(Ideal.Quotient.subsingleton_iff.2 htop).elim _ _`. Consider the case `succ k0`. Use `letI := ZMod.algebra k l`. Take `⟨lam, -, hlam, -⟩` from `UpperTheory.V.AlgebraTools.frob_form_trunc (k := k) l k0`. Conclude with `⟨lam, hlam⟩`.
+Treat this case separately. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem hermOrthExt_gram_entry_eq_single_and_frame_gram_eq_zero (l : ℕ) [Fact l.Prime] (k : Type) [Field k] [Finite k] [CharP k l] (m : ℕ) :
     ∃ τ : (PowerSeries k ⧸ Ideal.span {(PowerSeries.X : PowerSeries k) ^ m}) →+ ZMod l,
@@ -46,7 +46,7 @@ private theorem hermOrthExt_gram_entry_eq_single_and_frame_gram_eq_zero (l : ℕ
     exact ⟨lam, hlam⟩
 
 /- English proof (translation)
-Introduce `l _ F n x m`. Take `⟨-, -, -, h4, -, -, -, -, hc⟩` from `finAm l F n x m 0`. Take `⟨τ, hτ⟩` from `hermOrthExt_gram_entry_eq_single_and_frame_gram_eq_zero l x.K m`. Conclude with `⟨τ, hτ, fun a y => linearMap_comp_eq_on_smul_of_eq l (x.Am m) ((algebraMap x.A (x.Am m)).comp (algebraMap ℤ_[l] x.A)) h4 τ a y⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem UpperTheory.V.Pa.pair1 :
     ∀ (l : ℕ) [Fact l.Prime] (F : GFrame l) (n : ℕ) (x : NP F n) (m : ℕ), ∃ τ : x.Am m →+ ZMod l, (∀ y, (∀ z, τ (y * z) = 0) → y = 0) ∧ ∀ (a : ℤ_[l]) y, τ (algebraMap x.A (x.Am m) (algebraMap ℤ_[l] x.A a) * y) = PadicInt.toZMod a * τ y := by

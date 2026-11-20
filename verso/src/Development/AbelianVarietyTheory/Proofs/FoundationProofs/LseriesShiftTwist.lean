@@ -4,13 +4,13 @@ open Complex Filter Topology
 namespace GlobalTheory
 
 /- English proof (translation)
-Unfold `LSeries`. Use `congr 1`. Use function extensionality and compare the values at `n`. Simplify using `only [LSeries.term]`. Use `split_ifs with hn`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Establish `hn' : (n : ℂ) ≠ 0` using `Nat.cast_ne_zero.mpr hn`. Establish `key : (n : ℂ) ^ (((2 * (e : ℝ) + s : ℝ)) : ℂ) = (n : ℂ) ^ (e - 1) * (n : ℂ) ^ ((((e + 1 : ℝ) + s : ℝ)) : ℂ)`. Rewrite using `[← Complex.cpow_natCast, ← Complex.cpow_add _ _ hn']`. Use `congr 1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations.
 
-Move the coercions through the operations in `[Nat.cast_sub he]`. Expand and normalize the polynomial expressions, which then agree. Establish `h1 : (n : ℂ) ^ (e - 1) ≠ 0` using `pow_ne_zero _ hn'`. Establish `h2 : (n : ℂ) ^ ((((e + 1 : ℝ) + s : ℝ)) : ℂ) ≠ 0`. Rewrite using `[Ne, Complex.cpow_eq_zero_iff]`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. The claim follows by propositional logic.
 
-The claim follows by propositional logic. Rewrite using `[key]`. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem lseries_shift_twist (e : ℕ) (ψ g : ℕ → ℂ) (s : ℝ) (he : 1 ≤ e) :
     LSeries (fun n : ℕ => ψ n * (n : ℂ) ^ (e - 1) * g n) (((2 * (e : ℝ) + s : ℝ)) : ℂ) =

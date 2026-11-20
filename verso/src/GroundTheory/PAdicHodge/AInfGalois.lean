@@ -26,21 +26,21 @@ def map (φ : K →+* L) (hφ : ∀ x, ‖φ x‖ = ‖x‖) : AInf K p →+* AI
   WittVector.map (preTiltMap p φ hφ)
 
 /- English proof (translation)
-The claim follows from `WittVector.map_coeff _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem map_coeff (φ : K →+* L) (hφ : ∀ x, ‖φ x‖ = ‖x‖) (x : AInf K p) (n : ℕ) :
     (map p φ hφ x).coeff n = preTiltMap p φ hφ (x.coeff n) :=
   WittVector.map_coeff _ _ _
 
 /- English proof (translation)
-The claim follows from `WittVector.map_teichmuller p _ x`.
+A detailed English derivation is pending.
 -/
 theorem map_teichmuller (φ : K →+* L) (hφ : ∀ x, ‖φ x‖ = ‖x‖) (x : PreTilt (normInteger K) p) :
     map p φ hφ (WittVector.teichmuller p x) = WittVector.teichmuller p (preTiltMap p φ hφ x) :=
   WittVector.map_teichmuller p _ x
 
 /- English proof (translation)
-The claim follows from `fontaineTheta_map_preTiltMap φ hφ w`.
+A detailed English derivation is pending.
 -/
 theorem fontaineTheta_map (φ : K →+* L) (hφ : ∀ x, ‖φ x‖ = ‖x‖) (w : AInf K p) :
     WittVector.fontaineTheta (normInteger L) p (map p φ hφ w) =
@@ -48,14 +48,14 @@ theorem fontaineTheta_map (φ : K →+* L) (hφ : ∀ x, ‖φ x‖ = ‖x‖) (
   fontaineTheta_map_preTiltMap φ hφ w
 
 /- English proof (translation)
-Substitute `h` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem map_congr {φ ψ : K →+* L} (h : φ = ψ) (hφ : ∀ x, ‖φ x‖ = ‖x‖) (hψ : ∀ x, ‖ψ x‖ = ‖x‖) :
     map p φ hφ = map p ψ hψ := by
   subst h; rfl
 
 /- English proof (translation)
-Use `RingHom.ext fun x => WittVector.ext fun n => ?_` and prove the remaining obligations. Rewrite using `[RingHom.comp_apply, map_coeff, map_coeff, map_coeff, preTiltMap_comp, RingHom.comp_apply]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem map_comp (φ : K →+* L) (hφ : ∀ x, ‖φ x‖ = ‖x‖) (ψ : L →+* M) (hψ : ∀ x, ‖ψ x‖ = ‖x‖) :
     map p (ψ.comp φ) (norm_comp_eq hφ hψ) = (map p ψ hψ).comp (map p φ hφ) := by
@@ -63,7 +63,7 @@ theorem map_comp (φ : K →+* L) (hφ : ∀ x, ‖φ x‖ = ‖x‖) (ψ : L �
   rw [RingHom.comp_apply, map_coeff, map_coeff, map_coeff, preTiltMap_comp, RingHom.comp_apply]
 
 /- English proof (translation)
-Use `Perfection.ext fun n => ?_` and prove the remaining obligations. Rewrite using `[coeff_preTiltMap]`. Take `⟨a, ha⟩` from `Ideal.Quotient.mk_surjective (Perfection.coeff (ModP (normInteger K) p) p n x)`. Rewrite using `[← ha, modPMap_mk]`. Use `congr 1`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 -/
 theorem preTiltMap_id (x : PreTilt (normInteger K) p) :
     preTiltMap p (RingHom.id K) (fun _ => rfl) x = x := by
@@ -75,14 +75,14 @@ theorem preTiltMap_id (x : PreTilt (normInteger K) p) :
   congr 1
 
 /- English proof (translation)
-Use `RingHom.ext fun x => WittVector.ext fun n => ?_` and prove the remaining obligations. Rewrite using `[map_coeff, preTiltMap_id, RingHom.id_apply]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem map_id : map p (RingHom.id K) (fun _ => rfl) = RingHom.id (AInf K p) := by
   refine RingHom.ext fun x => WittVector.ext fun n => ?_
   rw [map_coeff, preTiltMap_id, RingHom.id_apply]
 
 /- English proof (translation)
-Use `WittVector.ext fun n => ?_` and prove the remaining obligations. Rewrite using `[map_coeff, WittVector.frobeniusEquiv_coeff, WittVector.frobeniusEquiv_coeff, map_coeff, map_pow]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem map_frobeniusEquiv (φ : K →+* L) (hφ : ∀ x, ‖φ x‖ = ‖x‖) (x : AInf K p) :
     map p φ hφ (WittVector.frobeniusEquiv p _ x) = WittVector.frobeniusEquiv p _ (map p φ hφ x) := by
@@ -91,7 +91,7 @@ theorem map_frobeniusEquiv (φ : K →+* L) (hφ : ∀ x, ‖φ x‖ = ‖x‖) 
     map_pow]
 
 /- English proof (translation)
-Use `WittVector.ext fun n => ?_` and prove the remaining obligations. Rewrite using `[map_coeff, WittVector.frobeniusEquiv_symm_coeff, WittVector.frobeniusEquiv_symm_coeff, map_coeff, RingHom.map_frobeniusEquiv_symm]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem map_frobeniusEquiv_symm (φ : K →+* L) (hφ : ∀ x, ‖φ x‖ = ‖x‖) (x : AInf K p) :
     map p φ hφ ((WittVector.frobeniusEquiv p _).symm x) =
@@ -103,7 +103,7 @@ theorem map_frobeniusEquiv_symm (φ : K →+* L) (hφ : ∀ x, ‖φ x‖ = ‖x
 omit [IsUltrametricDist K] in
 
 /- English proof (translation)
-The claim follows from `hσ x`.
+A detailed English derivation is pending.
 -/
 theorem norm_toRingHom_apply (σ : K ≃+* K) (hσ : ∀ x, ‖σ x‖ = ‖x‖) (x : K) :
     ‖(σ : K →+* K) x‖ = ‖x‖ :=
@@ -112,7 +112,7 @@ theorem norm_toRingHom_apply (σ : K ≃+* K) (hσ : ∀ x, ‖σ x‖ = ‖x‖
 omit [IsUltrametricDist K] in
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `‖σ.symm x‖ = ‖x‖`. Rewrite using `[← hσ, RingEquiv.apply_symm_apply]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem norm_symm_toRingHom_apply (σ : K ≃+* K) (hσ : ∀ x, ‖σ x‖ = ‖x‖) (x : K) :
     ‖(σ.symm : K →+* K) x‖ = ‖x‖ := by
@@ -138,7 +138,7 @@ section Galois
 variable {p : ℕ} [hp : Fact p.Prime] {K : IntermediateField ℚ_[p] (PadicAlgCl p)}
 
 /- English proof (translation)
-The claim follows from `norm_galCp σ x`.
+A detailed English derivation is pending.
 -/
 theorem norm_galCp_toRingHom (σ : Gal(PadicAlgCl p/K)) (x : ℂ_[p]) :
     ‖(galCp σ : ℂ_[p] →+* ℂ_[p]) x‖ = ‖x‖ :=
@@ -148,14 +148,14 @@ def galMap (σ : Gal(PadicAlgCl p/K)) : AInf ℂ_[p] p →+* AInf ℂ_[p] p :=
   map p (galCp σ : ℂ_[p] →+* ℂ_[p]) (norm_galCp_toRingHom σ)
 
 /- English proof (translation)
-Rewrite using `[galMap, ← map_id]`. Conclude with `map_congr (RingHom.ext fun x => by rw [galCp_one]; rfl) _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem galMap_one : galMap (1 : Gal(PadicAlgCl p/K)) = RingHom.id _ := by
   rw [galMap, ← map_id]
   exact map_congr (RingHom.ext fun x => by rw [galCp_one]; rfl) _ _
 
 /- English proof (translation)
-Rewrite using `[galMap, galMap, galMap, ← map_comp]`. Conclude with `map_congr (RingHom.ext fun x => by rw [galCp_mul]; rfl) _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem galMap_mul (σ τ : Gal(PadicAlgCl p/K)) : galMap (σ * τ) = (galMap σ).comp (galMap τ) := by
   rw [galMap, galMap, galMap, ← map_comp]
@@ -180,14 +180,14 @@ Both sides reduce to the same expression.
 theorem gal_smul_def (σ : Gal(PadicAlgCl p/K)) (x : AInf ℂ_[p] p) : σ • x = galMap σ x := rfl
 
 /- English proof (translation)
-The claim follows from `map_coeff _ _ x n`.
+A detailed English derivation is pending.
 -/
 theorem gal_smul_coeff (σ : Gal(PadicAlgCl p/K)) (x : AInf ℂ_[p] p) (n : ℕ) :
     (σ • x).coeff n = preTiltMap p (galCp σ : ℂ_[p] →+* ℂ_[p]) (norm_galCp_toRingHom σ) (x.coeff n) :=
   map_coeff _ _ x n
 
 /- English proof (translation)
-The claim follows from `map_teichmuller _ _ x`.
+A detailed English derivation is pending.
 -/
 theorem gal_smul_teichmuller (σ : Gal(PadicAlgCl p/K)) (x : PreTilt (normInteger ℂ_[p]) p) :
     σ • (WittVector.teichmuller p x : AInf ℂ_[p] p) =
@@ -195,7 +195,7 @@ theorem gal_smul_teichmuller (σ : Gal(PadicAlgCl p/K)) (x : PreTilt (normIntege
   map_teichmuller _ _ x
 
 /- English proof (translation)
-Rewrite using `[untilt_preTiltMap, coe_integerMap]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem coe_untilt_gal (σ : Gal(PadicAlgCl p/K)) (x : PreTilt (normInteger ℂ_[p]) p) :
     ((PreTilt.untilt (preTiltMap p (galCp σ : ℂ_[p] →+* ℂ_[p]) (norm_galCp_toRingHom σ) x) :
@@ -204,7 +204,7 @@ theorem coe_untilt_gal (σ : Gal(PadicAlgCl p/K)) (x : PreTilt (normInteger ℂ_
   rfl
 
 /- English proof (translation)
-Rewrite using `[gal_smul_def, galMap, fontaineTheta_map, coe_integerMap]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem fontaineTheta_gal_smul (σ : Gal(PadicAlgCl p/K)) (x : AInf ℂ_[p] p) :
     ((WittVector.fontaineTheta (normInteger ℂ_[p]) p (σ • x) : normInteger ℂ_[p]) : ℂ_[p]) =
@@ -213,7 +213,7 @@ theorem fontaineTheta_gal_smul (σ : Gal(PadicAlgCl p/K)) (x : AInf ℂ_[p] p) :
   rfl
 
 /- English proof (translation)
-The claim follows from `map_frobeniusEquiv _ _ x`.
+A detailed English derivation is pending.
 -/
 theorem gal_smul_frobeniusEquiv (σ : Gal(PadicAlgCl p/K)) (x : AInf ℂ_[p] p) :
     σ • WittVector.frobeniusEquiv p _ x = WittVector.frobeniusEquiv p _ (σ • x) :=

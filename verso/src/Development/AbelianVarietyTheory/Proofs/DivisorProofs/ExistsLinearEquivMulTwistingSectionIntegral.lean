@@ -16,7 +16,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   {Z : Comp Xo c} {G₀ : WTZ E}
 
 /- English proof (translation)
-Rewrite using `[mul_comm]`. Conclude with `idem_mul_eq (e := exZ Dw G) ⟨cuspW_le_secZ G hf.1, hf.2⟩`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mul_idem_cusp {G : WTZ E} {f : Rul Xo c} (hf : f ∈ cuspOn U Z G) : f * idem Z = f := by
   rw [mul_comm]; exact idem_mul_eq (e := exZ Dw G) ⟨cuspW_le_secZ G hf.1, hf.2⟩
@@ -34,7 +34,7 @@ def mulEquiv (s : TwSec U x Z G₀) (G : WTZ E) (hG : Even G.2) : cuspOn U Z G �
     rw [mul_assoc, mul_comm s.inv, s.mul_inv, mul_idem_cusp g.2])
 
 /- English proof (translation)
-Rewrite using `[add_comm t, ← add_assoc, ← EReal.coe_add]`. Conclude with `add_nonneg (EReal.coe_nonneg.2 hab) ht`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ereal_nonneg {a b : ℝ} {t : EReal} (ht : 0 ≤ t) (hab : 0 ≤ a + b) :
     0 ≤ ((a : ℝ) : EReal) + (t + ((b : ℝ) : EReal)) := by
@@ -42,7 +42,7 @@ theorem ereal_nonneg {a b : ℝ} {t : EReal} (ht : 0 ≤ t) (hab : 0 ≤ a + b) 
   exact add_nonneg (EReal.coe_nonneg.2 hab) ht
 
 /- English proof (translation)
-Use `(mem_supLat_iff (Z := Z) g.2.2).2 fun w v hv => ?_` and prove the remaining obligations. Establish `hfv : 0 ≤ v (f : Rul Xo c)` using `((mem_supLat_iff (Z := Z) f.2.2).1 hf) w v hv`. Take `⟨b, hb, -, hlb, -⟩` from `s.exists_val hv`. Rewrite using `[hg, (isVal_valOn hv).smul _ _ ha, (isVal_valOn hv).mul, hb]`. Conclude with `ereal_nonneg hfv (by linarith [hlo w])`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_latOn_of_mul (s : TwSec U x Z G₀) {G G' : WTZ E} (a : c.F) (ha : a ≠ 0)
     (hlo : ∀ w, 0 ≤ (vAdd w a : ℝ) + s.lo w) (f : cuspOn U Z G) (hf : f ∈ latOn U Z G)
@@ -54,7 +54,7 @@ theorem mem_latOn_of_mul (s : TwSec U x Z G₀) {G G' : WTZ E} (a : c.F) (ha : a
   exact ereal_nonneg hfv (by linarith [hlo w])
 
 /- English proof (translation)
-Use `(mem_supLat_iff (Z := Z) f.2.2).2 fun w v hv => ?_` and prove the remaining obligations. Establish `hgv : 0 ≤ v (g : Rul Xo c)` using `((mem_supLat_iff (Z := Z) g.2.2).1 hg) w v hv`. Take `⟨β, -, hβ, -, hβh⟩` from `s.exists_val hv`. Rewrite using `[hf, (isVal_valOn hv).smul _ _ hb, (isVal_valOn hv).mul, hβ]`. Conclude with `ereal_nonneg hgv (by linarith [hhi w])`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_latOn_of_mul_inv (s : TwSec U x Z G₀) {G G' : WTZ E} (b : c.F) (hb : b ≠ 0)
     (hhi : ∀ w, s.hi w ≤ (vAdd w b : ℝ)) (g : cuspOn U Z G') (hg : g ∈ latOn U Z G')
@@ -66,7 +66,7 @@ theorem mem_latOn_of_mul_inv (s : TwSec U x Z G₀) {G G' : WTZ E} (b : c.F) (hb
   exact ereal_nonneg hgv (by linarith [hhi w])
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c r U x Z G₀ s G hG`. Use `⟨mulEquiv s G hG, fun _ => rfl, fun _ => rfl, fun a ha hlo f hf g hg => ?_, fun b hb hhi g hg f hf => ?_⟩` and prove the remaining obligations. Conclude with `mem_latOn_of_mul s a ha hlo f hf g hg`. Conclude with `mem_latOn_of_mul_inv s b hb hhi g hg f hf`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem twSec_mulEquiv_integral : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (r : ℕ) (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r) (x : ℝ) (Z : Comp Xo c) (G₀ : WTZ E) (s : TwSec U x Z G₀) (G : WTZ E), Even G.2 → ∃ φ : cuspOn U Z G ≃ₗ[c.F] cuspOn U Z (G + G₀), (∀ f, (φ f : Rul Xo c) = f * s.sig) ∧ (∀ g, (φ.symm g : Rul Xo c) = g * s.inv) ∧ (∀ a : c.F, a ≠ 0 → (∀ w, 0 ≤ (vAdd w a : ℝ) + s.lo w) → ∀ f ∈ latOn U Z G, ∀ g : cuspOn U Z (G + G₀), (g : Rul Xo c) = a • (φ f : Rul Xo c) → g ∈ latOn U Z (G + G₀)) ∧ (∀ b : c.F, b ≠ 0 → (∀ w, s.hi w ≤ (vAdd w b : ℝ)) → ∀ g ∈ latOn U Z (G + G₀), ∀ f : cuspOn U Z G, (f : Rul Xo c) = b • (φ.symm g : Rul Xo c) → f ∈ latOn U Z G) := by
   intro E _ _ _ H Dw l Xo c r U x Z G₀ s G hG

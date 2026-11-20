@@ -27,17 +27,17 @@ section Top
 variable {R : Type} [TopologicalSpace R] (hd : d = d₁ + 2)
 
 /- English proof (translation)
-The claim follows from `continuous_pi fun _ => continuous_apply _`.
+A detailed English derivation is pending.
 -/
 theorem continuous_first_projection : Continuous (pr1 (n := n) (R := R) hd) := continuous_pi fun _ => continuous_apply _
 
 /- English proof (translation)
-The claim follows from `continuous_pi fun _ => continuous_apply _`.
+A detailed English derivation is pending.
 -/
 theorem continuous_second_projection : Continuous (pr2 (n := n) (R := R) hd) := continuous_pi fun _ => continuous_apply _
 
 /- English proof (translation)
-Use `continuous_pi fun k => ?_` and prove the remaining obligations. Simplify using `only [glue]`. Break down `idx hd k with q | q` into its components or cases. Conclude with `(continuous_apply q).comp continuous_fst`. Conclude with `(continuous_apply q).comp continuous_snd`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem continuous_glue : Continuous (glue (n := n) (R := R) hd) := by
   refine continuous_pi fun k => ?_
@@ -47,9 +47,9 @@ theorem continuous_glue : Continuous (glue (n := n) (R := R) hd) := by
   · exact (continuous_apply q).comp continuous_snd
 
 /- English proof (translation)
-Use function extensionality and compare the values at `k`. Simplify using `only [glue, pr1, pr2]`. Break down `h : idx hd k with q | q` into its components or cases. Use `show y ((idx hd).symm (Sum.inl q)) = y k`. Rewrite using `[← h, Equiv.symm_apply_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `show y ((idx hd).symm (Sum.inr q)) = y k`. Rewrite using `[← h, Equiv.symm_apply_apply]`.
+A detailed English derivation is pending.
 -/
 theorem glue_pr (y : Fin n × Fin d → R) : glue hd (pr1 hd y, pr2 hd y) = y := by
   funext k
@@ -61,19 +61,19 @@ theorem glue_pr (y : Fin n × Fin d → R) : glue hd (pr1 hd y, pr2 hd y) = y :=
 end Top
 
 /- English proof (translation)
-Use function extensionality and compare the values at `q`. Simplify using `[pr1]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem first_projection_insert_zero {R : Type} [Zero R] (hd : d = d₁ + 2) (x : Fin n × Fin d₁ → R) : pr1 hd (ins0 hd x) = x := by
   funext q; simp [pr1]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `q`. Simplify using `[pr2]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem second_projection_insert_zero {R : Type} [Zero R] (hd : d = d₁ + 2) (x : Fin n × Fin d₁ → R) : pr2 hd (ins0 hd x) = 0 := by
   funext q; simp [pr2]
 
 /- English proof (translation)
-Use `continuous_pi fun k => ?_` and prove the remaining obligations. Simplify using `only [ins0]`. Break down `idx hd k with q | q` into its components or cases. Conclude with `continuous_apply q`. Conclude with `continuous_const`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem continuous_insert_zero {R : Type} [TopologicalSpace R] [Zero R] (hd : d = d₁ + 2) :
     Continuous (ins0 (n := n) (R := R) hd) := by
@@ -84,9 +84,9 @@ theorem continuous_insert_zero {R : Type} [TopologicalSpace R] [Zero R] (hd : d 
   · exact continuous_const
 
 /- English proof (translation)
-Rewrite using `[IsLocallyConstant.iff_eventually_eq]`. Introduce `x`. Distinguish the cases in `hx : x ∈ W`. Use `filter_upwards [hW.isOpen.mem_nhds hx] with y hy`. Simplify using `[Set.indicator_of_mem hy, Set.indicator_of_mem hx]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use `filter_upwards [hW.isClosed.isOpen_compl.mem_nhds hx] with y hy`. Simplify using `[Set.indicator_of_notMem hy, Set.indicator_of_notMem hx]`.
+A detailed English derivation is pending.
 -/
 theorem isLocallyConstant_indicator_one {Z : Type} [TopologicalSpace Z] {W : Set Z} (hW : IsClopen W) :
     IsLocallyConstant (W.indicator (1 : Z → ℂ)) := by
@@ -99,17 +99,15 @@ theorem isLocallyConstant_indicator_one {Z : Type} [TopologicalSpace Z] {W : Set
     simp [Set.indicator_of_notMem hy, Set.indicator_of_notMem hx]
 
 /- English proof (translation)
-Use `haveI : CompactSpace (v.adicCompletionIntegers F) := GlobalTheory.AdelicUnitaryTop.compactSpace_adicCompletionIntegers F v`. Establish `hOc : IsCompact ((v.adicCompletionIntegers F : Set (Fv F v)))` using `isCompact_iff_compactSpace.2 this`. Establish `hOo : IsClopen ((v.adicCompletionIntegers F : Set (Fv F v)))` using `Valued.isClopen_integer _`. Apply `le_antisymm` to reduce the goal to its premises. Introduce and unpack `_ ⟨φ, ⟨hl, hc⟩, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `hemb : Topology.IsClosedEmbedding (ins0 (n` using `n) (R := Fv F v) hd) := Function.LeftInverse.isClosedEmbedding (f := pr1 hd) (fun x => first_projection_insert_zero hd x) (continuous_first_projection hd) (continuous_insert_zero hd)`. Conclude with `⟨hl.comp_continuous (continuous_insert_zero hd), hc.comp_isClosedEmbedding hemb⟩`. Introduce `φ₁ ⟨hl, hc⟩ set P : Set (Fin n × Fin 2 → Fv F v) := Set.pi Set.univ fun _ => (v.adicCompletionIntegers F : Set (Fv F v)) with hP`. Establish `hPc : IsCompact P` using `isCompact_univ_pi fun _ => hOc`. Establish `hPo : IsClopen P`.
+Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨isClosed_set_pi fun _ _ => hOo.isClosed, ?_⟩` and prove the remaining obligations. Conclude with `isOpen_set_pi Set.finite_univ fun _ _ => hOo.isOpen`. Set `φ : (Fin n × Fin d → Fv F v) → ℂ` to `fun y => φ₁ (pr1 hd y) * P.indicator 1 (pr2 hd y)`. Use `⟨φ, ⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations. Conclude with `(hl.comp_continuous (continuous_first_projection hd)).mul ((isLocallyConstant_indicator_one hPo).comp_continuous (continuous_second_projection hd))`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `hK : IsCompact (glue hd '' (tsupport φ₁ ×ˢ P))` using `(hc.isCompact.prod hPc).image (continuous_glue hd)`. Use `HasCompactSupport.intro' hK hK.isClosed fun y hy => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `h0`. Apply `hy` to reduce the goal to its premises. Establish `h1 : φ₁ (pr1 hd y) ≠ 0` using `fun h => h0 (by simp [φ, h])`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Supply the required witnesses or components.
 
-Establish `h2 : pr2 hd y ∈ P`. Assume the negation of the conclusion as `h; exact h0 (by simp [φ, Set.indicator_of_notMem h])`. Conclude with `⟨(pr1 hd y, pr2 hd y), ⟨subset_tsupport _ h1, h2⟩, glue_pr hd y⟩`. Use function extensionality and compare the values at `x`. Establish `h0 : (0 : Fin n × Fin 2 → Fv F v) ∈ P` using `fun q _ => (v.adicCompletionIntegers F).zero_mem`.
-
-Simplify using `[φ, ev_apply, first_projection_insert_zero, second_projection_insert_zero, Set.indicator_of_mem h0]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem map_ev_SB (F : Type) [Field F] [NumberField F] (n d d₁ : ℕ) (hd : d = d₁ + 2) (v : Pl F) :
     (SB (Fin n × Fin d → Fv F v)).map (ev hd v) = SB (Fin n × Fin d₁ → Fv F v) := by

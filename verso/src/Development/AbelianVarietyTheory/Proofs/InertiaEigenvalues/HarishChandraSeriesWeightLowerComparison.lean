@@ -11,7 +11,7 @@ open scoped Classical
 namespace GlobalTheory.GLq.LowerWt
 
 /- English proof (translation)
-Unfold `eSerC`. Rewrite using `[finsum_mem_eq_finite_toFinset_sum _ hfin, Finset.mul_sum]`. Simplify using `only [MonoidAlgebra.coeff_sum, Finsupp.finset_sum_apply]`. Use `Finset.sum_congr rfl fun χ _ => ?_` and prove the remaining obligations. Conclude with `((GlobalTheory.GLq.trIdem (Gn g N) a χ).2.2)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem coeff_mul_eSerC {g : ℕ} [Fact g.Prime] (L : LabelDatum g) {N : ℕ} (f : (ZMod g)[X])
     (a : MonoidAlgebra ℂ (Gn g N))
@@ -24,9 +24,9 @@ theorem coeff_mul_eSerC {g : ℕ} [Fact g.Prime] (L : LabelDatum g) {N : ℕ} (f
   exact ((GlobalTheory.GLq.trIdem (Gn g N) a χ).2.2)
 
 /- English proof (translation)
-Rewrite using `[coeff_mul_eSerC L f a hfin, Complex.re_sum]`. Use `Finset.sum_congr rfl fun χ hχ => ?_` and prove the remaining obligations. Establish `hI : IsIrr χ` using `((Set.Finite.mem_toFinset hfin).1 hχ).1`. Take `⟨d, -, hd⟩` from `(GlobalTheory.GLq.trIdem (Gn g N) a χ).2.1 hI`. Rewrite using `[hd]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Establish `: (d : ℂ) / (Fintype.card (Gn g N) : ℂ) = (((d : ℝ) / (Fintype.card (Gn g N) : ℝ) : ℝ) : ℂ)` using `by push_cast; rfl`. Rewrite using `[this, Complex.re_ofReal_mul]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem re_coeff_mul_eSerC {g : ℕ} [Fact g.Prime] (L : LabelDatum g) {N : ℕ} (f : (ZMod g)[X])
     (a : MonoidAlgebra ℂ (Gn g N))
@@ -44,7 +44,7 @@ theorem re_coeff_mul_eSerC {g : ℕ} [Fact g.Prime] (L : LabelDatum g) {N : ℕ}
   simp
 
 /- English proof (translation)
-Establish `hI : IsIrr χ` using `((Set.Finite.mem_toFinset hfin).1 hχ).1`. Take `⟨d, -, hd⟩` from `(GlobalTheory.GLq.trIdem (Gn g N) (1 : MonoidAlgebra ℂ (Gn g N)) χ).2.1 hI`. Rewrite using `[hd]`. Simplify using `only [Complex.natCast_re]`. Check the signs of the components of the expression.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Check the signs of the components of the expression.
 -/
 theorem weight_nonneg {g : ℕ} [Fact g.Prime] (L : LabelDatum g) {N : ℕ} (f : (ZMod g)[X])
     (hfin : {χ : Gn g N → ℂ | IsIrr χ ∧ HasLabel L χ f}.Finite) (χ : Gn g N → ℂ) (hχ : χ ∈ hfin.toFinset) :
@@ -58,23 +58,21 @@ theorem weight_nonneg {g : ℕ} [Fact g.Prime] (L : LabelDatum g) {N : ℕ} (f :
 end GlobalTheory.GLq.LowerWt
 
 /- English proof (translation)
-Introduce `g _ L ψ hψ N k s hN hk f`. Establish `hL8` using `GlobalTheory.T.mirabolic_trace_ge_whittakerDimension_GLn g ψ hψ N k s hN hk`. Take `⟨-, hU1, hJ, -⟩` from `GlobalTheory.T.whittakerJacquetIdempotents_properties_primeField g N k s ψ`. Take `⟨-, hJ1⟩` from `hJ hN`. Establish `hfin : {χ : Gn g N → ℂ | IsIrr χ ∧ HasLabel L χ f}.Finite` using `(irr_finite_and_finsum_zOf_eq_one (Gn g N)).1.subset fun χ h => h.1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `set T := hfin.toFinset`. Use `set c : (Gn g N → ℂ) → ℝ := fun χ => (χ 1).re / (Fintype.card (Gn g N) : ℝ) with hc`. Use `set A := ∑ χ ∈ T, c χ * (tr (eU g N ψ) χ).re with hA`. Use `set B := ∑ χ ∈ T, c χ * (tr (eJ g N k s ψ) χ).re with hB`. Establish `hAeq : ((eU g N ψ * eSerC L N f).coeff 1).re = A` using `LowerWt.re_coeff_mul_eSerC L f _ hfin`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hBeq : ((eJ g N k s ψ * eSerC L N f).coeff 1).re = B` using `LowerWt.re_coeff_mul_eSerC L f _ hfin`. Establish `hG : (0 : ℝ) < g` using `by exact_mod_cast (Fact.out : g.Prime).pos`. Use `set M := N * (N - 1) / 2`. Establish `hU1r : ((eU g N ψ).coeff 1).re = ((g : ℝ) ^ M)⁻¹`. Rewrite using `[hU1]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: ((g : ℂ) ^ M)⁻¹ = ((((g : ℝ) ^ M)⁻¹ : ℝ) : ℂ)` using `by push_cast; rfl`. Rewrite using `[this, Complex.ofReal_re]`. Establish `hJ1r : ((eJ g N k s ψ).coeff 1).re = (g : ℝ) ^ k * ((g : ℝ) ^ M)⁻¹`. Rewrite using `[hJ1]`. Establish `: (g : ℂ) ^ k * ((g : ℂ) ^ M)⁻¹ = ((((g : ℝ) ^ k * ((g : ℝ) ^ M)⁻¹) : ℝ) : ℂ)` using `by push_cast; rfl`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[this, Complex.ofReal_re]`. Establish `hBA : ((g : ℝ) ^ k - (g : ℝ) ^ (k - 1)) * A ≤ B`. Rewrite using `[hA, hB, Finset.mul_sum]`. Use `Finset.sum_le_sum fun χ hχ => ?_` and prove the remaining obligations. Establish `h0 : 0 ≤ c χ` using `LowerWt.weight_nonneg L f hfin χ hχ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Chain the equalities or inequalities of the calculation.
 
-Establish `hI : IsIrr χ` using `((Set.Finite.mem_toFinset hfin).1 hχ).1`. Establish `hC : IsChar χ` using `by obtain ⟨V, -, hV⟩ := hI; exact ⟨V, hV⟩`. Establish `h8` using `hL8 χ hC`. Unfold `wh at h8`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Replace the relevant objects with their definitions.
 
-Establish `hpow : (g : ℝ) ^ k - (g : ℝ) ^ (k - 1) = (g : ℝ) ^ k * (1 - 1 / (g : ℝ))`. Take `⟨j, rfl⟩ : ∃ j, k = j + 1` from `⟨k - 1, by omega⟩`. Simplify using `only [Nat.add_sub_cancel, pow_succ]`. Clear the denominators using the available nonvanishing facts. Unfold `wtC`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hAeq, hBeq, hU1r, hJ1r]`. Establish `hgk : (0 : ℝ) < (g : ℝ) ^ k` using `pow_pos hG k`. Establish `hgM : (0 : ℝ) < (g : ℝ) ^ M` using `pow_pos hG M`. Rewrite `hBA` using `[hpow]`. Rewrite using `[div_inv_eq_mul, le_div_iff₀ (mul_pos hgk (inv_pos.2 hgM))]`.
-
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.GLq.lowerWtComparison : ∀ (g : ℕ) [Fact g.Prime] (L : LabelDatum g) (ψ : AddChar (ZMod g) ℂ), ψ ≠ 1 →
     ∀ (N k s : ℕ), N = k + 2 * s + 1 → 1 ≤ k →

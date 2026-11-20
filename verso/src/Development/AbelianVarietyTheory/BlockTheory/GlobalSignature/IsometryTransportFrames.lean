@@ -37,7 +37,7 @@ Both sides reduce to the same expression.
 example (W : HSpace E) : withLat W W.L0 W.standardTuple_isLattice W.baseLattice_isUnimodular = W := rfl
 
 /- English proof (translation)
-The claim follows from `LinearMap.toMatrix_mulVec_repr _ _ _ _`.
+A detailed English derivation is pending.
 -/
 example (W₁ W₂ : HSpace E) (e : W₁.V →ₗ[E] W₂.V) (x : W₁.V) :
     (frameMat W₁ W₂ e).mulVec (W₁.frame.repr x) = W₂.frame.repr (e x) :=

@@ -18,13 +18,13 @@ namespace UpperTheory.Gal.AbelianGaloisNormality
 open UpperTheory.Gal.UnramifiedFromSplittingCriterion UpperTheory.ConvolutionTheory.Sph
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.GelfandKazhdanTop.gelfandKazhdanDual_of_rapidDecay PositivityTheory.AdelicQuotientData.jacquetShalika GlobalTheory.automorphicFormsFiniteGL GlobalTheory.CompanionTheory.CuspFinGL.cuspRapidDecaySiegelGL`.
+A detailed English derivation is pending.
 -/
 theorem gk_holds : GlobalTheory.Published.GelfandKazhdanDual :=
   GlobalTheory.GelfandKazhdanTop.gelfandKazhdanDual_of_rapidDecay PositivityTheory.AdelicQuotientData.jacquetShalika GlobalTheory.automorphicFormsFiniteGL
     GlobalTheory.CompanionTheory.CuspFinGL.cuspRapidDecaySiegelGL
 /- English proof (translation)
-The claim follows from `strongOf liftUnr ramSph`.
+A detailed English derivation is pending.
 -/
 theorem strongTC_holds : GlobalTheory.Published.ArthurClozelStrongTC := strongOf liftUnr ramSph
 

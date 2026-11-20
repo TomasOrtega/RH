@@ -13,7 +13,7 @@ section Gen6
 variable {N r : ℕ}
 
 /- English proof (translation)
-Unfold `stg`. Rewrite using `[dif_pos (by have := l.isLt; omega)]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem stg_castSucc (ν : Fin (N + 1) → Fin r → ℤ) (l : Fin N) : ν l.castSucc = stg ν l.val := by
   unfold stg
@@ -21,7 +21,7 @@ theorem stg_castSucc (ν : Fin (N + 1) → Fin r → ℤ) (l : Fin N) : ν l.cas
   rfl
 
 /- English proof (translation)
-Unfold `stg`. Rewrite using `[dif_pos (by have := l.isLt; omega)]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem stg_succ (ν : Fin (N + 1) → Fin r → ℤ) (l : Fin N) : ν l.succ = stg ν (l.val + 1) := by
   unfold stg
@@ -29,7 +29,7 @@ theorem stg_succ (ν : Fin (N + 1) → Fin r → ℤ) (l : Fin N) : ν l.succ = 
   rfl
 
 /- English proof (translation)
-Unfold `stg`. Apply the tactic sequence `split_ifs <;> rfl`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem stg_plPart {K : ℕ} (μ : Fin (N + 1) → Fin (r + K) → ℤ) (i : ℕ) (m : Fin r) :
     stg (plPart μ) i m = stg μ i (Fin.castAdd K m) := by
@@ -37,15 +37,15 @@ theorem stg_plPart {K : ℕ} (μ : Fin (N + 1) → Fin (r + K) → ℤ) (i : ℕ
   split_ifs <;> rfl
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Unfold `colH`. Apply `Finset.card_le_card` to reduce the goal to its premises. Introduce `m hm`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at hm ⊢`.
+Prove the components needed by the constructor for the conclusion. Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Conclude with `le_trans hm (ha m)`. Unfold `colH set S := Finset.univ.filter fun m => c ≤ ν m with hS set S' := Finset.univ.filter fun m => c ≤ ν' m with hS'`. Establish `hsub : S'.image Fin.val ⊆ insert 0 (S.image fun a => a.val + 1)`. Introduce `x hx`. Simplify using `only [Finset.mem_image, Finset.mem_filter, Finset.mem_univ, true_and, S', S, Finset.mem_insert] at hx ⊢`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Take `⟨m, hm, rfl⟩` from `hx`. Break down `Nat.eq_zero_or_pos m.val with h0 | hpos` into its components or cases. Use `left`. Conclude with `h0`. Use `right`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hlt : m.val - 1 < r` using `by omega`. Establish `h1 : (m.val - 1) + 1 < r` using `by omega`. Establish `hm' : (⟨(m.val - 1) + 1, h1⟩ : Fin r) = m` using `Fin.ext (by simp; omega)`. Use `⟨⟨m.val - 1, hlt⟩, ?_, by simp; omega⟩` and prove the remaining obligations. Establish `h2` using `hb ⟨m.val - 1, hlt⟩ h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Rewrite `h2` using `[hm']`. Conclude with `le_trans hm h2`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.card_image_le (s := S) (f := fun a : Fin r => a.val + 1)` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+A detailed English derivation is pending.
 -/
 theorem colH_step {ν ν' : Fin r → ℤ} (hν : Antitone ν) (hν' : Antitone ν') (ha : ∀ a, ν a ≤ ν' a)
     (hb : ∀ (a : Fin r) (h : a.val + 1 < r), ν' ⟨a.val + 1, h⟩ ≤ ν a) (c : ℤ) :
@@ -82,17 +82,15 @@ theorem colH_step {ν ν' : Fin r → ℤ} (hν : Antitone ν) (hν' : Antitone 
         omega
 
 /- English proof (translation)
-Establish `hdom : ∀ k, k < N + 1 → Antitone (stg P1.mu k)`. Introduce `k hk`. Rewrite using `[← stg_eq P1.mu k hk]`. Conclude with `P1.dom _`. Use `⟨fun i => if i.val < n0 then b' i else 0, ⟨cutPath n0 P1.mu, ?_, ?_, ?_⟩, rfl⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `show stg P1.mu (min (0 : Fin (N + 1)).val n0) = 0`. Simplify using `only [Fin.val_zero, Nat.zero_min]`. Rewrite using `[← stg_eq P1.mu 0 (by omega)]`. Conclude with `P1.zero`. Introduce `i`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Conclude with `hdom _ (lt_of_le_of_lt (min_le_left _ _) i.isLt)`. Introduce `i`. Establish `hi` using `i.isLt`. Distinguish the cases in `h : i.val < n0`. Establish `e1 : cutPath n0 P1.mu i.castSucc = P1.mu i.castSucc` using `by show stg P1.mu (min i.val n0) = _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[min_eq_left (by omega), stg_castSucc P1.mu]`. Establish `e2 : cutPath n0 P1.mu i.succ = P1.mu i.succ` using `by show stg P1.mu (min (i.val + 1) n0) = _`. Rewrite using `[min_eq_left (by omega), stg_succ P1.mu]`. Rewrite using `[e1, e2]`. Simplify using `only [h, if_true]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `P1.step i`. Establish `e1 : cutPath n0 P1.mu i.castSucc = stg P1.mu n0` using `by show stg P1.mu (min i.val n0) = _`. Rewrite using `[min_eq_right (by omega)]`. Establish `e2 : cutPath n0 P1.mu i.succ = stg P1.mu n0` using `by show stg P1.mu (min (i.val + 1) n0) = _`. Rewrite using `[min_eq_right (by omega)]`.
-
-Rewrite using `[e1, e2]`. Simplify using `only [h, if_false]`. Establish `hs : HStrip (stg P1.mu n0) (stg P1.mu n0) 0` using `⟨fun _ => le_rfl, fun a h' => hdom n0 (by omega) (by rw [Fin.le_def]; simp), by simp⟩`. Apply the tactic sequence `split_ifs <;> exact hs`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem cut_ppath {LL : Letters (Fin N)} {b' : Fin N → ℕ} (P1 : PPath r N LL b') (n0 : ℕ) :
     ∃ bc, ∃ Pc : PPath r N LL bc, Pc.mu = cutPath n0 P1.mu := by
@@ -132,7 +130,7 @@ theorem cut_ppath {LL : Letters (Fin N)} {b' : Fin N → ℕ} (P1 : PPath r N LL
       split_ifs <;> exact hs
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Conclude with `Fin.append_castAdd_natAdd`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem joinPT_parts {K : ℕ} (μ : Fin (N + 1) → Fin (r + K) → ℤ) : joinPT (plPart μ) (tanPart μ) = μ := by
   funext i
@@ -145,13 +143,13 @@ section Dat6
 variable {n' r : ℕ} [NeZero n'] [NeZero r] (X : Dat n' r) (p K : ℕ)
 
 /- English proof (translation)
-Establish `hr : 0 < r` using `NeZero.pos r`. Establish `hV` using `hX.valid`. Unfold `T.dplus Dat.beS`. Establish `himg : (X.F.letters j).filter (· < X.F.fr j 0) = (Finset.univ.filter fun l : Fin (segN X.F j) => l.val < segN X.F j - r).image (segE X.F j)`. Use extensionality with `x`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `only [Finset.mem_filter, Finset.mem_image, Finset.mem_univ, true_and]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hx, hlt⟩`. Take `⟨i, rfl⟩` from `segE_surj X.F j hx`. Conclude with `⟨i, (segE_lt_fr_iff X.F hV hr j i).mp hlt, rfl⟩`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Introduce and unpack `⟨i, hi, rfl⟩`. Conclude with `⟨segE_mem X.F j i, (segE_lt_fr_iff X.F hV hr j i).mpr hi⟩`. Rewrite using `[himg, Finset.sum_image (fun a _ b _ h => (segE_strictMono X.F j).injective h), Finset.sum_filter]`. Use `Finset.sum_le_sum fun l _ => ?_` and prove the remaining obligations. Use `split_ifs with h1 h2 h2`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hP.degs l ((segE_lt_fr_iff X.F hV hr j l).mpr h2)]`. Use linear arithmetic over natural numbers and integers. Conclude with `Nat.zero_le _`. Conclude with `le_rfl`.
+Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem dplus_le_beS (hX : X.Hyp p K) (j : ℤ) (b : ℤ → ℕ) (μ : Fin (segN X.F j + 1) → Fin (r + K) → ℤ)
     (dd : Fin (segN X.F j) → ℕ) (hP : X.IsPATH p K j b μ dd) (s : ℕ) (hs : s ≤ segN X.F j - r) :
@@ -179,35 +177,31 @@ theorem dplus_le_beS (hX : X.Hyp p K) (j : ℤ) (b : ℤ → ℕ) (μ : Fin (seg
   · exact le_rfl
 
 /- English proof (translation)
-Establish `hr : 0 < r` using `NeZero.pos r`. Establish `hV` using `hX.valid`. Take `⟨P, hPμ⟩` from `hP.path`. Establish `hrN : r ≤ segN X.F j` using `k_r_le_segN X.F hV hr j`. Establish `hNK : segN X.F j + r ≤ K` using `le_trans (Nat.add_le_add_right (hX.card j) r) hX.NsK`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `htau : ∀ t (ht : t < r), ∃ l : Fin (segN X.F j), l.val = segN X.F j - r + t ∧ segE X.F j l = X.F.fr j t ∧ HStrip (stg μ (segN X.F j - r + t)) (stg μ (segN X.F j - r + t + 1)) (dd l)`. Introduce `t ht`. Set `l : Fin (segN X.F j)` to `⟨segN X.F j - r + t, by omega⟩`. Establish `hl : segE X.F j l = X.F.fr j t` using `(segE_eq_fr_iff X.F hV j l ht).mpr rfl`. Establish `hvec : (segLL X.F j).vec l = true`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[comb_vec, hl]`. Conclude with `(hV.2.2.2.2.1 j t ht).2`. Establish `hs` using `T.step_vec P l hvec`. Rewrite `hs` using `[hPμ, stg_castSucc μ, stg_succ μ]`. Conclude with `⟨l, rfl, hl, hs⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `hlow : ∀ i ≤ segN X.F j - r, ∀ m, stg μ i m ≤ (X.beS p K j b : ℤ)`. Introduce `i hi m`. Establish `h1` using `T.mu_le_dplus P i (by omega) m`. Rewrite `h1` using `[hPμ, stg_eq μ i (by omega)]`. Establish `h2` using `dplus_le_beS X p K hX j b μ dd hP i hi`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `le_trans h1 (by exact_mod_cast h2)`. Establish `hup : ∀ t ≤ r, ∀ m, stg μ (segN X.F j - r + t) m ≤ (X.beS p K j b : ℤ)`. Introduce `t`. Proceed by induction on `t with`. Consider the case `zero => intro _ m`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hlow _ le_rfl m`. Consider the case `succ t ih`. Introduce `ht m`. Take `⟨l, hlv, hl, hs⟩` from `htau t (by omega)`. Rewrite using `[show segN X.F j - r + (t + 1) = segN X.F j - r + t + 1 by ring]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Distinguish the cases in `hm : m.val = 0`. Use `hP.head l ⟨t, by omega⟩ hl m (by omega)` as an intermediate fact. Rewrite `this` using `[stg_succ μ, hlv]`. Rewrite using `[this]`. Establish `hm'` using `m.isLt`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2` using `hs.2.1 ⟨m.val - 1, by omega⟩ (by simp only []; omega)`. Establish `e : (⟨(⟨m.val - 1, by omega⟩ : Fin (r + K)).val + 1, by simp only []; omega⟩ : Fin (r + K)) = m` using `Fin.ext (by simp only []; omega)`. Rewrite `h2` using `[e]`. Conclude with `le_trans h2 (ih (by omega) _)`. Establish `hdom : ∀ k, k < segN X.F j + 1 → Antitone (stg (plPart μ) k)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `k hk a a' haa`. Rewrite using `[stg_plPart, stg_plPart, ← stg_eq μ k hk, ← hPμ]`. Conclude with `P.dom _ (by rw [Fin.le_def]; simpa using haa)`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `i hi m`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[stg_plPart]`. Prove the components needed by the constructor for the conclusion. Establish `h1` using `T.mu_nonneg P i (by omega) (Fin.castAdd K m) (by`. Use `m.isLt` as an intermediate fact. Simplify using `only [Fin.val_castAdd]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses.
 
-Use the proof step `omega)`. Rewrite `h1` using `[hPμ, stg_eq μ i (by omega)]`. Then use the resulting hypothesis. Distinguish the cases in `h : i ≤ segN X.F j - r`. Conclude with `hlow i h _`. Use `hup (i - (segN X.F j - r)) (by omega) (Fin.castAdd K m)` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite `this` using `[show segN X.F j - r + (i - (segN X.F j - r)) = i by omega]`. Then use the resulting hypothesis. Introduce `m`. Rewrite using `[stg_plPart]`. Take `⟨l, hlv, hl, -⟩` from `htau (r - 1) (by omega)`. Use `hP.head l ⟨r - 1, by omega⟩ hl (Fin.castAdd K m) (by` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `m.isLt` as an intermediate fact. Simplify using `only [Fin.val_castAdd]`. Use the proof step `omega)`. Rewrite `this` using `[stg_succ μ, hlv, show segN X.F j - r + (r - 1) + 1 = segN X.F j by omega]`. Conclude with `this`.
-
-Introduce `t ht c`. Take `⟨l, hlv, hl, hs⟩` from `htau t ht`. Use `colH_step (hdom _ (by omega)) (hdom _ (by omega)) ?_ ?_ c` and prove the remaining obligations. Introduce `a`. Rewrite using `[stg_plPart, stg_plPart]`.
-
-Conclude with `hs.1 _`. Introduce `a h`. Rewrite using `[stg_plPart, stg_plPart]`. Use `hs.2.1 (Fin.castAdd K a) (by simp only [Fin.val_castAdd]; omega)` as an intermediate fact. Conclude with `this`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem plHyp_of (hX : X.Hyp p K) (j : ℤ) (b : ℤ → ℕ) (μ : Fin (segN X.F j + 1) → Fin (r + K) → ℤ)
     (dd : Fin (segN X.F j) → ℕ) (hP : X.IsPATH p K j b μ dd) :

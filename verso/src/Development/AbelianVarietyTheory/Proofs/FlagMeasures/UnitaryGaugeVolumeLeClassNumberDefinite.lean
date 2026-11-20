@@ -16,9 +16,9 @@ namespace GlobalTheory.DefiniteVolume
 variable (I : AutInst)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `a`. Establish `h0` using `(h v).2`. Unfold `AutInst.qAt at h0`. Rewrite `h0` using `[Finset.card_eq_zero, Finset.filter_eq_empty_iff]`. Establish `ha` using `h0 (Finset.mem_univ a)`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [allPos]`. Use `revert ha`. Apply the tactic sequence `cases I.ε v a <;> simp`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem eps_eq {r : ℕ} (h : HasSig I r 0) (v : InfinitePlace I.F) : I.ε v = allPos I.n := by
   funext a
@@ -31,7 +31,7 @@ theorem eps_eq {r : ℕ} (h : HasSig I r 0) (v : InfinitePlace I.F) : I.ε v = a
   cases I.ε v a <;> simp
 
 /- English proof (translation)
-Take `⟨v⟩ : Nonempty (InfinitePlace I.F)` from `inferInstance`. Establish `hp` using `(h v).1`. Rewrite `hp` using `[AutInst.pAt, eps_eq I h v]`. Simplify `hp.symm` using `[allPos]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem rank_eq {r : ℕ} (h : HasSig I r 0) : r = I.n := by
   obtain ⟨v⟩ : Nonempty (InfinitePlace I.F) := inferInstance
@@ -40,7 +40,7 @@ theorem rank_eq {r : ℕ} (h : HasSig I r 0) : r = I.n := by
   simpa [allPos] using hp.symm
 
 /- English proof (translation)
-Use `haveI := I.cm.totReal`. Establish `h2` using `NumberField.InfinitePlace.card_add_two_mul_card_eq_rank I.F`. Rewrite `h2` using `[NumberField.IsTotallyReal.nrComplexPlaces_eq_zero]`. Rewrite using `[NumberField.InfinitePlace.card_eq_nrRealPlaces_add_nrComplexPlaces, NumberField.IsTotallyReal.nrComplexPlaces_eq_zero, AutInst.f]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem card_places : Fintype.card (InfinitePlace I.F) = I.f := by
   haveI := I.cm.totReal
@@ -51,15 +51,13 @@ theorem card_places : Fintype.card (InfinitePlace I.F) = I.f := by
   omega
 
 /- English proof (translation)
-Establish `hconj : ∀ a, I.φ v (star a) = starRingEnd ℂ (I.φ v a)` using `fun a => I.cm.cmUnram.2.1 (I.φ v) a`. Establish `hdet : IsUnit (I.P v).det` using `(Matrix.isUnit_iff_isUnit_det _).1 (I.P_unit v)`. Establish `hspec : (I.P v)ᴴ * I.J.map (I.φ v) * I.P v = 1`. Rewrite using `[I.P_spec v, hv, GlobalTheory.UnitaryVolume.Jm_allPos]`. Establish `hmap : I.φ v (star y ⬝ᵥ (I.J *ᵥ y)) = star (fun i => I.φ v (y i)) ⬝ᵥ (I.J.map (I.φ v) *ᵥ fun i => I.φ v (y i))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [dotProduct, mulVec, map_sum, map_mul, Pi.star_apply, hconj, Matrix.map_apply, starRingEnd_apply]`. Establish `hne : (fun i => I.φ v (y i)) ≠ 0`. Introduce `h0`. Apply `hy` to reduce the goal to its premises. Use function extensionality and compare the values at `i`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `(I.φ v).injective (by simpa using congrFun h0 i)`. Rewrite using `[hmap]`. Generalize the expression as in `(fun i => I.φ v (y i)) = w at hne ⊢`. Establish `hwz : w = I.P v *ᵥ ((I.P v)⁻¹ *ᵥ w)`. Rewrite using `[mulVec_mulVec, Matrix.mul_nonsing_inv _ hdet, one_mulVec]`.
+Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hz0 : (I.P v)⁻¹ *ᵥ w ≠ 0`. Introduce `h0`. Apply `hne` to reduce the goal to its premises. Rewrite using `[hwz, h0, mulVec_zero]`. Rewrite using `[hwz, star_mulVec, ← dotProduct_mulVec, mulVec_mulVec, mulVec_mulVec, hspec, one_mulVec]`.
-
-Conclude with `(Complex.pos_iff.1 (Matrix.dotProduct_star_self_pos_iff.2 hz0)).1`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pos_at (v : InfinitePlace I.F) (hv : I.ε v = allPos I.n) (y : Fin I.n → I.E) (hy : y ≠ 0) :
     0 < (I.φ v (star y ⬝ᵥ (I.J *ᵥ y))).re := by
@@ -88,11 +86,11 @@ theorem pos_at (v : InfinitePlace I.F) (hv : I.ε v = allPos I.n) (y : Fin I.n �
   exact (Complex.pos_iff.1 (Matrix.dotProduct_star_self_pos_iff.2 hz0)).1
 
 /- English proof (translation)
-Establish `hJ : I.Jᴴ = I.J` using `by rw [← GlobalTheory.StabCosets.cT_star]; exact I.J_herm`. Establish `hstar : star (star y ⬝ᵥ (I.J *ᵥ y)) = star y ⬝ᵥ (I.J *ᵥ y)`. Rewrite using `[← star_dotProduct_star, star_star, star_mulVec, ← dotProduct_mulVec, hJ]`. Take `⟨b, hb⟩` from `(I.cm.fixed _).1 hstar`. Use `haveI := I.cm.totReal`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hreal : (InfinitePlace.mk (φ.comp (algebraMap I.F I.E))).IsReal` using `NumberField.IsTotallyReal.isReal _`. Establish `hemb` using `NumberField.InfinitePlace.embedding_mk_eq_of_isReal (NumberField.InfinitePlace.isReal_mk_iff.1 hreal)`. Establish `hval : φ (star y ⬝ᵥ (I.J *ᵥ y)) = I.φ (InfinitePlace.mk (φ.comp (algebraMap I.F I.E))) (star y ⬝ᵥ (I.J *ᵥ y))`. Rewrite using `[← hb, I.φ_over, hemb]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hval]`. Conclude with `pos_at I _ (eps_eq I h _) y hy`.
+A detailed English derivation is pending.
 -/
 theorem pos_all {r : ℕ} (h : HasSig I r 0) (φ : I.E →+* ℂ) (y : Fin I.n → I.E) (hy : y ≠ 0) :
     0 < (φ (star y ⬝ᵥ (I.J *ᵥ y))).re := by
@@ -113,7 +111,7 @@ theorem pos_all {r : ℕ} (h : HasSig I r 0) (φ : I.E →+* ℂ) (y : Fin I.n �
   exact pos_at I _ (eps_eq I h _) y hy
 
 /- English proof (translation)
-Simplify using `only [Formalism.UG.hform, dotProduct, mulVec, Finset.mul_sum, starRingEnd_apply, Pi.star_apply, mul_assoc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hform_eq (z x : Fin I.n → I.E) :
     Formalism.UG.hform (starRingEnd I.E) I.J z x = star z ⬝ᵥ (I.J *ᵥ x) := by
@@ -131,7 +129,7 @@ abbrev Isom (E : Type) [Field E] [NumberField E] [StarRing E] (r : ℕ) (X Y : D
       ∀ y, (γ : Matrix (Fin r) (Fin r) E) *ᵥ y ∈ Y.1.2 ↔ y ∈ X.1.2
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨1, by simp, fun y => by simp⟩ symm := by rintro X Y ⟨γ, h1, h2⟩ refine ⟨γ⁻¹, ?_, fun y => ?_⟩ · have hu : (γ : Matrix (Fin r) (Fin r) E) * ((γ⁻¹ : GL (Fin r) E) : Matrix (Fin r) (Fin r) E) = 1 := by simp calc ((γ⁻¹ : GL (Fin r) E) : Matrix (Fin r) (Fin r) E)ᴴ * X.1.1 * ((γ⁻¹ : G …`.
+Supply the required witnesses or components.
 -/
 theorem isom_equivalence (E : Type) [Field E] [NumberField E] [StarRing E] (r : ℕ) :
     Equivalence (Isom E r) where
@@ -165,15 +163,13 @@ def latOf {r : ℕ} (h : HasSig I r 0) (x : I.GA) : DefLat I.E I.n :=
       simpa only [hform_eq] using (GlobalTheory.PointLattice.lamX_selfDual I x).2.2.2.1 y⟩
 
 /- English proof (translation)
-Take `⟨γ, h1, h2⟩` from `e`. Express the relevant statement in the definitionally equal form `(γ : Matrix (Fin I.n) (Fin I.n) I.E)ᴴ * I.J * γ = I.J at h1`. Express the relevant statement in the definitionally equal form `∀ z, (γ : Matrix (Fin I.n) (Fin I.n) I.E) *ᵥ z ∈ lamX I x ↔ z ∈ lamX I y at h2`. Establish `hγ : γ ∈ Formalism.UG.UJ (starRingEnd I.E) I.J` using `by show Formalism.UG.cT (starRingEnd I.E) (γ : Matrix (Fin I.n) (Fin I.n) I.E) * I.J * γ = I.J`. Rewrite using `[GlobalTheory.StabCosets.cT_star]`.
+Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h1`. Take `⟨a, ha1, ha2⟩` from `GlobalTheory.StabCosets.exists_isImage I γ hγ`. Use `⟨a, ⟨γ, hγ, ha1, ha2⟩, ?_⟩` and prove the remaining obligations. Establish `hl : lamX I (a * y) = lamX I x`. Rewrite using `[(GlobalTheory.PointEquivariance.equivariance I y γ a hγ ha1 ha2).1]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Use extensionality with `z`. Simplify using `only [Submodule.mem_map, LinearMap.restrictScalars_apply, Matrix.toLin'_apply]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u, hu, rfl⟩`. Conclude with `(h2 u).2 hu`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `hz`. Use `⟨((γ⁻¹ : GL (Fin I.n) I.E) : Matrix (Fin I.n) (Fin I.n) I.E) *ᵥ z, (h2 _).1 ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[mulVec_mulVec, Units.mul_inv, one_mulVec]`. Conclude with `hz`. Rewrite using `[mulVec_mulVec, Units.mul_inv, one_mulVec]`.
-
-Conclude with `(GlobalTheory.PointEquivariance.lamX_mul_eq_iff I x (x⁻¹ * (a * y))).2 (by rw [mul_inv_cancel_left]; exact hl)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coset_of_isom {r : ℕ} (h : HasSig I r 0) (x y : I.GA)
     (e : Isom I.E I.n (latOf I h y) (latOf I h x)) :
@@ -202,15 +198,13 @@ theorem coset_of_isom {r : ℕ} (h : HasSig I r 0) (x y : I.GA)
   exact (GlobalTheory.PointEquivariance.lamX_mul_eq_iff I x (x⁻¹ * (a * y))).2 (by rw [mul_inv_cancel_left]; exact hl)
 
 /- English proof (translation)
-Set `pt : Quot (Isom I.E I.n) → I.GA` to `fun q => if hq : ∃ x, Quot.mk (Isom I.E I.n) (latOf I h x) = q then hq.choose else 1`. Set `D : Quot (Isom I.E I.n) → Set I.GA` to `fun q => Set.univ ×ˢ ((fun g => (pt q).2⁻¹ * g) ⁻¹' I.Kset)`. Establish `hKo : IsOpen I.Kset` using `(GlobalTheory.adelicStab_isCompact_isOpen I).2.1`. Establish `hDm : ∀ q, MeasurableSet (D q)` using `fun q => MeasurableSet.univ.prod (hKo.preimage (continuous_const.mul continuous_id)).measurableSet`. Establish `hcover : ∀ z ∈ (Set.univ : Set I.GA), ∃ γ ∈ I.GFset, γ * z ∈ ⋃ q, D q`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `z _`. Establish `hq : ∃ x, Quot.mk (Isom I.E I.n) (latOf I h x) = Quot.mk (Isom I.E I.n) (latOf I h z)` using `⟨z, rfl⟩`. Establish `hpt : pt (Quot.mk (Isom I.E I.n) (latOf I h z)) = hq.choose` using `dif_pos hq`. Establish `e : Isom I.E I.n (latOf I h z) (latOf I h hq.choose)` using `(isom_equivalence I.E I.n).symm ((Equivalence.eqvGen_iff (isom_equivalence I.E I.n)).1 (Quot.eqvGen_exact hq.choose_spec))`. Take `⟨a, ha, hk⟩` from `coset_of_isom I h hq.choose z e`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨a, ha, Set.mem_iUnion.2 ⟨Quot.mk (Isom I.E I.n) (latOf I h z), Set.mem_univ _, ?_⟩⟩` and prove the remaining obligations. Use `show (pt (Quot.mk (Isom I.E I.n) (latOf I h z))).2⁻¹ * (a * z).2 ∈ I.Kset`. Rewrite using `[hpt]`. Conclude with `hk`. Combine the equalities or inequalities in the displayed calculation.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Unfold `covol`. Conclude with `iInf_le_of_le _ (iInf_le_of_le (MeasurableSet.iUnion hDm) (iInf_le_of_le hcover le_rfl))`. Use `_ ≤ ∑ q, I.muA μf (D q) := measure_iUnion_fintype_le _ _`. Use `_ = ∑ _q : Quot (Isom I.E I.n), (∏ v, Formalism.REAL.muG (I.ε v) Set.univ) * μf I.Kset := by`. Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations.
-
-Simplify using `only [D, AutInst.muA]`. Rewrite using `[Measure.prod_prod, Measure.pi_univ, measure_preimage_mul]`. Use `_ = _ := by`. Rewrite using `[Finset.sum_const, Finset.card_univ, nsmul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem covol_le {r : ℕ} (h : HasSig I r 0) (μf : Measure I.Gf) [SigmaFinite μf] [μf.IsHaarMeasure]
     [Fintype (Quot (Isom I.E I.n))] :
@@ -250,18 +244,18 @@ theorem covol_le {r : ℕ} (h : HasSig I r 0) (μf : Measure I.Gf) [SigmaFinite 
         ring
 
 /- English proof (translation)
-Unfold `volU sphV`. Conclude with `mul_pos (Finset.prod_pos fun l _ => by positivity) (by positivity)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem volU_pos (i : ℕ) : 0 < volU i := by
   unfold volU sphV
   exact mul_pos (Finset.prod_pos fun l _ => by positivity) (by positivity)
 
 /- English proof (translation)
-Substitute `hε` using the available equality. Establish `h1` using `GlobalTheory.T.riemannianHaarGauge_volume_unitaryGroup_eq N c hc`. Establish `hlt` using `GlobalTheory.UnitaryVolume.muG_univ_lt_top N`. Establish `hne` using `GlobalTheory.UnitaryVolume.muG_univ_ne_zero N`. Establish `ht : 0 < (Formalism.REAL.muG (allPos N) Set.univ).toReal` using `ENNReal.toReal_pos hne hlt.ne`.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc0 : 0 < c`. Assume the negation of the conclusion as `hle`. Use `push_neg at hle`. Use polynomial arithmetic with `[volU_pos N]`. Use `⟨hc0.le, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Use the polynomial consequences of the given equalities and inequalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← ENNReal.ofReal_toReal hlt.ne, ← ENNReal.ofReal_mul hc0.le, h1]`.
+A detailed English derivation is pending.
 -/
 theorem gauge_local (N : ℕ) (ε : Fin N → Bool) (hε : ε = allPos N) (c : ℝ) (hc : IsGauge ε c) :
     0 ≤ c ∧ ENNReal.ofReal c * Formalism.REAL.muG ε Set.univ = ENNReal.ofReal (volU N) := by
@@ -278,15 +272,13 @@ theorem gauge_local (N : ℕ) (ε : Fin N → Bool) (hε : ε = allPos N) (c : �
   rw [← ENNReal.ofReal_toReal hlt.ne, ← ENNReal.ofReal_mul hc0.le, h1]
 
 /- English proof (translation)
-Introduce `I r h c μf _ _ hc`. Take `rfl` from `rank_eq I h`. Establish `hK` using `GlobalTheory.adelicStab_isCompact_isOpen I`. Establish `h1K : (1 : I.Gf) ∈ I.Kset` using `(GlobalTheory.PointEquivariance.lamX_mul_eq_iff I 1 1).2 (by rw [mul_one])`. Establish `hKpos : μf I.Kset ≠ 0` using `(hK.2.1.measure_pos μf ⟨1, h1K⟩).ne'`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hKtop : μf I.Kset ≠ ⊤` using `hK.1.measure_lt_top.ne`. Establish `hloc : ∀ v, 0 ≤ c v ∧ ENNReal.ofReal (c v) * Formalism.REAL.muG (I.ε v) Set.univ = ENNReal.ofReal (volU I.n)` using `fun v => gauge_local I.n (I.ε v) (eps_eq I h v) (c v) (hc v)`. Establish `hV : ENNReal.ofReal (volU I.n ^ I.f) ≠ 0` using `(ENNReal.ofReal_pos.2 (pow_pos (volU_pos _) _)).ne'`. Establish `hprod : ENNReal.ofReal (∏ v, c v) * ∏ v, Formalism.REAL.muG (I.ε v) Set.univ = ENNReal.ofReal (volU I.n ^ I.f)`. Rewrite using `[ENNReal.ofReal_prod_of_nonneg (fun v _ => (hloc v).1), ← Finset.prod_mul_distrib, Finset.prod_congr rfl (fun v _ => (hloc v).2), Finset.prod_const, Finset.card_univ, card_places, ENNReal.ofReal_pow (volU_pos _).le]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hfin : Finite (Quot (Isom I.E I.n))`. Use `haveI := Fintype.ofFinite (Quot (Isom I.E I.n))`. Establish `hcv` using `covol_le I h μf`. Unfold `gaugeVol`. Combine the equalities or inequalities in the displayed calculation.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Replace the relevant objects with their definitions. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← mul_assoc, hprod, ← mul_assoc, ENNReal.mul_div_cancel_right hKpos hKtop]`. Use `_ = ENNReal.ofReal (volU I.n ^ I.f) * ((defClassNum I.E I.n : ENat) : ENNReal) := by`. Rewrite using `[defClassNum, ENat.card_eq_coe_fintype_card, ENat.toENNReal_coe]`. Use `haveI := not_finite_iff_infinite.1 hfin`. Rewrite using `[defClassNum, ENat.card_eq_top_of_infinite, ENat.toENNReal_top, ENNReal.mul_top hV]`.
-
-Conclude with `le_top`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gaugeVol_le : ∀ (I : AutInst) (r : ℕ), HasSig I r 0 → ∀ (c : InfinitePlace I.F → ℝ) (μf : Measure I.Gf) [SigmaFinite μf] [μf.IsHaarMeasure], IsGaugeAll I c → gaugeVol I c μf ≤ ENNReal.ofReal (volU r ^ I.f) * ((defClassNum I.E r : ENat) : ENNReal) := by
   intro I r h c μf _ _ hc

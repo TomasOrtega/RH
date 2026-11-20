@@ -6,7 +6,7 @@ open NumberField IsDedekindDomain Formalism.L2.Host Formalism.ConjugateSelfDual 
 open UpperTheory.Gal.UnramifiedFromSplittingCriterion
 
 /- English proof (translation)
-Establish `hs : σ ∈ MulAction.stabilizer (G F Ω) z` using `h`. Conclude with `(MulAction.stabilizer (G F Ω) z).zpow_mem hs n`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem zpow_mem_fix {F Ω : Type} [Field F] [Field Ω] [Algebra F Ω] (σ : G F Ω) (z : Ω)
     (h : σ z = z) (n : ℤ) : (σ ^ n) z = z := by
@@ -14,7 +14,7 @@ private theorem zpow_mem_fix {F Ω : Type} [Field F] [Field Ω] [Algebra F Ω] (
   exact (MulAction.stabilizer (G F Ω) z).zpow_mem hs n
 
 /- English proof (translation)
-Establish `e : φ ^ (2 : ℤ) = φ * φ` using `zpow_two φ`. Rewrite using `[e, AlgEquiv.mul_apply]`. Break down `h with h | h` into its components or cases. Rewrite using `[h, h]`. Rewrite using `[h, map_neg, h, neg_neg]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 private theorem sq_apply_of_pm {F Ω : Type} [Field F] [Field Ω] [Algebra F Ω] (φ : G F Ω) (z : Ω)
     (h : φ z = z ∨ φ z = -z) : (φ ^ (2 : ℤ)) z = z := by
@@ -25,11 +25,9 @@ private theorem sq_apply_of_pm {F Ω : Type} [Field F] [Field Ω] [Algebra F Ω]
   · rw [h, map_neg, h, neg_neg]
 
 /- English proof (translation)
-Break down `Int.even_or_odd m with ⟨j, hj⟩ | ⟨j, hj⟩` into its components or cases. Rewrite using `[hj, ← two_mul, zpow_mul]`. Conclude with `zpow_mem_fix _ x (sq_apply_of_pm φ x hφx) j`. It suffices to derive a contradiction. Establish `hφe' : φ e = -e`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. It suffices to derive a contradiction. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `hφe with h | h` into its components or cases. Conclude with `absurd (zpow_mem_fix φ e h k) hk`. Conclude with `h`. Rewrite `hm` using `[hj, zpow_add, zpow_one, zpow_mul, AlgEquiv.mul_apply, hφe', map_neg, zpow_mem_fix _ e (sq_apply_of_pm φ e hφe) j]`. Establish `h2 : (2 : Ω) * e = 0` using `by linear_combination -hm`.
-
-Break down `mul_eq_zero.1 h2 with h | h` into its components or cases. Conclude with `two_ne_zero h`. Conclude with `he0 h`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 private theorem fix_of_parity {F Ω : Type} [Field F] [Field Ω] [Algebra F Ω] [CharZero Ω] (φ : G F Ω) (e x : Ω)
     (he0 : e ≠ 0) (hφe : φ e = e ∨ φ e = -e) (hφx : φ x = x ∨ φ x = -x) (k m : ℤ)
@@ -50,7 +48,7 @@ private theorem fix_of_parity {F Ω : Type} [Field F] [Field Ω] [Algebra F Ω] 
     · exact he0 h
 
 /- English proof (translation)
-Rewrite `h` using `[map_pow]`. Conclude with `sq_eq_sq_iff_eq_or_eq_neg.1 h`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem pm_of_sq {F Ω : Type} [Field F] [Field Ω] [Algebra F Ω] (σ : G F Ω) (z : Ω)
     (h : σ (z ^ 2) = z ^ 2) : σ z = z ∨ σ z = -z := by
@@ -58,13 +56,13 @@ private theorem pm_of_sq {F Ω : Type} [Field F] [Field Ω] [Algebra F Ω] (σ :
   exact sq_eq_sq_iff_eq_or_eq_neg.1 h
 
 /- English proof (translation)
-Introduce `y`. Establish `h2 : (2 : Y) ≠ 0` using `two_ne_zero`. Take `⟨a, haa⟩ : ∃ a : Y, a = (y + IsCMField.complexConj Y y) / 2` from `⟨_, rfl⟩`. Take `⟨b, hbb⟩ : ∃ b : Y, b = (y - IsCMField.complexConj Y y) / (2 * e)` from `⟨_, rfl⟩`. Establish `ha : IsCMField.complexConj Y a = a`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[haa, map_div₀, map_add, IsCMField.complexConj_apply_apply, map_ofNat, add_comm]`. Establish `hb : IsCMField.complexConj Y b = b`. Rewrite using `[hbb, map_div₀, map_sub, IsCMField.complexConj_apply_apply, map_mul, map_ofNat, hce]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hy : y = a + e * b`. Rewrite using `[haa, hbb]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish `hfa : g (algebraMap Y Ω a) = algebraMap Y Ω a` using `g.commutes ⟨a, (IsCMField.complexConj_eq_self_iff Y a).1 ha⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `hfb : g (algebraMap Y Ω b) = algebraMap Y Ω b` using `g.commutes ⟨b, (IsCMField.complexConj_eq_self_iff Y b).1 hb⟩`. Rewrite using `[hy, map_add, map_mul, map_add, map_mul, hfa, hfb, hg]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 private theorem fixes_of_imag {Y Ω : Type} [Field Y] [NumberField Y] [IsCMField Y] [Field Ω] [Algebra Y Ω]
     (e : Y) (he : e ≠ 0) (hce : IsCMField.complexConj Y e = -e) (g : G (maximalRealSubfield Y) Ω)
@@ -90,25 +88,21 @@ private theorem fixes_of_imag {Y Ω : Type} [Field Y] [NumberField Y] [IsCMField
   rw [hy, map_add, map_mul, map_add, map_mul, hfa, hfb, hg]
 
 /- English proof (translation)
-Introduce `hD Y Ω _ _ _ _ _ _ A u hu x a hx hI hg h hh`. Take `⟨g, hgD, hgY⟩` from `hg`. Use `haveI : IsAlgClosure (maximalRealSubfield Y) Ω := IsAlgClosure.ofAlgebraic _ Y Ω`. Use `haveI : CharZero Ω := charZero_of_injective_algebraMap (algebraMap Y Ω).injective`. Choose the witnesses or unpack the hypotheses as in `⟨v, hv⟩ : ∃ v : HeightOneSpectrum (𝓞 (maximalRealSubfield Y)), IsPlaceOver A v := by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨⟨u.asIdeal.comap (algebraMap (𝓞 (maximalRealSubfield Y)) (𝓞 Y)), Ideal.IsPrime.comap _, ?_⟩, ?_⟩` and prove the remaining obligations. Introduce `hb`. Conclude with `u.ne_bot (Ideal.eq_bot_of_comap_eq_bot hb)`. Introduce `z`. Conclude with `hu (algebraMap (𝓞 (maximalRealSubfield Y)) (𝓞 Y) z)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction.
 
-Take `⟨φ, hφ⟩` from `exists_isFrob hv`. Choose the witnesses or unpack the hypotheses as in `⟨e, he0, hce⟩ : ∃ e : Y, e ≠ 0 ∧ IsCMField.complexConj Y e = -e := by`. Choose the witnesses or unpack the hypotheses as in `⟨y, hy⟩ : ∃ y : Y, IsCMField.complexConj Y y ≠ y := by`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `IsCMField.complexConj_ne_one Y (AlgEquiv.ext hc)`. Use `⟨y - IsCMField.complexConj Y y, sub_ne_zero.2 (Ne.symm hy), ?_⟩` and prove the remaining obligations. Rewrite using `[map_sub, IsCMField.complexConj_apply_apply, neg_sub]`. Establish `hXf : ({x, algebraMap Y Ω e} : Set Ω).Finite` using `Set.toFinite _`. Establish `hIX : ∀ τ ∈ (Ine A : Subgroup (G (maximalRealSubfield Y) Ω)), ∀ y ∈ ({x, algebraMap Y Ω e} : Set Ω), τ y = y`.
+Separate the alternatives or extract the components of the hypothesis. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Introduce `τ hτ y hy`. Break down `hy with rfl | rfl` into its components or cases. Conclude with `(hI τ hτ).2`. Conclude with `(hI τ hτ).1 e`. Set `h' : G (maximalRealSubfield Y) Ω` to `AlgEquiv.restrictScalars _ h`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hh' : h' ∈ Dec A` using `(GlobalTheory.AboveL.mem_dec_congr A h' h (fun _ => rfl)).2 hh`. Take `⟨k, hk⟩` from `hD _ Ω A v hv φ hφ _ hXf hIX g hgD`. Take `⟨m, hm⟩` from `hD _ Ω A v hv φ hφ _ hXf hIX h' hh'`. Establish `hE0 : algebraMap Y Ω e ≠ 0` using `(map_ne_zero _).2 he0`. Establish `hpmE : φ (algebraMap Y Ω e) = algebraMap Y Ω e ∨ φ (algebraMap Y Ω e) = -algebraMap Y Ω e`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Apply `pm_of_sq` to reduce the goal to its premises. Establish `hs : e ^ 2 ∈ maximalRealSubfield Y`. Rewrite using `[← IsCMField.complexConj_eq_self_iff, map_pow, hce, neg_sq]`. Rewrite using `[← map_pow]`. Conclude with `φ.commutes (⟨e ^ 2, hs⟩ : maximalRealSubfield Y)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hpmx : φ x = x ∨ φ x = -x`. Apply `pm_of_sq` to reduce the goal to its premises. Rewrite using `[hx, map_intCast]`. Establish `hkE : (φ ^ k) (algebraMap Y Ω e) ≠ algebraMap Y Ω e`. Rewrite using `[← hk _ (by simp)]`.
-
-Introduce `hgE`. Conclude with `hgY (fixes_of_imag e he0 hce g hgE)`. Establish `hmE : (φ ^ m) (algebraMap Y Ω e) = algebraMap Y Ω e`. Rewrite using `[← hm _ (by simp)]`. Conclude with `h.commutes e`.
-
-Establish `hfx` using `fix_of_parity φ _ x hE0 hpmE hpmx k m hkE hmE`. Rewrite `hfx` using `[← hm x (by simp)]`. Conclude with `hfx`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.UnramifiedFromSplittingCriterion.inertSplit :
     DecGen → InertSplit := by

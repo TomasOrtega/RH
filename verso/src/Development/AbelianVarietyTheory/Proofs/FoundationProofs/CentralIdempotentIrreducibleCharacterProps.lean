@@ -10,9 +10,9 @@ namespace GlobalTheory.BadShare.ZCalc
 variable {G : Type} [Group G] [Fintype G]
 
 /- English proof (translation)
-Set `b` to `Module.finBasis ℂ V`. Establish `htr : ∀ s, V.character s = (LinearMap.toMatrix b b (V.ρ s)).trace` using `fun s => LinearMap.trace_eq_matrix_trace ℂ b _`. Rewrite using `[htr, htr]`. Use `Formalism.L2.DIV.trace_inv_of_pow_eq_one _ _ (N := Fintype.card G) Fintype.card_ne_zero ?_ ?_` and prove the remaining obligations. Rewrite using `[LinearMap.toMatrix_pow, ← map_pow, pow_card_eq_one, map_one, LinearMap.toMatrix_one]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← LinearMap.toMatrix_mul, ← map_mul, inv_mul_cancel, map_one, LinearMap.toMatrix_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem character_inv (V : FDRep ℂ G) (t : G) : V.character t⁻¹ = (starRingEnd ℂ) (V.character t) := by
   let b := Module.finBasis ℂ V
@@ -24,7 +24,7 @@ theorem character_inv (V : FDRep ℂ G) (t : G) : V.character t⁻¹ = (starRing
   · rw [← LinearMap.toMatrix_mul, ← map_mul, inv_mul_cancel, map_one, LinearMap.toMatrix_one]
 
 /- English proof (translation)
-Rewrite using `[PI.CharIdemW.act_charIdem]`. Simplify using `only [op, zc, FDRep.char_one]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem op_zc (V W : FDRep ℂ G) :
     op W.ρ (zc V.character) = PI.CharIdem.act W (PI.CharIdem.charIdem V) := by
@@ -32,11 +32,11 @@ theorem op_zc (V W : FDRep ℂ G) :
   simp only [op, zc, FDRep.char_one]
 
 /- English proof (translation)
-Establish `h1 : ∑ y, zc χ y * W.character (y * x⁻¹) = c * W.character x⁻¹`. Establish `h2 : LinearMap.trace ℂ W (op W.ρ (zc χ) * W.ρ x⁻¹) = c * W.character x⁻¹`. Rewrite using `[h, smul_mul_assoc, one_mul, map_smul, smul_eq_mul]`. Both sides reduce to the same expression. Rewrite using `[← h2, op, Finset.sum_mul, map_sum]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun y _ => ?_` and prove the remaining obligations. Rewrite using `[smul_mul_assoc, map_smul, smul_eq_mul, ← map_mul]`. Both sides reduce to the same expression. Establish `h3 : ∀ y, zc χ y * zc W.character (y⁻¹ * x) = W.character 1 / (Fintype.card G : ℂ) * (zc χ y * W.character (y * x⁻¹))`. Introduce `y`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `: W.character (y⁻¹ * x)⁻¹ = W.character (y * x⁻¹)`. Rewrite using `[mul_inv_rev, inv_inv, FDRep.char_mul_comm]`. Rewrite using `[show zc W.character (y⁻¹ * x) = W.character 1 / (Fintype.card G : ℂ) * W.character (y⁻¹ * x)⁻¹ from rfl, this]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[conv, Finset.sum_congr rfl fun y _ => h3 y, ← Finset.mul_sum, h1, show zc W.character x = W.character 1 / (Fintype.card G : ℂ) * W.character x⁻¹ from rfl]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the hypotheses and the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -60,7 +60,7 @@ theorem conv_zc_of_scalar (χ : G → ℂ) (W : FDRep ℂ G) (c : ℂ) (h : op W
   ring
 
 /- English proof (translation)
-Simplify using `only [op, conv, Finset.sum_smul, Finset.sum_mul_sum, smul_mul_smul_comm, ← map_mul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun y _ => ?_` and prove the remaining obligations. Use `(Fintype.sum_equiv (Equiv.mulLeft y) _ _ fun x => ?_).symm` and prove the remaining obligations. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem op_conv_eq {M : Type} [AddCommGroup M] [Module ℂ M] (ρ : Representation ℂ G M) (a b : G → ℂ) :
     op ρ (conv a b) = op ρ a * op ρ b := by
@@ -71,7 +71,7 @@ theorem op_conv_eq {M : Type} [AddCommGroup M] [Module ℂ M] (ρ : Representati
   simp
 
 /- English proof (translation)
-Establish `hi : IsIdempotentElem (op ρ e)`. Rewrite using `[IsIdempotentElem, ← op_conv_eq, he]`. Establish `hp` using `(LinearMap.IsIdempotentElem.isProj_range _ hi).trace`. Rewrite using `[rk, ← hp, op, map_sum]`. Simplify using `only [map_smul, smul_eq_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem rk_eq_trace {M : Type} [AddCommGroup M] [Module ℂ M] [FiniteDimensional ℂ M] (ρ : Representation ℂ G M)
     (e : G → ℂ) (he : conv e e = e) : (rk ρ e : ℂ) = ∑ γ, e γ * LinearMap.trace ℂ M (ρ γ) := by
@@ -82,17 +82,17 @@ theorem rk_eq_trace {M : Type} [AddCommGroup M] [Module ℂ M] [FiniteDimensiona
   simp only [map_smul, smul_eq_mul]
 
 /- English proof (translation)
-Introduce `G _ _ V hV`. Use `⟨⟨?_, ?_⟩, ?_, ?_, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `x`. Establish `h` using `(PI.CharIdemW.scalar G V V hV hV).1 ⟨CategoryTheory.Iso.refl V⟩`. Rewrite using `[conv_zc_of_scalar _ V 1 (by rw [op_zc, h, one_smul]), one_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `x`. Simplify using `only [zc, map_mul, map_div₀, FDRep.char_one, map_natCast]`. Rewrite using `[character_inv V x⁻¹]`. Introduce `a`. Use function extensionality and compare the values at `x`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [conv]`. Use `Fintype.sum_equiv ((Equiv.inv G).trans (Equiv.mulRight x)) _ _ fun y => ?_` and prove the remaining obligations. Simplify using `only [Equiv.trans_apply, Equiv.inv_apply, Equiv.coe_mulRight, zc]`. Establish `: V.character ((y⁻¹ * x)⁻¹ * x)⁻¹ = V.character y⁻¹`. Rewrite using `[← FDRep.char_conj V y⁻¹ x⁻¹]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use `group`. Rewrite using `[this, mul_comm]`. Introduce `W hW hne`. Use function extensionality and compare the values at `x`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Establish `h` using `(PI.CharIdemW.scalar G V W hV hW).2 ⟨fun i => hne (FDRep.char_iso i)⟩`. Rewrite using `[conv_zc_of_scalar _ W 0 (by rw [op_zc, h, zero_smul]), zero_mul]`. Both sides reduce to the same expression. Introduce `e he`. Rewrite using `[rk_eq_trace _ e he, conv, Finset.mul_sum, Finset.sum_div]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Fintype.sum_equiv (Equiv.inv G) _ _ fun y => ?_` and prove the remaining obligations. Simplify using `only [Equiv.inv_apply, zc, mul_one, FDRep.char_one]`. Rewrite using `[show LinearMap.trace ℂ V (V.ρ y⁻¹) = V.character y⁻¹ from rfl]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem zc_calc : ∀ (G : Type) [Group G] [Fintype G], ∀ (V : FDRep ℂ G) [CategoryTheory.Simple V], IsProj (zc V.character) ∧ (∀ a : G → ℂ, conv (zc V.character) a = conv a (zc V.character)) ∧ (∀ (W : FDRep ℂ G) [CategoryTheory.Simple W], V.character ≠ W.character → conv (zc V.character) (zc W.character) = 0) ∧ ∀ e : G → ℂ, conv e e = e → conv (zc V.character) e 1 = (Module.finrank ℂ V : ℂ) * (rk V.ρ e : ℂ) / (Fintype.card G : ℂ) := by
   intro G _ _ V hV

@@ -12,9 +12,9 @@ variable {n m : ℕ}
 def cols (X : Matrix (Fin n) (Fin m) k) : Fin m → Fin n → k := fun j r => X r j
 
 /- English proof (translation)
-Take `⟨l, hl, hx⟩` from `(Finsupp.mem_span_image_iff_linearCombination k).1 hj`. Use `⟨l, fun i hi => ?_, fun r => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `h`. Conclude with `hi (hl (Finsupp.mem_support_iff.2 h))`. Rewrite `hx` using `[Finsupp.linearCombination_apply, Finsupp.sum_fintype _ _ (by simp)]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `congrFun hx r` as an intermediate fact. Simplify `this` using `[Finset.sum_apply, cols]`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem exists_coeff (X : Matrix (Fin n) (Fin m) k) (j : Fin m)
     (hj : cols X j ∈ Submodule.span k (cols X '' Set.Ioi j)) :
@@ -34,7 +34,7 @@ noncomputable def coef (X : Matrix (Fin n) (Fin m) k) : Matrix (Fin m) (Fin m) k
     (exists_coeff X j h).choose i else 0
 
 /- English proof (translation)
-Unfold `coef`. Simplify using `[hj]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem coef_of_not_mem (X : Matrix (Fin n) (Fin m) k) {j : Fin m}
     (hj : cols X j ∉ Submodule.span k (cols X '' Set.Ioi j)) (i : Fin m) : coef X i j = 0 := by
@@ -42,7 +42,7 @@ theorem coef_of_not_mem (X : Matrix (Fin n) (Fin m) k) {j : Fin m}
   simp [hj]
 
 /- English proof (translation)
-Unfold `coef`. Simplify using `only [of_apply, dif_pos hj]`. Rewrite using `[← (exists_coeff X j hj).choose_spec.2 r]`. Conclude with `Finset.sum_congr rfl fun i _ => mul_comm _ _`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_coef (X : Matrix (Fin n) (Fin m) k) {j : Fin m}
     (hj : cols X j ∈ Submodule.span k (cols X '' Set.Ioi j)) (r : Fin n) :
@@ -56,7 +56,7 @@ noncomputable def clr (X : Matrix (Fin n) (Fin m) k) : Matrix (Fin m) (Fin m) k 
 
 open Classical in
 /- English proof (translation)
-Rewrite using `[clr, Matrix.mul_sub, Matrix.mul_one, Matrix.sub_apply, mul_apply]`. Use `split_ifs with hj`. Rewrite using `[sum_coef X hj, sub_self]`. Simplify using `[coef_of_not_mem X hj]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mul_clr (X : Matrix (Fin n) (Fin m) k) (r : Fin n) (j : Fin m) :
     (X * clr X) r j = if cols X j ∈ Submodule.span k (cols X '' Set.Ioi j) then 0 else X r j := by
@@ -66,15 +66,13 @@ theorem mul_clr (X : Matrix (Fin n) (Fin m) k) (r : Fin n) (j : Fin m) :
   · simp [coef_of_not_mem X hj]
 
 /- English proof (translation)
-Rewrite using `[linearIndependent_iff']`. Introduce `s g hs i hi`. Assume the negation of the conclusion as `hne`. Use `set T := s.filter (fun i => g i ≠ 0) with hTdef`. Establish `hT : T.Nonempty` using `⟨i, Finset.mem_filter.2 ⟨hi, hne⟩⟩`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set j := T.min' hT with hjdef`. Establish `hjT : j ∈ T` using `T.min'_mem hT`. Take `⟨hjs, hgj⟩` from `Finset.mem_filter.1 hjT`. Apply `j.2` to reduce the goal to its premises. Establish `key : g j • cols X j.1 = - ∑ i ∈ s.erase j, g i • cols X i.1`.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hs` using `[← Finset.add_sum_erase s _ hjs]`. Conclude with `eq_neg_of_add_eq_zero_left hs`. Establish `hmem : ∑ i ∈ s.erase j, g i • cols X i.1 ∈ Submodule.span k (cols X '' Set.Ioi j.1)`. Use `Submodule.sum_mem _ fun i hi => ?_` and prove the remaining obligations. Distinguish the cases in `hgi : g i = 0`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `[hgi]`. Use `Submodule.smul_mem _ _ (Submodule.subset_span ⟨i.1, ?_, rfl⟩)` and prove the remaining obligations. Establish `hiT : i ∈ T` using `Finset.mem_filter.2 ⟨Finset.mem_of_mem_erase hi, hgi⟩`. Establish `hle : j ≤ i` using `T.min'_le i hiT`. Establish `hne : i ≠ j` using `Finset.ne_of_mem_erase hi`.
-
-Conclude with `(lt_of_le_of_ne hle (Ne.symm hne) : j < i)`. Establish `: cols X j.1 = (g j)⁻¹ • (g j • cols X j.1)` using `by rw [smul_smul, inv_mul_cancel₀ hgj, one_smul]`. Rewrite using `[this, key]`. Conclude with `Submodule.smul_mem _ _ (Submodule.neg_mem _ hmem)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem linInd (X : Matrix (Fin n) (Fin m) k) :
     LinearIndependent k
@@ -106,19 +104,19 @@ theorem linInd (X : Matrix (Fin n) (Fin m) k) :
   exact Submodule.smul_mem _ _ (Submodule.neg_mem _ hmem)
 
 /- English proof (translation)
-Establish `hli` using `linInd X`. Set `B` to `Module.Basis.sumExtend hli`. Establish `hB : ∀ j, B (Sum.inl j) = cols X j.1`. Introduce `j`. Simplify using `only [B, Module.Basis.sumExtend, Module.Basis.reindex_apply, Module.Basis.coe_extend, Equiv.symm_symm, Equiv.trans_apply, Equiv.sumCongr_apply]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Both sides reduce to the same expression. Set `e` to `B.indexEquiv (Pi.basisFun k (Fin n))`. Set `b` to `B.reindex e`. Establish `hb : ∀ j, b (e (Sum.inl j)) = cols X j.1`. Introduce `j`.
+Both sides reduce to the same expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Module.Basis.reindex_apply, Equiv.symm_apply_apply, hB]`. Set `G : Matrix (Fin n) (Fin n) k` to `Matrix.of fun r l => b l r`. Establish `hG : G = (Pi.basisFun k (Fin n)).toMatrix b`. Use extensionality with `r l`. Simplify using `[G, Module.Basis.toMatrix_apply]`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Establish `hdet : G.det ≠ 0`. Rewrite using `[hG]`. Use `(Pi.basisFun k (Fin n)).invertibleToMatrix b` as an intermediate fact. Conclude with `(isUnit_det_of_invertible _).ne_zero`. Set `s : Matrix (Fin n) (Fin m) k` to `Matrix.of fun r j => if h : cols X j ∈ Submodule.span k (cols X '' Set.Ioi j) then 0 else if r = e (Sum.inl ⟨j, h⟩) then 1 else 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨GeneralLinearGroup.mkOfDetNeZero G hdet, s, fun i j => ?_, ?_⟩` and prove the remaining obligations. Apply the tactic sequence `simp only [s, of_apply] split_ifs <;> simp`. Use extensionality with `r j`. Rewrite using `[mul_clr, GeneralLinearGroup.val_mkOfDetNeZero, mul_apply]`. Simplify using `only [s, of_apply]`.
+Apply the first step, then apply the next step to every resulting obligation. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use `split_ifs with hj`. Simplify using the standard rewrite rules. Rewrite using `[Finset.sum_eq_single (e (Sum.inl ⟨j, hj⟩))]`. Use `congrFun (hb ⟨j, hj⟩) r` as an intermediate fact. Simplify using `only [G, of_apply, if_pos rfl, mul_one, dif_neg hj]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[this]`. Simplify using `[cols]`. Introduce `l _ hl`. Simplify using `[hl, dif_neg hj]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_decomp (X : Matrix (Fin n) (Fin m) k) :
     ∃ (g : GL (Fin n) k) (s : Matrix (Fin n) (Fin m) k), (∀ i j, s i j = 0 ∨ s i j = 1) ∧

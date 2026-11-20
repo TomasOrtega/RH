@@ -26,9 +26,9 @@ noncomputable section
 namespace GlobalTheory.LocVacFix
 
 /- English proof (translation)
-Establish `hd : {v : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F | v.asIdeal ∣ differentIdeal ℤ (𝓞 F)}.Finite` using `Ideal.finite_factors (differentIdeal_ne_bot (A := ℤ) (B := 𝓞 F))`. Establish `h6 : {v : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F | v.asIdeal ∣ Ideal.span {(6 : 𝓞 F)}}.Finite`. Use `Ideal.finite_factors ?_` and prove the remaining obligations. Rewrite using `[Ne, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot]`. Conclude with `(show ((6 : ℕ) : 𝓞 F) ≠ 0 from Nat.cast_ne_zero.mpr (by norm_num))` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `(hd.union h6).subset ?_` and prove the remaining obligations. Introduce and unpack `v (hv | hv)`. Conclude with `Or.inl (Ideal.dvd_iff_le.mpr hv)`. Conclude with `Or.inr (Ideal.dvd_iff_le.mpr ((Ideal.span_singleton_le_iff_mem _).mpr hv))`.
+Assume the hypotheses and unpack their components. Prove the first alternative. Prove the second alternative. A detailed English derivation is pending.
 -/
 theorem bad_finite (F : Type) [Field F] [NumberField F] :
     {v : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F | differentIdeal ℤ (𝓞 F) ≤ v.asIdeal ∨ (6 : 𝓞 F) ∈ v.asIdeal}.Finite := by
@@ -44,15 +44,13 @@ theorem bad_finite (F : Type) [Field F] [NumberField F] :
   · exact Or.inr (Ideal.dvd_iff_le.mpr ((Ideal.span_singleton_le_iff_mem _).mpr hv))
 
 /- English proof (translation)
-Establish `h2 : (2 : 𝓞 F) ∉ v.asIdeal`. Introduce `h`. Apply `h6` to reduce the goal to its premises. Establish `e : (6 : 𝓞 F) = 3 * 2` using `by norm_num`. Rewrite using `[e]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `v.asIdeal.mul_mem_left 3 h`. Use `⟨h2, ?_⟩` and prove the remaining obligations. Establish `hmem : ((Ideal.absNorm v.asIdeal : ℕ) : 𝓞 F) ∈ v.asIdeal` using `Ideal.absNorm_mem v.asIdeal`. Establish `hz : Ideal.absNorm v.asIdeal ≠ 0`. Rewrite using `[Ne, Ideal.absNorm_eq_zero_iff]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `v.ne_bot`. Establish `ho : Ideal.absNorm v.asIdeal ≠ 1`. Rewrite using `[Ne, Ideal.absNorm_eq_one_iff]`. Conclude with `v.isPrime.ne_top`. Assume the negation of the conclusion as `hle`.
+Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Replace the chosen expression with an arbitrary variable. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Use `push_neg at hle`. Generalize the expression as in `hN : Ideal.absNorm v.asIdeal = N at hmem hz ho hle`. Use `interval_cases N`. Conclude with `hz rfl`. Conclude with `ho rfl`.
-
-Conclude with `h2 (by exact_mod_cast hmem)`. Apply `h6` to reduce the goal to its premises. Establish `e : (6 : 𝓞 F) = 2 * 3` using `by norm_num`. Rewrite using `[e]`. Conclude with `v.asIdeal.mul_mem_left 2 (by exact_mod_cast hmem)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem two_three_of_six {F : Type} [Field F] [NumberField F] (v : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F)
     (h6 : (6 : 𝓞 F) ∉ v.asIdeal) : (2 : 𝓞 F) ∉ v.asIdeal ∧ 3 < Ideal.absNorm v.asIdeal := by
@@ -83,9 +81,9 @@ theorem two_three_of_six {F : Type} [Field F] [NumberField F] (v : GlobalTheory.
     exact v.asIdeal.mul_mem_left 2 (by exact_mod_cast hmem)
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B a a' G X om om' hT v hsp hvT hψ h2 h3 k hk`. Take `⟨hSB, hne, θ, hθ, heig⟩` from `hT.geo.hM.vac v`. Take `⟨φ₁, hφ₁, hact⟩` from `GlobalTheory.T.weilRepresentationLocality_unitaryGroupW_pairVW F E σ B a a' G X om om' hT v k hk.1 (G.M.vac v) hSB`. Establish `heig₁` using `GlobalTheory.T.weilOperator_latticeStabiliser_right_preserves_vacuumType F E σ B a a' G X om om' hT v k hk θ hθ (G.M.vac v) hSB φ₁ hφ₁ heig hact`. Take `⟨c, hc⟩` from `GlobalTheory.T.heisenbergSelfDualLattice_fixedFunctions_line F E σ B a a' G X om om' hT v hψ (GlobalTheory.PsiUnrSelfDual.latAtV_selfDual F E σ B a a' G X om om' hT v hψ) θ hθ (G.M.vac v) hSB hne heig φ₁ hφ₁ heig₁`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Substitute `hc` using the available equality. Establish `hc1 : c = 1` using `GlobalTheory.SplitVac.eigen_eq_one F E σ B a a' G X om om' hT v hsp hvT hψ h2 h3 k hk c hact`. Rewrite `hact` using `[hc1, one_smul]`. Conclude with `hact`.
+Substitute using the available equality. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem vac_fixed_split : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Base F E) (a a' : ℕ) (G : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Geo σ a a') (X : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Chars F E)
@@ -107,11 +105,9 @@ theorem vac_fixed_split : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [
   exact hact
 
 /- English proof (translation)
-Introduce `_ F E _ _ _ _ _ σ B a a' G X om om' hT`. Use `⟨X.T ∪ (bad_finite F).toFinset, ?_⟩` and prove the remaining obligations. Introduce `v hv k hk`. Simplify using `only [Finset.mem_union, Set.Finite.mem_toFinset, Set.mem_setOf_eq, not_or] at hv`. Take `⟨hvT, hd, h6⟩` from `hv`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Establish `hψ` using `GlobalTheory.StdCharUnrF.psiUnr_of_not_le F B.ψ hT.base.std v hd`. Take `⟨h2, h3⟩` from `two_three_of_six v h6`. Distinguish the cases in `hin : ∃ w : HeightOneSpectrum (𝓞 E), Formalism.UG.IsInertAt F E v w`. Take `⟨w, hw⟩` from `hin`. Conclude with `GlobalTheory.T.inert_place_lattice_stabiliser_fixes_vacuum F E σ B a a' G X om om' hT v w hw hvT k hk`.
-
-Use `push_neg at hin`. Conclude with `vac_fixed_split F E σ B a a' G X om om' hT v hin hvT hψ h2 h3 k hk`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem vac_fixed_cofinite : GlobalTheory.FunPr.Hypotheses₂ → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Base F E) (a a' : ℕ) (G : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Geo σ a a') (X : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Chars F E)

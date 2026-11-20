@@ -5,7 +5,7 @@ import Development.AbelianVarietyTheory.PublishedTheorems.BesselIntegrals.Bessel
 open Formalism.FourierDecayAlt Formalism.FourierDecayAlt.Wd Formalism.REAL Formalism.QuantumDeterminants MeasureTheory
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.HatNF.EmptyWordL2.integrable_density_nil` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FJetHarmonics%2FIntegrableEmptyWordDensityDecayingCoefficients.lean&line=125#L125)
 -/

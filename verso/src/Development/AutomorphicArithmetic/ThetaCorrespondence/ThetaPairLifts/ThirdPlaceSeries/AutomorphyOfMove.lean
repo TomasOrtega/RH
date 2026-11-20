@@ -16,7 +16,7 @@ namespace GlobalTheory.LayerMove
 set_option maxHeartbeats 4000000
 variable {D : D7} (m : Mv D) {hL : _root_.UpperTheory.Zero.LLC.RecTExists}
 /- English proof (translation)
-The claim follows from `(by with_unfolding_all exact (x :))`.
+A detailed English derivation is pending.
 -/
 theorem Mv.automorphy_of_move {cf : CharFrame D} {jE : D.host.E →+* Qb} {A : _root_.GlobalTheory.HeightCounting.CharFrameHostEmbedding D cf jE} (x : _root_.GlobalTheory.HeightCounting.AutomorphicSideRealised hL D A.wdT A.au) : _root_.GlobalTheory.HeightCounting.AutomorphicSideRealised hL m.D (m.sideA_alt A).wdT (m.sideA_alt A).au := (by with_unfolding_all exact (x :))
 section

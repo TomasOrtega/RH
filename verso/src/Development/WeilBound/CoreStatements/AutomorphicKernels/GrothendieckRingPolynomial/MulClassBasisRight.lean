@@ -15,9 +15,9 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
 namespace GrothendieckAssociativity
 
 /- English proof (translation)
-Take `⟨φ⟩` from `φ`. Unfold `cl0`. Distinguish the cases in `h : HasFiniteLength π`. Rewrite using `[dif_pos h, dif_pos (h.of_equiv φ)]`. Conclude with `clsGL_congr φ _ _`.
+Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[dif_neg h, dif_neg (fun h' => h (h'.of_equiv φ.symm))]`.
+A detailed English derivation is pending.
 -/
 theorem class_congr_equiv {N : ℕ} {V W : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W]
     {π : Representation ℂ (GL (Fin N) k) V} {τ : Representation ℂ (GL (Fin N) k) W}
@@ -30,7 +30,7 @@ theorem class_congr_equiv {N : ℕ} {V W : Type} [AddCommGroup V] [Module ℂ V]
   · rw [dif_neg h, dif_neg (fun h' => h (h'.of_equiv φ.symm))]
 
 /- English proof (translation)
-Substitute `h` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem class_induced_cast {r t N : ℕ} (h : r + t = N) {W : Type} [AddCommGroup W] [Module ℂ W]
     (ρ : Representation ℂ (GL (Fin r) k × GL (Fin t) k) W) :
@@ -39,14 +39,14 @@ theorem class_induced_cast {r t N : ℕ} (h : r + t = N) {W : Type} [AddCommGrou
   rfl
 
 /- English proof (translation)
-Conclude with `(dif_pos x.2.rep.hasFiniteLength).trans ((clsGL_irr x.2.rep x.2.rep.hasFiniteLength).trans (congrArg (fun c => Finsupp.single (⟨x.1, c⟩ : IrrGL k) (1 : ℤ)) x.2.cl_rep))`.
+A detailed English derivation is pending.
 -/
 theorem class_of_chosen_rep (x : IrrGL k) : cl0 (IrrGL.rep x) = sg x := by
   exact (dif_pos x.2.rep.hasFiniteLength).trans ((clsGL_irr x.2.rep x.2.rep.hasFiniteLength).trans
     (congrArg (fun c => Finsupp.single (⟨x.1, c⟩ : IrrGL k) (1 : ℤ)) x.2.cl_rep))
 
 /- English proof (translation)
-Establish `h1` using `Finsupp.sum_single_index (a := x) (b := (1 : ℤ)) (h := fun z m => (sg y).sum fun w n => (m * n) • cl0 (prod₂ (IrrGL.rep z) (IrrGL.rep w))) (by simp only [Finsupp.sum, zero_mul, zero_smul, Finset.sum_const_zero])`. Establish `h2` using `Finsupp.sum_single_index (a := y) (b := (1 : ℤ)) (h := fun w n => ((1 : ℤ) * n) • cl0 (prod₂ (IrrGL.rep x) (IrrGL.rep w))) (by simp only [mul_zero, zero_smul])`. Conclude with `h1.trans (h2.trans (by simp only [mul_one, one_smul]))`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem mulR_sg (x y : IrrGL k) : mulR (sg x) (sg y) = cl0 (prod₂ (IrrGL.rep x) (IrrGL.rep y)) := by
   have h1 := Finsupp.sum_single_index (a := x) (b := (1 : ℤ)) (h := fun z m => (sg y).sum fun w n => (m * n) • cl0 (prod₂ (IrrGL.rep z) (IrrGL.rep w))) (by simp only [Finsupp.sum, zero_mul, zero_smul, Finset.sum_const_zero])
@@ -54,9 +54,9 @@ theorem mulR_sg (x y : IrrGL k) : mulR (sg x) (sg y) = cl0 (prod₂ (IrrGL.rep x
   exact h1.trans (h2.trans (by simp only [mul_one, one_smul]))
 
 /- English proof (translation)
-Take `⟨a⟩` from `ind₂_congr (k := k) (rfl : r + s + t = r + s + t) φ (eqv_refl π₃)`. Take `⟨b⟩` from `ind₂_assoc' (k := k) (rfl : r + s = r + s) (rfl : r + s + t = r + s + t) (rfl : s + t = s + t) (Nat.add_assoc r s t).symm π₁ π₂ π₃ s₁ s₂ s₃`. Take `⟨c⟩` from `ind₂_congr (k := k) (Nat.add_assoc r s t).symm (eqv_refl π₁) (eqv_symm ψ)`. Establish `e1 : mulR (cl0 P) (cl0 π₃) = cl0 (prod₂ P π₃)` using `(h _ _ _ _ P π₃ fP f₃ sP s₃).2.symm`. Establish `e2 : cl0 (prod₂ P π₃) = cl0 (ind₂ (stdSum (Nat.add_assoc r s t).symm) (extTensor π₁ R))` using `class_congr_equiv ⟨(a.trans b).trans c⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e3 : cl0 (ind₂ (stdSum (Nat.add_assoc r s t).symm) (extTensor π₁ R)) = cl0 (prod₂ π₁ R)` using `class_induced_cast (Nat.add_assoc r s t).symm (extTensor π₁ R)`. Establish `e4 : cl0 (prod₂ π₁ R) = mulR (cl0 π₁) (cl0 R)` using `(h _ _ _ _ π₁ R f₁ fR s₁ sR).2`. Conclude with `e1.trans (e2.trans (e3.trans e4))`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem assoc_gen (h : MulCls k) {r s t : ℕ} {V₁ V₂ V₃ U U' : Type} [AddCommGroup V₁] [Module ℂ V₁]
     [AddCommGroup V₂] [Module ℂ V₂] [AddCommGroup V₃] [Module ℂ V₃] [AddCommGroup U] [Module ℂ U]
@@ -87,9 +87,9 @@ open GrothendieckAssociativity
 variable (k)
 
 /- English proof (translation)
-Introduce `x y z`. Establish `hxy : HasFiniteLength (prod₂ (IrrGL.rep x) (IrrGL.rep y))` using `(h x.1 y.1 _ _ (IrrGL.rep x) (IrrGL.rep y) x.2.rep.hasFiniteLength y.2.rep.hasFiniteLength x.2.rep.smooth y.2.rep.smooth).1`. Establish `hyz : HasFiniteLength (prod₂ (IrrGL.rep y) (IrrGL.rep z))` using `(h y.1 z.1 _ _ (IrrGL.rep y) (IrrGL.rep z) y.2.rep.hasFiniteLength z.2.rep.hasFiniteLength y.2.rep.smooth z.2.rep.smooth).1`. Establish `e1 : mulR (mulR (sg x) (sg y)) (sg z) = mulR (cl0 (prod₂ (IrrGL.rep x) (IrrGL.rep y))) (cl0 (IrrGL.rep z))` using `(congrArg (fun a => mulR a (sg z)) (mulR_sg x y)).trans (congrArg (mulR (cl0 (prod₂ (IrrGL.rep x) (IrrGL.rep y)))) (class_of_chosen_rep z).symm)`. Establish `e2 : mulR (cl0 (prod₂ (IrrGL.rep x) (IrrGL.rep y))) (cl0 (IrrGL.rep z)) = mulR (cl0 (IrrGL.rep x)) (cl0 (prod₂ (IrrGL.rep y) (IrrGL.rep z)))` using `assoc_gen h (IrrGL.rep x) (IrrGL.rep y) (IrrGL.rep z) (prod₂ (IrrGL.rep x) (IrrGL.rep y)) (prod₂ (IrrGL.rep y) (IrrGL.rep z)) (eqv_refl _) (eqv_refl _) x.2.rep.smooth y.2.rep.smooth z.2.rep.smooth (isSmooth_prod₂ _ _) (isSmooth_prod₂ _ _) x.2.rep.hasFiniteLength z.2.rep.hasFinite …`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e3 : mulR (cl0 (IrrGL.rep x)) (cl0 (prod₂ (IrrGL.rep y) (IrrGL.rep z))) = mulR (sg x) (mulR (sg y) (sg z))` using `(congrArg (fun a => mulR a (cl0 (prod₂ (IrrGL.rep y) (IrrGL.rep z)))) (class_of_chosen_rep x)).trans (congrArg (mulR (sg x)) (mulR_sg y z).symm)`. Conclude with `e1.trans (e2.trans e3)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem assoc (h : MulCls k) : Assoc k := by
   intro x y z
@@ -114,11 +114,11 @@ theorem assoc (h : MulCls k) : Assoc k := by
   exact e1.trans (e2.trans e3)
 
 /- English proof (translation)
-Introduce `x`. Set `c0 : IrrCl (GL (Fin 0) k)` to `(IrrRep.det (k := k) (Fin 0) 1 isSmoothChar_one).cl`. Set `e : (Σ _ : Fin 0, Fin 0) ≃ Fin 0` to `Equiv.equivOfIsEmpty _ _`. Set `τ : ∀ a : Fin 0, Representation ℂ (GL (Fin ((fun _ : Fin 0 => 0) a)) k) ((fun _ : Fin 0 => ℂ) a)` to `fun a => a.elim0`. Establish `A : Nonempty ((multiProd e τ).Equiv (IrrRep.det (k` using `k) (Fin 0) 1 isSmoothChar_one).ρ) := SupportRing.nonempty_equiv_unit e τ`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `B : Nonempty ((IrrGL.rep (⟨0, c0⟩ : IrrGL k)).Equiv (multiProd e τ))` using `eqv_trans (IrrRep.nonempty_equiv_rep _) (eqv_symm A)`. Establish `C : Nonempty ((ind₂ (stdSum (Nat.zero_add x.1)) (extTensor (IrrGL.rep (⟨0, c0⟩ : IrrGL k)) (IrrGL.rep x))).Equiv (ind₂ (stdSum (Nat.zero_add x.1)) (extTensor (multiProd e τ) (IrrGL.rep x))))` using `ind₂_congr (k := k) (Nat.zero_add x.1) B (eqv_refl (IrrGL.rep x))`. Establish `D : Nonempty ((ind₂ (stdSum (Nat.zero_add x.1)) (extTensor (multiProd e τ) (IrrGL.rep x))).Equiv (IrrGL.rep x))` using `GlobalTheory.T.parabolicInductionTwoBlocks_empty_product_left k x.1 0 (Nat.zero_add x.1) _ (IrrGL.rep x) x.2.rep.smooth (fun _ => 0) (fun _ => ℂ) τ e`. Establish `e1 : mulR (GrothGL.unit k) (sg x) = cl0 (prod₂ (IrrGL.rep (⟨0, c0⟩ : IrrGL k)) (IrrGL.rep x))` using `mulR_sg _ _`. Establish `e2 : cl0 (prod₂ (IrrGL.rep (⟨0, c0⟩ : IrrGL k)) (IrrGL.rep x)) = cl0 (ind₂ (stdSum (Nat.zero_add x.1)) (extTensor (IrrGL.rep (⟨0, c0⟩ : IrrGL k)) (IrrGL.rep x)))` using `(class_induced_cast (Nat.zero_add x.1) _).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨c⟩` from `C`. Take `⟨dd⟩` from `D`. Conclude with `e1.trans (e2.trans ((class_congr_equiv ⟨c.trans dd⟩).trans (class_of_chosen_rep x)))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem one : One k := by
   intro x

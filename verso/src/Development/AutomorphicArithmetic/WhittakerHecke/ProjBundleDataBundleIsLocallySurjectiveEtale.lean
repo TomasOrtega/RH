@@ -4,9 +4,9 @@ set_option backward.isDefEq.respectTransparency false
 open CategoryTheory Limits AlgebraicGeometry Opposite GlobalTheory.EtC CrystallineSemistableComparison CrystallineSemistableComparison.Onto Simplicial UpperTheory.Gal.KunnethLefschetz UpperTheory.Gal.KunnethLefschetz.G
 
 /- English proof (translation)
-Take `⟨O, a, h, u, hx, hv⟩` from `P.onto p.1 p.2 x`. Use `⟨O, hx, cechPt P.e 0 (a ≫ P.e) (fun _ => a) (fun _ => rfl), ?_⟩` and prove the remaining obligations. Establish `key : ((P.bunF ≫ P.pS).app (op ⦋0⦌)).app (op (O : Scheme.{0})) (cechPt P.e 0 (a ≫ P.e) (fun _ => a) (fun _ => rfl)) = Quotient.mk (P.relS (O : Scheme.{0})) (a ≫ P.ρ, P.v a)`. Express the relevant statement in the definitionally equal form `Quotient.mk _ (P.sv (Sx.map P.bunF (cechPt P.e 0 (a ≫ P.e) (fun _ => a) (fun _ => rfl))) 0) = _`. Rewrite using `[P.sv_bunF, pts_cechPt]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[key]`. Conclude with `Quotient.sound ⟨h, u, hv⟩`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem exists_local_lift {T W : Scheme.{0}} {r : T ⟶ W} {d : ℕ} (P : PBData r d) {U : Scheme.{0}}
     (p : P.PA.obj (op U)) (x : U) :
@@ -24,11 +24,11 @@ private theorem exists_local_lift {T W : Scheme.{0}} {r : T ⟶ W} {d : ℕ} (P 
   exact Quotient.sound ⟨h, u, hv⟩
 
 /- English proof (translation)
-Introduce `T W r d P`. Prove the components needed by the constructor for the conclusion. Introduce `U s`. Take `⟨p, rfl⟩` from `Quotient.exists_rep s`. Use `choose O hO t ht using fun x => exists_local_lift P p x`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hc : TopologicalSpace.IsOpenCover O`. Rewrite using `[TopologicalSpace.IsOpenCover, eq_top_iff]`. Introduce `x _`. Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨x, hO x⟩`. Apply `Scheme.zariskiTopology_le_etaleTopology` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `GrothendieckTopology.superset_covering _ ?_ (Scheme.Cover.mem_grothendieckTopology (U.openCoverOfIsOpenCover O hc))` and prove the remaining obligations. Rewrite using `[Sieve.ofArrows, Sieve.generate_le_iff]`. Introduce and unpack `_ _ ⟨x⟩`. Conclude with `⟨t x, ht x⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.projBundleData_bundle_isLocallySurjective_etale :
     ∀ {T W : Scheme.{0}} {r : T ⟶ W} {d : ℕ} (P : PBData r d),

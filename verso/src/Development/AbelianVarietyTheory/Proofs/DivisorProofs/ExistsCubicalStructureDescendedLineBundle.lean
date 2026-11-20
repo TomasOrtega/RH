@@ -10,11 +10,11 @@ open GlobalTheory.Mum
 namespace GlobalTheory.Mum
 
 /- English proof (translation)
-Introduce `R _ _ _ hR R' _ _ _ ρ hρ hgal D D' hD A' G' _ _ hG' U' a G _ _ β hG hβ hact L hL _ rig hr`. Take `⟨A, gen, -, -, -, -⟩` from `GlobalTheory.T.polarised_generic_fibre_descends_galois R hR R' ρ hρ hgal D D' hD A' G' hG' U' a G β hG hβ hact`. Take `⟨⟨hN, -, hIC, -⟩, -⟩` from `hR`. Establish `: IsProper (pullback.snd G.hom (jK R))`. Establish `: IsProper A.A.hom` using `A.isAb.proper`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsIso gen.hom.left` using `((Over.forget _).mapIso gen).isIso_hom`. Establish `hw : gen.hom.left ≫ A.A.hom = pullback.snd G.hom (jK R)` using `Over.w gen.hom`. Rewrite using `[← hw]`. Use `infer_instance`. Take `⟨L₀, c, rfl⟩` from `GlobalTheory.RigCube.exists_rigLB_cubicalStr R G hG this L hL`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨⟨c.t, c.isGen, c.face, c.cubeSymmetric_swap_first, c.cubeSymmetric_swap_last, c.cocycle⟩⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_cubicalStr_of_descended_bundle : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], Base R → ∀ (R' : Type) [CommRing R'] [IsDomain R'] [IsLocalRing R'] (ρ : R →+* R'), FinExt ρ → IsGal ρ → ∀ (D : DegData R (maximalIdeal R)) (D' : DegData R' (maximalIdeal R')) (hD : IsPullDeg ρ D.toPre D'.toPre) (A' : PolAV (Sp (FractionRing R'))) (G' : Over (Sp R')) [GrpObj G'] [IsCommMonObj G'], IsSemiAbelian G' → ∀ (U' : Unif (maximalIdeal R') D' A' G'), ∀ (a : GalAct ρ hD U') (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G] (β : G'.left ⟶ G.left), IsSemiAbelian G → IsGrpPullback G' G (spMap ρ) β → (∀ σ, a.act σ ≫ β = β) → ∀ (L : LB G.left) (hL : L.IsLB), LBIso U'.LG.L (L.pull β) → ∀ (rig : LB.Gen (L.pull (eSec G))) (hr : rig.IsGen), Nonempty (CubicalStr G (⟨L, rig, hL, hr⟩ : RigLB G)) := by
   intro R _ _ _ hR R' _ _ _ ρ hρ hgal D D' hD A' G' _ _ hG' U' a G _ _ β hG hβ hact L hL _ rig hr

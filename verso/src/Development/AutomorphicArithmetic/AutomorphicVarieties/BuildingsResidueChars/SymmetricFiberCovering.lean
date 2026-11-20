@@ -5,43 +5,39 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.BuildingsResidueCh
 open MulAction
 
 /- English proof (translation)
-Introduce `H G _ _ S U U' x Ux ι Φ hS hU hUx hr hL hR hT hfin`. Use `letI a1 : MulAction H (S ⧸ Ux) := MulAction.compHom _ ι`. Use `letI a2 : MulAction H (G ⧸ U') := MulAction.compHom _ (S.subtype.comp ι)`. Set `q : S ⧸ Ux → G ⧸ U'` to `fun y => (((y.out : S) : G) * x : G)`. Set `k : S ⧸ Ux → ℂ` to `fun y => Φ (((y.out : S) : G) * x)`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Equip the data with the indicated structure. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hΦ : ∀ a b : G, (a : G ⧸ U') = b → Φ a = Φ b`. Introduce `a b e`. Establish `hm : a⁻¹ * b ∈ U'` using `QuotientGroup.eq.1 e`. Use `hR _ hm a` as an intermediate fact. Rewrite using `[← this]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use `group`. Establish `hq0 : ∀ s : S, q (s : S ⧸ Ux) = (((s : G) * x : G) : G ⧸ U')`. Introduce `s`. Establish `h1 : ((s : S ⧸ Ux).out)⁻¹ * s ∈ Ux` using `QuotientGroup.eq.1 (QuotientGroup.out_eq' _)`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `hU ((hUx _).1 h1)`. Use `show ((((s : S ⧸ Ux).out : G) * x : G) : G ⧸ U') = _`. Rewrite using `[QuotientGroup.eq]`. Establish `e : (((s : S ⧸ Ux).out : G) * x)⁻¹ * ((s : G) * x) = x⁻¹ * ((((s : S ⧸ Ux).out)⁻¹ * s : S) : G) * x`. Simplify using `only [Subgroup.coe_mul, Subgroup.coe_inv]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `group`. Rewrite using `[e]`. Conclude with `h2`. Establish `hq : ∀ (h : H) (y : S ⧸ Ux), q (h • y) = h • q y`. Introduce `h y`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Proceed by induction on `y using QuotientGroup.induction_on with | H s => ?_`. Establish `e1 : h • (s : S ⧸ Ux) = ((ι h * s : S) : S ⧸ Ux)` using `rfl`. Rewrite using `[e1, hq0, hq0]`. Establish `e2 : ∀ z : G ⧸ U', h • z = ((ι h : S) : G) • z` using `fun _ => rfl`. Rewrite using `[e2, Subgroup.coe_mul, mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Both sides reduce to the same expression. Establish `hkq : ∀ y, k y = Φ (q y).out` using `fun y => hΦ _ _ (QuotientGroup.out_eq' (q y)).symm`. Establish `hk : ∀ (h : H) y, k (h • y) = k y`. Introduce `h y`. Rewrite using `[hkq, hkq, hq]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e2 : h • q y = ((((ι h : S) : G) * (q y).out : G) : G ⧸ U')` using `by conv_lhs => rw [← QuotientGroup.out_eq' (q y)]`. Both sides reduce to the same expression. Use `hΦ _ _ ((QuotientGroup.out_eq' (h • q y)).trans e2)` as an intermediate fact. Rewrite using `[this]`. Conclude with `hL h _`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Proceed by induction. Extract witnesses or component facts from the available result.
 
-Establish `hT' : ∃ T : Finset (S ⧸ Ux), ∀ y, k y ≠ 0 → ∃ h : H, ∃ s ∈ T, y = h • s`. Take `⟨T, hT⟩` from `hT`. Use `⟨T.image (fun t : S => (QuotientGroup.mk t : S ⧸ Ux)), fun y _ => ?_⟩` and prove the remaining obligations. Proceed by induction on `y using QuotientGroup.induction_on with | H s => ?_`. Take `⟨h, t, ht, u, hu, e⟩` from `hT s`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨h, (QuotientGroup.mk t : S ⧸ Ux), Finset.mem_image_of_mem (fun t : S => (QuotientGroup.mk t : S ⧸ Ux)) ht, ?_⟩` and prove the remaining obligations. Rewrite using `[e]`. Use `show ((ι h * t * u : S) : S ⧸ Ux) = ((ι h * t : S) : S ⧸ Ux)`. Conclude with `QuotientGroup.mk_mul_of_mem _ hu`. Establish `hcard : ∀ s₀ : S, {y | q y = (((s₀ : G) * x : G) : G ⧸ U')}.ncard = U.relIndex (U' ⊓ S)` using `fun s₀ => UpperTheory.orbitalFiber_card_formula G S U U' x Ux s₀ hS hU hUx`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hfinF : ∀ s₀ : S, {y | q y = (((s₀ : G) * x : G) : G ⧸ U')}.Finite` using `fun s₀ => Set.finite_of_ncard_ne_zero (by rw [hcard]; exact hr)`. Establish `hfib : ∀ z, {y | q y = z ∧ k y ≠ 0}.Finite`. Introduce `z`. Distinguish the cases in `hz : ∃ y, q y = z`. Take `⟨y, rfl⟩` from `hz`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `(hfinF y.out).subset fun w hw => hw.1`. Use `Set.Finite.subset Set.finite_empty fun w hw => hz ⟨w, hw.1⟩` and prove the remaining obligations. Establish `hrel : ∀ y, k y ≠ 0 → (⊥ : Subgroup H).relIndex (stabilizer H (q y)) ≠ 0`. Introduce `y _`. Rewrite using `[Subgroup.relIndex_bot_left]`.
+Establish an intermediate fact. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs : ((stabilizer H (q y) : Subgroup H) : Set H).Finite`. Use `(hfin (q y).out).subset fun h hh => ?_` and prove the remaining obligations. Establish `hh' : h • q y = q y` using `hh`. Establish `e2 : h • q y = ((((ι h : S) : G) * (q y).out : G) : G ⧸ U')` using `by conv_lhs => rw [← QuotientGroup.out_eq' (q y)]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails.
 
-Rewrite `hh'` using `[e2]`. Establish `e3 : (((q y).out : G) : G ⧸ U') = ((((ι h : S) : G) * (q y).out : G) : G ⧸ U')` using `(QuotientGroup.out_eq' (q y)).trans hh'.symm`. Use `QuotientGroup.eq.1 e3` as an intermediate fact. Use `show ((q y).out)⁻¹ * ((ι h : S) : G) * (q y).out ∈ U'`. Rewrite using `[mul_assoc]` and apply the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `haveI : Finite (stabilizer H (q y)) := hs.to_subtype`. Conclude with `Nat.card_pos.ne'`. Establish `hpush` using `UpperTheory.orbitalFiber_pushforward H (S ⧸ Ux) (G ⧸ U') ⊥ q k inferInstance hq (fun z hz y => by rw [Subgroup.mem_bot.1 hz, one_smul]) hk hT' hfib hrel`. Establish `hK : (fun z : G ⧸ U' => ∑ᶠ (y : S ⧸ Ux) (_ : q y = z), k y) = fun z => (U.relIndex (U' ⊓ S) : ℂ) * (orbit S (x : G ⧸ U')).indicator (fun y => Φ y.out) z`. Use function extensionality and compare the values at `z`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Distinguish the cases in `hz : z ∈ orbit S (x : G ⧸ U')`. Rewrite using `[Set.indicator_of_mem hz]`. Take `⟨s₀, rfl⟩` from `hz`. Establish `e0 : (fun m : S => m • (x : G ⧸ U')) s₀ = (((s₀ : G) * x : G) : G ⧸ U')` using `rfl`. Rewrite using `[e0]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `set z : G ⧸ U' := (((s₀ : G) * x : G) : G ⧸ U') with hzdef`. Establish `step : (∑ᶠ (y : S ⧸ Ux) (_ : q y = z), k y) = ∑ᶠ y ∈ {y | q y = z}, Φ z.out` using `finsum_mem_congr rfl fun y hy => by`. Establish `hy' : q y = z` using `hy`. Rewrite using `[hkq, hy']`. Rewrite using `[step, finsum_mem_eq_finite_toFinset_sum _ (hfinF s₀), Finset.sum_const, nsmul_eq_mul, ← Set.ncard_eq_toFinset_card _ (hfinF s₀), hcard]`.
-
-Rewrite using `[Set.indicator_of_notMem hz, mul_zero]`. Establish `h0 : ∀ y : S ⧸ Ux, (∑ᶠ (_ : q y = z), k y) = 0`. Introduce `y`. Use `finsum_eq_if.trans (if_neg fun e => hz ?_)` and prove the remaining obligations. Conclude with `⟨y.out, e⟩`.
-
-Simplify using `only [h0, finsum_zero]`. Establish `hbot` using `(UpperTheory.orbitalFiber_of_bot H (G ⧸ U') ⊥ ((orbit S (x : G ⧸ U')).indicator fun y => Φ y.out)).1 (U.relIndex (U' ⊓ S) : ℂ)`. Use `show UpperTheory.V.Z.Sym.gq ⊥ k = (U.relIndex (U' ⊓ S) : ℂ) * UpperTheory.V.Z.Sym.gq ⊥ ((orbit S (x : G ⧸ U')).indicator fun y => Φ y.out)`. Rewrite using `[hpush, hK]`. Conclude with `hbot`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.symmetric_fiber_covering : UpperTheory.V.Z.Sym.Glob.Fib.Cover := by
   intro H G _ _ S U U' x Ux ι Φ hS hU hUx hr hL hR hT hfin

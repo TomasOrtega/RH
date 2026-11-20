@@ -15,9 +15,9 @@ section SlopeTestRemainingChoices
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} (Dw : Datum H)
 
 /- English proof (translation)
-Take `⟨N, ⟨a⟩⟩ : ∃ k : ℕ, Nonempty (Module.Basis (Fin k) ℤ Dw.La)` from `by haveI := Dw.fin haveI : Module.Finite ℤ Dw.La := Module.Finite.trans (𝓞 E) Dw.La haveI : Module.IsTorsionFree ℤ Dw.La := Function.Injective.moduleIsTorsionFree Dw.EF Dw.unimod.1 (fun r x => map_smul _ r x) haveI : Module.Free ℤ Dw.La := Module.free_of_finite_type_torsion_free'`. Conclude with `⟨_, ⟨Module.finBasis ℤ Dw.La⟩⟩`. Use `choose s hs using fun m : Fin N => Dw.unimod.2 (a.coord m)`. Establish `h1 : ∀ x, ∑ m, Dw.EF (s m) x • a m = x` using `fun x => by`. Simplify using `only [hs, Module.Basis.coord_apply, a.sum_repr]`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨N, a, s, h1, fun y => Dw.unimod.1 (LinearMap.ext fun x => ?_)⟩` and prove the remaining obligations. Use `conv_rhs => rw [← h1 x]`. Simplify using `only [map_sum, LinearMap.sum_apply, map_smul, LinearMap.smul_apply, smul_eq_mul]`. Conclude with `Finset.sum_congr rfl fun m _ => mul_comm _ _`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem exists_dual_fam : ∃ (N : ℕ) (a s : Fin N → Dw.La),
     (∀ x, ∑ m, Dw.EF (s m) x • a m = x) ∧ ∀ y, ∑ m, Dw.EF y (a m) • s m = y := by
@@ -38,30 +38,30 @@ private theorem exists_dual_fam : ∃ (N : ℕ) (a s : Fin N → Dw.La),
   exact Finset.sum_congr rfl fun m _ => mul_comm _ _
 
 /- English proof (translation)
-Simplify using `[pr, LinearMap.BilinForm.baseChange_tmul, mul_comm]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem pr_tmul {K : Type} [CommRing K] (c : K) (x a : Dw.La) :
     pr Dw (c ⊗ₜ x) a = c * (Dw.EF x a : K) := by
   simp [pr, LinearMap.BilinForm.baseChange_tmul, mul_comm]
 
 /- English proof (translation)
-Simplify using `[pr]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem pr_add {K : Type} [CommRing K] (y y' : K ⊗[ℤ] Dw.La) (a : Dw.La) :
     pr Dw (y + y') a = pr Dw y a + pr Dw y' a := by
   simp [pr]
 
 /- English proof (translation)
-Simplify using `[pr]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem pr_smul {K : Type} [CommRing K] (c : K) (y : K ⊗[ℤ] Dw.La) (a : Dw.La) :
     pr Dw (c • y) a = c * pr Dw y a := by
   simp [pr]
 
 /- English proof (translation)
-Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp [pr]`. Consider the case `add x x' hx hx' => simp only [pr_add, add_smul, Finset.sum_add_distrib, hx, hx']`. Consider the case `tmul c x => conv_rhs => rw [← h x]`. Rewrite using `[TensorProduct.tmul_sum]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[pr_tmul, TensorProduct.smul_tmul', ← TensorProduct.smul_tmul, smul_eq_mul, _root_.mul_one, zsmul_eq_mul, mul_comm]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 private theorem pr_expand {K : Type} [CommRing K] {N : ℕ} {a s : Fin N → Dw.La}
     (h : ∀ y, ∑ m, Dw.EF y (a m) • s m = y) (y : K ⊗[ℤ] Dw.La) :
@@ -76,7 +76,7 @@ private theorem pr_expand {K : Type} [CommRing K] {N : ℕ} {a s : Fin N → Dw.
     rw [pr_tmul, TensorProduct.smul_tmul', ← TensorProduct.smul_tmul, smul_eq_mul, _root_.mul_one, zsmul_eq_mul, mul_comm]
 
 /- English proof (translation)
-Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp [pr]`. Consider the case `add x x' hx hx' => simp only [map_add, pr_add, hx, hx']`. Consider the case `tmul c x`. Rewrite using `[LinearMap.baseChange_tmul, pr_tmul, pr_tmul, ← Dw.adj]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -90,17 +90,15 @@ private theorem pr_act {K : Type} [CommRing K] (o : 𝓞 E) (y : K ⊗[ℤ] Dw.L
     rfl
 
 /- English proof (translation)
-The claim follows from `(GlobalTheory.PadicComplexHost.mem_iff_norm p _).1 (padicIntHom p z).2`.
+A detailed English derivation is pending.
 -/
 private theorem norm_alg_le (p : ℕ) [Fact p.Prime] (z : ℤ_[p]) : ‖algebraMap ℤ_[p] ℂ_[p] z‖ ≤ 1 :=
   (GlobalTheory.PadicComplexHost.mem_iff_norm p _).1 (padicIntHom p z).2
 
 /- English proof (translation)
-Establish `ht : t ∈ Submodule.span ℤ_[p] (Set.range f)` using `hf ▸ Submodule.mem_top`. Proceed by induction on `ht using Submodule.span_induction with`. Consider the case `mem x hx => obtain ⟨a, rfl⟩ := hx`. Conclude with `h a`. Consider the case `zero => simpa using hr`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `add x y _ _ hx hy`. Rewrite using `[TensorProduct.tmul_add, map_add]`. Conclude with `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le hx hy)`. Consider the case `smul c x _ hx`. Rewrite using `[TensorProduct.tmul_smul, ← algebraMap_smul ℂ_[p] c, map_smul, smul_eq_mul, norm_mul]`.
-
-Conclude with `(mul_le_of_le_one_left (norm_nonneg _) (norm_alg_le p c)).trans hx`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem norm_span_le (p : ℕ) [Fact p.Prime] {T L : Type} [AddCommGroup T] [Module ℤ_[p] T] (f : L → T)
     (hf : Submodule.span ℤ_[p] (Set.range f) = ⊤) (φ : ℂ_[p] ⊗[ℤ_[p]] T →ₗ[ℂ_[p]] ℂ_[p]) {r : ℝ} (hr : 0 ≤ r)
@@ -117,9 +115,9 @@ private theorem norm_span_le (p : ℕ) [Fact p.Prime] {T L : Type} [AddCommGroup
     exact (mul_le_of_le_one_left (norm_nonneg _) (norm_alg_le p c)).trans hx
 
 /- English proof (translation)
-Take `⟨c, hc⟩` from `h`. Establish `hc'` using `congrArg (algebraMap ℤ_[p] ℂ_[p]) hc`. Rewrite `hc'` using `[map_sub, map_mul, map_mul, map_intCast, map_pow, map_natCast]`. Establish `e3 : algebraMap ℤ_[p] ℂ_[p] u * (y * (j : ℂ_[p])) + y * -algebraMap ℤ_[p] ℂ_[p] g = -(y * algebraMap ℤ_[p] ℂ_[p] c * (p : ℂ_[p]) ^ n)`. Take the linear combination `(-y) * hc'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion.
 
-Establish `hp : ‖(p : ℂ_[p])‖ = (p : ℝ)⁻¹`. Rewrite using `[← map_natCast (algebraMap ℚ_[p] ℂ_[p]), norm_algebraMap', Padic.norm_p]`. Rewrite using `[e3, norm_neg, norm_mul, norm_mul, norm_pow, hp]`. Conclude with `mul_le_of_le_one_left (by positivity) (mul_le_one₀ hy (norm_nonneg _) (norm_alg_le p c))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem norm_cong (p : ℕ) [Fact p.Prime] (n : ℕ) (g u : ℤ_[p]) (j : ℤ) (h : (p : ℤ_[p]) ^ n ∣ g - u * j)
     (y : ℂ_[p]) (hy : ‖y‖ ≤ 1) :
@@ -136,19 +134,19 @@ private theorem norm_cong (p : ℕ) [Fact p.Prime] (n : ℕ) (g u : ℤ_[p]) (j 
   exact mul_le_of_le_one_left (by positivity) (mul_le_one₀ hy (norm_nonneg _) (norm_alg_le p c))
 
 /- English proof (translation)
-Take `⟨N, a, s, h1, h2⟩` from `exists_dual_fam Dw`. Establish `hr : (0 : ℝ) ≤ (p : ℝ)⁻¹ ^ n` using `by positivity`. Take `⟨φ, hφ⟩ : ∃ φ : ℂ_[p] ⊗[ℤ_[p]] T →ₗ[ℂ_[p]] ℂ_[p], ∀ z, φ z = Dw.EF.baseChange ℂ_[p] (B z) (B w') + algebraMap ℤ_[p] ℂ_[p] u * β.baseChange ℂ_[p] w' z` from `⟨(Dw.EF.baseChange ℂ_[p]).flip (B w') ∘ₗ B + algebraMap ℤ_[p] ℂ_[p] u • β.baseChange ℂ_[p] w', fun z => rfl⟩`. Establish `hf : ∀ x, ‖φ (1 ⊗ₜ f x)‖ ≤ (p : ℝ)⁻¹ ^ n`. Introduce `x`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e1 : Dw.EF.baseChange ℂ_[p] (B (1 ⊗ₜ f x)) (B w') = ∑ m, pr Dw (B w') (a m) * -algebraMap ℤ_[p] ℂ_[p] (β (f x) (f (s m)))` using `by conv_lhs => rw [← pr_expand Dw h2 (B w')]`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, smul_eq_mul]`. Use `congr 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `(hB _ _).trans ?_` and prove the remaining obligations. Rewrite using `[LinearMap.BilinForm.baseChange_tmul, _root_.mul_one, Algebra.algebraMap_eq_smul_one]`. Establish `e2 : β.baseChange ℂ_[p] w' (1 ⊗ₜ f x) = ∑ m, pr Dw (B w') (a m) * (Dw.EF x (s m) : ℂ_[p])` using `by conv_lhs => rw [← h1 x]`. Simplify using `only [map_sum, map_zsmul, TensorProduct.tmul_sum, TensorProduct.tmul_smul, hB, zsmul_eq_mul]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← LinearMap.IsAlt.neg (B := Dw.EF) Dw.alt x (s m)]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hφ, e1, e2, Finset.mul_sum, ← Finset.sum_add_distrib]`. Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg hr fun m _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[add_comm]`. Conclude with `norm_cong p n _ u _ (hcong x (s m)) _ (hw' _)`. Establish `hT` using `norm_span_le p f hspan φ hr hf`. Establish `hc` using `norm_span_le p f hspan (β.baseChange ℂ_[p] w) zero_le_one fun x => by`. Use `hw x` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `this` using `[hB, norm_neg]`. Then use the resulting hypothesis. Establish `e4 : Dw.EF.baseChange ℂ_[p] (B w) (B w') = φ w`. Rewrite using `[hφ, h0, mul_zero, add_zero]`. Establish `e5 : φ w = ∑ j, β.baseChange ℂ_[p] w (1 ⊗ₜ e j) * φ (1 ⊗ₜ t j)` using `by conv_lhs => rw [← (t.baseChange ℂ_[p]).sum_repr w, map_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_smul, smul_eq_mul, ht, Module.Basis.baseChange_apply]`. Rewrite using `[e4, e5]`. Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg hr fun j _ => ?_` and prove the remaining obligations. Rewrite using `[norm_mul]`. Conclude with `(mul_le_of_le_one_left (norm_nonneg _) (hc _)).trans (hT _)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem isot (p : ℕ) [Fact p.Prime] (n : ℕ) {T : Type} [AddCommGroup T] [Module ℤ_[p] T]
     (β : LinearMap.BilinForm ℤ_[p] T) (f : Dw.La →+ T) (u : ℤ_[p]) (hspan : Submodule.span ℤ_[p] (Set.range f) = ⊤)
@@ -202,7 +200,7 @@ private theorem isot (p : ℕ) [Fact p.Prime] (n : ℕ) {T : Type} [AddCommGroup
   exact (mul_le_of_le_one_left (norm_nonneg _) (hc _)).trans (hT _)
 
 /- English proof (translation)
-Take `⟨N, a, s, h1, -⟩` from `exists_dual_fam Dw`. Use `⟨∑ m, (g (a m)).smulRight ((1 : K) ⊗ₜ[ℤ] s m), fun w x => ?_⟩` and prove the remaining obligations. Use `conv_rhs => rw [← h1 x]`. Simplify using `only [pr, LinearMap.sum_apply, LinearMap.smulRight_apply, map_sum, map_smul, LinearMap.smul_apply, LinearMap.BilinForm.baseChange_tmul, map_zsmul, smul_eq_mul, zsmul_eq_mul, _root_.mul_one]`. Conclude with `Finset.sum_congr rfl fun m _ => by simp [mul_comm]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem exists_lin {K V : Type} [CommRing K] [AddCommGroup V] [Module K V] (g : Dw.La →+ (V →ₗ[K] K)) :
     ∃ B : V →ₗ[K] K ⊗[ℤ] Dw.La, ∀ w x, pr Dw (B w) x = g x w := by
@@ -215,7 +213,7 @@ private theorem exists_lin {K V : Type} [CommRing K] [AddCommGroup V] [Module K 
   exact Finset.sum_congr rfl fun m _ => by simp [mul_comm]
 
 /- English proof (translation)
-Take `⟨N, a, s, -, h2⟩` from `exists_dual_fam Dw`. Rewrite using `[← pr_expand Dw h2 y, ← pr_expand Dw h2 y']`. Simplify using `only [h]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem pr_ext {K : Type} [CommRing K] (y y' : K ⊗[ℤ] Dw.La) (h : ∀ x, pr Dw y x = pr Dw y' x) : y = y' := by
   obtain ⟨N, a, s, -, h2⟩ := exists_dual_fam Dw
@@ -225,9 +223,9 @@ private theorem pr_ext {K : Type} [CommRing K] (y y' : K ⊗[ℤ] Dw.La) (h : �
 end SlopeTestRemainingChoices
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw p _ n _ hstar P f u _ hspan hact _ hcong`. Take `⟨B, hB'⟩` from `exists_lin Dw (K := ℂ_[p]) (V := P.V) (-(P.pairV.flip.toAddMonoidHom.comp ((TensorProduct.mk ℤ_[p] ℂ_[p] P.T 1).toAddMonoidHom.comp f)))`. Establish `hB : ∀ w x, pr Dw (B w) x = -P.pairV w (1 ⊗ₜ f x)` using `hB'`. Use `⟨B, hB, fun w σ hw o => pr_ext Dw _ _ fun x => ?_, fun w w' h0 hw hw' => ?_⟩` and prove the remaining obligations. Rewrite using `[pr_act, pr_smul, hB, hB, hact, ← hstar]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `e : P.pairV w (1 ⊗ₜ P.actT (star o) (f x)) = P.pairV (P.actV o w) (1 ⊗ₜ f x)` using `(P.pairV_act o w (1 ⊗ₜ f x)).symm`. Rewrite using `[e, hw, map_smul, LinearMap.smul_apply, smul_eq_mul, mul_neg]`. Take `⟨k, e, t, -, ht⟩` from `P.exists_dual_bases`. Establish `h0' : P.pairV w' w = 0` using `by rw [P.pairV_swap w' w, h0, neg_zero]`. Conclude with `isot Dw p n (pairT P.A P.eps) f u hspan hcong e t ht B hB w w' h0' hw hw'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem UpperTheory.tate_module_pairing_congruence :
     ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (p : ℕ) [Fact p.Prime] (n : ℕ) [StarRing (𝓞 E)], (∀ a : 𝓞 E, star a = H.bar a) → ∀ (P : PtP E p) (f : Dw.La →+ P.T) (u : ℤ_[p]), 1 ≤ n → Submodule.span ℤ_[p] (Set.range f) = ⊤ → (∀ (o : 𝓞 E) a, f (o • a) = P.actT o (f a)) → IsUnit u → (∀ a b, (p : ℤ_[p]) ^ n ∣ pairT P.A P.eps (f a) (f b) - u * (Dw.EF a b : ℤ_[p])) → ∃ B : P.V →ₗ[ℂ_[p]] ℂ_[p] ⊗[ℤ] Dw.La, (∀ w a, pr Dw (B w) a = -P.pairV w (1 ⊗ₜ f a)) ∧ (∀ w (σ : 𝓞 E →+* ℂ_[p]), (∀ o, P.actV o w = σ o • w) → IsEigL Dw σ (B w)) ∧ ∀ w w', P.pairV w w' = 0 → (∀ a, ‖pr Dw (B w) a‖ ≤ 1) → (∀ a, ‖pr Dw (B w') a‖ ≤ 1) → ‖Dw.EF.baseChange ℂ_[p] (B w) (B w')‖ ≤ (p : ℝ)⁻¹ ^ n := by

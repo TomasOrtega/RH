@@ -15,9 +15,9 @@ def cone (a : ι → E) : MvPolynomial ι R →ₐ[R] Polynomial E :=
   aeval fun i => Polynomial.C (a i) * Polynomial.X
 
 /- English proof (translation)
-Use `conv_lhs => rw [f.as_sum]`. Use `conv_rhs => rw [f.as_sum]`. Rewrite using `[map_sum, map_sum, map_sum]`. Use `Finset.sum_congr rfl fun m hm => ?_` and prove the remaining obligations. Establish `hd : ∑ i ∈ m.support, m i = d`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `hf (mem_support_iff.mp hm)` as an intermediate fact. Simplify `this` using `[Finsupp.weight_apply, Finsupp.sum]`. Establish `hp : (m.prod fun i k => (Polynomial.C (a i) * Polynomial.X) ^ k) = Polynomial.C (m.prod fun i k => a i ^ k) * Polynomial.X ^ d`. Simplify using `only [Finsupp.prod, mul_pow, Finset.prod_mul_distrib, map_prod, map_pow, Finset.prod_pow_eq_pow_sum, hd]`. Rewrite using `[cone, aeval_monomial, aeval_monomial, hp, Polynomial.algebraMap_apply, ← mul_assoc, ← Polynomial.C_mul, Polynomial.C_mul_X_pow_eq_monomial]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cone_homog (a : ι → E) {f : MvPolynomial ι R} {d : ℕ} (hf : f.IsHomogeneous d) :
     cone a f = Polynomial.monomial d (aeval a f) := by
@@ -37,9 +37,9 @@ theorem cone_homog (a : ι → E) {f : MvPolynomial ι R} {d : ℕ} (hf : f.IsHo
     ← Polynomial.C_mul, Polynomial.C_mul_X_pow_eq_monomial]
 
 /- English proof (translation)
-Use `conv_lhs => rw [← sum_homogeneousComponent f]`. Rewrite using `[map_sum, Polynomial.finsetSum_coeff]`. Repeatedly rewrite using `[cone_homog a (homogeneousComponent_isHomogeneous _ f), Polynomial.coeff_monomial]`. Rewrite using `[Finset.sum_ite_eq']`. Use `split_ifs with h`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[homogeneousComponent_eq_zero _ _ (by simp at h; omega), map_zero]`.
+A detailed English derivation is pending.
 -/
 theorem coeff_cone (a : ι → E) (f : MvPolynomial ι R) (n : ℕ) :
     (cone a f).coeff n = aeval a (homogeneousComponent n f) := by
@@ -53,7 +53,7 @@ theorem coeff_cone (a : ι → E) (f : MvPolynomial ι R) (n : ℕ) :
   · rw [homogeneousComponent_eq_zero _ _ (by simp at h; omega), map_zero]
 
 /- English proof (translation)
-Establish `h` using `congrArg ((Polynomial.aeval t : Polynomial E →ₐ[E] E).restrictScalars R) (cone_homog (R := R) q hG)`. Rewrite `h` using `[cone, MvPolynomial.comp_aeval_apply]`. Simplify using `only [AlgHom.restrictScalars_apply, map_mul, Polynomial.aeval_C, Polynomial.aeval_X, Polynomial.aeval_monomial, Algebra.algebraMap_self, RingHom.id_apply] at h`. Rewrite using `[h, mul_comm]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem aeval_mul_homog (q : ι → E) (t : E) {G : MvPolynomial ι R} {m : ℕ} (hG : G.IsHomogeneous m) :
     aeval (fun i => q i * t) G = t ^ m * aeval q G := by
@@ -65,7 +65,7 @@ theorem aeval_mul_homog (q : ι → E) (t : E) {G : MvPolynomial ι R} {m : ℕ}
   rw [h, mul_comm]
 
 /- English proof (translation)
-Simplify using `using aeval_mul_homog (R := K) q t hG`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem eval_mul_homog {K : Type*} [CommRing K] (q : ι → K) (t : K) {G : MvPolynomial ι K} {m : ℕ}
     (hG : G.IsHomogeneous m) : eval (fun i => q i * t) G = t ^ m * eval q G := by
@@ -75,13 +75,13 @@ end Cone
 
 open MvPolynomial in
 /- English proof (translation)
-Use `by_contra! h`. Apply `h0` to reduce the goal to its premises. Establish `hX : (X 0 * G : MvPolynomial (Fin (n + 1)) K) = 0`. Apply `MvPolynomial.funext` to reduce the goal to its premises. Introduce `p`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul, eval_X, map_zero]`. Distinguish the cases in `hp : p 0 = 0`. Rewrite using `[hp, zero_mul]`. Establish `hq : p = fun i => (Fin.cons 1 (fun k => p k.succ / p 0) : Fin (n + 1) → K) i * p 0`. Use function extensionality and compare the values at `i`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations.
 
-Use `Fin.cases ?_ (fun k => ?_) i` and prove the remaining obligations. Simplify using the standard rewrite rules. Simplify using `[div_mul_cancel₀ _ hp]`. Establish `: eval p G = 0`. Rewrite using `[hq]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[eval_mul_homog _ _ hG, h, mul_zero]`. Rewrite using `[this, mul_zero]`. Conclude with `(mul_eq_zero.mp hX).resolve_left (X_ne_zero _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_cons_one_ne {K : Type*} [Field K] [Infinite K] {n m : ℕ}
     {G : MvPolynomial (Fin (n + 1)) K} (hG : G.IsHomogeneous m) (h0 : G ≠ 0) :
@@ -118,7 +118,7 @@ section Homog
 open Polynomial
 
 /- English proof (translation)
-Apply the tactic sequence `first | exact Bl.FirstLemmaA.goal1 .. | (apply Bl.FirstLemmaA.goal1 <;> assumption) | (intros; apply Bl.FirstLemmaA.goal1 <;> assumption) | (apply @Bl.FirstLemmaA.goal1 <;> assumption) | (intros; apply @Bl.FirstLemmaA.goal1 <;> assumption) | (apply @Bl.FirstLemmaA.goal1 <;> first …`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem prod_pow_natDegree_coeff' {B : Type*} [CommRing B] {ι : Type*} (s : Finset ι)
     (v : ι → B[X]) (d : ι → ℕ) (hv : ∀ i, (v i).natDegree ≤ 1) :

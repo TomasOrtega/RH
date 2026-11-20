@@ -20,29 +20,27 @@ noncomputable section
 namespace GlobalTheory.WeilAdm
 
 /- English proof (translation)
-Introduce `D ps hψ κ _ L A C hC hA hI`. Take `⟨θ, hθ⟩` from `hψ.2.1`. Take `⟨β, hβ1, hβ2⟩` from `GlobalTheory.T.standardAddChar_archimedean_exp_realLinear D ps θ hψ hθ`. Establish `hnd : ∀ a, a ≠ 0 → ∃ b, β (a * b) ≠ 0`. Introduce `a ha`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `ha' : (InfiniteAdeleRing.ringEquiv_mixedSpace D.host.F).symm a ≠ 0`. Simplify using `using ha`. Take `⟨b, hb⟩` from `GlobalTheory.T.realTrace_archimedeanEmbeddings_nondegenerate D θ hθ _ ha'`. Use `⟨InfiniteAdeleRing.ringEquiv_mixedSpace D.host.F b, ?_⟩` and prove the remaining obligations. Rewrite using `[hβ2, map_mul, RingEquiv.symm_apply_apply]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `using hb`. Take `⟨n, Q, P, hQP⟩` from `GlobalTheory.T.exists_linear_model_archimedean_schroedinger_standard D.host.F ps β hβ1 hnd κ`. Take `⟨c, hc⟩` from `GlobalTheory.T.lintegral_sq_comp_continuousLinearEquiv_mixedSpace D.host.F κ n Q`. Set `CQ` to `SchwartzMap.compCLMOfContinuousLinearEquiv ℂ (F := ℂ) Q`. Set `CQi` to `SchwartzMap.compCLMOfContinuousLinearEquiv ℂ (F := ℂ) Q.symm`.
+Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hCQ : ∀ f, ⇑(CQ f) = ⇑f ∘ ⇑Q` using `fun f => SchwartzMap.compCLMOfContinuousLinearEquiv_apply ℂ Q f`. Establish `hCQi : ∀ g, ⇑(CQi g) = ⇑g ∘ ⇑Q.symm` using `fun g => SchwartzMap.compCLMOfContinuousLinearEquiv_apply ℂ Q.symm g`. Establish `hQQ : ∀ f, CQi (CQ f) = f` using `fun f => by`. Use extensionality with `z`. Rewrite using `[hCQi, hCQ]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Establish `hQQ' : ∀ g, CQ (CQi g) = g` using `fun g => by`. Use extensionality with `z`. Rewrite using `[hCQ, hCQi]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Set `A' : GlobalTheory.RealWeil.Sch (Fin n) →ₗ[ℂ] GlobalTheory.RealWeil.Sch (Fin n)` to `CQ.toLinearMap ∘ₗ A ∘ₗ CQi.toLinearMap`. Establish `hA'apply : ∀ g, A' g = CQ (A (CQi g))` using `fun g => rfl`. Set `L' : (Fin n ⊕ Fin n → ℝ) ≃ₗ[ℝ] (Fin n ⊕ Fin n → ℝ)` to `P.trans (L.trans P.symm)`. Establish `hbound : ∀ g, ∫⁻ x, ‖A' g x‖ₑ ^ 2 ≤ C * ∫⁻ x, ‖g x‖ₑ ^ 2`. Introduce `g`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e1 : ∫⁻ x, ‖A' g x‖ₑ ^ 2 = c * ∫⁻ z, ‖A (CQi g) z‖ₑ ^ 2`. Rewrite using `[← hc]`. Simplify using `only [hA'apply, hCQ, Function.comp_apply]`. Establish `e2 : ∫⁻ x, ‖g x‖ₑ ^ 2 = c * ∫⁻ z, ‖CQi g z‖ₑ ^ 2`. Rewrite using `[← hc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [hCQi, Function.comp_apply, ContinuousLinearEquiv.symm_apply_apply]`. Rewrite using `[e1, e2, ← mul_assoc, mul_comm C c, mul_assoc]`. Conclude with `mul_le_mul' le_rfl (hA _)`. Establish `hint : ∀ w (g g' : GlobalTheory.RealWeil.Sch (Fin n)), ⇑g' = GlobalTheory.RealWeil.rhoFun w ⇑g → ⇑(A' g') = GlobalTheory.RealWeil.rhoFun (L' w) ⇑(A' g)`. Introduce `w g g' hg`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h1 : ⇑(CQi g') = schrInf D.host.F ps (P w) ⇑(CQi g)`. Use `congrArg (fun u => u ∘ ⇑Q.symm) (hQP w ⇑(CQi g))` as an intermediate fact. Simplify using `only [Function.comp_assoc, ContinuousLinearEquiv.self_comp_symm, Function.comp_id] at this`. Rewrite using `[this, hCQi, hg, ← hCQ, hQQ']`. Establish `h2` using `hI (P w) (CQi g) (CQi g') h1`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hL' : P (L' w) = L (P w)` using `P.apply_symm_apply _`. Establish `h3 : ⇑(A (CQi g')) = schrInf D.host.F ps (P (L' w)) ⇑(A (CQi g))`. Rewrite using `[h2]`. Conclude with `congrArg (fun v => schrInf D.host.F ps v ⇑(A (CQi g))) hL'.symm`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcont : Continuous A'` using `GlobalTheory.T.continuous_of_lie_intertwine_l2 (Fin n) L' A' C hC hbound (GlobalTheory.T.derived_action_intertwines_of_group (Fin n) L'.toLinearMap A' C hC hbound hint)`. Establish `hAeq : ⇑A = fun f => CQi (A' (CQ f))`. Use function extensionality and compare the values at `f`. Rewrite using `[hA'apply, hQQ, hQQ]`. Rewrite using `[hAeq]`.
-
-Conclude with `CQi.continuous.comp (hcont.comp CQ.continuous)`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem realcont : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ (κ : Type) [Fintype κ]
     (L : ((κ → mixedEmbedding.mixedSpace D.host.F) × (κ → mixedEmbedding.mixedSpace D.host.F)) ≃ₗ[ℝ] ((κ → mixedEmbedding.mixedSpace D.host.F) × (κ → mixedEmbedding.mixedSpace D.host.F)))

@@ -14,7 +14,7 @@ theorem intQ_apply {r n : ℕ} (F : MvPolynomial (Fin r × Fin n) ℤ) :
     intQ r n F = map (Int.castRingHom ℚ) F := rfl
 
 /- English proof (translation)
-Proceed by induction on `w with`. Consider the case `nil => simpa [applyWord] using hF`. Consider the case `cons x w ih`. Simplify using `only [applyWord, List.foldr_cons] at ih ⊢`. Conclude with `rowDivStable R r n ν x.1 x.2.1 x.2.2 _ ih`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem applyWord_mem_dualWeyl (R : Type) [CommRing R] {r n : ℕ} (ν : Fin n → ℕ)
     (w : List (Fin r × Fin r × ℕ)) {F : MvPolynomial (Fin r × Fin n) R} (hF : F ∈ dualWeyl R r n ν) :
@@ -26,9 +26,9 @@ theorem applyWord_mem_dualWeyl (R : Type) [CommRing R] {r n : ℕ} (ν : Fin n �
     exact rowDivStable R r n ν x.1 x.2.1 x.2.2 _ ih
 
 /- English proof (translation)
-Proceed by induction on `f using MvPolynomial.induction_on with`. Consider the case `C c => simp [rowGen]`. Consider the case `add p q hp hq => rw [map_add, map_add, Polynomial.map_add, hp, hq, map_add]`. Consider the case `mul_X p v hp`. Rewrite using `[map_mul, Polynomial.map_mul, hp, map_mul, map_mul, map_X]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Simplify using `only [rowGen, aeval_X]`. Apply the tactic sequence `split_ifs <;> simp`.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem rowGen_map_intCast {R S : Type} [CommRing R] [CommRing S] (φ : R →+* S) {r n : ℕ}
     (a b : Fin r) (f : MvPolynomial (Fin r × Fin n) R) :
@@ -43,7 +43,7 @@ private theorem rowGen_map_intCast {R S : Type} [CommRing R] [CommRing S] (φ : 
     split_ifs <;> simp
 
 /- English proof (translation)
-Unfold `rowDiv`. Rewrite using `[← rowGen_map_intCast, Polynomial.coeff_map]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 private theorem rowDiv_map_intCast {R S : Type} [CommRing R] [CommRing S] (φ : R →+* S) {r n : ℕ}
     (a b : Fin r) (k : ℕ) (f : MvPolynomial (Fin r × Fin n) R) :
@@ -52,7 +52,7 @@ private theorem rowDiv_map_intCast {R S : Type} [CommRing R] [CommRing S] (φ : 
   rw [← rowGen_map_intCast, Polynomial.coeff_map]
 
 /- English proof (translation)
-Proceed by induction on `w with`. Consider the case `nil => simp [applyWord]`. Consider the case `cons x w ih`. Simplify using `only [applyWord, List.foldr_cons] at ih ⊢`. Rewrite using `[rowDiv_map_intCast, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 private theorem map_intCast_applyWord {r n : ℕ} (w : List (Fin r × Fin r × ℕ))
     (f : MvPolynomial (Fin r × Fin n) ℤ) :
@@ -64,9 +64,9 @@ private theorem map_intCast_applyWord {r n : ℕ} (w : List (Fin r × Fin r × �
     rw [rowDiv_map_intCast, ih]
 
 /- English proof (translation)
-Unfold `hw lpMinor`. Rewrite using `[map_prod]`. Use `Finset.prod_congr rfl fun s _ => ?_` and prove the remaining obligations. Rewrite using `[map_pow, RingHom.map_det]`. Use `congr 2`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use extensionality with `p q`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 private theorem map_intCast_hw {r n : ℕ} (hn : n ≤ r) (ν : Fin n → ℕ) :
     map (Int.castRingHom ℚ) (hw ℤ hn ν) = hw ℚ hn ν := by
@@ -79,16 +79,16 @@ private theorem map_intCast_hw {r n : ℕ} (hn : n ≤ r) (ν : Fin n → ℕ) :
   simp
 
 /- English proof (translation)
-Rewrite using `[intQ_apply, map_intCast_applyWord, map_intCast_hw]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem intQ_word {r n : ℕ} (hn : n ≤ r) (ν : Fin n → ℕ) (w : List (Fin r × Fin r × ℕ)) :
     intQ r n (applyWord ℤ w (hw ℤ hn ν)) = applyWord ℚ w (hw ℚ hn ν) := by
   rw [intQ_apply, map_intCast_applyWord, map_intCast_hw]
 
 /- English proof (translation)
-Proceed by induction on `F using MvPolynomial.induction_on with`. Consider the case `C c => simp`. Consider the case `add p q hp hq => simp only [map_add, hp, hq, Int.cast_add]`. Consider the case `mul_X p v hp`. Simplify using `only [map_mul, map_X, eval_X, hp, Int.cast_mul]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules.
 
-Use `congr 1`. Unfold `idFrame`. Apply the tactic sequence `split_ifs <;> simp`.
+Reduce the equality to equality of the corresponding arguments. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem eval_idFrame_int {r n : ℕ} (F : MvPolynomial (Fin r × Fin n) ℤ) :
     eval (idFrame ℚ r n) (map (Int.castRingHom ℚ) F) = ((eval (idFrame ℤ r n) F : ℤ) : ℚ) := by
@@ -102,13 +102,13 @@ theorem eval_idFrame_int {r n : ℕ} (F : MvPolynomial (Fin r × Fin n) ℤ) :
     split_ifs <;> simp
 
 /- English proof (translation)
-Conclude with `(fockQPos σ f g).1`.
+A detailed English derivation is pending.
 -/
 theorem fockQ_symm {σ : Type} (f g : MvPolynomial σ ℚ) : fockQ f g = fockQ g f := by
   exact (fockQPos σ f g).1
 
 /- English proof (translation)
-Conclude with `(fockQPos _ (hw ℚ hn ν) (hw ℚ hn ν)).2 (hwNe ℚ r n hn ν)`.
+A detailed English derivation is pending.
 -/
 theorem fockQ_hw_pos {r n : ℕ} (hn : n ≤ r) (ν : Fin n → ℕ) : 0 < fockQ (hw ℚ hn ν) (hw ℚ hn ν) := by
   exact (fockQPos _ (hw ℚ hn ν) (hw ℚ hn ν)).2 (hwNe ℚ r n hn ν)
@@ -125,7 +125,7 @@ Both sides reduce to the same expression.
 theorem fockB_apply {σ : Type} (f g : MvPolynomial σ ℚ) : fockB σ f g = fockQ f g := rfl
 
 /- English proof (translation)
-Conclude with `Iff.rfl`.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_bDual {r n : ℕ} (hn : n ≤ r) (ν : Fin n → ℕ) (M : Submodule ℤ (MvPolynomial (Fin r × Fin n) ℚ))
     (P : MvPolynomial (Fin r × Fin n) ℚ) :
@@ -134,27 +134,27 @@ theorem mem_bDual {r n : ℕ} (hn : n ≤ r) (ν : Fin n → ℕ) (M : Submodule
   exact Iff.rfl
 
 /- English proof (translation)
-Rewrite using `[← fockB_apply, map_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem fockQ_zero_right {σ : Type} (f : MvPolynomial σ ℚ) : fockQ f 0 = 0 := by
   rw [← fockB_apply, map_zero]
 
 /- English proof (translation)
-Rewrite using `[← fockB_apply, map_add, fockB_apply, fockB_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem fockQ_add_right {σ : Type} (f g g' : MvPolynomial σ ℚ) :
     fockQ f (g + g') = fockQ f g + fockQ f g' := by
   rw [← fockB_apply, map_add, fockB_apply, fockB_apply]
 
 /- English proof (translation)
-Rewrite using `[← fockB_apply, map_smul, fockB_apply, smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem fockQ_smul_right' {σ : Type} (f g : MvPolynomial σ ℚ) (c : ℚ) :
     fockQ f (c • g) = c * fockQ f g := by
   rw [← fockB_apply, map_smul, fockB_apply, smul_eq_mul]
 
 /- English proof (translation)
-Rewrite using `[Finsupp.weight_apply, Finsupp.sum_fintype _ _ (by simp), Finset.sum_apply, Fintype.sum_prod_type]`. Simplify using `[colW, Pi.single_apply]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem weight_colW_apply' {r n : ℕ} (e : Fin r × Fin n →₀ ℕ) (s : Fin n) :
     Finsupp.weight (colW r n) e s = ∑ a : Fin r, e (a, s) := by
@@ -162,33 +162,31 @@ private theorem weight_colW_apply' {r n : ℕ} (e : Fin r × Fin n →₀ ℕ) (
   simp [colW, Pi.single_apply]
 
 /- English proof (translation)
-Introduce `hCW hHW hAdj hLT r n hn ν hν`. Establish `hc` using `fockQ_hw_pos hn ν`. Use extensionality with `P`. Rewrite using `[mem_bDual]`. Prove the components needed by the constructor for the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨F, hF, rfl⟩`. Establish `hFQ : intQ r n F ∈ dualWeyl ℚ r n ν`. Rewrite using `[intQ_apply]`. Conclude with `dualWeylMap ℤ ℚ (Int.castRingHom ℚ) r n ν F hF`. Use `⟨hFQ, ?_⟩` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `Q ⟨G, hG, rfl⟩`. Unfold `weyl at hG`. Proceed by induction on `hG using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨w, rfl⟩` from `hx`.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨eval (idFrame ℤ r n) (applyWord ℤ (transposeWord w) F), ?_⟩` and prove the remaining obligations. Rewrite using `[intQ_word hn ν w, fockQ_symm (intQ r n F), hAdj, hHW r n hn ν hν _ (applyWord_mem_dualWeyl ℚ ν _ hFQ), intQ_apply, ← map_intCast_applyWord, eval_idFrame_int]`. Consider the case `zero`. Use `⟨0, ?_⟩` and prove the remaining obligations. Rewrite using `[map_zero, fockQ_zero_right]`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Consider the case `add x y _ _ hx hy`. Take `⟨a, ha⟩` from `hx`. Take `⟨b, hb⟩` from `hy`. Use `⟨a + b, ?_⟩` and prove the remaining obligations.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_add, fockQ_add_right, ha, hb]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Consider the case `smul c x _ hx`. Take `⟨a, ha⟩` from `hx`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨c * a, ?_⟩` and prove the remaining obligations. Establish `hcx : intQ r n (c • x) = (c : ℚ) • intQ r n x`. Rewrite using `[map_zsmul]`. Conclude with `(Int.cast_smul_eq_zsmul ℚ c _).symm`. Rewrite using `[hcx, fockQ_smul_right', ha]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Introduce and unpack `⟨hP, hPQ⟩`. Establish `hhom : IsWeightedHomogeneous (colW r n) P ν`. Unfold `dualWeyl at hP`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(mem_weightedHomogeneousSubmodule _ _ _ _).mp (Submodule.mem_inf.mp hP).1`. Establish `hint : ∀ w : List (Fin r × Fin r × ℕ), ∃ z : ℤ, fockQ (hw ℚ hn ν) (applyWord ℚ w P) = z * fockQ (hw ℚ hn ν) (hw ℚ hn ν)`. Introduce `w`. Establish `hmem : applyWord ℚ (transposeWord w) (hw ℚ hn ν) ∈ (weyl ℤ r n hn ν).map (intQ r n)`. Use `⟨applyWord ℤ (transposeWord w) (hw ℤ hn ν), ?_, intQ_word hn ν _⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Unfold `weyl`. Conclude with `Submodule.subset_span ⟨_, rfl⟩`. Take `⟨z, hz⟩` from `hPQ _ hmem`. Conclude with `⟨z, by rw [fockQ_symm, hAdj, hz]⟩`. Establish `hcoef : ∀ e : Fin r × Fin n →₀ ℕ, LowerTri e → ∃ z : ℤ, coeff e P = z`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `e he`. Distinguish the cases in `hs : ∀ s : Fin n, ∑ a : Fin r, e (a, s) = ν s`. Take `⟨z, hz⟩` from `hint (wordOf e)`. Use `⟨z, ?_⟩` and prove the remaining obligations. Rewrite using `[hCW ℚ r n ν P e hhom he hs]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite `hz` using `[hHW r n hn ν hν _ (applyWord_mem_dualWeyl ℚ ν _ hP)]`. Conclude with `mul_right_cancel₀ hc.ne' hz`. Use `⟨0, ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hne`. Apply `hs` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `s`. Establish `hwt` using `hhom (d := e) (by simpa using hne)`. Rewrite using `[← weight_colW_apply' e s, hwt]`. Take `⟨Q', hQ'⟩` from `hLT r n ν P hP hcoef`. Use `⟨Q', (dualWeylIntRat r n ν Q').mpr ?_, hQ'.symm⟩` and prove the remaining obligations.
-
-Rewrite using `[← intQ_apply, ← hQ']`. Conclude with `hP`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nablaEqDualWeylOf : NablaEqDualWeylOf := by
   intro hCW hHW hAdj hLT r n hn ν hν
@@ -263,11 +261,11 @@ theorem nablaEqDualWeylOf : NablaEqDualWeylOf := by
     exact hP
 
 /- English proof (translation)
-Set `b` to `Module.Free.chooseBasis ℤ M`. Set `b'` to `b.extendOfIsLattice ℚ`. Establish `hrange : (Set.range b' : Set V) = M.subtype '' Set.range b`. Rewrite using `[← Set.range_comp]`. Use `congr 1`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use function extensionality and compare the values at `k`. Simplify using `[b']`. Establish `hM : Submodule.span ℤ (Set.range b') = M`. Rewrite using `[hrange, ← Submodule.map_span, b.span_eq, Submodule.map_top, Submodule.range_subtype]`. Rewrite using `[← hM]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `B.dualSubmodule_dualSubmodule_of_basis hB hB' b'`.
+A detailed English derivation is pending.
 -/
 theorem dual_dual_of_isLattice {V : Type} [AddCommGroup V] [Module ℚ V] (B : LinearMap.BilinForm ℚ V)
     (hB : B.Nondegenerate) (hB' : B.IsSymm) (M : Submodule ℤ V) [M.IsLattice ℚ] :
@@ -295,15 +293,15 @@ theorem normB_apply {r n : ℕ} (hn : n ≤ r) (ν : Fin n → ℕ) (x y : dualW
     normB hn ν x y = (fockQ (hw ℚ hn ν) (hw ℚ hn ν))⁻¹ * fockQ x.1 y.1 := rfl
 
 /- English proof (translation)
-Conclude with `⟨fun x y => by rw [normB_apply, normB_apply, fockQ_symm x.1]⟩`.
+Supply the required witnesses or components.
 -/
 theorem normB_symm {r n : ℕ} (hn : n ≤ r) (ν : Fin n → ℕ) : (normB hn ν).IsSymm := by
   exact ⟨fun x y => by rw [normB_apply, normB_apply, fockQ_symm x.1]⟩
 
 /- English proof (translation)
-Establish `hc` using `fockQ_hw_pos hn ν`. Establish `key : ∀ x : dualWeyl ℚ r n ν, normB hn ν x x = 0 → x = 0`. Introduce `x hx`. Rewrite `hx` using `[normB_apply, mul_eq_zero, inv_eq_zero]`. Break down `hx with h | h` into its components or cases.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `absurd h hc.ne'`. Assume the negation of the conclusion as `hne`. Establish `hx0 : (x : MvPolynomial (Fin r × Fin n) ℚ) ≠ 0` using `fun h0 => hne (Subtype.ext h0)`. Conclude with `((fockQPos _ x.1 x.1).2 hx0).ne' h`. Conclude with `⟨fun x hx => key x (hx x), fun y hy => key y (hy y)⟩`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem normB_nondeg {r n : ℕ} (hn : n ≤ r) (ν : Fin n → ℕ) : (normB hn ν).Nondegenerate := by
   have hc := fockQ_hw_pos hn ν
@@ -322,20 +320,20 @@ def inV {r n : ℕ} (ν : Fin n → ℕ) (M : Submodule ℤ (MvPolynomial (Fin r
   M.comap ((dualWeyl ℚ r n ν).subtype.restrictScalars ℤ)
 
 /- English proof (translation)
-Conclude with `Iff.rfl`.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_inV {r n : ℕ} (ν : Fin n → ℕ) (M : Submodule ℤ (MvPolynomial (Fin r × Fin n) ℚ))
     (x : dualWeyl ℚ r n ν) : x ∈ inV ν M ↔ x.1 ∈ M := by
   exact Iff.rfl
 
 /- English proof (translation)
-Establish `hc` using `fockQ_hw_pos hn ν`. Use extensionality with `x`. Rewrite using `[mem_inV, mem_bDual, LinearMap.BilinForm.mem_dualSubmodule]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨-, h⟩ y hy`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Rewrite `hy` using `[mem_inV]`. Take `⟨z, hz⟩` from `h y.1 hy`. Rewrite using `[Submodule.mem_one]`. Use `⟨z, ?_⟩` and prove the remaining obligations. Rewrite using `[normB_apply, hz, algebraMap_int_eq, eq_intCast]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Clear the denominators using the available nonvanishing facts. Introduce `h`. Use `⟨x.2, fun Q hQ => ?_⟩` and prove the remaining obligations. Take `⟨z, hz⟩` from `Submodule.mem_one.mp (h ⟨Q, hM Q hQ⟩ ((mem_inV _ _ _).mpr hQ))`. Use `⟨z, ?_⟩` and prove the remaining obligations.
+Clear the denominators using the available nonvanishing facts. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `hz` using `[normB_apply, algebraMap_int_eq, eq_intCast, eq_inv_mul_iff_mul_eq₀ hc.ne']`. Rewrite using `[← hz, mul_comm]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem inV_bDual {r n : ℕ} (hn : n ≤ r) (ν : Fin n → ℕ) (M : Submodule ℤ (MvPolynomial (Fin r × Fin n) ℚ))
     (hM : ∀ Q ∈ M, Q ∈ dualWeyl ℚ r n ν) :
@@ -359,7 +357,7 @@ theorem inV_bDual {r n : ℕ} (hn : n ≤ r) (ν : Fin n → ℕ) (M : Submodule
     rw [← hz, mul_comm]
 
 /- English proof (translation)
-Take `⟨b, hb, -⟩` from `sSBasis ℤ r n ν`. Take `⟨-, hspan, -⟩` from `hb`. Use `(sSIdxFinite r n ν).to_subtype` as an intermediate fact. Rewrite using `[← hspan]`. Conclude with `Submodule.fg_span (Set.finite_range b)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dualWeyl_int_fg (r n : ℕ) (ν : Fin n → ℕ) : (dualWeyl ℤ r n ν).FG := by
   obtain ⟨b, hb, -⟩ := sSBasis ℤ r n ν
@@ -369,7 +367,7 @@ theorem dualWeyl_int_fg (r n : ℕ) (ν : Fin n → ℕ) : (dualWeyl ℤ r n ν)
   exact Submodule.fg_span (Set.finite_range b)
 
 /- English proof (translation)
-Introduce and unpack `P ⟨G, hG, rfl⟩`. Rewrite using `[intQ_apply]`. Conclude with `dualWeylMap ℤ ℚ (Int.castRingHom ℚ) r n ν G (weylLeDual ℤ r n hn ν hν hG)`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem mem_dualWeyl_rat_of_mem_map_weyl {r n : ℕ} (hn : n ≤ r) (ν : Fin n → ℕ) (hν : Antitone ν) :
     ∀ P ∈ (weyl ℤ r n hn ν).map (intQ r n), P ∈ dualWeyl ℚ r n ν := by
@@ -378,17 +376,15 @@ private theorem mem_dualWeyl_rat_of_mem_map_weyl {r n : ℕ} (hn : n ≤ r) (ν 
   exact dualWeylMap ℤ ℚ (Int.castRingHom ℚ) r n ν G (weylLeDual ℤ r n hn ν hν hG)
 
 /- English proof (translation)
-Establish `hW : (weyl ℤ r n hn ν).FG`. Use `isNoetherian_of_fg_of_noetherian _ (dualWeyl_int_fg r n ν)` as an intermediate fact. Conclude with `Submodule.FG.of_le_of_isNoetherian (weylLeDual ℤ r n hn ν hν)`. Establish `hsub` using `mem_dualWeyl_rat_of_mem_map_weyl hn ν hν`. Use `Submodule.fg_of_fg_map_injective ((dualWeyl ℚ r n ν).subtype.restrictScalars ℤ) Subtype.val_injective ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `heq : (inV ν ((weyl ℤ r n hn ν).map (intQ r n))).map ((dualWeyl ℚ r n ν).subtype.restrictScalars ℤ) = (weyl ℤ r n hn ν).map (intQ r n)`. Apply `le_antisymm` to reduce the goal to its premises. Conclude with `Submodule.map_comap_le _ _`. Introduce `P hP`. Conclude with `⟨⟨P, hsub P hP⟩, hP, rfl⟩`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[heq]`. Conclude with `hW.map _`. Use `span_eq_top := by`. Establish `hsub` using `mem_dualWeyl_rat_of_mem_map_weyl hn ν hν`. Apply `Submodule.map_injective_of_injective (f := (dualWeyl ℚ r n ν).subtype) Subtype.val_injective` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Rewrite using `[Submodule.map_span, Submodule.map_top, Submodule.range_subtype]`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨x, -, rfl⟩`. Conclude with `x.2`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `le_trans (le_of_eq (weylEqNablaQ r n hn ν hν).symm) (Submodule.span_le.mpr ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨w, rfl⟩`. Apply `Submodule.subset_span` to reduce the goal to its premises. Establish `hmem : applyWord ℚ w (hw ℚ hn ν) ∈ (weyl ℤ r n hn ν).map (intQ r n)`. Use `⟨applyWord ℤ w (hw ℤ hn ν), ?_, intQ_word hn ν _⟩` and prove the remaining obligations.
-
-Unfold `weyl`. Conclude with `Submodule.subset_span ⟨_, rfl⟩`. Conclude with `⟨⟨_, hsub _ hmem⟩, (mem_inV _ _ _).mpr hmem, rfl⟩`.
+Replace the relevant objects with their definitions. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem weyl_isLattice {r n : ℕ} (hn : n ≤ r) (ν : Fin n → ℕ) (hν : Antitone ν) :
     (inV ν ((weyl ℤ r n hn ν).map (intQ r n))).IsLattice ℚ where
@@ -425,7 +421,7 @@ theorem weyl_isLattice {r n : ℕ} (hn : n ≤ r) (ν : Fin n → ℕ) (hν : An
       exact ⟨⟨_, hsub _ hmem⟩, (mem_inV _ _ _).mpr hmem, rfl⟩
 
 /- English proof (translation)
-Introduce and unpack `P ⟨G, hG, rfl⟩`. Rewrite using `[intQ_apply]`. Conclude with `dualWeylMap ℤ ℚ (Int.castRingHom ℚ) r n ν G hG`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem mem_dualWeyl_rat_of_mem_map_intQ {r n : ℕ} (ν : Fin n → ℕ) :
     ∀ P ∈ (dualWeyl ℤ r n ν).map (intQ r n), P ∈ dualWeyl ℚ r n ν := by
@@ -434,13 +430,11 @@ private theorem mem_dualWeyl_rat_of_mem_map_intQ {r n : ℕ} (ν : Fin n → ℕ
   exact dualWeylMap ℤ ℚ (Int.castRingHom ℚ) r n ν G hG
 
 /- English proof (translation)
-Introduce `hN r n hn ν hν`. Use `weyl_isLattice hn ν hν` as an intermediate fact. Establish `hW` using `mem_dualWeyl_rat_of_mem_map_weyl hn ν hν`. Establish `hD` using `mem_dualWeyl_rat_of_mem_map_intQ (r := r) ν`. Establish `key : inV ν (bDual r n hn ν ((dualWeyl ℤ r n ν).map (intQ r n))) = inV ν ((weyl ℤ r n hn ν).map (intQ r n))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[inV_bDual hn ν _ hD, hN r n hn ν hν, inV_bDual hn ν _ hW]`. Conclude with `dual_dual_of_isLattice _ (normB_nondeg hn ν) (normB_symm hn ν) _`. Use extensionality with `P`. Prove the components needed by the constructor for the conclusion. Introduce `hP`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h1 : (⟨P, hW P hP⟩ : dualWeyl ℚ r n ν) ∈ inV ν ((weyl ℤ r n hn ν).map (intQ r n))` using `(mem_inV _ _ _).mpr hP`. Rewrite `h1` using `[← key, mem_inV]`. Conclude with `h1`. Introduce `hP`. Establish `h1 : (⟨P, ((mem_bDual hn ν _ P).mp hP).1⟩ : dualWeyl ℚ r n ν) ∈ inV ν (bDual r n hn ν ((dualWeyl ℤ r n ν).map (intQ r n)))` using `(mem_inV _ _ _).mpr hP`.
-
-Rewrite `h1` using `[key, mem_inV]`. Conclude with `h1`.
+Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem weylEqDualNablaOf : WeylEqDualNablaOf := by
   intro hN r n hn ν hν
@@ -465,7 +459,7 @@ theorem weylEqDualNablaOf : WeylEqDualNablaOf := by
     exact h1
 
 /- English proof (translation)
-Conclude with `⟨nablaEqDualWeylOf, weylEqDualNablaOf⟩`.
+Supply the required witnesses or components.
 -/
 theorem weyl_dualities : NablaEqDualWeylOf ∧ WeylEqDualNablaOf := by
   exact ⟨nablaEqDualWeylOf, weylEqDualNablaOf⟩

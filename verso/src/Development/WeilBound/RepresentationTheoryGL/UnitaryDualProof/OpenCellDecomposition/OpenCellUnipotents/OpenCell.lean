@@ -10,13 +10,11 @@ namespace PositivityTheory.RgUd.CellA
 set_option maxHeartbeats 2000000 in
 
 /- English proof (translation)
-Introduce `ψ hψ _ r m V W _ _ _ _ A x ω hA hx hgA hgx hxω z hz`. Take `⟨φ⟩` from `bridge_equiv (k := k) A x`. Establish `hs : ∀ a, IsSmooth (piPair A x a)` using `fun a => by fin_cases a`. Conclude with `hA`. Conclude with `hx`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨F, hF, hi⟩` from `openCellPar ψ hψ (piTensor (piPair A x)) (isSmooth_piTensor hs) ω (piPair_levZ A x ω hxω) (exists_not_mem_twKer ψ A x hgA hgx) z hz`. Establish `e : φ (φ.symm F) = F` using `by first`. Consider the case `exact φ.apply_symm_apply F`. Consider the case `exact φ.toLinearEquiv.apply_symm_apply F`. Consider the case `simp`.
+Treat this case separately. Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨φ.symm F, φ.symm F, fun hmem => hF ?_, 0, fun i _ => ?_⟩` and prove the remaining obligations. Use `(equiv_mem_twKer φ _ _ (φ.symm F)).2 hmem` as an intermediate fact. Rewrite `this` using `[e]`. Conclude with `this`. Rewrite using `[← equiv_mem_twKer φ, map_sub, map_smul, equiv_apply, e]`.
-
-Conclude with `hi i`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem openCell (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] :
     PositivityTheory.RgUd.OpenCell k := by

@@ -48,7 +48,7 @@ def imForm (Hm : Matrix (Fin g) (Fin g) ℂ) : (Fin g → ℂ) →ₗ[ℝ] (Fin 
     (fun c z w => by simp [hermForm, Matrix.mulVec_smul, dotProduct_smul])
 
 /- English proof (translation)
-Establish `e : (imForm Hm).comp (F.restrictScalars ℝ) = (imForm Hm).compl₂ (F'.restrictScalars ℝ)` using `LinearMap.ext_on hs fun z hz => LinearMap.ext_on hs fun w hw => h z hz w hw`. Establish `im : ∀ z w, (hermForm Hm (F z) w).im = (hermForm Hm z (F' w)).im` using `fun z w => LinearMap.congr_fun (LinearMap.congr_fun e z) w`. Use `Complex.ext ?_ (im z w)` and prove the remaining obligations. Use `im (Complex.I • z) w` as an intermediate fact. Simplify `this` using `[hermForm, smul_dotProduct]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem hermForm_adjoint_of_span (Hm : Matrix (Fin g) (Fin g) ℂ) (F F' : (Fin g → ℂ) →ₗ[ℂ] (Fin g → ℂ))
     {s : Set (Fin g → ℂ)} (hs : Submodule.span ℝ s = ⊤)
@@ -63,7 +63,7 @@ theorem hermForm_adjoint_of_span (Hm : Matrix (Fin g) (Fin g) ℂ) (F F' : (Fin 
   simpa [hermForm, smul_dotProduct] using this
 
 /- English proof (translation)
-Establish `h₁ : LBIso (lbPow L 1) (M.pull (𝟙 A : A ⟶ A).left)` using `LBIso.trans (DVR.linComb_isLB _ hL _ _) hL (pull_isLB hM _) (lbIso_lbPow_one hL) h`. Use `(weilIs_along_hom hG S A A (𝟙 A) L M 1 n T x y c c hA hA hL hM inferInstance h₁ (by rwa [Category.comp_id, Category.comp_id])).1` as an intermediate fact. Rewrite `this` using `[Nat.cast_one, _root_.mul_one]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem weilIs_of_lbIso (hG : Out.GlobalFnsSt) {S : Scheme.{0}} {A : Over S} [GrpObj A] (hA : IsAbelianScheme A)
     {L M : LB A.left} (hL : L.IsLB) (hM : M.IsLB) (h : LBIso L (M.pull (𝟙 A : A ⟶ A).left)) {n : ℤ} {T : Over S}
@@ -75,23 +75,21 @@ theorem weilIs_of_lbIso (hG : Out.GlobalFnsSt) {S : Scheme.{0}} {A : Over S} [Gr
   rwa [Nat.cast_one, _root_.mul_one] at this
 
 /- English proof (translation)
-Introduce `h₁ h₂ h₃ h₄ E _ _ _ H D o _ g k J b em w w' a bas ρ ty t D' f ν Q Hm hpq hw hρ hty hgen hζ hper hpol ⟨u, χ, hAH, hΛ, _, hpt, hF⟩ hprim`. Use `t.ab.comm` as an intermediate fact. Establish `hQ : ∀ (c : 𝓞 E) x, diagAct ty c (Q x) = Q (c • x)` using `fun c x => funext fun i => (hper.1 c x i).symm`. Establish `hkeep : ∀ c, ∀ z ∈ u.Λ, diagAct ty c z ∈ u.Λ` using `fun c z hz => by`. Take `⟨x, rfl⟩` from `(hΛ z).1 hz`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `(hΛ _).2 ⟨c • x, (hQ c x).symm⟩`. Take `⟨act, hact⟩` from `GlobalTheory.T.exists_oAct_of_endo_preserving_lattice h₁ h₂ h₃ h₄ (𝓞 E) t.pol u (diagAct ty) hkeep`. Express the relevant statement in the definitionally equal form `OAct (𝓞 E) t.A at act`. Establish `hj : ∀ j, act.act (a j) = t.act j` using `fun j => by`. Take `⟨F, hFQ, hFe⟩` from `hF j`.
+Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e : F.restrictScalars ℝ = (diagAct ty (a j)).restrictScalars ℝ` using `LinearMap.ext_on_range hpol.2.2.1 fun x => (hFQ x).trans (hQ _ x).symm`. Use `(GlobalTheory.T.existsUnique_isMonHom_of_linearMap_lattice_anyDim h₁ h₂ h₃ h₄ t.pol t.pol t.L t.L u u (diagAct ty (a j)) (hkeep _)).unique ⟨act.hom _, hact _⟩ ⟨t.hom j, fun z => ?_⟩` and prove the remaining obligations. Conclude with `(congrArg u.ex (LinearMap.congr_fun e z).symm).trans (hFe z)`. Establish `hadj : ∀ c, LBIso (cubeLB t.A ![fst t.A t.A ≫ act.act c, snd t.A t.A] t.L) (cubeLB t.A ![fst t.A t.A, snd t.A t.A ≫ act.act (H.bar c)] t.L)` using `fun c => by`. Use `(GlobalTheory.T.cubeLineBundle_adjoint_iff_hermForm_adjoint h₁ h₂ h₃ h₄ t.pol u Hm χ _ _ _ _ hAH (act.hom c) (act.hom (H.bar c)) (hact c) (hact (H.bar c))).2 (hermForm_adjoint_of_span Hm (diagAct ty c) (diagAct ty (H.bar c)) hpol.2.2.1 ?_)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Introduce and unpack `_ ⟨x, rfl⟩ _ ⟨y, rfl⟩`. Establish `e` using `D'.adj c x y`. Rewrite using `[hQ, hQ, hpol.2.2.2.2.2, hpol.2.2.2.2.2, e]`. Take `⟨PP, cub, sym, iso, -, prim, adj⟩` from `PrimNorm.exists_primitive_normalisation h₁.globalFns E H _ t.A act t.L t.ab t.isLB (h₃ _ t.pol t.L t.isLB) hadj`. Establish `iso' : LBIso PP.L (t.L.pull (𝟙 t.A : t.A ⟶ t.A).left)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `iso` using `[← hw, hj]`. Use `LBIso.trans PP.isLB t.isLB (pull_isLB t.isLB _) (LBIso.trans PP.isLB (DVR.linComb_isLB _ t.isLB _ _) t.isLB iso hprim.2.2.symm) ?_` and prove the remaining obligations. Conclude with `(LBIso.chartPull (Geo.Tor.chartPullPull t.L (𝟙 _) (𝟙 _) rfl) (chartPullId t.L) (lbIso_refl t.isLB)).symm`. Use `⟨⟨t.A, isSemiAbelian_of_isAbelianScheme _ t.ab, act, PP, cub, sym, adj, prim⟩, Iso.refl _, inferInstanceAs (IsMonHom (𝟙 t.A)), iso', fun j => ?_, fun K _ _ _ x β hx => ?_⟩` and prove the remaining obligations. Use `show act.act (a j) ≫ 𝟙 _ = 𝟙 _ ≫ t.act j`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[hj, Category.comp_id, Category.id_comp]`. Take `⟨σ, rfl⟩ : ∃ σ : ℂ →+* K, x = spMap σ` from `⟨(Spec.preimage x).hom, (Spec.map_preimage x).symm⟩`. Take `rfl : σ.comp em = β` from `congrArg CommRingCat.Hom.hom (Spec.map_injective ((Spec.map_comp _ _).trans hx))`. Establish `hk : 0 < k` using `Nat.pos_of_ne_zero fun h => by`. Use `b.unit.map em` as an intermediate fact.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Simplify using `[h] at this`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[RingHom.comp_apply, hρ]`. Conclude with `GlobalTheory.T.determinantCondition_of_diagonalCMAction h₁ h₂ h₃ h₄ E H D t.pol u Hm χ act ty hAH hty hact K σ`. Take `⟨I, hI⟩` from `GlobalTheory.T.exists_tateIso_of_periodMap_genus_alt h₁ h₂ h₃ h₄ E H D D' f ν t.pol u Hm χ act Q hpq hgen hAH hpol.1 hΛ hpol.2.2.2.2.2 (fun c n x => by`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hact, map_smul]`. Conclude with `congrArg (fun z => u.ex ((n : ℂ)⁻¹ • z)) (hQ c x).symm) K σ`. Use `⟨{ I with isom := fun n hn x y => weilIs_of_lbIso h₁.globalFns t.ab PP.isLB t.isLB iso' (I.isom n hn x y) }, ?_, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[RingHom.comp_apply, hζ]`. Conclude with `(hI k hk).1`.
-
-Apply `Over.OverMorphism.ext show (I.ev k _).left ≫ 𝟙 _ = spMap σ ≫ (t.pt i).left` to reduce the goal to its premises. Rewrite using `[Category.comp_id, hpt]`. Conclude with `(hI k hk).2 _`.
+A detailed English derivation is pending.
 -/
 theorem pelClass_of_period : Out.Laws → Out.Laws2 → (∀ (S : Scheme.{0}) (P : Out.PolAV S) (M : LB P.A.left), M.IsLB → ∃ t : LB.Gen (Theta P.A M), t.IsGen) → ThetaUnifAV → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (o : Type) [CommRing o] (g k : ℕ) (J : Type) (b : TBase o k) (em : o →+* ℂ) (w w' : J) (a : J → 𝓞 E) (bas : (Fin (2 * g) → ℤ) ≃ₗ[ℤ] D.La) (ρ : o) (ty : Fin g → (E →+* ℂ)) (t : TObj g k J b (spMap em)) (D' : Datum H) (f : ℕ → D.La →ₗ[𝓞 E] D'.La) (ν : ℕ → ℤ) (Q : D'.La →+ (Fin g → ℂ)) (Hm : Matrix (Fin g) (Fin g) ℂ), 1 ≤ D.p + D.q → a w = H.w0 → em ρ = H.rt0 → IsTypeFn H D.p D.q ty → (D'.p = D.p ∧ D'.q = D.q ∧ (∀ n m : ℕ, 0 < n → 0 < m → ∀ x, ∃ y, f (n * m) x = f n x + n • y) ∧ (∀ n : ℕ, 0 < n → (∀ x, (∃ y, f n x = n • y) ↔ ∃ y, x = n • y) ∧ ∀ x', ∃ x y, x' = f n x + n • y) ∧ ∀ n : ℕ, 0 < n → ∀ x x', (n : ℤ) ∣ D'.EF (f n x) (f n x') - ν n * D.EF x x') → em (b.ζ : o) = Complex.exp (-(2 * Real.pi * Complex.I) * (ν k : ℂ) / k) → IsPeriod D' ty Q → (Function.Injective Q ∧ DiscreteTopology (Q).range ∧ Submodule.span ℝ (Set.range Q) = ⊤ ∧ (Hm).IsHermitian ∧ (∀ z : Fin g → ℂ, z ≠ 0 → 0 < (hermForm Hm z z).re) ∧ ∀ x y, (hermForm Hm (Q x) (Q y)).im = D'.EF x y) → (∃ (u : HolUnif t.A t.L g) (χ' : u.Λ → ℂ), u.IsAH Hm χ' ∧ (∀ z, z ∈ u.Λ ↔ z ∈ (Q).range) ∧ (∀ x (l : u.Λ), (l : Fin g → ℂ) = Q x → χ' l = (-1) ^ D'.EF x ((fun j x => a j • x) w x)) ∧ (∀ i₀, (t.pt i₀).left = (u.ex (((k : ℕ) : ℂ)⁻¹ • Q ((fun i => f k (bas (Pi.single i 1))) i₀))).left) ∧ ∀ j₀, ∃ F : (Fin g → ℂ) →ₗ[ℂ] (Fin g → ℂ), (∀ x, F (Q x) = Q ((fun j x => a j • x) j₀ x)) ∧ ∀ z, u.ex (F z) = u.ex z ≫ t.act j₀) → t.Prim w w' → PELClass D a bas ρ em t := by
   intro h₁ h₂ h₃ h₄ E _ _ _ H D o _ g k J b em w w' a bas ρ ty t D' f ν Q Hm hpq hw hρ hty hgen hζ hper hpol

@@ -9,7 +9,7 @@ open NumberField Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Forma
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `F _ _ P Q R S h`. Set `c : Formalism.BasicNotions.TH.Pol P Q R S →ₗ[ℂ] ℂ` to `(MvPolynomial.aeval (fun _ => (0:ℂ))).toLinearMap`. Establish `key` using `congrArg (PiTensorProduct.lift ((MultilinearMap.mkPiAlgebra ℂ (InfinitePlace F) ℂ).compLinearMap (fun _ => c))) h`. Simplify using `[PiTensorProduct.lift.tprod, c] at key`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem tprod_one_pol_ne_zero : ∀ (F : Type) [Field F] [NumberField F] (P Q R S : ℕ),
     (PiTensorProduct.tprod ℂ fun _ : InfinitePlace F => (1 : Formalism.BasicNotions.TH.Pol P Q R S)) ≠ 0 := by

@@ -8,11 +8,11 @@ open NumberField ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.LowDa
 namespace GlobalTheory.LowDat
 
 /- English proof (translation)
-Introduce `E _ _ n hn`. Establish `hn0 : (n : 𝓞 E) ≠ 0` using `by exact_mod_cast hn.ne'`. Establish `hI : Ideal.span {(n : 𝓞 E)} ≠ 0`. Simplify `hn0` using `[Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot]`. Use `((Ideal.finite_factors hI).image (fun v : IsDedekindDomain.HeightOneSpectrum (𝓞 E) => v.asIdeal)).subset ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `𝔮 ⟨hmax, hmem⟩`. Establish `hne : 𝔮 ≠ ⊥`. Introduce `h`. Rewrite `hmem` using `[h, Ideal.mem_bot]`. Conclude with `hn0 hmem`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨⟨𝔮, hmax.isPrime, hne⟩, ?_, rfl⟩` and prove the remaining obligations. Use `show 𝔮 ∣ Ideal.span {(n : 𝓞 E)}`. Rewrite using `[Ideal.dvd_iff_le, Ideal.span_singleton_le_iff_mem]`. Conclude with `hmem`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finite_maximal_ideals_containing_natCast :
     ∀ {E : Type} [Field E] [NumberField E] (n : ℕ) (hn : 0 < n),

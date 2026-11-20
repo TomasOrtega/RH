@@ -19,15 +19,13 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.Ar.Flat.GenRes
 
 /- English proof (translation)
-Use `letI : Algebra O K := β.toAlgebra`. Use `haveI : IsDomain O := hinj.isDomain β`. Use `haveI : IsFractionRing O K := { map_units := fun y => by`. Establish `hy : β y.1 ≠ 0` using `fun h => nonZeroDivisors.ne_zero y.2 (hinj (by rw [h, map_zero]))`. Conclude with `(IsUnit.mk0 _ hy)`.
+Equip the data with the indicated structure. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 
-Use `surj := fun z => by`. Take `⟨a, b, hb, h⟩` from `hfr z`. Establish `hb0 : b ≠ 0` using `fun h0 => hb (by rw [h0, map_zero])`. Conclude with `⟨⟨a, ⟨b, mem_nonZeroDivisors_of_ne_zero hb0⟩⟩, h⟩`. Use `exists_of_eq := fun {x y} h => ⟨1, by rw [hinj h]⟩ }`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hp : IsProjOver (pullback.snd s (spMap β))` using `GlobalTheory.ProjSpace.isProjOver_pullback_snd _ hs`. Establish `hb : IsPreimmersion (spMap β)` using `IsPreimmersion.of_isLocalization (R := CommRingCat.of O) (S := K) (nonZeroDivisors O)`. Establish `hbf : Flat (spMap β)`. Rewrite using `[Flat.SpecMap_iff]`. Conclude with `RingHom.flat_algebraMap_iff.mpr (IsLocalization.flat K (nonZeroDivisors O))`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : IsPreimmersion (pullback.fst s (spMap β))` using `MorphismProperty.of_isPullback (P := @IsPreimmersion) (IsPullback.of_hasPullback _ _).flip hb`. Establish `hiso` using `GlobalTheory.isIso_stalkMap_of_flat_of_surjectiveOnStalks (pullback.fst s (spMap β))`. Use `GlobalTheory.SchemeWords.isProper_of_isProjOver hp` as an intermediate fact. Use `⟨?_, LocallyOfFiniteType.isLocallyNoetherian (pullback.snd s (spMap β)), hp⟩` and prove the remaining obligations. Establish `: ∀ x, _root_.IsReduced ((pullback s (spMap β)).presheaf.stalk x)` using `fun x => by`.
-
-Use `hiso x` as an intermediate fact. Establish `i` using `(asIso ((pullback.fst s (spMap β)).stalkMap x)).commRingCatIsoToRingEquiv`. Take `⟨_, _⟩` from `hn (pullback.fst s (spMap β) x)`. Conclude with `isReduced_of_injective i.symm i.symm.injective`. Conclude with `isReduced_of_isReduced_stalk _`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem genericFibre_closed {O K : Type} [CommRing O] [Field K] (β : O →+* K)
     (hinj : Function.Injective β) (hfr : ∀ x : K, ∃ a b : O, β b ≠ 0 ∧ x * β b = β a)
@@ -65,9 +63,9 @@ theorem genericFibre_closed {O K : Type} [CommRing O] [Field K] (β : O →+* K)
   exact isReduced_of_isReduced_stalk _
 
 /- English proof (translation)
-Use `isProper_str K M` as an intermediate fact. Use `isProper_str K r` as an intermediate fact. Establish `hfst : IsProper (pullback.fst (PSpace.str K M) (PSpace.str K r))` using `MorphismProperty.of_isPullback (P := @IsProper) (IsPullback.of_hasPullback _ _).flip inferInstance`. Establish `hfi : IsProper (f ≫ i)` using `by rw [h]; infer_instance`. Establish `hf : IsProper f` using `IsProper.of_comp f i`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨hf, ?_⟩` and prove the remaining obligations. Rewrite using `[← Category.assoc]`. Use `infer_instance`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isProper_of_closed {K : Type} [Field K] {M r : ℕ} {X X' : Scheme.{0}} (i : X ⟶ PSpace K M)
     [IsClosedImmersion i] (j : X' ⟶ pullback (PSpace.str K M) (PSpace.str K r)) [IsClosedImmersion j]
@@ -87,17 +85,15 @@ end GlobalTheory.CompanionTheory.Ar.Flat.GenRes
 namespace GlobalTheory.CompanionTheory.Ar.Flat
 
 /- English proof (translation)
-Introduce and unpack `hRes E _ _ _ H D l Xo c O _ β Y ⟨hinj, -, hfr⟩`. Take `⟨hred, hln, M, i, hi, his⟩` from `GenRes.genericFibre_closed β hinj hfr Y.X Y.s Y.proj Y.normal`. Use `⟨hln, ?_⟩` and prove the remaining obligations. Use `Y.jQ_open` as an intermediate fact. Set `U : (pullback Y.s (spMap β)).Opens` to `Y.jQ.opensRange`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hd : Dense (U : Set (pullback Y.s (spMap β) : Scheme.{0}))`. Establish `: (U : Set (pullback Y.s (spMap β) : Scheme.{0})) = Set.range Y.jQ` using `Scheme.Hom.coe_opensRange _`. Rewrite using `[this]`. Conclude with `Y.jQ_dense`. Establish `hιe : Y.jQ.isoOpensRange.inv ≫ Y.jQ = U.ι`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Iso.inv_comp_eq, Scheme.Hom.isoOpensRange_hom_ι]`. Establish `hXF : SmoothOfRelativeDimension D.dim (pullback.snd Xo.s (spMap (IntermediateField.inclusion c.le).toRingHom))`. Use `Xo.smooth` as an intermediate fact. Use `smoothOfRelativeDimension_isStableUnderBaseChange D.dim` as an intermediate fact. Conclude with `MorphismProperty.of_isPullback (P := @SmoothOfRelativeDimension D.dim) (IsPullback.of_hasPullback _ _) Xo.smooth`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hU : SmoothOfRelativeDimension D.dim (U.ι ≫ pullback.snd Y.s (spMap β))`. Rewrite using `[← hιe, Category.assoc, Y.jQ_over]`. Use `smoothOfRelativeDimension_isStableUnderBaseChange D.dim` as an intermediate fact. Conclude with `MorphismProperty.of_isPullback (P := @SmoothOfRelativeDimension D.dim) (IsPullback.of_horiz_isIso ⟨by simp⟩ : IsPullback Y.jQ.isoOpensRange.inv (Y.jQ.isoOpensRange.inv ≫ pullback.snd _ _) (pullback.snd _ _) (𝟙 _)) hXF`. Establish `hin : Geo.ResK.IsResInput M i U D.dim` using `⟨hi, hred, hd, by rw [his]; exact hU⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `haveI : CharZero c.F := inferInstance`. Take `⟨r, X', j, f, hj, hfj, hsm, hiso, hdense, hsnc⟩` from `hRes c.F M D.dim _ i U hin`. Take `⟨hp1, hp2⟩` from `GenRes.isProper_of_closed i j f hfj`. Rewrite `hp2`, `hsm`, `hsnc` using `[his]`. Use `⟨X', f, D.dim, f ⁻¹ᵁ U, (f ∣_ U) ≫ Y.jQ.isoOpensRange.inv, inferInstance, ?_, hp1, hp2, hsm, hsnc⟩` and prove the remaining obligations.
-
-Rewrite using `[Category.assoc, hιe, morphismRestrict_ι]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_resolution_genericFibre : Geo.ResK.ResKStatement → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Y : Model Xo c β), (Function.Injective β ∧ IsNoetherianRing O ∧ ∀ x : c.F, ∃ a b : O, β b ≠ 0 ∧ x * β b = β a) → IsLocallyNoetherian (pullback Y.s (spMap β)) ∧ ∃ (X' : Scheme.{0}) (f : X' ⟶ pullback Y.s (spMap β)) (d : ℕ) (W' : X'.Opens) (jW : W'.toScheme ⟶ Xo.XF c), IsIso jW ∧ jW ≫ Y.jQ = W'.ι ≫ f ∧ IsProper f ∧ IsProper (f ≫ pullback.snd Y.s (spMap β)) ∧ SmoothOfRelativeDimension d (f ≫ pullback.snd Y.s (spMap β)) ∧ Geo.ResK.HasSncCoords (f ≫ pullback.snd Y.s (spMap β)) d (W' : Set X')ᶜ := by
   rintro hRes E _ _ _ H D l Xo c O _ β Y ⟨hinj, -, hfr⟩

@@ -6,7 +6,7 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.QuoIff
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.BudgetOfSizeAndWeight
 open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions Formalism.L2.Pj Formalism.BasicNotions.TH Formalism.L2.Theta ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.FD GlobalTheory.AllWt GlobalTheory.CompHt GlobalTheory.CovTop GlobalTheory.BigTop GlobalTheory.CovHt
 /- English proof (citation)
-Apply `GlobalTheory.CovHt.BudgetPf.budget` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FBudgetOfSizeAndWeight.lean&line=317#L317)
 -/

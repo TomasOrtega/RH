@@ -29,7 +29,7 @@ section General
 variable {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E] {n : ℕ}
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Conclude with `(RingHom.map_mulVec (inclR (F := F) (Af F)) A x i).symm`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem coset_fv_mulVec (A : Matrix (Fin n) (Fin n) E) (x : Fin n → E) :
     (A.map (inclR (F := F) (Af F))) *ᵥ AdLat.fv F x = AdLat.fv F (A *ᵥ x) := by
@@ -37,7 +37,7 @@ theorem coset_fv_mulVec (A : Matrix (Fin n) (Fin n) E) (x : Fin n → E) :
   exact (RingHom.map_mulVec (inclR (F := F) (Af F)) A x i).symm
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `only [AdLat.fv, Pi.smul_apply, smul_eq_mul, Algebra.TensorProduct.tmul_mul_tmul, one_mul, mul_one]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem coset_tmul_eq (t : Af F) (x : Fin n → E) :
     (fun i => t ⊗ₜ[F] x i : Fin n → AdLat.RA F E) = (t ⊗ₜ[F] (1 : E) : AdLat.RA F E) • AdLat.fv F x := by
@@ -45,11 +45,9 @@ theorem coset_tmul_eq (t : Af F) (x : Fin n → E) :
   simp only [AdLat.fv, Pi.smul_apply, smul_eq_mul, Algebra.TensorProduct.tmul_mul_tmul, one_mul, mul_one]
 
 /- English proof (translation)
-Proceed by induction on `hw using AddSubgroup.closure_induction with`. Consider the case `mem w hw`. Take `⟨s, hs, x, hx, rfl⟩` from `hw`. Use `AddSubgroup.subset_closure ⟨t * s, fun v => mul_mem (ht v) (hs v), x, hx, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [Pi.smul_apply, smul_eq_mul, Algebra.TensorProduct.tmul_mul_tmul, one_mul]`. Consider the case `zero => rw [smul_zero]`. Conclude with `zero_mem _`. Consider the case `add w w' _ _ h h' => rw [smul_add]`. Conclude with `add_mem h h'`.
-
-Consider the case `neg w _ h => rw [smul_neg]`. Conclude with `neg_mem h`.
+Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem coset_smul_mem_hat (L : Set (Fin n → E)) (t : Af F) (ht : ∀ v, t v ∈ v.adicCompletionIntegers F)
     (w : Fin n → AdLat.RA F E) (hw : w ∈ AdLat.hat F L) :
@@ -65,11 +63,9 @@ theorem coset_smul_mem_hat (L : Set (Fin n → E)) (t : Af F) (ht : ∀ v, t v �
   | neg w _ h => rw [smul_neg]; exact neg_mem h
 
 /- English proof (translation)
-Proceed by induction on `hw using AddSubgroup.closure_induction with`. Consider the case `mem w hw`. Take `⟨s, hs, x, hx, rfl⟩` from `hw`. Rewrite using `[coset_tmul_eq, Matrix.mulVec_smul, coset_fv_mulVec]`. Conclude with `coset_smul_mem_hat L s hs _ (AdLat.Half.fv_mem_hat' L _ (hA x hx))`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `zero => rw [Matrix.mulVec_zero]`. Conclude with `zero_mem _`. Consider the case `add w w' _ _ h h' => rw [Matrix.mulVec_add]`. Conclude with `add_mem h h'`. Consider the case `neg w _ h => rw [Matrix.mulVec_neg]`.
-
-Conclude with `neg_mem h`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem coset_mulVec_mem_hat (L : Set (Fin n → E)) (A : Matrix (Fin n) (Fin n) E) (hA : ∀ x ∈ L, A *ᵥ x ∈ L)
     (w : Fin n → AdLat.RA F E) (hw : w ∈ AdLat.hat F L) :
@@ -84,13 +80,13 @@ theorem coset_mulVec_mem_hat (L : Set (Fin n → E)) (A : Matrix (Fin n) (Fin n)
   | neg w _ h => rw [Matrix.mulVec_neg]; exact neg_mem h
 
 /- English proof (translation)
-Proceed by induction on `hz using AddSubgroup.closure_induction with`. Consider the case `mem w hw`. Take `⟨s, hs, x, hx, rfl⟩` from `hw`. Take `⟨y, hy, e⟩` from `h x hx`. Use `⟨_, coset_smul_mem_hat L s hs y hy, ?_⟩` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[coset_tmul_eq, smul_comm β, Matrix.mulVec_smul, ← smul_sub, e, smul_comm]`. Consider the case `zero => exact ⟨0, zero_mem _, by simp⟩`. Consider the case `add w w' _ _ h h'`. Take `⟨y, hy, e⟩` from `h`. Take `⟨y', hy', e'⟩` from `h'`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨y + y', add_mem hy hy', ?_⟩` and prove the remaining obligations. Rewrite using `[smul_add, smul_add, Matrix.mulVec_add, ← e, ← e']`. Normalize the expressions using the abelian group laws. Consider the case `neg w _ h`. Take `⟨y, hy, e⟩` from `h`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Use `⟨-y, neg_mem hy, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_neg, smul_neg, Matrix.mulVec_neg, ← e]`. Normalize the expressions using the abelian group laws.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem coset_congr_hat (L : Set (Fin n → E)) (κ : Matrix (Fin n) (Fin n) (AdLat.RA F E)) (N : ℕ) (β : AdLat.RA F E)
     (h : ∀ x ∈ L, ∃ y ∈ AdLat.hat F L, κ *ᵥ (β • AdLat.fv F x) - β • AdLat.fv F x = N • y)
@@ -116,31 +112,29 @@ theorem coset_congr_hat (L : Set (Fin n → E)) (κ : Matrix (Fin n) (Fin n) (Ad
     abel
 
 /- English proof (translation)
-Rewrite using `[smul_comm N, ← e, smul_comm β a z, Matrix.mulVec_smul κ a, ← smul_sub, mul_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem coset_scale {R : Type} [CommRing R] (κ : Matrix (Fin n) (Fin n) R) (N : ℕ) (β c a : R) (z y : Fin n → R)
     (e : κ *ᵥ (β • a • z) - β • a • z = N • y) : (c * a) • (κ *ᵥ (β • z) - β • z) = N • c • y := by
   rw [smul_comm N, ← e, smul_comm β a z, Matrix.mulVec_smul κ a, ← smul_sub, mul_smul]
 
 /- English proof (translation)
-Rewrite using `[add_smul, e, e', smul_add]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem coset_add {R : Type} [CommRing R] (N : ℕ) (s t : R) (u y y' : Fin n → R) (e : s • u = N • y)
     (e' : t • u = N • y') : (s + t) • u = N • (y + y') := by
   rw [add_smul, e, e', smul_add]
 
 /- English proof (translation)
-Substitute `hT` using the available equality. Establish `hc : ∀ c ∈ I⁻¹, ∀ y ∈ AddSubgroup.closure {w | ∃ a : E, a ∈ I ∧ ∃ z ∈ (S : Set (Fin n → R)), w = ι a • z}, ι c • y ∈ S`. Introduce `c hc y hy`. Proceed by induction on `hy using AddSubgroup.closure_induction with`. Consider the case `mem w hw`.
+Substitute using the available equality. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Take `⟨a, ha, w, hw, rfl⟩` from `hw`. Establish `h1` using `FractionalIdeal.mul_mem_mul hc ha`. Rewrite `h1` using `[inv_mul_cancel₀ hA]`. Take `⟨b, hb⟩` from `(FractionalIdeal.mem_one_iff _).1 h1`. Rewrite using `[smul_smul, ← map_mul, ← hb]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hS b w hw`. Consider the case `zero => rw [smul_zero]`. Conclude with `zero_mem _`. Consider the case `add w w' _ _ h h' => rw [smul_add]`. Conclude with `add_mem h h'`.
+Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Consider the case `neg w _ h => rw [smul_neg]`. Conclude with `neg_mem h`. Establish `key : ∀ s ∈ I⁻¹ * I, ∃ y ∈ S, ι s • (κ *ᵥ (β • z) - β • z) = N • y`. Introduce `s hs`. Use `FractionalIdeal.mul_induction_on (C := fun s => ∃ y ∈ S, ι s • (κ *ᵥ (β • z) - β • z) = N • y) hs (fun c hc' a ha => ?_) (fun s t hs ht => ?_)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨y, hy, e⟩` from `h (ι a • z) (AddSubgroup.subset_closure ⟨a, ha, z, hz, rfl⟩)`. Use `⟨_, hc c hc' y hy, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul]`. Conclude with `coset_scale κ N β _ _ z y e`. Take `⟨y, hy, e⟩` from `hs`.
-
-Take `⟨y', hy', e'⟩` from `ht`. Conclude with `⟨y + y', add_mem hy hy', by rw [map_add]; exact coset_add N _ _ _ y y' e e'⟩`. Use `key 1 (by rw [inv_mul_cancel₀ hA]; exact FractionalIdeal.one_mem_one _)` as an intermediate fact. Rewrite `this` using `[map_one, one_smul]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem coset_unscale_ideal {E R : Type} [Field E] [NumberField E] [CommRing R] (ι : E →+* R)
     (I : FractionalIdeal (𝓞 E)⁰ E) (hA : I ≠ 0) (S : AddSubgroup (Fin n → R))
@@ -179,9 +173,9 @@ theorem coset_unscale_ideal {E R : Type} [Field E] [NumberField E] [CommRing R] 
   rwa [map_one, one_smul] at this
 
 /- English proof (translation)
-Establish `e : gram τ G x = xᵀ * G.map τ * x.map (starRingEnd ℂ)`. Use extensionality with `a b`. Simplify using `only [gram, hermC, FD.col, Matrix.of_apply, Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply, Finset.sum_mul]`. Conclude with `Finset.sum_comm`. Introduce `h0`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h1` using `congrArg Matrix.det (e.symm.trans h)`. Rewrite `h1` using `[Matrix.det_mul, Matrix.det_mul, Matrix.det_transpose, h0, zero_mul, zero_mul, Matrix.det_diagonal]`. Use `Finset.prod_ne_zero_iff.2 (fun a _ => ?_) h1.symm` and prove the remaining obligations. Unfold `sgn`. Apply the tactic sequence `split_ifs <;> simp`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem coset_det_ne_zero {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} (τ : E →+* ℂ)
     (G : Matrix (Fin r) (Fin r) E) (x : Matrix (Fin r) (Fin r) ℂ) (p : ℕ)
@@ -205,7 +199,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 variable {D : D7}
 
 /- English proof (translation)
-Unfold `archM`. Rewrite using `[map_mul, Units.val_mul, Matrix.map_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem coset_archM_mul (V : HSp D) (θ : Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ) (a b : GA D V) :
     archM V θ (a * b) = archM V θ a * archM V θ b := by
@@ -213,22 +207,22 @@ theorem coset_archM_mul (V : HSp D) (θ : Ainf D.host.F ⊗[D.host.F] D.host.E �
   rw [map_mul, Units.val_mul, Matrix.map_mul]
 
 /- English proof (translation)
-Unfold `archM`. Rewrite using `[map_one, Units.val_one, Matrix.map_one _ (map_zero _) (map_one _)]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem coset_archM_one (V : HSp D) (θ : Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ) : archM V θ 1 = 1 := by
   unfold archM
   rw [map_one, Units.val_one, Matrix.map_one _ (map_zero _) (map_one _)]
 
 /- English proof (translation)
-Establish `hU : γ ∈ Formalism.UG.UJ (D.sp.cm.sig : D.host.E →+* D.host.E) V.gram`. Express the relevant statement in the definitionally equal form `Formalism.UG.cT _ _ * _ * _ = _`. Use extensionality with `i j : 1`. Establish `h` using `hγ (Pi.single j 1) (Pi.single i 1)`. Simplify using `only [herm, Matrix.mulVec_single_one, Matrix.col_apply, Matrix.neg_apply, Matrix.transpose_apply, mul_neg, neg_mul, Finset.sum_neg_distrib, neg_inj] at h`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Pi.single_apply, cc, apply_ite (IsCMField.complexConj D.host.E), map_one, map_zero, mul_ite, ite_mul, mul_one, mul_zero, one_mul, zero_mul, Finset.sum_ite_eq', Finset.mem_univ, if_true] at h`. Simplify using `only [Matrix.mul_apply, Formalism.UG.cT, Matrix.transpose_apply, Matrix.map_apply, Finset.sum_mul]`. Use `Eq.trans ?_ h` and prove the remaining obligations. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `IsCMField.complexConj D.host.E _ * _ * _ = _`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hU' : Formalism.UG.cT (D.sp.cm.sig : D.host.E →+* D.host.E) γ.1 * V.gram * γ.1 = V.gram` using `hU`. Establish `hA : Formalism.UG.bc (inclR (AF D.host.F)) γ ∈ HR (AF D.host.F) D.sp.cm.sig V.gram`. Establish `h3 : (Formalism.UG.cT (D.sp.cm.sig : D.host.E →+* D.host.E) γ.1).map (inclR (F` using `D.host.F) (AF D.host.F)) = Formalism.UG.cT (sigR (AF D.host.F) D.sp.cm.sig) (γ.1.map (inclR (AF D.host.F))) := by`. Use extensionality with `i j : 1`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Both sides reduce to the same expression. Establish `h4` using `congrArg (fun m => m.map (inclR (F := D.host.F) (AF D.host.F))) hU'`. Simplify using `only [Matrix.map_mul, h3] at h4`. Conclude with `h4`. Use `⟨⟨_, hA⟩, ⟨γ, hU, rfl⟩, ?_, fun τ θ hθ => ?_⟩` and prove the remaining obligations.
+Both sides reduce to the same expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Use extensionality with `i j : 1`. Both sides reduce to the same expression. Use extensionality with `i j : 1`. Conclude with `hθ.1 _`.
+Both sides reduce to the same expression. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem coset_exists_rat (V : HSp D) (γ : GL (Fin V.rank) D.host.E)
     (hγ : ∀ x y, herm (-V.gramᵀ) (γ.1 *ᵥ x) (γ.1 *ᵥ y) = herm (-V.gramᵀ) x y) :
@@ -264,7 +258,7 @@ theorem coset_exists_rat (V : HSp D) (γ : GL (Fin V.rank) D.host.E)
     exact hθ.1 _
 
 /- English proof (translation)
-Take `⟨hfg, hsp, h⟩` from `comp_latG D V`. Take `⟨Λ, h1, -, -, h2⟩` from `AdLat.exists_lattice_latOf D.host.F D.host.E V.rank (latG V 1) (finHom V g) hfg hsp`. Apply `SetLike.coe_injective` to reduce the goal to its premises. Rewrite using `[(h g).2, (h g).1, ← h1, h2]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem coset_latGHat (V : HSp D) (g : GA D V) :
     latGHat V g = AdLat.hat D.host.F (latG V g : Set (Fin V.rank → D.host.E)) := by
@@ -274,7 +268,7 @@ theorem coset_latGHat (V : HSp D) (g : GA D V) :
   rw [(h g).2, (h g).1, ← h1, h2]
 
 /- English proof (translation)
-Unfold `gLat`. Simplify using `only [map_one, Units.val_one]`. Use extensionality with `w`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem coset_gLat_one (V : HSp D) : gLat V 1 = latHat V := by
   unfold gLat
@@ -283,7 +277,7 @@ theorem coset_gLat_one (V : HSp D) : gLat V 1 = latHat V := by
   simp
 
 /- English proof (translation)
-Use `coset_unscale_ideal (inclR (F := D.host.F) (Af D.host.F)) D.host.AA (comp_AA_ne_zero D) (latHat V) (fun b w hw => LevelHalf.halfVec_mem V b w hw) (latGHat V 1) ?_ κ N β h z hz` and prove the remaining obligations. Unfold `latGHat`. Rewrite using `[coset_gLat_one]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem coset_unscale (V : HSp D) (κ : Matrix (Fin V.rank) (Fin V.rank) (AdLat.RA D.host.F D.host.E)) (N : ℕ)
     (β : AdLat.RA D.host.F D.host.E)
@@ -297,11 +291,11 @@ theorem coset_unscale (V : HSp D) (κ : Matrix (Fin V.rank) (Fin V.rank) (AdLat.
   rfl
 
 /- English proof (translation)
-Take `⟨z, hz, ez⟩` from `h1 _ (hδ' _ (sub_mem (sub_mem (hδ _ hw₁) hw₂) hb))`. Use `⟨z, hz, ?_⟩` and prove the remaining obligations. Establish `hz' : (δ * g₁).1 *ᵥ z = δ.1 *ᵥ w₁ - w₂ - b`. Rewrite using `[Units.val_mul, ← Matrix.mulVec_mulVec, ez, Matrix.mulVec_mulVec, Units.mul_inv, Matrix.one_mulVec]`. Establish `hinv : ∀ x, ((δ * g₁)⁻¹).1 *ᵥ ((δ * g₁).1 *ᵥ x) = x` using `fun x => by`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Matrix.mulVec_mulVec, Units.inv_mul, Matrix.one_mulVec]`. Establish `e : g₂.1 *ᵥ v - (δ * g₁).1 *ᵥ v = N • ((δ * g₁).1 *ᵥ z)`. Rewrite using `[hz', Units.val_mul, ← Matrix.mulVec_mulVec, smul_sub, smul_sub, ← Matrix.mulVec_smul, ← e₁, ← e₂, Matrix.mulVec_sub, e₃]`. Normalize the expressions using the abelian group laws. Rewrite using `[Units.val_mul, ← Matrix.mulVec_mulVec]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities.
 
-Establish `e'` using `congrArg (fun x => ((δ * g₁)⁻¹).1 *ᵥ x) e`. Simplify `e'` using `only [Matrix.mulVec_sub, Matrix.mulVec_smul, hinv]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem coset_fin {R : Type} [CommRing R] {n : ℕ} (S T : AddSubgroup (Fin n → R)) (g₁ g₂ δ : GL (Fin n) R) (N : ℕ)
     (h1 : ∀ w ∈ T, ∃ z ∈ S, g₁.1 *ᵥ z = w) (hδ : ∀ w ∈ T, δ.1 *ᵥ w ∈ T) (hδ' : ∀ w ∈ T, (δ⁻¹).1 *ᵥ w ∈ T)
@@ -323,27 +317,25 @@ theorem coset_fin {R : Type} [CommRing R] {n : ℕ} (S T : AddSubgroup (Fin n �
   simpa only [Matrix.mulVec_sub, Matrix.mulVec_smul, hinv] using e'
 
 /- English proof (translation)
-Substitute `hr` using the available equality. Take `⟨k, x⟩` from `p`. Take `⟨hbase, hW, ⟨-, hrange⟩, -, hth, hx⟩` from `hok`. Take `⟨γ₁, hγ₁, hL₁, hm₁, hf₁⟩` from `h1`. Take `⟨γ₂, hγ₂, hL₂, hm₂, hf₂⟩` from `h2`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hΛ₁ : ((M.X k).Λ : Set (Fin V.rank → D.host.E)) = latG V (γ₁ * h)` using `hL₁.trans (Set.image_id _)`. Establish `hΛ₂ : ((M.X k).Λ : Set (Fin V.rank → D.host.E)) = latG V (γ₂ * h')` using `hL₂.trans (Set.image_id _)`. Establish `hT₁ : latGHat V (γ₁ * h) = AdLat.hat D.host.F ((M.X k).Λ : Set (Fin V.rank → D.host.E))`. Rewrite using `[coset_latGHat, hΛ₁]`. Establish `hT₂ : latGHat V (γ₂ * h') = AdLat.hat D.host.F ((M.X k).Λ : Set (Fin V.rank → D.host.E))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[coset_latGHat, hΛ₂]`. Take `⟨⟨hU, hst⟩, hhalf, -⟩` from `(hbase.gam k γ').1 hγ'`. Establish `hst'` using `((M.X k).Γ_stab _ (inv_mem hγ')).2`. Establish `hG : (M.X k).Gm = -V.gramᵀ` using `(hW k).1`. Rewrite `hU` using `[hG]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨δ, hδ, hδf, hδa⟩` from `coset_exists_rat V γ' hU`. Use `⟨γ₂⁻¹ * δ * γ₁, mul_mem (mul_mem (inv_mem hγ₂) hδ) hγ₁, (δ * (γ₁ * h))⁻¹ * (γ₂ * h'), ?_, by group⟩` and prove the remaining obligations. Use `(hK _).2 ⟨((GlobalTheory.T.adelicUnitary_exists_with_prescribed_parts D V).2 (M.X k).Ψ (th k) (M.X k).cmType (hth k)).1 _ fun τ => ?_, fun b hb z hz => ?_⟩` and prove the remaining obligations. Establish `e₁ : mat x τ = archM V (th k τ) (γ₁ * h) * x₀ τ.1` using `hf₁ τ`. Establish `e₂ : γ'.1.map τ.1 * mat x τ = archM V (th k τ) (γ₂ * h') * x₀ τ.1` using `hf₂ τ`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdet` using `coset_det_ne_zero _ _ _ _ (hx k τ.1 τ.2)`. Establish `hu : IsUnit (x₀ τ.1)` using `(Matrix.isUnit_iff_isUnit_det _).2 (isUnit_iff_ne_zero.2 hdet)`. Rewrite `e₂` using `[e₁, ← hδa τ.1 _ (hth k τ), ← mul_assoc, ← coset_archM_mul]`. Rewrite using `[coset_archM_mul, ← hu.mul_right_cancel e₂, ← coset_archM_mul, inv_mul_cancel, coset_archM_one]`. Establish `hδi : ((finHom V δ)⁻¹).1 = (γ'⁻¹).1.map (inclR (Af D.host.F))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Apply `Units.inv_eq_of_mul_eq_one_right` to reduce the goal to its premises. Rewrite using `[hδf, ← Matrix.map_mul, Units.mul_inv, Matrix.map_one _ (map_zero _) (map_one _)]`. Use `coset_unscale V _ l.M (inclR (F := D.host.F) (Af D.host.F) (b : D.host.E)) (fun z hz => ?_) z hz` and prove the remaining obligations. Rewrite `hz`, the goal using `[coset_latGHat]`. Use `coset_congr_hat _ _ _ _ (fun v hv => ?_) z hz` and prove the remaining obligations.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hv' : v ∈ LinearMap.range io` using `by rw [hrange]; exact hv`. Take `⟨a, rfl⟩` from `hv'`. Establish `hba : b • a ∈ l.Mb.map (H.bar : 𝓞 D.host.E →+* 𝓞 D.host.E) • (⊤ : Submodule (𝓞 D.host.E) Dw.La)` using `Submodule.smul_mem_smul hb Submodule.mem_top`. Take `⟨w₁, hw₁, e₁⟩` from `hm₁ _ hba`. Take `⟨w₂, hw₂, e₂⟩` from `hm₂ _ hba`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨c, e₃⟩` from `hhalf (F.t k (b • a)) (by`. Rewrite using `[map_smul]`. Conclude with `Submodule.smul_mem_smul hb Submodule.mem_top)`. Establish `ev : inclR (F` using `D.host.F) (Af D.host.F) (b : D.host.E) • AdLat.fv D.host.F (io a) = AdLat.fv D.host.F (io (b • a)) := by`. Rewrite using `[map_smul]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `i`. Conclude with `(map_mul (inclR (F := D.host.F) (Af D.host.F)) _ _).symm`. Rewrite using `[ev, map_mul, map_inv, map_mul]`. Rewrite `hw₁` using `[hT₁]`. Rewrite `hw₂` using `[hT₂]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `coset_fin _ (AdLat.hat D.host.F ((M.X k).Λ : Set (Fin V.rank → D.host.E))) _ _ _ l.M (fun w hw => ?_) (fun w hw => ?_) (fun w hw => ?_) (AdLat.fv D.host.F (M.φ k (F.t k (b • a)) : Fin V.rank → D.host.E)) _ w₁ w₂ (AdLat.fv D.host.F (M.φ k c : Fin V.rank → D.host.E)) hw₁ hw₂ (AdLat …` and prove the remaining obligations. Rewrite `hw` using `[← hT₁, ← SetLike.mem_coe, ((comp_latG D V).2.2 _).2]`. Conclude with `hw`. Rewrite using `[hδf]`. Conclude with `coset_mulVec_mem_hat _ _ (fun y hy => (hst y).1 hy) w hw`.
-
-Rewrite using `[hδi]`. Conclude with `coset_mulVec_mem_hat _ _ (fun y hy => (hst' y).1 hy) w hw`. Rewrite using `[hδf, coset_fv_mulVec, e₃, AdLat.cap_fv_add, AdLat.cap_fv_nsmul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coset_of_markSpec (V : HSp D) {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host D.host.E} {Dw : Datum H} {l : Level H}
     {Xo : Moduli Dw l} {σ' : KA l →+* ℂ} {g : ℕ} {ty : Fin g → (D.host.E →+* ℂ)} (F : FamilyUnif Xo σ' ty)
@@ -414,7 +406,7 @@ theorem coset_of_markSpec (V : HSp D) {H : ReciprocityTheory.ChartRestriction.G.
     · rw [hδf, coset_fv_mulVec, e₃, AdLat.cap_fv_add, AdLat.cap_fv_nsmul]
 
 /- English proof (translation)
-Introduce `D Q hQ j hj _ _ _ F _ _ M io th x₀ hok Kf hK h h' p γ' hγ' h1 h2` and use `coset_of_markSpec (D.sp.W j) F (D.sp.W_rank j hj.1 hj.2) M io th x₀ hok Kf (LevelHalf.kfHalf_record D Q hQ j Kf hK) h h' p γ' hγ' h1 h2`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem double_coset_of_markSpec : ∀ (D : D7) (Q : Par D), Q.Pins → ∀ (j : ℕ) (hj : InR D j) (σ' : KA Q.l →+* ℂ) (g : ℕ) (ty : Fin g → (D.host.E →+* ℂ)) (F : FamilyUnif (Q.Xo j) σ' ty), σ' (baseKA Q.l).ρ = Q.H.rt0 → IsTypeFn Q.H (Q.Dw j).p (Q.Dw j).q ty → ∀ (M : GlobalTheory.FrameUnif.ModelsOf F D.R.r) (io : (Q.Dw j).La →ₗ[𝓞 D.host.E] (Fin (D.sp.W j).rank → D.host.E)) (th : ∀ k, (M.X k).Ψ → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ)) (x₀ : (D.host.E →+* ℂ) → Matrix (Fin D.R.r) (Fin D.R.r) ℂ), RecOK M (D.sp.W j) (D.sp.W_rank j hj.1 hj.2) io th x₀ → ∀ Kf : Subgroup (GA D (D.sp.W j)), IsLevelK (D.sp.W j) (D.host.g 0 * D.host.g 1) Kf → ∀ (h h' : GA D (D.sp.W j)) (p : Σ k, Frame (M.X k).Ψ D.R.r) (γ' : GL (Fin D.R.r) D.host.E), γ' ∈ (M.X p.1).Γ → MarkSpec M (D.sp.W j) (D.sp.W_rank j hj.1 hj.2) io th x₀ h p → MarkSpec M (D.sp.W j) (D.sp.W_rank j hj.1 hj.2) io th x₀ h' ⟨p.1, lact γ' p.2⟩ → ∃ γ ∈ GQ (D.sp.W j), ∃ k ∈ Kf, h' = γ * h * k :=
   fun D Q hQ j hj _ _ _ F _ _ M io th x₀ hok Kf hK h h' p γ' hγ' h1 h2 =>

@@ -9,7 +9,7 @@ open scoped SchwartzMap ContDiff
 variable {A B : Type} [NormedAddCommGroup A] [NormedSpace ℝ A] [NormedAddCommGroup B] [NormedSpace ℝ B]
 
 /- English proof (translation)
-Rewrite using `[p.iteratedFDeriv_comp_right (φ.smooth ⊤) _ (by exact_mod_cast le_top)]`. Simplify using `using ContinuousMultilinearMap.norm_compContinuousLinearMap_le (iteratedFDeriv ℝ i φ (p x)) (fun _ => p)`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem norm_iter_comp {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ E] (p : E →L[ℝ] A) (φ : 𝓢(A, ℂ)) (i : ℕ) (x : E) :
     ‖iteratedFDeriv ℝ i (⇑φ ∘ p) x‖ ≤ ‖iteratedFDeriv ℝ i φ (p x)‖ * ‖p‖ ^ i := by
@@ -17,9 +17,9 @@ theorem norm_iter_comp {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ E] (p 
   simpa using ContinuousMultilinearMap.norm_compContinuousLinearMap_le (iteratedFDeriv ℝ i φ (p x)) (fun _ => p)
 
 /- English proof (translation)
-Establish `h` using `WithLp.prod_norm_sq_eq_of_L2 x`. Establish `h1` using `norm_nonneg x.fst`. Establish `h2` using `norm_nonneg x.snd`. Establish `h3 : ‖x‖ ≤ ‖x.fst‖ + ‖x.snd‖`. Use `abs_le_of_sq_le_sq' ?_ (by positivity) |>.2` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use polynomial arithmetic with `[mul_nonneg h1 h2]`. Express the relevant statement in the definitionally equal form `‖x‖ ≤ (1 + ‖x.fst‖) * (1 + ‖x.snd‖)`. Use polynomial arithmetic with `[mul_nonneg h1 h2]`.
+Use the polynomial consequences of the given equalities and inequalities. Express the relevant assertion in an equivalent form by its definition. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem norm_le_prod (x : WithLp 2 (A × B)) :
     ‖x‖ ≤ (1 + ‖WithLp.fstL 2 ℝ A B x‖) * (1 + ‖WithLp.sndL 2 ℝ A B x‖) := by

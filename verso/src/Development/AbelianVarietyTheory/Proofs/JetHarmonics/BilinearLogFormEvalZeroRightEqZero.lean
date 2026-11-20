@@ -23,7 +23,7 @@ open GlobalTheory.TwistCheck (ev_bilL cc_log bilL_mixed balanced_iff)
 variable {S : Type} [CommRing S] {d : ℕ}
 
 /- English proof (translation)
-Introduce `j i`. Use `fin_cases j`. Conclude with `ha i`. Conclude with `hb i`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem cz2 {n : ℕ} {a b : Pt S n d} (ha : ∀ i, constantCoeff (a i) = 0) (hb : ∀ i, constantCoeff (b i) = 0) :
     CZ (![a, b] : Fin 2 → Pt S n d) := by
@@ -33,7 +33,7 @@ theorem cz2 {n : ℕ} {a b : Pt S n d} (ha : ∀ i, constantCoeff (a i) = 0) (hb
   · exact hb i
 
 /- English proof (translation)
-Rewrite using `[← coeff_zero_eq_constantCoeff_apply, coeff_pderiv, coeff_pderiv, zero_add]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem coeff_mixed (g : PS S 2 d) (i l : Fin d) :
     coeff (Finsupp.single ((0 : Fin 2), i) 1 + Finsupp.single ((1 : Fin 2), l) 1) g =
@@ -44,7 +44,7 @@ theorem coeff_mixed (g : PS S 2 d) (i l : Fin d) :
 variable [Algebra ℚ S]
 
 /- English proof (translation)
-Establish `e : (![0] : Fin 1 → Pt S n d) = fun _ _ => 0`. Use function extensionality and compare the values at `j c`. Use `fin_cases j`. Both sides reduce to the same expression. Rewrite using `[e, ev_zeroFam, cc_log, map_zero]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ev_zero_log {n : ℕ} (G : FGLaw S d) (i : Fin d) : ev (n := n) ![0] (logOf G i) = 0 := by
   have e : (![0] : Fin 1 → Pt S n d) = fun _ _ => 0 := by
@@ -57,21 +57,21 @@ Simplify using the standard rewrite rules.
 theorem cz0 {n : ℕ} (i : Fin d) : constantCoeff ((0 : Pt S n d) i) = 0 := by simp
 
 /- English proof (translation)
-Rewrite using `[ev_bilL G c (cz2 cz0 (FBMap.cz_pt _))]`. Simplify using `[ev_zero_log]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem bilinearLogForm_eval_zero_left_eq_zero (G : FGLaw S d) (c : Fin d → Fin d → S) : ev (n := 1) ![0, pt S d 0] (bilL G c) = 0 := by
   rw [ev_bilL G c (cz2 cz0 (FBMap.cz_pt _))]
   simp [ev_zero_log]
 
 /- English proof (translation)
-Rewrite using `[ev_bilL G c (cz2 (FBMap.cz_pt _) cz0)]`. Simplify using `[ev_zero_log]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem bilinearLogForm_eval_zero_right_eq_zero (G : FGLaw S d) (c : Fin d → Fin d → S) : ev (n := 1) ![pt S d 0, 0] (bilL G c) = 0 := by
   rw [ev_bilL G c (cz2 (FBMap.cz_pt _) cz0)]
   simp [ev_zero_log]
 
 /- English proof (translation)
-Rewrite using `[ev_bilL G c (cz2 (CIndFrFix2c.constantCoeff_add_first_second G) (FBMap.cz_pt _)), ev_bilL G c (cz2 (FBMap.cz_pt _) (FBMap.cz_pt _)), ev_bilL G c (cz2 (FBMap.cz_pt _) (FBMap.cz_pt _))]`. Simplify using `only [Matrix.cons_val_zero, Matrix.cons_val_one, CIndFrFix2c.formal_log_add_first_two, add_mul, mul_add, Finset.sum_add_distrib]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem bilL_add_left (G : FGLaw S d) (c : Fin d → Fin d → S) :
     ev (n := 3) ![G.add (pt S d 0) (pt S d 1), pt S d 2] (bilL G c) =
@@ -82,7 +82,7 @@ theorem bilL_add_left (G : FGLaw S d) (c : Fin d → Fin d → S) :
     Finset.sum_add_distrib]
 
 /- English proof (translation)
-Rewrite using `[ev_bilL G c (cz2 (FBMap.cz_pt _) (CIndFrFix2b.constantCoeff_add_second_third G)), ev_bilL G c (cz2 (FBMap.cz_pt _) (FBMap.cz_pt _)), ev_bilL G c (cz2 (FBMap.cz_pt _) (FBMap.cz_pt _))]`. Simplify using `only [Matrix.cons_val_zero, Matrix.cons_val_one, CIndFrFix2b.formal_log_add_last_two, add_mul, mul_add, Finset.sum_add_distrib]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem bilL_add_right (G : FGLaw S d) (c : Fin d → Fin d → S) :
     ev (n := 3) ![pt S d 0, G.add (pt S d 1) (pt S d 2)] (bilL G c) =
@@ -93,7 +93,7 @@ theorem bilL_add_right (G : FGLaw S d) (c : Fin d → Fin d → S) :
     Finset.sum_add_distrib]
 
 /- English proof (translation)
-Rewrite using `[ev_bilL G c (cz2 (FBMap.cz_pt _) (FBMap.cz_pt _))]`. Simplify using `only [Matrix.cons_val_zero, Matrix.cons_val_one, bilL, lg, smul_eq_C_mul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[hs l i, mul_comm (ev _ _)]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem bilL_swap (G : FGLaw S d) (c : Fin d → Fin d → S) (hs : ∀ i l, c i l = c l i) :
     ev (n := 2) ![pt S d 1, pt S d 0] (bilL G c) = bilL G c := by
@@ -104,17 +104,17 @@ theorem bilL_swap (G : FGLaw S d) (c : Fin d → Fin d → S) (hs : ∀ i l, c i
   rw [hs l i, mul_comm (ev _ _)]
 
 /- English proof (translation)
-Introduce `R _ d O _ _ k _ _ _ B h hc β hs hb`. Set `G : FGLaw k d` to `FBMap.mapG (algebraMap R k) B.G`. Set `A : OAct O G` to `FBMap.mapA (algebraMap R k) B.A`. Establish `hF : B.FK k = G.F` using `rfl`. Establish `hA : ∀ a, B.actK k a = A.act a` using `fun _ => rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `p {n : ℕ} (j : Fin n)` using `FBMap.cz_pt (R := k) (d := d) j`. Establish `q (a : O) (j : Fin 2)` using `FBMap.cz_comp1 (A.act a) (A.const a) (pt k d j) (p j)`. Use `⟨h - bilL G β, ⟨?_, ?_, ?_, ?_, ?_, fun a => ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[ev_sub (cz2 cz0 (p _)), hc.ax0, bilinearLogForm_eval_zero_left_eq_zero G β, sub_zero]`. Rewrite using `[ev_sub (cz2 (p _) cz0), hc.ax1, bilinearLogForm_eval_zero_right_eq_zero G β, sub_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hc.ph1, hF, ev_sub (cz2 (p _) (p _)), ev_sub (cz2 (p _) (p _)), ev_sub (cz2 (CIndFrFix2c.constantCoeff_add_first_second G) (p _)), bilL_add_left G β]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hc.ph2, hF, ev_sub (cz2 (p _) (p _)), ev_sub (cz2 (p _) (p _)), ev_sub (cz2 (p _) (CIndFrFix2b.constantCoeff_add_second_third G)), bilL_add_right G β]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hc.sy, ev_sub (cz2 (p _) (p _)), bilL_swap G β (fun i l => congrFun (congrFun hs l) i)]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Establish `hbal` using `(balanced_iff G A a (star a) β).1 (hb a)`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Rewrite using `[hc.ad a, hA, hA, ev_sub (cz2 (q _ _) (p _)), ev_sub (cz2 (p _) (q _ _)), hbal]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Use function extensionality and compare the values at `i l`. Use `coeff_mixed (bilL G β) i l` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Rewrite `this` using `[bilL_mixed G β]`. Simplify using `only [bilinPart, map_sub, this, Matrix.sub_apply]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem canon_sub_bilin : ∀ (R : Type) [CommRing R] (d : ℕ) (O : Type) [CommRing O] [StarRing O] (k : Type) [CommRing k] [Algebra ℚ k] [Algebra R k] (B : FB R d O) (h : PS k 2 d), B.IsCanonGauge k h → ∀ β : Matrix (Fin d) (Fin d) k, βᵀ = β → (∀ a : O, (dAct k B a)ᵀ * β = β * dAct k B (star a)) → ∃ h' : PS k 2 d, B.IsCanonGauge k h' ∧ bilinPart k h' = bilinPart k h - β := by
   intro R _ d O _ _ k _ _ _ B h hc β hs hb

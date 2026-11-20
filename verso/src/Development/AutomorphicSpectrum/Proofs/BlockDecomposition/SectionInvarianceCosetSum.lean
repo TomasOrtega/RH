@@ -7,15 +7,15 @@ namespace GlobalTheory.CompanionTheory.RgEisCross
 open PositivityTheory.RgEis in
 
 /- English proof (translation)
-Introduce `hSt G _ W _ _ _ Γ K Q P c ρ ξ lam Λ s w Ms hPQ hξ hΛ hsec hMs hconv hre g`. Use `set f : G → W := fun x => Complex.exp (Λ x + s * ξ x) • sec K P c ρ x w with hf`. Establish `hfinv : ∀ γ ∈ Γ, γ ∈ P → ∀ x, f (γ * x) = f x`. Introduce `γ hγ hP x`. Simplify using `only [hf]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hΛ γ hγ hP x, hξ γ hγ (hPQ hP) x, hsec γ hγ hP x]`. Establish `hnorm : ∀ x, ‖f x‖ ≤ Ms * Real.exp (lam x)`. Introduce `x`. Simplify using `only [hf]`. Rewrite using `[norm_smul, Complex.norm_exp, hre x, mul_comm (Real.exp _)]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `mul_le_mul_of_nonneg_right (hMs x) (Real.exp_pos _).le`. Establish `hsum : Summable fun q : Cos P Γ => ‖f (rep q * g)‖` using `Summable.of_nonneg_of_le (fun _ => norm_nonneg _) (fun q => hnorm _) ((hconv g).mul_left Ms)`. Take `⟨-, -, hstage⟩` from `hSt G W P (Γ ⊓ Q) Γ f inf_le_left (fun γ hγ hP => ⟨hγ, hPQ hP⟩) hfinv g hsum`. Establish `hR : eis Γ K P c ρ (fun x => Λ x + s * ξ x) g w = ∑' q : Cos P Γ, f (rep q * g)` using `rfl`. Rewrite using `[hR, hstage]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Unfold `eis`. Use `tsum_congr fun r => ?_` and prove the remaining obligations. Rewrite using `[← tsum_const_smul'']`. Use `tsum_congr fun q => ?_` and prove the remaining obligations. Establish `hq : rep q ∈ Γ ⊓ Q` using `(Quotient.out q).2`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [hf]`. Rewrite using `[hξ _ (Subgroup.mem_inf.mp hq).1 (Subgroup.mem_inf.mp hq).2, Complex.exp_add, smul_smul, mul_comm]`.
+A detailed English derivation is pending.
 -/
 theorem stage_eis : PositivityTheory.RgEis.PiLocalization₂ → ∀ (G : Type) [Group G] (W : Type) [NormedAddCommGroup W] [NormedSpace ℂ W] [CompleteSpace W]
     (Γ K Q P : Subgroup G) (c : G → ℂ) (ρ : K →* (W →L[ℂ] W)) (ξ lam : G → ℝ) (Λ : G → ℂ) (s : ℂ) (w : W) (Ms : ℝ),

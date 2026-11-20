@@ -27,7 +27,7 @@ open GlobalTheory.SiegelPullComp GlobalTheory.SiegelRingChange
 variable {h k : ℕ}
 
 /- English proof (translation)
-The claim follows from `IsLocalRing.of_isUnit_or_isUnit_one_sub_self fun a => by simp only [TrivSqZeroExt.isUnit_iff_isUnit_fst, TrivSqZeroExt.fst_sub, TrivSqZeroExt.fst_one] exact IsLocalRing.isUnit_or_isUnit_one_sub_self _`.
+A detailed English derivation is pending.
 -/
 theorem isLocalRing_tsze (K : Type) [Field K] (r : ℕ) : IsLocalRing (TrivSqZeroExt K (Fin r → K)) :=
   IsLocalRing.of_isUnit_or_isUnit_one_sub_self fun a => by
@@ -35,16 +35,16 @@ theorem isLocalRing_tsze (K : Type) [Field K] (r : ℕ) : IsLocalRing (TrivSqZer
     exact IsLocalRing.isUnit_or_isUnit_one_sub_self _
 
 /- English proof (translation)
-The claim follows from `haveI : Module.Finite K (TrivSqZeroExt K (Fin r → K)) := inferInstanceAs (Module.Finite K (K × (Fin r → K))) IsArtinianRing.of_finite K _`.
+A detailed English derivation is pending.
 -/
 theorem isArtinianRing_tsze (K : Type) [Field K] (r : ℕ) : IsArtinianRing (TrivSqZeroExt K (Fin r → K)) :=
   haveI : Module.Finite K (TrivSqZeroExt K (Fin r → K)) := inferInstanceAs (Module.Finite K (K × (Fin r → K)))
   IsArtinianRing.of_finite K _
 
 /- English proof (translation)
-Establish `e : f ≫ s = s' ≫ spMap (RingHom.id B)`. Rewrite using `[hf]`. Simplify using `[spMap]`. Establish `H` using `siegPre_pull_ringChange h k B B ζ ζ (RingHom.id B) S S' s s' f rfl e`. Take `⟨c', hc'⟩` from `H.1 c`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨c', hc', H.2.1 c c' hc'⟩`.
+Supply the required witnesses or components.
 -/
 theorem pull_exists {B : Type} [CommRing B] {ζ : B} {S S' : Scheme.{0}} {s : S ⟶ Sp B} {s' : S' ⟶ Sp B}
     (f : S' ⟶ S) (hf : f ≫ s = s') (c : SiegPre h k ζ s) :
@@ -57,14 +57,14 @@ theorem pull_exists {B : Type} [CommRing B] {ζ : B} {S S' : Scheme.{0}} {s : S 
   exact ⟨c', hc', H.2.1 c c' hc'⟩
 
 /- English proof (translation)
-The claim follows from `pb_cancel m (by rw [Category.comp_id]; exact pb_id c)`.
+A detailed English derivation is pending.
 -/
 theorem pb_symm {B B' : Type} [CommRing B] [CommRing B'] {ζ : B} {ζ' : B'} {S : Scheme.{0}} {s : S ⟶ Sp B}
     {s' : S ⟶ Sp B'} {c : SiegPre h k ζ s} {c' : SiegPre h k ζ' s'} (m : SiegPB c' c (𝟙 S)) : SiegPB c c' (𝟙 S) :=
   pb_cancel m (by rw [Category.comp_id]; exact pb_id c)
 
 /- English proof (translation)
-Unfold `constPt`. Simplify using `only [Category.assoc]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem constPt_comp {K : Type} [Field K] {X Y : Scheme.{0}} (x : Sp (DualNumber K) ⟶ X) (z : X ⟶ Y) :
     constPt (x ≫ z) = constPt x ≫ z := by
@@ -72,7 +72,7 @@ theorem constPt_comp {K : Type} [Field K] {X Y : Scheme.{0}} (x : Sp (DualNumber
   simp only [Category.assoc]
 
 /- English proof (translation)
-Rewrite using `[← spMap_comp']`. Apply the tactic sequence `congr 1 <;> exact RingHom.ext fun z => (TrivSqZeroExt.map L).commutes (β z)`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem base_map {K o V W : Type} [Field K] [CommRing o] [AddCommGroup V] [Module K V] [Module Kᵐᵒᵖ V]
     [IsCentralScalar K V] [AddCommGroup W] [Module K W] [Module Kᵐᵒᵖ W] [IsCentralScalar K W] (β : o →+* K)
@@ -82,7 +82,7 @@ theorem base_map {K o V W : Type} [Field K] [CommRing o] [AddCommGroup V] [Modul
   congr 1 <;> exact RingHom.ext fun z => (TrivSqZeroExt.map L).commutes (β z)
 
 /- English proof (translation)
-Rewrite using `[← spMap_comp']`. Apply the tactic sequence `congr 1 <;> exact RingHom.ext fun z => (TrivSqZeroExt.fstHom K K V).commutes (β z)`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem fst_base {K o V : Type} [Field K] [CommRing o] [AddCommGroup V] [Module K V] [Module Kᵐᵒᵖ V]
     [IsCentralScalar K V] (β : o →+* K) :
@@ -91,7 +91,7 @@ theorem fst_base {K o V : Type} [Field K] [CommRing o] [AddCommGroup V] [Module 
   congr 1 <;> exact RingHom.ext fun z => (TrivSqZeroExt.fstHom K K V).commutes (β z)
 
 /- English proof (translation)
-Unfold `constPt`. Rewrite using `[Category.assoc, Category.assoc, hx, fst_base, ← spMap_comp']`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem constPt_base {K o : Type} [Field K] [CommRing o] {X : Scheme.{0}} (β : o →+* K) (x : Sp (DualNumber K) ⟶ X)
     (s : X ⟶ Sp o) (hx : x ≫ s = spMap ((algebraMap K (DualNumber K)).comp β)) :
@@ -100,7 +100,7 @@ theorem constPt_base {K o : Type} [Field K] [CommRing o] {X : Scheme.{0}} (β : 
   rw [Category.assoc, Category.assoc, hx, fst_base, ← spMap_comp']
 
 /- English proof (translation)
-Rewrite using `[← spMap_comp']`. Apply the tactic sequence `congr 1 <;> exact RingHom.ext fun x => TrivSqZeroExt.ext (by simp [dirMap]) (by simp [dirMap])`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem dirMap_comp {K : Type} [Field K] {r m : ℕ} (mu : (Fin m → K) →ₗ[K] K) (L : (Fin r → K) →ₗ[K] (Fin m → K)) :
     spMap (dirMap (mu ∘ₗ L)) = spMap (dirMap mu) ≫ spMap (TrivSqZeroExt.map L).toRingHom := by
@@ -121,9 +121,9 @@ def incl (K : Type) [Field K] (d : ℕ) : (Fin d → K) →ₗ[K] (Fin (d + 1) �
     refine Fin.lastCases ?_ (fun j => ?_) i <;> simp
 
 /- English proof (translation)
-Use `⟨fun v w hvw => ?_, fun p => ⟨Fin.snoc p.1 p.2, ?_⟩⟩` and prove the remaining obligations. Establish `h1` using `congrArg Prod.fst hvw`. Establish `h2` using `congrArg Prod.snd hvw`. Simplify using `only [LinearMap.prod_apply, Pi.prod] at h1 h2`. Use function extensionality and compare the values at `i`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `Fin.lastCases ?_ (fun j => ?_) i` and prove the remaining obligations. Conclude with `h2`. Conclude with `congrFun h1 j`. Apply the tactic sequence `ext j <;> simp [drop, lastC]`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem bij_drop_last (K : Type) [Field K] (d : ℕ) : Function.Bijective ((drop K d).prod (lastC K d)) := by
   refine ⟨fun v w hvw => ?_, fun p => ⟨Fin.snoc p.1 p.2, ?_⟩⟩
@@ -137,9 +137,9 @@ theorem bij_drop_last (K : Type) [Field K] (d : ℕ) : Function.Bijective ((drop
   · ext j <;> simp [drop, lastC]
 
 /- English proof (translation)
-Use `LinearMap.ext fun v => ?_` and prove the remaining obligations. Establish `hv : v = incl K d (drop K d v) + v (Fin.last d) • Pi.single (Fin.last d) 1`. Use function extensionality and compare the values at `i`. Use `Fin.lastCases ?_ (fun j => ?_) i` and prove the remaining obligations. Simplify using `[incl]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `[incl, drop, Pi.single_apply, Fin.castSucc_ne_last]`. Use `conv_lhs => rw [hv]`. Simplify using `[lastC, mul_comm]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem lam_decomp (K : Type) [Field K] (d : ℕ) (lam : (Fin (d + 1) → K) →ₗ[K] K) :
     lam = (lam ∘ₗ incl K d) ∘ₗ drop K d + lam (Pi.single (Fin.last d) 1) • lastC K d := by
@@ -153,31 +153,29 @@ theorem lam_decomp (K : Type) [Field K] (d : ℕ) (lam : (Fin (d + 1) → K) →
   simp [lastC, mul_comm]
 
 /- English proof (translation)
-Introduce `g n hg hn hodd F K _ _ β₀ c hc`. Take `⟨c₀, hc₀, hc₀p⟩` from `pull_exists (spMap (TrivSqZeroExt.fstHom K K K).toRingHom) (fst_base β₀) c`. Take `⟨x₀, hx₀s, hx₀⟩` from `GlobalTheory.T.siegel_family_classifies_principal_algClosed g n hg hn hodd F K β₀ c₀ (hc₀p hc)`. Take `⟨y, hy₀, hys, hyinj⟩` from `GlobalTheory.T.exists_firstOrder_tangentPoint_smooth F.X F.s (g * (g + 1) / 2) F.smooth K β₀ x₀ hx₀s`. Take `⟨cy, hcy, hcyp⟩` from `pull_exists y hys F.univ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `h0y : SiegPB c₀ cy (spMap (TrivSqZeroExt.fstHom K K (Fin (g * (g + 1) / 2) → K)).toRingHom)` using `pb_cancel hcy (by rw [hy₀]; exact hx₀)`. Establish `hsq` using `GlobalTheory.T.trivial_square_zero_extension_pullback K (Fin (g * (g + 1) / 2 + 1) → K) (Fin (g * (g + 1) / 2) → K) K (drop K _) (lastC K _) (bij_drop_last K _)`. Set `β : CommRingCat.of (cycAway n) ⟶ CommRingCat.of (TrivSqZeroExt K (Fin (g * (g + 1) / 2 + 1) → K))` to `CommRingCat.ofHom ((algebraMap K (TrivSqZeroExt K (Fin (g * (g + 1) / 2 + 1) → K))).comp β₀)`. Take `⟨c₁, hc₁, hc₁p⟩` from `pull_exists (𝟙 _) (s' := Spec.map (CommRingCat.ofHom (TrivSqZeroExt.map (drop K (g * (g + 1) / 2))).toRingHom) ≫ Spec.map β) (by rw [Category.id_comp]; exact (base_map β₀ _).symm) cy`. Take `⟨c₂, hc₂, hc₂p⟩` from `pull_exists (𝟙 _) (s' := Spec.map (CommRingCat.ofHom (TrivSqZeroExt.map (lastC K (g * (g + 1) / 2))).toRingHom) ≫ Spec.map β) (by rw [Category.id_comp]; exact (base_map β₀ _).symm) c`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨c₀', hc₀', -⟩` from `pull_exists (𝟙 _) (s' := Spec.map (CommRingCat.ofHom (TrivSqZeroExt.fstHom K K (Fin (g * (g + 1) / 2) → K)).toRingHom) ≫ Spec.map (CommRingCat.ofHom (TrivSqZeroExt.map (drop K (g * (g + 1) / 2))).toRingHom) ≫ Spec.map β) (by`. Rewrite using `[Category.id_comp]`. Conclude with `((congrArg (spMap (TrivSqZeroExt.fstHom K K (Fin (g * (g + 1) / 2) → K)).toRingHom ≫ ·) (base_map β₀ (drop K _))).trans (fst_base β₀)).symm) c₀`. Establish `h01 : SiegPB c₀' c₁ (spMap (TrivSqZeroExt.fstHom K K (Fin (g * (g + 1) / 2) → K)).toRingHom)`. Use `pb_comp (pb_comp (pb_symm hc₁) h0y) hc₀'` as an intermediate fact.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `this` using `[Category.comp_id, Category.id_comp]`. Then use the resulting hypothesis. Establish `h02 : SiegPB c₀' c₂ (spMap (TrivSqZeroExt.fstHom K K K).toRingHom)`. Use `pb_comp (pb_comp (pb_symm hc₂) hc₀) hc₀'` as an intermediate fact. Rewrite `this` using `[Category.comp_id, Category.id_comp]`. Then use the resulting hypothesis. Take `⟨G, hGp, hG1, hG2⟩` from `GlobalTheory.T.exists_principalSiegelObject_glue_artinFibreProduct g n hn hodd _ _ (CommRingCat.of (DualNumber K)) (CommRingCat.of K) _ _ _ _ hsq (isLocalRing_tsze K _) (isArtinianRing_tsze K _) (fun a => ⟨TrivSqZeroExt.inl a, rfl⟩) (fun a => ⟨TrivSqZeroExt.inl a, rfl⟩) β c₁ c₂ ( …`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hGy : SiegPB cy G (spMap (TrivSqZeroExt.map (drop K (g * (g + 1) / 2))).toRingHom)`. Use `pb_comp hG1 (pb_symm hc₁)` as an intermediate fact. Rewrite `this` using `[Category.id_comp]`. Then use the resulting hypothesis. Establish `hGc : SiegPB c G (spMap (dirMap (lastC K (g * (g + 1) / 2))))`. Use `pb_comp hG2 (pb_symm hc₂)` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `this` using `[Category.id_comp]`. Then use the resulting hypothesis. Establish `htb` using `GlobalTheory.T.siegelFamily_tangentBound_nonconstant g n hg hn hodd K (g * (g + 1) / 2 + 1) β₀ G hGp`. Choose the witnesses or unpack the hypotheses as in `⟨lam, c', h1, h2, hlam⟩ : ∃ (lam : (Fin (g * (g + 1) / 2 + 1) → K) →ₗ[K] K) (c' : SiegPre g n (zetaAway n) (spMap ((algebraMap K (DualNumber K)).comp β₀))), SiegPB c' G (spMap (dirMap lam)) ∧ SiegPB c' G (constPt (spMap (dirMap lam))) ∧ lam ≠ 0 := by`. Assume the negation of the conclusion as `hne`. Use `push_neg at hne`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Use `htb fun lam c' h1 h2 => hne lam c' h1 h2` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Take `⟨mu, a, hdec⟩ : ∃ (mu : (Fin (g * (g + 1) / 2) → K) →ₗ[K] K) (a : K), lam = mu ∘ₗ drop K _ + a • lastC K _` from `⟨_, _, lam_decomp K _ lam⟩`. Distinguish the cases in `ha : a = 0`. It suffices to derive a contradiction.
+Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. It suffices to derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality.
 
-Rewrite `hdec` using `[ha, zero_smul, add_zero]`. Substitute `hdec` using the available equality. Rewrite `h1`, `h2` using `[dirMap_comp]`. Rewrite `h2` using `[constPt_comp]`. Establish `k1 : SiegPB c' F.univ (spMap (dirMap mu) ≫ y)` using `pb_comp hcy (pb_cancel hGy h1)`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `k2 : SiegPB c' F.univ (constPt (spMap (dirMap mu) ≫ y))`. Rewrite using `[constPt_comp]`. Conclude with `pb_comp hcy (pb_cancel hGy h2)`. Establish `hxs : (spMap (dirMap mu) ≫ y) ≫ F.s = spMap ((algebraMap K (DualNumber K)).comp β₀)`. Rewrite using `[Category.assoc, hys]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `base_map β₀ mu`. Take `⟨c'', hc'', -⟩` from `pull_exists (𝟙 _) (s' := (spMap (dirMap mu) ≫ y) ≫ F.s) (by rw [Category.id_comp, hxs]) c'`. Establish `e` using `F.eq_constPt K (spMap (dirMap mu) ≫ y) c'' (constPt_base β₀ _ _ hxs).symm (by have := pb_comp k1 hc''; rwa [Category.id_comp] at this) (by have := pb_comp k2 hc''; rwa [Category.id_comp] at this)`. Use `hyinj mu e` as an intermediate fact. Substitute `this` using the available equality.
+Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Conclude with `hlam (by simp)`. Establish `hκ : lastC K (g * (g + 1) / 2) = ((-a⁻¹) • mu) ∘ₗ drop K _ + a⁻¹ • lam`. Rewrite using `[hdec]`. Use `LinearMap.ext fun v => ?_` and prove the remaining obligations. Simplify using `only [LinearMap.add_apply, LinearMap.smul_apply, LinearMap.comp_apply, smul_eq_mul, neg_mul]`.
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish `k` using `GlobalTheory.T.siegelObject_tangentShift_constancy_direction_iso g n hn hodd K _ β₀ G hGp lam _ _ a⁻¹ c' c hκ h1 h2 hGc`. Rewrite `k` using `[dirMap_comp]`. Use `⟨spMap (dirMap ((-a⁻¹) • mu)) ≫ y, ?_, pb_comp hcy (pb_cancel hGy k)⟩` and prove the remaining obligations.
-
-Rewrite using `[Category.assoc, hys]`. Conclude with `base_map β₀ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem classified_dualNumber_of_algClosed : ∀ (g n : ℕ), 1 ≤ g → 3 ≤ n → Odd n → ∀ F : SFam g n (zetaAway n), ∀ (K : Type) [Field K] [IsAlgClosed K] (β₀ : cycAway n →+* K) (c : SiegPre g n (zetaAway n) (spMap ((algebraMap K (DualNumber K)).comp β₀))), c.Principal → ∃ f : Sp (DualNumber K) ⟶ F.X, f ≫ F.s = spMap ((algebraMap K (DualNumber K)).comp β₀) ∧ SiegPB c F.univ f := by
   intro g n hg hn hodd F K _ _ β₀ c hc

@@ -3,13 +3,13 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.Ferr
 open UpperTheory.V.FW
 
 /- English proof (translation)
-Establish `h1 : powR B l ≤ (powR C l).subgroupOf B`. Introduce and unpack `_ ⟨y, rfl⟩`. Conclude with `⟨(y : C), by simp⟩`. Establish `h2 : ((powR C l).subgroupOf B).index ≤ (powR B l).index` using `Nat.le_of_dvd (Nat.pos_of_ne_zero Subgroup.index_ne_zero_of_finite) (Subgroup.index_dvd_of_le h1)`. Establish `h3 : (powR B l).index = Nat.card (torK B l)`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a` using `Subgroup.index_mul_card (powR B l)`. Establish `b` using `Subgroup.index_mul_card (torK B l)`. Establish `c : (torK B l).index = Nat.card (powR B l)` using `Subgroup.index_ker _`. Establish `d : 0 < Nat.card (powR B l)` using `Nat.card_pos`. Rewrite `b` using `[c, ← a, mul_comm]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(Nat.eq_of_mul_eq_mul_right d b).symm`. Establish `h4 : Nat.card (torK B l) ≤ Nat.card (B ⊓ torK C l : Subgroup C)`. Use `Nat.card_le_card_of_injective (fun x => (⟨(x.1 : C), x.1.2, ?_⟩ : (B ⊓ torK C l : Subgroup C))) ?_` and prove the remaining obligations. Establish `hx : x.1 ^ l = 1` using `x.2 show (x.1 : C) ^ l = 1`. Rewrite using `[← Subgroup.coe_pow, hx]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Introduce `x y hxy`. Establish `e` using `congrArg Subtype.val hxy`. Conclude with `Subtype.ext (Subtype.ext e)`. Conclude with `h2.trans (h3.le.trans h4)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem pOdd_relIndex_le (l : ℕ) (C : Type) [CommGroup C] [Finite C] (B : Subgroup C) :
     (powR C l).relIndex B ≤ Nat.card (B ⊓ torK C l : Subgroup C) := by
@@ -37,11 +37,11 @@ private theorem pOdd_relIndex_le (l : ℕ) (C : Type) [CommGroup C] [Finite C] (
   exact h2.trans (h3.le.trans h4)
 
 /- English proof (translation)
-Introduce `l C _ _ J hl h`. Take `⟨k, hk⟩` from `hl`. Establish `h1 : minK J ⊓ torK C l ≤ difR J ⊓ torK C l`. Introduce and unpack `x ⟨hx, hx'⟩`. Use `⟨⟨x ^ (k + 1), ?_⟩, hx'⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Establish `a : J x * x = 1` using `hx`. Establish `b : x ^ l = 1` using `hx'`. Establish `c : J x = x⁻¹` using `eq_inv_of_mul_eq_one_left a`. Use `show x ^ (k + 1) / J (x ^ (k + 1)) = x`. Rewrite using `[map_pow, c, inv_pow, div_inv_eq_mul, ← pow_add, show k + 1 + (k + 1) = l + 1 by omega, pow_succ, b, one_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : Nat.card (minK J ⊓ torK C l : Subgroup C) ≤ Nat.card (difR J ⊓ torK C l : Subgroup C)` using `Subgroup.card_le_of_le h1`. Establish `h3` using `Subgroup.relIndex_mul_index (le_sup_left : powR C l ≤ powR C l ⊔ difR J)`. Rewrite `h3` using `[Subgroup.relIndex_sup_left]`. Establish `h4` using `pOdd_relIndex_le l C (difR J)`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.FW.pOdd :
     ∀ (l : ℕ) (C : Type) [CommGroup C] [Finite C] (J : C →* C), Odd l → (powR C l ⊔ difR J).index ≤ l * Nat.card (minK J ⊓ torK C l : Subgroup C) → (powR C l).index ≤ l * Nat.card (difR J ⊓ torK C l : Subgroup C) ^ 2 := by

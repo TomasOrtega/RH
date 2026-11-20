@@ -15,14 +15,14 @@ section Coord
 variable (D : D7) {T : D.host.E} (F0 : FlagG (VS D) D.R.rS T)
 
 /- English proof (translation)
-The claim follows from `Submodule.subset_span ⟨a, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem rs_e_mem_X (a : Fin D.R.rS) : F0.e a ∈ F0.X := Submodule.subset_span ⟨a, rfl⟩
 
 /- English proof (translation)
-Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨b, rfl⟩` from `hy`. Conclude with `F0.e_iso a b`. Consider the case `zero => simp`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately.
 
-Consider the case `add y w _ _ h1 h2 => simp [h1, h2]`. Consider the case `smul c y _ h => simp [h]`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem rs_hT_e_X (a : Fin D.R.rS) {x : (VS D).V} (hx : x ∈ F0.X) : (VS D).hT (F0.e a) x = 0 := by
   induction hx using Submodule.span_induction with
@@ -34,11 +34,9 @@ theorem rs_hT_e_X (a : Fin D.R.rS) {x : (VS D).V} (hx : x ∈ F0.X) : (VS D).hT 
   | smul c y _ h => simp [h]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hy a`. Conclude with `hy _ (rs_e_mem_X D F0 a)`. Introduce `h x hx`. Proceed by induction on `hx using Submodule.span_induction with`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `mem w hw`. Take `⟨b, rfl⟩` from `hw`. Conclude with `h b`. Consider the case `zero => simp`. Consider the case `add w w' _ _ h1 h2 => simp [h1, h2]`.
-
-Consider the case `smul c w _ h' => simp [h']`.
+Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem rs_mem_perp_iff' (y : (VS D).V) : y ∈ perpS (VS D) F0.X ↔ ∀ a, (VS D).hT (F0.e a) y = 0 := by
   constructor
@@ -54,13 +52,13 @@ theorem rs_mem_perp_iff' (y : (VS D).V) : y ∈ perpS (VS D) F0.X ↔ ∀ a, (VS
     | smul c w _ h' => simp [h']
 
 /- English proof (translation)
-Introduce `x hx` and use `(rs_mem_perp_iff' D F0 x).2 fun a => rs_hT_e_X D F0 a hx`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem rs_X_le_perp : F0.X ≤ perpS (VS D) F0.X := fun x hx =>
   (rs_mem_perp_iff' D F0 x).2 fun a => rs_hT_e_X D F0 a hx
 
 /- English proof (translation)
-Rewrite using `[Submodule.Quotient.mk_eq_zero]`. Conclude with `hx`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rs_mk_X_zero {x : (VS D).V} (hx : x ∈ F0.X) (hp : x ∈ perpS (VS D) F0.X) :
     (Submodule.Quotient.mk (⟨x, hp⟩ : perpS (VS D) F0.X) : WbQ D F0) = 0 := by
@@ -70,7 +68,7 @@ theorem rs_mk_X_zero {x : (VS D).V} (hx : x ∈ F0.X) (hp : x ∈ perpS (VS D) F
 variable {D F0} {f : Fin D.R.rS → (VS D).V}
 
 /- English proof (translation)
-Rewrite using `[← (VS D).herm.eq (F0.e b) (f a), hf.1 b a]`. Apply the tactic sequence `split_ifs <;> simp`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem rs_hT_f_e (hf : PartnerOK D F0 f) (a b : Fin D.R.rS) :
     (VS D).hT (f a) (F0.e b) = if b = a then 1 else 0 := by

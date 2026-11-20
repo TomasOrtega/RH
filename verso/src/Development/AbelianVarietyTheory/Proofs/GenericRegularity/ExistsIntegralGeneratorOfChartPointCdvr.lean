@@ -13,7 +13,7 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 namespace GlobalTheory.Reg.TieIntegral
 
 /- English proof (translation)
-The claim follows from `and_congr (isGen_iff w) (maps_iff w _ (fun _ => eSec G) _ L'.rig L.rig m.e _ (rigPull_le m.F m.e m.e_comm L.L) (fun _ => rfl))`.
+A detailed English derivation is pending.
 -/
 theorem isRigIso_iff {S S' : Scheme.{0}} {G' : Over S'} {G : Over S} [GrpObj G'] [IsCommMonObj G'] [GrpObj G]
     [IsCommMonObj G] (m : CubeMap G' G) (L' : RigLB G') (L : RigLB G) (w : LB.Iso L'.L (L.L.pull m.F)) :
@@ -23,9 +23,9 @@ theorem isRigIso_iff {S S' : Scheme.{0}} {G' : Over S'} {G : Over S} [GrpObj G']
     (maps_iff w _ (fun _ => eSec G) _ L'.rig L.rig m.e _ (rigPull_le m.F m.e m.e_comm L.L) (fun _ => rfl))
 
 /- English proof (translation)
-Take `⟨Fn, F3, e, hec, hp⟩` from `n`. Simplify using `only at hF he`. Substitute `hF he` using the available equality. Rewrite `hw`, `hw''` using `[isRigIso_iff]`. Take `⟨g, r⟩` from `hw`.
+Extract witnesses or component facts from the available result. Simplify by unfolding definitions. Substitute using the available equality. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨g'', r''⟩` from `hw''`. Take `⟨w', T⟩` from `exists_cancel L.isLB w w'' g g'' L'.isLB L''.isLB`. Conclude with `⟨w', (isRigIso_iff _ _ _ _).2 ⟨T.pgen_cancel L.isLB g g'', T.pmaps_cancel L.isLB (fun _ => m'.e_comm) r r''⟩, T⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_rigIso_cancel {S S' S'' : Scheme.{0}} {G'' : Over S''} {G' : Over S'} {G : Over S} [GrpObj G'']
     [IsCommMonObj G''] [GrpObj G'] [IsCommMonObj G'] [GrpObj G] [IsCommMonObj G] (m : CubeMap G' G)
@@ -47,9 +47,9 @@ theorem exists_rigIso_cancel {S S' S'' : Scheme.{0}} {G'' : Over S''} {G' : Over
     T.pmaps_cancel L.isLB (fun _ => m'.e_comm) r r''⟩, T⟩
 
 /- English proof (translation)
-Set `W : X'.Opens` to `F ⁻¹ᵁ (U ⊓ L.U j) ⊓ L'.U k`. Establish `h₁ : W ≤ F ⁻¹ᵁ (U ⊓ L.U j)` using `inf_le_left`. Establish `h₂ : W ≤ (L.pull F).U (fun _ => j) ⊓ L'.U k` using `fun y hy => ⟨mem_pull.2 hy.1.2, hy.2⟩`. Establish `hz : r z ∈ W` using `⟨⟨hU, hj⟩, hk⟩`. Establish `e` using `congrArg (gs r z W) (h j k W h₁ h₂)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(gs_appLE F _ _ h₁ r z hz _).symm.trans (e.trans ((gs_mul r z _ hz _ _).trans ?_))` and prove the remaining obligations. Conclude with `congrArg₂ (· * ·) ((gs_res r z h₂ hz _).trans (gs_unit r z _ (h₂ hz) _)) (gs_res r z _ hz _)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem gs_of_formula {X X' : Scheme.{0}} {L : LB X} {L' : LB X'} {F : X' ⟶ X} (w : LB.Iso L' (L.pull F))
     (U : X.Opens) (θ : ∀ i, Γ(X, U ⊓ L.U i)) (σ : LB.Sec L')
@@ -74,19 +74,17 @@ namespace GlobalTheory.Reg
 open TieIntegral in
 
 /- English proof (translation)
-Introduce `hT E _ _ _ H Dw l Xo c O _ β Y M hPI T io f₀`. Set `_` to `io.toAlgebra`. Introduce `x s Λ hTie G m m2 hφ`. Take `⟨w1, wΛ, σ, s1, r1, rΛ, hI1, hform, hg⟩` from `hTie`. Establish `hcomp : spMap ((algebraMap T.V T.Fr).comp f₀) = spMap (algebraMap T.V T.Fr) ≫ spMap f₀` using `by show Spec.map _ = Spec.map _ ≫ Spec.map _`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Establish `hz : Λ.xF ≫ Y.j = spMap (algebraMap T.V T.Fr) ≫ (spMap f₀ ≫ M.hU.fromSpec)`. Rewrite using `[Λ.xF_j, hcomp]`. Conclude with `Category.assoc _ _ _`. Take `⟨θ₀, hθ₀, -⟩` from `thetaCore_of hT E H Dw l Xo c O β Y hPI T.V _ Λ.xF hz G m Λ.t' m2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hU : ⊤ ≤ (spMap f₀ ≫ M.hU.fromSpec) ⁻¹ᵁ M.U` using `fun y _ => by`. Establish `: M.hU.fromSpec (spMap f₀ y) ∈ Set.range M.hU.fromSpec` using `⟨_, rfl⟩`. Rewrite `this` using `[M.hU.range_fromSpec]`. Conclude with `this`. Take `⟨w, θ, rw', hθ, hne⟩` from `exists_sec_pull_nonzero_on_fibres E H _ _ Y.t G _ m M.U hU M.θ M.θ_mem M.θ_ne`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hgen` using `(sec_generates_of_ne_zero_on_closed_fibre T.V _ G.G.hom G.PP.L θ₀ θ hθ₀ (hne _)).2`. Establish `he : Λ.m2.cm.e = m2.cm.e ≫ m.cm.e`. Rewrite using `[Λ.m2.base, m2.base, m.base, hcomp]`. Conclude with `Category.assoc _ _ _`. Take `⟨w2, r2, tri⟩` from `exists_rigIso_cancel m.cm m2.cm Λ.m2.cm hφ.symm he Λ.t'.PP G.PP Y.t.PP w wΛ rw' rΛ`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨θ, hgen, w1, w2, σ, s1, thfPull G.PP.L m2.φ θ, r1, r2, hI1, fun (i : PUnit → G.PP.L.ι) k => fn_ext fun y hy => ?_, fun j hj => rfl, hg⟩` and prove the remaining obligations. Establish `hi : m2.φ y ∈ G.PP.L.U (i PUnit.unit)` using `mem_pull.1 hy.1`. Take `⟨j, hj⟩` from `exists_chart Y.t.PP.isLB (m.φ (m2.φ y))`. Establish `hyU : m.φ (m2.φ y) ∈ Y.t.G.hom ⁻¹ᵁ M.U` using `(congrArg (fun q => q (m2.φ y) ∈ M.U) m.cart.1.w).mpr (hU (show G.G.hom (m2.φ y) ∈ (⊤ : (Sp T.V).Opens) from trivial))`. Establish `pt : Λ.m2.φ y = m.φ (m2.φ y)` using `congrArg (fun q => q y) hφ.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1` using `gs_of_formula w _ M.θ θ hθ (𝟙 _ ≫ m2.φ) y j (i PUnit.unit) hyU hj hi`. Establish `e2` using `gs_of_formula wΛ _ M.θ σ hform (𝟙 _) y j k (pt ▸ hyU) (pt ▸ hj) hy.2`. Establish `e3` using `tri _ (𝟙 _) y j (i PUnit.unit) k hj hi hy.2`. Establish `e4 : (𝟙 _ ≫ m2.φ) ≫ m.φ = 𝟙 _ ≫ Λ.m2.φ` using `by rw [Category.assoc, hφ]`. Rewrite `e1` using `[e4, e2, e3, Units.val_mul, _root_.mul_assoc, Units.mul_right_inj]`.
-
-Use `(gs_res _ y _ hy _).trans ((gs_appLE m2.φ _ _ _ (𝟙 _) y hy.1 _).trans (e1.symm.trans ?_))` and prove the remaining obligations. Use `Eq.symm ((gs_mul _ y _ hy _ _).trans ?_)` and prove the remaining obligations. Conclude with `congrArg₂ (· * ·) (gs_unit _ y _ hy _) (gs_res _ y _ hy _)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_generator_of_thTie :
     ReciprocityTheory.ChartRestriction.G.Out.SecTwistSt → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l), ∀ (O : Type) [CommRing O] (β : O →+* c.F) (Y : Model Xo c β) (M : MChart Y), PushInvertible Y.t.G Y.t.PP.L → ∀ (T : CDVR) (io : c.F →+* T.Fr) (f₀ : Γ(Y.X, M.U) →+* T.V), letI := io.toAlgebra; ∀ (x : Sp T.Fr ⟶ Xo.X) (s : LB.Sec (PPx x)) (Λ : M.Lift ((algebraMap T.V T.Fr).comp f₀) x), Λ.ThTie s → ∀ (G : SAB H (Sp T.V)) (m : SABMap G Y.t (spMap f₀ ≫ M.hU.fromSpec)) (m2 : SABMap Λ.t' G (spMap (algebraMap T.V T.Fr))), m2.φ ≫ m.φ = Λ.m2.φ → ∃ θ : LB.Sec G.PP.L, (∀ σ : LB.Sec G.PP.L, ∃! a : T.V, ∀ i, σ.f i = resG G.G.left (le_top : G.PP.L.U i ≤ ⊤) ((G.G.hom).appTop.hom (toΓ T.V a)) * θ.f i) ∧ ∃ (w1 : LB.Iso Λ.t'.PP.L (Xo.univ.t.PP.L.pull Λ.m1.φ)) (w2 : LB.Iso Λ.t'.PP.L (G.PP.L.pull m2.φ)) (σ : LB.Sec Λ.t'.PP.L) (s1 : LB.Sec (Xo.univ.t.PP.L.pull Λ.m1.φ)) (θ2 : LB.Sec (G.PP.L.pull m2.φ)), RigIso Λ.m1 w1 ∧ RigIso m2 w2 ∧ IsoMaps w1 σ s1 ∧ IsoMaps w2 σ θ2 ∧ PullSec m2.φ θ θ2 ∧ ∀ g : Λ.t'.G.left ⟶ Gx x, g ≫ (snd (Over.mk x) Xo.univ.t.G).left = Λ.m1.φ → g ≫ (fst (Over.mk x) Xo.univ.t.G).left = Λ.t'.G.hom → ∀ j (h : (Xo.univ.t.PP.L.pull Λ.m1.φ).U j ≤ g ⁻¹ᵁ (PPx x).U (fun _ => j PUnit.unit)), s1.f j = (g.appLE _ _ h).hom (s.f (fun _ => j PUnit.unit)) := by

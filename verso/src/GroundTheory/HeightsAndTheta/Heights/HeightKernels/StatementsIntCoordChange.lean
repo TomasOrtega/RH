@@ -17,13 +17,11 @@ def intCoordPt (A : Matrix T T₂ ℤ) (z : (Σ _ : Unit, T) → ℂ) : (Σ _ : 
   fun p => ∑ t, z ⟨(), t⟩ * (A t p.2 : ℂ)
 
 /- English proof (translation)
-Take `⟨B, hB⟩` from `hA`. Introduce and unpack `⟨⟩`. Take `⟨t, ht⟩` from `hz ()`. Assume the negation of the conclusion as `h`. Use `push Not at h`.
+Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `ht` to reduce the goal to its premises. Establish `h1 : ∀ t', (((A * B) t' t : ℤ) : ℂ) = ∑ s, (A t' s : ℂ) * (B s t : ℂ)`. Introduce `t'`. Simplify using `[Matrix.mul_apply]`. Establish `key : z ⟨(), t⟩ = ∑ s, intCoordPt A z ⟨(), s⟩ * (B s t : ℂ)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [intCoordPt, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Repeatedly rewrite using `[mul_assoc, ← Finset.mul_sum, ← h1, hB, Matrix.one_apply]`. Simplify using the standard rewrite rules. Rewrite using `[key]`.
-
-Conclude with `Finset.sum_eq_zero fun s _ => by rw [h s, zero_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem intCoordPt_ne_zero {A : Matrix T T₂ ℤ} (hA : ∃ B : Matrix T₂ T ℤ, A * B = 1)
     {z : (Σ _ : Unit, T) → ℂ} (hz : ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0) :
@@ -67,7 +65,7 @@ def IntCoordChange.Statement : Prop :=
       II Unit (dualBlocks T₂) P n L
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨by simp, by simp, le_rfl, DualArithVar.full ℚ 1 _ Unit dualBasisStandard le_rfl, (DualLineSemipositive.proof ℚ 1 _ Unit dualBasisStandard _).1⟩`.
+Supply the required witnesses or components.
 -/
 example : (-1 : Matrix Unit Unit ℤ) * (-1) = 1 ∧ (-1 : Matrix Unit Unit ℤ) * (-1) = 1 ∧ 1 ≤ 1 ∧
     IsArithVar (dualIdeal dualBasisStandard) 1 ∧
@@ -76,14 +74,14 @@ example : (-1 : Matrix Unit Unit ℤ) * (-1) = 1 ∧ (-1 : Matrix Unit Unit ℤ)
     (DualLineSemipositive.proof ℚ 1 _ Unit dualBasisStandard _).1⟩
 
 /- English proof (translation)
-The claim follows from `intCoordLine (-1 : Matrix Unit Unit ℤ) ⟨-1, by simp⟩ (dualLine (HermLattice.standard ℚ 1) dualBasisStandard dualEmbMatrix_standard_bijective)`.
+A detailed English derivation is pending.
 -/
 example : ReciprocityTheory.ChartRestriction.G.Geo.HermLine (dualBlocks Unit) :=
   intCoordLine (-1 : Matrix Unit Unit ℤ) ⟨-1, by simp⟩
     (dualLine (HermLattice.standard ℚ 1) dualBasisStandard dualEmbMatrix_standard_bijective)
 
 /- English proof (translation)
-Simplify using `[intCoordSubst]`.
+Simplify using the standard rewrite rules.
 -/
 example : intCoordSubst (-1 : Matrix Unit Unit ℤ) (X ⟨(), ()⟩) = -X ⟨(), ()⟩ := by
   simp [intCoordSubst]

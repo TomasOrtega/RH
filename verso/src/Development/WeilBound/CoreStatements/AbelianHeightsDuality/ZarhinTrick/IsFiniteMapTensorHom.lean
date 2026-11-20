@@ -55,11 +55,9 @@ def lim8 (A : Over S) : IsLimit (Fan.mk (G4 (A ⊗ A)) (pr8 A)) :=
 variable {T : Scheme.{0}} (s : T ⟶ S)
 
 /- English proof (translation)
-Use `set F := Over.pullback s`. Establish `he : F.map (f ⊗ₘ g) = CartesianMonoidalCategory.prodComparison F X X' ≫ (F.map f ⊗ₘ F.map g) ≫ inv (CartesianMonoidalCategory.prodComparison F Y Y')`. Rewrite using `[← Category.assoc, ← CartesianMonoidalCategory.prodComparison_natural, Category.assoc, IsIso.hom_inv_id, Category.comp_id]`. Establish `ht : IsFinite (Over.Hom.left (F.map f ⊗ₘ F.map g))` using `GlobalTheory.TensorFinite.isFinite_tensorHom _ _ hf hg`. Use `haveI : IsIso (CartesianMonoidalCategory.prodComparison F X X') := CartesianMonoidalCategory.isIso_prodComparison_of_preservesLimit_pair F X X'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : IsIso (CartesianMonoidalCategory.prodComparison F Y Y') := CartesianMonoidalCategory.isIso_prodComparison_of_preservesLimit_pair F Y Y'`. Use `haveI : IsIso (Over.Hom.left (CartesianMonoidalCategory.prodComparison F X X')) := (Over.forget T).map_isIso (CartesianMonoidalCategory.prodComparison F X X')`. Use `haveI : IsIso (Over.Hom.left (inv (CartesianMonoidalCategory.prodComparison F Y Y'))) := (Over.forget T).map_isIso (inv (CartesianMonoidalCategory.prodComparison F Y Y'))`. Establish `h1 : IsFinite (Over.Hom.left (CartesianMonoidalCategory.prodComparison F X X'))` using `inferInstance`. Establish `h2 : IsFinite (Over.Hom.left (inv (CartesianMonoidalCategory.prodComparison F Y Y')))` using `inferInstance`.
-
-Rewrite using `[he, Over.comp_left, Over.comp_left]`. Conclude with `MorphismProperty.comp_mem @IsFinite _ _ h1 (MorphismProperty.comp_mem @IsFinite _ _ ht h2)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isFinite_map_tensorHom {X Y X' Y' : Over S} (f : X ⟶ Y) (g : X' ⟶ Y')
     (hf : IsFinite ((Over.pullback s).map f).left) (hg : IsFinite ((Over.pullback s).map g).left) :

@@ -21,19 +21,19 @@ variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {Φ : 
 open GroundTheory.Heights₂.Heights.Inter
 
 /- English proof (translation)
-Establish `hP : h ∉ P` using `fun hh => hhΔ (hPΔ hh)`. Establish `hone : multAt (P ⊔ Ideal.span {g}) Δ = 1`. Unfold `multAt`. Rewrite using `[dif_pos hΔp, DiagonalOrderOne.length_eq_one_of_sat _ Δ (sup_le hPΔ ((Ideal.span_singleton_le_iff_mem _).2 hgΔ)) hsat]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hJΔ : P ⊔ Ideal.span {g * h} ≤ Δ` using `sup_le hPΔ ((Ideal.span_singleton_le_iff_mem _).mpr (Δ.mul_mem_right h hgΔ))`. Establish `hΔ : Δ ∈ divSupp P (g * h)`. Use `⟨⟨⟨hΔp, hJΔ⟩, fun Q hQ hQΔ => ?_⟩, hrel⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hΔQ`. Establish `hPQ : P ≤ Q` using `le_sup_left.trans hQ.2`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Take `⟨u, v, huQ, hvQ, hm⟩` from `key Q hQ.1 (fun k => (hrel k).imp fun _ hi hq' => hi (hQΔ hq')) hPQ hΔQ`. Establish `hhQ : h ∉ Q` using `fun hh' => hhΔ (hQΔ hh')`. Establish `hgQ : g ∈ Q` using `(hQ.1.mem_or_mem (hQ.2 (Ideal.mem_sup_right (Ideal.mem_span_singleton_self _)))).resolve_right hhQ`. Establish `hvh : v * h ∈ Q`. Establish `e : v * h = u * g - (u * g - v * h)` using `by ring`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[e]`. Conclude with `Q.sub_mem (Q.mul_mem_left u hgQ) (hPQ hm)`. Break down `hQ.1.mem_or_mem hvh with h1 | h1` into its components or cases. Use `exacts [hvQ h1, hhQ h1]`. Use extensionality with `W`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcg` using `DiagonalDivisor.divCycle_eq_ite (s := g) hP W`. Establish `hch` using `DiagonalDivisor.divCycle_eq_ite (s := h) hgP W`. Rewrite `hch` using `[mul_comm h g]`. Rewrite using `[Finsupp.add_apply, hcg, hch, Finsupp.single_apply]`. Distinguish the cases in `hW : W ∈ divSupp P (g * h)`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[if_pos hW, if_pos hW]`. Establish `hWp : W.IsPrime` using `hW.1.1.1`. Distinguish the cases in `hWΔ : Δ = W`. Rewrite using `[if_pos hWΔ, ← hWΔ, hone, DiagonalOrder.multAt_eq_zero_of_not_le hΔp (fun hle => hhΔ (hle (Ideal.mem_sup_right (Ideal.mem_span_singleton_self h))))]`. Rewrite using `[if_neg hWΔ, add_zero]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hPW : P ≤ W` using `le_sup_left.trans hW.1.1.2`. Establish `hΔW : ¬ Δ ≤ W` using `fun hle => hWΔ (le_antisymm hle (hW.1.2 ⟨hΔp, hJΔ⟩ hle))`. Take `⟨u, v, hu, hv, hm⟩` from `key W hWp hW.2 hPW hΔW`. Conclude with `DiagonalOrder.multAt_sup_span_eq hWp hPW hu hv hm`. Rewrite using `[if_neg hW, if_neg hW, if_neg (fun h' : Δ = W => hW (h' ▸ hΔ)), add_zero]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem div_eq_of_local {P Δ : Ideal (MRing ι)} (hPp : P.IsPrime) (hΔp : Δ.IsPrime) (hrel : IsRelevant Δ)
     (hPΔ : P ≤ Δ) {g h : MRing ι} (hgP : g ∉ P) (hhΔ : h ∉ Δ) (hgΔ : g ∈ Δ)
@@ -83,9 +83,9 @@ theorem div_eq_of_local {P Δ : Ideal (MRing ι)} (hPp : P.IsPrime) (hΔp : Δ.I
   · rw [if_neg hW, if_neg hW, if_neg (fun h' : Δ = W => hW (h' ▸ hΔ)), add_zero]
 
 /- English proof (translation)
-Establish `gen : ∀ (E : Type) [Field E] (ρ : MRing ι →+* E) (f : MRing ι), aeval (fun q => ρ (X q)) f = ρ f`. Introduce `E _ ρ f`. Establish `e : (aeval (fun q => ρ (X q)) : MRing ι →ₐ[ℤ] E).toRingHom = ρ` using `MvPolynomial.ringHom_ext (fun r => by simp) fun p => by simp`. Conclude with `RingHom.congr_fun e f`. Set `E` to `FractionRing (MRing ι ⧸ W)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `ρ : MRing ι →+* E` to `(algebraMap (MRing ι ⧸ W) E).comp (Ideal.Quotient.mk W)`. Use `⟨E, inferInstance, fun q => ρ (X q), fun f => ?_⟩` and prove the remaining obligations. Rewrite using `[gen E ρ f]`. Conclude with `(map_eq_zero_iff (algebraMap (MRing ι ⧸ W) E) (IsFractionRing.injective _ _)).trans Ideal.Quotient.eq_zero_iff_mem`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_point (W : Ideal (MRing ι)) (hW : W.IsPrime) :
     ∃ (E : Type) (_ : Field E) (z : (Σ k, ι k) → E), ∀ f : MRing ι, aeval z f = 0 ↔ f ∈ W := by
@@ -104,9 +104,9 @@ theorem exists_point (W : Ideal (MRing ι)) (hW : W.IsPrime) :
 def monoX (c : ∀ k, ι k) (d : K → ℕ) : MRing ι := ∏ k, X ⟨k, c k⟩ ^ d k
 
 /- English proof (translation)
-Rewrite using `[← Bridge.isMultiHomog_iff]`. Use `IsWeightedHomogeneous.prod (w := NumbersDVR.blockWeight ι) Finset.univ (fun k => (X ⟨k, c k⟩ : MRing ι) ^ d k) (fun k => d k • NumbersDVR.blockWeight ι ⟨k, c k⟩) (fun k _ => (isWeightedHomogeneous_X ℤ _ _).pow (d k))` as an intermediate fact. Establish `e : ∑ k, d k • NumbersDVR.blockWeight ι ⟨k, c k⟩ = d`. Use function extensionality and compare the values at `k`. Simplify using `[NumbersDVR.blockWeight, Finset.sum_apply, Pi.single_apply]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Rewrite `this` using `[e]`. Conclude with `this`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isMultiHomog_monoX (c : ∀ k, ι k) (d : K → ℕ) : IsMultiHomog (monoX c d) d := by
   rw [← Bridge.isMultiHomog_iff]
@@ -120,14 +120,14 @@ theorem isMultiHomog_monoX (c : ∀ k, ι k) (d : K → ℕ) : IsMultiHomog (mon
   exact this
 
 /- English proof (translation)
-Simplify using `[monoX]`.
+Simplify using the standard rewrite rules.
 -/
 theorem aeval_monoX (z : (Σ k, ι k) → L) (c : ∀ k, ι k) (d : K → ℕ) :
     aeval z (monoX c d) = ∏ k, z ⟨k, c k⟩ ^ d k := by
   simp [monoX]
 
 /- English proof (translation)
-Rewrite using `[aeval_monoX]`. Conclude with `Finset.prod_ne_zero_iff.2 fun k _ => pow_ne_zero _ (hc k)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem aeval_monoX_ne {z : (Σ k, ι k) → L} {c : ∀ k, ι k} (hc : ∀ k, z ⟨k, c k⟩ ≠ 0) (d : K → ℕ) :
     aeval z (monoX c d) ≠ 0 := by
@@ -135,7 +135,7 @@ theorem aeval_monoX_ne {z : (Σ k, ι k) → L} {c : ∀ k, ι k} (hc : ∀ k, z
   exact Finset.prod_ne_zero_iff.2 fun k _ => pow_ne_zero _ (hc k)
 
 /- English proof (translation)
-Rewrite using `[aeval_monoX, aeval_monoX, chartMono, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[← he, ← zpow_natCast, ← zpow_add₀ (hc k), sub_add_cancel, zpow_natCast]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem chartMono_mul {z : (Σ k, ι k) → L} {c : ∀ k, ι k} (hc : ∀ k, z ⟨k, c k⟩ ≠ 0) {dg dh : K → ℕ} {e : K → ℤ}
     (he : ∀ k, (dg k : ℤ) - dh k = e k) : chartMono z c e * aeval z (monoX c dh) = aeval z (monoX c dg) := by
@@ -144,19 +144,17 @@ theorem chartMono_mul {z : (Σ k, ι k) → L} {c : ∀ k, ι k} (hc : ∀ k, z 
   rw [← he, ← zpow_natCast, ← zpow_add₀ (hc k), sub_add_cancel, zpow_natCast]
 
 /- English proof (translation)
-The claim follows from `Finset.prod_ne_zero_iff.2 fun k _ => zpow_ne_zero _ (hc k)`.
+A detailed English derivation is pending.
 -/
 theorem chartMono_ne {z : (Σ k, ι k) → L} {c : ∀ k, ι k} (hc : ∀ k, z ⟨k, c k⟩ ≠ 0) (e : K → ℤ) :
     chartMono z c e ≠ 0 := Finset.prod_ne_zero_iff.2 fun k _ => zpow_ne_zero _ (hc k)
 
 /- English proof (translation)
-Establish `hcw : ∀ k, w ⟨k, c k⟩ ≠ 0` using `fun k => hz.coord_ne (hc k)`. Take `⟨d, n, m, hn, hm, h0, e1, e2⟩` from `hv`. Use `⟨m * monoX c dh, n * monoX c dg, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul]`. Conclude with `mul_ne_zero h0 (aeval_monoX_ne hc _)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul, map_mul, e2, ← chartMono_mul hc he]`. Expand and normalize the polynomial expressions, which then agree. Establish `hd : IsMultiHomog (m * monoX c dh * g - n * monoX c dg * h) (d + dh + dg)`. Use `isMultiHomog_sub (isMultiHomog_mul (isMultiHomog_mul hm (isMultiHomog_monoX _ _)) hg) ?_` and prove the remaining obligations. Rewrite using `[add_right_comm]`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `isMultiHomog_mul (isMultiHomog_mul hn (isMultiHomog_monoX _ _)) hh`. Rewrite using `[mem_iff_of_homog hd]`. Simplify using `only [map_sub, map_mul, e1, hq, ← chartMono_mul hcw he]`. Use `chartMono_ne hcw e` as an intermediate fact. Clear the denominators using the available nonvanishing facts.
-
-Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem exists_rel {w : (Σ k, ι k) → Φ} {z : (Σ k, ι k) → L} (hz : IsPt w z) {c : ∀ k, ι k}
     (hc : ∀ k, z ⟨k, c k⟩ ≠ 0) {σ : Φ} {e : K → ℤ} {v : L} (hv : HasVal w z (σ / chartMono w c e) v)
@@ -180,11 +178,11 @@ theorem exists_rel {w : (Σ k, ι k) → Φ} {z : (Σ k, ι k) → L} (hz : IsPt
     ring
 
 /- English proof (translation)
-Proceed by induction on `f using MvPolynomial.induction_on with`. Consider the case `C n => exact ⟨by simp, 0, zero_mem _, by simp⟩`. Consider the case `add f g hf hg`. Take `⟨h1, ρ, h2, h3⟩` from `hf`. Take `⟨h1', ρ', h2', h3'⟩` from `hg`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨by rw [map_add]; exact add_mem h1 h1', ρ + ρ', add_mem h2 h2', by`. Rewrite using `[map_add, map_add]`. Take the linear combination `h3 + h3'⟩`. Consider the case `mul_X f q hf`. Take `⟨h1, ρ, h2, h3⟩` from `hf`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨ρ', h2', h3'⟩` from `hab q`. Use `⟨by rw [map_mul, aeval_X]; exact mul_mem h1 (ha q), aeval a f * ρ' + ρ * b q, add_mem (mul_mem h1 h2') (mul_mem h2 (hb q)), ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, map_mul, aeval_X, aeval_X]`. Take the linear combination `(aeval a f) * h3' + b q * h3`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem congr_aeval {σ : Type} (O : Subring Φ) (a b : σ → Φ) (V : Φ) (ha : ∀ q, a q ∈ O) (hb : ∀ q, b q ∈ O)
     (hab : ∀ q, ∃ ρ ∈ O, a q - b q = ρ * V) (f : MvPolynomial σ ℤ) :
@@ -213,7 +211,7 @@ namespace PenFrame
 variable {z : (Σ k, ι k) → L} {c : ∀ k, ι k} (Fr : PenFrame y k₀ B cf e z c)
 
 /- English proof (translation)
-Establish `h` using `Fr.αp`. Simplify using `only [Fr.p_eq, mul_left_comm _ Fr.ε, ← Finset.mul_sum] at h`. Conclude with `eq_inv_of_mul_eq_one_right h`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem αA : ∑ m, Fr.α m * y ⟨k₀, m⟩ = Fr.ε⁻¹ := by
   have h := Fr.αp
@@ -221,7 +219,7 @@ theorem αA : ∑ m, Fr.α m * y ⟨k₀, m⟩ = Fr.ε⁻¹ := by
   exact eq_inv_of_mul_eq_one_right h
 
 /- English proof (translation)
-Establish `h` using `Fr.βp`. Simplify using `only [Fr.p_eq, mul_left_comm _ Fr.ε, ← Finset.mul_sum] at h`. Conclude with `(mul_eq_zero.1 h).resolve_left Fr.ε_ne`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem βA : ∑ m, Fr.β m * y ⟨k₀, m⟩ = 0 := by
   have h := Fr.βp
@@ -229,7 +227,7 @@ theorem βA : ∑ m, Fr.β m * y ⟨k₀, m⟩ = 0 := by
   exact (mul_eq_zero.1 h).resolve_left Fr.ε_ne
 
 /- English proof (translation)
-Establish `h` using `Fr.αr`. Simplify using `only [Fr.r_eq, mul_add, Finset.sum_add_distrib, mul_left_comm _ Fr.γ, mul_left_comm _ Fr.δ, ← Finset.mul_sum, Fr.αA] at h`. Use `Fr.γ_ne` as an intermediate fact. Establish `h' : ∑ m, Fr.α m * B m = Fr.γ⁻¹ * (Fr.γ * ∑ m, Fr.α m * B m)` using `by rw [inv_mul_cancel_left₀ this]`. Rewrite using `[h', eq_neg_of_add_eq_zero_left h]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -242,7 +240,7 @@ theorem αB : ∑ m, Fr.α m * B m = -(Fr.δ * Fr.ε⁻¹ * Fr.γ⁻¹) := by
   rw [h', eq_neg_of_add_eq_zero_left h]; ring
 
 /- English proof (translation)
-Establish `h` using `Fr.βr`. Simplify using `only [Fr.r_eq, mul_add, Finset.sum_add_distrib, mul_left_comm _ Fr.γ, mul_left_comm _ Fr.δ, ← Finset.mul_sum, Fr.βA, mul_zero, add_zero] at h`. Conclude with `eq_inv_of_mul_eq_one_right h`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem βB : ∑ m, Fr.β m * B m = Fr.γ⁻¹ := by
   have h := Fr.βr
@@ -253,7 +251,7 @@ theorem βB : ∑ m, Fr.β m * B m = Fr.γ⁻¹ := by
 end PenFrame
 
 /- English proof (translation)
-Simplify using `only [penCo, mul_add, Finset.sum_add_distrib, mul_left_comm _ t, ← Finset.mul_sum, ← map_mul, ← map_sum]`.
+Simplify using the standard rewrite rules.
 -/
 theorem pen_lin (μ : ι k₀ → Φ) (A : ι k₀ → Φ) (t : RatFunc Φ) :
     ∑ m, algebraMap Φ (RatFunc Φ) (μ m) * penCo y k₀ A B t ⟨none, m⟩ =
@@ -261,25 +259,25 @@ theorem pen_lin (μ : ι k₀ → Φ) (A : ι k₀ → Φ) (t : RatFunc Φ) :
   simp only [penCo, mul_add, Finset.sum_add_distrib, mul_left_comm _ t, ← Finset.mul_sum, ← map_mul, ← map_sum]
 
 /- English proof (translation)
-Use `set w := penCo y k₀ (fun m => y ⟨k₀, m⟩) B RatFunc.X with hw`. Set `φ` to `algebraMap Φ (RatFunc Φ)`. Establish `hz0 : IsPt y (z ∘ v₀ k₀)` using `hz.comp (isBlockMap_initial_vertex k₀) φ rfl`. Establish `pull : ∀ {s v}, HasVal y (z ∘ v₀ k₀) s v → HasVal w z (φ s) v` using `fun h => h.pull (isBlockMap_initial_vertex k₀) φ rfl`. Establish `hcy : ∀ k, y ⟨k, c (some k)⟩ ≠ 0` using `fun k => hz0.coord_ne (q := ⟨k, c (some k)⟩) (hc (some k))`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcw : w ⟨none, c none⟩ ≠ 0` using `hz.coord_ne (hc none)`. Establish `hε` using `Fr.ε_ne`. Establish `hγ` using `Fr.γ_ne`. Establish `hU₀ : HasVal y (z ∘ v₀ k₀) (∑ m, Fr.α m * (y ⟨k₀, m⟩ / y ⟨k₀, c (some k₀)⟩)) (∑ m, Fr.αv m * (z ⟨some k₀, m⟩ / z ⟨some k₀, c (some k₀)⟩))` using `HasVal.sum _ fun m _ => (Fr.hα m).mul (hasVal_ratio hz0 m (c (some k₀)) (hc (some k₀)))`. Establish `eU₀ : (∑ m, Fr.α m * (y ⟨k₀, m⟩ / y ⟨k₀, c (some k₀)⟩)) = Fr.ε⁻¹ / y ⟨k₀, c (some k₀)⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Fr.αA, Finset.sum_div]`. Simplify using `only [mul_div_assoc]`. Rewrite `hU₀` using `[eU₀]`. Establish `lin : ∀ (μ : ι k₀ → Φ) (μv : ι k₀ → L), (∀ m, HasVal y (z ∘ v₀ k₀) (μ m) (μv m)) → HasVal w z ((φ (∑ m, μ m * y ⟨k₀, m⟩) + RatFunc.X * φ (∑ m, μ m * B m)) / w ⟨none, c none⟩) (∑ m, μv m * (z ⟨none, m⟩ / z ⟨none, c none⟩))` using `fun μ μv h => by`. Rewrite using `[← pen_lin (y := y), Finset.sum_div]`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [mul_div_assoc]`. Conclude with `HasVal.sum _ fun m _ => (pull (h m)).mul (hasVal_ratio hz (k := none) m (c none) (hc none))`. Establish `hU` using `lin _ _ Fr.hα`. Establish `hV` using `lin _ _ Fr.hβ`. Rewrite `hU` using `[Fr.αA, Fr.αB]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hV` using `[Fr.βA, Fr.βB]`. Establish `hφε : φ Fr.ε ≠ 0` using `(map_ne_zero φ).2 hε`. Establish `hφγ : φ Fr.γ ≠ 0` using `(map_ne_zero φ).2 hγ`. Use `⟨_, _, _, _, pull (Fr.hs.mul hU₀), fun m => ?_, hU, hV, fun m => ?_, ?_⟩` and prove the remaining obligations. Use `(hasVal_ratio hz0 m (c (some k₀)) (hc (some k₀))).unique hz0 ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `(Fr.hp m).mul hU₀` as an intermediate fact. Rewrite `this` using `[Fr.p_eq, show Fr.ε * y ⟨k₀, m⟩ * (Fr.ε⁻¹ / y ⟨k₀, c (some k₀)⟩) = y ⟨k₀, m⟩ / y ⟨k₀, c (some k₀)⟩ by field_simp]`. Then use the resulting hypothesis. Rewrite using `[Fr.p_eq, Fr.r_eq, show w ⟨none, m⟩ = φ (y ⟨k₀, m⟩) + RatFunc.X * φ (B m) from rfl]`. Simplify using `only [map_mul, map_add, map_neg, map_inv₀, map_zero]`. Express the relevant statement in the definitionally equal form `_ = φ _ * φ _ * _ + (φ _ * φ _ + φ _ * φ _) * _`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 
-Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish `e1 : chartMono w c (totDeg k₀ e) = w ⟨none, c none⟩ * (φ (chartMono y (fun k => c (some k)) e) * φ (y ⟨k₀, c (some k₀)⟩))`. Rewrite using `[chartMono, Fintype.prod_option, chartMono, map_prod]`. Use `congr 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `zpow_one _`. Establish `: ∀ k, w ⟨some k, c (some k)⟩ ^ totDeg k₀ e (some k) = φ (y ⟨k, c (some k)⟩ ^ e k) * if k = k₀ then φ (y ⟨k₀, c (some k₀)⟩) else 1` using `fun k => by show φ (y ⟨k, c (some k)⟩) ^ (e k + if k = k₀ then 1 else 0) = _`. Rewrite using `[zpow_add₀ ((map_ne_zero φ).2 (hcy k)), map_zpow₀]`. Use `split_ifs with h`. Substitute `h` using the available equality.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[zpow_one]`. Rewrite using `[zpow_zero]`. Simplify using `only [this, Finset.prod_mul_distrib, Finset.prod_ite_eq', Finset.mem_univ, if_true]`. Establish `h1 : φ (chartMono y (fun k => c (some k)) e) ≠ 0` using `(map_ne_zero φ).2 (chartMono_ne hcy e)`. Establish `h2 : φ (y ⟨k₀, c (some k₀)⟩) ≠ 0` using `(map_ne_zero φ).2 (hcy k₀)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Clear the denominators using the available nonvanishing facts.
 
-Rewrite using `[e1]`. Simplify using `only [map_mul, map_div₀, map_inv₀, map_zero]`. Express the relevant statement in the definitionally equal form `RatFunc.X * φ cf / _ = _`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem local_data {z : (Σ o : Option K, ι (o.getD k₀)) → L}
     (hz : IsPt (penCo y k₀ (fun m => y ⟨k₀, m⟩) B RatFunc.X) z) {c : ∀ o, iW ι k₀ o} (hc : ∀ o, z ⟨o, c o⟩ ≠ 0)
@@ -355,13 +353,13 @@ theorem local_data {z : (Σ o : Option K, ι (o.getD k₀)) → L}
     ring
 
 /- English proof (translation)
-Set `fold : (Σ o : Option K, ι (o.getD k₀)) → Σ k, ι k` to `fun q => ⟨q.1.getD k₀, q.2⟩`. Establish `e1 : (ext2 y k₀ fun m => y ⟨k₀, m⟩) = y ∘ fold`. Use function extensionality and compare the values at `q`. Apply the tactic sequence `rcases q with ⟨_ | k, m⟩ <;> rfl`. Establish `e2 : (ext2 z k₀ fun m => z ⟨k₀, m⟩) = z ∘ fold`.
+Introduce a local definition for the expression. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `q`. Apply the tactic sequence `rcases q with ⟨_ | k, m⟩ <;> rfl`. Rewrite using `[e1, e2]`. Use `⟨fun o => hz.1 (o.getD k₀), fun f hf => ?_⟩` and prove the remaining obligations. Rewrite using `[← aeval_rename]`.
+Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `hz.2 _ ?_` and prove the remaining obligations. Establish `hf' : mConeMap (y ∘ fold) f = 0` using `hf`. Establish `e : (mConeMap y).comp (rename fold) = ((rename fun o : Option K => o.getD k₀).restrictScalars ℤ).comp (mConeMap (y ∘ fold))` using `MvPolynomial.algHom_ext fun q => by simp [mConeMap, fold]`. Use `DFunLike.congr_fun e f` as an intermediate fact. Simplify using `only [AlgHom.comp_apply, hf', map_zero] at this`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `this`.
+A detailed English derivation is pending.
 -/
 theorem isPt_diag {z : (Σ k, ι k) → L} (hz : IsPt y z) :
     IsPt (ext2 y k₀ fun m => y ⟨k₀, m⟩) (ext2 z k₀ fun m => z ⟨k₀, m⟩) := by
@@ -384,65 +382,53 @@ theorem isPt_diag {z : (Σ k, ι k) → L} (hz : IsPt y z) :
   exact this
 
 /- English proof (translation)
-Use `set w := penCo y k₀ (fun m => y ⟨k₀, m⟩) B RatFunc.X with hw`. Use `set δ := ext2 y k₀ fun m => y ⟨k₀, m⟩ with hδ`. Set `φ` to `algebraMap Φ (RatFunc Φ)`. Use `choose c₀ hc₀ using h0`. Set `c : ∀ o, iW ι k₀ o` to `fun o => c₀ (o.getD k₀)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `hc : ∀ o, δ ⟨o, c o⟩ ≠ 0`. Introduce and unpack `(_ | k)`. Conclude with `hc₀ k₀`. Conclude with `hc₀ k`. Establish `hle : mCoordIdeal w ≤ mCoordIdeal δ` using `pen_le_zero _ _ _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hpt : IsPt w δ` using `⟨fun o => ⟨c o, hc o⟩, fun f hf => aeval_eq_zero_of_mem (hle hf)⟩`. Establish `hcw : ∀ o, w ⟨o, c o⟩ ≠ 0` using `fun o => hpt.coord_ne (hc o)`. Take `⟨Fr⟩` from `hFr Φ y (isPt_self fun k => ⟨c₀ k, hc₀ k⟩) c₀ hc₀`. Take `⟨η, U, V, Uv, hη, hp, hU, hV, hrel, hσ⟩` from `local_data (cf := cf) (e := e) hpt hc Fr`. Rewrite `hη`, `hU`, `hV`, `hrel`, `hσ` using `[← hw]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hηv : (Fr.sv * ∑ m, Fr.αv m * (δ ⟨some k₀, m⟩ / δ ⟨some k₀, c (some k₀)⟩)) ≠ 0`. Use `mul_ne_zero Fr.sv_ne fun h => ?_` and prove the remaining obligations. Use `hp (c (some k₀))` as an intermediate fact. Rewrite `this` using `[h, mul_zero, div_self (hc _)]`. Conclude with `one_ne_zero this`.
+Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `hV0 : (∑ m, Fr.βv m * (δ ⟨none, m⟩ / δ ⟨none, c none⟩)) = 0`. Simplify using `only [← mul_div_assoc, ← Finset.sum_div, hasVal_self_eq (Fr.hβ _)]`. Rewrite using `[show (∑ m, Fr.β m * δ ⟨none, m⟩) = 0 from Fr.βA, zero_div]`. Rewrite `hV` using `[hV0]`. Establish `hcf : cf ≠ 0`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce and unpack `rfl`. Conclude with `Fr.hs.ne_zero (isPt_self fun k => ⟨c₀ k, hc₀ k⟩) Fr.sv_ne (by simp)`. Establish `hσ0 : RatFunc.X * φ cf ≠ 0` using `mul_ne_zero RatFunc.X_ne_zero ((map_ne_zero φ).2 hcf)`. Take `⟨d, n, m, hn, hm, hm0, e1, e2⟩` from `hη.mul hV`. Set `dp : Option K → ℕ` to `fun o => (totDeg k₀ e o).toNat`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Set `dm : Option K → ℕ` to `fun o => (-totDeg k₀ e o).toNat`. Establish `hpm : ∀ o, (dp o : ℤ) - dm o = totDeg k₀ e o` using `fun o => Int.toNat_sub_toNat_neg _`. Establish `hg` using `isMultiHomog_mul hn (isMultiHomog_monoX c dp)`. Establish `hh` using `isMultiHomog_mul hm (isMultiHomog_monoX c dm)`. Establish `hdeg : ∀ o, ((d + dp) o : ℤ) - (d + dm) o = totDeg k₀ e o` using `fun o => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hpm]`. Simplify using the standard rewrite rules. Establish `hhδ : aeval δ (m * monoX c dm) ≠ 0` using `by rw [map_mul]; exact mul_ne_zero hm0 (aeval_monoX_ne hc _)`. Establish `hhw : aeval w (m * monoX c dm) ≠ 0` using `hpt.aeval_ne hh hhδ`. Establish `hmono` using `chartMono_ne hcw (totDeg k₀ e)`.
+Express the relevant assertion in an equivalent form by its definition. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hq : aeval w (n * monoX c dp) = RatFunc.X * φ cf * aeval w (m * monoX c dm)`. Rewrite using `[map_mul, map_mul, e1, ← hσ, ← chartMono_mul hcw hpm]`. Express the relevant statement in the definitionally equal form `RatFunc.X * φ cf / _ * _ * _ = _`. Clear the denominators using the available nonvanishing facts. Use `set g := n * monoX c dp`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use `set h := m * monoX c dm`. Establish `hgw : g ∉ mCoordIdeal w` using `fun hh' => mul_ne_zero hσ0 hhw (hq ▸ aeval_eq_zero_of_mem hh')`. Establish `hΔp : (mCoordIdeal δ).IsPrime` using `RingHom.ker_isPrime _`. Use `⟨g, h, d + dp, d + dm, hg, hh, hgw, fun hh' => hhw (aeval_eq_zero_of_mem hh'), hdeg, hq, ?_⟩` and prove the remaining obligations. Use `div_eq_of_local (RingHom.ker_isPrime _) hΔp (CoordinateConeArithVar.relevant δ c hc) hle hgw (fun hh' => hhδ (aeval_eq_zero_of_mem hh')) ((mem_iff_of_homog hg).2 (by` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul, e2, mul_zero, zero_mul, zero_mul])) ?_ ?_`. Set `J : Ideal (MRing (iW ι k₀))` to `{ carrier := {f | ∃ u ∉ mCoordIdeal δ, u * f ∈ mCoordIdeal w ⊔ Ideal.span {g}} add_mem' := by`. Introduce and unpack `a b ⟨u, hu, hua⟩ ⟨v, hv, hvb⟩`. Use `⟨u * v, fun hm => (hΔp.mem_or_mem hm).elim hu hv, ?_⟩` and prove the remaining obligations. Establish `e' : u * v * (a + b) = v * (u * a) + u * (v * b)` using `by ring`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[e']`. Conclude with `Ideal.add_mem _ (Ideal.mul_mem_left _ _ hua) (Ideal.mul_mem_left _ _ hvb)`. Use the proof step `zero_mem' := ⟨1, fun h1 => hΔp.ne_top ((Ideal.eq_top_iff_one _).2 h1), by simp⟩`. Use the proof step `smul_mem' := by`. Introduce and unpack `a b ⟨u, hu, hub⟩`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `⟨u, hu, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_eq_mul, mul_left_comm]`. Conclude with `Ideal.mul_mem_left _ _ hub }`. Use `mCoordIdeal_le_of_homog (J := J) fun f a hf hf0 => ?_` and prove the remaining obligations. Establish `pull : ∀ {s v}, HasVal y y s v → φ s ∈ regO w δ` using `fun h => ⟨_, HasVal.pull (isBlockMap_initial_vertex k₀) φ (y' := w) (z' := δ) rfl h⟩`.
+Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Set `sc : Option K → RatFunc Φ` to `fun o => o.elim (φ Fr.ε * U) fun k => (φ (y ⟨k, c₀ k⟩))⁻¹`. Establish `hrat : ∀ q, CoordinateConeArithVar.ratioPt w c q ∈ regO w δ` using `fun q => ⟨_, hasVal_ratio hpt q.2 (c q.1) (hc q.1)⟩`. Establish `hb1 : ∀ m, sc none * (φ ∘ δ) ⟨none, m⟩ = φ (Fr.p m) * U` using `fun m => by`. Rewrite using `[Fr.p_eq, map_mul]`. Use `show φ Fr.ε * U * φ (y ⟨k₀, m⟩) = _`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hb2 : ∀ k m, sc (some k) * (φ ∘ δ) ⟨some k, m⟩ = CoordinateConeArithVar.ratioPt w c ⟨some k, m⟩` using `fun k m => by show (φ (y ⟨k, c₀ k⟩))⁻¹ * φ (y ⟨k, m⟩) = φ (y ⟨k, m⟩) / φ (y ⟨k, c₀ k⟩)`. Rewrite using `[div_eq_mul_inv, mul_comm]`. Take `⟨-, ρ, hρ, hρe⟩` from `congr_aeval (regO w δ) (CoordinateConeArithVar.ratioPt w c) (fun q => sc q.1 * (φ ∘ δ) q) V hrat (by`. Introduce and unpack `⟨_ | k, m⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hb1 m ▸ mul_mem (pull (Fr.hp m)) ⟨_, hU⟩`. Conclude with `hb2 k m ▸ hrat _) (by`. Introduce and unpack `⟨_ | k, m⟩`. Use `⟨φ (Fr.r m), pull (Fr.hr m), ?_⟩` and prove the remaining obligations. Rewrite using `[hb1 m, show CoordinateConeArithVar.ratioPt w c ⟨none, m⟩ = _ from hrel m]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `add_sub_cancel_left _ _`. Conclude with `⟨0, zero_mem _, by rw [hb2 k m, sub_self, zero_mul]⟩) f`. Rewrite `hρe` using `[aeval_scale' sc _ hf, CPts.aeval_comp_ringHom, hf0, map_zero, mul_zero, sub_zero, aeval_ratioPt hf]`. Take `⟨ρv, hρ⟩` from `hρ`. Take `⟨d', n', m', hn', hm', hm0', e1', -⟩` from `hρ.mul (hη.inv hpt hηv)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hη0 : η ≠ 0` using `hη.ne_zero hpt hηv`. Use `⟨m' * monoX c (d + dp) * h, fun hh' => ?_, ?_⟩` and prove the remaining obligations. Use `aeval_eq_zero_of_mem hh'` as an intermediate fact. Rewrite `this` using `[map_mul, map_mul]`. Conclude with `mul_ne_zero (mul_ne_zero hm0' (aeval_monoX_ne hc _)) hhδ this`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hd : IsMultiHomog (m' * monoX c (d + dp) * h * f - n' * monoX c a * monoX c (d + dm) * g) (d' + (d + dp) + (d + dm) + a)`. Use `isMultiHomog_sub (isMultiHomog_mul (isMultiHomog_mul (isMultiHomog_mul hm' (isMultiHomog_monoX _ _)) hh) hf) ?_` and prove the remaining obligations. Rewrite using `[show d' + (d + dp) + (d + dm) + a = d' + a + (d + dm) + (d + dp) by ring]`. Conclude with `isMultiHomog_mul (isMultiHomog_mul (isMultiHomog_mul hn' (isMultiHomog_monoX _ _)) (isMultiHomog_monoX _ _)) hg`. Establish `hP : m' * monoX c (d + dp) * h * f - n' * monoX c a * monoX c (d + dm) * g ∈ mCoordIdeal w`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[mem_iff_of_homog hd]`. Establish `h1 : aeval w f = aeval w (monoX c a) * (ρ * V)`. Rewrite using `[← hρe, aeval_monoX, ← mul_assoc, ← Finset.prod_mul_distrib, Finset.prod_eq_one fun k _ => by`. Rewrite using `[← mul_pow, mul_inv_cancel₀ (hcw k), one_pow], one_mul]`. Establish `h2 : RatFunc.X * φ cf = η * V * chartMono w c (totDeg k₀ e)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← hσ]`. Conclude with `(div_mul_cancel₀ _ hmono).symm`. Rewrite using `[map_sub, map_mul _ _ f, map_mul _ _ g, map_mul _ _ h, map_mul _ m', map_mul _ (n' * _), map_mul _ n', h1, hq, h2, e1', ← chartMono_mul hcw hdeg]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression.
 
-Establish `e' : m' * monoX c (d + dp) * h * f = (m' * monoX c (d + dp) * h * f - n' * monoX c a * monoX c (d + dm) * g) + n' * monoX c a * monoX c (d + dm) * g` using `by ring`. Rewrite using `[e']`. Conclude with `Ideal.add_mem _ (Ideal.mem_sup_left hP) (Ideal.mem_sup_right (Ideal.mul_mem_left _ _ (Ideal.mem_span_singleton_self g)))`. Introduce `W hW hWr hPW hΔW`. Take `⟨E, _, z, hz⟩` from `exists_point W hW`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `choose c' hc' using hWr`. Establish `hc'' : ∀ o, z ⟨o, c' o⟩ ≠ 0` using `fun o h => hc' o ((hz _).1 (by rwa [aeval_X]))`. Establish `hzp : IsPt w z` using `⟨fun o => ⟨c' o, hc'' o⟩, fun f hf => (hz f).2 (hPW hf)⟩`. Establish `hz0 : IsPt y (z ∘ v₀ k₀)` using `hzp.comp (isBlockMap_initial_vertex k₀) φ rfl`. Take `⟨Fr'⟩` from `hFr E (z ∘ v₀ k₀) hz0 (fun k => c' (some k)) fun k => hc'' (some k)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨η', U', V', Uv', hη', hp', hU', hV', hrel', hσ'⟩` from `local_data (cf := cf) (e := e) hzp hc'' Fr'`. Rewrite `hη'`, `hU'`, `hV'`, `hrel'`, `hσ'` using `[← hw]`. Use `set U₀ := ∑ m, Fr'.αv m * (z ⟨some k₀, m⟩ / z ⟨some k₀, c' (some k₀)⟩)`. Use `set Vv := ∑ m, Fr'.βv m * (z ⟨none, m⟩ / z ⟨none, c' none⟩)`. Establish `hU₀ : U₀ ≠ 0` using `fun h => by`.
-
-Use `hp' (c' (some k₀))` as an intermediate fact. Rewrite `this` using `[h, mul_zero, div_self (hc'' _)]`. Conclude with `one_ne_zero this`. Establish `hVv : Vv ≠ 0` using `fun h => hΔW <| by`. Rewrite `hV'` using `[h]`.
-
-Establish `h1 : ∀ m, z ⟨none, m⟩ / z ⟨none, c' none⟩ = Fr'.pv m * Uv'` using `fun m => by`. Use `(hasVal_ratio hzp (k := none) m (c' none) (hc'' none)).unique hzp ?_` and prove the remaining obligations. Rewrite using `[hrel' m]`. Simplify `(((Fr'.hp m).pull (isBlockMap_initial_vertex k₀) φ (y' := w) rfl).mul hU').add (((Fr'.hr m).pull (isBlockMap_initial_vertex k₀) φ (y' := w) rfl).mul hV')` using `only [mul_zero, add_zero]`. Set `sc : Option K → E` to `fun o => o.elim (z ⟨none, c' none⟩ * Uv' / (U₀ * z ⟨some k₀, c' (some k₀)⟩)) fun _ => 1`.
-
-Establish `h2 : z = fun q => sc q.1 * ext2 (z ∘ v₀ k₀) k₀ (fun m => (z ∘ v₀ k₀) ⟨k₀, m⟩) q`. Use function extensionality and compare the values at `q`. Break down `q with ⟨_ | k, m⟩` into its components or cases. Use `show z ⟨none, m⟩ = z ⟨none, c' none⟩ * Uv' / (U₀ * z ⟨some k₀, c' (some k₀)⟩) * z ⟨some k₀, m⟩`. Establish `a1` using `(div_eq_iff (hc'' none)).1 (h1 m)`.
-
-Establish `a2` using `(div_eq_iff (hc'' (some k₀))).1 (hp' m)`. Establish `a3` using `hc'' (some k₀)`. Rewrite using `[a1, a2]`. Clear the denominators using the available nonvanishing facts. Conclude with `(one_mul _).symm`.
-
-Use `mCoordIdeal_le_of_homog fun f a hf hf0 => (hz f).1 ?_` and prove the remaining obligations. Rewrite using `[h2, aeval_scale' sc _ hf, (isPt_diag hz0).2 f ((mem_iff_of_homog hf).2 hf0), mul_zero]`. Take `⟨u, u', hu, hu', hm⟩` from `exists_rel hzp hc'' (hσ' ▸ hη'.mul hV') hg hh hdeg hq`. Use `⟨u, u', fun h => hu ((hz _).2 h), fun h => ?_, hm⟩` and prove the remaining obligations. Rewrite `hu'` using `[(hz _).2 h]`.
-
-Conclude with `mul_ne_zero (mul_ne_zero (mul_ne_zero (mul_ne_zero Fr'.sv_ne hU₀) hVv) (chartMono_ne hc'' _)) hu hu'.symm`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sec_pen (h0 : ∀ k, ∃ i, y ⟨k, i⟩ ≠ 0)
     (hFr : ∀ (E : Type) [Field E] (z : (Σ k, ι k) → E), IsPt y z → ∀ c : ∀ k, ι k, (∀ k, z ⟨k, c k⟩ ≠ 0) →

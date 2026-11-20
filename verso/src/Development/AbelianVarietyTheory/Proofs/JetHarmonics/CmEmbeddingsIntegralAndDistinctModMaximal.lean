@@ -11,13 +11,13 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.G
 namespace GlobalTheory.EmbSep
 
 /- English proof (translation)
-Establish `hint : ∀ m : ℤ, V.Ge 0 (m : C)` using `fun m => by`. Break down `Int.eq_nat_or_neg m with ⟨k, rfl | rfl⟩` into its components or cases. Simplify using `using VF.ge_natCast (V := V) k`. Simplify using `using (VF.ge_natCast (V := V) k).neg`. Establish `hp : Prime (V.l : ℤ)` using `Nat.prime_iff_prime_int.1 V.l_prime`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Take `⟨a, b, hab⟩` from `(Irreducible.coprime_iff_not_dvd hp.irreducible).2 hn`. Establish `h1 : (a : C) * (V.l : C) + (b : C) * (n : C) = 1` using `by exact_mod_cast congrArg (Int.cast : ℤ → C) hab`. Use `le_antisymm ?_ (hint n)` and prove the remaining obligations. Assume the negation of the conclusion as `hc`. Establish `hc' : 0 < V.v (n : C)` using `lt_of_not_ge hc`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `h2 : 0 < V.v ((a : C) * (V.l : C))`. Rewrite using `[V.v.map_mul, V.v_l]`. Conclude with `lt_of_lt_of_le zero_lt_one (le_add_of_nonneg_left (hint a))`. Establish `h3 : 0 < V.v ((b : C) * (n : C))`. Rewrite using `[V.v.map_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `lt_of_lt_of_le hc' (le_add_of_nonneg_left (hint b))`. Establish `h4` using `V.v.map_lt_add h2 h3`. Rewrite `h4` using `[h1, V.v.map_one]`. Conclude with `lt_irrefl _ h4`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem v_intCast_eq_zero {C : Type} [Field C] (V : VF C) {n : ℤ} (hn : ¬ (V.l : ℤ) ∣ n) : V.v (n : C) = 0 := by
   have hint : ∀ m : ℤ, V.Ge 0 (m : C) := fun m => by
@@ -41,13 +41,13 @@ theorem v_intCast_eq_zero {C : Type} [Field C] (V : VF C) {n : ℤ} (hn : ¬ (V.
   exact lt_irrefl _ h4
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hc`. Use `push Not at hc`. Establish `hpos : ∀ i, 0 < V.v (M i j - M i j')` using `fun i => lt_of_le_of_ne ((h i j).sub (h i j')) (hc i).symm`. Establish `hd0 : M.det ≠ 0`. Introduce `h0`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hd` using `[h0, V.v.map_zero]`. Conclude with `WithTop.top_ne_zero hd`. Establish `hM : M⁻¹ * M = 1` using `Matrix.nonsing_inv_mul M (Ne.isUnit hd0)`. Establish `h1` using `congrFun (congrFun hM j) j`. Establish `h2` using `congrFun (congrFun hM j) j'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[Matrix.mul_apply, Matrix.one_apply_eq]`. Rewrite `h2` using `[Matrix.mul_apply, Matrix.one_apply_ne hj]`. Establish `h3 : ∑ i, M⁻¹ j i * (M i j - M i j') = 1`. Simplify using `only [mul_sub, Finset.sum_sub_distrib, h1, h2, sub_zero]`. Establish `h4 : 0 < V.v (∑ i, M⁻¹ j i * (M i j - M i j'))`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `V.v.map_lt_sum WithTop.zero_ne_top fun i _ => ?_` and prove the remaining obligations. Rewrite using `[V.v.map_mul]`. Conclude with `lt_of_lt_of_le (hpos i) (le_add_of_nonneg_left (inv_int M h hd j i))`. Rewrite `h4` using `[h3, V.v.map_one]`. Conclude with `lt_irrefl _ h4`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_v_sub_eq_zero {C : Type} [Field C] (V : VF C) {I : Type} [Fintype I] (M : Matrix I I C)
     (h : ∀ i j, V.Ge 0 (M i j)) (hd : V.v M.det = 0) {j j' : I} (hj : j ≠ j') :
@@ -75,15 +75,15 @@ theorem exists_v_sub_eq_zero {C : Type} [Field C] (V : VF C) {I : Type} [Fintype
   exact lt_irrefl _ h4
 
 /- English proof (translation)
-Introduce `E _ _ _ H lv c T io C _ _ V ι _ hd`. Establish `hint : ∀ τ x, V.Ge 0 (emA3 io ι τ x)` using `fun τ x => ge_of_isIntegral V (map_isIntegral_int (emA3 io ι τ) (Algebra.IsIntegral.isIntegral x))`. Use `⟨hint, fun τ τ' hne => ?_⟩` and prove the remaining obligations. Set `b : (E →+* ℂ) → 𝓞 E` to `fun i => RingOfIntegers.basis E (equivReindex E i)`. Set `M : Matrix (E →+* ℂ) (E →+* ℂ) c.F` to `Matrix.of fun i σ => embK c σ (b i)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hM : (algebraMap c.F ℂ).mapMatrix M = basisMatrix E`. Use extensionality with `i σ`. Simplify using `only [basisMatrix, Matrix.of_apply, canonicalEmbedding.latticeBasis_apply, integralBasis_apply]`. Both sides reduce to the same expression. Establish `hdet : M.det ^ 2 = (discr E : c.F)`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Apply `(algebraMap c.F ℂ).injective` to reduce the goal to its premises. Rewrite using `[map_pow, RingHom.map_det, hM, map_intCast, discr_eq_basisMatrix_det_sq]`. Set `N : Matrix (E →+* ℂ) (E →+* ℂ) C` to `(ι.comp io).mapMatrix M`. Establish `hN : N.det ^ 2 = (discr E : C)`. Rewrite using `[← RingHom.map_det, ← map_pow, hdet, map_intCast]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hNi : ∀ i j, V.Ge 0 (N i j)` using `fun i j => hint j (b i)`. Establish `hv : V.v N.det = 0`. Establish `h1` using `v_intCast_eq_zero V hd`. Rewrite `h1` using `[← hN, pow_two, V.v.map_mul]`. Establish `h0 : 0 ≤ V.v N.det` using `det_int N hNi`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `le_antisymm ?_ h0` and prove the remaining obligations. Rewrite using `[← h1]`. Conclude with `le_add_of_nonneg_right h0`. Take `⟨i, hi⟩` from `exists_v_sub_eq_zero V N hNi hv hne`. Conclude with `⟨b i, hi⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem cmEmbeddings_integral_and_distinct_mod_maximal' : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (lv : Level H) (c : Coeff lv) (T : CDVR) (io : c.F →+* T.Fr) (C : Type) [Field C] [CharZero C] (V : VF C) (ι : T.Fr →+* C), EmbOK T V ι → ¬ (V.l : ℤ) ∣ NumberField.discr E → (∀ τ x, V.Ge 0 (emA3 io ι τ x)) ∧ ∀ τ τ' : E →+* ℂ, τ ≠ τ' → ∃ a : 𝓞 E, V.v (emA3 io ι τ a - emA3 io ι τ' a) = 0 := by
   intro E _ _ _ H lv c T io C _ _ V ι _ hd

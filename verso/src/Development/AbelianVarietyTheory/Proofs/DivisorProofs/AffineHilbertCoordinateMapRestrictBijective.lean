@@ -8,7 +8,7 @@ noncomputable section
 namespace GlobalTheory.HilbAff
 
 /- English proof (translation)
-Substitute `h` using the available equality. Establish `: f.appLE (f ''ᵁ V) V e = (f.appIso V).hom` using `(Scheme.Hom.appIso_hom' f V).symm`. Rewrite using `[this]`. Conclude with `ConcreteCategory.bijective_of_isIso _`.
+Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bijective_appLE_of_image_eq {X Y : Scheme.{0}} (f : X ⟶ Y) [IsOpenImmersion f]
     (U : Y.Opens) (V : X.Opens) (h : f ''ᵁ V = U) (e : V ≤ f ⁻¹ᵁ U) :
@@ -19,36 +19,32 @@ theorem bijective_appLE_of_image_eq {X Y : Scheme.{0}} (f : X ⟶ Y) [IsOpenImme
   exact ConcreteCategory.bijective_of_isIso _
 
 /- English proof (translation)
-Substitute `h` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem appLE_congr_hom {X Y : Scheme.{0}} {f g : X ⟶ Y} (h : f = g) (U : Y.Opens) (V : X.Opens)
     (e₁ : V ≤ f ⁻¹ᵁ U) (e₂ : V ≤ g ⁻¹ᵁ U) : f.appLE U V e₁ = g.appLE U V e₂ := by
   subst h; rfl
 
 /- English proof (translation)
-Introduce `A B _ _ _ N r e σ Z y U W hb`. Use `set a := U.ι with ha`. Use `set y' := (functor A B r).map a.op y with hy'`. Set `f` to `bc A B y.1 a`. Set `J` to `y.2.1.comap f`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `φ : J.subscheme ⟶ y.2.1.subscheme` to `(y.2.1.comapIso f).hom ≫ pullback.snd f y.2.1.subschemeι`. Establish `hbc_fst : f ≫ pullback.fst (str A B) y.1 = pullback.fst (str A B) (a ≫ y.1)` using `(pullback.lift_fst _ _ _).trans (Category.comp_id _)`. Establish `hbc_snd : f ≫ pullback.snd (str A B) y.1 = pullback.snd (str A B) (a ≫ y.1) ≫ a` using `pullback.lift_snd _ _ _`. Establish `hφι : φ ≫ y.2.1.subschemeι = J.subschemeι ≫ f`. Simplify using `only [φ, Category.assoc, ← pullback.condition]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Category.assoc, Scheme.IdealSheafData.comapIso_hom_fst]`. Establish `h1 : φ ≫ y.2.1.subschemeι ≫ pullback.fst _ y.1 = J.subschemeι ≫ pullback.fst _ (a ≫ y.1)`. Rewrite using `[reassoc_of% hφι, hbc_fst]`. Establish `h2 : φ ≫ y.2.1.subschemeι ≫ pullback.snd _ y.1 = (J.subschemeι ≫ pullback.snd _ (a ≫ y.1)) ≫ a`. Rewrite using `[reassoc_of% hφι, hbc_snd, Category.assoc]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `H : IsPullback (pullback.snd f y.2.1.subschemeι) (pullback.fst f y.2.1.subschemeι ≫ pullback.snd _ (a ≫ y.1)) (y.2.1.subschemeι ≫ pullback.snd _ y.1) a` using `(IsPullback.of_hasPullback f y.2.1.subschemeι).flip.paste_vert (isPullback_bc A B y.1 a)`. Establish `hpb : IsPullback (J.subschemeι ≫ pullback.snd _ (a ≫ y.1)) φ a (y.2.1.subschemeι ≫ pullback.snd _ y.1)` using `H.flip.of_iso (y.2.1.comapIso f).symm (Iso.refl _) (Iso.refl _) (Iso.refl _) (by rw [Iso.refl_hom, Category.comp_id, Iso.symm_hom, ← Category.assoc, Scheme.IdealSheafData.comapIso_inv_subschemeι]) (by rw [Iso.refl_hom, Category.comp_id, Iso.symm_hom]; dsimp only [φ]; rw [Iso.inv_ …`. Use `haveI : IsOpenImmersion f := MorphismProperty.of_isPullback (P := @IsOpenImmersion) (isPullback_bc A B y.1 a).flip (inferInstanceAs (IsOpenImmersion U.ι))`. Use `haveI : IsOpenImmersion φ := by dsimp only [φ]; infer_instance`. Use `set X0 := a ''ᵁ W with hX0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hX : φ ''ᵁ ((subStr A B y') ⁻¹ᵁ W) = (subStr A B y) ⁻¹ᵁ X0` using `IsOpenImmersion.image_preimage_eq_preimage_image_of_isPullback hpb W`. Establish `hle : (subStr A B y') ⁻¹ᵁ W ≤ φ ⁻¹ᵁ ((subStr A B y) ⁻¹ᵁ X0)`. Rewrite using `[← hX]`. Conclude with `(Scheme.Hom.preimage_image_eq φ _).ge`. Establish `hW : W ≤ a ⁻¹ᵁ X0` using `(Scheme.Hom.preimage_image_eq a W).ge`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Set `β` to `φ.appLE _ _ hle`. Set `α` to `a.appLE X0 W hW`. Establish `hβ : Function.Bijective β.hom` using `bijective_appLE_of_image_eq φ _ _ hX hle`. Establish `hα : Function.Bijective α.hom` using `bijective_appLE_of_image_eq a _ _ rfl hW`. Establish `hAm : (subStr A B y).app X0 ≫ β = α ≫ (subStr A B y').app W`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[Scheme.Hom.app_eq_appLE, Scheme.Hom.app_eq_appLE]`. Conclude with `(Scheme.Hom.appLE_comp_appLE _ _ _ _ _ _ _).trans ((appLE_congr_hom h2 _ _ _ _).trans (Scheme.Hom.appLE_comp_appLE _ _ _ _ _ _ _).symm)`. Establish `hA : ∀ x, β.hom (algebraMap Γ(Z, X0) (Sec A B y X0) x) = algebraMap Γ(U.toScheme, W) (Sec A B y' W) (α.hom x)`. Introduce `x`. Express the relevant statement in the definitionally equal form `((subStr A B y).app X0 ≫ β).hom x = (α ≫ (subStr A B y').app W).hom x`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hAm]`. Both sides reduce to the same expression. Establish `hG : ∀ b, β.hom (gen A B y X0 b) = gen A B y' W b`. Introduce `b`. Express the relevant statement in the definitionally equal form `((y.2.1.subschemeι ≫ pullback.fst _ y.1).appLE ⊤ _ _ ≫ β).hom _ = ((J.subschemeι ≫ pullback.fst _ (a ≫ y.1)).appLE ⊤ _ _).hom _`.
+Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hGm : (y.2.1.subschemeι ≫ pullback.fst _ y.1).appLE ⊤ (subStr A B y ⁻¹ᵁ X0) (by simp) ≫ β = (J.subschemeι ≫ pullback.fst _ (a ≫ y.1)).appLE ⊤ (subStr A B y' ⁻¹ᵁ W) (by simp)` using `(Scheme.Hom.appLE_comp_appLE _ _ _ _ _ _ _).trans (appLE_congr_hom h1 _ _ _ _)`. Rewrite using `[hGm]`. Both sides reduce to the same expression. Establish `hc : ∀ c : Fin r → Γ(Z, X0), β.hom (coord A B e σ y X0 c) = coord A B e σ y' W (fun k => α.hom (c k))`. Introduce `c`.
+Reduce the conclusion to the remaining proof obligations. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[coord, coord, Fintype.linearCombination_apply, Fintype.linearCombination_apply]`. Simplify using `only [Algebra.smul_def]`. Use `erw [map_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Use `erw [map_mul, hA, hG]`.
-
-Both sides reduce to the same expression. Establish `hαe : Function.Bijective (fun c : Fin r → Γ(Z, X0) => fun k => α.hom (c k))` using `hα.comp_left`. Establish `hcomp : (coord A B e σ y' W) ∘ (fun c : Fin r → Γ(Z, X0) => fun k => α.hom (c k)) = β.hom ∘ (coord A B e σ y X0)`. Use function extensionality and compare the values at `c`. Conclude with `(hc c).symm`.
-
-Rewrite using `[← Function.Bijective.of_comp_iff _ hαe, hcomp]`. Conclude with `hβ.comp hb`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coord_restrict_bijective : ∀ (A B : Type) [CommRing A] [CommRing B] [Algebra A B] (N r : ℕ)
     (e : Module.Basis (Fin N) A B) (σ : Fin r ↪ Fin N) (Z : Scheme.{0})

@@ -6,7 +6,7 @@ namespace GlobalTheory.SuppFirstBlock
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Rewrite using `[val_emb₂]`. Use `conv_lhs => rw [← fromBlocks_toBlocks z]`. Simplify using `[fromBlocks_multiply]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem toBlocks₁₁_mul_diag {A D E : Type} [Fintype A] [DecidableEq A] [Fintype D] [DecidableEq D]
     (z : Matrix (A ⊕ E) (A ⊕ D) k) (x : GL A k) (y : GL D k) :
@@ -16,9 +16,9 @@ theorem toBlocks₁₁_mul_diag {A D E : Type} [Fintype A] [DecidableEq A] [Fint
   simp [fromBlocks_multiply]
 
 /- English proof (translation)
-Set `N : Matrix A A 𝒪[k]` to `fun i j => ⟨M i j, hM i j⟩`. Establish `hN : (algebraMap 𝒪[k] k).mapMatrix N = M` using `rfl`. Establish `hu : IsUnit N.det`. Rewrite using `[(Valuation.integer.integers (valuation k)).isUnit_iff_valuation_eq_one, RingHom.map_det, hN]`. Conclude with `hd`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨((Matrix.isUnit_iff_isUnit_det N).2 hu).unit, ?_⟩` and prove the remaining obligations. Conclude with `hN`.
+A detailed English derivation is pending.
 -/
 theorem exists_GL_of_int {A : Type} [Fintype A] [DecidableEq A] (M : Matrix A A k)
     (hM : ∀ i j, M i j ∈ 𝒪[k]) (hd : valuation k M.det = 1) :
@@ -35,9 +35,9 @@ end GlobalTheory.SuppFirstBlock
 
 open GlobalTheory.SuppFirstBlock in
 /- English proof (translation)
-Introduce `k _ _ _ _ A D E _ _ _ _ _ _ z x y hz hw`. Establish `hb` using `toBlocks₁₁_mul_diag z x y`. Take `⟨g, hg⟩` from `exists_GL_of_int z.toBlocks₁₁ (fun i j => hz.1 _ _) hz.2.1`. Take `⟨h, hh⟩` from `exists_GL_of_int (z.toBlocks₁₁ * x.val) (fun i j => by rw [← hb]; exact hw.1 _ _) (by rw [← hb]; exact hw.2.1)`. Establish `key : GeneralLinearGroup.map (n` using `A) (algebraMap 𝒪[k] k) g * x = GeneralLinearGroup.map (n := A) (algebraMap 𝒪[k] k) h := by ext1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[Units.val_mul, hg, hh]`. Use `⟨g⁻¹ * h, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, map_inv, ← key, inv_mul_cancel_left]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem GlobalTheory.SuppFirstBlock.mem_KO_of_inSupp : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (A D E : Type) [Fintype A] [DecidableEq A] [Fintype D] [DecidableEq D] [Fintype E] [DecidableEq E]

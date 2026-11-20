@@ -5,11 +5,11 @@ open NumberField Polynomial
 namespace GlobalTheory.MinpolyHeightCount
 
 /- English proof (translation)
-Establish `hS : S.Finite`. Use `(hT.biUnion fun t ht => (hfib t ht).1).subset fun x hx => ?_` and prove the remaining obligations. Conclude with `Set.mem_biUnion (hf hx) ⟨hx, rfl⟩`. Use `⟨hS, ?_⟩` and prove the remaining obligations. Rewrite using `[Set.ncard_eq_toFinset_card _ hS, Set.ncard_eq_toFinset_card _ hT]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.card_le_mul_card_image_of_maps_to (f := f) (fun a ha => by simpa using hf (by simpa using ha)) m fun t ht => ?_` and prove the remaining obligations. Establish `h` using `(hfib t (by simpa using ht)).2`. Establish `e : (({a ∈ hS.toFinset | f a = t} : Finset α) : Set α) = S ∩ f ⁻¹' {t}`. Use extensionality with `a`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Set.ncard_coe_finset, e]`. Conclude with `h`.
+A detailed English derivation is pending.
 -/
 theorem finite_and_ncard_le_of_fibres {α β : Type*} {S : Set α} {T : Set β} {f : α → β}
     (hT : T.Finite) (hf : Set.MapsTo f S T) (m : ℕ)
@@ -30,7 +30,7 @@ theorem finite_and_ncard_le_of_fibres {α β : Type*} {S : Set α} {T : Set β} 
   exact h
 
 /- English proof (translation)
-Establish `hsub : S ⊆ (p.roots.toFinset : Set L)` using `fun x hx => by`. Simplify using `[Multiset.mem_toFinset, mem_roots hp, IsRoot.def, hS x hx]`. Use `⟨(Finset.finite_toSet _).subset hsub, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 -/
 theorem finite_and_ncard_le_of_eval_eq_zero {L : Type*} [Field L] {S : Set L} {p : L[X]}
     (hp : p ≠ 0) (hS : ∀ x ∈ S, p.eval x = 0) : S.Finite ∧ S.ncard ≤ p.natDegree := by
@@ -45,7 +45,7 @@ theorem finite_and_ncard_le_of_eval_eq_zero {L : Type*} [Field L] {S : Set L} {p
     _ ≤ p.natDegree := card_roots' p
 
 /- English proof (translation)
-Use `finite_and_ncard_le_of_fibres hT hf m fun t ht => ?_` and prove the remaining obligations. Take `⟨p, hp, hdeg, hroot⟩` from `hfib t ht`. Take `⟨h1, h2⟩` from `finite_and_ncard_le_of_eval_eq_zero (S := S ∩ f ⁻¹' {t}) hp fun x hx => hroot x hx.1 hx.2`. Conclude with `⟨h1, h2.trans hdeg⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem finite_and_ncard_le_of_fibres_roots {L β : Type*} [Field L] {S : Set L} {T : Set β}
     {f : L → β} (hT : T.Finite) (hf : Set.MapsTo f S T) (m : ℕ)
@@ -62,7 +62,7 @@ section Integral
 variable (K : Type) [Field K] [NumberField K]
 
 /- English proof (translation)
-Rewrite using `[← (minpoly.monic hx).natDegree_map (algebraMap ℤ ℚ), ← minpoly.isIntegrallyClosed_eq_field_fractions' ℚ hx]`. Conclude with `minpoly.natDegree_le x`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem natDegree_minpoly_int_le {x : K} (hx : IsIntegral ℤ x) :
     (minpoly ℤ x).natDegree ≤ Module.finrank ℚ K := by
@@ -71,7 +71,7 @@ theorem natDegree_minpoly_int_le {x : K} (hx : IsIntegral ℤ x) :
   exact minpoly.natDegree_le x
 
 /- English proof (translation)
-Use `Eq.trans_le ?_ (Embeddings.coeff_bdd_of_norm_le h i)` and prove the remaining obligations. Rewrite using `[minpoly.isIntegrallyClosed_eq_field_fractions' ℚ hx, coeff_map, eq_intCast, Int.norm_cast_rat, Int.norm_eq_abs]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem abs_coeff_minpoly_int_le {x : K} (hx : IsIntegral ℤ x) {R : ℝ}
     (h : ∀ φ : K →+* ℂ, ‖φ x‖ ≤ R) (i : ℕ) :
@@ -82,23 +82,19 @@ theorem abs_coeff_minpoly_int_le {x : K} (hx : IsIntegral ℤ x) {R : ℝ}
     Int.norm_cast_rat, Int.norm_eq_abs]
 
 /- English proof (translation)
-Use `set d := Module.finrank ℚ K with hd`. Use `set M : ℝ := max R 1 ^ d * (d.choose (d / 2) : ℝ) with hM`. Use `set C : ℕ := ⌈M⌉₊ with hC`. Use `set T : Set (Fin (d + 1) → ℤ) := ((Fintype.piFinset fun _ : Fin (d + 1) => Finset.Icc (-(C : ℤ)) C : Finset (Fin (d + 1) → ℤ)) : Set (Fin (d + 1) → ℤ)) with hTdef`. Use `set f : K → Fin (d + 1) → ℤ := fun x i => (minpoly ℤ x).coeff i with hfdef`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Establish `hT : T.ncard = (2 * C + 1) ^ (d + 1)`. Rewrite using `[hTdef, Set.ncard_coe_finset, Fintype.card_piFinset, Finset.prod_const, Int.card_Icc, Finset.card_univ, Fintype.card_fin]`. Use `congr 1`. Use linear arithmetic over natural numbers and integers. Establish `hmaps : Set.MapsTo f {x : K | IsIntegral ℤ x ∧ ∀ φ : K →+* ℂ, ‖φ x‖ ≤ R} T`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `x hx`. Rewrite using `[hTdef, Finset.mem_coe, Fintype.mem_piFinset]`. Introduce `i`. Rewrite using `[Finset.mem_Icc]`. Establish `h1` using `abs_coeff_minpoly_int_le K hx.1 hx.2 i`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Establish `h2 : (|(minpoly ℤ x).coeff i| : ℝ) ≤ (C : ℝ)` using `h1.trans (Nat.le_ceil _)`. Establish `h3 : |(minpoly ℤ x).coeff i| ≤ (C : ℤ)` using `by exact_mod_cast h2`. Conclude with `abs_le.mp h3`. Take `⟨hfin, hcard⟩` from `finite_and_ncard_le_of_fibres_roots (Finset.finite_toSet _) hmaps d (by`. Introduce `t _`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Distinguish the cases in `h : ∃ x0 ∈ {x : K | IsIntegral ℤ x ∧ ∀ φ : K →+* ℂ, ‖φ x‖ ≤ R}, f x0 = t`. Take `⟨x0, hx0, hfx0⟩` from `h`. Use `⟨(minpoly ℤ x0).map (algebraMap ℤ K), ((minpoly.monic hx0.1).map _).ne_zero, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[(minpoly.monic hx0.1).natDegree_map]`. Conclude with `natDegree_minpoly_int_le K hx0.1`.
+By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `y hy hfy`. Establish `heq : minpoly ℤ y = minpoly ℤ x0`. Use extensionality with `i`. Distinguish the cases in `hi : i < d + 1`. Conclude with `congrFun (hfy.trans hfx0.symm) ⟨i, hi⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[coeff_eq_zero_of_natDegree_lt ((natDegree_minpoly_int_le K hy.1).trans_lt (by omega)), coeff_eq_zero_of_natDegree_lt ((natDegree_minpoly_int_le K hx0.1).trans_lt (by omega))]`. Rewrite using `[eval_map_algebraMap, ← heq]`. Conclude with `minpoly.aeval ℤ y`. Use `⟨1, one_ne_zero, by simp, fun x hx hfx => (h ⟨x, hx, hfx⟩).elim⟩)` and prove the remaining obligations. Use `⟨hfin, ?_⟩` and prove the remaining obligations.
-
-Establish `hM0 : 0 ≤ M` using `by positivity`. Establish `hC' : (C : ℝ) ≤ M + 1` using `(Nat.ceil_lt_add_one hM0).le`. Rewrite `hcard` using `[hT]`. Combine the equalities or inequalities in the displayed calculation. Establish `h23 : 2 * (C : ℝ) + 1 ≤ 2 * M + 3` using `by linarith`.
-
-Conclude with `mul_le_mul_of_nonneg_left (pow_le_pow_left₀ (by positivity) h23 _) (by positivity)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem finite_and_ncard_integral_le (R : ℝ) :
     {x : K | IsIntegral ℤ x ∧ ∀ φ : K →+* ℂ, ‖φ x‖ ≤ R}.Finite ∧
@@ -165,9 +161,9 @@ section Height
 variable {K : Type} [Field K] [NumberField K]
 
 /- English proof (translation)
-Use `set w := InfinitePlace.mk φ`. Establish `hw : w c = ‖φ c‖` using `InfinitePlace.apply φ c`. Rewrite using `[← hw, NumberField.mulHeight₁_eq]`. Establish `h1 : ∀ v : InfinitePlace K, 1 ≤ max (v c) 1 ^ v.mult` using `fun v => one_le_pow₀ (le_max_right _ _)`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Finset.mul_prod_erase _ _ (Finset.mem_univ w)]`. Conclude with `le_mul_of_one_le_right (by positivity) (Finset.one_le_prod fun v _ => h1 v)`. Use `_ ≤ _ := le_mul_of_one_le_right (Finset.prod_nonneg fun v _ => by positivity) (one_le_finprod fun _ => le_max_right _ _)`.
+A detailed English derivation is pending.
 -/
 theorem norm_embedding_le_mulHeight₁ (φ : K →+* ℂ) (c : K) : ‖φ c‖ ≤ Height.mulHeight₁ c := by
   classical
@@ -187,21 +183,17 @@ theorem norm_embedding_le_mulHeight₁ (φ : K →+* ℂ) (c : K) : ‖φ c‖ �
 variable (K) in
 
 /- English proof (translation)
-Use `set d := Module.finrank ℚ K with hd`. Use `⟨d * (2 * (d.choose (d / 2) : ℝ) + 3) ^ (d + 1), 1 + 2 * d * (d + 1), fun B hB => ?_⟩` and prove the remaining obligations. Use `⟨finite_setOfPred_mulHeight₁_le K B, ?_⟩` and prove the remaining obligations. Use `choose n hn0 hnle hint using fun c : K => exists_nat_le_mulHeight₁ c`. Use `set A := {x : K | IsIntegral ℤ x ∧ ∀ φ : K →+* ℂ, ‖φ x‖ ≤ B ^ 2} with hAdef`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨hAfin, hAcard⟩` from `finite_and_ncard_integral_le K (B ^ 2)`. Use `set P : Set (ℕ × K) := (↑(Finset.Icc 1 ⌊B⌋₊) : Set ℕ) ×ˢ A with hPdef`. Establish `hP : P.Finite` using `(Finset.finite_toSet _).prod hAfin`. Establish `hle : {c : K | Height.mulHeight₁ c ≤ B}.ncard ≤ P.ncard`. Use `Set.ncard_le_ncard_of_injOn (fun c => (n c, (n c : K) * c)) ?_ ?_ hP` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `c hc`. Establish `hc' : Height.mulHeight₁ c ≤ B` using `hc`. Use `Set.mk_mem_prod ?_ ⟨hint c, fun φ => ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.mem_coe, Finset.mem_Icc]`. Conclude with `⟨Nat.one_le_iff_ne_zero.mpr (hn0 c), Nat.le_floor ((hnle c).trans hc')⟩`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Rewrite using `[map_mul, norm_mul, map_natCast, Complex.norm_natCast, sq]`. Conclude with `mul_le_mul ((hnle c).trans hc') ((norm_embedding_le_mulHeight₁ φ c).trans hc') (norm_nonneg _) (by linarith)`. Introduce `c _ c' _ h`. Simplify using `only [Prod.mk.injEq] at h`. Take `⟨h1, h2⟩` from `h`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h2` using `[h1]`. Conclude with `mul_left_cancel₀ (by exact_mod_cast hn0 c') h2`. Establish `hPcard : P.ncard = ⌊B⌋₊ * A.ncard`. Rewrite using `[hPdef, Set.ncard_prod, Set.ncard_coe_finset, Nat.card_Icc, Nat.add_sub_cancel]`. Establish `hfl : (⌊B⌋₊ : ℝ) ≤ B` using `Nat.floor_le (by linarith)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hmax : max (B ^ 2) 1 = B ^ 2` using `max_eq_left (by nlinarith)`. Rewrite `hAcard` using `[hmax]`. Establish `hX : 1 ≤ B ^ (2 * d)` using `one_le_pow₀ hB`. Establish `hch : (0 : ℝ) ≤ (d.choose (d / 2) : ℝ)` using `Nat.cast_nonneg _`. Establish `hstep : 2 * ((B ^ 2) ^ d * (d.choose (d / 2) : ℝ)) + 3 ≤ (2 * (d.choose (d / 2) : ℝ) + 3) * B ^ (2 * d)`.
-
-Rewrite using `[← pow_mul]`. Use the polynomial consequences of the given equalities and inequalities. Combine the equalities or inequalities in the displayed calculation. Conclude with `hle` after adjusting the coercions. Use `_ = (⌊B⌋₊ : ℝ) * (A.ncard : ℝ) := by rw [hPcard]; push_cast; ring`.
-
-Use `_ ≤ B * (d * (2 * ((B ^ 2) ^ d * (d.choose (d / 2) : ℝ)) + 3) ^ (d + 1)) := mul_le_mul hfl hAcard (Nat.cast_nonneg _) (by linarith)`. Use `_ ≤ B * (d * ((2 * (d.choose (d / 2) : ℝ) + 3) * B ^ (2 * d)) ^ (d + 1)) := by gcongr`. Use `_ = _ := by rw [mul_pow, ← pow_mul, pow_add B 1, pow_one]; ring`.
+Use the polynomial consequences of the given equalities and inequalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem exists_ncard_mulHeight₁_le : ∃ (C : ℝ) (k : ℕ), ∀ B : ℝ, 1 ≤ B →
     {c : K | Height.mulHeight₁ c ≤ B}.Finite ∧
@@ -252,21 +244,17 @@ theorem exists_ncard_mulHeight₁_le : ∃ (C : ℝ) (k : ℕ), ∀ B : ℝ, 1 �
 end Height
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _`. Use `haveI : FiniteDimensional F E := Module.Finite.of_restrictScalars_finite ℚ F E`. Take `⟨C₁, k₁, h₁⟩` from `exists_ncard_mulHeight₁_le F`. Use `set m := Module.finrank F E with hm`. Use `⟨m * C₁ ^ (m + 1), k₁ * (m + 1), fun B hB => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨hSfin, hScard⟩` from `h₁ B hB`. Use `set S := {c : F | Height.mulHeight₁ c ≤ B} with hSdef`. Use `set X := {x : E | ∀ j, Height.mulHeight₁ ((minpoly F x).coeff j) ≤ B} with hXdef`. Use `set T : Set (Fin (m + 1) → F) := ((Fintype.piFinset fun _ : Fin (m + 1) => hSfin.toFinset : Finset (Fin (m + 1) → F)) : Set (Fin (m + 1) → F)) with hTdef`. Use `set f : E → Fin (m + 1) → F := fun x j => (minpoly F x).coeff j with hfdef`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hT : T.ncard = S.ncard ^ (m + 1)`. Rewrite using `[hTdef, Set.ncard_coe_finset, Fintype.card_piFinset, Finset.prod_const, Finset.card_univ, Fintype.card_fin, Set.ncard_eq_toFinset_card _ hSfin]`. Establish `hmaps : Set.MapsTo f X T`. Introduce `x hx`. Rewrite using `[hTdef, Finset.mem_coe, Fintype.mem_piFinset]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Introduce `j`. Rewrite using `[Set.Finite.mem_toFinset]`. Conclude with `hx j`. Take `⟨hXfin, hXcard⟩` from `finite_and_ncard_le_of_fibres_roots (Finset.finite_toSet _) hmaps m (by`. Introduce `t _`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Distinguish the cases in `h : ∃ x0 ∈ X, f x0 = t`. Take `⟨x0, -, hfx0⟩` from `h`. Establish `hi0 : IsIntegral F x0` using `Algebra.IsIntegral.isIntegral x0`. Use `⟨(minpoly F x0).map (algebraMap F E), ((minpoly.monic hi0).map _).ne_zero, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[(minpoly.monic hi0).natDegree_map]`.
+By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `minpoly.natDegree_le x0`. Introduce `y _ hfy`. Establish `heq : minpoly F y = minpoly F x0`. Use extensionality with `i`. Distinguish the cases in `hi : i < m + 1`.
-
-Conclude with `congrFun (hfy.trans hfx0.symm) ⟨i, hi⟩`. Rewrite using `[coeff_eq_zero_of_natDegree_lt ((minpoly.natDegree_le y).trans_lt (by omega)), coeff_eq_zero_of_natDegree_lt ((minpoly.natDegree_le x0).trans_lt (by omega))]`. Rewrite using `[eval_map_algebraMap, ← heq]`. Conclude with `minpoly.aeval F y`. Conclude with `⟨1, one_ne_zero, by simp, fun x hx hfx => (h ⟨x, hx, hfx⟩).elim⟩)`.
-
-Use `⟨hXfin, ?_⟩` and prove the remaining obligations. Rewrite `hXcard` using `[hT]`. Establish `h0 : (0 : ℝ) ≤ (S.ncard : ℝ)` using `Nat.cast_nonneg _`. Combine the equalities or inequalities in the displayed calculation.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem finite_and_ncard_minpoly_height_le : ∀ (F E : Type) [Field F] [NumberField F] [Field E]
     [NumberField E] [Algebra F E], ∃ (C : ℝ) (k : ℕ), ∀ B : ℝ, 1 ≤ B →

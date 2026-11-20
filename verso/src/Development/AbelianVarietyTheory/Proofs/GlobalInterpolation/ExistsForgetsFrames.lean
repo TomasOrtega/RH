@@ -20,7 +20,7 @@ def valAt (φ : S.Cl → Fr emb σ n → ℂ) (b : S.β) (d : S.D b) : Fr emb σ
 
 omit [StarRing E] [NumberField K] [StarRing K] in
 /- English proof (translation)
-Use function extensionality and compare the values at `y`. Simplify using `only [GStep.tr, trFr_apply, map_mul, Units.val_mul, _root_.mul_inv_rev, frMul_mul, mul_assoc]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem tr_mul (b : S.β) (g h : S.G b) (F : Fr emb σ n → ℂ) :
     S.tr emb σ b (g * h) F = S.tr emb σ b g (S.tr emb σ b h F) := by
@@ -30,9 +30,9 @@ theorem tr_mul (b : S.β) (g h : S.G b) (F : Fr emb σ n → ℂ) :
 variable {S}
 
 /- English proof (translation)
-Take `⟨b, q⟩` from `c`. Establish `hq : (Quotient.mk _ (g • S.rp b q) : MulAction.orbitRel.Quotient (S.G b) (S.D b)) = q` using `(Quotient.sound (show (MulAction.orbitRel (S.G b) (S.D b)).r (g • S.rp b q) (S.rp b q) from ⟨g, rfl⟩)).trans (S.rp_spec b q)`. Establish `h1 : S.mv b (g • S.rp b q) • S.rp b (Quotient.mk _ (g • S.rp b q)) = g • S.rp b q` using `S.mv_smul b _`. Rewrite `h1` using `[hq]`. Establish `h2 : S.mv b (g • S.rp b q) = g`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `hf b (g⁻¹ * S.mv b (g • S.rp b q)) (S.rp b q) (by rw [mul_smul, h1, inv_smul_smul])` as an intermediate fact. Conclude with `(inv_mul_eq_one.1 this).symm`. Use `show S.tr emb σ b (S.mv b (g • S.rp b q)) (φ ⟨b, Quotient.mk _ (g • S.rp b q)⟩) = _`. Rewrite using `[h2, hq]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem valAt_eq (hf : S.Free) (φ : S.Cl → Fr emb σ n → ℂ) (c : S.Cl) (g : S.G c.1) :
     valAt S emb σ φ c.1 (g • S.rep c) = S.tr emb σ c.1 g (φ c) := by
@@ -48,14 +48,14 @@ theorem valAt_eq (hf : S.Free) (φ : S.Cl → Fr emb σ n → ℂ) (c : S.Cl) (g
   rw [h2, hq]
 
 /- English proof (translation)
-Use `valAt_eq emb σ hf φ c 1` as an intermediate fact. Rewrite `this` using `[one_smul, DiaStab.tr_one]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem valAt_rep (hf : S.Free) (φ : S.Cl → Fr emb σ n → ℂ) (c : S.Cl) : valAt S emb σ φ c.1 (S.rep c) = φ c := by
   have := valAt_eq emb σ hf φ c 1
   rwa [one_smul, DiaStab.tr_one] at this
 
 /- English proof (translation)
-Establish `h` using `valAt_eq emb σ hf φ (S.cl b d) (g * S.mv b d)`. Rewrite `h` using `[mul_smul, S.mv_smul, tr_mul]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem valAt_smul (hf : S.Free) (φ : S.Cl → Fr emb σ n → ℂ) (b : S.β) (g : S.G b) (d : S.D b) :
     valAt S emb σ φ b (g • d) = S.tr emb σ b g (valAt S emb σ φ b d) := by
@@ -66,19 +66,17 @@ theorem valAt_smul (hf : S.Free) (φ : S.Cl → Fr emb σ n → ℂ) (b : S.β) 
 variable {S' : GStep E K n} {ST : Finset (HeightOneSpectrum (𝓞 E))} {A : TDat S ST} {A' : TDat S' ST} {T : ℕ}
 
 /- English proof (translation)
-Establish `hmv` using `S.mv_smul b d`. Take `⟨u, hu⟩` from `DilFv.exists_act_equiv A hA b (S.mv b d) (S.rep (S.cl b d)) (A'.N c'.1 (S'.rep c')) (by rw [hmv]; exact hN)`. Take `⟨e, he⟩` from `DilFv.exists_red_equiv P.1.asIdeal u`. Establish `hfv : ∀ x : A.N b (S.rep (S.cl b d)), A.f b d P (u x) = A.f b (S.rep (S.cl b d)) P x` using `fun x => by`. Use `hA.f_act b (S.mv b d) (S.rep (S.cl b d)) P x` as an intermediate fact.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[hmv, ← hu]`. Then use the resulting hypothesis. Use `show S.tr emb σ b (S.mv b d) (∑ x ∈ s (S.cl b d), valAt S emb σ φ b (A.upPt P (S.cl b d) x)) = _`. Rewrite using `[map_sum]`. Use `Finset.sum_equiv e.toEquiv (fun x => ?_) fun x hx => ?_` and prove the remaining obligations. Rewrite using `[hs, hs']`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Establish `e1` using `DilFv.fv_mk A hA P (S.cl b d) x`. Establish `e2` using `DilFv.fv_mk A' hA' P c' (u x)`. Establish `e3 : A'.fv P c' (e.toEquiv (Submodule.Quotient.mk x)) = A'.fv P c' (Submodule.Quotient.mk (u x))` using `congrArg _ (he x)`. Rewrite using `[e1, e3, e2, ← hF, hfv]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hx0 : (Submodule.Quotient.mk (Quotient.out x) : A.lv P (S.cl b d)) = x` using `Quotient.out_eq x`. Establish `h1 : A.f b (S.rep (S.cl b d)) P (Quotient.out x : A.N b (S.rep (S.cl b d))) = 1`. Rewrite using `[← (hs _ x).1 hx]`. Use `conv_rhs => rw [← hx0]`. Conclude with `(DilFv.fv_mk A hA P (S.cl b d) _).symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h2` using `hT.up_act b (S.mv b d) (S.rep (S.cl b d)) P _ (Quotient.out x : A.N b (S.rep (S.cl b d))).2 h1`. Rewrite `h2` using `[hmv, ← hu]`. Establish `h3 : (Submodule.Quotient.mk (Quotient.out (e.toEquiv x)) : A'.lv P c') = Submodule.Quotient.mk (u (Quotient.out x))` using `(Quotient.out_eq _).trans ((congrArg e hx0).symm.trans (he _))`. Rewrite `h3` using `[Submodule.Quotient.eq]`. Establish `h4` using `Submodule.mem_map_of_mem (f := (A'.N c'.1 (S'.rep c')).subtype) h3`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite `h4` using `[Submodule.map_smul'', Submodule.map_top, Submodule.range_subtype]`. Establish `h5` using `hT'.up_congr c'.1 (S'.rep c') P _ _ h4`. Unfold `TDat.upPt`. Rewrite using `[← valAt_smul emb σ hf]`. Use `Eq.trans ?_ (congrArg _ h5.symm)` and prove the remaining obligations.
-
-Rewrite using `[hup _ (by rw [hN]; exact (u _).2) ((hfv _).trans h1), h2]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem up_match (hf : S.Free) (hA : A.Ok T) (hT : A.Tied T) (hA' : A'.Ok T) (hT' : A'.Tied T) (P : ST)
     (s : ∀ c, Finset (A.lv P c)) (hs : ∀ c x, x ∈ s c ↔ A.fv P c x = 1)
@@ -132,7 +130,7 @@ section Points
 variable {X : Fields} {n : ℕ} {ST SG Q Q' : Finset (HeightOneSpectrum (𝓞 X.E))}
 
 /- English proof (translation)
-Use `choose f hf using fun P : Q => GlobalTheory.CharValCompare.exists_isFr P.1 d.2.lat`. Conclude with `⟨⟨(⟨(d, f), hf⟩, ∅), by rw [hy]; rfl⟩, rfl⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_pt {y : Ys X n} (hy : ∀ N, y.ys N = {∅}) (d : DecoSet X.E n ST SG) :
     ∃ p : PtY ST SG Q y, p.1.1.deco = d := by
@@ -140,9 +138,9 @@ theorem exists_pt {y : Ys X n} (hy : ∀ N, y.ys N = {∅}) (d : DecoSet X.E n S
   exact ⟨⟨(⟨(d, f), hf⟩, ∅), by rw [hy]; rfl⟩, rfl⟩
 
 /- English proof (translation)
-Distinguish the cases in `hc : (∀ (P : Q) (x : Sp X.E n), p.1.1.1.2 P x ∈ d.1.at P.1 ↔ x ∈ stdAt X.E n P.1) ∧ p.1.2 ∈ y.ys d.1.N`. Conclude with `congrArg (fun q : PtY ST SG Q y => q.1.1.deco) (dif_pos hc : p.mv d = _)`. Establish `h1 : p.mv d = p` using `dif_neg hc`. Rewrite `h` using `[h1]`. Use `absurd ⟨fun P x => ?_, h ▸ p.2⟩ hc` and prove the remaining obligations.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `p.1.1.2 P x` as an intermediate fact. Unfold `Deco.at at this ⊢`. Rewrite using `[← h]`. Conclude with `this`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mv_deco {y : Ys X n} (p : PtY ST SG Q y) (d : DecoSet X.E n ST SG) (h : (p.mv d).1.1.deco.1.N = d.1.N) :
     (p.mv d).1.1.deco = d := by
@@ -160,9 +158,9 @@ variable {T : ℕ} {y : Ys X n} {β : Type} [Fintype β] [DecidableEq β] {Λ : 
   {Θ : β → LevQFam X.E X.K n Q} {pref : DecoF X.E n ST SG Q → Prop}
 
 /- English proof (translation)
-Distinguish the cases in `hc : (p.1.1.deco.1.up P (T : 𝓞 X.E) x).Ok`. Apply `mv_deco` to reduce the goal to its premises. Establish `h1` using `congrArg Deco.N (hT.up_deco b p P x hx hf)`. Use `Eq.trans h1 ?_` and prove the remaining obligations. Unfold `DecoSet.up`.
+Consider separately whether the proposition holds or fails. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Rewrite using `[dif_pos hc]`. Both sides reduce to the same expression. Establish `h1 : p.1.1.deco.up P (T : 𝓞 X.E) x = p.1.1.deco` using `dif_neg hc`. Rewrite using `[h1]`. Conclude with `congrArg (fun q : PtY ST SG Q y => q.1.1.deco) (dif_pos ⟨p.1.1.2, p.2⟩ : p.mv p.1.1.deco = _)`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem up_deco (hT : (tdatY ST T y β Λ Θ pref).Tied T) (b : β) (p : PtY ST SG Q y) (P : ST) (x : Sp X.E n)
     (hx : x ∈ p.1.1.deco.1.N) (hf : p.1.1.deco.1.f P x = 1) :
@@ -179,7 +177,7 @@ theorem up_deco (hT : (tdatY ST T y β Λ Θ pref).Tied T) (b : β) (p : PtY ST 
     exact congrArg (fun q : PtY ST SG Q y => q.1.1.deco) (dif_pos ⟨p.1.1.2, p.2⟩ : p.mv p.1.1.deco = _)
 
 /- English proof (translation)
-The claim follows from `congrArg (fun q : PtY ST SG Q y => q.1.1.deco) (dif_pos ⟨p.1.1.2, p.2⟩ : p.mv (DecoSet.dia1 P a p.1.1.deco) = _)`.
+A detailed English derivation is pending.
 -/
 theorem dia_deco (p : PtY ST SG Q y) (P : ST) (a : (Res P.1)ˣ) :
     (p.mv (DecoSet.dia1 P a p.1.1.deco)).1.1.deco = DecoSet.dia1 P a p.1.1.deco :=
@@ -187,15 +185,13 @@ theorem dia_deco (p : PtY ST SG Q y) (P : ST) (a : (Res P.1)ˣ) :
     (dif_pos ⟨p.1.1.2, p.2⟩ : p.mv (DecoSet.dia1 P a p.1.1.deco) = _)
 
 /- English proof (translation)
-Substitute `hΛ h₁ h₂` using the available equality. Establish `hd : p.1.1.deco = ((g'.1, (g'.2.1 : GLG X.E n SG)) : UF X.E n × GLG X.E n SG) • p₀.1.1.deco`. Rewrite using `[h0]`. Conclude with `h1`. Establish `hc : ∀ P : Q, (p.1.1.fr P)⁻¹ * g'.1.1 * p₀.1.1.fr P ∈ GLint X.E n P.1` using `fun P x => by`.
+Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a1` using `p.1.1.2 P ((p.1.1.fr P).symm (g'.1.1 (p₀.1.1.fr P x)))`. Establish `a2` using `p₀.1.1.2 P x`. Use `a1.symm.trans (Iff.trans ?_ a2)` and prove the remaining obligations. Use `show p.1.1.fr P ((p.1.1.fr P).symm (g'.1.1 (p₀.1.1.fr P x))) ∈ p.1.1.deco.1.at P.1 ↔ _`. Rewrite using `[LinearEquiv.apply_symm_apply, hd]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `show _ ∈ Formalism.HermitianLatticesTheory.localization₂ P.1.asIdeal (Formalism.HermitianLatticesTheory.gmap g'.1.1 p₀.1.1.deco.1.N) ↔ _`. Rewrite using `[mem_localization_gmap, LinearEquiv.symm_apply_apply]`. Both sides reduce to the same expression. Use `⟨(g'.1, g'.2.1, ⟨fun P => ⟨_, hc P⟩, fun P _ => Subgroup.mem_top _⟩), ?_, rfl, ?_⟩` and prove the remaining obligations. Use `Subtype.ext (Prod.ext (Subtype.ext (Prod.ext hd.symm ?_)) ?_)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `P show g'.1.1 * p₀.1.1.fr P * ((p.1.1.fr P)⁻¹ * g'.1.1 * p₀.1.1.fr P)⁻¹ = p.1.1.fr P group`. Establish `a1` using `p.2`. Establish `a2` using `((ptYAct y Λ₁ (LevQFam.top X.E X.K n Q)).smul (g'.1, g'.2.1, ⟨fun P => ⟨_, hc P⟩, fun P _ => Subgroup.mem_top _⟩) p₀).2`. Rewrite `a1`, `a2` using `[hy]`. Conclude with `a2.trans a1.symm`.
-
-Rewrite using `[LevQFam.top_chr, LevQFam.top_chr]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_lift {y' : Ys X n} (hy : ∀ N, y.ys N = {∅}) {Λ₁ Λ₂ : LevFam X.E X.K n SG} {Θ₁ : LevQFam X.E X.K n Q}
     {Θ₂ : LevQFam X.E X.K n Q'} (hΛ : Λ₁ = Λ₂) (h₁ : Θ₁ = LevQFam.top X.E X.K n Q) (h₂ : Θ₂ = LevQFam.top X.E X.K n Q')
@@ -244,9 +240,9 @@ def ForgetsFrames (e : ((stepY ST y β Λ Θ pref).Cl → Fr X.emb σ n → ℂ)
       valAt (stepY ST y' β' Λ' Θ' pref') X.emb σ (e φ) b' p' = valAt (stepY ST y β Λ Θ pref) X.emb σ φ b p
 
 /- English proof (translation)
-Use `choose π hπ using fun c : (stepY ST y' β' Λ' Θ' pref').Cl => exists_pt (Q := Q) hy (show PtY ST SG Q' y' from (stepY ST y' β' Λ' Θ' pref').rep c).1.1.deco`. Use `⟨LinearMap.pi fun c => ((stepY ST y β Λ Θ pref).trTo X.emb σ b₀ (π c)).toLinearMap ∘ₗ LinearMap.proj ((stepY ST y β Λ Θ pref).cl b₀ (π c)), fun φ b b' p p' h => ?_⟩` and prove the remaining obligations. Take `rfl` from `hb b`. Establish `hm` using `(stepY ST y' β' Λ' Θ' pref').mv_smul b' p'`. Take `⟨g, g1, g2, g3⟩` from `exists_lift hy ((hΛ b).trans (hΛ' b').symm) (hΘ b) (hΘ' b') ((stepY ST y' β' Λ' Θ' pref').mv b' p') (π ((stepY ST y' β' Λ' Θ' pref').cl b' p')) p _ (hπ _) (h.trans (congrArg (fun q : PtY ST SG Q' y' => q.1.1.deco) hm).symm)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h1` using `valAt_smul X.emb σ hf φ b g (π ((stepY ST y' β' Λ' Θ' pref').cl b' p'))`. Use `Eq.trans ?_ (h1.symm.trans (congrArg _ g1))` and prove the remaining obligations. Establish `h2 : (stepY ST y' β' Λ' Θ' pref').tr X.emb σ b' ((stepY ST y' β' Λ' Θ' pref').mv b' p') = (stepY ST y β Λ Θ pref).tr X.emb σ b g` using `congrArg₂ (trFr X.emb σ) (congrArg (ufGL X.E n) g2.symm) g3.symm`. Conclude with `congrFun (congrArg DFunLike.coe h2) _`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_read (hy : ∀ N, y.ys N = {∅}) (b₀ : β) (hb : ∀ b, b = b₀) {Λ₀ : LevFam X.E X.K n SG} (hΛ : ∀ b, Λ b = Λ₀)
     (hΛ' : ∀ b, Λ' b = Λ₀) (hΘ : ∀ b, Θ b = LevQFam.top X.E X.K n Q) (hΘ' : ∀ b, Θ' b = LevQFam.top X.E X.K n Q')
@@ -274,7 +270,7 @@ variable {σ lam} {e : ((stepY ST y β Λ Θ pref).Cl → Fr X.emb σ n → ℂ)
     ((stepY ST y' β' Λ' Θ' pref').Cl → Fr X.emb σ n → ℂ)}
 
 /- English proof (translation)
-The claim follows from `DiaStab.mem_Fi _ X.emb σ lam hf _ fun _ => Submodule.sum_mem _ fun _ _ => DiaStab.tr_mem _ X.emb σ _ _ _ (hφ _).1`.
+A detailed English derivation is pending.
 -/
 theorem up_mem (hf : (stepY ST y β Λ Θ pref).Free) (P : ST) (s : ∀ c, Finset ((tdatY ST T y β Λ Θ pref).lv P c))
     {φ} (hφ : φ ∈ (stepY ST y β Λ Θ pref).Fi X.emb σ lam) :
@@ -283,9 +279,9 @@ theorem up_mem (hf : (stepY ST y β Λ Θ pref).Free) (P : ST) (s : ∀ c, Finse
   DiaStab.mem_Fi _ X.emb σ lam hf _ fun _ => Submodule.sum_mem _ fun _ _ => DiaStab.tr_mem _ X.emb σ _ _ _ (hφ _).1
 
 /- English proof (translation)
-Use function extensionality and compare the values at `c`. Take `⟨p, hp⟩` from `exists_pt (Q := Q) hy (show PtY ST SG Q' y' from (stepY ST y' β' Λ' Θ' pref').rep c).1.1.deco`. Use `(valAt_rep X.emb σ hf' _ c).symm.trans ((he _ (up_mem hf P s hφ) b₀ c.1 p _ hp).trans ?_)` and prove the remaining obligations. Establish `hN` using `congrArg (fun d : DecoSet X.E n ST SG => d.1.N) hp`. Establish `hF` using `congrArg (fun d : DecoSet X.E n ST SG => d.1.f P) hp`.
+Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `up_match X.emb σ hf hA hT hA' hT' P s hs c (s' c) (hs' c) φ (e φ) b₀ p hN hF fun x hx h1 => ?_` and prove the remaining obligations. Use `he φ hφ b₀ c.1 _ _ ?_` and prove the remaining obligations. Conclude with `(up_deco hT b₀ p P x hx h1).trans ((congrArg (fun d : DecoSet X.E n ST SG => d.up P (T : 𝓞 X.E) x) hp).trans (up_deco hT' c.1 _ P x (hN ▸ hx) ((congrFun hF x).symm.trans h1)).symm)`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem ForgetsFrames.up (he : ForgetsFrames σ lam e) (hy : ∀ N, y.ys N = {∅}) (b₀ : β)
     (hf : (stepY ST y β Λ Θ pref).Free) (hf' : (stepY ST y' β' Λ' Θ' pref').Free)
@@ -315,17 +311,15 @@ section Lattice
 variable {D : D7} {u : D.what₂.Word} {X Y : Ch D u} {e : Fn X 0 ≃ₗ[ℂ] Fn Y 0} {eL : Vl X 0 ≃ₗ[D.what₂.LL] Vl Y 0}
 
 /- English proof (translation)
-Establish `hS : ∀ z ∈ X.fm.S 0 w, eL z ∈ Y.fm.S 0 w` using `fun z hz => by`. Proceed by induction on `hz using Submodule.span_induction with`. Consider the case `mem z hz => exact Submodule.subset_span (hlat z hz)`. Consider the case `zero => rw [map_zero]`. Conclude with `Submodule.zero_mem _`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `add a b _ _ ha hb => rw [map_add]`. Conclude with `Submodule.add_mem _ ha hb`. Consider the case `smul r a _ ha`. Rewrite using `[Subring.smul_def, map_smul]`. Conclude with `Submodule.smul_mem _ r ha`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `hR : ∀ z ∈ X.fm.ramSub, eL z ∈ Y.fm.ramSub` using `fun z hz => by`. Establish `hz' : X.fm.emb 0 z ∈ X.A.Mram` using `hz`. Use `show Y.fm.emb 0 (eL z) ∈ Y.A.Mram`. Rewrite `hz'`, the goal using `[← MramI_zero]`. Unfold `MramI at hz' ⊢`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Submodule.mem_inf, Submodule.mem_iInf, LinearMap.mem_ker, emb_mem_Fi, true_and] at hz' ⊢`. Introduce `v'`. Take `⟨v, hv⟩` from `hNm v'`. Rewrite using `[hemb, ← hv _ (emb_mem_Fi X 0 z), hz' v, map_zero]`. Establish `hP : ∀ (k : ℕ), ∀ φ ∈ X.fm.Fi 0, e ((Uprod X 0 w ^ k) φ) = (Uprod Y 0 w ^ k) (e φ)` using `fun k => by`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `k with`. Consider the case `zero => exact fun _ _ => rfl`. Consider the case `succ k ih`. Introduce `φ hφ`. Rewrite using `[pow_succ, pow_succ, Module.End.mul_apply, Module.End.mul_apply, ← hU φ hφ]`.
-
-Conclude with `ih _ (hmem φ hφ)`. Take `⟨z, hz, hh⟩` from `hx`. Use `⟨eL z, ⟨hS z hz.1, hR z hz.2⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[hemb, hemb, hh, LinearMap.smul_apply, LinearMap.smul_apply, map_smul, hP _ _ (emb_mem_Fi X 0 z), hT, hexp]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nlam_map (w : D.what₂.places.Pl) (hT : Y.A.T = X.A.T) (hemb : ∀ x, Y.fm.emb 0 (eL x) = e (X.fm.emb 0 x))
     (hlat : ∀ x, x ∈ (X.fm.lat 0).L → eL x ∈ (Y.fm.lat 0).L)
@@ -406,7 +400,7 @@ def ForgetsAt {mu' : Tup X.F X.E X.K S} (cst' : LocCst X (rowSG Pr sel mu'))
   ForgetsFrames σ lam e
 
 /- English proof (translation)
-Establish `h` using `R.two_le_m`. Unfold `ysAt`. Rewrite using `[if_neg (by omega)]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem ysAt_zero (N : Submodule (𝓞 X.E) (Sp X.E (R.N 0))) : (ysAt R sel mu cst 0).ys N = {∅} := by
   have h := R.two_le_m

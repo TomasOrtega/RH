@@ -7,13 +7,13 @@ open scoped ComplexOrder
 namespace PositivityTheory.Xgp.ProjectiveLineNormal
 
 /- English proof (translation)
-Use `⟨⟨⟨fun v => (1 / 2 : ℂ) • (H v - Complex.I • H (Complex.I • v)), ?_⟩, ?_⟩, fun v => rfl⟩` and prove the remaining obligations. Introduce `v w`. Simplify using `only [smul_add, map_add]`. Use `module`. Introduce `c v`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `e1 : c • v = c.re • v + c.im • (Complex.I • v)`. Rewrite using `[← Complex.coe_smul, ← Complex.coe_smul, smul_smul, ← add_smul, Complex.re_add_im]`. Establish `e2 : Complex.I • c • v = c.re • (Complex.I • v) - c.im • v`. Rewrite using `[← Complex.coe_smul, ← Complex.coe_smul, smul_smul, smul_smul, ← sub_smul]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `apply Complex.ext <;> simp`. Simplify using `only [RingHom.id_apply]`. Rewrite using `[e2, e1, map_add, map_sub, H.map_smul, H.map_smul, H.map_smul, H.map_smul]`. Generalize the expression as in `H v = A`. Generalize the expression as in `H (Complex.I • v) = B`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Simplify using the standard rewrite rules.
 
-Simplify using `only [← Complex.coe_smul]`. Use `match_scalars`. Apply the tactic sequence `apply Complex.ext <;> simp [mul_comm]`. Apply the tactic sequence `apply Complex.ext <;> simp [mul_comm]`.
+Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem holo_part {E M : Type*} [AddCommGroup E] [Module ℂ E] [AddCommGroup M] [Module ℂ M]
     (H : E →ₗ[ℝ] M) : ∃ L : E →ₗ[ℂ] M, ∀ v, L v = (1 / 2 : ℂ) • (H v - Complex.I • H (Complex.I • v)) := by
@@ -40,29 +40,27 @@ theorem holo_part {E M : Type*} [AddCommGroup E] [Module ℂ E] [AddCommGroup M]
 end PositivityTheory.Xgp.ProjectiveLineNormal
 
 /- English proof (translation)
-Introduce `d G y₀ hpos hherm hC`. Establish `hG : ∀ p q, DifferentiableAt ℝ (fun y => G y p q) y₀` using `fun p q => (hC p q).differentiableAt (by norm_num)`. Take `⟨g0, hg0u, hg0⟩ : ∃ g0 : Matrix (Fin 2) (Fin 2) ℂ, IsUnit g0.det ∧ g0ᴴ * G y₀ * g0 = 1` from `by open scoped MatrixOrder in`. Take `⟨y, hy⟩` from `CStarAlgebra.nonneg_iff_eq_star_mul_self.mp hpos.posSemidef.nonneg`. Establish `hdet` using `hpos.det_pos.ne'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hyu : IsUnit y.det`. Rewrite `hdet` using `[hy, det_mul]`. Conclude with `isUnit_iff_ne_zero.mpr (right_ne_zero_of_mul hdet)`. Use `⟨y⁻¹, isUnit_nonsing_inv_det y hyu, ?_⟩` and prove the remaining obligations. Rewrite using `[hy, star_eq_conjTranspose, ← Matrix.mul_assoc, ← conjTranspose_mul, Matrix.mul_assoc, mul_nonsing_inv y hyu]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Set `Dm : (Fin d → ℂ) →ₗ[ℝ] Matrix (Fin 2) (Fin 2) ℂ` to `{ toFun := fun v => Matrix.of fun p q => fderiv ℝ (fun y => G y p q) y₀ v map_add' := fun v w => by ext p q; simp map_smul' := fun c v => by ext p q; simp }`. Establish `hDm : ∀ v, (Dm v)ᴴ = Dm v`. Introduce `v`. Use extensionality with `p q`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Establish `h1` using `(PositivityTheory.Xgp.gram_grad.line_deriv _ y₀ (hG q p) v).star`. Establish `h2` using `PositivityTheory.Xgp.gram_grad.line_deriv _ y₀ (hG p q) v`. Establish `e : (fun s : ℝ => star (G (y₀ + s • v) q p)) = fun s : ℝ => G (y₀ + s • v) p q`. Use function extensionality and compare the values at `s`. Conclude with `(hherm _).apply p q`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression.
 
-Rewrite `h1` using `[e]`. Conclude with `h1.unique h2`. Set `H : (Fin d → ℂ) →ₗ[ℝ] Matrix (Fin 2) (Fin 2) ℂ` to `{ toFun := fun v => g0ᴴ * Dm v * g0 map_add' := fun v w => by rw [map_add, Matrix.mul_add, Matrix.add_mul] map_smul' := fun c v => by rw [map_smul, Matrix.mul_smul, Matrix.smul_mul]; rfl }`. Establish `hH : ∀ v, (H v)ᴴ = H v`. Introduce `v`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `show (g0ᴴ * Dm v * g0)ᴴ = g0ᴴ * Dm v * g0`. Rewrite using `[conjTranspose_mul, conjTranspose_mul, hDm, conjTranspose_conjTranspose, Matrix.mul_assoc]`. Take `⟨L, hL⟩` from `PositivityTheory.Xgp.ProjectiveLineNormal.holo_part H`. Establish `hLL : ∀ v, (L v)ᴴ + L v = H v`. Introduce `v`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hL, conjTranspose_smul, conjTranspose_sub, conjTranspose_smul, hH, hH]`. Simplify using `only [Complex.star_def, Complex.conj_I, map_div₀, map_one, map_ofNat]`. Use `module`. Set `Λ : Fin 2 → Fin 2 → (Fin d → ℂ) →L[ℂ] ℂ` to `fun p q => LinearMap.toContinuousLinearMap { toFun := fun v => (g0 * L v) p q map_add' := fun v w => by rw [map_add, Matrix.mul_add]; rfl map_smul' := fun c v => by rw [map_smul, Matrix.mul_smul]; rfl }`. Use `⟨fun y => g0 - g0 * L (y - y₀), fun p q => ?_, by simpa using hg0u, by simpa using hg0, fun p q => ?_⟩` and prove the remaining obligations.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `show Differentiable ℂ fun y => g0 p q - Λ p q (y - y₀) fun_prop`. Distinguish the cases in `hd : DifferentiableAt ℝ (fun y => ((g0 - g0 * L (y - y₀))ᴴ * G y * (g0 - g0 * L (y - y₀))) p q) y₀ swap`. Conclude with `fderiv_zero_of_not_differentiableAt hd`. Use `ext1 v`. Establish `hV : ∀ p q, HasDerivAt (fun s : ℝ => (g0 - g0 * L (y₀ + s • v - y₀)) p q) ((-(g0 * L v)) p q) 0`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Introduce `p q`. Establish `e : (fun s : ℝ => (g0 - g0 * L (y₀ + s • v - y₀)) p q) = fun s : ℝ => g0 p q - s • (g0 * L v) p q`. Use function extensionality and compare the values at `s`. Rewrite using `[add_sub_cancel_left, L.map_smul_of_tower, Matrix.mul_smul]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Simplify using `using ((hasDerivAt_id (0 : ℝ)).smul_const ((g0 * L v) p q)).const_sub (g0 p q)`. Establish `h1` using `PositivityTheory.Xgp.gram_grad.triple_deriv (fun s : ℝ => G (y₀ + s • v)) (fun s : ℝ => g0 - g0 * L (y₀ + s • v - y₀)) (Dm v) (-(g0 * L v)) 0 (fun p q => PositivityTheory.Xgp.gram_grad.line_deriv _ y₀ (hG p q) v) hV p q`. Establish `h3` using `(PositivityTheory.Xgp.gram_grad.line_deriv _ y₀ hd v).unique h1`. Rewrite using `[h3]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [zero_smul, add_zero, sub_self, map_zero, Matrix.mul_zero, sub_zero]`. Establish `e1 : (-(g0 * L v))ᴴ * G y₀ * g0 = -(L v)ᴴ`. Rewrite using `[conjTranspose_neg, conjTranspose_mul, Matrix.neg_mul, Matrix.neg_mul, Matrix.mul_assoc (L v)ᴴ, Matrix.mul_assoc (L v)ᴴ, hg0, Matrix.mul_one]`. Establish `e2 : g0ᴴ * G y₀ * -(g0 * L v) = -L v`. Rewrite using `[Matrix.mul_neg, ← Matrix.mul_assoc, hg0, Matrix.one_mul]`.
-
-Establish `e3 : g0ᴴ * Dm v * g0 = (L v)ᴴ + L v` using `(hLL v).symm`. Rewrite using `[e1, e2, e3]`. Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem PositivityTheory.Xgp.projective_line_normal_frame : ∀ (d : ℕ) (G : (Fin d → ℂ) → Matrix (Fin 2) (Fin 2) ℂ) (y₀ : Fin d → ℂ), (G y₀).PosDef → (∀ y, (G y).IsHermitian) → (∀ p q, ContDiffAt ℝ 2 (fun y => G y p q) y₀) → ∃ g : (Fin d → ℂ) → Matrix (Fin 2) (Fin 2) ℂ, (∀ p q, Differentiable ℂ fun y => g y p q) ∧ IsUnit (g y₀).det ∧ (g y₀)ᴴ * G y₀ * g y₀ = 1 ∧ ∀ p q, fderiv ℝ (fun y => ((g y)ᴴ * G y * g y) p q) y₀ = 0 := by
   intro d G y₀ hpos hherm hC

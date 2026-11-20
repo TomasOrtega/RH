@@ -6,9 +6,9 @@ open scoped InnerProductSpace
 namespace Formalism.IndefR.U2
 
 /- English proof (translation)
-Take `⟨i', hi'⟩` from `ha i`. Establish `hcomm : op i (LinearMap.adjoint (op i) y) = LinearMap.adjoint (op i) (op i y)`. Rewrite using `[← hi']`. Conclude with `LinearMap.congr_fun (hc i i').eq y`. Establish `hTv : op i (LinearMap.adjoint (op i) y - (starRingEnd ℂ) μ • y) = μ • (LinearMap.adjoint (op i) y - (starRingEnd ℂ) μ • y)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_sub, map_smul, hcomm, hy, map_smul, smul_sub, smul_comm μ ((starRingEnd ℂ) μ) y]`. Establish `h0 : ⟪LinearMap.adjoint (op i) y - (starRingEnd ℂ) μ • y, LinearMap.adjoint (op i) y - (starRingEnd ℂ) μ • y⟫_ℂ = 0`. Rewrite using `[inner_sub_left, LinearMap.adjoint_inner_left, hTv, inner_smul_left, inner_smul_right]`. Simplify using the standard rewrite rules. Conclude with `sub_eq_zero.mp (inner_self_eq_zero.mp h0)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private lemma adjoint_apply_eq_conj_smul_of_eigen {I A : Type} [NormedAddCommGroup A] [InnerProductSpace ℂ A]
     [FiniteDimensional ℂ A] (op : I → Module.End ℂ A) (hc : PairCommF op) (ha : AdjClosed op)
@@ -28,7 +28,7 @@ private lemma adjoint_apply_eq_conj_smul_of_eigen {I A : Type} [NormedAddCommGro
   exact sub_eq_zero.mp (inner_self_eq_zero.mp h0)
 
 /- English proof (translation)
-Simplify using `[eigPart, sub_eq_zero]`.
+Simplify using the standard rewrite rules.
 -/
 private lemma mem_eigPart_iff' {I A : Type} [NormedAddCommGroup A] [InnerProductSpace ℂ A]
     [FiniteDimensional ℂ A] (op : I → Module.End ℂ A) (c : I → ℂ) (x : A) :
@@ -36,9 +36,9 @@ private lemma mem_eigPart_iff' {I A : Type} [NormedAddCommGroup A] [InnerProduct
   simp [eigPart, sub_eq_zero]
 
 /- English proof (translation)
-Take `⟨i, hi⟩` from `Function.ne_iff.mp hcc`. Establish `hx'` using `(mem_eigPart_iff' op c x).mp hx i`. Establish `hy'` using `adjoint_apply_eq_conj_smul_of_eigen op hc ha i (c' i) y ((mem_eigPart_iff' op c' y).mp hy i)`. Establish `h1 : ⟪op i x, y⟫_ℂ = ⟪x, LinearMap.adjoint (op i) y⟫_ℂ` using `(LinearMap.adjoint_inner_right (op i) x y).symm`. Rewrite `h1` using `[hx', hy', inner_smul_left, inner_smul_right]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Assume the negation of the conclusion as `hz`. Conclude with `hi ((starRingEnd ℂ).injective (mul_right_cancel₀ hz h1))`.
+Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 private lemma inner_eq_zero_of_mem_eigPart_ne {I A : Type} [NormedAddCommGroup A] [InnerProductSpace ℂ A]
     [FiniteDimensional ℂ A] (op : I → Module.End ℂ A) (hc : PairCommF op) (ha : AdjClosed op)
@@ -54,9 +54,9 @@ private lemma inner_eq_zero_of_mem_eigPart_ne {I A : Type} [NormedAddCommGroup A
   exact hi ((starRingEnd ℂ).injective (mul_right_cancel₀ hz h1))
 
 /- English proof (translation)
-Use `iSup₂_le fun c hc => le_iSup₂_of_le c ?_ (inf_le_inf_left _ h)` and prove the remaining obligations. Establish `hc' : eigPart op c ⊓ W' ≠ ⊥` using `hc`. Express the relevant statement in the definitionally equal form `eigPart op c ⊓ W ≠ ⊥`. Introduce `h0`. Apply `hc'` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite `h0`, the goal using `[eq_bot_iff]`. Conclude with `(inf_le_inf_left _ h).trans h0`.
+Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma iSup_eigPart_inf_mono {I A : Type} [NormedAddCommGroup A] [InnerProductSpace ℂ A]
     [FiniteDimensional ℂ A] (op : I → Module.End ℂ A) {W W' : Submodule ℂ A} (h : W' ≤ W) :
@@ -70,35 +70,29 @@ private lemma iSup_eigPart_inf_mono {I A : Type} [NormedAddCommGroup A] [InnerPr
   exact (inf_le_inf_left _ h).trans h0
 
 /- English proof (translation)
-Use the proof step `induction' n using Nat.strong_induction_on with n ih`. Introduce `W hn hW`. Distinguish the cases in `hbot : W = ⊥`. Rewrite using `[hbot]`. Conclude with `bot_le`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Distinguish the cases in `hsc : ∀ i, ∃ μ : ℂ, ∀ x ∈ W, op i x = μ • x`. Use `choose c hc' using hsc`. Establish `hle : W ≤ eigPart op c` using `fun x hx => (mem_eigPart_iff' op c x).mpr fun i => hc' i x hx`. Establish `hocc : c ∈ Occ op W`. Express the relevant statement in the definitionally equal form `eigPart op c ⊓ W ≠ ⊥`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[inf_eq_right.mpr hle]`. Conclude with `hbot`. Conclude with `le_iSup₂_of_le c hocc (le_inf hle le_rfl)`. Use `push_neg at hsc`. Take `⟨i, hi⟩` from `hsc`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hex : ∃ μ : ℂ, ∃ v : A, v ∈ W ∧ v ≠ 0 ∧ op i v = μ • v` using `by haveI : Nontrivial W := Submodule.nontrivial_iff_ne_bot.mpr hbot`. Establish `hmaps : ∀ x ∈ W, op i x ∈ W` using `hW i`. Take `⟨μ, hμ⟩` from `Module.End.exists_eigenvalue ((op i).restrict hmaps)`. Take `⟨v, hv⟩` from `hμ.exists_hasEigenvector`. Use `⟨μ, v, v.2, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Introduce `h`. Conclude with `hv.2 (Subtype.ext h)`. Establish `h` using `congrArg Subtype.val hv.apply_eq_smul`. Simplify using `using h`. Take `⟨μ, v, hvW, hv0, hv1⟩` from `hex`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨x0, hx0W, hx0⟩` from `hi μ`. Take `⟨W1, hW1⟩ : ∃ W1 : Submodule ℂ A, ∀ x, x ∈ W1 ↔ x ∈ W ∧ op i x = μ • x` from `⟨W ⊓ LinearMap.ker (op i - μ • 1), fun x => by simp [sub_eq_zero]⟩`. Establish `hW1W : W1 ≤ W` using `fun x hx => ((hW1 x).mp hx).1`. Establish `hvW1 : v ∈ W1` using `(hW1 v).mpr ⟨hvW, hv1⟩`. Establish `hW1inv : ∀ j, ∀ x ∈ W1, op j x ∈ W1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `j x hx`. Take `⟨hxW, hxe⟩` from `(hW1 x).mp hx`. Use `(hW1 _).mpr ⟨hW j x hxW, ?_⟩` and prove the remaining obligations. Establish `hcomm : op i (op j x) = op j (op i x)` using `LinearMap.congr_fun (hc i j).eq x`. Rewrite using `[hcomm, hxe, map_smul]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hW2inv : ∀ j, ∀ x ∈ W1ᗮ ⊓ W, op j x ∈ W1ᗮ ⊓ W`. Introduce `j x hx`. Take `⟨hx1, hx2⟩` from `Submodule.mem_inf.mp hx`. Use `Submodule.mem_inf.mpr ⟨?_, hW j x hx2⟩` and prove the remaining obligations. Rewrite using `[Submodule.mem_orthogonal]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Treat this case separately. Treat this case separately.
 
-Introduce `u hu`. Take `⟨j', hj'⟩` from `ha j`. Rewrite using `[← LinearMap.adjoint_inner_left, ← hj']`. Conclude with `Submodule.inner_right_of_mem_orthogonal (hW1inv j' u hu) hx1`. Establish `hsup : W ≤ W1 ⊔ W1ᗮ ⊓ W`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Introduce `x hx`. Use `first`. Consider the case `(rw [Submodule.sup_orthogonal_inf_of_hasOrthogonalProjection hW1W]; exact hx)`. Consider the case `(obtain ⟨y, hy, z, hz, rfl⟩ := W1.exists_add_mem_mem_orthogonal x`. Conclude with `Submodule.add_mem_sup hy (Submodule.mem_inf.mpr ⟨hz, (W.add_mem_iff_right (hW1W hy)).mp hx⟩))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Consider the case `(exact Submodule.mem_sup.mpr ⟨(orthogonalProjection W1 x : A), (orthogonalProjection W1 x).2, x - orthogonalProjection W1 x, Submodule.mem_inf.mpr ⟨sub_orthogonalProjection_mem_orthogonal x, W.sub_mem hx (hW1W (orthogonalProjection W1 x).2)⟩, by abel⟩)`. Consider the case `(exact Submodule.mem_sup.mpr ⟨(W1.orthogonalProjection x : A), (W1.orthogonalProjection x).2, x - W1.orthogonalProjection x, Submodule.mem_inf.mpr ⟨W1.sub_orthogonalProjection_mem_orthogonal x, W.sub_mem hx (hW1W (W1.orthogonalProjection x).2)⟩, by abel⟩)`. Establish `hlt1 : W1 < W`. Use `lt_of_le_of_ne hW1W fun h => hx0 ?_` and prove the remaining obligations. Establish `hx0' : x0 ∈ W1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[h]`. Conclude with `hx0W`. Conclude with `((hW1 x0).mp hx0').2`. Establish `hlt2 : W1ᗮ ⊓ W < W`. Use `lt_of_le_of_ne inf_le_right fun h => hv0 ?_` and prove the remaining obligations.
-
-Establish `hv2 : v ∈ W1ᗮ ⊓ W`. Rewrite using `[h]`. Conclude with `hvW`. Conclude with `inner_self_eq_zero.mp (Submodule.inner_right_of_mem_orthogonal hvW1 (Submodule.mem_inf.mp hv2).1)`. Establish `hr1 : Module.finrank ℂ W1 < n`.
-
-Rewrite using `[← hn]`. Conclude with `Submodule.finrank_lt_finrank_of_lt hlt1`. Establish `hr2 : Module.finrank ℂ (W1ᗮ ⊓ W : Submodule ℂ A) < n`. Rewrite using `[← hn]`. Conclude with `Submodule.finrank_lt_finrank_of_lt hlt2`.
-
-Establish `h1` using `ih _ hr1 W1 rfl hW1inv`. Establish `h2` using `ih _ hr2 (W1ᗮ ⊓ W) rfl hW2inv`. Conclude with `hsup.trans (sup_le (h1.trans (iSup_eigPart_inf_mono op hW1W)) (h2.trans (iSup_eigPart_inf_mono op inf_le_right)))`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private lemma le_iSup_eigPart_inf_of_invariant {I A : Type} [NormedAddCommGroup A] [InnerProductSpace ℂ A]
     [FiniteDimensional ℂ A] (op : I → Module.End ℂ A) (hc : PairCommF op) (ha : AdjClosed op)
@@ -191,7 +185,7 @@ private lemma le_iSup_eigPart_inf_of_invariant {I A : Type} [NormedAddCommGroup 
     (h2.trans (iSup_eigPart_inf_mono op inf_le_right)))
 
 /- English proof (translation)
-Introduce `I A _ _ _ op good hc ha hgood`. Conclude with `⟨le_iSup_eigPart_inf_of_invariant op hc ha _ good rfl hgood, fun c _ c' _ hcc x hx y hy => inner_eq_zero_of_mem_eigPart_ne op hc ha hcc (Submodule.mem_inf.mp hx).1 (Submodule.mem_inf.mp hy).1⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem decompOfNormal : DecompOfNormalStatement := by
   intro I A _ _ _ op good hc ha hgood

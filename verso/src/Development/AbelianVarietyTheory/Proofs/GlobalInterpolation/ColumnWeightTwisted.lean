@@ -7,11 +7,11 @@ open Formalism.BasicNotions GlobalTheory.LvT
 namespace GlobalTheory.Proof.ColumnWeightTwisted
 
 /- English proof (translation)
-Unfold `EatT`. Use `split_ifs`. Take `⟨a, ha⟩` from `D.R.m_even`. Take `⟨b, hb⟩` from `D.R.t_odd`. Use `⟨(D.R.m : ℤ) * (2 * (∑ τ : D.what₂.Tau, (Wtau D u τ : ℤ)) + (D.R.f : ℤ) * (D.R.N D.R.m : ℤ)) + ((topsOf D.host D.eTau).card : ℤ) * ((b : ℤ) + 1) * ((D.R.m : ℤ) + 1) * a, ?_⟩` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `ha' : (D.R.m : ℝ) = a + a` using `by exact_mod_cast ha`. Establish `hb' : (D.R.t : ℝ) = 2 * b + 1` using `by exact_mod_cast hb`. Unfold `Formalism.MainNotions.G.Nm`. Use `push_cast`. Rewrite using `[hb', ha']`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Conclude with `⟨0, by simp⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_int_m_mul_EatT (D : D7) (u : D.what₂.Word) (w : D.what₂.places.Pl) :
     ∃ k : ℤ, (D.R.m : ℝ) * EatT D u w = (k : ℝ) := by
@@ -30,13 +30,13 @@ theorem exists_int_m_mul_EatT (D : D7) (u : D.what₂.Word) (w : D.what₂.place
   · exact ⟨0, by simp⟩
 
 /- English proof (translation)
-Introduce `D T u μ h w hw x hx`. Take `⟨k, hk⟩` from `exists_int_m_mul_EatT D u w`. Take `⟨c, hc⟩` from `D.what₂.places.val_surj w ((D.what₂.places.ramIdx w : ℤ) * k)`. Establish `hc0 : c ≠ 0`. Introduce and unpack `rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Rewrite `hc` using `[AddValuation.map_zero]`. Conclude with `WithTop.top_ne_coe hc`. Take `⟨y, hy, e⟩` from `h w hw c _ hc (by rw [hk]; push_cast; exact le_rfl) x hx`. Establish `hv : vAdd (D.plEq w) c = (D.what₂.places.ramIdx w : ℤ) * k`. Rewrite `hc` using `[D.val_eq w _ hc0]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hc` after adjusting the coercions. Establish `hvi : vAdd (D.plEq w) c⁻¹ = - vAdd (D.plEq w) c`. Unfold `vAdd`. Rewrite using `[map_inv₀, WithZero.log_inv]`. Use `⟨c⁻¹ • y, ?_, c⁻¹, y, hy, rfl, Or.inr ?_⟩` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[LinearMap.map_smulₛₗ, e, smul_smul, ← map_mul, inv_mul_cancel₀ hc0, map_one, one_smul]`. Rewrite using `[hvi, hv, hk]`. Unfold `DV.ur`. Use `push_cast`. Conclude with `le_of_eq (by ring)`.
+Replace the relevant objects with their definitions. Move the embeddings inside the algebraic operations. A detailed English derivation is pending.
 -/
 theorem colGeTw_of_tupleChainSharpColumnValuation : ∀ (D : D7) (T : TwForms D) (u : D.what₂.Word) (μ : D.what₂.Tup), TupleChainSharpColumnValuation T u μ → ∀ w : D.what₂.places.Pl, D.what₂.places.resChar w = (D.mem u).A.T → ∀ x ∈ LT.Nlam D u w, Formalism.MainNotions.WeilJacquetShalikaLaw.ColGeTw T u μ w x (-((D.R.m : ℝ) * EatT D u w)) := by
   intro D T u μ h w hw x hx

@@ -31,7 +31,7 @@ noncomputable section
 namespace GlobalTheory.VertObj
 
 /- English proof (translation)
-The claim follows from `|lgOf Y (Finsupp.single (ArIn.ind Q, none, .inl (τ, k)) n) v ε y - lgOf Y (Finsupp.single (ArIn.ind Q₀, none, .inl (τ, k)) n) v ε y| ≤ (if resP v ∈ Q \ Q₀ then 1 / ((resP v : ℝ) - 1) else 0) * (-Real.log (ε.w (resP v : AlgebraicClosure F))) := by have hw : 0 ≤ -Real.log (ε.w (res …`.
+A detailed English derivation is pending.
 -/
 theorem abs_lgOf_single_sub_le {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E}
     {Dw : Datum H} {l : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level H} {Xo : Moduli Dw l} {c : Coeff l}
@@ -78,9 +78,9 @@ theorem abs_lgOf_single_sub_le {E : Type} [Field E] [NumberField E] [IsCMField E
     simp [this]
 
 /- English proof (translation)
-Introduce `D O c Q₀ Q hQ hd x v e y`. Express the relevant statement in the definitionally equal form `|lgOf _ (rootSym _ _ _ _ _) v e y - lgOf _ (rootSym _ _ _ _ _) v e y| ≤ _`. Unfold `rootSym`. Use `split_ifs with h₁ h₂ h₂`. Apply the tactic sequence `all_goals first`.
+Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Replace the relevant objects with their definitions. Treat this case separately. Treat this case separately.
 
-Consider the case `simpa only [if_pos h₂] using abs_lgOf_single_sub_le _ hQ hd _ _ _ (by simp) v e y`. Consider the case `simpa only [if_neg h₂] using abs_lgOf_single_sub_le _ hQ hd _ _ _ (by simp) v e y`.
+A detailed English derivation is pending.
 -/
 theorem abs_lg_root0_sub_le : ∀ (D : D7) (O : Setup D) (c : O.s.Comp) (Q₀ Q : Finset ℕ), Q₀ ⊆ Q → (NumberField.discr D.host.E).natAbs.primeFactors ⊆ Q₀ → ∀ (x : DV.Rt D.what₂.Tau O.N) (v : HeightOneSpectrum (𝓞 D.what₂.LL)) (e : TrueGeo.Ext v) (y : AlgPt (O.var c)), |(O.root0 c Q x).lg v e y - (O.root0 c Q₀ x).lg v e y| ≤ (if resP v ∈ Q \ Q₀ then 1 / ((resP v : ℝ) - 1) else 0) * (-Real.log (e.w (resP v : AlgebraicClosure D.what₂.LL))) := by
   intro D O c Q₀ Q hQ hd x v e y
@@ -103,9 +103,9 @@ abbrev Reads (V : Cover Y) (A : Adl (cxSt F) Y) (L : HermLB V.p) (k : ℕ) : Pro
   Norms V L (fun x => genAt A.D x ^ k) (fun σ y => k * lnAdl A σ y) (fun v e y => k * A.lg v e y)
 
 /- English proof (translation)
-Establish `key (W : Cover Y) : W.π (genericPoint W.G) = genericPoint Y.X`. Use `(genericPoint_spec W.G).image W.π.continuous` as an intermediate fact. Rewrite `this` using `[Set.image_univ, W.π.surjective.range_eq, closure_univ]`. Conclude with `this.eq (genericPoint_spec _)`. Take `⟨U, hU, e⟩` from `isDiscrete_iff_forall_exists_isOpen.mp (V.π.isDiscrete_preimage_singleton (genericPoint Y.X)) (g (genericPoint V'.G)) (by rw [Set.mem_preimage, ← Scheme.Hom.comp_apply, h, key]; rfl)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h₁ : g (genericPoint V'.G) ∈ U` using `(e.ge rfl).1`. Conclude with `(e.le ⟨(genericPoint_specializes _).mem_open hU h₁, key V⟩).symm`.
+A detailed English derivation is pending.
 -/
 theorem map_genericPoint {V' V : Cover Y} (g : V'.G ⟶ V.G) (h : g ≫ V.π = V'.π) :
     g (genericPoint V'.G) = genericPoint V.G := by
@@ -119,7 +119,7 @@ theorem map_genericPoint {V' V : Cover Y} (g : V'.G ⟶ V.G) (h : g ≫ V.π = V
   exact (e.le ⟨(genericPoint_specializes _).mem_open hU h₁, key V⟩).symm
 
 /- English proof (translation)
-Take `⟨g, h₁, h₂⟩` from `h`. Take `⟨a, b⟩` from `GlobalTheory.T.cover_refinement_generic_degree F Y V V' π hπ g h₁.symm h₂ (map_genericPoint g h₂)`. Conclude with `⟨a, b, fun A L k => GlobalTheory.T.norms_pullback_along_cover F Y V V' π hπ g h₁.symm h₂ (map_genericPoint g h₂) L _ _ _⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem lies {V' V : Cover Y} (π : V'.X ⟶ V.X) (hπ : π ≫ V.p = V'.p) (h : Lies V' V π) :
     π (genericPoint V'.X) = genericPoint V.X ∧ π.residueDegree (genericPoint V'.X) * V.deg = V'.deg ∧
@@ -129,11 +129,11 @@ theorem lies {V' V : Cover Y} (π : V'.X ⟶ V.X) (hπ : π ≫ V.p = V'.p) (h :
   exact ⟨a, b, fun A L k => GlobalTheory.T.norms_pullback_along_cover F Y V V' π hπ g h₁.symm h₂ (map_genericPoint g h₂) L _ _ _⟩
 
 /- English proof (translation)
-Take `⟨_, _, _, _, lg'⟩` from `A'`. Consider the cases of `e`. Apply the tactic sequence `refine (norms_comb (f := fun b x => genAt A.D x ^ (bif b then k else k')) (a := fun b σ y => (bif b then k else k' : ℕ) * lnAdl A σ y) (l := fun b v ε y => bif b then k * A.lg v ε y else k' * lg' v ε y) (fun b => by cases b <;> assumption) _).congr (fun x => ?_) (fun σ y => ?_) f …`. Establish `: genAt A.D x ≠ 0` using `Units.ne_zero _`. Simplify using `only [Fintype.prod_bool, cond_true, cond_false, zpow_neg, zpow_natCast, ← pow_mul, mul_comm k']`.
+Extract witnesses or component facts from the available result. Split into cases according to the possible forms of the given data. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `mul_inv_cancel₀ (pow_ne_zero _ this)`. Simplify using `only [Fintype.sum_bool, cond_true, cond_false]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [Fintype.sum_bool, cond_true, cond_false]`.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem norms_diff {V : Cover Y} {A A' : Adl (cxSt F) Y} {L L' : HermLB V.p} {k k' : ℕ} (e : A' = { A with lg := A'.lg })
     (h : Reads V A L k) (h' : Reads V A' L' k') :
@@ -156,7 +156,7 @@ theorem norms_diff {V : Cover Y} {A A' : Adl (cxSt F) Y} {L L' : HermLB V.p} {k 
     ring
 
 /- English proof (translation)
-Rewrite using `[← neg_sub]`. Use `neg_mem ?_` and prove the remaining obligations. Simplify `(GlobalTheory.T.arith_class_form_properties hP.p4 _ _ V.p D (hD ▸ V.ar) num hn).2.2.2 _ (fun b : Bool => bif b then L else L') fun b => bif b then (k' : ℤ) else -k` using `[sub_eq_add_neg]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem cl_diff (hP : Hypotheses2) {V : Cover Y} {D : ℕ} (hD : Y.dim = D) {num : Form (Cl V.p) D} (hn : IsArForm D num)
     (L L' : HermLB V.p) (k k' : ℕ) : ((k' : ℝ) • cl L - (k : ℝ) • cl L') -
@@ -167,7 +167,7 @@ theorem cl_diff (hP : Hypotheses2) {V : Cover Y} {D : ℕ} (hD : Y.dim = D) {num
     (fun b : Bool => bif b then L else L') fun b => bif b then (k' : ℤ) else -k
 
 /- English proof (translation)
-The claim follows from `|num (Fin.cons ((k' : ℝ) • cl L - (k : ℝ) • cl L') fun j => cl (N j))| ≤ (k : ℝ) * k' * (∑ l ∈ S, a l * Real.log l) * num (Fin.cons (cl (oneB V.p)) fun j => cl (N j)) := by have := GlobalTheory.T.norm_log_bound_prime_weights hP F Y V D hD num hn _ _ (norms_diff e h h') S (fun l = …`.
+A detailed English derivation is pending.
 -/
 theorem vert (hP : Hypotheses2) (V : Cover Y) {D : ℕ} (hD : Y.dim = D) (num : Form (Cl V.p) D) (hn : IsArForm D num)
     (A A' : Adl (cxSt F) Y) (L L' : HermLB V.p) (k k' : ℕ) (e : A' = { A with lg := A'.lg }) (h : Reads V A L k)
@@ -187,9 +187,9 @@ theorem vert (hP : Hypotheses2) (V : Cover Y) {D : ℕ} (hD : Y.dim = D) (num : 
   simp only [Finset.mul_sum, mul_assoc]
 
 /- English proof (translation)
-Rewrite using `[← GlobalTheory.T.arith_form_vanish_trivial_metric hP F Y V D hD num hn _ _ (norms_diff e h h') v j]`. Use `map_congr_rad num fun i => Fin.cases (by simp) (fun i => ?_) i` and prove the remaining obligations. Distinguish the cases in `hi : i = j`. Substitute `hi` using the available equality. Simplify using `using cl_diff hP hD hn L L' k k'`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `[hi]`.
+Simplify using the standard rewrite rules.
 -/
 theorem vertDeg (hP : Hypotheses2) (V : Cover Y) {D : ℕ} (hD : Y.dim = D) (num : Form (Cl V.p) D) (hn : IsArForm D num)
     (A A' : Adl (cxSt F) Y) (L L' : HermLB V.p) (k k' : ℕ) (e : A' = { A with lg := A'.lg }) (h : Reads V A L k)
@@ -209,7 +209,7 @@ end GlobalTheory.VertObj
 namespace GlobalTheory.VertObj
 
 /- English proof (translation)
-The claim follows from `|num fun j => w j + ∑ i, c j i • g i| ≤ C := by let g' : Fin (D + 1) → Option ι → E := fun j o => o.elim (w j) g refine ⟨∑ r : Fin (D + 1) → Option ι, |num fun j => g' j (r j)|, fun c h => ?_⟩ let c' : Fin (D + 1) → Option ι → ℝ := fun j o => o.elim 1 (c j) have e : (fun j => w j …`.
+A detailed English derivation is pending.
 -/
 theorem exists_bound {E : Type 1} [AddCommGroup E] [Module ℝ E] {D : ℕ} (num : Form E D) {ι : Type} [Fintype ι] (g : ι → E)
     (w : Fin (D + 1) → E) : ∃ C : ℝ, ∀ c : Fin (D + 1) → ι → ℝ, (∀ j i, |c j i| ≤ 1) →
@@ -232,7 +232,7 @@ def wtCl {k : Type} [CommRing k] {X : Scheme.{0}} {p : X ⟶ Sp k} {R : Type} [F
     (L : R → HermLB p) (u : R → ℝ) (t : ℝ) : Cl p := (t / m) • cl amp - ∑ r, u r • cl (L r)
 
 /- English proof (translation)
-Simplify using `only [wtCl, map_sub, map_smul, map_sum, pullCl_cl]`.
+Simplify using the standard rewrite rules.
 -/
 theorem pullCl_wtCl {k : Type} [CommRing k] {X X' : Scheme.{0}} {p : X ⟶ Sp k} {q : X' ⟶ Sp k} {R : Type} [Fintype R]
     (π : X' ⟶ X) (hπ : π ≫ p = q) (amp : HermLB p) (m : ℕ) (L : R → HermLB p) (u : R → ℝ) (t : ℝ) :
@@ -240,7 +240,7 @@ theorem pullCl_wtCl {k : Type} [CommRing k] {X X' : Scheme.{0}} {p : X ⟶ Sp k}
   simp only [wtCl, map_sub, map_smul, map_sum, pullCl_cl]
 
 /- English proof (translation)
-Establish `h₁ : (m : ℝ) ≠ 0` using `by positivity`. Establish `h₂ : (m' : ℝ) ≠ 0` using `by positivity`. Simplify using `only [wtCl, smul_sub, smul_smul, Nat.cast_one, Finset.sum_sub_distrib, mul_one]`. Rewrite using `[show t / (m * m') * m' = t / m by field_simp, show t / (m * m') * m = t / m' by field_simp]`. Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem wtCl_sub {k : Type} [CommRing k] {X : Scheme.{0}} {p : X ⟶ Sp k} {R : Type} [Fintype R] (amp amp' : HermLB p)
     {m m' : ℕ} (hm : 0 < m) (hm' : 0 < m') (L L' : R → HermLB p) (u : R → ℝ) (t : ℝ) :
@@ -253,7 +253,7 @@ theorem wtCl_sub {k : Type} [CommRing k] {X : Scheme.{0}} {p : X ⟶ Sp k} {R : 
   abel
 
 /- English proof (translation)
-Set `f : E →ₗ[ℝ] ℝ` to `{ toFun := fun x => num (Fin.cons x N), map_add' := num.cons_add N, map_smul' := num.cons_smul N }`. Express the relevant statement in the definitionally equal form `f _ = a * f x - ∑ r, u r * f (z r)`. Simplify using `only [map_sub, map_smul, map_sum, smul_eq_mul]`.
+Introduce a local definition for the expression. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 -/
 theorem cons_comb {E : Type 1} [AddCommGroup E] [Module ℝ E] {D : ℕ} (num : Form E D) {R : Type} [Fintype R] (a : ℝ) (x : E)
     (u : R → ℝ) (z : R → E) (N : Fin D → E) :
@@ -263,7 +263,7 @@ theorem cons_comb {E : Type 1} [AddCommGroup E] [Module ℝ E] {D : ℕ} (num : 
   simp only [map_sub, map_smul, map_sum, smul_eq_mul]
 
 /- English proof (translation)
-Set `f : E →ₗ[ℝ] ℝ` to `(num.curryLeft o).toLinearMap v j`. Express the relevant statement in the definitionally equal form `f _ = a * f x - ∑ r, u r * f (z r)`. Simplify using `only [map_sub, map_smul, map_sum, smul_eq_mul]`.
+Introduce a local definition for the expression. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 -/
 theorem update_comb {E : Type 1} [AddCommGroup E] [Module ℝ E] {D : ℕ} (num : Form E D) {R : Type} [Fintype R] (a : ℝ) (x : E)
     (u : R → ℝ) (z : R → E) (o : E) (v : Fin D → E) (j : Fin D) :
@@ -278,7 +278,7 @@ end GlobalTheory.VertObj
 namespace GlobalTheory.VertObj
 
 /- English proof (translation)
-The claim follows from `|num (fun _ => wtCl amp k L u t) / V.deg - num₀ (fun _ => wtCl amp₀ k₀ L₀ u t) / V₀.deg| ≤ C * ∑ l ∈ S, a l * Real.log l := by have hA := hP.p4 obtain ⟨H, hH⟩ := GlobalTheory.T.nef_fibre_twist_exists F V₀.X V₀.p V₀.ar.isProjOver R L₀ set h0 : Cl V₀.p := (Fintype.card R : ℝ) • cl …`.
+A detailed English derivation is pending.
 -/
 theorem general (hP : Hypotheses2) {F : Type} [Field F] [NumberField F] {Y : Var F} {D : ℕ} (hD : Y.dim = D) {R : Type} [Fintype R]
     (ab : Adl (cxSt F) Y) (hab : ab.NefFib) (V₀ : Cover Y) (ρ₀ : R → Adl (cxSt F) Y) (L₀ : R → HermLB V₀.p)
@@ -413,17 +413,17 @@ end GlobalTheory.VertObj
 namespace GlobalTheory.VertObj
 
 /- English proof (translation)
-Establish `e : -∑ x : T × Fin N, u x.1 x.2 • z x = ∑ τ, ∑ i, ShFam.coef u τ i • (-∑ x : T × Fin N, ShFam.fund τ i x.1 x.2 • z x)`. Simplify using `only [smul_neg, Finset.sum_neg_distrib, Finset.smul_sum, smul_smul, neg_inj]`. Rewrite using `[Finset.sum_congr rfl fun τ _ => Finset.sum_comm, Finset.sum_comm]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Simplify using `only [← Finset.sum_smul, ShFam.sum_coef_fund]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[e]`. Use `sum_mem_cone _ fun τ _ => sum_mem_cone _ fun i _ => ?_` and prove the remaining obligations. Establish `key (s : ℤ) (hs : 0 ≤ s ∨ ¬ (i : ℕ) + 1 < N) : (s : ℝ) • (-∑ x : T × Fin N, ShFam.fund τ i x.1 x.2 • z x) ∈ cone num G`. Use `h (fun τ' a => if τ' = τ ∧ a ≤ i then s else 0) fun τ' a b hab => by` as an intermediate fact. Use `a.2` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `b.2` as an intermediate fact. Establish `: (a : ℕ) ≤ b` using `hab`. Use `i.2` as an intermediate fact. Distinguish the cases in `hτ : τ' = τ`. Apply the tactic sequence `simp only [hτ, true_and, Fin.le_def] split_ifs <;> omega`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Apply the first step, then apply the next step to every resulting obligation.
 
-Simplify using `[hτ]`. Use `this using 1` and compare the differences between its conclusion and the goal. Simplify using `only [smul_neg, Finset.smul_sum, smul_smul, ShFam.fund]`. Use `congrArg _ (Finset.sum_congr rfl fun x _ => ?_)` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> simp`.
+Simplify using the standard rewrite rules. Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 
-Break down `le_total 0 (ShFam.coef u τ i) with hc | hc` into its components or cases. Simplify using `using smul_mem_cone hc (key 1 (.inl zero_le_one))`. Distinguish the cases in `hi : (i : ℕ) + 1 < N`. Rewrite using `[le_antisymm hc (ShFam.coef_nonneg hu τ hi), zero_smul]`. Conclude with `zero_mem_cone`.
+Separate the alternatives or extract the components of the hypothesis. Simplify to obtain the desired conclusion from the available facts. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using smul_mem_cone (neg_nonneg.2 hc) (key (-1) (.inr hi))`.
+A detailed English derivation is pending.
 -/
 theorem dominant_mem_cone {E : Type 1} [AddCommGroup E] [Module ℝ E] {D : ℕ} {num : Form E D} {G : Set E} {T : Type}
     [Fintype T] {N : ℕ} (z : T × Fin N → E)
@@ -460,23 +460,23 @@ theorem dominant_mem_cone {E : Type 1} [AddCommGroup E] [Module ℝ E] {D : ℕ}
     · simpa using smul_mem_cone (neg_nonneg.2 hc) (key (-1) (.inr hi))
 
 /- English proof (translation)
-Establish `hdim : (O.var c).dim = WeightThresholdDefs.dimY O.Y` using `O.dim_eq c`. Establish `ar : IsArithVar W.V.p (WeightThresholdDefs.dimY O.Y)` using `hdim ▸ W.V.ar`. Take `⟨ε, π, hd⟩` from `W.V.exists_isDown I`. Establish `e0 : (T.M c).pull ε π ((2 : ℝ) • 0) = fun _ _ => 0` using `by rw [smul_zero]; rfl`. Establish `hu : ∀ σ z, CxPts.CInfAt ((T.M c).pull ε π ((2 : ℝ) • 0) σ) z`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[e0]`. Conclude with `fun _ z => CxPts.cInfAt_const 0 z`. Establish `hc : ∀ σ σ', (Weight.ofFun ((T.M c).pull ε π ((2 : ℝ) • 0) σ)).IsConj (Weight.ofFun ((T.M c).pull ε π ((2 : ℝ) • 0) σ'))`. Rewrite using `[e0]`. Conclude with `fun _ _ _ _ _ _ _ => rfl`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. Both sides reduce to the same expression.
 
-Take `⟨Φ, hΦ⟩` from `((hA.arExists _ _ W.V.p _ ar).2 _ fun o : Option (Option (DV.Rt D.what₂.Tau O.N)) => o.elim (fnB _ hu hc) (W.gens (FlagAr.setB O.Y B))).1`. Set `a : Option (Option (DV.Rt D.what₂.Tau O.N)) → ℝ` to `fun o => o.elim 0 fun o => o.elim (s / W.mult) fun x => u x.1 x.2`. Establish `k1` using `hnum ε π hd 0 (fun σ j => contDiffOn_const) hu hc Φ hΦ a`. Establish `k2` using `hn _ _ Φ hΦ fun _ => a`. Rewrite `k2` using `[Finset.prod_const, Finset.card_univ, Fintype.card_fin, k1]`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hm : (W.mult : ℝ) ≠ 0` using `Nat.cast_ne_zero.2 W.mult_pos.ne'`. Establish `e1 : ∑ i, a (some i) • T.gen B c W.mult i + a none • (T.K B c).ar 0 = T.L B c u + s • T.a B c`. Establish `: T.L B c u = ∑ x : D.what₂.Tau × Fin O.Y.N, u x.1 x.2 • T.L B c (Pi.single x.1 (Pi.single x.2 1))`. Simplify using `only [← map_smul, ← map_sum]`. Use `congr 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Use function extensionality and compare the values at `τ i`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[Finset.sum_eq_single (τ, i)]`. Simplify using the standard rewrite rules. Introduce and unpack `⟨τ', i'⟩ _ hne`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components.
 
-Distinguish the cases in `h₁ : τ = τ'`. Substitute `h₁` using the available equality. Establish `: i ≠ i'` using `fun h₂ => hne (by rw [h₂])`. Simplify using `[this]`. Simplify using `[h₁]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Rewrite using `[this, Fintype.sum_option]`. Simplify using `only [a, Real0.gen, Option.elim, zero_smul, add_zero, smul_smul, div_mul_cancel₀ _ hm]`. Conclude with `add_comm _ _`. Take `⟨-, rd, -, -⟩` from `GlobalTheory.T.arith_class_form_properties hA _ _ W.V.p _ ar num hn`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `k2` using `[e1, map_congr_rad num (w := fun _ => wtCl W.amp W.k (W.root (FlagAr.setB O.Y B)) (fun x => u x.1 x.2) (s / ((O.met.ab c).n : ℕ))) fun _ => ?_]`. Rewrite using `[← k2, Cover.ν]`. Establish `: (W.V.deg : ℝ) ≠ 0` using `Nat.cast_ne_zero.2 W.V.deg_pos.ne'`. Establish `: (Module.finrank ℚ D.what₂.LL : ℝ) ≠ 0` using `Nat.cast_ne_zero.2 Module.finrank_pos.ne'`. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact.
 
-Use `Submodule.sum_mem (rad num) (t := Finset.univ) fun (x : DV.Rt D.what₂.Tau O.N) _ => Submodule.smul_mem _ (u x.1 x.2) (rd (W.root (FlagAr.setB O.Y B) x))` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Simplify using `only [Fintype.sum_option, a, Option.elim, zero_smul, zero_add, Setup.LatModel.gens, wtCl, Setup.LatModel.mult, smul_add, Finset.sum_add_distrib, Nat.cast_mul, div_div, mul_comm (W.k : ℝ)]`. Normalize the expressions using the abelian group laws.
+Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem top_eq (hA : GlobalTheory.Published.ArCalc) {D : D7} {O : Setup D} {T : Real0 O.Y} {c : O.s.Comp} (I : ManIs (T.M c) (O.var c))
     {B : ℝ} (W : O.LatModel (FlagAr.setB O.Y B) c) (hnum : O.NumIs I B W) (num : Form (Cl W.V.p) (WeightThresholdDefs.dimY O.Y))
@@ -537,7 +537,7 @@ end GlobalTheory.VertObj
 namespace GlobalTheory.VertObj
 
 /- English proof (translation)
-Break down `Nat.eq_zero_or_pos p with rfl | hp` into its components or cases. Simplify using the standard rewrite rules. Establish `: (1 : ℝ) ≤ p` using `by exact_mod_cast hp`. Conclude with `div_nonneg (Real.log_natCast_nonneg p) (by linarith)`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem log_div_pred_nonneg (p : ℕ) : 0 ≤ Real.log p / ((p : ℝ) - 1) := by
   rcases Nat.eq_zero_or_pos p with rfl | hp
@@ -546,11 +546,11 @@ theorem log_div_pred_nonneg (p : ℕ) : 0 ≤ Real.log p / ((p : ℝ) - 1) := by
     exact div_nonneg (Real.log_natCast_nonneg p) (by linarith)
 
 /- English proof (translation)
-Establish `hsub : GlobalTheory.FlagAr.setB Y B \ GlobalTheory.FlagAr.setB Y 2 ⊆ Finset.filter Nat.Prime (Finset.range (⌊B⌋₊ + 1))`. Introduce `p hp`. Simplify using `only [GlobalTheory.FlagAr.setB, Finset.mem_sdiff, Finset.mem_union] at hp`. The claim follows by propositional logic. Establish `h1` using `Finset.sum_le_sum_of_subset_of_nonneg hsub fun p _ _ => log_div_pred_nonneg p`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. The claim follows by propositional logic. Establish an intermediate fact.
 
-Establish `h2` using `GlobalTheory.PrimeLogSum.sum_log_div_pred_le_real B (by linarith)`. Establish `hl2 : 0 < Real.log 2` using `Real.log_pos (by norm_num)`. Establish `hlB : Real.log 2 ≤ Real.log B` using `Real.log_le_log (by norm_num) hB`. Establish `h3 : 3 ≤ 3 / Real.log 2 * Real.log B`. Rewrite using `[div_mul_eq_mul_div, le_div_iff₀ hl2]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use the polynomial consequences of the given equalities and inequalities. Combine the equalities or inequalities in the displayed calculation.
+Use the polynomial consequences of the given equalities and inequalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem sum_diff_le (D : D7) (Y : DV.ShimX D.what₂.Tau) (B : ℝ) (hB : 2 ≤ B) :
     ∑ p ∈ GlobalTheory.FlagAr.setB Y B \ GlobalTheory.FlagAr.setB Y 2, Real.log p / ((p : ℝ) - 1) ≤
@@ -570,7 +570,7 @@ theorem sum_diff_le (D : D7) (Y : DV.ShimX D.what₂.Tau) (B : ℝ) (hB : 2 ≤ 
     _ ≤ _ := by nlinarith
 
 /- English proof (translation)
-Establish `key (n n' : Letter O.S.Dw → ℤ) (h : n = n') (lg) : (⟨divOf (O.Φ.C c) n, 1, fun σ => O.met.h0 c σ n, 0, lg⟩ : Adl (cxSt D.what₂.LL) (O.var c)) = ⟨divOf (O.Φ.C c) n', 1, fun σ => O.met.h0 c σ n', 0, lg⟩` using `by rw [h]`. Conclude with `key _ _ ((expo_rootSym _ _ _ _ _).trans (expo_rootSym _ _ _ _ _).symm) _`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem root0_eq_with_lg_of_primes {D : D7} (O : Setup D) (c : O.s.Comp) (Q Q' : Finset ℕ) (x : DV.Rt D.what₂.Tau O.N) :
     O.root0 c Q' x = { O.root0 c Q x with lg := (O.root0 c Q' x).lg } := by
@@ -580,7 +580,7 @@ theorem root0_eq_with_lg_of_primes {D : D7} (O : Setup D) (c : O.s.Comp) (Q Q' :
   exact key _ _ ((expo_rootSym _ _ _ _ _).trans (expo_rootSym _ _ _ _ _).symm) _
 
 /- English proof (translation)
-The claim follows from `|(T.K B c).top (T.L B c u + s • T.a B c) - (T.K 2 c).top (T.L 2 c u + s • T.a 2 c)| ≤ C * ∑ p ∈ GlobalTheory.FlagAr.setB O.Y B \ GlobalTheory.FlagAr.setB O.Y 2, Real.log p / ((p : ℝ) - 1) := by intro h1 h2 D O hO hf A T H h have hA := h1.p4 have hdim (c : O.s.Comp) : (O.var c).di …`.
+A detailed English derivation is pending.
 -/
 theorem top_sub_le : Hypotheses2 → HypothesesH → OnObj fun _ O _ T _ _ => ∃ C : ℝ, ∀ B : ℝ, 2 ≤ B →
     ∀ (c : O.Y.Comp) (u : GlobalTheory.Mean4.Wt O.Y), WeightThresholdDefs.Dominant O.Y u → ‖u‖ ≤ 1 → ∀ s ∈ Set.Icc (0 : ℝ) 1,
@@ -634,9 +634,9 @@ theorem top_sub_le : Hypotheses2 → HypothesesH → OnObj fun _ O _ T _ _ => �
       (Finset.single_le_sum (f := fun c : O.Y.Comp => |C c|) (fun _ _ => abs_nonneg _) (Finset.mem_univ c))) hS
 
 /- English proof (translation)
-Introduce `h1 h2 D O hc hf A T H h`. Take `⟨C, hC⟩` from `top_sub_le h1 h2 D O hc hf A T H h`. Establish `hsm` using `GlobalTheory.InterpChgSmooth.smooth_phR h1 h2 D O hc hf A T H h`. Use `⟨max C 0 * (1 + 3 / Real.log 2), fun B hB c u hu hn s hs R hR => ?_⟩` and prove the remaining obligations. Establish `hR2 : 2 ≤ R` using `by linarith [Real.add_one_le_exp (2 : ℝ)]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[fR_sub_eq_top_sub D O.Y T B 2 c u s R fun σ => hsm c u σ R hR2]`. Establish `h3` using `hC B hB c u hu hn s hs`. Establish `hS` using `sum_diff_le D O.Y B hB`. Establish `hS0` using `Finset.sum_nonneg fun p (_ : p ∈ GlobalTheory.FlagAr.setB O.Y B \ GlobalTheory.FlagAr.setB O.Y 2) => log_div_pred_nonneg p`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem vertBd_onObj : Hypotheses2 → HypothesesH → OnObj fun _ _ _ T _ _ => VertBd T := by
   intro h1 h2 D O hc hf A T H h

@@ -12,9 +12,9 @@ noncomputable section
 namespace GlobalTheory.SerOSys
 
 /- English proof (translation)
-Rewrite `h` using `[FDRep.simple_iff_char_is_norm_one]`. Assume the negation of the conclusion as `hn`. Rewrite `hn` using `[not_nontrivial_iff_subsingleton]`. Establish `h0 : ∀ g, V.character g = 0` using `fun g => by`. Rewrite using `[FDRep.character, Subsingleton.elim (V.ρ g) 0, map_zero]`.
+Rewrite the indicated hypotheses using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [h0, mul_zero, Finset.sum_const_zero] at h`. Conclude with `(Nat.cast_ne_zero.mpr Nat.card_pos.ne' : (Nat.card Γ : ℂ) ≠ 0) h.symm`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem nontrivial_of_simpleRep {Γ : Type} [Group Γ] [Fintype Γ] (V : FDRep ℂ Γ) (h : Simple V) :
     Nontrivial V := by
@@ -27,13 +27,13 @@ theorem nontrivial_of_simpleRep {Γ : Type} [Group Γ] [Fintype Γ] (V : FDRep �
   exact (Nat.cast_ne_zero.mpr Nat.card_pos.ne' : (Nat.card Γ : ℂ) ≠ 0) h.symm
 
 /- English proof (translation)
-Set `A : Subrepresentation τ.ρ` to `⟨U, fun g v hv => hU g v hv⟩`. Set `X : FDRep ℂ Γ` to `FDRep.of A.toRepresentation`. Set `i : X ⟶ τ` to `⟨InducedCategory.homMk (ModuleCat.ofHom U.subtype), fun g => by ext1; ext x; rfl⟩`. Establish `hinj : Function.Injective ⇑(ConcreteCategory.hom i)`. Introduce `x y h`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Subtype.ext h`. Establish `: Mono i` using `ConcreteCategory.mono_of_injective i hinj`. Distinguish the cases in `h0 : i = 0`. Use `left`. Rewrite using `[Submodule.eq_bot_iff]`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `x hx`. Use `congrArg (fun f : X ⟶ τ => ConcreteCategory.hom f ⟨x, hx⟩) h0` as an intermediate fact. Establish `h1 : ConcreteCategory.hom i ⟨x, hx⟩ = x` using `rfl`. Establish `h2 : ConcreteCategory.hom (0 : X ⟶ τ) ⟨x, hx⟩ = 0` using `rfl`. Simplify using `only [h1, h2] at this`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `this`. Use `right`. Establish `: IsIso i` using `(Simple.mono_isIso_iff_nonzero i).2 h0`. Apply `Submodule.eq_top_of_finrank_eq` to reduce the goal to its premises. Conclude with `(FDRep.isoToLinearEquiv (asIso i)).finrank_eq`.
+A detailed English derivation is pending.
 -/
 theorem invariant_eq_bot_or_top_of_simple {Γ : Type} [Group Γ] [Fintype Γ] (τ : FDRep ℂ Γ)
     [Simple τ] (U : Submodule ℂ τ) (hU : ∀ g, ∀ x ∈ U, τ.ρ g x ∈ U) : U = ⊥ ∨ U = ⊤ := by
@@ -59,9 +59,9 @@ theorem invariant_eq_bot_or_top_of_simple {Γ : Type} [Group Γ] [Fintype Γ] (�
     exact (FDRep.isoToLinearEquiv (asIso i)).finrank_eq
 
 /- English proof (translation)
-Apply `MonoidAlgebra.ext` to reduce the goal to its premises. Use extensionality with `γ`. Rewrite using `[zIdem_coeff, zIdem_coeff, φ.finrank_eq]`. Establish `h : τ'.ρ γ⁻¹ = φ.conj (τ.ρ γ⁻¹)`. Use extensionality with `x`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Rewrite using `[LinearEquiv.conj_apply]`. Simplify using `[hφ]`. Rewrite using `[h, LinearMap.trace_conj']`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem zIdem_eq_of_linearEquiv {Γ : Type} [Group Γ] [Fintype Γ] (τ τ' : FDRep ℂ Γ)
     (φ : τ ≃ₗ[ℂ] τ') (hφ : ∀ g x, φ (τ.ρ g x) = τ'.ρ g (φ x)) : zIdem τ = zIdem τ' := by
@@ -75,7 +75,7 @@ theorem zIdem_eq_of_linearEquiv {Γ : Type} [Group Γ] [Fintype Γ] (τ τ' : FD
   rw [h, LinearMap.trace_conj']
 
 /- English proof (translation)
-Unfold `zIdem Formalism.IrreducibleCountingLemmas.GaloisIrreducibility.centralIdem`. Use `Finset.sum_congr rfl fun γ _ => ?_` and prove the remaining obligations. Rewrite using `[MonoidAlgebra.of_apply, MonoidAlgebra.smul_single', mul_one]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem zIdem_eq_centralIdem {Γ : Type} [Group Γ] [Fintype Γ] (τ : FDRep ℂ Γ) :
     zIdem τ = Formalism.IrreducibleCountingLemmas.GaloisIrreducibility.centralIdem τ.ρ := by
@@ -85,7 +85,7 @@ theorem zIdem_eq_centralIdem {Γ : Type} [Group Γ] [Fintype Γ] (τ : FDRep ℂ
   rfl
 
 /- English proof (translation)
-Introduce `Γ _ _ τ τ' hτ hτ' hne`. Use `haveI := nontrivial_of_simpleRep τ hτ`. Use `haveI := nontrivial_of_simpleRep τ' hτ'`. Rewrite using `[zIdem_eq_centralIdem, zIdem_eq_centralIdem]`. Conclude with `Formalism.IrreducibleCountingLemmas.GaloisIrreducibility.central_idempotents_orthogonal Γ τ τ' τ.ρ τ'.ρ (invariant_eq_bot_or_top_of_simple τ) (invariant_eq_bot_or_top_of_simple τ') (by rintro ⟨φ, hφ⟩; exact hne (zIdem_eq_of_linearEquiv τ τ' φ hφ))`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem zIdem_mul_eq_zero_of_ne : ∀ {Γ : Type} [Group Γ] [Fintype Γ] (τ τ' : FDRep ℂ Γ),
     Simple τ → Simple τ' → zIdem τ ≠ zIdem τ' → zIdem τ * zIdem τ' = 0 := by

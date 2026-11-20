@@ -12,28 +12,28 @@ open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions F
 namespace GlobalTheory
 
 /- English proof (translation)
-The claim follows from `bridge_star_holds D.R D.host x`.
+A detailed English derivation is pending.
 -/
 theorem cc_eq_host_conj (D : D7) (x : D.host.E) :
     ReciprocityTheory.ChartRestriction.G.FD.cc x = D.host.conj x :=
   bridge_star_holds D.R D.host x
 
 /- English proof (translation)
-Introduce `D`. Establish `hP` using `Formalism.IndefR.Fin.factPrincipalDatum`. Establish `hA` using `AA_ne_zero hP D`. Establish `hone : (1 : FractionalIdeal (nonZeroDivisors (𝓞 D.host.E)) D.host.E) ≠ 0` using `one_ne_zero`. Use `⟨(D.host.AA : Submodule (𝓞 D.host.E) D.host.E), ?_, ?_, fun x => ⟨fun h => ?_, fun h => ?_⟩⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `FractionalIdeal.fg_of_isNoetherianRing le_rfl _`. Introduce `h0`. Conclude with `hA (FractionalIdeal.coeToSubmodule_eq_bot.1 h0)`. Establish `h1 : ∀ w ∈ D.host.AA * D.host.AAbar, ∀ c : 𝓞 D.host.E, ∃ z : ℤ, Algebra.trace ℚ D.host.E (D.host.xi0 * x * (c • w)) = z`. Introduce `w hw`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `FractionalIdeal.mul_induction_on (C := fun w => ∀ c : 𝓞 D.host.E, ∃ z : ℤ, Algebra.trace ℚ D.host.E (D.host.xi0 * x * (c • w)) = z) hw (fun a ha b hb c => ?_) (fun u v hu hv c => ?_)` and prove the remaining obligations. Take `⟨z, hz⟩` from `h (c • a) (Submodule.smul_mem _ c ha) (D.host.conj b) (conj_mem_AA D hb)`. Use `⟨z, ?_⟩` and prove the remaining obligations. Rewrite `hz` using `[cc_eq_host_conj, conj_conj]`. Rewrite using `[← hz, ← smul_mul_assoc, mul_assoc (D.host.xi0 * x)]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨z, hz⟩` from `hu c`. Take `⟨z', hz'⟩` from `hv c`. Use `⟨z + z', ?_⟩` and prove the remaining obligations. Rewrite using `[smul_add, mul_add, map_add, hz, hz', Int.cast_add]`. Establish `h2 : x ∈ FractionalIdeal.dual ℤ ℚ (FractionalIdeal.dual ℤ ℚ (1 : FractionalIdeal (nonZeroDivisors (𝓞 D.host.E)) D.host.E))`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[FractionalIdeal.mem_dual (FractionalIdeal.dual_ne_zero ℤ ℚ hone)]`. Introduce `a ha`. Rewrite `ha` using `[← dual_eq hP D, mul_assoc, FractionalIdeal.mem_singleton_mul]`. Take `⟨w, hw, rfl⟩` from `ha`. Take `⟨z, hz⟩` from `h1 w hw 1`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `hz` using `[one_smul]`. Use `⟨z, ?_⟩` and prove the remaining obligations. Rewrite using `[Algebra.traceForm_apply, ← mul_assoc, mul_comm x, hz]`. Conclude with `eq_intCast _ _`. Rewrite `h2` using `[FractionalIdeal.dual_dual, FractionalIdeal.mem_one_iff]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Take `⟨c, rfl⟩` from `h2`. Conclude with `c.isIntegral_coe`. Introduce `a ha b hb`. Establish `hm : (⟨x, h⟩ : 𝓞 D.host.E) • (a * D.host.conj b) ∈ NAA D` using `Submodule.smul_mem _ _ (FractionalIdeal.mul_mem_mul ha (conj_mem_AAbar D hb))`. Take `⟨z, hz⟩` from `trace_int_of_mem hP D hm`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Express the relevant assertion in an equivalent form by its definition.
 
-Use `⟨z, ?_⟩` and prove the remaining obligations. Rewrite using `[← hz, cc_eq_host_conj, Algebra.smul_def]`. Use `congr 1`. Express the relevant statement in the definitionally equal form `_ = D.host.xi0 * (x * (a * D.host.conj b))`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem principalDatum_trace_perfect : ∀ D : D7, ∃ AA : Submodule (𝓞 D.host.E) D.host.E,
     AA.FG ∧ AA ≠ ⊥ ∧ ∀ x : D.host.E, (∀ a ∈ AA, ∀ b ∈ AA, ∃ z : ℤ,

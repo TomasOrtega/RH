@@ -25,14 +25,14 @@ theorem muMap_apply (hε : IsPrimitiveSystem ε) (a : Ainf p O) (t) :
     muMap hε a t = ofPadic p O ((epsEquiv hε).symm t) * a := rfl
 
 /- English proof (translation)
-Rewrite using `[LinearEquiv.symm_apply_eq]`. Conclude with `(one_smul ℤ_[p] (epsTate hε)).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem epsEquiv_symm_eps (hε : IsPrimitiveSystem ε) : (epsEquiv hε).symm (epsTate hε) = 1 := by
   rw [LinearEquiv.symm_apply_eq]
   exact (one_smul ℤ_[p] (epsTate hε)).symm
 
 /- English proof (translation)
-Introduce `n` and use `⟨0, fun t => by rw [muMap_apply, ghost_mul, ghost_mul, hμ, zero_mul, mul_zero, LinearMap.zero_apply]⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem muMap_mem (hε : IsPrimitiveSystem ε) (hμ : ∀ n, ghost p O n (Sandwich.mu ε) = 0)
     (a : Ainf p O) : muMap hε (Sandwich.mu ε * a) ∈ latt (PDivGroup.mu p O) := fun n =>
@@ -52,7 +52,7 @@ def toLatt (hε : IsPrimitiveSystem ε) (hμ : ∀ n, ghost p O n (Sandwich.mu �
     ring_nf
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `ofPadic p O ((epsEquiv hε).symm (epsTate hε)) * _ = _`. Rewrite using `[epsEquiv_symm_eps, map_one, one_mul]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem toLatt_eps (hε : IsPrimitiveSystem ε) (hμ : ∀ n, ghost p O n (Sandwich.mu ε) = 0)
     (a : Ainf p O) : (toLatt hε hμ a).1 (epsTate hε) = Sandwich.mu ε * a := by
@@ -60,17 +60,15 @@ theorem toLatt_eps (hε : IsPrimitiveSystem ε) (hμ : ∀ n, ghost p O n (Sandw
   rw [epsEquiv_symm_eps, map_one, one_mul]
 
 /- English proof (translation)
-Introduce `p _ C _ _ _ v O _ _ _ _ _ hv ε hε`. Establish `hμ : ∀ n, ghost p O n (Sandwich.mu ε) = 0` using `(GlobalTheory.T.ainfGhostThetaFrobIter_values_xi_mu_padic p C v O hv ε hε).2.2.1`. Establish `hdom` using `GlobalTheory.ainf_isDomain_and_mu_ne_zero p C v O hv ε (by simpa [zeta] using hε 1)`. Use `haveI := hdom.1`. Establish `hbij : Function.Bijective (toLatt hε hμ)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce `a b hab`. Establish `h` using `congrArg (fun y : latt (PDivGroup.mu p O) => y.1 (epsTate hε)) hab`. Simplify using `only [toLatt_eps] at h`. Conclude with `mul_left_cancel₀ hdom.2 h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `y`. Establish `hg : ∀ n, ghost p O n (y.1 (epsTate hε)) = 0` using `fun n => by`. Take `⟨x, hx⟩` from `y.2 n`. Rewrite using `[hx, Subsingleton.elim (hodgeTate (PDivGroup.mu p O) (epsTate hε)) 0, map_zero]`. Take `⟨a, ha⟩` from `GlobalTheory.T.ainfTeichmullerMinusOne_dvd_of_ghost_components_zero p C v O hv ε hε _ hg`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨a, Subtype.ext (LinearMap.ext fun t => ?_)⟩` and prove the remaining obligations. Take `⟨c, rfl⟩` from `(epsEquiv hε).surjective t`. Express the relevant statement in the definitionally equal form `ofPadic p O ((epsEquiv hε).symm (epsEquiv hε c)) * (Sandwich.mu ε * a) = y.1 (epsEquiv hε c)`. Rewrite using `[LinearEquiv.symm_apply_apply, ← ha]`. Establish `hc : epsEquiv hε c = c • epsTate hε` using `rfl`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hc, LinearMap.map_smulₛₗ, smul_eq_mul]`. Use `⟨(LinearEquiv.ofBijective _ hbij).symm, fun y => ?_⟩` and prove the remaining obligations. Establish `h` using `toLatt_eps hε hμ ((LinearEquiv.ofBijective _ hbij).symm y)`. Rewrite using `[← h]`. Use `congr 2`.
-
-Conclude with `(LinearEquiv.ofBijective _ hbij).apply_symm_apply y`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem latt_mu_equiv : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C] [CharZero C] (v : Valuation C NNReal) (O : Type) [CommRing O] [Algebra O C] [Fact ¬IsUnit (p : O)] [IsAdicComplete (Ideal.span {(p : O)}) O] [IsDomain O], v.Integers O → ∀ (ε : PreTilt O p) (hε : IsPrimitiveSystem ε), ∃ e : latt (PDivGroup.mu p O) ≃ₗ[Ainf p O] Ainf p O, ∀ y, Sandwich.mu ε * e y = y.1 (epsTate hε) := by
   intro p _ C _ _ _ v O _ _ _ _ _ hv ε hε

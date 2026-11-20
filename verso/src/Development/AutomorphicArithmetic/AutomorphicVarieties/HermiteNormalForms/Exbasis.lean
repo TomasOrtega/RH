@@ -4,17 +4,15 @@ open NumberField Matrix UpperTheory.V UpperTheory.V.KT
 open scoped ComplexOrder
 
 /- English proof (translation)
-Introduce `L _ _ N M hM`. Take `⟨s, hs, hspan, hli⟩` from `exists_linearIndependent L (toL '' M)`. Establish `htop : (⊤ : Submodule L (Fin N → L)) ≤ Submodule.span L (Set.range ((↑) : s → Fin N → L))`. Rewrite using `[Subtype.range_coe, hspan]`. Conclude with `hM.ge`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Set `B` to `Module.Basis.mk hli htop`. Use `haveI : Fintype s := @Fintype.ofFinite s (Module.Finite.finite_basis B)`. Establish `hcard : Fintype.card s = N`. Rewrite using `[← Module.finrank_eq_card_basis B, Module.finrank_fin_fun]`. Set `e : Fin N ≃ s` to `(Fintype.equivFinOfCardEq hcard).symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hmem : ∀ a, ∃ y ∈ M, toL y = (e a : Fin N → L)` using `fun a => hs (e a).2`. Use `choose y hyM hy using hmem`. Use `⟨fun i a => y a i, ?_, fun a => hyM a⟩` and prove the remaining obligations. Introduce `h0`. Establish `hli' : LinearIndependent L (fun a => ((e a : s) : Fin N → L))` using `hli.comp e e.injective`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Set `C : Matrix (Fin N) (Fin N) L` to `fun i a => ((e a : s) : Fin N → L) i`. Establish `hC : IsUnit C`. Rewrite using `[← Matrix.linearIndependent_cols_iff_isUnit]`. Conclude with `hli'`. Set `A : Matrix (Fin N) (Fin N) (𝓞 L)` to `fun i a => y a i`.
+Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Establish `hCA : C = (algebraMap (𝓞 L) L).mapMatrix A`. Use extensionality with `i a`. Simplify using `only [C, A, RingHom.mapMatrix_apply, Matrix.map_apply, ← hy]`. Both sides reduce to the same expression. Establish `hdet : C.det = algebraMap (𝓞 L) L A.det`.
-
-Rewrite using `[hCA]`. Conclude with `(RingHom.map_det (algebraMap (𝓞 L) L) A).symm`. Establish `h0' : A.det = 0` using `h0`. Rewrite `hdet` using `[h0', map_zero]`. Conclude with `(Matrix.isUnit_iff_isUnit_det C |>.mp hC).ne_zero hdet`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.KT.exbasis :
     ∀ (L : Type) [Field L] [NumberField L] (N : ℕ) (M : Set (Lat L N)), Spans M →

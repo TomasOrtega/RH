@@ -5,9 +5,9 @@ namespace GlobalTheory.PowerSeriesAdicEval
 open PowerSeries
 
 /- English proof (translation)
-Set `_ : WithIdeal A` to `⟨I⟩`. Set `_ : UniformSpace R` to `⊥`. Establish `_ : DiscreteUniformity R` using `⟨rfl⟩`. Establish `hI : IsAdic I` using `rfl`. Take `⟨h1, h2⟩` from `hI.isAdicComplete_iff.mp h`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `ha : PowerSeries.HasEval y` using `WithIdeal.isTopologicallyNilpotent_of_mem hy`. Establish `_ : ContinuousSMul R A` using `DiscreteTopology.instContinuousSMul R A`. Use `⟨PowerSeries.aeval ha, ?_⟩` and prove the remaining obligations. Rewrite using `[← Polynomial.coe_X, PowerSeries.aeval_coe, Polynomial.aeval_X]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_algHom_apply_X {R A : Type*} [CommRing R] [CommRing A] [Algebra R A]
     (I : Ideal A) [h : IsAdicComplete I A] {y : A} (hy : y ∈ I) :
@@ -23,7 +23,7 @@ theorem exists_algHom_apply_X {R A : Type*} [CommRing R] [CommRing A] [Algebra R
   rw [← Polynomial.coe_X, PowerSeries.aeval_coe, Polynomial.aeval_X]
 
 /- English proof (translation)
-Establish `: f.comp (Polynomial.coeToPowerSeries.algHom R) = Polynomial.aeval (f PowerSeries.X)`. Apply `Polynomial.algHom_ext` to reduce the goal to its premises. Simplify using the standard rewrite rules. Establish `h` using `DFunLike.congr_fun this p`. Simplify using `using h`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem algHom_coe {R A : Type*} [CommRing R] [CommRing A] [Algebra R A]
     (f : PowerSeries R →ₐ[R] A) (p : Polynomial R) :
@@ -35,11 +35,11 @@ theorem algHom_coe {R A : Type*} [CommRing R] [CommRing A] [Algebra R A]
   simpa using h
 
 /- English proof (translation)
-Apply `AlgHom.ext` to reduce the goal to its premises. Introduce `F`. Rewrite using `[← sub_eq_zero]`. Use `IsHausdorff.haus h _ fun n => ?_` and prove the remaining obligations. Rewrite using `[SModEq.zero, smul_eq_mul, Ideal.mul_top]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `e` using `F.eq_X_pow_mul_shift_add_trunc n`. Use `set G : PowerSeries R := PowerSeries.mk fun i => PowerSeries.coeff (i + n) F`. Establish `: f F - f' F = f PowerSeries.X ^ n * (f G - f' G)` using `by conv_lhs => rw [e]`. Rewrite using `[map_add, map_add, map_mul, map_mul, map_pow, map_pow, algHom_coe, algHom_coe, ← hX]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Conclude with `Ideal.mul_mem_right _ _ (Ideal.pow_mem_pow hy n)`.
+A detailed English derivation is pending.
 -/
 theorem algHom_ext_of_isHausdorff {R A : Type*} [CommRing R] [CommRing A] [Algebra R A]
     (I : Ideal A) [h : IsHausdorff I A] (f f' : PowerSeries R →ₐ[R] A)
@@ -59,7 +59,7 @@ theorem algHom_ext_of_isHausdorff {R A : Type*} [CommRing R] [CommRing A] [Algeb
   exact Ideal.mul_mem_right _ _ (Ideal.pow_mem_pow hy n)
 
 /- English proof (translation)
-Introduce `R A _ _ _ y h`. Conclude with `⟨exists_algHom_apply_X (Ideal.span {y}) (Ideal.mem_span_singleton_self y), fun f f' h1 h2 => algHom_ext_of_isHausdorff (Ideal.span {y}) f f' h1 (Ideal.mem_span_singleton.2 h2)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem exists_eval_and_unique :
     ∀ (R A : Type) [CommRing R] [CommRing A] [Algebra R A] (y : A),

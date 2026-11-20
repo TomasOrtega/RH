@@ -14,9 +14,9 @@ namespace GlobalTheory.CompanionTheory.ContUniv
 variable {l : ℕ} [Fact l.Prime]
 
 /- English proof (translation)
-Rewrite using `[Finset.sum_mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_eq_single i]`. Establish `: e i * a i * (e i * b i) = (e i * e i) * (a i * b i)` using `by ring`. Rewrite using `[this, h.idem i]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `j _ hj`. Establish `: e i * a i * (e j * b j) = (e i * e j) * (a i * b j)` using `by ring`. Rewrite using `[this, h.ortho hj.symm, zero_mul]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem sum_mul_sum_idem {T I : Type} [CommRing T] [Fintype I] {e : I → T}
     (h : CompleteOrthogonalIdempotents e) (a b : I → T) :
@@ -35,13 +35,13 @@ theorem sum_mul_sum_idem {T I : Type} [CommRing T] [Fintype I] {e : I → T}
 def rep {m : ℕ} (c : ZMod (l ^ m)) : ℤ_[l] := ((c.val : ℕ) : ℤ_[l])
 
 /- English proof (translation)
-Rewrite using `[rep, map_natCast, ZMod.natCast_zmod_val]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem toZModPow_rep {m : ℕ} (c : ZMod (l ^ m)) : PadicInt.toZModPow m (rep c) = c := by
   rw [rep, map_natCast, ZMod.natCast_zmod_val]
 
 /- English proof (translation)
-Rewrite using `[rep, map_natCast, ZMod.natCast_val, ZMod.castHom_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem toZModPow_rep_of_le {m n : ℕ} (h : m ≤ n) (c : ZMod (l ^ n)) :
     PadicInt.toZModPow m (rep c) = ZMod.castHom (pow_dvd_pow l h) (ZMod (l ^ m)) c := by
@@ -66,13 +66,13 @@ theorem stage_apply {A : PAlg l} {T : Type} [CommRing T] (φ : A.A →+* T) {m :
     stage φ e he f = ∑ c, e c * φ (Hom.f (A.evCont (rep c)) f) := rfl
 
 /- English proof (translation)
-The claim follows from `RingHom.congr_fun (Hom.comm φ) (pFlat l)`.
+A detailed English derivation is pending.
 -/
 theorem hom_pi {A t : PAlg l} (φ : A ⟶ t) : Hom.f φ A.pi = t.pi :=
   RingHom.congr_fun (Hom.comm φ) (pFlat l)
 
 /- English proof (translation)
-Take `⟨c, rfl⟩` from `Ideal.mem_span_singleton'.1 h`. Rewrite using `[map_mul, map_pow, hom_pi]`. Conclude with `Ideal.mul_mem_left _ _ (Ideal.mem_span_singleton_self _)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_mem_span {A t : PAlg l} (φ : A ⟶ t) {k : ℕ} {x : A.A} (h : x ∈ Ideal.span {A.pi ^ k}) :
     Hom.f φ x ∈ Ideal.span {t.pi ^ k} := by
@@ -81,11 +81,11 @@ theorem map_mem_span {A t : PAlg l} (φ : A ⟶ t) {k : ℕ} {x : A.A} (h : x �
   exact Ideal.mul_mem_left _ _ (Ideal.mem_span_singleton_self _)
 
 /- English proof (translation)
-Take `⟨M, hM⟩` from `exists_period A f k`. Use `⟨M, fun m hm => ?_⟩` and prove the remaining obligations. Establish `h1 : stage (Hom.f φ) (e M) (he M) f = ∑ c : ZMod (l ^ m), e m c * Hom.f φ (Hom.f (A.evCont (rep (ZMod.castHom (pow_dvd_pow l hm) (ZMod (l ^ M)) c))) f)`. Rewrite using `[stage_apply, ← Finset.sum_fiberwise Finset.univ (ZMod.castHom (pow_dvd_pow l hm) (ZMod (l ^ M)))]`. Use `Finset.sum_congr rfl fun d _ => ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hc M m hm d, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun c hc' => ?_` and prove the remaining obligations. Rewrite using `[(Finset.mem_filter.1 hc').2]`. Rewrite using `[h1, stage_apply, ← Finset.sum_sub_distrib]`. Use `Ideal.sum_mem _ fun c _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← mul_sub, ← map_sub]`. Use `Ideal.mul_mem_left _ _ (map_mem_span φ (hM _ _ ?_))` and prove the remaining obligations. Rewrite using `[toZModPow_rep_of_le hm, toZModPow_rep]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem stage_cauchy {A t : PAlg l} (φ : A ⟶ t) (e : ∀ m : ℕ, ZMod (l ^ m) → t.A)
     (he : ∀ m, CompleteOrthogonalIdempotents (e m))
@@ -110,7 +110,7 @@ theorem stage_cauchy {A t : PAlg l} (φ : A ⟶ t) (e : ∀ m : ℕ, ZMod (l ^ m
   rw [toZModPow_rep_of_le hm, toZModPow_rep]
 
 /- English proof (translation)
-Rewrite using `[stage_apply, hc m n h c, Finset.sum_filter]`. Use `Finset.sum_congr rfl fun c' _ => ?_` and prove the remaining obligations. Rewrite using `[ev_ind, toZModPow_rep_of_le h]`. Apply the tactic sequence `split_ifs <;> simp`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem stage_ind {A t : PAlg l} (φ : A ⟶ t) (e : ∀ m : ℕ, ZMod (l ^ m) → t.A)
     (he : ∀ m, CompleteOrthogonalIdempotents (e m))
@@ -124,13 +124,11 @@ theorem stage_ind {A t : PAlg l} (φ : A ⟶ t) (e : ∀ m : ℕ, ZMod (l ^ m) �
   split_ifs <;> simp
 
 /- English proof (translation)
-Use `haveI : IsAdicComplete (Ideal.span {t.pi}) t.A := t.compl`. Take `⟨ψ, hψ⟩` from `exists_lim_hom (ϖ := t.pi) (fun m => stage (Hom.f φ) (e m) (he m)) (stage_cauchy φ e he hc)`. Establish `hconst : ∀ x : A.A, ψ (Hom.f (A.toCont ℤ_[l]) x) = Hom.f φ x` using `fun x => by`. Use `(hψ _).unique ?_` and prove the remaining obligations. Establish `: (fun m => stage (Hom.f φ) (e m) (he m) (Hom.f (A.toCont ℤ_[l]) x)) = fun _ => Hom.f φ x`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `m`. Rewrite using `[stage_apply]`. Simplify using `only [ev_toCont]`. Rewrite using `[← Finset.sum_mul, (he m).complete, one_mul]`. Rewrite using `[this]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `tends_const _`. Establish `hcomm : ψ.comp (A.cont ℤ_[l]).s = t.s` using `RingHom.ext fun y => by`. Establish `h` using `hconst (A.s y)`. Conclude with `h.trans (RingHom.congr_fun (Hom.comm φ) y)`. Use `⟨⟨ψ, hcomm⟩, Hom.ext (RingHom.ext hconst), fun m c => ?_⟩` and prove the remaining obligations.
-
-Use `(hψ _).unique fun k => ⟨m, fun n hn => ?_⟩` and prove the remaining obligations. Use `beta_reduce`. Rewrite using `[stage_ind φ e he hc hn c, sub_self]`. Conclude with `zero_mem _`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_exists (A t : PAlg l) (φ : A ⟶ t) (e : ∀ m : ℕ, ZMod (l ^ m) → t.A)
     (he : ∀ m, CompleteOrthogonalIdempotents (e m))
@@ -159,17 +157,15 @@ theorem map_exists (A t : PAlg l) (φ : A ⟶ t) (e : ∀ m : ℕ, ZMod (l ^ m) 
   exact zero_mem _
 
 /- English proof (translation)
-Use `haveI : IsAdicComplete (Ideal.span {t.pi}) t.A := t.compl`. Establish `hconst : ∀ x, Hom.f ψ (Hom.f (A.toCont ℤ_[l]) x) = Hom.f ψ' (Hom.f (A.toCont ℤ_[l]) x)` using `fun x => congrArg (fun g : A ⟶ t => Hom.f g x) h1`. Use `Hom.ext (RingHom.ext fun f => ?_)` and prove the remaining obligations. Rewrite using `[← sub_eq_zero]`. Use `IsHausdorff.haus (inferInstance : IsHausdorff (Ideal.span {t.pi}) t.A) _ fun k => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `smodEq_iff.2 ?_` and prove the remaining obligations. Rewrite using `[sub_zero]`. Take `⟨M, hM⟩` from `exists_period A f k`. Set `g : (A.cont ℤ_[l]).A` to `∑ c, ind A M c * Hom.f (A.toCont ℤ_[l]) (Hom.f (A.evCont (rep c)) f)`. Establish `hg : Hom.f ψ g = Hom.f ψ' g`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [g, map_sum, map_mul, h2, hconst]`. Establish `hfg : f - g ∈ Ideal.span {(A.cont ℤ_[l]).pi ^ k}`. Use `(mem_span_pi_pow A k _).2 fun z => ?_` and prove the remaining obligations. Establish `: Hom.f (A.evCont z) g = Hom.f (A.evCont (rep (PadicInt.toZModPow M z))) f`. Simplify using `only [g, map_sum, map_mul, ev_toCont, ev_ind]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_eq_single (PadicInt.toZModPow M z)]`. Simplify using the standard rewrite rules. Introduce `c _ hc`. Rewrite using `[if_neg hc.symm, zero_mul]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_sub, this]`. Conclude with `hM _ _ (toZModPow_rep _).symm`. Establish `h3` using `map_mem_span ψ hfg`. Establish `h4` using `map_mem_span ψ' hfg`. Use `sub_mem h3 h4` as an intermediate fact.
-
-Rewrite `this` using `[map_sub, map_sub, hg, sub_sub_sub_cancel_right]`. Conclude with `this`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_unique {A t : PAlg l} (ψ ψ' : A.cont ℤ_[l] ⟶ t)
     (h1 : A.toCont ℤ_[l] ≫ ψ = A.toCont ℤ_[l] ≫ ψ')
@@ -204,7 +200,7 @@ theorem map_unique {A t : PAlg l} (ψ ψ' : A.cont ℤ_[l] ⟶ t)
   exact this
 
 /- English proof (translation)
-Introduce `l _ A t φ e he hc`. Take `⟨ψ, h1, h2⟩` from `map_exists A t φ e he hc`. Conclude with `⟨ψ, ⟨h1, h2⟩, fun ψ' ⟨h3, h4⟩ => map_unique ψ' ψ (h3.trans h1.symm) fun m c => (h4 m c).trans (h2 m c).symm⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem map_existsUnique : ∀ {l : ℕ} [Fact l.Prime] (A t : PAlg l) (φ : A ⟶ t) (e : ∀ m : ℕ, ZMod (l ^ m) → t.A), (∀ m, CompleteOrthogonalIdempotents (e m)) →
   (∀ (m n : ℕ) (h : m ≤ n) (c : ZMod (l ^ m)), e m c = ∑ c' with ZMod.castHom (pow_dvd_pow l h) (ZMod (l ^ m)) c' = c, e n c') →
@@ -215,11 +211,11 @@ theorem map_existsUnique : ∀ {l : ℕ} [Fact l.Prime] (A t : PAlg l) (φ : A �
     fun m c => (h4 m c).trans (h2 m c).symm⟩
 
 /- English proof (translation)
-Introduce `l _ ε t ht r hr h1 m`. Establish `hp` using `(GlobalTheory.T.epsilon_cyclotomic_element_properties ε).2.2.2.2 m`. Establish `hz : t.sharp (r m) ^ l ^ m = 1`. Establish `: ∀ m, r m ^ l ^ m = r 0` using `fun m => by`. Proceed by induction on `m with`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Proceed by induction.
 
-Consider the case `zero => simp`. Consider the case `succ m ih => rw [pow_succ', pow_mul, hr, ih]`. Rewrite using `[← map_pow, this, h1]`. Take `⟨e, he, h⟩` from `RL.mu_lc t ht.val_aic.1 m _ hp _ hz`. Use `⟨e, he, fun c => ?_⟩` and prove the remaining obligations.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h2 : t.oC (theta0 l (WittVector.teichmuller l (ε.e m : Ob l))) = t.sharp (t.s (ε.e m))`. Rewrite using `[oC_theta0, sW, WittVector.map_teichmuller]`. Both sides reduce to the same expression. Rewrite using `[← h2]`. Conclude with `h c`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem level : ∀ {l : ℕ} [Fact l.Prime] (ε : Eps l) (t : PAlg l), t.IsTest → ∀ (r : ℕ → t.A), (∀ m, r (m + 1) ^ l = r m) → t.sharp (r 0) = 1 →
   ∀ m, ∃ e : ZMod (l ^ m) → t.A, CompleteOrthogonalIdempotents e ∧ ∀ c, t.sharp (e c) * (t.sharp (r m) - t.sharp (t.s (ε.e m)) ^ c.val) = 0 := by
@@ -239,9 +235,9 @@ theorem level : ∀ {l : ℕ} [Fact l.Prime] (ε : Eps l) (t : PAlg l), t.IsTest
   exact h c
 
 /- English proof (translation)
-Establish `h` using `congrArg (mapU (contMap A.fromBase ℤ_[l] ≫ ψ)) (hF m)`. Rewrite `h` using `[mapU_sharp, map_sum]`. Use `h.trans (Finset.sum_congr rfl fun c _ => ?_)` and prove the remaining obligations. Rewrite using `[map_mul, map_pow, mapU_sharp, mapU_sharp]`. Establish `h1 : Hom.f (contMap A.fromBase ℤ_[l] ≫ ψ) (ind (base l) m c) = Hom.f ψ (ind A m c)` using `congrArg (Hom.f ψ) (contMap_ind A.fromBase m c)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : Hom.f (contMap A.fromBase ℤ_[l] ≫ ψ) (((base l).cont ℤ_[l]).s (ε.e m)) = t.s (ε.e m)` using `RingHom.congr_fun (Hom.comm (contMap A.fromBase ℤ_[l] ≫ ψ)) _`. Rewrite using `[h1, h2]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem formula (ε : Eps l) {ρ : ℕ → ((base l).cont ℤ_[l]).A}
     (hF : ∀ m, ((base l).cont ℤ_[l]).sharp (ρ m) =
@@ -261,7 +257,7 @@ theorem formula (ε : Eps l) {ρ : ℕ → ((base l).cont ℤ_[l]).A}
   rw [h1, h2]
 
 /- English proof (translation)
-The claim follows from `mul_sub_eq_zero_of_sum (a := fun c => t.sharp (E c)) (b := fun c : ZMod (l ^ m) => ξ ^ c.val) (fun i => by rw [← map_mul, hE.idem i]) (fun i j h => by rw [← map_mul, hE.ortho h, sharp_zero]) hx c`.
+A detailed English derivation is pending.
 -/
 theorem rel_of_formula {t : PAlg l} {m : ℕ} {E : ZMod (l ^ m) → t.A} (hE : CompleteOrthogonalIdempotents E)
     {x ξ : t.U} (hx : x = ∑ c, t.sharp (E c) * ξ ^ c.val) (c : ZMod (l ^ m)) :
@@ -270,15 +266,13 @@ theorem rel_of_formula {t : PAlg l} {m : ℕ} {E : ZMod (l ^ m) → t.A} (hE : C
     (fun i => by rw [← map_mul, hE.idem i]) (fun i j h => by rw [← map_mul, hE.ortho h, sharp_zero]) hx c
 
 /- English proof (translation)
-Take `⟨r, hr0, hr⟩` from `exists_roots t (u : t.A)`. Establish `hr1 : t.sharp (r 0) = 1` using `by rw [hr0, hu]`. Use `choose e he hrel using level ε t ht r hr hr1`. Establish `hcomp : ∀ (m n : ℕ) (h : m ≤ n) (c : ZMod (l ^ m)), e m c = ∑ c' with ZMod.castHom (pow_dvd_pow l h) (ZMod (l ^ m)) c' = c, e n c'` using `fun m n h c => by`. Take `⟨h1, h2⟩` from `GlobalTheory.T.idempotents_coarsen_to_lower_level ε t r hr h (e n) (he n) (hrel n)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `congrFun (GlobalTheory.T.idempotents_unique_for_epsilon_root ε t m (t.sharp (r m)) (e m) _ (he m) h1 (hrel m) h2) c`. Take `⟨ψ, ⟨hψ1, hψ2⟩, hψ⟩` from `map_existsUnique A t φ e he hcomp`. Establish `hv : ∀ (ψ' : A.cont ℤ_[l] ⟶ t) (m : ℕ), Hom.f ψ' (Hom.f (contMap A.fromBase ℤ_[l]) (ρ (m + 1))) ^ l = Hom.f ψ' (Hom.f (contMap A.fromBase ℤ_[l]) (ρ m))` using `fun ψ' m => by`. Rewrite using `[← map_pow, ← map_pow, hρ]`. Use `⟨ψ, ⟨hψ1, ?_⟩, fun ψ' ⟨h1, h2⟩ => hψ ψ' ⟨h1, fun m c => ?_⟩⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hE : ∀ m, (fun c => Hom.f ψ (ind A m c)) = e m` using `fun m => funext (hψ2 m)`. Establish `key : (fun m => Hom.f ψ (Hom.f (contMap A.fromBase ℤ_[l]) (ρ m))) = r`. Use `RL.tilt_inj t _ _ (hv ψ) hr fun m => ?_` and prove the remaining obligations. Rewrite using `[formula ε hF ψ m]`. Use `eq_sum_of_mul_sub (a := fun c => t.sharp (e m c)) (b := fun c : ZMod (l ^ m) => t.sharp (t.s (ε.e m)) ^ c.val) (sum_sharp_eq_one t (he m)) (hrel m)` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[this]`. Conclude with `Finset.sum_congr rfl fun c _ => by rw [hψ2 m c]`. Conclude with `(congrFun key 0).trans hr0`. Establish `key : (fun m => Hom.f ψ' (Hom.f (contMap A.fromBase ℤ_[l]) (ρ m))) = r` using `roots_unique t (h2.trans hr0.symm) (hv ψ') hr`. Use `congrFun (GlobalTheory.T.idempotents_unique_for_epsilon_root ε t m (t.sharp (r m)) _ (e m) (coi_map ψ' m) (he m) (fun c => ?_) (hrel m)) c` and prove the remaining obligations.
-
-Use `rel_of_formula (coi_map ψ' m) (formula ε hF ψ' m) c` as an intermediate fact. Rewrite `this` using `[show Hom.f ψ' (Hom.f (contMap A.fromBase ℤ_[l]) (ρ m)) = r m from congrFun key m]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem continuous_algebra_universal_existsUnique (ε : Eps l) {ρ : ℕ → ((base l).cont ℤ_[l]).A} (hρ : ∀ m, ρ (m + 1) ^ l = ρ m)
     (hF : ∀ m, ((base l).cont ℤ_[l]).sharp (ρ m) =
@@ -315,13 +309,13 @@ theorem continuous_algebra_universal_existsUnique (ε : Eps l) {ρ : ℕ → ((b
     rwa [show Hom.f ψ' (Hom.f (contMap A.fromBase ℤ_[l]) (ρ m)) = r m from congrFun key m] at this
 
 /- English proof (translation)
-Introduce `l _ ε`. Take `⟨η, hη, hs⟩` from `GlobalTheory.T.exists_continuous_epsilon_power ε`. Take `⟨ρ, h0, hρ⟩` from `exists_roots ((base l).cont ℤ_[l]) η`. Establish `hF` using `GlobalTheory.T.sharp_epsilon_root_idempotent_sum ε ρ (fun m z => h0 ▸ hη m z) hρ`. Establish `h1 : ((base l).cont ℤ_[l]).sharp η = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `hF 0`. Rewrite `h` using `[h0]`. Rewrite using `[h, ← sum_sharp_eq_one ((base l).cont ℤ_[l]) (coi_ind (base l) 0)]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Establish `: c.val = 0`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `: c.val < 1` using `lt_of_lt_of_eq (ZMod.val_lt c) (pow_zero l)`. Use linear arithmetic over natural numbers and integers. Rewrite using `[this, pow_zero, mul_one]`. Take `⟨w, rfl⟩` from `RL.unit_lift ((base l).cont ℤ_[l]) η (by rw [h1]; exact isUnit_one)`. Use `⟨w, h1, hs, fun A t ht φ u hu => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `continuous_algebra_universal_existsUnique ε hρ hF A t ht φ u hu` as an intermediate fact. Rewrite `this` using `[h0]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem main : ∀ {l : ℕ} [Fact l.Prime] (ε : Eps l), ∃ η : (((base l).cont ℤ_[l]).A)ˣ, ((base l).cont ℤ_[l]).sharp η = 1 ∧ PAlg.Hom.f (contShift (base l)) η = ((base l).cont ℤ_[l]).s (ε.e 0) * η ∧ ∀ (A t : PAlg l), t.IsTest → ∀ (φ : A ⟶ t) (u : (t.A)ˣ), t.sharp u = 1 → ∃! ψ : A.cont ℤ_[l] ⟶ t, A.toCont ℤ_[l] ≫ ψ = φ ∧ PAlg.Hom.f ψ (PAlg.Hom.f (contMap A.fromBase ℤ_[l]) η) = u := by
   intro l _ ε

@@ -9,9 +9,9 @@ namespace Formalism.MainNotions.ColumnSystems.Pf
 open Formalism.MainNotions.G Formalism.MainNotions.G.GLWeightTheory MvPolynomial
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert a s ha ih`. Rewrite using `[Nat.multinomial_insert ha, Nat.factorization_mul (Nat.choose_pos (Nat.le_add_right _ _)).ne' (Nat.multinomial_pos _ _).ne', Finsupp.add_apply, Finset.card_insert_of_notMem ha, Finset.sum_insert ha]`. Establish `h1` using `Nat.factorization_choose_le_log (p := p) (n := f a + ∑ i ∈ s, f i) (k := f a)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : Nat.log p (∑ i ∈ s, f i) ≤ Nat.log p (f a + ∑ i ∈ s, f i)` using `Nat.log_mono_right (Nat.le_add_left _ _)`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem fact_multinomial_le (p : ℕ) {α : Type} [DecidableEq α] (s : Finset α) (f : α → ℕ) :
     (Nat.multinomial s f).factorization p ≤ s.card * Nat.log p (∑ i ∈ s, f i) := by
@@ -27,13 +27,13 @@ theorem fact_multinomial_le (p : ℕ) {α : Type} [DecidableEq α] (s : Finset �
       _ = (s.card + 1) * Nat.log p (f a + ∑ i ∈ s, f i) := by ring
 
 /- English proof (translation)
-Use `dvr_fraction_field_char_zero hp S` as an intermediate fact. Use `set v := M.factorization p with hv`. Use `set M' := M / p ^ v with hM'`. Establish `hMM : p ^ v * M' = M` using `Nat.ordProj_mul_ordCompl_eq_self M p`. Establish `hnd : ¬ p ∣ M'` using `Nat.not_dvd_ordCompl hp hM`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨uu, hu⟩` from `natCast_isUnit_of_coprime hp S M' hnd`. Establish `hy : (↑(uu⁻¹) : O) * (M' : O) = 1` using `by rw [← hu]; exact Units.inv_mul uu`. Establish `hK : algebraMap O (KK O) (↑(uu⁻¹) : O) * (M' : KK O) = 1`. Rewrite using `[← map_natCast (algebraMap O (KK O)), ← map_mul, hy, map_one]`. Establish `hne : (M : KK O) ≠ 0` using `Nat.cast_ne_zero.2 hM`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨(p : O) ^ (κ - v) * ↑(uu⁻¹), ?_⟩` and prove the remaining obligations. Rewrite using `[div_eq_iff hne]`. Establish `hMK : (M : KK O) = (p : KK O) ^ v * (M' : KK O)` using `by rw [← hMM]; push_cast; rfl`. Establish `hpow : (p : KK O) ^ κ = (p : KK O) ^ (κ - v) * (p : KK O) ^ v` using `by rw [← pow_add, Nat.sub_add_cancel h]`. Simplify using `only [map_mul, map_pow, map_natCast]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Rewrite using `[hMK, hpow]`. Take the linear combination `(-((p : KK O) ^ (κ - v) * (p : KK O) ^ v)) * hK`.
+A detailed English derivation is pending.
 -/
 theorem pow_div_mem {p : ℕ} {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (hp : p.Prime)
     (S : UniformizedDVR p O) (M κ : ℕ) (hM : M ≠ 0) (h : M.factorization p ≤ κ) :
@@ -57,26 +57,24 @@ theorem pow_div_mem {p : ℕ} {O : Type} [CommRing O] [IsDomain O] [IsDiscreteVa
   linear_combination (-((p : KK O) ^ (κ - v) * (p : KK O) ^ v)) * hK
 
 /- English proof (translation)
-Rewrite using `[expFact, Finsupp.prod_fintype _ _ (fun _ => rfl), Fintype.prod_prod_type]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem factorial_exponent_eq_prod {ι : Type} [Fintype ι] {k : ℕ} (μ : ι × Fin k →₀ ℕ) :
     expFact μ = ∏ x : ι, ∏ c : Fin k, (μ (x, c)).factorial := by
   rw [expFact, Finsupp.prod_fintype _ _ (fun _ => rfl), Fintype.prod_prod_type]
 
 /- English proof (translation)
-Use `dvr_fraction_field_char_zero hp S` as an intermediate fact. Use `set M : ℕ := ∏ x : TT × Bool, Nat.multinomial Finset.univ (fun c : Fin (m + 1) => μ (x, c)) with hMdef`. Establish `hM0 : M ≠ 0` using `Finset.prod_ne_zero_iff.2 fun x _ => (Nat.multinomial_pos _ _).ne'`. Establish `hEM : expFact μ * M = ∏ x : TT × Bool, (hhDegs TT aT bT x).factorial`. Rewrite using `[factorial_exponent_eq_prod, hMdef, ← Finset.prod_mul_distrib]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.prod_congr rfl fun x _ => ?_` and prove the remaining obligations. Rewrite using `[Nat.multinomial_spec, ← hμ x]`. Both sides reduce to the same expression. Establish `hfac : M.factorization p ≤ kapZ p m TT aT bT`. Rewrite using `[hMdef, Nat.factorization_prod (fun x _ => (Nat.multinomial_pos _ _).ne'), Finsupp.finsetSum_apply]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Unfold `kapZ`. Use `Finset.sum_le_sum fun x _ => ?_` and prove the remaining obligations. Use `fact_multinomial_le p (Finset.univ : Finset (Fin (m + 1))) (fun c => μ (x, c))` as an intermediate fact. Rewrite `this` using `[Finset.card_univ, Fintype.card_fin]`. Rewrite using `[← hμ x]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `this`. Take `⟨y, hy⟩` from `pow_div_mem hp S M _ hM0 hfac`. Use `⟨y, ?_⟩` and prove the remaining obligations. Rewrite using `[← hy]`. Unfold `zTen`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hE0 : (expFact μ : KK O) ≠ 0`. Rewrite using `[Nat.cast_ne_zero]`. Introduce `h0`. Rewrite `hEM` using `[h0, zero_mul]`. Conclude with `(Finset.prod_ne_zero_iff.2 fun x _ => Nat.factorial_ne_zero _) hEM.symm`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hMK : (M : KK O) ≠ 0` using `Nat.cast_ne_zero.2 hM0`. Establish `hcast : (∏ x : TT × Bool, ((hhDegs TT aT bT x).factorial : KK O)) = (expFact μ : KK O) * (M : KK O)`. Rewrite using `[← Nat.cast_mul, hEM]`. Use `push_cast`. Both sides reduce to the same expression.
-
-Rewrite using `[hcast]`. Clear the denominators using the available nonvanishing facts.
+Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem tensor_factorial_integral {p : ℕ} {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (hp : p.Prime)
     (S : UniformizedDVR p O) {n' : ℕ} (m : ℕ) (TT : Finset (Fin n')) (aT bT : Fin n' → ℕ)
@@ -117,15 +115,15 @@ theorem tensor_factorial_integral {p : ℕ} {O : Type} [CommRing O] [IsDomain O]
   field_simp
 
 /- English proof (translation)
-Introduce `p O _ _ _ hp S w n' m TT aT bT P hP Q i hPi hQ`. Establish `hsup : ∀ μ ∈ P.support, ∀ x, multideg μ x = hhDegs TT aT bT x`. Introduce `μ hμ`. Use `((mem_restrictSupport_iff _).1 hP) (Finset.mem_coe.2 hμ)` as an intermediate fact. Conclude with `this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `fock`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_induction _ (fun x => ∃ y : O, x = algebraMap O (KK O) (w ^ i * y)) ?_ ⟨0, by simp⟩ ?_` and prove the remaining obligations. Introduce and unpack `_ _ ⟨y, rfl⟩ ⟨y', rfl⟩`. Conclude with `⟨y + y', by rw [← map_add]; congr 1; ring⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `μ hμ`. Take `⟨c, hc⟩` from `hPi μ`. Take `⟨c', hc'⟩` from `hQ μ`. Take `⟨y, hy⟩` from `tensor_factorial_integral hp S m TT aT bT μ (hsup μ hμ)`. Use `⟨c * c' * y, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hc, hc']`. Establish `: zTen (KK O) p m TT aT bT * (algebraMap O (KK O) (w ^ i * c) * algebraMap O (KK O) c' * (expFact μ : KK O)) = algebraMap O (KK O) (w ^ i * c) * algebraMap O (KK O) c' * (zTen (KK O) p m TT aT bT * (expFact μ : KK O))`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this, hy, ← map_mul, ← map_mul]`. Use `congr 1`.
+Establish an intermediate fact. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem intAt : IntAt := by
   intro p O _ _ _ hp S w n' m TT aT bT P hP Q i hPi hQ

@@ -9,7 +9,7 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsKummerTorsorSplit
 open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComplex.HomComplex GlobalTheory.EtC
 
 /- English proof (translation)
-Take `⟨p, hp⟩` from `Polynomial.cyclotomic.dvd_X_pow_sub_one q ℤ`. Establish `h` using `congrArg (Polynomial.aeval ζ.1) hp`. Rewrite `h` using `[map_mul, ζ.2.2, zero_mul]`. Simplify `h` using `[sub_eq_zero]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem prim_pow (q : ℕ) {A : Type} [CommRing A] (ζ : Prim q A) : ζ.1 ^ q = 1 := by
   obtain ⟨p, hp⟩ := Polynomial.cyclotomic.dvd_X_pow_sub_one q ℤ
@@ -18,7 +18,7 @@ private theorem prim_pow (q : ℕ) {A : Type} [CommRing A] (ζ : Prim q A) : ζ.
   simpa [sub_eq_zero] using h
 
 /- English proof (translation)
-Establish `h` using `φ.hom.naturality g.op`. Conclude with `congrArg (fun f => f.hom x) h`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem sec_map_res {R : Type} [CommRing R] {F G : Shv R} (φ : F ⟶ G) {V U : Scheme.{0}} (g : V ⟶ U)
     (x : Sec F U) : Sec.map φ (Sec.res g x) = Sec.res g (Sec.map φ x) := by
@@ -26,28 +26,28 @@ private theorem sec_map_res {R : Type} [CommRing R] {F G : Shv R} (φ : F ⟶ G)
   exact congrArg (fun f => f.hom x) h
 
 /- English proof (translation)
-The claim follows from `map_add (F.obj.map g.op).hom x y`.
+A detailed English derivation is pending.
 -/
 private theorem sec_res_add {R : Type} [CommRing R] {F : Shv R} {V U : Scheme.{0}} (g : V ⟶ U)
     (x y : Sec F U) : Sec.res g (x + y) = Sec.res g x + Sec.res g y :=
   map_add (F.obj.map g.op).hom x y
 
 /- English proof (translation)
-The claim follows from `map_zero (φ.hom.app (op U)).hom`.
+A detailed English derivation is pending.
 -/
 private theorem sec_map_zero {R : Type} [CommRing R] {F G : Shv R} (φ : F ⟶ G) {U : Scheme.{0}} :
     Sec.map φ (0 : Sec F U) = 0 :=
   map_zero (φ.hom.app (op U)).hom
 
 /- English proof (translation)
-The claim follows from `map_nsmul (φ.hom.app (op U)).hom c x`.
+A detailed English derivation is pending.
 -/
 private theorem sec_map_nsmul {R : Type} [CommRing R] {F G : Shv R} (φ : F ⟶ G) {U : Scheme.{0}} (c : ℕ)
     (x : Sec F U) : Sec.map φ (c • x) = c • Sec.map φ x :=
   map_nsmul (φ.hom.app (op U)).hom c x
 
 /- English proof (translation)
-Proceed by induction on `c with`. Consider the case `zero => simp`. Consider the case `succ c ih`. Rewrite using `[pow_succ', mul_assoc, UpperTheory.PicD.unitSec_mul, ih, succ_nsmul]`. Normalize the expressions using the abelian group laws.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 private theorem unitSec_pow_mul {W : Scheme.{0}} (u w : (Γ(W, ⊤))ˣ) (c : ℕ) :
     unitSec (u ^ c * w) = unitSec w + c • unitSec u := by
@@ -58,7 +58,7 @@ private theorem unitSec_pow_mul {W : Scheme.{0}} (u w : (Γ(W, ⊤))ˣ) (c : ℕ
     abel
 
 /- English proof (translation)
-Proceed by induction on `c with`. Consider the case `zero => simp`. Consider the case `succ c ih`. Establish `h` using `(GlobalTheory.T.isKummerTorsorSplitting_kummerTorsorSplitting q).2 W ζ (u ^ c * w) (u ^ (c + 1) * w) (by rw [pow_succ', mul_assoc, Units.val_mul, hu])`. Rewrite using `[h, ih, succ_nsmul, add_assoc]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 private theorem kumT_pow_mul (q : ℕ) [NeZero q] (W : Scheme.{0}) (ζ : Prim q Γ(W, ⊤)) (u w : (Γ(W, ⊤))ˣ)
     (hu : (u : Γ(W, ⊤)) = ζ.1) (c : ℕ) :
@@ -71,19 +71,17 @@ private theorem kumT_pow_mul (q : ℕ) [NeZero q] (W : Scheme.{0}) (ζ : Prim q 
     rw [h, ih, succ_nsmul, add_assoc]
 
 /- English proof (translation)
-Introduce `q _ V hq v v' a h`. Use `(GlobalTheory.T.etaleSheafSections_ext_and_glue (ZMod q) _ V).1 _ _ ?_` and prove the remaining obligations. Take `⟨S, hS, hP⟩` from `(GlobalTheory.T.tateTwist_sections_locally_generated q 1).1 V a`. Use `⟨S, hS, fun W g hg => ?_⟩` and prove the remaining obligations. Use `show Sec.res g (kumT q V v') = Sec.res g (kumT q V v + Sec.map (resι _ (tw q 1)) a)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hK` using `(GlobalTheory.T.isKummerTorsorSplitting_kummerTorsorSplitting q).1 W V g`. Set `b : Sec (UpperTheory.Deg2.T q) V` to `a`. Set `bW : Sec (UpperTheory.Deg2.T q) W` to `Sec.res g a`. Establish `hb : Sec.res g (Sec.map (UpperTheory.Deg2.kap q) b) = Sec.map (UpperTheory.Deg2.kap q) bW` using `(sec_map_res (UpperTheory.Deg2.kap q) g b).symm`. Establish `h' : unitSec (Units.map g.appTop.hom.toMonoidHom v') = unitSec (Units.map g.appTop.hom.toMonoidHom v) + Sec.map (UpperTheory.Deg2.kap q) bW`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0 : unitSec v' = unitSec v + Sec.map (UpperTheory.Deg2.kap q) b` using `h`. Establish `h1` using `congrArg (Sec.res g) h0`. Rewrite `h1` using `[sec_res_add, UpperTheory.PicD.unitSec_res, UpperTheory.PicD.unitSec_res, hb]`. Conclude with `h1`. Rewrite using `[sec_res_add, hK v hq, hK v' hq, ← sec_map_res]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Break down `hP W g hg with h0 | ⟨ζ, c, hc⟩` into its components or cases. Establish `h2 : Sec.map (UpperTheory.Deg2.kap q) bW = 0`. Establish `: bW = 0` using `h0`. Rewrite using `[this]`. Conclude with `sec_map_zero _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h0, sec_map_zero, add_zero]`. Rewrite `h'` using `[h2, add_zero]`. Rewrite using `[UpperTheory.eq_of_unitGlobalSection_eq _ _ _ h']`. Establish `hun : IsUnit ζ.1` using `isUnit_iff_exists_inv.2 ⟨ζ.1 ^ (q - 1), by`. Rewrite using `[← pow_succ', Nat.sub_add_cancel (NeZero.pos q)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `prim_pow q ζ⟩`. Take `⟨u, hu⟩` from `hun`. Establish `h2 : Sec.map (UpperTheory.Deg2.kap q) bW = c • unitSec u`. Establish `: bW = c • (show Sec (UpperTheory.Deg2.T q) W from twGen 1 ζ)` using `hc`. Rewrite using `[this, sec_map_nsmul, (UpperTheory.Deg2.kap_spec q).2.2.1 W ζ u hu]`.
-
-Rewrite `h'` using `[h2, ← unitSec_pow_mul]`. Rewrite using `[UpperTheory.eq_of_unitGlobalSection_eq _ _ _ h', kumT_pow_mul q W ζ u _ hu c, hc, sec_map_nsmul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem UpperTheory.kummer_class_add_of_unitSec_add :
     ∀ (q : ℕ) [NeZero q] (V : Scheme.{0}), IsUnit (q : Γ(V, ⊤)) → ∀ (v v' : (Γ(V, ⊤))ˣ) (a : Sec (tw q 1) V), unitSec v' = unitSec v + Sec.map (UpperTheory.Deg2.kap q) (show Sec (UpperTheory.Deg2.T q) V from a) → kumT q V v' = kumT q V v + Sec.map (resι _ (tw q 1)) a := by

@@ -9,7 +9,7 @@ namespace Formalism.MainNotions.N
 open Formalism.BasicNotions
 
 /- English proof (translation)
-Unfold `Formalism.MainNotions.ElementDenominator.adm1`. Conclude with `Formalism.MainNotions.DeltaInvariantLattices.thm1used_of (theorem_one_of_local_package D HW F Cm h56)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem delta_input_one_of_local (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (Cm : CmpOf D.loc D.locA HW F)
     (h56 : Formalism.MainNotions.DeltaInvariantLattices.aux₃ D HW F Cm) :
@@ -18,7 +18,7 @@ theorem delta_input_one_of_local (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.l
   exact Formalism.MainNotions.DeltaInvariantLattices.thm1used_of (theorem_one_of_local_package D HW F Cm h56)
 
 /- English proof (translation)
-Unfold `Formalism.MainNotions.ElementDenominator.adm2`. Conclude with `proposition_two_of_local_package D HW F Cm h56`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem delta_input_two_of_local (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (Cm : CmpOf D.loc D.locA HW F)
     (h56 : Formalism.MainNotions.DeltaInvariantLattices.aux₃ D HW F Cm) :
@@ -27,7 +27,7 @@ theorem delta_input_two_of_local (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.l
   exact proposition_two_of_local_package D HW F Cm h56
 
 /- English proof (translation)
-Unfold `Formalism.MainNotions.ElementDenominator.adm3`. Conclude with `lemma_three_of_local_package D HW F Cm h56`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem delta_input_three_of_local (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (Cm : CmpOf D.loc D.locA HW F)
     (h56 : Formalism.MainNotions.DeltaInvariantLattices.aux₃ D HW F Cm) :
@@ -36,7 +36,7 @@ theorem delta_input_three_of_local (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D
   exact lemma_three_of_local_package D HW F Cm h56
 
 /- English proof (translation)
-Unfold `Formalism.MainNotions.ElementDenominator.ArchimedeanSignatureMatching`. Conclude with `lift_of_lifting_package D HW F C CA CB CK h54`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem archimedean_signature_matching_of_liftingTheory (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (CA : ℝ) (CB : ℝ) (CK : ℝ) (C : ℝ)
     (h54 : Formalism.MainNotions.LiftingTheory.aux₃ D HW F C CA CB CK) :
@@ -45,7 +45,7 @@ theorem archimedean_signature_matching_of_liftingTheory (D : D7) (HW : HWOf D.lo
   exact lift_of_lifting_package D HW F C CA CB CK h54
 
 /- English proof (translation)
-Unfold `Formalism.MainNotions.ElementDenominator.adm5`. Conclude with `wach_of_lifting_package D HW F C CA CB CK h54`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem lifting_input_five_of_lifting (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (C CA CB CK : ℝ)
     (h54 : Formalism.MainNotions.LiftingTheory.aux₃ D HW F C CA CB CK) :
@@ -54,7 +54,7 @@ theorem lifting_input_five_of_lifting (D : D7) (HW : HWOf D.loc) (F : FonOf D.lo
   exact wach_of_lifting_package D HW F C CA CB CK h54
 
 /- English proof (translation)
-Unfold `Formalism.MainNotions.ElementDenominator.adm6`. Conclude with `lifting_local_of_package D HW F C CA CB CK h54`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem lifting_input_six_of_lifting (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (C CA CB CK : ℝ)
     (h54 : Formalism.MainNotions.LiftingTheory.aux₃ D HW F C CA CB CK) :
@@ -63,7 +63,7 @@ theorem lifting_input_six_of_lifting (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc
   exact lifting_local_of_package D HW F C CA CB CK h54
 
 /- English proof (translation)
-Unfold `Formalism.MainNotions.ElementDenominator.adm13`. Conclude with `hconds5`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem bloch_kato_input_of_dropping (D : D7)
     (hconds5 : Formalism.MainNotions.LocalSituation.Conclusion5 D) :

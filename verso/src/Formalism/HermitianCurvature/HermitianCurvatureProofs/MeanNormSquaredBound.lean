@@ -14,7 +14,7 @@ section Abstract
 variable {E : Type} [NormedAddCommGroup E] [InnerProductSpace ℂ E]
 
 /- English proof (translation)
-Rewrite using `[inner_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[sum_inner]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[inner_smul_left, inner_smul_right]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -30,7 +30,7 @@ lemma inner_sum_sum {ι κ : Type} (S : Finset ι) (S' : Finset κ) (c : ι → 
   ring
 
 /- English proof (translation)
-Rewrite using `[← inner_sum_sum, inner_self_eq_norm_sq_to_K]`. Use `push_cast`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression.
 -/
 lemma normSq_sum {ι : Type} (S : Finset ι) (c : ι → ℂ) (v : ι → E) :
     ((‖∑ i ∈ S, c i • v i‖ ^ 2 : ℝ) : ℂ) =
@@ -40,7 +40,7 @@ lemma normSq_sum {ι : Type} (S : Finset ι) (c : ι → ℂ) (v : ι → E) :
   rfl
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 lemma sum_sum_sum_sum_comm {α β M : Type} [AddCommMonoid M] (P : Finset α) (H : Finset β)
     (f : α → α → β → β → M) :
@@ -56,9 +56,9 @@ lemma sum_sum_sum_sum_comm {α β M : Type} [AddCommMonoid M] (P : Finset α) (H
         Finset.sum_congr rfl fun h _ => Finset.sum_comm
 
 /- English proof (translation)
-Establish `h1 : L (k • ∑ p ∈ P, c p • ∑ h ∈ F, a h • u h p) = ∑ p ∈ P, (k * c p) • ∑ h ∈ F, a h • L (u h p)`. Simplify using `only [map_smul, map_sum, Finset.smul_sum, smul_smul, mul_assoc]`. Rewrite using `[h1, normSq_sum]`. Simplify using `only [inner_sum_sum, Finset.mul_sum]`. Rewrite using `[sum_sum_sum_sum_comm]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun h _ => Finset.sum_congr rfl fun h' _ => Finset.sum_congr rfl fun p _ => Finset.sum_congr rfl fun p' _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, hk]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 lemma normSq_mean {X α : Type} (L : E →ₗ[ℂ] E) (k : ℂ) (hk : conj k = k) (P : Finset α)
     (c : α → ℂ) (F : Finset X) (a : X → ℂ) (u : X → α → E) :
@@ -77,7 +77,7 @@ lemma normSq_mean {X α : Type} (L : E →ₗ[ℂ] E) (k : ℂ) (hk : conj k = k
   ring
 
 /- English proof (translation)
-Rewrite using `[Fintype.sum_prod_type, Finset.sum_product, ← Finset.sum_coe_sort A]`. Use `Finset.sum_congr rfl fun ρ _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_coe_sort B]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 lemma sum_sub_prod {α β M : Type} [AddCommMonoid M] (A : Finset α) (B : Finset β)
     (f : α × β → M) : ∑ p : ↥A × ↥B, f (p.1.1, p.2.1) = ∑ p ∈ A ×ˢ B, f p := by
@@ -86,17 +86,15 @@ lemma sum_sub_prod {α β M : Type} [AddCommMonoid M] (A : Finset α) (B : Finse
   rw [← Finset.sum_coe_sort B]
 
 /- English proof (translation)
-Use `set w : Y × Y → E := fun p => ∑ h ∈ F, a h • u h p with hw`. Establish `key` using `AB E ↥A ↥B (fun p => w (p.1.1, p.2.1)) T (fun ρ => e₁ ρ.1) (fun b => e₂ b.1) hT (fun ρ => he₁ ρ.1 ρ.2) (by`. Introduce `ρ ρ' b b' hne`. Establish `hne' : ρ.1 ≠ ρ'.1` using `fun h => hne (Subtype.ext h)`. Simplify using `only [hw]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[inner_sum_sum]`. Use `Finset.sum_eq_zero fun h hh => Finset.sum_eq_zero fun h' hh' => ?_` and prove the remaining obligations. Rewrite using `[horth h' hh' h hh ρ.1 ρ.2 ρ'.1 ρ'.2 b.1 b.2 b'.1 b'.2 hne', mul_zero])`. Simplify using `only [Fintype.card_coe] at key`. Establish `e1 : (∑ p : ↥A × ↥B, (e₁ p.1.1 * e₂ p.2.1) • w (p.1.1, p.2.1)) = ∑ p ∈ A ×ˢ B, (e₁ p.1 * e₂ p.2) • w p` using `sum_sub_prod A B (fun p => (e₁ p.1 * e₂ p.2) • w p)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2 : (∑ ρ : ↥A, ‖(B.card : ℂ)⁻¹ • ∑ b : ↥B, e₂ b.1 • w (ρ.1, b.1)‖ ^ 2) = ∑ ρ ∈ A, ‖(B.card : ℂ)⁻¹ • ∑ b ∈ B, e₂ b • w (ρ, b)‖ ^ 2`. Rewrite using `[← Finset.sum_coe_sort A]`. Use `Finset.sum_congr rfl fun ρ _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_coe_sort B]`. Rewrite `key` using `[e1, e2]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨_, _, key, ?_, ?_⟩` and prove the remaining obligations. Conclude with `normSq_mean T _ (by simp) (A ×ˢ B) (fun p => e₁ p.1 * e₂ p.2) F a u`. Establish `h3 : ∀ ρ, ((‖(B.card : ℂ)⁻¹ • ∑ b ∈ B, e₂ b • w (ρ, b)‖ ^ 2 : ℝ) : ℂ) = ∑ h ∈ F, ∑ h' ∈ F, a h * conj (a h') * (((B.card : ℂ)⁻¹) ^ 2 * ∑ b ∈ B, ∑ b' ∈ B, e₂ b * conj (e₂ b') * inner ℂ (u h' (ρ, b')) (u h (ρ, b)))` using `fun ρ => normSq_mean LinearMap.id _ (by simp) B e₂ F a (fun h b => u h (ρ, b))`. Rewrite using `[Complex.ofReal_mul, Complex.ofReal_mul, Complex.ofReal_sum]`. Simplify using `only [h3, Complex.ofReal_inv, Complex.ofReal_natCast]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.sum_comm]`. Simplify using `only [Finset.mul_sum]`. Use `Finset.sum_congr rfl fun h _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun h' _ => Finset.sum_congr rfl fun ρ _ => Finset.sum_congr rfl fun b _ => Finset.sum_congr rfl fun b' _ => ?_` and prove the remaining obligations.
-
-Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 lemma abstract_bound (AB : AvgBound) {X Y : Type} (F : Finset X) (a : X → ℂ) (A B : Finset Y)
     (u : X → Y × Y → E) (T : E →ₗ[ℂ] E) (hT : ∀ v, ‖T v‖ ≤ ‖v‖) (e₁ e₂ : Y → ℂ)
@@ -148,9 +146,9 @@ lemma abstract_bound (AB : AvgBound) {X Y : Type} (F : Finset X) (a : X → ℂ)
 end Abstract
 
 /- English proof (translation)
-Establish `h1 : ψ x * conj (ψ x) = 1`. Rewrite using `[hu, ← AddChar.map_add_eq_mul, add_neg_cancel, AddChar.map_zero_eq_one]`. Rewrite `h1` using `[Complex.mul_conj, Complex.normSq_eq_norm_sq]`. Establish `h2 : ‖ψ x‖ ^ 2 = 1` using `by exact_mod_cast h1`. Establish `h3 : (‖ψ x‖ - 1) * (‖ψ x‖ + 1) = 0` using `by ring_nf; rw [h2]; ring`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Break down `mul_eq_zero.mp h3 with h | h` into its components or cases. Combine the linear equalities and inequalities to obtain the conclusion. Use `norm_nonneg (ψ x)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Separate the alternatives or extract the components of the hypothesis. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 lemma norm_psi {K : Type} [CommRing K] (ψ : AddChar K ℂ) (hu : ∀ x : K, conj (ψ x) = ψ (-x))
     (x : K) : ‖ψ x‖ = 1 := by
@@ -167,41 +165,37 @@ end MeanNormSquaredBound
 
 open MeanNormSquaredBound in
 /- English proof (translation)
-Introduce `GI A2V UGE ExponentialIntegralMeasures CSA MM CPSD KG GRC AB CNE CM PL K _ _ _ R ψ hD hchar m hm n₀ F Om Lc hF hOm D`. Use `set Sg : Finset K := (D.A ×ˢ D.B).image (fun p => p.1 + p.2) with hSg`. Establish `hLat : IsLat (perp ψ D.L₂)` using `(PL K R ψ hD hchar D.L₂ D.lat₂).1`. Establish `hAL : ∀ ρ ∈ D.A, ρ ∈ D.L₂` using `D.repsA.1`. Establish `hBR : ∀ b ∈ D.B, b ∈ R.toAddSubgroup` using `D.repsB.1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmemSg : ∀ ρ ∈ D.A, ∀ b ∈ D.B, ρ + b ∈ Sg`. Introduce `ρ hρ b hb`. Conclude with `Finset.mem_image.mpr ⟨(ρ, b), Finset.mem_product.mpr ⟨hρ, hb⟩, rfl⟩`. Establish `hSgL : ∀ σ ∈ Sg, σ ∈ D.L₂`. Introduce `σ hσ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨p, hp, rfl⟩` from `Finset.mem_image.mp hσ`. Take `⟨hp1, hp2⟩` from `Finset.mem_product.mp hp`. Conclude with `D.L₂.add_mem (hAL _ hp1) (D.le₂ (hBR _ hp2))`. Take `⟨V, hV, hGI⟩` from `GI K R ψ hD hchar m hm n₀ F hF Om Sg (perp ψ D.L₂) hOm hLat D.omStable D.nsInv (by`. Introduce `σ hσ σ' hσ' l hl`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `hl _ (D.L₂.sub_mem (hSgL σ hσ) (hSgL σ' hσ')))`. Use `⟨V, hV, ?_⟩` and prove the remaining obligations. Introduce `t τ cr ht hcr hsh z₁ hz₁ a`. Use `set F' : Finset (Point K × Kˣ) := F ×ˢ Sg.image τ with hF'`. Establish `hmemF' : ∀ h ∈ F, ∀ ρ ∈ D.A, ∀ b ∈ D.B, (h, τ (ρ + b)) ∈ F'`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Introduce `h hh ρ hρ b hb`. Conclude with `Finset.mem_product.mpr ⟨hh, Finset.mem_image_of_mem τ (hmemSg ρ hρ b hb)⟩`. Take `⟨hc1, hc2⟩` from `CPSD KG ExponentialIntegralMeasures MM K R ψ hD m cr (cutSet m Om t) F' hcr (by`. Introduce `p hp p' hp'`. Rewrite using `[hF _ (Finset.mem_product.mp hp).1, hF _ (Finset.mem_product.mp hp').1])`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Take `⟨n, u₀, T, hT, hG, hGc⟩` from `GRC (Point K × Kˣ) F' (fun p p' => uGram R ψ m cr Set.univ p.1 p'.1 p.2 p'.2) (fun p p' => uGram R ψ m cr (cutSet m Om t) p.1 p'.1 p.2 p'.2) hc1 hc2`. Take `⟨r₁, r₂, hr, hr₁, hr₂⟩` from `abstract_bound AB F a D.A D.B (fun h p => u₀ (h, τ (p.1 + p.2))) T hT (fun ρ => ψ (-(z₁ * ρ))) (fun b => ψ (-(z₁ * b))) (fun ρ _ => norm_psi ψ hD.unitary _) (by`. Introduce `h hh h' hh' ρ hρ ρ' hρ' b hb b' hb' hne`. Simplify using `only`. Rewrite using `[hG _ (hmemF' h' hh' ρ' hρ' b' hb') _ (hmemF' h hh ρ hρ b hb)]`.
+Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only`. Rewrite using `[UGE ExponentialIntegralMeasures CSA MM K R ψ hD m h' h _ _ cr (by rw [hF h hh, hF h' hh']) hcr]`. Assume the negation of the conclusion as `hcon`. Establish `hNs : Ns R ψ m h' h (τ (ρ' + b')) (τ (ρ + b)) ≠ 0` using `fun h0 => hcon (by rw [h0, mul_zero])`. Establish `hmem` using `A2V K R ψ hD m hm h' h _ _ (by rw [hF h hh, hF h' hh']) hNs`.
+Establish an intermediate fact. Establish an intermediate fact. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `hmem` using `[hsh ρ' hρ' b' hb', hsh ρ hρ b hb]`. Establish `h5 : ρ' - ρ ∈ R.toAddSubgroup`. Establish `h6 : ρ' - ρ = (((t⁻¹ : Kˣ) : K) + (ρ' + b') - (((t⁻¹ : Kˣ) : K) + (ρ + b))) + (b - b')`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h6]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `R.toAddSubgroup.add_mem hmem (R.toAddSubgroup.sub_mem (hBR b hb) (hBR b' hb'))`. Take `⟨x, _, hx⟩` from `D.repsA.2 ρ' (hAL ρ' hρ')`. Establish `e1` using `hx ρ ⟨hρ, h5⟩`. Establish `e2` using `hx ρ' ⟨hρ', by rw [sub_self]; exact R.toAddSubgroup.zero_mem⟩`. Conclude with `hne (e1.trans e2.symm))`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `hr₁' : (r₁ : ℂ) = ∑ h ∈ F, ∑ h' ∈ F, a h * conj (a h') * ((D.A.card : ℂ)⁻¹ * NsK R ψ (m + 1) h h' z₁)`. Rewrite using `[hr₁]`. Use `Finset.sum_congr rfl fun h hh => Finset.sum_congr rfl fun h' hh' => ?_` and prove the remaining obligations. Use `congr 1`. Rewrite using `[← CNE CM PL K R ψ hD hchar (m + 1) F Om Lc D hOm.2.1 z₁ hz₁ h hh h' hh']`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use `Finset.sum_congr rfl fun p hp => Finset.sum_congr rfl fun p' hp' => ?_` and prove the remaining obligations. Take `⟨hp1, hp2⟩` from `Finset.mem_product.mp hp`. Take `⟨hp1', hp2'⟩` from `Finset.mem_product.mp hp'`. Rewrite using `[hGc _ (hmemF' h hh p.1 hp1 p.2 hp2) _ (hmemF' h' hh' p'.1 hp1' p'.2 hp2')]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only`. Rewrite using `[hGI t _ _ cr ht hcr _ (hmemSg p.1 hp1 p.2 hp2) _ (hmemSg p'.1 hp1' p'.2 hp2') (hsh p.1 hp1 p.2 hp2) (hsh p'.1 hp1' p'.2 hp2') h hh h' hh']`. Rewrite using `[← AddChar.map_add_eq_mul, ← AddChar.map_add_eq_mul]`. Establish `q1 : -(z₁ * p.1) + -(z₁ * p.2) = -(z₁ * (p.1 + p.2))` using `by ring`. Establish `q2 : -(z₁ * p'.1) + -(z₁ * p'.2) = -(z₁ * (p'.1 + p'.2))` using `by ring`.
+Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[q1, q2]`. Establish `hr₂' : (r₂ : ℂ) = ∑ h ∈ F, ∑ h' ∈ F, a h * conj (a h') * ((D.A.card : ℂ)⁻¹ * thx R ψ m cr D.A D.B τ z₁ h h')`. Rewrite using `[hr₂]`. Use `Finset.sum_congr rfl fun h hh => Finset.sum_congr rfl fun h' hh' => ?_` and prove the remaining obligations. Use `congr 2`.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Unfold `thx`. Use `congr 1`. Use `Finset.sum_congr rfl fun ρ hρ => ?_` and prove the remaining obligations. Use `congr 1`. Use `Finset.sum_congr rfl fun b hb => Finset.sum_congr rfl fun b' hb' => ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only`. Rewrite using `[hG _ (hmemF' h hh ρ hρ b hb) _ (hmemF' h' hh' ρ hρ b' hb')]`. Establish `hApos : 0 < (D.A.card : ℝ)`. Take `⟨x, hx, _⟩` from `D.repsA.2 0 D.L₂.zero_mem`. Conclude with `Finset.card_pos.mpr ⟨x, hx.1⟩` after adjusting the coercions.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities.
 
-Establish `hAne : (D.A.card : ℂ) ≠ 0`. Conclude with `hApos.ne'` after adjusting the coercions. Establish `hfin : ∑ h ∈ F, ∑ h' ∈ F, a h * conj (a h') * (thx R ψ m cr D.A D.B τ z₁ h h' - NsK R ψ (m + 1) h h' z₁) = (((D.A.card : ℝ) * (r₂ - r₁) : ℝ) : ℂ)`. Use `push_cast`. Rewrite using `[hr₁', hr₂', ← Finset.sum_sub_distrib, Finset.mul_sum]`.
-
-Use `Finset.sum_congr rfl fun h _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_sub_distrib, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun h' _ => ?_` and prove the remaining obligations. Clear the denominators using the available nonvanishing facts. Rewrite using `[hfin]`.
-
-Use `⟨Complex.ofReal_im _, ?_⟩` and prove the remaining obligations. Rewrite using `[Complex.ofReal_re]`. Conclude with `mul_nonneg hApos.le (sub_nonneg.mpr hr)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem thetaAverageLower : Formalism.FourierDecayAlt.A6.ThxLower := by
   intro GI A2V UGE ExponentialIntegralMeasures CSA MM CPSD KG GRC AB CNE CM PL K _ _ _ R ψ hD hchar m hm n₀ F Om Lc hF hOm D

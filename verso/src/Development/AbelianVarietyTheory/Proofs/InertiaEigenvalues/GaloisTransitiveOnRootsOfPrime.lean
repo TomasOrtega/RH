@@ -8,21 +8,19 @@ open scoped Formalism.Per NNReal
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `: FiniteDimensional ℚ_[l] ↥K.1` using `K.2`. Establish `: IsFractionRing ↥(OL K) ↥K.1` using `integralClosure.isFractionRing_of_finite_extension ℚ_[l] ↥K.1`. Establish `: IsIntegrallyClosed ↥(OL K)` using `integralClosure.isIntegrallyClosedOfFiniteExtension ℚ_[l]`. Establish `hn0 : n ≠ 0` using `hn.ne'`. Establish `hmon : (Polynomial.X ^ n - Polynomial.C π).Monic` using `Polynomial.monic_X_pow_sub_C π hn0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hirr : Irreducible (Polynomial.X ^ n - Polynomial.C π)`. Use `Polynomial.irreducible_of_eisenstein_criterion ((Ideal.span_singleton_prime hπ.ne_zero).2 hπ) ?_ ?_ ?_ ?_ hmon.isPrimitive` and prove the remaining obligations. Rewrite using `[hmon.leadingCoeff]`. Introduce `h`. Conclude with `hπ.not_isUnit (Ideal.span_singleton_eq_top.1 ((Ideal.eq_top_iff_one _).2 h))`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `m hm`. Rewrite `hm` using `[Polynomial.degree_X_pow_sub_C hn π, Nat.cast_lt]`. Rewrite using `[Polynomial.coeff_sub, Polynomial.coeff_X_pow, Polynomial.coeff_C, if_neg hm.ne]`. Use `split_ifs`. Conclude with `Ideal.sub_mem _ (Ideal.zero_mem _) (Ideal.mem_span_singleton_self π)`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Rewrite using `[Polynomial.degree_X_pow_sub_C hn π]`. Conclude with `hn` after adjusting the coercions. Rewrite using `[Polynomial.coeff_sub, Polynomial.coeff_X_pow, Polynomial.coeff_C, if_neg hn0.symm, if_pos rfl, zero_sub, Ideal.span_singleton_pow, Ideal.neg_mem_iff, Ideal.mem_span_singleton]`. Introduce and unpack `⟨c, hc⟩`.
+Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Apply `hπ.not_isUnit` to reduce the goal to its premises. Establish `h1 : π * 1 = π * (π * c)`. Rewrite using `[mul_one, ← mul_assoc, ← pow_two]`. Conclude with `hc`. Conclude with `isUnit_of_dvd_one ⟨c, mul_left_cancel₀ hπ.ne_zero h1⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hirrF : Irreducible (Polynomial.X ^ n - Polynomial.C ((π : ↥K.1)))`. Establish `h` using `(hmon.irreducible_iff_irreducible_map_fraction_map (K := ↥K.1)).1 hirr`. Rewrite `h` using `[Polynomial.map_sub, Polynomial.map_pow, Polynomial.map_X, Polynomial.map_C]`. Then use the resulting hypothesis. Establish `hmin : ∀ w : Om l, w ^ n = ((π : ↥K.1) : Om l) → minpoly (↥K.1) w = Polynomial.X ^ n - Polynomial.C ((π : ↥K.1))`. Introduce `w hw`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `(minpoly.eq_of_irreducible_of_monic hirrF ?_ (Polynomial.monic_X_pow_sub_C _ hn0)).symm` and prove the remaining obligations. Simplify using `only [map_sub, map_pow, Polynomial.aeval_X, Polynomial.aeval_C, IntermediateField.algebraMap_apply, hw, sub_self]`. Establish `: Normal (↥K.1) (Om l)` using `Normal.tower_top_of_normal ℚ_[l] (↥K.1) (Om l)`. Take `⟨σ, hσ⟩` from `(Normal.minpoly_eq_iff_mem_orbit (F := ↥K.1) (E := Om l)).1 ((hmin z hz).trans (hmin y hy).symm)`. Use `⟨⟨σ.restrictScalars ℚ_[l], ?_⟩, hσ⟩` and prove the remaining obligations.
-
-Use `show σ.restrictScalars ℚ_[l] ∈ IntermediateField.fixingSubgroup K.1`. Rewrite using `[IntermediateField.mem_fixingSubgroup_iff]`. Introduce `x hx`. Conclude with `σ.commutes ⟨x, hx⟩`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem galois_transitive_on_roots_of_prime (l : ℕ) [Fact l.Prime] (K : FinExt l) (π : ↥(OL K))
     (hπ : Prime π) (n : ℕ) (y z : Om l) (hy : y ^ n = ((π : ↥K.1) : Om l))

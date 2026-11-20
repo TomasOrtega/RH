@@ -23,41 +23,35 @@ open scoped Matrix
 namespace GlobalTheory.SeeConjGroup
 
 /- English proof (translation)
-Introduce `D g e0 f0 z0 bw bwd ew hF β PP w hβ hL x M hx hM hSt hc`. Establish `hred` using `GlobalTheory.T.residueCoordinatesInFrame_linear_stabiliser β (II D).L hβ PP`. Establish `hLf : ∀ v, v ∈ (II D).Lf → v ∈ Formalism.L2.Herm.hatL (F` using `↥D.host.F) (E := D.host.E) (II D).L := by`. Introduce `v hv`. Establish `e` using `Formalism.IndefR.Eqv.lamAf_eq_hatL (V := Yc D 0) (II D).L`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `(Set.ext_iff.mp e v).mp hv`. Establish `hint : ∀ i : Fin D.R.k, ew ∈ IntAf (II D).F (II D).E ∧ sigA (II D) ew ∈ IntAf (II D).F (II D).E`. Introduce `i`. Take `⟨t, ht, he⟩` from `hF.dual i i`. Take `⟨t', ht', he'⟩` from `Formalism.L2.SG.Pf.BunEx.Unip.Zsym (hF.dual i i)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Simplify using `only [if_pos (Eq.refl i), ↓reduceIte] at he he'`. Establish `h1` using `Formalism.L2.SG.Pf.unitaryCongruence.hA_int (II D) (hF.mem.2.2 i).2 (hF.mem.2.2 i).1`. Establish `h2` using `Formalism.L2.SG.Pf.unitaryCongruence.hA_int (II D) (hF.mem.2.2 i).1 (hF.mem.2.2 i).2`. Establish `hg : ((g : (II D).E ⊗[(II D).F] Af (II D).F)) ∈ IntAf (II D).F (II D).E` using `natCast_mem _ g`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Establish an intermediate fact.
 
-Establish `e1 : ew = hA (II D) (bwd i) (bw i) - (g : (II D).E ⊗[(II D).F] Af (II D).F) * t`. Rewrite using `[← he]`. Conclude with `(sub_sub_cancel _ _).symm`. Rewrite using `[e1]`. Conclude with `sub_mem h1 (mul_mem hg ht)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `e1 : sigA (II D) ew = hA (II D) (bw i) (bwd i) - (g : (II D).E ⊗[(II D).F] Af (II D).F) * t'`. Rewrite using `[← he']`. Conclude with `(sub_sub_cancel _ _).symm`. Rewrite using `[e1]`. Conclude with `sub_mem h2 (mul_mem hg ht')`.
+Split into cases according to the possible forms of the given data. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Consider the cases of `w`. Establish `hR : RedIs β PP (flagV D.R.rS D.R.k (Yc D 0).rank e0 f0 (fun i => bwd (Fin.rev i)) z0)` using `hL.2.2.2`. Use `GlobalTheory.T.reduction_mem_unipSym_of_flag_congruences g e0 f0 z0 (fun i => bwd (Fin.rev i)) bw β PP hβ hL.1 hR ?_ M hSt ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `i`. Use `⟨(hF.mem.2.2 i).1, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hi : ew ∈ Formalism.L2.Herm.intAf D.host.F D.host.E` using `(hint i).1`. Establish `hs` using `hred.2.1 ⟨ew, hi⟩ (bw i) (hLf _ (hF.mem.2.2 i).1)`. Establish `h0` using `hL.2.1 hi`. Simplify using `only [Bool.false_eq_true, if_false] at h0`. Rewrite `hs` using `[h0, zero_smul]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hF.bw_w i]`. Conclude with `hs`. Introduce `a`. Rewrite using `[← hM]`. Conclude with `hc.1 a`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Prove the first alternative.
 
-Rewrite using `[← hM]`. Conclude with `hc.2.1`. Introduce `i`. Rewrite using `[← hM]`. Establish `hb` using `GlobalTheory.T.unipotentLevel_moves_dualVector_upper (II D) g e0 f0 z0 bw bwd ew hF x hx hc (Fin.rev i)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Establish `hsub : Set.range e0 ∪ bwd '' {l | Fin.rev i < l} ⊆ Set.range e0 ∪ Set.range bw ∪ (fun j => bwd (Fin.rev j)) '' {j | j.1 < i.1}`. Introduce and unpack `v (hv | ⟨l, hl, rfl⟩)`. Conclude with `Or.inl (Or.inl hv)`. Use `Or.inr ⟨Fin.rev l, ?_, by simp⟩` and prove the remaining obligations. Establish `hl' : (Fin.rev i).1 < l.1` using `hl`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Simplify using `only [Fin.val_rev] at hl'`. Use `show (Fin.rev l).1 < i.1`. Simplify using `only [Fin.val_rev]`. Use linear arithmetic over natural numbers and integers. Conclude with `Formalism.L2.SG.Pf.unitaryCongruence.Mo_mono (II D) hsub hb`.
+Prove the first alternative. Prove the first alternative. Prove the first alternative. Extract witnesses or component facts from the available result. Prove the first alternative.
 
-Introduce `b`. Rewrite using `[← hM]`. Establish `hf` using `Formalism.L2.SG.Pf.BunEx.Unip.F1 hF hx hc b`. Establish `hsub : Set.range e0 ∪ {z0} ∪ Set.range bw ∪ Set.range bwd ∪ f0 '' {c | b < c} ⊆ Set.range e0 ∪ {z0} ∪ Set.range (fun j => bwd (Fin.rev j)) ∪ Set.range bw ∪ f0 '' {c | b < c}`. Introduce and unpack `v ((((hv | hv) | hv) | hv) | hv)`.
+Prove the second alternative. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Or.inl (Or.inl (Or.inl (Or.inl hv)))`. Conclude with `Or.inl (Or.inl (Or.inl (Or.inr hv)))`. Conclude with `Or.inl (Or.inr hv)`. Take `⟨j, rfl⟩` from `hv`. Conclude with `Or.inl (Or.inl (Or.inr ⟨Fin.rev j, by simp⟩))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `Or.inr hv`. Conclude with `Formalism.L2.SG.Pf.unitaryCongruence.Mo_mono (II D) hsub hf`. Establish `hR : RedIs β PP (flagV D.R.rS D.R.k (Yc D 0).rank e0 f0 bw z0)` using `hL.2.2.2`. Use `GlobalTheory.T.reduction_mem_unipSym_of_flag_congruences g e0 f0 z0 bw bwd β PP hβ hL.1 hR ?_ M hSt ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `i`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨(hF.mem.2.2 i).2, ?_⟩` and prove the remaining obligations. Establish `hi : sigA (II D) ew ∈ Formalism.L2.Herm.intAf D.host.F D.host.E` using `(hint i).2`. Establish `hs` using `hred.2.1 ⟨sigA (II D) ew, hi⟩ (bwd i) (hLf _ (hF.mem.2.2 i).2)`. Establish `h0` using `hL.2.2.1 hi`. Simplify using `only [if_true] at h0`.
-
-Rewrite `hs` using `[h0, zero_smul]`. Rewrite using `[hF.bwd_w i]`. Conclude with `hs`. Introduce `a`. Rewrite using `[← hM]`.
-
-Conclude with `hc.1 a`. Rewrite using `[← hM]`. Conclude with `hc.2.1`. Introduce `i`. Rewrite using `[← hM]`.
-
-Establish `hsub : Set.range e0 ∪ bw '' {j | j.1 < i.1} ⊆ Set.range e0 ∪ Set.range bwd ∪ bw '' {j | j.1 < i.1}` using `Set.union_subset_union_left _ Set.subset_union_left`. Conclude with `Formalism.L2.SG.Pf.unitaryCongruence.Mo_mono (II D) hsub (hc.2.2 i)`. Introduce `b`. Rewrite using `[← hM]`. Conclude with `Formalism.L2.SG.Pf.BunEx.Unip.F1 hF hx hc b`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem congr_red_mem_unipSym : ∀ {D : D7} (g : ℕ) (e0 f0 : Fin D.R.rS → VA (II D)) (z0 : VA (II D)) (bw bwd : Fin D.R.k → VA (II D)) (ew : EAf D), Formalism.L2.SG.Pf.BunEx.Unip.FH (II D) g e0 f0 z0 bw bwd ew → ∀ (β : GL (Fin (Yc D 0).rank) (EAf D)) (PP : Pl D.host.E) (w : Bool), IsFrame β (II D).L → LocAt g e0 f0 z0 bw bwd ew β PP w → ∀ (x : (II D).Gf) (M : GL (Fin (Yc D 0).rank) (EAf D)), x ∈ (II D).Kset → (II D).fmat x = M.val → M ∈ St β → K2cong (II D) g e0 z0 bw x → upperLeftBlock (r_le_Y (D := D) 0) (redFn β PP M) ∈ unipSym (kP PP) D.R.r D.R.rS D.R.k := by
   intro D g e0 f0 z0 bw bwd ew hF β PP w hβ hL x M hx hM hSt hc

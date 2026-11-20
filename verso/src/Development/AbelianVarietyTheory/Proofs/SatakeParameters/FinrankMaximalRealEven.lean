@@ -5,9 +5,9 @@ open NumberField
 namespace GlobalTheory.RealGal
 
 /- English proof (translation)
-Establish `h1` using `Module.finrank_mul_finrank ℚ (maximalRealSubfield Q.K) Q.K`. Establish `h2` using `Module.finrank_mul_finrank ℚ E Q.K`. Establish `h3` using `Module.finrank_mul_finrank ℚ (maximalRealSubfield E) E`. Rewrite `h1` using `[Algebra.IsQuadraticExtension.finrank_eq_two (maximalRealSubfield Q.K) Q.K]`. Rewrite `h3` using `[Algebra.IsQuadraticExtension.finrank_eq_two (maximalRealSubfield E) E]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[Q.two]`. Conclude with `⟨Module.finrank ℚ (maximalRealSubfield E), by omega⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 -/
 theorem QCM.even_finrank_maximalRealSubfield (E Ω : Type) [Field E] [NumberField E] [IsCMField E] [Field Ω] [Algebra E Ω]
     (Q : GlobalTheory.RealGal.QCM E Ω) : Even (Module.finrank ℚ (maximalRealSubfield Q.K)) := by

@@ -11,7 +11,7 @@ open ReciprocityTheory.ChartRestriction.G.I2
 namespace GlobalTheory
 
 /- English proof (translation)
-The claim follows from `tOf ext_all_inputs GlobalTheory.T.greedy_splitting_principal_torus_exists (gSup ext_all_inputs.1) dim`.
+A detailed English derivation is pending.
 -/
 theorem theta_bound_tStatement : TStatement :=
   tOf ext_all_inputs GlobalTheory.T.greedy_splitting_principal_torus_exists (gSup ext_all_inputs.1) dim

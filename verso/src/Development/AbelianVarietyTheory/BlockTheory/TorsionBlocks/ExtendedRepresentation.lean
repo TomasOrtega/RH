@@ -106,15 +106,15 @@ def LongOrbitColengthAnyCoeff (l : ℕ) [Fact l.Prime] (P : LocPrime l) : Prop :
     Concl P F n size w S η b j
 
 /- English proof (translation)
-Establish `ht : ∀ i : ZMod 3, Thick (fun i => if i = 2 then 0 else 80) 80 0 i ↔ i ≠ 2`. Unfold `Thick`. Evaluate the decidable proposition. Use `⟨le_rfl, ?_, fun _ => by simp [parG], by norm_num, {{0, 1}}, ?_, ?_⟩` and prove the remaining obligations. Introduce `i hi`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Evaluate the decidable proposition. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hi` using `[ht, not_not]`. Simplify using `[hi]`. Introduce and unpack `c rfl`. Use `⟨0, ⟨(ht _).2 (by decide), Or.inr ⟨1, by decide, (ht _).2 (by decide), rfl, ?_, by decide⟩⟩, ?_⟩` and prove the remaining obligations. Introduce `q h0 h1`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `: ((1 : ZMod 3) - 0).val = 1` using `by decide`. Use linear arithmetic over natural numbers and integers. Introduce `q h0 h1`. Take `rfl : q = 1` from `by omega`. Rewrite using `[ht]`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Evaluate the decidable proposition. Introduce `i hi`. Rewrite `hi` using `[ht]`. Use `⟨{0, 1}, ⟨rfl, ?_⟩, fun c hc => hc.1⟩` and prove the remaining obligations. Simplify using `only [Set.mem_insert_iff, Set.mem_singleton_iff]`.
+Evaluate the decidable proposition. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `revert i`. Evaluate the decidable proposition.
+Evaluate the decidable proposition. A detailed English derivation is pending.
 -/
 example : WordHyp 3 (fun i => if i = 2 then 0 else 80) 0 0 0 80 1 := by
   have ht : ∀ i : ZMod 3, Thick (fun i => if i = 2 then 0 else 80) 80 0 i ↔ i ≠ 2 := by

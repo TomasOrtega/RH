@@ -18,23 +18,23 @@ end
 namespace GlobalTheory.MovedJetNZ
 open GlobalTheory.Grid (neg ofSgn)
 /- English proof (translation)
-Introduce `D T _ L μ₀ sc G W i j A A' WW X _ hI _ hX t γ hγ _ _ γ' hγ' _ _ _ _`. Establish `hIs` using `hX.is`. Establish `hψ : IsStdChar D W.ψ (-1)` using `hIs.isVac.1`. Establish `hθ : IsInfFam W.θ` using `hIs.isVac.2.inf`. Use `set om' := (X.ω t).toSgn true with hom'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hom` using `hIs.weil t`. Establish `hsA : ∀ τ, X.rA.s τ = 1` using `fun τ => (hX.std.2.2 τ).1`. Establish `hsW : ∀ τ, X.rW.s τ = 1` using `fun τ => (hX.stdW.2.2 τ).1`. Establish `hBA : ∀ τ, X.rA.B τ = 1` using `fun τ => by rw [(hX.std.2.2 τ).2]`. Take `⟨k₀, hk₀⟩` from `vac_jet_ne_zero hI hX`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hall`. Use `push_neg at hall`. Use `set γs := (ofSgn true A).symm γ with hγs`. Establish `hγsQ : γs ∈ GQ (neg A)` using `(GlobalTheory.SgnIdent.mem_GQ_sgn true A γs).2 (by rw [hγs, MulEquiv.apply_symm_apply]; exact hγ)`. Establish `hg : X.ω t (γ, γ') X.vac = om' (γs, γ') X.vac` using `by show _ = (X.ω t) ((ofSgn true A) ((ofSgn true A).symm γ), γ') X.vac`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[MulEquiv.apply_symm_apply]`. Simplify using `only [hg] at hall`. Establish `hvθ : IsThetaFunO W.ψ (neg A) WW X.vac` using `hIs.isVac.2.theta`. Establish `hgθ : IsThetaFunO W.ψ (neg A) WW (om' (γs, γ') X.vac)` using `hom.om_pres _ _ hvθ`. Establish `hzero : ∀ P, pureTensorO W.ψ W.θ (neg A) WW (fun τ => -X.rA.s τ) X.rW.s X.rA.B X.rW.B (om' (γs, γ') X.vac) P 0 = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `P`. Rewrite using `[P.as_sum, map_sum, Finset.sum_apply]`. Use `Finset.sum_eq_zero fun k _ => ?_` and prove the remaining obligations. Establish `e : MvPolynomial.monomial k (P.coeff k) = P.coeff k • MvPolynomial.monomial k 1`. Rewrite using `[MvPolynomial.smul_monomial, smul_eq_mul, mul_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[e, map_smul, Pi.smul_apply, hall k, smul_zero]`. Establish `hop` using `GlobalTheory.OrientedHeis.om_pureTensorO D W.ψ W.θ (neg A) WW _ _ om' hom hθ (fun τ => -X.rA.s τ) (fun τ => -X.rA.s τ) X.rA.B (fun τ => compAt W.θ τ (Formalism.L2.Theta.mt (neg A) γs) * X.rA.B τ) X.rW.s X.rW.s X.rW.B (fun τ => compAt W.θ τ (Formalism.L2.Theta.mt WW γ') * X.rW.B τ …`. Establish `haut` using `hom.om_aut γs hγsQ γ' hγ' _ hop.1`. Apply `hk₀` to reduce the goal to its premises. Rewrite using `[← haut, hop.2]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hBW : ∀ τ, X.rW.B τ = 1` using `fun τ => by rw [(hX.stdW.2.2 τ).2]`. Establish `e1 : (fun τ => compAt W.θ τ (Formalism.L2.Theta.mt (neg A) γs) * X.rA.B τ) = fun τ => X.rA.B τ * compAt W.θ τ (Formalism.L2.Theta.mt (neg A) γs)`. Use function extensionality and compare the values at `τ`. Rewrite using `[hBA, Matrix.mul_one, Matrix.one_mul]`. Establish `e2 : (fun τ => compAt W.θ τ (Formalism.L2.Theta.mt WW γ') * X.rW.B τ) = fun τ => X.rW.B τ * compAt W.θ τ (Formalism.L2.Theta.mt WW γ')`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `τ`. Rewrite using `[hBW, Matrix.mul_one, Matrix.one_mul]`. Establish `es : (fun τ => -X.rA.s τ) = fun _ => (-1 : Matrix (Fin A.rank) (Fin A.rank) ℂ)` using `funext fun τ => by rw [hsA]`. Establish `et : X.rW.s = fun _ => (1 : Matrix (Fin WW.rank) (Fin WW.rank) ℂ)` using `funext hsW`. Rewrite using `[e1, e2]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hzero`, the goal using `[es, et]`. Express the relevant statement in the definitionally equal form `pureTensorO W.ψ W.θ (negSp A) WW (fun _ => -1) (fun _ => 1) _ _ _ _ _ = _`. Rewrite using `[GlobalTheory.FockNegSubst.pureTensorO_negSp_subst D W.ψ W.θ A WW hψ hθ _ _ _ _ _ hgθ]`. Conclude with `hzero _`.
+A detailed English derivation is pending.
 -/
 theorem moved_vacuum_jet_ne_zero : ∀ {D : D7} {T : Type} [Finite T] {L : LevCh D T} {μ₀ : T} {sc : Consts} {G : GridData L sc} {W : G.Weil}
     {i j : Fin D.R.m} {A A' WW : HSp D} {X : Tri T A A' WW}, _root_.GlobalTheory.FunPr.ThetaLocalInputs → (∀ D, GlobalTheory.NormSum.Inp D) → L.Is μ₀ →
@@ -103,7 +103,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.RowEx MeasureTheory
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.MovedJetNZ.moved_vacuum_jet_ne_zero | exact _root_.GlobalTheory.MovedJetNZ.moved_vacuum_jet_ne_zero | (intros; apply _root_.GlobalTheory.MovedJetNZ.moved_vacuum_jet_ne_zero <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.jet_of_moved_vacuum_nonvanishing : ∀ {D : D7} {T : Type} [Finite T] {L : LevCh D T} {μ₀ : T} {sc : Consts} {G : GridData L sc} {W : G.Weil}
     {i j : Fin D.R.m} {A A' WW : HSp D} {X : Tri T A A' WW}, _root_.GlobalTheory.FunPr.ThetaLocalInputs → (∀ D, GlobalTheory.NormSum.Inp D) → L.Is μ₀ →

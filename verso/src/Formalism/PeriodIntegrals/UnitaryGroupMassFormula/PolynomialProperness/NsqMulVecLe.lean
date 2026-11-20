@@ -9,45 +9,45 @@ noncomputable section
 namespace PI.PolynomialProperness
 
 /- English proof (translation)
-Introduce `k r` and use `⟨GN.hpk_herm k r, GN.hpk_sq k r⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem hpkInvol : HpkInvol := fun k r => ⟨GN.hpk_herm k r, GN.hpk_sq k r⟩
 
 /- English proof (translation)
-Introduce `_ _` and use `⟨fun _ hg _ hh => GN.mul_mem hg hh, fun _ hg => ⟨GN.inv_eq hg, GN.inv_mem hg, GN.mul_inv hg, GN.inv_mul hg⟩⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem gvGroup : GVGroup := fun _ _ =>
   ⟨fun _ hg _ hh => GN.mul_mem hg hh,
     fun _ hg => ⟨GN.inv_eq hg, GN.inv_mem hg, GN.mul_inv hg, GN.inv_mul hg⟩⟩
 
 /- English proof (translation)
-Introduce `_ _ _ hg v w` and use `GN.herm_mulVec hg v w`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem gvHerm : GVHerm := fun _ _ _ hg v w => GN.herm_mulVec hg v w
 
 /- English proof (translation)
-The claim follows from `GN.polynomial_normInv`.
+A detailed English derivation is pending.
 -/
 theorem normInv : NormInv := GN.polynomial_normInv
 
 /- English proof (translation)
-The claim follows from `GN.zhat_norm_linear_bound`.
+A detailed English derivation is pending.
 -/
 theorem zhatBound : ZhatBound := GN.zhat_norm_linear_bound
 
 /- English proof (translation)
-Unfold `nsq`. Conclude with `Finset.sum_congr rfl fun i _ => Complex.normSq_eq_norm_sq _`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem nsq_eq_norm {n : ℕ} (x : Fin n → ℂ) : nsq x = ∑ i, ‖x i‖ ^ 2 := by
   unfold nsq
   exact Finset.sum_congr rfl fun i _ => Complex.normSq_eq_norm_sq _
 
 /- English proof (translation)
-Rewrite using `[GN.gN_sq]`. Establish `h1 : ∀ i, ‖(g *ᵥ x) i‖ ^ 2 ≤ (∑ j, ‖g i j‖ ^ 2) * ∑ j, ‖x j‖ ^ 2`. Introduce `i`. Establish `e : (g *ᵥ x) i = ∑ j, g i j * x j` using `rfl`. Rewrite using `[e]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : ‖∑ j, g i j * x j‖ ≤ ∑ j, ‖g i j‖ * ‖x j‖`. Use `(norm_sum_le _ _).trans (le_of_eq ?_)` and prove the remaining obligations. Conclude with `Finset.sum_congr rfl fun j _ => norm_mul _ _`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[nsq_eq_norm, nsq_eq_norm]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Finset.sum_mul]`. Use `congr 1`. Unfold `GN.hs`. Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => (Complex.normSq_eq_norm_sq _).symm`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem nsq_mulVec_le {k r : ℕ} (g : B.Mat k r) (x : Fin (2 * r + k + 1) → ℂ) :
     nsq (g *ᵥ x) ≤ B.gN g ^ 2 * nsq x := by
@@ -73,9 +73,9 @@ theorem nsq_mulVec_le {k r : ℕ} (g : B.Mat k r) (x : Fin (2 * r + k + 1) → �
           Finset.sum_congr rfl fun j _ => (Complex.normSq_eq_norm_sq _).symm
 
 /- English proof (translation)
-Rewrite using `[GN.gN_sq]`. Establish `e : ∀ j i, (g *ᵥ bvec j) i = g i j`. Introduce `j i`. Simplify using `[bvec, mulVec, dotProduct, Pi.single_apply]`. Unfold `GN.hs nsq`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions.
 
-Simplify using `only [e]`. Conclude with `Finset.sum_comm`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem gN_sq_cols {k r : ℕ} (g : B.Mat k r) : B.gN g ^ 2 = ∑ j, nsq (g *ᵥ bvec j) := by
   rw [GN.gN_sq]
@@ -87,13 +87,13 @@ theorem gN_sq_cols {k r : ℕ} (g : B.Mat k r) : B.gN g ^ 2 = ∑ j, nsq (g *ᵥ
   exact Finset.sum_comm
 
 /- English proof (translation)
-Introduce `_ _` and use `⟨GN.gN_nonneg, GN.gN_mul_le, nsq_mulVec_le, gN_sq_cols⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem gnFacts : GNFacts := fun _ _ =>
   ⟨GN.gN_nonneg, GN.gN_mul_le, nsq_mulVec_le, gN_sq_cols⟩
 
 /- English proof (translation)
-Unfold `fmul`. Rewrite using `[Finset.sum_apply]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem fmul_apply (k r : ℕ) (z : Fin (2 * r + k + 1) → ℂ) (c : Matrix (Fin (r + 1)) (Fin (r + 1)) ℂ)
     (b : Fin (r + 1)) (i : Fin (2 * r + k + 1)) :
@@ -103,11 +103,11 @@ theorem fmul_apply (k r : ℕ) (z : Fin (2 * r + k + 1) → ℂ) (c : Matrix (Fi
   rfl
 
 /- English proof (translation)
-Introduce `k r z`. Use `⟨∑ i, (∑ a, ‖fvec k r z a i‖) ^ 2, fun c b => ?_⟩` and prove the remaining obligations. Establish `h1 : ∀ i, ‖fmul k r z c b i‖ ≤ mx c * ∑ a, ‖fvec k r z a i‖`. Introduce `i`. Rewrite using `[fmul_apply, Finset.mul_sum]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `(norm_sum_le _ _).trans (Finset.sum_le_sum fun a _ => ?_)` and prove the remaining obligations. Rewrite using `[norm_mul]`. Conclude with `mul_le_mul_of_nonneg_right (GN.entry_le_mx c a b) (norm_nonneg _)`. Rewrite using `[nsq_eq_norm]`. Combine the equalities or inequalities in the displayed calculation.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_mul]`. Conclude with `Finset.sum_congr rfl fun i _ => by ring`.
+A detailed English derivation is pending.
 -/
 theorem fmulBound : FmulBound := by
   intro k r z
@@ -126,7 +126,7 @@ theorem fmulBound : FmulBound := by
         exact Finset.sum_congr rfl fun i _ => by ring
 
 /- English proof (translation)
-Unfold `herm`. Rewrite using `[← mulVecLin_apply, map_sum, dotProduct_sum]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, mulVecLin_apply, dotProduct_smul, smul_eq_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem herm_sum_left {n : ℕ} {ι : Type*} [Fintype ι] (H : Matrix (Fin n) (Fin n) ℂ) (u : ι → ℂ)
     (x : ι → Fin n → ℂ) (y : Fin n → ℂ) :
@@ -137,7 +137,7 @@ theorem herm_sum_left {n : ℕ} {ι : Type*} [Fintype ι] (H : Matrix (Fin n) (F
   rw [map_smul, mulVecLin_apply, dotProduct_smul, smul_eq_mul]
 
 /- English proof (translation)
-Unfold `herm`. Rewrite using `[star_sum, sum_dotProduct]`. Use `Finset.sum_congr rfl fun d _ => ?_` and prove the remaining obligations. Rewrite using `[star_smul, smul_dotProduct, smul_eq_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem herm_sum_right {n : ℕ} {ι : Type*} [Fintype ι] (H : Matrix (Fin n) (Fin n) ℂ) (x : Fin n → ℂ)
     (w : ι → ℂ) (y : ι → Fin n → ℂ) :
@@ -148,7 +148,7 @@ theorem herm_sum_right {n : ℕ} {ι : Type*} [Fintype ι] (H : Matrix (Fin n) (
   rw [star_smul, smul_dotProduct, smul_eq_mul]
 
 /- English proof (translation)
-Unfold `fmul`. Rewrite using `[← mulVecLin_apply, map_sum]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, mulVecLin_apply]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem mulVec_fmul (k r : ℕ) (z : Fin (2 * r + k + 1) → ℂ) (g : B.Mat k r)
     (c : Matrix (Fin (r + 1)) (Fin (r + 1)) ℂ) (b : Fin (r + 1)) :
@@ -159,13 +159,13 @@ theorem mulVec_fmul (k r : ℕ) (z : Fin (2 * r + k + 1) → ℂ) (g : B.Mat k r
   rw [map_smul, mulVecLin_apply]
 
 /- English proof (translation)
-Introduce `k r z z' γ σ s' v u' hσ _ hv hu`. Use extensionality with `a b`. Establish `hσi : σ * σ⁻¹ = 1` using `GN.mul_inv hσ`. Establish `key : ∀ x y : Fin (2 * r + k + 1) → ℂ, herm (Hpk k r) ((σ⁻¹ * γ * s') *ᵥ x) y = herm (Hpk k r) ((γ * s') *ᵥ x) (σ *ᵥ y)`. Introduce `x y`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← GN.herm_mulVec hσ, mulVec_mulVec, ← Matrix.mul_assoc, ← Matrix.mul_assoc, hσi, Matrix.one_mul]`. Use `show herm (Hpk k r) ((σ⁻¹ * γ * s') *ᵥ fvec k r z' b) (fvec k r z a) = _`. Rewrite using `[key, hv a, ← mulVec_mulVec, hu b, mulVec_fmul]`. Unfold `fmul`. Rewrite using `[herm_sum_right]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [herm_sum_left]`. Simplify using `only [mul_apply, conjTranspose_apply, Finset.sum_mul, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun d _ => Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Simplify using `only [Zhat]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem zhatMove : ZhatMove := by
   intro k r z z' γ σ s' v u' hσ _ hv hu

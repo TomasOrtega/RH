@@ -18,7 +18,7 @@ open scoped Classical
 variable {G Γ : Type} [Group G] [Group Γ] (ι : Γ →* G)
 
 /- English proof (translation)
-Introduce `i j hij`. Establish `h1 : ∃ (γ : Γ) (k : J), y i = ι γ * y i * k` using `⟨1, 1, by simp⟩`. Establish `h2 : ∃ (γ : Γ) (k : J), y i = ι γ * y j * k` using `⟨1, 1, by simp [hij]⟩`. Conclude with `(hy (y i)).unique h1 h2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem injective_of_isReps {J : Subgroup G} {I : Type} {y : I → G} (hy : Bridge.IsReps ι J y) :
     Function.Injective y := by
@@ -28,9 +28,9 @@ theorem injective_of_isReps {J : Subgroup G} {I : Type} {y : I → G} (hy : Brid
   exact (hy (y i)).unique h1 h2
 
 /- English proof (translation)
-Introduce `g`. Take `⟨i, ⟨γ, k, e⟩, hu⟩` from `hy g`. Use `⟨y i, ⟨Finset.mem_image_of_mem _ (Finset.mem_univ _), ⟨ι γ, γ, rfl⟩, k, k.2, e⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `t ⟨ht, ⟨_, δ, rfl⟩, κ, hκ, e'⟩`. Take `⟨j, -, rfl⟩` from `Finset.mem_image.1 ht`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hu j ⟨δ, ⟨κ, hκ⟩, e'⟩]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem image_reps {J : Subgroup G} {I : Type} [Fintype I] {y : I → G} (hy : Bridge.IsReps ι J y) :
     ∀ g : G, ∃! t, t ∈ Finset.univ.image y ∧ ∃ (γ : ι.range) (κ : G), κ ∈ J ∧ g = (γ : G) * t * κ := by
@@ -42,9 +42,9 @@ theorem image_reps {J : Subgroup G} {I : Type} [Fintype I] {y : I → G} (hy : B
   rw [hu j ⟨δ, ⟨κ, hκ⟩, e'⟩]
 
 /- English proof (translation)
-Use `Nat.card_congr (Equiv.ofBijective (fun γ => ⟨⟨ι γ, γ, rfl⟩, ?_⟩) ⟨?_, ?_⟩)` and prove the remaining obligations. Rewrite using `[mem_stabQ]`. Conclude with `(Bridge.mem_stab ι).1 γ.2`. Introduce `a b h`. Apply `Subtype.ext` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hι` to reduce the goal to its premises. Use `congrArg (fun x : stabQ ι.range J t => ((x : ι.range) : G)) h` as an intermediate fact. Simplify using `using this`. Introduce and unpack `⟨⟨_, γ, rfl⟩, hq⟩`. Use `⟨⟨γ, (Bridge.mem_stab ι).2 (mem_stabQ.1 hq)⟩, rfl⟩` and prove the remaining obligations.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem card_stab_eq (hι : Function.Injective ι) (J : Subgroup G) (t : G) :
     Nat.card (Bridge.stab ι J t) = Nat.card (stabQ ι.range J t) := by
@@ -59,14 +59,14 @@ theorem card_stab_eq (hι : Function.Injective ι) (J : Subgroup G) (t : G) :
     refine ⟨⟨γ, (Bridge.mem_stab ι).2 (mem_stabQ.1 hq)⟩, rfl⟩
 
 /- English proof (translation)
-Rewrite using `[Finset.sum_image (fun a _ b _ h => hy h)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem sum_image_eq {I : Type} [Fintype I] {y : I → G} (hy : Function.Injective y) (f : G → ℂ) :
     ∑ i, f (y i) = ∑ t ∈ Finset.univ.image y, f t := by
   rw [Finset.sum_image (fun a _ b _ h => hy h)]
 
 /- English proof (translation)
-Introduce `G Γ _ _ ι hι J J₀ hJ F hF hFu I₀ _ y₀ hy₀ I _ y hy Φ hl hr`. Establish `key` using `sum_classReps_refine (Q := ι.range) hJ (image_reps ι hy) (image_reps ι hy₀) Φ (by rintro ⟨_, γ, rfl⟩ g; exact hl γ g) hr hF hFu`. Simplify using `only [card_stab_eq ι hι]`. Rewrite using `[sum_image_eq (injective_of_isReps ι hy₀) (fun t => ((Nat.card (stabQ ι.range J₀ t) : ℂ))⁻¹ * Φ t), sum_image_eq (injective_of_isReps ι hy) (fun t => ((Nat.card (stabQ ι.range J t) : ℂ))⁻¹ * ∑ u ∈ F, Φ (t * u))]`. Conclude with `key`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_isReps_refine : ∀ {G Γ : Type} [Group G] [Group Γ] (ι : Γ →* G), Function.Injective ι → ∀ {J J₀ : Subgroup G}, J₀ ≤ J →
     ∀ {F : Finset G}, (∀ u ∈ F, u ∈ J) → (∀ κ ∈ J, ∃! u, u ∈ F ∧ u⁻¹ * κ ∈ J₀) →

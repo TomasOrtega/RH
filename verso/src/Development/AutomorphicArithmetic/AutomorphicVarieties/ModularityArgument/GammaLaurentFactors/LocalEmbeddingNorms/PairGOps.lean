@@ -7,7 +7,7 @@ open Polynomial
 namespace UpperTheory.V.Z.Gam
 
 /- English proof (translation)
-Introduce `h0`. Apply `h` to reduce the goal to its premises. Use function extensionality and compare the values at `s`. Use `congrFun h0 (s + z)` as an intermediate fact. Simplify using `using this`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem ne_zero_sub {f : ℂ → ℂ} (h : f ≠ 0) (z : ℂ) : (fun s => f (s - z)) ≠ 0 := by
   intro h0
@@ -17,11 +17,11 @@ private theorem ne_zero_sub {f : ℂ → ℂ} (h : f ≠ 0) (z : ℂ) : (fun s =
   simpa using this
 
 /- English proof (translation)
-Introduce `hfg`. Apply `hg0` to reduce the goal to its premises. Choose the witnesses or unpack the hypotheses as in `⟨z₀, hz₀⟩ : ∃ z, f z ≠ 0 := by`. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Conclude with `hf0 (funext hcon)`. Establish `hev : ∀ᶠ z in nhds z₀, f z ≠ 0` using `hf.continuous.continuousAt.eventually_ne hz₀`. Establish `hg_ev : g =ᶠ[nhds z₀] 0` using `hev.mono fun z hz => by`. Establish `hz'` using `congrFun hfg z`. Simplify using `only [Pi.mul_apply, Pi.zero_apply, mul_eq_zero] at hz'`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hz'.resolve_left hz`. Establish `han : AnalyticOnNhd ℂ g Set.univ` using `fun z _ => hg.analyticAt z`. Establish `heq` using `han.eqOn_zero_of_preconnected_of_eventuallyEq_zero isPreconnected_univ (Set.mem_univ z₀) hg_ev`. Use function extensionality and compare the values at `z`. Conclude with `heq (Set.mem_univ z)`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 private theorem mul_ne_zero_entire {f g : ℂ → ℂ} (hf : Differentiable ℂ f) (hg : Differentiable ℂ g)
     (hf0 : f ≠ 0) (hg0 : g ≠ 0) : f * g ≠ 0 := by
@@ -43,7 +43,7 @@ private theorem mul_ne_zero_entire {f g : ℂ → ℂ} (hf : Differentiable ℂ 
   exact heq (Set.mem_univ z)
 
 /- English proof (translation)
-Simplify using `only [fac, eval_mul]`. Use `push_cast`. Rewrite using `[add_mul, Complex.exp_add]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem fac_mul (c c' : ℂ) (t t' q : ℝ) (P P' : ℂ[X]) (s : ℂ) :
     fac (c * c') (t + t') q (P * P') s = fac c t q P s * fac c' t' q P' s := by
@@ -53,9 +53,9 @@ private theorem fac_mul (c c' : ℂ) (t t' q : ℝ) (P P' : ℂ[X]) (s : ℂ) :
   ring
 
 /- English proof (translation)
-Establish `hq0 : (q : ℂ) ≠ 0` using `Complex.ofReal_ne_zero.mpr (by linarith)`. Unfold `fac`. Simplify using `only [eval_comp, eval_mul, eval_C, eval_X]`. Rewrite using `[← Complex.cpow_add _ _ hq0, ← Complex.cpow_add _ _ hq0, mul_assoc c (Complex.exp _), ← Complex.exp_add]`. Establish `e1 : z + -s = -(s - z)` using `by ring`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e2 : z + (1 - s) = 1 - (s - z)` using `by ring`. Establish `e3 : -((t : ℂ) * z) + t * s = t * (s - z)` using `by ring`. Rewrite using `[e1, e2, e3]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 private theorem fac_sub (c : ℂ) (t : ℝ) {q : ℝ} (hq : 1 < q) (P : ℂ[X]) (z s : ℂ) :
     fac (c * Complex.exp (-(t * z))) t q (P.comp (C ((q : ℂ) ^ z) * X)) s = fac c t q P (s - z) := by
@@ -69,33 +69,33 @@ private theorem fac_sub (c : ℂ) (t : ℝ) {q : ℝ} (hq : 1 < q) (P : ℂ[X]) 
   rw [e1, e2, e3]
 
 /- English proof (translation)
-Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `q`. Use `⟨fun _ => 1, fun _ => 1, fun _ => 1, fun _ => 1, 1, 1, 1, 0, 0, differentiable_const _, differentiable_const _, ?_, one_ne_zero, one_ne_zero, ?_, ?_⟩` and prove the remaining obligations. Introduce `h`. Simplify using `using congrFun h 0`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce `s _`. Simplify using `[fac]`. Introduce `s _`. Simplify using `[fac]`. Introduce `L₁ L₁' L₂ L₂' β₁ β₂ q P₁ P₂ h₁ h₂`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨Z₁, W₁, A₁, B₁, k₁, k₁', c₁, t₁, d₁, hZ₁, hW₁, hZ₁0, hk₁, hk₁', hu₁, hl₁⟩` from `h₁`. Take `⟨Z₂, W₂, A₂, B₂, k₂, k₂', c₂, t₂, d₂, hZ₂, hW₂, hZ₂0, hk₂, hk₂', hu₂, hl₂⟩` from `h₂`. Use `⟨Z₁ * Z₂, W₁ * W₂, A₁ * A₂, B₁ * B₂, k₁ * k₂, k₁' * k₂', c₁ * c₂, t₁ + t₂, max d₁ d₂, hZ₁.mul hZ₂, hW₁.mul hW₂, mul_ne_zero_entire hZ₁ hZ₂ hZ₁0 hZ₂0, mul_ne_zero hk₁ hk₂, mul_ne_zero hk₁' hk₂', ?_, ?_⟩` and prove the remaining obligations. Introduce `s hs`. Take `⟨e₁, f₁⟩` from `hu₁ s (lt_of_le_of_lt (le_max_left _ _) hs)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨e₂, f₂⟩` from `hu₂ s (lt_of_le_of_lt (le_max_right _ _) hs)`. Simplify using `only [Pi.mul_apply, eval_mul, e₁, e₂, f₁, f₂]`. Apply the tactic sequence `constructor <;> ring`. Introduce `s hs`. Establish `hs₁ : s.re < -d₁` using `lt_of_lt_of_le hs (neg_le_neg (le_max_left _ _))`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hs₂ : s.re < -d₂` using `lt_of_lt_of_le hs (neg_le_neg (le_max_right _ _))`. Take `⟨e₁, f₁⟩` from `hl₁ s hs₁`. Take `⟨e₂, f₂⟩` from `hl₂ s hs₂`. Simplify using `only [Pi.mul_apply, fac_mul, e₁, e₂, f₁, f₂]`. Apply the tactic sequence `constructor <;> ring`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Introduce `L L' L₁ L₁' β q P c h hL hL'`. Take `⟨Z, W, A, B, k, k', c₀, t, d, hZ, hW, hZ0, hk, hk', hu, hl⟩` from `h`. Use `⟨Z, W, A, B, k, k', c₀, t, max d (c + 1), hZ, hW, hZ0, hk, hk', ?_, ?_⟩` and prove the remaining obligations. Introduce `s hs`. Establish `h1 : d < s.re` using `lt_of_le_of_lt (le_max_left _ _) hs`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h2 : c + 1 < s.re` using `lt_of_le_of_lt (le_max_right _ _) hs`. Take `⟨e, f⟩` from `hu s h1`. Establish `h3 : c < (s + 1).re`. Rewrite using `[Complex.add_re, Complex.one_re]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Conclude with `⟨by rw [e, hL s (by linarith)], by rw [f, hL (s + 1) h3]⟩`. Introduce `s hs`. Establish `h1 : s.re < -d` using `lt_of_lt_of_le hs (neg_le_neg (le_max_left _ _))`. Establish `h2 : s.re < -(c + 1)` using `lt_of_lt_of_le hs (neg_le_neg (le_max_right _ _))`. Take `⟨e, f⟩` from `hl s h1`.
+Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `h3 : (s + 1).re < -c`. Rewrite using `[Complex.add_re, Complex.one_re]`. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `⟨by rw [e, hL' s (by linarith)], by rw [f, hL' (s + 1) h3]⟩`. Introduce `L L' β q P z hq h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨Z, W, A, B, k, k', c₀, t, d, hZ, hW, hZ0, hk, hk', hu, hl⟩` from `h`. Establish `hsh : Differentiable ℂ (fun s : ℂ => s - z)` using `differentiable_id.sub_const z`. Use `⟨fun s => Z (s - z), fun s => W (s - z), fun s => A (s - z), fun s => B (s - z), k, k', c₀ * Complex.exp (-(t * z)), t, d + |z.re|, hZ.comp hsh, hW.comp hsh, ne_zero_sub hZ0 z, hk, hk', ?_, ?_⟩` and prove the remaining obligations. Introduce `s hs`. Establish `h1 : d < (s - z).re`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[Complex.sub_re]`. Combine the linear relations using `[le_abs_self z.re]`. Take `⟨e, f⟩` from `hu (s - z) h1`. Use `⟨e, ?_⟩` and prove the remaining obligations. Use `show W (s - z) = k * L (s + 1 - z) * eval s (β.comp (X - C z)) * A (s - z)`.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[f, eval_comp]`. Simplify using `only [eval_sub, eval_X, eval_C]`. Rewrite using `[show s - z + 1 = s + 1 - z by ring]`. Introduce `s hs`. Establish `h1 : (s - z).re < -d`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Complex.sub_re]`. Combine the linear relations using `[neg_abs_le z.re]`. Take `⟨e, f⟩` from `hl (s - z) h1`. Prove the components needed by the constructor for the conclusion. Use `show Z (s - z) = L' (s - z) * B (s - z) * fac (c₀ * Complex.exp (-(t * z))) t q (P.comp (C ((q : ℂ) ^ z) * X)) s`.
+Combine the linear equalities and inequalities to obtain the conclusion. Extract witnesses or component facts from the available result. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, fac_sub c₀ t hq P z s]`. Use `show W (s - z) = k' * L' (s + 1 - z) * B (s - z) * fac (c₀ * Complex.exp (-(t * z))) t q (P.comp (C ((q : ℂ) ^ z) * X)) (s + 1)`. Rewrite using `[f, fac_sub c₀ t hq P z (s + 1), show s - z + 1 = s + 1 - z by ring]`.
+A detailed English derivation is pending.
 -/
 theorem pairGOps : PairGOps := by
   refine ⟨?_, ?_, ?_, ?_⟩

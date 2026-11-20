@@ -25,9 +25,9 @@ def LeafSmoothOfLocus : Prop := ∀ (k : Type) [Field k] (Ω : Type) [Field Ω] 
     Smooth (pullback.snd q (incl h))
 
 /- English proof (translation)
-Introduce `k _ Ω _ _ R S h D q _ hy`. Establish `hU : Smooth (q.smoothLocus.ι ≫ q)`. Rewrite using `[← Scheme.Hom.smoothLocus_eq_top_iff, ← Scheme.Hom.preimage_smoothLocus_eq]`. Conclude with `Scheme.Opens.ι_preimage_self _`. Establish `sq` using `(isPullback_morphismRestrict (pullback.fst q (incl h)) q.smoothLocus).paste_vert (IsPullback.of_hasPullback q (incl h))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs : Smooth (((pullback.fst q (incl h)) ⁻¹ᵁ q.smoothLocus).ι ≫ pullback.snd q (incl h))` using `MorphismProperty.IsStableUnderBaseChange.of_isPullback sq hU`. Establish `hL : IsZariskiLocalAtSource @Smooth` using `HasRingHomProperty.instIsZariskiLocalAtSource (Q := RingHom.Smooth)`. Use `IsZariskiLocalAtSource.of_iSup_eq_top (P := @Smooth) (fun _ : Unit => (pullback.fst q (incl h)) ⁻¹ᵁ q.smoothLocus) ?_ (fun _ => hs)` and prove the remaining obligations. Conclude with `top_le_iff.mp fun y _ => TopologicalSpace.Opens.mem_iSup.mpr ⟨(), hy y⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem leafSmoothOfLocus : LeafSmoothOfLocus := by
   intro k _ Ω _ _ R S h D q _ hy
@@ -52,9 +52,9 @@ def LeafAvoidConstructible : Prop := ∀ (k : Type) [Field k] (Ω : Type) [Field
     ∃ (S : Subalgebra k Ω) (h : R ≤ S), S.FG ∧ ∀ w : (Sp S : Scheme.{0}), (incl h).base w ∉ T
 
 /- English proof (translation)
-Introduce `k _ Ω _ _ R hR D q hD hlfp Z hZ`. Establish `: IsNoetherianRing R` using `isNoetherianRing_of_fg hR`. Establish `: IsNoetherianRing (CommRingCat.of R)` using `this`. Establish `: IsLocallyNoetherian D` using `LocallyOfFiniteType.isLocallyNoetherian q`. Establish `: IsNoetherian D` using `⟨⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc : IsConstructible (Zᶜ)` using `(TopologicalSpace.NoetherianSpace.isCompact _).isConstructible hZ.isOpen_compl`. Simplify using `using hc`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem leafClosedConstructible : LeafClosedConstructible := by
   intro k _ Ω _ _ R hR D q hD hlfp Z hZ
@@ -70,9 +70,9 @@ def LeafGenericNbhd : Prop := ∀ (k : Type) [Field k] (Ω : Type) [Field Ω] [A
     ∃ f : R, f ≠ 0 ∧ ∀ z ∈ T, f ∈ (show PrimeSpectrum R from z).asIdeal
 
 /- English proof (translation)
-Establish `hf0 : (f : Ω) ≠ 0` using `fun e => hf (Subtype.ext e)`. Use `⟨R ⊔ Algebra.adjoin k {(f : Ω)⁻¹}, le_sup_left, hR.sup ⟨{(f : Ω)⁻¹}, by simp⟩, fun w hw => ?_⟩` and prove the remaining obligations. Establish `hi : (f : Ω)⁻¹ ∈ R ⊔ Algebra.adjoin k {(f : Ω)⁻¹}` using `(le_sup_right : Algebra.adjoin k {(f : Ω)⁻¹} ≤ _) (Algebra.subset_adjoin rfl)`. Establish `hu : IsUnit (Subalgebra.inclusion (le_sup_left : R ≤ R ⊔ Algebra.adjoin k {(f : Ω)⁻¹}) f)`. Use `IsUnit.of_mul_eq_one (⟨_, hi⟩ : ↥(R ⊔ Algebra.adjoin k {(f : Ω)⁻¹})) ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `[hf0]`. Establish `hw' : Subalgebra.inclusion (le_sup_left : R ≤ R ⊔ Algebra.adjoin k {(f : Ω)⁻¹}) f ∈ w.asIdeal` using `hw`. Conclude with `w.isPrime.ne_top (Ideal.eq_top_of_isUnit_mem _ hw' hu)`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem leafInvert (k : Type) [Field k] (Ω : Type) [Field Ω] [Algebra k Ω] (R : Subalgebra k Ω) (hR : R.FG)
     (f : R) (hf : f ≠ 0) : ∃ (S : Subalgebra k Ω) (h : R ≤ S), S.FG ∧
@@ -89,21 +89,19 @@ theorem leafInvert (k : Type) [Field k] (Ω : Type) [Field Ω] [Algebra k Ω] (R
   exact w.isPrime.ne_top (Ideal.eq_top_of_isUnit_mem _ hw' hu)
 
 /- English proof (translation)
-Introduce `k _ Ω _ _ R hR T hT hgen`. Set `η : PrimeSpectrum R` to `⟨⊥, Ideal.bot_prime⟩`. Establish `hη : (show Sp R from η) ∈ Set.range (toR R).base`. Use `⟨(show Sp Ω from (⟨⊥, Ideal.bot_prime⟩ : PrimeSpectrum Ω)), ?_⟩` and prove the remaining obligations. Apply `PrimeSpectrum.ext` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Express the relevant statement in the definitionally equal form `Ideal.comap (algebraMap R Ω) ⊥ = ⊥`. Rewrite using `[← RingHom.ker_eq_comap_bot]`. Conclude with `(RingHom.injective_iff_ker_eq_bot _).mp Subtype.val_injective`. Take `⟨C, hC⟩` from `(PrimeSpectrum.exists_constructibleSetData_iff (R := R) (s := T)).mpr hT`. Establish `hne : ∀ c ∈ C, ∃ a : R, a ≠ 0 ∧ ∀ z ∈ c.toSet, a ∈ z.asIdeal`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `c hc`. Distinguish the cases in `h0 : c.f = 0`. Use `⟨1, one_ne_zero, fun z hz => absurd ?_ hz.2⟩` and prove the remaining obligations. Simplify using `[h0, PrimeSpectrum.mem_zeroLocus]`. Distinguish the cases in `hg : ∃ i, c.g i ≠ 0`.
+Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Take `⟨i, hi⟩` from `hg`. Conclude with `⟨c.g i, hi, fun z hz => hz.1 ⟨i, rfl⟩⟩`. Simplify using `only [not_exists, not_not] at hg`. It suffices to derive a contradiction. Establish `hηc : η ∈ c.toSet`.
+Supply the required witnesses or components. Simplify using the standard rewrite rules. It suffices to derive a contradiction. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨i, rfl⟩`. Simplify using `[η, hg i]`. Introduce `h`. Conclude with `h0 (by simpa [η, PrimeSpectrum.mem_zeroLocus] using h)`.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hηT : η ∈ T`. Rewrite using `[← hC]`. Simplify using `only [PrimeSpectrum.ConstructibleSetData.toSet, Set.mem_iUnion]`. Conclude with `Set.mem_iUnion₂.mpr ⟨c, hc, hηc⟩`. Conclude with `hgen _ hηT hη`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Use `choose! a ha using hne`. Use `⟨∏ c ∈ C, a c, Finset.prod_ne_zero_iff.mpr (fun c hc => (ha c hc).1), fun z hz => ?_⟩` and prove the remaining obligations. Rewrite `hz` using `[← hC]`. Simplify using `only [PrimeSpectrum.ConstructibleSetData.toSet] at hz`. Take `⟨c, hc, hzc⟩` from `Set.mem_iUnion₂.mp hz`.
-
-Rewrite using `[← Finset.mul_prod_erase C a hc]`. Conclude with `Ideal.mul_mem_right _ _ ((ha c hc).2 z hzc)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem leafGenericNbhd : LeafGenericNbhd := by
   classical
@@ -146,7 +144,7 @@ theorem leafGenericNbhd : LeafGenericNbhd := by
   exact Ideal.mul_mem_right _ _ ((ha c hc).2 z hzc)
 
 /- English proof (translation)
-Introduce `k _ Ω _ _ R hR T hT hgen`. Take `⟨f, hf, hfT⟩` from `hN k Ω R hR T hT hgen`. Take `⟨S, h, hS, hw⟩` from `leafInvert k Ω R hR f hf`. Conclude with `⟨S, h, hS, fun w hwT => hw w (hfT _ hwT)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem leafAvoidConstructible_of (hN : LeafGenericNbhd) : LeafAvoidConstructible := by
   intro k _ Ω _ _ R hR T hT hgen
@@ -155,11 +153,11 @@ theorem leafAvoidConstructible_of (hN : LeafGenericNbhd) : LeafAvoidConstructibl
   exact ⟨S, h, hS, fun w hwT => hw w (hfT _ hwT)⟩
 
 /- English proof (translation)
-Introduce `k _ Ω _ _ R hR D q hD hlfp U hU`. Establish `: QuasiCompact q` using `inferInstance`. Establish `hT` using `q.isConstructible_image (hC k Ω R hR q hD hlfp ((U : Set D)ᶜ) U.isOpen.isClosed_compl)`. Take `⟨S, h, hS, hw⟩` from `hA k Ω R hR _ hT (by`. Introduce and unpack `z ⟨x, hx, rfl⟩ hz`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components.
 
-Conclude with `hx (hU x hz))`. Use `⟨S, h, hS, fun y => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hy`. Apply `hw ((pullback.snd q (incl h)).base y)` to reduce the goal to its premises. Use `⟨(pullback.fst q (incl h)).base y, hy, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Scheme.Hom.comp_apply, pullback.condition, Scheme.Hom.comp_apply]`.
+A detailed English derivation is pending.
 -/
 theorem leafSpreadOpen_of (hC : LeafClosedConstructible) (hA : LeafAvoidConstructible) : LeafSpreadOpen := by
   intro k _ Ω _ _ R hR D q hD hlfp U hU
@@ -175,7 +173,7 @@ theorem leafSpreadOpen_of (hC : LeafClosedConstructible) (hA : LeafAvoidConstruc
   rw [← Scheme.Hom.comp_apply, pullback.condition, Scheme.Hom.comp_apply]
 
 /- English proof (translation)
-Introduce `k _ Ω _ _ R hR C D c q v hD hlfp hs hv`. Take `⟨S, h, hS, hy⟩` from `hO k Ω R hR q hD hlfp q.smoothLocus (hG k Ω R hR c q v hD hs hv)`. Conclude with `⟨S, h, hS, hL k Ω h q hy⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem LeafSpreadSmoothAffSm_of_cut (hG : LeafGenericSmooth) (hO : LeafSpreadOpen) (hL : LeafSmoothOfLocus) :
     LeafSpreadSmoothAffSm := by
@@ -189,7 +187,7 @@ def LeafStalkDescend : Prop := ∀ (k : Type) [Field k] (Ω : Type) [Field Ω] [
     IsPullback v c q (toR R) → ∀ y : C, v.base y ∈ q.smoothLocus
 
 /- English proof (translation)
-Introduce `k _ Ω _ _ R hR C D c q v hD _ hs hv x ⟨w, hw⟩`. Take `⟨z, hz1, -⟩` from `Scheme.Pullback.exists_preimage_pullback x w hw.symm`. Use `hS k Ω R hR c q v hD hs hv (hv.isoPullback.inv.base z)` as an intermediate fact. Rewrite `this` using `[← Scheme.Hom.comp_apply, hv.isoPullback_inv_fst, hz1]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem leafGenericSmooth_of (hS : LeafStalkDescend) : LeafGenericSmooth := by
   intro k _ Ω _ _ R hR C D c q v hD _ hs hv x ⟨w, hw⟩
@@ -198,7 +196,7 @@ theorem leafGenericSmooth_of (hS : LeafStalkDescend) : LeafGenericSmooth := by
   rwa [← Scheme.Hom.comp_apply, hv.isoPullback_inv_fst, hz1] at this
 
 /- English proof (translation)
-The claim follows from `LeafSpreadSmoothAffSm_of_cut (leafGenericSmooth_of hD) (leafSpreadOpen_of leafClosedConstructible (leafAvoidConstructible_of leafGenericNbhd)) leafSmoothOfLocus`.
+A detailed English derivation is pending.
 -/
 theorem LeafSpreadSmoothAffSm_of (hD : LeafStalkDescend) :
     LeafSpreadSmoothAffSm :=

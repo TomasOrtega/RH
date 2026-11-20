@@ -22,13 +22,11 @@ open CategoryTheory AlgebraicGeometry TensorProduct Opposite MonoidalCategory Ca
 namespace GlobalTheory.CompanionTheory.PerfectFirstCohomology
 
 /- English proof (translation)
-Establish `hle : Submodule.span R {u} ≤ LinearMap.ker a₀`. Rewrite using `[Submodule.span_le, Set.singleton_subset_iff]`. Conclude with `hu`. Establish `hcomp : (Submodule.span R {u}).liftQ a₀ hle ∘ₗ (Submodule.span R {u}).mkQ = a₀` using `Submodule.liftQ_mkQ _ _ _`. Establish `hflat : Module.Flat R (P₁ ⧸ LinearMap.range ((Submodule.span R {u}).liftQ a₀ hle))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `GlobalTheory.T.flat_quotient_of_universally_injective` to reduce the goal to its premises. Introduce `M _ _`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `z hz`. Take `⟨x, rfl⟩` from `LinearMap.lTensor_surjective M (Submodule.mkQ_surjective (Submodule.span R {u})) z`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hx : a₀.lTensor M x = 0`. Rewrite using `[← hcomp, LinearMap.lTensor_comp_apply]`. Conclude with `hz`. Take `⟨m, rfl⟩` from `(hU M).2 x hx`. Rewrite using `[LinearMap.lTensor_tmul, Submodule.mkQ_apply, (Submodule.Quotient.mk_eq_zero _).mpr (Submodule.mem_span_singleton_self u), TensorProduct.tmul_zero]`.
-
-Rewrite `hflat` using `[Submodule.range_liftQ]`. Use `haveI := hflat`. Use `haveI : Module.FinitePresentation R P₁ := Module.finitePresentation_of_projective R P₁`. Use `haveI : Module.FinitePresentation R (P₁ ⧸ LinearMap.range a₀) := Module.finitePresentation_of_surjective (LinearMap.range a₀).mkQ (Submodule.mkQ_surjective _) (by rw [Submodule.ker_mkQ, LinearMap.range_eq_map]; exact Module.Finite.fg_top.map a₀)`. Conclude with `Module.Flat.projective_of_finitePresentation`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem proj_coker (R P₀ P₁ : Type) [CommRing R] [AddCommGroup P₀] [Module R P₀] [AddCommGroup P₁] [Module R P₁]
     [Module.Finite R P₀] [Module.Finite R P₁] [Module.Projective R P₀] [Module.Projective R P₁]
@@ -62,15 +60,13 @@ theorem proj_coker (R P₀ P₁ : Type) [CommRing R] [AddCommGroup P₀] [Module
   exact Module.Flat.projective_of_finitePresentation
 
 /- English proof (translation)
-Take `⟨r, hidem, hfree, hfin, hrank⟩` from `GlobalTheory.T.local_free_kernel_splitting A Q P d`. Use `⟨r, ?_⟩` and prove the remaining obligations. Establish `hrank' : Module.finrank A (LinearMap.ker (r ∘ₗ d)) = g` using `hrank.trans h4`. Establish `hle : LinearMap.ker d ≤ LinearMap.ker (r ∘ₗ d)` using `fun x hx => by`. Rewrite using `[LinearMap.mem_ker, LinearMap.comp_apply, LinearMap.mem_ker.mp hx, map_zero]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Set `b` to `Module.finBasisOfFinrankEq A (LinearMap.ker d) h3`. Set `φ : (Fin g → A) →ₗ[A] LinearMap.ker (r ∘ₗ d)` to `Submodule.inclusion hle ∘ₗ b.equivFun.symm.toLinearMap`. Establish `hφ : Function.Injective φ` using `(Submodule.inclusion_injective hle).comp b.equivFun.symm.injective`. Establish `hzero : (d ∘ₗ (LinearMap.ker (r ∘ₗ d)).subtype) ∘ₗ φ = 0` using `LinearMap.ext fun v => by`. Express the relevant statement in the definitionally equal form `d ((b.equivFun.symm v : LinearMap.ker d) : Q) = 0`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Conclude with `LinearMap.mem_ker.mp (b.equivFun.symm v).2`. Establish `key` using `GlobalTheory.T.linear_map_zero_of_injective_full_rank A _ P g φ (d ∘ₗ (LinearMap.ker (r ∘ₗ d)).subtype) hrank' hφ hzero`. Use extensionality with `x`. Establish `hx : x - r (d x) ∈ LinearMap.ker (r ∘ₗ d)`. Establish `h` using `LinearMap.congr_fun hidem x`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [LinearMap.comp_apply] at h`. Rewrite using `[LinearMap.mem_ker, map_sub, LinearMap.comp_apply, LinearMap.comp_apply, h, sub_self]`. Establish `h` using `LinearMap.congr_fun key ⟨_, hx⟩`. Simplify using `only [LinearMap.comp_apply, Submodule.subtype_apply, LinearMap.zero_apply, map_sub, sub_eq_zero] at h`. Simplify using `only [LinearMap.comp_apply]`.
-
-Conclude with `h.symm`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem local_regular (A Q P : Type) [CommRing A] [IsLocalRing A] [AddCommGroup Q] [Module A Q] [AddCommGroup P]
     [Module A P] [Module.Finite A Q] [Module.Free A Q] [Module.Finite A P] [Module.Free A P] (d : Q →ₗ[A] P) (g : ℕ)
@@ -103,11 +99,9 @@ theorem local_regular (A Q P : Type) [CommRing A] [IsLocalRing A] [AddCommGroup 
   exact h.symm
 
 /- English proof (translation)
-Take `⟨hfin, hproj, hrank⟩` from `hVB`. Apply `GlobalTheory.T.local_splitting_kernel_base_change R Q P d` to reduce the goal to its premises. Introduce `p hp`. Take `⟨h1, h2, h3⟩` from `GlobalTheory.T.kernel_free_at_primes_of_constant_rank R Q P d g hfin hproj hrank p`. Use `haveI : Module.Flat (Localization.AtPrime p) (Localization.AtPrime p ⊗[R] Q) := Module.Flat.baseChange R _ Q`.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `haveI : Module.Flat (Localization.AtPrime p) (Localization.AtPrime p ⊗[R] P) := Module.Flat.baseChange R _ P`. Use `haveI : Module.Free (Localization.AtPrime p) (Localization.AtPrime p ⊗[R] Q) := Module.free_of_flat_of_isLocalRing`. Use `haveI : Module.Free (Localization.AtPrime p) (Localization.AtPrime p ⊗[R] P) := Module.free_of_flat_of_isLocalRing`. Use `GlobalTheory.CompanionTheory.PerfectFirstCohomology.local_regular (Localization.AtPrime p) _ _ (d.baseChange (Localization.AtPrime p)) g h1 h2 h3 ?_` and prove the remaining obligations. Take `⟨e⟩` from `GlobalTheory.T.kernel_base_change_tower_equiv R (Localization.AtPrime p) (IsLocalRing.ResidueField (Localization.AtPrime p)) Q P d`.
-
-Rewrite using `[e.finrank_eq]`. Conclude with `hfib _`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem regular_of_fibres (R Q P : Type) [CommRing R] [AddCommGroup Q] [Module R Q] [AddCommGroup P] [Module R P]
     [Module.Finite R Q] [Module.Projective R Q] [Module.Finite R P] [Module.Projective R P] (d : Q →ₗ[R] P) (g : ℕ)
@@ -134,13 +128,11 @@ theorem regular_of_fibres (R Q P : Type) [CommRing R] [AddCommGroup Q] [Module R
   exact hfib _
 
 /- English proof (translation)
-Use `letI : Module Rᵐᵒᵖ M := Module.compHom M ((RingHom.id R).fromOpposite fun x y => Commute.all _ _)`. Use `haveI : IsCentralScalar R M := ⟨fun _ _ => rfl⟩`. Use `haveI : IsScalarTower R Rᵐᵒᵖ M := ⟨fun r s m => mul_smul r (MulOpposite.unop s) m⟩`. Use `haveI : SMulCommClass R Rᵐᵒᵖ M := ⟨fun r s m => smul_comm r (MulOpposite.unop s) m⟩`. Take `⟨F', m, hF'⟩` from `hS (TrivSqZeroExt R M)`.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨E₀, E₁, E₂, h0, -, -, h01, -⟩` from `GlobalTheory.T.cochain_base_change_equivalences R (TrivSqZeroExt R M) C F F' m`. Establish `hone : E₀ (1 ⊗ₜ[R] (1 : GlobalTheory.CatCoh.C0 F)) = 1`. Rewrite using `[h0]`. Use function extensionality and compare the values at `T`. Use `first`.
+Apply function extensionality and compare values at an arbitrary argument. Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Consider the case `exact map_one _`. Consider the case `simp`. Use `GlobalTheory.T.retract_base_change_kernel_compatible R (TrivSqZeroExt R M) M _ _ _ _ (TrivSqZeroExt.inrHom R M) (TrivSqZeroExt.sndHom R M) (GlobalTheory.CatCoh.d0 F) (GlobalTheory.CatCoh.d0 F') E₀ E₁ 1 (LinearMap.ext fun _ => rfl) h01 ?_ ?_` and prove the remaining obligations. Introduce `r hr`. Rewrite `hr` using `[hone, ← Algebra.algebraMap_eq_smul_one]`.
-
-Conclude with `hF'.2 (hr.trans (map_zero _).symm)`. Introduce `z hz`. Take `⟨r, hr⟩` from `(hF'.1 z).mp hz`. Conclude with `⟨r, by rw [hone, ← Algebra.algebraMap_eq_smul_one, ← Algebra.linearMap_apply]; exact hr⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem stein_univ (R C : Type) [CommRing R] [Category.{0} C] [Finite C] [∀ T T' : C, Finite (T ⟶ T')]
     (F : C ⥤ CommAlgCat.{0} R) (hS : SteinU F) (M : Type) [AddCommGroup M] [Module R M] :
@@ -170,13 +162,13 @@ theorem stein_univ (R C : Type) [CommRing R] [Category.{0} C] [Finite C] [∀ T 
     exact ⟨r, by rw [hone, ← Algebra.algebraMap_eq_smul_one, ← Algebra.linearMap_apply]; exact hr⟩
 
 /- English proof (translation)
-Unfold `MainStatements.Hodge.QIsoAt at h ⊢`. Take `⟨hA, hB⟩` from `h`. Use `⟨fun x' hx' ⟨y', hy'⟩ => ?_, fun z' hz' => ?_⟩` and prove the remaining obligations. Establish `ha : a₁ (ε₁.symm x') = 0`. Apply `ε₂.injective` to reduce the goal to its premises.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[← h1, ε₁.apply_symm_apply, hx', map_zero]`. Establish `hb : b₀ (η₀.symm y') = f (ε₁.symm x')`. Apply `η₁.injective` to reduce the goal to its premises. Rewrite using `[← k0, ← hf, η₀.apply_symm_apply, ε₁.apply_symm_apply, hy']`. Take `⟨y, hy⟩` from `hA _ ha ⟨_, hb⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨ε₀ y, by rw [h0, hy, ε₁.apply_symm_apply]⟩`. Establish `hz : b₁ (η₁.symm z') = 0`. Apply `η₂.injective` to reduce the goal to its premises. Rewrite using `[← k1, η₁.apply_symm_apply, hz', map_zero]`. Take `⟨x, y, hx, hxy⟩` from `hB _ hz`.
+Supply the required witnesses or components. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `⟨ε₁ x, η₀ y, by rw [h1, hx, map_zero], ?_⟩` and prove the remaining obligations. Rewrite using `[hf, k0, ← hxy, map_sub, η₁.apply_symm_apply]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem qiso_transport {R S A₀ A₁ A₂ B₀ B₁ B₂ A₀' A₁' A₂' B₀' B₁' B₂' : Type} [CommRing R] [CommRing S]
     [AddCommGroup A₀] [AddCommGroup A₁] [AddCommGroup A₂] [AddCommGroup B₀] [AddCommGroup B₁] [AddCommGroup B₂]
@@ -209,7 +201,7 @@ theorem qiso_transport {R S A₀ A₁ A₂ B₀ B₁ B₂ A₀' A₁' A₂' B₀
     rw [hf, k0, ← hxy, map_sub, η₁.apply_symm_apply]
 
 /- English proof (translation)
-Proceed by induction on `y with`. Consider the case `zero => simp`. Consider the case `tmul a b => simp`. Consider the case `add a b ha hb => simp only [map_add, ha, hb]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem lid_natural {R X Y : Type} [CommRing R] [AddCommGroup X] [Module R X] [AddCommGroup Y] [Module R Y]
     (h : X →ₗ[R] Y) (y : R ⊗[R] X) : h (TensorProduct.lid R X y) = TensorProduct.lid R Y (h.lTensor R y) := by
@@ -219,7 +211,7 @@ theorem lid_natural {R X Y : Type} [CommRing R] [AddCommGroup X] [Module R X] [A
   | add a b ha hb => simp only [map_add, ha, hb]
 
 /- English proof (translation)
-The claim follows from `qiso_transport h (TensorProduct.lid R A₀).toAddEquiv (TensorProduct.lid R A₁).toAddEquiv (TensorProduct.lid R A₂).toAddEquiv (TensorProduct.lid R B₀).toAddEquiv (TensorProduct.lid R B₁).toAddEquiv (TensorProduct.lid R B₂).toAddEquiv (lid_natural a₀) (lid_natural a₁) (lid_natural …`.
+A detailed English derivation is pending.
 -/
 theorem qiso_lid {R A₀ A₁ A₂ B₀ B₁ B₂ : Type} [CommRing R]
     [AddCommGroup A₀] [AddCommGroup A₁] [AddCommGroup A₂] [AddCommGroup B₀] [AddCommGroup B₁] [AddCommGroup B₂]
@@ -239,7 +231,7 @@ variable {R C : Type} [CommRing R] [Category.{0} C] (F : C ⥤ CommAlgCat.{0} R)
   (a₀ : P₀ →ₗ[R] P₁) (a₁ : P₁ →ₗ[R] P₂) (ψ₀ : P₀ →ₗ[R] C0 F) (ψ₁ : P₁ →ₗ[R] C1 F) (ψ₂ : P₂ →ₗ[R] C2 F)
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.CatCoh.commAlgFunctorCocyclesOne_eq_ker, LinearMap.mem_ker]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mem_Z1_iff_cocycle {S : Type} [CommRing S] (G : C ⥤ CommAlgCat.{0} S) (z : C1 G) : z ∈ Z1 G ↔ d1 G z = 0 := by
   rw [GlobalTheory.CatCoh.commAlgFunctorCocyclesOne_eq_ker, LinearMap.mem_ker]
@@ -247,7 +239,7 @@ theorem mem_Z1_iff_cocycle {S : Type} [CommRing S] (G : C ⥤ CommAlgCat.{0} S) 
 variable {F a₀ a₁ ψ₀ ψ₁ ψ₂} in
 
 /- English proof (translation)
-Use `GlobalTheory.T.kernel_equiv_cohomology_of_quasi_isomorphism R P₀ P₁ P₂ (P₁ ⧸ LinearMap.range a₀) _ _ _ a₀ a₁ (LinearMap.range a₀).mkQ d (GlobalTheory.CatCoh.Z1 F) (LinearMap.codRestrict _ (GlobalTheory.CatCoh.d0 F) (GlobalTheory.CatCoh.commAlgFunctorCoboundaryZero_mem_cocyclesOne …` and prove the remaining obligations. Introduce `x hx`. Rewrite using `[← LinearMap.comp_apply (GlobalTheory.CatCoh.d1 F) ψ₁, ← c1, LinearMap.comp_apply, hx, map_zero]`. Rewrite using `[LinearMap.subtype_comp_codRestrict]` and apply the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 -/
 theorem ker_equiv_H1 (c0 : ψ₁ ∘ₗ a₀ = d0 F ∘ₗ ψ₀) (c1 : ψ₂ ∘ₗ a₁ = d1 F ∘ₗ ψ₁)
     (d : (P₁ ⧸ LinearMap.range a₀) →ₗ[R] P₂) (hdπ : d ∘ₗ (LinearMap.range a₀).mkQ = a₁)
@@ -264,13 +256,13 @@ theorem ker_equiv_H1 (c0 : ψ₁ ∘ₗ a₀ = d0 F ∘ₗ ψ₀) (c1 : ψ₂ �
 variable {F a₀ a₁ ψ₀ ψ₁ ψ₂} in
 
 /- English proof (translation)
-Use `GlobalTheory.T.kernel_equiv_cohomology_of_quasi_isomorphism k (k ⊗[R] P₀) (k ⊗[R] P₁) (k ⊗[R] P₂) (k ⊗[R] (P₁ ⧸ LinearMap.range a₀)) _ _ _ (a₀.baseChange k) (a₁.baseChange k) ((LinearMap.range a₀).mkQ.baseChange k) (d.baseChange k) (GlobalTheory.CatCoh.Z1 G) (LinearMap.codRestric …` and prove the remaining obligations. Rewrite using `[LinearMap.baseChange_eq_ltensor]`. Conclude with `LinearMap.lTensor_surjective k (Submodule.mkQ_surjective _)`. Rewrite using `[LinearMap.baseChange_eq_ltensor, LinearMap.baseChange_eq_ltensor]`. Conclude with `lTensor_exact k (LinearMap.exact_map_mkQ_range a₀) (Submodule.mkQ_surjective _)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← LinearMap.baseChange_comp, hdπ]`. Introduce `x hx`. Establish `h` using `LinearMap.congr_fun (congrArg (LinearMap.baseChange k) c1) x`. Rewrite `h` using `[LinearMap.baseChange_comp, LinearMap.baseChange_comp, LinearMap.comp_apply, LinearMap.comp_apply, hx, map_zero]`. Simplify using `only [LinearMap.comp_apply, LinearEquiv.coe_coe]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← h12, ← h, map_zero]`. Introduce `y`. Establish `h` using `LinearMap.congr_fun (congrArg (LinearMap.baseChange k) c0) y`. Rewrite `h` using `[LinearMap.baseChange_comp, LinearMap.baseChange_comp, LinearMap.comp_apply, LinearMap.comp_apply]`. Simplify using `only [LinearMap.comp_apply, LinearEquiv.coe_coe, LinearMap.codRestrict_apply]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h, h01]`. Rewrite using `[LinearMap.subtype_comp_codRestrict]`. Conclude with `GlobalTheory.CompanionTheory.PerfectFirstCohomology.qiso_transport hq (AddEquiv.refl _) (AddEquiv.refl _) (AddEquiv.refl _) E₀.toAddEquiv E₁.toAddEquiv E₂.toAddEquiv (fun y => congrFun (LinearMap.baseChange_eq_ltensor a₀) y) (fun x => congrFun (LinearMap.baseChange_eq_ltensor a₁) …`.
+A detailed English derivation is pending.
 -/
 theorem ker_equiv_base {k : Type} [CommRing k] [Algebra R k] (G : C ⥤ CommAlgCat.{0} k)
     (E₀ : k ⊗[R] C0 F ≃ₗ[k] C0 G) (E₁ : k ⊗[R] C1 F ≃ₗ[k] C1 G) (E₂ : k ⊗[R] C2 F ≃ₗ[k] C2 G)
@@ -313,19 +305,19 @@ theorem ker_equiv_base {k : Type} [CommRing k] [Algebra R k] (G : C ⥤ CommAlgC
 variable {F a₀ a₁ ψ₀ ψ₁ ψ₂} in
 
 /- English proof (translation)
-Establish `h1zero : GlobalTheory.CatCoh.d0 F 1 = 0`. Use function extensionality and compare the values at `T T' φ`. Rewrite using `[GlobalTheory.CatCoh.amitsur_d0_apply]`. Simplify using the standard rewrite rules. Take `⟨u, hu, hU⟩` from `GlobalTheory.T.universal_coefficient_degree_zero R _ _ P₀ P₁ (GlobalTheory.CatCoh.d0 F) a₀ ψ₀ ψ₁ 1 c0 h1zero hq0 (fun M _ _ => GlobalTheory.CompanionTheory.PerfectFirstCohomology.stein_univ R C F hS M)`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Use `haveI : Module.Projective R (P₁ ⧸ LinearMap.range a₀) := GlobalTheory.CompanionTheory.PerfectFirstCohomology.proj_coker R P₀ P₁ a₀ u hu hU`. Establish `hle : LinearMap.range a₀ ≤ LinearMap.ker a₁`. Introduce and unpack `_ ⟨y, rfl⟩`. Conclude with `LinearMap.congr_fun h10 y`. Take `⟨d, hdπ⟩ : ∃ d : (P₁ ⧸ LinearMap.range a₀) →ₗ[R] P₂, d ∘ₗ (LinearMap.range a₀).mkQ = a₁` from `⟨_, Submodule.liftQ_mkQ _ _ hle⟩`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨e⟩` from `GlobalTheory.CompanionTheory.PerfectFirstCohomology.ker_equiv_H1 c0 c1 d hdπ (GlobalTheory.CompanionTheory.PerfectFirstCohomology.qiso_lid (hq' R))`. Take `⟨hfin, hproj, hrank⟩` from `hVB`. Establish `hVBd : MainStatements.Hodge.VB R (LinearMap.ker d) g` using `⟨Module.Finite.equiv e.symm, Module.Projective.of_equiv e.symm, fun p => by`. Rewrite using `[Module.rankAtStalk_eq_of_equiv e]`. Conclude with `hrank p⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hfibd : ∀ (k : Type) [Field k] [Algebra R k], Module.finrank k (LinearMap.ker (d.baseChange k)) = g`. Introduce `k _ _`. Take `⟨F', m, hg⟩` from `hfib k`. Take `⟨E₀, E₁, E₂, -, -, -, h01, h12⟩` from `GlobalTheory.T.cochain_base_change_equivalences R k C F F' m`. Take `⟨e'⟩` from `GlobalTheory.CompanionTheory.PerfectFirstCohomology.ker_equiv_base F' E₀ E₁ E₂ h01 h12 c0 c1 d hdπ (hq' k)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[e'.finrank_eq, hg]`. Take `⟨r', hr'⟩` from `GlobalTheory.CompanionTheory.PerfectFirstCohomology.regular_of_fibres R _ P₂ d g hVBd hfibd`. Take `⟨r, hr⟩` from `Module.projective_lifting_property (LinearMap.range a₀).mkQ r' (Submodule.mkQ_surjective _)`. Establish `har : a₁ ∘ₗ r ∘ₗ a₁ = a₁`. Rewrite using `[← hdπ]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact.
 
-Use extensionality with `x`. Establish `h₁` using `LinearMap.congr_fun hr (d ((LinearMap.range a₀).mkQ x))`. Establish `h₂` using `LinearMap.congr_fun hr' ((LinearMap.range a₀).mkQ x)`. Simplify using `only [LinearMap.comp_apply] at h₁ h₂ ⊢`. Rewrite using `[h₁, h₂]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Introduce `R' _ _ F' m`. Take `⟨E₀, E₁, E₂, -, hE₁, -, h01, h12⟩` from `GlobalTheory.T.cochain_base_change_equivalences R R' C F F' m`. Take `⟨H₁, H₂⟩` from `GlobalTheory.T.quasi_isomorphism_degree_one_kernel R _ _ _ P₀ P₁ P₂ (GlobalTheory.CatCoh.d0 F) (GlobalTheory.CatCoh.d1 F) a₀ a₁ ψ₀ ψ₁ ψ₂ r (GlobalTheory.CatCoh.Z1 F) (LinearMap.codRestrict _ (GlobalTheory.CatCoh.d0 F) (GlobalTheory.CatCoh.commAlgFunctorCoboundaryZero_mem_cocycles …`. Conclude with `GlobalTheory.T.first_cohomology_base_change_of_cochain_equivs R R' C F F' m E₀ E₁ E₂ hE₁ h01 h12 H₁ H₂`.
+A detailed English derivation is pending.
 -/
 theorem core [Finite C] [∀ T T' : C, Finite (T ⟶ T')] [Module.Finite R P₀] [Module.Finite R P₁] [Module.Projective R P₀]
     [Module.Projective R P₁] [Module.Finite R P₂] [Module.Projective R P₂] (g : ℕ)
@@ -384,7 +376,7 @@ theorem core [Finite C] [∀ T T' : C, Finite (T ⟶ T')] [Module.Finite R P₀]
 end Core
 
 /- English proof (translation)
-Introduce `R _ P _ _ F g hP hS hVB hfib`. Use `haveI : Finite Pᵒᵖ := Finite.of_equiv P Opposite.equivToOpposite`. Use `haveI : ∀ T T' : Pᵒᵖ, Finite (T ⟶ T') := fun _ _ => Finite.of_subsingleton`. Take `⟨P₀, P₁, P₂, P₃, a₀, a₁, a₂, ψ₀, ψ₁, ψ₂, ⟨f0, p0⟩, ⟨f1, p1⟩, ⟨f2, p2⟩, -, h10, -, c0, c1, -, hq⟩` from `hP`. Conclude with `GlobalTheory.CompanionTheory.PerfectFirstCohomology.core g h10 c0 c1 (fun M _ _ => (hq (ModuleCat.of R M)).1) (fun M _ _ => (hq (ModuleCat.of R M)).2.1) hS ⟨hVB.1, hVB.2.1, hVB.2.2⟩ hfib`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem perfect_first_cohomology_base_change : PerfectH1BaseChange := by
   intro R _ P _ _ F g hP hS hVB hfib

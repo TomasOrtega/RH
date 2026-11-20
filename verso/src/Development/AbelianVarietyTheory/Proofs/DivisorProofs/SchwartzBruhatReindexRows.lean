@@ -19,7 +19,7 @@ def rowRenum (e : A ≃ A') : Matrix A D k ≃ₜ Matrix A' D k where
   continuous_invFun := continuous_id.matrix_submatrix _ _
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hf.1.comp_continuous (rowRenum (k := k) (D := D) e).continuous, hf.2.comp_homeomorph (rowRenum (k := k) (D := D) e)⟩`.
+Supply the required witnesses or components.
 -/
 theorem comp_rowRenum_mem_SB (e : A ≃ A') {f : Matrix A' D k → ℂ} (hf : f ∈ SB (Matrix A' D k)) :
     (fun Y : Matrix A D k => f (Y.submatrix e.symm id)) ∈ SB (Matrix A D k) :=
@@ -35,7 +35,7 @@ Both sides reduce to the same expression.
 theorem glRenum_val (e : A ≃ A') (g : GL A' k) : (glRenum e g).val = g.val.submatrix e e := rfl
 
 /- English proof (translation)
-Use `ext`. Simplify using `[GlobalTheory.SplitFlip.gdet, glRenum_val, Matrix.det_submatrix_equiv_self]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem gdet_glRenum (e : A ≃ A') (g : GL A' k) :
     GlobalTheory.SplitFlip.gdet (glRenum e g) = GlobalTheory.SplitFlip.gdet g := by
@@ -43,11 +43,11 @@ theorem gdet_glRenum (e : A ≃ A') (g : GL A' k) :
   simp [GlobalTheory.SplitFlip.gdet, glRenum_val, Matrix.det_submatrix_equiv_self]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `Y`. Simplify using `only [GlobalTheory.SplitFlip.omB, gdet_glRenum, Units.val_one, Matrix.mul_one]`. Use `congr 1`. Simplify using the standard rewrite rules. Use `congr 1`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[glRenum_val]`. Establish `hY : Y = (Y.submatrix e.symm id).submatrix e id` using `by ext; simp`. Use `conv_rhs => rw [hY]`. Rewrite using `[show (g.val.submatrix e e)ᵀ = (g.valᵀ).submatrix e e from rfl, Matrix.submatrix_mul_equiv]`. Use `ext`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem omB_comp_rowRenum (ν : kˣ →* ℂˣ) (e : A ≃ A') (g : GL A' k) (Ψ : Matrix A' D k → ℂ) :
     (fun Y : Matrix A D k => GlobalTheory.SplitFlip.omB ν ν g 1 Ψ (Y.submatrix e.symm id)) =
@@ -64,11 +64,11 @@ theorem omB_comp_rowRenum (ν : kˣ →* ℂˣ) (e : A ≃ A') (g : GL A' k) (Ψ
     ext; simp
 
 /- English proof (translation)
-Introduce `k _ _ _ _ A A' D _ _ _ _ _ _ ν e`. Use `⟨fun f hf => comp_rowRenum_mem_SB e hf, ?_⟩` and prove the remaining obligations. Set `L : (Matrix A' D k → ℂ) →ₗ[ℂ] (Matrix A D k → ℂ)` to `LinearMap.funLeft ℂ ℂ (fun Y : Matrix A D k => Y.submatrix e.symm id)`. Establish `hle : Nsp k A' D ν ≤ (Nsp k A D ν).comap L`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `_ ⟨g, Ψ', hΨ', rfl⟩`. Use `show L (GlobalTheory.SplitFlip.omB ν ν g 1 Ψ' - Ψ') ∈ Nsp k A D ν`. Rewrite using `[map_sub]`. Establish `h1 : L (GlobalTheory.SplitFlip.omB ν ν g 1 Ψ') = GlobalTheory.SplitFlip.omB ν ν (glRenum e g) 1 (fun Y : Matrix A D k => Ψ' (Y.submatrix e.symm id))` using `omB_comp_rowRenum ν e g Ψ'`. Rewrite using `[h1]`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `sub_mem_Nsp ν (glRenum e g) (comp_rowRenum_mem_SB e hΨ')`. Introduce `f hf`. Conclude with `hle hf`.
+A detailed English derivation is pending.
 -/
 theorem rowRenum_SB_Nsp : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (A A' D : Type) [Fintype A] [DecidableEq A] [Fintype A'] [DecidableEq A'] [Fintype D] [DecidableEq D]

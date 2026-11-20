@@ -5,7 +5,7 @@ import Development.AbelianVarietyTheory.Proofs.HeightProofs.InnerDRepSq
 open Matrix Formalism.REAL Formalism.MainNotions.S Formalism.L2.Theta GlobalTheory.SmoothGlob GlobalTheory.TypeSum GlobalTheory.TypeSum.CasBasis GlobalTheory.LowTypeDetermined
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.TypeSum.CasBasis.re_trace_kB_mul_pB` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FHeightProofs%2FReTraceSkewHermitianMulHermitianOrthonormalBasis.lean&line=50#L50)
 -/

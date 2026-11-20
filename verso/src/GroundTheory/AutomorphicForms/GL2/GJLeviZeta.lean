@@ -25,7 +25,7 @@ def leviIntegrand (σ : Representation ℂ (levi F n β) W) (θ : levi F n β �
     ℓ (σ m w)
 
 /- English proof (translation)
-Simplify using `only [leviIntegrand, coeffIntegrand]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem leviIntegrand_eq (θ : levi F n β →* ℝ≥0) (Ψ : Matrix (Fin n) (Fin n) F → ℂ) (w : W)
     (ℓ : Module.Dual ℂ W) (s : ℂ) (m : levi F n β) :
@@ -38,7 +38,7 @@ def BlockSmall (b : Set.range β) (t : ℤ) (X : Matrix (Fin n) (Fin n) F) : Pro
   ∀ i j, blockOf β i = b → (uniformizer F : F) ^ (-t) * X i j ∈ 𝒪[F]
 
 /- English proof (translation)
-Introduce `i j h`. Simplify using `only [zeroBlock]`. Use `split_ifs`. Both sides reduce to the same expression. Conclude with `hX i j h`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem zeroBlock_blockDiag {b : Set.range β} {X : Matrix (Fin n) (Fin n) F}
     (hX : ∀ i j, β i ≠ β j → X i j = 0) : ∀ i j, β i ≠ β j → zeroBlock b X i j = 0 := by
@@ -49,11 +49,9 @@ theorem zeroBlock_blockDiag {b : Set.range β} {X : Matrix (Fin n) (Fin n) F}
   · exact hX i j h
 
 /- English proof (translation)
-Establish `hsplit : X = zeroBlock b X + (X - zeroBlock b X)` using `by abel`. Use `conv_lhs => rw [hsplit]`. Use `hinv _ _ (zeroBlock_blockDiag hX) (fun i j h => ?_) fun i j => ?_` and prove the remaining obligations. Rewrite using `[Matrix.sub_apply, hX i j h, zeroBlock_blockDiag hX i j h, sub_zero]`. Use `exists_eq_pow_mul_iff.2 ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.sub_apply]`. Simplify using `only [zeroBlock]`. Use `split_ifs with hi`. Rewrite using `[sub_zero]`. Conclude with `hsmall i j hi`.
-
-Rewrite using `[sub_self, mul_zero]`. Conclude with `(𝒪[F]).zero_mem`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_zeroBlock_of_invariant {Ψ : Matrix (Fin n) (Fin n) F → ℂ} {r : ℕ}
     (hinv : ∀ X Y : Matrix (Fin n) (Fin n) F, (∀ i j, β i ≠ β j → X i j = 0) →
@@ -75,11 +73,11 @@ theorem eq_zeroBlock_of_invariant {Ψ : Matrix (Fin n) (Fin n) F → ℂ} {r : �
       exact (𝒪[F]).zero_mem
 
 /- English proof (translation)
-Use `set B := ((leviBlock F m b : GL (Fiber β b) F) : Matrix (Fiber β b) (Fiber β b) F)`. Establish `hB : B.det ≠ 0` using `det_ne_zero_of_GL _`. Establish `hmem : ((uniformizer F : F) ^ A • B).det ∈ 𝒪[F]` using `det_mem_integer_of_fintype fun i j => by`. Rewrite using `[Matrix.smul_apply, smul_eq_mul]`. Conclude with `h i.1 j.1 i.2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hmem` using `[Matrix.det_smul]`. Establish `hϖ : ((uniformizer F : F) ^ A) ^ Fintype.card (Fiber β b) ≠ 0` using `pow_ne_zero _ (pow_ne_zero _ (Cartan.uniformizer_ne_zero F))`. Establish `h0` using `ord_nonneg_of_mem (mul_ne_zero hϖ hB) hmem`. Rewrite `h0` using `[LocalField.ord_mul hϖ hB, ← pow_mul, ← zpow_natCast, ord_zpow_uniformizer]`. Simplify using `only [blockOrd]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[blockSize]`. Move the coercions through the operations in `at h0 ⊢`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem neg_le_blockOrd {b : Set.range β} {m : levi F n β} {A : ℕ}
     (h : ∀ i j, blockOf β i = b →
@@ -102,13 +100,13 @@ theorem neg_le_blockOrd {b : Set.range β} {m : levi F n β} {A : ℕ}
   linarith
 
 /- English proof (translation)
-Take `⟨r₁, A₁, hi₁, hs₁⟩` from `h₁`. Take `⟨r₂, A₂, hi₂, hs₂⟩` from `h₂`. Establish `hweak : ∀ {r r' : ℕ}, r ≤ r' → ∀ y : F, (∃ a ∈ 𝒪[F], y = (uniformizer F : F) ^ r' * a) → ∃ a ∈ 𝒪[F], y = (uniformizer F : F) ^ r * a`. Introduce and unpack `r r' hr y ⟨a, ha, rfl⟩`. Use `⟨(uniformizer F : F) ^ (r' - r) * a, Subring.mul_mem _ (Subring.pow_mem _ (GLnLocal.uniformizer F).2 _) ha, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← mul_assoc, ← pow_add, Nat.add_sub_cancel' hr]`. Establish `hweakA : ∀ {A A' : ℕ}, A ≤ A' → ∀ y : F, (uniformizer F : F) ^ A * y ∈ 𝒪[F] → (uniformizer F : F) ^ A' * y ∈ 𝒪[F]`. Introduce `A A' hA y hy`. Rewrite using `[← Nat.add_sub_cancel' hA, pow_add, mul_comm ((uniformizer F : F) ^ A), mul_assoc]`. Conclude with `Subring.mul_mem _ (Subring.pow_mem _ (GLnLocal.uniformizer F).2 _) hy`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨max r₁ r₂, max A₁ A₂, fun X Y hX hY hYs => ?_, fun X hX h0 i j => ?_⟩` and prove the remaining obligations. Simplify using `only [Pi.sub_apply]`. Rewrite using `[hi₁ X Y hX hY fun i j => hweak (le_max_left _ _) _ (hYs i j), hi₂ X Y hX hY fun i j => hweak (le_max_right _ _) _ (hYs i j)]`. Simplify using `only [Pi.sub_apply] at h0`. Distinguish the cases in `h1 : Ψ₁ X = 0`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h0` using `[h1, zero_sub, neg_ne_zero]`. Conclude with `hweakA (le_max_right _ _) _ (hs₂ X hX h0 i j)`. Conclude with `hweakA (le_max_left _ _) _ (hs₁ X hX h1 i j)`.
+A detailed English derivation is pending.
 -/
 theorem IsLeviSchwartz.sub {Ψ₁ Ψ₂ : Matrix (Fin n) (Fin n) F → ℂ} (h₁ : IsLeviSchwartz β Ψ₁)
     (h₂ : IsLeviSchwartz β Ψ₂) : IsLeviSchwartz β (Ψ₁ - Ψ₂) := by
@@ -140,7 +138,7 @@ def shiftBlock (b : Set.range β) (Ψ : Matrix (Fin n) (Fin n) F → ℂ) :
   fun X => Ψ ((((blockUnif F b)⁻¹ : levi F n β) : GL (Fin n) F) * X)
 
 /- English proof (translation)
-Establish `: ((((blockUnif F b)⁻¹ : levi F n β) : GL (Fin n) F) : Matrix (Fin n) (Fin n) F) = Matrix.diagonal fun i => (uniformizer F : F) ^ (-blockIndicator b i)`. Rewrite using `[InvMemClass.coe_inv, blockUnif, ← diagPow_neg, Cartan.coe_diagPow]`. Both sides reduce to the same expression. Rewrite using `[this, Matrix.diagonal_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 -/
 theorem blockUnif_inv_mul_apply (b : Set.range β) (X : Matrix (Fin n) (Fin n) F) (i j : Fin n) :
     ((((blockUnif F b)⁻¹ : levi F n β) : GL (Fin n) F) * X : Matrix (Fin n) (Fin n) F) i j =
@@ -152,33 +150,31 @@ theorem blockUnif_inv_mul_apply (b : Set.range β) (X : Matrix (Fin n) (Fin n) F
   rw [this, Matrix.diagonal_mul]
 
 /- English proof (translation)
-Simplify using `only [blockIndicator]`. Apply the tactic sequence `split_ifs <;> norm_num`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem blockIndicator_nonneg (b : Set.range β) (i : Fin n) : 0 ≤ blockIndicator b i := by
   simp only [blockIndicator]
   split_ifs <;> norm_num
 
 /- English proof (translation)
-Simplify using `only [blockIndicator]`. Apply the tactic sequence `split_ifs <;> norm_num`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem blockIndicator_le_one (b : Set.range β) (i : Fin n) : blockIndicator b i ≤ 1 := by
   simp only [blockIndicator]
   split_ifs <;> norm_num
 
 /- English proof (translation)
-Take `⟨r, A, hinv, hsupp⟩` from `hΨ`. Establish `hϖ` using `Cartan.uniformizer_ne_zero F`. Establish `hbd : ∀ X : Matrix (Fin n) (Fin n) F, (∀ i j, β i ≠ β j → X i j = 0) → ∀ i j, β i ≠ β j → ((((blockUnif F b)⁻¹ : levi F n β) : GL (Fin n) F) * X : Matrix (Fin n) (Fin n) F) i j = 0`. Introduce `X hX i j h`. Rewrite using `[blockUnif_inv_mul_apply, hX i j h, mul_zero]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `⟨r + 1, A + 1, fun X Y hX hY hYs => ?_, fun X hX h0 i j => ?_⟩` and prove the remaining obligations. Simplify using `only [GodementJacquet.shiftBlock]`. Rewrite using `[Matrix.mul_add]`. Use `hinv _ _ (hbd X hX) (hbd Y hY) fun i j => ?_` and prove the remaining obligations. Take `⟨a, ha, hYa⟩` from `hYs i j`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨(uniformizer F : F) ^ (1 - blockIndicator b i) * a, Subring.mul_mem _ ?_ ha, ?_⟩` and prove the remaining obligations. Establish `h0 : 0 ≤ 1 - blockIndicator b i` using `by linarith [blockIndicator_le_one b i]`. Rewrite using `[← Int.toNat_of_nonneg h0, zpow_natCast]`. Conclude with `Subring.pow_mem _ (GLnLocal.uniformizer F).2 _`. Rewrite using `[blockUnif_inv_mul_apply, hYa, pow_succ]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[show (uniformizer F : F) ^ (1 - blockIndicator b i) = (uniformizer F : F) ^ (1 : ℤ) * (uniformizer F : F) ^ (-blockIndicator b i) by`. Rewrite using `[← zpow_add₀ hϖ]`. Use the proof step `ring_nf]`. Rewrite using `[zpow_one]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h` using `hsupp _ (hbd X hX) h0 i j`. Rewrite `h` using `[blockUnif_inv_mul_apply]`. Establish `h1 : 0 ≤ 1 + blockIndicator b i` using `by linarith [blockIndicator_nonneg b i]`. Establish `: (uniformizer F : F) ^ (1 + blockIndicator b i) * ((uniformizer F : F) ^ A * ((uniformizer F : F) ^ (-blockIndicator b i) * X i j)) = (uniformizer F : F) ^ (A + 1) * X i j`. Rewrite using `[← mul_assoc, ← mul_assoc, ← zpow_natCast (uniformizer F : F) A, ← zpow_add₀ hϖ, ← zpow_add₀ hϖ, ← zpow_natCast]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations.
 
-Use `congr 2`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[← this]`. Use `Subring.mul_mem _ ?_ h` and prove the remaining obligations.
-
-Rewrite using `[← Int.toNat_of_nonneg h1, zpow_natCast]`. Conclude with `Subring.pow_mem _ (GLnLocal.uniformizer F).2 _`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsLeviSchwartz.shiftBlock {Ψ : Matrix (Fin n) (Fin n) F → ℂ} (hΨ : IsLeviSchwartz β Ψ)
     (b : Set.range β) : IsLeviSchwartz β (shiftBlock b Ψ) := by
@@ -221,11 +217,11 @@ theorem IsLeviSchwartz.shiftBlock {Ψ : Matrix (Fin n) (Fin n) F → ℂ} (hΨ :
     exact Subring.pow_mem _ (GLnLocal.uniformizer F).2 _
 
 /- English proof (translation)
-Use `⟨hG.aestronglyMeasurable, ?_⟩` and prove the remaining obligations. Establish `hpt : ∀ m, ‖G m‖ₑ ≤ ENNReal.ofReal C * E.indicator (fun m => ‖H m‖ₑ) m`. Introduce `m`. Rewrite using `[← ofReal_norm]`. Use `(ENNReal.ofReal_le_ofReal (hle m)).trans_eq ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[ENNReal.ofReal_mul hC]`. Use `congr 1`. Distinguish the cases in `hm : m ∈ E`. Rewrite using `[Set.indicator_of_mem hm, Set.indicator_of_mem hm, ofReal_norm]`. Rewrite using `[Set.indicator_of_notMem hm, Set.indicator_of_notMem hm, ENNReal.ofReal_zero]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem integrable_of_le_indicator {μ : Measure (levi F n β)} {G H : levi F n β → ℂ}
     (hG : Continuous G) {C : ℝ} (hC : 0 ≤ C) {E : Set (levi F n β)}
@@ -248,7 +244,7 @@ theorem integrable_of_le_indicator {μ : Measure (levi F n β)} {G H : levi F n 
     _ < ⊤ := ENNReal.mul_lt_top ENNReal.ofReal_lt_top hH
 
 /- English proof (translation)
-Establish `: leviIntegrand σ θ Ψ w ℓ s = fun m : levi F n β => Ψ ((m : GL (Fin n) F) : Matrix (Fin n) (Fin n) F) * coeffIntegrand σ θ w ℓ s m`. Use function extensionality and compare the values at `fun m => leviIntegrand_eq θ Ψ w ℓ s m`. Rewrite using `[this]`. Conclude with `hΨ.isLocallyConstant.continuous.mul (continuous_coeffIntegrand hσ θ hθ w ℓ s)`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_leviIntegrand (hσ : IsSmooth σ) (θ : levi F n β →* ℝ≥0) (hθ : Continuous θ)
     {Ψ : Matrix (Fin n) (Fin n) F → ℂ} (hΨ : IsLeviSchwartz β Ψ) (w : W) (ℓ : Module.Dual ℂ W)
@@ -260,7 +256,7 @@ theorem continuous_leviIntegrand (hσ : IsSmooth σ) (θ : levi F n β →* ℝ�
   exact hΨ.isLocallyConstant.continuous.mul (continuous_coeffIntegrand hσ θ hθ w ℓ s)
 
 /- English proof (translation)
-Introduce `_` and use `neg_le_blockOrd fun i j _ => hsupp _ (mem_levi.1 m.2) hm i j`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem mem_of_isLeviSchwartz {Ψ : Matrix (Fin n) (Fin n) F → ℂ} {A : ℕ}
     (hsupp : ∀ X : Matrix (Fin n) (Fin n) F, (∀ i j, β i ≠ β j → X i j = 0) → Ψ X ≠ 0 →
@@ -270,9 +266,9 @@ theorem mem_of_isLeviSchwartz {Ψ : Matrix (Fin n) (Fin n) F → ℂ} {A : ℕ}
   fun _ => neg_le_blockOrd fun i j _ => hsupp _ (mem_levi.1 m.2) hm i j
 
 /- English proof (translation)
-Take `⟨C, hC⟩` from `hΨ.exists_bound`. Take `⟨r, A, hinv, hsupp⟩` from `hΨ`. Use `integrable_of_le_indicator (continuous_leviIntegrand hσ θ hθ ⟨r, A, hinv, hsupp⟩ w ℓ s) (le_max_right C 0) (hconv fun b => -((blockSize β b : ℤ) * A)) fun m => ?_` and prove the remaining obligations. Rewrite using `[leviIntegrand_eq, norm_mul]`. Distinguish the cases in `h0 : Ψ ((m : GL (Fin n) F) : Matrix (Fin n) (Fin n) F) = 0`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[h0, norm_zero, zero_mul]`. Conclude with `mul_nonneg (le_max_right C 0) (Set.indicator_nonneg (fun _ _ => norm_nonneg _) _)`. Rewrite using `[Set.indicator_of_mem (mem_of_isLeviSchwartz hsupp h0)]`. Conclude with `mul_le_mul_of_nonneg_right ((hC _ (mem_levi.1 m.2)).trans (le_max_left _ _)) (norm_nonneg _)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integrable_leviIntegrand (hσ : IsSmooth σ) (θ : levi F n β →* ℝ≥0) (hθ : Continuous θ)
     {μ : Measure (levi F n β)} {Ψ : Matrix (Fin n) (Fin n) F → ℂ} (hΨ : IsLeviSchwartz β Ψ)
@@ -293,7 +289,7 @@ theorem integrable_leviIntegrand (hσ : IsSmooth σ) (θ : levi F n β →* ℝ�
       (norm_nonneg _)
 
 /- English proof (translation)
-Rewrite using `[← Units.val_mul, ← Subgroup.coe_mul, inv_mul_cancel_left]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem coe_blockUnif_inv_mul (b : Set.range β) (m : levi F n β) :
     (((blockUnif F b)⁻¹ : levi F n β) : GL (Fin n) F) *
@@ -302,7 +298,7 @@ theorem coe_blockUnif_inv_mul (b : Set.range β) (m : levi F n β) :
   rw [← Units.val_mul, ← Subgroup.coe_mul, inv_mul_cancel_left]
 
 /- English proof (translation)
-Rewrite using `[← integral_mul_left_eq_self _ (blockUnif F b), ← integral_const_mul]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun m => ?_)` and prove the remaining obligations. Simplify using `only`. Rewrite using `[leviIntegrand_eq, leviIntegrand_eq, shiftBlock, coe_blockUnif_inv_mul, coeffIntegrand_blockUnif_mul hω]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem integral_shiftBlock (μ : Measure (levi F n β)) [μ.IsMulLeftInvariant]
     {ω : Set.range β → ℂ} (hω : ∀ b v, σ (blockUnif F b) v = ω b • v) (θ : levi F n β →* ℝ≥0)
@@ -318,13 +314,13 @@ theorem integral_shiftBlock (μ : Measure (levi F n β)) [μ.IsMulLeftInvariant]
   ring
 
 /- English proof (translation)
-Establish `hϖ` using `Cartan.uniformizer_ne_zero F`. Establish `hX' : ∀ i j, β i ≠ β j → ((((blockUnif F b)⁻¹ : levi F n β) : GL (Fin n) F) * X : Matrix (Fin n) (Fin n) F) i j = 0` using `fun i j h => by rw [blockUnif_inv_mul_apply, hX i j h, mul_zero]`. Establish `h1 : BlockSmall b r X` using `fun i j hi => by`. Use `Subring.mul_mem _ (Subring.pow_mem _ (GLnLocal.uniformizer F).2 1) (hsmall i j hi)` as an intermediate fact. Rewrite `this` using `[← mul_assoc, pow_one, ← zpow_one_add₀ hϖ, show (1 : ℤ) + -((r : ℤ) + 1) = -(r : ℤ) by ring]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `h2 : BlockSmall b r ((((blockUnif F b)⁻¹ : levi F n β) : GL (Fin n) F) * X : Matrix (Fin n) (Fin n) F)` using `fun i j hi => by`. Rewrite using `[blockUnif_inv_mul_apply, ← mul_assoc, ← zpow_add₀ hϖ]`. Establish `hind : blockIndicator b i = 1` using `by simp [blockIndicator, hi]`. Rewrite using `[hind, show -(r : ℤ) + -1 = -((r : ℤ) + 1) by ring]`. Conclude with `hsmall i j hi`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hz : zeroBlock b ((((blockUnif F b)⁻¹ : levi F n β) : GL (Fin n) F) * X : Matrix (Fin n) (Fin n) F) = zeroBlock b X`. Use extensionality with `i j`. Simplify using `only [zeroBlock]`. Use `split_ifs with hi`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[blockUnif_inv_mul_apply]`. Establish `hind : blockIndicator b i = 0` using `by simp [blockIndicator, hi]`. Rewrite using `[hind, neg_zero, zpow_zero, one_mul]`. Rewrite using `[eq_zeroBlock_of_invariant hinv hX h1, shiftBlock, eq_zeroBlock_of_invariant hinv hX' h2, hz]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_shiftBlock_of_small {Ψ : Matrix (Fin n) (Fin n) F → ℂ} {r : ℕ}
     (hinv : ∀ X Y : Matrix (Fin n) (Fin n) F, (∀ i j, β i ≠ β j → X i j = 0) →
@@ -358,7 +354,7 @@ theorem eq_shiftBlock_of_small {Ψ : Matrix (Fin n) (Fin n) F → ℂ} {r : ℕ}
   rw [eq_zeroBlock_of_invariant hinv hX h1, shiftBlock, eq_zeroBlock_of_invariant hinv hX' h2, hz]
 
 /- English proof (translation)
-Introduce `i j hi` and use `by rw [blockUnif_inv_mul_apply] have hind : blockIndicator b i = 0 := by simp [blockIndicator, hi, hb] rw [hind, neg_zero, zpow_zero, one_mul] exact h i j hi`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem blockSmall_shift {b b' : Set.range β} (hb : b' ≠ b) {t : ℤ}
     {X : Matrix (Fin n) (Fin n) F} (h : BlockSmall b' t X) :
@@ -370,7 +366,7 @@ theorem blockSmall_shift {b b' : Set.range β} (hb : b' ≠ b) {t : ℤ}
   exact h i j hi
 
 /- English proof (translation)
-Use function extensionality and compare the values at `m`. Simplify using `only [leviIntegrand, Pi.sub_apply]`. Expand and normalize the polynomial expressions, which then agree.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem leviIntegrand_sub (θ : levi F n β →* ℝ≥0) (Ψ₁ Ψ₂ : Matrix (Fin n) (Fin n) F → ℂ) (w : W)
     (ℓ : Module.Dual ℂ W) (s : ℂ) :
@@ -381,13 +377,13 @@ theorem leviIntegrand_sub (θ : levi F n β →* ℝ≥0) (Ψ₁ Ψ₂ : Matrix 
   ring
 
 /- English proof (translation)
-Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty => exact ⟨Ψ, hΨ, by simp, fun s _ => by simp⟩`. Consider the case `insert b S hb ih`. Take `⟨Ψ', hΨ', hvan, hint⟩` from `ih`. Take `⟨r, A, hinv, hsupp⟩` from `id hΨ'`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨Ψ' - shiftBlock b Ψ', hΨ'.sub (hΨ'.shiftBlock b), fun b' hb' => ?_, fun s hs => ?_⟩` and prove the remaining obligations. Break down `Finset.mem_insert.1 hb' with rfl | hb'S` into its components or cases. Conclude with `⟨(r : ℤ) + 1, fun X hX hsm => by`. Rewrite using `[Pi.sub_apply, ← eq_shiftBlock_of_small hinv hX hsm, sub_self]⟩`. Take `⟨t, ht⟩` from `hvan b' hb'S`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hne : b' ≠ b` using `fun e => hb (e ▸ hb'S)`. Use `⟨t, fun X hX hsm => ?_⟩` and prove the remaining obligations. Establish `hX' : ∀ i j, β i ≠ β j → ((((blockUnif F b)⁻¹ : levi F n β) : GL (Fin n) F) * X : Matrix (Fin n) (Fin n) F) i j = 0` using `fun i j h => by`. Rewrite using `[blockUnif_inv_mul_apply, hX i j h, mul_zero]`. Rewrite using `[Pi.sub_apply, ht X hX hsm, shiftBlock, ht _ hX' (blockSmall_shift hne hsm), sub_zero]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hi1` using `integrable_leviIntegrand hσ θ hθ hΨ' w ℓ s (hconv s hs)`. Establish `hi2` using `integrable_leviIntegrand hσ θ hθ (hΨ'.shiftBlock b) w ℓ s (hconv s hs)`. Rewrite using `[leviIntegrand_sub]`. Simplify using `only [Pi.sub_apply]`. Rewrite using `[integral_sub hi1 hi2, integral_shiftBlock μ hω, hint s hs, Finset.prod_insert hb]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -429,11 +425,11 @@ theorem exists_removeBlocks (hσ : IsSmooth σ) (θ : levi F n β →* ℝ≥0) 
       ring
 
 /- English proof (translation)
-Rewrite using `[IsLocallyConstant.iff_exists_open]`. Introduce `m`. Use `⟨⋂ i, ⋂ j, (fun x : levi F n β => f x i j) ⁻¹' {x : F | (uniformizer F : F) ^ (-(r : ℤ)) * (x - f m i j) ∈ 𝒪[F]}, isOpen_iInter_of_finite fun i => isOpen_iInter_of_finite fun j => (isOpen_small r _).preimage (hf i j), ?_, fun x hx => ?_⟩` and prove the remaining obligations. Simplify using `only [Set.mem_iInter, Set.mem_preimage, Set.mem_ofPred_eq, sub_self, mul_zero]`. Conclude with `fun _ _ => (𝒪[F]).zero_mem`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Simplify using `only [Set.mem_iInter, Set.mem_preimage, Set.mem_ofPred_eq] at hx`. Establish `hx' : f x = f m + (f x - f m)` using `by abel`. Use `show Ψ (f x) = Ψ (f m)`. Rewrite using `[hx']`. Use `hinv _ _ (hbd m) (fun i j h => ?_) fun i j => exists_eq_pow_mul_iff.2 (hx i j)` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.sub_apply, hbd x i j h, hbd m i j h, sub_zero]`.
+A detailed English derivation is pending.
 -/
 theorem isLocallyConstant_comp_of_invariant {Ψ : Matrix (Fin n) (Fin n) F → ℂ} {r : ℕ}
     (hinv : ∀ X Y : Matrix (Fin n) (Fin n) F, (∀ i j, β i ≠ β j → X i j = 0) →
@@ -457,7 +453,7 @@ theorem isLocallyConstant_comp_of_invariant {Ψ : Matrix (Fin n) (Fin n) F → �
     rw [Matrix.sub_apply, hbd x i j h, hbd m i j h, sub_zero]
 
 /- English proof (translation)
-Simplify using `only [zeroBlock]`. Use `split_ifs`. Conclude with `continuous_const`. Apply the tactic sequence `exact (continuous_entry F n i j).comp continuous_subtype_val`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem continuous_zeroBlock_apply (b : Set.range β) (i j : Fin n) :
     Continuous fun m : levi F n β =>
@@ -468,7 +464,7 @@ theorem continuous_zeroBlock_apply (b : Set.range β) (i j : Fin n) :
   · exact (continuous_entry F n i j).comp continuous_subtype_val
 
 /- English proof (translation)
-Establish `: 1 < Fintype.card (Fiber β b)` using `hb`. Take `⟨x, y, hxy⟩` from `Fintype.exists_pair_of_one_lt_card this`. Use `⟨x.1, y.1, x.2, ?_, fun e => hxy (Subtype.ext e)⟩` and prove the remaining obligations. Conclude with `congrArg Subtype.val (x.2.trans y.2.symm)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_two_of_blockSize {b : Set.range β} (hb : 2 ≤ blockSize β b) :
     ∃ i₀ j₀ : Fin n, blockOf β i₀ = b ∧ β i₀ = β j₀ ∧ i₀ ≠ j₀ := by
@@ -478,31 +474,27 @@ theorem exists_two_of_blockSize {b : Set.range β} (hb : 2 ≤ blockSize β b) :
   exact congrArg Subtype.val (x.2.trans y.2.symm)
 
 /- English proof (translation)
-Take `⟨i₀, j₀, hi₀, hij, hne⟩` from `exists_two_of_blockSize hb`. Use `set R : Set (levi F n β) := {m | Pr fun b' => blockOrd F b' m} with hR`. Use `set G : levi F n β → ℂ := fun m => R.indicator (fun m => Ψ (zeroBlock b ((m : GL (Fin n) F) : Matrix (Fin n) (Fin n) F)) * (θ m : ℂ) * detPow (m : GL (Fin n) F) s) m with hG`. Establish `hpt : ∀ m, R.indicator (leviIntegrand σ θ Ψ w ℓ s) m = G m * ℓ (σ m w)`. Introduce `m`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hm : m ∈ R`. Rewrite using `[Set.indicator_of_mem hm, hG]`. Simplify using `only`. Rewrite using `[Set.indicator_of_mem hm, leviIntegrand]`. Distinguish the cases in `hℓ0 : ℓ (σ m w) = 0`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hℓ0, mul_zero, mul_zero]`. Rewrite using `[eq_zeroBlock_of_invariant hinv (mem_levi.1 m.2) (fun i j hi => hN m hℓ0 b r (hPr _ hm) i j hi)]`. Rewrite using `[Set.indicator_of_notMem hm, hG]`. Simplify using `only`. Rewrite using `[Set.indicator_of_notMem hm, zero_mul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[integral_congr_ae (Filter.Eventually.of_forall hpt)]`. Establish `hRu : ∀ m u : levi F n β, (u : GL (Fin n) F) ∈ unipotentRadical F n (splitFun {i₀}) → (m * u ∈ R ↔ m ∈ R)`. Introduce `m u hu`. Establish `: (fun b' => blockOrd F b' (m * u)) = fun b' => blockOrd F b' m`. Use function extensionality and compare the values at `b'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[blockOrd_mul, blockOrd_of_mem_unipotentRadical b' hu, add_zero]`. Simplify using `only [hR, Set.mem_ofPred_eq, this]`. Use `integral_eq_zero_of_cuspidal hc μ hij hne ℓ (fun m u hu => ?_) (fun w' => ?_) w` and prove the remaining obligations. Simplify using `only [hG]`. Distinguish the cases in `hm : m ∈ R`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Set.indicator_of_mem ((hRu m u hu).2 hm), Set.indicator_of_mem hm, zeroBlock_mul_unipotent hi₀ m hu, map_mul, map_eq_one_of_mem_unipotentRadical θ hθ hu, mul_one, Subgroup.coe_mul, detPow_mul, detPow_eq_qs_zpow (u : GL (Fin n) F), ordDet_of_mem_unipotentRadical hu, zpow_zero, mu …`. Rewrite using `[Set.indicator_of_notMem (fun h => hm ((hRu m u hu).1 h)), Set.indicator_of_notMem hm]`. Set `k : Set.range β → ℤ` to `fun b' => if b' = b then (blockSize β b : ℤ) * ((r : ℤ) + N) else -((blockSize β b' : ℤ) * A)`. Establish `hcont : Continuous fun m => G m * ℓ (σ m w')`. Establish `hloc : IsLocallyConstant fun m : levi F n β => if m ∈ R then (1 : ℂ) else 0` using `(isLocallyConstant_blockOrds (F := F) (β := β)).comp (fun v => if Pr v then (1 : ℂ) else 0)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `heq : (fun m => G m * ℓ (σ m w')) = fun m => (if m ∈ R then (1 : ℂ) else 0) * (Ψ (zeroBlock b ((m : GL (Fin n) F) : Matrix (Fin n) (Fin n) F)) * coeffIntegrand σ θ w' ℓ s m)`. Use function extensionality and compare the values at `m`. Simplify using `only [hG, coeffIntegrand, Set.indicator]`. Apply the tactic sequence `split_ifs <;> ring`. Rewrite using `[heq]`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Conclude with `hloc.continuous.mul ((isLocallyConstant_comp_of_invariant hinv (fun m i j h => zeroBlock_blockDiag (mem_levi.1 m.2) i j h) (continuous_zeroBlock_apply b)).continuous.mul (continuous_coeffIntegrand hσ θ hθ w' ℓ s))`. Use `integrable_of_le_indicator hcont hC0 (hconv w' k) fun m => ?_` and prove the remaining obligations. Simplify using `only [hG]`. Distinguish the cases in `hm : m ∈ R`. Rewrite using `[Set.indicator_of_mem hm]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Distinguish the cases in `h0 : Ψ (zeroBlock b ((m : GL (Fin n) F) : Matrix (Fin n) (Fin n) F)) = 0`. Rewrite using `[h0, zero_mul, zero_mul, zero_mul, norm_zero]`. Conclude with `mul_nonneg hC0 (Set.indicator_nonneg (fun _ _ => norm_nonneg _) _)`. Establish `hmE : m ∈ {m : levi F n β | ∀ b', k b' ≤ blockOrd F b' m}`. Introduce `b'`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `hb' : b' = b`. Substitute `hb'` using the available equality. Simplify using `only [k, if_pos rfl]`. Conclude with `hPr _ hm`. Simplify using `only [k, if_neg hb']`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `neg_le_blockOrd fun i j hi => ?_` and prove the remaining obligations. Use `hsupp _ (zeroBlock_blockDiag (mem_levi.1 m.2)) h0 i j` as an intermediate fact. Simplify `this` using `[zeroBlock, hi, hb']`. Rewrite using `[Set.indicator_of_mem hmE]`. Establish `: Ψ (zeroBlock b ((m : GL (Fin n) F) : Matrix (Fin n) (Fin n) F)) * (θ m : ℂ) * detPow (m : GL (Fin n) F) s * ℓ (σ m w') = Ψ (zeroBlock b ((m : GL (Fin n) F) : Matrix (Fin n) (Fin n) F)) * coeffIntegrand σ θ w' ℓ s m`.
-
-Simplify using `only [coeffIntegrand]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this, norm_mul]`. Conclude with `mul_le_mul_of_nonneg_right (hC _ (zeroBlock_blockDiag (mem_levi.1 m.2))) (norm_nonneg _)`. Rewrite using `[Set.indicator_of_notMem hm, zero_mul, norm_zero]`.
-
-Conclude with `mul_nonneg hC0 (Set.indicator_nonneg (fun _ _ => norm_nonneg _) _)`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integral_indicator_eq_zero (hσ : IsSmooth σ) (hc : IsCuspidal σ)
     (θ : levi F n β →* ℝ≥0) (hθ : Continuous θ) (μ : Measure (levi F n β)) [μ.IsHaarMeasure]
@@ -610,7 +602,7 @@ theorem integral_indicator_eq_zero (hσ : IsSmooth σ) (hc : IsCuspidal σ)
       exact mul_nonneg hC0 (Set.indicator_nonneg (fun _ _ => norm_nonneg _) _)
 
 /- English proof (translation)
-Rewrite using `[Polynomial.eval_finsetSum, Finset.sum_div]`. Use `Finset.sum_congr rfl fun k hk => ?_` and prove the remaining obligations. Rewrite using `[Polynomial.eval_mul, Polynomial.eval_C, Polynomial.eval_pow, Polynomial.eval_X, ← zpow_natCast, ← zpow_natCast, Int.toNat_of_nonneg (sub_nonneg.2 (hS k hk)), Int.toNat_of_nonneg (neg_nonneg.2 hK₀), mul_div_assoc, ← zpow_sub₀ hx]`. Use `congr 2`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem eval_laurent_sum {x : ℂ} (hx : x ≠ 0) {K₀ : ℤ} (hK₀ : K₀ ≤ 0) (S : Finset ℤ)
     (hS : ∀ k ∈ S, K₀ ≤ k) (a : ℤ → ℂ) :
@@ -625,53 +617,47 @@ theorem eval_laurent_sum {x : ℂ} (hx : x ≠ 0) {K₀ : ℤ} (hK₀ : K₀ ≤
   ring
 
 /- English proof (translation)
-Take `⟨Ns, hNs⟩` from `exists_block_small hσ hc w hℓ`. Take `⟨C, hC⟩` from `hΨ.exists_bound`. Take `⟨r, A, hinv, hsupp⟩` from `id hΨ`. Use `choose! t ht using hvan`. Use `set T : Set.range β → ℤ := fun b => (blockSize β b : ℤ) * ((r : ℤ) + Ns) with hT`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `set nonB1 : Finset (Set.range β) := Finset.univ.filter fun b => blockSize β b ≠ 1 with hnonB1`. Set `Q : Finset (Set.range β) → Set (levi F n β)` to `fun S => {m | ∀ b ∈ S, blockOrd F b m < T b}`. Establish `hQm : ∀ S, MeasurableSet (Q S)` using `fun S => measurableSet_blockOrds (fun v => ∀ b ∈ S, v b < T b)`. Establish `hcut : ∀ s : ℂ, s₀ < s.re → ∀ S : Finset (Set.range β), S ⊆ nonB1 → ∫ m, leviIntegrand σ θ Ψ w ℓ s m ∂μ = ∫ m, (Q S).indicator (leviIntegrand σ θ Ψ w ℓ s) m ∂μ`. Introduce `s hs S`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Proceed by induction. Treat this case separately.
 
-Establish `hint` using `integrable_leviIntegrand hσ θ hθ hΨ w ℓ s (hconv s hs w)`. Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty`. Introduce `_`. Establish `: Q ∅ = Set.univ` using `by ext m; simp [Q]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[this, Set.indicator_univ]`. Consider the case `insert b S hb ih`. Introduce `hsub`. Rewrite using `[ih ((Finset.subset_insert b S).trans hsub)]`. Establish `hb2 : 2 ≤ blockSize β b`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Establish `h1` using `(Finset.mem_filter.1 (hsub (Finset.mem_insert_self b S))).2`. Establish `h2` using `blockSize_pos β b`. Use linear arithmetic over natural numbers and integers. Set `R : Set (levi F n β)` to `{m | (fun v : Set.range β → ℤ => (∀ b' ∈ S, v b' < T b') ∧ T b ≤ v b) fun b' => blockOrd F b' m}`. Establish `hRm : MeasurableSet R` using `measurableSet_blockOrds (fun v => (∀ b' ∈ S, v b' < T b') ∧ T b ≤ v b)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Establish `hpt : (Q S).indicator (leviIntegrand σ θ Ψ w ℓ s) = (Q (insert b S)).indicator (leviIntegrand σ θ Ψ w ℓ s) + R.indicator (leviIntegrand σ θ Ψ w ℓ s)`. Use function extensionality and compare the values at `m`. Simplify using `only [Pi.add_apply, Set.indicator, Q, R, Set.mem_ofPred_eq, Finset.mem_insert]`. Distinguish the cases in `h1 : ∀ b' ∈ S, blockOrd F b' m < T b'`. Distinguish the cases in `h2 : blockOrd F b m < T b`.
+Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Establish `: ∀ b', b' = b ∨ b' ∈ S → blockOrd F b' m < T b'`. Introduce and unpack `b' (rfl | h)`. Conclude with `h2`. Conclude with `h1 b' h`. Rewrite using `[if_pos h1, if_pos this, if_neg (fun h => absurd h.2 (not_le.2 h2)), add_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_pos h1, if_neg (fun h => h2 (h b (Or.inl rfl))), if_pos ⟨h1, not_lt.1 h2⟩, zero_add]`. Rewrite using `[if_neg h1, if_neg (fun h => h1 fun b' hb' => h b' (Or.inr hb')), if_neg (fun h => h1 h.1), add_zero]`. Rewrite using `[hpt]`. Simplify using `only [Pi.add_apply]`. Rewrite using `[integral_add (hint.indicator (hQm _)) (hint.indicator hRm)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Establish `hzero` using `integral_indicator_eq_zero hσ hc θ hθ μ hinv hsupp (le_max_right C 0) (fun X hX => (hC X hX).trans (le_max_left _ _)) w ℓ hNs s (hconv s hs) hb2 (fun v => (∀ b' ∈ S, v b' < T b') ∧ T b ≤ v b) (fun v hv => hv.2)`. Rewrite using `[hzero, add_zero]`. Use `set K₀ : ℤ := -∑ b, (blockSize β b : ℤ) * A with hK₀`. Use `set V : Set.range β → ℤ := fun b => max (T b) ((blockSize β b : ℤ) * (t b + Ns)) with hV`. Use `set K₁ : ℤ := ∑ b, (V b - 1) with hK₁`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hK₀0 : K₀ ≤ 0`. Rewrite using `[hK₀, neg_nonpos]`. Conclude with `Finset.sum_nonneg fun b _ => by positivity`. Set `e : levi F n β → ℂ` to `fun m => Ψ ((m : GL (Fin n) F) : Matrix (Fin n) (Fin n) F) * (θ m : ℂ) * ℓ (σ m w)`. Set `Qk : ℤ → Set (levi F n β)` to `fun k => {m | (fun v : Set.range β → ℤ => (∀ b ∈ nonB1, v b < T b) ∧ ∑ b, v b = k) fun b => blockOrd F b m}`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hQkm : ∀ k, MeasurableSet (Qk k)` using `fun k => measurableSet_blockOrds (fun v => (∀ b ∈ nonB1, v b < T b) ∧ ∑ b, v b = k)`. Set `a : ℤ → ℂ` to `fun k => ∫ m, (Qk k).indicator e m ∂μ`. Use `⟨(-K₀).toNat, ∑ k ∈ Finset.Icc K₀ K₁, Polynomial.C (a k) * Polynomial.X ^ (k - K₀).toNat, fun s hs => ?_⟩` and prove the remaining obligations. Rewrite using `[eval_laurent_sum (qs_ne_zero s) hK₀0 _ (fun k hk => (Finset.mem_Icc.1 hk).1), hcut s hs nonB1 le_rfl]`. Establish `hint` using `integrable_leviIntegrand hσ θ hθ hΨ w ℓ s (hconv s hs w)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities.
 
-Establish `hrange : ∀ m ∈ Q nonB1, leviIntegrand σ θ Ψ w ℓ s m ≠ 0 → K₀ ≤ ordDet (m : GL (Fin n) F) ∧ ordDet (m : GL (Fin n) F) ≤ K₁`. Introduce `m hm h0`. Establish `hΨ0 : Ψ ((m : GL (Fin n) F) : Matrix (Fin n) (Fin n) F) ≠ 0` using `fun h => h0 (by`. Simplify using `[leviIntegrand, h])`. Establish `hℓ0 : ℓ (σ m w) ≠ 0` using `fun h => h0 (by simp [leviIntegrand, h])`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlow` using `mem_of_isLeviSchwartz hsupp hΨ0`. Rewrite using `[ordDet_eq_sum_blockOrd]`. Prove the components needed by the constructor for the conclusion. Rewrite using `[hK₀, ← Finset.sum_neg_distrib]`. Conclude with `Finset.sum_le_sum fun b _ => hlow b`.
+Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `Finset.sum_le_sum fun b _ => ?_` and prove the remaining obligations. Distinguish the cases in `hb1 : blockSize β b = 1`. Assume the negation of the conclusion as `hcon`. Establish `hge : (blockSize β b : ℤ) * (t b + Ns) ≤ blockOrd F b m`. Use `le_max_right (T b) ((blockSize β b : ℤ) * (t b + Ns))` as an intermediate fact.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [hV] at hcon`. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `hΨ0 (ht b hb1 _ (mem_levi.1 m.2) fun i j hi => hNs m hℓ0 b (t b) hge i j hi)`. Use `hm b (Finset.mem_filter.2 ⟨Finset.mem_univ _, hb1⟩)` as an intermediate fact. Use `le_max_left (T b) ((blockSize β b : ℤ) * (t b + Ns))` as an intermediate fact.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Simplify using `only [hV]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hpt : ∀ m, (Q nonB1).indicator (leviIntegrand σ θ Ψ w ℓ s) m = ∑ k ∈ Finset.Icc K₀ K₁, qs F s ^ k * (Qk k).indicator e m`. Introduce `m`. Establish `hQk : ∀ k, m ∈ Qk k ↔ m ∈ Q nonB1 ∧ ordDet (m : GL (Fin n) F) = k`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Introduce `k`. Simplify using `only [Qk, Q, Set.mem_ofPred_eq, ordDet_eq_sum_blockOrd]`. Establish `hval : leviIntegrand σ θ Ψ w ℓ s m = qs F s ^ ordDet (m : GL (Fin n) F) * e m`. Simplify using `only [leviIntegrand, e, detPow_eq_qs_zpow]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Consider separately whether the proposition holds or fails.
 
-Establish `hterm : ∀ k, qs F s ^ k * (Qk k).indicator e m = if k = ordDet (m : GL (Fin n) F) then (Q nonB1).indicator (leviIntegrand σ θ Ψ w ℓ s) m else 0`. Introduce `k`. Distinguish the cases in `hk : k = ordDet (m : GL (Fin n) F)`. Rewrite using `[if_pos hk]`. Distinguish the cases in `hm : m ∈ Q nonB1`.
+Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Set.indicator_of_mem ((hQk k).2 ⟨hm, hk.symm⟩), Set.indicator_of_mem hm, hval, hk]`. Rewrite using `[Set.indicator_of_notMem (fun h => hm ((hQk k).1 h).1), Set.indicator_of_notMem hm, mul_zero]`. Rewrite using `[if_neg hk, Set.indicator_of_notMem (fun h => hk ((hQk k).1 h).2.symm), mul_zero]`. Rewrite using `[Finset.sum_congr rfl fun k _ => hterm k, Finset.sum_ite_eq']`. Use `split_ifs with hmem`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Distinguish the cases in `hm : m ∈ Q nonB1`. Rewrite using `[Set.indicator_of_mem hm]`. Assume the negation of the conclusion as `h0`. Conclude with `hmem (Finset.mem_Icc.2 (hrange m hm h0))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Set.indicator_of_notMem hm]`. Establish `hintk : ∀ k, Integrable ((Qk k).indicator e) μ`. Introduce `k`. Establish `heq : (Qk k).indicator e = fun m => (qs F s ^ k)⁻¹ * (Qk k).indicator (leviIntegrand σ θ Ψ w ℓ s) m`. Use function extensionality and compare the values at `m`.
-
-Distinguish the cases in `hm : m ∈ Qk k`. Rewrite using `[Set.indicator_of_mem hm, Set.indicator_of_mem hm]`. Establish `hk : ordDet (m : GL (Fin n) F) = k`. Use `hm.2` as an intermediate fact. Rewrite using `[ordDet_eq_sum_blockOrd]`.
-
-Conclude with `this`. Simplify using `only [leviIntegrand, e, detPow_eq_qs_zpow, hk]`. Clear denominators, using `[zpow_ne_zero k (qs_ne_zero s)]` for the nonvanishing conditions. Rewrite using `[Set.indicator_of_notMem hm, Set.indicator_of_notMem hm, mul_zero]`. Rewrite using `[heq]`.
-
-Conclude with `(hint.indicator (hQkm k)).const_mul _`. Rewrite using `[integral_congr_ae (Filter.Eventually.of_forall hpt), integral_finsetSum _ fun k _ => (hintk k).const_mul _]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[integral_const_mul, mul_comm]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_laurent (hσ : IsSmooth σ) (hc : IsCuspidal σ) (θ : levi F n β →* ℝ≥0)
     (hθ : Continuous θ) (μ : Measure (levi F n β)) [μ.IsHaarMeasure]
@@ -835,11 +821,11 @@ theorem exists_laurent (hσ : IsSmooth σ) (hc : IsCuspidal σ) (θ : levi F n �
   rw [integral_const_mul, mul_comm]
 
 /- English proof (translation)
-Take `⟨ω, hω⟩` from `exists_blockChar (F := F) hσ`. Take `⟨s₀, -, hconv⟩` from `exists_lintegral_lt_top hσ hc θ hθ μM`. Use `set B1 : Finset (Set.range β) := Finset.univ.filter fun b => blockSize β b = 1 with hB1`. Use `⟨s₀, ∏ b ∈ B1, (1 - Polynomial.C ((θ (blockUnif F b) : ℂ) * ω b) * Polynomial.X), ?_, fun Ψ hΨ w ℓ hℓ => ⟨fun s hs => integrable_leviIntegrand hσ θ hθ hΨ w ℓ s (hconv s hs w ℓ hℓ), ?_⟩⟩` and prove the remaining obligations. Rewrite using `[Polynomial.eval_prod]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `Finset.prod_eq_one fun b _ => by simp`. Take `⟨Ψ', hΨ', hvan, hint⟩` from `exists_removeBlocks hσ θ hθ μM hω w ℓ (fun s hs k => hconv s hs w ℓ hℓ k) hΨ B1`. Take `⟨N, P, hNP⟩` from `exists_laurent hσ hc θ hθ μM hΨ' (fun b hb => hvan b (Finset.mem_filter.2 ⟨Finset.mem_univ _, hb⟩)) w hℓ (fun s hs w' k => hconv s hs w' ℓ hℓ k)`. Use `⟨N, P, fun s hs => ?_⟩` and prove the remaining obligations. Rewrite using `[← hNP s hs, hint s hs, Polynomial.eval_prod]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Use `congr 1`. Use `Finset.prod_congr rfl fun b hb => ?_` and prove the remaining obligations. Rewrite using `[(Finset.mem_filter.1 hb).2, pow_one]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_leviZeta (hσ : IsSmooth σ) [σ.IsIrreducible] (hc : IsCuspidal σ)
     (θ : levi F n β →* ℝ≥0) (hθ : Continuous θ) (μM : Measure (levi F n β)) [μM.IsHaarMeasure] :

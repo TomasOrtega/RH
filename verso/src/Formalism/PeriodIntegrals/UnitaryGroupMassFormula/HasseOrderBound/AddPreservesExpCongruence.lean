@@ -9,14 +9,14 @@ namespace PI.HasseOrdBdW
 variable {D : D7} {B : WeightFamilies.Prov D} {P : ModuliIntegralCharts.Prov D} {j : ℕ} {X : PJ D B P j} {ka wL wF : WeightFamilies.Wt D j}
 
 /- English proof (translation)
-Use `Kl_charZero X la` as an intermediate fact. Conclude with `charZero_of_injective_algebraMap (algebraMap (X.Kl la) (Kp X la N)).injective`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem kp_charZero (la : HeightOneSpectrum (𝓞 B.KO)) (N : ℕ) : CharZero (Kp X la N) := by
   have := Kl_charZero X la
   exact charZero_of_injective_algebraMap (algebraMap (X.Kl la) (Kp X la N)).injective
 
 /- English proof (translation)
-Establish `: Algebra.IsIntegral (Kp X la G.N) (OsK X la G.w)` using `Algebra.IsIntegral.of_finite _ _`. Conclude with `isUnif_of_field (Kp X la G.N) (Op.irreducible_map X la G.N (Classical.choose_spec (IsDiscreteValuationRing.exists_irreducible (X.Ol la))))`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isUnif_unifO (G : GlobalFamilyData X ka wL wF) (la : HeightOneSpectrum (𝓞 B.KO))
     (hfd : FiniteDimensional (Kp X la G.N) (OsK X la G.w)) :
@@ -26,7 +26,7 @@ theorem isUnif_unifO (G : GlobalFamilyData X ka wL wF) (la : HeightOneSpectrum (
     (Op.irreducible_map X la G.N (Classical.choose_spec (IsDiscreteValuationRing.exists_irreducible (X.Ol la))))
 
 /- English proof (translation)
-Use `kp_charZero (X := X) la G.N` as an intermediate fact. Conclude with `(hP (Op X la G.N) (Kp X la G.N) (OsK X la G.w)).2 ζ`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isDVRAt_pt (G : GlobalFamilyData X ka wL wF) (la : HeightOneSpectrum (𝓞 B.KO)) (hP : PublishedIntClos)
     (hfd : FiniteDimensional (Kp X la G.N) (OsK X la G.w)) (hred : IsReduced (OsK X la G.w))
@@ -35,9 +35,9 @@ theorem isDVRAt_pt (G : GlobalFamilyData X ka wL wF) (la : HeightOneSpectrum (�
   exact (hP (Op X la G.N) (Kp X la G.N) (OsK X la G.w)).2 ζ
 
 /- English proof (translation)
-Introduce `D B P j X ka wL wF G la Q hP hC ζ`. Take `⟨hfd, hred, hgen⟩` from `hC`. Establish `hU` using `isUnif_unifO G la hfd`. Use `isDVRAt_pt G la hP hfd hred ζ` as an intermediate fact. Use `⟨ordV_zero Q.c ζ hU hgen, fun m v => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `show ordV (unifO X la G.N) ζ Q.e Q.c v ≤ ordV (unifO X la G.N) ζ Q.e Q.c (m • v)`. Rewrite using `[← Int.cast_smul_eq_zsmul (OsK X la G.w) m v, ordV_smul Q.c ζ hU hgen]`. Conclude with `le_add_of_nonneg_left (ord_nonneg ζ hU (intCast_mem _ m))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem addPreservesExpCongruence : S3 := by
   intro D B P j X ka wL wF G la Q hP hC ζ
@@ -50,17 +50,17 @@ theorem addPreservesExpCongruence : S3 := by
   exact le_add_of_nonneg_left (ord_nonneg ζ hU (intCast_mem _ m))
 
 /- English proof (translation)
-Introduce `e vf vg d T n hvf h`. Use `mul_le_mul_of_nonneg_left ?_ (by exact_mod_cast Nat.zero_le e)` and prove the remaining obligations. Establish `e1 : (T : EReal) * (d : EReal) = ((T * d : ℝ) : EReal)` using `by rw [EReal.coe_mul]; rfl`. Establish `e2 : ((T + n : ℕ) : EReal) * (d : EReal) = ((((T + n : ℕ) : ℝ) * d : ℝ) : EReal)`. Rewrite using `[EReal.coe_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[e1, e2]`. Proceed by induction on `vf using EReal.rec with`. Consider the case `bot => exact absurd rfl hvf`. Consider the case `top`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Establish `hg : vg = ⊤`. Rewrite `h` using `[EReal.top_add_coe]`. Conclude with `top_le_iff.mp h`. Rewrite using `[hg, EReal.top_sub_coe, EReal.top_sub_coe]`. Consider the case `coe a`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately. Proceed by induction.
 
-Proceed by induction on `vg using EReal.rec with`. Consider the case `bot`. Rewrite `h` using `[← EReal.coe_add]`. Conclude with `absurd (le_bot_iff.mp h) (EReal.coe_ne_bot _)`. Consider the case `top`.
+Treat this case separately. Rewrite the indicated hypotheses using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Rewrite using `[EReal.top_sub_coe]`. Conclude with `le_top`. Consider the case `coe b`. Establish `h' : a + n * d ≤ b`. Rewrite `h` using `[← EReal.coe_add]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Use the polynomial consequences of the given equalities and inequalities.
 
-Conclude with `EReal.coe_le_coe_iff.mp h`. Rewrite using `[← EReal.coe_sub, ← EReal.coe_sub, EReal.coe_le_coe_iff]`. Use `push_cast`. Use the polynomial consequences of the given equalities and inequalities.
+A detailed English derivation is pending.
 -/
 theorem expCongruenceExtendsToSum : S4 := by
   intro e vf vg d T n hvf h

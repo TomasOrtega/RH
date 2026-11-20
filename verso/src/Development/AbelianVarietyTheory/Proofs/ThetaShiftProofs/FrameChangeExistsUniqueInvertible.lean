@@ -9,11 +9,11 @@ open AlgebraicGeometry CategoryTheory CategoryTheory.Limits NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor Formalism.L2.Pj Formalism.L2.Pj.QAt GlobalTheory.ArcQ GlobalTheory.Frames
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c S _ _ g s y`. Establish `hunit : ∀ y', FrChg g s y y' → (∀ τ, IsUnit (g τ).det) ∧ IsUnit s`. Introduce `y' h`. Take `⟨h1, h2⟩` from `GlobalTheory.Frames.frChg_exists_unique E H Dw l Xo c S y y'`. Take `⟨g', a, hg', h'⟩` from `h1 h.1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨e1, e2⟩` from `h2 g g' s a h h'`. Substitute `e1 e2` using the available equality. Conclude with `⟨hg', a.isUnit⟩`. Use `⟨fun hg hs => ?_, fun y' y'' h' h'' => ?_, hunit, fun y' hx => ?_⟩` and prove the remaining obligations. Take `⟨a, rfl⟩` from `hs`.
+Extract witnesses or component facts from the available result. Substitute using the available equality. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `(GlobalTheory.Frames.existsUnique_frChg E H Dw l Xo c S y g a hg).exists`. Take `⟨hg, a, rfl⟩` from `hunit y' h'`. Conclude with `(GlobalTheory.Frames.existsUnique_frChg E H Dw l Xo c S y g a hg).unique h' h''`. Take `⟨g', a, -, h⟩` from `(GlobalTheory.Frames.frChg_exists_unique E H Dw l Xo c S y y').1 hx`. Conclude with `⟨g', a, h⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.ArcQ.frChg_exists_unique_units : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (S : Type) [CommRing S] [Algebra c.F S] (g : ∀ τ : E →+* ℂ, Matrix (Fin (Dw.mult τ)) (Fin (Dw.mult τ)) S) (s : S) (y : FrPt Xo c S), ((∀ τ, IsUnit (g τ).det) → IsUnit s → ∃ y', FrChg g s y y') ∧ (∀ y' y'', FrChg g s y y' → FrChg g s y y'' → y' = y'') ∧ (∀ y', FrChg g s y y' → (∀ τ, IsUnit (g τ).det) ∧ IsUnit s) ∧ ∀ y' : FrPt Xo c S, y'.x = y.x → ∃ (g' : ∀ τ : E →+* ℂ, Matrix (Fin (Dw.mult τ)) (Fin (Dw.mult τ)) S) (s' : S), FrChg g' s' y y' := by
   intro E _ _ _ H Dw l Xo c S _ _ g s y

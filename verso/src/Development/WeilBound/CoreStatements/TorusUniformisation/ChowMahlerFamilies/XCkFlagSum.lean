@@ -11,7 +11,7 @@ open GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.NumbersDVR.Bundl
 namespace PositivityTheory.Xgn.A_ck_flag_sum
 
 /- English proof (translation)
-Unfold `classList`. Rewrite using `[← Finsupp.toMultiset_map, Multiset.map_map]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem classList_mapDomain {K σ τ : Type} (cls : τ → K → ℤ) (e : σ → τ) (μ : σ →₀ ℕ) :
     classList cls (Finsupp.mapDomain e μ) = classList (cls ∘ e) μ := by
@@ -19,7 +19,7 @@ theorem classList_mapDomain {K σ τ : Type} (cls : τ → K → ℤ) (e : σ �
   rw [← Finsupp.toMultiset_map, Multiset.map_map]
 
 /- English proof (translation)
-Unfold `classNum`. Rewrite using `[support_rename_of_injective he, Finset.sum_image fun a _ b _ h => Finsupp.mapDomain_injective he h]`. Use `Finset.sum_congr rfl fun μ _ => ?_` and prove the remaining obligations. Rewrite using `[coeff_rename_mapDomain e he, classList_mapDomain]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem classNum_rename {K : Type} [DecidableEq K] {ι : K → Type} {O : Type} [CommRing O] [IsDomain O]
     [IsDiscreteValuationRing O] {σ τ : Type} (cls : τ → K → ℤ) (e : σ → τ) (he : Function.Injective e)
@@ -33,7 +33,7 @@ theorem classNum_rename {K : Type} [DecidableEq K] {ι : K → Type} {O : Type} 
   rw [coeff_rename_mapDomain e he, classList_mapDomain]
 
 /- English proof (translation)
-Simplify using `[psumExpansion]`.
+Simplify using the standard rewrite rules.
 -/
 theorem psumExpansion_eq_rename (N k : ℕ) (i : Fin N) :
     psumExpansion N k i =
@@ -41,9 +41,9 @@ theorem psumExpansion_eq_rename (N k : ℕ) (i : Fin N) :
   simp [psumExpansion]
 
 /- English proof (translation)
-Unfold `pairNum`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Fin.sum_univ_one]`. Establish `he : Function.Injective (Sum.map (fun _ : Fin 1 => i) (fun _ : Fin 1 => i))` using `Sum.map_injective.mpr ⟨fun _ _ _ => Subsingleton.elim _ _, fun _ _ _ => Subsingleton.elim _ _⟩`. Establish `hc : Sum.elim x x' ∘ Sum.map (fun _ : Fin 1 => i) (fun _ : Fin 1 => i) = Sum.elim (fun _ : Fin 1 => x i) (fun _ : Fin 1 => x' i)`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `s`. Apply the tactic sequence `rcases s with s | s <;> rfl`. Simplify using `only [psumExpansion_eq_rename N k i, classNum_rename _ _ he, hc]`.
+Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem pairNum_psum {K : Type} [DecidableEq K] {ι : K → Type} {O : Type} [CommRing O] [IsDomain O]
     [IsDiscreteValuationRing O] {N : ℕ} (P : Ideal (MRing ι O)) (x x' : Fin N → K → ℤ)

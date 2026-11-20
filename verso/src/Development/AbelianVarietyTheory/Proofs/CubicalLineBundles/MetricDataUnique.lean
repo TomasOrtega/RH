@@ -22,7 +22,7 @@ open GlobalTheory GlobalTheory.CM GlobalTheory.Frames GlobalTheory.LamT
 namespace GlobalTheory.LamT.MetUniq
 
 /- English proof (translation)
-Substitute `hg` using the available equality. Conclude with `GlobalTheory.T.thetaSection_norm_and_hermitianForm_indep_uniformisation x u Hm χ θ Fd u' Hm' χ' θ' Fd' h h'`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem uniq_cast (x : KeyIn ℂ) (g : ℕ) (hg : x.P.g = g) (u : HolUnif x.P.A x.P.L g) (Hm : Matrix (Fin g) (Fin g) ℂ)
     (χ : u.Λ → ℂ) (θ : (Fin g → ℂ) → ℂ) (Fd : Set (Fin g → ℂ)) (u' : HolUnif x.P.A x.P.L x.P.g)
@@ -37,7 +37,7 @@ theorem uniq_cast (x : KeyIn ℂ) (g : ℕ) (hg : x.P.g = g) (u : HolUnif x.P.A 
   exact GlobalTheory.T.thetaSection_norm_and_hermitianForm_indep_uniformisation x u Hm χ θ Fd u' Hm' χ' θ' Fd' h h'
 
 /- English proof (translation)
-Establish `: Formalism.L2.Pj.dualMap (RingHom.id S) = RingHom.id _`. Use `RingHom.ext fun r => ?_` and prove the remaining obligations. Apply the tactic sequence `ext <;> simp [Formalism.L2.Pj.dualMap]`. Rewrite using `[this]`. Conclude with `Spec.map_id _`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem spMap_dualMap_id (S : Type) [CommRing S] :
     spMap (Formalism.L2.Pj.dualMap (RingHom.id S)) = 𝟙 (Sp (DualNumber S)) := by
@@ -50,17 +50,17 @@ theorem spMap_dualMap_id (S : Type) [CommRing S] :
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Level H} {Xo : Moduli Dw l}
 
 /- English proof (translation)
-Take `⟨Φ, u, Hm, χ, θ, Fd, w, W, tie, a1, a2, a3, a4, hN, hw, hG⟩` from `h`. Take `⟨Φ', u', Hm', χ', θ', Fd', w', W', tie', b1, b2, b3, b4, hN', hw', hG'⟩` from `h'`. Establish `hx : x = spMap (RingHom.id ℂ) ≫ x`. Establish `: spMap (RingHom.id ℂ) = 𝟙 (Sp ℂ)` using `Spec.map_id _`. Rewrite using `[this, Category.id_comp]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `sc` using `GlobalTheory.Frames.SecCalc.sec_calc E H Dw l Xo ℂ ℂ ℂ (RingHom.id ℂ) (RingHom.id ℂ) x x x hx hx`. Establish `hbc : SecBC (RingHom.id ℂ) 1 x x s s` using `(sc.2.1 1 s s).2 fun i => by`. Rewrite using `[(sc.2.2.2 1 1 i).2.2, _root_.one_mul]`. Take `⟨hg, v', hv', kp, hv⟩` from `GlobalTheory.T.universalTripleFibreKeyData_baseChange_keyPullback E H Dw l Xo ℂ ℂ (RingHom.id ℂ) x x Φ Φ' s s hx tie tie' hbc`. Simplify using `only [spMap_dualMap_id, Category.id_comp] at hv`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Take `⟨u₁, χ₁, θ₁, Fd₁, c1, c2, c3, c4, hN₁, hD⟩` from `GlobalTheory.T.exists_appellHumbert_uniformisation_of_keyDatumIso Φ.key _ kp hg _ u Hm χ θ Fd ⟨a1, a2, a3, a4⟩`. Establish `hm : Hm.map (RingHom.id ℂ) = Hm` using `rfl`. Rewrite `c1`, `hN₁` using `[hm]`. Take `⟨e1, e2⟩` from `uniq_cast ({ Φ' with v := v', basis := hv' } : FibKey Xo ℂ x).key _ hg u₁ Hm χ₁ θ₁ Fd₁ u' Hm' χ' θ' Fd' ⟨c1, c2, c3, c4⟩ ⟨b1, b2, b3, b4⟩`. Establish `tan : ∀ b i, IsTangent (G` using `Φ.T.t.G) (w b i) := fun b i => (Chart.tan_push Φ.m.cart _).2 (((congrArg (_ ≫ ·) (hw b i).1)).trans (ht b i).2)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `tan' : ∀ b i, IsTangent (G` using `Φ'.T.t.G) (w' b i) := fun b i => (Chart.tan_push Φ'.m.cart _).2 (((congrArg (_ ≫ ·) (hw' b i).1)).trans (ht b i).2)`. Establish `key : ∀ b i, u₁.IsDiff (W b i) (w' b i)` using `fun b i => by`. Take `⟨cf, hcf, -⟩` from `Φ.basis.2 (w b i) (tan b i)`. Use `hD cf (w b i) (w' b i) (W b i) hcf ?_ (hw b i).2` and prove the remaining obligations. Take `⟨p, hp, hq⟩` from `(Chart.comb_push Φ.m.cart _ _ _).1 hcf`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `(Chart.comb_push Φ'.m.cart _ v' (w' b i)).2 ⟨fun j => p (j.cast hg), fun j => ?_, ?_⟩` and prove the remaining obligations. Conclude with `(hp _).trans (congrArg (_ ≫ ·) (hv j).symm)`. Establish `: List.ofFn (fun j : Fin Φ'.T.g => p (j.cast hg)) = List.ofFn p` using `(List.ofFn_congr hg.symm p).symm`. Conclude with `(congrArg (fun L => (List.prod L).left) this).trans (hq.trans ((hw b i).1.trans (hw' b i).1.symm))`. Use `⟨hN.trans (hN₁.symm.trans (e1.trans hN'.symm)), ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. By extensionality, compare the relevant components.
 
-Use function extensionality and compare the values at `b`. Use extensionality with `i k`. Rewrite using `[hG, hG', e2 (w' b k) (w' b i) _ _ _ _ (tan' b k) (tan' b i) (key b k) (key b i) (hw' b k).2 (hw' b i).2]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isMetricAt_unique (x : Sp ℂ ⟶ Xo.X) (s : LB.Sec (PPx x))
     (uu : ∀ τ : E →+* ℂ, Fin (Dw.mult τ) → (Sp (DualNumber ℂ) ⟶ Xo.univ.t.G.left)) (ht : ∀ τ i, IsTanAt x (uu τ i))
@@ -99,7 +99,7 @@ theorem isMetricAt_unique (x : Sp ℂ ⟶ Xo.X) (s : LB.Sec (PPx x))
   rw [hG, hG', e2 (w' b k) (w' b i) _ _ _ _ (tan' b k) (tan' b i) (key b k) (key b i) (hw' b k).2 (hw' b i).2]
 
 /- English proof (translation)
-Introduce `_ _ _ _ _ _ _ _ _ _ y N N' Gr Gr' h h'` and use `isMetricAt_unique y.x y.s y.u y.tan N N' Gr Gr' h h'`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isMetric_unique : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (σ : c.F →+* ℂ) (y : FrPt Xo c (CAt σ)) (N N' : ℝ) (Gr Gr' : (∀ b : E →+* ℂ, Matrix (Fin (Dw.mult b)) (Fin (Dw.mult b)) ℂ)), IsMetric y N Gr → IsMetric y N' Gr' → N = N' ∧ Gr = Gr' :=
   fun _ _ _ _ _ _ _ _ _ _ y N N' Gr Gr' h h' => isMetricAt_unique y.x y.s y.u y.tan N N' Gr Gr' h h'

@@ -12,22 +12,22 @@ open MvPolynomial NumberField ReciprocityTheory.ChartRestriction.G.Geo Reciproci
 namespace GlobalTheory.CompanionTheory.Ar.Flat
 
 /- English proof (translation)
-Simplify using `[HermLine.tensor, constLine, HermLine.ofWeight]`.
+Simplify using the standard rewrite rules.
 -/
 theorem constLine_zero_tensor {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] :
     (constLine (ι := ι) 0).tensor (constLine 0) = constLine 0 := by
   simp [HermLine.tensor, constLine, HermLine.ofWeight]
 
 /- English proof (translation)
-Introduce `hPI K _ ι _ Ω _ F _ _ y φ I W n L d t u hI hd hO hle hW hL ht hu`. Establish `hex` using `fun σ : F →+* ℂ => GlobalTheory.T.exists_place_weight_conj_invariant K ι Ω F y φ (Set.indicator {σ} 1) hO`. Use `choose χ hχ _ using hex`. Establish `hsplit : ∀ (t' : (F →+* ℂ) → ℝ) (u' : ((Σ k, ι k) → ℂ) → ℝ), (∀ σ z, PtOver y φ σ z → u' z = t' σ) → ptsIntegral W (pot L) u' = ∑ σ : F →+* ℂ, t' σ * ptsIntegral W (pot L) (χ σ)` using `fun t' u' h => GlobalTheory.T.green_current_integral_formula hPI K ι Ω F y φ W n L t' u' χ hO hle hW hL h hχ`. Establish `hc : IsSmoothHerm (constLine (ι` using `ι) 0) := contDiffOn_const`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hzero : I W (n + 1) (Fin.snoc L (constLine 0)) = 0`. Establish `h` using `hI.2.1 W n L (constLine 0) (constLine 0) hW hL hc hc`. Rewrite `h` using `[constLine_zero_tensor]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hunit : ∀ α : (𝓞 F)ˣ, ∑ σ : F →+* ℂ, Real.log ‖σ ((α : 𝓞 F) : F)‖ * ptsIntegral W (pot L) (χ σ) = 0`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `α`. Take `⟨S, -, hκ⟩` from `GlobalTheory.T.flat_herm_unit_constant K ι Ω F y φ α hO`. Take `⟨v, hv, -⟩` from `GlobalTheory.T.exists_place_weight_conj_invariant K ι Ω F y φ (fun σ => Real.log (S.κ σ)) hO`. Establish `h1` using `GlobalTheory.T.intersection_family_flat_twist K ι Ω F y φ I W n L (constLine 0) S d v hI hd hO hle hW hL hc hv`. Establish `h2` using `hsplit (fun σ => Real.log (S.κ σ)) v fun σ z hz => (hv.near σ z hz).self_of_nhds`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [hκ] at h2`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hmain` using `sum_eq_mean_of_units F (fun σ => ptsIntegral W (pot L) (χ σ)) t hunit ht`. Establish `hone` using `hsplit (fun _ => 1) (fun _ => 1) fun _ _ _ => rfl`. Simplify using `only [one_mul] at hone`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hsplit t u hu, hone, hmain]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem ptsIntegral_eq_mean : PtsIntegrableStatement → ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] (Ω : Type) [Field Ω] (F : Type) [Field F] [NumberField F] (y : (Σ k, ι k) → Ω) (φ : F →+* Ω) (I : Ideal (MRing ι) → (n : ℕ) → (Fin n → HermLine ι) → ℝ) (W : Ideal (MRing ι)) (n : ℕ) (L : Fin n → HermLine ι) (d : ℕ) (t : (F →+* ℂ) → ℝ) (u : ((Σ k, ι k) → ℂ) → ℝ), IsIntersectionFamily I → IsArithVar (mCoordIdeal y) d → OverInt y φ → mCoordIdeal y ≤ W → IsArithVar W (n + 1) → (∀ j, IsSmoothHerm (L j)) → (∀ σ, t (ComplexEmbedding.conjugate σ) = t σ) → (∀ σ z, PtOver y φ σ z → u z = t σ) → ptsIntegral W (pot L) u = meanEmb t * ptsIntegral W (pot L) (fun _ => 1) := by
   intro hPI K _ ι _ Ω _ F _ _ y φ I W n L d t u hI hd hO hle hW hL ht hu

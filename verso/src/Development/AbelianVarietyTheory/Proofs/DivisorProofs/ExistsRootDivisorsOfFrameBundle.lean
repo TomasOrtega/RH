@@ -13,19 +13,19 @@ open GlobalTheory.Twist (resM resM_resM resM_self resM_smul app_resM)
 open GlobalTheory.LB (resG_resG)
 
 /- English proof (translation)
-Take `⟨s, -, es⟩` from `H i.castSucc`. Use `(fl.isSubbundle i.succ).mono` as an intermediate fact. Set `w : Fin m → Γ(fl.F i.succ, W)` to `fun k => if h : (k : ℕ) < i then (fl.step i).app W (s ⟨k, h⟩) else t`. Establish `hw (k : Fin m) : T k i • (fl.ι i.succ).app W (w k) = T k i • v k`. Break down `lt_trichotomy k i with h | rfl | h` into its components or cases.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `h' : (k : ℕ) < i` using `h`. Use `congr 1`. Simplify using `only [w, dif_pos h']`. Use `Eq.trans ?_ (es ⟨k, h'⟩)` and prove the remaining obligations. Rewrite using `[← fl.step_ι i]`.
+Establish an intermediate fact. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Simplify using `only [w, lt_irrefl, dif_neg, not_false_eq_true, ht]`. Rewrite using `[hT h, zero_smul, zero_smul]`. Establish `e : t₀ = ∑ k, T k i • w k`. Use `QCoh.injective_app_of_mono (fl.ι i.succ) W ?_` and prove the remaining obligations.
+Both sides reduce to the same expression. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[ht₀, map_sum]`. Conclude with `Finset.sum_congr rfl fun k _ => ((Scheme.Modules.Hom.app_smul _ _ _).trans (hw k)).symm`. Rewrite using `[e, map_sum, Finset.sum_eq_single i]`. Rewrite using `[Scheme.Modules.Hom.app_smul]`. Simplify using `only [w, lt_irrefl, dif_neg, not_false_eq_true]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `k _ hk`. Rewrite using `[Scheme.Modules.Hom.app_smul]`. Break down `lt_or_gt_of_ne hk with h | h` into its components or cases. Establish `h' : (k : ℕ) < i` using `h`. Establish `z : (fl.π i).app W (w k) = 0`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [w, dif_pos h']`. Establish `c : fl.step i ≫ fl.π i = 0` using `Limits.cokernel.condition _`. Express the relevant statement in the definitionally equal form `(fl.step i ≫ fl.π i).app W _ = 0`. Rewrite using `[c]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[z, smul_zero]`. Rewrite using `[hT h, zero_smul]`. Conclude with `fun h => absurd (Finset.mem_univ _) h`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
 -/
 theorem app_π_eq_smul {X : Scheme.{0}} {G : X.Modules} {m : ℕ} {fl : Vert.Flag G m} {W : X.Opens}
     {v : Fin m → Γ(G, W)} (H : Spans fl W v) (i : Fin m) {T : Matrix (Fin m) (Fin m) Γ(X, W)}
@@ -67,7 +67,7 @@ theorem app_π_eq_smul {X : Scheme.{0}} {G : X.Modules} {m : ℕ} {fl : Vert.Fla
   · exact fun h => absurd (Finset.mem_univ _) h
 
 /- English proof (translation)
-Take `⟨s, t, -, h₂, h₃⟩` from `H.exists_adaptedChart i`. Use `⟨t 0, (h₃ (Sum.inr 0)).trans (congrArg v (Fin.ext rfl)), ?_⟩` and prove the remaining obligations. Use `h₂ using 3 with j` and compare the differences between its conclusion and the goal. Conclude with `congrArg t (Subsingleton.elim _ _)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion. A detailed English derivation is pending.
 -/
 theorem exists_chart_gr {X : Scheme.{0}} {G : X.Modules} {m : ℕ} {fl : Vert.Flag G m} {U : X.Opens}
     {v : Fin m → Γ(G, U)} (H : Spans fl U v) (i : Fin m) :
@@ -78,7 +78,7 @@ theorem exists_chart_gr {X : Scheme.{0}} {G : X.Modules} {m : ℕ} {fl : Vert.Fl
   exact congrArg t (Subsingleton.elim _ _)
 
 /- English proof (translation)
-Rewrite using `[IsFrame.val_detUnit, Module.Basis.det_apply, Matrix.det_unique, Module.Basis.toMatrix_apply, e, ← hs.basis_apply h default, map_smul, Module.Basis.repr_self]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem val_detUnit_of_eq_smul {X : Scheme.{0}} {G : X.Modules} {U U' V : X.Opens} {s : Γ(G, U)} {s' : Γ(G, U')}
     (hs : IsFrame fun _ : Fin 1 => s) (hs' : IsFrame fun _ : Fin 1 => s') (h : V ≤ U) (h' : V ≤ U') {a : Γ(X, V)}
@@ -88,25 +88,23 @@ theorem val_detUnit_of_eq_smul {X : Scheme.{0}} {G : X.Modules} {U U' V : X.Open
   simp
 
 /- English proof (translation)
-Introduce `F _ Y ι _ r E e fl hE he E' hE'`. Take `⟨B, hB⟩` from `E'.nonempty (genericPoint Y.X)`. Use `choose U₀ h₀ M₀ hM₀ hB₀ using (hE' _ _).1 hB`. Use `choose t₀ ht₀ hf₀ using fun x : GlobalTheory.GoodMetric.Root r => exists_chart_gr (hM₀ x.1) x.2`. Set `c₀ (x : GlobalTheory.GoodMetric.Root r) : ((fl x.1).root x.2).ι` to `(⟨U₀ x.1, _, hf₀ x⟩ : Chart ((fl x.1).gr x.2) 1)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `P (x : GlobalTheory.GoodMetric.Root r)` using `presents_ofLB ((fl x.1).isLB_root x.2) (c₀ x) (h₀ x.1)`. Use `⟨_, fun x => (P x).toPic_eq, B, hB, fun y x => ?_⟩` and prove the remaining obligations. Take `⟨a, i⟩` from `x`. Take `⟨A, hA⟩` from `E'.nonempty y`. Take `⟨U, hy, M, hM, hAM⟩` from `(hE' _ _).1 hA a`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Take `⟨t, ht, hf⟩` from `exists_chart_gr hM i`. Set `c : ((fl a).root i).ι` to `(⟨U, _, hf⟩ : Chart ((fl a).gr i) 1)`. Use `⟨A, hA, _, ?_, (P ⟨a, i⟩).isEqn c y hy⟩` and prove the remaining obligations. Use `(hE a).isQuasicoherent` as an intermediate fact. Establish `h₁ : U ⊓ U₀ a ≤ U` using `inf_le_left`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h₂ : U ⊓ U₀ a ≤ U₀ a` using `inf_le_right`. Establish `hN` using `spans_pullCol_res Y.str (e a) le_top h₁ hM`. Establish `hN₀` using `spans_pullCol_res Y.str (e a) le_top h₂ (hM₀ a)`. Take `⟨T, hT, -, hMT⟩` from `exists_upper_of_spans Y.str (he a) _ hN hN₀`. Establish `hg : genericPoint Y.X ∈ U ⊓ U₀ a` using `memInf (gen_mem hy) (h₀ a)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hd : (hf.detUnit (hf₀ ⟨a, i⟩) h₁ h₂ : Γ(Y.X, U ⊓ U₀ a)) = T i i`. Use `val_detUnit_of_eq_smul _ _ _ _ ?_` and prove the remaining obligations. Rewrite using `[← app_resM, ← app_resM]`. Use `app_π_eq_smul hN i hT ?_ ?_` and prove the remaining obligations. Rewrite using `[app_resM, ht]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `res_pullCol Y.str (e a) le_top h₁ M i`. Rewrite using `[app_resM, ht₀ ⟨a, i⟩]`. Use `(res_pullCol Y.str (e a) le_top h₂ (M₀ a) i).trans (Eq.trans ?_ (sum_smul_pullCol Y.str (e a) le_top _ T i).symm)` and prove the remaining obligations. Rewrite using `[hMT]`. Establish `hv : (frameRat ((fl a).root i) (c₀ ⟨a, i⟩) (h₀ a) c : Y.X.functionField) = fnOf _ hg (T i i)` using `(val_frameRat (L := (fl a).root i) (c₀ ⟨a, i⟩) (h₀ a) c (gen_mem hy)).trans (congrArg (fnOf _ hg) hd)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Eq.trans ?_ hv.symm` and prove the remaining obligations. Establish `hA' : A a = ((M.map (resG Y.X h₁)).map (fnOf _ hg)).transpose`. Rewrite using `[hAM]`. Use extensionality with `j l`. Conclude with `(fnOf_resG h₁ hg _).symm`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Establish `hB' : B a = (T.map (fnOf _ hg)).transpose * A a`. Rewrite using `[hA', ← Matrix.transpose_mul, ← Matrix.map_mul, ← hMT, hB₀]`. Use extensionality with `j l`. Conclude with `(fnOf_resG h₂ hg _).symm`. Establish `hu : IsUnit (A a).det`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hA', Matrix.det_transpose]`. Establish `hu` using `(isUnit_det_of_spans Y.str (he a) _ hN).map (fnOf _ hg)`. Rewrite `hu` using `[RingHom.map_det]`. Then use the resulting hypothesis. Express the relevant statement in the definitionally equal form `(B a * (A a)⁻¹) i i = _`. Rewrite using `[hB', Matrix.mul_nonsing_inv_cancel_right _ _ hu]`.
-
-Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_graded : ∀ (F : Type) [Field F] (Y : Var F) (ι : Type) [Fintype ι] (r : ι → ℕ) (E : ι → (Sp F).Modules) (e : ∀ a, Fin (r a) → Γ(E a, ⊤)) (fl : ∀ a, Vert.Flag ((Scheme.Modules.pullback Y.str).obj (E a)) (r a)), (∀ a, IsVB (E a) (r a)) → (∀ a, IsFrame (e a)) → ∀ E' : Fr (ratOf Y) r r, (∀ y A', A' ∈ E'.S y ↔ AdFrame e fl y A') → ∃ gr : GlobalTheory.GoodMetric.Root r → Y.Dv, (∀ x, GlobalTheory.Cartier.toPic (gr x) = GlobalTheory.CechPic.cls ((fl x.1).root x.2) ((fl x.1).isLB_root x.2)) ∧ GlobalTheory.GoodMetric.IsGraded E' gr := by
   intro F _ Y ι _ r E e fl hE he E' hE'

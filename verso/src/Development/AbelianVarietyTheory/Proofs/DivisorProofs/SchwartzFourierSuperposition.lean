@@ -4,9 +4,9 @@ open MeasureTheory
 namespace GlobalTheory
 
 /- English proof (translation)
-Break down `le_total a 1 with h | h` into its components or cases. Combine the equalities or inequalities in the displayed calculation. Establish `: 0 ≤ a ^ n` using `pow_nonneg ha n`. Use polynomial arithmetic with `[pow_pos (show (0:ℝ) < 2 by norm_num) n]`. Combine the equalities or inequalities in the displayed calculation.
+Separate the alternatives or extract the components of the hypothesis. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Chain the equalities or inequalities of the calculation.
 
-Establish `: 0 ≤ (2:ℝ) ^ n` using `by positivity`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem one_add_pow_le_two_pow_mul_one_add_pow (a : ℝ) (ha : 0 ≤ a) (n : ℕ) :
     (1 + a) ^ n ≤ 2 ^ n * (1 + a ^ n) := by
@@ -24,13 +24,13 @@ theorem one_add_pow_le_two_pow_mul_one_add_pow (a : ℝ) (ha : 0 ≤ a) (n : ℕ
 open Real in
 
 /- English proof (translation)
-Introduce `V _ _ _ ψ`. Set `e : V ≃L[ℝ] EuclideanSpace ℝ (Fin (Module.finrank ℝ V))` to `toEuclidean`. Set `ψ' : SchwartzMap (EuclideanSpace ℝ (Fin (Module.finrank ℝ V))) ℂ` to `SchwartzMap.compCLMOfContinuousLinearEquiv ℂ e.symm ψ`. Set `A : EuclideanSpace ℝ (Fin (Module.finrank ℝ V)) →L[ℝ] V →L[ℝ] ℝ` to `(2 * π) • (((ContinuousLinearMap.compL ℝ V _ ℝ).flip (e : V →L[ℝ] _)).comp (innerSL ℝ))`. Establish `hA : ∀ w x, A w x = 2 * π * inner ℝ w (e x)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `w x`. Simplify using `[A]`. Set `Φ : SchwartzMap (EuclideanSpace ℝ (Fin (Module.finrank ℝ V))) ℂ` to `FourierTransform.fourier ψ'`. Use `⟨Module.finrank ℝ V, A, (Φ : EuclideanSpace ℝ (Fin (Module.finrank ℝ V)) → ℂ), Φ.continuous, fun n => ?_, fun x => ?_⟩` and prove the remaining obligations. Establish `hi : Integrable (fun w : EuclideanSpace ℝ (Fin (Module.finrank ℝ V)) => 2 ^ n * (‖Φ w‖ + ‖w‖ ^ n * ‖Φ w‖))` using `((Φ.integrable_pow_mul volume 0).norm.add (Φ.integrable_pow_mul volume n) |>.congr (Filter.Eventually.of_forall fun w => by simp)).const_mul _`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `hi.mono' (by fun_prop) (Filter.Eventually.of_forall fun w => ?_)` and prove the remaining obligations. Rewrite using `[Real.norm_eq_abs, abs_of_nonneg (by positivity)]`. Combine the equalities or inequalities in the displayed calculation. Establish `h1 : ψ x = ψ' (e x)`. Simplify using `[ψ']`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h2` using `congrArg (fun f : SchwartzMap _ ℂ => f (e x)) (FourierTransform.fourierInv_fourier_eq (F := SchwartzMap (EuclideanSpace ℝ (Fin (Module.finrank ℝ V))) ℂ) ψ')`. Rewrite using `[h1, ← h2, SchwartzMap.fourierInv_coe, Real.fourierInv_eq']`. Use `congr 1`. Use extensionality with `w`. Rewrite using `[hA, smul_eq_mul, mul_comm]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 -/
 theorem fourier_inversion_real_linear_forms :
     ∀ {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] [FiniteDimensional ℝ V] (ψ : SchwartzMap V ℂ),

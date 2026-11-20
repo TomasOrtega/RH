@@ -31,9 +31,9 @@ noncomputable section
 namespace GlobalTheory.Poinc.Sep.LiesData
 
 /- English proof (translation)
-Establish `e : GlobalTheory.TorusExt.extMap f hf ≫ toUnit (TF (R` using `R) F) = toUnit (TF (R := R) F') := comp_toUnit _`. Use `(GlobalTheory.FieldRestrictionTest.isPullF_iff (toUnit (TF (R := R) F')) g' _).2 ⟨?_, fun χ y J hJ => ?_⟩` and prove the remaining obligations. Establish `b₁ : g₁.b = toUnit (TF (R` using `R) F) ≫ g'.b := ((GlobalTheory.FieldRestrictionTest.isPullF_iff (toUnit (TF (R := R) F)) g' g₁).1 H).1`. Conclude with `(GlobalTheory.TorusExt.gtExt_b f hf g₁).trans ((congrArg (GlobalTheory.TorusExt.extMap f hf ≫ ·) b₁).trans ((Category.assoc _ _ _).symm.trans (congrArg (· ≫ g'.b) e)))`. Use `(GlobalTheory.TorusExt.gtExt_val f hf g₁ χ hJ).trans ((val_corr hJ (H.2 χ) _).trans ((val_pull hJ _ _ _).trans ?_))` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e' : (GlobalTheory.TorusExt.extMap f hf).left ≫ (toUnit (TF (R` using `R) F)).left = (toUnit (TF (R := R) F')).left := by`. Rewrite using `[← Over.comp_left, e]`. Rewrite using `[← e']`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isPullF_gtExt {R : Type} [CommRing R] [IsDomain R] {D : DegPre R} {F F' : Type} [Field F]
     [Algebra (FractionRing R) F] [Field F'] [Algebra (FractionRing R) F'] (f : F →+* F')
@@ -52,11 +52,11 @@ theorem isPullF_gtExt {R : Type} [CommRing R] [IsDomain R] {D : DegPre R} {F F' 
     rw [← e']
 
 /- English proof (translation)
-Introduce `V _ _ _ hCN D A G _ _ hG U w₀ hw₀ N hN g w x fr hg hw hfr hlies`. Use `haveI : CharZero V := hCN.2.2.2`. Establish `hL : GlobalTheory.UT.LL` using `GlobalTheory.firstFiveLaws`. Establish `hB` using `D.tau_bimult`. Take `⟨p, hy, rfl, hp⟩` from `GlobalTheory.Poinc.Sep.LiesPair.exists_pair_of_liesOver V hCN D A G hG U w₀ hw₀ N hN _ w x fr hg hw hfr hlies`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hf : (algebraMap (FractionRing V) (AlgebraicClosure (FractionRing V))).comp (algebraMap (FractionRing V) (FractionRing V)) = algebraMap _ _` using `RingHom.comp_id _`. Establish `hq` using `(GlobalTheory.TorsionExt.qkToAkU_iff_of_algebra hL.1.globalFns hL.1.kerPow U hN ((GlobalTheory.TorusExt.qkExt_iff hB _ hf p _).2 rfl) x).1 hp`. Take `⟨h, g', -, -, hform, hext, hpull⟩` from `GlobalTheory.Poinc.TorsLift.lift V hCN D A G hG U N hN x _ _ rfl hy hq`. Take `⟨g₁, hg₁⟩` from `GlobalTheory.FieldRestrictionTest.exists_isPullF (toUnit (TF (R := V) (FractionRing V))) g'`. Establish `e : g₁ = p.g` using `GlobalTheory.Balanced.gtExt_injective _ hf D.toPre (GlobalTheory.FieldRestrictionTest.isPullF_unique (isPullF_gtExt _ hf hg₁) hpull)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨i, hi⟩` from `exists_chart U.LG.isLB (h.left (cpt V))`. Take `⟨f, hf₀⟩` from `GlobalTheory.TorsFrameInt.exists_gen_of_chart U.LG.isLB (K := Fin 1) (fun _ => h.left) (fun _ => 1) (fun _ => i) (fun y => Set.mem_iInter.2 fun _ => (top_le_iff_cpt (A := V) h.left _).2 hi (show y ∈ ⊤ from trivial))`. Take `⟨t, ht, hrel⟩` from `GlobalTheory.Poinc.IntEval.exists_integral_frame V hCN D A G U.toUnifPre h g' hform f hf₀`. Conclude with `⟨h, g', f, t, hform, hext, e ▸ hg₁, hf₀, ht, hrel⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_data : ∀ (V : Type) [CommRing V] [IsDomain V] [IsLocalRing V], IsCN V → ∀ (D : DegData V (maximalIdeal V)) (A : PolAV (Sp (FractionRing V))) (G : Over (Sp V)) [GrpObj G] [IsCommMonObj G], IsSemiAbelian G → ∀ (U : Unif (maximalIdeal V) D A G), ∀ (w₀ : W0 U.toUnifPre), w₀.IsGen → ∀ N : ℕ, 1 ≤ N → ∀ (g : GtPtF D.toPre (FractionRing V)) (w : Frm D.toPre (FractionRing V) 1 g.b) (x : TFK (R := V) (FractionRing V) ⟶ A.A) (fr : FrAt x), (∃ o, GtPtF.IsNsmul N g o ∧ o.IsZero) → w.IsGen → fr.IsGen → LiesOver U.toUnifPre w₀ g w x fr → ∃ (h : (𝟙_ (Over (Sp V))) ⟶ G) (g' : GtPt D.toPre (𝟙_ (Over (Sp V)))) (f : LB.Gen (LB.LinComb U.LG.L (K := Fin 1) (fun _ => (h).left) (fun _ => 1))) (t : LB.Gen (LB.LinComb D.toPre.P.L ![(η[D.toPre.P.A]).left, (g'.b).left] (DegPre.lineε 1))), GlobalTheory.IndefiniteRowSideFullHecke.FlatIsoUnitGenerator.FormalEq U.toUnifPre h g' ∧ IntTerm.Ext U.toUnifPre x h ∧ GtPt.IsPullF (FractionRing V) (toUnit (TF (R := V) (FractionRing V))).left g' g ∧ f.IsGen ∧ t.IsGen ∧ ∀ e : ℕ, GlobalTheory.Poinc.IntEval.TRel U.toUnifPre h g'.b f t e := by
   intro V _ _ _ hCN D A G _ _ hG U w₀ hw₀ N hN g w x fr hg hw hfr hlies

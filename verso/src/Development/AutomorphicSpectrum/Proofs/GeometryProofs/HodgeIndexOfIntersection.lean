@@ -33,7 +33,7 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.G
 namespace GlobalTheory.CompanionTheory.Ar.Link
 
 /- English proof (translation)
-Introduce `hI hHS hBig hRes`. Take `⟨g1, z1, z2, g6p, -, -⟩` from `GlobalTheory.CompanionTheory.Ar.Giv.hsLinks_of_moriwaki hHS hBig`. Conclude with `⟨z1, z2, g1, g6p, GlobalTheory.T.big_line_implies_height_positivity hBig, GlobalTheory.T.hodge_index_implies_height_bound hHS, GlobalTheory.T.hilbert_samuel_G7s_of_statements hI hHS hRes, GlobalTheory.T.hilbert_samuel_G3_of_moriwaki hHS hBig, GlobalTheory.T.hilbert_samuel_G3Star_ …`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem hodgeIndex_of_intersection :
     ReciprocityTheory.ChartRestriction.G.Geo.ArithIntersectionSystemStatement → ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.MoriwakiHSStatement →

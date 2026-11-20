@@ -25,13 +25,13 @@ namespace GlobalTheory.DepthZeroRankOneLabel
 end GlobalTheory.DepthZeroRankOneLabel
 open GlobalTheory.WeilDeligne in
 /- English proof (translation)
-Establish `htame` using `GlobalTheory.SerSys.LabDepth.tame_of_isTameWD (_root_.UpperTheory.One.M.LawsM.depth hl (GlobalTheory.LocGL.IrrGL.ofChar μ hμ) (UpperTheory.One.M.good_ofChar μ hμ) (by`. Use `GlobalTheory.LocLanglands.fixed_ne_bot_of_equiv (GlobalTheory.SmGL.IrrRep.nonempty_equiv_rep (Irr.ofDet 1 μ hμ).toIrrRep).some.symm ?_` and prove the remaining obligations. Use `(Submodule.ne_bot_iff _).2 ⟨(show (Irr.ofDet 1 μ hμ).V from (1 : ℂ)), GlobalTheory.Parabolic.mem_fixed.2 fun u hu => ?_, (one_ne_zero : (1 : ℂ) ≠ 0)⟩` and prove the remaining obligations. Establish `hu' : u ∈ GlobalTheory.SplitWeil.KOne ((D.naut.plGw k v).adicCompletion D.host.E) (Fin 1)` using `hu`. Establish `h1` using `GlobalTheory.StepData.mem_KOne.1 hu' 0 0`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1` using `[Matrix.sub_apply, Matrix.one_apply_eq]`. Establish `h2 : μ (Matrix.GeneralLinearGroup.det u) = 1` using `hT _ (by`. Establish `e : ((Matrix.GeneralLinearGroup.det u : (_)ˣ) : (D.naut.plGw k v).adicCompletion D.host.E) = u.val 0 0`. Simplify using `[Matrix.det_fin_one]`. Rewrite using `[e]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h1)`. Express the relevant statement in the definitionally equal form `(GlobalTheory.SmGL.detRep (Fin 1) μ) u (1 : ℂ) = (1 : ℂ)`. Simplify using `[GlobalTheory.SmGL.detRep, h2]))`. Rewrite `htame` using `[hl.one, WD.lpOfChar, WD.tame_mk]`. Introduce `σ hσ`.
+Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h2` using `LinearMap.congr_fun (htame σ hσ) (fun _ => 1)`. Establish `h3` using `congrFun h2 0`. Simplify using `using h3`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.DepthZeroRankOneLabel.wild_trivial_m_alt (D : D7) (k : Fin 2) (v : D.nd.PlG k)
     (μ : ((D.naut.plGw k v).adicCompletion D.host.E)ˣ →* ℂˣ) (hμ : GlobalTheory.SmGL.IsSmoothChar μ) (hT : GlobalTheory.SplitWeil.IsTame μ)

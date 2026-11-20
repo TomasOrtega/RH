@@ -9,7 +9,7 @@ namespace GlobalTheory.TamOne
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
 /- English proof (translation)
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a x => rfl`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem sigR_cj_eq_locConj (v : HeightOneSpectrum (𝓞 (maximalRealSubfield E)))
     (z : Fv (maximalRealSubfield E) v ⊗[maximalRealSubfield E] E) :
@@ -20,11 +20,9 @@ theorem sigR_cj_eq_locConj (v : HeightOneSpectrum (𝓞 (maximalRealSubfield E))
   | add x y hx hy => rw [map_add, map_add, hx, hy]
 
 /- English proof (translation)
-Proceed by induction on `hz using Algebra.adjoin_induction with`. Consider the case `mem x hx`. Take `⟨a, rfl⟩` from `hx`. Conclude with `tmul_mem_intLoc (one_mem _) a`. Consider the case `algebraMap a`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately. Establish an intermediate fact.
 
-Establish `: algebraMap (v.adicCompletionIntegers (maximalRealSubfield E)) (GlobalTheory.SelfDualGenus.LocAlg v) a = (a : Fv (maximalRealSubfield E) v) ⊗ₜ[maximalRealSubfield E] ((1 : 𝓞 E) : E)`. Simplify using `[Algebra.TensorProduct.algebraMap_apply]`. Rewrite using `[this]`. Conclude with `tmul_mem_intLoc a.2 1`. Consider the case `add x y _ _ hx hy => exact add_mem hx hy`.
-
-Consider the case `mul x y _ _ hx hy => exact mul_mem hx hy`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem mem_intLoc_of_mem_locOrder (v : HeightOneSpectrum (𝓞 (maximalRealSubfield E)))
     {z : Fv (maximalRealSubfield E) v ⊗[maximalRealSubfield E] E} (hz : z ∈ GlobalTheory.SelfDualGenus.locOrder v) :
@@ -43,15 +41,15 @@ theorem mem_intLoc_of_mem_locOrder (v : HeightOneSpectrum (𝓞 (maximalRealSubf
   | mul x y _ _ hx hy => exact mul_mem hx hy
 
 /- English proof (translation)
-Use `haveI : Algebra.Unramified (𝓞 (maximalRealSubfield E)) (𝓞 E) := hU`. Take `⟨ω, u, hu⟩` from `GlobalTheory.SelfDualGenus.exists_isUnit_sub_locOrderConj (E := E) v`. Use `set c := GlobalTheory.SelfDualGenus.locConj v with hc`. Use `set e : Fv (maximalRealSubfield E) v ⊗[maximalRealSubfield E] E := (((u⁻¹ : (GlobalTheory.SelfDualGenus.locOrder v)ˣ) : GlobalTheory.SelfDualGenus.locOrder v)).val with he`. Use `set o : Fv (maximalRealSubfield E) v ⊗[maximalRealSubfield E] E := ω.val with ho`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hde : (o - c o) * e = 1`. Establish `h1 : ((u : GlobalTheory.SelfDualGenus.locOrder v) * ↑u⁻¹ : GlobalTheory.SelfDualGenus.locOrder v) = 1` using `u.mul_inv`. Rewrite `h1` using `[hu]`. Establish `h2` using `congrArg (fun z : GlobalTheory.SelfDualGenus.locOrder v => (z : GlobalTheory.SelfDualGenus.LocAlg v)) h1`. Simplify `h2` using `[GlobalTheory.SelfDualGenus.coe_locOrderConj]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcc : ∀ z, c (c z) = z` using `GlobalTheory.SelfDualGenus.locConj_locConj v`. Establish `hce : c e = -e`. Establish `h3 : (c o - o) * c e = 1`. Use `congrArg c hde` as an intermediate fact. Rewrite `this` using `[map_mul, map_sub, hcc, map_one]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h4 : (o - c o) * (-(c e)) = 1` using `by rw [← h3]; ring`. Combine the equalities or inequalities in the displayed calculation. Establish `hom : o ∈ intLoc (maximalRealSubfield E) E v` using `mem_intLoc_of_mem_locOrder v ω.2`. Establish `hem : e ∈ intLoc (maximalRealSubfield E) E v` using `mem_intLoc_of_mem_locOrder v (((u⁻¹ : (GlobalTheory.SelfDualGenus.locOrder v)ˣ) : GlobalTheory.SelfDualGenus.locOrder v)).2`. Use `⟨⟨o * e, mul_mem hom hem⟩, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `o * e + Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR (Fv (maximalRealSubfield E) v) (cj E) (o * e) = 1`. Rewrite using `[sigR_cj_eq_locConj, ← hc, map_mul, hce]`. Rewrite using `[← hde]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem exists_add_intLocConj_eq_one (E : Type) [Field E] [NumberField E] [IsCMField E] (hU : Unr E)
     (v : HeightOneSpectrum (𝓞 (maximalRealSubfield E))) :

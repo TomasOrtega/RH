@@ -14,7 +14,7 @@ namespace GlobalTheory.CompanionTheory.MuC
 variable {D : D7} {p : ℕ}
 
 /- English proof (translation)
-Simplify using `[Matrix.mul_apply, blk4, ← finSumFinEquiv.sum_comp, Fintype.sum_sum_type, Matrix.one_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mul_nBlock_inl {R : Type} [CommRing R] {n : ℕ} (A : Matrix (Fin (n + n)) (Fin (n + n)) R)
     (y : Matrix (Fin n) (Fin n) R) (i : Fin (n + n)) (j : Fin n) :
@@ -22,7 +22,7 @@ theorem mul_nBlock_inl {R : Type} [CommRing R] {n : ℕ} (A : Matrix (Fin (n + n
   simp [Matrix.mul_apply, blk4, ← finSumFinEquiv.sum_comp, Fintype.sum_sum_type, Matrix.one_apply]
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_apply, ← finSumFinEquiv.sum_comp, Fintype.sum_sum_type]`. Simplify using `only [blk4, Matrix.submatrix_apply, Equiv.symm_apply_apply, Matrix.fromBlocks_apply₁₂, Matrix.fromBlocks_apply₂₂]`. Simplify using `[Matrix.one_apply]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem mul_nBlock_inr {R : Type} [CommRing R] {n : ℕ} (A : Matrix (Fin (n + n)) (Fin (n + n)) R)
     (y : Matrix (Fin n) (Fin n) R) (i : Fin (n + n)) (j : Fin n) :
@@ -34,9 +34,9 @@ theorem mul_nBlock_inr {R : Type} [CommRing R] {n : ℕ} (A : Matrix (Fin (n + n
   simp [Matrix.one_apply]
 
 /- English proof (translation)
-Establish `hm : mat (g * nb y) = mat g * blk4 1 y.1 0 1`. Rewrite using `[← hnb y]`. Both sides reduce to the same expression. Use extensionality with `i j`. Simplify using `only [lowC, Matrix.submatrix_apply, hm]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Conclude with `mul_nBlock_inl _ _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem lowC_mul_nb {nb : hermA D p → G D p} (hnb : IsNMap nb) (g : G D p) (y : hermA D p) :
     lowC (g * nb y) = lowC g := by
@@ -47,9 +47,9 @@ theorem lowC_mul_nb {nb : hermA D p → G D p} (hnb : IsNMap nb) (g : G D p) (y 
   exact mul_nBlock_inl _ _ _ _
 
 /- English proof (translation)
-Establish `hm : mat (g * nb y) = mat g * blk4 1 y.1 0 1`. Rewrite using `[← hnb y]`. Both sides reduce to the same expression. Use extensionality with `i j`. Simplify using `only [lowC, lowD, Matrix.submatrix_apply, hm, Matrix.add_apply, Matrix.mul_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Conclude with `mul_nBlock_inr _ _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem lowD_mul_nb {nb : hermA D p → G D p} (hnb : IsNMap nb) (g : G D p) (y : hermA D p) :
     lowD (g * nb y) = lowC g * y.1 + lowD g := by
@@ -60,9 +60,9 @@ theorem lowD_mul_nb {nb : hermA D p → G D p} (hnb : IsNMap nb) (g : G D p) (y 
   exact mul_nBlock_inr _ _ _ _
 
 /- English proof (translation)
-Establish `hy : e • y.1.1 = y.1.1` using `y.2`. Establish `hc : e • (lowC g * y.1.1) = lowC g * y.1.1` using `by rw [← Matrix.mul_smul, hy]`. Establish `hs : (x + y).1.1 = x.1.1 + y.1.1` using `rfl`. Unfold `IsB InCell`. Rewrite using `[lowC_mul_nb hnb, lowD_mul_nb hnb, hs]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `and_congr_right fun _ => ?_` and prove the remaining obligations. Simplify using `only [mm]`. Rewrite using `[mul_add, smul_add, hc, add_comm (lowC g * y.1.1) (e • lowD g), add_left_inj]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem isB_mul_nb {D : D7} {p : ℕ} {e : AE D} {nb : hermA D p → G D p} (hnb : IsNMap nb) {g : G D p}
     (y x : hermS D p e) : IsB e (g * nb y.1) (x + y) ↔ IsB e g x := by

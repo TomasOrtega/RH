@@ -22,7 +22,7 @@ attribute [local instance] Over.cartesianMonoidalCategory in
 set_option autoImplicit false in
 
 /- English proof (translation)
-Rewrite using `[Hom.mul_def]`. Use `infer_instance`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.OActLift.isMonHom_mul_of_comm {S : Scheme.{0}} {G : Over S} [GrpObj G] [IsCommMonObj G]
     (f g : G ⟶ G) [IsMonHom f] [IsMonHom g] : IsMonHom (f * g) := by
@@ -30,13 +30,13 @@ theorem _root_.GlobalTheory.OActLift.isMonHom_mul_of_comm {S : Scheme.{0}} {G : 
   infer_instance
 
 /- English proof (translation)
-Introduce `GD R R₀ _ _ I κ hκ π hπ hI g A₀ _ A _ i h hA hg O _ a₀ hfil`. Establish `HL` using `(GD R I κ hκ R₀ π hπ hI).2.2`. Use `haveI : IsCommMonObj A := hA.comm`. Establish `key : ∀ x : O, ∃! f : A ⟶ A, IsMonHom f ∧ i ≫ f.left = (a₀.act x).left ≫ i` using `fun x ↦ by haveI := a₀.hom x`. Conclude with `HL g A₀ A i h hA hg g A₀ A i h hA hg (a₀.act x) (fun d hd ↦ hfil x d hd)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `choose f hf huniq using key`. Use `⟨⟨f, fun x ↦ (hf x).1, ?_, ?_, ?_⟩, fun x ↦ (hf x).2.symm⟩` and prove the remaining obligations. Use `(huniq 1 (𝟙 _) ⟨inferInstance, ?_⟩).symm` and prove the remaining obligations. Rewrite using `[a₀.one]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `x y haveI := (hf x).1 haveI := (hf y).1`. Use `(huniq (x * y) (f x ≫ f y) ⟨inferInstance, ?_⟩).symm` and prove the remaining obligations. Rewrite using `[a₀.mul, Over.comp_left, Over.comp_left, ← Category.assoc, (hf x).2, Category.assoc, (hf y).2, Category.assoc]`. Introduce `x y haveI := (hf x).1 haveI := (hf y).1`. Use `(huniq (x + y) (f x * f y) ⟨isMonHom_mul_of_comm _ _, ?_⟩).symm` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[a₀.add]`. Set `j : Over.mk (A₀.hom ≫ spMap π) ⟶ A` to `Over.homMk i h.1.w`. Establish `e` using `h.2 A₀ (a₀.act x) (a₀.act y) (j ≫ f x) (j ≫ f y) (hf x).2 (hf y).2`. Rewrite `e` using `[← MonObj.comp_mul]`. Conclude with `e`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_oAct_lift : GlobalTheory.Published.GrothendieckDeformation → ∀ (R R₀ : Type) [CommRing R] [CommRing R₀] (I : Ideal R) (κ : DividedPowers I),
     IsNilDP κ → ∀ (π : R →+* R₀), Function.Surjective π → RingHom.ker π = I →

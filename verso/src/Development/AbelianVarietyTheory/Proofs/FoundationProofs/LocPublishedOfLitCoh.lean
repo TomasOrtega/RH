@@ -11,15 +11,15 @@ open scoped Matrix
 namespace GlobalTheory.Ord2
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h.lfK, h.ltK, h.leK, h.lf, h.lt, h.le, h.bk⟩`.
+Supply the required witnesses or components.
 -/
 theorem localGaloisCohomology_of_galoisCohomology (h : GlobalTheory.Mem.LiteralAutomorphy.LitCoh) : Loc.LocalPublishedTheorems :=
   ⟨h.lfK, h.ltK, h.leK, h.lf, h.lt, h.le, h.bk⟩
 
 /- English proof (translation)
-Introduce `hLit l _ Ω _ _ _ e S A W hNf hES c hc hBK`. Establish `hStr : StrZero (dual1 W) A` using `GlobalTheory.T.strict_vanishing_dual_of_literature hLit l Ω e S A W hNf hES`. Establish `hGrD : GrZero (dual1 W) A` using `GlobalTheory.T.ordinarySelmer_dual_vanishes_of_strict hLit l Ω e S A W hNf hES hStr`. Establish `hGr : GrZero W A` using `GlobalTheory.T.ordinarySelmer_vanishes_of_dual_vanishes hLit l Ω e S A W hNf hGrD`. Take `⟨hU, hG⟩` from `GlobalTheory.T.blochKato_cocycle_unramified_and_greenbergOrdinary (localGaloisCohomology_of_galoisCohomology hLit) l Ω e S A W hNf c hc hBK`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `hGr c hc hU hG`.
+A detailed English derivation is pending.
 -/
 theorem es_vanish : GlobalTheory.Mem.LiteralAutomorphy.LitCoh → ∀ (l : ℕ) [Fact l.Prime] (Ω : Type) [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω]
     (e : ℕ) (S : Finset Pl) (A : ValuationSubring Ω) (W : R2 Ω l), Nf e S A W → ES W A → BlochKatoSelmerVanishes l (Loc.colRep W) := by

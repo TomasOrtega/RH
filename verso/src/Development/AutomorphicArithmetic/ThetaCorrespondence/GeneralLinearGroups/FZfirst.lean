@@ -15,36 +15,36 @@ section
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-The claim follows from `isSmooth_twist σ.smooth (IsSmoothChar.detChar (GlobalTheory.LocGL.isSmoothChar_absPow _))`.
+A detailed English derivation is pending.
 -/
 private theorem segTerm_smooth {d : ℕ} (σ : IrrRep (GL (Fin d) k)) (l : ℕ) (a : Fin l) :
     IsSmooth (segTerm σ.ρ l a) :=
   isSmooth_twist σ.smooth (IsSmoothChar.detChar (GlobalTheory.LocGL.isSmoothChar_absPow _))
 
 /- English proof (translation)
-The claim follows from `isIrreducible_twist σ.irr _`.
+A detailed English derivation is pending.
 -/
 private theorem segTerm_irr {d : ℕ} (σ : IrrRep (GL (Fin d) k)) (l : ℕ) (a : Fin l) :
     (segTerm σ.ρ l a).IsIrreducible :=
   isIrreducible_twist σ.irr _
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.piExteriorTensor_smoothIrreducible_isIrreducible hBZ k (Fin l) (fun _ => Fin d) fun a => ⟨_, segTerm σ.ρ l a, segTerm_smooth σ l a, segTerm_irr σ l a⟩`.
+A detailed English derivation is pending.
 -/
 private theorem piSeg_irr (hBZ : GlobalTheory.Published.BernsteinZelevinskyFiniteness) {d : ℕ} (σ : IrrRep (GL (Fin d) k))
     (l : ℕ) : (piTensor (segTerm σ.ρ l)).IsIrreducible :=
   GlobalTheory.T.piExteriorTensor_smoothIrreducible_isIrreducible hBZ k (Fin l) (fun _ => Fin d) fun a => ⟨_, segTerm σ.ρ l a, segTerm_smooth σ l a, segTerm_irr σ l a⟩
 
 /- English proof (translation)
-Use `haveI := hi`. Establish `hs' : GroundTheory.Automorphic.IsSmooth T` using `hs`. Establish `hb` using `(GroundTheory.Automorphic.algebraMap_intertwiningMap_bijective_of_isSmooth hs').2`. Establish `key : ∀ f : π.IntertwiningMap (parInd e T), ∃ c : ℂ, ∀ x, Model.evalOne e f x = c • θ x`. Introduce `f`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨c, hc⟩` from `hb ((Model.evalOne e f).comp θ.symm.toIntertwiningMap)`. Use `⟨c, fun x => ?_⟩` and prove the remaining obligations. Establish `h1 : c • θ x = Model.evalOne e f (θ.symm (θ x))` using `congrArg (fun F : T.IntertwiningMap T => F (θ x)) hc`. Rewrite using `[h1, θ.symm_apply_apply]`. Take `⟨a, ha⟩` from `key f`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨b, hb⟩` from `key g`. Establish `hinj` using `(Model.evalOne_bijective e hπ T).1`. Establish `ha0 : a ≠ 0`. Introduce and unpack `rfl`. Use `hf (hinj ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `DFunLike.ext _ _ fun x => ?_` and prove the remaining obligations. Rewrite using `[ha, zero_smul]`. Take `⟨v, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Both sides reduce to the same expression. Use `⟨b / a, hinj (DFunLike.ext _ _ fun x => ?_)⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `: Model.evalOne e ((b / a) • f) x = (b / a) • Model.evalOne e f x`. Take `⟨v, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Both sides reduce to the same expression. Rewrite using `[this, ha, hb, smul_smul, div_mul_cancel₀ _ ha0]`.
+Extract witnesses or component facts from the available result. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem range_eq {l d N : ℕ} (e : (Σ _ : Fin l, Fin d) ≃ Fin N) {V X : Type} [AddCommGroup V] [Module ℂ V]
     [AddCommGroup X] [Module ℂ X] {π : Representation ℂ (GL (Fin N) k) V} (hπ : IsSmooth π)
@@ -78,11 +78,11 @@ private theorem range_eq {l d N : ℕ} (e : (Σ _ : Fin l, Fin d) ≃ Fin N) {V 
   rw [this, ha, hb, smul_smul, div_mul_cancel₀ _ ha0]
 
 /- English proof (translation)
-Use `⟨π.irr, f, hf, fun S hS => ?_⟩` and prove the remaining obligations. Establish `hirr` using `GlobalTheory.ClassFin.isIrreducible_toRepresentation_of_isAtom S hS`. Set `ι : S.toRepresentation.IntertwiningMap (parInd e T)` to `⟨S.toSubmodule.subtype, fun _ => rfl⟩`. Establish `hsm : IsSmooth S.toRepresentation` using `(IsSubquotient.of_injective ι Subtype.val_injective).isSmooth (isSmooth_parInd _ _)`. Take `⟨ψ⟩ : Nonempty (S.toRepresentation.Equiv π.ρ)` from `H ⟨_, S.toRepresentation, hsm, hirr⟩ ι Subtype.val_injective`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hf0 : f ≠ 0`. Introduce and unpack `rfl`. Use `haveI := Model.nontrivial_of_isIrreducible π.irr`. Take `⟨v, w, h⟩` from `exists_pair_ne π.V`. Conclude with `h (hf rfl)`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨c, hc⟩` from `range_eq e π.smooth hs hi θ f (ι.comp ψ.symm.toIntertwiningMap) hf0`. Use `(((isAtom_range π.irr f hf).le_iff_eq hS.1).1 fun v hv => ?_)` and prove the remaining obligations. Establish `h1 : ι (ψ.symm (ψ ⟨v, hv⟩)) = c • f (ψ ⟨v, hv⟩)` using `congrArg (fun F : π.ρ.IntertwiningMap (parInd e T) => F (ψ ⟨v, hv⟩)) hc`. Rewrite `h1` using `[ψ.symm_apply_apply, ← map_smul]`. Conclude with `⟨_, h1.symm⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem isSocle_of {l d N : ℕ} (e : (Σ _ : Fin l, Fin d) ≃ Fin N) {X : Type}
     [AddCommGroup X] [Module ℂ X] (π : IrrRep (GL (Fin N) k))
@@ -110,9 +110,9 @@ private theorem isSocle_of {l d N : ℕ} (e : (Σ _ : Fin l, Fin d) ≃ Fin N) {
   exact ⟨_, h1.symm⟩
 
 /- English proof (translation)
-Establish `hd : ∑ a, (Δ.term a).1 = Δ.len * Δ.d` using `Δ.sum_term_fst`. Establish `H` using `hZ Δ Δ.start.rep Δ.start.cl_rep (stdBlocks (fun _ : Fin Δ.len => Δ.d) hd)`. Take `⟨f, hf⟩` from `(H (Z Δ).rep).1.1 (Z Δ).cl_rep`. Take `⟨θ⟩` from `(H (Z Δ).rep).2.1 (Z Δ).cl_rep`. Establish `hS : IsSocle (Z Δ).rep.ρ (multiProd (stdBlocks (fun _ : Fin Δ.len => Δ.d) hd) (segTerm Δ.start.rep.ρ Δ.len))` using `isSocle_of _ (Z Δ).rep (isSmooth_piTensor (segTerm_smooth _ _)) (piSeg_irr hBZ _ _) θ f hf fun τ g hg => IrrRep.cl_eq_iff.1 (((H τ).1.2 ⟨g, hg⟩).trans (Z Δ).cl_rep.symm)`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `⟨⟨_, Z Δ⟩, hd, hS.of_equiv (.refl _) (segProdEquiv Δ hd)⟩`.
+Supply the required witnesses or components.
 -/
 private theorem exists_unit_one_add_generator (hBZ : GlobalTheory.Published.BernsteinZelevinskyFiniteness)
     {Z : ∀ Δ : Segment k, IrrCl (GL (Fin (Δ.len * Δ.d)) k)} (hZ : IsSegmentClass k Z) (Δ : Segment k) :
@@ -130,9 +130,9 @@ private theorem exists_unit_one_add_generator (hBZ : GlobalTheory.Published.Bern
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Take `⟨E0, ⟨χ⟩⟩` from `GlobalTheory.SmGL.Stages.stages_equiv (k := k) s d t (fun a b => (u a b).1) e' (fun a b => (u a b).2.rep.V) (fun a b => (u a b).rep) (Fin n) e`. Set `F : Fin (∑ a, t a) ≃ Σₗ a, Fin (t a)` to `finSigmaFinEquiv.symm.trans toLex`. Set `E : (Σ c : Fin (∑ a, t a), Fin (u (finSigmaFinEquiv.symm c).1 (finSigmaFinEquiv.symm c).2).1) ≃ Fin n` to `(Equiv.sigmaCongrLeft (β := fun c : Σₗ a, Fin (t a) => Fin (u (ofLex c).1 (ofLex c).2).1) F).trans E0`. Take `⟨ω⟩` from `GlobalTheory.T.parabolicInductionProduct_block_renaming_equiv (k := k) F (GlobalTheory.T.finSigmaFinEquiv_symm_strictMono_toLex s t) F.surjective E0 E (fun _ _ => rfl) fun c => (u (ofLex c).1 (ofLex c).2).rep`. Set `Ψ` to `parIndMap e (GlobalTheory.CompanionTheory.CuspEmbed.piTensorMap ψ)`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `hΨ : Function.Injective Ψ` using `GlobalTheory.CompanionTheory.CuspEmbed.parIndMap_injective e _ (GlobalTheory.CompanionTheory.CuspEmbed.piTensorMap_injective ψ hψ)`. Conclude with `⟨fun c => u (finSigmaFinEquiv.symm c).1 (finSigmaFinEquiv.symm c).2, E, (χ.trans ω).toIntertwiningMap.comp (Ψ.comp φ), (χ.trans ω).toLinearEquiv.injective.comp (hΨ.comp hφ), fun _ => rfl⟩`.
+Establish an intermediate fact. Supply the required witnesses or components.
 -/
 private theorem glue {n s : ℕ} (π : IrrRep (GL (Fin n) k)) (d : Fin s → ℕ) (e : (Σ a, Fin (d a)) ≃ Fin n)
     (σ : ∀ a, IrrRep (GL (Fin (d a)) k)) (φ : π.ρ.IntertwiningMap (multiProd e fun a => (σ a).ρ))
@@ -159,7 +159,7 @@ private theorem glue {n s : ℕ} (π : IrrRep (GL (Fin n) k)) (d : Fin s → ℕ
     (χ.trans ω).toLinearEquiv.injective.comp (hΨ.comp hφ), fun _ => rfl⟩
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.CompanionTheory.CuspEmbed.main hBZ hG k x.1 (GlobalTheory.SplitRead.Irr.ofIrrRep x.2.rep)`.
+A detailed English derivation is pending.
 -/
 private theorem embeds' (hG : GlobalTheory.Published.GeometricLemma) (hBZ : GlobalTheory.Published.BernsteinZelevinskyFiniteness)
     (x : IrrGL k) : ∃ (s : ℕ) (u : Fin s → IrrGL k) (e : (Σ a, Fin (u a).1) ≃ Fin x.1),
@@ -167,15 +167,13 @@ private theorem embeds' (hG : GlobalTheory.Published.GeometricLemma) (hBZ : Glob
   GlobalTheory.CompanionTheory.CuspEmbed.main hBZ hG k x.1 (GlobalTheory.SplitRead.Irr.ofIrrRep x.2.rep)
 
 /- English proof (translation)
-Take `rfl : Δ.len * Δ.d = N` from `h.deg_eq`. Establish `h1 : HasSupport π.ρ (Finset.univ.val.map u)` using `⟨s, u, rfl, π.irr, fun a => ⟨(hu a).1, IrrRep.irr _, (hu a).2⟩, e, .of_injective φ hφ⟩`. Establish `h2` using `GlobalTheory.CompanionTheory.Hypotheses₂.TD.hasSupport_unique hG hBZ h1 h.hasSupport`. Take `rfl : Δ.len = s` from `by simpa using (congrArg Multiset.card h2).symm`. Establish `h3 : ∀ a, ∃ c : IrrCl (GL (Fin Δ.d) k), u a = ⟨Δ.d, c⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `a`. Establish `: u a ∈ Δ.ms` using `h2 ▸ Multiset.mem_map_of_mem _ (Finset.mem_univ a)`. Take `⟨b, hb⟩` from `Segment.mem_ms.1 this`. Conclude with `⟨(Δ.term b).2, hb.symm⟩`. Use `choose c hc using h3`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `rfl : u = fun a => ⟨Δ.d, c a⟩` from `funext hc`. Take `⟨θ⟩` from `(hZ Δ Δ.start.rep Δ.start.cl_rep e π).2.1 (h.cl_eq hZ)`. Establish `hT : (piTensor fun a => (c a).rep.ρ).IsIrreducible` using `GlobalTheory.T.piExteriorTensor_smoothIrreducible_isIrreducible hBZ k (Fin Δ.len) (fun _ => Fin Δ.d) fun a => (c a).rep`. Use `haveI := Model.nontrivial_of_isIrreducible π.irr`. Take `⟨v, hv⟩` from `exists_ne (0 : π.V)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h4` using `GlobalTheory.CompanionTheory.SocleJm.one_le_jhMult_jac e hT φ ⟨v, fun h0 => hv (hφ (h0.trans (map_zero φ).symm))⟩`. Establish `h5 : IsSubquotient (piTensor fun a => (c a).rep.ρ) (piTensor (segTerm Δ.start.rep.ρ Δ.len))` using `(jhMult_ne_zero_iff.1 (ENat.one_le_iff_ne_zero.1 h4)).trans (.of_injective θ.toIntertwiningMap θ.toLinearEquiv.injective)`. Establish `h6` using `GlobalTheory.LocGL.SupportUnique.isSubquotient_factor (segTerm Δ.start.rep.ρ Δ.len) a (c a).rep.irr ((GlobalTheory.CompanionTheory.Hypotheses₂.TD.isSubquotient_comp_mulSingle (fun a => (c a).rep.ρ) (fun a => (c a).rep.irr) a).trans (GlobalTheory.LocGL.SupportUnique.isSubquotient_ …`. Take `⟨ω⟩` from `h6.nonempty_equiv (c a).rep.irr (segTerm_irr _ _ a)`. Establish `ω'` using `ω.symm.trans (Δ.first.twEquiv _ (isSmoothChar_absPow ((a : ℕ) : ℂ)))`.
-
-Conclude with `(IrrGL.of_rep (⟨Δ.d, c a⟩ : IrrGL k)).symm.trans ((IrrGL.of_eq_of.2 ⟨ω'⟩).trans (IrrGL.of_rep (Δ.first.nu (a : ℕ))))`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem word (hG : GlobalTheory.Published.GeometricLemma) (hBZ : GlobalTheory.Published.BernsteinZelevinskyFiniteness)
     {Z : ∀ Δ : Segment k, IrrCl (GL (Fin (Δ.len * Δ.d)) k)} (hZ : IsSegmentClass k Z) (Δ : Segment k) {N : ℕ}
@@ -214,13 +212,13 @@ private theorem word (hG : GlobalTheory.Published.GeometricLemma) (hBZ : GlobalT
 end
 
 /- English proof (translation)
-Introduce `hG hBZ hP k _ _ _ _ Δ`. Take `⟨Z, -, hZ, -⟩` from `hP k`. Use `⟨exists_unit_one_add_generator hBZ hZ Δ, fun z hz q hq hc hj => ?_⟩` and prove the remaining obligations. Take `⟨y, hd, φ, hφ⟩` from `UpperTheory.Lit.Full.embL hG hBZ k z q hq hc hj`. Use `choose t u e' hu ψ hψ using fun a : Fin 2 => embeds' hG hBZ (![q 0, y] a)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨w, E, Φ, hΦ, hwu⟩` from `glue z.2.rep (fun a => (![q 0, y] a).1) (stdBlocks (fun a => (![q 0, y] a).1) hd) (fun a => (![q 0, y] a).2.rep) φ hφ t u e' ψ hψ`. Establish `hw` using `word hG hBZ hZ Δ z.2.rep hz w (fun c => hwu c ▸ hu _ _) E Φ hΦ`. Establish `h1 : HasSupport (q 0).rep (Finset.univ.val.map (u 0))` using `⟨t 0, u 0, rfl, (q 0).2.rep.irr, fun a => ⟨(hu 0 a).1, IrrRep.irr _, (hu 0 a).2⟩, e' 0, .of_injective (ψ 0) (hψ 0)⟩`. Establish `h2` using `GlobalTheory.CompanionTheory.Hypotheses₂.TD.hasSupport_unique hG hBZ h1 (hasSupport_self hc)`. Establish `h3 : t 0 = 1` using `by simpa using congrArg Multiset.card h2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `b : Fin (t 0)` to `⟨0, by omega⟩`. Establish `h4 : u 0 b = q 0` using `Multiset.mem_singleton.1 (h2 ▸ Multiset.mem_map_of_mem _ (Finset.mem_univ b))`. Establish `h5` using `hw (finSigmaFinEquiv ⟨0, b⟩)`. Establish `h6 : ((finSigmaFinEquiv ⟨0, b⟩ : Fin (∑ a, t a)) : ℕ) = 0`. Rewrite using `[finSigmaFinEquiv_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[b]`. Rewrite `h5` using `[hwu, h6, Nat.cast_zero, IrrGL.nu_zero, Equiv.symm_apply_apply]`. Conclude with `h4.symm.trans h5`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Lit.Full.zfirst :
     GlobalTheory.Published.GeometricLemma → GlobalTheory.Published.BernsteinZelevinskyFiniteness → GlobalTheory.Published.ZelevinskyPolynomialRing → ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (Δ : Segment k), (∃ z : IrrGL k, IsZSeg Δ z.rep) ∧ ∀ z : IrrGL k, IsZSeg Δ z.rep → FirstIn z {Δ.first} := by

@@ -8,11 +8,11 @@ open MeasureTheory GlobalTheory.AutomorphicL2Unitary GlobalTheory.CuspRep Global
 open GroundTheory.Automorphic GroundTheory.Automorphic.AutomorphicForm GroundTheory.Automorphic.CuspidalSpectrum
 
 /- English proof (translation)
-Introduce `E _ _ _ a μ _ μ₁ _ hp v`. Establish `hv : v ∈ ((centralCuspForms E a).map (cuspVecL μ₁)).topologicalClosure`. Rewrite using `[UpperTheory.V.KernelIndexFullLattice.dense_holds E a μ₁]`. Discharge the goal by the elementary cases of `trivial`. Establish `hcl : IsClosed (UpperTheory.V.KernelIndexFullLattice.cmp hp ⁻¹' (L2cusp μ : Set (L2 (latticeGL E a) μ)))` using `(Submodule.isClosed_topologicalClosure _).preimage (UpperTheory.V.KernelIndexFullLattice.cmp hp).continuous`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. Establish an intermediate fact.
 
-Use `closure_minimal ?_ hcl hv` and prove the remaining obligations. Introduce and unpack `_ ⟨φ, hφ, rfl⟩`. Establish `hc : Continuous φ.1` using `φ.2.1.continuous`. Establish `hl : IsLeftInvariant φ.1` using `φ.2.1.isLeftInvariant`. Use `Submodule.le_topologicalClosure _ ⟨φ.1, mem_cuspCont.2 ⟨hc, fun γ g => hl γ g, fun t g => ?_, UpperTheory.isCuspidal_of_constantTerm_eq_zero E a φ.1 hl hc φ.2.2⟩, UpperTheory.V.KernelIndexFullLattice.cmpForm_holds E a μ μ₁ hp φ hφ⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[splitCentre_comm, UpperTheory.V.KernelIndexFullLattice.splitEq_holds]`. Conclude with `apply_mul_centralSection_of_mem hφ _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.KernelIndexFullLattice.rangeLe_holds :
     UpperTheory.V.KernelIndexFullLattice.RangeLe := by

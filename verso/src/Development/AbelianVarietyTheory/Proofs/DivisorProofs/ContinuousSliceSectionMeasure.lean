@@ -5,15 +5,13 @@ open Matrix MeasureTheory ValuativeRel GlobalTheory.SplitFlip GlobalTheory.SmGL 
 namespace GlobalTheory.RankFibreKer
 
 /- English proof (translation)
-Introduce `k _ _ _ _ a d Φ hΦ s hs hsl huniq`. Take `⟨⟨hlc, hcs⟩, hrank⟩` from `hΦ`. Establish `hclosed : IsClosed (Function.support Φ)`. Conclude with `(hlc.isClopen_fiber (0 : ℂ)).compl.isClosed`. Establish `hts : tsupport Φ = Function.support Φ` using `hclosed.closure_eq`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsub : tsupport Φ ⊆ {Y | Y.rank = a}`. Introduce `Y hY`. Rewrite `hY` using `[hts]`. Assume the negation of the conclusion as `h`. Conclude with `hY (hrank Y h)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨s '' tsupport Φ, hcs.isCompact.image_of_continuousOn (hs.mono hsub), ?_⟩` and prove the remaining obligations. Introduce `g Z hZ hne`. Establish `hY : g.val * Z ∈ tsupport Φ` using `subset_tsupport _ hne`. Establish `hr : (g.val * Z).rank = a` using `hsub hY`. Establish `h1 : ((s (g.val * Z))⁻¹ * g).val * Z ∈ slice k a d`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Units.val_mul, Matrix.mul_assoc]`. Conclude with `hsl _ hr`. Establish `h2` using `huniq Z _ hZ h1`. Establish `: g = s (g.val * Z)`. Rewrite `h2` using `[inv_mul_eq_one]`.
-
-Conclude with `h2.symm`. Conclude with `⟨g.val * Z, hY, this.symm⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_isCompact_of_slice : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (a d : ℕ) (Φ : Matrix (Fin a) (Fin d) k → ℂ), Φ ∈ fullRankSB k a d →
     ∀ (s : Matrix (Fin a) (Fin d) k → GL (Fin a) k), ContinuousOn s {Y | Y.rank = a} →

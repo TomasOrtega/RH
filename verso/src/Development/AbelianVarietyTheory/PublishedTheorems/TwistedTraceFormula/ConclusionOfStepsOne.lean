@@ -10,7 +10,7 @@ namespace GlobalTheory.Published.TemperedSub
 variable {n a : ℕ} {ε : Fin n → Bool}
 
 /- English proof (translation)
-Establish `hK : IsCompact (KG ε : Set (UJ ε))` using `isCompact_iff_compactSpace.2 (instCompactKG n ε)`. Establish `: CompactSpace ↥(KG ε ⊓ D.M)` using `isCompact_iff_compactSpace.1 (hK.inter_right (isClosed_leviOne D.flag D.pos))`. Conclude with `⟨Measure.haarMeasure ⊤, inferInstance, ⟨Measure.haarMeasure_self⟩⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem exists_haar (D : Datum ε) :
     ∃ μ : Measure ↥(KG ε ⊓ D.M), μ.IsHaarMeasure ∧ IsProbabilityMeasure μ := by
@@ -20,15 +20,15 @@ theorem exists_haar (D : Datum ε) :
   exact ⟨Measure.haarMeasure ⊤, inferInstance, ⟨Measure.haarMeasure_self⟩⟩
 
 /- English proof (translation)
-Establish `one : ∀ {u : UJ ε}, IsSplit ε W 0 u → u = 1` using `fun hu => (existsUnique_isSplit hW 0).unique hu isSplit_one`. Establish `hN : (1 : UJ ε) ∈ flagN ε W` using `⟨fun i y _ => by simp [uMat_one], fun y _ => by simp [uMat_one]⟩`. Establish `law : ∀ f ∈ indFun (leviOne ε W) j W σ s, ∀ g ∈ leviOne ε W, f g = σ (uMat g) (f 1)` using `fun f hf g hg => by`. Simplify `hf.2.2 1 hN g hg 0 1 isSplit_one (one_mem _) hg (one_mem _) 1 (one_mem _)` using `[pairing]`. Use `⟨Function.Surjective.denseRange fun v => ⟨⟨fun g => if g ∈ leviOne ε W then σ (uMat g) v else 0, ?_, fun g hg => if_neg hg, fun u hu m hm x t ht h1 _ h3 g hg => ?_⟩, ?_⟩, fun f => ?_, fun y hy f f' e => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations.
 
-Use `((hσ.2.2 v).comp continuous_uMat.continuousOn fun g hg => ⟨g, hg, rfl⟩).congr fun g hg => if_pos hg` and prove the remaining obligations. Establish `hx : x = 0` using `funext fun i => by`. Use `ht.detOn_succ hW i` as an intermediate fact. Rewrite `this` using `[h3.2, h3.2, one_mul, eq_comm, Real.exp_eq_one_iff, mul_eq_zero]`. Establish `hji` using `hj i`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `this.resolve_left (by exact_mod_cast (by omega : j i ≠ 0))`. Substitute `hx` using the available equality. Establish `hu1 : u = 1` using `one ⟨h1.1, fun i y hy => by simpa using hu.1 i y hy, hu.2⟩`. Rewrite using `[hu1, one ht, one_mul, mul_one]`. Simplify using `only`.
+Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_pos (mul_mem hm hg), if_pos hg, uMat_mul, hσ.1.2 _ ⟨m, hm, rfl⟩ _ ⟨g, hg, rfl⟩]`. Simplify using `[pairing]`. Simplify using `[uMat_one, hσ.1.1, one_mem]`. Establish `: ∀ k : ↥(KG ε ⊓ leviOne ε W), ‖f.1 k‖ = ‖f.1 1‖` using `fun k => by`. Rewrite using `[law _ f.2 _ k.2.2, hσ.2.1 _ ⟨_, k.2.2, rfl⟩]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[this]`. Simplify `(law _ f.2 y hy).symm` using `[e]`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem isIndModel_self {j : Fin a → ℕ} {W : Flag n a} (hW : IsIsoFlag ε j W) (hj : ∀ i, 1 ≤ j i)
     {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V] {σ : Matrix (Fin n) (Fin n) ℂ → (V →L[ℂ] V)}
@@ -62,7 +62,7 @@ theorem isIndModel_self {j : Fin a → ℕ} {W : Flag n a} (hW : IsIsoFlag ε j 
   · simpa [e] using (law _ f.2 y hy).symm
 
 /- English proof (translation)
-Establish `hW : IsIsoFlag ε (fun _ => 1) D.W` using `h ▸ D.flag`. Use `⟨D.a, D.W, hW, fun i => ⟨i, rfl⟩, D.V, _, _, inferInstance, D.σ, 0, D.temp, fun μ _ _ X _ _ _ ρ ι hm => ?_⟩` and prove the remaining obligations. Take `⟨U, -, hU⟩` from `(isIndModel_self hW (fun _ => le_rfl) D.temp.2.2.1 _ μ).unique hm fun _ hf _ hy => indFun_mul_right hf hy`. Conclude with `⟨U.toLinearIsometry, fun m hm v => hU _ ⟨m, hm, rfl⟩ v⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem conclusion_of_steps_one (D : Datum ε) (h : D.j = fun _ => 1) :
     ∃ (b : ℕ) (W' : Flag n b), IsIsoFlag ε (fun _ => 1) W' ∧ (∀ i, D.W i ∈ Set.range W') ∧
@@ -81,13 +81,13 @@ theorem conclusion_of_steps_one (D : Datum ε) (h : D.j = fun _ => 1) :
   exact ⟨U.toLinearIsometry, fun m hm v => hU _ ⟨m, hm, rfl⟩ v⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨funext fun (i : Fin 1) => by rw [Subsingleton.elim i 0]; rfl, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem sphericalDatum_steps (s : ℂ) : (sphericalDatum s).j = (fun _ => 1) ∧ (sphericalDatum s).a = 1 :=
   ⟨funext fun (i : Fin 1) => by rw [Subsingleton.elim i 0]; rfl, rfl⟩
 
 /- English proof (translation)
-Establish `h : Finset.Iio (1 : Fin 2) = {0}` using `by decide`. Establish `h0 : Finset.Iio (0 : Fin 2) = ∅` using `by decide`. Simplify using `[pairing, rho, Fin.sum_univ_two, h, h0]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem pairing_rho_four (x : ℝ) : pairing (fun _ : Fin 2 => 1) (rho 4 fun _ => 1) ![x, -x] = 2 * x := by
   have h : Finset.Iio (1 : Fin 2) = {0} := by decide

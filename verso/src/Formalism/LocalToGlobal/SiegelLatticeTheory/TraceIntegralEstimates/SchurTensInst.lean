@@ -18,11 +18,11 @@ section Loc
 variable {n : ℕ} {ε : Fin n → Bool} {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
 
 /- English proof (translation)
-Take `⟨⟨h1, hmul⟩, hnorm, hcont⟩` from `hU`. Establish `hmem : ∀ g : Formalism.REAL.UJ ε, uMat g ∈ UJset ε` using `fun g => g.2`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `show σ (uMat 1) = 1`. Simplify `h1` using `[uMat]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x y show σ (uMat (x * y)) = σ (uMat x) * σ (uMat y)`. Rewrite using `[show uMat (x * y) = uMat x * uMat y from rfl, hmul _ (hmem x) _ (hmem y)]`. Both sides reduce to the same expression. Introduce `x a b`. Set `Li : H →ₗᵢ[ℂ] H` to `{ toLinearMap := (σ (uMat x)).toLinearMap, norm_map' := hnorm _ (hmem x) }`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Li.inner_map_map a b`. Introduce `a`. Conclude with `(hcont a).comp_continuous (Units.continuous_val.comp continuous_subtype_val) hmem`.
+A detailed English derivation is pending.
 -/
 theorem unitRep_of_URepOn {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} (hU : IsURepOn (UJset ε) σ) :
     IsUnitRep (fun g : Formalism.REAL.UJ ε => σ (uMat g)) := by
@@ -42,22 +42,22 @@ theorem unitRep_of_URepOn {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} 
     exact (hcont a).comp_continuous (Units.continuous_val.comp continuous_subtype_val) hmem
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h.1, fun a b a' b' => h.2 a b a' b'⟩`.
+Supply the required witnesses or components.
 -/
 theorem isSchur_of_isFdeg {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} {d : ℝ}
     (h : IsFdeg (Formalism.REAL.muG ε) σ d) : IsSchur (Formalism.REAL.muG ε) (fun g : Formalism.REAL.UJ ε => σ (uMat g)) d :=
   ⟨h.1, fun a b a' b' => h.2 a b a' b'⟩
 
 /- English proof (translation)
-Take `⟨hd, hI⟩` from `h`. Establish `h2` using `(hI w w w w).2`. Establish `hc : ∀ g : Formalism.REAL.UJ ε, coefOn σ w w g * star (coefOn σ w w g) = ((‖coefOn σ w w g‖ ^ 2 : ℝ) : ℂ)` using `fun g => by`. Rewrite using `[Complex.star_def]`. Rewrite using `[RCLike.mul_conj (K := ℂ)]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `norm_cast`. Establish `hin : ⟪w, w⟫_ℂ = ((‖w‖ ^ 2 : ℝ) : ℂ)`. Rewrite using `[inner_self_eq_norm_sq_to_K]`. Use `norm_cast`. Simplify using `only [hc] at h2`.
+Put the expressions in a common number system so they can be compared. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Put the expressions in a common number system so they can be compared. Simplify using the standard rewrite rules.
 
-Rewrite `h2` using `[integral_complex_ofReal, hin]`. Establish `hr : (∫ g, ‖coefOn σ w w g‖ ^ 2 ∂(Formalism.REAL.muG ε)) = ‖w‖ ^ 4 / d`. Establish `h3 : ((∫ g, ‖coefOn σ w w g‖ ^ 2 ∂(Formalism.REAL.muG ε) : ℝ) : ℂ) = ((‖w‖ ^ 4 / d : ℝ) : ℂ)`. Rewrite using `[h2]`. Use `push_cast`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Expand and normalize the polynomial expressions, which then agree. Conclude with `h3` after adjusting the coercions. Establish `hw' : ‖w‖ ≠ 0` using `norm_ne_zero_iff.mpr hw`. Establish `hd' : d ≠ 0` using `hd.ne'`. Unfold `fdegOf`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hr]`. Clear the denominators using the available nonvanishing facts.
+Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem fdegOf_eq' {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} {d : ℝ} (h : IsFdeg (Formalism.REAL.muG ε) σ d)
     {w : H} (hw : w ≠ 0) : fdegOf (Formalism.REAL.muG ε) σ w = d := by
@@ -87,19 +87,19 @@ theorem fdegOf_eq' {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} {d : �
 end Loc
 
 /- English proof (translation)
-Introduce `D X`. Establish `hU : ∀ v, IsUnitRep (fun g : Formalism.REAL.UJ (X.B.I.ε v) => X.B.σ v (uMat g))` using `fun v => unitRep_of_URepOn (X.ds v).2.2.1`. Establish `hw : ∀ v, ‖X.B.w v‖ = 1` using `fun v => (X.low v).1`. Establish `hF : ∀ v, IsFdeg (Formalism.REAL.muG (X.B.I.ε v)) (X.B.σ v) (X.dv v)`. Introduce `v`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨d, hd⟩` from `Formalism.MainNotions.BridgeCSchur.fdeg_of_DS _ (X.B.σ v) (X.ds v)`. Establish `hw0 : X.B.w v ≠ 0`. Introduce `h0`. Use `hw v` as an intermediate fact. Rewrite `this` using `[h0, norm_zero]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `zero_ne_one this`. Establish `he : X.dv v = d` using `fdegOf_eq' hd hw0`. Rewrite using `[he]`. Conclude with `hd`. Establish `hT : IsTensAbs (fun v (g : Formalism.REAL.UJ (X.B.I.ε v)) => X.B.σ v (uMat g)) X.B.σs X.B.tens` using `X.B.tens_spec`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨isUnitRep_tens hU hT, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `isSchur_tens (fun v => Formalism.REAL.muG (X.B.I.ε v)) X.dv hU (fun v => isSchur_of_isFdeg (hF v)) hT`. Establish `h1` using `X.B.tens_spec.1 X.B.w X.B.w`. Establish `h2 : ∏ v, ⟪X.B.w v, X.B.w v⟫_ℂ = 1`. Use `Finset.prod_eq_one fun v _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[inner_self_eq_norm_sq_to_K, hw v]`. Simplify using the standard rewrite rules. Rewrite `h1` using `[h2]`. Establish `h3 : ‖X.B.tens X.B.w‖ ^ 2 = 1`. Use `congrArg RCLike.re h1` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Rewrite `this` using `[inner_self_eq_norm_sq (𝕜 := ℂ)]`. Simplify using `using this`. Establish `h4` using `norm_nonneg (X.B.tens X.B.w)`. Use polynomial arithmetic with `[h3, h4]`. Introduce `y`.
+Use the polynomial consequences of the given equalities and inequalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Simplify using `only [Formalism.L2.SG.ProjRows.phInf, Formalism.L2.SG.ProjRows.mInf, Formalism.L2.SG.RealObj.degX]`. Rewrite using `[X.B.tens_spec.2.1 y, X.B.tens_spec.1]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem stepSchurG_holds : Formalism.L2.SG.RealObj.EnergyInst.StepSchurG := by
   intro D X

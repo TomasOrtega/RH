@@ -14,9 +14,9 @@ open GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.LocGL
 namespace GlobalTheory.RgGu
 
 /- English proof (translation)
-Establish `hc : ∀ v, Fintype.card {a // x a = v} = Fintype.card {b // y b = v}` using `fun v => by`. Use `congrArg (Multiset.count v) H` as an intermediate fact. Simplify using `only [Multiset.count_map] at this`. Simplify using `only [Fintype.card_subtype, Finset.card_def, Finset.filter_val, eq_comm (b := v)]`. Conclude with `this`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 
-Conclude with `⟨Equiv.ofFiberEquiv fun v => Fintype.equivOfCardEq (hc v), fun a => Equiv.ofFiberEquiv_map _ a⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_equiv_of_map_univ_eq {α : Type*} {h h' : ℕ} (x : Fin h → α) (y : Fin h' → α)
     (H : Finset.univ.val.map x = Finset.univ.val.map y) : ∃ e : Fin h ≃ Fin h', ∀ a, y (e a) = x a := by
@@ -29,11 +29,11 @@ theorem exists_equiv_of_map_univ_eq {α : Type*} {h h' : ℕ} (x : Fin h → α)
   exact ⟨Equiv.ofFiberEquiv fun v => Fintype.equivOfCardEq (hc v), fun a => Equiv.ofFiberEquiv_map _ a⟩
 
 /- English proof (translation)
-Introduce `N s V W _ _ _ _ π σ hπ hσ gπ gσ`. Take `⟨ψ, hψc, hψ1, gπψ⟩` from `gπ`. Establish `gσψ : IsGenericFor ψ σ` using `(isGeneric_iff_isGenericFor hψc hψ1 σ).1 gσ`. Take `⟨h, x, hd, hxs, hxc, hπx⟩` from `GlobalTheory.T.cuspidal_support_realised_by_product k π s hπ`. Take `⟨h', y, hd', hys, hyc, hσy⟩` from `GlobalTheory.T.cuspidal_support_realised_by_product k σ s hσ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨e, he⟩` from `exists_equiv_of_map_univ_eq x y (hxs.trans hys.symm)`. Establish `hh : h = h'` using `by simpa using Fintype.card_congr e`. Substitute `hh` using the available equality. Establish `hfun : (fun a => y (e a)) = x` using `funext he`. Substitute `hfun` using the available equality.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Substitute using the available equality.
 
-Establish `hσx : IsSubquotient σ (prodIrr (fun a => y (e a)) hd)` using `hP hA (GlobalTheory.T.gelfand_kazhdan_local hA) hH hW hC ψ hψc hψ1 y hyc hd' e hd σ hσ.isSmooth hσ.isIrreducible gσψ hσy`. Conclude with `GlobalTheory.T.whittaker_rank_extension_bound k ψ hψc N (prodIrr (fun a => y (e a)) hd) π σ (isSmooth_prodIrr _ hd) (GlobalTheory.T.whittaker_rank_product_le_one k hH hW ψ hψc hψ1 h N _ hd) hπ.isIrreducible hσ.isIrreducible hπx hσx gπψ gσψ`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem genericUnique_of_perm {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (hA : GlobalTheory.Published.IrreducibleAdmissibleGL) (hH : GlobalTheory.BZMir.Leib.WhitHeredity k) (hW : GlobalTheory.BZSeg.WhitRankIrr k)
@@ -56,11 +56,9 @@ theorem genericUnique_of_perm {k : Type} [Field k] [ValuativeRel k] [Topological
     (GlobalTheory.T.whittaker_rank_product_le_one k hH hW ψ hψc hψ1 h N _ hd) hπ.isIrreducible hσ.isIrreducible hπx hσx gπψ gσψ
 
 /- English proof (translation)
-Break down `h with _ | n` into its components or cases. Take `rfl : τ = 1` from `Subsingleton.elim _ _`. Conclude with `hx`. Establish `hτ : τ ∈ Submonoid.closure (Set.range fun i : Fin n => Equiv.swap i.castSucc i.succ)`. Rewrite using `[Equiv.Perm.mclosure_swap_castSucc_succ]`.
+Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition.
 
-Discharge the goal by the elementary cases of `trivial`. Proceed by induction on `hτ using Submonoid.closure_induction_right with`. Consider the case `one => exact hx`. Consider the case `mul_right t ht s hs' ih`. Take `⟨i, rfl⟩` from `hs'`.
-
-Conclude with `hP (fun a => x (t a)) i.1 (by omega) ih`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem perm_abs {α : Type 1} {h : ℕ} (P : (Fin h → α) → Prop)
     (hP : ∀ (y : Fin h → α) (j : ℕ) (hj : j + 1 < h), P y → P fun a => y (Equiv.swap ⟨j, by omega⟩ ⟨j + 1, hj⟩ a))
@@ -77,9 +75,9 @@ theorem perm_abs {α : Type 1} {h : ℕ} (P : (Fin h → α) → Prop)
     exact hP (fun a => x (t a)) i.1 (by omega) ih
 
 /- English proof (translation)
-Introduce `k _ _ _ _ hA hG hH hW hC ψ hc h1 h N x hx hd τ hd' W _ _ σ hs hi hg hσ`. Set `P : (Fin h → IrrGL k) → Prop` to `fun y => (∀ a, (y a).IsCusp) ∧ ∃ e : ∑ a, (y a).1 = N, IsSubquotient σ (prodIrr y e)`. Establish `step : ∀ (y : Fin h → IrrGL k) (j : ℕ) (hj : j + 1 < h), P y → P fun a => y (Equiv.swap ⟨j, by omega⟩ ⟨j + 1, hj⟩ a)`. Introduce and unpack `y j hj ⟨c, e, H⟩`. Establish `e' : ∑ a, (y (Equiv.swap ⟨j, by omega⟩ ⟨j + 1, hj⟩ a)).1 = N` using `(Equiv.sum_comp (Equiv.swap ⟨j, by omega⟩ ⟨j + 1, hj⟩) fun a => (y a).1).trans e`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Conclude with `⟨fun a => c _, e', @GlobalTheory.T.cuspidal_swap_product_generic k _ _ _ _ hA hG hH hW hC ψ hc h1 h N y c e j hj e' W _ _ σ hs hi hg H⟩`. Take `⟨-, e, H⟩` from `perm_abs P step x ⟨hx, hd, hσ⟩ τ`. Conclude with `H`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem perm_of_swap : ∀ {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k], GlobalTheory.Published.IrreducibleAdmissibleGL → Zc.Cos.GKLocal k → GlobalTheory.BZMir.Leib.WhitHeredity k → GlobalTheory.BZSeg.WhitRankIrr k → GlobalTheory.BZSeg.CuspGeneric k → ∀ (ψ : AddChar k Circle), Continuous ψ → ψ ≠ 1 → ∀ {h N : ℕ} (x : Fin h → IrrGL k), (∀ a, (x a).IsCusp) → ∀ (hd : ∑ a, (x a).1 = N) (τ : Equiv.Perm (Fin h)) (hd' : ∑ a, (x (τ a)).1 = N) {W : Type} [AddCommGroup W] [Module ℂ W] (σ : Representation ℂ (GL (Fin N) k) W), IsSmooth σ → σ.IsIrreducible → IsGenericFor ψ σ → IsSubquotient σ (prodIrr x hd) → IsSubquotient σ (prodIrr (fun a => x (τ a)) hd') := by
   intro k _ _ _ _ hA hG hH hW hC ψ hc h1 h N x hx hd τ hd' W _ _ σ hs hi hg hσ
@@ -95,7 +93,7 @@ theorem perm_of_swap : ∀ {k : Type} [Field k] [ValuativeRel k] [TopologicalSpa
   exact H
 
 /- English proof (translation)
-The claim follows from `genericUnique_of_perm hA hH hW hC (@perm_of_swap k _ _ _ _)`.
+A detailed English derivation is pending.
 -/
 theorem genericUnique_of {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (hA : GlobalTheory.Published.IrreducibleAdmissibleGL) (hH : GlobalTheory.BZMir.Leib.WhitHeredity k) (hW : GlobalTheory.BZSeg.WhitRankIrr k)

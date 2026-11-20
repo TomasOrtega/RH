@@ -4,17 +4,15 @@ open MeasureTheory Filter Topology Set
 namespace GlobalTheory
 
 /- English proof (translation)
-Take `⟨b, hbdef⟩ : ∃ b : ℝ, b = c / 2` from `⟨_, rfl⟩`. Establish `hb : 0 < b` using `by rw [hbdef]; positivity`. Establish `hI : IntegrableOn (fun s : ℝ => ((m.factorial : ℝ) / b ^ m * Real.exp b) * Real.exp (-b * s)) (Ioi 0)` using `(exp_neg_integrableOn_Ioi 0 hb).const_mul _`. Use `Integrable.mono' hI ?_ ?_` and prove the remaining obligations. Conclude with `(Continuous.aestronglyMeasurable (by fun_prop))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `(ae_restrict_iff' measurableSet_Ioi).2 (Eventually.of_forall fun s hs => ?_)` and prove the remaining obligations. Establish `hs0 : (0:ℝ) ≤ s` using `le_of_lt hs`. Establish `h1` using `Real.pow_div_factorial_le_exp (b * (1 + s)) (mul_nonneg hb.le (by linarith)) m`. Rewrite using `[Real.norm_eq_abs, abs_of_nonneg (mul_nonneg (Real.exp_pos _).le (pow_nonneg (by linarith) _))]`. Establish `hf : (0:ℝ) < m.factorial` using `by exact_mod_cast m.factorial_pos`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[div_le_iff₀ hf, mul_pow]`. Establish `key : (1 + s) ^ m ≤ (m.factorial : ℝ) / b ^ m * Real.exp (b * (1 + s))`. Rewrite using `[div_mul_eq_mul_div, le_div_iff₀ (pow_pos hb m)]`. Combine the linear relations using `[h1]`. Establish `he : Real.exp (b * (1 + s)) = Real.exp b * Real.exp (b * s)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Real.exp_add]`. Put the polynomial expressions in normal form. Establish `hcs : Real.exp (-c * s) * Real.exp (b * s) = Real.exp (-b * s)`. Rewrite using `[← Real.exp_add]`. Use `congr 1`.
+Put the polynomial expressions in normal form. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hbdef]`. Expand and normalize the polynomial expressions, which then agree. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[he]`. Expand and normalize the polynomial expressions, which then agree.
-
-Use `_ = ((m.factorial : ℝ) / b ^ m * Real.exp b) * Real.exp (-b * s) := by rw [hcs]`.
+Expand and normalize the polynomial expressions, which then agree. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem vertRay_expPow_weight_integrableOn (c : ℝ) (m : ℕ) (hc : 0 < c) :
     IntegrableOn (fun s : ℝ => Real.exp (-c * s) * (1 + s) ^ m) (Ioi 0) := by
@@ -46,23 +44,21 @@ theorem vertRay_expPow_weight_integrableOn (c : ℝ) (m : ℕ) (hc : 0 < c) :
       _ = ((m.factorial : ℝ) / b ^ m * Real.exp b) * Real.exp (-b * s) := by rw [hcs]
 
 /- English proof (translation)
-Introduce `g K c m τ hg hc hb hτ`. Establish `hK : 0 ≤ K`. Establish `h` using `hb Complex.I (by simp)`. Establish `hpos : 0 < Real.exp (-c * Complex.I.im) * (1 + ‖Complex.I‖) ^ m` using `by positivity`. Assume the negation of the conclusion as `hneg`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `hneg' : K < 0` using `not_le.mp hneg`. Establish `: K * Real.exp (-c * Complex.I.im) * (1 + ‖Complex.I‖) ^ m < 0`. Rewrite using `[mul_assoc]`. Conclude with `mul_neg_of_neg_of_pos hneg' hpos`. Combine the linear relations using `[norm_nonneg (g Complex.I)]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Extract witnesses or component facts from the available result.
 
-Take `⟨A, hA⟩ : ∃ A : ℝ, A = K * Real.exp (-c * τ.im) * (1 + ‖τ‖) ^ m` from `⟨_, rfl⟩`. Rewrite using `[← hA]`. Establish `hw` using `vertRay_expPow_weight_integrableOn c m hc`. Establish `hbound : ∀ s : ℝ, 0 < s → ‖g (τ + s * Complex.I)‖ ≤ A * (Real.exp (-c * s) * (1 + s) ^ m)`. Introduce `s hs`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `him : (τ + s * Complex.I).im = τ.im + s` using `by simp`. Establish `h1` using `hb (τ + s * Complex.I) (by rw [him]; linarith)`. Rewrite `h1` using `[him]`. Establish `hn : ‖τ + s * Complex.I‖ ≤ ‖τ‖ + s`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[norm_mul, Complex.norm_I, mul_one, Complex.norm_real, Real.norm_eq_abs, abs_of_pos hs]`. Establish `hp : (1 + ‖τ + s * Complex.I‖) ^ m ≤ (1 + ‖τ‖) ^ m * (1 + s) ^ m`. Rewrite using `[← mul_pow]`. Apply `pow_le_pow_left₀ (by positivity)` to reduce the goal to its premises. Use polynomial arithmetic with `[mul_nonneg (norm_nonneg τ) hs.le]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Establish `he : Real.exp (-c * (τ.im + s)) = Real.exp (-c * τ.im) * Real.exp (-c * s)`. Rewrite using `[← Real.exp_add]`. Put the polynomial expressions in normal form. Combine the equalities or inequalities in the displayed calculation. Establish `hmeas : AEStronglyMeasurable (fun s : ℝ => g (τ + s * Complex.I)) (volume.restrict (Ioi 0))`.
+Rewrite the conclusion using the stated equalities. Put the polynomial expressions in normal form. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc' : ContinuousOn (fun s : ℝ => g (τ + s * Complex.I)) (Ioi 0)`. Use `ContinuousOn.comp (g := g) (f := fun s : ℝ => τ + s * Complex.I) hg (by fun_prop) ?_` and prove the remaining obligations. Introduce `s hs`. Establish `him : (τ + s * Complex.I).im = τ.im + s` using `by simp`. Use `show 0 < (τ + s * Complex.I).im`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Rewrite using `[him]`. Combine the linear relations using `[mem_Ioi.mp hs]`. Conclude with `hc'.aestronglyMeasurable measurableSet_Ioi`. Establish `hae : ∀ᵐ s : ℝ ∂(volume.restrict (Ioi (0:ℝ))), ‖g (τ + s * Complex.I)‖ ≤ A * (Real.exp (-c * s) * (1 + s) ^ m)` using `(ae_restrict_iff' measurableSet_Ioi).2 (Eventually.of_forall fun s hs => hbound s hs)`. Establish `hint : IntegrableOn (fun s : ℝ => g (τ + s * Complex.I)) (Ioi 0)` using `Integrable.mono' (hw.const_mul A) hmeas hae`.
-
-Use `⟨hint, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem vertRay_integral_expPow_bound : ∀ (g : ℂ → ℂ) (K c : ℝ) (m : ℕ) (τ : ℂ),
     ContinuousOn g {z : ℂ | 0 < z.im} → 0 < c →

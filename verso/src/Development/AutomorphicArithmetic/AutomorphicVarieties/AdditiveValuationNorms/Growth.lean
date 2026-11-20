@@ -9,21 +9,21 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AdditiveValuationN
 open UpperTheory.V UpperTheory.V.PropA
 
 /- English proof (translation)
-Introduce `l _ X _ _ R g hG hU m`. Establish `hl : 1 < l` using `(Fact.out : l.Prime).one_lt`. Take `⟨k, hk⟩ : ∃ k, k = Nat.log l R + 1` from `⟨_, rfl⟩`. Establish `hRk : R ≤ l ^ k`. Rewrite using `[hk]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(Nat.lt_pow_succ_log_self hl R).le`. Establish `hA : InPow 1 ((g - 1) ^ l ^ k)`. Establish `h0` using `unipPow l X R g hG hU`. Establish `hsplit : (g - 1) ^ l ^ k = (g - 1) ^ (l ^ k - R) * (g - 1) ^ R`. Rewrite using `[← pow_add, Nat.sub_add_cancel hRk]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x`. Take `⟨y, hy⟩` from `h0 x`. Use `⟨((g - 1) ^ (l ^ k - R)) y, ?_⟩` and prove the remaining obligations. Rewrite using `[hsplit, Module.End.mul_apply, hy, map_smul]`. Establish `hB : InPow 2 (g ^ l ^ (k + 1) - 1)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `(powIn l X (g ^ l ^ k)).2 ((frob l X g k).1 hA)`. Rewrite `h` using `[← pow_mul, ← pow_succ]`. Then use the resulting hypothesis. Establish `hC : ∀ n, k + 1 ≤ n → InPow 2 (g ^ l ^ n - 1)`. Introduce `n hn`. Establish `h` using `(powIn l X (g ^ l ^ (k + 1))).1 2 (l ^ (n - (k + 1))) hB`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `h` using `[← pow_mul, ← pow_add, Nat.add_sub_cancel' hn]`. Then use the resulting hypothesis. Establish `hstep : ∀ n, k + 1 ≤ n → cokLen (g ^ l ^ (n + 1) - 1) ≤ cokLen (g ^ l ^ n - 1) + R`. Introduce `n hn`. Establish `h` using `step l X R (g ^ l ^ n) hG (hC n hn)`. Rewrite `h` using `[← pow_mul, ← pow_succ]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `main : ∀ d, cokLen (g ^ l ^ (jZero l R + d) - 1) ≤ cokLen (g ^ l ^ jZero l R - 1) + ((R * d : ℕ) : ℕ∞)`. Introduce `d`. Proceed by induction on `d with`. Consider the case `zero => simp`. Consider the case `succ d ih`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Break down `le_total m (jZero l R) with hm | hm` into its components or cases. Rewrite using `[Nat.sub_eq_zero_of_le hm, mul_zero, Nat.cast_zero, add_zero]`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `mono l X g _ _ (pow_dvd_pow l hm)`. Take `⟨d, rfl⟩` from `Nat.exists_eq_add_of_le hm`. Rewrite using `[Nat.add_sub_cancel_left]`. Conclude with `main d`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.PropA.growth :
     ∀ (l : ℕ) [Fact l.Prime] (X : Type) [AddCommGroup X] [Module ℤ_[l] X] (R : ℕ) (g : Module.End ℤ_[l] X), GenBy l R X → Unip g → ∀ m : ℕ,

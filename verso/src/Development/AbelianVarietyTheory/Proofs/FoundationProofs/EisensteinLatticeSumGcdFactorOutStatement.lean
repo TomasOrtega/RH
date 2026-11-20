@@ -7,7 +7,7 @@ open UpperHalfPlane Complex MeasureTheory CongruenceSubgroup GlobalTheory.EisM U
 open scoped MatrixGroups Real ComplexConjugate Manifold ModularForm
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.EisM.lattice_sum_gcd_out` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+Apply the cited theorem to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FFoundationProofs%2FEisensteinLatticeSumGcdFactorOut.lean&line=56#L56)
 -/

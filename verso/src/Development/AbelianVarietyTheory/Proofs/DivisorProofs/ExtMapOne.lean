@@ -8,13 +8,13 @@ set_option autoImplicit false
 namespace GlobalTheory.ExtOne
 
 /- English proof (translation)
-Establish `hiT : i ∉ T` using `fun h => lt_irrefl i (hT i h)`. Use function extensionality and compare the values at `S`. Distinguish the cases in `hS : S = insert i T`. Substitute `hS` using the available equality. Establish `hf : (insert i T).filter (· < i) = ∅`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact.
 
-Use extensionality with `x`. Simplify using `only [Finset.mem_filter, Finset.mem_insert, Finset.notMem_empty, iff_false, not_and]`. Introduce and unpack `(rfl | hx)`. Conclude with `lt_irrefl x`. Conclude with `fun h => lt_asymm h (hT x hx)`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Simplify using the standard rewrite rules.
 
-Simplify using `[wedge, sgn, hf, Finset.erase_insert hiT]`. Rewrite using `[Pi.single_apply, if_neg hS]`. Distinguish the cases in `hi : i ∈ S`. Establish `hne : S.erase i ≠ T`. Introduce `h`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hS` to reduce the goal to its premises. Rewrite using `[← h, Finset.insert_erase hi]`. Simplify using `[wedge, hi, Pi.single_apply, hne]`. Simplify using `[wedge, hi]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem wedge_single_of_lt {m : ℕ} (i : Fin m) (T : Finset (Fin m)) (hT : ∀ t ∈ T, i < t) :
     wedge i (Pi.single T (1 : ℂ)) = Pi.single (insert i T) 1 := by
@@ -37,16 +37,16 @@ theorem wedge_single_of_lt {m : ℕ} (i : Fin m) (T : Finset (Fin m)) (hT : ∀ 
     · simp [wedge, hi]
 
 /- English proof (translation)
-Simplify using `[Matrix.one_apply, ite_smul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sum_one_smul_wedge {m : ℕ} (i : Fin m) (x : Ext m) :
     ∑ k, (1 : Matrix (Fin m) (Fin m) ℂ) i k • wedge k x = wedge i x := by
   simp [Matrix.one_apply, ite_smul]
 
 /- English proof (translation)
-Proceed by induction on `S using Finset.induction_on_min with`. Consider the case `empty => simp [genProd]`. Consider the case `insert a s ha ih`. Establish `has : a ∉ s` using `fun h => lt_irrefl a (ha a h)`. Establish `hsort : (insert a s).sort (· ≤ ·) = a :: s.sort (· ≤ ·)` using `Finset.sort_insert _ (fun b hb => (ha b hb).le) has`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ih' : genProd (1 : Matrix (Fin m) (Fin m) ℂ) s = Pi.single s 1` using `ih`. Unfold `genProd at ih' ⊢`. Rewrite using `[hsort, List.foldr_cons, ih', sum_one_smul_wedge, wedge_single_of_lt a s ha]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem genProd_one {m : ℕ} (S : Finset (Fin m)) :
     genProd (1 : Matrix (Fin m) (Fin m) ℂ) S = Pi.single S 1 := by
@@ -61,7 +61,7 @@ theorem genProd_one {m : ℕ} (S : Finset (Fin m)) :
     rw [hsort, List.foldr_cons, ih', sum_one_smul_wedge, wedge_single_of_lt a s ha]
 
 /- English proof (translation)
-Introduce `m`. Use `ext1 w`. Rewrite using `[extMap_apply, ContinuousLinearMap.id_apply]`. Use function extensionality and compare the values at `T`. Simplify using `[genProd_one, Finset.sum_apply, Pi.single_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem extMap_one : ∀ {m : ℕ}, extMap (1 : Matrix (Fin m) (Fin m) ℂ) = ContinuousLinearMap.id ℂ (Ext m) := by
   intro m

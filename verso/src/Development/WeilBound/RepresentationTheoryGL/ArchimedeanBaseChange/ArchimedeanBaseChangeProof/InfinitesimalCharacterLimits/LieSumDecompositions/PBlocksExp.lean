@@ -23,9 +23,9 @@ def tl (r : ℕ) (s : ℝ) : Module.End ℂ (GA E N → ℂ) where
   map_smul' _ _ := rfl
 
 /- English proof (translation)
-Proceed by induction on `i generalizing f with`. Consider the case `zero`. Use function extensionality and compare the values at `g`. Simplify using `[aT_zero]`. Consider the case `succ i ih`.
+Proceed by induction. Treat this case separately. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Treat this case separately.
 
-Use function extensionality and compare the values at `g`. Rewrite using `[pow_succ, Module.End.mul_apply, ih]`. Use `show f (aT E N r s * (aT E N r (s * i) * g)) = f (aT E N r (s * ((i + 1 : ℕ) : ℝ)) * g)`. Rewrite using `[← mul_assoc, ← aT_add, show s + s * (i : ℝ) = s * ((i + 1 : ℕ) : ℝ) by push_cast; ring]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tl_pow (r : ℕ) (s : ℝ) (i : ℕ) (f : GA E N → ℂ) : (tl r s ^ i) f = fun g => f (aT E N r (s * i) * g) := by
   induction i generalizing f with
@@ -39,11 +39,11 @@ theorem tl_pow (r : ℕ) (s : ℝ) (i : ℕ) (f : GA E N → ℂ) : (tl r s ^ i)
     rw [← mul_assoc, ← aT_add, show s + s * (i : ℝ) = s * ((i + 1 : ℕ) : ℝ) by push_cast; ring]
 
 /- English proof (translation)
-Establish `e : aeval (tl (N` using `N) r s) p F = fun g => ∑ j ∈ Finset.range (p.natDegree + 1), p.coeff j * F (aT E N r (s * j) * g) := by`. Rewrite using `[aeval_eq_sum_range, LinearMap.sum_apply]`. Use function extensionality and compare the values at `g`. Rewrite using `[Finset.sum_apply]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[LinearMap.smul_apply, tl_pow]`. Both sides reduce to the same expression. Rewrite using `[e]`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Use function extensionality and compare the values at `g`. Conclude with `h g`. Introduce `h g`. Conclude with `congrFun h g`.
+Apply function extensionality and compare values at an arbitrary argument. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem kl_iff (r : ℕ) (s : ℝ) (p : ℂ[X]) (F : GA E N → ℂ) : Kl r s p F ↔ aeval (tl r s) p F = 0 := by
   have e : aeval (tl (N := N) r s) p F = fun g => ∑ j ∈ Finset.range (p.natDegree + 1), p.coeff j * F (aT E N r (s * j) * g) := by
@@ -62,23 +62,23 @@ theorem kl_iff (r : ℕ) (s : ℝ) (p : ℂ[X]) (F : GA E N → ℂ) : Kl r s p 
     exact congrFun h g
 
 /- English proof (translation)
-Rewrite `h`, the goal using `[kl_iff]`. Rewrite using `[mul_comm, aeval_mul, Module.End.mul_apply, h, map_zero]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem kl_mul {r : ℕ} {s : ℝ} {p q : ℂ[X]} {F : GA E N → ℂ} (h : Kl r s p F) : Kl r s (p * q) F := by
   rw [kl_iff] at h ⊢
   rw [mul_comm, aeval_mul, Module.End.mul_apply, h, map_zero]
 
 /- English proof (translation)
-Rewrite using `[mul_comm]`. Conclude with `kl_mul h`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kl_mul' {r : ℕ} {s : ℝ} {p q : ℂ[X]} {F : GA E N → ℂ} (h : Kl r s q F) : Kl r s (p * q) F := by
   rw [mul_comm]
   exact kl_mul h
 
 /- English proof (translation)
-Use `letI : MeasurableSpace (BlockIx N r → Ad E) := borel _`. Establish `: BorelSpace (BlockIx N r → Ad E)` using `⟨rfl⟩`. Take `⟨μ, hμ, hD, hint⟩` from `JDict.exists_normed E N r`. Use `⟨μ, hμ, hD, fun f => funext fun g => ?_⟩` and prove the remaining obligations. Use `show An.ctn r f.1 g = ∫ x in GroundTheory.Automorphic.AutomorphicForm.unipFundamentalDomain E N r, f.1 (unip x * g) ∂μ`.
+Equip the data with the indicated structure. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hint]`. Simplify using `only [An.ctn, GroundTheory.Automorphic.AutomorphicForm.constantTerm, GlobalTheory.CompanionTheory.CuspBridge.unipGL_eq_unip]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem ctn_eq_ct (r : ℕ) :
     letI : MeasurableSpace (BlockIx N r → Ad E) := borel _
@@ -94,9 +94,9 @@ theorem ctn_eq_ct (r : ℕ) :
   simp only [An.ctn, GroundTheory.Automorphic.AutomorphicForm.constantTerm, GlobalTheory.CompanionTheory.CuspBridge.unipGL_eq_unip]
 
 /- English proof (translation)
-Use `letI : MeasurableSpace (BlockIx N r → Ad E) := borel _`. Establish `: BorelSpace (BlockIx N r → Ad E)` using `⟨rfl⟩`. Take `⟨μ, hμ, hD, e⟩` from `ctn_eq_ct (E := E) (N := N) r`. Use `hμ` as an intermediate fact. Rewrite using `[e, e, e]`.
+Equip the data with the indicated structure. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `ct_add μ _ hD hφ hψ`.
+A detailed English derivation is pending.
 -/
 theorem ctn_add (r : ℕ) {φ ψ : Sm E N} (hφ : IsAutForm φ) (hψ : IsAutForm ψ) :
     An.ctn r (φ + ψ).1 = An.ctn r φ.1 + An.ctn r ψ.1 := by
@@ -108,7 +108,7 @@ theorem ctn_add (r : ℕ) {φ ψ : Sm E N} (hφ : IsAutForm φ) (hψ : IsAutForm
   exact ct_add μ _ hD hφ hψ
 
 /- English proof (translation)
-Use `letI : MeasurableSpace (BlockIx N r → Ad E) := borel _`. Take `⟨μ, -, -, e⟩` from `ctn_eq_ct (E := E) (N := N) r`. Rewrite using `[e, e]`. Conclude with `ct_smul μ _ c φ`.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ctn_smul (r : ℕ) (c : ℂ) (φ : Sm E N) : An.ctn r (c • φ).1 = c • An.ctn r φ.1 := by
   letI : MeasurableSpace (BlockIx N r → Ad E) := borel _
@@ -120,13 +120,13 @@ def Good (β : ℕ → ℝ) (φ : Sm E N) : Prop :=
   IsAutForm φ ∧ ∀ r, 0 < r → r < N → ∃ p : ℂ[X], p.Monic ∧ Kl r 1 p (An.ctn r φ.1) ∧ ∀ z, p.IsRoot z → ‖z‖ ≤ Real.exp (β r)
 
 /- English proof (translation)
-Introduce `r hr hrN c hc`. Take `⟨p, -, hk, hroot⟩` from `h.2 r hr hrN`. Take `⟨F₀, hCT, F, hFspan, hF0, hFe⟩` from `hc`. Take `⟨-, -, -, hD⟩` from `dict_holds E N`. Take `⟨c₁, -, e₁⟩` from `(hD φ h.1 r hr hrN).2 F₀ hCT`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hk₀ : Kl r 1 p F₀`. Establish `: F₀ = c₁ • An.ctn r φ.1`. Use function extensionality and compare the values at `g`. Rewrite using `[e₁]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[this]`. Conclude with `(klSub r 1 p).smul_mem c₁ hk`. Establish `hroot'` using `kl_eigen (kl_span hk₀ hFspan) hF0 hFe`. Establish `h1` using `hroot (Complex.exp (c * ((1 : ℝ) : ℂ))) hroot'`. Rewrite `h1` using `[Complex.norm_exp]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h2` using `Real.exp_le_exp.1 h1`. Simplify using `using h2`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem good_bound {β : ℕ → ℝ} {φ : Sm E N} (h : Good β φ) :
     ∀ r, 0 < r → r < N → ∀ c ∈ Exp r φ.1, c.re ≤ β r := by
@@ -149,13 +149,13 @@ theorem good_bound {β : ℕ → ℝ} {φ : Sm E N} (h : Good β φ) :
   simpa using h2
 
 /- English proof (translation)
-Use `⟨hφ, fun r hr hrN => ?_⟩` and prove the remaining obligations. Take `⟨hA, -, -, hCT⟩` from `dict_holds E N`. Establish `hct` using `(hCT φ hφ r hr hrN).1`. Establish `hfin` using `finTr_holds E N φ hφ r hr hrN _ hct`. Establish `hadd : ∀ s t, aT E N r (s + t) = aT E N r s * aT E N r t` using `fun s t => aT_add r s t`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcont : ∀ g, Continuous fun t => An.ctn r φ.1 (aT E N r t * g)`. Introduce `g`. Establish `e : (fun t => An.ctn r φ.1 (aT E N r t * g)) = fun t => An.ctn r φ.1 (An.aR E N r t * g)`. Use function extensionality and compare the values at `fun t => by rw [hA]`. Rewrite using `[e]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Conclude with `JSqIntGlue.continuous_ctn_comp (GlobalTheory.CompanionTheory.ContAutForm.continuous_of_isAutForm_totallyComplex E N φ hφ) r ((JSqIntGlue.continuous_aR r).mul continuous_const)`. Take `⟨p, hp, hpk, hroots⟩` from `killPoly_holds (GA E N) (aT E N r) (An.ctn r φ.1) hadd hcont hfin`. Use `⟨p, hp, fun g => ?_, fun z hz => ?_⟩` and prove the remaining obligations. Use `hpk g` as an intermediate fact. Simplify `this` using `only [one_mul]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result.
 
-Take `⟨c, rfl, F, hF, hF0, hFe⟩` from `hroots z hz`. Establish `hc : c ∈ Exp r φ.1` using `⟨_, hct, F, hF, hF0, hFe⟩`. Rewrite using `[Complex.norm_exp]`. Conclude with `Real.exp_le_exp.2 (hexp r hr hrN c hc)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem good_of (β : ℕ → ℝ) {φ : Sm E N} (hφ : IsAutForm φ)
     (hexp : ∀ r, 0 < r → r < N → ∀ c ∈ Exp r φ.1, c.re ≤ β r) : Good β φ := by
@@ -181,9 +181,9 @@ theorem good_of (β : ℕ → ℝ) {φ : Sm E N} (hφ : IsAutForm φ)
     exact Real.exp_le_exp.2 (hexp r hr hrN c hc)
 
 /- English proof (translation)
-Use `⟨GlobalTheory.CompanionTheory.AffglAssembly.isAutForm_add hφ.1 hψ.1, fun r hr hrN => ?_⟩` and prove the remaining obligations. Take `⟨p, hp, hpk, hpr⟩` from `hφ.2 r hr hrN`. Take `⟨q, hq, hqk, hqr⟩` from `hψ.2 r hr hrN`. Use `⟨p * q, hp.mul hq, ?_, fun z hz => ?_⟩` and prove the remaining obligations. Rewrite using `[ctn_add r hφ.1 hψ.1]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(klSub r 1 (p * q)).add_mem (kl_mul hpk) (kl_mul' hqk)`. Break down `(Polynomial.root_mul.1 hz) with h | h` into its components or cases. Conclude with `hpr z h`. Conclude with `hqr z h`.
+Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem good_add {β : ℕ → ℝ} {φ ψ : Sm E N} (hφ : Good β φ) (hψ : Good β ψ) : Good β (φ + ψ) := by
   refine ⟨GlobalTheory.CompanionTheory.AffglAssembly.isAutForm_add hφ.1 hψ.1, fun r hr hrN => ?_⟩
@@ -197,7 +197,7 @@ theorem good_add {β : ℕ → ℝ} {φ ψ : Sm E N} (hφ : Good β φ) (hψ : G
     · exact hqr z h
 
 /- English proof (translation)
-Use `⟨GlobalTheory.CompanionTheory.AffglAssembly.isAutForm_smul c hφ.1, fun r hr hrN => ?_⟩` and prove the remaining obligations. Take `⟨p, hp, hpk, hpr⟩` from `hφ.2 r hr hrN`. Use `⟨p, hp, ?_, hpr⟩` and prove the remaining obligations. Rewrite using `[ctn_smul]`. Conclude with `(klSub r 1 p).smul_mem c hpk`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem good_smul {β : ℕ → ℝ} {φ : Sm E N} (hφ : Good β φ) (c : ℂ) : Good β (c • φ) := by
   refine ⟨GlobalTheory.CompanionTheory.AffglAssembly.isAutForm_smul c hφ.1, fun r hr hrN => ?_⟩
@@ -207,9 +207,9 @@ theorem good_smul {β : ℕ → ℝ} {φ : Sm E N} (hφ : Good β φ) (c : ℂ) 
   exact (klSub r 1 p).smul_mem c hpk
 
 /- English proof (translation)
-Use `⟨GlobalTheory.HCF.FormsSub.isAutForm_zero, fun r hr hrN => ⟨1, monic_one, ?_, fun z hz => ?_⟩⟩` and prove the remaining obligations. Establish `e : An.ctn r (0 : Sm E N).1 = (0 : ℂ) • An.ctn r (0 : Sm E N).1`. Rewrite using `[← ctn_smul, zero_smul]`. Rewrite using `[e]`. Conclude with `(klSub r 1 1).smul_mem 0 (by`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `g`. Simplify using `[An.ctn, GroundTheory.Automorphic.AutomorphicForm.constantTerm])`. Conclude with `absurd hz (by simp [Polynomial.IsRoot])`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem good_zero (β : ℕ → ℝ) : Good β (0 : Sm E N) := by
   refine ⟨GlobalTheory.HCF.FormsSub.isAutForm_zero, fun r hr hrN => ⟨1, monic_one, ?_, fun z hz => ?_⟩⟩
@@ -222,9 +222,9 @@ theorem good_zero (β : ℕ → ℝ) : Good β (0 : Sm E N) := by
   · exact absurd hz (by simp [Polynomial.IsRoot])
 
 /- English proof (translation)
-Introduce `φ hφ`. Use `good_bound ?_` and prove the remaining obligations. Proceed by induction on `hφ using Submodule.span_induction with`. Consider the case `mem x hx => exact good_of β (haut x hx) (hexp x hx)`. Consider the case `zero => exact good_zero β`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `add x y _ _ hx hy => exact good_add hx hy`. Consider the case `smul c x _ hx => exact good_smul hx c`.
+Treat this case separately. Treat this case separately.
 -/
 theorem exp_span (S : Set (Sm E N)) (β : ℕ → ℝ) (haut : ∀ φ ∈ S, IsAutForm φ)
     (hexp : ∀ φ ∈ S, ∀ r, 0 < r → r < N → ∀ c ∈ Exp r φ.1, c.re ≤ β r) :

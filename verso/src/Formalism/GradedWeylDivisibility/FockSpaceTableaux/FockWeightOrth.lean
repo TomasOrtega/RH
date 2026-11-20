@@ -7,9 +7,9 @@ noncomputable section
 namespace Formalism.GradedWeylDivisibility
 
 /- English proof (translation)
-Introduce `σ M _ w μ μ' f g hne hf hg`. Unfold `Formalism.REAL.fockF`. Use `Finset.sum_eq_zero fun m hm => ?_` and prove the remaining obligations. Establish `hgm : g.coeff m = 0`. Assume the negation of the conclusion as `h`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Conclude with `hne ((hf (mem_support_iff.mp hm)).symm.trans (hg h))`. Rewrite using `[hgm, star_zero, mul_zero, zero_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fischerInnerWeightOrthogonal_holds : FockWeightOrth := by
   intro σ M _ w μ μ' f g hne hf hg

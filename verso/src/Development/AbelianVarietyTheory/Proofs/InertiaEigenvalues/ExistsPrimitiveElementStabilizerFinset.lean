@@ -3,17 +3,15 @@ import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.Exists
 open NumberField IsDedekindDomain Polynomial Formalism.ConjugateSelfDual ReciprocityTheory.Gal GlobalTheory.WeilDeligne
 
 /- English proof (translation)
-Introduce `E Ω _ _ _ _ _ s`. Use `haveI : Algebra.IsAlgebraic E Ω := IsAlgClosure.isAlgebraic`. Use `set K := IntermediateField.adjoin E (s : Set Ω) with hK`. Use `haveI : FiniteDimensional E K := IntermediateField.finiteDimensional_adjoin (fun x _ => Algebra.IsIntegral.isIntegral x)`. Take `⟨α, hα⟩` from `Field.exists_primitive_element E K`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨(α : Ω), fun σ => ?_⟩` and prove the remaining obligations. Establish `key : IntermediateField.adjoin E {(α : Ω)} = K`. Establish `h1` using `congrArg (IntermediateField.map K.val) hα`. Rewrite `h1` using `[IntermediateField.adjoin_map]`. Establish `hm : IntermediateField.map K.val ⊤ = K`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z, -, rfl⟩`. Conclude with `z.2`. Introduce `hy`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Conclude with `⟨⟨y, hy⟩, trivial, rfl⟩`. Rewrite `h1` using `[hm]`. Simplify `h1` using `[Set.image_singleton]`. Establish `gen : ∀ (T : Set Ω), (∀ x ∈ T, σ x = x) → ∀ y ∈ IntermediateField.adjoin E T, σ y = y`. Introduce `T hT y hy`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `IntermediateField.algHom_ext_of_eq_adjoin E (S := IntermediateField.adjoin E T) (s := T) rfl (φ₁ := ((σ : Ω →ₐ[E] Ω)).comp (IntermediateField.adjoin E T).val) (φ₂ := (IntermediateField.adjoin E T).val) (fun x hx => by simp [hT x hx])` as an intermediate fact. Conclude with `congrArg (fun φ => φ ⟨y, hy⟩) this`. Prove the components needed by the constructor for the conclusion. Introduce `h x hx`. Establish `hxK : x ∈ IntermediateField.adjoin E {(α : Ω)}`.
-
-Rewrite using `[key]`. Conclude with `IntermediateField.subset_adjoin E _ hx`. Conclude with `gen {(α : Ω)} (by simpa using h) x hxK`. Introduce `h`. Conclude with `gen (s : Set Ω) (fun x hx => h x hx) (α : Ω) α.2`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.stab_finset_eq_stab_primitive : ∀ (E Ω : Type) [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω] (s : Finset Ω), ∃ β : Ω, ∀ σ : G E Ω, σ β = β ↔ ∀ x ∈ s, σ x = x := by
   intro E Ω _ _ _ _ _ s

@@ -20,9 +20,9 @@ open GlobalTheory.FinPl
 variable {D : D7} {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Take `⟨r, hr0, hr1⟩` from `Valuation.IsNontrivial.exists_lt_one (v := valuation k)`. Use `⟨r⁻¹, fun h => ?_⟩` and prove the remaining obligations. Establish `h1 : valuation k r⁻¹ ≤ 1` using `h`. Establish `hr : r ≠ 0` using `hr0`. Establish `: (1 : ValueGroupWithZero k) ≤ valuation k r`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Conclude with `absurd hr1 (not_lt.2 this)`.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem exists_not_int : ∃ x : k, x ∉ 𝒪[k] := by
   obtain ⟨r, hr0, hr1⟩ := Valuation.IsNontrivial.exists_lt_one (v := valuation k)
@@ -37,20 +37,20 @@ theorem exists_not_int : ∃ x : k, x ∉ 𝒪[k] := by
   exact absurd hr1 (not_lt.2 this)
 
 /- English proof (translation)
-Rewrite using `[mul_comm, FrameLat.sec_mul_right, mul_comm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mul_sec' (q : SplitPt D k) (a : AE D) (b : k) : a * q.sec b = q.sec (q.pr a * b) := by
   rw [mul_comm, FrameLat.sec_mul_right, mul_comm]
 
 /- English proof (translation)
-Rewrite using `[← mul_sec', map_mul, Formalism.L2.Theta.cA_cA]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mul_csec (q : SplitPt D k) (a : AE D) (b : k) :
     a * cA D (q.sec b) = cA D (q.sec (q.pr (cA D a) * b)) := by
   rw [← mul_sec', map_mul, Formalism.L2.Theta.cA_cA]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `j`. Simplify using `only [Matrix.mulVec, dotProduct, Matrix.map_apply, mul_sec', map_sum]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem mulVec_sec' (q : SplitPt D k) {m n : ℕ} (M : Matrix (Fin m) (Fin n) (AE D)) (A : Fin n → k) :
     (M *ᵥ fun i => q.sec (A i)) = fun j => q.sec ((M.map q.pr *ᵥ A) j) := by
@@ -58,7 +58,7 @@ theorem mulVec_sec' (q : SplitPt D k) {m n : ℕ} (M : Matrix (Fin m) (Fin n) (A
   simp only [Matrix.mulVec, dotProduct, Matrix.map_apply, mul_sec', map_sum]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `j`. Simplify using `only [Matrix.mulVec, dotProduct, Matrix.map_apply, mul_csec, map_sum]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem mulVec_csec (q : SplitPt D k) {m n : ℕ} (M : Matrix (Fin m) (Fin n) (AE D)) (B : Fin n → k) :
     (M *ᵥ fun i => cA D (q.sec (B i))) = fun j => cA D (q.sec ((M.map (fun a => q.pr (cA D a)) *ᵥ B) j)) := by
@@ -66,7 +66,7 @@ theorem mulVec_csec (q : SplitPt D k) {m n : ℕ} (M : Matrix (Fin m) (Fin n) (A
   simp only [Matrix.mulVec, dotProduct, Matrix.map_apply, mul_csec, map_sum]
 
 /- English proof (translation)
-Establish `he : q.pr (cA D q.e) = 0`. Establish `h1 : q.pr (cA D q.e * q.e) = 0` using `by rw [FrameLat.cAe_mul_e, map_zero]`. Establish `pe : q.pr q.e = 1` using `by rw [← FrameLat.sec_one, q.pr_sec]`. Rewrite `h1` using `[map_mul, pe, mul_one]`. Then use the resulting hypothesis. Rewrite using `[← FrameLat.e_mul_sec q c, map_mul, map_mul, he, zero_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities.
 -/
 theorem pr_cA_sec (q : SplitPt D k) (c : k) : q.pr (cA D (q.sec c)) = 0 := by
   have he : q.pr (cA D q.e) = 0 := by
@@ -76,9 +76,9 @@ theorem pr_cA_sec (q : SplitPt D k) (c : k) : q.pr (cA D (q.sec c)) = 0 := by
   rw [← FrameLat.e_mul_sec q c, map_mul, map_mul, he, zero_mul]
 
 /- English proof (translation)
-Establish `hid : cA D (q.sec 1) ∈ idAt D (· = q.v)` using `FrameLat.csec_mem_idAt (p := q) 1`. Establish `hc : cA D (q.sec 1) ∈ intAt D (· = q.v)`. Use `(GlobalTheory.SplitIntComp.mem_intAt_iff q hid).2 ⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[pr_cA_sec]`. Conclude with `zero_mem _`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Formalism.L2.Theta.cA_cA, q.pr_sec]`. Conclude with `one_mem _`. Establish `h2` using `(h.1 _ hc).1`. Establish `h3` using `((GlobalTheory.SplitIntComp.mem_intAt_iff q h2.1).1 h2).2`. Rewrite `h3` using `[map_mul, Formalism.L2.Theta.cA_cA, map_mul, q.pr_sec, mul_one]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem pr_cA_xi_int (q : SplitPt D k) (h : q.UnitAA) : q.pr (cA D (incA D D.host.xi0)) ∈ 𝒪[k] := by
   have hid : cA D (q.sec 1) ∈ idAt D (· = q.v) := FrameLat.csec_mem_idAt (p := q) 1
@@ -91,7 +91,7 @@ theorem pr_cA_xi_int (q : SplitPt D k) (h : q.UnitAA) : q.pr (cA D (incA D D.hos
   rwa [map_mul, Formalism.L2.Theta.cA_cA, map_mul, q.pr_sec, mul_one] at h3
 
 /- English proof (translation)
-The claim follows from `(GlobalTheory.SplitIntComp.val_xi q h).le`.
+A detailed English derivation is pending.
 -/
 theorem pr_xi_int (q : SplitPt D k) (h : q.UnitAA) : q.pr (incA D D.host.xi0) ∈ 𝒪[k] :=
   (GlobalTheory.SplitIntComp.val_xi q h).le
@@ -102,41 +102,35 @@ namespace GlobalTheory.SplitLineSim
 open GlobalTheory.FinPl
 
 /- English proof (translation)
-Introduce `D k _ _ _ _ q L L'' τ LL LZ zL z₀ u hU hLL hLZ hr hr'' hcL hcZ hu hτz hτ y hy`. Use `haveI : Unique (Fin L.rank) := ⟨⟨⟨0, by omega⟩⟩, fun j => Fin.ext (by have := j.2; omega)⟩`. Use `haveI : Unique (Fin L''.rank) := ⟨⟨⟨0, by omega⟩⟩, fun j => Fin.ext (by have := j.2; omega)⟩`. Use `set j0 : Fin L.rank := default with hj0`. Use `set i0 : Fin L''.rank := default with hi0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hu0 : u ≠ 0`. Introduce `h`. Rewrite `hu` using `[h, map_zero]`. Conclude with `zero_ne_one hu`. Establish `hu_int : u ∈ 𝒪[k]` using `hu.le`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hui_int : u⁻¹ ∈ 𝒪[k]` using `by show valuation k u⁻¹ ≤ 1`. Rewrite using `[map_inv₀, hu, inv_one]`. Establish `h1 : q.pr (incA D (τ j0 i0)) * z₀ i0 = u * zL j0`. Use `congrFun hτz j0` as an intermediate fact. Simplify using `only [Matrix.mulVec, dotProduct, Matrix.map_apply, Fintype.sum_unique, Pi.smul_apply, smul_eq_mul] at this`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `this`. Establish `hzL : zL j0 ≠ 0`. Introduce `h0`. Take `⟨x, hx⟩` from `exists_not_int (k := k)`. Apply `hx` to reduce the goal to its premises.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hcL]`. Establish `: (fun i => q.sec (zL i * x)) = 0`. Use function extensionality and compare the values at `i`. Rewrite using `[Subsingleton.elim i j0, h0, zero_mul, map_zero]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[this]`. Conclude with `zero_mem _`. Establish `hz0 : z₀ i0 ≠ 0`. Introduce `h0`. Rewrite `h1` using `[h0, mul_zero]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hzL ((mul_eq_zero.1 h1.symm).resolve_left hu0)`. Establish `hyS : ∀ i, y i ∈ idAt D (· = q.v)` using `FrameLat.latV_supp hy`. Use `set A : Fin L''.rank → k := fun i => q.pr (y i) with hA`. Use `set B : Fin L''.rank → k := fun i => q.pr (cA D (y i)) with hB`. Establish `hyAB : y = (fun i => q.sec (A i)) + fun i => cA D (q.sec (B i))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `i`. Conclude with `GlobalTheory.SplitIntComp.eq_sec_add_csec q (hyS i)`. Rewrite `hy` using `[hyAB]`. Take `⟨hyA, hyB⟩` from `(FrameLat.decomp hLZ A B).1 hy`. Rewrite using `[hyAB, Matrix.mulVec_add, mulVec_sec', mulVec_csec]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Use `(FrameLat.decomp hLL _ _).2 ⟨?_, ?_⟩` and prove the remaining obligations. Use `set c : k := A i0 / z₀ i0 with hc`. Establish `hcA : ∀ i, z₀ i * c = A i` using `fun i => by`. Rewrite using `[Subsingleton.elim i i0, hc, mul_div_cancel₀ _ hz0]`. Establish `hcint : c ∈ 𝒪[k]` using `(hcZ c).2 (by simpa only [hcA] using hyA)`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `: (fun j => q.sec ((((rat τ : Mx D L.rank L''.rank)).map q.pr *ᵥ A) j)) = fun j => q.sec (zL j * (u * c))`. Use function extensionality and compare the values at `j`. Rewrite using `[Subsingleton.elim j j0]`. Use `congr 1`. Simplify using `only [Matrix.mulVec, dotProduct, Matrix.map_apply, Fintype.sum_unique]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[← hcA i0]`. Express the relevant statement in the definitionally equal form `q.pr (incA D (τ j0 i0)) * (z₀ i0 * c) = _`. Rewrite using `[← mul_assoc, h1]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(hcL _).1 (mul_mem hu_int hcint)`. Rewrite using `[FrameLat.csec_mem_iff hLL]`. Introduce `x hx`. Establish `h00 : star (τ j0 i0) * (L.gram j0 j0 * τ j0 i0) = -(D.host.xi0 * star D.host.xi0) * L''.gram i0 i0`. Use `congrFun (congrFun hτ i0) i0` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[Matrix.mul_apply, Fintype.sum_unique, Matrix.mul_apply, Fintype.sum_unique, Matrix.conjTranspose_apply, Matrix.smul_apply, smul_eq_mul]`. Conclude with `this`. Set `φ : D.host.E →+* k` to `(q.pr.comp (cA D)).comp (incA D)`. Establish `hφs : ∀ t : D.host.E, φ (star t) = q.pr (incA D t)` using `fun t => by show q.pr (cA D (incA D (star t))) = _`. Rewrite using `[FrameLat.cA_incA, star_star]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e3 : q.pr (incA D (τ j0 i0)) * (q.pr (cA D (incA D (L.gram j0 j0))) * q.pr (cA D (incA D (τ j0 i0)))) = -(q.pr (cA D (incA D D.host.xi0)) * q.pr (incA D D.host.xi0)) * q.pr (cA D (incA D (L''.gram i0 i0)))`. Establish `h2` using `congrArg φ h00`. Rewrite `h2` using `[map_mul, map_mul, map_mul, map_neg, map_mul, hφs (τ j0 i0), hφs D.host.xi0]`. Conclude with `h2`. Establish `hcw_int : -(q.pr (cA D (incA D D.host.xi0)) * q.pr (incA D D.host.xi0)) ∈ 𝒪[k]` using `neg_mem (mul_mem (pr_cA_xi_int q hU) (pr_xi_int q hU))`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨c', hc'⟩ : ∃ c' : k, c' = x j0 / zL j0` from `⟨_, rfl⟩`. Establish `hxc : ∀ j, zL j * c' = x j` using `fun j => by`. Rewrite using `[Subsingleton.elim j j0, hc', mul_div_cancel₀ _ hzL]`. Establish `hc'int : c' ∈ 𝒪[k]` using `(hcL c').2 (by simpa only [hxc] using hx)`. Establish `hz1 : (fun i => q.sec (z₀ i)) ∈ latV L'' LZ (· = q.v)`.
-
-Simplify `(hcZ 1).1 (one_mem _)` using `only [mul_one]`. Establish `hZB` using `(FrameLat.csec_mem_iff hLZ B).1 hyB z₀ hz1`. Simplify using `only [Fintype.sum_unique] at hZB`. Establish `hinv : u * u⁻¹ = 1` using `mul_inv_cancel₀ hu0`. Establish `e0 : ((((rat τ : Mx D L.rank L''.rank)).map (fun a => q.pr (cA D a)) *ᵥ B) j0) = q.pr (cA D (incA D (τ j0 i0))) * B i0`.
-
-Simplify using `only [Matrix.mulVec, dotProduct, Matrix.map_apply, Fintype.sum_unique]`. Both sides reduce to the same expression. Simplify using `only [Fintype.sum_unique]`. Rewrite using `[e0, ← hxc j0]`. Establish `key : zL j0 * c' * q.pr (cA D (incA D (L.gram j0 j0))) * (q.pr (cA D (incA D (τ j0 i0))) * B i0) = c' * u⁻¹ * (-(q.pr (cA D (incA D D.host.xi0)) * q.pr (incA D D.host.xi0))) * (z₀ i0 * q.pr (cA D (incA D (L''.gram i0 i0))) * B i0)`.
-
-Take the linear combination `(c' * u⁻¹ * z₀ i0 * B i0) * e3 - (c' * u⁻¹ * q.pr (cA D (incA D (L.gram j0 j0))) * q.pr (cA D (incA D (τ j0 i0))) * B i0) * h1 - (c' * q.pr (cA D (incA D (L.gram j0 j0))) * q.pr (cA D (incA D (τ j0 i0))) * B i0 * zL j0) * hinv`. Rewrite using `[key]`. Conclude with `mul_mem (mul_mem (mul_mem hc'int hui_int) hcw_int) hZB`.
+Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem line_sim_maps : ∀ (D : D7) (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (q : GlobalTheory.FinPl.SplitPt D k) (L L'' : HSp D) (τ : Matrix (Fin L.rank) (Fin L''.rank) D.host.E) (LL : GlobalTheory.FinPl.Lat L) (LZ : GlobalTheory.FinPl.Lat L'') (zL : Fin L.rank → k) (z₀ : Fin L''.rank → k) (u : k), q.UnitAA → IsSelfDualC L LL → IsSelfDualC L'' LZ → L.rank = 1 → L''.rank = 1 → (∀ y : k, y ∈ 𝒪[k] ↔ (fun i => q.sec (zL i * y)) ∈ GlobalTheory.FinPl.latV L LL (· = q.v)) → (∀ y : k, y ∈ 𝒪[k] ↔ (fun i => q.sec (z₀ i * y)) ∈ GlobalTheory.FinPl.latV L'' LZ (· = q.v)) → valuation k u = 1 → τ.map (ofSplit q).pr *ᵥ z₀ = u • zL → τᴴ * (L.gram * τ) = (-(D.host.xi0 * star D.host.xi0)) • L''.gram → ∀ y ∈ GlobalTheory.FinPl.latV L'' LZ (· = q.v), (rat τ : Mx D L.rank L''.rank) *ᵥ y ∈ GlobalTheory.FinPl.latV L LL (· = q.v) := by
   intro D k _ _ _ _ q L L'' τ LL LZ zL z₀ u hU hLL hLZ hr hr'' hcL hcZ hu hτz hτ y hy

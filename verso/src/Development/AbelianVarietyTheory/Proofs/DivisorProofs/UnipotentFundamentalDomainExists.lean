@@ -13,11 +13,9 @@ noncomputable section
 namespace GlobalTheory.UnipMassHerm
 
 /- English proof (translation)
-Take `⟨μ₀, 𝓕, h0, hF, h1⟩` from `GlobalTheory.T.cocompact_lattice_unit_covolume G Γ K hK hcov`. Use `haveI := h0`. Establish `e : μ = Measure.haarScalarFactor μ μ₀ • μ₀` using `Measure.isMulLeftInvariant_eq_smul μ μ₀`. Establish `hc` using `Measure.haarScalarFactor_pos_of_isHaarMeasure μ μ₀`. Use `⟨𝓕, hF.mono ?_, ?_, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `Measure.smul_absolutelyContinuous`. Rewrite using `[e, Measure.smul_apply, h1, ENNReal.smul_def, smul_eq_mul, mul_one]`. Conclude with `hc.ne'` after adjusting the coercions. Rewrite using `[e, Measure.smul_apply, h1, ENNReal.smul_def, smul_eq_mul, mul_one]`.
-
-Conclude with `ENNReal.coe_ne_top`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_fundDom_pos_finite {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [LocallyCompactSpace G]
     [SecondCountableTopology G] [T2Space G] [MeasurableSpace G] [BorelSpace G] (Γ : Subgroup G) [Countable Γ]
@@ -38,13 +36,13 @@ namespace GlobalTheory.UnipMassHerm
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Establish `hσ : ∀ a, σ (σ a) = a` using `cm_conj_conj hcm`. Take `⟨-, htc, -, hτ⟩` from `hcm`. Establish `hx : ∃ x, σ x ≠ x`. Assume the negation of the conclusion as `hall`. Use `push_neg at hall`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Take `⟨w⟩ : Nonempty (InfinitePlace E)` from `inferInstance`. Establish `hc` using `htc.isComplex w`. Rewrite `hc` using `[InfinitePlace.isComplex_iff]`. Apply `hc` to reduce the goal to its premises. Use `ComplexEmbedding.isReal_iff.2 (RingHom.ext fun x => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ComplexEmbedding.conjugate_coe_eq]`. Use `hτ w.embedding x` as an intermediate fact. Rewrite `this` using `[hall x]`. Conclude with `this.symm`. Take `⟨x, hx⟩` from `hx`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨x - σ x, sub_ne_zero.2 (Ne.symm hx), ?_⟩` and prove the remaining obligations. Rewrite using `[map_sub, hσ]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem exists_anti {σ : E →ₐ[F] E} (hcm : IsCMExt F E σ) : ∃ δ : E, δ ≠ 0 ∧ σ δ = -δ := by
   have hσ : ∀ a, σ (σ a) = a := cm_conj_conj hcm
@@ -66,7 +64,7 @@ theorem exists_anti {σ : E →ₐ[F] E} (hcm : IsCMExt F E σ) : ∃ δ : E, δ
   rw [map_sub, hσ]; ring
 
 /- English proof (translation)
-Unfold `form`. Rewrite using `[Matrix.smul_mulVec, dotProduct_smul, smul_eq_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem form_smul_mat (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (δ : E) (v w : Fin n → E) :
     form σ (δ • J) v w = δ * form σ J v w := by
@@ -74,7 +72,7 @@ theorem form_smul_mat (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n)
   rw [Matrix.smul_mulVec, dotProduct_smul, smul_eq_mul]
 
 /- English proof (translation)
-Unfold `form`. Rewrite using `[smul_dotProduct, smul_eq_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem form_smul_left (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (t : E) (v w : Fin n → E) :
     form σ J (t • v) w = t * form σ J v w := by
@@ -82,7 +80,7 @@ theorem form_smul_left (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n
   rw [smul_dotProduct, smul_eq_mul]
 
 /- English proof (translation)
-Unfold `form`. Rewrite using `[show (fun i => σ ((t • w) i)) = σ t • fun i => σ (w i) from funext fun i => by simp [map_mul], Matrix.mulVec_smul, dotProduct_smul, smul_eq_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem form_smul_right (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (t : E) (v w : Fin n → E) :
     form σ J v (t • w) = σ t * form σ J v w := by
@@ -91,7 +89,7 @@ theorem form_smul_right (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin 
     Matrix.mulVec_smul, dotProduct_smul, smul_eq_mul]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[incM, Matrix.map_apply, Matrix.smul_apply, smul_eq_mul, map_mul]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem incM_smul (δ : E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) :
     incM F (δ • J) = inclR (F := F) (AF F) δ • incM F J := by
@@ -99,7 +97,7 @@ theorem incM_smul (δ : E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) :
   simp [incM, Matrix.map_apply, Matrix.smul_apply, smul_eq_mul, map_mul]
 
 /- English proof (translation)
-Establish `hu : IsUnit (inclR (F` using `F) (AF F) δ) := (isUnit_iff_ne_zero.2 hδ).map _`. Use extensionality with `g`. Use `show (g : Matrix (Fin n) (Fin n) (AE F E))ᵀ * incM F (δ • J) * (g : Matrix _ _ _).map (cA σ) = incM F (δ • J) ↔ (g : Matrix (Fin n) (Fin n) (AE F E))ᵀ * incM F J * (g : Matrix _ _ _).map (cA σ) = incM F J`. Rewrite using `[incM_smul, Matrix.mul_smul, Matrix.smul_mul]`. Conclude with `hu.smul_left_cancel`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UG_smul (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) {δ : E} (hδ : δ ≠ 0) :
     UG (cA σ) (incM F (δ • J)) = UG (cA σ) (incM F J) := by
@@ -115,47 +113,39 @@ end GlobalTheory.UnipMassHerm
 namespace GlobalTheory.UnipMassHerm
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B b a' G G₁ H H' hC hB hG _ μN hμ`. Establish `hσ : ∀ a, σ (σ a) = a` using `cm_conj_conj hB.cm`. Establish `hV` using `hG.hV`. Establish `hH` using `hC.hH`. Establish `hspan : ∀ v : Fin (b + 2) → E, ∃ (s t : E) (u : Fin b → E), v = s • H.x + H.ι *ᵥ u + t • H.y`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `v`. Establish `hv : v ∈ Submodule.span E (G.V.L : Set (Fin (b + 2) → E))`. Rewrite using `[hV.lat.span_eq_top]`. Discharge the goal by the elementary cases of `trivial`. Proceed by induction on `hv using Submodule.span_induction with`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. Proceed by induction.
 
-Consider the case `mem z hz`. Take `⟨s, t, u, -, -, -, hz⟩` from `hH.split z hz`. Conclude with `⟨s, t, u, hz⟩`. Consider the case `zero => exact ⟨0, 0, 0, by simp⟩`. Consider the case `add y z _ _ hy hz`.
+Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Treat this case separately.
 
-Take `⟨s, t, u, rfl⟩` from `hy`. Take `⟨s', t', u', rfl⟩` from `hz`. Conclude with `⟨s + s', t + t', u + u', by rw [Matrix.mulVec_add]; module⟩`. Consider the case `smul a y _ hy`. Take `⟨s, t, u, rfl⟩` from `hy`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨a * s, a * t, a • u, by rw [Matrix.mulVec_smul]; module⟩`. Establish `hx0 : H.x ≠ 0` using `fun h0 => by`. Establish `h1` using `hH.xy`. Rewrite `h1` using `[h0]`. Simplify using `[form] at h1`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Take `⟨δ, hδ0, hδ⟩` from `exists_anti hB.cm`. Set `W' : Spc F E (b + 2)` to `⟨δ • G.V.J, G.V.L, G.V.θ, G.V.bas⟩`. Set `H'' : Plane E (b + 2) b` to `⟨H.x, (-δ⁻¹) • H.y, H.ι, H.𝔟⟩`. Establish `hform : ∀ v w, form σ W'.J v w = δ * form σ G.V.J v w` using `form_smul_mat σ G.V.J δ`. Establish `hσt : σ (-δ⁻¹) = δ⁻¹` using `by rw [map_neg, map_inv₀, hδ, inv_neg, neg_neg]`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hxx : form σ W'.J H''.x H''.x = 0` using `by rw [hform]; show δ * form σ G.V.J H.x H.x = 0; rw [hH.xx, mul_zero]`. Establish `hyy : form σ W'.J H''.y H''.y = 0`. Rewrite using `[hform]`. Use `show δ * form σ G.V.J ((-δ⁻¹) • H.y) ((-δ⁻¹) • H.y) = 0`. Rewrite using `[form_smul_left, form_smul_right, hH.yy]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hxy : form σ W'.J H''.x H''.y = 1`. Rewrite using `[hform]`. Use `show δ * form σ G.V.J H.x ((-δ⁻¹) • H.y) = 1`. Rewrite using `[form_smul_right, hH.xy, hσt, mul_one, mul_inv_cancel₀ hδ0]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `horth : ∀ u, form σ W'.J (H''.ι *ᵥ u) H''.x = 0 ∧ form σ W'.J (H''.ι *ᵥ u) H''.y = 0`. Introduce `u`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hform]`. Use `show δ * form σ G.V.J (H.ι *ᵥ u) H.x = 0`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[(hH.orth u).1, mul_zero]`. Rewrite using `[hform]`. Use `show δ * form σ G.V.J (H.ι *ᵥ u) ((-δ⁻¹) • H.y) = 0`. Rewrite using `[form_smul_right, (hH.orth u).2]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hspan'' : ∀ v : Fin (b + 2) → E, ∃ (s t : E) (u : Fin b → E), v = s • H''.x + H''.ι *ᵥ u + t • H''.y`. Introduce `v`. Take `⟨s, t, u, hv⟩` from `hspan v`. Use `⟨s, t * -δ, u, ?_⟩` and prove the remaining obligations. Use `show v = s • H.x + H.ι *ᵥ u + (t * -δ) • (-δ⁻¹) • H.y`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[smul_smul, show t * -δ * -δ⁻¹ = t by field_simp, hv]`. Establish `horthA : ∀ z, hA σ W'.J (incM F H''.ι *ᵥ z) (incV F H''.x) = 0`. Introduce `z`. Rewrite using `[hA_incM_incV]`. Use `Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1` using `(horth (Pi.single j 1)).1`. Rewrite `h1` using `[Matrix.mulVec_single_one]`. Rewrite using `[show (fun i => H''.ι i j) = H''.ι.col j from rfl, h1, map_zero, mul_zero]`. Establish `hyp : Hyp σ W' H''`. Use `⟨hσ, fun i j => ?_, by rw [hA_incV, hxx, map_zero], horthA⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Use `show σ (δ * G.V.J j i) = -(δ * G.V.J i j)`. Rewrite using `[map_mul, hδ, hV.herm]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨K', hK', hcov'⟩` from `cocompact hyp hxx hyy hxy horth hspan''`. Establish `hUG` using `UG_smul (F := F) σ G.V.J hδ0`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Set `φ : UA σ W'.J →* UA σ G.V.J` to `Subgroup.inclusion hUG.le`. Set `φ' : UA σ G.V.J →* UA σ W'.J` to `Subgroup.inclusion hUG.ge`. Establish `hmap : (unip σ W' H'').map φ ≤ unip σ G.V H`. Rewrite using `[unip, MonoidHom.map_closure]`. Use `Subgroup.closure_mono ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Introduce a local definition for the expression.
 
-Introduce and unpack `_ ⟨u, hu, rfl⟩`. Conclude with `hu`. Establish `hmap' : (unip σ G.V H).map φ' ≤ unip σ W' H''`. Rewrite using `[unip, MonoidHom.map_closure]`. Use `Subgroup.closure_mono ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `_ ⟨u, hu, rfl⟩`. Conclude with `hu`. Set `Ψ : unip σ W' H'' → unip σ G.V H` to `fun g => ⟨φ g.1, hmap ⟨g.1, g.2, rfl⟩⟩`. Establish `hΨ : Continuous Ψ` using `Continuous.subtype_mk (Continuous.subtype_mk (continuous_subtype_val.comp continuous_subtype_val) _) _`. Establish `hcov : ∀ g : unip σ G.V H, ∃ γ : (ratU σ G.V.J).subgroupOf (unip σ G.V H), γ • g ∈ Ψ '' K'`.
-
-Introduce `g`. Take `⟨γ', hγ'⟩` from `hcov' ⟨φ' g.1, hmap' ⟨g.1, g.2, rfl⟩⟩`. Use `⟨⟨Ψ γ'.1, ?_⟩, ⟨_, hγ', ?_⟩⟩` and prove the remaining obligations. Conclude with `Subgroup.mem_subgroupOf.2 (Subgroup.mem_subgroupOf.2 (Subgroup.mem_subgroupOf.1 (Subgroup.mem_subgroupOf.1 γ'.2)))`. Conclude with `unip_ext rfl`.
-
-Take `⟨hTG, hLC, hSC, hT2⟩` from `topUA σ G.V.J`. Use `haveI := hTG`. Use `haveI := hLC`. Use `haveI := hSC`. Use `haveI := hT2`.
-
-Use `haveI : BorelSpace (UA σ G.V.J) := ⟨rfl⟩`. Establish `hcl` using `GlobalTheory.T.unipotent_radical_closed_nonzero F E σ _ _ G.V H hx0`. Use `haveI : LocallyCompactSpace (unip σ G.V H) := hcl.isClosedEmbedding_subtypeVal.locallyCompactSpace`. Use `haveI : SecondCountableTopology (unip σ G.V H) := hcl.isClosedEmbedding_subtypeVal.isEmbedding.secondCountableTopology`. Use `haveI := countable_ratU' σ G.V.J (unip σ G.V H)`.
-
-Use `haveI := GlobalTheory.T.discrete_rational_points_subgroup F E σ _ G.V.J (unip σ G.V H)`. Use `haveI := hμ`. Conclude with `exists_fundDom_pos_finite _ (Ψ '' K') (hK'.image hΨ) hcov μN`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_fundDom_unip_herm : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) (B : Base F E) (b a' : ℕ) (G : Geo σ (b + 2) a') (G₁ : Geo σ b a')

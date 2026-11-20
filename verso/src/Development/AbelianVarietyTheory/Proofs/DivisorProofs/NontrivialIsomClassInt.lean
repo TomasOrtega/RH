@@ -20,7 +20,7 @@ variable {y : CxPts p σ} {U W : X.Opens}
 def logSq (y : CxPts p σ) (U : X.Opens) (u : Γ(X, U)ˣ) : ℝ := Real.log (‖ev p σ U u.val y‖ ^ 2)
 
 /- English proof (translation)
-Rewrite using `[logSq, Units.val_mul, ev_mul, log_normSq_mul (ev_ne_zero h u.isUnit) (ev_ne_zero h v.isUnit)]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem logSq_mul (h : y ∈ ptsIn p σ U) (u v : Γ(X, U)ˣ) :
     logSq y U (u * v) = logSq y U u + logSq y U v := by
@@ -28,19 +28,19 @@ theorem logSq_mul (h : y ∈ ptsIn p σ U) (u v : Γ(X, U)ˣ) :
   rfl
 
 /- English proof (translation)
-Rewrite using `[logSq, Units.val_one, ev_one h, norm_one, one_pow, Real.log_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem logSq_one (h : y ∈ ptsIn p σ U) : logSq y U 1 = 0 := by
   rw [logSq, Units.val_one, ev_one h, norm_one, one_pow, Real.log_one]
 
 /- English proof (translation)
-Rewrite using `[logSq, ev_inv h, norm_inv, inv_pow, Real.log_inv, logSq]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem logSq_inv (h : y ∈ ptsIn p σ U) (u : Γ(X, U)ˣ) : logSq y U u⁻¹ = -logSq y U u := by
   rw [logSq, ev_inv h, norm_inv, inv_pow, Real.log_inv, logSq]
 
 /- English proof (translation)
-The claim follows from `congrArg (fun z => Real.log (‖z‖ ^ 2)) (ev_res e h u.val)`.
+A detailed English derivation is pending.
 -/
 theorem logSq_res (e : W ≤ U) (h : y ∈ ptsIn p σ W) (u : Γ(X, U)ˣ) :
     logSq y W (res e u) = logSq y U u := congrArg (fun z => Real.log (‖z‖ ^ 2)) (ev_res e h u.val)
@@ -52,17 +52,17 @@ namespace HermLB
 variable {L M N L' M' : HermLB p}
 
 /- English proof (translation)
-Set `v (c : M.B.ι × L.B.ι) (j : J) : Γ(X, M.B.U c.1 ⊓ L.B.U c.2 ⊓ W j)ˣ` to `res (inf_le_inf inf_le_left (ha j)) (M.B.g c.1 (a j)) * (res (inf_le_inf inf_le_right (hb j)) (L.B.g c.2 (b j)))⁻¹ * res inf_le_right (u j)`. Establish `hv (c j) (x : X) (hx : x ∈ M.B.U c.1 ⊓ L.B.U c.2 ⊓ W j) : gm (𝟙 X) x _ (v c j) = gm (𝟙 X) x _ (M.B.g c.1 (a j)) * (gm (𝟙 X) x _ (L.B.g c.2 (b j)))⁻¹ * gm (𝟙 X) x _ (u j)`. Simplify using `only [v, map_mul, map_inv, gm_res (𝟙 X) x _ hx]`. Establish `key : ∀ {G : Type} [CommGroup G] (a b c d e : G), a * b * (c * d)⁻¹ * e = a * c⁻¹ * (b * d⁻¹ * e)`. Introduce `G _ a b c d e`.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [mul_inv]`. The two sides agree by associativity and commutativity. Establish `hg (c : M.B.ι × L.B.ι) : ∃ s : Γ(X, M.B.U c.1 ⊓ L.B.U c.2)ˣ, ∀ j, res inf_le_left s = v c j`. Use `glue_unit _ _ _ (fun x hx => ?_) (v c) fun j j' x hx => ?_` and prove the remaining obligations. Take `⟨j, hj⟩` from `hW x`.
+Simplify using the standard rewrite rules. The two sides agree by associativity and commutativity. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `Opens.mem_iSup.2 ⟨j, hx, hj⟩`. Rewrite using `[hv c j x hx.1, hv c j' x hx.2, hu x j j' hx.1.2 hx.2.2, ← gm_cocycle M.isLB (𝟙 X) x hx.1.1.1 (ha j hx.1.2) (ha j' hx.2.2), ← gm_cocycle L.isLB (𝟙 X) x hx.1.1.2 (hb j hx.1.2) (hb j' hx.2.2), key]`. Use `choose s hs using hg`. Establish `hs' (c j) (x : X) (hx : x ∈ M.B.U c.1 ⊓ L.B.U c.2 ⊓ W j) : gm (𝟙 X) x _ (s c) = gm (𝟙 X) x _ (M.B.g c.1 (a j)) * (gm (𝟙 X) x _ (L.B.g c.2 (b j)))⁻¹ * gm (𝟙 X) x _ (u j)`. Rewrite using `[← hv c j x hx, ← hs, gm_res (𝟙 X) x _ hx]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨⟨s⟩, (isGen_iff_germ _).2 fun x c c' hc hc' => ?_, fun σ a₀ b₀ y h₁ h₂ => ?_⟩` and prove the remaining obligations. Take `⟨j, hj⟩` from `hW x`. Use `(hs' c j x ⟨hc, hj⟩).trans (Eq.trans ?_ (congrArg₂ (· * ·) (gm_div' M.B L.B (𝟙 X) x c c' hc hc') (hs' c' j x ⟨hc', hj⟩)).symm)` and prove the remaining obligations. Rewrite using `[← gm_cocycle M.isLB (𝟙 X) x hc.1 hc'.1 (ha j hj), ← gm_cocycle L.isLB (𝟙 X) x hc.2 hc'.2 (hb j hj), key]`. Take `⟨j, hj⟩` from `hW (under y)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hj' : y ∈ ptsIn p σ (W j)` using `mem_ptsIn.2 hj`. Establish `hy : y ∈ ptsIn p σ (M.B.U a₀ ⊓ L.B.U b₀ ⊓ W j)` using `by simp [*]`. Establish `e : logSq y _ (s (a₀, b₀)) = logSq y _ (M.B.g a₀ (a j)) + -logSq y _ (L.B.g b₀ (b j)) + logSq y _ (u j)`. Rewrite using `[← logSq_res inf_le_left hy, hs (a₀, b₀) j]`. Simplify using `only [v, logSq_mul hy, logSq_inv hy, logSq_res _ hy]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e₁ : _ = _ - logSq y _ (M.B.g a₀ (a j))` using `(M.φ σ).trans a₀ (a j) y h₁ (ptsIn_mono (ha j) hj')`. Establish `e₂ : _ = _ - logSq y _ (L.B.g b₀ (b j))` using `(L.φ σ).trans b₀ (b j) y h₂ (ptsIn_mono (hb j) hj')`. Establish `e₃` using `hφ σ j y hj'`. Express the relevant statement in the definitionally equal form `_ = _ + logSq y _ (s (a₀, b₀))`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem isometric_of_local {J : Type} (W : J → X.Opens) (hW : ∀ x, ∃ j, x ∈ W j) (a : J → M.B.ι)
     (b : J → L.B.ι) (ha : ∀ j, W j ≤ M.B.U (a j)) (hb : ∀ j, W j ≤ L.B.U (b j)) (u : ∀ j, Γ(X, W j)ˣ)
@@ -111,7 +111,7 @@ theorem isometric_of_local {J : Type} (W : J → X.Opens) (hW : ∀ x, ∃ j, x 
     linarith
 
 /- English proof (translation)
-The claim follows from `isometric_of_local L.B.U (exists_chart L.isLB) a id ha (fun _ => le_rfl) (fun _ => 1) (fun x j j' h h' => by rw [map_one, map_one, ← hg x j j' h h', mul_one]; exact (mul_inv_cancel _).symm) fun σ j y h => by rw [logSq_one h, add_zero]; exact hφ σ j y h`.
+A detailed English derivation is pending.
 -/
 theorem isometric_of_chart (a : L.B.ι → M.B.ι) (ha : ∀ j, L.B.U j ≤ M.B.U (a j))
     (hg : ∀ (x : X) j j', x ∈ L.B.U j → x ∈ L.B.U j' →
@@ -123,7 +123,7 @@ theorem isometric_of_chart (a : L.B.ι → M.B.ι) (ha : ∀ j, L.B.U j ≤ M.B.
     fun σ j y h => by rw [logSq_one h, add_zero]; exact hφ σ j y h
 
 /- English proof (translation)
-The claim follows from `have ⟨w, hw, h⟩ := h ⟨fun a b => w.s (a, b), fun _ f z a a' b b' => gm_isGen hw f z a a' b b', h⟩`.
+A detailed English derivation is pending.
 -/
 theorem Isometric.exists_units (h : L.Isometric M) :
     ∃ w : ∀ a b, Γ(X, M.B.U a ⊓ L.B.U b)ˣ,
@@ -136,9 +136,9 @@ theorem Isometric.exists_units (h : L.Isometric M) :
   ⟨fun a b => w.s (a, b), fun _ f z a a' b b' => gm_isGen hw f z a a' b b', h⟩
 
 /- English proof (translation)
-Take `⟨w, hw, h⟩` from `h.exists_units`. Use `isometric_of_local (fun c : M.B.ι × L.B.ι => M.B.U c.1 ⊓ L.B.U c.2) (fun x => ?_) Prod.snd Prod.fst (fun _ => inf_le_right) (fun _ => inf_le_left) (fun c => (w c.1 c.2)⁻¹) (fun x c c' hc hc' => ?_) fun σ c y hy => ?_` and prove the remaining obligations. Take `⟨a, ha⟩` from `exists_chart M.isLB x`. Take `⟨b, hb⟩` from `exists_chart L.isLB x`. Conclude with `⟨(a, b), ha, hb⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Rewrite using `[map_inv, map_inv, hw _ (𝟙 X) x _ c'.1 _ c'.2 hc.1 hc'.1 hc.2 hc'.2, mul_inv, mul_inv, inv_inv]`. Conclude with `congrArg (· * _) (mul_comm _ _)`. Rewrite using `[logSq_inv hy, h σ c.1 c.2 y (mem_ptsIn_inf.1 hy).1 (mem_ptsIn_inf.1 hy).2]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem Isometric.symm (h : L.Isometric M) : M.Isometric L := by
   obtain ⟨w, hw, h⟩ := h.exists_units
@@ -155,13 +155,13 @@ theorem Isometric.symm (h : L.Isometric M) : M.Isometric L := by
     ring
 
 /- English proof (translation)
-Take `⟨w, hw, h⟩` from `h.exists_units`. Take `⟨w', hw', h'⟩` from `h'.exists_units`. Use `isometric_of_local (fun c : N.B.ι × M.B.ι × L.B.ι => N.B.U c.1 ⊓ M.B.U c.2.1 ⊓ (M.B.U c.2.1 ⊓ L.B.U c.2.2)) (fun x => ?_) (·.1) (·.2.2) (fun _ => inf_le_left.trans inf_le_left) (fun _ => inf_le_right.trans inf_le_right) (fun c => res inf_le_left (w' c.1 c.2.1) * res inf_le_right …` and prove the remaining obligations. Take `⟨a, ha⟩` from `exists_chart N.isLB x`. Take `⟨b, hb⟩` from `exists_chart M.isLB x`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨c, hc⟩` from `exists_chart L.isLB x`. Conclude with `⟨(a, b, c), ⟨ha, hb⟩, hb, hc⟩`. Rewrite using `[map_mul, map_mul, gm_res (𝟙 X) x _ hc, gm_res (𝟙 X) x _ hc, gm_res (𝟙 X) x _ hc', gm_res (𝟙 X) x _ hc', hw _ (𝟙 X) x _ c'.2.1 _ c'.2.2 hc.2.1 hc'.2.1 hc.2.2 hc'.2.2, hw' _ (𝟙 X) x _ c'.1 _ c'.2.1 hc.1.1 hc'.1.1 hc.1.2 hc'.1.2]`. Establish `key : ∀ {G : Type} [CommGroup G] (a b c d e : G), a * b⁻¹ * c * (b * d * e) = a * d * (c * e)`. Introduce `G _ a b c d e`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← mul_right_inj b, mul_right_comm a, ← mul_assoc b, mul_comm b, inv_mul_cancel_right]`. The two sides agree by associativity and commutativity. Conclude with `key _ _ _ _ _`. Establish `hy'` using `hy`. Simplify using `only [mem_ptsIn_inf] at hy'`.
+Rewrite the conclusion using the stated equalities. The two sides agree by associativity and commutativity. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[logSq_mul hy, logSq_res _ hy, logSq_res _ hy, h' σ _ _ y hy'.1.1 hy'.1.2, h σ _ _ y hy'.2.1 hy'.2.2]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem Isometric.trans (h : L.Isometric M) (h' : M.Isometric N) : L.Isometric N := by
   obtain ⟨w, hw, h⟩ := h.exists_units
@@ -191,11 +191,11 @@ theorem Isometric.trans (h : L.Isometric M) (h' : M.Isometric N) : L.Isometric N
     ring
 
 /- English proof (translation)
-Take `⟨w, hw, h⟩` from `h.exists_units`. Use `isometric_of_local (fun c : M.B.ι × L.B.ι × N.B.ι => M.B.U c.1 ⊓ L.B.U c.2.1 ⊓ N.B.U c.2.2) (fun x => ?_) (fun c => (c.1, c.2.2)) (·.2) (fun _ _ h => ⟨h.1.1, h.2⟩) (fun _ _ h => ⟨h.1.2, h.2⟩) (fun c => res inf_le_left (w c.1 c.2.1)) (fun x c c' hc hc' => ?_) fun σ c y hy => ?_` and prove the remaining obligations. Take `⟨a, ha⟩` from `exists_chart M.isLB x`. Take `⟨b, hb⟩` from `exists_chart L.isLB x`. Take `⟨c, hc⟩` from `exists_chart N.isLB x`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨(a, b, c), ⟨ha, hb⟩, hc⟩`. Use `Eq.trans ?_ (congrArg (· * _) (congrArg₂ (fun a b => a * b⁻¹) (gm_tens M.B N.B (𝟙 X) x (c.1, c.2.2) (c'.1, c'.2.2) ⟨hc.1.1, hc.2⟩ ⟨hc'.1.1, hc'.2⟩) (gm_tens L.B N.B (𝟙 X) x c.2 c'.2 ⟨hc.1.2, hc.2⟩ ⟨hc'.1.2, hc'.2⟩))).symm` and prove the remaining obligations. Rewrite using `[gm_res (𝟙 X) x _ hc, gm_res (𝟙 X) x _ hc', hw _ (𝟙 X) x _ c'.1 _ c'.2.1 hc.1.1 hc'.1.1 hc.1.2 hc'.1.2, ← div_eq_mul_inv, ← div_eq_mul_inv, mul_div_mul_right_eq_div]`. Establish `hy'` using `hy`. Simplify using `only [mem_ptsIn_inf] at hy'`.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[logSq_res _ hy]`. Express the relevant statement in the definitionally equal form `(M.φ σ).φ _ y + (N.φ σ).φ _ y = (L.φ σ).φ _ y + (N.φ σ).φ _ y + _`. Rewrite using `[h σ _ _ y hy'.1.1 hy'.1.2]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem Isometric.tens_right (h : L.Isometric M) (N : HermLB p) : (L.tens N).Isometric (M.tens N) := by
   obtain ⟨w, hw, h⟩ := h.exists_units
@@ -220,11 +220,9 @@ theorem Isometric.tens_right (h : L.Isometric M) (N : HermLB p) : (L.tens N).Iso
     ring
 
 /- English proof (translation)
-Take `⟨w, hw, h⟩` from `h.exists_units`. Use `isometric_of_local (fun c : M.B.ι × L.B.ι => π ⁻¹ᵁ (M.B.U c.1 ⊓ L.B.U c.2)) (fun x => ?_) (fun c _ => c.1) (fun c _ => c.2) (fun _ _ h => mem_pull.2 h.1) (fun _ _ h => mem_pull.2 h.2) (fun c => pullU π _ (w c.1 c.2)) (fun x c c' hc hc' => ?_) fun σ c y hy => ?_` and prove the remaining obligations. Take `⟨a, ha⟩` from `exists_chart M.isLB (π x)`. Take `⟨b, hb⟩` from `exists_chart L.isLB (π x)`. Conclude with `⟨(a, b), ha, hb⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use `Eq.trans ?_ (congrArg (· * _) (congrArg₂ (fun a b => a * b⁻¹) (gm_pull_g M.B π (𝟙 Y) x (fun _ => c.1) (fun _ => c'.1) (mem_pull.2 hc.1) (mem_pull.2 hc'.1)) (gm_pull_g L.B π (𝟙 Y) x (fun _ => c.2) (fun _ => c'.2) (mem_pull.2 hc.2) (mem_pull.2 hc'.2)))).symm` and prove the remaining obligations. Rewrite using `[gm_pull (𝟙 Y) π x _ hc, gm_pull (𝟙 Y) π x _ hc']`. Conclude with `hw _ _ x _ _ _ _ hc.1 hc'.1 hc.2 hc'.2`. Establish `hy' : PtsOver.map π hπ _ y ∈ ptsIn p σ (M.B.U c.1 ⊓ L.B.U c.2)` using `hy`. Use `((M.φ σ).pull_φ π hπ _ y).trans ((h σ _ _ _ (mem_ptsIn_inf.1 hy').1 (mem_ptsIn_inf.1 hy').2).trans (congrArg₂ (· + ·) ((L.φ σ).pull_φ π hπ (fun _ => c.2) y).symm ?_))` and prove the remaining obligations.
-
-Conclude with `congrArg (fun z => Real.log (‖z‖ ^ 2)) (ev_app π hπ _ _ y).symm`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem Isometric.pull (h : L.Isometric M) (π : Y ⟶ X) (hπ : π ≫ p = q) :
     (L.pull π hπ).Isometric (M.pull π hπ) := by
@@ -249,7 +247,7 @@ theorem Isometric.pull (h : L.Isometric M) (π : Y ⟶ X) (hπ : π ≫ p = q) :
 variable (L M N)
 
 /- English proof (translation)
-The claim follows from `isometric_of_chart (fun c => (c.2, c.1)) (fun _ _ h => ⟨h.2, h.1⟩) (fun x c c' h h' => (gm_tens L.B M.B (𝟙 X) x c c' h h').trans ((mul_comm _ _).trans (gm_tens M.B L.B (𝟙 X) x (c.2, c.1) (c'.2, c'.1) ⟨h.2, h.1⟩ ⟨h'.2, h'.1⟩).symm)) fun _ _ _ _ => add_comm _ _`.
+A detailed English derivation is pending.
 -/
 theorem isometric_tens_comm : (L.tens M).Isometric (M.tens L) :=
   isometric_of_chart (fun c => (c.2, c.1)) (fun _ _ h => ⟨h.2, h.1⟩)
@@ -258,7 +256,7 @@ theorem isometric_tens_comm : (L.tens M).Isometric (M.tens L) :=
     fun _ _ _ _ => add_comm _ _
 
 /- English proof (translation)
-The claim follows from `isometric_of_chart (fun c => (c.1.1, c.1.2, c.2)) (fun _ _ h => ⟨h.1.1, h.1.2, h.2⟩) (fun x c c' h h' => ((gm_tens (CechPic.tens L.B M.B) N.B (𝟙 X) x c c' h h').trans (congrArg (· * _) (gm_tens L.B M.B (𝟙 X) x c.1 c'.1 h.1 h'.1))).trans ((mul_assoc _ _ _).trans ((gm_tens L.B (Cec …`.
+A detailed English derivation is pending.
 -/
 theorem isometric_tens_assoc : ((L.tens M).tens N).Isometric (L.tens (M.tens N)) :=
   isometric_of_chart (fun c => (c.1.1, c.1.2, c.2)) (fun _ _ h => ⟨h.1.1, h.1.2, h.2⟩)
@@ -270,7 +268,7 @@ theorem isometric_tens_assoc : ((L.tens M).tens N).Isometric (L.tens (M.tens N))
     fun _ _ _ _ => (add_assoc _ _ _).symm
 
 /- English proof (translation)
-The claim follows from `isometric_of_chart (fun c => c.1) (fun _ _ h => h.1) (fun x c c' h h' => (gm_tens M.B (LB.triv X) (𝟙 X) x c c' h h').trans ((congrArg (_ * ·) (map_one _)).trans (mul_one _))) fun _ _ _ _ => rfl`.
+A detailed English derivation is pending.
 -/
 theorem isometric_tens_fnB (u : ∀ σ : k →+* ℂ, CxPts p σ → ℝ) (hu : ∀ σ y, CInfAt (u σ) y)
     (hc : ∀ σ σ', (Weight.ofFun (u σ)).IsConj (Weight.ofFun (u σ'))) :
@@ -281,7 +279,7 @@ theorem isometric_tens_fnB (u : ∀ σ : k →+* ℂ, CxPts p σ → ℝ) (hu : 
     fun _ _ _ _ => rfl
 
 /- English proof (translation)
-The claim follows from `isometric_of_chart (fun c => c.1) (fun _ _ h => h.1) (fun x c c' h h' => (gm_tens L.B (LB.triv X) (𝟙 X) x c c' h h').trans ((congrArg (_ * ·) (map_one _)).trans (mul_one _))) fun _ _ _ _ => (add_zero _).symm`.
+A detailed English derivation is pending.
 -/
 theorem isometric_tens_triv : (L.tens (triv p)).Isometric L :=
   isometric_of_chart (fun c => c.1) (fun _ _ h => h.1)
@@ -290,13 +288,13 @@ theorem isometric_tens_triv : (L.tens (triv p)).Isometric L :=
     fun _ _ _ _ => (add_zero _).symm
 
 /- English proof (translation)
-The claim follows from `(isometric_tens_comm _ _).trans L.isometric_tens_triv`.
+A detailed English derivation is pending.
 -/
 theorem isometric_triv_tens : ((triv p).tens L).Isometric L :=
   (isometric_tens_comm _ _).trans L.isometric_tens_triv
 
 /- English proof (translation)
-The claim follows from `isometric_of_local L.B.U (exists_chart L.isLB) (fun _ => PUnit.unit) (fun j => (j, j)) (fun _ => le_top) (fun _ _ h => ⟨h, h⟩) (fun _ => 1) (fun x j j' h h' => by have e := (gm_tens (CechPic.dual L.B) L.B (𝟙 X) x (j, j) (j', j') ⟨h, h⟩ ⟨h', h'⟩).trans ((congrArg (· * _) (map_inv …`.
+A detailed English derivation is pending.
 -/
 theorem isometric_dual_tens : (L.dual.tens L).Isometric (triv p) :=
   isometric_of_local L.B.U (exists_chart L.isLB) (fun _ => PUnit.unit) (fun j => (j, j)) (fun _ => le_top)
@@ -308,7 +306,7 @@ theorem isometric_dual_tens : (L.dual.tens L).Isometric (triv p) :=
     fun σ j y h => by rw [logSq_one h, add_zero]; exact (neg_add_cancel _).symm
 
 /- English proof (translation)
-The claim follows from `isometric_of_chart (fun _ => PUnit.unit) (fun _ => le_top) (fun x j j' h h' => (gm_linComb L.B _ _ (𝟙 X) x j j' h h').trans ((Fintype.prod_unique _).trans ((zpow_zero _).trans (map_one _).symm))) fun σ j y _ => (((L.φ σ).zpow_φ _ j y).trans (by simp; rfl)).symm`.
+A detailed English derivation is pending.
 -/
 theorem isometric_pow_zero : (L.pow 0).Isometric (triv p) :=
   isometric_of_chart (fun _ => PUnit.unit) (fun _ => le_top)
@@ -317,7 +315,7 @@ theorem isometric_pow_zero : (L.pow 0).Isometric (triv p) :=
     fun σ j y _ => (((L.φ σ).zpow_φ _ j y).trans (by simp; rfl)).symm
 
 /- English proof (translation)
-The claim follows from `isometric_of_chart (fun j => (j, j PUnit.unit)) (fun _ _ h => ⟨h, Set.mem_iInter.1 h PUnit.unit⟩) (fun x j j' h h' => by refine (gm_linComb L.B _ _ (𝟙 X) x j j' h h').trans (Eq.trans ?_ ((gm_tens (lbPow L.B m) L.B (𝟙 X) x (j, j PUnit.unit) (j', j' PUnit.unit) ⟨h, Set.mem_iInter.1 …`.
+A detailed English derivation is pending.
 -/
 theorem isometric_pow_succ (m : ℕ) : (L.pow (m + 1)).Isometric ((L.pow m).tens L) :=
   isometric_of_chart (fun j => (j, j PUnit.unit)) (fun _ _ h => ⟨h, Set.mem_iInter.1 h PUnit.unit⟩)
@@ -332,7 +330,7 @@ theorem isometric_pow_succ (m : ℕ) : (L.pow (m + 1)).Isometric ((L.pow m).tens
       ((L.φ σ).zpow_φ _ j y).symm
 
 /- English proof (translation)
-The claim follows from `isometric_of_chart (fun j => (fun _ => (j PUnit.unit).1, fun _ => (j PUnit.unit).2)) (fun _ _ h => ⟨mem_pull.2 (mem_pull.1 h).1, mem_pull.2 (mem_pull.1 h).2⟩) (fun x j j' h h' => by have e := mem_pull.1 h have e' := mem_pull.1 h' refine ((gm_pull_g (CechPic.tens L.B M.B) π (𝟙 Y) …`.
+A detailed English derivation is pending.
 -/
 theorem isometric_pull_tens (π : Y ⟶ X) (hπ : π ≫ p = q) :
     ((L.tens M).pull π hπ).Isometric ((L.pull π hπ).tens (M.pull π hπ)) :=
@@ -361,13 +359,13 @@ theorem shift_eq_raise (t : (k →+* ℂ) → ℝ) (ht : ∀ σ, t ((starRingEnd
 variable {L M N}
 
 /- English proof (translation)
-The claim follows from `(h.tens_right L').trans ((isometric_tens_comm _ _).trans ((h'.tens_right M).trans (isometric_tens_comm _ _)))`.
+A detailed English derivation is pending.
 -/
 theorem Isometric.tens (h : L.Isometric M) (h' : L'.Isometric M') : (L.tens L').Isometric (M.tens M') :=
   (h.tens_right L').trans ((isometric_tens_comm _ _).trans ((h'.tens_right M).trans (isometric_tens_comm _ _)))
 
 /- English proof (translation)
-The claim follows from `(isometric_triv_tens _).symm.trans <| (M.isometric_dual_tens.symm.tens_right _).trans <| (isometric_tens_assoc _ _ _).trans <| ((Isometric.refl _).tens ((h.symm.tens_right _).trans ((isometric_tens_comm _ _).trans L.isometric_dual_tens))).trans (isometric_tens_triv _)`.
+A detailed English derivation is pending.
 -/
 theorem Isometric.dual (h : L.Isometric M) : L.dual.Isometric M.dual :=
   (isometric_triv_tens _).symm.trans <| (M.isometric_dual_tens.symm.tens_right _).trans <|
@@ -385,7 +383,7 @@ def IsomClass : Type 1 := Quotient (isometrySetoid p)
 def icls (L : HermLB p) : IsomClass p := Quotient.mk _ L
 
 /- English proof (translation)
-The claim follows from `Quotient.eq (r := isometrySetoid p)`.
+A detailed English derivation is pending.
 -/
 theorem icls_eq_iff : L.icls = M.icls ↔ L.Isometric M := Quotient.eq (r := isometrySetoid p)
 
@@ -419,14 +417,14 @@ Both sides reduce to the same expression.
 theorem icls_triv : (triv p).icls = 0 := rfl
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(ArithBase.trivShift 0).icls, (ArithBase.trivShift 1).icls, fun h => zero_ne_one (eq_of_isometric_trivShift (icls_eq_iff.1 h))⟩`.
+Supply the required witnesses or components.
 -/
 theorem nontrivial_isomClass_int : Nontrivial (IsomClass (𝟙 (Sp ℤ))) :=
   ⟨(ArithBase.trivShift 0).icls, (ArithBase.trivShift 1).icls, fun h =>
     zero_ne_one (eq_of_isometric_trivShift (icls_eq_iff.1 h))⟩
 
 /- English proof (translation)
-Proceed by induction on `m with`. Consider the case `zero => rw [zero_nsmul]`. Conclude with `icls_eq_iff.2 L.isometric_pow_zero`. Consider the case `succ m ih => rw [succ_nsmul, ← ih]`. Conclude with `icls_eq_iff.2 (L.isometric_pow_succ m)`.
+Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem icls_pow (L : HermLB p) (m : ℕ) : (L.pow m).icls = m • L.icls := by
   induction m with
@@ -434,7 +432,7 @@ theorem icls_pow (L : HermLB p) (m : ℕ) : (L.pow m).icls = m • L.icls := by
   | succ m ih => rw [succ_nsmul, ← ih]; exact icls_eq_iff.2 (L.isometric_pow_succ m)
 
 /- English proof (translation)
-The claim follows from `icls_eq_iff.1 (by rw [icls_pow, icls_pow, icls_eq_iff.2 h])`.
+A detailed English derivation is pending.
 -/
 theorem Isometric.pow (h : L.Isometric M) (m : ℕ) : (L.pow m).Isometric (M.pow m) :=
   icls_eq_iff.1 (by rw [icls_pow, icls_pow, icls_eq_iff.2 h])
@@ -458,14 +456,14 @@ open HermLB
 variable {ι : Type} [Fintype ι]
 
 /- English proof (translation)
-Rewrite using `[zp, icls_tens, icls_dual, icls_pow, icls_pow, ← natCast_zsmul, ← natCast_zsmul, ← sub_eq_add_neg, ← sub_smul, Int.toNat_sub_toNat_neg]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem icls_zp (L : HermLB p) (n : ℤ) : (zp L n).icls = n • L.icls := by
   rw [zp, icls_tens, icls_dual, icls_pow, icls_pow, ← natCast_zsmul, ← natCast_zsmul, ← sub_eq_add_neg,
     ← sub_smul, Int.toNat_sub_toNat_neg]
 
 /- English proof (translation)
-Rewrite using `[← Finset.sum_map_toList, comb]`. Proceed by induction on `(Finset.univ : Finset ι).toList with`. Consider the case `nil => rfl`. Consider the case `cons i l ih => rw [List.foldr_cons, icls_tens, ih, icls_zp, List.map_cons, List.sum_cons]`.
+Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem icls_comb (L : ι → HermLB p) (n : ι → ℤ) : (comb L n).icls = ∑ i, n i • (L i).icls := by
   rw [← Finset.sum_map_toList, comb]
@@ -474,35 +472,35 @@ theorem icls_comb (L : ι → HermLB p) (n : ι → ℤ) : (comb L n).icls = ∑
   | cons i l ih => rw [List.foldr_cons, icls_tens, ih, icls_zp, List.map_cons, List.sum_cons]
 
 /- English proof (translation)
-The claim follows from `icls_eq_iff.1 (by simp [icls_comb, Pi.single_apply])`.
+A detailed English derivation is pending.
 -/
 theorem isometric_comb_single [DecidableEq ι] (L : ι → HermLB p) (i : ι) :
     (comb L (Pi.single i 1)).Isometric (L i) :=
   icls_eq_iff.1 (by simp [icls_comb, Pi.single_apply])
 
 /- English proof (translation)
-The claim follows from `icls_eq_iff.1 (by simp [icls_comb, icls_tens, add_smul, Finset.sum_add_distrib])`.
+A detailed English derivation is pending.
 -/
 theorem isometric_comb_add (L : ι → HermLB p) (n n' : ι → ℤ) :
     (comb L (n + n')).Isometric ((comb L n).tens (comb L n')) :=
   icls_eq_iff.1 (by simp [icls_comb, icls_tens, add_smul, Finset.sum_add_distrib])
 
 /- English proof (translation)
-The claim follows from `icls_eq_iff.1 (by simp [icls_comb, icls_pull])`.
+A detailed English derivation is pending.
 -/
 theorem isometric_comb_pull (L : ι → HermLB p) (n : ι → ℤ) (π : Y ⟶ X) (hπ : π ≫ p = q) :
     (comb (fun i => (L i).pull π hπ) n).Isometric ((comb L n).pull π hπ) :=
   icls_eq_iff.1 (by simp [icls_comb, icls_pull])
 
 /- English proof (translation)
-The claim follows from `icls_eq_iff.1 (by simp only [icls_comb, fun i => icls_eq_iff.2 (h i)])`.
+A detailed English derivation is pending.
 -/
 theorem isometric_comb_congr {L M : ι → HermLB p} (h : ∀ i, (L i).Isometric (M i)) (n : ι → ℤ) :
     (comb L n).Isometric (comb M n) :=
   icls_eq_iff.1 (by simp only [icls_comb, fun i => icls_eq_iff.2 (h i)])
 
 /- English proof (translation)
-The claim follows from `icls_eq_iff.1 (by simp only [icls_comb, Finset.sum_smul, Finset.smul_sum, mul_smul] exact Finset.sum_comm)`.
+A detailed English derivation is pending.
 -/
 theorem isometric_comb_comb {κ : Type} [Fintype κ] (L : ι → HermLB p) (A : κ → ι → ℤ) (m : κ → ℤ) :
     (comb L fun i => ∑ j, m j * A j i).Isometric (comb (fun j => comb L (A j)) m) :=
@@ -517,11 +515,11 @@ namespace HermLB
 variable {L M : HermLB p} {D : ℕ}
 
 /- English proof (translation)
-Take `⟨w, -, h⟩` from `h.exists_units`. Establish `ho` using `isOpen_over c.e (isOpen_ptsIn (p := p) (σ := σ) (M.B.U a ⊓ L.B.U b))`. Establish `hm` using `mem_over c.e hy (mem_ptsIn_inf.2 ⟨ha, hb⟩)`. Establish `hg` using `c.holo _ (w a b).val`. Establish `h0 : ∀ v ∈ c.e.target ∩ c.e.symm ⁻¹' ptsIn p σ (M.B.U a ⊓ L.B.U b), (ev p σ _ (w a b).val ∘ c.e.symm) v ≠ 0` using `fun v hv => ev_ne_zero hv.2 (w a b).isUnit`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e` using `ReciprocityTheory.L2DbarEstimates.I.MongeAmpereIntegrability.cHess_add_smul ho ((contDiffOn_chart (L.cInf σ b) c).mono fun v hv => ⟨hv.1, (mem_ptsIn_inf.1 hv.2).2⟩) (contDiffOn_log_normSq ho hg h0) 1 hm`. Establish `e₀ : ReciprocityTheory.L2DbarEstimates.cHess D (fun v => ((Real.log (‖(ev p σ _ (w a b).val ∘ c.e.symm) v‖ ^ 2) : ℝ) : ℂ)) (c.e y) = 0`. Use extensionality with `i j`. Conclude with `ReciprocityTheory.L2DbarEstimates.Y.cmpa_hess_log ho hm hg h0 i j`. Rewrite `e` using `[e₀, smul_zero, add_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Eq.trans (ReciprocityTheory.L2DbarEstimates.Y.cmpb_cHess_congr ?_) e` and prove the remaining obligations. Use `filter_upwards [ho.mem_nhds hm] with v hv`. Rewrite using `[h σ a b _ (mem_ptsIn_inf.1 hv.2).1 (mem_ptsIn_inf.1 hv.2).2, one_mul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem Isometric.hess_eq (h : L.Isometric M) (c : AlgChart p σ D) {y : CxPts p σ} (hy : y ∈ c.e.source)
     {a : M.B.ι} {b : L.B.ι} (ha : y ∈ ptsIn p σ (M.B.U a)) (hb : y ∈ ptsIn p σ (L.B.U b)) :
@@ -546,7 +544,7 @@ theorem Isometric.hess_eq (h : L.Isometric M) (c : AlgChart p σ D) {y : CxPts p
   rfl
 
 /- English proof (translation)
-Use `iSup_congr fun c => congrArg (MeasureTheory.Measure.map _) (MeasureTheory.withDensity_congr_ae (MeasureTheory.ae_restrict_of_forall_mem c.e.open_target.measurableSet fun v hv => ?_))` and prove the remaining obligations. Simplify using `only [Function.comp_apply, AlgChart.chernDens, h.hess_eq c (c.e.map_target hv) (mem_pick (M.φ σ).isLB _) (mem_pick (L.φ σ).isLB _)]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem Isometric.chernPart_eq (h : L.Isometric M) (σ : k →+* ℂ) (D : ℕ) (ε : ℤˣ) :
     (L.φ σ).chernPart D ε = (M.φ σ).chernPart D ε := by
@@ -556,7 +554,7 @@ theorem Isometric.chernPart_eq (h : L.Isometric M) (σ : k →+* ℂ) (D : ℕ) 
     h.hess_eq c (c.e.map_target hv) (mem_pick (M.φ σ).isLB _) (mem_pick (L.φ σ).isLB _)]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `S f`. Rewrite using `[Weight.chernInt, Weight.chernInt, h.chernPart_eq, h.chernPart_eq]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 -/
 theorem Isometric.chernInt_eq (h : L.Isometric M) (σ : k →+* ℂ) (D : ℕ) :
     (L.φ σ).chernInt D = (M.φ σ).chernInt D := by
@@ -564,7 +562,7 @@ theorem Isometric.chernInt_eq (h : L.Isometric M) (σ : k →+* ℂ) (D : ℕ) :
   rw [Weight.chernInt, Weight.chernInt, h.chernPart_eq, h.chernPart_eq]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `S f`. Rewrite using `[Weight.ChernIntegrableOn, Weight.ChernIntegrableOn, h.chernPart_eq, h.chernPart_eq]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 -/
 theorem Isometric.chernIntegrableOn_eq (h : L.Isometric M) (σ : k →+* ℂ) (D : ℕ) :
     (L.φ σ).ChernIntegrableOn D = (M.φ σ).ChernIntegrableOn D := by
@@ -572,27 +570,27 @@ theorem Isometric.chernIntegrableOn_eq (h : L.Isometric M) (σ : k →+* ℂ) (D
   rw [Weight.ChernIntegrableOn, Weight.ChernIntegrableOn, h.chernPart_eq, h.chernPart_eq]
 
 /- English proof (translation)
-Simplify using `only [chInt, h.chernInt_eq]`.
+Simplify using the standard rewrite rules.
 -/
 theorem Isometric.chInt_eq (h : L.Isometric M) (D : ℕ) (f : ∀ σ : k →+* ℂ, CxPts p σ → ℝ) :
     chInt L D f = chInt M D f := by
   simp only [chInt, h.chernInt_eq]
 
 /- English proof (translation)
-The claim follows from `h.chInt_eq D _`.
+A detailed English derivation is pending.
 -/
 theorem Isometric.gdeg_eq (h : L.Isometric M) (D : ℕ) : gdeg L D = gdeg M D := h.chInt_eq D _
 
 /- English proof (translation)
-Take `⟨w, hw, h⟩` from `h.exists_units`. Take `⟨b₀, h₀⟩` from `exists_chart L.isLB (genericPoint X)`. Set `F (U : X.Opens) (u : Γ(X, U)ˣ) : X.functionFieldˣ` to `gm (𝟙 X) (genericPoint X) U u`. Establish `hF (U : X.Opens) (u : Γ(X, U)ˣ) (hU : genericPoint X ∈ U) : (F U u : X.functionField) = fnOf U hU u.val` using `gm_val (𝟙 X) _ U hU u`. Establish `hw' (a a' b b') (h₁ : genericPoint X ∈ M.B.U a) (h₂ : genericPoint X ∈ M.B.U a') (h₃ : genericPoint X ∈ L.B.U b) (h₄ : genericPoint X ∈ L.B.U b') : F _ (w a b) = F _ (M.B.g a a') * (F _ (L.B.g b b'))⁻¹ * F _ (w a' b')` using `hw _ (𝟙 X) _ a a' b b' h₁ h₂ h₃ h₄`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hM (a) (h₁ : genericPoint X ∈ M.B.U a) : F _ (M.B.g a a) = 1` using `gm_self M.isLB (𝟙 X) _ h₁`. Establish `hL : F _ (L.B.g b₀ b₀) = 1` using `gm_self L.isLB (𝟙 X) _ h₀`. Establish `hr' : IsRatSec M.B fun a => F _ (w a b₀) * r b₀` using `fun a a' h' => by beta_reduce`. Rewrite using `[← hF, ← Units.val_mul, hw' a a' b₀ b₀ h'.1 h'.2 h₀ h₀, hL, inv_one, mul_one, mul_assoc]`. Establish `key (a b) (h' : genericPoint X ∈ M.B.U a ⊓ L.B.U b) : ((F _ (w a b₀) * r b₀ : X.functionFieldˣ) : X.functionField) = fnOf _ h' (w a b).val * r b`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← hF, hr b b₀ (memInf h'.2 h₀), ← hF _ (L.B.g b b₀), ← Units.val_mul, ← Units.val_mul, hw' a a b b₀ h'.1 h'.1 h'.2 h₀, hM a h'.1, one_mul, mul_comm (F _ (L.B.g b b₀))⁻¹, mul_assoc, inv_mul_cancel_left]`. Establish `hd : M.div hr' = L.div hr` using `CartierDiv.ext_of_isEqn fun x => by`. Take `⟨a, ha⟩` from `exists_chart M.isLB x`. Take `⟨b, hb⟩` from `exists_chart L.isLB x`. Use `⟨_, (presents_divOfRatSec _ hr').isEqn a x ha, ((presents_divOfRatSec _ hr).isEqn b x hb).iff_unitAt.2 ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[key a b (gen_mem (memInf ha hb)), mul_div_cancel_right₀ _ (r b).ne_zero]`. Conclude with `unitAt_fnOf (memInf ha hb) _ _`. Use `⟨_, hr', hd, fun σ y hy => ?_⟩` and prove the remaining obligations. Establish `ha` using `mem_pick (M.φ σ).isLB y`. Establish `hb` using `mem_pick (L.φ σ).isLB y`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hab` using `mem_ptsIn_inf.2 ⟨ha, hb⟩`. Establish `hu` using `hr.unitAt L.isLB hy hb`. Rewrite using `[logNorm, logNorm, key _ _ (gen_mem (mem_ptsIn.1 hab)), ratVal_mul (regAt_fnOf (mem_ptsIn.1 hab) _ _) hu.regAt, ratVal_fnOf hab, h σ _ _ y ha hb, logSq, norm_mul, Real.log_mul (norm_ne_zero_iff.2 (ev_ne_zero hab (Units.isUnit _))) (norm_ne_zero_iff.2 (ratVal_ne_zero hu)), Real.lo …`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem Isometric.exists_isRatSec [IsIntegral X] (h : L.Isometric M) {r : L.B.ι → X.functionFieldˣ}
     (hr : IsRatSec L.B r) : ∃ (r' : M.B.ι → X.functionFieldˣ) (hr' : IsRatSec M.B r'), M.div hr' = L.div hr ∧
@@ -638,15 +636,13 @@ theorem Isometric.exists_isRatSec [IsIntegral X] (h : L.Isometric M) {r : L.B.ι
 end HermLB
 
 /- English proof (translation)
-Take `⟨Z, i, _, _, hi⟩` from `exists_isClosedImmersion_genericPoint (under y)`. Establish `hc : CharZero Γ(Z, ⊤)` using `charZero_of_inj_zero fun n hn => by_contra fun h0 => by`. Establish `h₁ : ev p σ ⊤ (n : Γ(X, ⊤)) y ≠ 0`. Rewrite using `[ev_eq mem_ptsIn_top, map_natCast]`. Conclude with `Nat.cast_ne_zero.2 h0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h₂ : genericPoint Z ∈ i ⁻¹ᵁ X.basicOpen (n : Γ(X, ⊤))`. Use `mem_ptsIn.1 ((mem_ptsIn_basicOpen mem_ptsIn_top _).2 h₁)` as an intermediate fact. Express the relevant statement in the definitionally equal form `i (genericPoint Z) ∈ X.basicOpen _`. Rewrite using `[hi]`. Conclude with `this`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h₂` using `[Scheme.preimage_basicOpen_top, map_natCast, hn, Scheme.basicOpen_zero]`. Conclude with `h₂`. Establish `hr : closure {under y} = Set.range i`. Establish `h₁` using `(genericPoint_spec Z).image i.continuous`. Rewrite `h₁` using `[Set.image_univ, i.isClosedEmbedding.isClosed_range.closure_eq, hi]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `h₁`. Break down `Order.krullDim_le_one_iff.1 (show Order.krullDim (IrreducibleCloseds X) ≤ 1 from hX.dim_eq.le) ⟨closure {under y}, isIrreducible_singleton.closure, isClosed_closure⟩ with h | h` into its components or cases. Take `⟨d, hd⟩` from `hX.exists_dim_eq i`. Establish `h0 : topologicalKrullDim Z ≤ 0` using `Order.krullDim_nonpos_iff_forall_isMax.2 fun T T' _ z _ => by`. Use `@h ⟨i '' T, T.isIrreducible.image i i.continuous.continuousOn, i.isClosedEmbedding.isClosedMap _ T.isClosed⟩ ((Set.image_subset_range _ _).trans hr.ge) (i z) (hr.ge ⟨z, rfl⟩)` as an intermediate fact.
-
-Conclude with `(i.isClosedEmbedding.injective.mem_set_image).1 this`. Use `absurd (le_antisymm h0 ?_) (hX.dim_ne_zero i hc)` and prove the remaining obligations. Rewrite using `[hd]`. Conclude with `Nat.cast_nonneg d`. Conclude with `IsGenericPoint.eq (Set.eq_univ_of_univ_subset (@h ⟨Set.univ, IrreducibleSpace.isIrreducible_univ X, isClosed_univ⟩ (Set.subset_univ _))) (genericPoint_spec X)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsArithVar.under_eq_genericPoint [IsIntegral X] (hX : IsArithVar p 0) (y : CxPts p σ) :
     under y = genericPoint X := by
@@ -685,11 +681,11 @@ namespace HermLB
 variable {L M : HermLB p} {D : ℕ}
 
 /- English proof (translation)
-Establish `⟨w, hw, _⟩` using `e.pull i rfl`. Establish `e' : topSelfIntersection κ (L.B.pull i) d = topSelfIntersection κ (M.B.pull i) d` using `interNum_congr_lbIso κ _ (fun _ => (L.restr i).isLB) (fun _ => (M.restr i).isLB) fun _ => ⟨w, hw⟩`. Rewrite using `[H.vertical Z i κ d hd, e']`. Use `point Z i _ _ _ hc hd r hr := by`. Take `⟨r', hr', h₁, h₂⟩` from `(e.pull i rfl).symm.exists_isRatSec hr`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hZ : IsArithVar (i ≫ p) 0` using `hX.of_isClosedImmersion i hc hd`. Rewrite using `[H.point Z i hc hd r' hr', curveDeg, curveDeg, h₁]`. Use `congrArg _ (finsum_congr fun σ => finsum_congr fun y => h₂ σ (mem_offSupp.2 ?_))` and prove the remaining obligations. Rewrite using `[hZ.under_eq_genericPoint]`. Conclude with `CartierDiv.genericPoint_notMem_supp _`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `recursion Z i _ _ _ hc d hd hd' m r hr := by`. Take `⟨r', hr', h₁, h₂⟩` from `((e.pull i rfl).pow m).symm.exists_isRatSec hr`. Take `⟨h₃, h₄⟩` from `H.recursion Z i hc d hd hd' m r' hr'`. Simplify using `only [ArchIntegrable, archInt, h₁, (e.pull i rfl).chernInt_eq, (e.pull i rfl).chernIntegrableOn_eq] at h₃ h₄`. Conclude with `⟨fun σ => (h₃ σ).congr (isOpen_offSupp _).measurableSet (h₂ σ), h₄.trans (congrArg _ (finsum_congr fun σ => Weight.chernInt_congr (isOpen_offSupp _).measurableSet (h₂ σ)))⟩`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem Isometric.isArithHeight (hX : IsArithVar p D) (e : L.Isometric M) {h : X → ℝ} (H : L.IsArithHeight h) :
     M.IsArithHeight h where
@@ -714,7 +710,7 @@ theorem Isometric.isArithHeight (hX : IsArithVar p D) (e : L.Isometric M) {h : X
       (finsum_congr fun σ => Weight.chernInt_congr (isOpen_offSupp _).measurableSet (h₂ σ)))⟩
 
 /- English proof (translation)
-The claim follows from `have ⟨h, H₁, H₂⟩ := H ⟨h, e.isArithHeight hX H₁, H₂⟩`.
+A detailed English derivation is pending.
 -/
 theorem Isometric.isSelfInter [IsIntegral X] (hX : IsArithVar p D) (e : L.Isometric M) {a : ℝ}
     (H : L.IsSelfInter a) : M.IsSelfInter a :=
@@ -728,13 +724,13 @@ namespace ArInt
 variable {ι κ : Type} [Fintype ι] [Fintype κ]
 
 /- English proof (translation)
-The claim follows from `IsHomogeneous.sum _ _ _ fun i _ => isHomogeneous_C_mul_X _ i`.
+A detailed English derivation is pending.
 -/
 theorem isHomogeneous_lin (n : ι → ℝ) : (lin n).IsHomogeneous 1 :=
   IsHomogeneous.sum _ _ _ fun i _ => isHomogeneous_C_mul_X _ i
 
 /- English proof (translation)
-Simplify using `only [lin, map_sum, map_mul, aeval_C, aeval_X, algebraMap_eq, Finset.mul_sum, Finset.sum_mul, mul_assoc]`. Conclude with `Finset.sum_comm`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem aeval_lin (A : κ → ι → ℝ) (m : κ → ℝ) :
     aeval (fun j => lin (A j)) (lin m) = lin fun i => ∑ j, m j * A j i := by
@@ -742,7 +738,7 @@ theorem aeval_lin (A : κ → ι → ℝ) (m : κ → ℝ) :
   exact Finset.sum_comm
 
 /- English proof (translation)
-Simplify using `[lin, Pi.single_apply, apply_ite C]`.
+Simplify using the standard rewrite rules.
 -/
 theorem lin_single [DecidableEq ι] (i : ι) :
     (lin fun j => ((Pi.single i 1 : ι → ℤ) j : ℝ)) = MvPolynomial.X i := by
@@ -751,9 +747,9 @@ theorem lin_single [DecidableEq ι] (i : ι) :
 end ArInt
 
 /- English proof (translation)
-Introduce `k _ X _ p D hX`. Use `⟨fun L M h e H => e.isArithHeight hX H, fun ι _ L Φ hΦ => ⟨fun i => ?_, fun M e => ⟨fun n => ?_, hΦ.2⟩, fun κ _ M A e => ⟨fun m => ?_, fun P d hd hP => ?_⟩⟩⟩` and prove the remaining obligations. Rewrite using `[← lin_single i]`. Conclude with `(isometric_comb_single L i).isSelfInter hX (hΦ.1 _)`. Conclude with `(isometric_comb_congr e n).isSelfInter hX (hΦ.1 n)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h` using `((isometric_comb_comb L A m).trans (isometric_comb_congr e m)).isSelfInter hX (hΦ.1 _)`. Rewrite using `[LinearMap.comp_apply, AlgHom.toLinearMap_apply, map_pow, aeval_lin]`. Simplify `h` using `only [Int.cast_sum, Int.cast_mul]`. Conclude with `hΦ.2 _ d hd (by simpa using hP.aeval _ fun j => isHomogeneous_lin _)`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem Published.arIso_holds : Published.ArIso := by
   intro k _ X _ p D hX

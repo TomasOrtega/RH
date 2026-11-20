@@ -18,11 +18,11 @@ noncomputable section
 namespace GlobalTheory.DnTypeApprox
 
 /- English proof (translation)
-Establish `hd : I - ∑ k, ∑ q, J k q = (I - ∑ k, L k) + ∑ k, (L k - ∑ q, J k q)`. Rewrite using `[Finset.sum_sub_distrib]`. Normalize the expressions using the abelian group laws. Rewrite using `[hd]`. Establish `h3 : ‖∑ k, (L k - ∑ q, J k q)‖ ≤ m * (δ / (2 * (m + 1)))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `(norm_sum_le _ _).trans ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Establish `h4 : (m : ℝ) * (δ / (2 * (m + 1))) ≤ δ / 2`. Establish `hm : (0 : ℝ) ≤ m` using `Nat.cast_nonneg m`. Rewrite using `[mul_div_assoc', div_le_div_iff₀ (by positivity) (by norm_num)]`.
+Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use the polynomial consequences of the given equalities and inequalities. Combine the equalities or inequalities in the displayed calculation.
+Use the polynomial consequences of the given equalities and inequalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem norm_sub_sum_sum_lt {E : Type*} [SeminormedAddCommGroup E] {m : ℕ} (I : E) (L : Fin m → E) (n : Fin m → ℕ)
     (J : ∀ k, Fin (n k) → E) {δ : ℝ} (hδ : 0 < δ) (h1 : ‖I - ∑ k, L k‖ < δ / 2)
@@ -44,11 +44,11 @@ theorem norm_sub_sum_sum_lt {E : Type*} [SeminormedAddCommGroup E] {m : ℕ} (I 
     _ = δ := by ring
 
 /- English proof (translation)
-Introduce `hL hP D hS G₀ _ _ Pl0 T A Ks _ _ _ R G hRB hG i hi Φ hΦ φ hφ hint C hC δ hδ`. Take `⟨m, F, v, hF, hFi, hA⟩` from `GlobalTheory.T.theta_lift_diagonal_smooth_vectors hL hP D hS G₀ Pl0 T A Ks R G hRB hG i hi Φ hΦ φ hφ hint C hC (δ / 2) (by positivity)`. Establish `hB` using `fun k : Fin m => GlobalTheory.T.theta_lift_diagonal_rapid_decay hL hP D hS G₀ Pl0 T A Ks R G hRB hG i hi Φ hΦ (F k) (hF k) (v k) (hFi k) C hC (δ / (2 * (m + 1))) (by positivity)`. Use `choose n f p hf hBk using hB`. Establish `hCA` using `(hL D hS G₀ Pl0 T A Ks R G hRB hG).dn i hi`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hE` using `fun k (q : Fin (n k)) => hCA (f k q) (hf k q) (F k) (hF k)`. Use `choose F' hF' hI using hE`. Use `⟨∑ k, ∑ q, (F' k q ((G.dn i).It (p k q) (v k)) : GA D (G.P i).V → ℂ), ?_, fun x hx => ?_⟩` and prove the remaining obligations. Use `Submodule.sum_mem _ fun k _ => Submodule.sum_mem _ fun q _ => Submodule.subset_span ⟨F' k q, hF' k q, _, rfl⟩` and prove the remaining obligations. Establish `e : (∑ k, ∑ q, (F' k q ((G.dn i).It (p k q) (v k)) : GA D (G.P i).V → ℂ)) x = ∑ k, ∑ q, ∫ g in (G.mP (i + 1)).fd, thetaKO (G.dn i).ω g x (GlobalTheory.Grid.fock R.ψ R.θ true (G.P (i + 1)) (G.P i) (f k q) (p k q)) * F k (v k) g ∂(G.mP (i + 1)).ν`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Finset.sum_apply]`. Use `Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Conclude with `((hI k q (p k q) (v k) x).2).symm`. Rewrite using `[e]`. Conclude with `norm_sub_sum_sum_lt _ _ _ _ hδ (hA x hx) fun k => hBk k x hx`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lift_approx_span : GlobalTheory.IndefiniteRowSideFullHecke.CuspAlongSmoothLifts.LiftsCuspidal → GlobalTheory.FunPr.Hypotheses₂ → ∀ (D : D7), GlobalTheory.IndefiniteRowSideFullHecke.CuspAlongSmoothLifts.Sizes D → ∀ (G₀ : Type) [Group G₀] [Fintype G₀] (Pl0 T : Type) (A : FamIn D.what₂.LL G₀ Pl0 T D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (G : GlobalTheory.Grid.GridPre R), GlobalTheory.IndefiniteRowSideFullHecke.CuspAlongSmoothLifts.RowBase R → G.Is → ∀ i, i < D.R.m → ∀ Φ, IsThetaFunO R.ψ (GlobalTheory.Grid.neg (G.P (i + 1)).V) (G.P i).V Φ → ∀ φ, GlobalTheory.IndefiniteRowSideFullHecke.CuspAlongSmoothLifts.IsCuspOfType R.θ (G.P (i + 1)) φ → (∀ h, IntegrableOn (fun g => thetaKO (G.dn i).ω g h Φ * φ g) (G.mP (i + 1)).fd (G.mP (i + 1)).ν) → ∀ C : Set (GA D (G.P i).V), IsCompact C → ∀ δ : ℝ, 0 < δ → ∃ χ ∈ Submodule.span ℂ {f : GA D (G.P i).V → ℂ | ∃ F ∈ (G.P i).Cusp R.θ, ∃ w, f = F w}, ∀ x ∈ C, ‖(∫ g in (G.mP (i + 1)).fd, thetaKO (G.dn i).ω g x Φ * φ g ∂(G.mP (i + 1)).ν) - χ x‖ < δ := by
   intro hL hP D hS G₀ _ _ Pl0 T A Ks _ _ _ R G hRB hG i hi Φ hΦ φ hφ hint C hC δ hδ

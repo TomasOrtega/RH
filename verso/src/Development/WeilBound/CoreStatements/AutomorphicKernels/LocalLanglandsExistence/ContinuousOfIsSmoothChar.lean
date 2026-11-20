@@ -15,19 +15,19 @@ open ValuativeRel GroundTheory.LocalField
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Simplify using `[GlobalTheory.SmGL.ord, ord, normalizedValuation_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem ord_eq (x : kˣ) : GlobalTheory.SmGL.ord k x = ord (x : k) := by
   simp [GlobalTheory.SmGL.ord, ord, normalizedValuation_apply]
 
 /- English proof (translation)
-Rewrite using `[mem_valBall, ← normalizedValuation_eq_exp_ord x.ne_zero, normalizedValuation_le_iff]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem val_le_iff_mem (y : k) (x : kˣ) : valuation k y ≤ valuation k (x : k) ↔ y ∈ valBall k (ord (x : k)) := by
   rw [mem_valBall, ← normalizedValuation_eq_exp_ord x.ne_zero, normalizedValuation_le_iff]
 
 /- English proof (translation)
-Distinguish the cases in `hz : z = 0`. Substitute `hz` using the available equality. Simplify using `only [mul_zero]`. Conclude with `⟨fun _ => zero_mem _, fun _ => zero_mem _⟩`. Rewrite using `[mem_valBall_iff_le_ord (mul_ne_zero g.ne_zero hz), mem_valBall_iff_le_ord hz, ord_mul g.ne_zero hz]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
 Use linear arithmetic over natural numbers and integers.
 -/
@@ -39,7 +39,7 @@ theorem mul_mem_valBall_iff (g : kˣ) (z : k) (j : ℤ) :
     omega
 
 /- English proof (translation)
-Use `continuous_of_continuousAt_one χ ?_` and prove the remaining obligations. Establish `h : (χ.ker : Set kˣ) ∈ nhds (1 : kˣ)` using `hχ.mem_nhds χ.ker.one_mem`. Use `(continuousAt_const (y := (1 : ℂˣ))).congr ?_` and prove the remaining obligations. Use `filter_upwards [h] with x hx`. Conclude with `(MonoidHom.mem_ker.mp hx).symm`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuous_of_isSmoothChar (χ : kˣ →* ℂˣ) (hχ : GlobalTheory.SmGL.IsSmoothChar χ) : Continuous χ := by
   refine continuous_of_continuousAt_one χ ?_
@@ -49,11 +49,9 @@ theorem continuous_of_isSmoothChar (χ : kˣ →* ℂˣ) (hχ : GlobalTheory.SmG
   exact (MonoidHom.mem_ker.mp hx).symm
 
 /- English proof (translation)
-Introduce `x`. Rewrite using `[val_le_iff_mem x (unifUnit k ^ addCharConductor ψ), ord_unifUnit_zpow]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Distinguish the cases in `hx : x = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Substitute `hx` using the available equality. Conclude with `zero_mem _`. Establish `htriv : IsTrivialOn ψ (ord x)` using `fun y hy => h y (by`. Rewrite using `[← normalizedValuation_le_iff, normalizedValuation_eq_exp_ord hx]`. Conclude with `hy)`.
-
-Conclude with `(mem_valBall_iff_le_ord hx).2 ((isTrivialOn_iff hψ h1 (ord x)).1 htriv)`. Introduce `hx y hy`. Conclude with `isTrivialOn_addCharConductor hψ h1 y ((normalizedValuation_le_iff.2 hy).trans hx)`.
+Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem hasConductor (ψ : AddChar k Circle) (hψ : Continuous ψ) (h1 : ψ ≠ 1) :
     GlobalTheory.SplitWeil.HasConductor ψ (unifUnit k ^ addCharConductor ψ) := by
@@ -70,13 +68,11 @@ theorem hasConductor (ψ : AddChar k Circle) (hψ : Continuous ψ) (h1 : ψ ≠ 
     exact isTrivialOn_addCharConductor hψ h1 y ((normalizedValuation_le_iff.2 hy).trans hx)
 
 /- English proof (translation)
-Break down `Nat.eq_zero_or_pos b with rfl | hb` into its components or cases. Rewrite using `[mem_unitFiltrationUnits_zero_iff]`. Use `⟨fun h => h.1, fun h => ⟨h, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[pow_zero]`. Conclude with `(Valuation.map_sub _ _ _).trans (by simp [h])`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mem_unitFiltrationUnits_iff_valBall hb]`. Take `⟨p, hp, hpo⟩` from `GlobalTheory.LocLanglands.exists_unit_pow k b`. Establish `hpo' : ord (p : k) = b` using `by rw [← ord_eq]; exact hpo`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `(val_le_iff_mem ((x : k) - 1) p).1 (h.2.trans_eq hp.symm)` as an intermediate fact. Rewrite `this` using `[hpo']`. Then use the resulting hypothesis. Introduce `h`. Use `⟨mem_unitFiltrationUnits_zero_iff.1 (unitFiltrationUnits_antitone (Nat.zero_le b) ((mem_unitFiltrationUnits_iff_valBall hb).2 h)), ?_⟩` and prove the remaining obligations. Rewrite using `[← hp]`.
-
-Conclude with `(val_le_iff_mem ((x : k) - 1) p).2 (by rwa [hpo'])`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_unitFilt_iff (b : ℕ) (x : kˣ) :
     x ∈ GlobalTheory.LocLanglands.unitFilt k b ↔ x ∈ unitFiltrationUnits k b := by
@@ -99,7 +95,7 @@ theorem mem_unitFilt_iff (b : ℕ) (x : kˣ) :
       exact (val_le_iff_mem ((x : k) - 1) p).2 (by rwa [hpo'])
 
 /- English proof (translation)
-Use `⟨fun x hx => unitFiltrationUnits_quasiCharConductor_le_ker hχ ((mem_unitFilt_iff _ x).1 hx), fun b hb => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `h`. Use `push Not at h`. Establish `hle : quasiCharConductor χ ≤ b` using `Nat.sInf_le (fun x hx => MonoidHom.mem_ker.2 (h x ((mem_unitFilt_iff b x).2 hx)))`. Use linear arithmetic over natural numbers and integers.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem hasExponent (χ : kˣ →* ℂˣ) (hχ : Continuous χ) :
     GlobalTheory.LocLanglands.HasExponent χ (quasiCharConductor χ) := by
@@ -111,13 +107,13 @@ theorem hasExponent (χ : kˣ →* ℂˣ) (hχ : Continuous χ) :
   omega
 
 /- English proof (translation)
-Introduce `x hx` and use `isUnramifiedChar_iff.1 hu x (by rw [← ord_eq]; exact GlobalTheory.SmGL.ord_eq_zero hx)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isUnram_of (χ : kˣ →* ℂˣ) (hu : IsUnramifiedChar χ) : GlobalTheory.SplitWeil.IsUnram χ := fun x hx =>
   isUnramifiedChar_iff.1 hu x (by rw [← ord_eq]; exact GlobalTheory.SmGL.ord_eq_zero hx)
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.LGrp.nabs_eq_zpow, ord_eq, ord_unifUnit_zpow]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem nabs_unif (n : ℤ) : GlobalTheory.SplitWeil.nabs k (unifUnit k ^ n) = (residueCard k : ℝ) ^ (-n) := by
   rw [GlobalTheory.LGrp.nabs_eq_zpow, ord_eq, ord_unifUnit_zpow]
@@ -142,13 +138,13 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
 def shellPt (m : ℤ) {a : ℕ} (t : unitsModFiltration k a) : kˣ := unifUnit k ^ m * unitsModRep t
 
 /- English proof (translation)
-Rewrite using `[shellPt, ord_units_mul, ord_unifUnit_zpow, mem_unitFiltrationUnits_zero_iff_ord.1 (unitsModRep_mem t), add_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem ord_shellPt (m : ℤ) {a : ℕ} (t : unitsModFiltration k a) : ord ((shellPt m t : kˣ) : k) = m := by
   rw [shellPt, ord_units_mul, ord_unifUnit_zpow, mem_unitFiltrationUnits_zero_iff_ord.1 (unitsModRep_mem t), add_zero]
 
 /- English proof (translation)
-Introduce `x y h`. Establish `h2 : unitsModRep x = unitsModRep y` using `mul_left_cancel h`. Conclude with `Quotient.out_inj.1 (Subtype.ext h2)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem shellPt_injective (m : ℤ) (a : ℕ) : Function.Injective (shellPt (k := k) m (a := a)) := by
   intro x y h
@@ -156,11 +152,11 @@ theorem shellPt_injective (m : ℤ) (a : ℕ) : Function.Injective (shellPt (k :
   exact Quotient.out_inj.1 (Subtype.ext h2)
 
 /- English proof (translation)
-Use `set m : ℤ := n - a`. Use `set u : kˣ := unifUnit k ^ (-m) * y`. Use `set w : kˣ := unitsModRep t`. Establish `hy' : y = unifUnit k ^ m * u`. Simplify using `only [u, ← mul_assoc, ← zpow_add, add_neg_cancel, zpow_zero, one_mul]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hw0 : ord (w : k) = 0` using `mem_unitFiltrationUnits_zero_iff_ord.1 (unitsModRep_mem t)`. Establish `hdiff : (y : k) - (shellPt m t : k) = ((unifUnit k ^ m * w : kˣ) : k) * (((w⁻¹ * u : kˣ) : k) - 1)`. Establish `hw : (w : k) ≠ 0` using `w.ne_zero`. Rewrite using `[hy', shellPt]`. Use `push_cast`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Clear the denominators using the available nonvanishing facts. Both sides reduce to the same expression. Rewrite using `[val_le_iff_mem, ord_unifUnit_zpow, hdiff, mul_mem_valBall_iff, ord_units_mul, ord_unifUnit_zpow, hw0, mem_unitsModCoset, mem_unitFiltrationUnits_iff_valBall ha]`. Apply the tactic sequence `constructor <;> intro h <;> convert h using 2 <;> simp [m]`.
+Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem shell_val_le_iff {n : ℤ} {a : ℕ} (ha : 1 ≤ a) (y : kˣ)
     (t : unitsModFiltration k a) :
@@ -185,11 +181,11 @@ theorem shell_val_le_iff {n : ℤ} {a : ℕ} (ha : 1 ≤ a) (y : kˣ)
 open Classical in
 
 /- English proof (translation)
-Establish `hc : GlobalTheory.SmGL.ord k (unifUnit k ^ n) = n` using `by rw [ord_eq, ord_unifUnit_zpow]`. Use `⟨fun r hr => ?_, fun y hy => ?_⟩` and prove the remaining obligations. Take `⟨t, -, rfl⟩` from `Finset.mem_image.1 hr`. Rewrite using `[ord_eq, ord_shellPt, hc]`. Rewrite using `[hc, ord_eq] at hy set u : kˣ := unifUnit k ^ (-(n - a)) * y`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `hu0 : u ∈ unitFiltrationUnits k 0`. Rewrite using `[mem_unitFiltrationUnits_zero_iff_ord, ord_units_mul, ord_unifUnit_zpow, hy]`. Expand and normalize the polynomial expressions, which then agree. Use `⟨shellPt (n - a) (QuotientGroup.mk ⟨u, hu0⟩ : unitsModFiltration k a), ⟨Finset.mem_image_of_mem _ (Finset.mem_univ _), (shell_val_le_iff ha y _).2 (mem_unitsModCoset_mk hu0)⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `r ⟨hr, hv⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Take `⟨t', -, rfl⟩` from `Finset.mem_image.1 hr`. Rewrite using `[eq_of_mem_unitsModCoset ((shell_val_le_iff ha y t').1 hv) (mem_unitsModCoset_mk hu0)]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem isShellReps {n : ℤ} {a : ℕ} (ha : 1 ≤ a) :
     GlobalTheory.LocLanglands.IsShellReps (unifUnit k ^ n) a
@@ -231,11 +227,11 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
 omit [MeasurableSpace k] [BorelSpace k] in
 
 /- English proof (translation)
-Establish `hq : (0 : ℝ) < (residueCard k : ℝ)` using `residueCard_pos_real`. Rewrite using `[show (residueCard k : ℂ) ^ (-(n : ℂ) / 2) = (((residueCard k : ℝ) ^ (-(n : ℝ) / 2) : ℝ) : ℂ) by`. Rewrite using `[Complex.ofReal_cpow hq.le]`. Use `push_cast`. Use the proof step `ring_nf]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Complex.ofReal_mul]`. Use `congr 1`. Rewrite using `[div_eq_mul_inv, ← Real.rpow_neg hq.le, mul_assoc, ← Real.rpow_add hq, ← Real.rpow_intCast]`. Use `congr 2`. Use `push_cast`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem real_factor (t : ℝ) (n : ℤ) :
     ((t / (residueCard k : ℝ) ^ ((n : ℝ) / 2) : ℝ) : ℂ) * (residueCard k : ℂ) ^ (-(n : ℂ) / 2) =
@@ -251,15 +247,15 @@ theorem real_factor (t : ℝ) (n : ℤ) :
   ring
 
 /- English proof (translation)
-Establish `hχc` using `continuous_of_isSmoothChar χ hχ`. Establish `hvol : (selfDualMeasure ψ (valBall k 0 : Set k)).toReal = (residueCard k : ℝ) ^ ((addCharConductor ψ : ℝ) / 2)` using `selfDualMeasure_real_valBall_zero ψ`. Rewrite using `[hvol]`. Establish `hc` using `hasConductor ψ hψ h1`. Distinguish the cases in `hu : IsUnramifiedChar χ`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Use `GlobalTheory.LocLanglands.MeasModel.isTateMeas_of_isUnram hc (isUnram_of χ hu) t` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Rewrite using `[localEpsilon_of_isUnramified hu, nabs_unif, map_zpow, Units.val_inv_eq_inv_val, Units.val_zpow_eq_zpow_val, ← zpow_neg]`. Establish `e : (residueCard k : ℂ) ^ ((addCharConductor ψ : ℂ) * (0 - 1 / 2)) = (residueCard k : ℂ) ^ (-(addCharConductor ψ : ℂ) / 2)` using `by congr 1; ring`. Rewrite using `[e, ← real_factor]`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `ha` using `hasExponent χ hχc`. Establish `ha1` using `quasiCharConductor_pos hχc hu`. Use `⟨_, _, _, hc, ha, isShellReps (n := addCharConductor ψ) ha1, ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.sum_image (fun x _ y _ h => shellPt_injective _ _ h), localEpsilon_eq_gaussSum hψ h1 hχc hu 0, nabs_unif]`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `e : (residueCard k : ℂ) ^ (((addCharConductor ψ - quasiCharConductor χ : ℤ) : ℂ) * 0 - (addCharConductor ψ : ℂ) / 2) = (residueCard k : ℂ) ^ (-(addCharConductor ψ : ℂ) / 2)`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, ← mul_assoc, real_factor, GroundTheory.LocalField.gaussSum]`. Use `congr 1`.
+Establish an intermediate fact. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations. Rewrite using `[Units.val_inv_eq_inv_val]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem main (ψ : AddChar k Circle) (hψ : Continuous ψ) (h1 : ψ ≠ 1) (χ : kˣ →* ℂˣ)
     (hχ : GlobalTheory.SmGL.IsSmoothChar χ) (t : ℝ) :
@@ -314,7 +310,7 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
 variable [MeasurableSpace k] [BorelSpace k]
 
 /- English proof (translation)
-The claim follows from `G7.main ψ hψ h1 χ hχ t`.
+A detailed English derivation is pending.
 -/
 theorem isTateMeas_localEpsilon (ψ : AddChar k Circle) (hψ : Continuous ψ) (h1 : ψ ≠ 1) (χ : kˣ →* ℂˣ)
     (hχ : IsSmoothChar χ) (t : ℝ) (ht : 0 < t) :

@@ -15,7 +15,7 @@ def HoldsOff (Q₀ : Ideal (MRing J)) (G : Ideal (MRing J) → Prop) : Prop :=
 variable {Q₀ : Ideal (MRing J)}
 
 /- English proof (translation)
-The claim follows from `let ⟨d, f, h1, h2, h3⟩ := h ⟨d, f, h1, h2, fun Q hQ => hG Q (h3 Q hQ)⟩`.
+A detailed English derivation is pending.
 -/
 theorem HoldsOff.mono {G G' : Ideal (MRing J) → Prop} (h : HoldsOff Q₀ G) (hG : ∀ Q, G Q → G' Q) :
     HoldsOff Q₀ G' :=
@@ -23,13 +23,13 @@ theorem HoldsOff.mono {G G' : Ideal (MRing J) → Prop} (h : HoldsOff Q₀ G) (h
   ⟨d, f, h1, h2, fun Q hQ => hG Q (h3 Q hQ)⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨0, 1, GroundTheory.Heights₂.Heights.Inter.AvoidRing.isMultiHomog_one, (Ideal.ne_top_iff_one _).1 hQ.ne_top, fun Q _ => h Q⟩`.
+Supply the required witnesses or components.
 -/
 theorem holdsOff_of_forall (hQ : Q₀.IsPrime) {G : Ideal (MRing J) → Prop} (h : ∀ Q, G Q) : HoldsOff Q₀ G :=
   ⟨0, 1, GroundTheory.Heights₂.Heights.Inter.AvoidRing.isMultiHomog_one, (Ideal.ne_top_iff_one _).1 hQ.ne_top, fun Q _ => h Q⟩
 
 /- English proof (translation)
-Take `⟨d, f, h1, h2, h3⟩` from `h`. Take `⟨d', f', h1', h2', h3'⟩` from `h'`. Conclude with `⟨d + d', f * f', GroundTheory.Heights₂.Heights.Inter.AvoidRing.isMultiHomog_mul h1 h1', fun h => (hQ.mem_or_mem h).elim h2 h2', fun Q h => ⟨h3 Q fun a => h (Q.mul_mem_right _ a), h3' Q fun a => h (Q.mul_mem_left _ a)⟩⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem HoldsOff.and (hQ : Q₀.IsPrime) {G G' : Ideal (MRing J) → Prop} (h : HoldsOff Q₀ G) (h' : HoldsOff Q₀ G') :
     HoldsOff Q₀ fun Q => G Q ∧ G' Q := by
@@ -39,11 +39,9 @@ theorem HoldsOff.and (hQ : Q₀.IsPrime) {G G' : Ideal (MRing J) → Prop} (h : 
     fun Q h => ⟨h3 Q fun a => h (Q.mul_mem_right _ a), h3' Q fun a => h (Q.mul_mem_left _ a)⟩⟩
 
 /- English proof (translation)
-Use `haveI := Fintype.ofFinite α`. Establish `key : ∀ s : Finset α, HoldsOff Q₀ fun Q => ∀ a ∈ s, G a Q`. Introduce `s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => exact holdsOff_of_forall hQ (by simp)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `insert a s _ ih`. Use `(HoldsOff.and hQ (h a) ih).mono fun Q hh b hb => ?_` and prove the remaining obligations. Break down `Finset.mem_insert.1 hb with rfl | hb` into its components or cases. Conclude with `hh.1`. Conclude with `hh.2 b hb`.
-
-Conclude with `(key Finset.univ).mono fun Q hh a => hh a (Finset.mem_univ a)`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem holdsOff_forall (hQ : Q₀.IsPrime) {α : Type} [Finite α] {G : α → Ideal (MRing J) → Prop}
     (h : ∀ a, HoldsOff Q₀ (G a)) : HoldsOff Q₀ fun Q => ∀ a, G a Q := by
@@ -61,7 +59,7 @@ theorem holdsOff_forall (hQ : Q₀.IsPrime) {α : Type} [Finite α] {G : α → 
   exact (key Finset.univ).mono fun Q hh a => hh a (Finset.mem_univ a)
 
 /- English proof (translation)
-The claim follows from `let ⟨d, g, t, hg, ht, h0, e⟩ := h ⟨d, t, ht, h0, fun _ hQ => ⟨d, g, t, hg, ht, hQ, e⟩⟩`.
+A detailed English derivation is pending.
 -/
 theorem holdsOff_regAt {Ω : Type} [Field Ω] {x : (Σ k, J k) → Ω} {s : Ω} (h : RegAt x Q₀ s) :
     HoldsOff Q₀ fun Q => RegAt x Q s :=
@@ -69,9 +67,9 @@ theorem holdsOff_regAt {Ω : Type} [Field Ω] {x : (Σ k, J k) → Ω} {s : Ω} 
   ⟨d, t, ht, h0, fun _ hQ => ⟨d, g, t, hg, ht, hQ, e⟩⟩
 
 /- English proof (translation)
-Take `⟨h0, hc⟩` from `h`. Establish `h1 : ∀ k, x ⟨k, c k⟩ ≠ 0` using `fun k => Finset.prod_ne_zero_iff.1 h0 k (Finset.mem_univ k)`. Use `fun k => ⟨h1 k, fun i => ?_⟩` and prove the remaining obligations. Use `hc (Function.update c k i) using 1` and compare the differences between its conclusion and the goal. Unfold `segreCoord`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion. Replace the relevant objects with their definitions.
 
-Rewrite using `[← Finset.prod_div_distrib, Finset.prod_eq_single k]`. Simplify using the standard rewrite rules. Introduce `k' _ hk`. Rewrite using `[Function.update_of_ne hk, div_self (h1 k')]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem inBlockChart_of_inChart {Z : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Spec (CommRingCat.of Ω) ⟶ Z}
     {x : (Σ k, J k) → Ω} {c : ∀ k, J k} {q : Cpt ξ} (h : InChart ξ (segreCoord x) c q) : InBlockChart ξ x c q := by
@@ -88,11 +86,11 @@ theorem inBlockChart_of_inChart {Z : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Sp
   · simp
 
 /- English proof (translation)
-Take `⟨d, h, hd, h0, hG⟩` from `hG`. Use `⟨MvPolynomial.aeval x h / ∏ k, x ⟨k, c k⟩ ^ d k, ⟨hc, _, (GlobalTheory.T.valAt_iff_value_at Z Ω ξ K J x tie z w hz hw _ _).1 (valAt_form hw hz hc hd), ?_⟩, fun p hp hu => ?_⟩` and prove the remaining obligations. Rewrite `h0` using `[form_mem_mCoordIdeal_iff w hd]`. Conclude with `div_ne_zero h0 (Finset.prod_ne_zero_iff.2 fun k _ => pow_ne_zero _ (hc k))`. Establish `hb` using `inBlockChart_of_inChart hp`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨hb, hG _ ?_⟩` and prove the remaining obligations. Take `⟨R, _, z', w', e, hw', -⟩` from `exists_ptIdeal_eq tie p`. Establish `hz' : genPt ξ ⤳ centre z'` using `e ▸ p.2`. Take `rfl : p = ⟨centre z', hz'⟩` from `Subtype.ext e.symm`. Establish `hc'` using `(inBlockChart_centre_iff hw' hz' c).1 hb`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ptIdeal_centre hw' hz', form_mem_mCoordIdeal_iff w' hd]`. Rewrite `hu` using `[unitAt_iff_of_valAt (valAt_form hw' hz' hc' hd) hz']`. Introduce `h1`. Conclude with `hu (by rw [h1, zero_div])`.
+Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem exists_frameDomain {Z : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Spec (CommRingCat.of Ω) ⟶ Z}
     {x : (Σ k, J k) → Ω} (tie : CoordTie ℤ ξ fun c' : (k : K) → J k => ∏ k, x ⟨k, c' k⟩)
@@ -117,11 +115,11 @@ theorem exists_frameDomain {Z : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Spec (C
     exact hu (by rw [h1, zero_div])
 
 /- English proof (translation)
-Establish `hP : (mCoordIdeal w).IsPrime` using `RingHom.ker_isPrime _`. Establish `hc : ∀ k, w ⟨k, F.c k⟩ ≠ 0`. Use `(inBlockChart_centre_iff hw hz F.c).1 ((inBlockChart_iff_X_notMem tie _ F.c).2 ?_)` and prove the remaining obligations. Rewrite using `[ptIdeal_centre hw hz]`. Conclude with `hF.1`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : HoldsOff (mCoordIdeal w) fun Q => ∀ q I, RegAt M.x Q (F.u q I) ∧ RegAt M.x Q (F.u' I q)` using `holdsOff_forall hP fun q => holdsOff_forall hP fun I => HoldsOff.and hP (holdsOff_regAt (hF.2.1 q I).1) (holdsOff_regAt (hF.2.1 q I).2)`. Establish `h2 : HoldsOff (mCoordIdeal w) fun Q => ∀ p, M.blk p = none → F.υ p ≠ 0 ∧ RegAt M.x Q (F.υ p) ∧ RegAt M.x Q (F.υ p)⁻¹`. Use `holdsOff_forall hP fun p => ?_` and prove the remaining obligations. Distinguish the cases in `hp : M.blk p = none`. Take `⟨a, b, c⟩` from `hF.2.2 p hp`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `(HoldsOff.and hP (holdsOff_regAt b) (holdsOff_regAt c)).mono fun Q h _ => ⟨a, h⟩`. Conclude with `holdsOff_of_forall hP fun Q h => absurd h hp`. Take `⟨f, hf, hg⟩` from `exists_frameDomain tie hz hw hc (HoldsOff.and hP h1 h2)`. Conclude with `⟨f, hf, fun p a b => ⟨(inBlockChart_iff_X_notMem tie p F.c).1 (hg p a b).1, (hg p a b).2⟩⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_goodDomain {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {Φ : Type} [Field Φ]
     {y : (Σ k, ι k) → Φ} {Ψ : Type} [Finite Ψ] {N j : ℕ} (M : FlagModel y Ψ N j)

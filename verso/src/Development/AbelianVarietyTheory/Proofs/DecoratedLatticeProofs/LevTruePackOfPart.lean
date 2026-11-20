@@ -14,9 +14,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.Fam.ColTest
 
 /- English proof (translation)
-Take `⟨L, hC, hL⟩` from `GlobalTheory.LevelChoices.exists_levCh_unit (I.rec7 l Z) (TC.cf I l Z)`. Establish `hP : L.Pg = (B.primes X).vGs`. Use extensionality with `w`. Rewrite using `[hL.Pg w, hC]`. Establish `hv : w ∈ (B.primes X).vGs ↔ (I.C.P.Div 0 w ∨ I.C.P.Div 1 w)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← h.pibar 0 w, ← h.pibar 1 w]`. Conclude with `@Finset.mem_union _ (_) _ _ _`. Conclude with `(hv.trans (Fin.exists_fin_two (p := fun k => I.C.P.Div k w)).symm).symm`. Rewrite using `[← hP]`. Conclude with `GlobalTheory.SeeSaw.ComCols.isTypePlaces_of_levCh hL`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isTypePlaces_vGs {B : GlobalTheory.Mem.Base} {X : PreX B.toPre} (I : TC B X) (l : I.Laws) (Z : TC.Later B (I.cols l)) (h : I.Ok) :
     GlobalTheory.Core.Mi.IsTypePlaces (D := I.rec7 l Z) (B.primes X).vGs := by

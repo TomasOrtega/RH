@@ -10,7 +10,7 @@ namespace Formalism.InvariantFactorPaths.ColumnFamilies
 variable {n : ℕ}
 
 /- English proof (translation)
-Rewrite using `[qb_ev_apply]`. Simplify using `only [Matrix.mulVec, dotProduct, map_sum, map_mul, map_intCast, qd_evGLR_mapCoord, qd_ev_algebraMap, Matrix.map_apply, Int.coe_castRingHom]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma qd_ev_point (M : GLMod n) (nu : Fin n → ℤ) (x : M.ι → ℚ) {R' : Type} [CommRing R'] [Algebra ℚ R']
     (g : GL (Fin n) R') (i : M.ι) :
@@ -22,7 +22,7 @@ lemma qd_ev_point (M : GLMod n) (nu : Fin n → ℤ) (x : M.ι → ℚ) {R' : Ty
     Matrix.map_apply, Int.coe_castRingHom]
 
 /- English proof (translation)
-Rewrite using `[qd_ev_point, qd_ev_point, M.mul, ← Matrix.mulVec_mulVec, hx.2 R' u hu1 hu2]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma qd_ev_inv (M : GLMod n) (la nu : Fin n → ℤ) (x : M.ι → ℚ) (hx : IsHighest M ℚ la x)
     {R' : Type} [CommRing R'] [Algebra ℚ R'] (g u : GL (Fin n) R') (hu1 : ∀ a, u.val a a = 1)
@@ -33,11 +33,11 @@ lemma qd_ev_inv (M : GLMod n) (la nu : Fin n → ℤ) (x : M.ι → ℚ) (hx : I
 variable [NeZero n]
 
 /- English proof (translation)
-Introduce `c hc t`. Apply `Finset.card_le_card` to reduce the goal to its premises. Apply `Finset.filter_subset_filter` to reduce the goal to its premises. Introduce `x hx`. Simplify using `only [canT, Finset.mem_map, Finset.mem_univ, true_and] at hx ⊢`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Take `⟨a, rfl⟩` from `hx`. Establish `hle : colH mu ((c : ℤ) + 1) ≤ colH mu c`. Apply `Finset.card_le_card` to reduce the goal to its premises. Introduce `m hm`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at hm ⊢`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Use linear arithmetic over natural numbers and integers. Conclude with `⟨⟨a.1, lt_of_lt_of_le a.2 hle⟩, rfl⟩`.
+Use linear arithmetic over natural numbers and integers. Supply the required witnesses or components.
 -/
 lemma qd_canT_std (mu : Fin n → ℤ) : StdT (canT mu) := by
   intro c hc t
@@ -57,18 +57,18 @@ def qd_f {M : GLMod n} (CF : ColFam M) (a : qb_Idx CF → ℚ) (j : CF.J) : GLCo
   ∑ I : {I : TIdx (CF.mu j) // StdT I}, a ⟨j, I⟩ • mapCoord ℚ (brk (CF.mu j) I.1)
 
 /- English proof (translation)
-The claim follows from `Submodule.sum_mem _ fun I _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨I.1, rfl⟩)`.
+A detailed English derivation is pending.
 -/
 lemma qd_f_mem {M : GLMod n} (CF : ColFam M) (a : qb_Idx CF → ℚ) (j : CF.J) :
     qd_f CF a j ∈ Submodule.span ℚ (Set.range fun I : TIdx (CF.mu j) => mapCoord ℚ (brk (CF.mu j) I)) :=
   Submodule.sum_mem _ fun I _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨I.1, rfl⟩)
 
 /- English proof (translation)
-Rewrite using `[← qb_evL_apply, map_sum, Finset.sum_apply, Fintype.sum_sigma, ← Finset.sum_subtype (univ.filter fun j => CF.mu j = nu) (by simp) (fun j => ((CF.ph j i (canT (CF.mu j)) : ℤ) : ℚ) • qd_f CF a j), Finset.sum_filter]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Use `split_ifs with hj`. Substitute `hj` using the available equality. Rewrite using `[qd_f, Finset.smul_sum]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun I _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, Pi.smul_apply, qb_evL_apply, qb_vecF_def, qb_key_eq, smul_comm, Algebra.smul_def (R := ℚ) ((CF.ph j i (canT (CF.mu j)) : ℤ) : ℚ), map_intCast]`. Use `Finset.sum_eq_zero fun I _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, Pi.smul_apply, qb_evL_apply, qb_vecF_def]`. Distinguish the cases in `ha : a ⟨j, I⟩ = 0`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ha, zero_smul]`. Rewrite using `[qb_key_zero CF ℚ j I.1 nu (fun hd => hj (hmax ⟨j, I⟩ ha hd)), Pi.zero_apply, smul_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma qd_ev_expand {M : GLMod n} (CF : ColFam M) (a : qb_Idx CF → ℚ) (nu : Fin n → ℤ)
     (hmax : ∀ y, a y ≠ 0 → DomLE nu (CF.mu y.1) → CF.mu y.1 = nu) (i : M.ι) :
@@ -92,37 +92,35 @@ lemma qd_ev_expand {M : GLMod n} (CF : ColFam M) (a : qb_Idx CF → ℚ) (nu : F
     · rw [qb_key_zero CF ℚ j I.1 nu (fun hd => hj (hmax ⟨j, I⟩ ha hd)), Pi.zero_apply, smul_zero]
 
 /- English proof (translation)
-Introduce `hA n _ M CF la hla x hx`. Establish `hsp` using `(qb_basisR hA CF ℚ).2`. Establish `hli` using `(qb_basisR hA CF ℚ).1`. Choose the witnesses or unpack the hypotheses as in `⟨a, ha⟩ : ∃ a : qb_Idx CF → ℚ, ∑ y, a y • qb_vecF CF ℚ y = x := by`. Establish `: x ∈ Submodule.span ℚ (Set.range (qb_vecF CF ℚ))` using `by rw [hsp]; trivial`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `(Submodule.mem_span_range_iff_exists_fun ℚ).1 this`. Substitute `ha` using the available equality. Establish `h1 : ∀ y, a y ≠ 0 → qb_wtT (CF.mu y.1) y.2.1 = la`. Establish `hpr : ∀ y, Matrix.mulVec ((prMu M la).map (Int.castRingHom ℚ)) (qb_vecF CF ℚ y) = if qb_wtT (CF.mu y.1) y.2.1 = la then qb_vecF CF ℚ y else 0`. Introduce `y`.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `i`. Use `congrArg (Int.cast : ℤ → ℚ) (qb_prMu_ph CF y.1 la i y.2.1)` as an intermediate fact. Move the coercions through the operations in `at this`. Simplify using `only [Matrix.mulVec, dotProduct, Matrix.map_apply, Int.coe_castRingHom, qb_vecF, ColFam.vec]`. Rewrite using `[this]`.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `split_ifs <;> rfl`. Establish `h : Matrix.mulVecLin ((prMu M la).map (Int.castRingHom ℚ)) (∑ y, a y • qb_vecF CF ℚ y) = ∑ y, a y • qb_vecF CF ℚ y` using `hx.1`. Rewrite `h` using `[map_sum]`. Simplify using `only [map_smul, Matrix.mulVecLin_apply, hpr, smul_ite, smul_zero] at h`. Establish `h0` using `Fintype.linearIndependent_iff.1 hli (fun y => (if qb_wtT (CF.mu y.1) y.2.1 = la then a y else 0) - a y) (by`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [sub_smul, Finset.sum_sub_distrib, ite_smul, zero_smul]`. Rewrite using `[sub_eq_zero]`. Conclude with `h)`. Introduce `y hy`. Assume the negation of the conclusion as `hne`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `h0 y` as an intermediate fact. Simplify using `only [if_neg hne, zero_sub, neg_eq_zero] at this`. Conclude with `hy this`. Establish `h3 : ∀ nu, (∀ y, a y ≠ 0 → DomLE nu (CF.mu y.1) → CF.mu y.1 = nu) → ∀ y, CF.mu y.1 = nu → a y ≠ 0 → y.2.1 = canT (CF.mu y.1)`. Introduce `nu hmax`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hinv : ∀ (j : {j : CF.J // CF.mu j = nu}) (R' : Type) [CommRing R'] [Algebra ℚ R'] (g u : GL (Fin n) R'), (∀ a, u.val a a = 1) → (∀ a b, b < a → u.val a b = 0) → evGLR (R` using `ℚ) (g * u) (qd_f CF a j.1) = evGLR (R := ℚ) g (qd_f CF a j.1) := by`. Introduce `j R' _ _ g u hu1 hu2`. Use `qb_indep_ext (k := ℚ) (W := R') _ (CF.indepQ nu) (fun j => evGLR (R := ℚ) (g * u) (qd_f CF a j.1) - evGLR (R := ℚ) g (qd_f CF a j.1)) (fun i => ?_) j` as an intermediate fact. Conclude with `sub_eq_zero.1 this`. Establish `e` using `qd_ev_inv M la nu _ hx g u hu1 hu2 i`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite `e` using `[qd_ev_expand CF a nu hmax i, map_sum, map_sum]`. Simplify using `only [smul_sub, Finset.sum_sub_distrib]`. Rewrite using `[sub_eq_zero]`. Apply the tactic sequence `convert e using 2 <;>`. Rewrite using `[Algebra.smul_def, Algebra.smul_def, map_mul, qd_ev_algebraMap]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Introduce `y hy hay`. Take `⟨c, hc⟩` from `eq_smul_canonical_of_unipotent_invariant (CF.mu y.1) (qd_f CF a y.1) (qd_f_mem CF a y.1) (hinv ⟨y.1, hy⟩)`. Establish `hind` using `hA n (CF.mu y.1) (CF.dom y.1) ℚ`. Assume the negation of the conclusion as `hne`. Use `Fintype.linearIndependent_iff.1 hind (fun I => a ⟨y.1, I⟩ - if I = ⟨canT (CF.mu y.1), qd_canT_std _⟩ then c else 0) (by` as an intermediate fact.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [sub_smul, Finset.sum_sub_distrib, ite_smul, zero_smul, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Rewrite using `[sub_eq_zero]`. Conclude with `hc) y.2`. Rewrite `this` using `[if_neg (fun h => hne (congrArg Subtype.val h)), sub_zero]`. Conclude with `hay this`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `h4 : ∀ y, a y ≠ 0 → CF.mu y.1 = la ∧ y.2.1 = canT (CF.mu y.1)`. Introduce `y0 hy0`. Set `s : Finset (Fin n → ℤ)` to `(univ.filter fun y => a y ≠ 0).image fun y => CF.mu y.1`. Establish `hs0 : CF.mu y0.1 ∈ s` using `mem_image.2 ⟨y0, by simp [hy0], rfl⟩`. Take `⟨nu, hnu, hle, hmax⟩` from `qb_exists_max_above s hs0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨y1, hy1, hy1nu⟩` from `mem_image.1 hnu`. Establish `hay1 : a y1 ≠ 0` using `by simpa using hy1`. Establish `hmax' : ∀ y, a y ≠ 0 → DomLE nu (CF.mu y.1) → CF.mu y.1 = nu` using `fun y hy hd => hmax _ (mem_image.2 ⟨y, by simp [hy], rfl⟩) hd`. Establish `hcan` using `h3 nu hmax' y1 hy1nu hay1`. Establish `hw` using `h1 y1 hay1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Supply the required witnesses or components.
 
-Rewrite `hw` using `[hcan, qb_wtT_can (CF.dom y1.1)]`. Establish `hnula : nu = la` using `hy1nu.symm.trans hw`. Establish `hle2 : DomLE la (CF.mu y0.1)`. Rewrite using `[← h1 y0 hy0]`. Conclude with `qb_wtT_le (CF.dom _) _`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `heq : CF.mu y0.1 = la` using `qb_domLE_antisymm (hnula ▸ hle) hle2`. Conclude with `⟨heq, (qb_wtT_eq_iff (CF.dom _) _).1 ((h1 y0 hy0).trans heq.symm)⟩`. Use `Submodule.sum_mem _ fun y _ => ?_` and prove the remaining obligations. Distinguish the cases in `hy : a y = 0`. Rewrite using `[hy, zero_smul]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `zero_mem _`. Apply `Submodule.smul_mem` to reduce the goal to its premises. Apply `Submodule.subset_span` to reduce the goal to its premises. Take `⟨e1, e2⟩` from `h4 y hy`. Use `⟨y.1, e1, ?_⟩` and prove the remaining obligations.
-
-Use function extensionality and compare the values at `i`. Simplify using `only [qb_vecF]`. Rewrite using `[e2]`.
+A detailed English derivation is pending.
 -/
 theorem highest_vectors_rational_span_of : LemmaA → HighestVectorsRationalSpan := by
   intro hA n _ M CF la hla x hx

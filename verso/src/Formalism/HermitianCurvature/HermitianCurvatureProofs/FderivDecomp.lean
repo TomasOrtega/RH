@@ -11,9 +11,9 @@ def wZ (f : ℂ → ℂ) (ζ : ℂ) : ℂ := (1 / 2 : ℂ) * (fderiv ℝ f ζ 1 
 def wZb (f : ℂ → ℂ) (ζ : ℂ) : ℂ := (1 / 2 : ℂ) * (fderiv ℝ f ζ 1 + I * fderiv ℝ f ζ I)
 
 /- English proof (translation)
-Take `⟨x, y, rfl⟩ : ∃ x y : ℝ, v = x + y * I` from `⟨v.re, v.im, (Complex.re_add_im v).symm⟩`. Establish `e : (x : ℂ) + y * I = x • (1 : ℂ) + y • I` using `by rw [Complex.real_smul, Complex.real_smul, mul_one]`. Establish `hL : L ((x : ℂ) + y * I) = (x : ℂ) * L 1 + (y : ℂ) * L I`. Rewrite using `[e, map_add, map_smul, map_smul, Complex.real_smul, Complex.real_smul]`. Rewrite using `[hL]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [map_add, map_mul, Complex.conj_ofReal, Complex.conj_I]`. Take the linear combination `((y : ℂ) * L I) * Complex.I_sq`.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem clm_decomp (L : ℂ →L[ℝ] ℂ) (v : ℂ) :
     L v = (1 / 2 : ℂ) * (L 1 - I * L I) * v + (1 / 2 : ℂ) * (L 1 + I * L I) * (starRingEnd ℂ v) := by
@@ -27,7 +27,7 @@ theorem clm_decomp (L : ℂ →L[ℝ] ℂ) (v : ℂ) :
   linear_combination ((y : ℂ) * L I) * Complex.I_sq
 
 /- English proof (translation)
-Unfold `wZ wZb`. Conclude with `clm_decomp _ v`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem fderiv_decomp (f : ℂ → ℂ) (ζ v : ℂ) :
     fderiv ℝ f ζ v = wZ f ζ * v + wZb f ζ * (starRingEnd ℂ v) := by
@@ -37,7 +37,7 @@ theorem fderiv_decomp (f : ℂ → ℂ) (ζ v : ℂ) :
 def Hh (TT : ℝ) : Set ℂ := {w | TT < Complex.normSq (Complex.exp w)}
 
 /- English proof (translation)
-Use `first`. Consider the case `rw [Complex.normSq_eq_norm_sq, Complex.norm_exp]`. Consider the case `simp [Complex.normSq_eq_norm_sq, Complex.norm_exp]`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem normSq_exp (w : ℂ) : Complex.normSq (Complex.exp w) = Real.exp w.re ^ 2 := by
 
@@ -46,16 +46,16 @@ theorem normSq_exp (w : ℂ) : Complex.normSq (Complex.exp w) = Real.exp w.re ^ 
     | simp [Complex.normSq_eq_norm_sq, Complex.norm_exp]
 
 /- English proof (translation)
-The claim follows from `isOpen_lt continuous_const (Complex.continuous_normSq.comp Complex.continuous_exp)`.
+A detailed English derivation is pending.
 -/
 theorem isOpen_Hh (TT : ℝ) : IsOpen (Hh TT) := isOpen_lt continuous_const (Complex.continuous_normSq.comp Complex.continuous_exp)
 
 /- English proof (translation)
-Introduce `w1 h1 w2 h2 a b ha hb hab`. Simplify using `only [Hh, Set.mem_setOf_eq, normSq_exp] at h1 h2 ⊢`. Establish `hre : (a • w1 + b • w2).re = a * w1.re + b * w2.re` using `by simp`. Rewrite using `[hre]`. Break down `le_total w1.re w2.re with h | h` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `e : a * w1.re + b * w2.re - w1.re = b * (w2.re - w1.re)`. Rewrite using `[show a = 1 - b by linarith]; ring`. Establish `: w1.re ≤ a * w1.re + b * w2.re` using `by nlinarith [mul_nonneg hb (sub_nonneg.2 h)]`. Use `gcongr`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `e : a * w1.re + b * w2.re - w2.re = a * (w1.re - w2.re)`. Rewrite using `[show b = 1 - a by linarith]; ring`. Establish `: w2.re ≤ a * w1.re + b * w2.re` using `by nlinarith [mul_nonneg ha (sub_nonneg.2 h)]`. Use `gcongr`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem convex_Hh (TT : ℝ) : Convex ℝ (Hh TT) := by
 
@@ -78,7 +78,7 @@ theorem convex_Hh (TT : ℝ) : Convex ℝ (Hh TT) := by
         gcongr
 
 /- English proof (translation)
-Simplify using `only [Hh, Set.mem_setOf_eq, Complex.exp_add, Complex.exp_int_mul_two_pi_mul_I, mul_one]`.
+Simplify using the standard rewrite rules.
 -/
 theorem Hh_add_period (TT : ℝ) (w : ℂ) (k : ℤ) : w + (k : ℂ) * (2 * Real.pi * I) ∈ Hh TT ↔ w ∈ Hh TT := by
 
@@ -90,7 +90,7 @@ def omL : ℂ →L[ℝ] (ℂ →L[ℝ] ℝ) :=
   (2 : ℝ) • (ContinuousLinearMap.compL ℝ ℂ ℂ ℝ Complex.imCLM).comp (ContinuousLinearMap.mul ℝ ℂ)
 
 /- English proof (translation)
-Simplify using `[omL]`.
+Simplify using the standard rewrite rules.
 -/
 theorem omL_apply (c v : ℂ) : omL c v = 2 * (c * v).im := by
 
@@ -99,12 +99,12 @@ theorem omL_apply (c v : ℂ) : omL c v = 2 * (c * v).im := by
 def om (α : ℂ → ℂ) (w : ℂ) : ℂ →L[ℝ] ℝ := omL (bet α w)
 
 /- English proof (translation)
-The claim follows from `omL_apply _ _`.
+A detailed English derivation is pending.
 -/
 theorem om_apply (α : ℂ → ℂ) (w v : ℂ) : om α w v = 2 * (bet α w * v).im := omL_apply _ _
 
 /- English proof (translation)
-Simplify using `only [bet, Complex.exp_add, Complex.exp_int_mul_two_pi_mul_I, mul_one]`.
+Simplify using the standard rewrite rules.
 -/
 theorem bet_periodic (α : ℂ → ℂ) (w : ℂ) (k : ℤ) : bet α (w + (k : ℂ) * (2 * Real.pi * I)) = bet α w := by
 

@@ -12,15 +12,13 @@ open GlobalTheory.CompanionTheory.Ar.Flat.CPoint
 namespace GlobalTheory.CompanionTheory.Ar.Flat.CPoint
 
 /- English proof (translation)
-Introduce `K W _ _ _ S n b`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hli, hspan⟩`. Use `⟨fun i => hspan ▸ Submodule.subset_span ⟨i, rfl⟩, fun e he => ?_⟩` and prove the remaining obligations. Rewrite `he` using `[← hspan, Submodule.mem_span_range_iff_exists_fun]`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨x, hx⟩` from `he`. Use `⟨x, hx.symm, fun y hy => ?_⟩` and prove the remaining obligations. Establish `h0 : ∑ i, (y - x) i • b i = 0`. Simplify using `only [Pi.sub_apply, sub_smul, Finset.sum_sub_distrib, ← hy, hx, sub_self]`. Use function extensionality and compare the values at `i`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `sub_eq_zero.mp (Fintype.linearIndependent_iff.mp hli _ h0 i)`. Introduce and unpack `⟨hb, huniq⟩`. Use `⟨Fintype.linearIndependent_iff.mpr fun g hg i => ?_, le_antisymm ?_ fun e he => ?_⟩` and prove the remaining obligations. Take `⟨x, _, hx⟩` from `huniq 0 S.zero_mem`. Establish `hg0 : g = x` using `hx g hg.symm`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h00 : (0 : Fin n → K) = x` using `hx 0 (by simp)`. Rewrite using `[hg0, ← h00]`. Both sides reduce to the same expression. Conclude with `Submodule.span_le.mpr (Set.range_subset_iff.mpr hb)`. Take `⟨x, hx, _⟩` from `huniq e he`.
-
-Rewrite using `[hx]`. Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem basis_iff_unique_combinations : ∀ (K W : Type) [Field K] [AddCommGroup W] [Module K W] (S : Submodule K W) (n : ℕ) (b : Fin n → W),
     (LinearIndependent K b ∧ Submodule.span K (Set.range b) = S) ↔

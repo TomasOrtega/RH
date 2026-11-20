@@ -65,7 +65,7 @@ section FibSMul
 variable {E : Type} [Field E] (σ : E →+* ℂ) (V : Type) [AddCommGroup V] [Module E V]
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp only [smul_zero]`. Consider the case `tmul z e => rw [smul_tmul', smul_tmul', complex_smul_def, smul_eq_mul]`. Both sides reduce to the same expression. Consider the case `add x y hx hy => rw [smul_add, smul_add, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Both sides reduce to the same expression. Treat this case separately.
 -/
 theorem fib_smul_eq (a : CAt σ) (x : Fib σ V) : a • x = (ofComplex σ).symm a • x := by
   induction x using TensorProduct.induction_on with
@@ -186,7 +186,7 @@ def quotMap (W : Submodule E S.V) (τ : InfinitePlace E) :
       (Submodule.isCompl_orthogonal _)).toLinearMap ∘ₗ (S.quotEquiv W τ).toLinearMap)
 
 /- English proof (translation)
-Introduce `a b h`. Conclude with `(S.quotEquiv W τ).injective ((Submodule.quotientEquivOfIsCompl (S.fibSub W τ) (S.fibSub W τ)ᗮ (Submodule.isCompl_orthogonal _)).injective ((S.fibSub W τ)ᗮ.injective_subtype h))`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem quotMap_injective (W : Submodule E S.V) (τ : InfinitePlace E) :
     Function.Injective (S.quotMap W τ) := by
@@ -203,7 +203,7 @@ def restrictMap (W : Submodule E S.V) (τ : InfinitePlace E) :
   (W.subtype.baseChange (CAt τ.embedding)).restrictScalars ℂ
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `Function.Injective (W.subtype.baseChange (CAt τ.embedding))`. Rewrite using `[LinearMap.baseChange_eq_ltensor]`. Conclude with `Module.Flat.lTensor_preserves_injective_linearMap _ W.injective_subtype`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem restrictMap_injective (W : Submodule E S.V) (τ : InfinitePlace E) :
     Function.Injective (S.restrictMap W τ) := by
@@ -221,7 +221,7 @@ def dualCoord (τ : InfinitePlace E) :
   LinearMap.liftBaseChange (CAt τ.embedding) (Module.Dual.baseChange (CAt τ.embedding))
 
 /- English proof (translation)
-Rewrite using `[dualCoord, LinearMap.liftBaseChange_tmul, LinearMap.smul_apply, Module.Dual.baseChange_apply_tmul, smul_eq_mul, Algebra.smul_def]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem dualCoord_tmul_tmul (τ : InfinitePlace E) (z w : CAt τ.embedding) (φ : Module.Dual E S.V)
     (v : S.V) : S.dualCoord τ (z ⊗ₜ φ) (w ⊗ₜ v) = z * (algebraMap E (CAt τ.embedding) (φ v) * w) := by
@@ -229,15 +229,15 @@ theorem dualCoord_tmul_tmul (τ : InfinitePlace E) (z w : CAt τ.embedding) (φ 
     Module.Dual.baseChange_apply_tmul, smul_eq_mul, Algebra.smul_def]
 
 /- English proof (translation)
-Set `b` to `Module.finBasis E S.V`. Establish `hψ : ∀ ψ : Module.Dual E S.V, ∑ i, ψ (b i) • b.coord i = ψ`. Introduce `ψ`. Use `b.ext fun j ↦ ?_` and prove the remaining obligations. Rewrite using `[LinearMap.sum_apply]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [LinearMap.smul_apply, Basis.coord_apply, Basis.repr_self, smul_eq_mul]`. Rewrite using `[Finset.sum_eq_single j]`. Simplify using the standard rewrite rules. Introduce `i _ hij`. Simplify using `[hij]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Establish `hrec : ∀ x, ∑ i, S.dualCoord τ x (1 ⊗ₜ b i) ⊗ₜ b.coord i = x`. Introduce `x`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero, LinearMap.zero_apply, zero_tmul, Finset.sum_const_zero]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `add x y hx hy`. Simplify using `only [map_add, LinearMap.add_apply, add_tmul, Finset.sum_add_distrib, hx, hy]`. Consider the case `tmul z ψ => conv_rhs => rw [← hψ ψ]`. Rewrite using `[tmul_sum]`. Use `Finset.sum_congr rfl fun i _ ↦ ?_` and prove the remaining obligations.
+Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[dualCoord_tmul_tmul, mul_one, ← smul_tmul, Algebra.smul_def, mul_comm]`. Introduce `x y hxy`. Rewrite using `[← hrec x, ← hrec y, hxy]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem dualCoord_injective (τ : InfinitePlace E) : Function.Injective (S.dualCoord τ) := by
   classical
@@ -274,7 +274,7 @@ def riesz (τ : InfinitePlace E) (x : Fib τ.embedding (Module.Dual E S.V)) : S.
   (InnerProductSpace.toDual ℂ (S.FibSp τ)).symm (S.dualFunctional τ x)
 
 /- English proof (translation)
-Rewrite using `[riesz, InnerProductSpace.toDual_symm_apply]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem inner_riesz (τ : InfinitePlace E) (x : Fib τ.embedding (Module.Dual E S.V))
     (v : S.FibSp τ) :
@@ -283,7 +283,7 @@ theorem inner_riesz (τ : InfinitePlace E) (x : Fib τ.embedding (Module.Dual E 
   rfl
 
 /- English proof (translation)
-Use `ext_inner_right ℂ fun v ↦ ?_` and prove the remaining obligations. Rewrite using `[inner_add_left, inner_riesz, inner_riesz, inner_riesz, map_add, LinearMap.add_apply, map_add]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem riesz_add (τ : InfinitePlace E) (x y : Fib τ.embedding (Module.Dual E S.V)) :
     S.riesz τ (x + y) = S.riesz τ x + S.riesz τ y := by
@@ -291,7 +291,7 @@ theorem riesz_add (τ : InfinitePlace E) (x y : Fib τ.embedding (Module.Dual E 
   rw [inner_add_left, inner_riesz, inner_riesz, inner_riesz, map_add, LinearMap.add_apply, map_add]
 
 /- English proof (translation)
-Use `ext_inner_right ℂ fun v ↦ ?_` and prove the remaining obligations. Establish `hc : c • x = ofComplex τ.embedding c • x`. Rewrite using `[fib_smul_eq τ.embedding _ (ofComplex τ.embedding c) x, AlgEquiv.symm_apply_apply]`. Rewrite using `[inner_smul_left, Complex.conj_conj, inner_riesz, inner_riesz, hc, map_smul, LinearMap.smul_apply, smul_eq_mul, map_mul, AlgEquiv.symm_apply_apply]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem riesz_smul (τ : InfinitePlace E) (c : ℂ) (x : Fib τ.embedding (Module.Dual E S.V)) :
     S.riesz τ (c • x) = starRingEnd ℂ c • S.riesz τ x := by
@@ -302,9 +302,9 @@ theorem riesz_smul (τ : InfinitePlace E) (c : ℂ) (x : Fib τ.embedding (Modul
     LinearMap.smul_apply, smul_eq_mul, map_mul, AlgEquiv.symm_apply_apply]
 
 /- English proof (translation)
-Use `S.dualCoord_injective τ ?_` and prove the remaining obligations. Rewrite using `[map_zero]`. Use `LinearMap.ext fun u ↦ ?_` and prove the remaining obligations. Use `S.inner_riesz τ x (S.toSp τ u)` as an intermediate fact. Rewrite `this` using `[hx, inner_zero_left, LinearEquiv.symm_apply_apply]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[LinearMap.zero_apply]`. Conclude with `(ofComplex τ.embedding).symm.injective (by rw [← this, map_zero])`. Use the proof step `@[instance_reducible]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem riesz_eq_zero (τ : InfinitePlace E) (x : Fib τ.embedding (Module.Dual E S.V))
     (hx : S.riesz τ x = 0) : x = 0 := by
@@ -500,12 +500,12 @@ def stdLat : Submodule (𝓞 E) (Fin n → E) :=
 variable {E n}
 
 /- English proof (translation)
-The claim follows from `Submodule.fg_span (Set.finite_range _)`.
+A detailed English derivation is pending.
 -/
 theorem stdLat_fg : (stdLat E n).FG := Submodule.fg_span (Set.finite_range _)
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `inner ℂ (stdCoord E n τ.embedding ((1 : CAt τ.embedding) ⊗ₜ v)) (stdCoord E n τ.embedding ((1 : CAt τ.embedding) ⊗ₜ w)) = _`. Simplify using `only [PiLp.inner_apply, RCLike.inner_apply, stdCoord_tmul]`. Use `Finset.sum_congr rfl fun i _ ↦ ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(τ.embedding (w i) * 1) * starRingEnd ℂ (τ.embedding (v i) * 1) = _`. Rewrite using `[mul_one, mul_one, mul_comm]`.
+Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem standard_inner_pt (τ : InfinitePlace E) (v w : Fin n → E) :
     inner ℂ ((MetSpace.standard E n).pt τ v) ((MetSpace.standard E n).pt τ w) =
@@ -518,7 +518,7 @@ theorem standard_inner_pt (τ : InfinitePlace E) (v w : Fin n → E) :
   rw [mul_one, mul_one, mul_comm]
 
 /- English proof (translation)
-Rewrite using `[standard_inner_pt, Finset.sum_eq_single i]`. Simplify using the standard rewrite rules. Introduce `j _ hj`. Simplify using `[Pi.single_apply, hj]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem standard_inner_single (τ : InfinitePlace E) (i : Fin n) :
     inner ℂ ((MetSpace.standard E n).pt τ (Pi.single i 1))
@@ -529,16 +529,16 @@ theorem standard_inner_single (τ : InfinitePlace E) (i : Fin n) :
   · simp
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun ⟨c, hc⟩ => hc ▸ RingOfIntegers.isIntegral_coe c, fun h => ⟨⟨x, h⟩, rfl⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem mem_range_iff_isIntegral (x : E) :
     x ∈ Set.range (algebraMap (𝓞 E) E) ↔ IsIntegral ℤ x :=
   ⟨fun ⟨c, hc⟩ => hc ▸ RingOfIntegers.isIntegral_coe c, fun h => ⟨⟨x, h⟩, rfl⟩⟩
 
 /- English proof (translation)
-Rewrite using `[stdLat, Submodule.mem_span_range_iff_exists_fun]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨c, rfl⟩ i`. Use `⟨c i, ?_⟩` and prove the remaining obligations. Simplify using `[Finset.sum_apply, Pi.single_apply, Algebra.smul_def]`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Introduce `h`. Use `⟨fun i => (h i).choose, funext fun j => ?_⟩` and prove the remaining obligations. Simplify using `only [Finset.sum_apply, Pi.smul_apply, Pi.single_apply, Algebra.smul_def, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq, Finset.mem_univ, if_true]`. Conclude with `(h j).choose_spec`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mem_stdLat_iff (y : Fin n → E) :
     y ∈ stdLat E n ↔ ∀ i, y i ∈ Set.range (algebraMap (𝓞 E) E) := by
@@ -568,13 +568,13 @@ def flipMap : (Fin 2 → E) →ₗ[E] (Fin 2 → E) :=
 variable {F}
 
 /- English proof (translation)
-Apply the tactic sequence `fin_cases i <;> simp [signs]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem signs_sq (i : Fin 2) : algebraMap F E (signs F i) * algebraMap F E (signs F i) = 1 := by
   fin_cases i <;> simp [signs]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `only [flipMap, LinearMap.pi_apply, LinearMap.smul_apply, LinearMap.proj_apply, smul_eq_mul]`. Rewrite using `[← mul_assoc, signs_sq, one_mul]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem flipMap_flipMap (y : Fin 2 → E) : flipMap F (flipMap F y) = y := by
   funext i
@@ -589,7 +589,7 @@ variable {F : Type} [Field F] [NumberField F] [IsTotallyReal F] [IsTotallyComple
   [Algebra F E] [Algebra.IsQuadraticExtension F E]
 
 /- English proof (translation)
-The claim follows from `hx.map (conjHom F E).toIntAlgHom`.
+A detailed English derivation is pending.
 -/
 theorem isIntegral_conj {x : E} (hx : IsIntegral ℤ x) : IsIntegral ℤ (conj F E x) :=
   hx.map (conjHom F E).toIntAlgHom
@@ -604,13 +604,13 @@ theorem hypForm_apply (y y' : Fin 2 → E) :
       ∑ i, conj F E (y i) * algebraMap F E (signs F i) * y' i := rfl
 
 /- English proof (translation)
-Introduce `y`. Simplify using `only [mem_range_iff_isIntegral, mem_stdLat_iff, hypForm_apply]`. Prove the components needed by the constructor for the conclusion. Introduce `hy l hl`. Use `IsIntegral.sum _ fun i _ => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `((isIntegral_conj (hy i)).mul ?_).mul (hl i)` and prove the remaining obligations. Apply the tactic sequence `fin_cases i <;> simp [signs, isIntegral_one, IsIntegral.neg]`. Introduce `h i`. Establish `key` using `h (Pi.single i 1) (by`. Introduce `j`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `hij : j = i`. Substitute `hij` using the available equality. Simplify using `[isIntegral_one]`. Simplify using `[Pi.single_apply, hij, isIntegral_zero])`. Rewrite `key` using `[Finset.sum_eq_single i (fun j _ hj => by simp [Pi.single_apply, hj]) (by simp)]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [Pi.single_eq_same, mul_one] at key`. Establish `hc : IsIntegral ℤ (conj F E (y i))` using `by fin_cases i`. Simplify `key` using `[signs]`. Simplify `key.neg` using `[signs]`. Simplify `isIntegral_conj (F := F) hc` using `[conj_conj]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem stdLat_isSelfDual : IsSelfDual (hypForm (F := F) (E := E)) (stdLat E 2) := by
   intro y
@@ -642,9 +642,9 @@ variable {F : Type} [Field F] [NumberField F] [IsTotallyReal F] [IsTotallyComple
   [Algebra F E] [Algebra.IsQuadraticExtension F E]
 
 /- English proof (translation)
-Proceed by induction on `u using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul z v`. Rewrite using `[LinearMap.baseChange_tmul, stdCoord_tmul, stdCoord_tmul]`. Simplify using `only [flipMap, LinearMap.pi_apply, LinearMap.smul_apply, LinearMap.proj_apply, smul_eq_mul, map_mul]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Consider the case `add u v hu hv => rw [map_add, map_add, PiLp.add_apply, hu, hv, map_add, PiLp.add_apply, mul_add]`.
+Expand and normalize the polynomial expressions, which then agree. Treat this case separately.
 -/
 theorem stdCoord_flip (τ : InfinitePlace E) (u : Fib τ.embedding (Fin 2 → E)) (i : Fin 2) :
     stdCoord E 2 τ.embedding ((flipMap F).baseChange (CAt τ.embedding) u) i =
@@ -659,7 +659,7 @@ theorem stdCoord_flip (τ : InfinitePlace E) (u : Fib τ.embedding (Fin 2 → E)
   | add u v hu hv => rw [map_add, map_add, PiLp.add_apply, hu, hv, map_add, PiLp.add_apply, mul_add]
 
 /- English proof (translation)
-Apply the tactic sequence `fin_cases i <;> simp [signs]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem signs_conj_mul (τ : InfinitePlace E) (i : Fin 2) :
     starRingEnd ℂ (τ.embedding (algebraMap F E (signs F i))) *
@@ -667,7 +667,7 @@ theorem signs_conj_mul (τ : InfinitePlace E) (i : Fin 2) :
   fin_cases i <;> simp [signs]
 
 /- English proof (translation)
-Rewrite using `[← LinearMap.comp_apply, ← LinearMap.baseChange_comp]`. Establish `h : flipMap F ∘ₗ flipMap F = (LinearMap.id : (Fin 2 → E) →ₗ[E] (Fin 2 → E))` using `LinearMap.ext flipMap_flipMap`. Rewrite using `[h, LinearMap.baseChange_id, LinearMap.id_apply]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem flip_flip_fib (τ : InfinitePlace E) (u : Fib τ.embedding (Fin 2 → E)) :
     (flipMap F).baseChange (CAt τ.embedding) ((flipMap F).baseChange (CAt τ.embedding) u) = u := by
@@ -677,7 +677,7 @@ theorem flip_flip_fib (τ : InfinitePlace E) (u : Fib τ.embedding (Fin 2 → E)
   rw [h, LinearMap.baseChange_id, LinearMap.id_apply]
 
 /- English proof (translation)
-Simplify using `only [PiLp.inner_apply, RCLike.inner_apply, stdCoord_flip]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul]`. Take the linear combination `(stdCoord E 2 τ.embedding v i * starRingEnd ℂ (stdCoord E 2 τ.embedding u i)) * signs_conj_mul (F := F) τ i`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem flip_isometry (τ : InfinitePlace E) (u v : Fib τ.embedding (Fin 2 → E)) :
     inner ℂ (stdCoord E 2 τ.embedding ((flipMap F).baseChange (CAt τ.embedding) u))
@@ -690,9 +690,9 @@ theorem flip_isometry (τ : InfinitePlace E) (u v : Fib τ.embedding (Fin 2 → 
     starRingEnd ℂ (stdCoord E 2 τ.embedding u i)) * signs_conj_mul (F := F) τ i
 
 /- English proof (translation)
-Rewrite using `[LinearMap.baseChange_tmul, hypForm_apply, map_sum]`. Simplify using `only [PiLp.inner_apply, RCLike.inner_apply, stdCoord_tmul]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `h1 : (ofComplex τ.embedding).symm 1 = 1` using `rfl`. Simplify using `only [h1, mul_one, map_one, map_mul, embedding_conj]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `fin_cases i <;> simp [flipMap, signs, embedding_conj] <;> ring`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem flip_majorant (τ : InfinitePlace E) (y y' : Fin 2 → E) :
     inner ℂ (stdCoord E 2 τ.embedding
@@ -718,7 +718,7 @@ def hypFrame : SelfDualFrame F E where
   majorant τ y y' := flip_majorant τ y y'
 
 /- English proof (translation)
-Apply the tactic sequence `refine ⟨?_, (mem_stdLat_iff _).2 fun i => ⟨1, by fin_cases i <;> simp⟩⟩`. Rewrite using `[hypForm_apply, Fin.sum_univ_two]`. Simplify using `[signs]`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem hypForm_isotropic :
     (hypForm (F := F) (E := E)).toSesq ![1, 1] ![1, 1] = 0 ∧ (![1, 1] : Fin 2 → E) ∈ stdLat E 2 := by
@@ -729,24 +729,24 @@ theorem hypForm_isotropic :
 end Frame2
 
 /- English proof (translation)
-The claim follows from `hypFrame`.
+A detailed English derivation is pending.
 -/
 example : SelfDualFrame ℚ GaussQ := hypFrame
 
 /- English proof (translation)
-The claim follows from `(MetSpace.standard GaussQ 2).quot (Submodule.span GaussQ {(Pi.single 0 1 : Fin 2 → GaussQ)})`.
+A detailed English derivation is pending.
 -/
 example : MetSpace GaussQ :=
   (MetSpace.standard GaussQ 2).quot (Submodule.span GaussQ {(Pi.single 0 1 : Fin 2 → GaussQ)})
 
 /- English proof (translation)
-The claim follows from `(MetSpace.standard GaussQ 2).restrict (Submodule.span GaussQ {(Pi.single 0 1 : Fin 2 → GaussQ)})`.
+A detailed English derivation is pending.
 -/
 example : MetSpace GaussQ :=
   (MetSpace.standard GaussQ 2).restrict (Submodule.span GaussQ {(Pi.single 0 1 : Fin 2 → GaussQ)})
 
 /- English proof (translation)
-The claim follows from `(MetSpace.standard GaussQ 2).dual`.
+A detailed English derivation is pending.
 -/
 example : MetSpace GaussQ := (MetSpace.standard GaussQ 2).dual
 

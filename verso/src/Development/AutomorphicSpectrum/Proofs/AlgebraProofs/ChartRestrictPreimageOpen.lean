@@ -12,9 +12,9 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.FreeQuotGlue.ChartRestrict
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Introduce and unpack `x ⟨y, rfl⟩ show V.ι (X.homOfLE h y) ∈ U`. Rewrite using `[← Scheme.Hom.comp_apply, Scheme.homOfLE_ι]`. Conclude with `y.2`. Introduce `x hx`.
+Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Conclude with `⟨⟨x.1, hx⟩, Subtype.ext (Scheme.homOfLE_apply h _)⟩`.
+A detailed English derivation is pending.
 -/
 theorem opensRange_homOfLE_eq {X : Scheme.{0}} {U V : X.Opens} (h : U ≤ V) :
     (X.homOfLE h).opensRange = V.ι ⁻¹ᵁ U := by
@@ -27,31 +27,27 @@ theorem opensRange_homOfLE_eq {X : Scheme.{0}} {U V : X.Opens} (h : U ≤ V) :
     exact ⟨⟨x.1, hx⟩, Subtype.ext (Scheme.homOfLE_apply h _)⟩
 
 /- English proof (translation)
-Take `⟨hst, hfin, hflat, hlfp, hsurj, a', ha', hpbV⟩` from `h`. Establish `hrange : Set.range (X.homOfLE hle ≫ q) ⊆ Set.range D.ι`. Introduce and unpack `_ ⟨w, rfl⟩`. Rewrite using `[Scheme.Opens.range_ι]`. Use `show q (X.homOfLE hle w) ∈ D`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hW, ← Scheme.Hom.comp_apply, Scheme.homOfLE_ι]`. Conclude with `w.2`. Set `q' : W.toScheme ⟶ D.toScheme` to `IsOpenImmersion.lift D.ι (X.homOfLE hle ≫ q) hrange`. Establish `hq' : q' ≫ D.ι = X.homOfLE hle ≫ q` using `IsOpenImmersion.lift_fac _ _ _`. Establish `hS2 : IsPullback q' (X.homOfLE hle) D.ι q`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `IsOpenImmersion.isPullback q' (X.homOfLE hle) D.ι q hq'.symm ?_` and prove the remaining obligations. Rewrite using `[Scheme.Opens.opensRange_ι, opensRange_homOfLE_eq hle]`. Use extensionality with `u`. Conclude with `(hW u).symm`. Establish `hstW : a ⁻¹ᵁ W = b ⁻¹ᵁ W`.
+By extensionality, compare the relevant components. Establish an intermediate fact. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Use extensionality with `p`. Use `show a p ∈ W ↔ b p ∈ W`. Distinguish the cases in `hpa : a p ∈ V`. Establish `hpb : b p ∈ V`. Establish `: p ∈ a ⁻¹ᵁ V` using `hpa`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `this` using `[hst]`. Conclude with `this`. Take `⟨u, hu⟩ : a p ∈ Set.range V.ι` from `by rw [Scheme.Opens.range_ι]; exact hpa`. Take `⟨u', hu'⟩ : b p ∈ Set.range V.ι` from `by rw [Scheme.Opens.range_ι]; exact hpb`. Establish `hq : q u = q u'` using `(IsChart.apply_eq_iff ⟨hst, hfin, hflat, hlfp, hsurj, a', ha', hpbV⟩ u u').mpr ⟨p, hu.symm, hu'.symm⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `e1` using `hW u`. Establish `e2` using `hW u'`. Rewrite `e1` using `[hu]`. Rewrite `e2` using `[hu']`. Rewrite using `[e1, e2, hq]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `hpb : b p ∉ V` using `fun hb => hpa (by`. Establish `: p ∈ b ⁻¹ᵁ V` using `hb`. Rewrite `this` using `[← hst]`. Conclude with `this)`. Conclude with `⟨fun hw => absurd (hle hw) hpa, fun hw => absurd (hle hw) hpb⟩`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hrange' : Set.range ((b ⁻¹ᵁ W).ι ≫ a) ⊆ Set.range W.ι`. Introduce and unpack `_ ⟨p, rfl⟩`. Rewrite using `[Scheme.Opens.range_ι]`. Establish `: p.1 ∈ a ⁻¹ᵁ W` using `by rw [hstW]; exact p.2`. Conclude with `this`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Set `a'' : (b ⁻¹ᵁ W).toScheme ⟶ W.toScheme` to `IsOpenImmersion.lift W.ι ((b ⁻¹ᵁ W).ι ≫ a) hrange'`. Establish `ha'' : a'' ≫ W.ι = (b ⁻¹ᵁ W).ι ≫ a` using `IsOpenImmersion.lift_fac _ _ _`. Set `ιK : (b ⁻¹ᵁ W).toScheme ⟶ (b ⁻¹ᵁ V).toScheme` to `P.homOfLE (b.preimage_mono hle)`. Establish `hL : IsPullback (b ∣_ W) ιK (X.homOfLE hle) (b ∣_ V)`. Use `IsOpenImmersion.isPullback (b ∣_ W) ιK (X.homOfLE hle) (b ∣_ V) ?_ ?_` and prove the remaining obligations.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← cancel_mono V.ι, Category.assoc, Category.assoc, morphismRestrict_ι, Scheme.homOfLE_ι, morphismRestrict_ι, ← Category.assoc, Scheme.homOfLE_ι]`. Rewrite using `[opensRange_homOfLE_eq hle, opensRange_homOfLE_eq (b.preimage_mono hle)]`. Use extensionality with `p`. Use `show (b ∣_ V) p ∈ V.ι ⁻¹ᵁ W ↔ (b ⁻¹ᵁ V).ι p ∈ b ⁻¹ᵁ W`. Rewrite using `[Scheme.Hom.mem_preimage, Scheme.Hom.mem_preimage, ← Scheme.Hom.comp_apply, morphismRestrict_ι, Scheme.Hom.comp_apply]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hcomm : ιK ≫ a' = a'' ≫ X.homOfLE hle`. Rewrite using `[← cancel_mono V.ι, Category.assoc, ha', Category.assoc, Scheme.homOfLE_ι, ha'', ← Category.assoc, Scheme.homOfLE_ι]`. Establish `hs : IsPullback (a'' ≫ X.homOfLE hle) (b ∣_ W) q (q' ≫ D.ι)`. Use `hL.flip.paste_horiz hpbV` as an intermediate fact. Rewrite `this` using `[hcomm, ← hq']`.
-
-Conclude with `this`. Establish `hpW : IsPullback a'' (b ∣_ W) q' q'`. Use `hs.of_right ?_ hS2.flip` and prove the remaining obligations. Rewrite using `[← cancel_mono D.ι, Category.assoc, Category.assoc, hq']`. Simplify `hs.w` using `[hq']`.
-
-Conclude with `⟨q', ⟨hstW, MorphismProperty.of_isPullback hS2.flip hfin, MorphismProperty.of_isPullback hS2.flip hflat, MorphismProperty.of_isPullback hS2.flip hlfp, MorphismProperty.of_isPullback hS2.flip hsurj, a'', ha'', hpW⟩, hq'⟩`.
+Simplify to obtain the desired conclusion from the available facts. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isChart_of_le {P X Y : Scheme.{0}} {a b : P ⟶ X} {V : X.Opens} {q : V.toScheme ⟶ Y}
     (h : IsChart a b V q) (D : Y.Opens) (W : X.Opens) (hle : W ≤ V)
@@ -134,7 +130,7 @@ end GlobalTheory.CompanionTheory.FreeQuotGlue.ChartRestrict
 namespace GlobalTheory.CompanionTheory.FreeQuotGlue
 
 /- English proof (translation)
-Introduce `P X Y a b V q h D`. Establish `hle : V.ι ''ᵁ (q ⁻¹ᵁ D) ≤ V` using `V.ι_image_le _`. Establish `hW : ∀ u : V.toScheme, V.ι u ∈ V.ι ''ᵁ (q ⁻¹ᵁ D) ↔ q u ∈ D` using `fun u => (Scheme.Opens.mem_ι_image_iff (x := u) (V := q ⁻¹ᵁ D))`. Take `⟨q', hq', hfac⟩` from `ChartRestrict.isChart_of_le h D _ hle hW`. Conclude with `⟨hle, q', hq', hfac⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem isChart_restrict_quotient_open :
     ∀ {P X Y : Scheme.{0}} {a b : P ⟶ X} {V : X.Opens} {q : V.toScheme ⟶ Y},

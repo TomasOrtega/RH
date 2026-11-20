@@ -215,7 +215,7 @@ def e1 : Fin 2 → ℂ := Pi.single 0 1
 def e2 : Fin 2 → ℂ := Pi.single 1 1
 
 /- English proof (translation)
-Rewrite using `[← Module.finrank_eq_card_chooseBasisIndex, RingOfIntegers.rank]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem card_chooseBasisIndex_Eg :
     Fintype.card (Module.Free.ChooseBasisIndex ℤ (𝓞 Eg)) = finrank ℚ Eg := by

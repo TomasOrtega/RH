@@ -17,7 +17,7 @@ variable {G : Type} [Group G]
 def twR (θ : G →* G) (x y : G) : Prop := ∃ g, y = g⁻¹ * x * θ g
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨1, by simp⟩ symm := by rintro x y ⟨g, rfl⟩ exact ⟨g⁻¹, by rw [map_inv]; group⟩ trans := by rintro x y z ⟨g, rfl⟩ ⟨h, rfl⟩ exact ⟨g * h, by rw [map_mul]; group⟩`.
+Supply the required witnesses or components.
 -/
 theorem twR_equiv (θ : G →* G) : Equivalence (twR θ) where
   refl x := ⟨1, by simp⟩
@@ -31,13 +31,13 @@ theorem twR_equiv (θ : G →* G) : Equivalence (twR θ) where
 def cls (θ : G →* G) (x : G) : TwCl θ := Quot.mk (twR θ) x
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h => (twR_equiv θ).eqvGen_iff.1 (Quot.eqvGen_exact h), fun h => Quot.sound h⟩`.
+Supply the required witnesses or components.
 -/
 theorem cls_eq_iff (θ : G →* G) (x y : G) : cls θ x = cls θ y ↔ twR θ x y :=
   ⟨fun h => (twR_equiv θ).eqvGen_iff.1 (Quot.eqvGen_exact h), fun h => Quot.sound h⟩
 
 /- English proof (translation)
-The claim follows from `Quot.out_eq c`.
+A detailed English derivation is pending.
 -/
 theorem cls_rep (θ : G →* G) (c : TwCl θ) : cls θ c.rep = c := Quot.out_eq c
 
@@ -46,7 +46,7 @@ end Generic
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
 /- English proof (translation)
-Use `filter_upwards [UnitStable.eventually_mem_KGL δ, UnitStable.eventually_mem_KGL (δ * thE E n δ)] with w h1 h2`. Unfold `locEl`. Use `split_ifs`. Conclude with `h2`. Conclude with `h1`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem locEl_eventually_mem (n : ℕ) (δ : GL (Fin n) E) :
     ∀ᶠ w : Pl E in cofinite, locEl n w δ ∈ GlobalTheory.LFun.KGL w n := by
@@ -61,7 +61,7 @@ end CompanionTheory.Rg.BcB.G3.FibL
 namespace CompanionTheory.Rg.BcB.G3.ParamLP
 
 /- English proof (translation)
-Take `⟨g, rfl⟩` from `h`. Use `⟨g⁻¹, ?_⟩` and prove the remaining obligations. Simplify using `only [inv_inv, map_inv]`. Use `group`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem tw_symm {G : Type} [Group G] (θ : G →* G) {x y : G} (h : ∃ g, x = g⁻¹ * y * θ g) :
     ∃ g, y = g⁻¹ * x * θ g := by
@@ -71,7 +71,7 @@ theorem tw_symm {G : Type} [Group G] (θ : G →* G) {x y : G} (h : ∃ g, x = g
   group
 
 /- English proof (translation)
-Take `⟨g, rfl⟩` from `h₁`. Take `⟨h, rfl⟩` from `h₂`. Use `⟨h * g, ?_⟩` and prove the remaining obligations. Simplify using `only [map_mul]`. Use `group`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem tw_trans {G : Type} [Group G] (θ : G →* G) {x y z : G} (h₁ : ∃ g, x = g⁻¹ * y * θ g)
     (h₂ : ∃ g, y = g⁻¹ * z * θ g) : ∃ g, x = g⁻¹ * z * θ g := by
@@ -82,7 +82,7 @@ theorem tw_trans {G : Type} [Group G] (θ : G →* G) {x y z : G} (h₁ : ∃ g,
   group
 
 /- English proof (translation)
-Use `v.isPrime` as an intermediate fact. Take `⟨Q, hQ, hl⟩` from `(Ideal.nonempty_primesOver v.asIdeal (S := 𝓞 K)).some`. Conclude with `⟨⟨Q, hQ, Ideal.ne_bot_of_liesOver_of_ne_bot v.ne_bot Q⟩, HeightOneSpectrum.ext hl.over.symm⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_over {F K : Type} [Field F] [NumberField F] [Field K] [NumberField K] [Algebra F K]
     (v : HeightOneSpectrum (𝓞 F)) : ∃ w : HeightOneSpectrum (𝓞 K), w.under (𝓞 F) = v := by
@@ -91,9 +91,9 @@ theorem exists_over {F K : Type} [Field F] [NumberField F] [Field K] [NumberFiel
   exact ⟨⟨Q, hQ, Ideal.ne_bot_of_liesOver_of_ne_bot v.ne_bot Q⟩, HeightOneSpectrum.ext hl.over.symm⟩
 
 /- English proof (translation)
-Establish `h` using `IsDedekindDomain.primesOver_finite v.asIdeal (𝓞 K)`. Use `(h.preimage (f := fun u : HeightOneSpectrum (𝓞 K) => u.asIdeal) (fun a _ b _ hab => HeightOneSpectrum.ext hab)).subset ?_` and prove the remaining obligations. Introduce `u hu`. Express the relevant statement in the definitionally equal form `u.under (𝓞 F) = v at hu`. Use `⟨u.isPrime, ⟨?_⟩⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← hu]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem finite_over {F K : Type} [Field F] [NumberField F] [Field K] [NumberField K] [Algebra F K]
     (v : HeightOneSpectrum (𝓞 F)) : {u : HeightOneSpectrum (𝓞 K) | u.under (𝓞 F) = v}.Finite := by
@@ -109,13 +109,13 @@ theorem finite_over {F K : Type} [Field F] [NumberField F] [Field K] [NumberFiel
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.ThetaPull.thetaGL_thetaGL _ (fun x => IsCMField.complexConj_apply_apply E x) g`.
+A detailed English derivation is pending.
 -/
 theorem thE_thE (n : ℕ) (g : GL (Fin n) E) : thE E n (thE E n g) = g :=
   GlobalTheory.ThetaPull.thetaGL_thetaGL _ (fun x => IsCMField.complexConj_apply_apply E x) g
 
 /- English proof (translation)
-Rewrite using `[map_mul, map_mul, map_inv, thE_thE]`. Use `group`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nrm_tw (n : ℕ) (z g : GL (Fin n) E) :
     (g⁻¹ * z * thE E n g) * thE E n (g⁻¹ * z * thE E n g) = g⁻¹ * (z * thE E n z) * g := by
@@ -123,9 +123,9 @@ theorem nrm_tw (n : ℕ) (z g : GL (Fin n) E) :
   group
 
 /- English proof (translation)
-Use `⟨GeneralLinearGroup.map (algebraMap E (w.adicCompletion E)) g, ?_⟩` and prove the remaining obligations. Unfold `locEl thL`. Use `split_ifs with hs`. Rewrite using `[nrm_tw, map_mul, map_mul, map_inv, MonoidHom.id_apply]`. Establish `hm : GeneralLinearGroup.map (algebraMap E (w.adicCompletion E)) (thE E n g) = thetaGL n (cj w) (GeneralLinearGroup.map (algebraMap E (w.adicCompletion E)) g)` using `GlobalTheory.ThetaPull.map_thetaGL _ _ _ (fun x => (((GlobalTheory.T.placeConjugation_properties_cmField E hU w).2.2.2.1 hs).1 x).symm) g`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul, map_mul, map_inv, hm]`.
+A detailed English derivation is pending.
 -/
 theorem locEl_tw (hU : Unr E) (n : ℕ) (w : Pl E) (z g : GL (Fin n) E) :
     ∃ h, locEl n w (g⁻¹ * z * thE E n g) = h⁻¹ * locEl n w z * thL n w h := by
@@ -139,9 +139,9 @@ theorem locEl_tw (hU : Unr E) (n : ℕ) (w : Pl E) (z g : GL (Fin n) E) :
     rw [map_mul, map_mul, map_inv, hm]
 
 /- English proof (translation)
-Take `⟨g, rfl⟩` from `h`. Take `⟨k, hk⟩` from `locEl_tw hU n w z g`. Rewrite using `[hk]`. Prove the components needed by the constructor for the conclusion. Introduce `hz`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `tw_trans _ ⟨k, rfl⟩ hz`. Introduce `hz`. Conclude with `tw_trans _ (tw_symm _ ⟨k, rfl⟩) hz`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem locEl_rel (hU : Unr E) (n : ℕ) (w : Pl E) {z z' : GL (Fin n) E} (h : ∃ g, z' = g⁻¹ * z * thE E n g)
     (yw : GLw n w) :
@@ -156,51 +156,45 @@ theorem locEl_rel (hU : Unr E) (n : ℕ) (w : Pl E) {z z' : GL (Fin n) E} (h : �
     exact tw_trans _ (tw_symm _ ⟨k, rfl⟩) hz
 
 /- English proof (translation)
-Introduce `E _ _ _ hU n S hS P hP y hy hyK`. Take `⟨s, d, hs0, hsc, hsd⟩` from `h1 E`. Take `⟨δ, hδ⟩` from `GlobalTheory.BCT.KapMul.exists_norm E hP`. Establish `hPδ : (δ * thE E n δ).val.charpoly ∈ Ell E n` using `by rw [hδ]; exact hP`. Establish `hsep : (δ * thE E n δ).val.charpoly.Separable` using `hPδ.2.2.1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨ι, _, K, _, _, _, ρ, hcard, hreal, hsum, hfr⟩` from `h2 E s d hs0 hsc hsd n δ hPδ`. Use `choose hinf L fL nfL aL qL hLc hglob hloc using fun i => h3 E s d hs0 hsc hsd (K i) (hreal i)`. Establish `hinv : ∀ x, (IsCMField.complexConj E).toRingEquiv.toRingHom ((IsCMField.complexConj E).toRingEquiv.toRingHom x) = x` using `fun x => IsCMField.complexConj_apply_apply E x`. Establish `hyδ : ∀ w, (nrmL n w (y w)).val.charpoly = atPl w (δ * thE E n δ).val.charpoly` using `fun w => by`. Rewrite using `[hδ]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hy w`. Use `choose X hX using fun w => h4 E hU s d hs0 hsc hsd n δ hsep ι K ρ hfr w (y w) (hyδ w)`. Establish `hW : ∀ i (u : HeightOneSpectrum (𝓞 (K i))), ∃ w ∈ S, w.under (𝓞 (maximalRealSubfield E)) = u.under (𝓞 (maximalRealSubfield E))`. Introduce `i u`. Take `⟨w0, hw0⟩` from `exists_over (K := E) (u.under (𝓞 (maximalRealSubfield E)))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression.
 
-Take `⟨w, ⟨hwS, hw⟩, -⟩` from `hS w0`. Conclude with `⟨w, hwS, hw.trans hw0⟩`. Use `choose W hWS hWu using hW`. Set `x : ∀ i, GlobalTheory.QuadSymbol.FinFam (K i)` to `fun i u => X (W i u) i ⟨u, (hWu i u).symm⟩`. Establish `hxX : ∀ i (w : Pl E) (u : {u : HeightOneSpectrum (𝓞 (K i)) // u.under (𝓞 (maximalRealSubfield E)) = w.under (𝓞 (maximalRealSubfield E))}), w ∈ S → x i u.1 = X w i u`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Introduce `i w u hw`. Establish `e : W i u.1 = w` using `(hS w).unique ⟨hWS i u.1, (hWu i u.1).trans u.2⟩ ⟨hw, rfl⟩`. Establish `key : ∀ (w1 : Pl E) (_ : w1 = w) (p : u.1.under (𝓞 (maximalRealSubfield E)) = w1.under (𝓞 (maximalRealSubfield E))), X w1 i ⟨u.1, p⟩ = X w i u`. Introduce and unpack `w1 rfl p`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `key _ e _`. Set `ev : ∀ i, (∀ j, K j)ˣ →* (K i)ˣ` to `fun i => Units.map (Pi.evalMonoidHom K i)`. Establish `hloc' : ∀ (t : (∀ i, K i)ˣ) (w : Pl E), w ∈ S → ((∃ g, locEl n w (pt δ ρ.toRingHom t) = g⁻¹ * y w * thL n w g) ↔ ∀ i (u : {u : HeightOneSpectrum (𝓞 (K i)) // u.under (𝓞 (maximalRealSubfield E)) = w.under (𝓞 (maximalRealSubfield E))}), x i u.1 / GlobalTheory.QuadSymbol.finDiag (K …`. Introduce `t w hw`. Rewrite using `[hX w t]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `forall_congr' fun i => forall_congr' fun u => ?_` and prove the remaining obligations. Rewrite using `[hxX i w u hw, hloc i u.1]`. Establish `hne : algebraMap (K i) (u.1.adicCompletion (K i)) ((t : ∀ j, K j) i) ≠ 0` using `(_root_.map_ne_zero _).2 (ev i t).ne_zero`. Establish `hv : ((X w i u / GlobalTheory.QuadSymbol.finDiag (K i) (ev i t) u.1 : (u.1.adicCompletion (K i))ˣ) : u.1.adicCompletion (K i)) = (X w i u : u.1.adicCompletion (K i)) / algebraMap (K i) (u.1.adicCompletion (K i)) ((t : ∀ j, K j) i)`. Rewrite using `[Units.val_div_eq_div_val]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Both sides reduce to the same expression. Rewrite using `[hv]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, b, h⟩`. Conclude with `⟨a, b, by rw [h, mul_div_cancel_left₀ _ hne]⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `⟨a, b, h⟩`. Conclude with `⟨a, b, by rw [div_eq_iff hne] at h; rw [h, mul_comm]⟩`. Establish `hev : ∀ᶠ w : Pl E in cofinite, ∃ g, locEl n w (pt δ ρ.toRingHom 1) = g⁻¹ * y w * thL n w g` using `by filter_upwards [h8 E hU n P hP, hyK, FibL.locEl_eventually_mem n δ] with w hw hyw hδw`. Take `⟨g, hg⟩` from `(hw (locEl n w δ) hδw (by rw [ThBasic.charpoly_nrmL hU, hδ])).2.2 (y w) hyw (hy w)`. Use `⟨g⁻¹, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[hg, show pt δ ρ.toRingHom 1 = δ by simp [pt]]`. Simplify using `only [map_inv, inv_inv]`. Use `group`. Establish `hAN : ∀ i, GlobalTheory.QuadSymbol.AlmostNorm (K i) (L i) (x i)`. Introduce `i`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hbad` using `Filter.eventually_cofinite.1 hev`. Use `(hbad.biUnion fun w _ => finite_over (F := maximalRealSubfield E) (K := K i) (w.under (𝓞 (maximalRealSubfield E)))).subset ?_` and prove the remaining obligations. Introduce `u hu`. Establish `hWbad : W i u ∈ {w : Pl E | ¬ ∃ g, locEl n w (pt δ ρ.toRingHom 1) = g⁻¹ * y w * thL n w g}`. Introduce `hgood`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Apply `hu` to reduce the goal to its premises. Establish `h0` using `(hloc' 1 (W i u) (hWS i u)).1 hgood i ⟨u, (hWu i u).symm⟩`. Establish `h1 : GlobalTheory.QuadSymbol.finDiag (K i) (ev i 1) u = 1`. Rewrite using `[map_one]`. Conclude with `map_one (GlobalTheory.QuadSymbol.toUnits (K i) (u.adicCompletion (K i)))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h0` using `[h1, div_one]`. Conclude with `h0`. Conclude with `Set.mem_biUnion hWbad (hWu i u).symm`. Establish `hC : ∀ c : {c : TwCl (thE E n) // (c.rep * thE E n c.rep).val.charpoly = P ∧ ∀ w ∈ S, ∃ g, locEl n w c.rep = g⁻¹ * y w * thL n w g}, ∃ (t : (∀ i, K i)ˣ) (g : GL (Fin n) E), c.1.rep = g⁻¹ * pt δ ρ.toRingHom t * thE E n g` using `fun c => h6 E n _ hinv δ s hs0 hsc _ _ ρ.toRingHom hfr hsep c.1.rep (c.2.1.trans hδ.symm)`. Use `choose tc gc htc using hC`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hcond : ∀ c i u, x i u / GlobalTheory.QuadSymbol.finDiag (K i) (ev i (tc c)) u ∈ GlobalTheory.QuadSymbol.normGroup (K i) (L i) (u.adicCompletion (K i))`. Introduce `c i u`. Establish `hl : ∃ g, locEl n (W i u) (pt δ ρ.toRingHom (tc c)) = g⁻¹ * y (W i u) * thL n (W i u) g` using `(locEl_rel hU n (W i u) ⟨gc c, htc c⟩ (y _)).2 (c.2.2 _ (hWS i u))`. Conclude with `(hloc' (tc c) (W i u) (hWS i u)).1 hl i ⟨u, (hWu i u).symm⟩`. Use `⟨ι, inferInstance, K, L, inferInstance, inferInstance, fL, nfL, aL, qL, x, ?_, hreal, hLc, hAN, ?_, ⟨Equiv.ofBijective (fun c i => ⟨QuotientGroup.mk (ev i (tc c)), ev i (tc c), rfl, hcond c i⟩) ⟨?_, ?_⟩⟩⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[hcard, hδ]`. Rewrite using `[Finset.sum_congr rfl (fun i _ => hinf i), ← Finset.sum_mul, hsum]`. Introduce `c c' hcc`. Establish `hq : ∀ i, (ev i (tc c))⁻¹ * ev i (tc c') ∈ GlobalTheory.QuadSymbol.globalNorms (K i) (L i)` using `fun i => QuotientGroup.eq.1 (congrArg (fun f => (f i).1) hcc)`. Use `choose a b hab using fun i => (hglob i _).1 (hq i)`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hrel : ∃ g, pt δ ρ.toRingHom (tc c) = g⁻¹ * pt δ ρ.toRingHom (tc c') * thE E n g`. Use `(h7 E n _ hinv δ s hs0 hsc _ _ ρ.toRingHom hfr (tc c') (tc c)).2 ⟨a, b, funext fun i => ?_⟩` and prove the remaining obligations. Establish `hi` using `hab i`. Rewrite `hi` using `[Units.val_mul, Units.val_inv_eq_inv_val]`. Express the relevant statement in the definitionally equal form `(tc c' : ∀ j, K j) i = (tc c : ∀ j, K j) i * (a i ^ 2 - algebraMap (maximalRealSubfield E) (K i) d * b i ^ 2)`.
+Introduce a local definition for the expression. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[← hi]`. Express the relevant statement in the definitionally equal form `(tc c' : ∀ j, K j) i = (tc c : ∀ j, K j) i * (((tc c : ∀ j, K j) i)⁻¹ * (tc c' : ∀ j, K j) i)`. Rewrite using `[← mul_assoc, mul_inv_cancel₀ (show (tc c : ∀ j, K j) i ≠ 0 from (ev i (tc c)).ne_zero), one_mul]`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[← FibL.cls_rep _ c.1, ← FibL.cls_rep _ c'.1, FibL.cls_eq_iff]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e` using `FibL.twR_equiv (thE E n)`. Conclude with `e.trans (e.symm ⟨gc c, htc c⟩) (e.trans (e.symm hrel) ⟨gc c', htc c'⟩)`. Introduce `f choose T hT hTc using fun i => (f i).2`. Set `Tu : (∀ i, K i)ˣ` to `⟨fun i => (T i : K i), fun i => ((T i)⁻¹ : (K i)ˣ),`. Use function extensionality and compare the values at `fun i => (T i).mul_inv, funext fun i => (T i).inv_mul⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Establish `hTu : ∀ i, ev i Tu = T i` using `fun i => Units.ext rfl`. Take `⟨g0, hg0⟩ : FibL.twR (thE E n) (pt δ ρ.toRingHom Tu) (FibL.cls (thE E n) (pt δ ρ.toRingHom Tu)).rep` from `(FibL.cls_eq_iff _ _ _).1 (FibL.cls_rep _ _).symm`. Establish `hmem : ((FibL.cls (thE E n) (pt δ ρ.toRingHom Tu)).rep * thE E n (FibL.cls (thE E n) (pt δ ρ.toRingHom Tu)).rep).val.charpoly = P ∧ ∀ w ∈ S, ∃ g, locEl n w (FibL.cls (thE E n) (pt δ ρ.toRingHom Tu)).rep = g⁻¹ * y w * thL n w g`. Use `⟨?_, fun w hw => ?_⟩` and prove the remaining obligations. Rewrite using `[hg0, nrm_tw, show pt δ ρ.toRingHom Tu * thE E n (pt δ ρ.toRingHom Tu) = δ * thE E n δ from h5 E n _ hinv δ s hs0 hsc _ _ ρ.toRingHom hfr Tu, ← hδ, Units.val_mul, Units.val_mul, Matrix.coe_units_inv, Matrix.charpoly_units_conj']`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use `(locEl_rel hU n w ⟨g0, hg0⟩ (y w)).1 ((hloc' Tu w hw).2 fun i u => ?_)` and prove the remaining obligations. Rewrite using `[hTu]`. Conclude with `hTc i u.1`. Use `⟨⟨FibL.cls (thE E n) (pt δ ρ.toRingHom Tu), hmem⟩, funext fun i => Subtype.ext ?_⟩` and prove the remaining obligations. Establish `hrel : ∃ g, pt δ ρ.toRingHom (tc ⟨_, hmem⟩) = g⁻¹ * pt δ ρ.toRingHom Tu * thE E n g`.
-
-Establish `e` using `FibL.twR_equiv (thE E n)`. Conclude with `e.trans ⟨g0, hg0⟩ (e.symm ⟨gc ⟨_, hmem⟩, htc ⟨_, hmem⟩⟩)`. Take `⟨uu, vv, huv⟩` from `(h7 E n _ hinv δ s hs0 hsc _ _ ρ.toRingHom hfr Tu (tc ⟨_, hmem⟩)).1 hrel`. Express the relevant statement in the definitionally equal form `QuotientGroup.mk (ev i (tc ⟨_, hmem⟩)) = (f i).1`. Rewrite using `[hT i, ← hTu i]`.
-
-Use `QuotientGroup.eq.2 ((hglob i _).2 ⟨uu i, vv i, ?_⟩)` and prove the remaining obligations. Establish `hi` using `congrFun huv i`. Rewrite using `[Units.val_mul, Units.val_inv_eq_inv_val]`. Express the relevant statement in the definitionally equal form `((tc ⟨_, hmem⟩ : ∀ j, K j) i)⁻¹ * (Tu : ∀ j, K j) i = _`. Rewrite using `[hi]`.
-
-Express the relevant statement in the definitionally equal form `((tc ⟨_, hmem⟩ : ∀ j, K j) i)⁻¹ * ((tc ⟨_, hmem⟩ : ∀ j, K j) i * (uu i ^ 2 - algebraMap (maximalRealSubfield E) (K i) d * vv i ^ 2)) = _`. Rewrite using `[← mul_assoc, inv_mul_cancel₀ (show (tc ⟨_, hmem⟩ : ∀ j, K j) i ≠ 0 from (ev i (tc ⟨_, hmem⟩)).ne_zero), one_mul]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem param_main (h1 : SkewEx) (h2 : Struct) (h3 : QuadField) (h4 : LocDict) (h5 : ClsNorm) (h6 : ClsOnto)
     (h7 : ClsEq) (h8 : LocGood) : Param := by
@@ -349,7 +343,7 @@ end CompanionTheory.Rg.BcB.G3.ParamLP
 namespace CompanionTheory.Rg.BcB.G3
 
 /- English proof (translation)
-The claim follows from `ParamLP.param_main h1 h2 h3 h4 h5 h6 h7 h8`.
+A detailed English derivation is pending.
 -/
 theorem param_pfL (h1 : SkewEx) (h2 : Struct) (h3 : QuadField) (h4 : LocDict) (h5 : ClsNorm) (h6 : ClsOnto)
     (h7 : ClsEq) (h8 : LocGood) : Param :=

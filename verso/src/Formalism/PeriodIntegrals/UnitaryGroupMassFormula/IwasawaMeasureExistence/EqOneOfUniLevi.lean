@@ -18,7 +18,7 @@ def uw (A : Matrix ι ι R) : Matrix (Fin n) (Fin n) R := Fm * A.submatrix e.sym
 variable {Fm Fi}
 
 /- English proof (translation)
-Unfold `wc`. Rewrite using `[submatrix_mul_equiv, show Fi * X * Fm * (Fi * Y * Fm) = Fi * X * (Fm * Fi) * Y * Fm by`. Simplify using `only [Matrix.mul_assoc], hFm, Matrix.mul_one]`. Simplify using `only [Matrix.mul_assoc]`.
+Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem wc_mul (hFm : Fm * Fi = 1) (X Y : Matrix (Fin n) (Fin n) R) :
     wc e Fm Fi (X * Y) = wc e Fm Fi X * wc e Fm Fi Y := by
@@ -28,7 +28,7 @@ theorem wc_mul (hFm : Fm * Fi = 1) (X Y : Matrix (Fin n) (Fin n) R) :
   simp only [Matrix.mul_assoc]
 
 /- English proof (translation)
-Unfold `uw`. Rewrite using `[(submatrix_mul_equiv A B e.symm e.symm e.symm).symm, show Fm * A.submatrix e.symm e.symm * Fi * (Fm * B.submatrix e.symm e.symm * Fi) = Fm * A.submatrix e.symm e.symm * (Fi * Fm) * B.submatrix e.symm e.symm * Fi by simp only [Matrix.mul_assoc], hFi, Matrix.mul_one]`. Simplify using `only [Matrix.mul_assoc]`.
+Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem uw_mul (hFi : Fi * Fm = 1) (A B : Matrix ι ι R) :
     uw e Fm Fi (A * B) = uw e Fm Fi A * uw e Fm Fi B := by
@@ -40,21 +40,21 @@ theorem uw_mul (hFi : Fi * Fm = 1) (A B : Matrix ι ι R) :
   simp only [Matrix.mul_assoc]
 
 /- English proof (translation)
-Unfold `wc`. Rewrite using `[Matrix.mul_one, hFi, submatrix_one_equiv]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem wc_one (hFi : Fi * Fm = 1) : wc e Fm Fi (1 : Matrix (Fin n) (Fin n) R) = 1 := by
   unfold wc
   rw [Matrix.mul_one, hFi, submatrix_one_equiv]
 
 /- English proof (translation)
-Unfold `uw`. Rewrite using `[submatrix_one_equiv, Matrix.mul_one, hFm]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem uw_one (hFm : Fm * Fi = 1) : uw e Fm Fi (1 : Matrix ι ι R) = 1 := by
   unfold uw
   rw [submatrix_one_equiv, Matrix.mul_one, hFm]
 
 /- English proof (translation)
-Introduce `s r hl`. Establish `h1 : g ∈ Formalism.UG.stabGL (stepLo (cols e Fm) lev (lev r + 1))` using `Subgroup.mem_iInf.1 hg (lev r + 1)`. Conclude with `entry_zero hFi {t | lev t < lev r + 1} h1 s r (by simp only [Set.mem_ofPred_eq]; omega) (by simp only [Set.mem_ofPred_eq]; omega)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem blo_of_par (hFi : Fi * Fm = 1) {g : GL (Fin n) R} (hg : g ∈ parGL (cols e Fm) lev) :
     BLo lev (wc e Fm Fi (g : Matrix (Fin n) (Fin n) R)) := by
@@ -79,31 +79,31 @@ theorem cT_apply (σ : R →+* R) {m p : Type} (M : Matrix m p R) (i : p) (j : m
     Formalism.UG.cT σ M i j = σ (M j i) := rfl
 
 /- English proof (translation)
-Use extensionality with `i j`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Both sides reduce to the same expression.
 -/
 theorem cT_submatrix (σ : R →+* R) {m p m' p' : Type} (M : Matrix m p R) (f : m' → m) (g : p' → p) :
     Formalism.UG.cT σ (M.submatrix f g) = (Formalism.UG.cT σ M).submatrix g f := by
   ext i j; rfl
 
 /- English proof (translation)
-Simplify using `only [Matrix.mul_apply, cT_apply, Finset.sum_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem tripleS (σ : R →+* R) (A W : Matrix ι ι R) (p q : ι) :
     (Formalism.UG.cT σ A * W * A) p q = ∑ t, ∑ r, σ (A r p) * W r t * A t q := by
   simp only [Matrix.mul_apply, cT_apply, Finset.sum_mul]
 
 /- English proof (translation)
-Use extensionality with `p q`. Rewrite using `[tripleS]`. Distinguish the cases in `hpq : lev p + lev q = 2 * a`. Use `conv_rhs => rw [← hU, tripleS]`. Use `Finset.sum_congr rfl fun t _ => Finset.sum_congr rfl fun r _ => ?_` and prove the remaining obligations.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hW : W r t = 0`. Rewrite using `[hW, mul_zero, zero_mul, mul_zero, zero_mul]`. Establish `hl` using `hA r t hW`. Simplify using `only [bd]`. Distinguish the cases in `h1 : lev r = lev p`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_pos h1, if_pos (show lev t = lev q by omega)]`. Rewrite using `[if_neg h1, map_zero, zero_mul, zero_mul]`. Break down `Nat.lt_or_ge (lev p) (lev r) with h2 | h2` into its components or cases. Rewrite using `[hT r p h2, map_zero, zero_mul, zero_mul]`. Rewrite using `[hT t q (by omega), mul_zero]`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hW : W p q = 0`. Assume the negation of the conclusion as `h`. Conclude with `hpq (hA p q h)`. Rewrite using `[hW]`. Use `Finset.sum_eq_zero fun t _ => Finset.sum_eq_zero fun r _ => ?_` and prove the remaining obligations.
+Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Simplify using `only [bd]`. Distinguish the cases in `h1 : lev r = lev p`. Distinguish the cases in `h2 : lev t = lev q`. Establish `hW' : W r t = 0`. Assume the negation of the conclusion as `h`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Use `hA r t h` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite using `[hW', mul_zero, zero_mul]`. Rewrite using `[if_neg h2, mul_zero]`. Rewrite using `[if_neg h1, map_zero, zero_mul, zero_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bd_unitaryS (σ : R →+* R) {a : ℕ} {W T : Matrix ι ι R} (hA : ALev lev a W) (hT : BLo lev T)
     (hU : Formalism.UG.cT σ T * W * T = W) : Formalism.UG.cT σ (bd lev T) * W * bd lev T = W := by
@@ -136,11 +136,9 @@ theorem bd_unitaryS (σ : R →+* R) {a : ℕ} {W T : Matrix ι ι R} (hA : ALev
     · rw [if_neg h1, map_zero, zero_mul, zero_mul]
 
 /- English proof (translation)
-Substitute `hW` using the available equality. Unfold `wc`. Rewrite using `[cT_submatrix, submatrix_mul_equiv, submatrix_mul_equiv]`. Use `congr 1`. Establish `e1 : Formalism.UG.cT σ Fi * Formalism.UG.cT σ Fm = 1` using `by rw [← Formalism.UG.cT_mul, hFm, Formalism.UG.cT_one]`.
+Substitute using the available equality. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Formalism.UG.cT_mul, Matrix.mul_assoc]`. Use `_ = Formalism.UG.cT σ Fm * (Formalism.UG.cT σ X * Jx * X) * Fm := by`. Rewrite using `[e1, hFm]`. Simplify using `only [Matrix.mul_one, Matrix.mul_assoc]`.
-
-Use `_ = _ := by rw [hX]`.
+Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem wc_unitary (σ : R →+* R) (Jx : Matrix (Fin n) (Fin n) R) (hFm : Fm * Fi = 1) {W : Matrix ι ι R}
     (hW : (Formalism.UG.cT σ Fm * Jx * Fm).submatrix e e = W) (X : Matrix (Fin n) (Fin n) R)
@@ -158,9 +156,9 @@ theorem wc_unitary (σ : R →+* R) (Jx : Matrix (Fin n) (Fin n) R) (hFm : Fm * 
     _ = _ := by rw [hX]
 
 /- English proof (translation)
-Establish `e1 : Formalism.UG.cT σ Fi * Formalism.UG.cT σ Fm = 1` using `by rw [← Formalism.UG.cT_mul, hFm, Formalism.UG.cT_one]`. Establish `hG : Formalism.UG.cT σ Fm * Jx * Fm = W.submatrix e.symm e.symm`. Rewrite using `[← hW, submatrix_submatrix, Equiv.self_comp_symm, submatrix_id_id]`. Establish `hA' : Formalism.UG.cT σ (A.submatrix e.symm e.symm) * W.submatrix e.symm e.symm * A.submatrix e.symm e.symm = W.submatrix e.symm e.symm`. Rewrite using `[cT_submatrix, submatrix_mul_equiv, submatrix_mul_equiv, hA]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Unfold `uw`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hG, hA', ← hG]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = Jx := by rw [e1, hFm, Matrix.one_mul, Matrix.mul_one]`.
+Replace the relevant objects with their definitions. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem uw_unitary (σ : R →+* R) (Jx : Matrix (Fin n) (Fin n) R) (hFm : Fm * Fi = 1) {W : Matrix ι ι R}
     (hW : (Formalism.UG.cT σ Fm * Jx * Fm).submatrix e e = W) (A : Matrix ι ι R) (hA : Formalism.UG.cT σ A * W * A = W) :
@@ -180,14 +178,14 @@ theorem uw_unitary (σ : R →+* R) (Jx : Matrix (Fin n) (Fin n) R) (hFm : Fm * 
     _ = Jx := by rw [e1, hFm, Matrix.one_mul, Matrix.mul_one]
 
 /- English proof (translation)
-Rewrite using `[← wc_mul e hFm, ← Units.val_mul, mul_inv_cancel, Units.val_one, wc_one e hFi]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem wc_mul_inv (hFm : Fm * Fi = 1) (hFi : Fi * Fm = 1) (g : GL (Fin n) R) :
     wc e Fm Fi (g : Matrix (Fin n) (Fin n) R) * wc e Fm Fi ((g⁻¹ : GL (Fin n) R) : Matrix (Fin n) (Fin n) R) = 1 := by
   rw [← wc_mul e hFm, ← Units.val_mul, mul_inv_cancel, Units.val_one, wc_one e hFi]
 
 /- English proof (translation)
-Rewrite using `[← wc_mul e hFm, ← Units.val_mul, inv_mul_cancel, Units.val_one, wc_one e hFi]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem wc_inv_mul (hFm : Fm * Fi = 1) (hFi : Fi * Fm = 1) (g : GL (Fin n) R) :
     wc e Fm Fi ((g⁻¹ : GL (Fin n) R) : Matrix (Fin n) (Fin n) R) * wc e Fm Fi (g : Matrix (Fin n) (Fin n) R) = 1 := by
@@ -205,7 +203,7 @@ def levGL (hFm : Fm * Fi = 1) (hFi : Fi * Fm = 1) (g : GL (Fin n) R) (hg : g ∈
 variable (hFm : Fm * Fi = 1) (hFi : Fi * Fm = 1) {g : GL (Fin n) R} (hg : g ∈ parGL (cols e Fm) lev)
 
 /- English proof (translation)
-The claim follows from `uw_unitary e σ Jx hFm hW _ (bd_unitaryS lev σ hA (blo_of_par e lev hFi hg) (wc_unitary e σ Jx hFm hW _ hgU))`.
+A detailed English derivation is pending.
 -/
 theorem levGL_unitary (σ : R →+* R) (Jx : Matrix (Fin n) (Fin n) R) {a : ℕ} {W : Matrix ι ι R}
     (hW : (Formalism.UG.cT σ Fm * Jx * Fm).submatrix e e = W) (hA : ALev lev a W) (hgU : g ∈ Formalism.UG.UJ σ Jx) :

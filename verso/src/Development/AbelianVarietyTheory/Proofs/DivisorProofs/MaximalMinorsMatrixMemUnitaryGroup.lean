@@ -15,7 +15,7 @@ noncomputable def strictMonoEquivPowersetCard (a : ℕ) (n : Type*) [LinearOrder
     Set.powersetCard.ofFinEmbEquiv
 
 /- English proof (translation)
-Establish `h : Set.powersetCard.ofFinEmbEquiv.symm (strictMonoEquivPowersetCard a n s) = OrderEmbedding.ofStrictMono s.1 s.2` using `Equiv.symm_apply_apply _ _`. Conclude with `congrArg (fun f : Fin a ↪o n => (f : Fin a → n)) h`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem subsetEnum_strictMonoEquivPowersetCard (a : ℕ) {n : Type*} [LinearOrder n]
     (s : {s : Fin a → n // StrictMono s}) :
@@ -25,11 +25,11 @@ theorem subsetEnum_strictMonoEquivPowersetCard (a : ℕ) {n : Type*} [LinearOrde
   exact congrArg (fun f : Fin a ↪o n => (f : Fin a → n)) h
 
 /- English proof (translation)
-Introduce `N a M hM`. Use `set e := strictMonoEquivPowersetCard a (Fin N)`. Establish `hC : (Matrix.of fun s s' : {s : Fin a → Fin N // StrictMono s} => (Matrix.of fun i i' : Fin a => M (s'.1 i') (s.1 i)).det) = (compoundMatrix a Mᵀ).submatrix e e`. Use extensionality with `s s'`. Establish `he : ∀ s, subsetEnum (e s) = s.1` using `subsetEnum_strictMonoEquivPowersetCard a`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [submatrix_apply, compoundMatrix, of_apply, he]`. Both sides reduce to the same expression. Establish `hT : Mᵀ * (Mᵀ)ᴴ = 1`. Rewrite `hM` using `[mem_unitaryGroup_iff']`. Establish `h1 : Mᵀ * (Mᵀ)ᴴ = (star M * M)ᵀ`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `i j`. Simplify using `[mul_apply, mul_comm]`. Rewrite using `[h1, hM, transpose_one]`. Rewrite using `[hC, mem_unitaryGroup_iff, star_eq_conjTranspose, conjTranspose_submatrix, submatrix_mul_equiv, ← compoundMatrix_conjTranspose, ← compoundMatrix_mul, hT, compoundMatrix_one, submatrix_one_equiv]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem minorsMatrix_mem_unitaryGroup : ∀ {N a : ℕ} (M : Matrix (Fin N) (Fin N) ℂ),
     M ∈ Matrix.unitaryGroup (Fin N) ℂ →

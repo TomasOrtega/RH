@@ -19,13 +19,13 @@ noncomputable section
 namespace GlobalTheory.LiftUnits
 
 /- English proof (translation)
-Introduce `_ hp` and use `⟨hU hp, hV hp⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem le_pre_inf {X Y : Scheme.{0}} {y : Y ⟶ X} {U V : X.Opens} (hU : ⊤ ≤ y ⁻¹ᵁ U) (hV : ⊤ ≤ y ⁻¹ᵁ V) :
     ⊤ ≤ y ⁻¹ᵁ (U ⊓ V) := fun _ hp => ⟨hU hp, hV hp⟩
 
 /- English proof (translation)
-Substitute `e` using the available equality. Introduce `p _`. Conclude with `hU (Set.mem_univ (f p))`.
+Substitute using the available equality. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem le_pre_of_eq {X Y Z : Scheme.{0}} {f : Z ⟶ Y} {y : Y ⟶ X} {z : Z ⟶ X} (e : f ≫ y = z) {U : X.Opens}
     (hU : ⊤ ≤ y ⁻¹ᵁ U) : ⊤ ≤ z ⁻¹ᵁ U := by
@@ -34,7 +34,7 @@ theorem le_pre_of_eq {X Y Z : Scheme.{0}} {f : Z ⟶ Y} {y : Y ⟶ X} {z : Z ⟶
   exact hU (Set.mem_univ (f p))
 
 /- English proof (translation)
-Substitute `e` using the available equality. Take `⟨_, hn, -⟩` from `GlobalTheory.EvalNat.evalAt_natural φ x U h`. Conclude with `(hn f).symm`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem map_evalAt {X : Scheme.{0}} {C C' : Type} [CommRing C] [CommRing C'] (φ : C →+* C') {x : Sp C ⟶ X}
     {y : Sp C' ⟶ X} (e : spMap φ ≫ x = y) {U : X.Opens} (h : ⊤ ≤ x ⁻¹ᵁ U) (h' : ⊤ ≤ y ⁻¹ᵁ U) (f : Γ(X, U)) :
@@ -44,9 +44,9 @@ theorem map_evalAt {X : Scheme.{0}} {C C' : Type} [CommRing C] [CommRing C'] (φ
   exact (hn f).symm
 
 /- English proof (translation)
-Establish `hres : ∀ {U V : X.Opens} (h : V ≤ U) (u : (Γ(X, U))ˣ), ((res h u : (Γ(X, V))ˣ) : Γ(X, V)) = (X.presheaf.map (homOfLE h).op).hom (u : Γ(X, U))` using `fun _ _ => rfl`. Establish `q2` using `congrArg (fun u => evalAt y (M.U a ⊓ M.U b ⊓ M.U c) (le_pre_inf (le_pre_inf ha hb) hc) (Units.val u)) (hM.cocycle a b c)`. Simplify using `only [Units.val_mul, map_mul, hres] at q2`. Take `⟨_, -, hr⟩` from `GlobalTheory.EvalNat.evalAt_natural (RingHom.id C) y (M.U a ⊓ M.U b ⊓ M.U c) (le_pre_inf (le_pre_inf ha hb) hc)`. Rewrite using `[hr (M.U a ⊓ M.U b) (le_trans inf_le_left le_rfl) (le_pre_inf ha hb), hr (M.U b ⊓ M.U c) (le_inf (le_trans inf_le_left inf_le_right) inf_le_right) (le_pre_inf hb hc), hr (M.U a ⊓ M.U c) (le_inf (le_trans inf_le_left inf_le_left) inf_le_right) (le_pre_inf ha hc)]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `q2`.
+A detailed English derivation is pending.
 -/
 theorem evalAt_g_mul {X : Scheme.{0}} {C : Type} [CommRing C] {M : LB X} (hM : M.IsLB) (y : Sp C ⟶ X) {a b c : M.ι}
     (ha : ⊤ ≤ y ⁻¹ᵁ M.U a) (hb : ⊤ ≤ y ⁻¹ᵁ M.U b) (hc : ⊤ ≤ y ⁻¹ᵁ M.U c) :
@@ -64,13 +64,13 @@ theorem evalAt_g_mul {X : Scheme.{0}} {C : Type} [CommRing C] {M : LB X} (hM : M
   exact q2
 
 /- English proof (translation)
-The claim follows from `u.isUnit.map (evalAt y U h)`.
+A detailed English derivation is pending.
 -/
 theorem isUnit_evalAt {X : Scheme.{0}} {C : Type} [CommRing C] (y : Sp C ⟶ X) {U : X.Opens} (h : ⊤ ≤ y ⁻¹ᵁ U)
     (u : Γ(X, U)ˣ) : IsUnit (evalAt y U h u.val) := u.isUnit.map (evalAt y U h)
 
 /- English proof (translation)
-Substitute `hu hv hw hf` using the available equality. Take the linear combination `(S * A) * c₁ - (S * A) * c₂`.
+Substitute using the available equality. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem mul_eq_one_of_covolume_identity {R : Type} [CommRing R] {g₁ g₂ g₃ g₄ g₅ u v w A S f : R} (c₁ : g₁ * g₂ = g₅) (c₂ : g₃ * g₄ = g₅)
     (hu : u = g₁) (hv : v = g₂ * S) (hw : w = g₃ * f) (hf : f = g₄ * A * S) : u * v * A = w := by
@@ -78,23 +78,23 @@ theorem mul_eq_one_of_covolume_identity {R : Type} [CommRing R] {g₁ g₂ g₃ 
   linear_combination (S * A) * c₁ - (S * A) * c₂
 
 /- English proof (translation)
-Introduce `I _ g Λ _ F B _ X s σ K r M hM j hj fr a hfr hcoc i hi uu huu`. Establish `hjT : ∀ T : K.Obj, ⊤ ≤ (r.obj T).x ⁻¹ᵁ M.U (j T.k)` using `fun T => le_pre_of_eq (f := spMap ((Ideal.Quotient.mk T.J).comp T.ρ)) (y := r.x T.k) rfl (hj T.k)`. Establish `hlift : ∀ T : K.Obj, ∃ c : T.C, IsUnit c ∧ Ideal.Quotient.mk T.J c = @id (T.C ⧸ T.J) (evalAt (r.obj T).x _ (le_pre_inf (hi T) (hjT T)) (M.g (i T) (j T.k)).val) * Ideal.Quotient.mk T.J (T.ρ (fr T.k))`. Introduce `T`. Establish `hu : IsUnit (@id (T.C ⧸ T.J) (evalAt (r.obj T).x _ (le_pre_inf (hi T) (hjT T)) (M.g (i T) (j T.k)).val) * Ideal.Quotient.mk T.J (T.ρ (fr T.k)))` using `(isUnit_evalAt (r.obj T).x (le_pre_inf (hi T) (hjT T)) (M.g (i T) (j T.k))).mul (((hfr T.k).map T.ρ).map (Ideal.Quotient.mk T.J))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Take `⟨c, hc⟩` from `Ideal.Quotient.mk_surjective (@id (T.C ⧸ T.J) (evalAt (r.obj T).x _ (le_pre_inf (hi T) (hjT T)) (M.g (i T) (j T.k)).val) * Ideal.Quotient.mk T.J (T.ρ (fr T.k)))`. Take `⟨d, hd⟩` from `Ideal.Quotient.mk_surjective (((hu.unit⁻¹ : (T.C ⧸ T.J)ˣ)) : T.C ⧸ T.J)`. Use `⟨c, ?_, hc⟩` and prove the remaining obligations. Establish `hmem : c * d - 1 ∈ T.J`. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, map_sub, map_mul, hc, hd, map_one, IsUnit.mul_val_inv, sub_self]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hnil : IsNilpotent (c * d - 1)`. Take `⟨n, hn⟩` from `T.nil`. Use `⟨n, ?_⟩` and prove the remaining obligations. Establish `hp` using `Ideal.pow_mem_pow hmem n`. Rewrite `hp` using `[hn, Ideal.zero_eq_bot, Ideal.mem_bot]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `hcd : IsUnit (c * d)`. Establish `h1` using `hnil.isUnit_one_add`. Rewrite `h1` using `[add_sub_cancel]`. Then use the resulting hypothesis. Conclude with `isUnit_of_mul_isUnit_left hcd`. Use `choose c hcu hcε using hlift`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨fun T => (hcu T).unit, ?_⟩` and prove the remaining obligations. Introduce `T T' φ`. Establish `hle : K.le φ.deg T'.k T.k` using `Charts.Hom.le φ`. Establish `hiT : ⊤ ≤ (r.obj T').x ⁻¹ᵁ M.U (i T)` using `le_pre_of_eq (f := spMap (Ideal.quotientMap T'.J (φ.φ : T.C →+* T'.C) φ.mem)) (y := (r.obj T).x) (r.analyticChartsRealization_comp_point_eq φ) (hi T)`. Establish `hjk : ⊤ ≤ (r.obj T').x ⁻¹ᵁ M.U (j T.k)` using `le_pre_of_eq (f := spMap (Ideal.quotientMap T'.J (φ.φ : T.C →+* T'.C) φ.mem)) (y := (r.obj T).x) (r.analyticChartsRealization_comp_point_eq φ) (hjT T)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hxk : ⊤ ≤ r.x T'.k ⁻¹ᵁ (M.U (j T'.k) ⊓ M.U (j T.k))` using `le_pre_inf (hj T'.k) (le_pre_of_eq (r.compat hle) (hj T.k))`. Establish `c₁` using `evalAt_g_mul hM (r.obj T').x (hi T') hiT hjk`. Establish `c₂` using `evalAt_g_mul hM (r.obj T').x (hi T') (hjT T') hjk`. Establish `hu` using `huu T T' φ (le_pre_inf (hi T') hiT)`. Establish `hS : Ideal.Quotient.mk T'.J (φ.φ (T.ρ (fr T.k))) = Ideal.Quotient.mk T'.J (T'.ρ (Charts.sh hle (fr T.k)))` using `Ideal.Quotient.eq.mpr (Close.sub_mem φ.close (fr T.k))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hv : Ideal.Quotient.mk T'.J (φ.φ (c T)) = @id (T'.C ⧸ T'.J) (evalAt (r.obj T').x _ (le_pre_inf hiT hjk) (M.g (i T) (j T.k)).val) * Ideal.Quotient.mk T'.J (T'.ρ (Charts.sh hle (fr T.k)))`. Establish `h1 : Ideal.Quotient.mk T'.J (φ.φ (c T)) = Ideal.quotientMap T'.J (φ.φ : T.C →+* T'.C) φ.mem (Ideal.Quotient.mk T.J (c T))`. Both sides reduce to the same expression. Establish `h2 : Ideal.quotientMap T'.J (φ.φ : T.C →+* T'.C) φ.mem (Ideal.Quotient.mk T.J (T.ρ (fr T.k))) = Ideal.Quotient.mk T'.J (φ.φ (T.ρ (fr T.k)))`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Establish an intermediate fact. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[h1, hcε T, map_mul, h2, hS]`. Use `congr 1`. Conclude with `map_evalAt (Ideal.quotientMap T'.J (φ.φ : T.C →+* T'.C) φ.mem) (x := (r.obj T).x) (y := (r.obj T').x) (r.analyticChartsRealization_comp_point_eq φ) _ (le_pre_inf hiT hjk) _`. Establish `hf : Ideal.Quotient.mk T'.J (T'.ρ (fr T'.k)) = @id (T'.C ⧸ T'.J) (evalAt (r.obj T').x _ (le_pre_inf (hjT T') hjk) (M.g (j T'.k) (j T.k)).val) * Ideal.Quotient.mk T'.J (T'.ρ (a φ.deg T'.k)) * Ideal.Quotient.mk T'.J (T'.ρ (Charts.sh hle (fr T.k)))`. Rewrite using `[hcoc φ.deg T'.k T.k hle hxk, map_mul, map_mul, map_mul, map_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `congr 2`. Conclude with `map_evalAt ((Ideal.Quotient.mk T'.J).comp T'.ρ) (x := r.x T'.k) (y := (r.obj T').x) rfl _ _ _`. Use `Ideal.Quotient.eq.mp ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_mul]`. Conclude with `mul_eq_one_of_covolume_identity (R := T'.C ⧸ T'.J) c₁ c₂ hu hv (hcε T') hf`.
+A detailed English derivation is pending.
 -/
 theorem exists_units : ∀ {I : Type} [Fintype I] {g : ℕ} {Λ : Type} [AddCommGroup Λ] {F : Fam I g Λ} {B : Type} [CommRing B] {X : Scheme.{0}} {s : X ⟶ Sp B} {σ : B →+* Hol F.V} (K : Charts F) (r : Real K s σ) (M : LB X), M.IsLB → ∀ (j : K.K → M.ι), (∀ k, ⊤ ≤ r.x k ⁻¹ᵁ M.U (j k)) → ∀ (fr : ∀ k, Hol (K.W k)) (a : Λ → ∀ k, Hol (K.W k)), (∀ k, IsUnit (fr k)) → (∀ l k' k (h : K.le l k' k) (hh : ⊤ ≤ r.x k' ⁻¹ᵁ (M.U (j k') ⊓ M.U (j k))), fr k' = evalAt (r.x k') (M.U (j k') ⊓ M.U (j k)) hh (M.g (j k') (j k)).val * a l k' * Charts.sh h (fr k)) → ∀ (i : K.Obj → M.ι), (∀ T, ⊤ ≤ (r.obj T).x ⁻¹ᵁ M.U (i T)) → ∀ (uu : ∀ T T' : K.Obj, (T ⟶ T') → T'.C), (∀ (T T' : K.Obj) (φ : T ⟶ T') (hh : ⊤ ≤ (r.obj T').x ⁻¹ᵁ (M.U (i T') ⊓ M.U (i T))), Ideal.Quotient.mk T'.J (uu T T' φ) = evalAt (r.obj T').x (M.U (i T') ⊓ M.U (i T)) hh (M.g (i T') (i T)).val) → ∃ e : ∀ T : K.Obj, (T.C)ˣ, (∀ (T T' : K.Obj) (φ : T ⟶ T'), uu T T' φ * φ.φ (e T : T.C) * T'.ρ (a φ.deg T'.k) - (e T' : T'.C) ∈ T'.J) := by
   intro I _ g Λ _ F B _ X s σ K r M hM j hj fr a hfr hcoc i hi uu huu

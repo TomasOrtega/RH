@@ -6,13 +6,13 @@ open scoped ContDiff BigOperators Real
 namespace GlobalTheory
 
 /- English proof (translation)
-Use `haveI : IsZLattice ℝ Λ := ⟨hΛ⟩`. Set `b0` to `Module.finBasis ℤ Λ`. Set `b` to `b0.ofZLatticeBasis ℝ Λ`. Use `⟨_, b.equivFunL.symm, ?_, ?_⟩` and prove the remaining obligations. Introduce `ν`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `: b.equivFunL.symm (fun k => (ν k : ℝ)) = ∑ k, (ν k : ℝ) • b k` using `b.equivFun_symm_apply _`. Rewrite using `[this]`. Use `Submodule.sum_mem _ fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Int.cast_smul_eq_zsmul]`. Use `Submodule.smul_mem _ _ ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `[b]`. Introduce `l`. Use `⟨fun k => b0.repr l k, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `k`. Use `Module.Basis.ofZLatticeBasis_repr_apply ℝ Λ b0 l k` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `this` using `[b]`.
+A detailed English derivation is pending.
 -/
 theorem exists_equiv_latticeCoords (g : ℕ) (Λ : Submodule ℤ (Fin g → ℂ)) [DiscreteTopology Λ]
     (hΛ : Submodule.span ℝ (Λ : Set (Fin g → ℂ)) = ⊤) :
@@ -38,9 +38,9 @@ theorem exists_equiv_latticeCoords (g : ℕ) (Λ : Submodule ℤ (Fin g → ℂ)
     simpa [b] using this
 
 /- English proof (translation)
-Use `conv_lhs => rw [← Finset.univ_sum_single u]`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Establish `: (Pi.single k (u k) : Fin n → ℝ) = u k • (Pi.single k 1 : Fin n → ℝ)`. Rewrite using `[← Pi.single_smul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Rewrite using `[this, map_smul]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem realLinear_eq_sum_single {n : ℕ} (L : (Fin n → ℝ) →L[ℝ] ℂ) (u : Fin n → ℝ) :
     L u = ∑ k, (u k : ℂ) * L (Pi.single k 1) := by
@@ -52,9 +52,9 @@ theorem realLinear_eq_sum_single {n : ℕ} (L : (Fin n → ℝ) →L[ℝ] ℂ) (
   rw [this, map_smul]; simp
 
 /- English proof (translation)
-Establish `e : ∀ y, fderiv ℝ h (T x) y = fderiv ℝ (h ∘ T) x (T.symm y)`. Introduce `y`. Rewrite using `[ContinuousLinearEquiv.comp_right_fderiv]`. Simplify using the standard rewrite rules. Rewrite using `[e u, e v, realLinear_eq_sum_single _ (T.symm u), realLinear_eq_sum_single _ (T.symm v), Finset.mul_sum, ← Finset.sum_add_distrib]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem dbar_comp_equiv {n g : ℕ} (T : (Fin n → ℝ) ≃L[ℝ] (Fin g → ℂ)) (h : (Fin g → ℂ) → ℂ)
     (x : Fin n → ℝ) (u v : Fin g → ℂ) :
@@ -69,15 +69,15 @@ theorem dbar_comp_equiv {n g : ℕ} (T : (Fin n → ℝ) ≃L[ℝ] (Fin g → �
   ring
 
 /- English proof (translation)
-Establish `h1 : ∀ a, T.symm (Pi.single a 1) ⬝ᵥ ξ = 0` using `fun a => by`. Use `congrArg Complex.re (h a)` as an intermediate fact. Simplify `this` using `[Complex.re_sum, dotProduct]`. Establish `h2 : ∀ a, T.symm (I • (Pi.single a 1 : Fin g → ℂ)) ⬝ᵥ ξ = 0` using `fun a => by`. Use `congrArg Complex.im (h a)` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify `this` using `[Complex.im_sum, dotProduct]`. Establish `h3 : ∀ z : Fin g → ℂ, T.symm z ⬝ᵥ ξ = 0` using `fun z => by`. Establish `hz : z = ∑ a, ((z a).re • (Pi.single a 1 : Fin g → ℂ) + (z a).im • (I • (Pi.single a 1 : Fin g → ℂ)))` using `by conv_lhs => rw [← Finset.univ_sum_single z]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Use function extensionality and compare the values at `c`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Distinguish the cases in `hc : c = a`. Substitute `hc` using the available equality. Simplify using the standard rewrite rules. Simplify using `[hc]`. Rewrite using `[hz, map_sum, sum_dotProduct]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_eq_zero fun a _ => ?_` and prove the remaining obligations. Rewrite using `[map_add, map_smul, map_smul, add_dotProduct, smul_dotProduct, smul_dotProduct, h1, h2]`. Simplify using the standard rewrite rules. Use `h3 (T ξ)` as an intermediate fact. Rewrite `this` using `[T.symm_apply_apply]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `dotProduct_self_eq_zero.mp this`.
+A detailed English derivation is pending.
 -/
 theorem dbar_symbol_elliptic {n g : ℕ} (T : (Fin n → ℝ) ≃L[ℝ] (Fin g → ℂ)) (ξ : Fin n → ℝ)
     (h : ∀ a, ∑ k, ((T.symm (Pi.single a 1) k : ℂ) +
@@ -106,13 +106,11 @@ theorem dbar_symbol_elliptic {n g : ℕ} (T : (Fin n → ℝ) ≃L[ℝ] (Fin g �
   exact dotProduct_self_eq_zero.mp this
 
 /- English proof (translation)
-Introduce `g Λ hd hΛ w hw hc`. Take `⟨n, T, hT1, hT2⟩` from `exists_equiv_latticeCoords g Λ hΛ`. Take `⟨t, f, hf, hper, heq⟩` from `GlobalTheory.T.exists_periodic_smooth_solution_torus_system n g (fun a k => (T.symm (Pi.single a 1) k : ℂ) + I * (T.symm (I • (Pi.single a 1 : Fin g → ℂ)) k : ℂ)) (dbar_symbol_elliptic T) (fun a => w a ∘ T) (fun a => ⟨(hw a).1.comp T.contDiff, fun ν x => by`. Simplify using `only [Function.comp, map_add]`. Conclude with `(hw a).2 ⟨_, hT1 ν⟩ _⟩)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `(fun a b x => by`. Rewrite using `[dbar_comp_equiv, dbar_comp_equiv]`. Conclude with `hc a b _)`. Use `⟨t, f ∘ T.symm, hf.comp T.symm.contDiff, fun l z => ?_, fun a z => ?_⟩` and prove the remaining obligations. Take `⟨ν, hν⟩` from `hT2 l`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Function.comp, map_add, hν]`. Conclude with `hper ν _`. Establish `h1` using `dbar_comp_equiv T (f ∘ T.symm) (T.symm z) (Pi.single a 1) (I • (Pi.single a 1 : Fin g → ℂ))`. Establish `h2 : (f ∘ T.symm) ∘ T = f` using `by funext y; simp`. Rewrite `h1` using `[h2, T.apply_symm_apply]`.
-
-Rewrite using `[← h1, heq a]`. Simplify using the standard rewrite rules.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem dbar_solve_complexTorus : ∀ (g : ℕ) (Λ : Submodule ℤ (Fin g → ℂ)), DiscreteTopology Λ → Submodule.span ℝ (Λ : Set (Fin g → ℂ)) = ⊤ → ∀ w : Fin g → (Fin g → ℂ) → ℂ, (∀ a, ContDiff ℝ ∞ (w a) ∧ ∀ (l : Λ) z, w a (z + l) = w a z) → (∀ a b z, (fderiv ℝ (w b) z (Pi.single a 1 : Fin g → ℂ) + I * fderiv ℝ (w b) z (I • (Pi.single a 1 : Fin g → ℂ))) = (fderiv ℝ (w a) z (Pi.single b 1 : Fin g → ℂ) + I * fderiv ℝ (w a) z (I • (Pi.single b 1 : Fin g → ℂ)))) → ∃ (t : Fin g → ℂ) (f : (Fin g → ℂ) → ℂ), ContDiff ℝ ∞ f ∧ (∀ (l : Λ) z, f (z + l) = f z) ∧ ∀ a z, (fderiv ℝ f z (Pi.single a 1 : Fin g → ℂ) + I * fderiv ℝ f z (I • (Pi.single a 1 : Fin g → ℂ))) = w a z - t a := by
   intro g Λ hd hΛ w hw hc

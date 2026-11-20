@@ -9,19 +9,17 @@ open Formalism.BasicNotions Formalism.BasicNotions.Loc ValuativeRel GroundTheory
 namespace GlobalTheory.PMon.Ram
 
 /- English proof (translation)
-Introduce `K L _ _ _ _ _ _ _ _ _ _ _ _ p E A B hp hE hA hord hcomm hpow hnot`. Take `⟨j, hj, hrange, -, hram⟩` from `GlobalTheory.T.galoisGroup_fixedField_baseChange_localField K L A`. Establish `hmemA : ∀ σ, j σ ∈ A` using `fun σ => hrange.le ⟨σ, rfl⟩`. Establish `htop : lowerRamificationGroup (IntermediateField.fixedField A) L 0 = ⊤`. Rewrite using `[hram, eq_top_iff]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `σ _`. Conclude with `hA (hmemA σ)`. Establish `hcomm' : ∀ σ τ : L ≃ₐ[IntermediateField.fixedField A] L, σ * τ * σ⁻¹ * τ⁻¹ ∈ B.comap j`. Introduce `σ τ`. Rewrite using `[Subgroup.mem_comap, map_mul, map_mul, map_mul, map_inv, map_inv]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hcomm _ (hmemA σ) _ (hmemA τ)`. Establish `hpow' : ∀ σ : L ≃ₐ[IntermediateField.fixedField A] L, σ ^ p ∈ B.comap j`. Introduce `σ`. Rewrite using `[Subgroup.mem_comap, map_pow]`. Conclude with `hpow _ (hmemA σ)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hne : B.comap j ≠ ⊤`. Introduce `h`. Apply `hnot` to reduce the goal to its premises. Introduce `a ha`. Take `⟨σ, rfl⟩` from `hrange.ge ha`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: σ ∈ B.comap j` using `h ▸ Subgroup.mem_top σ`. Conclude with `this`. Establish `key` using `GlobalTheory.T.card_le_wild_jumpSum_totallyRamified (IntermediateField.fixedField A) L p E (B.comap j) hp hE htop hord hcomm' hpow' hne`. Establish `hwild : wild (IntermediateField.fixedField A) L = fun t => (wild K L t).comap j`. Use function extensionality and compare the values at `t`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Conclude with `hram _`. Establish `hcard : Nat.card (L ≃ₐ[IntermediateField.fixedField A] L) = Nat.card ↥A`. Conclude with `(Nat.card_congr (MonoidHom.ofInjective hj).toEquiv).trans (congrArg (fun H : Subgroup (L ≃ₐ[K] L) => Nat.card ↥H) hrange)`. Establish `hjs : jumpSum (wild K L) A B = jumpSum (wild (IntermediateField.fixedField A) L) ⊤ (B.comap j)`. Rewrite using `[hwild, GlobalTheory.T.ramificationJumpSum_comap_injective _ _ j (wild K L) B hj]`.
-
-Conclude with `congrArg (fun H => jumpSum (wild K L) H B) hrange.symm`. Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem card_le_jumpSum_wild :
     ∀ (K L : Type) [Field K] [ValuativeRel K] [TopologicalSpace K] [IsNonarchimedeanLocalField K] [Field L] [ValuativeRel L] [TopologicalSpace L] [IsNonarchimedeanLocalField L] [Algebra K L] [ValuativeExtension K L] [FiniteDimensional K L] [IsGalois K L] (p E : ℕ) (A B : Subgroup (L ≃ₐ[K] L)), p.Prime → 0 < E → A ≤ lowerRamificationGroup K L 0 → OrdIs L p E → (∀ σ ∈ A, ∀ τ ∈ A, σ * τ * σ⁻¹ * τ⁻¹ ∈ B) → (∀ σ ∈ A, σ ^ p ∈ B) → ¬ A ≤ B → Nat.card ↥A ≤ jumpSum (wild K L) A B := by

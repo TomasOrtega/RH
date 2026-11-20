@@ -12,7 +12,7 @@ open NumberField IsDedekindDomain Representation Formalism.ConjugateSelfDual Rec
 namespace PositivityTheory.PTN
 
 /- English proof (translation)
-Introduce `F Ω _ _ _ _ _`. Take `⟨K, hK, hC, e, E, h⟩` from `GlobalTheory.CompanionTheory.FieldModel.exists_subfield_model F Ω`. Conclude with `ptConcl_of_iso_of hL F Ω K (AlgebraicClosure ℚ) e E h (hfs K)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem ptConclAt_all_of (hfs : PtfsHyp) (hL : LocHyp) :
     ∀ (F Ω : Type) [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω],
@@ -22,9 +22,9 @@ theorem ptConclAt_all_of (hfs : PtfsHyp) (hL : LocHyp) :
   exact ptConcl_of_iso_of hL F Ω K (AlgebraicClosure ℚ) e E h (hfs K)
 
 /- English proof (translation)
-Introduce `F Ω _ _ _ _ _ l _ r hl hr ζ hζ`. Take `⟨inv, hinv⟩` from `GlobalTheory.CompanionTheory.PoitouTateInv.exists_invFam_normalised F Ω l r hr ζ hζ`. Use `⟨inv, hinv, ?_⟩` and prove the remaining obligations. Introduce `S hS Av hAv μ hμ M _ _ _ _ _ ρ hρ`. Establish `h` using `ptConclAt_all_of hfs hL F Ω l r hl hr ζ hζ inv hinv S hS Av hAv μ hμ M ρ hρ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `⟨h.1, h.2, hvan F Ω l r hl hr S hS M ρ hρ⟩`.
+Supply the required witnesses or components.
 -/
 theorem poitouTateNormalised_of (hfs : PtfsHyp) (hL : LocHyp) (hvan : VanishAll) :
     PoitouTateNormalised := by

@@ -27,14 +27,14 @@ def eichGL (x v : V) (c : E) : V →ₗ[E] V where
     simp only [eichG, H.h_smul_left, RingHom.id_apply]; module
 
 /- English proof (translation)
-Simplify using `only [eichG, H.h_add_left, h_sub_left, H.h_smul_left]`.
+Simplify using the standard rewrite rules.
 -/
 lemma eichG_hL (x v : V) (c : E) (y w : V) : H.h (eichG H x v c y) w =
     H.h y w + H.h y v * H.h x w - H.h y x * H.h v w + c * H.h y x * H.h x w := by
   simp only [eichG, H.h_add_left, h_sub_left, H.h_smul_left]
 
 /- English proof (translation)
-Simplify using `only [eichG, h_add_right, h_sub_right, h_smul_right, map_mul]`.
+Simplify using the standard rewrite rules.
 -/
 lemma eichG_hR (x v : V) (c : E) (w y : V) : H.h w (eichG H x v c y) =
     H.h w y + M.L.cj (H.h y v) * H.h w x - M.L.cj (H.h y x) * H.h w v +
@@ -44,9 +44,9 @@ lemma eichG_hR (x v : V) (c : E) (w y : V) : H.h w (eichG H x v c y) =
 variable {H}
 
 /- English proof (translation)
-Establish `hvx : H.h v x = 0` using `by rw [h_right, hxv, map_zero]`. Establish `e1 : H.h x y' = M.L.cj (H.h y' x)` using `h_right H x y'`. Establish `e2 : H.h v y' = M.L.cj (H.h y' v)` using `h_right H v y'`. Simplify using `only [eichG_hL, eichG_hR]`. Rewrite using `[hxx, hxv, hvx, e1, e2]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Take the linear combination `(H.h y x * M.L.cj (H.h y' x)) * hc`.
+Take a linear combination of the given relations to obtain the conclusion.
 -/
 lemma eichG_isom {x v : V} {c : E} (hxx : H.h x x = 0) (hxv : H.h x v = 0)
     (hc : c + M.L.cj c + H.h v v = 0) (y y' : V) :
@@ -59,11 +59,11 @@ lemma eichG_isom {x v : V} {c : E} (hxx : H.h x x = 0) (hxv : H.h x v = 0)
   linear_combination (H.h y x * M.L.cj (H.h y' x)) * hc
 
 /- English proof (translation)
-Establish `hvx : H.h v x = 0` using `by rw [h_right, hxv, map_zero]`. Establish `e1 : H.h (eichG H (-x) v c' w) v = H.h w v + H.h w x * H.h v v`. Rewrite using `[eichG_hL, h_neg_left, h_neg_right, hxv]`. Expand and normalize the polynomial expressions, which then agree. Establish `e2 : H.h (eichG H (-x) v c' w) x = H.h w x`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Rewrite using `[eichG_hL, h_neg_left, h_neg_right, hxx, hvx]`. Expand and normalize the polynomial expressions, which then agree. Establish `key : eichG H x v c (eichG H (-x) v c' w) - w = ((c + c' + H.h v v) * H.h w x) • x`. Unfold `eichG at e1 e2 ⊢`. Rewrite using `[e1, e2, h_neg_right]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `module`. Rewrite `key` using `[hc, zero_mul, zero_smul, sub_eq_zero]`. Conclude with `key`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 lemma eichG_inv {x v : V} {c c' : E} (hxx : H.h x x = 0) (hxv : H.h x v = 0)
     (hc : c + c' + H.h v v = 0) (w : V) :
@@ -81,15 +81,15 @@ lemma eichG_inv {x v : V} {c c' : E} (hxx : H.h x x = 0) (hxv : H.h x v = 0)
   exact key
 
 /- English proof (translation)
-The claim follows from `Λ.smul_mem ⟨α, hα⟩ hv`.
+A detailed English derivation is pending.
 -/
 lemma smul_memO {Λ : Submodule M.L.O V} {α : E} (hα : α ∈ M.L.O) {v : V} (hv : v ∈ Λ) : α • v ∈ Λ :=
   Λ.smul_mem ⟨α, hα⟩ hv
 
 /- English proof (translation)
-Introduce `g hg`. Proceed by induction on `hg using Submodule.span_induction with`. Consider the case `mem g hg => exact hs g hg`. Consider the case `zero => rw [H.h_zero_left]`. Conclude with `M.L.O.zero_mem`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `add a b _ _ ha hb => rw [H.h_add_left]`. Conclude with `M.L.O.add_mem ha hb`. Consider the case `smul α a _ ha => show H.h ((α : E) • a) u ∈ M.L.O`. Rewrite using `[H.h_smul_left]`. Conclude with `M.L.O.mul_mem α.2 ha`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma span_h_left {s : Set V} {u : V} (hs : ∀ g ∈ s, H.h g u ∈ M.L.O) :
     ∀ g ∈ Submodule.span M.L.O s, H.h g u ∈ M.L.O := by
@@ -103,9 +103,9 @@ lemma span_h_left {s : Set V} {u : V} (hs : ∀ g ∈ s, H.h g u ∈ M.L.O) :
     rw [H.h_smul_left]; exact M.L.O.mul_mem α.2 ha
 
 /- English proof (translation)
-Introduce `u hu`. Proceed by induction on `hu using Submodule.span_induction with`. Consider the case `mem u hu => exact hs u hu`. Consider the case `zero => rw [h_zero_right]`. Conclude with `M.L.O.zero_mem`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `add a b _ _ ha hb => rw [h_add_right]`. Conclude with `M.L.O.add_mem ha hb`. Consider the case `smul α a _ ha => show H.h g ((α : E) • a) ∈ M.L.O`. Rewrite using `[h_smul_right]`. Conclude with `M.L.O.mul_mem (GlobalTheory.UnramOrder.cj_mem M.L α.2) ha`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma span_h_right {s : Set V} {g : V} (hs : ∀ u ∈ s, H.h g u ∈ M.L.O) :
     ∀ u ∈ Submodule.span M.L.O s, H.h g u ∈ M.L.O := by
@@ -119,7 +119,7 @@ lemma span_h_right {s : Set V} {g : V} (hs : ∀ u ∈ s, H.h g u ∈ M.L.O) :
     rw [h_smul_right]; exact M.L.O.mul_mem (GlobalTheory.UnramOrder.cj_mem M.L α.2) ha
 
 /- English proof (translation)
-Introduce `w hw`. Unfold `eichG`. Use `Λ.add_mem (Λ.sub_mem (Λ.add_mem hw (smul_memO (hgv w hw) hxL)) (smul_memO (hgx w hw) hvL)) (smul_memO (M.L.O.mul_mem hc (hgx w hw)) hxL)` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 -/
 lemma eichG_maps {Λ : Submodule M.L.O V} {x v : V} {c : E} (hc : c ∈ M.L.O) (hxL : x ∈ Λ) (hvL : v ∈ Λ)
     (hgx : ∀ g ∈ Λ, H.h g x ∈ M.L.O) (hgv : ∀ g ∈ Λ, H.h g v ∈ M.L.O) :
@@ -140,12 +140,12 @@ variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
   {M : Model F E} {V : Type} [AddCommGroup V] [Module E V] {H : HermSp M V} {r : ℕ} (Fr : FrameD H r)
 
 /- English proof (translation)
-The claim follows from `Submodule.subset_span ⟨a, rfl⟩`.
+A detailed English derivation is pending.
 -/
 lemma e_mem_X (a : Fin r) : Fr.f a.castSucc ∈ H.X Fr.f := Submodule.subset_span ⟨a, rfl⟩
 
 /- English proof (translation)
-Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem u hu => exact Submodule.subset_span hu`. Consider the case `zero => exact Submodule.zero_mem _`. Consider the case `add a b _ _ ha hb => exact Submodule.add_mem _ ha hb`. Consider the case `smul α a _ ha => exact Submodule.smul_mem _ (α : E) ha`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 lemma spanO_le_X {x : V} (hx : x ∈ Submodule.span M.L.O (Set.range fun a : Fin r => Fr.f a.castSucc)) :
     x ∈ H.X Fr.f := by
@@ -156,9 +156,9 @@ lemma spanO_le_X {x : V} (hx : x ∈ Submodule.span M.L.O (Set.range fun a : Fin
   | smul α a _ ha => exact Submodule.smul_mem _ (α : E) ha
 
 /- English proof (translation)
-Use `Submodule.subset_span ⟨fun b => ?_, fun b => ?_, ⟨0, ?_, by simp⟩⟩` and prove the remaining obligations. Rewrite using `[Fr.h_es]`. Use `split_ifs`. Conclude with `M.L.O.one_mem`. Conclude with `M.L.O.zero_mem`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[FrameD.e, Fr.h_iso _ _ (Or.inl (Fin.castSucc_ne_last a))]`. Conclude with `M.L.O.zero_mem`. Establish `h2 : ∀ b, H.h (Fr.f a.castSucc) (Fr.e b) = 0` using `fun b => Fr.h_iso _ _ (Or.inl (Fin.castSucc_ne_last a))`. Simplify using `only [FrameD.prF, Fr.h_es, h2, zero_smul, Finset.sum_const_zero, sub_zero, ite_smul, one_smul, Finset.sum_ite_eq, Finset.mem_univ, if_true]`. Simplify using `[FrameD.e]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma e_mem_LamStd (L : Submodule M.L.O (H.Wb Fr.f)) (a : Fin r) : Fr.f a.castSucc ∈ Fr.LamStd L := by
   refine Submodule.subset_span ⟨fun b => ?_, fun b => ?_, ⟨0, ?_, by simp⟩⟩
@@ -178,37 +178,35 @@ namespace GlobalTheory.LocOver.ZStep
 open GlobalTheory.LocOver.UnipOnto
 
 /- English proof (translation)
-Introduce `F _ _ _ E _ _ _ _ M hOK V _ _ H r Fr L hL y hyL hzy hyes x hx`. Use `letI := hOK.loc`. Use `haveI := hOK.char0`. Establish `hyX : ∀ w ∈ H.X Fr.f, H.h w (y : V) = 0` using `fun w hw => by rw [h_right, y.2 w hw, map_zero]`. Establish `hxX : x ∈ H.X Fr.f` using `spanO_le_X Fr hx`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hxx : H.h x x = 0` using `X_iso Fr x hxX x hxX`. Establish `hxy : H.h x y = 0` using `hyX x hxX`. Establish `hnx : H.h (-x) (-x) = 0` using `by rw [h_neg_left, h_neg_right, neg_neg, hxx]`. Establish `hny : H.h (-x) y = 0` using `by rw [h_neg_left, hxy, neg_zero]`. Establish `hyy : H.h (y : V) y ∈ M.L.O` using `(hL.2.1 y).1 hyL y hyL`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨t, ht⟩` from `GlobalTheory.UnramOrder.exists_int_of_fixed M.L hyy (H.h_herm _ _).symm`. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible 𝒪[F]`. Take `⟨c, hcO, hc⟩` from `(GlobalTheory.UnramOrder.order_facts M.L ϖ hϖ).1 (-t)`. Establish `hc1 : c + M.L.cj c + H.h (y : V) y = 0`. Rewrite using `[hc, ht, ← map_add]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Establish `hc2 : M.L.cj c + c + H.h (y : V) y = 0` using `by rw [← hc1]; ring`. Establish `hcjO : M.L.cj c ∈ M.L.O` using `GlobalTheory.UnramOrder.cj_mem M.L hcO`. Set `n : V ≃ₗ[E] V` to `LinearEquiv.ofLinear (ZStep.eichGL H x y c) (ZStep.eichGL H (-x) y (M.L.cj c)) (LinearMap.ext fun w => ZStep.eichG_inv hxx hxy hc1 w) (LinearMap.ext fun w => by`. Use `ZStep.eichG_inv (c := M.L.cj c) (c' := c) hnx hny hc2 w` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[neg_neg]`. Conclude with `this)`. Establish `hn : ∀ w, n w = ZStep.eichG H x y c w` using `fun w => rfl`. Use `set Λ := Fr.LamStd L with hΛ`. Establish `heL : ∀ a : Fin r, Fr.f a.castSucc ∈ Λ` using `fun a => e_mem_LamStd Fr L a`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Establish `hxL : x ∈ Λ`. Use `Submodule.span_le.2 ?_ hx` and prove the remaining obligations. Introduce and unpack `_ ⟨a, rfl⟩`. Conclude with `heL a`. Establish `hyLam : (y : V) ∈ Λ`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `Submodule.subset_span ⟨fun a => by rw [hyes a]; exact M.L.O.zero_mem, fun a => by rw [show H.h (y : V) (Fr.e a) = 0 from y.2 _ (e_mem_X Fr a)]; exact M.L.O.zero_mem, ⟨y, ?_, hyL⟩⟩` and prove the remaining obligations. Establish `h2 : ∀ a, H.h (y : V) (Fr.e a) = 0` using `fun a => y.2 _ (e_mem_X Fr a)`. Simplify using `[FrameD.prF, hyes, h2]`. Establish `hgen : ∀ g ∈ {v | (∀ a, H.h v (Fr.es a) ∈ M.L.O) ∧ (∀ a, H.h v (Fr.e a) ∈ M.L.O) ∧ ∃ w : ↥(H.perp (H.X Fr.f)), (w : V) = Fr.prF v ∧ H.mkW Fr.f w ∈ L}, H.h g y ∈ M.L.O ∧ H.h g x ∈ M.L.O`. Introduce and unpack `g ⟨hges, hge, w, hw, hwL⟩`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `hpr : H.h (Fr.prF g) y = H.h g y`. Establish `h1 : ∀ a, H.h (Fr.es a) (y : V) = 0` using `fun a => by rw [h_right, hyes a, map_zero]`. Establish `h2 : ∀ a, H.h (Fr.e a) (y : V) = 0` using `fun a => hyX _ (e_mem_X Fr a)`. Simplify using `only [FrameD.prF, h_sub_left]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[show H.h (∑ a, H.h g (Fr.es a) • Fr.e a) (y : V) = UnipOnto.lf H (y : V) (∑ a, H.h g (Fr.es a) • Fr.e a) from rfl, show H.h (∑ a, H.h g (Fr.e a) • Fr.es a) (y : V) = UnipOnto.lf H (y : V) (∑ a, H.h g (Fr.e a) • Fr.es a) from rfl, map_sum, map_sum]`. Simplify using `[UnipOnto.lf, H.h_smul_left, h1, h2]`. Rewrite using `[← hpr, ← hw]`. Conclude with `(hL.2.1 w).1 hwL y hyL`. Use `span_h_right (s := Set.range fun a : Fin r => Fr.f a.castSucc) ?_ x hx` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `_ ⟨a, rfl⟩`. Conclude with `hge a`. Establish `hgy : ∀ g ∈ Λ, H.h g y ∈ M.L.O` using `span_h_left fun g hg => (hgen g hg).1`. Establish `hgx : ∀ g ∈ Λ, H.h g x ∈ M.L.O` using `span_h_left fun g hg => (hgen g hg).2`. Establish `hgnx : ∀ g ∈ Λ, H.h g (-x) ∈ M.L.O` using `fun g hg => by`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[h_neg_right]`. Conclude with `M.L.O.neg_mem (hgx g hg)`. Establish `hmap` using `eichG_maps hcO hxL hyLam hgx hgy`. Establish `hmap'` using `eichG_maps hcjO (Λ.neg_mem hxL) hyLam hgnx hgy`. Use `⟨n, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[N_eq] show n ∈ NU H Fr.f`. Use `⟨fun w w' => eichG_isom hxx hxy hc1 w w', fun a => ?_, fun v hv => ?_⟩` and prove the remaining obligations. Establish `h1 : H.h (Fr.f a.castSucc) y = 0` using `hyX _ (e_mem_X Fr a)`. Establish `h2 : H.h (Fr.f a.castSucc) x = 0` using `X_iso Fr _ (e_mem_X Fr a) x hxX`. Rewrite using `[hn]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [eichG, h1, h2, zero_smul, mul_zero, add_zero, sub_zero, sub_self]`. Conclude with `Submodule.zero_mem _`. Establish `h2 : H.h v x = 0` using `hv x hxX`. Rewrite using `[hn]`. Establish `: eichG H x y c v - v = H.h v y • x` using `by simp [eichG, h2]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ _ hxX`. Rewrite using `[hn]`. Establish `hzx : H.h (Fr.f (Fin.last r)) x = 0` using `z_X Fr x hxX`. Simplify using `[eichG, hzy, hzx]`.
+Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Introduce `w hw`. Rewrite using `[hn]`. Establish `h1 : H.h w y = 0` using `hyX w hw`. Establish `h2 : H.h w x = 0` using `X_iso Fr w hw x hxX`. Simplify using `[eichG, h1, h2]`.
-
-Apply `le_antisymm` to reduce the goal to its premises. Introduce and unpack `_ ⟨w, hw, rfl⟩`. Conclude with `hmap w hw`. Introduce `w hw`. Conclude with `⟨eichG H (-x) y (M.L.cj c) w, hmap' w hw, eichG_inv hxx hxy hc1 w⟩`.
+A detailed English derivation is pending.
 -/
 theorem zstep : ∀ {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] {E : Type} [CommRing E] [Algebra F E]
     [TopologicalSpace E] [MeasurableSpace E] (M : Model F E), M.OK → ∀ {V : Type} [AddCommGroup V] [Module E V]

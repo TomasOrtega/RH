@@ -6,33 +6,31 @@ open IsLocalRing TensorProduct
 namespace GlobalTheory.CompletionFlat
 
 /- English proof (translation)
-Introduce `A R _ _ _ _ ψ hfin hflat`. Set `B` to `AdicCompletion (maximalIdeal A) A`. Use `letI : Algebra B R := ψ.toAlgebra`. Use `letI : Algebra A R := (ψ.comp (algebraMap A B)).toAlgebra`. Use `haveI : IsScalarTower A B R := IsScalarTower.of_algebraMap_eq (fun _ => rfl)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Equip the data with the indicated structure. Equip the data with the indicated structure. Reduce the argument to an intermediate assertion.
 
-Use `haveI : IsNoetherianRing B := GlobalTheory.AdicNoeth.isNoetherianRing_adicCompletion A _`. Use `haveI : Module.Finite B R := hfin`. Use `haveI : Module.Flat A R := hflat`. Use `haveI : Module.FinitePresentation B R := Module.finitePresentation_of_finite B R`. It suffices to establish `H : Function.Injective ((maximalIdeal B).subtype.rTensor R) by haveI` using `Module.free_of_maximalIdeal_rTensor_injective H`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Conclude with `(inferInstance : Module.Flat B R)`. Set `mA` to `maximalIdeal A`. Set `mB` to `maximalIdeal B`. Establish `hmap : mB = mA.map (algebraMap A B)` using `AdicCompletion.maximalIdeal_eq_map`. Establish `hmem : ∀ a ∈ mA, algebraMap A B a ∈ mB` using `fun a ha => hmap ▸ Ideal.mem_map_of_mem _ ha`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Set `j : mA →+ mB` to `{ toFun := fun a => ⟨algebraMap A B a, hmem a a.2⟩ map_zero' := by ext; simp map_add' := by intros; ext; simp }`. Set `F : mA →+ R →+ (mB ⊗[B] R)` to `{ toFun := fun a => (TensorProduct.mk B mB R (j a)).toAddMonoidHom map_zero' := by ext; simp map_add' := by intros; ext; simp [add_tmul] }`. Establish `hF : ∀ (r : A) (a : mA) (n : R), F (r • a) n = F a (r • n)`. Introduce `r a n`. Establish `h1 : j (r • a) = algebraMap A B r • j a` using `Subtype.ext (by simp [j, Algebra.smul_def])`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Use `show TensorProduct.mk B mB R (j (r • a)) n = TensorProduct.mk B mB R (j a) (r • n)`. Rewrite using `[h1, TensorProduct.mk_apply, TensorProduct.mk_apply, TensorProduct.smul_tmul, algebraMap_smul]`. Set `φ : mA ⊗[A] R →+ mB ⊗[B] R` to `TensorProduct.liftAddHom F hF`. Establish `hφ : ∀ (a : mA) (n : R), φ (a ⊗ₜ n) = j a ⊗ₜ n` using `fun a n => TensorProduct.liftAddHom_tmul _ _ _ _`. Establish `key : ∀ y : mA ⊗[A] R, TensorProduct.lid B R (mB.subtype.rTensor R (φ y)) = TensorProduct.lid A R (mA.subtype.rTensor R y)`.
+Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Establish an intermediate fact.
 
-Introduce `y`. Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a n => rw [hφ]`. Simplify using `[j, algebraMap_smul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Consider the case `add x y hx hy => rw [map_add, map_add, map_add, hx, hy, map_add, map_add]`. Establish `gen : ∀ (b : B) (hb : b ∈ mB) (n : R), ∃ y, φ y = (⟨b, hb⟩ : mB) ⊗ₜ n`. Introduce `b hb`. Establish `hb' : b ∈ Ideal.map (algebraMap A B) mA` using `hmap ▸ hb`. Use `Submodule.span_induction (p := fun b _ => ∀ hb : b ∈ mB, ∀ n : R, ∃ y, φ y = (⟨b, hb⟩ : mB) ⊗ₜ n) ?_ ?_ ?_ ?_ hb' hb` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Introduce and unpack `x ⟨a, ha, rfl⟩ hx n`. Conclude with `⟨(⟨a, ha⟩ : mA) ⊗ₜ n, by rw [hφ]; rfl⟩`. Introduce `hz n`. Conclude with `⟨0, by rw [map_zero]; exact (zero_tmul mB n).symm⟩`. Introduce `x y hx hy ihx ihy hxy n`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨u, hu⟩` from `ihx (hmap ▸ hx) n`. Take `⟨v, hv⟩` from `ihy (hmap ▸ hy) n`. Use `⟨u + v, ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, hu, hv, ← add_tmul]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `c x hx ihx hcx n`. Take `⟨u, hu⟩` from `ihx (hmap ▸ hx) (c • n)`. Use `⟨u, ?_⟩` and prove the remaining obligations. Rewrite using `[hu, ← TensorProduct.smul_tmul]`. Both sides reduce to the same expression.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Establish `surj : ∀ x : mB ⊗[B] R, ∃ y, φ y = x`. Introduce `x`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => exact ⟨0, map_zero _⟩`. Consider the case `tmul m n => exact gen m.1 m.2 n`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Consider the case `add x z hx hz`. Take `⟨u, hu⟩` from `hx`. Take `⟨v, hv⟩` from `hz`. Conclude with `⟨u + v, by rw [map_add, hu, hv]⟩`. Establish `hinjA : Function.Injective (mA.subtype.rTensor R)` using `Module.Flat.rTensor_preserves_injective_linearMap mA.subtype Subtype.val_injective`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[injective_iff_map_eq_zero]`. Introduce `x hx`. Take `⟨y, rfl⟩` from `surj x`. Establish `h1 : TensorProduct.lid A R (mA.subtype.rTensor R y) = 0` using `by rw [← key, hx, map_zero]`. Establish `h0 : mA.subtype.rTensor R y = 0` using `(TensorProduct.lid A R).injective (by rw [h1, map_zero])`.
-
-Establish `hy : y = 0` using `hinjA (by rw [h0, map_zero])`. Rewrite using `[hy, map_zero]`.
+A detailed English derivation is pending.
 -/
 theorem flat_of_finite_of_flat_comp : ∀ {A R : Type} [CommRing A] [IsLocalRing A] [IsNoetherianRing A]
     [CommRing R] (ψ : AdicCompletion (maximalIdeal A) A →+* R), ψ.Finite →

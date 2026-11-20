@@ -9,25 +9,23 @@ open ReciprocityTheory.Gal Formalism.RepresentationBoundsCohomology.LOC Reciproc
 namespace GlobalTheory.TateNat
 
 /- English proof (translation)
-Introduce `p _ O _ _ _ _ _ _ G _ _ χ c hgen φ ε hεφ ϖ hϖ hp hopen a f hf hd`. Establish `key : ∀ n : ℕ, a ∈ (powSub (M` using `O) ϖ n : Submodule O O) := by`. Introduce `n`. Use `set N : Submodule O O := powSub (M := O) ϖ n with hN`. Use `letI : Module ℤ_[p] (O ⧸ N) := Module.compHom (O ⧸ N) φ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Establish `hs : ∀ (t : ℤ_[p]) (x : O), t • (Submodule.Quotient.mk x : O ⧸ N) = Submodule.Quotient.mk (φ t * x)` using `fun t x => by show (φ t) • (Submodule.Quotient.mk x : O ⧸ N) = _`. Rewrite using `[← Submodule.Quotient.mk_smul, smul_eq_mul]`. Use `haveI : Finite (O ⧸ N) := AddSubgroup.quotient_finite_of_isOpen N.toAddSubgroup (hopen n)`. Establish `hM : ∀ m : O ⧸ N, (p : ℤ_[p]) ^ n • m = 0`. Introduce `m`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Proceed by induction on `m using Submodule.Quotient.induction_on with`. Consider the case `H x`. Rewrite using `[hs, Submodule.Quotient.mk_eq_zero, map_pow, map_natCast]`. Rewrite `hp` using `[hϖ.maximalIdeal_eq, Ideal.mem_span_singleton]`. Take `⟨u, hu⟩` from `hp`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `mem_powSub.2 ⟨u ^ n * x, ?_⟩` and prove the remaining obligations. Rewrite using `[hu, smul_eq_mul, mul_pow]`. Expand and normalize the polynomial expressions, which then agree. Establish `hlc : IsLocallyConstant (fun g => (Submodule.Quotient.mk (f g) : O ⧸ N))`. Introduce `s`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `ho : IsOpen ((Submodule.Quotient.mk : O → O ⧸ N) ⁻¹' s)`. Rewrite using `[isOpen_iff_forall_mem_open]`. Introduce `x hx`. Use `⟨(fun y => y - x) ⁻¹' (N : Set O), fun y hy => ?_, (hopen n).preimage (continuous_id.sub continuous_const), ?_⟩` and prove the remaining obligations. Establish `e : (Submodule.Quotient.mk y : O ⧸ N) = Submodule.Quotient.mk x` using `(Submodule.Quotient.eq N).2 hy show (Submodule.Quotient.mk y : O ⧸ N) ∈ s`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `hx`. Use `show x - x ∈ N`. Rewrite using `[sub_self]`. Conclude with `N.zero_mem`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition.
 
-Conclude with `ho.preimage hf`. Establish `h3` using `((hgen n) (O ⧸ N) hM).2.2 (Submodule.Quotient.mk a) (fun g => Submodule.Quotient.mk (f g)) hlc fun q => by`. Take `⟨g, h⟩` from `q`. Establish `e` using `hd g h`. Simplify using `only [d1_apply] at e`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Take a linear combination of the given relations to obtain the conclusion.
 
-Express the relevant statement in the definitionally equal form `(ε g : O) • f h - f (g * h) + f g = a * φ (c (g, h)) at e`. Rewrite `e` using `[smul_eq_mul, hεφ]`. Simplify using `only [GlobalTheory.TateTop.cob, hs]`. Rewrite using `[← Submodule.Quotient.mk_sub, ← Submodule.Quotient.mk_add]`. Use `congr 1`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take the linear combination `-e`. Conclude with `(Submodule.Quotient.mk_eq_zero N).1 h3`. Establish `hbot` using `Ideal.iInf_pow_eq_bot_of_isLocalRing (IsLocalRing.maximalIdeal O) (IsLocalRing.maximalIdeal.isMaximal O).ne_top`. Establish `hmem : a ∈ ⨅ i, (IsLocalRing.maximalIdeal O) ^ i`. Use `Submodule.mem_iInf _ |>.2 fun i => ?_` and prove the remaining obligations.
-
-Take `⟨y, hy⟩` from `mem_powSub.1 (key i)`. Rewrite using `[hϖ.maximalIdeal_eq, Ideal.span_singleton_pow, Ideal.mem_span_singleton, ← hy, smul_eq_mul]`. Conclude with `dvd_mul_right _ _`. Rewrite `hmem` using `[hbot]`. Conclude with `(Submodule.mem_bot O).1 hmem`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem free_inj : ∀ {p : ℕ} [Fact p.Prime] {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [TopologicalSpace O] [IsTopologicalRing O] [CompactSpace O] {G : Type} [Group G] [TopologicalSpace G] (χ : G →* ℤ_[p]ˣ) (c : G × G → ℤ_[p]), (∀ r, GlobalTheory.TateTop.Gen χ r c) → ∀ (φ : ℤ_[p] →+* O) (ε : G →* Oˣ), (∀ g, ((ε g : Oˣ) : O) = φ (χ g : ℤ_[p])) → ∀ (ϖ : O), Irreducible ϖ → (p : O) ∈ IsLocalRing.maximalIdeal O → (∀ n : ℕ, IsOpen ((powSub (M := O) ϖ n : Submodule O O) : Set O)) → ∀ (a : O) (f : G → O), Continuous f → (∀ g h : G, d1 (twist ε O) f (g, h) = a * φ (c (g, h))) → a = 0 := by
   intro p _ O _ _ _ _ _ _ G _ _ χ c hgen φ ε hεφ ϖ hϖ hp hopen a f hf hd

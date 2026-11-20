@@ -14,7 +14,7 @@ namespace GlobalTheory.ChainOnto.RightMove
 variable {D : D7}
 
 /- English proof (translation)
-Use extensionality with `i j`. Distinguish the cases in `hi : i.val < b`. Simplify using `[topL, Matrix.mul_apply, hi]`. Simplify using `[topL, Matrix.mul_apply, hi]`.
+By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem topL_mul {κ : Type} [CommRing κ] {a b : ℕ} (y : Matrix (Fin b) (Fin a) κ) (γ : Matrix (Fin a) (Fin a) κ) :
     topL a (y * γ) = topL a y * γ := by
@@ -24,7 +24,7 @@ theorem topL_mul {κ : Type} [CommRing κ] {a b : ℕ} (y : Matrix (Fin b) (Fin 
   · simp [topL, Matrix.mul_apply, hi]
 
 /- English proof (translation)
-Introduce `i j hi _`. Rewrite using `[Matrix.mul_apply]`. Conclude with `Finset.sum_eq_zero fun l _ => by rw [hy i l hi l.2, zero_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lowZero_mul {κ : Type} [CommRing κ] {a b : ℕ} {y : Matrix (Fin b) (Fin a) κ} (hy : LowZero a y)
     (γ : Matrix (Fin a) (Fin a) κ) : LowZero a (y * γ) := by
@@ -38,9 +38,9 @@ abbrev Cond {a b : ℕ} (L : LevDat D.host.E ℂ a) (y : ∀ PP : Pl D.host.E, M
     (∀ PP : ↥L.Pg, g PP ∈ blockTri (blkOf L.r L.t)) ∧ (fun PP => upperLeftBlock L.hr (g PP)) ∈ L.P.H
 
 /- English proof (translation)
-Take `⟨h1, g, h2, h3, h4⟩` from `h`. Use `⟨fun PP hP' => (hz PP).symm ▸ lowZero_mul (h1 PP hP') _, fun PP => g PP * γ PP.1, fun PP => ?_, fun PP => mul_mem (h3 PP) (hγ PP.1 PP.2), ?_⟩` and prove the remaining obligations. Rewrite using `[Units.val_mul, h2, hz, topL_mul]`. Establish `e : (fun PP : ↥L.Pg => upperLeftBlock L.hr (g PP * γ PP.1)) = (fun PP => upperLeftBlock L.hr (g PP)) * (fun PP : ↥L.Pg => upperLeftBlock L.hr (γ PP.1))`. Use function extensionality and compare the values at `PP`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `extendMatrixByIdentityAlongIndices_mul _ (blockTri_blkOf_le _ _ (h3 PP)) (blockTri_blkOf_le _ _ (hγ PP.1 PP.2))`. Rewrite using `[e]`. Conclude with `mul_mem h4 hP`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cond_mul {a b : ℕ} (L : LevDat D.host.E ℂ a) (γ : ∀ PP : Pl D.host.E, GL (Fin a) (kP PP))
     (hγ : ∀ PP ∈ L.Pg, γ PP ∈ blockTri (blkOf L.r L.t)) (hP : (fun PP : ↥L.Pg => upperLeftBlock L.hr (γ PP.1)) ∈ L.P.H)
@@ -58,17 +58,15 @@ theorem cond_mul {a b : ℕ} (L : LevDat D.host.E ℂ a) (γ : ∀ PP : Pl D.hos
     exact mul_mem h4 hP
 
 /- English proof (translation)
-Introduce `D a b L χ G hG hP y`. Establish `hGi : ∀ PP ∈ L.Pg, (G PP)⁻¹ ∈ blockTri (blkOf L.r L.t)` using `fun PP h => inv_mem (hG PP h)`. Establish `hPi : (fun PP : ↥L.Pg => upperLeftBlock L.hr (G PP.1)⁻¹) ∈ L.P.H`. Establish `e : (fun PP : ↥L.Pg => upperLeftBlock L.hr (G PP.1)⁻¹) = (fun PP : ↥L.Pg => upperLeftBlock L.hr (G PP.1))⁻¹`. Use function extensionality and compare the values at `PP`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `extendOne_inv _ (blockTri_blkOf_le _ _ (hG PP.1 PP.2))`. Rewrite using `[e]`. Conclude with `inv_mem hP`. Unfold `omegaG`. Distinguish the cases in `hy : Cond L y`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hy' : Cond L (fun PP => y PP * (G PP).val)` using `cond_mul L G hG hP y _ (fun _ => rfl) hy`. Rewrite using `[dif_pos hy', dif_pos hy]`. Establish `key : ∀ PP : ↥L.Pg, hy'.2.choose PP = hy.2.choose PP * G PP.1` using `fun PP => Units.ext (by`. Rewrite using `[Units.val_mul, hy'.2.choose_spec.1 PP, hy.2.choose_spec.1 PP, topL_mul])`. Establish `hc : (⟨fun PP => upperLeftBlock L.hr (hy'.2.choose PP), hy'.2.choose_spec.2.2⟩ : L.P.H) = ⟨fun PP => upperLeftBlock L.hr (hy.2.choose PP), hy.2.choose_spec.2.2⟩ * ⟨_, hP⟩` using `Subtype.ext (funext fun PP => by show upperLeftBlock L.hr (hy'.2.choose PP) = upperLeftBlock L.hr (hy.2.choose PP) * upperLeftBlock L.hr (G PP.1)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[key]`. Conclude with `extendMatrixByIdentityAlongIndices_mul _ (blockTri_blkOf_le _ _ (hy.2.choose_spec.2.1 PP)) (blockTri_blkOf_le _ _ (hG PP.1 PP.2)))`. Establish `hd : ∀ PP : ↥L.Pg, ∀ c : ℕ, dBlk (blkOf L.r L.t) c (hy'.2.choose PP) = dBlk (blkOf L.r L.t) c (hy.2.choose PP) * dBlk (blkOf L.r L.t) c (G PP.1)` using `fun PP c => by`. Rewrite using `[key]`. Conclude with `diag_block_det_mul (hy.2.choose_spec.2.1 PP) (hG PP.1 PP.2)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hc, map_mul]`. Simplify using `only [hd]`. Simplify using `only [key, map_mul, Units.val_mul, mul_inv, Finset.prod_mul_distrib, Units.val_inv_eq_inv_val, Units.coe_prod]`. Rewrite using `[← Finset.prod_coe_sort L.Pg (fun PP => ((χ PP (Matrix.GeneralLinearGroup.det (G PP)) : ℂˣ) : ℂ)⁻¹), ← Finset.prod_coe_sort L.Pg (fun PP => ∏ i ∈ Finset.range L.s, ((L.cg (i + 1) PP (dBlk (blkOf L.r L.t) (i + 1) (G PP)) : ℂˣ) : ℂ))]`. Expand and normalize the polynomial expressions, which then agree.
-
-Establish `hy' : ¬ Cond L (fun PP => y PP * (G PP).val)` using `fun h => hy (cond_mul L (fun PP => (G PP)⁻¹) hGi hPi _ y (fun PP => by rw [Matrix.mul_assoc, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.mul_one]) h)`. Rewrite using `[dif_neg hy', dif_neg hy, mul_zero]`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem omegaG_mul_right : ∀ (D : D7) (a b : ℕ) (L : LevDat D.host.E ℂ a) (χ : ∀ PP : Pl D.host.E, (kP PP)ˣ →* ℂˣ) (G : ∀ PP : Pl D.host.E, GL (Fin a) (kP PP)), (∀ PP ∈ L.Pg, G PP ∈ blockTri (blkOf L.r L.t)) → ∀ hP : (fun PP : ↥L.Pg => upperLeftBlock L.hr (G PP.1)) ∈ L.P.H, ∀ y : ∀ PP : Pl D.host.E, Matrix (Fin b) (Fin a) (kP PP), omegaG L χ (fun PP => y PP * (G PP).val) = ((L.P.chi ⟨_, hP⟩ * (∏ PP ∈ L.Pg, ∏ i ∈ Finset.range L.s, L.cg (i + 1) PP (dBlk (blkOf L.r L.t) (i + 1) (G PP))) * ∏ PP ∈ L.Pg, (χ PP (Matrix.GeneralLinearGroup.det (G PP)))⁻¹ : ℂˣ) : ℂ) * omegaG L χ y := by
   intro D a b L χ G hG hP y

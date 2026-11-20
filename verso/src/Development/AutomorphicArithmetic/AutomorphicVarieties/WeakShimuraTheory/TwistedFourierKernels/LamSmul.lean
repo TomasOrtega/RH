@@ -4,15 +4,15 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AlgebraTools.Deter
 open IsLocalRing Polynomial UpperTheory.V UpperTheory.V.Alg UpperTheory.V.W UpperTheory.V.Ws.H5
 
 /- English proof (translation)
-Establish `hsum : D.chi (a • y) = ∑ j ∈ Finset.range (n + 1), C (D.lam j y * (-a) ^ j) * X ^ (n - j)`. Establish `h` using `AlgebraTools.Det.expand D y A[X] X (C (-a))`. Rewrite `h` using `[Polynomial.algebraMap_eq]`. Unfold `GDet.chi`. Establish `harg : MonoidAlgebra.single 1 X - (MonoidAlgebra.mapRingHom G C) (a • y) = MonoidAlgebra.single 1 X + C (-a) • (MonoidAlgebra.mapRingHom G C) y`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Rewrite using `[map_neg, neg_smul, ← sub_eq_add_neg]`. Use `congr 1`. Use extensionality with `g`. Simplify using `[MonoidAlgebra.mapRingHom]`. Rewrite using `[harg, h]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_pow]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hsum, Polynomial.finset_sum_coeff, Finset.sum_eq_single i]`. Rewrite using `[Polynomial.coeff_C_mul_X_pow, if_pos rfl]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Introduce `j hj hji`. Rewrite using `[Polynomial.coeff_C_mul_X_pow, if_neg]`. Introduce `h`. Apply `hji` to reduce the goal to its premises.
+Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Use `Finset.mem_range.mp hj` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Introduce `h`. Conclude with `absurd (Finset.mem_range.mpr (by omega)) h`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 private theorem coeff_chi_smul {n : ℕ} {A G : Type} [CommRing A] [Group G] (D : GDet n A G) (a : A)
     (y : MonoidAlgebra A G) (i : ℕ) (hi : i ≤ n) :
@@ -44,11 +44,11 @@ private theorem coeff_chi_smul {n : ℕ} {A G : Type} [CommRing A] [Group G] (D 
     exact absurd (Finset.mem_range.mpr (by omega)) h
 
 /- English proof (translation)
-Introduce `n A G _ _ D a y i`. Establish `hl : ∀ (z : MonoidAlgebra A G) (j : ℕ), D.lam j z = (-1) ^ j * (D.chi z).coeff (n - j)`. Introduce `z j`. Unfold `GDet.lam`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Both sides reduce to the same expression.
 
-Break down `le_or_gt i n with hi | hi` into its components or cases. Rewrite using `[hl, coeff_chi_smul D a y i hi, min_eq_left hi, ← mul_assoc, ← mul_pow, neg_one_mul, neg_neg]`. Establish `hn : n - i = n - n` using `by omega`. Establish `h1` using `coeff_chi_smul D 1 y n le_rfl`. Rewrite `h1` using `[one_smul]`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hl (a • y), hl y, hn, coeff_chi_smul D a y n le_rfl, h1, min_eq_right hi.le, neg_pow a n]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem UpperTheory.V.Ws.H5.lamSmul :
     ∀ {n : ℕ} {A G : Type} [CommRing A] [Group G] (D : GDet n A G) (a : A) (y : MonoidAlgebra A G) (i : ℕ), D.lam i (a • y) = a ^ min i n * D.lam i y := by

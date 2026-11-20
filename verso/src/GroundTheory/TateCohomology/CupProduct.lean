@@ -17,13 +17,13 @@ section Cocycles
 variable {A B : Rep k G} {p q n : ℕ}
 
 /- English proof (translation)
-The claim follows from `(ModuleCat.mono_iff_injective _).1 inferInstance h`.
+A detailed English derivation is pending.
 -/
 theorem cocycles_ext {z z' : cocycles A n} (h : iCocycles A n z = iCocycles A n z') : z = z' :=
   (ModuleCat.mono_iff_injective _).1 inferInstance h
 
 /- English proof (translation)
-Establish `h` using `congr(($((inhomogeneousCochains A).iCycles_d n (n + 1))).hom z)`. Simplify using `using h`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem d_iCocycles (z : cocycles A n) :
     (inhomogeneousCochains.d A n).hom (iCocycles A n z) = 0 := by
@@ -31,7 +31,7 @@ theorem d_iCocycles (z : cocycles A n) :
   simpa using h
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(toCocycles A m (m + 1) ≫ iCocycles A (m + 1)).hom y = _`. Rewrite using `[HomologicalComplex.toCycles_i]`. Simplify using the standard rewrite rules.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem iCocycles_toCocycles {m : ℕ} (y : (Fin m → G) → A) :
     iCocycles A (m + 1) (toCocycles A m (m + 1) y) = (inhomogeneousCochains.d A m).hom y := by
@@ -40,13 +40,13 @@ theorem iCocycles_toCocycles {m : ℕ} (y : (Fin m → G) → A) :
   simp
 
 /- English proof (translation)
-The claim follows from `(inhomogeneousCochains A).toCycles_eq_zero (by simpa using h)`.
+A detailed English derivation is pending.
 -/
 theorem toCocycles_eq_zero {i : ℕ} (h : i + 1 ≠ n) : toCocycles A i n = 0 :=
   (inhomogeneousCochains A).toCycles_eq_zero (by simpa using h)
 
 /- English proof (translation)
-Establish `: z = toCocycles A m (m + 1) y` using `cocycles_ext (by rw [hz, iCocycles_toCocycles])`. Substitute `this` using the available equality. Conclude with `congr(($((inhomogeneousCochains A).toCycles_comp_homologyπ m (m + 1))).hom y)`.
+Establish an intermediate fact. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem π_eq_zero_of_eq_d {m : ℕ} (z : cocycles A (m + 1)) (y : (Fin m → G) → A)
     (hz : iCocycles A (m + 1) z = (inhomogeneousCochains.d A m).hom y) :
@@ -63,7 +63,7 @@ def descH {M : Type u} [AddCommGroup M] [Module k M] (φ : cocycles A n →ₗ[k
       (by ext y; exact hφ _ y))).hom
 
 /- English proof (translation)
-The claim follows from `congr(($(((inhomogeneousCochains A).homologyIsCokernel _ n rfl).fac (CokernelCofork.ofπ (Z := ModuleCat.of k M) (ModuleCat.ofHom φ) (by ext y; exact hφ _ y)) WalkingParallelPair.one)).hom z)`.
+A detailed English derivation is pending.
 -/
 theorem descH_π {M : Type u} [AddCommGroup M] [Module k M] (φ : cocycles A n →ₗ[k] M)
     (hφ : ∀ (i : ℕ) (y : (Fin i → G) → A), φ (toCocycles A i n y) = 0) (z : cocycles A n) :
@@ -73,7 +73,7 @@ theorem descH_π {M : Type u} [AddCommGroup M] [Module k M] (φ : cocycles A n �
       (by ext y; exact hφ _ y)) WalkingParallelPair.one)).hom z)
 
 /- English proof (translation)
-The claim follows from `LinearMap.ext fun x => groupCohomology_induction_on x h`.
+A detailed English derivation is pending.
 -/
 theorem linearMap_ext {M : Type u} [AddCommGroup M] [Module k M]
     {φ ψ : groupCohomology A n →ₗ[k] M} (h : ∀ z : cocycles A n, φ (π A n z) = ψ (π A n z)) :
@@ -81,21 +81,21 @@ theorem linearMap_ext {M : Type u} [AddCommGroup M] [Module k M]
   LinearMap.ext fun x => groupCohomology_induction_on x h
 
 /- English proof (translation)
-The claim follows from `(cupₗ h).map_zero₂ g`.
+A detailed English derivation is pending.
 -/
 theorem cupCochain_zero_left (h : p + q = n) (g : (Fin q → G) → B) :
     cupCochain h (0 : (Fin p → G) → A) g = 0 :=
   (cupₗ h).map_zero₂ g
 
 /- English proof (translation)
-The claim follows from `(cupₗ h f).map_zero`.
+A detailed English derivation is pending.
 -/
 theorem cupCochain_zero_right (h : p + q = n) (f : (Fin p → G) → A) :
     cupCochain h f (0 : (Fin q → G) → B) = 0 :=
   (cupₗ h f).map_zero
 
 /- English proof (translation)
-Rewrite using `[d_cupCochain, d_iCocycles, d_iCocycles, cupCochain_zero_left, cupCochain_zero_right, smul_zero, add_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem d_cupCochain_iCocycles (h : p + q = n) (z : cocycles A p) (w : cocycles B q) :
     (inhomogeneousCochains.d (A ⊗ B) n).hom (cupCochain h (iCocycles A p z) (iCocycles B q w)) =
@@ -107,7 +107,7 @@ def cupCocycle (h : p + q = n) (z : cocycles A p) (w : cocycles B q) : cocycles 
   cocyclesMk (cupCochain h (iCocycles A p z) (iCocycles B q w)) (d_cupCochain_iCocycles h z w)
 
 /- English proof (translation)
-The claim follows from `iCocycles_mk _ (d_cupCochain_iCocycles h z w)`.
+A detailed English derivation is pending.
 -/
 theorem iCocycles_cupCocycle (h : p + q = n) (z : cocycles A p) (w : cocycles B q) :
     iCocycles (A ⊗ B) n (cupCocycle h z w) = cupCochain h (iCocycles A p z) (iCocycles B q w) :=
@@ -129,7 +129,7 @@ def cupCocycles (h : p + q = n) : cocycles A p →ₗ[k] cocycles B q →ₗ[k] 
       exact (cupₗ h _).map_smul _ _))
 
 /- English proof (translation)
-The claim follows from `iCocycles_cupCocycle h z w`.
+A detailed English derivation is pending.
 -/
 theorem iCocycles_cupCocycles (h : p + q = n) (z : cocycles A p) (w : cocycles B q) :
     iCocycles (A ⊗ B) n (cupCocycles h z w) = cupCochain h (iCocycles A p z) (iCocycles B q w) :=
@@ -142,9 +142,9 @@ section Cohomology
 variable {A B : Rep k G} {p q n : ℕ}
 
 /- English proof (translation)
-Distinguish the cases in `hi : i + 1 = q`. Substitute `hi` using the available equality. Take `rfl : n = p + i + 1` from `by omega`. Use `π_eq_zero_of_eq_d _ ((-1 : k) ^ p • cupCochain rfl (iCocycles A p z) y) ?_` and prove the remaining obligations. Rewrite using `[map_smul, d_cupCochain, d_iCocycles, cupCochain_zero_left, zero_add, smul_smul, ← pow_add, ← two_mul, pow_mul, neg_one_sq, one_pow, one_smul, iCocycles_cupCocycles, iCocycles_toCocycles]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[toCocycles_eq_zero hi]`.
+Simplify using the standard rewrite rules.
 -/
 theorem π_cupCocycles_toCocycles_right (h : p + q = n) (z : cocycles A p) (i : ℕ)
     (y : (Fin i → G) → B) : π (A ⊗ B) n (cupCocycles h z (toCocycles B i q y)) = 0 := by
@@ -158,9 +158,9 @@ theorem π_cupCocycles_toCocycles_right (h : p + q = n) (z : cocycles A p) (i : 
   · simp [toCocycles_eq_zero hi]
 
 /- English proof (translation)
-Distinguish the cases in `hi : i + 1 = p`. Substitute `hi` using the available equality. Take `rfl : n = i + q + 1` from `by omega`. Use `π_eq_zero_of_eq_d _ (cupCochain rfl y (iCocycles B q w)) ?_` and prove the remaining obligations. Rewrite using `[d_cupCochain, d_iCocycles, cupCochain_zero_right, smul_zero, add_zero, iCocycles_cupCocycles, iCocycles_toCocycles]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[toCocycles_eq_zero hi]`.
+Simplify using the standard rewrite rules.
 -/
 theorem π_cupCocycles_toCocycles_left (h : p + q = n) (i : ℕ) (y : (Fin i → G) → A)
     (w : cocycles B q) : π (A ⊗ B) n (cupCocycles h (toCocycles A i p y) w) = 0 := by
@@ -177,7 +177,7 @@ def cupHLeft (h : p + q = n) (z : cocycles A p) :
   descH ((π (A ⊗ B) n).hom ∘ₗ cupCocycles h z) (π_cupCocycles_toCocycles_right h z)
 
 /- English proof (translation)
-The claim follows from `descH_π _ _ w`.
+A detailed English derivation is pending.
 -/
 theorem cupHLeft_π (h : p + q = n) (z : cocycles A p) (w : cocycles B q) :
     cupHLeft h z (π B q w) = π (A ⊗ B) n (cupCocycles h z w) :=
@@ -198,7 +198,7 @@ def cupH (h : p + q = n) :
       rw [cupHLeft_π, π_cupCocycles_toCocycles_left])
 
 /- English proof (translation)
-Rewrite using `[cupH, descH_π]`. Conclude with `cupHLeft_π h z w`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cupH_π (h : p + q = n) (z : cocycles A p) (w : cocycles B q) :
     cupH h (π A p z) (π B q w) = π (A ⊗ B) n (cupCocycles h z w) := by
@@ -217,7 +217,7 @@ def cup : groupCohomology A p ⊗ groupCohomology B q ⟶ groupCohomology (A ⊗
   ModuleCat.ofHom (cupTensor A B p q)
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(π A n ≫ map (MonoidHom.id G) φ n).hom z = (cocyclesMap (MonoidHom.id G) φ n ≫ π A' n).hom z`. Rewrite using `[π_map]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem map_π_apply {A' : Rep k G} (φ : A ⟶ A') (z : cocycles A n) :
     map (MonoidHom.id G) φ n (π A n z) = π A' n (cocyclesMap (MonoidHom.id G) φ n z) := by
@@ -226,7 +226,7 @@ theorem map_π_apply {A' : Rep k G} (φ : A ⟶ A') (z : cocycles A n) :
   rw [π_map]
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(cocyclesMap (MonoidHom.id G) φ n ≫ iCocycles A' n).hom z = _`. Rewrite using `[HomologicalComplex.cyclesMap_i]`. Both sides reduce to the same expression.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem iCocycles_cocyclesMap {A' : Rep k G} (φ : A ⟶ A') (z : cocycles A n) :
     iCocycles A' n (cocyclesMap (MonoidHom.id G) φ n z) =
@@ -236,9 +236,9 @@ theorem iCocycles_cocyclesMap {A' : Rep k G} (φ : A ⟶ A') (z : cocycles A n) 
   rfl
 
 /- English proof (translation)
-Use `groupCohomology_induction_on a fun z => ?_` and prove the remaining obligations. Use `groupCohomology_induction_on b fun w => ?_` and prove the remaining obligations. Establish `key : cocyclesMap (A` using `A ⊗ B) (MonoidHom.id G) (φ ⊗ₘ ψ) n (cupCocycles h z w) = cupCocycles h (cocyclesMap (MonoidHom.id G) φ p z) (cocyclesMap (MonoidHom.id G) ψ q w) := by`. Use `cocycles_ext ?_` and prove the remaining obligations. Rewrite using `[iCocycles_cocyclesMap, iCocycles_cupCocycles, iCocycles_cupCocycles, iCocycles_cocyclesMap, iCocycles_cocyclesMap]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `x`. Conclude with `tensorHom_cupCochain φ ψ h _ _ x`. Rewrite using `[cupH_π, map_π_apply, map_π_apply, cupH_π, ← key]`. Conclude with `map_π_apply _ _`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_cupH {A' B' : Rep k G} (φ : A ⟶ A') (ψ : B ⟶ B') (h : p + q = n)
     (a : groupCohomology A p) (b : groupCohomology B q) :
@@ -257,7 +257,7 @@ theorem map_cupH {A' B' : Rep k G} (φ : A ⟶ A') (ψ : B ⟶ B') (h : p + q = 
   exact map_π_apply _ _
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Simplify using `[inhomogeneousCochains.d_hom_apply, oneCochain]`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem d_oneCochain :
     (inhomogeneousCochains.d (𝟙_ (Rep k G)) 0).hom (oneCochain (k := k) (G := G)) = 0 := by

@@ -17,17 +17,17 @@ variable {D : D7} {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host D.host.
 set_option maxHeartbeats 800000 in
 
 /- English proof (translation)
-Substitute `hΛ hΛ'` using the available equality. Take `⟨r1, -, r3, -, r5⟩` from `GlobalTheory.T.rational_points_adelicUnitary_eq_unitary D V`. Take `⟨δ, hδ1, hδ2, hδ3⟩` from `exists_unitary_of_trace_eq _ _ (GlobalTheory.T.adelicElementLattice_full_and_completion D V g).2.1 (GlobalTheory.T.adelicElementLattice_full_and_completion D V g').2.1 φ φ' _ ξ hξ htr`. Take `⟨γ, hγ⟩` from `r3 δ hδ3`. Take `⟨m1, m2⟩` from `(GlobalTheory.T.adelicUnitaryLattice_rationalTranslate_invariance D V).1 γ δ g hγ`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hlat : latG V (γ * g) = latG V g'`. Use extensionality with `v`. Establish `hv : (δ : Matrix (Fin V.rank) (Fin V.rank) D.host.E) *ᵥ (((δ⁻¹ : GL (Fin V.rank) D.host.E) : Matrix (Fin V.rank) (Fin V.rank) D.host.E) *ᵥ v) = v`. Rewrite using `[Matrix.mulVec_mulVec, Units.mul_inv, Matrix.one_mulVec]`. Establish `a1` using `m1 (((δ⁻¹ : GL (Fin V.rank) D.host.E) : Matrix (Fin V.rank) (Fin V.rank) D.host.E) *ᵥ v)`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `a2` using `hδ2 (((δ⁻¹ : GL (Fin V.rank) D.host.E) : Matrix (Fin V.rank) (Fin V.rank) D.host.E) *ᵥ v)`. Rewrite `a1`, `a2` using `[hv]`. Conclude with `a1.symm.trans a2`. Establish `hc : FinCong V l.M ((γ * g)⁻¹ * g')`. Use `finCong_of_marks l V io hio _ _ hlat (fun a => finVec V (φ' (t a) : Fin V.rank → D.host.E)) ?_ hM'` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a ha`. Take `⟨w, hw, e⟩` from `hM a ha`. Use `⟨_, (m2 w).1 hw, ?_⟩` and prove the remaining obligations. Establish `e2` using `congrArg (fun z => (finHom V γ).1 *ᵥ z) e`. Simplify using `only [Matrix.mulVec_sub, Matrix.mulVec_smul] at e2`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e2` using `[(r5 _ δ hγ).1, Matrix.mulVec_mulVec, ← Units.val_mul, ← map_mul, hδ1]`. Conclude with `e2`. Establish `hu : gLat V ((γ * g)⁻¹ * g') = latHat V`. Use `gLat_eq_of_finCong V _ ((GlobalTheory.T.adelicUnitaryLattice_rationalTranslate_invariance D V).2.2.2 _ _ hlat) ?_` and prove the remaining obligations. Establish `e0 : ((γ * g)⁻¹ * g')⁻¹ = g'⁻¹ * (γ * g)` using `by group`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Rewrite using `[e0]`. Conclude with `(GlobalTheory.T.adelicUnitaryLattice_rationalTranslate_invariance D V).2.2.2 _ _ hlat.symm`. Conclude with `⟨γ, (r1 γ).2 ⟨δ, hγ⟩, _, hu, hc, (mul_inv_cancel_left _ _).symm⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_rat_finCong_of_marks (l : Level H) (V : HSp D) (io : Dw.La →ₗ[𝓞 D.host.E] (Fin V.rank → D.host.E))
     (hio : LatEmb V io) {La : Type} [AddCommGroup La] [Module (𝓞 D.host.E) La] (t : Dw.La → La)
@@ -74,7 +74,7 @@ theorem exists_rat_finCong_of_marks (l : Level H) (V : HSp D) (io : Dw.La →ₗ
   exact ⟨γ, (r1 γ).2 ⟨δ, hγ⟩, _, hu, hc, (mul_inv_cancel_left _ _).symm⟩
 
 /- English proof (translation)
-Substitute `hi` using the available equality. Conclude with `exists_rat_finCong_of_marks l V io hio (F.t i) g g' Λ Λ' hΛ hΛ' φ φ' ξ hξ (fun a b => (htr a b).symm.trans (htr' a b)) hM hM'`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem exists_rat_finCong_of_index {l : Level H} {Xo : Moduli Dw l} {s : KA l →+* ℂ} {n : ℕ}
     {ty : Fin n → D.host.E →+* ℂ}
@@ -100,17 +100,15 @@ theorem exists_rat_finCong_of_index {l : Level H} {Xo : Moduli Dw l} {s : KA l �
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `D H Dw l Xo c σ V r hr U dict io g e F ik φ th x₀ hio hpos hA hgood hW hD hdom hcl w _ h2 h3`. Substitute `hr` using the available equality. Establish `hG : ∀ k, (U.X k).Gm = -V.gramᵀ` using `fun k => (hW k).1`. Establish `htr : ∀ k a b, (((F.Di (ik k)).EF a b : ℤ) : ℚ) = Algebra.trace ℚ D.host.E (-(-D.host.xi0) * herm (-V.gramᵀ) (φ k a : Fin V.rank → D.host.E) (φ k b))` using `fun k a b => by`. Rewrite using `[hD.1.1 k a b, hG k, (hW k).2]`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `key : ∀ h h', ik (dict h).1 = ik (dict h').1 → w h = w h'`. Introduce `h h' hi`. Take `⟨γ, hγ, hΛ, hm, -⟩` from `hD.2 h`. Take `⟨γ', hγ', hΛ', hm', -⟩` from `hD.2 h'`. Establish `hξ : -(-D.host.xi0) ≠ 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[← (hW (dict h).1).2]`. Conclude with `neg_ne_zero.2 (U.X _).ξ0_ne`. Take `⟨δ, hδ, u, hu, hc, eu⟩` from `exists_rat_finCong_of_index F V io hio.emb _ _ hi _ _ _ _ (SetLike.ext' (hΛ.trans (Set.image_id _))) (SetLike.ext' (hΛ'.trans (Set.image_id _))) (φ _) (φ _) _ hξ (htr _) (htr _) hm hm'`. Rewrite using `[← h2 γ' hγ' h', eu, h3 u hu hc, h2 δ hδ, h2 γ hγ]`. Establish `hv : ∀ i : Fin F.n, ∃ a : c.F, ∀ h, ik (dict h).1 = i → a = w h`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i`. Distinguish the cases in `hex : ∃ h, ik (dict h).1 = i`. Take `⟨h, hi⟩` from `hex`. Conclude with `⟨w h, fun h' hi' => key h h' (hi.trans hi'.symm)⟩`. Conclude with `⟨0, fun h hi => absurd ⟨h, hi⟩ hex⟩`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Use `choose v hv using hv`. Take `⟨f, hf, -, hf2⟩` from `GlobalTheory.T.exists_weightZero_section_of_periodSpace_function D.host.E H Dw l Xo c σ g _ F hpos hgood ((GlobalTheory.T.relabelEmbeddings_good_bijective_conj_compat _ H l c σ hgood).2.2.2 Dw g e) hA hcl v`. Use `⟨f, hf, fun h => ?_⟩` and prove the remaining obligations. Take `⟨Pm, -, hP, hx, -⟩` from `hD.1.2 (dict h).1 ⟨(dict h).2, hdom h⟩`. Rewrite using `[← hv _ h rfl, ← hf2 _ _ Pm hP hx]`.
-
-Conclude with `dif_pos (hdom h)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_sec_rdU_eq : ∀ (D : D7) (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host D.host.E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (σ : c.F →+* ℂ) (V : HSp D) (r : ℕ) (hr : V.rank = r) (U : Unf Xo c σ r) (dict : GA D V → Σ k, Frame (U.X k).Ψ r) (io : Dw.La →ₗ[𝓞 D.host.E] (Fin V.rank → D.host.E)) (g : ℕ) (e : Fin g ≃ Σ τ : D.host.E →+* ℂ, Fin (Dw.mult τ)) (F : FamilyUnif Xo (σ.comp (IntermediateField.inclusion c.le).toRingHom) (fun j => relab c σ (e j).1)) (ik : U.Comp → Fin F.n) (φ : ∀ k, (F.Di (ik k)).La ≃ₗ[𝓞 D.host.E] (U.X k).Λ) (th : ∀ k, (U.X k).Ψ → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ)) (x₀ : (D.host.E →+* ℂ) → Matrix (Fin r) (Fin r) ℂ), IotaOK Dw V io → 1 ≤ Dw.p + Dw.q → l.A = 1 → GoodEmb c σ → (∀ k, ModelW V hr (U.X k)) → DictLat U V hr dict io e F ik φ th x₀ → (∀ h, (dict h).2 ∈ (U.X (dict h).1).dom) → FnAlgClosed Xo c → ∀ w : GA D V → c.F, (∀ h h' : GA D V, finHom V h = finHom V h' → w h = w h') → (∀ γ ∈ GQ V, ∀ h, w (γ * h) = w h) → (∀ u : GA D V, gLat V u = latHat V → FinCong V l.M u → ∀ h, w (h * u) = w h) → ∃ f ∈ sec Xo c 0 0, ∀ h : GA D V, rdU U f (dict h).1 (dict h).2 = σ (w h) := by
   intro D H Dw l Xo c σ V r hr U dict io g e F ik φ th x₀ hio hpos hA hgood hW hD hdom hcl w _ h2 h3

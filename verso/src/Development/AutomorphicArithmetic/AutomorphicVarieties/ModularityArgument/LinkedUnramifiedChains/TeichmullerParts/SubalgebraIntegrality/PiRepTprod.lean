@@ -8,7 +8,7 @@ section Transfer
 variable {G G' W W' : Type} [Group G] [Group G'] [AddCommGroup W] [Module ℂ W] [AddCommGroup W'] [Module ℂ W']
 
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.Ra6.irr_iff ρ`.
+A detailed English derivation is pending.
 -/
 private lemma irr_iff (ρ : Representation ℂ G W) :
     ρ.IsIrreducible ↔ Nontrivial W ∧
@@ -16,19 +16,17 @@ private lemma irr_iff (ρ : Representation ℂ G W) :
   _root_.UpperTheory.Reformulated.B.Ra6.irr_iff ρ
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `hρ`. Take `⟨hW, hN⟩` from `(irr_iff ρ).1 h1`. Use `⟨(irr_iff ρ').2 ⟨e.toEquiv.nontrivial, fun N hN' => ?_⟩, fun f hf => ?_⟩` and prove the remaining obligations. Establish `hinv : ∀ g, ∀ v ∈ N.map e.toLinearMap, ρ g v ∈ N.map e.toLinearMap`. Introduce and unpack `g _ ⟨x, hx, rfl⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Take `⟨g', rfl⟩` from `hφ g`. Conclude with `⟨ρ' g' x, hN' g' x hx, h g' x⟩`. Break down `hN _ hinv with h3 | h3` into its components or cases. Use `left`. Rewrite using `[Submodule.eq_bot_iff]`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x hx`. Establish `hm : e.toLinearMap x ∈ N.map e.toLinearMap` using `Submodule.mem_map_of_mem hx`. Rewrite `hm` using `[h3, Submodule.mem_bot]`. Conclude with `e.map_eq_zero_iff.1 hm`. Use `right`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[Submodule.eq_top_iff']`. Introduce `x`. Establish `hm : e.toLinearMap x ∈ N.map e.toLinearMap` using `by rw [h3]; exact Submodule.mem_top`. Take `⟨y, hy, hyx⟩` from `hm`. Rewrite using `[← e.injective hyx]` and apply the resulting hypothesis.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hs : ∀ g' v, e.symm (ρ (φ g') v) = ρ' g' (e.symm v)` using `fun g' v => by`. Rewrite using `[LinearEquiv.symm_apply_eq, h g' (e.symm v), LinearEquiv.apply_symm_apply]`. Establish `hF : Intw ρ ρ (e.toLinearMap ∘ₗ f ∘ₗ e.symm.toLinearMap)`. Introduce `g v`. Take `⟨g', rfl⟩` from `hφ g`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Simplify using `only [LinearMap.comp_apply, LinearEquiv.coe_coe]`. Rewrite using `[hs, hf, h]`. Take `⟨a, ha⟩` from `h2 _ hF`. Use `⟨a, LinearMap.ext fun x => e.injective ?_⟩` and prove the remaining obligations. Use `LinearMap.congr_fun ha (e x)` as an intermediate fact.
-
-Simplify using `using this`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 private lemma transfer (ρ : Representation ℂ G W) (ρ' : Representation ℂ G' W') (φ : G' → G)
     (hφ : Function.Surjective φ) (e : W' ≃ₗ[ℂ] W)
@@ -66,7 +64,7 @@ private lemma transfer (ρ : Representation ℂ G W) (ρ' : Representation ℂ G
     simpa using this
 
 /- English proof (translation)
-The claim follows from `LinearMap.congr_fun (PiTensorProduct.ext (MultilinearMap.ext h)) x`.
+A detailed English derivation is pending.
 -/
 private lemma pt_eq {ι Z : Type} {s : ι → Type} [∀ i, AddCommGroup (s i)] [∀ i, Module ℂ (s i)]
     [AddCommGroup Z] [Module ℂ Z] (A B : (⨂[ℂ] i, s i) →ₗ[ℂ] Z)
@@ -77,7 +75,7 @@ private lemma pt_eq {ι Z : Type} {s : ι → Type} [∀ i, AddCommGroup (s i)] 
 end Transfer
 
 /- English proof (translation)
-The claim follows from `PiTensorProduct.map_tprod _ _`.
+A detailed English derivation is pending.
 -/
 private lemma piRep_tprod {I : Type} {Gi Wi : I → Type} [∀ i, Group (Gi i)]
     [∀ i, AddCommGroup (Wi i)] [∀ i, Module ℂ (Wi i)]
@@ -90,7 +88,7 @@ private def Pp (I : Type) : Prop :=
     (τ : ∀ i, Representation ℂ (Gi i) (Wi i)), (∀ i, AbsIrr (τ i)) → AbsIrr (piRep τ)
 
 /- English proof (translation)
-Introduce `Gi Wi _ _ _ τ hτ`. Use `transfer (piRep fun a => τ (f.symm a)) (piRep τ) (Equiv.piCongrLeft' Gi f) (Equiv.surjective _) (PiTensorProduct.reindex ℂ Wi f) (fun g x => ?_) (h (fun a => Gi (f.symm a)) (fun a => Wi (f.symm a)) (fun a => τ (f.symm a)) fun a => hτ _)` and prove the remaining obligations. Use `pt_eq ((PiTensorProduct.reindex ℂ Wi f).toLinearMap ∘ₗ piRep τ g) ((piRep (fun a => τ (f.symm a)) (Equiv.piCongrLeft' Gi f g)) ∘ₗ (PiTensorProduct.reindex ℂ Wi f).toLinearMap) (fun m => ?_) x` and prove the remaining obligations. Simplify using `only [LinearMap.comp_apply, LinearEquiv.coe_coe, piRep_tprod, PiTensorProduct.reindex_tprod]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 private lemma Pp_equiv {α β : Type} (f : β ≃ α) (h : Pp α) : Pp β := by
   intro Gi Wi _ _ _ τ hτ
@@ -104,7 +102,7 @@ private lemma Pp_equiv {α β : Type} (f : β ≃ α) (h : Pp α) : Pp β := by
   rfl
 
 /- English proof (translation)
-Use `⟨(irr_iff _).2 ⟨inferInstance, fun N _ => eq_bot_or_eq_top N⟩, fun f _ => ⟨f 1, ?_⟩⟩` and prove the remaining obligations. Use `LinearMap.ext_ring ?_` and prove the remaining obligations. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 private lemma absIrr_triv : AbsIrr (Representation.trivial ℂ Unit ℂ) := by
   refine ⟨(irr_iff _).2 ⟨inferInstance, fun N _ => eq_bot_or_eq_top N⟩, fun f _ => ⟨f 1, ?_⟩⟩
@@ -112,7 +110,7 @@ private lemma absIrr_triv : AbsIrr (Representation.trivial ℂ Unit ℂ) := by
   simp
 
 /- English proof (translation)
-Introduce `Gi Wi _ _ _ τ _`. Use `transfer (Representation.trivial ℂ Unit ℂ) (piRep τ) (fun _ => ()) (fun _ => ⟨1, rfl⟩) (PiTensorProduct.isEmptyEquiv PEmpty) (fun g x => ?_) absIrr_triv` and prove the remaining obligations. Use `pt_eq ((PiTensorProduct.isEmptyEquiv PEmpty).toLinearMap ∘ₗ piRep τ g) (Representation.trivial ℂ Unit ℂ () ∘ₗ (PiTensorProduct.isEmptyEquiv PEmpty).toLinearMap) (fun m => ?_) x` and prove the remaining obligations. Simplify using `[piRep_tprod, PiTensorProduct.isEmptyEquiv_apply_tprod]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 private lemma Pp_empty : Pp PEmpty := by
   intro Gi Wi _ _ _ τ _
@@ -124,7 +122,7 @@ private lemma Pp_empty : Pp PEmpty := by
   simp [piRep_tprod, PiTensorProduct.isEmptyEquiv_apply_tprod]
 
 /- English proof (translation)
-Introduce `Gi Wi _ _ _ τ hτ`. Use `transfer (τ PUnit.unit) (piRep τ) (fun g => g PUnit.unit) (fun h => ⟨fun _ => h, rfl⟩) (PiTensorProduct.subsingletonEquiv PUnit.unit) (fun g x => ?_) (hτ _)` and prove the remaining obligations. Use `pt_eq ((PiTensorProduct.subsingletonEquiv PUnit.unit).toLinearMap ∘ₗ piRep τ g) (τ PUnit.unit (g PUnit.unit) ∘ₗ (PiTensorProduct.subsingletonEquiv PUnit.unit).toLinearMap) (fun m => ?_) x` and prove the remaining obligations. Simplify using `[piRep_tprod, PiTensorProduct.subsingletonEquiv_apply_tprod]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 private lemma Pp_unit : Pp PUnit := by
   intro Gi Wi _ _ _ τ hτ
@@ -136,9 +134,9 @@ private lemma Pp_unit : Pp PUnit := by
   simp [piRep_tprod, PiTensorProduct.subsingletonEquiv_apply_tprod]
 
 /- English proof (translation)
-Introduce `Gi Wi _ _ _ τ hτ`. Use `transfer (box (piRep fun a => τ (.inl a)) (piRep fun b => τ (.inr b))) (piRep τ) (fun g => (fun a => g (.inl a), fun b => g (.inr b))) (fun p => ⟨fun s => Sum.rec (motive := Gi) p.1 p.2 s, rfl⟩) (PiTensorProduct.tmulEquivDep ℂ Wi).symm (fun g x => ?_) (hB _ _ _ _ _ _ (ha _ _ _ fu …` and prove the remaining obligations. Use `pt_eq ((PiTensorProduct.tmulEquivDep ℂ Wi).symm.toLinearMap ∘ₗ piRep τ g) ((box (piRep fun a => τ (.inl a)) (piRep fun b => τ (.inr b)) (fun a => g (.inl a), fun b => g (.inr b))) ∘ₗ (PiTensorProduct.tmulEquivDep ℂ Wi).symm.toLinearMap) (fun m => ?_) x` and prove the remaining obligations. Simplify using `only [LinearMap.comp_apply, LinearEquiv.coe_coe, piRep_tprod, PiTensorProduct.tmulEquivDep_symm_apply]`. Simplify using `only [box, Representation.tprod_apply, MonoidHom.comp_apply, TensorProduct.map_tmul]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[piRep_tprod]`.
+Simplify using the standard rewrite rules.
 -/
 private lemma Pp_sum (hB : BoxIrr) {α β : Type} (ha : Pp α) (hb : Pp β) : Pp (α ⊕ β) := by
   intro Gi Wi _ _ _ τ hτ
@@ -157,9 +155,9 @@ private lemma Pp_sum (hB : BoxIrr) {α β : Type} (ha : Pp α) (hb : Pp β) : Pp
   simp [piRep_tprod]
 
 /- English proof (translation)
-Introduce `hB I _ _ Gi Wi _ _ _ τ hτ`. Establish `key : ∀ (α : Type) [Fintype α], Pp α`. Use `Fintype.induction_empty_option (P := fun α _ => Pp α) ?_ Pp_empty ?_` and prove the remaining obligations. Introduce `α β _ e h`. Conclude with `Pp_equiv e.symm h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `α _ h`. Conclude with `Pp_equiv (Equiv.optionEquivSumPUnit α) (Pp_sum hB h Pp_unit)`. Conclude with `key I Gi Wi τ hτ`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.J.D.piIrr :
     BoxIrr → PiIrr := by

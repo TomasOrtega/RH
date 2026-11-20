@@ -19,13 +19,13 @@ def evalAt {n : ℕ} (i : Fin n) : V ⊗[ℂ] (Fin n → ℂ) →ₗ[ℂ] V :=
   (TensorProduct.rid ℂ V).toLinearMap ∘ₗ LinearMap.lTensor V (LinearMap.proj i)
 
 /- English proof (translation)
-Simplify using `[evalAt]`.
+Simplify using the standard rewrite rules.
 -/
 theorem evalAt_tmul {n : ℕ} (i : Fin n) (v : V) (y : Fin n → ℂ) : evalAt i (v ⊗ₜ[ℂ] y) = y i • v := by
   simp [evalAt]
 
 /- English proof (translation)
-Introduce `h0`. Use `congrArg (evalAt (V := V) i) h0` as an intermediate fact. Rewrite `this` using `[evalAt_tmul, map_zero]`. Simplify using `at this`. Conclude with `hv this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem tmul_single_ne_zero {n : ℕ} (i : Fin n) {v : V} (hv : v ≠ 0) :
     v ⊗ₜ[ℂ] (Pi.single i 1 : Fin n → ℂ) ≠ 0 := by
@@ -36,9 +36,9 @@ theorem tmul_single_ne_zero {n : ℕ} (i : Fin n) {v : V} (hv : v ≠ 0) :
   exact hv this
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Rewrite using `[shiftEnd_pow_apply]`. Use `split_ifs with hi`. Apply the tactic sequence `simp only [Pi.single_apply, Fin.ext_iff] split_ifs <;> first | rfl | (exfalso; omega)`. Rewrite using `[Pi.single_apply, if_neg]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `e`. Apply `hi` to reduce the goal to its premises. Rewrite using `[e]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem shiftEnd_pow_single_zero (n j : ℕ) (hj : j < n) :
     (shiftEnd n ^ j) (Pi.single ⟨0, by omega⟩ 1) = Pi.single ⟨j, hj⟩ 1 := by
@@ -53,7 +53,7 @@ theorem shiftEnd_pow_single_zero (n j : ℕ) (hj : j < n) :
     rw [e]
 
 /- English proof (translation)
-The claim follows from `LinearMap.ext fun y => funext fun i => by rw [shiftEnd_pow_apply, if_neg (by omega)] rfl`.
+A detailed English derivation is pending.
 -/
 theorem shiftEnd_pow_eq_zero {n j : ℕ} (hj : n ≤ j) : shiftEnd n ^ j = 0 :=
   LinearMap.ext fun y => funext fun i => by
@@ -61,7 +61,7 @@ theorem shiftEnd_pow_eq_zero {n j : ℕ} (hj : n ≤ j) : shiftEnd n ^ j = 0 :=
     rfl
 
 /- English proof (translation)
-The claim follows from `LinearMap.ext fun y => funext fun i => by rw [shiftEnd_pow_apply, LinearMap.comp_apply, LinearMap.coe_single, LinearMap.proj_apply, Pi.single_apply] split_ifs with h1 h2 h2 · congr 1; ext; simp only; omega · exfalso; apply h2; ext; simp only; omega · exfalso; apply h1; rw [h2] · …`.
+A detailed English derivation is pending.
 -/
 theorem shiftEnd_pow_self (k : ℕ) : shiftEnd (k + 1) ^ k =
     LinearMap.single ℂ (fun _ : Fin (k + 1) => ℂ) ⟨k, by omega⟩ ∘ₗ LinearMap.proj ⟨0, by omega⟩ :=
@@ -74,9 +74,9 @@ theorem shiftEnd_pow_self (k : ℕ) : shiftEnd (k + 1) ^ k =
     · rfl
 
 /- English proof (translation)
-Rewrite `hx`, the goal using `[shiftEnd_pow_self, LinearMap.lTensor_comp, LinearMap.comp_apply]`. Establish `key : ∀ z : V ⊗[ℂ] ℂ, evalAt ⟨k, by omega⟩ (LinearMap.lTensor V (LinearMap.single ℂ (fun _ : Fin (k + 1) => ℂ) ⟨k, by omega⟩) z) = TensorProduct.rid ℂ V z` using `fun z => by`. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul v t => simp [evalAt_tmul]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Rewrite `hx` using `[key, LinearEquiv.map_eq_zero_iff]`. Rewrite using `[hx, map_zero]`.
+Treat this case separately. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem eq_zero_of_evalAt_shift (k : ℕ) (x : V ⊗[ℂ] (Fin (k + 1) → ℂ))
     (hx : evalAt ⟨k, by omega⟩ (LinearMap.lTensor V (shiftEnd (k + 1) ^ k) x) = 0) :
@@ -99,7 +99,7 @@ section Irr
 variable {G V V' : Type} [Monoid G] [AddCommGroup V] [Module ℂ V] [AddCommGroup V'] [Module ℂ V']
 
 /- English proof (translation)
-Use `haveI := hρ`. Break down `IsSimpleOrder.eq_bot_or_eq_top (⟨S, fun g v hv => hS g v hv⟩ : Subrepresentation ρ) with h | h` into its components or cases. Conclude with `Or.inl (congrArg Subrepresentation.toSubmodule h)`. Conclude with `Or.inr (congrArg Subrepresentation.toSubmodule h)`.
+Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Prove the second alternative. A detailed English derivation is pending.
 -/
 theorem stable_eq_bot_or_top {ρ : Representation ℂ G V} (hρ : ρ.IsIrreducible) (S : Submodule ℂ V)
     (hS : ∀ g v, v ∈ S → ρ g v ∈ S) : S = ⊥ ∨ S = ⊤ := by
@@ -109,9 +109,9 @@ theorem stable_eq_bot_or_top {ρ : Representation ℂ G V} (hρ : ρ.IsIrreducib
   · exact Or.inr (congrArg Subrepresentation.toSubmodule h)
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hall`. Use `push_neg at hall`. Use `haveI := hρ`. Apply `(bot_ne_top : (⊥ : Subrepresentation ρ) ≠ ⊤)` to reduce the goal to its premises. Apply `Subrepresentation.ext` to reduce the goal to its premises.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use extensionality with `v`. Use `show v ∈ (⊥ : Submodule ℂ V) ↔ v ∈ (⊤ : Submodule ℂ V)`. Simplify using `[hall v]`.
+A detailed English derivation is pending.
 -/
 theorem exists_ne_zero {ρ : Representation ℂ G V} (hρ : ρ.IsIrreducible) : ∃ v : V, v ≠ 0 := by
   by_contra hall
@@ -124,9 +124,9 @@ theorem exists_ne_zero {ρ : Representation ℂ G V} (hρ : ρ.IsIrreducible) : 
   simp [hall v]
 
 /- English proof (translation)
-Use `first`. Consider the case `(rename_i h_3 h_4 h_5 h_6 h_7; revert G V V' h_3 h_4 h_5 h_6 h_7 ρ ρ' hρ hρ' F hF h0; exact @_root_.GlobalTheory.BijectiveIntertwining.bijective_of_intertwining)`. Consider the case `exact @_root_.GlobalTheory.BijectiveIntertwining.bijective_of_intertwining`. Consider the case `exact _root_.GlobalTheory.BijectiveIntertwining.bijective_of_intertwining`. Consider the case `(apply _root_.GlobalTheory.BijectiveIntertwining.bijective_of_intertwining <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply _root_.GlobalTheory.BijectiveIntertwining.bijective_of_intertwining <;> assumption)`. Consider the case `(intros; apply @_root_.GlobalTheory.BijectiveIntertwining.bijective_of_intertwining <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.BijectiveIntertwining.bijective_of_intertwining ..)`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem bijective_of_ne_zero {ρ : Representation ℂ G V} {ρ' : Representation ℂ G V'} (hρ : ρ.IsIrreducible)
     (hρ' : ρ'.IsIrreducible) (F : V →ₗ[ℂ] V') (hF : ∀ g v, F (ρ g v) = ρ' g (F v)) (h0 : F ≠ 0) :
@@ -151,13 +151,11 @@ variable {V U U' : Type} [AddCommGroup V] [Module ℂ V] [FiniteDimensional ℂ 
   [AddCommGroup U] [Module ℂ U] [FiniteDimensional ℂ U] [AddCommGroup U'] [Module ℂ U'] [FiniteDimensional ℂ U']
 
 /- English proof (translation)
-Establish `hq : ((normV w : ℕ) : ℂ) ≠ 0` using `Nat.cast_ne_zero.mpr (one_lt_normV w).ne_bot`. Break down `stable_eq_bot_or_top ha (LinearMap.ker a.N) (fun σ v hv => by` into its components or cases. Rewrite `hv`, the goal using `[LinearMap.mem_ker]`. Use `a.comm_apply σ v` as an intermediate fact. Rewrite `this` using `[hv, map_zero]`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(smul_eq_zero.1 this.symm).resolve_left (zpow_ne_zero _ hq)) with h0 | h0`. It suffices to derive a contradiction. Take `⟨r, hr⟩` from `a.nilpotent`. Take `⟨v, hv⟩` from `exists_ne_zero ha`. Establish `hi : Function.Injective (a.N ^ r)`.
+It suffices to derive a contradiction. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Module.End.coe_pow]`. Conclude with `(LinearMap.ker_eq_bot.1 h0).iterate r`. Apply `hv` to reduce the goal to its premises. Apply `hi` to reduce the goal to its premises. Rewrite using `[hr, map_zero, LinearMap.zero_apply]`.
-
-Conclude with `LinearMap.ker_eq_top.1 h0`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem N_eq_zero_of_irr (a : WDRep h V) (ha : a.ρ.IsIrreducible) : a.N = 0 := by
   have hq : ((normV w : ℕ) : ℂ) ≠ 0 := Nat.cast_ne_zero.mpr (one_lt_normV w).ne_bot
@@ -178,7 +176,7 @@ theorem N_eq_zero_of_irr (a : WDRep h V) (ha : a.ρ.IsIrreducible) : a.N = 0 := 
   · exact LinearMap.ker_eq_top.1 h0
 
 /- English proof (translation)
-Proceed by induction on `j generalizing v with`. Consider the case `zero => simp`. Consider the case `succ j ih => rw [pow_succ', Module.End.mul_apply, he, ih, pow_succ', Module.End.mul_apply]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem pow_N_apply_of_iso {b : WDRep h U} {b' : WDRep h U'} (e : U ≃ₗ[ℂ] U')
     (he : ∀ v, e (b.N v) = b'.N (e v)) (j : ℕ) (v : U) : e ((b.N ^ j) v) = (b'.N ^ j) (e v) := by
@@ -187,7 +185,7 @@ theorem pow_N_apply_of_iso {b : WDRep h U} {b' : WDRep h U'} (e : U ≃ₗ[ℂ] 
   | succ j ih => rw [pow_succ', Module.End.mul_apply, he, ih, pow_succ', Module.End.mul_apply]
 
 /- English proof (translation)
-The claim follows from `(map_pow (LinearMap.prodMapRingHom ℂ U U') (b.N, b'.N) j).symm`.
+A detailed English derivation is pending.
 -/
 theorem sum_N_pow (b : WDRep h U) (b' : WDRep h U') (j : ℕ) :
     (b.sum b').N ^ j = (b.N ^ j).prodMap (b'.N ^ j) :=
@@ -203,11 +201,11 @@ def PowZero (b : WDRep h U) : Prop := b.N ^ (k + 1) = 0
 variable {ρ k c}
 
 /- English proof (translation)
-Take `⟨e, h1, h2⟩` from `hb`. Take `⟨f, g, hf, hc, rfl⟩` from `H`. Use `⟨e.toLinearMap ∘ₗ ((b.N ^ k) ∘ₗ g), e.toLinearMap ∘ₗ g, ?_, fun σ v => ?_, ?_⟩` and prove the remaining obligations. Introduce `h0`. Apply `hf` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Use `LinearMap.ext fun v => ?_` and prove the remaining obligations. Use `LinearMap.congr_fun h0 v` as an intermediate fact. Simplify using `only [LinearMap.comp_apply, LinearEquiv.coe_coe, LinearMap.zero_apply, LinearEquiv.map_eq_zero_iff] at this`. Simplify using `using this`. Simplify using `only [LinearMap.comp_apply, LinearEquiv.coe_coe]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules.
 
-Rewrite using `[← h1, ← LinearMap.comp_apply (b.N ^ k) g, hc, map_smul]`. Both sides reduce to the same expression. Use `LinearMap.ext fun v => ?_` and prove the remaining obligations. Simplify using `only [LinearMap.comp_apply, LinearEquiv.coe_coe]`. Conclude with `pow_N_apply_of_iso e h2 k (g v)`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem HasCopy.of_iso {b : WDRep h U} {b' : WDRep h U'} (hb : b.Iso b') (H : HasCopy ρ k c b) :
     HasCopy ρ k c b' := by
@@ -229,7 +227,7 @@ theorem HasCopy.of_iso {b : WDRep h U} {b' : WDRep h U'} (hb : b.Iso b') (H : Ha
     exact pow_N_apply_of_iso e h2 k (g v)
 
 /- English proof (translation)
-Take `⟨e, -, h2⟩` from `hb`. Use `LinearMap.ext fun v => ?_` and prove the remaining obligations. Take `⟨v, rfl⟩` from `e.surjective v`. Rewrite using `[← pow_N_apply_of_iso e h2, show b.N ^ (k + 1) = 0 from H]`. Simplify using the standard rewrite rules.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem PowZero.of_iso {b : WDRep h U} {b' : WDRep h U'} (hb : b.Iso b') (H : PowZero k b) :
     PowZero k b' := by
@@ -240,13 +238,13 @@ theorem PowZero.of_iso {b : WDRep h U} {b' : WDRep h U'} (hb : b.Iso b') (H : Po
   simp
 
 /- English proof (translation)
-Take `⟨f, g, hf, hc, rfl⟩` from `H`. Distinguish the cases in `h1 : LinearMap.fst ℂ U U' ∘ₗ (((b.sum b').N ^ k) ∘ₗ g) = 0`. Distinguish the cases in `h2 : LinearMap.snd ℂ U U' ∘ₗ (((b.sum b').N ^ k) ∘ₗ g) = 0`. It suffices to derive a contradiction. Apply `hf` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. It suffices to derive a contradiction. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `LinearMap.ext fun v => Prod.ext (LinearMap.congr_fun h1 v) (LinearMap.congr_fun h2 v)`. Use `Or.inr ⟨_, LinearMap.snd ℂ U U' ∘ₗ g, h2, fun σ v => ?_, ?_⟩` and prove the remaining obligations. Use `congrArg Prod.snd (hc σ v)` as an intermediate fact. Simplify using `using this`. Use `LinearMap.ext fun v => ?_ show (((b.sum b').N ^ k) (g v)).2 = _` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[sum_N_pow]`. Both sides reduce to the same expression. Use `Or.inl ⟨_, LinearMap.fst ℂ U U' ∘ₗ g, h1, fun σ v => ?_, ?_⟩` and prove the remaining obligations. Use `congrArg Prod.fst (hc σ v)` as an intermediate fact. Simplify using `using this`.
+Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations.
 
-Use `LinearMap.ext fun v => ?_ show (((b.sum b').N ^ k) (g v)).1 = _` and prove the remaining obligations. Rewrite using `[sum_N_pow]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem HasCopy.sum {b : WDRep h U} {b' : WDRep h U'} (H : HasCopy ρ k c (b.sum b')) :
     HasCopy ρ k c b ∨ HasCopy ρ k c b' := by
@@ -270,9 +268,9 @@ theorem HasCopy.sum {b : WDRep h U} {b' : WDRep h U'} (H : HasCopy ρ k c (b.sum
       rw [sum_N_pow]; rfl
 
 /- English proof (translation)
-Unfold `PowZero at H ⊢`. Rewrite `H` using `[sum_N_pow]`. Prove the components needed by the constructor for the conclusion. Use `LinearMap.ext fun v => ?_` and prove the remaining obligations. Use `congrArg Prod.fst (LinearMap.congr_fun H (v, 0))` as an intermediate fact.
+Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Prove the components needed by the constructor for the conclusion. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `using this`. Use `LinearMap.ext fun v => ?_` and prove the remaining obligations. Use `congrArg Prod.snd (LinearMap.congr_fun H (0, v))` as an intermediate fact. Simplify using `using this`.
+Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem PowZero.sum {b : WDRep h U} {b' : WDRep h U'} (H : PowZero k (b.sum b')) :
     PowZero k b ∧ PowZero k b' := by
@@ -287,7 +285,7 @@ theorem PowZero.sum {b : WDRep h U} {b' : WDRep h U'} (H : PowZero k (b.sum b'))
     simpa using this
 
 /- English proof (translation)
-Introduce and unpack `⟨f, -, hf, -, -⟩`. Conclude with `hf (LinearMap.ext fun v => Subsingleton.elim _ _)`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem not_hasCopy_zero : ¬ HasCopy ρ k c (WDRep.diag h (ι := Fin 0) fun i => i.elim0) := by
   rintro ⟨f, -, hf, -, -⟩
@@ -305,27 +303,27 @@ variable (h) in
 def lastEig (k : ℕ) (σ : Weil h) : ℂ := (WDRep.spEig w (k + 1) ⟨k, by omega⟩ : ℂ) ^ deg σ
 
 /- English proof (translation)
-Simplify using `[WDRep.sp_ρ]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sp_ρ_apply (n : ℕ) (σ : Weil h) (y : Fin n → ℂ) (i : Fin n) :
     (WDRep.sp h n).ρ σ y i = (WDRep.spEig w n i : ℂ) ^ deg σ * y i := by
   simp [WDRep.sp_ρ]
 
 /- English proof (translation)
-Rewrite using `[WDRep.tensor_N, ha, LinearMap.rTensor_zero, zero_add, WDRep.sp_N, LinearMap.lTensor_pow]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem tensor_sp_N_pow (a : WDRep h V) (ha : a.N = 0) (n j : ℕ) :
     (a.tensor (WDRep.sp h n)).N ^ j = LinearMap.lTensor V (shiftEnd n ^ j) := by
   rw [WDRep.tensor_N, ha, LinearMap.rTensor_zero, zero_add, WDRep.sp_N, LinearMap.lTensor_pow]
 
 /- English proof (translation)
-Establish `hN` using `N_eq_zero_of_irr a ha`. Use `⟨(TensorProduct.mk ℂ V (Fin (k + 1) → ℂ)).flip (Pi.single ⟨k, by omega⟩ 1), (TensorProduct.mk ℂ V (Fin (k + 1) → ℂ)).flip (Pi.single ⟨0, by omega⟩ 1), ?_, fun σ v => ?_, ?_⟩` and prove the remaining obligations. Take `⟨v, hv⟩` from `exists_ne_zero ha`. Introduce `h0`. Use `LinearMap.congr_fun h0 v` as an intermediate fact.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `only [LinearMap.flip_apply, TensorProduct.mk_apply, LinearMap.zero_apply] at this`. Conclude with `tmul_single_ne_zero _ hv this`. Simplify using `only [LinearMap.flip_apply, TensorProduct.mk_apply, WDRep.tensor_ρ, TensorProduct.map_tmul]`. Establish `: (WDRep.sp h (k + 1)).ρ σ (Pi.single ⟨k, by omega⟩ 1) = lastEig h k σ • (Pi.single ⟨k, by omega⟩ 1 : Fin (k + 1) → ℂ)`. Use function extensionality and compare the values at `i`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[sp_ρ_apply]`. Distinguish the cases in `hi : i = ⟨k, by omega⟩`. Substitute `hi` using the available equality. Simplify using `[lastEig]`. Simplify using `[hi]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, TensorProduct.tmul_smul]`. Use `LinearMap.ext fun v => ?_` and prove the remaining obligations. Rewrite using `[tensor_sp_N_pow a hN]`. Simplify using `only [LinearMap.comp_apply, LinearMap.flip_apply, TensorProduct.mk_apply, LinearMap.lTensor_tmul]`. Rewrite using `[shiftEnd_pow_single_zero]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasCopy_self (a : WDRep h V) (ha : a.ρ.IsIrreducible) (k : ℕ) :
     HasCopy a.ρ k (lastEig h k) (a.tensor (WDRep.sp h (k + 1))) := by
@@ -352,25 +350,23 @@ theorem hasCopy_self (a : WDRep h V) (ha : a.ρ.IsIrreducible) (k : ℕ) :
     rw [shiftEnd_pow_single_zero]
 
 /- English proof (translation)
-Establish `hN'` using `N_eq_zero_of_irr a' ha'`. Establish `hN` using `N_eq_zero_of_irr a ha`. Unfold `PowZero at Z`. Rewrite `Z` using `[tensor_sp_N_pow a' hN']`. Take `⟨f, g, hf, hc, hfg⟩` from `H`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `hfg` using `[tensor_sp_N_pow a' hN']`. Establish `hmk : m ≤ k`. Assume the negation of the conclusion as `hlt`. Use `push_neg at hlt`. Take `⟨v, hv⟩` from `exists_ne_zero ha'`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `tmul_single_ne_zero (⟨k + 1, by omega⟩ : Fin (m + 1)) hv` to reduce the goal to its premises. Use `LinearMap.congr_fun Z (v ⊗ₜ Pi.single ⟨0, by omega⟩ 1)` as an intermediate fact. Rewrite `this` using `[LinearMap.lTensor_tmul, shiftEnd_pow_single_zero, LinearMap.zero_apply]`. Then use the resulting hypothesis. Establish `hkm : k ≤ m`. Assume the negation of the conclusion as `hlt`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result.
 
-Use `push_neg at hlt`. Apply `hf` to reduce the goal to its premises. Rewrite using `[hfg, shiftEnd_pow_eq_zero (by omega), LinearMap.lTensor_zero, LinearMap.zero_comp]`. Take `rfl : m = k` from `le_antisymm hmk hkm`. Use `⟨rfl, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hπ : ∀ σ x, evalAt (⟨m, by omega⟩ : Fin (m + 1)) ((a'.tensor (WDRep.sp h (m + 1))).ρ σ x) = lastEig h m σ • a'.ρ σ (evalAt ⟨m, by omega⟩ x)`. Introduce `σ x`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul v y`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[WDRep.tensor_ρ, TensorProduct.map_tmul, evalAt_tmul, evalAt_tmul, sp_ρ_apply, map_smul, smul_smul]`. Both sides reduce to the same expression. Consider the case `add x y hx hy => simp only [map_add, smul_add, hx, hy]`. Set `G : V →ₗ[ℂ] V'` to `evalAt (⟨m, by omega⟩ : Fin (m + 1)) ∘ₗ f`. Establish `hG : ∀ σ v, G (a.ρ σ v) = a'.ρ σ (G v)`.
+Treat this case separately. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `σ v`. Establish `h1` using `congrArg (evalAt (⟨m, by omega⟩ : Fin (m + 1))) (hc σ v)`. Rewrite `h1` using `[hπ, map_smul]`. Establish `hc0 : lastEig h m σ ≠ 0` using `zpow_ne_zero _ (Units.ne_zero _)`. Conclude with `(smul_right_injective V' hc0 h1).symm`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hG0 : G ≠ 0`. Introduce `h0`. Apply `hf` to reduce the goal to its premises. Use `LinearMap.ext fun v => ?_` and prove the remaining obligations. Establish `h1 : evalAt (⟨m, by omega⟩ : Fin (m + 1)) (f v) = 0` using `LinearMap.congr_fun h0 v`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite `h1`, the goal using `[hfg]`. Simplify using `only [LinearMap.comp_apply, LinearMap.zero_apply] at h1 ⊢`. Conclude with `eq_zero_of_evalAt_shift m (g v) h1`. Establish `hb` using `bijective_of_ne_zero ha ha' G hG hG0`. Use `⟨LinearEquiv.ofBijective G hb, fun σ v => hG σ v, fun v => ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[hN, hN']`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem eq_of_hasCopy (a : WDRep h V) (ha : a.ρ.IsIrreducible) (a' : WDRep h V') (ha' : a'.ρ.IsIrreducible)
     (m k : ℕ) (H : HasCopy a.ρ k (lastEig h k) (a'.tensor (WDRep.sp h (m + 1))))
@@ -440,23 +436,23 @@ def PowZeroW (x : WD h) : Prop := ∃ (n : ℕ) (b : WDRep h (Fin n → ℂ)), W
 variable {ρ k c}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun ⟨_, _, e, H⟩ => H.of_iso (WD.mk_eq_mk.1 e), fun H => ⟨_, (WD.std b).2, WD.sound (WD.iso_std b).symm, H.of_iso (WD.iso_std b)⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem hasCopyW_mk (b : WDRep h U) : HasCopyW ρ k c (WD.mk b) ↔ HasCopy ρ k c b :=
   ⟨fun ⟨_, _, e, H⟩ => H.of_iso (WD.mk_eq_mk.1 e),
     fun H => ⟨_, (WD.std b).2, WD.sound (WD.iso_std b).symm, H.of_iso (WD.iso_std b)⟩⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun ⟨_, _, e, H⟩ => H.of_iso (WD.mk_eq_mk.1 e), fun H => ⟨_, (WD.std b).2, WD.sound (WD.iso_std b).symm, H.of_iso (WD.iso_std b)⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem powZeroW_mk (b : WDRep h U) : PowZeroW k (WD.mk b) ↔ PowZero k b :=
   ⟨fun ⟨_, _, e, H⟩ => H.of_iso (WD.mk_eq_mk.1 e),
     fun H => ⟨_, (WD.std b).2, WD.sound (WD.iso_std b).symm, H.of_iso (WD.iso_std b)⟩⟩
 
 /- English proof (translation)
-Proceed by induction on `x using WD.ind with`. Consider the case `hP n a`. Proceed by induction on `y using WD.ind with`. Consider the case `hP n' b`. Rewrite `H` using `[WD.lpSum_mk, hasCopyW_mk]`.
+Proceed by induction. Treat this case separately. Proceed by induction. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hasCopyW_mk, hasCopyW_mk]`. Conclude with `H.sum`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasCopyW_lpSum (x y : WD h) (H : HasCopyW ρ k c (x.lpSum y)) : HasCopyW ρ k c x ∨ HasCopyW ρ k c y := by
   induction x using WD.ind with
@@ -468,9 +464,9 @@ theorem hasCopyW_lpSum (x y : WD h) (H : HasCopyW ρ k c (x.lpSum y)) : HasCopyW
       exact H.sum
 
 /- English proof (translation)
-Proceed by induction on `x using WD.ind with`. Consider the case `hP n a`. Proceed by induction on `y using WD.ind with`. Consider the case `hP n' b`. Rewrite `H` using `[WD.lpSum_mk, powZeroW_mk]`.
+Proceed by induction. Treat this case separately. Proceed by induction. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[powZeroW_mk, powZeroW_mk]`. Conclude with `H.sum`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem powZeroW_lpSum (x y : WD h) (H : PowZeroW k (x.lpSum y)) : PowZeroW k x ∧ PowZeroW k y := by
   induction x using WD.ind with
@@ -482,11 +478,11 @@ theorem powZeroW_lpSum (x y : WD h) (H : PowZeroW k (x.lpSum y)) : PowZeroW k x 
       exact H.sum
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil`. It suffices to derive a contradiction. Express the relevant statement in the definitionally equal form `HasCopyW ρ k c (WD.lpZero h) at H`. Rewrite `H` using `[WD.lpZero, hasCopyW_mk]`.
+Proceed by induction. Treat this case separately. It suffices to derive a contradiction. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `not_hasCopy_zero H`. Consider the case `cons p l ih`. Express the relevant statement in the definitionally equal form `HasCopyW ρ k c ((F p).lpSum (sumList (l.map F))) at H`. Express the relevant statement in the definitionally equal form `PowZeroW k ((F p).lpSum (sumList (l.map F))) at Z`. Take `⟨Z1, Z2⟩` from `powZeroW_lpSum _ _ Z`.
+Treat this case separately. Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `hasCopyW_lpSum _ _ H with H1 | H2` into its components or cases. Conclude with `⟨p, List.mem_cons_self .., H1, Z1⟩`. Take `⟨q, hq, h1, h2⟩` from `ih H2 Z2`. Conclude with `⟨q, List.mem_cons_of_mem _ hq, h1, h2⟩`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_mem_of_sumList {α : Type} (F : α → WD h) (l : List α)
     (H : HasCopyW ρ k c (sumList (l.map F))) (Z : PowZeroW k (sumList (l.map F))) :

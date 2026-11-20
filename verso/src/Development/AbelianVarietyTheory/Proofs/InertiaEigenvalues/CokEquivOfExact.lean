@@ -24,7 +24,7 @@ theorem matAct_apply' {B : Type} [AddCommGroup B] [Module R B] (Φ : Matrix (Fin
     (u : Fin a → B) (i : Fin a) : matAct Φ u i = ∑ j, Φ i j • u j := rfl
 
 /- English proof (translation)
-Establish `hy : y = ∑ c, y c • (Pi.single c 1 : Fin a → R)`. Use extensionality with `j`. Simplify using `[Finset.sum_apply, Pi.single_apply]`. Use `conv_lhs => rw [hy]`. Simplify using `only [map_sum, map_smul, univ]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mk_eq_sum (Φ : Matrix (Fin a) (Fin a) R) (y : Fin a → R) :
     (LinearMap.range Φ.transpose.mulVecLin).mkQ y = ∑ c, y c • univ Φ c := by
@@ -35,9 +35,9 @@ theorem mk_eq_sum (Φ : Matrix (Fin a) (Fin a) R) (y : Fin a → R) :
   simp only [map_sum, map_smul, univ]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Rewrite using `[matAct_apply', Pi.zero_apply]`. Establish `h` using `mk_eq_sum Φ (fun j => Φ i j)`. Use `beta_reduce at h`. Rewrite using `[← h, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero, LinearMap.mem_range]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨Pi.single i 1, ?_⟩` and prove the remaining obligations. Use extensionality with `j`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem univ_ker (Φ : Matrix (Fin a) (Fin a) R) : matAct Φ (univ Φ) = 0 := by
   funext i
@@ -50,9 +50,9 @@ theorem univ_ker (Φ : Matrix (Fin a) (Fin a) R) : matAct Φ (univ Φ) = 0 := by
   simp
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Establish `h` using `congrFun hu i`. Rewrite `h` using `[matAct_apply', Pi.zero_apply]`. Rewrite using `[matAct_apply', Pi.zero_apply]`. Combine the equalities or inequalities in the displayed calculation.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[map_sum]`. Simplify using `only [map_smul]`. Use `_ = 0 := by rw [h, map_zero]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem map_ker {B B' : Type} [AddCommGroup B] [Module R B] [AddCommGroup B'] [Module R B']
     (Φ : Matrix (Fin a) (Fin a) R) (f : B →ₗ[R] B') (u : Fin a → B) (hu : matAct Φ u = 0) :
@@ -67,13 +67,13 @@ theorem map_ker {B B' : Type} [AddCommGroup B] [Module R B] [AddCommGroup B'] [M
     _ = 0 := by rw [h, map_zero]
 
 /- English proof (translation)
-Take `⟨g, hg⟩ : ∃ g : (Fin a → R) →ₗ[R] B, ∀ y, g y = ∑ c, y c • b c` from `⟨∑ c, (LinearMap.proj c).smulRight (b c), fun y => by simp [LinearMap.sum_apply]⟩`. Establish `key : ∀ j, ∑ c, Φ j c • b c = 0` using `fun j => by`. Establish `h` using `congrFun hb j`. Rewrite `h` using `[matAct_apply', Pi.zero_apply]`. Conclude with `h`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hle : LinearMap.range Φ.transpose.mulVecLin ≤ LinearMap.ker g`. Introduce and unpack `_ ⟨z, rfl⟩`. Rewrite using `[LinearMap.mem_ker, hg]`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.mulVecLin_apply, Matrix.mulVec, dotProduct, Matrix.transpose_apply, Finset.sum_smul]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[mul_comm, mul_smul]`. Use `_ = ∑ j, z j • ∑ c, Φ j c • b c := by`. Rewrite using `[Finset.sum_comm]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Finset.smul_sum]`. Use `_ = 0 := by simp [key]`. Use `⟨(LinearMap.range Φ.transpose.mulVecLin).liftQ g hle, fun c => ?_⟩` and prove the remaining obligations. Rewrite using `[univ, Submodule.mkQ_apply, Submodule.liftQ_apply, hg]`. Simplify using `[Pi.single_apply]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_lift {B : Type} [AddCommGroup B] [Module R B]
     (Φ : Matrix (Fin a) (Fin a) R) (b : Fin a → B) (hb : matAct Φ b = 0) :
@@ -103,7 +103,7 @@ theorem exists_lift {B : Type} [AddCommGroup B] [Module R B]
   simp [Pi.single_apply]
 
 /- English proof (translation)
-Apply `Submodule.linearMap_qext` to reduce the goal to its premises. Use `LinearMap.ext fun y => ?_` and prove the remaining obligations. Simplify using `only [LinearMap.comp_apply, mk_eq_sum, map_sum, map_smul, h]`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem hom_ext {B : Type} [AddCommGroup B] [Module R B]
     (Φ : Matrix (Fin a) (Fin a) R) (f g : Cok Φ →ₗ[R] B)
@@ -115,25 +115,23 @@ theorem hom_ext {B : Type} [AddCommGroup B] [Module R B]
 end
 
 /- English proof (translation)
-Introduce `R _ a a' k Φ Φ' x rel t H1 H2 H3 H4 H5 H6 H7`. Set `_ : TopologicalSpace (Cok Φ)` to `⊥`. Establish `: DiscreteTopology (Cok Φ)` using `⟨rfl⟩`. Set `_ : TopologicalSpace (Cok Φ')` to `⊥`. Establish `: DiscreteTopology (Cok Φ')` using `⟨rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Take `⟨v, hv⟩ : ∃ v : Fin k → Cok Φ', v = t (Cok Φ') (univ Φ')` from `⟨_, rfl⟩`. Use `⟨v, fun j => by rw [hv]; exact H5 _ _ (univ_ker Φ') j, ?_⟩` and prove the remaining obligations. Take `⟨S, hS⟩ : ∃ S : Submodule R (Cok Φ'), S = Submodule.span R (Set.range v)` from `⟨_, rfl⟩`. Rewrite using `[← hS]`. Set `_ : TopologicalSpace (Cok Φ' ⧸ S)` to `⊥`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Establish `: DiscreteTopology (Cok Φ' ⧸ S)` using `⟨rfl⟩`. Establish `hw0 : matAct Φ' (fun c => S.mkQ (univ Φ' c)) = 0` using `map_ker Φ' S.mkQ (univ Φ') (univ_ker Φ')`. Establish `ht0 : t (Cok Φ' ⧸ S) (fun c => S.mkQ (univ Φ' c)) = 0`. Rewrite using `[H7 (Cok Φ') (Cok Φ' ⧸ S) S.mkQ (univ Φ') (univ_ker Φ'), ← hv]`. Use function extensionality and compare the values at `j`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [Submodule.mkQ_apply, Pi.zero_apply, Submodule.Quotient.mk_eq_zero]`. Rewrite using `[hS]`. Conclude with `Submodule.subset_span ⟨j, rfl⟩`. Take `⟨u0, hu0, hr0⟩` from `H4 _ _ hw0 ht0`. Take `⟨φ, hφ⟩` from `exists_lift Φ u0 hu0`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨w1, hw1, hr1, ht1⟩` from `H3 (Cok Φ) (univ Φ) (univ_ker Φ)`. Take `⟨ψ0, hψ0⟩` from `exists_lift Φ' w1 hw1`. Establish `hψ0v : S ≤ LinearMap.ker ψ0`. Rewrite using `[hS, Submodule.span_le]`. Introduce and unpack `_ ⟨j, rfl⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[SetLike.mem_coe, LinearMap.mem_ker, hv]`. Establish `h` using `H7 (Cok Φ') (Cok Φ) ψ0 (univ Φ') (univ_ker Φ')`. Rewrite `h` using `[show (fun c => ψ0 (univ Φ' c)) = w1 from funext hψ0, ht1]`. Conclude with `(congrFun h j).symm`. Take `⟨ψ, hψ⟩ : ∃ ψ : (Cok Φ' ⧸ S) →ₗ[R] Cok Φ, ∀ c, ψ (S.mkQ (univ Φ' c)) = w1 c` from `⟨S.liftQ ψ0 hψ0v, fun c => by rw [Submodule.mkQ_apply, Submodule.liftQ_apply, hψ0]⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `e1 : ψ.comp φ = LinearMap.id`. Apply `hom_ext Φ` to reduce the goal to its premises. Introduce `c`. Simplify using `only [LinearMap.comp_apply, LinearMap.id_apply, hφ]`. Establish `hk : matAct Φ (fun c => ψ (u0 c)) = 0` using `map_ker Φ ψ u0 hu0`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hr` using `H6 (Cok Φ' ⧸ S) (Cok Φ) ψ u0 (fun c => S.mkQ (univ Φ' c)) hu0 hw0 hr0`. Simplify using `only [hψ] at hr`. Conclude with `congrFun (H1 (Cok Φ) _ _ w1 hk (univ_ker Φ) hr hr1) c`. Establish `e2 : φ.comp ψ = LinearMap.id`. Apply `Submodule.linearMap_qext` to reduce the goal to its premises.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Apply `hom_ext Φ'` to reduce the goal to its premises. Introduce `c`. Simplify using `only [LinearMap.comp_apply, LinearMap.id_apply, hψ]`. Establish `hk : matAct Φ' (fun c => φ (w1 c)) = 0` using `map_ker Φ' φ w1 hw1`. Establish `hr` using `H6 (Cok Φ) (Cok Φ' ⧸ S) φ (univ Φ) w1 (univ_ker Φ) hw1 hr1`.
-
-Simplify using `only [hφ] at hr`. Conclude with `congrFun (H2 _ u0 _ _ hk hw0 hr hr0) c`. Conclude with `⟨LinearEquiv.ofLinearMap ψ φ e1 e2⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem cok_equiv_of_exact : ∀ (R : Type) [CommRing R] (a a' k : ℕ) (Φ : Matrix (Fin a) (Fin a) R) (Φ' : Matrix (Fin a') (Fin a') R) (x : R) (rel : ∀ (B : Type) [AddCommGroup B] [Module R B] [TopologicalSpace B] [DiscreteTopology B], (Fin a → B) → (Fin a' → B) → Prop) (t : ∀ (B : Type) [AddCommGroup B] [Module R B] [TopologicalSpace B] [DiscreteTopology B], (Fin a' → B) → Fin k → B), (∀ (B : Type) [AddCommGroup B] [Module R B] [TopologicalSpace B] [DiscreteTopology B] (u u' : Fin a → B) (w : Fin a' → B), matAct Φ u = 0 → matAct Φ u' = 0 → rel B u w → rel B u' w → u = u') → (∀ (B : Type) [AddCommGroup B] [Module R B] [TopologicalSpace B] [DiscreteTopology B] (u : Fin a → B) (w w' : Fin a' → B), matAct Φ' w = 0 → matAct Φ' w' = 0 → rel B u w → rel B u w' → w = w') → (∀ (B : Type) [AddCommGroup B] [Module R B] [TopologicalSpace B] [DiscreteTopology B] (u : Fin a → B), matAct Φ u = 0 → ∃ w : Fin a' → B, matAct Φ' w = 0 ∧ rel B u w ∧ t B w = 0) → (∀ (B : Type) [AddCommGroup B] [Module R B] [TopologicalSpace B] [DiscreteTopology B] (w : Fin a' → B), matAct Φ' w = 0 → t B w = 0 → ∃ u : Fin a → B, matAct Φ u = 0 ∧ rel B u w) → (∀ (B : Type) [AddCommGroup B] [Module R B] [TopologicalSpace B] [DiscreteTopology B] (w : Fin a' → B), matAct Φ' w = 0 → ∀ j, x • t B w j = 0) → (∀ (B B' : Type) [AddCommGroup B] [Module R B] [TopologicalSpace B] [DiscreteTopology B] [AddCommGroup B'] [Module R B'] [TopologicalSpace B'] [DiscreteTopology B'] (f : B →ₗ[R] B') (u : Fin a → B) (w : Fin a' → B), matAct Φ u = 0 → matAct Φ' w = 0 → rel B u w → rel B' (fun c => f (u c)) (fun c => f (w c))) → (∀ (B B' : Type) [AddCommGroup B] [Module R B] [TopologicalSpace B] [DiscreteTopology B] [AddCommGroup B'] [Module R B'] [TopologicalSpace B'] [DiscreteTopology B'] (f : B →ₗ[R] B') (w : Fin a' → B), matAct Φ' w = 0 → t B' (fun c => f (w c)) = fun j => f (t B w j)) → ∃ v : Fin k → ((Fin a' → R) ⧸ LinearMap.range Φ'.transpose.mulVecLin), (∀ j, x • v j = 0) ∧ Nonempty ((((Fin a' → R) ⧸ LinearMap.range Φ'.transpose.mulVecLin) ⧸ Submodule.span R (Set.range v)) ≃ₗ[R] ((Fin a → R) ⧸ LinearMap.range Φ.transpose.mulVecLin)) := by
   intro R _ a a' k Φ Φ' x rel t H1 H2 H3 H4 H5 H6 H7

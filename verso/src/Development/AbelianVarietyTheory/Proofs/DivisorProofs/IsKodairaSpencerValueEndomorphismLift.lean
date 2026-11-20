@@ -9,13 +9,11 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.KSExist
 
 /- English proof (translation)
-Introduce `R _ A _ A' _ i h O _ a a' hi z f w hf`. Use `haveI := a.hom z`. Use `haveI := a'.hom z`. Take `⟨k, ⟨d, hd, e⟩, l⟩` from `hf`. Rewrite using `[act_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm` using `push_mem_liftFil (epsDP R) h h (a.act z) (a'.act z) (e := (hi z).symm) hd`. Establish `hl` using `l.push (a.act z)`. Use `⟨push (dp0 R) (𝟙 _) (a.act z) k, ⟨_, hm, fun c ↦ ?_⟩, hl⟩` and prove the remaining obligations. Establish `kk` using `(homMor (dp0 R) (𝟙 _) (a.act z)).comp (constMor A)`. Establish `hM` using `homMor (epsDP R) (DeRham.epsRed R) (a.act z)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1` using `GrpMor.pull_pull (constMor A) hM kk (fun _ ↦ rfl) (by simp) c`. Establish `e2` using `GrpMor.pull_pull (homMor (dp0 R) (𝟙 _) (a.act z)) (constMor A) kk (fun _ ↦ rfl) rfl c`. Rewrite using `[push_apply]`. Express the relevant statement in the definitionally equal form `d (hM.pull ((constMor A).pull c)) = _`. Rewrite using `[e1, ← e2, e]`.
-
-Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem isKSValue_act : ∀ {R : Type} [CommRing R] {A : Over (Sp R)} [GrpObj A] {A' : Over (Sp (DualNumber R))} [GrpObj A'] {i : A.left ⟶ A'.left} (h : IsGrpPullback A A' (GlobalTheory.DeRham.epsRed R) i) {O : Type} [CommRing O] (a : OAct O A) (a' : OAct O A'), (∀ z, (a.act z).left ≫ i = i ≫ (a'.act z).left) → ∀ (z : O) {f : HdR A} {w : epsR R ⟶ A}, IsKSValue h f w → IsKSValue h (act (dp0 R) (𝟙 _) a z f) (w ≫ a.act z) := by
   intro R _ A _ A' _ i h O _ a a' hi z f w hf

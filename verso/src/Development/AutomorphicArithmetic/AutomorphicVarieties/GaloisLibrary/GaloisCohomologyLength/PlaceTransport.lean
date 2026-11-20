@@ -4,7 +4,7 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.Galo
 open NumberField IsDedekindDomain ReciprocityTheory.Gal Formalism.ConjugateSelfDual Formalism.GaloisCohomology UpperTheory.V.LDataCardLeFinrank
 
 /- English proof (translation)
-Rewrite using `[valuation_lt_one_iff' (Ω := Ω), valuation_lt_one_iff' (Ω := Ω'), ← hA, ← map_inv₀, ← hA, map_eq_zero_iff _ σ.injective]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem pt_val_lt_one {Ω Ω' : Type} [Field Ω] [Field Ω'] {σ : Ω ≃+* Ω'} {A : ValuationSubring Ω}
     {A' : ValuationSubring Ω'} (hA : ∀ x, x ∈ A ↔ σ x ∈ A') (x : Ω) :
@@ -13,23 +13,21 @@ private theorem pt_val_lt_one {Ω Ω' : Type} [Field Ω] [Field Ω'] {σ : Ω �
     map_eq_zero_iff _ σ.injective]
 
 /- English proof (translation)
-Introduce `F Ω _ _ _ _ _ F' Ω' _ _ _ _ _ f σ h φ hφ v' A' hv'`. Establish `hne : v'.asIdeal.comap (RingOfIntegers.mapRingHom f) ≠ ⊥`. Introduce `hb`. Establish `h1 : ((Ideal.absNorm v'.asIdeal : ℕ) : 𝓞 F) ∈ v'.asIdeal.comap (RingOfIntegers.mapRingHom f)`. Rewrite using `[Ideal.mem_comap, map_natCast]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Ideal.absNorm_mem _`. Rewrite `h1` using `[hb, Ideal.mem_bot, Nat.cast_eq_zero, Ideal.absNorm_eq_zero_iff]`. Conclude with `v'.ne_bot h1`. Set `v : HeightOneSpectrum (𝓞 F)` to `⟨v'.asIdeal.comap (RingOfIntegers.mapRingHom f), Ideal.comap_isPrime _ _, hne⟩`. Establish `hA : ∀ x, x ∈ A'.comap σ.toRingHom ↔ σ x ∈ A'` using `fun x => Iff.rfl`.
+Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact.
 
-Generalize the expression as in `A'.comap σ.toRingHom = A at hA`. Establish `hD : ∀ g, φ g ∈ Dec (F` using `F) A ↔ g ∈ Dec (F := F') A' := by`. Introduce `g`. Prove the components needed by the constructor for the conclusion. Introduce `hg`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Rewrite using `[mem_Dec]`. Use extensionality with `y`. Take `⟨x, rfl⟩` from `σ.surjective y`. Rewrite using `[ValuationSubring.mem_pointwise_smul_iff_inv_smul_mem, AlgEquiv.smul_def, ← hφ, ← hA, ← hA, map_inv]`. Conclude with `apply_mem_iff_of_mem_Dec ((Dec (F := F) A).inv_mem hg) _`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Introduce `hg`. Rewrite using `[mem_Dec]`. Use extensionality with `x`. Rewrite using `[ValuationSubring.mem_pointwise_smul_iff_inv_smul_mem, ← map_inv, AlgEquiv.smul_def, hA, hA, hφ]`. Conclude with `apply_mem_iff_of_mem_Dec ((Dec (F := F') A').inv_mem hg) _`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨v, A, ?_, ?_, hA, hD, ?_⟩` and prove the remaining obligations. Introduce `x`. Establish `e : x ∈ v.asIdeal ↔ RingOfIntegers.mapRingHom f x ∈ v'.asIdeal` using `Iff.rfl`. Rewrite using `[e, ← hv', pt_val_lt_one hA, h]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion.
 
-Introduce `l show RingOfIntegers.mapRingHom f ((l : ℕ) : 𝓞 F) ∈ v'.asIdeal ↔ ((l : ℕ) : 𝓞 F') ∈ v'.asIdeal`. Rewrite using `[map_natCast]`. Introduce `g`. Prove the components needed by the constructor for the conclusion. Introduce `hg`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨(hD g).1 hg.1, fun y hy => ?_⟩` and prove the remaining obligations. Take `⟨x, rfl⟩` from `σ.surjective y`. Rewrite using `[← hφ, ← map_sub, ← pt_val_lt_one hA]`. Conclude with `hg.2 _ ((A.valuation_le_one_iff _).2 ((hA x).2 ((A'.valuation_le_one_iff _).1 hy)))`. Introduce `hg`.
-
-Use `⟨(hD g).2 hg.1, fun x hx => ?_⟩` and prove the remaining obligations. Rewrite using `[pt_val_lt_one hA, map_sub, hφ]`. Conclude with `hg.2 _ ((A'.valuation_le_one_iff _).2 ((hA x).1 ((A.valuation_le_one_iff _).1 hx)))`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.LDataCardLeFinrank.placeTransport :
     ∀ (F Ω : Type) [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] (F' Ω' : Type) [Field F'] [NumberField F'] [Field Ω'] [Algebra F' Ω'] [IsAlgClosure F' Ω'] (f : F →+* F') (σ : Ω ≃+* Ω'), (∀ x, σ (algebraMap F Ω x) = algebraMap F' Ω' (f x)) →

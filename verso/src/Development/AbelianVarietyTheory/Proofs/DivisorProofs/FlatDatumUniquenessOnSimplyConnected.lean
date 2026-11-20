@@ -7,9 +7,9 @@ open Set Matrix GlobalTheory.TorsionForm GlobalTheory.IndefiniteRowSideFullHecke
 namespace GlobalTheory.TorsionForm.FlatSame
 
 /- English proof (translation)
-Use `⟨fun l hl => ⟨?_, fun P hP => (hj.1 l hl).2 _ (GlobalTheory.FlatRigidity.transl_mem τ x hP)⟩, fun l hl l' hl' P hP => ?_⟩` and prove the remaining obligations. Conclude with `(hj.1 l hl).1.comp (GlobalTheory.FlatRigidity.differentiableOn_transl hτ x) fun P hP => GlobalTheory.FlatRigidity.transl_mem τ x hP`. Establish `hc : GlobalTheory.IndefiniteRowSideFullHecke.SiegelReframe.transl τ x (GlobalTheory.IndefiniteRowSideFullHecke.SiegelReframe.transl τ l' P) = GlobalTheory.IndefiniteRowSideFullHecke.SiegelReframe.transl τ l' (GlobalTheory.IndefiniteRowSideFullHecke.SiegelReframe.transl τ x P)`. Rewrite using `[GlobalTheory.FlatRigidity.transl_transl, GlobalTheory.FlatRigidity.transl_transl, add_comm]`. Simplify using `only [translPullFactor]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hc]`. Conclude with `hj.2 l hl l' hl' _ (GlobalTheory.FlatRigidity.transl_mem τ x hP)`.
+A detailed English derivation is pending.
 -/
 theorem isFactor_transl {g : ℕ} {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] {B : Set E}
     {τ : E → Matrix (Fin g) (Fin g) ℂ} (hτ : IsPeriodMap B τ) {M : Submodule ℤ (Fl g)}
@@ -27,9 +27,9 @@ theorem isFactor_transl {g : ℕ} {E : Type} [NormedAddCommGroup E] [NormedSpace
     exact hj.2 l hl l' hl' _ (GlobalTheory.FlatRigidity.transl_mem τ x hP)
 
 /- English proof (translation)
-Use `⟨h.1.inv h.2.1, fun P hP => inv_ne_zero (h.2.1 P hP), fun l hl P hP => ?_⟩` and prove the remaining obligations. Establish `e` using `h.2.2 l hl P hP`. Establish `h1` using `h.2.1 P hP`. Establish `h2` using `h.2.1 _ (GlobalTheory.FlatRigidity.transl_mem τ l hP)`. Clear the denominators using the available nonvanishing facts.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts.
 
-Take the linear combination `-e`.
+Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem isBundleIso_inv {g : ℕ} {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] {B : Set E}
     {τ : E → Matrix (Fin g) (Fin g) ℂ} {M : Submodule ℤ (Fl g)}
@@ -43,7 +43,7 @@ theorem isBundleIso_inv {g : ℕ} {E : Type} [NormedAddCommGroup E] [NormedSpace
   linear_combination -e
 
 /- English proof (translation)
-Introduce `P hP`. Establish `h1 : ‖φ P‖ ≠ 0` using `norm_ne_zero_iff.2 (hφ P hP)`. Rewrite using `[← hi P hP, norm_inv]`. Clear the denominators using the available nonvanishing facts.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 -/
 theorem isIsometry_inv {g : ℕ} {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] {B : Set E}
     {h h' : Pt E g → ℝ} {φ : Pt E g → ℂ} (hφ : ∀ P ∈ cov B g, φ P ≠ 0)
@@ -55,7 +55,7 @@ theorem isIsometry_inv {g : ℕ} {E : Type} [NormedAddCommGroup E] [NormedSpace 
   field_simp
 
 /- English proof (translation)
-Introduce `hI hT E _ _ _ g n B τ hB M hint j₁ j₂ h₁ h₂ hd₁ hc₁ hd₂ hc₂ β b hb T hT₁`. Take `⟨x, φ, hφ, hiso⟩` from `GlobalTheory.FlatRigidity.rigidity hd₁.1 hB M hd₁.2.1 hint j₁ j₂ h₁ h₂ hd₁.2.2.1 hd₁.2.2.2 hc₁ hd₂.2.2.1 hd₂.2.2.2 hc₂`. Establish `hdx : IsDatum B τ M (translPullFactor τ x j₁) (fun P => h₁ (GlobalTheory.IndefiniteRowSideFullHecke.SiegelReframe.transl τ x P))` using `⟨hd₁.1, hd₁.2.1, isFactor_transl hd₁.1 hd₁.2.2.1 x, (GlobalTheory.FlatTransl.translate_isMetric_chernIsFlat hd₁.1 M j₁ h₁ hd₁.2.2.2 hc₁ x).1⟩`. Conclude with `hI E g n B τ M _ j₂ _ h₂ _ hdx hd₂ (isBundleIso_inv hφ) (isIsometry_inv hφ.2.1 hiso) β b hb T (hT E g n B τ M j₁ h₁ hd₁ x β b hb T hT₁)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem main : IsometryInv → TranslationInv → ∀ (E : Type) [NormedAddCommGroup E] [NormedSpace ℂ E] [FiniteDimensional ℂ E] (g n : ℕ) (B : Set E) (τ : E → Matrix (Fin g) (Fin g) ℂ), SimplyConnectedSpace B → ∀ (M : Submodule ℤ (Fl g)), (∀ l ∈ M, ∀ l' ∈ M, ∃ k : ℤ, riem l l' = k) → ∀ (j₁ j₂ : Fl g → Pt E g → ℂ) (h₁ h₂ : Pt E g → ℝ), IsDatum B τ M j₁ h₁ → ChernIsFlat B τ h₁ → IsDatum B τ M j₂ h₂ → ChernIsFlat B τ h₂ → ∀ (β : Fin n → E), ∀ b ∈ B, ∀ T : Ext (n + n), IsTorsionForm τ M j₁ h₁ β b T → IsTorsionForm τ M j₂ h₂ β b T := by
   intro hI hT E _ _ _ g n B τ hB M hint j₁ j₂ h₁ h₂ hd₁ hc₁ hd₂ hc₂ β b hb T hT₁

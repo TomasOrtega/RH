@@ -70,7 +70,7 @@ def DecayPair4 : Prop :=
     ∀ s, ‖∫ t, fsv s t * (((1 + ‖t‖ ^ 2) ^ 2 : ℝ) • Dd t)‖ ≤ C * (1 + ‖s‖) ^ (-((n : ℝ) + 3))
 
 /- English proof (translation)
-Take `⟨h1, h2, h3, h4⟩` from `hD`. Establish `hp : ∀ s : ℂ, 0 ≤ (1 + ‖s‖) ^ (-((n : ℝ) + 3))` using `fun s => Real.rpow_nonneg (by positivity) _`. Conclude with `⟨h1, h2, fun s => (h3 s).trans (mul_le_mul_of_nonneg_right h (hp s)), fun s => (h4 s).trans (mul_le_mul_of_nonneg_right h (hp s))⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem decayRest_mono {n : ℕ} {C C' : ℝ} {Dd : ℂ → ℂ} (h : C ≤ C') (hD : DecayRest n C Dd) :
     DecayRest n C' Dd := by
@@ -80,35 +80,29 @@ theorem decayRest_mono {n : ℕ} {C C' : ℝ} {Dd : ℂ → ℂ} (h : C ≤ C') 
     fun s => (h4 s).trans (mul_le_mul_of_nonneg_right h (hp s))⟩
 
 /- English proof (translation)
-Introduce `Wp Wq _ _ _ _ _ _ S _ _ P z z' π π' X μ L st l0 D hD hl1 hl2 hz hz' hπ hπ' w hw l hl x y hx hy c hc`. Establish `: SFinite μ` using `sfinite_of_isHaarOn _ μ hD.2.1`. Take `⟨K, a, bs, v, hlen, hv, hexp, hsum⟩` from `hE Wp Wq S P z z' π π' X μ L st l0 D hD hl1 hl2 hz hz' hπ hπ' w hw l hl x y hx hy c hc`. Use `set u := act (RRi L st l.castSucc w) x with hu`. Establish `hC3` using `fun i => h3 Wp Wq S P z z' π π' X μ L st l0 D hD hl1 hl2 hz hz' hπ hπ' w hw l hl x (v i) hx (hv i) c hc w.length`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hC4` using `fun i => h4 Wp Wq S P z z' π π' X μ L st l0 D hD hl1 hl2 hz hz' hπ hπ' w hw l hl x (v i) hx (hv i) c hc w.length`. Use `choose C3 hC3 using hC3`. Use `choose C4 hC4 using hC4`. Use `set C : ℝ := ∑ i, (|C3 i| + |C4 i|) with hCdef`. Establish `hle : ∀ i, |C3 i| + |C4 i| ≤ C` using `fun i => Finset.single_le_sum (f := fun i => |C3 i| + |C4 i|) (fun j _ => by positivity) (Finset.mem_univ i)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hrest : ∀ i, DecayRest w.length C (Dens μ l u (v i) c)`. Introduce `i`. Use `decayRest_mono (C := max (C3 i) (C4 i)) ?_ ⟨?_, ?_, fun s => (hC3 i s).trans ?_, fun s => (hC4 i s).trans ?_⟩` and prove the remaining obligations. Conclude with `(max_le ((le_abs_self _).trans (le_add_of_nonneg_right (abs_nonneg _))) ((le_abs_self _).trans (le_add_of_nonneg_left (abs_nonneg _)))).trans (hle i)`. Conclude with `h1 Wp Wq S P z z' π π' X μ L st l0 D hD hl1 hl2 hz hz' hπ hπ' w hw l hl x (v i) hx (hv i) c hc w.length`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `h2 Wp Wq S P z z' π π' X μ L st l0 D hD hl1 hl2 hz hz' hπ hπ' w hw l hl x (v i) hx (hv i) c hc w.length`. Conclude with `mul_le_mul_of_nonneg_right (le_max_left _ _) (Real.rpow_nonneg (by positivity) _)`. Conclude with `mul_le_mul_of_nonneg_right (le_max_right _ _) (Real.rpow_nonneg (by positivity) _)`. Establish `hr : 0 < P.r` using `lt_of_le_of_lt (Nat.zero_le _) l.isLt`. Establish `hl0 : l.castSucc = (0 : Fin (P.r + 1))` using `Fin.ext (by simp [hl])`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hgd` using `compact_kernel_le_good_domain (S := S) P z z' π π' X μ L st l0 D hD hz hz' hπ hπ' hr`. Establish `hl2s` using `compact_kernel_le_L2 (S := S) P z z' π π' μ hD.2.1 L st l0 D hD.1 hz hz' hπ hπ'`. Establish `hx0 : InK (herKc S P z z' π π' L st l0 D 0) x` using `by rw [← hl0]; exact hx`. Establish `hu2 : ∀ b, u b ∈ squareIntegrableSmoothSubmoduleGL P.k P.r z z' π π' μ hD.2.1`. Introduce `b`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [hu, act]`. Rewrite using `[hl0]`. Conclude with `(squareIntegrableSmoothSubmoduleGL P.k P.r z z' π π' μ hD.2.1).sum_mem fun b' _ => (hgd (hx0 b')).2 w hw b b'`. Establish `hv2 : ∀ i b, v i b ∈ squareIntegrableSmoothSubmoduleGL P.k P.r z z' π π' μ hD.2.1`. Introduce `i b`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hv i b` as an intermediate fact. Rewrite `this` using `[hl0]`. Conclude with `hl2s this`. Establish `IU : ∀ b, LevelSquareIntegrable μ l.castSucc (u b) c`. Introduce `b`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Rewrite using `[hl0]`. Conclude with `(hu2 b).2 c`. Establish `IV : ∀ i b, LevelSquareIntegrable μ l.castSucc (v i b) c`. Introduce `i b`. Rewrite using `[hl0]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(hv2 i b).2 c`. Establish `hint : ∀ i, Integrable (Dens μ l u (v i) c)` using `fun i => (dens_int μ hD.2.1 l u (v i) (fun b => (hu2 b).1) (fun b => (hv2 i b).1) c IU (IV i)).1`. Establish `hcd : ∀ i, ContDiffOn ℝ w.length (Dens μ l u (v i) c) {t | t ≠ 0}`. Introduce `i`. Take `⟨r1, r2, r3, r4⟩` from `hrest i`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨D', hD'c, hD'e, -⟩` from `Fou.smooth_extension_of_fourier_decay _ w.length C (hint i) r1 r2 r3 r4`. Conclude with `hD'c.contDiffOn.congr fun t ht => (hD'e t ht).symm`. Establish `hWi` using `fun i => hW w.length (Dens μ l u (v i) c) (bs i) (hlen i) (hcd i)`. Use `choose K' a' v' hsum1 hexp' using hWi`. Set `e` to `Fintype.equivFin (Σ i : Fin K, Fin (K' i))`.
+Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨w.length, Fintype.card (Σ i : Fin K, Fin (K' i)), C, fun _ => u, fun m => v (e.symm m).1, fun m => (bs (e.symm m).1).length, fun m => v' (e.symm m).1 (e.symm m).2, fun m => a (e.symm m).1 * a' (e.symm m).1 (e.symm m).2, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `m b`. Conclude with `⟨(hu2 b).1, IU b, (hv2 _ b).1, IV _ b⟩`. Introduce `m`. Conclude with `hlen _`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `m`. Conclude with `hrest _`. Introduce `t ht`. Rewrite using `[hexp t ht]`. Rewrite using `[e.symm.sum_comp (fun p : (Σ i : Fin K, Fin (K' i)) => a p.1 * a' p.1 p.2 * iteratedFDeriv ℝ (bs p.1).length (Dens μ l u (v p.1) c) t (v' p.1 p.2)), Fintype.sum_sigma]`.
-
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[hexp' i t ht, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[← hsum]`.
-
-Rewrite using `[e.symm.sum_comp (fun p : (Σ i : Fin K, Fin (K' i)) => a p.1 * a' p.1 p.2 * (if (bs p.1).length = 0 then form μ l.castSucc u (v p.1) c else 0)), Fintype.sum_sigma]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Distinguish the cases in `hb : bs i = []`. Establish `hb' : (bs i).length = 0` using `by simp [hb]`. Simplify using `only [hb', if_true]`.
-
-Rewrite using `[← Finset.sum_mul, ← Finset.mul_sum, hsum1 i hb, mul_one]`. Simplify using `[hb]`. Establish `hb' : (bs i).length ≠ 0` using `by simpa using hb`. Simplify using `[hb', hb]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem expansion_L2_of_decay_pairs (hW : WdExpand) (hE : LetterDensityExpansion) (h1 : DecayPair1) (h2 : DecayPair2) (h3 : DecayPair3)
     (h4 : DecayPair4) : LevelDensitySquareIntegrable := by
@@ -232,11 +226,11 @@ def MirrorLetterDensityExpansion : Prop :=
           RRform L st μ l.castSucc w x y c
 
 /- English proof (translation)
-Introduce `Wp Wq _ _ _ _ _ _ S _ _ P z z' π π' X μ L st l0 D hD hl1 hl2 hz hz' hπ hπ' w hw l hl x y hx hy c hc`. Take `⟨K, a, bs, v, h1, h2, h3, h4⟩` from `hC Wp Wq S P z z' π π' X μ L st l0 D hD hl1 hl2 hz hz' hπ hπ' w hw l hl x y hx hy c hc`. Use `⟨K, a, bs, v, h1, h2, fun t ht => ?_, h4⟩` and prove the remaining obligations. Rewrite using `[← h3 t ht]`. Establish `hss` using `siteStep_actual P z z' π π' X μ L st l0 w hD hw l`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hinv : ibT (site L l) w * star (bTl L l w) = 1` using `hI ℂ (Pr (RadSp P.k P.r z z' π π')) S (site L l) w (isSite_actual hD.2.2.1 l) (fun le hle => Complex.conj_eq_iff_im.mpr (hw.2.1 le hle).1)`. Establish `key : RRi L st l.succ w * bTl L l w = ibT (site L l) w * RRi L st l.castSucc w`. Rewrite using `[← hss]`. Simplify using `only [← mul_assoc, hinv, one_mul]`. Simplify using `only [P5.ph, RRform, Dens]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[← act_mul, key, act_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem step_density_expansion_of_mirror (hI : IbTInv) (hC : MirrorLetterDensityExpansion) : LetterDensityExpansion := by
   intro Wp Wq _ _ _ _ _ _ S _ _ P z z' π π' X μ L st l0 D hD hl1 hl2 hz hz' hπ hπ' w hw l hl x y hx hy c hc

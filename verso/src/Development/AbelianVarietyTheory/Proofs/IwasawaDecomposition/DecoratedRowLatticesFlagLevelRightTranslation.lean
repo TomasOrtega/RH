@@ -13,9 +13,9 @@ noncomputable section
 namespace GlobalTheory.Mem.R3.RowDeco
 
 /- English proof (translation)
-Introduce `X px I hX U L eG hI hV hL hG t q`. Establish `hz` using `unitaryFiniteAdelicPointAsMatrix_mem_flagIwahori X I hI L hL t q`. Establish `hu` using `GlobalTheory.T.inv_reduction_mul_flagTranslation_mem_rowLevelGroup X px I U L eG hI hL hG t q hz`. Use `⟨⟨_, hu⟩, fun h => ?_, GlobalTheory.T.rowLevelCharacter_translation_eq_flagCharacter X px I U L eG hI hV hL hG t q hz hu⟩` and prove the remaining obligations. Use `(decoAd_mul X I hI t h _ hz).trans ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `congrArg (fun a : Formalism.L2.Col.GLG X.B.fields.E (X.B.R.N X.B.R.m - 1) (Formalism.L2.Col.rowSG (X.B.primes px) I.sel t.1) => ((1 : Formalism.L2.Col.UF X.B.fields.E (X.B.R.N X.B.R.m - 1)), a) • RowAd.decoAd X I t h) ?_` and prove the remaining obligations. Conclude with `(mul_inv_cancel_right _ _).symm`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem deco_tie : ∀ (X : Stages) (px : PreX X.B.toPre) (I : Col2.ColIn X.B px) (hX : X.B.fields.Ok) (U : Set I.ι)
     (L : Formalism.IndefR.Links.LevCh X.toD7 (TupU I U)) (eG : Gc X.B px ≃* G0 L.Pg X.toD7.R.r),

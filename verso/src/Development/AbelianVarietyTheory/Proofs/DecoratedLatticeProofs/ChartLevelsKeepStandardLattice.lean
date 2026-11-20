@@ -24,17 +24,15 @@ abbrev IA (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Alge
   tensInt (F := F) (FiniteAdeleRing (𝓞 F) F) (intOE E) (intAd F)
 
 /- English proof (translation)
-The claim follows from `Subring.subset_closure (Or.inl ⟨⟨(r : E), ⟨r, rfl⟩⟩, rfl⟩)`.
+A detailed English derivation is pending.
 -/
 theorem inclE_mem_IA (r : 𝓞 E) : inclE (F := F) (FiniteAdeleRing (𝓞 F) F) (r : E) ∈ IA F E :=
   Subring.subset_closure (Or.inl ⟨⟨(r : E), ⟨r, rfl⟩⟩, rfl⟩)
 
 /- English proof (translation)
-Establish `h : IA F E ≤ (IA F E).comap (Formalism.UG.sigR σ (FiniteAdeleRing (𝓞 F) F))`. Use `Subring.closure_le.2 ?_` and prove the remaining obligations. Introduce and unpack `z (⟨⟨x, ⟨r, rfl⟩⟩, rfl⟩ | ⟨⟨w, hw⟩, rfl⟩)`. Establish `hi : IsIntegral ℤ (σ (algebraMap (𝓞 E) E r))` using `(NumberField.RingOfIntegers.isIntegral_coe r).map (RingHom.toIntAlgHom (σ : E →+* E))`. Establish `e : Formalism.UG.sigR σ (FiniteAdeleRing (𝓞 F) F) ((algebraMap (𝓞 E) E r) ⊗ₜ[F] (1 : FiniteAdeleRing (𝓞 F) F)) = inclE (F` using `F) (FiniteAdeleRing (𝓞 F) F) (((⟨_, hi⟩ : 𝓞 E) : E)) := rfl`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `show Formalism.UG.sigR σ (FiniteAdeleRing (𝓞 F) F) ((algebraMap (𝓞 E) E r) ⊗ₜ[F] (1 : FiniteAdeleRing (𝓞 F) F)) ∈ IA F E`. Rewrite using `[e]`. Conclude with `inclE_mem_IA (F := F) (⟨_, hi⟩ : 𝓞 E)`. Establish `e : Formalism.UG.sigR σ (FiniteAdeleRing (𝓞 F) F) ((1 : E) ⊗ₜ[F] (w : FiniteAdeleRing (𝓞 F) F)) = (1 : E) ⊗ₜ[F] (w : FiniteAdeleRing (𝓞 F) F)`. Simplify using `[Formalism.UG.sigR]`.
-
-Use `show Formalism.UG.sigR σ (FiniteAdeleRing (𝓞 F) F) ((1 : E) ⊗ₜ[F] (w : FiniteAdeleRing (𝓞 F) F)) ∈ IA F E`. Rewrite using `[e]`. Conclude with `Subring.subset_closure (Or.inr ⟨⟨w, hw⟩, rfl⟩)`. Conclude with `h hy`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sigR_mem_IA (σ : E →ₐ[F] E) {y : E ⊗[F] FiniteAdeleRing (𝓞 F) F} (hy : y ∈ IA F E) :
     Formalism.UG.sigR σ (FiniteAdeleRing (𝓞 F) F) y ∈ IA F E := by
@@ -62,17 +60,17 @@ def HatP (π : 𝓞 E) (x : Fin n → E ⊗[F] FiniteAdeleRing (𝓞 F) F) : Pro
     (j.1 + 1 = n → ∃ s ∈ IA F E, x j = inclE (F := F) (FiniteAdeleRing (𝓞 F) F) ((π : 𝓞 E) : E) * s)
 
 /- English proof (translation)
-Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨z, hz, rfl⟩` from `hy`. Introduce `j`. Take `⟨r, hr, hd⟩` from `hL z hz j`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `⟨by simp only [hr]; exact inclE_mem_IA r, fun hj => ?_⟩` and prove the remaining obligations. Take `⟨t, rfl⟩` from `hd hj`. Use `⟨_, inclE_mem_IA t, ?_⟩` and prove the remaining obligations. Use `show inclE (F := F) (FiniteAdeleRing (𝓞 F) F) (z j) = _`. Rewrite using `[hr, ← map_mul]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Consider the case `zero => intro j; exact ⟨zero_mem _, fun _ => ⟨0, zero_mem _, by simp⟩⟩`. Consider the case `add x y _ _ hx hy`. Introduce `j`. Take `⟨a1, a2⟩` from `hx j`.
+Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨b1, b2⟩` from `hy j`. Use `⟨add_mem a1 b1, fun hj => ?_⟩` and prove the remaining obligations. Take `⟨s, hs, e⟩` from `a2 hj`. Take `⟨s', hs', e'⟩` from `b2 hj`. Conclude with `⟨s + s', add_mem hs hs', by simp only [Pi.add_apply, e, e', mul_add]⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately.
 
-Consider the case `smul c x _ hx`. Introduce `j`. Take `⟨a1, a2⟩` from `hx j`. Establish `ec : (c • x) j = (c : E ⊗[F] FiniteAdeleRing (𝓞 F) F) * x j` using `rfl`. Use `⟨by rw [ec]; exact mul_mem c.2 a1, fun hj => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨s, hs, e⟩` from `a2 hj`. Conclude with `⟨(c : E ⊗[F] FiniteAdeleRing (𝓞 F) F) * s, mul_mem c.2 hs, by rw [ec, e]; ring⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem hatP_of_mem (π : 𝓞 E) (L : Submodule (𝓞 E) (Fin n → E))
     (hL : ∀ x, x ∈ L → ∀ j : Fin n, ∃ r : 𝓞 E, x j = (r : E) ∧ (j.1 + 1 = n → π ∣ r))
@@ -116,9 +114,9 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   {σ : E →ₐ[F] E} {n : ℕ} {T f : ℕ} {bad : Set (HeightOneSpectrum (𝓞 F))}
 
 /- English proof (translation)
-Establish `hu` using `((lev.U_eq g).1 hg).1`. Establish `h : Formalism.UG.cT (Formalism.UG.sigR σ (FiniteAdeleRing (𝓞 F) F)) g.1 * (J.map (inclE (F` using `F) (FiniteAdeleRing (𝓞 F) F))) * g.1 = J.map (inclE (F := F) (FiniteAdeleRing (𝓞 F) F)) := hu`. Rewrite `h` using `[hJ, Matrix.map_one _ (map_zero _) (map_one _), Matrix.mul_one]`. Establish `e : (g⁻¹ : GL (Fin n) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)).1 = Formalism.UG.cT (Formalism.UG.sigR σ (FiniteAdeleRing (𝓞 F) F)) g.1`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[h, Matrix.one_mul]`. Use `_ = _ := by rw [Matrix.mul_assoc, Units.mul_inv, Matrix.mul_one]`. Rewrite using `[e]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem inv_eq_cT {J : Matrix (Fin n) (Fin n) E} (hJ : J = 1) (lev : StepLevel F E σ J T f bad)
     {g : GL (Fin n) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)} (hg : g ∈ lev.U) (a b : Fin n) :
@@ -140,7 +138,7 @@ variable (π : 𝓞 E) {J : Matrix (Fin n) (Fin n) E} (lev : StepLevel F E σ J 
 
 include hLb in
 /- English proof (translation)
-The claim follows from `hatP_of_mem π lev.Lb (fun x hx => (hLb x).1 hx) ((GlobalTheory.Mem.Col2.SameOff.stepLevel_stab lev g hg _).1 (Submodule.subset_span ⟨y, hy, rfl⟩))`.
+A detailed English derivation is pending.
 -/
 theorem img_hatP {g : GL (Fin n) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)} (hg : g ∈ lev.U) (y : Fin n → E) (hy : y ∈ lev.Lb) :
     HatP π (g.1 *ᵥ fun i => inclE (F := F) (FiniteAdeleRing (𝓞 F) F) (y i)) :=
@@ -148,7 +146,7 @@ theorem img_hatP {g : GL (Fin n) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)} (hg : g 
     ((GlobalTheory.Mem.Col2.SameOff.stepLevel_stab lev g hg _).1 (Submodule.subset_span ⟨y, hy, rfl⟩))
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Distinguish the cases in `hi : i = j`. Substitute `hi` using the available equality. Simplify using the standard rewrite rules. Simplify using `[hi]`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem incl_single (j : Fin n) (c : E) :
     (fun i => inclE (F := F) (FiniteAdeleRing (𝓞 F) F) ((Pi.single j c : Fin n → E) i)) =
@@ -161,9 +159,9 @@ theorem incl_single (j : Fin n) (c : E) :
 include hLb in
 
 /- English proof (translation)
-Establish `hy : (Pi.single j 1 : Fin n → E) ∈ lev.Lb`. Use `(hLb _).2 fun k => ?_` and prove the remaining obligations. Distinguish the cases in `hk : k = j`. Substitute `hk; exact ⟨1, by simp, fun h => absurd h hj⟩` using the available equality. Conclude with `⟨0, by simp [hk], fun _ => dvd_zero _⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Supply the required witnesses or components.
 
-Establish `h` using `(img_hatP π lev hLb hg _ hy a).1`. Rewrite `h` using `[incl_single, map_one, Matrix.mulVec_single_one]`. Simplify using `using h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem col_mem {g : GL (Fin n) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)} (hg : g ∈ lev.U) (j : Fin n) (hj : ¬ j.1 + 1 = n)
     (a : Fin n) : g.1 a j ∈ IA F E := by
@@ -178,11 +176,11 @@ theorem col_mem {g : GL (Fin n) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)} (hg : g �
 
 include hLb in
 /- English proof (translation)
-Introduce `h0`. Establish `hsub : (lev.Lb : Set (Fin n → E)) ⊆ (LinearMap.ker (LinearMap.proj l : (Fin n → E) →ₗ[E] E) : Set (Fin n → E))`. Introduce `x hx`. Take `⟨r, hr, hd⟩` from `(hLb x).1 hx l`. Establish `hr0 : r = 0` using `by rw [h0] at hd; exact zero_dvd_iff.1 (hd hl)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Simplify using `[LinearMap.mem_ker, hr, hr0]`. Establish `h2` using `Submodule.span_le.2 hsub`. Rewrite `h2` using `[lev.Lb_span, top_le_iff]`. Establish `h1 : (Pi.single l 1 : Fin n → E) ∈ LinearMap.ker (LinearMap.proj l : (Fin n → E) →ₗ[E] E)`. Rewrite using `[h2]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Discharge the goal by the elementary cases of `trivial`. Simplify using `at h1`.
+Check the elementary cases of the proposition. Simplify using the standard rewrite rules.
 -/
 theorem pi_ne_zero (l : Fin n) (hl : l.1 + 1 = n) : π ≠ 0 := by
   intro h0
@@ -200,11 +198,11 @@ theorem pi_ne_zero (l : Fin n) (hl : l.1 + 1 = n) : π ≠ 0 := by
 include hLb in
 
 /- English proof (translation)
-Establish `hy : (Pi.single l (π : E) : Fin n → E) ∈ lev.Lb`. Use `(hLb _).2 fun k => ?_` and prove the remaining obligations. Distinguish the cases in `hk : k = l`. Substitute `hk; exact ⟨π, by simp, fun _ => dvd_rfl⟩` using the available equality. Conclude with `⟨0, by simp [hk], fun _ => dvd_zero _⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Supply the required witnesses or components.
 
-Take `⟨s, hs, e⟩` from `(img_hatP π lev hLb hg _ hy l).2 hl`. Rewrite `e` using `[incl_single, Matrix.mulVec_single]`. Establish `hπ : (π : E) ≠ 0` using `fun h => pi_ne_zero π lev hLb l hl (by exact_mod_cast h)`. Establish `hu : IsUnit (inclE (F` using `F) (FiniteAdeleRing (𝓞 F) F) (π : E)) := (IsUnit.mk0 _ hπ).map _`. Establish `e2 : inclE (F` using `F) (FiniteAdeleRing (𝓞 F) F) (π : E) * g.1 l l = inclE (F := F) (FiniteAdeleRing (𝓞 F) F) (π : E) * s := by`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[mul_comm]`. Conclude with `e`. Rewrite using `[hu.mul_left_cancel e2]`. Conclude with `hs`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem last_mem {g : GL (Fin n) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)} (hg : g ∈ lev.U) (l : Fin n) (hl : l.1 + 1 = n) :
     g.1 l l ∈ IA F E := by
@@ -225,11 +223,9 @@ theorem last_mem {g : GL (Fin n) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)} (hg : g 
 include hLb in
 
 /- English proof (translation)
-Distinguish the cases in `hb : b.1 + 1 = n`. Distinguish the cases in `ha : a.1 + 1 = n`. Establish `hab : a = b` using `Fin.ext (by omega)`. Substitute `hab` using the available equality. Conclude with `last_mem π lev hLb hg a ha`.
+Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact.
 
-Establish `hi : g⁻¹ ∈ lev.U` using `inv_mem hg`. Establish `e` using `inv_eq_cT hJ lev hi a b`. Rewrite `e` using `[inv_inv]`. Rewrite using `[e]`. Conclude with `sigR_mem_IA σ (col_mem π lev hLb hi a ha b)`.
-
-Conclude with `col_mem π lev hLb hg b hb a`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem entry_mem (hJ : J = 1) {g : GL (Fin n) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)} (hg : g ∈ lev.U) (a b : Fin n) :
     g.1 a b ∈ IA F E := by
@@ -246,7 +242,7 @@ theorem entry_mem (hJ : J = 1) {g : GL (Fin n) (E ⊗[F] FiniteAdeleRing (𝓞 F
   · exact col_mem π lev hLb hg b hb a
 
 /- English proof (translation)
-The claim follows from `entry_mem π lev hLb hJ hg a b`.
+A detailed English derivation is pending.
 -/
 theorem entry_memD {D : D7} {n : ℕ} {J : Matrix (Fin n) (Fin n) D.host.E} {T f : ℕ} {bad : Set (HeightOneSpectrum (𝓞 D.host.F))}
     (π : 𝓞 D.host.E) (lev : StepLevel D.host.F D.host.E (sigD D) J T f bad)
@@ -262,11 +258,11 @@ end GlobalTheory.KLat
 namespace GlobalTheory.AdForm
 
 /- English proof (translation)
-Introduce `B X I hI _ l Z u a Ch A hA i hi β k hk`. Take `⟨-, κ, hκ⟩` from `(hA.U i hi β k).1 hk`. Establish `hV : ((I.rec7 l Z).sp.X i).gram = 1` using `hI.gram_X i`. Use `GlobalTheory.SplitDec.moves_std hV _ ?_` and prove the remaining obligations. Establish `hJ : gramN (I.rec7 l Z) i hi = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Unfold `gramN`. Rewrite using `[hV]`. Simplify using the standard rewrite rules. Establish `hLb` using `(hA.reads i hi).lb β`. Introduce `p q`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e : toEAf (I.rec7 l Z) (Formalism.L2.Theta.mt _ k p q) = finM _ (rankN (I.rec7 l Z) i hi) k (finCongr (rankN _ i hi) p) (finCongr (rankN _ i hi) q)`. Simplify using `[finM, Matrix.reindex_apply]`. Rewrite using `[e, ← hκ]`. Establish `hLb' : ∀ x, x ∈ (A.K i hi β).lev.Lb ↔ ∀ j : Fin ((I.rec7 l Z).R.N i), ∃ r : 𝓞 (I.rec7 l Z).host.E, x j = (r : (I.rec7 l Z).host.E) ∧ (j.1 + 1 = (I.rec7 l Z).R.N i → (X.piT u : 𝓞 (I.rec7 l Z).host.E) ∣ r)` using `fun x => hLb x`. Conclude with `GlobalTheory.KLat.entry_memD _ (A.K i hi β).lev hLb' hJ κ.2 _ _`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem levels_keep_stdLat : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → TC.Pins B X → ∀ (l : I.Laws) (Z : TC.Later B (I.cols l)), ∀ (u : B.Word) (a : I.ι) (Ch : ℕ → Type) (A : TwDat I l Z u a Ch), A.Is → ∀ (i : ℕ) (hi : i ≤ B.R.m) β, ∀ k ∈ A.U i β, Moves _ (rankN (I.rec7 l Z) i hi) k (Formalism.L2.Col.stdLat B.fields.E _) := by
   intro B X I hI _ l Z u a Ch A hA i hi β k hk

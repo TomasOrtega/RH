@@ -14,17 +14,17 @@ namespace GroundTheory.Heights₂.Heights.LowerBoundFree
 open MvPolynomial MeasureTheory ReciprocityTheory.ChartRestriction.G.Geo Filter Topology
 
 /- English proof (translation)
-Introduce `II Ψ _ _ K _ ι _ Ω _ _ E _ _ D O Lt _ _ _ X`. Take `⟨C, t₀, ht₀, hb⟩` from `GroundTheory.Heights₂.Heights.Regular.ChartMollifiedBounds.proof GroundTheory.Heights₂.Heights.Regular.TruncPsh.proof X.M.Xc D.n X.M.atlas X.S.R X.S.ρ`. Establish `hev : ∀ᶠ t in 𝓝[>] (0 : ℝ), t < t₀ ∧ 0 ≤ X.S.K t` using `(eventually_nhdsWithin_of_eventually_nhds (eventually_lt_nhds ht₀)).and (X.S_tied.K_tendsto.eventually_ge_atTop 0)`. Take `⟨t₂, ht₂, hsub⟩` from `mem_nhdsGT_iff_exists_Ioc_subset.1 hev`. Use `⟨t₂, ht₂, D.Bd ∪ {z | X.M.proj z ∉ X.S.R.Yo}, ?_, fun t ht htt z hz hzN => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `Ψ' hΨ'`. Use `measure_mono_null (fun y hy => ?_) (measure_union_null (hBd II Ψ K ι Ω E D Ψ' hΨ') (hDiv K ι _ _ X.M X.S.R Ψ' hΨ'))` and prove the remaining obligations. Take `⟨z, hz, hzN, hzy⟩` from `hy`. Break down `hzN with h | h` into its components or cases. Conclude with `Or.inl ⟨z, hz, h, hzy⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative.
 
-Conclude with `Or.inr ⟨z, hz, h, hzy⟩`. Take `⟨htt₀, hK⟩ : t < t₀ ∧ 0 ≤ X.S.K t` from `hsub ⟨ht, htt⟩`. Establish `hBdz : z ∉ D.Bd` using `fun h => hzN (Or.inl h)`. Establish `hY : X.M.proj z ∈ X.S.R.Yo`. Assume the negation of the conclusion as `h`.
+Prove the second alternative. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Conclude with `hzN (Or.inr h)`. Establish `hXo : z ∈ D.Xo` using `Set.mem_sdiff_of_mem hz hBdz`. Take `⟨k, hk⟩` from `X.S.R.cover (X.M.proj z)`. Establish `hkm` using `X.S.R.inner_subset_mid k hk`. Establish `hε : 0 ≤ X.S.e1 t` using `ht.le.trans (X.S.e1_ge t ht)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `((hb t ht htt₀).2 (X.S.K t) hK k (X.M.proj z) hkm).2.2 hY`. Establish `h2` using `GroundTheory.Heights₂.Heights.Regular.LogLogRegularisation.le_glue X.S.R.toPotentialCharts (fun j x => X.S.R.phReg X.S.ρ (X.S.K t) t j x + 4 * X.S.e1 t * X.S.η j x) hε hkm`. Establish `h3 : X.S.regWeight t (X.M.proj z) = X.S.R.glue (fun j x => X.S.R.phReg X.S.ρ (X.S.K t) t j x + 4 * X.S.e1 t * X.S.η j x) (X.S.e1 t) (X.M.proj z)` using `rfl`. Establish `hη` using `X.S.cutoff.eq_zero k (X.M.proj z) hk`. Simplify using `only [hη, mul_zero, add_zero] at h2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h4` using `X.S.ph_eq z ⟨hXo, hz⟩ hY`. Establish `h5 : phMu X.H z = Real.log ((muLine X.H).h z)` using `rfl`. Rewrite using `[h3, h5]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem RegAboveWeight.proof (hBd : BdPtsNull.Statement) (hDiv : DivisorPreimageNull.Statement) :
     RegAboveWeight.Statement := by

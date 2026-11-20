@@ -3,13 +3,11 @@ import Mathlib
 namespace GlobalTheory.CMModel
 
 /- English proof (translation)
-Establish `hint : ∀ z : ℤ, V.valuation (z : ℂ) ≤ 1` using `fun z => (V.valuation_le_one_iff _).2 (intCast_mem V z)`. Establish `hnat : ∀ n : ℕ, V.valuation (n : ℂ) ≤ 1` using `fun n => (V.valuation_le_one_iff _).2 (natCast_mem V n)`. Assume the negation of the conclusion as `hcon`. Rewrite `hcon` using `[not_or]`. Establish `ha : V.valuation (a : ℂ) < 1` using `lt_of_le_of_ne (hnat a) hcon.1`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hb : V.valuation (b : ℂ) < 1` using `lt_of_le_of_ne (hnat b) hcon.2`. Take `⟨x, y, hxy⟩` from `Nat.isCoprime_iff_coprime.2 h`. Establish `hC : (x : ℂ) * (a : ℂ) + (y : ℂ) * (b : ℂ) = 1` using `by exact_mod_cast hxy`. Establish `h1 : V.valuation ((x : ℂ) * (a : ℂ)) < 1`. Rewrite using `[map_mul]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `lt_of_le_of_lt (mul_le_of_le_one_left' (hint x)) ha`. Establish `h2 : V.valuation ((y : ℂ) * (b : ℂ)) < 1`. Rewrite using `[map_mul]`. Conclude with `lt_of_le_of_lt (mul_le_of_le_one_left' (hint y)) hb`. Establish `h3` using `V.valuation.map_add_lt h1 h2`.
-
-Rewrite `h3` using `[hC, map_one]`. Conclude with `lt_irrefl _ h3`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem valuation_natCast_eq_one_of_coprime (V : ValuationSubring ℂ) (a b : ℕ)
     (h : Nat.Coprime a b) :

@@ -7,15 +7,13 @@ open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.Genus
 namespace GlobalTheory.CartanRestrict
 
 /- English proof (translation)
-Take `⟨h1, h2, h3⟩` from `h`. Establish `hs : ∀ {a b c : ℕ} (A : Matrix (Fin a) (Fin b) ℂ) (C : Matrix (Fin b) (Fin c) ℂ), (A * C).map star = A.map star * C.map star` using `fun A C => Matrix.map_mul (f := starRingEnd ℂ)`. Use `⟨?_, ?_, fun x hx => ?_⟩` and prove the remaining obligations. Establish `: ι * (θ₁ * θ₁) = ι`. Rewrite using `[← Matrix.mul_assoc, ← hι, Matrix.mul_assoc, ← hι, ← Matrix.mul_assoc, h1, Matrix.one_mul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hs, Matrix.transpose_mul]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = ιᵀ * (θᵀ * M * θ.map star) * ι.map star := by`.
+Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hι, hs, Matrix.transpose_mul]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = _ := by rw [h2]`. Establish `hx' : ι *ᵥ x ≠ 0` using `fun h0 => hx (by`. Establish `: L *ᵥ (ι *ᵥ x) = 0` using `by rw [h0, Matrix.mulVec_zero]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Rewrite using `[Matrix.mulVec_mulVec, hL, Matrix.one_mulVec] at this)` and apply the resulting hypothesis. Establish `hst : star (ι *ᵥ x) = ι.map star *ᵥ star x`. Use extensionality with `i`. Simplify using `[Matrix.mulVec, dotProduct]`. Use `h3 _ hx'` as an intermediate fact.
-
-Rewrite `this` using `[hst, Matrix.mulVec_mulVec, hι, ← Matrix.mulVec_mulVec, ← Matrix.vecMul_transpose, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec]`. Conclude with `this`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isCartan_restrict {n m : ℕ} {M θ : Matrix (Fin n) (Fin n) ℂ} {θ₁ : Matrix (Fin m) (Fin m) ℂ}
     {ι : Matrix (Fin n) (Fin m) ℂ} {L : Matrix (Fin m) (Fin n) ℂ} (hL : L * ι = 1) (h : IsCartan M θ)
@@ -46,9 +44,9 @@ theorem isCartan_restrict {n m : ℕ} {M θ : Matrix (Fin n) (Fin n) ℂ} {θ₁
     exact this
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B d d₁ r' s' i₀ i₁ W W₁ H' hB hW hH w ⟨L, hL⟩`. Establish `key` using `isCartan_restrict hL (hW.cartan w) (hH.cartan w).1`. Establish `hc : (H'.ι.map σ).map (B.emb w).1 = (H'.ι.map (B.emb w).1).map star`. Use extensionality with `i j`. Simplify using `using hB.cm.2.2.2 (B.emb w).1 (H'.ι i j)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hg : W₁.J.map (B.emb w).1 = (H'.ι.map (B.emb w).1)ᵀ * W.J.map (B.emb w).1 * (H'.ι.map (B.emb w).1).map star`. Rewrite using `[← hH.gram, Matrix.map_mul, Matrix.map_mul, hc, Matrix.transpose_map]`. Rewrite using `[hg, ← Matrix.smul_mul, ← Matrix.mul_smul]`. Conclude with `key`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isCartan_of_isAdapted : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) (B : Base F E)

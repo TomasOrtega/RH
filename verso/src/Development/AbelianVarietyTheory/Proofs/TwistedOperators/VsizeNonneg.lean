@@ -31,7 +31,7 @@ def seen (V : HSp D) (g : GA D V) (ξ : Fin V.rank → D.host.E) : Fin V.rank �
   mt V g⁻¹ *ᵥ fun i => incA D (ξ i)
 
 /- English proof (translation)
-The claim follows from `NNReal.coe_nonneg _`.
+A detailed English derivation is pending.
 -/
 theorem vsize_nonneg {n : ℕ} (x : Fin n → AE D) : 0 ≤ vsize x := NNReal.coe_nonneg _
 

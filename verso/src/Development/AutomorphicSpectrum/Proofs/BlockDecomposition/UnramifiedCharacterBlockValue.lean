@@ -14,9 +14,9 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.CtS.NuVal
 
 /- English proof (translation)
-Establish `h : Valued.v (x : w.adicCompletion E) ≠ 0` using `(Valuation.ne_zero_iff _).2 x.ne_zero`. Rewrite using `[GlobalTheory.SmGL.SphCompletion.ord_completion]`. Unfold `ordL`. Rewrite using `[dif_neg h]`. Use `congr 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `conv_lhs => rw [← WithZero.coe_unzero h]`. Apply the tactic sequence `first | rfl | simp [WithZero.log]`.
+A detailed English derivation is pending.
 -/
 theorem ord_eq_ordL_unit {E : Type} [Field E] [NumberField E] (w : HeightOneSpectrum (𝓞 E))
     (x : (w.adicCompletion E)ˣ) : GlobalTheory.SmGL.ord (w.adicCompletion E) x = ordL (x : w.adicCompletion E) := by
@@ -29,11 +29,11 @@ theorem ord_eq_ordL_unit {E : Type} [Field E] [NumberField E] (w : HeightOneSpec
   first | rfl | simp [WithZero.log]
 
 /- English proof (translation)
-Introduce `E _ _ _ a b w c i j m h1 h2`. Establish `hneg : GlobalTheory.SmGL.unrChar (w.adicCompletion E) c (-1) = 1`. Rewrite using `[GlobalTheory.SmGL.unrChar_apply, GlobalTheory.SmGL.ord_eq_zero (by simp), zpow_zero]`. Establish `hd1 : GlobalTheory.SmGL.unrChar (w.adicCompletion E) c (GeneralLinearGroup.det m.1) = c ^ i`. Rewrite using `[GlobalTheory.SmGL.unrChar_apply, ord_eq_ordL_unit]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `erw [h1]`. Simplify using the standard rewrite rules. Establish `hd2 : GlobalTheory.SmGL.unrChar (w.adicCompletion E) c (GeneralLinearGroup.det m.2) = c ^ j`. Rewrite using `[GlobalTheory.SmGL.unrChar_apply, ord_eq_ordL_unit]`. Use `erw [h2]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Rewrite using `[map_mul, map_mul, map_pow, map_pow, map_pow, hneg, hd1, hd2, one_pow, one_mul, ← pow_mul, ← pow_mul, ← pow_add]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem unrChar_twist : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (a b : ℕ) (w : Pl E) (c : ℂˣ) (i j : ℕ) (m : GLw a w × GLw b w), ordL m.1.val.det = (i : ℤ) → ordL m.2.val.det = (j : ℤ) → (GlobalTheory.SmGL.unrChar (w.adicCompletion E) c ((-1) ^ (a * b) * GeneralLinearGroup.det m.1 ^ b * GeneralLinearGroup.det m.2 ^ a) : ℂ) = (c : ℂ) ^ (i * b + j * a) := by
   intro E _ _ _ a b w c i j m h1 h2

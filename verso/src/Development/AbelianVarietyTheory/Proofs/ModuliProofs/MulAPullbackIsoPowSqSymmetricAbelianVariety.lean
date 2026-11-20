@@ -19,13 +19,13 @@ namespace GlobalTheory.MulSym
 open GlobalTheory.MulPull GlobalTheory.PrimNorm
 
 /- English proof (translation)
-Establish `hcube : HasGen M (thφ A (x3 A)) thε` using `hc`. Establish `hrig : HasGen M (Y` using `Spec (CommRingCat.of K)) (K := PUnit) (fun _ => eSec A) (fun _ => 1) := DVR.exists_gen_of_local M hM _ _`. Establish `hs' : LBIso (M.pull (𝟙 A.left)) (M.pull (GrpObj.inv : A ⟶ A).left)` using `LBIso.chartPull (chartPullPull M _ _ rfl) (chartPullId _) hs`. Establish `hneg` using `(lbIso_iff hM _ _ _ _).1 hs'`. Simplify using `only [Fintype.prod_unique, zpow_one] at hneg`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `main` using `hasGen_pow hM hcube (𝟙 A) ?_ ?_ k`. Establish `h` using `(hasGen_iff hM _ _).1 main`. Use `(lbIso_iff hM _ _ _ _).2 ?_` and prove the remaining obligations. Simplify using `only [Fin.prod_univ_two, Matrix.cons_val_zero, Matrix.cons_val_one, zpow_neg_one, mul_inv_eq_one] at h`. Simplify using `only [Fintype.prod_unique, zpow_one, Nat.cast_pow]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Conclude with `h.symm`. Use `(hrig.pull (toUnit A).left).of_formEq hM (fun U _ h => ?_)` and prove the remaining obligations. Simplify using `only [Finset.univ_unique, Finset.prod_singleton, Fin.prod_univ_succ, Fin.prod_univ_zero, Matrix.cons_val_zero, _root_.mul_one]`. Both sides reduce to the same expression. Use `(hasGen_iff hM _ _).2 ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e : ((𝟙 A : A ⟶ A)⁻¹) = (GrpObj.inv : A ⟶ A)` using `Category.id_comp _`. Simplify using `only [Fin.prod_univ_two, Matrix.cons_val_zero, Matrix.cons_val_one, zpow_neg_one, zpow_one, mul_inv_eq_one, e]`. Conclude with `hneg`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem lbIso_mulPull_of_cube {K : Type} [Field K] (A : Over (Sp K)) [GrpObj A] [IsCommMonObj A] (M : LB A.left)
     (k : ℕ) (hM : M.IsLB) (hc : ∃ t : LB.Gen (Theta A M), t.IsGen) (hs : SymB M) :
@@ -55,7 +55,7 @@ theorem lbIso_mulPull_of_cube {K : Type} [Field K] (A : Over (Sp K)) [GrpObj A] 
     exact hneg
 
 /- English proof (translation)
-Introduce `_ _ _ P M k hM hs` and use `lbIso_mulPull_of_cube P.A M k hM (GlobalTheory.AbLaw.CubeAssembly.cube_gen _ P M hM) hs`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem lbIso_mulPull_of_symB : ∀ (K : Type) [Field K] [IsAlgClosed K] (P : Out.PolAV (Sp K)) (M : LB P.A.left) (k : ℕ), M.IsLB → SymB M → LBIso (M.pull (Out.mulA P.A k).left) (lbPow M (k ^ 2)) :=
   fun _ _ _ P M k hM hs => lbIso_mulPull_of_cube P.A M k hM (GlobalTheory.AbLaw.CubeAssembly.cube_gen _ P M hM) hs

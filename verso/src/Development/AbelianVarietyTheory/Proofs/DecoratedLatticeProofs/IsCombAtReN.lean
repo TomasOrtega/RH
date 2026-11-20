@@ -26,9 +26,9 @@ Both sides reduce to the same expression.
 @[simp] theorem reN_rfl {N : ℕ} (F : Frame k N Y) : reN rfl F = F := rfl
 
 /- English proof (translation)
-Take `⟨O, hO, -⟩` from `GlobalTheory.LocMod.PinModel.exists_isOne (k := k) (Y := Y) (Y' := Y')`. Take `⟨Φ₀, h1, h2⟩` from `LocPlInhab.exists_latInd q FS FT hS hT`. Take `⟨o, o1, o2⟩` from `GlobalTheory.LocComb.exists_comb D k (ofSplit q) Y Y' S T FS FT ψ hψ Φ₀ O (by rintro rfl; simp at h1)`. Use `⟨o, o1, fun Tm hT a b hb ha => ?_⟩` and prove the remaining obligations. Take `rfl : b = O` from `Subtype.ext (hb.trans hO.symm)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `rfl : a = Φ₀` from `Subtype.ext (ha.trans h2.symm)`. Conclude with `o2 Tm hT`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exists_o {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1)) (q : GlobalTheory.FinPl.SplitPt D k)
     (FS : Frame k S.rank Y') (FT : Frame k T.rank Y) {M : GlobalTheory.FinPl.Lat S} {M' : GlobalTheory.FinPl.Lat T}
@@ -59,7 +59,7 @@ variable {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotio
   {v : VCom f.c}
 
 /- English proof (translation)
-Use `G.hs` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem s_eq (G : GLoc v) {j : ℕ} (h : j + 2 * 0 + 2 = D.R.m) : G.s = j := by
   have := G.hs; omega
@@ -73,7 +73,7 @@ def phiT (G : GLoc v) : SB (Matrix (Ix (Fin D.R.k ⊕ Fin (G.s + 1)) (Fin D.R.t)
   ⟨(G.S.T (Fin D.R.t)).PhiTop, (GModel.phi_sb G).2⟩
 
 /- English proof (translation)
-Introduce and unpack `s j rfl F e e' he h`. Consider the cases of `he`. Conclude with `h`.
+Assume the hypotheses and unpack their components. Split into cases according to the possible forms of the given data. A detailed English derivation is pending.
 -/
 theorem isCombAt_reN {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     {Y Y' : Type} [Fintype Y] [DecidableEq Y] [Fintype Y'] [DecidableEq Y'] (q : GlobalTheory.FinPl.SplitPt D k)
@@ -86,7 +86,7 @@ theorem isCombAt_reN {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] 
   exact h
 
 /- English proof (translation)
-Introduce and unpack `s j rfl F h`. Conclude with `h`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem intIn_reN {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     {Y' : Type} [Fintype Y'] [DecidableEq Y'] (q : GlobalTheory.FinPl.SplitPt D k) (N : ∀ j, GlobalTheory.FinPl.Lat (Yc D j)) :
@@ -100,7 +100,7 @@ def eT {n : ℕ} {G : Fin n → GLoc v} (hGP : GPin G) {j : ℕ} (h : j + 2 * 0 
   Classical.choose (hGP.eGT j h) i
 
 /- English proof (translation)
-The claim follows from `Classical.choose_spec (hGP.eGT j h)`.
+A detailed English derivation is pending.
 -/
 theorem eT_spec {n : ℕ} {G : Fin n → GLoc v} (hGP : GPin G) {j : ℕ} (h : j + 2 * 0 + 2 = D.R.m) :
     (∀ i, HEq (eT hGP h i) (G i).egT) ∧ ∀ F, IsThetaFunO f.c.ψ _ _ F →
@@ -108,7 +108,7 @@ theorem eT_spec {n : ℕ} {G : Fin n → GLoc v} (hGP : GPin G) {j : ℕ} (h : j
   Classical.choose_spec (hGP.eGT j h)
 
 /- English proof (translation)
-The claim follows from `isCombAt_reN (G i).q f.c.ψ (G i).FT _ (s_eq (G i) h) ((G i).FY ((G i).s + 1) 0 rfl) (G i).egT _ ((eT_spec hGP h).1 i) (G i).egT_is`.
+A detailed English derivation is pending.
 -/
 theorem eT_is {n : ℕ} {G : Fin n → GLoc v} (hGP : GPin G) {j : ℕ} (h : j + 2 * 0 + 2 = D.R.m) (i : Fin n) :
     (ofSplit (G i).q).IsCombAt f.c.ψ (frS (G i) h) (G i).FT (eT hGP h i) (phiT (G i)).1 :=

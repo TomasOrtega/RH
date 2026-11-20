@@ -16,13 +16,13 @@ open PositivityTheory.RgUd.Form PositivityTheory.RgUd.Form.ColumnElementGluing P
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Use `set S := ∑ i ∈ Finset.range I, u i with hS`. Establish `h0` using `hB.2 (v - S)`. Establish `e1 : B (v - S) (v - S) = B v v - B v S - B S v + B S S`. Simplify using `only [map_sub, LinearMap.sub_apply]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `e2 : B S v = ∑ i ∈ Finset.range I, B (u i) (u i)`. Rewrite using `[hS, map_sum, LinearMap.sum_apply]`. Conclude with `Finset.sum_congr rfl fun i _ => hself i`. Establish `e3 : B v S = ∑ i ∈ Finset.range I, starRingEnd ℂ (B (u i) (u i))`. Rewrite using `[hS, map_sum]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[hB.1 (u i) v, hself i]`. Establish `e4 : B S S = ∑ i ∈ Finset.range I, B (u i) (u i)`. Rewrite using `[hS]`. Simplify using `only [map_sum, LinearMap.sum_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun i hi => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_eq_single i (fun j _ hj => horth j i hj) (fun h => absurd hi h)]`. Rewrite `h0` using `[e1, e2, e3, e4]`. Simplify using `only [Complex.add_re, Complex.sub_re, Complex.re_sum, Complex.conj_re] at h0`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem bessel_finite {V : Type} [AddCommGroup V] [Module ℂ V] (B : V →ₗ[ℂ] V →ₗ⋆[ℂ] ℂ) (hB : IsPsd B)
     (u : ℕ → V) (v : V) (hself : ∀ i, B (u i) v = B (u i) (u i)) (horth : ∀ i j, i ≠ j → B (u i) (u j) = 0)
@@ -48,9 +48,9 @@ theorem bessel_finite {V : Type} [AddCommGroup V] [Module ℂ V] (B : V →ₗ[�
   linarith
 
 /- English proof (translation)
-Use `⟨?_, AddSubgroup.isOpen_mono le_sup_left hA.2⟩` and prove the remaining obligations. Establish `hc : IsCompact ((A : Set (Fin (m + 1) → k)) + (A' : Set (Fin (m + 1) → k)))` using `hA.1.add hA'.1`. Use `hc.of_isClosed_subset (AddSubgroup.isClosed_of_isOpen _ (AddSubgroup.isOpen_mono le_sup_left hA.2)) ?_` and prove the remaining obligations. Introduce `x hx`. Take `⟨y, hy, w, hw, rfl⟩` from `AddSubgroup.mem_sup.1 hx`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `Set.add_mem_add hy hw`.
+A detailed English derivation is pending.
 -/
 theorem isLat_sup {m : ℕ} {A A' : AddSubgroup (Fin (m + 1) → k)} (hA : IsLat A) (hA' : IsLat A') : IsLat (A ⊔ A') := by
   refine ⟨?_, AddSubgroup.isOpen_mono le_sup_left hA.2⟩
@@ -61,9 +61,9 @@ theorem isLat_sup {m : ℕ} {A A' : AddSubgroup (Fin (m + 1) → k)} (hA : IsLat
   exact Set.add_mem_add hy hw
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hc`. Use `push Not at hc`. Establish `h1 : valuation k ((1 : kˣ) : k) ≤ valuation k (z : k)` using `by simpa using hc`. Use `(nabs_le_iff (1 : kˣ) z).2 h1` as an intermediate fact. Rewrite `this` using `[nabs_one]`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 theorem val_lt_one_of_nabs {z : kˣ} (hz : nabs k z < 1) : valuation k (z : k) < 1 := by
   by_contra hc
@@ -86,14 +86,14 @@ def Mz (ψ : AddChar k Circle) (m : ℕ) (b : k) : AddSubgroup (Fin (m + 1) → 
     rw [dotProduct_neg, mul_neg, AddChar.map_neg_eq_inv, hx t ht, inv_one]
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.character_annihilator_integer_lattice k ψ hψ hψ1 (m + 1) b hb`.
+A detailed English derivation is pending.
 -/
 theorem isLat_Mz {ψ : AddChar k Circle} (hψ : Continuous ψ) (hψ1 : ψ ≠ 1) (m : ℕ) {b : k} (hb : b ≠ 0) :
     IsLat (Mz ψ m b) :=
   GlobalTheory.T.character_annihilator_integer_lattice k ψ hψ hψ1 (m + 1) b hb
 
 /- English proof (translation)
-Introduce `t ht`. Rewrite using `[dotProduct_smul, smul_eq_mul, ← smul_eq_mul c, ← smul_dotProduct]`. Conclude with `hx (c • t) fun j => by simpa using mul_mem hc (ht j)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem smul_mem_Mz {ψ : AddChar k Circle} {m : ℕ} {b c : k} (hc : c ∈ 𝒪[k]) {x : Fin (m + 1) → k}
     (hx : x ∈ Mz ψ m b) : c • x ∈ Mz ψ m b := by
@@ -102,11 +102,9 @@ theorem smul_mem_Mz {ψ : AddChar k Circle} {m : ℕ} {b c : k} (hc : c ∈ 𝒪
   exact hx (c • t) fun j => by simpa using mul_mem hc (ht j)
 
 /- English proof (translation)
-Choose the witnesses or unpack the hypotheses as in `⟨c₀, hc₀⟩ : ∃ c, ψ c ≠ 1 := by`. Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`. Conclude with `hψ1 (DFunLike.ext _ _ (fun c => by rw [hcon c, AddChar.one_apply]))`. Take `⟨d, hd, -, hd2⟩` from `GlobalTheory.T.exists_scaled_nontrivial_character k ψ hψ a c₀ ha hc₀`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨d, hd, fun c hc t ht => ?_⟩` and prove the remaining obligations. Rewrite using `[dotProduct_single]`. Use `hd2 (t (Fin.last m) * c) (mul_mem (ht _) hc)` as an intermediate fact. Rewrite using `[← this]`. Use `congr 1`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem exists_sep {ψ : AddChar k Circle} (hψ : Continuous ψ) (hψ1 : ψ ≠ 1) (m : ℕ) {a : k}
     (ha : valuation k a < 1) :
@@ -128,14 +126,14 @@ variable {ψ : AddChar k Circle} {m N : ℕ} {h : m + 2 ≤ N} {V : Type} [AddCo
   {π : Representation ℂ (GL (Fin N) k) V} {s : ℝ} {B : V →ₗ[ℂ] V →ₗ⋆[ℂ] ℂ}
 
 /- English proof (translation)
-Rewrite using `[LinearMap.map_smul, LinearMap.smul_apply, LinearMap.map_smulₛₗ, smul_eq_mul, smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem B_smul_smul {W : Type} [AddCommGroup W] [Module ℂ W] (B : W →ₗ[ℂ] W →ₗ⋆[ℂ] ℂ) (α β : ℂ) (x y : W) :
     B (α • x) (β • y) = α * (starRingEnd ℂ β * B x y) := by
   rw [LinearMap.map_smul, LinearMap.smul_apply, LinearMap.map_smulₛₗ, smul_eq_mul, smul_eq_mul]
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simp [nabs_one]`. Consider the case `succ n ih => rw [pow_succ, GlobalTheory.SmGL.nabs_mul' k, ih, pow_succ]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem nabs_pow (x : kˣ) (n : ℕ) : nabs k (x ^ n) = nabs k x ^ n := by
   induction n with
@@ -143,7 +141,7 @@ theorem nabs_pow (x : kˣ) (n : ℕ) : nabs k (x ^ n) = nabs k x ^ n := by
   | succ n ih => rw [pow_succ, GlobalTheory.SmGL.nabs_mul' k, ih, pow_succ]
 
 /- English proof (translation)
-Establish `hmem : unip k (m + 1) (Multiplicative.ofAdd y) ∈ Mir k (m + 1)` using `MirU_le_Mir k (m + 1) ⟨_, rfl⟩`. Establish `e` using `hB.mir _ hmem a b`. Rewrite `e` using `[ColumnElementGluing.det_unip, nabs_one, Real.one_rpow, Complex.ofReal_one, one_mul]`. Conclude with `e`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem B_colEl (hB : Lv ψ h π s B) (y : Fin (m + 1) → k) (a b : V) :
     B (π (colEl k m N h y) a) (π (colEl k m N h y) b) = B a b := by
@@ -153,13 +151,13 @@ theorem B_colEl (hB : Lv ψ h π s B) (y : Fin (m + 1) → k) (a b : V) :
   exact e
 
 /- English proof (translation)
-Use `set g : GL (Fin (m + 1)) k := Units.map (algebraMap k (Matrix (Fin (m + 1)) (Fin (m + 1)) k)).toMonoidHom (z ^ i) with hg`. Establish `hmem : glEmb k (m + 1) g ∈ Mir k (m + 1)` using `glEmb_mem_Mir k (m + 1) g`. Establish `e` using `hB.mir _ hmem a b`. Rewrite `e` using `[ColumnElementGluing.blkAt_glEmb h g, ColumnElementGluing.det_glEmb]`. Establish `hdet : Matrix.GeneralLinearGroup.det g = (z ^ i) ^ (m + 1)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `Units.ext ?_` and prove the remaining obligations. Rewrite using `[Matrix.GeneralLinearGroup.val_det_apply, hg, Units.coe_map]`. Express the relevant statement in the definitionally equal form `(algebraMap k (Matrix (Fin (m + 1)) (Fin (m + 1)) k) ((z ^ i : kˣ) : k)).det = _`. Rewrite using `[Algebra.algebraMap_eq_smul_one, Matrix.det_smul, Matrix.det_one, mul_one, Fintype.card_fin]`. Use `push_cast`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Rewrite `e` using `[hdet, nabs_pow, nabs_pow, ← pow_mul, ← Real.rpow_natCast, ← Real.rpow_mul (nabs_pos' k z).le]`. Use `show B (π (blkAt k (m + 1) N (by omega) g) a) (π (blkAt k (m + 1) N (by omega) g) b) = _`. Rewrite using `[e]`. Use `congr 3`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem B_scal (hB : Lv ψ h π s B) (z : kˣ) (i : ℕ) (a b : V) :
     B (π (scalAt k (m + 1) N (by omega) (z ^ i)) a) (π (scalAt k (m + 1) N (by omega) (z ^ i)) b) =
@@ -184,49 +182,47 @@ theorem B_scal (hB : Lv ψ h π s B) (z : kˣ) (i : ℕ) (a b : V) :
   ring
 
 /- English proof (translation)
-Establish `h1 : m + 1 ≤ N` using `by omega`. Set `S : Subgroup (GL (Fin N) k)` to `{ carrier := {g | π g v = v} mul_mem' := fun {a b} (ha : π a v = v) (hb : π b v = v) => show π (a * b) v = v by rw [map_mul, Module.End.mul_apply, hb, ha] one_mem' := show π 1 v = v by rw [map_one, Module.End.one_apply] inv_mem' := fun {a} (ha : π a v = v) => show π a⁻¹ v = v by …`. Rewrite using `[← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply] }`. Set `K : Subgroup (GL (Fin (m + 1)) k)` to `S.comap (blkAt k (m + 1) N h1)`. Establish `hK : IsOpen (K : Set (GL (Fin (m + 1)) k))` using `(hB.smooth v).preimage (ColumnElementGluing.continuous_blkAt (m + 1) N h1)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hvK : FixK h1 π K v` using `fun g hg => hg`. Take `⟨A₁, hA₁, -, hst⟩` from `hstab K hK hA₀`. Establish `hzv : valuation k (z : k) < 1` using `val_lt_one_of_nabs hz`. Take `⟨d, hd, hdM⟩` from `exists_sep hB.cont hB.ne m hzv`. Establish `hM : IsLat (Mz ψ m (z : k))` using `isLat_Mz hB.cont hB.ne m z.ne_zero`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Set `A : AddSubgroup (Fin (m + 1) → k)` to `A₁ ⊔ Mz ψ m (z : k)`. Establish `hA : IsLat A` using `isLat_sup hA₁ hM`. Establish `h1A : A₁ ≤ A` using `le_sup_left`. Establish `hMA : Mz ψ m (z : k) ≤ A` using `le_sup_right`. Establish `hzO : (z : k) ∈ 𝒪[k]` using `(Valuation.mem_integer_iff _ _).2 hzv.le`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `σ : ℕ → GL (Fin N) k` to `fun i => scalAt k (m + 1) N h1 (z ^ i)`. Establish `hfix : ∀ i, FixK h1 π K (π (σ i) v)`. Introduce `i g hg`. Use `show π (blkAt k (m + 1) N h1 g) (π (scalAt k (m + 1) N h1 (z ^ i)) v) = π (scalAt k (m + 1) N h1 (z ^ i)) v`. Rewrite using `[← Module.End.mul_apply, ← map_mul, ← ColumnElementGluing.scalAt_comm_blkAt h1 (z ^ i) g, map_mul, Module.End.mul_apply, hvK g hg]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Set `a : ℕ → V` to `fun i => avg ψ h π (xi0 k m) A (π (σ i) v)`. Establish `hval : ∀ i, B' (π (σ i) v) (π (σ i) v) = ((A₀.relIndex A : ℕ) : ℂ) * B (a i) (π (σ i) v)`. Introduce `i`. Take `⟨A₂, hA₂, -, hv2⟩` from `hD (π (σ i) v) (π (σ i) v)`. Establish `hA3 : IsLat (A ⊔ A₂)` using `isLat_sup hA hA₂`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hv2 (A ⊔ A₂) hA3 le_sup_right, hst _ _ (hfix i) (hfix i) (A ⊔ A₂) hA3 (h1A.trans le_sup_left), ← hst _ _ (hfix i) (hfix i) A hA h1A]`. Set `u : ℕ → V` to `fun i => π (σ i)⁻¹ (a i)`. Establish `hσu : ∀ i, π (σ i) (u i) = a i` using `fun i => by show π (σ i) (π (σ i)⁻¹ (a i)) = a i`. Rewrite using `[← Module.End.mul_apply, ← map_mul, mul_inv_cancel, map_one, Module.End.one_apply]`. Establish `hsc : ∀ i (x y : V), B (π (σ i) x) (π (σ i) y) = ((nabs k z ^ ((i : ℝ) * (m + 1) * s) : ℝ) : ℂ) * B x y` using `fun i x y => B_scal hB z i x y`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcpos : ∀ i : ℕ, 0 < nabs k z ^ ((i : ℝ) * (m + 1) * s)` using `fun i => Real.rpow_pos_of_pos (nabs_pos' k z) _`. Establish `hself : ∀ i, B (u i) v = B (u i) (u i)`. Introduce `i`. Establish `e : B (a i) (π (σ i) v) = B (a i) (avg ψ h π (xi0 k m) A (π (σ i) v))` using `alg.avg_selfadj hB (xi0 k m) hA (π (σ i) v) (π (σ i) v)`. Express the relevant statement in the definitionally equal form `B (a i) (π (σ i) v) = B (a i) (a i) at e`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e` using `[← hσu i, hsc, hsc]`. Conclude with `mul_left_cancel₀ (by exact_mod_cast (hcpos i).ne') e`. Establish `heig : ∀ i (y : Fin (m + 1) → k), ((z ^ i : kˣ) : k) • y ∈ A → π (colEl k m N h y) (u i) = ((ψ (xi0 k m ⬝ᵥ ((z ^ i : kˣ) : k) • y) : Circle) : ℂ) • u i`. Introduce `i y hy`. Use `show π (colEl k m N h y) (π (σ i)⁻¹ (a i)) = _ • π (σ i)⁻¹ (a i)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hc` using `ColumnElementGluing.scalAt_conj_colEl h (z ^ i) y`. Establish `hc' : colEl k m N h y * (σ i)⁻¹ = (σ i)⁻¹ * colEl k m N h (((z ^ i : kˣ) : k) • y)` using `by show colEl k m N h y * (scalAt k (m + 1) N h1 (z ^ i))⁻¹ = (scalAt k (m + 1) N h1 (z ^ i))⁻¹ * colEl k m N h (((z ^ i : kˣ) : k) • y)`. Rewrite using `[← hc]`. Use `group`. Rewrite using `[← Module.End.mul_apply, ← map_mul, hc', map_mul, Module.End.mul_apply]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e` using `ColumnElementGluing.avg_eigen ψ h π hB.cont hB.smooth (xi0 k m) A hA (π (σ i) v) _ hy`. Express the relevant statement in the definitionally equal form `π (colEl k m N h (((z ^ i : kˣ) : k) • y)) (a i) = _ at e`. Rewrite using `[e, map_smul]`. Establish `horth0 : ∀ i j, i < j → B (u i) (u j) = 0`. Introduce `i j hij`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨l, rfl⟩ : ∃ l, j = i + (l + 1)` from `⟨j - i - 1, by omega⟩`. Establish `hzl : valuation k ((z : k) ^ (l + 1)) < 1`. Rewrite using `[map_pow]; exact pow_lt_one₀ zero_le hzv (by omega)`. Establish `h1z : valuation k (1 - (z : k) ^ (l + 1)) = 1` using `Valuation.map_one_sub_of_lt _ hzl`. Establish `h1z0 : (1 - (z : k) ^ (l + 1)) ≠ 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `e`. Rewrite `h1z` using `[e, map_zero]`. Conclude with `zero_ne_one h1z`. Set `c : k` to `(1 - (z : k) ^ (l + 1))⁻¹`. Establish `hcO : c ∈ 𝒪[k]` using `(Valuation.mem_integer_iff _ _).2 (by simp only [c, map_inv₀, h1z, inv_one]; exact le_rfl)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Set `w : Fin (m + 1) → k` to `Pi.single (Fin.last m) (c * d)`. Establish `hwM : w ∈ Mz ψ m (z : k)` using `hdM c hcO`. Set `y : Fin (m + 1) → k` to `(((z ^ i)⁻¹ : kˣ) : k) • w`. Establish `hy1 : ((z ^ i : kˣ) : k) • y = w`. Simplify using `only [y, smul_smul, Units.mul_inv, one_smul]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
-Establish `hy2 : ((z ^ (i + (l + 1)) : kˣ) : k) • y = ((z : k) ^ (l + 1)) • w`. Simplify using `only [y, smul_smul]`. Use `congr 1`. Use `push_cast`. Rewrite using `[pow_add, mul_assoc, mul_comm ((z : k) ^ (l + 1)), ← mul_assoc, mul_inv_cancel₀ (pow_ne_zero _ z.ne_zero), one_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `e1` using `heig i y (hy1 ▸ hMA hwM)`. Establish `e2` using `heig (i + (l + 1)) y (hy2 ▸ hMA (smul_mem_Mz (pow_mem hzO _) hwM))`. Rewrite `e1` using `[hy1]`. Rewrite `e2` using `[hy2]`. Establish `hinv` using `B_colEl hB y (u i) (u (i + (l + 1)))`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hinv` using `[e1, e2, B_smul_smul]`. Establish `hxw : xi0 k m ⬝ᵥ w = c * d` using `by simp [w, xi0]`. Establish `hxw2 : xi0 k m ⬝ᵥ ((z : k) ^ (l + 1)) • w = (z : k) ^ (l + 1) * (c * d)`. Rewrite using `[dotProduct_smul, hxw, smul_eq_mul]`. Rewrite `hinv` using `[hxw, hxw2]`.
+Establish an intermediate fact. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hsplit : c * d = (z : k) ^ (l + 1) * (c * d) + d`. Establish `: c * (1 - (z : k) ^ (l + 1)) = 1` using `inv_mul_cancel₀ h1z0`. Take the linear combination `d * this`. Use `set β : Circle := ψ ((z : k) ^ (l + 1) * (c * d))`. Establish `hα : ((ψ (c * d) : Circle) : ℂ) = (β : ℂ) * ((ψ d : Circle) : ℂ)`.
+Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hsplit, AddChar.map_add_eq_mul]`. Use `push_cast`. Both sides reduce to the same expression. Rewrite `hinv` using `[hα]`. Establish `hb1 : starRingEnd ℂ (β : ℂ) * (β : ℂ) = 1` using `ColumnElementGluing.conj_circle_mul_self β`.
+Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hd1 : ((ψ d : Circle) : ℂ) ≠ 1` using `fun e => hd (Subtype.ext (by simpa using e))`. Establish `: ((ψ d : Circle) : ℂ) * B (u i) (u (i + (l + 1))) = B (u i) (u (i + (l + 1)))`. Take the linear combination `hinv - (((ψ d : Circle) : ℂ) * B (u i) (u (i + (l + 1)))) * hb1`. Establish `: (((ψ d : Circle) : ℂ) - 1) * B (u i) (u (i + (l + 1))) = 0` using `by linear_combination this`. Conclude with `(mul_eq_zero.1 this).resolve_left (sub_ne_zero.2 hd1)`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `horth : ∀ i j, i ≠ j → B (u i) (u j) = 0`. Introduce `i j hij`. Break down `lt_or_gt_of_ne hij with hl | hl` into its components or cases. Conclude with `horth0 i j hl`. Rewrite using `[hB.psd.1 (u j) (u i), horth0 j i hl, map_zero]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hterm : ∀ i : ℕ, nabs k z ^ (-((i : ℝ) * (m + 1) * s)) * (B' (π (σ i) v) (π (σ i) v)).re = (A₀.relIndex A : ℝ) * (B (u i) (u i)).re`. Introduce `i`. Rewrite using `[hval i, ← hσu i, hsc i, hself i]`. Rewrite using `[show ((A₀.relIndex A : ℕ) : ℂ) * (((nabs k z ^ ((i : ℝ) * (m + 1) * s) : ℝ) : ℂ) * B (u i) (u i)) = (((A₀.relIndex A : ℝ) * nabs k z ^ ((i : ℝ) * (m + 1) * s) : ℝ) : ℂ) * B (u i) (u i) by push_cast; ring]`. Rewrite using `[Complex.re_ofReal_mul, Real.rpow_neg (nabs_pos' k z).le]`.
-
-Use `(hcpos i).ne'` as an intermediate fact. Clear the denominators using the available nonvanishing facts. Use `summable_of_sum_range_le (c := (A₀.relIndex A : ℝ) * (B v v).re) (fun i => ?_) (fun I => ?_)` and prove the remaining obligations. Conclude with `le_of_le_of_eq (mul_nonneg (Nat.cast_nonneg _) (hB.psd.2 _)) (hterm i).symm`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem dens_bessel_of (hB : Lv ψ h π s B)
     (hstab : ∀ (K : Subgroup (GL (Fin (m + 1)) k)), IsOpen (K : Set (GL (Fin (m + 1)) k)) →

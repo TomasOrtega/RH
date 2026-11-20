@@ -19,7 +19,7 @@ def values (j : ℕ) (la : HeightOneSpectrum (𝓞 T.Q.c.F)) : Set (T.R j → ER
   valSet (T.Q.Xo j) T.Q.c (algCls (T.Q.Xo j) T.Q.c) la
 
 /- English proof (translation)
-The claim follows from `isVal_valSet la`.
+A detailed English derivation is pending.
 -/
 theorem isVal_values (j : ℕ) (la : HeightOneSpectrum (𝓞 T.Q.c.F)) : ∀ v ∈ values T j la, IsVal la v :=
   isVal_valSet la
@@ -30,7 +30,7 @@ def good (σ : T.Q.c.F →+* ℂ) : T.Q.c.F →+* ℂ :=
   if GoodEmb T.Q.c σ then σ else (starRingEnd ℂ).comp σ
 
 /- English proof (translation)
-The claim follows from `goodEmb_goodOf T.Q.c σ`.
+A detailed English derivation is pending.
 -/
 theorem goodEmb_good (σ : T.Q.c.F →+* ℂ) : GoodEmb T.Q.c (good T σ) := goodEmb_goodOf T.Q.c σ
 
@@ -51,7 +51,7 @@ def charLat (j : ℕ) (cu : Cusps T j) : Submodule (𝓞 D.host.E) (Fin (WeightF
   FJ.XcFD 1 cu.2
 
 /- English proof (translation)
-The claim follows from `FJ.xcFD_lat 1 (fun h => one_ne_zero (α := D.host.E) ((FractionalIdeal.mem_zero_iff _).1 (h ▸ FractionalIdeal.one_mem_one _))) cu.2`.
+A detailed English derivation is pending.
 -/
 theorem charLat_isLattice (j : ℕ) (cu : Cusps T j) : Submodule.IsLattice D.host.E (charLat T j cu) :=
   FJ.xcFD_lat 1 (fun h => one_ne_zero (α := D.host.E)
@@ -63,7 +63,7 @@ abbrev domSec (j : ℕ) (cu : Cusps T j) (w : WeightFamilies.Wt D j) : Type :=
 variable {T}
 
 /- English proof (translation)
-The claim follows from `have h1 := (h.unf j hj T.σ₀ T.good_σ₀).2.2.2.2.1 (wtA w) w.n (dom_wtA w) f.1 (cusp_le_sec _ _ _ _ _ f.2) k ⟨h1.1, h1.2.1⟩`.
+A detailed English derivation is pending.
 -/
 theorem isFlagSec_rd (h : LawsM T) {j : ℕ} (hj : InR D j) (w : WeightFamilies.Wt D j) (f : forms T j w) (k) :
     IsFlagSec ((T.U j T.σ₀).X k) (laU (T.U j T.σ₀) (wtA w) w.n k) (rdU (T.U j T.σ₀) f.1 k) :=
@@ -71,7 +71,7 @@ theorem isFlagSec_rd (h : LawsM T) {j : ℕ} (hj : InR D j) (w : WeightFamilies.
   ⟨h1.1, h1.2.1⟩
 
 /- English proof (translation)
-The claim follows from `FJ.rdOrbInt_of_latZ _ _ _ (fun f k => (isFlagSec_rd h.toLawsM hj w f k).1.continuousOn) (h.latZ j hj)`.
+A detailed English derivation is pending.
 -/
 theorem orbInt (h : LawsCore T) {j : ℕ} (hj : InR D j) (w : WeightFamilies.Wt D j) :
     FJ.RdOrbInt T.σ₀ (T.X₀ j) (WeightFamilies.rho D j) ((rdU (T.U j T.σ₀)).comp (forms T j w).subtype) :=
@@ -91,7 +91,7 @@ def coef (h : LawsCore T) (j : ℕ) (cu : Cusps T j) (χ : WeightFamilies.ExpoSe
   if hj : InR D j then coefIn h hj cu χ.1 w else 0
 
 /- English proof (translation)
-Establish `hf' : f ∈ cusp (T.Q.Xo j) T.Q.c (T.U j) (wtA w) w.n` using `hf`. Rewrite using `[l2C, dif_pos hf', petGood, Core.phiAd, map_smul, eLpNorm_const_smul, ENNReal.toReal_mul]`. Use `congr 1`. Simplify using `[abs_of_pos (lieFac_pos _ _ _)]`. Conclude with `(Lp.norm_toLp _ (hm ⟨f, hf'⟩)).symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem petGood_eq {j : ℕ} (w : WeightFamilies.Wt D j) (σ : T.Q.c.F →+* ℂ)
     (hm : JMemL2 (T.V j σ) σ (rdC (T.U j) σ (wtA w) w.n) (T.dict j σ) (T.mu j σ)) {f : T.R j} (hf : f ∈ forms T j w) :
@@ -103,18 +103,16 @@ theorem petGood_eq {j : ℕ} (w : WeightFamilies.Wt D j) (σ : T.Q.c.F →+* ℂ
   · exact (Lp.norm_toLp _ (hm ⟨f, hf'⟩)).symm
 
 /- English proof (translation)
-The claim follows from `(isNormOn_supC (xiR D) (h.supDef j hj) (dom_wtA w) (goodEmb_good T σ)).of_goodOf`.
+A detailed English derivation is pending.
 -/
 theorem isNormOn_supNorm (h : LawsM T) (j : ℕ) (hj : InR D j) (w : WeightFamilies.Wt D j) (σ : T.Q.c.F →+* ℂ) :
     IsNormOn (forms T j w) σ (supNorm T j w σ) :=
   (isNormOn_supC (xiR D) (h.supDef j hj) (dom_wtA w) (goodEmb_good T σ)).of_goodOf
 
 /- English proof (translation)
-Establish `hσ` using `goodEmb_good T σ`. Establish `h0` using `(isNormOn_l2C (xiR D) (h.l2Def j hj _ hσ) (dom_wtA w)).of_goodOf`. Establish `e : ∀ f ∈ forms T j w, petNorm T j w σ f = _` using `fun f hf => petGood_eq w _ (h.cuspidalL2Subspace j hj _ hσ _ _ (dom_wtA w)) hf`. Use `⟨fun f hf => ?_, fun f hf h1 => ?_, fun a f hf => ?_, fun f hf g hg => ?_⟩` and prove the remaining obligations. Rewrite using `[e f hf]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h0.nonneg f hf`. Rewrite `h1` using `[e f hf]`. Conclude with `h0.defin f hf h1`. Rewrite using `[e f hf, e _ (Submodule.smul_mem _ a hf)]`. Conclude with `h0.smul a f hf`.
-
-Rewrite using `[e f hf, e g hg, e _ (Submodule.add_mem _ hf hg)]`. Conclude with `h0.add f hf g hg`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isNormOn_petNorm (h : LawsM T) (j : ℕ) (hj : InR D j) (w : WeightFamilies.Wt D j) (σ : T.Q.c.F →+* ℂ) :
     IsNormOn (forms T j w) σ (petNorm T j w σ) := by
@@ -129,7 +127,7 @@ theorem isNormOn_petNorm (h : LawsM T) (j : ℕ) (hj : InR D j) (w : WeightFamil
   · rw [e f hf, e g hg, e _ (Submodule.add_mem _ hf hg)]; exact h0.add f hf g hg
 
 /- English proof (translation)
-Introduce `f hf`. Establish `hσ` using `goodEmb_good T σ`. Take `⟨th, hr, -, hd⟩` from `h.dictU j hj _ hσ`. Rewrite using `[petNorm, petGood_eq w _ (h.cuspidalL2Subspace j hj _ hσ _ _ (dom_wtA w)) hf]`. Conclude with `l2C_le_supC (xiR D) hσ _ hd.2.2.2.1 (h.muUnit j hj _ hσ) f hf`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem petNorm_le_supNorm (h : LawsM T) (j : ℕ) (hj : InR D j) (w : WeightFamilies.Wt D j) (σ : T.Q.c.F →+* ℂ) :
     ∀ f ∈ forms T j w, petNorm T j w σ f ≤ supNorm T j w σ f := by

@@ -15,9 +15,9 @@ namespace GlobalTheory.AdjSrcZero
 variable {D : D7} {T : Type} {L : LevCh D T} {sc : Consts}
 
 /- English proof (translation)
-Take `⟨⟨hAA, hbar⟩, -⟩` from `GlobalTheory.ChiGrid.StairConj.conj_AA_and_stA D`. Introduce `h0`. Apply `hAA` to reduce the goal to its premises. Rewrite `h0`, the goal using `[FractionalIdeal.eq_zero_iff]`. Introduce `x hx`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1 : star x ∈ D.host.AAbar` using `(hbar _).2 (by rwa [star_star])`. Establish `h2` using `h0 _ h1`. Simplify using `using congrArg star h2`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem AAbar_ne_zero (D : D7) : D.host.AAbar ≠ 0 := by
   obtain ⟨⟨hAA, hbar⟩, -⟩ := GlobalTheory.ChiGrid.StairConj.conj_AA_and_stA D
@@ -30,7 +30,7 @@ theorem AAbar_ne_zero (D : D7) : D.host.AAbar ≠ 0 := by
   simpa using congrArg star h2
 
 /- English proof (translation)
-Establish `hA` using `AAbar_ne_zero D`. Simplify using `only [zero_add, pow_one, Places.stA, Places.stAbar, shiftId, mul_inv, inv_inv]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation.
 -/
 theorem AAbar_mul_st (G : GridData L sc) :
     D.host.AAbar * (G.pl.stA sc ^ (0 + 1) * (G.pl.stAbar sc ^ (0 + 1))⁻¹) = D.host.AA * shiftId G := by
@@ -42,15 +42,15 @@ theorem AAbar_mul_st (G : GridData L sc) :
     _ = _ := by rw [mul_inv_cancel₀ hA, one_mul]
 
 /- English proof (translation)
-Introduce `D T L sc G n Λ₀ a ha s hs`. Take `⟨⟨-, hbar⟩, -⟩` from `GlobalTheory.ChiGrid.StairConj.conj_AA_and_stA D`. Establish `key : ∀ b ∈ D.host.AA * shiftId G, ∀ y ∈ Λ₀, b • y ∈ Submodule.span (𝓞 D.host.E) {y | ∃ a' ∈ D.host.AA, ∃ s' ∈ idLat (shiftId G) Λ₀, y = a' • s'}`. Introduce `b hb y hy`. Use `FractionalIdeal.mul_induction_on (C := fun b => b • y ∈ Submodule.span (𝓞 D.host.E) {y | ∃ a' ∈ D.host.AA, ∃ s' ∈ idLat (shiftId G) Λ₀, y = a' • s'}) hb ?_ ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `i hi j hj`. Use `Submodule.subset_span ⟨i, hi, j • y, Submodule.subset_span ⟨j, hj, y, hy, rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_smul]`. Introduce `x z hx hz`. Rewrite using `[add_smul]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `add_mem hx hz`. Establish `hsa : star a ∈ D.host.AAbar` using `(hbar _).2 (by rwa [star_star])`. Unfold `idLat at hs`. Use `Submodule.span_induction (p := fun z _ => star a • z ∈ Submodule.span (𝓞 D.host.E) {y | ∃ a' ∈ D.host.AA, ∃ s' ∈ idLat (shiftId G) Λ₀, y = a' • s'}) ?_ ?_ ?_ ?_ hs` and prove the remaining obligations. Introduce and unpack `_ ⟨i, hi, y, hy, rfl⟩`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[smul_smul]`. Conclude with `key _ (AAbar_mul_st G ▸ FractionalIdeal.mul_mem_mul hsa hi) y hy`. Simplify using the standard rewrite rules. Introduce `x z _ _ hx hz`. Rewrite using `[smul_add]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `add_mem hx hz`. Introduce `c x _ hx`. Rewrite using `[smul_comm]`. Conclude with `Submodule.smul_mem _ c hx`.
+A detailed English derivation is pending.
 -/
 theorem star_smul_mem_span : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} (G : GridData L sc) {n : ℕ}
     (Λ₀ : Submodule (𝓞 D.host.E) (Fin n → D.host.E)), ∀ a ∈ D.host.AA,

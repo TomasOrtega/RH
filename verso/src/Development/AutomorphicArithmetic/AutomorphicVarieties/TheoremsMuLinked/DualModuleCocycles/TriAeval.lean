@@ -3,13 +3,13 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.TheoremsMuLinked.D
 open Matrix IsLocalRing UpperTheory.V UpperTheory.V.W UpperTheory.V.Alg UpperTheory.V.Pa UpperTheory.V.Th UpperTheory.V.Th.Coc
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero`. Use `⟨fun a b hab => ?_, fun i => by simp⟩` and prove the remaining obligations. Simplify using `[Matrix.one_apply_ne hab.ne']`. Consider the case `succ k ih`.
+Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Treat this case separately.
 
-Use `⟨fun a b hab => ?_, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[pow_succ, Matrix.mul_apply]`. Use `Finset.sum_eq_zero fun c _ => ?_` and prove the remaining obligations. Break down `lt_or_ge c a with hc | hc` into its components or cases. Rewrite using `[ih.1 a c hc, zero_mul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h c b (lt_of_lt_of_le hab hc), mul_zero]`. Rewrite using `[pow_succ, Matrix.mul_apply, Finset.sum_eq_single i]`. Rewrite using `[ih.2, hd, pow_succ]`. Introduce `c _ hc`. Break down `lt_or_gt_of_ne hc with hc | hc` into its components or cases.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite using `[ih.1 i c hc, zero_mul]`. Rewrite using `[h c i hc, mul_zero]`. Introduce `hi`. Conclude with `absurd (Finset.mem_univ i) hi`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 private theorem tri_pow {O : Type} [CommRing O] {n : ℕ} (u : Matrix (Fin n) (Fin n) O) (α : Fin n → O)
     (h : ∀ a b, b < a → u a b = 0) (hd : ∀ i, u i i = α i) (k : ℕ) :
@@ -35,11 +35,11 @@ private theorem tri_pow {O : Type} [CommRing O] {n : ℕ} (u : Matrix (Fin n) (F
         exact absurd (Finset.mem_univ i) hi
 
 /- English proof (translation)
-Proceed by induction on `p using Polynomial.induction_on' with`. Consider the case `add p q hp hq`. Use `⟨fun a b hab => ?_, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, Matrix.add_apply, hp.1 a b hab, hq.1 a b hab, add_zero]`. Rewrite using `[map_add, Matrix.add_apply, hp.2, hq.2, Polynomial.eval_add]`.
+Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Consider the case `monomial k c`. Establish `hk` using `tri_pow u α h hd k`. Rewrite using `[Polynomial.aeval_monomial, ← Algebra.smul_def]`. Use `⟨fun a b hab => ?_, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.smul_apply, hk.1 a b hab, smul_zero]`.
+Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.smul_apply, hk.2, Polynomial.eval_monomial, smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem tri_aeval {O : Type} [CommRing O] {n : ℕ} (u : Matrix (Fin n) (Fin n) O) (α : Fin n → O)
     (h : ∀ a b, b < a → u a b = 0) (hd : ∀ i, u i i = α i) (p : Polynomial O) :
@@ -57,11 +57,9 @@ private theorem tri_aeval {O : Type} [CommRing O] {n : ℕ} (u : Matrix (Fin n) 
     · rw [Matrix.smul_apply, hk.2, Polynomial.eval_monomial, smul_eq_mul]
 
 /- English proof (translation)
-Introduce `O _ n u α h hd`. Establish `hev : ∀ i k, (∏ j ∈ Finset.univ.erase i, (Polynomial.X - Polynomial.C (α j))).eval (α k) = ∏ j ∈ Finset.univ.erase i, (α k - α j)`. Introduce `i k`. Simplify using `[Polynomial.eval_prod]`. Use `⟨fun a b hab => ⟨?_, ?_⟩, fun i => ⟨?_, ?_⟩⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(tri_aeval u α h hd _).1 a b hab`. Conclude with `(tri_aeval u α h hd _).1 a b hab`. Use `show kEl u α i i i = _`. Rewrite using `[kEl, (tri_aeval u α h hd _).2 i, hev]`. Use `show kEl u α i i i = _`.
-
-Rewrite using `[kEl, (tri_aeval u α h hd _).2 i, hev]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Th.Coc.flagB :
     ∀ {O : Type} [CommRing O] {n : ℕ} (u : Matrix (Fin n) (Fin n) O) (α : Fin n → O), (∀ a b, b < a → u a b = 0) → (∀ i, u i i = α i) → (∀ a b, b < a → kS u α a b = 0 ∧ kT u α a b = 0) ∧ ∀ i, kS u α i i = ∏ j ∈ Finset.univ.erase i, (α i - α j) ∧ kT u α i i = ∏ j ∈ Finset.univ.erase i, (α i - α j) := by

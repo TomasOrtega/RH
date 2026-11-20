@@ -32,7 +32,7 @@ def pushLine (e : ∀ k, ι k ≃ Fin (n k + 1)) (A : HermLine ι) : HermLine (b
   smul c z hc := A.smul c (z ∘ sig e) hc
 
 /- English proof (translation)
-Use `show rename (sig e) (X ⟨k, i⟩) = _`. Rewrite using `[rename_X]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem ren_X (e : ∀ k, ι k ≃ Fin (n k + 1)) (k : K) (i : ι k) :
     ren e (X ⟨k, i⟩) = (X ⟨k, e k i⟩ : MRing (blockIdx n)) := by
@@ -41,7 +41,7 @@ theorem ren_X (e : ∀ k, ι k ≃ Fin (n k + 1)) (k : K) (i : ι k) :
   rfl
 
 /- English proof (translation)
-Use `show rename (sig e) (C a) = _`. Rewrite using `[rename_C]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ren_C (e : ∀ k, ι k ≃ Fin (n k + 1)) (a : ℤ) :
     ren e (C a) = (C a : MRing (blockIdx n)) := by
@@ -49,7 +49,7 @@ theorem ren_C (e : ∀ k, ι k ≃ Fin (n k + 1)) (a : ℤ) :
   rw [rename_C]
 
 /- English proof (translation)
-Use `show eval z (map _ (rename (sig e) g)) = _`. Rewrite using `[map_rename, eval_rename]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eval_ren (e : ∀ k, ι k ≃ Fin (n k + 1)) (z : Coord n → ℂ) (g : MRing ι) :
     eval z (map (Int.castRingHom ℂ) (ren e g)) = eval (z ∘ sig e) (map (Int.castRingHom ℂ) g) := by
@@ -57,11 +57,11 @@ theorem eval_ren (e : ∀ k, ι k ≃ Fin (n k + 1)) (z : Coord n → ℂ) (g : 
   rw [map_rename, eval_rename]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h k`. Take `⟨i, hi⟩` from `h k`. Use `⟨(e k).symm i, fun hm => hi ?_⟩` and prove the remaining obligations. Use `(mem_map_ringEquiv_iff (ren e) V _).2 hm` as an intermediate fact.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `this` using `[ren_X, Equiv.apply_symm_apply]`. Then use the resulting hypothesis. Introduce `h k`. Take `⟨i, hi⟩` from `h k`. Use `⟨e k i, fun hm => hi ?_⟩` and prove the remaining obligations. Rewrite `hm` using `[← ren_X]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(mem_map_ringEquiv_iff (ren e) V _).1 hm`.
+A detailed English derivation is pending.
 -/
 theorem isRelevant_map_iff (e : ∀ k, ι k ≃ Fin (n k + 1)) (V : Ideal (MRing ι)) :
     IsRelevant (V.map (ren e)) ↔ IsRelevant V := by
@@ -78,7 +78,7 @@ theorem isRelevant_map_iff (e : ∀ k, ι k ≃ Fin (n k + 1)) (V : Ideal (MRing
     exact (mem_map_ringEquiv_iff (ren e) V _).1 hm
 
 /- English proof (translation)
-Use extensionality with `a`. Rewrite using `[Ideal.mem_comap, Ideal.mem_comap, ← mem_map_ringEquiv_iff (ren e) V, ren_C]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 -/
 theorem comap_C_map (e : ∀ k, ι k ≃ Fin (n k + 1)) (V : Ideal (MRing ι)) :
     (V.map (ren e)).comap (C : ℤ →+* MRing (blockIdx n)) = V.comap (C : ℤ →+* MRing ι) := by
@@ -86,7 +86,7 @@ theorem comap_C_map (e : ∀ k, ι k ≃ Fin (n k + 1)) (V : Ideal (MRing ι)) :
   rw [Ideal.mem_comap, Ideal.mem_comap, ← mem_map_ringEquiv_iff (ren e) V, ren_C]
 
 /- English proof (translation)
-Unfold `IsHorizontal`. Rewrite using `[comap_C_map]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem isHorizontal_map_iff (e : ∀ k, ι k ≃ Fin (n k + 1)) (V : Ideal (MRing ι)) :
     IsHorizontal (V.map (ren e)) ↔ IsHorizontal V := by
@@ -94,16 +94,16 @@ theorem isHorizontal_map_iff (e : ∀ k, ι k ≃ Fin (n k + 1)) (V : Ideal (MRi
   rw [comap_C_map]
 
 /- English proof (translation)
-Simplify using `only [charOf, comap_C_map]`.
+Simplify using the standard rewrite rules.
 -/
 theorem charOf_map (e : ∀ k, ι k ≃ Fin (n k + 1)) (V : Ideal (MRing ι)) :
     charOf (V.map (ren e)) = charOf V := by
   simp only [charOf, comap_C_map]
 
 /- English proof (translation)
-Establish `hsup : V.map (ren e) ⊔ Ideal.span {ren e s} = (V ⊔ Ideal.span {s}).map (ren e)`. Rewrite using `[Ideal.map_sup, Ideal.map_span, Set.image_singleton]`. Use extensionality with `W'`. Simplify using `only [divSupp, Set.mem_ofPred_eq, Set.mem_image, hsup, minimalPrimes_map_ringEquiv]`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨⟨W, hW, rfl⟩, hrel⟩`. Conclude with `⟨W, ⟨hW, (isRelevant_map_iff e W).1 hrel⟩, rfl⟩`. Introduce and unpack `⟨W, ⟨hW, hrel⟩, rfl⟩`. Conclude with `⟨⟨W, hW, rfl⟩, (isRelevant_map_iff e W).2 hrel⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem divSupp_map (e : ∀ k, ι k ≃ Fin (n k + 1)) (V : Ideal (MRing ι)) (s : MRing ι) :
     divSupp (V.map (ren e)) (ren e s) = Ideal.map (ren e) '' divSupp V s := by
@@ -118,9 +118,9 @@ theorem divSupp_map (e : ∀ k, ι k ≃ Fin (n k + 1)) (V : Ideal (MRing ι)) (
     exact ⟨⟨W, hW, rfl⟩, (isRelevant_map_iff e W).2 hrel⟩
 
 /- English proof (translation)
-Unfold `multAt`. Distinguish the cases in `hV : V.IsPrime`. Establish `hV' : (V.map (ren e)).IsPrime` using `(isPrime_map_ringEquiv_iff (ren e) V).2 hV`. Rewrite using `[dif_pos hV, dif_pos hV']`. Conclude with `congrArg ENat.toNat (length_localizedModule_quotient_map (ren e) J V)`.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hV' : ¬ (V.map (ren e)).IsPrime` using `fun h' => hV ((isPrime_map_ringEquiv_iff (ren e) V).1 h')`. Rewrite using `[dif_neg hV, dif_neg hV']`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem multAt_map (e : ∀ k, ι k ≃ Fin (n k + 1)) (J V : Ideal (MRing ι)) :
     multAt (J.map (ren e)) (V.map (ren e)) = multAt J V := by
@@ -133,9 +133,9 @@ theorem multAt_map (e : ∀ k, ι k ≃ Fin (n k + 1)) (J V : Ideal (MRing ι)) 
     rw [dif_neg hV, dif_neg hV']
 
 /- English proof (translation)
-Establish `h : V.map (ren e) ⊔ Ideal.span (Set.range fun k => (X ⟨k, e k (c k)⟩ : MRing (blockIdx n)) - 1) = (V ⊔ Ideal.span (Set.range fun k => (X ⟨k, c k⟩ : MRing ι) - 1)).map (ren e)`. Rewrite using `[Ideal.map_sup, Ideal.map_span, ← Set.range_comp]`. Use `congr 3`. Use function extensionality and compare the values at `k`. Simplify using `only [Function.comp_apply, map_sub, map_one, ren_X]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Rewrite using `[h]`. Conclude with `length_int_quotient_map (ren e) _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem length_chart_map (e : ∀ k, ι k ≃ Fin (n k + 1)) (V : Ideal (MRing ι)) (c : ∀ k, ι k) :
     Module.length ℤ (MRing (blockIdx n) ⧸ (V.map (ren e) ⊔
@@ -151,9 +151,9 @@ theorem length_chart_map (e : ∀ k, ι k ≃ Fin (n k + 1)) (V : Ideal (MRing �
   exact length_int_quotient_map (ren e) _
 
 /- English proof (translation)
-Establish `hV'` using `(isRelevant_map_iff e V).2 hV`. Simplify using `only [geoNum, dif_pos hV, dif_pos hV']`. Establish `hc : ∀ k, (X ⟨k, e k (hV k).choose⟩ : MRing (blockIdx n)) ∉ V.map (ren e)` using `fun k hm => by`. Rewrite `hm` using `[← ren_X]`. Conclude with `(hV k).choose_spec ((mem_map_ringEquiv_iff (ren e) V _).1 hm)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨φ⟩` from `hD (fun k => (hV' k).choose) (fun k => e k (hV k).choose) (fun k => (hV' k).choose_spec) hc`. Rewrite using `[← length_chart_map e V fun k => (hV k).choose, φ.toAddEquiv.toIntLinearEquiv.length_eq]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem geoNum_map (e : ∀ k, ι k ≃ Fin (n k + 1)) (V : Ideal (MRing ι)) (hV : IsRelevant V)
     (hD : ∀ c c' : ∀ k, Fin (n k + 1), (∀ k, (X ⟨k, c k⟩ : MRing (blockIdx n)) ∉ V.map (ren e)) →
@@ -200,11 +200,11 @@ def ptsEquiv (e : ∀ k, ι k ≃ Fin (n k + 1)) (P : Ideal (MRing ι)) :
     exact congrArg z.1 ((sig e).apply_symm_apply p)
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨c, hc, h⟩`. Use `⟨c, hc, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `p`. Use `show z'.1 ((sig e).symm p) = c p.1 * z.1 ((sig e).symm p)`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h]`. Both sides reduce to the same expression. Introduce and unpack `⟨c, hc, h⟩`. Use `⟨c, hc, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `p`.
+Both sides reduce to the same expression. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Use `congrFun h (sig e p)` as an intermediate fact. Establish `h1 : ∀ y : mcPts P, ((ptsEquiv e P y : mcPts (P.map (ren e))) : Coord n → ℂ) (sig e p) = y.1 p` using `fun y => congrArg y.1 ((sig e).symm_apply_apply p)`. Rewrite `this` using `[h1, h1]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rel_iff (e : ∀ k, ι k ≃ Fin (n k + 1)) (P : Ideal (MRing ι)) (z z' : mcPts P) :
     (∃ c : K → ℂ, (∀ k, c k ≠ 0) ∧ (z' : (Σ k, ι k) → ℂ) = fun p => c p.1 * (z : (Σ k, ι k) → ℂ) p) ↔
@@ -231,22 +231,20 @@ def projEquiv (e : ∀ k, ι k ≃ Fin (n k + 1)) (P : Ideal (MRing ι)) :
   Quot.congr (ptsEquiv e P) fun z z' => rel_iff e P z z'
 
 /- English proof (translation)
-The claim follows from `(Nat.card_congr (projEquiv e P)).symm`.
+A detailed English derivation is pending.
 -/
 theorem degC_map (e : ∀ k, ι k ≃ Fin (n k + 1)) (P : Ideal (MRing ι)) :
     degC (P.map (ren e)) = degC P :=
   (Nat.card_congr (projEquiv e P)).symm
 
 /- English proof (translation)
-Establish `hs' : IsMultiHomog (ren e s) a` using `GroundTheory.Heights₂.Heights.LowerBoundFree.FlZArithVar.isMultiHomog_rename_sigma e hs`. Rewrite using `[GroundTheory.Heights₂.Heights.Targets.CurveRationalSectionSum.arInt_eq_sum hP hAa hs, GroundTheory.Heights₂.Heights.Targets.CurveRationalSectionSum.arInt_eq_sum hP' hBa hs']`. Set `F : projPts P → ℝ` to `Quot.lift (fun z : mcPts P => logNorm A s z.1) (by`. Introduce and unpack `z z' ⟨c, hc, h⟩`. Use `show logNorm A s z.1 = logNorm A s z'.1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h]`. Conclude with `(GroundTheory.Heights₂.Heights.Targets.CurveRationalSectionSum.logNorm_smul hAa hs c z.1 hc).symm)`. Set `F' : projPts (P.map (ren e)) → ℝ` to `Quot.lift (fun z : mcPts (P.map (ren e)) => logNorm B (ren e s) z.1) (by`. Introduce and unpack `z z' ⟨c, hc, h⟩`. Use `show logNorm B (ren e s) z.1 = logNorm B (ren e s) z'.1`.
+Introduce a local definition for the expression. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[h]`. Conclude with `(GroundTheory.Heights₂.Heights.Targets.CurveRationalSectionSum.logNorm_smul hBa hs' c z.1 hc).symm)`. Establish `hF : ∀ q, logNorm A s (Quot.out q : mcPts P).1 = F q` using `fun q => by conv_rhs => rw [← Quot.out_eq q]`. Establish `hF' : ∀ q, logNorm B (ren e s) (Quot.out q : mcPts (P.map (ren e))).1 = F' q` using `fun q => by conv_rhs => rw [← Quot.out_eq q]`. Simplify using `only [hF, hF']`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately.
 
-Rewrite using `[← finsum_comp_equiv (projEquiv e P)]`. Use `finsum_congr fun q => ?_` and prove the remaining obligations. Proceed by induction on `q using Quot.ind with`. Consider the case `mk z => show logNorm B (ren e s) (ptsEquiv e P z).1 = logNorm A s z.1`. Establish `hz : (ptsEquiv e P z).1 ∘ sig e = z.1`.
-
-Use function extensionality and compare the values at `p`. Conclude with `congrArg z.1 ((sig e).symm_apply_apply p)`. Unfold `logNorm`. Rewrite using `[hB _ (ptsEquiv e P z).2, eval_ren, hz]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem arInt_map (e : ∀ k, ι k ≃ Fin (n k + 1)) {P : Ideal (MRing ι)} (hP : IsArithVar P 1)
     (hP' : IsArithVar (P.map (ren e)) 1) {A : HermLine ι} {B : HermLine (blockIdx n)} {s : MRing ι}
@@ -286,9 +284,9 @@ theorem arInt_map (e : ∀ k, ι k ≃ Fin (n k + 1)) {P : Ideal (MRing ι)} (hP
     rw [hB _ (ptsEquiv e P z).2, eval_ren, hz]
 
 /- English proof (translation)
-Proceed by induction on `f using MvPolynomial.induction_on with`. Consider the case `C a => simp [mConeMap, ren_C]`. Consider the case `add p q hp hq => simp only [map_add, hp, hq]`. Consider the case `mul_X p q hp`. Rewrite using `[map_mul, map_mul, map_mul, hp]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Take `⟨k, i⟩` from `q`. Rewrite using `[ren_X]`. Simplify using `only [mConeMap, aeval_X]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem mConeMap_ren {Ω : Type} [Field Ω] (e : ∀ k, ι k ≃ Fin (n k + 1)) (y : Coord n → Ω) (f : MRing ι) :
     mConeMap (ι := blockIdx n) y (ren e f) = mConeMap (y ∘ sig e) f := by
@@ -303,7 +301,7 @@ theorem mConeMap_ren {Ω : Type} [Field Ω] (e : ∀ k, ι k ≃ Fin (n k + 1)) 
     rfl
 
 /- English proof (translation)
-Establish `h : mCoordIdeal (y ∘ sig e) = (mCoordIdeal (ι` using `blockIdx n) y).comap (ren e) := by`. Use extensionality with `f`. Simplify using `only [mCoordIdeal, RingHom.mem_ker, Ideal.mem_comap, mConeMap_ren]`. Rewrite using `[h]`. Conclude with `Ideal.map_comap_of_surjective _ (ren e).surjective _`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mCoordIdeal_ren {Ω : Type} [Field Ω] (e : ∀ k, ι k ≃ Fin (n k + 1)) (y : Coord n → Ω) :
     (mCoordIdeal (y ∘ sig e)).map (ren e) = mCoordIdeal (ι := blockIdx n) y := by
@@ -314,11 +312,11 @@ theorem mCoordIdeal_ren {Ω : Type} [Field Ω] (e : ∀ k, ι k ≃ Fin (n k + 1
   exact Ideal.map_comap_of_surjective _ (ren e).surjective _
 
 /- English proof (translation)
-Establish `key : ∀ f : MRing ι, mConeMap (fun p => j (w p)) f = MvPolynomial.map j (mConeMap w f)`. Introduce `f`. Proceed by induction on `f using MvPolynomial.induction_on with`. Consider the case `C a => simp [mConeMap]`. Consider the case `add p q hp hq => simp only [map_add, hp, hq]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `mul_X p q hp`. Rewrite using `[map_mul, map_mul, map_mul, hp]`. Simplify using `[mConeMap]`. Use extensionality with `f`. Simplify using `only [mCoordIdeal, RingHom.mem_ker, key]`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Conclude with `map_eq_zero_iff _ (MvPolynomial.map_injective j j.injective)`.
+A detailed English derivation is pending.
 -/
 theorem mCoordIdeal_ringHom {L Ω : Type} [Field L] [Field Ω] (j : L →+* Ω) (w : (Σ k, ι k) → L) :
     mCoordIdeal (fun p => j (w p)) = mCoordIdeal w := by
@@ -335,11 +333,11 @@ theorem mCoordIdeal_ringHom {L Ω : Type} [Field L] [Field Ω] (j : L →+* Ω) 
   exact map_eq_zero_iff _ (MvPolynomial.map_injective j j.injective)
 
 /- English proof (translation)
-Establish `hx : ∀ k, (fun i => w ⟨k, i⟩) ≠ 0` using `fun k => Function.ne_iff.mpr (hw k)`. Establish `hfin : ∀ C : K → ℝ, ∑ᶠ v : FinitePlace L, ∑ k, C k * Real.log (⨆ i, v (w ⟨k, i⟩)) = ∑ k, C k * ∑ᶠ v : FinitePlace L, Real.log (⨆ i, v (w ⟨k, i⟩))` using `fun C => GroundTheory.Heights₂.Heights.finsum_sum_mul _ _ fun k => GroundTheory.Heights₂.Heights.support_log_iSup_place_finite (hx k)`. Establish `harch : ∀ σ : L →+* ℂ, Real.log ((A.tensor B).h fun p => σ (w p)) = Real.log (A.h fun p => σ (w p)) + Real.log (B.h fun p => σ (w p))` using `fun σ => by`. Establish `hσ : ∀ k, ∃ i, (fun p => σ (w p)) ⟨k, i⟩ ≠ 0` using `fun k => by`. Take `⟨i, hi⟩` from `hw k`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨i, (map_ne_zero _).mpr hi⟩`. Conclude with `Real.log_mul (A.pos _ hσ).ne' (B.pos _ hσ).ne'`. Unfold `lineHt ptHt`. Rewrite using `[hfin, hfin, hfin, Finset.sum_congr rfl fun σ _ => harch σ, Finset.sum_add_distrib]`. Simplify using `only [HermLine.tensor, Pi.add_apply, Int.cast_add, add_mul, Finset.sum_add_distrib]`.
+Supply the required witnesses or components. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem lineHt_tensor (A B : HermLine ι) (L : Type) [Field L] [NumberField L] (w : (Σ k, ι k) → L)
     (hw : ∀ k, ∃ i, w ⟨k, i⟩ ≠ 0) :
@@ -361,9 +359,9 @@ theorem lineHt_tensor (A B : HermLine ι) (L : Type) [Field L] [NumberField L] (
   ring
 
 /- English proof (translation)
-Establish `hu : ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (fun z : Coord n → ℂ => z ∘ sig e)` using `contDiff_pi.2 fun p => contDiff_apply ℝ ℂ (sig e p)`. Establish `h : ContDiffOn ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (A.h ∘ fun z : Coord n → ℂ => z ∘ sig e) {z : Coord n → ℂ | ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0}`. Use `ContDiffOn.comp hA hu.contDiffOn fun z hz k => ?_` and prove the remaining obligations. Take `⟨i, hi⟩` from `hz k`. Conclude with `⟨(e k).symm i, by show z (sig e ⟨k, (e k).symm i⟩) ≠ 0`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Simplify `hi⟩` using `[sig]`. Conclude with `h`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem isSmoothHerm_pushLine (e : ∀ k, ι k ≃ Fin (n k + 1)) {A : HermLine ι} (hA : IsSmoothHerm A) :
     IsSmoothHerm (pushLine e A) := by
@@ -379,21 +377,21 @@ theorem isSmoothHerm_pushLine (e : ∀ k, ι k ≃ Fin (n k + 1)) {A : HermLine 
   exact h
 
 /- English proof (translation)
-Set `jA : L →ₐ[ℚ] AlgebraicClosure ℚ` to `j.toRatAlgHom`. Establish `hle : coordField x ≤ jA.fieldRange`. Use `IntermediateField.adjoin_le_iff.mpr ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨⟨k, i⟩, rfl⟩`. Conclude with `⟨w ⟨k, (e k).symm i⟩, (hx k i).symm⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Set `E : L ≃ₐ[ℚ] jA.fieldRange` to `AlgEquiv.ofInjectiveField jA`. Set `e0 : coordField x →+* L` to `(E.symm.toAlgHom.comp (IntermediateField.inclusion hle)).toRingHom`. Set `w' : (Σ k, ι k) → coordField x` to `fun p => coordVec x p.1 (e p.1 p.2)`. Establish `hw' : ∀ p, e0 (w' p) = w p`. Introduce and unpack `⟨k, i⟩`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Use `show E.symm (IntermediateField.inclusion hle (w' ⟨k, i⟩)) = _`. Rewrite using `[AlgEquiv.symm_apply_eq]`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show x k (e k i) = j (w ⟨k, i⟩)`. Rewrite using `[hx, Equiv.symm_apply_apply]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hnz : ∀ k, ∃ i, w' ⟨k, i⟩ ≠ 0` using `fun k => by`. Take `⟨i, hi⟩` from `hw k`. Use `⟨i, fun h => hi ?_⟩` and prove the remaining obligations. Rewrite using `[← hw', h, map_zero]`. Establish `hext` using `lineHt_map_scale K ι B (coordField x) L e0 w' (fun _ => 1) hnz fun _ => one_ne_zero`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [one_mul, hw'] at hext`. Establish `hfun : (fun p => w p) = w` using `rfl`. Rewrite `hext` using `[hfun]`. Rewrite using `[hext]`. Unfold `lineHt ptHt GroundTheory.Heights₂.Heights.height`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Use `congr 2`. Use `finsum_congr fun v => Finset.sum_congr rfl fun k _ => ?_ beta_reduce` and prove the remaining obligations. Rewrite using `[hBa]`. Use `congr 2`. Conclude with `((e k).iSup_comp (g := fun i => v (coordVec x k i))).symm`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Establish `hσ : ∀ k, ∃ i, (fun p => σ (w' p)) ⟨k, i⟩ ≠ 0` using `fun k => by`. Take `⟨i, hi⟩` from `hnz k`. Conclude with `⟨i, (map_ne_zero _).mpr hi⟩`. Use `beta_reduce`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Rewrite using `[hBh (fun p => σ (w' p)) hσ]`. Use `congr 2`. Use function extensionality and compare the values at `k i`. Simplify using `[w']`.
+A detailed English derivation is pending.
 -/
 theorem height_eq_lineHt (e : ∀ k, ι k ≃ Fin (n k + 1)) (A : GroundTheory.Heights₂.Heights.HermLine n) (B : HermLine ι)
     (hBa : ∀ k, B.a k = A.deg k)
@@ -450,13 +448,13 @@ section Recursion
 variable [DecidableEq K] [Nonempty K]
 
 /- English proof (translation)
-Establish `hdeh` using `GroundTheory.Heights₂.Heights.OrbitChartDehom.proof GroundTheory.Heights₂.Heights.OrbitChartMax.proof GroundTheory.Heights₂.Heights.OrbitChartQuot.proof K n A x (ren e s) hx hs`. Establish `hver` using `GroundTheory.Heights₂.Heights.OrbitDivVertical.proof K n A x (ren e s) hx hs`. Rewrite `hdeh`, `hver`, the goal using `[← hW]`. Unfold `recR`. Rewrite using `[harch]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Establish `hsup : W.map (ren e) ⊔ Ideal.span {ren e s} = (W ⊔ Ideal.span {s}).map (ren e)`. Rewrite using `[Ideal.map_sup, Ideal.map_span, Set.image_singleton]`. Rewrite using `[divSupp_map, finsum_mem_image (map_ringEquiv_injective (ren e)).injOn]`. Use `finsum_mem_congr rfl fun V hV => ?_` and prove the remaining obligations.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hV' : V.map (ren e) ∈ divSupp (W.map (ren e)) (ren e s)`. Rewrite using `[divSupp_map]`. Conclude with `⟨V, hV, rfl⟩`. Establish `hnh` using `hver _ hV'`. Establish `hnh' : ¬ IsHorizontal V` using `fun h => hnh ((isHorizontal_map_iff e V).2 h)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[if_neg hnh, if_neg hnh', hsup, multAt_map, charOf_map, geoNum_map e V hV.2 (fun c c' h1 h2 => (hdeh _ hV' c c' h1 h2).2)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem recR_map (e : ∀ k, ι k ≃ Fin (n k + 1)) {x : Cone n (AlgebraicClosure ℚ)} (hx : BlockNonzero x)
     {W : Ideal (MRing ι)} (hW : W.map (ren e) = orbitIdeal x) (A : GroundTheory.Heights₂.Heights.HermLine n)
@@ -489,9 +487,7 @@ theorem recR_map (e : ∀ k, ι k ≃ Fin (n k + 1)) {x : Cone n (AlgebraicClosu
 end Recursion
 
 /- English proof (translation)
-Use `open GroundTheory.Heights₂.Heights in`. Establish `hM : OrbitChartMax.Statement` using `OrbitChartMax.proof`. Use `open GroundTheory.Heights₂.Heights in`. Establish `hQ : OrbitChartQuot.Statement` using `OrbitChartQuot.proof`. Use `open GroundTheory.Heights₂.Heights in`.
-
-Establish `hIff : OrbitCenterMemIff.Statement` using `OrbitCenterMemIff.proof`. Use `open GroundTheory.Heights₂.Heights in`. Conclude with `HeightRecR.proof OrbitDivVertical.proof (OrbitFiniteSum.proof OrbitDegreeRatio.proof (OrbitLocalSum.proof OrbitChartRing.proof hM (OrbitChartResidue.proof hM hQ (OrbitChartDehom.proof hM hQ)) OrbitChartMult.proof (LocalLengthPlaces.proof LocalQuotCard.proof CentredPlacesFinite.pr …`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem heightRecR : GroundTheory.Heights₂.Heights.HeightRecR.Statement := by
   open GroundTheory.Heights₂.Heights in
@@ -513,7 +509,7 @@ theorem heightRecR : GroundTheory.Heights₂.Heights.HeightRecR.Statement := by
     (OrbitArchSum.of_conjSum OrbitConjSum.proof)
 
 /- English proof (translation)
-Rewrite using `[GroundTheory.Heights₂.Heights.Inter.mCoordIdeal_eq_ker_multiConeMap]`. Conclude with `not_iff_not.mp (by`. Simplify using `using GroundTheory.Heights₂.Heights.Inter.DiagRAux.not_mem_ker_iff_aeval_ne w f a hf)`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem mem_mCoordIdeal_iff {Ω : Type} [Field Ω] (w : (Σ k, ι k) → Ω) (f : MRing ι) (a : K → ℕ)
     (hf : IsMultiHomog f a) : f ∈ mCoordIdeal w ↔ aeval w f = 0 := by
@@ -522,7 +518,7 @@ theorem mem_mCoordIdeal_iff {Ω : Type} [Field Ω] (w : (Σ k, ι k) → Ω) (f 
     simpa using GroundTheory.Heights₂.Heights.Inter.DiagRAux.not_mem_ker_iff_aeval_ne w f a hf)
 
 /- English proof (translation)
-Establish `h : (ren e).symm g = rename (Equiv.sigmaCongrRight fun k => (e k).symm) g` using `by show (renameEquiv ℤ (sig e)).symm g = _`. Rewrite using `[renameEquiv_symm, Equiv.sigmaCongrRight_symm]`. Both sides reduce to the same expression. Rewrite using `[h]`. Conclude with `GroundTheory.Heights₂.Heights.LowerBoundFree.FlZArithVar.isMultiHomog_rename_sigma (fun k => (e k).symm) hg`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ren_symm_homog (e : ∀ k, ι k ≃ Fin (n k + 1)) {g : MRing (blockIdx n)} {a : K → ℕ}
     (hg : IsMultiHomog g a) : IsMultiHomog ((ren e).symm g) a := by
@@ -542,41 +538,35 @@ open GroundTheory.Heights₂.Heights (Cone BlockNonzero flatCone orbitIdeal bloc
 open GlobalTheory.CompanionTheory.Ar.Ht.PointCurve
 
 /- English proof (translation)
-Introduce `K _ ι _ II hII P d hP L _ _ w hw`. Take `⟨hwb, hwP⟩` from `hw`. Use `haveI : Nonempty K := hP.1`. Establish `hne : ∀ k, Nonempty (ι k)` using `fun k => (hwb k).elim fun i _ => ⟨i⟩`. Set `n : K → ℕ` to `fun k => Fintype.card (ι k) - 1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hcard : ∀ k, Fintype.card (ι k) = n k + 1` using `fun k => by`. Use `@Fintype.card_pos (ι k) _ (hne k)` as an intermediate fact. Simplify using `only [n]`. Use linear arithmetic over natural numbers and integers. Set `e : ∀ k, ι k ≃ Fin (n k + 1)` to `fun k => Fintype.equivFinOfCardEq (hcard k)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `j : L →+* AlgebraicClosure ℚ` to `(IsAlgClosed.lift : L →ₐ[ℚ] AlgebraicClosure ℚ).toRingHom`. Set `x : Cone n (AlgebraicClosure ℚ)` to `fun k i => j (w ⟨k, (e k).symm i⟩)`. Establish `hx : BlockNonzero x` using `fun k h => by`. Take `⟨i, hi⟩` from `hwb k`. Establish `h0 : j (w ⟨k, (e k).symm (e k i)⟩) = 0` using `congrFun h (e k i)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h0` using `[Equiv.symm_apply_apply, map_eq_zero]`. Conclude with `hi h0`. Establish `hWW : (mCoordIdeal w).map (ren e) = orbitIdeal x`. Establish `h1 : (flatCone x) ∘ sig e = fun p => j (w p)`. Use function extensionality and compare the values at `p`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `congrArg (fun q => j (w q)) ((sig e).symm_apply_apply p)`. Rewrite using `[orbitIdeal, ← mCoordIdeal_ren e, h1, mCoordIdeal_ringHom]`. Establish `hcurve' : IsArithVar (ι` using `blockIdx n) (orbitIdeal x) 1 := GroundTheory.Heights₂.Heights.OrbitCurve.full K n x hx`. Establish `hcurve : IsArithVar (mCoordIdeal w) 1`. Establish `h` using `GroundTheory.Heights₂.Heights.LowerBoundFree.FlZArithVar.isArithVar_comap_rename_sigma e hcurve'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `h2 : (orbitIdeal x).comap (rename (Equiv.sigmaCongrRight e) : MRing ι →ₐ[ℤ] MRing (blockIdx n)) = mCoordIdeal w`. Rewrite using `[← hWW]`. Conclude with `Ideal.comap_map_of_bijective (ren e) (ren e).bijective`. Rewrite `h` using `[h2]`. Then use the resulting hypothesis. Establish `hcurve'' : IsArithVar ((mCoordIdeal w).map (ren e)) 1` using `hWW ▸ hcurve'`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hdeg : 0 < degC (mCoordIdeal w)`. Rewrite using `[← degC_map e, hWW]`. Conclude with `GroundTheory.Heights₂.Heights.OrbitDegree.full K n x hx`. Establish `key : ∀ (C : HermLine ι) (d : K → ℕ), IsSmoothHerm C → (∀ k, C.a k = d k) → II K ι (mCoordIdeal w) (0 + 1) (Fin.snoc (Fin.elim0 : Fin 0 → HermLine ι) C) = degC (mCoordIdeal w) * lineHt C L w`. Introduce `C d hC hd`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `A' : GroundTheory.Heights₂.Heights.HermLine n` to `GroundTheory.Heights₂.Heights.HermLine.ofGeo (pushLine e C) (isSmoothHerm_pushLine e hC)`. Take `⟨c, hc⟩` from `GroundTheory.Heights₂.Heights.exists_chart hx`. Establish `hdA : ∀ k, A'.deg k = d k` using `hd`. Establish `hren : ren e ((ren e).symm (chartMonomial c d)) = chartMonomial c d` using `(ren e).apply_symm_apply _`. Establish `hsec : IsSectionOn (orbitIdeal x) A'.toGeo (ren e ((ren e).symm (chartMonomial c d)))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hren]`. Conclude with `GroundTheory.Heights₂.Heights.isSectionOn_chartMonomial A' x c hc d hdA`. Establish `hsd : IsMultiHomog ((ren e).symm (chartMonomial c d)) d` using `ren_symm_homog e ((GroundTheory.Heights₂.Heights.geoMultiHomog_iff _ d).mpr (GroundTheory.Heights₂.Heights.isWeightedHomogeneous_chartMonomial c d))`. Establish `hsW : (ren e).symm (chartMonomial c d) ∉ mCoordIdeal w` using `fun h => GroundTheory.Heights₂.Heights.chartMonomial_notMem_orbitIdeal x c hc d (by`. Rewrite using `[← hren, ← hWW]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Ideal.mem_map_of_mem _ h)`. Take `⟨-, -, hR⟩` from `hII K ι`. Establish `h1` using `hR (mCoordIdeal w) 0 Fin.elim0 C _ d hcurve (fun j => j.elim0) hC hd hsd hsW`. Establish `harch` using `arInt_map e hcurve hcurve'' (B := A'.toGeo) hd hd hsd fun z hz => by`. Establish `hzb : BlockNonzero (GroundTheory.Heights₂.Heights.unflatCone z)` using `(GroundTheory.Heights₂.Heights.blockNonzero_unflatCone_iff z).mpr hz.1`.
+Establish an intermediate fact. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `GroundTheory.Heights₂.Heights.HermLine.toGeo_ofGeo_h _ _ hzb`. Establish `h2` using `recR_map e hx hWW A' C _ hsec harch (II K ι) fun _ _ _ => 0`. Establish `h3` using `heightRecR K n (fun _ _ _ => 0) A' x _ hx hsec`. Establish `h4` using `height_eq_lineHt e A' C (fun _ => rfl) (fun z _ => by show C.h z = C.h _`. Use `congr 1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations.
 
-Use function extensionality and compare the values at `p`. Conclude with `congrArg z ((sig e).symm_apply_apply p).symm) L j w hwb x fun _ _ => rfl`. Establish `h5` using `degC_map e (mCoordIdeal w)`. Rewrite using `[h1, ← h2, h3, ← hWW, h5, h4]`. Establish `hsnoc : ∀ B : HermLine ι, (Fin.snoc (Fin.elim0 : Fin 0 → HermLine ι) B : Fin 1 → _) = ![B]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components.
 
-Introduce `B`. Use function extensionality and compare the values at `i`. Use `fin_cases i`. Both sides reduce to the same expression. Use `⟨hcurve, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Take `⟨S, hS, hPS⟩` from `hP.2.1.2.1`. Rewrite using `[hPS, Ideal.span_le]`. Introduce `f hf`. Take `⟨a, ha⟩` from `hS f hf`. Conclude with `(mem_mCoordIdeal_iff w f a ha).2 (hwP f (hPS ▸ Ideal.subset_span hf))`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce and unpack `f ⟨a, ha⟩`. Conclude with `mem_mCoordIdeal_iff w f a ha`. Introduce `A hA`. Set `m : K → ℕ` to `fun k => (A.a k).natAbs`. Establish `hS` using `isSmoothHerm_sqMetric (ι := ι) m`.
-
-Establish `hAS` using `key (A.tensor (HermLine.sqMetric m)) (fun k => (A.a k + m k).toNat) (isSmoothHerm_tensor hA hS) fun k => by show A.a k + (m k : ℤ) = _`. Simplify using `only [m]`. Use linear arithmetic over natural numbers and integers. Establish `hSS` using `key (HermLine.sqMetric m) m hS fun _ => rfl`. Take `⟨-, hAdd, -⟩` from `hII K ι`.
-
-Establish `hadd` using `hAdd (mCoordIdeal w) 0 Fin.elim0 A (HermLine.sqMetric m) hcurve (fun j => j.elim0) hA hS`. Establish `hten` using `lineHt_tensor A (HermLine.sqMetric m) L w hwb`. Rewrite `hadd` using `[hAS, hSS, hsnoc A, hten]`. Establish `hpos : (0 : ℝ) < degC (mCoordIdeal w)` using `by exact_mod_cast hdeg`. Rewrite using `[div_eq_iff hpos.ne']`.
-
-Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem pointCurve_height : ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] (II : IntersectionSystem), IsIntersectionSystem II → ∀ (P : Ideal (MRing ι)) (d : ℕ), IsArithVar P d → ∀ (L : Type) [Field L] [NumberField L], ∀ w ∈ ptsOver L P, IsArithVar (mCoordIdeal w) 1 ∧ P ≤ mCoordIdeal w ∧ (∀ f : MRing ι, (∃ a, IsMultiHomog f a) → (f ∈ mCoordIdeal w ↔ aeval w f = 0)) ∧ ∀ A : HermLine ι, IsSmoothHerm A → II K ι (mCoordIdeal w) 1 ![A] / (degC (mCoordIdeal w) : ℝ) = lineHt A L w := by
   intro K _ ι _ II hII P d hP L _ _ w hw

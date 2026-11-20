@@ -13,7 +13,7 @@ instance : AddCommGroup (FrobTw K p W) := inferInstanceAs (AddCommGroup W)
 instance : Module K (FrobTw K p W) := @Module.compHom K K W _ _ _ _ (frobenius K p)
 
 /- English proof (translation)
-Use `show (frobenius K p c) • (show W from x) = _`. Rewrite using `[frobenius_def]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem frobTw_smul (c : K) (x : FrobTw K p W) :
     c • x = ((c ^ p • (show W from x) : W) : FrobTw K p W) := by
@@ -23,11 +23,9 @@ theorem frobTw_smul (c : K) (x : FrobTw K p W) :
 end
 
 /- English proof (translation)
-Introduce `K _ V _ _ W _ _ p _ _ g hadd hsmul halt`. Set `f : ∀ a : ℕ, V [⋀^Fin a]→ₗ[K] FrobTw K p W` to `fun a => { toFun := fun v => (g a v : FrobTw K p W) map_update_add' := fun m i x y => by`. Take `rfl : ‹DecidableEq (Fin a)› = instDecidableEqFin a` from `Subsingleton.elim _ _`. Conclude with `hadd a m i x y`. Use the proof step `map_update_smul' := fun m i c x => by`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `rfl : ‹DecidableEq (Fin a)› = instDecidableEqFin a` from `Subsingleton.elim _ _`. Conclude with `(hsmul a m i c x).trans (frobTw_smul K p W c (g a (Function.update m i x))).symm`. Use the proof step `map_eq_zero_of_eq' := fun v i j h hij => halt a v i j hij h }`. Use `⟨(ExteriorAlgebra.liftAlternating (R := K) (M := V) (N := FrobTw K p W) f).toAddMonoidHom, ?_⟩` and prove the remaining obligations. Introduce `c a v`.
-
-Use `show (ExteriorAlgebra.liftAlternating (R := K) (M := V) (N := FrobTw K p W) f) (c • ExteriorAlgebra.ιMulti K a v) = _`. Rewrite using `[LinearMap.map_smul, ExteriorAlgebra.liftAlternating_apply_ιMulti, frobTw_smul]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem main : ∀ {K : Type} [CommRing K] {V : Type} [AddCommGroup V] [Module K V] {W : Type} [AddCommGroup W] [Module K W] (p : ℕ) [Fact p.Prime] [CharP K p] (g : ∀ a : ℕ, (Fin a → V) → W), (∀ a v k x y, g a (Function.update v k (x + y)) = g a (Function.update v k x) + g a (Function.update v k y)) → (∀ a v k (c : K) x, g a (Function.update v k (c • x)) = c ^ p • g a (Function.update v k x)) → (∀ a v k l, k ≠ l → v k = v l → g a v = 0) → ∃ Φ : ExteriorAlgebra K V →+ W, ∀ (c : K) (a : ℕ) (v : Fin a → V), Φ (c • ExteriorAlgebra.ιMulti K a v) = c ^ p • g a v := by
   intro K _ V _ _ W _ _ p _ _ g hadd hsmul halt

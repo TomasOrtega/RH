@@ -14,7 +14,7 @@ open PositivityTheory.SiegelWeilFormula
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert j s hj ih => rw [Finset.sum_insert hj, Finset.prod_insert hj, AddChar.map_add_eq_mul, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem lin_addChar_sum {A : Type} [AddCommMonoid A] (ψ : AddChar A ℂ) {ι : Type} (s : Finset ι) (f : ι → A) :
     ψ (∑ i ∈ s, f i) = ∏ i ∈ s, ψ (f i) := by
@@ -24,7 +24,7 @@ theorem lin_addChar_sum {A : Type} [AddCommMonoid A] (ψ : AddChar A ℂ) {ι : 
   | insert j s hj ih => rw [Finset.sum_insert hj, Finset.prod_insert hj, AddChar.map_add_eq_mul, ih]
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using holValueAt_const 0 s₀`. Consider the case `insert j s hj ih`. Simplify using `only [Finset.sum_insert hj]`. Conclude with `((holValueAt_const (c j) s₀).mul (hh j (Finset.mem_insert_self j s))).add (ih fun i hi => hh i (Finset.mem_insert_of_mem hi))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem lin_holValueAt_sum {ι : Type} (s : Finset ι) (c : ι → ℂ) (h : ι → ℂ → ℂ) (v : ι → ℂ) (s₀ : ℂ)
     (hh : ∀ i ∈ s, HolValueAt (h i) s₀ (v i)) :
@@ -58,38 +58,38 @@ Both sides reduce to the same expression.
 theorem lin_T_eq (Φ : d.Fn) (X : Mx F E d.m d.n) : d.T Φ X = d.l (linRhoL d X Φ) := rfl
 
 /- English proof (translation)
-Simplify using `only [lin_T_eq, map_sum, map_smul, smul_eq_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem lin_T_sum {ι : Type} (s : Finset ι) (c : ι → ℂ) (Φs : ι → d.Fn) (X : Mx F E d.m d.n) :
     d.T (∑ i ∈ s, c i • Φs i) X = ∑ i ∈ s, c i * d.T (Φs i) X := by
   simp only [lin_T_eq, map_sum, map_smul, smul_eq_mul]
 
 /- English proof (translation)
-Simplify using `only [SD.sec0, map_sum, map_smul, smul_eq_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem section_linear_finset_sum {ι : Type} (s : Finset ι) (c : ι → ℂ) (Φs : ι → d.Fn) (x : d.G) :
     d.sec0 (∑ i ∈ s, c i • Φs i) x = ∑ i ∈ s, c i * d.sec0 (Φs i) x := by
   simp only [SD.sec0, map_sum, map_smul, smul_eq_mul]
 
 /- English proof (translation)
-The claim follows from `d.ok.dbl.weil.2.1.pres x Φ h`.
+A detailed English derivation is pending.
 -/
 theorem lin_om_mem (x : d.G) {Φ : d.Fn} (h : Φ ∈ d.sch) : d.om x Φ ∈ d.sch := d.ok.dbl.weil.2.1.pres x Φ h
 
 /- English proof (translation)
-The claim follows from `d.ok.dbl.lin.pres g Φ h`.
+A detailed English derivation is pending.
 -/
 theorem lin_S_mem (g : UA σ d.A.J) {Φ : d.Fn} (h : Φ ∈ d.sch) : d.S g Φ ∈ d.sch := d.ok.dbl.lin.pres g Φ h
 
 /- English proof (translation)
-The claim follows from `Submodule.sum_mem _ fun i hi => Submodule.smul_mem _ _ (h i hi)`.
+A detailed English derivation is pending.
 -/
 theorem lin_sum_mem {ι : Type} (s : Finset ι) (c : ι → ℂ) (Φs : ι → d.Fn) (h : ∀ i ∈ s, Φs i ∈ d.sch) :
     ∑ i ∈ s, c i • Φs i ∈ d.sch :=
   Submodule.sum_mem _ fun i hi => Submodule.smul_mem _ _ (h i hi)
 
 /- English proof (translation)
-Establish `h1` using `(hT F E σ d _ (lin_sum_mem d s c Φs h)).1`. Establish `h2 : HasSum (fun X : Matrix (Fin d.m) (Fin d.n) E => ∑ i ∈ s, c i * d.T (Φs i) (incM F X)) (∑ i ∈ s, c i * thetaSum F (Φs i))` using `hasSum_sum fun i hi => ((hT F E σ d _ (h i hi)).1).mul_left (c i)`. Simplify using `only [lin_T_sum] at h1`. Conclude with `h1.unique h2`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem lin_thetaSum_sum (hT : TTheta) {ι : Type} (s : Finset ι) (c : ι → ℂ) (Φs : ι → d.Fn) (h : ∀ i ∈ s, Φs i ∈ d.sch) :
     thetaSum F (∑ i ∈ s, c i • Φs i) = ∑ i ∈ s, c i * thetaSum F (Φs i) := by
@@ -101,11 +101,9 @@ theorem lin_thetaSum_sum (hT : TTheta) {ι : Type} (s : Finset ι) (c : ι → �
   exact h1.unique h2
 
 /- English proof (translation)
-Establish `e : ∀ g : UA σ d.A.J, thetaSum F (d.om x (d.S g (∑ i ∈ s, c i • Φs i))) = ∑ i ∈ s, c i * thetaSum F (d.om x (d.S g (Φs i)))`. Introduce `g`. Rewrite using `[map_sum, map_sum]`. Simplify using `only [map_smul]`. Conclude with `lin_thetaSum_sum d hT s c (fun i => d.om x (d.S g (Φs i))) fun i hi => lin_om_mem d x (lin_S_mem d g (h i hi))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hint : ∀ i ∈ s, IntegrableOn (fun g => thetaSum F (d.om x (d.S g (Φs i)))) d.D d.μ` using `fun i hi => ((hA F E σ d).2.2 _ (h i hi)).1 x`. Use `show ⨍ g in d.D, thetaSum F (d.om x (d.S g (∑ i ∈ s, c i • Φs i))) ∂d.μ = ∑ i ∈ s, c i * ⨍ g in d.D, thetaSum F (d.om x (d.S g (Φs i))) ∂d.μ`. Simplify using `only [e, setAverage_eq]`. Rewrite using `[integral_finsetSum s fun i hi => (hint i hi).const_mul (c i), Finset.smul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
-
-Rewrite using `[integral_const_mul, mul_smul_comm]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lin_I_sum (hT : TTheta) (hA : ThetaAuto) {ι : Type} (s : Finset ι) (c : ι → ℂ) (Φs : ι → d.Fn)
     (h : ∀ i ∈ s, Φs i ∈ d.sch) (x : d.G) : d.I (∑ i ∈ s, c i • Φs i) x = ∑ i ∈ s, c i * d.I (Φs i) x := by
@@ -127,9 +125,9 @@ theorem lin_I_sum (hT : TTheta) (hA : ThetaAuto) {ι : Type} (s : Finset ι) (c 
 end SDl
 
 /- English proof (translation)
-Establish `key : ∀ β : nA σ d.Y d.b, d.B.ψ (-d.tt (M * β.1)) = ∏ i, ∏ k, d.B.ψ (-(Algebra.trace (AF F) (AE F E) (M i k * β.1 k i)))`. Introduce `β`. Simplify using `only [SD.tt, Matrix.trace, Matrix.diag, Matrix.mul_apply, map_sum, ← Finset.sum_neg_distrib, lin_addChar_sum]`. Rewrite using `[show (fun β : nA σ d.Y d.b => d.B.ψ (-d.tt (M * β.1))) = fun β => ∏ i, ∏ k, d.B.ψ (-(Algebra.trace (AF F) (AE F E) (M i k * β.1 k i))) from funext key]`. Establish `: OpensMeasurableSpace (AE F E)` using `⟨le_rfl⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `Finset.measurable_prod _ fun i _ => Finset.measurable_prod _ fun k _ => ?_` and prove the remaining obligations. Establish `hc : Continuous fun y : AE F E => d.B.ψ (-(Algebra.trace (AF F) (AE F E) (M i k * y)))` using `d.ok.good.std.1.comp (IsModuleTopology.continuous_of_linearMap ((Algebra.trace (AF F) (AE F E)).comp (LinearMap.mulLeft (AF F) (M i k)))).neg`. Conclude with `hc.measurable.comp ((measurable_pi_apply i).comp ((measurable_pi_apply k).comp measurable_subtype_coe))`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem lin_psi_meas (d : SD σ) (M : Mx F E d.n d.n) :
     Measurable (fun β : nA σ d.Y d.b => d.B.ψ (-d.tt (M * β.1))) := by
@@ -147,13 +145,13 @@ theorem lin_psi_meas (d : SD σ) (M : Mx F E d.n d.n) :
   exact hc.measurable.comp ((measurable_pi_apply i).comp ((measurable_pi_apply k).comp measurable_subtype_coe))
 
 /- English proof (translation)
-Take `⟨hlin, -⟩` from `hLB F E σ d (fun f => fc d.B.ψ d.b nb lam 𝓖 f T x) ⟨nb, lam, 𝓖, T, x, hcd, hND, rfl⟩`. Establish `hfun : ∀ s : Finset ι, (∑ i ∈ s, c i • f i) = fun a => ∑ i ∈ s, c i * f i a`. Introduce `s`. Use function extensionality and compare the values at `a`. Simplify using `[Finset.sum_apply]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Establish `hcs : ∀ s : Finset ι, Continuous (∑ i ∈ s, c i • f i)`. Introduce `s`. Rewrite using `[hfun s]`. Conclude with `continuous_finset_sum s fun i _ => continuous_const.mul (hc i)`. Establish `his : ∀ s : Finset ι, ∀ γ ∈ rat2 σ d.Y, ∀ g, (∑ i ∈ s, c i • f i) (γ * g) = (∑ i ∈ s, c i • f i) g`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `s γ hγ g; rw [hfun s]; exact Finset.sum_congr rfl fun i _ => by rw [hi i γ hγ g]`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Establish `h0` using `hlin 1 0 0 continuous_const continuous_const (fun _ _ _ => rfl) (fun _ _ _ => rfl)`. Simplify using `only [one_smul, add_zero, one_mul] at h0`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using h0`. Consider the case `insert j s hj ih`. Rewrite using `[Finset.sum_insert hj, Finset.sum_insert hj, hlin (c j) (f j) _ (hc j) (hcs s) (hi j) (his s), ih]`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lin_fc_sum (hLB : LamBd) (d : SD σ) {nb lam 𝓖} (hcd : CoefData (σ := σ) (Y := d.Y) d.b nb lam 𝓖)
     (T : nF σ d.Y d.b) (hND : IsND T) (x : d.G) {ι : Type} (s : Finset ι) (c : ι → ℂ) (f : ι → d.G → ℂ)

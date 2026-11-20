@@ -11,33 +11,29 @@ noncomputable section
 namespace GlobalTheory.TwU
 
 /- English proof (translation)
-Introduce `D P W Qq _ _ _ _ _ _ p hp ρ hA h1 k k' N N' a b hNa hNb`. Establish `hsc : ∀ (c : D.host.E) (M : Matrix (Fin k') (Fin k) D.host.E), (∃ y : W, ρ c = algebraMap W Qq y) → M.map ρ ∈ homLat W (colSpan W a) (colSpan W b) → (c • M).map ρ ∈ homLat W (colSpan W a) (colSpan W b)`. Introduce and unpack `c M ⟨y, hy⟩ hM z hz`. Establish `e : (c • M).map ρ = y • M.map ρ`. Use extensionality with `i j`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `[Matrix.map_apply, map_mul, hy, Algebra.smul_def]`. Rewrite using `[e, Matrix.smul_mulVec]`. Conclude with `(colSpan W b).smul_mem y (hM z hz)`. Establish `hO : ∀ c : 𝓞 D.host.E, ∃ y : W, ρ (c : D.host.E) = algebraMap W Qq y` using `fun c => (h1 c).imp fun y hy => hy.1`. Establish `hAA : ∀ x ∈ (D.host.AA0 : Submodule (𝓞 D.host.E) D.host.E), ∃ y : W, ρ x = algebraMap W Qq y`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x hx`. Establish `hx' : x ∈ Formalism.HermitianLatticesTheory.localization₂ P.asIdeal (D.host.AA0 : Submodule (𝓞 D.host.E) D.host.E)` using `⟨1, P.asIdeal.primeCompl.one_mem, by simpa using hx⟩`. Rewrite `hx'` using `[hA]`. Take `⟨s, hs, hsx⟩` from `hx'`. Take `⟨t, ht⟩` from `Submodule.mem_one.1 hsx`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨ys, hys, hsP⟩` from `h1 s`. Take `⟨yt, hyt⟩` from `hO t`. Establish `hu : IsUnit ys`. Establish `hmax : IsLocalRing.maximalIdeal W = Ideal.span {(p : W)}` using `(IsDiscreteValuationRing.irreducible_iff_uniformizer _).1 hp`. Assume the negation of the conclusion as `hn`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `: ys ∈ IsLocalRing.maximalIdeal W` using `(IsLocalRing.mem_maximalIdeal ys).2 hn`. Rewrite `this` using `[hmax, Ideal.mem_span_singleton]`. Conclude with `hs (hsP.2 this)`. Use `⟨hu.unit⁻¹ * yt, ?_⟩` and prove the remaining obligations. Establish `e1 : ρ (algebraMap (𝓞 D.host.E) D.host.E t) = ρ (s : D.host.E) * ρ x`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[ht, Algebra.smul_def, map_mul]`. Establish `e2 : algebraMap W Qq ys ≠ 0`. Rewrite using `[Ne, map_eq_zero_iff _ (IsFractionRing.injective W Qq)]`. Conclude with `hu.ne_zero`. Rewrite using `[map_mul, ← hyt]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `_ = _ * ρ (t : D.host.E)`. Rewrite using `[show ((t : D.host.E)) = algebraMap (𝓞 D.host.E) D.host.E t from rfl, e1, hys, ← mul_assoc, ← map_mul, IsUnit.val_inv_mul, map_one, one_mul]`. Establish `hHom : ∀ A ∈ TaylorLogMetric.homL D N N', A.map ρ ∈ homLat W (colSpan W a) (colSpan W b)`. Introduce `A hA'`. Proceed by induction on `hA' using Submodule.span_induction with`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Consider the case `mem A hA0`. Introduce `z hz`. Rewrite `hz` using `[← hNa]`. Rewrite using `[← hNb]`. Proceed by induction on `hz using Submodule.span_induction with`.
+Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Consider the case `mem z hz0`. Take `⟨x, hx, rfl⟩` from `hz0`. Use `Submodule.subset_span ⟨A *ᵥ x, hA0 x hx, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Simplify using `[Matrix.mulVec, dotProduct, Matrix.map_apply, map_sum, map_mul]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `zero => rw [Matrix.mulVec_zero]`. Conclude with `Submodule.zero_mem _`. Consider the case `add z z' _ _ hz hz' => rw [Matrix.mulVec_add]`. Conclude with `Submodule.add_mem _ hz hz'`. Consider the case `smul c z _ hz => rw [Matrix.mulVec_smul]`.
+Treat this case separately. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Conclude with `Submodule.smul_mem _ c hz`. Consider the case `zero => rw [Matrix.map_zero _ (map_zero ρ)]`. Conclude with `Submodule.zero_mem _`. Consider the case `add A B _ _ hA hB => rw [Matrix.map_add _ (map_add ρ)]`. Conclude with `Submodule.add_mem _ hA hB`.
+Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `smul c A _ hA => exact hsc (c : D.host.E) A (hO c) hA`. Introduce `A hA'`. Proceed by induction on `hA' using Submodule.span_induction with`. Consider the case `mem B hB`. Take `⟨c, hc, A, hA0, rfl⟩` from `hB`.
-
-Conclude with `hsc c A (hAA c hc) (hHom A hA0)`. Consider the case `zero => rw [Matrix.map_zero _ (map_zero ρ)]`. Conclude with `Submodule.zero_mem _`. Consider the case `add A B _ _ hA hB => rw [Matrix.map_add _ (map_add ρ)]`. Conclude with `Submodule.add_mem _ hA hB`.
-
-Consider the case `smul c A _ hA => exact hsc (c : D.host.E) A (hO c) hA`.
+A detailed English derivation is pending.
 -/
 theorem map_mem_homLat_of_mem_YYl : ∀ (D : D7) (P : HeightOneSpectrum (𝓞 D.host.E)) {W Qq : Type} [CommRing W] [IsDomain W] [IsDiscreteValuationRing W] [Field Qq] [Algebra W Qq] [IsFractionRing W Qq] (p : ℕ) (hp : Irreducible (p : W)) (ρ : D.host.E →+* Qq) (hA : Formalism.HermitianLatticesTheory.localization₂ P.asIdeal (D.host.AA0 : Submodule (𝓞 D.host.E) D.host.E) = Formalism.HermitianLatticesTheory.localization₂ P.asIdeal (1 : Submodule (𝓞 D.host.E) D.host.E)) (h1 : ∀ x : 𝓞 D.host.E, ∃ y : W, ρ x = algebraMap W Qq y ∧ (x ∈ P.asIdeal ↔ (p : W) ∣ y)) {k k' : ℕ} (N : Submodule (𝓞 D.host.E) (Fin k → D.host.E)) (N' : Submodule (𝓞 D.host.E) (Fin k' → D.host.E)) (a : Matrix (Fin k) (Fin k) Qq) (b : Matrix (Fin k') (Fin k') Qq) (hNa : Submodule.span W ((fun x i => ρ (x i)) '' (N : Set (Fin k → D.host.E))) = colSpan W a) (hNb : Submodule.span W ((fun x i => ρ (x i)) '' (N' : Set (Fin k' → D.host.E))) = colSpan W b), ∀ A ∈ TaylorLogMetric.YYl D N N', A.map ρ ∈ homLat W (colSpan W a) (colSpan W b) := by
   intro D P W Qq _ _ _ _ _ _ p hp ρ hA h1 k k' N N' a b hNa hNb

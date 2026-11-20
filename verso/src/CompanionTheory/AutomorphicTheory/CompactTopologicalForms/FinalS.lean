@@ -17,15 +17,13 @@ def NFTopDomAllJ : Prop :=
       NFTopDom p χ (TBBx4.fpm p f (fun _ => ContinuousLinearMap.id ℂ Wq) p₀) w
 
 /- English proof (translation)
-Introduce `Cb`. Take `⟨C1, C₁, H1⟩` from `hP Cb`. Take `⟨C2, H2⟩` from `hL Cb C₁`. Take `⟨C3, H3⟩` from `hM Cb`. Use `⟨max C1 (max C2 C3), ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `Wp Wq _ _ _ _ _ _ P p f A₀ p₀ χ Y N hH hJ w hw hN`. Establish `mono : ∀ c, c ≤ max C1 (max C2 C3) → NFHyp Cb c p f A₀ p₀ χ N` using `fun c hc => by`. Take `⟨a1, a2, a3, a4, a5, a6⟩` from `hH`. Use `⟨a1, a2, a3, a4, le_trans ?_ a5, a6⟩` and prove the remaining obligations. Establish `hX : 0 ≤ ((P.r : ℝ) + 1) ^ 4 * ((N : ℝ) * (2 * (P.r : ℝ) + P.k + 1) ^ 2 + (2 * (P.r : ℝ) + P.k + 1) ^ 3)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Check the signs of the components of the expression. Establish `e : ∀ x : ℝ, x * ((P.r : ℝ) + 1) ^ 4 * ((N : ℝ) * (2 * (P.r : ℝ) + P.k + 1) ^ 2 + (2 * (P.r : ℝ) + P.k + 1) ^ 3) = x * (((P.r : ℝ) + 1) ^ 4 * ((N : ℝ) * (2 * (P.r : ℝ) + P.k + 1) ^ 2 + (2 * (P.r : ℝ) + P.k + 1) ^ 3))` using `fun x => by ring`. Rewrite using `[e, e]`. Conclude with `mul_le_mul_of_nonneg_right hc hX`. Take `⟨m, Th, Mb, hMb, hok, hb⟩` from `H1 Wp Wq P p p₀ χ Y N w hw hN`.
+Check the signs of the components of the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hb` using `hb f A₀ (mono C1 (le_max_left _ _)) hJ`. Use `⟨eventually_nhdsWithin_of_forall fun ε hε => H3 Wp Wq P p f A₀ p₀ χ Y N (mono C3 (le_trans (le_max_right _ _) (le_max_right _ _))) w hw hN ε hε, fun c => Mb * ∑ t, ‖TBB.Gp p (TBB.bigPt P.r c)‖ ^ (2 * p₀ - N) * TBB.Ew p (fun _ => 1) (B.opApply (Th t) f) (P.r + 1) [] (TBB.bigPt P.r …` and prove the remaining obligations. Conclude with `(integrable_finsetSum Finset.univ fun t _ => H2 Wp Wq P p f A₀ p₀ χ N (mono C2 (le_trans (le_max_left _ _) (le_max_right _ _))) (Th t) (hok t)).const_mul Mb`. Use `eventually_nhdsWithin_of_forall fun ε hε => ae_of_all _ fun c => ?_` and prove the remaining obligations. Distinguish the cases in `hc : D.IsLocPt (TBB.bigPt P.r c) (P.r + 1) ∧ 0 < TBB.Gp p (TBB.bigPt P.r c)`.
-
-Conclude with `hb ε hε c hc.1 hc.2`. Rewrite using `[hZ Wp Wq P p _ w c hc, norm_zero]`. Conclude with `mul_nonneg hMb (Finset.sum_nonneg fun t _ => mul_nonneg (pow_nonneg (norm_nonneg _) _) (TBBx4.ew_nonneg p _ _))`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nfTopDomAllJ_of_cut (hZ : NFDomZero) (hP : NFDomPtwS) (hL : DominatedL2OperatorBound) (hM : NFDomMeas) : NFTopDomAllJ := by
   intro Cb
@@ -60,14 +58,14 @@ theorem nfTopDomAllJ_of_cut (hZ : NFDomZero) (hP : NFDomPtwS) (hL : DominatedL2O
         mul_nonneg (pow_nonneg (norm_nonneg _) _) (TBBx4.ew_nonneg p _ _))
 
 /- English proof (translation)
-The claim follows from `nfTopDomAllJ_of_cut domination_at_zero_holds (nfDomPtwS_of_open leibniz_vector_estimate_holds (nFCoreNS_of_open leibniz_vector_estimate_holds hT hH)) dominated_L2_operator_bound_holds domination_measurability_holds`.
+A detailed English derivation is pending.
 -/
 theorem nfTopDomAllJ_of_open (hT : NFTieHatS) (hH : NFHatProdKBS) : NFTopDomAllJ :=
   nfTopDomAllJ_of_cut domination_at_zero_holds (nfDomPtwS_of_open leibniz_vector_estimate_holds (nFCoreNS_of_open leibniz_vector_estimate_holds hT hH))
     dominated_L2_operator_bound_holds domination_measurability_holds
 
 /- English proof (translation)
-Introduce `_ hε n` and use `block_growth_bound_of_compact_coefCpt hA p nn _ Y K N Cb hCb (cptCoef_apx P p.T.base hχ hF hε n) hnn`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem blockGrowthBound_apx_cutF (hA : P5.ThmPActualCpt) {P : M.Par} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp]
     [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq]
@@ -80,11 +78,11 @@ theorem blockGrowthBound_apx_cutF (hA : P5.ThmPActualCpt) {P : M.Par} {Wp Wq : T
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace in
 
 /- English proof (translation)
-Take `⟨C1, H1⟩` from `CompanionTheory.NFCpt.top_form_all_compact hA Cb`. Take `⟨C2, H2⟩` from `top_pointwise_all_levels_holds Cb`. Take `⟨C3, H3⟩` from `h3 Cb`. Use `⟨max (max C1 C2) (max C3 100), ?_⟩` and prove the remaining obligations. Introduce `Wp Wq _ _ _ _ _ _ P p f A₀ p₀ χ Y N hH hJ w hw hN`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `m1 : C1 ≤ max (max C1 C2) (max C3 100)` using `le_max_of_le_left (le_max_left _ _)`. Establish `m2 : C2 ≤ max (max C1 C2) (max C3 100)` using `le_max_of_le_left (le_max_right _ _)`. Establish `m3 : C3 ≤ max (max C1 C2) (max C3 100)` using `le_max_of_le_right (le_max_left _ _)`. Establish `m4 : 100 ≤ max (max C1 C2) (max C3 100)` using `le_max_of_le_right (le_max_right _ _)`. Establish `hid : B.CkOn ⊤ (B.GV P.k P.r) (fun _ : B.Mat P.k P.r => ContinuousLinearMap.id ℂ Wq)` using `fun g₀ _ => ⟨Set.univ, fun _ => ContinuousLinearMap.id ℂ Wq, isOpen_univ, trivial, contDiffOn_const, fun _ _ _ => rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hL` using `fun (χ' : ℝ → ℝ) (hχ' : C6.IsCut0 χ') => CompanionTheory.BpCpt.NFId.lim_top p (H1 Wp Wq P p f A₀ p₀ χ' Y N (CompanionTheory.BpCpt.NFId.nfHyp_mono hH m1 hχ') w hw hN) (H2 Wp Wq P p f A₀ p₀ χ' Y N (CompanionTheory.BpCpt.NFId.nfHyp_mono hH m2 hχ') w hw hN) (H3 Wp Wq P p f A₀ p₀ χ' Y …`. Establish `hId` using `CompanionTheory.BpCpt.NFId.nfTopId_of_lim p hH.1 (ckOn_fpm p p₀ hH.2.2.1 hid) (inCC_fpm_id p p₀ hH.2.2.2.1) hw.1 (CutMP.ER.bound_aux P.r P.k w.length N _ hN (CompanionTheory.BpCpt.NFId.nfHyp_mono hH m4 hH.1).2.2.2.2.1) hL`. Unfold `NFTopId at hId`. Rewrite using `[← hId]`. Conclude with `hL χ hH.1`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem limEvT_J (hA : P5.ThmPActualCpt) (h3 : NFTopDomAllJ) (Cb : ℝ) : ∃ Cc : ℝ, ∀ (Wp Wq : Type) [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
     [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq] (P : M.Par) (p : KB.Pl P Wp Wq)
@@ -115,9 +113,9 @@ theorem limEvT_J (hA : P5.ThmPActualCpt) (h3 : NFTopDomAllJ) (Cb : ℝ) : ∃ Cc
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace in
 
 /- English proof (translation)
-Establish `hA : P5.ThmPActualCpt` using `CutSE.actual_compact_theorem`. Take `⟨C₄, c₃, Cc, Cc', h⟩` from `thmBpAt_main2Cpt hA Cb C₃ CΛ C₀ hC₃ hCΛ hC₀`. Take `⟨Cn, hn⟩` from `limEvT_J hA h3 Cb`. Use `⟨C₄, c₃, Cc, Cc', Cn, ?_⟩` and prove the remaining obligations. Introduce `Wp Wq _ _ _ _ _ _ P p f b Λ A₀ p₀ χ nn Y K N hb hΛ hΛb hT hp₀ hK hKN hχ hnn hCb hf hfA hJ hth1 hth2 hth3 hth4 hN2 hexp hWG hLG hBd`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hid : B.CkOn ⊤ (B.GV P.k P.r) (fun _ : B.Mat P.k P.r => ContinuousLinearMap.id ℂ Wq)` using `fun g₀ _ => ⟨Set.univ, fun _ => ContinuousLinearMap.id ℂ Wq, isOpen_univ, trivial, contDiffOn_const, fun _ _ _ => rfl⟩`. Conclude with `h Wp Wq P p f b Λ A₀ p₀ χ nn Y K N hb hΛ hΛb hT hp₀ hK hKN hχ hnn hCb hf hfA hth1 hth2 hth3 hexp hWG hLG (blockGrowthBound_apx_cutF hA p nn χ _ Y K N Cb hCb hχ (ckOn_fpm p p₀ hf hid) hnn) (hn Wp Wq P p f A₀ p₀ χ Y N ⟨hχ, hCb, hf, hfA, hth4, hN2⟩ hJ) hBd`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem thmBpAt_J (h3 : NFTopDomAllJ)
     (Cb C₃ CΛ C₀ : ℝ) (hC₃ : 0 ≤ C₃) (hCΛ : 0 ≤ CΛ) (hC₀ : 1 / 2 ≤ C₀) :
@@ -168,13 +166,11 @@ noncomputable section
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace in
 
 /- English proof (translation)
-Establish `hA : P5.ThmPActualCpt` using `CutSE.actual_compact_theorem`. Take `⟨C₄, c₃, Cc, Cc', h⟩` from `thmBpAt_eq_limEvTCpt hA Formalism.FourierDecayAlt.P.CutBP2.normaliser_across_places Cb C₃ CΛ C₀ hC₃ hCΛ hC₀`. Take `⟨Cn, hn⟩` from `limEvT_J hA h3 Cb`. Use `⟨C₄, c₃, Cc, Cc', Cn, ?_⟩` and prove the remaining obligations. Introduce `P Wp Wq _ _ _ _ _ _ p f b n₀ S Λ A₀ p₀ χ nnp nnm Yp Ym K N hb hΛ hΛb hT hn₀ hp₀ hK hKN hχ hnnp hnnm hDDp hDDm hf hfA hJp hJm hth1 hth2 hth3 hth4 hN2 hexp hWGp hLGp hWGm hLGm hBdp hBdm`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hI5p` using `blockGrowthBound_apx_cutF hA S.pp nnp χ _ Yp K N Cb hDDp hχ (ckOn_fpmSh S.pp p₀ hf (ckOn_of_polyOp S.polyP)) hnnp`. Establish `hI5m` using `blockGrowthBound_apx_cutF hA S.pm nnm χ _ Ym K N Cb hDDm hχ (ckOn_fpmSh S.pm p₀ hf (ckOn_of_polyOp S.polyM)) hnnm`. Establish `hth4' : Cn * ((P.r : ℝ) + 1) ^ 4 * ((N : ℝ) * (2 * (P.r : ℝ) + P.k + 1) ^ 2 + (2 * (P.r : ℝ) + P.k + 1) ^ 3) ≤ (A₀ - ((n₀ * (P.r + 1) : ℕ) : ℝ)) - (((2 * P.r + 2) * p₀ : ℕ) : ℝ)` using `by linarith`. Establish `hLp : LimEvT S.pp χ (fpmSh S.pp f S.Ap p₀) Yp N`. Establish `e` using `fpmSh_eq_fpm S.pp f S.Ap p₀`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `k` using `hn Wp S.Wqp (shP P S.up S.up') S.pp (fun g => (f g).comp (S.Ap g)) (A₀ - ((n₀ * (P.r + 1) : ℕ) : ℝ)) p₀ χ Yp N ⟨hχ, hDDp, ckOn_compSh hf (ckOn_of_polyOp S.polyP), inCC_compSh S.pp hfA S.polyP, hth4', hN2⟩ hJp`. Conclude with `Eq.mpr (congrArg (fun F => LimEvT S.pp χ F Yp N) e) k`. Establish `hLm : LimEvT S.pm χ (fpmSh S.pm f S.Am p₀) Ym N`. Establish `e` using `fpmSh_eq_fpm S.pm f S.Am p₀`. Establish `k` using `hn Wp S.Wqm (shP P S.um S.um') S.pm (fun g => (f g).comp (S.Am g)) (A₀ - ((n₀ * (P.r + 1) : ℕ) : ℝ)) p₀ χ Ym N ⟨hχ, hDDm, ckOn_compSh hf (ckOn_of_polyOp S.polyM), inCC_compSh S.pm hfA S.polyM, hth4', hN2⟩ hJm`.
-
-Conclude with `Eq.mpr (congrArg (fun F => LimEvT S.pm χ F Ym N) e) k`. Conclude with `h P Wp Wq S.Wqp S.Wqm S.up S.up' S.um S.um' p S.pp S.pm f S.Ap S.Am S.ApPt S.AmPt b Λ (A₀ - (((2 * P.r + 2) * p₀ : ℕ) : ℝ) - ((n₀ * (P.r + 1) : ℕ) : ℝ)) n₀ p₀ χ nnp nnm Yp Ym K N hb hΛ hΛb hT hn₀ hp₀ S.hzp S.hzp' S.hzm S.hzm' hK hKN hχ hnnp hnnm hDDp hDDm hf (ckOn_of_polyOp S.pol …`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem thmBpAt_eqR_J (h3 : NFTopDomAllJ)
     (Cb C₃ CΛ C₀ : ℝ) (hC₃ : 0 ≤ C₃) (hCΛ : 0 ≤ CΛ) (hC₀ : 1 / 2 ≤ C₀) :

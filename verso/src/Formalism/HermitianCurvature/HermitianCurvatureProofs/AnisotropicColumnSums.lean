@@ -17,9 +17,9 @@ attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 namespace AnisotropicColumnSums
 
 /- English proof (translation)
-Substitute `h` using the available equality. Establish `e1 : la = Fin.last n` using `Fin.ext hla`. Substitute `e1` using the available equality. Establish `e2 : ι = skip1 (Fin.last n)`. Use function extensionality and compare the values at `a`.
+Substitute using the available equality. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Apply `Fin.ext` to reduce the goal to its premises. Use `a.isLt` as an intermediate fact. Simplify using `[skip1, hι]`. Rewrite using `[e2]`. Conclude with `first_contraction_adapted A n Eop P Q hE hQP hPQ u β hβ`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chat_gen (t n : ℕ) (h : t = n + 1) (A : Type) [Ring A] [Algebra ℂ A] (Eop : Fin t → Fin t → A)
     (P Q : Matrix (Fin t) (Fin t) ℂ) (la : Fin t) (hla : la.val = n) (ι : Fin n → Fin t)
@@ -40,23 +40,23 @@ theorem chat_gen (t n : ℕ) (h : t = n + 1) (A : Type) [Ring A] [Algebra ℂ A]
 variable {k r : ℕ}
 
 /- English proof (translation)
-Establish `hinj : ∀ c c' : Fin (mdim k r (Fin.last r)), posL k r (Fin.last r) c = posL k r (Fin.last r) c' → c = c'`. Introduce `c c' h`. Use `ext`. Simplify using `only [posL, Fin.ext_iff] at h`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Establish `hsurj : ∀ p, Qx2.inV k r (Fin.last r) p → ∃ c, posL k r (Fin.last r) c = p`. Introduce `p hp`. Simplify using `only [Qx2.inV, Fin.val_last] at hp`. Use `⟨⟨p.val - r, ?_⟩, ?_⟩` and prove the remaining obligations. Simplify using `only [mdim, Fin.val_last]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use linear arithmetic over natural numbers and integers. Use `ext`. Simplify using `only [posL, Fin.val_last]`. Use linear arithmetic over natural numbers and integers. Establish `hv' : v = ∑ d, v (posL k r (Fin.last r) d) • bvec (posL k r (Fin.last r) d)`.
+Use linear arithmetic over natural numbers and integers. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Use extensionality with `q`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, bvec, Pi.single_apply, smul_eq_mul, mul_ite, mul_one, mul_zero]`. Distinguish the cases in `hq : Qx2.inV k r (Fin.last r) q`. Take `⟨d0, rfl⟩` from `hsurj q hq`. Rewrite using `[Fintype.sum_eq_single d0]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Introduce `d hd`. Establish `hne : posL k r (Fin.last r) d0 ≠ posL k r (Fin.last r) d` using `fun h => hd (hinj _ _ h).symm`. Simplify using `[hne]`. Rewrite using `[Finset.sum_eq_zero]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Apply `hv` to reduce the goal to its premises. Simplify using `only [Qx2.inV, Fin.val_last] at hq`. Use linear arithmetic over natural numbers and integers. Introduce `d _`. Establish `hne : q ≠ posL k r (Fin.last r) d`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce and unpack `rfl`. Apply `hq` to reduce the goal to its premises. Establish `hd` using `d.isLt`. Simplify using `only [Qx2.inV, posL, mdim, Fin.val_last] at hd ⊢`. Use linear arithmetic over natural numbers and integers.
+Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Simplify using `[hne]`. Use `conv_rhs => rw [hv']`. Unfold `herm`. Rewrite using `[Matrix.mulVec_sum, dotProduct_sum]`. Use `Finset.sum_congr rfl fun d _ => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.mulVec_smul, dotProduct_smul, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem sum_last {v : Fin (2 * r + k + 1) → ℂ} (hv : inWb k r v) (w : Fin (2 * r + k + 1) → ℂ) :
     ∑ d, herm (Hpk k r) (bvec (posL k r (Fin.last r) d)) w * v (posL k r (Fin.last r) d) = herm (Hpk k r) v w := by
@@ -111,13 +111,13 @@ def nrm (k r : ℕ) (x : Fin (2 * r + k + 1) → ℂ) (j : Fin (mdim k r (Fin.la
   if j.val < k then 1 else (herm (Hpk k r) x x)⁻¹
 
 /- English proof (translation)
-Simplify using `[mdim]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mdim_last : mdim k r (Fin.last r) = k + 1 := by
   simp [mdim]
 
 /- English proof (translation)
-Unfold `bcol`. Use `split_ifs`. Conclude with `hB.1 _`. Conclude with `hx`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem bcol_inWb {x : Fin (2 * r + k + 1) → ℂ} {Bs : Fin k → Fin (2 * r + k + 1) → ℂ} (hx : inWb k r x)
     (hB : IsFrameOf k r [x] Bs) (j : Fin (mdim k r (Fin.last r))) : inWb k r (bcol k r x Bs j) := by
@@ -127,7 +127,7 @@ theorem bcol_inWb {x : Fin (2 * r + k + 1) → ℂ} {Bs : Fin k → Fin (2 * r +
   · exact hx
 
 /- English proof (translation)
-Unfold `bcol`. Distinguish the cases in `h : j.val < k`. Rewrite using `[dif_pos h, if_pos h]`. Conclude with `hB.2.2 _ x (List.mem_singleton_self x)`. Rewrite using `[dif_neg h, if_neg h]`.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem herm_bcol_eq_ite {x : Fin (2 * r + k + 1) → ℂ} {Bs : Fin k → Fin (2 * r + k + 1) → ℂ}
     (hB : IsFrameOf k r [x] Bs) (j : Fin (mdim k r (Fin.last r))) :
@@ -139,7 +139,7 @@ theorem herm_bcol_eq_ite {x : Fin (2 * r + k + 1) → ℂ} {Bs : Fin k → Fin (
   · rw [dif_neg h, if_neg h]
 
 /- English proof (translation)
-Unfold `herm`. Rewrite using `[Matrix.star_dotProduct, Matrix.star_mulVec, Qx2.hpk_h, ← Matrix.dotProduct_mulVec]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 private theorem herm_eq_star_herm_swap (v w : Fin (2 * r + k + 1) → ℂ) :
     herm (Hpk k r) v w = star (herm (Hpk k r) w v) := by
@@ -147,17 +147,17 @@ private theorem herm_eq_star_herm_swap (v w : Fin (2 * r + k + 1) → ℂ) :
   rw [Matrix.star_dotProduct, Matrix.star_mulVec, Qx2.hpk_h, ← Matrix.dotProduct_mulVec]
 
 /- English proof (translation)
-Take `⟨hBw, hBo, hBx⟩` from `hB`. Establish `hx0 : ∀ a, herm (Hpk k r) (Bs a) x = 0` using `fun a => hBx a x (List.mem_singleton_self x)`. Establish `hx0' : ∀ a, herm (Hpk k r) x (Bs a) = 0` using `fun a => by rw [herm_eq_star_herm_swap, hx0, star_zero]`. Establish `hj : j.val < k + 1`. Use `j.isLt` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [mdim, Fin.val_last] at this`. Use linear arithmetic over natural numbers and integers. Establish `hj' : j'.val < k + 1`. Use `j'.isLt` as an intermediate fact. Simplify using `only [mdim, Fin.val_last] at this`.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use linear arithmetic over natural numbers and integers. Unfold `bcol nrm`. Apply the tactic sequence `by_cases h1 : j.val < k <;> by_cases h2 : j'.val < k`. Rewrite using `[dif_pos h2, dif_pos h1, if_pos h1, mul_one, hBo]`. Distinguish the cases in `hjj : j = j'`.
+Use linear arithmetic over natural numbers and integers. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Substitute `hjj` using the available equality. Simplify using the standard rewrite rules. Establish `hne : ¬ j'.val = j.val` using `fun h => hjj (Fin.ext h.symm)`. Simplify using `[hjj, hne]`. Rewrite using `[dif_neg h2, dif_pos h1, if_pos h1, mul_one, hx0', if_neg]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `rfl`. Conclude with `h2 h1`. Rewrite using `[dif_pos h2, dif_neg h1, if_neg h1, hx0, zero_mul, if_neg]`. Introduce and unpack `rfl`. Conclude with `h1 h2`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `hjj : j = j'`. Use `ext`. Use linear arithmetic over natural numbers and integers. Rewrite using `[dif_neg h2, dif_neg h1, if_neg h1, if_pos hjj, mul_inv_cancel₀ hxx]`.
+Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gram {x : Fin (2 * r + k + 1) → ℂ} {Bs : Fin k → Fin (2 * r + k + 1) → ℂ}
     (hxx : herm (Hpk k r) x x ≠ 0) (hB : IsFrameOf k r [x] Bs) (j j' : Fin (mdim k r (Fin.last r))) :
@@ -196,21 +196,19 @@ end AnisotropicColumnSums
 
 open AnisotropicColumnSums in
 /- English proof (translation)
-Introduce `hFM E _ _ k r D hD x Bs hx hxx hB u φ g hg`. Use `set P : Matrix (Fin (mdim k r (Fin.last r))) (Fin (mdim k r (Fin.last r))) ℂ := Matrix.of fun c j => bcol k r x Bs j (posL k r (Fin.last r) c) with hP`. Use `set Q : Matrix (Fin (mdim k r (Fin.last r))) (Fin (mdim k r (Fin.last r))) ℂ := Matrix.of fun j d => herm (Hpk k r) (bvec (posL k r (Fin.last r) d)) (bcol k r x Bs j) * nrm k r x j with hQ`. Establish `hQP : Q * P = 1`. Use extensionality with `j j'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[Matrix.mul_apply, Matrix.one_apply, ← gram hxx hB j j', ← sum_last (bcol_inWb hx hB j'), Finset.sum_mul]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `d _`. Simplify using `only [hP, hQ, Matrix.of_apply]`. Expand and normalize the polynomial expressions, which then agree.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hPQ : P * Q = 1` using `mul_eq_one_comm.1 hQP`. Set `la : Fin (mdim k r (Fin.last r))` to `⟨k, by rw [mdim_last]; omega⟩`. Set `ι : Fin k → Fin (mdim k r (Fin.last r))` to `fun a => ⟨a.val, by rw [mdim_last]; omega⟩`. Establish `hβP : ∀ j, ((fun j => herm (Hpk k r) (bvec (posL k r (Fin.last r) j)) x) ᵥ* P) j = if j.val < k then 0 else herm (Hpk k r) x x`. Introduce `j`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[← herm_bcol_eq_ite hB j, ← sum_last (bcol_inWb hx hB j)]`. Both sides reduce to the same expression. Establish `hcol : (fun j => x (posL k r (Fin.last r) j)) = fun p => P p la`. Use function extensionality and compare the values at `p`. Simplify using `[hP, bcol, la]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `key` using `chat_gen (mdim k r (Fin.last r)) k mdim_last (Module.End ℂ (SV k r (Fin.last r) D E)) (EV k r (Fin.last r) D E) P Q la rfl ι (fun _ => rfl) (relation_representation E k r 0 (Fin.last r) D hD).1 hQP hPQ u (fun j => herm (Hpk k r) (bvec (posL k r (Fin.last r) j)) x) (by`. Introduce `j hj`. Rewrite using `[hβP, if_pos]`. Establish `h1 : j.val < k + 1` using `lt_of_lt_of_eq j.isLt mdim_last`. Establish `: j.val ≠ k` using `fun e => hj (Fin.ext e)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use the proof step `omega)`. Rewrite using `[hcol, key, hβP, if_neg (by simp [la])]`. Establish `hm` using `hFM E k r k D hD Bs hB.1 P Q ι (fun a b e => Fin.ext (by have e' := congrArg Fin.val e; exact e')) (by`. Introduce `a c`. Simplify using `[hP, bcol, ι])`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `(by`. Introduce `b d`. Simplify using `[hQ, bcol, nrm, ι])`. Use `u φ g hg`. Rewrite using `[← hm]`.
-
-Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem qr_chatFrame_of : Formalism.FourierDecayAlt.Qr.FrameMinor → Formalism.FourierDecayAlt.Qr.ChatFrame := by
   intro hFM E _ _ k r D hD x Bs hx hxx hB u φ g hg

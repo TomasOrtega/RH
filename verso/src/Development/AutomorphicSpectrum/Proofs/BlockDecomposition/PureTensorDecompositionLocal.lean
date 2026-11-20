@@ -12,16 +12,16 @@ def pureSpan (X Y : Type*) [TopologicalSpace X] [TopologicalSpace Y] : Submodule
   Submodule.span ℂ {h | ∃ (f : X → ℂ) (g : Y → ℂ), LCC f ∧ LCC g ∧ h = fun p => f p.1 * g p.2}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hf.1.mul hg.1, hf.2.mul_right⟩`.
+Supply the required witnesses or components.
 -/
 theorem LCC.mul {X : Type*} [TopologicalSpace X] {f g : X → ℂ} (hf : LCC f) (hg : LCC g) :
     LCC (fun x => f x * g x) :=
   ⟨hf.1.mul hg.1, hf.2.mul_right⟩
 
 /- English proof (translation)
-Use `⟨(IsLocallyConstant.iff_eventually_eq _).2 fun x => ?_, HasCompactSupport.intro hU fun x hx => Set.indicator_of_notMem hx _⟩` and prove the remaining obligations. Distinguish the cases in `hx : x ∈ U`. Use `filter_upwards [hO.mem_nhds hx] with y hy`. Simplify using `[hx, hy]`. Use `filter_upwards [hU.isClosed.isOpen_compl.mem_nhds hx] with y hy`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hy' : y ∉ U` using `hy`. Simplify using `[hx, hy']`.
+A detailed English derivation is pending.
 -/
 theorem lcc_indicator {X : Type*} [TopologicalSpace X] [T2Space X] {U : Set X} (hU : IsCompact U)
     (hO : IsOpen U) : LCC (U.indicator (fun _ => (1 : ℂ))) := by
@@ -35,7 +35,7 @@ theorem lcc_indicator {X : Type*} [TopologicalSpace X] [T2Space X] {U : Set X} (
     simp [hx, hy']
 
 /- English proof (translation)
-Take `⟨K, hK, hKW, hKc⟩` from `local_compact_nhds hW`. Establish `hb` using `loc_compact_Haus_tot_disc_of_zero_dim (H := X)`. Take `⟨V, hV, hxV, hVK⟩` from `hb.mem_nhds_iff.1 hK`. Conclude with `⟨V, hKc.of_isClosed_subset hV.1 hVK, hV.2, hxV, hVK.trans hKW⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_compact_open {X : Type*} [TopologicalSpace X] [T2Space X] [LocallyCompactSpace X]
     [TotallyDisconnectedSpace X] {x : X} {W : Set X} (hW : W ∈ nhds x) :
@@ -46,13 +46,13 @@ theorem exists_compact_open {X : Type*} [TopologicalSpace X] [T2Space X] [Locall
   exact ⟨V, hKc.of_isClosed_subset hV.1 hVK, hV.2, hxV, hVK.trans hKW⟩
 
 /- English proof (translation)
-Proceed by induction on `hh using Submodule.span_induction with`. Consider the case `mem h hh`. Take `⟨f, g, hf, hg, rfl⟩` from `hh`. Use `Submodule.subset_span ⟨_, _, hf.mul ha, hg.mul hb, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `p`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Expand and normalize the polynomial expressions, which then agree. Consider the case `zero`. Use `(pureSpan X Y).zero_mem using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `p`. Simplify using the standard rewrite rules.
+Expand and normalize the polynomial expressions, which then agree. Treat this case separately. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Consider the case `add u v _ _ hu hv`. Use `(pureSpan X Y).add_mem hu hv using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `p`. Simplify using `[add_mul]`. Consider the case `smul c u _ hu`.
+Treat this case separately. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Treat this case separately.
 
-Use `(pureSpan X Y).smul_mem c hu using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `p`. Simplify using `[mul_assoc]`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem mul_mem_pureSpan {X Y : Type*} [TopologicalSpace X] [TopologicalSpace Y] {a : X → ℂ}
     {b : Y → ℂ} (ha : LCC a) (hb : LCC b) {h : X × Y → ℂ} (hh : h ∈ pureSpan X Y) :
@@ -77,29 +77,29 @@ theorem mul_mem_pureSpan {X Y : Type*} [TopologicalSpace X] [TopologicalSpace Y]
     simp [mul_assoc]
 
 /- English proof (translation)
-Establish `hbox : ∀ p : X × Y, ∃ U V, IsCompact U ∧ IsOpen U ∧ IsCompact V ∧ IsOpen V ∧ p.1 ∈ U ∧ p.2 ∈ V ∧ ∀ q ∈ U ×ˢ V, Φ q = Φ p`. Introduce `p`. Establish `hp` using `(IsLocallyConstant.iff_eventually_eq Φ).1 h p`. Establish `hp' : {q | Φ q = Φ p} ∈ nhds ((p.1, p.2) : X × Y)` using `hp`. Take `⟨u, hu, v, hv, huv⟩` from `mem_nhds_prod_iff.1 hp'`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨U, hUc, hUo, hxU, hUu⟩` from `exists_compact_open hu`. Take `⟨V, hVc, hVo, hyV, hVv⟩` from `exists_compact_open hv`. Conclude with `⟨U, V, hUc, hUo, hVc, hVo, hxU, hyV, fun q hq => huv ⟨hUu hq.1, hVv hq.2⟩⟩`. Use `choose U V hUc hUo hVc hVo hxU hyV hconst using hbox`. Take `⟨t, -, ht⟩` from `IsCompact.elim_nhds_subcover hc (fun p => U p ×ˢ V p) fun p _ => ((hUo p).prod (hVo p)).mem_nhds ⟨hxU p, hyV p⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `key : ∀ t : Finset (X × Y), (⋃ q ∈ t, U q ×ˢ V q).indicator Φ ∈ pureSpan X Y` using `by classical`. Introduce `t`. Proceed by induction on `t using Finset.induction_on with`. Consider the case `empty`. Use `(pureSpan X Y).zero_mem using 1` and compare the differences between its conclusion and the goal.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `p`. Simplify using the standard rewrite rules. Consider the case `insert q t _ ih`. Establish `ha` using `lcc_indicator (hUc q) (hUo q)`. Establish `hb` using `lcc_indicator (hVc q) (hVo q)`.
+Simplify using the standard rewrite rules. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hbox : (fun p : X × Y => (U q).indicator (fun _ => (1 : ℂ)) p.1 * (V q).indicator (fun _ => (1 : ℂ)) p.2) ∈ pureSpan X Y` using `Submodule.subset_span ⟨_, _, ha, hb, rfl⟩`. Establish `hm` using `mul_mem_pureSpan ha hb ih`. Use `(pureSpan X Y).sub_mem ((pureSpan X Y).add_mem ((pureSpan X Y).smul_mem (Φ q) hbox) ih) hm using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `p`. Distinguish the cases in `h1 : p ∈ U q ×ˢ V q`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Establish `h1a : p.1 ∈ U q` using `h1.1`. Establish `h1b : p.2 ∈ V q` using `h1.2`. Establish `hmem : p ∈ ⋃ r ∈ insert q t, U r ×ˢ V r`. Simplify using `only [Set.mem_iUnion]`. Conclude with `⟨q, Finset.mem_insert_self _ _, h1⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Supply the required witnesses or components. Simplify using the standard rewrite rules.
 
-Simplify using `[Set.indicator_of_mem hmem, h1a, h1b, hconst q p h1]`. Establish `h0 : (U q).indicator (fun _ => (1 : ℂ)) p.1 * (V q).indicator (fun _ => (1 : ℂ)) p.2 = 0`. Distinguish the cases in `h1a : p.1 ∈ U q`. Establish `h1b : p.2 ∉ V q` using `fun hb' => h1 ⟨h1a, hb'⟩`. Simplify using `[h1b]`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[h1a]`. Establish `hiff : p ∈ ⋃ r ∈ insert q t, U r ×ˢ V r ↔ p ∈ ⋃ r ∈ t, U r ×ˢ V r`. Simplify using `only [Set.mem_iUnion, Finset.mem_insert, exists_prop]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨r, rfl | hr, hp⟩`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Conclude with `absurd hp h1`. Conclude with `⟨r, hr, hp⟩`. Introduce and unpack `⟨r, hr, hp⟩`. Conclude with `⟨r, Or.inr hr, hp⟩`. Distinguish the cases in `h2 : p ∈ ⋃ r ∈ t, U r ×ˢ V r`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Pi.sub_apply, Pi.add_apply, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[Set.indicator_of_mem (hiff.2 h2), Set.indicator_of_mem h2, h0]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [Pi.sub_apply, Pi.add_apply, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[Set.indicator_of_notMem (fun hh => h2 (hiff.1 hh)), Set.indicator_of_notMem h2, h0]`.
+Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Expand and normalize the polynomial expressions, which then agree. Use `key t using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `p`. Distinguish the cases in `hp : p ∈ ⋃ q ∈ t, U q ×ˢ V q`. Rewrite using `[Set.indicator_of_mem hp]`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction.
 
-Rewrite using `[Set.indicator_of_notMem hp]`. Assume the negation of the conclusion as `hne`. Conclude with `hp (ht (subset_tsupport _ hne))`.
+A detailed English derivation is pending.
 -/
 theorem mem_pureSpan {X Y : Type*} [TopologicalSpace X] [T2Space X] [LocallyCompactSpace X]
     [TotallyDisconnectedSpace X] [TopologicalSpace Y] [T2Space Y] [LocallyCompactSpace Y]
@@ -171,9 +171,9 @@ theorem mem_pureSpan {X Y : Type*} [TopologicalSpace X] [T2Space X] [LocallyComp
     exact hp (ht (subset_tsupport _ hne))
 
 /- English proof (translation)
-Take `⟨n, c, e, he⟩` from `Submodule.mem_span_set'.1 (mem_pureSpan h hc)`. Use `choose f g hf hg hfg using fun i => (e i).2`. Establish `hcf : ∀ i, LCC (fun x => c i * f i x)` using `fun i => ⟨(IsLocallyConstant.const (c i)).mul (hf i).1, (hf i).2.mul_left⟩`. Use `⟨n, fun i x => c i * f i x, g, hcf, hg, fun x y => ?_⟩` and prove the remaining obligations. Rewrite using `[← he]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[hfg i]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem exists_pure_sum {X Y : Type*} [TopologicalSpace X] [T2Space X] [LocallyCompactSpace X]
     [TotallyDisconnectedSpace X] [TopologicalSpace Y] [T2Space Y] [LocallyCompactSpace Y]
@@ -227,7 +227,7 @@ instance : TotallyDisconnectedSpace (Matrix (Fin 2) (Fin 2) F) :=
   inferInstanceAs (TotallyDisconnectedSpace (Fin 2 → Fin 2 → F))
 
 /- English proof (translation)
-Take `⟨n, f, g, hf, hg, hfg⟩` from `exists_pure_sum (Φ := Φ ∘ cat3Homeo) (h.comp_continuous cat3Homeo.continuous) (hc.comp_homeomorph cat3Homeo)`. Conclude with `⟨n, f, g, hf, hg, fun A y => hfg A y⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem schwartzBruhat_pure_tensor_sum (Φ : Matrix (Fin 2) (Fin 3) F → ℂ) (h : IsLocallyConstant Φ)
     (hc : HasCompactSupport Φ) :
@@ -239,7 +239,7 @@ theorem schwartzBruhat_pure_tensor_sum (Φ : Matrix (Fin 2) (Fin 3) F → ℂ) (
   exact ⟨n, f, g, hf, hg, fun A y => hfg A y⟩
 
 /- English proof (translation)
-Introduce `F _ _ _ _ _ _ ψ _ Φ hΦ`. Take `⟨n, f, g, hf, hg, hfg⟩` from `schwartzBruhat_pure_tensor_sum Φ hΦ.1 hΦ.2`. Conclude with `⟨n, f, g, hf, fun i => GodementSectionLocal.mem_schwartzBruhat2.2 (hg i), hfg⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem k2pt : Ad3.K.GL2LocalData.SchwartzBruhatProductDecomposition := by
   intro F _ _ _ _ _ _ ψ _ Φ hΦ

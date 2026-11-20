@@ -11,13 +11,13 @@ namespace GlobalTheory.EuclidTransport
 variable (l : Type) [Fintype l]
 
 /- English proof (translation)
-The claim follows from `PiLp.volume_preserving_ofLp l`.
+A detailed English derivation is pending.
 -/
 theorem volume_preserving_ofLp' : MeasurePreserving (@WithLp.ofLp 2 (l → ℝ)) volume volume :=
   PiLp.volume_preserving_ofLp l
 
 /- English proof (translation)
-The claim follows from `PiLp.volume_preserving_toLp l`.
+A detailed English derivation is pending.
 -/
 theorem volume_preserving_toLp' : MeasurePreserving (@WithLp.toLp 2 (l → ℝ)) volume volume :=
   PiLp.volume_preserving_toLp l
@@ -48,9 +48,9 @@ theorem l2TransportIso_apply (f : Lp ℂ 2 (volume : Measure (l → ℝ))) :
     l2TransportIsometry l f = Lp.compMeasurePreserving _ (volume_preserving_ofLp' l) f := rfl
 
 /- English proof (translation)
-Introduce `h`. Use `⟨Lp.compMeasurePreserving (@WithLp.toLp 2 (l → ℝ)) (volume_preserving_toLp' l) h, ?_⟩` and prove the remaining obligations. Rewrite using `[l2TransportIso_apply]`. Use `ext1`. Use `(Lp.coeFn_compMeasurePreserving _ (volume_preserving_ofLp' l)).trans ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `((volume_preserving_ofLp' l).quasiMeasurePreserving.ae_eq_comp (Lp.coeFn_compMeasurePreserving h (volume_preserving_toLp' l))).trans ?_` and prove the remaining obligations. Conclude with `Filter.Eventually.of_forall fun x => rfl`.
+A detailed English derivation is pending.
 -/
 theorem l2TransportIso_surjective : Function.Surjective (l2TransportIsometry l) := by
   intro h
@@ -74,9 +74,9 @@ theorem l2Transport_apply (f : Lp ℂ 2 (volume : Measure (l → ℝ))) :
     l2Transport l f = Lp.compMeasurePreserving _ (volume_preserving_ofLp' l) f := rfl
 
 /- English proof (translation)
-Rewrite using `[l2Transport_apply]`. Establish `h4 : ((φ.toLp 2 : Lp ℂ 2 (volume : Measure (l → ℝ))) : (l → ℝ) → ℂ) =ᵐ[volume] (φ : (l → ℝ) → ℂ)` using `φ.coeFn_toLp 2 volume`. Establish `h5 : (((schwartzTransport l φ).toLp 2 : L2 l) : EuclideanSpace ℝ l → ℂ) =ᵐ[volume] (schwartzTransport l φ : EuclideanSpace ℝ l → ℂ)` using `(schwartzTransport l φ).coeFn_toLp 2 volume`. Use `Lp.ext (Filter.EventuallyEq.trans ?_ h5.symm)` and prove the remaining obligations. Use `(Lp.coeFn_compMeasurePreserving _ (volume_preserving_ofLp' l)).trans ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `((volume_preserving_ofLp' l).quasiMeasurePreserving.ae_eq_comp h4).trans ?_` and prove the remaining obligations. Conclude with `Filter.Eventually.of_forall fun x => (schwartzTransport_apply φ x).symm`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem l2Transport_toLp (φ : 𝓢(l → ℝ, ℂ)) : l2Transport l (φ.toLp 2) = (schwartzTransport l φ).toLp 2 := by
   rw [l2Transport_apply]
@@ -91,7 +91,7 @@ theorem l2Transport_toLp (φ : 𝓢(l → ℝ, ℂ)) : l2Transport l (φ.toLp 2)
   exact Filter.Eventually.of_forall fun x => (schwartzTransport_apply φ x).symm
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨schwartzTransport l, l2Transport l, schwartzTransport_apply, l2Transport_toLp⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_schwartz_L2_transport (l : Type) [Fintype l] [DecidableEq l] :
     ∃ (e : 𝓢(l → ℝ, ℂ) ≃L[ℂ] Sch l) (u : Lp ℂ 2 (volume : Measure (l → ℝ)) ≃ₗᵢ[ℂ] L2 l),

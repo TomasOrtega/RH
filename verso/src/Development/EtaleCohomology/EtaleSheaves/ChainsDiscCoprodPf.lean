@@ -8,7 +8,7 @@ namespace LateralTheory.E.ChainsDiscCoprodPf
 variable (R : Type) [CommRing R]
 
 /- English proof (translation)
-Simplify using `only [chains, chainsXIso, Functor.comp_map]`. Use `erw [HomologicalComplex.extendMap_f _ ComplexShape.embeddingDownNat (i := n) rfl]`. Both sides reduce to the same expression.
+Simplify by unfolding definitions. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem chains_disc_f {P Q : PSh} (f : P ⟶ Q) (n : ℕ) :
     ((chains R).map (disc.map f)).f (-(n : ℤ)) =
@@ -18,18 +18,18 @@ theorem chains_disc_f {P Q : PSh} (f : P ⟶ Q) (n : ℕ) :
   rfl
 
 /- English proof (translation)
-The claim follows from `HomologicalComplex.isZero_extend_X _ ComplexShape.embeddingDownNat i (fun n => hi n)`.
+A detailed English derivation is pending.
 -/
 theorem isZero_chains_X (E : Spc) (i : ℤ) (hi : ∀ n : ℕ, -(n : ℤ) ≠ i) :
     IsZero (((chains R).obj E).X i) :=
   HomologicalComplex.isZero_extend_X _ ComplexShape.embeddingDownNat i (fun n => hi n)
 
 /- English proof (translation)
-Use `⟨Cofan.IsColimit.mk _ (fun s => b.hom ≫ hc.desc (Cofan.mk s.pt fun j => (a j).inv ≫ s.inj j)) ?_ ?_⟩` and prove the remaining obligations. Introduce `s j`. Use `hc.fac (Cofan.mk s.pt fun j => (a j).inv ≫ s.inj j) ⟨j⟩` as an intermediate fact. Simplify using `only [Cofan.mk_ι_app] at this`. Express the relevant statement in the definitionally equal form `f' j ≫ _ = _`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition.
 
-Simplify using `only [hf, Category.assoc, Iso.inv_hom_id_assoc, this, Iso.hom_inv_id_assoc]`. Introduce `s m hm`. Rewrite using `[← Iso.inv_comp_eq]`. Use `hc.uniq (Cofan.mk s.pt fun j => (a j).inv ≫ s.inj j) _ ?_` and prove the remaining obligations. Introduce and unpack `⟨j⟩`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Express the relevant statement in the definitionally equal form `f j ≫ b.inv ≫ m = (a j).inv ≫ s.inj j`. Rewrite using `[← hm j]`. Express the relevant statement in the definitionally equal form `f j ≫ b.inv ≫ m = (a j).inv ≫ f' j ≫ m`. Simplify using `only [hf, Category.assoc, Iso.inv_hom_id_assoc]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 -/
 theorem cofan_of_isos {C : Type*} [Category C] {ι : Type} {A A' : ι → C} {B B' : C}
     (a : ∀ j, A' j ≅ A j) (b : B' ≅ B) (f : ∀ j, A j ⟶ B) (f' : ∀ j, A' j ⟶ B')
@@ -51,7 +51,7 @@ theorem cofan_of_isos {C : Type*} [Category C] {ι : Type} {A A' : ι → C} {B 
     simp only [hf, Category.assoc, Iso.inv_hom_id_assoc]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨Cofan.IsColimit.mk _ (fun _ => 0) (fun _ j => (hA j).eq_of_src _ _) (fun _ _ _ => hB.eq_of_src _ _)⟩`.
+Supply the required witnesses or components.
 -/
 theorem cofan_of_zero {C : Type*} [Category C] [HasZeroMorphisms C] {ι : Type} {A : ι → C} {B : C}
     (hA : ∀ j, IsZero (A j)) (hB : IsZero B) (f : ∀ j, A j ⟶ B) :
@@ -59,9 +59,9 @@ theorem cofan_of_zero {C : Type*} [Category C] [HasZeroMorphisms C] {ι : Type} 
   ⟨Cofan.IsColimit.mk _ (fun _ => 0) (fun _ j => (hA j).eq_of_src _ _) (fun _ _ _ => hB.eq_of_src _ _)⟩
 
 /- English proof (translation)
-Rewrite using `[(isColimitMapCoconeCofanMkEquiv _ _ _).nonempty_congr]`. Distinguish the cases in `h : 0 < i`. Establish `h' : ∀ n : ℕ, -(n : ℤ) ≠ i` using `fun n => by omega`. Conclude with `cofan_of_zero (fun j => isZero_chains_X R _ i h') (isZero_chains_X R _ i h') _`. Establish `hi : i = -(((-i).toNat : ℕ) : ℤ)` using `by omega`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hi]`. Generalize the expression as in `(-i).toNat = n`. Conclude with `cofan_of_isos (fun j => chainsXIso R (disc.obj (P j)) n) (chainsXIso R (disc.obj Q) n) (fun j => (free R).map (p j)) _ (fun j => chains_disc_f R (p j) n) hc`.
+Replace the chosen expression with an arbitrary variable. A detailed English derivation is pending.
 -/
 theorem degColimit {ι : Type} (P : ι → PSh) (Q : PSh) (p : ∀ j, P j ⟶ Q)
     (hc : IsColimit (Cofan.mk ((free R).obj Q) fun j => (free R).map (p j))) (i : ℤ) :
@@ -78,7 +78,7 @@ theorem degColimit {ι : Type} (P : ι → PSh) (Q : PSh) (p : ∀ j, P j ⟶ Q)
       (fun j => (free R).map (p j)) _ (fun j => chains_disc_f R (p j) n) hc
 
 /- English proof (translation)
-Introduce `R _ ι P Q p ⟨hc⟩`. Conclude with `⟨HomologicalComplex.isColimitOfEval _ _ (fun i => (degColimit R P Q p hc i).some)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem ChainsDiscCoprod_of : LateralTheory.E.CoprodPf.ChainsDiscCoprod := by
   intro R _ ι P Q p ⟨hc⟩

@@ -19,7 +19,7 @@ set_option linter.unusedSectionVars false
 local notation "𝔸f" => FiniteAdeleRing (𝓞 ℚ) ℚ
 
 /- English proof (translation)
-Take `⟨z, hz⟩` from `exists_eq_of_forall_mem_adicCompletionIntegers ℚ x fun v => hx v`. Use `⟨Rat.ringOfIntegersEquiv z, ?_⟩` and prove the remaining obligations. Rewrite using `[Rat.ringOfIntegersEquiv_apply_coe, ← hz]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_int_of_mem_integralFiniteAdeles {x : ℚ}
     (hx : algebraMap ℚ 𝔸f x ∈ integralFiniteAdeles (𝓞 ℚ) ℚ) : ∃ m : ℤ, x = m := by
@@ -28,7 +28,7 @@ theorem exists_int_of_mem_integralFiniteAdeles {x : ℚ}
   rw [Rat.ringOfIntegersEquiv_apply_coe, ← hz]
 
 /- English proof (translation)
-The claim follows from `intCast_mem _ m`.
+A detailed English derivation is pending.
 -/
 theorem intCast_mem_integralFiniteAdeles (m : ℤ) :
     (m : 𝔸f) ∈ integralFiniteAdeles (𝓞 ℚ) ℚ :=
@@ -41,15 +41,15 @@ def levelUnit (N : ℕ) [NeZero N] : 𝔸fˣ :=
   FiniteAdeleRing.unitEmbedding (𝓞 ℚ) ℚ (Units.mk0 (N : ℚ) (Nat.cast_ne_zero.2 (NeZero.ne N)))
 
 /- English proof (translation)
-Rewrite using `[levelUnit, FiniteAdeleRing.unitEmbedding_apply, Units.val_mk0, map_natCast]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem coe_levelUnit (N : ℕ) [NeZero N] : (levelUnit N : 𝔸f) = N := by
   rw [levelUnit, FiniteAdeleRing.unitEmbedding_apply, Units.val_mk0, map_natCast]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨t, ht, rfl⟩`. Rewrite using `[← coe_levelUnit N, ← mul_assoc, Units.inv_mul, one_mul]` and apply the resulting hypothesis. Introduce `h`. Use `⟨_, h, ?_⟩` and prove the remaining obligations.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← coe_levelUnit N, ← mul_assoc, Units.mul_inv, one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mem_levelIdeal_iff (N : ℕ) [NeZero N] (x : 𝔸f) :
     x ∈ levelIdeal N ↔ ((levelUnit N)⁻¹ : 𝔸fˣ) * x ∈ integralFiniteAdeles (𝓞 ℚ) ℚ := by
@@ -61,7 +61,7 @@ theorem mem_levelIdeal_iff (N : ℕ) [NeZero N] (x : 𝔸f) :
     rw [← coe_levelUnit N, ← mul_assoc, Units.mul_inv, one_mul]
 
 /- English proof (translation)
-Establish `: levelIdeal N = (fun x : 𝔸f => ((levelUnit N)⁻¹ : 𝔸fˣ) * x) ⁻¹' (integralFiniteAdeles (𝓞 ℚ) ℚ : Set 𝔸f)`. Use extensionality with `x`. Conclude with `mem_levelIdeal_iff N x`. Rewrite using `[this]`. Conclude with `isOpen_integralFiniteAdeles.preimage (continuous_const.mul continuous_id)`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isOpen_levelIdeal (N : ℕ) [NeZero N] : IsOpen (levelIdeal N) := by
   have : levelIdeal N = (fun x : 𝔸f => ((levelUnit N)⁻¹ : 𝔸fˣ) * x) ⁻¹'
@@ -72,13 +72,13 @@ theorem isOpen_levelIdeal (N : ℕ) [NeZero N] : IsOpen (levelIdeal N) := by
   exact isOpen_integralFiniteAdeles.preimage (continuous_const.mul continuous_id)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨0, zero_mem _, by rw [mul_zero]⟩`.
+Supply the required witnesses or components.
 -/
 theorem zero_mem_levelIdeal (N : ℕ) : (0 : 𝔸f) ∈ levelIdeal N :=
   ⟨0, zero_mem _, by rw [mul_zero]⟩
 
 /- English proof (translation)
-Take `⟨s, hs, rfl⟩` from `hx`. Take `⟨t, ht, rfl⟩` from `hy`. Conclude with `⟨a * s + b * t, add_mem (mul_mem ha hs) (mul_mem hb ht), by ring⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem mul_add_mul_mem_levelIdeal {N : ℕ} {a b x y : 𝔸f}
     (ha : a ∈ integralFiniteAdeles (𝓞 ℚ) ℚ) (hb : b ∈ integralFiniteAdeles (𝓞 ℚ) ℚ)
@@ -88,16 +88,16 @@ theorem mul_add_mul_mem_levelIdeal {N : ℕ} {a b x y : 𝔸f}
   exact ⟨a * s + b * t, add_mem (mul_mem ha hs) (mul_mem hb ht), by ring⟩
 
 /- English proof (translation)
-Simplify using `using mul_add_mul_mem_levelIdeal ha (zero_mem _) hx (zero_mem_levelIdeal N)`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem mul_mem_levelIdeal {N : ℕ} {a x : 𝔸f}
     (ha : a ∈ integralFiniteAdeles (𝓞 ℚ) ℚ) (hx : x ∈ levelIdeal N) : a * x ∈ levelIdeal N := by
   simpa using mul_add_mul_mem_levelIdeal ha (zero_mem _) hx (zero_mem_levelIdeal N)
 
 /- English proof (translation)
-Rewrite `hx` using `[mem_levelIdeal_iff]`. Establish `hN : (N : ℚ) ≠ 0` using `Nat.cast_ne_zero.2 (NeZero.ne N)`. Establish `: (((levelUnit N)⁻¹ : 𝔸fˣ) : 𝔸f) * algebraMap ℚ 𝔸f x = algebraMap ℚ 𝔸f (x / N)`. Rewrite using `[levelUnit, ← map_inv, FiniteAdeleRing.unitEmbedding_apply, ← map_mul, Units.val_inv_eq_inv_val, Units.val_mk0, div_eq_mul_inv, mul_comm]`. Rewrite `hx` using `[this]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨m, hm⟩` from `exists_int_of_mem_integralFiniteAdeles hx`. Use `⟨m, ?_⟩` and prove the remaining obligations. Rewrite using `[← hm]`. Clear the denominators using the available nonvanishing facts.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 -/
 theorem exists_int_of_mem_levelIdeal (N : ℕ) [NeZero N] {x : ℚ}
     (hx : algebraMap ℚ 𝔸f x ∈ levelIdeal N) : ∃ m : ℤ, x = N * m := by
@@ -143,7 +143,7 @@ def Gamma0Level : Subgroup (FiniteAdelicGL ℚ 2) where
     exact ⟨-t, neg_mem ht, by rw [h, mul_neg]⟩
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_Gamma0Level {g : FiniteAdelicGL ℚ 2} :
     g ∈ Gamma0Level N ↔
@@ -151,12 +151,12 @@ theorem mem_Gamma0Level {g : FiniteAdelicGL ℚ 2} :
   Iff.rfl
 
 /- English proof (translation)
-Introduce `_ h` and use `h.1`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Gamma0Level_le_integralFiniteGL : Gamma0Level N ≤ integralFiniteGL ℚ 2 := fun _ h => h.1
 
 /- English proof (translation)
-Establish `: (Gamma0Level N : Set (FiniteAdelicGL ℚ 2)) = (integralFiniteGL ℚ 2 : Set _) ∩ (fun g : FiniteAdelicGL ℚ 2 => (g : Matrix (Fin 2) (Fin 2) 𝔸f) 1 0) ⁻¹' levelIdeal N` using `rfl`. Rewrite using `[this]`. Conclude with `(isOpen_integralFiniteGL ℚ 2).inter ((isOpen_levelIdeal N).preimage ((Units.continuous_val (M := Matrix (Fin 2) (Fin 2) 𝔸f)).matrix_elem 1 0))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isOpen_Gamma0Level : IsOpen (Gamma0Level N : Set (FiniteAdelicGL ℚ 2)) := by
   have : (Gamma0Level N : Set (FiniteAdelicGL ℚ 2)) = (integralFiniteGL ℚ 2 : Set _) ∩
@@ -166,22 +166,20 @@ theorem isOpen_Gamma0Level : IsOpen (Gamma0Level N : Set (FiniteAdelicGL ℚ 2))
     ((Units.continuous_val (M := Matrix (Fin 2) (Fin 2) 𝔸f)).matrix_elem 1 0))
 
 /- English proof (translation)
-Use `le_antisymm (Gamma0Level_le_integralFiniteGL 1) fun g hg => ⟨hg, ?_⟩` and prove the remaining obligations. Conclude with `⟨_, ((mem_integralFiniteGL_iff ℚ 2).1 hg).1 1 0, by rw [Nat.cast_one, one_mul]⟩`.
+Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components.
 -/
 theorem Gamma0Level_one : Gamma0Level 1 = integralFiniteGL ℚ 2 := by
   refine le_antisymm (Gamma0Level_le_integralFiniteGL 1) fun g hg => ⟨hg, ?_⟩
   exact ⟨_, ((mem_integralFiniteGL_iff ℚ 2).1 hg).1 1 0, by rw [Nat.cast_one, one_mul]⟩
 
 /- English proof (translation)
-Rewrite `ha` using `[mem_finiteLevel]`. Establish `hv : ∀ v, (a : 𝔸f) v ∈ v.adicCompletionIntegers ℚ ∧ ((a⁻¹ : 𝔸fˣ) : 𝔸f) v ∈ v.adicCompletionIntegers ℚ`. Introduce `v`. Use `ha v` as an intermediate fact. Rewrite `this` using `[Pi.zero_apply, unitsLevel_zero, Submonoid.mem_units_iff]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `⟨this.1, ?_⟩` and prove the remaining obligations. Establish `h` using `this.2`. Rewrite `h` using `[← map_inv]`. Then use the resulting hypothesis. Establish `key : ∀ b : 𝔸fˣ, (∀ v, (b : 𝔸f) v ∈ v.adicCompletionIntegers ℚ) → ∀ i j, ((diagonalGL (Pi.mulSingle (0 : Fin 2) b) : FiniteAdelicGL ℚ 2) : Matrix (Fin 2) (Fin 2) 𝔸f) i j ∈ integralFiniteAdeles (𝓞 ℚ) ℚ`. Introduce `b hb i j`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[coe_diagonalGL, Matrix.diagonal_apply]`. Use `split_ifs with hij`. Rewrite using `[Pi.mulSingle_apply] split_ifs`. Conclude with `hb`. Conclude with `one_mem _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `zero_mem _`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[mem_integralFiniteGL_iff, ← map_inv]`. Use `⟨key a fun v => (hv v).1, ?_⟩` and prove the remaining obligations. Rewrite using `[← Pi.mulSingle_inv]`.
-
-Conclude with `key a⁻¹ fun v => (hv v).2`. Rewrite using `[coe_diagonalGL, Matrix.diagonal_apply_ne _ (by decide)]`. Conclude with `zero_mem_levelIdeal N`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem diagonalGL_mem_Gamma0Level {a : 𝔸fˣ} (ha : a ∈ finiteLevel 0) :
     diagonalGL (Pi.mulSingle (0 : Fin 2) a) ∈ Gamma0Level N := by
@@ -214,7 +212,7 @@ theorem diagonalGL_mem_Gamma0Level {a : 𝔸fˣ} (ha : a ∈ finiteLevel 0) :
     exact zero_mem_levelIdeal N
 
 /- English proof (translation)
-Introduce `a ha` and use `⟨_, diagonalGL_mem_Gamma0Level N ha, det_diagonalGL_mulSingle (n := 2) two_pos a⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem finiteLevel_le_map_det :
     finiteLevel 0 ≤ (Gamma0Level N).map
@@ -222,7 +220,7 @@ theorem finiteLevel_le_map_det :
   ⟨_, diagonalGL_mem_Gamma0Level N ha, det_diagonalGL_mulSingle (n := 2) two_pos a⟩
 
 /- English proof (translation)
-Rewrite using `[eq_top_iff]`. Introduce `x _`. Use `RationalIdeles.subsingleton_classGroup` as an intermediate fact. Establish `h` using `(finiteQuotientEquivClassGroup ℚ).injective (Subsingleton.elim ((finiteQuotientEquivClassGroup ℚ) (QuotientGroup.mk x)) ((finiteQuotientEquivClassGroup ℚ) 1))`. Rewrite `h` using `[QuotientGroup.eq_one_iff]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem unitEmbedding_range_sup_finiteLevel :
     (FiniteAdeleRing.unitEmbedding (𝓞 ℚ) ℚ).range ⊔ finiteLevel 0 = ⊤ := by
@@ -235,14 +233,14 @@ theorem unitEmbedding_range_sup_finiteLevel :
   rwa [QuotientGroup.eq_one_iff] at h
 
 /- English proof (translation)
-Rewrite using `[eq_top_iff, ← unitEmbedding_range_sup_finiteLevel]`. Conclude with `sup_le le_sup_left ((finiteLevel_le_map_det N).trans le_sup_right)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem detClassSubgroup_Gamma0Level : detClassSubgroup ℚ 2 (Gamma0Level N) = ⊤ := by
   rw [eq_top_iff, ← unitEmbedding_range_sup_finiteLevel]
   exact sup_le le_sup_left ((finiteLevel_le_map_det N).trans le_sup_right)
 
 /- English proof (translation)
-Take `⟨γ, u, hu, h⟩` from `exists_eq_finiteDiagonal_mul_mul (K := ℚ) (n := 2) two_pos (isOpen_Gamma0Level N) (g := 1) (g' := g) (by rw [detClassSubgroup_Gamma0Level]; exact Subgroup.mem_top _)`. Conclude with `⟨γ, u, hu, by rw [h, mul_one]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_eq_finiteDiagonal_mul (g : FiniteAdelicGL ℚ 2) :
     ∃ γ : GL (Fin 2) ℚ, ∃ u ∈ Gamma0Level N, g = finiteDiagonal ℚ 2 γ * u := by
@@ -252,7 +250,7 @@ theorem exists_eq_finiteDiagonal_mul (g : FiniteAdelicGL ℚ 2) :
   exact ⟨γ, u, hu, by rw [h, mul_one]⟩
 
 /- English proof (translation)
-Establish `hi` using `((mem_integralFiniteGL_iff ℚ 2).1 h.1).1`. Use `choose A hA using fun i j => exists_int_of_mem_integralFiniteAdeles (hi i j)`. Conclude with `⟨Matrix.of A, fun i j => (hA i j).symm⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_int_entries {γ : GL (Fin 2) ℚ} (h : finiteDiagonal ℚ 2 γ ∈ Gamma0Level N) :
     ∃ A : Matrix (Fin 2) (Fin 2) ℤ, ∀ i j, (A i j : ℚ) = γ i j := by
@@ -261,15 +259,13 @@ theorem exists_int_entries {γ : GL (Fin 2) ℚ} (h : finiteDiagonal ℚ 2 γ �
   exact ⟨Matrix.of A, fun i j => (hA i j).symm⟩
 
 /- English proof (translation)
-Take `⟨A, hA⟩` from `exists_int_entries N h`. Take `⟨B, hB⟩` from `exists_int_entries N (γ := γ⁻¹) (by rw [map_inv]; exact inv_mem h)`. Use `⟨A, hA, ?_, ?_⟩` and prove the remaining obligations. Take `⟨m, hm⟩` from `exists_int_of_mem_levelIdeal N (x := γ 1 0) h.2`. Use `⟨m, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `hA 1 0` as an intermediate fact. Rewrite `this` using `[hm]`. Conclude with `this` after adjusting the coercions. Establish `hAB : A * B = 1`. Establish `hmap : (Int.castRingHom ℚ).mapMatrix (A * B) = (Int.castRingHom ℚ).mapMatrix 1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul, map_one]`. Establish `e1 : (Int.castRingHom ℚ).mapMatrix A = (γ : Matrix (Fin 2) (Fin 2) ℚ)`. Use extensionality with `i j`. Conclude with `hA i j`. Establish `e2 : (Int.castRingHom ℚ).mapMatrix B = ((γ⁻¹ : GL (Fin 2) ℚ) : Matrix (Fin 2) (Fin 2) ℚ)`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `i j`. Conclude with `hB i j`. Rewrite using `[e1, e2, Units.mul_inv]`. Conclude with `Matrix.ext fun i j => Int.cast_injective (α := ℚ) (show (((A * B) i j : ℤ) : ℚ) = (((1 : Matrix (Fin 2) (Fin 2) ℤ) i j : ℤ) : ℚ) from congrFun (congrFun hmap i) j)`. Establish `hdet : A.det * B.det = 1` using `by rw [← Matrix.det_mul, hAB, Matrix.det_one]`.
-
-Conclude with `Int.eq_one_or_neg_one_of_mul_eq_one hdet`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_int_of_finiteDiagonal_mem {γ : GL (Fin 2) ℚ}
     (h : finiteDiagonal ℚ 2 γ ∈ Gamma0Level N) :

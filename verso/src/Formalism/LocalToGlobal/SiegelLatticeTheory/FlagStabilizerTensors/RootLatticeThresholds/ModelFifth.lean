@@ -14,47 +14,41 @@ variable {r : ℕ} (pN : Formalism.MainNotions.S.Point ℂ (r + 1))
 local notation "W" => wPt pN
 
 /- English proof (translation)
-Establish `hzS : Formalism.FourierDecayAlt.C2.StdZ (k0 + 1) r Ds.z` using `⟨Ds.z_mem, Ds.T_pos⟩`. Establish `hz'S : Formalism.FourierDecayAlt.C2.StdZ (k0 + 1) r Ds.z'` using `⟨Ds.z'_mem, Ds.T'_pos⟩`. Establish `hG` using `good_of Ds hδ hd hZ`. Establish `hu : IsUnit δ.det` using `((uHGroup _ (Hpk (k0 + 1) r) Formalism.L2.SG.HermitianMatrixIdentities.hpk_isUnit).2.2 δ hδ).1`. Establish `hδi : δ⁻¹ ∈ Formalism.FourierDecayAlt.B.GV (k0 + 1) r` using `((uHGroup _ (Hpk (k0 + 1) r) Formalism.L2.SG.HermitianMatrixIdentities.hpk_isUnit).2.2 δ hδ).2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨Ds', hD1, hD2⟩` from `Formalism.MainNotions.S.Pv.AmpDDPf.bsetting_of (k0 + 1) r (by omega) Ds.z' Ds.z hz'S hzS`. Use `set d' : Fin (r + 1) → ℂ := fun a => star (d (W a)) with hd'def`. Establish `hd' : ∀ a, d' a ≠ 0` using `fun a => star_ne_zero.2 (hd _)`. Establish `hZ' : Zhat (k0 + 1) r Ds'.z Ds'.z' δ⁻¹ = Formalism.FourierDecayAlt.C2.monoP W d'`. Use extensionality with `i a`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hD1, hD2, Formalism.L2.SG.Pf.RootHaarLoc.zhat_inv Ds.z Ds.z' hδ hu i a, hZ]`. Simplify using `only [Formalism.FourierDecayAlt.C2.monoP, Matrix.of_apply, hd'def]`. Distinguish the cases in `hai : a = W i`. Establish `hia : i = W a` using `by rw [hai, wPt_invol]`. Rewrite using `[if_pos hai, if_pos hia]`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Apply the tactic sequence `all_goals (try (rw [hai, wPt_invol]))`. Establish `hia : ¬ i = W a` using `fun h => hai (by rw [h, wPt_invol])`. Rewrite using `[if_neg hai, if_neg hia, star_zero]`. Establish `hG'` using `good_of Ds' hδi hd' hZ'`. Use `set φ : Mt (k0 + 1) r → Formalism.FourierDecayAlt.C2.Lstidx W → ℂ := phi0 Ds W with hφ`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `set φ' : Mt (k0 + 1) r → Formalism.FourierDecayAlt.C2.Lstidx W → ℂ := fun x => phi0 Ds' W (Matrix.of.symm (δ⁻¹ * Matrix.of x * δ)) with hφ'`. Establish `hφc : Continuous φ` using `continuous_radial_phi Ds`. Establish `hφ'c : Continuous φ'`. Use `(continuous_radial_phi Ds').comp ?_` and prove the remaining obligations. Conclude with `(continuous_const.matrix_mul continuous_id).matrix_mul continuous_const`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hRinv : ∀ x : Mt (k0 + 1) r, Matrix.of x ∈ Formalism.FourierDecayAlt.C6.Rset δ → δ⁻¹ * Matrix.of x * δ ∈ Formalism.FourierDecayAlt.C6.Rset δ⁻¹`. Introduce `x hx`. Use `⟨hx.2, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.nonsing_inv_nonsing_inv _ hu]`. Establish `: δ * (δ⁻¹ * Matrix.of x * δ) * δ⁻¹ = Matrix.of x`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [← Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hu, Matrix.one_mul]`. Rewrite using `[Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hu, Matrix.mul_one]`. Rewrite using `[this]`. Conclude with `hx.1`. Establish `hroot : ∀ x : Mt (k0 + 1) r, Matrix.of x ∈ Formalism.FourierDecayAlt.C6.Rset δ → Formalism.MainNotions.S.rootCoords (k0 + 1) r Ds.z' pN (Matrix.of.symm (δ⁻¹ * Matrix.of x * δ)) = Tmap pN (φ' x)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `x hx`. Establish `hm` using `hRinv x hx`. Establish `e2` using `u_eq_low Ds' hδi hd' hG' hm`. Establish `hρ` using `rhoF_unique Ds' hδi hd' hG' (φ' x) hm (by`. Rewrite using `[← Matrix.conjTranspose_conjTranspose (Formalism.FourierDecayAlt.C2.uMap _ _ _ _), e2])`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `Formalism.L2.SG.Pf.RootHaarLoc.rootCoords_psiG Ds'.z Ds' rfl pN hδi hd' hZ' (Tmap pN (φ' x))`. Rewrite `h1` using `[Tinv_Tmap, ← hρ, hD1]`. Conclude with `h1`. Establish `hkey : ∀ x : Mt (k0 + 1) r, Matrix.of x ∈ Formalism.FourierDecayAlt.C6.Rset δ → φ x = Formalism.L2.SG.lowerTriangularModel.linv W (Rm pN d (φ' x))`. Introduce `x hx`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm` using `hRinv x hx`. Establish `e1` using `u_eq_low Ds hδ hd hG hx`. Establish `e2` using `u_eq_low Ds' hδi hd' hG' hm`. Establish `zh` using `Formalism.L2.SG.HermitianMatrixIdentities.zhat_uMap hzS hz'S hδ hx.1 hx.2`. Establish `hinv : Formalism.FourierDecayAlt.C2.uMap (k0 + 1) r Ds.z (Matrix.of x)⁻¹ = (Formalism.FourierDecayAlt.C2.uMap (k0 + 1) r Ds.z (Matrix.of x))⁻¹`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hxu : IsUnit (Matrix.of x).det` using `((uHGroup _ (Hpk (k0 + 1) r) Formalism.L2.SG.HermitianMatrixIdentities.hpk_isUnit).2.2 _ hx.1.1).1`. Establish `hm1` using `uMap_mul Ds hx.1 (PI.WBL.Cv.n_inv hx.1)`. Rewrite `hm1` using `[Matrix.mul_nonsing_inv _ hxu, uMap_one _ hzS]`. Conclude with `(Matrix.inv_eq_right_inv hm1.symm).symm`. Establish `e1' : (Formalism.FourierDecayAlt.C2.uMap (k0 + 1) r Ds.z (Matrix.of x))ᴴ = low W (φ x)` using `e1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e2' : (Formalism.FourierDecayAlt.C2.uMap (k0 + 1) r Ds'.z (δ⁻¹ * Matrix.of x * δ))ᴴ = low W (φ' x)` using `e2`. Establish `hU : Formalism.FourierDecayAlt.C2.uMap (k0 + 1) r Ds.z (Matrix.of x) = (low W (φ x))ᴴ`. Rewrite using `[← e1', Matrix.conjTranspose_conjTranspose]`. Establish `hU' : Formalism.FourierDecayAlt.C2.uMap (k0 + 1) r Ds.z' (δ⁻¹ * Matrix.of x * δ) = (low W (φ' x))ᴴ`. Rewrite using `[← hD1, ← e2', Matrix.conjTranspose_conjTranspose]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `zh` using `[hU', hinv, hU, hZ, Matrix.conjTranspose_nonsing_inv, Matrix.conjTranspose_conjTranspose]`. Establish `h1 : low W (Rm pN d (φ' x)) * Formalism.FourierDecayAlt.C2.monoP W d = (low W (φ x))⁻¹ * Formalism.FourierDecayAlt.C2.monoP W d`. Rewrite using `[low_R_mono pN d hd, zh]`. Establish `h2 : low W (Rm pN d (φ' x)) = (low W (φ x))⁻¹`. Use `congrArg (· * Formalism.FourierDecayAlt.C2.monoP (wPt pN).symm (fun j => (d ((wPt pN).symm j))⁻¹)) h1` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Simplify using `only [Matrix.mul_assoc, mono_mul_inv pN d hd, Matrix.mul_one] at this`. Conclude with `this`. Establish `hlu : IsUnit (low W (φ x)).det` using `Formalism.L2.SG.lowerTriangularModel.isUnit_low W _`. Establish `h3 : low W (φ x) = (low W (Rm pN d (φ' x)))⁻¹`. Rewrite using `[h2, Matrix.nonsing_inv_nonsing_inv _ hlu]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `q`. Rewrite using `[← low_coord W (φ x) q, h3]`. Both sides reduce to the same expression. Establish `hae : ∀ᵐ x ∂μ, Matrix.of x ∈ Formalism.FourierDecayAlt.C6.Rset δ` using `ae_iff.2 hconc`. Establish `hB : μ.map φ' = c • volume`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hA : μ.map (Tmap pN ∘ φ') = c • volume`. Rewrite using `[← hmap]`. Use `Measure.map_congr ?_` and prove the remaining obligations. Use `filter_upwards [hae] with x hx`. Conclude with `(hroot x hx).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hTm : Measurable (Tmap pN)` using `(Tmap_mp pN).measurable`. Establish `e : φ' = Tinv pN ∘ (Tmap pN ∘ φ')`. Use function extensionality and compare the values at `x`. Simplify using `[Tinv_Tmap]`. Rewrite using `[e, ← Measure.map_map (Tinv_mp pN).measurable (hTm.comp hφ'c.measurable), hA, Measure.map_smul, (Tinv_mp pN).map_eq]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hC : μ.map φ = c • volume`. Establish `hlinv` using `Formalism.L2.SG.lowerTriangularModel.linv_mp W`. Establish `hR` using `Rm_mp pN d hd hdm`. Rewrite using `[Measure.map_congr (g := Formalism.L2.SG.lowerTriangularModel.linv W ∘ Rm pN d ∘ φ') (by filter_upwards [hae] with x hx`. Conclude with `hkey x hx)]`.
-
-Rewrite using `[← Measure.map_map hlinv.measurable (hR.measurable.comp hφ'c.measurable), ← Measure.map_map hR.measurable hφ'c.measurable, hB, Measure.map_smul, hR.map_eq, Measure.map_smul, hlinv.map_eq]`. Establish `hrho` using `rhoF_meas Ds hδ hd hG`. Establish `hD : μ = μ.map ((fun y => Matrix.of.symm (rhoF Ds δ W y)) ∘ φ)` using `by conv_lhs => rw [← Measure.map_id (μ := μ)]`. Use `Measure.map_congr ?_` and prove the remaining obligations. Use `filter_upwards [hae] with x hx`.
-
-Establish `hρ` using `rhoF_unique Ds hδ hd hG (φ x) hx (by`. Rewrite using `[← Matrix.conjTranspose_conjTranspose (Formalism.FourierDecayAlt.C2.uMap _ _ _ _), u_eq_low Ds hδ hd hG hx]`. Use the proof step `rfl)`. Use `show x = Matrix.of.symm (rhoF Ds δ W (φ x))`. Rewrite using `[← hρ]`.
-
-Both sides reduce to the same expression. Rewrite using `[hD, ← Measure.map_map hrho hφc.measurable, hC, Measure.map_smul]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem mp_model {k0 : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
     [InnerProductSpace ℂ Wq] (Ds : Formalism.FourierDecayAlt.B.RealPlaceData (k0 + 1) r Wp Wq) {δ : Formalism.FourierDecayAlt.B.Mat (k0 + 1) r}

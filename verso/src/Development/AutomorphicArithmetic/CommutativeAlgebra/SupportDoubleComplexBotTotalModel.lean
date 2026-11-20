@@ -18,14 +18,14 @@ private theorem map_id' {p : ℕ} {U : Scheme.{0}} (z : Sx E p U) : Sx.map (𝟙
 private def cst {U : Scheme.{0}} {a b : ℤ} (e : a = b) (v : Sec (K.X a) U) : Sec (K.X b) U := e ▸ v
 
 /- English proof (translation)
-Substitute `e` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 private theorem res_cst {V U : Scheme.{0}} (g : V ⟶ U) {a b : ℤ} (e : a = b) (v : Sec (K.X a) U) :
     Sec.res g (cst e v) = cst e (Sec.res g v) := by
   subst e; rfl
 
 /- English proof (translation)
-Substitute `e` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 private theorem cst_fam (x : (famDC (Sub.bot E) K 0).Tot) (p : ℕ) (U : Scheme.{0}) (z : Sx E p U)
     {s t : ℤ} (e : t = s) (e' : t + 0 = s + 0) :
@@ -34,9 +34,9 @@ private theorem cst_fam (x : (famDC (Sub.bot E) K 0).Tot) (p : ℕ) (U : Scheme.
   subst e; rfl
 
 /- English proof (translation)
-Take `⟨γ, hγ⟩` from `GlobalTheory.T.exists_cochain_ev_eq_of_natural' R (E := E) (I := K) (n := n) (fun p s _ U z => cst (add_zero s) ((x p s).1 U z)) (by`. Introduce `p s h V U g z`. Rewrite using `[res_cst, (x p s).2.1 V U g z])`. Use `⟨γ, ?_⟩` and prove the remaining obligations. Introduce `p s h U z`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[map_id', hγ]`. Conclude with `cst_fam x p U z (add_zero s) (add_zero (s + 0))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem exists_cochain (n : ℤ) (x : (famDC (Sub.bot E) K 0).Tot) :
     ∃ γ : Cochain ((chains R).obj E) K n, Comp (𝟙 E) γ x := by
@@ -51,7 +51,7 @@ private theorem exists_cochain (n : ℤ) (x : (famDC (Sub.bot E) K 0).Tot) :
   exact cst_fam x p U z (add_zero s) (add_zero (s + 0))
 
 /- English proof (translation)
-Use `(GlobalTheory.T.etaleCochainEvalOnSimplex_basic_properties R (E := E) (I := K) (n := N)).2.2.1 γ 0 fun p s hs U z => ?_` and prove the remaining obligations. Take `⟨t, rfl⟩ : ∃ t, s = t + 0` from `⟨s, (add_zero s).symm⟩`. Establish `h1` using `h p t hs U z`. Rewrite `h1` using `[map_id']`. Rewrite using `[((GlobalTheory.T.etaleCochainEvalOnSimplex_basic_properties R (E := E) (I := K) (n := N)).1 γ γ p (t + 0) hs U z).2.2.1, ← h1]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -65,7 +65,7 @@ private theorem eq_zero_of_comp {N : ℤ} (γ : Cochain ((chains R).obj E) K N)
   rfl
 
 /- English proof (translation)
-Establish `h2` using `(UpperTheory.supportDoubleComplex_total_represents_vanishing_cochain R (𝟙 E) (Sub.bot E) K 0 N N (add_zero N)).2.2.2.1 γ γ' x x h h'`. Rewrite `h2` using `[sub_self]`. Conclude with `sub_eq_zero.1 (eq_zero_of_comp _ h2)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem eq_of_comp {N : ℤ} (γ γ' : Cochain ((chains R).obj E) K N)
     (x : (famDC (Sub.bot E) K 0).Tot) (h : Comp (𝟙 E) γ x) (h' : Comp (𝟙 E) γ' x) : γ = γ' := by
@@ -77,21 +77,21 @@ end UpperTheory.ConstantCochains
 
 open UpperTheory.ConstantCochains in
 /- English proof (translation)
-Introduce `R _ E K n`. Take `⟨k, rfl⟩ : ∃ k, n = k + 1` from `⟨n - 1, by omega⟩`. Establish `Ik` using `UpperTheory.supportDoubleComplex_total_represents_vanishing_cochain R (𝟙 E) (Sub.bot E) K 0 k k (add_zero k)`. Establish `I1` using `UpperTheory.supportDoubleComplex_total_represents_vanishing_cochain R (𝟙 E) (Sub.bot E) K 0 (k + 1) (k + 1) (add_zero _)`. Establish `I2` using `UpperTheory.supportDoubleComplex_total_represents_vanishing_cochain R (𝟙 E) (Sub.bot E) K 0 (k + 1 + 1) (k + 1 + 1) (add_zero _)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `x hx hD`. Take `⟨γ, hγ⟩` from `exists_cochain (k + 1) x`. Establish `h1` using `I1.2.2.1 γ x hγ`. Rewrite `h1` using `[hD]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h0` using `eq_zero_of_comp _ h1`. Conclude with `⟨CohomologyClass.mk (Cocycle.mk γ _ rfl h0), Cocycle.mk γ _ rfl h0, rfl, hγ⟩`. Introduce `c`. Take `⟨γ, rfl⟩` from `CohomologyClass.mk_surjective c`. Take `⟨x, hx, hc⟩` from `I1.1 γ (fun _ _ _ _ _ hm => False.elim hm)`.
+Establish an intermediate fact. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨x, hx, ?_, γ, rfl, hc⟩` and prove the remaining obligations. Establish `h1` using `I1.2.2.1 γ x hc`. Rewrite `h1` using `[Cocycle.δ_eq_zero]`. Establish `c00 : Comp (𝟙 E) (0 : Cochain ((chains R).obj E) K (k + 1 + 1)) (0 : (famDC (Sub.bot E) K 0).Tot)`. Introduce `p s h U z`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[((GlobalTheory.T.etaleCochainEvalOnSimplex_basic_properties R (E := E) (I := K) (n := k + 1 + 1)).1 0 0 p _ h U _).2.2.1]`. Both sides reduce to the same expression. Conclude with `I2.2.1 0 _ 0 (I1.2.2.2.2 x hx) (fun _ _ _ => rfl) h1 c00`. Introduce and unpack `x c x' c' ⟨γ, rfl, hγ⟩ ⟨γ', rfl, hγ'⟩`. Conclude with `⟨γ - γ', CohomologyClass.mk_sub _ _, I1.2.2.2.1 _ _ _ _ hγ hγ'⟩`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `x c hx ⟨γ, rfl, hγ⟩`. Rewrite using `[CohomologyClass.mk_eq_zero_iff, mem_coboundaries_iff γ k rfl, add_sub_cancel_right]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨β, hβ⟩`. Take `⟨y, hy, hyβ⟩` from `Ik.1 β (fun _ _ _ _ _ hm => False.elim hm)`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨y, hy, ?_⟩` and prove the remaining obligations. Establish `h1` using `Ik.2.2.1 β y hyβ`. Rewrite `h1` using `[hβ]`. Conclude with `I1.2.1 _ _ _ (Ik.2.2.2.2 y hy) hx h1 hγ`. Introduce and unpack `⟨y, hy, rfl⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨β, hβ⟩` from `exists_cochain k y`. Conclude with `⟨β, eq_of_comp _ _ _ (Ik.2.2.1 β y hβ) hγ⟩`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.supportDoubleComplex_bot_totalModel :
     ∀ (R : Type) [CommRing R] (E : Spc) (K : Cx R) (n : ℤ), TModel (famDC (Sub.bot E) K 0) n (HRel (E := E) (K := K) (n := n)) := by

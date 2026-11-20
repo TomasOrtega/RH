@@ -23,27 +23,25 @@ open GlobalTheory.CompanionTheory.Ar.Flat.CPoint
 namespace GlobalTheory.CompanionTheory.Ar.Flat.CPoint.IntFrameSpan
 
 /- English proof (translation)
-Introduce `E _ _ _ H D l Xo c O _ _ _ β Y U Z V K _ _ _ _ _ _ y z h₁ h₂ ψ g ℓ ρK MU MY T tK m m' n σ σi b hz hreg hint hfr₂ hfr₁ hsame hval hact hσ hif hli`. Take `⟨ML, hML⟩` from `(LieMove.main K Xo.X (under y) Xo.univ.t.G tK.G m.φ (Fin g → K) m.cart).1 MU`. Take `⟨φ₁, hφ₁, htr⟩` from `GlobalTheory.T.semiabelian_pullback_tangent_map E H D l Xo c O β Y K y tK m`. Take `⟨σV, vV, hσV, hfr, hu⟩` from `hif`. Establish `hρ : ML.IsActOf tK.act.act ρK`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `r e`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Apply `m.cart.1.hom_ext` to reduce the goal to its premises. Rewrite using `[hML, hact r e, Over.comp_left, Over.comp_left, Category.assoc, m.act r, ← Category.assoc, hML]`. Rewrite using `[Over.w (ML.pt (ρK r e)), Over.comp_left, Category.assoc, Over.w (tK.act.act r), Over.w (ML.pt e)]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hepi : Epi (CommRingCat.ofHom (algebraMap V K))` using `IsLocalization.epi (nonZeroDivisors V) K`. Establish `hmono : Mono (spMap (algebraMap V K))`. Conclude with `Functor.map_mono Scheme.Spec (CommRingCat.ofHom (algebraMap V K)).op`. Establish `hb : ∀ i, (ML.pt (b i)).left ≫ m'.φ = spMap (dualMap (algebraMap V K)) ≫ (vV i).left`. Introduce `i`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨u, hu1, hu2⟩` from `hu i`. Establish `hw : u ≫ tK.G.hom = (ML.pt (b i)).left ≫ tK.G.hom`. Rewrite using `[← cancel_mono (spMap (algebraMap V K)), Category.assoc, ← m'.cart.1.w, ← Category.assoc, hu2, Category.assoc, Over.w (vV i), Over.w (ML.pt (b i))]`. Conclude with `(LieTangent.spec_dual_alg _ |>.trans (by simp))`. Establish `: u = (ML.pt (b i)).left` using `m.cart.1.hom_ext (hu1.trans (hML _).symm) hw`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← this]`. Conclude with `hu2`. Establish `key` using `GlobalTheory.T.dvr_eigen_tangent_extension V K T.G tK.G m'.φ (𝓞 E) T.act tK.act g n ML ρK σV vV b m'.cart m'.act hρ hfr hb`. Establish `cast : ∀ (x x' : Sp K ⟶ Y.X) (_ : x = x') (M : LieModel Y.t.G x' (Fin g → K)), ∃ MC : LieModel Y.t.G x (Fin g → K), ∀ e, (MC.pt e).left = (M.pt e).left`. Introduce and unpack `_ _ rfl M`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `⟨M, fun _ => rfl⟩`. Take `⟨MC, hMC⟩` from `cast _ _ hz MY`. Establish `hfib` using `GlobalTheory.T.dvr_specialization_lie_lattice Y.X Y.t.G Z.Ω (Z.ξ₀ ≫ Y.j) Z.V Z.M V K (y ≫ Y.j) z h₁ h₂ ψ g ℓ MY MC hz hMC Z.gen hreg hint hfr₂ hval`. Establish `hsm` using `Y.t.semi.smooth`. Establish `h₁' : genPt (Z.ξ₀ ≫ Y.j) ⤳ centre (Spec.map (CommRingCat.ofHom (algebraMap V K)) ≫ z)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: Spec.map (CommRingCat.ofHom (algebraMap V K)) ≫ z = y ≫ Y.j` using `hz`. Rewrite using `[this]`. Conclude with `h₁`. Establish `hL : ∀ w, w ∈ stdLat V K g ↔ ∃ a : epsAt (𝟙 (Sp V)) ⟶ T.G, IsTanAt T.G (𝟙 _) a ∧ (ML.pt w).left ≫ m'.φ = spMap (dualMap (algebraMap V K)) ≫ a.left`. Introduce `w`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hA` using `GlobalTheory.T.semiabelian_extension_over_dvr V K Y.X Y.t.G T.G tK.G z m'.φ φ₁ Y.t.semi T.semi m'.cart (by rw [hz]; exact hφ₁) (ML.pt w) (ML.tan w)`. Establish `hF` using `GlobalTheory.T.lie_lattice_eval_fraction_field Y.X Y.t.G Z.Ω (Z.ξ₀ ≫ Y.j) Z.V Z.M V z K (Fin g → K) MC Z.gen hsm h₂ h₁' w`. Rewrite `hF` using `[hfib]`. Rewrite using `[hF, hA]`. Establish `e : (ML.pt w).left ≫ φ₁ = (MC.pt w).left`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hMC]`. Conclude with `htr _ _ _ (hsame w) (hML w)`. Rewrite using `[e]`. Use extensionality with `w`. Rewrite using `[key w, ← hL w]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `show _ ↔ w ∈ stdLat V K g ⊓ (HT.eigSp ρK σ).restrictScalars V`. Rewrite using `[Submodule.mem_inf]`. Use `and_congr Iff.rfl ?_` and prove the remaining obligations. Establish `: ∀ r, algebraMap V K (σV r) = σ (r : E)` using `fun r => by`. Rewrite using `[← hσ r, ← hσV]`.
-
-Both sides reduce to the same expression. Simplify using `[HT.eigSp, Submodule.mem_iInf, sub_eq_zero, this]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem span_eq_eigSub : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (β : O →+* c.F) (Y : Model Xo c β) (U : Set (Xo.XF c)) (Z : CptOver Y U) (V K : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] [Field K] [Algebra V K] [IsFractionRing V K]
     (y : Sp K ⟶ Xo.XF c) (z : Sp V ⟶ Y.X) (h₁ : genPt (Z.ξ₀ ≫ Y.j) ⤳ centre (y ≫ Y.j)) (h₂ : genPt (Z.ξ₀ ≫ Y.j) ⤳ centre z)

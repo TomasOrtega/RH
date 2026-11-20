@@ -12,7 +12,7 @@ attribute [local instance] MvPolynomial.gradedAlgebra
 namespace GlobalTheory.CompanionTheory.GE
 
 /- English proof (translation)
-Establish `e` using `congrArg (fun g => CommRingCat.Hom.hom g a) (φ.naturality (homOfLE h).op)`. Simplify using `only [CommRingCat.hom_comp, RingHom.comp_apply] at e`. Conclude with `e`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem app_presheaf_map {A B : Scheme.{0}} (φ : B ⟶ A) {U V : A.Opens} (h : V ≤ U)
     (h' : φ ⁻¹ᵁ V ≤ φ ⁻¹ᵁ U) (a : Γ(A, U)) :
@@ -25,7 +25,7 @@ theorem app_presheaf_map {A B : Scheme.{0}} (φ : B ⟶ A) {U V : A.Opens} (h : 
 variable {R : Type} [CommRing R] {N : ℕ}
 
 /- English proof (translation)
-Substitute `h` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 private theorem formOn_congr {U : (PSpace R N).Opens} {i : Fin (N + 1)} {hi : U ≤ chart R N i} {n : ℕ}
     {f g : MvPolynomial (Fin (N + 1)) R} (hf : f.IsHomogeneous n) (hg : g.IsHomogeneous n) (h : f = g) :
@@ -34,7 +34,7 @@ private theorem formOn_congr {U : (PSpace R N).Opens} {i : Fin (N + 1)} {hi : U 
   rfl
 
 /- English proof (translation)
-Proceed by induction on `m with`. Consider the case `zero`. Rewrite using `[formOn_congr _ (isHomogeneous_C _ (1 : R)) (by simp), GlobalTheory.ProjSpace.formOn_C, map_one, pow_zero]`. Consider the case `succ m ih`. Rewrite using `[formOn_congr _ ((isHomogeneous_X_pow j m).mul (isHomogeneous_X R j)) (pow_succ _ _), GlobalTheory.ProjSpace.formOn_mul (isHomogeneous_X_pow j m) (isHomogeneous_X R j), ih, GlobalTheory.ProjSpace.formOn_X, pow_succ]`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem formOn_X_pow (U : (PSpace R N).Opens) (i : Fin (N + 1)) (hi : U ≤ chart R N i)
     (j : Fin (N + 1)) (m : ℕ) :
@@ -47,13 +47,11 @@ theorem formOn_X_pow (U : (PSpace R N).Opens) (i : Fin (N + 1)) (hi : U ≤ char
       GlobalTheory.ProjSpace.formOn_mul (isHomogeneous_X_pow j m) (isHomogeneous_X R j), ih, GlobalTheory.ProjSpace.formOn_X, pow_succ]
 
 /- English proof (translation)
-Establish `hW : φ ⁻¹ᵁ (chart R N j ⊓ chart R N k) ≤ φ ⁻¹ᵁ chart R N j` using `(TopologicalSpace.Opens.map φ.base).monotone inf_le_left`. Establish `hW' : φ ⁻¹ᵁ (chart R N j ⊓ chart R N k) ≤ φ ⁻¹ᵁ chart R N k` using `(TopologicalSpace.Opens.map φ.base).monotone inf_le_right`. Establish `e1` using `GlobalTheory.ProjSpace.resG_formOn (U := chart R N j) (i := j) (hi := le_rfl) (inf_le_left : chart R N j ⊓ chart R N k ≤ chart R N j) hf`. Establish `e2` using `GlobalTheory.ProjSpace.resG_formOn (U := chart R N k) (i := k) (hi := le_rfl) (inf_le_right : chart R N j ⊓ chart R N k ≤ chart R N k) hf`. Establish `e3` using `GlobalTheory.ProjSpace.formOn_eq_ratioOn_pow_mul (U := chart R N j ⊓ chart R N k) (i := j) (hi := inf_le_left) (j := k) inf_le_right hf`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key : (Y.presheaf.map (homOfLE hW).op).hom ((φ.app (chart R N j)).hom (formOn (chart R N j) j le_rfl n f hf)) = 0`. Rewrite using `[← app_presheaf_map φ inf_le_left hW]`. Use `erw [e1]`. Rewrite using `[e3, ← e2, map_mul]`. Use `erw [app_presheaf_map φ inf_le_right hW']`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[h0, map_zero, mul_zero]`. Establish `hle : Y.basicOpen ((φ.app (chart R N j)).hom (ratio R N j k)) ≤ φ ⁻¹ᵁ (chart R N j ⊓ chart R N k)`. Rewrite using `[← Scheme.preimage_basicOpen, GlobalTheory.ProjSpace.basicOpen_ratioOn]`. Use `exists_pow_mul_eq_zero_of_res_basicOpen_eq_zero_of_isCompact Y (U := φ ⁻¹ᵁ chart R N j) (φ.isCompact_preimage (GlobalTheory.ProjSpace.isAffineOpen_chart R N j).isCompact) _ _ ?_` and prove the remaining obligations. Use `show (Y.presheaf.map (homOfLE _).op).hom _ = 0`.
-
-Rewrite using `[show (homOfLE (Y.basicOpen_le _) : Y.basicOpen ((φ.app (chart R N j)).hom (ratio R N j k)) ⟶ φ ⁻¹ᵁ chart R N j) = homOfLE hle ≫ homOfLE hW from rfl, op_comp, Functor.map_comp, CommRingCat.hom_comp, RingHom.comp_apply, key, map_zero]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_ratio_pow_mul_eq_zero {Y : Scheme.{0}} (φ : Y ⟶ PSpace R N) [QuasiCompact φ] (n : ℕ)
     (f : MvPolynomial (Fin (N + 1)) R) (hf : f.IsHomogeneous n) (k : Fin (N + 1))
@@ -88,9 +86,9 @@ theorem exists_ratio_pow_mul_eq_zero {Y : Scheme.{0}} (φ : Y ⟶ PSpace R N) [Q
     map_zero]
 
 /- English proof (translation)
-Introduce `R _ N Y φ _ n f hf k h0`. Use `choose m hm using fun j => exists_ratio_pow_mul_eq_zero φ n f hf k h0 j`. Use `⟨∑ j, m j, (isHomogeneous_X_pow k _).mul hf, ?_⟩` and prove the remaining obligations. Introduce `j`. Rewrite using `[GlobalTheory.ProjSpace.formOn_mul (isHomogeneous_X_pow k _) hf, formOn_X_pow, map_mul, map_pow]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hle : m j ≤ ∑ j, m j` using `Finset.single_le_sum (fun _ _ => Nat.zero_le _) (Finset.mem_univ j)`. Rewrite using `[← Nat.sub_add_cancel hle, pow_add, mul_assoc, hm j, mul_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_killsForm_X_pow_mul :
     ∀ {R : Type} [CommRing R] {N : ℕ} {Y : Scheme.{0}} (φ : Y ⟶ PSpace R N) [QuasiCompact φ] (n : ℕ)

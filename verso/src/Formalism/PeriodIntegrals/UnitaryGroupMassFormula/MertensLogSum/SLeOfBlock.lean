@@ -5,7 +5,7 @@ namespace PI.PrimeLogOverPWork
 open Finset
 
 /- English proof (translation)
-Establish `h` using `log_le_of_pow_le 3 32 20 (by norm_num) (by norm_num) (by norm_num)`. Move the coercions through the operations in `at h`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem u3 : Real.log (3 : ℝ) ≤ 32 / 20 * Real.log 2 := by
   have h := log_le_of_pow_le 3 32 20 (by norm_num) (by norm_num) (by norm_num)
@@ -13,7 +13,7 @@ theorem u3 : Real.log (3 : ℝ) ≤ 32 / 20 * Real.log 2 := by
   linarith
 
 /- English proof (translation)
-Establish `h` using `log_le_of_pow_le 5 47 20 (by norm_num) (by norm_num) (by norm_num)`. Move the coercions through the operations in `at h`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem u5 : Real.log (5 : ℝ) ≤ 47 / 20 * Real.log 2 := by
   have h := log_le_of_pow_le 5 47 20 (by norm_num) (by norm_num) (by norm_num)
@@ -21,7 +21,7 @@ theorem u5 : Real.log (5 : ℝ) ≤ 47 / 20 * Real.log 2 := by
   linarith
 
 /- English proof (translation)
-Establish `h` using `log_le_of_pow_le 7 57 20 (by norm_num) (by norm_num) (by norm_num)`. Move the coercions through the operations in `at h`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem u7 : Real.log (7 : ℝ) ≤ 57 / 20 * Real.log 2 := by
   have h := log_le_of_pow_le 7 57 20 (by norm_num) (by norm_num) (by norm_num)
@@ -29,7 +29,7 @@ theorem u7 : Real.log (7 : ℝ) ≤ 57 / 20 * Real.log 2 := by
   linarith
 
 /- English proof (translation)
-Establish `h` using `log_le_of_pow_le 11 70 20 (by norm_num) (by norm_num) (by norm_num)`. Move the coercions through the operations in `at h`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem u11 : Real.log (11 : ℝ) ≤ 70 / 20 * Real.log 2 := by
   have h := log_le_of_pow_le 11 70 20 (by norm_num) (by norm_num) (by norm_num)
@@ -37,7 +37,7 @@ theorem u11 : Real.log (11 : ℝ) ≤ 70 / 20 * Real.log 2 := by
   linarith
 
 /- English proof (translation)
-Establish `h` using `log_le_of_pow_le 13 75 20 (by norm_num) (by norm_num) (by norm_num)`. Move the coercions through the operations in `at h`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem u13 : Real.log (13 : ℝ) ≤ 75 / 20 * Real.log 2 := by
   have h := log_le_of_pow_le 13 75 20 (by norm_num) (by norm_num) (by norm_num)
@@ -45,7 +45,7 @@ theorem u13 : Real.log (13 : ℝ) ≤ 75 / 20 * Real.log 2 := by
   linarith
 
 /- English proof (translation)
-Establish `h` using `log_le_of_pow_le 17 82 20 (by norm_num) (by norm_num) (by norm_num)`. Move the coercions through the operations in `at h`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem u17 : Real.log (17 : ℝ) ≤ 82 / 20 * Real.log 2 := by
   have h := log_le_of_pow_le 17 82 20 (by norm_num) (by norm_num) (by norm_num)
@@ -53,7 +53,7 @@ theorem u17 : Real.log (17 : ℝ) ≤ 82 / 20 * Real.log 2 := by
   linarith
 
 /- English proof (translation)
-Establish `h` using `log_le_of_pow_le 19 85 20 (by norm_num) (by norm_num) (by norm_num)`. Move the coercions through the operations in `at h`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem u19 : Real.log (19 : ℝ) ≤ 85 / 20 * Real.log 2 := by
   have h := log_le_of_pow_le 19 85 20 (by norm_num) (by norm_num) (by norm_num)
@@ -61,7 +61,7 @@ theorem u19 : Real.log (19 : ℝ) ≤ 85 / 20 * Real.log 2 := by
   linarith
 
 /- English proof (translation)
-Establish `h` using `log_le_of_pow_le 23 91 20 (by norm_num) (by norm_num) (by norm_num)`. Move the coercions through the operations in `at h`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem u23 : Real.log (23 : ℝ) ≤ 91 / 20 * Real.log 2 := by
   have h := log_le_of_pow_le 23 91 20 (by norm_num) (by norm_num) (by norm_num)
@@ -69,7 +69,7 @@ theorem u23 : Real.log (23 : ℝ) ≤ 91 / 20 * Real.log 2 := by
   linarith
 
 /- English proof (translation)
-Establish `h` using `log_le_of_pow_le 29 98 20 (by norm_num) (by norm_num) (by norm_num)`. Move the coercions through the operations in `at h`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem u29 : Real.log (29 : ℝ) ≤ 98 / 20 * Real.log 2 := by
   have h := log_le_of_pow_le 29 98 20 (by norm_num) (by norm_num) (by norm_num)
@@ -77,7 +77,7 @@ theorem u29 : Real.log (29 : ℝ) ≤ 98 / 20 * Real.log 2 := by
   linarith
 
 /- English proof (translation)
-Establish `h` using `log_le_of_pow_le 31 100 20 (by norm_num) (by norm_num) (by norm_num)`. Move the coercions through the operations in `at h`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem u31 : Real.log (31 : ℝ) ≤ 100 / 20 * Real.log 2 := by
   have h := log_le_of_pow_le 31 100 20 (by norm_num) (by norm_num) (by norm_num)
@@ -85,7 +85,7 @@ theorem u31 : Real.log (31 : ℝ) ≤ 100 / 20 * Real.log 2 := by
   linarith
 
 /- English proof (translation)
-Establish `h` using `log_le_of_pow_le 37 105 20 (by norm_num) (by norm_num) (by norm_num)`. Move the coercions through the operations in `at h`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem u37 : Real.log (37 : ℝ) ≤ 105 / 20 * Real.log 2 := by
   have h := log_le_of_pow_le 37 105 20 (by norm_num) (by norm_num) (by norm_num)
@@ -93,7 +93,7 @@ theorem u37 : Real.log (37 : ℝ) ≤ 105 / 20 * Real.log 2 := by
   linarith
 
 /- English proof (translation)
-Establish `h` using `log_le_of_pow_le 41 108 20 (by norm_num) (by norm_num) (by norm_num)`. Move the coercions through the operations in `at h`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem u41 : Real.log (41 : ℝ) ≤ 108 / 20 * Real.log 2 := by
   have h := log_le_of_pow_le 41 108 20 (by norm_num) (by norm_num) (by norm_num)
@@ -101,7 +101,7 @@ theorem u41 : Real.log (41 : ℝ) ≤ 108 / 20 * Real.log 2 := by
   linarith
 
 /- English proof (translation)
-Establish `h` using `log_le_of_pow_le 43 109 20 (by norm_num) (by norm_num) (by norm_num)`. Move the coercions through the operations in `at h`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem u43 : Real.log (43 : ℝ) ≤ 109 / 20 * Real.log 2 := by
   have h := log_le_of_pow_le 43 109 20 (by norm_num) (by norm_num) (by norm_num)
@@ -109,7 +109,7 @@ theorem u43 : Real.log (43 : ℝ) ≤ 109 / 20 * Real.log 2 := by
   linarith
 
 /- English proof (translation)
-Establish `h` using `log_le_of_pow_le 47 112 20 (by norm_num) (by norm_num) (by norm_num)`. Move the coercions through the operations in `at h`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem u47 : Real.log (47 : ℝ) ≤ 112 / 20 * Real.log 2 := by
   have h := log_le_of_pow_le 47 112 20 (by norm_num) (by norm_num) (by norm_num)
@@ -117,7 +117,7 @@ theorem u47 : Real.log (47 : ℝ) ≤ 112 / 20 * Real.log 2 := by
   linarith
 
 /- English proof (translation)
-Establish `h` using `log_le_of_pow_le 53 115 20 (by norm_num) (by norm_num) (by norm_num)`. Move the coercions through the operations in `at h`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem u53 : Real.log (53 : ℝ) ≤ 115 / 20 * Real.log 2 := by
   have h := log_le_of_pow_le 53 115 20 (by norm_num) (by norm_num) (by norm_num)
@@ -125,7 +125,7 @@ theorem u53 : Real.log (53 : ℝ) ≤ 115 / 20 * Real.log 2 := by
   linarith
 
 /- English proof (translation)
-Establish `h` using `log_le_of_pow_le 59 118 20 (by norm_num) (by norm_num) (by norm_num)`. Move the coercions through the operations in `at h`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem u59 : Real.log (59 : ℝ) ≤ 118 / 20 * Real.log 2 := by
   have h := log_le_of_pow_le 59 118 20 (by norm_num) (by norm_num) (by norm_num)
@@ -133,7 +133,7 @@ theorem u59 : Real.log (59 : ℝ) ≤ 118 / 20 * Real.log 2 := by
   linarith
 
 /- English proof (translation)
-Establish `h` using `log_le_of_pow_le 61 119 20 (by norm_num) (by norm_num) (by norm_num)`. Move the coercions through the operations in `at h`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem u61 : Real.log (61 : ℝ) ≤ 119 / 20 * Real.log 2 := by
   have h := log_le_of_pow_le 61 119 20 (by norm_num) (by norm_num) (by norm_num)
@@ -141,7 +141,7 @@ theorem u61 : Real.log (61 : ℝ) ≤ 119 / 20 * Real.log 2 := by
   linarith
 
 /- English proof (translation)
-Establish `h` using `le_log_of_pow_le 3 31 20 (by norm_num) (by norm_num)`. Move the coercions through the operations in `at h`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem l3 : (31 : ℝ) / 20 * Real.log 2 ≤ Real.log (3 : ℝ) := by
   have h := le_log_of_pow_le 3 31 20 (by norm_num) (by norm_num)
@@ -149,7 +149,7 @@ theorem l3 : (31 : ℝ) / 20 * Real.log 2 ≤ Real.log (3 : ℝ) := by
   linarith
 
 /- English proof (translation)
-Establish `h` using `le_log_of_pow_le 5 46 20 (by norm_num) (by norm_num)`. Move the coercions through the operations in `at h`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem l5 : (46 : ℝ) / 20 * Real.log 2 ≤ Real.log (5 : ℝ) := by
   have h := le_log_of_pow_le 5 46 20 (by norm_num) (by norm_num)
@@ -157,7 +157,7 @@ theorem l5 : (46 : ℝ) / 20 * Real.log 2 ≤ Real.log (5 : ℝ) := by
   linarith
 
 /- English proof (translation)
-Establish `h` using `le_log_of_pow_le 11 69 20 (by norm_num) (by norm_num)`. Move the coercions through the operations in `at h`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem l11 : (69 : ℝ) / 20 * Real.log 2 ≤ Real.log (11 : ℝ) := by
   have h := le_log_of_pow_le 11 69 20 (by norm_num) (by norm_num)
@@ -165,7 +165,7 @@ theorem l11 : (69 : ℝ) / 20 * Real.log 2 ≤ Real.log (11 : ℝ) := by
   linarith
 
 /- English proof (translation)
-Establish `h` using `le_log_of_pow_le 31 99 20 (by norm_num) (by norm_num)`. Move the coercions through the operations in `at h`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem l31 : (99 : ℝ) / 20 * Real.log 2 ≤ Real.log (31 : ℝ) := by
   have h := le_log_of_pow_le 31 99 20 (by norm_num) (by norm_num)
@@ -173,13 +173,13 @@ theorem l31 : (99 : ℝ) / 20 * Real.log 2 ≤ Real.log (31 : ℝ) := by
   linarith
 
 /- English proof (translation)
-Simplify using `[S]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem S_zero' : S 0 = 0 := by
   simp [S]
 
 /- English proof (translation)
-Simplify using `only [S, Finset.sum_filter]`. Rewrite using `[Finset.sum_Ioc_succ_top (Nat.zero_le n)]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 private theorem S_succ_eq_add_ite_prime (n : ℕ) :
     S (n + 1) = S n +
@@ -188,31 +188,31 @@ private theorem S_succ_eq_add_ite_prime (n : ℕ) :
   rw [Finset.sum_Ioc_succ_top (Nat.zero_le n)]
 
 /- English proof (translation)
-Evaluate the numerical expressions using `[S_succ_eq_add_ite_prime, S_zero']`.
+Evaluate the numerical expressions.
 -/
 theorem S_1 : S 1 = 0 := by
   norm_num [S_succ_eq_add_ite_prime, S_zero']
 
 /- English proof (translation)
-Evaluate the numerical expressions using `[S_succ_eq_add_ite_prime, S_zero']`.
+Evaluate the numerical expressions.
 -/
 theorem S_2 : S 2 = Real.log 2 / 2 := by
   norm_num [S_succ_eq_add_ite_prime, S_zero']
 
 /- English proof (translation)
-Evaluate the numerical expressions using `[S_succ_eq_add_ite_prime, S_zero']`.
+Evaluate the numerical expressions.
 -/
 theorem S_4 : S 4 = Real.log 2 / 2 + Real.log 3 / 3 := by
   norm_num [S_succ_eq_add_ite_prime, S_zero']
 
 /- English proof (translation)
-Evaluate the numerical expressions using `[S_succ_eq_add_ite_prime, S_zero']`.
+Evaluate the numerical expressions.
 -/
 theorem S_10 : S 10 = Real.log 2 / 2 + Real.log 3 / 3 + Real.log 5 / 5 + Real.log 7 / 7 := by
   norm_num [S_succ_eq_add_ite_prime, S_zero']
 
 /- English proof (translation)
-Evaluate the numerical expressions using `[S_succ_eq_add_ite_prime, S_zero']`.
+Evaluate the numerical expressions.
 -/
 theorem S_30 : S 30 = Real.log 2 / 2 + Real.log 3 / 3 + Real.log 5 / 5 + Real.log 7 / 7 + Real.log 11 / 11 + Real.log 13 / 13 + Real.log 17 / 17 + Real.log 19 / 19 + Real.log 23 / 23 + Real.log 29 / 29 := by
   norm_num [S_succ_eq_add_ite_prime, S_zero']
@@ -220,19 +220,19 @@ theorem S_30 : S 30 = Real.log 2 / 2 + Real.log 3 / 3 + Real.log 5 / 5 + Real.lo
 set_option maxHeartbeats 800000 in
 
 /- English proof (translation)
-Evaluate the numerical expressions using `[S_succ_eq_add_ite_prime, S_zero']`.
+Evaluate the numerical expressions.
 -/
 theorem S_63 : S 63 = Real.log 2 / 2 + Real.log 3 / 3 + Real.log 5 / 5 + Real.log 7 / 7 + Real.log 11 / 11 + Real.log 13 / 13 + Real.log 17 / 17 + Real.log 19 / 19 + Real.log 23 / 23 + Real.log 29 / 29 + Real.log 31 / 31 + Real.log 37 / 37 + Real.log 41 / 41 + Real.log 43 / 43 + Real.log 47 / 47 + Real.log 53 / 53 + Real.log 59 / 59 + Real.log 61 / 61 := by
   norm_num [S_succ_eq_add_ite_prime, S_zero']
 
 /- English proof (translation)
-Rewrite using `[S_1, Real.log_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem S_le_1_1 : S 1 ≤ Real.log (1 : ℝ) := by
   rw [S_1, Real.log_one]
 
 /- English proof (translation)
-Rewrite using `[S_2]`. Establish `h2` using `Real.log_pos (by norm_num : (1 : ℝ) < 2)`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem S_le_2_2 : S 2 ≤ Real.log (2 : ℝ) := by
   rw [S_2]
@@ -240,7 +240,7 @@ theorem S_le_2_2 : S 2 ≤ Real.log (2 : ℝ) := by
   linarith
 
 /- English proof (translation)
-Rewrite using `[S_4]`. Establish `h2` using `Real.log_pos (by norm_num : (1 : ℝ) < 2)`. Establish `ha` using `l3`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem S_le_3_4 : S 4 ≤ Real.log (3 : ℝ) := by
   rw [S_4]
@@ -249,7 +249,7 @@ theorem S_le_3_4 : S 4 ≤ Real.log (3 : ℝ) := by
   linarith
 
 /- English proof (translation)
-Rewrite using `[S_10]`. Establish `h2` using `Real.log_pos (by norm_num : (1 : ℝ) < 2)`. Establish `ha` using `l5`. Establish `hb0` using `u3`. Establish `hb1` using `u7`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
 Combine the linear equalities and inequalities to obtain the conclusion.
 -/
@@ -262,11 +262,11 @@ theorem S_le_5_10 : S 10 ≤ Real.log (5 : ℝ) := by
   linarith
 
 /- English proof (translation)
-Rewrite using `[S_30]`. Establish `h2` using `Real.log_pos (by norm_num : (1 : ℝ) < 2)`. Establish `ha` using `l11`. Establish `hb0` using `u3`. Establish `hb1` using `u5`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb2` using `u7`. Establish `hb3` using `u13`. Establish `hb4` using `u17`. Establish `hb5` using `u19`. Establish `hb6` using `u23`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb7` using `u29`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem S_le_11_30 : S 30 ≤ Real.log (11 : ℝ) := by
   rw [S_30]
@@ -283,13 +283,13 @@ theorem S_le_11_30 : S 30 ≤ Real.log (11 : ℝ) := by
   linarith
 
 /- English proof (translation)
-Rewrite using `[S_63]`. Establish `h2` using `Real.log_pos (by norm_num : (1 : ℝ) < 2)`. Establish `ha` using `l31`. Establish `hb0` using `u3`. Establish `hb1` using `u5`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb2` using `u7`. Establish `hb3` using `u11`. Establish `hb4` using `u13`. Establish `hb5` using `u17`. Establish `hb6` using `u19`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb7` using `u23`. Establish `hb8` using `u29`. Establish `hb9` using `u37`. Establish `hb10` using `u41`. Establish `hb11` using `u43`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb12` using `u47`. Establish `hb13` using `u53`. Establish `hb14` using `u59`. Establish `hb15` using `u61`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem S_le_31_63 : S 63 ≤ Real.log (31 : ℝ) := by
   rw [S_63]
@@ -314,7 +314,7 @@ theorem S_le_31_63 : S 63 ≤ Real.log (31 : ℝ) := by
   linarith
 
 /- English proof (translation)
-Establish `ha' : (0 : ℝ) < a` using `by exact_mod_cast ha`. Establish `h1' : (a : ℝ) ≤ n` using `by exact_mod_cast h1`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem S_le_of_block {a b n : ℕ} (ha : 0 < a) (h : S b ≤ Real.log (a : ℝ)) (h1 : a ≤ n)
     (h2 : n ≤ b) : S n ≤ Real.log (n : ℝ) := by
@@ -325,11 +325,9 @@ theorem S_le_of_block {a b n : ℕ} (ha : 0 < a) (h : S b ≤ Real.log (a : ℝ)
     _ ≤ Real.log (n : ℝ) := Real.log_le_log ha' h1'
 
 /- English proof (translation)
-Distinguish the cases in `hA : n ≤ 1`. Conclude with `S_le_of_block (a := 1) (b := 1) (by norm_num) (by exact_mod_cast S_le_1_1) h1 hA`. Distinguish the cases in `hB : n ≤ 2`. Conclude with `S_le_of_block (a := 2) (b := 2) (by norm_num) (by exact_mod_cast S_le_2_2) (by omega) hB`. Distinguish the cases in `hC : n ≤ 4`.
+Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails.
 
-Conclude with `S_le_of_block (a := 3) (b := 4) (by norm_num) (by exact_mod_cast S_le_3_4) (by omega) hC`. Distinguish the cases in `hD : n ≤ 10`. Conclude with `S_le_of_block (a := 5) (b := 10) (by norm_num) (by exact_mod_cast S_le_5_10) (by omega) hD`. Distinguish the cases in `hE : n ≤ 30`. Conclude with `S_le_of_block (a := 11) (b := 30) (by norm_num) (by exact_mod_cast S_le_11_30) (by omega) hE`.
-
-Conclude with `S_le_of_block (a := 31) (b := 63) (by norm_num) (by exact_mod_cast S_le_31_63) (by omega) h2`.
+A detailed English derivation is pending.
 -/
 theorem S_le_small (n : ℕ) (h1 : 1 ≤ n) (h2 : n ≤ 63) : S n ≤ Real.log (n : ℝ) := by
   by_cases hA : n ≤ 1

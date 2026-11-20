@@ -19,15 +19,13 @@ open GlobalTheory.Unf
 namespace GlobalTheory.ThetaOrthTotal
 
 /- English proof (translation)
-Introduce `D ψ hψ S T μ 𝓕 hμ h𝓕 q hq hquasi horth`. Take `⟨f₀, hne, h₀⟩` from `GlobalTheory.FinWeilForm.exists_theta hψ S T`. Take `⟨i1, i2, i3, i4, i5, K, hK, hcov⟩` from `GlobalTheory.AdelicMatrixLattice.lattice D T S`. Use `haveI : BorelSpace (WO S T) := ⟨rfl⟩`. Take `⟨hl, hr, halt, hdbl, hcont, -⟩` from `GlobalTheory.OrientedFormLaws.symplOH_laws D S T`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨hψc, hψn, -, -⟩` from `hψ.1`. Establish `hann : ∀ x : WO S T, (∀ γ ∈ ratL T S, ψ (symplOH S T x γ + symplOH S T x γ) = 1) ↔ x ∈ ratL T S`. Introduce `x`. Simplify using `only [hdbl]`. Conclude with `GlobalTheory.T.rationalSymplecticPoints_self_annihilator D ψ hψ S T x`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hq' : ∀ γ ∈ ratL T S, ∀ w, q (γ + w) = ψ (-(symplOH S T γ w)) * q w`. Introduce `γ hγ w`. Take `⟨γ', rfl⟩` from `hγ`. Conclude with `hquasi γ' w`. Establish `horth' : ∀ w, ∫ x in 𝓕, heisO ψ S T w f₀ x * star (q x) ∂μ = 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `w`. Establish `h` using `horth _ ((GlobalTheory.HeisThetaLaws.heis_theta_laws D ψ hψ S T).1 w f₀ h₀)`. Establish `e : (fun x => heisO ψ S T w f₀ x * star (q x)) = fun x => (starRingEnd ℂ) (q x * star (heisO ψ S T w f₀ x))`. Use function extensionality and compare the values at `x`. Simplify using `only [map_mul, Complex.star_def, Complex.conj_conj]`.
-
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, integral_conj, h, map_zero]`. Conclude with `GlobalTheory.HeisTotal.eq_zero_abstract (G := WO S T) (ratL T S) K hK hcov ψ hψc hψn (symplOH S T) hl hr halt hcont hann f₀ q h₀.cont hq (GlobalTheory.HeisTotal.quasi_of_mem h₀) hq' hne μ 𝓕 hμ h𝓕 horth'`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_orthogonal_theta : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ (S T : HSp D) (μ : Measure (WO S T)) (𝓕 : Set (WO S T)), μ.IsAddHaarMeasure → IsAddFundamentalDomain (ratL T S) 𝓕 μ → ∀ q : WO S T → ℂ, Continuous q → (∀ γ w, q (ratW T S γ + w) = ψ (-(symplOH S T (ratW T S γ) w)) * q w) → (∀ f, IsThetaFunO ψ S T f → ∫ w in 𝓕, q w * star (f w) ∂μ = 0) → q = 0 := by
   intro D ψ hψ S T μ 𝓕 hμ h𝓕 q hq hquasi horth

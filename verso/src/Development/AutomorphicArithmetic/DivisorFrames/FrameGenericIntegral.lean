@@ -9,7 +9,7 @@ open GlobalTheory GlobalTheory.VB GlobalTheory.TangentOrigin GlobalTheory.Toroid
 open scoped ComplexOrder
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `‖∑ i, φ (S k i) * a i‖ ≤ 1`. Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg zero_le_one fun i _ => ?_` and prove the remaining obligations. Rewrite using `[norm_mul]`. Conclude with `mul_le_one₀ (hφ _) (norm_nonneg _) (ha i)`.
+Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.norm_mulVec_le_one {R C : Type} [CommRing R] [NormedField C] [IsUltrametricDist C] (φ : R →+* C)
     (hφ : ∀ r, ‖φ r‖ ≤ 1) {m n : ℕ} (S : Matrix (Fin m) (Fin n) R) (a : Fin n → C) (ha : ∀ i, ‖a i‖ ≤ 1) (k : Fin m) :
@@ -22,29 +22,29 @@ private theorem UpperTheory.norm_mulVec_le_one {R C : Type} [CommRing R] [Normed
 open GlobalTheory.LineNorm.Chart ReciprocityTheory.ChartRestriction.G.PullbackSections GlobalTheory.LieMet in
 open Formalism.MainNotions.DIV.Cons (intO) in
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c O _ β Z F _ _ e Y ρ _ g₀ τ X j ρ' hj V P hS v hpf ε y yt hyt hin φ f hf a w hw`. Take `⟨hV, hξ, g, b, S, S', he, hSS, -, hP⟩` from `hS`. Establish `hX : Z.X.IsSeparated`. Establish `: IsProper Z.s` using `by exact isProper_toroidalModel_structureMap Z`. Conclude with `⟨by rw [← Limits.terminal.comp_from Z.s]; infer_instance⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 
-Take `⟨hp, h1, -⟩` from `ioOf_spec F v ε`. Take `⟨γ, hγ⟩` from `exists_ringHom hV yt hin`. Establish `hy : j (below y.1) ∈ V`. Establish `: (spMap ε.O.subtype ≫ yt) (IsLocalRing.closedPoint _) ∈ V` using `hin (Set.mem_univ _)`. Rewrite `this` using `[hyt]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Take `⟨α, hα⟩` from `exists_stalkHom hV j _ hy`. Establish `hα' : spMap α ≫ hV.fromSpec ≫ ρ' = stalkPt Y (below y.1) ≫ ρ ≫ genι Z`. Rewrite using `[← Category.assoc, hα, Category.assoc, hj]`. Both sides reduce to the same expression. Establish `hι : spMap (evalPt _ V hξ) ≫ hV.fromSpec = genericPt Y ≫ j` using `GlobalTheory.Points.specMap_valMap_fromSpec hV _ hξ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hαι : (toFn (below y.1)).comp α = evalPt _ V hξ` using `ringHom_ext hV (by`. Rewrite using `[← spMap_comp', Category.assoc, hα, ← Category.assoc, hι]`. Conclude with `congrArg (· ≫ j) (gen_eq _))`. Establish `hι' : spMap (evalPt _ V hξ) ≫ hV.fromSpec ≫ ρ' = genericPt Y ≫ ρ ≫ genι Z`. Rewrite using `[← Category.assoc, hι, Category.assoc, hj]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hc : ∀ i, IsCombAtG Z.t (spMap α ≫ hV.fromSpec ≫ ρ') (fun k => spMap (dualMap α) ≫ b k) (fun k => α (S k i)) (f.v τ i)` using `fun i => by`. Take `⟨s, hs, -⟩` from `he.2 _ α (f.v τ i) (by rw [hα']; exact f.tan τ i)`. Establish `h2` using `coord_map α (toFn (below y.1)) hs`. Rewrite `h2` using `[hαι]`. Take `⟨w', h3, h4⟩` from `hP i`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `rfl : w' = spMap (dualMap (toFn (below y.1))) ≫ f.v τ i` from `((comb_iff (g₀.tan τ) _ _).1 h3).trans ((comb_iff (g₀.tan τ) _ _).1 (hf.2 i)).symm`. Rewrite `h4` using `[← hι']`. Establish `h5` using `(he.2 _ (evalPt _ V hξ) _ (comb_tan (fun k => isTan_map _ rfl (he.1 k)) h2)).unique h2 h4`. Establish `h6 : s = fun k => α (S k i)` using `funext fun k => toFn_injective _ ((congrFun h5 k).trans (RingHom.congr_fun hαι _).symm)`. Rewrite `hs` using `[h6]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `hσ : (Scheme.stalkClosedPointTo y.1).hom.comp α = ε.O.subtype.comp γ` using `ringHom_ext hV (by`. Rewrite using `[← spMap_comp', ← spMap_comp', Category.assoc, Category.assoc, hα, hγ, hyt, ← Category.assoc]`. Conclude with `congrArg (· ≫ j) (Scheme.Spec_stalkClosedPointTo_fromSpecStalk y.1))`. Take `⟨ψ, hψ⟩ : ∃ ψ, ψ = valP ε y` from `⟨_, rfl⟩`. Rewrite `hw`, the goal using `[← hψ]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hn : ∀ r, ‖ψ.comp α r‖ ≤ 1` using `fun r => by`. Establish `: (Scheme.stalkClosedPointTo y.1).hom (α r) = γ r` using `RingHom.congr_fun hσ r`. Rewrite using `[hψ]`. Use `(h1 _).2 ?_` and prove the remaining obligations. Rewrite using `[this]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `(γ r).2`. Set `θ : Γ(X, V) →+* ↥(intO ℂ_[resP v])` to `(ψ.comp α).codRestrict _ hn`. Establish `hθ : (intO ℂ_[resP v]).subtype.comp θ = ψ.comp α` using `rfl`. Establish `hx : spMap ψ ≫ stalkPt Y (below y.1) ≫ ρ ≫ genι Z = spMap (ψ.comp α) ≫ hV.fromSpec ≫ ρ'`. Rewrite using `[← hα', ← Category.assoc, spMap_comp']`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hx' : spMap (intO ℂ_[resP v]).subtype ≫ spMap θ ≫ hV.fromSpec ≫ ρ' = spMap (ψ.comp α) ≫ hV.fromSpec ≫ ρ'`. Rewrite using `[← hθ, ← Category.assoc, spMap_comp']`. Establish `key` using `GlobalTheory.HTPres.mem_latDR_iff Z.t hX _ he ℂ_[resP v] θ`. Rewrite `key` using `[hx', hθ]`. Rewrite `hw`, the goal using `[hx]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `h7` using `comb_comb (fun k => isTan_map _ rfl (he.1 k)) (fun i => coord_map α ψ (hc i)) hw`. Establish `h8 : (∑ i, a i • fun k => ψ (α (S k i))) = S.map (ψ.comp α) *ᵥ a`. Use function extensionality and compare the values at `k`. Simplify using `[mulVec, dotProduct, Finset.sum_apply, _root_.mul_comm]`. Rewrite using `[key _ _ h7, h8]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `⟨fun h => ?_, UpperTheory.norm_mulVec_le_one _ hn S a⟩` and prove the remaining obligations. Use `UpperTheory.norm_mulVec_le_one _ hn S' _ h` as an intermediate fact. Rewrite `this` using `[mulVec_mulVec, ← Matrix.map_mul, hSS, Matrix.map_one _ (map_zero _) (map_one _), one_mulVec]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.frame_generic_integral :
     ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Z : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Model Xo c β) (F : Type) [Field F] [NumberField F] (e : F ≃+* c.F) (Y : Var F) (ρ : Y.X ⟶ gen Z) (_ : ρ ≫ genStr Z ≫ spMap e.toRingHom = Y.str) (g₀ : GenFrame e ρ) (τ : E →+* ℂ) (X : Scheme.{0}) (j : Y.X ⟶ X) (ρ' : X ⟶ Z.X), j ≫ ρ' = ρ ≫ genι Z → ∀ (V : X.Opens) (P : Matrix (Fin (Dw.mult τ)) (Fin (Dw.mult τ)) Y.Fn), SplitOn g₀ τ j ρ' V P → LatOn g₀ τ j V P := by

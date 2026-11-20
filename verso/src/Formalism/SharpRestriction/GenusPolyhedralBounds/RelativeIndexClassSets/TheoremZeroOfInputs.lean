@@ -26,14 +26,14 @@ def AtMInputs (G : GlobalFamilyData X ka wL wF) (S : Scal B) (T : ℕ) (Gc PH Pr
     AtMBasis G ∧ AtMCurve Qf ∧ AtMTie Qf S ∧ AtMLift Qf S Gc Prw T ∧ Heights Qf Gc PH Prw Pet
 
 /- English proof (translation)
-Introduce `la y` and use `⟨fun h => absurd h (not_lt.2 hj), fun _ => hd la y⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem combBound_of_depthAtM {G : GlobalFamilyData X ka wL wF} {S : Scal B} {c : ℝ} {nus : HeightOneSpectrum (𝓞 B.KO) → ℝ}
     (hj : D.R.m ≤ j) (hd : DepthAtM X S wL nus) : CombBound G S c nus :=
   fun la y => ⟨fun h => absurd h (not_lt.2 hj), fun _ => hd la y⟩
 
 /- English proof (translation)
-Rewrite using `[tQ.1]`. Conclude with `rhoP_eq_zero_of_rho (rho_eq_zero_of_ge hj) _ _ _ ka`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rqAtM_eq_zero {large₂ : SizeData₂ D} {G : GlobalFamilyData X ka wL wF} {S : Scal B} {CRm : ℝ} {T : ℕ} {c Ch Ah : ℝ}
     (hj : D.R.m ≤ j) (tQ : G.TiedQ large₂ S CRm T c Ch Ah) : G.rq = 0 := by
@@ -41,7 +41,7 @@ theorem rqAtM_eq_zero {large₂ : SizeData₂ D} {G : GlobalFamilyData X ka wL w
   exact rhoP_eq_zero_of_rho (rho_eq_zero_of_ge hj) _ _ _ ka
 
 /- English proof (translation)
-Unfold `ShareRhoT at h`. Unfold `ShareRho`. Rewrite `h` using `[rqAtM_eq_zero hj tQ, Nat.cast_zero, zero_add]`. Conclude with `h`.
+Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem shareRho_of_shareRhoT {large₂ : SizeData₂ D} {G : GlobalFamilyData X ka wL wF} {S : Scal B} {CRm : ℝ} {T : ℕ} {c Ch Ah : ℝ} {d : ℕ}
     (hj : D.R.m ≤ j) (tQ : G.TiedQ large₂ S CRm T c Ch Ah) (h : ShareRhoT (D := D) (j := j) T G.rz G.rq d) :
@@ -54,7 +54,7 @@ theorem shareRho_of_shareRhoT {large₂ : SizeData₂ D} {G : GlobalFamilyData X
 end Inputs
 
 /- English proof (translation)
-Introduce `hj hd`. Take `⟨Qf, iB, iC, iT, iL, hHt⟩` from `hA hj`. Conclude with `theorem_zero_of_named_inputs large₂ X K H Ch Ah Cq Aq C2 A2 CR CT j h1 h2 S ka wL wF T nP nW h0 nus hH lA sA mA qA G Gc PH Prw Pet Pd Qf tW tTh tZ tQ tEt dH dS dL (pageGd4_iff.mp pG) sRd (shareRho_of_shareRhoT hj tQ sRho) sRhoP (polyDom4_iff.mp hP) iB iC iT iL iZ iM (combBound_of …`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem conclAtM_of_atMInputs (large₂ : SizeData₂ D) (X : Prov D B P) (K : KAdm) (H : KHyp) (Ch Ah Cq Aq C2 A2 CR CT : ℝ)
     (j : ℕ) (h1 : 1 ≤ j) (h2 : j ≤ D.R.m) (S : Scal B) (ka wL wF : WeightFamilies.Wt D j) (T nP nW : ℕ) (h0 : ℝ)
@@ -107,7 +107,7 @@ def Conclusion1OfComb5 : Prop :=
       ((X j h1 h2).rk ka (B.Mlat j ka) * D.R.f * D.R.m * large₂.sc.b * large₂.de2)
 
 /- English proof (translation)
-Introduce `large₂ X K H Ch Ah Cq Aq C2 A2 CR CT j h1 h2 S ka wL wF T nP nW h0 nus hH lA sA mA qA tC pA pS G Gc PH Prw Pet Pd tW tTh tZ tQ tEt dH dS dL pG sRd sRho sRhoP hP iZ iM hQf hDm hA`. Conclude with `theorem_zero_of_refined_inputs large₂ X K H Ch Ah Cq Aq C2 A2 CR CT j h1 h2 S ka wL wF T nP nW h0 nus hH lA sA mA qA tC pA pS G Gc PH Prw Pet Pd tW tTh tZ tQ tEt dH dS dL pG sRd sRho sRhoP hP iZ iM hQf hDm (conclAtM_of_atMInputs large₂ X K H Ch Ah Cq Aq C2 A2 CR CT j h1 h2 S ka w …`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem theorem_zero_of_inputs : Conclusion1OfComb5 (D := D) (B := B) (P := P) := by
   intro large₂ X K H Ch Ah Cq Aq C2 A2 CR CT j h1 h2 S ka wL wF T nP nW h0 nus hH lA sA mA qA tC pA pS G Gc PH Prw Pet Pd

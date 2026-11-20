@@ -19,14 +19,14 @@ section Alg
 variable {K : Type} [Field K]
 
 /- English proof (translation)
-Rewrite using `[coeff_one_lgF l hl]`. Conclude with `isUnit_one`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUnit_coeff_one (l : ℕ) (hl : 2 ≤ l) : IsUnit (PowerSeries.coeff 1 (lgF K l)) := by
   rw [coeff_one_lgF l hl]
   exact isUnit_one
 
 /- English proof (translation)
-Unfold `expF`. Rewrite using `[dif_pos (isUnit_coeff_one l hl)]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem expF_eq (l : ℕ) (hl : 2 ≤ l) :
     expF K l = PowerSeries.substInvOfIsUnit (lgF K l) (isUnit_coeff_one l hl) := by
@@ -34,7 +34,7 @@ theorem expF_eq (l : ℕ) (hl : 2 ≤ l) :
   rw [dif_pos (isUnit_coeff_one l hl)]
 
 /- English proof (translation)
-The claim follows from `lgF_subst_inj (ι := Unit) l hl a b ha hb h`.
+A detailed English derivation is pending.
 -/
 theorem inj (l : ℕ) (hl : 2 ≤ l) (a b : PowerSeries K) (ha : PowerSeries.constantCoeff a = 0)
     (hb : PowerSeries.constantCoeff b = 0)
@@ -42,7 +42,7 @@ theorem inj (l : ℕ) (hl : 2 ≤ l) (a b : PowerSeries K) (ha : PowerSeries.con
   lgF_subst_inj (ι := Unit) l hl a b ha hb h
 
 /- English proof (translation)
-Use `⟨by simp, ?_⟩` and prove the remaining obligations. Rewrite using `[← rescale_lgF hζ hl, PowerSeries.rescale_eq_subst, PowerSeries.smul_eq_C_mul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem isMul_root {ζ : K} {l : ℕ} (hl : 2 ≤ l) (hζ : ζ ^ (l ^ 2 - 1) = 1) :
     IsMul l ζ (PowerSeries.C ζ * PowerSeries.X) := by
@@ -50,7 +50,7 @@ theorem isMul_root {ζ : K} {l : ℕ} (hl : 2 ≤ l) (hζ : ζ ^ (l ^ 2 - 1) = 1
   rw [← rescale_lgF hζ hl, PowerSeries.rescale_eq_subst, PowerSeries.smul_eq_C_mul]
 
 /- English proof (translation)
-Unfold `at1`. Rewrite using `[PowerSeries.subst_mul (PowerSeries.HasSubst.X x), PowerSeries.subst_C, PowerSeries.subst_X (PowerSeries.HasSubst.X x)]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem at_variable_C_mul_X {ι : Type} (x : ι) (ζ : K) :
     at1 x (PowerSeries.C ζ * PowerSeries.X) =
@@ -66,16 +66,16 @@ section Normed
 variable {K : Type} [NormedField K] [IsUltrametricDist K]
 
 /- English proof (translation)
-Establish `h1 : ‖a‖ ^ n = 1` using `by rw [← norm_pow, h, norm_one]`. Conclude with `(pow_eq_one_iff_of_nonneg (norm_nonneg a) hn).1 h1`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem norm_eq_one_of_pow {a : K} {n : ℕ} (hn : n ≠ 0) (h : a ^ n = 1) : ‖a‖ = 1 := by
   have h1 : ‖a‖ ^ n = 1 := by rw [← norm_pow, h, norm_one]
   exact (pow_eq_one_iff_of_nonneg (norm_nonneg a) hn).1 h1
 
 /- English proof (translation)
-Proceed by induction on `i with`. Consider the case `zero => simp`. Consider the case `succ i ih`. Establish `e : a ^ (i + 1) - b ^ (i + 1) = a * (a ^ i - b ^ i) + (a - b) * b ^ i` using `by ring`. Rewrite using `[e]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le ?_ ?_)` and prove the remaining obligations. Rewrite using `[norm_mul]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[norm_mul, norm_pow]`. Combine the equalities or inequalities in the displayed calculation.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem norm_pow_sub_pow_le {a b : K} (ha : ‖a‖ ≤ 1) (hb : ‖b‖ ≤ 1) (i : ℕ) :
     ‖a ^ i - b ^ i‖ ≤ ‖a - b‖ := by
@@ -95,17 +95,17 @@ theorem norm_pow_sub_pow_le {a b : K} (ha : ‖a‖ ≤ 1) (hb : ‖b‖ ≤ 1) 
         _ = ‖a - b‖ := mul_one _
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Establish `hN0 : N ≠ 0`. Introduce and unpack `rfl`. Simplify using `at hN`. Establish `na : ‖a‖ = 1` using `norm_eq_one_of_pow hN0 ha`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `nb : ‖b‖ = 1` using `norm_eq_one_of_pow hN0 hb`. Establish `hS : (∑ i ∈ Finset.range N, a ^ i * b ^ (N - 1 - i)) = 0`. Establish `h` using `geom_sum₂_mul a b N`. Rewrite `h` using `[ha, hb, sub_self]`. Conclude with `(mul_eq_zero.1 h).resolve_right (sub_ne_zero.2 hne)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hT : (∑ i ∈ Finset.range N, b ^ i * b ^ (N - 1 - i)) = (N : K) * b ^ (N - 1)`. Rewrite using `[Finset.sum_congr rfl (g := fun _ => b ^ (N - 1))]`. Simplify using the standard rewrite rules. Introduce `i hi`. Establish `: i < N` using `Finset.mem_range.1 hi`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← pow_add]`. Use `congr 1`. Use linear arithmetic over natural numbers and integers. Establish `hD : (N : K) * b ^ (N - 1) = - ∑ i ∈ Finset.range N, (a ^ i - b ^ i) * b ^ (N - 1 - i)`. Simplify using `only [sub_mul, Finset.sum_sub_distrib, hS, hT]`.
+Reduce the equality to equality of the corresponding arguments. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `h1 : ‖(N : K) * b ^ (N - 1)‖ = 1`. Rewrite using `[norm_mul, norm_pow, hN, nb, one_pow, one_mul]`. Establish `h2 : ‖(N : K) * b ^ (N - 1)‖ ≤ ‖a - b‖`. Rewrite using `[hD, norm_neg]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg (norm_nonneg _) fun i _ => ?_` and prove the remaining obligations. Rewrite using `[norm_mul, norm_pow, nb, one_pow, mul_one]`. Conclude with `norm_pow_sub_pow_le na.le nb.le i`. Rewrite `h2` using `[h1]`. Conclude with `absurd hab (not_lt.2 h2)`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem root_eq_of_norm_lt {a b : K} {N : ℕ} (hN : ‖(N : K)‖ = 1) (ha : a ^ N = 1)
     (hb : b ^ N = 1) (hab : ‖a - b‖ < 1) : a = b := by
@@ -142,7 +142,7 @@ theorem root_eq_of_norm_lt {a b : K} {N : ℕ} (hN : ‖(N : K)‖ = 1) (ha : a 
   exact absurd hab (not_lt.2 h2)
 
 /- English proof (translation)
-Introduce `n`. Express the relevant statement in the definitionally equal form `‖MvPowerSeries.coeff n (MvPowerSeries.X () : MvPowerSeries Unit K)‖ ≤ 1`. Rewrite using `[MvPowerSeries.coeff_X]`. Apply the tactic sequence `split_ifs <;> simp`.
+Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem integral_X : Integral (PowerSeries.X : MvPowerSeries Unit K) := by
   intro n
@@ -151,9 +151,9 @@ theorem integral_X : Integral (PowerSeries.X : MvPowerSeries Unit K) := by
   split_ifs <;> simp
 
 /- English proof (translation)
-Use `⟨constantCoeff_lgF l hl, ?_⟩` and prove the remaining obligations. Establish `h1 : MvPowerSeries.map (σ.comp σ) (lgF K l : MvPowerSeries Unit K) = lgF K l` using `map_lgF (σ.comp σ) l`. Establish `h2 : (lgF K l : MvPowerSeries Unit K) - MvPowerSeries.C ((l : K)⁻¹) * frobVar (l ^ 2) (lgF K l : MvPowerSeries Unit K) = (PowerSeries.X : PowerSeries K)`. Establish `h` using `lgF_funEq (K := K) l hl hlK`. Rewrite `h` using `[PowerSeries.smul_eq_C_mul]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h`. Rewrite using `[h1, h2]`. Conclude with `integral_X`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ip_lgF (l : ℕ) (σ : K →+* K) (hl : 2 ≤ l) (hlK : (l : K) ≠ 0) :
     IP l σ (lgF K l : MvPowerSeries Unit K) := by
@@ -175,11 +175,9 @@ end FormalExponential
 open FormalExponential
 
 /- English proof (translation)
-Introduce `K _ l hl`. Establish `h0` using `constantCoeff_lgF (K := K) l hl`. Establish `hc : PowerSeries.constantCoeff (expF K l) = 0`. Rewrite using `[expF_eq l hl]`. Conclude with `PowerSeries.constantCoeff_substInvOfIsUnit _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : PowerSeries.subst (expF K l) (lgF K l) = (PowerSeries.X : PowerSeries K)`. Rewrite using `[expF_eq l hl]`. Conclude with `PowerSeries.subst_substInvOfIsUnit_right _ h0 _`. Use `⟨hc, h1, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[expF_eq l hl]`.
-
-Conclude with `PowerSeries.subst_substInvOfIsUnit_left _ h0 _`. Introduce `ex hex h`. Conclude with `inj l hl ex _ hex hc (h.trans h1.symm)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem exponential_specification : ExpSpec := by
   intro K _ l hl
@@ -197,15 +195,15 @@ theorem exponential_specification : ExpSpec := by
     exact inj l hl ex _ hex hc (h.trans h1.symm)
 
 /- English proof (translation)
-Introduce `K _ _ _ l d σ hU hd ζ hζ`. Take `⟨hp, _, hnl, _, hσ⟩` from `hU`. Establish `hlt : ‖(l : K)‖ < 1`. Rewrite using `[hnl]`. Conclude with `inv_lt_one_of_one_lt₀ (by exact_mod_cast hp.one_lt)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hpos : 1 ≤ l ^ d` using `Nat.one_le_pow _ _ hp.pos`. Establish `hnd : ¬ l ∣ l ^ d - 1`. Introduce `h`. Establish `h1 : l ∣ l ^ d` using `dvd_pow_self l (by omega)`. Establish `h2 : l ∣ 1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(Nat.dvd_sub h1 h)` as an intermediate fact. Rewrite `this` using `[Nat.sub_sub_self hpos]`. Then use the resulting hypothesis. Conclude with `hp.one_lt.ne' (Nat.dvd_one.1 h2)`. Establish `hN : ‖((l ^ d - 1 : ℕ) : K)‖ = 1` using `Formalism.DworkPowerSeriesWeights.norm_natCast_eq_one_of_not_dvd hp hlt hnd`. Establish `hN0 : l ^ d - 1 ≠ 0`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `h`. Rewrite `hnd` using `[h]`. Conclude with `hnd (dvd_zero l)`. Establish `nζ : ‖ζ‖ = 1` using `norm_eq_one_of_pow hN0 hζ`. Use `root_eq_of_norm_lt hN ?_ ?_ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← map_pow, hζ, map_one]`. Rewrite using `[← pow_mul, mul_comm, pow_mul, hζ, one_pow]`. Use `lt_of_le_of_lt (hσ ζ nζ.le) ?_` and prove the remaining obligations. Conclude with `inv_lt_one_of_one_lt₀ (by exact_mod_cast hp.one_lt)`.
+A detailed English derivation is pending.
 -/
 theorem teichmuller_sigma : TeichSigma := by
   intro K _ _ _ l d σ hU hd ζ hζ
@@ -234,13 +232,13 @@ theorem teichmuller_sigma : TeichSigma := by
     exact inv_lt_one_of_one_lt₀ (by exact_mod_cast hp.one_lt)
 
 /- English proof (translation)
-Introduce `hE hL hC K _ _ _ l σ hU c`. Establish `hp : l.Prime` using `hU.1`. Establish `hl : 2 ≤ l` using `hp.two_le`. Establish `hlK : (l : K) ≠ 0` using `by exact_mod_cast hp.ne_zero`. Take `⟨hc, h1, _, _⟩` from `hE K l hl`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `h0` using `constantCoeff_lgF (K := K) l hl`. Establish `huniq : ∀ e e' : PowerSeries K, IsMul l c e → IsMul l c e' → e = e'` using `fun e e' he he' => inj l hl e e' he.1 he'.1 (he.2.trans he'.2.symm)`. Use `⟨?_, huniq, ?_⟩` and prove the remaining obligations. Establish `hg0 : PowerSeries.constantCoeff (PowerSeries.C c * lgF K l) = 0`. Rewrite using `[map_mul, h0, mul_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨PowerSeries.subst (PowerSeries.C c * lgF K l) (expF K l), PowerSeries.constantCoeff_subst_eq_zero hg0 _ hc, ?_⟩` and prove the remaining obligations. Rewrite using `[← PowerSeries.subst_comp_subst_apply (PowerSeries.HasSubst.of_constantCoeff_zero' hc) (PowerSeries.HasSubst.of_constantCoeff_zero' hg0), h1, PowerSeries.subst_X (PowerSeries.HasSubst.of_constantCoeff_zero' hg0)]`. Introduce `hc1 hσc e he n`. Establish `hip : IP l σ (MvPowerSeries.C c * (lgF K l : MvPowerSeries Unit K))` using `(hC K l σ Unit).2.2 c _ hc1 hσc (ip_lgF l σ hl hlK)`. Take `⟨h, hh0, hhI, hh⟩` from `hL K l σ hU Unit _ hip`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `: e = h` using `huniq e h he ⟨hh0, hh⟩`. Rewrite using `[this]`. Conclude with `hhI (Finsupp.single () n)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem MulSpec_of : ExpSpec → IPLemma → IPClosure → MulSpec := by
   intro hE hL hC K _ _ _ l σ hU c
@@ -268,13 +266,13 @@ theorem MulSpec_of : ExpSpec → IPLemma → IPClosure → MulSpec := by
     exact hhI (Finsupp.single () n)
 
 /- English proof (translation)
-Introduce `hT K _ _ _ l σ hU F be0 hF1 hF2`. Establish `hp : l.Prime` using `hU.1`. Establish `hl : 2 ≤ l` using `hp.two_le`. Use `⟨hF1.1, hF1.2.1, hF1.2.2, ?_⟩` and prove the remaining obligations. Introduce `ζ hζ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hN0 : l ^ 2 - 1 ≠ 0`. Establish `: 2 ^ 2 ≤ l ^ 2` using `Nat.pow_le_pow_left hl 2`. Use linear arithmetic over natural numbers and integers. Establish `nζ : ‖ζ‖ = 1` using `norm_eq_one_of_pow hN0 hζ`. Establish `hσ : σ ζ = ζ ^ l` using `hT K l 2 σ hU (by norm_num) ζ hζ`.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hζl : (ζ ^ l) ^ (l ^ 2 - 1) = 1`. Rewrite using `[← pow_mul, mul_comm, pow_mul, hζ, one_pow]`. Establish `hσσ : σ (σ ζ) = ζ`. Rewrite using `[hσ, map_pow, hσ, ← pow_mul, ← sq]`. Establish `: l ^ 2 = (l ^ 2 - 1) + 1` using `by omega`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[this, pow_succ, hζ, one_mul]`. Establish `h` using `hF2 ζ nζ.le hσσ (PowerSeries.C ζ * PowerSeries.X) (PowerSeries.C (ζ ^ l) * PowerSeries.X) (isMul_root hl hζ) (by rw [hσ]; exact isMul_root hl hζl)`. Rewrite `h` using `[at_variable_C_mul_X, at_variable_C_mul_X]`. Conclude with `h`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem BetaHypOfF_of : TeichSigma → BetaHypOfF := by
   intro hT K _ _ _ l σ hU F be0 hF1 hF2

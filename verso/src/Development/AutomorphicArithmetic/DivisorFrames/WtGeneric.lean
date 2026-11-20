@@ -8,9 +8,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.TorusPart
 
 /- English proof (translation)
-Establish `e0 : (p.appLE W ⊤ h).hom (A - B) = 0` using `by rw [map_sub, e, sub_self]`. Establish `e1` using `Scheme.basicOpen_appLE p ⊤ W h (A - B)`. Rewrite `e1` using `[show p.appLE W ⊤ h (A - B) = 0 from e0, Scheme.basicOpen_zero, top_inf_eq]`. Use `sub_eq_zero.1 (eq_zero_of_basicOpen_eq_bot _ ?_)` and prove the remaining obligations. Assume the negation of the conclusion as `hne`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction.
 
-Take `⟨z, hz⟩` from `p.denseRange.exists_mem_open (P.basicOpen (A - B)).isOpen ((TopologicalSpace.Opens.ne_bot_iff_nonempty _).1 hne)`. Establish `: z ∈ p ⁻¹ᵁ P.basicOpen (A - B)` using `hz`. Rewrite `this` using `[← e1]`. Conclude with `this`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.appLE_injective_of_dominant {Z P : Scheme.{0}} [IsReduced P] (p : Z ⟶ P) [IsDominant p] (W : P.Opens)
     (h : ⊤ ≤ p ⁻¹ᵁ W) (A B : Γ(P, W)) (e : (p.appLE W ⊤ h).hom A = (p.appLE W ⊤ h).hom B) : A = B := by
@@ -26,7 +26,7 @@ private theorem UpperTheory.appLE_injective_of_dominant {Z P : Scheme.{0}} [IsRe
   exact this
 
 /- English proof (translation)
-Substitute `e` using the available equality. Conclude with `congrArg (fun q => q.hom f) (Scheme.Hom.appLE_comp_appLE p a V W ⊤ hW h)`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.appLE_appLE_eq_appLE_of_comp {Z P Y : Scheme.{0}} (p : Z ⟶ P) (a : P ⟶ Y) (c : Z ⟶ Y) (e : p ≫ a = c)
     (V : Y.Opens) (W : P.Opens) (hW : W ≤ a ⁻¹ᵁ V) (h : ⊤ ≤ p ⁻¹ᵁ W) (h' : ⊤ ≤ c ⁻¹ᵁ V) (f : Γ(Y, V)) :
@@ -35,9 +35,9 @@ private theorem UpperTheory.appLE_appLE_eq_appLE_of_comp {Z P Y : Scheme.{0}} (p
   exact congrArg (fun q => q.hom f) (Scheme.Hom.appLE_comp_appLE p a V W ⊤ hW h)
 
 /- English proof (translation)
-Establish `h : ⊤ ≤ p ⁻¹ᵁ (a ⁻¹ᵁ V ⊓ s ⁻¹ᵁ V)`. Substitute `ea es` using the available equality. Conclude with `fun z hz => ⟨h₁ hz, h₂ hz⟩`. Use `⟨h, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, UpperTheory.appLE_appLE_eq_appLE_of_comp p a a' ea V _ _ h h₁, UpperTheory.appLE_appLE_eq_appLE_of_comp p s s' es V _ _ h h₂]`.
+Establish an intermediate fact. Substitute using the available equality. Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `e3` using `UpperTheory.appLE_appLE_eq_appLE_of_comp p r r' er ⊤ _ le_top h le_top c`. Establish `: r'.appLE ⊤ ⊤ le_top = r'.appTop` using `(Scheme.Hom.app_eq_appLE r' (U := ⊤)).symm`. Rewrite `e3` using `[this]`. Conclude with `Eq.congr_right (congrArg (· * (s'.appLE V ⊤ h₂).hom f) e3)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.appLE_product_iff {Z P T G : Scheme.{0}} (a s : P ⟶ G) (r : P ⟶ T) (V : G.Opens) (f : Γ(G, V))
     (c : Γ(T, ⊤)) (p : Z ⟶ P) (a' s' : Z ⟶ G) (r' : Z ⟶ T) (ea : p ≫ a = a') (es : p ≫ s = s') (er : p ≫ r = r')
@@ -57,11 +57,11 @@ private theorem UpperTheory.appLE_product_iff {Z P T G : Scheme.{0}} (a s : P �
   exact Eq.congr_right (congrArg (· * (s'.appLE V ⊤ h₂).hom f) e3)
 
 /- English proof (translation)
-Introduce `S G _ X _ u hint V f χ Z t g hdom h₁ h₂ H Z' t' g' h₁' h₂'`. Establish `key : ∀ (Y : Over S) (t : Y ⟶ splitTorus S X) (g : Y ⟶ G), (lift t g).left ≫ ((fst (splitTorus S X) G ≫ u) * snd (splitTorus S X) G).left = ((t ≫ u) * g).left ∧ (lift t g).left ≫ (snd (splitTorus S X) G).left = g.left ∧ (lift t g).left ≫ (fst (splitTorus S X) G).left = t.left` using `fun Y t g => by`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← Over.comp_left, MonObj.comp_mul, lift_fst_assoc, lift_snd]`. Rewrite using `[← Over.comp_left, lift_snd]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Over.comp_left, lift_fst]`. Take `⟨a, b, c⟩` from `key Z t g`. Take `⟨a', b', c'⟩` from `key Z' t' g'`. Take `⟨h, e⟩` from `UpperTheory.appLE_product_iff _ _ _ V f (charUnit S X χ).val _ _ _ _ a b c h₁ h₂`. Take `⟨h', e'⟩` from `UpperTheory.appLE_product_iff _ _ _ V f (charUnit S X χ).val _ _ _ _ a' b' c' h₁' h₂'`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `e'.1 (congrArg _ (UpperTheory.appLE_injective_of_dominant _ _ h _ _ (e.2 H)))`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.wt_generic :
     WtGeneric := by

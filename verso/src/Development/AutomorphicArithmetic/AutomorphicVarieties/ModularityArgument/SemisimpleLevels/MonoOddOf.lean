@@ -29,9 +29,9 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 namespace UpperTheory.V.Lev
 
 /- English proof (translation)
-Take `⟨n, b, rfl⟩` from `WD.exists_rep x`. Take `rfl : n = 1` from `by simpa using hx`. Use `(WD.monodromyZero_ofWeilDeligneRepClass_iff b).2 ?_` and prove the remaining obligations. Establish `h1` using `(LinearMap.isNilpotent_iff_charpoly b.N).1 b.nilpotent`. Establish `h2` using `LinearMap.aeval_self_charpoly b.N`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h2` using `[h1]`. Simplify using `using h2`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem monodromy_zero_of_dim_one {K Ω : Type} [Field K] [NumberField K] [Field Ω] [Algebra K Ω] [IsAlgClosure K Ω]
     {A : ValuationSubring Ω} {w : HeightOneSpectrum (𝓞 K)} {h : IsPlaceOver A w} (x : WD h) (hx : x.lpDim = 1) : x.mono0 := by
@@ -44,13 +44,11 @@ private theorem monodromy_zero_of_dim_one {K Ω : Type} [Field K] [NumberField K
   simpa using h2
 
 /- English proof (translation)
-Introduce `P hS K _ _ _ n hodd l _ Ω _ _ _ ι r π hr hreg hd ha w A h ⟨O, _, _, _, Bw, hj, hpc⟩ σ hσ rc hrc`. Break down `(show n = 1 ∨ 2 ≤ n by obtain ⟨k, rfl⟩ := hodd; omega) with rfl | hn` into its components or cases. Use `monodromy_zero_of_dim_one _ ?_` and prove the remaining obligations. Rewrite using `[rec_algNorm hrc, WD.lpDim_tw]`. Take `⟨a, ha, ε, -, H⟩` from `hrc`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `H.dim _`. Take `⟨R, hc, hs, Haw, Hab⟩` from `hS K Ω l ι n hn hodd π hd (P.litN.aut.coh K n (by omega) π hreg)`. Choose the witnesses or unpack the hypotheses as in `⟨p, hp⟩ : RepIso R r := by`. Use `isoOfFrob P K Ω l ι n R r hc hr hs ha.1 ?_` and prove the remaining obligations. Use `filter_upwards [ha.2, eventually_not_mem K l] with w ⟨B, hB, hf⟩ hw`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨⟨σ, hσ⟩, hi⟩` from `locCompC P K n π w`. Conclude with `⟨_, satFrob P K Ω l ι n R hc w hw σ B (((satLoc P K n w σ).2 _ π.finPart (hi σ hσ) B).1 hB) fun A h rc hrc => Haw w hw A h rc hrc σ hσ, hf⟩`. Establish `h1` using `Hab _ _ (Loc.tiedP l) w A h O Bw hj`. Establish `h3` using `GlobalTheory.PstConj.main K Ω l ι n _ _ (Loc.tiedP l) w A h O Bw hj (R.comp (Dec (F := K) A).subtype) (r.comp (Dec (F := K) A).subtype) p (fun g => hp g.1) h1.1`. Use `h1.2 σ hσ rc hrc ?_` and prove the remaining obligations.
-
-Rewrite using `[← h3.2]`. Conclude with `(GlobalTheory.PstLaws.wdParameterAt_monodromy_zero_iff_potCrystalline Bw h hj _ ι _ h3.1).2 hpc`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem monoOddOf : UpperTheory.V.Af.Hypotheses₂ → CsdMonoOdd → MonoOdd := by
   intro P hS K _ _ _ n hodd l _ Ω _ _ _ ι r π hr hreg hd ha w A h ⟨O, _, _, _, Bw, hj, hpc⟩ σ hσ rc hrc
@@ -74,7 +72,7 @@ theorem monoOddOf : UpperTheory.V.Af.Hypotheses₂ → CsdMonoOdd → MonoOdd :=
   exact (GlobalTheory.PstLaws.wdParameterAt_monodromy_zero_iff_potCrystalline Bw h hj _ ι _ h3.1).2 hpc
 
 /- English proof (translation)
-The claim follows from `monoOddOf P P.mono`.
+A detailed English derivation is pending.
 -/
 theorem monoOdd (P : UpperTheory.V.Af.Hypotheses₂) : MonoOdd := monoOddOf P P.mono
 

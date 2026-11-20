@@ -8,7 +8,7 @@ noncomputable section
 namespace GlobalTheory.FrameBlockDiagonal
 
 /- English proof (translation)
-Rewrite using `[D.sp.V_rank _ (Nat.le_add_left _ _) k.2]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem rankV (D : D7) (k : Fin D.R.m) : (Vc D k).rank = D.R.nV := by
   rw [D.sp.V_rank _ (Nat.le_add_left _ _) k.2]

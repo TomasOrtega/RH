@@ -12,9 +12,9 @@ def sqBall (r : ℕ) (E : Type*) [NormedAddCommGroup E] (R : ℝ) : Set (Fin r �
   {u | ∑ k, ‖u k‖ ^ 2 ≤ R ^ 2}
 
 /- English proof (translation)
-Establish `h1 : ‖a • z + b • w‖ ≤ a * ‖z‖ + b * ‖w‖`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[norm_smul, norm_smul, Real.norm_of_nonneg ha, Real.norm_of_nonneg hb]`. Establish `h2 : (a * ‖z‖ + b * ‖w‖) ^ 2 ≤ a * ‖z‖ ^ 2 + b * ‖w‖ ^ 2`. Take `rfl : b = 1 - a` from `by linarith`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use polynomial arithmetic with `[mul_nonneg (mul_nonneg ha hb) (sq_nonneg (‖z‖ - ‖w‖))]`. Combine the equalities or inequalities in the displayed calculation.
+Use the polynomial consequences of the given equalities and inequalities. Chain the equalities or inequalities of the calculation.
 -/
 lemma norm_sq_convex_comb {a b : ℝ} (ha : 0 ≤ a) (hb : 0 ≤ b) (hab : a + b = 1) (z w : E) :
     ‖a • z + b • w‖ ^ 2 ≤ a * ‖z‖ ^ 2 + b * ‖w‖ ^ 2 := by
@@ -29,9 +29,7 @@ lemma norm_sq_convex_comb {a b : ℝ} (ha : 0 ≤ a) (hb : 0 ≤ b) (hab : a + b
     _ ≤ _ := h2
 
 /- English proof (translation)
-Introduce `u hu v hv a b ha hb hab`. Simplify using `only [sqBall, Set.mem_setOf_eq] at hu hv ⊢`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.sum_add_distrib, Finset.mul_sum, Finset.mul_sum]`. Use `_ ≤ a * R ^ 2 + b * R ^ 2 := by gcongr`.
-
-Use `_ = R ^ 2 := by rw [← add_mul, hab, one_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma sqBall_convex (r : ℕ) (R : ℝ) : Convex ℝ (sqBall r E R) := by
   intro u hu v hv a b ha hb hab
@@ -45,16 +43,16 @@ lemma sqBall_convex (r : ℕ) (R : ℝ) : Convex ℝ (sqBall r E R) := by
     _ = R ^ 2 := by rw [← add_mul, hab, one_mul]
 
 /- English proof (translation)
-Introduce `u hu`. Simplify `hu` using `[sqBall]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts.
 -/
 lemma sqBall_neg (r : ℕ) (R : ℝ) : ∀ u ∈ sqBall r E R, -u ∈ sqBall r E R := by
   intro u hu
   simpa [sqBall] using hu
 
 /- English proof (translation)
-Introduce `u hu`. Simplify using `only [sqBall, Set.mem_setOf_eq] at hu`. Rewrite using `[mem_closedBall_zero_iff]`. Use `(pi_norm_le_iff_of_nonneg (abs_nonneg R)).2 fun k => ?_` and prove the remaining obligations. Establish `hk : ‖u k‖ ^ 2 ≤ R ^ 2` using `(Finset.single_le_sum (f := fun k => ‖u k‖ ^ 2) (fun k _ => by positivity) (Finset.mem_univ k)).trans hu`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `sq_le_sq.mp hk` as an intermediate fact. Rewrite `this` using `[abs_of_nonneg (norm_nonneg _)]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 lemma sqBall_subset (r : ℕ) (R : ℝ) : sqBall r E R ⊆ Metric.closedBall 0 |R| := by
   intro u hu
@@ -68,12 +66,12 @@ lemma sqBall_subset (r : ℕ) (R : ℝ) : sqBall r E R ⊆ Metric.closedBall 0 |
   rwa [abs_of_nonneg (norm_nonneg _)] at this
 
 /- English proof (translation)
-The claim follows from `Metric.isBounded_closedBall.subset (sqBall_subset r R)`.
+A detailed English derivation is pending.
 -/
 lemma sqBall_isBounded (r : ℕ) (R : ℝ) : Bornology.IsBounded (sqBall r E R) := Metric.isBounded_closedBall.subset (sqBall_subset r R)
 
 /- English proof (translation)
-Unfold `sqBall`. Conclude with `isClosed_le (continuous_finset_sum _ fun k _ => (continuous_apply k).norm.pow 2) continuous_const`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 lemma sqBall_isClosed (r : ℕ) (R : ℝ) : IsClosed (sqBall r E R) := by
   unfold sqBall
@@ -81,11 +79,11 @@ lemma sqBall_isClosed (r : ℕ) (R : ℝ) : IsClosed (sqBall r E R) := by
     continuous_const
 
 /- English proof (translation)
-Introduce `u hu`. Rewrite `hu` using `[Set.mem_univ_pi]`. Simplify using `only [sqBall, Set.mem_setOf_eq]`. Break down `Nat.eq_zero_or_pos r with rfl | hr` into its components or cases. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules.
 
-Check the signs of the components of the expression. Establish `hr' : (0 : ℝ) < r` using `by exact_mod_cast hr`. Establish `hb : ∀ k, ‖u k‖ ^ 2 ≤ R ^ 2 / r`. Introduce `k`. Establish `h` using `mem_closedBall_zero_iff.mp (hu k)`.
+Check the signs of the components of the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul]`. Clear the denominators using the available nonvanishing facts.
+Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 -/
 lemma box_subset_sqBall (r : ℕ) {R : ℝ} :
     Set.pi Set.univ (fun _ : Fin r => Metric.closedBall (0 : E) (R / Real.sqrt r)) ⊆

@@ -9,19 +9,17 @@ open NumberField
 namespace Formalism.L2.SG.Pf.Tau
 
 /- English proof (translation)
-Introduce `K _ _ n j M B b hM hBM hli hbB hBspan`. Establish `hBfg : B.FG` using `by haveI := isNoetherian_of_fg_of_noetherian M hM`. Establish `h1 : (B.comap M.subtype).FG` using `IsNoetherian.noetherian _`. Establish `h2` using `h1.map M.subtype`. Rewrite `h2` using `[Submodule.map_comap_subtype, inf_eq_right.mpr hBM]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Take `⟨s, hs⟩` from `hBfg`. Establish `hcoef : ∀ g ∈ s, ∃ c : Fin j → K, ∑ a, c a • b a = g` using `fun g hg => (Submodule.mem_span_range_iff_exists_fun K).mp (hBspan (hs ▸ Submodule.subset_span hg))`. Use `choose! c hc using hcoef`. Take `⟨y, hy0, hy⟩` from `exists_integral_multiples ℤ ℚ ((s ×ˢ Finset.univ).image (fun p : (Fin n → K) × Fin j => c p.1 p.2))`. Establish `hyg : ∀ g ∈ s, (y : ℤ) • g ∈ Submodule.span (𝓞 K) (Set.range b)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `g hg`. Rewrite using `[← hc g hg, Finset.smul_sum]`. Use `Submodule.sum_mem _ fun a _ => ?_` and prove the remaining obligations. Establish `hint : IsIntegral ℤ (y • c g a)` using `hy _ (Finset.mem_image.mpr ⟨(g, a), Finset.mem_product.mpr ⟨hg, Finset.mem_univ a⟩, rfl⟩)`. Establish `e : (y : ℤ) • (c g a • b a) = (⟨y • c g a, hint⟩ : 𝓞 K) • b a`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← smul_assoc]`. Both sides reduce to the same expression. Rewrite using `[e]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨a, rfl⟩)`. Establish `hyB : ∀ v ∈ B, (y : ℤ) • v ∈ Submodule.span (𝓞 K) (Set.range b)`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← hs]`. Introduce `v hv`. Use `Submodule.span_induction (fun g hg => hyg g hg) (by simp) (fun u w _ _ hu hw => by rw [smul_add]; exact add_mem hu hw) (fun o u _ hu => by rw [smul_comm]; exact Submodule.smul_mem _ o hu) hv` and prove the remaining obligations. Use `haveI : Module.Finite (𝓞 K) B := Module.Finite.iff_fg.mpr ⟨s, hs⟩`. Use `haveI : Module.Finite ℤ (B ⧸ (Submodule.span (𝓞 K) (Set.range b)).comap B.subtype) := Module.Finite.trans (𝓞 K) _`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Apply `Module.finite_of_fg_torsion` to reduce the goal to its premises. Introduce `q`. Take `⟨v, rfl⟩` from `Submodule.Quotient.mk_surjective ((Submodule.span (𝓞 K) (Set.range b)).comap B.subtype) q`. Use `⟨⟨y, mem_nonZeroDivisors_of_ne_zero hy0⟩, ?_⟩` and prove the remaining obligations. Use `show (y : ℤ) • (Submodule.Quotient.mk (p := (Submodule.span (𝓞 K) (Set.range b)).comap B.subtype) v) = 0`.
-
-Establish `hz` using `map_zsmul (Submodule.mkQ ((Submodule.span (𝓞 K) (Set.range b)).comap B.subtype)) y v`. Rewrite `hz` using `[Submodule.mkQ_apply, Submodule.mkQ_apply]`. Rewrite using `[← hz, Submodule.Quotient.mk_eq_zero]`. Conclude with `hyB v v.2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem t2 : ExistsBoundedBasis := by
   intro K _ _ n j M B b hM hBM hli hbB hBspan

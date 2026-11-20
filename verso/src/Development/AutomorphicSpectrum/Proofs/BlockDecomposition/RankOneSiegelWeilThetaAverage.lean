@@ -9,7 +9,7 @@ open scoped TensorProduct ENNReal NNReal Matrix Classical
 namespace GlobalTheory.CompanionTheory.SW.RankOneSiegelWeil
 
 /- English proof (translation)
-Establish `e : ((ue (AF F) σ J g : (AF F ⊗[F] E)ˣ) : AF F ⊗[F] E) = (HA.mat (AF F) σ J g).val 0 0`. Simplify using `[ue, Matrix.GeneralLinearGroup.val_det_apply, Matrix.det_fin_one]`. Rewrite using `[e]`. Simplify using `only [actW, actTup, Matrix.mulVec, dotProduct, ratTup, Fin.sum_univ_one, Subsingleton.elim i 0, Subsingleton.elim a 0]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem actW_rat_one {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E] (σ : E →ₐ[F] E)
     (J : Matrix (Fin 1) (Fin 1) E) (g : HA (AF F) σ J) (X : Fin 1 → Fin 1 → E) (a i : Fin 1) :
@@ -21,23 +21,21 @@ theorem actW_rat_one {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F
     Subsingleton.elim a 0]
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hcm J hJ μ 𝓕 hμ h𝓕 d b S φ A hT x`. Take `⟨⟨_, _, _⟩, -⟩` from `GlobalTheory.T.adeles_locally_compact_second_countable F`. Take `⟨_, _, _, _, -, -, -, hB, -, -⟩` from `GlobalTheory.T.tensor_locally_compact_ring F E σ hcm (AF F)`. Use `hB 1 1` as an intermediate fact. Take `⟨_, _, _, _, _, hact⟩` from `GlobalTheory.T.adelic_unitary_group_locally_compact F E σ hcm 1 J hJ (AF F)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨ac, -, -, -⟩` from `hact 1`. Take `⟨i1, i2, i3, i4, -⟩` from `GlobalTheory.T.infinite_adeles_local_ring_totally_real F hcm.1`. Establish `: BorelSpace (Ainf F)` using `⟨rfl⟩`. Take `⟨k1, -, -, -, -, -, -, k8, -⟩` from `GlobalTheory.T.tensor_locally_compact_ring F E σ hcm (Ainf F)`. Use `k8 1 1` as an intermediate fact.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨t1, t2, t3, t4, t5, -⟩` from `GlobalTheory.T.adelic_tuple_projections F E σ hcm d b 1 1`. Take `⟨hφc, -, hφ0, -, hAS, hAoff⟩` from `hT`. Establish `hs : ∀ v, Continuous fun X : Fin 1 → Fin 1 → AF F ⊗[F] E => projV v (projFin X)` using `fun v => (t3 v).comp t2`. Establish `hP : IsOpen {X : Fin 1 → Fin 1 → AF F ⊗[F] E | ∀ v, projV v (projFin X) ∈ A v}`. Establish `e : {X : Fin 1 → Fin 1 → AF F ⊗[F] E | ∀ v, projV v (projFin X) ∈ A v} = (⋂ v ∈ S, (fun X => projV v (projFin X)) ⁻¹' A v) ∩ intOff b S`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use extensionality with `X`. Simplify using `only [Set.mem_setOf_eq, Set.mem_inter_iff, Set.mem_iInter, Set.mem_preimage, intOff]`. Use `⟨fun h => ⟨fun v _ => h v, fun v hv => hAoff v hv ▸ h v⟩, fun h v => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hv : v ∈ S`. Conclude with `h.1 v hv`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hAoff v hv]`. Conclude with `h.2 v hv`. Rewrite using `[e]`. Conclude with `(isOpen_biInter_finset fun v hv => (hAS v hv).2.1.preimage (hs v)).inter (t5 S)`. Establish `hPsi : Measurable (Psi φ A)` using `(ENNReal.measurable_ofReal.comp (hφc.comp t1).measurable).indicator hP.measurableSet`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmul : Continuous fun (Y : Fin 1 → Fin 1 → AF F ⊗[F] E) (a i : Fin 1) => (x : AF F ⊗[F] E) * Y a i` using `continuous_pi fun a => continuous_pi fun i => continuous_const.mul (continuous_apply_apply a i)`. Use `set Φ : (Fin 1 → Fin 1 → AF F ⊗[F] E) → ℝ≥0∞ := fun Y => Psi φ A fun a i => (x : AF F ⊗[F] E) * Y a i with hΦd`. Establish `hΦ : Measurable Φ` using `hPsi.comp hmul.measurable`. Establish `hQ : MeasurableSet {X : Fin 1 → Fin 1 → AF F ⊗[F] E | ∀ v, projV v (projFin fun a i => (x : AF F ⊗[F] E) * X a i) ∈ A v}` using `(hP.preimage hmul).measurableSet`. Establish `: Countable E` using `Countable.of_equiv _ (Module.finBasis ℚ E).equivFun.symm.toEquiv`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Establish `hterm : ∀ (h : HA (AF F) σ J), Th φ A (x * ue (AF F) σ J h⁻¹) = ∑' X : ({X : Fin 1 → Fin 1 → E | X ≠ 0} : Set _), Φ (actW (AF F) σ J h⁻¹ (ratTup (AF F) X.1))` using `fun h => by`. Use `tsum_congr fun X => ?_` and prove the remaining obligations. Simplify using `only [hΦd]`. Use `congr 1`. Use function extensionality and compare the values at `a i`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[actW_rat_one, Units.val_mul, mul_assoc]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Simplify using `only [hterm]`. Rewrite using `[← PositivityTheory.PlacePermOperatorBicommutantSpan.theta_lint F E σ hcm 1 J hJ μ 𝓕 hμ h𝓕 1 _ Φ hΦ, mean, ← lintegral_indicator hQ]`. Use `lintegral_congr fun X => ?_` and prove the remaining obligations.
-
-Simplify using `only [hΦd, Psi, Set.indicator, Set.mem_setOf_eq]`. Simplify using `only [hterm]`. Conclude with `Measurable.ennreal_tsum fun X => hΦ.comp (ac.comp (continuous_inv.prodMk continuous_const)).measurable`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mean_eq_lint : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (J : Matrix (Fin 1) (Fin 1) E), IsHermND σ J → ∀ (μ : Measure (HA (AF F) σ J)) (𝓕 : Set (HA (AF F) σ J)), IsHaarH F E σ 1 J μ → IsFDH F E σ 1 J μ 𝓕 → ∀ (d : ℕ) (b : Module.Basis (Fin d) F E) (S : Finset (HeightOneSpectrum (𝓞 F))) (φ : (Fin 1 → Fin 1 → Ainf F ⊗[F] E) → ℝ) (A : ∀ v : HeightOneSpectrum (𝓞 F), Set (Fin 1 → Fin 1 → Fv F v ⊗[F] E)), IsTest σ J b S φ A → ∀ x : (AF F ⊗[F] E)ˣ, mean σ J μ 𝓕 φ A x = (μ 𝓕)⁻¹ * ∫⁻ h in 𝓕, Th φ A (x * ue (AF F) σ J h⁻¹) ∂μ ∧ Measurable fun h : HA (AF F) σ J => Th φ A (x * ue (AF F) σ J h⁻¹) := by
   intro F E _ _ _ _ _ σ hcm J hJ μ 𝓕 hμ h𝓕 d b S φ A hT x

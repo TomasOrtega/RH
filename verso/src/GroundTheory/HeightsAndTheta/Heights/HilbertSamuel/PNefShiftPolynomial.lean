@@ -14,13 +14,13 @@ open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.Cha
 noncomputable section
 
 /- English proof (translation)
-Introduce `K _ ι _ Ω _ _ y D a _ hV _ hN`. Set `_ : LinearOrder K` to `LinearOrder.lift' (Fintype.equivFin K) (Fintype.equivFin K).injective`. Set `_ : ∀ k, LinearOrder (ι k)` to `fun k => LinearOrder.lift' (Fintype.equivFin (ι k)) (Fintype.equivFin (ι k)).injective`. Take `⟨hQ, hdim⟩` from `ShiftDegreePolynomial.genericFibre hV`. Use `set Q := (mCoordIdeal y).map (MvPolynomial.map (Int.castRingHom ℚ)) with hQdef`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨m, hm⟩` from `hF K ι (mCoordIdeal y) D a hV hN`. Take `⟨p, a₀, hpdeg, hp⟩` from `MultigradedHilbertPolynomial.proof EventualPolynomial.proof ℚ K ι Q D hQ hdim`. Take `⟨r, hrdeg, hrcoef, hr⟩` from `hL K D (hilbFn Q) p a₀ a (fun _ => (m : ℤ)) hpdeg hp`. Use `⟨m, r, hrdeg, ?_, Eventually.of_forall fun n => ?_⟩` and prove the remaining obligations. Establish `hH : ∀ i j : DecidableEq K, @hilbFn K i ι ℚ _ Q = @hilbFn K j ι ℚ _ Q` using `fun i j => by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Subsingleton.elim i j]`. Establish `hg : genDeg (mCoordIdeal y) D a = eventualValue (mixedDiff (fun _ : Fin D => a) (hilbFn Q))` using `congrArg (fun h => eventualValue (mixedDiff (fun _ : Fin D => a) h)) (hH _ _)`. Rewrite using `[hrcoef, hg]`. Take `⟨e⟩` from `hC K ι Ω y (D + 1) ((n : ℤ) • a + fun _ => (m : ℤ)) hV`. Rewrite using `[e.finrank_eq, ← hr n, ← hE ℚ K ι Q p a₀ hQ hp _ (hm n)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Put the expressions in a common number system so they can be compared.
 
-Use `norm_cast`.
+A detailed English derivation is pending.
 -/
 theorem NefShiftPolynomial.proof (hF : FujitaGeneric.Statement) (hC : ChartLatQCech.Statement)
     (hE : EulerHilbert.Statement) (hL : EventualPolyLine.Statement) : NefShiftPolynomial.Statement := by

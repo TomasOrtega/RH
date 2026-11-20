@@ -16,9 +16,9 @@ namespace PositivityTheory.Rg.BcB.F.FX.Bo
 open PositivityTheory.Rg.BcB.F PositivityTheory.Rg.BcB.F.RS PositivityTheory.Rg.BcB.CG
 
 /- English proof (translation)
-Take `⟨e, h1, h2⟩` from `h`. Use `⟨e.symm, fun i w => ?_, fun i τ => ?_⟩` and prove the remaining obligations. Use `h1 (e.symm i) w` as an intermediate fact. Rewrite `this` using `[Equiv.apply_symm_apply]`. Conclude with `this.symm`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `h2 (e.symm i) τ` as an intermediate fact. Rewrite `this` using `[Equiv.apply_symm_apply]`. Conclude with `this.symm`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem preEquiv_symm {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ} {P P' : Pre E n} (h : PreEquiv P P') :
     PreEquiv P' P := by
@@ -28,7 +28,7 @@ theorem preEquiv_symm {E : Type} [Field E] [NumberField E] [IsCMField E] {n : �
   · have := h2 (e.symm i) τ; rw [Equiv.apply_symm_apply] at this; exact this.symm
 
 /- English proof (translation)
-The claim follows from `(hR E).choose_spec.choose_spec.choose_spec.choose_spec.choose_spec.choose_spec.2.1 a b Ma Mb K₁ K₂ h1 h2`.
+A detailed English derivation is pending.
 -/
 theorem rl_levels (hR : Rd.ReadLimit) (E : Type) [Field E] [NumberField E] [IsCMField E] (a b : ℕ) (Ma : Mods E a)
     (Mb : Mods E b) (K₁ : Subgroup (GL (Fin a) (Af E))) (K₂ : Subgroup (GL (Fin b) (Af E)))
@@ -37,7 +37,7 @@ theorem rl_levels (hR : Rd.ReadLimit) (E : Type) [Field E] [NumberField E] [IsCM
   (hR E).choose_spec.choose_spec.choose_spec.choose_spec.choose_spec.choose_spec.2.1 a b Ma Mb K₁ K₂ h1 h2
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨((hR E).choose_spec.choose_spec.choose_spec.choose_spec.choose_spec.choose_spec.1 a b Ma Mb).2.2.1, ((hR E).choose_spec.choose_spec.choose_spec.choose_spec.choose_spec.choose_spec.1 a b Ma Mb).2.2.2.1⟩`.
+Supply the required witnesses or components.
 -/
 theorem rl_ktypes (hR : Rd.ReadLimit) (E : Type) [Field E] [NumberField E] [IsCMField E] (a b : ℕ) (Ma : Mods E a)
     (Mb : Mods E b) : KTypes E (rlΩ₁ hR E a b Ma Mb) ∧ KTypes E (rlΩ₂ hR E a b Ma Mb) :=
@@ -45,7 +45,7 @@ theorem rl_ktypes (hR : Rd.ReadLimit) (E : Type) [Field E] [NumberField E] [IsCM
     ((hR E).choose_spec.choose_spec.choose_spec.choose_spec.choose_spec.choose_spec.1 a b Ma Mb).2.2.2.1⟩
 
 /- English proof (translation)
-Use `⟨∑ i, ∑ k, ∑ w ∈ T, f i k w, fun i k w hw => ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 -/
 theorem ub_fin {α ι : Type} [Fintype ι] {κ : ι → Type} [∀ i, Fintype (κ i)] (T : Finset α) (f : ∀ i, κ i → α → ℕ) :
     ∃ m, ∀ i k, ∀ w ∈ T, f i k w ≤ m := by
@@ -69,13 +69,11 @@ def ClauseC {hR : Rd.ReadLimit} {E : Type} [Field E] [NumberField E] [IsCMField 
 
 set_option maxHeartbeats 4000000 in
 /- English proof (translation)
-Establish `hLA : ∀ i : F₀.C.ι, Levels E (rlΘ₁ hR E _ _ (F₀.A i).Ma (F₀.A i).Mb (lev₁ F₀.Sec d (F₀.C.a i)) (lev₂ F₀.Sec d (F₀.C.a i))) ∧ Levels E (rlΘ₂ hR E _ _ (F₀.A i).Ma (F₀.A i).Mb (lev₁ F₀.Sec d (F₀.C.a i)) (lev₂ F₀.Sec d (F₀.C.a i)))` using `fun i => rl_levels hR E _ _ _ _ _ _ (hO i).1 (hO i).2`. Establish `hKA : ∀ i : F₀.C.ι, KTypes E (rlΩ₁ hR E (F₀.C.a i) (n - F₀.C.a i) (F₀.A i).Ma (F₀.A i).Mb) ∧ KTypes E (rlΩ₂ hR E (F₀.C.a i) (n - F₀.C.a i) (F₀.A i).Ma (F₀.A i).Mb)` using `fun i => rl_ktypes hR E _ _ _ _`. Use `choose kA PA hPA using fun i : F₀.C.ι => hFS E (F₀.C.a i) _ _ (hLA i).1 (hKA i).1 (mOf (F₀.A i).χa)`. Use `choose kB PB hPB using fun i : F₀.C.ι => hFS E (n - F₀.C.a i) _ _ (hLA i).2 (hKA i).2 (mOf (F₀.A i).χb)`. Establish `hcls : ∀ i s₁ s₂ Pa Pb D, F₀.Cand d i s₁ s₂ Pa Pb D → (∃ ja, Strict Pa (PA i ja)) ∧ ∃ jb, Strict Pb (PB i jb)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `i s₁ s₂ Pa Pb D hc`. Establish `hp` using `hCP hR E n π S F₀ d i s₁ s₂ Pa Pb D hc`. Establish `hm` using `LemDd.cand_sum hc`. Conclude with `⟨hPA i Pa hp.1 hm.1, hPB i Pb hp.2 hm.2⟩`. Establish `hunif : ∀ w, ordL ((F₀.d₀.ϖ w : (w.adicCompletion E)ˣ) : w.adicCompletion E) = 1` using `fun w => (F₀.unif w).1.1`.
+Establish an intermediate fact. Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `choose Z mZ hZ using fun (i : F₀.C.ι) (w : Pl E) (ja : Fin (kA i)) (jb : Fin (kB i)) => hJ E _ _ (PA i ja) (PB i jb) w (F₀.d₀.ϖ w) (hunif w)`. Take `⟨m₀, hub⟩` from `ub_fin (κ := fun i => Fin (kA i) × Fin (kB i)) T' (fun i k w => mZ i w k.1 k.2)`. Use `⟨fun i w => ⟨⋃ ja, ⋃ jb, Z i w ja jb, Set.finite_iUnion fun ja => Set.finite_iUnion fun jb => (hZ i w ja jb).1, fun s₁ s₂ Pa Pb D hc _ ξa ξb hj => ?_⟩, fun w hw => ?_, ⟨m₀, fun i s₁ s₂ Pa Pb D hc w hw => ?_⟩⟩` and prove the remaining obligations. Take `⟨⟨ja, ha⟩, ⟨jb, hb⟩⟩` from `hcls i s₁ s₂ Pa Pb D hc`. Use `((hZ i w ja jb).2 Pa Pb (preEquiv_symm (hSP E _ _ _ ha)) (preEquiv_symm (hSP E _ _ _ hb))).2 ξa ξb hj` as an intermediate fact.
-
-Conclude with `Set.mem_iUnion.2 ⟨ja, Set.mem_iUnion.2 ⟨jb, this⟩⟩`. Conclude with `He2.candB hEq hSPr hSJ hII hAd F₀ d kA kB PA PB hcls w hw`. Take `⟨⟨ja, ha⟩, ⟨jb, hb⟩⟩` from `hcls i s₁ s₂ Pa Pb D hc`. Establish `h1` using `((hZ i w ja jb).2 Pa Pb (preEquiv_symm (hSP E _ _ _ ha)) (preEquiv_symm (hSP E _ _ _ hb))).1`. Conclude with `h1.trans (hub i (ja, jb) w hw)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem candFin_d (hJ : JEigFin) (hFS : FinStrict) (hEq : StrictEqv) (hSP : StrictPre) (hSPr : StrictProd)
     (hSJ : StrictJoin) (hCP : CandParts) (hII : IsoInv) (hAd : AdmProd)
@@ -114,7 +112,7 @@ theorem candFin_d (hJ : JEigFin) (hFS : FinStrict) (hEq : StrictEqv) (hSP : Stri
 
 set_option maxHeartbeats 4000000 in
 /- English proof (translation)
-Introduce `hJ hFS hEq hSP hSPr hSJ hCP hLO hII hAd`. Introduce `hR E _ _ _ hU n hn π hπ S F₀ T' c e b hT'`. Conclude with `candFin_d hJ hFS hEq hSP hSPr hSJ hCP hII hAd F₀ T' (F₀.loc T' c e b) (fun i => hLO hR E n π S F₀ T' c e b (F₀.C.a i) (F₀.C.le i))`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem candFin_of : CandFinOf := by
   intro hJ hFS hEq hSP hSPr hSJ hCP hLO hII hAd

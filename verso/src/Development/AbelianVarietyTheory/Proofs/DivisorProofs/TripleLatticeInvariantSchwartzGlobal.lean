@@ -31,7 +31,7 @@ theorem schrL_apply {K : Type} [CommRing K] [Invertible (2 : K)] (ψ : AddChar K
     (z : (κ → K) × (κ → K)) (f : (κ → K) → ℂ) : schrL ψ z f = schr ψ z f := rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x; simp [schrL_apply, schr] mul x y v := by simp only [schrL_apply]; exact schr_schr ψ x y v`.
+Apply function extensionality and compare values at an arbitrary argument.
 -/
 theorem ops_schrL {K : Type} [CommRing K] [Invertible (2 : K)] (ψ : AddChar K ℂ) {κ : Type} [Fintype κ] :
     GlobalTheory.Published.SvN.Ops (fun z z' : (κ → K) × (κ → K) => ψ (⅟(2 : K) * (z.1 ⬝ᵥ z'.2 - z'.1 ⬝ᵥ z.2))) (schrL ψ) where
@@ -39,7 +39,7 @@ theorem ops_schrL {K : Type} [CommRing K] [Invertible (2 : K)] (ψ : AddChar K �
   mul x y v := by simp only [schrL_apply]; exact schr_schr ψ x y v
 
 /- English proof (translation)
-Introduce `h`. Use `ψ.map_add_eq_mul t (-t)` as an intermediate fact. Rewrite `this` using `[add_neg_cancel, AddChar.map_zero_eq_one, h, zero_mul]`. Conclude with `one_ne_zero this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem addChar_ne_zero {A : Type} [AddGroup A] (ψ : AddChar A ℂ) (t : A) : ψ t ≠ 0 := by
   intro h
@@ -48,11 +48,11 @@ theorem addChar_ne_zero {A : Type} [AddGroup A] (ψ : AddChar A ℂ) (t : A) : �
   exact one_ne_zero this
 
 /- English proof (translation)
-Take `⟨U₀, hU₀⟩` from `GlobalTheory.HeisLatVac.lc_exists_open_ker ψ hψ`. Take `⟨K, hK⟩` from `GlobalTheory.WeilM.HaarUniq.exists_invariant hf`. Establish `hc : Continuous fun z : ((κ → Fv F v) × (κ → Fv F v)) × (κ → Fv F v) => z.2 ⬝ᵥ z.1.2 + ⅟(2 : Fv F v) * (z.1.1 ⬝ᵥ z.1.2)` using `(continuous_snd.dotProduct continuous_fst.snd).add (continuous_const.mul (continuous_fst.fst.dotProduct continuous_fst.snd))`. Establish `h1 : ∀ᶠ z : (κ → Fv F v) × (κ → Fv F v) in 𝓝 0, ∀ x ∈ tsupport f, x ⬝ᵥ z.2 + ⅟(2 : Fv F v) * (z.1 ⬝ᵥ z.2) ∈ (U₀ : Set (Fv F v))`. Use `IsCompact.eventually_forall_of_forall_eventually hf.2 (P := fun (z : (κ → Fv F v) × (κ → Fv F v)) (x : κ → Fv F v) => x ⬝ᵥ z.2 + ⅟(2 : Fv F v) * (z.1 ⬝ᵥ z.2) ∈ (U₀ : Set (Fv F v))) fun x _ => ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `(U₀.isOpen.preimage hc).mem_nhds ?_` and prove the remaining obligations. Simplify using `using U₀.zero_mem`. Establish `h2 : ∀ᶠ z : (κ → Fv F v) × (κ → Fv F v) in 𝓝 0, z.1 ∈ (K : Set (κ → Fv F v))` using `(K.isOpen.preimage continuous_fst).mem_nhds K.zero_mem`. Use `filter_upwards [h1, h2] with z hz1 hz2`. Use function extensionality and compare the values at `x`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use `show ψ (x ⬝ᵥ z.2 + ⅟(2 : Fv F v) * (z.1 ⬝ᵥ z.2)) * f (x + z.1) = f x`. Rewrite using `[hK z.1 hz2 x]`. Distinguish the cases in `hx : x ∈ tsupport f`. Rewrite using `[hU₀ _ (hz1 x hx), one_mul]`. Rewrite using `[image_eq_zero_of_notMem_tsupport hx, mul_zero]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eventually_schr_fix {F : Type} [Field F] [NumberField F] (v : Pl F) (ψ : AddChar (Fv F v) ℂ)
     (hψ : Continuous ψ) {κ : Type} [Fintype κ] {f : (κ → Fv F v) → ℂ} (hf : f ∈ SB (κ → Fv F v)) :
@@ -81,7 +81,7 @@ theorem eventually_schr_fix {F : Type} [Field F] [NumberField F] (v : Pl F) (ψ 
   · rw [image_eq_zero_of_notMem_tsupport hx, mul_zero]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Simplify using `only [tens, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Finset.sum_mul, mul_assoc]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem tens_sum {F : Type} [Field F] [NumberField F] {R κ ι : Type} (ev : AF F → R) (s : Finset ι) (c : ι → ℂ)
     (g : ι → (κ → R) → ℂ) (r : (κ → AF F) → ℂ) :
@@ -90,7 +90,7 @@ theorem tens_sum {F : Type} [Field F] [NumberField F] {R κ ι : Type} (ev : AF 
   simp only [tens, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Finset.sum_mul, mul_assoc]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Simplify using `only [tens, Pi.smul_apply, smul_eq_mul, mul_assoc]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem tens_smul {F : Type} [Field F] [NumberField F] {R κ : Type} (ev : AF F → R) (c : ℂ) (g : (κ → R) → ℂ)
     (r : (κ → AF F) → ℂ) : tens ev (c • g) r = c • tens ev g r := by
@@ -98,7 +98,7 @@ theorem tens_smul {F : Type} [Field F] [NumberField F] {R κ : Type} (ev : AF F 
   simp only [tens, Pi.smul_apply, smul_eq_mul, mul_assoc]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Simplify using `only [Darboux.rho, schr, Finset.sum_apply, Finset.mul_sum]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem rho_sum {R : Type} [CommRing R] [Invertible (2 : R)] {W : Type} [AddCommGroup W] [Module R W]
     {B : W → W → R} {κ ι : Type} [Fintype κ] (d : Darboux B κ) (ψ : AddChar R ℂ) (γ : W) (s : Finset ι)
@@ -107,37 +107,33 @@ theorem rho_sum {R : Type} [CommRing R] [Invertible (2 : R)] {W : Type} [AddComm
   simp only [Darboux.rho, schr, Finset.sum_apply, Finset.mul_sum]
 
 /- English proof (translation)
-Introduce `_ F E _ _ _ _ _ σ B a a' G X om om' hT w Ψ _ hyp m f φ hSB hstd hsum`. Establish `hψc : Continuous (GlobalTheory.LatVac.psiAt B.ψ w)` using `GlobalTheory.SchrSB.continuous_psiAt B.ψ hT.base.std.1 w`. Take `⟨hvSB, hv0, θ, -, hθ⟩` from `hT.geo.hM'.vac w`. Establish `hat : ∀ γ ∈ latAtV G.V' G.W w, At (evFin F w) γ` using `(GlobalTheory.LatVac.latAtV_at_stable G.V' G.W w).1`. Use `set L := schrL (κ := Fin a' × Fin (a + a')) (GlobalTheory.LatVac.psiAt B.ψ w) with hL`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `set vac := G.M'.vac w with hvac`. Use `set Λ := (latAtV G.V' G.W w).map (GlobalTheory.LatVac.locCo G.M'.co w) with hΛ`. Take `⟨-, hΛc⟩` from `GlobalTheory.LatOpenCpt.main σ B G.V' G.W _ _ _ _ hT.geo.hV' hT.geo.hW G.M' hT.geo.hM'.rat w`. Establish `hAct : ∀ γ ∈ latAtV G.V' G.W w, ∀ φ₀ : (Fin a' × Fin (a + a') → Fv F w) → ℂ, Acts (evFin F w) (G.M'.co.rho B.ψ γ) φ₀ (L (GlobalTheory.LatVac.locCo G.M'.co w γ) φ₀)` using `fun γ hγ φ₀ => GlobalTheory.VacBridge.rho_acts_locCo G.M'.co B.ψ w γ (hat γ hγ) φ₀`. Establish `huniq : ∀ γ ∈ latAtV G.V' G.W w, ∀ c₀ : ℂ, Acts (evFin F w) (G.M'.co.rho B.ψ γ) vac (c₀ • vac) → L (GlobalTheory.LatVac.locCo G.M'.co w γ) vac = c₀ • vac` using `fun γ hγ c₀ h => GlobalTheory.TensUniq.eq_of_tens_eq w vac _ _ hvSB fun r hr => (hAct γ hγ vac r hr).symm.trans (h r hr)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `hinj : ∀ e e' : ℂ, e • vac = e' • vac → e = e'` using `fun e e' h => smul_left_injective ℂ hv0 h`. Establish `hex : ∀ z ∈ Λ, ∃ e : ℂ, L z vac = e • vac`. Introduce and unpack `_ ⟨γ, hγ, rfl⟩`. Conclude with `⟨_, huniq γ hγ _ (hθ γ hγ)⟩`. Set `α : (Fin a' × Fin (a + a') → Fv F w) × (Fin a' × Fin (a + a') → Fv F w) → ℂ` to `fun z => if h : ∃ e : ℂ, L z vac = e • vac then h.choose else 1`.
+Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Establish `hαspec : ∀ z, (∃ e : ℂ, L z vac = e • vac) → L z vac = α z • vac` using `fun z h => by show _ = (if h : ∃ e : ℂ, L z vac = e • vac then h.choose else 1) • vac`. Rewrite using `[dif_pos h]`. Conclude with `h.choose_spec`. Set `c : (Fin a' × Fin (a + a') → Fv F w) × (Fin a' × Fin (a + a') → Fv F w) → (Fin a' × Fin (a + a') → Fv F w) × (Fin a' × Fin (a + a') → Fv F w) → ℂ` to `fun z z' => GlobalTheory.LatVac.psiAt B.ψ w (⅟(2 : Fv F w) * (z.1 ⬝ᵥ z'.2 - z'.1 ⬝ᵥ z.2))`. Establish `hops : GlobalTheory.Published.SvN.Ops c L` using `ops_schrL _`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hαne : ∀ z ∈ Λ, α z ≠ 0`. Introduce `z hz h0`. Establish `h1` using `hops.mul (-z) z vac`. Rewrite `h1` using `[hαspec z (hex z hz), h0, zero_smul, map_zero, neg_add_cancel, hops.zero]`. Conclude with `hv0 ((smul_eq_zero.1 h1.symm).resolve_left (addChar_ne_zero _ _))`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hsplit : GlobalTheory.Published.SvN.Splits c Λ α`. Use `⟨hαne, fun x hx y hy => hinj _ _ ?_⟩` and prove the remaining obligations. Establish `h1` using `hops.mul x y vac`. Rewrite `h1` using `[hαspec y (hex y hy), map_smul, hαspec x (hex x hx), hαspec (x + y) (hex _ (Λ.add_mem hx hy)), smul_smul, smul_smul]`. Rewrite using `[mul_comm (α x)]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Equip the data with the indicated structure.
 
-Conclude with `h1`. Establish `hfix : ∀ᶠ z in 𝓝 (0 : (Fin a' × Fin (a + a') → Fv F w) × (Fin a' × Fin (a + a') → Fv F w)), L z vac = vac ∧ ∀ i, L z (φ i w) = φ i w` using `(eventually_schr_fix w _ hψc hvSB).and (Filter.eventually_all.2 fun i => eventually_schr_fix w _ hψc (hSB i w))`. Take `⟨U, hU⟩` from `NonarchimedeanAddGroup.is_nonarchimedean _ hfix`. Establish `hUα : ∀ u ∈ U.toAddSubgroup, α u = 1` using `fun u hu => hinj _ _ (by rw [← hαspec u ⟨1, by rw [one_smul]; exact (hU hu).1⟩, one_smul]; exact (hU hu).1)`. Establish `hfin : Finite (Λ ⧸ U.toAddSubgroup.addSubgroupOf Λ)` using `GlobalTheory.Published.SvN.finite_quot Λ U.toAddSubgroup U.mem_nhds_zero hΛc subset_rfl`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `letI := Fintype.ofFinite (Λ ⧸ U.toAddSubgroup.addSubgroupOf Λ)`. Take `⟨avg, havg⟩ : ∃ avg : Fin m → (Fin a' × Fin (a + a') → Fv F w) → ℂ, ∀ i, avg i = ∑ q : Λ ⧸ U.toAddSubgroup.addSubgroupOf Λ, (α q.out.1)⁻¹ • L q.out.1 (φ i w)` from `⟨_, fun _ => rfl⟩`. Establish `heig : ∀ i, ∀ z ∈ Λ, L z (avg i) = α z • avg i` using `fun i z hz => by`. Rewrite using `[havg i]`. Conclude with `GlobalTheory.Published.SvN.average hops hsplit U.toAddSubgroup hUα (φ i w) (fun u hu => (hU hu).2 i) z hz`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `set N := Fintype.card (Λ ⧸ U.toAddSubgroup.addSubgroupOf Λ) with hN`. Establish `hN0 : (N : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 Fintype.card_ne_zero`. Use `choose γq hγq hγqe using fun q : Λ ⧸ U.toAddSubgroup.addSubgroupOf Λ => AddSubgroup.mem_map.1 q.out.2`. Use `choose r hr1 hr2 using fun i => GlobalTheory.PureFactor.exists_rest_factor w (f i) (φ i) (hstd i)`. Establish `hpure : ∀ i, pure (f i) (φ i) = tens (evFin F w) (φ i w) (r i)` using `fun i => by`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hr2, Function.update_eq_self]`. Establish `hRest : ∀ i, Rest (evFin F w) (φ i w) (r i)` using `fun i => ⟨hr1 i, hpure i ▸ GlobalTheory.TensUniq.pure_mem_schA (f i) (φ i) (hSB i) (hstd i)⟩`. Establish `hΨ' : Ψ = ∑ i, tens (evFin F w) (φ i w) (r i)`. Rewrite using `[hsum]`. Conclude with `Finset.sum_congr rfl fun i _ => hpure i`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hqΨ : ∀ q : Λ ⧸ U.toAddSubgroup.addSubgroupOf Λ, G.M'.co.rho B.ψ (γq q) Ψ = α q.out.1 • Ψ` using `fun q => hyp _ (hγq q) _ (by`. Use `hAct _ (hγq q) vac` as an intermediate fact. Rewrite using `[hγqe q, hαspec _ (hex _ q.out.2)] at this)` and apply the resulting hypothesis. Establish `hqΨ2 : ∀ q : Λ ⧸ U.toAddSubgroup.addSubgroupOf Λ, G.M'.co.rho B.ψ (γq q) Ψ = ∑ i, tens (evFin F w) (L q.out.1 (φ i w)) (r i)` using `fun q => by`. Rewrite using `[hΨ', rho_sum]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[hAct _ (hγq q) (φ i w) (r i) (hRest i), hγqe q]`. Establish `e1 : ∑ q : Λ ⧸ U.toAddSubgroup.addSubgroupOf Λ, (α q.out.1)⁻¹ • G.M'.co.rho B.ψ (γq q) Ψ = (N : ℂ) • Ψ`. Combine the equalities or inequalities in the displayed calculation. Establish `e2 : ∑ q : Λ ⧸ U.toAddSubgroup.addSubgroupOf Λ, (α q.out.1)⁻¹ • G.M'.co.rho B.ψ (γq q) Ψ = ∑ i, tens (evFin F w) (avg i) (r i)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [hqΨ2, Finset.smul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[havg i, tens_sum]`. Establish `hgSB : ∀ i, (N : ℂ)⁻¹ • avg i ∈ SB (Fin a' × Fin (a + a') → Fv F w)` using `fun i => by`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[havg i]`. Conclude with `(SB _).smul_mem _ (Submodule.sum_mem _ fun q _ => (SB _).smul_mem _ (GlobalTheory.SchrSB.schr_mem_SB B.ψ hT.base.std.1 w _ _ (hSB i w)))`. Use `⟨fun i => (N : ℂ)⁻¹ • avg i, hgSB, fun i γ hγ c₀ hc => ?_, ?_⟩` and prove the remaining obligations. Establish `hz : GlobalTheory.LatVac.locCo G.M'.co w γ ∈ Λ` using `AddSubgroup.mem_map_of_mem _ hγ`. Establish `e` using `huniq γ hγ c₀ hc`.
-
-Rewrite `e` using `[hαspec _ (hex _ hz)]`. Establish `hc₀` using `hinj _ _ e`. Use `hAct γ hγ ((N : ℂ)⁻¹ • avg i)` as an intermediate fact. Rewrite `this` using `[map_smul, heig i _ hz, hc₀, smul_comm]`. Then use the resulting hypothesis. Combine the equalities or inequalities in the displayed calculation.
-
-Rewrite using `[← e1, e2, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← tens_smul, hr2]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem avg_eigen : GlobalTheory.FunPr.Hypotheses₂ → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (a a' : ℕ) (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W), IsTriple B G X om om' →

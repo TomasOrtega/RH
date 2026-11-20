@@ -9,9 +9,9 @@ namespace Formalism.HermitianLattices.GL2a2
 open Formalism.HermitianLattices.GL2PrimeSums
 
 /- English proof (translation)
-Introduce `q n hq hn`. Establish `hqo : Odd q` using `by rw [Nat.odd_iff]; omega`. Rewrite using `[← neg_one_mul, jacobiSym.mul_left, jacobiSym.at_neg_one hn]`. Break down `Nat.odd_mod_four_iff.mp (Nat.odd_iff.mp hn) with h1 | h3` into its components or cases. Rewrite using `[jacobiSym.quadratic_reciprocity_one_mod_four' hqo h1]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ZMod.χ₄_nat_one_mod_four h1, one_mul]`. Rewrite using `[jacobiSym.quadratic_reciprocity_three_mod_four hq h3]`. Rewrite using `[ZMod.χ₄_nat_three_mod_four h3]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem kronecker_odd : KronOdd := by
   intro q n hq hn
@@ -24,9 +24,9 @@ theorem kronecker_odd : KronOdd := by
     rw [ZMod.χ₄_nat_three_mod_four h3]; ring
 
 /- English proof (translation)
-Introduce `q hq`. Establish `hqo : Odd q` using `by rw [Nat.odd_iff]; omega`. Rewrite using `[jacobiSym.at_two hqo]`. Establish `h8 : q % 8 = 3 ∨ q % 8 = 7` using `by omega`. Establish `: ((q : ℕ) : ZMod 8) = ((q % 8 : ℕ) : ZMod 8)` using `by simp`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `push_cast`. Rewrite using `[this]`. Apply the tactic sequence `rcases h8 with h | h <;> rw [h] <;> decide`.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem kronecker_two : KronTwo := by
   intro q hq

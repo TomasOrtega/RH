@@ -7,77 +7,73 @@ namespace Formalism.IrreducibleCountingLemmas.GaloisIrreducibility
 set_option maxHeartbeats 800000 in
 
 /- English proof (translation)
-Introduce `K _ _ N n hN`. It suffices to establish `H : ((Finset.univ : Finset (Fin N → K)).filter (fun c => Squarefree (monicOf c) ∧ (monicOf c).coeff 0 ≠ 0 ∧ ∀ d ∈ Finset.Icc 1 N, ((normalizedFactors (monicOf c)).map Polynomial.natDegree).count d = n d)).card = ∏ d ∈ Finset.Icc 1 N, (((Finset.univ : Finset (Fin d → K)).filter (f …`. Use `H` and compare the differences between its conclusion and the goal. Establish `L1 : ∀ m : Multiset K[X], (∀ q ∈ m, q.Monic ∧ Irreducible q ∧ q.coeff 0 ≠ 0) → m.prod.Monic ∧ normalizedFactors m.prod = m ∧ m.prod.natDegree = (m.map Polynomial.natDegree).sum ∧ m.prod.coeff 0 ≠ 0`. Introduce `m`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the argument to an intermediate assertion. Apply an available result and prove the equalities needed to match it to the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `m using Multiset.induction_on with`. Consider the case `empty => intro _`. Simplify using the standard rewrite rules. Consider the case `cons a s ih`. Introduce `h`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `ha` using `h a (by simp)`. Take `⟨h1, h2, h3, h4⟩` from `ih (fun q hq => h q (by simp [hq]))`. Establish `hna : normalize a = a` using `by first`. Consider the case `exact ha.1.normalize_eq_self`. Consider the case `exact Polynomial.Monic.normalize_eq_self ha.1`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Treat this case separately. Treat this case separately.
 
-Consider the case `simp [normalize_apply, Polynomial.coe_normUnit, ha.1.leadingCoeff]`. Rewrite using `[Multiset.prod_cons]`. Use `⟨ha.1.mul h1, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[normalizedFactors_mul ha.2.1.ne_zero h1.ne_zero, normalizedFactors_irreducible ha.2.1, hna, h2, Multiset.singleton_add]`. Rewrite using `[ha.1.natDegree_mul h1, h3, Multiset.map_cons, Multiset.sum_cons]`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Polynomial.mul_coeff_zero]`. Conclude with `mul_ne_zero ha.2.2 h4`. Establish `L2 : ∀ (T : Finset K[X]) (d : ℕ), (T.val.map Polynomial.natDegree).count d = (T.filter (fun q => q.natDegree = d)).card`. Introduce `T d`. Rewrite using `[Multiset.count_map]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `congrArg Multiset.card (Multiset.filter_congr (fun x _ => eq_comm))`. Establish `F : ∀ c : Fin N → K, (monicOf c).coeff 0 ≠ 0 → ∀ q ∈ normalizedFactors (monicOf c), q.Monic ∧ Irreducible q ∧ q.coeff 0 ≠ 0 ∧ 1 ≤ q.natDegree ∧ q.natDegree ≤ N`. Introduce `c hc q hq`. Establish `hirr : Irreducible q` using `by first`. Consider the case `exact irreducible_of_normalized_factor q hq`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Consider the case `exact UniqueFactorizationMonoid.irreducible_of_normalized_factor q hq`. Establish `hq0 : q ≠ 0` using `hirr.ne_zero`. Establish `hnq : normalize q = q` using `by first`. Consider the case `exact normalize_normalized_factor q hq`. Consider the case `exact UniqueFactorizationMonoid.normalize_normalized_factor q hq`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmon : q.Monic`. Establish `h` using `Polynomial.monic_normalize hq0`. Rewrite `h` using `[hnq]`. Then use the resulting hypothesis. Establish `hdvd : q ∣ monicOf c` using `by first`. Consider the case `exact dvd_of_mem_normalizedFactors hq`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Consider the case `exact UniqueFactorizationMonoid.dvd_of_mem_normalizedFactors hq`. Establish `hp0 : monicOf c ≠ 0` using `(monicOf_monic c).ne_zero`. Use `⟨hmon, hirr, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `h0`. Apply `hc` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Conclude with `Polynomial.X_dvd_iff.mp ((Polynomial.X_dvd_iff.mpr h0).trans hdvd)`. Assume the negation of the conclusion as `hlt`. Establish `hz : q.natDegree = 0` using `by omega`. Establish `h1 : q = 1` using `by first`. Consider the case `exact hmon.natDegree_eq_zero_iff_eq_one.mp hz`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Consider the case `exact Polynomial.eq_one_of_monic_natDegree_zero hmon hz`. Apply `hirr.not_isUnit` to reduce the goal to its premises. Rewrite using `[h1]`. Conclude with `isUnit_one`. Establish `h` using `Polynomial.natDegree_le_of_dvd hdvd hp0`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `h` using `[monicOf_natDegree]`. Then use the resulting hypothesis. Establish `P : ∀ c : Fin N → K, (monicOf c).coeff 0 ≠ 0 → (normalizedFactors (monicOf c)).prod = monicOf c`. Introduce `c hc`. Establish `hp0 : monicOf c ≠ 0` using `(monicOf_monic c).ne_zero`. Establish `hm` using `(L1 _ (fun q hq => ⟨(F c hc q hq).1, (F c hc q hq).2.1, (F c hc q hq).2.2.1⟩)).1`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Apply `Polynomial.eq_of_monic_of_associated hm (monicOf_monic c)` to reduce the goal to its premises. Use `first`. Consider the case `exact prod_normalizedFactors hp0`. Consider the case `exact normalizedFactors_prod hp0`. Consider the case `exact UniqueFactorizationMonoid.prod_normalizedFactors hp0`.
+Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Consider the case `exact UniqueFactorizationMonoid.normalizedFactors_prod hp0`. Use `set Irr : ℕ → Finset K[X] := fun d => ((Finset.univ : Finset (Fin d → K)).filter (fun c => Irreducible (monicOf c) ∧ (monicOf c).coeff 0 ≠ 0)).image monicOf with hIrrdef`. Establish `hIrr : ∀ (d : ℕ) (q : K[X]), q ∈ Irr d ↔ q.Monic ∧ q.natDegree = d ∧ Irreducible q ∧ q.coeff 0 ≠ 0`. Introduce `d q`. Simplify using `only [Irr, Finset.mem_image, Finset.mem_filter, Finset.mem_univ, true_and]`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨c, ⟨h1, h2⟩, rfl⟩`. Conclude with `⟨monicOf_monic c, monicOf_natDegree c, h1, h2⟩`. Introduce and unpack `⟨h1, h2, h3, h4⟩`. Use `⟨fun i => q.coeff i, ?_, monicOf_coeffs h1 h2⟩` and prove the remaining obligations.
+Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[monicOf_coeffs h1 h2]`. Conclude with `⟨h3, h4⟩`. Use `set U : ((d : ℕ) → d ∈ Finset.Icc 1 N → Finset K[X]) → Finset K[X] := fun f => (Finset.Icc 1 N).attach.biUnion (fun x => f x.1 x.2) with hUdef`. Establish `hmemT : ∀ (f : (d : ℕ) → d ∈ Finset.Icc 1 N → Finset K[X]) (q : K[X]), q ∈ U f ↔ ∃ d, ∃ hd : d ∈ Finset.Icc 1 N, q ∈ f d hd`. Introduce `f q`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Simplify using `only [U]`. Rewrite using `[Finset.mem_biUnion]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, _, hx⟩`. Conclude with `⟨x.1, x.2, hx⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce and unpack `⟨d, hd, hq⟩`. Conclude with `⟨⟨d, hd⟩, Finset.mem_attach _ _, hq⟩`. Establish `key : ∀ f : ((d : ℕ) → d ∈ Finset.Icc 1 N → Finset K[X]), (∀ d (hd : d ∈ Finset.Icc 1 N), f d hd ∈ (Irr d).powersetCard (n d)) → (U f).val.prod.Monic ∧ normalizedFactors (U f).val.prod = (U f).val ∧ (U f).val.prod.natDegree = N ∧ (U f).val.prod.coeff 0 ≠ 0 ∧ ∀ d (hd : d ∈ Finset. …`. Introduce `f hf`. Establish `hprop : ∀ d (hd : d ∈ Finset.Icc 1 N) q, q ∈ f d hd → q.Monic ∧ q.natDegree = d ∧ Irreducible q ∧ q.coeff 0 ≠ 0` using `fun d hd q hq => (hIrr d q).mp ((Finset.mem_powersetCard.mp (hf d hd)).1 hq)`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `hfib : ∀ d (hd : d ∈ Finset.Icc 1 N), (U f).filter (fun q => q.natDegree = d) = f d hd`. Introduce `d hd`. Use extensionality with `q`. Rewrite using `[Finset.mem_filter, hmemT]`. Prove the components needed by the constructor for the conclusion.
+Substitute using the available equality. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce and unpack `⟨⟨d', hd', hq⟩, hdeg⟩`. Establish `hdd : d' = d` using `(hprop d' hd' q hq).2.1.symm.trans hdeg`. Substitute `hdd` using the available equality. Conclude with `hq`. Introduce `hq`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `⟨⟨d, hd, hq⟩, (hprop d hd q hq).2.1⟩`. Establish `hall : ∀ q ∈ (U f).val, q.Monic ∧ Irreducible q ∧ q.coeff 0 ≠ 0`. Introduce `q hq`. Take `⟨d, hd, hq'⟩` from `(hmemT f q).mp hq`. Take `⟨h1, _, h3, h4⟩` from `hprop d hd q hq'`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨h1, h3, h4⟩`. Take `⟨hmon, hnf, hdeg, hc0⟩` from `L1 _ hall`. Use `⟨hmon, hnf, ?_, hc0, hfib⟩` and prove the remaining obligations. Rewrite using `[hdeg, ← hN]`. Establish `hmaps : ∀ q ∈ U f, q.natDegree ∈ Finset.Icc 1 N`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `q hq`. Take `⟨d, hd, hq'⟩` from `(hmemT f q).mp hq`. Rewrite using `[(hprop d hd q hq').2.1]`. Conclude with `hd`. Establish `hsum : ((U f).val.map Polynomial.natDegree).sum = ∑ q ∈ U f, q.natDegree` using `rfl`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hsum, ← Finset.sum_fiberwise_of_maps_to hmaps]`. Use `Finset.sum_congr rfl ?_` and prove the remaining obligations. Introduce `d hd`. Rewrite using `[hfib d hd, Finset.sum_const_nat (fun q hq => (hprop d hd q hq).2.1), (Finset.mem_powersetCard.mp (hf d hd)).2, mul_comm]`. Establish `hTval : ∀ c : Fin N → K, Squarefree (monicOf c) → (normalizedFactors (monicOf c)).toFinset.val = normalizedFactors (monicOf c)`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `c hsq`. Rewrite using `[Multiset.toFinset_val]`. Conclude with `Multiset.dedup_eq_self.mpr ((squarefree_iff_nodup_normalizedFactors (monicOf_monic c).ne_zero).mp hsq)`. Use `(Finset.card_nbij' (t := (Finset.Icc 1 N).pi (fun d => (Irr d).powersetCard (n d))) (fun (c : Fin N → K) (d : ℕ) (_ : d ∈ Finset.Icc 1 N) => (normalizedFactors (monicOf c)).toFinset.filter (fun q => q.natDegree = d)) (fun (f : (d : ℕ) → d ∈ Finset.Icc 1 N → Finset K[X]) (k : Fin …` and prove the remaining obligations. Introduce `c hc`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `hc` using `[Finset.mem_coe, Finset.filter_congr_decidable, Finset.mem_filter]`. Take `⟨_, hsq, hc0, hcount⟩` from `hc`. Rewrite using `[Finset.mem_coe, Finset.mem_pi]`. Introduce `d hd`. Rewrite using `[Finset.mem_powersetCard]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Prove the components needed by the constructor for the conclusion. Introduce `q hq`. Rewrite `hq` using `[Finset.mem_filter, Multiset.mem_toFinset]`. Take `⟨h1, h2, h3, _, _⟩` from `F c hc0 q hq.1`. Conclude with `(hIrr d q).mpr ⟨h1, hq.2, h2, h3⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h` using `L2 (normalizedFactors (monicOf c)).toFinset d`. Rewrite `h` using `[hTval c hsq]`. Rewrite using `[← h]`. Conclude with `hcount d hd`. Introduce `f hf`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hf` using `[Finset.mem_coe, Finset.mem_pi]`. Take `⟨hmon, hnf, hdeg, hc0, hfib⟩` from `key f hf`. Establish `hp` using `monicOf_coeffs hmon hdeg`. Rewrite using `[Finset.mem_coe, Finset.filter_congr_decidable, Finset.mem_filter]`. Simplify using `only`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hp]`. Use `⟨Finset.mem_univ _, (squarefree_iff_nodup_normalizedFactors hmon.ne_zero).mpr ?_, hc0, ?_⟩` and prove the remaining obligations. Rewrite using `[hnf]`. Conclude with `(U f).nodup`. Introduce `d hd`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Rewrite using `[hnf, L2, hfib d hd]`. Conclude with `(Finset.mem_powersetCard.mp (hf d hd)).2`. Introduce `c hc`. Rewrite `hc` using `[Finset.mem_coe, Finset.filter_congr_decidable, Finset.mem_filter]`. Take `⟨_, hsq, hc0, _⟩` from `hc`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hU : U (fun d _ => (normalizedFactors (monicOf c)).toFinset.filter (fun q => q.natDegree = d)) = (normalizedFactors (monicOf c)).toFinset`. Use extensionality with `q`. Simplify using `only [U]`. Rewrite using `[Finset.mem_biUnion]`. Prove the components needed by the constructor for the conclusion.
+Extract witnesses or component facts from the available result. Apply function extensionality and compare values at an arbitrary argument. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `⟨x, _, hq⟩`. Conclude with `(Finset.mem_filter.mp hq).1`. Introduce `hq`. Take `⟨_, _, _, h4, h5⟩` from `F c hc0 q (Multiset.mem_toFinset.mp hq)`. Conclude with `⟨⟨q.natDegree, Finset.mem_Icc.mpr ⟨h4, h5⟩⟩, Finset.mem_attach _ _, Finset.mem_filter.mpr ⟨hq, rfl⟩⟩`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `k`. Simplify using `only`. Rewrite using `[hU, hTval c hsq, P c hc0, monicOf_coeff]`. Introduce `f hf`. Rewrite `hf` using `[Finset.mem_coe, Finset.mem_pi]`.
-
-Take `⟨hmon, hnf, hdeg, _, hfib⟩` from `key f hf`. Use function extensionality and compare the values at `d hd`. Simplify using `only`. Rewrite using `[monicOf_coeffs hmon hdeg, hnf, Finset.val_toFinset, hfib d hd]`. Rewrite using `[Finset.card_pi]`.
-
-Use `Finset.prod_congr rfl ?_` and prove the remaining obligations. Introduce `d _`. Rewrite using `[Finset.card_powersetCard]`. Simplify using `only [Irr]`. Rewrite using `[Finset.card_image_of_injective _ monicOf_injective]`.
+A detailed English derivation is pending.
 -/
 theorem type_count_exact : TypeCountExact := by
   classical

@@ -24,9 +24,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.AnVal
 
 /- English proof (translation)
-Take `⟨m, hm⟩` from `MvPolynomial.support_nonempty.2 h0`. Establish `hr` using `hP.1.2.2 m hm`. Establish `h1` using `hh (MvPolynomial.mem_support_iff.1 hm)`. Establish `h2 : m.degree = P.totalDegree` using `by rw [Finsupp.degree_eq_weight_one]; exact h1`. Rewrite using `[← h2, Finsupp.degree_eq_sum]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Fintype.sum_sigma]`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[Fintype.sum_prod_type]`. Conclude with `Finset.sum_congr rfl fun i _ => hr τ i`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem totalDegree_eq_sum_rows {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H}
     {l : Geo.Tor.Level H} (c : Coeff l) (a : (E →+* ℂ) × ℕ → ℕ) (n : ℕ) (P : MvPolynomial (LtN Dw n) c.F)
@@ -44,9 +44,9 @@ theorem totalDegree_eq_sum_rows {E : Type} [Field E] [NumberField E] [IsCMField 
   exact Finset.sum_congr rfl fun i _ => hr τ i
 
 /- English proof (translation)
-Establish `hp : 0 < 2 * Real.pi * x` using `by positivity`. Establish `hd' : (∑ τ : E →+* ℂ, ∑ i : Fin (Dw.mult τ), (a (τ, i) : ℝ)) = d` using `by rw [hd]; push_cast; rfl`. Unfold `lieFac`. Rewrite using `[hd', ← Real.exp_nat_mul, ← Real.exp_log (inv_pos.2 hp), ← Real.exp_nat_mul, Real.log_inv]`. Use `congr 1`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem lieFac_sq {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} (Dw : Datum H) (x : ℝ) (hx : 0 < x)
     (a : (E →+* ℂ) × ℕ → ℕ) (d : ℕ) (hd : d = ∑ τ : E →+* ℂ, ∑ i : Fin (Dw.mult τ), a (τ, i)) :
@@ -60,27 +60,21 @@ theorem lieFac_sq {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E
   ring
 
 /- English proof (translation)
-Introduce `hCI E _ _ _ H Dw l Xo c _ r U xR nab hnab hU α hα hMb a n P₁ hdom hP hbp s hs N wR hw hct R0 m hrun hm tableLineDegreeFive cc hP14 hcc σ hσ k x hx`. Take `⟨hUn, hFT, hxi⟩` from `hU σ hσ`. Take `⟨b, -, hbd, hbo, -, hphi, hpn⟩` from `exists_ortho_frame E r ((U σ).X k) x hx`. Take `⟨T, Pr, hTr, hq, hPm, hph, hbound⟩` from `GlobalTheory.T.unfoldedThetaRule_archimedeanValue_bound hCI E H Dw l Xo c σ r (U σ) k ⟨_, hbd⟩ xR nab hnab hσ hUn (hFT k _) hbo (hxi k) α hα hMb a n P₁ hP hbp R0 m hrun hm`. Take `⟨h0, hh, -⟩` from `GlobalTheory.T.determinantBlockProduct_rename_torusPolynomial E H Dw n c.F σ P₁ hbp Dw.mult id (fun _ => le_rfl) Function.injective_id`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hdeg` using `totalDegree_eq_sum_rows c a n P₁ hP h0 hh`. Establish `hxR : 0 < xR`. Take `⟨τ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Rewrite using `[← hxi k τ]`. Conclude with `norm_pos_iff.2 ((map_ne_zero τ).2 ((U σ).X k).ξ0_ne)`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hM : (0 : ℝ) < l.M`. Use `Pr.hq` as an intermediate fact. Rewrite `this` using `[hq]`. Conclude with `this` after adjusting the coercions. Take `⟨jb, hjb, hf⟩` from `hct`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `choose f hf1 hf2 using hf`. Use `haveI : Finite (LevQ Dw l) := (GlobalTheory.card_levQ E H Dw l).1`. Use `haveI : Fintype (Fin n → LevQ Dw l) := Fintype.ofFinite _`. Establish `hb` using `hbound f hf1`. Rewrite `hb` using `[finsum_eq_sum_of_fintype]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hrec : ∀ j, recNrm (U σ) xR a n (wR j) k x = lieFac Dw xR a * ‖rdU (U σ) (wR j) k (FD.rmul x b)‖` using `fun j => by`. Unfold `recNrm`. Rewrite using `[hpn _ _ (hUn.2.2.2.2.1 a n hdom (wR j) (hw j) k)]`. Establish `hval : ∀ q, rdU (U σ) (wR (jb q)) k (FD.rmul x b) = σ s * toC (evR Xo c (f q) ((U σ).un k ⟨_, hbd⟩))` using `fun q => by`. Establish `e : wR (jb q) = s • f q`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `p y`. Rewrite using `[hf2 q p y]`. Conclude with `(Algebra.smul_def s (f q p y)).symm`. Rewrite using `[e, map_smulₛₗ]`. Use `show σ s * rdU (U σ) (f q) k (FD.rmul x b) = _`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Conclude with `dif_pos hbd`. Establish `hkey : (Real.pi⁻¹) ^ P₁.totalDegree * Pr.Jbound n ≤ ∑ j, recNrm (U σ) xR a n (wR j) k x ^ 2`. Establish `hl` using `lieFac_sq Dw xR hxR a _ hdeg`. Establish `hL : (0 : ℝ) ≤ ((2 * Real.pi * xR)⁻¹) ^ P₁.totalDegree` using `by positivity`.
+Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← _root_.mul_assoc, ← _root_.mul_assoc, ← mul_pow, ← mul_pow]`. Use `congr 2`. Clear the denominators using the available nonvanishing facts. Use `_ ≤ ((2 * Real.pi * xR)⁻¹) ^ P₁.totalDegree * ((l.M : ℝ) ^ P₁.totalDegree * ∑ q, ‖toC (evR Xo c (f q) ((U σ).un k ⟨_, hbd⟩))‖ ^ 2) := mul_le_mul_of_nonneg_left (mul_le_mul_of_nonneg_left hb (by positivity)) hL`.
-
-Use `_ ≤ ((2 * Real.pi * xR)⁻¹) ^ P₁.totalDegree * (‖σ s‖ ^ 2 * ∑ q, ‖toC (evR Xo c (f q) ((U σ).un k ⟨_, hbd⟩))‖ ^ 2) := mul_le_mul_of_nonneg_left (mul_le_mul_of_nonneg_right (hs σ) (Finset.sum_nonneg fun _ _ => sq_nonneg _)) hL`. Use `_ = ∑ q, recNrm (U σ) xR a n (wR (jb q)) k x ^ 2 := by`. Rewrite using `[Finset.mul_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Rewrite using `[hrec, hval, mul_pow, hl, norm_mul, mul_pow]`.
-
-Use `_ = ∑ j ∈ Finset.univ.image jb, recNrm (U σ) xR a n (wR j) k x ^ 2 := (Finset.sum_image (f := fun j => recNrm (U σ) xR a n (wR j) k x ^ 2) fun _ _ _ _ h => hjb h).symm`. Use `_ ≤ _ := Finset.sum_le_sum_of_subset_of_nonneg (Finset.subset_univ _) fun _ _ _ => sq_nonneg _`. Establish `hfin` using `neg_log_sqrt_le_of_jbound E T P₁.totalDegree n Pr _ tableLineDegreeFive cc hkey (by rw [hTr, hPm]; exact hP14) (by rw [hPm, hq]; exact hcc)`. Rewrite `hfin` using `[hph]`. Rewrite using `[← hphi]`.
-
-Conclude with `hfin`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem i2iAt_of_containsTh : ChartIndepSt2 → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Geo.Tor.Level H) (Xo : Moduli Dw l) (c : Coeff l) [StarRing (𝓞 E)] (r : ℕ) (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r) (xR : ℝ) (nab : NabV Xo c), IsNab Xo c nab → (∀ σ, GoodEmb c σ → IsUnf (U σ) ∧ (∀ k x, FromTest (K := c.F) (fun S _ _ => FrPt Xo c S) (fun φ y z => FrMap φ y z) ((U σ).un k x)) ∧ ∀ k (τ : E →+* ℂ), ‖τ ((U σ).X k).ξ0‖ = xR) → ∀ α : 𝓞 E, α * H.bar α = (l.M : 𝓞 E) → l.Mb = Ideal.span {H.bar α} → ∀ (a : (E →+* ℂ) × ℕ → ℕ) (n : ℕ) (P₁ : MvPolynomial (LtN Dw n) c.F), Dom a n → P₁ ∈ harmA c a n → IsBlockProd P₁ → ∀ s : c.F, (∀ σ : c.F →+* ℂ, (l.M : ℝ) ^ P₁.totalDegree ≤ ‖σ s‖ ^ 2) → ∀ (N : ℕ) (wR : Fin (N + 1) → Rul Xo c), (∀ i, wR i ∈ sec Xo c a n) → ContainsTh Xo c nab s P₁ wR → ∀ (R0 : ℝ) (m : ℕ), RunOK E r P₁.totalDegree l.M R0 m → (Dw.p ≤ m ∨ Dw.q ≤ m) → ∀ tableLineDegreeFive cc : ℝ, p14 E r n m ≤ tableLineDegreeFive → 8100 * Real.pi * n * (m : ℝ) ^ 4 * (I2.dstar (E := E) m : ℝ) ^ 4 * I2.RR (E := E) / l.M ≤ cc → I2AtFramePoints U xR wR (a, n) (I2.th (E := E) l.M R0) tableLineDegreeFive P₁.totalDegree cc := by
   intro hCI E _ _ _ H Dw l Xo c _ r U xR nab hnab hU α hα hMb a n P₁ hdom hP hbp s hs N wR hw hct R0 m hrun hm

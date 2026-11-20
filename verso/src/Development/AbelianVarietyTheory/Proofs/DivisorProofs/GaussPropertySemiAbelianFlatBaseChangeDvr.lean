@@ -14,7 +14,7 @@ open GlobalTheory.Desc
 namespace GlobalTheory.Desc.GaussBC
 
 /- English proof (translation)
-Introduce `X _ R _ p`. Apply `ext_of_isAffine` to reduce the goal to its premises. Rewrite using `[← cancel_mono (Scheme.ΓSpecIso _).hom, Scheme.ΓSpecIso_naturality, Scheme.Hom.comp_appTop, gp, Scheme.fromSpecStalk_appTop]`. Use extensionality with `r`. Simplify using `[GlobalTheory.Desc.cst, fnOf, Scheme.functionField]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem gp_comp_eq_spMap_cst : ∀ (X : Scheme.{0}) [IsIntegral X] (R : Type) [CommRing R] (p : X ⟶ Sp R),
     gp X ≫ p = spMap (GlobalTheory.Desc.cst p) := by
@@ -26,9 +26,9 @@ theorem gp_comp_eq_spMap_cst : ∀ (X : Scheme.{0}) [IsIntegral X] (R : Type) [C
   simp [GlobalTheory.Desc.cst, fnOf, Scheme.functionField]
 
 /- English proof (translation)
-Introduce `R _ _ X _ p x hx r`. Establish `hreg : GlobalTheory.Cartier.RegAt x (GlobalTheory.Desc.cst p r)` using `regAt_fnOf (U := ⊤) trivial trivial _`. Use `⟨hreg, fun hr => zeroAt_iff.2 ⟨hreg, fun hu => ?_⟩⟩` and prove the remaining obligations. Establish `h1` using `(unitAt_fnOf_iff (U := ⊤) trivial trivial _).1 hu`. Establish `h2 : x ∈ p ⁻¹ᵁ (Sp R).basicOpen ((Scheme.ΓSpecIso (CommRingCat.of R)).inv r)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Scheme.Hom.preimage_basicOpen]`. Conclude with `h1`. Establish `h3 : p x ∈ (Sp R).basicOpen ((Scheme.ΓSpecIso (CommRingCat.of R)).inv r)` using `h2`. Rewrite `h3` using `[basicOpen_eq_of_affine, hx]`. Conclude with `(PrimeSpectrum.mem_basicOpen _ _).1 h3 hr`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cst_regAt_zeroAt : ∀ (R : Type) [CommRing R] [IsLocalRing R] (X : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp R) (x : X), p x = closedPoint R → ∀ r : R, GlobalTheory.Cartier.RegAt x (GlobalTheory.Desc.cst p r) ∧ (r ∈ maximalIdeal R → GlobalTheory.Cartier.ZeroAt x (GlobalTheory.Desc.cst p r)) := by
   intro R _ _ X _ p x hx r
@@ -50,14 +50,14 @@ section Span
 variable {R₁ F₁ : Type} [CommRing R₁] [CommRing F₁] (c : R₁ →+* F₁)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨0, Fin.elim0, Fin.elim0, fun i => i.elim0, by simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem zero_mem_spanBy (T : Set F₁) : (0 : F₁) ∈ spanBy c T := ⟨0, Fin.elim0, Fin.elim0, fun i => i.elim0, by simp⟩
 
 /- English proof (translation)
-Take `⟨n, r, t, ht, rfl⟩` from `hv`. Take `⟨m, r', t', ht', rfl⟩` from `hw`. Use `⟨n + m, Fin.append r r', Fin.append t t', fun i => ?_, ?_⟩` and prove the remaining obligations. Use `Fin.addCases (fun i => ?_) (fun i => ?_) i` and prove the remaining obligations. Rewrite using `[Fin.append_left]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `ht i`. Rewrite using `[Fin.append_right]`. Conclude with `ht' i`. Rewrite using `[Fin.sum_univ_add]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem add_mem_spanBy {T : Set F₁} {v w : F₁} (hv : v ∈ spanBy c T) (hw : w ∈ spanBy c T) :
     v + w ∈ spanBy c T := by
@@ -70,14 +70,14 @@ theorem add_mem_spanBy {T : Set F₁} {v w : F₁} (hv : v ∈ spanBy c T) (hw :
   · rw [Fin.sum_univ_add]; simp
 
 /- English proof (translation)
-Take `⟨n, r, t, ht, rfl⟩` from `hv`. Conclude with `⟨n, fun i => d * r i, t, ht, by rw [Finset.mul_sum]; simp only [map_mul, _root_.mul_assoc]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem mul_mem_spanBy {T : Set F₁} {v : F₁} (hv : v ∈ spanBy c T) (d : R₁) : c d * v ∈ spanBy c T := by
   obtain ⟨n, r, t, ht, rfl⟩ := hv
   exact ⟨n, fun i => d * r i, t, ht, by rw [Finset.mul_sum]; simp only [map_mul, _root_.mul_assoc]⟩
 
 /- English proof (translation)
-Introduce and unpack `v ⟨n, r, t, ht, rfl⟩`. Conclude with `Finset.sum_induction _ p hadd h0 fun i _ => hmul (r i) (t i) (ht i)`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem spanBy_induction {T : Set F₁} (p : F₁ → Prop) (h0 : p 0) (hadd : ∀ a b, p a → p b → p (a + b))
     (hmul : ∀ r, ∀ t ∈ T, p (c r * t)) : ∀ v ∈ spanBy c T, p v := by
@@ -87,7 +87,7 @@ theorem spanBy_induction {T : Set F₁} (p : F₁ → Prop) (h0 : p 0) (hadd : �
 end Span
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => rw [pow_zero]`. Conclude with `(unitAt_one x).regAt`. Consider the case `succ n ih => rw [pow_succ]`. Conclude with `ih.mul h`.
+Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem regAt_pow {X : Scheme.{0}} [IsIntegral X] {x : X} {f : X.functionField} (h : GlobalTheory.Cartier.RegAt x f) (n : ℕ) :
     GlobalTheory.Cartier.RegAt x (f ^ n) := by
@@ -96,47 +96,41 @@ theorem regAt_pow {X : Scheme.{0}} [IsIntegral X] {x : X} {f : X.functionField} 
   | succ n ih => rw [pow_succ]; exact ih.mul h
 
 /- English proof (translation)
-Introduce `T D _ _ _ _ _ _ a ha hm H _ _ H' _ _ π θ hH hpb hff y y' hy hy' hdy hdy'`. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible T`. Establish `hmT` using `hϖ.maximalIdeal_eq`. Establish `hmD : maximalIdeal D = Ideal.span {a ϖ}` using `by rw [← hm, hmT, Ideal.map_span, Set.image_singleton]`. Establish `hcomp : θ.comp (cst H.hom) = (cst H'.hom).comp a`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨l, hl1, hl2⟩` from `hff`. Establish `e1` using `gp_comp_eq_spMap_cst H.left T H.hom`. Establish `e2` using `gp_comp_eq_spMap_cst H'.left D H'.hom`. Establish `hl : l = gp H'.left` using `by simpa using hl1`. Establish `key : spMap (θ.comp (cst H.hom)) = spMap ((cst H'.hom).comp a)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Conclude with `congrArg CommRingCat.Hom.hom (Spec.map_injective key)`. Use `set c := cst H'.hom with hc`. Use `set P := c (a ϖ) with hPdef`. Establish `hP : P = θ (cst H.hom ϖ)` using `by rw [hPdef, ← RingHom.comp_apply, ← hcomp, RingHom.comp_apply]`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨hϖ0, hfac⟩` from `GlobalTheory.T.semiAbelian_dvr_closedFibre_stalk_uniformiser T H hH y hy hdy ϖ hmT`. Establish `hP0 : P ≠ 0` using `by rw [hP]; exact (map_ne_zero θ).2 hϖ0`. Establish `hPz : GlobalTheory.Cartier.ZeroAt y' P` using `(cst_regAt_zeroAt D H'.left H'.hom y' hy' (a ϖ)).2 (by rw [hmD]; exact Ideal.subset_span rfl)`. Establish `hreg : ∀ u, GlobalTheory.Cartier.RegAt y u → GlobalTheory.Cartier.RegAt y' (θ u)`. Introduce `u hu`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpt` using `GlobalTheory.T.baseChange_sends_closedFibre_genericPoint_dvr T D a ha hm H H' π θ hH hpb ⟨_, hff.choose_spec⟩ y y' hy hy' hdy hdy'`. Conclude with `GlobalTheory.T.regularAtPoint_functionField_map_of_genericPoint_comp H.left H'.left π θ ⟨_, hff.choose_spec⟩ y' u (hpt ▸ hu)`. Establish `hcreg : ∀ d, GlobalTheory.Cartier.RegAt y' (c d)` using `fun d => (cst_regAt_zeroAt D H'.left H'.hom y' hy' d).1`. Establish `hc0reg : ∀ t, GlobalTheory.Cartier.RegAt y (cst H.hom t)` using `fun t => (cst_regAt_zeroAt T H.left H.hom y hy t).1`. Establish `hmod` using `GlobalTheory.T.thetaSpan_vanishing_eq_uniformiser_mul T D a ha hm H H' π θ hH hpb ⟨_, hff.choose_spec⟩ y y' hy hy' hdy hdy' ϖ hmT`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `set S := spanBy c (θ '' regSet y) with hS`. Establish `hSreg : ∀ v ∈ S, GlobalTheory.Cartier.RegAt y' v` using `spanBy_induction c _ (regAt_zero y') (fun _ _ h h' => h.add h') (by`. Introduce and unpack `r _ ⟨t, ht, rfl⟩`. Conclude with `(hcreg r).mul (hreg t ht))`. Establish `hSP : ∀ v ∈ S, ∀ N : ℕ, P ^ N * v ∈ S`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `v hv N`. Proceed by induction on `N with`. Consider the case `zero => simpa using hv`. Consider the case `succ N ih => rw [pow_succ', _root_.mul_assoc]`. Conclude with `mul_mem_spanBy c ih _`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hQ : ∀ v ∈ spanBy c (Set.range θ), ∃ N : ℕ, P ^ N * v ∈ S`. Use `spanBy_induction c _ ⟨0, by simpa using zero_mem_spanBy c _⟩ ?_ ?_` and prove the remaining obligations. Introduce and unpack `v w ⟨N, hN⟩ ⟨M, hM⟩`. Use `⟨N + M, ?_⟩` and prove the remaining obligations. Use `add_mem_spanBy c (hSP _ hN M) (hSP _ hM N)` as an intermediate fact.
+Assume the hypotheses and unpack their components. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `this using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree. Introduce and unpack `r _ ⟨u, rfl⟩`. Distinguish the cases in `hu : u = 0`. Conclude with `⟨0, by simpa [hu] using zero_mem_spanBy c _⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨k, w, hw, rfl⟩` from `hfac u hu`. Use `⟨(-k).toNat, ?_⟩` and prove the remaining obligations. Establish `hk : ((-k).toNat : ℤ) + k = ((((-k).toNat : ℤ) + k).toNat : ℤ)` using `(Int.toNat_of_nonneg (by omega)).symm`. Establish `e : P ^ (-k).toNat * (c r * θ (cst H.hom ϖ ^ k * w)) = c r * θ (cst H.hom ϖ ^ (((-k).toNat : ℤ) + k).toNat * w)`. Rewrite using `[hP, map_mul, map_mul, map_zpow₀, map_pow]`.
+Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Establish `hq : θ (cst H.hom ϖ) ^ (-k).toNat * θ (cst H.hom ϖ) ^ k = θ (cst H.hom ϖ) ^ (((-k).toNat : ℤ) + k).toNat`. Rewrite using `[← zpow_natCast, ← zpow_natCast _ (((-k).toNat : ℤ) + k).toNat, ← hk, zpow_add₀ ((map_ne_zero θ).2 hϖ0)]`. Take the linear combination `(c r * θ w) * hq`. Rewrite using `[e]`. Conclude with `mul_mem_spanBy c (subset_spanBy c (θ '' regSet y) (Set.mem_image_of_mem θ (show _ ∈ regSet y from (regAt_pow (hc0reg ϖ) _).mul hw.regAt))) r`.
+Treat this case separately. Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hB : ∀ (N : ℕ) (t : H'.left.functionField), GlobalTheory.Cartier.RegAt y' t → P ^ N * t ∈ S → t ∈ S`. Introduce `N`. Proceed by induction on `N with`. Consider the case `zero => intro t _ h`. Simplify using `using h`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Consider the case `succ N ih`. Introduce `t ht h`. Rewrite `h` using `[pow_succ', _root_.mul_assoc]`. Take `⟨z₁, hz₁, e⟩` from `hmod _ h (hPz.mul ((regAt_pow hPz.regAt N).mul ht))`. Establish `: P ^ N * t = z₁` using `mul_left_cancel₀ hP0 e`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion.
 
-Conclude with `ih t ht (this ▸ hz₁)`. Use `⟨fun v ⟨d, hd0, hdv⟩ => ⟨fun hv => ?_, fun ⟨s, hs, hsv⟩ => ?_⟩, ?_, ?_⟩` and prove the remaining obligations. Take `⟨N, hN⟩` from `hQ _ hdv`. Establish `hirr : Irreducible (a ϖ)` using `(IsDiscreteValuationRing.irreducible_iff_uniformizer _).2 hmD`. Take `⟨n, u, rfl⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible hd0 hirr`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e : P ^ (N + n) * v = c (↑u⁻¹ : D) * (P ^ N * (c (↑u * a ϖ ^ n) * v))`. Rewrite using `[hPdef, map_mul, map_pow]`. Establish `: c (↑u⁻¹ : D) * c ↑u = 1` using `by rw [← map_mul, Units.inv_mul, map_one]`. Take the linear combination `(-(c (a ϖ) ^ (N + n) * v)) * this`. Use `⟨1, fun h => (maximalIdeal.isMaximal D).ne_top ((Ideal.eq_top_iff_one _).2 h), ?_⟩` and prove the remaining obligations.
+By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[map_one, _root_.one_mul]`. Conclude with `hB (N + n) v hv (e ▸ mul_mem_spanBy c hN _)`. Take `⟨u, rfl⟩` from `IsLocalRing.notMem_maximalIdeal.1 hs`. Establish `e : v = c (↑u⁻¹ : D) * (c ↑u * v)` using `by rw [← _root_.mul_assoc, ← map_mul, Units.inv_mul, map_one, _root_.one_mul]`. Rewrite using `[e]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. It suffices to derive a contradiction.
 
-Conclude with `(hcreg _).mul (hSreg _ hsv)`. Use extensionality with `u`. Use `⟨fun h => ?_, fun h => hreg u h⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `GlobalTheory.Cartier.RegAt y' (θ u) at h`. Express the relevant statement in the definitionally equal form `GlobalTheory.Cartier.RegAt y u`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Distinguish the cases in `hu : u = 0`. Rewrite using `[hu]`. Conclude with `regAt_zero y`. Take `⟨k, w, hw, rfl⟩` from `hfac u hu`. Break down `le_or_gt 0 k with hk | hk` into its components or cases.
-
-Use `lift k to ℕ using hk`. Rewrite using `[zpow_natCast]`. Conclude with `(regAt_pow (hc0reg ϖ) k).mul hw.regAt`. It suffices to derive a contradiction. Establish `hw0` using `hw.ne_zero`.
-
-Take `⟨hw1, hw2⟩` from `(unitAt_iff hw0).1 hw`. Establish `hθw : GlobalTheory.Cartier.UnitAt y' (θ w)` using `(unitAt_iff ((map_ne_zero θ).2 hw0)).2 ⟨hreg w hw1, by rw [← map_inv₀]; exact hreg _ hw2⟩`. Establish `hm1 : ((-(k + 1)).toNat : ℤ) = -(k + 1)` using `Int.toNat_of_nonneg (by omega)`. Establish `e : P⁻¹ = θ (cst H.hom ϖ ^ k * w) * (θ w)⁻¹ * P ^ (-(k + 1)).toNat`. Rewrite using `[map_mul, map_zpow₀, ← hP, _root_.mul_assoc (P ^ k), mul_inv_cancel₀ ((map_ne_zero θ).2 hw0), _root_.mul_one, ← zpow_natCast, hm1, ← zpow_add₀ hP0, show k + -(k + 1) = -1 by ring, zpow_neg_one]`.
-
-Establish `hPi : GlobalTheory.Cartier.RegAt y' P⁻¹`. Rewrite using `[e]`. Conclude with `(h.mul hθw.inv.regAt).mul (regAt_pow hPz.regAt _)`. Conclude with `(zeroAt_iff.1 hPz).2 ((unitAt_iff hP0).2 ⟨hPz.regAt, hPi⟩)`. Conclude with `GlobalTheory.T.linearlyDisjoint_functionField_of_flat_baseChange T D a ha H H' π θ hpb ⟨_, hff.choose_spec⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gauss_baseChange : ∀ (T D : Type) [CommRing T] [IsDomain T] [IsDiscreteValuationRing T] [CommRing D] [IsDomain D] [IsDiscreteValuationRing D] (a : T →+* D), a.Flat → (maximalIdeal T).map a = maximalIdeal D → ∀ (H : Over (Sp T)) [GrpObj H] [IsIntegral H.left] (H' : Over (Sp D)) [GrpObj H'] [IsIntegral H'.left] (π : H'.left ⟶ H.left) (θ : H.left.functionField →+* H'.left.functionField), IsSemiAbelian H → IsPullback π H'.hom H.hom (spMap a) → PFF (𝟙 _) π θ → ∀ (y : H.left) (y' : H'.left), H.hom y = closedPoint T → H'.hom y' = closedPoint D → ringKrullDim (H.left.presheaf.stalk y) = 1 → ringKrullDim (H'.left.presheaf.stalk y') = 1 → GaussAt (GlobalTheory.Desc.cst H'.hom) (maximalIdeal D) θ (regSet y) (regSet y') ∧ θ ⁻¹' (regSet y') = regSet y ∧ LinDisj (GlobalTheory.Desc.cst H.hom) (GlobalTheory.Desc.cst H'.hom) θ := by
   intro T D _ _ _ _ _ _ a ha hm H _ _ H' _ _ π θ hH hpb hff y y' hy hy' hdy hdy'

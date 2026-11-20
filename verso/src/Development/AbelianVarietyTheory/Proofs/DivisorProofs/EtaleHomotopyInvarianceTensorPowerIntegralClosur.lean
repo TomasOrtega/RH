@@ -23,15 +23,13 @@ open scoped TensorProduct
 namespace GlobalTheory.EtC
 
 /- English proof (translation)
-Establish `hlow` using `GlobalTheory.T.etaleHomotopyInvariant_integral_killed_of_lowerDim q d hH D hq hd`. Establish `hqE : IsUnit (q : E)` using `by simpa using hq.map (algebraMap D E)`. Use `set X : Finset (E →ₐ[D] T) := (GlobalTheory.T.finite_retractions_of_adjoin_finset_integral_domain D T E ι F hF).toFinset with hX`. Establish `hXid : ∀ χ ∈ X, χ.comp ι = AlgHom.id D T` using `fun χ hχ => by simpa [hX] using hχ`. Take `⟨s, hs0, hs⟩` from `GlobalTheory.T.exists_ne_zero_isNilpotent_mul_finite_inf_fg_ideals D E (E →ₐ[D] T) X (fun χ => RingHom.ker χ) (fun χ hχ => GlobalTheory.T.ker_retraction_fg_of_adjoin_finset D T E ι F hF χ (hXid χ hχ)) (fun Q hQ hQc => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨χ, hχι, hχQ⟩` from `GlobalTheory.T.exists_retraction_of_monicPolynomialsHaveRoots D T E hT ι Q hQ hQc`. Establish `hmem : χ ∈ X` using `by simpa [hX] using hχι`. Rewrite using `[← hχQ]`. Conclude with `iInf₂_le χ hmem)`. Use `set I : Ideal E := ⨅ χ ∈ X, RingHom.ker χ with hI`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `set J : Ideal E := Ideal.span {algebraMap D E s} with hJ`. Establish `hIJ : I ⊓ J ≤ nilradical E`. Introduce `y hy`. Take `⟨hyI, hyJ⟩` from `Ideal.mem_inf.mp hy`. Take `⟨a, rfl⟩` from `Ideal.mem_span_singleton'.mp hyJ`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Take `⟨m, hm⟩` from `hs _ hyI`. Use `⟨2 * m, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Establish `hJs : ∀ K : Ideal E, J ≤ K → algebraMap D (E ⧸ K) s = 0`. Introduce `K hK`.
-
-Rewrite using `[IsScalarTower.algebraMap_apply D E (E ⧸ K), Ideal.Quotient.algebraMap_eq, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `hK (Ideal.mem_span_singleton_self _)`. Conclude with `GlobalTheory.T.etaleHomotopyInvariantTwists_of_closedCover q E I J hIJ hqE (GlobalTheory.T.hInv_quot_iInf_ker_retractions q D T E hq hTq hlow ι X hXid) (hlow (E ⧸ J) s hs0 (hJs J le_rfl)) (hlow (E ⧸ (I ⊔ J)) s hs0 (hJs _ le_sup_right))`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hInv_of_finite_over_aic (q : ℕ) [NeZero q] (d : ℕ) (hH : (∀ (R : Type) [CommRing R] [Algebra.FiniteType ℤ R], IsUnit (q : R) → ringKrullDim R < d → HInv q R))
     (D : Type) [CommRing D] [IsDomain D] [Algebra.FiniteType ℤ D] (hq : IsUnit (q : D))
@@ -78,13 +76,13 @@ def subalgebraOfSubringEquiv {R A : Type} [CommRing R] [CommRing A] [Algebra R A
   map_add' _ _ := rfl
 
 /- English proof (translation)
-Introduce `q _ d hH D _ _ _ hq hd k`. Establish `hqDp : IsUnit (q : integralClosure D (AlgebraicClosure (FractionRing D)))`. Simplify using `using hq.map (algebraMap D (integralClosure D (AlgebraicClosure (FractionRing D))))`. Establish `hTq` using `GlobalTheory.T.etaleHomotopyInvariance_absolutelyIntegrallyClosed q _ (GlobalTheory.T.monicPolynomialsHaveRoots_integralClosure_algClosure D) hqDp`. Establish `hqS : ∀ F, IsUnit (q : firstAndFinite D (integralClosure D (AlgebraicClosure (FractionRing D))) k F)` using `fun F => by simpa using hq.map (algebraMap D (firstAndFinite D (integralClosure D (AlgebraicClosure (FractionRing D))) k F))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `GlobalTheory.T.hInv_of_directed_union_subalgebras q _ (Finset (integralClosure D (AlgebraicClosure (FractionRing D)))) (fun F => subalgebraOfSubring (firstAndFinite D (integralClosure D (AlgebraicClosure (FractionRing D))) k F).toSubring) ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `F G hFG x hx`. Rewrite `hx`, the goal using `[mem_subalgebraOfSubring]`. Conclude with `Algebra.adjoin_mono (Set.union_subset_union_right _ (Set.iUnion_mono fun i => Set.image_mono (Finset.coe_subset.mpr hFG))) hx`. Introduce `x`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨F, hF⟩` from `GlobalTheory.T.exists_finset_mem_tensorPowerFirstFactorAdjoinFinset D _ k x`. Conclude with `⟨F, (mem_subalgebraOfSubring).mpr hF⟩`. Introduce `F`. Simplify using `using (hqS F).map (subalgebraOfSubringEquiv (firstAndFinite D (integralClosure D (AlgebraicClosure (FractionRing D))) k F))`. Introduce `F haveI := GlobalTheory.T.tensorPowerFirstFactorAdjoinFinset_isIntegral D (integralClosure D (AlgebraicClosure (FractionRing D))) k F`.
+Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨F', hF'⟩` from `GlobalTheory.T.tensorPowerFirstFactorAdjoinFinset_fg_over_first D (integralClosure D (AlgebraicClosure (FractionRing D))) k F`. Conclude with `GlobalTheory.T.etaleHomotopyInvariantTwists_of_ringEquiv q _ _ (subalgebraOfSubringEquiv _) (hInv_of_finite_over_aic q d hH D hq hd _ (GlobalTheory.T.monicPolynomialsHaveRoots_integralClosure_algClosure D) hTq _ (firstIncl D _ k F) F' hF')`.
+A detailed English derivation is pending.
 -/
 theorem hInv_tensorPower_integralClosure : ∀ (q : ℕ) [NeZero q] (d : ℕ), (∀ (R : Type) [CommRing R] [Algebra.FiniteType ℤ R], IsUnit (q : R) → ringKrullDim R < d → HInv q R) → ∀ (D : Type) [CommRing D] [IsDomain D] [Algebra.FiniteType ℤ D], IsUnit (q : D) → ringKrullDim D ≤ d → ∀ k : ℕ, HInv q (PiTensorProduct D (fun _ : Fin (k + 1) => integralClosure D (AlgebraicClosure (FractionRing D)))) := by
   intro q _ d hH D _ _ _ hq hd k

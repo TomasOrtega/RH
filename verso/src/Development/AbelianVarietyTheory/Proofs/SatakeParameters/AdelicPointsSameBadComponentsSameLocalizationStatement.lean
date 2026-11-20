@@ -7,7 +7,7 @@ open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions F
 
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.PhiTLat.phiT_lat` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FSatakeParameters%2FAdelicPointsSameBadComponentsSameLocalization.lean&line=132#L132)
 -/

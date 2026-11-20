@@ -67,30 +67,30 @@ namespace NetData
 variable (Nt : NetData B j ka)
 
 /- English proof (translation)
-Apply the tactic sequence `by_cases h : p.1 = σ <;> simp [e0, h]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem goodRowsProjector_apply_eq_sum (σ : B.KO →+* ℂ) (F : B.Cusp j ka) (p : Σ τ : B.KO →+* ℂ, Nt.NN τ) [Decidable (p.1 = σ)] :
     Nt.e0 σ F p = if p.1 = σ then ((Nt.cf p.1 : ℝ) : ℂ) * Nt.ev p.1 p.2 F else 0 := by
   by_cases h : p.1 = σ <;> simp [e0, h]
 
 /- English proof (translation)
-Unfold `cf`. Rewrite using `[← mul_inv, Real.mul_self_sqrt (Nat.cast_nonneg _)]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem cf_sq (σ : B.KO →+* ℂ) : Nt.cf σ * Nt.cf σ = (Fintype.card (Nt.NN σ) : ℝ)⁻¹ := by
   unfold cf
   rw [← mul_inv, Real.mul_self_sqrt (Nat.cast_nonneg _)]
 
 /- English proof (translation)
-The claim follows from `inv_nonneg.mpr (Real.sqrt_nonneg _)`.
+A detailed English derivation is pending.
 -/
 theorem cf_nonneg (σ : B.KO →+* ℂ) : 0 ≤ Nt.cf σ := inv_nonneg.mpr (Real.sqrt_nonneg _)
 
 /- English proof (translation)
-Rewrite using `[EuclideanSpace.norm_eq, netN]`. Use `congr 1`. Rewrite using `[Fintype.sum_sigma, Finset.sum_eq_single σ]`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun y _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Nt.goodRowsProjector_apply_eq_sum, if_pos rfl, norm_mul, mul_pow, Complex.norm_real, Real.norm_eq_abs, sq_abs, ← Nt.cf_sq]`. Expand and normalize the polynomial expressions, which then agree. Introduce `τ _ hτ`. Use `Finset.sum_eq_zero fun y _ => ?_` and prove the remaining obligations. Rewrite using `[Nt.goodRowsProjector_apply_eq_sum, if_neg hτ, norm_zero]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Introduce `h`. Conclude with `absurd (Finset.mem_univ σ) h`.
+Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem norm_euclideanEmbedding_eq_netNorm (σ : B.KO →+* ℂ) (F : B.Cusp j ka) : ‖Nt.e0 σ F‖ = Nt.netN σ F := by
   classical
@@ -109,33 +109,33 @@ theorem norm_euclideanEmbedding_eq_netNorm (σ : B.KO →+* ℂ) (F : B.Cusp j k
     exact absurd (Finset.mem_univ σ) h
 
 /- English proof (translation)
-The claim follows from `Real.sqrt_nonneg _`.
+A detailed English derivation is pending.
 -/
 theorem netN_nonneg (σ : B.KO →+* ℂ) (F : B.Cusp j ka) : 0 ≤ Nt.netN σ F := Real.sqrt_nonneg _
 
 /- English proof (translation)
-Rewrite using `[← Nt.norm_euclideanEmbedding_eq_netNorm, ← Nt.norm_euclideanEmbedding_eq_netNorm, map_smulₛₗ, norm_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem netN_smul (σ : B.KO →+* ℂ) (a : B.KO) (F : B.Cusp j ka) : Nt.netN σ (a • F) = ‖σ a‖ * Nt.netN σ F := by
   rw [← Nt.norm_euclideanEmbedding_eq_netNorm, ← Nt.norm_euclideanEmbedding_eq_netNorm, map_smulₛₗ, norm_smul]
 
 /- English proof (translation)
-Rewrite using `[← Nt.norm_euclideanEmbedding_eq_netNorm, ← Nt.norm_euclideanEmbedding_eq_netNorm, ← Nt.norm_euclideanEmbedding_eq_netNorm, map_add]`. Conclude with `norm_add_le _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem netN_add (σ : B.KO →+* ℂ) (F G : B.Cusp j ka) : Nt.netN σ (F + G) ≤ Nt.netN σ F + Nt.netN σ G := by
   rw [← Nt.norm_euclideanEmbedding_eq_netNorm, ← Nt.norm_euclideanEmbedding_eq_netNorm, ← Nt.norm_euclideanEmbedding_eq_netNorm, map_add]
   exact norm_add_le _ _
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Take `⟨y, hy⟩` from `hM σ F`. Establish `hpos : (0 : ℝ) < Fintype.card (Nt.NN σ)` using `Nat.cast_pos.mpr (Fintype.card_pos_iff.mpr ⟨y⟩)`. Establish `h2 : (Fintype.card (Nt.NN σ) : ℝ)⁻¹ * ∑ y, ‖Nt.ev σ y F‖ ^ 2 ≤ 0` using `Real.sqrt_eq_zero'.mp h`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : ∑ y, ‖Nt.ev σ y F‖ ^ 2 ≤ 0`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Use `mul_pos (inv_pos.mpr hpos) hc` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `h4 : ‖Nt.ev σ y F‖ ^ 2 ≤ ∑ y, ‖Nt.ev σ y F‖ ^ 2` using `Finset.single_le_sum (f := fun y => ‖Nt.ev σ y F‖ ^ 2) (fun i _ => sq_nonneg _) (Finset.mem_univ y)`. Establish `ht : ‖Nt.ev σ y F‖ = 0`. Establish `h5 : ‖Nt.ev σ y F‖ ^ 2 ≤ 0` using `h4.trans h3`. Use `norm_nonneg (Nt.ev σ y F)` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Establish `hs : B.supN j ka σ F ≤ 0`. Rewrite `hy` using `[ht]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hl : B.l2NormAlt j ka σ F = 0` using `le_antisymm ((B.l2Norm_le_supNorm_alt j ka σ F).trans hs) (B.l2Norm_nonneg_bis j ka σ F)`. Conclude with `(B.l2Norm_eq_zero_iff j ka σ F).mp hl`.
+Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `rfl`. Rewrite using `[← Nt.norm_euclideanEmbedding_eq_netNorm, map_zero, norm_zero]`.
+A detailed English derivation is pending.
 -/
 theorem netN_eq_zero (hM : NetMax Nt) (σ : B.KO →+* ℂ) (F : B.Cusp j ka) : Nt.netN σ F = 0 ↔ F = 0 := by
   constructor
@@ -164,11 +164,11 @@ theorem netN_eq_zero (hM : NetMax Nt) (σ : B.KO →+* ℂ) (F : B.Cusp j ka) : 
     rw [← Nt.norm_euclideanEmbedding_eq_netNorm, map_zero, norm_zero]
 
 /- English proof (translation)
-Establish `hs : 0 ≤ B.supN j ka σ F` using `B.supN_nonneg j ka σ F`. Unfold `netN`. Combine the equalities or inequalities in the displayed calculation. Apply `Real.sqrt_le_sqrt` to reduce the goal to its premises. Establish `h1 : ∑ y, ‖Nt.ev σ y F‖ ^ 2 ≤ ∑ _y : Nt.NN σ, B.supN j ka σ F ^ 2` using `Finset.sum_le_sum fun y _ => by gcongr`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Conclude with `hL σ y F`. Rewrite `h1` using `[Finset.sum_const, Finset.card_univ, nsmul_eq_mul]`. Break down `eq_or_ne (Fintype.card (Nt.NN σ) : ℝ) 0 with h0 | h0` into its components or cases. Rewrite using `[h0, inv_zero, zero_mul]`. Check the signs of the components of the expression.
+Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Check the signs of the components of the expression. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Use `_ = B.supN j ka σ F := Real.sqrt_sq hs`.
+A detailed English derivation is pending.
 -/
 theorem netN_le (hL : NetLeSup Nt) (σ : B.KO →+* ℂ) (F : B.Cusp j ka) : Nt.netN σ F ≤ B.supN j ka σ F := by
   have hs : 0 ≤ B.supN j ka σ F := B.supN_nonneg j ka σ F
@@ -207,13 +207,13 @@ def runN : ∀ j' (ka' : WeightFamilies.Wt D j'), (B.KO →+* ℂ) → B.Cusp j'
     else B.supN j' ka'
 
 /- English proof (translation)
-Simplify using `[runN]`.
+Simplify using the standard rewrite rules.
 -/
 theorem runN_run : Nt.runN j ka = Nt.netN := by
   simp [runN]
 
 /- English proof (translation)
-Introduce and unpack `j' ka' ⟨⟩ σ F`. Rewrite using `[runN_run]`. Conclude with `Nt.netN_nonneg σ F`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem netNorm_nonneg_alt : ∀ j' (ka' : WeightFamilies.Wt D j'), covRun j ka j' ka' → ∀ σ F, 0 ≤ Nt.runN j' ka' σ F := by
   rintro j' ka' ⟨⟩ σ F
@@ -221,7 +221,7 @@ theorem netNorm_nonneg_alt : ∀ j' (ka' : WeightFamilies.Wt D j'), covRun j ka 
   exact Nt.netN_nonneg σ F
 
 /- English proof (translation)
-Introduce and unpack `j' ka' ⟨⟩ σ F`. Rewrite using `[runN_run]`. Conclude with `Nt.netN_eq_zero hM σ F`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem netNorm_eq_zero_iff (hM : NetMax Nt) :
     ∀ j' (ka' : WeightFamilies.Wt D j'), covRun j ka j' ka' → ∀ σ F, Nt.runN j' ka' σ F = 0 ↔ F = 0 := by
@@ -230,7 +230,7 @@ theorem netNorm_eq_zero_iff (hM : NetMax Nt) :
   exact Nt.netN_eq_zero hM σ F
 
 /- English proof (translation)
-Introduce and unpack `j' ka' ⟨⟩ σ a F`. Rewrite using `[runN_run]`. Conclude with `Nt.netN_smul σ a F`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem netNorm_smul_alt : ∀ j' (ka' : WeightFamilies.Wt D j'), covRun j ka j' ka' →
     ∀ σ (a : B.KO) F, Nt.runN j' ka' σ (a • F) = ‖σ a‖ * Nt.runN j' ka' σ F := by
@@ -239,7 +239,7 @@ theorem netNorm_smul_alt : ∀ j' (ka' : WeightFamilies.Wt D j'), covRun j ka j'
   exact Nt.netN_smul σ a F
 
 /- English proof (translation)
-Introduce and unpack `j' ka' ⟨⟩ σ F G`. Rewrite using `[runN_run]`. Conclude with `Nt.netN_add σ F G`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem netNorm_add_le_alt : ∀ j' (ka' : WeightFamilies.Wt D j'), covRun j ka j' ka' →
     ∀ σ F G, Nt.runN j' ka' σ (F + G) ≤ Nt.runN j' ka' σ F + Nt.runN j' ka' σ G := by
@@ -248,7 +248,7 @@ theorem netNorm_add_le_alt : ∀ j' (ka' : WeightFamilies.Wt D j'), covRun j ka 
   exact Nt.netN_add σ F G
 
 /- English proof (translation)
-Introduce and unpack `j' ka' ⟨⟩ σ F`. Rewrite using `[runN_run]`. Conclude with `Nt.netN_le hL σ F`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem netNorm_le_supNorm (hL : NetLeSup Nt) :
     ∀ j' (ka' : WeightFamilies.Wt D j'), covRun j ka j' ka' → ∀ σ F, Nt.runN j' ka' σ F ≤ B.supN j' ka' σ F := by
@@ -260,7 +260,7 @@ abbrev Bp (hM : NetMax Nt) (hL : NetLeSup Nt) : WeightFamilies.Prov D :=
   Formalism.L2.Pj.withNormOnWeights (cov := covRun j ka) (Nn := Nt.runN) Nt.netNorm_nonneg_alt (Nt.netNorm_eq_zero_iff hM) Nt.netNorm_smul_alt Nt.netNorm_add_le_alt (Nt.netNorm_le_supNorm hL)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `σ F`. Simplify using `[Bp, Formalism.L2.Pj.withNormOnWeights, Formalism.L2.Pj.l2nOn, covRun, Nt.runN_run]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem Bp_L2N_run (hM : NetMax Nt) (hL : NetLeSup Nt) : (Nt.Bp hM hL).l2NormAlt j ka = Nt.netN := by
   funext σ F

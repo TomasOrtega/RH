@@ -11,7 +11,7 @@ def Box {n : ℕ} (L : Fin (n + 1) → ℤ) (M : Fin n → ℤ) : Prop :=
   ∀ j : Fin n, L j.succ < M j ∧ M j ≤ L j.castSucc
 
 /- English proof (translation)
-Rewrite using `[Fin.strictAnti_iff_succ_lt]`. Introduce `j`. Conclude with `lt_of_lt_of_le (h j).1 (h j).2`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem Box.strictAnti {n : ℕ} {L : Fin (n + 1) → ℤ} {M : Fin n → ℤ} (h : Box L M) :
     StrictAnti L := by
@@ -20,7 +20,7 @@ theorem Box.strictAnti {n : ℕ} {L : Fin (n + 1) → ℤ} {M : Fin n → ℤ} (
   exact lt_of_lt_of_le (h j).1 (h j).2
 
 /- English proof (translation)
-Rewrite using `[← Finset.compl_singleton, ← Fin.image_succAbove_univ, Finset.prod_image (fun a _ b _ hab => Fin.succAbove_right_injective hab)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem prod_erase_eq {n : ℕ} (f : Fin (n + 1) → ℝ) (l : Fin (n + 1)) :
     ∏ j ∈ univ.erase l, f j = ∏ j : Fin n, f (l.succAbove j) := by
@@ -28,13 +28,13 @@ theorem prod_erase_eq {n : ℕ} (f : Fin (n + 1) → ℝ) (l : Fin (n + 1)) :
     Finset.prod_image (fun a _ b _ hab => Fin.succAbove_right_injective hab)]
 
 /- English proof (translation)
-Establish `hA` using `h.strictAnti`. Establish `he0' : (0 : ℝ) ≤ e` using `by exact_mod_cast he0`. Establish `he1' : (e : ℝ) ≤ 1` using `by exact_mod_cast he1`. Break down `lt_or_ge (Fin.castSucc j) l with hj | hj` into its components or cases. Rewrite using `[Fin.succAbove_of_castSucc_lt l j hj]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : L l ≤ L j.succ` using `hA.antitone (Fin.castSucc_lt_iff_succ_le.mp hj)`. Establish `h2 : L l < L j.castSucc` using `hA hj`. Establish `h3` using `(h j).1`. Establish `h4 : (L l : ℝ) + 1 ≤ M j` using `by exact_mod_cast (by omega : L l + 1 ≤ M j)`. Establish `h5 : (L l : ℝ) < L j.castSucc` using `by exact_mod_cast h2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply the tactic sequence `apply div_nonneg <;> linarith`. Rewrite using `[Fin.succAbove_of_le_castSucc l j hj]`. Establish `h1 : L j.castSucc ≤ L l` using `hA.antitone hj`. Establish `h2 : L j.succ < L l` using `hA (lt_of_le_of_lt hj Fin.castSucc_lt_succ)`. Establish `h4 : (M j : ℝ) ≤ L l` using `by exact_mod_cast le_trans (h j).2 h1`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h5 : (L j.succ : ℝ) < L l` using `by exact_mod_cast h2`. Apply the tactic sequence `apply div_nonneg_of_nonpos <;> linarith`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem factor_nonneg {n : ℕ} {L : Fin (n + 1) → ℤ} {M : Fin n → ℤ} (h : Box L M)
     (l : Fin (n + 1)) (j : Fin n) (e : ℤ) (he0 : 0 ≤ e) (he1 : e ≤ 1) :
@@ -58,7 +58,7 @@ theorem factor_nonneg {n : ℕ} {L : Fin (n + 1) → ℤ} {M : Fin n → ℤ} (h
     apply div_nonneg_of_nonpos <;> linarith
 
 /- English proof (translation)
-Unfold `GlobalTheory.WigSh.wP`. Rewrite using `[prod_erase_eq, ← Finset.prod_div_distrib]`. Use `Finset.prod_nonneg fun j _ => ?_` and prove the remaining obligations. Simplify using `using factor_nonneg h l j 1 zero_le_one le_rfl`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem placeWeight_nonneg {n : ℕ} {L : Fin (n + 1) → ℤ} {M : Fin n → ℤ} (h : Box L M)
     (l : Fin (n + 1)) : 0 ≤ wP L M l := by
@@ -68,7 +68,7 @@ theorem placeWeight_nonneg {n : ℕ} {L : Fin (n + 1) → ℤ} {M : Fin n → �
   simpa using factor_nonneg h l j 1 zero_le_one le_rfl
 
 /- English proof (translation)
-Unfold `GlobalTheory.WigSh.wM`. Rewrite using `[prod_erase_eq, ← Finset.prod_div_distrib]`. Use `Finset.prod_nonneg fun j _ => ?_` and prove the remaining obligations. Simplify using `using factor_nonneg h l j 0 le_rfl zero_le_one`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem wM_nonneg {n : ℕ} {L : Fin (n + 1) → ℤ} {M : Fin n → ℤ} (h : Box L M)
     (l : Fin (n + 1)) : 0 ≤ wM L M l := by
@@ -78,7 +78,7 @@ theorem wM_nonneg {n : ℕ} {L : Fin (n + 1) → ℤ} {M : Fin n → ℤ} (h : B
   simpa using factor_nonneg h l j 0 le_rfl zero_le_one
 
 /- English proof (translation)
-Rewrite using `[prod_erase_eq]`. Use `Finset.prod_ne_zero_iff.mpr fun j _ => sub_ne_zero.mpr ?_` and prove the remaining obligations. Conclude with `h.strictAnti.injective.ne (Fin.succAbove_ne l j)` after adjusting the coercions.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem denom_ne_zero {n : ℕ} {L : Fin (n + 1) → ℤ} {M : Fin n → ℤ} (h : Box L M)
     (l : Fin (n + 1)) : ∏ j ∈ univ.erase l, ((L j : ℝ) - (L l : ℝ)) ≠ 0 := by
@@ -87,9 +87,9 @@ theorem denom_ne_zero {n : ℕ} {L : Fin (n + 1) → ℤ} {M : Fin n → ℤ} (h
   exact_mod_cast h.strictAnti.injective.ne (Fin.succAbove_ne l j)
 
 /- English proof (translation)
-Rewrite using `[← abs_of_nonneg (placeWeight_nonneg h l)]`. Unfold `GlobalTheory.WigSh.wP`. Rewrite using `[abs_div, Finset.abs_prod, Finset.abs_prod]`. Apply the tactic sequence `congr 1 <;> refine Finset.prod_congr rfl fun i _ => ?_`. Rewrite using `[hρ, hu, ← abs_neg]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hu i, hu l, ← abs_neg]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem weight_eq_abs_prod_div_prod {n : ℕ} {L : Fin (n + 1) → ℤ} {M : Fin n → ℤ} (h : Box L M) (β : ℝ)
     (u : Fin (n + 1) → ℝ) (ρ : Fin n → ℝ)
@@ -108,9 +108,9 @@ theorem weight_eq_abs_prod_div_prod {n : ℕ} {L : Fin (n + 1) → ℤ} {M : Fin
     ring
 
 /- English proof (translation)
-Rewrite using `[← abs_of_nonneg (wM_nonneg h l)]`. Unfold `GlobalTheory.WigSh.wM`. Rewrite using `[abs_div, Finset.abs_prod, Finset.abs_prod]`. Apply the tactic sequence `congr 1 <;> refine Finset.prod_congr rfl fun i _ => ?_`. Rewrite using `[hρ, hu, ← abs_neg]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hu i, hu l, ← abs_neg]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem wM_eq_abs {n : ℕ} {L : Fin (n + 1) → ℤ} {M : Fin n → ℤ} (h : Box L M) (β : ℝ)
     (u : Fin (n + 1) → ℝ) (ρ : Fin n → ℝ)
@@ -129,9 +129,9 @@ theorem wM_eq_abs {n : ℕ} {L : Fin (n + 1) → ℤ} {M : Fin n → ℤ} (h : B
     ring
 
 /- English proof (translation)
-Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `j fin_cases j`. Evaluate the decidable proposition. Simplify using `[GlobalTheory.WigSh.wP, prod_erase_eq]`. Evaluate the numerical expressions.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Evaluate the decidable proposition. Simplify using the standard rewrite rules. Evaluate the numerical expressions.
 
-Simplify using `[GlobalTheory.WigSh.wP, prod_erase_eq, Fin.succAbove]`. Evaluate the numerical expressions.
+Simplify using the standard rewrite rules. Evaluate the numerical expressions.
 -/
 theorem example_wP : Box ![3, -1] ![1] ∧ wP ![3, -1] ![1] 0 = 3 / 4 ∧ wP ![3, -1] ![1] 1 = 1 / 4 := by
   refine ⟨?_, ?_, ?_⟩
@@ -144,7 +144,7 @@ theorem example_wP : Box ![3, -1] ![1] ∧ wP ![3, -1] ![1] 0 = 3 / 4 ∧ wP ![3
     norm_num
 
 /- English proof (translation)
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Simplify using `[GlobalTheory.WigSh.wM, prod_erase_eq]`. Evaluate the numerical expressions. Simplify using `[GlobalTheory.WigSh.wM, prod_erase_eq, Fin.succAbove]`. Evaluate the numerical expressions.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Evaluate the numerical expressions. Simplify using the standard rewrite rules. Evaluate the numerical expressions.
 -/
 theorem example_wM : wM ![3, -1] ![1] 0 = 1 / 2 ∧ wM ![3, -1] ![1] 1 = 1 / 2 := by
   refine ⟨?_, ?_⟩
@@ -154,7 +154,7 @@ theorem example_wM : wM ![3, -1] ![1] 0 = 1 / 2 ∧ wM ![3, -1] ![1] 1 = 1 / 2 :
     norm_num
 
 /- English proof (translation)
-Apply the tactic sequence `constructor <;> simp [GlobalTheory.WigSh.wP, GlobalTheory.WigSh.wM]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem rank_one (L : Fin 1 → ℤ) (M : Fin 0 → ℤ) : wP L M 0 = 1 ∧ wM L M 0 = 1 := by
   constructor <;> simp [GlobalTheory.WigSh.wP, GlobalTheory.WigSh.wM]

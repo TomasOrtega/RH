@@ -7,13 +7,13 @@ noncomputable section
 namespace GroundTheory.Heights₂.Heights.Inter
 
 /- English proof (translation)
-Introduce `F Φ Ω _ _ _ _ _ _ _ S`. Use `set f := IsScalarTower.toAlgHom F Φ Ω`. Use `set Φ₁ : IntermediateField F Ω := f.fieldRange`. Set `i : Φ ≃ₐ[F] Φ₁` to `AlgEquiv.ofInjectiveField f`. Establish `hi : (algebraMap Φ Ω : Φ → Ω) = (algebraMap Φ₁ Ω) ∘ i`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression.
 
-Use function extensionality and compare the values at `x`. Both sides reduce to the same expression. Establish `hres : (IntermediateField.adjoin Φ S).restrictScalars F = (IntermediateField.adjoin Φ₁ S).restrictScalars F` using `IntermediateField.restrictScalars_adjoin_of_algEquiv i hi S`. Establish `hle : Φ₁ ≤ Φ₁ ⊔ IntermediateField.adjoin F S` using `le_sup_left`. Establish `hext : IntermediateField.extendScalars hle = IntermediateField.adjoin Φ₁ S`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `IntermediateField.restrictScalars_injective F` to reduce the goal to its premises. Rewrite using `[IntermediateField.extendScalars_restrictScalars, IntermediateField.restrictScalars_adjoin_eq_sup]`. Rewrite using `[IntermediateField.relfinrank_eq_finrank_of_le hle, hext]`. Set `j : IntermediateField.adjoin Φ S ≃+* IntermediateField.adjoin Φ₁ S` to `(IntermediateField.equivOfEq hres).toRingEquiv`. Use `Algebra.finrank_eq_of_equiv_equiv i.toRingEquiv j ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Both sides reduce to the same expression.
 
-Use extensionality with `x`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem FinrankAdjoinRange.proof : FinrankAdjoinRange.Statement := by
   intro F Φ Ω _ _ _ _ _ _ _ S

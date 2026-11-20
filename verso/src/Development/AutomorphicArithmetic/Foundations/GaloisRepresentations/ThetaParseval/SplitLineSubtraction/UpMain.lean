@@ -9,12 +9,12 @@ import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.Theta
 namespace UpperTheory.Gal.TP.Sub
 
 /- English proof (translation)
-The claim follows from `upOf_holds embSplit_holds wtId_holds satId_holds UpperTheory.Gal.TP.Loc.liftSatU_holds`.
+A detailed English derivation is pending.
 -/
 theorem upOf : UpOf := upOf_holds embSplit_holds wtId_holds satId_holds UpperTheory.Gal.TP.Loc.liftSatU_holds
 
 /- English proof (translation)
-The claim follows from `baseNG_holds UpperTheory.Gal.TP.Skew.skewLine_holds`.
+A detailed English derivation is pending.
 -/
 theorem baseNG : BaseNG := baseNG_holds UpperTheory.Gal.TP.Skew.skewLine_holds
 

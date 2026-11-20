@@ -25,7 +25,7 @@ def eK (k : JI H N0 N1 → ℕ) : ZV H N0 N1 →₀ ℕ :=
   Finsupp.equivFunOnFinite.symm (fun v => k (v.1.2, v.2))
 
 /- English proof (translation)
-Use `first`. Consider the case `rfl`. Consider the case `simp [eK]`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem eK_apply (k : JI H N0 N1 → ℕ) (s : Bool) (t : H) (a : Fin N0) (b : Fin N1) :
     eK k ((s, t), a, b) = k (t, a, b) := by
@@ -34,9 +34,9 @@ theorem eK_apply (k : JI H N0 N1 → ℕ) (s : Bool) (t : H) (a : Fin N0) (b : F
   | simp [eK]
 
 /- English proof (translation)
-Use extensionality with `⟨⟨s, t⟩, a, b⟩`. Rewrite using `[eK_apply, Finsupp.finset_sum_apply, Finset.sum_eq_single (t, a, b)]`. Apply the tactic sequence `cases s <;> simp [eJ, vX, Finsupp.single_apply]`. Introduce and unpack `⟨t', a', b'⟩ _ hne`. Simplify using `only [eJ, vX, Finsupp.add_apply, Finsupp.smul_apply, Finsupp.single_apply, smul_eq_mul, Prod.mk.injEq]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `split_ifs <;> simp_all`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem sum_eJ (k : JI H N0 N1 → ℕ) : ∑ j, k j • eJ j = eK k := by
   ext ⟨⟨s, t⟩, a, b⟩
@@ -50,11 +50,9 @@ theorem sum_eJ (k : JI H N0 N1 → ℕ) : ∑ j, k j • eJ j = eK k := by
     exact absurd (Finset.mem_univ _) h
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `rfl`. Use `⟨fun t a b => by rw [eK_apply, eK_apply], ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `⟨t, a, b⟩`. Conclude with `(eK_apply k true t a b).symm`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨h1, rfl⟩`. Use extensionality with `⟨⟨s, t⟩, a, b⟩`. Rewrite using `[eK_apply]`. Consider the cases of `s`. Conclude with `h1 t a b`.
-
-Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Split into cases according to the possible forms of the given data. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem eK_eq_iff (k : JI H N0 N1 → ℕ) (κ : ZV H N0 N1 →₀ ℕ) :
     κ = eK k ↔ (∀ t a b, κ ((false, t), a, b) = κ ((true, t), a, b)) ∧ k = fun j => κ (vX true j) := by
@@ -71,7 +69,7 @@ theorem eK_eq_iff (k : JI H N0 N1 → ℕ) (κ : ZV H N0 N1 →₀ ℕ) :
     · rfl
 
 /- English proof (translation)
-Use `Finset.induction_on s ?_ ?_` and prove the remaining obligations. Simplify using `[MvPowerSeries.monomial_zero_one]`. Introduce `i s hi ih`. Rewrite using `[Finset.prod_insert hi, Finset.prod_insert hi, Finset.sum_insert hi, ih, MvPowerSeries.monomial_mul_monomial]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem prod_monomial' {σ ι R : Type*} [CommSemiring R] (s : Finset ι) (f : ι → σ →₀ ℕ) (a : ι → R) :
     ∏ i ∈ s, MvPowerSeries.monomial (f i) (a i) =
@@ -86,9 +84,9 @@ theorem prod_monomial' {σ ι R : Type*} [CommSemiring R] (s : Finset ι) (f : �
 variable (p : ℕ) [Fact p.Prime]
 
 /- English proof (translation)
-Establish `key : ∀ (c : ℂ_[p]) (n : ZV H N0 N1 →₀ ℕ), c • (MvPowerSeries.monomial n (1 : ℂ_[p])) = MvPowerSeries.monomial n c`. Introduce `c n`. Rewrite using `[← map_smul, smul_eq_mul, mul_one]`. Simplify using `only [Finset.smul_sum, ← Finset.sum_neg_distrib, Fintype.sum_prod_type]`. Use `Finset.sum_congr rfl fun t _ => Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[MvPowerSeries.X, MvPowerSeries.X, MvPowerSeries.monomial_mul_monomial, mul_one, smul_smul, ← neg_smul, key]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem f_eq (S : ℂ_[p]) (ut : H → ℂ_[p]) :
     (-(S • ∑ t : H, ut t • ∑ a : Fin N0, ∑ b : Fin N1,
@@ -107,9 +105,9 @@ theorem f_eq (S : ℂ_[p]) (ut : H → ℂ_[p]) :
   rfl
 
 /- English proof (translation)
-Rewrite using `[map_sum]`. Use `Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations. Rewrite using `[← MvPowerSeries.coeff_zero_eq_constantCoeff_apply, MvPowerSeries.coeff_monomial, if_neg]`. Introduce `h`. Establish `h2` using `DFunLike.congr_fun h (vX false j)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `[eJ, vX, Finsupp.single_apply] at h2`.
+Simplify using the standard rewrite rules.
 -/
 theorem cc_zero (S : ℂ_[p]) (ut : H → ℂ_[p]) :
     MvPowerSeries.constantCoeff
@@ -122,7 +120,7 @@ theorem cc_zero (S : ℂ_[p]) (ut : H → ℂ_[p]) :
   simp [eJ, vX, Finsupp.single_apply] at h2
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => simp [MvPowerSeries.monomial_zero_one]`. Consider the case `succ k ih => rw [pow_succ, ih, MvPowerSeries.monomial_mul_monomial, succ_nsmul, pow_succ]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 private theorem monomial_pow_lemma {σ R : Type*} [CommSemiring R] (n : σ →₀ ℕ) (a : R) (k : ℕ) :
     MvPowerSeries.monomial n a ^ k = MvPowerSeries.monomial (k • n) (a ^ k) := by
@@ -131,17 +129,17 @@ private theorem monomial_pow_lemma {σ R : Type*} [CommSemiring R] (n : σ →�
   | succ k ih => rw [pow_succ, ih, MvPowerSeries.monomial_mul_monomial, succ_nsmul, pow_succ]
 
 /- English proof (translation)
-Establish `hn : ∀ (n : ℕ) (m : ZV H N0 N1 →₀ ℕ) (c : ℂ_[p]), (n : MvPowerSeries (ZV H N0 N1) ℂ_[p]) * MvPowerSeries.monomial m c = MvPowerSeries.monomial m ((n : ℂ_[p]) * c)`. Introduce `n m c`. Rewrite using `[← nsmul_eq_mul, ← map_nsmul, nsmul_eq_mul]`. Establish `hterm : ∀ k : JI H N0 N1 → ℕ, (Nat.multinomial Finset.univ k : MvPowerSeries (ZV H N0 N1) ℂ_[p]) * ∏ j, MvPowerSeries.monomial (eJ j) (-(S * ut j.1)) ^ k j = MvPowerSeries.monomial (eK k) ((Nat.multinomial Finset.univ k : ℂ_[p]) * ∏ j, (-(S * ut j.1)) ^ k j)`. Introduce `k`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [monomial_pow_lemma]`. Rewrite using `[prod_monomial', sum_eJ, hn]`. Rewrite using `[Finset.sum_pow_eq_sum_piAntidiag, map_sum]`. Simplify using `only [hterm, MvPowerSeries.coeff_monomial]`. Use `split_ifs with h`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_eq_single (fun j => κ (vX true j))]`. Rewrite using `[if_pos ((eK_eq_iff _ _).2 ⟨h.1, rfl⟩)]`. Introduce `k _ hk`. Rewrite using `[if_neg]`. Introduce `he`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hk ((eK_eq_iff k κ).1 he).2`. Introduce `hn'`. It suffices to derive a contradiction. Apply `hn'` to reduce the goal to its premises. Rewrite using `[Finset.mem_piAntidiag]`.
+It suffices to derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `⟨h.2, fun i _ => Finset.mem_univ i⟩`. Use `Finset.sum_eq_zero fun k hk => ?_` and prove the remaining obligations. Rewrite using `[if_neg]`. Introduce `he`. Apply `h` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨h1, h2⟩` from `(eK_eq_iff k κ).1 he`. Use `⟨h1, ?_⟩` and prove the remaining obligations. Rewrite `hk` using `[Finset.mem_piAntidiag]`. Substitute `h2` using the available equality. Conclude with `hk.1`.
+Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem coeff_pow (S : ℂ_[p]) (ut : H → ℂ_[p]) (κ : ZV H N0 N1 →₀ ℕ) (d : ℕ) :
     MvPowerSeries.coeff κ ((∑ j : JI H N0 N1, MvPowerSeries.monomial (eJ j) (-(S * ut j.1))) ^ d) =
@@ -190,19 +188,19 @@ theorem coeff_pow (S : ℂ_[p]) (ut : H → ℂ_[p]) (κ : ZV H N0 N1 →₀ ℕ
 end ExponentialCoefficients
 
 /- English proof (translation)
-Introduce `H _ _ N0 N1 p _ S ut κ`. Establish `hs : PowerSeries.HasSubst (∑ j : ExponentialCoefficients.JI H N0 N1, MvPowerSeries.monomial (ExponentialCoefficients.eJ j) (-(S * ut j.1)))` using `PowerSeries.HasSubst.of_constantCoeff_zero (ExponentialCoefficients.cc_zero p S ut)`. Rewrite using `[expS, ExponentialCoefficients.f_eq, PowerSeries.coeff_subst hs]`. Simplify using `only [ExponentialCoefficients.coeff_pow, PowerSeries.coeff_exp, smul_eq_mul]`. Use `split_ifs with hbal`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[finsum_eq_single _ (∑ j, κ (ExponentialCoefficients.vX true j)) ?_]`. Rewrite using `[if_pos ⟨hbal, rfl⟩]`. Establish `hκ : (κ.prod fun _ k => (k.factorial : ℂ_[p])) = ∏ j : ExponentialCoefficients.JI H N0 N1, ((κ (ExponentialCoefficients.vX true j)).factorial : ℂ_[p]) ^ 2`. Rewrite using `[Finsupp.prod_fintype _ _ (fun _ => by simp)]`. Set `e : (Bool × ExponentialCoefficients.JI H N0 N1) ≃ ZV H N0 N1` to `{ toFun := fun x => ExponentialCoefficients.vX x.1 x.2 invFun := fun v => (v.1.1, v.1.2, v.2) left_inv := fun _ => rfl right_inv := fun _ => rfl }`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← e.prod_comp, Fintype.prod_prod_type, Fintype.prod_bool, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun j _ => ?_` and prove the remaining obligations. Take `⟨t, a, b⟩` from `j`. Simplify using `only [e, Equiv.coe_fn_mk, ExponentialCoefficients.vX]`. Rewrite using `[← hbal t a b, sq]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hR : (∏ t : H, ∏ a : Fin N0, ∏ b : Fin N1, ((κ ((true, t), a, b)).factorial : ℂ_[p]) * (-(S * ut t)) ^ κ ((true, t), a, b)) = ∏ j : ExponentialCoefficients.JI H N0 N1, ((κ (ExponentialCoefficients.vX true j)).factorial : ℂ_[p]) * (-(S * ut j.1)) ^ κ (ExponentialCoefficients.vX tr …`. Apply the tactic sequence `simp only [Fintype.prod_prod_type] <;> rfl`. Establish `hM` using `congrArg (Nat.cast (R := ℂ_[p])) (Nat.multinomial_spec Finset.univ (fun j => κ (ExponentialCoefficients.vX true j)))`. Move the coercions through the operations in `at hM`. Establish `hD : ((∑ j, κ (ExponentialCoefficients.vX true j)).factorial : ℂ_[p]) ≠ 0` using `Nat.cast_ne_zero.mpr (Nat.factorial_ne_zero _)`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hκ, hR, Finset.prod_mul_distrib, Finset.prod_pow, map_div₀, map_one, map_natCast]`. Rewrite `hD`, the goal using `[← hM]`. Establish `hMne` using `right_ne_zero_of_mul hD`. Clear the denominators using the available nonvanishing facts. Introduce `d hd`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg, mul_zero]`. Introduce and unpack `⟨_, h⟩`. Conclude with `hd h.symm`. Rewrite using `[finsum_eq_zero_of_forall_eq_zero, mul_zero]`. Introduce `d`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Rewrite using `[if_neg, mul_zero]`. Introduce and unpack `⟨h, _⟩`. Conclude with `hbal h`.
+A detailed English derivation is pending.
 -/
 theorem pExpCoeff : PExpCoeff := by
   intro H _ _ N0 N1 p _ S ut κ

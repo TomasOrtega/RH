@@ -10,11 +10,9 @@ namespace ReciprocityTheory.PGsh.Up.FrobeniusGroupField
 variable {C : Type} [Field C] {v : Valuation C NNReal} {R : Type} [CommRing R] [Algebra R C]
 
 /- English proof (translation)
-Use `haveI : IsDomain R := hv.hom_inj.isDomain (algebraMap R C)`. Establish `hm : (ρ (algebraMap ℤ_[p] O z)).map (algebraMap ℤ_[p] R) = algebraMap ℤ_[p] (Matrix n n R) z`. Use extensionality with `i k`. Rewrite using `[AlgHom.commutes, Matrix.map_apply, Matrix.algebraMap_matrix_apply, Matrix.algebraMap_matrix_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Establish `h` using `heig (algebraMap ℤ_[p] O z) j`. Rewrite `h` using `[hm, Algebra.algebraMap_eq_smul_one, smul_mul_assoc, one_mul, ← algebraMap_smul R z (εT j)]`. Establish `h2 : (algebraMap ℤ_[p] R z - sg j (algebraMap ℤ_[p] O z)) • εT j = 0`. Rewrite using `[sub_smul, h, sub_self]`. Break down `smul_eq_zero.mp h2 with h3 | h3` into its components or cases.
-
-Conclude with `(sub_eq_zero.mp h3).symm`. Conclude with `absurd h3 hj`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem sg_algebraMap (hv : v.Integers R) {p : ℕ} [Fact p.Prime]
     [Algebra ℤ_[p] R] {n : Type} [Fintype n] [DecidableEq n] {ι : Type}
@@ -36,7 +34,7 @@ theorem sg_algebraMap (hv : v.Integers R) {p : ℕ} [Fact p.Prime]
   · exact absurd h3 hj
 
 /- English proof (translation)
-Establish `hc : (sg j).comp (algebraMap ℤ_[p] O) = algebraMap ℤ_[p] R` using `RingHom.ext fun z => sg_algebraMap hv ρ εT sg heig j hj z`. Rewrite using `[Polynomial.aeval_def, Polynomial.aeval_def, Polynomial.hom_eval₂, hc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem sg_aeval (hv : v.Integers R) {p : ℕ} [Fact p.Prime]
     [Algebra ℤ_[p] R] {n : Type} [Fintype n] [DecidableEq n] {ι : Type}
@@ -49,41 +47,37 @@ theorem sg_aeval (hv : v.Integers R) {p : ℕ} [Fact p.Prime]
   rw [Polynomial.aeval_def, Polynomial.aeval_def, Polynomial.hom_eval₂, hc]
 
 /- English proof (translation)
-Establish `hpr : p.Prime` using `Fact.out`. Use `isDomain hv` as an intermediate fact. Set `_ : Field (R ⧸ mI hv)` to `instField hv`. Establish `hch : CharP (R ⧸ mI hv) p` using `charP p hv hpv`. Use `set f : ℤ_[p][X] := (ρ a).charpoly with hfdef`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hf : f.Monic` using `Matrix.charpoly_monic _`. Establish `hfa : aeval (ρ a) f = 0` using `Matrix.aeval_self_charpoly _`. Set `S` to `AdjoinRoot f`. Set `J : Ideal S` to `Ideal.span {(p : S)}`. Establish `: Finite (S ⧸ J)` using `finite_quot f hf`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `r : S` to `AdjoinRoot.root f + (c : S)`. Set `xq : S ⧸ J` to `Ideal.Quotient.mk J r`. Take `⟨M, hM0, hM⟩` from `exists_pow_idem xq`. Take `⟨N, rfl⟩ : ∃ N, M = N + 1` from `⟨M - 1, by omega⟩`. Set `uq : S ⧸ J` to `xq ^ (N + 1 + 1) + 1 - xq ^ (N + 1)`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `huq : IsUnit uq`. Use `IsUnit.of_mul_eq_one (xq ^ N * xq ^ (N + 1) + 1 - xq ^ (N + 1)) ?_` and prove the remaining obligations. Establish `he : xq ^ (N + 1) * xq ^ (N + 1) = xq ^ (N + 1)` using `by rw [← pow_add, ← hM]; ring_nf`. Establish `hx : xq * xq ^ N = xq ^ (N + 1)` using `by ring`. Simplify using `only [uq]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `(xq * xq ^ N - xq - xq ^ N + 2) * he + xq ^ (N + 1) * hx`. Establish `hU : Nat.card (S ⧸ J)ˣ ≠ 0` using `Nat.card_pos.ne'`. Take `⟨s, m0, hm0p, hUeq⟩` from `Nat.exists_eq_pow_mul_and_not_dvd hU p hpr.one_lt.ne'`. Establish `hm0 : 0 < m0` using `Nat.pos_of_ne_zero (by rintro rfl; simp at hUeq; exact hU hUeq)`. Establish `hw : (uq ^ p ^ s) ^ m0 = 1`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `pow_card_eq_one' (x := huq.unit)`. Rewrite `h1` using `[hUeq, pow_mul]`. Use `congrArg (fun u : (S ⧸ J)ˣ => (u : S ⧸ J)) h1` as an intermediate fact. Simplify using `using this`. Set `Q0 : ℤ_[p][X]` to `((X + (c : ℤ_[p][X])) ^ (N + 1 + 1) + 1 - (X + (c : ℤ_[p][X])) ^ (N + 1)) ^ p ^ s`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hQ0 : AdjoinRoot.mk f Q0 = (r ^ (N + 1 + 1) + 1 - r ^ (N + 1)) ^ p ^ s`. Simplify using `[Q0, r]`. Establish `hH0 : ∃ K : ℤ_[p][X], AdjoinRoot.mk f (Q0 ^ m0 - 1) = (p : S) * AdjoinRoot.mk f K`. Establish `hmem : AdjoinRoot.mk f (Q0 ^ m0 - 1) ∈ J`. Establish `e1 : AdjoinRoot.mk f (Q0 ^ m0 - 1) = ((r ^ (N + 1 + 1) + 1 - r ^ (N + 1)) ^ p ^ s) ^ m0 - 1`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_sub, map_pow, hQ0, map_one]`. Rewrite using `[e1, ← Ideal.Quotient.eq_zero_iff_mem]`. Simplify using `only [map_pow, map_add, map_sub, map_one]`. Rewrite using `[sub_eq_zero]`. Conclude with `hw`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨t, ht⟩` from `Ideal.mem_span_singleton'.1 hmem`. Take `⟨K, rfl⟩` from `AdjoinRoot.mk_surjective t`. Conclude with `⟨K, by rw [← ht, mul_comm]⟩`. Take `⟨Q, K, hQdvd, hQK⟩` from `hensel f hf hm0 hm0p Q0 hH0`. Use `⟨aeval a Q, m0, s, hm0, hm0p, ?_, ?_⟩` and prove the remaining obligations.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨g, hg⟩` from `hQdvd`. Use `congrArg (aeval (ρ a)) hg` as an intermediate fact. Rewrite `this` using `[map_mul, hfa, zero_mul, map_sub, map_pow, map_one, sub_eq_zero]`. Rewrite using `[← aeval_algHom_apply, this]`. Introduce `j hj hres`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfj : f.eval₂ (algebraMap ℤ_[p] R) (sg j a) = 0`. Establish `h1` using `heig (aeval a f) j`. Rewrite `h1` using `[← aeval_algHom_apply, hfa, Matrix.map_zero _ (map_zero _), Matrix.zero_mul, sg_aeval hv ρ εT sg heig j hj]`. Use `smul_cancel hv hj (h1.symm.trans (zero_smul R (εT j)).symm)` as an intermediate fact. Rewrite `this` using `[aeval_def]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `ev : S →+* R` to `AdjoinRoot.lift (algebraMap ℤ_[p] R) (sg j a) hfj`. Establish `hevJ : ∀ t ∈ J, res hv (ev t) = 0`. Introduce `t ht`. Take `⟨w, rfl⟩` from `Ideal.mem_span_singleton'.1 ht`. Rewrite using `[map_mul, map_natCast, map_mul, map_natCast]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: (p : R ⧸ mI hv) = 0`. Rewrite using `[← map_natCast (res hv)]`. Conclude with `(res_eq_zero hv _).2 hpv`. Rewrite using `[this, mul_zero]`. Establish `hevr : ev r = sg j a + c` using `by show ev (AdjoinRoot.root f + (c : S)) = _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_add, map_intCast]`. Simplify using `only [ev]`. Rewrite using `[AdjoinRoot.lift_root]`. Establish `hb : sg j (aeval a Q) = ev (AdjoinRoot.mk f Q)`. Rewrite using `[sg_aeval hv ρ εT sg heig j hj, AdjoinRoot.lift_mk, aeval_def]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `set x := res hv (sg j a + c) with hxdef`. Establish `hxM : x ^ (N + 1) = 1`. Establish `hmem : r ^ (2 * (N + 1)) - r ^ (N + 1) ∈ J`. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, map_sub, map_pow, map_pow, sub_eq_zero]`. Conclude with `hM`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h0` using `hevJ _ hmem`. Rewrite `h0` using `[map_sub, map_pow, map_pow, hevr, map_sub, map_pow, map_pow, ← hxdef, sub_eq_zero, pow_mul', sq]`. Establish `hx0 : x ^ (N + 1) ≠ 0` using `pow_ne_zero _ hres`. Conclude with `mul_left_cancel₀ hx0 (h0.trans (mul_one _).symm)`. Establish `hdiff : AdjoinRoot.mk f Q - AdjoinRoot.mk f Q0 ∈ J`.
-
-Rewrite using `[← map_sub, hQK]`. Conclude with `Ideal.mul_mem_right _ _ (Ideal.subset_span rfl)`. Establish `h2` using `hevJ _ hdiff`. Rewrite `h2` using `[map_sub, map_sub, sub_eq_zero, hQ0]`. Establish `hT : ∀ {A B : Type} [CommRing A] [CommRing B] (φ : A →+* B) (z : A), φ ((z ^ (N + 1 + 1) + 1 - z ^ (N + 1)) ^ p ^ s) = (φ z ^ (N + 1 + 1) + 1 - φ z ^ (N + 1)) ^ p ^ s` using `by intros; simp`.
-
-Rewrite using `[hb, h2, hT, hT, hevr, ← hxdef, pow_succ x (N + 1), hxM, one_mul, add_sub_cancel_right]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem seed (p : ℕ) [Fact p.Prime] (hv : v.Integers R) (hpv : v (algebraMap R C (p : R)) < 1)
     [Algebra ℤ_[p] R] {n : Type} [Fintype n] [DecidableEq n] {ι : Type}
@@ -189,25 +183,23 @@ theorem seed (p : ℕ) [Fact p.Prime] (hv : v.Integers R) (hpv : v (algebraMap R
     rw [hb, h2, hT, hT, hevr, ← hxdef, pow_succ x (N + 1), hxM, one_mul, add_sub_cancel_right]
 
 /- English proof (translation)
-Establish `hpr : p.Prime` using `Fact.out`. Set `_ : Field (R ⧸ mI hv)` to `instField hv`. Establish `hch : CharP (R ⧸ mI hv) p` using `charP p hv hpv`. Use `set yi := res hv (sg i a)`. Use `set yj := res hv (sg j a)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h10 : (1 : R ⧸ mI hv) ≠ 0` using `one_ne_zero`. Establish `h20 : (2 : R ⧸ mI hv) ≠ 0`. Introduce `h0`. Use `(CharP.cast_eq_zero_iff (R ⧸ mI hv) p 2).1 (by exact_mod_cast h0)` as an intermediate fact. Conclude with `hp2 ((Nat.prime_dvd_prime_iff_eq hpr Nat.prime_two).1 this)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `hc : ∃ c : ℤ, yi + (c : R ⧸ mI hv) ≠ 0 ∧ yj + (c : R ⧸ mI hv) ≠ 0`. Assume the negation of the conclusion as `hno`. Use `push Not at hno`. Establish `h0` using `hno 0`. Establish `h1` using `hno 1`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Establish `h2` using `hno 2`. Simplify using `only [Int.cast_zero, Int.cast_one, Int.cast_ofNat, add_zero] at h0 h1 h2`. Distinguish the cases in `a0 : yi = 0`. Establish `b1` using `h1 (by rw [a0, zero_add]; exact h10)`. Establish `b2` using `h2 (by rw [a0, zero_add]; exact h20)`.
+Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `h10 (by linear_combination b2 - b1)`. Establish `b0` using `h0 a0`. Distinguish the cases in `a1 : yi + 1 = 0`. Establish `b2` using `h2 (fun e => h10 (by linear_combination e - a1))`. Conclude with `h20 (by linear_combination b2 - b0)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `b1` using `h1 a1`. Conclude with `h10 (by linear_combination b1 - b0)`. Take `⟨c, hci, hcj⟩` from `hc`. Take `⟨b, m, s, hm0, hmp, hbm, hbres⟩` from `seed p hv hpv ρ εT sg heig a c`. Use `⟨b, m, hm0, hmp, hbm, fun heq => h ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Establish `hri : res hv (sg i a + c) = yi + c` using `by rw [map_add, map_intCast]`. Establish `hrj : res hv (sg j a + c) = yj + c` using `by rw [map_add, map_intCast]`. Rewrite `heq` using `[hbres j hj (by rwa [hrj]), hbres i hi (by rwa [hri]), hri, hrj, ← pow_mul, mul_comm, pow_mul]`. Establish `hcfix : ∀ k : ℕ, ((c : R ⧸ mI hv)) ^ p ^ k = c`. Introduce `k`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Proceed by induction on `k with`. Consider the case `zero => simp`. Consider the case `succ k ih`. Rewrite using `[pow_succ, pow_mul, ih]`. Use `map_intCast (frobenius (R ⧸ mI hv) p) c` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion.
 
-Rewrite `this` using `[frobenius_def]`. Then use the resulting hypothesis. Establish `hrhs : (yi + c) ^ p ^ t = yi ^ p ^ t + c` using `by rw [add_pow_char_pow, hcfix]`. Rewrite `heq` using `[hrhs]`. Establish `hsub : (yj + c - (yi ^ p ^ t + c)) ^ p ^ s = 0`. Rewrite using `[sub_pow_char_pow, heq, sub_self]`.
-
-Use `pow_eq_zero_iff (pow_ne_zero s hpr.ne_zero) |>.1 hsub` as an intermediate fact. Take the linear combination `this`.
+A detailed English derivation is pending.
 -/
 theorem pair (p : ℕ) [Fact p.Prime] (hp2 : p ≠ 2) (hv : v.Integers R)
     (hpv : v (algebraMap R C (p : R)) < 1)

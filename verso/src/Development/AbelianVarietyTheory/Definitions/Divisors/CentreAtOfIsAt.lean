@@ -39,7 +39,7 @@ def LcCut (p : X ⟶ Sp k) (n : ℕ) (Γ : X → ℚ) (x : X) (j : ℕ) : Prop :
     ∀ z, z ⤳ x → ¬ KltAt p n Γ z → topologicalKrullDim (closure ({z} : Set X)) ≤ j
 
 /- English proof (translation)
-Take `⟨m, D₀, hm, he, hD, -⟩` from `h`. Conclude with `⟨m, D₀, hm, he, hD⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem QNum.isQCart [IsLocallyNoetherian X] {p : X ⟶ Sp k} {N : LB X} {b : ℚ} {D : X → ℚ}
     (h : QNum p N b D) : IsQCart D := by

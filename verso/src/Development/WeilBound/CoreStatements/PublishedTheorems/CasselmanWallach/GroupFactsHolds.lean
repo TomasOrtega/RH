@@ -12,7 +12,7 @@ namespace CompactGroupFacts
 variable {n : ℕ}
 
 /- English proof (translation)
-Establish `hg' : gᴴ * Jm ε * g = Jm ε` using `hg`. Establish `hh' : hᴴ * Jm ε * h = Jm ε` using `hh`. Use `show (g * h)ᴴ * Jm ε * (g * h) = Jm ε`. Rewrite using `[Matrix.conjTranspose_mul]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem mul_mem (ε : Fin n → Bool) {g h : Matrix (Fin n) (Fin n) ℂ} (hg : g ∈ UJset ε) (hh : h ∈ UJset ε) :
     g * h ∈ UJset ε := by
@@ -24,14 +24,14 @@ theorem mul_mem (ε : Fin n → Bool) {g h : Matrix (Fin n) (Fin n) ℂ} (hg : g
     _ = Jm ε := by rw [hg', hh']
 
 /- English proof (translation)
-Unfold `hs2`. Use `fun_prop`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem hilbert_schmidt_continuous : Continuous (hs2 : Matrix (Fin n) (Fin n) ℂ → ℝ) := by
   unfold hs2
   fun_prop
 
 /- English proof (translation)
-Establish `: UJset ε = (fun g : Matrix (Fin n) (Fin n) ℂ => gᴴ * Jm ε * g) ⁻¹' {Jm ε}` using `rfl`. Rewrite using `[this]`. Conclude with `isClosed_singleton.preimage (by fun_prop)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isClosed_UJ (ε : Fin n → Bool) : IsClosed (UJset ε) := by
   have : UJset ε = (fun g : Matrix (Fin n) (Fin n) ℂ => gᴴ * Jm ε * g) ⁻¹' {Jm ε} := rfl
@@ -39,7 +39,7 @@ theorem isClosed_UJ (ε : Fin n → Bool) : IsClosed (UJset ε) := by
   exact isClosed_singleton.preimage (by fun_prop)
 
 /- English proof (translation)
-Unfold `hs2`. Combine the equalities or inequalities in the displayed calculation.
+Replace the relevant objects with their definitions. Chain the equalities or inequalities of the calculation.
 -/
 theorem entry_le (g : Matrix (Fin n) (Fin n) ℂ) (i j : Fin n) : ‖g i j‖ ^ 2 ≤ hs2 g := by
   unfold hs2
@@ -50,9 +50,9 @@ theorem entry_le (g : Matrix (Fin n) (Fin n) ℂ) (i j : Fin n) : ‖g i j‖ ^ 
           (fun _ _ => Finset.sum_nonneg fun _ _ => by positivity) (Finset.mem_univ i)
 
 /- English proof (translation)
-Set `K : Set (Fin n → Fin n → ℂ)` to `Set.pi Set.univ fun _ => Set.pi Set.univ fun _ => Metric.closedBall (0 : ℂ) (Real.sqrt ρ)`. Establish `hK : IsCompact K` using `isCompact_univ_pi fun _ => isCompact_univ_pi fun _ => isCompact_closedBall _ _`. Use `hK.of_isClosed_subset ((isClosed_UJ ε).inter (isClosed_le hilbert_schmidt_continuous continuous_const)) ?_` and prove the remaining obligations. Introduce and unpack `g ⟨-, hg⟩ i - j -`. Simplify using `only [Metric.mem_closedBall, dist_zero_right]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 
-Conclude with `Real.le_sqrt_of_sq_le ((entry_le g i j).trans hg)`.
+A detailed English derivation is pending.
 -/
 theorem compact (ε : Fin n → Bool) (ρ : ℝ) : IsCompact {g | g ∈ UJset ε ∧ hs2 g ≤ ρ} := by
   let K : Set (Fin n → Fin n → ℂ) :=
@@ -64,17 +64,15 @@ theorem compact (ε : Fin n → Bool) (ρ : ℝ) : IsCompact {g | g ∈ UJset ε
   exact Real.le_sqrt_of_sq_le ((entry_le g i j).trans hg)
 
 /- English proof (translation)
-Take `⟨a, b⟩` from `p`. Establish `hab : ε a ≠ ε b` using `by simpa [nc] using hp`. Establish `hne : a ≠ b` using `fun h => hab (h ▸ rfl)`. Use `set σ : Fin n → ℂ := fun k => if ε k then 1 else -1 with hσdef`. Establish `hσ : σ b = -σ a`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `simp only [hσdef]; revert hab; cases ε a <;> cases ε b <;> simp`. Establish `h2 : Xp a b * Jm ε = -(Jm ε * Xp a b)` using `by show Xp a b * Matrix.diagonal σ = -(Matrix.diagonal σ * Xp a b)`. Use extensionality with `i j`. Simplify using `only [Xp, Matrix.mul_diagonal, Matrix.diagonal_mul, Matrix.neg_apply, Matrix.add_apply, Matrix.single_apply]`. Apply the tactic sequence `by_cases h1 : a = i ∧ b = j <;> by_cases h3 : b = i ∧ a = j`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result.
 
-Conclude with `absurd (h1.1.trans h3.1.symm) hne`. Take `⟨rfl, rfl⟩` from `h1`. Simplify using `only [if_neg h3, hσ]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨rfl, rfl⟩` from `h3`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `only [if_neg h1, hσ]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [if_neg h1, if_neg h3]`. Expand and normalize the polynomial expressions, which then agree. Establish `hh : (Xp a b)ᴴ = Xp a b`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use extensionality with `i j`. Simplify using `only [Xp, Matrix.conjTranspose_apply, Matrix.add_apply, Matrix.single_apply]`. Apply the tactic sequence `by_cases hi : a = i <;> by_cases hj : b = j <;> by_cases hi' : b = i <;> by_cases hj' : a = j <;> subst_vars <;> simp_all [Complex.ext_iff]`. Use `⟨?_, h2⟩` and prove the remaining obligations. Use `show (Xp a b)ᴴ * Jm ε + Jm ε * Xp a b = 0`.
-
-Rewrite using `[hh, h2, neg_add_cancel]`.
+Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Xp_inP (ε : Fin n → Bool) (p : Fin n × Fin n) (hp : p ∈ nc ε) : inP ε (Xp p.1 p.2) := by
   obtain ⟨a, b⟩ := p
@@ -105,11 +103,9 @@ theorem Xp_inP (ε : Fin n → Bool) (p : Fin n × Fin n) (hp : p ∈ nc ε) : i
 end CompactGroupFacts
 
 /- English proof (translation)
-Introduce `n ε`. Use `⟨CompactGroupFacts.compact ε, ?_, ?_, ?_, CompactGroupFacts.hilbert_schmidt_continuous, CompactGroupFacts.Xp_inP ε⟩` and prove the remaining obligations. Use `show (1 : Matrix (Fin n) (Fin n) ℂ)ᴴ * Jm ε * 1 = Jm ε`. Simplify using the standard rewrite rules. Introduce `g hg X hX t`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `CompactGroupFacts.mul_mem ε hg ?_` and prove the remaining obligations. Use `rq_exp_mem ε X hX.1 t` as an intermediate fact. Rewrite `this` using `[Complex.coe_smul]`. Then use the resulting hypothesis. Introduce `X s t`. Rewrite using `[add_smul]`.
-
-Conclude with `Matrix.exp_add_of_commute _ _ ((Commute.refl X).smul_left s |>.smul_right t)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem group_facts_holds : UnitaryGroupFacts := by
   intro n ε

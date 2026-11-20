@@ -13,13 +13,11 @@ namespace GlobalTheory.WeilLevel
 variable {F : Type} [Field F] [NumberField F] {N : ℕ}
 
 /- English proof (translation)
-Establish `h : ∀ᶠ u in 𝓝 (0 : M), ∀ x ∈ tsupport Φ, Φ (x + u) = Φ x ∧ Φ (x - u) = Φ x`. Apply `h2.isCompact.eventually_forall_of_forall_eventually` to reduce the goal to its premises. Introduce `x _`. Establish `a1` using `(h1.comp_continuous (show Continuous fun z : M × M => z.2 + z.1 by fun_prop)).eventually_eq (0, x)`. Establish `a2` using `(h1.comp_continuous (show Continuous fun z : M × M => z.2 - z.1 by fun_prop)).eventually_eq (0, x)`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a3` using `(h1.comp_continuous (show Continuous fun z : M × M => z.2 by fun_prop)).eventually_eq (0, x)`. Use `filter_upwards [a1, a2, a3] with z b1 b2 b3`. Simplify using `only [Function.comp, add_zero, sub_zero] at b1 b2 b3`. Conclude with `⟨b1.trans b3.symm, b2.trans b3.symm⟩`. Use `filter_upwards [h] with u hu x`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Supply the required witnesses or components. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hx : x ∈ tsupport Φ`. Conclude with `(hu x hx).1`. Distinguish the cases in `hx' : x + u ∈ tsupport Φ`. Use `(hu _ hx').2` as an intermediate fact. Rewrite `this` using `[add_sub_cancel_right]`.
-
-Conclude with `this.symm`. Rewrite using `[image_eq_zero_of_notMem_tsupport hx, image_eq_zero_of_notMem_tsupport hx']`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eventually_invariant {M : Type} [AddCommGroup M] [TopologicalSpace M] [IsTopologicalAddGroup M] {Φ : M → ℂ}
     (h1 : IsLocallyConstant Φ) (h2 : HasCompactSupport Φ) : ∀ᶠ u in 𝓝 (0 : M), ∀ x, Φ (x + u) = Φ x := by
@@ -42,13 +40,13 @@ theorem eventually_invariant {M : Type} [AddCommGroup M] [TopologicalSpace M] [I
     · rw [image_eq_zero_of_notMem_tsupport hx, image_eq_zero_of_notMem_tsupport hx']
 
 /- English proof (translation)
-Simplify using `[Bd, half, dotProduct]`.
+Simplify using the standard rewrite rules.
 -/
 theorem Bd_half_f (u y : Fin N → Af F) : Bd (Af F) (half F N) u y = u ⬝ᵥ y := by
   simp [Bd, half, dotProduct]
 
 /- English proof (translation)
-Take `⟨lam, ν, hc⟩` from `ctx_exists F hF ψ hψ N (half F N) (fun l => half_ne_zero l)`. Take `⟨-, h2, h3⟩` from `GlobalTheory.T.finiteAdeleVector_annihilators_compact_open_basis F N ψ lam ν (half F N) hc`. Use `⟨fun K hK => ?_, h3⟩` and prove the remaining obligations. Use `h2 K hK` as an intermediate fact. Simplify `this` using `only [Bd_half_f]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem annih_basis (hF : IsTotallyReal F) (ψ : AddChar (AF F) ℂ) (hψ : IsCharAF F ψ) :
     (∀ K : Set (Fin N → Af F), IsCompact K → {y : Fin N → Af F | ∀ u ∈ K, ψ (pairA F 0 (u ⬝ᵥ y)) = 1} ∈ 𝓝 0) ∧
@@ -71,9 +69,9 @@ def levelSub (L : AddSubgroup (Af F)) : AddSubgroup (VA F N) where
     exact ⟨L.neg_mem (ha l).1, L.neg_mem (ha l).2⟩
 
 /- English proof (translation)
-Establish `hs : Continuous fun z : AF F => sndA F z` using `continuous_snd`. Establish `e : (levelSub (N` using `N) L : Set (VA F N)) = ⋂ l, ((fun u : VA F N => sndA F (u.1 l)) ⁻¹' L ∩ (fun u : VA F N => sndA F (u.2 l)) ⁻¹' L) := by`. Use extensionality with `u`. Simplify using `[levelSub]`. Rewrite using `[e]`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `isOpen_iInter_of_finite fun l => IsOpen.inter ?_ ?_` and prove the remaining obligations. Conclude with `hL.preimage (hs.comp ((continuous_apply l).comp continuous_fst))`. Conclude with `hL.preimage (hs.comp ((continuous_apply l).comp continuous_snd))`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isOpen_levelSub {L : AddSubgroup (Af F)} (hL : IsOpen (L : Set (Af F))) :
     IsOpen (levelSub (N := N) L : Set (VA F N)) := by
@@ -93,32 +91,30 @@ namespace GlobalTheory.WeilLevel
 variable {F : Type} [Field F] [NumberField F] {N : ℕ}
 
 /- English proof (translation)
-The claim follows from `Prod.ext h1 h2`.
+A detailed English derivation is pending.
 -/
 theorem adele_ext {z z' : AF F} (h1 : fstA F z = fstA F z') (h2 : sndA F z = sndA F z') : z = z' := Prod.ext h1 h2
 
 /- English proof (translation)
-Take `⟨hann, hbas⟩` from `annih_basis (N := N) hF ψ hψ`. Establish `hV` using `eventually_invariant hg.1 hg.2`. Take `⟨L0, hL0o, hL0c, hL0V⟩` from `hbas _ hV`. Use `set c : Af F := algebraMap F (Af F) (1 / 2)`. Establish `hK2 : IsCompact ((fun a : Fin N → Af F => c • a) '' {a | ∀ l, a l ∈ L0})`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsCompact {a : Fin N → Af F | ∀ l, a l ∈ L0}`. Use `isCompact_univ_pi (fun _ : Fin N => hL0c)` as an intermediate fact. Simplify `this` using `[Set.pi]`. Conclude with `this.image (continuous_const_smul c)`. Establish `hA1` using `hann _ hg.2.isCompact`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hA2` using `hann _ hK2`. Take `⟨L1, hL1o, -, hL1⟩` from `hbas _ (Filter.inter_mem (Filter.inter_mem hV hA1) hA2)`. Use `⟨levelSub (L0 ⊓ L1), isOpen_levelSub (by rw [AddSubgroup.coe_inf]; exact hL0o.inter hL1o), fun u hu h1 h2 => ?_⟩` and prove the remaining obligations. Use `set a : Fin N → Af F := fun l => sndA F (u.1 l)`. Use `set b : Fin N → Af F := fun l => sndA F (u.2 l)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `ha0 : ∀ l, a l ∈ L0` using `fun l => (AddSubgroup.mem_inf.mp (hu l).1).1`. Establish `ha1 : ∀ l, a l ∈ L1` using `fun l => (AddSubgroup.mem_inf.mp (hu l).1).2`. Establish `hb1 : ∀ l, b l ∈ L1` using `fun l => (AddSubgroup.mem_inf.mp (hu l).2).2`. Take `⟨⟨hVa, -⟩, -⟩` from `hL1 a ha1`. Take `⟨⟨-, hAb⟩, hA2b⟩` from `hL1 b hb1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Establish `i1 : ∀ l, fstA F (u.1 l) = 0` using `fun l => congrFun h1 l`. Establish `i2 : ∀ l, fstA F (u.2 l) = 0` using `fun l => congrFun h2 l`. Use function extensionality and compare the values at `x`. Use `set xf : Fin N → Af F := fun i => (x i).2`. Establish `ex : (fun i => ((x + u.1) i).2) = xf + a`.
+Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `i`. Both sides reduce to the same expression. Establish `ex' : (fun i => InfiniteAdeleRing.ringEquiv_mixedSpace F ((x + u.1) i).1) = fun i => InfiniteAdeleRing.ringEquiv_mixedSpace F (x i).1`. Use function extensionality and compare the values at `i`. Establish `: ((x + u.1) i).1 = (x i).1` using `by show (x i).1 + (u.1 i).1 = (x i).1`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[show (u.1 i).1 = fstA F (u.1 i) from rfl, i1 i, add_zero]`. Rewrite using `[this]`. Simplify using `only [GlobalTheory.WeilM.schr, GlobalTheory.WeilM.pureA]`. Rewrite using `[ex, ex', hVa xf]`. Distinguish the cases in `hg0 : g xf = 0`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[hg0]`. Simplify using the standard rewrite rules. Establish `hxK : xf ∈ tsupport g` using `subset_tsupport g hg0`. Establish `e : x ⬝ᵥ u.2 + ⅟(2 : AF F) * (u.1 ⬝ᵥ u.2) = pairA F 0 (xf ⬝ᵥ b) + pairA F 0 ((c • a) ⬝ᵥ b)`. Apply `adele_ext` to reduce the goal to its premises.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [map_add, map_mul]`. Rewrite using `[show fstA F (x ⬝ᵥ u.2) = (fstA F).toRingHom (x ⬝ᵥ u.2) from rfl, show fstA F (u.1 ⬝ᵥ u.2) = (fstA F).toRingHom (u.1 ⬝ᵥ u.2) from rfl, RingHom.map_dotProduct, RingHom.map_dotProduct]`. Establish `: (fstA F).toRingHom ∘ u.2 = 0` using `funext i2`. Rewrite using `[this, dotProduct_zero, dotProduct_zero, mul_zero, add_zero]`. Rewrite using `[show ∀ p, fstA F (pairA F 0 p) = 0 from fun _ => rfl, show ∀ p, fstA F (pairA F 0 p) = 0 from fun _ => rfl, add_zero]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [map_add, map_mul]`. Rewrite using `[show sndA F (x ⬝ᵥ u.2) = (sndA F).toRingHom (x ⬝ᵥ u.2) from rfl, show sndA F (u.1 ⬝ᵥ u.2) = (sndA F).toRingHom (u.1 ⬝ᵥ u.2) from rfl, RingHom.map_dotProduct, RingHom.map_dotProduct, invOf_two_eq, AlgHom.commutes, smul_dotProduct, smul_eq_mul]`. Rewrite using `[show ∀ p, sndA F (pairA F 0 p) = p from fun _ => rfl, show ∀ p, sndA F (pairA F 0 p) = p from fun _ => rfl]`. Both sides reduce to the same expression. Rewrite using `[e, AddChar.map_add_eq_mul, hAb _ hxK, hA2b _ ⟨a, ha0, rfl⟩]`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem pure_level [Invertible (2 : AF F)] (ψ : AddChar (AF F) ℂ) (hF : IsTotallyReal F) (hψ : IsCharAF F ψ)
     (f : SchwartzMap (Fin N → mixedEmbedding.mixedSpace F) ℂ) (g : (Fin N → Af F) → ℂ)
@@ -186,15 +182,15 @@ end GlobalTheory.WeilLevel
 namespace GlobalTheory.WeilLevel
 
 /- English proof (translation)
-Introduce `F _ _ N _ ψ hF hψ Φ hΦ`. Proceed by induction on `hΦ using Submodule.span_induction with`. Consider the case `mem Φ h`. Take `⟨f, g, hg, rfl⟩` from `h`. Conclude with `pure_level ψ hF hψ f g hg`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately.
 
-Consider the case `zero`. Conclude with `⟨⊤, isOpen_univ, fun u _ _ _ => by funext x; simp [GlobalTheory.WeilM.schr]⟩`. Consider the case `add Φ Φ' _ _ h h'`. Take `⟨U, hU, hUΦ⟩` from `h`. Take `⟨U', hU', hUΦ'⟩` from `h'`.
+Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨U ⊓ U', by rw [AddSubgroup.coe_inf]; exact hU.inter hU', fun u hu h1 h2 => ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `x`. Establish `e1` using `congrFun (hUΦ u (AddSubgroup.mem_inf.mp hu).1 h1 h2) x`. Establish `e2` using `congrFun (hUΦ' u (AddSubgroup.mem_inf.mp hu).2 h1 h2) x`. Simplify using `only [GlobalTheory.WeilM.schr, Pi.add_apply] at e1 e2 ⊢`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_add, e1, e2]`. Consider the case `smul c Φ _ h`. Take `⟨U, hU, hUΦ⟩` from `h`. Use `⟨U, hU, fun u hu h1 h2 => ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `x`.
+Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Establish `e1` using `congrFun (hUΦ u hu h1 h2) x`. Simplify using `only [GlobalTheory.WeilM.schr, Pi.smul_apply, smul_eq_mul] at e1 ⊢`. Rewrite using `[mul_left_comm, e1]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem schA_level : ∀ (F : Type) [Field F] [NumberField F] (N : ℕ) [Invertible (2 : AF F)] (ψ : AddChar (AF F) ℂ),
     IsTotallyReal F → IsCharAF F ψ → ∀ Φ ∈ GlobalTheory.WeilM.schA F (Fin N), ∃ U : AddSubgroup (VA F N),

@@ -2,7 +2,7 @@ import Mathlib
 import Formalism.WeaklyAdmissibleFiltrations.Statement
 
 /- English proof (translation)
-Introduce `A _`. Use `infer_instance`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.Qh15.aux1 :
     ∀ {A : Type} [inst : CommRing A],
@@ -15,7 +15,7 @@ theorem UpperTheory.Reformulated.B.Qh15.aux1 :
   infer_instance
 
 /- English proof (translation)
-Introduce `G A _ _ κ`. Use `ext`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem UpperTheory.Reformulated.B.Qh15.aux2 :
     ∀ {G A : Type} [inst : Group G] [inst_1 : CommRing A]
@@ -166,7 +166,7 @@ theorem UpperTheory.Reformulated.B.Qh15.aux2 :
   simp
 
 /- English proof (translation)
-Introduce `G A _ _ κ g h`. Use `ext`. Simplify using `[mul_comm]`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem UpperTheory.Reformulated.B.Qh15.aux3 :
     ∀ {G A : Type} [inst : Group G] [inst_1 : CommRing A]
@@ -641,13 +641,13 @@ noncomputable def UpperTheory.Reformulated.B.Qh15.chRep :
         (@UpperTheory.Reformulated.B.Qh15.aux3 G A inst inst_1 κ)
 
 /- English proof (translation)
-Introduce `G _ Qp K₀ K _ _ _ _ _ _ _ B BdR _ _ _ _ _ _ _ _ _ _ _ PD E _ _ κ g x y`. Establish `hch : ∀ (μ : G →* Eˣ) (a : E), UpperTheory.Reformulated.B.Qh15.chRep μ g a = (μ g : E) * a` using `fun μ a => rfl`. Establish `hact : ∀ (μ : G →* Eˣ) (a : E) (b : B), Formalism.WeaklyAdmissibleFiltrations.actVB PD (UpperTheory.Reformulated.B.Qh15.chRep μ) g (a ⊗ₜ[Qp] b) = ((μ g : E) * a) ⊗ₜ[Qp] PD.actB g b`. Introduce `μ a b`. Rewrite using `[← hch]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero, zero_mul]`. Consider the case `add x₁ x₂ h₁ h₂ => simp only [map_add, add_mul, h₁, h₂]`. Consider the case `tmul a b`.
+Both sides reduce to the same expression. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero, mul_zero]`. Consider the case `add y₁ y₂ h₁ h₂ => simp only [map_add, mul_add, h₁, h₂]`. Consider the case `tmul c d`. Establish `hu : (κ g : E) * a * ((κ⁻¹ g : E) * c) = ((1 : G →* Eˣ) g : E) * (a * c)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Rewrite using `[mul_mul_mul_comm, ← Units.val_mul, MonoidHom.inv_apply, mul_inv_cancel, MonoidHom.one_apply]`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, hact, hact, hact, Algebra.TensorProduct.tmul_mul_tmul, hu, map_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem UpperTheory.Reformulated.B.Qh15.act_mul :
     ∀ {G : Type} [inst : Group G] {Qp K₀ K : Type} [inst_1 : Field Qp] [inst_2 : Field K₀] [inst_3 : Field K]

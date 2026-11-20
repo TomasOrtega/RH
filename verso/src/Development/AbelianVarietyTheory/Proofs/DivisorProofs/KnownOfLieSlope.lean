@@ -27,7 +27,7 @@ namespace GlobalTheory.CovHt.KnownOf
 open GlobalTheory.CovTop GlobalTheory.CovHt
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.height_integral_lie_slope h2 hH hSW hL bd := GlobalTheory.T.height_bound_of_lie_slope h2 hH hSW hL up := GlobalTheory.DenseBoundedHeight.htUpSt h2 hH reg := GlobalTheory.T.demailly_regularisation_estimate h2 hH hY.dem test := GlobalTheory.T.test_function_estimate_o …`.
+A detailed English derivation is pending.
 -/
 theorem heightEstimates_of_lieSlope (hX : HypothesesXH) (h2 : Hypotheses2) (hH : HypothesesH) (hY : HypothesesY)
     (hSW : GlobalTheory.Published.ScholzeWeinsteinB) (hPD : GlobalTheory.Published.PoincareDeRhamDuality) (hL : GlobalTheory.LieHt.LieSlope)

@@ -15,7 +15,7 @@ open GroundTheory.Heights₂.Heights.LowerBoundFree GlobalTheory.CompanionTheory
 namespace GlobalTheory.CompanionTheory.Ar.Cusp.TopNine
 
 /- English proof (translation)
-Take `⟨Ch, hCh⟩` from `GlobalTheory.T.cusp_height_upper hG hF`. Take `⟨Cu, hCu⟩` from `GlobalTheory.T.cusp_volume_sum hG`. Use `⟨Ch, Cu, ?_⟩` and prove the remaining obligations. Introduce `E _ _ _ _ H D Xo l c Y II K _ J _ Ω _ _ W _ _ Dc Hd S₀ Or B₁ U M S' hII hAdm hU hT`. Conclude with `⟨GlobalTheory.T.intersection_degree_lower hG hW E H D Xo l c Y II K J Ω W Dc Hd S₀ Or B₁ U M S' hII hAdm hT, hCh E H D Xo l c Y II K J Ω W Dc Hd S₀ Or B₁ U M S' hII hAdm hU hT, hCu E H D Xo l c Y II K J Ω W Dc Hd S₀ Or B₁ U hII hAdm hU⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem nineGeoU_of_given (hG : Top.Given) (hW : Out.WeilSt) (hF : Fl.FlatDegree) :
     ∃ Ch Cu : ℝ, NineGeoU Ch Cu := by

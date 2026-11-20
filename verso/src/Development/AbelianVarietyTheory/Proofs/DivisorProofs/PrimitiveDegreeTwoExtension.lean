@@ -13,15 +13,13 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.Obs
 
 /- English proof (translation)
-Introduce `R₀ R₁ _ _ _ q hq A _ g hA hsm c c₁ c₂ hμ h₁ h₂`. Take `⟨B, _, pr, pr', hB, hBs, hp, hp', eμ, ef, es, -, -⟩` from `GlobalTheory.T.exists_abelianScheme_baseChange_and_square R₀ R₁ A g hA hsm`. Take `⟨e, he⟩` from `GlobalTheory.T.h2_structure_base_change_extension R₀ R₁ q hq`. Use `set eX := e A.left B.left A.hom B.hom pr hp`. Use `set eY := e (A ⊗ A).left (B ⊗ B).left (A ⊗ A).hom (B ⊗ B).hom pr' hp'`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc : c = eX (eX.symm c)` using `(eX.apply_symm_apply c).symm`. Establish `hc₁ : c₁ = eY (eY.symm c₁)` using `(eY.apply_symm_apply c₁).symm`. Establish `hc₂ : c₂ = eY (eY.symm c₂)` using `(eY.apply_symm_apply c₂).symm`. Establish `hsum : c₁ + c₂ = eY (eY.symm c₁ + eY.symm c₂)` using `by rw [map_add, ← hc₁, ← hc₂]`. Establish `hd : eX.symm c = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `hO R₁ B g hB hBs (eX.symm c) (eY.symm c₁) (eY.symm c₂) ?_ ?_ ?_` and prove the remaining obligations. Use `he A.left B.left A.hom B.hom pr hp (A ⊗ A).left (B ⊗ B).left (A ⊗ A).hom (B ⊗ B).hom pr' hp' (μ[A]).left (μ[B]).left (overW μ[A]) (overW μ[B]) eμ _ _ ?_` and prove the remaining obligations. Rewrite using `[← hc, ← hsum]`. Conclude with `hμ`. Use `he A.left B.left A.hom B.hom pr hp (A ⊗ A).left (B ⊗ B).left (A ⊗ A).hom (B ⊗ B).hom pr' hp' (fst A A).left (fst B B).left (overW (fst A A)) (overW (fst B B)) ef _ _ ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hc, ← hc₁]`. Conclude with `h₁`. Use `he A.left B.left A.hom B.hom pr hp (A ⊗ A).left (B ⊗ B).left (A ⊗ A).hom (B ⊗ B).hom pr' hp' (snd A A).left (snd B B).left (overW (snd A A)) (overW (snd B B)) es _ _ ?_` and prove the remaining obligations. Rewrite using `[← hc, ← hc₂]`. Conclude with `h₂`.
-
-Rewrite using `[hc, hd, map_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem primE2_of_primO2 (hO : PrimitiveStructureSheafDegTwoVanish) : PrimitiveExtendedDegTwoVanish := by
   intro R₀ R₁ _ _ _ q hq A _ g hA hsm c c₁ c₂ hμ h₁ h₂

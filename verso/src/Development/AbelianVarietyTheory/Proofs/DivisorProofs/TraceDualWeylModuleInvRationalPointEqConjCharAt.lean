@@ -13,7 +13,7 @@ namespace GlobalTheory.ContraChar
 open ReciprocityTheory.ChartRestriction.TR.Weyl
 
 /- English proof (translation)
-The claim follows from `| 0, l, t => by simp [gtChar] | n + 1, l, t => by simp only [gtChar, map_sum, map_mul, map_zpow₀] refine Finset.sum_congr rfl fun mu _ => ?_ rw [map_gtChar σ n mu]`.
+A detailed English derivation is pending.
 -/
 theorem map_gtChar (σ : ℂ →+* ℂ) : ∀ (n : ℕ) (l : Fin n → ℤ) (t : Fin n → ℂ),
     σ (gtChar n l t) = gtChar n l (fun i => σ (t i))
@@ -24,7 +24,7 @@ theorem map_gtChar (σ : ℂ →+* ℂ) : ∀ (n : ℕ) (l : Fin n → ℤ) (t :
     rw [map_gtChar σ n mu]
 
 /- English proof (translation)
-Take `⟨f, hf, htr⟩` from `sqChar n lam g t hg`. Establish `e : f = GlobalTheory.Branching.sqRep ℂ n lam g` using `LinearMap.ext fun x => Subtype.ext (by rw [hf, GlobalTheory.Branching.sqRep_coe])`. Rewrite using `[← e, htr]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem trace_sqRep_diag {n : ℕ} (lam : DomWeight n) (g : GL (Fin n) ℂ) (t : Fin n → ℂ)
     (hg : (g : Matrix (Fin n) (Fin n) ℂ) = diagonal t) :
@@ -35,7 +35,7 @@ theorem trace_sqRep_diag {n : ℕ} (lam : DomWeight n) (g : GL (Fin n) ℂ) (t :
   rw [← e, htr]
 
 /- English proof (translation)
-Establish `e2 : GlobalTheory.Branching.sqRep ℂ n lam P⁻¹ * GlobalTheory.Branching.sqRep ℂ n lam P = 1`. Rewrite using `[← map_mul, inv_mul_cancel, map_one]`. Rewrite using `[map_mul (GlobalTheory.Branching.sqRep ℂ n lam), map_mul (GlobalTheory.Branching.sqRep ℂ n lam), mul_assoc, LinearMap.trace_mul_comm, mul_assoc, e2, mul_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem trace_sqRep_conj {n : ℕ} (lam : DomWeight n) (P g : GL (Fin n) ℂ) :
     LinearMap.trace ℂ _ (GlobalTheory.Branching.sqRep ℂ n lam (P * g * P⁻¹)) =
@@ -46,11 +46,11 @@ theorem trace_sqRep_conj {n : ℕ} (lam : DomWeight n) (P g : GL (Fin n) ℂ) :
     LinearMap.trace_mul_comm, mul_assoc, e2, mul_one]
 
 /- English proof (translation)
-Set `B` to `Module.finBasis ℂ (nablaSq ℂ n lam)`. Establish `hL : ∀ i, ∃ L : MvPolynomial (Fin n × Fin n) ℂ →ₗ[ℂ] ℂ, L ∘ₗ (nablaSq ℂ n lam).subtype = B.coord i` using `fun i => LinearMap.exists_extend (B.coord i)`. Use `choose L hL using hL`. Establish `hP : ∀ i, ∃ P : MvPolynomial (Fin n × Fin n) ℂ, ∀ A : Matrix (Fin n) (Fin n) ℂ, L i (Formalism.GradedWeylDivisibility.rowAct ℂ A (B i : MvPolynomial (Fin n × Fin n) ℂ)) = MvPolynomial.eval (fun x => A x.1 x.2) P` using `fun i => GlobalTheory.Branching.exists_poly_rowAct_coef n n _ (L i)`. Use `choose P hP using hP`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨∑ i, P i, fun g => ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.trace_eq_matrix_trace ℂ B, Matrix.trace, map_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.diag_apply, LinearMap.toMatrix_apply]`. Establish `h1` using `LinearMap.congr_fun (hL i) (GlobalTheory.Branching.sqRep ℂ n lam g (B i))`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [LinearMap.comp_apply, Submodule.subtype_apply, Module.Basis.coord_apply] at h1`. Rewrite using `[← h1, GlobalTheory.Branching.sqRep_coe, sqAct, map_smul, hP, smul_eq_mul]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_poly_trace {n : ℕ} (lam : DomWeight n) :
     ∃ Q : MvPolynomial (Fin n × Fin n) ℂ, ∀ g : GL (Fin n) ℂ,
@@ -75,7 +75,7 @@ theorem exists_poly_trace {n : ℕ} (lam : DomWeight n) :
   rfl
 
 /- English proof (translation)
-Unfold `detPow`. Rewrite using `[map_mul, map_mul, map_inv, mul_comm (Matrix.GeneralLinearGroup.det P), mul_inv_cancel_right]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem detPow_conj {n : ℕ} (P g : GL (Fin n) ℂ) (c : ℤ) :
     detPow ℂ n (P * g * P⁻¹) c = detPow ℂ n g c := by
@@ -83,23 +83,23 @@ theorem detPow_conj {n : ℕ} (P g : GL (Fin n) ℂ) (c : ℤ) :
   rw [map_mul, map_mul, map_inv, mul_comm (Matrix.GeneralLinearGroup.det P), mul_inv_cancel_right]
 
 /- English proof (translation)
-Take `⟨Q, hQ⟩` from `exists_poly_trace lam`. Use `set A : Matrix (Fin n) (Fin n) ℂ := (T : Matrix (Fin n) (Fin n) ℂ) with hA`. Set `φ : ℂ → ℂ` to `fun u => MvPolynomial.eval (fun x : Fin n × Fin n => A x.2 x.1 * u ^ ((x.1 : ℕ) - (x.2 : ℕ))) Q`. Establish `hdetT : detPow ℂ n D lam.detShift = detPow ℂ n T lam.detShift`. Unfold `detPow`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 2`. Use `ext`. Rewrite using `[Matrix.GeneralLinearGroup.val_det_apply, Matrix.GeneralLinearGroup.val_det_apply, hD, det_diagonal, ← hA, Matrix.det_of_isUpperTriangular hT]`. Establish `hne : detPow ℂ n T lam.detShift ≠ 0` using `Units.ne_zero _`. Establish `hconj : ∀ u : ℂ, u ≠ 0 → LinearMap.trace ℂ _ (GlobalTheory.Branching.sqRep ℂ n lam T) = detPow ℂ n T lam.detShift * φ u`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `u hu`. Set `U : ℂˣ` to `Units.mk0 u hu`. Set `Du : GL (Fin n) ℂ` to `diagGL ℂ n fun i : Fin n => U⁻¹ ^ (i : ℕ)`. Establish `hM : ∀ i j, ((Du * T * Du⁻¹ : GL (Fin n) ℂ) : Matrix (Fin n) (Fin n) ℂ) i j = A i j * u ^ ((j : ℕ) - (i : ℕ))`. Introduce `i j`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `(diagonal (fun a : Fin n => ((U⁻¹ ^ (a : ℕ) : ℂˣ) : ℂ)) * A * diagonal (fun a : Fin n => (((U⁻¹ ^ (a : ℕ))⁻¹ : ℂˣ) : ℂ))) i j = _`. Rewrite using `[mul_diagonal, diagonal_mul]`. Simplify using `only [Units.val_pow_eq_pow_val, Units.val_inv_eq_inv_val, Units.val_mk0, U, inv_pow, inv_inv]`. Distinguish the cases in `hji : j < i`. Rewrite using `[hT hji]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hij : (i : ℕ) ≤ j` using `by rw [not_lt, Fin.le_iff_val_le_val] at hji; exact hji`. Establish `e : u ^ (j : ℕ) = u ^ (i : ℕ) * u ^ ((j : ℕ) - (i : ℕ))`. Rewrite using `[← pow_add, Nat.add_sub_cancel' hij]`. Rewrite using `[e]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Clear the denominators using the available nonvanishing facts. Rewrite using `[← trace_sqRep_conj lam Du T, hQ, detPow_conj]`. Use `congr 1`. Conclude with `congrArg (fun f => MvPolynomial.eval f Q) (funext fun x => hM x.2 x.1)`. Establish `hφc : Continuous φ` using `(MvPolynomial.continuous_eval Q).comp (continuous_pi fun x => continuous_const.mul (continuous_pow _))`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hφ : φ = fun _ => φ 1`. Use `Continuous.ext_on (dense_compl_singleton (0 : ℂ)) hφc continuous_const fun u hu => ?_` and prove the remaining obligations. Establish `h1` using `hconj u hu`. Rewrite `h1` using `[hconj 1 one_ne_zero]`. Conclude with `(mul_left_cancel₀ hne h1).symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `h0 : φ 0 = MvPolynomial.eval (fun x => (D : Matrix (Fin n) (Fin n) ℂ) x.2 x.1) Q`. Use `congrArg (fun f => MvPolynomial.eval f Q) (funext fun x => ?_)` and prove the remaining obligations. Rewrite using `[hD, diagonal_apply]`. Distinguish the cases in `h : x.2 = x.1`. Rewrite using `[if_pos h, h, Nat.sub_self, pow_zero, mul_one]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[if_neg h]`. Break down `lt_or_gt_of_ne h with h' | h'` into its components or cases. Rewrite using `[zero_pow (by rw [Fin.lt_def] at h'; omega), mul_zero]`. Rewrite using `[hT h', zero_mul]`. Rewrite using `[hQ D, hdetT, ← h0, congrFun hφ 0, hconj 1 one_ne_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem trace_sqRep_of_upper {n : ℕ} (lam : DomWeight n) (T D : GL (Fin n) ℂ)
     (hT : (T : Matrix (Fin n) (Fin n) ℂ).BlockTriangular id)
@@ -157,15 +157,15 @@ theorem trace_sqRep_of_upper {n : ℕ} (lam : DomWeight n) (T D : GL (Fin n) ℂ
   rw [hQ D, hdetT, ← h0, congrFun hφ 0, hconj 1 one_ne_zero]
 
 /- English proof (translation)
-Take `⟨P, hP, hT, -⟩` from `GlobalTheory.CommTriang.exists_triangular ℂ Unit n (fun _ => (g : Matrix (Fin n) (Fin n) ℂ)) (fun _ _ => rfl)`. Set `Pu : GL (Fin n) ℂ` to `hP.unit`. Set `T : GL (Fin n) ℂ` to `Pu⁻¹ * g * Pu`. Establish `hTv : (T : Matrix (Fin n) (Fin n) ℂ) = P⁻¹ * g * P`. Simplify using `only [T, Units.val_mul, Matrix.coe_units_inv, Pu, IsUnit.unit_spec]`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hTt : (T : Matrix (Fin n) (Fin n) ℂ).BlockTriangular id` using `by rw [hTv]; exact hT ()`. Establish `hdet : ∀ i, (T : Matrix (Fin n) (Fin n) ℂ) i i ≠ 0`. Introduce `i h`. Establish `hd : (T : Matrix (Fin n) (Fin n) ℂ).det ≠ 0`. Rewrite using `[← Matrix.GeneralLinearGroup.val_det_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Units.ne_zero _`. Rewrite `hd` using `[Matrix.det_of_isUpperTriangular hTt]`. Conclude with `hd (Finset.prod_eq_zero (Finset.mem_univ i) h)`. Set `D : GL (Fin n) ℂ` to `diagGL ℂ n fun i => Units.mk0 _ (hdet i)`. Establish `hD : (D : Matrix (Fin n) (Fin n) ℂ) = diagonal fun i => (T : Matrix (Fin n) (Fin n) ℂ) i i`.
+Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 
-Express the relevant statement in the definitionally equal form `diagonal (fun a => ((Units.mk0 _ (hdet a) : ℂˣ) : ℂ)) = _`. Simplify using `only [Units.val_mk0]`. Use `⟨fun i => (T : Matrix (Fin n) (Fin n) ℂ) i i, hdet, ?_, ?_⟩` and prove the remaining obligations. Establish `h` using `Matrix.charpoly_units_conj (Pu⁻¹) (g : Matrix (Fin n) (Fin n) ℂ)`. Rewrite `h` using `[← Matrix.coe_units_inv, inv_inv, ← Units.val_mul, ← Units.val_mul]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← h]`. Conclude with `Matrix.charpoly_of_isUpperTriangular _ hTt`. Establish `hg : g = Pu * T * Pu⁻¹` using `by simp only [T, mul_assoc, mul_inv_cancel, mul_one, mul_inv_cancel_left]`. Rewrite using `[hg, trace_sqRep_conj, trace_sqRep_of_upper lam T D hTt hD, trace_sqRep_diag lam D _ hD]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_eig {n : ℕ} (lam : DomWeight n) (g : GL (Fin n) ℂ) :
     ∃ d : Fin n → ℂ, (∀ i, d i ≠ 0) ∧ (g : Matrix (Fin n) (Fin n) ℂ).charpoly = ∏ i, (X - C (d i)) ∧
@@ -196,9 +196,9 @@ theorem exists_eig {n : ℕ} (lam : DomWeight n) (g : GL (Fin n) ℂ) :
     rw [hg, trace_sqRep_conj, trace_sqRep_of_upper lam T D hTt hD, trace_sqRep_diag lam D _ hD]
 
 /- English proof (translation)
-Establish `hc : ∀ c, Fintype.card {i // g' i = c} = Fintype.card {i // g i = c}`. Introduce `c`. Use `congrArg (Multiset.count c) h` as an intermediate fact. Rewrite `this` using `[Multiset.count_map, Multiset.count_map]`. Rewrite using `[Fintype.card_subtype, Fintype.card_subtype]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Finset.card, Finset.filter_val]`. Simplify `this.symm` using `only [eq_comm]`. Conclude with `⟨Equiv.ofFiberEquiv (fun c => Fintype.equivOfCardEq (hc c)), fun i => Equiv.ofFiberEquiv_map _ i⟩`.
+Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Supply the required witnesses or components.
 -/
 theorem exists_perm_of_map_eq {ι β : Type} [Fintype ι] (g g' : ι → β)
     (h : Finset.univ.val.map g = Finset.univ.val.map g') :
@@ -225,9 +225,9 @@ def permGL {n : ℕ} (π : Equiv.Perm (Fin n)) : GL (Fin n) ℂ where
       PEquiv.toMatrix_refl]
 
 /- English proof (translation)
-Set `D : GL (Fin n) ℂ` to `diagGL ℂ n fun i => Units.mk0 _ (hd i)`. Establish `hD : (D : Matrix (Fin n) (Fin n) ℂ) = diagonal d`. Express the relevant statement in the definitionally equal form `diagonal (fun a => ((Units.mk0 _ (hd a) : ℂˣ) : ℂ)) = _`. Simplify using `only [Units.val_mk0]`. Establish `hDπ : ((permGL π * D * (permGL π)⁻¹ : GL (Fin n) ℂ) : Matrix (Fin n) (Fin n) ℂ) = diagonal fun i => d (π i)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[Units.val_mul, Units.val_mul, hD]`. Express the relevant statement in the definitionally equal form `π.toPEquiv.toMatrix * diagonal d * π.symm.toPEquiv.toMatrix = _`. Rewrite using `[PEquiv.toMatrix_toPEquiv_mul, PEquiv.mul_toMatrix_toPEquiv, Equiv.symm_symm, submatrix_submatrix]`. Conclude with `submatrix_diagonal_equiv d π`. Rewrite using `[← trace_sqRep_diag lam D d hD, ← trace_sqRep_diag lam _ _ hDπ, trace_sqRep_conj]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gtChar_perm {n : ℕ} (lam : DomWeight n) (d : Fin n → ℂ) (hd : ∀ i, d i ≠ 0) (π : Equiv.Perm (Fin n)) :
     gtChar n lam.w (fun i => d (π i)) = gtChar n lam.w d := by
@@ -244,9 +244,9 @@ theorem gtChar_perm {n : ℕ} (lam : DomWeight n) (d : Fin n → ℂ) (hd : ∀ 
   rw [← trace_sqRep_diag lam D d hD, ← trace_sqRep_diag lam _ _ hDπ, trace_sqRep_conj]
 
 /- English proof (translation)
-Take `⟨d, hd0, hdc, hdt⟩` from `exists_eig lam g`. Take `⟨d', -, hdc', hdt'⟩` from `exists_eig lam h`. Establish `hr : ∀ e : Fin n → ℂ, (∏ i, (X - C (e i))).roots = Finset.univ.val.map e` using `fun e => by`. Rewrite using `[← roots_multiset_prod_X_sub_C (Finset.univ.val.map e), Multiset.map_map]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hm : Finset.univ.val.map d = Finset.univ.val.map d'` using `by rw [← hr, ← hr, ← hdc, ← hdc', hc]`. Take `⟨π, hπ⟩` from `exists_perm_of_map_eq d d' hm`. Rewrite using `[hdt, hdt', ← funext hπ, gtChar_perm lam d hd0 π]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem trace_sqRep_eq_of_charpoly_eq {n : ℕ} (lam : DomWeight n) (g h : GL (Fin n) ℂ)
     (hc : (g : Matrix (Fin n) (Fin n) ℂ).charpoly = (h : Matrix (Fin n) (Fin n) ℂ).charpoly) :
@@ -261,21 +261,19 @@ theorem trace_sqRep_eq_of_charpoly_eq {n : ℕ} (lam : DomWeight n) (g h : GL (F
   rw [hdt, hdt', ← funext hπ, gtChar_perm lam d hd0 π]
 
 /- English proof (translation)
-Introduce `E _ _ _ n lam γ v`. Use `set τ : E →+* ℂ := v.embedding with hτ`. Use `set g : GL (Fin n) ℂ := GeneralLinearGroup.map τ γ.1 with hg`. Establish `hinv : GeneralLinearGroup.map τ (γ⁻¹).1 = g⁻¹` using `by rw [Subgroup.coe_inv, map_inv]`. Establish `hgv : (g : Matrix (Fin n) (Fin n) ℂ) = (γ.1 : Matrix (Fin n) (Fin n) E).map τ` using `rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcp : γ.1.val.charpoly.map τ = (g : Matrix (Fin n) (Fin n) ℂ).charpoly` using `by rw [hgv, charpoly_map]`. Establish `hu : ((g : Matrix (Fin n) (Fin n) ℂ).map (starRingEnd ℂ))ᵀ * (g : Matrix (Fin n) (Fin n) ℂ) = 1`. Establish `h : cT (IsCMField.complexConj E).toRingEquiv.toRingHom (γ.1 : Matrix (Fin n) (Fin n) E) * 1 * (γ.1 : Matrix (Fin n) (Fin n) E) = 1` using `γ.2`. Rewrite `h` using `[Matrix.mul_one]`. Establish `h2` using `congrArg (fun M => M.map τ) h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Matrix.map_mul, Matrix.map_one τ (map_zero τ) (map_one τ)] at h2`. Rewrite using `[← h2, hgv]`. Use `congr 1`. Use extensionality with `i j`. Simplify using `only [cT, Matrix.transpose_apply, Matrix.map_apply, RingEquiv.toRingHom_eq_coe, RingHom.coe_coe, AlgEquiv.coe_ringEquiv]`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(IsCMField.complexEmbedding_complexConj E τ _).symm`. Establish `hginv : ((g⁻¹ : GL (Fin n) ℂ) : Matrix (Fin n) (Fin n) ℂ) = ((g : Matrix (Fin n) (Fin n) ℂ).map (starRingEnd ℂ))ᵀ`. Rewrite using `[Matrix.coe_units_inv]`. Conclude with `Matrix.inv_eq_left_inv hu`. Take `⟨d, hd0, hdc, -⟩` from `exists_eig lam g`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hcd : ∀ i, starRingEnd ℂ (d i) ≠ 0` using `fun i => by simpa using hd0 i`. Set `Dc : GL (Fin n) ℂ` to `diagGL ℂ n fun i => Units.mk0 _ (hcd i)`. Set `D : GL (Fin n) ℂ` to `diagGL ℂ n fun i => Units.mk0 _ (hd0 i)`. Establish `hDc : (Dc : Matrix (Fin n) (Fin n) ℂ) = diagonal fun i => starRingEnd ℂ (d i)`. Express the relevant statement in the definitionally equal form `diagonal (fun a => ((Units.mk0 _ (hcd a) : ℂˣ) : ℂ)) = _`.
+Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 
-Simplify using `only [Units.val_mk0]`. Establish `hD : (D : Matrix (Fin n) (Fin n) ℂ) = diagonal d`. Express the relevant statement in the definitionally equal form `diagonal (fun a => ((Units.mk0 _ (hd0 a) : ℂˣ) : ℂ)) = _`. Simplify using `only [Units.val_mk0]`. Establish `cpD : (D : Matrix (Fin n) (Fin n) ℂ).charpoly = (g : Matrix (Fin n) (Fin n) ℂ).charpoly`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hD, charpoly_diagonal, hdc]`. Establish `cpDc : ((g⁻¹ : GL (Fin n) ℂ) : Matrix (Fin n) (Fin n) ℂ).charpoly = (Dc : Matrix (Fin n) (Fin n) ℂ).charpoly`. Rewrite using `[hginv, charpoly_transpose, charpoly_map, hdc, hDc, charpoly_diagonal, Polynomial.map_prod]`. Simplify using the standard rewrite rules. Rewrite using `[hinv, hcp, trace_sqRep_eq_of_charpoly_eq lam _ Dc cpDc, trace_sqRep_diag lam Dc _ hDc]`.
-
-Establish `hex : ∃ h : GL (Fin n) ℂ, (h : Matrix (Fin n) (Fin n) ℂ).charpoly = (g : Matrix (Fin n) (Fin n) ℂ).charpoly` using `⟨g, rfl⟩`. Unfold `chAt`. Rewrite using `[dif_pos hex, trace_sqRep_eq_of_charpoly_eq lam _ D (hex.choose_spec.trans cpD.symm), trace_sqRep_diag lam D _ hD, map_gtChar]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem trace_sqRep_inv_eq_conj_chAt : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (n : ℕ)
     (lam : DomWeight n) (γ : UE E n) (v : InfinitePlace E),

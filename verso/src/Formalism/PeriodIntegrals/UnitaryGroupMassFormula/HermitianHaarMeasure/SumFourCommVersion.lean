@@ -9,21 +9,21 @@ namespace PI.QnHermHaar
 open Formalism.REAL Formalism.FourierDecayAlt.Q
 
 /- English proof (translation)
-Rewrite using `[Finset.sum_mul, Finset.mul_sum, ← Finset.sum_sub_distrib]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem commSumA {A : Type*} [Ring A] {ι : Type*} [Fintype ι] (h : ι → A) (g : A) :
     (∑ i, h i) * g - g * (∑ i, h i) = ∑ i, (h i * g - g * h i) := by
   rw [Finset.sum_mul, Finset.mul_sum, ← Finset.sum_sub_distrib]
 
 /- English proof (translation)
-Rewrite using `[Finset.sum_mul, Finset.mul_sum, ← Finset.sum_sub_distrib]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem commSumB {A : Type*} [Ring A] {ι : Type*} [Fintype ι] (h : ι → A) (g : A) :
     g * (∑ i, h i) - (∑ i, h i) * g = ∑ i, (g * h i - h i * g) := by
   rw [Finset.sum_mul, Finset.mul_sum, ← Finset.sum_sub_distrib]
 
 /- English proof (translation)
-Rewrite using `[smul_mul_smul_comm, smul_mul_smul_comm, mul_comm β α, smul_sub]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem smulComm {A : Type*} [Ring A] [Algebra ℂ A] (α β : ℂ) (X Y : A) :
     (α • X) * (β • Y) - (β • Y) * (α • X) = (α * β) • (X * Y - Y * X) := by
@@ -36,7 +36,7 @@ def covC {A : Type*} [Ring A] [Algebra ℂ A] {m : ℕ} (P : Matrix (Fin m) (Fin
   fun c => ∑ l, P l c • Yb l
 
 /- English proof (translation)
-Establish `h` using `congrFun (congrFun hQP b) c`. Rewrite `h` using `[Matrix.mul_apply, Matrix.one_apply]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem qpApply {m : ℕ} (P Q : Matrix (Fin m) (Fin m) ℂ) (hQP : Q * P = 1) (b c : Fin m) :
     ∑ j, Q b j * P j c = if b = c then 1 else 0 := by
@@ -45,17 +45,15 @@ theorem qpApply {m : ℕ} (P Q : Matrix (Fin m) (Fin m) ℂ) (hQP : Q * P = 1) (
   exact h
 
 /- English proof (translation)
-Introduce `a b c d`. Establish `hG : ∀ a b c d, E a b * E c d - E c d * E a b = (if b = c then E a d else 0) - (if d = a then E c b else 0)` using `hGl`. Simplify using `only [Econj]`. Repeatedly rewrite using `[commSumA]`. Repeatedly rewrite using `[commSumB]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities.
 
-Simplify using `only [smulComm, hG, smul_sub, Finset.sum_sub_distrib, smul_ite, smul_zero]`. Use `congr 1`. Simplify using `only [Finset.sum_ite_irrel, Finset.sum_const_zero, Finset.sum_ite_eq, Finset.mem_univ, if_true]`. Rewrite using `[Finset.sum_congr rfl (fun i _ => Finset.sum_comm)]`. Simplify using `only [← Finset.sum_smul]`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hc : ∀ i l : Fin m, ∑ j, P i a * Q b j * (P j c * Q d l) = (if b = c then 1 else 0) * (P i a * Q d l)`. Introduce `i l`. Rewrite using `[← qpApply P Q hQP b c, Finset.sum_mul]`. Use `Finset.sum_congr rfl (fun j _ => ?_)` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `only [hc]`. Apply the tactic sequence `split_ifs <;> simp`. Simplify using `only [Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Establish `e2 : ∀ i j k : Fin m, P i a * Q b j * (P k c * Q d i) = (P k c * Q b j) * (Q d i * P i a)` using `by intros; ring`. Simplify using `only [e2]`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.sum_comm, Finset.sum_congr rfl (fun j _ => Finset.sum_comm)]`. Simplify using `only [← Finset.sum_smul, ← Finset.mul_sum, qpApply P Q hQP d a]`. Use `split_ifs with h`. Simplify using `only [mul_one]`. Conclude with `Finset.sum_comm`.
-
-Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem glConj {A : Type*} [Ring A] [Algebra ℂ A] {m : ℕ} (E : Fin m → Fin m → A)
     (P Q : Matrix (Fin m) (Fin m) ℂ) (hGl : GlRel E) (hQP : Q * P = 1) : GlRel (Econj E P Q) := by
@@ -90,11 +88,9 @@ theorem glConj {A : Type*} [Ring A] [Algebra ℂ A] {m : ℕ} (E : Fin m → Fin
     · simp
 
 /- English proof (translation)
-Simplify using `only [Econj, vecC]`. Repeatedly rewrite using `[commSumA]`. Repeatedly rewrite using `[commSumB]`. Simplify using `only [smulComm, hL, smul_ite, smul_zero, Finset.sum_ite_eq, Finset.mem_univ, if_true]`. Rewrite using `[Finset.sum_comm]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `e : ∀ i j : Fin m, P i a * Q b j * Q c i = Q b j * (Q c i * P i a)` using `by intros; ring`. Simplify using `only [e, ← Finset.sum_smul, ← Finset.mul_sum, qpApply P Q hQP c a]`. Use `split_ifs with h1 h2 h2`. Simplify using `[Finset.sum_neg_distrib]`. Conclude with `absurd h1.symm h2`.
-
-Conclude with `absurd h2.symm h1`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem leibVec {A : Type*} [Ring A] [Algebra ℂ A] {m : ℕ} (E : Fin m → Fin m → A) (Y : Fin m → A)
     (P Q : Matrix (Fin m) (Fin m) ℂ) (hQP : Q * P = 1)
@@ -114,9 +110,9 @@ theorem leibVec {A : Type*} [Ring A] [Algebra ℂ A] {m : ℕ} (E : Fin m → Fi
   · simp
 
 /- English proof (translation)
-Simplify using `only [Econj, covC]`. Repeatedly rewrite using `[commSumA]`. Repeatedly rewrite using `[commSumB]`. Simplify using `only [smulComm, hL, smul_ite, smul_zero, Finset.sum_ite_eq, Finset.mem_univ, if_true]`. Establish `e : ∀ i j : Fin m, P i a * Q b j * P j c = P i a * (Q b j * P j c)` using `by intros; ring`.
+Simplify using the standard rewrite rules. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [e, ← Finset.sum_smul, ← Finset.mul_sum, qpApply P Q hQP b c]`. Apply the tactic sequence `split_ifs <;> simp`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem leibCov {A : Type*} [Ring A] [Algebra ℂ A] {m : ℕ} (E : Fin m → Fin m → A) (Yb : Fin m → A)
     (P Q : Matrix (Fin m) (Fin m) ℂ) (hQP : Q * P = 1)
@@ -131,7 +127,7 @@ theorem leibCov {A : Type*} [Ring A] [Algebra ℂ A] {m : ℕ} (E : Fin m → Fi
   split_ifs <;> simp
 
 /- English proof (translation)
-Simplify using `only [vecC, Finset.sum_mul_sum, smul_mul_smul_comm]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl (fun l _ => Finset.sum_congr rfl (fun k _ => ?_))` and prove the remaining obligations. Rewrite using `[hYY k l, mul_comm (Q a k)]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem commVec {A : Type*} [Ring A] [Algebra ℂ A] {m : ℕ} (Y : Fin m → A) (Q : Matrix (Fin m) (Fin m) ℂ)
     (hYY : ∀ a b, Y a * Y b = Y b * Y a) (a b : Fin m) :
@@ -142,7 +138,7 @@ theorem commVec {A : Type*} [Ring A] [Algebra ℂ A] {m : ℕ} (Y : Fin m → A)
   rw [hYY k l, mul_comm (Q a k)]
 
 /- English proof (translation)
-Simplify using `only [covC, Finset.sum_mul_sum, smul_mul_smul_comm]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl (fun l _ => Finset.sum_congr rfl (fun k _ => ?_))` and prove the remaining obligations. Rewrite using `[hYY k l, mul_comm (P k a)]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem commCov {A : Type*} [Ring A] [Algebra ℂ A] {m : ℕ} (Yb : Fin m → A) (P : Matrix (Fin m) (Fin m) ℂ)
     (hYY : ∀ a b, Yb a * Yb b = Yb b * Yb a) (a b : Fin m) :
@@ -153,7 +149,7 @@ theorem commCov {A : Type*} [Ring A] [Algebra ℂ A] {m : ℕ} (Yb : Fin m → A
   rw [hYY k l, mul_comm (P k a)]
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem sum_four_comm_version {A : Type*} [AddCommMonoid A] {m : ℕ} (f : Fin m → Fin m → Fin m → Fin m → A) :
     ∑ i, ∑ j, ∑ k, ∑ l, f i j k l = ∑ k, ∑ l, ∑ i, ∑ j, f i j k l := by
@@ -164,11 +160,11 @@ theorem sum_four_comm_version {A : Type*} [AddCommMonoid A] {m : ℕ} (f : Fin m
     _ = _ := Finset.sum_congr rfl (fun k _ => Finset.sum_comm)
 
 /- English proof (translation)
-Simplify using `only [Econj, star_sum, star_smul, hstar, Finset.smul_sum, smul_smul, star_mul', hP, hQ]`. Rewrite using `[sum_four_comm_version]`. Simplify using `only [← Finset.sum_smul, intCastMul, Finset.smul_sum, smul_smul]`. Use `Finset.sum_congr rfl (fun k _ => Finset.sum_congr rfl (fun l _ => ?_))` and prove the remaining obligations. Use `congr 1`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments.
 
-Establish `h1 : ∑ i, ∑ j, Q a i * P j b * (Hm k j * Hm i l) = (∑ i, Q a i * Hm i l) * (∑ j, Hm k j * P j b)`. Rewrite using `[Finset.sum_mul_sum]`. Use `Finset.sum_congr rfl (fun i _ => Finset.sum_congr rfl (fun j _ => ?_))` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h1, hQH, hHP]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem starConj {A : Type*} [Ring A] [StarRing A] [Algebra ℂ A] [StarModule ℂ A] {m : ℕ}
     (E : Fin m → Fin m → A) (Hm P Q : Matrix (Fin m) (Fin m) ℂ) (ε : Fin m → ℤˣ)
@@ -191,9 +187,9 @@ theorem starConj {A : Type*} [Ring A] [StarRing A] [Algebra ℂ A] [StarModule �
   ring
 
 /- English proof (translation)
-Simplify using `only [covC, vecC, hYb, star_sum, star_smul, hQ, Finset.smul_sum, smul_smul]`. Rewrite using `[Finset.sum_comm]`. Simplify using `only [← Finset.sum_smul]`. Use `Finset.sum_congr rfl (fun k _ => ?_)` and prove the remaining obligations. Use `congr 1`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[Finset.sum_congr rfl (fun j _ => mul_comm (P j c) (Hm k j)), hHP k c]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem relCov {A : Type*} [Ring A] [StarRing A] [Algebra ℂ A] [StarModule ℂ A] {m : ℕ}
     (Y Yb : Fin m → A) (Hm P Q : Matrix (Fin m) (Fin m) ℂ) (ε : Fin m → ℤˣ)
@@ -209,9 +205,9 @@ theorem relCov {A : Type*} [Ring A] [StarRing A] [Algebra ℂ A] [StarModule ℂ
   ring
 
 /- English proof (translation)
-Simplify using `only [Matrix.vecMul, Matrix.mulVec, dotProduct, hxb, star_sum, star_mul', hQ, Finset.sum_mul, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl (fun k _ => ?_)` and prove the remaining obligations. Establish `h` using `hHP k c`. Establish `h2 : ∑ j, Hm k j * star (x k) * P j c = (∑ j, Hm k j * P j c) * star (x k)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Finset.sum_mul]`. Use `Finset.sum_congr rfl (fun j _ => ?_)` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h2, h]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem relX {m : ℕ} (x xb : Fin m → ℂ) (Hm P Q : Matrix (Fin m) (Fin m) ℂ) (ε : Fin m → ℤˣ)
     (hxb : ∀ c, xb c = ∑ l, Hm l c * star (x l)) (hQ : ∀ i j, star (Q i j) = P j i)
@@ -230,19 +226,19 @@ theorem relX {m : ℕ} (x xb : Fin m → ℂ) (Hm P Q : Matrix (Fin m) (Fin m) �
   ring
 
 /- English proof (translation)
-Establish `hA : Hm.IsHermitian` using `hH`. Establish `hu1 : star (hA.eigenvectorUnitary : Matrix (Fin m) (Fin m) ℂ) * (hA.eigenvectorUnitary : Matrix (Fin m) (Fin m) ℂ) = 1` using `Matrix.mem_unitaryGroup_iff'.mp hA.eigenvectorUnitary.2`. Establish `hu2 : (hA.eigenvectorUnitary : Matrix (Fin m) (Fin m) ℂ) * star (hA.eigenvectorUnitary : Matrix (Fin m) (Fin m) ℂ) = 1` using `Matrix.mem_unitaryGroup_iff.mp hA.eigenvectorUnitary.2`. Use `set U : Matrix (Fin m) (Fin m) ℂ := (hA.eigenvectorUnitary : Matrix (Fin m) (Fin m) ℂ) with hU`. Use `set lam : Fin m → ℂ := fun j => ((hA.eigenvalues j : ℝ) : ℂ) with hlam`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `hHU : Hm * U = U * diagonal lam`. Use extensionality with `i j`. Rewrite using `[Matrix.mul_diagonal, Matrix.mul_apply]`. Establish `h` using `congrFun (hA.mulVec_eigenvectorBasis j) i`. Simplify using `only [Matrix.mulVec, dotProduct, Pi.smul_apply, Complex.real_smul] at h`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [hU, Matrix.IsHermitian.eigenvectorUnitary_apply, hlam]`. Rewrite using `[h, mul_comm]`. Establish `hD1 : star U * Hm * U = diagonal lam`. Rewrite using `[Matrix.mul_assoc, hHU, ← Matrix.mul_assoc, hu1, Matrix.one_mul]`. Establish `hD : diagonal lam * diagonal lam = 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← hD1]`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc U (star U), hu2, Matrix.one_mul, ← Matrix.mul_assoc Hm Hm, h2, Matrix.one_mul, hu1]`. Establish `hr : ∀ j, hA.eigenvalues j = 1 ∨ hA.eigenvalues j = -1`. Introduce `j`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h` using `congrFun (congrFun hD j) j`. Rewrite `h` using `[Matrix.diagonal_mul_diagonal, Matrix.diagonal_apply_eq, Matrix.one_apply_eq]`. Simplify using `only [hlam] at h`. Establish `h' : hA.eigenvalues j * hA.eigenvalues j = 1` using `by exact_mod_cast h`. Conclude with `mul_self_eq_one_iff.mp h'`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `⟨U, fun j => if hA.eigenvalues j = 1 then 1 else -1, hu1, hu2, ?_⟩` and prove the remaining obligations. Rewrite using `[hHU]`. Use `congr 2`. Use function extensionality and compare the values at `j`. Break down `hr j with h | h` into its components or cases.
+Apply function extensionality and compare values at an arbitrary argument. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[hlam, h]`. Establish `hn : ¬ hA.eigenvalues j = 1` using `by rw [h]; norm_num show ((hA.eigenvalues j : ℝ) : ℂ) = (((if hA.eigenvalues j = 1 then (1 : ℤˣ) else -1 : ℤˣ) : ℤ) : ℂ)`. Rewrite using `[if_neg hn, h]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem diagInvol {m : ℕ} (Hm : Matrix (Fin m) (Fin m) ℂ) (hH : Hmᴴ = Hm) (h2 : Hm * Hm = 1) :
     ∃ (U : Matrix (Fin m) (Fin m) ℂ) (ε : Fin m → ℤˣ), star U * U = 1 ∧ U * star U = 1 ∧

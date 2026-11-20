@@ -21,7 +21,7 @@ noncomputable def B (μ' : Pair J K M) (ν' : Pair I M L) (st u w : ℤ) (h : st
   exact DirectSum.toModule _ _ _ fun p => TensorProduct.lift (bil μ' ν' st u w h V c p)
 
 /- English proof (translation)
-Unfold `B`. Rewrite using `[DirectSum.toModule_lof, TensorProduct.lift.tmul]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem B_lof (μ' : Pair J K M) (ν' : Pair I M L) (st u w : ℤ) (h : st + u = w) (V : Scheme.{0})
     (c : Sec (K.X u) V) (p : {p : ℤ × ℤ // p.1 + p.2 = st}) (a : Sec (I.X p.1.1) V) (b : Sec (J.X p.1.2) V) :
@@ -33,7 +33,7 @@ theorem B_lof (μ' : Pair J K M) (ν' : Pair I M L) (st u w : ℤ) (h : st + u =
   rfl
 
 /- English proof (translation)
-Unfold `Pair.lift`. Rewrite using `[DirectSum.toModule_lof, TensorProduct.lift.tmul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem lift_lof (τ : Pair I J T) (V : Scheme.{0}) (st : ℤ) (p : {p : ℤ × ℤ // p.1 + p.2 = st})
     (a : Sec (I.X p.1.1) V) (b : Sec (J.X p.1.2) V) :
@@ -43,7 +43,7 @@ theorem lift_lof (τ : Pair I J T) (V : Scheme.{0}) (st : ℤ) (p : {p : ℤ × 
   rw [DirectSum.toModule_lof, TensorProduct.lift.tmul]
 
 /- English proof (translation)
-Unfold `Tens.res`. Rewrite using `[DirectSum.lmap_lof, TensorProduct.map_tmul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem tres_lof {V U : Scheme.{0}} (g : V ⟶ U) (st : ℤ) (p : {p : ℤ × ℤ // p.1 + p.2 = st})
     (a : Sec (I.X p.1.1) U) (b : Sec (J.X p.1.2) U) :
@@ -55,9 +55,9 @@ theorem tres_lof {V U : Scheme.{0}} (g : V ⟶ U) (st : ℤ) (p : {p : ℤ × �
   rw [DirectSum.lmap_lof, TensorProduct.map_tmul]
 
 /- English proof (translation)
-Proceed by induction on `x using DirectSum.induction_on with`. Consider the case `zero => exact h0`. Consider the case `add x y hx hy => exact hadd x y hx hy`. Consider the case `of p m`. Proceed by induction on `m using TensorProduct.induction_on with`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Proceed by induction.
 
-Consider the case `zero => simpa using h0`. Consider the case `tmul a b => exact hof p a b`. Consider the case `add m m' hm hm'`. Rewrite using `[map_add]`. Conclude with `hadd _ _ hm hm'`.
+Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tens_ind {V : Scheme.{0}} {st : ℤ} {P : Tens I J V st → Prop} (x : Tens I J V st) (h0 : P 0)
     (hadd : ∀ x y, P x → P y → P (x + y))
@@ -84,26 +84,26 @@ namespace TensAssoc
 variable {R : Type} [CommRing R] {I J K T M L : Cx R}
 
 /- English proof (translation)
-Simplify using `[Sec.res]`.
+Simplify using the standard rewrite rules.
 -/
 theorem res_res' {F : Shv R} {W V U : Scheme.{0}} (k : W ⟶ V) (g : V ⟶ U) (a : Sec F U) :
     Sec.res k (Sec.res g a) = Sec.res (k ≫ g) a := by
   simp [Sec.res]
 
 /- English proof (translation)
-The claim follows from `map_add _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem res_add' {F : Shv R} {V U : Scheme.{0}} (g : V ⟶ U) (a a' : Sec F U) :
     Sec.res g (a + a') = Sec.res g a + Sec.res g a' := map_add _ _ _
 
 /- English proof (translation)
-The claim follows from `map_smul _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem res_smul' {F : Shv R} {V U : Scheme.{0}} (g : V ⟶ U) (r : ULift.{1} R) (a : Sec F U) :
     Sec.res g (r • a) = r • Sec.res g a := map_smul _ _ _
 
 /- English proof (translation)
-Use `congrArg (fun f => f.hom a) (φ.hom.naturality g.op)` as an intermediate fact. Simplify `this.symm` using `[Sec.res, Sec.map]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem res_map' {F G : Shv R} (φ : F ⟶ G) {V U : Scheme.{0}} (g : V ⟶ U) (a : Sec F U) :
     Sec.res g (Sec.map φ a) = Sec.map φ (Sec.res g a) := by
@@ -111,7 +111,7 @@ theorem res_map' {F G : Shv R} (φ : F ⟶ G) {V U : Scheme.{0}} (g : V ⟶ U) (
   simpa [Sec.res, Sec.map] using this.symm
 
 /- English proof (translation)
-Proceed by induction on `x using tens_ind with`. Consider the case `h0 => simp`. Consider the case `hadd x y hx hy => rw [map_add, res_add', hx, hy, map_add, map_add]`. Consider the case `hof p a b => rw [lift_lof, tres_lof, lift_lof, τ.nat]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem lift_nat (τ : Pair I J T) {V U : Scheme.{0}} (g : V ⟶ U) (st : ℤ) (x : Tens I J U st) :
     Sec.res g (τ.lift U st x) = τ.lift V st (Tens.res g st x) := by
@@ -121,7 +121,7 @@ theorem lift_nat (τ : Pair I J T) {V U : Scheme.{0}} (g : V ⟶ U) (st : ℤ) (
   | hof p a b => rw [lift_lof, tres_lof, lift_lof, τ.nat]
 
 /- English proof (translation)
-Proceed by induction on `x using tens_ind with`. Consider the case `h0 => simp`. Consider the case `hadd x y hx hy => rw [map_add, res_add', hx, hy, map_add, map_add]`. Consider the case `hof p a b => rw [B_lof, tres_lof, B_lof, ν'.nat, μ'.nat]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem B_nat (μ' : Pair J K M) (ν' : Pair I M L) (st u w : ℤ) (h : st + u = w) {V U : Scheme.{0}} (g : V ⟶ U)
     (c : Sec (K.X u) U) (x : Tens I J U st) :
@@ -132,7 +132,7 @@ theorem B_nat (μ' : Pair J K M) (ν' : Pair I M L) (st u w : ℤ) (h : st + u =
   | hof p a b => rw [B_lof, tres_lof, B_lof, ν'.nat, μ'.nat]
 
 /- English proof (translation)
-Proceed by induction on `x using tens_ind with`. Consider the case `h0 => simp`. Consider the case `hadd x y hx hy => rw [map_add, hx, hy, map_add, map_add]`. Normalize the expressions using the abelian group laws. Consider the case `hof p a b => rw [B_lof, B_lof, B_lof, map_add, map_add]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Normalize the expressions using the abelian group laws. Treat this case separately.
 -/
 theorem B_add_c (μ' : Pair J K M) (ν' : Pair I M L) (st u w : ℤ) (h : st + u = w) (V : Scheme.{0})
     (c c' : Sec (K.X u) V) (x : Tens I J V st) :
@@ -143,7 +143,7 @@ theorem B_add_c (μ' : Pair J K M) (ν' : Pair I M L) (st u w : ℤ) (h : st + u
   | hof p a b => rw [B_lof, B_lof, B_lof, map_add, map_add]
 
 /- English proof (translation)
-Proceed by induction on `x using tens_ind with`. Consider the case `h0 => simp`. Consider the case `hadd x y hx hy => rw [map_add, hx, hy, map_add, smul_add]`. Consider the case `hof p a b => rw [B_lof, B_lof, map_smul, map_smul]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem B_smul_c (μ' : Pair J K M) (ν' : Pair I M L) (st u w : ℤ) (h : st + u = w) (V : Scheme.{0})
     (r : ULift.{1} R) (c : Sec (K.X u) V) (x : Tens I J V st) :
@@ -158,9 +158,9 @@ variable {τ : Pair I J T} (hτ : τ.IsTensor) (μ' : Pair J K M) (ν' : Pair I 
 
 include hτ in
 /- English proof (translation)
-Take `⟨S, hS, hz⟩` from `hτ.2 V st (x - x') (by rw [map_sub, hx, sub_self])`. Use `(sec_ext_glue R (L.X w) V).1 _ _ ⟨S, hS, fun W k hk => ?_⟩` and prove the remaining obligations. Apply the tactic sequence `try dsimp only`. Rewrite using `[B_nat, B_nat]`. Use `hz W k hk` as an intermediate fact.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Apply the tactic sequence `try dsimp only at this`. Rewrite `this` using `[map_sub, sub_eq_zero]`. Rewrite using `[this]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem key {V : Scheme.{0}} (c : Sec (K.X u) V) (x x' : Tens I J V st) (hx : τ.lift V st x = τ.lift V st x') :
     B μ' ν' st u w h V c x = B μ' ν' st u w h V c x' := by
@@ -181,9 +181,9 @@ def Ch (U : Scheme.{0}) (y : Sec (T.X st) U) (c : Sec (K.X u) U) (a : Sec (L.X w
 
 include hτ in
 /- English proof (translation)
-Introduce `V g x hx`. Take `⟨S, hS, hS'⟩` from `loc_pullback U V g _ hl`. Use `(sec_ext_glue R (L.X w) V).1 _ _ ⟨S, hS, fun W k hk => ?_⟩` and prove the remaining obligations. Take `⟨x', hx'1, hx'2⟩` from `hS' W k hk`. Apply the tactic sequence `try dsimp only`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[res_res', hx'2, B_nat, res_res']`. Apply `key hτ` to reduce the goal to its premises. Rewrite using `[hx'1, ← lift_nat, hx, res_res']`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ch_loc {U : Scheme.{0}} (y : Sec (T.X st) U) (c : Sec (K.X u) U) (a : Sec (L.X w) U)
     (hl : Loc U fun V g => ∃ x, τ.lift V st x = Sec.res g y ∧ Sec.res g a = B μ' ν' st u w h V (Sec.res g c) x) :
@@ -199,9 +199,9 @@ theorem ch_loc {U : Scheme.{0}} (y : Sec (T.X st) U) (c : Sec (K.X u) U) (a : Se
 
 include hτ in
 /- English proof (translation)
-Take `⟨S, hS, hl⟩` from `hτ.1 U st y`. Set `s : ∀ (V : Scheme.{0}) (g : V ⟶ U), S.arrows g → Sec (L.X w) V` to `fun V g hg => B μ' ν' st u w h V (Sec.res g c) (hl V g hg).choose`. Establish `hs : ∀ (V W : Scheme.{0}) (g : V ⟶ U) (k : W ⟶ V) (hg : S.arrows g), Sec.res k (s V g hg) = s W (k ≫ g) (S.downward_closed hg k)`. Introduce `V W g k hg`. Simplify using `only [s]`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Rewrite using `[B_nat, res_res']`. Apply `key hτ` to reduce the goal to its premises. Rewrite using `[← lift_nat, (hl V g hg).choose_spec, (hl W (k ≫ g) (S.downward_closed hg k)).choose_spec, res_res']`. Take `⟨a, ha⟩` from `(sec_ext_glue R (L.X w) U).2 S hS s hs`. Conclude with `⟨a, ch_loc hτ μ' ν' st u w h y c a ⟨S, hS, fun V g hg => ⟨(hl V g hg).choose, (hl V g hg).choose_spec, ha V g hg⟩⟩⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem ch_exists (U : Scheme.{0}) (y : Sec (T.X st) U) (c : Sec (K.X u) U) :
     ∃ a, Ch τ μ' ν' st u w h U y c a := by
@@ -221,7 +221,7 @@ theorem ch_exists (U : Scheme.{0}) (y : Sec (T.X st) U) (c : Sec (K.X u) U) :
 
 include hτ in
 /- English proof (translation)
-Take `⟨S, hS, hl⟩` from `hτ.1 U st y`. Use `(sec_ext_glue R (L.X w) U).1 _ _ ⟨S, hS, fun V g hg => ?_⟩` and prove the remaining obligations. Take `⟨x, hx⟩` from `hl V g hg`. Apply the tactic sequence `try dsimp only`. Rewrite using `[ha V g x hx, ha' V g x hx]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ch_unique {U : Scheme.{0}} (y : Sec (T.X st) U) (c : Sec (K.X u) U) (a a' : Sec (L.X w) U)
     (ha : Ch τ μ' ν' st u w h U y c a) (ha' : Ch τ μ' ν' st u w h U y c a') : a = a' := by
@@ -232,7 +232,7 @@ theorem ch_unique {U : Scheme.{0}} (y : Sec (T.X st) U) (c : Sec (K.X u) U) (a a
   rw [ha V g x hx, ha' V g x hx]
 
 /- English proof (translation)
-Introduce `W k x hx`. Rewrite using `[res_res', res_res']`. Conclude with `ha W (k ≫ g) x (by rw [hx, res_res'])`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ch_res {V U : Scheme.{0}} (g : V ⟶ U) (y : Sec (T.X st) U) (c : Sec (K.X u) U) (a : Sec (L.X w) U)
     (ha : Ch τ μ' ν' st u w h U y c a) :
@@ -243,7 +243,7 @@ theorem ch_res {V U : Scheme.{0}} (g : V ⟶ U) (y : Sec (T.X st) U) (c : Sec (K
 
 include hτ in
 /- English proof (translation)
-Introduce `V g x' hx'`. Rewrite using `[B_nat]`. Apply `key hτ` to reduce the goal to its premises. Rewrite using `[← lift_nat, hx']`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem ch_base {U : Scheme.{0}} (x : Tens I J U st) (c : Sec (K.X u) U) :
     Ch τ μ' ν' st u w h U (τ.lift U st x) c (B μ' ν' st u w h U c x) := by
@@ -254,9 +254,9 @@ theorem ch_base {U : Scheme.{0}} (x : Tens I J U st) (c : Sec (K.X u) U) :
 
 include hτ in
 /- English proof (translation)
-Take `⟨S1, hS1, hl1⟩` from `hτ.1 U st y`. Take `⟨S2, hS2, hl2⟩` from `hτ.1 U st y'`. Use `ch_loc hτ μ' ν' st u w h _ _ _ ⟨S1 ⊓ S2, Scheme.etaleTopology.intersection_covering hS1 hS2, fun V g hg => ?_⟩` and prove the remaining obligations. Take `⟨x1, e1⟩` from `hl1 V g hg.1`. Take `⟨x2, e2⟩` from `hl2 V g hg.2`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨x1 + x2, by rw [map_add, e1, e2, res_add'], by rw [res_add', ha V g x1 e1, ha' V g x2 e2, map_add]⟩`.
+Supply the required witnesses or components.
 -/
 theorem ch_add_y {U : Scheme.{0}} (y y' : Sec (T.X st) U) (c : Sec (K.X u) U) (a a' : Sec (L.X w) U)
     (ha : Ch τ μ' ν' st u w h U y c a) (ha' : Ch τ μ' ν' st u w h U y' c a') :
@@ -270,7 +270,7 @@ theorem ch_add_y {U : Scheme.{0}} (y y' : Sec (T.X st) U) (c : Sec (K.X u) U) (a
 
 include hτ in
 /- English proof (translation)
-Take `⟨S1, hS1, hl1⟩` from `hτ.1 U st y`. Use `ch_loc hτ μ' ν' st u w h _ _ _ ⟨S1, hS1, fun V g hg => ?_⟩` and prove the remaining obligations. Take `⟨x1, e1⟩` from `hl1 V g hg`. Conclude with `⟨r • x1, by rw [map_smul, e1, res_smul'], by rw [res_smul', ha V g x1 e1, map_smul]⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem ch_smul_y {U : Scheme.{0}} (r : ULift.{1} R) (y : Sec (T.X st) U) (c : Sec (K.X u) U) (a : Sec (L.X w) U)
     (ha : Ch τ μ' ν' st u w h U y c a) :
@@ -281,7 +281,7 @@ theorem ch_smul_y {U : Scheme.{0}} (r : ULift.{1} R) (y : Sec (T.X st) U) (c : S
   exact ⟨r • x1, by rw [map_smul, e1, res_smul'], by rw [res_smul', ha V g x1 e1, map_smul]⟩
 
 /- English proof (translation)
-Introduce `V g x hx`. Rewrite using `[res_add', ha V g x hx, ha' V g x hx, res_add', B_add_c]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem ch_add_c {U : Scheme.{0}} (y : Sec (T.X st) U) (c c' : Sec (K.X u) U) (a a' : Sec (L.X w) U)
     (ha : Ch τ μ' ν' st u w h U y c a) (ha' : Ch τ μ' ν' st u w h U y c' a') :
@@ -290,7 +290,7 @@ theorem ch_add_c {U : Scheme.{0}} (y : Sec (T.X st) U) (c c' : Sec (K.X u) U) (a
   rw [res_add', ha V g x hx, ha' V g x hx, res_add', B_add_c]
 
 /- English proof (translation)
-Introduce `V g x hx`. Rewrite using `[res_smul', ha V g x hx, res_smul', B_smul_c]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem ch_smul_c {U : Scheme.{0}} (r : ULift.{1} R) (y : Sec (T.X st) U) (c : Sec (K.X u) U) (a : Sec (L.X w) U)
     (ha : Ch τ μ' ν' st u w h U y c a) :
@@ -309,7 +309,7 @@ namespace TensAssoc
 variable {R : Type} [CommRing R] {I J K T M L : Cx R}
 
 /- English proof (translation)
-Rewrite using `[Units.smul_def, Units.smul_def]`. Conclude with `map_zsmul _ _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem res_usmul {F : Shv R} {V U : Scheme.{0}} (g : V ⟶ U) (k : ℤˣ) (a : Sec F U) :
     Sec.res g (k • a) = k • Sec.res g a := by
@@ -324,7 +324,7 @@ noncomputable def nu (U : Scheme.{0}) (st u w : ℤ) (h : st + u = w) (y : Sec (
   (ch_exists hτ μ' ν' st u w h U y c).choose
 
 /- English proof (translation)
-The claim follows from `(ch_exists hτ μ' ν' st u w h U y c).choose_spec`.
+A detailed English derivation is pending.
 -/
 theorem nu_spec (U : Scheme.{0}) (st u w : ℤ) (h : st + u = w) (y : Sec (T.X st) U) (c : Sec (K.X u) U) :
     Ch τ μ' ν' st u w h U y c (nu hτ μ' ν' U st u w h y c) :=
@@ -349,7 +349,7 @@ theorem nuL_apply (U : Scheme.{0}) (st u w : ℤ) (h : st + u = w) (y : Sec (T.X
     nuL hτ μ' ν' U st u w h y c = nu hτ μ' ν' U st u w h y c := rfl
 
 /- English proof (translation)
-The claim follows from `ch_unique hτ μ' ν' st u w h _ _ _ _ (ch_res μ' ν' st u w h g y c _ (nu_spec hτ μ' ν' U st u w h y c)) (nu_spec hτ μ' ν' V st u w h _ _)`.
+A detailed English derivation is pending.
 -/
 theorem nu_res {V U : Scheme.{0}} (g : V ⟶ U) (st u w : ℤ) (h : st + u = w) (y : Sec (T.X st) U) (c : Sec (K.X u) U) :
     Sec.res g (nuL hτ μ' ν' U st u w h y c) = nuL hτ μ' ν' V st u w h (Sec.res g y) (Sec.res g c) :=
@@ -357,7 +357,7 @@ theorem nu_res {V U : Scheme.{0}} (g : V ⟶ U) (st u w : ℤ) (h : st + u = w) 
     (nu_spec hτ μ' ν' V st u w h _ _)
 
 /- English proof (translation)
-Substitute `h3` using the available equality. Establish `e : τ.mul U s t st h1 a b = τ.lift U st (DirectSum.lof (ULift.{1} R) _ (fun p : {p : ℤ × ℤ // p.1 + p.2 = st} => Sec (I.X p.1.1) U ⊗[ULift.{1} R] Sec (J.X p.1.2) U) ⟨(s, t), h1⟩ (a ⊗ₜ b))` using `(lift_lof τ U st ⟨(s, t), h1⟩ a b).symm`. Rewrite using `[nuL_apply, e]`. Conclude with `(ch_unique hτ μ' ν' st u w h2 _ c _ _ (nu_spec hτ μ' ν' U st u w h2 _ c) (ch_base hτ μ' ν' st u w h2 _ c)).trans (B_lof μ' ν' st u w h2 U c ⟨(s, t), h1⟩ a b)`.
+Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem main (U : Scheme.{0}) (s t u st tu w : ℤ) (h1 : s + t = st) (h2 : st + u = w) (h3 : t + u = tu)
     (h4 : s + tu = w) (a : Sec (I.X s) U) (b : Sec (J.X t) U) (c : Sec (K.X u) U) :
@@ -371,9 +371,9 @@ theorem main (U : Scheme.{0}) (s t u st tu w : ℤ) (h1 : s + t = st) (h2 : st +
     (ch_base hτ μ' ν' st u w h2 _ c)).trans (B_lof μ' ν' st u w h2 U c ⟨(s, t), h1⟩ a b)
 
 /- English proof (translation)
-Rewrite using `[τ.leibniz]`. Simplify using `only [map_add, LinearMap.add_apply, Units.smul_def, map_zsmul, LinearMap.smul_apply]`. Rewrite using `[main hτ μ' ν' U s t u st (t + u) w hp h rfl (by omega), main hτ μ' ν' U (s + 1) t u (st + 1) (t + u) (w + 1) (by omega) (by omega) rfl (by omega), main hτ μ' ν' U s (t + 1) u (st + 1) (t + u + 1) (w + 1) (by omega) (by omega) (by omega) (by omega), main hτ μ' ν' U s t (u + 1) st …`. Rewrite using `[ν'.leibniz, μ'.leibniz]`. Simplify using `only [map_add, Units.smul_def, map_zsmul, smul_add]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Substitute `hp` using the available equality. Rewrite using `[Int.negOnePow_add, Units.val_mul, mul_smul]`. Normalize the expressions using the abelian group laws.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem leib_mul (U : Scheme.{0}) (st u w : ℤ) (h : st + u = w) (s t : ℤ) (hp : s + t = st)
     (a : Sec (I.X s) U) (b : Sec (J.X t) U) (c : Sec (K.X u) U) :
@@ -393,9 +393,9 @@ theorem leib_mul (U : Scheme.{0}) (st u w : ℤ) (h : st + u = w) (s t : ℤ) (h
   abel
 
 /- English proof (translation)
-Proceed by induction on `x using tens_ind with`. Consider the case `h0 => simp`. Consider the case `hadd x y hx hy`. Simplify using `only [map_add, LinearMap.add_apply, smul_add, hx, hy]`. Normalize the expressions using the abelian group laws.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 
-Consider the case `hof p a b`. Rewrite using `[lift_lof]`. Conclude with `leib_mul hτ μ' ν' U st u w h p.1.1 p.1.2 p.2 a b c`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem leib_lift (U : Scheme.{0}) (st u w : ℤ) (h : st + u = w) (x : Tens I J U st) (c : Sec (K.X u) U) :
     Sec.map (L.d w (w + 1)) (nuL hτ μ' ν' U st u w h (τ.lift U st x) c) =
@@ -411,9 +411,7 @@ theorem leib_lift (U : Scheme.{0}) (st u w : ℤ) (h : st + u = w) (x : Tens I J
     exact leib_mul hτ μ' ν' U st u w h p.1.1 p.1.2 p.2 a b c
 
 /- English proof (translation)
-Take `⟨S, hS, hl⟩` from `hτ.1 U st y`. Use `(sec_ext_glue R (L.X (w + 1)) U).1 _ _ ⟨S, hS, fun V g hg => ?_⟩` and prove the remaining obligations. Take `⟨x, hx⟩` from `hl V g hg`. Apply the tactic sequence `try dsimp only`. Rewrite using `[res_add', res_usmul, res_map', nu_res, nu_res, nu_res, res_map', res_map', ← hx]`.
-
-Conclude with `leib_lift hτ μ' ν' V st u w h x _`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem leib (U : Scheme.{0}) (st u w : ℤ) (h : st + u = w) (y : Sec (T.X st) U) (c : Sec (K.X u) U) :
     Sec.map (L.d w (w + 1)) (nuL hτ μ' ν' U st u w h y c) =
@@ -435,7 +433,7 @@ end Build
 end TensAssoc
 
 /- English proof (translation)
-Introduce `R _ I J K T T3 τ τ' hτ _ M L μ' ν'`. Conclude with `⟨TensAssoc.nuPair hτ μ' ν', fun U s t u st tu w h1 h2 h3 h4 a b c => TensAssoc.main hτ μ' ν' U s t u st tu w h1 h2 h3 h4 a b c⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem tensor_assoc_desc : ∀ (R : Type) [CommRing R] {I J K T T3 : Cx R} (τ : Pair I J T) (τ' : Pair T K T3),
     τ.IsTensor → τ'.IsTensor → ∀ {M L : Cx R} (μ' : Pair J K M) (ν' : Pair I M L), ∃ ν : Pair T K L,

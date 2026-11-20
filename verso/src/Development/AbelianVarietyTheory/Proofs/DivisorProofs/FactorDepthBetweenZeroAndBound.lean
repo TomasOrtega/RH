@@ -12,15 +12,13 @@ open GlobalTheory.IndefiniteRowSideFullHecke.FactorDepthInertBounds (boundAll bo
 namespace GlobalTheory.RefSum
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c p _ la f k`. Use `letI := H.starRing`. Establish `hch : ∀ (T : CDVR) (io : c.F →+* T.Fr) (y : IntFr Xo c T io), Nonempty (IntegralChartA3 Xo c T io y)` using `fun T io y => by`. Take `⟨C, -⟩` from `(@GlobalTheory.IntChartExists.intChart_exists E _ _ _ H Dw l Xo c H.starRing).2.2 (fun _ => rfl) T io y`. Conclude with `⟨C⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `hB : ∀ (T : CDVR) (io : c.F →+* T.Fr) (y : IntFr Xo c T io) (Ch : IntegralChartA3 Xo c T io y) (X : ValExt T p), 0 ≤ nuFacC Ch X f k ∧ nuFacC Ch X f k ≤ ((boundAll p (rk f) k : ℝ) : EReal) ∧ (k < p → nuFacC Ch X f k = 0)`. Introduce `T io y Ch X`. Establish `h1` using `GlobalTheory.T.formalGroupDeterminantPowDepth_bounds X.C (vX_vp X) p Fact.out (vX_vp_p X) (rk f) _ k (fgl Ch X) (frame Ch X f) (isSatFrame_frame Ch X f)`. Use `⟨h1.1, ?_, fun hk => GlobalTheory.T.formalGroupDeterminantPowDepth_eq_zero_of_lt_prime X.C (vX_vp X) p Fact.out (vX_vp_p X) (rk f) _ k (fgl Ch X) (frame Ch X f) (isSatFrame_frame Ch X f) hk⟩` and prove the remaining obligations. Establish `h2` using `h1.2.2`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Unfold `boundAll`. Conclude with `h2`. Establish `hmain : ∀ B : ℝ, (∀ (T : CDVR) (io : c.F →+* T.Fr) (y : IntFr Xo c T io) (Ch : IntegralChartA3 Xo c T io y) (X : ValExt T p), nuFacC Ch X f k ≤ (B : EReal)) → FacBetween Xo la f k 0 B`. Introduce `B hb T io e ho y`. Use `⟨?_, fun _ => ?_⟩` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[EReal.coe_zero]`. Conclude with `le_nuFac fun Ch X => (hB T io y Ch X).1`. Take `⟨Ch⟩` from `hch T io y`. Take `⟨X⟩` from `nonempty_valExt_of_overLa la ho`. Conclude with `(nuFac_le Ch X f k).trans (hb T io y Ch X)`.
-
-Use `⟨hmain _ fun T io y Ch X => (hB T io y Ch X).2.1, fun hk => hmain 0 fun T io y Ch X => ?_⟩` and prove the remaining obligations. Rewrite using `[(hB T io y Ch X).2.2 hk, EReal.coe_zero]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem facBetween_zero_boundAll : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l), ∀ (p : ℕ) [Fact p.Prime] (la : PointsOfFlagModel.abelian₂ p c), ∀ (f : Lt1 Dw) (k : ℕ), FacBetween Xo la f k 0 (boundAll p (rk f) k) ∧ (k < p → FacBetween Xo la f k 0 0) := by
   intro E _ _ _ H Dw l Xo c p _ la f k

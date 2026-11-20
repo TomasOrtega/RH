@@ -19,7 +19,7 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
   {n : ℕ} (G : Grp k n)
 
 /- English proof (translation)
-Take `⟨v, hv0, hv⟩` from `h`. Use `⟨v, hv0, fun g hg => ?_⟩` and prove the remaining obligations. Establish `h1` using `detChar_of_mem_KO (isUnram_absPow k (-((modExp (fun b : Fin G.s => Fin (G.d b)) a : ℂ) / 2))) hg`. Rewrite using `[twD, twist_apply, h1, hv g hg, Units.val_one, one_smul]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem twD_hasDetVec {Y : Fin G.s → Type} [∀ a, AddCommGroup (Y a)] [∀ a, Module ℂ (Y a)]
     (τ : ∀ a, Representation ℂ (GL (Fin (G.d a)) k) (Y a)) (a : Fin G.s)
@@ -31,7 +31,7 @@ theorem twD_hasDetVec {Y : Fin G.s → Type} [∀ a, AddCommGroup (Y a)] [∀ a,
   rw [twD, twist_apply, h1, hv g hg, Units.val_one, one_smul]
 
 /- English proof (translation)
-The claim follows from `isSmooth_twist h (isSmoothChar_of_isUnram (isUnram_absPow k _)).detChar`.
+A detailed English derivation is pending.
 -/
 theorem twD_isSmooth {Y : Fin G.s → Type} [∀ a, AddCommGroup (Y a)] [∀ a, Module ℂ (Y a)]
     (τ : ∀ a, Representation ℂ (GL (Fin (G.d a)) k) (Y a)) (a : Fin G.s)
@@ -39,7 +39,7 @@ theorem twD_isSmooth {Y : Fin G.s → Type} [∀ a, AddCommGroup (Y a)] [∀ a, 
   isSmooth_twist h (isSmoothChar_of_isUnram (isUnram_absPow k _)).detChar
 
 /- English proof (translation)
-Rewrite using `[jac, twist_apply, MonoidHom.inv_apply, deltaHalf_of_mem_leviK hm, inv_one, Units.val_one, one_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem jacU_eq_jac {V : Type} [AddCommGroup V] [Module ℂ V] (π : Representation ℂ (GL (Fin n) k) V)
     (m : Levi k fun a : Fin G.s => Fin (G.d a)) (hm : m ∈ leviK k (m := fun a : Fin G.s => Fin (G.d a)))
@@ -49,15 +49,15 @@ theorem jacU_eq_jac {V : Type} [AddCommGroup V] [Module ℂ V] (π : Representat
 end P_spPiEta
 
 /- English proof (translation)
-Unfold `SpecialRepresentationEtaProp`. Introduce `hLift Y _ _ τ hsm hdet`. Take `⟨v, hv0, hv⟩` from `step_tensorVec k G.s G.d Y (G.twD τ) G.μ (fun a => P_spPiEta.twD_hasDetVec G τ a (hdet a))`. Establish `hsm' : IsSmooth (piTensor (G.twD τ))` using `isSmooth_piTensor fun a => P_spPiEta.twD_isSmooth G τ a (hsm a)`. Take `⟨f, hf1, -⟩` from `GlobalTheory.SmGL.ProdIrr.exists_indSp_apply_one G.e (piTensor (G.twD τ)) hsm' v`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Set `φ` to `Model.evalOne G.e (Representation.IntertwiningMap.id (multiProd G.e (G.twD τ)))`. Establish `hφ : φ (Submodule.Quotient.mk f) = v` using `hf1`. Set `T : Subrepresentation (piTensor (G.twD τ))` to `φ.range`. Establish `hmem : ∀ x, φ x ∈ T.toSubmodule` using `fun x => (Representation.IntertwiningMap.mem_range _ _ _ _).2 ⟨x, rfl⟩`. Set `ψ : (jac G.e (multiProd G.e (G.twD τ))).IntertwiningMap T.toRepresentation` to `⟨LinearMap.codRestrict T.toSubmodule φ.toLinearMap hmem, fun g => LinearMap.ext fun x => Subtype.ext (φ.isIntertwining _ _ g x)⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hψ : Function.Surjective ψ`. Introduce and unpack `⟨w, hw⟩`. Take `⟨x, rfl⟩` from `(Representation.IntertwiningMap.mem_range _ _ _ _).1 hw`. Conclude with `⟨x, rfl⟩`. Establish `hsub : IsSubquotient T.toRepresentation (jac G.e (multiProd G.e (G.twD τ)))` using `IsSubquotient.of_surjective ψ hψ`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `hη : G.HasEtaVec T.toRepresentation`. Use `⟨⟨v, hφ ▸ hmem _⟩, fun h => hv0 (congrArg Subtype.val h), fun m hm => ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Conclude with `hv m fun a => hm a (Set.mem_univ a)`. Take `⟨y, hy0, hy⟩` from `hLift _ _ _ T.toRepresentation (isSmooth_jac G.e (isSmooth_parInd _ _)) hsub hη`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨y, hy0, fun m hm => ?_⟩` and prove the remaining obligations. Conclude with `(P_spPiEta.jacU_eq_jac G _ m hm y).trans (hy m hm)`.
+A detailed English derivation is pending.
 -/
 theorem step_spPiEta {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     {n : ℕ} (G : Grp k n) : G.SpecialRepresentationEtaProp := by

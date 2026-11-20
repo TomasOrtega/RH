@@ -91,7 +91,7 @@ def TrivialFlagRoots.exampleZMod4 : TrivialFlagRoots (ZMod 4) 2 where
       simp
 
 /- English proof (translation)
-Introduce `h`. Use `congrFun h 0` as an intermediate fact. Use `revert this`. Evaluate the decidable proposition.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Evaluate the decidable proposition. A detailed English derivation is pending.
 -/
 theorem TrivialFlagRoots.exampleZMod4_x_ne_zero : TrivialFlagRoots.exampleZMod4.x ≠ 0 := by
   intro h
@@ -114,7 +114,7 @@ def CyclicRecursionData.exampleZMod2 : CyclicRecursionData (ZMod 2) where
     · simp [show (1 : ZMod 2) ≠ 0 by decide, show (1 : ZMod 2) + 1 = 0 by decide]
 
 /- English proof (translation)
-Simplify using `[CyclicRecursionData.exampleZMod2, show (1 : ZMod 2) ≠ 0 by decide]`.
+Simplify using the standard rewrite rules.
 -/
 theorem CyclicRecursionData.exampleZMod2_lam_nonconstant :
     CyclicRecursionData.exampleZMod2.lam 0 ≠ CyclicRecursionData.exampleZMod2.lam 1 := by
@@ -143,7 +143,7 @@ def FrobeniusRecursionData.exampleConstant : FrobeniusRecursionData (ZMod 3) whe
   q_eq := by norm_num
 
 /- English proof (translation)
-Introduce `_` and use `rfl`.
+Fix the arbitrary inputs and assume any hypotheses. Both sides reduce to the same expression.
 -/
 theorem FrobeniusRecursionData.exampleConstant_hyp :
     ∀ σ, FrobeniusRecursionData.exampleConstant.lam σ = 2 := fun _ => rfl

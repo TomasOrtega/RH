@@ -7,25 +7,23 @@ open TensorProduct
 namespace GlobalTheory.CompanionTheory.Ar.Crv
 
 /- English proof (translation)
-Unfold `IsSplit at h`. Use `set F := Algebra.TensorProduct.lift (Algebra.ofId k (S → k)) (Pi.algHom ℤ (fun _ : S => k) fun s => (χ s).toIntAlgHom) (fun _ _ => Commute.all _ _) with hF`. Establish `hv : ∀ (a : k) (x : O) (s : S), F (a ⊗ₜ[ℤ] x) s = a * χ s x`. Introduce `a x s`. Simplify using `[hF, Algebra.ofId_apply]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce `s t hst`. Assume the negation of the conclusion as `hne`. Take `⟨y, hy⟩` from `h.2 (Pi.single s 1)`. Establish `key : ∀ y : TensorProduct ℤ k O, F y s = F y t`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `y`. Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a x => rw [hv, hv, hst]`. Consider the case `add u v hu hv' => simp [map_add, hu, hv']`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Establish `h1` using `key y`. Rewrite `h1` using `[hy]`. Simplify using `[Pi.single_apply, Ne.symm hne] at h1`. Introduce `ψ`. Set `Ψ : TensorProduct ℤ k O →ₐ[k] k` to `Algebra.TensorProduct.lift (AlgHom.id k k) ψ.toIntAlgHom (fun _ _ => Commute.all _ _)`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `choose y hy using fun s => h.2 (Pi.single s (1 : k))`. Establish `hsum : ∑ s, y s = 1`. Apply `h.1` to reduce the goal to its premises. Rewrite using `[map_sum, map_one]`. Simplify using `only [hy]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use extensionality with `t`. Simplify using `[Finset.sum_apply, Pi.single_apply]`. Establish `hne : ∑ s, Ψ (y s) ≠ 0`. Rewrite using `[← map_sum, hsum, map_one]`. Conclude with `one_ne_zero`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take `⟨s, -, hs⟩` from `Finset.exists_ne_zero_of_sum_ne_zero hne`. Use `⟨s, ?_⟩` and prove the remaining obligations. Establish `hmul : ∀ z, z * y s = (F z s) • y s`. Introduce `z`. Apply `h.1` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[map_mul, map_smul, hy]`. Use extensionality with `t`. Distinguish the cases in `hts : t = s`. Substitute `hts` using the available equality. Simplify using the standard rewrite rules.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Simplify using `[Pi.single_apply, hts]`. Use extensionality with `o`. Establish `h1` using `congrArg Ψ (hmul ((1 : k) ⊗ₜ[ℤ] o))`. Establish `h2 : Ψ ((1 : k) ⊗ₜ[ℤ] o) = ψ o`. Simplify using `[Ψ]`.
-
-Rewrite `h1` using `[map_mul, map_smul, hv, h2, smul_eq_mul, one_mul]`. Conclude with `(mul_right_cancel₀ hs h1).symm`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isSplit_injective_and_exists (O k S : Type) [CommRing O] [Field k] [Fintype S]
     (χ : S → (O →+* k)) (h : IsSplit χ) :

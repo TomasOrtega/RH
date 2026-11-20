@@ -8,9 +8,9 @@ open GlobalTheory.Count Formalism.MainNotions.S Formalism.HN Formalism.REAL Matr
 namespace GlobalTheory.Count.FrameMajorant
 
 /- English proof (translation)
-Unfold `Formalism.HermitianLatticesTheory.cnorm`. Establish `h1 : ‖star a ⬝ᵥ (Jm ε *ᵥ b)‖ ≤ ∑ i, ‖a i‖ * ‖b i‖`. Unfold `dotProduct`. Use `(norm_sum_le _ _).trans (Finset.sum_le_sum fun i _ => le_of_eq ?_)` and prove the remaining obligations. Simplify using `only [Jm, Matrix.mulVec_diagonal, norm_mul, Pi.star_apply, norm_star]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `split_ifs <;> simp`. Conclude with `h1.trans (Real.sum_mul_le_sqrt_mul_sqrt _ _ _)`.
+Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem signed_cs {n : ℕ} (ε : Fin n → Bool) (a b : Fin n → ℂ) :
     ‖star a ⬝ᵥ (Jm ε *ᵥ b)‖ ≤ Formalism.HermitianLatticesTheory.cnorm a * Formalism.HermitianLatticesTheory.cnorm b := by
@@ -23,11 +23,11 @@ theorem signed_cs {n : ℕ} (ε : Fin n → Bool) (a b : Fin n → ℂ) :
   exact h1.trans (Real.sum_mul_le_sqrt_mul_sqrt _ _ _)
 
 /- English proof (translation)
-Establish `key : ∀ c : Fin n → ℂ, ((∑ i, ‖c i‖ ^ 2 : ℝ) : ℂ) = star c ⬝ᵥ c`. Introduce `c`. Unfold `dotProduct`. Use `push_cast`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Move the embeddings inside the algebraic operations. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Pi.star_apply, Complex.star_def, Complex.conj_mul']`. Unfold `Formalism.HermitianLatticesTheory.cnorm`. Use `congr 1`. Establish `: star (u *ᵥ a) ⬝ᵥ (u *ᵥ a) = star a ⬝ᵥ a`. Rewrite using `[Matrix.star_mulVec, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, hu, Matrix.one_mulVec]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(key _).trans (this.trans (key _).symm)` after adjusting the coercions.
+A detailed English derivation is pending.
 -/
 theorem cnorm_unitary {n : ℕ} (u : Matrix (Fin n) (Fin n) ℂ) (hu : uᴴ * u = 1) (a : Fin n → ℂ) :
     Formalism.HermitianLatticesTheory.cnorm (u *ᵥ a) = Formalism.HermitianLatticesTheory.cnorm a := by
@@ -44,7 +44,7 @@ theorem cnorm_unitary {n : ℕ} (u : Matrix (Fin n) (Fin n) ℂ) (hu : uᴴ * u 
   exact_mod_cast (key _).trans (this.trans (key _).symm)
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_inv_rev, Matrix.inv_eq_left_inv hu, ← Matrix.mulVec_mulVec]`. Apply `cnorm_unitary` to reduce the goal to its premises. Rewrite using `[Matrix.conjTranspose_conjTranspose]`. Conclude with `mul_eq_one_comm.1 hu`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cnorm_inv_mul_unitary {n : ℕ} (X u : Matrix (Fin n) (Fin n) ℂ) (hu : uᴴ * u = 1) (a : Fin n → ℂ) :
     Formalism.HermitianLatticesTheory.cnorm ((X * u)⁻¹ *ᵥ a) = Formalism.HermitianLatticesTheory.cnorm (X⁻¹ *ᵥ a) := by
@@ -56,11 +56,11 @@ theorem cnorm_inv_mul_unitary {n : ℕ} (X u : Matrix (Fin n) (Fin n) ℂ) (hu :
 variable (I : AutInst)
 
 /- English proof (translation)
-Use `⟨fun w w' h => ?_, ?_⟩` and prove the remaining obligations. Establish `hw : ∀ w : InfinitePlace I.E, w = InfinitePlace.mk (I.φ (w.comap (algebraMap I.F I.E)))`. Introduce `w`. Break down `Test.embedding_cases I w with h | h` into its components or cases. Rewrite using `[← h, InfinitePlace.mk_embedding]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← InfinitePlace.mk_conjugate_eq, ← h, InfinitePlace.mk_embedding]`. Establish `h' : w.comap (algebraMap I.F I.E) = w'.comap (algebraMap I.F I.E)` using `h`. Rewrite using `[hw w, hw w', h']`. Introduce `v`. Use `⟨InfinitePlace.mk (I.φ v), ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h2 : (I.φ v).comp (algebraMap I.F I.E) = v.embedding` using `RingHom.ext (I.φ_over v)`. Use `show (InfinitePlace.mk (I.φ v)).comap _ = v`. Rewrite using `[InfinitePlace.comap_mk, h2, InfinitePlace.mk_embedding]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem comap_bijective :
     Function.Bijective (fun w : InfinitePlace I.E => w.comap (algebraMap I.F I.E)) := by
@@ -79,7 +79,7 @@ theorem comap_bijective :
     rw [InfinitePlace.comap_mk, h2, InfinitePlace.mk_embedding]
 
 /- English proof (translation)
-Establish `hR` using `I.cm.totReal`. Rewrite using `[AutInst.f, IsTotallyReal.finrank, InfinitePlace.card_eq_nrRealPlaces_add_nrComplexPlaces, IsTotallyReal.nrComplexPlaces_eq_zero, add_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem card_places : Fintype.card (InfinitePlace I.F) = I.f := by
   have hR := I.cm.totReal
@@ -87,7 +87,7 @@ theorem card_places : Fintype.card (InfinitePlace I.F) = I.f := by
     IsTotallyReal.nrComplexPlaces_eq_zero, add_zero]
 
 /- English proof (translation)
-Establish `h` using `congrArg (fun M => (Jm (I.ε (w.comap (algebraMap I.F I.E))) * M).det) (Test.frm_frame I x w)`. Simplify using `only [Jm_mul_self, Matrix.det_mul, Matrix.det_one] at h`. Use `isUnit_iff_ne_zero.2 fun h0 => ?_` and prove the remaining obligations. Simplify using `[h0] at h`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem frm_unit (x : I.GA) (w : InfinitePlace I.E) : IsUnit (frm I x w).det := by
   have h := congrArg (fun M => (Jm (I.ε (w.comap (algebraMap I.F I.E))) * M).det) (Test.frm_frame I x w)
@@ -96,11 +96,11 @@ theorem frm_unit (x : I.GA) (w : InfinitePlace I.E) : IsUnit (frm I x w).det := 
   simp [h0] at h
 
 /- English proof (translation)
-Establish `hc` using `I.cm.cmUnram.2.1`. Establish `hX` using `frm_unit I x w`. Establish `hback : ∀ y, frm I x w *ᵥ Formalism.HermitianLatticesTheory.fcoord (bas I) (frm I x) w y = fun i => w.embedding (y i)`. Introduce `y`. Unfold `Formalism.HermitianLatticesTheory.fcoord`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Rewrite using `[Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv _ hX, Matrix.one_mulVec]`. Use function extensionality and compare the values at `i`. Simplify using `[Formalism.HermitianLatticesTheory.vecAt]`. Establish `h1 : w.embedding (Formalism.UG.hform (starRingEnd I.E) I.J y z) = star (fun i => w.embedding (y i)) ⬝ᵥ (I.J.map w.embedding *ᵥ fun i => w.embedding (z i))`. Simplify using `only [Formalism.UG.hform, map_sum, map_mul, dotProduct, Matrix.mulVec, Matrix.map_apply, Pi.star_apply, Finset.mul_sum, starRingEnd_apply, hc, mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[h1, ← hback y, ← hback z, Matrix.star_mulVec, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, Test.frm_frame I x w]`. Conclude with `signed_cs _ _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hform_le (x : I.GA) (w : InfinitePlace I.E) (y z : Fin I.n → I.E) :
     ‖w.embedding (Formalism.UG.hform (starRingEnd I.E) I.J y z)‖ ≤
@@ -122,13 +122,11 @@ theorem hform_le (x : I.GA) (w : InfinitePlace I.E) (y z : Fin I.n → I.E) :
   exact signed_cs _ _ _
 
 /- English proof (translation)
-Use `set v := w.comap (algebraMap I.F I.E) with hv`. Establish `hu : (uMat (k.1 v))ᴴ * uMat (k.1 v) = 1` using `(hk v).1.1`. Establish `hm : uMat ((x * k).1 v) = uMat (x.1 v) * uMat (k.1 v)` using `rfl`. Unfold `Formalism.HermitianLatticesTheory.normAt Formalism.HermitianLatticesTheory.fcoord frm`. Simplify using `only [← hv]`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `split_ifs with h`. Rewrite using `[hm, ← Matrix.mul_assoc]`. Conclude with `cnorm_inv_mul_unitary _ _ hu _`. Rewrite using `[hm, ← Matrix.mul_assoc, Matrix.map_mul]`. Apply `cnorm_inv_mul_unitary` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Establish `hT : ∀ M : Matrix (Fin I.n) (Fin I.n) ℂ, (M.map (starRingEnd ℂ))ᴴ = Mᴴ.map (starRingEnd ℂ)`. Introduce `M`. Use extensionality with `i j`. Simplify using the standard rewrite rules. Rewrite using `[hT, ← Matrix.map_mul, hu]`.
-
-Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem normAt_mul (x : I.GA) (w : InfinitePlace I.E) (k : I.GA) (hk : ∀ v, uMat (k.1 v) ∈ Kset (I.ε v))
     (y : Fin I.n → I.E) :
@@ -149,7 +147,7 @@ theorem normAt_mul (x : I.GA) (w : InfinitePlace I.E) (k : I.GA) (hk : ∀ v, uM
     simp
 
 /- English proof (translation)
-Introduce `I x`. Use `⟨I.cm.cmUnram.1, ?_, card_places I, comap_bijective I, fun w => ⟨frm_unit I x w, Test.frm_frame I x w, hform_le I x w, normAt_mul I x w⟩⟩` and prove the remaining obligations. Rewrite using `[nPl, Fintype.card_of_bijective (comap_bijective I), card_places]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem frames_give_majorants : ∀ (I : AutInst) (x : I.GA), IsTotallyComplex I.E ∧ nPl I.E = I.f ∧ Fintype.card (InfinitePlace I.F) = I.f ∧ Function.Bijective (fun w : InfinitePlace I.E => w.comap (algebraMap I.F I.E)) ∧ ∀ w : InfinitePlace I.E, IsUnit (frm I x w).det ∧ (frm I x w)ᴴ * I.J.map w.embedding * frm I x w = Jm (I.ε (w.comap (algebraMap I.F I.E))) ∧ (∀ y z : (Fin I.n → I.E), ‖w.embedding (Formalism.UG.hform (starRingEnd I.E) I.J y z)‖ ≤ Formalism.HermitianLatticesTheory.normAt (bas I) (frm I x) w y * Formalism.HermitianLatticesTheory.normAt (bas I) (frm I x) w z) ∧ ∀ k : I.GA, (∀ v, uMat (k.1 v) ∈ Kset (I.ε v)) → ∀ y, Formalism.HermitianLatticesTheory.normAt (bas I) (frm I (x * k)) w y = Formalism.HermitianLatticesTheory.normAt (bas I) (frm I x) w y := by
   intro I x

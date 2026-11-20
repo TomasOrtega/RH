@@ -15,7 +15,7 @@ open NumberField Formalism.FourierDecayAlt.P.CutMP Formalism.FourierDecayAlt.P.C
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
 /- English proof (translation)
-Establish `hr : (0 : ℝ) ≤ r` using `Nat.cast_nonneg _`. Establish `hk : (0 : ℝ) ≤ k` using `Nat.cast_nonneg _`. Establish `h1 : 0 ≤ (r : ℝ) * (4 * (r : ℝ) + 2 * (k : ℝ)) * (6 * (r : ℝ) + 1)` using `by positivity`. Establish `h2 : 0 ≤ (r : ℝ) * (6 * (r : ℝ) + 1)` using `by positivity`. Use `⟨by linarith, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
 Use the polynomial consequences of the given equalities and inequalities.
 -/
@@ -29,23 +29,21 @@ theorem thrW_sa (k r o : ℕ) :
   nlinarith
 
 /- English proof (translation)
-Use `⟨0, ?_⟩` and prove the remaining obligations. Introduce `E _ _ _ Wp Wq _ _ _ _ _ _ S T f χ ν' m₀ top A₀ hB v Θ hΘ F hFs hFc _hFO U X hU hX hagree y hy hyU`. Establish `hPl : Q.IsPlace (D.parOf S v) (T v).base.z (T v).base.z' (T v).base.π (T v).base.π'` using `(hB.1.2.2.2.1.2 v).2.2.2.1`. Establish `hTT : (D.parOf S v).TT = Tz S.G.k S.G.r (T v).base.z * Tz S.G.k S.G.r (T v).base.z'`. Rewrite using `[hPl.2.2.2.1, hPl.2.2.2.2.1]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `hAg` using `QO.agree_qOf (T v).base X F U hX (fun q hq hqU => hagree q ⟨hq.1, by rw [hTT]; exact hq.2⟩ hqU)`. Use `set V : Set (B.Mat S.G.k S.G.r) := Q.OmPlus S.G.k S.G.r (T v).base.z (T v).base.z' ∩ QO.qOf (T v).base.z (T v).base.z' ⁻¹' U with hVdef`. Establish `hVo : IsOpen V` using `QO.isOpen_qOf _ _ hU`. Establish `hJV : ∀ g ∈ V, g ∈ B.GV S.G.k S.G.r → X g = B.JF (T v).base F g` using `fun g hg hgG => hAg g ⟨hgG, hg.1⟩ hg.2`.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hq : y ∈ JF.QDom S.G.k S.G.r (T v).base.z (T v).base.z'` using `⟨hy.1, by rw [← hTT]; exact hy.2⟩`. Establish `hg0` using `Formalism.FourierDecayAlt.P.BigCellHermitian.gqDom (T v).base hq`. Establish `hg0V : B.gq (T v).base y ∈ V` using `⟨hg0.2, by show QO.qOf (T v).base.z (T v).base.z' (B.gq (T v).base y) ∈ U`. Rewrite using `[QO.qOf_gq (T v).base hq]`. Conclude with `hyU⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hJck : B.CkOn ⊤ (JF.Om S.G.k S.G.r (T v).base.z (T v).base.z') X` using `Formalism.FourierDecayAlt.P.CutMP.jdc_ckOn_om _ _ hX.1`. Use `set UU : Set (B.Mat S.G.k S.G.r) := JF.Om S.G.k S.G.r (T v).base.z (T v).base.z' ∩ V with hUUdef`. Establish `hUU : UU ⊆ JF.Om S.G.k S.G.r (T v).base.z (T v).base.z'` using `Set.inter_subset_left`. Establish `hCkF : B.CkOn (B.opOrder Θ : ℕ∞) UU (B.JF (T v).base F)`. Introduce `g₀ hg₀`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨U₁, f', hU₁, hgU₁, hc, he⟩` from `hJck g₀ hg₀.1`. Use `⟨U₁ ∩ V, f', hU₁.inter hVo, ⟨hgU₁, hg₀.2⟩, (hc.mono Set.inter_subset_left).of_le ?_, ?_⟩` and prove the remaining obligations. Conclude with `le_top` after adjusting the coercions. Introduce `g hg hgG`. Rewrite using `[← hJV g hg.2 hgG]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `he g hg.1 hgG`. Establish `hg0UU : B.gq (T v).base y ∈ UU` using `⟨hg0, hg0V⟩`. Establish `hIn` using `Formalism.FourierDecayAlt.P.JFxG.cptInCC_G hFs hFc (fun g _ hg => image_eq_zero_of_notMem_tsupport hg) (6 * (S.G.r : ℝ) * (B.opOrder Θ : ℝ) + (S.G.r : ℝ) * (4 * (S.G.r : ℝ) + 2 * (S.G.k : ℝ)) * (6 * (S.G.r : ℝ) + 1) + 1) (B.opOrder Θ)`. Take `⟨hT1, hT2⟩` from `hT S.G.k S.G.r (Wp (S.pl v)) (Wq (S.pl v)) (T v).base Θ _ F UU (thrW_sa S.G.k S.G.r (B.opOrder Θ)) hΘ.1 hΘ.2 hFs hIn hUU hCkF`. Establish `hg0G : B.gq (T v).base y ∈ B.GV S.G.k S.G.r` using `hg0.1`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result.
 
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← hT1 _ hg0]`. Unfold `B.opApply`. Use `congr 1`. Apply `List.map_congr_left` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments.
 
-Introduce `Tm _`. Rewrite using `[Formalism.FourierDecayAlt.P.CutMP.JA.FFS.rw_local Tm.word Tm.word_lie hVo hJV _ hg0V hg0G]`. Rewrite using `[← hT2 _ hg0UU]`. Unfold `B.opAdj`. Use `congr 1`.
-
-Apply `List.map_congr_left` to reduce the goal to its premises. Introduce `Tm _`. Rewrite using `[Formalism.FourierDecayAlt.P.CutMP.JA.FFS.rw_local Tm.word.reverse (fun X hX => Tm.word_lie X (List.mem_reverse.1 hX)) hVo (f := fun g => Tm.coefAdj g (X g)) (f' := fun g => Tm.coefAdj g (B.JF (T v).base F g)) (fun g hg hgG => by simp only [hJV g hg hgG]) _ hg0V hg0G]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sAJCommC_of_thetaJ (hT : LT.ThetaJ) : SAJCommC := by
   refine ⟨0, ?_⟩
@@ -107,13 +105,13 @@ theorem sAJCommC_of_thetaJ (hT : LT.ThetaJ) : SAJCommC := by
       (fun g hg hgG => by simp only [hJV g hg hgG]) _ hg0V hg0G]
 
 /- English proof (translation)
-The claim follows from `sAJCommC_of_thetaJ (LT.thetaJ_of_adjComm hAC)`.
+A detailed English derivation is pending.
 -/
 theorem sAJCommC_of_adjComm (hAC : Formalism.FourierDecayAlt.P.CutMP.JA.FFS.AdjComm) : SAJCommC :=
   sAJCommC_of_thetaJ (LT.thetaJ_of_adjComm hAC)
 
 /- English proof (translation)
-The claim follows from `sAJCommC_of_adjComm Formalism.FourierDecayAlt.P.CutMP.JA.FFS.adjoint_commutation_holds`.
+A detailed English derivation is pending.
 -/
 theorem self_adjoint_commutation_compact : SAJCommC :=
   sAJCommC_of_adjComm Formalism.FourierDecayAlt.P.CutMP.JA.FFS.adjoint_commutation_holds

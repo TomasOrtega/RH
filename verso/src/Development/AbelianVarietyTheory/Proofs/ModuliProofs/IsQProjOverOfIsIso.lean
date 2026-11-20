@@ -27,9 +27,9 @@ section Bundles
 variable {X Y : Scheme.{0}}
 
 /- English proof (translation)
-Take `⟨t, ht⟩` from `h`. Use `⟨⟨fun j => ∏ k, res (LB.wchart_le L φ j k) (pullU (φ k) _ (t.s (j k))) ^ ε k⟩, fun i j => ?_⟩` and prove the remaining obligations. Use `unit_ext fun y hy => ?_` and prove the remaining obligations. Establish `v : ∀ j : K → L.ι, y ∈ LB.wchart L φ j → gm (𝟙 Y) y (LB.wchart L φ j) (∏ k, res (LB.wchart_le L φ j k) (pullU (φ k) _ (t.s (j k))) ^ ε k) = ∏ k, gm (φ k) y (L.U (j k)) (t.s (j k)) ^ ε k` using `fun j hj => (map_prod _ _ _).trans (Finset.prod_congr rfl fun k _ => (map_zpow _ _ _).trans (congrArg (· ^ ε k) (gm_rp₁ (φ k) y _ _ (LB.wchart_le L φ j k) hj _)))`. Use `((gm_res _ y _ hy _).trans (v i hy.1)).trans (Eq.symm ((map_mul _ _ _).trans ((congrArg₂ (· * ·) (gm_linComb L φ ε (𝟙 Y) y i j hy.1 hy.2) ((gm_res _ y _ hy _).trans (v j hy.2))).trans ?_)))` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Establish `hm : φ k y ∈ L.U (i k) ⊓ L.U (j k)` using `⟨LB.wchart_le L φ i k hy.1, LB.wchart_le L φ j k hy.2⟩`. Rewrite using `[← mul_zpow, Category.id_comp]`. Conclude with `congrArg (· ^ ε k) (((gm_res (φ k) y _ hm _).symm.trans ((congrArg (gm (φ k) y _) (ht (i k) (j k))).trans ((map_mul _ _ _).trans (congrArg₂ (· * ·) rfl (gm_res (φ k) y _ hm _))))).symm)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Triv.linComb {L : LB X} (h : Triv L) {K : Type} [Fintype K] (φ : K → (Y ⟶ X)) (ε : K → ℤ) :
     Triv (LB.LinComb L φ ε) := by
@@ -51,16 +51,16 @@ theorem Triv.linComb {L : LB X} (h : Triv L) {K : Type} [Fintype K] (φ : K → 
     ((map_mul _ _ _).trans (congrArg₂ (· * ·) rfl (gm_res (φ k) y _ hm _))))).symm)
 
 /- English proof (translation)
-Take `⟨t, ht⟩` from `h`. Conclude with `gen_chartPull (chartPullSec L F ρ e) t ht`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem Triv.of_pull {L : LB X} {F : Y ⟶ X} (h : Triv (L.pull F)) (ρ : X ⟶ Y) (e : ρ ≫ F = 𝟙 X) : Triv L := by
   obtain ⟨t, ht⟩ := h
   exact gen_chartPull (chartPullSec L F ρ e) t ht
 
 /- English proof (translation)
-Take `⟨t, ht⟩` from `h`. Take `⟨u, hu⟩` from `h'`. Use `⟨⟨fun p => res inf_le_left (u.s p.1) * (res inf_le_right (t.s p.2))⁻¹⟩, fun p q => unit_ext fun y hy => ?_⟩` and prove the remaining obligations. Establish `v : ∀ p : M.ι × L.ι, y ∈ M.U p.1 ⊓ L.U p.2 → gm (𝟙 X) y (M.U p.1 ⊓ L.U p.2) (res inf_le_left (u.s p.1) * (res inf_le_right (t.s p.2))⁻¹) = gm (𝟙 X) y _ (u.s p.1) * (gm (𝟙 X) y _ (t.s p.2))⁻¹` using `fun p hp => (map_mul _ _ _).trans (congrArg₂ (· * ·) (gm_res _ y _ hp _) ((map_inv _ _).trans (congrArg (·⁻¹) (gm_res _ y _ hp _))))`. Establish `w : ∀ {N : LB X} (s : LB.Gen N), s.IsGen → ∀ i j, y ∈ N.U i ⊓ N.U j → gm (𝟙 X) y _ (s.s i) = gm (𝟙 X) y _ (N.g i j) * gm (𝟙 X) y _ (s.s j)` using `fun s hs i j hm => (gm_res _ y _ hm _).symm.trans ((congrArg (gm (𝟙 X) y _) (hs i j)).trans ((map_mul _ _ _).trans (congrArg₂ (· * ·) rfl (gm_res _ y _ hm _))))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `((gm_res _ y _ hy _).trans (v p hy.1)).trans (Eq.symm ((map_mul _ _ _).trans ((congrArg₂ (· * ·) (gm_div L M (𝟙 X) y p q hy) ((gm_res _ y _ hy _).trans (v q hy.2))).trans ?_)))` and prove the remaining obligations. Rewrite using `[w u hu p.1 q.1 ⟨hy.1.1, hy.2.1⟩, w t ht p.2 q.2 ⟨hy.1.2, hy.2.2⟩, mul_inv, _root_.mul_mul_mul_comm]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem Triv.lbIso {L M : LB X} (h : Triv L) (h' : Triv M) : LBIso L M := by
   obtain ⟨t, ht⟩ := h
@@ -80,7 +80,7 @@ theorem Triv.lbIso {L M : LB X} (h : Triv L) (h' : Triv M) : LBIso L M := by
   rw [w u hu p.1 q.1 ⟨hy.1.1, hy.2.1⟩, w t ht p.2 q.2 ⟨hy.1.2, hy.2.2⟩, mul_inv, _root_.mul_mul_mul_comm]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨⟨fun _ => 1⟩, ZJ.isGen_one_of_g_eq_one _ fun _ _ => rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem triv_trivLB (X : Scheme.{0}) : Triv (Out.Inh.trivLB X) :=
   ⟨⟨fun _ => 1⟩, ZJ.isGen_one_of_g_eq_one _ fun _ _ => rfl⟩
@@ -92,24 +92,24 @@ section Groups
 variable {S S' : Scheme.{0}}
 
 /- English proof (translation)
-The claim follows from `Over.OverMorphism.ext (by rw [← cancel_mono G.hom, Over.w, Over.w])`.
+A detailed English derivation is pending.
 -/
 theorem hom_unique {G : Over S} (hG : IsIso G.hom) {T : Over S} (x y : T ⟶ G) : x = y :=
   Over.OverMorphism.ext (by rw [← cancel_mono G.hom, Over.w, Over.w])
 
 /- English proof (translation)
-The claim follows from `(cancel_mono G.hom).1 h`.
+A detailed English derivation is pending.
 -/
 theorem left_unique {G : Over S} (hG : IsIso G.hom) {T : Scheme.{0}} {x y : T ⟶ G.left} (h : x ≫ G.hom = y ≫ G.hom) :
     x = y := (cancel_mono G.hom).1 h
 
 /- English proof (translation)
-The claim follows from `inferInstanceAs (IsIso (𝟙 S))`.
+A detailed English derivation is pending.
 -/
 theorem isIso_unit (S : Scheme.{0}) : IsIso (𝟙_ (Over S)).hom := inferInstanceAs (IsIso (𝟙 S))
 
 /- English proof (translation)
-Establish `: IsIso (fst G G').left` using `inferInstanceAs (IsIso (pullback.fst G.hom G'.hom))`. Rewrite using `[← Over.w (fst G G')]`. Use `infer_instance`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isIso_tensor {G G' : Over S} (hG : IsIso G.hom) (hG' : IsIso G'.hom) : IsIso (G ⊗ G').hom := by
   have : IsIso (fst G G').left := inferInstanceAs (IsIso (pullback.fst G.hom G'.hom))
@@ -117,18 +117,18 @@ theorem isIso_tensor {G G' : Over S} (hG : IsIso G.hom) (hG' : IsIso G'.hom) : I
   infer_instance
 
 /- English proof (translation)
-The claim follows from `IsIso.of_isIso_fac_right (Over.w x)`.
+A detailed English derivation is pending.
 -/
 theorem isIso_left {G G' : Over S} (hG : IsIso G.hom) (hG' : IsIso G'.hom) (x : G ⟶ G') : IsIso x.left :=
   IsIso.of_isIso_fac_right (Over.w x)
 
 /- English proof (translation)
-The claim follows from `Over.w x`.
+A detailed English derivation is pending.
 -/
 theorem section_w {G : Over S} (x : 𝟙_ (Over S) ⟶ G) : x.left ≫ G.hom = 𝟙 S := Over.w x
 
 /- English proof (translation)
-The claim follows from `have := isIso_left hG hG' x h.of_pull (inv x.left) (IsIso.inv_hom_id _)`.
+A detailed English derivation is pending.
 -/
 theorem triv_of_pull {G G' : Over S} (hG : IsIso G.hom) (hG' : IsIso G'.hom) (x : G ⟶ G') {L : LB G'.left}
     (h : Triv (L.pull x.left)) : Triv L :=
@@ -136,7 +136,7 @@ theorem triv_of_pull {G G' : Over S} (hG : IsIso G.hom) (hG' : IsIso G'.hom) (x 
   h.of_pull (inv x.left) (IsIso.inv_hom_id _)
 
 /- English proof (translation)
-The claim follows from `triv_of_pull (isIso_unit S) hG η[G] ⟨L.rig, L.rigGen⟩`.
+A detailed English derivation is pending.
 -/
 theorem triv_rig {G : Over S} [GrpObj G] (hG : IsIso G.hom) (L : RigLB G) : Triv L.L :=
   triv_of_pull (isIso_unit S) hG η[G] ⟨L.rig, L.rigGen⟩
@@ -144,13 +144,13 @@ theorem triv_rig {G : Over S} [GrpObj G] (hG : IsIso G.hom) (L : RigLB G) : Triv
 def zmap {G' : Over S'} {G : Over S} (hG : IsIso G.hom) (f : S' ⟶ S) : G'.left ⟶ G.left := G'.hom ≫ f ≫ inv G.hom
 
 /- English proof (translation)
-Simplify using `[zmap]`.
+Simplify using the standard rewrite rules.
 -/
 theorem zmap_w {G' : Over S'} {G : Over S} (hG : IsIso G.hom) (f : S' ⟶ S) :
     zmap (G' := G') hG f ≫ G.hom = G'.hom ≫ f := by simp [zmap]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨IsPullback.of_vert_isIso ⟨zmap_w hG f⟩, fun T x y x₀ y₀ _ _ => left_unique hG (by rw [Over.w, Category.assoc, zmap_w, ← Category.assoc, Over.w]; rfl)⟩`.
+Supply the required witnesses or components.
 -/
 theorem isGrpPullback_zero {G' : Over S'} {G : Over S} [GrpObj G'] [GrpObj G] (hG' : IsIso G'.hom) (hG : IsIso G.hom)
     (f : S' ⟶ S) : IsGrpPullback G' G f (zmap hG f) :=
@@ -158,7 +158,7 @@ theorem isGrpPullback_zero {G' : Over S'} {G : Over S} [GrpObj G'] [GrpObj G] (h
     rw [Over.w, Category.assoc, zmap_w, ← Category.assoc, Over.w]; rfl)⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨left_unique hG (by rw [Category.assoc, Over.w, Category.assoc, zmap_w, zmap_w, ← Category.assoc, Over.w]), left_unique hG (by rw [Category.assoc, Over.w, Category.assoc, zmap_w, zmap_w, ← Category.assoc, Over.w])⟩`.
+Supply the required witnesses or components.
 -/
 theorem isSquare_zero {G' : Over S'} {G : Over S} (hG : IsIso G.hom) (f : S' ⟶ S) :
     IsSquare (zmap (G' := G') hG f) (zmap (isIso_tensor hG hG) f) :=
@@ -166,14 +166,14 @@ theorem isSquare_zero {G' : Over S'} {G : Over S} (hG : IsIso G.hom) (f : S' ⟶
     left_unique hG (by rw [Category.assoc, Over.w, Category.assoc, zmap_w, zmap_w, ← Category.assoc, Over.w])⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨inferInstance, inferInstance, inferInstance, MorphismProperty.of_isPullback (P := @GeometricallyConnected) (isGrpPullback_zero hG (isIso_unit S) (𝟙 S)).1 (UU.isAbelianScheme_unit S).geomConnected⟩`.
+Supply the required witnesses or components.
 -/
 theorem isAbelianScheme_zero {G : Over S} [GrpObj G] [IsCommMonObj G] (hG : IsIso G.hom) : IsAbelianScheme G :=
   ⟨inferInstance, inferInstance, inferInstance, MorphismProperty.of_isPullback (P := @GeometricallyConnected)
     (isGrpPullback_zero hG (isIso_unit S) (𝟙 S)).1 (UU.isAbelianScheme_unit S).geomConnected⟩
 
 /- English proof (translation)
-The claim follows from `left_unique hG ((Category.assoc _ _ _).trans ((congrArg (x'.left ≫ ·) w).trans ((Category.assoc _ _ _).symm.trans ((congrArg (· ≫ f) (section_w x')).trans ((Category.id_comp f).trans ((Category.comp_id f).symm.trans ((congrArg (f ≫ ·) (section_w x).symm).trans (Category.assoc _ _ …`.
+A detailed English derivation is pending.
 -/
 theorem sec_comm {G' : Over S'} {G : Over S} (hG : IsIso G.hom) {f : S' ⟶ S} {φ : G'.left ⟶ G.left}
     (w : φ ≫ G.hom = G'.hom ≫ f) (x' : 𝟙_ (Over S') ⟶ G') (x : 𝟙_ (Over S) ⟶ G) : x'.left ≫ φ = f ≫ x.left :=
@@ -182,9 +182,9 @@ theorem sec_comm {G' : Over S'} {G : Over S} (hG : IsIso G.hom) {f : S' ⟶ S} {
       ((congrArg (f ≫ ·) (section_w x).symm).trans (Category.assoc _ _ _).symm)))))))
 
 /- English proof (translation)
-Introduce `p`. Use `⟨⊤, trivial, ?_, fun θx θy _ _ => corr_of_val hL fun z J hJ => ?_⟩` and prove the remaining obligations. Take `⟨a, ha⟩` from `h.linComb ![(snd _ G).left, (Out.translPt G (Out.overResι ⊤ ≫ x)).left] ![k, -k]`. Take `⟨b, hb⟩` from `h.linComb ![(snd _ G).left, (Out.translPt G (Out.overResι ⊤ ≫ y)).left] ![k, -k]`. Conclude with `⟨⟨_, a, ha⟩, ⟨_, b, hb⟩, rfl, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `e : ∀ u : Out.overRes (T` using `T) ⊤ ⟶ G, Out.translT G u = 𝟙 _ := fun u => CartesianMonoidalCategory.hom_ext _ _ (by simp [Out.translT]) (hom_unique hG _ _)`. Use `((val_mul hJ _ _ _).trans (congrArg₂ (· * ·) rfl (val_pull hJ _ _ _))).trans (Eq.symm (((val_mul hJ _ _ _).trans (congrArg₂ (· * ·) ((val_mul hJ _ _ _).trans (congrArg₂ (· * ·) rfl (val_pull hJ _ _ _))) (H1.val_constGen _ _ _ _ _))).trans ?_))` and prove the remaining obligations. Rewrite using `[e, e, Out.unitRes, map_one, map_one, _root_.mul_one, Over.id_left, Category.comp_id]`. Conclude with `mul_comm _ _`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem weilIs_zero {G : Over S} [GrpObj G] (hG : IsIso G.hom) {L : LB G.left} (hL : L.IsLB) (h : Triv L) (k : ℤ)
     {T : Over S} (x y : T ⟶ G) : Out.WeilIs G L k x y 1 := by
@@ -204,9 +204,9 @@ theorem weilIs_zero {G : Over S} [GrpObj G] (hG : IsIso G.hom) {L : LB G.left} (
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E}
 
 /- English proof (translation)
-Take `⟨t₁, ⟨m⟩⟩` from `Inhab.exists_pull f t`. Establish `h₁ : IsIso t₁.G.hom` using `MorphismProperty.of_isPullback (P := MorphismProperty.isomorphisms _) m.cart.1 h`. Set `α : t'.G ⟶ t₁.G` to `Over.homMk (zmap h₁ (𝟙 _)) (by simp [zmap_w])`. Establish `: IsMonHom α` using `⟨hom_unique h₁ _ _, hom_unique h₁ _ _⟩`. Set `n : SABMap t' t₁ (𝟙 _)` to `⟨CubeMap.ofHom α, isGrpPullback_zero h' h₁ _, rfl, fun a => congrArg (fun q => q.left) (hom_unique h₁ (t'.act.act a ≫ α) (α ≫ t₁.act.act a)), HeckePoint.isPullCubical_of_iso globalFns_holds (isAbelianScheme_zero h') α _ _ ((triv_rig h' _).lbIso ((triv_rig h₁ _).linComb _ _))⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Take `⟨r, -⟩` from `ObjMaps.exists_sab_comp m n`. Conclude with `⟨Category.id_comp f ▸ r⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem nonempty_sabMap {t' : SAB H S'} {t : SAB H S} (h' : IsIso t'.G.hom) (h : IsIso t.G.hom) (f : S' ⟶ S) :
     Nonempty (SABMap t' t f) := by
@@ -224,11 +224,11 @@ theorem nonempty_sabMap {t' : SAB H S'} {t : SAB H S} (h' : IsIso t'.G.hom) (h :
 end Groups
 
 /- English proof (translation)
-Take `⟨g, hg⟩` from `AbelianDim.exists_relDim k B hB`. Establish `h1 : Nat.card {x : 𝟙_ (Over (Sp k)) ⟶ B // x ^ N = 1} = 1`. Rewrite using `[Nat.card_eq_one_iff_exists]`. Conclude with `⟨⟨1, one_pow N⟩, fun x => Subtype.ext (h x.1 x.2)⟩`. Rewrite `h1` using `[hc k B g N hB hg hN]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the indicated hypotheses using the stated equalities.
 
-Choose the witnesses or unpack the hypotheses as in `rfl : g = 0 := by`. Apply the tactic sequence `rcases (Nat.pow_eq_one.1 h1) with h | h <;> omega`. Use `hB.proper` as an intermediate fact. Use `hB.geomConnected` as an intermediate fact. Use `hB.smooth` as an intermediate fact.
+Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: Etale B.hom` using `(Etale.iff_smoothOfRelativeDimension_zero _).2 hg`. Take `⟨ho, hcl⟩` from `isOpenImmersion_and_isClosedImmersion_of_section_of_etale B.hom (eSec B) (section_w η[B])`. Establish `: ConnectedSpace B.left` using `(GroupConn.connectedSpace_group _ B).1`. Establish `hne : (Set.range (eSec B)).Nonempty` using `⟨_, (default : PrimeSpectrum k), rfl⟩`. Conclude with `Set.range_eq_univ.1 (IsClopen.eq_univ ⟨(eSec B).isClosedEmbedding.isClosed_range, (eSec B).isOpenEmbedding.isOpen_range⟩ hne)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem surjective_unit
     (hc : ∀ (k : Type) [Field k] [IsAlgClosed k] (B : Over (Sp k)) [GrpObj B] (g N : ℕ), IsAbelianScheme B →
@@ -253,17 +253,17 @@ theorem surjective_unit
     (eSec B).isOpenEmbedding.isOpen_range⟩ hne)
 
 /- English proof (translation)
-Use `hG.proper` as an intermediate fact. Use `hG.smooth` as an intermediate fact. Use `hG.comm` as an intermediate fact. Establish `: IsReduced G.left` using `isReduced_of_smooth_of_isReduced G.hom`. Establish `hcl` using `isClosedImmersion_of_section_of_isSeparated G.hom (eSec G) (section_w η[G])`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs : Surjective (eSec G)`. Use `⟨fun y => ?_⟩` and prove the remaining obligations. Set `k` to `AlgebraicClosure (G.left.residueField y)`. Set `u : Sp k ⟶ G.left` to `Spec.map (CommRingCat.ofHom (algebraMap (G.left.residueField y) k)) ≫ G.left.fromSpecResidueField y`. Establish `hu : ∀ p, u p = y` using `fun p => Scheme.fromSpecResidueField_apply y _`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `x` to `u ≫ G.hom`. Establish `hp` using `isGrpPullback_pullback G x`. Establish `hB` using `isAbelianScheme_pullback_obj x G hG`. Use `hB.comm` as an intermediate fact. Take `⟨N, h₁, hN, ht⟩` from `h k ((𝟙_ (Over (Sp k))).hom ≫ x)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hsB` using `surjective_unit hc _ hB h₁ hN fun g hg => by`. Establish `e` using `ht (pushHom hp _ g) (by rw [← map_pow, hg, map_one])`. Rewrite `e` using `[← map_one (pushHom hp (𝟙_ _))]`. Conclude with `Over.OverMorphism.ext (hp.1.hom_ext (congrArg (fun q => q.left) e) (by rw [Over.w, Over.w]))`. Take `⟨p, hp'⟩` from `hsB (hp.1.lift u (𝟙 _) (Category.id_comp _).symm (default : PrimeSpectrum k))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨x p, ?_⟩` and prove the remaining obligations. Establish `e₁` using `congrArg (fun q => q p) (cubeMapOf hp).e_comm`. Establish `e₂` using `congrArg (fun q => q (default : PrimeSpectrum k)) (hp.1.lift_fst u (𝟙 _) (Category.id_comp _).symm)`. Conclude with `e₁.symm.trans ((congrArg (pullback.fst G.hom x) hp').trans (e₂.trans (hu _)))`. Establish `: IsIso (eSec G)` using `isIso_of_isClosedImmersion_of_surjective _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: IsIso (eSec G ≫ G.hom)`. Rewrite using `[show eSec G ≫ G.hom = 𝟙 S from section_w η[G]]`. Conclude with `inferInstanceAs (IsIso (𝟙 S))`. Conclude with `IsIso.of_isIso_comp_left (eSec G) G.hom`.
+A detailed English derivation is pending.
 -/
 theorem isIso_of_no_torsion
     (hc : ∀ (k : Type) [Field k] [IsAlgClosed k] (B : Over (Sp k)) [GrpObj B] (g N : ℕ), IsAbelianScheme B →
@@ -307,20 +307,20 @@ abbrev Count : Prop := ∀ (k : Type) [Field k] [IsAlgClosed k] (B : Over (Sp k)
     Nat.card {x : 𝟙_ (Over (Sp k)) ⟶ B // x ^ N = 1} = N ^ (2 * g)
 
 /- English proof (translation)
-The claim follows from `(Spec.map_comp _ _).symm`.
+A detailed English derivation is pending.
 -/
 theorem spMap_comp {R R' R'' : Type} [CommRing R] [CommRing R'] [CommRing R''] (f : R →+* R') (g : R' →+* R'') :
     spMap g ≫ spMap f = spMap (g.comp f) := (Spec.map_comp _ _).symm
 
 /- English proof (translation)
-Take `⟨φ, rfl⟩` from `Spec.map_surjective x`. Conclude with `⟨φ.hom, rfl⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_spMap {R R' : Type} [CommRing R] [CommRing R'] (x : Sp R' ⟶ Sp R) : ∃ β : R →+* R', x = spMap β := by
   obtain ⟨φ, rfl⟩ := Spec.map_surjective x
   exact ⟨φ.hom, rfl⟩
 
 /- English proof (translation)
-Take `⟨N, i, hi, h⟩` from `Inhab.isProjOver_id R`. Conclude with `⟨N, f ≫ i, inferInstance, inferInstance, by rw [Category.assoc, h, Category.comp_id]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem isQProjOver_of_isIso {R : Type} [CommRing R] {X : Scheme.{0}} (f : X ⟶ Sp R) (hf : IsIso f) :
     IsQProjOver f := by
@@ -328,7 +328,7 @@ theorem isQProjOver_of_isIso {R : Type} [CommRing R] {X : Scheme.{0}} (f : X ⟶
   exact ⟨N, f ≫ i, inferInstance, inferInstance, by rw [Category.assoc, h, Category.comp_id]⟩
 
 /- English proof (translation)
-Take `⟨β, rfl⟩` from `exists_spMap x`. Rewrite using `[constPt, spMap_comp, spMap_comp]`. Conclude with `congrArg spMap (h β)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_constPt_of {R k : Type} [CommRing R] [Field k] (x : Sp (DualNumber k) ⟶ Sp R)
     (h : ∀ β : R →+* DualNumber k,
@@ -338,7 +338,7 @@ theorem eq_constPt_of {R k : Type} [CommRing R] [Field k] (x : Sp (DualNumber k)
   exact congrArg spMap (h β)
 
 /- English proof (translation)
-Use `eq_constPt_of x fun φ => ?_` and prove the remaining obligations. Use `letI : Algebra ℚ (DualNumber k) := (φ.comp (algebraMap ℚ F)).toAlgebra`. Establish `: Algebra.FormallyUnramified ℚ F` using `Algebra.FormallyUnramified.of_isSeparable ℚ F`. Use `Algebra.FormallyUnramified.ext' (R := ℚ) (A := F) (B := DualNumber k) (TrivSqZeroExt.fstHom k k k).toRingHom ⟨2, TrivSqZeroExt.kerIdeal_sq k k⟩ φ.toRatAlgHom ((algebraMap k (DualNumber k)).comp ((TrivSqZeroExt.fstHom k k k).toRingHom.comp φ)).toRatAlgHom (fun a => by simp [TrivSq …` as an intermediate fact. Conclude with `RingHom.ext fun a => DFunLike.congr_fun this a`.
+Reduce the conclusion to the remaining proof obligations. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem eq_constPt_field {F k : Type} [Field F] [CharZero F] [Algebra.IsAlgebraic ℚ F] [Field k]
     (x : Sp (DualNumber k) ⟶ Sp F) : x = constPt x := by
@@ -356,7 +356,7 @@ section Objects
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Datum H}
 
 /- English proof (translation)
-Use `D.fin` as an intermediate fact. Use `D.proj` as an intermediate fact. Establish `: Module.Flat (𝓞 E) D.La` using `inferInstance`. Conclude with `Module.finrank_zero_iff.mp (D.rank.trans hD)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem subsingleton_La (hD : D.p + D.q = 0) : Subsingleton D.La := by
   have := D.fin
@@ -365,12 +365,12 @@ theorem subsingleton_La (hD : D.p + D.q = 0) : Subsingleton D.La := by
   exact Module.finrank_zero_iff.mp (D.rank.trans hD)
 
 /- English proof (translation)
-The claim follows from `isIso_unit S`.
+A detailed English derivation is pending.
 -/
 theorem isIso_zeroTriple (S : Scheme.{0}) : IsIso (Inhab.zeroTriple H S).G.hom := isIso_unit S
 
 /- English proof (translation)
-Substitute `hn` using the available equality. Conclude with `⟨Fin.elim0, fun i => i.elim0, fun w _ => ⟨Fin.elim0, ⟨Fin.elim0, fun i => i.elim0, hom_unique hG _ _⟩, fun _ _ => Subsingleton.elim _ _⟩⟩`.
+Substitute using the available equality. Supply the required witnesses or components.
 -/
 theorem lieMult_zero {S : Scheme.{0}} {O k : Type} [CommRing O] [Field k] {G : Over S} [GrpObj G] (hG : IsIso G.hom)
     (act : OAct O G) (t : Sp k ⟶ S) (τ : O →+* k) {n : ℕ} (hn : n = 0) : LieMult act t τ n := by
@@ -406,9 +406,9 @@ def zeroObj (hD : D.p + D.q = 0) (l : Level H) {S : Scheme.{0}} (s : S ⟶ Sp (K
     exact weilIs_zero hz (Inhab.zeroTriple H S).PP.isLB (triv_rig hz _) _ _ _
 
 /- English proof (translation)
-Use `isIso_of_no_torsion hc _ ⟨o.t.semi.comm, o.t.semi.smooth, o.proper, o.t.semi.geomConnected⟩ fun k _ _ x => ?_` and prove the remaining obligations. Take `⟨β, hβ⟩` from `exists_spMap (x ≫ s)`. Take `⟨-, I, -⟩` from `o.geom k x β hβ`. Use `subsingleton_La hD` as an intermediate fact. Use `⟨2, one_lt_two, ?_, fun g hg => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `((b.unit 2 two_pos).map β).ne_zero` as an intermediate fact. Rewrite `this` using `[map_natCast]`. Then use the resulting hypothesis. Take `⟨a, rfl⟩` from `(I.onto 2 two_pos g).1 hg`. Conclude with `(I.ker 2 two_pos a).2 ⟨0, Subsingleton.elim _ _⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem isIso_obj (hc : Count) (hD : D.p + D.q = 0) {l : Level H} {B : Type} [CommRing B] {b : Base l B}
     {S : Scheme.{0}} [IsReduced S] {s : S ⟶ Sp B} (o : Obj D l b s) : IsIso o.t.G.hom := by
@@ -423,7 +423,7 @@ theorem isIso_obj (hc : Count) (hD : D.p + D.q = 0) {l : Level H} {B : Type} [Co
     exact (I.ker 2 two_pos a).2 ⟨0, Subsingleton.elim _ _⟩
 
 /- English proof (translation)
-Take `⟨m⟩` from `nonempty_sabMap h' h f`. Conclude with `⟨⟨m, fun _ => sec_comm h m.cart.1.w _ _, fun _ => sec_comm h m.cart.1.w _ _⟩⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem nonempty_objMap {l : Level H} {B B' : Type} [CommRing B] [CommRing B'] {b : Base l B} {b' : Base l B'}
     {S S' : Scheme.{0}} {s : S ⟶ Sp B} {s' : S' ⟶ Sp B'} {o' : Obj D l b' s'} {o : Obj D l b s}
@@ -447,9 +447,9 @@ def zeroModuli (hc : Count) (hD : D.p + D.q = 0) (l : Level H) : Moduli D l wher
     eq_constPt_field x
 
 /- English proof (translation)
-Use `Xo.smooth` as an intermediate fact. Establish `: Smooth Xo.s` using `SmoothOfRelativeDimension.smooth D.dim Xo.s`. Establish `hr : IsReduced Xo.X` using `isReduced_of_smooth_of_isReduced Xo.s`. Establish `h` using `isIso_obj hc hD Xo.univ`. Take `⟨g, ⟨hg, -⟩, -⟩` from `Xo.rep (Sp (KA l)) (𝟙 _) inferInstance (zeroObj hD l _)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨⟨g, (Xo.rep _ Xo.s hr Xo.univ).unique ⟨?_, nonempty_objMap h h _⟩ ⟨Category.id_comp _, nonempty_objMap h h _⟩, hg⟩, h⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, hg, Category.comp_id]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem isIso_moduli (hc : Count) (hD : D.p + D.q = 0) {l : Level H} (Xo : Moduli D l) :
     IsIso Xo.s ∧ IsIso Xo.univ.t.G.hom := by
@@ -488,7 +488,7 @@ def zeroSieg (N : ℕ) (ζ : B) (s : S ⟶ Sp B) : SiegPre 0 N ζ s where
     exact weilIs_zero (isIso_unit S) (pull_isLB (Out.Inh.trivLB_isLB _) _) ((triv_trivLB _).linComb _ _) _ _ _
 
 /- English proof (translation)
-Use `⟨?_, fun _ _ _ => toUnit_unique _ _⟩` and prove the remaining obligations. Take `⟨w, hw⟩ : LBIso (zeroSieg N ζ s).diag ((Out.Inh.trivLB _).pull (𝟙 _))` from `((triv_trivLB _).linComb _ _).lbIso ((triv_trivLB _).linComb _ _)`. Conclude with `relAmple_pull (A := 𝟙_ _) (f := 𝟙 _) (φ := 𝟙 _) (IsPullback.of_horiz_isIso ⟨(Category.id_comp _).trans (Category.comp_id _).symm⟩) (Out.Inh.trivLB_isLB _) (pull_isLB (Out.Inh.trivLB_isLB _) _) ((isGen_iff w).1 hw) ⊤ (isAffineOpen_top _) (fun _ => trivial) (Out.Inh.zeroPolAV _).am …`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem principal_zeroSieg {R : Type} [CommRing R] (s : Sp R ⟶ Sp B) : (zeroSieg N ζ s).Principal := by
   refine ⟨?_, fun _ _ _ => toUnit_unique _ _⟩
@@ -500,7 +500,7 @@ theorem principal_zeroSieg {R : Type} [CommRing R] (s : Sp R ⟶ Sp B) : (zeroSi
     (Out.Inh.zeroPolAV _).ample
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨_, _, isGrpPullback_zero h' h f, isSquare_zero h f, (triv_of_pull h' (isIso_tensor h' h') _ o'.rig₁).lbIso ((triv_of_pull h (isIso_tensor h h) _ o.rig₁).linComb _ _), fun _ => sec_comm h (zmap_w h f) _ _⟩`.
+Supply the required witnesses or components.
 -/
 theorem siegPB_zero {h : ℕ} {s : S ⟶ Sp B} {s' : S' ⟶ Sp B'} {o' : SiegPre h N ζ' s'} {o : SiegPre h N ζ s}
     (h' : IsIso o'.A.hom) (h : IsIso o.A.hom) (f : S' ⟶ S) : SiegPB o' o f :=
@@ -509,7 +509,7 @@ theorem siegPB_zero {h : ℕ} {s : S ⟶ Sp B} {s' : S' ⟶ Sp B'} {o' : SiegPre
     fun _ => sec_comm h (zmap_w h f) _ _⟩
 
 /- English proof (translation)
-Establish `: n ≠ 0`. Introduce and unpack `rfl`. Conclude with `hp.one_lt.ne' (Nat.coprime_zero_left _ |>.1 hn)`. Conclude with `Subtype.ext (by simpa using mul_inv_cancel₀ (Nat.cast_ne_zero.2 this : (n : ℂ) ≠ 0))`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem natCast_mul_inv {p N n : ℕ} (hp : p.Prime) (hn : n.Coprime p) (h : (n : ℂ)⁻¹ ∈ ZP p N) :
     (n : ZP p N) * ⟨_, h⟩ = 1 := by
@@ -519,20 +519,20 @@ theorem natCast_mul_inv {p N n : ℕ} (hp : p.Prime) (hn : n.Coprime p) (h : (n 
   exact Subtype.ext (by simpa using mul_inv_cancel₀ (Nat.cast_ne_zero.2 this : (n : ℂ) ≠ 0))
 
 /- English proof (translation)
-The claim follows from `IsUnit.of_mul_eq_one _ (natCast_mul_inv hp hn (Subring.subset_closure (Or.inr ⟨n, hn, rfl⟩)))`.
+A detailed English derivation is pending.
 -/
 theorem isUnit_natCast {p N n : ℕ} (hp : p.Prime) (hn : n.Coprime p) : IsUnit (n : ZP p N) :=
   IsUnit.of_mul_eq_one _ (natCast_mul_inv hp hn (Subring.subset_closure (Or.inr ⟨n, hn, rfl⟩)))
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (BaseRing.zeta_pow_self hN)`.
+A detailed English derivation is pending.
 -/
 theorem zeta_pow_eq_one (p : ℕ) (hN : 0 < N) : zetaZP p N ^ N = 1 := Subtype.ext (BaseRing.zeta_pow_self hN)
 
 /- English proof (translation)
-Use `isIso_of_no_torsion hc _ o.ab fun k _ _ x => ?_` and prove the remaining obligations. Take `⟨β, hβ⟩` from `exists_spMap (x ≫ s)`. Establish `hu : IsUnit (β (zetaZP p N))` using `((isUnit_pow_iff (by omega : N ≠ 0)).1 (zeta_pow_eq_one p (by omega : 0 < N) ▸ isUnit_one)).map β`. Take `⟨e₁, e₂, -⟩` from `o.geom k x β hu.unit hβ rfl`. Use `⟨N, h₁, ?_, fun g hg => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `((isUnit_natCast (N := N) hp hN).map β).ne_zero` as an intermediate fact. Rewrite `this` using `[map_natCast]`. Then use the resulting hypothesis. Take `⟨a, rfl⟩` from `e₂ g hg`. Conclude with `(e₁ a).2 ⟨0, Subsingleton.elim _ _⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem isIso_sieg (hc : Count) {p : ℕ} (hp : p.Prime) (h₁ : 1 < N) (hN : N.Coprime p) [IsReduced S]
     {s : S ⟶ Sp (ZP p N)} (o : SiegPre 0 N (zetaZP p N) s) : IsIso o.A.hom := by
@@ -548,19 +548,17 @@ theorem isIso_sieg (hc : Count) {p : ℕ} (hp : p.Prime) (h₁ : 1 < N) (hN : N.
     exact (e₁ a).2 ⟨0, Subsingleton.elim _ _⟩
 
 /- English proof (translation)
-Use `eq_constPt_of x fun β => ?_` and prove the remaining obligations. Generalize the expression as in `hδ : ((algebraMap k (DualNumber k)).comp (TrivSqZeroExt.fstHom k k k).toRingHom).comp β = δ`. Use `RingHom.ext fun ⟨y, hy⟩ => ?_` and prove the remaining obligations. Proceed by induction on `hy using Subring.closure_induction with`. Consider the case `mem y hy`.
+Reduce the conclusion to the remaining proof obligations. Replace the chosen expression with an arbitrary variable. Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately.
 
-Break down `hy with rfl | ⟨n, hn, rfl⟩` into its components or cases. Substitute `hδ` using the available equality. Establish `hz : β (zetaZP p N) ^ N = 1` using `by rw [← map_pow, zeta_pow_eq_one p h₁, map_one]`. Establish `hk : (N : k) ≠ 0`. Use `(((isUnit_natCast (N := N) hp hN).map β).map (TrivSqZeroExt.fstHom k k k)).ne_zero` as an intermediate fact.
+Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[map_natCast, map_natCast]`. Then use the resulting hypothesis. Establish `ha : (β (zetaZP p N)).fst ≠ 0` using `fun h0 => by`. Use `congrArg TrivSqZeroExt.fst hz` as an intermediate fact. Rewrite `this` using `[TrivSqZeroExt.fst_pow, h0, zero_pow h₁.ne', TrivSqZeroExt.fst_one]`. Conclude with `zero_ne_one this`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hb` using `congrArg TrivSqZeroExt.snd hz`. Rewrite `hb` using `[TrivSqZeroExt.snd_pow, TrivSqZeroExt.snd_one, nsmul_eq_mul, smul_eq_mul]`. Establish `hb'` using `(mul_eq_zero.1 ((mul_eq_zero.1 hb).resolve_left hk)).resolve_left (pow_ne_zero _ ha)`. Conclude with `TrivSqZeroExt.ext (x := β (zetaZP p N)) rfl hb'`. Establish `e` using `natCast_mul_inv (N := N) hp hn (Subring.subset_closure (Or.inr ⟨n, hn, rfl⟩))`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e₁` using `congrArg β e`. Establish `e₂` using `congrArg δ e`. Rewrite `e₁`, `e₂` using `[map_mul, map_natCast, map_one]`. Conclude with `left_inv_eq_right_inv ((mul_comm _ _).trans e₁) e₂`. Consider the case `zero => exact (map_zero β).trans (map_zero δ).symm`.
+Rewrite the indicated hypotheses using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `one => exact (map_one β).trans (map_one δ).symm`. Consider the case `add a b ha hb h h'`. Conclude with `(map_add β ⟨a, ha⟩ ⟨b, hb⟩).trans ((congrArg₂ (· + ·) h h').trans (map_add δ ⟨a, ha⟩ ⟨b, hb⟩).symm)`. Consider the case `neg a ha h => exact (map_neg β ⟨a, ha⟩).trans ((congrArg (- ·) h).trans (map_neg δ ⟨a, ha⟩).symm)`. Consider the case `mul a b ha hb h h'`.
-
-Conclude with `(map_mul β ⟨a, ha⟩ ⟨b, hb⟩).trans ((congrArg₂ (· * ·) h h').trans (map_mul δ ⟨a, ha⟩ ⟨b, hb⟩).symm)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem eq_constPt_ZP {p : ℕ} (hp : p.Prime) (h₁ : 0 < N) (hN : N.Coprime p) {k : Type} [Field k]
     (x : Sp (DualNumber k) ⟶ Sp (ZP p N)) : x = constPt x := by
@@ -618,22 +616,20 @@ def inc (n : ℕ) (l : Level H) (h : l.A = N) : RZ H n N →+* KA l :=
   (RZ H n N).subtype.codRestrict (KA l) fun x => BaseRing.RZ_le_KA l n (h ▸ x.2)
 
 /- English proof (translation)
-The claim follows from `RingHom.ext fun x => Subtype.ext (hβ x)`.
+A detailed English derivation is pending.
 -/
 theorem eq_inc {l : Level H} (h : l.A = N) {β : RZ H n N →+* KA l}
     (hβ : IsInc (RZ H n N).subtype (KA l).val.toRingHom β) : β = inc n l h :=
   RingHom.ext fun x => Subtype.ext (hβ x)
 
 /- English proof (translation)
-Take `⟨y, hy⟩` from `x`. Proceed by induction on `hy using Subring.closure_induction with`. Consider the case `mem y hy`. Break down `hy with rfl | rfl | rfl` into its components or cases. Use `show ((σ ((1 + (baseKA l).ρ) / 2) : KA l) : ℂ) ∈ _`.
+Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_div₀, map_add, map_one, hσ, map_ofNat]`. Conclude with `Subring.subset_closure (Or.inl rfl)`. Use `show ((σ ((n : KA l)⁻¹) : KA l) : ℂ) ∈ _`. Rewrite using `[map_inv₀, map_natCast]`. Conclude with `Subring.subset_closure (Or.inr (Or.inl rfl))`.
+Rewrite the conclusion using the stated equalities. Substitute using the available equality. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Substitute `h` using the available equality. Establish `: NeZero l.A` using `⟨l.A_pos.ne'⟩`. Take `⟨i, -, hi⟩` from `(baseKA l).ζ_prim.eq_pow_of_pow_eq_one (ξ := σ (baseKA l).ζ) (by rw [← map_pow, (baseKA l).ζ_prim.pow_eq_one, map_one])`. Use `show ((σ (baseKA l).ζ : KA l) : ℂ) ∈ _`. Rewrite using `[← hi]`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Conclude with `pow_mem (Subring.subset_closure (Or.inr (Or.inr rfl)) : zeta l.A ∈ RZ H n l.A) i`. Consider the case `zero => exact (congrArg Subtype.val (map_zero (σ.comp (inc n l h)))).symm ▸ zero_mem _`. Consider the case `one => exact (congrArg Subtype.val (map_one (σ.comp (inc n l h)))).symm ▸ one_mem _`. Consider the case `add a b ha hb h₁ h₂`. Conclude with `(congrArg Subtype.val (map_add (σ.comp (inc n l h)) ⟨a, ha⟩ ⟨b, hb⟩)).symm ▸ add_mem h₁ h₂`.
-
-Consider the case `neg a ha h₁ => exact (congrArg Subtype.val (map_neg (σ.comp (inc n l h)) ⟨a, ha⟩)).symm ▸ neg_mem h₁`. Consider the case `mul a b ha hb h₁ h₂`. Conclude with `(congrArg Subtype.val (map_mul (σ.comp (inc n l h)) ⟨a, ha⟩ ⟨b, hb⟩)).symm ▸ mul_mem h₁ h₂`.
+A detailed English derivation is pending.
 -/
 theorem map_inc_mem {l : Level H} (h : l.A = N) (σ : KA l →+* KA l) (hσ : σ (baseKA l).ρ = (baseKA l).ρ)
     (x : RZ H n N) : ((σ (inc n l h x) : KA l) : ℂ) ∈ RZ H n N := by
@@ -667,7 +663,7 @@ def restr {l : Level H} (h : l.A = N) (σ : KA l →+* KA l) (hσ : σ (baseKA l
   ((KA l).val.toRingHom.comp (σ.comp (inc n l h))).codRestrict _ (map_inc_mem h σ hσ)
 
 /- English proof (translation)
-Establish `: (restr (n` using `n) h σ hσ).comp (restr h τ hτ) = RingHom.id _ := RingHom.ext fun x => Subtype.ext (congrArg (fun y : KA l => (y : ℂ)) (e (inc n l h x)))`. Rewrite using `[spMap_comp, this]`. Conclude with `Spec.map_id _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem restr_comp {l : Level H} (h : l.A = N) (σ τ : KA l →+* KA l) (hσ : σ (baseKA l).ρ = (baseKA l).ρ)
     (hτ : τ (baseKA l).ρ = (baseKA l).ρ) (e : ∀ x, σ (τ x) = x) :
@@ -678,14 +674,14 @@ theorem restr_comp {l : Level H} (h : l.A = N) (σ τ : KA l →+* KA l) (hσ : 
   exact Spec.map_id _
 
 /- English proof (translation)
-The claim follows from `inferInstanceAs (IsIso X.topIso.hom)`.
+A detailed English derivation is pending.
 -/
 theorem isIso_top (X : Scheme.{0}) : IsIso (⊤ : X.Opens).ι := inferInstanceAs (IsIso X.topIso.hom)
 
 /- English proof (translation)
-Substitute `hg` using the available equality. Use `subsingleton_La hD` as an intermediate fact. Use `⟨zeroFamily hc hp h₁ hN, LinearEquiv.ofSubsingleton _ _, fun x y => ?_, fun O _ z T sT tT levT hs ht => ?_⟩` and prove the remaining obligations. Rewrite using `[omegaStd, Fin.sum_univ_zero, Subsingleton.elim (LinearEquiv.ofSubsingleton _ _ y) (0 : D.La), map_zero]`. Establish `: IsIso (zeroFamily hc hp h₁ hN).s` using `inferInstanceAs (IsIso (𝟙 _))`.
+Substitute using the available equality. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `⟨sT ≫ inv (pullback.snd _ _), ⟨zeroSieg _ _ _, _, _, isGrpPullback_zero (isIso_unit T) ht _, isSquare_zero ht _, (triv_trivLB _).lbIso (((triv_rig ht _).linComb _ _).linComb _ _), fun _ => (sec_comm ht (zmap_w ht _) _ _).trans (Category.id_comp _), by simp, siegPB_zero (isIso_uni …` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations.
 -/
 theorem siegel_zero (hc : Count) (hD : D.p + D.q = 0) {g p : ℕ} (hg : g = 0) (hp : p.Prime) (h₁ : 1 < N)
     (hN : N.Coprime p) : ∃ (Ag : SiegelFamily g p N) (bas : (Fin g ⊕ Fin g → ℤ) ≃ₗ[ℤ] D.La),
@@ -704,17 +700,17 @@ theorem siegel_zero (hc : Count) (hD : D.p + D.q = 0) {g p : ℕ} (hg : g = 0) (
       siegPB_zero (isIso_unit _) (isIso_unit _) _⟩, inferInstance, inferInstance⟩
 
 /- English proof (translation)
-Establish `h₁ : 1 < n ^ J` using `Nat.one_lt_pow (by omega) hn.one_lt`. Establish `: IsDedekindDomain (RZ H n (n ^ J))` using `BaseRing.isDedekindDomain_RZ (HostModel.level H (n ^ J) (by omega)) hn.pos (dvd_refl (n ^ J))`. Set `Z` to `Sp (RZ H n (n ^ J))`. Establish `hz` using `isIso_zeroTriple (H := H) Z`. Establish `hab : abLocus (Inhab.zeroTriple H Z).G = Set.univ` using `Inhab.abLocus_eq_univ _ (Inhab.isProper_zeroTriple Z)`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `htop` using `isIso_top Z`. Establish `hX` using `fun l => isIso_moduli hc hD (Xo l)`. Set `m : ∀ l h, SABMap (Xo l).univ.t (Inhab.zeroTriple H Z) ((Xo l).s ≫ spMap (inc n l h))` to `fun l h => (nonempty_sabMap (hX l).2 hz _).some`. Take `⟨mU⟩` from `nonempty_sabMap (isIso_zeroTriple (H := H) (⊤ : Z.Opens).toScheme) hz (⊤ : Z.Opens).ι`. Use `⟨{ Z := Z, s := 𝟙 _, normal := ZJ.isNormalScheme_sp _, proj := Inhab.isProjOver_id _, flat := inferInstance t := Inhab.zeroTriple H Z, qproj := isQProjOver_of_isIso _ inferInstance good := Inhab.good_zeroTriple Z, ga := hab ▸ Set.subset_univ _ a := fun l h => (Xo l).s ≫ spMap (in …` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `rfl` from `eq_inc h hβ`. Use `(hX l).1` as an intermediate fact. Use `isIso_top (pullback (𝟙 Z) (spMap (inc n l h)))` as an intermediate fact. Use `⟨⊤, (Xo l).s ≫ inv (pullback.snd _ _) ≫ inv (Scheme.Opens.ι ⊤), by rw [hab]; rfl, inferInstance, inferInstance, ?_, by simp⟩` and prove the remaining obligations. Establish `e : pullback.fst (𝟙 Z) (spMap (inc n l h)) = pullback.snd _ _ ≫ spMap (inc n l h)` using `(Category.comp_id _).symm.trans pullback.condition`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[e]`. Simplify using the standard rewrite rules. Establish `e : r ≫ (Xo l).s ≫ spMap (inc n l h) = (Xo l').s ≫ spMap (inc n l' h')`. Rewrite using `[← Category.assoc, hr, Category.assoc, spMap_comp, eq_inc h' (β := k.comp (inc n l h)) fun x => hk _]`. Use `⟨e, left_unique hz ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Category.assoc, (m l h).cart.1.w, (m l' h').cart.1.w, ← Category.assoc, ν.cart.1.w, Category.assoc, e]`. Establish `hσ' : σ.symm (baseKA l).ρ = (baseKA l).ρ` using `σ.symm_apply_eq.2 hσ.symm`. Use `⟨⟨spMap (restr h σ.toRingHom hσ), spMap (restr h σ.symm.toRingHom hσ'), restr_comp h _ _ _ _ σ.apply_symm_apply, restr_comp h _ _ _ _ σ.symm_apply_apply⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[← Category.assoc, hr, Category.assoc, Category.assoc, spMap_comp, spMap_comp]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[← Category.assoc, ha]`. Conclude with `hy.trans (sec_comm hz (m l h).cart.1.w _ _)`. Take `⟨Ag, bas, e₁, e₂⟩` from `siegel_zero (H := H) hc hD (g := Module.finrank ℚ E / 2 * (D.p + D.q)) (by rw [hD, mul_zero]) hp h₁ (((Nat.coprime_primes hn hp).2 hpn.symm).pow_left J)`. Conclude with `⟨Ag, bas, e₁, fun O _ _ z b _ _ _ T sT f tT ν levT hpb _ => e₂ O z T sT tT levT (MorphismProperty.of_isPullback (P := MorphismProperty.isomorphisms _) hpb (inferInstanceAs (IsIso (𝟙 Z)))) (MorphismProperty.of_isPullback (P := MorphismProperty.isomorphisms _) ν.cart.1 hz)⟩`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem nonempty_top (hc : Count) (hD : D.p + D.q = 0) (Xo : ∀ l : Level H, Moduli D l) {J : ℕ} (hn : n.Prime)
     (hJ : 1 ≤ J) : Nonempty (Top Xo n (n ^ J)) := by
@@ -770,7 +766,7 @@ theorem nonempty_top (hc : Count) (hD : D.p + D.q = 0) (Xo : ∀ l : Level H, Mo
 end Full
 
 /- English proof (translation)
-Introduce `_ _ _ _ _ _ hD` and use `⟨⟨zeroModuli GlobalTheory.card_torsion_abelianVariety hD⟩, fun Xo _ _ hn hJ => nonempty_top GlobalTheory.card_torsion_abelianVariety hD Xo hn.1 hJ⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem main : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H), D.p + D.q = 0 → Nonempty (∀ l : Level H, Moduli D l) ∧ ∀ (Xo : ∀ l : Level H, Moduli D l) (n J : ℕ), AuxiliaryInertOddPrime H n → 1 ≤ J → Nonempty (Top Xo n (n ^ J)) :=
   fun _ _ _ _ _ _ hD => ⟨⟨zeroModuli GlobalTheory.card_torsion_abelianVariety hD⟩, fun Xo _ _ hn hJ => nonempty_top GlobalTheory.card_torsion_abelianVariety hD Xo hn.1 hJ⟩

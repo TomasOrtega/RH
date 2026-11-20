@@ -12,9 +12,9 @@ open BpJoin Formalism.FourierDecayAlt Formalism.FourierDecayAlt.P Formalism.Four
 namespace GlobalTheory.GridAtPlace
 
 /- English proof (translation)
-Establish `hb0 : 0 < b` using `by linarith`. Establish `e : b ^ ((7 + C) * ((2 * r + 2 : ℕ) : ℝ)) = b ^ ((6 + C) * ((2 * r + 2 : ℕ) : ℝ)) * b ^ (2 * r + 2)`. Rewrite using `[← Real.rpow_natCast b (2 * r + 2), ← Real.rpow_add hb0]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[e, mul_pow]`. Use `mul_le_mul_of_nonneg_left ?_ (sq_nonneg _)` and prove the remaining obligations. Rewrite using `[← pow_mul]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem pow_absorb (C b : ℝ) (r : ℕ) (hb : 3 ≤ b) :
     (b ^ ((6 + C) * ((2 * r + 2 : ℕ) : ℝ))) ^ 2 * (5 / 4 : ℝ) ^ (3 * (r + 1)) ≤
@@ -33,9 +33,9 @@ theorem pow_absorb (C b : ℝ) (r : ℕ) (hb : 3 ≤ b) :
     _ ≤ b ^ ((2 * r + 2) * 2) := pow_le_pow_right₀ (by linarith) (by omega)
 
 /- English proof (translation)
-Introduce `C b c P Wp Wq _ _ _ _ _ _ p lam hC hG hcut`. Take `⟨hc, hcb, hkb, hu, hu', hlam, hgap, hint, hint', hT, hT'⟩` from `hG`. Establish `hb3 : 3 ≤ b` using `by linarith`. Establish `hpos : ∀ y, 0 < Pst lam c y` using `fun y => Finset.prod_pos (fun s _ => by have := abs_nonneg (y + lam s); linarith)`. Establish `hone : 1 ≤ b ^ ((7 + C) * ((2 * P.r + 2 : ℕ) : ℝ))` using `Real.one_le_rpow (by linarith) (by positivity)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨hpos, hone, ?_⟩` and prove the remaining obligations. Take `⟨Y, hcard, hsep, hon⟩` from `GlobalTheory.exists_grid_five_apart_on_cut.1 P.u P.u' p.l0 (3 * (P.r + 1) * (2 * P.r + 1)) (le_trans (by`. Conclude with `GlobalTheory.exists_grid_five_apart_on_cut.2 P.r) hcut)` after adjusting the coercions. Establish `hNQ` using `GlobalTheory.NormaliserCutBound.main C b c P p.l0 lam (Pst lam c) Y p.hP.1 hC p.hl.1 p.hl.2.1 hc hcb hkb hu hu' hlam (fun s t hst _ => hgap s t (by rw [Fin.lt_def]; omega)) hint hint' hT hT' (fun y => ⟨(hpos y).le, le_rfl⟩) (fun y hy => (hon y hy).1)`. Conclude with `⟨Y, GlobalTheory.T.waveGrid_liftGrid_of_layout_normaliserBound P Wp Wq p (Pst lam c) Y _ _ 3 (3 * (P.r + 1)) hpos ⟨hsep, hcard, hon⟩ hNQ (by linarith) (pow_absorb C b P.r hb3)⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem main : ∀ (C b c : ℝ) (P : M.Par) (Wp Wq : Type) [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq] (p : KB.Pl P Wp Wq) (lam : Fin (2 * P.r + P.k + 1) → ℝ), 0 ≤ C → GridNum C b c P p.l0 lam → ((30 * (P.r + 1) ^ 2 + 6 : ℕ) : ℝ) ≤ |P.u p.l0 - P.u' p.l0| → (∀ y, 0 < Pst lam c y) ∧ 1 ≤ b ^ ((7 + C) * ((2 * P.r + 2 : ℕ) : ℝ)) ∧ ∃ Y : Finset ℝ, TBBx5.WaveGrid p (Pst lam c) Y (b ^ ((7 + C) * ((2 * P.r + 2 : ℕ) : ℝ))) 3 (3 * (P.r + 1)) ∧ TBBx5.LiftGrid p (Pst lam c) Y (b ^ ((7 + C) * ((2 * P.r + 2 : ℕ) : ℝ))) 3 (3 * (P.r + 1)) := by
   intro C b c P Wp Wq _ _ _ _ _ _ p lam hC hG hcut

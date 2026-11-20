@@ -21,18 +21,18 @@ def ringVal {A : Type} [CommRing A] {X : Scheme.{0}} (v : Sp A ⟶ X) (W : X.Ope
   (Scheme.ΓSpecIso (CommRingCat.of A)).hom.hom ((v.appLE W ⊤ h).hom f)
 
 /- English proof (translation)
-Rewrite using `[← Spec.map_comp, ← Spec.map_id]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 -/
 theorem epsPt_epsStr : epsPt ≫ epsStr = 𝟙 _ := by
   rw [← Spec.map_comp, ← Spec.map_id]
   congr 1
 
 /- English proof (translation)
-Introduce `q _`. Establish `hq : (q : PrimeSpectrum (DualNumber ℂ)) ∈ Set.range (PrimeSpectrum.comap (TrivSqZeroExt.fstHom ℂ ℂ ℂ).toRingHom)`. Rewrite using `[range_comap_of_surjective _ _ (fun a => ⟨TrivSqZeroExt.inl a, rfl⟩)]`. Introduce `x hx`. Establish `hx0 : TrivSqZeroExt.fst x = 0` using `hx`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Apply `q.isPrime.mem_of_pow_mem 2` to reduce the goal to its premises. Establish `: x ^ 2 = 0`. Apply the tactic sequence `rw [pow_two]; ext <;> simp [hx0]`. Rewrite using `[this]`. Conclude with `q.asIdeal.zero_mem`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨s, rfl⟩` from `hq`. Conclude with `h (Set.mem_univ s)`.
+A detailed English derivation is pending.
 -/
 theorem top_le_of_epsPt {X : Scheme.{0}} (v : Sp (DualNumber ℂ) ⟶ X) (W : X.Opens)
     (h : ⊤ ≤ (epsPt ≫ v) ⁻¹ᵁ W) : ⊤ ≤ v ⁻¹ᵁ W := by
@@ -50,13 +50,13 @@ theorem top_le_of_epsPt {X : Scheme.{0}} (v : Sp (DualNumber ℂ) ⟶ X) (W : X.
   exact h (Set.mem_univ s)
 
 /- English proof (translation)
-Introduce `_ _` and use `h (Set.mem_univ _)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem top_le_epsPt {X : Scheme.{0}} (v : Sp (DualNumber ℂ) ⟶ X) (W : X.Opens)
     (h : ⊤ ≤ v ⁻¹ᵁ W) : ⊤ ≤ (epsPt ≫ v) ⁻¹ᵁ W := fun _ _ => h (Set.mem_univ _)
 
 /- English proof (translation)
-Rewrite using `[ringVal, ringVal, ← CommRingCat.comp_apply (m.appLE W O e), Scheme.Hom.appLE_comp_appLE]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem ringVal_appLE {A : Type} [CommRing A] {X Y : Scheme.{0}} (v : Sp A ⟶ Y) (m : Y ⟶ X) (W : X.Opens) (O : Y.Opens)
     (e : O ≤ m ⁻¹ᵁ W) (h : ⊤ ≤ v ⁻¹ᵁ O) (h' : ⊤ ≤ (v ≫ m) ⁻¹ᵁ W) (f : Γ(X, W)) :
@@ -64,7 +64,7 @@ theorem ringVal_appLE {A : Type} [CommRing A] {X Y : Scheme.{0}} (v : Sp A ⟶ Y
   rw [ringVal, ringVal, ← CommRingCat.comp_apply (m.appLE W O e), Scheme.Hom.appLE_comp_appLE]
 
 /- English proof (translation)
-Rewrite using `[Scheme.Hom.app_eq_appLE]`. Conclude with `ringVal_appLE v m W _ _ h h' f`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ringVal_app {A : Type} [CommRing A] {X Y : Scheme.{0}} (v : Sp A ⟶ Y) (m : Y ⟶ X) (W : X.Opens)
     (h : ⊤ ≤ v ⁻¹ᵁ (m ⁻¹ᵁ W)) (h' : ⊤ ≤ (v ≫ m) ⁻¹ᵁ W) (f : Γ(X, W)) :
@@ -73,7 +73,7 @@ theorem ringVal_app {A : Type} [CommRing A] {X Y : Scheme.{0}} (v : Sp A ⟶ Y) 
   exact ringVal_appLE v m W _ _ h h' f
 
 /- English proof (translation)
-Establish `h1` using `Scheme.ΓSpecIso_naturality (CommRingCat.ofHom φ)`. Establish `h2` using `congrArg (fun g => g.hom s) h1`. Establish `h3 : (spMap φ).appLE ⊤ ⊤ h = (spMap φ).appTop` using `(Scheme.Hom.app_eq_appLE (spMap φ) (U := ⊤)).symm`. Rewrite using `[ringVal, h3]`. Conclude with `h2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ringVal_spMap {A R : Type} [CommRing A] [CommRing R] (φ : R →+* A) (h : ⊤ ≤ spMap φ ⁻¹ᵁ ⊤) (s : Γ(Sp R, ⊤)) :
     ringVal (spMap φ) ⊤ h s = φ ((Scheme.ΓSpecIso (CommRingCat.of R)).hom.hom s) := by
@@ -84,14 +84,14 @@ theorem ringVal_spMap {A R : Type} [CommRing A] [CommRing R] (φ : R →+* A) (h
   exact h2
 
 /- English proof (translation)
-Substitute `e` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem ringVal_congr {A : Type} [CommRing A] {X : Scheme.{0}} {v v' : Sp A ⟶ X} (e : v = v') (W : X.Opens)
     (h : ⊤ ≤ v ⁻¹ᵁ W) (h' : ⊤ ≤ v' ⁻¹ᵁ W) (f : Γ(X, W)) : ringVal v W h f = ringVal v' W h' f := by
   subst e; rfl
 
 /- English proof (translation)
-Use `(ringVal_appLE v p ⊤ ⊤ le_top h le_top _).trans ?_` and prove the remaining obligations. Use `(ringVal_congr hv ⊤ _ le_top _).trans ((ringVal_spMap φ _ _).trans ?_)` and prove the remaining obligations. Use `congr 1`. Conclude with `(Scheme.ΓSpecIso (CommRingCat.of R)).inv_hom_id_apply r`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem ringVal_constFn {A R : Type} [CommRing A] [CommRing R] {X : Scheme.{0}} (v : Sp A ⟶ X) (p : X ⟶ Sp R)
     (φ : R →+* A) (hv : v ≫ p = spMap φ) (h : ⊤ ≤ v ⁻¹ᵁ ⊤) (r : R) :
@@ -102,7 +102,7 @@ theorem ringVal_constFn {A R : Type} [CommRing A] [CommRing R] {X : Scheme.{0}} 
   exact (Scheme.ΓSpecIso (CommRingCat.of R)).inv_hom_id_apply r
 
 /- English proof (translation)
-Establish `hz : ⊤ ≤ z ⁻¹ᵁ W`. Use `top_le_epsPt _ W h` as an intermediate fact. Rewrite `this` using `[← Category.assoc, epsPt_epsStr, Category.id_comp]`. Then use the resulting hypothesis. Conclude with `congrArg TrivSqZeroExt.snd ((ringVal_appLE epsStr z W ⊤ hz le_top h f).symm.trans (ringVal_spMap _ _ _))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem snd_ringVal_const {X : Scheme.{0}} (z : Sp ℂ ⟶ X) (W : X.Opens) (h : ⊤ ≤ (epsStr ≫ z) ⁻¹ᵁ W) (f : Γ(X, W)) :
     TrivSqZeroExt.snd (ringVal (epsStr ≫ z) W h f) = 0 := by
@@ -113,9 +113,9 @@ theorem snd_ringVal_const {X : Scheme.{0}} (z : Sp ℂ ⟶ X) (W : X.Opens) (h :
     ((ringVal_appLE epsStr z W ⊤ hz le_top h f).symm.trans (ringVal_spMap _ _ _))
 
 /- English proof (translation)
-Take `⟨ψ, hψ⟩` from `Spec.map_surjective (v ≫ p)`. Establish `hφ : v ≫ p = spMap ψ.hom` using `hψ.symm`. Rewrite `h₁` using `[hφ, ← Spec.map_comp]`. Establish `h₃` using `Spec.map_injective h₁`. Rewrite using `[hφ, ← Spec.map_comp]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use `RingHom.ext fun r => ?_` and prove the remaining obligations. Establish `h₄ : TrivSqZeroExt.snd (ψ.hom r : DualNumber ℂ) = 0` using `(congrArg TrivSqZeroExt.snd (ringVal_constFn v p ψ.hom hφ le_top r)).symm.trans (h₂ r)`. Establish `h₅ : TrivSqZeroExt.fst (ψ.hom r : DualNumber ℂ) = x₀ r` using `congrArg (fun g => g.hom r) h₃`. Conclude with `TrivSqZeroExt.ext h₅ h₄`.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem comp_eq_const {R : Type} [CommRing R] (x₀ : R →+* ℂ) {X : Scheme.{0}} (p : X ⟶ Sp R)
     (v : Sp (DualNumber ℂ) ⟶ X) (h₁ : epsPt ≫ v ≫ p = spMap x₀)
@@ -138,25 +138,23 @@ end GlobalTheory.KS.VertFib
 open GlobalTheory.KS.VertFib in
 
 /- English proof (translation)
-Introduce `Y R _ x₀ X p m hP y hy`. Prove the components needed by the constructor for the conclusion. Introduce `δ hδ h0`. Take `⟨v, ⟨hv, hvδ⟩, -⟩` from `(GlobalTheory.T.germDerivation_iff_dualNumberPoint X (y ≫ m)).1 δ hδ`. Establish `hvp : v ≫ p = epsStr ≫ spMap x₀`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `comp_eq_const x₀ p v ?_ fun r => (hvδ ⊤ le_top _).trans (h0 r)` and prove the remaining obligations. Rewrite using `[← Category.assoc, hv, Category.assoc, hP.w, ← Category.assoc, hy, Category.id_comp]`. Establish `hw₁` using `hP.lift_fst v epsStr hvp`. Establish `hw₂` using `hP.lift_snd v epsStr hvp`. Generalize the expression as in `hP.lift v epsStr hvp = w at hw₁ hw₂`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable.
 
-Establish `hwy : epsPt ≫ w = y`. Apply `hP.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, hw₁, hv]`. Rewrite using `[Category.assoc, hw₂, epsPt_epsStr, hy]`. Take `⟨δ₀, hδ₀, hw⟩` from `(GlobalTheory.T.germDerivation_iff_dualNumberPoint Y.left y).2 w hwy`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `⟨δ₀, hδ₀, fun a => ?_, fun W f hW => ?_⟩` and prove the remaining obligations. Use `(hw ⊤ le_top _).symm.trans ?_` and prove the remaining obligations. Conclude with `congrArg TrivSqZeroExt.snd (ringVal_constFn w Y.hom _ hw₂ le_top a)`. Establish `h1 : ⊤ ≤ v ⁻¹ᵁ W` using `top_le_of_epsPt v W (by rw [hv]; exact hW)`. Establish `h2 : ⊤ ≤ (w ≫ m) ⁻¹ᵁ W` using `by rw [hw₁]; exact h1`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `(hvδ W h1 f).symm.trans (Eq.trans ?_ (hw (m ⁻¹ᵁ W) h2 _))` and prove the remaining obligations. Conclude with `congrArg TrivSqZeroExt.snd ((ringVal_congr hw₁.symm W h1 h2 f).trans (ringVal_app w m W h2 h2 f).symm)`. Introduce `δ₀ hδ₀ h0 hm O f hO`. Take `⟨v, ⟨hv, hvδ⟩, -⟩` from `(GlobalTheory.T.germDerivation_iff_dualNumberPoint Y.left y).1 δ₀ hδ₀`. Establish `hvp : v ≫ Y.hom = epsStr`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hid : spMap (RingHom.id ℂ) = 𝟙 (Sp ℂ)` using `Spec.map_id _`. Use `comp_eq_const (RingHom.id ℂ) Y.hom v (by rw [← Category.assoc, hv, hy, hid]) fun r => (hvδ ⊤ le_top _).trans (h0 r)` as an intermediate fact. Rewrite `this` using `[hid, Category.comp_id]`. Then use the resulting hypothesis. Establish `hz : PtDer (y ≫ m) (fun _ _ => 0)` using `⟨by simp, by simp, by simp⟩`. Establish `hvm : v ≫ m = epsStr ≫ y ≫ m`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `((GlobalTheory.T.germDerivation_iff_dualNumberPoint X (y ≫ m)).1 _ hz).unique ⟨?_, fun W h g => ?_⟩ ⟨?_, fun W h g => ?_⟩` and prove the remaining obligations. Rewrite using `[← Category.assoc, hv]`. Establish `hW : ⊤ ≤ (y ≫ m) ⁻¹ᵁ W`. Use `top_le_epsPt _ W h` as an intermediate fact. Rewrite `this` using `[← Category.assoc, hv]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Eq.trans ?_ ((hvδ (m ⁻¹ᵁ W) h _).trans (hm W g hW))` and prove the remaining obligations. Conclude with `congrArg TrivSqZeroExt.snd (ringVal_app v m W h h g).symm`. Rewrite using `[← Category.assoc, epsPt_epsStr, Category.id_comp]`. Conclude with `snd_ringVal_const (y ≫ m) W h g`. Establish `hvc : v = epsStr ≫ y`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Apply `hP.hom_ext` to reduce the goal to its premises. Rewrite using `[hvm, Category.assoc]`. Rewrite using `[hvp, Category.assoc, hy, Category.comp_id]`. Establish `h1 : ⊤ ≤ v ⁻¹ᵁ O` using `top_le_of_epsPt v O (by rw [hv]; exact hO)`. Use `(hvδ O h1 f).symm.trans ?_` and prove the remaining obligations.
-
-Establish `h2 : ⊤ ≤ (epsStr ≫ y) ⁻¹ᵁ O` using `by rw [← hvc]; exact h1`. Conclude with `(congrArg TrivSqZeroExt.snd (ringVal_congr hvc O h1 h2 f)).trans (snd_ringVal_const y O h2 f)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.KS.ptDer_of_fibre : ∀ (Y : Over (Sp ℂ)) (R : Type) [CommRing R] (x₀ : R →+* ℂ) (X : Scheme.{0}) (p : X ⟶ Sp R) (m : Y.left ⟶ X), IsPullback m Y.hom p (spMap x₀) → ∀ y : Sp ℂ ⟶ Y.left, y ≫ Y.hom = 𝟙 _ → (∀ δ, PtDer (y ≫ m) δ → (∀ r, δ ⊤ (constFn p ⊤ r) = 0) → ∃ δ₀, PtDer y δ₀ ∧ (∀ a, δ₀ ⊤ (constFn Y.hom ⊤ a) = 0) ∧ ∀ W f, ⊤ ≤ (y ≫ m) ⁻¹ᵁ W → δ W f = δ₀ (m ⁻¹ᵁ W) ((m.app W).hom f)) ∧ ∀ δ₀, PtDer y δ₀ → (∀ a, δ₀ ⊤ (constFn Y.hom ⊤ a) = 0) → (∀ W f, ⊤ ≤ (y ≫ m) ⁻¹ᵁ W → δ₀ (m ⁻¹ᵁ W) ((m.app W).hom f) = 0) → ∀ O f, ⊤ ≤ y ⁻¹ᵁ O → δ₀ O f = 0 := by
   intro Y R _ x₀ X p m hP y hy

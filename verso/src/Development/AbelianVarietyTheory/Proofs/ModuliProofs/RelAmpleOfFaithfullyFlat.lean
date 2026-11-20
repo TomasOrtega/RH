@@ -20,9 +20,9 @@ open GlobalTheory.ZM
 namespace GlobalTheory.AmpleDescent
 
 /- English proof (translation)
-Introduce `R R' _ _ _ _ _ _ _ B B' _ _ φ L L' hB h hL hL' hw hA`. Establish `: Flat (Out.specOf (algebraMap R R'))` using `(HasRingHomProperty.Spec_iff (P := @Flat)).2 (RingHom.flat_algebraMap_iff.2 inferInstance)`. Establish `: Surjective (Out.specOf (algebraMap R R'))` using `⟨PrimeSpectrum.comap_surjective_of_faithfullyFlat (A := R) (B := R')⟩`. Establish `: IsProper B.hom` using `hB.proper`. Establish `: IsProper B'.hom` using `MorphismProperty.of_isPullback (P := @IsProper) h.1 inferInstance`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: CompactSpace B.left` using `QuasiCompact.compactSpace_of_compactSpace B.hom`. Establish `: QuasiSeparatedSpace B.left` using `quasiSeparatedSpace_of_quasiSeparated B.hom`. Use `(relAmple_iff_isAmpleLB_of_isAffine B hL).2 (isAmpleLB_of_pull (algebraMap R R') h.1 hL ?_)` and prove the remaining obligations. Conclude with `(isAmpleLB_of_relAmple_of_isAffine B' hL' hA).of_lbIso (LB.isLB_pull hL φ) hw.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem relAmple_of_faithfullyFlat : ∀ (R R' : Type) [CommRing R] [IsLocalRing R] [IsNoetherianRing R] [CommRing R'] [IsLocalRing R'] [Algebra R R'] [Module.FaithfullyFlat R R'] (B : Over (Sp R)) (B' : Over (Sp R')) [GrpObj B] [GrpObj B'] (φ : B'.left ⟶ B.left) (L : LB B.left) (L' : LB B'.left), IsAbelianScheme B → IsGrpPullback B' B (spMap (algebraMap R R')) φ → L.IsLB → L'.IsLB → LBIso L' (L.pull φ) → RelAmple B' L' → RelAmple B L := by
   intro R R' _ _ _ _ _ _ _ B B' _ _ φ L L' hB h hL hL' hw hA

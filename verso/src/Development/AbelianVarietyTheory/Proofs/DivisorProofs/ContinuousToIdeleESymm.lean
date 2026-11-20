@@ -16,9 +16,9 @@ open GroundTheory.Global GroundTheory.Global.AdeleBaseChange
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Use `Units.ext (Prod.ext ?_ (mul_one _).symm)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(InfiniteAdeleRing.ringEquiv_mixedSpace F).symm _ = (InfiniteAdeleRing.ringEquiv_mixedSpace F).symm _ * (InfiniteAdeleRing.ringEquiv_mixedSpace F).symm _`. Rewrite using `[← map_mul]`. Use `congr 1`. Use `Prod.ext (funext fun _ => ?_) (funext fun _ => ?_)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[Real.exp_add]`. Simplify using `[Real.exp_add]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem archUnitF_add (c d : ℝ) : archUnitF F (c + d) = archUnitF F c * archUnitF F d := by
   refine Units.ext (Prod.ext ?_ (mul_one _).symm)
@@ -31,14 +31,14 @@ theorem archUnitF_add (c d : ℝ) : archUnitF F (c + d) = archUnitF F c * archUn
   · simp [Real.exp_add]
 
 /- English proof (translation)
-Rewrite using `[archUnit, archUnitF_add, map_mul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem archUnit_add (c d : ℝ) : archUnit F E (c + d) = archUnit F E c * archUnit F E d := by
   rw [archUnit, archUnitF_add, map_mul]
   rfl
 
 /- English proof (translation)
-Establish `h : ⇑(InfiniteAdeleRing.ringEquiv_mixedSpace F).symm = (homeomorphMixedSpace F).symm` using `funext fun p => by`. Apply `(InfiniteAdeleRing.ringEquiv_mixedSpace F).injective` to reduce the goal to its premises. Rewrite using `[RingEquiv.apply_symm_apply, ← homeomorphMixedSpace_apply, Homeomorph.apply_symm_apply]`. Rewrite using `[h]`. Conclude with `(homeomorphMixedSpace F).symm.continuous`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_mixed_symm : Continuous (InfiniteAdeleRing.ringEquiv_mixedSpace F).symm := by
   have h : ⇑(InfiniteAdeleRing.ringEquiv_mixedSpace F).symm = (homeomorphMixedSpace F).symm := funext fun p => by
@@ -48,9 +48,9 @@ theorem continuous_mixed_symm : Continuous (InfiniteAdeleRing.ringEquiv_mixedSpa
   exact (homeomorphMixedSpace F).symm.continuous
 
 /- English proof (translation)
-Establish `hp : ∀ s : ℝ, Continuous fun c : ℝ => (InfiniteAdeleRing.ringEquiv_mixedSpace F).symm (fun _ => Real.exp (s * c), fun _ => ((Real.exp (s * c) : ℝ) : ℂ))` using `fun s => continuous_mixed_symm.comp ((continuous_pi fun _ => by fun_prop).prodMk (continuous_pi fun _ => by fun_prop))`. Rewrite using `[Units.continuous_iff]`. Prove the components needed by the constructor for the conclusion. Use `((hp 1).prodMk (continuous_const (y := (1 : IsDedekindDomain.FiniteAdeleRing (𝓞 F) F)))).congr fun c => ?_` and prove the remaining obligations. Simplify using `only [one_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Both sides reduce to the same expression. Use `((hp (-1)).prodMk (continuous_const (y := (1 : IsDedekindDomain.FiniteAdeleRing (𝓞 F) F)))).congr fun c => ?_` and prove the remaining obligations. Simplify using `only [neg_one_mul]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem continuous_archUnitF : Continuous (archUnitF F) := by
   have hp : ∀ s : ℝ, Continuous fun c : ℝ => (InfiniteAdeleRing.ringEquiv_mixedSpace F).symm
@@ -66,7 +66,7 @@ theorem continuous_archUnitF : Continuous (archUnitF F) := by
     rfl
 
 /- English proof (translation)
-Use `haveI : IsModuleTopology (AF F) (AF F ⊗[F] E) := ⟨rfl⟩`. Use `haveI := GlobalTheory.Doubling.isTopologicalRing_tens (F := F) (E := E) (R := AF F)`. Establish `h : Continuous (algebraMap (AF F) (AF F ⊗[F] E))` using `IsModuleTopology.continuous_of_linearMap (Algebra.linearMap (AF F) (AF F ⊗[F] E))`. Conclude with `(Continuous.units_map _ h).comp continuous_archUnitF`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem continuous_archUnit : Continuous (archUnit F E) := by
   haveI : IsModuleTopology (AF F) (AF F ⊗[F] E) := ⟨rfl⟩
@@ -79,7 +79,7 @@ def toIdeleE : (AF F ⊗[F] E)ˣ ≃* IdeleGroup E :=
   Units.mapEquiv (adeleTensorAlgEquivLeft F E).toRingEquiv.toMulEquiv
 
 /- English proof (translation)
-Use `haveI : IsModuleTopology (AF F) (AF F ⊗[F] E) := ⟨rfl⟩`. Use `haveI := isModuleTopology_adeleRing (K := F) (L := E)`. Use `haveI := GlobalTheory.Doubling.isTopologicalRing_tens (F := F) (E := E) (R := AF F)`. Establish `h : Continuous (adeleTensorAlgEquivLeft F E)` using `IsModuleTopology.continuous_of_linearMap (adeleTensorAlgEquivLeft F E).toLinearEquiv.toLinearMap`. Conclude with `Continuous.units_map ((adeleTensorAlgEquivLeft F E).toRingEquiv.toMulEquiv.toMonoidHom) h`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem continuous_toIdeleE : Continuous (toIdeleE (F := F) (E := E)) := by
   haveI : IsModuleTopology (AF F) (AF F ⊗[F] E) := ⟨rfl⟩
@@ -90,7 +90,7 @@ theorem continuous_toIdeleE : Continuous (toIdeleE (F := F) (E := E)) := by
   exact Continuous.units_map ((adeleTensorAlgEquivLeft F E).toRingEquiv.toMulEquiv.toMonoidHom) h
 
 /- English proof (translation)
-Use `haveI : IsModuleTopology (AF F) (AF F ⊗[F] E) := ⟨rfl⟩`. Use `haveI := isModuleTopology_adeleRing (K := F) (L := E)`. Use `haveI := GlobalTheory.Doubling.isTopologicalRing_tens (F := F) (E := E) (R := AF F)`. Establish `h : Continuous (adeleTensorAlgEquivLeft F E).symm` using `IsModuleTopology.continuous_of_linearMap (adeleTensorAlgEquivLeft F E).symm.toLinearEquiv.toLinearMap`. Conclude with `Continuous.units_map ((adeleTensorAlgEquivLeft F E).symm.toRingEquiv.toMulEquiv.toMonoidHom) h`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem continuous_toIdeleE_symm : Continuous (toIdeleE (F := F) (E := E)).symm := by
   haveI : IsModuleTopology (AF F) (AF F ⊗[F] E) := ⟨rfl⟩
@@ -101,7 +101,7 @@ theorem continuous_toIdeleE_symm : Continuous (toIdeleE (F := F) (E := E)).symm 
   exact Continuous.units_map ((adeleTensorAlgEquivLeft F E).symm.toRingEquiv.toMulEquiv.toMonoidHom) h
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `adeleTensorAlgEquivLeft F E ((1 : AF F) ⊗ₜ[F] (e : E)) = _`. Rewrite using `[adeleTensorAlgEquivLeft_tmul, map_one, mul_one, IdeleGroup.coe_diagonal]`.
+Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem toIdeleE_inclR (e : Eˣ) :
     toIdeleE (Units.map (inclR (F := F) (AF F)).toMonoidHom e) = IdeleGroup.diagonal E e := by
@@ -110,15 +110,15 @@ theorem toIdeleE_inclR (e : Eˣ) :
   rw [adeleTensorAlgEquivLeft_tmul, map_one, mul_one, IdeleGroup.coe_diagonal]
 
 /- English proof (translation)
-Take `⟨D, hD, -, hxD⟩` from `IdeleGroup.exists_isCompact_normOneSubgroup E`. Take `⟨B, hB⟩` from `hD.exists_bound_of_continuousOn (hg.comp continuous_toIdeleE_symm).continuousOn`. Establish `h1 : g 1 = 0` using `by have := hmul 1 1; rw [mul_one] at this; linarith`. Establish `hpow : ∀ n : ℕ, g (y ^ n) = n * g y`. Introduce `n`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `n with`. Consider the case `zero => simp [h1]`. Consider the case `succ n ih => rw [pow_succ, hmul, ih]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Proceed by induction. Treat this case separately. Treat this case separately. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `key : ∀ n : ℕ, |(n : ℝ) * g y| ≤ B`. Introduce `n`. Take `⟨k, hk⟩` from `hxD (toIdeleE (y ^ n)) (by rw [map_pow]; exact pow_mem hy n)`. Establish `e1 : toIdeleE.symm (IdeleGroup.diagonal E k * toIdeleE (y ^ n)) = Units.map (inclR (F` using `F) (AF F)).toMonoidHom k * y ^ n := by`. Rewrite using `[map_mul, MulEquiv.symm_apply_apply, ← toIdeleE_inclR (F := F) k, MulEquiv.symm_apply_apply]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `hB _ hk` as an intermediate fact. Rewrite `this` using `[Function.comp_apply, e1, hmul, hprin, zero_add, hpow, Real.norm_eq_abs]`. Conclude with `this`. Assume the negation of the conclusion as `hne`. Establish `hpos : 0 < |g y|` using `abs_pos.2 hne`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨n, hn⟩` from `exists_nat_gt (B / |g y|)`. Establish `h2` using `key n`. Rewrite `h2` using `[abs_mul, Nat.abs_cast]`. Establish `h3` using `(div_lt_iff₀ hpos).1 hn`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_normOne (g : (AF F ⊗[F] E)ˣ → ℝ) (hg : Continuous g) (hmul : ∀ a b, g (a * b) = g a + g b)
     (hprin : ∀ e : Eˣ, g (Units.map (inclR (F := F) (AF F)).toMonoidHom e) = 0) (y : (AF F ⊗[F] E)ˣ)
@@ -149,13 +149,13 @@ theorem eq_zero_of_normOne (g : (AF F ⊗[F] E)ˣ → ℝ) (hg : Continuous g) (
   linarith
 
 /- English proof (translation)
-Use `haveI := hσ.1`. Establish `hN : Algebra.norm (AF F) ((archUnit F E c : (AF F ⊗[F] E)ˣ) : AF F ⊗[F] E) = ((archUnitF F c : (AF F)ˣ) : AF F) ^ 2`. Express the relevant statement in the definitionally equal form `Algebra.norm (AF F) (algebraMap (AF F) (AF F ⊗[F] E) (archUnitF F c : AF F)) = _`. Rewrite using `[Algebra.norm_algebraMap, Module.finrank_baseChange, hσ.2.2.1]`. Establish `hinf : ∀ w : InfinitePlace F, ‖evInf F w ((archUnitF F c : (AF F)ˣ) : AF F)‖ = Real.exp c`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `w`. Establish `hw : w.IsReal` using `IsTotallyReal.isReal w`. Establish `h` using `congrArg (fun p => p.1 ⟨w, hw⟩) ((InfiniteAdeleRing.ringEquiv_mixedSpace F).apply_symm_apply (fun _ => Real.exp c, fun _ => ((Real.exp c : ℝ) : ℂ)))`. Simplify using `only [InfiniteAdeleRing.ringEquiv_mixedSpace_apply] at h`. Express the relevant statement in the definitionally equal form `‖(InfiniteAdeleRing.ringEquiv_mixedSpace F).symm (fun _ => Real.exp c, fun _ => ((Real.exp c : ℝ) : ℂ)) w‖ = _`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← (InfinitePlace.Completion.isometry_extensionEmbeddingOfIsReal hw).norm_map_of_map_zero (map_zero _), h, Real.norm_eq_abs, abs_of_pos (Real.exp_pos c)]`. Establish `hfin : ∀ v, evFin F v ((archUnitF F c : (AF F)ˣ) : AF F) = 1` using `fun v => rfl`. Rewrite using `[GlobalTheory.Doubling.absE_apply]`. Simplify using `only [GlobalTheory.Doubling.absEw_unitInf, GlobalTheory.Doubling.absEv_unitFin, hN, map_pow, hfin, one_pow, nnnorm_one, finprod_one, mul_one, NNReal.coe_prod, NNReal.coe_pow, coe_nnnorm, norm_pow, hinf]`. Rewrite using `[Finset.prod_pow_eq_pow_sum, InfinitePlace.sum_mult_eq, ← pow_mul, ← Real.exp_nat_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Put the polynomial expressions in normal form.
+Put the polynomial expressions in normal form. A detailed English derivation is pending.
 -/
 theorem absE_archUnit {σ : E →ₐ[F] E} (hσ : IsCMExt F E σ) (c : ℝ) :
     (absE F E (archUnit F E c) : ℝ) = Real.exp (2 * Module.finrank ℚ F * c) := by

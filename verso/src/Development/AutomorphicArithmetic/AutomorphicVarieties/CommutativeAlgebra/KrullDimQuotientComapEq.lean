@@ -4,9 +4,9 @@ import ReciprocityTheory.GaloisValuations.ContinuousConstSMulQuotient
 open IsLocalRing MvPowerSeries UpperTheory.V.Alg
 
 /- English proof (translation)
-Establish `hB : Module.Finite k B`. Use `⟨Submodule.fg_of_fg_map_of_fg_inf_ker p (IsNoetherian.noetherian _) ?_⟩` and prove the remaining obligations. Rewrite using `[top_inf_eq, ← h2, LinearMap.range_eq_map]`. Conclude with `Submodule.FG.map _ Module.Finite.fg_top`. Establish `e1` using `LinearMap.finrank_range_add_finrank_ker β`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2` using `LinearMap.finrank_range_add_finrank_ker p`. Establish `e3` using `LinearMap.finrank_range_of_inj h0`. Rewrite `e1` using `[← h1, h2]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 private theorem krull_dim_quotient_comap_eq {k Z A B C : Type} [Field k] [AddCommGroup Z] [Module k Z] [AddCommGroup A] [Module k A]
     [AddCommGroup B] [Module k B] [AddCommGroup C] [Module k C] [Module.Finite k A] [Module.Finite k C]
@@ -24,9 +24,9 @@ private theorem krull_dim_quotient_comap_eq {k Z A B C : Type} [Field k] [AddCom
   omega
 
 /- English proof (translation)
-Rewrite using `[IsLocallyConstant.iff_exists_open]`. Introduce `x`. Use `⟨(fun y => x⁻¹ * y) ⁻¹' (ρ.ker : Set Γ), h.preimage (by fun_prop), by simp, fun y hy => ?_⟩` and prove the remaining obligations. Establish `hy' : ρ (x⁻¹ * y) = 1` using `hy`. Establish `: ρ y = ρ x` using `by conv_lhs => rw [← mul_inv_cancel_left x y, map_mul, hy', mul_one]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[this]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem cob_lc {k Γ M : Type} [Field k] [Group Γ] [TopologicalSpace Γ] [IsTopologicalGroup Γ]
     [AddCommGroup M] [Module k M] (ρ : Representation k Γ M) (h : IsOpen (ρ.ker : Set Γ)) (m : M) :
@@ -40,51 +40,47 @@ private theorem cob_lc {k Γ M : Type} [Field k] [Group Γ] [TopologicalSpace Γ
   rw [this]
 
 /- English proof (translation)
-Introduce `k Γ M _ _ _ _ _ _ _ _ _ _ _ ρ hρ F hN hfin`. Set `δ : ReciprocityTheory.Gal.H0 ρ →ₗ[k] (∀ v, ReciprocityTheory.Gal.H0 (ρ.comp (F.φ v) : Representation k _ M))` to `LinearMap.pi fun v => ReciprocityTheory.Gal.resH0 ρ (F.φ v)`. Set `β : (∀ v, ReciprocityTheory.Gal.H0 (ρ.comp (F.φ v) : Representation k _ M)) →ₗ[k] F.H1c ρ` to `{ toFun := fun b => ⟨(fun g => ρ g (-(b F.v0).1) - (-(b F.v0).1), fun v => (b v).1 - (b F.v0).1), cob_lc ρ hρ _, fun s t => by`. Simplify using `only [map_mul, Module.End.mul_apply, map_sub]`. Use the proof step `abel,`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `fun q n hn => by simp [hN q n hn],`. Use `fun v s => by`. Establish `: ρ (F.φ v s) (b v).1 = (b v).1` using `(b v).2 s`. Simplify using `only [map_sub, map_neg, this]`. Use the proof step `abel,`.
+Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 
-Use `sub_self _⟩`. Use the proof step `map_add' := fun b b' => by`. Apply `Subtype.ext` to reduce the goal to its premises. Use `Prod.ext (funext fun g => ?_) (funext fun v => ?_)` and prove the remaining obligations. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Normalize the expressions using the abelian group laws. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Use the proof step `map_smul' := fun c b => by`. Apply `Subtype.ext` to reduce the goal to its premises.
+Simplify using the standard rewrite rules. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `Prod.ext (funext fun g => ?_) (funext fun v => ?_)` and prove the remaining obligations. Simplify using `[smul_add]`. Simplify using `[smul_sub] }`. Set `p0 : F.H1c ρ →ₗ[k] ReciprocityTheory.Gal.Z1 ρ` to `{ toFun := fun x => ⟨x.1.1, x.2.1.continuous, x.2.2.1⟩ map_add' := fun _ _ => rfl map_smul' := fun _ _ => rfl }`. Set `p : F.H1c ρ →ₗ[k] ReciprocityTheory.Gal.H1 ρ` to `(Submodule.mkQ _).comp p0`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Establish `h0 : Function.Injective δ`. Introduce `x y hxy`. Use `congrArg (fun b => (b F.v0).1) hxy` as an intermediate fact. Conclude with `Subtype.ext this`. Establish `h1 : LinearMap.range δ = LinearMap.ker β`.
+Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `b`. Rewrite using `[LinearMap.mem_ker]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨m, rfl⟩`. Apply `Subtype.ext` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `Prod.ext (funext fun g => ?_) (funext fun v => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `ρ g (-m.1) - (-m.1) = 0`. Rewrite using `[map_neg, (ReciprocityTheory.Gal.mem_riemannRochSpace_iff_regularAt_everywhere ρ m.1).1 m.2 g, sub_self]`. Conclude with `sub_self m.1`. Introduce `hb`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `e1 : ∀ g, ρ g (-(b F.v0).1) - (-(b F.v0).1) = 0` using `fun g => congrArg (fun x : F.H1c ρ => x.1.1 g) hb`. Establish `e2 : ∀ v, (b v).1 - (b F.v0).1 = 0` using `fun v => congrArg (fun x : F.H1c ρ => x.1.2 v) hb`. Use `⟨⟨(b F.v0).1, (ReciprocityTheory.Gal.mem_riemannRochSpace_iff_regularAt_everywhere ρ _).2 fun g => ?_⟩, funext fun v => Subtype.ext ?_⟩` and prove the remaining obligations. Use `e1 g` as an intermediate fact. Rewrite `this` using `[map_neg, sub_eq_zero]`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `neg_injective this`. Conclude with `(sub_eq_zero.1 (e2 v)).symm`. Establish `h2 : LinearMap.range β = LinearMap.ker p`. Use extensionality with `x`. Rewrite using `[LinearMap.mem_ker]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `_ ↔ Submodule.Quotient.mk (p0 x) = 0`. Rewrite using `[Submodule.Quotient.mk_eq_zero, Submodule.mem_comap, ReciprocityTheory.Gal.mem_coboundaries1]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨b, rfl⟩`. Conclude with `⟨-(b F.v0).1, fun g => rfl⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Introduce and unpack `⟨m, hm⟩`. Establish `hm' : ∀ g, x.1.1 g = ρ g m - m` using `hm`. Take `⟨-, -, -, a4, a5⟩` from `x.2`. Use `⟨fun v => ⟨x.1.2 v - m, (ReciprocityTheory.Gal.mem_riemannRochSpace_iff_regularAt_everywhere _ _).2 fun s => ?_⟩, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `ρ (F.φ v s) (x.1.2 v - m) = x.1.2 v - m`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Use `a4 v s` as an intermediate fact. Rewrite `this` using `[hm']`. Rewrite using `[map_sub, sub_eq_sub_iff_sub_eq_sub, this]`. Apply `Subtype.ext` to reduce the goal to its premises. Use `Prod.ext (funext fun g => ?_) (funext fun v => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `ρ g (-(x.1.2 F.v0 - m)) - (-(x.1.2 F.v0 - m)) = x.1.1 g`. Rewrite using `[a5, hm']`. Simplify using the standard rewrite rules. Express the relevant statement in the definitionally equal form `x.1.2 v - m - (x.1.2 F.v0 - m) = x.1.2 v`. Rewrite using `[a5]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Normalize the expressions using the abelian group laws. Establish `key : ∀ c : ReciprocityTheory.Gal.Z1 ρ, (Submodule.Quotient.mk c : ReciprocityTheory.Gal.H1 ρ) ∈ (ReciprocityTheory.Gal.Sha1 ρ F.φ F.hφ ⊓ ReciprocityTheory.Gal.Sel ρ F.ψ F.hψ (fun q => ReciprocityTheory.Gal.H1ur (ρ.comp (F.ψ q) : Representation k _ M) (F.N q)) : Submodule k (Reci …`. Introduce `c`. Rewrite using `[Submodule.mem_inf, ReciprocityTheory.Gal.mem_Sel, ReciprocityTheory.Gal.Sha1, Submodule.mem_iInf]`. Use `and_congr (forall_congr' fun v => ?_) (forall_congr' fun q => ?_)` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[LinearMap.mem_ker, ReciprocityTheory.Gal.resH1, Submodule.mapQ_apply, Submodule.Quotient.mk_eq_zero, Submodule.mem_comap, ReciprocityTheory.Gal.mem_coboundaries1]`. Both sides reduce to the same expression. Rewrite using `[ReciprocityTheory.Gal.H1ur, LinearMap.mem_ker, ReciprocityTheory.Gal.resH1]`. Use `(Submodule.Quotient.mk_eq_zero _).trans ?_` and prove the remaining obligations. Rewrite using `[ Submodule.mem_comap, ReciprocityTheory.Gal.mem_coboundaries1]`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨m, hm⟩ n hn`. Establish `: c.1 (F.ψ q n) = ρ (F.ψ q n) m - m` using `hm ⟨n, hn⟩`. Rewrite using `[this, hN q n hn]`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Use `⟨0, fun n => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `c.1 (F.ψ q n.1) = ρ (F.ψ q n.1) 0 - 0`. Rewrite using `[h n.1 n.2]`. Simplify using the standard rewrite rules.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 
-Establish `h3 : LinearMap.range p = (ReciprocityTheory.Gal.Sha1 ρ F.φ F.hφ ⊓ ReciprocityTheory.Gal.Sel ρ F.ψ F.hψ (fun q => ReciprocityTheory.Gal.H1ur (ρ.comp (F.ψ q) : Representation k _ M) (F.N q)) : Submodule k (ReciprocityTheory.Gal.H1 ρ))`. Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, rfl⟩`. Take `⟨-, -, a3, a4, -⟩` from `x.2`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(key (p0 x)).2 ⟨fun v => ⟨x.1.2 v, a4 v⟩, a3⟩`. Introduce `hy`. Take `⟨c, rfl⟩` from `Submodule.Quotient.mk_surjective _ y`. Take `⟨k1, k2⟩` from `(key c).1 hy`. Use `choose m hm using k1`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact.
 
-Use `⟨⟨(fun g => c.1 g - (ρ g (m F.v0) - m F.v0), fun v => m v - m F.v0), ((IsLocallyConstant.iff_continuous _).2 c.2.1).sub (cob_lc ρ hρ _), fun s t => ?_, fun q n hn => ?_, fun v s => ?_, sub_self _⟩, ?_⟩` and prove the remaining obligations. Simplify using `only [c.2.2 s t, map_mul, Module.End.mul_apply, map_sub]`. Normalize the expressions using the abelian group laws. Simplify using `[k2 q n hn, hN q n hn]`. Simplify using `only [hm, map_sub]`.
-
-Normalize the expressions using the abelian group laws. Express the relevant statement in the definitionally equal form `Submodule.Quotient.mk _ = _`. Rewrite using `[Submodule.Quotient.eq, Submodule.mem_comap, ReciprocityTheory.Gal.mem_coboundaries1]`. Use `⟨-m F.v0, fun g => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `c.1 g - (ρ g (m F.v0) - m F.v0) - c.1 g = _`.
-
-Rewrite using `[map_neg]`. Normalize the expressions using the abelian group laws. Use `krull_dim_quotient_comap_eq δ β p h0 h1 h2` as an intermediate fact. Rewrite `this` using `[h3, Module.finrank_pi_fintype]`. Conclude with `this`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Alg.finrank_compact_support_H1 :
     ∀ (k Γ M : Type) [Field k] [Group Γ] [TopologicalSpace Γ] [IsTopologicalGroup Γ] [AddCommGroup M] [Module k M] [Module.Finite k M] [TopologicalSpace M] [DiscreteTopology M] [IsTopologicalAddGroup M] [ContinuousConstSMul k M]

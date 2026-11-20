@@ -16,7 +16,7 @@ namespace CrystallineSemistableComparison.Pb.Kap
 variable {l : ℕ} [Fact l.Prime] {K : IntermediateField ℚ_[l] (PadicAlgCl l)}
 
 /- English proof (translation)
-Use `sm_proper_q hM` as an intermediate fact. Conclude with `(cov_ex M.q).1 (sm_smooth_q hM)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem cov_sm_pf (M : Model l K) (hM : M.Sm) : Nonempty (Cov M.q) := by
   have := sm_proper_q hM

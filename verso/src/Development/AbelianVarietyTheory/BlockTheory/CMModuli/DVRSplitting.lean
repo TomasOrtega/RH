@@ -15,7 +15,7 @@ def IsFinUnram (V W : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V
   Function.Injective (algebraMap V W) ∧ Module.Finite V W ∧ Algebra.FormallyUnramified V W
 
 /- English proof (translation)
-Take `⟨hi, hf, hu⟩` from `h`. Establish `: FaithfulSMul V W` using `(faithfulSMul_iff_algebraMap_injective V W).mpr hi`. Establish `: IsLocalHom (algebraMap V W)` using `inferInstance`. Conclude with `⟨this, Algebra.FormallyUnramified.map_maximalIdeal⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem IsFinUnram.map_maximalIdeal {V W : Type} [CommRing V] [IsDomain V] [IsDiscreteValuationRing V]
     [CommRing W] [IsDomain W] [IsDiscreteValuationRing W] [Algebra V W] (h : IsFinUnram V W) :

@@ -24,7 +24,7 @@ section One
 variable {K : Type} [Field K] [NumberField K] {n : ℕ}
 
 /- English proof (translation)
-Establish `hb` using `cvBasic (archGroup K n) ν β γ γ β.continuous β.hasCompactSupport γ.continuous γ.hasCompactSupport γ.continuous γ.hasCompactSupport`. Establish `hex : ∃ δ : TI K n, ∀ g, δ g = ∫ x, β x * γ (x⁻¹ * g) ∂ν` using `⟨⟨⟨cv ν β γ, hb.1⟩, hb.2.1⟩, fun _ => rfl⟩`. Unfold `GM.conv`. Rewrite using `[dif_pos hex]`. Conclude with `hex.choose_spec g`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem conv_apply (ν : Measure (archGroup K n)) [ν.IsHaarMeasure] (β γ : TI K n) (g : archGroup K n) :
     GM.conv ν β γ g = cv ν β γ g := by
@@ -38,7 +38,7 @@ private theorem conv_apply (ν : Measure (archGroup K n)) [ν.IsHaarMeasure] (β
 variable [IsTotallyComplex K]
 
 /- English proof (translation)
-Take `⟨hγ, -, -, h4⟩` from `lactCv K n ν α β γ hα h`. Establish `hl` using `lactLaws K n γ hγ`. Rewrite using `[hl.2.2.1 y z]`. Establish `h5 : ∀ g, lact z γ g = cv ν α (lact z β) g` using `h4 hβ z hz`. Conclude with `(lactCv K n ν α (lact z β) (lact z γ) hα h5).2.2.1 y g`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem lact_step (ν : Measure (archGroup K n)) [ν.IsHaarMeasure] (α β γ : TI K n) (hα : SmoothT α)
     (hβ : SmoothT β) (h : ∀ g, γ g = cv ν α β g) (y z : UC K n) (hz : z ∈ Subalgebra.center ℂ (UC K n))
@@ -50,9 +50,9 @@ private theorem lact_step (ν : Measure (archGroup K n)) [ν.IsHaarMeasure] (α 
   exact (lactCv K n ν α (lact z β) (lact z γ) hα h5).2.2.1 y g
 
 /- English proof (translation)
-Introduce `m`. Proceed by induction on `m with`. Consider the case `zero => exact fun φ h => ⟨φ 0, h 0, fun _ => rfl⟩`. Consider the case `succ m ih`. Introduce `φ h`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨γ', h1, h2⟩` from `ih (fun i => φ i.succ) fun i => h _`. Establish `h3 : (γ' : archGroup K n → ℂ) = cvAll ν m (fun i => φ i.succ)` using `funext h2`. Use `⟨GM.conv ν (φ 0) γ', (lactCv K n ν (φ 0) γ' _ (h 0) (conv_apply ν _ _)).1, fun g => ?_⟩` and prove the remaining obligations. Rewrite using `[conv_apply, h3]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem cvAll_ex (ν : Measure (archGroup K n)) [ν.IsHaarMeasure] :
     ∀ (m : ℕ) (φ : Fin (m + 1) → TI K n), (∀ i, SmoothT (φ i)) →
@@ -69,13 +69,13 @@ private theorem cvAll_ex (ν : Measure (archGroup K n)) [ν.IsHaarMeasure] :
     rfl
 
 /- English proof (translation)
-Introduce `m`. Proceed by induction on `m with`. Consider the case `zero`. Introduce `φ z γ _ h g`. Establish `: γ = φ 0` using `DFunLike.ext _ _ h`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Substitute `this` using the available equality. Simplify using `[cvAll]`. Consider the case `succ m ih`. Introduce `φ z γ h hγ g`. Take `⟨γ', h1, h2⟩` from `cvAll_ex ν m (fun i => φ i.succ) fun i => h _`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `h3 : (γ' : archGroup K n → ℂ) = cvAll ν m (fun i => φ i.succ)` using `funext h2`. Establish `h4 : ∀ g, γ g = cv ν (φ 0) γ' g` using `fun g => by`. Rewrite using `[hγ, h3]`. Both sides reduce to the same expression. Establish `h5` using `ih (fun i => φ i.succ) (fun i => z i.succ) γ' (fun i => h _) h2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite using `[Fin.prod_univ_succ, Subalgebra.coe_mul, lact_step ν (φ 0) γ' γ (h 0) h1 h4 _ _ (Subtype.property _) g, funext h5]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem cvAll_lact (ν : Measure (archGroup K n)) [ν.IsHaarMeasure] :
     ∀ (m : ℕ) (φ : Fin (m + 1) → TI K n) (z : Fin (m + 1) → Subalgebra.center ℂ (UC K n)) (γ : TI K n),
@@ -101,9 +101,9 @@ private theorem cvAll_lact (ν : Measure (archGroup K n)) [ν.IsHaarMeasure] :
     rfl
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => exact ⟨hα, fun _ => rfl⟩`. Consider the case `succ k ih`. Use `⟨(lactCv K n ν α (GM.word ν α (List.replicate k none)) _ hα (conv_apply ν _ _)).1, fun g => ?_⟩` and prove the remaining obligations. Establish `h : GM.word ν α (List.replicate (k + 1) none) = GM.conv ν α (GM.word ν α (List.replicate k none))` using `rfl`.
+Proceed by induction. Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[h, conv_apply, funext ih.2]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem pow_word (ν : Measure (archGroup K n)) [ν.IsHaarMeasure] (α : TI K n) (hα : SmoothT α) (k : ℕ) :
     SmoothT (GM.word ν α (List.replicate k none)) ∧ ∀ g, GM.word ν α (List.replicate k none) g = cvPow ν α k g := by
@@ -124,11 +124,11 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   {νF : Measure (archGroup F n)} [νF.IsHaarMeasure] {b a : TI F n} {aE : TI E n} {aF : TI F n}
 
 /- English proof (translation)
-Introduce `g`. Take `⟨hc, -, -, hgc, -⟩` from `archBasic F E σ m D n`. Establish `h3` using `(cvPowers (archGroup F n) νF m (ψ 0) (ψ 0) (ψ 0).continuous (ψ 0).hasCompactSupport (ψ 0).continuous (ψ 0).hasCompactSupport 0).2.2 (fun i => ψ i) (fun i => φ i) (fun i => ⟨(ψ i).continuous, (ψ i).hasCompactSupport⟩) (fun i => ⟨(φ i).continuous, (φ i).hasCompactSupport⟩)`. Establish `h4` using `congrFun h3 (fun i => compA D n i g)`. Simplify using `only [conv_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `Eq.trans ?_ h4` and prove the remaining obligations. Unfold `cv`. Rewrite using `[hm, integral_map hgc.aemeasurable]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun y => ?_)` and prove the remaining obligations. Simplify using `only [h1 _, h2 _, hc, map_mul, map_inv, Pi.mul_apply, Pi.inv_apply]`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Establish `: Continuous fun x : archGroup E n => β₁ x * β₂ (x⁻¹ * g)`. Use `β₁.continuous` as an intermediate fact. Use `β₂.continuous` as an intermediate fact. Use `fun_prop`. Conclude with `this.aestronglyMeasurable`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem conv_tens (hm : νE = Measure.map (glueA D n) (Measure.pi fun _ => νF))
     {ψ φ : Fin (m + 1) → TI F n} {β₁ β₂ : TI E n} (h1 : IsTens D ψ β₁) (h2 : IsTens D φ β₂) :
@@ -154,7 +154,7 @@ private theorem conv_tens (hm : νE = Measure.map (glueA D n) (Measure.pi fun _ 
 variable [IsTotallyComplex F] [IsTotallyComplex E]
 
 /- English proof (translation)
-Establish `hc : Continuous fun x : archGroup F n => conj (b x⁻¹)`. Use `b.continuous` as an intermediate fact. Use `fun_prop`. Establish `hk : HasCompactSupport fun x : archGroup F n => conj (b x⁻¹)` using `(b.hasCompactSupport.comp_homeomorph (Homeomorph.inv _)).comp_left (g := starRingEnd ℂ) (map_zero _)`. Conclude with `(lactCv F n νF b ⟨⟨_, hc⟩, hk⟩ a hs.smooth hs.sq).1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem a_smooth (hs : ArchSlot D νE νF b a aE aF) : SmoothT a := by
   have hc : Continuous fun x : archGroup F n => conj (b x⁻¹) := by
@@ -165,7 +165,7 @@ private theorem a_smooth (hs : ArchSlot D νE νF b a aE aF) : SmoothT a := by
   exact (lactCv F n νF b ⟨⟨_, hc⟩, hk⟩ a hs.smooth hs.sq).1
 
 /- English proof (translation)
-Take `⟨γ, h1, h2⟩` from `cvAll_ex νF m (fun _ => a) fun _ => a_smooth hs`. Establish `: γ = aF` using `DFunLike.ext _ _ fun g => by rw [h2, hs.pow]; rfl`. Conclude with `this ▸ h1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem aF_smooth (hs : ArchSlot D νE νF b a aE aF) : SmoothT aF := by
   obtain ⟨γ, h1, h2⟩ := cvAll_ex νF m (fun _ => a) fun _ => a_smooth hs
@@ -173,15 +173,15 @@ private theorem aF_smooth (hs : ArchSlot D νE νF b a aE aF) : SmoothT aF := by
   exact this ▸ h1
 
 /- English proof (translation)
-Establish `ha` using `a_smooth hs`. Consider the cases of `x with`. Consider the case `none`. Use `⟨1, fun g => ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [Pi.one_apply, OneMemClass.coe_one, (lactLaws F n a ha).2.1]`.
+Establish an intermediate fact. Split into cases according to the possible forms of the given data. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Conclude with `hs.tens g`. Simplify using `only [Pi.one_apply, Finset.prod_const_one, OneMemClass.coe_one, (lactLaws F n aF (aF_smooth hs)).2.1]`. Both sides reduce to the same expression. Consider the case `some x`. Take `⟨τ, i⟩` from `x`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨k, hk⟩` from `(positionOf F E σ m D).1 τ`. Set `c : Subalgebra.center ℂ (UC F n)` to `⟨zc (τ.comp (algebraMap F E)) i, (jUnique F n _).2 i⟩`. Use `⟨Function.update 1 k c, fun g => ?_, ?_⟩` and prove the remaining obligations. Establish `h` using `lactTens F E σ m D n τ k hk (fun _ => a) aE (fun _ => ha) hs.tens i g`. Use `h.trans (Finset.prod_congr rfl fun j _ => ?_)` and prove the remaining obligations.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hj : j = k`. Substitute `hj` using the available equality. Simplify using `[c]`. Simplify using `[Function.update_of_ne hj, (lactLaws F n a ha).2.1]`. Establish `: (∏ i, (Function.update 1 k c : Fin (m + 1) → Subalgebra.center ℂ (UC F n)) i) = c`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.prod_update_of_mem (Finset.mem_univ k)]`. Simplify using the standard rewrite rules. Rewrite using `[this]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 private theorem letter_tens (hs : ArchSlot D νE νF b a aE aF) (x : Option (Ix E n)) :
     ∃ y : Fin (m + 1) → Subalgebra.center ℂ (UC F n), IsTens D (fun i => lact (y i) a) (GM.letter aE x) ∧
@@ -212,15 +212,13 @@ private theorem letter_tens (hs : ArchSlot D νE νF b a aE aF) (x : Option (Ix 
       rfl
 
 /- English proof (translation)
-Establish `ha` using `a_smooth hs`. Establish `hA` using `aF_smooth hs`. Proceed by induction on `w with`. Consider the case `nil`. Use `⟨1, fun g => ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Pi.one_apply, OneMemClass.coe_one, List.length_nil, List.replicate_zero]`. Simplify using `only [GM.word, (lactLaws F n a ha).2.1]`. Conclude with `hs.tens g`. Simplify using `only [Pi.one_apply, Finset.prod_const_one, OneMemClass.coe_one, List.length_nil, List.replicate_zero, List.map_nil, GM.word, (lactLaws F n aF hA).2.1]`. Consider the case `cons x w ih`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨y, hy1, hy2⟩` from `letter_tens hs x`. Take `⟨z, hz1, hz2⟩` from `ih`. Use `⟨fun i => y i * z i, fun g => ?_, ?_⟩` and prove the remaining obligations. Establish `ht` using `conv_tens hs.meas hy1 hz1 g`. Use `ht.trans (Finset.prod_congr rfl fun i _ => ?_)` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[conv_apply]`. Conclude with `(lact_step νF a _ (GM.word νF a (List.replicate (w.length + 1) none)) ha (pow_word νF a ha _).1 (conv_apply νF _ _) (y i) (z i) (z i).2 _).symm`. Establish `h : GM.word νF aF ((x :: w).map (GM.resIx F)) = GM.conv νF (GM.letter aF (GM.resIx F x)) (GM.word νF aF (w.map (GM.resIx F)))` using `rfl`. Rewrite using `[h, hy2, hz2]`. Use `DFunLike.ext _ _ fun g => ?_` and prove the remaining obligations.
-
-Rewrite using `[conv_apply, Finset.prod_mul_distrib]`. Conclude with `(lact_step νF aF _ (GM.word νF aF (List.replicate (w.length + 1) none)) hA (pow_word νF aF hA _).1 (conv_apply νF _ _) _ _ (Subtype.property _) _).symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem word_main (hs : ArchSlot D νE νF b a aE aF) (w : List (Option (Ix E n))) :
     ∃ z : Fin (m + 1) → Subalgebra.center ℂ (UC F n),
@@ -260,11 +258,11 @@ end UpperTheory.ConvolutionTheory.L1
 
 open UpperTheory.ConvolutionTheory.L1 in
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ _ _ σ m D n νE _ νF _ b a aE aF hs w`. Take `⟨z, h1, h2⟩` from `word_main hs w`. Establish `ha` using `a_smooth hs`. Establish `hA` using `aF_smooth hs`. Take `⟨p1, p2⟩` from `pow_word νF a ha w.length`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨q1, q2⟩` from `pow_word νF aF hA w.length`. Use `⟨fun i => lact (z i) (GM.word νF a (List.replicate w.length none)), h1, fun g => ?_⟩` and prove the remaining obligations. Rewrite using `[h2]`. Use `cvAll_lact νF m (fun _ => GM.word νF a (List.replicate w.length none)) z _ (fun _ => p1) (fun g => ?_) g` and prove the remaining obligations. Establish `h3` using `(cvPowers (archGroup F n) νF m a a a.continuous a.hasCompactSupport a.continuous a.hasCompactSupport w.length).1`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h4 : (aF : archGroup F n → ℂ) = cvPow νF a m` using `funext hs.pow`. Rewrite using `[q2, funext p2, h4, ← h3]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem UpperTheory.ConvolutionTheory.L1.wordTens :
     UpperTheory.ConvolutionTheory.L1.WordTens := by

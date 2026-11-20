@@ -27,21 +27,21 @@ section Calc
 variable {X Y Z : Scheme.{0}}
 
 /- English proof (translation)
-The claim follows from `Units.ext (congr($(f.appLE_map h (homOfLE h').op).hom a.val))`.
+A detailed English derivation is pending.
 -/
 theorem res_pb (f : Y ⟶ X) (U : X.Opens) (W W' : Y.Opens) (h : W ≤ f ⁻¹ᵁ U) (h' : W' ≤ W)
     (a : Γ(X, U)ˣ) : res h' (pb f U W h a) = pb f U W' (h'.trans h) a :=
   Units.ext (congr($(f.appLE_map h (homOfLE h').op).hom a.val))
 
 /- English proof (translation)
-The claim follows from `Units.ext (congr($(f.map_appLE h (homOfLE h').op).hom a.val))`.
+A detailed English derivation is pending.
 -/
 theorem pb_res (f : Y ⟶ X) (U U' : X.Opens) (W : Y.Opens) (h : W ≤ f ⁻¹ᵁ U') (h' : U' ≤ U)
     (a : Γ(X, U)ˣ) : pb f U' W h (res h' a) = pb f U W (h.trans (f.preimage_mono h')) a :=
   Units.ext (congr($(f.map_appLE h (homOfLE h').op).hom a.val))
 
 /- English proof (translation)
-The claim follows from `Units.ext (congr($(Scheme.Hom.appLE_comp_appLE g f U V W h h').hom a.val))`.
+A detailed English derivation is pending.
 -/
 theorem pb_pb (g : Z ⟶ Y) (f : Y ⟶ X) (U : X.Opens) (V : Y.Opens) (W : Z.Opens)
     (h : V ≤ f ⁻¹ᵁ U) (h' : W ≤ g ⁻¹ᵁ V) (a : Γ(X, U)ˣ) :
@@ -49,27 +49,27 @@ theorem pb_pb (g : Z ⟶ Y) (f : Y ⟶ X) (U : X.Opens) (V : Y.Opens) (W : Z.Ope
   Units.ext (congr($(Scheme.Hom.appLE_comp_appLE g f U V W h h').hom a.val))
 
 /- English proof (translation)
-The claim follows from `Units.ext (congr($(f.app_eq_appLE (U := U)).hom a.val))`.
+A detailed English derivation is pending.
 -/
 theorem pullU_eq (f : Y ⟶ X) (U : X.Opens) (a : Γ(X, U)ˣ) :
     pullU f U a = pb f U _ le_rfl a :=
   Units.ext (congr($(f.app_eq_appLE (U := U)).hom a.val))
 
 /- English proof (translation)
-The claim follows from `Units.ext (congr($((X.presheaf.map_comp (homOfLE h).op (homOfLE h').op).symm).hom a.val))`.
+A detailed English derivation is pending.
 -/
 theorem res_res {U V W : X.Opens} (h : V ≤ U) (h' : W ≤ V) (a : Γ(X, U)ˣ) :
     res h' (res h a) = res (h'.trans h) a :=
   Units.ext (congr($((X.presheaf.map_comp (homOfLE h).op (homOfLE h').op).symm).hom a.val))
 
 /- English proof (translation)
-The claim follows from `Units.ext (congr($(X.presheaf.map_id (Opposite.op U)).hom a.val))`.
+A detailed English derivation is pending.
 -/
 theorem res_self {U : X.Opens} (h : U ≤ U) (a : Γ(X, U)ˣ) : res h a = a :=
   Units.ext (congr($(X.presheaf.map_id (Opposite.op U)).hom a.val))
 
 /- English proof (translation)
-Rewrite using `[Scheme.Hom.appTop, Scheme.Hom.app_eq_appLE]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem pb_top_val (f : Y ⟶ X) (h : ⊤ ≤ f ⁻¹ᵁ ⊤) (a : Γ(X, ⊤)ˣ) :
     (pb f ⊤ ⊤ h a).val = f.appTop.hom a.val := by
@@ -93,7 +93,7 @@ def extend (t : Γ(Z, ⊤)ˣ) (i : L.ι) : Γ(Z, b ⁻¹ᵁ L.U i)ˣ :=
 variable {L}
 
 /- English proof (translation)
-Introduce `i i'`. Establish `h` using `congrArg (pb b (L.U j ⊓ L.U i ⊓ L.U i') (b ⁻¹ᵁ (L.U i ⊓ L.U i')) (fun x hx => ⟨⟨hj trivial, hx.1⟩, hx.2⟩)) (hL.cocycle j i i')`. Rewrite `h` using `[map_mul, pb_res, pb_res, pb_res]`. Simplify using `only [extend, map_mul, res_pb, res_res, pullU_eq]`. Rewrite using `[← h, ← _root_.mul_assoc, _root_.mul_comm (pb b _ _ _ (L.g i i'))]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem compat_extend (hL : L.IsLB) (t : Γ(Z, ⊤)ˣ) : Compat L b (extend L b j hj t) := by
   intro i i'
@@ -104,7 +104,7 @@ theorem compat_extend (hL : L.IsLB) (t : Γ(Z, ⊤)ˣ) : Compat L b (extend L b 
   rw [← h, ← _root_.mul_assoc, _root_.mul_comm (pb b _ _ _ (L.g i i'))]
 
 /- English proof (translation)
-Establish `h` using `congrArg (pb b (L.U j) ⊤ hj) (hL.g_self j)`. Rewrite `h` using `[pb_res, map_one]`. Simplify using `only [extend, map_mul, res_pb, res_res, res_self]`. Rewrite using `[h, _root_.one_mul]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem res_extend_self (hL : L.IsLB) (t : Γ(Z, ⊤)ˣ) : res hj (extend L b j hj t j) = t := by
   have h := congrArg (pb b (L.U j) ⊤ hj) (hL.g_self j)
@@ -113,7 +113,7 @@ theorem res_extend_self (hL : L.IsLB) (t : Γ(Z, ⊤)ˣ) : res hj (extend L b j 
   rw [h, _root_.one_mul]
 
 /- English proof (translation)
-Establish `h` using `congrArg (res (show b ⁻¹ᵁ L.U i ≤ b ⁻¹ᵁ (L.U j ⊓ L.U i) from fun x hx => ⟨hj trivial, hx⟩)) (hs j i)`. Rewrite `h` using `[map_mul, res_res, res_res, res_self, pullU_eq, res_pb]`. Rewrite using `[h, extend, res_res]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem eq_extend {s : ∀ i : L.ι, Γ(Z, b ⁻¹ᵁ L.U i)ˣ} (hs : Compat L b s) (i : L.ι) :
     s i = extend L b j hj (res hj (s j)) i := by
@@ -123,9 +123,9 @@ theorem eq_extend {s : ∀ i : L.ι, Γ(Z, b ⁻¹ᵁ L.U i)ˣ} (hs : Compat L b
   rw [h, extend, res_res]
 
 /- English proof (translation)
-Substitute `hg` using the available equality. Introduce `i i'`. Establish `h` using `congrArg (pb g (q ⁻¹ᵁ (L.U i ⊓ L.U i')) ((g ≫ q) ⁻¹ᵁ (L.U i ⊓ L.U i')) le_rfl) (hu i i')`. Rewrite `h` using `[map_mul, pb_res, pb_res, pullU_eq, pb_pb]`. Rewrite using `[res_pb, res_pb, pullU_eq]`.
+Substitute using the available equality. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h`.
+A detailed English derivation is pending.
 -/
 theorem compat_pb {G : Scheme.{0}} {q : G ⟶ B} {u : ∀ i : L.ι, Γ(G, q ⁻¹ᵁ L.U i)ˣ}
     (hu : Compat L q u) (g : Z ⟶ G) (hg : g ≫ q = b) :
@@ -153,7 +153,7 @@ def Univ : Prop :=
         (s k i).val
 
 /- English proof (translation)
-Take `⟨g, ⟨hg, h⟩, -⟩` from `hU Z b (fun k => extend (N k) b (j k) (hj k) (t k)) fun k => compat_extend b (j k) (hj k) (hN k) (t k)`. Use `⟨g, hg, fun k => ?_⟩` and prove the remaining obligations. Establish `e : pb g (q ⁻¹ᵁ (N k).U (j k)) (b ⁻¹ᵁ (N k).U (j k)) (by rw [← hg]; exact le_rfl) (u k (j k)) = extend (N k) b (j k) (hj k) (t k) (j k)` using `Units.ext (h k (j k))`. Rewrite using `[← res_extend_self b (j k) (hj k) (hN k) (t k), ← e, res_pb]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_hom (hN : ∀ k, (N k).IsLB) (hU : Univ N q u) {Z : Scheme.{0}} (b : Z ⟶ B)
     (j : ∀ k, (N k).ι) (hj : ∀ k, ⊤ ≤ b ⁻¹ᵁ (N k).U (j k)) (t : κ → Γ(Z, ⊤)ˣ) :
@@ -167,9 +167,9 @@ theorem exists_hom (hN : ∀ k, (N k).IsLB) (hU : Univ N q u) {Z : Scheme.{0}} (
   rw [← res_extend_self b (j k) (hj k) (hN k) (t k), ← e, res_pb]
 
 /- English proof (translation)
-Establish `c` using `fun k => compat_pb (g ≫ q) (hu k) g rfl`. Establish `c'` using `fun k => compat_pb (g ≫ q) (hu k) g' hg`. Use `(hU Z (g ≫ q) _ c).unique ⟨hg, fun k i => ?_⟩ ⟨rfl, fun k i => rfl⟩` and prove the remaining obligations. Establish `e` using `eq_extend (g ≫ q) (j k) (hj k) (c k) i`. Establish `e'` using `eq_extend (g ≫ q) (j k) (hj k) (c' k) i`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [res_pb] at e e'`. Rewrite `e'` using `[h k, ← e]`. Conclude with `congrArg Units.val e'`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hom_ext (hu : ∀ k, Compat (N k) q (u k)) (hU : Univ N q u) {Z : Scheme.{0}}
     (j : ∀ k, (N k).ι) (g g' : Z ⟶ G) (hg : g' ≫ q = g ≫ q)
@@ -187,7 +187,7 @@ theorem hom_ext (hu : ∀ k, Compat (N k) q (u k)) (hU : Univ N q u) {Z : Scheme
 
 open SplitTorus in
 /- English proof (translation)
-Apply `(pointsEquiv T (κ →₀ ℤ)).injective` to reduce the goal to its premises. Use `Finsupp.addHom_ext' fun k => AddMonoidHom.ext_int ?_` and prove the remaining obligations. Conclude with `Additive.toMul.injective (Units.ext (h k))`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem torus_hom_ext {S : Scheme.{0}} {T : Over S} {a a' : T ⟶ splitTorus S (κ →₀ ℤ)}
     (h : ∀ k, val a (Finsupp.single k 1) = val a' (Finsupp.single k 1)) : a = a' := by
@@ -197,7 +197,7 @@ theorem torus_hom_ext {S : Scheme.{0}} {T : Over S} {a a' : T ⟶ splitTorus S (
 
 open SplitTorus in
 /- English proof (translation)
-Use `⟨ofVal (Finsupp.liftAddHom fun k => zmultiplesHom _ (Additive.ofMul (t k))), fun k => ?_⟩` and prove the remaining obligations. Rewrite using `[val_ofVal]`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem exists_torus_hom {S : Scheme.{0}} {T : Over S} (t : κ → Γ(T.left, ⊤)ˣ) :
     ∃ a : T ⟶ splitTorus S (κ →₀ ℤ), ∀ k, val a (Finsupp.single k 1) = (t k).val := by
@@ -208,19 +208,17 @@ theorem exists_torus_hom {S : Scheme.{0}} {T : Over S} (t : κ → Γ(T.left, �
 open SplitTorus in
 
 /- English proof (translation)
-Set `T` to `splitTorus V (κ →₀ ℤ)`. Establish `lands : ∀ {Z : Scheme.{0}} (c : Z ⟶ V) k, ⊤ ≤ (c ≫ v) ⁻¹ᵁ (N k).U (j k)` using `fun c k => c.preimage_mono (hj k)`. Establish `lands' : ∀ {Z : Scheme.{0}} (a : Z ⟶ G) (c : Z ⟶ V) (_ : a ≫ q = c ≫ v) k, ⊤ ≤ a ⁻¹ᵁ q ⁻¹ᵁ (N k).U (j k)` using `fun a c h k => by`. Rewrite using `[← Scheme.Hom.comp_preimage, h]`. Conclude with `lands c k`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨p, hp, hpu⟩` from `exists_hom hN hU (T.hom ≫ v) j (lands T.hom) fun k => (isUnit_val (𝟙 T) (Finsupp.single k 1)).unit`. Establish `key : ∀ {Z : Over V} (m : Z ⟶ T) k (h : ⊤ ≤ (m.left ≫ p) ⁻¹ᵁ q ⁻¹ᵁ (N k).U (j k)), (pb (m.left ≫ p) (q ⁻¹ᵁ (N k).U (j k)) ⊤ h (u k (j k))).val = val m (Finsupp.single k 1)`. Introduce `Z m k h`. Rewrite using `[← pb_pb m.left p _ ⊤ ⊤ (lands' p T.hom hp k) le_rfl, hpu, pb_top_val]`. Conclude with `(val_eq m _).symm`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `ex : ∀ s : PullbackCone q v, ∃ l : s.pt ⟶ T.left, l ≫ p = s.fst ∧ l ≫ T.hom = s.snd`. Introduce `s`. Take `⟨l, hl⟩` from `exists_torus_hom (T := Over.mk s.snd) fun k => pb s.fst (q ⁻¹ᵁ (N k).U (j k)) ⊤ (lands' _ _ s.condition k) (u k (j k))`. Establish `w : l.left ≫ T.hom = s.snd` using `Over.w l`. Establish `w' : (l.left ≫ p) ≫ q = s.snd ≫ v`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Category.assoc, hp, ← Category.assoc, w]`. Use `⟨l.left, hom_ext hu hU j _ _ (w'.trans s.condition.symm) (lands' _ _ s.condition) (lands' _ _ w') fun k => Units.ext ?_, w⟩` and prove the remaining obligations. Conclude with `(key l k _).trans (hl k)`. Use `⟨p, ⟨hp⟩, ⟨PullbackCone.IsLimit.mk _ (fun s => (ex s).choose) (fun s => (ex s).choose_spec.1) (fun s => (ex s).choose_spec.2) fun s m h₁ h₂ => ?_⟩⟩` and prove the remaining obligations. Take `⟨h₃, h₄⟩` from `(ex s).choose_spec`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Generalize the expression as in `(ex s).choose = l at h₃ h₄`. Establish `: (Over.homMk m h₂ : Over.mk s.snd ⟶ T) = Over.homMk l h₄`. Use `torus_hom_ext fun k => ?_` and prove the remaining obligations. Establish `hm : ⊤ ≤ (m ≫ p) ⁻¹ᵁ q ⁻¹ᵁ (N k).U (j k)` using `by rw [h₁]; exact lands' _ _ s.condition k`. Establish `hl : ⊤ ≤ (l ≫ p) ⁻¹ᵁ q ⁻¹ᵁ (N k).U (j k)` using `by rw [h₃]; exact lands' _ _ s.condition k`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Rewrite using `[← key (Over.homMk m h₂ : Over.mk s.snd ⟶ T) k hm, ← key (Over.homMk l h₄ : Over.mk s.snd ⟶ T) k hl]`. Establish `aux : ∀ (a a' : s.pt ⟶ G) (_ : a = a') h h', pb a (q ⁻¹ᵁ (N k).U (j k)) ⊤ h (u k (j k)) = pb a' (q ⁻¹ᵁ (N k).U (j k)) ⊤ h' (u k (j k))`. Introduce and unpack `a _ rfl _ _`. Both sides reduce to the same expression. Conclude with `congrArg Units.val (aux _ _ (h₁.trans h₃.symm) _ _)`.
-
-Conclude with `congrArg (·.left) this`.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_isPullback (hN : ∀ k, (N k).IsLB) (hu : ∀ k, Compat (N k) q (u k)) (hU : Univ N q u)
     {V : Scheme.{0}} (v : V ⟶ B) (j : ∀ k, (N k).ι) (hj : ∀ k, ⊤ ≤ v ⁻¹ᵁ (N k).U (j k)) :
@@ -264,11 +262,9 @@ theorem exists_isPullback (hN : ∀ k, (N k).IsLB) (hu : ∀ k, Compat (N k) q (
   exact congrArg (·.left) this
 
 /- English proof (translation)
-Set `W : (∀ k, (N k).ι) → B.Opens` to `fun j => ⟨⋂ k, ((N k).U (j k) : Set B), isOpen_iInter_of_finite fun k => ((N k).U (j k)).isOpen⟩`. Establish `hW : iSup W = ⊤`. Use `top_le_iff.1 fun x _ => ?_` and prove the remaining obligations. Establish `: ∀ k, ∃ i, x ∈ (N k).U i` using `fun k => TopologicalSpace.Opens.mem_iSup.1 ((hN k).cover.ge trivial)`. Use `choose j hj using this`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨j, Set.mem_iInter.2 hj⟩`. Use `IsZariskiLocalAtTarget.of_iSup_eq_top W hW fun j => ?_` and prove the remaining obligations. Take `⟨p, hp⟩` from `exists_isPullback hN hu hU (W j).ι j fun k x _ => Set.mem_iInter.1 x.2 k`. Establish `h` using `(isPullback_morphismRestrict q (W j)).flip`. Rewrite using `[← h.isoIsPullback_hom_snd _ _ hp, MorphismProperty.cancel_left_of_respectsIso P]`.
-
-Conclude with `hP _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem prop_of_torus [Fintype κ] (P : MorphismProperty Scheme.{0}) [IsZariskiLocalAtTarget P]
     (hP : ∀ V : Scheme.{0}, P (splitTorus V (κ →₀ ℤ)).hom)
@@ -293,11 +289,9 @@ end Many
 end GenScheme
 
 /- English proof (translation)
-Introduce `B κ _ N hN G q u ⟨hu, hU⟩`. Establish `hc : GeometricallyConnected q`. Establish `: IsZariskiLocalAtTarget @GeometricallyConnected`. Rewrite using `[GeometricallyConnected.eq_geometrically]`. Use `infer_instance`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `GenScheme.prop_of_torus @GeometricallyConnected (fun V => inferInstance) hN hu hU`. Establish `: IsZariskiLocalAtTarget @IsAffineHom` using `HasAffineProperty.instIsZariskiLocalAtTarget (P := @IsAffineHom)`. Establish `: IsZariskiLocalAtTarget @Smooth` using `HasRingHomProperty.instIsZariskiLocalAtTarget (P := @Smooth)`. Establish `ha : IsAffineHom q` using `GenScheme.prop_of_torus @IsAffineHom (fun V => inferInstance) hN hu hU`. Use `⟨ha, GenScheme.prop_of_torus @Smooth (fun V => ?_) hN hu hU, inferInstance, inferInstance, hc⟩` and prove the remaining obligations.
-
-Use `H1.torus_dim V (κ →₀ ℤ)` as an intermediate fact. Conclude with `SmoothOfRelativeDimension.smooth (Module.finrank ℤ (κ →₀ ℤ)) _`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem generatorScheme_properties :
     ∀ (B : Scheme.{0}) (κ : Type) [Fintype κ] (N : κ → LB B), (∀ k, (N k).IsLB) → ∀ (G : Scheme.{0}) (q : G ⟶ B) (u : ∀ k (i : (N k).ι), Γ(G, q ⁻¹ᵁ (N k).U i)ˣ), ((∀ k i i', res (Scheme.Hom.preimage_mono q (inf_le_right : (N k).U i ⊓ (N k).U i' ≤ (N k).U i')) (u k i') = pullU q _ ((N k).g i i') * res (Scheme.Hom.preimage_mono q (inf_le_left : (N k).U i ⊓ (N k).U i' ≤ (N k).U i)) (u k i)) ∧ ∀ (Z : Scheme.{0}) (b : Z ⟶ B) (s : ∀ k (i : (N k).ι), Γ(Z, b ⁻¹ᵁ (N k).U i)ˣ), (∀ k i i', res (Scheme.Hom.preimage_mono b (inf_le_right : (N k).U i ⊓ (N k).U i' ≤ (N k).U i')) (s k i') = pullU b _ ((N k).g i i') * res (Scheme.Hom.preimage_mono b (inf_le_left : (N k).U i ⊓ (N k).U i' ≤ (N k).U i)) (s k i)) → ∃! g : Z ⟶ G, ∃ hg : g ≫ q = b, ∀ k i, (g.appLE (q ⁻¹ᵁ (N k).U i) (b ⁻¹ᵁ (N k).U i) (by rw [← hg]; exact le_rfl)).hom (u k i).val = (s k i).val) → IsAffineHom q ∧ Smooth q ∧ Surjective q ∧ IsSeparated q ∧ GeometricallyConnected q := by

@@ -13,11 +13,11 @@ namespace GlobalTheory.OrientedHeis
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Establish `hC0 : 0 ≤ C` using `(norm_nonneg _).trans (hC 0)`. Establish `a : ∀ s ∈ Set.Icc (0 : ℝ) t, ‖φ' s - φ' 0‖ ≤ C * (s - 0)` using `norm_image_sub_le_of_norm_deriv_le_segment' (fun s _ => (h2 s).hasDerivWithinAt) fun s _ => hC s`. Establish `d : ∀ s : ℝ, HasDerivAt (fun s : ℝ => φ s - (s : ℂ) * φ' 0) (φ' s - φ' 0) s` using `fun s => by`. Use `(h1 s).sub ((Complex.ofRealCLM.hasDerivAt (x := s)).mul_const (φ' 0))` as an intermediate fact. Rewrite `this` using `[Complex.ofRealCLM_apply, Complex.ofReal_one, one_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this`. Establish `b` using `norm_image_sub_le_of_norm_deriv_le_segment' (C := C * t) (a := 0) (b := t) (fun s _ => (d s).hasDerivWithinAt) (fun s hs => (a s ⟨hs.1, hs.2.le⟩).trans (mul_le_mul_of_nonneg_left (by linarith [hs.2]) hC0)) t ⟨ht.le, le_rfl⟩`. Establish `ht' : (t : ℂ) ≠ 0` using `Complex.ofReal_ne_zero.2 ht.ne'`. Establish `e : (t : ℂ)⁻¹ * (φ t - φ 0) - φ' 0 = (t : ℂ)⁻¹ * (φ t - t * φ' 0 - (φ 0 - ((0 : ℝ) : ℂ) * φ' 0))`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, norm_mul, norm_inv, Complex.norm_real, Real.norm_of_nonneg ht.le, inv_mul_le_iff₀ ht]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem taylor_bound {φ φ' φ'' : ℝ → ℂ} (h1 : ∀ s, HasDerivAt φ (φ' s) s) (h2 : ∀ s, HasDerivAt φ' (φ'' s) s) {C : ℝ}
     (hC : ∀ s, ‖φ'' s‖ ≤ C) {t : ℝ} (ht : 0 < t) : ‖(t : ℂ)⁻¹ * (φ t - φ 0) - φ' 0‖ ≤ C * t := by
@@ -40,11 +40,11 @@ theorem taylor_bound {φ φ' φ'' : ℝ → ℂ} (h1 : ∀ s, HasDerivAt φ (φ'
   linarith
 
 /- English proof (translation)
-Establish `ho : IsOpen {w | f w ≠ 0}` using `isOpen_ne_fun hf continuous_const`. Establish `h1` using `(lintegral_eq_zero_iff (hf.measurable.enorm.pow_const 2)).1 h0`. Establish `h2 : μ ({w | f w ≠ 0} ∩ 𝓕) = 0`. Rewrite using `[← Measure.restrict_apply ho.measurableSet]`. Use `measure_mono_null (fun w hw => ?_) h1` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `using hw`. Establish `h3` using `h𝓕.measure_zero_of_invariant _ (fun γ => by`. Use extensionality with `w`. Rewrite using `[Set.mem_vadd_set_iff_neg_vadd_mem]`. Use `show f (((-γ : Γ) : G) + w) ≠ 0 ↔ f w ≠ 0`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← norm_ne_zero_iff, hp _ (-γ).2, norm_ne_zero_iff]) h2`. Establish `h4` using `(ho.measure_eq_zero_iff μ).1 h3`. Use function extensionality and compare the values at `w`. Assume the negation of the conclusion as `hw`. Conclude with `(Set.eq_empty_iff_forall_notMem.1 h4) w hw`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_lintegral_eq_zero {G : Type} [AddCommGroup G] [TopologicalSpace G] [IsTopologicalAddGroup G]
     [MeasurableSpace G] [BorelSpace G] (Γ : AddSubgroup G) [Countable Γ] (μ : Measure G) [μ.IsAddHaarMeasure]
@@ -67,19 +67,15 @@ theorem eq_zero_of_lintegral_eq_zero {G : Type} [AddCommGroup G] [TopologicalSpa
   exact (Set.eq_empty_iff_forall_notMem.1 h4) w hw
 
 /- English proof (translation)
-Establish `en : ∀ z : ℂ, ‖z‖ₑ ^ 2 = ENNReal.ofReal (‖z‖ ^ 2)` using `fun z => by`. Rewrite using `[ENNReal.ofReal_pow (norm_nonneg _), ofReal_norm_eq_enorm]`. Establish `key : ∀ t : ℝ, 0 < t → ∫⁻ w, ‖δ w‖ₑ ^ 2 ∂ν ≤ ENNReal.ofReal (2 * (C * t) ^ 2 + 2 * (C' * t) ^ 2)`. Introduce `t ht`. Take `⟨a, b, r, e, h1, h2, h3⟩` from `h t ht`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `h4 : ∫⁻ w, ‖r w‖ₑ ^ 2 ∂ν ≤ ENNReal.ofReal ((C * t) ^ 2)`. Use `(lintegral_mono (g := fun _ => ENNReal.ofReal ((C * t) ^ 2)) fun w => ?_).trans ?_` and prove the remaining obligations. Use `show ‖r w‖ₑ ^ 2 ≤ _`. Rewrite using `[en]`. Conclude with `ENNReal.ofReal_le_ofReal (pow_le_pow_left₀ (norm_nonneg _) (h2 w) 2)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[lintegral_const, hν, mul_one]`. Combine the equalities or inequalities in the displayed calculation. Use `lintegral_mono fun w => ?_` and prove the remaining obligations. Use `show ‖δ w‖ₑ ^ 2 ≤ 2 * ‖a w‖ₑ ^ 2 + ENNReal.ofReal (2 * (C' * t) ^ 2)`. Rewrite using `[en, en, ← ENNReal.ofReal_ofNat 2, ← ENNReal.ofReal_mul (by norm_num), ← ENNReal.ofReal_add (by positivity) (by positivity)]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `ENNReal.ofReal_le_ofReal ?_` and prove the remaining obligations. Establish `h5 : ‖δ w‖ ≤ ‖a w‖ + ‖b w‖` using `by rw [e]; exact norm_sub_le _ _`. Establish `h6` using `pow_le_pow_left₀ (norm_nonneg _) h5 2`. Establish `h7` using `pow_le_pow_left₀ (norm_nonneg _) (h3 w) 2`. Use polynomial arithmetic with `[sq_nonneg (‖a w‖ - ‖b w‖)]`.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Use `_ = 2 * ∫⁻ w, ‖a w‖ₑ ^ 2 ∂ν + ENNReal.ofReal (2 * (C' * t) ^ 2) := by`. Rewrite using `[lintegral_add_right _ measurable_const, lintegral_const_mul' _ _ (by norm_num), lintegral_const, hν, mul_one]`. Use `_ ≤ 2 * ENNReal.ofReal ((C * t) ^ 2) + ENNReal.ofReal (2 * (C' * t) ^ 2) := by`. Rewrite using `[h1]`. Use `gcongr`.
-
-Use `_ = _ := by`. Rewrite using `[ENNReal.ofReal_add (by positivity) (by positivity), ENNReal.ofReal_mul (p := 2) (q := (C * t) ^ 2) (by norm_num), ENNReal.ofReal_ofNat]`. Establish `hc : Continuous fun t : ℝ => ENNReal.ofReal (2 * (C * t) ^ 2 + 2 * (C' * t) ^ 2)` using `ENNReal.continuous_ofReal.comp (by fun_prop)`. Establish `ht` using `(hc.tendsto 0).mono_left (nhdsWithin_le_nhds (s := Set.Ioi 0))`. Simplify using `only [mul_zero, ne_eq, OfNat.ofNat_ne_zero, not_false_eq_true, zero_pow, add_zero, ENNReal.ofReal_zero] at ht`.
-
-Conclude with `le_antisymm (ge_of_tendsto ht (eventually_nhdsWithin_of_forall key)) bot_le`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem lintegral_eq_zero_of_approx {G : Type} [MeasurableSpace G] (ν : Measure G) (hν : ν Set.univ = 1) (δ : G → ℂ)
     (C C' : ℝ) (h : ∀ t : ℝ, 0 < t → ∃ a b r : G → ℂ, δ = a - b ∧ ∫⁻ w, ‖a w‖ₑ ^ 2 ∂ν = ∫⁻ w, ‖r w‖ₑ ^ 2 ∂ν ∧
@@ -121,7 +117,7 @@ theorem lintegral_eq_zero_of_approx {G : Type} [MeasurableSpace G] (ν : Measure
 variable {D : D7} {θ : InfFam D} {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D}
 
 /- English proof (translation)
-Introduce and unpack `_ ⟨γ, rfl⟩ w`. Use `congrArg norm (hf.quasi γ w)` as an intermediate fact. Rewrite `this` using `[norm_mul, hψ.1.2.1, one_mul]`. Conclude with `this`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem theta_norm_periodic (hψ : IsStdChar D ψ (-1)) {f : WO S T → ℂ} (hf : IsThetaFunO ψ S T f) :
     ∀ γ ∈ ratL T S, ∀ w, ‖f (γ + w)‖ = ‖f w‖ := by
@@ -131,9 +127,9 @@ theorem theta_norm_periodic (hψ : IsStdChar D ψ (-1)) {f : WO S T → ℂ} (hf
   exact this
 
 /- English proof (translation)
-Take `⟨-, -, -, -, -, K, hK, hc⟩` from `GlobalTheory.AdelicMatrixLattice.lattice D T S`. Take `⟨C, hC⟩` from `hK.exists_bound_of_continuousOn hf.cont.continuousOn`. Use `⟨C, fun w => ?_⟩` and prove the remaining obligations. Take `⟨γ, hγ, h⟩` from `hc w`. Rewrite using `[← theta_norm_periodic hψ hf γ hγ w]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hC _ h`.
+A detailed English derivation is pending.
 -/
 theorem theta_bounded (hψ : IsStdChar D ψ (-1)) {f : WO S T → ℂ} (hf : IsThetaFunO ψ S T f) :
     ∃ C : ℝ, ∀ w, ‖f w‖ ≤ C := by
@@ -145,9 +141,9 @@ theorem theta_bounded (hψ : IsStdChar D ψ (-1)) {f : WO S T → ℂ} (hf : IsT
   exact hC _ h
 
 /- English proof (translation)
-Use function extensionality and compare the values at `w`. Establish `h : symplOH S T w 0 = 0`. Use `symplOH_add_right w 0 0` as an intermediate fact. Rewrite `this` using `[add_zero]`. Conclude with `left_eq_add.1 this`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions.
 
-Unfold `heisO`. Rewrite using `[h, AddChar.map_zero_eq_one, one_mul, add_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem heisO_zero (f : WO S T → ℂ) : heisO ψ S T 0 f = f := by
   funext w
@@ -159,9 +155,9 @@ theorem heisO_zero (f : WO S T → ℂ) : heisO ψ S T 0 f = f := by
   rw [h, AddChar.map_zero_eq_one, one_mul, add_zero]
 
 /- English proof (translation)
-Establish `h1` using `theta_dLine hθ hψ hL hf`. Take `⟨C, hC⟩` from `theta_bounded hψ (theta_dLine hθ hψ hL h1)`. Use `⟨C, fun t ht w => ?_⟩` and prove the remaining obligations. Use `taylor_bound (hasDerivAt_heisO hθ hψ hL hf w) (hasDerivAt_heisO hθ hψ hL h1 w) (C := C) (fun s => by` as an intermediate fact. Unfold `heisO`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[norm_mul, hψ.1.2.1, one_mul]`. Conclude with `hC _) ht`. Rewrite `this` using `[L.map_zero, heisO_zero, heisO_zero]`. Conclude with `this`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem quotient_bound (hθ : IsInfFam θ) (hψ : IsStdChar D ψ (-1)) {L : ℝ →+ WO S T} (hL : IsRealDir T S L)
     {f : WO S T → ℂ} (hf : IsThetaFunO ψ S T f) : ∃ C : ℝ, ∀ t : ℝ, 0 < t → ∀ w,
@@ -179,11 +175,11 @@ theorem quotient_bound (hθ : IsInfFam θ) (hψ : IsStdChar D ψ (-1)) {L : ℝ 
 variable {χS χT : (Formalism.L2.Theta.AE D)ˣ →* Circle} {om : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ)}
 
 /- English proof (translation)
-Establish `hψ` using `hom.std`. Take `⟨i1, i2, i3, i4, i5, K, hK, hc⟩` from `GlobalTheory.AdelicMatrixLattice.lattice D T S`. Use `haveI : BorelSpace (WA T S) := ⟨rfl⟩`. Take `⟨⟨μ, 𝓕, hμ, h𝓕, h1⟩, -⟩` from `GlobalTheory.meanSquare_addFundamentalDomain_of_cocompact (WA T S) (ratL T S) K hK hc`. Use `haveI : Countable (ratL T S) := TopologicalSpace.separableSpace_iff_countable.1 inferInstance`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hf'` using `hom.om_pres (g, h) f hf`. Establish `hδ` using `theta_sub (theta_dLine hθ hψ hL' hf') (hom.om_pres (g, h) _ (theta_dLine hθ hψ hL hf))`. Take `⟨C, hC⟩` from `quotient_bound hθ hψ hL hf`. Take `⟨C', hC'⟩` from `quotient_bound hθ hψ hL' hf'`. Use `(sub_eq_zero.1 (eq_zero_of_lintegral_eq_zero (G := WA T S) (ratL T S) μ 𝓕 h𝓕 _ hδ.cont (theta_norm_periodic hψ hδ) ?_)).symm` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `lintegral_eq_zero_of_approx (μ.restrict 𝓕) (by rw [Measure.restrict_apply_univ, h1]) _ C C' fun t ht => ?_` and prove the remaining obligations. Establish `hr` using `theta_sub (theta_smul (t : ℂ)⁻¹ (theta_sub (theta_heisO_real hθ hψ (hL.2 t) hf) hf)) (theta_dLine hθ hψ hL hf)`. Use `⟨_, _, _, ?_, hom.om_unit μ 𝓕 hμ h𝓕 (g, h) _ hr, hC t ht, hC' t ht⟩` and prove the remaining obligations. Rewrite using `[map_sub, map_smul, map_sub, hom.om_heis g h _ f hf, hLL]`. Normalize the expressions using the abelian group laws.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem om_dLine (hom : IsWeilDatumO ψ S T χS χT om) (hθ : IsInfFam θ) (g : GA D S) (h : GA D T)
     {L L' : ℝ →+ WO S T} (hL : IsRealDir T S L) (hL' : IsRealDir T S L') (hLL : ∀ t, L' t = actO S T g h (L t))
@@ -208,29 +204,27 @@ theorem om_dLine (hom : IsWeilDatumO ψ S T χS χT om) (hθ : IsInfFam θ) (g :
   abel
 
 /- English proof (translation)
-The claim follows from `Classical.epsilon_spec (GlobalTheory.RealLineAt.lineAt_exists D θ hθ m n τ z)`.
+A detailed English derivation is pending.
 -/
 theorem isLineAt_lineAt (hθ : IsInfFam θ) {m n : ℕ} (τ : D.what₂.Tau) (z : Matrix (Fin m) (Fin n) ℂ) :
     IsLineAt θ τ z (lineAt θ τ z) :=
   Classical.epsilon_spec (GlobalTheory.RealLineAt.lineAt_exists D θ hθ m n τ z)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(isLineAt_lineAt hθ τ z).1, (isLineAt_lineAt hθ τ z).2.1⟩`.
+Supply the required witnesses or components.
 -/
 theorem isRealDir_lineAt (hθ : IsInfFam θ) (τ : D.what₂.Tau) (z : Matrix (Fin T.rank) (Fin S.rank) ℂ) :
     IsRealDir T S (lineAt θ τ z) := ⟨(isLineAt_lineAt hθ τ z).1, (isLineAt_lineAt hθ τ z).2.1⟩
 
 /- English proof (translation)
-The claim follows from `Matrix.map_mul (f := (θ τ).comp (infPart D))`.
+A detailed English derivation is pending.
 -/
 theorem compAt_mul (τ : D.what₂.Tau) {k m n : ℕ} (x : Mx D k m) (y : Mx D m n) :
     compAt θ τ (HMul.hMul x y : Mx D k n) = compAt θ τ x * compAt θ τ y :=
   Matrix.map_mul (f := (θ τ).comp (infPart D))
 
 /- English proof (translation)
-Establish `e : mt S g * mt S g⁻¹ = 1`. Unfold `Formalism.L2.Theta.mt`. Rewrite using `[← Units.val_mul, ← map_mul, mul_inv_cancel, map_one, Units.val_one]`. Rewrite using `[← compAt_mul]`. Use `erw [e]`.
-
-Conclude with `Matrix.map_one _ (((θ τ).comp (infPart D)).map_zero) (((θ τ).comp (infPart D)).map_one)`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem compAt_mt_mul_inv (τ : D.what₂.Tau) (g : GA D S) : compAt θ τ (mt S g) * compAt θ τ (mt S g⁻¹) = 1 := by
   have e : mt S g * mt S g⁻¹ = 1 := by
@@ -241,11 +235,11 @@ theorem compAt_mt_mul_inv (τ : D.what₂.Tau) (g : GA D S) : compAt θ τ (mt S
   exact Matrix.map_one _ (((θ τ).comp (infPart D)).map_zero) (((θ τ).comp (infPart D)).map_one)
 
 /- English proof (translation)
-Establish `hL` using `isLineAt_lineAt hθ τ z`. Set `L : ℝ →+ WO S T` to `{ toFun := fun t => actO S T g h (lineAt θ τ z t) map_zero' := by unfold actO; rw [AddMonoidHom.map_zero, Matrix.mul_zero, Matrix.zero_mul] map_add' := fun s t => by unfold actO; rw [AddMonoidHom.map_add, Matrix.mul_add, Matrix.add_mul] }`. Establish `hL' : IsLineAt θ τ (compAt θ τ (mt T h) * z * compAt θ τ (mt S g⁻¹)) L`. Use `⟨(continuous_const.matrix_mul hL.1).matrix_mul continuous_const, fun t => ?_, fun t τ' => ?_⟩` and prove the remaining obligations. Use `show (actO S T g h (lineAt θ τ z t)).map (finPart D) = 0`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Unfold `actO`. Rewrite using `[Matrix.map_mul, Matrix.map_mul, hL.2.1, Matrix.mul_zero, Matrix.zero_mul]`. Use `show compAt θ τ' (actO S T g h (lineAt θ τ z t)) = _`. Unfold `actO`. Rewrite using `[compAt_mul, compAt_mul, hL.2.2]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `split_ifs with e`. Rewrite using `[e, Matrix.mul_smul, Matrix.smul_mul]`. Rewrite using `[Matrix.mul_zero, Matrix.zero_mul]`. Rewrite using `[GlobalTheory.RealLineAt.lineAt_unique D θ hθ _ _ τ _ _ _ (isLineAt_lineAt hθ τ _) hL']`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem lineAt_move (hθ : IsInfFam θ) (g : GA D S) (h : GA D T) (τ : D.what₂.Tau)
     (z : Matrix (Fin T.rank) (Fin S.rank) ℂ) (t : ℝ) :
@@ -270,7 +264,7 @@ theorem lineAt_move (hθ : IsInfFam θ) (g : GA D S) (h : GA D T) (τ : D.what�
   rfl
 
 /- English proof (translation)
-The claim follows from `theta_dLine hθ hψ (isRealDir_lineAt hθ τ z) hf`.
+A detailed English derivation is pending.
 -/
 theorem theta_dRho (hθ : IsInfFam θ) (hψ : IsStdChar D ψ (-1)) (τ : D.what₂.Tau)
     (z : Matrix (Fin T.rank) (Fin S.rank) ℂ) {f : WO S T → ℂ} (hf : IsThetaFunO ψ S T f) :
@@ -278,7 +272,7 @@ theorem theta_dRho (hθ : IsInfFam θ) (hψ : IsStdChar D ψ (-1)) (τ : D.what�
   theta_dLine hθ hψ (isRealDir_lineAt hθ τ z) hf
 
 /- English proof (translation)
-The claim follows from `om_dLine hom hθ g h (isRealDir_lineAt hθ τ z) (isRealDir_lineAt hθ τ _) (lineAt_move hθ g h τ z) hf`.
+A detailed English derivation is pending.
 -/
 theorem om_dRho (hom : IsWeilDatumO ψ S T χS χT om) (hθ : IsInfFam θ) (g : GA D S) (h : GA D T) (τ : D.what₂.Tau)
     (z : Matrix (Fin T.rank) (Fin S.rank) ℂ) {f : WO S T → ℂ} (hf : IsThetaFunO ψ S T f) :

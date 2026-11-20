@@ -3,27 +3,25 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.A
 open MeasureTheory Set UpperHalfPlane
 
 /- English proof (translation)
-Introduce `hF hB hW L _ G hG s hs v v'`. Take `⟨hGc, C0, hC0⟩` from `hG`. Establish `hs' : s ∈ Icc (1 : ℝ) 2` using `⟨hs.1.le, hs.2⟩`. Take `⟨h1, h2, -, -, -, h6⟩` from `hB s hs'`. Establish `hW2 : Summable fun x : Fin 2 → ℤ => ‖x‖ ^ (-(2 * s))` using `hW.1 (2 * s) (by linarith [hs.1])`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `set W := ∑' x : Fin 2 → ℤ, ‖x‖ ^ (-(2 * s)) with hWdef`. Use `set g : (Fin 2 → ℤ) → ℍ → ℝ := fun x z => if UpperTheory.V.Af.Rs.cls L x = v' then UpperTheory.V.Af.Rs.ker s x z else 0 with hg`. Establish `hg0 : ∀ x z, 0 ≤ g x z` using `fun x z => by`. Simplify using `only [hg]`. Use `split_ifs`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `exacts [h2 x z, le_rfl]`. Establish `hgle : ∀ x z, g x z ≤ UpperTheory.V.Af.Rs.ker s x z` using `fun x z => by`. Simplify using `only [hg]`. Use `split_ifs`. Use `exacts [le_rfl, h2 x z]`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Establish `hgm : ∀ x, Measurable (g x)`. Introduce `x`. Distinguish the cases in `h : UpperTheory.V.Af.Rs.cls L x = v'`. Establish `e : g x = UpperTheory.V.Af.Rs.ker s x`. Use function extensionality and compare the values at `z`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[hg, h]`. Rewrite using `[e]`. Conclude with `(h1 x).measurable`. Establish `e : g x = fun _ => 0`. Use function extensionality and compare the values at `z`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[hg, h]`. Rewrite using `[e]`. Conclude with `measurable_const`. Establish `hgs : ∀ z ∈ ModularGroup.fd, Summable fun x => g x z` using `fun z hz => Summable.of_nonneg_of_le (fun x => hg0 x z) (fun x => (hgle x z).trans (h6 x z hz)) (hW2.mul_left _)`. Establish `hEq : EqOn (fun z => G v z * (((∑' x, ENNReal.ofReal (g x z)).toReal : ℝ) : ℂ)) (fun z => G v z * ((UpperTheory.V.Af.Rs.Zc L v' s z : ℝ) : ℂ)) ModularGroup.fd`.
+Both sides reduce to the same expression. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `z hz`. Establish `e : (∑' x, ENNReal.ofReal (g x z)).toReal = UpperTheory.V.Af.Rs.Zc L v' s z`. Rewrite using `[← ENNReal.ofReal_tsum_of_nonneg (fun x => hg0 x z) (hgs z hz), ENNReal.toReal_ofReal (tsum_nonneg fun x => hg0 x z)]`. Both sides reduce to the same expression. Simplify using `only [e]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Use `IntegrableOn.congr_fun ?_ hEq hF.1` and prove the remaining obligations. Use `Measure.integrableOn_of_bounded (M := 8 * C0 * W) hF.2.ne ?_ ?_` and prove the remaining obligations. Conclude with `((hGc v).measurable.mul (Complex.measurable_ofReal.comp (Measurable.ennreal_toReal (Measurable.ennreal_tsum fun x => (hgm x).ennreal_ofReal)))).aestronglyMeasurable`. Use `ae_restrict_of_forall_mem hF.1 fun z hz => ?_` and prove the remaining obligations. Establish `him0 : 0 < z.im` using `z.im_pos`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `him : 1 / 2 ≤ z.im`. Use `ModularGroup.three_le_four_mul_im_sq_of_mem_fd hz` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish `e` using `hEq hz`. Simplify using `only at e`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Rewrite using `[e]`. Establish `hZ0 : 0 ≤ UpperTheory.V.Af.Rs.Zc L v' s z` using `tsum_nonneg fun x => hg0 x z`. Establish `hZ : UpperTheory.V.Af.Rs.Zc L v' s z ≤ 4 * z.im ^ 2 * W`. Combine the equalities or inequalities in the displayed calculation. Establish `hGb` using `hC0 v z him`.
-
-Establish `hW0 : 0 ≤ W` using `tsum_nonneg fun x => Real.rpow_nonneg (norm_nonneg _) _`. Rewrite using `[norm_mul, Complex.norm_real, Real.norm_of_nonneg hZ0]`. Establish `hG2 : ‖G v z‖ * z.im ^ 2 ≤ 2 * C0`. Use polynomial arithmetic with `[mul_nonneg (mul_nonneg (norm_nonneg (G v z)) (sq_nonneg z.im)) (sub_nonneg.mpr him)]`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Af.Rs.zInt :
     UpperTheory.V.Af.Rs.FdFin → UpperTheory.V.Af.Rs.KerBd → UpperTheory.V.Af.Rs.WTop → UpperTheory.V.Af.Rs.ZInt := by

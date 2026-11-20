@@ -5,17 +5,15 @@ open MeasureTheory NumberField IsDedekindDomain Filter GroundTheory.Automorphic 
 open GroundTheory.Automorphic.CuspidalSpectrum GlobalTheory.IndefiniteRowSideFullHecke.IwahoriDoubleCosets GlobalTheory.PRep Formalism.BasicNotions GlobalTheory.CuspRep GlobalTheory.SmGL UpperTheory.ConvolutionTheory UpperTheory.ConvolutionTheory.C
 
 /- English proof (translation)
-Introduce `K _ _ n μ _ V hV w σ`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨f, hf0, hfV, hf⟩`. Use `⟨f.codRestrict V hfV, ?_, ?_⟩` and prove the remaining obligations. Introduce `h`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `hf0` to reduce the goal to its premises. Use `ext1 x`. Use `congrArg (fun l : σ.V →ₗ[ℂ] V => ((l x : V) : LL μ)) h` as an intermediate fact. Simplify using `using this`. Introduce `g x`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Establish `h1` using `hf g x`. Rewrite `h1` using `[UpperTheory.ConvolutionTheory.Dp.rhoLoc K n μ w g (f x)]`. Conclude with `h1`. Introduce and unpack `⟨f, hf0, hf⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨V.subtype ∘ₗ f, ?_, fun x => (f x).2, ?_⟩` and prove the remaining obligations. Introduce `h`. Apply `hf0` to reduce the goal to its premises. Use `ext1 x`. Apply `Subtype.ext` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `congrArg (fun l : σ.V →ₗ[ℂ] LL μ => l x) h` as an intermediate fact. Simplify using `using this`. Introduce `g x`. Establish `h1` using `congrArg (Subtype.val) (hf g x)`. Rewrite using `[UpperTheory.ConvolutionTheory.Dp.rhoLoc K n μ w g]`.
-
-Conclude with `h1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.C.occursIff :
     UpperTheory.ConvolutionTheory.C.OccursIff := by

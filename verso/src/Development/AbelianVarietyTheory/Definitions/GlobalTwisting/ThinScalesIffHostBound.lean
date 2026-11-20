@@ -46,14 +46,14 @@ def IsCharH (H : Host R) {N : ℕ} (χ : DirichletCharacter ℂ N) : Prop :=
     χ (a : ZMod N) = ((ψ (H.art (ZMod.unitOfCoprime a h)) : ℂˣ) : ℂ)
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem isCharH_iff_isCharED (D : D7) {N : ℕ} (χ : DirichletCharacter ℂ N) : IsCharH D.host χ ↔ GlobalTheoryTheory.IsCharED D χ := Iff.rfl
 
 /- English proof (translation)
-Establish `key : ∀ (ψ : R.GG →* ℂˣ) (a : ℕ) (h : a.Coprime H.condN), H.dirAt ψ a = ((ψ (H.art (ZMod.unitOfCoprime a h)) : ℂˣ) : ℂ)` using `fun ψ a h => by`. Rewrite using `[← H.dir_unit ψ (ZMod.unitOfCoprime a h), ZMod.coe_unitOfCoprime]`. Both sides reduce to the same expression. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, ψ, h2⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨ψ, h1, fun a ha => (h2 a ha).trans (key ψ a ha).symm⟩`. Introduce and unpack `⟨ψ, h1, h2⟩`. Conclude with `⟨h1, ψ, fun a ha => (h2 a ha).trans (key ψ a ha)⟩`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem isCharH_iff (H : Host R) {N : ℕ} (χ : DirichletCharacter ℂ N) : IsCharH H χ ↔ H.IsCharE χ := by
   have key : ∀ (ψ : R.GG →* ℂˣ) (a : ℕ) (h : a.Coprime H.condN),
@@ -71,7 +71,7 @@ def ThinOK (s : Scale) (c : ℝ) (H : Host R) : Prop :=
     ∀ y : ℝ, Real.exp (s.x ^ (s.eps / 3)) / 3 ≤ y → ‖GlobalTheoryTheory.gChi χ y‖ ≤ y * Real.exp (-(c * s.x ^ (s.eps / 8)))
 
 /- English proof (translation)
-The claim follows from `forall_congr' fun _ => forall_congr' fun _ => forall_congr' fun χ => imp_congr (isCharH_iff H χ) Iff.rfl`.
+A detailed English derivation is pending.
 -/
 theorem thinScales_iff_hostBound (s : Scale) (c : ℝ) (H : Host R) : ThinOK s c H ↔ H.ChebyshevCharacterBound s.x s.eps c :=
   forall_congr' fun _ => forall_congr' fun _ => forall_congr' fun χ => imp_congr (isCharH_iff H χ) Iff.rfl
@@ -85,26 +85,26 @@ def BoxW (s : Scale) (H : Host R) : Prop :=
   ∃ Y : ℝ, PairWin s Y ∧ PairRow Y s.eps H ∧ Boxq Y s.eps H.q H.d ∧ BoxH H Y s.eps
 
 /- English proof (translation)
-The claim follows from `let ⟨Y, h1, h2, _⟩ := h ⟨Y, h1, h2⟩`.
+A detailed English derivation is pending.
 -/
 theorem BoxW.what₂ {s : Scale} {H : Host R} (h : BoxW s H) : ∃ Y : ℝ, PairWin s Y ∧ PairRow Y s.eps H :=
   let ⟨Y, h1, h2, _⟩ := h
   ⟨Y, h1, h2⟩
 
 /- English proof (translation)
-The claim follows from `let ⟨Y, h1, _, h3, h4⟩ := h ⟨Y, h1, h3, h4⟩`.
+A detailed English derivation is pending.
 -/
 theorem BoxW.boxesW {s : Scale} {D : D7} (h : BoxW s D.host) : BoxesW D s :=
   let ⟨Y, h1, _, h3, h4⟩ := h
   ⟨Y, h1, h3, h4⟩
 
 /- English proof (translation)
-The claim follows from `h.what₂`.
+A detailed English derivation is pending.
 -/
 theorem BoxW.qdRowsW {s : Scale} {D : D7} (h : BoxW s D.host) : QDRowsW D s := h.what₂
 
 /- English proof (translation)
-Establish `key : ∀ Q : ℝ, GlobalTheoryTheory.GoodFor Q χ → DirichletCharacter.LFunction χ β ≠ 0` using `fun Q hQ => hQ.2.2.2 β (by simpa using hβ) (by simpa using (Nat.cast_nonneg N).trans hQ.2.2.1)`. Distinguish the cases in `hd : H.d ∣ N`. Conclude with `key _ ((h N χ hχ hr).1 hd)`. Conclude with `key _ ((h N χ hχ hr).2 (hN.resolve_right hd) hd)`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. A detailed English derivation is pending.
 -/
 theorem BoxH.real_ne_zero {H : Host R} {Y eps : ℝ} (h : BoxH H Y eps) {N : ℕ} [NeZero N] (χ : DirichletCharacter ℂ N)
     (hχ : IsCharH H χ) (hr : GlobalTheoryTheory.IsRealChar χ) (hN : H.q ∣ N ∨ H.d ∣ N) (β : ℝ) (hβ : 1 - 1 / 400 < β) :
@@ -116,7 +116,7 @@ theorem BoxH.real_ne_zero {H : Host R} {Y eps : ℝ} (h : BoxH H Y eps) {N : ℕ
   · exact key _ ((h N χ hχ hr).2 (hN.resolve_right hd) hd)
 
 /- English proof (translation)
-The claim follows from `let ⟨_, _, _, _, hB⟩ := h hB.real_ne_zero χ ((isCharH_iff H χ).2 hχ) hr hN β hβ`.
+A detailed English derivation is pending.
 -/
 theorem BoxW.real_ne_zero {s : Scale} {H : Host R} (h : BoxW s H) {N : ℕ} [NeZero N] (χ : DirichletCharacter ℂ N)
     (hχ : H.IsCharE χ) (hr : GlobalTheoryTheory.IsRealChar χ) (hN : H.q ∣ N ∨ H.d ∣ N) (β : ℝ) (hβ : 1 - 1 / 400 < β) :
@@ -135,13 +135,13 @@ def HostGood (s : Scale) (C8 C5 c6 Cb : ℝ) (H : Host R) (q0 : ℕ) : Prop :=
   H.levelPrimes = {H.g 0, H.g 1, H.pde, H.pde', q0}
 
 /- English proof (translation)
-The claim follows from `lt_of_lt_of_le H.hyp.2.1.one_lt (Nat.le_mul_of_pos_left _ (Nat.mul_pos H.QS_pos H.hyp.1.pos))`.
+A detailed English derivation is pending.
 -/
 private theorem one_lt_modulus (H : Host R) : 1 < H.QS * H.q * H.d :=
   lt_of_lt_of_le H.hyp.2.1.one_lt (Nat.le_mul_of_pos_left _ (Nat.mul_pos H.QS_pos H.hyp.1.pos))
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(mod_of_mod_lcm (one_lt_modulus H) h.2.2.2.2.2.2.2.2.2.2.2.1.1).2, (mod_of_mod_lcm (one_lt_modulus H) h.2.2.2.2.2.2.2.2.2.2.2.1.2).2⟩`.
+Supply the required witnesses or components.
 -/
 theorem HostGood.pde_mod {s : Scale} {C8 C5 c6 Cb : ℝ} {H : Host R} {q0 : ℕ} (h : HostGood s C8 C5 c6 Cb H q0) :
     H.pde % (H.QS * H.q * H.d) = 1 ∧ H.pde' % (H.QS * H.q * H.d) = 1 :=
@@ -159,7 +159,7 @@ def HostExP (P : HostReq) : Prop := ∃ la : ℝ, 1 < la ∧ HostExW la P
 def HostEx : Prop := HostExP fun _ _ _ _ _ => True
 
 /- English proof (translation)
-Introduce `eps h1 h2`. Take `⟨CT2, C8, C5, c6, Cb, x0, a1, a2, a3, a4, S, h⟩` from `h eps h1 h2`. Use `⟨CT2, C8, C5, c6, Cb, x0, a1, a2, a3, a4, S, fun s b1 b2 b3 => ?_⟩` and prove the remaining obligations. Take `⟨R, H, q0, c1, c2, c3, c4⟩` from `h s b1 b2 b3`. Conclude with `⟨R, H, q0, c1, c2, c3, hP _ _ _ _ _ c4⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem HostExW.imp {la : ℝ} {P P' : HostReq} (h : HostExW la P) (hP : ∀ c s R H q0, P c s R H q0 → P' c s R H q0) :
     HostExW la P' := by
@@ -170,14 +170,14 @@ theorem HostExW.imp {la : ℝ} {P P' : HostReq} (h : HostExW la P) (hP : ∀ c s
   exact ⟨R, H, q0, c1, c2, c3, hP _ _ _ _ _ c4⟩
 
 /- English proof (translation)
-The claim follows from `let ⟨la, h1, h2⟩ := h ⟨la, h1, h2.imp hP⟩`.
+A detailed English derivation is pending.
 -/
 theorem HostExP.imp {P P' : HostReq} (h : HostExP P) (hP : ∀ c s R H q0, P c s R H q0 → P' c s R H q0) : HostExP P' :=
   let ⟨la, h1, h2⟩ := h
   ⟨la, h1, h2.imp hP⟩
 
 /- English proof (translation)
-The claim follows from `h.imp fun _ _ _ _ _ _ => trivial`.
+A detailed English derivation is pending.
 -/
 theorem HostExP.hostEx {P : HostReq} (h : HostExP P) : HostEx := h.imp fun _ _ _ _ _ _ => trivial
 
@@ -212,19 +212,19 @@ section From
 variable {C : FC} {p : Pt C} {H : Host R} {a b : R.A → ℤ} {M : ℕ} {c : Fin M → Fin (R.k - 2) → Bool} {u0 : ℕ}
 
 /- English proof (translation)
-The claim follows from `h.2.2.2.2.2.2.2.2.2.2.2.2.1`.
+A detailed English derivation is pending.
 -/
 theorem Pt.From.words (h : p.From H a b c u0) :
     ∃ eW : p.D.what₂.Word ≃ Fin M, ∀ u l, wordBits p.D u l = if h : l < R.k - 2 then c (eW u) ⟨l, h⟩ else false :=
   h.2.2.2.2.2.2.2.2.2.2.2.2.1
 
 /- English proof (translation)
-The claim follows from `h.2.2.2.2.2.2.2.2.2.2.2.2.2`.
+A detailed English derivation is pending.
 -/
 theorem Pt.From.field (h : p.From H a b c u0) : HEq p.D.host.toHostAx H.toHostAx := h.2.2.2.2.2.2.2.2.2.2.2.2.2
 
 /- English proof (translation)
-Establish `h1` using `h.1`. Establish `h2` using `h.field`. Substitute `h1` using the available equality. Rewrite using `[eq_of_heq h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 -/
 theorem Pt.From.congr_field (h : p.From H a b c u0) {α : Sort*} (f : ∀ φ : Formalism.HC.Frame, Formalism.HC.HostAx φ → α) :
     f p.D.R.toFrame p.D.host.toHostAx = f R.toFrame H.toHostAx := by
@@ -234,29 +234,29 @@ theorem Pt.From.congr_field (h : p.From H a b c u0) {α : Sort*} (f : ∀ φ : F
   rw [eq_of_heq h2]
 
 /- English proof (translation)
-The claim follows from `h.congr_field fun _ X => X.QS`.
+A detailed English derivation is pending.
 -/
 theorem Pt.From.QS_eq (h : p.From H a b c u0) : p.D.host.QS = H.QS := h.congr_field fun _ X => X.QS
 
 /- English proof (translation)
-The claim follows from `h.congr_field fun _ X => artNum X.toHostRaw`.
+A detailed English derivation is pending.
 -/
 theorem Pt.From.art_eq (h : p.From H a b c u0) : artNum p.D.host.toHostRaw = artNum H.toHostRaw :=
   h.congr_field fun _ X => artNum X.toHostRaw
 
 /- English proof (translation)
-The claim follows from `h.congr_field fun _ X => X.rd`.
+A detailed English derivation is pending.
 -/
 theorem Pt.From.rd_eq (h : p.From H a b c u0) : p.D.host.rdE = H.rdE := h.congr_field fun _ X => X.rd
 
 /- English proof (translation)
-The claim follows from `h.congr_field fun _ X => primeClass X.toHostRaw`.
+A detailed English derivation is pending.
 -/
 theorem Pt.From.cls_eq (h : p.From H a b c u0) : p.D.host.cls = H.cls :=
   h.congr_field fun _ X => primeClass X.toHostRaw
 
 /- English proof (translation)
-Rewrite using `[← isCharH_iff_isCharED, isCharH_iff, isCharH_iff]`. Conclude with `iff_of_eq (h.congr_field fun _ X => X.IsCharE χ)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Pt.From.isCharED_iff (h : p.From H a b c u0) {N : ℕ} (χ : DirichletCharacter ℂ N) :
     GlobalTheoryTheory.IsCharED p.D χ ↔ IsCharH H χ := by
@@ -264,13 +264,13 @@ theorem Pt.From.isCharED_iff (h : p.From H a b c u0) {N : ℕ} (χ : DirichletCh
   exact iff_of_eq (h.congr_field fun _ X => X.IsCharE χ)
 
 /- English proof (translation)
-Introduce `N _ χ hχ` and use `hT N χ ((h.isCharED_iff χ).1 hχ)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Pt.From.chThin (h : p.From H a b c u0) {s : Scale} {c6 : ℝ} (hT : ThinOK s c6 H) : ChThin_at p.D s.x s.eps c6 :=
   fun N _ χ hχ => hT N χ ((h.isCharED_iff χ).1 hχ)
 
 /- English proof (translation)
-Introduce `N _ χ hχ hr`. Use `hB N χ ((h.isCharED_iff χ).1 hχ) hr` as an intermediate fact. Unfold `GlobalTheoryTheory.oddQS`. Rewrite using `[h.QS_eq, h.2.2.2.1, h.2.2.2.2.1]`. Conclude with `this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Pt.From.boxE (h : p.From H a b c u0) {Y eps : ℝ} (hB : BoxH H Y eps) : GlobalTheoryTheory.BoxE p.D Y eps := by
   intro N _ χ hχ hr
@@ -280,7 +280,7 @@ theorem Pt.From.boxE (h : p.From H a b c u0) {Y eps : ℝ} (hB : BoxH H Y eps) :
   exact this
 
 /- English proof (translation)
-Unfold `PairRow`. Rewrite using `[h.QS_eq, h.2.2.2.1, h.2.2.2.2.1]`. Conclude with `hr`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Pt.From.pairRow (h : p.From H a b c u0) {Y eps : ℝ} (hr : PairRow Y eps H) : PairRow Y eps p.D.host := by
   unfold PairRow
@@ -288,7 +288,7 @@ theorem Pt.From.pairRow (h : p.From H a b c u0) {Y eps : ℝ} (hr : PairRow Y ep
   exact hr
 
 /- English proof (translation)
-Take `⟨Y, h1, h2, h3, h4⟩` from `hB`. Use `⟨Y, h1, h.pairRow h2, ?_, h.boxE h4⟩` and prove the remaining obligations. Rewrite using `[h.2.2.2.1, h.2.2.2.2.1]`. Conclude with `h3`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Pt.From.boxW (h : p.From H a b c u0) {s : Scale} (hB : BoxW s H) : BoxW s p.D.host := by
   obtain ⟨Y, h1, h2, h3, h4⟩ := hB
@@ -297,12 +297,12 @@ theorem Pt.From.boxW (h : p.From H a b c u0) {s : Scale} (hB : BoxW s H) : BoxW 
   exact h3
 
 /- English proof (translation)
-The claim follows from `(h.boxW hB).boxesW`.
+A detailed English derivation is pending.
 -/
 theorem Pt.From.boxesW (h : p.From H a b c u0) {s : Scale} (hB : BoxW s H) : BoxesW p.D s := (h.boxW hB).boxesW
 
 /- English proof (translation)
-The claim follows from `(h.boxW hB).qdRowsW`.
+A detailed English derivation is pending.
 -/
 theorem Pt.From.qdRowsW (h : p.From H a b c u0) {s : Scale} (hB : BoxW s H) : QDRowsW p.D s := (h.boxW hB).qdRowsW
 

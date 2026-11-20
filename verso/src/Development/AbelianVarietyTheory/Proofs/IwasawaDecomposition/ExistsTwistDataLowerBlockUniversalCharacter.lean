@@ -42,7 +42,7 @@ abbrev Sp (i : D.ntw.Tw) (j : ℕ) (b : Bool) (k : ℕ) (Q : Finset (PlE D.host)
   ↥(NX.TypeSpF D.host.E D.R.nV (NX.Kk D i k) (mtAt E i j b k Q ψ c).ρ (mtAt E i j b k Q ψ c).J (chiAt E τ' i j b k Q ψ c))
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.LevForms.typeSpF_finiteDimensional D.host.E D.R.nV (NX.Kk D i k) _ _ _ (GlobalTheory.T.exists_definiteLevel_recharacterised D i j b k Q ψ E.sgnT (E.Wt i j b) (E.rhoW i j b) (E.tauG i j b) (τ' i j b) (mtAt E i j b k Q ψ c)).choose_spec.1`.
+A detailed English derivation is pending.
 -/
 theorem fdSp (i : D.ntw.Tw) (j : ℕ) (b : Bool) (k : ℕ) (Q : Finset (PlE D.host))
     (ψ : Formalism.ConjugateSelfDual.G D.host.E D.nd.Om →* (D.ntw.Ok i k)ˣ) (c : Cond D i j k Q ψ) :
@@ -97,7 +97,7 @@ variable (ex : NExp D.R D.host D.what₂ D.LL0 D.nd D.ntw)
 abbrev twX : TwNew D := ⟨D.ntw, ex, h0, nth', D.ntwbr, D.ntwbr_ind⟩
 
 /- English proof (translation)
-Unfold `NX.gVal`. Rewrite using `[hps]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem gVal_twX (hps : ∀ (i : D.ntw.Tw) (b : Bool) (u : G0g D.nd), NX.psiUTot D i b u = NX.psiUTot (twX ex h0 nth').toD7 i b u)
     (i : D.ntw.Tw) (k : ℕ) (b : Bool) (kv : Σ k : Fin 2, D.nd.PlG k) (s : ReciprocityTheory.Aut.SplitPlace D.host.E)
@@ -164,12 +164,12 @@ variable (nth' : NTh D.R D.host D.what₂ D.LL0 D.nd D.ntw (exN Mt))
 abbrev twN : TwNew D := twX (exN Mt) D.nStage_trivialCharacter_coeff_eq nth'
 
 /- English proof (translation)
-Introduce `_ _ _` and use `rfl`.
+Fix the arbitrary inputs and assume any hypotheses. Both sides reduce to the same expression.
 -/
 theorem twN_univ : GlobalTheory.UnivChar.IsUnivChar (twN Mt nth').toD7.nexp := fun _ _ _ => rfl
 
 /- English proof (translation)
-Introduce `_ _ _` and use `rfl`.
+Fix the arbitrary inputs and assume any hypotheses. Both sides reduce to the same expression.
 -/
 theorem twN_psi : ∀ (i : D.ntw.Tw) (b : Bool) (u : G0g D.nd), NX.psiUTot D i b u = NX.psiUTot (twN Mt nth').toD7 i b u := fun _ _ _ => rfl
 
@@ -216,14 +216,14 @@ def sideN {cf : CharFrame D} {Rw : RowSide D} {low : Finset ℕ}
     pq := fun i j b k Q ψ hj hj' hA => Bs.pq i j b k Q ψ hj hj' hA }
 
 /- English proof (translation)
-Introduce `i j b hn` and use `h i j b hn`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem twN_noOff (h : GlobalTheory.HeightCounting.SerCopy.NoOff D) : GlobalTheory.HeightCounting.SerCopy.NoOff (twN Mt nth').toD7 := fun i j b hn => h i j b hn
 
 end Generic
 
 /- English proof (translation)
-Introduce `D cf Rw low Pq S hL eig θ Bs τ hτ`. Set `τ' : ∀ i : D.ntw.Tw, ℕ → Bool → ∀ kv : (Σ k : Fin 2, D.nd.PlG k), (ZMod (D.host.g kv.1))ˣ →* (FractionRing (D.ntw.O i))ˣ` to `fun i j b kv => (Units.map (GlobalTheory.SeriesTie.sideEmb D.ntw i b).toMonoidHom).comp (τ j kv)`. Conclude with `⟨twN (MtN Bs.exp τ') (thN _), rfl, twN_noOff _ _, twN_univ _ _, sideN τ' _ _ Bs hτ (evalN Bs.exp τ'), τ, fun _ _ _ _ _ _ _ => rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Supply the required witnesses or components.
 -/
 theorem exists_trueTau : ∀ (D : D7) (cf : CharFrame D) (Rw : RowSide D) (low : Finset ℕ) (Pq : HeightOneSpectrum (𝓞 (maximalRealSubfield D.host.E)) → PlE D.host) (S : RatDat D.ntw) (hL : ∀ j, ℕ → PlE D.host → Module.End D.what₂.LL (S.WL j)) (eig : ℕ → D.what₂.FT → ℕ → PlE D.host → ↥D.LL0) (θ : ∀ kk : Fin 2, Multiplicative (ZMod (D.host.g kk)) →* (↥D.LL0)ˣ) (Bs : SideB D cf Rw low Pq S hL eig θ) (τ : ℕ → ∀ kv : (Σ k : Fin 2, D.nd.PlG k), (ZMod (D.host.g kv.1))ˣ →* (↥D.LL0)ˣ), (∀ i j b kv x, 1 ≤ j → j ≤ D.R.m → NX.pG D kv ∉ placesOver D.host.E (D.ntw.l i) → ((Bs.exp.tauG i j b kv x : (FractionRing (D.ntw.O i))ˣ) : FractionRing (D.ntw.O i)) = sideEmb D.ntw i b ((τ j kv x : (↥D.LL0)ˣ) : ↥D.LL0)) → ∃ N : TwNew D, N.tw = D.ntw ∧ (GlobalTheory.HeightCounting.SerCopy.NoOff D → GlobalTheory.HeightCounting.SerCopy.NoOff N.toD7) ∧ GlobalTheory.UnivChar.IsUnivChar N.toD7.nexp ∧ ∃ Bs' : SideB N.toD7 (N.cf cf) (N.row Rw) low Pq (N.rat S) hL eig θ, TauTrue Bs'.exp := by
   intro D cf Rw low Pq S hL eig θ Bs τ hτ

@@ -23,7 +23,7 @@ section Hol
 variable {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E]
 
 /- English proof (translation)
-Introduce `U f` and use `by have := h (φ ⁻¹ᵁ U) ((φ.app U).hom f) simp only [valAt'_comp, ← top_le_preimage_comp] at this exact this`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem IsHolFamily.comp {Z Z' : Scheme.{0}} {c : E → (Sp ℂ ⟶ Z)} (h : IsHolFamily c) (φ : Z ⟶ Z') :
     IsHolFamily (fun z => c z ≫ φ) := fun U f => by
@@ -32,7 +32,7 @@ theorem IsHolFamily.comp {Z Z' : Scheme.{0}} {c : E → (Sp ℂ ⟶ Z)} (h : IsH
   exact this
 
 /- English proof (translation)
-Introduce `U f` and use `⟨(h U f).1.preimage hT.continuous, (h U f).2.comp hT.differentiableOn fun _ hz => hz⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem IsHolFamily.precomp {E' : Type} [NormedAddCommGroup E'] [NormedSpace ℂ E'] {Z : Scheme.{0}}
     {c : E → (Sp ℂ ⟶ Z)} (h : IsHolFamily c) {T : E' → E} (hT : Differentiable ℂ T) :
@@ -40,13 +40,13 @@ theorem IsHolFamily.precomp {E' : Type} [NormedAddCommGroup E'] [NormedSpace ℂ
   ⟨(h U f).1.preimage hT.continuous, (h U f).2.comp hT.differentiableOn fun _ hz => hz⟩
 
 /- English proof (translation)
-Introduce `U f` and use `⟨isOpen_const, differentiableOn_const _⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem isHolFamily_const {Z : Scheme.{0}} (x : Sp ℂ ⟶ Z) : IsHolFamily (fun _ : E => x) := fun U f =>
   ⟨isOpen_const, differentiableOn_const _⟩
 
 /- English proof (translation)
-Introduce `U f`. Use `holFamily_lift valAt'_rules E Set.univ X Y (fun z => c z ≫ fst _ _) (fun z => c z ≫ snd _ _) (fun U f => by simpa only [Set.mem_univ, true_and] using h0 U f) (fun U f => by simpa only [Set.mem_univ, true_and] using h1 U f) U f` as an intermediate fact. Simplify `this` using `only [Set.mem_univ, true_and, ← comp_lift, lift_fst_snd, Category.comp_id]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem isHolFamily_tensor (X Y : Over (Sp ℂ)) (c : E → (𝟙_ (Over (Sp ℂ)) ⟶ X ⊗ Y))
     (h0 : IsHolFamily (Z := X.left) (fun z => (c z ≫ fst _ _).left))
@@ -59,7 +59,7 @@ theorem isHolFamily_tensor (X Y : Over (Sp ℂ)) (c : E → (𝟙_ (Over (Sp ℂ
   simpa only [Set.mem_univ, true_and, ← comp_lift, lift_fst_snd, Category.comp_id] using this
 
 /- English proof (translation)
-The claim follows from `| 0, c, _ => by have : c = fun _ => 𝟙 _ := funext fun z => toUnit_unique _ _ subst this exact isHolFamily_const _ | n + 1, c, h => by refine isHolFamily_tensor G (Out.powObj G n) c (h 0) (isHolFamily_powObj G n (fun z => c z ≫ snd _ _) fun i => ?_) have h1 : (fun z => ((c z ≫ snd …`.
+A detailed English derivation is pending.
 -/
 theorem isHolFamily_powObj (G : Over (Sp ℂ)) : ∀ (n : ℕ) (c : E → (𝟙_ (Over (Sp ℂ)) ⟶ Out.powObj G n)),
     (∀ i, IsHolFamily (Z := G.left) (fun z => (c z ≫ Out.powPr G i).left)) →
@@ -75,11 +75,11 @@ theorem isHolFamily_powObj (G : Over (Sp ℂ)) : ∀ (n : ℕ) (c : E → (𝟙_
     exact h1 ▸ h i.succ
 
 /- English proof (translation)
-Set `φ : G' ⟶ Out.powObj G j` to `(Out.powIsLimit G j).lift (Fan.mk _ p.pr)`. Set `ψ : Out.powObj G j ⟶ G'` to `p.lim.lift (Fan.mk _ (Out.powPr G))`. Establish `hφ : ∀ i, φ ≫ Out.powPr G i = p.pr i` using `fun i => (Out.powIsLimit G j).fac (Fan.mk _ p.pr) ⟨i⟩`. Establish `hψ : ∀ i, ψ ≫ p.pr i = Out.powPr G i` using `fun i => p.lim.fac (Fan.mk _ (Out.powPr G)) ⟨i⟩`. Establish `hφψ : φ ≫ ψ = 𝟙 _` using `p.lim.hom_ext fun ⟨i⟩ => by`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `(φ ≫ ψ) ≫ p.pr i = 𝟙 _ ≫ p.pr i`. Rewrite using `[Category.assoc, hψ, hφ, Category.id_comp]`. Establish `h1` using `(isHolFamily_powObj G j (fun z => c z ≫ φ) (fun i => by`. Simplify `h i)).comp ψ.left` using `only [Category.assoc, hφ]`. Establish `h2 : ∀ z, (c z ≫ φ).left ≫ ψ.left = (c z).left` using `fun z => by`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Rewrite using `[← Over.comp_left, Category.assoc, hφψ, Category.comp_id]`. Establish `h3 : (fun z => (c z ≫ φ).left ≫ ψ.left) = fun z => (c z).left` using `funext h2`. Conclude with `h3 ▸ h1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isHolFamily_pow {G' G : Over (Sp ℂ)} [GrpObj G'] [GrpObj G] {j : ℕ} (p : Out.IsPowGrp G' G j)
     (c : E → (𝟙_ (Over (Sp ℂ)) ⟶ G'))
@@ -106,21 +106,21 @@ section Val
 variable {X Y : Scheme.{0}}
 
 /- English proof (translation)
-The claim follows from `valAt'_map x (homOfLE h).op s.val hV`.
+A detailed English derivation is pending.
 -/
 theorem val_res (x : Sp ℂ ⟶ X) {U V : X.Opens} (h : V ≤ U) (s : Γ(X, U)ˣ) (hV : ⊤ ≤ x ⁻¹ᵁ V) :
     valAt' x V (res h s).val = valAt' x U s.val :=
   valAt'_map x (homOfLE h).op s.val hV
 
 /- English proof (translation)
-The claim follows from `(val_res x h _ hV).trans (valAt'_comp x φ U s.val)`.
+A detailed English derivation is pending.
 -/
 theorem val_res_pull (x : Sp ℂ ⟶ X) (φ : X ⟶ Y) (U : Y.Opens) {V : X.Opens} (h : V ≤ φ ⁻¹ᵁ U) (s : Γ(Y, U)ˣ)
     (hV : ⊤ ≤ x ⁻¹ᵁ V) : valAt' x V (res h (pullU φ U s)).val = valAt' (x ≫ φ) U s.val :=
   (val_res x h _ hV).trans (valAt'_comp x φ U s.val)
 
 /- English proof (translation)
-Simplify using `only [top_le_preimage_iff_mem]`. Conclude with `Set.mem_iInter`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem le_wchart_iff (x : Sp ℂ ⟶ Y) (L : LB X) {K : Type} [Fintype K] (φ : K → (Y ⟶ X)) (jj : K → L.ι) :
     ⊤ ≤ x ⁻¹ᵁ LB.wchart L φ jj ↔ ∀ k, ⊤ ≤ (x ≫ φ k) ⁻¹ᵁ L.U (jj k) := by
@@ -128,7 +128,7 @@ theorem le_wchart_iff (x : Sp ℂ ⟶ Y) (L : LB X) {K : Type} [Fintype K] (φ :
   exact Set.mem_iInter
 
 /- English proof (translation)
-Establish `: x (default : PrimeSpectrum ℂ) ∈ ⨆ i, L.U i` using `by rw [hL.cover]; trivial`. Take `⟨i, hi⟩` from `TopologicalSpace.Opens.mem_iSup.1 this`. Conclude with `⟨i, (top_le_preimage_iff_mem x _).2 hi⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_chart {L : LB X} (hL : L.IsLB) (x : Sp ℂ ⟶ X) : ∃ i, ⊤ ≤ x ⁻¹ᵁ L.U i := by
   have : x (default : PrimeSpectrum ℂ) ∈ ⨆ i, L.U i := by rw [hL.cover]; trivial
@@ -136,21 +136,21 @@ theorem exists_chart {L : LB X} (hL : L.IsLB) (x : Sp ℂ ⟶ X) : ∃ i, ⊤ �
   exact ⟨i, (top_le_preimage_iff_mem x _).2 hi⟩
 
 /- English proof (translation)
-Rewrite using `[← val_res x (le_inf le_rfl le_rfl : L.U i ≤ L.U i ⊓ L.U i) _ h, hL.g_self, Units.val_one, valAt'_one x h]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem val_g_self {L : LB X} (hL : L.IsLB) (x : Sp ℂ ⟶ X) (i : L.ι) (h : ⊤ ≤ x ⁻¹ᵁ L.U i) :
     valAt' x (L.U i ⊓ L.U i) (L.g i i).val = 1 := by
   rw [← val_res x (le_inf le_rfl le_rfl : L.U i ≤ L.U i ⊓ L.U i) _ h, hL.g_self, Units.val_one, valAt'_one x h]
 
 /- English proof (translation)
-Rewrite using `[← val_res x (inf_le_left : L.U i ⊓ L.U k ≤ _) _ h, ht i k, Units.val_mul, valAt'_mul, val_res x _ _ h]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem val_gen {L : LB X} {t : L.Gen} (ht : t.IsGen) (x : Sp ℂ ⟶ X) (i k : L.ι) (h : ⊤ ≤ x ⁻¹ᵁ (L.U i ⊓ L.U k)) :
     valAt' x (L.U i) (t.s i).val = valAt' x (L.U i ⊓ L.U k) (L.g i k).val * valAt' x (L.U k) (t.s k).val := by
   rw [← val_res x (inf_le_left : L.U i ⊓ L.U k ≤ _) _ h, ht i k, Units.val_mul, valAt'_mul, val_res x _ _ h]
 
 /- English proof (translation)
-Rewrite using `[← val_res x (le_inf (inf_le_left.trans inf_le_left) (inf_le_right.trans inf_le_left)) (M.g a a') h, ← val_res x (le_inf (inf_le_left.trans inf_le_right) (inf_le_right.trans inf_le_right)) (L.g b b') h, ← valAt'_units_inv x h, ← valAt'_mul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem val_div_g (M L : LB X) (x : Sp ℂ ⟶ X) (a a' : M.ι) (b b' : L.ι)
     (h : ⊤ ≤ x ⁻¹ᵁ (M.U a ⊓ L.U b ⊓ (M.U a' ⊓ L.U b'))) :
@@ -162,7 +162,7 @@ theorem val_div_g (M L : LB X) (x : Sp ℂ ⟶ X) (a a' : M.ι) (b b' : L.ι)
   rfl
 
 /- English proof (translation)
-Use `(valAt'_units_prod x h Finset.univ _).trans (Finset.prod_congr rfl fun k _ => ?_)` and prove the remaining obligations. Rewrite using `[zpow_one]`. Conclude with `val_res_pull x (φ k) (L.U (jj k) ⊓ L.U (jj' k)) _ _ h`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem val_linComb_g (x : Sp ℂ ⟶ Y) (L : LB X) {K : Type} [Fintype K] (φ : K → (Y ⟶ X)) (jj jj' : K → L.ι)
     (h : ⊤ ≤ x ⁻¹ᵁ (LB.wchart L φ jj ⊓ LB.wchart L φ jj')) :
@@ -173,9 +173,9 @@ theorem val_linComb_g (x : Sp ℂ ⟶ Y) (L : LB X) {K : Type} [Fintype K] (φ :
   exact val_res_pull x (φ k) (L.U (jj k) ⊓ L.U (jj' k)) _ _ h
 
 /- English proof (translation)
-Establish `hV : ⊤ ≤ x ⁻¹ᵁ (LB.wchart L φ jj ⊓ L'.U b ⊓ (LB.wchart L φ jj' ⊓ L'.U b'))`. Simplify using `only [top_le_preimage_inf]`. Conclude with `⟨⟨h₁, h₃⟩, h₂, h₄⟩`. Establish `h12 : ⊤ ≤ x ⁻¹ᵁ (LB.wchart L φ jj ⊓ LB.wchart L φ jj')` using `(top_le_preimage_inf _ _ _).2 ⟨h₁, h₂⟩`. Rewrite using `[← val_linComb_g x L φ jj jj' h12]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(val_gen hw x (jj, b) (jj', b') hV).trans (congrArg (· * _) (val_div_g (LB.LinComb L φ (fun _ => 1)) L' x jj jj' b b' hV))`.
+A detailed English derivation is pending.
 -/
 theorem val_iso (x : Sp ℂ ⟶ Y) (L : LB X) (L' : LB Y) {K : Type} [Fintype K] (φ : K → (Y ⟶ X))
     (w : LB.Iso L' (LB.LinComb L φ (fun _ => 1))) (hw : w.IsGen) (jj jj' : K → L.ι) (b b' : L'.ι)
@@ -195,21 +195,17 @@ theorem val_iso (x : Sp ℂ ⟶ Y) (L : LB X) (L' : LB Y) {K : Type} [Fintype K]
 end Val
 
 /- English proof (translation)
-Use `choose j₀ hj₀ using fun z k => exists_chart hL (c z ≫ φ k)`. Establish `hj : ∀ z, ⊤ ≤ c z ⁻¹ᵁ LB.wchart L φ (j₀ z)` using `fun z => (le_wchart_iff _ L φ _).2 (hj₀ z)`. Set `ω : (K → L.ι) → L'.ι → E → ℂ` to `fun jj b z => valAt' (c z) (LB.wchart L φ jj ⊓ L'.U b) (w.s (jj, b)).val`. Set `G : (K → L.ι) → L'.ι → E → ℂ` to `fun jj b z => (∏ k, fr k (jj k) z) / ω jj b z`. Establish `hω : ∀ jj b z, ⊤ ≤ c z ⁻¹ᵁ LB.wchart L φ jj → ⊤ ≤ c z ⁻¹ᵁ L'.U b → ω jj b z ≠ 0` using `fun jj b z h₁ h₂ => valAt'_unit_ne_zero (c z) ((top_le_preimage_inf _ _ _).2 ⟨h₁, h₂⟩) (w.s (jj, b))`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hG : ∀ jj jj' b b' z, ⊤ ≤ c z ⁻¹ᵁ LB.wchart L φ jj → ⊤ ≤ c z ⁻¹ᵁ LB.wchart L φ jj' → ⊤ ≤ c z ⁻¹ᵁ L'.U b → ⊤ ≤ c z ⁻¹ᵁ L'.U b' → G jj b z = valAt' (c z) (L'.U b ⊓ L'.U b') (L'.g b b').val * G jj' b' z`. Introduce `jj jj' b b' z h₁ h₂ h₃ h₄`. Establish `hk : ∀ k, ⊤ ≤ (c z ≫ φ k) ⁻¹ᵁ (L.U (jj k) ⊓ L.U (jj' k))` using `fun k => (top_le_preimage_inf _ _ _).2 ⟨(le_wchart_iff _ L φ _).1 h₁ k, (le_wchart_iff _ L φ _).1 h₂ k⟩`. Establish `e₁ : ω jj b z = _ * _ * ω jj' b' z` using `val_iso (c z) L L' φ w hw jj jj' b b' h₁ h₂ h₃ h₄`. Establish `e₂ : ∏ k, fr k (jj k) z = (∏ k, valAt' (c z ≫ φ k) (L.U (jj k) ⊓ L.U (jj' k)) (L.g (jj k) (jj' k)).val) * ∏ k, fr k (jj' k) z`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Finset.prod_mul_distrib]`. Conclude with `Finset.prod_congr rfl fun k _ => hco k _ _ z (hk k)`. Establish `n₁ : (∏ k, valAt' (c z ≫ φ k) (L.U (jj k) ⊓ L.U (jj' k)) (L.g (jj k) (jj' k)).val) ≠ 0` using `Finset.prod_ne_zero_iff.2 fun k _ => valAt'_unit_ne_zero _ (hk k) _`. Establish `n₂` using `valAt'_unit_ne_zero (c z) ((top_le_preimage_inf _ _ _).2 ⟨h₃, h₄⟩) (L'.g b b')`. Establish `n₃` using `hω jj' b' z h₂ h₄`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [G]`. Rewrite using `[e₁, e₂]`. Clear the denominators using the available nonvanishing facts. Establish `hG' : ∀ jj b z, ⊤ ≤ c z ⁻¹ᵁ LB.wchart L φ jj → ⊤ ≤ c z ⁻¹ᵁ L'.U b → G (j₀ z) b z = G jj b z`. Introduce `jj b z h₁ h₂`.
+Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hG (j₀ z) jj b b z (hj z) h₁ h₂ h₂, val_g_self hL' _ _ h₂, _root_.one_mul]`. Use `⟨fun b z => G (j₀ z) b z, fun b z₀ hz₀ => ?_, fun b z hz => ?_, fun b b' z hz => ?_, fun jj b z h₁ h₂ => ?_⟩` and prove the remaining obligations. Establish `hS` using `(hc (LB.wchart L φ (j₀ z₀) ⊓ L'.U b) (w.s (j₀ z₀, b)).val)`. Establish `hS₀` using `hS.1.mem_nhds ((top_le_preimage_inf _ _ _).2 ⟨hj z₀, hz₀⟩)`. Establish `hd : DifferentiableAt ℂ (G (j₀ z₀) b) z₀`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [G, div_eq_mul_inv]`. Use `DifferentiableAt.mul (HasFDerivAt.finsetProd fun k _ => DifferentiableAt.hasFDerivAt ?_).differentiableAt ((hS.2.differentiableAt hS₀).inv (hω _ _ _ (hj z₀) hz₀))` and prove the remaining obligations. Conclude with `(hhol k _).differentiableAt (((hc.comp (φ k)) _ 0).1.mem_nhds (hj₀ z₀ k))`. Use `(hd.congr_of_eventuallyEq ?_).differentiableWithinAt` and prove the remaining obligations. Use `filter_upwards [hS₀] with z hz`.
-
-Conclude with `hG' _ _ _ ((top_le_preimage_inf _ _ _).1 hz).1 ((top_le_preimage_inf _ _ _).1 hz).2`. Conclude with `div_ne_zero (Finset.prod_ne_zero_iff.2 fun k _ => hne k _ z (hj₀ z k)) (hω _ _ _ (hj z) hz)`. Conclude with `hG _ _ _ _ z (hj z) (hj z) ((top_le_preimage_inf _ _ _).1 hz).1 ((top_le_preimage_inf _ _ _).1 hz).2`. Use `beta_reduce`. Rewrite using `[hG' jj b z h₁ h₂]`.
-
-Conclude with `(mul_div_cancel₀ _ (hω jj b z h₁ h₂)).symm`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_frame {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] {X Y : Scheme.{0}} {c : E → (Sp ℂ ⟶ Y)}
     (hc : IsHolFamily c) {L : LB X} (hL : L.IsLB) {L' : LB Y} (hL' : L'.IsLB) {K : Type} [Fintype K]
@@ -286,7 +282,7 @@ Both sides reduce to the same expression.
 theorem blockPr_apply (i : Fin j) (z : Fin n → ℂ) : blockPr e i z = fun k => z (e (i, k)) := rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `q`. Simplify using `only [blockIn, ContinuousLinearMap.pi_apply]`. Apply the tactic sequence `split_ifs <;> rfl`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem blockIn_apply (i : Fin j) (z : Fin g → ℂ) :
     blockIn e i z = fun q => if i = (e.symm q).1 then z (e.symm q).2 else 0 := by
@@ -295,7 +291,7 @@ theorem blockIn_apply (i : Fin j) (z : Fin g → ℂ) :
   split_ifs <;> rfl
 
 /- English proof (translation)
-Rewrite using `[blockPr_apply, blockIn_apply]`. Apply the tactic sequence `split_ifs with h <;> funext k <;> simp [h]`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem blockPr_blockIn (i i' : Fin j) (z : Fin g → ℂ) :
     blockPr e i' (blockIn e i z) = if i = i' then z else 0 := by
@@ -303,7 +299,7 @@ theorem blockPr_blockIn (i i' : Fin j) (z : Fin g → ℂ) :
   split_ifs with h <;> funext k <;> simp [h]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `q`. Simplify using `only [Finset.sum_apply, blockIn_apply, blockPr_apply, Finset.sum_ite_eq', Finset.mem_univ, if_true, Prod.mk.eta, Equiv.apply_symm_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem sum_blockIn_blockPr (z : Fin n → ℂ) : ∑ i, blockIn e i (blockPr e i z) = z := by
   funext q
@@ -317,7 +313,7 @@ def blockLat (Λ : Submodule ℤ (Fin g → ℂ)) : Submodule ℤ (Fin n → ℂ
   smul_mem' := fun c z hz i => by rw [map_zsmul]; exact Λ.smul_mem c (hz i)
 
 /- English proof (translation)
-Use `DiscreteTopology.of_continuous_injective (β := Fin j → Λ) (f := fun z i => ⟨blockPr e i z.1, z.2 i⟩) (continuous_pi fun i => ((blockPr e i).continuous.comp continuous_subtype_val).subtype_mk _) fun z z' h => ?_` and prove the remaining obligations. Use `Subtype.ext ?_` and prove the remaining obligations. Rewrite using `[← sum_blockIn_blockPr e z.1, ← sum_blockIn_blockPr e z'.1]`. Conclude with `Finset.sum_congr rfl fun i _ => congrArg _ (congrArg Subtype.val (congrFun h i))`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem blockLat_discrete (Λ : Submodule ℤ (Fin g → ℂ)) [DiscreteTopology Λ] : DiscreteTopology (blockLat e Λ) := by
   refine DiscreteTopology.of_continuous_injective (β := Fin j → Λ)
@@ -328,13 +324,11 @@ theorem blockLat_discrete (Λ : Submodule ℤ (Fin g → ℂ)) [DiscreteTopology
   exact Finset.sum_congr rfl fun i _ => congrArg _ (congrArg Subtype.val (congrFun h i))
 
 /- English proof (translation)
-Use `eq_top_iff.2 fun z _ => ?_` and prove the remaining obligations. Rewrite using `[← sum_blockIn_blockPr e z]`. Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Establish `hz : blockPr e i z ∈ Submodule.span ℝ (Λ : Set (Fin g → ℂ))` using `h ▸ Submodule.mem_top`. Generalize the expression as in `blockPr e i z = a at hz`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable.
 
-Proceed by induction on `hz using Submodule.span_induction with`. Consider the case `mem a ha`. Use `Submodule.subset_span fun i' => ?_` and prove the remaining obligations. Rewrite using `[blockPr_blockIn]`. Use `split_ifs`.
+Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Use `exacts [ha, Λ.zero_mem]`. Consider the case `zero => rw [map_zero]`. Conclude with `Submodule.zero_mem _`. Consider the case `add a b _ _ ha hb => rw [map_add]`. Conclude with `Submodule.add_mem _ ha hb`.
-
-Consider the case `smul r a _ ha => rw [ContinuousLinearMap.map_smul_of_tower]`. Conclude with `Submodule.smul_mem _ r ha`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem blockLat_full (Λ : Submodule ℤ (Fin g → ℂ)) (h : Submodule.span ℝ (Λ : Set (Fin g → ℂ)) = ⊤) :
     Submodule.span ℝ (blockLat e Λ : Set (Fin n → ℂ)) = ⊤ := by
@@ -360,7 +354,7 @@ section Pow
 variable {G' G : Over (Sp ℂ)} [GrpObj G'] [GrpObj G] {j : ℕ} (p : Out.IsPowGrp G' G j)
 
 /- English proof (translation)
-The claim follows from `p.lim.hom_ext fun ⟨i⟩ => h i`.
+A detailed English derivation is pending.
 -/
 theorem pow_hom_ext {T : Over (Sp ℂ)} {a b : T ⟶ G'} (h : ∀ i, a ≫ p.pr i = b ≫ p.pr i) : a = b :=
   p.lim.hom_ext fun ⟨i⟩ => h i
@@ -368,7 +362,7 @@ theorem pow_hom_ext {T : Over (Sp ℂ)} {a b : T ⟶ G'} (h : ∀ i, a ≫ p.pr 
 def powLift {T : Over (Sp ℂ)} (a : Fin j → (T ⟶ G)) : T ⟶ G' := p.lim.lift (Fan.mk _ a)
 
 /- English proof (translation)
-The claim follows from `p.lim.fac (Fan.mk _ a) ⟨i⟩`.
+A detailed English derivation is pending.
 -/
 theorem powLift_pr {T : Over (Sp ℂ)} (a : Fin j → (T ⟶ G)) (i : Fin j) : powLift p a ≫ p.pr i = a i :=
   p.lim.fac (Fan.mk _ a) ⟨i⟩
@@ -376,31 +370,29 @@ theorem powLift_pr {T : Over (Sp ℂ)} (a : Fin j → (T ⟶ G)) (i : Fin j) : p
 variable {L : LB G.left} {g : ℕ} (u : HolUnif G L g)
 
 /- English proof (translation)
-The claim follows from `(u.ker 0).2 u.Λ.zero_mem`.
+A detailed English derivation is pending.
 -/
 theorem ex_zero : u.ex 0 = 1 := (u.ker 0).2 u.Λ.zero_mem
 
 /- English proof (translation)
-Rewrite using `[Hom.one_def, toUnit_unique (toUnit _) (𝟙 _), Category.id_comp]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem one_left : (1 : 𝟙_ (Over (Sp ℂ)) ⟶ G).left = eSec G := by
   rw [Hom.one_def, toUnit_unique (toUnit _) (𝟙 _), Category.id_comp]
   rfl
 
 /- English proof (translation)
-Set `ex : (Fin n → ℂ) → (𝟙_ (Over (Sp ℂ)) ⟶ G')` to `fun z => powLift p fun i => u.ex (blockPr e i z)`. Establish `hex : ∀ z i, ex z ≫ p.pr i = u.ex (blockPr e i z)` using `fun z i => powLift_pr p _ i`. Set `c : (Fin n → ℂ) → (Sp ℂ ⟶ G'.left)` to `fun z => (ex z).left`. Set `d : (Fin g → ℂ) → (Sp ℂ ⟶ G.left)` to `fun z => (u.ex z).left`. Establish `hcd : ∀ z i, c z ≫ (p.pr i).left = d (blockPr e i z)` using `fun z i => congrArg (·.left) (hex z i)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hd : IsHolFamily d` using `u.hol`. Establish `hc : IsHolFamily c` using `isHolFamily_pow p ex fun i => by`. Simplify using `only [hex]`. Conclude with `hd.precomp (blockPr e i).differentiable`. Take `⟨fr', h₁, h₂, h₃, h₄⟩` from `exists_frame hc hL hL' (fun i => (p.pr i).left) w hw (fun i a z => u.fr a (blockPr e i z)) (fun i a => by`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Simplify using `only [hcd]`. Conclude with `(u.fr_hol a).comp (blockPr e i).differentiable.differentiableOn fun _ hz => hz)`. Use the proof step `(fun i a z hz => u.fr_ne a _ (by rw [hcd] at hz; exact hz))`. Use the proof step `(fun i a a' z hz => by`. Rewrite `hz`, the goal using `[hcd]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `u.fr_compat a a' _ hz)`. Use `u.discrete` as an intermediate fact. Use `⟨⟨ex, fun z z' => pow_hom_ext p fun i => ?_, fun a => ?_, blockLat e u.Λ, fun z => ?_, blockLat_discrete e u.Λ, blockLat_full e u.Λ u.full, hc, fr', h₁, h₂, h₃⟩, fun z => Iff.rfl, hex, h₄⟩` and prove the remaining obligations. Use `p.hom i` as an intermediate fact. Rewrite using `[MonObj.mul_comp, hex, hex, hex, map_add, u.ex_add]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `choose z hz using fun i => u.ex_onto (a ≫ p.pr i)`. Use `⟨∑ i, blockIn e i (z i), pow_hom_ext p fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[hex, ← hz, map_sum]`. Simplify using `only [blockPr_blockIn, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Introduce `h i`. Use `p.hom i` as an intermediate fact. Rewrite using `[← u.ker, ← hex, h, MonObj.one_comp]`. Introduce `h`. Use `pow_hom_ext p fun i => ?_` and prove the remaining obligations.
-
-Use `p.hom i` as an intermediate fact. Rewrite using `[hex, MonObj.one_comp, (u.ker _).2 (h i)]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_powUnif (hL : L.IsLB) {L' : LB G'.left} (hL' : L'.IsLB) (w : LB.Iso L' (Out.boxLB L p.pr))
     (hw : w.IsGen) {n : ℕ} (e : Fin j × Fin g ≃ Fin n) :
@@ -448,13 +440,13 @@ theorem exists_powUnif (hL : L.IsLB) {L' : LB G'.left} (hL' : L'.IsLB) (w : LB.I
 variable {L' : LB G'.left} {n : ℕ} (u' : HolUnif G' L' n)
 
 /- English proof (translation)
-Introduce `U hU f`. Establish `h0 : ⊤ ≤ (u'.ex 0).left ⁻¹ᵁ U`. Rewrite using `[ex_zero, one_left]`. Introduce `x hx`. Establish `h1 : (spMap (TrivSqZeroExt.fstHom ℂ ℂ ℂ).toRingHom ≫ (v ≫ φ).left) x ∈ U` using `hU (Set.mem_univ _)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `h1` using `[ht]`. Conclude with `h1`. Establish `hF : DifferentiableAt ℂ (fun z => valAt' (u'.ex z).left U f) (T 0)`. Rewrite using `[map_zero]`. Conclude with `(u'.hol U f).2.differentiableAt ((u'.hol U f).1.mem_nhds h0)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `h (φ.left ⁻¹ᵁ U) hU ((φ.left.app U).hom f)`. Establish `h2 : (fun z => valAt' (u.ex z).left (φ.left ⁻¹ᵁ U) ((φ.left.app U).hom f)) = (fun z => valAt' (u'.ex z).left U f) ∘ T` using `funext fun z => by`. Use `(valAt'_comp _ _ _ _).trans ?_` and prove the remaining obligations. Rewrite using `[Function.comp_apply, hT]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `h1` using `[h2, fderiv_comp _ hF T.differentiableAt, T.fderiv, map_zero]`. Use `Eq.trans ?_ h1` and prove the remaining obligations. Establish `h3 : (v ≫ φ).left.appLE U ⊤ hU = φ.left.app U ≫ v.left.appLE (φ.left ⁻¹ᵁ U) ⊤ hU` using `Scheme.Hom.comp_appLE v.left φ.left U ⊤ hU`. Rewrite using `[h3]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem isDiff_map (φ : G ⟶ G') (T : (Fin g → ℂ) →L[ℂ] (Fin n → ℂ)) (hT : ∀ z, u'.ex (T z) = u.ex z ≫ φ)
     {a : Fin g → ℂ} {v : epsR ℂ ⟶ G} (ht : IsTangent (v ≫ φ)) (h : u.IsDiff a v) : u'.IsDiff (T a) (v ≫ φ) := by
@@ -484,11 +476,9 @@ theorem isDiff_map (φ : G ⟶ G') (T : (Fin g → ℂ) →L[ℂ] (Fin n → ℂ
 end Pow
 
 /- English proof (translation)
-Establish `ha' : ⊤ ≤ (𝟙 (Sp ℂ)) ⁻¹ᵁ ((Out.boxLB L p.pr).pull (eSec G')).U fun _ _ => a` using `fun x hx => Set.mem_iInter.2 fun _ => ha hx`. Establish `hV : ⊤ ≤ (𝟙 (Sp ℂ)) ⁻¹ᵁ (((Out.boxLB L p.pr).pull (eSec G')).U (fun _ _ => a) ⊓ (L'.pull (eSec G')).U b)` using `(top_le_preimage_inf _ _ _).2 ⟨ha', hb⟩`. Establish `h1` using `(val_res (𝟙 (Sp ℂ)) _ _ hV).symm.trans ((congrArg (fun s => valAt' (𝟙 (Sp ℂ)) _ (Units.val s)) (h (fun _ _ => a, b))).trans (valAt'_mul _ _ _ _))`. Use `Eq.trans ?_ (h1.trans (congrArg₂ (· * ·) ?_ (val_res _ _ _ hV)))` and prove the remaining obligations. Use `Eq.trans (Finset.prod_congr rfl fun i _ => ?_) (valAt'_units_prod (κ := Fin j) _ ha' Finset.univ _).symm` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hi : ⊤ ≤ (𝟙 (Sp ℂ)) ⁻¹ᵁ LB.wchart (L.pull (p.pr i).left) (fun _ : PUnit => eSec G') (fun _ _ => a)` using `top_le_preimage_mono _ (Out.GeneratorPullback.box_le L (fun i => (p.pr i).left) (fun _ : PUnit => eSec G') (fun _ _ => a) i) ha'`. Use `Eq.trans ?_ (val_res _ _ _ ha').symm` and prove the remaining obligations. Conclude with `(val_res_pull (𝟙 (Sp ℂ)) (𝟙 (Sp ℂ)) _ _ _ hi).symm`. Use `(valAt'_units_prod (κ := PUnit) _ hV Finset.univ _).trans ?_` and prove the remaining obligations. Rewrite using `[Fintype.prod_unique, zpow_one]`.
-
-Conclude with `val_res_pull (𝟙 (Sp ℂ)) (eSec G') ((Out.boxLB L p.pr).U (fun _ => a) ⊓ L'.U (b PUnit.unit)) _ _ hV`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem val_boxRig {G' G : Over (Sp ℂ)} [GrpObj G'] [IsCommMonObj G'] [GrpObj G] [IsCommMonObj G] {j : ℕ}
     (p : Out.IsPowGrp G' G j) {L : LB G.left} {L' : LB G'.left} (w : LB.Iso L' (Out.boxLB L p.pr))
@@ -516,27 +506,25 @@ theorem val_boxRig {G' G : Over (Sp ℂ)} [GrpObj G'] [IsCommMonObj G'] [GrpObj 
     exact val_res_pull (𝟙 (Sp ℂ)) (eSec G') ((Out.boxLB L p.pr).U (fun _ => a) ⊓ L'.U (b PUnit.unit)) _ _ hV
 
 /- English proof (translation)
-Introduce and unpack `x y j u θ W ⟨p, hg, hr, ht, hv⟩ hrig hfn hdiff`. Set `e : Fin j × Fin x.P.g ≃ Fin y.P.g` to `finProdFinEquiv.trans (finCongr hg)`. Take `⟨u', hΛ, hex, hfr⟩` from `exists_powUnif p.toIsPowGrp u x.P.isLB y.P.isLB p.w p.w_gen e`. Set `c : (Fin y.P.g → ℂ) → (Sp ℂ ⟶ y.P.A.left)` to `fun z => (u'.ex z).left`. Set `d : (Fin x.P.g → ℂ) → (Sp ℂ ⟶ x.P.A.left)` to `fun z => (u.ex z).left`.
+Assume the hypotheses and unpack their components. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hcd : ∀ z i, c z ≫ (p.pr i).left = d (blockPr e i z)` using `fun z i => congrArg (·.left) (hex z i)`. Use `⟨e, u', hΛ, fun b hb => ?_, fun b z hb => ?_, fun q => ?_⟩` and prove the remaining obligations. Use `y.P.isAb.comm` as an intermediate fact. Use `x.P.isAb.comm` as an intermediate fact. Take `⟨a, ha⟩` from `exists_chart x.P.isLB (d 0)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hc0 : c 0 = eSec y.P.A` using `(congrArg (·.left) (ex_zero u')).trans one_left`. Establish `hd0 : d 0 = eSec x.P.A` using `(congrArg (·.left) (ex_zero u)).trans one_left`. Establish `h₁ : ⊤ ≤ c 0 ⁻¹ᵁ (Out.boxLB x.P.L p.pr).U fun _ => a` using `(le_wchart_iff _ _ _ _).2 fun i => by rw [hcd, map_zero]; exact ha`. Establish `h₂ : ⊤ ≤ c 0 ⁻¹ᵁ y.P.L.U (b PUnit.unit)`. Rewrite using `[hc0]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hb.trans (LB.wchart_le y.P.L (fun _ : PUnit => eSec y.P.A) b PUnit.unit)`. Establish `h₃ : ⊤ ≤ (x.P.L.pull (eSec x.P.A)).U fun _ => a`. Rewrite `ha` using `[hd0]`. Conclude with `fun s hs => Set.mem_iInter.2 fun _ => ha hs`. Establish `e₁ : _ = valAt' (c 0) _ _ * _` using `hfr _ _ 0 h₁ h₂`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hne` using `valAt'_unit_ne_zero (c 0) ((top_le_preimage_inf _ _ _).2 ⟨h₁, h₂⟩) (p.w.s (fun _ => a, b PUnit.unit))`. Establish `e₂` using `val_boxRig p.toIsPowGrp p.w x.rig y.rig hr a b (hc0 ▸ h₁) hb`. Rewrite `e₁`, `hne` using `[hc0]`. Use `mul_left_cancel₀ hne (e₁.symm.trans (Eq.trans (Finset.prod_congr rfl fun i _ => ?_) e₂))` and prove the remaining obligations. Rewrite using `[map_zero]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hrig _ h₃`. Use `choose jj hjj using fun i => exists_chart x.P.isLB (d (blockPr e i z))`. Establish `h₁ : ⊤ ≤ c z ⁻¹ᵁ (Out.boxLB x.P.L p.pr).U jj` using `(le_wchart_iff _ _ _ _).2 fun i => by rw [hcd]; exact hjj i`. Establish `hV : ⊤ ≤ c z ⁻¹ᵁ ((Out.boxLB x.P.L p.pr).U jj ⊓ y.P.L.U b)` using `(top_le_preimage_inf _ _ _).2 ⟨h₁, hb⟩`. Establish `e₁ : _ = valAt' (c z) _ _ * _` using `hfr _ _ z h₁ hb`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hne` using `valAt'_unit_ne_zero (c z) hV (p.w.s (jj, b))`. Establish `e₂` using `congrArg (valAt' (c z) _) (ht jj b fun i => inf_le_left.trans (LB.wchart_le x.P.L (fun i => (p.pr i).left) jj i))`. Rewrite `e₂` using `[valAt'_prod _ hV, valAt'_mul, valAt'_res _ _ _ hV]`. Use `mul_left_cancel₀ hne (e₂.symm.trans ?_)` and prove the remaining obligations. Rewrite using `[mul_left_comm]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Eq.trans ?_ (congrArg (_ * ·) e₁)` and prove the remaining obligations. Rewrite using `[← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[valAt'_appLE _ _ _ _ _ _ hV, hcd]`. Conclude with `hfn _ _ (hjj i)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨⟨i, k⟩, rfl⟩` from `e.surjective q`. Set `ι' : x.P.A ⟶ y.P.A` to `powLift p.toIsPowGrp fun i' => if i = i' then 𝟙 _ else 1`. Establish `hι : ∀ {T : Over (Sp ℂ)} (s : T ⟶ x.P.A) (i' : Fin j), (s ≫ ι') ≫ p.pr i' = if i = i' then s else 1` using `fun s i' => by`. Rewrite using `[Category.assoc, powLift_pr]`. Use `split_ifs`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `exacts [Category.comp_id _, MonObj.comp_one _]`. Establish `hq : y.v (e (i, k)) = x.v k ≫ ι'` using `pow_hom_ext p.toIsPowGrp fun i' => (hv i i' k).trans (hι _ i').symm`. Establish `hT : ∀ z, u'.ex (blockIn e i z) = u.ex z ≫ ι'` using `fun z => pow_hom_ext p.toIsPowGrp fun i' => by`. Rewrite using `[hex, blockPr_blockIn, hι]`. Use `split_ifs`.
-
-Use `exacts [rfl, ex_zero u]`. Use `isDiff_map u u' ι' (blockIn e i) hT (hq ▸ y.basis.1 _) (hdiff k)` as an intermediate fact. Rewrite `this` using `[blockIn_apply, ← hq]`. Simplify `this` using `only [Equiv.symm_apply_apply]`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem exists_holUnif_pow : ∀ (x y : KeyIn ℂ) (j : ℕ) (u : HolUnif x.P.A x.P.L x.P.g) (θ : (Fin x.P.g → ℂ) → ℂ) (W : Matrix (Fin x.P.g) (Fin x.P.g) ℂ), GlobalTheory.KeyPow.IsKeyPow y x j → u.IsRig x.rig → u.IsFn x.th θ → (∀ i, u.IsDiff (W i) (x.v i)) → ∃ (e : Fin j × Fin x.P.g ≃ Fin y.P.g) (u' : HolUnif y.P.A y.P.L y.P.g), (∀ z, z ∈ u'.Λ ↔ ∀ i, (fun k => z (e (i, k))) ∈ u.Λ) ∧ u'.IsRig y.rig ∧ u'.IsFn y.th (fun z => ∏ i, θ (fun k => z (e (i, k)))) ∧ ∀ p, u'.IsDiff (fun q => if (e.symm p).1 = (e.symm q).1 then W (e.symm p).2 (e.symm q).2 else 0) (y.v p) := by
   rintro x y j u θ W ⟨p, hg, hr, ht, hv⟩ hrig hfn hdiff

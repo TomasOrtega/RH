@@ -11,14 +11,14 @@ section Chain
 variable {R : Type*} [CommRing R] {σ : Type*}
 
 /- English proof (translation)
-Simplify using `only [PI.JetsPhW.dX, PowerSeries.coeff_mk]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem coeff_dX (f : PowerSeries R) (n : ℕ) :
     PowerSeries.coeff n (PI.JetsPhW.dX f) = ((n : R) + 1) * PowerSeries.coeff (n + 1) f := by
   simp only [PI.JetsPhW.dX, PowerSeries.coeff_mk]
 
 /- English proof (translation)
-Use extensionality with `n`. Rewrite using `[PowerSeries.coeff_derivative, coeff_dX]`. Expand and normalize the polynomial expressions, which then agree.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem dX_eq (f : PowerSeries R) : dX f = PowerSeries.derivative R f := by
   ext n
@@ -26,7 +26,7 @@ theorem dX_eq (f : PowerSeries R) : dX f = PowerSeries.derivative R f := by
   ring
 
 /- English proof (translation)
-Take `⟨z, rfl⟩` from `exists_add_of_le h`. Rewrite using `[map_add]`. Conclude with `Nat.le_add_right _ _`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem degree_le_of_le {y e : σ →₀ ℕ} (h : y ≤ e) : y.degree ≤ e.degree := by
   obtain ⟨z, rfl⟩ := exists_add_of_le h
@@ -34,7 +34,7 @@ theorem degree_le_of_le {y e : σ →₀ ℕ} (h : y ≤ e) : y.degree ≤ e.deg
   exact Nat.le_add_right _ _
 
 /- English proof (translation)
-Apply `MvPowerSeries.coeff_of_lt_order` to reduce the goal to its premises. Conclude with `lt_of_lt_of_le (by exact_mod_cast h) (MvPowerSeries.le_order_pow_of_constantCoeff_eq_zero d ha)`.
+Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem coeff_pow_eq_zero_of_degree_lt {a : MvPowerSeries σ R} (ha : MvPowerSeries.constantCoeff a = 0)
     {e : σ →₀ ℕ} {d : ℕ} (h : e.degree < d) : MvPowerSeries.coeff e (a ^ d) = 0 := by
@@ -42,9 +42,9 @@ theorem coeff_pow_eq_zero_of_degree_lt {a : MvPowerSeries σ R} (ha : MvPowerSer
   exact lt_of_lt_of_le (by exact_mod_cast h) (MvPowerSeries.le_order_pow_of_constantCoeff_eq_zero d ha)
 
 /- English proof (translation)
-Establish `hs : PowerSeries.HasSubst a` using `PowerSeries.HasSubst.of_constantCoeff_zero ha`. Rewrite using `[PowerSeries.coeff_subst hs, PowerSeries.coeff_subst hs]`. Use `finsum_congr fun k => ?_` and prove the remaining obligations. Distinguish the cases in `hk : k < N`. Rewrite using `[hfg k hk]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[coeff_pow_eq_zero_of_degree_lt ha (lt_of_lt_of_le he (not_lt.mp hk)), smul_zero, smul_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem coeff_subst_congr {a : MvPowerSeries σ R} (ha : MvPowerSeries.constantCoeff a = 0)
     {f g : PowerSeries R} {N : ℕ} (hfg : ∀ k < N, PowerSeries.coeff k f = PowerSeries.coeff k g)
@@ -58,7 +58,7 @@ theorem coeff_subst_congr {a : MvPowerSeries σ R} (ha : MvPowerSeries.constantC
   · rw [coeff_pow_eq_zero_of_degree_lt ha (lt_of_lt_of_le he (not_lt.mp hk)), smul_zero, smul_zero]
 
 /- English proof (translation)
-Rewrite using `[MvPowerSeries.coeff_mul, MvPowerSeries.coeff_mul]`. Use `Finset.sum_congr rfl fun p hp => ?_` and prove the remaining obligations. Rewrite `hp` using `[Finset.HasAntidiagonal.mem_antidiagonal]`. Rewrite using `[hfg p.2 (by rw [← hp]; exact le_add_self)]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem coeff_mul_congr (u : MvPowerSeries σ R) {f g : MvPowerSeries σ R} {e : σ →₀ ℕ}
     (hfg : ∀ y ≤ e, MvPowerSeries.coeff y f = MvPowerSeries.coeff y g) :
@@ -70,7 +70,7 @@ theorem coeff_mul_congr (u : MvPowerSeries σ R) {f g : MvPowerSeries σ R} {e :
   rw [hfg p.2 (by rw [← hp]; exact le_add_self)]
 
 /- English proof (translation)
-Establish `hs : PowerSeries.HasSubst a` using `PowerSeries.HasSubst.of_constantCoeff_zero ha`. Rewrite using `[dX_eq, PowerSeries.derivative_coe, PowerSeries.subst_coe hs, PowerSeries.subst_coe hs, Derivation.map_aeval, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem pderiv_subst_coe (i : σ) {a : MvPowerSeries σ R} (ha : MvPowerSeries.constantCoeff a = 0)
     (q : Polynomial R) :
@@ -82,11 +82,11 @@ theorem pderiv_subst_coe (i : σ) {a : MvPowerSeries σ R} (ha : MvPowerSeries.c
   ring
 
 /- English proof (translation)
-Use extensionality with `e`. Establish `h1 : MvPowerSeries.coeff e (MvPowerSeries.pderiv R i (PowerSeries.subst a g)) = MvPowerSeries.coeff e (MvPowerSeries.pderiv R i (PowerSeries.subst a (PowerSeries.trunc (e.degree + 2) g : PowerSeries R)))`. Rewrite using `[MvPowerSeries.coeff_pderiv, MvPowerSeries.coeff_pderiv]`. Use `congr 1`. Use `coeff_subst_congr ha (N := e.degree + 2) (fun k hk => ?_) ?_` and prove the remaining obligations.
+By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(PowerSeries.coeff_coe_trunc_of_lt hk).symm`. Rewrite using `[map_add, Finsupp.degree_single]`. Use linear arithmetic over natural numbers and integers. Establish `h2 : MvPowerSeries.coeff e (MvPowerSeries.pderiv R i a * PowerSeries.subst a (PI.JetsPhW.dX g)) = MvPowerSeries.coeff e (MvPowerSeries.pderiv R i a * PowerSeries.subst a (PI.JetsPhW.dX (PowerSeries.trunc (e.degree + 2) g : PowerSeries R)))`. Use `coeff_mul_congr _ fun y hy => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `coeff_subst_congr ha (N := e.degree + 1) (fun k hk => ?_) ?_` and prove the remaining obligations. Rewrite using `[coeff_dX, coeff_dX, PowerSeries.coeff_coe_trunc_of_lt (n := k + 1) (m := e.degree + 2) (by omega)]`. Conclude with `Nat.lt_succ_of_le (degree_le_of_le hy)`. Rewrite using `[h1, pderiv_subst_coe i ha, h2]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pderiv_subst (i : σ) {a : MvPowerSeries σ R} (ha : MvPowerSeries.constantCoeff a = 0)
     (g : PowerSeries R) :
@@ -112,7 +112,7 @@ theorem pderiv_subst (i : σ) {a : MvPowerSeries σ R} (ha : MvPowerSeries.const
   rw [h1, pderiv_subst_coe i ha, h2]
 
 /- English proof (translation)
-Rewrite using `[pderiv_subst i (a := MvPowerSeries.X i) (MvPowerSeries.constantCoeff_X i) g, MvPowerSeries.pderiv_X_self, one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem pderiv_subst_X_self (i : σ) (g : PowerSeries R) :
     MvPowerSeries.pderiv R i (PowerSeries.subst (MvPowerSeries.X i) g) =
@@ -121,7 +121,7 @@ theorem pderiv_subst_X_self (i : σ) (g : PowerSeries R) :
     MvPowerSeries.pderiv_X_self, one_mul]
 
 /- English proof (translation)
-Rewrite using `[pderiv_subst i (a := MvPowerSeries.X j) (MvPowerSeries.constantCoeff_X j) g, MvPowerSeries.pderiv_X_of_ne h, zero_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem pderiv_subst_X_ne {i j : σ} (h : j ≠ i) (g : PowerSeries R) :
     MvPowerSeries.pderiv R i (PowerSeries.subst (MvPowerSeries.X j) g) = 0 := by
@@ -135,19 +135,19 @@ def DvR (v : PowerSeries R) (i : σ) (f : MvPowerSeries σ R) : MvPowerSeries σ
   PowerSeries.subst (MvPowerSeries.X i) v * MvPowerSeries.pderiv R i f
 
 /- English proof (translation)
-Simplify using `using PowerSeries.subst_C (a := a) (1 : R)`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem subst_one' (a : MvPowerSeries σ R) : PowerSeries.subst a (1 : PowerSeries R) = 1 := by
   simpa using PowerSeries.subst_C (a := a) (1 : R)
 
 /- English proof (translation)
-The claim follows from `PowerSeries.HasSubst.of_constantCoeff_zero (MvPowerSeries.constantCoeff_X i)`.
+A detailed English derivation is pending.
 -/
 private theorem powerSeries_hasSubst_mvPowerSeries_X (i : σ) : PowerSeries.HasSubst (MvPowerSeries.X i : MvPowerSeries σ R) :=
   PowerSeries.HasSubst.of_constantCoeff_zero (MvPowerSeries.constantCoeff_X i)
 
 /- English proof (translation)
-Rewrite using `[← PowerSeries.subst_mul (powerSeries_hasSubst_mvPowerSeries_X i), hv, subst_one']`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem subst_v_mul {l v : PowerSeries R} (hv : v * dX l = 1) (i : σ) :
     PowerSeries.subst (MvPowerSeries.X i : MvPowerSeries σ R) v *

@@ -22,27 +22,27 @@ Both sides reduce to the same expression.
 theorem cc_apply (a : V) (i) : cc a i = star ((stdOrthonormalBasis ℂ V).repr a i) := rfl
 
 /- English proof (translation)
-Simplify using `[ccInv, cc_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem ccInv_cc (a : V) : ccInv (cc a) = a := by
   simp [ccInv, cc_apply]
 
 /- English proof (translation)
-Use extensionality with `i`. Simplify using `[ccInv, cc_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem cc_ccInv (x : EuclideanSpace ℂ (Fin (Module.finrank ℂ V))) : cc (ccInv x) = x := by
   ext i
   simp [ccInv, cc_apply]
 
 /- English proof (translation)
-Use extensionality with `i`. Simplify using `[cc_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem cc_add (a b : V) : cc (a + b) = cc a + cc b := by
   ext i
   simp [cc_apply]
 
 /- English proof (translation)
-Use extensionality with `i`. Simplify using `[cc_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem cc_smul (s : ℂ) (a : V) : cc (s • a) = star s • cc a := by
   ext i
@@ -51,9 +51,9 @@ theorem cc_smul (s : ℂ) (a : V) : cc (s • a) = star s • cc a := by
 variable {k : ℕ}
 
 /- English proof (translation)
-Establish `h1 : (Finset.univ.filter fun b : Fin k => a < b) = Finset.Ioi a` using `by ext b; simp`. Establish `h2 : (Finset.univ.filter fun b : Fin k => b < a) = Finset.Iio a` using `by ext b; simp`. Establish `h3 : (a : ℕ) + 1 ≤ k` using `a.2`. Simplify using `only [allPos, Formalism.QuantumDeterminants.lowK, Formalism.REAL.rhoN, Formalism.REAL.rhoC, Pi.sub_apply, Pi.add_apply, ne_eq, not_true_eq_false, and_false, and_true, Finset.filter_false, Finset.card_empty, h1, h2, Fin.card_Ioi, Fin.card_Iio]`. Rewrite using `[show k - 1 - (a : ℕ) = k - ((a : ℕ) + 1) by omega, Nat.cast_sub h3]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem lowK_allPos (lam : Fin k → ℝ) (a : Fin k) :
     Formalism.QuantumDeterminants.lowK (allPos k) lam a = lam a - (((k : ℝ) - 1) / 2 - (a : ℕ)) := by
@@ -66,7 +66,7 @@ theorem lowK_allPos (lam : Fin k → ℝ) (a : Fin k) :
   push_cast; ring
 
 /- English proof (translation)
-Use function extensionality and compare the values at `a`. Rewrite using `[lowK_allPos, lowK_allPos, Fin.val_rev, Nat.cast_sub a.2]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem lowK_neg_rev (u : Fin k → ℝ) :
     Formalism.QuantumDeterminants.lowK (allPos k) (fun i => -u (Fin.rev i)) = fun a => -Formalism.QuantumDeterminants.lowK (allPos k) u (Fin.rev a) := by
@@ -88,14 +88,14 @@ namespace GlobalTheory.ConjTypeW
 variable {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V] [FiniteDimensional ℂ V]
 
 /- English proof (translation)
-Rewrite using `[← cc_ccInv x, ← cc_ccInv y, ← cc_add, ccInv_cc, ccInv_cc, ccInv_cc]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem ccInv_add (x y : EuclideanSpace ℂ (Fin (Module.finrank ℂ V))) :
     (ccInv (x + y) : V) = ccInv x + ccInv y := by
   rw [← cc_ccInv x, ← cc_ccInv y, ← cc_add, ccInv_cc, ccInv_cc, ccInv_cc]
 
 /- English proof (translation)
-Use `conv_lhs => rw [← cc_ccInv x, ← star_star s, ← cc_smul, ccInv_cc]`.
+A detailed English derivation is pending.
 -/
 theorem ccInv_smul (s : ℂ) (x : EuclideanSpace ℂ (Fin (Module.finrank ℂ V))) :
     (ccInv (s • x) : V) = star s • ccInv x := by

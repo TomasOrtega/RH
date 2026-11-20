@@ -31,7 +31,7 @@ Both sides reduce to the same expression.
 theorem imForm_apply (x y : EuclideanSpace ℂ ι) : imForm x y = (Hf x y).im := rfl
 
 /- English proof (translation)
-Establish `h : Hf y x = starRingEnd ℂ (Hf x y)`. Simplify using `[Hf, map_sum, mul_comm]`. Rewrite using `[imForm_apply, imForm_apply, h, Complex.conj_im]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem imForm_swap (x y : EuclideanSpace ℂ ι) : imForm y x = -imForm x y := by
   have h : Hf y x = starRingEnd ℂ (Hf x y) := by
@@ -45,18 +45,18 @@ def upper (b : Module.Basis (Fin n) ℝ (EuclideanSpace ℂ ι)) :
   b.constr ℝ fun i => b.constr ℝ fun j => if i < j then imForm (b i) (b j) else 0
 
 /- English proof (translation)
-Simplify using `only [upper, b.constr_basis]`.
+Simplify using the standard rewrite rules.
 -/
 theorem upper_basis (b : Module.Basis (Fin n) ℝ (EuclideanSpace ℂ ι)) (i j : Fin n) :
     upper b (b i) (b j) = if i < j then imForm (b i) (b j) else 0 := by
   simp only [upper, b.constr_basis]
 
 /- English proof (translation)
-Establish `key : imForm = upper b - (upper b).flip`. Use `b.ext fun i => b.ext fun j => ?_` and prove the remaining obligations. Simplify using `only [LinearMap.sub_apply, LinearMap.flip_apply, upper_basis]`. Break down `lt_trichotomy i j with h | h | h` into its components or cases. Simplify using `[h, lt_asymm h]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules.
 
-Substitute `h` using the available equality. Use `imForm_swap (b i) (b i)` as an intermediate fact. Simplify using `only [lt_irrefl, if_false, sub_zero]`. Combine the linear equalities and inequalities to obtain the conclusion. Use `imForm_swap (b j) (b i)` as an intermediate fact.
+Substitute using the available equality. Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Simplify using `only [h, lt_asymm h, if_true, if_false, zero_sub]`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[key]`. Simplify using `only [LinearMap.sub_apply, LinearMap.flip_apply]`.
+Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem upper_sub (b : Module.Basis (Fin n) ℝ (EuclideanSpace ℂ ι)) (x y : EuclideanSpace ℂ ι) :
     imForm x y = upper b x y - upper b y x := by
@@ -76,19 +76,17 @@ theorem upper_sub (b : Module.Basis (Fin n) ℝ (EuclideanSpace ℂ ι)) (x y : 
   simp only [LinearMap.sub_apply, LinearMap.flip_apply]
 
 /- English proof (translation)
-Establish `base : ∀ i j, ∃ k : ℤ, upper b (b i) (b j) = k`. Introduce `i j`. Rewrite using `[upper_basis]`. Use `split_ifs`. Rewrite using `[imForm_apply]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `hint _ _ (Submodule.subset_span ⟨i, rfl⟩) (Submodule.subset_span ⟨j, rfl⟩)`. Conclude with `⟨0, by simp⟩`. Establish `hrow : ∀ i, ∃ k : ℤ, upper b (b i) y = k`. Introduce `i`. Proceed by induction on `hy using Submodule.span_induction with`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Consider the case `mem z hz`. Take `⟨j, rfl⟩` from `hz`. Conclude with `base i j`. Consider the case `zero => exact ⟨0, by simp⟩`. Consider the case `add z w _ _ hz hw`.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨k₁, h₁⟩` from `hz`. Take `⟨k₂, h₂⟩` from `hw`. Conclude with `⟨k₁ + k₂, by simp [map_add, h₁, h₂]⟩`. Consider the case `smul n z _ hz`. Take `⟨k₁, h₁⟩` from `hz`.
+Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Proceed by induction. Treat this case separately.
 
-Conclude with `⟨n * k₁, by simp [map_zsmul, h₁, zsmul_eq_mul]⟩`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem z hz`. Take `⟨i, rfl⟩` from `hz`. Conclude with `hrow i`.
+Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Consider the case `zero => exact ⟨0, by simp⟩`. Consider the case `add z w _ _ hz hw`. Take `⟨k₁, h₁⟩` from `hz`. Take `⟨k₂, h₂⟩` from `hw`. Conclude with `⟨k₁ + k₂, by simp [map_add, LinearMap.add_apply, h₁, h₂]⟩`.
-
-Consider the case `smul n z _ hz`. Take `⟨k₁, h₁⟩` from `hz`. Conclude with `⟨n * k₁, by simp [map_zsmul, LinearMap.smul_apply, h₁, zsmul_eq_mul]⟩`.
+Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem upper_int (b : Module.Basis (Fin n) ℝ (EuclideanSpace ℂ ι))
     (hint : ∀ x y : EuclideanSpace ℂ ι, x ∈ lat b → y ∈ lat b → ∃ k : ℤ, (Hf x y).im = k)
@@ -129,11 +127,11 @@ theorem upper_int (b : Module.Basis (Fin n) ℝ (EuclideanSpace ℂ ι))
     exact ⟨n * k₁, by simp [map_zsmul, LinearMap.smul_apply, h₁, zsmul_eq_mul]⟩
 
 /- English proof (translation)
-Use `⟨⟨b, hint, hperf, fun x => Complex.exp (((Real.pi * upper b x x : ℝ) : ℂ) * Complex.I), fun x _ => Complex.norm_exp_ofReal_mul_I _⟩, rfl, ?_⟩` and prove the remaining obligations. Introduce `γ hγ γ' hγ'`. Take `⟨k, hk⟩` from `upper_int b hint hγ hγ'`. Establish `him : (Hf γ γ').im = upper b γ γ' - upper b γ' γ`. Rewrite using `[← imForm_apply]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `upper_sub b γ γ'`. Establish `hadd : upper b (γ + γ') (γ + γ') = upper b γ γ + upper b γ γ' + upper b γ' γ + upper b γ' γ'`. Simplify using `only [map_add, LinearMap.add_apply]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Complex.exp_add, ← Complex.exp_add, Complex.exp_eq_exp_iff_exists_int]`. Use `⟨k, ?_⟩` and prove the remaining obligations. Rewrite using `[hadd, him, hk]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem exists_coc {ι : Type} [Fintype ι]
     (b : Module.Basis (Fin (2 * Fintype.card ι)) ℝ (EuclideanSpace ℂ ι))

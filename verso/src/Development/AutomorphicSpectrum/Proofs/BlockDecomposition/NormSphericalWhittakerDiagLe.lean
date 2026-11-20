@@ -31,9 +31,9 @@ section Local
 variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F]
 
 /- English proof (translation)
-Take `⟨u, hu⟩` from `GlobalTheory.CompanionTheory.LocalUnramified.exists_unit_eq_uniformizer_zpow_ord_mul F a`. Take `⟨u', hu'⟩` from `GlobalTheory.CompanionTheory.LocalUnramified.exists_unit_eq_uniformizer_zpow_ord_mul F b`. Use `⟨GLnLocal.integralGLHom F 2 (d2 u u'), ⟨_, rfl⟩, ?_⟩` and prove the remaining obligations. Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components.
 
-Rewrite using `[Units.val_mul, coe_torusPow]`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;>`. Simplify using `[d2, GLnLocal.integralGLHom, Matrix.diagonal_mul, ← hu, ← hu']`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem partialYAtZero_eq (a b : Fˣ) : ∃ k ∈ integralGL F 2,
     (d2 a b : GL (Fin 2) F) = torusPow F 2 ![ord (a : F), ord (b : F)] * k := by
@@ -47,7 +47,7 @@ theorem partialYAtZero_eq (a b : Fˣ) : ∃ k ∈ integralGL F 2,
     simp [d2, GLnLocal.integralGLHom, Matrix.diagonal_mul, ← hu, ← hu']
 
 /- English proof (translation)
-Establish `h1 : (1 : ℝ) ≤ (qF F : ℝ)` using `by exact_mod_cast (qF_pos (F := F))`. Establish `h2 : ‖sqrtQ F‖ = Real.sqrt (qF F : ℝ)`. Simplify using `[sqrtQ, Real.coe_sqrt]`. Rewrite using `[h2]`. Conclude with `Real.one_le_sqrt.2 h1`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem one_le_norm_sqrtQ : 1 ≤ ‖sqrtQ F‖ := by
   have h1 : (1 : ℝ) ≤ (qF F : ℝ) := by exact_mod_cast (qF_pos (F := F))
@@ -57,20 +57,20 @@ theorem one_le_norm_sqrtQ : 1 ≤ ‖sqrtQ F‖ := by
   exact Real.one_le_sqrt.2 h1
 
 /- English proof (translation)
-Simplify using `[monomialChar, Fin.prod_univ_two, hz, Units.val_zpow_eq_zpow_val]`.
+Simplify using the standard rewrite rules.
 -/
 theorem norm_monomialChar_const (z : Fin 2 → ℂˣ) (hz : ∀ j, ‖((z j : ℂˣ) : ℂ)‖ = 1) (n : ℤ) :
     ‖monomialChar (fun _ : Fin 2 => n) z‖ = 1 := by
   simp [monomialChar, Fin.prod_univ_two, hz, Units.val_zpow_eq_zpow_val]
 
 /- English proof (translation)
-Take `⟨k, hk, hd⟩` from `partialYAtZero_eq (unifUnit F ^ ((m : ℤ) + n)) (unifUnit F ^ n)`. Rewrite using `[hd, sphericalWhittaker_mul_right hψ₀ _ _ hk, ord_unifUnit_zpow, ord_unifUnit_zpow, sphericalWhittaker_torusPow hψ₀]`. Establish `hanti : Antitone (![(m : ℤ) + n, n] : Fin 2 → ℤ)`. Introduce `i j hij`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp_all`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `hr : rhoPair (![(m : ℤ) + n, n] : Fin 2 → ℤ) = m`. Simplify using `[rhoPair, Fin.sum_univ_two]`. Establish `hl : (![(m : ℤ) + n, n] : Fin 2 → ℤ) = ![(m : ℤ), 0] + fun _ => n`. Use function extensionality and compare the values at `i`. Apply the tactic sequence `fin_cases i <;> simp`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[if_pos hanti, halfModulus_eq, hr, hl, schur_add_const, map_mul, GlobalTheory.CompanionTheory.RSUnram.evalAt_schur_row, monomial, evalAt_single, one_mul, norm_mul, norm_mul, norm_monomialChar_const z hz, one_mul]`. Establish `h1 : ‖sqrtQ F ^ (-(m : ℤ))‖ ≤ 1`. Rewrite using `[norm_zpow, _root_.zpow_neg, zpow_natCast]`. Conclude with `inv_le_one_of_one_le₀ (one_le_pow₀ one_le_norm_sqrtQ)`. Establish `h2` using `GlobalTheory.CompanionTheory.RSUnram.norm_hs_le (hz 0) (hz 1) m`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem norm_spherical_whittaker_diag_le {ψ₀ : AddChar F ℂ} (hψ₀ : ∀ x ∈ 𝒪[F], ψ₀ x = 1) (z : Fin 2 → ℂˣ)
     (hz : ∀ j, ‖((z j : ℂˣ) : ℂ)‖ = 1) (m : ℕ) (n : ℤ) :
@@ -99,9 +99,9 @@ theorem norm_spherical_whittaker_diag_le {ψ₀ : AddChar F ℂ} (hψ₀ : ∀ x
 end Local
 
 /- English proof (translation)
-Proceed by induction on `hW using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨h, rfl⟩` from `hx`. Conclude with `Submodule.subset_span ⟨h₀ * h, by funext g; simp only [mul_assoc]⟩`. Consider the case `zero => exact Submodule.zero_mem _`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately.
 
-Consider the case `add x y _ _ hx hy => exact Submodule.add_mem _ hx hy`. Consider the case `smul a x _ hx => exact Submodule.smul_mem _ a hx`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem translate_mem {G : Type} [Group G] (f W : G → ℂ)
     (hW : W ∈ Submodule.span ℂ {u : G → ℂ | ∃ h : G, u = fun g => f (g * h)}) (h₀ : G) :
@@ -115,9 +115,9 @@ theorem translate_mem {G : Type} [Group G] (f W : G → ℂ)
   | smul a x _ hx => exact Submodule.smul_mem _ a hx
 
 /- English proof (translation)
-Take `⟨z, hz⟩` from `IsAlgClosed.exists_pow_nat_eq (a : ℂ) (n := 2) (by norm_num)`. Establish `hz0 : z ≠ 0`. Introduce and unpack `rfl`. Conclude with `a.ne_zero (by simpa using hz.symm)`. Use `⟨Units.mk0 z hz0, Units.ext (by simpa using hz), ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h2 : ‖z‖ ^ 2 = 1` using `by rw [← norm_pow, hz, ha]`. Establish `h0 : 0 ≤ ‖z‖` using `norm_nonneg z`. Simplify using `using (pow_eq_one_iff_of_nonneg h0 (by norm_num)).1 h2`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem exists_sqrt_unit (a : ℂˣ) (ha : ‖(a : ℂ)‖ = 1) : ∃ b : ℂˣ, b ^ 2 = a ∧ ‖(b : ℂ)‖ = 1 := by
   obtain ⟨z, hz⟩ := IsAlgClosed.exists_pow_nat_eq (a : ℂ) (n := 2) (by norm_num)
@@ -130,7 +130,7 @@ theorem exists_sqrt_unit (a : ℂˣ) (ha : ‖(a : ℂ)‖ = 1) : ∃ b : ℂˣ,
   simpa using (pow_eq_one_iff_of_nonneg h0 (by norm_num)).1 h2
 
 /- English proof (translation)
-Use `⟨GroundTheory.Automorphic.GodementSection.continuous_localChar c w, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[GroundTheory.Automorphic.GodementSection.coe_localChar]`. Conclude with `Circle.norm_coe _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUnit1_localChar {K : Type} [Field K] [NumberField K] (c : HeckeCharacter K) (w : PlK K) :
     IsUnit1 (localChar c w) := by
@@ -139,7 +139,7 @@ theorem isUnit1_localChar {K : Type} [Field K] [NumberField K] (c : HeckeCharact
   exact Circle.norm_coe _
 
 /- English proof (translation)
-Establish `hU` using `isUnit1_localChar c w`. Use `⟨hU.1.comp (Continuous.units_map _ (continuous_adicCompletionMap v w)), fun x => hU.2 _⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem isUnit1_cAt {K : Type} [Field K] [NumberField K] (c : HeckeCharacter K) (v : Pl) (w : PlK K)
     [w.asIdeal.LiesOver v.asIdeal] : IsUnit1 (cAt c v w) := by
@@ -147,7 +147,7 @@ theorem isUnit1_cAt {K : Type} [Field K] [NumberField K] (c : HeckeCharacter K) 
   refine ⟨hU.1.comp (Continuous.units_map _ (continuous_adicCompletionMap v w)), fun x => hU.2 _⟩
 
 /- English proof (translation)
-Establish `hB : ({w : PlK K | w.asIdeal ∣ c.conductor}).Finite` using `Ideal.finite_factors c.conductor_ne_bot`. Conclude with `GlobalTheory.CompanionTheory.BaseChangeData.enl_holds K hd c hB.toFinset (fun w hw => (c.isUnramifiedChar_localChar_iff w).2 (by simpa using hw))`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_bad (K : Type) [Field K] [NumberField K] (hd : Module.finrank ℚ K = 2)
     (c : HeckeCharacter K) : ∃ Bd : Finset Pl, ∀ v ∉ Bd, Ad3.K.QuadraticBaseChangeGL3.Th.Unr c v := by
@@ -157,7 +157,7 @@ theorem exists_bad (K : Type) [Field K] [NumberField K] (hd : Module.finrank ℚ
     (fun w hw => (c.isUnramifiedChar_localChar_iff w).2 (by simpa using hw))
 
 /- English proof (translation)
-Establish `hψ : IsStd (GP.psiF v)` using `GlobalTheory.CompanionTheory.StdCharQ.stdChar v`. Establish `hχ : IsStd (GP.psiF v)⁻¹` using `(GlobalTheory.CompanionTheory.StdAddChar.isStd_inv_and_trivial_and_nontrivial (Qv v) _ hψ).1`. Take `⟨-, h1, h2⟩` from `GlobalTheory.CompanionTheory.StdAddChar.isStd_inv_and_trivial_and_nontrivial (Qv v) _ hχ`. Use `GlobalTheory.T.unramified_whittaker_spherical_span (Qv v) 2 _ h1 h2 y W' hm (fun g k hk => hs.1 k hk g) g` as an intermediate fact. Rewrite `this` using `[hs.2, one_mul]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem eq_sph_of_mem {v : Pl} (W' : GL (Fin 2) (Qv v) → ℂ) (hs : SphN W') (y : Fin 2 → ℂˣ)
     (hm : W' ∈ Submodule.span ℂ {f : GL (Fin 2) (Qv v) → ℂ | ∃ h : GL (Fin 2) (Qv v),
@@ -171,17 +171,13 @@ theorem eq_sph_of_mem {v : Pl} (W' : GL (Fin 2) (Qv v) → ℂ) (hs : SphN W') (
   rwa [hs.2, one_mul] at this
 
 /- English proof (translation)
-Establish `hψ : IsStd (GP.psiF v)` using `GlobalTheory.CompanionTheory.StdCharQ.stdChar v`. Establish `hχ : IsStd (GP.psiF v)⁻¹` using `(GlobalTheory.CompanionTheory.StdAddChar.isStd_inv_and_trivial_and_nontrivial (Qv v) _ hψ).1`. Break down `hth with ⟨w₁, w₂, i₁, i₂, hne, hW, -⟩ | ⟨w, i, hu, σ, η, hσ, hη, hW, -⟩` into its components or cases. Use `haveI := i₁ haveI := i₂`. Establish `u₁` using `isUnit1_cAt c v w₁`.
+Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `u₂` using `isUnit1_cAt c v w₂`. Establish `r₁ : IsUnramifiedChar (cAt c v w₁)` using `GlobalTheory.CompanionTheory.SphTheta.isUnramifiedChar_comp_unitsMap (Qv v) (Kv K w₁) (localChar c w₁) (hw w₁).1`. Establish `r₂ : IsUnramifiedChar (cAt c v w₂)` using `GlobalTheory.CompanionTheory.SphTheta.isUnramifiedChar_comp_unitsMap (Qv v) (Kv K w₂) (localChar c w₂) (hw w₂).1`. Use `⟨![cAt c v w₁ (unifUnit (Qv v)), cAt c v w₂ (unifUnit (Qv v))], fun j => ?_, ?_⟩` and prove the remaining obligations. Use `fin_cases j`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Conclude with `u₁.2 _`. Conclude with `u₂.2 _`. Use `(Submodule.span_le.2 ?_) hW` and prove the remaining obligations. Introduce and unpack `_ ⟨Φ, hlc, hcs, h₀, rfl⟩`. Conclude with `translate_mem (fun g => _) _ (GlobalTheory.T.compact_whittaker_mem_spherical_span (Qv v) _ hχ _ _ u₁ u₂ r₁ r₂ Φ hlc hcs) h₀`.
+Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `haveI := i`. Break down `GlobalTheory.CompanionTheory.QuadPlace.split_or_inert_of_unramified K hd v (fun w _ => (hw w).2) with ⟨a, b, ha, hb, hab⟩ | ⟨w', hw', -, hf, hord⟩` into its components or cases. Conclude with `absurd ((hu a ha).trans (hu b hb).symm) hab`. Take `rfl : w' = w` from `hu w' hw' haveI : FiniteDimensional (Qv v) (Kv K w') := Module.finite_of_finrank_pos (by omega)`. Establish `hres : residueCard (Kv K w') = residueCard (Qv v) ^ 2` using `GlobalTheory.CompanionTheory.NormGauss.card_E hf hord`.
-
-Establish `hU` using `isUnit1_localChar c w'`. Take `⟨b, hb2, hbn⟩` from `exists_sqrt_unit (localChar c w' (Units.map (algebraMap (Qv v) (Kv K w')).toMonoidHom (unifUnit (Qv v)))) (hU.2 _)`. Use `⟨![b, -b], fun j => ?_, ?_⟩` and prove the remaining obligations. Use `fin_cases j`. Conclude with `hbn`.
-
-Simplify using `using hbn`. Use `(Submodule.span_le.2 ?_) hW` and prove the remaining obligations. Introduce and unpack `_ ⟨Φ, hΦ, h₀, rfl⟩`. Conclude with `translate_mem (fun g => _) _ (GlobalTheory.T.unramified_quadratic_residue_card (Qv v) (Kv K w') hf (continuous_adicCompletionMap v w') hres _ hχ σ hσ η hη _ hU (hw w').1 b hb2 Φ hΦ) h₀`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem exists_params {K : Type} [Field K] [NumberField K] (hd : Module.finrank ℚ K = 2)
     (c : HeckeCharacter K) (v : Pl) (hw : Ad3.K.QuadraticBaseChangeGL3.Th.Unr c v)
@@ -227,9 +223,9 @@ theorem exists_params {K : Type} [Field K] [NumberField K] (hd : Module.finrank 
           (continuous_adicCompletionMap v w') hres _ hχ σ hσ η hη _ hU (hw w').1 b hb2 Φ hΦ) h₀
 
 /- English proof (translation)
-Introduce `K _ _ hd c`. Take `⟨Bd, hBd⟩` from `exists_bad K hd c`. Use `⟨Bd, fun v hv W' e hth hsph m n => ?_⟩` and prove the remaining obligations. Take `⟨y, hy, hm⟩` from `exists_params hd c v (hBd v hv) W' e hth`. Establish `hψ : IsStd (GP.psiF v)` using `GlobalTheory.CompanionTheory.StdCharQ.stdChar v`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hχ : IsStd (GP.psiF v)⁻¹` using `(GlobalTheory.CompanionTheory.StdAddChar.isStd_inv_and_trivial_and_nontrivial (Qv v) _ hψ).1`. Take `⟨-, h1, -⟩` from `GlobalTheory.CompanionTheory.StdAddChar.isStd_inv_and_trivial_and_nontrivial (Qv v) _ hχ`. Rewrite using `[eq_sph_of_mem W' hsph y hm]`. Conclude with `norm_spherical_whittaker_diag_le h1 y hy m n`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem main : ∀ (K : Type) [Field K] [NumberField K], Module.finrank ℚ K = 2 →
     ∀ c : HeckeCharacter K, ∃ Bd : Finset Pl, ∀ v ∉ Bd,

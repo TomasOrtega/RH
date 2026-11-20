@@ -20,19 +20,17 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC ReciprocityTheory.Gal IsLocalRing Polynomial UpperTheory.V.Base UpperTheory.V.Alg UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.Ws
 
 /- English proof (translation)
-Introduce `Ω _ _ _ l _ c D hC pr hpr`. Establish `hD` using `hC.1`. Choose the witnesses or unpack the hypotheses as in `⟨κ, hκ⟩ : ∃ κ, Kap D κ := by`. Take `⟨-, h, t, e, ψ, -, -, -, -, -, hO⟩` from `hC`. Conclude with `kapEx D hD h.N ψ hO.psi`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨j, hj⟩` from `hκ.pow`. Take `⟨p₃, φ, hφ⟩` from `quadEx Ω 1 D.S hD.S_prime`. Establish `h1 : ∀ q ∈ insert p₃ D.S, q.Prime` using `Finset.forall_mem_insert _ _ _ |>.2 ⟨hφ.prime, hD.S_prime⟩`. Take `⟨p, η, hη⟩` from `quadEx Ω (-1) _ h1`. Take `⟨p', η', hη'⟩` from `quadEx Ω (-1) (insert p (insert p₃ D.S)) (Finset.forall_mem_insert _ _ _ |>.2 ⟨hη.prime, h1⟩)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨x1, x2, x3⟩` from `xi2 D hC`. Set `X : Set2 D` to `⟨κ, p₃, p, p', φ, η, η', hκ, hφ, hη, hη', x3, x1, x2, ev2 D hC κ j hj, exists_decomposition_element_at_l_xi_pow_four_ne_one D hC κ j hj, exists_inertia_element_at_two_xi_pow_four_ne_one D hC κ j hj⟩`. Take `⟨b1, b2, b3, b4, b5⟩` from `characterSubgroup_open_even_index_tame_power D hD X`. Take `⟨F, _, _, hF, dF⟩` from `fixAb Ω X.H b1 b2`. Take `⟨K, _, _, hK, dK⟩` from `fixAb Ω η.ker hη.opn (Abelianization.commutator_subset_ker η)`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨k₀, _, _, hk, dk⟩` from `fixAb Ω φ.ker hφ.opn (Abelianization.commutator_subset_ker φ)`. Rewrite `dK` using `[hη.idx]`. Rewrite `dk` using `[hφ.idx]`. Use `haveI : IsTotallyReal F := (fixInf Ω F).1 (hF ▸ b3)`. Use `haveI : IsCMField K := (fixInf Ω K).2 (fun σ hσ h => by`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h` using `[hK, MonoidHom.mem_ker, hη.cc σ hσ]`. Conclude with `absurd h (by decide)) dK`. Establish `rk : IsTotallyReal k₀` using `(fixInf Ω k₀).1 fun σ hσ => hk ▸ hφ.cc σ hσ`. Establish `sp : ∀ q ∈ D.S, ∀ A : ValuationSubring Ω, A.valuation (q : Ω) < 1 → Dec (F` using `ℚ) A ≤ K.fixingSubgroup := fun q hq A hA => hK ▸ hη.split q (Finset.mem_insert_of_mem hq) A hA`. Take `⟨a, u, t, hE⟩` from `elts2 D hD X`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨g0, hg0⟩` from `exists_resQ (F := F) (g := t) (hF ▸ hE.t_mem.1)`. Take `⟨T, e1, e2, e3, e4⟩` from `mkTower D hD pr K F dK (sp l hD.l_mem) g0`. Establish `hT : X.On T` using `⟨e3 ▸ hF, e2 ▸ hK⟩`. Take `⟨a1, a2, a3, a4, a5⟩` from `ok2A D hD X T hT a u t hE`. Take `⟨c1, c2, c3, c4⟩` from `ok2B D hD X T hT`.
-
-Establish `ev : Even T.d`. Rewrite using `[Tower.d, IntermediateField.finrank_eq_fixingSubgroup_index, hT.1]`. Conclude with `b4`. Conclude with `⟨T, e1, ⟨e1 ▸ hpr, ev, c1, e2 ▸ sp, a1, a2, a3, a4, c2, c3, c4, a5 (e4.trans hg0), UpperTheory.V.Keep.loc2 D hC X T hT⟩, two2 D hD X T hT k₀ dk rk hk, fun A hA g hg => hT.1 ▸ b5 A hA g hg⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Ws.exists_tame_tower_ok_two :
     ∀ {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime] {c : Coef l} (D : Raw Ω c), Ctx2 D → ∀ pr, LabOk D pr → ∃ T : Tower D, T.pr = pr ∧ T.Ok ∧ T.Two ∧ TameL l T.F := by

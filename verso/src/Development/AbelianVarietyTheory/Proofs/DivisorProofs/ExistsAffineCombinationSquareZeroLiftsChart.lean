@@ -7,7 +7,7 @@ open CategoryTheory AlgebraicGeometry ReciprocityTheory.ChartRestriction.G.Geo.T
 namespace GlobalTheory.SecGlue.CombEx
 
 /- English proof (translation)
-Establish `h` using `IsAffineOpen.SpecMap_appLE_fromSpec x hV (isAffineOpen_top (Sp S)) hx.ge`. Rewrite `h` using `[IsAffineOpen.fromSpec_top, Scheme.isoSpec_Spec_inv]`. Establish `e : CommRingCat.ofHom (chartHom V x hx) = x.appLE V ⊤ hx.ge ≫ (Scheme.ΓSpecIso (CommRingCat.of S)).hom` using `rfl`. Use `show Spec.map (CommRingCat.ofHom (chartHom V x hx)) ≫ hV.fromSpec = x`. Rewrite using `[e, Spec.map_comp, Category.assoc, h, ← Category.assoc, ← Spec.map_comp, Iso.inv_hom_id, Spec.map_id, Category.id_comp]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chart_rebuild {Y : Scheme.{0}} {V : Y.Opens} (hV : IsAffineOpen V) {S : Type} [CommRing S]
     (x : Sp S ⟶ Y) (hx : x ⁻¹ᵁ V = ⊤) : spMap (chartHom V x hx) ≫ hV.fromSpec = x := by
@@ -19,28 +19,28 @@ theorem chart_rebuild {Y : Scheme.{0}} {V : Y.Opens} (hV : IsAffineOpen V) {S : 
     Category.id_comp]
 
 /- English proof (translation)
-The claim follows from `top_le_iff.1 fun x _ => h.ge (show f x ∈ (⊤ : B.Opens) from trivial)`.
+A detailed English derivation is pending.
 -/
 theorem top_of_comp {A B Y : Scheme.{0}} (f : A ⟶ B) (g : B ⟶ Y) (V : Y.Opens) (h : g ⁻¹ᵁ V = ⊤) :
     (f ≫ g) ⁻¹ᵁ V = ⊤ :=
   top_le_iff.1 fun x _ => h.ge (show f x ∈ (⊤ : B.Opens) from trivial)
 
 /- English proof (translation)
-The claim follows from `top_le_iff.1 fun _ _ => hV.range_fromSpec.subset ⟨_, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem fromSpec_comp_top {Y : Scheme.{0}} {V : Y.Opens} (hV : IsAffineOpen V) {S : Type} [CommRing S]
     (χ : Γ(Y, V) →+* S) : (spMap χ ≫ hV.fromSpec) ⁻¹ᵁ V = ⊤ :=
   top_le_iff.1 fun _ _ => hV.range_fromSpec.subset ⟨_, rfl⟩
 
 /- English proof (translation)
-Substitute `e` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem chartHom_congr {Y : Scheme.{0}} (V : Y.Opens) {S : Type} [CommRing S] {x x' : Sp S ⟶ Y}
     (e : x = x') (h : x ⁻¹ᵁ V = ⊤) (h' : x' ⁻¹ᵁ V = ⊤) : chartHom V x h = chartHom V x' h' := by
   subst e; rfl
 
 /- English proof (translation)
-Use `show Spec.map (CommRingCat.ofHom (g.comp f)) = Spec.map _ ≫ Spec.map _`. Rewrite using `[← Spec.map_comp]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem spMap_comp' {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (g : B →+* C) :
     spMap (g.comp f) = spMap g ≫ spMap f := by
@@ -48,7 +48,7 @@ theorem spMap_comp' {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A
   rw [← Spec.map_comp]; rfl
 
 /- English proof (translation)
-Establish `e` using `chart_rebuild hV (spMap χ ≫ hV.fromSpec) hc`. Rewrite `e` using `[cancel_mono]`. Conclude with `congrArg CommRingCat.Hom.hom (Spec.map_injective e)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chartHom_fromSpec {Y : Scheme.{0}} {V : Y.Opens} (hV : IsAffineOpen V) {S : Type} [CommRing S]
     (χ : Γ(Y, V) →+* S) (hc : (spMap χ ≫ hV.fromSpec) ⁻¹ᵁ V = ⊤) :
@@ -58,7 +58,7 @@ theorem chartHom_fromSpec {Y : Scheme.{0}} {V : Y.Opens} (hV : IsAffineOpen V) {
   exact congrArg CommRingCat.Hom.hom (Spec.map_injective e)
 
 /- English proof (translation)
-Establish `e : spMap (chartHom V (spMap g ≫ x) h') ≫ hV.fromSpec = spMap (g.comp (chartHom V x hx)) ≫ hV.fromSpec`. Rewrite using `[chart_rebuild, spMap_comp', Category.assoc, chart_rebuild]`. Rewrite `e` using `[cancel_mono]`. Conclude with `congrArg CommRingCat.Hom.hom (Spec.map_injective e)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chartHom_spMap_comp {Y : Scheme.{0}} {V : Y.Opens} (hV : IsAffineOpen V) {S S' : Type} [CommRing S]
     [CommRing S'] (g : S →+* S') (x : Sp S ⟶ Y) (hx : x ⁻¹ᵁ V = ⊤) (h' : (spMap g ≫ x) ⁻¹ᵁ V = ⊤) :
@@ -74,7 +74,7 @@ end GlobalTheory.SecGlue.CombEx
 namespace GlobalTheory.SecGlue.CombEx
 
 /- English proof (translation)
-Establish `h : s * t ∈ RingHom.ker q ^ 2`. Rewrite using `[sq]`. Conclude with `Ideal.mul_mem_mul (RingHom.mem_ker.2 hs) (RingHom.mem_ker.2 ht)`. Rewrite `h` using `[hsq]`. Conclude with `(Submodule.mem_bot S).1 h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mul_eq_zero_of_sq {S T : Type} [CommRing S] [CommRing T] (q : S →+* T) (hsq : RingHom.ker q ^ 2 = ⊥)
     {s t : S} (hs : q s = 0) (ht : q t = 0) : s * t = 0 := by
@@ -119,7 +119,7 @@ theorem combHom_apply {A S T : Type} [CommRing A] [CommRing S] [CommRing T] (q :
     combHom q hsq φ ψ a hq x = φ x + ∑ i, a i * (ψ i x - φ x) := rfl
 
 /- English proof (translation)
-Use extensionality with `x`. Establish `hd : ∀ i, q (ψ i x - φ x) = 0` using `fun i => by`. Rewrite using `[map_sub, ← RingHom.comp_apply, hq i, RingHom.comp_apply, sub_self]`. Simplify using `only [RingHom.comp_apply, combHom_apply, map_add, map_sum, map_mul, hd, mul_zero, Finset.sum_const_zero, add_zero]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem comp_combHom {A S T : Type} [CommRing A] [CommRing S] [CommRing T] (q : S →+* T)
     (hsq : RingHom.ker q ^ 2 = ⊥) {ι : Type} [Fintype ι] (φ : A →+* S) (ψ : ι → (A →+* S)) (a : ι → S)
@@ -131,7 +131,7 @@ theorem comp_combHom {A S T : Type} [CommRing A] [CommRing S] [CommRing T] (q : 
     Finset.sum_const_zero, add_zero]
 
 /- English proof (translation)
-Use extensionality with `r`. Establish `h : ∀ i, ψ i (θ r) = φ (θ r)` using `fun i => RingHom.congr_fun (hθ i) r`. Simplify using `only [RingHom.comp_apply, combHom_apply, h, sub_self, mul_zero, Finset.sum_const_zero, add_zero]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem combHom_comp_eq {R A S T : Type} [CommRing R] [CommRing A] [CommRing S] [CommRing T] (q : S →+* T)
     (hsq : RingHom.ker q ^ 2 = ⊥) {ι : Type} [Fintype ι] (φ : A →+* S) (ψ : ι → (A →+* S)) (a : ι → S)
@@ -142,15 +142,15 @@ theorem combHom_comp_eq {R A S T : Type} [CommRing R] [CommRing A] [CommRing S] 
   simp only [RingHom.comp_apply, combHom_apply, h, sub_self, mul_zero, Finset.sum_const_zero, add_zero]
 
 /- English proof (translation)
-Introduce `Y V hV S T _ _ q hqs hsq ι _ u w a hu hw`. Establish `hwV : ∀ i, w i ⁻¹ᵁ V = ⊤` using `fun i => (GlobalTheory.SecGlue.preimage_eq_of_comp_eq_of_sqZero S T q hqs hsq Y (w i) u (hw i) V).trans hu`. Establish `hq : ∀ i, q.comp (chartHom V (w i) (hwV i)) = q.comp (chartHom V u hu)` using `fun i => by`. Rewrite using `[← chartHom_spMap_comp hV q (w i) (hwV i) (top_of_comp _ _ V (hwV i)), ← chartHom_spMap_comp hV q u hu (top_of_comp _ _ V hu)]`. Conclude with `chartHom_congr V (hw i) _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Set `χ` to `combHom q hsq (chartHom V u hu) (fun i => chartHom V (w i) (hwV i)) a hq`. Establish `hc` using `fromSpec_comp_top hV χ`. Use `⟨spMap χ ≫ hV.fromSpec, ⟨hu, hc, hwV, fun x => ?_⟩, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[chartHom_fromSpec hV χ hc]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[spMap_comp', Category.assoc]`. Use `_ = spMap (q.comp (chartHom V u hu)) ≫ hV.fromSpec := by rw [comp_combHom]`. Use `_ = spMap q ≫ u := by rw [spMap_comp', Category.assoc, chart_rebuild]`. Introduce `R' _ p hp`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `θ : CommRingCat.of R' ⟶ Γ(Y, V)` to `Spec.preimage (hV.fromSpec ≫ p)`. Establish `key : ∀ (x : Sp S ⟶ Y) (hx : x ⁻¹ᵁ V = ⊤), x ≫ p = spMap ((chartHom V x hx).comp θ.hom)`. Introduce `x hx`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[show CommRingCat.ofHom ((chartHom V x hx).comp θ.hom) = θ ≫ CommRingCat.ofHom (chartHom V x hx) from rfl, Spec.map_comp]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hθ : ∀ i, (chartHom V (w i) (hwV i)).comp θ.hom = (chartHom V u hu).comp θ.hom` using `fun i => by`. Establish `e` using `(key (w i) (hwV i)).symm.trans ((hp i).trans (key u hu))`. Conclude with `congrArg CommRingCat.Hom.hom (Spec.map_injective e)`. Rewrite using `[key _ hc, key u hu, chartHom_fromSpec hV χ hc]`. Conclude with `congrArg spMap (combHom_comp_eq q hsq _ _ a hq θ.hom hθ)`.
+A detailed English derivation is pending.
 -/
 theorem exists_comb : ∀ (Y : Scheme.{0}) (V : Y.Opens), IsAffineOpen V →
     ∀ (S T : Type) [CommRing S] [CommRing T] (q : S →+* T), Function.Surjective q → RingHom.ker q ^ 2 = ⊥ →

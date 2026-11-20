@@ -22,9 +22,9 @@ def hypForm {K : Type} [Field K] [NumberField K] {r : ℕ} (S : HermForm K r) (j
     congr 1 <;> simp only [and_comm]
 
 /- English proof (translation)
-Rewrite using `[HermForm.h]`. Establish `e : ∀ a, ∑ b, (hypForm S j p).c (x a) * (hypForm S j p).G a b * y b = (if a = j then S.c (x a) * y p else 0) + (if a = p then S.c (x a) * y j else 0)`. Introduce `a`. Simplify using `only [hypForm, hypG, Matrix.of_apply, mul_add, add_mul, Finset.sum_add_distrib]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Apply the tactic sequence `by_cases ha : a = j <;> simp [ha]`. Apply the tactic sequence `by_cases ha : a = p <;> simp [ha]`. Rewrite using `[Finset.sum_congr rfl fun a _ => e a]`. Simplify using `[Finset.sum_add_distrib]`.
+Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem hypForm_h {K : Type} [Field K] [NumberField K] {r : ℕ} (S : HermForm K r) (j p : Fin r)
     (x y : Fin r → K) : (hypForm S j p).h x y = S.c (x j) * y p + S.c (x p) * y j := by
@@ -40,7 +40,7 @@ theorem hypForm_h {K : Type} [Field K] [NumberField K] {r : ℕ} (S : HermForm K
   simp [Finset.sum_add_distrib]
 
 /- English proof (translation)
-The claim follows from `|((Algebra.norm ℚ (-z) : ℚ) : ℝ)| = |((Algebra.norm ℚ z : ℚ) : ℝ)| := by rw [neg_eq_neg_one_mul, map_mul, Rat.cast_mul, abs_mul] have h1 : (-1 : K) = algebraMap ℚ K (-1) := by simp rw [h1, Algebra.norm_algebraMap] simp`.
+A detailed English derivation is pending.
 -/
 theorem abs_norm_neg {K : Type} [Field K] [NumberField K] (z : K) :
     |((Algebra.norm ℚ (-z) : ℚ) : ℝ)| = |((Algebra.norm ℚ z : ℚ) : ℝ)| := by
@@ -50,43 +50,37 @@ theorem abs_norm_neg {K : Type} [Field K] [NumberField K] (z : K) :
   simp
 
 /- English proof (translation)
-Establish `hjp' : j ≠ p` using `fun h => by rw [h] at hjp; omega`. Establish `hx0p : x0 p = 0` using `hj x0 hx0 p (Ne.symm hjp')`. Establish `hyj : y j = 0` using `hp y hy j hjp'`. Use `set n : ℝ := (Fintype.card (K →+* ℂ) : ℝ)`. Establish `e0` using `h0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e0` using `[latDeg_single δ Gj j x0 (hj x0 hx0)]`. Simplify using `only [hδj] at e0`. Rewrite `e0` using `[sum_log_single (x0 j) hx0j d hd]`. Rewrite using `[latDeg_single δ Gp p y (hp y hy)]`. Simplify using `only [hδp]`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[sum_log_single (y p) hyp d⁻¹ (inv_pos.2 hd), Real.log_inv]`. Use `set A : ℝ := (spanIdx Gj ![x0] : ℝ)`. Use `set B : ℝ := (spanIdx Gp ![y] : ℝ)`. Use `set X : ℝ := |((Algebra.norm ℚ (x0 j) : ℚ) : ℝ)|`. Use `set Y : ℝ := |((Algebra.norm ℚ (y p) : ℚ) : ℝ)|`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hA : 1 ≤ A`. Use `spanIdx_ne_zero Gj ![x0] hGj (kBasisIn_single j Gj hj x0 hx0 hx0j)` as an intermediate fact. Conclude with `Nat.one_le_cast.2 (Nat.one_le_iff_ne_zero.2 this)`. Establish `hB : 1 ≤ B`. Use `spanIdx_ne_zero Gp ![y] hGp (kBasisIn_single p Gp hp y hy hyp)` as an intermediate fact.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Nat.one_le_cast.2 (Nat.one_le_iff_ne_zero.2 this)`. Establish `hX : 0 < X`. Apply `abs_pos.2` to reduce the goal to its premises. Conclude with `(Algebra.norm_ne_zero_iff).2 hx0j` after adjusting the coercions. Establish `hY : 0 < Y`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Apply `abs_pos.2` to reduce the goal to its premises. Conclude with `(Algebra.norm_ne_zero_iff).2 hyp` after adjusting the coercions. Establish `key : A * B ≤ X * Y` using `by set T := Gj ⊔ Gp`. Establish `hT : T.FG` using `hGj.sup hGp`. Establish `hbT : IsKBasisIn T ![x0, y]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `⟨fun i => ?_, ?_, ?_⟩` and prove the remaining obligations. Use `fin_cases i`. Conclude with `Submodule.mem_sup_left hx0`. Conclude with `Submodule.mem_sup_right hy`. Rewrite using `[LinearIndependent.pair_iff]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Introduce `s t hst`. Establish `h1` using `congr_fun hst j`. Establish `h2` using `congr_fun hst p`. Simplify using `only [Pi.add_apply, Pi.smul_apply, smul_eq_mul, Pi.zero_apply, hx0p, hyj, mul_zero, add_zero, zero_add] at h1 h2`. Conclude with `⟨(mul_eq_zero.1 h1).resolve_right hx0j, (mul_eq_zero.1 h2).resolve_right hyp⟩`.
+Substitute using the available equality. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Introduce `z hz`. Take `⟨z1, hz1, z2, hz2, rfl⟩` from `Submodule.mem_sup.1 hz`. Rewrite using `[Matrix.range_cons_cons_empty]`. Establish `e1 : z1 = (z1 j / x0 j) • x0`. Use function extensionality and compare the values at `a`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Distinguish the cases in `ha : a = j`. Substitute `ha` using the available equality. Clear the denominators using the available nonvanishing facts. Rewrite using `[hj z1 hz1 a ha, hj x0 hx0 a ha, mul_zero]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `e2 : z2 = (z2 p / y p) • y`. Use function extensionality and compare the values at `a`. Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Distinguish the cases in `ha : a = p`. Substitute `ha` using the available equality.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Clear the denominators using the available nonvanishing facts. Rewrite using `[hp z2 hz2 a ha, hp y hy a ha, mul_zero]`. Rewrite using `[e1, e2]`. Conclude with `Submodule.add_mem _ (Submodule.smul_mem _ _ (Submodule.subset_span (by simp))) (Submodule.smul_mem _ _ (Submodule.subset_span (by simp)))`. Establish `hint : IsIntegralOn (hypForm S j p) T`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `z hz w hw`. Take `⟨z1, hz1, z2, hz2, rfl⟩` from `Submodule.mem_sup.1 hz`. Take `⟨w1, hw1, w2, hw2, rfl⟩` from `Submodule.mem_sup.1 hw`. Rewrite using `[hypForm_h]`. Simplify using `only [Pi.add_apply, hj z1 hz1 p (Ne.symm hjp'), hj w1 hw1 p (Ne.symm hjp'), hp z2 hz2 j hjp', hp w2 hw2 j hjp', add_zero, zero_add]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `isIntegralElt_add (hpair z1 hz1 w2 hw2) ?_` and prove the remaining obligations. Use `isIntegralElt_c S (hpair w1 hw1 z2 hz2)` as an intermediate fact. Rewrite `this` using `[map_mul, S.c_invol, mul_comm]`. Then use the resulting hypothesis. Establish `hgram : hGram (hypForm S j p) ![x0, y] = !![0, S.c (x0 j) * y p; S.c (y p) * x0 j, 0]`. Use extensionality with `a b`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the indicated hypotheses using the stated equalities.
 
-Apply the tactic sequence `fin_cases a <;> fin_cases b <;>`. Simplify using `[hGram, hypForm_h, hx0p, hyj]`. Establish `hdet : (hGram (hypForm S j p) ![x0, y]).det = -((S.c (x0 j) * y p) * (S.c (y p) * x0 j))`. Rewrite using `[hgram, Matrix.det_fin_two_of]`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `hcx : S.c (x0 j) ≠ 0` using `fun h => hx0j (S.c.injective (by rw [h, map_zero]))`. Establish `hcy : S.c (y p) ≠ 0` using `fun h => hyp (S.c.injective (by rw [h, map_zero]))`. Establish `hdet0 : (hGram (hypForm S j p) ![x0, y]).det ≠ 0`. Rewrite using `[hdet, neg_ne_zero]`. Conclude with `mul_ne_zero (mul_ne_zero hcx hyp) (mul_ne_zero hcy hx0j)`.
-
-Establish `hb` using `hN K r 2 (hypForm S j p) T ![x0, y] hT hbT hint hdet0`. Rewrite `hb` using `[hdet, abs_norm_neg, map_mul, map_mul, map_mul, norm_c, norm_c]`. Move the coercions through the operations in `at hb`. Rewrite `hb` using `[spanIdx_pair j p hjp Gj Gp hj hp x0 y hx0 hy]`. Move the coercions through the operations in `at hb`.
-
-Establish `hb' : (A * B) ^ 2 ≤ (X * Y) ^ 2` using `le_of_le_of_eq hb (by simp only [X, Y]; rw [abs_mul, abs_mul, abs_mul]; ring)`. Conclude with `(pow_le_pow_iff_left₀ (by positivity) (by positivity) two_ne_zero).1 hb'`. Establish `hlog : Real.log A + Real.log B ≤ Real.log X + Real.log Y`. Rewrite using `[← Real.log_mul (by positivity) (by positivity), ← Real.log_mul hX.ne' hY.ne']`. Conclude with `Real.log_le_log (by positivity) key`.
-
-Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 theorem top_le_zero (hN : IntegralIndexStatement) {K : Type} [Field K] [NumberField K] {r : ℕ}
     (S : HermForm K r) (j p : Fin r) (hjp : (j : ℕ) < p) (Gj Gp : Submodule (𝓞 K) (Fin r → K))

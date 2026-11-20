@@ -15,15 +15,13 @@ noncomputable section
 namespace GlobalTheory.HaarRev
 
 /- English proof (translation)
-Introduce `m ε`. Use `set ε' : Fin m → Bool := fun a => ε a.rev with hε'`. Establish `he : ∀ a, ε' a = ε a.rev` using `fun a => rfl`. Set `φ : Formalism.REAL.UJ ε ≃* Formalism.REAL.UJ ε'` to `GlobalTheory.ConjDS.rvU (GlobalTheory.ConjDS.sg_symm he)`. Establish `hφ : Continuous φ` using `GlobalTheory.ConjDS.rvU_cont _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hφs : Continuous φ.symm` using `GlobalTheory.ConjDS.rvU_cont he`. Use `haveI : ((Formalism.REAL.muG ε).map φ).IsHaarMeasure := MulEquiv.isHaarMeasure_map _ φ hφ hφs`. Use `set c := Measure.haarScalarFactor ((Formalism.REAL.muG ε).map φ) (Formalism.REAL.muG ε') with hc`. Establish `hmap : (Formalism.REAL.muG ε).map φ = c • Formalism.REAL.muG ε'` using `Measure.isMulLeftInvariant_eq_smul _ _`. Establish `hc0 : c ≠ 0`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Introduce `h0`. Establish `: (Formalism.REAL.muG ε).map φ = 0` using `by rw [hmap, h0, zero_smul]`. Conclude with `(Measure.IsHaarMeasure.toIsOpenPosMeasure (μ := (Formalism.REAL.muG ε).map φ)).open_pos _ isOpen_univ Set.univ_nonempty (by rw [this]; rfl)`. Set `e : Formalism.REAL.UJ ε ≃ᵐ Formalism.REAL.UJ ε'` to `{ toEquiv := φ.toEquiv, measurable_toFun := hφ.measurable, measurable_invFun := hφs.measurable }`. Establish `he' : ⇑e = ⇑φ` using `rfl`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Use `⟨(c : ℝ), by positivity, ?_⟩` and prove the remaining obligations. Introduce `E _ _ F`. Establish `hcomp : (fun u : Formalism.REAL.UJ ε => F (GlobalTheory.ConjDS.rv (Formalism.MainNotions.S.umat u))) = (fun h : Formalism.REAL.UJ ε' => F (Formalism.MainNotions.S.umat h)) ∘ e` using `rfl`. Prove the components needed by the constructor for the conclusion. Rewrite using `[hcomp, ← integrable_map_equiv e, he', hmap, ENNReal.smul_def]`.
-
-Conclude with `integrable_smul_measure (by simpa using hc0) ENNReal.coe_ne_top`. Use `show ∫ u, F (Formalism.MainNotions.S.umat (e u)) ∂(Formalism.REAL.muG ε) = _`. Rewrite using `[← integral_map_equiv e (fun h : Formalism.REAL.UJ ε' => F (Formalism.MainNotions.S.umat h)), he', hmap, integral_smul_nnreal_measure, NNReal.smul_def]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem haar_rev : ∀ (m : ℕ) (ε : Fin m → Bool), ∃ lam : ℝ, 0 < lam ∧
   ∀ (E : Type) [NormedAddCommGroup E] [NormedSpace ℝ E] (F : Matrix (Fin m) (Fin m) ℂ → E),

@@ -15,9 +15,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC ReciprocityTheory.Gal IsLocalRing Polynomial UpperTheory.V.Base UpperTheory.V.Alg UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.Ws
 
 /- English proof (translation)
-Take `⟨j, hj⟩` from `hσ`. Take `⟨j', hj'⟩` from `hτ`. Use `letI : Algebra Ω ℂ := j.toAlgebra`. Use `haveI : IsScalarTower ℚ Ω ℂ := IsScalarTower.of_algebraMap_eq' (Subsingleton.elim _ _)`. Establish `key : ∀ x, j (AlgHom.restrictNormal' j'.toRatAlgHom Ω x) = j' x` using `fun x => AlgHom.restrictNormal_commutes j'.toRatAlgHom Ω x`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨AlgHom.restrictNormal' j'.toRatAlgHom Ω, AlgEquiv.ext fun x => j.injective ?_⟩` and prove the remaining obligations. Rewrite using `[AlgEquiv.mul_apply, AlgEquiv.mul_apply, key, hj, hj', key]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem complex_conjugations_conjugate {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {σ τ : G ℚ Ω} (hσ : IsCC σ) (hτ : IsCC τ) :
     ∃ g : G ℚ Ω, g * τ = σ * g := by
@@ -30,21 +30,19 @@ private theorem complex_conjugations_conjugate {Ω : Type} [Field Ω] [CharZero 
   rw [AlgEquiv.mul_apply, AlgEquiv.mul_apply, key, hj, hj', key]
 
 /- English proof (translation)
-Take `⟨p, η, h⟩` from `quadEx Ω (-1) S hS`. Take `⟨p', η', h'⟩` from `quadEx Ω (-1) (insert p S) fun q hq => (Finset.mem_insert.1 hq).elim (fun e => e ▸ h.prime) (hS q)`. Establish `hk : ∀ g, g ∈ (η * η'⁻¹).ker ↔ η g = η' g` using `fun g => by`. Rewrite using `[MonoidHom.mem_ker, MonoidHom.mul_apply, MonoidHom.inv_apply, mul_inv_eq_one]`. Establish `ho : IsOpen ((η * η'⁻¹).ker : Set (G ℚ Ω))` using `Subgroup.isOpen_mono (H₁ := η.ker ⊓ η'.ker) (fun g hg => (hk g).2 (Eq.trans hg.1 (Eq.symm hg.2))) (h.opn.inter h'.opn)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨K, _, _, hK, dK⟩` from `fixAb Ω η.ker h.opn (Abelianization.commutator_subset_ker _)`. Take `⟨F, _, _, hF, dF⟩` from `fixAb Ω (H ⊓ (η * η'⁻¹).ker) (hH.inter ho) (le_inf hc (Abelianization.commutator_subset_ker _))`. Establish `hN : H.Normal` using `Subgroup.Normal.of_commutator_le _ hc`. Use `⟨K, F, inferInstance, inferInstance, (fixInf Ω K).2 (fun σ hσ e => ?_) (dK.trans h.idx), (fixInf Ω F).1 fun σ hσ => ?_, inferInstance, η.ker ⊓ η'.ker, dK.trans h.idx, ?_, fun q hq A hA => le_inf (h.split q hq A hA) (h'.split q (Finset.mem_insert_of_mem hq) A hA), fun g => ⟨?_, ?_ …` and prove the remaining obligations. Rewrite `e` using `[hK, MonoidHom.mem_ker, h.cc σ hσ]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `absurd e (by decide)`. Take `⟨g, hg⟩` from `complex_conjugations_conjugate hσ hcc`. Establish `e : σ = g * cc * g⁻¹` using `by rw [hg, mul_inv_cancel_right]`. Rewrite using `[hF]`. Conclude with `⟨e ▸ hN.conj_mem cc hm g, (hk σ).2 ((h.cc σ hσ).trans (h'.cc σ hσ).symm)⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `⟨A, hA⟩` from `hpl p h.prime`. Take `⟨g, hg, e⟩` from `h.ram A hA`. Establish `e' : η' g = 1` using `h'.split p (Finset.mem_insert_self _ _) A hA (Ine_le_Dec A hg)`. Establish `h2 : (η * η'⁻¹).ker.index = 2`. Rewrite using `[Subgroup.index_ker]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `ht : (η * η'⁻¹).range = ⊤` using `eq_top_iff.2 fun u _ => by`. Break down `Int.units_eq_one_or u with rfl | rfl` into its components or cases. Use `exacts [one_mem _, ⟨g, by simp [e, e']⟩]`. Rewrite using `[ht, Subgroup.card_top, Nat.card_eq_fintype_card]`. Both sides reduce to the same expression.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[dF, even_iff_two_dvd, ← h2]`. Conclude with `Subgroup.index_dvd_of_le inf_le_right`. Use `show η (g ^ 2) = 1`. Rewrite using `[map_pow, Int.units_sq]`. Use `show η' (g ^ 2) = 1`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_pow, Int.units_sq]`. Rewrite using `[hF, hK]`. Use extensionality with `g`. Conclude with `⟨fun ⟨⟨a, b⟩, d⟩ => ⟨a, d, ((hk g).1 b).symm.trans d⟩, fun ⟨a, b, d⟩ => ⟨⟨a, (hk g).2 (Eq.trans b (Eq.symm d))⟩, b⟩⟩`. Rewrite using `[hK]`.
-
-Distinguish the cases in `hA : A.valuation (p : Ω) < 1`. Establish `e` using `hg.2`. Rewrite `e` using `[hF]`. Conclude with `((hk g).1 e.2).trans (h'.split p (Finset.mem_insert_self _ _) A hA (Ine_le_Dec A hg.1))`. Conclude with `h.unr A hA hg.1`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem fieldsEx {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω]
     (hpl : ∀ p : ℕ, p.Prime → ∃ A : ValuationSubring Ω, A.valuation (p : Ω) < 1) (S : Finset ℕ) (hS : ∀ p ∈ S, p.Prime)
@@ -101,29 +99,29 @@ noncomputable section SlopeTestRemainingChoices
 variable {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime] {c : Coef l}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨AlgEquiv.ofRingEquiv (f := g.toRingEquiv) fun x => (F.mem_fixingSubgroup_iff g).1 hg x.1 x.2, rfl⟩`.
+Supply the required witnesses or components.
 -/
 private theorem exists_lift_of_mem_fixing {F : IntermediateField ℚ Ω} {g : G ℚ Ω} (hg : g ∈ F.fixingSubgroup) : ∃ g' : G F Ω, resQ F g' = g :=
   ⟨AlgEquiv.ofRingEquiv (f := g.toRingEquiv) fun x => (F.mem_fixingSubgroup_iff g).1 hg x.1 x.2, rfl⟩
 
 /- English proof (translation)
-The claim follows from `(F.mem_fixingSubgroup_iff _).2 fun x hx => g.commutes ⟨x, hx⟩`.
+A detailed English derivation is pending.
 -/
 private theorem restrict_mem_fixing_subgroup {F : IntermediateField ℚ Ω} (g : G F Ω) : resQ F g ∈ F.fixingSubgroup :=
   (F.mem_fixingSubgroup_iff _).2 fun x hx => g.commutes ⟨x, hx⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hg.1, hg.2⟩`.
+Supply the required witnesses or components.
 -/
 private theorem restrict_inertia_mem {F : IntermediateField ℚ Ω} [NumberField F] {A : ValuationSubring Ω} {g : G F Ω}
     (hg : g ∈ Ine (F := F) A) : resQ F g ∈ Ine (F := ℚ) A := ⟨hg.1, hg.2⟩
 
 /- English proof (translation)
-Introduce `e`. Break down `Nat.even_or_odd n with hn | hn` into its components or cases. Rewrite `e` using `[hn.neg_pow, ← pow_mul]`. Establish `h8 : (2 * n).Coprime m`. Establish `: 2 * n ∣ 2 ^ 3`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨k, rfl⟩` from `hn`. Establish `: k = 1 ∨ k = 2` using `by omega`. Apply the tactic sequence `rcases this with rfl | rfl <;> norm_num`. Conclude with `Nat.Coprime.coprime_dvd_left this (Nat.Coprime.pow_left 3 ((Nat.coprime_two_left).2 hm))`. Conclude with `hy (orderOf_eq_one_iff.1 (Nat.eq_one_of_dvd_coprimes h8 (orderOf_dvd_of_pow_eq_one e) (orderOf_dvd_of_pow_eq_one h)))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e2 : ((-y ^ 2) ^ n) ^ m = 1` using `by rw [e, one_pow]`. Rewrite `e2` using `[← pow_mul, (hn.mul hm).neg_pow, ← pow_mul, ← mul_assoc, mul_comm _ m, pow_mul, h, one_pow]`. Conclude with `h2 e2`.
+A detailed English derivation is pending.
 -/
 private theorem neg_sq_pow_ne_one_of_odd_order {R : Type} [CommRing R] {y : Rˣ} {m : ℕ} (hm : Odd m) (h : y ^ m = 1) (hy : y ≠ 1) (h2 : (-1 : Rˣ) ≠ 1)
     {n : ℕ} (h0 : 0 < n) (h4 : n ≤ 4) : (-y ^ 2) ^ n ≠ 1 := by
@@ -146,25 +144,25 @@ private abbrev bU (c : Coef l) : c.Oˣ →* (ResidueField c.O)ˣ := Units.map (r
 private def sgnP (pr : Bool) : ℤ := if pr then -1 else 1
 
 /- English proof (translation)
-The claim follows from `Units.ext (hD.om_bar g).symm`.
+A detailed English derivation is pending.
 -/
 private theorem reduction_cyclotomic_char_eq (D : Raw Ω c) (hD : D.Good) (g : G ℚ Ω) : bU c (chiO ℚ Ω l c.O g) = bU c (D.om g) :=
   Units.ext (hD.om_bar g).symm
 
 /- English proof (translation)
-Simplify using `only [Raw.al, MonoidHom.mul_apply, MonoidHom.inv_apply, map_mul, map_inv, reduction_cyclotomic_char_eq D hD, mul_inv_cancel, one_mul]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem reduction_alpha_eq_xi (D : Raw Ω c) (hD : D.Good) (g : G ℚ Ω) : bU c (D.al g) = bU c (D.ξ g) := by
   simp only [Raw.al, MonoidHom.mul_apply, MonoidHom.inv_apply, map_mul, map_inv, reduction_cyclotomic_char_eq D hD, mul_inv_cancel, one_mul]
 
 /- English proof (translation)
-Simplify using `only [Raw.Psi, UpperTheory.V.Chr.Psi, MonoidHom.mul_apply, zpow_natCast, MonoidHom.pow_apply, map_mul, map_pow, reduction_cyclotomic_char_eq D hD]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem reduction_psi_eq_omega_pow (D : Raw Ω c) (hD : D.Good) (g : G ℚ Ω) : bU c (D.Psi g) = bU c (D.om g) ^ D.e * bU c (D.ψ g) := by
   simp only [Raw.Psi, UpperTheory.V.Chr.Psi, MonoidHom.mul_apply, zpow_natCast, MonoidHom.pow_apply, map_mul, map_pow, reduction_cyclotomic_char_eq D hD]
 
 /- English proof (translation)
-Apply the tactic sequence `cases pr <;> simp [chi, lab, Raw.ps, Raw.th, sgnP, mul_comm]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem character_ratios_eq (D : Raw Ω c) (pr : Bool) (g : G ℚ Ω) :
     chi D pr 0 g * (chi D pr 1 g)⁻¹ = D.al g ∧ chi D pr 0 g * (chi D pr 2 g)⁻¹ = D.Psi g ^ sgnP pr ∧
@@ -175,7 +173,7 @@ private def del (D : Raw Ω c) (pr : Bool) : G ℚ Ω →* (ResidueField c.O)ˣ 
   (bU c).comp (D.al ^ 2 * (D.Psi ^ sgnP pr)⁻¹)
 
 /- English proof (translation)
-Rewrite using `[MonoidHom.mem_ker, ← reduction_alpha_eq_xi D hD, ← reduction_psi_eq_omega_pow D hD]`. Simplify using `only [del, MonoidHom.comp_apply, MonoidHom.mul_apply, MonoidHom.inv_apply, MonoidHom.pow_apply, MonoidHom.zpow_apply, map_mul, map_inv, map_pow, map_zpow, mul_inv_eq_one]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem del_iff (D : Raw Ω c) (hD : D.Good) (pr : Bool) (g : G ℚ Ω) :
     g ∈ (del D pr).ker ↔ bU c (D.ξ g) ^ 2 = (bU c (D.om g) ^ D.e * bU c (D.ψ g)) ^ sgnP pr := by
@@ -184,11 +182,11 @@ private theorem del_iff (D : Raw Ω c) (hD : D.Good) (pr : Bool) (g : G ℚ Ω) 
     map_pow, map_zpow, mul_inv_eq_one]
 
 /- English proof (translation)
-Take `⟨h1, h2, h3⟩` from `character_ratios_eq D pr g`. Establish `h` using `(del_iff D hD pr g).1 hg`. Rewrite `h` using `[← reduction_psi_eq_omega_pow D hD, ← map_zpow]`. Establish `k1` using `congrArg (bU c) h1`. Establish `k2` using `congrArg (bU c) h2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `k3` using `congrArg (bU c) h3`. Simplify using `only [map_mul, map_inv, reduction_alpha_eq_xi D hD, ← h] at k1 k2 k3`. Use `fin_cases i`. Simplify using the standard rewrite rules. Simplify using `[← k1]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[← k2]`. Use `show bU c (chi D pr 3 g) = _ * (_ ^ 3)⁻¹`. Rewrite using `[pow_succ', ← k3]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem reduced_character_quotient_eq (D : Raw Ω c) (hD : D.Good) (pr : Bool) {g : G ℚ Ω} (hg : g ∈ (del D pr).ker) (i : Fin 4) :
     bU c (chi D pr i g) = bU c (chi D pr 0 g) * (bU c (D.ξ g) ^ (i : ℕ))⁻¹ := by
@@ -207,9 +205,9 @@ private theorem reduced_character_quotient_eq (D : Raw Ω c) (hD : D.Good) (pr :
     rw [pow_succ', ← k3]; simp
 
 /- English proof (translation)
-Take `⟨h1, h2, -⟩` from `character_ratios_eq D T.pr (resQ T.F g)`. Establish `h` using `(del_iff D hD T.pr _).1 (hF (restrict_mem_fixing_subgroup g))`. Rewrite `h` using `[← reduction_psi_eq_omega_pow D hD, ← map_zpow]`. Establish `e : (T.fr ∅).rt w g = D.al (resQ T.F g) ^ w.1 * (D.Psi (resQ T.F g) ^ sgnP T.pr) ^ w.2`. Rewrite using `[← h1, ← h2]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `e2 : bU c ((T.fr ∅).rt w g) = bU c (D.ξ (resQ T.F g)) ^ (w.1 + 2 * w.2)`. Rewrite using `[e, map_mul, map_zpow, map_zpow _ _ w.2, ← h, reduction_alpha_eq_xi D hD, zpow_add, zpow_mul]`. Both sides reduce to the same expression. Rewrite using `[← e2]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -225,13 +223,13 @@ private theorem residual_root_character_eq_pow {D : Raw Ω c} (hD : D.Good) (T :
   rw [← e2]; rfl
 
 /- English proof (translation)
-Establish `key : ∀ i j, D.rbar g i j = residue c.O (Matrix.diagonal (fun i => (D.ps i g : c.O)) i j)` using `fun _ _ => rfl`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `h1` using `key 1 1`. Establish `h2` using `key 2 2`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1`, `h2` using `[h, Matrix.one_apply_eq, Matrix.diagonal_apply_eq]`. Conclude with `⟨Units.ext h2.symm, Units.ext h1.symm⟩`. Introduce and unpack `⟨h1, h2⟩`. Establish `h3 : ∀ i, residue c.O (D.ps i g : c.O) = 1` using `fun i => by`. Apply the tactic sequence `have : bU c (D.ps i g) = 1 := by fin_cases i <;> simp [Raw.ps, Raw.th, h1, h2]`.
+Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Conclude with `congrArg Units.val this`. Use extensionality with `i j`. Rewrite using `[key]`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.diagonal_apply_eq, Matrix.one_apply_eq, h3]`. Rewrite using `[Matrix.diagonal_apply_ne _ hij, Matrix.one_apply_ne hij, map_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem residual_rep_trivial_iff (D : Raw Ω c) (g : G ℚ Ω) : D.rbar g = 1 ↔ bU c (D.al g) = 1 ∧ bU c (D.Psi g) = 1 := by
   have key : ∀ i j, D.rbar g i j = residue c.O (Matrix.diagonal (fun i => (D.ps i g : c.O)) i j) := fun _ _ => rfl
@@ -255,43 +253,39 @@ private theorem residual_rep_trivial_iff (D : Raw Ω c) (g : G ℚ Ω) : D.rbar 
 end SlopeTestRemainingChoices
 
 /- English proof (translation)
-Introduce `Ω _ _ _ l hl c D hC pr hlab`. Establish `hD` using `hC.1`. Take `⟨h5, he, hSb, ⟨m, -, hlm, hm⟩, hIl⟩` from `large₂.host3 D hC`. Establish `hom : IsOmT c D.om` using `⟨hD.om_pow, fun g => (Ideal.Quotient.eq).1 (hD.om_bar g)⟩`. Take `⟨-, -, -, o4, -, o6, o7, -⟩` from `(omT Ω l c).2 D.om hom`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hl2 : l.Coprime 2` using `(Nat.coprime_primes hl.out Nat.prime_two).2 hD.l_odd`. Establish `hl1 : l.Coprime (l - 1)` using `(Nat.coprime_self_sub_right hl.out.one_le).2 (Nat.coprime_one_right _)`. Establish `h2e : ∀ g, D.om (g ^ 2) ^ D.e = 1` using `fun g => by`. Take `⟨k, hk⟩` from `he`. Rewrite using `[map_pow, ← pow_mul, hk, pow_mul, ← MonoidHom.pow_apply, hD.om_pow, MonoidHom.one_apply, one_pow]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Establish `hsq : ∀ A : ValuationSubring Ω, A.valuation (l : Ω) < 1 → ∀ g ∈ Ine (F` using `ℚ) A, g ^ 2 ∈ (del D pr).ker := fun A hA g hg => by`. Take `⟨a1, a2⟩` from `hIl A hA (pow_mem hg 2)`. Rewrite using `[del_iff D hD, ← map_pow _ _ D.e, h2e, MonoidHom.mem_ker.1 a1, MonoidHom.mem_ker.1 a2]`. Simplify using the standard rewrite rules. Establish `hopen : IsOpen ((del D pr).ker : Set (G ℚ Ω))`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `Subgroup.isOpen_mono (H₁ := D.ξ.ker ⊓ D.ψ.ker ⊓ D.om.ker) ?_ ((hD.xi_open.inter hD.psi_open).inter o4)` and prove the remaining obligations. Introduce and unpack `g ⟨⟨a1, a2⟩, a3⟩`. Rewrite using `[del_iff D hD, MonoidHom.mem_ker.1 a1, MonoidHom.mem_ker.1 a2, MonoidHom.mem_ker.1 a3]`. Simplify using the standard rewrite rules. Establish `hcc : D.cc ∈ (del D pr).ker`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[del_iff D hD, ← reduction_psi_eq_omega_pow D hD, hD.xi_odd, hD.Psi_even, ← map_pow]`. Simplify using the standard rewrite rules. Take `⟨K, F, _, _, _, _, _, J, hK, hev, hJS, hJ2, hJK, hFH, hFK, hunr⟩` from `fieldsEx (fun p hp => ⟨_, hD.pl_over p hp⟩) D.S hD.S_prime (del D pr).ker hopen (Abelianization.commutator_subset_ker _) D.cc hD.isCC hcc`. Establish `hL : ∀ g, g ∈ (del D pr).ker → g ∈ J → ∃ g' : G F Ω, resQ F g' = g ∧ resQ F g' ∈ K.fixingSubgroup` using `fun g a b => by`. Establish `h : g ∈ F.fixingSubgroup ⊓ K.fixingSubgroup` using `hFK ▸ ⟨a, b⟩`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨g', rfl⟩` from `exists_lift_of_mem_fixing h.1`. Conclude with `⟨g', rfl, h.2⟩`. Take `⟨g1, i1, x1, p1, w1⟩` from `large₂.eltTwo D hC`. Apply the tactic sequence `obtain ⟨g2, m', hm', hlm', w2, x2, x3, x4⟩ := large₂.eltOdd D hC (sgnP pr) (by cases pr <;> simp [sgnP])`. Establish `hx : D.ξ (g1 * g2 ^ 2) = -D.ξ g2 ^ 2` using `by rw [map_mul, map_pow, x1, neg_one_mul]`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Establish `hw : D.om (g1 * g2 ^ 2) = 1` using `by rw [map_mul, map_pow, w1, w2, one_pow, one_mul]`. Take `⟨g0, hg0, hg0K⟩` from `hL (g1 * g2 ^ 2) (by`. Rewrite using `[del_iff D hD, hx, hw, map_one, one_pow, one_mul, map_mul, p1, one_mul, ← map_pow, ← map_zpow, neg_sq, x2, map_pow D.ψ, ← zpow_natCast, ← zpow_natCast (D.ψ g2), ← zpow_mul, ← zpow_mul, mul_comm])`. Use the proof step `(J.mul_mem (hJS 2 hD.two_mem _ (hD.pl_over 2 Nat.prime_two) (Ine_le_Dec _ i1)) (hJ2 g2))`. Establish `hord : ∀ n : ℕ, 0 < n → n ≤ 4 → bU c (D.ξ (resQ F g0)) ^ n ≠ 1` using `fun n h0 h4 e => by`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e` using `[hg0, hx, ← map_pow]`. Use `neg_sq_pow_ne_one_of_odd_order hm' x3 x4 (fun h => ?_) h0 h4 (large₂.redOne c (2 * m') (hl2.mul_right hlm') _ ?_ (congrArg Units.val e))` and prove the remaining obligations. Establish `h' : ((-1 : c.O) : PadicAlgCl l) = ((1 : c.O) : PadicAlgCl l)` using `congrArg _ (congrArg Units.val h)`. Evaluate the numerical expressions using `at h'`. Rewrite using `[← pow_mul, ((even_two_mul m').mul_left n).neg_pow, ← pow_mul, show 2 * (n * (2 * m')) = m' * (4 * n) by ring, pow_mul, x3, one_pow]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Evaluate the numerical expressions. Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Choose the witnesses or unpack the hypotheses as in `⟨g3, i3, w3⟩ : ∃ g ∈ D.Ip l, D.om (g ^ 2) ≠ 1 := by`. Assume the negation of the conclusion as `hc`. Use `push Not at hc`. Use `Nat.le_of_dvd two_pos (o7 _ (hD.pl_over l hl.out) 2 fun g hg => by` as an intermediate fact. Rewrite using `[MonoidHom.mem_ker, MonoidHom.pow_apply, ← map_pow]`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result.
 
-Conclude with `hc g hg)`. Use linear arithmetic over natural numbers and integers. Take `⟨g4, hg4, hg4K⟩` from `hL (g3 ^ 2) (hsq _ (hD.pl_over l hl.out) g3 i3) (hJ2 g3)`. Take `⟨T, rfl, rfl, rfl, hT0⟩` from `mkTower D hD pr K F hK (fun A hA => (hJS l hD.l_mem A hA).trans hJK) g0`. Establish `hrb` using `residual_root_character_eq_pow hD T hFH`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hq` using `fun (g : G T.F Ω) => reduced_character_quotient_eq D hD T.pr (hFH (restrict_mem_fixing_subgroup g))`. Establish `hdist : ∀ i j : Fin 4, bU c (chi D T.pr i (resQ T.F g0)) = bU c (chi D T.pr j (resQ T.F g0)) → i = j`. Establish `key : ∀ i j : Fin 4, i < j → bU c (D.ξ (resQ T.F g0)) ^ (i : ℕ) ≠ bU c (D.ξ (resQ T.F g0)) ^ (j : ℕ)` using `fun i j hij e => by`. Take `⟨k, hk⟩` from `Nat.exists_eq_add_of_lt (show (i : ℕ) < j from hij)`. Rewrite `e` using `[hk, add_assoc, pow_add, left_eq_mul]`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `hord (k + 1) (by omega) (by omega) e`. Introduce `i j e`. Rewrite `e` using `[hq, hq _ j, mul_right_inj, inv_inj]`. Break down `lt_trichotomy i j with h | h | h` into its components or cases. Use `exacts [absurd e (key i j h), h, absurd e.symm (key j i h)]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Rewrite the conclusion using the stated equalities.
 
-Establish `hz : ∀ n : ℤ, n ≠ 0 → n.natAbs ≤ 4 → bU c (D.ξ (resQ T.F g0)) ^ n ≠ 1` using `fun n h0 h4 e => hord n.natAbs (Int.natAbs_pos.2 h0) h4 (orderOf_dvd_iff_pow_eq_one.1 (Int.ofNat_dvd_left.1 (orderOf_dvd_iff_zpow_eq_one.2 e)))`. Use `⟨T, rfl, ⟨hlab, hev, fun A g hg => hunr A ⟨restrict_inertia_mem hg, restrict_mem_fixing_subgroup g⟩, fun p hp A hA => (hJS p hp A hA).trans hJK, fun w => ⟨g4, hg4K, ?_⟩, fun w hw => ⟨g0, hg0K, ?_⟩, fun η _ hη h => ?_, ⟨wAl, by decide, fun n h0 h4 => ⟨g0, hg0K, ?_⟩⟩, fun A hA g hg …` and prove the remaining obligations. Rewrite using `[hrb, hg4, MonoidHom.mem_ker.1 (hIl _ (hD.pl_over l hl.out) (pow_mem i3 2)).1, map_one, one_zpow]`. Conclude with `fun e => w3 (large₂.redOne c (l - 1) hl1 _ (by rw [← MonoidHom.pow_apply, hD.om_pow]; rfl) e.symm)`. Rewrite using `[hrb, Ne, Units.val_eq_one] revert w`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `fun w hw => hz _ ((by decide : ∀ w ∈ roots, w.1 + 2 * w.2 ≠ 0) w hw) ((by decide : ∀ w ∈ roots, (w.1 + 2 * w.2).natAbs ≤ 4) w hw)`. Take `⟨j, hj⟩` from `h 0`. Establish `h1` using `hj ⟨g0, hg0K⟩`. Rewrite `h1` using `[hη ⟨g0, hg0K⟩ (by show D.om (resQ T.F g0) = 1; rw [hg0, hw]), Units.val_one, one_mul]`. Take `rfl : 0 = j` from `hdist 0 j (Units.ext h1)`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use extensionality with `g`. Conclude with `(mul_eq_right₀ (bU c (chi D T.pr 0 (resQ T.F g))).ne_zero).1 (hj g)`. Rewrite using `[hrb, ← Units.val_pow_eq_pow_val, Ne, Units.val_eq_one]`. Simplify `hord n h0 h4` using `[wAl]`. Establish `h1` using `((residual_rep_trivial_iff D _).1 hr).2`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[reduction_psi_eq_omega_pow D hD, MonoidHom.mem_ker.1 (o6 A (hA l (Finset.mem_singleton_self l)) (restrict_inertia_mem hg)), map_one, one_pow, one_mul]`. Conclude with `large₂.redOne c m hlm _ (by rw [← MonoidHom.pow_apply, hm]; rfl) (congrArg Units.val h1)`. Rewrite using `[← MonoidHom.pow_apply, hm]`. Both sides reduce to the same expression. Establish `a1` using `MonoidHom.mem_ker.1 (hIl A hA (restrict_inertia_mem hg)).1`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `h` using `(del_iff D hD T.pr _).1 (hFH (restrict_mem_fixing_subgroup g))`. Rewrite `h` using `[← reduction_psi_eq_omega_pow D hD, a1, map_one, one_pow]`. Use `(residual_rep_trivial_iff D _).2 ⟨by rw [reduction_alpha_eq_xi D hD, a1, map_one], ?_⟩` and prove the remaining obligations. Use `revert h`. Apply the tactic sequence `cases T.pr <;> simp [sgnP, eq_comm]`.
-
-Rewrite `e` using `[hT0]`. Conclude with `hij (hdist i j (Units.ext e))`. Rewrite using `[hrb, hrb, ← Units.val_pow_eq_pow_val, ← zpow_natCast, ← zpow_mul]`. Both sides reduce to the same expression. Establish `h : g ^ 2 ∈ T.F.fixingSubgroup ⊓ T.K.fixingSubgroup` using `hFK ▸ ⟨hsq A hA g hg, hJ2 g⟩`.
-
-Conclude with `h.1`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Ws.exists_tame_tower_ok_three :
     ∀ {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime] {c : Coef l} (D : Raw Ω c), Ctx3 D → ∀ pr, LabOk D pr → ∃ T : Tower D, T.pr = pr ∧ T.Ok ∧ T.Three ∧ TameL l T.F := by

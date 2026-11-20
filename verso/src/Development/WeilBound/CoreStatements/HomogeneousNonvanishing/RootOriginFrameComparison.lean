@@ -29,9 +29,9 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
 set_option backward.isDefEq.respectTransparency false in
 
 /- English proof (translation)
-Use `𝔐.t.act.hom x` as an intermediate fact. Rewrite `he`, the goal using `[GlobalTheory.CompanionTheory.Ar.LieModel.mem_lat_iff]`. Take `⟨v, hv⟩` from `he`. Take `⟨ht, hpt⟩` from `(GlobalTheory.CompanionTheory.Ar.LieModel.extends_iff _ _ _ _).mp hv`. Use `⟨v ≫ 𝔐.t.act.act x, (GlobalTheory.CompanionTheory.Ar.LieModel.extends_iff _ _ _ _).mpr ⟨?_, ?_⟩⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `ht`, the goal using `[GlobalTheory.CompanionTheory.Ar.LieTangent.isTanAt_iff]`. Rewrite using `[← Category.assoc, ht, CategoryTheory.MonObj.one_comp]`. Rewrite using `[𝔐.act x e, hpt, Category.assoc]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem lat_act_of_model_rf (𝔐 : HodgeCpt Y SS y) (q : Cpt 𝔐.ξ) (x : 𝓞 E) (e : 𝔐.Li) (he : e ∈ 𝔐.M.lat q) :
     𝔐.ρ x e ∈ 𝔐.M.lat q := by
@@ -49,15 +49,13 @@ end Act
 set_option backward.isDefEq.respectTransparency false in
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hnd`. Unfold `GlobalTheory.CompanionTheory.Ar.InFibre GlobalTheory.CompanionTheory.Ar.unitAt GlobalTheory.CompanionTheory.Ar.regAt at hf`. Establish `key : ∀ {S : Type} [CommRing S] [IsLocalRing S], IsCoprime (p : ℤ) d → ¬ IsUnit (p : S) → ¬ IsUnit (d : S) → False`. Introduce `S _ _ hpd hp' hd'`. Take `⟨a, b, hab⟩` from `hpd`.
+Assume the negation of the conclusion and derive a contradiction. Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `h1 : (a : S) * (p : S) + (b : S) * (d : S) = 1`. Use `congrArg (Int.cast : ℤ → S) hab` as an intermediate fact. Move the coercions through the operations in `at this`. Conclude with `this`. Break down `IsLocalRing.isUnit_or_isUnit_of_add_one h1 with h' | h'` into its components or cases.
+Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hp' (isUnit_of_mul_isUnit_right h')`. Conclude with `hd' (isUnit_of_mul_isUnit_right h')`. Use `key (S := X.presheaf.stalk (GlobalTheory.CompanionTheory.Ar.centre z)) ((Nat.prime_iff_prime_int.mp hp).coprime_iff_not_dvd.mpr hd) ?_ ?_` and prove the remaining obligations. Introduce and unpack `⟨u, hu⟩`. Apply `hf` to reduce the goal to its premises.
+Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hgp : GlobalTheory.CompanionTheory.Ar.genMap ξ ⟨GlobalTheory.CompanionTheory.Ar.centre z, h⟩ (p : X.presheaf.stalk (GlobalTheory.CompanionTheory.Ar.centre z)) = (p : Ω)` using `map_natCast _ p`. Establish `hmul : GlobalTheory.CompanionTheory.Ar.genMap ξ ⟨GlobalTheory.CompanionTheory.Ar.centre z, h⟩ (↑u⁻¹ : X.presheaf.stalk (GlobalTheory.CompanionTheory.Ar.centre z)) * (p : Ω) = 1`. Rewrite using `[← hgp, ← map_mul, ← hu, Units.inv_mul, map_one]`. Use `⟨right_ne_zero_of_mul_eq_one hmul, RingHom.mem_range.mpr ⟨_, hgp⟩, RingHom.mem_range.mpr ⟨(↑u⁻¹ : X.presheaf.stalk (GlobalTheory.CompanionTheory.Ar.centre z)), ?_⟩⟩` and prove the remaining obligations. Conclude with `eq_inv_of_mul_eq_one_left hmul`.
-
-Introduce `hu`. Conclude with `hnd (by simpa using hu.map (Scheme.stalkClosedPointTo z).hom)`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem isUnit_int_of_inFibre_rf {X : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Spec (CommRingCat.of Ω) ⟶ X}
     {R : Type} [CommRing R] [IsLocalRing R] (z : Spec (CommRingCat.of R) ⟶ X) (h : genPt ξ ⤳ centre z)
@@ -89,39 +87,35 @@ theorem isUnit_int_of_inFibre_rf {X : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : S
     exact hnd (by simpa using hu.map (Scheme.stalkClosedPointTo z).hom)
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c O _ β Y SS RM Sys Fx Or Fr A p _ z ev hz hval hgood la T io e y evT zT t hint zV hread hpS hdisc EC _ _ _ _ MC ρC hact s σ hσ`. Establish `hp : p.Prime` using `Fact.out`. Establish `hgen : IsCptGen Or.𝔐.ξ` using `Or.𝔐.tie.gen`. Establish `hsm : Smooth Or.𝔐.t.G.hom` using `Or.𝔐.t.semi.smooth`. Establish `h₀ : genPt Or.𝔐.ξ ⤳ centre zV` using `Or.𝔐.all _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h₁ : genPt Or.𝔐.ξ ⤳ centre (gen T zV)` using `Or.𝔐.all _`. Establish `hF : InFibre Or.𝔐.ξ p ⟨centre zV, h₀⟩` using `GlobalTheory.T.root_origin_frame_nonarchimedean E H Dw l Xo c O β Y SS RM Sys Fx Or Fr A p z ev hz hval hgood la T io e y evT zT t hint zV hread`. Establish `hV : Or.𝔐.V s ⟨centre zV, h₀⟩ = Or.𝔐.dR s ⟨centre zV, h₀⟩` using `Lat.patch_of_not SS _ _ fun r hr hfr => Lat.not_inFibre_of_coprime _ ((Nat.coprime_primes hp (Or.𝔐.S_prime r hr)).2 fun hne => hpS (hne ▸ hr)) hF hfr`. Take `⟨ev', hev1, hev2, -⟩` from `GlobalTheory.T.lie_lattice_eval_at_local_ring Or.𝔐.X Or.𝔐.t.G RM.Ω Or.𝔐.ξ Or.𝔐.Li Or.𝔐.M T.Fr (gen T zV) h₁ EC MC hgen hsm`. Establish `hσ' : ∀ a, ValAt Or.𝔐.ξ (gen T zV) (Or.𝔐.emb s a) (algebraMap T.V T.Fr (σ a))` using `fun a => TopFibre.valAt_comp (algebraMap T.V T.Fr) (hσ a) h₁`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `P0 : Or.𝔐.M.ValAt (gen T zV) 0 (MC.pt 0)` using `(hev1 _ _).2 ⟨zero_mem _, map_zero ev'⟩`. Establish `P1 : ∀ (a : 𝓞 E) {e w}, Or.𝔐.M.ValAt (gen T zV) e (MC.pt w) → Or.𝔐.M.ValAt (gen T zV) (Or.𝔐.ρ a e) (MC.pt (ρC a w))` using `fun a e w h => by haveI := Or.𝔐.t.act.hom a`. Establish `h1` using `Flat.CPoint.valAt_of_isDiffOf (Or.𝔐.t.act.act a) (Or.𝔐.ρ a) (Or.𝔐.act a) h`. Rewrite `h1` using `[← hact a w]`. Then use the resulting hypothesis. Establish `P2 : ∀ {a : RM.Ω} {r : T.Fr} {e w}, ValAt Or.𝔐.ξ (gen T zV) a r → Or.𝔐.M.ValAt (gen T zV) e (MC.pt w) → Or.𝔐.M.ValAt (gen T zV) (a • e) (MC.pt (r • w))` using `fun {a r e w} ha h => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Take `⟨he, rfl⟩` from `(hev1 _ _).1 h`. Establish `ha' : a ∈ regAt Or.𝔐.ξ ⟨centre (gen T zV), h₁⟩`. Take `⟨_, s', e1, -⟩` from `ha`. Conclude with `⟨s', e1⟩`. Conclude with `(hev1 _ _).2 ⟨(Or.𝔐.M.lat _).smul_mem ⟨a, ha'⟩ he, hev2 ⟨a, ha'⟩ r ⟨e, he⟩ ha⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `P3 : ∀ {e e' w w'}, Or.𝔐.M.ValAt (gen T zV) e (MC.pt w) → Or.𝔐.M.ValAt (gen T zV) e' (MC.pt w') → Or.𝔐.M.ValAt (gen T zV) (e + e') (MC.pt (w + w'))` using `fun {e e' w w'} h h' => by`. Take `⟨he, rfl⟩` from `(hev1 _ _).1 h`. Take `⟨he', rfl⟩` from `(hev1 _ _).1 h'`. Conclude with `(hev1 _ _).2 ⟨add_mem he he', map_add ev' ⟨e, he⟩ ⟨e', he'⟩⟩`. Establish `Pu : ∀ {e w w'}, Or.𝔐.M.ValAt (gen T zV) e (MC.pt w) → Or.𝔐.M.ValAt (gen T zV) e (MC.pt w') → w = w'` using `fun {e w w'} h h' => by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨he, rfl⟩` from `(hev1 _ _).1 h`. Take `⟨he', rfl⟩` from `(hev1 _ _).1 h'`. Both sides reduce to the same expression. Take `⟨n, a, b, hop⟩` from `GlobalTheory.CompanionTheory.Ar.Sandwich.Sep.exists_eigen_op_discr E`. Set `Tc : EC →ₗ[T.Fr] EC` to `∑ i, algebraMap T.V T.Fr (σ (b i)) • ρC (a i)`.
+Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hTc : ∀ w, Tc w = ∑ i, ((algebraMap T.V T.Fr).comp σ) (b i) • ρC (a i) w` using `fun w => by`. Simplify using `[Tc, LinearMap.sum_apply]`. Establish `Pt : ∀ {e w}, Or.𝔐.M.ValAt (gen T zV) e (MC.pt w) → Or.𝔐.M.ValAt (gen T zV) (∑ i, Or.𝔐.emb s (b i) • Or.𝔐.ρ (a i) e) (MC.pt (Tc w))` using `fun {e w} h => by`. Rewrite using `[hTc]`. Establish `: ∀ S : Finset (Fin n), Or.𝔐.M.ValAt (gen T zV) (∑ i ∈ S, Or.𝔐.emb s (b i) • Or.𝔐.ρ (a i) e) (MC.pt (∑ i ∈ S, ((algebraMap T.V T.Fr).comp σ) (b i) • ρC (a i) w))` using `fun S => by classical`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Proceed by induction. Treat this case separately.
 
-Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty => simpa using P0`. Consider the case `insert i S hi ih`. Rewrite using `[Finset.sum_insert hi, Finset.sum_insert hi]`. Conclude with `P3 (P2 (hσ' _) (P1 _ h)) ih`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Conclude with `this _`. Establish `hD : IsUnit ((discr E : ℤ) : T.V)` using `isUnit_int_of_inFibre_rf (ξ := Or.𝔐.ξ) zV h₀ hp hF hdisc`. Use `le_antisymm (Submodule.span_le.2 ?_) ?_` and prove the remaining obligations. Introduce and unpack `w ⟨h, e', he, hw⟩`. Establish `he' : e' ∈ Or.𝔐.dR s ⟨centre zV, h₀⟩` using `hV ▸ he`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `⟨Submodule.subset_span ⟨h, e', he'.1, hw⟩, ?_⟩` and prove the remaining obligations. Establish `heig : ∀ x, Or.𝔐.ρ x e' = Or.𝔐.emb s x • e'` using `fun x => by`. Use `(Submodule.mem_iInf _).1 he'.2 x` as an intermediate fact. Simplify `this` using `[sub_eq_zero]`. Use `(Submodule.mem_iInf _).2 fun x => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h1` using `P1 x hw`. Rewrite `h1` using `[heig x]`. Establish `h2` using `Pu h1 (P2 (hσ' x) hw)`. Simplify using `[sub_eq_zero, h2]`. Introduce and unpack `w ⟨hw1, hw2⟩`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Establish `key : ∀ u ∈ Or.𝔐.M.fibAt Or.𝔐.M.lat zV MC, Tc u ∈ Or.𝔐.M.fibAt (Or.𝔐.V s) zV MC` using `fun u hu => by`. Proceed by induction on `hu using Submodule.span_induction with`. Consider the case `mem u hu`. Take `⟨h, e', he, hv⟩` from `hu`. Use `Submodule.subset_span ⟨h, _, ?_, Pt hv⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `show _ ∈ Or.𝔐.V s ⟨centre zV, h₀⟩`. Rewrite using `[hV]`. Use `⟨Submodule.sum_mem _ fun i _ => ?_, (hop RM.Ω Or.𝔐.Li Or.𝔐.ρ (Or.𝔐.emb s)).1 e'⟩` and prove the remaining obligations. Establish `hreg : Or.𝔐.emb s (b i) ∈ regAt Or.𝔐.ξ ⟨centre zV, h₀⟩`. Take `⟨_, s', e1, -⟩` from `hσ (b i)`.
+Supply the required witnesses or components. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Conclude with `⟨s', e1⟩`. Conclude with `(Or.𝔐.M.lat _).smul_mem ⟨_, hreg⟩ (lat_act_of_model_rf Or.𝔐 _ _ _ he)`. Consider the case `zero => simp`. Consider the case `add u v _ _ hu hv`. Rewrite using `[map_add]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `add_mem hu hv`. Consider the case `smul r u _ hu`. Rewrite using `[LinearMap.map_smul_of_tower]`. Conclude with `Submodule.smul_mem _ r hu`. Establish `hT : Tc w = ((discr E : ℤ) : T.Fr) • w`.
-
-Rewrite using `[hTc]`. Conclude with `(hop T.Fr EC ρC ((algebraMap T.V T.Fr).comp σ)).2 w hw2`. Take `⟨u, hu⟩` from `hD.exists_left_inv`. Establish `e1 : w = u • Tc w`. Rewrite using `[hT, ← map_intCast (algebraMap T.V T.Fr), algebraMap_smul, smul_smul, hu, one_smul]`.
-
-Rewrite using `[e1]`. Conclude with `Submodule.smul_mem _ u (key w hw1)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fib_eq_lieEig_rf : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Y : Model Xo c β) (SS : Finset ℕ) (RM : Top.RootModel (CMType H) (Dw.p + Dw.q)) (Sys : PB.AnSys (Top.dimFl (CMType H) (Dw.p + Dw.q)) (Option (RootIx Dw))) (Fx : FixedData Y Sys) (Or : RootOrigin Y SS RM Fx) (Fr : Small.GenFrame Or) (A : Subring RM.Ω) (p : ℕ) [Fact p.Prime] (z : (Σ k, RM.ι k) → PadicAlgCl p) (ev : A →+* PadicAlgCl p), z ∈ Small.algPts p (mCoordIdeal RM.y) → (∀ x : A, Small.HasVal RM.y 0 (x : RM.Ω) z (ev x)) → FinRd.GoodRing Fr A → ∀ (la : HeightOneSpectrum (𝓞 c.F)) (T : CDVR) (io : c.F →+* T.Fr) (e : ℕ) (y : IntFr Xo c T io) (evT : A →+* T.Fr) (zT : letI := io.toAlgebra; FrPt Xo c T.Fr) (t : Ix Dw → T.Frˣ), FinRd.IsIntPt Fr A ev la T io e y evT zT t → ∀ (zV : Spec (CommRingCat.of T.V) ⟶ Or.𝔐.X), FinRd.Roots.ReadsPt Or.𝔐.ξ A T evT zV → p ∉ SS → ¬ (p : ℤ) ∣ discr E → ∀ (EC : Type) [AddCommGroup EC] [Module T.Fr EC] [Module T.V EC] [IsScalarTower T.V T.Fr EC] (MC : LieModel Or.𝔐.t.G (FinRd.Roots.gen T zV) EC) (ρC : 𝓞 E →+* Module.End T.Fr EC), MC.IsActOf Or.𝔐.t.act.act ρC → ∀ (s : CMType H ⊕ CMType H) (σ : 𝓞 E →+* T.V), (∀ a, GlobalTheory.CompanionTheory.Ar.ValAt Or.𝔐.ξ zV (Or.𝔐.emb s a) (σ a)) → Or.𝔐.M.fibAt (Or.𝔐.V s) zV MC = FinRd.Roots.lieEig Or MC ρC σ := by
   intro E _ _ _ H Dw l Xo c O _ β Y SS RM Sys Fx Or Fr A p _ z ev hz hval hgood la T io e y evT zT t hint zV hread
@@ -237,7 +231,7 @@ open scoped Matrix
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Conclude with `GlobalTheory.CompanionTheory.Ar.Rec.FinRd.Roots.fib_eq_lieEig_rf`.
+A detailed English derivation is pending.
 -/
 theorem _root_.PositivityTheory.UnitarySelfGeneration.root_origin_frame_comparison : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Y : Model Xo c β) (SS : Finset ℕ) (RM : Top.RootModel (CMType H) (Dw.p + Dw.q)) (Sys : PB.AnSys (Top.dimFl (CMType H) (Dw.p + Dw.q)) (Option (RootIx Dw))) (Fx : FixedData Y Sys) (Or : RootOrigin Y SS RM Fx) (Fr : Small.GenFrame Or) (A : Subring RM.Ω) (p : ℕ) [Fact p.Prime] (z : (Σ k, RM.ι k) → PadicAlgCl p) (ev : A →+* PadicAlgCl p), z ∈ Small.algPts p (mCoordIdeal RM.y) → (∀ x : A, Small.HasVal RM.y 0 (x : RM.Ω) z (ev x)) → FinRd.GoodRing Fr A → ∀ (la : HeightOneSpectrum (𝓞 c.F)) (T : CDVR) (io : c.F →+* T.Fr) (e : ℕ) (y : IntFr Xo c T io) (evT : A →+* T.Fr) (zT : letI := io.toAlgebra; FrPt Xo c T.Fr) (t : Ix Dw → T.Frˣ), FinRd.IsIntPt Fr A ev la T io e y evT zT t → ∀ (zV : Spec (CommRingCat.of T.V) ⟶ Or.𝔐.X), FinRd.Roots.ReadsPt Or.𝔐.ξ A T evT zV → p ∉ SS → ¬ (p : ℤ) ∣ discr E → ∀ (EC : Type) [AddCommGroup EC] [Module T.Fr EC] [Module T.V EC] [IsScalarTower T.V T.Fr EC] (MC : LieModel Or.𝔐.t.G (FinRd.Roots.gen T zV) EC) (ρC : 𝓞 E →+* Module.End T.Fr EC), MC.IsActOf Or.𝔐.t.act.act ρC → ∀ (s : CMType H ⊕ CMType H) (σ : 𝓞 E →+* T.V), (∀ a, GlobalTheory.CompanionTheory.Ar.ValAt Or.𝔐.ξ zV (Or.𝔐.emb s a) (σ a)) → Or.𝔐.M.fibAt (Or.𝔐.V s) zV MC = FinRd.Roots.lieEig Or MC ρC σ := by
   exact GlobalTheory.CompanionTheory.Ar.Rec.FinRd.Roots.fib_eq_lieEig_rf

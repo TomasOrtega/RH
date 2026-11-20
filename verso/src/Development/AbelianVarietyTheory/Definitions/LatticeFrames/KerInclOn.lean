@@ -50,13 +50,13 @@ def EvSome (Q : ℝ → ∀ D : D7, D.what₂.Word → Prop) : Prop := ∃ x₀ 
 def EvAll (Q : ℝ → ∀ D : D7, D.what₂.Word → Prop) : Prop := ∃ x₀ : ℝ, ∀ x, x₀ ≤ x → ∀ (i : F.Ix x) u, Q x (F.D x i) u
 
 /- English proof (translation)
-The claim follows from `let ⟨x₀, h⟩ := h; ⟨x₀, fun x hx i => ⟨(F.D x i).u₀, h x hx i _⟩⟩`.
+A detailed English derivation is pending.
 -/
 theorem EvAll.some {F : Pts} {Q : ℝ → ∀ D : D7, D.what₂.Word → Prop} (h : F.EvAll Q) : F.EvSome Q :=
   let ⟨x₀, h⟩ := h; ⟨x₀, fun x hx i => ⟨(F.D x i).u₀, h x hx i _⟩⟩
 
 /- English proof (translation)
-The claim follows from `let ⟨a, h⟩ := h; let ⟨b, h'⟩ := h' ⟨max a b, fun x hx i u => ⟨h x (le_trans (le_max_left _ _) hx) i u, h' x (le_trans (le_max_right _ _) hx) i u⟩⟩`.
+A detailed English derivation is pending.
 -/
 theorem EvAll.and {F : Pts} {Q Q' : ℝ → ∀ D : D7, D.what₂.Word → Prop} (h : F.EvAll Q) (h' : F.EvAll Q') :
     F.EvAll fun x D u => Q x D u ∧ Q' x D u :=
@@ -64,7 +64,7 @@ theorem EvAll.and {F : Pts} {Q Q' : ℝ → ∀ D : D7, D.what₂.Word → Prop}
   ⟨max a b, fun x hx i u => ⟨h x (le_trans (le_max_left _ _) hx) i u, h' x (le_trans (le_max_right _ _) hx) i u⟩⟩
 
 /- English proof (translation)
-The claim follows from `h`.
+A detailed English derivation is pending.
 -/
 theorem EvSome.rkAll {F : Pts} (h : F.EvSome fun _ D u => RK D u) : F.RKAll := h
 

@@ -36,15 +36,13 @@ def CovolSum (X : CData) (R : ℝ) : Prop :=
     ∑ y ∈ ys, muInf X.I (D y) ≤ ENNReal.ofReal (X.I.gaugeU * R)
 
 /- English proof (translation)
-Take `⟨hH, hF, -⟩` from `RegData_of_HypB X hX`. Establish `hμ : X.μf.IsHaarMeasure` using `hH`. Take `⟨ys, hys, ⟨D, hD⟩, heq⟩` from `hU X.I X.μf X.fund hF`. Establish `hU0 : 0 < X.I.gaugeU` using `Finset.prod_pos fun v _ => (hGD _ (X.I.ε v)).2`. Establish `hsum` using `hB ys D hys hD`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hvol` using `heq D hD`. Take `⟨hpos1, hKfin⟩` from `kg_pos_fin X hμ (le_refl 1)`. Establish `hKpos : 0 < X.μf X.I.Kset` using `lt_of_lt_of_le hpos1 (measure_mono (kg_sub X.I 1))`. Use `set μK := (X.μf X.I.Kset).toReal with hμK`. Establish `hμK0 : 0 < μK` using `ENNReal.toReal_pos hKpos.ne' hKfin.ne`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `huR : 0 ≤ X.I.gaugeU * R` using `mul_nonneg hU0.le hR0`. Establish `hle : X.I.vol X.μf X.fund ≤ μK * (X.I.gaugeU * R)`. Unfold `AutInst.vol`. Rewrite using `[hvol]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations.
 
-Use `ENNReal.toReal_mono (ENNReal.mul_ne_top hKfin.ne ENNReal.ofReal_ne_top) ?_` and prove the remaining obligations. Use `gcongr`. Use `_ = μK * (X.I.gaugeU * R) := by rw [ENNReal.toReal_mul, ENNReal.toReal_ofReal huR]`. Unfold `GaugeVolumeBoundVar`. Establish `hp : 0 < μK * X.I.gaugeU` using `mul_pos hμK0 hU0`.
-
-Combine the equalities or inequalities in the displayed calculation.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem gauge_volume_bound_of_parts (hU : UnfoldVol) (hGD : ∀ (n : ℕ) (ε : Fin n → Bool), Gauge.GaugeDens ε) (X : CData) {n₀ : ℕ} {A C0 R : ℝ}
     (hX : X.HypB n₀ A) (hR0 : 0 ≤ R) (hB : CovolSum X R)

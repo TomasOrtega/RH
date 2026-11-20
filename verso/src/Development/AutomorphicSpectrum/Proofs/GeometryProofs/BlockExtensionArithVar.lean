@@ -13,7 +13,7 @@ open ReciprocityTheory.ChartRestriction.G.AI.I1 (IsBlockMap pullDeg)
 namespace GlobalTheory.CompanionTheory.Ar.Cmp.Good
 
 /- English proof (translation)
-Introduce `h0`. Apply `h` to reduce the goal to its premises. Unfold `mCoordIdeal`. Rewrite using `[RingHom.mem_ker]`. Simplify using `[mConeMap, h0]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem coord_ne_zero {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {Ω : Type} [Field Ω]
     (y : (Σ k, ι k) → Ω) (p : Σ k, ι k) (h : (X p : MRing ι) ∉ mCoordIdeal y) : y p ≠ 0 := by
@@ -24,7 +24,7 @@ theorem coord_ne_zero {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (
   simp [mConeMap, h0]
 
 /- English proof (translation)
-Introduce and unpack `(k | u)`. Take `⟨i, hi⟩` from `hy k`. Conclude with `⟨i, coord_ne_zero y ⟨k, i⟩ hi⟩`. Take `⟨i, hi⟩` from `h₂`. Conclude with `⟨i, hi⟩`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem join_blocks {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {Ω : Type} [Field Ω]
     (y : (Σ k, ι k) → Ω) {M : ℕ} (y₂ : (Σ _ : Unit, Fin M) → Ω) (hy : IsRelevant (mCoordIdeal y))
@@ -36,13 +36,11 @@ theorem join_blocks {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι
     exact ⟨i, hi⟩
 
 /- English proof (translation)
-Introduce `hRes K _ ι _ Ω _ _ y e β b hV hβ hβP`. Take `⟨M, y₂, J, ⟨i₀, hi₀⟩, hfield, hJh, hJ, hsnc, hz⟩` from `GlobalTheory.T.adjoin_coords_arith_var hRes K ι Ω y e β b hV hβ hβP`. Establish `hj` using `(GlobalTheory.T.block_join_inclusions_compat).1 K ι Unit (fun _ => Fin M) Ω y y₂`. Establish `hb₁` using `hj.1`. Establish `hcomp : joinVec y y₂ ∘ joinInl ι (fun _ : Unit => Fin M) = y` using `hj.2.2.1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hblocks` using `join_blocks y y₂ hV.2.1.2.2 ⟨i₀, hi₀⟩`. Establish `harith : IsArithVar (mCoordIdeal (joinVec y y₂)) (e + 1)`. Use `GlobalTheory.T.isArithVar_of_block_algebraic K ι (K ⊕ Unit) (joinIdx ι fun _ : Unit => Fin M) Sum.inl (joinInl ι fun _ : Unit => Fin M) Ω (joinVec y y₂) (e + 1) hb₁ hblocks ?_ ?_` and prove the remaining obligations. Rewrite using `[hcomp]`. Conclude with `hV`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hcomp, hfield]`. Introduce `t ht`. Conclude with `isAlgebraic_algebraMap (⟨t, ht⟩ : blockFnField y)`. Take `⟨R, hR⟩` from `GlobalTheory.T.snc_model_embedded_log_resolution (K ⊕ Unit) (joinIdx ι fun _ : Unit => Fin M) Ω (joinVec y y₂) e J harith hJh hJ hsnc`. Take `⟨Amp, h₁, h₂, h₃⟩` from `GlobalTheory.T.embedded_resolution_ample_metric (K ⊕ Unit) (joinIdx ι fun _ : Unit => Fin M) (mCoordIdeal (joinVec y y₂)) J e R hR`.
-
-Conclude with `⟨K ⊕ Unit, inferInstance, joinIdx ι fun _ : Unit => Fin M, inferInstance, Sum.inl, joinInl ι fun _ : Unit => Fin M, joinVec y y₂, J, R, Amp, hb₁, hcomp, hfield, harith, hR, h₁, h₂, h₃, hz⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_good_model : ReciprocityTheory.ChartRestriction.G.Geo.ResK.ResKStatement → ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] (Ω : Type) [Field Ω] [CharZero Ω] (y : (Σ k, ι k) → Ω) (e : ℕ) (β : MRing ι) (b : K → ℕ), IsArithVar (mCoordIdeal y) (e + 1) → IsMultiHomog β b → β ∉ mCoordIdeal y → ∃ (K' : Type) (_ : Fintype K') (ι' : K' → Type) (_ : ∀ k, Fintype (ι' k)) (κ : K → K') (v : (Σ k, ι k) → Σ k, ι' k) (y' : (Σ k, ι' k) → Ω) (J : Ideal (MRing ι')) (R : AnLogRes (mCoordIdeal y') J e) (Amp : HermLine ι'), IsBlockMap κ v ∧ y' ∘ v = y ∧ blockFnField y' = blockFnField y ∧ IsArithVar (mCoordIdeal y') (e + 1) ∧ IsEmbedded R.A (mCoordIdeal y') R.U R.lift ∧ IsSmoothHerm Amp ∧ IsPotential R.A (potOf R Amp) ∧ IsPosPot R.A (potOf R Amp) ∧ ∀ z ∈ mcPts (mCoordIdeal y'), evC z (rename v β) = 0 → z ∈ mcPts J := by
   intro hRes K _ ι _ Ω _ _ y e β b hV hβ hβP

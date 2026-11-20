@@ -3,13 +3,11 @@ import Mathlib
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `g Λ hd h`. Use `haveI : IsZLattice ℝ Λ := ⟨h⟩`. Use `haveI : Module.Free ℤ Λ := ZLattice.module_free ℝ Λ`. Use `haveI : Module.Finite ℤ Λ := ZLattice.module_finite ℝ Λ`. Establish `hr : Module.finrank ℤ Λ = 2 * g`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Rewrite using `[ZLattice.rank ℝ Λ, Module.finrank_pi_fintype, Finset.sum_const, Complex.finrank_real_complex]`. Simplify using `[mul_comm]`. Set `b : Module.Basis (Fin (2 * g)) ℤ Λ` to `Module.finBasisOfFinrankEq ℤ Λ hr`. Establish `e : (fun i => (b i : Fin g → ℂ)) = ⇑(b.ofZLatticeBasis ℝ Λ)`. Use function extensionality and compare the values at `i`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(Module.Basis.ofZLatticeBasis_apply ℝ Λ b i).symm`. Use `⟨b, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[e]`. Conclude with `(b.ofZLatticeBasis ℝ Λ).linearIndependent`. Rewrite using `[e]`.
-
-Conclude with `(b.ofZLatticeBasis ℝ Λ).span_eq`.
+A detailed English derivation is pending.
 -/
 theorem exists_basis_of_discrete_of_span_eq_top_complex_pi :
     ∀ (g : ℕ) (Λ : Submodule ℤ (Fin g → ℂ)), DiscreteTopology Λ →

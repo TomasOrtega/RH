@@ -25,7 +25,7 @@ namespace GlobalTheory.UnfKer
 variable {D : D7} {ψ : AddChar (AF D.host.F) ℂ}
 
 /- English proof (translation)
-Use `⟨vecMulVec z (fun i : Fin ρ => if i.1 + 1 = ρ then (1 : D.host.E) else 0), ?_⟩` and prove the remaining obligations. Rewrite using `[zEll, GlobalTheory.CharLaws.ell_eq]`. Use extensionality with `i j`. Express the relevant statement in the definitionally equal form `incA D (_ * _) = _`. Rewrite using `[map_mul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -37,7 +37,7 @@ theorem zEll_rat (T : HSp D) (ρ : ℕ) (z : Fin T.rank → D.host.E) : zEll T �
   rw [map_mul]; rfl
 
 /- English proof (translation)
-Rewrite using `[d.incAdj_apply, d.incY_apply]`. Conclude with `ratMx_mul (rat_mem _) (ratMx_smul _ (ratMx_mul (ratMx_adj hy) (rat_mem _)))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem incAdj_rat {T T₀ : HSp D} {ρ : ℕ} (d : HypDec T T₀ ρ) (S : HSp D) {y : Mx D S.rank ρ}
     (hy : y ∈ ratMx D S.rank ρ) : d.incAdj S y ∈ ratMx D T.rank S.rank := by
@@ -45,9 +45,9 @@ theorem incAdj_rat {T T₀ : HSp D} {ρ : ℕ} (d : HypDec T T₀ ρ) (S : HSp D
   exact ratMx_mul (rat_mem _) (ratMx_smul _ (ratMx_mul (ratMx_adj hy) (rat_mem _)))
 
 /- English proof (translation)
-Establish `h1` using `incAdj_rat d S hy`. Establish `h2 : mt T n⁻¹ ⬝ d.incAdj S y ∈ ratMx D T.rank S.rank` using `ratMx_mul ((mem_GQ_iff T _).1 (inv_mem hn)) h1`. Take `⟨a, ha⟩` from `(GlobalTheory.OrientedFormLaws.symplOH_laws D S T).2.2.2.2.2.1 _ h1 _ h2`. Take `⟨δ, hδ⟩ : ptT d S y n ∈ ratMx D T₀.rank S.rank` from `ratMx_mul (rat_mem _) h2`. Establish `h3` using `hf.quasi δ 0`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `h3` using `[show ratW T₀ S δ = ptT d S y n from hδ, symplOH_zero_right, neg_zero, AddChar.map_zero_eq_one, one_mul, add_zero]`. Rewrite using `[jacT, Pi.smul_apply, cenT, ha, hψ.2.2.1, one_smul, heisO, symplOH_zero_left, AddChar.map_zero_eq_one, one_mul, zero_add, h3]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem jacT_rat (hψ : IsCharAF D.host.F ψ) {T T₀ : HSp D} {ρ : ℕ} (d : HypDec T T₀ ρ) (S : HSp D) {y : Mx D S.rank ρ}
     (hy : y ∈ ratMx D S.rank ρ) {n : GA D T} (hn : n ∈ GQ T) {f : WO S T₀ → ℂ} (hf : IsThetaFunO ψ S T₀ f) :
@@ -71,7 +71,7 @@ theorem flatBF_eq (Ψ : WO B.V J.W → ℂ) : flatBF s Ψ =
     flatAt ψ B.d J.d s.vS.μ s.vS.𝓕 s.vT.μ s.vT.𝓕 s.vU.ν (rat J.d.e) (yZero B.V₀ ρ (vecB B.o B.ζ)) Ψ := rfl
 
 /- English proof (translation)
-The claim follows from `(GlobalTheory.T.flatThetaMaps_converge_thetaFunctions D ψ s.weil.std B.V B.V₀ J.W J.W₀ ρ ρ B.d J.d s.vS s.vT s.vU J.d.e (GlobalTheory.T.unfolding_base_point_fourierJacobi_group D J.W J.W₀ ρ J.d).1.1 _ Ψ hΨ).2`.
+A detailed English derivation is pending.
 -/
 theorem flatBF_theta {Ψ : WO B.V J.W → ℂ} (hΨ : IsThetaFunO ψ B.V J.W Ψ) : IsThetaFunO ψ B.V₀ J.W₀ (flatBF s Ψ) :=
   (GlobalTheory.T.flatThetaMaps_converge_thetaFunctions D ψ s.weil.std B.V B.V₀ J.W J.W₀ ρ ρ B.d J.d s.vS s.vT s.vU J.d.e
@@ -81,11 +81,11 @@ variable {om' : Om B.V₀ J.W} (hom : IsWeilDatumO ψ B.V₀ J.W s.χV s.χW om'
 include hom
 
 /- English proof (translation)
-Take `⟨n, hn, h', rfl⟩` from `(GlobalTheory.MixPer.Decomp.mem_jacGrp_iff J.d).1 hγ.2`. Take `⟨hnQ, hh'⟩` from `((GlobalTheory.T.unfolding_base_point_fourierJacobi_group D J.W J.W₀ ρ J.d).2.2.2.2.2 n hn h').1 hγ.1`. Establish `hψ` using `s.weil.std.1`. Establish `hΞ` using `flatBF_theta s hΨ`. Establish `hy : yZero B.V₀ ρ (vecB B.o B.ζ) ∈ ratMx D B.V₀.rank ρ` using `neg_mem (zEll_rat _ _ _)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : flatBF s (s.om (embA B.d B.o 1, n * J.d.emb0 h') Ψ) 0 = flatBF s Ψ 0`. Rewrite using `[GlobalTheory.T.besselToJacobiFlatSchwartz_equivariant D ψ ρ B J s om' hom Ψ hΨ 1 n hn h', psiFlag_eq, GlobalTheory.CharLaws.psiBes_rat ψ J.d hψ.2.2.1 1 0 hnQ, star_one, one_smul, Prod.mk_one_one, map_one, Prod.mk_one_one, map_one, Module.End.one_apply, opA, jacT_rat hψ J.d B.V₀ …`. Establish `hΨ'` using `s.weil.om_pres (embA B.d B.o 1, n * J.d.emb0 h') Ψ hΨ`. Establish `e2 : s.om (embA B.d B.o γ₀, n * J.d.emb0 h') Ψ = s.om (embA B.d B.o γ₀, 1 * J.d.emb0 1) (s.om (embA B.d B.o 1, n * J.d.emb0 h') Ψ)`. Rewrite using `[← Module.End.mul_apply, ← map_mul s.om, Prod.mk_mul_mk, map_one, map_one, mul_one, mul_one, one_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e2, GlobalTheory.T.besselToJacobiFlatSchwartz_equivariant D ψ ρ B J s om' hom _ hΨ' γ₀ 1 (one_mem _) 1, psiFlag_eq, GlobalTheory.CharLaws.psiBes_rat ψ J.d hψ.2.2.1 1 0 (one_mem _), star_one, one_smul, opA, jacT_one, Prod.mk_one_one, map_one, Module.End.one_apply, id, s.weil₀.om_ …`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem flat_rat {Ψ : WO B.V J.W → ℂ} (hΨ : IsThetaFunO ψ B.V J.W Ψ) {γ₀ : GA D B.A} (h₀ : γ₀ ∈ GQ B.A) {γ : GA D J.W}
     (hγ : γ ∈ GQ J.W ⊓ jacGrp J.d) : flatBF s (s.om (embA B.d B.o γ₀, γ) Ψ) 0 = flatBF s Ψ 0 := by
@@ -107,7 +107,7 @@ theorem flat_rat {Ψ : WO B.V J.W → ℂ} (hΨ : IsThetaFunO ψ B.V J.W Ψ) {γ
     Module.End.one_apply, id, s.weil₀.om_aut _ (B.o.emb_mem_GQ h₀ (one_mem _)) 1 (one_mem _) _ (flatBF_theta s hΨ'), e1]
 
 /- English proof (translation)
-Rewrite using `[map_mul, ← Prod.mk_mul_mk, map_mul, Module.End.mul_apply]`. Conclude with `flat_rat s hom (s.weil.om_pres _ _ hΦ) h₀ hγ`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem flat_left {Φ : WO B.V J.W → ℂ} (hΦ : IsThetaFunO ψ B.V J.W Φ) {γ₀ : GA D B.A} (h₀ : γ₀ ∈ GQ B.A) {γ : GA D J.W}
     (hγ : γ ∈ GQ J.W ⊓ jacGrp J.d) (g : GA D B.A) (h : GA D J.W) :
@@ -120,17 +120,17 @@ end GlobalTheory.UnfKer
 namespace GlobalTheory.Unf
 
 /- English proof (translation)
-Introduce `D ψ ρ B J s om' hom φ G Φ hφ hG hΦ`. Establish `h3 : ∀ γ ∈ GQ B.A, ∀ h₀ h, flatBF s (s.om (embA B.d B.o (γ * h₀), h) Φ) 0 = flatBF s (s.om (embA B.d B.o h₀, h) Φ) 0` using `fun γ hγ h₀ h => by`. Use `GlobalTheory.UnfKer.flat_left s hom hΦ hγ (one_mem _) h₀ h` as an intermediate fact. Rewrite `this` using `[one_mul]`. Then use the resulting hypothesis. Use `⟨?_, fun γ hγ h => ?_, h3, fun h h' n => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hc` using `GlobalTheory.T.continuous_flatMap_weilRepresentation_joint D ψ B.V B.V₀ J.W J.W₀ ρ ρ B.d J.d s.vS s.vT s.χV s.χW s.om s.weil s.vU J.d.e (GlobalTheory.T.unfolding_base_point_fourierJacobi_group D J.W J.W₀ ρ J.d).1.1 Φ hΦ`. Establish `he : Continuous (embA B.d B.o)` using `B.d.continuous_embed.comp (B.o.continuous_emb.comp (continuous_id.prodMk continuous_const))`. Establish `hq : Continuous fun p : GA D B.A × GA D J.W => (((embA B.d B.o p.1, p.2), yZero B.V₀ ρ (vecB B.o B.ζ), 0) : (GA D B.V × GA D J.W) × Mx D B.V₀.rank ρ × WO B.V₀ J.W₀)` using `((he.comp continuous_fst).prodMk continuous_snd).prodMk continuous_const`. Establish `hF : Continuous fun p : GA D B.A × GA D J.W => flatBF s (s.om (embA B.d B.o p.1, p.2) Φ) 0`. Use `(hc.comp hq).congr fun p => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Function.comp_apply, GlobalTheory.UnfKer.flatBF_eq]`. Establish `hK : Continuous (Function.uncurry fun (h₀ : GA D B.A) (h : GA D J.W) => φ h₀ * flatBF s (s.om (embA B.d B.o h₀, h) Φ) 0)`. Use `((hφ.2.comp continuous_fst).mul hF).congr fun p => ?_` and prove the remaining obligations. Rewrite using `[Function.uncurry, Pi.mul_apply, Function.comp_apply]`. Conclude with `hG.2.1.mul (GlobalTheory.T.continuous_integral_compactAutomorphicQuotient_param D B.A B.cpt B.vA (GA D J.W) _ hK (fun γ hγ g p => by rw [hφ.1 γ hγ, h3 γ hγ])).2.1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[kerBF, kerBF, hG.1 γ hγ.1]`. Use `congr 2`. Use function extensionality and compare the values at `h₀`. Use `GlobalTheory.UnfKer.flat_left s hom hΦ (one_mem _) hγ h₀ h` as an intermediate fact. Rewrite `this` using `[one_mul]`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Rewrite using `[kerBF, fjAllFun, rTrans, mul_assoc (G _), ← integral_const_mul (star _)]`. Use `congr 2`. Use function extensionality and compare the values at `h₀`. Establish `e : s.om (embA B.d B.o h₀, n.1 * J.d.emb0 h' * h) Φ = s.om (embA B.d B.o h₀, n.1 * J.d.emb0 h') (s.om (1, h) Φ)`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Module.End.mul_apply, ← map_mul s.om, Prod.mk_mul_mk, mul_one]`. Rewrite using `[e, GlobalTheory.T.besselToJacobiFlatSchwartz_equivariant D ψ ρ B J s om' hom _ (s.weil.om_pres _ _ hΦ) h₀ n.1 n.2 h', Pi.smul_apply, smul_eq_mul, fjKer]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem kerBF_laws : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (ρ : ℕ) (B : BesLev D ρ) (J : JacLev D ρ) (s : StepBF ψ B J) (om' : Om B.V₀ J.W), IsWeilDatumO ψ B.V₀ J.W s.χV s.χW om' → ∀ (φ : GA D B.A → ℂ) (G : GA D J.W → ℂ) (Φ : WO B.V J.W → ℂ), IsContAut B.A φ → RapidDec J.W G → IsThetaFunO ψ B.V J.W Φ → Continuous (kerBF s φ G Φ) ∧ (∀ γ ∈ GQ J.W ⊓ jacGrp J.d, ∀ h, kerBF s φ G Φ (γ * h) = kerBF s φ G Φ h) ∧ (∀ γ ∈ GQ B.A, ∀ h₀ h, flatBF s (s.om (embA B.d B.o (γ * h₀), h) Φ) 0 = flatBF s (s.om (embA B.d B.o h₀, h) Φ) 0) ∧ ∀ h h' (n : flagN J.d), kerBF s φ G Φ (n.1 * J.d.emb0 h' * h) = fjAllFun ψ J.d B.o B.ζ s.om₀ B.vA.μ B.vA.𝓕 φ (rTrans h G) (flatBF s (s.om (1, h) Φ)) h' n := by
   intro D ψ ρ B J s om' hom φ G Φ hφ hG hΦ

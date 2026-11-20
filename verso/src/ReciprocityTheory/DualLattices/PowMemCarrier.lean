@@ -15,9 +15,9 @@ section SlopeTestRemainingChoices
 variable {C : Type} [Field C] {R : Type} [CommRing R] [Algebra R C]
 
 /- English proof (translation)
-Rewrite using `[sqIdeal, Submodule.mul_eq_span_mul_set]`. Use `congr 1`. Use extensionality with `h`. Simplify using `only [Set.mem_setOf_eq, Set.mem_mul]`. Prove the components needed by the constructor for the conclusion.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨f, hf, f', hf', rfl⟩`. Conclude with `⟨f, hf, f', hf', rfl⟩`. Introduce and unpack `⟨f, hf, f', hf', rfl⟩`. Conclude with `⟨f, hf, f', hf', rfl⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 lemma sq_eq_mul {X : Type} (I : Submodule R (X → C)) : sqIdeal I = I * I := by
   rw [sqIdeal, Submodule.mul_eq_span_mul_set]
@@ -31,7 +31,7 @@ lemma sq_eq_mul {X : Type} (I : Submodule R (X → C)) : sqIdeal I = I * I := by
     exact ⟨f, hf, f', hf', rfl⟩
 
 /- English proof (translation)
-Simplify using `[augIdeal, Submodule.mem_inf, LinearMap.mem_ker]`.
+Simplify using the standard rewrite rules.
 -/
 lemma mem_aug {X : Type} [AddCommGroup X] (M : Submodule R (X → C)) (f : X → C) :
     f ∈ augIdeal M ↔ f ∈ M ∧ f 0 = 0 := by
@@ -40,7 +40,7 @@ lemma mem_aug {X : Type} [AddCommGroup X] (M : Submodule R (X → C)) (f : X →
 variable {N : Type} [AddCommGroup N] [Fintype N] [DecidableEq N]
 
 /- English proof (translation)
-Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => simpa using AA.one_mem`. Consider the case `succ k ih => rw [pow_succ]`. Conclude with `AA.mul_mem _ _ ih hf`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 lemma pow_mem_carrier (AA : HopfOrder (C := C) R N) {f : N → C} (hf : f ∈ AA.carrier) :
     ∀ k : ℕ, f ^ k ∈ AA.carrier := by
@@ -52,7 +52,7 @@ lemma pow_mem_carrier (AA : HopfOrder (C := C) R N) {f : N → C} (hf : f ∈ AA
 variable (K : AddSubgroup N) [DecidablePred (· ∈ K)] [DecidableEq (N ⧸ K)] [Fintype (N ⧸ K)]
 
 /- English proof (translation)
-Rewrite `hb`, the goal using `[mem_aug]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `h1 : b ∈ AA.carrier.comap (pullQ (R` using `R) K) := hAQ ▸ hb.1`. Conclude with `h1`. Simplify `hb.2` using `[pullQ, LinearMap.funLeft_apply]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 lemma pullQ_aug (AA : HopfOrder (C := C) R N) (AQ : HopfOrder (C := C) R (N ⧸ K))
     (hAQ : AQ.carrier = AA.carrier.comap (pullQ K)) {b : N ⧸ K → C}
@@ -64,9 +64,9 @@ lemma pullQ_aug (AA : HopfOrder (C := C) R N) (AQ : HopfOrder (C := C) R (N ⧸ 
   · simpa [pullQ, LinearMap.funLeft_apply] using hb.2
 
 /- English proof (translation)
-Establish `key : sqIdeal (augIdeal AQ.carrier) ≤ (sqIdeal (augIdeal AA.carrier)).comap (pullQ (R` using `R) K) := by`. Rewrite using `[sqIdeal, Submodule.span_le]`. Introduce and unpack `h ⟨f, hf, f', hf', rfl⟩`. Apply `Submodule.subset_span` to reduce the goal to its premises. Conclude with `⟨_, pullQ_aug K AA AQ hAQ hf, _, pullQ_aug K AA AQ hAQ hf', rfl⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Supply the required witnesses or components.
 
-Conclude with `key hz`.
+A detailed English derivation is pending.
 -/
 lemma pullQ_sq (AA : HopfOrder (C := C) R N) (AQ : HopfOrder (C := C) R (N ⧸ K))
     (hAQ : AQ.carrier = AA.carrier.comap (pullQ K)) {z : N ⧸ K → C}
@@ -81,13 +81,13 @@ lemma pullQ_sq (AA : HopfOrder (C := C) R N) (AQ : HopfOrder (C := C) R (N ⧸ K
   exact key hz
 
 /- English proof (translation)
-Rewrite using `[Submodule.mul_le]`. Introduce `m hm a ha`. Take `⟨b, hb, rfl⟩` from `Submodule.mem_map.1 hm`. Rewrite `hb` using `[mem_aug]`. Take `⟨r, hr⟩` from `AA.le_int ha 0`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hpb : pullQ (R` using `R) K b ∈ augIdeal AA.carrier := by`. Rewrite using `[mem_aug]`. Conclude with `⟨hb.1, by simpa [pullQ, LinearMap.funLeft_apply] using hb.2⟩`. Establish `ha' : a - r • (1 : N → C) ∈ augIdeal AA.carrier`. Rewrite using `[mem_aug]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨AA.carrier.sub_mem ha (AA.carrier.smul_mem r AA.one_mem), ?_⟩` and prove the remaining obligations. Simplify using `[Algebra.smul_def, hr]`. Establish `hsplit : pullQ (R` using `R) K b * a = pullQ (R := R) K b * (a - r • (1 : N → C)) + r • pullQ (R := R) K b := by`. Rewrite using `[mul_sub, mul_smul_comm, mul_one]`. Normalize the expressions using the abelian group laws.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Rewrite using `[hsplit]`. Use `Submodule.add_mem _ (Submodule.mem_sup_right (Submodule.mul_mem_mul hpb ha')) ?_` and prove the remaining obligations. Use `Submodule.mem_sup_left ?_` and prove the remaining obligations. Conclude with `Submodule.smul_mem _ r (Submodule.mem_map_of_mem (by rw [mem_aug]; exact hb))`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 lemma IK_mul_le (AA : HopfOrder (C := C) R N) (AQ : HopfOrder (C := C) R (N ⧸ K))
     (hAQ : AQ.carrier = AA.carrier.comap (pullQ K)) :
@@ -140,7 +140,7 @@ def zmodEquiv (p : ℕ) [Fact p.Prime] {N : Type} [AddCommGroup N] (x : N) (hx :
     rfl
 
 /- English proof (translation)
-Take `⟨B, -, hB⟩` from `h`. Conclude with `⟨_, B, hB, rfl⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 lemma hasColen_of_lat {C : Type} [Field C] {R : Type} [CommRing R] [Algebra R C]
     (v : Valuation C NNReal) {X : Type} [Fintype X] [DecidableEq X] {M : Submodule R (X → C)}
@@ -161,21 +161,19 @@ def ClaimBody (C : Type) [Field C] (v : Valuation C NNReal) (R : Type) [CommRing
       c ^ 2 = (∏ i, v (algebraMap R C (δ i))) ^ Fintype.card N
 
 /- English proof (translation)
-Use `haveI : Unique N := ⟨⟨0⟩, htriv⟩`. Use `⟨0, Fin.elim0, Fin.elim0, fun i => i.elim0, ?_, fun i => i.elim0, ?_⟩` and prove the remaining obligations. Introduce `f hf`. Use `⟨Fin.elim0, ?_⟩` and prove the remaining obligations. Establish `hf0 : f = 0`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `x`. Rewrite using `[htriv x]`. Conclude with `((mem_aug _ f).1 hf).2`. Simplify using `[hf0]`. Introduce and unpack `c ⟨B, hB, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hrange : (Set.range fun j x => B x j) = {fun x => B x 0}`. Rewrite using `[Set.range_unique]`. Use `congr 1`. Use function extensionality and compare the values at `x`. Rewrite using `[htriv (default : N)]`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hB` using `[hrange]`. Establish `h1 : (1 : N → C) ∈ Submodule.span R {fun x => B x 0}`. Rewrite using `[← hB]`. Conclude with `AA.one_mem`. Take `⟨r, hr⟩` from `Submodule.mem_span_singleton.1 h1`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hcolmem : (fun x => B x 0) ∈ AA.carrier`. Rewrite using `[hB]`. Conclude with `Submodule.subset_span rfl`. Take `⟨s, hs⟩` from `AA.le_int hcolmem 0`. Establish `hs' : B 0 0 = algebraMap R C s` using `hs.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hdet : B.det = algebraMap R C s` using `by rw [Matrix.det_unique, htriv (default : N)]; exact hs'`. Establish `hprod : algebraMap R C r * algebraMap R C s = 1`. Establish `h2` using `congrFun hr 0`. Simplify using `only [Pi.smul_apply, Algebra.smul_def, Pi.one_apply] at h2`. Rewrite using `[← hs']`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `h2`. Establish `hvs` using `hv.map_le_one s`. Establish `hv1 : v (algebraMap R C r) * v (algebraMap R C s) = 1`. Rewrite using `[← map_mul, hprod, map_one]`. Establish `hs1 : v (algebraMap R C s) = 1`.
-
-Apply `le_antisymm hvs` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hdet, hs1]`. Simplify using the standard rewrite rules.
+Reduce the claim to the hypotheses of an applicable result. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma claim_base {C : Type} [Field C] (v : Valuation C NNReal) {R : Type} [CommRing R]
     [Algebra R C] (hv : v.Integers R) (N : Type) [AddCommGroup N] [Fintype N] [DecidableEq N]
@@ -220,61 +218,57 @@ lemma claim_base {C : Type} [Field C] (v : Valuation C NNReal) {R : Type} [CommR
     simp
 
 /- English proof (translation)
-Introduce `k`. Proceed by induction on `k using Nat.strong_induction_on with`. Consider the case `_ k ih`. Introduce `N _ _ _ hk hN AA`. Distinguish the cases in `htriv : ∀ x : N, x = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Conclude with `claim_base v hv N htriv AA`. Use `push_neg at htriv`. Take `⟨x, hx0⟩` from `htriv`. Use `set K : AddSubgroup N := AddSubgroup.zmultiples x with hKdef`. Set `e : ZMod p ≃+ K` to `zmodEquiv p x (hN x) hx0`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Equip the data with the indicated structure. Equip the data with the indicated structure. Equip the data with the indicated structure.
 
-Use `letI : DecidablePred (· ∈ K) := Classical.decPred _`. Use `letI : DecidableEq (N ⧸ K) := Classical.decEq _`. Use `letI : Fintype (N ⧸ K) := Fintype.ofSurjective (QuotientAddGroup.mk : N → N ⧸ K) QuotientAddGroup.mk_surjective`. Take `⟨⟨AK, hAK⟩, ⟨AQ, hAQ⟩, -, -⟩` from `h2 C R v hv N K AA`. Establish `hcardK : Fintype.card K = p`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← Fintype.card_congr e.toEquiv, ZMod.card]`. Establish `hcardN : Fintype.card N = Fintype.card (N ⧸ K) * p`. Establish `h0` using `AddSubgroup.card_eq_card_quotient_mul_card_addSubgroup K`. Simplify using `only [Nat.card_eq_fintype_card] at h0`. Rewrite using `[h0, hcardK]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hp1 : 1 < p` using `(Fact.out : p.Prime).one_lt`. Establish `hlt : Fintype.card (N ⧸ K) < k`. Rewrite using `[← hk, hcardN]`. Establish `hpos : 0 < Fintype.card (N ⧸ K)` using `Fintype.card_pos`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Establish `hNQ : ∀ q : N ⧸ K, p • q = 0`. Introduce `q`. Proceed by induction on `q using QuotientAddGroup.induction_on with`. Consider the case `H a => rw [← QuotientAddGroup.mk_nsmul, hN a, QuotientAddGroup.mk_zero]`. Take `⟨n, g, δ, hg1, hg2, hg3, hg4⟩` from `ih _ hlt (N ⧸ K) rfl hNQ AQ`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨xK, δK, x1, hxK, hxKp, hδK, hxKgen, hcK⟩` from `primeHopfOrder_of_addEquiv u3 p C v R hv hvp e AK`. Establish `hxKA : xK ∈ AA.carrier.map (resK (R` using `R) K) := by`. Rewrite using `[← hAK]`. Conclude with `((mem_aug _ _).1 hxK).1`. Take `⟨y0, hy0, hy0x⟩` from `Submodule.mem_map.1 hxKA`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hyx : ∀ a : K, y0 (a : N) = xK a` using `fun a => by rw [← hy0x]; rfl`. Establish `hyaug : y0 ∈ augIdeal AA.carrier`. Rewrite using `[mem_aug]`. Use `⟨hy0, ?_⟩` and prove the remaining obligations. Establish `h0` using `hyx 0`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `h0` using `[((mem_aug _ _).1 hxK).2]`. Simplify using `using h0`. Establish `hIK : ∀ z ∈ (augIdeal (AA.carrier.comap (pullQ (R` using `R) K))).map (pullQ (R := R) K), ∃ r : Fin n → R, z - ∑ j, r j • pullQ (R := R) K (g j) ∈ sqIdeal (augIdeal AA.carrier) := by`. Introduce `z hz`. Take `⟨b, hb, rfl⟩` from `Submodule.mem_map.1 hz`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `hb` using `[← hAQ]`. Take `⟨r, hr⟩` from `hg2 b hb`. Use `⟨r, ?_⟩` and prove the remaining obligations. Establish `h1` using `pullQ_sq K AA AQ hAQ hr`. Simplify `h1` using `[map_sub, map_sum, map_smul]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hsup : ∀ z ∈ (augIdeal (AA.carrier.comap (pullQ (R` using `R) K))).map (pullQ (R := R) K) ⊔ augIdeal AA.carrier * augIdeal AA.carrier, ∃ r : Fin n → R, z - ∑ j, r j • pullQ (R := R) K (g j) ∈ sqIdeal (augIdeal AA.carrier) := by`. Introduce `z hz`. Take `⟨z1, hz1, z2, hz2, rfl⟩` from `Submodule.mem_sup.1 hz`. Take `⟨r, hr⟩` from `hIK z1 hz1`. Use `⟨r, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Normalize the expressions using the abelian group laws.
 
-Establish `hz2' : z2 ∈ sqIdeal (augIdeal AA.carrier)` using `by rw [sq_eq_mul]; exact hz2`. Establish `h1` using `Submodule.add_mem _ hr hz2'`. Use `h1 using 1` and compare the differences between its conclusion and the goal. Normalize the expressions using the abelian group laws. Use `⟨n + 1, Fin.snoc (fun i => pullQ (R := R) K (g i)) y0, Fin.snoc δ δK, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Introduce `i`. Proceed by induction on `i using Fin.lastCases with`. Consider the case `last => simpa only [Fin.snoc_last] using hyaug`. Consider the case `cast i0`. Simplify using `only [Fin.snoc_castSucc]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `pullQ_aug K AA AQ hAQ (hg1 i0)`. Introduce `f hf`. Establish `hrf : resK (R` using `R) K f ∈ augIdeal AK.carrier := by`. Rewrite using `[mem_aug, hAK]`. Use `⟨Submodule.mem_map_of_mem ((mem_aug _ _).1 hf).1, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0` using `((mem_aug _ _).1 hf).2`. Simplify `h0` using `[resK, LinearMap.funLeft_apply]`. Take `⟨r0, hr0⟩` from `hxKgen _ hrf`. Establish `hgm : f - r0 • y0 ∈ augIdeal AA.carrier` using `Submodule.sub_mem _ hf (Submodule.smul_mem _ _ hyaug)`. Establish `hres : resK (R` using `R) K (f - r0 • y0) ∈ augIdeal (AA.carrier.map (resK (R := R) K)) * augIdeal (AA.carrier.map (resK (R := R) K)) := by`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← hAK, map_sub, map_smul, hy0x]`. Conclude with `hr0`. Take `⟨r, hr⟩` from `hsup _ (mem_sup_of_restrictToSubgroup_mem_sq hv AA K _ hgm hres)`. Use `⟨Fin.snoc r r0, ?_⟩` and prove the remaining obligations. Rewrite using `[Fin.sum_univ_castSucc]`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Normalize the expressions using the abelian group laws. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Simplify using `only [Fin.snoc_castSucc, Fin.snoc_last]`. Use `hr using 1` and compare the differences between its conclusion and the goal. Normalize the expressions using the abelian group laws. Introduce `i`. Proceed by induction on `i using Fin.lastCases with`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Consider the case `last`. Establish `hmemA : y0 ^ p - δK • y0 ∈ AA.carrier` using `AA.carrier.sub_mem (pow_mem_carrier AA hy0 p) (AA.carrier.smul_mem δK hy0)`. Establish `hres0 : resK (R` using `R) K (y0 ^ p - δK • y0) = 0 := by`. Use function extensionality and compare the values at `a`. Establish `h2` using `congrFun hxKp a`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Pi.pow_apply] at h2`. Simplify using `[resK, LinearMap.funLeft_apply, hyx, h2, Algebra.smul_def]`. Establish `hIKA` using `mem_of_restrictToSubgroup_eq_zero hv AA K _ hmemA hres0`. Take `⟨a, ha⟩` from `hsup _ (IK_mul_le K AA AQ hAQ hIKA)`. Establish `hpow : y0 ^ p ∈ sqIdeal (augIdeal AA.carrier)`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hp0 : p = (p - 1) + 1` using `by omega`. Rewrite using `[hp0, pow_succ]`. Apply `Submodule.subset_span` to reduce the goal to its premises. Use `⟨y0 ^ (p - 1), ?_, y0, hyaug, rfl⟩` and prove the remaining obligations. Rewrite using `[mem_aug]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `⟨pow_mem_carrier AA hy0 _, ?_⟩` and prove the remaining obligations. Establish `h0` using `((mem_aug _ _).1 hyaug).2`. Simplify using `[h0, show p - 1 ≠ 0 by omega]`. Use `⟨Fin.snoc (fun j => -a j) 0, ?_⟩` and prove the remaining obligations. Rewrite using `[Fin.sum_univ_castSucc]`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Treat this case separately.
 
-Simplify using `only [Fin.snoc_last, Fin.snoc_castSucc, Fin.castSucc_lt_last, if_true, lt_self_iff_false, if_false, zero_smul, add_zero]`. Establish `h1` using `Submodule.sub_mem _ hpow ha`. Use `h1 using 1` and compare the differences between its conclusion and the goal. Simplify using `only [neg_smul, Finset.sum_neg_distrib, sub_neg_eq_add]`. Normalize the expressions using the abelian group laws.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Consider the case `cast i0`. Take `⟨a, ha⟩` from `hg3 i0`. Use `⟨Fin.snoc a 0, ?_⟩` and prove the remaining obligations. Establish `hnl : ¬ (Fin.last n < Fin.castSucc i0)` using `not_lt.2 (Fin.castSucc_lt_last i0).le`. Rewrite using `[Fin.sum_univ_castSucc]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Simplify using `only [Fin.snoc_castSucc, Fin.snoc_last, Fin.castSucc_lt_castSucc_iff, hnl, if_false, zero_smul, add_zero]`. Establish `h1` using `pullQ_sq K AA AQ hAQ ha`. Simplify `h1` using `[map_sub, map_sum, map_smul, apply_ite (pullQ (R := R) K), map_zero]`. Introduce `c hc`. Take `⟨cB, hcB⟩` from `hasColen_of_lat v AQ.lat`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hB2` using `hg4 cB hcB`. Establish `hcB' : HasColen R v (AA.carrier.comap (pullQ (R` using `R) K)) cB := by`. Rewrite using `[← hAQ]`. Conclude with `hcB`. Establish `hcK' : HasColen R v (AA.carrier.map (resK (R` using `R) K)) (v x1 ^ (p * (p - 1) / 2)) := by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hAK]`. Conclude with `hcK`. Establish `hc_eq` using `hasColength_eq_pow_mul_pow hv AA K c cB _ hc hcB' hcK'`. Establish `hK2 : (v x1 ^ (p * (p - 1) / 2)) ^ 2 = v (algebraMap R C δK) ^ p`. Rewrite using `[hδK, ← pow_mul, ← pow_mul]`.
-
-Use `congr 1`. Establish `h2 : 2 ∣ p * (p - 1)` using `(Nat.even_mul_pred_self p).two_dvd`. Rewrite using `[Nat.div_mul_cancel h2, mul_comm]`. Rewrite using `[hc_eq, hcardK, Fin.prod_univ_castSucc, hcardN]`. Simplify using `only [Fin.snoc_castSucc, Fin.snoc_last]`.
-
-Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem claim_all (p : ℕ) [hp : Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C] [CharZero C]
     (v : Valuation C NNReal) (R : Type) [CommRing R] [Algebra R C] (hv : v.Integers R)
@@ -429,7 +423,7 @@ theorem claim_all (p : ℕ) [hp : Fact p.Prime] (C : Type) [Field C] [IsAlgClose
       _ = _ := by ring
 
 /- English proof (translation)
-Apply `colengthCotangentBoundStatement_of_claim` to reduce the goal to its premises. Introduce `p _ C _ _ _ v R _ _ hv hvp N _ _ _ hN AA`. Conclude with `claim_all p C v R hv hvp (Fintype.card N) N rfl hN AA`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem u4 : ColengthCotangentBoundStatement := by
   apply colengthCotangentBoundStatement_of_claim

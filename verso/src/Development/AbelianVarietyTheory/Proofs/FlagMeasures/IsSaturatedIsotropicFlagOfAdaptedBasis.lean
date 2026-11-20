@@ -8,58 +8,56 @@ noncomputable section
 namespace GlobalTheory.FlagBase.AdSat
 
 /- English proof (translation)
-Simplify using `[Formalism.UG.hform, dotProduct, mulVec, Finset.mul_sum, mul_assoc, starRingEnd_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hform_eq {E : Type} [Field E] [StarRing E] {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (x y : Fin n → E) :
     Formalism.UG.hform (starRingEnd E) J x y = star x ⬝ᵥ (J *ᵥ y) := by
   simp [Formalism.UG.hform, dotProduct, mulVec, Finset.mul_sum, mul_assoc, starRingEnd_apply]
 
 /- English proof (translation)
-Take `⟨-, -, hΛ, h1, h2, -, hL, hS⟩` from `h`. Establish `hJ : I.Jᴴ = I.J` using `I.J_herm`. Set `p : ∀ i, (Fin I.n → I.E) →ₗ[I.E] (Fin (j i) → I.E)` to `fun i => ((T' i)ᴴ * I.J).mulVecLin`. Establish `hsw : ∀ i k, (T' i)ᴴ * I.J * T k = ((T k)ᴴ * I.J * T' i)ᴴ` using `fun i k => by`. Simplify using `[Matrix.conjTranspose_mul, hJ, Matrix.mul_assoc]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `pT : ∀ i x, p i (T i *ᵥ x) = x` using `fun i x => by`. Simplify using `only [p, mulVecLin_apply, mulVec_mulVec]`. Rewrite using `[hsw, (h2 i).1]`. Simplify using the standard rewrite rules. Establish `pT' : ∀ i k x, k ≠ i → p i (T k *ᵥ x) = 0` using `fun i k x hk => by`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [p, mulVecLin_apply, mulVec_mulVec]`. Rewrite using `[hsw, (h1 k i).2.2 hk]`. Simplify using the standard rewrite rules. Establish `pS : ∀ i (u : ∀ i, Fin (j i) → I.E), p i (∑ k, T k *ᵥ u k) = u i` using `fun i u => by`. Rewrite using `[map_sum, Finset.sum_eq_single i (fun k _ hk => pT' i k _ hk) (by simp), pT]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hsp : ∀ k z, z ∈ Submodule.span I.E (S k : Set (Fin I.n → I.E)) → z = ∑ i, T i *ᵥ p i z ∧ ∀ i : Fin a, ¬ i.castSucc < k → p i z = 0` using `fun k z hz => by`. Proceed by induction on `hz using Submodule.span_induction with`. Consider the case `mem z hz`. Take `⟨u, -, hu, rfl⟩` from `(hS k z).1 hz`. Simplify using `only [pS]`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Conclude with `⟨trivial, hu⟩`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy`. Use `⟨?_, fun i hi => by rw [map_add, hx.2 i hi, hy.2 i hi, add_zero]⟩` and prove the remaining obligations. Simplify using `only [map_add, mulVec_add, Finset.sum_add_distrib]`.
+Supply the required witnesses or components. Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[← hx.1, ← hy.1]`. Consider the case `smul c x _ hx`. Use `⟨?_, fun i hi => by rw [map_smul, hx.2 i hi, smul_zero]⟩` and prove the remaining obligations. Simplify using `only [map_smul, mulVec_smul, ← Finset.smul_sum]`. Rewrite using `[← hx.1]`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hmono : Monotone S` using `fun k l hkl z hz => by`. Take `⟨u, hu, hu0, rfl⟩` from `(hS k z).1 hz`. Conclude with `(hS l _).2 ⟨u, hu, fun i hi => hu0 i fun h => hi (h.trans_le hkl), rfl⟩`. Use `⟨?_, hmono, fun i => ?_, fun k y => ⟨fun hy => ⟨?_, Submodule.subset_span hy⟩, ?_⟩, ?_⟩` and prove the remaining obligations. Use `eq_bot_iff.2 fun z hz => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨u, -, hu0, rfl⟩` from `(hS 0 z).1 hz`. Establish `: ∀ i, u i = 0` using `fun i => hu0 i (by simp)`. Simplify using `[this]`. Establish `hsup : Submodule.span I.E (S i.succ : Set (Fin I.n → I.E)) = Submodule.span I.E (S i.castSucc : Set (Fin I.n → I.E)) ⊔ LinearMap.range (T i).mulVecLin`. Apply `le_antisymm` to reduce the goal to its premises.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Use `Submodule.span_le.2 fun z hz => ?_` and prove the remaining obligations. Take `⟨u, hu, hu0, rfl⟩` from `(hS _ z).1 hz`. Establish `e1 : ∑ k, T k *ᵥ u k = ∑ k, T k *ᵥ Function.update u i 0 k + T i *ᵥ u i`. Rewrite using `[← Finset.add_sum_erase _ _ (Finset.mem_univ i), ← Finset.add_sum_erase _ (fun k => T k *ᵥ Function.update u i 0 k) (Finset.mem_univ i)]`. Rewrite using `[Finset.sum_congr rfl (s₁ := univ.erase i) (f := fun k => T k *ᵥ Function.update u i 0 k) (g := fun k => T k *ᵥ u k) (fun k hk => by rw [Function.update_of_ne (Finset.ne_of_mem_erase hk)])]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[add_comm]`. Rewrite using `[e1]`. Use `Submodule.add_mem_sup (Submodule.subset_span ((hS _ _).2 ⟨_, fun k => ?_, fun k hk => ?_, rfl⟩)) ⟨u i, rfl⟩` and prove the remaining obligations. Distinguish the cases in `hki : k = i`. Substitute `hki` using the available equality.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Rewrite using `[Function.update_of_ne hki]`. Conclude with `hu k`. Distinguish the cases in `hki : k = i`. Substitute `hki` using the available equality.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Rewrite using `[Function.update_of_ne hki]`. Use `hu0 k fun h => hk ?_` and prove the remaining obligations. Rewrite `h` using `[Fin.castSucc_lt_succ_iff]`. Conclude with `Fin.castSucc_lt_castSucc_iff.2 (lt_of_le_of_ne h hki)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `sup_le (Submodule.span_mono (hmono (Fin.castSucc_lt_succ).le)) ?_` and prove the remaining obligations. Rewrite using `[LinearMap.range_eq_map, ← (hΛ i).span_eq_top, Submodule.map_span]`. Use `Submodule.span_mono ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Use `(hS _ _).2 ⟨Pi.single i x, fun k => ?_, fun k hk => ?_, ?_⟩` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts.
 
-Distinguish the cases in `hki : k = i`. Substitute `hki` using the available equality. Simplify using `using hx`. Rewrite using `[Pi.single_eq_of_ne hki]`. Conclude with `zero_mem _`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `Pi.single_eq_of_ne ?_ _` and prove the remaining obligations. Introduce and unpack `rfl`. Conclude with `hk Fin.castSucc_lt_succ`. Rewrite using `[Finset.sum_eq_single i (fun k _ hk => by rw [Pi.single_eq_of_ne hk, mulVec_zero]) (by simp)]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hinf : Submodule.span I.E (S i.castSucc : Set (Fin I.n → I.E)) ⊓ LinearMap.range (T i).mulVecLin = ⊥`. Use `eq_bot_iff.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨hz, x, rfl⟩`. Establish `: x = 0` using `(pT i x).symm.trans ((hsp _ _ hz).2 i (lt_irrefl _))`. Simplify using `[this]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hinj : Function.Injective (T i).mulVecLin` using `fun x y hxy => by`. Rewrite using `[← pT i x, ← pT i y]`. Conclude with `congrArg (p i) hxy`. Use `Submodule.finrank_sup_add_finrank_inf_eq (Submodule.span I.E (S i.castSucc : Set (Fin I.n → I.E))) (LinearMap.range (T i).mulVecLin)` as an intermediate fact. Rewrite `this` using `[hinf, ← hsup, LinearMap.finrank_range_of_inj hinj]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify `this` using `[Formalism.HN.rkK]`. Take `⟨u, hu, -, rfl⟩` from `(hS k y).1 hy`. Use `(hL _).2 ⟨u, 0, 0, hu, fun i t _ => by simpa using zero_mem _, zero_mem _, ?_⟩` and prove the remaining obligations. Establish `: (fun l => e ((0 : Fin I₀.n → I₀.E) l)) = 0` using `by ext; simp`. Rewrite using `[this]`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Introduce and unpack `⟨hy, hy'⟩`. Take `⟨u, u', y₀, hu, -, -, hz⟩` from `(hL y).1 hy`. Establish `hp : ∀ i, p i y = u i` using `fun i => by`. Establish `a1 : ∀ k, p i (T' k *ᵥ u' k) = 0` using `fun k => by`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [p, mulVecLin_apply, mulVec_mulVec]`. Rewrite using `[(h1 i k).2.1]`. Simplify using the standard rewrite rules. Establish `a2 : ∀ x, p i (T₀ *ᵥ x) = 0` using `fun x => by`. Simplify using `only [p, mulVecLin_apply, mulVec_mulVec]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[(h2 i).2.2]`. Simplify using the standard rewrite rules. Rewrite using `[hz, map_add, map_add, pS, a2, map_sum]`. Simplify using `[a1]`. Take `⟨b1, b2⟩` from `hsp k y hy'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(hS k y).2 ⟨fun i => p i y, fun i => by simpa only [hp] using hu i, b2, b1⟩`. Introduce `x hx y hy`. Take `⟨u, -, -, rfl⟩` from `(hS _ x).1 hx`. Take `⟨v, -, -, rfl⟩` from `(hS _ y).1 hy`. Rewrite using `[hform_eq, star_sum, sum_dotProduct]`.
-
-Use `Finset.sum_eq_zero fun i _ => ?_` and prove the remaining obligations. Rewrite using `[mulVec_sum, dotProduct_sum]`. Use `Finset.sum_eq_zero fun k _ => ?_` and prove the remaining obligations. Rewrite using `[star_mulVec, ← dotProduct_mulVec, mulVec_mulVec, mulVec_mulVec, (h1 i k).1]`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isSatFlag_of_isAdapted (I I₀ : AutInst) (e : I₀.E ≃+* I.E) (xf : I.Gf) (a : ℕ) (j : Fin a → ℕ)
     (S : Fin (a + 1) → Submodule (𝓞 I.E) (Fin I.n → I.E)) (Λ : ∀ i, Submodule (𝓞 I.E) (Fin (j i) → I.E))

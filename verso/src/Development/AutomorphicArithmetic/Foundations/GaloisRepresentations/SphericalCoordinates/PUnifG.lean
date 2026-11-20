@@ -6,7 +6,7 @@ open scoped Matrix TensorProduct Classical
 open UpperTheory.Gal.W2
 
 /- English proof (translation)
-Take `rfl` from `U.distinct i' i w hw`. Conclude with `(U.fibre i' P' P hP' hP).2 ⟨w, h, hw, hh⟩`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 private theorem u_eq_of_marked {O : Type} [Ring O] {bar : O → O} {g : ℕ} {ρ : O →+* Matrix (Fin g) (Fin g) ℂ}
     {Λ : Type} {F : Fam ℂ O Λ g} {N : ℕ} {Cl : ∀ D' : PLat O bar, (Λ → D'.La) → Prop}
@@ -19,7 +19,7 @@ private theorem u_eq_of_marked {O : Type} [Ring O] {bar : O → O} {g : ℕ} {ρ
   exact (U.fibre i' P' P hP' hP).2 ⟨w, h, hw, hh⟩
 
 /- English proof (translation)
-Take `rfl` from `U.disj i' i P' P hP' hP e`. Conclude with `(U.fibre i' P' P hP' hP).1 e`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 private theorem marked_of_u_eq {O : Type} [Ring O] {bar : O → O} {g : ℕ} {ρ : O →+* Matrix (Fin g) (Fin g) ℂ}
     {Λ : Type} {F : Fam ℂ O Λ g} {N : ℕ} {Cl : ∀ D' : PLat O bar, (Λ → D'.La) → Prop}
@@ -32,15 +32,13 @@ private theorem marked_of_u_eq {O : Type} [Ring O] {bar : O → O} {g : ℕ} {ρ
   exact (U.fibre i' P' P hP' hP).1 e
 
 /- English proof (translation)
-Take `⟨h1, h2, h3, h4, Hm, hH, hpos, hEF⟩` from `hP`. Establish `hs : Set.range (P.comp w.toLinearMap.toAddMonoidHom) = Set.range P`. Use extensionality with `z`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, rfl⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨w x, rfl⟩`. Introduce and unpack `⟨x, rfl⟩`. Conclude with `⟨w.symm x, by simp⟩`. Establish `hr : (P.comp w.toLinearMap.toAddMonoidHom).range = P.range`. Use extensionality with `z`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Conclude with `Set.ext_iff.1 hs z`. Use `⟨fun a x => ?_, h2.comp w.injective, ?_, ?_, Hm, hH, hpos, fun x y => ?_⟩` and prove the remaining obligations. Use `show P (w (a • x)) = _`. Rewrite using `[map_smul, h1]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hr]`. Conclude with `h3`. Rewrite using `[hs]`. Conclude with `h4`. Use `show (hermForm Hm (P (w x)) (P (w y))).im = _`.
-
-Rewrite using `[hEF, hw x y]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem isPeriod_comp {O : Type} [Ring O] {bar : O → O} {g : ℕ} {ρ : O →+* Matrix (Fin g) (Fin g) ℂ}
     {D' D'' : PLat O bar} {P : D'.La →+ (Fin g → ℂ)} (hP : IsPeriod D' ρ P) (w : D''.La ≃ₗ[O] D'.La)
@@ -68,9 +66,9 @@ private theorem isPeriod_comp {O : Type} [Ring O] {bar : O → O} {g : ℕ} {ρ 
     rw [hEF, hw x y]
 
 /- English proof (translation)
-Use `⟨fun x y => ?_, fun a => ?_⟩` and prove the remaining obligations. Use `h.1 (w.symm x) (w.symm y)` as an intermediate fact. Simplify using `using this.symm`. Take `⟨e, he⟩` from `h.2 a`. Use `⟨-(w.symm e), ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h2` using `congrArg w.symm he`. Rewrite `h2` using `[LinearEquiv.symm_apply_apply, map_add, map_nsmul]`. Rewrite using `[h2, smul_neg]`. Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 private theorem marked_symm {O : Type} [Ring O] {bar : O → O} {Λ : Type} {N : ℕ} {D₁ D₂ : PLat O bar}
     {t₁ : Λ → D₁.La} {t₂ : Λ → D₂.La} {w : D₁.La ≃ₗ[O] D₂.La} (h : IsMarkedIsom N D₁ D₂ t₁ t₂ w) :
@@ -86,17 +84,17 @@ private theorem marked_symm {O : Type} [Ring O] {bar : O → O} {Λ : Type} {N :
     abel
 
 /- English proof (translation)
-Introduce `hEx hOcc hIso hMove p _ D G L hDa hDm v hv t₀ ht₀ ρ hρ PD RD N hN hNp F U`. Establish `hch : ∀ x : CxPts F.s (RingHom.id ℂ), ∃ (i : Fin U.n) (P : (U.Di i).La →+ (Fin D.g → ℂ)) (q : GlobalTheory.LKCx.FCls G) (a : GlobalTheory.LKCx.Dat G v (Quot.out q).β) (j : (U.Di i).La →+ VQ D), IsPeriod (U.Di i) ρ P ∧ x.1 = U.u i P ∧ IsCoord L (Quot.out q) (PD _) (RD _) N (U.Di i …`. Introduce `x`. Take `⟨i, P, hP, hu⟩` from `U.onto x.1 x.2`. Take `⟨q, a, j, hc⟩` from `hEx p D G L hDa hDm v hv t₀ ht₀ ρ hρ PD RD N hN hNp (U.Di i) (U.t i) P (U.mem i) hP`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨i, P, q, a, j, hP, hu.symm, hc⟩`. Use `choose i P q a j hP hu hc using hch`. Set `Φ₀ : CxPts F.s (RingHom.id ℂ) → GlobalTheory.LKCx.AllPts G v (L.KN N) (KHT p G.m G.n 1 G.Fw)` to `fun x => ⟨q x, Quot.mk _ (a x)⟩`. Establish `hinj : Function.Injective Φ₀`. Introduce `x x' e`.
+Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨w, h, hw, hh⟩` from `(hIso p D G L v t₀ ρ PD RD N hN hNp (U.Di (i x)) (U.t (i x)) (P x) (U.Di (i x')) (U.t (i x')) (P x') (U.mem _) (U.mem _) (q x) (q x') (a x) (a x') (j x) (j x') (hc x) (hc x')).2 e`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[hu x, hu x']`. Conclude with `(u_eq_of_marked U _ _ _ _ (hP x) (hP x') w h hw hh).symm`. Establish `hsurj : Function.Surjective Φ₀`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Introduce and unpack `⟨q₀, c⟩`. Take `⟨a₀, rfl⟩` from `Quot.exists_rep c`. Take `⟨D', t, Pd, jd, hCl, hPd, hcd⟩` from `hOcc p D G L hDa hDm v hv t₀ ht₀ ρ hρ PD RD N hN hNp (Quot.out q₀) a₀`. Take `⟨i₀, w, hw⟩` from `U.all D' t hCl ⟨Pd, hPd⟩`. Establish `hws` using `marked_symm hw`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `P₀` to `Pd.comp w.symm.toLinearMap.toAddMonoidHom`. Establish `hP₀ : IsPeriod (U.Di i₀) ρ P₀` using `isPeriod_comp hPd w.symm hws.1`. Set `j₀` to `jd.comp w.symm.toLinearMap.toAddMonoidHom`. Establish `hc₀ : IsCoord L (Quot.out q₀) (PD _) (RD _) N (U.Di i₀) (U.t i₀) P₀ j₀ a₀` using `hMove p D G L v t₀ ρ (Quot.out q₀) (PD _) (RD _) N D' t Pd (U.Di i₀) (U.t i₀) P₀ w.symm hws (fun _ => rfl) jd j₀ (fun _ => rfl) a₀ hcd`. Set `x : CxPts F.s (RingHom.id ℂ)` to `⟨U.u i₀ P₀, (U.unif i₀ P₀ hP₀).1⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨x, ?_⟩` and prove the remaining obligations. Take `⟨w', h', hw', hh'⟩` from `marked_of_u_eq U i₀ (i x) P₀ (P x) hP₀ (hP x) (hu x).symm`. Conclude with `((hIso p D G L v t₀ ρ PD RD N hN hNp (U.Di i₀) (U.t i₀) P₀ (U.Di (i x)) (U.t (i x)) (P x) (U.mem _) (U.mem _) q₀ (q x) a₀ (a x) j₀ (j x) hc₀ (hc x)).1 ⟨w', h', hw', hh'⟩).symm`. Conclude with `⟨Equiv.ofBijective Φ₀ ⟨hinj, hsurj⟩, fun x => ⟨q x, a x, i x, P x, j x, rfl, hP x, hu x, hc x⟩⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.W2.unifG_of :
     UpperTheory.Gal.W2.CoordEx → UpperTheory.Gal.W2.CoordOcc → UpperTheory.Gal.W2.CoordIso → UpperTheory.Gal.W2.CoordMove → UpperTheory.Gal.W2.UnifG := by

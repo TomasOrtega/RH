@@ -15,13 +15,13 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 def CptAll_k : Prop :=
   ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (n : ℕ) (Y : Spc F E n) (r s : ℕ), _root_.UpperTheory.TP.W.GoodK σ B → (Y.IsHerm σ B r s ∨ Y.IsSkew σ B r s) → min r s = 0 → Cpt σ Y.J
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B n Y r s hB hY h0`. Take `⟨e, -, hr⟩` from `h2 F E σ B hB n Y r s hY`. Take `⟨a1, a2, a3, a4, -, -, -, a5⟩` from `h1 F E σ hB.cm n Y.J e`. Take `⟨fr, g, -, ⟨Ω, hΩ, hc⟩, -⟩` from `h3 F E σ hB.cm n Y.J e`. Establish `r0 : fr.r = 0` using `by have := hr fr g; omega`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `a0 : ∀ t, fr.a t = 1` using `fun t => by`. Establish `: t + t = t` using `funext fun i => absurd i.2 (by omega)`. Establish `e` using `g.add t t`. Rewrite `e` using `[this]`. Conclude with `left_eq_mul.1 e`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `cov : ∀ x, ∃ γ ∈ ratU σ Y.J, γ * x ∈ Ω` using `fun x => by`. Take `⟨γ, hγ, t, -, κ, hκ, e⟩` from `hc x`. Conclude with `⟨γ, hγ, by rwa [e, a0, one_mul]⟩`. Take `⟨C, hC⟩` from `a5 Ω hΩ`. Take `⟨-, u1, u2⟩ : Countable (ratU σ Y.J) ∧ _ ∧ _` from `e.1.elim (fun h => h5 F E σ hB.cm n Y.J 1 (fun i j => by simp [h]) e.2) fun h => h5 F E σ hB.cm n Y.J (-1) (fun i j => by simp [h]) e.2`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨a1, a2, a3, a4, ⟨Ω, hΩ, cov⟩, ⟨C, fun x => ?_⟩, u1, h4 F E σ hB.cm n Y.J e, u2⟩` and prove the remaining obligations. Take `⟨γ, hγ, hx⟩` from `cov x`. Conclude with `(ciInf_le (OrderBot.bddBelow _) (⟨γ, hγ⟩ : ratU σ Y.J)).trans (hC _ hx)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem cptAll_of_k (h1 : PositivityTheory.ThKEst.GrpTop) (h2 : _root_.PositivityTheory.ThKEst.EpsOf_k) (h3 : PositivityTheory.ThKEst.SiegelAll) (h4 : PositivityTheory.ThKEst.FinVolU)
     (h5 : PositivityTheory.ThKF.Unimod) : _root_.GlobalTheory.ThK.Dbl.CptAll_k := by

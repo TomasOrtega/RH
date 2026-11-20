@@ -15,7 +15,7 @@ open GlobalTheory.EtC
 variable {R : Type} [CommRing R]
 
 /- English proof (translation)
-Take `⟨S, hS, hSP⟩` from `h`. Conclude with `⟨S, hS, fun V g hg => hP V g (hSP V g hg)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem loc_mono {U : Scheme.{0}} {P P' : ∀ V : Scheme.{0}, (V ⟶ U) → Prop} (h : Loc U P)
     (hP : ∀ V g, P V g → P' V g) : Loc U P' := by
@@ -23,7 +23,7 @@ theorem loc_mono {U : Scheme.{0}} {P P' : ∀ V : Scheme.{0}, (V ⟶ U) → Prop
   exact ⟨S, hS, fun V g hg => hP V g (hSP V g hg)⟩
 
 /- English proof (translation)
-Take `⟨S, hS, hSP⟩` from `h`. Use `⟨Sieve.bind S.arrows (fun V g hg => (h' V g (hSP V g hg)).choose), Scheme.etaleTopology.bind_covering hS (fun V g hg => (h' V g (hSP V g hg)).choose_spec.1), ?_⟩` and prove the remaining obligations. Introduce and unpack `W _ ⟨V, k, g, hg, hk, rfl⟩`. Conclude with `(h' V g (hSP V g hg)).choose_spec.2 W k hk`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem loc_bind {U : Scheme.{0}} {P P' : ∀ V : Scheme.{0}, (V ⟶ U) → Prop} (h : Loc U P)
     (h' : ∀ (V : Scheme.{0}) (g : V ⟶ U), P V g → Loc V fun W k => P' W (k ≫ g)) : Loc U P' := by
@@ -34,19 +34,19 @@ theorem loc_bind {U : Scheme.{0}} {P P' : ∀ V : Scheme.{0}, (V ⟶ U) → Prop
   exact (h' V g (hSP V g hg)).choose_spec.2 W k hk
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨⊤, Scheme.etaleTopology.top_mem U, fun _ _ _ => trivial⟩`.
+Supply the required witnesses or components.
 -/
 theorem loc_true (U : Scheme.{0}) : Loc U fun _ _ => True :=
   ⟨⊤, Scheme.etaleTopology.top_mem U, fun _ _ _ => trivial⟩
 
 /- English proof (translation)
-The claim follows from `(isSheaf_iff_isSheaf_of_type _ _).1 ((Presheaf.isSheaf_iff_isSheaf_forget _ _ (forget _)).1 G.property)`.
+A detailed English derivation is pending.
 -/
 theorem isSheaf_types (G : Shv R) : Presieve.IsSheaf Scheme.etaleTopology (G.obj ⋙ forget _) :=
   (isSheaf_iff_isSheaf_of_type _ _).1 ((Presheaf.isSheaf_iff_isSheaf_forget _ _ (forget _)).1 G.property)
 
 /- English proof (translation)
-Take `⟨S, hS, hSP⟩` from `h`. Conclude with `((isSheaf_types F) S hS).isSeparatedFor.ext fun _ g hg => hSP _ g hg`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem sec_eq_of_loc {F : Shv R} {U : Scheme.{0}} (x y : Sec F U)
     (h : Loc U fun V g => Sec.res g x = Sec.res g y) : x = y := by
@@ -54,16 +54,16 @@ theorem sec_eq_of_loc {F : Shv R} {U : Scheme.{0}} (x y : Sec F U)
   exact ((isSheaf_types F) S hS).isSeparatedFor.ext fun _ g hg => hSP _ g hg
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun a b => ((isSheaf_types F).isSheafFor (⊥ : Presieve U) (by rw [Sieve.generate_bot]; exact Scheme.bot_mem_grothendieckTopology U)).isSeparatedFor.ext (fun _ _ h => h.elim)⟩`.
+Supply the required witnesses or components.
 -/
 theorem sec_subsingleton_of_isEmpty (F : Shv R) (U : Scheme.{0}) [IsEmpty U] : Subsingleton (Sec F U) :=
   ⟨fun a b => ((isSheaf_types F).isSheafFor (⊥ : Presieve U)
     (by rw [Sieve.generate_bot]; exact Scheme.bot_mem_grothendieckTopology U)).isSeparatedFor.ext (fun _ _ h => h.elim)⟩
 
 /- English proof (translation)
-Establish `: Sheaf.IsLocallySurjective φ`. Prove the components needed by the constructor for the conclusion. Introduce `U y`. Take `⟨S, hS, hSP⟩` from `h U y`. Use `Scheme.etaleTopology.superset_covering (fun V g hg => ?_) hS` and prove the remaining obligations.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨x, hx⟩` from `hSP V g hg`. Conclude with `⟨x, hx⟩`. Use `infer_instance`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem epi_of_loc {F G : Shv R} (φ : F ⟶ G)
     (h : ∀ (U : Scheme.{0}) (y : Sec G U), Loc U fun V g => ∃ x : Sec F V, Sec.map φ x = Sec.res g y) : Epi φ := by
@@ -83,7 +83,7 @@ theorem sec_map_comp {X Y Z : Shv R} (f : X ⟶ Y) (g : Y ⟶ Z) {U : Scheme.{0}
     Sec.map (f ≫ g) x = Sec.map g (Sec.map f x) := rfl
 
 /- English proof (translation)
-Establish `h1 : Mono f.hom` using `(sheafToPresheaf _ _).map_mono f`. Establish `h2 : Mono (f.hom.app (op U))` using `(NatTrans.mono_iff_mono_app f.hom).1 h1 (op U)`. Conclude with `(ModuleCat.mono_iff_injective _).1 h2`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem sec_map_injective_of_mono {X Y : Shv R} (f : X ⟶ Y) [Mono f] (U : Scheme.{0}) :
     Function.Injective (Sec.map f (U := U)) := by
@@ -92,9 +92,9 @@ theorem sec_map_injective_of_mono {X Y : Shv R} (f : X ⟶ Y) [Mono f] (U : Sche
   exact (ModuleCat.mono_iff_injective _).1 h2
 
 /- English proof (translation)
-Apply `epi_of_loc` to reduce the goal to its premises. Introduce `U y`. Establish `hy : Sec.map g (Sec.map (kernel.ι g) y) = 0`. Rewrite using `[← sec_map_comp, kernel.condition]`. Both sides reduce to the same expression.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `loc_mono (h U _ hy) fun V k ⟨x, hx⟩ => ⟨x, ?_⟩` and prove the remaining obligations. Apply `sec_map_injective_of_mono (kernel.ι g)` to reduce the goal to its premises. Rewrite using `[← sec_map_comp, kernel.lift_ι, hx, GlobalTheory.EtC.CupSpec.map_res]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem epi_lift_of_loc {X Y Z : Shv R} (f : X ⟶ Y) (g : Y ⟶ Z) (w : f ≫ g = 0)
     (h : ∀ (U : Scheme.{0}) (y : Sec Y U), Sec.map g y = 0 →
@@ -109,7 +109,7 @@ theorem epi_lift_of_loc {X Y Z : Shv R} (f : X ⟶ Y) (g : Y ⟶ Z) (w : f ≫ g
   rw [← sec_map_comp, kernel.lift_ι, hx, GlobalTheory.EtC.CupSpec.map_res]
 
 /- English proof (translation)
-Apply `Sheaf.hom_ext` to reduce the goal to its premises. Use extensionality with `U y`. Use `(h U.unop (Sec.map (kernel.ι f) y) ?_).trans rfl` and prove the remaining obligations. Rewrite using `[← sec_map_comp, kernel.condition]`. Both sides reduce to the same expression.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem ker_comp_zero {X Y Z : Shv R} (f : X ⟶ Y) (g : X ⟶ Z)
     (h : ∀ (U : Scheme.{0}) (y : Sec X U), Sec.map f y = 0 → Sec.map g y = 0) : kernel.ι f ≫ g = 0 := by

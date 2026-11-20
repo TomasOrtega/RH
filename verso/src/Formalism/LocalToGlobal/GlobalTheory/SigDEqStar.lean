@@ -24,11 +24,11 @@ def rhoC (D : D7) (τ : D.what₂.Tau) : D.host.E →+* D.what₂.LL :=
     (D.host.sigmaOf (D.eTau τ : D.R.GG) : D.host.E →+* D.host.E))
 
 /- English proof (translation)
-Unfold `rhoC embS`. Simplify using `only [RingHom.coe_comp, Function.comp_apply]`. Establish `hs : ∀ b : D.host.E, (sigD D : D.host.E →+* D.host.E) b = star b` using `fun b => sigD_eq_star b`. Rewrite using `[hs]`. Use `first`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `exact NumberField.IsCMField.complexEmbedding_complexConj (s.comp D.embE) _`. Consider the case `exact NumberField.IsCMField.complexEmbedding_complexConj _ (s.comp D.embE) _`. Consider the case `(erw [NumberField.IsCMField.complexEmbedding_complexConj]; rfl)`. Consider the case `exact (NumberField.IsCMField.complexEmbedding_complexConj (K := D.host.E) (φ := s.comp D.embE) _)`. Consider the case `(simp only [NumberField.IsCMField.complexEmbedding_star]; rfl)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact NumberField.IsCMField.complexEmbedding_star _ (s.comp D.embE) _`. Consider the case `exact NumberField.IsCMField.complexConj_apply_apply (s.comp D.embE) _`. Consider the case `exact (NumberField.IsCMField.complexEmbedding_complexConj (s.comp D.embE) _ : _)`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem rhoC_conj (s : D.what₂.LL →+* ℂ) (τ : D.what₂.Tau) (a : D.host.E) :
     s (rhoC D τ a) = starRingEnd ℂ (embS D s τ a) := by
@@ -47,11 +47,9 @@ theorem rhoC_conj (s : D.what₂.LL →+* ℂ) (τ : D.what₂.Tau) (a : D.host.
     | exact (NumberField.IsCMField.complexEmbedding_complexConj (s.comp D.embE) _ : _)
 
 /- English proof (translation)
-Assume the negation of the conclusion as `h`. Use `push_neg at h`. Establish `hr : NumberField.ComplexEmbedding.IsReal φ` using `by first`. Consider the case `(rw [NumberField.ComplexEmbedding.isReal_iff]; ext t; simp [Complex.conj_eq_iff_im, h t])`. Consider the case `(intro t; simp [Complex.conj_eq_iff_im, h t])`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(ext t; simp [Complex.conj_eq_iff_im, h t])`. Establish `hc : (NumberField.InfinitePlace.mk φ).IsComplex` using `by first`. Consider the case `exact NumberField.IsTotallyComplex.isComplex _`. Consider the case `exact IsTotallyComplex.isComplex _`. Consider the case `exact NumberField.InfinitePlace.IsTotallyComplex.isComplex _`.
-
-Conclude with `(NumberField.InfinitePlace.isComplex_mk_iff.mp hc) hr`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem exists_im_ne (φ : D.host.E →+* ℂ) : ∃ t : D.host.E, (φ t).im ≠ 0 := by
   by_contra h
@@ -72,11 +70,11 @@ def crd (y : (D.sp.X 0).V) : Fin (D.R.N 0) → D.host.E :=
   fun i => (D.sp.X 0).frame.repr y ((finCongr (rankN D 0 (Nat.zero_le _))).symm i)
 
 /- English proof (translation)
-Unfold `gramN`. Rewrite using `[Matrix.conjTranspose_reindex]`. Use `congr 1`. Use `first`. Consider the case `exact (D.sp.X 0).gram_isHermitian`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Treat this case separately. Treat this case separately.
 
-Consider the case `exact (D.sp.X 0).isHermitian_gram`. Consider the case `exact (D.sp.X 0).gram_herm`. Consider the case `exact (D.sp.X 0).gram_conjTranspose`. Consider the case `exact (D.sp.X 0).herm`. Consider the case `(ext i j; exact (D.sp.X 0).herm _ _)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(ext i j; exact (D.sp.X 0).herm.eq _ _)`. Consider the case `(ext i j; exact LinearMap.IsSymm.eq (D.sp.X 0).herm _ _)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem gramN_herm : (gramN D 0 (Nat.zero_le _))ᴴ = gramN D 0 (Nat.zero_le _) := by
   unfold gramN
@@ -93,13 +91,11 @@ theorem gramN_herm : (gramN D 0 (Nat.zero_le _))ᴴ = gramN D 0 (Nat.zero_le _) 
     | (ext i j; exact LinearMap.IsSymm.eq (D.sp.X 0).herm _ _)
 
 /- English proof (translation)
-Unfold `crd gramN`. Establish `hy` using `(D.sp.X 0).frame.sum_repr y`. Use `conv_lhs => rw [← hy]`. Simplify using `only [map_sum, LinearMap.map_smulₛₗ, map_smul, LinearMap.sum_apply, LinearMap.smul_apply, smul_eq_mul, starRingEnd_apply]`. Simplify using `only [dotProduct, Matrix.mulVec, Matrix.reindex_apply, Matrix.submatrix_apply, Pi.star_apply, Finset.mul_sum]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← (finCongr (rankN D 0 (Nat.zero_le _))).sum_comp]`. Simplify using `only [Equiv.symm_apply_apply]`. Use `conv_lhs => rw [Finset.sum_comm]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `k _`.
+Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← (finCongr (rankN D 0 (Nat.zero_le _))).sum_comp]`. Simplify using `only [Equiv.symm_apply_apply, Formalism.BasicNotions.HSpace.gram]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `l _`. Use `first`.
-
-Consider the case `ring1`. Consider the case `(clear hy; generalize ((D.sp.X 0).frame.repr y) k = a; generalize ((D.sp.X 0).frame.repr y) l = b; generalize (D.sp.X 0).hT ((D.sp.X 0).frame k) ((D.sp.X 0).frame l) = h1; generalize (D.sp.X 0).hT ((D.sp.X 0).frame l) ((D.sp.X 0).frame k) = h2; done)`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem hT_crd (y : (D.sp.X 0).V) :
     (D.sp.X 0).hT y y = star (crd y) ⬝ᵥ (gramN D 0 (Nat.zero_le _) *ᵥ crd y) := by
@@ -128,11 +124,11 @@ def Mb (c : (D.mem u).C.cls 0) (τ : D.what₂.Tau) : Matrix (Fin (D.R.N 0)) (Fi
     ((B.eQ c τ).symm j)
 
 /- English proof (translation)
-Unfold `Mb crd`. Use `conv_lhs => rw [← (D.sp.X 0).frame.sum_repr y]`. Simplify using `only [map_sum, B.bc_smul, LinearMap.map_smulₛₗ, map_smulₛₗ, map_smul, Finsupp.coe_finset_sum, Finset.sum_apply, Finsupp.smul_apply, smul_eq_mul, Matrix.mulVec, dotProduct, RingHom.id_apply]`. Rewrite using `[← (finCongr (rankN D 0 (Nat.zero_le _))).sum_comp]`. Simplify using `only [Equiv.symm_apply_apply]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `k _`. Use `first`. Consider the case `ring1`. Consider the case `(simp only [RingHom.id_apply]; ring1)`.
+Fix the arbitrary inputs or assume the hypotheses. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(rw [mul_comm]; rfl)`. Consider the case `done`.
+A detailed English derivation is pending.
 -/
 theorem repr_bc (c : (D.mem u).C.cls 0) (τ : D.what₂.Tau) (y : (D.sp.X 0).V) (j : Fin (D.R.N 0)) :
     (B.Q c τ).b.repr (B.bc c τ y) ((B.eQ c τ).symm j) = (Mb B c τ *ᵥ fun i => B.rho τ (crd y i)) j := by
@@ -154,9 +150,9 @@ def Ymat (v : InfinitePlace D.what₂.LL) (c : (D.mem u).C.cls 0) (τ : D.what�
   Matrix.reindex (B.eQ c τ) (B.eQ c τ) ((B.Q c τ).X v)⁻¹ * (Mb B c τ).map v.embedding
 
 /- English proof (translation)
-Establish `hv : (fun i => v.embedding (B.rho τ (crd y i))) = fun i => v.embedding (B.rho τ (crd y i))` using `rfl`. Rewrite using `[Ymat, ← Matrix.mulVec_mulVec]`. Unfold `Formalism.HermitianLatticesTheory.fcoord Formalism.HermitianLatticesTheory.vecAt`. Rewrite using `[Matrix.mulVec, Matrix.mulVec, dotProduct, dotProduct, ← (B.eQ c τ).symm.sum_comp]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[repr_bc, RingHom.map_mulVec]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem fcoord_bc (v : InfinitePlace D.what₂.LL) (c : (D.mem u).C.cls 0) (τ : D.what₂.Tau) (y : (D.sp.X 0).V)
     (j : Fin (D.R.N 0)) :
@@ -171,9 +167,9 @@ theorem fcoord_bc (v : InfinitePlace D.what₂.LL) (c : (D.mem u).C.cls 0) (τ :
   rfl
 
 /- English proof (translation)
-Unfold `Formalism.HermitianLatticesTheory.majAt`. Rewrite using `[← (B.eQ c τ).symm.sum_comp]`. Simplify using `only [fcoord_bc]`. Use `first`. Consider the case `rfl`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately.
 
-Consider the case `simp [dotProduct]`. Consider the case `simp [Matrix.dotProduct]`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem maj_bc (v : InfinitePlace D.what₂.LL) (c : (D.mem u).C.cls 0) (τ : D.what₂.Tau) (y : (D.sp.X 0).V) :
     Formalism.HermitianLatticesTheory.majAt (B.Q c τ).b (B.Q c τ).X v (B.bc c τ y) (B.bc c τ y) =
@@ -188,11 +184,9 @@ theorem maj_bc (v : InfinitePlace D.what₂.LL) (c : (D.mem u).C.cls 0) (τ : D.
     | simp [Matrix.dotProduct]
 
 /- English proof (translation)
-Take `⟨t, ht⟩` from `exists_im_ne (v.embedding.comp (B.rho τ))`. Use `gram_of_norm (v.embedding.comp (B.rho τ)) (host_emb_star D _) _ _ gramN_herm t ht fun x => ?_` and prove the remaining obligations. Set `y : (D.sp.X 0).V` to `(D.sp.X 0).frame.equivFun.symm fun a => x (finCongr (rankN D 0 (Nat.zero_le _)) a)`. Establish `hy : crd y = x`. Use function extensionality and compare the values at `i`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `show (D.sp.X 0).frame.repr y _ = _`. Rewrite using `[← Module.Basis.equivFun_apply, LinearEquiv.apply_symm_apply]`. Simplify using the standard rewrite rules. Establish `h` using `B.bc_norm c τ v y`. Rewrite `h` using `[maj_bc, hT_crd, hy]`.
-
-Conclude with `h`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gram_Y (v : InfinitePlace D.what₂.LL) (c : (D.mem u).C.cls 0) (τ : D.what₂.Tau) :
     (Ymat B v c τ)ᴴ * Ymat B v c τ = (gramN D 0 (Nat.zero_le _)).map (v.embedding.comp (B.rho τ)) := by

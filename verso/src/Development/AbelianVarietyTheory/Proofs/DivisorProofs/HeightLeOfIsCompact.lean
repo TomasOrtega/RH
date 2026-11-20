@@ -8,17 +8,15 @@ open scoped ContDiff
 namespace GlobalTheory.HeightBound
 
 /- English proof (translation)
-Introduce `E _ _ _ a Q hQ hsub`. Set `f : Lie E a → Lie E a` to `fun w => toL ((Matrix.of w)⁻¹)`. Establish `hdetc : Continuous (fun x : Lie E a => (Matrix.of x).det)`. Simplify using `only [Matrix.det_apply', Matrix.of_apply]`. Use `continuous_finset_sum _ fun σ _ => continuous_const.mul (continuous_finset_prod _ fun i _ => ?_)` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(continuous_apply i).comp (continuous_apply (σ i))`. Establish `hadj : Continuous (fun x : Lie E a => (Matrix.of x).adjugate)` using `Continuous.matrix_adjugate (continuous_id : Continuous fun x : Lie E a => x)`. Establish `hf : ContinuousOn f (invSet E a)`. Introduce `w hw`. Apply `ContinuousAt.continuousWithinAt` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `hdet : IsUnit (Matrix.of w).det` using `(Matrix.isUnit_iff_isUnit_det _).1 hw`. Establish `h1 : ContinuousAt (fun x : Lie E a => Ring.inverse (Matrix.of x).det) w`. Use `NormedRing.inverse_continuousAt hdet.unit` as an intermediate fact. Rewrite `this` using `[hdet.unit_spec]`. Conclude with `this.comp hdetc.continuousAt`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `continuousAt_pi.2 fun i => continuousAt_pi.2 fun j => ?_` and prove the remaining obligations. Simplify using `only [f, toL, Matrix.inv_def, Matrix.smul_apply, Matrix.of_symm_apply, smul_eq_mul]`. Conclude with `h1.mul ((continuous_apply j).comp ((continuous_apply i).comp hadj)).continuousAt`. Take `⟨C1, hC1⟩` from `hQ.exists_bound_of_continuousOn (f := fun w : Lie E a => w) continuous_id.continuousOn`. Take `⟨C2, hC2⟩` from `hQ.exists_bound_of_continuousOn (hf.mono hsub)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `⟨1 + C1 + C2, fun y hy => ?_⟩` and prove the remaining obligations. Establish `h2 : f (toL y.val) = toL (y⁻¹).val`. Simplify using `only [f, toL, Equiv.apply_symm_apply, Matrix.coe_units_inv]`. Use `hC2 _ hy` as an intermediate fact. Rewrite `this` using `[h2]`.
-
-Unfold `GlobalTheory.CuspRep.height`. Combine the linear relations using `[hC1 _ hy]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem height_le_of_isCompact : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ) (Q : Set (Lie E a)),
     IsCompact Q → Q ⊆ invSet E a →

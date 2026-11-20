@@ -4,7 +4,7 @@ import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.FockJointMultiplicity.L
 namespace PI.FJMX
 
 /- English proof (translation)
-Introduce `_ _ ι hι α hα` and use `⟨shapeProd_hwb ι hι _, shapeProd_diag ι hι α hα⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem minorProductDiagonal : PI.FJMB.HypShape := fun _ _ ι hι α hα =>
   ⟨shapeProd_hwb ι hι _, shapeProd_diag ι hι α hα⟩

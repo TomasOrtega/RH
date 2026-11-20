@@ -17,31 +17,31 @@ section Perp
 variable {V : HSpace E}
 
 /- English proof (translation)
-Simplify using `[perp, Submodule.mem_iInf, HSpace.hD]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_perp {W : Submodule E V.V} {y : V.V} : y ∈ perp V W ↔ ∀ x ∈ W, V.hD y x = 0 := by
   simp [perp, Submodule.mem_iInf, HSpace.hD]
 
 /- English proof (translation)
-Introduce `_ hy` and use `mem_perp.2 fun x hx => mem_perp.1 hy x (h hx)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem perp_anti {A B : Submodule E V.V} (h : A ≤ B) : perp V B ≤ perp V A :=
   fun _ hy => mem_perp.2 fun x hx => mem_perp.1 hy x (h hx)
 
 /- English proof (translation)
-The claim follows from `eq_top_iff.2 fun y _ => mem_perp.2 fun x hx => by simp [(Submodule.mem_bot E).1 hx, HSpace.hD]`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem perp_bot : perp V ⊥ = ⊤ :=
   eq_top_iff.2 fun y _ => mem_perp.2 fun x hx => by simp [(Submodule.mem_bot E).1 hx, HSpace.hD]
 
 /- English proof (translation)
-The claim follows from `eq_bot_iff.2 fun y hy => V.nondeg.2 y fun x => mem_perp.1 hy x trivial`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem perp_top : perp V ⊤ = ⊥ :=
   eq_bot_iff.2 fun y hy => V.nondeg.2 y fun x => mem_perp.1 hy x trivial
 
 /- English proof (translation)
-The claim follows from `h.trans (hB.trans (perp_anti h))`.
+A detailed English derivation is pending.
 -/
 theorem le_perp_of_le {A B : Submodule E V.V} (h : A ≤ B) (hB : B ≤ perp V B) : A ≤ perp V A :=
   h.trans (hB.trans (perp_anti h))
@@ -55,19 +55,19 @@ variable (V : HSpace E) (R : Type) [CommRing R] [Algebra F R]
 omit [NumberField F]
 
 /- English proof (translation)
-The claim follows from `Submodule.subset_span ⟨x, hx, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem coordR_mem {W : Submodule E V.V} {x : V.V} (hx : x ∈ W) : coordR (F := F) V R x ∈ extSub (F := F) V R W :=
   Submodule.subset_span ⟨x, hx, rfl⟩
 
 /- English proof (translation)
-The claim follows from `Submodule.span_mono (Set.image_mono h)`.
+A detailed English derivation is pending.
 -/
 theorem extSub_mono {A B : Submodule E V.V} (h : A ≤ B) : extSub (F := F) V R A ≤ extSub (F := F) V R B :=
   Submodule.span_mono (Set.image_mono h)
 
 /- English proof (translation)
-The claim follows from `extSub_mono V R (Submodule.span_le.2 (by rintro _ ⟨k, rfl⟩; exact h k) : colSpan V M ≤ W) ((mem_extSub_colSpan V R M _).2 ⟨a, rfl⟩)`.
+A detailed English derivation is pending.
 -/
 theorem mulVec_mem_extSub {W : Submodule E V.V} {r : ℕ} (M : Matrix (Fin V.rank) (Fin r) E)
     (h : ∀ k, vecOf V (Mᵀ k) ∈ W) (a : Fin r → R ⊗[F] E) :
@@ -76,18 +76,18 @@ theorem mulVec_mem_extSub {W : Submodule E V.V} {r : ℕ} (M : Matrix (Fin V.ran
     ((mem_extSub_colSpan V R M _).2 ⟨a, rfl⟩)
 
 /- English proof (translation)
-The claim follows from `funext fun i => (RingHom.map_mulVec (inclR (F := F) R) M (fun j => V.frame.repr x j) i).symm`.
+A detailed English derivation is pending.
 -/
 theorem map_mulVec_coordR {r : ℕ} (M : Matrix (Fin r) (Fin V.rank) E) (x : V.V) :
     M.map (inclR (F := F) R) *ᵥ coordR (F := F) V R x = fun i => inclR R ((M *ᵥ fun j => V.frame.repr x j) i) :=
   funext fun i => (RingHom.map_mulVec (inclR (F := F) R) M (fun j => V.frame.repr x j) i).symm
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hy`. Use `(Submodule.span_le (p := LinearMap.ker (T.map (inclR (F := F) R)).mulVecLin)).2 ?_ hy` and prove the remaining obligations. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Express the relevant statement in the definitionally equal form `T.map (inclR (F := F) R) *ᵥ coordR V R x = 0`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[map_mulVec_coordR, (hW x).1 hx]`. Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules. Introduce `hy`. Establish `h` using `mulVec_mem_extSub (F := F) V R (W := W) (1 - P * T) (fun k => (hW _).2 (by`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `: T * (1 - P * T) = 0` using `by rw [Matrix.mul_sub, ← Matrix.mul_assoc, hP, Matrix.mul_one, sub_self]`. Use function extensionality and compare the values at `i`. Simplify using `only [repr_vecOf]`. Conclude with `congrFun (congrFun this i) k)) y`. Rewrite `h` using `[Matrix.map_sub _ (map_sub _), Matrix.map_one _ (map_zero _) (map_one _), Matrix.map_mul, Matrix.sub_mulVec, Matrix.one_mulVec, ← Matrix.mulVec_mulVec, hy, Matrix.mulVec_zero, sub_zero]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem mem_extSub_iff_of_ker {W : Submodule E V.V} {r : ℕ} (T : Matrix (Fin r) (Fin V.rank) E)
     (P : Matrix (Fin V.rank) (Fin r) E) (hP : T * P * T = T)
@@ -110,9 +110,9 @@ theorem mem_extSub_iff_of_ker {W : Submodule E V.V} {r : ℕ} (T : Matrix (Fin r
       Matrix.one_mulVec, ← Matrix.mulVec_mulVec, hy, Matrix.mulVec_zero, sub_zero] at h
 
 /- English proof (translation)
-Take `⟨U, hU⟩` from `W.exists_isCompl`. Set `π : V.V →ₗ[E] V.V` to `U.projection W hU.symm`. Use `⟨LinearMap.toMatrix V.frame V.frame π, ?_, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mul_one, ← LinearMap.toMatrix_mul, (Submodule.isIdempotentElem_projection hU.symm).eq]`. Use `LinearMap.toMatrix_mulVec_repr V.frame V.frame π x` as an intermediate fact.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[show (fun j => V.frame.repr x j) = ⇑(V.frame.repr x) from rfl, this, Finsupp.coe_eq_zero, LinearEquiv.map_eq_zero_iff, Submodule.projection_apply_eq_zero_iff]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_cut (W : Submodule E V.V) : ∃ T : Matrix (Fin V.rank) (Fin V.rank) E, T * 1 * T = T ∧
     ∀ x, x ∈ W ↔ (T *ᵥ fun j => V.frame.repr x j) = 0 := by
@@ -125,20 +125,20 @@ theorem exists_cut (W : Submodule E V.V) : ∃ T : Matrix (Fin V.rank) (Fin V.ra
       LinearEquiv.map_eq_zero_iff, Submodule.projection_apply_eq_zero_iff]
 
 /- English proof (translation)
-The claim follows from `Submodule.span_eq_bot.2 (by rintro _ ⟨x, hx, rfl⟩; funext i; simp [coordR, (Submodule.mem_bot E).1 hx])`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem extSub_bot : extSub (F := F) V R ⊥ = ⊥ :=
   Submodule.span_eq_bot.2 (by rintro _ ⟨x, hx, rfl⟩; funext i; simp [coordR, (Submodule.mem_bot E).1 hx])
 
 /- English proof (translation)
-The claim follows from `eq_top_iff.2 fun y _ => (mem_extSub_iff_of_ker V R (r := 0) 0 0 (by simp) (fun _ => by simp [eq_iff_true_of_subsingleton]) y).2 (Subsingleton.elim _ _)`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem extSub_top : extSub (F := F) V R ⊤ = ⊤ :=
   eq_top_iff.2 fun y _ => (mem_extSub_iff_of_ker V R (r := 0) 0 0 (by simp) (fun _ => by simp [eq_iff_true_of_subsingleton]) y).2
     (Subsingleton.elim _ _)
 
 /- English proof (translation)
-Take `⟨T, h1, h2⟩` from `exists_cut V W`. Establish `hi : Function.Injective (inclR (F` using `F) (E := E) R) := Algebra.TensorProduct.includeRight_injective (algebraMap F R).injective`. Rewrite using `[mem_extSub_iff_of_ker V R T 1 h1 h2, map_mulVec_coordR, h2]`. Conclude with `⟨fun h => funext fun i => hi ((congrFun h i).trans (map_zero _).symm), fun h => by rw [h]; funext i; simp⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem coordR_mem_iff [Nontrivial R] {W : Submodule E V.V} {x : V.V} :
     coordR (F := F) V R x ∈ extSub (F := F) V R W ↔ x ∈ W := by
@@ -154,19 +154,19 @@ def mapVec (φ : R →ₐ[F] R') (y : Fin V.rank → R ⊗[F] E) : Fin V.rank �
   fun i => Algebra.TensorProduct.map φ (AlgHom.id F E) (y i)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `[mapVec, coordR, inclR]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 @[simp] theorem mapVec_coordR (φ : R →ₐ[F] R') (x : V.V) : mapVec V φ (coordR V R x) = coordR V R' x := by
   funext i; simp [mapVec, coordR, inclR]
 
 /- English proof (translation)
-The claim follows from `funext fun _ => map_sub _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem mapVec_sub (φ : R →ₐ[F] R') (y z : Fin V.rank → R ⊗[F] E) :
     mapVec V φ (y - z) = mapVec V φ y - mapVec V φ z := funext fun _ => map_sub _ _ _
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Use `Eq.trans ?_ (RingHom.map_mulVec (Algebra.TensorProduct.map φ (AlgHom.id F E)).toRingHom _ y i).symm` and prove the remaining obligations. Use `congr 1`. Use extensionality with `a b`. Simplify using `[inclR]`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem map_mulVec_mapVec (φ : R →ₐ[F] R') (T : Matrix (Fin V.rank) (Fin V.rank) E) (y : Fin V.rank → R ⊗[F] E) :
     T.map (inclR (F := F) R') *ᵥ mapVec V φ y = mapVec V φ (T.map (inclR (F := F) R) *ᵥ y) := by
@@ -177,7 +177,7 @@ theorem map_mulVec_mapVec (φ : R →ₐ[F] R') (T : Matrix (Fin V.rank) (Fin V.
   simp [inclR]
 
 /- English proof (translation)
-Take `⟨T, h1, h2⟩` from `exists_cut V W`. Rewrite `hy`, the goal using `[mem_extSub_iff_of_ker V _ T 1 h1 h2]`. Rewrite using `[map_mulVec_mapVec, hy]`. Use function extensionality and compare the values at `i`. Simplify using `[mapVec]`.
+Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem mapVec_mem (φ : R →ₐ[F] R') {W : Submodule E V.V} {y : Fin V.rank → R ⊗[F] E}
     (hy : y ∈ extSub (F := F) V R W) : mapVec V φ y ∈ extSub (F := F) V R' W := by
@@ -189,7 +189,7 @@ theorem mapVec_mem (φ : R →ₐ[F] R') {W : Submodule E V.V} {y : Fin V.rank �
 omit [NumberField E] [StarRing E] in
 
 /- English proof (translation)
-Proceed by induction on `u using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, Finsupp.add_apply, hx, hy]`. Consider the case `tmul a e => simp`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem repr_map {ι : Type} (b : Module.Basis ι F E) (φ : R →ₐ[F] R') (u : R ⊗[F] E) (j : ι) :
     (Algebra.TensorProduct.basis R' b).repr (Algebra.TensorProduct.map φ (AlgHom.id F E) u) j =
@@ -206,14 +206,14 @@ section Form
 variable (hc : CMData F E) (V : HSpace E) {R : Type} [CommRing R] [Algebra F R]
 
 /- English proof (translation)
-Simplify using `only [hR, hform, JR, dotProduct, Matrix.mulVec, Finset.mul_sum, mul_assoc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hR_eq (x y : Fin V.rank → R ⊗[F] E) : hR R hc.sig V.gram x y =
     (fun i => Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR R hc.sig (x i)) ⬝ᵥ (V.gram.map (inclR (F := F) R) *ᵥ y) := by
   simp only [hR, hform, JR, dotProduct, Matrix.mulVec, Finset.mul_sum, mul_assoc]
 
 /- English proof (translation)
-Rewrite using `[hR_eq, ← Matrix.mulVec_mulVec, Matrix.dotProduct_mulVec _ (cT _ M)]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Conclude with `(RingHom.map_mulVec _ M a i).trans (congrFun (Matrix.vecMul_transpose _ _).symm i)`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem hR_mulVec {r : ℕ} (M : Matrix (Fin V.rank) (Fin r) (R ⊗[F] E)) (a : Fin r → R ⊗[F] E)
     (y : Fin V.rank → R ⊗[F] E) : hR R hc.sig V.gram (M *ᵥ a) y = (fun i => Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR R hc.sig (a i)) ⬝ᵥ
@@ -224,7 +224,7 @@ theorem hR_mulVec {r : ℕ} (M : Matrix (Fin V.rank) (Fin r) (R ⊗[F] E)) (a : 
   exact (RingHom.map_mulVec _ M a i).trans (congrFun (Matrix.vecMul_transpose _ _).symm i)
 
 /- English proof (translation)
-Establish `hg : cT (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR R hc.sig) (HA.mat R hc.sig V.gram g).1 * V.gram.map (inclR (F` using `F) R) * (HA.mat R hc.sig V.gram g).1 = V.gram.map (inclR (F := F) R) := g.2`. Rewrite using `[act, hR_mulVec, act, Matrix.mulVec_mulVec, hg, hR_eq]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem hR_act (g : HA R hc.sig V.gram) (x y : Fin V.rank → R ⊗[F] E) :
     hR R hc.sig V.gram (act hc V g x) (act hc V g y) = hR R hc.sig V.gram x y := by
@@ -233,7 +233,7 @@ theorem hR_act (g : HA R hc.sig V.gram) (x y : Fin V.rank → R ⊗[F] E) :
   rw [act, hR_mulVec, act, Matrix.mulVec_mulVec, hg, hR_eq]
 
 /- English proof (translation)
-Establish `h` using `hR_act hc V g (act hc V g⁻¹ x) y`. Rewrite `h` using `[← act_mul, mul_inv_cancel, act_one]`. Simplify using `only [hR_eq, Matrix.mulVec_sub, dotProduct_sub, Pi.sub_apply, map_sub] at h ⊢`. Rewrite using `[h, ← sub_dotProduct]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem hR_act_sub (g : HA R hc.sig V.gram) (x y : Fin V.rank → R ⊗[F] E) :
     hR R hc.sig V.gram x (act hc V g y - y) = hR R hc.sig V.gram (act hc V g⁻¹ x - x) y := by
@@ -244,13 +244,13 @@ theorem hR_act_sub (g : HA R hc.sig V.gram) (x y : Fin V.rank → R ⊗[F] E) :
   rfl
 
 /- English proof (translation)
-Take `⟨r, C, hC, rfl⟩` from `exists_colSpan V W`. Take `⟨l, hl⟩` from `LinearMap.exists_leftInverse_of_injective C.mulVecLin (LinearMap.ker_eq_bot.2 (Matrix.mulVec_injective_iff.2 hC))`. Take `⟨L, hL⟩ : ∃ L : Matrix (Fin r) (Fin V.rank) E, L * C = 1` from `⟨LinearMap.toMatrix' l, by`. Apply `Matrix.toLin'.injective` to reduce the goal to its premises. Rewrite using `[Matrix.toLin'_mul, Matrix.toLin'_toMatrix', Matrix.toLin'_one]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hl⟩`. Establish `hT : cT (hc.sig : E →+* E) C * V.gram * (V.gram⁻¹ * cT (hc.sig : E →+* E) L) = 1`. Rewrite using `[← Matrix.mul_assoc, Matrix.mul_nonsing_inv_cancel_right _ _ (gram_det_isUnit V), ← cT_mul, hL, cT_one]`. Rewrite using `[mem_extSub_iff_of_ker V R _ _ (by rw [hT, Matrix.one_mul]) (mem_perp_colSpan hc V C), Matrix.map_mul, ← GlobalTheory.AutFunCounterexample.cT_map_gen]`. Simplify using `only [mem_extSub_colSpan]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `h _ ⟨a, rfl⟩`. Rewrite using `[hR_mulVec, h, dotProduct_zero]`. Introduce `h`. Use function extensionality and compare the values at `k`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Use `h _ ⟨Pi.single k 1, rfl⟩` as an intermediate fact. Rewrite `this` using `[hR_mulVec]`. Simplify `this` using `[dotProduct, Pi.single_apply, apply_ite]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem mem_extSub_perp {W : Submodule E V.V} {y : Fin V.rank → R ⊗[F] E} :
     y ∈ extSub (F := F) V R (perp V W) ↔ ∀ x ∈ extSub (F := F) V R W, hR R hc.sig V.gram x y = 0 := by
@@ -295,9 +295,9 @@ def trivOn (A B : Submodule E V.V) : Subgroup (HA R hc.sig V.gram) where
 variable {hc V R} {A B W : Submodule E V.V} {g : HA R hc.sig V.gram}
 
 /- English proof (translation)
-Use `⟨fun h y => (h y).1, fun h y => ⟨h y, fun hy => ?_⟩⟩` and prove the remaining obligations. Set `f` to `(HA.mat R hc.sig V.gram g).1.mulVecLin`. Establish `hs : Function.Surjective ((extSub (F` using `F) V R W).mapQ (extSub (F := F) V R W) f h) := fun q => by`. Take `⟨z, rfl⟩` from `Submodule.Quotient.mk_surjective _ q`. Use `⟨Submodule.Quotient.mk (act hc V g⁻¹ z), congrArg Submodule.Quotient.mk ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Express the relevant statement in the definitionally equal form `act hc V g _ = z`. Rewrite using `[← act_mul, mul_inv_cancel, act_one]`. Use `(Submodule.Quotient.mk_eq_zero _).1 (OrzechProperty.injective_of_surjective_endomorphism _ hs ?_)` and prove the remaining obligations. Rewrite using `[map_zero]`. Conclude with `(Submodule.Quotient.mk_eq_zero _).2 hy`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_parab_iff_maps : g ∈ parab hc V R W ↔ ∀ y ∈ extSub (F := F) V R W, act hc V g y ∈ extSub (F := F) V R W := by
   refine ⟨fun h y => (h y).1, fun h y => ⟨h y, fun hy => ?_⟩⟩
@@ -312,7 +312,7 @@ theorem mem_parab_iff_maps : g ∈ parab hc V R W ↔ ∀ y ∈ extSub (F := F) 
   exact (Submodule.Quotient.mk_eq_zero _).2 hy
 
 /- English proof (translation)
-The claim follows from `mem_parab_iff_maps.trans ⟨fun h _ hx => h _ (coordR_mem V R hx), fun h _ hy => (Submodule.span_le (p := (extSub (F := F) V R W).comap (HA.mat R hc.sig V.gram g).1.mulVecLin)).2 (by rintro _ ⟨x, hx, rfl⟩; exact h x hx) hy⟩`.
+A detailed English derivation is pending.
 -/
 theorem mem_parab : g ∈ parab hc V R W ↔ ∀ x ∈ W, act hc V g (coordR V R x) ∈ extSub (F := F) V R W :=
   mem_parab_iff_maps.trans ⟨fun h _ hx => h _ (coordR_mem V R hx), fun h _ hy =>
@@ -320,7 +320,7 @@ theorem mem_parab : g ∈ parab hc V R W ↔ ∀ x ∈ W, act hc V g (coordR V R
       (by rintro _ ⟨x, hx, rfl⟩; exact h x hx) hy⟩
 
 /- English proof (translation)
-The claim follows from `eq_top_iff.2 fun g _ => mem_parab_iff_maps.2 fun y hy => by rw [extSub_bot, Submodule.mem_bot] at hy ⊢ rw [hy, act, Matrix.mulVec_zero]`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem parab_bot : parab hc V R ⊥ = ⊤ :=
   eq_top_iff.2 fun g _ => mem_parab_iff_maps.2 fun y hy => by
@@ -328,7 +328,7 @@ The claim follows from `eq_top_iff.2 fun g _ => mem_parab_iff_maps.2 fun y hy =>
     rw [hy, act, Matrix.mulVec_zero]
 
 /- English proof (translation)
-Introduce `g hg` and use `mem_parab_iff_maps.2 fun y hy => (mem_extSub_perp hc V).2 fun x hx => by rw [← hR_act hc V g⁻¹, act_inv] exact (mem_extSub_perp hc V).1 hy _ ((inv_mem hg x).1 hx)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem parab_le_perp : parab hc V R W ≤ parab hc V R (perp V W) := fun g hg =>
   mem_parab_iff_maps.2 fun y hy => (mem_extSub_perp hc V).2 fun x hx => by
@@ -336,7 +336,7 @@ theorem parab_le_perp : parab hc V R W ≤ parab hc V R (perp V W) := fun g hg =
     exact (mem_extSub_perp hc V).1 hy _ ((inv_mem hg x).1 hx)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h => h.2, fun h' => ⟨mem_parab_iff_maps.2 fun y hy => by simpa using add_mem (h' y (extSub_mono V R h hy)) hy, h'⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem mem_trivOn_iff_maps (h : A ≤ B) :
     g ∈ trivOn hc V R A B ↔ ∀ y ∈ extSub (F := F) V R B, act hc V g y - y ∈ extSub (F := F) V R A :=
@@ -344,7 +344,7 @@ theorem mem_trivOn_iff_maps (h : A ≤ B) :
     simpa using add_mem (h' y (extSub_mono V R h hy)) hy, h'⟩⟩
 
 /- English proof (translation)
-The claim follows from `(mem_trivOn_iff_maps h).trans ⟨fun h _ hx => h _ (coordR_mem V R hx), fun h _ hy => ((Submodule.span_le (p := (extSub (F := F) V R A).comap ((HA.mat R hc.sig V.gram g).1.mulVecLin - LinearMap.id))).2 (by rintro _ ⟨x, hx, rfl⟩; exact h x hx) hy :)⟩`.
+A detailed English derivation is pending.
 -/
 theorem mem_trivOn (h : A ≤ B) : g ∈ trivOn hc V R A B ↔
     ∀ x ∈ B, act hc V g (coordR V R x) - coordR V R x ∈ extSub (F := F) V R A :=
@@ -353,20 +353,20 @@ theorem mem_trivOn (h : A ≤ B) : g ∈ trivOn hc V R A B ↔
       ((HA.mat R hc.sig V.gram g).1.mulVecLin - LinearMap.id))).2 (by rintro _ ⟨x, hx, rfl⟩; exact h x hx) hy :)⟩
 
 /- English proof (translation)
-Introduce `g hg` and use `mem_parab_iff_maps.2 fun y hy => by simpa using add_mem (extSub_mono V R h1 (hg.2 y (extSub_mono V R h2 hy))) hy`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem trivOn_le_parab (h1 : A ≤ W) (h2 : W ≤ B) : trivOn hc V R A B ≤ parab hc V R W := fun g hg =>
   mem_parab_iff_maps.2 fun y hy => by simpa using add_mem (extSub_mono V R h1 (hg.2 y (extSub_mono V R h2 hy))) hy
 
 /- English proof (translation)
-Introduce `_ hg` and use `(mem_trivOn_iff_maps h2).2 fun y hy => extSub_mono V R h1 (hg.2 y (extSub_mono V R h3 hy))`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem trivOn_mono {A' B' : Submodule E V.V} (h1 : A ≤ A') (h2 : A' ≤ B') (h3 : B' ≤ B) :
     trivOn hc V R A B ≤ trivOn hc V R A' B' := fun _ hg =>
   (mem_trivOn_iff_maps h2).2 fun y hy => extSub_mono V R h1 (hg.2 y (extSub_mono V R h3 hy))
 
 /- English proof (translation)
-Introduce `g hg` and use `(mem_trivOn_iff_maps (perp_anti h)).2 fun y hy => (mem_extSub_perp hc V).2 fun x hx => by rw [hR_act_sub] exact (mem_extSub_perp hc V).1 hy _ ((inv_mem hg).2 x hx)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem trivOn_le_trivOn_perp (h : A ≤ B) : trivOn hc V R A B ≤ trivOn hc V R (perp V B) (perp V A) := fun g hg =>
   (mem_trivOn_iff_maps (perp_anti h)).2 fun y hy => (mem_extSub_perp hc V).2 fun x hx => by
@@ -374,7 +374,7 @@ theorem trivOn_le_trivOn_perp (h : A ≤ B) : trivOn hc V R A B ≤ trivOn hc V 
     exact (mem_extSub_perp hc V).1 hy _ ((inv_mem hg).2 x hx)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨mul_mem (mul_mem hA hg.1) (inv_mem hA), fun y hy => by have := (hA _).1 (hg.2 _ ((inv_mem hB y).1 hy)) rwa [act_sub, ← act_mul, ← act_mul, ← act_mul, mul_inv_cancel, act_one] at this⟩`.
+Supply the required witnesses or components.
 -/
 theorem conj_mem_trivOn {p : HA R hc.sig V.gram} (hA : p ∈ parab hc V R A) (hB : p ∈ parab hc V R B)
     (hg : g ∈ trivOn hc V R A B) : p * g * p⁻¹ ∈ trivOn hc V R A B :=
@@ -383,7 +383,7 @@ theorem conj_mem_trivOn {p : HA R hc.sig V.gram} (hA : p ∈ parab hc V R A) (hB
     rwa [act_sub, ← act_mul, ← act_mul, ← act_mul, mul_inv_cancel, act_one] at this⟩
 
 /- English proof (translation)
-The claim follows from `eq_bot_iff.2 fun g hg => HA_ext _ _ fun r s => by have := hg.2 (Pi.single s 1) (by simp) rw [extSub_bot, Submodule.mem_bot, sub_eq_zero] at this have e := congrFun (this.trans (act_one hc V _).symm) r simpa only [act, Matrix.mulVec_single_one, Matrix.col_apply] using e`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem trivOn_bot_top : trivOn hc V R ⊥ ⊤ = ⊥ :=
   eq_bot_iff.2 fun g hg => HA_ext _ _ fun r s => by
@@ -395,20 +395,20 @@ The claim follows from `eq_bot_iff.2 fun g hg => HA_ext _ _ fun r s => by have :
 variable {R' : Type} [CommRing R'] [Algebra F R']
 
 /- English proof (translation)
-The claim follows from `funext fun i => (RingHom.map_mulVec (Algebra.TensorProduct.map φ (AlgHom.id F E)).toRingHom _ y i).symm`.
+A detailed English derivation is pending.
 -/
 theorem act_mapH (φ : R →ₐ[F] R') (g : HA R hc.sig V.gram) (y : Fin V.rank → R ⊗[F] E) :
     act hc V (mapH hc.sig V.gram φ g) (mapVec V φ y) = mapVec V φ (act hc V g y) :=
   funext fun i => (RingHom.map_mulVec (Algebra.TensorProduct.map φ (AlgHom.id F E)).toRingHom _ y i).symm
 
 /- English proof (translation)
-The claim follows from `mem_parab.2 fun x hx => by rw [← mapVec_coordR V φ, act_mapH]; exact mapVec_mem V φ (mem_parab.1 hg x hx)`.
+A detailed English derivation is pending.
 -/
 theorem mapH_mem_parab (φ : R →ₐ[F] R') (hg : g ∈ parab hc V R W) : mapH hc.sig V.gram φ g ∈ parab hc V R' W :=
   mem_parab.2 fun x hx => by rw [← mapVec_coordR V φ, act_mapH]; exact mapVec_mem V φ (mem_parab.1 hg x hx)
 
 /- English proof (translation)
-The claim follows from `(mem_trivOn h).2 fun x hx => by rw [← mapVec_coordR V φ, act_mapH, ← mapVec_sub]; exact mapVec_mem V φ ((mem_trivOn h).1 hg x hx)`.
+A detailed English derivation is pending.
 -/
 theorem mapH_mem_trivOn (h : A ≤ B) (φ : R →ₐ[F] R') (hg : g ∈ trivOn hc V R A B) :
     mapH hc.sig V.gram φ g ∈ trivOn hc V R' A B :=
@@ -423,9 +423,9 @@ variable {hc : CMData F E} {V : HSpace E} {R : Type} [CommRing R] [Algebra F R] 
   [IsTopologicalRing R] [T2Space R]
 
 /- English proof (translation)
-Take `⟨T, h1, h2⟩` from `exists_cut V W`. Establish `: IsModuleTopology R (R ⊗[F] E)` using `⟨rfl⟩`. Establish `: IsTopologicalRing (R ⊗[F] E)` using `IsModuleTopology.isTopologicalRing R _`. Establish `: T2Space (R ⊗[F] E)` using `.of_injective_continuous (f := (Algebra.TensorProduct.basis R (Module.finBasis F E)).equivFun) (LinearEquiv.injective _) (IsModuleTopology.continuous_of_linearMap (Algebra.TensorProduct.basis R (Module.finBasis F E)).equivFun.toLinearMap)`. Establish `hm : Continuous fun g : HA R hc.sig V.gram => (HA.mat _ hc.sig V.gram g).1` using `Units.continuous_val.comp continuous_subtype_val`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [mem_extSub_iff_of_ker V _ T 1 h1 h2]`. Conclude with `isClosed_eq (continuous_const.matrix_mulVec ((hm.matrix_mulVec continuous_const).sub continuous_const)) continuous_const`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isClosed_act_sub_mem (W : Submodule E V.V) (y z : Fin V.rank → R ⊗[F] E) :
     IsClosed {g : HA R hc.sig V.gram | act hc V g y - z ∈ extSub (F := F) V R W} := by
@@ -443,7 +443,7 @@ theorem isClosed_act_sub_mem (W : Submodule E V.V) (y z : Fin V.rank → R ⊗[F
     continuous_const
 
 /- English proof (translation)
-Use `isClosed_biInter fun x (_ : x ∈ W) => isClosed_act_sub_mem (hc := hc) W (coordR V R x) 0 using 1` and compare the differences between its conclusion and the goal. Use extensionality with `g`. Simplify using `using mem_parab`.
+Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem isClosed_parab (W : Submodule E V.V) : IsClosed (parab hc V R W : Set (HA R hc.sig V.gram)) := by
   convert isClosed_biInter fun x (_ : x ∈ W) => isClosed_act_sub_mem (hc := hc) W (coordR V R x) 0 using 1
@@ -451,7 +451,7 @@ theorem isClosed_parab (W : Submodule E V.V) : IsClosed (parab hc V R W : Set (H
   simpa using mem_parab
 
 /- English proof (translation)
-Use `isClosed_biInter fun x (_ : x ∈ B) => isClosed_act_sub_mem (hc := hc) A (coordR V R x) (coordR V R x) using 1` and compare the differences between its conclusion and the goal. Use extensionality with `g`. Simplify using `using mem_trivOn h`.
+Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem isClosed_trivOn {A B : Submodule E V.V} (h : A ≤ B) :
     IsClosed (trivOn hc V R A B : Set (HA R hc.sig V.gram)) := by
@@ -468,9 +468,9 @@ open GlobalTheory.AdelicU
 variable {hc : CMData F E} {V : HSpace E} {A B W : Submodule E V.V} {g : GAd hc.sig V.gram}
 
 /- English proof (translation)
-Take `⟨T, h1, h2⟩` from `exists_cut V W`. Simplify using `only [mem_extSub_iff_of_ker V _ T 1 h1 h2, map_mulVec_mapVec] at h h' ⊢`. Use function extensionality and compare the values at `k`. Set `b` to `Module.finBasis F E`. Use `(Algebra.TensorProduct.basis (AF F) b).repr.map_eq_zero_iff.1 (Finsupp.ext fun j => Prod.ext (funext fun w => ?_) (Subtype.ext (funext fun v => ?_)))` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(repr_map b (evInf F w) _ j).symm.trans (by rw [show Algebra.TensorProduct.map _ _ _ = 0 from congrFun (h w) k]; simp; rfl)`. Conclude with `(repr_map b (evFin F v) _ j).symm.trans (by rw [show Algebra.TensorProduct.map _ _ _ = 0 from congrFun (h' v) k]; simp; rfl)`.
+A detailed English derivation is pending.
 -/
 theorem mem_extSub_of_adelic {y : Fin V.rank → AF F ⊗[F] E}
     (h : ∀ w, mapVec V (evInf F w) y ∈ extSub (F := F) V w.Completion W)
@@ -487,7 +487,7 @@ theorem mem_extSub_of_adelic {y : Fin V.rank → AF F ⊗[F] E}
       (by rw [show Algebra.TensorProduct.map _ _ _ = 0 from congrFun (h' v) k]; simp; rfl)
 
 /- English proof (translation)
-The claim follows from `mem_parab.2 fun x hx => mem_extSub_of_adelic (fun w => by rw [← act_mapH, mapVec_coordR]; exact mem_parab.1 (h w) x hx) fun v => by rw [← act_mapH, mapVec_coordR]; exact mem_parab.1 (h' v) x hx`.
+A detailed English derivation is pending.
 -/
 theorem mem_parab_of_adelic (h : ∀ w, projArch hc.sig V.gram w g ∈ parab hc V w.Completion W)
     (h' : ∀ v, proj hc.sig V.gram v g ∈ parab hc V (Fv F v) W) : g ∈ parab hc V (AF F) W :=
@@ -496,7 +496,7 @@ theorem mem_parab_of_adelic (h : ∀ w, projArch hc.sig V.gram w g ∈ parab hc 
     fun v => by rw [← act_mapH, mapVec_coordR]; exact mem_parab.1 (h' v) x hx
 
 /- English proof (translation)
-The claim follows from `(mem_trivOn e).2 fun x hx => mem_extSub_of_adelic (fun w => by rw [mapVec_sub, ← act_mapH, mapVec_coordR]; exact (mem_trivOn e).1 (h w) x hx) fun v => by rw [mapVec_sub, ← act_mapH, mapVec_coordR]; exact (mem_trivOn e).1 (h' v) x hx`.
+A detailed English derivation is pending.
 -/
 theorem mem_trivOn_of_adelic (e : A ≤ B) (h : ∀ w, projArch hc.sig V.gram w g ∈ trivOn hc V w.Completion A B)
     (h' : ∀ v, proj hc.sig V.gram v g ∈ trivOn hc V (Fv F v) A B) : g ∈ trivOn hc V (AF F) A B :=
@@ -515,7 +515,7 @@ def ratAct (γ : GRat hc V) : V.V →ₗ[E] V.V := Matrix.toLin V.frame V.frame 
 variable {hc V} (R : Type) [CommRing R] [Algebra F R] {A B W : Submodule E V.V} {γ : GRat hc V}
 
 /- English proof (translation)
-The claim follows from `(map_mulVec_coordR V R γ.1.1 x).trans (funext fun i => congrArg (inclR R) (by rw [ratAct, Matrix.repr_toLin]))`.
+A detailed English derivation is pending.
 -/
 theorem act_diagH (γ : GRat hc V) (x : V.V) :
     act hc V (diagH hc.sig V.gram R γ) (coordR V R x) = coordR V R (ratAct hc V γ x) :=
@@ -525,13 +525,13 @@ theorem act_diagH (γ : GRat hc V) (x : V.V) :
 variable [Nontrivial R]
 
 /- English proof (translation)
-Simplify using `only [mem_parab, act_diagH, coordR_mem_iff]`.
+Simplify using the standard rewrite rules.
 -/
 theorem diagH_mem_parab : diagH hc.sig V.gram R γ ∈ parab hc V R W ↔ ∀ x ∈ W, ratAct hc V γ x ∈ W := by
   simp only [mem_parab, act_diagH, coordR_mem_iff]
 
 /- English proof (translation)
-Establish `e : ∀ y z : V.V, coordR (F` using `F) V R y - coordR V R z = coordR V R (y - z) := fun y z => by`. Use function extensionality and compare the values at `i`. Simplify using `[coordR]`. Simplify using `only [mem_trivOn h, act_diagH, e, coordR_mem_iff]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem diagH_mem_trivOn (h : A ≤ B) :
     diagH hc.sig V.gram R γ ∈ trivOn hc V R A B ↔ ∀ x ∈ B, ratAct hc V γ x - x ∈ A := by
@@ -559,29 +559,29 @@ def Proper : Prop := 0 < 𝔉.k
 abbrev top : Submodule E V.V := 𝔉.X (Fin.last 𝔉.k)
 
 /- English proof (translation)
-The claim follows from `𝔉.strictMono.monotone (Fin.le_last i)`.
+A detailed English derivation is pending.
 -/
 theorem le_top (i : Fin (𝔉.k + 1)) : 𝔉.X i ≤ 𝔉.top := 𝔉.strictMono.monotone (Fin.le_last i)
 
 /- English proof (translation)
-The claim follows from `𝔉.strictMono.monotone i.castSucc_le_succ`.
+A detailed English derivation is pending.
 -/
 theorem le_succ (i : Fin 𝔉.k) : 𝔉.X i.castSucc ≤ 𝔉.X i.succ := 𝔉.strictMono.monotone i.castSucc_le_succ
 
 /- English proof (translation)
-The claim follows from `(𝔉.le_top i).trans (𝔉.iso.trans (perp_anti (𝔉.le_top j)))`.
+A detailed English derivation is pending.
 -/
 theorem le_perp (i j : Fin (𝔉.k + 1)) : 𝔉.X i ≤ perp V (𝔉.X j) :=
   (𝔉.le_top i).trans (𝔉.iso.trans (perp_anti (𝔉.le_top j)))
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨𝔉.zero ▸ (𝔉.strictMono (Fin.pos_iff_ne_zero.2 hi)).ne', 𝔉.le_perp i i⟩`.
+Supply the required witnesses or components.
 -/
 theorem isIsotropic {i : Fin (𝔉.k + 1)} (hi : i ≠ 0) : IsIsotropic V (𝔉.X i) :=
   ⟨𝔉.zero ▸ (𝔉.strictMono (Fin.pos_iff_ne_zero.2 hi)).ne', 𝔉.le_perp i i⟩
 
 /- English proof (translation)
-The claim follows from `𝔉.isIsotropic (Fin.ne_of_val_ne h.ne')`.
+A detailed English derivation is pending.
 -/
 theorem Proper.isIsotropic_top {𝔉 : IsoFlag V} (h : 𝔉.Proper) : IsIsotropic V 𝔉.top :=
   𝔉.isIsotropic (Fin.ne_of_val_ne h.ne')
@@ -594,7 +594,7 @@ def single {W : Submodule E V.V} (hW : IsIsotropic V W) : IsoFlag V :=
   ⟨1, ![⊥, W], rfl, Fin.strictMono_iff_lt_succ.2 fun i => by fin_cases i; exact bot_lt_iff_ne_bot.2 hW.1, hW.2⟩
 
 /- English proof (translation)
-The claim follows from `one_pos`.
+A detailed English derivation is pending.
 -/
 theorem proper_single {W : Submodule E V.V} (hW : IsIsotropic V W) : (single hW).Proper := one_pos
 
@@ -631,12 +631,12 @@ def unipRat : Subgroup (GRat hc V) := (𝔉.unip hc F).comap (diagH hc.sig V.gra
 variable {𝔉 hc R} {g : HA R hc.sig V.gram}
 
 /- English proof (translation)
-The claim follows from `Subgroup.mem_iInf`.
+A detailed English derivation is pending.
 -/
 theorem mem_par : g ∈ 𝔉.par hc R ↔ ∀ i, g ∈ parab hc V R (𝔉.X i) := Subgroup.mem_iInf
 
 /- English proof (translation)
-Simplify using `only [unip, Subgroup.mem_inf, Subgroup.mem_iInf]`. Conclude with `and_iff_left_of_imp fun h i => trivOn_le_trivOn_perp (𝔉.le_succ i) (h.1 i)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mem_unip : g ∈ 𝔉.unip hc R ↔ (∀ i : Fin 𝔉.k, g ∈ trivOn hc V R (𝔉.X i.castSucc) (𝔉.X i.succ)) ∧
     g ∈ trivOn hc V R 𝔉.top (perp V 𝔉.top) := by
@@ -644,7 +644,7 @@ theorem mem_unip : g ∈ 𝔉.unip hc R ↔ (∀ i : Fin 𝔉.k, g ∈ trivOn hc
   exact and_iff_left_of_imp fun h i => trivOn_le_trivOn_perp (𝔉.le_succ i) (h.1 i)
 
 /- English proof (translation)
-The claim follows from `mem_unip.trans (and_congr (forall_congr' fun i => mem_trivOn (𝔉.le_succ i)) (mem_trivOn 𝔉.iso))`.
+A detailed English derivation is pending.
 -/
 theorem mem_unip_iff : g ∈ 𝔉.unip hc R ↔
     (∀ i : Fin 𝔉.k, ∀ x ∈ 𝔉.X i.succ, act hc V g (coordR V R x) - coordR V R x ∈ extSub (F := F) V R (𝔉.X i.castSucc)) ∧
@@ -654,7 +654,7 @@ theorem mem_unip_iff : g ∈ 𝔉.unip hc R ↔
 variable (𝔉 hc R)
 
 /- English proof (translation)
-Introduce `_ hg` and use `mem_par.2 fun i => Fin.lastCases (mem_unip.1 hg).2.1 (fun j => ((mem_unip.1 hg).1 j).1) i`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem unip_le_par : 𝔉.unip hc R ≤ 𝔉.par hc R := fun _ hg => mem_par.2 fun i =>
   Fin.lastCases (mem_unip.1 hg).2.1 (fun j => ((mem_unip.1 hg).1 j).1) i
@@ -662,7 +662,7 @@ theorem unip_le_par : 𝔉.unip hc R ≤ 𝔉.par hc R := fun _ hg => mem_par.2 
 variable {𝔉 hc R} in
 
 /- English proof (translation)
-The claim follows from `mem_unip.2 ⟨fun i => conj_mem_trivOn (mem_par.1 hp _) (mem_par.1 hp _) ((mem_unip.1 hg).1 i), conj_mem_trivOn (mem_par.1 hp _) (parab_le_perp (mem_par.1 hp _)) (mem_unip.1 hg).2⟩`.
+A detailed English derivation is pending.
 -/
 theorem conj_mem_unip {p : HA R hc.sig V.gram} (hp : p ∈ 𝔉.par hc R) (hg : g ∈ 𝔉.unip hc R) :
     p * g * p⁻¹ ∈ 𝔉.unip hc R :=
@@ -673,12 +673,12 @@ instance normal_unip : ((𝔉.unip hc R).subgroupOf (𝔉.par hc R)).Normal :=
   ⟨fun _ hn p => conj_mem_unip p.2 hn⟩
 
 /- English proof (translation)
-Simplify using `[par, nil]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem par_nil : (nil V).par hc R = ⊤ := by simp [par, nil]
 
 /- English proof (translation)
-The claim follows from `eq_bot_iff.2 fun g hg => by simpa [nil, top] using (mem_unip.1 hg).2`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem unip_nil : (nil V).unip hc R = ⊥ :=
   eq_bot_iff.2 fun g hg => by simpa [nil, top] using (mem_unip.1 hg).2
@@ -686,33 +686,31 @@ The claim follows from `eq_bot_iff.2 fun g hg => by simpa [nil, top] using (mem_
 variable {W : Submodule E V.V} (hW : IsIsotropic V W)
 
 /- English proof (translation)
-The claim follows from `Subgroup.ext fun g => mem_par.trans (Fin.forall_fin_two.trans (and_iff_right (parab_bot (hc := hc) (V := V) (R := R) ▸ trivial)))`.
+A detailed English derivation is pending.
 -/
 theorem par_single : (single hW).par hc R = parab hc V R W :=
   Subgroup.ext fun g => mem_par.trans (Fin.forall_fin_two.trans (and_iff_right (parab_bot (hc := hc) (V := V) (R := R) ▸ trivial)))
 
 /- English proof (translation)
-The claim follows from `Subgroup.ext fun g => mem_unip.trans (and_congr (Fin.forall_fin_one.trans ((mem_trivOn_iff_maps bot_le).trans (forall₂_congr fun y _ => by rw [extSub_bot, Submodule.mem_bot, sub_eq_zero]))) (mem_trivOn_iff_maps hW.2))`.
+A detailed English derivation is pending.
 -/
 theorem unip_single : (single hW).unip hc R = unipRad hc V R W :=
   Subgroup.ext fun g => mem_unip.trans (and_congr (Fin.forall_fin_one.trans ((mem_trivOn_iff_maps bot_le).trans
     (forall₂_congr fun y _ => by rw [extSub_bot, Submodule.mem_bot, sub_eq_zero]))) (mem_trivOn_iff_maps hW.2))
 
 /- English proof (translation)
-The claim follows from `iInf_le _ i`.
+A detailed English derivation is pending.
 -/
 theorem par_le_parab (i : Fin (𝔉.k + 1)) : 𝔉.par hc R ≤ parab hc V R (𝔉.X i) := iInf_le _ i
 
 /- English proof (translation)
-The claim follows from `(𝔉.par_le_parab hc R i).trans parab_le_perp`.
+A detailed English derivation is pending.
 -/
 theorem par_le_parab_perp (i : Fin (𝔉.k + 1)) : 𝔉.par hc R ≤ parab hc V R (perp V (𝔉.X i)) :=
   (𝔉.par_le_parab hc R i).trans parab_le_perp
 
 /- English proof (translation)
-Introduce `g hg`. Take `⟨h1, h2⟩` from `mem_unip.1 hg`. Use `mem_unip.2 ⟨fun j => ?_, trivOn_mono (𝔉.le_top i) 𝔉.iso (perp_anti (𝔉.le_top i)) h2⟩` and prove the remaining obligations. Break down `le_or_gt i j.castSucc with h | h` into its components or cases. Conclude with `trivOn_mono (𝔉.strictMono.monotone h) (𝔉.le_succ j) (𝔉.le_perp _ i) h2`.
-
-Conclude with `trivOn_mono bot_le (𝔉.le_succ j) (𝔉.strictMono.monotone (Fin.castSucc_lt_iff_succ_le.1 h)) (h1 (0 : Fin 1))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem unip_single_le {i : Fin (𝔉.k + 1)} (hi : i ≠ 0) : (single (𝔉.isIsotropic hi)).unip hc R ≤ 𝔉.unip hc R := by
   intro g hg
@@ -725,25 +723,25 @@ theorem unip_single_le {i : Fin (𝔉.k + 1)} (hi : i ≠ 0) : (single (𝔉.isI
 variable {𝔉 hc R} {R' : Type} [CommRing R'] [Algebra F R']
 
 /- English proof (translation)
-The claim follows from `mem_par.2 fun i => mapH_mem_parab φ (mem_par.1 hg i)`.
+A detailed English derivation is pending.
 -/
 theorem mapH_mem_par (φ : R →ₐ[F] R') (hg : g ∈ 𝔉.par hc R) : mapH hc.sig V.gram φ g ∈ 𝔉.par hc R' :=
   mem_par.2 fun i => mapH_mem_parab φ (mem_par.1 hg i)
 
 /- English proof (translation)
-The claim follows from `mem_unip.2 ⟨fun i => mapH_mem_trivOn (𝔉.le_succ i) φ ((mem_unip.1 hg).1 i), mapH_mem_trivOn 𝔉.iso φ (mem_unip.1 hg).2⟩`.
+A detailed English derivation is pending.
 -/
 theorem mapH_mem_unip (φ : R →ₐ[F] R') (hg : g ∈ 𝔉.unip hc R) : mapH hc.sig V.gram φ g ∈ 𝔉.unip hc R' :=
   mem_unip.2 ⟨fun i => mapH_mem_trivOn (𝔉.le_succ i) φ ((mem_unip.1 hg).1 i), mapH_mem_trivOn 𝔉.iso φ (mem_unip.1 hg).2⟩
 
 /- English proof (translation)
-The claim follows from `mem_par.trans (forall_congr' fun _ => diagH_mem_parab F)`.
+A detailed English derivation is pending.
 -/
 theorem mem_parRat {γ : GRat hc V} : γ ∈ 𝔉.parRat hc ↔ ∀ i, ∀ x ∈ 𝔉.X i, ratAct hc V γ x ∈ 𝔉.X i :=
   mem_par.trans (forall_congr' fun _ => diagH_mem_parab F)
 
 /- English proof (translation)
-The claim follows from `mem_unip.trans (and_congr (forall_congr' fun i => diagH_mem_trivOn F (𝔉.le_succ i)) (diagH_mem_trivOn F 𝔉.iso))`.
+A detailed English derivation is pending.
 -/
 theorem mem_unipRat {γ : GRat hc V} : γ ∈ 𝔉.unipRat hc ↔
     (∀ i : Fin 𝔉.k, ∀ x ∈ 𝔉.X i.succ, ratAct hc V γ x - x ∈ 𝔉.X i.castSucc) ∧
@@ -751,13 +749,13 @@ theorem mem_unipRat {γ : GRat hc V} : γ ∈ 𝔉.unipRat hc ↔
   mem_unip.trans (and_congr (forall_congr' fun i => diagH_mem_trivOn F (𝔉.le_succ i)) (diagH_mem_trivOn F 𝔉.iso))
 
 /- English proof (translation)
-The claim follows from `(mem_par.trans (forall_congr' fun _ => diagH_mem_parab R)).trans mem_parRat.symm`.
+A detailed English derivation is pending.
 -/
 theorem diagH_mem_par [Nontrivial R] {γ : GRat hc V} : diagH hc.sig V.gram R γ ∈ 𝔉.par hc R ↔ γ ∈ 𝔉.parRat hc :=
   (mem_par.trans (forall_congr' fun _ => diagH_mem_parab R)).trans mem_parRat.symm
 
 /- English proof (translation)
-The claim follows from `(mem_unip.trans (and_congr (forall_congr' fun i => diagH_mem_trivOn R (𝔉.le_succ i)) (diagH_mem_trivOn R 𝔉.iso))).trans mem_unipRat.symm`.
+A detailed English derivation is pending.
 -/
 theorem diagH_mem_unip [Nontrivial R] {γ : GRat hc V} : diagH hc.sig V.gram R γ ∈ 𝔉.unip hc R ↔ γ ∈ 𝔉.unipRat hc :=
   (mem_unip.trans (and_congr (forall_congr' fun i => diagH_mem_trivOn R (𝔉.le_succ i))
@@ -766,13 +764,13 @@ theorem diagH_mem_unip [Nontrivial R] {γ : GRat hc V} : diagH hc.sig V.gram R �
 variable (𝔉 hc R) [TopologicalSpace R] [IsTopologicalRing R] [T2Space R]
 
 /- English proof (translation)
-Rewrite using `[par, Subgroup.coe_iInf]`. Conclude with `isClosed_iInter fun _ => isClosed_parab _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isClosed_par : IsClosed (𝔉.par hc R : Set (HA R hc.sig V.gram)) := by
   rw [par, Subgroup.coe_iInf]; exact isClosed_iInter fun _ => isClosed_parab _
 
 /- English proof (translation)
-Use `(isClosed_iInter fun i => isClosed_trivOn (hc := hc) (R := R) (𝔉.le_succ i)).inter (isClosed_trivOn 𝔉.iso) using 1` and compare the differences between its conclusion and the goal. Use extensionality with `g`. Simplify using `using mem_unip`.
+Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem isClosed_unip : IsClosed (𝔉.unip hc R : Set (HA R hc.sig V.gram)) := by
   convert (isClosed_iInter fun i => isClosed_trivOn (hc := hc) (R := R) (𝔉.le_succ i)).inter (isClosed_trivOn 𝔉.iso) using 1
@@ -804,7 +802,7 @@ instance (v : HeightOneSpectrum (𝓞 F)) : LocallyCompactSpace (𝔉.unip hc (F
 variable {𝔉 hc} {g : GAd hc.sig V.gram}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h => ⟨fun _ => mapH_mem_par _ h, fun _ => mapH_mem_par _ h⟩, fun h => mem_par.2 fun i => mem_parab_of_adelic (fun w => mem_par.1 (h.1 w) i) fun v => mem_par.1 (h.2 v) i⟩`.
+Supply the required witnesses or components.
 -/
 theorem mem_par_adelic : g ∈ 𝔉.par hc (AF F) ↔ (∀ w, projArch hc.sig V.gram w g ∈ 𝔉.par hc w.Completion) ∧
     ∀ v, proj hc.sig V.gram v g ∈ 𝔉.par hc (Fv F v) :=
@@ -812,7 +810,7 @@ theorem mem_par_adelic : g ∈ 𝔉.par hc (AF F) ↔ (∀ w, projArch hc.sig V.
     mem_parab_of_adelic (fun w => mem_par.1 (h.1 w) i) fun v => mem_par.1 (h.2 v) i⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h => ⟨fun _ => mapH_mem_unip _ h, fun _ => mapH_mem_unip _ h⟩, fun h => mem_unip.2 ⟨fun i => mem_trivOn_of_adelic (𝔉.le_succ i) (fun w => (mem_unip.1 (h.1 w)).1 i) fun v => (mem_unip.1 (h.2 v)).1 i, mem_trivOn_of_adelic 𝔉.iso (fun w => (mem_unip.1 (h.1 w)).2) fun v => (mem_u …`.
+Supply the required witnesses or components.
 -/
 theorem mem_unip_adelic : g ∈ 𝔉.unip hc (AF F) ↔ (∀ w, projArch hc.sig V.gram w g ∈ 𝔉.unip hc w.Completion) ∧
     ∀ v, proj hc.sig V.gram v g ∈ 𝔉.unip hc (Fv F v) :=
@@ -821,7 +819,7 @@ theorem mem_unip_adelic : g ∈ 𝔉.unip hc (AF F) ↔ (∀ w, projArch hc.sig 
     mem_trivOn_of_adelic 𝔉.iso (fun w => (mem_unip.1 (h.1 w)).2) fun v => (mem_unip.1 (h.2 v)).2⟩⟩
 
 /- English proof (translation)
-The claim follows from `mem_unip_adelic.trans ⟨fun h => by simpa using h.2 v, fun h => ⟨fun w => by simp [one_mem], fun u => by by_cases e : u = v · subst e; simpa using h · rw [proj_emb_ne _ _ e]; exact one_mem _⟩⟩`.
+A detailed English derivation is pending.
 -/
 theorem emb_mem_unip {v : HeightOneSpectrum (𝓞 F)} {x : GLoc hc.sig V.gram v} :
     emb hc.sig V.gram v x ∈ 𝔉.unip hc (AF F) ↔ x ∈ 𝔉.unip hc (Fv F v) :=
@@ -831,7 +829,7 @@ theorem emb_mem_unip {v : HeightOneSpectrum (𝓞 F)} {x : GLoc hc.sig V.gram v}
     · rw [proj_emb_ne _ _ e]; exact one_mem _⟩⟩
 
 /- English proof (translation)
-The claim follows from `mem_par_adelic.trans ⟨fun h => by simpa using h.2 v, fun h => ⟨fun w => by simp [one_mem], fun u => by by_cases e : u = v · subst e; simpa using h · rw [proj_emb_ne _ _ e]; exact one_mem _⟩⟩`.
+A detailed English derivation is pending.
 -/
 theorem emb_mem_par {v : HeightOneSpectrum (𝓞 F)} {x : GLoc hc.sig V.gram v} :
     emb hc.sig V.gram v x ∈ 𝔉.par hc (AF F) ↔ x ∈ 𝔉.par hc (Fv F v) :=
@@ -851,7 +849,7 @@ variable (V : HSpace E)
 def wittIndex : ℕ := sSup {d | ∃ W : Submodule E V.V, W ≤ perp V W ∧ Module.finrank E W = d}
 
 /- English proof (translation)
-The claim follows from `have h : BddAbove {d | ∃ W : Submodule E V.V, W ≤ perp V W ∧ Module.finrank E W = d} := ⟨Module.finrank E V.V, by rintro _ ⟨W, -, rfl⟩; exact W.finrank_le⟩ ⟨Nat.sSup_mem ⟨_, ⊥, bot_le, rfl⟩ h, fun _ hd => le_csSup h hd⟩`.
+A detailed English derivation is pending.
 -/
 theorem isGreatest_wittIndex :
     IsGreatest {d | ∃ W : Submodule E V.V, W ≤ perp V W ∧ Module.finrank E W = d} (wittIndex V) :=
@@ -862,15 +860,15 @@ theorem isGreatest_wittIndex :
 variable {V}
 
 /- English proof (translation)
-The claim follows from `(isGreatest_wittIndex V).2 ⟨W, h, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem finrank_le_wittIndex {W : Submodule E V.V} (h : W ≤ perp V W) : Module.finrank E W ≤ wittIndex V :=
   (isGreatest_wittIndex V).2 ⟨W, h, rfl⟩
 
 /- English proof (translation)
-Use `⟨fun h => ?_, fun h => (isGreatest_wittIndex V).2 h⟩` and prove the remaining obligations. Take `⟨W, hW, e⟩` from `(isGreatest_wittIndex V).1`. Take `⟨f, hf⟩` from `exists_linearIndependent_of_le_finrank (R := E) (M := W) (h.trans e.ge)`. Use `⟨_, le_perp_of_le (Submodule.span_le.2 ?_) hW, (finrank_span_eq_card (hf.map' W.subtype W.ker_subtype)).trans (Fintype.card_fin i)⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨a, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Conclude with `(f a).2`.
+A detailed English derivation is pending.
 -/
 theorem le_wittIndex_iff {i : ℕ} :
     i ≤ wittIndex V ↔ ∃ W : Submodule E V.V, W ≤ perp V W ∧ Module.finrank E W = i := by
@@ -883,9 +881,9 @@ theorem le_wittIndex_iff {i : ℕ} :
   exact (f a).2
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Take `⟨W, hW, e⟩` from `(isGreatest_wittIndex V).1`. Conclude with `⟨W, fun h0 => by rw [h0, finrank_bot] at e; omega, hW⟩`. Introduce and unpack `⟨W, h0, hW⟩`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `(Nat.pos_of_ne_zero fun e => h0 (Submodule.finrank_eq_zero.1 e)).trans_le (finrank_le_wittIndex hW)`.
+A detailed English derivation is pending.
 -/
 theorem wittIndex_pos_iff : 0 < wittIndex V ↔ ∃ W, IsIsotropic V W := by
   constructor
@@ -896,9 +894,9 @@ theorem wittIndex_pos_iff : 0 < wittIndex V ↔ ∃ W, IsIsotropic V W := by
     exact (Nat.pos_of_ne_zero fun e => h0 (Submodule.finrank_eq_zero.1 e)).trans_le (finrank_le_wittIndex hW)
 
 /- English proof (translation)
-Rewrite using `[← not_iff_not, ← Ne, ← Nat.pos_iff_ne_zero, wittIndex_pos_iff]`. Use `push Not`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨W, h0, hW⟩`. Take `⟨x, hx, h⟩` from `(Submodule.ne_bot_iff W).1 h0`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨x, mem_perp.1 (hW hx) x hx, h⟩`. Introduce and unpack `⟨x, h, hx⟩`. Use `⟨E ∙ x, by simpa using hx, (Submodule.span_singleton_le_iff_mem _ _).2 (mem_perp.2 fun y hy => ?_)⟩` and prove the remaining obligations. Take `⟨a, rfl⟩` from `Submodule.mem_span_singleton.1 hy`. Simplify using `[HSpace.hD, show V.hT x x = 0 from h]`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem wittIndex_eq_zero_iff : wittIndex V = 0 ↔ ∀ x, V.hD x x = 0 → x = 0 := by
   rw [← not_iff_not, ← Ne, ← Nat.pos_iff_ne_zero, wittIndex_pos_iff]
@@ -913,7 +911,7 @@ theorem wittIndex_eq_zero_iff : wittIndex V = 0 ↔ ∀ x, V.hD x x = 0 → x = 
     simp [HSpace.hD, show V.hT x x = 0 from h]
 
 /- English proof (translation)
-Establish `h : StrictMono fun i => Module.finrank E (𝔉.X i)` using `fun i j h => Submodule.finrank_lt_finrank_of_lt (𝔉.strictMono h)`. Establish `: ∀ i : Fin (𝔉.k + 1), i.val ≤ Module.finrank E (𝔉.X i)` using `fun i => Fin.induction (Nat.zero_le _) (fun i ih => Nat.succ_le_of_lt (ih.trans_lt (h i.castSucc_lt_succ))) i`. Conclude with `(this (Fin.last _)).trans (finrank_le_wittIndex 𝔉.iso)`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem IsoFlag.k_le_wittIndex (𝔉 : IsoFlag V) : 𝔉.k ≤ wittIndex V := by
   have h : StrictMono fun i => Module.finrank E (𝔉.X i) := fun i j h => Submodule.finrank_lt_finrank_of_lt (𝔉.strictMono h)
@@ -922,7 +920,7 @@ theorem IsoFlag.k_le_wittIndex (𝔉 : IsoFlag V) : 𝔉.k ≤ wittIndex V := by
   exact (this (Fin.last _)).trans (finrank_le_wittIndex 𝔉.iso)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun ⟨𝔉, h⟩ => lt_of_lt_of_le h 𝔉.k_le_wittIndex, fun h => (wittIndex_pos_iff.1 h).elim fun _ hW => ⟨_, IsoFlag.proper_single hW⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_proper_iff : (∃ 𝔉 : IsoFlag V, 𝔉.Proper) ↔ 0 < wittIndex V :=
   ⟨fun ⟨𝔉, h⟩ => lt_of_lt_of_le h 𝔉.k_le_wittIndex,

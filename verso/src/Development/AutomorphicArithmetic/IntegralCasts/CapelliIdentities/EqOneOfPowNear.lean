@@ -1,17 +1,17 @@
 import Mathlib
 
 /- English proof (translation)
-Introduce `z h`. Establish `step : ∀ n : ℕ, (3 / 2 : ℝ) * ‖z ^ n - 1‖ ≤ ‖z ^ (n * 2) - 1‖`. Introduce `n`. Establish `e : z ^ (n * 2) - 1 = (z ^ n + 1) * (z ^ n - 1)` using `by ring`. Establish `h1 : ‖(2 : ℂ)‖ ≤ ‖z ^ n + 1‖ + ‖z ^ n - 1‖`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2 : (2 : ℂ) = (z ^ n + 1) - (z ^ n - 1)` using `by ring`. Combine the equalities or inequalities in the displayed calculation. Establish `h2 : ‖(2 : ℂ)‖ = 2` using `by simp`. Establish `h3` using `h n`. Rewrite using `[e, norm_mul]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_le_mul_of_nonneg_right (by linarith) (norm_nonneg _)`. Establish `grow : ∀ k : ℕ, (3 / 2 : ℝ) ^ k * ‖z - 1‖ ≤ ‖z ^ (2 ^ k) - 1‖`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => simp`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `succ k ih`. Establish `s` using `step (2 ^ k)`. Rewrite using `[pow_succ, pow_succ]`. Combine the linear equalities and inequalities to obtain the conclusion. Assume the negation of the conclusion as `hz`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `hpos : 0 < ‖z - 1‖` using `norm_pos_iff.mpr (sub_ne_zero.mpr hz)`. Take `⟨k, hk⟩` from `pow_unbounded_of_one_lt ((1 / 2 : ℝ) / ‖z - 1‖) (by norm_num : (1 : ℝ) < 3 / 2)`. Rewrite `hk` using `[div_lt_iff₀ hpos]`. Establish `g` using `grow k`. Establish `h4` using `h (2 ^ k)`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.EqOneOfPowNear.eq_one_of_pow_near :
     ∀ (z : ℂ),

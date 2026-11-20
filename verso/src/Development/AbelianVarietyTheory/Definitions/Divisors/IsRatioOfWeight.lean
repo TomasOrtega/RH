@@ -88,7 +88,7 @@ def val (P : Pair p) (a b : ℤ) (σ : k →+* ℂ) (y : CxPts p σ) (f : X.func
     (Real.exp (-(a * (P.L.φ σ).φ (pick (P.L.φ σ).isLB y) y + b * (P.A.φ σ).φ (pick (P.A.φ σ).isLB y) y) / 2) : ℝ)
 
 /- English proof (translation)
-Rewrite using `[val, norm_mul, Complex.norm_real, Real.norm_of_nonneg (Real.exp_pos _).le]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem norm_val (P : Pair p) (a b : ℤ) (σ : k →+* ℂ) (y : CxPts p σ) (f : X.functionField) :
     ‖val P a b σ y f‖ = P.nu a b σ y f := by
@@ -141,7 +141,7 @@ omit [IsIntegral X] in
 def fib (X : Scheme.{0}) (ℓ : ℕ) : Set X := {x | ringChar (X.residueField x) = ℓ}
 
 /- English proof (translation)
-The claim follows from `Nat.one_pos mem _ x i j _ _ := by rw [IntExample.loc_eq] exact (unitAt_one x).regAt cover z := ⟨0, fun i j _ _ => by rw [IntExample.loc_eq]; exact unitAt_one z⟩`.
+A detailed English derivation is pending.
 -/
 theorem gens_int : Gens IntExample.pair 0 1 fun _ => 1 where
   pos := Nat.one_pos
@@ -151,7 +151,7 @@ theorem gens_int : Gens IntExample.pair 0 1 fun _ => 1 where
   cover z := ⟨0, fun i j _ _ => by rw [IntExample.loc_eq]; exact unitAt_one z⟩
 
 /- English proof (translation)
-Use `⟨⟨inferInstance, fun _ _ _ => integrable_const _⟩, ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Simplify using `[gram, finsum_unique]`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem gram_point : IsFam (S := Unit) (Y := fun _ => Unit) (ι := Unit) (fun _ => Measure.dirac ()) (fun _ _ _ => 1) ∧
     gram (S := Unit) (Y := fun _ => Unit) (ι := Unit) (fun _ => Measure.dirac ()) (fun _ _ _ => 1) = 1 := by
@@ -160,9 +160,9 @@ theorem gram_point : IsFam (S := Unit) (Y := fun _ => Unit) (ι := Unit) (fun _ 
   simp [gram, finsum_unique]
 
 /- English proof (translation)
-Establish `h1 : ∀ u, HasFDerivAt (fun w => fderiv ℝ g w u) ((fderiv ℝ (fderiv ℝ g) y).flip u) y` using `fun u => by`. Simplify using `using hD.hasFDerivAt.clm_apply (hasFDerivAt_const u y)`. Establish `h3 : HasFDerivAt (fun w => fderiv ℝ g w u + c * fderiv ℝ g w u') ((fderiv ℝ (fderiv ℝ g) y).flip u + c • (fderiv ℝ (fderiv ℝ g) y).flip u') y` using `HasFDerivAt.add (h1 u) (HasFDerivAt.const_mul (h1 u') c)`. Rewrite using `[(show HasFDerivAt (fun w => (fderiv ℝ g w u + c * fderiv ℝ g w u') / 2) ((2 : ℂ)⁻¹ • ((fderiv ℝ (fderiv ℝ g) y).flip u + c • (fderiv ℝ (fderiv ℝ g) y).flip u')) y by`. Simplify `HasFDerivAt.mul_const h3 (2 : ℂ)⁻¹).fderiv]` using `only [div_eq_mul_inv]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Apply the tactic sequence `simp <;> ring`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem fderiv_half_comb_fderiv {n : ℕ} {g : ReciprocityTheory.L2DbarEstimates.V n → ℂ} {y : ReciprocityTheory.L2DbarEstimates.V n} (hD : DifferentiableAt ℝ (fderiv ℝ g) y)
     (c : ℂ) (u u' v : ReciprocityTheory.L2DbarEstimates.V n) :
@@ -179,7 +179,7 @@ private theorem fderiv_half_comb_fderiv {n : ℕ} {g : ReciprocityTheory.L2DbarE
   simp <;> ring
 
 /- English proof (translation)
-Use function extensionality and compare the values at `w`. Simplify using `[ReciprocityTheory.L2DbarEstimates.wd, sub_eq_add_neg]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 private theorem wd_eq_half_fderiv_sub_I {n : ℕ} (j : Fin n) (g : ReciprocityTheory.L2DbarEstimates.V n → ℂ) :
     ReciprocityTheory.L2DbarEstimates.wd n j g = fun w => (fderiv ℝ g w (ReciprocityTheory.L2DbarEstimates.bas n j) +
@@ -195,11 +195,11 @@ private theorem wdb_eq_half_fderiv_add_I {n : ℕ} (j : Fin n) (g : ReciprocityT
       Complex.I * fderiv ℝ g w (Complex.I • ReciprocityTheory.L2DbarEstimates.bas n j)) / 2 := rfl
 
 /- English proof (translation)
-Establish `hg2 : ContDiffAt ℝ 2 (fun v => ((f v : ℝ) : ℂ)) x` using `Complex.ofRealCLM.contDiff.contDiffAt.comp x hf`. Establish `hD : DifferentiableAt ℝ (fderiv ℝ (fun v => ((f v : ℝ) : ℂ))) x` using `(hg2.fderiv_right (m := 1) (by norm_num)).differentiableAt (by norm_num)`. Establish `hsymm` using `hg2.isSymmSndFDerivAt (by simp)`. Establish `hreal : (fun w => (starRingEnd ℂ) ((fun v => ((f v : ℝ) : ℂ)) w)) = fun v => ((f v : ℝ) : ℂ)`. Use function extensionality and compare the values at `fun w => Complex.conj_ofReal _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hc : (fun w => (starRingEnd ℂ) (ReciprocityTheory.L2DbarEstimates.wdb n i (fun v => ((f v : ℝ) : ℂ)) w)) = ReciprocityTheory.L2DbarEstimates.wd n i (fun v => ((f v : ℝ) : ℂ))`. Use function extensionality and compare the values at `w`. Rewrite using `[← ReciprocityTheory.L2DbarEstimates.ChartWirtingerDerivatives.wd_conj', hreal]`. Simplify using `only [ReciprocityTheory.L2DbarEstimates.cHess, Matrix.of_apply, Complex.star_def]`. Rewrite using `[← ReciprocityTheory.L2DbarEstimates.ChartWirtingerDerivatives.wdb_conj', hc]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [wd_eq_half_fderiv_sub_I, wdb_eq_half_fderiv_add_I]`. Rewrite using `[fderiv_half_comb_fderiv hD, fderiv_half_comb_fderiv hD, fderiv_half_comb_fderiv hD, fderiv_half_comb_fderiv hD]`. Rewrite using `[hsymm (ReciprocityTheory.L2DbarEstimates.bas n i) (ReciprocityTheory.L2DbarEstimates.bas n j), hsymm (ReciprocityTheory.L2DbarEstimates.bas n i) (Complex.I • ReciprocityTheory.L2DbarEstimates.bas n j), hsymm (Complex.I • ReciprocityTheory.L2DbarEstimates.bas n i) (ReciprocityThe …`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem star_cHess_swap_of_contDiffAt {n : ℕ} {f : ReciprocityTheory.L2DbarEstimates.V n → ℝ} {x : ReciprocityTheory.L2DbarEstimates.V n} (hf : ContDiffAt ℝ 2 f x) (i j : Fin n) :
     star (ReciprocityTheory.L2DbarEstimates.cHess n (fun v => ((f v : ℝ) : ℂ)) x j i) = ReciprocityTheory.L2DbarEstimates.cHess n (fun v => ((f v : ℝ) : ℂ)) x i j := by
@@ -233,15 +233,13 @@ omit [IsIntegral X]
 open scoped ComplexConjugate in
 
 /- English proof (translation)
-Establish `hH` using `star_cHess_swap_of_contDiffAt hf`. Establish `hP : (cHess n (fun v => ((f v : ℝ) : ℂ)) x).PosDef`. Use `Matrix.posDef_iff_dotProduct_mulVec.mpr ⟨Matrix.IsHermitian.ext hH, fun z hz => ?_⟩` and prove the remaining obligations. Establish `hz' : (fun i => (starRingEnd ℂ) (z i)) ≠ 0` using `fun h => hz (funext fun i => by`. Simplify using `using congrFun h i)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hre` using `hL _ hz'`. Establish `heq : leviV n (fun v => ((f v : ℝ) : ℂ)) x (fun i => (starRingEnd ℂ) (z i)) = dotProduct (star z) (Matrix.mulVec (cHess n (fun v => ((f v : ℝ) : ℂ)) x) z)`. Simplify using `only [ReciprocityTheory.L2DbarEstimates.leviV, ReciprocityTheory.L2DbarEstimates.cHess, dotProduct, Matrix.mulVec, Matrix.of_apply, Finset.mul_sum, Pi.star_apply, Complex.star_def, Complex.conj_conj]`. Use `Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hself : (starRingEnd ℂ) (dotProduct (star z) (Matrix.mulVec (cHess n (fun v => ((f v : ℝ) : ℂ)) x) z)) = dotProduct (star z) (Matrix.mulVec (cHess n (fun v => ((f v : ℝ) : ℂ)) x) z)`. Simplify using `only [dotProduct, Matrix.mulVec, Pi.star_apply, Complex.star_def, map_sum, map_mul, Complex.conj_conj, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Use `hH j k` as an intermediate fact.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `this` using `[Complex.star_def]`. Rewrite using `[this]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `hre` using `[heq]`. Conclude with `Complex.pos_iff.2 ⟨hre, (Complex.conj_eq_iff_im.1 hself).symm⟩`.
-
-Conclude with `(Complex.pos_iff.1 hP.det_pos).1`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem det_cHess_pos {n : ℕ} {f : V n → ℝ} {x : V n} (hf : ContDiffAt ℝ 2 f x)
     (hL : ∀ ξ : Fin n → ℂ, ξ ≠ 0 → 0 < (leviV n (fun v => ((f v : ℝ) : ℂ)) x ξ).re) :
@@ -286,7 +284,7 @@ def VolDens.ofWeight {σ : k →+* ℂ} {D : ℕ} {B : LB X} (φ : Weight p σ B
   trans c c' _ hy hy' := c.chernDens_trans c' h hy hy'
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨continuous_const, fun _ _ _ => (one_mul _).symm⟩`.
+Supply the required witnesses or components.
 -/
 theorem VolDens.isRatio_ofWeight {σ : k →+* ℂ} {D : ℕ} {B : LB X} (φ : Weight p σ B) (h : φ.IsCInf)
     (hp : ∀ c : AlgChart p σ D, ∀ y ∈ c.e.source, 0 < c.chernDens φ y) :
@@ -299,7 +297,7 @@ def volFS (k : Type) [CommRing k] (σ : k →+* ℂ) (N : ℕ) : VolDens (PSpace
       fun ξ hξ => WeightShift.strictPos_fsO1 N (AnRead.all _ σ N) _ c y ⟨hy, mem_pick _ y⟩ ξ hξ)
 
 /- English proof (translation)
-Simplify using `only [VolDens.meas, volFS, VolDens.ofWeight, Weight.chernPart, Units.val_one, Int.cast_one, one_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem volFS_meas (k : Type) [CommRing k] (σ : k →+* ℂ) (N : ℕ) :
     (volFS k σ N).meas = ((ProjSpace.hermitianTwistingSheaf k N).φ σ).chernPart N 1 := by
@@ -331,7 +329,7 @@ def SmFn.ofSec (L : HermLB p) (s : L.B.Sec) : SmFn p where
       secVal_apply, CxPts.ev_conj h hi, RCLike.norm_conj]
 
 /- English proof (translation)
-The claim follows from `AddSubgroup.zmultiples_le.2 fun x i j _ _ => by rw [IntExample.loc_eq] exact IntExample.regAt_nat x 2 fg _ := ⟨{((2 : ℕ) : (Sp ℤ).functionField)}, by simp [AddSubgroup.zmultiples_eq_closure]⟩ small := by refine ⟨1, le_rfl, fun m _ => AddSubgroup.zmultiples_le.2 (AddSubgroup.subse …`.
+A detailed English derivation is pending.
 -/
 theorem goodFam_int : GoodFam IntExample.pair 0 1 fun _ => AddSubgroup.zmultiples ((2 : ℕ) : (Sp ℤ).functionField) where
   le m := AddSubgroup.zmultiples_le.2 fun x i j _ _ => by
@@ -361,7 +359,7 @@ theorem goodFam_int : GoodFam IntExample.pair 0 1 fun _ => AddSubgroup.zmultiple
     exact tendsto_const_nhds
 
 /- English proof (translation)
-The claim follows from `Nat.one_pos mem l x i j _ _ := by rw [IntExample.loc_eq] fin_cases l · exact IntExample.regAt_nat x 2 · exact IntExample.regAt_nat x 3 cover z := by by_cases h : UnitAt z ((2 : ℕ) : (Sp ℤ).functionField) · exact ⟨0, fun i j _ _ => by rw [IntExample.loc_eq]; exact h⟩ · refine ⟨1, …`.
+A detailed English derivation is pending.
 -/
 theorem gens_int' : Gens IntExample.pair 1 1 ![((2 : ℕ) : (Sp ℤ).functionField), ((3 : ℕ) : (Sp ℤ).functionField)] where
   pos := Nat.one_pos
@@ -385,7 +383,7 @@ theorem gens_int' : Gens IntExample.pair 1 1 ![((2 : ℕ) : (Sp ℤ).functionFie
         norm_num
 
 /- English proof (translation)
-Introduce `σ y`. Rewrite using `[Fin.sum_univ_succ, Fin.sum_univ_succ, Fin.sum_univ_zero]`. Simplify using `only [Matrix.cons_val_zero, Matrix.cons_val_succ]`. Rewrite using `[IntExample.nu_nat, IntExample.nu_nat]`. Simplify using `only [SmFn.const]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
 Evaluate the numerical expressions.
 -/

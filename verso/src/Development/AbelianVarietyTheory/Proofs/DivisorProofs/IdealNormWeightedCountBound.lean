@@ -24,7 +24,7 @@ abbrev normW (w : InfinitePlace F) (c : E) : ℝ :=
   ‖Algebra.norm w.Completion (inclR (F := F) w.Completion c)‖
 
 /- English proof (translation)
-Establish `h0 : (0 : ℚ) ≤ FractionalIdeal.absNorm I` using `FractionalIdeal.absNorm_nonneg I`. Establish `h1 : FractionalIdeal.absNorm I ≠ 0` using `fun h => hI (FractionalIdeal.absNorm_eq_zero_iff.mp h)`. Conclude with `lt_of_le_of_ne h0 (Ne.symm h1)` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem absNorm_pos' {K : Type} [Field K] [NumberField K]
     {I : FractionalIdeal (nonZeroDivisors (𝓞 K)) K} (hI : I ≠ 0) :
@@ -34,23 +34,21 @@ theorem absNorm_pos' {K : Type} [Field K] [NumberField K]
   exact_mod_cast lt_of_le_of_ne h0 (Ne.symm h1)
 
 /- English proof (translation)
-Take `⟨C2, hC2⟩` from `GlobalTheory.T.bounded_norm_ideal_elements_finite_count F E σ hcm`. Take `⟨C3, hC3⟩` from `GlobalTheory.T.lattice_point_weighted_power_sum_bound (InfinitePlace F) s hs`. Establish `hP : 0 < ∏ w, B w` using `Finset.prod_pos fun w _ => hB w`. Use `⟨max C3 0 * max 1 (max C2 0 / ∏ w, B w), by positivity, ?_⟩` and prove the remaining obligations. Introduce `𝔞 h𝔞 A hA`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hN` using `absNorm_pos' h𝔞`. Use `set N : ℝ := (FractionalIdeal.absNorm 𝔞 : ℝ) with hNdef`. Use `set P : ℝ := ∏ w, B w with hPdef`. Use `set K : ℝ := max C2 0 / (P * N) with hK`. Establish `hK0 : 0 ≤ K` using `by positivity`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hf0 : ∀ (c : {c : E // c ∈ 𝔞}) w, 0 ≤ normW w (c : E) * B w` using `fun c w => mul_nonneg (norm_nonneg _) (hB w).le`. Establish `hcount : ∀ T : InfinitePlace F → ℝ, (∀ w, 0 ≤ T w) → {c : {c : E // c ∈ 𝔞} | ∀ w, normW w (c : E) * B w ≤ T w}.Finite ∧ ({c : {c : E // c ∈ 𝔞} | ∀ w, normW w (c : E) * B w ≤ T w}.ncard : ℝ) ≤ 1 + K * ∏ w, T w`. Introduce `T hT`. Take `⟨hfin, hcard⟩` from `hC2 𝔞 h𝔞 (fun w => T w / B w) fun w => div_nonneg (hT w) (hB w).le`. Establish `hset : {c : {c : E // c ∈ 𝔞} | ∀ w, normW w (c : E) * B w ≤ T w} = Subtype.val ⁻¹' {c : E | c ∈ 𝔞 ∧ ∀ w, normW w c ≤ T w / B w}`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `c`. Simplify using `only [Set.mem_setOf_eq, Set.mem_preimage, c.2, true_and]`. Conclude with `forall_congr' fun w => (le_div_iff₀ (hB w)).symm`. Rewrite using `[hset]`. Use `⟨hfin.preimage Subtype.val_injective.injOn, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Set.ncard_preimage_of_injective_subset_range Subtype.val_injective (fun x hx => ⟨⟨x, hx.1⟩, rfl⟩)]`. Use `hcard.trans ?_` and prove the remaining obligations. Establish `hT0 : 0 ≤ ∏ w, T w` using `Finset.prod_nonneg fun w _ => hT w`. Rewrite using `[Finset.prod_div_distrib, hK]`. Establish `: C2 * ((∏ w, T w) / P) / N ≤ max C2 0 * ((∏ w, T w) / P) / N` using `by gcongr`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `le_max_left _ _`. Combine the equalities or inequalities in the displayed calculation. Establish `h3` using `hC3 {c : E // c ∈ 𝔞} (fun c w => normW w (c : E) * B w) K A hf0 hK0 hA hcount`. Use `h3.trans (ENNReal.ofReal_le_ofReal ?_)` and prove the remaining obligations. Establish `hPA : 0 ≤ ∏ w, A w` using `Finset.prod_nonneg fun w _ => (hA w).le`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hX : 0 ≤ (∏ w, A w) ^ (-s)` using `Real.rpow_nonneg hPA _`. Establish `hM1 : 1 ≤ max 1 (max C2 0 / P)` using `le_max_left _ _`. Establish `hM2 : max C2 0 / P ≤ max 1 (max C2 0 / P)` using `le_max_right _ _`. Establish `hy : 0 ≤ (∏ w, A w) / N` using `div_nonneg hPA hN.le`. Establish `hKA : K * ∏ w, A w = max C2 0 / P * ((∏ w, A w) / N)` using `by rw [hK]; field_simp`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : 1 + K * ∏ w, A w ≤ max 1 (max C2 0 / P) * (1 + (∏ w, A w) / N)`. Rewrite using `[hKA]`. Use the polynomial consequences of the given equalities and inequalities. Establish `h1' : 0 ≤ 1 + K * ∏ w, A w` using `by positivity`. Establish `hC3' : C3 ≤ max C3 0` using `le_max_left _ _`.
-
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem inner_bound (σ : E →ₐ[F] E) (hcm : IsCMExt F E σ) (B : InfinitePlace F → ℝ)
     (hB : ∀ w, 0 < B w) (s : ℝ) (hs : 1 < s) :
@@ -114,41 +112,37 @@ end GlobalTheory.IdealBoxSum
 namespace GlobalTheory.IdealBoxSum
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hcm I₀ hI₀ B hB s hs δ hδ`. Take `⟨C5, hC5, h5⟩` from `inner_bound σ hcm B hB s (by linarith)`. Take `⟨Z1, hZ1⟩` from `GlobalTheory.T.subideal_norm_power_series_bound E s (by linarith)`. Take `⟨Z2, hZ2⟩` from `GlobalTheory.T.subideal_norm_power_series_bound E (s - 1) (by linarith)`. Establish `hN₀` using `absNorm_pos' hI₀`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `set N₀ : ℝ := (FractionalIdeal.absNorm I₀ : ℝ) with hN₀def`. Use `⟨C5 * max Z1 0 / δ + C5 * max Z2 0 / N₀, ?_⟩` and prove the remaining obligations. Introduce `I A hA hδI`. Use `set NI : ℝ := (FractionalIdeal.absNorm I : ℝ) with hNIdef`. Use `set PA : ℝ := ∏ w, A w with hPAdef`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hNI0 : 0 ≤ NI`. Establish `: (0 : ℚ) ≤ FractionalIdeal.absNorm I` using `FractionalIdeal.absNorm_nonneg I`. Rewrite using `[hNIdef]`. Conclude with `this` after adjusting the coercions. Establish `hPA0 : 0 ≤ PA` using `Finset.prod_nonneg fun w _ => hA w`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hX : 0 < NI * PA` using `lt_of_lt_of_le hδ hδI`. Establish `hNI : 0 < NI` using `lt_of_le_of_ne hNI0 (fun h => by rw [← h, zero_mul] at hX; exact lt_irrefl _ hX)`. Establish `hPA : 0 < PA` using `lt_of_le_of_ne hPA0 (fun h => by rw [← h, mul_zero] at hX; exact lt_irrefl _ hX)`. Establish `hI : I ≠ 0`. Introduce and unpack `rfl`.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Simplify using `[NI] at hNI`. Establish `hApos : ∀ w, 0 < A w`. Introduce `w`. Break down `(hA w).lt_or_eq with h | h` into its components or cases. Conclude with `h`.
+It suffices to derive a contradiction. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-It suffices to derive a contradiction. Establish `: PA = 0` using `Finset.prod_eq_zero (Finset.mem_univ w) h.symm`. Combine the linear equalities and inequalities to obtain the conclusion. Use `set g : E → ENNReal := fun c => ENNReal.ofReal ((∏ w, (A w + normW w c * B w)) ^ (-s)) with hg`. Establish `hsplit : ∀ c : {c : E // c ≠ 0}, ENNReal.ofReal (((FractionalIdeal.absNorm (I ⊓ FractionalIdeal.spanSingleton (nonZeroDivisors (𝓞 E)) (c : E)⁻¹ * I₀) : ℝ) * ∏ w, (A w + ‖Algebra.norm w.Completion (inclR (F` using `F) w.Completion (c : E))‖ * B w)) ^ (-s)) = ENNReal.ofReal ((FractionalIdeal.absNorm (I ⊓ FractionalIdeal.spanSingleton (nonZeroDivisors (𝓞 E)) (c : E)⁻¹ * I₀) : ℝ) ^ (-s)) * g c := by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `c`. Establish `h1 : (0 : ℝ) ≤ (FractionalIdeal.absNorm (I ⊓ FractionalIdeal.spanSingleton (nonZeroDivisors (𝓞 E)) (c : E)⁻¹ * I₀) : ℝ)`. Conclude with `FractionalIdeal.absNorm_nonneg _` after adjusting the coercions. Establish `h2 : (0 : ℝ) ≤ ∏ w, (A w + normW w (c : E) * B w)` using `Finset.prod_nonneg fun w _ => add_nonneg (hA w) (mul_nonneg (norm_nonneg _) (hB w).le)`. Rewrite using `[hg, Real.mul_rpow h1 h2, ENNReal.ofReal_mul (Real.rpow_nonneg h1 _)]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[tsum_congr hsplit]`. Use `(GlobalTheory.T.ideal_intersection_norm_series_bound E I₀ I hI₀ hI s g).trans ?_` and prove the remaining obligations. Establish `hJ : ∀ J : {J : FractionalIdeal (nonZeroDivisors (𝓞 E)) E // J ≠ 0 ∧ J ≤ I}, ENNReal.ofReal ((FractionalIdeal.absNorm (J : FractionalIdeal (nonZeroDivisors (𝓞 E)) E) : ℝ) ^ (-s)) * ∑' c : {c : E // c ∈ I₀ / (J : FractionalIdeal (nonZeroDivisors (𝓞 E)) E)}, g c ≤ ENNReal.ofReal (C …`. Introduce `J`. Establish `hJ0 : (J : FractionalIdeal (nonZeroDivisors (𝓞 E)) E) ≠ 0` using `J.2.1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression.
 
-Establish `hNJ` using `absNorm_pos' hJ0`. Use `set NJ : ℝ := (FractionalIdeal.absNorm (J : FractionalIdeal (nonZeroDivisors (𝓞 E)) E) : ℝ) with hNJdef`. Establish `ha0 : I₀ / (J : FractionalIdeal (nonZeroDivisors (𝓞 E)) E) ≠ 0` using `div_ne_zero hI₀ hJ0`. Establish `hin` using `h5 _ ha0 A hApos`. Establish `hNa : (FractionalIdeal.absNorm (I₀ / (J : FractionalIdeal (nonZeroDivisors (𝓞 E)) E)) : ℝ) = N₀ / NJ`.
+Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Rewrite using `[map_div₀]`. Use `push_cast`. Both sides reduce to the same expression. Rewrite `hin` using `[hNa]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Rewrite using `[← ENNReal.ofReal_mul (Real.rpow_nonneg hNJ.le _)]`. Use `congr 1`. Establish `e1 : NJ ^ (-(s - 1)) = NJ ^ (-s) * NJ`. Rewrite using `[show -(s - 1) = -s + 1 by ring, Real.rpow_add hNJ, Real.rpow_one]`. Establish `e2 : PA ^ (1 - s) = PA ^ (-s) * PA`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[show 1 - s = -s + 1 by ring, Real.rpow_add hPA, Real.rpow_one]`. Rewrite using `[e1, e2]`. Clear the denominators using the available nonvanishing facts. Use `_ = _ := by`. Rewrite using `[ENNReal.ofReal_add (by positivity) (by positivity), ENNReal.ofReal_mul (p := C5 * PA ^ (-s)) (by positivity), ENNReal.ofReal_mul (p := C5 * PA ^ (1 - s) / N₀) (by positivity)]`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `(ENNReal.tsum_le_tsum hJ).trans ?_` and prove the remaining obligations. Rewrite using `[ENNReal.tsum_add, ENNReal.tsum_mul_left, ENNReal.tsum_mul_left]`. Establish `hz1` using `hZ1 I hI`. Establish `hz2` using `hZ2 I hI`. Establish `hz1' : ENNReal.ofReal (Z1 * NI ^ (-s)) ≤ ENNReal.ofReal (max Z1 0 * NI ^ (-s))` using `ENNReal.ofReal_le_ofReal (mul_le_mul_of_nonneg_right (le_max_left _ _) (Real.rpow_nonneg hNI0 _))`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hz2' : ENNReal.ofReal (Z2 * NI ^ (-(s - 1))) ≤ ENNReal.ofReal (max Z2 0 * NI ^ (-(s - 1)))` using `ENNReal.ofReal_le_ofReal (mul_le_mul_of_nonneg_right (le_max_left _ _) (Real.rpow_nonneg hNI0 _))`. Combine the equalities or inequalities in the displayed calculation. Conclude with `hz1.trans hz1'`. Conclude with `hz2.trans hz2'`. Use `_ = ENNReal.ofReal (C5 * max Z1 0 * (NI * PA) ^ (-s) + C5 * max Z2 0 / N₀ * (NI * PA) ^ (1 - s)) := by`.
+Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← ENNReal.ofReal_mul (by positivity), ← ENNReal.ofReal_mul (by positivity), ← ENNReal.ofReal_add (by positivity) (by positivity)]`. Use `congr 1`. Rewrite using `[Real.mul_rpow hNI0 hPA0, Real.mul_rpow hNI0 hPA0, show -(s - 1) = 1 - s by ring]`. Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ ENNReal.ofReal ((C5 * max Z1 0 / δ + C5 * max Z2 0 / N₀) * (NI * PA) ^ (1 - s)) := by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 
-Apply `ENNReal.ofReal_le_ofReal` to reduce the goal to its premises. Establish `e : (NI * PA) ^ (-s) = (NI * PA) ^ (1 - s) / (NI * PA)`. Rewrite using `[show 1 - s = -s + 1 by ring, Real.rpow_add hX, Real.rpow_one]`. Clear the denominators using the available nonvanishing facts. Establish `hY : 0 ≤ (NI * PA) ^ (1 - s)` using `Real.rpow_nonneg hX.le _`.
-
-Establish `hq : (NI * PA) ^ (1 - s) / (NI * PA) ≤ (NI * PA) ^ (1 - s) / δ` using `div_le_div_of_nonneg_left hY hδ hδI`. Establish `hc : 0 ≤ C5 * max Z1 0` using `by positivity`. Rewrite using `[e]`. Use `mul_le_mul_of_nonneg_left hq hc` as an intermediate fact. Rewrite using `[add_mul]`.
-
-Establish `h' : C5 * max Z1 0 * ((NI * PA) ^ (1 - s) / δ) = C5 * max Z1 0 / δ * (NI * PA) ^ (1 - s)` using `by ring`. Combine the linear equalities and inequalities to obtain the conclusion. Use `_ = _ := by`. Rewrite using `[ENNReal.ofReal_mul (by positivity)]`.
+A detailed English derivation is pending.
 -/
 theorem lattice_sum_le : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E),
     IsCMExt F E σ → ∀ I₀ : FractionalIdeal (nonZeroDivisors (𝓞 E)) E, I₀ ≠ 0 →

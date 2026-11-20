@@ -9,7 +9,7 @@ set_option maxHeartbeats 1600000
 
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.PlaceRead.TupAt.isTupOf_tupT_muTw_of_embW_eq` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FTwistingOkClassAtPlace.lean&line=161#L161)
 -/

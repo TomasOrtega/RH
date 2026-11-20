@@ -12,7 +12,7 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.UCanon
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(PrimeSpectrum.denseRange_comap_iff_ker_le_nilRadical f).2 (by rw [(RingHom.injective_iff_ker_eq_bot _).1 hf] exact bot_le)⟩`.
+Supply the required witnesses or components.
 -/
 theorem spMap_isDominant_of_injective {A B : Type} [CommRing A] [CommRing B] (f : A →+* B)
     (hf : Function.Injective f) : IsDominant (spMap f) :=
@@ -21,7 +21,7 @@ theorem spMap_isDominant_of_injective {A B : Type} [CommRing A] [CommRing B] (f 
     exact bot_le)⟩
 
 /- English proof (translation)
-Use `haveI := spMap_isDominant_of_injective f hf`. Conclude with `ext_of_isDominant_of_isSeparated (terminal.from S) (terminal.hom_ext _ _) (spMap f) h`.
+A detailed English derivation is pending.
 -/
 theorem spMap_ext_of_injective {A B : Type} [CommRing A] [IsDomain A] [CommRing B] {S : Scheme.{0}} [S.IsSeparated]
     (f : A →+* B) (hf : Function.Injective f) {a b : Sp A ⟶ S} (h : spMap f ≫ a = spMap f ≫ b) : a = b := by
@@ -29,9 +29,7 @@ theorem spMap_ext_of_injective {A B : Type} [CommRing A] [IsDomain A] [CommRing 
   exact ext_of_isDominant_of_isSeparated (terminal.from S) (terminal.hom_ext _ _) (spMap f) h
 
 /- English proof (translation)
-Take `⟨N, ci, hci, hcis⟩` from `h`. Use `haveI := hci`. Establish `: IsSeparated f`. Rewrite using `[← hcis, PSpace.str]`. Use `infer_instance`.
-
-Conclude with `⟨by rw [← terminal.comp_from f]; infer_instance⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isSeparated_of_projOver {R : Type} [CommRing R] {X : Scheme.{0}} {f : X ⟶ Sp R} (h : IsProjOver f) :
     X.IsSeparated := by
@@ -47,19 +45,17 @@ end GlobalTheory.UCanon
 namespace GlobalTheory.UCanon
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c φ hpq hpf hns Z zs i OZ N d J S π j _ BD hU hSep V _ _ _ hB hac C ξV hnt hCV`. Take `⟨k, hk, m, e, C₁, θ, ⟨hcan⟩, hpar, hθ, hthr⟩` from `GlobalTheory.T.exists_canonical_family_through_degenerating_family Xo c φ V hB hac C hnt`. Use `letI := hk`. Establish `hT : IsTautB C₁` using `GlobalTheory.T.canonicalFamily_isPointRigid_tautologicalChart Xo c φ hpq hpf hns C₁ hcan hpar`. Take `⟨ξ, hξ⟩` from `GlobalTheory.UChart.taut_exists_map Xo c φ hpq hpf hns zs i OZ N d J π j BD hU hSep C₁ hT.1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `haveI : S.IsSeparated := isSeparated_of_projOver hU.2.2.2.2.1.2.1`. Use `⟨k, hk, m, e, C₁, ξ, θ, hT, hξ, hθ, ?_⟩` and prove the remaining obligations. Take `⟨yo, κ, hgen, hκ, hκy⟩` from `hthr`. Take `⟨hm, hs⟩` from `hpar`. Establish `hne : (∏ i, C₁.s i) ≠ 0`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.prod_ne_zero_iff]`. Introduce `i _`. Rewrite using `[hs i]`. Conclude with `bdParam_ne_zero k m e _`. Use `set L := Localization.Away (∏ i, C₁.s i)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hle : Submonoid.powers (∏ i, C₁.s i) ≤ nonZeroDivisors (ChartRing k m e)` using `powers_le_nonZeroDivisors_of_noZeroDivisors hne`. Use `haveI : IsDomain L := IsLocalization.isDomain_localization hle`. Establish `hu : IsUnit (algebraMap (ChartRing k m e) (FractionRing (ChartRing k m e)) (∏ i, C₁.s i))` using `IsUnit.mk0 _ ((map_ne_zero_iff _ (IsFractionRing.injective _ _)).2 hne)`. Set `gR : L →+* FractionRing (ChartRing k m e)` to `IsLocalization.Away.lift (∏ i, C₁.s i) hu`. Establish `hgR : gR.comp (algebraMap (ChartRing k m e) L) = algebraMap (ChartRing k m e) (FractionRing (ChartRing k m e))` using `IsLocalization.Away.lift_comp (∏ i, C₁.s i) hu`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hinj : Function.Injective gR`. Use `(IsLocalization.lift_injective_iff _).2 fun x y => ?_` and prove the remaining obligations. Rewrite using `[(IsLocalization.injective L hle).eq_iff, (IsFractionRing.injective (ChartRing k m e) (FractionRing (ChartRing k m e))).eq_iff]`. Establish `hg : spMap gR ≫ spMap (algebraMap (ChartRing k m e) L) = jK (ChartRing k m e)`. Rewrite using `[← Spec.map_comp, ← CommRingCat.ofHom_comp, hgR]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hopen : spMap (algebraMap (ChartRing k m e) L) ≫ ξ = yo ≫ j`. Use `spMap_ext_of_injective gR hinj ?_` and prove the remaining obligations. Rewrite using `[← Category.assoc, hg, ← hξ, ← Category.assoc, hgen _ hg]`. Use `spMap_ext_of_injective (algebraMap V (FractionRing V)) (IsFractionRing.injective _ _) ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `jK V ≫ _ = jK V ≫ _`.
-
-Rewrite using `[← Category.assoc, ← hκ, Category.assoc, hopen, ← Category.assoc, hκy, hCV]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_taut_through : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Geo.Tor.Level H} (Xo : Moduli Dw l) (c : Coeff l) (φ : InvFun (𝓞 E)), 1 ≤ Dw.p + Dw.q → IsPolFan H.bar (min Dw.p Dw.q) φ → NoSelfInt H.bar (min Dw.p Dw.q) φ → ∀ {Z : Scheme.{0}} (zs : Z ⟶ Sp c.F) (i : Xo.XF c ⟶ Z) (OZ : LB Z) (N d : ℕ) (J : Z.IdealSheafData) {S : Scheme.{0}} (π : S ⟶ Z) (j : Xo.XF c ⟶ S) [IsOpenImmersion j] (BD : GlobalTheory.EffCartierData S), GlobalTheory.UPoinc.UPoinOnX Xo c φ zs i OZ N d J π j BD → SepB Xo c φ j → ∀ (V : Type) [CommRing V] [IsDomain V] [IsLocalRing V], GlobalTheory.Mum.Base V → IsAlgClosed (ResidueField V) → ∀ (C : MonoFam Xo c φ V) (ξV : Sp V ⟶ S), Nontrivial C.P.D.toPre.X → C.y ≫ j = jK V ≫ ξV → ∃ (k : Type) (_ : Field k) (m e : ℕ) (C₁ : MonoFam Xo c φ (ChartRing k m e)) (ξ : Sp (ChartRing k m e) ⟶ S) (θ : ChartRing k m e →+* V), IsTautB C₁ ∧ C₁.y ≫ j = jK _ ≫ ξ ∧ IsLocalHom θ ∧ spMap θ ≫ ξ = ξV := by
   intro E _ _ _ H Dw l Xo c φ hpq hpf hns Z zs i OZ N d J S π j _ BD hU hSep V _ _ _ hB hac C ξV hnt hCV

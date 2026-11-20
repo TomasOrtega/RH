@@ -27,7 +27,7 @@ Both sides reduce to the same expression.
   rfl
 
 /- English proof (translation)
-The claim follows from `Subgroup.mem_subgroupOf.2 ⟨γ, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem ratElt_mem (γ : GL (Fin n) K) : ratElt γ ∈ rationalGLOne K n :=
   Subgroup.mem_subgroupOf.2 ⟨γ, rfl⟩
@@ -50,7 +50,7 @@ Both sides reduce to the same expression.
 variable (μ : Measure (normOneGL K n)) [μ.IsHaarMeasure]
 
 /- English proof (translation)
-Rewrite using `[lintegral_eq_lintegral_automorphize (Γ := rationalGLOne K n) μ hh.aemeasurable, lintegral_quotientMeasure]`. Use `lintegral_congr fun y => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `∑' γ : rationalGLOne K n, h (γ • y) = _`. Rewrite using `[← (ratEquiv (K := K) (n := n)).tsum_eq]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem lintegral_eq_setLIntegral_tsum {h : normOneGL K n → ℝ≥0∞} (hh : Measurable h) :
     ∫⁻ y, h y ∂μ = ∫⁻ y in fundamentalDomain (rationalGLOne K n),
@@ -63,7 +63,7 @@ theorem lintegral_eq_setLIntegral_tsum {h : normOneGL K n → ℝ≥0∞} (hh : 
   rfl
 
 /- English proof (translation)
-Rewrite using `[integral_eq_integral_automorphize (Γ := rationalGLOne K n) μ hh, integral_quotientMeasure]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun y => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `∑' γ : rationalGLOne K n, h (γ • y) = _`. Rewrite using `[← (ratEquiv (K := K) (n := n)).tsum_eq]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem integral_eq_setIntegral_tsum {h : normOneGL K n → ℂ} (hh : Integrable h μ) :
     ∫ y, h y ∂μ = ∫ y in fundamentalDomain (rationalGLOne K n),
@@ -75,7 +75,7 @@ theorem integral_eq_setIntegral_tsum {h : normOneGL K n → ℂ} (hh : Integrabl
   rfl
 
 /- English proof (translation)
-Use `isFiniteMeasure_quotientMeasure (K := K) (n := n) μ` as an intermediate fact. Conclude with `(measure_fundamentalDomain_pos_lt_top (rationalGLOne K n) μ).2`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem measure_fundamentalDomain_rationalGLOne_lt_top :
     μ (fundamentalDomain (rationalGLOne K n)) < ⊤ := by
@@ -83,7 +83,7 @@ theorem measure_fundamentalDomain_rationalGLOne_lt_top :
   exact (measure_fundamentalDomain_pos_lt_top (rationalGLOne K n) μ).2
 
 /- English proof (translation)
-Rewrite using `[posRealMeasure]`. Establish `h` using `lintegral_subtype_comap (μ := volume.withDensity fun t : ℝ ↦ ENNReal.ofReal t⁻¹) (s := Ioi (0 : ℝ)) measurableSet_Ioi f`. Use `h.trans ?_` and prove the remaining obligations. Establish `hm : Measurable fun t : ℝ ↦ ENNReal.ofReal t⁻¹` using `ENNReal.measurable_ofReal.comp measurable_inv`. Rewrite using `[setLIntegral_withDensity_eq_setLIntegral_mul_non_measurable _ hm f measurableSet_Ioi (Filter.Eventually.of_forall fun _ => ENNReal.ofReal_lt_top)]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -103,9 +103,9 @@ section Pairing
 variable {φ₁ φ₂ Ξ : AdelicGLn.AdelicGL K n → ℂ}
 
 /- English proof (translation)
-Establish `hm : Measurable fun y : normOneGL K n => ‖Ξ (centralSection K n s * x * (y : AdelicGLn.AdelicGL K n))‖ₑ * ‖φ₁ (y : AdelicGLn.AdelicGL K n)‖ₑ` using `(hΞ.comp (continuous_const.mul continuous_subtype_val)).enorm.measurable.mul (hφ₁.comp continuous_subtype_val).enorm.measurable`. Rewrite using `[lintegral_eq_setLIntegral_tsum μ hm]`. Use `lintegral_congr fun y => ?_` and prove the remaining obligations. Rewrite using `[← ENNReal.tsum_mul_left]`. Use `tsum_congr fun γ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Subgroup.coe_mul, coe_ratElt]`. Rewrite using `[hφ₁l, mul_comm]`. Simplify using `only [mul_assoc]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem lintegral_enorm_translate_eq (hφ₁ : Continuous φ₁) (hφ₁l : AutomorphicForm.IsLeftInvariant φ₁)
     (hΞ : Continuous Ξ) (s : {r : ℝ // 0 < r}) (x : AdelicGLn.AdelicGL K n) :
@@ -128,9 +128,9 @@ theorem lintegral_enorm_translate_eq (hφ₁ : Continuous φ₁) (hφ₁l : Auto
   simp only [mul_assoc]
 
 /- English proof (translation)
-Rewrite using `[lintegral_enorm_translate_eq μ hφ₁ hφ₁l hΞ, ← lintegral_const_mul' _ _ enorm_ne_top, ← setLIntegral_const]`. Use `lintegral_mono fun y => ?_` and prove the remaining obligations. Take `⟨hs, hle⟩` from `hB s x y x.2 y.2`. Establish `e1 : ∑' γ : GL (Fin n) K, ‖Ξ (centralSection K n s * (x : AdelicGLn.AdelicGL K n)⁻¹ * AdelicGLn.diagonal K n γ * (y : AdelicGLn.AdelicGL K n))‖ₑ = ENNReal.ofReal (∑' γ : GL (Fin n) K, ‖Ξ (centralSection K n s * (x : AdelicGLn.AdelicGL K n)⁻¹ * AdelicGLn.diagonal K n γ * (y : Adel …`. Rewrite using `[ENNReal.ofReal_tsum_of_nonneg (fun _ => norm_nonneg _) hs]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [ofReal_norm]`. Rewrite using `[e1, ← ofReal_norm, ← ofReal_norm, ← ENNReal.ofReal_mul (norm_nonneg _), ← ENNReal.ofReal_mul (norm_nonneg _)]`. Use `ENNReal.ofReal_le_ofReal ?_` and prove the remaining obligations. Rewrite using `[← mul_assoc]`. Conclude with `hle`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem enorm_mul_lintegral_le (hφ₁ : Continuous φ₁) (hφ₁l : AutomorphicForm.IsLeftInvariant φ₁)
     (hΞ : Continuous Ξ) {B : ℝ → ℝ}
@@ -162,11 +162,9 @@ theorem enorm_mul_lintegral_le (hφ₁ : Continuous φ₁) (hφ₁l : Automorphi
   exact hle
 
 /- English proof (translation)
-Rewrite using `[← setLIntegral_const]`. Use `lintegral_mono fun x => ?_` and prove the remaining obligations. Establish `h1 : ∫⁻ y, ‖Ξ (centralSection K n s * (y : AdelicGLn.AdelicGL K n))‖ₑ * ‖φ₁ ((x : AdelicGLn.AdelicGL K n) * (y : AdelicGLn.AdelicGL K n))‖ₑ * ‖φ₂ (x : AdelicGLn.AdelicGL K n)‖ₑ ∂μ = ‖φ₂ (x : AdelicGLn.AdelicGL K n)‖ₑ * ∫⁻ y, ‖Ξ (centralSection K n s * (x : AdelicGLn.AdelicGL K n) …`. Combine the equalities or inequalities in the displayed calculation. Use `lintegral_congr fun y => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Subgroup.coe_mul, mul_assoc, inv_mul_cancel_left]`. Expand and normalize the polynomial expressions, which then agree. Use `_ = ∫⁻ y, ‖φ₂ (x : AdelicGLn.AdelicGL K n)‖ₑ * (‖Ξ (centralSection K n s * (x : AdelicGLn.AdelicGL K n)⁻¹ * (y : AdelicGLn.AdelicGL K n))‖ₑ * ‖φ₁ (y : AdelicGLn.AdelicGL K n)‖ₑ) ∂μ := lintegral_mul_left_eq_self (μ := μ) (fun y : normOneGL K n => ‖φ₂ (x : AdelicGLn.AdelicGL K n)‖ₑ …`. Use `_ = _ := lintegral_const_mul' _ _ enorm_ne_top`. Rewrite using `[h1]`.
-
-Conclude with `enorm_mul_lintegral_le μ hφ₁ hφ₁l hΞ hB s x`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lintegral_lintegral_enorm_le (hφ₁ : Continuous φ₁) (hφ₁l : AutomorphicForm.IsLeftInvariant φ₁)
     (hΞ : Continuous Ξ) {B : ℝ → ℝ}
@@ -218,27 +216,23 @@ section Identity
 variable {φ₁ φ₂ Ξ : AdelicGLn.AdelicGL K n → ℂ}
 
 /- English proof (translation)
-Use `set F := fundamentalDomain (rationalGLOne K n) with hF`. Establish `hFfin` using `measure_fundamentalDomain_rationalGLOne_lt_top μ`. Use `set f : normOneGL K n → normOneGL K n → ℂ := fun y x => Ξ (centralSection K n s * (y : AdelicGLn.AdelicGL K n)) * (φ₁ ((x : AdelicGLn.AdelicGL K n) * (y : AdelicGLn.AdelicGL K n)) * conj (φ₂ (x : AdelicGLn.AdelicGL K n))) with hfdef`. Establish `hcont : Continuous (Function.uncurry f)` using `(hΞ.comp (continuous_const.mul (continuous_subtype_val.comp continuous_fst))).mul ((hφ₁.comp ((continuous_subtype_val.comp continuous_snd).mul (continuous_subtype_val.comp continuous_fst))).mul (Complex.continuous_conj.comp (hφ₂.comp (continuous_subtype_val.comp continuous_snd))) …`. Establish `hint : Integrable (Function.uncurry f) (μ.prod (μ.restrict F))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨hcont.aestronglyMeasurable, ?_⟩` and prove the remaining obligations. Rewrite using `[HasFiniteIntegral, lintegral_prod _ hcont.enorm.measurable.aemeasurable]`. Rewrite using `[lintegral_lintegral_swap (hcont.enorm.measurable.aemeasurable)]`. Establish `h1 : ∀ x y : normOneGL K n, ‖Function.uncurry f (y, x)‖ₑ = ‖Ξ (centralSection K n s * (y : AdelicGLn.AdelicGL K n))‖ₑ * ‖φ₁ ((x : AdelicGLn.AdelicGL K n) * (y : AdelicGLn.AdelicGL K n))‖ₑ * ‖φ₂ (x : AdelicGLn.AdelicGL K n)‖ₑ`. Introduce `x y`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion repeatedly using the stated equalities.
 
-Simplify using `only [Function.uncurry_apply_pair, hfdef, enorm_mul, RCLike.enorm_conj, mul_assoc]`. Repeatedly rewrite using `[h1]`. Use `lt_of_le_of_lt (lintegral_lintegral_enorm_le μ hφ₁ hφ₁l hΞ hB s) ?_` and prove the remaining obligations. Conclude with `ENNReal.mul_lt_top (ENNReal.mul_lt_top ENNReal.ofReal_lt_top hFfin) hFfin`. Establish `hstep : ∀ x : normOneGL K n, ∫ y, f y x ∂μ = ∫ y in F, conj (φ₂ (x : AdelicGLn.AdelicGL K n)) * φ₁ (y : AdelicGLn.AdelicGL K n) * ∑' γ : GL (Fin n) K, Ξ (centralSection K n s * (x : AdelicGLn.AdelicGL K n)⁻¹ * AdelicGLn.diagonal K n γ * (y : AdelicGLn.AdelicGL K n)) ∂μ`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Introduce `x`. Use `set h : normOneGL K n → ℂ := fun y => Ξ (centralSection K n s * (x : AdelicGLn.AdelicGL K n)⁻¹ * (y : AdelicGLn.AdelicGL K n)) * φ₁ (y : AdelicGLn.AdelicGL K n) with hhdef`. Establish `e1 : ∫ y, f y x ∂μ = conj (φ₂ (x : AdelicGLn.AdelicGL K n)) * ∫ y, h y ∂μ`. Rewrite using `[← integral_const_mul, ← integral_mul_left_eq_self (μ := μ) (fun y => conj (φ₂ (x : AdelicGLn.AdelicGL K n)) * h y) x]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun y => ?_)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Simplify using `only [hfdef, hhdef, Subgroup.coe_mul, mul_assoc, inv_mul_cancel_left]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e1]`. Distinguish the cases in `hx : φ₂ (x : AdelicGLn.AdelicGL K n) = 0`. Simplify using `[hx]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hhi : Integrable h μ`. Establish `hhc : Continuous h` using `(hΞ.comp (continuous_const.mul continuous_subtype_val)).mul (hφ₁.comp continuous_subtype_val)`. Use `⟨hhc.aestronglyMeasurable, ?_⟩` and prove the remaining obligations. Establish `hb` using `enorm_mul_lintegral_le μ hφ₁ hφ₁l hΞ hB s x`. Establish `hne : ‖φ₂ (x : AdelicGLn.AdelicGL K n)‖ₑ ≠ 0` using `enorm_ne_zero.2 hx`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[HasFiniteIntegral]`. Simplify using `only [hhdef, enorm_mul]`. Establish `hb' : (∫⁻ y, ‖Ξ (centralSection K n s * (x : AdelicGLn.AdelicGL K n)⁻¹ * (y : AdelicGLn.AdelicGL K n))‖ₑ * ‖φ₁ (y : AdelicGLn.AdelicGL K n)‖ₑ ∂μ) * ‖φ₂ (x : AdelicGLn.AdelicGL K n)‖ₑ ≤ ENNReal.ofReal (B s) * μ F`. Rewrite using `[mul_comm]`. Conclude with `hb`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hI` using `(ENNReal.le_div_iff_mul_le (Or.inl hne) (Or.inl enorm_ne_top)).2 hb'`. Conclude with `lt_of_le_of_lt hI (ENNReal.div_lt_top (ENNReal.mul_ne_top ENNReal.ofReal_ne_top hFfin.ne) hne)`. Rewrite using `[integral_eq_setIntegral_tsum μ hhi, ← integral_const_mul]`. Use `setIntegral_congr_fun (measurableSet_fundamentalDomain _) fun y _ => ?_` and prove the remaining obligations. Simplify using `only [hhdef, Subgroup.coe_mul, coe_ratElt]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Chain the equalities or inequalities of the calculation.
 
-Establish `hl : ∀ γ : GL (Fin n) K, φ₁ (AdelicGLn.diagonal K n γ * (y : AdelicGLn.AdelicGL K n)) = φ₁ (y : AdelicGLn.AdelicGL K n)` using `fun γ => hφ₁l γ _`. Simplify using `only [hl]`. Rewrite using `[tsum_mul_right]`. Simplify using `only [mul_assoc]`. Expand and normalize the polynomial expressions, which then agree.
-
-Combine the equalities or inequalities in the displayed calculation. Use `integral_congr_ae (Filter.Eventually.of_forall fun y => ?_)` and prove the remaining obligations. Simplify using `only [matrixCoeff, hfdef]`. Rewrite using `[← integral_const_mul]`. Use `_ = ∫ x in F, ∫ y, f y x ∂μ ∂μ := integral_integral_swap hint`.
-
-Use `_ = ∫ x in F, ∫ y in F, conj (φ₂ (x : AdelicGLn.AdelicGL K n)) * φ₁ (y : AdelicGLn.AdelicGL K n) * ∑' γ : GL (Fin n) K, Ξ (centralSection K n s * (x : AdelicGLn.AdelicGL K n)⁻¹ * AdelicGLn.diagonal K n γ * (y : AdelicGLn.AdelicGL K n)) ∂μ ∂μ := setIntegral_congr_fun (measurableSe …`. Use `_ = thetaPairing μ φ₁ φ₂ Ξ s := rfl`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integral_mul_matrixCoeff_eq_thetaPairing (hφ₁ : Continuous φ₁) (hφ₂ : Continuous φ₂)
     (hφ₁l : AutomorphicForm.IsLeftInvariant φ₁) (hΞ : Continuous Ξ) {B : ℝ → ℝ}
@@ -336,7 +330,7 @@ section Main
 variable {φ₁ φ₂ Ξ : AdelicGLn.AdelicGL K n → ℂ}
 
 /- English proof (translation)
-Unfold `matrixCoeff`. Use `integral_congr_ae (Filter.Eventually.of_forall fun x => ?_)` and prove the remaining obligations. Simplify using `only`. Rewrite using `[← mul_assoc, ← centralSection_mul_comm s (x : AdelicGLn.AdelicGL K n), mul_assoc, hφ₁z]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem matrixCoeff_centralSection_mul
     (hφ₁z : ∀ (s : {r : ℝ // 0 < r}) (x : AdelicGLn.AdelicGL K n), φ₁ (centralSection K n s * x) = φ₁ x)
@@ -348,7 +342,7 @@ theorem matrixCoeff_centralSection_mul
   rw [← mul_assoc, ← centralSection_mul_comm s (x : AdelicGLn.AdelicGL K n), mul_assoc, hφ₁z]
 
 /- English proof (translation)
-Unfold `detPow`. Rewrite using `[map_mul, detModule_centralSection hn, mem_normOneGL_iff_detModule.1 y.2, mul_one]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem detPow_centralSection_mul (hn : 0 < n) (s : {r : ℝ // 0 < r}) (y : normOneGL K n) (w : ℂ) :
     detPow (centralSection K n s * (y : AdelicGLn.AdelicGL K n)) w = ((s : ℝ) : ℂ) ^ w := by
@@ -356,9 +350,9 @@ theorem detPow_centralSection_mul (hn : 0 < n) (s : {r : ℝ // 0 < r}) (y : nor
   rw [map_mul, detModule_centralSection hn, mem_normOneGL_iff_detModule.1 y.2, mul_one]
 
 /- English proof (translation)
-Unfold `detPow`. Rewrite using `[map_inv, Complex.cpow_neg]`. Establish `hpos : (0 : ℝ) < (detModule K n g : ℝ)` using `(detModule K n g).2`. Establish `e : (((detModule K n g)⁻¹ : {r : ℝ // 0 < r}) : ℝ) = ((detModule K n g : ℝ))⁻¹` using `rfl`. Rewrite using `[e, Complex.ofReal_inv, Complex.inv_cpow _ _ (by`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Complex.arg_ofReal_of_nonneg hpos.le]`. Conclude with `Real.pi_pos.ne)]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem detPow_inv (g : AdelicGLn.AdelicGL K n) (w : ℂ) : detPow g⁻¹ w = detPow g (-w) := by
   unfold detPow
@@ -369,7 +363,7 @@ theorem detPow_inv (g : AdelicGLn.AdelicGL K n) (w : ℂ) : detPow g⁻¹ w = de
     rw [Complex.arg_ofReal_of_nonneg hpos.le]; exact Real.pi_pos.ne)]
 
 /- English proof (translation)
-Establish `hc : Continuous (Function.uncurry fun (g : AdelicGLn.AdelicGL K n) (x : normOneGL K n) => φ₁ ((x : AdelicGLn.AdelicGL K n) * g) * conj (φ₂ (x : AdelicGLn.AdelicGL K n)))` using `(hφ₁.comp ((continuous_subtype_val.comp continuous_snd).mul continuous_fst)).mul (Complex.continuous_conj.comp (hφ₂.comp (continuous_subtype_val.comp continuous_snd)))`. Conclude with `hc.stronglyMeasurable.integral_prod_right`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem stronglyMeasurable_matrixCoeff (hφ₁ : Continuous φ₁) (hφ₂ : Continuous φ₂) :
     StronglyMeasurable (matrixCoeff μ φ₁ φ₂) := by
@@ -380,35 +374,31 @@ theorem stronglyMeasurable_matrixCoeff (hφ₁ : Continuous φ₁) (hφ₂ : Con
   exact hc.stronglyMeasurable.integral_prod_right
 
 /- English proof (translation)
-Use `⟨centralHaarConst hn μ ν, by exact_mod_cast centralHaarConst_pos hn μ ν, ?_⟩` and prove the remaining obligations. Introduce `φ₁ φ₂ Ξ w B hφ₁ hφ₂ hΞ hφ₁l hφ₁z hB hBint`. Use `set F := fundamentalDomain (rationalGLOne K n) with hF`. Establish `hFfin` using `measure_fundamentalDomain_rationalGLOne_lt_top μ`. Use `set H : AdelicGLn.AdelicGL K n → ℂ := fun g => Ξ g * matrixCoeff μ φ₁ φ₂ g * detPow g w with hH`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hHz : ∀ (s : {r : ℝ // 0 < r}) (y : normOneGL K n), H (centralSection K n s * (y : AdelicGLn.AdelicGL K n)) = Ξ (centralSection K n s * (y : AdelicGLn.AdelicGL K n)) * matrixCoeff μ φ₁ φ₂ (y : AdelicGLn.AdelicGL K n) * ((s : ℝ) : ℂ) ^ w`. Introduce `s y`. Simplify using `only [hH, matrixCoeff_centralSection_mul μ hφ₁z, detPow_centralSection_mul hn]`. Establish `hdet : Measurable fun g : AdelicGLn.AdelicGL K n => detPow g w` using `(Complex.measurable_ofReal.comp (measurable_subtype_coe.comp continuous_detModule.measurable)).pow_const w`. Establish `hHm : StronglyMeasurable H` using `(hΞ.stronglyMeasurable.mul (stronglyMeasurable_matrixCoeff μ hφ₁ hφ₂)).mul hdet.stronglyMeasurable`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcz : Continuous fun p : normOneGL K n × {r : ℝ // 0 < r} => centralSection K n p.2 * (p.1 : AdelicGLn.AdelicGL K n)` using `(continuous_centralSection.comp continuous_snd).mul (continuous_subtype_val.comp continuous_fst)`. Establish `hfin : ∀ s : {r : ℝ // 0 < r}, ∫⁻ y, ‖H (centralSection K n s * (y : AdelicGLn.AdelicGL K n))‖ₑ ∂μ ≤ ENNReal.ofReal ((s : ℝ) ^ w.re * B s) * (μ F * μ F)`. Introduce `s`. Establish `hs0 : (0 : ℝ) < s` using `s.2`. Establish `hm2 : Measurable (Function.uncurry fun (y x : normOneGL K n) => ‖Ξ (centralSection K n s * (y : AdelicGLn.AdelicGL K n))‖ₑ * ‖φ₁ ((x : AdelicGLn.AdelicGL K n) * (y : AdelicGLn.AdelicGL K n))‖ₑ * ‖φ₂ (x : AdelicGLn.AdelicGL K n)‖ₑ)` using `(((hΞ.comp (continuous_const.mul (continuous_subtype_val.comp continuous_fst))).enorm.measurable).mul (hφ₁.comp ((continuous_subtype_val.comp continuous_snd).mul (continuous_subtype_val.comp continuous_fst))).enorm.measurable).mul (hφ₂.comp (continuous_subtype_val.comp continuous …`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations.
 
-Combine the equalities or inequalities in the displayed calculation. Use `lintegral_mono fun y => ?_` and prove the remaining obligations. Rewrite using `[hHz, enorm_mul, enorm_mul]`. Establish `e1 : ‖((s : ℝ) : ℂ) ^ w‖ₑ = ENNReal.ofReal ((s : ℝ) ^ w.re)`. Rewrite using `[← ofReal_norm, Complex.norm_cpow_eq_rpow_re_of_pos hs0]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e2 : ‖matrixCoeff μ φ₁ φ₂ (y : AdelicGLn.AdelicGL K n)‖ₑ ≤ ∫⁻ x in F, ‖φ₁ ((x : AdelicGLn.AdelicGL K n) * (y : AdelicGLn.AdelicGL K n))‖ₑ * ‖φ₂ (x : AdelicGLn.AdelicGL K n)‖ₑ ∂μ`. Use `(enorm_integral_le_lintegral_enorm _).trans (le_of_eq ?_)` and prove the remaining obligations. Use `lintegral_congr fun x => ?_` and prove the remaining obligations. Rewrite using `[enorm_mul, RCLike.enorm_conj]`. Rewrite using `[e1]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_comm _ (ENNReal.ofReal _), ← lintegral_const_mul' _ _ enorm_ne_top]`. Use `congr 1`. Use `lintegral_congr fun x => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `_ = ENNReal.ofReal ((s : ℝ) ^ w.re) * ∫⁻ x in F, ∫⁻ y, ‖Ξ (centralSection K n s * (y : AdelicGLn.AdelicGL K n))‖ₑ * ‖φ₁ ((x : AdelicGLn.AdelicGL K n) * (y : AdelicGLn.AdelicGL K n))‖ₑ * ‖φ₂ (x : AdelicGLn.AdelicGL K n)‖ₑ ∂μ ∂μ := by`. Rewrite using `[lintegral_const_mul' _ _ ENNReal.ofReal_ne_top, lintegral_lintegral_swap hm2.aemeasurable]`. Use `_ ≤ ENNReal.ofReal ((s : ℝ) ^ w.re) * (ENNReal.ofReal (B s) * μ F * μ F) := by gcongr`. Conclude with `lintegral_lintegral_enorm_le μ hφ₁ hφ₁l hΞ hB s`. Use `_ = ENNReal.ofReal ((s : ℝ) ^ w.re * B s) * (μ F * μ F) := by`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[ENNReal.ofReal_mul (Real.rpow_nonneg hs0.le _)]`. Expand and normalize the polynomial expressions, which then agree. Establish `hint : Integrable H ν`. Rewrite using `[integrable_iff_prod μ ν hn H]`. Use `⟨(hHm.comp_measurable hcz.measurable).aestronglyMeasurable, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[HasFiniteIntegral, lintegral_prod_symm (fun p : normOneGL K n × {r : ℝ // 0 < r} => ‖H (centralSection K n p.2 * (p.1 : AdelicGLn.AdelicGL K n))‖ₑ) (hHm.comp_measurable hcz.measurable).enorm.aemeasurable]`. Use `lt_of_le_of_lt (lintegral_mono fun s => hfin s) ?_` and prove the remaining obligations. Rewrite using `[lintegral_mul_const' _ _ (ENNReal.mul_ne_top hFfin.ne hFfin.ne)]`. Use `ENNReal.mul_lt_top ?_ (ENNReal.mul_lt_top hFfin hFfin)` and prove the remaining obligations. Rewrite using `[lintegral_posRealMeasure (fun t => ENNReal.ofReal (t ^ w.re * B t))]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities.
 
-Establish `e3 : ∫⁻ t in Ioi (0 : ℝ), ENNReal.ofReal t⁻¹ * ENNReal.ofReal (t ^ w.re * B t) = ∫⁻ t in Ioi (0 : ℝ), ENNReal.ofReal (t ^ (w.re - 1) * B t)`. Use `setLIntegral_congr_fun measurableSet_Ioi fun t (ht : 0 < t) => ?_` and prove the remaining obligations. Rewrite using `[← ENNReal.ofReal_mul (inv_nonneg.2 ht.le), Real.rpow_sub_one ht.ne']`. Use `congr 1`. Clear the denominators using the available nonvanishing facts.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[e3]`. Use `lt_of_le_of_lt (lintegral_mono fun t => ?_) hBint.2` and prove the remaining obligations. Rewrite using `[Real.enorm_eq_ofReal_abs]`. Conclude with `ENNReal.ofReal_le_ofReal (le_abs_self _)`. Use `⟨hint, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[integral_eq_centralHaarConst_smul hn μ ν hint]`. Establish `hinner : ∀ s : {r : ℝ // 0 < r}, ∫ y, H (centralSection K n s * (y : AdelicGLn.AdelicGL K n)) ∂μ = thetaPairing μ φ₁ φ₂ Ξ s * ((s : ℝ) : ℂ) ^ w`. Introduce `s`. Repeatedly rewrite using `[hHz]`. Rewrite using `[integral_mul_const, integral_mul_matrixCoeff_eq_thetaPairing μ hφ₁ hφ₂ hφ₁l hΞ hB s]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Repeatedly rewrite using `[hinner]`. Use `set J' : ℝ → ℂ := fun t => if h : 0 < t then thetaPairing μ φ₁ φ₂ Ξ ⟨t, h⟩ * (t : ℂ) ^ w else 0 with hJ'`. Establish `e4 : (fun s : {r : ℝ // 0 < r} => thetaPairing μ φ₁ φ₂ Ξ s * ((s : ℝ) : ℂ) ^ w) = fun s : {r : ℝ // 0 < r} => J' (s : ℝ)`. Use function extensionality and compare the values at `s`. Simplify using `only [hJ', dif_pos s.2, Subtype.coe_eta]`.
-
-Rewrite using `[e4, integral_posRealMeasure, Complex.real_smul, mellin]`. Use `congr 1`. Use `setIntegral_congr_fun measurableSet_Ioi fun t (ht : 0 < t) => ?_` and prove the remaining obligations. Simplify using `only [hJ', dif_pos ht]`. Rewrite using `[Complex.real_smul, smul_eq_mul, Complex.cpow_sub _ _ (Complex.ofReal_ne_zero.2 ht.ne'), Complex.cpow_one, Complex.ofReal_inv]`.
-
-Establish `: (t : ℂ) ≠ 0` using `Complex.ofReal_ne_zero.2 ht.ne'`. Clear the denominators using the available nonvanishing facts.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem exists_integral_eq_mellin_thetaPairing (hn : 0 < n) (ν : Measure (AdelicGLn.AdelicGL K n))
     [ν.IsHaarMeasure] :

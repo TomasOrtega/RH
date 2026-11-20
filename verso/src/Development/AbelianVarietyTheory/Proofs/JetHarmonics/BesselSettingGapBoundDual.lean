@@ -16,26 +16,26 @@ open scoped InnerProductSpace ENNReal
 namespace GlobalTheory
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨Formalism.FourierDecayAlt.P.B5.haar_sigmaFinite h, h.ne_zero, h.conc, h.left⟩`.
+Supply the required witnesses or components.
 -/
 theorem besselInner_haar {k r : ℕ} {U : Set (Mx k r)} {μ : Measure (Formalism.QuantumDeterminants.Mt k r)} (h : B.IsHaarOn U μ) :
     PI.BesselPeriodGGP.IsHaarOn U μ :=
   ⟨Formalism.FourierDecayAlt.P.B5.haar_sigmaFinite h, h.ne_zero, h.conc, h.left⟩
 
 /- English proof (translation)
-Take `⟨-, -, -, hT, -, hae⟩` from `GlobalTheory.T.besselSubgroup_parameter_measurePreserving k r D.z' D.μW' D.μN D.k_pos D.z'_mem D.T'_pos (besselInner_haar D.haarW') (besselInner_haar D.haarN)`. Take `⟨-, -, -, hconj, hW, hN⟩` from `GlobalTheory.T.besselCharacter_unipotentRadical_properties k r D.z' Formalism.QuantumDeterminants.cStd D.z'_mem`. Use `set v := R.σ (γ⁻¹ * Matrix.of a.2 * Matrix.of a.1) x with hv`. Use `set G := beInt D.z' Formalism.QuantumDeterminants.cStd D.π' R.σ y v with hG`. Use `set T : Formalism.QuantumDeterminants.Mt k r × Formalism.QuantumDeterminants.Mt k r → Formalism.QuantumDeterminants.Mt k r × Formalism.QuantumDeterminants.Mt k r := fun p => ((fun i j => (Matrix.of p.1 : Mx k r) i j), (fun i j => ((Matrix.of p.1)⁻¹ * Matrix.of p.2 * Matrix.of p.1 …`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `L : (Wq →L[ℂ] Wq) →L[ℂ] (Wq →L[ℂ] Wp)` to `Formalism.QuantumDeterminants.psi k r D.z Formalism.QuantumDeterminants.cStd (Matrix.of a.2) • ContinuousLinearMap.compL ℂ Wq Wq Wp ((D.π (Matrix.of a.1)).comp X)`. Establish `hL : ∀ A, L A = Formalism.QuantumDeterminants.psi k r D.z Formalism.QuantumDeterminants.cStd (Matrix.of a.2) • (D.π (Matrix.of a.1)).comp (X.comp A)` using `fun A => rfl`. Establish `key : (fun b => JF.integrand D (fun g => ⟪x, R.σ g y⟫_ℂ • X) γ (a, b)) =ᵐ[D.μW'.prod D.μN] fun b => L (G (T b))` using `by filter_upwards [hae] with b hb`. Take `⟨hb1, hb2⟩` from `hb`. Establish `hb1G : Matrix.of b.1 ∈ GG k r` using `(hW _ hb1 _ hb1).2.2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb2G : Matrix.of b.2 ∈ GG k r` using `hN _ hb2`. Establish `u1` using `Formalism.QuantumDeterminants.WeylGroupFacts.isUnit_of_uh ha1`. Establish `u2` using `Formalism.QuantumDeterminants.WeylGroupFacts.isUnit_of_uh ha2`. Establish `u3` using `Formalism.QuantumDeterminants.WeylGroupFacts.isUnit_of_uh hγ`. Establish `u4` using `Formalism.QuantumDeterminants.WeylGroupFacts.isUnit_of_uh hb1G`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hg0 : γ⁻¹ * Matrix.of a.2 * Matrix.of a.1 ∈ GG k r` using `Formalism.QuantumDeterminants.WeylGroupFacts.uh_mul (Formalism.QuantumDeterminants.WeylGroupFacts.uh_mul (Formalism.QuantumDeterminants.WeylGroupFacts.uh_inv hγ) ha2) ha1`. Establish `hs : B.sgs (a, b) γ ∈ GG k r` using `Formalism.QuantumDeterminants.WeylGroupFacts.uh_mul (Formalism.QuantumDeterminants.WeylGroupFacts.uh_mul (Formalism.QuantumDeterminants.WeylGroupFacts.uh_mul (Formalism.QuantumDeterminants.WeylGroupFacts.uh_mul (Formalism.QuantumDeterminants.WeylGroupFacts.uh_inv ha1) (Formalism. …`. Establish `e1 : (γ⁻¹ * Matrix.of a.2 * Matrix.of a.1) * B.sgs (a, b) γ = Matrix.of b.1 * ((Matrix.of b.1)⁻¹ * Matrix.of b.2 * Matrix.of b.1)`. Simplify using `only [B.sgs, Matrix.mul_assoc, Matrix.mul_nonsing_inv_cancel_left _ _ u1, Matrix.mul_nonsing_inv_cancel_left _ _ u2, Matrix.mul_nonsing_inv_cancel_left _ _ u4, Matrix.nonsing_inv_mul_cancel_left _ _ u3]`. Establish `e2 : ⟪x, R.σ (B.sgs (a, b) γ) y⟫_ℂ = ⟪v, R.σ (Matrix.of b.1 * ((Matrix.of b.1)⁻¹ * Matrix.of b.2 * Matrix.of b.1)) y⟫_ℂ`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← e1, hmul _ hg0 _ hs, hv, huni _ hg0]`. Establish `e3` using `(hconj _ hb1 _ hb2).2.2.2`. Establish `e4 : G (T b) = (⟪v, R.σ (Matrix.of b.1 * ((Matrix.of b.1)⁻¹ * Matrix.of b.2 * Matrix.of b.1)) y⟫_ℂ * star (Formalism.QuantumDeterminants.psi k r D.z' Formalism.QuantumDeterminants.cStd ((Matrix.of b.1)⁻¹ * Matrix.of b.2 * Matrix.of b.1))) • D.π' (Matrix.of b.1)⁻¹` using `rfl`. Rewrite using `[hL, e4, e3, ← e2]`. Use extensionality with `w`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `only [JF.integrand, JF.xiP, B.rho, ContinuousLinearMap.smul_apply, ContinuousLinearMap.comp_apply, map_smul, smul_smul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Establish `hGT : Integrable (fun b => G (T b)) (D.μW'.prod D.μN)` using `hT.integrable_comp_of_integrable hint`. Rewrite using `[integral_congr_ae key, L.integral_comp_comm hGT, ← hL]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `congr 1`. Establish `h2` using `integral_map hT.aemeasurable (f := G) (by rw [hT.map_eq]; exact hint.aestronglyMeasurable)`. Rewrite `h2` using `[hT.map_eq]`. Conclude with `h2.symm`.
+A detailed English derivation is pending.
 -/
 theorem besselInner_integral {k r : ℕ} (R : Rep k r) {Wp : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp]
     [CompleteSpace Wp] {Wq : Type} [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [CompleteSpace Wq]
@@ -103,17 +103,17 @@ theorem besselInner_integral {k r : ℕ} (R : Rep k r) {Wp : Type} [NormedAddCom
   exact h2.symm
 
 /- English proof (translation)
-Introduce `hH k r ε mu h R Wp _ _ _ _ Wq _ _ _ _ D l l' hDS hgap hOK _ hl' γ hγ`. Take `⟨hmul, -, huni, -, hsm, hTK, -⟩` from `GlobalTheory.rep_basic_of_isDS hH.1.2.2.1 k r ε mu R hDS`. Use `⟨fun x b c => ∫ a : Formalism.QuantumDeterminants.Mt k r × Formalism.QuantumDeterminants.Mt k r, (Formalism.QuantumDeterminants.psi k r D.z Formalism.QuantumDeterminants.cStd (Matrix.of a.2) * ⟪l' (R.σ (γ⁻¹ * Matrix.of a.2 * Matrix.of a.1) x), c⟫_ℂ) • D.π (Matrix.of a.1) b ∂(D.μW …` and prove the remaining obligations. Introduce `x b c t`. Simplify using `only`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Rewrite using `[← integral_smul]`. Use `congr 1`. Use function extensionality and compare the values at `a`. Rewrite using `[map_smul, smul_comm]`. Introduce `x hx y hy X c`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hcoef : IsCoef R l l' (fun g => ⟪x, R.σ g y⟫_ℂ • X) ⟪l x, X (l' y)⟫_ℂ` using `⟨1, fun _ => x, fun _ => y, fun _ => X, fun _ => ⟨hx, hy⟩, fun g _ => by simp, by simp⟩`. Establish `hcc` using `(GlobalTheory.isCoef_ckOn_inCC hH k r ε mu h R Wp Wq l l' _ _ hDS hgap hOK hcoef).2 0`. Establish `hI` using `(Formalism.FourierDecayAlt.P.bessel_integral_converges k r Wp Wq D _ _ (GlobalTheory.T.decayThresholds_of_spectralGapCondition k r h hOK).1 hcc).1 γ hγ`. Use `haveI := Formalism.FourierDecayAlt.P.B5.haar_sigmaFinite D.haarW`. Use `haveI := Formalism.FourierDecayAlt.P.B5.haar_sigmaFinite D.haarN`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI := Formalism.FourierDecayAlt.P.B5.haar_sigmaFinite D.haarW'`. Establish `hJ : B.JF D (fun g => ⟪x, R.σ g y⟫_ℂ • X) γ = ∫ p, JF.integrand D (fun g => ⟪x, R.σ g y⟫_ℂ • X) γ p ∂((D.μW.prod D.μN).prod (D.μW'.prod D.μN))` using `rfl`. Establish `hI' : Integrable (JF.integrand D (fun g => ⟪x, R.σ g y⟫_ℂ • X) γ) ((D.μW.prod D.μN).prod (D.μW'.prod D.μN))` using `hI`. Rewrite using `[hJ, integral_prod _ hI', ContinuousLinearMap.integral_apply hI'.integral_prod_left]`. Take `⟨-, -, -, -, -, hae⟩` from `GlobalTheory.T.besselSubgroup_parameter_measurePreserving k r D.z D.μW D.μN D.k_pos D.z_mem D.T_pos (besselInner_haar D.haarW) (besselInner_haar D.haarN)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take `⟨-, -, -, -, hW, hN⟩` from `GlobalTheory.T.besselCharacter_unipotentRadical_properties k r D.z Formalism.QuantumDeterminants.cStd D.z_mem`. Use `integral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [hae] with a ha`. Establish `ha1 : Matrix.of a.1 ∈ GG k r` using `(hW _ ha.1 _ ha.1).2.2`. Establish `ha2 : Matrix.of a.2 ∈ GG k r` using `hN _ ha.2`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hg0 : γ⁻¹ * Matrix.of a.2 * Matrix.of a.1 ∈ GG k r` using `Formalism.QuantumDeterminants.WeylGroupFacts.uh_mul (Formalism.QuantumDeterminants.WeylGroupFacts.uh_mul (Formalism.QuantumDeterminants.WeylGroupFacts.uh_inv hγ.1) ha2) ha1`. Take `⟨hint, hbe⟩` from `hl'.2 y (hsm y hy) _ (hTK _ hg0 x hx)`. Rewrite using `[besselInner_integral R D hmul huni hγ.1 x y X a ha1 ha2 hint, hbe]`. Simplify using `[smul_smul]`.
+A detailed English derivation is pending.
 -/
 theorem besselJ_coef_through_right : Hyps → ∀ (k r : ℕ) (ε : Fin (2 * r + k + 1) → Bool) (mu : Fin (2 * r + k + 1) → ℝ) (h : ℝ) (R : Rep k r) (Wp : Type) [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [CompleteSpace Wp] [FiniteDimensional ℂ Wp] (Wq : Type) [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [CompleteSpace Wq] [FiniteDimensional ℂ Wq] (D : B.RealPlaceData k r Wp Wq) (l : R.H → Wp) (l' : R.H → Wq), R.IsDS ε mu → Formalism.QuantumDeterminants.GapAtLeast ε mu h → GapOK k r h → IsBeL R D.z D.π D.μW D.μN l → IsBeL R D.z' D.π' D.μW' D.μN l' → ∀ γ ∈ JF.Om k r D.z D.z', ∃ Bb : R.H → Wp → Wq → Wp, (∀ x b c (t : ℂ), Bb x (t • b) c = t • Bb x b c) ∧ ∀ x ∈ R.TK, ∀ y ∈ R.TK, ∀ (X : Wq →L[ℂ] Wp) (c : Wq), B.JF D (fun g => ⟪x, R.σ g y⟫_ℂ • X) γ c = Bb x (X (l' y)) c := by
   intro hH k r ε mu h R Wp _ _ _ _ Wq _ _ _ _ D l l' hDS hgap hOK _ hl' γ hγ

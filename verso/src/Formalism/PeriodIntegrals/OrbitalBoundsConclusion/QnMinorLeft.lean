@@ -1,7 +1,7 @@
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.LeftQuantumMinor.QuantumMinorLeftHermitian
 
 /- English proof (translation)
-Use function extensionality and compare the values at `g`. Simplify using `only [Formalism.QuantumDeterminants.EabH, Formalism.REAL.RdV, mul_assoc]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 private theorem eabH_comp_mul_left {n : ℕ} {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E]
     (H h : Matrix (Fin n) (Fin n) ℂ) (a b : Fin n) (f : Matrix (Fin n) (Fin n) ℂ → E) :
@@ -10,7 +10,7 @@ private theorem eabH_comp_mul_left {n : ℕ} {E : Type} [NormedAddCommGroup E] [
   simp only [Formalism.QuantumDeterminants.EabH, Formalism.REAL.RdV, mul_assoc]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `g`. Simplify using `only [Formalism.QuantumDeterminants.Top, eabH_comp_mul_left]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 private theorem qdTop_eabH_comp_mul_left {n : ℕ} {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E]
     (H h : Matrix (Fin n) (Fin n) ℂ) (u : ℂ) (a b : Fin n) (f : Matrix (Fin n) (Fin n) ℂ → E) :
@@ -20,9 +20,9 @@ private theorem qdTop_eabH_comp_mul_left {n : ℕ} {E : Type} [NormedAddCommGrou
   simp only [Formalism.QuantumDeterminants.Top, eabH_comp_mul_left]
 
 /- English proof (translation)
-Proceed by induction on `L with`. Consider the case `nil => rfl`. Consider the case `cons T L ih`. Simplify using `only [List.foldr_cons]`. Rewrite using `[ih (fun T' hT' => hL T' (by simp [hT']))]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hL T (by simp) _`.
+A detailed English derivation is pending.
 -/
 private theorem foldr_apply_comp_mul_left_of_forall_mem {n : ℕ} {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E]
     (h : Matrix (Fin n) (Fin n) ℂ) (L : List ((Matrix (Fin n) (Fin n) ℂ → E) → (Matrix (Fin n) (Fin n) ℂ → E)))
@@ -37,9 +37,9 @@ private theorem foldr_apply_comp_mul_left_of_forall_mem {n : ℕ} {E : Type} [No
     exact hL T (by simp) _
 
 /- English proof (translation)
-Introduce `E _ _ n t H f a b u h`. Use function extensionality and compare the values at `x`. Simplify using `only [Formalism.QuantumDeterminants.qminorOp, Finset.sum_apply, Pi.smul_apply]`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Establish `hL : ∀ T ∈ List.ofFn (fun k : Fin t => Formalism.QuantumDeterminants.Top (Formalism.QuantumDeterminants.EabH H) (u - ((k : ℕ) : ℂ)) (a (σ k)) (b k)), ∀ f' : Matrix (Fin n) (Fin n) ℂ → E, T (fun x => f' (h * x)) = fun x => T f' (h * x)`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Introduce `T hT f'`. Take `⟨k, rfl⟩` from `List.mem_ofFn.mp hT`. Conclude with `qdTop_eabH_comp_mul_left H h _ _ _ f'`. Rewrite using `[foldr_apply_comp_mul_left_of_forall_mem h _ hL f]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem qnMinorLeft : Formalism.FourierDecayAlt.Q.QMinorLeftH := by
   intro E _ _ n t H f a b u h
@@ -55,6 +55,6 @@ theorem qnMinorLeft : Formalism.FourierDecayAlt.Q.QMinorLeftH := by
   rw [foldr_apply_comp_mul_left_of_forall_mem h _ hL f]
 
 /- English proof (translation)
-The claim follows from `qnMinorLeft`.
+A detailed English derivation is pending.
 -/
 theorem quantum_minor_left : Formalism.FourierDecayAlt.Q.QMinorLeftH := qnMinorLeft

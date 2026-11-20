@@ -12,13 +12,13 @@ namespace GlobalTheory.BesselPsi
 open Formalism.QuantumDeterminants
 
 /- English proof (translation)
-The claim follows from `Matrix.isUnit_det_of_right_inverse (hpkFacts k r).2.1`.
+A detailed English derivation is pending.
 -/
 theorem hpk_unit (k r : ℕ) : IsUnit (Hpk k r).det :=
   Matrix.isUnit_det_of_right_inverse (hpkFacts k r).2.1
 
 /- English proof (translation)
-Use `conv_lhs => rw [← h]`. Rewrite using `[Matrix.mulVec_mulVec, Matrix.nonsing_inv_mul _ hg, Matrix.one_mulVec]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inv_fix {n : ℕ} {g : Matrix (Fin n) (Fin n) ℂ} (hg : IsUnit g.det) {v : Fin n → ℂ}
     (h : g *ᵥ v = v) : g⁻¹ *ᵥ v = v := by
@@ -26,7 +26,7 @@ theorem inv_fix {n : ℕ} {g : Matrix (Fin n) (Fin n) ℂ} (hg : IsUnit g.det) {
   rw [Matrix.mulVec_mulVec, Matrix.nonsing_inv_mul _ hg, Matrix.one_mulVec]
 
 /- English proof (translation)
-Take `⟨hu, hi⟩` from `(uHGroup _ _ (hpk_unit k r)).2.2 g hg.1`. Conclude with `⟨hi, fun a => ⟨inv_fix hu (hg.2.1 a).1, inv_fix hu (hg.2.1 a).2⟩, inv_fix hu hg.2.2⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem uw_inv {k r : ℕ} {z : Fin (2 * r + k + 1) → ℂ} {g : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ}
     (hg : g ∈ UWset k r z) : g⁻¹ ∈ UWset k r z := by
@@ -34,7 +34,7 @@ theorem uw_inv {k r : ℕ} {z : Fin (2 * r + k + 1) → ℂ} {g : Matrix (Fin (2
   exact ⟨hi, fun a => ⟨inv_fix hu (hg.2.1 a).1, inv_fix hu (hg.2.1 a).2⟩, inv_fix hu hg.2.2⟩
 
 /- English proof (translation)
-Use `⟨(uHGroup _ _ (hpk_unit k r)).2.1 g hg.1 g' hg'.1, fun a => ⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[← Matrix.mulVec_mulVec, (hg'.2.1 a).1, (hg.2.1 a).1]`. Rewrite using `[← Matrix.mulVec_mulVec, (hg'.2.1 a).2, (hg.2.1 a).2]`. Rewrite using `[← Matrix.mulVec_mulVec, hg'.2.2, hg.2.2]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem uw_mul {k r : ℕ} {z : Fin (2 * r + k + 1) → ℂ}
     {g g' : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ}
@@ -45,11 +45,11 @@ theorem uw_mul {k r : ℕ} {z : Fin (2 * r + k + 1) → ℂ}
   · rw [← Matrix.mulVec_mulVec, hg'.2.2, hg.2.2]
 
 /- English proof (translation)
-Introduce `k r z c hz`. Use `⟨fun g => ?_, fun m hm m' hm' => ⟨(nSubgroup k r).2.1 m hm m' hm', (psiChar k r z c hz m hm).1 m' hm'⟩, fun m hm => ⟨(nSubgroup k r).2.2 m hm, ?_⟩, fun g hg m hm => ?_, fun g hg g' hg' => ⟨uw_mul hg hg', uw_inv hg, hg.1⟩, fun m hm => hm.1⟩` and prove the remaining obligations. Unfold `psi`. Rewrite using `[mul_comm]`. Conclude with `Complex.norm_exp_ofReal_mul_I _`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← BesselUnipotentEquiv.star_psi_inv z c hz m hm, star_star]`. Establish `hu` using `((uHGroup _ _ (hpk_unit k r)).2.2 g hg.1).1`. Establish `h1` using `uWNormal k r z hz g hg m hm`. Establish `h2` using `uWNormal k r z hz g⁻¹ (uw_inv hg) m hm`. Rewrite `h2` using `[Matrix.nonsing_inv_nonsing_inv _ hu]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨h1.1, h2.1, ?_, ?_⟩` and prove the remaining obligations. Unfold `psi`. Rewrite using `[h1.2]`. Unfold `psi`. Rewrite using `[h2.2]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem psi_character : ∀ (k r : ℕ) (z : Fin (2 * r + k + 1) → ℂ) (c : ℂ), Formalism.QuantumDeterminants.inWb k r z → (∀ g, ‖Formalism.QuantumDeterminants.psi k r z c g‖ = 1) ∧ (∀ m ∈ Formalism.QuantumDeterminants.Nset k r, ∀ m' ∈ Formalism.QuantumDeterminants.Nset k r, m * m' ∈ Formalism.QuantumDeterminants.Nset k r ∧ Formalism.QuantumDeterminants.psi k r z c (m * m') = Formalism.QuantumDeterminants.psi k r z c m * Formalism.QuantumDeterminants.psi k r z c m') ∧ (∀ m ∈ Formalism.QuantumDeterminants.Nset k r, m⁻¹ ∈ Formalism.QuantumDeterminants.Nset k r ∧ Formalism.QuantumDeterminants.psi k r z c m⁻¹ = star (Formalism.QuantumDeterminants.psi k r z c m)) ∧ (∀ g ∈ Formalism.QuantumDeterminants.UWset k r z, ∀ m ∈ Formalism.QuantumDeterminants.Nset k r, g * m * g⁻¹ ∈ Formalism.QuantumDeterminants.Nset k r ∧ g⁻¹ * m * g ∈ Formalism.QuantumDeterminants.Nset k r ∧ Formalism.QuantumDeterminants.psi k r z c (g * m * g⁻¹) = Formalism.QuantumDeterminants.psi k r z c m ∧ Formalism.QuantumDeterminants.psi k r z c (g⁻¹ * m * g) = Formalism.QuantumDeterminants.psi k r z c m) ∧ (∀ g ∈ Formalism.QuantumDeterminants.UWset k r z, ∀ g' ∈ Formalism.QuantumDeterminants.UWset k r z, g * g' ∈ Formalism.QuantumDeterminants.UWset k r z ∧ g⁻¹ ∈ Formalism.QuantumDeterminants.UWset k r z ∧ g ∈ GG k r) ∧ ∀ m ∈ Formalism.QuantumDeterminants.Nset k r, m ∈ GG k r := by
   intro k r z c hz

@@ -20,19 +20,19 @@ Both sides reduce to the same expression.
 theorem toLE_apply (γ : GL (Fin N) E) (x : Fin N → E) : toLE γ x = (γ : Matrix (Fin N) (Fin N) E) *ᵥ x := rfl
 
 /- English proof (translation)
-Rewrite using `[toLE_apply, toLE_apply, Matrix.mulVec_mulVec, Units.mul_inv, Matrix.one_mulVec]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem toLE_inv_apply (γ : GL (Fin N) E) (x : Fin N → E) : toLE γ (toLE γ⁻¹ x) = x := by
   rw [toLE_apply, toLE_apply, Matrix.mulVec_mulVec, Units.mul_inv, Matrix.one_mulVec]
 
 /- English proof (translation)
-Rewrite using `[toLE_apply, toLE_apply, Matrix.mulVec_mulVec, Units.inv_mul, Matrix.one_mulVec]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem toLE_inv_apply' (γ : GL (Fin N) E) (x : Fin N → E) : toLE γ⁻¹ (toLE γ x) = x := by
   rw [toLE_apply, toLE_apply, Matrix.mulVec_mulVec, Units.inv_mul, Matrix.one_mulVec]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `a`. Simplify using `[bc, Matrix.mulVec, dotProduct, map_sum, map_mul]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem bc_mulVec (γ : GL (Fin N) E) (x : Fin N → E) :
     ((bc (inclE (F := F) (FiniteAdeleRing (𝓞 F) F)) γ : GL (Fin N) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)) :
@@ -42,13 +42,13 @@ theorem bc_mulVec (γ : GL (Fin N) E) (x : Fin N → E) :
   simp [bc, Matrix.mulVec, dotProduct, map_sum, map_mul]
 
 /- English proof (translation)
-Unfold `latAd mvL`. Rewrite using `[Submodule.map_span]`. Use `congr 1`. Use `set B := bc (inclE (F := F) (FiniteAdeleRing (𝓞 F) F)) γ with hB`. Establish `h2 : ∀ v : Fin N → E ⊗[F] FiniteAdeleRing (𝓞 F) F, (B⁻¹ : GL (Fin N) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)).val *ᵥ (B.val *ᵥ v) = v` using `fun v => by`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.mulVec_mulVec, Units.inv_mul, Matrix.one_mulVec]`. Establish `key : ∀ x : Fin N → E, ((B * y)⁻¹ : GL (Fin N) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)).val *ᵥ (fun a => inclE (F` using `F) (FiniteAdeleRing (𝓞 F) F) (x a)) = (y⁻¹ : GL (Fin N) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)).val *ᵥ (fun a => inclE (F := F) (FiniteAdeleRing (𝓞 F) F) (toLE γ⁻¹ x a)) := by`. Introduce `x`. Establish `h1 : (fun a => inclE (F` using `F) (FiniteAdeleRing (𝓞 F) F) (x a)) = B.val *ᵥ (fun a => inclE (F := F) (FiniteAdeleRing (𝓞 F) F) (toLE γ⁻¹ x a)) := by`. Rewrite using `[hB, bc_mulVec, ← toLE_apply, toLE_inv_apply]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1, _root_.mul_inv_rev, Units.val_mul, ← Matrix.mulVec_mulVec, h2]`. Use extensionality with `x`. Simplify using `only [Set.mem_setOf_eq, Set.mem_image, LinearMap.coe_restrictScalars, LinearEquiv.coe_coe, key]`. Prove the components needed by the constructor for the conclusion. Introduce `hx`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Conclude with `⟨toLE γ⁻¹ x, hx, toLE_inv_apply γ x⟩`. Introduce and unpack `⟨z, hz, rfl⟩`. Rewrite using `[toLE_inv_apply']` and apply the resulting hypothesis.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem latAd_rat (γ : GL (Fin N) E) (y : GL (Fin N) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)) (Lb : Submodule (𝓞 E) (Fin N → E)) :
     latAd (bc (inclE (F := F) (FiniteAdeleRing (𝓞 F) F)) γ * y) Lb = mvL γ (latAd y Lb) := by
@@ -78,9 +78,9 @@ def HatStab (Lb : Submodule (𝓞 E) (Fin N → E)) (κ : GL (Fin N) (E ⊗[F] F
       Formalism.L2.Herm.hatL (F := F) Lb ↔ z ∈ Formalism.L2.Herm.hatL (F := F) Lb
 
 /- English proof (translation)
-Unfold `latAd`. Use `congr 1`. Use extensionality with `x`. Simplify using `only [Set.mem_setOf_eq]`. Rewrite using `[_root_.mul_inv_rev, Units.val_mul, ← Matrix.mulVec_mulVec]`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hκ _`.
+A detailed English derivation is pending.
 -/
 theorem latAd_stab (y κ : GL (Fin N) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)) (Lb : Submodule (𝓞 E) (Fin N → E)) (hκ : HatStab Lb κ) :
     latAd (y * κ) Lb = latAd y Lb := by
@@ -92,14 +92,14 @@ theorem latAd_stab (y κ : GL (Fin N) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)) (Lb
   exact hκ _
 
 /- English proof (translation)
-Simplify using `only [hform, dotProduct, Matrix.mulVec, Finset.mul_sum, mul_assoc]`.
+Simplify using the standard rewrite rules.
 -/
 private lemma hform_eq_lemma (σ : E →+* E) (J : Matrix (Fin N) (Fin N) E) (x y : Fin N → E) :
     hform σ J x y = (fun i => σ (x i)) ⬝ᵥ (J *ᵥ y) := by
   simp only [hform, dotProduct, Matrix.mulVec, Finset.mul_sum, mul_assoc]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `[Matrix.mulVec, dotProduct, map_sum, map_mul]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 private lemma ringHom_mulVec_eq_map_mulVec (σ : E →+* E) (M : Matrix (Fin N) (Fin N) E) (x : Fin N → E) :
     (fun i => σ ((M *ᵥ x) i)) = (M.map σ) *ᵥ (fun i => σ (x i)) := by
@@ -107,7 +107,7 @@ private lemma ringHom_mulVec_eq_map_mulVec (σ : E →+* E) (M : Matrix (Fin N) 
   simp [Matrix.mulVec, dotProduct, map_sum, map_mul]
 
 /- English proof (translation)
-Rewrite using `[hform_eq_lemma, hform_eq_lemma, ringHom_mulVec_eq_map_mulVec]`. Unfold `cT at hM`. Rewrite `hM` using `[Matrix.mul_assoc]`. Use `conv_lhs => rw [dotProduct_comm, Matrix.dotProduct_mulVec, ← Matrix.mulVec_transpose, dotProduct_comm]`. Simplify using `only [Matrix.mulVec_mulVec, Matrix.mul_assoc, hM]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private lemma hform_mulVec_eq_of_cT_mul_mul_eq' (σ : E →+* E) (J : Matrix (Fin N) (Fin N) E) (M : Matrix (Fin N) (Fin N) E)
     (hM : cT σ M * J * M = J) (x y : Fin N → E) :
@@ -119,11 +119,11 @@ private lemma hform_mulVec_eq_of_cT_mul_mul_eq' (σ : E →+* E) (J : Matrix (Fi
   simp only [Matrix.mulVec_mulVec, Matrix.mul_assoc, hM]
 
 /- English proof (translation)
-Establish `hM : cT σ (γ : Matrix (Fin N) (Fin N) E) * J * (γ : Matrix (Fin N) (Fin N) E) = J` using `hγ`. Use extensionality with `v`. Unfold `dualSet mvL`. Simplify using `only [Set.mem_setOf_eq, Set.mem_image, Submodule.mem_map, LinearMap.coe_restrictScalars, LinearEquiv.coe_coe]`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. By extensionality, compare the relevant components. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Introduce `hv`. Use `⟨toLE γ⁻¹ v, fun x hx => ?_, toLE_inv_apply γ v⟩` and prove the remaining obligations. Establish `h` using `hv (toLE γ x) ⟨x, hx, rfl⟩`. Rewrite using `[← hform_mulVec_eq_of_cT_mul_mul_eq' σ J _ hM x (toLE γ⁻¹ v), ← toLE_apply, ← toLE_apply, toLE_inv_apply]`. Conclude with `h`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨w, hw, rfl⟩ x ⟨x', hx', rfl⟩`. Rewrite using `[toLE_apply, toLE_apply, hform_mulVec_eq_of_cT_mul_mul_eq' σ J _ hM]`. Conclude with `hw x' hx'`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dualSet_mvL (σ : E →+* E) (J : Matrix (Fin N) (Fin N) E) (γ : GL (Fin N) E) (hγ : γ ∈ UJ σ J)
     (Λ : Submodule (𝓞 E) (Fin N → E)) : dualSet σ J (mvL γ Λ) = toLE γ '' dualSet σ J Λ := by
@@ -142,7 +142,7 @@ theorem dualSet_mvL (σ : E →+* E) (J : Matrix (Fin N) (Fin N) E) (γ : GL (Fi
     exact hw x' hx'
 
 /- English proof (translation)
-Unfold `compan`. Rewrite using `[dualSet_mvL _ J γ hγ Λ]`. Unfold `mvL`. Simplify using `only [Submodule.map_sup, Submodule.map_smul'', Submodule.map_span, LinearMap.coe_restrictScalars, LinearEquiv.coe_coe]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem compan_mvL (J : Matrix (Fin N) (Fin N) E) (a : 𝓞 E) (γ : GL (Fin N) E) (hγ : γ ∈ UJ (sp.cm.sig : E →+* E) J)
     (Λ : Submodule (𝓞 E) (Fin N → E)) : compan (sp := sp) J a (mvL γ Λ) = mvL γ (compan (sp := sp) J a Λ) := by
@@ -152,9 +152,9 @@ theorem compan_mvL (J : Matrix (Fin N) (Fin N) E) (a : 𝓞 E) (γ : GL (Fin N) 
   simp only [Submodule.map_sup, Submodule.map_smul'', Submodule.map_span, LinearMap.coe_restrictScalars, LinearEquiv.coe_coe]
 
 /- English proof (translation)
-Unfold `toStd mvL stdG`. Use extensionality with `v`. Simplify using `only [Submodule.mem_map, LinearMap.coe_restrictScalars, LinearEquiv.coe_coe, LinearEquiv.trans_apply]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨w, ⟨x, hx, rfl⟩, rfl⟩`.
+Replace the relevant objects with their definitions. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨stdCo σ J x, ⟨x, hx, rfl⟩, by rw [LinearEquiv.symm_apply_apply]⟩`. Introduce and unpack `⟨w, ⟨x, hx, rfl⟩, rfl⟩`. Conclude with `⟨toLE γ x, ⟨x, hx, rfl⟩, by rw [LinearEquiv.symm_apply_apply]⟩`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem toStd_mvL (σ : E →+* E) (J : Matrix (Fin N) (Fin N) E) (γ : GL (Fin N) E) (Λ : Submodule (𝓞 E) (Fin N → E)) :
     toStd σ J (mvL γ Λ) = (toStd σ J Λ).map
@@ -173,7 +173,7 @@ def latK (sp : Spaces R F E) (J : Matrix (Fin N) (Fin N) E) (a : 𝓞 E) (y : GL
   toStd (sp.cm.sig : E →+* E) J (compan (sp := sp) J a (latAd y Lb))
 
 /- English proof (translation)
-Unfold `latK`. Rewrite using `[latAd_stab _ _ _ hκ, latAd_rat, compan_mvL J a γ₀ hγ, toStd_mvL]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem latK_tr (J : Matrix (Fin N) (Fin N) E) (a : 𝓞 E) (y κ₀ : GL (Fin N) (E ⊗[F] FiniteAdeleRing (𝓞 F) F))
     (Lb : Submodule (𝓞 E) (Fin N → E)) (γ₀ : GL (Fin N) E) (hγ : γ₀ ∈ UJ (sp.cm.sig : E →+* E) J) (hκ : HatStab Lb κ₀) :
@@ -183,14 +183,14 @@ theorem latK_tr (J : Matrix (Fin N) (Fin N) E) (a : 𝓞 E) (y κ₀ : GL (Fin N
   rw [latAd_stab _ _ _ hκ, latAd_rat, compan_mvL J a γ₀ hγ, toStd_mvL]
 
 /- English proof (translation)
-Use extensionality with `x i`. Simplify using `[reE]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem reE_rfl : reE (E := E) (rfl : N = N) = LinearEquiv.refl E (Fin N → E) := by
   ext x i
   simp [reE]
 
 /- English proof (translation)
-Substitute `h` using the available equality. Establish `e : ∀ h'' : N = N, reE (E` using `E) h'' = LinearEquiv.refl E (Fin N → E) := fun _ => reE_rfl`. Rewrite using `[e]`. Use extensionality with `x`. Simplify using the standard rewrite rules.
+Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem map_reE_symm {n : ℕ} (h : N = n) (h' : n = N) (Λ : Submodule (𝓞 E) (Fin N → E)) :
     (Λ.map (((reE (E := E) h : (Fin N → E) ≃ₗ[E] (Fin n → E)) : (Fin N → E) →ₗ[E] (Fin n → E)).restrictScalars (𝓞 E))).map
@@ -202,7 +202,7 @@ theorem map_reE_symm {n : ℕ} (h : N = n) (h' : n = N) (Λ : Submodule (𝓞 E)
   simp
 
 /- English proof (translation)
-Establish `e : reE (E` using `E) h = LinearEquiv.refl E (Fin N → E) := reE_rfl`. Rewrite using `[e]`. Use extensionality with `x`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem map_reE_rfl (h : N = N) (Λ : Submodule (𝓞 E) (Fin N → E)) :
     Λ.map (((reE (E := E) h : (Fin N → E) ≃ₗ[E] (Fin N → E)) : (Fin N → E) →ₗ[E] (Fin N → E)).restrictScalars (𝓞 E)) = Λ := by

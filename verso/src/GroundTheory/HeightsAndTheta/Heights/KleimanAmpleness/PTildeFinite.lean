@@ -24,13 +24,13 @@ def supportRes (I J : StdCell N) (_h : I.1 ⊆ J.1) : ConeLaurent S x →ₗ[S] 
   if J.1 ⊆ support x then LinearMap.id else 0
 
 /- English proof (translation)
-The claim follows from `if_pos hJ`.
+A detailed English derivation is pending.
 -/
 theorem supportRes_of_subset {I J : StdCell N} (h : I.1 ⊆ J.1) (hJ : J.1 ⊆ support x) :
     supportRes S x I J h = LinearMap.id := if_pos hJ
 
 /- English proof (translation)
-The claim follows from `if_neg hJ`.
+A detailed English derivation is pending.
 -/
 theorem supportRes_of_not {I J : StdCell N} (h : I.1 ⊆ J.1) (hJ : ¬ J.1 ⊆ support x) :
     supportRes S x I J h = 0 := if_neg hJ
@@ -48,15 +48,15 @@ def FinGradedSub.cellConeS (I : StdCell N) : LocMod S N M.coneSub I.1 →ₗ[S] 
   (M.cellCone I).restrictScalars S
 
 /- English proof (translation)
-The claim follows from `dif_neg h`.
+A detailed English derivation is pending.
 -/
 theorem FinGradedSub.cellCone_of_not {I : StdCell N} (h : ¬ I.1 ⊆ support x) : M.cellCone I = 0 :=
   dif_neg h
 
 /- English proof (translation)
-Distinguish the cases in `h : I.1 ⊆ support x`. Express the relevant statement in the definitionally equal form `Function.Injective (M.cellCone I)`. Rewrite using `[M.cellCone_of_subset h]`. Conclude with `locCone_injective M I.1 h`. Choose the witnesses or unpack the hypotheses as in `⟨i, hiI, hi⟩ : ∃ i ∈ I.1, x i = 0 := by`.
+Consider separately whether the proposition holds or fails. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hne`. Use `push Not at hne`. Conclude with `h fun i hi => (mem_support x).mpr (hne i hi)`. Use `locMod_subsingleton M hiI hi` as an intermediate fact. Conclude with `Function.injective_of_subsingleton _`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem FinGradedSub.cellConeS_injective (I : StdCell N) : Function.Injective (M.cellConeS I) := by
   by_cases h : I.1 ⊆ support x
@@ -71,9 +71,9 @@ theorem FinGradedSub.cellConeS_injective (I : StdCell N) : Function.Injective (M
     exact Function.injective_of_subsingleton _
 
 /- English proof (translation)
-Distinguish the cases in `hJ : J.1 ⊆ support x`. Rewrite using `[supportRes_of_subset h hJ, LinearMap.id_apply]`. Express the relevant statement in the definitionally equal form `M.cellCone J (locRes h m) = M.cellCone I m`. Rewrite using `[M.cellCone_of_subset hJ, M.cellCone_of_subset (h.trans hJ)]`. Conclude with `locCone_locRes M h hJ m`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[supportRes_of_not h hJ, LinearMap.zero_apply]`. Express the relevant statement in the definitionally equal form `M.cellCone J _ = 0`. Rewrite using `[M.cellCone_of_not hJ]`. Both sides reduce to the same expression.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem FinGradedSub.cellConeS_res (I J : StdCell N) (h : I.1 ⊆ J.1) (m : LocMod S N M.coneSub I.1) :
     M.cellConeS J (locResS I J h m) = supportRes S x I J h (M.cellConeS I m) := by
@@ -91,11 +91,11 @@ def FinGradedSub.coneDeg (I : StdCell N) : Submodule S (ConeLaurent S x) :=
   (degLoc M.coneGraded c I).map (M.cellConeS I)
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hy`. Take `⟨z, hz, rfl⟩` from `Submodule.mem_map.mp hy`. Take `⟨v, hv, hzv⟩` from `locCone_degLoc M c I hI hz`. Use `⟨v, hv, ?_⟩` and prove the remaining obligations.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Express the relevant statement in the definitionally equal form `M.cellCone I z = _`. Rewrite using `[M.cellCone_of_subset hI]`. Conclude with `hzv`. Introduce and unpack `⟨v, hv, rfl⟩`. Take `⟨z, hz, hzv⟩` from `exists_locCone_eq M c I hI hv`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `Submodule.mem_map.mpr ⟨z, hz, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `M.cellCone I z = _`. Rewrite using `[M.cellCone_of_subset hI]`. Conclude with `hzv`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem FinGradedSub.mem_coneDeg_of_subset {I : StdCell N} (hI : I.1 ⊆ support x) {y : ConeLaurent S x} :
     y ∈ M.coneDeg c I ↔ ∃ v ∈ M.tilde c ⟨I.1, I.2.1, hI⟩, y = coneSingle S x c v := by
@@ -115,7 +115,7 @@ theorem FinGradedSub.mem_coneDeg_of_subset {I : StdCell N} (hI : I.1 ⊆ support
     exact hzv
 
 /- English proof (translation)
-Take `⟨z, -, rfl⟩` from `Submodule.mem_map.mp hy`. Express the relevant statement in the definitionally equal form `M.cellCone I z = 0`. Rewrite using `[M.cellCone_of_not hI]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem FinGradedSub.eq_zero_of_mem_coneDeg {I : StdCell N} (hI : ¬ I.1 ⊆ support x) {y : ConeLaurent S x}
     (hy : y ∈ M.coneDeg c I) : y = 0 := by
@@ -147,7 +147,7 @@ def FinGradedSub.embedC (n : ℕ) :
     · simp only [dif_neg h, Pi.smul_apply, smul_zero, RingHom.id_apply]
 
 /- English proof (translation)
-Simplify using `only [FinGradedSub.embedC, LinearMap.coe_mk, AddHom.coe_mk]`. Rewrite using `[dif_pos h]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem FinGradedSub.embedC_of_subset {n : ℕ} (s : Cech.Cochain (fun I : Chart x => (M.tildeSys c).sub I) n)
     (K : Cech.Idx (Finset.univ : Finset (Fin (N + 1))) n) (h : K.1.1 ⊆ support x) :
@@ -157,7 +157,7 @@ theorem FinGradedSub.embedC_of_subset {n : ℕ} (s : Cech.Cochain (fun I : Chart
   rfl
 
 /- English proof (translation)
-The claim follows from `M.embedC_of_subset c s K h`.
+A detailed English derivation is pending.
 -/
 theorem FinGradedSub.embedC_of_subset' {n : ℕ}
     (s : Cech.Cochain (fun I : Chart x => (M.tildeSys c).sub I) n)
@@ -166,7 +166,7 @@ theorem FinGradedSub.embedC_of_subset' {n : ℕ}
   M.embedC_of_subset c s K h
 
 /- English proof (translation)
-Simplify using `only [FinGradedSub.embedC, LinearMap.coe_mk, AddHom.coe_mk]`. Rewrite using `[dif_neg h]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem FinGradedSub.embedC_of_not {n : ℕ} (s : Cech.Cochain (fun I : Chart x => (M.tildeSys c).sub I) n)
     (K : Cech.Idx (Finset.univ : Finset (Fin (N + 1))) n) (h : ¬ K.1.1 ⊆ support x) :
@@ -175,11 +175,11 @@ theorem FinGradedSub.embedC_of_not {n : ℕ} (s : Cech.Cochain (fun I : Chart x 
   rw [dif_neg h]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `J`. Rewrite using `[Cech.d_apply]`. Distinguish the cases in `hJ : J.1.1 ⊆ support x`. Rewrite using `[M.embedC_of_subset' c _ J hJ, Cech.d_apply, map_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_zsmul, supportRes_of_subset _ hJ, LinearMap.id_apply, M.embedC_of_subset c s _ ((Cech.face_subset J j).trans hJ)]`. Both sides reduce to the same expression. Rewrite using `[M.embedC_of_not c _ J hJ]`. Use `symm`. Use `Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[supportRes_of_not _ hJ, LinearMap.zero_apply, smul_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem FinGradedSub.embedC_d (n : ℕ) (s : Cech.Cochain (fun I : Chart x => (M.tildeSys c).sub I) n) :
     M.embedC c (n + 1) (Cech.d _ (M.tildeSys c).res n s) =
@@ -198,7 +198,7 @@ theorem FinGradedSub.embedC_d (n : ℕ) (s : Cech.Cochain (fun I : Chart x => (M
     rw [supportRes_of_not _ hJ, LinearMap.zero_apply, smul_zero]
 
 /- English proof (translation)
-Introduce `s t hst`. Use function extensionality and compare the values at `K`. Establish `h` using `congrArg (coeffAt S x c) (congrFun hst (ofChartIdx K))`. Rewrite `h` using `[M.embedC_of_subset c s (ofChartIdx K) K.1.2.2, M.embedC_of_subset c t (ofChartIdx K) K.1.2.2, coeffAt_coneSingle_same, coeffAt_coneSingle_same]`. Conclude with `Subtype.ext h`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem FinGradedSub.embedC_injective (n : ℕ) : Function.Injective (M.embedC c n) := by
   intro s t hst
@@ -209,9 +209,7 @@ theorem FinGradedSub.embedC_injective (n : ℕ) : Function.Injective (M.embedC c
   exact Subtype.ext h
 
 /- English proof (translation)
-Introduce `K _`. Distinguish the cases in `h : K.1.1 ⊆ support x`. Rewrite using `[M.embedC_of_subset c s K h]`. Conclude with `(M.mem_coneDeg_of_subset c h).mpr ⟨_, (s (toChartIdx K h)).2, rfl⟩`. Rewrite using `[M.embedC_of_not c s K h]`.
-
-Conclude with `zero_mem _`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem FinGradedSub.embedC_mem (n : ℕ) (s : Cech.Cochain (fun I : Chart x => (M.tildeSys c).sub I) n) :
     M.embedC c n s ∈ Cech.Cdeg (fun _ : StdCell N => ConeLaurent S x) (M.coneDeg c) n := by
@@ -223,11 +221,11 @@ theorem FinGradedSub.embedC_mem (n : ℕ) (s : Cech.Cochain (fun I : Chart x => 
     exact zero_mem _
 
 /- English proof (translation)
-Establish `hv : ∀ K : Cech.Idx (Finset.univ : Finset (Fin (N + 1))) n, ∀ h : K.1.1 ⊆ support x, ∃ v ∈ M.tilde c ⟨K.1.1, K.1.2.1, h⟩, w K = coneSingle S x c v` using `fun K h => (M.mem_coneDeg_of_subset c h).mp (hw K (Set.mem_univ _))`. Establish `key : ∀ K : Cech.Idx (support x) n, coeffAt S x c (w (ofChartIdx K)) ∈ (M.tildeSys c).sub K.1`. Introduce `K`. Take `⟨v, hv', hwv⟩` from `hv (ofChartIdx K) K.1.2.2`. Rewrite using `[hwv, coeffAt_coneSingle_same]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hv'`. Use `⟨fun K => ⟨coeffAt S x c (w (ofChartIdx K)), key K⟩, funext fun K => ?_⟩` and prove the remaining obligations. Distinguish the cases in `h : K.1.1 ⊆ support x`. Rewrite using `[M.embedC_of_subset c _ K h]`. Take `⟨v, -, hwv⟩` from `hv K h`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `coneSingle S x c (coeffAt S x c (w K)) = w K`. Rewrite using `[hwv, coeffAt_coneSingle_same]`. Rewrite using `[M.embedC_of_not c _ K h]`. Conclude with `(M.eq_zero_of_mem_coneDeg c h (hw K (Set.mem_univ _))).symm`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem FinGradedSub.exists_embedC_eq (n : ℕ) (w : Cech.Cochain (fun _ : StdCell N => ConeLaurent S x) n)
     (hw : w ∈ Cech.Cdeg (fun _ : StdCell N => ConeLaurent S x) (M.coneDeg c) n) :
@@ -251,7 +249,7 @@ theorem FinGradedSub.exists_embedC_eq (n : ℕ) (w : Cech.Cochain (fun _ : StdCe
     exact (M.eq_zero_of_mem_coneDeg c h (hw K (Set.mem_univ _))).symm
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨LinearMap.mem_ker.mpr (by rw [← M.embedC_d, LinearMap.mem_ker.mp hs, map_zero]), M.embedC_mem c n s⟩`.
+Supply the required witnesses or components.
 -/
 theorem FinGradedSub.embedC_mem_cocyDeg (n : ℕ) (s : Cech.Cochain (fun I : Chart x => (M.tildeSys c).sub I) n)
     (hs : s ∈ LinearMap.ker (Cech.d _ (M.tildeSys c).res n)) :
@@ -283,13 +281,13 @@ def FinGradedSub.embedH (n : ℕ) :
         exact Submodule.mem_map.mpr ⟨M.embedC c n t, M.embedC_mem c n t, by rw [← M.embedC_d, ht]; rfl⟩)
 
 /- English proof (translation)
-Rewrite using `[injective_iff_map_eq_zero]`. Introduce `y hy`. Take `⟨z, rfl⟩` from `Submodule.Quotient.mk_surjective _ y`. Express the relevant statement in the definitionally equal form `Submodule.Quotient.mk _ = 0 at hy`. Establish `hz` using `(Submodule.Quotient.mk_eq_zero _).mp hy`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact.
 
-Use `(Submodule.Quotient.mk_eq_zero _).mpr ?_` and prove the remaining obligations. Consider the cases of `n with`. Consider the case `zero`. Express the relevant statement in the definitionally equal form `M.embedC c 0 (z : Cech.Cochain (fun I : Chart x => (M.tildeSys c).sub I) 0) ∈ (⊥ : Submodule S _) at hz`. Express the relevant statement in the definitionally equal form `(z : Cech.Cochain (fun I : Chart x => (M.tildeSys c).sub I) 0) ∈ (⊥ : Submodule S _)`.
+Reduce the conclusion to the remaining proof obligations. Split into cases according to the possible forms of the given data. Treat this case separately. Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite `hz`, the goal using `[Submodule.mem_bot]`. Conclude with `M.embedC_injective c 0 (hz.trans (map_zero _).symm)`. Consider the case `succ n`. Express the relevant statement in the definitionally equal form `M.embedC c (n + 1) (z : Cech.Cochain (fun I : Chart x => (M.tildeSys c).sub I) (n + 1)) ∈ (Cech.Cdeg (fun _ : StdCell N => ConeLaurent S x) (M.coneDeg c) n).map (Cech.d (fun _ : StdCell N => ConeLaurent S x) (supportRes S x) n) at hz`. Take `⟨w, hw, hwz⟩` from `Submodule.mem_map.mp hz`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Treat this case separately. Express the relevant assertion in an equivalent form by its definition. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨t, rfl⟩` from `M.exists_embedC_eq c n w hw`. Use `LinearMap.mem_range.mpr ⟨t, M.embedC_injective c (n + 1) ?_⟩` and prove the remaining obligations. Rewrite using `[M.embedC_d, hwz]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem FinGradedSub.embedH_injective (n : ℕ) : Function.Injective (M.embedH c n) := by
   rw [injective_iff_map_eq_zero]
@@ -318,7 +316,7 @@ theorem FinGradedSub.embedH_injective (n : ℕ) : Function.Injective (M.embedH c
 end Compare
 
 /- English proof (translation)
-Introduce `S _ _ Ω _ _ N x M i c`. Establish `hT` using `Cech.Transport.proof (N + 1) (Finset.univ : Finset (Fin (N + 1))) S (locSys S N M.coneSub) (fun _ : StdCell N => ConeLaurent S x) locResS (supportRes S x) (degLoc M.coneGraded c) (M.coneDeg c) M.cellConeS M.cellConeS_res (fun I _ hm => Submodule.mem_map_of_mem hm) M.cellConeS_inj …`. Establish `: Module.Finite S (Cech.Hdeg (locSys S N M.coneSub) (degLoc M.coneGraded c) locResS i)` using `h S N M.coneSub M.coneGraded M.coneSub_finite i c`. Establish `: Module.Finite S (Cech.Hdeg (fun _ : StdCell N => ConeLaurent S x) (M.coneDeg c) (supportRes S x) i)` using `Module.Finite.of_surjective _ hT.2`. Conclude with `Module.Finite.of_injective (M.embedH c i) (M.embedH_injective c i)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem TildeFinite.proof (h : SerreFinite.Statement.{u, w}) : TildeFinite.Statement.{u, w} := by
   intro S _ _ Ω _ _ N x M i c

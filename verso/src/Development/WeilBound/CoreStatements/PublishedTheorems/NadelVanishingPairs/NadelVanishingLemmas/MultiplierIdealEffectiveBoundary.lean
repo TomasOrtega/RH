@@ -20,23 +20,19 @@ set_option autoImplicit false
 namespace GlobalTheory.Discrepancy
 
 /- English proof (translation)
-Introduce `k _ _ X _ _ _ p n hproj _ Δ η m G Y _ _ s _ K B F hΔ hmult hres hF x f hf`. Use `haveI : IsProper p := GlobalTheory.CommonModel.isProper_of_isProjOver hproj`. Use `haveI : IsProper (s ≫ p) := GlobalTheory.CommonModel.isProper_of_isProjOver hres.proj`. Use `haveI : IsProper s := IsProper.of_comp s p`. Use `haveI := hres.smooth`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Distinguish the cases in `hf0 : f = 0`. Substitute `hf0` using the available equality. Conclude with `regAt_zero x`. Use `regAt_of_forall_coheight_eq_one fun z hzx hz1 => ?_` and prove the remaining obligations. Take `⟨E, hE⟩` from `DivOver.exists_isAt_of_coheight_eq_one (p := p) hz1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨E', hE'E⟩` from `GlobalTheory.T.exists_primeDivisor_over_source_birational k X Y p s hres.bir E`. Take `⟨w, rfl, hE'⟩` from `GlobalTheory.T.divisor_point_proper_lift k X Y p s hres.bir inferInstance E' E hE'E _ hE`. Take `⟨g, hg⟩` from `G.exists_isEqn (s w)`. Establish `hg'` using `isEqn_pullCart s hg`. Establish `hη' : EtaleKlt.ratPull p s n η ≠ 0` using `fun h0 => hmult.ne_zero ((GlobalTheory.T.rationalTopFormPullback_bijective_birational k X Y p s hres.bir n).1 (h0.trans (map_zero _).symm))`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hd` using `GlobalTheory.T.discrepancy_formula_divisor k Y (s ≫ p) n (EtaleKlt.ratPull p s n η) hη' K (pullCart s G) m hmult.pos hres.div E' w (fnPull s g) hE' hg'`. Establish `hd2 : discrep E' (EtaleKlt.ratPull p s n η) m (fnPull s g) = discrep E η m g`. Simplify using `only [discrep]`. Rewrite using `[GlobalTheory.T.form_order_birational_pullback k X Y p s hres.bir E' E hE'E n η hmult.ne_zero, GlobalTheory.T.ord_functionField_pullback_primeDivisor_over k X Y p s hres.bir E' E hE'E g]`. Establish `hd3` using `(hmult.eqn _ g hg).discrep_eq_neg hmult.pos (specializes_refl _) hE`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hm : (0 : ℚ) < m` using `by exact_mod_cast hmult.pos`. Establish `hnn : 0 ≤ (pullCart s G - m • K).mult w`. Establish `e : ((pullCart s G - m • K).mult w : ℚ) / m = Δ (s w)`. Rewrite `hd3` using `[← hd2, hd]`. Rewrite `hd3` using `[neg_div]`.
+Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `neg_injective hd3`. Establish `h0 : (0 : ℚ) ≤ ((pullCart s G - m • K).mult w : ℚ) / m` using `e ▸ hΔ (s w)`. Use `(div_nonneg_iff.1 h0)` as an intermediate fact. Break down `this with ⟨h1, -⟩ | ⟨-, h2⟩` into its components or cases. Conclude with `h1` after adjusting the coercions.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `absurd h2 (not_le.2 hm)`. Establish `hFn : 0 ≤ F.mult w`. Rewrite using `[hF]; exact Int.ediv_nonneg hnn (by exact_mod_cast hmult.pos.le)`. Take `⟨h, hh⟩` from `F.exists_isEqn w`. Establish `hreg` using `(hh.neg.regularAt_iff).1 (hf w hzx)`.
-
-Use `set u : X.functionFieldˣ := Units.mk0 f hf0 with hu`. Establish `hv : ((fnPull s u * h⁻¹ : Y.functionFieldˣ) : Y.functionField) = functionFieldMap s f * ((h⁻¹ : Y.functionFieldˣ) : Y.functionField)`. Simplify using `[hu, fnPull]`. Establish `h1 : 0 ≤ E'.ord (fnPull s u * h⁻¹)` using `(E'.ord_nonneg_iff _).2 (hv ▸ (hE' _).2 hreg)`. Rewrite `h1` using `[E'.ord_mul, E'.ord_inv, GlobalTheory.T.ord_functionField_pullback_primeDivisor_over k X Y p s hres.bir E' E hE'E u, hE'.ord_eq h, ← hh.mult_eq]`.
-
-Establish `h2 : 0 ≤ E.ord u` using `by omega`. Conclude with `(hE f).1 ((E.ord_nonneg_iff u).1 h2)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem regAt_of_regularAt_neg_roundDown : ∀ (k : Type) [Field k] [CharZero k] (X : Scheme.{0}) [IsIntegral X] [IsLocallyNoetherian X] [GlobalTheory.IsNormalScheme X] (p : X ⟶ Sp k) (n : ℕ), IsProjOver p → topologicalKrullDim X = n → ∀ (Δ : X → ℚ) (η : RatForms p n) (m : ℕ) (G : CartierDiv X) (Y : Scheme.{0}) [IsIntegral Y] [IsLocallyNoetherian Y] (s : Y ⟶ X) [IsDominant s] (K : CartierDiv Y) (B : Closeds Y) (F : CartierDiv Y), (∀ z, 0 ≤ Δ z) → IsLogMult p n Δ η m G → IsLogRes p n η m G s K B → (∀ z, F.mult z = (pullCart s G - m • K).mult z / (m : ℤ)) → ∀ (x : X) (f : X.functionField), (∀ y : Y, s y ⤳ x → (-F).RegularAt y (functionFieldMap s f)) → RegAt x f := by
   intro k _ _ X _ _ _ p n hproj _ Δ η m G Y _ _ s _ K B F hΔ hmult hres hF x f hf

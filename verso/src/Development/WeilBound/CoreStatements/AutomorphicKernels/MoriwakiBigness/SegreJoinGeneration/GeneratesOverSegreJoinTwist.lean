@@ -26,12 +26,12 @@ open GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.Kleiman2 (IsNef 
 open GroundTheory.Heights₂.Heights.Kleiman.SectionsOverLocalization (segreJoin)
 
 /- English proof (translation)
-The claim follows from `(GlobalTheory.T.kleiman_input_nef_ample_section_count GlobalTheory.T.kleiman_genericPointSectionInput).2.1 d`.
+A detailed English derivation is pending.
 -/
 theorem kAt_all (d : ℕ) : KAt d := (GlobalTheory.T.kleiman_input_nef_ample_section_count GlobalTheory.T.kleiman_genericPointSectionInput).2.1 d
 
 /- English proof (translation)
-The claim follows from `HilbertSamuel.GenTwistVanish.proof PositivityTheory.HtPt.Ktw.a11 HilbertSamuel.QuotPartGraded.full (HilbertSamuel.GenKoszulStep.proof HilbertSamuel.KoszulCechComplex.proof HilbertSamuel.KoszulCechExact.proof HilbertSamuel.DoubleComplexVanish.full Kleiman.KHCechDSq.full Kleiman.KH …`.
+A detailed English derivation is pending.
 -/
 theorem genTwistVanish : HilbertSamuel.GenTwistVanish.Statement :=
   HilbertSamuel.GenTwistVanish.proof PositivityTheory.HtPt.Ktw.a11 HilbertSamuel.QuotPartGraded.full
@@ -39,21 +39,21 @@ theorem genTwistVanish : HilbertSamuel.GenTwistVanish.Statement :=
       HilbertSamuel.DoubleComplexVanish.full Kleiman.KHCechDSq.full Kleiman.KHCechDDeg.full)
 
 /- English proof (translation)
-The claim follows from `HilbertSamuel.AmpleOfGenTwist.proof HilbertSamuel.GenTwistGenerated.full genTwistVanish`.
+A detailed English derivation is pending.
 -/
 theorem ampleOfGenTwist : HilbertSamuel.AmpleOfGenTwist.Statement :=
   HilbertSamuel.AmpleOfGenTwist.proof HilbertSamuel.GenTwistGenerated.full genTwistVanish
 
 /- English proof (translation)
-Introduce `c0 hc`. Take `⟨u, hu, hsum⟩` from `h (Kleiman.SectionsOverLocalization.segreChart c0 c0) (Kleiman.SectionsOverLocalization.segreChart_adm y (Kleiman.SectionsOverLocalization.segreVec_ne_zero y hc) hc)`. Use `⟨u, fun j => Kleiman.SectionsOverLocalization.segre_diag_le y c0 (hu j), ?_⟩` and prove the remaining obligations. Establish `e1 : ∀ k : K, segreJoin y ⟨Sum.inr k, Kleiman.SectionsOverLocalization.segreChart c0 c0 (Sum.inr k)⟩ = y ⟨k, c0 k⟩` using `fun _ => rfl`. Establish `e2 : segreJoin y ⟨Sum.inl (), Kleiman.SectionsOverLocalization.segreChart c0 c0 (Sum.inl ())⟩ = ∏ k, y ⟨k, c0 k⟩` using `rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set D : Unit ⊕ K → ℤ := IndefiniteRowSideFullHecke.Kleiman2.pullDeg (K₁ := Unit) β + c • baseDeg (Sum.inl ()) with hD`. Establish `e3 : ∀ k : K, D (Sum.inr k) = β k`. Introduce `k`. Simplify using `[hD, IndefiniteRowSideFullHecke.Kleiman2.pullDeg, baseDeg]`. Establish `e4 : D (Sum.inl ()) = c`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[hD, IndefiniteRowSideFullHecke.Kleiman2.pullDeg, baseDeg]`. Establish `hprod : (∏ k, segreJoin y ⟨k, Kleiman.SectionsOverLocalization.segreChart c0 c0 k⟩ ^ (-D k)) = ∏ k, y ⟨k, c0 k⟩ ^ (-(β k + c))`. Rewrite using `[Fintype.prod_sum_type]`. Establish `hu1 : (∏ u : Unit, segreJoin y ⟨Sum.inl u, Kleiman.SectionsOverLocalization.segreChart c0 c0 (Sum.inl u)⟩ ^ (-D (Sum.inl u))) = (∏ k, y ⟨k, c0 k⟩) ^ (-c)`. Rewrite using `[Fintype.prod_unique]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `show segreJoin y ⟨Sum.inl (), Kleiman.SectionsOverLocalization.segreChart c0 c0 (Sum.inl ())⟩ ^ (-D (Sum.inl ())) = _`. Rewrite using `[e2, e4]`. Rewrite using `[hu1, ← Finset.prod_zpow, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[e1, e3, ← zpow_add₀ (hc k)]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 
-Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite `hsum` using `[hprod]`. Conclude with `hsum`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem generatesOver_segreJoin_twist {S : Type} [CommRing S] {K : Type} [Fintype K] [DecidableEq K]
     {ι : K → Type} {Ω : Type} [Field Ω] [Algebra S Ω] (y : (Σ k, ι k) → Ω) (β : K → ℤ) (c : ℤ) {n : ℕ}
@@ -90,9 +90,9 @@ theorem generatesOver_segreJoin_twist {S : Type} [CommRing S] {K : Type} [Fintyp
   exact hsum
 
 /- English proof (translation)
-Take `⟨a', m, ha', hm, hva⟩` from `kAt_all d F (Unit ⊕ K) _ Ω (segreJoin y) (Sum.inl ()) (Kleiman.SectionsOverLocalization.SegreBase.proof F K ι Ω y hnz).1 ((Kleiman.SectionsOverLocalization.SegreDim.proof F K ι Ω y hnz).trans hrel) (IndefiniteRowSideFullHecke.Kleiman2.pullDeg α) ((Kleiman.SectionsOverLocalization …`. Take `⟨n, x', hx', hgen, -⟩` from `hva`. Establish `e : a' • IndefiniteRowSideFullHecke.Kleiman2.pullDeg (K₁` using `Unit) α + m • baseDeg (Sum.inl ()) = IndefiniteRowSideFullHecke.Kleiman2.pullDeg (K₁ := Unit) (a' • α) + m • baseDeg (Sum.inl ()) := by`. Use `congr 1`. Use function extensionality and compare the values at `k`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Apply the tactic sequence `cases k <;> simp [IndefiniteRowSideFullHecke.Kleiman2.pullDeg, Pi.mul_apply, Pi.natCast_apply]`. Rewrite `hx'`, `hgen` using `[e]`. Use `⟨a', m, ha', hm, n, x', fun j => ?_, generatesOver_segreJoin_twist y (a' • α) m x' hgen⟩` and prove the remaining obligations. Use `hx' j` as an intermediate fact. Rewrite `this` using `[Kleiman.SectionsOverLocalization.SegreTwist.proof F K ι Ω y hnz]`. Then use the resulting hypothesis.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem generated_of_nef (F : Type) [Field F] (K : Type) [Fintype K] [DecidableEq K] (ι : K → Type)
     [∀ k, Fintype (ι k)] (Ω : Type) [Field Ω] [Algebra F Ω] (y : (Σ k, ι k) → Ω) (d : ℕ) (α : K → ℤ)
@@ -117,21 +117,19 @@ theorem generated_of_nef (F : Type) [Field F] (K : Type) [Fintype K] [DecidableE
   rwa [Kleiman.SectionsOverLocalization.SegreTwist.proof F K ι Ω y hnz] at this
 
 /- English proof (translation)
-Introduce `F _ K _ _ ι _ _ I V d α b a hI hV hnef hb ha`. Establish `: V.IsPrime` using `hV.1.1`. Establish `hVd` using `HilbertSamuel.KleimanNefF.isMultiProjPrime_dvr hV.1`. Use `set y := Kleiman.SectionsOverLocalization.ModelGenericPoint.genPt (O := F) V`. Establish `hy : KH.mIdealOver F y = V` using `Kleiman.SectionsOverLocalization.ModelGenericPoint.mIdealOver_genPt V hVd.multiHomog`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hnz : ∀ k, ∃ i, y ⟨k, i⟩ ≠ 0` using `fun k => by`. Take `⟨i, hi⟩` from `hV.1.2.2 k`. Conclude with `⟨i, (Kleiman.SectionsOverLocalization.ModelGenericPoint.genPt_ne_zero V _).2 hi⟩`. Establish `hrel : FieldNumbers.relDim (KH.mIdealOver F y) = ((d : ℕ) : WithBot (WithTop ℤ))`. Rewrite using `[hy]`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(FieldNumbers.CutRegular.relDim_eq_natCast_iff V d).2 hV.2`. Establish `hnef' : IsNef F y α`. Introduce `W hW hle hW1`. Rewrite `hle` using `[hy]`. Establish `hWF : IsProjVarF W 1` using `⟨⟨hW.isPrime, (NumbersDVR.VocabMultiHomogIdeal.proof NumbersDVR.VocabMultiHomog.proof F K ι W).2 hW.multiHomog, hW.relevant⟩, (FieldNumbers.CutRegular.relDim_eq_natCast_iff W 1).1 hW1⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `h` using `hnef W hWF hle`. Rewrite `h` using `[HilbertSamuel.KleimanNefF.eq_intNum hI 1 W _ hWF]`. Then use the resulting hypothesis. Establish `hb' : (0 : ℚ) < b` using `by exact_mod_cast hb`. Establish `ha₀ : (0 : ℚ) < a` using `by exact_mod_cast ha`. Take `⟨a', m, ha', hm, hgen⟩` from `generated_of_nef F K ι _ y d α hnz hrel hnef' ((a : ℚ) / (2 * b)) (by positivity)`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hGV : KH.GeneratedV F V (a' • α + fun _ => m)`. Use `Kleiman.SectionsOverLocalization.GeneratedCechTie.proof F K ι _ y _ hnz hgen` as an intermediate fact. Rewrite `this` using `[hy]`. Then use the resulting hypothesis. Establish `hamp` using `ampleOfGenTwist F K ι V _ (a' * a) (2 * b) hV.1.2.1 hGV (Nat.one_le_iff_ne_zero.mpr (Nat.mul_ne_zero (by omega) (by omega)))`. Establish `hm' : (2 * (b : ℤ)) * m = a' * a`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hq : (2 * (b : ℚ)) * m = a' * a`. Rewrite using `[hm]`. Clear the denominators using the available nonvanishing facts. Conclude with `hq` after adjusting the coercions. Establish `e : ((2 * b : ℕ) : ℤ) • (a' • α + fun _ => m) + (fun _ => ((a' * a : ℕ) : ℤ)) = (2 * a') • (b • α + fun _ => (a : ℤ))`.
+Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
-Use function extensionality and compare the values at `k`. Simplify using `only [Pi.add_apply, Pi.smul_apply, smul_eq_mul, nsmul_eq_mul, Pi.mul_apply, Pi.natCast_apply]`. Use `push_cast`. Take the linear combination `hm'`. Rewrite `hamp` using `[e]`.
-
-Conclude with `HilbertSamuel.ampleV_of_nsmul (by omega) hamp`.
+Take a linear combination of the given relations to obtain the conclusion. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kAmp : KH.KAmpStatement := by
   intro F _ K _ _ ι _ _ I V d α b a hI hV hnef hb ha

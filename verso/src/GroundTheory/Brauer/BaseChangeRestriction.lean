@@ -18,7 +18,7 @@ variable {k : Type u} [CommRing k] {H : Type u} [Group H] [TopologicalSpace H]
   [IsTopologicalGroup H] {B : Rep.{u} k H} [IsDiscreteRep B]
 
 /- English proof (translation)
-Conclude with `congrArg (fun φ => φ.hom ((isoCocycles₂ A).inv.hom c)) (HomologicalComplex.homologyπ_naturality F 2)`.
+A detailed English derivation is pending.
 -/
 theorem homologyMap_H2π {G : Type u} [Group G] {A : Rep.{u} k G}
     (F : inhomogeneousCochains A ⟶ cochainsComplex B) (c : cocycles₂ A) :
@@ -28,11 +28,11 @@ theorem homologyMap_H2π {G : Type u} [Group G] {A : Rep.{u} k G}
     (HomologicalComplex.homologyπ_naturality F 2)
 
 /- English proof (translation)
-Rewrite using `[homologyMap_H2π, homologyMap_H2π]`. Use `congr 1`. Apply `(ModuleCat.mono_iff_injective ((cochainsComplex B).iCycles 2)).1 inferInstance` to reduce the goal to its premises. Establish `hi : ∀ {G : Type u} [Group G] {A : Rep.{u} k G} (F : inhomogeneousCochains A ⟶ cochainsComplex B) (c : cocycles₂ A), ((cochainsComplex B).iCycles 2).hom ((HomologicalComplex.cyclesMap F 2).hom ((isoCocycles₂ A).inv.hom c)) = (F.f 2).hom ((cochainsIso₂ A).inv.hom c)`. Introduce `G _ A F c`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Express the relevant statement in the definitionally equal form `((HomologicalComplex.cyclesMap F 2 ≫ (cochainsComplex B).iCycles 2).hom ((isoCocycles₂ A).inv.hom c)) = _`. Rewrite using `[HomologicalComplex.cyclesMap_i]`. Express the relevant statement in the definitionally equal form `(F.f 2).hom ((((isoCocycles₂ A).inv ≫ iCocycles A 2)).hom c) = _`. Rewrite using `[isoCocycles₂_inv_comp_iCocycles]`. Both sides reduce to the same expression.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[hi, hi]`. Conclude with `(ModuleCat.mono_iff_injective ((cochainsComplexι B).f 2)).1 inferInstance h`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem homologyMap_H2π_eq {G₁ G₂ : Type u} [Group G₁] [Group G₂] {A₁ : Rep.{u} k G₁}
     {A₂ : Rep.{u} k G₂} (F₁ : inhomogeneousCochains A₁ ⟶ cochainsComplex B)
@@ -65,15 +65,15 @@ section Topology
 variable {K Ks : Type u} [Field K] [Field Ks] [Algebra K Ks]
 
 /- English proof (translation)
-Use `continuous_of_continuousAt_one _ ?_` and prove the remaining obligations. Rewrite using `[ContinuousAt, map_one]`. Introduce `s hs`. Take `⟨S, hS, hSs⟩` from `(krullTopology_mem_nhds_one_iff K Ks s).1 hs`. Rewrite using `[Filter.mem_map, krullTopology_mem_nhds_one_iff]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Set `b` to `Module.finBasis K S`. Set `T : Set Ks` to `Set.range fun i => (b i : Ks)`. Use `⟨IntermediateField.adjoin E T, ?_, ?_⟩` and prove the remaining obligations. Use `IntermediateField.finiteDimensional_adjoin fun x hx => ?_` and prove the remaining obligations. Take `⟨i, rfl⟩` from `hx`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `((IsIntegral.of_finite K (b i)).map S.val).tower_top`. Introduce `σ hσ`. Apply `hSs` to reduce the goal to its premises. Rewrite `hσ`, the goal using `[SetLike.mem_coe, IntermediateField.mem_fixingSubgroup_iff]`. Introduce `x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hT : ∀ i, (AlgEquiv.restrictScalarsHom K σ) (b i : Ks) = b i` using `fun i => hσ _ (IntermediateField.subset_adjoin E T ⟨i, rfl⟩)`. Establish `hx' : x = ∑ i, (b.repr ⟨x, hx⟩ i) • (b i : Ks)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[map_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => map_smul S.val _ _`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hx', map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, hT]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_restrictScalarsHom (E : IntermediateField K Ks) :
     Continuous (AlgEquiv.restrictScalarsHom K : (Ks ≃ₐ[E] Ks) →* (Ks ≃ₐ[K] Ks)) := by

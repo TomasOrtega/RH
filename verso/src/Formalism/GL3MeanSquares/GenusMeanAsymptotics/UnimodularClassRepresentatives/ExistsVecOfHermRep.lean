@@ -33,20 +33,20 @@ def vecSplitPerp (h : V →ₗ⋆[K] V →ₗ[K] K) {x₀ : V} (hx : h x₀ x₀
     · simp
 
 /- English proof (translation)
-Apply the tactic sequence `first | exact hs a b | exact hs.eq a b`.
+A detailed English derivation is pending.
 -/
 private theorem star_sesq_eq_swap_of_isSymm {h : V →ₗ⋆[K] V →ₗ[K] K} (hs : h.IsSymm) (a b : V) :
     star (h a b) = h b a := by
   first | exact hs a b | exact hs.eq a b
 
 /- English proof (translation)
-Set `f : K × V' →ₗ[K] V` to `LinearMap.coprod (LinearMap.toSpanSingleton K V S.x₀) S.ι`. Establish `hf : Function.Bijective f`. Prove the components needed by the constructor for the conclusion. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce and unpack `⟨c, a⟩ hca`.
+Introduce a local definition for the expression. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Establish `h1 : c • S.x₀ + S.ι a = 0` using `by simpa [f] using hca`. Establish `h2 : h S.x₀ (c • S.x₀ + S.ι a) = 0` using `by rw [h1, map_zero]`. Rewrite `h2` using `[map_add, map_smul, S.orth, add_zero, smul_eq_mul]`. Establish `hc : c = 0` using `(mul_eq_zero.mp h2).resolve_right S.hx₀`. Substitute `hc` using the available equality.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Substitute using the available equality.
 
-Establish `h3 : S.ι a = 0` using `by simpa using h1`. Establish `ha : a = 0` using `S.inj (by rw [h3, map_zero])`. Simplify using `[ha]`. Introduce `v`. Take `⟨c, a, hv⟩` from `S.cover v`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨(c, a), by simp [f, hv]⟩`. Use `(LinearEquiv.ofBijective f hf).finrank_eq` as an intermediate fact. Rewrite `this` using `[Module.finrank_prod, Module.finrank_self]`. Use linear arithmetic over natural numbers and integers.
+Supply the required witnesses or components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem VecSplit.finrank_add_one {h : V →ₗ⋆[K] V →ₗ[K] K} {h' : V' →ₗ⋆[K] V' →ₗ[K] K}
     (S : VecSplit h h') : finrank K V' + 1 = finrank K V := by
@@ -71,14 +71,14 @@ theorem VecSplit.finrank_add_one {h : V →ₗ⋆[K] V →ₗ[K] K} {h' : V' →
   omega
 
 /- English proof (translation)
-The claim follows from `VecSplit.finrank_add_one (vecSplitPerp h hx)`.
+A detailed English derivation is pending.
 -/
 theorem finrank_perpSpace {h : V →ₗ⋆[K] V →ₗ[K] K} {x₀ : V} (hx : h x₀ x₀ ≠ 0) :
     finrank K (perpSpace h x₀) + 1 = finrank K V :=
   VecSplit.finrank_add_one (vecSplitPerp h hx)
 
 /- English proof (translation)
-Introduce `a ha φ`. Rewrite using `[← S.isom]`. Conclude with `hd _ (fun h0 => ha (S.inj (by rw [h0, map_zero]))) φ`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem VecSplit.isTotPosDef {h : V →ₗ⋆[K] V →ₗ[K] K} {h' : V' →ₗ⋆[K] V' →ₗ[K] K}
     (S : VecSplit h h') (hd : IsTotPosDef h) : IsTotPosDef h' := by
@@ -87,7 +87,7 @@ theorem VecSplit.isTotPosDef {h : V →ₗ⋆[K] V →ₗ[K] K} {h' : V' →ₗ�
   exact hd _ (fun h0 => ha (S.inj (by rw [h0, map_zero]))) φ
 
 /- English proof (translation)
-Establish `H : ∀ a b : V', star (h' a b) = h' b a`. Introduce `a b`. Rewrite using `[← S.isom, ← S.isom]`. Conclude with `star_sesq_eq_swap_of_isSymm hs _ _`. Apply the tactic sequence `first | exact H | exact ⟨H⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem VecSplit.isSymm {h : V →ₗ⋆[K] V →ₗ[K] K} {h' : V' →ₗ⋆[K] V' →ₗ[K] K}
     (S : VecSplit h h') (hs : h.IsSymm) : h'.IsSymm := by
@@ -98,13 +98,13 @@ theorem VecSplit.isSymm {h : V →ₗ⋆[K] V →ₗ[K] K} {h' : V' →ₗ⋆[K]
   first | exact H | exact ⟨H⟩
 
 /- English proof (translation)
-Establish `hne : ∀ x : V, x ≠ 0 → h x x ≠ 0`. Introduce `x hx h0`. Take `⟨φ⟩ : Nonempty (K →+* ℂ)` from `inferInstance`. Use `hd x hx φ` as an intermediate fact. Rewrite `this` using `[h0, map_zero, Complex.zero_re]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `lt_irrefl _ this`. Take `⟨x, hx⟩ : ∃ x : V, x ≠ 0` from `(Module.finrank_pos_iff_exists_ne_zero (R := K)).mp (by omega)`. Establish `hfr` using `finrank_perpSpace (h := h) (hne x hx)`. Take `⟨y', hy'⟩ : ∃ y : ↥(perpSpace h x), y ≠ 0` from `(Module.finrank_pos_iff_exists_ne_zero (R := K)).mp (by omega)`. Establish `hy0 : y'.1 ≠ 0` using `fun h0 => hy' (Subtype.ext h0)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hxy : h x y'.1 = 0` using `LinearMap.mem_ker.mp y'.2`. Establish `hyx : h y'.1 x = 0` using `by rw [← star_sesq_eq_swap_of_isSymm hs, hxy, star_zero]`. Take `⟨s, t, hst⟩` from `hH K hK (h x x) (h y'.1 y'.1) n (star_sesq_eq_swap_of_isSymm hs x x) (star_sesq_eq_swap_of_isSymm hs _ _) hn (fun φ => hd x hx φ) (fun φ => hd _ hy0 φ) hpos`. Use `⟨star s • x + star t • y'.1, ?_⟩` and prove the remaining obligations. Simplify using `only [map_add, map_smulₛₗ, LinearMap.add_apply, LinearMap.smul_apply, map_smul, smul_eq_mul, hxy, hyx, starRingEnd_apply, star_star]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `hst`.
+A detailed English derivation is pending.
 -/
 theorem exists_vec_of_hermRep (hH : HermRepUnram) (hK : Formalism.HermitianLatticesTheory.IsCMUnram K)
     {h : V →ₗ⋆[K] V →ₗ[K] K} (hs : h.IsSymm) (hd : IsTotPosDef h) (hV : 2 ≤ finrank K V)
@@ -131,7 +131,7 @@ theorem exists_vec_of_hermRep (hH : HermRepUnram) (hK : Formalism.HermitianLatti
   linear_combination hst
 
 /- English proof (translation)
-Establish `hle : S.adjoin (S.cut Λ) ≤ Λ` using `sup_le (Submodule.span_le.mpr (Set.singleton_subset_iff.mpr hx)) (Submodule.map_comap_le _ _)`. Use `⟨hle, fun x hx' => ?_⟩` and prove the remaining obligations. Simplify using `only [Formalism.HermitianLatticesTheory.dual, Formalism.E.hdual, Submodule.mem_iInf, Submodule.mem_comap]`. Introduce `y hy`. Conclude with `hΛ y (hle hy) x hx'`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem VecSplit.le_dual_of_mem {h : V →ₗ⋆[K] V →ₗ[K] K} {h' : V' →ₗ⋆[K] V' →ₗ[K] K}
     (hs : h.IsSymm) (S : VecSplit h h') {Λ : Submodule (𝓞 K) V}

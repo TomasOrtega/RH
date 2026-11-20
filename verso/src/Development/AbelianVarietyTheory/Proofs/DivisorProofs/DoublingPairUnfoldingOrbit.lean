@@ -29,7 +29,7 @@ def sigEquiv (r s : ℕ) : Ix r s ⊕ Ix r s ≃ Ix (r + s) (s + r) :=
       Equiv.sumCongr finSumFinEquiv finSumFinEquiv
 
 /- English proof (translation)
-Establish `: (Jm (r + s) (s + r)).submatrix (sigEquiv r s) (sigEquiv r s) = Matrix.fromBlocks (Jm r s) 0 0 (-Jm r s)`. Use extensionality with `i j`. Apply the tactic sequence `rcases i with (i | i) | (i | i) <;> rcases j with (j | j) | (j | j) <;>`. Apply the tactic sequence `simp [sigEquiv, Jm, Formalism.UG.Jpq, Matrix.one_apply, Fin.ext_iff] <;> omega`. Rewrite using `[← this]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/
@@ -43,9 +43,9 @@ theorem Jm_dbl (r s : ℕ) :
   simp
 
 /- English proof (translation)
-Take `⟨h1, C', h2⟩` from `hC`. Use `⟨(Matrix.fromBlocks C 0 0 C).submatrix finSumFinEquiv.symm (sigEquiv r s).symm, ⟨?_, (Matrix.fromBlocks C' 0 0 C').submatrix (sigEquiv r s).symm finSumFinEquiv.symm, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[Jm_dbl, blkMat, Matrix.transpose_submatrix, ← Matrix.submatrix_map, Matrix.submatrix_mul_equiv, Matrix.submatrix_mul_equiv, Matrix.fromBlocks_transpose, Matrix.fromBlocks_map, Matrix.fromBlocks_multiply, Matrix.fromBlocks_multiply]`. Establish `h3 : Cᵀ * M * C.map (starRingEnd ℂ) = Jm r s` using `h1`. Simplify using `[Matrix.map_zero, h3]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[Matrix.submatrix_mul_equiv, Matrix.fromBlocks_multiply]`. Simplify using `[h2]`. Rewrite using `[Jm_dbl, blkMat, Matrix.submatrix_mul_equiv, Matrix.submatrix_mul_equiv, Matrix.fromBlocks_multiply, Matrix.fromBlocks_multiply]`. Simplify using `[hθ]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem frame_dbl {d r s : ℕ} (M θ : Matrix (Fin d) (Fin d) ℂ) (C : Matrix (Fin d) (Ix r s) ℂ) (hC : IsFrame M C)
     (hθ : θ * C = C * Jm r s) :
@@ -69,19 +69,17 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   {n d : ℕ} {X : Spc F E n} {W : Spc F E d}
 
 /- English proof (translation)
-Establish `hA1 : ∀ w, IsFrame ((1 : ℂ) • (incM F X.J).map (piInf (B.emb w))) (A w)` using `fun w => by`. Rewrite using `[GlobalTheory.FockKFin.VacFin.incM_map_piInf, one_smul]`. Conclude with `hA w`. Establish `hC1 : ∀ w, IsFrame (Complex.I • (incM F W.J).map (piInf (B.emb w))) (C w)` using `fun w => by`. Rewrite using `[GlobalTheory.FockKFin.VacFin.incM_map_piInf]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hC w`. Establish `fr : Framed B.emb (incM F X.J) (incM F W.J) 1 Complex.I A C` using `⟨one_mul _, hA1, hC1⟩`. Take `⟨Φ, hΦ⟩` from `GlobalTheory.FockMapEx.fockEx_of_derEx GlobalTheory.HeisDer.derEx F E σ _ _ _ _ _ _ _ B.ψ B.emb _ _ M.co 1 Complex.I A C hb.cm hb.std fr`. Take `⟨D, hD⟩` from `GlobalTheory.HeisDer.derEx F E σ (Fin n) (Fin d) (Fin n × Fin d) B.ψ (incM F X.J) (incM F W.J) M.co hb.std`. Establish `hDd : ∀ u, At (evI F) u → ∀ f : SInf F (Fin n × Fin d), D u f = dOp (arc (M.co.e u).1) (arc (M.co.e u).2) f`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `u hu f`. Use `DFunLike.ext _ _ fun x => ?_` and prove the remaining obligations. Rewrite using `[(hD u hu f).2 x, dOp_apply]`. Apply the tactic sequence `try rfl`. Establish `tw : ∀ w (c : Matrix (Ix r s) (Ix r' s') ℂ) (e : ℂ), A w * (e • (Jm r s * c * Jm r' s')) * (C w)ᵀ = e • (X.θ w * (A w * c * (C w)ᵀ) * (W.θ w)ᵀ)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `w c e`. Establish `h2 : (C w)ᵀ * (W.θ w)ᵀ = Jm r' s' * (C w)ᵀ`. Rewrite using `[← Matrix.transpose_mul, hCθ w, Matrix.transpose_mul, GlobalTheory.FockKFin.VacFin.Jm_transpose]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_smul, Matrix.smul_mul, Matrix.mul_assoc]`.
+Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `_ = _ := by rw [← hAθ w, ← h2]; simp only [Matrix.mul_assoc]`. Establish `hle : GlobalTheory.FockKFin.vacSp M B.emb ≤ Submodule.span ℂ {Φ (PiTensorProduct.tprod ℂ fun _ => 1)}`. Use `Submodule.span_le.2 fun g ⟨ε, hε⟩ => ?_` and prove the remaining obligations. Establish `: ∃ z : ℂ, g = z • Φ (PiTensorProduct.tprod ℂ fun _ => 1)`. Use `GlobalTheory.VacLn.vacLine_of_derEx GlobalTheory.HeisDer.derEx F E σ _ _ _ _ _ _ _ B.ψ B.emb _ _ M.co 1 Complex.I A C Φ hb.cm hb.std fr hΦ g ε ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `u u' hu hu' c hc hc' f f' hf hf'`. Establish `e1 : f = D u g` using `(actsLaws F _ g f (D u g)).2.2.2.2 _ hf (hD u hu g).1`. Establish `e2 : f' = D u' g` using `(actsLaws F _ g f' (D u' g)).2.2.2.2 _ hf' (hD u' hu' g).1`. Rewrite using `[e1, e2, hDd u hu, hDd u' hu']`. Conclude with `hε u u' hu hu' (fun w => by rw [hc' w, tw, ← hc w])`.
-
-Take `⟨z, rfl⟩` from `this`. Conclude with `Submodule.smul_mem _ z (Submodule.subset_span rfl)`. Conclude with `Submodule.finiteDimensional_of_le hle`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem vacSp_fin (B : Base F E) (hb : B.IsGood σ) (M : Model σ X W) {r s r' s' : ℕ}
     (A : InfinitePlace F → Matrix (Fin n) (Ix r s) ℂ) (C : InfinitePlace F → Matrix (Fin d) (Ix r' s') ℂ)
@@ -124,9 +122,9 @@ theorem vacSp_fin (B : Base F E) (hb : B.IsGood σ) (M : Model σ X W) {r s r' s
   exact Submodule.finiteDimensional_of_le hle
 
 /- English proof (translation)
-Take `⟨D, hD⟩` from `GlobalTheory.HeisDer.derEx F E σ (Fin n) (Fin d) (Fin n × Fin d) ψ (incM F X.J) (incM F W.J) M.co hψ`. Establish `hL` using `actsLaws F (Fin n × Fin d)`. Establish `hSD : SD (M.heisLine ψ u) f (D u f)` using `(hD u hu f).1`. Establish `e : f₁ = D u f` using `(hL _ _ _).2.2.1 _ h ((hL f _ f).1 _ (heisLine_zero M ψ u) hSD)`. Rewrite using `[e]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(hL _ _ f).1 _ (heisLine_zero M ψ _) (sd_intertwine hw k (hA f) (hA _) hSD)`.
+A detailed English derivation is pending.
 -/
 theorem actsD_mul {ψ : AddChar (AF F) ℂ} (hψ : IsStd ψ) {M : Model σ X W} {χX χW : Chr F E} {om : Rep σ X W}
     (hw : M.IsWeil ψ χX χW om) (k : UA σ W.J) (A : SInf F (Fin n × Fin d) →ₗ[ℂ] SInf F (Fin n × Fin d))
@@ -141,7 +139,7 @@ theorem actsD_mul {ψ : AddChar (AF F) ℂ} (hψ : IsStd ψ) {M : Model σ X W} 
   exact (hL _ _ f).1 _ (heisLine_zero M ψ _) (sd_intertwine hw k (hA f) (hA _) hSD)
 
 /- English proof (translation)
-Establish `hu` using `GlobalTheory.ThK.EvAt0.PolEv.at_symm M a b`. Use `⟨_, _, fun f => (GlobalTheory.ThK.EvAt0.PolEv.actsD_iff_dOp hψ M _ (GlobalTheory.KInfPol.at_mul_right hu (mat k)ᵀ) _ _).1 (actsD_mul hψ hw k A hA _ hu f _ ?_)⟩` and prove the remaining obligations. Use `(GlobalTheory.ThK.EvAt0.PolEv.actsD_iff_dOp hψ M _ hu _ _).2 ?_` and prove the remaining obligations. Rewrite using `[LinearEquiv.apply_symm_apply, GlobalTheory.ThK.EvAt0.PolEv.arc_liftA, GlobalTheory.ThK.EvAt0.PolEv.arc_liftA]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem op_dOp {ψ : AddChar (AF F) ℂ} (hψ : IsStd ψ) {M : Model σ X W} {χX χW : Chr F E} {om : Rep σ X W}
     (hw : M.IsWeil ψ χX χW om) (k : UA σ W.J) (A : SInf F (Fin n × Fin d) →ₗ[ℂ] SInf F (Fin n × Fin d))
@@ -155,19 +153,19 @@ theorem op_dOp {ψ : AddChar (AF F) ℂ} (hψ : IsStd ψ) {M : Model σ X W} {χ
   rw [LinearEquiv.apply_symm_apply, GlobalTheory.ThK.EvAt0.PolEv.arc_liftA, GlobalTheory.ThK.EvAt0.PolEv.arc_liftA]
 
 /- English proof (translation)
-Rewrite `hf₀`, the goal using `[← GlobalTheory.ThK.EvAt0.PolEv.isGauss_iff hψ]`. Establish `hL` using `actsLaws F (Fin n × Fin d)`. Establish `hkk : (mat k⁻¹)ᵀ * (mat k)ᵀ = 1`. Rewrite using `[← Matrix.transpose_mul]`. Express the relevant statement in the definitionally equal form `(mat (k * k⁻¹))ᵀ = 1`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[mul_inv_cancel]`. Conclude with `Matrix.transpose_one`. Establish `hcan : ∀ u : Matrix (Fin n) (Fin d) (AE F E), u * (mat k⁻¹)ᵀ * (mat k)ᵀ = u` using `fun u => by`. Rewrite using `[Matrix.mul_assoc, hkk, Matrix.mul_one]`. Take `⟨ε, hε⟩` from `hf₀`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨ε, fun u u' hu hu' huu g g' hg hg' => ?_⟩` and prove the remaining obligations. Establish `hv` using `GlobalTheory.KInfPol.at_mul_right hu (mat k⁻¹)ᵀ`. Establish `hv'` using `GlobalTheory.KInfPol.at_mul_right hu' (mat k⁻¹)ᵀ`. Establish `d1` using `(GlobalTheory.ThK.EvAt0.PolEv.actsD_iff_dOp hψ M _ hv f₀ _).2 rfl`. Establish `d2` using `(GlobalTheory.ThK.EvAt0.PolEv.actsD_iff_dOp hψ M _ hv' f₀ _).2 rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `actsD_mul hψ hw k A hA _ hv f₀ _ d1`. Establish `h2` using `actsD_mul hψ hw k A hA _ hv' f₀ _ d2`. Rewrite `h1`, `h2` using `[hcan]`. Establish `e1` using `(hL _ _ _).2.2.1 _ hg h1`. Establish `e2` using `(hL _ _ _).2.2.1 _ hg' h2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key` using `hε _ _ hv hv' (fun w => ?_) _ _ d1 d2`. Rewrite using `[e1, e2, key, map_smul]`. Establish `hm : (mat k⁻¹).map (piInf (τ w)) * (mat k).map (piInf (τ w)) = 1`. Rewrite using `[← Matrix.map_mul]`. Express the relevant statement in the definitionally equal form `(mat (k⁻¹ * k)).map _ = 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[inv_mul_cancel]`. Conclude with `Matrix.map_one _ (map_zero _) (map_one _)`. Establish `hm' : (mat k).map (piInf (τ w)) * (mat k⁻¹).map (piInf (τ w)) = 1` using `mul_eq_one_comm.1 hm`. Establish `hc : (mat k⁻¹).map (piInf (τ w)) * W.θ w = W.θ w * (mat k⁻¹).map (piInf (τ w))`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[Matrix.map_mul, Matrix.map_mul, huu w, Matrix.transpose_map, Matrix.smul_mul]`. Use `congr 1`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[← Matrix.transpose_mul, ← Matrix.transpose_mul, hc]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem op_gauss {ψ : AddChar (AF F) ℂ} (hψ : IsStd ψ) {M : Model σ X W} {χX χW : Chr F E} {om : Rep σ X W}
     (hw : M.IsWeil ψ χX χW om) (τ : ∀ w : InfinitePlace F, EmbOver E w) (k : UA σ W.J) (hk : k ∈ KInf σ W τ)
@@ -214,23 +212,19 @@ theorem op_gauss {ψ : AddChar (AF F) ℂ} (hψ : IsStd ψ) {M : Model σ X W} {
     rw [← Matrix.transpose_mul, ← Matrix.transpose_mul, hc]
 
 /- English proof (translation)
-Establish `hfin : ∀ m, FiniteDimensional ℂ (GlobalTheory.FockKFin.polLe M τ m)`. Introduce `m`. Proceed by induction on `m with`. Consider the case `zero => exact h0`. Consider the case `succ m ih`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Rewrite using `[GlobalTheory.FockKFin.polLe_succ]`. Use `haveI := ih`. Use `haveI := GlobalTheory.FockKFinStep.dStep_finiteDimensional F _ _ ih`. Use `infer_instance`. Establish `hdir : Directed (· ≤ ·) (GlobalTheory.FockKFin.polLe M τ)` using `(GlobalTheory.FockKFin.polLe_mono M τ).directed_le`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hsub : M.Pol ψ τ ≤ ⨆ m, GlobalTheory.FockKFin.polLe M τ m`. Rewrite using `[GlobalTheory.ThK.EvAt0.PolEv.pol_eq hψ]`. Use `sInf_le ⟨fun g hg => Submodule.mem_iSup_of_mem 0 (Submodule.subset_span hg), fun a b g hg => ?_⟩` and prove the remaining obligations. Take `⟨m, hm⟩` from `(Submodule.mem_iSup_of_directed _ hdir).1 hg`. Use `Submodule.mem_iSup_of_mem (m + 1) ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[GlobalTheory.FockKFin.polLe_succ]`. Conclude with `Submodule.mem_sup_right (GlobalTheory.FockKFin.dOp_mem_dStep _ a b hm)`. Take `⟨m, hm⟩` from `(Submodule.mem_iSup_of_directed _ hdir).1 (hsub hf)`. Establish `hst : ∀ k ∈ KInf σ W τ, ∀ A : SInf F (Fin n × Fin d) →ₗ[ℂ] SInf F (Fin n × Fin d), (∀ f : SInf F (Fin n × Fin d), Acts (evI F) (om (1, k)) ⇑f ⇑(A f)) → ∀ m, GlobalTheory.FockKFin.polLe M τ m ≤ (GlobalTheory.FockKFin.polLe M τ m).comap A`. Introduce `k hk A hA m`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Proceed by induction on `m with`. Consider the case `zero`. Rewrite using `[GlobalTheory.FockKFin.polLe_zero]`. Conclude with `Submodule.span_le.2 fun g hg => Submodule.subset_span (op_gauss hψ hw τ k hk A hA g hg)`. Consider the case `succ m ih`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[GlobalTheory.FockKFin.polLe_succ]`. Use `sup_le (fun y hy => Submodule.mem_sup_left (ih hy)) (Submodule.span_le.2 ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨a, b, g₀, hg₀, rfl⟩`. Take `⟨a', b', hab⟩` from `op_dOp hψ hw k A hA a b`. Use `Submodule.mem_comap.2 (Submodule.mem_sup_right ?_)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Rewrite using `[hab]`. Conclude with `GlobalTheory.FockKFin.dOp_mem_dStep _ a' b' (ih hg₀)`. Set `L : SInf F (Fin n × Fin d) →ₗ[ℂ] (Fin n × Fin d → AF F) → ℂ` to `{ toFun := fun φ => pureA F φ g map_add' := fun φ φ' => by funext x; simp [pureA, add_mul] map_smul' := fun c φ => by funext x; simp [pureA, mul_assoc] }`. Use `haveI := hfin m`. Use `Submodule.finiteDimensional_of_le (S₂ := (GlobalTheory.FockKFin.polLe M τ m).map L) (Submodule.span_le.2 ?_)` and prove the remaining obligations.
-
-Introduce and unpack `_ ⟨k, hk, rfl⟩`. Establish `h1 : (1 : UA σ X.J) ∈ UAt σ X (evI F)`. Introduce `u _`. Simplify using `[mat]`. Take `⟨A, hA⟩` from `GlobalTheory.ArchLocalAct.exists_op_of_UAt hψ hw (1, k) h1 hk.1`.
-
-Conclude with `⟨A f, hst k hk A hA m hm, (sa_of_acts (hA f) g hg).symm⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem pol_kfin {ψ : AddChar (AF F) ℂ} (hψ : IsStd ψ) {M : Model σ X W} {χX χW : Chr F E} {om : Rep σ X W}
     (hw : M.IsWeil ψ χX χW om) (τ : ∀ w : InfinitePlace F, EmbOver E w)
@@ -285,11 +279,9 @@ theorem pol_kfin {ψ : AddChar (AF F) ℂ} (hψ : IsStd ψ) {M : Model σ X W} {
   exact ⟨A f, hst k hk A hA m hm, (sa_of_acts (hA f) g hg).symm⟩
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B n d Xs W M χX χW om r s' r₁ s₁ hP W₂ hJ _ hθ co _ _ _ om₂ hw f hf g hg`. Use `choose A hA hAθ using fun w => frameEx_holds _ _ _ _ _ (hP.herm.sig w) (hP.herm.cartan w)`. Use `choose C hC hCθ using fun w => frameEx_holds _ _ _ _ _ (hP.skew.sig w) (hP.skew.cartan w)`. Use `choose C₂ hC₂ hC₂θ using fun w => frame_dbl _ _ _ (hC w) (hCθ w)`. Use `pol_kfin (M := { co := co, vac := fun _ _ => 0, μ := 0, dom := ∅ }) hP.base.std hw B.emb (vacSp_fin B hP.base _ A C₂ hA hAθ (fun w => ?_) (fun w => ?_)) f hf g hg` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Establish `e : Complex.I • W₂.J.map (B.emb w).1 = blkMat finSumFinEquiv (Complex.I • W.J.map (B.emb w).1) (-(Complex.I • W.J.map (B.emb w).1))`. Rewrite using `[hJ]`. Use extensionality with `i j`. Apply the tactic sequence `obtain ⟨i | i, rfl⟩ := finSumFinEquiv.surjective i <;> obtain ⟨j | j, rfl⟩ := finSumFinEquiv.surjective j <;>`. Apply the tactic sequence `simp only [dblGram, blkMat, Matrix.smul_apply, Matrix.map_apply, Matrix.submatrix_apply, Equiv.symm_apply_apply] <;> simp`.
-
-Rewrite using `[e]`. Conclude with `hC₂ w`. Rewrite using `[hθ]`. Conclude with `hC₂θ w`.
+Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dbl_kInf_finite : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : Base F E) (n d : ℕ) (Xs : Spc F E n) (W : Spc F E d) (M : Model σ Xs W) (χX χW : Chr F E) (om : Rep σ Xs W) (r s' r₁ s₁ : ℕ),

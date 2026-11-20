@@ -6,7 +6,7 @@ import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.FourierMatc
 open GlobalTheory.UnitLemma Matrix MeasureTheory
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.UnitLemma.exists_basis_pow_of_separable | exact GlobalTheory.UnitLemma.exists_basis_pow_of_separable | (intros; apply GlobalTheory.UnitLemma.exists_basis_pow_of_separable <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.exists_power_basis_of_charpoly_separable : ∀ (K : UQ) (B : InvAlg K), B.P.Separable → ∃ e : Module.Basis (Fin (Module.finrank K.E B.A)) K.E B.A, ∀ i, e i = B.g ^ (i : ℕ) := by
   first | exact @GlobalTheory.UnitLemma.exists_basis_pow_of_separable | exact GlobalTheory.UnitLemma.exists_basis_pow_of_separable | (intros; apply GlobalTheory.UnitLemma.exists_basis_pow_of_separable <;> assumption)

@@ -16,25 +16,25 @@ def IsDiag (a : Fin n × Fin n) : Prop := a.1 = a.2
 def IsUpper (a : Fin n × Fin n) : Prop := a.1 < a.2
 
 /- English proof (translation)
-Introduce `a b ha hb h` and use `by simp only [IsLower] at *; rw [h] at ha; exact lt_trans hb ha`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem closed_lower : Closed (IsLower (n := n)) := fun a b ha hb h => by
   simp only [IsLower] at *; rw [h] at ha; exact lt_trans hb ha
 
 /- English proof (translation)
-Introduce `a b ha hb h` and use `by simp only [IsUpper] at *; rw [h] at ha; exact lt_trans ha hb`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem closed_upper : Closed (IsUpper (n := n)) := fun a b ha hb h => by
   simp only [IsUpper] at *; rw [h] at ha; exact lt_trans ha hb
 
 /- English proof (translation)
-Introduce `a b ha hb h` and use `by simp only [IsDiag] at *; rw [ha, h, hb]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem closed_diag : Closed (IsDiag (n := n)) := fun a b ha hb h => by
   simp only [IsDiag] at *; rw [ha, h, hb]
 
 /- English proof (translation)
-Introduce `_ _ _ _ _` and use `trivial`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem closed_true : Closed (fun _ : Fin n × Fin n => True) := fun _ _ _ _ _ => trivial
 
@@ -42,18 +42,18 @@ def wordSpan (P : Fin n × Fin n → Prop) (k : ℕ) : Submodule ℂ (U n) :=
   Submodule.span ℂ {u | ∃ w : List (Fin n × Fin n), (∀ a ∈ w, P a) ∧ w.length = k ∧ word w = u}
 
 /- English proof (translation)
-The claim follows from `Submodule.subset_span ⟨w, hw, rfl, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem word_mem_wordSpan {P : Fin n × Fin n → Prop} {w : List (Fin n × Fin n)}
     (hw : ∀ a ∈ w, P a) : word w ∈ wordSpan P w.length :=
   Submodule.subset_span ⟨w, hw, rfl, rfl⟩
 
 /- English proof (translation)
-Proceed by induction on `hu using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨w, hw, rfl, rfl⟩` from `hx`. Rewrite using `[← word_cons]`. Use `word_mem_wordSpan (w := a :: w) ?_` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `b hb`. Break down `List.mem_cons.1 hb with rfl | hb` into its components or cases. Conclude with `ha`. Conclude with `hw b hb`. Consider the case `zero => simp`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `add x y _ _ hx hy => rw [mul_add]`. Conclude with `Submodule.add_mem _ hx hy`. Consider the case `smul r x _ hx => rw [mul_smul_comm]`. Conclude with `Submodule.smul_mem _ r hx`.
+A detailed English derivation is pending.
 -/
 theorem e_mul_mem_wordSpan {P : Fin n × Fin n → Prop} {a : Fin n × Fin n} (ha : P a) {k : ℕ}
     {u : U n} (hu : u ∈ wordSpan P k) : e a * u ∈ wordSpan P (k + 1) := by
@@ -71,7 +71,7 @@ theorem e_mul_mem_wordSpan {P : Fin n × Fin n → Prop} {a : Fin n × Fin n} (h
   | smul r x _ hx => rw [mul_smul_comm]; exact Submodule.smul_mem _ r hx
 
 /- English proof (translation)
-Proceed by induction on `v with`. Consider the case `nil => simpa using hu`. Consider the case `cons a v ih`. Rewrite using `[word_cons, mul_assoc, List.length_cons, show v.length + 1 + k = (v.length + k) + 1 by omega]`. Conclude with `e_mul_mem_wordSpan (hv a (List.mem_cons_self ..)) (ih fun b hb => hv b (List.mem_cons_of_mem _ hb))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mul_mem_wordSpan {P : Fin n × Fin n → Prop} {v : List (Fin n × Fin n)}
     (hv : ∀ a ∈ v, P a) {k : ℕ} {u : U n} (hu : u ∈ wordSpan P k) :
@@ -84,13 +84,11 @@ theorem mul_mem_wordSpan {P : Fin n × Fin n → Prop} {v : List (Fin n × Fin n
       (ih fun b hb => hv b (List.mem_cons_of_mem _ hb))
 
 /- English proof (translation)
-Rewrite using `[e_mul_sub_mul, sub_mul]`. Use `Submodule.sub_mem _ ?_ ?_` and prove the remaining obligations. Use `split_ifs with h`. Rewrite using `[← word_cons]`. Use `word_mem_wordSpan (w := (a.1, b.2) :: l) ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `c hc`. Break down `List.mem_cons.1 hc with rfl | hc` into its components or cases. Conclude with `hP a b ha hb h`. Conclude with `hl c hc`. Simplify using the standard rewrite rules.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `split_ifs with h`. Rewrite using `[← word_cons]`. Use `word_mem_wordSpan (w := (b.1, a.2) :: l) ?_` and prove the remaining obligations. Introduce `c hc`. Break down `List.mem_cons.1 hc with rfl | hc` into its components or cases.
-
-Conclude with `hP b a hb ha h`. Conclude with `hl c hc`. Simplify using the standard rewrite rules.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem commutator_mul_mem_wordSpan {P : Fin n × Fin n → Prop} (hP : Closed P)
     {a b : Fin n × Fin n} (ha : P a) (hb : P b) {l : List (Fin n × Fin n)} (hl : ∀ c ∈ l, P c) :
@@ -115,15 +113,13 @@ theorem commutator_mul_mem_wordSpan {P : Fin n × Fin n → Prop} (hP : Closed P
     · simp
 
 /- English proof (translation)
-Proceed by induction on `h with`. Consider the case `nil => simp`. Consider the case `cons x h ih`. Name the introduced variables `l₁ l₂`. Break down `l₁ with _ | ⟨y, l₁⟩` into its components or cases.
+Proceed by induction. Treat this case separately. Treat this case separately. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[List.nil_perm.1 h]`. Simplify using the standard rewrite rules. Rewrite using `[show word (x :: y :: l₁) - word (x :: l₂) = e x * (word (y :: l₁) - word l₂) by`. Rewrite using `[word_cons x, word_cons x, mul_sub], List.length_cons, Nat.add_sub_cancel]`. Use `ih fun a ha => hw a (List.mem_cons_of_mem _ ha)` as an intermediate fact.
+Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [List.length_cons, Nat.add_sub_cancel] at this`. Conclude with `e_mul_mem_wordSpan (hw x (List.mem_cons_self ..)) this`. Consider the case `swap x y l`. Rewrite using `[word_cons, word_cons, word_cons, word_cons, ← mul_assoc, ← mul_assoc, ← sub_mul]`. Simplify using `only [List.length_cons, Nat.add_sub_cancel]`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Conclude with `commutator_mul_mem_wordSpan hP (hw y (by simp)) (hw x (by simp)) (fun c hc => hw c (by simp [hc]))`. Consider the case `trans h₁ h₂ ih₁ ih₂`. Rewrite using `[← sub_add_sub_cancel]`. Use `Submodule.add_mem _ (ih₁ hw) ?_` and prove the remaining obligations. Rewrite using `[h₁.length_eq]`.
-
-Conclude with `ih₂ fun a ha => hw a (h₁.symm.subset ha)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem word_sub_word_mem_of_perm {P : Fin n × Fin n → Prop} (hP : Closed P)
     {w w' : List (Fin n × Fin n)} (h : w.Perm w') (hw : ∀ a ∈ w, P a) :
@@ -156,9 +152,9 @@ def letters (n : ℕ) : List (Fin n × Fin n) :=
     all.filter (fun a => decide (a.1 < a.2))
 
 /- English proof (translation)
-Simplify using `only [letters, List.mem_append, List.mem_filter, List.mem_flatMap, List.mem_map, List.mem_finRange, true_and, decide_eq_true_eq]`. Establish `hall : ∃ i, ∃ j, (i, j) = a` using `⟨a.1, a.2, rfl⟩`. Break down `lt_trichotomy a.1 a.2 with h | h | h` into its components or cases. Conclude with `Or.inr ⟨hall, h⟩`. Conclude with `Or.inl (Or.inr ⟨hall, h⟩)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Prove the second alternative. Prove the first alternative.
 
-Conclude with `Or.inl (Or.inl ⟨hall, h⟩)`.
+Prove the first alternative.
 -/
 theorem mem_letters (a : Fin n × Fin n) : a ∈ letters n := by
   simp only [letters, List.mem_append, List.mem_filter, List.mem_flatMap, List.mem_map,
@@ -170,13 +166,11 @@ theorem mem_letters (a : Fin n × Fin n) : a ∈ letters n := by
   · exact Or.inl (Or.inl ⟨hall, h⟩)
 
 /- English proof (translation)
-Establish `hall : ((List.finRange n).flatMap fun i => (List.finRange n).map fun j => (i, j)).Nodup`. Rewrite using `[List.nodup_flatMap]`. Use `⟨fun i _ => (List.nodup_finRange n).map fun j j' h => by simpa using h, ?_⟩` and prove the remaining obligations. Use `(List.nodup_finRange n).pairwise_of_forall_ne ?_` and prove the remaining obligations. Introduce `i _ i' _ hii'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [Function.onFun, List.disjoint_left, List.mem_map, List.mem_finRange, true_and]`. Introduce and unpack `_ ⟨j, rfl⟩ ⟨j', h⟩`. Conclude with `hii' (congrArg Prod.fst h).symm`. Simplify using `only [letters]`. Use `List.Nodup.append (List.Nodup.append (hall.filter _) (hall.filter _) ?_) (hall.filter _) ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [List.disjoint_left, List.mem_filter, decide_eq_true_eq]`. Introduce and unpack `a ⟨_, h⟩ ⟨_, h'⟩`. Conclude with `absurd h (by rw [h']; exact lt_irrefl _)`. Simplify using `only [List.disjoint_left, List.mem_append, List.mem_filter, decide_eq_true_eq]`. Introduce and unpack `a (⟨_, h⟩ | ⟨_, h⟩) ⟨_, h'⟩`.
-
-Conclude with `lt_asymm h h'`. Conclude with `absurd h' (by rw [h]; exact lt_irrefl _)`.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem nodup_letters : (letters n).Nodup := by
   have hall : ((List.finRange n).flatMap fun i => (List.finRange n).map fun j => (i, j)).Nodup := by
@@ -203,9 +197,9 @@ def expand (m : Fin n × Fin n →₀ ℕ) : List (Fin n × Fin n) :=
 noncomputable def canon (m : Fin n × Fin n →₀ ℕ) : U n := word (expand m)
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => simp`. Consider the case `cons a l ih`. Rewrite using `[List.flatMap_cons, word_append, ih, List.map_cons, List.prod_cons]`. Use `congr 1`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Simplify using `[word, List.map_replicate, List.prod_replicate]`.
+Simplify using the standard rewrite rules.
 -/
 theorem word_flatMap_replicate (l : List (Fin n × Fin n)) (m : Fin n × Fin n → ℕ) :
     word (l.flatMap fun a => List.replicate (m a) a) = (l.map fun a => e a ^ m a).prod := by
@@ -217,18 +211,18 @@ theorem word_flatMap_replicate (l : List (Fin n × Fin n)) (m : Fin n × Fin n �
     simp [word, List.map_replicate, List.prod_replicate]
 
 /- English proof (translation)
-The claim follows from `word_flatMap_replicate _ _`.
+A detailed English derivation is pending.
 -/
 theorem canon_eq_prod (m : Fin n × Fin n →₀ ℕ) :
     canon m = ((letters n).map fun a => e a ^ m a).prod :=
   word_flatMap_replicate _ _
 
 /- English proof (translation)
-Establish `key : ∀ l : List (Fin n × Fin n), l.Nodup → Multiset.count a ((l.flatMap fun b => List.replicate (m b) b : List _) : Multiset _) = if a ∈ l then m a else 0`. Introduce `l hl`. Proceed by induction on `l with`. Consider the case `nil => simp`. Consider the case `cons b l ih`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Rewrite using `[List.flatMap_cons, ← Multiset.coe_add, Multiset.count_add, ih (List.nodup_cons.1 hl).2, Multiset.coe_replicate, Multiset.count_replicate]`. Distinguish the cases in `hb : b = a`. Substitute `hb` using the available equality. Simplify using `[(List.nodup_cons.1 hl).1]`. Simplify using `[hb, Ne.symm hb]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[expand, key _ nodup_letters, if_pos (mem_letters a)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem count_expand (m : Fin n × Fin n →₀ ℕ) (a : Fin n × Fin n) :
     Multiset.count a ((expand m : List _) : Multiset _) = m a := by
@@ -247,7 +241,7 @@ theorem count_expand (m : Fin n × Fin n →₀ ℕ) (a : Fin n × Fin n) :
   rw [expand, key _ nodup_letters, if_pos (mem_letters a)]
 
 /- English proof (translation)
-Use extensionality with `a`. Rewrite using `[Multiset.toFinsupp_apply, count_expand]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 -/
 theorem toFinsupp_expand (m : Fin n × Fin n →₀ ℕ) :
     Multiset.toFinsupp ((expand m : List _) : Multiset _) = m := by
@@ -255,7 +249,7 @@ theorem toFinsupp_expand (m : Fin n × Fin n →₀ ℕ) :
   rw [Multiset.toFinsupp_apply, count_expand]
 
 /- English proof (translation)
-Use `Multiset.coe_eq_coe.1 ?_` and prove the remaining obligations. Use extensionality with `a`. Rewrite using `[count_expand, Multiset.toFinsupp_apply]`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 -/
 theorem perm_expand (w : List (Fin n × Fin n)) :
     w.Perm (expand (Multiset.toFinsupp (w : Multiset _))) := by
@@ -264,7 +258,7 @@ theorem perm_expand (w : List (Fin n × Fin n)) :
   rw [count_expand, Multiset.toFinsupp_apply]
 
 /- English proof (translation)
-Rewrite using `[Finsupp.degree_eq_sum, expand, List.length_flatMap]`. Simplify using `only [List.length_replicate]`. Establish `: (letters n).toFinset = Finset.univ` using `Finset.eq_univ_of_forall fun a => List.mem_toFinset.2 (mem_letters a)`. Rewrite using `[← this, List.sum_toFinset _ nodup_letters]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem length_expand (m : Fin n × Fin n →₀ ℕ) : (expand m).length = m.degree := by
   rw [Finsupp.degree_eq_sum, expand, List.length_flatMap]
@@ -274,7 +268,7 @@ theorem length_expand (m : Fin n × Fin n →₀ ℕ) : (expand m).length = m.de
   rw [← this, List.sum_toFinset _ nodup_letters]
 
 /- English proof (translation)
-Rewrite using `[← length_expand]`. Conclude with `(perm_expand w).length_eq.symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem degree_toFinsupp (w : List (Fin n × Fin n)) :
     Finsupp.degree (Multiset.toFinsupp (w : Multiset (Fin n × Fin n))) = w.length := by
@@ -282,7 +276,7 @@ theorem degree_toFinsupp (w : List (Fin n × Fin n)) :
   exact (perm_expand w).length_eq.symm
 
 /- English proof (translation)
-Rewrite `ha` using `[Multiset.toFinsupp_support, Multiset.mem_toFinset]`. Conclude with `Multiset.mem_coe.1 ha`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_of_mem_support_toFinsupp {w : List (Fin n × Fin n)} {a : Fin n × Fin n}
     (ha : a ∈ (Multiset.toFinsupp (w : Multiset _)).support) : a ∈ w := by
@@ -290,20 +284,20 @@ theorem mem_of_mem_support_toFinsupp {w : List (Fin n × Fin n)} {a : Fin n × F
   exact Multiset.mem_coe.1 ha
 
 /- English proof (translation)
-Rewrite using `[Finsupp.mem_support_iff, ← count_expand]`. Conclude with `(Multiset.count_pos.2 (Multiset.mem_coe.2 ha)).ne'`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_support_of_mem_expand {m : Fin n × Fin n →₀ ℕ} {a : Fin n × Fin n}
     (ha : a ∈ expand m) : a ∈ m.support := by
   rw [Finsupp.mem_support_iff, ← count_expand]
   exact (Multiset.count_pos.2 (Multiset.mem_coe.2 ha)).ne'
 /- English proof (translation)
-Simplify using `[expand]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem expand_zero : expand (0 : Fin n × Fin n →₀ ℕ) = [] := by
   simp [expand]
 
 /- English proof (translation)
-Simplify using `[canon]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem canon_zero : canon (0 : Fin n × Fin n →₀ ℕ) = 1 := by
   simp [canon]
@@ -313,7 +307,7 @@ def canonSpan (P : Fin n × Fin n → Prop) (lo hi : ℕ) : Submodule ℂ (U n) 
     m.degree ≤ hi ∧ canon m = u}
 
 /- English proof (translation)
-Use `Submodule.span_mono ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨m, hm, h1, h2, rfl⟩`. Conclude with `⟨m, hm, hlo.trans h1, h2.trans hhi, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem canonSpan_mono {P : Fin n × Fin n → Prop} {lo lo' hi hi' : ℕ} (hlo : lo' ≤ lo)
     (hhi : hi ≤ hi') : canonSpan P lo hi ≤ canonSpan P lo' hi' := by
@@ -322,26 +316,24 @@ theorem canonSpan_mono {P : Fin n × Fin n → Prop} {lo lo' hi hi' : ℕ} (hlo 
   exact ⟨m, hm, hlo.trans h1, h2.trans hhi, rfl⟩
 
 /- English proof (translation)
-The claim follows from `Submodule.subset_span ⟨m, hm, le_rfl, le_rfl, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem canon_mem_canonSpan {P : Fin n × Fin n → Prop} {m : Fin n × Fin n →₀ ℕ}
     (hm : ∀ a ∈ m.support, P a) : canon m ∈ canonSpan P m.degree m.degree :=
   Submodule.subset_span ⟨m, hm, le_rfl, le_rfl, rfl⟩
 
 /- English proof (translation)
-Introduce `w`. Proceed by induction on `hk : w.length using Nat.strong_induction_on generalizing w with`. Consider the case `_ k ih`. Introduce `hw`. Use `set m := Multiset.toFinsupp (w : Multiset (Fin n × Fin n))`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hmP : ∀ a ∈ m.support, P a` using `fun a ha => hw a (mem_of_mem_support_toFinsupp ha)`. Establish `hmdeg : m.degree = k` using `by rw [degree_toFinsupp, hk]`. Establish `hcanon : canon m ∈ canonSpan P (min 1 k) k`. Use `canon_mem_canonSpan hmP` as an intermediate fact. Rewrite `this` using `[hmdeg]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `canonSpan_mono (min_le_right _ _) le_rfl this`. Rewrite using `[← sub_add_cancel (word w) (canon m)]`. Use `Submodule.add_mem _ ?_ hcanon` and prove the remaining obligations. Establish `hperm` using `word_sub_word_mem_of_perm hP (perm_expand w) hw`. Rewrite `hperm` using `[hk]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Separate the alternatives or extract the components of the hypothesis.
 
-Express the relevant statement in the definitionally equal form `word w - word (expand m) ∈ _`. Break down `Nat.lt_or_ge k 2 with hk2 | hk2` into its components or cases. Establish `hw' : w = expand m`. Break down `w with _ | ⟨a, _ | ⟨b, w⟩⟩` into its components or cases. Simplify using `[m]`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h` using `perm_expand [a]`. Conclude with `(List.perm_singleton.1 h.symm).symm`. Simplify using `at hk`. Use linear arithmetic over natural numbers and integers. Rewrite using `[← hw', sub_self]`.
+Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Conclude with `Submodule.zero_mem _`. Use `(Submodule.span_le.2 ?_) hperm` and prove the remaining obligations. Introduce and unpack `_ ⟨v, hv, hvl, rfl⟩`. Use `ih (k - 1) (by omega) v hvl hv` as an intermediate fact. Rewrite `this` using `[show min 1 (k - 1) = 1 by omega]`.
-
-Conclude with `canonSpan_mono (by omega) (by omega) this`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem word_mem_canonSpan {P : Fin n × Fin n → Prop} (hP : Closed P) :
     ∀ (w : List (Fin n × Fin n)), (∀ a ∈ w, P a) →
@@ -379,17 +371,15 @@ theorem word_mem_canonSpan {P : Fin n × Fin n → Prop} (hP : Closed P) :
     exact canonSpan_mono (by omega) (by omega) this
 
 /- English proof (translation)
-Establish `hword : ∀ w : List (Fin n × Fin n), word w ∈ Submodule.span ℂ (Set.range (canon (n` using `n))) := by`. Introduce `w`. Use `word_mem_canonSpan closed_true w (fun _ _ => trivial)` as an intermediate fact. Use `(Submodule.span_le.2 ?_) this` and prove the remaining obligations. Introduce and unpack `_ ⟨m, -, -, -, rfl⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Conclude with `Submodule.subset_span ⟨m, rfl⟩`. Use `set S := Submodule.span ℂ (Set.range (canon (n := n)))`. Establish `hS : Submodule.span ℂ (Set.range (word (n` using `n))) ≤ S := Submodule.span_le.2 (by rintro _ ⟨w, rfl⟩; exact hword w)`. Establish `hall : ∀ u : U n, u ∈ Submodule.span ℂ (Set.range (word (n` using `n))) := by`. Introduce `u`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Proceed by induction on `u using U.induction with`. Consider the case `halg r`. Rewrite using `[Algebra.algebraMap_eq_smul_one, ← word_nil]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨[], rfl⟩)`. Consider the case `hι X`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ι_eq_sum_e]`. Use `Submodule.sum_mem _ fun a _ => Submodule.smul_mem _ _ ?_` and prove the remaining obligations. Rewrite using `[← word_singleton]`. Conclude with `Submodule.subset_span ⟨[a], rfl⟩`. Consider the case `hmul a b ha hb`.
+Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Establish `: Submodule.span ℂ (Set.range (word (n` using `n))) * Submodule.span ℂ (Set.range (word (n := n))) ≤ Submodule.span ℂ (Set.range (word (n := n))) := by`. Rewrite using `[Submodule.span_mul_span]`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨_, ⟨v, rfl⟩, _, ⟨w, rfl⟩, rfl⟩`. Conclude with `Submodule.subset_span ⟨v ++ w, word_append v w⟩`.
-
-Conclude with `this (Submodule.mul_mem_mul ha hb)`. Consider the case `hadd a b ha hb => exact Submodule.add_mem _ ha hb`. Conclude with `eq_top_iff.2 fun u _ => hS (hall u)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem span_canon_eq_top : Submodule.span ℂ (Set.range (canon (n := n))) = ⊤ := by
   have hword : ∀ w : List (Fin n × Fin n), word w ∈ Submodule.span ℂ (Set.range (canon (n := n))) := by
@@ -428,31 +418,31 @@ def filt (d : ℕ) : Submodule ℂ (U n) :=
   Submodule.span ℂ {u | ∃ w : List (Fin n × Fin n), w.length ≤ d ∧ word w = u}
 
 /- English proof (translation)
-The claim follows from `Submodule.subset_span ⟨w, h, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem word_mem_filt {w : List (Fin n × Fin n)} {d : ℕ} (h : w.length ≤ d) : word w ∈ filt (n := n) d :=
   Submodule.subset_span ⟨w, h, rfl⟩
 
 /- English proof (translation)
-The claim follows from `Submodule.span_mono fun _ ⟨w, hw, hu⟩ => ⟨w, hw.trans h, hu⟩`.
+A detailed English derivation is pending.
 -/
 theorem filt_mono {d d' : ℕ} (h : d ≤ d') : filt (n := n) d ≤ filt d' :=
   Submodule.span_mono fun _ ⟨w, hw, hu⟩ => ⟨w, hw.trans h, hu⟩
 
 /- English proof (translation)
-The claim follows from `word_mem_filt (length_expand m).le`.
+A detailed English derivation is pending.
 -/
 theorem canon_mem_filt (m : Fin n × Fin n →₀ ℕ) : canon m ∈ filt (n := n) m.degree :=
   word_mem_filt (length_expand m).le
 
 /- English proof (translation)
-The claim follows from `Submodule.span_le.2 fun _ ⟨w, _, hw, hu⟩ => Submodule.subset_span ⟨w, hw.le, hu⟩`.
+A detailed English derivation is pending.
 -/
 theorem wordSpan_le_filt (P : Fin n × Fin n → Prop) (k : ℕ) : wordSpan (n := n) P k ≤ filt k :=
   Submodule.span_le.2 fun _ ⟨w, _, hw, hu⟩ => Submodule.subset_span ⟨w, hw.le, hu⟩
 
 /- English proof (translation)
-Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨w, hw, rfl⟩`. Conclude with `canonSpan_mono (Nat.zero_le _) hw (word_mem_canonSpan closed_true w fun _ _ => trivial)`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem filt_le_canonSpan (d : ℕ) : filt (n := n) d ≤ canonSpan (fun _ => True) 0 d := by
   refine Submodule.span_le.2 ?_
@@ -460,7 +450,7 @@ theorem filt_le_canonSpan (d : ℕ) : filt (n := n) d ≤ canonSpan (fun _ => Tr
   exact canonSpan_mono (Nat.zero_le _) hw (word_mem_canonSpan closed_true w fun _ _ => trivial)
 
 /- English proof (translation)
-The claim follows from `wordSpan_le_filt _ _ (word_sub_word_mem_of_perm closed_true (perm_expand w) fun _ _ => trivial)`.
+A detailed English derivation is pending.
 -/
 theorem word_sub_canon_mem_filt (w : List (Fin n × Fin n)) :
     word w - canon (Multiset.toFinsupp (w : Multiset _)) ∈ filt (n := n) (w.length - 1) :=
@@ -472,11 +462,11 @@ def rootAt (a : Fin n × Fin n) (k : Fin n) : ℤ :=
 def wt (m : Fin n × Fin n →₀ ℕ) (k : Fin n) : ℤ := m.sum fun a c => (c : ℤ) * rootAt a k
 
 /- English proof (translation)
-Rewrite using `[e_mul_sub_mul]`. Take `⟨i, j⟩` from `a`. Simplify using `only [rootAt]`. Apply the tactic sequence `by_cases hi : k = i <;> by_cases hj : k = j`. Substitute `hi` using the available equality.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Substitute using the available equality.
 
-Substitute `hj` using the available equality. Simplify using the standard rewrite rules. Substitute `hi` using the available equality. Simplify using `[hj, Ne.symm hj]`. Substitute `hj` using the available equality.
+Substitute using the available equality. Simplify using the standard rewrite rules. Substitute using the available equality. Simplify using the standard rewrite rules. Substitute using the available equality.
 
-Simplify using `[hi]`. Simplify using `[hi, hj, Ne.symm hj]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem e_diag_mul_sub (k : Fin n) (a : Fin n × Fin n) :
     e (k, k) * e a - e a * e (k, k) = (rootAt a k : ℂ) • e a := by
@@ -490,9 +480,9 @@ theorem e_diag_mul_sub (k : Fin n) (a : Fin n × Fin n) :
   · simp [hi, hj, Ne.symm hj]
 
 /- English proof (translation)
-Proceed by induction on `w with`. Consider the case `nil => simp`. Consider the case `cons a w ih`. Rewrite using `[word_cons, List.map_cons, List.sum_cons]`. Establish `h1` using `e_diag_mul_sub k a`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[h1, ih, smul_mul_assoc, mul_smul_comm, ← add_smul]`. Use `push_cast`. Put the polynomial expressions in normal form.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Put the polynomial expressions in normal form.
 -/
 theorem e_diag_mul_word_sub (k : Fin n) (w : List (Fin n × Fin n)) :
     e (k, k) * word w - word w * e (k, k) = (((w.map fun a => rootAt a k).sum : ℤ) : ℂ) • word w := by
@@ -509,9 +499,9 @@ theorem e_diag_mul_word_sub (k : Fin n) (w : List (Fin n × Fin n)) :
           push_cast; ring_nf
 
 /- English proof (translation)
-Establish `hw : ∀ w : List (Fin n × Fin n), (w.map fun a => rootAt a k).sum = wt (Multiset.toFinsupp (w : Multiset _)) k`. Introduce `w`. Proceed by induction on `w with`. Consider the case `nil => simp [wt]`. Consider the case `cons a w ih`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Rewrite using `[List.map_cons, List.sum_cons, ih, show ((a :: w : List _) : Multiset _) = {a} + (w : Multiset _) by simp, Multiset.toFinsupp_add, Multiset.toFinsupp_singleton, wt, wt, Finsupp.sum_add_index' (by simp) (by intros; push_cast; ring), Finsupp.sum_single_index (by simp)]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hw, toFinsupp_expand]`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 -/
 theorem sum_rootAt_expand (m : Fin n × Fin n →₀ ℕ) (k : Fin n) :
     ((expand m).map fun a => rootAt a k).sum = wt m k := by
@@ -530,7 +520,7 @@ theorem sum_rootAt_expand (m : Fin n × Fin n →₀ ℕ) (k : Fin n) :
   rw [hw, toFinsupp_expand]
 
 /- English proof (translation)
-Rewrite using `[canon, e_diag_mul_word_sub, sum_rootAt_expand]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem e_diag_mul_canon_sub (k : Fin n) (m : Fin n × Fin n →₀ ℕ) :
     e (k, k) * canon m - canon m * e (k, k) = (wt m k : ℂ) • canon m := by

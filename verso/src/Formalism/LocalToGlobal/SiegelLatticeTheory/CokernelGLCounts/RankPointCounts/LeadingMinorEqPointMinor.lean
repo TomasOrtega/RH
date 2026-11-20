@@ -15,7 +15,7 @@ namespace Formalism.L2.SG.NGCut.NormalVectorPairings
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Unfold `Formalism.HermitianLatticeCounting.ExpansionTerms.leadingPrincipalMinor Formalism.MainNotions.S.LocalSplitGroups.Dmin`. Rewrite using `[dif_pos hl]`. Set `e : Fin l ≃ {i : Fin n // (i : ℕ) < l}` to `{ toFun := fun j => ⟨Fin.castLE hl j, by simp⟩ invFun := fun i => ⟨i.1, i.2⟩ left_inv := fun j => by ext; simp right_inv := fun i => by ext; simp }`. Rewrite using `[← Matrix.det_submatrix_equiv_self e]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem leadingMinor_eq_pointMinor {D : D7} {n : ℕ} (w : Point D.host.E n) (l : ℕ) (hl : l ≤ n) :
     Formalism.HermitianLatticeCounting.ExpansionTerms.leadingPrincipalMinor (ptMat w) l = Formalism.MainNotions.S.LocalSplitGroups.Dmin w l := by
@@ -30,15 +30,15 @@ theorem leadingMinor_eq_pointMinor {D : D7} {n : ℕ} (w : Point D.host.E n) (l 
   rfl
 
 /- English proof (translation)
-The claim follows from `(D.conjF_eq x).trans (Formalism.BasicNotions.Examples₂.star_eq_conj (H := D.host) x).symm`.
+A detailed English derivation is pending.
 -/
 theorem conjF_star' {D : D7} (x : D.host.E) : D.conjF x = star x :=
   (D.conjF_eq x).trans (Formalism.BasicNotions.Examples₂.star_eq_conj (H := D.host) x).symm
 
 /- English proof (translation)
-Establish `h` using `(Formalism.MainNotions.S.Inh.zero_of_gram_point_exists D u u').choose_spec`. Unfold `Formalism.MainNotions.S.LocalSplitGroups.Gpt at h`. Unfold `Formalism.L2.SG.PairVal.junkPoint GPt`. Rewrite using `[LeadingMinorIntegrality.dlast_eq, LeadingMinorIntegrality.dr_eq, leadingMinor_eq_pointMinor _ _ le_rfl, leadingMinor_eq_pointMinor _ _ (Nat.le_succ _), ← conjF_star', ← conjF_star']`. Use `h using 3` and compare the differences between its conclusion and the goal.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Apply the tactic sequence `all_goals first`. Consider the case `rfl`. Consider the case `(push_cast; rfl)`. Consider the case `norm_cast`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem GPt_junk (D : D7) (u u' : D.what₂.Word) :
     GPt ((Tu D u : ℕ) * (Tu D u' : ℕ)) (toPts (Formalism.L2.SG.PairVal.junkPoint D u u')) = 0 := by
@@ -54,7 +54,7 @@ theorem GPt_junk (D : D7) (u u' : D.what₂.Word) :
     | norm_cast
 
 /- English proof (translation)
-Unfold `NGPt at h`. Introduce `h0`. Rewrite `h` using `[h0]`. Simplify using `[Fintype.card_ne_zero] at h`. Combine the linear equalities and inequalities to obtain the conclusion.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem GPt_ne_of_NGPt {D : D7} (TT : ℕ) (γ : PN.Pts D.host.E D.R.rS) (h : 1 ≤ NGPt D.host.rdE TT γ) :
     GPt TT γ ≠ 0 := by
@@ -67,11 +67,11 @@ theorem GPt_ne_of_NGPt {D : D7} (TT : ℕ) (γ : PN.Pts D.host.E D.R.rS) (h : 1 
 variable {D : D7} {X : HidaSetting D} (Y : Full X) {u u' : D.what₂.Word}
 
 /- English proof (translation)
-Establish `hne` using `GPt_ne_of_NGPt _ _ hG`. Distinguish the cases in `h : ∃ w, t.toTerm.atPt w ∧ t.toTerm.relevant`. Take `⟨F', ⟨hP, hmk⟩, -, hcell⟩` from `Formalism.L2.SG.PairVal.ptOf_spec t.toTerm h`. Establish `h1` using `LeadingMinorIntegrality.gpt_eq (T := Tu D u) (T' := Tu D u') (lf D (X.Fu u)) F' _ hcell`. Rewrite using `[show ptPN t = toPts (Formalism.L2.SG.PairVal.ptOf t.toTerm) from rfl, h1, ← Formalism.L2.SG.Pf.SatGram.gterm_G Y t]`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hΛ` using `(Y.rowsOK u).1 t.lam t.mem`. Use `show Formalism.L2.SG.TermDef.Gt _ _ _ t.toTerm.cls = _`. Rewrite using `[← hmk]`. Conclude with `Formalism.L2.SG.TermDef.Gt_mk ((Formalism.L2.SG.Closed.TermFun_holds D u u' (X.Fu u) t.lam hΛ).1) _`. It suffices to derive a contradiction.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. It suffices to derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Replace the relevant objects with their definitions.
 
-Apply `hne` to reduce the goal to its premises. Use `show GPt _ (toPts (Formalism.L2.SG.PairVal.ptOf t.toTerm)) = 0`. Unfold `Formalism.L2.SG.PairVal.ptOf`. Rewrite using `[dif_neg h]`. Conclude with `GPt_junk D u u'`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gval_occ (t : TauC Y u u')
     (hG : 1 ≤ NGPt D.host.rdE ((Tu D u : ℕ) * (Tu D u' : ℕ)) (ptPN t)) :

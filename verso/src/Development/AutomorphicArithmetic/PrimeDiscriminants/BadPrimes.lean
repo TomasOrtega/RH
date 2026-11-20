@@ -9,11 +9,9 @@ namespace Formalism.BasicNotions.Host
 variable {R : Ranks} (H : Host R)
 
 /- English proof (translation)
-Introduce `p hp`. Rewrite `hp` using `[Nat.mem_primeFactors]`. Take `⟨hpp, hpd, -⟩` from `hp`. Establish `hc : p ∣ H.condN`. Break down `(Nat.Prime.dvd_mul hpp).1 hpd with h2 | h2` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite using `[(Nat.prime_dvd_prime_iff_eq hpp Nat.prime_two).1 h2]`. Conclude with `H.two_dvd_condN`. Conclude with `H.der.discr_primes.1 p hpp (Int.natCast_dvd.2 h2)`. Break down `(H.dvd_condN_iff_small hpp).1 hc with h | h | h` into its components or cases. Conclude with `Finset.mem_union_left _ h`.
-
-Simplify using `[h]`. Simplify using `[h]`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem bad_subset : Nat.primeFactors (2 * (discr H.E).natAbs) ⊆ H.small ∪ {H.q, H.d} := by
   intro p hp
@@ -30,11 +28,11 @@ theorem bad_subset : Nat.primeFactors (2 * (discr H.E).natAbs) ⊆ H.small ∪ {
   · simp [h]
 
 /- English proof (translation)
-Rewrite using `[Finset.card_le_one]`. Introduce `p hp p' hp'`. Rewrite `hp`, `hp'` using `[Finset.mem_filter, H.mem_small_iff]`. Assume the negation of the conclusion as `hne`. Establish `hpn : R.n < p` using `by exact_mod_cast hB.trans_lt hp.2`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `hpn' : R.n < p'` using `by exact_mod_cast hB.trans_lt hp'.2`. Establish `hdvd : p * p' ∣ H.QS` using `Nat.Coprime.mul_dvd_of_dvd_of_dvd ((Nat.coprime_primes hp.1.1 hp'.1.1).2 hne) hp.1.2 hp'.1.2`. Establish `hle` using `Nat.le_of_dvd H.QS_pos hdvd`. Establish `hq` using `H.QS_le`. Establish `hm : R.n * R.n < p * p'` using `Nat.mul_lt_mul'' hpn hpn'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hq` using `[sq]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem card_small_gt_le_one {B : ℝ} (hB : (R.n : ℝ) ≤ B) : (H.small.filter fun p : ℕ => B < (p : ℝ)).card ≤ 1 := by
   rw [Finset.card_le_one]
@@ -52,11 +50,9 @@ theorem card_small_gt_le_one {B : ℝ} (hB : (R.n : ℝ) ≤ B) : (H.small.filte
   linarith
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation. Apply `Finset.card_le_card` to reduce the goal to its premises. Introduce `p hp`. Rewrite `hp` using `[Finset.mem_filter]`. Distinguish the cases in `hs : p ∈ H.small`.
+Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Conclude with `Finset.mem_union_right _ (Finset.mem_filter.2 ⟨hs, hp.2⟩)`. Conclude with `Finset.mem_union_left _ (Finset.mem_sdiff.2 ⟨hp.1, hs⟩)`. Use `_ ≤ (S \ H.small).card + (H.small.filter fun p : ℕ => B < (p : ℝ)).card := Finset.card_union_le _ _`. Use `_ ≤ (S \ H.small).card + 1 := by`. Establish `h1` using `card_small_gt_le_one H hB`.
-
-Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem card_gt_le_card_sdiff (S : Finset ℕ) {B : ℝ} (hB : (R.n : ℝ) ≤ B) :
     (S.filter fun p : ℕ => B < (p : ℝ)).card ≤ (S \ H.small).card + 1 := by
@@ -75,11 +71,11 @@ theorem card_gt_le_card_sdiff (S : Finset ℕ) {B : ℝ} (hB : (R.n : ℝ) ≤ B
         omega
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation. Apply `Finset.card_le_card` to reduce the goal to its premises. Introduce `p hp`. Rewrite `hp` using `[Finset.mem_sdiff, Finset.mem_union]`. Break down `hp.1 with h | h` into its components or cases.
+Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `hb` using `bad_subset H h`. Rewrite `hb` using `[Finset.mem_union]`. Break down `hb with h' | h'` into its components or cases. Conclude with `absurd h' hp.2`. Conclude with `Finset.mem_union_right _ h'`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Conclude with `Finset.mem_union_left _ h`. Use `_ ≤ S.card + ({H.q, H.d} : Finset ℕ).card := Finset.card_union_le _ _`. Use `_ ≤ S.card + 2 := by`. Establish `h2 : ({H.q, H.d} : Finset ℕ).card ≤ 2` using `Finset.card_le_two`. Use linear arithmetic over natural numbers and integers.
+A detailed English derivation is pending.
 -/
 theorem card_bad_sdiff_le (S : Finset ℕ) :
     ((Nat.primeFactors (2 * (discr H.E).natAbs) ∪ S) \ H.small).card ≤ S.card + 2 := by
@@ -100,7 +96,7 @@ theorem card_bad_sdiff_le (S : Finset ℕ) :
         omega
 
 /- English proof (translation)
-Use `H.card_gt_le_card_sdiff (Nat.primeFactors (2 * (discr H.E).natAbs) ∪ S) hB` as an intermediate fact. Use `H.card_bad_sdiff_le S` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem card_bad_gt_le (S : Finset ℕ) {B : ℝ} (hB : (R.n : ℝ) ≤ B) :
     ((Nat.primeFactors (2 * (discr H.E).natAbs) ∪ S).filter fun p : ℕ => B < (p : ℝ)).card ≤ S.card + 3 := by
@@ -109,9 +105,9 @@ theorem card_bad_gt_le (S : Finset ℕ) {B : ℝ} (hB : (R.n : ℝ) ≤ B) :
   omega
 
 /- English proof (translation)
-Establish `h1 : (4 : ℝ) * (R.n : ℝ) ≤ H.rdE ^ 2` using `H.der.rd_sq_ge`. Establish `hn : (0 : ℝ) < R.n` using `by exact_mod_cast R.toFrame.ord_pos`. Establish `h2 : (R.n : ℝ) ≤ H.rdE ^ 2` using `by linarith`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Real.log_pow]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem log_n_le_two_log_rdE : Real.log (R.n : ℝ) ≤ 2 * Real.log H.rdE := by
   have h1 : (4 : ℝ) * (R.n : ℝ) ≤ H.rdE ^ 2 := H.der.rd_sq_ge
@@ -124,13 +120,13 @@ theorem log_n_le_two_log_rdE : Real.log (R.n : ℝ) ≤ 2 * Real.log H.rdE := by
       ring
 
 /- English proof (translation)
-Establish `hprod : ∏ p ∈ H.small, p ≤ H.QS` using `Nat.le_of_dvd H.QS_pos (Nat.prod_primeFactors_dvd _)`. Establish `hpos : ∀ p ∈ H.small, (0 : ℝ) < p` using `fun p hp => by`. Establish `hp'` using `((H.mem_small_iff).1 hp).1.pos`. Conclude with `hp'` after adjusting the coercions. Rewrite using `[← Real.log_prod (s := H.small) (f := fun p : ℕ => (p : ℝ)) (fun p hp => (hpos p hp).ne')]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hP : (0 : ℝ) < ∏ p ∈ H.small, (p : ℝ)` using `Finset.prod_pos hpos`. Combine the equalities or inequalities in the displayed calculation. Apply `Real.log_le_log hP` to reduce the goal to its premises. Establish `h' : (∏ p ∈ H.small, p : ℕ) ≤ R.n ^ 2` using `hprod.trans H.QS_le`. Establish `h''` using `(Nat.cast_le (α := ℝ)).2 h'`.
+Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Move the coercions through the operations in `at h''`. Conclude with `h''`. Use `_ = 2 * Real.log R.n := by`. Rewrite using `[Real.log_pow]`. Use `push_cast`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ 4 * Real.log H.rdE := by`. Establish `h6` using `log_n_le_two_log_rdE H`. Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 theorem sum_small_log_le : ∑ p ∈ H.small, Real.log p ≤ 4 * Real.log H.rdE := by
   have hprod : ∏ p ∈ H.small, p ≤ H.QS := Nat.le_of_dvd H.QS_pos (Nat.prod_primeFactors_dvd _)

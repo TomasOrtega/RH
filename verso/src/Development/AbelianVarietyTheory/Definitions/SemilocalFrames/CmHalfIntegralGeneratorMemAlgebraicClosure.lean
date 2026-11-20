@@ -20,14 +20,14 @@ def xx : Mat 2 1 := (!![1,-1,0,0,-1/2; 0,1,0,0,1; 0,0,1,0,0; 0,0,0,1,0; 0,0,0,0,
 def xi : Mat 2 1 := (!![1,1,0,0,-1/2; 0,1,0,0,-1; 0,0,1,0,0; 0,0,0,1,0; 0,0,0,0,1] : Matrix (Fin 5) (Fin 5) ℂ)
 
 /- English proof (translation)
-Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [Hpk]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem hpk_eq : Hpk 2 1 = (!![0,0,0,0,1; 0,1,0,0,0; 0,0,1,0,0; 0,0,0,-1,0; 1,0,0,0,0] : Matrix (Fin 5) (Fin 5) ℂ) := by
   ext i j
   fin_cases i <;> fin_cases j <;> simp [Hpk]
 
 /- English proof (translation)
-Simplify using `[herm, Hb, dotProduct, Matrix.mulVec_diagonal, Fin.sum_univ_succ, Fin.ext_iff]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem herm3 (v w : Fin (2 + 1) → ℂ) : herm (Hb 2) v w =
     star (w (0 : Fin 3)) * v (0 : Fin 3) + star (w (1 : Fin 3)) * v (1 : Fin 3) - star (w (2 : Fin 3)) * v (2 : Fin 3) := by
@@ -35,7 +35,7 @@ theorem herm3 (v w : Fin (2 + 1) → ℂ) : herm (Hb 2) v w =
   ring
 
 /- English proof (translation)
-Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;>`. Apply the tactic sequence `simp [xx, pEl, herm3, bvec] <;> norm_num`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem xx_eq : xx = pEl 2 1 (fun _ => (![1,0,0] : Fin 3 → ℂ)) 0 := by
   ext i j
@@ -43,7 +43,7 @@ theorem xx_eq : xx = pEl 2 1 (fun _ => (![1,0,0] : Fin 3 → ℂ)) 0 := by
     simp [xx, pEl, herm3, bvec] <;> norm_num
 
 /- English proof (translation)
-Apply `Matrix.inv_eq_right_inv` to reduce the goal to its premises. Use `show (xx * xi : Matrix (Fin 5) (Fin 5) ℂ) = 1`. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [xx, xi, Matrix.mul_apply, Fin.sum_univ_succ] <;> norm_num`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem xx_inv : xx⁻¹ = xi := by
   apply Matrix.inv_eq_right_inv
@@ -52,7 +52,7 @@ theorem xx_inv : xx⁻¹ = xi := by
   fin_cases i <;> fin_cases j <;> simp [xx, xi, Matrix.mul_apply, Fin.sum_univ_succ] <;> norm_num
 
 /- English proof (translation)
-Apply `Matrix.inv_eq_right_inv` to reduce the goal to its premises. Use `show (sw * sw : Matrix (Fin 5) (Fin 5) ℂ) = 1`. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [sw, Matrix.mul_apply, Fin.sum_univ_succ]`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem sw_inv : sw⁻¹ = sw := by
   apply Matrix.inv_eq_right_inv
@@ -61,7 +61,7 @@ theorem sw_inv : sw⁻¹ = sw := by
   fin_cases i <;> fin_cases j <;> simp [sw, Matrix.mul_apply, Fin.sum_univ_succ]
 
 /- English proof (translation)
-Use `show swᴴ * Hpk 2 1 * sw = Hpk 2 1`. Rewrite using `[hpk_eq]`. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [sw, Matrix.mul_apply, Fin.sum_univ_succ]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem sw_mem : sw ∈ GG 2 1 := by
   show swᴴ * Hpk 2 1 * sw = Hpk 2 1
@@ -70,7 +70,7 @@ theorem sw_mem : sw ∈ GG 2 1 := by
   fin_cases i <;> fin_cases j <;> simp [sw, Matrix.mul_apply, Fin.sum_univ_succ]
 
 /- English proof (translation)
-Use `show xxᴴ * Hpk 2 1 * xx = Hpk 2 1`. Rewrite using `[hpk_eq]`. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [xx, Matrix.mul_apply, Fin.sum_univ_succ, map_ofNat] <;> norm_num`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem xx_mem : xx ∈ GG 2 1 := by
   show xxᴴ * Hpk 2 1 * xx = Hpk 2 1
@@ -79,7 +79,7 @@ theorem xx_mem : xx ∈ GG 2 1 := by
   fin_cases i <;> fin_cases j <;> simp [xx, Matrix.mul_apply, Fin.sum_univ_succ, map_ofNat] <;> norm_num
 
 /- English proof (translation)
-Rewrite using `[hpk_eq]`. Simplify using `[herm, dotProduct, Matrix.mulVec, Fin.sum_univ_succ]`. Put the polynomial expressions in normal form.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Put the polynomial expressions in normal form.
 -/
 theorem herm5 (v w : Fin (2 * 1 + 2 + 1) → ℂ) : herm (Hpk 2 1) v w =
     star (w (0 : Fin 5)) * v (4 : Fin 5) + star (w (1 : Fin 5)) * v (1 : Fin 5) + star (w (2 : Fin 5)) * v (2 : Fin 5)
@@ -89,44 +89,44 @@ theorem herm5 (v w : Fin (2 * 1 + 2 + 1) → ℂ) : herm (Hpk 2 1) v w =
   ring_nf
 
 /- English proof (translation)
-Apply the tactic sequence `ext i; fin_cases i <;> simp [bvec, eI]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem e0_eq : bvec (eI 2 1 0) = (![1,0,0,0,0] : Fin 5 → ℂ) := by
   ext i; fin_cases i <;> simp [bvec, eI]
 
 /- English proof (translation)
-Rewrite using `[← e0_eq]`. Simplify using `[fvec]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem fvec0 (z) : fvec 2 1 z 0 = (![1,0,0,0,0] : Fin 5 → ℂ) := by
   rw [← e0_eq]; simp [fvec]
 
 /- English proof (translation)
-Simplify using `[fvec]`.
+Simplify using the standard rewrite rules.
 -/
 theorem fvec1 (z) : fvec 2 1 z 1 = z := by simp [fvec]
 
 /- English proof (translation)
-Apply the tactic sequence `ext i; fin_cases i <;> simp [sw, dotProduct, Matrix.mulVec, Fin.sum_univ_succ] <;> rfl`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem sw_mulVec (v : Fin (2 * 1 + 2 + 1) → ℂ) : sw *ᵥ v =
     (![v (4 : Fin 5), v (1 : Fin 5), v (2 : Fin 5), v (3 : Fin 5), v (0 : Fin 5)] : Fin 5 → ℂ) := by
   ext i; fin_cases i <;> simp [sw, dotProduct, Matrix.mulVec, Fin.sum_univ_succ] <;> rfl
 
 /- English proof (translation)
-Use extensionality with `a b`. Apply the tactic sequence `fin_cases a <;> fin_cases b <;> simp [Zhat, fvec0, fvec1, herm5, sw_mulVec, z0, z1]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem zhat_eq : Zhat 2 1 z0 z1 sw = !![1, 0; 0, -2] := by
   ext a b
   fin_cases a <;> fin_cases b <;> simp [Zhat, fvec0, fvec1, herm5, sw_mulVec, z0, z1]
 
 /- English proof (translation)
-Unfold `Dmin`. Rewrite using `[zhat_eq]`. Simplify using `[Matrix.det_unique]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem dmin_one : Dmin 2 1 z0 z1 sw ⟨1, by omega⟩ = 1 := by
   unfold Dmin; rw [zhat_eq]; simp [Matrix.det_unique]
 
 /- English proof (translation)
-Unfold `Dmin`. Rewrite using `[zhat_eq]`. Use `show (!![1, 0; 0, -2] : Matrix (Fin 2) (Fin 2) ℂ).det = -2`. Simplify using `[Matrix.det_fin_two]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem dmin_two : Dmin 2 1 z0 z1 sw (Fin.last 2) = -2 := by
   unfold Dmin; rw [zhat_eq]
@@ -134,23 +134,23 @@ theorem dmin_two : Dmin 2 1 z0 z1 sw (Fin.last 2) = -2 := by
   simp [Matrix.det_fin_two]
 
 /- English proof (translation)
-Unfold `Dr`. Rewrite using `[dmin_one]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem dr_eq : Dr 2 1 z0 z1 sw = 1 := by unfold Dr; rw [dmin_one]; simp
 
 /- English proof (translation)
-Simplify using `[Tz, herm5, z0]`.
+Simplify using the standard rewrite rules.
 -/
 theorem tz0 : Tz 2 1 z0 = 1 := by simp [Tz, herm5, z0]
 /- English proof (translation)
-Simplify using `[Tz, herm5, z1]`. Evaluate the numerical expressions.
+Simplify using the standard rewrite rules. Evaluate the numerical expressions.
 -/
 theorem tz1 : Tz 2 1 z1 = 3 := by simp [Tz, herm5, z1]; norm_num
 
 /- English proof (translation)
-Use `⟨?_, ?_, by rw [tz0]; norm_num, by rw [tz1]; norm_num, sw_mem, ?_, by rw [dr_eq]; norm_num⟩` and prove the remaining obligations. Apply the tactic sequence `intro i hi; fin_cases i <;> simp_all [z0]`. Apply the tactic sequence `intro i hi; fin_cases i <;> simp_all [z1]`. Unfold `Gf`. Rewrite using `[dmin_one, tz0, tz1]`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `dmin_two` as an intermediate fact. Rewrite using `[this]`. Simplify using the standard rewrite rules. Evaluate the numerical expressions.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Evaluate the numerical expressions.
 -/
 theorem twoFl : TwoFl 2 1 z0 z1 sw := by
   refine ⟨?_, ?_, by rw [tz0]; norm_num, by rw [tz1]; norm_num, sw_mem, ?_, by rw [dr_eq]; norm_num⟩
@@ -161,7 +161,7 @@ theorem twoFl : TwoFl 2 1 z0 z1 sw := by
     rw [this]; simp; norm_num
 
 /- English proof (translation)
-Apply the tactic sequence `ext i; fin_cases i <;> simp [xx, dotProduct, Matrix.mulVec, Fin.sum_univ_succ] <;> ring`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem xx_mulVec (v : Fin (2 * 1 + 2 + 1) → ℂ) : xx *ᵥ v =
     (![v (0 : Fin 5) - v (1 : Fin 5) - v (4 : Fin 5) / 2, v (1 : Fin 5) + v (4 : Fin 5), v (2 : Fin 5), v (3 : Fin 5),
@@ -169,18 +169,18 @@ theorem xx_mulVec (v : Fin (2 * 1 + 2 + 1) → ℂ) : xx *ᵥ v =
   ext i; fin_cases i <;> simp [xx, dotProduct, Matrix.mulVec, Fin.sum_univ_succ] <;> ring
 
 /- English proof (translation)
-Rewrite using `[xx_inv, sw_inv, e0_eq, sw_mulVec]`. Apply the tactic sequence `ext i; fin_cases i <;> simp [xi, dotProduct, Matrix.mulVec, Fin.sum_univ_succ]`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem vec_eq : xx⁻¹ *ᵥ (sw⁻¹ *ᵥ bvec (eI 2 1 0)) = (![-1/2, -1, 0, 0, 1] : Fin 5 → ℂ) := by
   rw [xx_inv, sw_inv, e0_eq, sw_mulVec]
   ext i; fin_cases i <;> simp [xi, dotProduct, Matrix.mulVec, Fin.sum_univ_succ]
 
 /- English proof (translation)
-Simplify using `only [Ppos, Submodule.mem_comap, Submodule.mem_inf, LinearMap.mem_ker, Matrix.toLin'_apply]`. Prove the components needed by the constructor for the conclusion. Rewrite using `[hpk_eq]`. Apply the tactic sequence `ext i; fin_cases i <;> simp [dotProduct, Matrix.mulVec, Fin.sum_univ_succ, Matrix.one_apply]`. Rewrite using `[Submodule.mem_sup]`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Use `⟨(![0, -1, 0, 0, 0] : Fin 5 → ℂ), ?_, bvec (eI 2 1 0), Submodule.subset_span ⟨0, rfl⟩, ?_⟩` and prove the remaining obligations. Introduce `a`. Rewrite using `[sw_inv]`. Apply the tactic sequence `fin_cases a <;> simp [fvec0, fvec1, herm5, sw_mulVec, z0, z1]`. Rewrite using `[xx_mulVec, e0_eq]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `ext i; fin_cases i <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem cmHalfIntegralGenerator_mem_algebraicClosure : (WithLp.toLp 2 (![0, -1, 0, 0, 0] : Fin 5 → ℂ) : EuclideanSpace ℂ (Fin (2 * 1 + 2 + 1))) ∈
     Ppos 2 1 z0 z1 sw xx := by
@@ -197,15 +197,15 @@ theorem cmHalfIntegralGenerator_mem_algebraicClosure : (WithLp.toLp 2 (![0, -1, 
       ext i; fin_cases i <;> simp
 
 /- English proof (translation)
-Simplify using `only [Ppos, Submodule.mem_comap, Submodule.mem_inf, LinearMap.mem_ker, Matrix.toLin'_apply] at hp`. Take `⟨h1, h2⟩` from `hp`. Rewrite `h2` using `[Submodule.mem_sup]`. Take `⟨h, hh, y, hy, hs⟩` from `h2`. Establish `h4 : h (4 : Fin 5) = 0`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `(hh 0).1` as an intermediate fact. Simplify `this` using `[fvec0, herm5]`. Establish `y4 : y (4 : Fin 5) = 0`. Unfold `Xsp at hy`. Rewrite `hy` using `[Submodule.mem_span_range_iff_exists_fun]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨c, rfl⟩` from `hy`. Simplify using `[e0_eq]`. Establish `p4 : p (4 : Fin 5) = 0`. Use `congrFun hs (4 : Fin 5)` as an intermediate fact. Rewrite `this` using `[xx_mulVec]`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify `this.symm` using `[h4, y4]`. Use `⟨?_, p4⟩` and prove the remaining obligations. Use `congrFun h1 (0 : Fin 5)` as an intermediate fact. Rewrite `this` using `[hpk_eq]`. Simplify using `[dotProduct, Matrix.mulVec, Fin.sum_univ_succ, Matrix.one_apply] at this`.
+Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `p4' : p.ofLp (4 : Fin 5) = 0` using `p4`. Take the linear combination `-this + p4'`.
+Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem ppos_coord (p : EuclideanSpace ℂ (Fin (2 * 1 + 2 + 1))) (hp : p ∈ Ppos 2 1 z0 z1 sw xx) :
     p (0 : Fin 5) = 0 ∧ p (4 : Fin 5) = 0 := by
@@ -233,7 +233,7 @@ theorem ppos_coord (p : EuclideanSpace ℂ (Fin (2 * 1 + 2 + 1))) (hp : p ∈ Pp
   linear_combination -this + p4'
 
 /- English proof (translation)
-Apply `Submodule.eq_starProjection_of_mem_of_inner_eq_zero cmHalfIntegralGenerator_mem_algebraicClosure` to reduce the goal to its premises. Introduce `p hp`. Take `⟨h0, h4⟩` from `ppos_coord p hp`. Simplify using `[PiLp.inner_apply, Fin.sum_univ_succ, h0, h4]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 -/
 theorem proj_eq : (Ppos 2 1 z0 z1 sw xx).starProjection (WithLp.toLp 2 (![-1/2, -1, 0, 0, 1] : Fin 5 → ℂ)) =
     WithLp.toLp 2 (![0, -1, 0, 0, 0] : Fin 5 → ℂ) := by
@@ -243,7 +243,7 @@ theorem proj_eq : (Ppos 2 1 z0 z1 sw xx).starProjection (WithLp.toLp 2 (![-1/2, 
   simp [PiLp.inner_apply, Fin.sum_univ_succ, h0, h4]
 
 /- English proof (translation)
-Unfold `Yv gramProj`. Rewrite using `[dr_eq, Matrix.det_unique]`. Simplify using `only [Matrix.gram_apply]`. Rewrite using `[show (default : Fin 1) = 0 from rfl, vec_eq, proj_eq]`. Simplify using `[EuclideanSpace.norm_eq, Fin.sum_univ_succ]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem yv_eq : Yv 2 1 z0 z1 sw xx = 1 := by
   unfold Yv gramProj
@@ -253,15 +253,15 @@ theorem yv_eq : Yv 2 1 z0 z1 sw xx = 1 := by
   simp [EuclideanSpace.norm_eq, Fin.sum_univ_succ]
 
 /- English proof (translation)
-Unfold `Sg`. Rewrite using `[Finset.le_fold_max]`. Conclude with `Or.inl le_rfl`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Prove the first alternative.
 -/
 theorem one_le_Sg (k r : ℕ) (z) (x : Mat k r) : 1 ≤ Sg k r z x := by
   unfold Sg; rw [Finset.le_fold_max]; exact Or.inl le_rfl
 
 /- English proof (translation)
-Use `⟨max (Sg 2 1 z1 xx) (Sg 2 1 z0 (sw * xx)), Matrix.of.symm xx, xx_mem, le_max_left _ _, le_max_right _ _, ?_, ?_⟩` and prove the remaining obligations. Use `show 3 / 4 < Yv 2 1 z0 z1 sw xx`. Rewrite using `[yv_eq]`. Evaluate the numerical expressions. Use `show Yv 2 1 z0 z1 sw xx ≤ _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 
-Rewrite using `[yv_eq]`. Evaluate the numerical expressions.
+A detailed English derivation is pending.
 -/
 theorem eset_nonempty : ∃ R₀ : ℝ, (Eset 2 1 z0 z1 sw R₀ (3 / 4)).Nonempty := by
   refine ⟨max (Sg 2 1 z1 xx) (Sg 2 1 z0 (sw * xx)), Matrix.of.symm xx, xx_mem, le_max_left _ _, le_max_right _ _, ?_, ?_⟩
@@ -271,9 +271,9 @@ theorem eset_nonempty : ∃ R₀ : ℝ, (Eset 2 1 z0 z1 sw R₀ (3 / 4)).Nonempt
     rw [yv_eq]; norm_num
 
 /- English proof (translation)
-Use `⟨le_rfl, fun l hl _ => ?_⟩` and prove the remaining obligations. Use `fin_cases l`. Simplify using `[Dmin]`. Use `dmin_one` as an intermediate fact. Simplify using `at this ⊢`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Simplify using the standard rewrite rules. Simplify using `at hl`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem deOK : DeOK 2 1 z0 z1 sw 1 := by
   refine ⟨le_rfl, fun l hl _ => ?_⟩
@@ -285,11 +285,11 @@ theorem deOK : DeOK 2 1 z0 z1 sw 1 := by
   · simp at hl
 
 /- English proof (translation)
-Establish `hu : upper (r` using `2) (fun _ => a) = !![1, a; 0, 1] := by`. Apply the tactic sequence `ext i j; fin_cases i <;> fin_cases j <;> simp [upper]`. Establish `hi : (!![1, a; 0, 1] : Matrix (Fin 2) (Fin 2) ℂ)⁻¹ = !![1, -a; 0, 1]`. Apply `Matrix.inv_eq_right_inv` to reduce the goal to its premises. Apply the tactic sequence `ext i j; fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_succ]`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `he : uEmb 0 2 !![1, a; 0, 1] = (!![1,a,0,0,0; 0,1,0,0,0; 0,0,1,0,0; 0,0,0,1,-star a; 0,0,0,0,1] : Matrix (Fin 5) (Fin 5) ℂ)`. Apply the tactic sequence `ext i j; fin_cases i <;> fin_cases j <;> simp [uEmb, hi]`. Establish `hH : Hpk 0 2 = (!![0,0,0,0,1; 0,0,0,1,0; 0,0,-1,0,0; 0,1,0,0,0; 1,0,0,0,0] : Matrix (Fin 5) (Fin 5) ℂ)`. Apply the tactic sequence `ext i j; fin_cases i <;> fin_cases j <;> simp [Hpk]`. Rewrite using `[hu, he]`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Use `show _ᴴ * Hpk 0 2 * _ = Hpk 0 2`. Rewrite using `[hH]`. Apply the tactic sequence `ext i j; fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_succ]`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem uEmb_mem (a : ℂ) : uEmb 0 2 (upper fun _ => a) ∈ GG 0 2 := by
   have hu : upper (r := 2) (fun _ => a) = !![1, a; 0, 1] := by
@@ -307,11 +307,11 @@ theorem uEmb_mem (a : ℂ) : uEmb 0 2 (upper fun _ => a) ∈ GG 0 2 := by
   ext i j; fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_succ]
 
 /- English proof (translation)
-Establish `h1 : ∀ v w : Fin (0 + 1) → ℂ, herm (Hb 0) v w = - (star (w 0) * v 0)`. Introduce `v w`. Simplify using `[herm, Hb, dotProduct, Matrix.mulVec_diagonal]`. Establish `he : pOf 0 2 (![fun _ => b₀, fun _ => b₁], fun _ => s, ![t₀, t₁]) = (!![1,0,star b₀, s + star b₀ * b₁ / 2, t₀ * Complex.I + star b₀ * b₀ / 2; 0,1,star b₁, t₁ * Complex.I + star b₁ * b₁ / 2, -star s + star b₁ * b₀ / 2; 0,0,1,b₁,b₀; 0,0,0,1,0; 0,0,0,0,1] : Matrix (Fin 5) (Fin 5) ℂ)`. Apply the tactic sequence `ext i j; fin_cases i <;> fin_cases j <;> simp [pOf, pEl, skewM, h1, bvec] <;> ring`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `hH : Hpk 0 2 = (!![0,0,0,0,1; 0,0,0,1,0; 0,0,-1,0,0; 0,1,0,0,0; 1,0,0,0,0] : Matrix (Fin 5) (Fin 5) ℂ)`. Apply the tactic sequence `ext i j; fin_cases i <;> fin_cases j <;> simp [Hpk]`. Rewrite using `[he]`. Use `show _ᴴ * Hpk 0 2 * _ = Hpk 0 2`. Rewrite using `[hH]`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `ext i j; fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_succ, map_ofNat] <;> ring`.
+A detailed English derivation is pending.
 -/
 theorem pOf_mem (b₀ b₁ s : ℂ) (t₀ t₁ : ℝ) : pOf 0 2 (![fun _ => b₀, fun _ => b₁], fun _ => s, ![t₀, t₁]) ∈ GG 0 2 := by
   have h1 : ∀ v w : Fin (0 + 1) → ℂ, herm (Hb 0) v w = - (star (w 0) * v 0) := by
@@ -335,7 +335,7 @@ example {m : ℕ} (S : Set (Matrix (Fin m) (Fin m) ℂ)) :
     (volume : Measure (lieE S)) = (stdOrthonormalBasis ℝ (lieE S)).toBasis.addHaar := rfl
 
 /- English proof (translation)
-Use `continuous_pi fun a => continuous_pi fun b => ?_` and prove the remaining obligations. Unfold `upper`. Apply the tactic sequence `split_ifs <;> fun_prop`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem cont_upper (r : ℕ) : Continuous (upper : (UT r → ℂ) → Matrix (Fin r) (Fin r) ℂ) := by
   refine continuous_pi fun a => continuous_pi fun b => ?_
@@ -345,9 +345,9 @@ theorem cont_upper (r : ℕ) : Continuous (upper : (UT r → ℂ) → Matrix (Fi
 open MeasureTheory Matrix in
 open scoped InnerProductSpace ENNReal in
 /- English proof (translation)
-Rewrite using `[Matrix.det_of_upperTriangular]`. Conclude with `Finset.prod_eq_one fun i _ => by simp [_root_.GlobalTheory.Amp.upper]`. Introduce `i j hij`. Simplify using `only [id] at hij`. Establish `h1 : ¬ i < j` using `not_lt.mpr hij.le`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[_root_.GlobalTheory.Amp.upper, h1, hij.ne']`.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.Amp.Model.det_upper {r : ℕ} (x : _root_.GlobalTheory.Amp.UT r → ℂ) :
     (_root_.GlobalTheory.Amp.upper x).det = 1 := by
@@ -359,9 +359,9 @@ theorem _root_.GlobalTheory.Amp.Model.det_upper {r : ℕ} (x : _root_.GlobalTheo
     simp [_root_.GlobalTheory.Amp.upper, h1, hij.ne']
 
 /- English proof (translation)
-Establish `: (fun x : UT r → ℂ => (upper x)⁻¹) = fun x => (upper x).adjugate`. Use function extensionality and compare the values at `x`. Rewrite using `[Matrix.inv_def, det_upper]`. Simplify using the standard rewrite rules. Rewrite using `[this]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(cont_upper r).matrix_adjugate`.
+A detailed English derivation is pending.
 -/
 theorem cont_upper_inv (r : ℕ) : Continuous fun x : UT r → ℂ => (upper x)⁻¹ := by
   have : (fun x : UT r → ℂ => (upper x)⁻¹) = fun x => (upper x).adjugate := by
@@ -371,15 +371,11 @@ theorem cont_upper_inv (r : ℕ) : Continuous fun x : UT r → ℂ => (upper x)�
 open MeasureTheory Matrix in
 open scoped InnerProductSpace ENNReal in
 /- English proof (translation)
-Establish `hup : Continuous fun x : _root_.GlobalTheory.Amp.UT r → ℂ => _root_.GlobalTheory.Amp.upper x`. Use `continuous_pi fun a => continuous_pi fun b => ?_` and prove the remaining obligations. Unfold `_root_.GlobalTheory.Amp.upper`. Use `split_ifs`. Conclude with `continuous_apply _`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `continuous_const`. Conclude with `continuous_const`. Establish `hinv : ∀ x : _root_.GlobalTheory.Amp.UT r → ℂ, (_root_.GlobalTheory.Amp.upper x)⁻¹ = (_root_.GlobalTheory.Amp.upper x).adjugate`. Introduce `x`. Rewrite using `[Matrix.inv_def, _root_.GlobalTheory.Amp.Model.det_upper]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using the standard rewrite rules. Establish `hc : Continuous fun x : _root_.GlobalTheory.Amp.UT r → ℂ => (_root_.GlobalTheory.Amp.upper x)⁻¹`. Repeatedly rewrite using `[hinv]`. Conclude with `hup.matrix_adjugate`. Use `continuous_pi fun i => continuous_pi fun j => ?_` and prove the remaining obligations.
-
-Unfold `_root_.GlobalTheory.Amp.uEmb`. Use `split_ifs`. Conclude with `(continuous_apply_apply _ _).comp hup`. Conclude with `((continuous_apply_apply _ _).comp hc).star`. Conclude with `continuous_const`.
-
-Conclude with `continuous_const`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.Amp.Model.cont_uEmb (k r : ℕ) :
     Continuous fun x : _root_.GlobalTheory.Amp.UT r → ℂ =>
@@ -409,13 +405,9 @@ theorem _root_.GlobalTheory.Amp.Model.cont_uEmb (k r : ℕ) :
 open MeasureTheory Matrix in
 open scoped InnerProductSpace ENNReal in
 /- English proof (translation)
-Establish `herm : ∀ {f g : _root_.GlobalTheory.Amp.PPar k r → Fin (k + 1) → ℂ}, Continuous f → Continuous g → Continuous fun q => _root_.Formalism.QuantumDeterminants.herm (_root_.Formalism.QuantumDeterminants.Hb k) (f q) (g q)` using `fun hf hg => (_root_.Formalism.FourierDecayAlt.P.B2x5.continuous_herm (_root_.Formalism.QuantumDeterminants.Hb k)).comp (hf.prodMk hg)`. Establish `hB : ∀ a, Continuous fun q : _root_.GlobalTheory.Amp.PPar k r => q.1 a` using `fun a => (continuous_apply a).comp continuous_fst`. Establish `hS : ∀ a b, Continuous fun q : _root_.GlobalTheory.Amp.PPar k r => _root_.GlobalTheory.Amp.skewM q.2.1 q.2.2 a b`. Introduce `a b`. Unfold `_root_.GlobalTheory.Amp.skewM`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Use `split_ifs`. Conclude with `(continuous_apply _).comp (continuous_fst.comp continuous_snd)`. Conclude with `((continuous_apply _).comp (continuous_fst.comp continuous_snd)).star.neg`. Conclude with `(Complex.continuous_ofReal.comp ((continuous_apply _).comp (continuous_snd.comp continuous_snd))).mul continuous_const`. Use `continuous_pi fun i => continuous_pi fun j => ?_` and prove the remaining obligations.
-
-Unfold `_root_.GlobalTheory.Amp.pOf _root_.GlobalTheory.Amp.pEl`. Use `split_ifs`. Conclude with `continuous_const`. Conclude with `(herm continuous_const (hB _)).neg`. Conclude with `(continuous_apply _).comp (hB _)`.
-
-Conclude with `(hS _ _).sub ((herm (hB _) (hB _)).div_const _)`. Conclude with `continuous_const`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.Amp.Model.cont_pOf (k r : ℕ) :
     Continuous (_root_.GlobalTheory.Amp.pOf k r) := by
@@ -445,7 +437,7 @@ theorem _root_.GlobalTheory.Amp.Model.cont_pOf (k r : ℕ) :
 open MeasureTheory Matrix in
 open scoped InnerProductSpace ENNReal in
 /- English proof (translation)
-Conclude with `((_root_.GlobalTheory.Amp.Model.cont_uEmb k r).comp continuous_fst).matrix_mul ((_root_.GlobalTheory.Amp.Model.cont_pOf k r).comp continuous_snd)`.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.Amp.Model.cont_lebN_map (k r : ℕ) :
     Continuous fun q : (_root_.GlobalTheory.Amp.UT r → ℂ) × _root_.GlobalTheory.Amp.PPar k r =>
@@ -455,11 +447,7 @@ theorem _root_.GlobalTheory.Amp.Model.cont_lebN_map (k r : ℕ) :
     ((_root_.GlobalTheory.Amp.Model.cont_pOf k r).comp continuous_snd)
 
 /- English proof (translation)
-Introduce `h`. Use `congrArg (fun μ : Measure (Mt k r) => μ Set.univ) h` as an intermediate fact. Simplify using `only [lebN] at this`. Rewrite `this` using `[Measure.map_apply (cont_lebN_map k r).measurable MeasurableSet.univ]`. Use `haveI h1 : (volume : Measure ((UT r → ℂ) × (Fin r → ℝ))).IsOpenPosMeasure := Measure.prod.instIsOpenPosMeasure`.
-
-Use `haveI h0 : (volume : Measure (Fin (k + 1) → ℂ)).IsOpenPosMeasure := Measure.pi.isOpenPosMeasure _`. Use `haveI h0' : (volume : Measure (Fin r → Fin (k + 1) → ℂ)).IsOpenPosMeasure := Measure.pi.isOpenPosMeasure _`. Use `haveI s1 : SFinite (volume : Measure ((UT r → ℂ) × (Fin r → ℝ))) := Measure.prod.instSFinite`. Use `haveI s2 : SFinite (volume : Measure (PPar k r)) := Measure.prod.instSFinite`. Use `haveI h2 : (volume : Measure (PPar k r)).IsOpenPosMeasure := Measure.prod.instIsOpenPosMeasure`.
-
-Use `haveI h3 : (volume : Measure ((UT r → ℂ) × PPar k r)).IsOpenPosMeasure := Measure.prod.instIsOpenPosMeasure`. Conclude with `(isOpen_univ.measure_pos (volume : Measure ((UT r → ℂ) × PPar k r)) Set.univ_nonempty).ne' (by simpa using this)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lebN_ne_zero (k r : ℕ) : lebN k r ≠ 0 := by
   intro h
@@ -476,14 +464,14 @@ theorem lebN_ne_zero (k r : ℕ) : lebN k r ≠ 0 := by
   exact (isOpen_univ.measure_pos (volume : Measure ((UT r → ℂ) × PPar k r)) Set.univ_nonempty).ne' (by simpa using this)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨Metric.measure_ball_pos _ _ h, measure_ball_lt_top⟩`.
+Supply the required witnesses or components.
 -/
 theorem ball_pos_fin {m : ℕ} (S : Set (Matrix (Fin m) (Fin m) ℂ)) {ρ : ℝ} (h : 0 < ρ) :
     0 < volume (Metric.ball (0 : lieE S) ρ) ∧ volume (Metric.ball (0 : lieE S) ρ) < ⊤ :=
   ⟨Metric.measure_ball_pos _ _ h, measure_ball_lt_top⟩
 
 /- English proof (translation)
-The claim follows from `tendsto_nhds_unique h h'`.
+A detailed English derivation is pending.
 -/
 theorem hasDens_unique {m : ℕ} {S : Set (Matrix (Fin m) (Fin m) ℂ)} {μ} {c c' : ℝ≥0∞}
     (h : HasDens S μ c) (h' : HasDens S μ c') : c = c' := tendsto_nhds_unique h h'

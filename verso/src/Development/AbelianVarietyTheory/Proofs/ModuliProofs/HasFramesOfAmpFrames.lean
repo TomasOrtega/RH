@@ -11,7 +11,7 @@ noncomputable section
 namespace GlobalTheory.ModelSum
 
 /- English proof (translation)
-Introduce and unpack `x ⟨⟨a, ha, rfl⟩, ⟨b, hb, hba⟩⟩`. Take `rfl : b = a` from `f.isOpenEmbedding.injective hba`. Conclude with `⟨b, ⟨ha, hb⟩, rfl⟩`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem image_inf_le {Z' Z : Scheme.{0}} (f : Z' ⟶ Z) [IsOpenImmersion f] (U V : Z'.Opens) :
     f ''ᵁ U ⊓ f ''ᵁ V ≤ f ''ᵁ (U ⊓ V) := by
@@ -55,7 +55,7 @@ def HasFrames {Z : Scheme.{0}} (G : Over Z) (L : LB G.left) (N : ℕ) (A : LB Z)
 variable {Z : Scheme.{0}} {G : Over Z} {L : LB G.left} {N : ℕ}
 
 /- English proof (translation)
-Use `⟨F.th, F.b, ?_, ?_⟩` and prove the remaining obligations. Introduce `i j`. Conclude with `F.trans i j`. Introduce `i W _ _ _ hW χ hχ`. Conclude with `F.trait i W hW χ hχ`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem hasFrames_of_ampFrames (F : AmpFrames G L N) : HasFrames G L N F.A F.n F.r F.s := by
   refine ⟨F.th, F.b, ?_, ?_⟩
@@ -65,7 +65,7 @@ theorem hasFrames_of_ampFrames (F : AmpFrames G L N) : HasFrames G L N F.A F.n F
     exact F.trait i W hW χ hχ
 
 /- English proof (translation)
-Take `⟨th, b, htr, htrait⟩` from `h`. Conclude with `⟨⟨A, hA, ha, n, th, b, r, s, htr, htrait⟩, rfl, rfl, rfl, rfl⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_ampFrames {A : LB Z} {n : ℕ} {r s : ℤ} (hA : A.IsLB) (ha : AmpleFam A) (h : HasFrames G L N A n r s) :
     ∃ F : AmpFrames G L N, F.A = A ∧ F.n = n ∧ F.r = r ∧ F.s = s := by

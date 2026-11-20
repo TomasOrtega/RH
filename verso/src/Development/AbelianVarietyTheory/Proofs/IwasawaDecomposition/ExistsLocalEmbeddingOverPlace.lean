@@ -13,15 +13,13 @@ namespace GlobalTheory.LocEmbExist
 variable {E : Type} [Field E] [NumberField E]
 
 /- English proof (translation)
-Break down `eq_or_ne x 0 with rfl | hx` into its components or cases. Conclude with `Or.inl isIntegral_zero`. Set `K` to `w.adicCompletion E`. Set `L : IntermediateField K (GlobalTheory.LocDict.Kbar w)` to `IntermediateField.adjoin K {x}`. Establish `: FiniteDimensional K L` using `IntermediateField.adjoin.finiteDimensional (Algebra.IsIntegral.isIntegral x)`.
+Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `y : L` to `⟨x, IntermediateField.mem_adjoin_simple_self K x⟩`. Establish `hy0 : y ≠ 0` using `fun h => hx (congrArg Subtype.val h)`. Set `f : L →ₐ[w.adicCompletionIntegers E] GlobalTheory.LocDict.Kbar w` to `L.val.restrictScalars _`. Establish `hf : Function.Injective f` using `L.val.injective`. Establish `key : ∀ z : L, IsIntegral (w.adicCompletionIntegers E) (z : GlobalTheory.LocDict.Kbar w) ↔ Valued.v (Algebra.norm K z) ≤ 1` using `fun z => by`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← GlobalTheory.CNorm.isIntegral_iff_valued_norm_le_one E w L z]`. Conclude with `isIntegral_algHom_iff f hf`. Establish `hyx : ((y⁻¹ : L) : GlobalTheory.LocDict.Kbar w) = x⁻¹` using `by simp [y]`. Establish `hmul : Valued.v (Algebra.norm K y) * Valued.v (Algebra.norm K y⁻¹) = 1`. Rewrite using `[← map_mul, ← map_mul, mul_inv_cancel₀ hy0, map_one, map_one]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `le_total (Valued.v (Algebra.norm K y)) 1 with h | h` into its components or cases. Conclude with `Or.inl ((key y).2 h)`. Use `right`. Rewrite using `[← hyx]`. Use `(key _).2 ?_` and prove the remaining obligations.
-
-Combine the equalities or inequalities in the displayed calculation.
+Prove the first alternative. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem isIntegral_or_isIntegral_inv (w : HeightOneSpectrum (𝓞 E)) (x : GlobalTheory.LocDict.Kbar w) :
     IsIntegral (w.adicCompletionIntegers E) x ∨ IsIntegral (w.adicCompletionIntegers E) x⁻¹ := by
@@ -56,19 +54,17 @@ def intValRing (w : HeightOneSpectrum (𝓞 E)) : ValuationSubring (GlobalTheory
   mem_or_inv_mem' x := isIntegral_or_isIntegral_inv w x
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_intValRing {w : HeightOneSpectrum (𝓞 E)} (x : GlobalTheory.LocDict.Kbar w) :
     x ∈ intValRing w ↔ IsIntegral (w.adicCompletionIntegers E) x := Iff.rfl
 
 /- English proof (translation)
-Set `K` to `w.adicCompletion E`. Establish `h1 : algebraMap E (GlobalTheory.LocDict.Kbar w) e = algebraMap K (GlobalTheory.LocDict.Kbar w) (algebraMap E K e)` using `IsScalarTower.algebraMap_apply E K _ e`. Set `f : K →ₐ[w.adicCompletionIntegers E] GlobalTheory.LocDict.Kbar w` to `(IsScalarTower.toAlgHom K K (GlobalTheory.LocDict.Kbar w)).restrictScalars _`. Rewrite using `[h1, show algebraMap K (GlobalTheory.LocDict.Kbar w) (algebraMap E K e) = f (algebraMap E K e) from rfl, isIntegral_algHom_iff f f.toRingHom.injective, IsIntegrallyClosed.isIntegral_iff (K := K)]`. Establish `hv : Valued.v (algebraMap E K e) = w.valuation E e` using `HeightOneSpectrum.valuedAdicCompletion_eq_valuation' w e`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy⟩`. Establish `h` using `y.2`. Rewrite `h` using `[HeightOneSpectrum.mem_adicCompletionIntegers]`. Express the relevant statement in the definitionally equal form `Valued.v (y : K) ≤ 1 at h`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite `h` using `[show (y : K) = algebraMap E K e from hy, hv]`. Conclude with `h`. Introduce `h`. Use `⟨⟨algebraMap E K e, ?_⟩, rfl⟩` and prove the remaining obligations. Rewrite using `[HeightOneSpectrum.mem_adicCompletionIntegers, hv]`.
-
-Conclude with `h`.
+Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isIntegral_algebraMap_iff (w : HeightOneSpectrum (𝓞 E)) (e : E) :
     IsIntegral (w.adicCompletionIntegers E) (algebraMap E (GlobalTheory.LocDict.Kbar w) e) ↔
@@ -95,9 +91,9 @@ theorem isIntegral_algebraMap_iff (w : HeightOneSpectrum (𝓞 E)) (e : E) :
     exact h
 
 /- English proof (translation)
-Break down `eq_or_ne e 0 with rfl | he` into its components or cases. Simplify using the standard rewrite rules. Establish `ha : algebraMap E Ω e ≠ 0` using `(map_ne_zero _).2 he`. Establish `h1 : B.valuation (algebraMap E Ω e) < 1 ↔ ¬ B.valuation (algebraMap E Ω e⁻¹) ≤ 1`. Rewrite using `[map_inv₀, map_inv₀, inv_le_one₀ (zero_lt_iff.2 ((Valuation.ne_zero_iff _).2 ha)), not_le]`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : w.valuation E e < 1 ↔ ¬ w.valuation E e⁻¹ ≤ 1`. Rewrite using `[map_inv₀, inv_le_one₀ (zero_lt_iff.2 ((Valuation.ne_zero_iff _).2 he)), not_le]`. Rewrite using `[h1, h2, ValuationSubring.valuation_le_one_iff, hB]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem valuation_lt_one_iff_of_mem_iff {Ω : Type} [Field Ω] [Algebra E Ω] (B : ValuationSubring Ω)
     (w : HeightOneSpectrum (𝓞 E)) (hB : ∀ e : E, algebraMap E Ω e ∈ B ↔ w.valuation E e ≤ 1) (e : E) :
@@ -116,11 +112,11 @@ end GlobalTheory.LocEmbExist
 namespace GlobalTheory.LocDict
 
 /- English proof (translation)
-Introduce `E Ω _ _ _ _ _ A w h`. Establish `: Algebra.IsAlgebraic E Ω` using `IsAlgClosure.isAlgebraic`. Set `ι₀ : Ω →ₐ[E] Kbar w` to `IsAlgClosed.lift`. Set `A₀ : ValuationSubring Ω` to `(GlobalTheory.LocEmbExist.intValRing w).comap ι₀.toRingHom`. Establish `hA₀ : ∀ z, z ∈ A₀ ↔ IsIntegral (w.adicCompletionIntegers E) (ι₀ z)` using `fun _ => Iff.rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hE : ∀ e : E, algebraMap E Ω e ∈ A₀ ↔ w.valuation E e ≤ 1` using `fun e => by`. Rewrite using `[hA₀, ι₀.commutes]`. Conclude with `GlobalTheory.LocEmbExist.isIntegral_algebraMap_iff w e`. Establish `hP : IsPlaceOver A₀ w` using `fun x => by`. Rewrite using `[GlobalTheory.LocEmbExist.valuation_lt_one_iff_of_mem_iff A₀ w hE]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `w.valuation_lt_one_iff_mem (K := E) x`. Take `⟨σ, hσ⟩` from `exists_smul_eq_of_isPlaceOver hP h`. Use `⟨ι₀.comp (σ.symm : Ω →ₐ[E] Ω), fun z => ?_⟩` and prove the remaining obligations. Rewrite using `[← hσ, ValuationSubring.mem_pointwise_smul_iff_inv_smul_mem, hA₀]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_isLocEmb : ∀ (E Ω : Type) [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω] (A : ValuationSubring Ω) (w : HeightOneSpectrum (𝓞 E)) (h : IsPlaceOver A w), ∃ ι : Ω →ₐ[E] Kbar w, IsLocEmb A w ι := by
   intro E Ω _ _ _ _ _ A w h

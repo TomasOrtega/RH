@@ -93,19 +93,19 @@ def SectionOrder.Statement : Prop :=
 section Inhabitants
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨inferInstance, inferInstance⟩`.
+Supply the required witnesses or components.
 -/
 theorem FGNullstellensatz.hypotheses_inhabited : IsReduced ℚ ∧ Algebra.FiniteType ℚ ℚ :=
   ⟨inferInstance, inferInstance⟩
 
 /- English proof (translation)
-The claim follows from `isProjPrime_point ℚ`.
+A detailed English derivation is pending.
 -/
 theorem ProjNullstellensatz.hypotheses_inhabited : IsProjPrime (⊥ : Ideal (MvPolynomial (Fin 1) ℚ)) :=
   isProjPrime_point ℚ
 
 /- English proof (translation)
-Unfold `genPt`. Rewrite using `[Ne, IsFractionRing.to_map_eq_zero_iff, Ideal.Quotient.eq_zero_iff_mem, Ideal.mem_bot]`. Conclude with `X_ne_zero 0`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem genPt_bot_zero_ne_zero : genPt (⊥ : Ideal (MvPolynomial (Fin 1) ℚ)) 0 ≠ 0 := by
   unfold genPt
@@ -113,7 +113,7 @@ theorem genPt_bot_zero_ne_zero : genPt (⊥ : Ideal (MvPolynomial (Fin 1) ℚ)) 
   exact X_ne_zero 0
 
 /- English proof (translation)
-Use `⟨Ideal.isPrime_bot, ?_⟩` and prove the remaining obligations. Rewrite using `[Fin.sum_univ_one]`. Conclude with `inv_mul_cancel₀ genPt_bot_zero_ne_zero`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IncidenceGeneric.hypotheses_inhabited :
     (⊥ : Ideal (MvPolynomial (Fin 1) ℚ)).IsPrime ∧
@@ -124,14 +124,14 @@ theorem IncidenceGeneric.hypotheses_inhabited :
   exact inv_mul_cancel₀ genPt_bot_zero_ne_zero
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨Ideal.isPrime_bot, (isProjPrime_point ℚ).isRelevant⟩`.
+Supply the required witnesses or components.
 -/
 theorem IncIdealPrime.hypotheses_inhabited :
     (⊥ : Ideal (MvPolynomial (Fin 1) ℚ)).IsPrime ∧ IsRelevant (⊥ : Ideal (MvPolynomial (Fin 1) ℚ)) :=
   ⟨Ideal.isPrime_bot, (isProjPrime_point ℚ).isRelevant⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨isProjPrime_point ℚ, isChowForm_point ℚ⟩`.
+Supply the required witnesses or components.
 -/
 theorem ChowFormMultiHomog.hypotheses_inhabited :
     IsProjPrime (⊥ : Ideal (MvPolynomial (Fin 1) ℚ)) ∧
@@ -139,7 +139,7 @@ theorem ChowFormMultiHomog.hypotheses_inhabited :
   ⟨isProjPrime_point ℚ, isChowForm_point ℚ⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨isProjPrime_point ℚ, isChowForm_point ℚ⟩`.
+Supply the required witnesses or components.
 -/
 theorem ConeDimOfChowForm.hypotheses_inhabited :
     IsProjPrime (⊥ : Ideal (MvPolynomial (Fin 1) ℚ)) ∧
@@ -147,7 +147,7 @@ theorem ConeDimOfChowForm.hypotheses_inhabited :
   ⟨isProjPrime_point ℚ, isChowForm_point ℚ⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(isProjPrime_point ℚ).isHomog, by have : (⊥ : Ideal (MvPolynomial (Fin 1) ℚ)).IsPrime := Ideal.isPrime_bot rw [Ideal.minimalPrimes_eq_subsingleton_self]; rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem MinimalPrimeHomog.hypotheses_inhabited :
     IsHomogIdeal (⊥ : Ideal (MvPolynomial (Fin 1) ℚ)) ∧
@@ -157,7 +157,7 @@ theorem MinimalPrimeHomog.hypotheses_inhabited :
     rw [Ideal.minimalPrimes_eq_subsingleton_self]; rfl⟩
 
 /- English proof (translation)
-Rewrite using `[ringKrullDim_eq_of_ringEquiv (RingEquiv.quotientBot (MvPolynomial (Fin n) F)), MvPolynomial.ringKrullDim_of_isNoetherianRing, ringKrullDim_eq_zero_of_field, zero_add, Nat.card_eq_fintype_card, Fintype.card_fin]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem ringKrullDim_quot_bot (F : Type*) [Field F] (n : ℕ) :
     ringKrullDim (MvPolynomial (Fin n) F ⧸ (⊥ : Ideal (MvPolynomial (Fin n) F))) =
@@ -167,9 +167,9 @@ theorem ringKrullDim_quot_bot (F : Type*) [Field F] (n : ℕ) :
     Nat.card_eq_fintype_card, Fintype.card_fin]
 
 /- English proof (translation)
-Establish `hl : linForm (fun j : Fin 2 => if j = 0 then (1 : F) else 0) = X 0`. Simplify using `[linForm]`. Rewrite using `[hl, bot_sup_eq]`. Establish `: (Ideal.span {(X 0 : MvPolynomial (Fin 2) F)}).IsPrime` using `(Ideal.span_singleton_prime (X_ne_zero 0)).mpr X_prime`. Use `⟨by rw [Ideal.minimalPrimes_eq_subsingleton_self]; rfl, 1, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Ideal.mem_span_singleton]`. Introduce `h`. Use `(X_dvd_X (R := F)).mp h` as an intermediate fact. Conclude with `absurd this (by decide)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem span_X_zero_mem_relComps (F : Type*) [Field F] :
     Ideal.span {X 0} ∈ relComps ((⊥ : Ideal (MvPolynomial (Fin 2) F)) ⊔
@@ -186,9 +186,9 @@ theorem span_X_zero_mem_relComps (F : Type*) [Field F] :
   exact absurd this (by decide)
 
 /- English proof (translation)
-Use `⟨⟨Ideal.isPrime_bot, fun f hf d => ?_, ⟨0, ?_⟩⟩, ringKrullDim_quot_bot ℚ 2, ?_, span_X_zero_mem_relComps ℚ⟩` and prove the remaining obligations. Rewrite `hf`, the goal using `[Ideal.mem_bot]`. Simplify using `[hf]`. Rewrite using `[Ideal.mem_bot]`. Conclude with `X_ne_zero 0`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Ideal.mem_bot]`. Simplify using `[linForm, X_ne_zero]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem ConeDimComponent.hypotheses_inhabited :
     IsProjPrime (⊥ : Ideal (MvPolynomial (Fin 2) ℚ)) ∧
@@ -204,7 +204,7 @@ theorem ConeDimComponent.hypotheses_inhabited :
   · rw [Ideal.mem_bot]; simp [linForm, X_ne_zero]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨isProjPrime_point ℚ, ringKrullDim_quot_bot ℚ 1⟩`.
+Supply the required witnesses or components.
 -/
 theorem ChowFormExists.hypotheses_inhabited :
     IsProjPrime (⊥ : Ideal (MvPolynomial (Fin 1) ℚ)) ∧
@@ -213,7 +213,7 @@ theorem ChowFormExists.hypotheses_inhabited :
   ⟨isProjPrime_point ℚ, ringKrullDim_quot_bot ℚ 1⟩
 
 /- English proof (translation)
-Establish `: Fact (Nat.Prime 2)` using `⟨Nat.prime_two⟩`. Rewrite using `[LinearMap.det_smul, LinearMap.det_id, mul_one, Module.finrank_self, pow_one]`. Conclude with `two_ne_zero`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem LengthQuotientDet.hypotheses_inhabited :
     LinearMap.det ((2 : ℤ_[2]) • LinearMap.id : ℤ_[2] →ₗ[ℤ_[2]] ℤ_[2]) ≠ 0 := by
@@ -222,7 +222,7 @@ theorem LengthQuotientDet.hypotheses_inhabited :
   exact two_ne_zero
 
 /- English proof (translation)
-Rewrite using `[Ideal.map_bot]`. Conclude with `⟨Ideal.isPrime_bot, Ideal.isPrime_bot⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem OrdPolynomialLocalization.hypotheses_inhabited :
     (⊥ : Ideal ℤ).IsPrime ∧ (Ideal.map (C : ℤ →+* MvPolynomial Unit ℤ) ⊥).IsPrime := by
@@ -230,7 +230,7 @@ theorem OrdPolynomialLocalization.hypotheses_inhabited :
   exact ⟨Ideal.isPrime_bot, Ideal.isPrime_bot⟩
 
 /- English proof (translation)
-The claim follows from `ChowFormSection.hypotheses_inhabited`.
+A detailed English derivation is pending.
 -/
 theorem SectionOrder.hypotheses_inhabited :
     IsProjPrime (⊥ : Ideal (MvPolynomial (Fin 1) ℚ)) ∧

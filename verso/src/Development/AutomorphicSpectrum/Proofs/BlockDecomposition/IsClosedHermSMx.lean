@@ -12,7 +12,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.CompanionTheory.RswTop
 
 /- English proof (translation)
-Introduce `D p e`. Take `⟨h1, h2, h3, h4, -⟩` from `GlobalTheory.CompanionTheory.MuC.hermS_facts D p e`. Conclude with `⟨inferInstance, inferInstance, inferInstance, h2, h1, h3, h4⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem topC : PositivityTheory.Rg.Rsw.Cell.TopC := by
   intro D p e

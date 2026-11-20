@@ -33,7 +33,7 @@ def domOf {n : ℕ} (w : ℕ → ℤ) (h : ∀ a : ℕ, a + 1 < n → w (a + 1) 
     exact key j hij hj
 
 /- English proof (translation)
-Use `i.2` as an intermediate fact. Rewrite using `[Fin.val_rev, Nat.cast_sub (by omega : (i : ℕ) + 1 ≤ n)]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem rev_cast {n : ℕ} (i : Fin n) : ((Fin.rev i : ℕ) : ℝ) = (n : ℝ) - 1 - (i : ℕ) := by
   have := i.2
@@ -41,7 +41,7 @@ theorem rev_cast {n : ℕ} (i : Fin n) : ((Fin.rev i : ℕ) : ℝ) = (n : ℝ) -
   push_cast; ring
 
 /- English proof (translation)
-Rewrite using `[hl i, GlobalTheory.ConjTypeW.lowK_allPos, rev_cast]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem lam_eq {n : ℕ} (lamH : Fin n → ℝ) (lam : ℕ → ℤ)
     (hl : ∀ i : Fin n, (lam i : ℝ) = -(Formalism.QuantumDeterminants.lowK (Formalism.MainNotions.S.allPos n) lamH) (Fin.rev i)) (i : Fin n) :
@@ -49,9 +49,9 @@ theorem lam_eq {n : ℕ} (lamH : Fin n → ℝ) (lam : ℕ → ℤ)
   rw [hl i, GlobalTheory.ConjTypeW.lowK_allPos, rev_cast]; ring
 
 /- English proof (translation)
-Establish `h1` using `lam_eq lamH lam hl ⟨a, by omega⟩`. Establish `h2` using `lam_eq lamH lam hl ⟨a + 1, ha⟩`. Establish `h3 : lamH (Fin.rev ⟨a, by omega⟩) < lamH (Fin.rev ⟨a + 1, ha⟩)` using `hH (by rw [Fin.rev_lt_rev]; simp [Fin.lt_def])`. Simplify using `only [Fin.val_mk] at h1 h2`. Establish `h4 : ((lam (a + 1) : ℤ) : ℝ) < (lam a : ℝ) + 1` using `by rw [h1, h2]; push_cast; linarith`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h5 : lam (a + 1) < lam a + 1` using `by exact_mod_cast h4`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem step {n : ℕ} (lamH : Fin n → ℝ) (hH : StrictAnti lamH) (lam : ℕ → ℤ)
     (hl : ∀ i : Fin n, (lam i : ℝ) = -(Formalism.QuantumDeterminants.lowK (Formalism.MainNotions.S.allPos n) lamH) (Fin.rev i))
@@ -66,7 +66,7 @@ theorem step {n : ℕ} (lamH : Fin n → ℝ) (hH : StrictAnti lamH) (lam : ℕ 
   omega
 
 /- English proof (translation)
-Use `show -lamH (Fin.rev i) = ((lam (Fin.cast rfl i : ℕ) : ℤ) : ℝ) + _`. Rewrite using `[Fin.val_cast, lam_eq lamH lam hl i, Formalism.BasicNotions.rhoVec]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem rho_cond {n : ℕ} (lamH : Fin n → ℝ) (hH : StrictAnti lamH) (lam : ℕ → ℤ)
     (hl : ∀ i : Fin n, (lam i : ℝ) = -(Formalism.QuantumDeterminants.lowK (Formalism.MainNotions.S.allPos n) lamH) (Fin.rev i)) (i : Fin n) :
@@ -83,7 +83,7 @@ theorem forms_ten_eq {ι : Type} [Fintype ι] {n : ℕ} (f : ι → MvPolynomial
     Formalism.L2.Forms.ten f = Formalism.L2.DIV.ten f := rfl
 
 /- English proof (translation)
-Establish `hb` using `(Formalism.GradedWeylDivisibility.blockActTensor ℂ ℂ ι n n (fun τ => ((h τ : GL (Fin n) ℂ) : Matrix (Fin n) (Fin n) ℂ)ᵀ)).1`. Simplify using `only [Formalism.L2.DIV.actP, Formalism.L2.DIV.ten, Formalism.L2.DIV.detTwK, Formalism.L2.DIV.trAct, Formalism.BasicNotions.sqAct, LinearMap.smul_apply, AlgHom.toLinearMap_apply, map_prod, hb, map_smul]`. Rewrite using `[Finset.prod_smul]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem polyAction_ten' {ι : Type} [Fintype ι] {n : ℕ} (lam : ι → Formalism.BasicNotions.DomWeight n)
     (h : ι → GL (Fin n) ℂ) (f : ι → MvPolynomial (Fin n × Fin n) ℂ) :
@@ -94,11 +94,11 @@ theorem polyAction_ten' {ι : Type} [Fintype ι] {n : ℕ} (lam : ι → Formali
   rw [Finset.prod_smul]
 
 /- English proof (translation)
-Establish `hm : ((Formalism.BasicNotions.inside₂ ℂ n (GlobalTheory.Branching.unitaryIncl n u) : GL (Fin n) ℂ) : Matrix (Fin n) (Fin n) ℂ) = ((u : Matrix (Fin n) (Fin n) ℂ)ᴴ)ᵀ` using `by show (((GlobalTheory.Branching.unitaryIncl n u)⁻¹ : GL (Fin n) ℂ) : Matrix (Fin n) (Fin n) ℂ)ᵀ = _`. Rewrite using `[← map_inv, GlobalTheory.Branching.unitaryIncl_coe]`. Both sides reduce to the same expression. Establish `hu : (u : Matrix (Fin n) (Fin n) ℂ) * (u : Matrix (Fin n) (Fin n) ℂ)ᴴ = 1`. Use `(Matrix.mem_unitaryGroup_iff).1 u.2` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[Matrix.star_eq_conjTranspose]`. Then use the resulting hypothesis. Establish `hd : (u : Matrix (Fin n) (Fin n) ℂ)ᴴ.det = ((u : Matrix (Fin n) (Fin n) ℂ).det)⁻¹`. Establish `h1 : (u : Matrix (Fin n) (Fin n) ℂ).det * (u : Matrix (Fin n) (Fin n) ℂ)ᴴ.det = 1`. Rewrite using `[← Matrix.det_mul, hu, Matrix.det_one]`. Conclude with `(eq_inv_of_mul_eq_one_right h1)`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Unfold `Formalism.BasicNotions.sqAct Formalism.BasicNotions.detPow`. Rewrite using `[hm, Matrix.transpose_transpose, Units.val_zpow_eq_zpow_val, Matrix.GeneralLinearGroup.val_det_apply, hm, Matrix.det_transpose, hd, inv_zpow', zpow_neg]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sqAct_invTr {n : ℕ} (lam : Formalism.BasicNotions.DomWeight n) (u : Matrix.unitaryGroup (Fin n) ℂ)
     (f : MvPolynomial (Fin n × Fin n) ℂ) :
@@ -121,27 +121,25 @@ theorem sqAct_invTr {n : ℕ} (lam : Formalism.BasicNotions.DomWeight n) (u : Ma
     Matrix.det_transpose, hd, inv_zpow', zpow_neg]
 
 /- English proof (translation)
-Introduce `ι _ _ n H _ _ _ σ lamH lam hH hU hK hl`. Set `lam' : ι → Formalism.BasicNotions.DomWeight n` to `fun τ => domOf (lam τ) (step (lamH τ) (hH τ) (lam τ) (hl τ))`. Establish `hlw : ∀ τ (i : Fin n), (lam' τ).w i = lam τ i` using `fun _ _ => rfl`. Use `haveI : FiniteDimensional ℂ (Formalism.L2.DIV.VV ℂ lam') := Module.Finite.of_basis (Formalism.L2.DIV.bVV ℂ lam')`. Establish `hj` using `fun τ => GlobalTheory.DualWeylType.dual_weyl_type n n rfl (lam' τ) (H τ) (σ τ) (lamH τ) (hU τ) (hK τ) (rho_cond (lamH τ) (hH τ) (lam τ) (hl τ))`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `choose j d b hin hon hortho heq using hj`. Take `⟨Jt, hinj, hrange, hpure⟩` from `GlobalTheory.TenInj.main ι n lam' H j d b hin hon hortho`. Establish `hR : LinearMap.range Jt = Formalism.L2.DIV.VV ℂ lam'` using `hrange.trans (GlobalTheory.TrueBranch.cSpan_eq_VV lam')`. Set `E : (⨂[ℂ] τ, H τ) ≃ₗ[ℂ] Formalism.L2.DIV.VV ℂ lam'` to `(LinearEquiv.ofInjective Jt hinj).trans (LinearEquiv.ofEq _ _ hR)`. Establish `hE : ∀ x, (E x : Formalism.L2.DIV.Pol ℂ ι n) = Jt x` using `fun _ => rfl`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `U : GlobalTheory.IndefiniteRowSideFullHecke.MinorOrderedEntries.UG ι n → (ι → GL (Fin n) ℂ)` to `fun u τ => GlobalTheory.Branching.unitaryIncl n (u τ)`. Establish `hEq : ∀ (u : GlobalTheory.IndefiniteRowSideFullHecke.MinorOrderedEntries.UG ι n) x, E (PiTensorProduct.map (fun τ => ((σ τ (u τ) : H τ →L[ℂ] H τ) : H τ →ₗ[ℂ] H τ)) x) = Formalism.L2.DIV.rhoK lam' (Formalism.L2.DIV.invTrK (U u)) (E x)`. Introduce `u x`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[hE]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Use `show Jt _ = Formalism.L2.DIV.actP lam' _ (Jt x)`. Establish `hlin : Jt ∘ₗ PiTensorProduct.map (fun τ => ((σ τ (u τ) : H τ →L[ℂ] H τ) : H τ →ₗ[ℂ] H τ)) = Formalism.L2.DIV.actP lam' (Formalism.L2.DIV.invTrK (U u)) ∘ₗ Jt`. Apply `PiTensorProduct.ext` to reduce the goal to its premises. Apply `MultilinearMap.ext` to reduce the goal to its premises. Introduce `y`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Simplify using `only [LinearMap.compMultilinearMap_apply, LinearMap.comp_apply, PiTensorProduct.map_tprod, hpure]`. Rewrite using `[forms_ten_eq, forms_ten_eq, polyAction_ten']`. Use `congr 1`. Use function extensionality and compare the values at `τ`. Establish `hs : ((u τ : Matrix (Fin n) (Fin n) ℂ)).submatrix (Fin.cast rfl) (Fin.cast rfl) = (u τ : Matrix (Fin n) (Fin n) ℂ)` using `by ext; simp`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `h1` using `heq τ (u τ) (u τ).2 (y τ)`. Rewrite `h1` using `[hs]`. Rewrite using `[ContinuousLinearMap.coe_coe, h1]`. Conclude with `(sqAct_invTr (lam' τ) (u τ) _).symm`. Conclude with `LinearMap.congr_fun hlin x`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Take `⟨A, hA⟩` from `GlobalTheory.CoefPsi.exists_equiv n lam lam' hlw`. Use `⟨(A.symm.dualMap.trans (Module.evalEquiv ℂ (Formalism.L2.DIV.VV ℂ lam')).symm).trans E.symm, fun u φ => ?_⟩` and prove the remaining obligations. Establish `hU' : (fun τ => GlobalTheory.Branching.unitaryIncl n ((u⁻¹ : GlobalTheory.IndefiniteRowSideFullHecke.MinorOrderedEntries.UG ι n) τ)) = (U u)⁻¹`. Use function extensionality and compare the values at `τ`. Simplify using `[U, Pi.inv_apply, map_inv]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `key : ∀ ℓ : Module.Dual ℂ (Formalism.L2.DIV.VV ℂ lam'), weylRep n lam u⁻¹ (A.symm ℓ) = A.symm (ℓ ∘ₗ Formalism.L2.DIV.rhoK lam' (Formalism.L2.DIV.invTrK (U u)))`. Introduce `ℓ`. Apply `A.injective` to reduce the goal to its premises. Rewrite using `[hA, LinearEquiv.apply_symm_apply, LinearEquiv.apply_symm_apply, hU', map_inv (Formalism.L2.DIV.invTrK (K := ℂ) (ι := ι) (n := n)), inv_inv]`. Take `⟨v, hvv⟩ : ∃ v, (Module.evalEquiv ℂ (Formalism.L2.DIV.VV ℂ lam')).symm (A.symm.dualMap φ) = v` from `⟨_, rfl⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hv : ∀ ℓ : Module.Dual ℂ (Formalism.L2.DIV.VV ℂ lam'), ℓ v = φ (A.symm ℓ)`. Introduce `ℓ`. Establish `h2` using `congrArg (fun X => X ℓ) ((Module.evalEquiv ℂ (Formalism.L2.DIV.VV ℂ lam')).apply_symm_apply (A.symm.dualMap φ))`. Rewrite `h2` using `[hvv]`. Simplify `h2` using `[Module.evalEquiv_apply]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `E.injective` to reduce the goal to its premises. Simplify using `only [LinearEquiv.trans_apply, LinearEquiv.apply_symm_apply]`. Rewrite using `[hvv, hEq, LinearEquiv.apply_symm_apply]`. Apply `(Module.evalEquiv ℂ (Formalism.L2.DIV.VV ℂ lam')).injective` to reduce the goal to its premises. Rewrite using `[LinearEquiv.apply_symm_apply]`.
-
-Use extensionality with `ℓ`. Rewrite using `[Module.evalEquiv_apply, Module.Dual.eval_apply, LinearEquiv.dualMap_apply, Representation.dual_apply, Module.Dual.transpose_apply, LinearMap.comp_apply, key, ← hv]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem main : ∀ (ι : Type) [Fintype ι] [DecidableEq ι] (n : ℕ) (H : ι → Type) [∀ τ, NormedAddCommGroup (H τ)] [∀ τ, InnerProductSpace ℂ (H τ)] [∀ τ, FiniteDimensional ℂ (H τ)] (σ : ∀ τ, Matrix (Fin n) (Fin n) ℂ → (H τ →L[ℂ] H τ)) (lamH : ι → Fin n → ℝ) (lam : ι → ℕ → ℤ), (∀ τ, StrictAnti (lamH τ)) → (∀ τ, Formalism.MainNotions.S.IsURepOn (Formalism.MainNotions.S.UJset (Formalism.MainNotions.S.allPos n)) (σ τ)) → (∀ τ, Formalism.MainNotions.S.IsKTypeOf (Formalism.MainNotions.S.allPos n) (σ τ) (Formalism.QuantumDeterminants.lowK (Formalism.MainNotions.S.allPos n) (lamH τ)) ⊤) → (∀ τ (i : Fin n), (lam τ i : ℝ) = -(Formalism.QuantumDeterminants.lowK (Formalism.MainNotions.S.allPos n) (lamH τ)) (Fin.rev i)) → ∃ Φ : Module.Dual ℂ (weylSub n lam) ≃ₗ[ℂ] ⨂[ℂ] τ, H τ, ∀ (u : UG ι n) (φ : Module.Dual ℂ (weylSub n lam)), Φ ((weylRep n lam).dual u φ) = PiTensorProduct.map (fun τ => ((σ τ (u τ) : H τ →L[ℂ] H τ) : H τ →ₗ[ℂ] H τ)) (Φ φ) := by
   intro ι _ _ n H _ _ _ σ lamH lam hH hU hK hl

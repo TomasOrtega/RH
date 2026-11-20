@@ -15,29 +15,29 @@ open TensorProduct
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `R R' _ _ _ M _ _ _ _ M' _ _ f hf F hF F' hF' g hg`. Substitute `hF'` using the available equality. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨h, hh, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Rewrite using `[SetLike.mem_coe, Submodule.mem_dualAnnihilator]`. Introduce `w hw`. Use `Submodule.span_induction (p := fun w _ => g h w = 0) ?_ ?_ ?_ ?_ hw` and prove the remaining obligations. Introduce and unpack `_ ⟨c, hc, rfl⟩`. Rewrite using `[hg, (Submodule.mem_dualAnnihilator h).1 hh c hc, map_zero]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Introduce `x y _ _ hx hy`. Simplify using `[hx, hy]`. Introduce `a x _ hx`. Simplify using `[hx]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `φ hφ`. Rewrite `hφ` using `[Submodule.mem_dualAnnihilator]`. Take `⟨N, hN⟩` from `hF`. Take `⟨n, π, hπ⟩` from `Module.Finite.exists_fin' R M`. Take `⟨s, hs⟩` from `Module.projective_lifting_property π LinearMap.id hπ`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Set `q : M →ₗ[R] M` to `LinearMap.id - F.subtype ∘ₗ Submodule.linearProjOfIsCompl F N hN`. Establish `hqF : ∀ c ∈ F, q c = 0`. Introduce `c hc`. Establish `e : F.linearProjOfIsCompl N hN c = ⟨c, hc⟩` using `Submodule.linearProjOfIsCompl_apply_left hN ⟨c, hc⟩`. Simplify using `[q, e]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hqd : ∀ m, m - q m ∈ F` using `by intro m; simp [q]`. Set `k : Fin n → Module.Dual R M` to `fun i => LinearMap.proj i ∘ₗ s ∘ₗ q`. Establish `hk : ∀ i, k i ∈ F.dualAnnihilator`. Introduce `i`. Rewrite using `[Submodule.mem_dualAnnihilator]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `c hc`. Simplify using `[k, hqF c hc]`. Establish `hexp : ∀ m : M, m = ∑ i, s m i • π (Pi.single i 1)`. Introduce `m`. Establish `e1 : m = π (s m)` using `by rw [← LinearMap.comp_apply, hs, LinearMap.id_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `conv_lhs => rw [e1, pi_eq_sum_univ (s m)]`. Simplify using `only [map_sum, map_smul]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Use `congr 2`. Use extensionality with `j`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `[Pi.single_apply, eq_comm]`. Establish `key : φ = ∑ i, φ (f (π (Pi.single i 1))) • g (k i)`. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `w`. Take `⟨z, rfl⟩` from `hf.2 w`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Proceed by induction.
 
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Consider the case `tmul x c`. Rewrite using `[liftSemi_tmul, map_smul, map_smul]`.
+Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Establish `h1 : φ (f c) = φ (f (q c))`. Use `hφ _ (Submodule.subset_span ⟨_, hqd c, rfl⟩)` as an intermediate fact. Rewrite `this` using `[map_sub, map_sub, sub_eq_zero]`. Conclude with `this`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[h1, hexp (q c)]`. Simplify using `[map_sum, LinearMap.map_smulₛₗ, LinearMap.sum_apply, hg, k, Algebra.smul_def, mul_comm]`. Rewrite using `[key]`. Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨k i, hk i, rfl⟩)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem annihilator_baseChange : ∀ {R R' : Type} [CommRing R] [CommRing R'] [Algebra R R'] {M : Type*} [AddCommGroup M]
     [Module R M] [Module.Finite R M] [Module.Projective R M] {M' : Type*} [AddCommGroup M'] [Module R' M']

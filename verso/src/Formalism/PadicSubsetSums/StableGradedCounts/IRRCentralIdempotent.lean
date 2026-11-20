@@ -9,11 +9,9 @@ section
 variable {G V : Type} [Group G] [Fintype G] [AddCommGroup V] [Module ℂ V] [FiniteDimensional ℂ V]
 
 /- English proof (translation)
-Unfold `Representation.IsIrreducible`. Use `{ exists_pair_ne := ⟨⊥, ⊤, fun heq => ?_⟩, eq_bot_or_eq_top := fun W => ?_ }` and prove the remaining obligations. Establish `h1` using `congrArg Subrepresentation.toSubmodule heq`. Conclude with `bot_ne_top (show (⊥ : Submodule ℂ V) = ⊤ from h1)`. Take `⟨S, hS⟩` from `W`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `h S (fun g x hx => hS g hx) with h1 | h1` into its components or cases. Use `left`. Substitute `h1` using the available equality. Both sides reduce to the same expression. Use `right`.
-
-Substitute `h1` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression. Substitute using the available equality. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem isIrreducible_of [Nontrivial V] (ρ : Representation ℂ G V)
     (h : ∀ W : Submodule ℂ V, (∀ g, ∀ x ∈ W, ρ g x ∈ W) → W = ⊥ ∨ W = ⊤) :
@@ -32,17 +30,15 @@ theorem isIrreducible_of [Nontrivial V] (ρ : Representation ℂ G V)
       rfl
 
 /- English proof (translation)
-Use `set T : Module.End ℂ V := ∑ g, a g • ρ g with hT`. Establish `hcomm : ∀ k, ρ k * T = T * ρ k`. Introduce `k`. Rewrite using `[hT, Finset.mul_sum, Finset.sum_mul]`. Use `Fintype.sum_equiv (MulAut.conj k).toEquiv _ _ (fun g => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [MulEquiv.toEquiv_eq_coe, MulEquiv.coe_toEquiv, MulAut.conj_apply, ha, mul_smul_comm, smul_mul_assoc, ← map_mul, inv_mul_cancel_right]`. Take `⟨μ, hμ⟩` from `Module.End.exists_eigenvalue T`. Use `⟨μ, ?_⟩` and prove the remaining obligations. Establish `hW : ∀ g, ∀ x ∈ Module.End.eigenspace T μ, ρ g x ∈ Module.End.eigenspace T μ`. Introduce `g x hx`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite `hx`, the goal using `[Module.End.mem_eigenspace_iff]`. Rewrite using `[← Module.End.mul_apply, ← hcomm g, Module.End.mul_apply, hx, map_smul]`. Break down `h _ hW with h0 | h0` into its components or cases. Use `exfalso first`. Consider the case `exact Module.End.hasEigenvalue_iff.1 hμ h0`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Treat this case separately. Treat this case separately.
 
-Consider the case `exact hμ h0`. Consider the case `(obtain ⟨v, hv⟩ := hμ.exists_hasEigenvector`. Establish `hv1` using `hv.1`. Rewrite `hv1` using `[h0]`. Conclude with `hv.2 ((Submodule.mem_bot ℂ).1 hv1))`.
+Treat this case separately. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `LinearMap.ext fun x => ?_` and prove the remaining obligations. Establish `hx : x ∈ Module.End.eigenspace T μ`. Rewrite using `[h0]`. Conclude with `Submodule.mem_top`. Rewrite `hx` using `[Module.End.mem_eigenspace_iff]`.
-
-Rewrite using `[hx]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem schur_scalar [Nontrivial V] (ρ : Representation ℂ G V)
     (h : ∀ W : Submodule ℂ V, (∀ g, ∀ x ∈ W, ρ g x ∈ W) → W = ⊥ ∨ W = ⊤)
@@ -79,7 +75,7 @@ theorem schur_scalar [Nontrivial V] (ρ : Representation ℂ G V)
     simp
 
 /- English proof (translation)
-Take `⟨μ, hμ⟩` from `schur_scalar ρ h a ha`. Use `⟨μ, fun k => ?_⟩` and prove the remaining obligations. Establish `h2` using `congrArg (fun T : Module.End ℂ V => LinearMap.trace ℂ V (T * ρ k)) hμ`. Simplify using `only [Finset.sum_mul, smul_mul_assoc, ← map_mul, map_sum, map_smul, one_mul, smul_eq_mul] at h2`. Conclude with `h2`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem conv_char [Nontrivial V] (ρ : Representation ℂ G V)
     (h : ∀ W : Submodule ℂ V, (∀ g, ∀ x ∈ W, ρ g x ∈ W) → W = ⊥ ∨ W = ⊤)
@@ -92,9 +88,9 @@ theorem conv_char [Nontrivial V] (ρ : Representation ℂ G V)
   exact h2
 
 /- English proof (translation)
-Rewrite using `[Finset.sum_mul_sum]`. Establish `key : ∀ g, ∑ h, (A g • MonoidAlgebra.of ℂ G g) * (B h • MonoidAlgebra.of ℂ G h) = ∑ k, (A g * B (g⁻¹ * k)) • MonoidAlgebra.of ℂ G k`. Introduce `g`. Use `Fintype.sum_equiv (Equiv.mulLeft g) _ _ (fun h => ?_)` and prove the remaining obligations. Simplify using `only [Equiv.coe_mulLeft, inv_mul_cancel_left, smul_mul_smul_comm, ← map_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.sum_congr rfl (fun g _ => key g), Finset.sum_comm]`. Repeatedly rewrite using `[Finset.sum_smul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities.
 -/
 theorem sum_of_mul_sum_of (A B : G → ℂ) :
     (∑ g, A g • MonoidAlgebra.of ℂ G g) * (∑ g, B g • MonoidAlgebra.of ℂ G g) =
@@ -111,15 +107,15 @@ theorem sum_of_mul_sum_of (A B : G → ℂ) :
 end
 
 /- English proof (translation)
-Establish `ha : ∀ g k : G, ρ.character (k * g * k⁻¹)⁻¹ = ρ.character g⁻¹`. Introduce `g k`. Simplify `ρ.char_conj g⁻¹ k` using `[mul_assoc]`. Take `⟨μ, hconv⟩` from `conv_char σ h (fun g => ρ.character g⁻¹) ha`. Establish `hone : σ.character 1 = (Module.finrank ℂ W : ℂ)` using `by first`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Consider the case `exact σ.char_one`. Consider the case `(unfold Representation.character; simp)`. Use `⟨μ, ?_, ?_⟩` and prove the remaining obligations. Establish `h1` using `hconv 1`. Simplify using `only [mul_one, hone] at h1`.
+Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `h1.symm`. Unfold `centralIdem`. Rewrite using `[sum_of_mul_sum_of, Finset.smul_sum]`. Use `Finset.sum_congr rfl (fun k _ => ?_)` and prove the remaining obligations. Rewrite using `[smul_smul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Establish `hcm : ∀ g : G, σ.character (k⁻¹ * g) = σ.character (g * k⁻¹)` using `fun g => by`. Simplify `(σ.char_conj (k⁻¹ * g) g).symm` using `[mul_assoc]`. Establish `e1 : ∀ g : G, ((Module.finrank ℂ V : ℂ) / (Fintype.card G : ℂ) * ρ.character g⁻¹) * ((Module.finrank ℂ W : ℂ) / (Fintype.card G : ℂ) * σ.character (g⁻¹ * k)⁻¹) = ((Module.finrank ℂ V : ℂ) / (Fintype.card G : ℂ) * ((Module.finrank ℂ W : ℂ) / (Fintype.card G : ℂ))) * (ρ.character g …`. Introduce `g`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_inv_rev, inv_inv, hcm]`. Expand and normalize the polynomial expressions, which then agree. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Finset.mul_sum, hconv k⁻¹]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem centralIdem_mul {G V W : Type} [Group G] [Fintype G] [AddCommGroup V] [Module ℂ V]
     [FiniteDimensional ℂ V] [AddCommGroup W] [Module ℂ W] [FiniteDimensional ℂ W] [Nontrivial W]
@@ -162,9 +158,9 @@ theorem centralIdem_mul {G V W : Type} [Group G] [Fintype G] [AddCommGroup V] [M
         ring
 
 /- English proof (translation)
-Establish `hc : ∀ h : G, ρ.character (k⁻¹ * (h * k)) = ρ.character h` using `by first`. Consider the case `exact fun h => by simpa [mul_assoc] using ρ.char_conj h k⁻¹`. Consider the case `(intro h; unfold Representation.character; done)`. Unfold `centralIdem`. Rewrite using `[Finset.sum_mul, Finset.mul_sum]`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `Fintype.sum_equiv (MulAut.conj k⁻¹).toEquiv _ _ (fun g => ?_)` and prove the remaining obligations. Simplify using `only [MulEquiv.toEquiv_eq_coe, MulEquiv.coe_toEquiv, MulAut.conj_apply, inv_inv, smul_mul_assoc, mul_smul_comm, ← map_mul, mul_inv_rev, mul_assoc, hc, mul_inv_cancel_left]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem centralIdem_comm_of {G V : Type} [Group G] [Fintype G] [AddCommGroup V] [Module ℂ V]
     (ρ : Representation ℂ G V) (k : G) :
@@ -180,17 +176,17 @@ theorem centralIdem_comm_of {G V : Type} [Group G] [Fintype G] [AddCommGroup V] 
     mul_smul_comm, ← map_mul, mul_inv_rev, mul_assoc, hc, mul_inv_cancel_left]
 
 /- English proof (translation)
-Introduce `G V _ _ _ _ _ _ ρ h`. Prove the components needed by the constructor for the conclusion. Take `⟨μ, h1, h2⟩` from `centralIdem_mul ρ ρ h`. Establish `hirr : ρ.IsIrreducible` using `isIrreducible_of ρ h`. Establish `hc0 : (Fintype.card G : ℂ) ≠ 0` using `by exact_mod_cast Fintype.card_ne_zero`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: Invertible (Nat.card G : ℂ)` using `invertibleOfNonzero (by rw [Nat.card_eq_fintype_card]; exact hc0)`. Establish `horth` using `Representation.char_orthonormal ρ ρ`. Rewrite `horth` using `[if_pos ⟨Representation.Equiv.refl ρ⟩, Nat.card_eq_fintype_card]`. Establish `h3 : ∑ g, ρ.character g⁻¹ * ρ.character g = (Fintype.card G : ℂ)`. Establish `: ∑ g, ρ.character g⁻¹ * ρ.character g = ∑ g, ρ.character g * ρ.character g⁻¹` using `Finset.sum_congr rfl fun g _ => mul_comm _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[this]`. Clear denominators, using `at horth` for the nonvanishing conditions. Simplify using `using horth`. Rewrite using `[h2]`. Establish `h4 : (Module.finrank ℂ V : ℂ) / (Fintype.card G : ℂ) * μ = 1`.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h1` using `[h3]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[mul_comm]`. Conclude with `h1`. Rewrite using `[h4, one_smul]`.
+Rewrite the indicated hypotheses using the stated equalities. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x`. Proceed by induction on `x using MonoidAlgebra.induction_linear with`. Consider the case `zero => simp`. Consider the case `add a b ha hb => rw [mul_add, add_mul, ha, hb]`. Consider the case `single g c`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Establish `: MonoidAlgebra.single g c = c • MonoidAlgebra.of ℂ G g`. Simplify using `[MonoidAlgebra.of_apply]`. Rewrite using `[this, mul_smul_comm, smul_mul_assoc, centralIdem_comm_of]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem central_idempotent_holds : CentralIdempotent := by
   intro G V _ _ _ _ _ _ ρ h

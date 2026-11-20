@@ -32,7 +32,7 @@ variable {D : D7} (i : D.nd.Loc) (dc : TruncatedSeriesCountingIdentities.Decl D 
   [∀ w, IsScalarTower (D.nd.O i) (FractionRing (D.nd.O i)) (ReciprocityTheory.Gal.H1 (Dat w).ρT')]
 
 /- English proof (translation)
-Substitute `hA hB` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem len_congr {O H : Type} [CommRing O] [AddCommGroup H] [Module O H] {A A' B B' : Submodule O H}
     (hA : A = A') (hB : B = B') :
@@ -41,7 +41,7 @@ theorem len_congr {O H : Type} [CommRing O] [AddCommGroup H] [Module O H] {A A' 
   rfl
 
 /- English proof (translation)
-Establish `key : fZ i dc n (Dat n).ρT' = finZ (eK (D.nbr i _ hn)) (Br.PD D.loc D.nbr i _ hn) (Dat n).ρT' (Br.iota D.nbr i _ hn)`. Unfold `fZ`. Rewrite using `[dif_pos hn]`. Unfold `Fs FsG Hf₂ finiteClassesContinuousMap fPre finiteClassesContinuous finPre`. Rewrite using `[key]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem fs_eq {n : ℕ} (hn : K.plOf i dc n ∈ placesOver D.host.E (D.nd.l i)) :
     Fs i dc VT VT' Dat n = FsG (Γ := ↥(Γn i dc n)) (eK (D.nbr i _ hn)) (Br.PD D.loc D.nbr i _ hn) (Br.iota D.nbr i _ hn) (Dat n) := by
@@ -52,7 +52,7 @@ theorem fs_eq {n : ℕ} (hn : K.plOf i dc n ∈ placesOver D.host.E (D.nd.l i)) 
   rw [key]
 
 /- English proof (translation)
-Establish `key : fZ i dc n (locRep (resRep ρ₁ (Γn i dc n))) = finZ (eK (D.nbr i _ hn)) (Br.PD D.loc D.nbr i _ hn) (locRep (resRep ρ₁ (Γn i dc n))) (Br.iota D.nbr i _ hn)`. Unfold `fZ`. Rewrite using `[dif_pos hn]`. Unfold `Hf₁ finiteClassesContinuousLocal finiteClassesContinuousLattice finiteClassesContinuousMap fPre finiteClassesContinuous finPre`. Rewrite using `[key]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -72,7 +72,7 @@ variable (r : D.nd.X i → (GE D.nd →* GL (Fin D.R.nV) (D.nd.O i)))
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Unfold `rowLenD`. Conclude with `len_congr (fs_eq i dc VT VT' Dat hw) (by unfold imRow; rw [finite_classes_row_eq_generic i dc ρ₁ hw]; rfl)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem rowLenD_eq_gen {n : ℕ} (hw : K.plOf i dc n ∈ placesOver D.host.E (D.nd.l i)) :
     rowLenD i dc VT VT' Dat ρ₁ π vD hpD heD n =
@@ -88,9 +88,9 @@ theorem rowLenD_eq_gen {n : ℕ} (hw : K.plOf i dc n ∈ placesOver D.host.E (D.
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Establish `hbij : Function.Bijective (Br.iota D.nbr i _ hw)` using `(D.nbr i _ hw).e.symm.bijective`. Establish `hcobn : ∀ x : VT' n, (fun γ => (Dat n).ρT' γ x - x) ∈ finZ (eK (D.nbr i _ hw)) (Br.PD D.loc D.nbr i _ hw) (Dat n).ρT' (Br.iota D.nbr i _ hw)`. Introduce `x`. Establish `h` using `cob_mem_fZ i dc (Dat n).ρT' hcob x`. Rewrite `h` using `[fZ_pos i dc _ hw]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Conclude with `(rowLenD_eq_gen i dc VT VT' Dat ρ₁ π vD hpD heD hw).trans (len_eq_col (Γ := ↥(Γn i dc n)) (eK (D.nbr i _ hw)) (D.nbr i _ hw).eO (heO_br i dc hw) (Br.PD D.loc D.nbr i _ hw) (Br.iota D.nbr i _ hw) (Dat n) (resRep ρ₁ (Γn i dc n)) π (vD n) (hpD n) (heD n) hsp hbij hcobn htopV htop1)`.
+A detailed English derivation is pending.
 -/
 theorem rowLenD_eq {n : ℕ} (hw : K.plOf i dc n ∈ placesOver D.host.E (D.nd.l i))
     [Module.Finite (D.nd.O i) T₁] [Module.Free (D.nd.O i) T₁]
@@ -119,17 +119,15 @@ theorem rowLenD_eq {n : ℕ} (hw : K.plOf i dc n ∈ placesOver D.host.E (D.nd.l
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `n hn hw b hR`. Take `⟨hF1, hF2, hFn⟩` from `hFin`. Take `⟨hF3, hF4, hsp⟩` from `hFn n hn`. Use `haveI := hF1`. Use `haveI := hF2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI := hF3`. Use `haveI := hF4`. Establish `hev : Function.Surjective ((vD n).toLinearMap ∘ₗ π)` using `(vD n).surjective.comp hπ`. Establish `hrow` using `rowLenD_eq i dc VT VT' Dat ρ₁ π vD hpD heD hw hsp (hcob n hn) (hTop n hn hw).1 (hTop n hn hw).2`. Establish `hR' : RowAt (Br.PD D.loc D.nbr i _ hw) (LL` using `Br.LLw (D.nbr i _ hw)) (O := Br.Ow (D.nbr i _ hw)) (fun x : D.nd.X i => ⇑(TruncatedSeriesCountingIdentities.locC (TruncatedSeriesCountingIdentities.CoefExt.self i _ hw) (rDuO D.nd i r x))) ⇑(TruncatedSeriesCountingIdentities.locC (TruncatedSeriesCountingIdentities.CoefExt.self i …`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hL1` using `finDim_of_lat (Ow := Br.Ow (D.nbr i _ hw)) (Qp := ℚ_[D.nd.l i]) (L1 (Γ := ↥(Γn i dc n)) (eK (D.nbr i _ hw)) (D.nbr i _ hw).eO (heO_br i dc hw) (Br.iota D.nbr i _ hw) (resRep ρ₁ (Γn i dc n)))`. Establish `hL2` using `finDim_of_lat (Ow := Br.Ow (D.nbr i _ hw)) (Qp := ℚ_[D.nd.l i]) (L2 (Γ := ↥(Γn i dc n)) (eK (D.nbr i _ hw)) (D.nbr i _ hw).eO (heO_br i dc hw) (Br.iota D.nbr i _ hw) (Dat n) hsp)`. Establish `hons : Function.Surjective (trL (eK (D.nbr i _ hw)) (f0 (Dat n) π (vD n)))` using `trL_onto (hspQ := hsp) (hcomm := fun m => lift_map_mk (Dat n) π (vD n) m) hev`. Establish `hc1` using `hOrb n hn hw`. Establish `hc2 : ∀ y, Continuous fun g => repL (eK (D.nbr i _ hw)) (Dat n).ρT' (Br.iota D.nbr i _ hw) g y`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Introduce `y`. Take `⟨x, rfl⟩` from `hons y`. Establish `h : (fun g => repL (eK (D.nbr i _ hw)) (Dat n).ρT' (Br.iota D.nbr i _ hw) g (trL (eK (D.nbr i _ hw)) (f0 (Dat n) π (vD n)) x)) = fun g => trL (eK (D.nbr i _ hw)) (f0 (Dat n) π (vD n)) (repL (eK (D.nbr i _ hw)) (locRep (resRep ρ₁ (Γn i dc n))) (Br.iota D.nbr i _ hw) g x)`. Use function extensionality and compare the values at `fun g => (lift_map_equivariant (Dat n) (resRep ρ₁ (Γn i dc n)) π (vD n) (heD n) (Br.iota D.nbr i _ hw g) x).symm`. Rewrite using `[h]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(trL_cont (eK (D.nbr i _ hw)) _).comp (hc1 x)`. Establish `hOnto` using `latHom_onto (ρP := resRep ρ₁ (Γn i dc n)) (ρQ := (Dat n).ρTl') (Br.iota D.nbr i _ hw) (heO_br i dc hw) mkK_inj Subtype.val_injective (fun γ m => (locRep_mkK (resRep ρ₁ (Γn i dc n)) γ m).symm) (fun _ _ => rfl) mkK_span hsp (lift_map_equivariant (Dat n) (resRep ρ₁ (Γn i dc n)) π (v …`. Take `⟨m, k, hm, hk, hmk⟩` from `hR' (TrV (eK (D.nbr i _ hw)) (VT' n)) (repL (eK (D.nbr i _ hw)) (Dat n).ρT' (Br.iota D.nbr i _ hw)) (L2 (Γ := ↥(Γn i dc n)) (eK (D.nbr i _ hw)) (D.nbr i _ hw).eO (heO_br i dc hw) (Br.iota D.nbr i _ hw) (Dat n) hsp) hc2 (hMat n hn hw) (TrV (eK (D.nbr i _ hw)) (MK (O := D.nd.O i) T …`. Establish `hm' : rowLenD i dc VT VT' Dat ρ₁ π vD hpD heD n = m` using `hrow.trans hm`. Establish `hk' : lenOl (Br.PD D.loc D.nbr i (K.plOf i dc n) hw) (O` using `↥(OL (TruncatedSeriesCountingIdentities.CoefExt.self i (K.plOf i dc n) hw).LL)) = k := hk`.
-
-Use `⟨by rw [hm']; exact ENat.coe_ne_top m, ?_⟩` and prove the remaining obligations. Rewrite using `[hm', hk']`. Simplify using `only [ENat.toNat_coe]`. Conclude with `hmk`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem rowTie_disp (hπ : Function.Surjective π)
     (hSub : RowSub (ρ₁ := ρ₁) i dc r) (hOrb : RowOrb (ρ₁ := ρ₁) i dc)
@@ -191,7 +189,7 @@ theorem rowTie_disp (hπ : Function.Surjective π)
 variable (lenRow : HeightOneSpectrum (𝓞 D.host.E) → ℚ) in
 
 /- English proof (translation)
-Conclude with `K.Sel.tieRow_rec i dc r ρ πx _ lenRow hG hadm (rowTie_disp i dc VT VT' Dat ρ₁ π vD hpD heD r ρ πx hπ hSub hOrb hMat hTop hFin hcob)`.
+A detailed English derivation is pending.
 -/
 theorem tieRow_disp (hG : K.SelfGood i) (hadm : TruncatedSeriesCountingIdentities.LengthBoundAtPlaces i r ρ πx dc lenRow) (hπ : Function.Surjective π)
     (hSub : RowSub (ρ₁ := ρ₁) i dc r) (hOrb : RowOrb (ρ₁ := ρ₁) i dc)

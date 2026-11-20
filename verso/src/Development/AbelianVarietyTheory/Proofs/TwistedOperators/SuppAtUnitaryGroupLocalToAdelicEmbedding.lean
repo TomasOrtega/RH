@@ -17,7 +17,7 @@ noncomputable section
 namespace GlobalTheory.SuppAtPlace
 
 /- English proof (translation)
-Introduce `D V v w h ε he g`. Establish `hP : IsPrimeIdem w ε (ε + cA D ε)` using `Or.inl ⟨he, rfl⟩`. Conclude with `(Supp.suppF_iff_of_isPrimeIdem V hP h _).2 ⟨g, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem suppAt_embV : ∀ (D : D7) (V : HSp D) (v : HeightOneSpectrum (𝓞 D.host.F)) (w : HeightOneSpectrum (𝓞 D.host.E)), w.under (𝓞 D.host.F) = v → ∀ ε : AE D, Formalism.L2.NTheta.IsIdemAt ε w → ∀ g : Gv V v, SuppAt ε V (embV V v g) := by
   intro D V v w h ε he g

@@ -11,7 +11,7 @@ namespace UpperTheory.V.Ws
 variable {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime] {c : Coef l} {D : Raw Ω c}
 
 /- English proof (translation)
-Use `letI : Algebra F L := (IntermediateField.inclusion h).toRingHom.toAlgebra`. Use `haveI : IsScalarTower F L Ω := IsScalarTower.of_algebraMap_eq fun _ => rfl`. Conclude with `Af.continuous_restrictScalarsHom F L Ω`.
+Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem continuous_resLe {F L : IntermediateField ℚ Ω} (h : F ≤ L) : Continuous (resLe h) := by
   letI : Algebra F L := (IntermediateField.inclusion h).toRingHom.toAlgebra
@@ -25,12 +25,12 @@ variable {T : Tower D} {c' : Coef l} {h : c.O ≤ c'.O} (K : Link T c' h) (X : S
 def sc (g : G T.L Ω) : c'.O := K.κ g * K.β g ^ n
 
 /- English proof (translation)
-Simplify using `[sc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sc_one : K.sc n 1 = 1 := by simp [sc]
 
 /- English proof (translation)
-Simplify using `only [sc, map_mul, Units.val_mul, mul_pow]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem sc_mul (g g' : G T.L Ω) : K.sc n (g * g') = K.sc n g * K.sc n g' := by
   simp only [sc, map_mul, Units.val_mul, mul_pow]; ring

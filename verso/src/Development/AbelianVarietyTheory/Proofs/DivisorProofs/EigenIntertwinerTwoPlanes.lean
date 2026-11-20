@@ -22,15 +22,13 @@ open NumberField IsDedekindDomain MeasureTheory Filter Topology Formalism.MainNo
 open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK
 
 /- English proof (translation)
-Introduce `_ F E _ _ _ _ _ σ B n d n₁ d₁ r s r' s' i₀ i₁ j₀ j₁ X W X₁ W₁ H H' M M₁ hB hX hW hM hH hH' hM₁`. Take `⟨eq⟩ : Nonempty (Fin n × Fin d ≃ Kc F E d₁ n₁ ⊕ Fin n₁ × Fin d₁)` from `Fintype.card_eq.mp (GlobalTheory.T.plane_transform_card_eq σ B X W X₁ W₁ H H' hB hH hH')`. Set `T` to `LinearEquiv.ofBijective (planeT σ X W H H') (GlobalTheory.T.plane_transform_bijective σ B X W X₁ W₁ H H' hB hX hW hH hH')`. Establish `hT : ∀ u, T u = planeT σ X W H H' u` using `fun u => rfl`. Establish `hf : ∀ w w', symp (cA σ) (-1) (incM F X.J) (incM F W.J) w w' = (T w).1.1 ⬝ᵥ (T w').1.2 - (T w').1.1 ⬝ᵥ (T w).1.2 + symp (cA σ) (-1) (incM F X₁.J) (incM F W₁.J) (T w).2 (T w').2` using `GlobalTheory.T.plane_transform_symplectic σ B X W X₁ W₁ H H' hB hX hW hH hH'`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `Ma : Model σ X W` to `Model.mk (glueDarboux M₁.co eq T hf) (fun v => vacGlue eq (vacS σ X W H H' v) (M₁.vac v)) M.μ M.dom`. Establish `hS` using `GlobalTheory.T.vacuum_schwartz_bruhat σ B X W X₁ W₁ H H' hB hX hW hH hH'`. Establish `h0 : ∀ v, vacS σ X W H H' v 0 = 1` using `fun v => by`. Establish `hm : (0 : Kc F E d₁ n₁ → Fv F v) ∈ latS σ X W H H' v` using `⟨0, (latAtV X W v).zero_mem, fun k => by simp⟩`. Simplify using `only [vacS, Set.indicator_of_mem hm, Pi.one_apply]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `⟨Ma, restr eq, ⟨fun x => ?_, fun v => ?_, ?_, hM.haar, hM.dom⟩, GlobalTheory.T.adapted_evaluation_block_transform σ B X W X₁ W₁ H.ι H'.ι (isoB H H') M₁ eq T hf (vacS σ X W H H') M.μ M.dom (fun z => by rw [hT]; exact GlobalTheory.T.lagrangian_invariant_functional_unique σ B X W X₁ …` and prove the remaining obligations. Take `⟨⟨y, z, hyz⟩, x₁, hx₁⟩` from `GlobalTheory.T.plane_transform_rational_points σ X W H H' x`. Take `⟨y₁, z₁, h₁⟩` from `hM₁.rat x₁`. Use `⟨glue eq y y₁, glue eq z z₁, ?_⟩` and prove the remaining obligations. Use `show (glueDarboux M₁.co eq T hf).e (incM F x) = _`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[glueDarboux_e, hT, hx₁, h₁, hyz]`. Apply the tactic sequence `refine Prod.ext (funext fun k => ?_) (funext fun k => ?_) <;>`. Apply the tactic sequence `simp only [glue] <;> rcases eq k with k' | k' <;> rfl`. Conclude with `GlobalTheory.T.evaluation_adapted_good_model σ B X W X₁ W₁ H H' M₁ hB hX hW hH hH' hM₁ eq T hT hf M.μ M.dom v`. Use `filter_upwards [GlobalTheory.T.vacuum_unramified_almost_all σ B X W X₁ W₁ H H' hB hX hW hH hH', hM₁.std] with v hv hv₁ show vacGlue eq (vacS σ X W H H' v) (M₁.vac v) = _`.
-
-Rewrite using `[hv, hv₁]`. Conclude with `vacGlue_indicator eq _`.
+Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_ev_isoB : GlobalTheory.FunPr.Hypotheses₂ → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (n d n₁ d₁ r s r' s' i₀ i₁ j₀ j₁ : ℕ) (X : Spc F E n) (W : Spc F E d) (X₁ : Spc F E n₁) (W₁ : Spc F E d₁) (H : Plane E n n₁)

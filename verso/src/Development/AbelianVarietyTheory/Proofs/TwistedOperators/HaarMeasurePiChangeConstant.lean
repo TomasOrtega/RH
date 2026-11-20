@@ -7,7 +7,7 @@ open MeasureTheory ValuativeRel Matrix GlobalTheory.SplitWeil GlobalTheory.RootE
 namespace GlobalTheory.IdealChain
 
 /- English proof (translation)
-Use `Measure.pi_eq fun s _ => ?_` and prove the remaining obligations. Rewrite using `[Measure.coe_nnreal_smul_apply, Measure.pi_pi]`. Simplify using `only [Measure.coe_nnreal_smul_apply, Finset.prod_mul_distrib, Finset.prod_const, Finset.card_univ, ENNReal.coe_pow]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem pi_nnreal_smul {ι X : Type} [Fintype ι] [MeasurableSpace X] (μ : Measure X) [SigmaFinite μ] (c : NNReal) :
     (Measure.pi fun _ : ι => c • μ) = (c ^ Fintype.card ι) • Measure.pi fun _ : ι => μ := by
@@ -17,17 +17,17 @@ theorem pi_nnreal_smul {ι X : Type} [Fintype ι] [MeasurableSpace X] (μ : Meas
     ENNReal.coe_pow]
 
 /- English proof (translation)
-Introduce `k _ _ _ _ _ _ ι _ ν νs d hν hνs`. Use `secondCountable k` as an intermediate fact. Use `t2Space k` as an intermediate fact. Take `⟨a, ha0, ha⟩ : ∃ a : NNReal, 0 < a ∧ ν = a • νs` from `⟨_, Measure.addHaarScalarFactor_pos_of_isAddHaarMeasure ν νs, Measure.isAddLeftInvariant_eq_smul ν νs⟩`. Set `g : GL ι k` to `⟨Matrix.diagonal fun i => (d i : k), Matrix.diagonal fun i => ((d i)⁻¹ : kˣ), by simp [Matrix.diagonal_mul_diagonal], by simp [Matrix.diagonal_mul_diagonal]⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `hpos` using `nabs_pos' (Matrix.GeneralLinearGroup.det g)`. Use `⟨(a : ℝ) ^ Fintype.card ι * nabs k (Matrix.GeneralLinearGroup.det g), ⟨mul_pos (pow_pos ha0 _) hpos, fun h1 h2 => isHalfPow_mul (isHalfPow_pow ?_ _) (isHalfPow_nabs _)⟩, fun F => ?_⟩` and prove the remaining obligations. Establish `h3 : (νs (𝒪[k] : Set k)).toReal ≠ 0`. Take `⟨e, he⟩` from `h2`. Rewrite using `[he]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(Real.rpow_pos_of_pos resCard_pos _).ne'`. Establish `h4 : (a : ℝ) = (ν (𝒪[k] : Set k)).toReal * ((νs (𝒪[k] : Set k)).toReal)⁻¹`. Rewrite using `[eq_mul_inv_iff_mul_eq₀ h3, ha, Measure.coe_nnreal_smul_apply, ENNReal.toReal_mul, ENNReal.coe_toReal]`. Rewrite using `[h4]`. Conclude with `isHalfPow_mul h1 (isHalfPow_inv h2)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `integral_comp_mulVec_eq_smul νs g F`. Establish `h2 : ∀ x : ι → k, g.val.mulVec x = fun i => (d i : k) * x i`. Introduce `x`. Use function extensionality and compare the values at `i`. Simplify using `[g, Matrix.mulVec_diagonal]`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [h2] at h`. Establish `h5 : (Measure.pi fun _ : ι => ν) = (a ^ Fintype.card ι) • Measure.pi fun _ : ι => νs`. Rewrite using `[← pi_nnreal_smul, ← ha]`. Rewrite using `[h, h5, integral_smul_nnreal_measure]`. Establish `: (nabs k (Matrix.GeneralLinearGroup.det g) : ℂ) ≠ 0` using `by exact_mod_cast hpos.ne'`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[Complex.real_smul, NNReal.smul_def, Complex.real_smul]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem integral_scale_change_haar : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [MeasurableSpace k] [BorelSpace k] (ι : Type) [Fintype ι] (ν νs : Measure k) (d : ι → kˣ), ν.IsAddHaarMeasure → νs.IsAddHaarMeasure → ∃ C : ℝ, (0 < C ∧ (IsHalfPow k (ν (𝒪[k] : Set k)).toReal → IsHalfPow k (νs (𝒪[k] : Set k)).toReal → IsHalfPow k C)) ∧ ∀ F : (ι → k) → ℂ, ∫ e, F e ∂(Measure.pi fun _ => ν) = C * ∫ e, F (fun i => (d i : k) * e i) ∂(Measure.pi fun _ => νs) := by
   intro k _ _ _ _ _ _ ι _ ν νs d hν hνs

@@ -14,19 +14,17 @@ variable {K F V : Type} [Field K] [NumberField K] [StarRing K] [Field F] [Number
 variable {h : V →ₗ⋆[K] V →ₗ[K] K}
 
 /- English proof (translation)
-Establish `hmap : ((extP K 𝔭) ^ k • ⊤ : Submodule (𝓞 K) ↥A).map (e : ↥A →ₗ[𝓞 K] ↥B) = ((extP K 𝔭) ^ k • ⊤ : Submodule (𝓞 K) ↥B)`. Rewrite using `[Submodule.map_smul'', Submodule.map_top, LinearEquiv.range]`. Set `ε` to `Submodule.Quotient.equiv _ _ e hmap`. Establish `hε : ∀ x : ↥A, ε (Submodule.Quotient.mk x) = Submodule.Quotient.mk (e x)` using `fun x => rfl`. Unfold `akCount`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Use `(Nat.card_congr (Equiv.subtypeEquiv ε.conj.toEquiv ?_)).symm` and prove the remaining obligations. Introduce `X`. Establish `hX : ∀ x : ↥A, (ε.conj X) (Submodule.Quotient.mk (e x)) = ε (X (Submodule.Quotient.mk x))`. Introduce `x`. Rewrite using `[LinearEquiv.conj_apply_apply, ← hε, LinearEquiv.symm_apply_apply]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Prove the components needed by the constructor for the conclusion. Introduce `H x y x' y' h1 h2`. Take `⟨x, rfl⟩` from `e.surjective x`. Take `⟨y, rfl⟩` from `e.surjective y`. Take `⟨x', rfl⟩` from `e.surjective x'`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨y', rfl⟩` from `e.surjective y'`. Rewrite using `[he, he]`. Use `H x y x' y' ?_ ?_` and prove the remaining obligations. Apply `ε.injective` to reduce the goal to its premises. Rewrite using `[hε, ← hX]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h1`. Apply `ε.injective` to reduce the goal to its premises. Rewrite using `[hε, ← hX]`. Conclude with `h2`. Introduce `H x y x' y' h1 h2`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← he, ← he x y]`. Use `H (e x) (e y) (e x') (e y') ?_ ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ = (ε.conj X) _`. Rewrite using `[hX, ← h1, hε]`. Express the relevant statement in the definitionally equal form `_ = (ε.conj X) _`.
-
-Rewrite using `[hX, ← h2, hε]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem akCount_congr {A B : Submodule (𝓞 K) V} (e : ↥A ≃ₗ[𝓞 K] ↥B)
     (he : ∀ x y : ↥A, h (e x : V) (e y : V) = h (x : V) (y : V)) (𝔭 : Ideal (𝓞 F)) (k : ℕ) :
@@ -65,7 +63,7 @@ theorem akCount_congr {A B : Submodule (𝓞 K) V} (e : ↥A ≃ₗ[𝓞 K] ↥B
       rw [hX, ← h2, hε]
 
 /- English proof (translation)
-The claim follows from `akCount_congr (A := T) (B := Formalism.HermitianLatticesTheory.gmap g T) ((g.restrictScalars (𝓞 K)).submoduleMap T) (fun x y => hg (x : V) (y : V)) 𝔭 k`.
+A detailed English derivation is pending.
 -/
 theorem akCount_gmap {g : V ≃ₗ[K] V} (hg : g ∈ Formalism.HermitianLatticesTheory.isom h) (T : Submodule (𝓞 K) V)
     (𝔭 : Ideal (𝓞 F)) (k : ℕ) : akCount h (Formalism.HermitianLatticesTheory.gmap g T) 𝔭 k = akCount h T 𝔭 k :=
@@ -73,7 +71,7 @@ theorem akCount_gmap {g : V ≃ₗ[K] V} (hg : g ∈ Formalism.HermitianLattices
     (fun x y => hg (x : V) (y : V)) 𝔭 k
 
 /- English proof (translation)
-Unfold `alphaL`. Simplify using `only [akCount_gmap hg]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem alphaL_gmap {g : V ≃ₗ[K] V} (hg : g ∈ Formalism.HermitianLatticesTheory.isom h) (T : Submodule (𝓞 K) V)
     (𝔭 : Ideal (𝓞 F)) : alphaL h (Formalism.HermitianLatticesTheory.gmap g T) 𝔭 = alphaL h T 𝔭 := by
@@ -90,7 +88,7 @@ variable {K F V V' : Type} [Field K] [NumberField K] [StarRing K] [Field F] [Num
 variable {h : V →ₗ⋆[K] V →ₗ[K] K} {h' : V' →ₗ⋆[K] V' →ₗ[K] K}
 
 /- English proof (translation)
-Unfold `lamP`. Rewrite using `[UnimodularLocalization.vd_gmap hg, alphaL_gmap hg]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem localFactor_map' {g : V ≃ₗ[K] V} (hg : g ∈ Formalism.HermitianLatticesTheory.isom h) (T : Submodule (𝓞 K) V)
     (𝔭 : Ideal (𝓞 F)) : lamP h (Formalism.HermitianLatticesTheory.gmap g T) 𝔭 = lamP h T 𝔭 := by
@@ -98,13 +96,13 @@ theorem localFactor_map' {g : V ≃ₗ[K] V} (hg : g ∈ Formalism.HermitianLatt
   rw [UnimodularLocalization.vd_gmap hg, alphaL_gmap hg]
 
 /- English proof (translation)
-Establish `ex : ∀ T ∈ s, ∃! T₀, T₀ ∈ s' ∧ ∃ g ∈ Formalism.HermitianLatticesTheory.isom h', Formalism.HermitianLatticesTheory.gmap g T₀ = T` using `fun T hT => hsr'.2 T (hsr.1 T hT).1 (hsr.1 T hT).2.1 (hsr.1 T hT).2.2`. Use `Finset.sum_bij (fun T hT => (ex T hT).choose) ?_ ?_ ?_ ?_` and prove the remaining obligations. Conclude with `fun T hT => (ex T hT).choose_spec.1.1`. Introduce `T₁ h1 T₂ h2 e`. Take `⟨g₁, hg₁, e₁⟩` from `(ex T₁ h1).choose_spec.1.2`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨g₂, hg₂, e₂⟩` from `(ex T₂ h2).choose_spec.1.2`. Simplify using `only at e`. Rewrite `e₂` using `[← e]`. Establish `hu` using `hsr.2 T₂ (hsr.1 T₂ h2).1 (hsr.1 T₂ h2).2.1 (hsr.1 T₂ h2).2.2`. Use `hu.unique ⟨h1, g₂ * g₁⁻¹, Subgroup.mul_mem _ hg₂ (Subgroup.inv_mem _ hg₁), ?_⟩ ⟨h2, 1, Subgroup.one_mem _, autSub_gmap_one _⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← e₁, ← autSub_gmap_mul, mul_assoc, inv_mul_cancel, mul_one, e₂]`. Introduce `T₀ h0`. Take `⟨T, ⟨hT, g, hg, e⟩, -⟩` from `hsr.2 T₀ (hsr'.1 T₀ h0).1 (hsr'.1 T₀ h0).2.1 (hsr'.1 T₀ h0).2.2`. Use `⟨T, hT, ?_⟩` and prove the remaining obligations. Use `(ex T hT).unique (ex T hT).choose_spec.1 ⟨h0, g⁻¹, Subgroup.inv_mem _ hg, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← e, ← autSub_gmap_mul, inv_mul_cancel, autSub_gmap_one]`. Introduce `T hT`. Take `⟨g, hg, e⟩` from `(ex T hT).choose_spec.1.2`. Use `conv_lhs => rw [← e, GoodGenusOrbits.fibLoc_gmap hs S L 𝔭 hg, localFactor_map' hg]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem sum_locReps_eq (hs : h.IsSymm) (S : VecSplit h h') (L : Submodule (𝓞 K) V)
     (𝔭 : Ideal (𝓞 F)) {s s' : Finset (Submodule (𝓞 K) V')} (hsr : IsLocReps S L 𝔭 s)
@@ -134,7 +132,7 @@ theorem sum_locReps_eq (hs : h.IsSymm) (S : VecSplit h h') (L : Submodule (𝓞 
     conv_lhs => rw [← e, GoodGenusOrbits.fibLoc_gmap hs S L 𝔭 hg, localFactor_map' hg]
 
 /- English proof (translation)
-Establish `hex : ∃ s, IsLocReps S L 𝔭 s` using `⟨s, hsr⟩`. Unfold `psiP`. Rewrite using `[dif_pos hex]`. Conclude with `sum_locReps_eq hs S L 𝔭 hex.choose_spec hsr`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem psiP_eq_sum' (hs : h.IsSymm) (S : VecSplit h h') (L : Submodule (𝓞 K) V)
     (𝔭 : Ideal (𝓞 F)) {s : Finset (Submodule (𝓞 K) V')} (hsr : IsLocReps S L 𝔭 s) :

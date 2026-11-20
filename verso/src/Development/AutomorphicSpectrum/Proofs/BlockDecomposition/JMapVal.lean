@@ -12,7 +12,7 @@ variable {R S : Type} [CommRing R] [CommRing S] {ι : Type} [Fintype ι] [Decida
 def sc (a : Rˣ) : GL (ι ⊕ ι) R := Units.map (Matrix.scalar (ι ⊕ ι) : R →+* _).toMonoidHom a
 
 /- English proof (translation)
-Use `show Matrix.scalar (ι ⊕ ι) (a : R) * G = (a : R) • G`. Rewrite using `[Matrix.scalar_apply, Matrix.smul_eq_diagonal_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sc_val (a : Rˣ) (G : Matrix (ι ⊕ ι) (ι ⊕ ι) R) :
     ((sc a : GL (ι ⊕ ι) R) : Matrix (ι ⊕ ι) (ι ⊕ ι) R) * G = (a : R) • G := by
@@ -20,7 +20,7 @@ theorem sc_val (a : Rˣ) (G : Matrix (ι ⊕ ι) (ι ⊕ ι) R) :
   rw [Matrix.scalar_apply, Matrix.smul_eq_diagonal_mul]
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Use `show Matrix.scalar (ι ⊕ ι) (a : R) * (g : Matrix (ι ⊕ ι) (ι ⊕ ι) R) = (g : Matrix (ι ⊕ ι) (ι ⊕ ι) R) * Matrix.scalar (ι ⊕ ι) (a : R)`. Rewrite using `[Matrix.scalar_apply, ← Matrix.smul_eq_diagonal_mul, ← Matrix.smul_eq_mul_diagonal]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sc_comm (a : Rˣ) (g : GL (ι ⊕ ι) R) : sc a * g = g * sc a := by
   apply Units.ext
@@ -40,7 +40,7 @@ def jMap (D : GL (ι ⊕ ι) R) (ν : S →+* R) : Rˣ × GL (ι ⊕ ι) S →* 
     simp only [mul_assoc, mul_inv_cancel_left]
 
 /- English proof (translation)
-Establish `hs : ∀ f : ι → R, ∑ z, f z = f i` using `fun f => Fintype.sum_eq_single i (fun z hz => (hz (hi z)).elim)`. Simplify using `only [Matrix.mul_apply, Fintype.sum_sum_type, hs, Matrix.transpose_apply, PositivityTheory.RgEis.Ad.J, Matrix.fromBlocks_apply₁₁, Matrix.fromBlocks_apply₁₂, Matrix.fromBlocks_apply₂₁, Matrix.fromBlocks_apply₂₂, Matrix.one_apply_eq, Matrix.smul_apply, Matrix.zero_apply, smul_eq_mu …`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem J_apply (e : ℤˣ) (i : ι) (hi : ∀ x : ι, x = i) (G G' : Matrix (ι ⊕ ι) (ι ⊕ ι) R) (x y : ι ⊕ ι) :
     (Gᵀ * Ad.J R e ι * G') x y =
@@ -54,7 +54,7 @@ theorem J_apply (e : ℤˣ) (i : ι) (hi : ∀ x : ι, x = i) (G G' : Matrix (ι
   ring
 
 /- English proof (translation)
-Apply the tactic sequence `let e : Fin 2 ≃ ι ⊕ ι := { toFun := ![Sum.inl i, Sum.inr i] invFun := Sum.elim (fun _ => 0) (fun _ => 1) left_inv := fun x => by fin_cases x <;> rfl right_inv := fun x => by`. Apply the tactic sequence `rcases x with x | x <;> (have h := hi x; subst h; rfl) }`. Rewrite using `[← Matrix.det_submatrix_equiv_self e N, Matrix.det_fin_two]`. Both sides reduce to the same expression.
+Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem det_two (i : ι) (hi : ∀ x : ι, x = i) (N : Matrix (ι ⊕ ι) (ι ⊕ ι) R) :
     N.det = N (Sum.inl i) (Sum.inl i) * N (Sum.inr i) (Sum.inr i) -
@@ -69,11 +69,11 @@ theorem det_two (i : ι) (hi : ∀ x : ι, x = i) (N : Matrix (ι ⊕ ι) (ι �
   rfl
 
 /- English proof (translation)
-Establish `he2 : ((e : ℤ) : R) * ((e : ℤ) : R) = 1`. Apply the tactic sequence `rcases Int.units_eq_one_or e with h | h <;> simp [h]`. Establish `h1 : σ d * σ d' = 1` using `by rw [← map_mul, hd, map_one]`. Rewrite `h1` using `[hσ]`. Establish `hσd' : σ d' = -(((e : ℤ) : R) * d')`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Take the linear combination `(-(((e : ℤ) : R) * d')) * h1 - (σ d' * ((e : ℤ) : R) ^ 2) * hd - σ d' * he2`. Establish `hdet` using `GlobalTheory.CompanionTheory.RgEis.Cover.det_two i hi N`. Use extensionality with `x y`. Rewrite using `[GlobalTheory.CompanionTheory.RgEis.Cover.J_apply e i hi]`. Apply the tactic sequence `rcases x with x | x <;> rcases y with y | y <;> rw [hi x, hi y] <;>`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Simplify using `only [Matrix.smul_apply, Matrix.mul_diagonal, Matrix.diagonal_mul, Matrix.map_apply, Sum.elim_inl, Sum.elim_inr, smul_eq_mul, map_mul, map_one, hN, hσ, hσd', one_mul, mul_one, PositivityTheory.RgEis.Ad.J, Matrix.fromBlocks_apply₁₁, Matrix.fromBlocks_apply₁₂, Matrix.fromBlocks_app …`. Expand and normalize the polynomial expressions, which then agree. Take the linear combination `(((e : ℤ) : R) ^ 2 * a * σ a * (N (Sum.inl i) (Sum.inl i) * N (Sum.inr i) (Sum.inr i) - N (Sum.inl i) (Sum.inr i) * N (Sum.inr i) (Sum.inl i))) * hd + (a * σ a * (N (Sum.inl i) (Sum.inl i) * N (Sum.inr i) (Sum.inr i) - N (Sum.inl i) (Sum.inr i) * N (Sum.inr i) (Sum.inl i))) * he2 …`. Take the linear combination `(((e : ℤ) : R) * a * σ a * (N (Sum.inl i) (Sum.inl i) * N (Sum.inr i) (Sum.inr i) - N (Sum.inl i) (Sum.inr i) * N (Sum.inr i) (Sum.inl i))) * hd + ((e : ℤ) : R) * ha - (((e : ℤ) : R) * a * σ a) * hdet`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Take a linear combination of the given relations to obtain the conclusion. Take a linear combination of the given relations to obtain the conclusion. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem mem_aux (σ : R →+* R) (e : ℤˣ) (i : ι) (hi : ∀ x : ι, x = i) (a d d' : R)
     (N : Matrix (ι ⊕ ι) (ι ⊕ ι) R) (hN : ∀ x y, σ (N x y) = N x y) (hd : d * d' = 1)
@@ -107,7 +107,7 @@ theorem mem_aux (σ : R →+* R) (e : ℤˣ) (i : ι) (hi : ∀ x : ι, x = i) (
   · ring
 
 /- English proof (translation)
-Use `show ((GlobalTheory.CompanionTheory.RgEis.Cover.sc x.1 * (D⁻¹ * Matrix.GeneralLinearGroup.map ν x.2 * D) : GL (ι ⊕ ι) R) : Matrix (ι ⊕ ι) (ι ⊕ ι) R) = _`. Rewrite using `[Units.val_mul, GlobalTheory.CompanionTheory.RgEis.Cover.sc_val]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem jMap_val (D : GL (ι ⊕ ι) R) (ν : S →+* R) (x : Rˣ × GL (ι ⊕ ι) S) :
     ((jMap D ν x : GL (ι ⊕ ι) R) : Matrix (ι ⊕ ι) (ι ⊕ ι) R) =
@@ -117,11 +117,9 @@ theorem jMap_val (D : GL (ι ⊕ ι) R) (ν : S →+* R) (x : Rˣ × GL (ι ⊕ 
   rw [Units.val_mul, GlobalTheory.CompanionTheory.RgEis.Cover.sc_val]
 
 /- English proof (translation)
-Introduce `F E R _ _ _ _ _ _ A ε ν r δ α ω ι _ _ i hD hi`. Take `⟨-, -, hfix, -, -, -, -, -, -, -, -, -, hδ, -, -⟩` from `hD`. Use `⟨((GlobalTheory.CompanionTheory.RgEis.Cover.jMap (PositivityTheory.RgEis.So.dg ι (Units.map (PositivityTheory.RgEis.Ad.i A : E →* R) δ)) ν).comp (PositivityTheory.RgEis.So.cover A ν ι).subtype).codRestrict (PositivityTheory.RgEis.Ad.uSub A ε ι) ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨⟨a, g⟩, hx⟩`. Establish `h1 : (a : R) * PositivityTheory.RgEis.Ad.σ A (a : R) * ν (g : Matrix (ι ⊕ ι) (ι ⊕ ι) _).det = 1` using `congrArg Units.val ((MonoidHom.mem_ker).1 hx)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `e1 : ((Matrix.GeneralLinearGroup.map ν g : GL (ι ⊕ ι) R) : Matrix (ι ⊕ ι) (ι ⊕ ι) R).det = ν (g : Matrix (ι ⊕ ι) (ι ⊕ ι) _).det` using `(RingHom.map_det ν _).symm`. Establish `key` using `GlobalTheory.CompanionTheory.RgEis.Cover.mem_aux (PositivityTheory.RgEis.Ad.σ A) ε i hi (a : R) ((Units.map (PositivityTheory.RgEis.Ad.i A : E →* R) δ : Rˣ) : R) (((Units.map (PositivityTheory.RgEis.Ad.i A : E →* R) δ)⁻¹ : Rˣ) : R) ((Matrix.GeneralLinearGroup.map ν g : GL (ι ⊕ ι) …`. Use `show ((GlobalTheory.CompanionTheory.RgEis.Cover.jMap (PositivityTheory.RgEis.So.dg ι (Units.map (PositivityTheory.RgEis.Ad.i A : E →* R) δ)) ν (a, g) : GL (ι ⊕ ι) R) : Matrix (ι ⊕ ι) (ι ⊕ ι) R)ᵀ * PositivityTheory.RgEis.Ad.J R ε ι * ((GlobalTheory.CompanionTheory.RgEis.Cover.jMap …`. Rewrite using `[GlobalTheory.CompanionTheory.RgEis.Cover.jMap_val]`. Conclude with `key`.
-
-Introduce `x`. Conclude with `GlobalTheory.CompanionTheory.RgEis.Cover.jMap_val _ _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem jEx : JEx := by
   intro F E R _ _ _ _ _ _ A ε ν r δ α ω ι _ _ i hD hi

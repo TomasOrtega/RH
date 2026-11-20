@@ -10,23 +10,23 @@ def gen {V W : X.Opens} (h : W ≤ V) (T : Set (F.obj (op V))) : Subring (F.obj 
   Subring.closure (Set.range (α.app (op W)).hom ∪ (F.map (homOfLE h).op).hom '' T)
 
 /- English proof (translation)
-The claim follows from `Subring.subset_closure (Or.inl ⟨r, rfl⟩)`.
+A detailed English derivation is pending.
 -/
 lemma algebraMap_mem_gen {V W : X.Opens} (h : W ≤ V) (T : Set (F.obj (op V))) (r : Γ(X, W)) :
     (α.app (op W)).hom r ∈ gen F α h T :=
   Subring.subset_closure (Or.inl ⟨r, rfl⟩)
 
 /- English proof (translation)
-The claim follows from `Subring.subset_closure (Or.inr ⟨t, ht, rfl⟩)`.
+A detailed English derivation is pending.
 -/
 lemma res_mem_gen {V W : X.Opens} (h : W ≤ V) (T : Set (F.obj (op V))) {t : F.obj (op V)}
     (ht : t ∈ T) : (F.map (homOfLE h).op).hom t ∈ gen F α h T :=
   Subring.subset_closure (Or.inr ⟨t, ht, rfl⟩)
 
 /- English proof (translation)
-Rewrite using `[gen, RingHom.map_closure, Subring.closure_le]`. Introduce and unpack `_ ⟨y, (⟨r, rfl⟩ | ⟨t, ht, rfl⟩), rfl⟩`. Use `congr($(α.naturality (homOfLE h').op).hom r)` as an intermediate fact. Simplify using `only [CommRingCat.comp_apply] at this`. Rewrite using `[← this]`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `algebraMap_mem_gen F α _ T _`. Rewrite using `[← CommRingCat.comp_apply, ← F.map_comp]`. Conclude with `res_mem_gen F α _ T ht`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma map_gen_le {V W W' : X.Opens} (h : W ≤ V) (h' : W' ≤ W) (T : Set (F.obj (op V))) :
     (gen F α h T).map (F.map (homOfLE h').op).hom ≤ gen F α (h'.trans h) T := by
@@ -40,7 +40,7 @@ lemma map_gen_le {V W W' : X.Opens} (h : W ≤ V) (h' : W' ≤ W) (T : Set (F.ob
     exact res_mem_gen F α _ T ht
 
 /- English proof (translation)
-The claim follows from `map_gen_le F α h h' T ⟨b, hb, rfl⟩`.
+A detailed English derivation is pending.
 -/
 lemma res_mem_gen_of_mem {V W W' : X.Opens} (h : W ≤ V) (h' : W' ≤ W) (T : Set (F.obj (op V)))
     {b : F.obj (op W)} (hb : b ∈ gen F α h T) :
@@ -48,7 +48,7 @@ lemma res_mem_gen_of_mem {V W W' : X.Opens} (h : W ≤ V) (h' : W' ≤ W) (T : S
   map_gen_le F α h h' T ⟨b, hb, rfl⟩
 
 /- English proof (translation)
-Use `letI := (α.app (op W)).hom.toAlgebra`. Rewrite using `[Algebra.adjoin_eq_ring_closure]`. Both sides reduce to the same expression.
+Equip the data with the indicated structure. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 lemma gen_eq_adjoin {V W : X.Opens} (h : W ≤ V) (T : Set (F.obj (op V))) :
     letI := (α.app (op W)).hom.toAlgebra
@@ -64,7 +64,7 @@ def sub (W : X.Opens) : Subring (F.obj (op W)) :=
     (gen F α hV (T j)).comap (F.map (homOfLE hW).op).hom
 
 /- English proof (translation)
-Simplify using `only [sub, Subring.mem_iInf, Subring.mem_comap]`.
+Simplify using the standard rewrite rules.
 -/
 lemma mem_sub {W : X.Opens} {b : F.obj (op W)} :
     b ∈ sub F α V T W ↔ ∀ (j : ι) (W' : X.Opens), IsAffineOpen W' → ∀ (hW : W' ≤ W)
@@ -72,9 +72,9 @@ lemma mem_sub {W : X.Opens} {b : F.obj (op W)} :
   simp only [sub, Subring.mem_iInf, Subring.mem_comap]
 
 /- English proof (translation)
-Rewrite using `[mem_sub]`. Introduce `j W' _ hW hV`. Use `congr($(α.naturality (homOfLE hW).op).hom r)` as an intermediate fact. Simplify using `only [CommRingCat.comp_apply] at this`. Rewrite using `[← this]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `algebraMap_mem_gen F α _ _ _`.
+A detailed English derivation is pending.
 -/
 lemma algebraMap_mem_sub (W : X.Opens) (r : Γ(X, W)) : (α.app (op W)).hom r ∈ sub F α V T W := by
   rw [mem_sub]
@@ -85,7 +85,7 @@ lemma algebraMap_mem_sub (W : X.Opens) (r : Γ(X, W)) : (α.app (op W)).hom r �
   exact algebraMap_mem_gen F α _ _ _
 
 /- English proof (translation)
-Rewrite `hb`, the goal using `[mem_sub]`. Introduce `j W' hW' hW hV`. Rewrite using `[← CommRingCat.comp_apply, ← F.map_comp]`. Conclude with `hb j W' hW' (hW.trans h) hV`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma res_mem_sub {W W₁ : X.Opens} (h : W₁ ≤ W) {b : F.obj (op W)} (hb : b ∈ sub F α V T W) :
     (F.map (homOfLE h).op).hom b ∈ sub F α V T W₁ := by
@@ -134,13 +134,13 @@ lemma subNat_comp_subIncl :
   rfl
 
 /- English proof (translation)
-The claim follows from `Subtype.val_injective`.
+A detailed English derivation is pending.
 -/
 lemma subIncl_injective (W : X.AffineZariskiSiteᵒᵖ) : Function.Injective ((subIncl F α V T).app W).hom :=
   Subtype.val_injective
 
 /- English proof (translation)
-The claim follows from `Scheme.AffineZariskiSite.coequifibered_iff_forall_isLocalizationAway.mp hα ⟨W, hW⟩ f`.
+A detailed English derivation is pending.
 -/
 lemma isLocalizationAway
     (hα : ((Scheme.AffineZariskiSite.toOpensFunctor X).op.whiskerLeft α).Coequifibered)

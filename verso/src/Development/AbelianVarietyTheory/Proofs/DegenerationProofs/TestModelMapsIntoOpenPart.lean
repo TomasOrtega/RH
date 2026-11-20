@@ -20,7 +20,7 @@ namespace GlobalTheory.ZH.TestInOpen
 variable {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω] {S : ThetaSys o Ω}
 
 /- English proof (translation)
-Substitute `h` using the available equality. Unfold `ThetaSys.proj`. Rewrite using `[finsum_unique, S.ρ_one _ (by rw [AddSubgroup.mem_bot.1 (Subtype.prop _), smul_zero])]`. Simplify using the standard rewrite rules.
+Substitute using the available equality. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem proj_bot {T : AddSubgroup S.Gam} (h : T = ⊥) : S.proj T 0 = 1 := by
   subst h
@@ -31,23 +31,21 @@ theorem proj_bot {T : AddSubgroup S.Gam} (h : T = ⊥) : S.proj T 0 = 1 := by
 variable {ρ : S.Real} {M : RatModel o Ω} {U₀ : M.Z.Opens} {EE : M.Lat S.J}
 
 /- English proof (translation)
-Establish `hxz : ∀ s, Q.P.hom (x s) = z` using `fun s => by`. Establish `: (x ≫ Q.P.hom) s ∈ Set.range (x ≫ Q.P.hom)` using `⟨_, rfl⟩`. Rewrite `this` using `[hz]`. Conclude with `this`. Take `⟨l, hl⟩ : ∃ l, z ∈ Q.W l` from `TopologicalSpace.Opens.mem_iSup.1 (by rw [Q.cover]; trivial)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hr : Set.range x ⊆ Set.range (Q.P.hom ⁻¹ᵁ Q.W l).ι`. Introduce and unpack `_ ⟨s, rfl⟩`. Rewrite using `[Scheme.Opens.range_ι]`. Express the relevant statement in the definitionally equal form `Q.P.hom (x s) ∈ Q.W l`. Rewrite using `[hxz]` and apply the resulting hypothesis.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result.
 
-Take `⟨x', rfl⟩ : ∃ x', x' ≫ (Q.P.hom ⁻¹ᵁ Q.W l).ι = x` from `⟨_, IsOpenImmersion.lift_fac _ x hr⟩`. Establish `hcov` using `(Q.imm l).1`. Establish `hm : x' (IsLocalRing.closedPoint K) ∈ ⨆ i ∈ (Set.univ : Set S.J), nonzeroLocus (Q.σ l i)`. Rewrite using `[hcov]`. Discharge the goal by the elementary cases of `trivial`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. Simplify using the standard rewrite rules.
 
-Simplify using `only [TopologicalSpace.Opens.mem_iSup] at hm`. Take `⟨i, -, hi⟩` from `hm`. Take `⟨m, hm⟩` from `TopologicalSpace.Opens.mem_iSup.1 hi`. Take `⟨w, hw⟩ : ∃ w, Crd _ (Q.σ l) x' w` from `⟨_, m, 1, (CrdCalc.top_le_iff x' _).2 (Scheme.basicOpen_le _ _ hm), fun _ => rfl⟩`. Establish `hwi` using `((CrdCalc.crd_isUnit_iff i hw).2 ((CrdCalc.top_le_iff x' _).2 hi)).ne_zero`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨_, Q.rel l K x' _ hw, fun h0 => hwi ?_⟩` and prove the remaining obligations. Establish `hBm : ∀ a b, Q.B l a b ∈ M.O z` using `fun a => (RatModel.Lat.mem_const_iff M).1 (by`. Rewrite using `[RatModel.Lat.const_E, ← hB.ee.1 z hc, Q.basis l z hl]`. Conclude with `Submodule.subset_span ⟨a, rfl⟩)`. Set `B' : Matrix S.J S.J (M.O z)` to `fun a b => ⟨_, hBm a b⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `C' : Matrix S.J S.J (M.O z)` to `fun a b => ⟨_, RatModel.valF_mem_O hl (Q.c l a b)⟩`. Establish `h1 : C' * B' = 1`. Apply `Matrix.map_injective (f := (M.O z).val.toRingHom) Subtype.val_injective` to reduce the goal to its premises. Use `beta_reduce`. Rewrite using `[Matrix.map_mul, Matrix.map_one _ (map_zero _) (map_one _)]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Q.c_inv l`. Establish `h2` using `congrArg (fun A => A.map (RatModel.valHom _ z hz)) (mul_eq_one_comm.1 h1)`. Use `beta_reduce at h2`. Rewrite `h2` using `[Matrix.map_mul, Matrix.map_one _ (map_zero _) (map_one _)]`. Establish `h3 : C'.map (RatModel.valHom _ z hz) = (Q.c l).map (valR (x' ≫ (Q.P.hom ⁻¹ᵁ Q.W l).ι ≫ Q.P.hom) (Q.W l))`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `a b`. Rewrite using `[← Category.assoc]`. Conclude with `RatModel.val_valF (by rw [hz]; exact Set.singleton_subset_iff.2 hl) _`. Establish `h4 : w = 0`. Rewrite using `[← Matrix.one_mulVec w, ← h2, ← Matrix.mulVec_mulVec, h3, h0, Matrix.mulVec_zero]`.
-
-Rewrite using `[h4]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_crd_ne_zero (hB : BaseFacts S M U₀ EE) (Q : Clos ρ M U₀ EE) {K : Type} [Field K]
     (x : Sp K ⟶ Q.P.left) {z : M.Z} (hz : Set.range (x ≫ Q.P.hom) = {z}) (hc : z ∈ U₀) :
@@ -97,13 +95,11 @@ theorem exists_crd_ne_zero (hB : BaseFacts S M U₀ EE) (Q : Clos ρ M U₀ EE) 
   rw [h4]; rfl
 
 /- English proof (translation)
-Set `x : Sp (Q.P.left.residueField w) ⟶ Q.P.left` to `Q.P.left.fromSpecResidueField w`. Establish `hx : ∀ s, x s = w` using `fun s => Scheme.fromSpecResidueField_apply w s`. Establish `hz : Set.range (x ≫ Q.P.hom) = {Q.P.hom w}`. Rewrite using `[RatModel.range_eq_singleton _ (IsLocalRing.closedPoint _)]`. Conclude with `congrArg (fun a => {Q.P.hom a}) (hx _)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨v, hv, hv0⟩` from `exists_crd_ne_zero hB Q x hz hc`. Establish `h` using `(OpenPart.le_preimage_G_iff o Ω S ρ M U₀ EE hB Q _ x _ (Spec.preimage (x ≫ Q.P.hom ≫ M.s)).hom v hz (Or.inr hc) (Spec.map_preimage _).symm hv).2 (by`. Take `⟨i, hi⟩` from `Function.ne_iff.1 hv0`. Use `⟨i, ?_⟩` and prove the remaining obligations. Rewrite using `[proj_bot (hB.gen _ hc), Finset.sum_eq_single i]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using hi`. Introduce `j _ hj`. Simplify using `[hj]`. Use the proof step `simp)`. Rewrite using `[← hx (IsLocalRing.closedPoint _)]`.
-
-Conclude with `(CrdCalc.top_le_iff x _).1 h`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_G_of_mem [ArithBase o Ω] (hB : BaseFacts S M U₀ EE) (Q : Clos ρ M U₀ EE) (w : Q.P.left)
     (hc : Q.P.hom w ∈ U₀) : w ∈ Q.G := by
@@ -126,7 +122,7 @@ theorem mem_G_of_mem [ArithBase o Ω] (hB : BaseFacts S M U₀ EE) (Q : Clos ρ 
   exact (CrdCalc.top_le_iff x _).1 h
 
 /- English proof (translation)
-Use `⟨?_, h.1, h.2.1⟩` and prove the remaining obligations. Establish `h1 : 2 ≤ ρ.n ^ ρ.k` using `ρ.n_prime.two_le.trans (Nat.le_self_pow (by have := ρ.two_le; omega) _)`. Rewrite using `[ρ.N_eq]`. Use the polynomial consequences of the given equalities and inequalities.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem big_of_big (ρ : S.Real) (h : S.Big) : Big S.g S.N (S.r * S.N) := by
   refine ⟨?_, h.1, h.2.1⟩
@@ -137,9 +133,9 @@ theorem big_of_big (ρ : S.Real) (h : S.Big) : Big S.g S.N (S.r * S.N) := by
 variable {p : ℕ} [Fact p.Prime] {y₀ : S.R →+* PadicAlgCl p}
 
 /- English proof (translation)
-Use `⟨fun a ha => ?_⟩` and prove the remaining obligations. Take `⟨b, hb⟩` from `ha.exists_right_inv`. Establish `hb' : algebraMap (FractionRing u.V) (PadicAlgCl p) (algebraMap u.V _ a) * b = 1` using `congrArg Subtype.val hb`. Establish `h0 : algebraMap u.V (FractionRing u.V) a ≠ 0` using `fun h => by simp [h] at hb'`. Take `⟨c, hc⟩` from `(u.norm_le (algebraMap u.V _ a)⁻¹).1 (by`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[map_inv₀, ← eq_inv_of_mul_eq_one_right hb']`. Conclude with `(mem_OO_iff _).1 b.2)`. Use `IsUnit.of_mul_eq_one c (IsFractionRing.injective u.V (FractionRing u.V) ?_)` and prove the remaining obligations. Rewrite using `[map_mul, hc, mul_inv_cancel₀ h0, map_one]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isLocalHom_j (u : ρ.UTest p y₀) : IsLocalHom u.j := by
   refine ⟨fun a ha => ?_⟩
@@ -153,9 +149,9 @@ theorem isLocalHom_j (u : ρ.UTest p y₀) : IsLocalHom u.j := by
   rw [map_mul, hc, mul_inv_cancel₀ h0, map_one]
 
 /- English proof (translation)
-Distinguish the cases in `h : s.asIdeal = ⊥`. Use `Or.inl ⟨(⊥ : PrimeSpectrum (FractionRing u.V)), PrimeSpectrum.ext ?_⟩` and prove the remaining obligations. Rewrite using `[h]`. Conclude with `Ideal.comap_bot_of_injective _ (IsFractionRing.injective u.V (FractionRing u.V))`. Use `isLocalHom_j u` as an intermediate fact.
+Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `Or.inr ⟨IsLocalRing.closedPoint (kb p), ?_⟩` and prove the remaining obligations. Establish `e₁ : rPt p (IsLocalRing.closedPoint (kb p)) = cPt p` using `IsLocalRing.comap_closedPoint (IsLocalRing.residue (OO p))`. Establish `e₂ : spMap u.j (cPt p) = IsLocalRing.closedPoint u.V` using `IsLocalRing.comap_closedPoint u.j`. Use `((congrArg (spMap u.j) e₁).trans e₂).trans ?_` and prove the remaining obligations. Conclude with `PrimeSpectrum.ext (IsLocalRing.eq_maximalIdeal (Ring.DimensionLEOne.maximalOfPrime h s.isPrime)).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem mem_range_or (u : ρ.UTest p y₀) (s : Sp u.V) :
     s ∈ Set.range (jK u.V) ∨ s ∈ Set.range (rPt p ≫ spMap u.j) := by
@@ -172,21 +168,21 @@ theorem mem_range_or (u : ρ.UTest p y₀) (s : Sp u.V) :
     exact PrimeSpectrum.ext (IsLocalRing.eq_maximalIdeal (Ring.DimensionLEOne.maximalOfPrime h s.isPrime)).symm
 
 /- English proof (translation)
-Introduce `hL o Ω _ _ _ _ S ρ M U₀ EE hB Q p _ y y₀ t c tm hS x _`. Break down `mem_range_or t.u (t.u.G.hom x) with ⟨s, hs⟩ | ⟨s, hs⟩` into its components or cases. Use `mem_G_of_mem hB Q _ ?_` and prove the remaining obligations. Establish `e₁ : Q.P.hom ((tm.f ≫ (Q.P.hom ⁻¹ᵁ Q.W tm.l).ι) x) = c.yV (t.u.G.hom x)`. Rewrite using `[← Scheme.Hom.comp_apply, Category.assoc, tm.f_over, Scheme.Hom.comp_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e₂ : c.yV (jK t.u.V s) = U₀.ι (c.yK s)`. Rewrite using `[← Scheme.Hom.comp_apply, ← c.yK_fac, Scheme.Hom.comp_apply]`. Use `show Q.P.hom ((tm.f ≫ (Q.P.hom ⁻¹ᵁ Q.W tm.l).ι) x) ∈ U₀`. Rewrite using `[e₁, ← hs, e₂]`. Conclude with `(c.yK s).2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `haveI : IsAlgClosed (kb p) := (GlobalTheory.ZJ.kb_isAlgClosed_and_conj p).1`. Establish `pb : IsPullback t.mod.r t.mod.Φ.G.hom t.u.G.hom (rPt p ≫ spMap t.u.j)` using `t.mod.cart.1`. Take `⟨x', rfl, -⟩` from `Scheme.exists_preimage_of_isPullback pb x s hs.symm`. Establish `hsm : SmoothOfRelativeDimension S.g t.mod.Φ.G.hom` using `(smoothOfRelativeDimension_isStableUnderBaseChange _).of_isPullback pb t.mod.smooth`. Establish `: Smooth t.mod.Φ.G.hom` using `SmoothOfRelativeDimension.smooth S.g _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `: JacobsonSpace t.mod.Φ.G.left` using `LocallyOfFiniteType.jacobsonSpace t.mod.Φ.G.hom`. Establish `hcov` using `(GlobalTheory.T.immBy_weight_zero' hL.1 hL.2.1 (kb p) t.mod.Φ S.g S.N _ _ S.J _ t.mod.F t.mod.pol (big_of_big ρ hS) t.mod.good t.mod.dim).1`. Set `U : t.mod.Φ.G.left.Opens` to `t.mod.r ⁻¹ᵁ ((tm.f ≫ (Q.P.hom ⁻¹ᵁ Q.W tm.l).ι) ⁻¹ᵁ Q.G)`. Assume the negation of the conclusion as `hx`. Take `⟨a, haU, ha⟩` from `nonempty_inter_closedPoints (Z := (U : Set t.mod.Φ.G.left)ᶜ) ⟨x', hx⟩ U.isOpen.isClosed_compl.isLocallyClosed`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `x₀` to `pointOfClosedPoint (K := kb p) t.mod.Φ.G.hom a ha`. Establish `h₂ : x₀ ≫ t.mod.Φ.G.hom = 𝟙 _` using `pointOfClosedPoint_comp _ a ha`. Establish `h₃ : x₀ (IsLocalRing.closedPoint (kb p)) = a` using `pointOfClosedPoint_apply _ a ha _`. Take `⟨v, hv⟩` from `CrdCalc.crd_exists (R := kb p) (t.mod.Φ.H_isLB 1) t.mod.F x₀`. Establish `hmem : x₀ (IsLocalRing.closedPoint (kb p)) ∈ ⨆ i ∈ {i | t.mod.xe.symm (t.cls i) = 0}, Out.nonzeroLocus (t.mod.F i)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. Simplify using the standard rewrite rules.
 
-Rewrite using `[hcov]`. Discharge the goal by the elementary cases of `trivial`. Simplify using `only [TopologicalSpace.Opens.mem_iSup] at hmem`. Take `⟨i, hi, hm⟩` from `hmem`. Establish `h₄` using `((CrdCalc.crd_isUnit_iff i hv).2 ((CrdCalc.top_le_iff _ _).2 hm)).ne_zero`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h₁ : (x₀ ≫ t.mod.r) ≫ t.u.G.hom = rPt p ≫ spMap t.u.j`. Rewrite using `[Category.assoc, pb.w, ← Category.assoc, h₂]`. Conclude with `Category.id_comp _`. Establish `hcr` using `tm.crd (kb p) ((IsLocalRing.residue (OO p)).comp t.u.j) _ v (h₁.trans (Spec.map_comp _ _).symm) (t.mod.red (Over.homMk x₀ h₂) v hv)`. Establish `hov : ((x₀ ≫ t.mod.r) ≫ tm.f) ≫ (Q.P.hom ⁻¹ᵁ Q.W tm.l).ι ≫ Q.P.hom = rPt p ≫ y`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Category.assoc, tm.f_over, ← Category.assoc, h₁, Category.assoc, c.fac]`. Establish `key` using `(GlobalTheory.T.le_preimage_openPart_iff_testCoordinates o Ω S ρ M U₀ EE hB Q p y y₀ t c tm hS _ v hov hcr).2 ⟨i, t.mod.xe.symm.map_eq_zero_iff.1 hi, h₄⟩`. Use `haU ?_` and prove the remaining obligations. Rewrite using `[← h₃]`. Conclude with `key (x := IsLocalRing.closedPoint (kb p)) trivial`.
+A detailed English derivation is pending.
 -/
 theorem top_le_preimage_G : GlobalTheory.UT.LL → ∀ (o Ω : Type) [CommRing o] [Field Ω] [Algebra o Ω] [ArithBase o Ω] (S : ThetaSys o Ω) (ρ : S.Real) (M : RatModel o Ω) (U₀ : M.Z.Opens) (EE : M.Lat S.J), BaseFacts S M U₀ EE → ∀ (Q : Clos ρ M U₀ EE) (p : ℕ) [Fact p.Prime] (y : Sp (OO p) ⟶ M.Z) (y₀ : S.R →+* PadicAlgCl p) (t : ρ.GeoTest p y₀) (c : Q.Fac y t.u) (tm : Q.TMap t c), S.Big → ⊤ ≤ (tm.f ≫ (Q.P.hom ⁻¹ᵁ Q.W tm.l).ι) ⁻¹ᵁ Q.G := by
   intro hL o Ω _ _ _ _ S ρ M U₀ EE hB Q p _ y y₀ t c tm hS x _

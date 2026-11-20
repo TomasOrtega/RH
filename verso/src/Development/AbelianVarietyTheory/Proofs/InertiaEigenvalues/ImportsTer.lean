@@ -5,23 +5,21 @@ namespace GlobalTheory.ClosedStatement
 open Ideal Module
 
 /- English proof (translation)
-Use `letI : Algebra R A := f.toAlgebra`. Use `letI : Field (R ⧸ m) := Ideal.Quotient.field m`. Establish `hf : algebraMap R A = f` using `rfl`. Rewrite `hne`, the goal using `[← hf]`. Use `haveI : Nontrivial (A ⧸ Ideal.map (algebraMap R A) m) := Ideal.Quotient.nontrivial_iff.mpr hne`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hli : LinearIndepOn (R ⧸ m) id ({1} : Set (A ⧸ Ideal.map (algebraMap R A) m))` using `(linearIndepOn_singleton_iff (R ⧸ m)).mpr one_ne_zero`. Set `v` to `Basis.extend hli`. Establish `h1mem : (1 : A ⧸ Ideal.map (algebraMap R A) m) ∈ hli.extend (Set.subset_univ _)` using `Basis.subset_extend hli rfl`. Set `b : ↥(hli.extend (Set.subset_univ _)) → A` to `fun i => if (i : A ⧸ Ideal.map (algebraMap R A) m) = 1 then 1 else (Ideal.Quotient.mk_surjective (i : A ⧸ Ideal.map (algebraMap R A) m)).choose`. Establish `hb : ∀ i, Ideal.Quotient.mk (Ideal.map (algebraMap R A) m) (b i) = v i`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i`. Rewrite using `[Basis.coe_extend]`. Simplify using `only [b]`. Use `split_ifs with h`. Rewrite using `[map_one, h]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(Ideal.Quotient.mk_surjective _).choose_spec`. Establish `key : ∀ a : ↥(hli.extend (Set.subset_univ _)) →₀ R, Ideal.Quotient.mk (Ideal.map (algebraMap R A) m) (Finsupp.sum a fun i y ↦ (algebraMap R A) y * b i) = Finsupp.linearCombination (R ⧸ m) v (a.mapRange (Ideal.Quotient.mk m) (map_zero _))`. Introduce `a`. Rewrite using `[Finsupp.linearCombination_apply, Finsupp.sum_mapRange_index (by simp), map_finsuppSum]`. Use `Finsupp.sum_congr (fun i _ => ?_)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[map_mul, hb, Algebra.smul_def, Ideal.Quotient.algebraMap_quotient_map_quotient]`. Use `⟨_, b, ⟨1, h1mem⟩, by simp [b], ?_, ?_⟩` and prove the remaining obligations. Introduce `x`. Set `g : R ⧸ m → R` to `fun c => if c = 0 then 0 else (Ideal.Quotient.mk_surjective c).choose`. Establish `hg : ∀ c, Ideal.Quotient.mk m (g c) = c`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Introduce `c`. Simplify using `only [g]`. Use `split_ifs with h`. Rewrite using `[h, map_zero]`. Conclude with `(Ideal.Quotient.mk_surjective c).choose_spec`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Use `⟨(v.repr (Ideal.Quotient.mk _ x)).mapRange g (by simp [g]), ?_⟩` and prove the remaining obligations. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, map_sub, key]`. Establish `hc : ∀ c : ↥(hli.extend (Set.subset_univ _)) →₀ R ⧸ m, (c.mapRange g (by simp [g])).mapRange (Ideal.Quotient.mk m) (map_zero _) = c`. Introduce `c`. Use extensionality with `i`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Simplify using `[hg]`. Rewrite using `[hc, Basis.linearCombination_repr, sub_self]`. Introduce `a ha i`. Rewrite `ha` using `[← Ideal.Quotient.eq_zero_iff_mem, key]`. Establish `h0` using `linearIndependent_iff.mp v.linearIndependent _ ha`.
-
-Use `congrArg (fun l => l i) h0` as an intermediate fact. Simplify `this` using `[Ideal.Quotient.eq_zero_iff_mem]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem main {R A : Type} [CommRing R] [CommRing A] (f : R →+* A) (m : Ideal R)
     [hm : Ideal.IsMaximal m] (hne : Ideal.map f m ≠ ⊤) :

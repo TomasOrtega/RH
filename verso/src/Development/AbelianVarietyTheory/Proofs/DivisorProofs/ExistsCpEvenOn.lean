@@ -24,15 +24,13 @@ namespace GlobalTheory.Mum.PrimCube
 open GlobalTheory.PrimNorm GlobalTheory.MulPull
 
 /- English proof (translation)
-Introduce `R _ _ _ hR D A G _ _ hS U P a ha hw`. Establish `hp : IsProper (pullback.snd G.hom (jK R))`. Use `A.isAb.proper` as an intermediate fact. Establish `e : pullback.snd G.hom (jK R) = U.gen.hom.left ≫ A.A.hom` using `(Over.w U.gen.hom).symm`. Establish `: IsIso U.gen.hom.left` using `inferInstanceAs (IsIso ((Over.forget _).map U.gen.hom))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `e ▸ MorphismProperty.comp_mem @IsProper U.gen.hom.left A.A.hom inferInstance A.isAb.proper`. Establish `hB : IsAbelianScheme (thickObj R (maximalIdeal R) 0 D.toPre.P.A)` using `GlobalTheory.isAbelianScheme_pullback_obj _ _ D.toPre.P.isAb`. Set `Q₀` to `GlobalTheory.Mum.tqOfGtCoord (U.gt 0) hB`. Take `⟨P₀, v, hv⟩` from `GlobalTheory.UU.exists_isLevelCP (maximalIdeal R) 0 P`. Establish `hm : (maximalIdeal R ^ (0 + 1)).IsMaximal`.
+Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[zero_add, pow_one]`. Use `infer_instance`. Use `letI : Field (R ⧸ maximalIdeal R ^ (0 + 1)) := Ideal.Quotient.field _`. Establish `hS0` using `IsSemiAbelian.pullback (thick R (maximalIdeal R) 0) G hS`. Use `hS0.smooth` as an intermediate fact.
+Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hS0.geomConnected` as an intermediate fact. Use `Q₀.i_hom` as an intermediate fact. Use `letI := D.toPre.addX`. Use `haveI := D.toPre.freeX`. Use `haveI := D.toPre.finX`.
-
-Take `⟨s⟩` from `GlobalTheory.BiextTriv.main (R ⧸ maximalIdeal R ^ (0 + 1)) D.toPre.X (thickObj R (maximalIdeal R) 0 G) P₀.L P₀.c Q₀.i Q₀.i_hom`. Take `⟨σ, hσ⟩` from `GlobalTheory.EvenTriv.exists_even_of_surjective (GlobalTheory.EvenTriv.surjective_cube_of_generic G hS hp) P a hw P₀ (IsPullback.of_hasPullback G.hom (thick R (maximalIdeal R) 0)) hv Q₀.i s`. Conclude with `⟨D.toPre.X, D.toPre.addX, D.toPre.freeX, D.toPre.finX, Q₀, P₀, ⟨v, hv⟩, σ, hσ⟩`.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem evenOn_of_prim : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], Base R → ∀ (D : DegData R (maximalIdeal R)) (A : PolAV (Sp (FractionRing R))) (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G], IsSemiAbelian G → ∀ U : Unif (maximalIdeal R) D A G, ∀ (P : GlobalTheory.UU.CP G) (a : G ⟶ G), IsMonHom a → LBIso P.L.L (cubeLB G ![𝟙 G, a] P.L.L) → EvenOn P := by
   intro R _ _ _ hR D A G _ _ hS U P a ha hw
@@ -62,23 +60,21 @@ theorem evenOn_of_prim : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R
   exact ⟨D.toPre.X, D.toPre.addX, D.toPre.freeX, D.toPre.finX, Q₀, P₀, ⟨v, hv⟩, σ, hσ⟩
 
 /- English proof (translation)
-Introduce `R _ _ _ hR D A G _ _ hS U O _ _ _ o oA oG hlin w hw _`. Take `⟨hno, -, hic, -⟩` from `hR.1`. Establish `ha` using `oG.hom w`. Establish `hb` using `oG.hom (star w)`. Establish `hL : Laws` using `GlobalTheory.firstFiveLaws.1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hgh` using `U.gen_hom`. Establish `hp : IsProper (pullback.snd G.hom (jK R))`. Use `A.isAb.proper` as an intermediate fact. Establish `e : pullback.snd G.hom (jK R) = U.gen.hom.left ≫ A.A.hom` using `(Over.w U.gen.hom).symm`. Establish `: IsIso U.gen.hom.left` using `inferInstanceAs (IsIso ((Over.forget _).map U.gen.hom))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `e ▸ MorphismProperty.comp_mem @IsProper U.gen.hom.left A.A.hom inferInstance A.isAb.proper`. Establish `hM` using `U.LG.isLB`. Establish `hT : ∃ t : LB.Gen (Theta G U.LG.L), t.IsGen` using `⟨U.cubG.t, U.cubG.isGen⟩`. Establish `hadd : oG.act w * oG.act (star w) = 𝟙 G`. Establish `e` using `oG.map_add w (star w)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e` using `[hw, oG.map_one]`. Conclude with `(e.trans rfl).symm`. Establish `hadj` using `GlobalTheory.T.uniformisation_ringAction_adjoint_cubeBundle R hR.1 D A G hS U O o oA oG hlin w`. Establish `hc` using `fun T : Over (Sp R) => diff₃_ptCls (T := T) hM hT`. Establish `hq : ∀ T : Over (Sp R), (fun x : T ⟶ G => normCls U.LG.L (oG.act w) x.left) = fun x => diff₂ (ptCls U.LG.L T) x (postHom (oG.act w) T x)` using `fun T => funext fun x => normCls_left _ x`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs : ∀ (T : Over (Sp R)) (y : T ⟶ G), postHom (oG.act w) T y * postHom (oG.act (star w)) T y = y` using `fun T y => (MonObj.comp_mul y _ _).symm.trans (by rw [hadd, Category.comp_id])`. Establish `hadj' : ∀ (T : Over (Sp R)) (x y : T ⟶ G), diff₂ (ptCls U.LG.L T) (postHom (oG.act w) T x) y = diff₂ (ptCls U.LG.L T) x (postHom (oG.act (star w)) T y)` using `fun T x y => diff₂_ptCls_adj hM hadj x y`. Establish `iso : ∀ (T : Over (Sp R)) (x y : T ⟶ G), LBIso (cubeLB G ![x, y] (cubeLB G ![𝟙 G, oG.act w] U.LG.L)) (cubeLB G ![x, y] U.LG.L)` using `fun T x y => by`. Use `lbIso_nested hM _ _ _ _ _ _ ((prod_square_id x y (normCls U.LG.L (oG.act w))).trans (Eq.trans ?_ (prod_square_id x y (cls U.LG.L)).symm))` and prove the remaining obligations. Rewrite using `[hq]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `diff₂_quadratic (hc T) _ _ (hs _) (hadj' _) x y`. Establish `symN : HasGen (cubeLB G ![𝟙 G, oG.act w] U.LG.L) (K` using `Fin 2) ![(GrpObj.inv (X := G)).left, 𝟙 _] ![1, -1] := by`. Use `hasGen_nested hM _ _ _ _ ?_` and prove the remaining obligations. Rewrite using `[Fin.prod_univ_two]`. Use `show normCls U.LG.L (oG.act w) (GrpObj.inv (X := G)).left ^ (1 : ℤ) * normCls U.LG.L (oG.act w) (𝟙 G : G ⟶ G).left ^ (-1 : ℤ) = 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e : GrpObj.inv (X` using `G) = (𝟙 G)⁻¹ := by simp [Hom.inv_def]`. Establish `e' : (𝟙 G)⁻¹ ≫ oG.act w = (𝟙 G ≫ oG.act w)⁻¹` using `map_inv (postHom (oG.act w) G) _`. Rewrite using `[normCls_left, normCls_left, e, e', diff₂_inv_inv (hc G), zpow_neg, mul_inv_cancel]`. Establish `hN` using `GlobalTheory.LamCalc.cubeLB_isLB hM ![𝟙 G, oG.act w]`. Take `⟨L', c', hL'⟩` from `GlobalTheory.RigCube.exists_rigLB_cubicalStr R G hS hp _ hN`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hsym : L'.IsSymmetric` using `isSymmetric_of_hasGen L' (hL' ▸ symN)`. Take `⟨P, hP, -⟩` from `GlobalTheory.UU.exists_cp_of_isSymmetric hL R A G hS U.gen hgh L' c' hsym`. Establish `hPN : P.L.L = cubeLB G ![𝟙 G, oG.act w] U.LG.L` using `by rw [hP, hL']`. Use `⟨P, hPN ▸ GlobalTheory.PolBaseChange.lbIso_refl P.L.isLB, evenOn_of_prim R hR D A G hS U P (oG.act w) ha ?_⟩` and prove the remaining obligations. Rewrite using `[hPN]`.
-
-Conclude with `(iso G (𝟙 G) (oG.act w)).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_cp_evenOn : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], Base R → ∀ (D : DegData R (maximalIdeal R)) (A : PolAV (Sp (FractionRing R))) (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G], IsSemiAbelian G → ∀ U : Unif (maximalIdeal R) D A G, ∀ (O : Type) [CommRing O] [StarRing O] [Module O D.toPre.X] (o : D.toPre.OAct O) (oA : A.OAct O) (oG : RingAct G O), U.toUnifPre.OLinear O o oA oG → ∀ w : O, w + star w = 1 → TraceFormTwistIso D.toPre o w → ∃ P : GlobalTheory.UU.CP G, LBIso P.L.L (cubeLB G ![𝟙 G, oG.act w] U.LG.L) ∧ EvenOn P := by
   intro R _ _ _ hR D A G _ _ hS U O _ _ _ o oA oG hlin w hw _

@@ -9,7 +9,7 @@ open scoped Formalism.Per
 namespace GlobalTheory.PMon
 
 /- English proof (translation)
-Introduce `_ _ P V _ _ z` and use `monV_eq_zero_iff_mem_range_crisIncl P _ V z`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem monV_eq_zero_iff_exists_crisIncl : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (V : Type) [AddCommGroup V] [Module ℚ_[l] V] (z : V ⊗[ℚ_[l]] Bst P), monV P ℚ_[l] V z = 0 ↔ ∃ w, crisIncl P ℚ_[l] V w = z :=
   fun _ _ P V _ _ z => monV_eq_zero_iff_mem_range_crisIncl P _ V z

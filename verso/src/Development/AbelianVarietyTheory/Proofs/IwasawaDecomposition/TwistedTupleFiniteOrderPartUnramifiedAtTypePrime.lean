@@ -14,9 +14,9 @@ open GlobalTheory.TwistChoice (Reading ReadsAt)
 namespace GlobalTheory.TwistUnr
 
 /- English proof (translation)
-Introduce `hp'`. Establish `hc : IsCoprime (p : 𝓞 E) (q : 𝓞 E)` using `Nat.Coprime.cast ((Nat.coprime_primes hp hq).2 hne)`. Take `⟨a, b, hab⟩` from `hc`. Apply `Q.isPrime.ne_top` to reduce the goal to its premises. Rewrite using `[Ideal.eq_top_iff_one, ← hab]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Q.asIdeal.add_mem (Q.asIdeal.mul_mem_left a hp') (Q.asIdeal.mul_mem_left b hq')`.
+A detailed English derivation is pending.
 -/
 theorem nat_not_mem_of_ne {E : Type} [Field E] [NumberField E] {p q : ℕ} (hp : p.Prime) (hq : q.Prime)
     (hne : p ≠ q) (Q : HeightOneSpectrum (𝓞 E)) (hq' : ((q : ℕ) : 𝓞 E) ∈ Q.asIdeal) : ((p : ℕ) : 𝓞 E) ∉ Q.asIdeal := by
@@ -28,9 +28,9 @@ theorem nat_not_mem_of_ne {E : Type} [Field E] [NumberField E] {p q : ℕ} (hp :
   exact Q.asIdeal.add_mem (Q.asIdeal.mul_mem_left a hp') (Q.asIdeal.mul_mem_left b hq')
 
 /- English proof (translation)
-Introduce `B f T v Q k hg hQ`. Establish `hp : B.host.pde.Prime` using `B.toPre.level_prime _ B.host.pde_level.1`. Establish `hp' : B.host.pde'.Prime` using `B.toPre.level_prime _ B.host.pde_level.2`. Establish `h1` using `nat_not_mem_of_ne hp (B.host.g_prime k) (B.host.pde_ne_g k).1 Q hg`. Establish `h2` using `nat_not_mem_of_ne hp' (B.host.g_prime k) (B.host.pde_ne_g k).2 Q hg`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hψ : (T.psi v).UnrAt Q` using `((T.psi_is v).ram Q).2 hQ`. Unfold `TwDat.xiTw`. Use `split_ifs`. Conclude with `GlobalTheory.Plug.TwistLevels.unrAt_mul (f.isDel'.unr Q h2) hψ`. Conclude with `GlobalTheory.Plug.TwistLevels.unrAt_mul (f.isDel.unr Q h1) hψ`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem unrAt_xiTw : ∀ (B : Base) (f : Fr B.toPre) (T : TwDat B) (v : B.places.Pl) (Q : HeightOneSpectrum (𝓞 B.host.E)) (k : Fin 2),
     ((B.host.g k : ℕ) : 𝓞 B.host.E) ∈ Q.asIdeal → Q ∉ T.Q v → (T.xiTw f v).UnrAt Q := by

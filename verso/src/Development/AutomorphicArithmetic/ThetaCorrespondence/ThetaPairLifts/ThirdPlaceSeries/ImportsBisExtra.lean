@@ -14,13 +14,11 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formal
   IsDedekindDomain Polynomial GlobalTheory.HeightCounting GlobalTheory.RowTie GlobalTheory.SplitRead GlobalTheory.NPin
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 /- English proof (translation)
-Introduce `hL D P`. Set `γ : Fin 2 → PlE D.host → Formalism.ConjugateSelfDual.G D.host.E D.nd.Om` to `fun k => Function.extend (D.naut.plGw k) (D.ntypes.tg k) (fun _ => 1)`. Establish `hγ : ∀ k v, γ k (D.naut.plGw k v) = D.ntypes.tg k v` using `fun k v => (D.naut.plGw_inj k).extend_apply _ _ v`. Establish `hT : GlobalTheory.LabLaws.LabTie P.T D.ntypes.teichC γ`. Introduce `k v`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hγ k v]`. Conclude with `⟨D.ntypes.teichC_inj k, D.ntypes.tg_gen k v, P.lab k v⟩`. Use `⟨GlobalTheory.LabLaws.tieLab_of_labTie hT, _root_.GlobalTheory.LabLaws.labTameS_of_labTie hT, ?_, ⟨P.ty.rbarSS, P.ty.rbar⟩⟩` and prove the remaining obligations. Introduce `i`. Use `⟨P.ty.plB (D.nd.w i), P.ty.plκ (D.nd.w i), fun y => P.ty.plB_loc i y, fun k v x => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `haveI : Fact (D.host.g k).Prime := ⟨D.host.g_prime k⟩`. Establish `hm` using `GlobalTheory.ParRay.mem_of_monoidHom (P.ty.plB (D.nd.w i)) (D.ntypes.teichC k) x`. Use `⟨hm, ?_⟩` and prove the remaining obligations. Rewrite using `[P.ty.plB_iota i k v x]`. Unfold `redThrough`.
-
-Conclude with `dif_pos hm`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem main_alt_alt : ∀ (hL : _root_.UpperTheory.Zero.LLC.RecTExists) (D : D7) (P : _root_.GlobalTheory.NPin.CharacterChoiceData hL D),
     Formalism.MainNotions.SumRepresentations.tieLab D ∧ _root_.UpperTheory.GalS.LabTameS D.nd D.naut ∧ IotaRed D ∧ GlobalTheory.RowCopy.RbarTie D := by

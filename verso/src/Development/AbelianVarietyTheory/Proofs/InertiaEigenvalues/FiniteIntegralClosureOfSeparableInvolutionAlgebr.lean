@@ -13,9 +13,9 @@ namespace GlobalTheory.UnitLemma.IntegralFinite
 open Matrix
 
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.TargetStatementAlt.target`. Consider the case `exact _root_.GlobalTheory.TargetStatementAlt.target`. Consider the case `(apply _root_.GlobalTheory.TargetStatementAlt.target <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.TargetStatementAlt.target <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.TargetStatementAlt.target <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.TargetStatementAlt.target ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem isIntegral_matrix_trace {R F : Type} [CommRing R] [Field F] [Algebra R F] {n : Type}
     [Fintype n] [DecidableEq n] (M : Matrix n n F) (hM : IsIntegral R M) : IsIntegral R M.trace := by
@@ -30,7 +30,7 @@ theorem isIntegral_matrix_trace {R F : Type} [CommRing R] [Field F] [Algebra R F
 variable {K : UQ} (B : InvAlg K)
 
 /- English proof (translation)
-Set `bs` to `Module.finBasis K.E B.A`. Rewrite using `[Algebra.trace_eq_matrix_trace bs]`. Conclude with `isIntegral_matrix_trace _ (hx.map ((Algebra.leftMulMatrix bs).restrictScalars K.O))`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isIntegral_trace {x : B.A} (hx : IsIntegral K.O x) :
     IsIntegral K.O (Algebra.trace K.E B.A x) := by
@@ -39,24 +39,22 @@ theorem isIntegral_trace {x : B.A} (hx : IsIntegral K.O x) :
   exact isIntegral_matrix_trace _ (hx.map ((Algebra.leftMulMatrix bs).restrictScalars K.O))
 
 /- English proof (translation)
-The claim follows from `IsIntegrallyClosed.isIntegral_iff.mp (isIntegral_trace B hx)`.
+A detailed English derivation is pending.
 -/
 theorem trace_mem_range {x : B.A} (hx : IsIntegral K.O x) :
     ∃ c : K.O, algebraMap K.O K.E c = Algebra.trace K.E B.A x :=
   IsIntegrallyClosed.isIntegral_iff.mp (isIntegral_trace B hx)
 
 /- English proof (translation)
-Introduce `K B hsep`. Set `bs` to `Module.finBasis K.E B.A`. Use `haveI : Algebra.IsAlgebraic K.O K.E := IsLocalization.isAlgebraic K.E (nonZeroDivisors K.O)`. Use `haveI : Algebra.IsAlgebraic K.O B.A := Algebra.IsAlgebraic.trans K.O K.E B.A`. Take `⟨y, hy, hint⟩` from `Algebra.IsAlgebraic.exists_integral_multiples K.O (Finset.univ.image bs)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hy' : algebraMap K.O K.E y ≠ 0`. Introduce `h`. Conclude with `hy (IsFractionRing.injective K.O K.E (by rw [h, map_zero]))`. Set `b` to `bs.isUnitSMul (w := fun _ => algebraMap K.O K.E y) (fun _ => (Ne.isUnit hy'))`. Establish `hbint : ∀ i, IsIntegral K.O (b i)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce `i`. Establish `h` using `hint (bs i) (Finset.mem_image_of_mem _ (Finset.mem_univ i))`. Simplify `h` using `[b, Module.Basis.isUnitSMul_apply, algebraMap_smul]`. Establish `hnd : (Algebra.traceForm K.E B.A).Nondegenerate`. Use `⟨fun a ha => ?_, fun a ha => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Centraliser.eq_zero_of_trace_mul B hsep a (fun z => by simpa [Algebra.traceForm_apply] using ha z)`. Conclude with `Centraliser.eq_zero_of_trace_mul B hsep a (fun z => by simpa [Algebra.traceForm_apply, mul_comm] using ha z)`. Set `d` to `(Algebra.traceForm K.E B.A).dualBasis hnd b`. Establish `hle : Subalgebra.toSubmodule (integralClosure K.O B.A) ≤ Submodule.span K.O (Set.range d)`. Introduce `x hx`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Establish `hx' : IsIntegral K.O x` using `hx`. Rewrite using `[← d.sum_repr x]`. Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Take `⟨c, hc⟩` from `trace_mem_range B (hx'.mul (hbint i))`. Rewrite using `[LinearMap.BilinForm.dualBasis_repr_apply, Algebra.traceForm_apply, ← hc, algebraMap_smul]`.
-
-Conclude with `Submodule.smul_mem _ c (Submodule.subset_span ⟨i, rfl⟩)`. Use `haveI : IsNoetherian K.O (Submodule.span K.O (Set.range d)) := isNoetherian_span_of_finite K.O (Set.finite_range d)`. Use `haveI : IsNoetherian K.O (Subalgebra.toSubmodule (integralClosure K.O B.A)) := isNoetherian_of_le hle`. Conclude with `Module.IsNoetherian.finite K.O (Subalgebra.toSubmodule (integralClosure K.O B.A))`.
+A detailed English derivation is pending.
 -/
 theorem finite_integralClosure :
     ∀ (K : UQ) (B : InvAlg K), B.P.Separable → Module.Finite K.O (integralClosure K.O B.A) := by

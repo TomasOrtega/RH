@@ -14,7 +14,7 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `h₁ h₂ h₃ h₄` and use `⟨GlobalTheory.T.uniformisation_baseChange h₁ h₂ h₃ h₄, WeightPf.weightIndep, TLinPf.tLin_of h₂⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem uniformisationLaws_of_baseChange_laws :
     PolBaseChangeSt → GlobalFnsSt → SecBaseChangeSt → DVR.TwistBaseChangeStatement → Laws4 :=

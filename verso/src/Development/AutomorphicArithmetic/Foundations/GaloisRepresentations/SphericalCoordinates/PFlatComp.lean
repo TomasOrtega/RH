@@ -6,9 +6,9 @@ open scoped Matrix
 open GlobalTheory.HodgeCoh GlobalTheory.CechDR Polynomial UpperTheory.Gal.W2
 
 /- English proof (translation)
-Introduce `V _ _ Y Y' f s v₀ w h U a hU`. Establish `hU' : ⊤ ≤ s v₀ ⁻¹ᵁ (f ⁻¹ᵁ U)` using `hU`. Establish `e : (fun v => valAt' (s v ≫ f) U a) = fun v => valAt' (s v) (f ⁻¹ᵁ U) ((f.appLE U (f ⁻¹ᵁ U) le_rfl).hom a)`. Use function extensionality and compare the values at `fun v => GlobalTheory.ExpCoord.valAt'_comp (s v) f U a`. Rewrite using `[e]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h _ _ hU'`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.W2.flatComp_of :
     UpperTheory.Gal.W2.FlatComp := by

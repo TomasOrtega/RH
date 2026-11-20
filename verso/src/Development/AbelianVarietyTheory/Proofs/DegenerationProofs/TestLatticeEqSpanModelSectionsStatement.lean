@@ -12,7 +12,7 @@ open ReciprocityTheory.ChartRestriction.G.Out GlobalTheory.ZH Classical
 attribute [local instance] SplitExt.free SplitExt.finite MvPolynomial.gradedAlgebra
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.ZH.testLattice_eq_span_sections` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDegenerationProofs%2FTestLatticeEqSpanModelSections.lean&line=24#L24)
 -/

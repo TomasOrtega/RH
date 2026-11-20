@@ -5,7 +5,7 @@ open CategoryTheory AlgebraicGeometry
 namespace LateralTheory.EtaleTrace
 
 /- English proof (translation)
-Introduce `k _ _ T hT`. Take `⟨Y, g, hg, y, hy⟩` from `(Scheme.geometricFiber k).jointly_surjective T hT (𝟙 (S k))`. Establish `hy' : y ≫ g = 𝟙 (S k)` using `hy`. Use `T.downward_closed hg y` as an intermediate fact. Rewrite `this` using `[hy']`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem PtCover_of : PtCover := by
   intro k _ _ T hT

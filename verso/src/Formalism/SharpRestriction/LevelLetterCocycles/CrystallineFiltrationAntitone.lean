@@ -32,16 +32,16 @@ theorem dvL_apply (T : LocLat G Qp LL O) (e : ℕ) {d : ℕ} (b : Fin d → W.DD
     dvL W T e b c = dv W T e b c := rfl
 
 /- English proof (translation)
-Introduce `_ _ hab` and use `Submodule.map_mono (inf_le_inf_right _ (Formalism.MainNotions.UnusedSlot80.LevR.filCris_anti (PD := PD) (ρ := T.ρ) hab))`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem crystalline_filtration_antitone (T : LocLat G Qp LL O) (a : ZMod n) : Antitone fun u => FilS W T a 0 u :=
   fun _ _ hab => Submodule.map_mono (inf_le_inf_right _
     (Formalism.MainNotions.UnusedSlot80.LevR.filCris_anti (PD := PD) (ρ := T.ρ) hab))
 
 /- English proof (translation)
-Distinguish the cases in `hx : x = 0`. Conclude with `⟨0, 0, by simp [hx]⟩`. Establish `hne : v x ≠ ⊤` using `by rwa [ne_eq, AddValuation.top_iff]`. Take `⟨q, hq⟩` from `WithTop.ne_top_iff_exists.mp hne`. Use `⟨⌈-q⌉₊, hO2 _ ?_⟩` and prove the remaining obligations.
+Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[AddValuation.map_mul, AddValuation.map_pow, hvl, ← hq]`. Establish `h1 : ((⌈-q⌉₊ : ℕ) • (1 : WithTop ℚ)) = (((⌈-q⌉₊ : ℕ) : ℚ) : WithTop ℚ)`. Rewrite using `[← WithTop.coe_one, ← WithTop.coe_nsmul, nsmul_eq_mul, mul_one]`. Rewrite using `[h1, ← WithTop.coe_add, WithTop.coe_nonneg]`. Use `Nat.le_ceil (-q)` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
 Combine the linear equalities and inequalities to obtain the conclusion.
 -/
@@ -60,7 +60,7 @@ theorem exists_lpow (hvl : v (PD.p : LL) = 1) (hO2 : ∀ x : LL, 0 ≤ v x → �
   linarith
 
 /- English proof (translation)
-Use `choose κ o ho using fun i => exists_lpow hvl hO2 (x i)`. Use `⟨∑ i, κ i, fun i => ⟨((PD.p : ℕ) : O) ^ (∑ j, κ j - κ i) * o i, ?_⟩⟩` and prove the remaining obligations. Establish `hle : κ i ≤ ∑ j, κ j` using `Finset.single_le_sum (fun j _ => Nat.zero_le (κ j)) (Finset.mem_univ i)`. Rewrite using `[map_mul, ho, map_pow, map_natCast, ← mul_assoc, ← pow_add, Nat.sub_add_cancel hle]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_lpow_fin (hvl : v (PD.p : LL) = 1) (hO2 : ∀ x : LL, 0 ≤ v x → ∃ o : O, algebraMap O LL o = x) {ι : Type}
     [Fintype ι] (x : ι → LL) : ∃ κ : ℕ, ∀ i, ∃ o : O, algebraMap O LL o = (PD.p : LL) ^ κ * x i := by
@@ -70,9 +70,9 @@ theorem exists_lpow_fin (hvl : v (PD.p : LL) = 1) (hO2 : ∀ x : LL, 0 ≤ v x �
   rw [map_mul, ho, map_pow, map_natCast, ← mul_assoc, ← pow_add, Nat.sub_add_cancel hle]
 
 /- English proof (translation)
-Unfold `Formalism.MainNotions.UnusedSlot80.LevC.LamUp abelian₂`. Rewrite using `[map_prod]`. Use `Finset.prod_congr rfl fun s _ => ?_` and prove the remaining obligations. Rewrite using `[map_pow, ← Formalism.MainNotions.UnusedSlot80.LevC.ps_succ, Formalism.MainNotions.UnusedSlot80.LevC.hs_succ]`. Use `congr 2`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem lamUp_eq (A : ArcP n) (c' : ZMod n) (e : ℕ) :
     Formalism.MainNotions.UnusedSlot80.LevC.LamUp W A c' e = ∏ s ∈ Finset.range e,
@@ -87,15 +87,15 @@ theorem lamUp_eq (A : ArcP n) (c' : ZMod n) (e : ℕ) :
 variable [IsDomain O]
 
 /- English proof (translation)
-Take `⟨S, -, hS⟩` from `Formalism.MainNotions.UnusedSlot80.DivLevR.lev_qP_X (W := W) hR a ζ hζ`. Establish `hq0 : constantCoeff (W.lev a ζ (Formalism.MainNotions.WachCoordinates.qP W)) = 0`. Rewrite using `[hS, map_mul, constantCoeff_X, zero_mul]`. Establish `hp : (PD.p : LL) ≠ 0` using `Formalism.MainNotions.UnusedSlot80.ArcF.p_ne_zero W`. Establish `hπ : constantCoeff (W.lev a ζ W.π₀) = -(PD.p : LL)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : W.π₀ = Formalism.MainNotions.WachCoordinates.qP W - ((PD.p : ℕ) : LetA O n)`. Unfold `Formalism.MainNotions.WachCoordinates.qP`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e1, map_sub, map_sub, hq0, map_natCast, map_natCast]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hps : ∀ s : ℕ, constantCoeff (W.lev a ζ (ps W (s + 1))) = (PD.p : LL)`. Introduce `s`. Take `⟨x, hx⟩` from `Formalism.MainNotions.UnusedSlot80.ToolsR.φpow_qP (W := W) hR (s + 1) (by omega)`. Establish `e1 : ps W (s + 1) = ((PD.p : ℕ) : LetA O n) + Formalism.MainNotions.WachCoordinates.qP W * x`. Use `Formalism.MainNotions.UnusedSlot80.ToolsR.pS_sub (W := W) (s + 1)` as an intermediate fact.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[hx]`. Establish `e2 : ps W (s + 1) = Formalism.MainNotions.WachCoordinates.pS W (s + 1)` using `rfl`. Rewrite using `[e2, ← this]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e1, map_add, map_mul, map_add, map_mul, hq0, zero_mul, add_zero, map_natCast, map_natCast]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[lamUp_eq, map_mul, map_prod, map_mul, map_prod, hπ]`. Use `mul_ne_zero (neg_ne_zero.mpr hp) (Finset.prod_ne_zero_iff.mpr fun s _ => ?_)` and prove the remaining obligations. Rewrite using `[map_pow, map_pow, hps]`. Conclude with `pow_ne_zero _ hp`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cc_lev_piLamUp (hR : Formalism.MainNotions.UnusedSlot80.ToolsR.RingP W) (A : ArcP n) (c' : ZMod n) (e : ℕ)
     (a : ZMod n) (ζ : LL) (hζ : IsPrimitiveRoot ζ PD.p) :
@@ -123,9 +123,9 @@ theorem cc_lev_piLamUp (hR : Formalism.MainNotions.UnusedSlot80.ToolsR.RingP W) 
   exact pow_ne_zero _ hp
 
 /- English proof (translation)
-Establish `h1 : (X : PowerSeries LL) ^ k ∣ U * F` using `X_pow_dvd_iff.mpr h`. Establish `h2 : (X : PowerSeries LL) ^ k ∣ F`. Take `⟨g, hg⟩` from `h1`. Use `⟨U⁻¹ * g, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 
-Conclude with `X_pow_dvd_iff.mp h2`.
+A detailed English derivation is pending.
 -/
 theorem X_pow_dvd_of_unit {U F : PowerSeries LL} (hU : constantCoeff U ≠ 0) {k : ℕ}
     (h : ∀ j < k, coeff j (U * F) = 0) : ∀ j < k, coeff j F = 0 := by

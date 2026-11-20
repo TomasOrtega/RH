@@ -12,15 +12,15 @@ namespace GlobalTheory.OrientedHeis
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Establish `hl : ∀ l : List ι, p (l.foldr (fun i g => A i g) f) ∧ Φ (l.foldr (fun i g => A i g) f) = l.foldr (fun i g => A' i g) (Φ f)`. Introduce `l`. Proceed by induction on `l with`. Consider the case `nil => exact ⟨hf, rfl⟩`. Consider the case `cons i l ih`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Rewrite using `[List.foldr_cons, List.foldr_cons, ← ih.2]`. Conclude with `hA i _ ih.1`. Establish `hm : ∀ (B : ι → (X → ℂ) → (X → ℂ)) (g : X → ℂ) (k : ι →₀ ℕ) (c : ℂ), pureTensorL B g (MvPolynomial.monomial k c) = c • opPow B k g`. Introduce `B g k c`. Establish `e : MvPolynomial.monomial k c = c • MvPolynomial.basisMonomials ι ℂ k`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[MvPolynomial.coe_basisMonomials, MvPolynomial.smul_monomial, smul_eq_mul, mul_one]`. Rewrite using `[e, map_smul]`. Unfold `pureTensorL`. Rewrite using `[Module.Basis.constr_basis]`. Proceed by induction on `P using MvPolynomial.induction_on' with`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately.
 
-Consider the case `monomial k c`. Rewrite using `[hm, hm, map_smul]`. Conclude with `⟨psmul c _ (hl _).1, congrArg (c • ·) (hl _).2⟩`. Consider the case `add P Q hP hQ`. Rewrite using `[map_add, map_add, map_add, hP.2, hQ.2]`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Treat this case separately. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `⟨padd _ _ hP.1 hQ.1, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem pureTensorL_intertwine {ι X : Type} (p : (X → ℂ) → Prop) (p0 : p 0) (padd : ∀ a b, p a → p b → p (a + b))
     (psmul : ∀ (c : ℂ) a, p a → p (c • a)) (A A' : ι → (X → ℂ) → (X → ℂ)) (Φ : Module.End ℂ (X → ℂ))
@@ -51,9 +51,9 @@ theorem pureTensorL_intertwine {ι X : Type} (p : (X → ℂ) → Prop) (p0 : p 
     exact ⟨padd _ _ hP.1 hQ.1, rfl⟩
 
 /- English proof (translation)
-Establish `hG' : G' * G = 1` using `mul_eq_one_comm.1 hG`. Establish `e : G' * sS' = sS * G'`. Combine the equalities or inequalities in the displayed calculation. Unfold `cplxO`. Rewrite using `[Matrix.mul_smul, Matrix.smul_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Combine the equalities or inequalities in the displayed calculation.
+Reduce the equality to equality of the corresponding arguments. Chain the equalities or inequalities of the calculation.
 -/
 theorem cplxO_move {m n : ℕ} {sS sS' G G' : Matrix (Fin n) (Fin n) ℂ} {sT sT' H : Matrix (Fin m) (Fin m) ℂ}
     (hG : G * G' = 1) (hS : sS' * G = G * sS) (hT : sT' * H = H * sT) (z : Matrix (Fin m) (Fin n) ℂ) :
@@ -69,7 +69,7 @@ theorem cplxO_move {m n : ℕ} {sS sS' G G' : Matrix (Fin n) (Fin n) ℂ} {sT sT
     _ = _ := by rw [hT, e]; simp only [Matrix.mul_assoc]
 
 /- English proof (translation)
-Unfold `unitMap`. Rewrite using `[Matrix.mul_inv_rev, Matrix.inv_eq_right_inv hG]`. Simplify using `only [Matrix.mul_assoc]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem unitMap_move {m n : ℕ} {B G G' : Matrix (Fin n) (Fin n) ℂ} {B' H : Matrix (Fin m) (Fin m) ℂ}
     (hG : G * G' = 1) (i : Fin m) (j : Fin n) : unitMap (G * B) (H * B') i j = H * unitMap B B' i j * G' := by
@@ -78,9 +78,9 @@ theorem unitMap_move {m n : ℕ} {B G G' : Matrix (Fin n) (Fin n) ℂ} {B' H : M
   simp only [Matrix.mul_assoc]
 
 /- English proof (translation)
-Introduce `D ψ θ S T χS χT om hom hθ sS sS' BS BS' sT sT' BT BT' g h h1 h2 h3 h4 f hf P`. Use `pureTensorL_intertwine (IsThetaFunO ψ S T) theta_zero (fun _ _ => theta_add) (fun c _ => theta_smul c) _ _ (om (g, h)) (fun k f hf => ?_) f hf P` and prove the remaining obligations. Take `⟨τ, i, j⟩` from `k`. Establish `hG` using `compAt_mt_mul_inv (θ := θ) τ g`. Use `⟨theta_smul _ (theta_sub (theta_dRho hθ hom.std τ _ hf) (theta_smul _ (theta_dRho hθ hom.std τ _ hf))), ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [aPlusAll, aPlus, crea]`. Rewrite using `[map_smul, map_sub, map_smul, om_dRho hom hθ g h τ _ hf, om_dRho hom hθ g h τ _ hf, h3, h4, unitMap_move hG, cplxO_move hG (h1 τ) (h2 τ)]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem om_pureTensorO : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (S T : HSp D) (χS χT : (AE D)ˣ →* Circle) (om : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ)), IsWeilDatumO ψ S T χS χT om → IsInfFam θ → ∀ (sS sS' BS BS' : D.what₂.Tau → Matrix (Fin S.rank) (Fin S.rank) ℂ) (sT sT' BT BT' : D.what₂.Tau → Matrix (Fin T.rank) (Fin T.rank) ℂ) (g : GA D S) (h : GA D T), (∀ τ, sS' τ * compAt θ τ (mt S g) = compAt θ τ (mt S g) * sS τ) → (∀ τ, sT' τ * compAt θ τ (mt T h) = compAt θ τ (mt T h) * sT τ) → (∀ τ, BS' τ = compAt θ τ (mt S g) * BS τ) → (∀ τ, BT' τ = compAt θ τ (mt T h) * BT τ) → ∀ f, IsThetaFunO ψ S T f → ∀ P, IsThetaFunO ψ S T (pureTensorO ψ θ S T sS sT BS BT f P) ∧ om (g, h) (pureTensorO ψ θ S T sS sT BS BT f P) = pureTensorO ψ θ S T sS' sT' BS' BT' (om (g, h) f) P := by
   intro D ψ θ S T χS χT om hom hθ sS sS' BS BS' sT sT' BT BT' g h h1 h2 h3 h4 f hf P

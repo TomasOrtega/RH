@@ -21,7 +21,7 @@ noncomputable section
 namespace GlobalTheory.UU.OneDim
 
 /- English proof (translation)
-Distinguish the cases in `h : f y ∈ U`. Rewrite using `[gs_eq f y U h, map_zero, map_zero]`. Conclude with `dif_neg h`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gs_zero {X Y : Scheme.{0}} (f : Y ⟶ X) (y : Y) (U : X.Opens) : gs f y U 0 = 0 := by
   by_cases h : f y ∈ U
@@ -36,9 +36,9 @@ variable {R : Type} [CommRing R] [IsDomain R] {I : Ideal R} {D : DegPre R}
   {A : PolAV (Spec (CommRingCat.of (FractionRing R)))} {G : Over (Spec (CommRingCat.of R))} [GrpObj G] [IsCommMonObj G]
 
 /- English proof (translation)
-Use `⟨0, Fin.elim0, Fin.elim0, Fin.elim0, fun i => i.elim0, ?_, ?_⟩` and prove the remaining obligations. Introduce `Z rA y rG _ _ z JA JG _ _`. Rewrite using `[Fin.sum_univ_zero]`. Conclude with `(congrArg (_ * ·) (gs_zero _ _ _)).trans (mul_zero _)`. Introduce `α Z rF rB _ z J _`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Fin.sum_univ_zero]`. Conclude with `gs_zero _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem expF_zero (U : PreU I D A G) (F : Type) [Field F] [Algebra (FractionRing R) F] (k : ℕ) :
     U.ExpF F k (zeroSec _) (fun _ => zeroSec _) := by
@@ -51,9 +51,9 @@ theorem expF_zero (U : PreU I D A G) (F : Type) [Field F] [Algebra (FractionRing
     exact gs_zero _ _ _
 
 /- English proof (translation)
-Establish `e₂ : (toUnit (TF (R` using `R) F)).left = Spec.map (CommRingCat.ofHom ((algebraMap (FractionRing R) F).comp (algebraMap R (FractionRing R)))) := by`. Establish `a` using `Over.w (toUnit (TF (R := R) F))`. Conclude with `((Category.comp_id _).symm.trans a).trans (Spec.map_comp _ _).symm`. Rewrite using `[e₂]`. Establish `n` using `Scheme.ΓSpecIso_naturality (CommRingCat.ofHom ((algebraMap (FractionRing R) F).comp (algebraMap R (FractionRing R))))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `i : Function.Injective ((Scheme.ΓSpecIso (CommRingCat.of R)).hom ≫ CommRingCat.ofHom ((algebraMap (FractionRing R) F).comp (algebraMap R (FractionRing R)))).hom` using `((algebraMap (FractionRing R) F).injective.comp (IsFractionRing.injective R (FractionRing R))).comp (Scheme.ΓSpecIso (CommRingCat.of R)).commRingCatIsoToRingEquiv.injective`. Rewrite `i` using `[← n]`. Conclude with `Function.Injective.of_comp (f := (Scheme.ΓSpecIso (CommRingCat.of F)).hom.hom) i`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem appTop_injective (F : Type) [Field F] [Algebra (FractionRing R) F] :
     Function.Injective (toUnit (TF (R := R) F)).left.appTop.hom := by
@@ -72,13 +72,11 @@ theorem appTop_injective (F : Type) [Field F] [Algebra (FractionRing R) F] :
   exact Function.Injective.of_comp (f := (Scheme.ΓSpecIso (CommRingCat.of F)).hom.hom) i
 
 /- English proof (translation)
-Establish `hs : Smooth G.hom` using `U.semi.smooth`. Establish `: IsAffine (𝟙_ (Over (Spec (CommRingCat.of R)))).left` using `inferInstanceAs (IsAffine (Spec _))`. Establish `: IsAffine (TF (R` using `R) F).left := inferInstanceAs (IsAffine (Spec _))`. Use `GlobalTheory.sec_eq_zero_of_sval_whiskerRight_eq_zero _ G (𝟙_ _) (TF (R := R) F) (toUnit _) (appTop_injective F) _ U.P.L.L U.P.L.isLB _ _ _ σ (fun z J hJ => ?_) j` and prove the remaining obligations. Establish `w : (snd (TF (R` using `R) F) G).left ≫ G.hom = ((fst (TF (R := R) F) G).left ≫ jFK (R := R) F) ≫ jK R := (Over.w (snd (TF (R := R) F) G)).trans ((Over.w (fst (TF (R := R) F) G)).symm.trans (Category.assoc _ _ _).symm)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Set `y : (TF (R` to `R) F ⊗ G).left ⟶ ((Over.pullback (jK R)).obj G).left := pullback.lift _ _ w`. Establish `e₄ : U.gen.hom.left ≫ A.A.hom = pullback.snd G.hom (jK R)` using `Over.w U.gen.hom`. Establish `w' : (fst (TF (R` using `R) F) G).left ≫ jFK (R := R) F = (y ≫ U.gen.hom.left) ≫ A.A.hom := by`. Rewrite using `[Category.assoc, e₄]`. Conclude with `(pullback.lift_snd _ _ _).symm`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Set `rA : (TF (R` to `R) F ⊗ G).left ⟶ (TFK (R := R) F ⊗ A.A).left := pullback.lift _ _ w'`. Take `⟨JA, hJA⟩` from `exists_good_pt A.isLB z`. Use `(h _ rA y (toUnit (TF (R := R) F) ▷ G).left (pullback.lift_snd _ _ _) ?_ ?_ z JA J hJA hJ).symm.trans ?_` and prove the remaining obligations. Conclude with `(congrArg CommaMorphism.left (whiskerRight_snd (toUnit (TF (R := R) F)) G)).trans (pullback.lift_fst _ _ w).symm`. Use `(congrArg CommaMorphism.left (whiskerRight_fst (toUnit (TF (R := R) F)) G)).trans ?_` and prove the remaining obligations.
-
-Rewrite using `[← Category.assoc]`. Conclude with `congrArg (· ≫ (toUnit (TF (R := R) F)).left) (pullback.lift_fst _ _ w').symm`. Conclude with `(congrArg (_ * ·) ((congrArg (gs rA z _) (ht _)).trans (gs_zero _ _ _))).trans (mul_zero _)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_pullG (U : PreU I D A G) (F : Type) [Field F] [Algebra (FractionRing R) F] (k : ℕ)
     (σ : U.SecGT (𝟙_ _) k) (t : LB.Sec (LPow A.A A.L (k : ℤ) (TFK (R := R) F)))
@@ -109,7 +107,7 @@ theorem eq_zero_of_pullG (U : PreU I D A G) (F : Type) [Field F] [Algebra (Fract
 end
 
 /- English proof (translation)
-Use `letI : Field B := (e.symm.toMulEquiv.isField (Field.toIsField F)).toField`. Take `⟨c, hc⟩` from `(finrank_eq_one_iff_of_nonzero' (K := B) v hv).1 h w`. Conclude with `⟨e.symm c, by rw [e.apply_symm_apply]; exact hc⟩`.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_smul_of_finrank_one {F B M : Type} [Field F] [CommRing B] [AddCommGroup M] [Module B M]
     (e : F ≃+* B) (h : Module.finrank B M = 1) {v : M} (hv : v ≠ 0) (w : M) : ∃ c : F, e c • v = w := by
@@ -118,13 +116,13 @@ theorem exists_smul_of_finrank_one {F B M : Type} [Field F] [CommRing B] [AddCom
   exact ⟨e.symm c, by rw [e.apply_symm_apply]; exact hc⟩
 
 /- English proof (translation)
-Introduce `hL hL2 V _ _ _ hV D A G _ _ U θ f hθ th s₀ hG hB`. Establish `hne : ∃ j, th.f j ≠ 0`. Assume the negation of the conclusion as `hn`. Take `⟨j, hj⟩` from `hθ.2`. Conclude with `hj (eq_zero_of_pullG U (Kbar V) 1 θ th hG (fun j => by_contra fun h => hn ⟨j, h⟩) j)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hE` using `GlobalTheory.expF_of_pull V D _ A G U (Kbar V) 1 θ f th s₀ hθ.1 hG hB`. Use `⟨hne, hE, fun t s hts => ?_⟩` and prove the remaining obligations. Take `⟨-, -, hr, -⟩` from `GlobalTheory.ThetaRep.exists_projective_rep hL hL2 _ A (Kbar V) (jFK (R := V) (Kbar V)) 1 (by rw [Nat.cast_one]; exact one_ne_zero)`. Rewrite `hr` using `[one_pow]`. Establish `hv : SecM.ofSec A.A th ≠ 0` using `fun h => by`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨j, hj⟩` from `hne`. Conclude with `hj (congrFun (congrArg Subtype.val h) j)`. Take `⟨c, hc⟩` from `exists_smul_of_finrank_one (Scheme.ΓSpecIso (CommRingCat.of (Kbar V))).symm.commRingCatIsoToRingEquiv hr hv (SecM.ofSec A.A t)`. Set `s' : Raw D (Kbar V) 1` to `fun α => ⟨fun j => DegPre.constBF D (Kbar V) c _ * (s₀ α).f j, fun i j => by`. Rewrite using `[map_mul, map_mul, (s₀ α).compat i j, mul_left_comm]`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Use `congr 2`. Conclude with `fn_ext fun x hx => (gs_res _ x _ hx _).trans ((gs_res _ x _ hx.1 _).trans ((gs_res _ x _ hx _).trans (gs_res _ x _ hx.2 _)).symm)⟩`. Establish `hs' : U.ExpF (Kbar V) 1 t s'` using `GlobalTheory.UU.ExpLin.expF_linear V hV D A G U (Kbar V) 1 th (zeroSec _) t s₀ (fun _ => zeroSec _) s' c hE (expF_zero U _ 1) (fun j => ((congrFun (congrArg Subtype.val hc) j).symm).trans (add_zero _).symm) (fun α j => (add_zero _).symm)`. Establish `e : s = s'` using `(GlobalTheory.T.fourierJacobiExpansion_overField_injective V hV D A G U (Kbar V) 1 t t s s' hts hs').1 rfl`. Conclude with `⟨c, fun α j => by rw [e]⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem expF_one_dim : Laws → Laws2 → (AllPre fun {V} _ _ _ {D} {A} {G} _ _ U => ∀ θ f, U.Theta θ f → ∀ (th : LB.Sec (LPow A.A A.L ((1 : ℕ) : ℤ) (TFK (R := V) (Kbar V)))) (s₀ : Raw D (Kbar V) 1), U.PullG (Kbar V) (toUnit _) 1 θ th → PullB D (Kbar V) (toUnit _) 1 f s₀ → (∃ j, th.f j ≠ 0) ∧ U.ExpF (Kbar V) 1 th s₀ ∧ ∀ t s, U.ExpF (Kbar V) 1 t s → ∃ c : (Kbar V), ∀ α j, (s α).f j = DegPre.constBF D (Kbar V) c _ * (s₀ α).f j) := by
   intro hL hL2 V _ _ _ hV D A G _ _ U θ f hθ th s₀ hG hB

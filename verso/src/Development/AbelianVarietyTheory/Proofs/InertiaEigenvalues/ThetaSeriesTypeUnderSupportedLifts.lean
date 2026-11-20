@@ -20,7 +20,7 @@ namespace GlobalTheory.TypeSupportLift
 variable {D : D7}
 
 /- English proof (translation)
-Take `⟨_, N, hB⟩` from `GlobalTheory.FinAdIdent.exists_baseFrame V Λ h`. Conclude with `⟨N, hβ, hB.2⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_isBaseFrame {V : HSp D} {β : GL (Fin V.rank) (Lev.EAf D)}
     {Λ : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E)} (hβ : IsFrame β Λ) (h : IsSelfDualC V Λ) :
@@ -29,11 +29,9 @@ theorem exists_isBaseFrame {V : HSp D} {β : GL (Fin V.rank) (Lev.EAf D)}
   exact ⟨N, hβ, hB.2⟩
 
 /- English proof (translation)
-Establish `e1 : idem P * idemAt PP = idemAt PP`. Rewrite using `[idem, Finset.sum_mul, Finset.sum_eq_single PP (fun q hq hne => hP.mul_eq_zero hq hPP fun e => hne e.symm) (fun h => absurd hPP h)]`. Conclude with `(hP.isIdemAt hPP).1.1`. Establish `e2 : idem P * cA D (idemAt PP) = 0`. Rewrite using `[idem, Finset.sum_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Finset.sum_eq_zero fun q hq => hP.mul_conj hq hPP`. Establish `e3 : cA D (idem P) * idemAt PP = 0`. Rewrite using `[idem, map_sum, Finset.sum_mul]`. Conclude with `Finset.sum_eq_zero fun q hq => by rw [mul_comm]; exact hP.mul_conj hPP hq`. Establish `e4 : cA D (idem P) * cA D (idemAt PP) = cA D (idemAt PP)` using `by rw [← RingHom.map_mul, e1]`.
-
-Rewrite using `[add_mul, mul_add, mul_add, e1, e2, e3, e4, add_zero, zero_add]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem idem_add_conj_mul {P : Finset (Pl D.host.E)} (hP : SplitSet P) {PP : Pl D.host.E} (hPP : PP ∈ P) :
     (idem P + cA D (idem P)) * (idemAt PP + cA D (idemAt PP)) = idemAt PP + cA D (idemAt PP) := by
@@ -51,18 +49,18 @@ theorem idem_add_conj_mul {P : Finset (Pl D.host.E)} (hP : SplitSet P) {PP : Pl 
   rw [add_mul, mul_add, mul_add, e1, e2, e3, e4, add_zero, zero_add]
 
 /- English proof (translation)
-Introduce `i j` and use `by rw [← hg i j, ← mul_assoc, idem_add_conj_mul hP hPP]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem suppAt_idem_of_mem {V : HSp D} {P : Finset (Pl D.host.E)} (hP : SplitSet P) {PP : Pl D.host.E} (hPP : PP ∈ P)
     {g : GA D V} (hg : SuppAt (idemAt PP) V g) : SuppAt (idem P) V g := fun i j => by
   rw [← hg i j, ← mul_assoc, idem_add_conj_mul hP hPP]
 
 /- English proof (translation)
-Take `⟨N, hN⟩` from `exists_isBaseFrame hB.frame.frT hB.frame.sdT`. Take `⟨R, h1, -, hR⟩` from `hB.places.split`. Establish `hPg : SplitSet B.G.Pg` using `hR.mono h1`. Take `⟨e, κ, hl, hall⟩` from `GlobalTheory.ParahoricLift.exists_lift_prod T B.F.βT B.G.levT B.F.ΛT N hN (fun PP hP PP' hP' => by`. Break down `hP' with hP' | hP'` into its components or cases.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `GlobalTheory.ExportType.not_isConjPl_of_splitSet hR (h1 hP) (h1 hP')`. Conclude with `absurd hP' (Finset.notMem_empty _))`. Use the proof step `(Finset.disjoint_empty_right _) u`. Use `⟨_, (hall Finset.univ.toList (Finset.nodup_toList _) fun PP => Finset.mem_toList.2 (Finset.mem_univ PP)).1, ?_⟩` and prove the remaining obligations. Use `List.prod_induction _ (fun a b ha hb => GlobalTheory.SplitLinear.suppAt_mul ha hb) (GlobalTheory.SplitLinear.suppAt_one _ _) ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `x hx`. Take `⟨PP, -, rfl⟩` from `List.mem_map.1 hx`. Establish `hs` using `(hl PP).2.1`. Rewrite `hs` using `[← idemAt_eq (hl PP).1]`. Conclude with `suppAt_idem_of_mem hPg PP.2 hs`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_lift_supp {S T : HSp D} (B : Base S T) (hB : B.Good) (u : G0 B.G.Pg T.rank) :
     ∃ κ : GA D T, Lev.IsLevelLift T B.F.βT B.G.levT u κ ∧ SuppAt (idem B.G.Pg) T κ := by
@@ -86,9 +84,9 @@ theorem exists_lift_supp {S T : HSp D} (B : Base S T) (hB : B.Good) (u : G0 B.G.
 open Classical in
 
 /- English proof (translation)
-Introduce `D S T B hB hS ω hω u hu`. Take `⟨κ, hκ, hs⟩` from `exists_lift_supp B hB u`. Use `⟨κ, hκ, hs, fun Q hQ φ h P g => ?_⟩` and prove the remaining obligations. Establish `hred : ∀ PP : ↥Q, redFn B.F.βT PP.1 (Lev.finE T κ) = 1` using `fun PP => GlobalTheory.ExportSeries.redFn_eq_one_of_suppAt B.F.βT (GlobalTheory.ExportSeries.DualType.dualTypePlaces_isSplitNonconjugate_of_admissible hQ) Finset.subset_union_left (Finset.mem_union_right _ (Finset.mem_union_right _ PP.2)) (fun h => Finset.disjoint_left.1 hQ.1.dis …`. Use `GlobalTheory.ExportType.series_type hB hS hQ hω hu (GlobalTheory.ExportType.lifts_of_isLiftG0 hκ) (φ := φ) (φ' := φ) (fun _ => 1) (fun PP y => by rw [hred PP, Units.val_one, Matrix.one_mul, Units.val_one, one_mul]) h P g` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[this, Finset.prod_const_one, inv_one, mul_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem series_type_supp : ∀ (D : D7) (S T : HSp D) (B : Base S T), B.Good → S.SigOK → ∀ ω : PairRep S T, B.IsWeil 1 ω →
     ∀ (u : G0 B.G.Pg T.rank) (hu : u ∈ B.G.P.H), ∃ κ : GA D T, Lev.IsLevelLift T B.F.βT B.G.levT u κ ∧

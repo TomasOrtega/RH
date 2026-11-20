@@ -14,7 +14,7 @@ section gen
 variable (P : M.Par)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `π`. Use `show ∑ π', ((a + b) π π').1 (x π') = ∑ π', (a π π').1 (x π') + ∑ π', (b π π').1 (x π')`. Rewrite using `[← Finset.sum_add_distrib]`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem jd_actA_add (a b : MA.A P (MA.DQ P)) (x : M.Ty P → MA.SmQ P.r P.TT) :
     MA.actA P (a + b) x = MA.actA P a x + MA.actA P b x := by
@@ -24,7 +24,7 @@ theorem jd_actA_add (a b : MA.A P (MA.DQ P)) (x : M.Ty P → MA.SmQ P.r P.TT) :
   rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `π`. Use `show ∑ π', ((0 : MA.A P (MA.DQ P)) π π').1 (x π') = 0`. Conclude with `Finset.sum_eq_zero fun _ _ => rfl`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem jd_actA_zero (x : M.Ty P → MA.SmQ P.r P.TT) : MA.actA P 0 x = 0 := by
   funext π
@@ -32,7 +32,7 @@ theorem jd_actA_zero (x : M.Ty P → MA.SmQ P.r P.TT) : MA.actA P 0 x = 0 := by
   exact Finset.sum_eq_zero fun _ _ => rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `π`. Use `show ∑ π', (a π π').1 (x π' + y π') = ∑ π', (a π π').1 (x π') + ∑ π', (a π π').1 (y π')`. Rewrite using `[← Finset.sum_add_distrib]`. Conclude with `Finset.sum_congr rfl fun _ _ => map_add _ _ _`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem jd_actA_addR (a : MA.A P (MA.DQ P)) (x y : M.Ty P → MA.SmQ P.r P.TT) :
     MA.actA P a (x + y) = MA.actA P a x + MA.actA P a y := by
@@ -42,7 +42,7 @@ theorem jd_actA_addR (a : MA.A P (MA.DQ P)) (x y : M.Ty P → MA.SmQ P.r P.TT) :
   exact Finset.sum_congr rfl fun _ _ => map_add _ _ _
 
 /- English proof (translation)
-Use function extensionality and compare the values at `π`. Use `show ∑ π', (a π π').1 (c • x π') = c • ∑ π', (a π π').1 (x π')`. Rewrite using `[Finset.smul_sum]`. Conclude with `Finset.sum_congr rfl fun _ _ => map_smul _ _ _`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem jd_actA_smulR (a : MA.A P (MA.DQ P)) (c : ℂ) (x : M.Ty P → MA.SmQ P.r P.TT) :
     MA.actA P a (c • x) = c • MA.actA P a x := by
@@ -52,7 +52,7 @@ theorem jd_actA_smulR (a : MA.A P (MA.DQ P)) (c : ℂ) (x : M.Ty P → MA.SmQ P.
   exact Finset.sum_congr rfl fun _ _ => map_smul _ _ _
 
 /- English proof (translation)
-Establish `h` using `jd_actA_smulR P a 0 0`. Rewrite `h` using `[zero_smul, zero_smul]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem jd_actA_zeroR (a : MA.A P (MA.DQ P)) : MA.actA P a 0 = 0 := by
   have h := jd_actA_smulR P a 0 0
@@ -60,7 +60,7 @@ theorem jd_actA_zeroR (a : MA.A P (MA.DQ P)) : MA.actA P a 0 = 0 := by
   exact h
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => simp only [List.map_nil, List.sum_nil]`. Conclude with `jd_actA_zeroR P a`. Consider the case `cons i l ih => rw [List.map_cons, List.sum_cons, jd_actA_addR, ih, List.map_cons, List.sum_cons]`.
+Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem jd_actA_listsum {ι : Type} (a : MA.A P (MA.DQ P)) (l : List ι) (g : ι → M.Ty P → MA.SmQ P.r P.TT) :
     MA.actA P a (l.map g).sum = (l.map fun i => MA.actA P a (g i)).sum := by
@@ -71,23 +71,19 @@ theorem jd_actA_listsum {ι : Type} (a : MA.A P (MA.DQ P)) (l : List ι) (g : ι
 variable {P}
 
 /- English proof (translation)
-Introduce `w`. Proceed by induction on `w with`. Consider the case `nil`. Introduce `_ _ F hF`. Use `Submodule.subset_span ⟨1, Submonoid.one_mem _, F, hF, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[List.prod_nil, actA_one]`. Consider the case `cons a w ih`. Introduce `hlen hw F hF`. Establish `ha : a ∈ MA.hatSet P L` using `hw a (List.mem_cons_self ..)`. Establish `hlt : w.length < m` using `by simp only [List.length_cons] at hlen; omega`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hIH` using `ih hlt.le (fun x hx => hw x (List.mem_cons_of_mem _ hx)) F hF`. Rewrite using `[List.prod_cons, actA_mul]`. Establish `hgen : ∀ c ∈ Submodule.span ℂ (bddHat P L), ∀ F', Good w.length F' → MA.actA P c (tr F') ∈ Submodule.span ℂ {u | ∃ b ∈ Submonoid.closure (MA.bddSet P L), ∃ F', Good (a :: w).length F' ∧ u = MA.actA P b (tr F')}`. Introduce `c hc F' hF'`. Proceed by induction on `hc using Submodule.span_induction with`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `mem x hx`. Take `⟨b', hb', X', hX', rfl⟩` from `hx`. Take `⟨ts, hts, he⟩` from `hStep w.length hlt F' hF' X' hX'`. Rewrite using `[actA_mul, he, jd_actA_listsum]`. Use `list_sum_mem fun u hu => ?_` and prove the remaining obligations.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨t, ht, rfl⟩` from `List.mem_map.1 hu`. Rewrite using `[← actA_mul]`. Conclude with `Submodule.subset_span ⟨b' * t.1, Submonoid.mul_mem _ hb' (hts t ht).1, t.2, (hts t ht).2, rfl⟩`. Consider the case `zero => rw [jd_actA_zero]`. Conclude with `Submodule.zero_mem _`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `add x y _ _ h1 h2 => rw [jd_actA_add]`. Conclude with `Submodule.add_mem _ h1 h2`. Consider the case `smul c x _ h1 => rw [actA_smul]`. Conclude with `Submodule.smul_mem _ c h1`. Establish `key : ∀ x ∈ Submodule.span ℂ {u | ∃ b ∈ Submonoid.closure (MA.bddSet P L), ∃ F', Good w.length F' ∧ u = MA.actA P b (tr F')}, MA.actA P a x ∈ Submodule.span ℂ {u | ∃ b ∈ Submonoid.closure (MA.bddSet P L), ∃ F', Good (a :: w).length F' ∧ u = MA.actA P b (tr F')}`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Introduce `x hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨b, hb, F', hF', rfl⟩` from `hx`. Rewrite using `[← actA_mul]`.
-
-Conclude with `hgen _ (hBdd a ha b hb) F' hF'`. Consider the case `zero => rw [jd_actA_zeroR]`. Conclude with `Submodule.zero_mem _`. Consider the case `add x y _ _ h1 h2 => rw [jd_actA_addR]`. Conclude with `Submodule.add_mem _ h1 h2`.
-
-Consider the case `smul c x _ h1 => rw [jd_actA_smulR]`. Conclude with `Submodule.smul_mem _ c h1`. Conclude with `key _ hIH`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem jd_word_span {Fn : Type} (L : R.LevelData (MA.A P (MA.DQ P)) P.r) (Good : ℕ → Fn → Prop)
     (tr : Fn → M.Ty P → MA.SmQ P.r P.TT) (m : ℕ)
@@ -144,9 +140,9 @@ theorem jd_word_span {Fn : Type} (L : R.LevelData (MA.A P (MA.DQ P)) P.r) (Good 
 variable (P)
 
 /- English proof (translation)
-Establish `hs : ContDiffOn ℝ MA.sm (MA.ext (g : MA.Qp P.r P.TT → ℂ)) (MA.Qset P.r P.TT)` using `g.2`. Establish `h2` using `hs.continuousOn.comp_continuous continuous_subtype_val (fun q => q.2)`. Establish `hc : Continuous (MA.evQ P g)` using `h2.congr fun q => by`. Simplify using `only [Function.comp, MA.ext, dif_pos q.2]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Conclude with `hc.aestronglyMeasurable`.
+A detailed English derivation is pending.
 -/
 theorem jd_evQ_meas (g : MA.SmQ P.r P.TT) : AEStronglyMeasurable (MA.evQ P g) (MA.mu0 P.r P.TT) := by
   have hs : ContDiffOn ℝ MA.sm (MA.ext (g : MA.Qp P.r P.TT → ℂ)) (MA.Qset P.r P.TT) := g.2
@@ -159,16 +155,16 @@ theorem jd_evQ_meas (g : MA.SmQ P.r P.TT) : AEStronglyMeasurable (MA.evQ P g) (M
 def componentwiseL2 (u : M.Ty P → MA.SmQ P.r P.TT) : Prop := ∀ π, MemLp (MA.evQ P (u π)) 2 (MA.mu0 P.r P.TT)
 
 /- English proof (translation)
-The claim follows from `forall_congr' fun π => memLp_two_iff_integrable_sq_norm (jd_evQ_meas P (u π))`.
+A detailed English derivation is pending.
 -/
 theorem componentwiseL2_iff_integrable (u : M.Ty P → MA.SmQ P.r P.TT) :
     componentwiseL2 P u ↔ ∀ π, Integrable (fun q => ‖MA.evQ P (u π) q‖ ^ 2) (MA.mu0 P.r P.TT) :=
   forall_congr' fun π => memLp_two_iff_integrable_sq_norm (jd_evQ_meas P (u π))
 
 /- English proof (translation)
-Introduce `u hu`. Proceed by induction on `hu using Submodule.span_induction with`. Consider the case `mem x hx => exact h x hx`. Consider the case `zero => intro π`. Conclude with `MemLp.zero`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `add x y _ _ h1 h2 => intro π`. Conclude with `(h1 π).add (h2 π)`. Consider the case `smul c x _ h1 => intro π`. Conclude with `(h1 π).const_smul c`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem componentwiseL2_of_span (G : Set (M.Ty P → MA.SmQ P.r P.TT)) (h : ∀ u ∈ G, componentwiseL2 P u) :
     ∀ u ∈ Submodule.span ℂ G, componentwiseL2 P u := by
@@ -182,29 +178,29 @@ theorem componentwiseL2_of_span (G : Set (M.Ty P → MA.SmQ P.r P.TT)) (h : ∀ 
 end gen
 
 /- English proof (translation)
-Establish `hρ : 1 ≤ R + 1` using `by linarith`. Establish `hρ0 : 0 ≤ R + 1` using `by linarith`. Establish `hn0 : 0 ≤ n` using `by linarith`. Establish `hρ4 : R + 1 ≤ (R + 1) ^ 4` using `le_self_pow₀ hρ (by norm_num)`. Establish `hR4 : R ≤ (R + 1) ^ 4` using `by linarith`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hρ24 : (R + 1) ^ 2 ≤ (R + 1) ^ 4` using `pow_le_pow_right₀ hρ (by norm_num)`. Establish `hn2 : n ≤ n ^ 2` using `le_self_pow₀ hn (by norm_num)`. Establish `hn3 : n ≤ n ^ 3` using `le_self_pow₀ hn (by norm_num)`. Establish `hn23 : n ^ 2 ≤ n ^ 3` using `pow_le_pow_right₀ hn (by norm_num)`. Establish `hNn : 0 ≤ N * n ^ 2` using `by positivity`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set X : ℝ := (R + 1) ^ 4 * (N * n ^ 2 + n ^ 3) with hX`. Establish `hX0 : 0 ≤ X` using `by positivity`. Establish `hY : ∀ a b : ℝ, 0 ≤ a → 0 ≤ b → a ≤ (R + 1) ^ 4 → b ≤ n ^ 3 → a * b ≤ X`. Introduce `a b ha hb h1 h2`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `hXa : (R + 1) * n ^ 2 ≤ X` using `hY _ _ hρ0 (by positivity) hρ4 hn23`. Establish `hXa' : (R + 1) ^ 2 * n ≤ X` using `hY _ _ (by positivity) hn0 hρ24 hn3`. Establish `hXc : R * n ≤ X` using `hY _ _ hR hn0 hR4 hn3`. Establish `hXb : (2 * N + 2) * ((R + 1) * n) ≤ 2 * X`. Establish `h1' : N * n ≤ N * n ^ 2` using `mul_le_mul_of_nonneg_left hn2 hN`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2' : (R + 1) * (N * n + n) ≤ (R + 1) ^ 4 * (N * n ^ 2 + n ^ 3)` using `mul_le_mul hρ4 (by linarith) (by positivity) (by positivity)`. Establish `e : (2 * N + 2) * ((R + 1) * n) = 2 * ((R + 1) * (N * n + n))` using `by ring`. Rewrite using `[e, hX]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hdm0 : 0 ≤ C2 * (R + 1) * n` using `by positivity`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2 : (2 * N + 2) * (C2 * (R + 1) * n) ≤ 2 * C2 * X`. Use `mul_le_mul_of_nonneg_left hXb hC2` as an intermediate fact. Establish `e : (2 * N + 2) * (C2 * (R + 1) * n) = C2 * ((2 * N + 2) * ((R + 1) * n))` using `by ring`. Rewrite using `[e]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `e3 : C3 * (R + 1) * n ^ 2 ≤ |C3| * X`. Combine the equalities or inequalities in the displayed calculation. Establish `e3' : C5 * (R + 1) ^ 2 * n ≤ |C5| * X`. Combine the equalities or inequalities in the displayed calculation. Establish `e4 : 0 ≤ |C5| * X` using `mul_nonneg (abs_nonneg _) hX0`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e4' : 0 ≤ |C3| * X` using `mul_nonneg (abs_nonneg _) hX0`. Establish `hA2 : (8 * C2 + |C3| + |C5|) * X ≤ A₀`. Establish `e : (8 * C2 + |C3| + |C5|) * X = (8 * C2 + |C3| + |C5|) * (R + 1) ^ 4 * (N * n ^ 2 + n ^ 3)`. Rewrite using `[hX]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `hA`. Establish `hsplit : (8 * C2 + |C3| + |C5|) * X = 2 * C2 * X + 6 * C2 * X + |C3| * X + |C5| * X` using `by ring`. Establish `e6 : 0 ≤ 6 * C2 * X` using `by positivity`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `i o hi ho`. Establish `e1 : (i + 1) * (C2 * (R + 1) * n) ≤ (2 * N + 2) * (C2 * (R + 1) * n)` using `mul_le_mul_of_nonneg_right hi hdm0`. Establish `e5 : 6 * R * o ≤ 6 * C2 * X`. Establish `h1 : R * o ≤ R * (C2 * n)` using `mul_le_mul_of_nonneg_left ho hR`. Establish `h2 : R * (C2 * n) = C2 * (R * n)` using `by ring`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `h3 : C2 * (R * n) ≤ C2 * X` using `mul_le_mul_of_nonneg_left hXc hC2`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `e : C3 * (R + 1) * n ^ 2 + 6 * R * o + C2 * (R + 1) * n + i * (C2 * (R + 1) * n) = C3 * (R + 1) * n ^ 2 + 6 * R * o + (i + 1) * (C2 * (R + 1) * n)` using `by ring`. Combine the linear equalities and inequalities to obtain the conclusion. Introduce `i hi`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `e1 : i * (C2 * (R + 1) * n) ≤ (2 * N + 2) * (C2 * (R + 1) * n)` using `mul_le_mul_of_nonneg_right hi hdm0`. Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 theorem jd_arith (C2 C3 C5 R n N A₀ : ℝ) (hC2 : 0 ≤ C2) (hR : 0 ≤ R) (hn : 1 ≤ n) (hN : 0 ≤ N)
     (hA : (8 * C2 + |C3| + |C5|) * (R + 1) ^ 4 * (N * n ^ 2 + n ^ 3) ≤ A₀) :
@@ -273,33 +269,33 @@ theorem jd_arith (C2 C3 C5 R n N A₀ : ℝ) (hC2 : 0 ≤ C2) (hR : 0 ≤ R) (hn
     linarith
 
 /- English proof (translation)
-Take `⟨C2, hC2, H2⟩` from `h2`. Take `⟨C3, H3⟩` from `h3`. Take `⟨C5, H5⟩` from `h5`. Unfold `JDecayTr`. Use `⟨8 * C2 + |C3| + |C5|, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `E _ _ _ Wp Wq _ _ _ _ _ _ S T f χ ν' m₀ top A₀ hB v e L hFr hGa hL hJf`. Establish `hmono : ∀ c, c ≤ 8 * C2 + |C3| + |C5| → BuiltOW c S T f χ ν' m₀ top A₀` using `fun c hc => ⟨isBuiltPlace_mono hc hB.1, hB.2⟩`. Establish `hB2` using `hmono C2 (by linarith [abs_nonneg C3, abs_nonneg C5])`. Establish `hB3` using `hmono C3 (by linarith [le_abs_self C3, abs_nonneg C5])`. Establish `hB5` using `hmono C5 (by linarith [le_abs_self C5, abs_nonneg C3])`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hPl : Q.IsPlace (D.parOf S v) (T v).base.z (T v).base.z' (T v).base.π (T v).base.π'` using `(hB.1.2.2.2.1.2 v).2.2.2.1`. Establish `hTT : (D.parOf S v).TT = Tz S.G.k S.G.r (T v).base.z * Tz S.G.k S.G.r (T v).base.z'`. Rewrite using `[hPl.2.2.2.1, hPl.2.2.2.2.1]`. Both sides reduce to the same expression. Establish `hTTpos : 0 < (D.parOf S v).TT` using `by rw [hTT]; exact mul_pos (T v).base.T_pos (T v).base.T'_pos`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hInCC : ∀ m : ℕ, B.InCC A₀ m (f v)` using `(hB.1.2.2.2.1.2 v).2.2.2.2.1`. Take `⟨-, -, -, -, -, -, -, -, -, hCk, -, hA, -⟩` from `hB.1`. Establish `hR : (0 : ℝ) ≤ (S.G.r : ℝ)` using `Nat.cast_nonneg _`. Establish `hnE : nDim S.G.k S.G.r = 2 * (S.G.r : ℝ) + S.G.k + 1` using `by unfold nDim; push_cast; ring`. Establish `hn : (1 : ℝ) ≤ nDim S.G.k S.G.r`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hnE]`. Use `Nat.cast_nonneg (α := ℝ) S.G.k` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hA' : (8 * C2 + |C3| + |C5|) * ((S.G.r : ℝ) + 1) ^ 4 * ((S.Ntop : ℝ) * nDim S.G.k S.G.r ^ 2 + nDim S.G.k S.G.r ^ 3) ≤ A₀` using `by rw [hnE]; exact hA`. Take `⟨hK3', hK5'⟩` from `jd_arith C2 C3 C5 _ _ _ A₀ hC2 hR hn (Nat.cast_nonneg _) hA'`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hdm0 : 0 ≤ C2 * ((S.G.r : ℝ) + 1) * nDim S.G.k S.G.r`. Use `le_trans zero_le_one hn` as an intermediate fact. Check the signs of the components of the expression. Establish `hK3 : ∀ i : ℕ, i ≤ 2 * S.Ntop + 1 → ∀ o : ℝ, o ≤ C2 * nDim S.G.k S.G.r → C3 * ((S.G.r : ℝ) + 1) * nDim S.G.k S.G.r ^ 2 + 6 * (S.G.r : ℝ) * o + C2 * ((S.G.r : ℝ) + 1) * nDim S.G.k S.G.r ≤ A₀ - (i : ℝ) * (C2 * ((S.G.r : ℝ) + 1) * nDim S.G.k S.G.r)`. Introduce `i hi o ho`.
+Establish an intermediate fact. Establish an intermediate fact. Check the signs of the components of the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `hK3' _ _ ?_ ho` and prove the remaining obligations. Establish `: ((i : ℕ) : ℝ) ≤ ((2 * S.Ntop + 1 : ℕ) : ℝ)` using `by exact_mod_cast hi`. Move the coercions through the operations in `at this`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hK5 : ∀ i : ℕ, i ≤ 2 * S.Ntop + 2 → C5 * ((S.G.r : ℝ) + 1) ^ 2 * nDim S.G.k S.G.r ≤ A₀ - (i : ℝ) * (C2 * ((S.G.r : ℝ) + 1) * nDim S.G.k S.G.r)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Introduce `i hi`. Use `hK5' _ ?_` and prove the remaining obligations. Establish `: ((i : ℕ) : ℝ) ≤ ((2 * S.Ntop + 2 : ℕ) : ℝ)` using `by exact_mod_cast hi`. Move the coercions through the operations in `at this`. Combine the linear equalities and inequalities to obtain the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Set `Good : ℕ → (B.Mat S.G.k S.G.r → (Wq (S.pl v) →L[ℂ] Wp (S.pl v))) → Prop` to `fun i F => B.CkOn ⊤ (B.GV S.G.k S.G.r) F ∧ (∀ m : ℕ, B.InCC (A₀ - (i : ℝ) * (C2 * ((S.G.r : ℝ) + 1) * nDim S.G.k S.G.r)) m F) ∧ B.JF (T v).base F ∈ Q.FFl S.G.k S.G.r (T v).base.z (T v).base.z' (T v).base.π (T v).base.π' 0 (OmP S T v)`. Set `tr : (B.Mat S.G.k S.G.r → (Wq (S.pl v) →L[ℂ] Wp (S.pl v))) → M.Ty (D.parOf S v) → MA.SmQ (D.parOf S v).r (D.parOf S v).TT` to `fun F => trJ S T v e (B.JF (T v).base F)`. Establish `hStep : ∀ i, i < 2 * S.Ntop + 2 → ∀ F, Good i F → ∀ X ∈ MA.hatSet (D.parOf S v) L, ∃ ts : List (MA.A (D.parOf S v) (MA.DQ (D.parOf S v)) × (B.Mat S.G.k S.G.r → (Wq (S.pl v) →L[ℂ] Wp (S.pl v)))), (∀ t ∈ ts, t.1 ∈ Submonoid.closure (MA.bddSet (D.parOf S v) L) ∧ Good (i + 1) t.2) ∧ …`. Introduce `i hi F hF X hX`. Take `⟨hCkF, hCCF, hFF⟩` from `hF`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨ts, hts, hid⟩` from `H2 E Wp Wq S T f χ ν' m₀ top A₀ hB2 v e L hFr hGa hL X hX`. Establish `hthr : ∀ t ∈ ts, C3 * ((S.G.r : ℝ) + 1) * nDim S.G.k S.G.r ^ 2 + 6 * (S.G.r : ℝ) * (B.opOrder t.2 : ℝ) + C2 * ((S.G.r : ℝ) + 1) * nDim S.G.k S.G.r ≤ A₀ - (i : ℝ) * (C2 * ((S.G.r : ℝ) + 1) * nDim S.G.k S.G.r)` using `fun t ht => hK3 i (by omega) _ (hts t ht).2.2.2.2`. Establish `l3 : ∀ t ∈ ts, _` using `fun t ht => H3 E Wp Wq S T f χ ν' m₀ top A₀ hB3 v t.2 (C2 * ((S.G.r : ℝ) + 1) * nDim S.G.k S.G.r) (A₀ - (i : ℝ) * (C2 * ((S.G.r : ℝ) + 1) * nDim S.G.k S.G.r)) hdm0 (hts t ht).2.1 (hts t ht).2.2.1 (hts t ht).2.2.2.1 (hthr t ht) F hCkF hCCF hFF`. Use `⟨ts.map fun t => (t.1, B.opApply t.2 F), ?_, ?_⟩` and prove the remaining obligations. Introduce `t ht`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨t0, ht0, rfl⟩` from `List.mem_map.1 ht`. Establish `l4` using `h4 _ _ _ _ t0.2 (C2 * ((S.G.r : ℝ) + 1) * nDim S.G.k S.G.r) (A₀ - (i : ℝ) * (C2 * ((S.G.r : ℝ) + 1) * nDim S.G.k S.G.r)) hdm0 (hts t0 ht0).2.2.2.1 F hCkF hCCF`. Use `⟨(hts t0 ht0).1, l4.1, fun m => ?_, (l3 t0 ht0).1⟩` and prove the remaining obligations. Establish `e : A₀ - (i : ℝ) * (C2 * ((S.G.r : ℝ) + 1) * nDim S.G.k S.G.r) - (C2 * ((S.G.r : ℝ) + 1) * nDim S.G.k S.G.r) = A₀ - ((i + 1 : ℕ) : ℝ) * (C2 * ((S.G.r : ℝ) + 1) * nDim S.G.k S.G.r)` using `by push_cast; ring`. Rewrite using `[← e]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `l4.2 m`. Rewrite using `[hid (B.JF (T v).base F) hFF, List.map_map]`. Use `congr 1`. Use `List.map_congr_left fun t ht => ?_` and prove the remaining obligations. Simplify using `only [Function.comp]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Conclude with `trJ_congr S T v e _ _ (l3 t ht).2`. Introduce `w hw hwh π`. Establish `hG0 : Good 0 (f v)` using `⟨hCk v, fun m => by simpa using hInCC m, hJf⟩`. Establish `hmem` using `jd_word_span L Good tr (2 * S.Ntop + 2) (h1 _ L hTTpos.le hL) hStep w hw hwh (f v) hG0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `hgen : ∀ u ∈ {u | ∃ b ∈ Submonoid.closure (MA.bddSet (D.parOf S v) L), ∃ F', Good w.length F' ∧ u = MA.actA (D.parOf S v) b (tr F')}, componentwiseL2 (D.parOf S v) u`. Introduce and unpack `u ⟨b, hb, F', ⟨hCk', hCC', hFF'⟩, rfl⟩`. Establish `l5` using `H5 E Wp Wq S T f χ ν' m₀ top A₀ hB5 v e hFr (A₀ - (w.length : ℝ) * (C2 * ((S.G.r : ℝ) + 1) * nDim S.G.k S.G.r)) (hK5 _ hw) F' hCk' hCC' hFF'`. Conclude with `(componentwiseL2_iff_integrable _ _).2 (h6 _ L hTTpos hL b hb _ l5)`. Conclude with `(componentwiseL2_iff_integrable _ _).1 (componentwiseL2_of_span _ _ hgen _ hmem) π`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem jDecayTr_of_leaves (h1 : JDHatBdd) (h2 : JDHatOp) (h3 : JDJComm) (h4 : JDCCLower) (h5 : TransferSquareIntegrable)
     (h6 : BoundedOperatorsSquareIntegrable) : JDecayTr := by

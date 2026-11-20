@@ -20,13 +20,13 @@ instance instFintypePl : Fintype (Pl R) := Fintype.ofFinite _
 def tau (H : Host R) (τ : Pl R) : H.E →+* ℂ := H.emb τ.1
 
 /- English proof (translation)
-The claim follows from `H.conjE_apply _ x`.
+A detailed English derivation is pending.
 -/
 theorem tau_conj (H : Host R) (τ : Pl R) (x : H.E) :
     tau H τ (H.conj x) = starRingEnd ℂ (tau H τ x) := H.conjE_apply _ x
 
 /- English proof (translation)
-The claim follows from `H.φ₀.injective (by rw [show H.φ₀ (H.conj (H.conj x)) = _ from H.conjE_apply _ _, show H.φ₀ (H.conj x) = _ from H.conjE_apply _ _] simp)`.
+A detailed English derivation is pending.
 -/
 theorem conj_conj (H : Host R) (x : H.E) : H.conj (H.conj x) = x :=
   H.φ₀.injective (by
@@ -46,7 +46,7 @@ def idealMul (𝔞 : FractionalIdeal (nonZeroDivisors (𝓞 H.E)) H.E) (N : Subm
   Submodule.span (𝓞 H.E) {w | ∃ a ∈ 𝔞, ∃ v ∈ N, w = a • v}
 
 /- English proof (translation)
-Rewrite using `[smul_dotProduct, dotProduct_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem smul_dot (a : 𝓞 H.E) (y x : V H n) : (a • y) ⬝ᵥ x = y ⬝ᵥ (a • x) := by
   rw [smul_dotProduct, dotProduct_smul]
@@ -93,7 +93,7 @@ def val (χ : Herm H n) (y y' : V H n) : H.E :=
   ∑ i, ∑ k, y i * (χ : Matrix (Fin n) (Fin n) H.E) i k * H.conj (y' k)
 
 /- English proof (translation)
-Simplify using `only [val, map_sum, map_mul, conj_conj]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[← χ.2 k i]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem conj_val (χ : Herm H n) (y y' : V H n) : H.conj (val χ y y') = val χ y' y := by
   simp only [val, map_sum, map_mul, conj_conj]
@@ -137,7 +137,7 @@ def levelOne (X : Submodule (𝓞 H.E) (V H n)) : AddSubgroup (Herm H n) :=
 def level (H : Host R) : ℕ := H.g 0 * H.g 1
 
 /- English proof (translation)
-The claim follows from `Nat.mul_pos (H.g_prime 0).pos (H.g_prime 1).pos`.
+A detailed English derivation is pending.
 -/
 theorem level_pos (H : Host R) : 0 < level H := Nat.mul_pos (H.g_prime 0).pos (H.g_prime 1).pos
 
@@ -164,7 +164,7 @@ def toR (H : Host R) (n : ℕ) : V H n →+ XR R n where
 def act (a : H.E) (u : XR R n) : XR R n := fun τ i => tau H τ a * u τ i
 
 /- English proof (translation)
-Use extensionality with `τ i`. Simplify using `[toR, act, Algebra.smul_def]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem toR_smul (a : 𝓞 H.E) (x : V H n) : toR H n (a • x) = act (a : H.E) (toR H n x) := by
   ext τ i
@@ -350,11 +350,11 @@ def DeepPairingClaim : Prop := ∀ (D : D7) (j : Lift D.R) (T : ℕ) (c : ℝ), 
   ∀ B : Bal D.host (rho j), IsPSDRat X B → B ≠ 0 → T * c * phiC X B < pairing χ B
 
 /- English proof (translation)
-Introduce `u hu`. Establish `h : bil (ofHerm H (n` using `n) (fun _ => 1) fun _ => Matrix.isHermitian_one) u u = ∑ τ, ∑ i, 2 * Complex.normSq (u τ i) := by`. Simplify using `only [bil, ofHerm, trBil, LinearMap.mk₂_apply]`. Use `Finset.sum_congr rfl fun τ _ => Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_eq_single i (fun k _ hk => by simp [Matrix.one_apply_ne hk.symm]) (by simp)]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[Complex.normSq_apply]`. Rewrite using `[h]`. Take `⟨τ, hτ⟩` from `Function.ne_iff.1 hu`. Take `⟨i, hi⟩` from `Function.ne_iff.1 hτ`. Use `Finset.sum_pos' (fun τ _ => Finset.sum_nonneg fun i _ => by` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `Complex.normSq_nonneg (u τ i)` as an intermediate fact. Use the proof step `positivity) ⟨τ, Finset.mem_univ _, ?_⟩`. Use `Finset.sum_pos' (fun i _ => by have := Complex.normSq_nonneg (u τ i); positivity) ⟨i, Finset.mem_univ _, ?_⟩` and prove the remaining obligations. Use `Complex.normSq_pos.2 hi` as an intermediate fact. Check the signs of the components of the expression.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Check the signs of the components of the expression. A detailed English derivation is pending.
 -/
 example (H : Host R) :
     IsPD (ofHerm H (n := n) (fun _ => 1) fun _ => Matrix.isHermitian_one) := by
@@ -377,7 +377,7 @@ example (H : Host R) :
   positivity
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Use extensionality with `i k`. Simplify using `[symForm, sqForm, two_mul]`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 example (x : V H n) : symForm x x = 2 • sqForm x := by
   apply Subtype.ext; ext i k; simp [symForm, sqForm, two_mul]

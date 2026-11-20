@@ -15,9 +15,7 @@ def glReindex {a b : Type} [Fintype a] [DecidableEq a] [Fintype b] [DecidableEq 
   Units.mapEquiv (Matrix.reindexAlgEquiv k k e).toMulEquiv
 
 /- English proof (translation)
-Rewrite using `[Units.continuous_iff]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `show Continuous fun g : GL a k => Matrix.reindex e e (g : Matrix a a k)`. Conclude with `Units.continuous_val.matrix_reindex e e`. Use `show Continuous fun g : GL a k => Matrix.reindex e e ((g⁻¹ : GL a k) : Matrix a a k)`.
-
-Conclude with `Units.continuous_coe_inv.matrix_reindex e e`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuous_glReindex {a b : Type} [Fintype a] [DecidableEq a] [Fintype b] [DecidableEq b]
     (e : a ≃ b) : Continuous (glReindex (k := k) e) := by
@@ -29,7 +27,7 @@ theorem continuous_glReindex {a b : Type} [Fintype a] [DecidableEq a] [Fintype b
     exact Units.continuous_coe_inv.matrix_reindex e e
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Both sides reduce to the same expression.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Both sides reduce to the same expression.
 -/
 theorem glReindex_symm {a b : Type} [Fintype a] [DecidableEq a] [Fintype b] [DecidableEq b]
     (e : a ≃ b) (g : GL b k) : (glReindex (k := k) e).symm g = glReindex e.symm g := by
@@ -42,23 +40,21 @@ end GlobalTheory.CompanionTheory.SmGLBridge
 namespace GlobalTheory.CompanionTheory.SmGLBridge
 
 /- English proof (translation)
-Introduce `k _ _ _ _ n _ _ V _ _ π hsm hirr`. Set `e : Fin (Fintype.card n) ≃ n` to `(Fintype.equivFin n).symm`. Set `ψ : GL (Fin (Fintype.card n)) k ≃* GL n k` to `glReindex e`. Establish `hψ : Continuous ψ` using `continuous_glReindex e`. Establish `hψs : Continuous ψ.symm` using `(continuous_glReindex (k := k) e.symm).congr (fun g => (glReindex_symm e g).symm)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `π' : Representation ℂ (GL (Fin (Fintype.card n)) k) V` to `π.comp ψ.toMonoidHom`. Establish `hsm' : GroundTheory.Automorphic.IsSmooth π'`. Introduce `v`. Establish `hs : (↑(GroundTheory.Automorphic.stabilizerOf π' v) : Set (GL (Fin (Fintype.card n)) k)) = ψ ⁻¹' {g | π g v = v}`. Use extensionality with `g`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `only [SetLike.mem_coe, GroundTheory.Automorphic.mem_stabilizerOf, Set.mem_preimage, Set.mem_setOf_eq]`. Conclude with `Iff.rfl`. Rewrite using `[hs]`. Conclude with `(hsm v).preimage hψ`. Use `haveI : IsSimpleOrder (Subrepresentation π) := hirr`.
+Simplify using the standard rewrite rules. Unfold both sides to obtain the same proposition, which implies itself. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `f : Subrepresentation π' ≃o Subrepresentation π` to `{ toFun := fun W => ⟨W.toSubmodule, fun g v hv => by`. Establish `h` using `W.apply_mem_toSubmodule (ψ.symm g) hv`. Simplify `h⟩` using `[π']`. Use `invFun := fun W => ⟨W.toSubmodule, fun g v hv => W.apply_mem_toSubmodule (ψ g) hv⟩`. Use `left_inv := fun W => rfl`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Use `right_inv := fun W => rfl`. Use the proof step `map_rel_iff' := Iff.rfl }`. Use `haveI : π'.IsIrreducible := f.isSimpleOrder`. Establish `had` using `GroundTheory.Automorphic.Parabolic.isAdmissible_of_isIrreducible hsm'`. Use `⟨hsm, fun K hKo hKc => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Set `K' : Subgroup (GL (Fin (Fintype.card n)) k)` to `K.comap ψ.toMonoidHom`. Set `Hm : GL (Fin (Fintype.card n)) k ≃ₜ GL n k` to `{ toEquiv := ψ.toEquiv, continuous_toFun := hψ, continuous_invFun := hψs }`. Establish `hK'o : IsOpen (K' : Set (GL (Fin (Fintype.card n)) k))` using `hKo.preimage hψ`. Establish `hK'c : IsCompact (K' : Set (GL (Fin (Fintype.card n)) k))` using `Hm.isCompact_preimage.mpr hKc`. Establish `hfd` using `had.2 K' hK'c hK'o`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `heq : GlobalTheory.PRep.fixed π K = GroundTheory.Automorphic.fixedVectors π' K'`. Use extensionality with `v`. Rewrite using `[GroundTheory.Automorphic.mem_fixedVectors]`. Use `show (∀ h : ↥K, π (h : GL n k) v = ((1 : ↥K →* ℂˣ) h : ℂ) • v) ↔ _`. Prove the components needed by the constructor for the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Introduce `hv g hg`. Establish `h1` using `hv ⟨ψ g, hg⟩`. Simplify using `only [MonoidHom.one_apply, Units.val_one, one_smul] at h1`. Conclude with `h1`. Introduce `hv h`.
-
-Establish `h1` using `hv (ψ.symm h) (by simpa [K'] using h.2)`. Simplify using `only [MonoidHom.one_apply, Units.val_one, one_smul]`. Simplify `h1` using `[π']`. Rewrite using `[heq]`. Conclude with `hfd`.
+A detailed English derivation is pending.
 -/
 theorem irreducibleAdmissible :
     ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k],

@@ -16,7 +16,7 @@ namespace GlobalTheory.FinPl.VLast.KernPf
 variable {D : D7}
 
 /- English proof (translation)
-Establish `h` using `e.sum_eq_one`. Establish `h1 : e.jX ⬝ e.pX = 0` using `by ext i k; simp [Matrix.mul_apply]`. Establish `h2 : e.jY ⬝ e.pY = 0` using `by ext i k; simp [Matrix.mul_apply]`. Rewrite `h` using `[h1, h2, zero_add, add_zero]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem wittDecomposition_rankZero_coreEmbed_proj {S S₀ : HSp D} (e : HypDec S S₀ 0) : e.j0 ⬝ e.p0 = 1 := by
   have h := e.sum_eq_one
@@ -35,34 +35,32 @@ Both sides reduce to the same expression.
 theorem wittCoreRestrictionHom_apply {S S₀ : HSp D} {ρ : ℕ} (e : HypDec S S₀ ρ) (T : HSp D) (w : WO S T) : wittCoreRestrictionHom e T w = w ⬝ e.j0 := rfl
 
 /- English proof (translation)
-The claim follows from `continuous_id.matrix_mul continuous_const`.
+A detailed English derivation is pending.
 -/
 theorem continuous_restrict_j_zero {S S₀ : HSp D} {ρ : ℕ} (e : HypDec S S₀ ρ) (T : HSp D) : Continuous (wittCoreRestrictionHom e T) :=
   continuous_id.matrix_mul continuous_const
 
 /- English proof (translation)
-Rewrite using `[HypDec.matrixExtendByZero_apply, wittCoreRestrictionHom_apply, Matrix.mul_assoc, wittDecomposition_rankZero_coreEmbed_proj, Matrix.mul_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem wittDecomposition_rankZero_ext_restriction {S S₀ : HSp D} (e : HypDec S S₀ 0) (T : HSp D) (w : WO S T) : e.ext0 T (wittCoreRestrictionHom e T w) = w := by
   rw [HypDec.matrixExtendByZero_apply, wittCoreRestrictionHom_apply, Matrix.mul_assoc, wittDecomposition_rankZero_coreEmbed_proj, Matrix.mul_one]
 
 /- English proof (translation)
-Rewrite using `[← e.wittDecomp_sympl_extAnisotropic_extAnisotropic T, wittDecomposition_rankZero_ext_restriction, wittDecomposition_rankZero_ext_restriction]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem symplectic_restrict_j_zero {S S₀ : HSp D} (e : HypDec S S₀ 0) (T : HSp D) (w w' : WO S T) :
     symplOH S T w w' = symplOH S₀ T (wittCoreRestrictionHom e T w) (wittCoreRestrictionHom e T w') := by
   rw [← e.wittDecomp_sympl_extAnisotropic_extAnisotropic T, wittDecomposition_rankZero_ext_restriction, wittDecomposition_rankZero_ext_restriction]
 
 /- English proof (translation)
-Establish `h` using `hΦ.quasi (γ ⬝ e.i₀) (wittCoreRestrictionHom e T w)`. Establish `hr : ratW T S₀ (γ ⬝ e.i₀) = wittCoreRestrictionHom e T (ratW T S γ)`. Rewrite using `[ratW_eq, ratW_eq, rat_mul, wittCoreRestrictionHom_apply]`. Both sides reduce to the same expression. Rewrite `h` using `[hr]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[map_add, symplectic_restrict_j_zero e T]`. Conclude with `h`. Use `level := by`. Take `⟨U, hU, hfix⟩` from `hΦ.level`. Use `⟨U.comap (wittCoreRestrictionHom e T), hU.preimage (continuous_restrict_j_zero e T), fun u hu hinf => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h0 : (wittCoreRestrictionHom e T u).map (infPart D) = 0`. Rewrite using `[wittCoreRestrictionHom_apply, Matrix.map_mul, hinf, Matrix.zero_mul]`. Establish `hf` using `hfix _ hu h0`. Use function extensionality and compare the values at `w`. Establish `hw` using `congrFun hf (wittCoreRestrictionHom e T w)`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [heisO] at hw ⊢`. Rewrite using `[symplectic_restrict_j_zero e T, map_add]`. Conclude with `hw`. Use `cont := hΦ.cont.comp (continuous_restrict_j_zero e T)`. Use `smooth k L hL hLf w := by`.
-
-Establish `h` using `hΦ.smooth k ((wittCoreRestrictionHom e T).comp L) ((continuous_restrict_j_zero e T).comp hL) (fun t => by show (wittCoreRestrictionHom e T (L t)).map (finPart D) = 0`. Rewrite using `[wittCoreRestrictionHom_apply, Matrix.map_mul, hLf t, Matrix.zero_mul]) (wittCoreRestrictionHom e T w)`. Simplify `h` using `only [AddMonoidHom.comp_apply, map_add]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem theta_restrict_j_zero {S S₀ T : HSp D} (e : HypDec S S₀ 0) {ψ : AddChar (AF D.host.F) ℂ} {Φ : WO S₀ T → ℂ}
     (hΦ : IsThetaFunO ψ S₀ T Φ) : IsThetaFunO ψ S T (fun w => Φ (wittCoreRestrictionHom e T w)) where
@@ -92,9 +90,9 @@ theorem theta_restrict_j_zero {S S₀ T : HSp D} (e : HypDec S S₀ 0) {ψ : Add
     simpa only [AddMonoidHom.comp_apply, map_add] using h
 
 /- English proof (translation)
-Establish `hf` using `theta_restrict_j_zero e hΦ`. Establish `a` using `GlobalTheory.FinPl.VLast.Transport.weilRep_rankZeroWittEmbedding_valueAtZero D ψ S S₀ T e χS χT om om₁ h1 h1' _ hf g h`. Establish `b` using `GlobalTheory.FinPl.VLast.Transport.weilRep_rankZeroWittEmbedding_valueAtZero D ψ S S₀ T e χS' χT' om om₂ h2 h2' _ hf g h`. Establish `hw : (fun w => Φ (wittCoreRestrictionHom e T (e.ext0 T w))) = Φ`. Use function extensionality and compare the values at `w`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[HypDec.matrixExtendByZero_apply, wittCoreRestrictionHom_apply, Matrix.mul_assoc, HypDec.p0_j0, Matrix.mul_one]`. Rewrite `a`, `b` using `[hw]`. Rewrite using `[← a, ← b]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem om_core_eq_rankZero (ψ : AddChar (AF D.host.F) ℂ) {S S₀ T : HSp D} (e : HypDec S S₀ 0)
     (χS χT χS' χT' : (AE D)ˣ →* Circle) (om : Om S T) (om₁ om₂ : Om S₀ T)
@@ -117,15 +115,15 @@ namespace GlobalTheory.FinPl.VLast.KernPf
 set_option maxHeartbeats 2000000 in
 
 /- English proof (translation)
-Introduce `D u d k _ _ _ _ ι o _ hP j h χS χT omT hpT homT φ Ξ Φ hΞ hΦ F`. Take `⟨χA, χz, χS', χT', omz, omT₀, omz'', hV, homa, homz, homX, homT₀, hpT', homz'', -⟩` from `hP.weilLast j h`. Establish `hstd : IsStdChar D d.c.ψ (-1)` using `hpT.std`. Establish `hT : ∀ g h', omT (g, h') Φ 0 = omT₀ (g, h') Φ 0` using `fun g h' => om_core_eq_rankZero d.c.ψ (d.jac j 0 h).d χS χT χS' χT' (d.pT j h).ω omT omT₀ hpT homT hpT' homT₀ Φ hΦ g h'`. Establish `hom₁ : IsWeilDatumO d.c.ψ _ _ (χA * χz) (d.sBF j 0 h).χW (d.sBF j 0 h).om₀`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← hV]`. Conclude with `(d.sBF j 0 h).weil₀`. Establish `hτ` using `(hP.tau j h).1`. Take `⟨-, key⟩` from `GlobalTheory.SeeLastPf.seeLast D d.c.ψ (d.bes j 0 h).V₀ (D.sp.X j) (d.bes j 0 h).L (D.sp.X (j + 1)) (D.sp.X (j + 1 + 1)) D.sp.X' d.Lz (d.bes j 0 h).o (d.oT (j + 1 + 1) h) (o.τ j h) (d.bes j 0 h).line.1 (lastLine_rank d) hτ χA χz (d.sBF j 0 h).χW χS' χT' (d.sBF j 0 h).om₀ (d.k j). …`. Establish `hC` using `GlobalTheory.LastBiTheta.isBiTheta_lastBi D d.c.ψ hstd (d.bes j 0 h).V₀ (D.sp.X j) (d.bes j 0 h).L (D.sp.X (j + 1)) (D.sp.X (j + 1 + 1)) D.sp.X' d.Lz (d.bes j 0 h).o (d.oT (j + 1 + 1) h) (o.τ j h) hτ Ξ Φ hΞ hΦ`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨-, -, hcomm, -⟩` from `GlobalTheory.SeeSaw.biAct_all D d.c.ψ (D.sp.X j) (D.sp.X (j + 1)) (D.sp.X (j + 1 + 1)) χA (d.sBF j 0 h).χW χS' (χT' * χz⁻¹) (d.k j).om (d.k (j + 1)).om homa homX _ hC`. Establish `pt : ∀ h' g h₀, omT (g, h') Φ 0 * (φ h₀ * (d.sBF j 0 h).om₀ ((d.bes j 0 h).o.emb (h₀, 1), g) Ξ 0) = φ h₀ * (d.k (j + 1)).om (g, (d.oT (j + 1 + 1) h).emb (h', 1)) (fun v => (d.k j).om (h₀, g) (fun u => lastBi (d.bes j 0 h).o (d.oT (j + 1 + 1) h) (o.τ j h) Ξ Φ u v) 0) 0`. Introduce `h' g h₀`. Rewrite using `[hT, mul_left_comm, key h₀ g h', hcomm]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Replace the relevant objects with their definitions.
 
-Unfold `smallQ biLift`. Use `congr 1`. Use function extensionality and compare the values at `h'`. Use `congr 1`. Use `congr 1`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Reduce the equality to equality of the corresponding arguments. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `g`. Rewrite using `[← integral_const_mul]`. Use `congr 1`. Use function extensionality and compare the values at `h₀`. Conclude with `pt h' g h₀`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem main : ∀ (D : D7) (u : D.what₂.Word) (d : Dat D u) (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (ι : Type) (o : OffDat d k ι), d.Base → PinOff o → ∀ (j : ℕ) (h : j + 2 * 0 + 2 = D.R.m) (χS χT : (AE D)ˣ →* Circle) (omT : Om (D.sp.X (j + 1)) D.sp.X'), IsWeilDatumO d.c.ψ _ _ χS χT (d.pT j h).ω → IsWeilDatumO d.c.ψ _ _ χS χT omT → ∀ (φ : GA D (D.sp.X j) → ℂ) (Ξ : WO (d.bes j 0 h).V₀ (D.sp.X (j + 1)) → ℂ) (Φ : WO (D.sp.X (j + 1)) D.sp.X' → ℂ), IsThetaFunO d.c.ψ _ _ Ξ → IsThetaFunO d.c.ψ _ _ Φ → ∀ F : GA D D.sp.X' → ℂ, smallQ d j h (d.sBF j 0 h).om₀ omT φ Ξ Φ F = ∫ h' in d.top.fd, F h' * biLift (d.k j).om (d.k (j + 1)).om (d.x j).vol (d.x (j + 1)).vol φ (lastBi (d.bes j 0 h).o (d.oT (j + 1 + 1) h) (o.τ j h) Ξ Φ) ((d.oT (j + 1 + 1) h).emb (h', 1)) ∂d.top.ν := by
   intro D u d k _ _ _ _ ι o _ hP j h χS χT omT hpT homT φ Ξ Φ hΞ hΦ F

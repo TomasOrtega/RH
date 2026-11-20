@@ -17,9 +17,9 @@ namespace GlobalTheory.NormalDescent
 open TopologicalSpace Opposite GlobalTheory.LBGerm GlobalTheory.FiniteAmple
 
 /- English proof (translation)
-Establish `hxV : x ∈ V` using `h hx`. Use `letI := TopCat.Presheaf.algebra_section_stalk X.presheaf (⟨x, hxV⟩ : V)`. Establish `hloc` using `hV.isLocalization_stalk ⟨x, hxV⟩`. Establish `hinj : Function.Injective (X.presheaf.germ V x hxV).hom` using `IsLocalization.injective (M := (hV.primeIdealOf ⟨x, hxV⟩).asIdeal.primeCompl) (S := X.presheaf.stalk x) (Ideal.primeCompl_le_nonZeroDivisors _)`. Introduce `a b e`.
+Establish an intermediate fact. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `hinj` to reduce the goal to its premises. Rewrite using `[← X.presheaf.germ_res (homOfLE h) x hx]`. Simplify using `only [CommRingCat.comp_apply, e]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem injective_res_of_isAffineOpen {X : Scheme.{0}} {V W : X.Opens} (hV : IsAffineOpen V) [IsDomain Γ(X, V)]
     (h : W ≤ V) {x : X} (hx : x ∈ W) : Function.Injective (X.presheaf.map (homOfLE h).op).hom := by
@@ -35,23 +35,21 @@ theorem injective_res_of_isAffineOpen {X : Scheme.{0}} {V W : X.Opens} (hV : IsA
   simp only [CommRingCat.comp_apply, e]
 
 /- English proof (translation)
-Introduce `X Y f _ _ _ M hM t`. Set `α : Type` to `{p : X.Opens × M.ι // IsAffineOpen p.1 ∧ p.1 ≤ M.U p.2 ∧ IsIrreducible (p.1 : Set X)}`. Establish `nd : ∀ a : α, IsDomain Γ(X, a.1.1) ∧ IsIntegrallyClosed Γ(X, a.1.1)` using `fun a => GlobalTheory.IsNormalScheme.isDomain_and_isIntegrallyClosed_of_isIrreducible a.2.2.2`. Establish `cov : ∀ x : X, ∃ a : α, x ∈ a.1.1` using `fun x => by`. Take `⟨i, hi⟩` from `exists_chart hM x`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hC` using `GlobalTheory.IsNormalScheme.isOpen_of_mem_irreducibleComponents (irreducibleComponent_mem_irreducibleComponents x)`. Take `⟨V, hV, hx, hle⟩` from `exists_isAffineOpen_mem_and_subset (U := M.U i ⊓ ⟨_, hC⟩) (x := x) ⟨hi, mem_irreducibleComponent⟩`. Establish `hle : V ≤ M.U i ⊓ ⟨_, hC⟩` using `hle`. Conclude with `⟨⟨(V, i), hV, hle.trans inf_le_left, ⟨⟨x, hx⟩, (isIrreducible_irreducibleComponent (x := x)).2.open_subset V.isOpen fun q hq => (hle hq).2⟩⟩, hx⟩`. Establish `le : ∀ a : α, f ⁻¹ᵁ a.1.1 ≤ (M.pull f).U fun _ => a.1.2` using `fun a y hy => mem_pull.2 (a.2.2.1 hy)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components. Establish an intermediate fact.
 
-Set `τ : ∀ a : α, Γ(Y, f ⁻¹ᵁ a.1.1)` to `fun a => resG Y (le a) (t.f fun _ => a.1.2)`. Set `c : ∀ (k : ℕ) (a : α), Γ(X, a.1.1)` to `fun k a => haveI := (nd a).1 normCoeff (f.app a.1.1).hom (f.finite_app _ a.2.1) (τ a) k`. Establish `key : ∀ k (x : X) (a b : α), x ∈ a.1.1 → x ∈ b.1.1 → gs (𝟙 X) x _ (c k a) = (gm (𝟙 X) x (M.U a.1.2 ⊓ M.U b.1.2) (M.g a.1.2 b.1.2)).val ^ k * gs (𝟙 X) x _ (c k b)`. Introduce `k x a b ha hb`. Take `⟨W, hW, hx, hle⟩` from `exists_isAffineOpen_mem_and_subset (U := a.1.1 ⊓ b.1.1) (x := x) ⟨ha, hb⟩`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hle : W ≤ a.1.1 ⊓ b.1.1` using `hle`. Establish `la : W ≤ a.1.1` using `hle.trans inf_le_left`. Establish `lb : W ≤ b.1.1` using `hle.trans inf_le_right`. Establish `lg : W ≤ M.U a.1.2 ⊓ M.U b.1.2` using `le_inf (la.trans a.2.2.1) (lb.trans b.2.2.1)`. Establish `hWi : IsIrreducible (W : Set X)` using `⟨⟨x, hx⟩, a.2.2.2.2.open_subset W.isOpen la⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨_, _⟩` from `GlobalTheory.IsNormalScheme.isDomain_and_isIntegrallyClosed_of_isIrreducible hWi`. Take `⟨_, _⟩` from `nd a`. Take `⟨_, _⟩` from `nd b`. Establish `ea` using `GlobalTheory.T.reversedCharpolyCoeff_map_of_isPushout _ _ _ _ (isPushout_app f a.2.1 hW la) (injective_res_of_isAffineOpen a.2.1 la hx) (f.finite_app _ a.2.1) (f.finite_app _ hW) (τ a) k`. Establish `eb` using `GlobalTheory.T.reversedCharpolyCoeff_map_of_isPushout _ _ _ _ (isPushout_app f b.2.1 hW lb) (injective_res_of_isAffineOpen b.2.1 lb hx) (f.finite_app _ b.2.1) (f.finite_app _ hW) (τ b) k`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `eτ : resG Y (show f ⁻¹ᵁ W ≤ f ⁻¹ᵁ a.1.1 from fun _ hy => la hy) (τ a) = (f.app W).hom (resG X lg (M.g a.1.2 b.1.2).val) * resG Y (show f ⁻¹ᵁ W ≤ f ⁻¹ᵁ b.1.1 from fun _ hy => lb hy) (τ b)` using `fn_ext fun y hy => by`. Establish `hy' : (𝟙 Y ≫ f) y ∈ W` using `hy`. Rewrite using `[gs_mul (𝟙 Y) y _ hy, gs_res (𝟙 Y) y _ hy, gs_res (𝟙 Y) y _ hy, gs_res (𝟙 Y) y (le a) (la hy), gs_res (𝟙 Y) y (le b) (lb hy), gs_pull (𝟙 Y) f y W hy, gs_res (𝟙 Y ≫ f) y _ hy', gs_unit (𝟙 Y ≫ f) y _ (lg hy'), ← gm_pull_g M f (𝟙 Y) y (fun _ => a.1.2) (fun _ => b.1.2) (le a (la hy)) …`. Conclude with `gs_compat t (𝟙 Y) y (le a (la hy)) (le b (lb hy))`. Establish `e : resG X la (c k a) = resG X lg (M.g a.1.2 b.1.2).val ^ k * resG X lb (c k b)` using `ea.trans ((congrArg (fun z => normCoeff (f.app W).hom (f.finite_app _ hW) z k) eτ).trans ((GlobalTheory.T.reversedCharpolyCoeffInDomain_mul _ _ _ _ k).trans (congrArg (_ * ·) eb.symm)))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e'` using `congrArg (gs (𝟙 X) x W) e`. Rewrite `e'` using `[gs_mul _ x _ hx, gs_pow _ x _ hx, gs_res _ x _ hx, gs_res _ x _ hx, gs_res _ x _ hx, gs_unit _ x _ (lg hx)]`. Then use the resulting hypothesis. Use `choose u hu using fun k => exists_sec_of_refinement (isLB_lbPow hM k) (fun a : α => a.1.1) (fun a _ => a.1.2) (fun a x hx => mem_powChart.2 (a.2.2.1 hx)) cov (c k) fun x a b ha hb => by`. Rewrite using `[gm_lbPow_g k (𝟙 X) x _ _ (mem_powChart.2 (a.2.2.1 ha)) (mem_powChart.2 (b.2.2.1 hb)), Units.val_pow_eq_pow_val]`. Conclude with `key k x a b ha hb`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨u, fun x => ?_⟩` and prove the remaining obligations. Take `⟨a, ha⟩` from `cov x`. Use `⟨a.1.1, a.2.1, (nd a).1, (nd a).2, τ a, ha, fun y hy => ?_, fun k z hz => ?_⟩` and prove the remaining obligations. Establish `hy : y ∈ f ⁻¹ᵁ a.1.1` using `hy`. Rewrite using `[mem_nonzeroLocus_iff_isUnit t (le a hy), ← gs_res (𝟙 Y) y (le a) hy]`.
-
-Conclude with `isUnit_gs_iff (𝟙 Y) y _ hy _`. Establish `hJ : z ∈ (lbPow M k).U fun _ => a.1.2` using `mem_powChart.2 (a.2.2.1 hz)`. Rewrite using `[mem_nonzeroLocus_iff_isUnit (u k) hJ, hu k z _ a hJ hz, Units.isUnit_units_mul]`. Conclude with `isUnit_gs_iff (𝟙 X) z _ hz _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_sec_normCoeff_local : ∀ {X Y : Scheme.{0}} (f : Y ⟶ X) [IsFinite f] [IsLocallyNoetherian X]
     [GlobalTheory.IsNormalScheme X] {M : LB X}, M.IsLB → ∀ t : (M.pull f).Sec, ∃ u : ∀ k, (lbPow M k).Sec, ∀ x : X,

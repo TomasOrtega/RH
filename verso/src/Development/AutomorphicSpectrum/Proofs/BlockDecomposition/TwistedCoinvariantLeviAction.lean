@@ -19,16 +19,16 @@ theorem qO_tmul {i t : ℕ} (ψ : AddChar k Circle) (τ : MRep k (i + 1)) (σ : 
     qO τ σ ψ (x ⊗ₜ[ℂ] y) = cls ψ τ x ⊗ₜ[ℂ] y := rfl
 
 /- English proof (translation)
-The claim follows from `twist_apply _ _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem phiN_cls {i : ℕ} (ψ : AddChar k Circle) (τ : MRep k (i + 1)) (a : Mir k i) (x : τ.V) :
     (phiN ψ τ).ρ a (cls ψ τ x) = ((dpowM i (-1 / 2) a : ℂˣ) : ℂ) • cls ψ τ (τ.ρ (sEmb k i a) x) :=
   twist_apply _ _ _ _
 
 /- English proof (translation)
-Establish `h : dpow (k` using `k) (i + 1) (1 / 2 + -1 / 2) = dpow (i + 1) (1 / 2) * dpow (i + 1) (-1 / 2) := GlobalTheory.CompanionTheory.LeibPhi.dpow_add k (i + 1) _ _`. Establish `h0 : dpow (k` using `k) (i + 1) (1 / 2 + -1 / 2) = 1 := by`. Rewrite using `[show ((1 / 2 + -1 / 2 : ℝ)) = 0 by norm_num]`. Use extensionality with `g`. Simplify using `[dpow, detChar, absPow]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Establish `h1` using `congrArg (fun f => ((f (a : GL (Fin (i + 1)) k) : ℂˣ) : ℂ)) (h.symm.trans h0)`. Simplify `h1` using `[dpowM]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem dpowM_half (i : ℕ) (a : Mir k i) :
     ((dpowM i (1 / 2) a : ℂˣ) : ℂ) * ((dpowM i (-1 / 2) a : ℂˣ) : ℂ) = 1 := by
@@ -42,7 +42,7 @@ theorem dpowM_half (i : ℕ) (a : Mir k i) :
   simpa [dpowM] using h1
 
 /- English proof (translation)
-Establish `e : (-((i + 1 + 1 : ℕ) : ℝ) / 2) = -1 / 2 + (-((i + 1 : ℕ) : ℝ) / 2)` using `by push_cast; ring`. Rewrite using `[e, GlobalTheory.CompanionTheory.LeibPhi.dpow_add]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem dpow_step (i t : ℕ) (w : GL (Fin (t + 1)) k) :
     ((dpow (t + 1) (-((i + 1 + 1 : ℕ) : ℝ) / 2) w : ℂˣ) : ℂ) =
@@ -53,7 +53,7 @@ theorem dpow_step (i t : ℕ) (w : GL (Fin (t + 1)) k) :
   simp
 
 /- English proof (translation)
-Rewrite using `[smul_smul f f' p]`. Generalize the expression as in `f * f' = f at h`. Rewrite using `[TensorProduct.tmul_smul, TensorProduct.tmul_smul, ← TensorProduct.smul_tmul', ← TensorProduct.smul_tmul', smul_smul, smul_smul, smul_smul, mul_comm d c, h, mul_comm f g, mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Rewrite the conclusion using the stated equalities.
 -/
 theorem smul_tmul_scal {X Y : Type} [AddCommGroup X] [Module ℂ X] [AddCommGroup Y] [Module ℂ Y] (p : X) (q : Y)
     (c d e f f' g : ℂ) (h : c * d = e * (f * f' * g)) :
@@ -64,13 +64,13 @@ theorem smul_tmul_scal {X Y : Type} [AddCommGroup X] [Module ℂ X] [AddCommGrou
     smul_smul, smul_smul, smul_smul, mul_comm d c, h, mul_comm f g, mul_assoc]
 
 /- English proof (translation)
-Set `L : τ.V ⊗[ℂ] σ.V →ₗ[ℂ] (phiN ψ τ).V ⊗[ℂ] σ.V` to `(qO τ σ ψ) ∘ₗ (extTensor (mtw τ (((t + 1 : ℕ) : ℝ) / 2)).ρ (σ.tw (-((i + 1 + 1 : ℕ) : ℝ) / 2)).ρ (sEmb k i a, w))`. Set `R : τ.V ⊗[ℂ] σ.V →ₗ[ℂ] (phiN ψ τ).V ⊗[ℂ] σ.V` to `(((dpowM i (1 / 2) a : ℂˣ) : ℂ) * ((dpow (t + 1) (-1 / 2) w : ℂˣ) : ℂ)) • ((extTensor (mtw (phiN ψ τ) (((t + 1 : ℕ) : ℝ) / 2)).ρ (σ.tw (-((i + 1 : ℕ) : ℝ) / 2)).ρ (a, w)) ∘ₗ (qO τ σ ψ))`. Establish `hLR : L = R`. Use `TensorProduct.ext' fun x y => ?_` and prove the remaining obligations. Establish `hl : (mtw τ (((t + 1 : ℕ) : ℝ) / 2)).ρ (sEmb k i a) x = ((dpowM i (((t + 1 : ℕ) : ℝ) / 2) a : ℂˣ) : ℂ) • τ.ρ (sEmb k i a) x` using `(twist_apply _ _ _ _).trans (by`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[show sEmb k i a = (levi k (i + 1)).comp (Mir k i).subtype a from rfl, GlobalTheory.CompanionTheory.LeibPhiTw.dpowM_levi]`. Use the proof step `rfl)`. Establish `hr : ∀ s : ℝ, (σ.tw s).ρ w y = ((dpow (t + 1) s w : ℂˣ) : ℂ) • σ.ρ w y` using `fun s => twist_apply _ _ _ _`. Establish `hm : (mtw (phiN ψ τ) (((t + 1 : ℕ) : ℝ) / 2)).ρ a (cls ψ τ x) = ((dpowM i (((t + 1 : ℕ) : ℝ) / 2) a : ℂˣ) : ℂ) • (phiN ψ τ).ρ a (cls ψ τ x)` using `twist_apply _ _ _ _`. Establish `hc : ∀ (c : ℂ) (z : τ.V), cls ψ τ (c • z) = c • cls ψ τ z` using `fun c z => map_smul _ c z`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `eL : L (x ⊗ₜ[ℂ] y) = cls ψ τ ((mtw τ (((t + 1 : ℕ) : ℝ) / 2)).ρ (sEmb k i a) x) ⊗ₜ[ℂ] (σ.tw (-((i + 1 + 1 : ℕ) : ℝ) / 2)).ρ w y` using `rfl`. Establish `eR : R (x ⊗ₜ[ℂ] y) = (((dpowM i (1 / 2) a : ℂˣ) : ℂ) * ((dpow (t + 1) (-1 / 2) w : ℂˣ) : ℂ)) • ((mtw (phiN ψ τ) (((t + 1 : ℕ) : ℝ) / 2)).ρ a (cls ψ τ x) ⊗ₜ[ℂ] (σ.tw (-((i + 1 : ℕ) : ℝ) / 2)).ρ w y)` using `rfl`. Rewrite using `[eL, eR, hl, hm, phiN_cls, hr, hr, hc, dpow_step]`. Establish `hh` using `dpowM_half i a`. Use `smul_tmul_scal (X := (phiN ψ τ).V) (Y := σ.V) _ _ _ _ _ _ _ _ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `(-(((dpowM i (((t + 1 : ℕ) : ℝ) / 2) a : ℂˣ) : ℂ) * ((dpow (t + 1) (-1 / 2) w : ℂˣ) : ℂ) * ((dpow (t + 1) (-((i + 1 : ℕ) : ℝ) / 2) w : ℂˣ) : ℂ))) * hh`. Conclude with `LinearMap.congr_fun hLR v`.
+A detailed English derivation is pending.
 -/
 theorem intertwine (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (i t : ℕ) (ψ : AddChar k Circle) (τ : MRep k (i + 1)) (σ : GRep k (t + 1)) (a : Mir k i) (w : GL (Fin (t + 1)) k) (v : τ.V ⊗[ℂ] σ.V) :
   qO τ σ ψ (extTensor (mtw τ (((t + 1 : ℕ) : ℝ) / 2)).ρ (σ.tw (-((i + 1 + 1 : ℕ) : ℝ) / 2)).ρ (sEmb k i a, w) v) =

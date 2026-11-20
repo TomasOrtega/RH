@@ -8,11 +8,11 @@ section GLCong
 variable {B : Type} [CommRing B] (R : Subring B) {n : ℕ}
 
 /- English proof (translation)
-Set `M : Matrix (Fin n) (Fin n) R` to `fun i j => ⟨_, hA i j⟩`. Set `N : Matrix (Fin n) (Fin n) R` to `fun i j => ⟨_, hA' i j⟩`. Establish `hM : R.subtype.mapMatrix M = (A : Matrix (Fin n) (Fin n) B)` using `by ext i j; rfl`. Establish `hN : R.subtype.mapMatrix N = ((A⁻¹ : GL (Fin n) B) : Matrix (Fin n) (Fin n) B)` using `by ext i j; rfl`. Establish `hinj : Function.Injective (R.subtype.mapMatrix : Matrix (Fin n) (Fin n) R →+* _)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `X Y h`. Use extensionality with `i j`. Conclude with `congrFun (congrFun h i) j`. Establish `h1 : M * N = 1` using `hinj (by rw [map_mul, map_one, hM, hN, ← Units.val_mul, mul_inv_cancel, Units.val_one])`. Establish `h2 : N * M = 1` using `hinj (by rw [map_mul, map_one, hM, hN, ← Units.val_mul, inv_mul_cancel, Units.val_one])`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨⟨M, N, h1, h2⟩, ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem glcong_mem_range (A : GL (Fin n) B) (hA : ∀ i j, (A : Matrix (Fin n) (Fin n) B) i j ∈ R)
     (hA' : ∀ i j, ((A⁻¹ : GL (Fin n) B) : Matrix (Fin n) (Fin n) B) i j ∈ R) :
@@ -30,17 +30,17 @@ theorem glcong_mem_range (A : GL (Fin n) B) (hA : ∀ i j, (A : Matrix (Fin n) (
   rfl
 
 /- English proof (translation)
-Establish `hX : ∀ i j, ∃ x : R, x * (c * c) = (h : Matrix (Fin n) (Fin n) R) i j - (1 : Matrix (Fin n) (Fin n) R) i j`. Introduce `i j`. Rewrite using `[← Ideal.mem_span_singleton', ← Ideal.Quotient.eq]`. Use `congrArg (fun u : GL (Fin n) (R ⧸ Ideal.span {c * c}) => (u : Matrix (Fin n) (Fin n) (R ⧸ Ideal.span {c * c})) i j) hh` as an intermediate fact. Simplify using `only [GeneralLinearGroup.map_apply, Units.val_one] at this`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[this, Matrix.one_apply, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`. Use `choose X hXe using hX`. Set `P' : Matrix (Fin n) (Fin n) R` to `fun i j => ⟨_, hP i j⟩`. Set `Q' : Matrix (Fin n) (Fin n) R` to `fun i j => ⟨_, hQ i j⟩`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `X' : Matrix (Fin n) (Fin n) R` to `fun i j => X i j`. Establish `hP' : R.subtype.mapMatrix P' = (c : B) • P` using `by ext i j; rfl`. Establish `hQ' : R.subtype.mapMatrix Q' = (c : B) • Q` using `by ext i j; rfl`. Establish `hh' : (h : Matrix (Fin n) (Fin n) R) = 1 + (c * c) • X'`. Use `Matrix.ext fun i j => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `show _ = (1 : Matrix (Fin n) (Fin n) R) i j + (c * c) * X i j`. Rewrite using `[mul_comm, hXe i j]`. Expand and normalize the polynomial expressions, which then agree. Establish `key : P * R.subtype.mapMatrix (h : Matrix (Fin n) (Fin n) R) * Q = R.subtype.mapMatrix (1 + P' * X' * Q')`. Establish `hs : R.subtype.mapMatrix ((c * c) • X') = ((c : B) * (c : B)) • R.subtype.mapMatrix X'`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition.
 
-Use extensionality with `i j`. Express the relevant statement in the definitionally equal form `((c * c * X i j : R) : B) = (c : B) * c * (X i j : B)`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[map_add, map_one, map_mul, map_mul, hP', hQ', hh', map_add, map_one, hs]`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [Matrix.mul_add, Matrix.add_mul, Matrix.mul_one, hPQ, Matrix.smul_mul, Matrix.mul_smul, smul_smul, Matrix.mul_assoc]`. Introduce `i j`. Rewrite using `[key]`. Conclude with `((1 + P' * X' * Q' : Matrix (Fin n) (Fin n) R) i j).2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem glcong_entries (c : R) (h : GL (Fin n) R)
     (hh : GeneralLinearGroup.map (n := Fin n) (Ideal.Quotient.mk (Ideal.span {c * c})) h = 1)
@@ -77,17 +77,15 @@ theorem glcong_entries (c : R) (h : GL (Fin n) R)
   exact ((1 + P' * X' * Q' : Matrix (Fin n) (Fin n) R) i j).2
 
 /- English proof (translation)
-Use `set φ := GeneralLinearGroup.map (n := Fin n) R.subtype`. Use `set ψ := GeneralLinearGroup.map (n := Fin n) (Ideal.Quotient.mk (Ideal.span {c * c}))`. Establish `hΓ : ψ.ker.index ≠ 0`. Rewrite using `[Subgroup.index_ker]`. Conclude with `Nat.card_ne_zero.mpr ⟨inferInstance, inferInstance⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Establish `hinj : Function.Injective φ`. Introduce `a b hab`. Use extensionality with `i j`. Conclude with `congrArg (fun u : GL (Fin n) B => (u : Matrix (Fin n) (Fin n) B) i j) hab`. Establish `h1 : (ψ.ker.map φ).relIndex φ.range ≠ 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[MonoidHom.range_eq_map, Subgroup.relIndex_map_map_of_injective _ _ hinj, Subgroup.relIndex_top_right]`. Conclude with `hΓ`. Establish `hval : ∀ h : GL (Fin n) R, ((φ h : GL (Fin n) B) : Matrix (Fin n) (Fin n) B) = R.subtype.mapMatrix (h : Matrix (Fin n) (Fin n) R)` using `fun h => rfl`. Establish `hgg : ((g⁻¹ : GL (Fin n) B) : Matrix (Fin n) (Fin n) B) * (g : Matrix (Fin n) (Fin n) B) = 1`. Rewrite using `[← Units.val_mul, inv_mul_cancel, Units.val_one]`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h2 : ψ.ker.map φ ≤ φ.range.map (MulAut.conj g).toMonoidHom`. Introduce and unpack `x ⟨h, hh, rfl⟩`. Use `replace hh : ψ h = 1 := hh`. Establish `hh' : ψ h⁻¹ = 1` using `by rw [map_inv, hh, inv_one]`. Rewrite using `[Subgroup.mem_map]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨g⁻¹ * φ h * g, ?_, by simp [MulAut.conj_apply, mul_assoc]⟩` and prove the remaining obligations. Apply `glcong_mem_range` to reduce the goal to its premises. Introduce `i j`. Use `glcong_entries R c h hh _ _ hg' hg hgg i j` as an intermediate fact. Rewrite using `[Units.val_mul, Units.val_mul, hval]` and apply the resulting hypothesis.
-
-Introduce `i j`. Use `glcong_entries R c h⁻¹ hh' _ _ hg' hg hgg i j` as an intermediate fact. Rewrite using `[show (g⁻¹ * φ h * g)⁻¹ = g⁻¹ * φ h⁻¹ * g by rw [map_inv]; group, Units.val_mul, Units.val_mul, hval]` and apply the resulting hypothesis. Conclude with `fun h0 => h1 (Subgroup.relIndex_eq_zero_of_le_left h2 h0)`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
 -/
 theorem glcong_relIndex_ne_zero (c : R) (hfin : Finite (R ⧸ Ideal.span {c * c})) (g : GL (Fin n) B)
     (hg : ∀ i j, (c : B) * (g : Matrix (Fin n) (Fin n) B) i j ∈ R)
@@ -129,11 +127,9 @@ theorem glcong_relIndex_ne_zero (c : R) (hfin : Finite (R ⧸ Ideal.span {c * c}
 end GLCong
 
 /- English proof (translation)
-Use `set K := (GeneralLinearGroup.map (n := Fin n) R.subtype).range`. Use `⟨glcong_relIndex_ne_zero R c hfin g hg hg', ?_⟩` and prove the remaining obligations. Establish `e` using `Subgroup.relIndex_map_map_of_injective (f := (MulAut.conj g).toMonoidHom) (K.map (MulAut.conj g⁻¹).toMonoidHom) K (MulEquiv.injective _)`. Establish `hK : (K.map (MulAut.conj g⁻¹).toMonoidHom).map (MulAut.conj g).toMonoidHom = K`. Rewrite using `[Subgroup.map_map]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `conv_rhs => rw [← Subgroup.map_id K]`. Use `congr 1`. Use extensionality with `x`. Simplify using `[MulAut.conj_apply, mul_assoc]`. Rewrite `e` using `[hK]`.
-
-Rewrite using `[e]`. Conclude with `glcong_relIndex_ne_zero R c hfin g⁻¹ hg' (by simpa using hg)`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem commensurable_conj_range_GL_subring {B : Type} [CommRing B] (R : Subring B) (n : ℕ) (c : R)
     (hfin : Finite (R ⧸ Ideal.span {c * c})) (g : GL (Fin n) B)

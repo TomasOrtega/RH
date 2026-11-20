@@ -18,9 +18,9 @@ namespace GlobalTheory.ChainInv
 variable {D : D7}
 
 /- English proof (translation)
-Apply `HeightOneSpectrum.ext` to reduce the goal to its premises. Use extensionality with `x`. Use `show Formalism.L2.Col.cO _ x ∈ P.asIdeal ↔ x ∈ Ideal.map (Formalism.DivisionValues.cO D.host.E) P.asIdeal`. Rewrite using `[← Ideal.comap_symm, Ideal.mem_comap]`. Establish `: (Formalism.DivisionValues.cO D.host.E).symm x = Formalism.L2.Col.cO _ x`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `RingOfIntegers.ext` to reduce the goal to its premises. Simplify using `[Formalism.DivisionValues.cO, Formalism.L2.Col.cO]`. Both sides reduce to the same expression. Rewrite using `[this]`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conjP_eq_conjPl (P : HeightOneSpectrum (𝓞 D.host.E)) : Formalism.L2.Col.conjPrime₂ P = Formalism.DivisionValues.conjPl P := by
   apply HeightOneSpectrum.ext
@@ -34,7 +34,7 @@ theorem conjP_eq_conjPl (P : HeightOneSpectrum (𝓞 D.host.E)) : Formalism.L2.C
   rw [this]
 
 /- English proof (translation)
-Rewrite using `[← conjP_eq_conjPl]`. Conclude with `GlobalTheory.GridPlaces.under_conjP w`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem under_conjPl (w : HeightOneSpectrum (𝓞 D.host.E)) :
     (Formalism.DivisionValues.conjPl w).under (𝓞 D.host.F) = w.under (𝓞 D.host.F) := by
@@ -42,7 +42,7 @@ theorem under_conjPl (w : HeightOneSpectrum (𝓞 D.host.E)) :
   exact GlobalTheory.GridPlaces.under_conjP w
 
 /- English proof (translation)
-Rewrite using `[Ideal.absNorm_apply, Ideal.absNorm_apply, Submodule.cardQuot_apply, Submodule.cardQuot_apply]`. Conclude with `(Nat.card_congr (Ideal.quotientEquiv w.asIdeal (Formalism.DivisionValues.conjPl w).asIdeal (Formalism.DivisionValues.cO D.host.E) rfl).toEquiv).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem absNorm_conjPl (w : HeightOneSpectrum (𝓞 D.host.E)) :
     Ideal.absNorm (Formalism.DivisionValues.conjPl w).asIdeal = Ideal.absNorm w.asIdeal := by
@@ -51,7 +51,7 @@ theorem absNorm_conjPl (w : HeightOneSpectrum (𝓞 D.host.E)) :
     (Ideal.quotientEquiv w.asIdeal (Formalism.DivisionValues.conjPl w).asIdeal (Formalism.DivisionValues.cO D.host.E) rfl).toEquiv).symm
 
 /- English proof (translation)
-Introduce `hs`. Take `⟨P, Q, hPQ, hP, hQ⟩` from `GlobalTheory.LFun.isSplit_iff.1 hs`. Establish `key : ∀ R : HeightOneSpectrum (𝓞 D.host.E), R.under (𝓞 D.host.F) = w.under (𝓞 D.host.F) → R = w` using `fun R hR => (GlobalTheory.GridPlaces.eq_or_eq_conjP hR).elim id fun h => h.trans ((conjP_eq_conjPl w).trans hc)`. Conclude with `hPQ ((key P hP).trans (key Q hQ).symm)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem not_isSplit_of_conjPl_eq {w : HeightOneSpectrum (𝓞 D.host.E)} (hc : Formalism.DivisionValues.conjPl w = w) :
     ¬ Formalism.MainNotions.SchurIrreducible.IsSplit (E := D.host.E) (w.under (𝓞 D.host.F)) := by
@@ -62,9 +62,9 @@ theorem not_isSplit_of_conjPl_eq {w : HeightOneSpectrum (𝓞 D.host.E)} (hc : F
   exact hPQ ((key P hP).trans (key Q hQ).symm)
 
 /- English proof (translation)
-Establish `h2` using `(GlobalTheory.AdelicU.isCMExt_host D).2.2.1`. Distinguish the cases in `hc : Formalism.DivisionValues.conjPl w = w`. Establish `hns` using `not_isSplit_of_conjPl_eq hc`. Break down `GlobalTheory.LFun.InertChart.isSplit_or_isInertAt (GlobalTheory.VacCoef.isUnram_host D (w.under (𝓞 D.host.F))) with hs | ⟨w0, hw0⟩` into its components or cases. Conclude with `absurd hs hns`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result.
 
-Take `rfl : w0 = w` from `GlobalTheory.LFun.eq_of_not_isSplit hns (GlobalTheory.LFun.under_eq_of_isInertAt hw0) rfl`. Establish `hv` using `GlobalTheory.LFun.ResEta.val_of_isInertAt h2 hr hw0 hu`. Rewrite using `[hc, hv, ← inv_pow, inv_neg_one]`. Conclude with `eq_inv_of_mul_eq_one_right (GlobalTheory.LFun.ResEta.val_mul_val h2 hr (Ne.symm hc) rfl (under_conjPl w) hu hu')`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem val_conjPl_of_resEta (χ : (AE D)ˣ →* Circle) (n : ℕ) (hr : Formalism.L2.Theta.ResEta D χ n)
     (w : HeightOneSpectrum (𝓞 D.host.E)) (hu : GlobalTheory.LFun.UnrAt χ w) (hu' : GlobalTheory.LFun.UnrAt χ (Formalism.DivisionValues.conjPl w)) :
@@ -80,9 +80,9 @@ theorem val_conjPl_of_resEta (χ : (AE D)ˣ →* Circle) (n : ℕ) (hr : Formali
   · exact eq_inv_of_mul_eq_one_right (GlobalTheory.LFun.ResEta.val_mul_val h2 hr (Ne.symm hc) rfl (under_conjPl w) hu hu')
 
 /- English proof (translation)
-Establish `hw' : Formalism.DivisionValues.conjPl w ∉ GlobalTheory.LFun.above D.host.E (c.S : Set (HeightOneSpectrum (𝓞 D.host.F)))`. Introduce `h`. Apply `hw` to reduce the goal to its premises. Rewrite `h`, the goal using `[GlobalTheory.LFun.above, Set.mem_setOf_eq]`. Rewrite `h` using `[under_conjPl]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `hμ : GlobalTheory.LFun.val (F` using `D.host.F) (c.μ (k + 1)) (Formalism.DivisionValues.conjPl w) = (GlobalTheory.LFun.val (F := D.host.F) (c.μ (k + 1)) w)⁻¹ := val_conjPl_of_resEta _ 0 (hc.chars.2.2.2.2 (k + 1) (Finset.mem_Icc.2 ⟨by omega, by omega⟩)).2 w (hc.unr ⟨k, hk⟩ w hw) (hc.unr ⟨k, hk⟩ _ hw')`. Establish `hη : GlobalTheory.LFun.val (F` using `D.host.F) c.η (Formalism.DivisionValues.conjPl w) = (GlobalTheory.LFun.val (F := D.host.F) c.η w)⁻¹ := val_conjPl_of_resEta _ 1 hc.chars.2.2.1 w (GlobalTheory.LFun.unrAt_of_unramEverywhere hc.chars.2.1 w) (GlobalTheory.LFun.unrAt_of_unramEverywhere hc.chars.2.1 _)`. Unfold `Com.chS Com.chT Lift.chrStep`. Apply the tactic sequence `split_ifs <;> simp only [GlobalTheory.LFun.val_mul, GlobalTheory.LFun.val_inv, hμ, hη, mul_inv, inv_inv, and_self]`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem val_step_conjPl (c : Com D) (hc : c.Is) (k : ℕ) (hk : k < D.R.m) (w : HeightOneSpectrum (𝓞 D.host.E))
     (hw : w ∉ GlobalTheory.LFun.above D.host.E (c.S : Set (HeightOneSpectrum (𝓞 D.host.F)))) :
@@ -106,9 +106,9 @@ theorem val_step_conjPl (c : Com D) (hc : c.Is) (k : ℕ) (hk : k < D.R.m) (w : 
   split_ifs <;> simp only [GlobalTheory.LFun.val_mul, GlobalTheory.LFun.val_inv, hμ, hη, mul_inv, inv_inv, and_self]
 
 /- English proof (translation)
-Use `(Multiset.Nodup.ext ?_ (Multiset.nodup_range t)).2 fun a => ?_` and prove the remaining obligations. Use `(Multiset.nodup_range t).map_on fun x hx y hy h => ?_` and prove the remaining obligations. Rewrite `hx`, `hy` using `[Multiset.mem_range]`. Use linear arithmetic over natural numbers and integers. Simplify using `only [Multiset.mem_map, Multiset.mem_range]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨b, hb, rfl⟩`. Use linear arithmetic over natural numbers and integers. Introduce `ha; exact ⟨t - 1 - a, by omega, by omega⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses.
 -/
 theorem range_reflect (t : ℕ) : (Multiset.range t).map (fun i => t - 1 - i) = Multiset.range t := by
   refine (Multiset.Nodup.ext ?_ (Multiset.nodup_range t)).2 fun a => ?_
@@ -121,11 +121,11 @@ theorem range_reflect (t : ℕ) : (Multiset.range t).map (fun i => t - 1 - i) = 
     · intro ha; exact ⟨t - 1 - a, by omega, by omega⟩
 
 /- English proof (translation)
-Establish `hN : ∀ y, GlobalTheory.LFun.npowU (Formalism.DivisionValues.conjPl w) y = GlobalTheory.LFun.npowU w y` using `fun y => Units.ext (by simp only [GlobalTheory.LFun.coe_npowU, GlobalTheory.LFun.npow, absNorm_conjPl])`. Simplify using `only [GlobalTheory.LFun.seg, hN, Multiset.map_map, Finset.range_val]`. Use `conv_rhs => rw [← range_reflect t, Multiset.map_map]`. Use `Multiset.map_congr rfl fun i hi => ?_` and prove the remaining obligations. Rewrite `hi` using `[Multiset.mem_range]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Function.comp_apply, mul_inv]`. Use `congr 1`. Use `Units.ext ?_` and prove the remaining obligations. Simplify using `only [GlobalTheory.LFun.coe_npowU, Units.val_inv_eq_inv_val, GlobalTheory.LFun.npow]`. Rewrite using `[← Complex.cpow_neg]`.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Move the coercions through the operations in `[Nat.cast_sub (show i ≤ t - 1 by omega), Nat.cast_sub (show 1 ≤ t by omega)]`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem seg_conjPl (w : HeightOneSpectrum (𝓞 D.host.E)) (z : ℂˣ) (t : ℕ) :
     GlobalTheory.LFun.seg (Formalism.DivisionValues.conjPl w) z⁻¹ t = (GlobalTheory.LFun.seg w z t).map (·⁻¹) := by
@@ -145,11 +145,11 @@ theorem seg_conjPl (w : HeightOneSpectrum (𝓞 D.host.E)) (z : ℂˣ) (t : ℕ)
   ring
 
 /- English proof (translation)
-Introduce `k hk`. Proceed by induction on `k with`. Consider the case `zero => exact hB`. Consider the case `succ k ih`. Take `⟨hS, hT⟩` from `val_step_conjPl c hc k (by omega) w hw`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Rewrite using `[chainPar_succ, chainPar_succ]`. Simplify using `only [stepPar]`. Rewrite using `[ih (by omega), hS, hT, seg_conjPl, Multiset.map_add, Multiset.map_map, Multiset.map_map]`. Use `congr 1`. Use `Multiset.map_congr rfl fun b _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Function.comp_apply, mul_inv, inv_inv]`.
+Simplify using the standard rewrite rules.
 -/
 theorem chainPar_conjPl (c : Com D) (hc : c.Is) (B B' : GlobalTheory.LFun.Fam D.host.E) (w : HeightOneSpectrum (𝓞 D.host.E))
     (hw : w ∉ GlobalTheory.LFun.above D.host.E (c.S : Set (HeightOneSpectrum (𝓞 D.host.F))))
@@ -168,9 +168,9 @@ theorem chainPar_conjPl (c : Com D) (hc : c.Is) (B B' : GlobalTheory.LFun.Fam D.
     simp only [Function.comp_apply, mul_inv, inv_inv]
 
 /- English proof (translation)
-Introduce `D c hc j hj B w hw h`. Set `B' : GlobalTheory.LFun.Fam D.host.E` to `Function.update B (Formalism.DivisionValues.conjPl w) ((B w).map (·⁻¹))`. Establish `hB : B' (Formalism.DivisionValues.conjPl w) = (B w).map (·⁻¹)` using `by simp [B']`. Establish `h1` using `chainPar_conjPl c hc B B' w hw hB j hj`. Establish `h2` using `chainPar_inj_at D c j B B' (Formalism.DivisionValues.conjPl w) (h.trans h1.symm)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[h2, hB]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem conjPl_inv_of_chainPar : ∀ (D : D7) (c : Com D), c.Is → ∀ j ≤ D.R.m, ∀ (B : GlobalTheory.LFun.Fam D.host.E),
     ∀ w ∉ (GlobalTheory.LFun.above D.host.E (c.S : Set (HeightOneSpectrum (𝓞 D.host.F)))),
@@ -185,7 +185,7 @@ theorem conjPl_inv_of_chainPar : ∀ (D : D7) (c : Com D), c.Is → ∀ j ≤ D.
   rw [h2, hB]
 
 /- English proof (translation)
-The claim follows from `conjPl_inv_of_chainPar`.
+A detailed English derivation is pending.
 -/
 example : ∀ (D : D7) (c : Com D), c.Is → ∀ j ≤ D.R.m, ∀ (B : GlobalTheory.LFun.Fam D.host.E), ∀ w ∉ (GlobalTheory.LFun.above D.host.E (c.S : Set (HeightOneSpectrum (𝓞 D.host.F)))), chainPar c B j (Formalism.DivisionValues.conjPl w) = (chainPar c B j w).map (·⁻¹) → B (Formalism.DivisionValues.conjPl w) = (B w).map (·⁻¹) :=
   conjPl_inv_of_chainPar

@@ -14,7 +14,7 @@ namespace GlobalTheory.BCT.HopLev
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ}
 
 /- English proof (translation)
-Unfold `toSub`. Rewrite using `[dif_pos h]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem toSub_of_mem {G : Type} [Group G] (H : Subgroup G) {g : G} (h : g ∈ H) : toSub H g = ⟨g, h⟩ := by
   unfold toSub; rw [dif_pos h]
@@ -23,14 +23,14 @@ def comp (hU : Unr E) (n : ℕ) (w : Pl E) : finU E n →* UL n w :=
   ((cLoc w).comp (finU E n).subtype).codRestrict (UL n w) (fun x => cLoc_mem_UL E hU n w x)
 
 /- English proof (translation)
-The claim follows from `(toSub_of_mem _ (cLoc_mem_UL E hU n w x)).symm`.
+A detailed English derivation is pending.
 -/
 theorem comp_eq (hU : Unr E) (w : Pl E) (x : finU E n) :
     comp hU n w x = toSub (UL n w) (cLoc w (x : UA E n)) :=
   (toSub_of_mem _ (cLoc_mem_UL E hU n w x)).symm
 
 /- English proof (translation)
-Unfold `globLev`. Simplify using `only [Subgroup.mem_iInf, Subgroup.mem_comap, Subgroup.mem_map, MonoidHom.coe_comp, Function.comp_apply, Subgroup.coe_subtype]`. Use `forall_congr' fun w => forall_congr' fun _ => ⟨fun ⟨k, hk, e⟩ => ?_, fun h => ⟨_, h, rfl⟩⟩` and prove the remaining obligations. Establish `: k = comp hU n w x` using `Subtype.ext e`. Rewrite using `[← this]` and apply the resulting hypothesis.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 -/
 theorem mem_globLev (hU : Unr E) (S : Set (Pl E)) (L : ∀ w : Pl E, Subgroup (UL n w)) (x : finU E n) :
     x ∈ globLev S L ↔ ∀ w ∈ S, comp hU n w x ∈ L w := by
@@ -42,17 +42,15 @@ theorem mem_globLev (hU : Unr E) (S : Set (Pl E)) (L : ∀ w : Pl E, Subgroup (U
   rwa [← this]
 
 /- English proof (translation)
-Unfold `globFn`. Repeatedly rewrite using `[← comp_eq hU]`. Distinguish the cases in `hx : x ∈ globLev S K'`. Rewrite using `[if_pos hx]`. Use `finprod_mem_of_eqOn_one fun w hw => ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the conclusion repeatedly using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Set.indicator_of_mem ((mem_globLev hU S K' x).1 hx w hw)]`. Both sides reduce to the same expression. Rewrite using `[if_neg hx, finprod_mem_def]`. Choose the witnesses or unpack the hypotheses as in `⟨w₀, hw₀, hn⟩ : ∃ w ∈ S, comp hU n w x ∉ K' w := by`. Assume the negation of the conclusion as `h`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction.
 
-Use `push_neg at h`. Conclude with `hx ((mem_globLev hU S K' x).2 h)`. Use `finprod_eq_zero _ w₀ ?_ ?_` and prove the remaining obligations. Rewrite using `[Set.mulIndicator_of_mem hw₀, Set.indicator_of_notMem hn]`. Establish `h1` using `Filter.eventually_cofinite.1 hK`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h2` using `Filter.eventually_cofinite.1 (LocAE.eventually_mem_KL E hU n x)`. Use `(h1.union h2).subset fun w hw => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hc`. Simplify using `only [Set.mem_union, Set.mem_setOf_eq, not_or, not_not] at hc`. Apply `hw` to reduce the goal to its premises.
+Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Set.mulIndicator_apply]`. Use `split_ifs`. Rewrite using `[Set.indicator_of_mem]`. Both sides reduce to the same expression. Rewrite using `[hc.1, comp_eq hU]`.
-
-Conclude with `hc.2`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem globFn_indicator (hU : Unr E) (S : Set (Pl E)) (K' : ∀ w : Pl E, Subgroup (UL n w))
     (hK : ∀ᶠ w in cofinite, K' w = KL n w) (x : finU E n) :
@@ -93,7 +91,7 @@ open GlobalTheory.BCT.HopLev
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ}
 
 /- English proof (translation)
-Repeatedly rewrite using `[Subgroup.index, ← Nat.card_pi]`. Use `Nat.card_congr ((Quotient.congrRight (fun x y ↦ ?_)).trans (Setoid.piQuotientEquiv _).symm)` and prove the remaining obligations. Rewrite using `[QuotientGroup.leftRel_pi]`.
+Rewrite the conclusion repeatedly using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem index_pi_univ {ι : Type} [Fintype ι] {G : ι → Type} [∀ i, Group (G i)] (H : ∀ i, Subgroup (G i)) :
     (Subgroup.pi Set.univ H).index = ∏ i, (H i).index := by
@@ -102,9 +100,9 @@ theorem index_pi_univ {ι : Type} [Fintype ι] {G : ι → Type} [∀ i, Group (
   rw [QuotientGroup.leftRel_pi]
 
 /- English proof (translation)
-Set `ψ : Up →* ((i : ι) → K i)` to `{ toFun := fun g i => ⟨φ g.1 i, hK g.1 g.2 i⟩ map_one' := by ext i; simp map_mul' := by intro x y; ext i; simp }`. Establish `hψ : Function.Surjective ψ`. Introduce `x`. Take `⟨g, hg, e⟩` from `hs (fun i => (x i).1) (fun i => (x i).2)`. Conclude with `⟨⟨g, hg⟩, by ext i; simp [ψ, e]⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `e : U.subgroupOf Up = (Subgroup.pi Set.univ fun i => (H i).subgroupOf (K i)).comap ψ`. Use extensionality with `g`. Simplify using `[Subgroup.mem_subgroupOf, Subgroup.mem_pi, hU, g.2, ψ]`. Rewrite using `[Subgroup.relIndex, e, Subgroup.index_comap_of_surjective _ hψ, index_pi_univ]`. Both sides reduce to the same expression.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem relIndex_eq_prod {ι : Type} [Fintype ι] {G : Type} [Group G] {M : ι → Type} [∀ i, Group (M i)]
     (φ : G →* ((i : ι) → M i)) (Up U : Subgroup G) (K H : ∀ i, Subgroup (M i))
@@ -125,23 +123,19 @@ theorem relIndex_eq_prod {ι : Type} [Fintype ι] {G : Type} [Group G] {M : ι �
   rfl
 
 /- English proof (translation)
-Establish `hfin` using `Filter.eventually_cofinite.1 hK`. Take `⟨T, hTS, hnT⟩ : ∃ T : Finset (Pl E), (∀ w ∈ T, w ∈ S) ∧ ∀ w ∈ S, w ∉ T → K' w = KL n w` from `⟨hfin.toFinset.filter (· ∈ S), fun w hw => (Finset.mem_filter.1 hw).2, fun w hw h => by`. Assume the negation of the conclusion as `hc`. Conclude with `h (Finset.mem_filter.2 ⟨hfin.mem_toFinset.2 hc, hw⟩)⟩`. Rewrite using `[finprod_mem_eq_prod_of_inter_mulSupport_eq _ (t := T)]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Finset.prod_coe_sort T]`. Rewrite using `[relIndex_eq_prod (MonoidHom.pi fun i : T => comp hU n i.1) (globLev S (KL n)) (globLev S K') (fun i => KL n i.1) (fun i => K' i.1)]`. Use `push_cast`. Both sides reduce to the same expression. Introduce `g hg i`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(mem_globLev hU S (KL n) g).1 hg i.1 (hTS _ i.2)`. Introduce `x hx`. Take `⟨y, hyT, hyn⟩ : ∃ y : ∀ w : Pl E, UL n w, (∀ i : T, y i.1 = x i) ∧ ∀ w, w ∉ T → y w = 1` from `⟨fun w => if h : w ∈ T then x ⟨w, h⟩ else 1, fun i => dif_pos i.2, fun w h => dif_neg h⟩`. Establish `hy : ∀ w, y w ∈ KL n w` using `fun w => by`. Distinguish the cases in `h : w ∈ T`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `hx ⟨w, h⟩` as an intermediate fact. Rewrite using `[hyT ⟨w, h⟩]`. Conclude with `this`. Rewrite using `[hyn w h]`. Conclude with `one_mem _`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Take `⟨g, hg⟩` from `exists_finU_of_loc E hU n S hS y (Filter.Eventually.of_forall hy)`. Establish `hg' : ∀ w ∈ S, comp hU n w g = y w` using `fun w hw => by rw [comp_eq]; exact hg w hw`. Use `⟨g, (mem_globLev hU S (KL n) g).2 fun w hw => by rw [hg' w hw]; exact hy w, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Use `show comp hU n i.1 g = x i`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[hg' i.1 (hTS _ i.2)]`. Conclude with `hyT i`. Introduce `g`. Rewrite using `[mem_globLev hU S K' g, mem_globLev hU S (KL n) g]`. Use `⟨fun h => ⟨fun w hw => hle w (h w hw), fun i => h i.1 (hTS _ i.2)⟩, fun ⟨h1, h2⟩ w hw => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction.
 
-Distinguish the cases in `hwT : w ∈ T`. Conclude with `h2 ⟨w, hwT⟩`. Rewrite using `[hnT w hw hwT]`. Conclude with `h1 w hw`. Use extensionality with `w`.
-
-Simplify using `only [Set.mem_inter_iff, Function.mem_mulSupport, Finset.mem_coe]`. Use `⟨fun ⟨hw, h⟩ => ⟨?_, h⟩, fun ⟨hw, h⟩ => ⟨hTS w hw, h⟩⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hwT`. Apply `h` to reduce the goal to its premises. Rewrite using `[hnT w hw hwT, Subgroup.relIndex_self]`.
-
-Simplify using the standard rewrite rules.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem relIndex_globLev (hU : Unr E) (S : Set (Pl E)) (hS : IsSection S) (K' : ∀ w : Pl E, Subgroup (UL n w))
     (hle : ∀ w, K' w ≤ KL n w) (hK : ∀ᶠ w in cofinite, K' w = KL n w) :
@@ -193,15 +187,15 @@ end GlobalTheory.BCT.HopLev2
 open GlobalTheory.BCT.HopLev GlobalTheory.BCT.HopLev2 in
 
 /- English proof (translation)
-Introduce `E _ _ _ hU n _ S hS K' hK φ hφ`. Rewrite using `[← relIndex_globLev hU S hS K' (fun w => (hK.1 w).2.1) hK.2]`. Unfold `hop levOp`. Rewrite using `[LinearMap.smul_apply]`. Use `congr 1`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `set H := globLev S K'`. Establish `hq : ∀ q : finU E n ⧸ H, q ≠ ((1 : finU E n) : finU E n ⧸ H) → Quotient.out q ∉ H`. Introduce `q hq hm`. Apply `hq` to reduce the goal to its premises. Rewrite using `[← QuotientGroup.out_eq' q, QuotientGroup.eq]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using hm`. Establish `h1 : Quotient.out ((1 : finU E n) : finU E n ⧸ H) ∈ H`. Use `QuotientGroup.out_eq' ((1 : finU E n) : finU E n ⧸ H)` as an intermediate fact. Rewrite `this` using `[QuotientGroup.eq]`. Simplify using `using this`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[finsum_eq_single _ ((1 : finU E n) : finU E n ⧸ H)]`. Rewrite using `[globFn_indicator hU S K' hK.2, if_pos h1, one_smul, LinearMap.comp_id]`. Use `hφ ⟨_, h1⟩` as an intermediate fact. Simplify using `using this`. Introduce `q hne`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[globFn_indicator hU S K' hK.2, if_neg (hq q hne), zero_smul]`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.BCT.hop_indicator_level : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E], Unr E → ∀ n : ℕ, 1 ≤ n →
     ∀ S : Set (Pl E), IsSection S → ∀ K' : ∀ w : Pl E, Subgroup (UL n w),

@@ -14,7 +14,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-The claim follows from `(congrArg (fun m ↦ m R.θ (R.MY 0) (JR R F) (chiR R F)) (mult_eq (reL a Z) a))`.
+A detailed English derivation is pending.
 -/
 theorem multR_eq_reL {B : Base} {C : Cols B} (a : Late B C) (Z : New a.D) {G' : Type} [Group G'] [Fintype G'] {Pl0 T : Type}
     {A : FamIn a.D.what₂.LL G' Pl0 T a.D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [iK : Algebra Ks a.D.what₂.LL]
@@ -24,11 +24,9 @@ theorem multR_eq_reL {B : Base} {C : Cols B} (a : Late B C) (Z : New a.D) {G' : 
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Introduce `B C a Z G' _ _ Pl0 T A Ks _ _ iK R F X h t hs`. Take `⟨h1, h2, σ, red, hA, ⟨hr, hB⟩, hC⟩` from `hs`. Establish `hB'` using `cast (congrArg (fun E : Submodule ℂ (MMap (MP R)) => ∀ k ∈ X.B.I.Kset, ∀ T ∈ E, ∀ (v : (MP R).Vec) (g : GA a.D (Yc a.D 0)), (T : MMap (MP R)) v (g * kap X h t k) = actL (Yc a.D 0) (R.βY 0) (R.dat0 R.triv) (R.eG (σ (red k))) ((T : MMap (MP R)) v) g) (multR_eq_reL a Z R F)) hB`. Use `letI := alg (reL a Z) iK`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(by with_unfolding_all exact (h1 :))`. Use `kexactB h2`. Use `⟨(by with_unfolding_all exact (σ :)), (by with_unfolding_all exact (red :)), ?_, ⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations. Conclude with `(by with_unfolding_all exact (hA :))`. Conclude with `(by with_unfolding_all exact (hr :))`.
-
-Use `kexactB hB'`. Conclude with `(by with_unfolding_all exact (hC :))`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem mvSee : MvSee := by
   intro B C a Z G' _ _ Pl0 T A Ks _ _ iK R F X h t hs

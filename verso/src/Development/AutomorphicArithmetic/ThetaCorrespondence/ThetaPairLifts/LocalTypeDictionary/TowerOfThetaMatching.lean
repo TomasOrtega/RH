@@ -30,33 +30,33 @@ end GlobalTheory.SqTower
 namespace GlobalTheory.SqTower
 open GlobalTheory.SqTower
 /- English proof (translation)
-Introduce `hP hK hM hL`. Establish `H` using `gbig_and (_root_.GlobalTheory.T.witt_tower_top_stage_theta_norm_formula hP hK hM) (gbig_and (_root_.GlobalTheory.T.exists_factor_of_isStageC hP hK hM) (gbig_and (_root_.GlobalTheory.T.witt_tower_norm_step_of_small_rank hP hK hM) (gbig_and (_root_.GlobalTheory.T.witt_tower_norm_st …`. Unfold `Tower`. Use `gbig_mono H ?_` and prove the remaining obligations. Introduce `D T Lc sc G μ₀ C x b hμ hQ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨htop, hfac, hsm, hbig, hbot, hlne⟩` from `hQ`. Introduce `W S ρ hψ hN i j t c c₀ A A' WW X c0 Λ Λ₀ hnz hc hnz₀ hc₀ hX hc0 hΛ hΛ₀`. Use `choose Lf hLf using (hlne i j).1`. Establish `eΛ : Λ = Lf t` using `hΛ.unique (hLf t).1`. Establish `eΛ₀ : Λ₀ = Lf μ₀` using `hΛ₀.unique (hLf μ₀).1`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality.
 
-Substitute `eΛ eΛ₀` using the available equality. Establish `rk` using `ranks_exact D i j`. Take `⟨u1, hu1⟩` from `D.R.t_odd`. Take `⟨v1, hv1⟩` from `odd_sLen D`. Establish `e2 : rankV D (↑i + 1) (↑j + 1) = rankV D ↑i ↑j + D.R.t + sLen D` using `by simp only [rankV]; ring`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `D.R.three_m_lt_t`. Establish `hm : D.R.m ≤ rankV D ↑i ↑j`. Use `D.R.m_add_three_le_k` as an intermediate fact. Simplify using `only [rankV]`. Unfold `Ranks.r`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Establish `hpp : pp D j ≤ D.R.m` using `by unfold pp; omega`. Establish `hqq : qq D j ≤ D.R.m` using `by unfold qq; omega`. Establish `hpe : pp D j ≤ eTop D i j` using `by unfold eTop; omega`. Establish `hqh : eTop D i j + qq D j ≤ halfRank D i j` using `by unfold eTop; omega`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨A1, A1', WW1, X1, ct, κT, hst, hct, hκT, hsq⟩` from `htop W S hψ hN ρ i j`. Establish `ec` using `hsq t c hnz hc`. Establish `ec₀` using `hsq μ₀ c₀ hnz₀ hc₀`. Take `⟨lamT, hlamT⟩` from `hfac W S hψ hN i j _ _ A1 A1' WW1 X1 hst`. Take `⟨κ1, hκ1, e1⟩` from `hlamT.eq_mul hct`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hct0 : ∀ t, ct t ≠ 0` using `fun t => by rw [e1 t]; exact mul_ne_zero hκ1 (hlamT.1 t)`. Establish `hrk : A1.rank = A1'.rank + 2 * eTop D i j`. Take `⟨-, -, a1, a2, -⟩` from `hst`. Unfold `eTop`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result.
 
-Take `⟨B, B', W₁, Y, cY, u, κ, hY, hcY, hκ, hu, hid⟩` from `descent (W := W) (μ₀ := μ₀) (hfac W S hψ hN) (hsm W S hψ hN) (hbig W S hψ hN) i j Lf (fun t => (hLf t).1) (qq D j) (pp D j) (eTop D i j) X1 ct hst hct hrk hpe`. Take `⟨v, hv, hvr⟩` from `hbot W S hψ hN i j A A' WW X B B' W₁ Y cY hX hY hcY`. Take `⟨lam0, hlam0⟩` from `hfac W S hψ hN i j 0 0 A A' WW X (IsBottomTri.isStageC hX)`. Take `⟨a, ha, ea⟩` from `hlam0.eq_mul hc0`. Take `⟨b', hb', eb⟩` from `hlam0.eq_mul hv`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `ec0 : ∀ t, c0 t = a / b' * (v t * cY t)` using `fun t => by`. Rewrite using `[ea t, eb t]`. Clear the denominators using the available nonvanishing facts. Establish `hLne : ∀ n : ℕ, 1 ≤ n → n ≤ halfRank D i j → Lf μ₀ (n : ℂ) ≠ 0` using `fun n h1 h2 => by`. Use `(hLf μ₀).2 (n : ℤ) (by omega) (by exact_mod_cast h2)` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `this` using `[Int.cast_natCast]`. Then use the resulting hypothesis. Establish `hP0 : ∏ k ∈ range (qq D j), Lf μ₀ ((eTop D i j + k + 1 : ℕ) : ℂ) ≠ 0` using `prod_ne_zero_iff.2 fun k hk => hLne _ (by omega) (by rw [mem_range] at hk; omega)`. Establish `hP0' : ∏ k ∈ range (pp D j), Lf μ₀ ((eTop D i j + qq D j - k : ℕ) : ℂ) ≠ 0` using `prod_ne_zero_iff.2 fun k hk => by rw [mem_range] at hk; exact hLne _ (by omega) (by omega)`. Establish `hU0 : ∏ k ∈ range (pp D j + qq D j), u k μ₀ ≠ 0` using `prod_ne_zero_iff.2 fun k _ => (hu k μ₀).1`. Establish `hcY0 : cY μ₀ ≠ 0` using `fun h0 => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hid μ₀` as an intermediate fact. Rewrite `this` using `[h0, mul_zero, zero_mul]`. Conclude with `mul_ne_zero (hct0 μ₀) hP0 this`. Establish `hκT0` using `(hκT μ₀).1`. Establish `hv0` using `(hvr μ₀).1`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨-, ζT, hζT, eκT⟩` from `hκT t`. Take `⟨hvt, ζv, hζv, ev⟩` from `hvr t`. Establish `hζv0 : ζv ≠ 0` using `fun h0 => hvt (by rw [ev, h0, map_zero, zero_mul])`. Establish `hσv : D.what₂.embLL ζv ≠ 0` using `(map_ne_zero _).2 hζv0`. Use `⟨fun k => u k t / u k μ₀, fun k => stepRatio_div (hu k t).2 (hu k μ₀).1, ζT * ζv⁻¹, hζT.mul (isAwayUnit_inv hζv hζv0), ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Fin.prod_univ_eq_prod_range (fun k => u k t / u k μ₀), prod_div_distrib, prod_div_distrib, prod_div_distrib, map_mul, map_inv₀, ec0, ec0]`. Establish `L1 : c / c₀ * ((∏ k ∈ range (qq D j), Lf t ((eTop D i j + k + 1 : ℕ) : ℂ)) / ∏ k ∈ range (qq D j), Lf μ₀ ((eTop D i j + k + 1 : ℕ) : ℂ)) = κT t / κT μ₀ * ((ct t * ∏ k ∈ range (qq D j), Lf t ((eTop D i j + k + 1 : ℕ) : ℂ)) / (ct μ₀ * ∏ k ∈ range (qq D j), Lf μ₀ ((eTop D i j + k + …`. Rewrite using `[ec, ec₀]`. Use `hct0 μ₀` as an intermediate fact. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Rewrite using `[L1, hid t, hid μ₀, eκT, ev]`. Clear the denominators using the available nonvanishing facts.
+A detailed English derivation is pending.
 -/
 theorem tower_alt_bis : _root_.GlobalTheory.FunPr.ThetaLocalInputs → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.ThetaIntegralsAgree → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.LocalMatching → LNe → Tower := by
   intro hP hK hM hL
@@ -138,7 +138,7 @@ end
 section
 open GlobalTheory.SqTop
 /- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.SqTower.tower_alt_bis | exact _root_.GlobalTheory.SqTower.tower_alt_bis | (intros; apply _root_.GlobalTheory.SqTower.tower_alt_bis <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.tower_of_theta_matching_lNe : _root_.GlobalTheory.FunPr.ThetaLocalInputs → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.ThetaIntegralsAgree → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.LocalMatching → LNe → Tower := by
   first | exact @_root_.GlobalTheory.SqTower.tower_alt_bis | exact _root_.GlobalTheory.SqTower.tower_alt_bis | (intros; apply _root_.GlobalTheory.SqTower.tower_alt_bis <;> assumption)

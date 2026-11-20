@@ -15,19 +15,19 @@ open Formalism.L2.Host (HChar)
 namespace GlobalTheory.HeckeStrip
 
 /- English proof (translation)
-Introduce `E _ _ _ I _ φ hφ χ n hu hi hn`. Take `⟨m, X, hm, hX0, hX1, hXm, hXn, hXz, hXP, hXβ⟩` from `GlobalTheory.T.exists_idealCharacter_of_unitary_heckeChar E χ hu`. Establish `hβ : ∀ β : 𝓞 E, β ≠ 0 → β - 1 ∈ m → X (Ideal.span {β}) = wt φ n (β : E)`. Introduce `β h0 h1`. Establish `h0' : (β : E) ≠ 0` using `by exact_mod_cast h0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[hXβ β (Units.mk0 _ h0') rfl h1, hi (Units.mk0 _ h0')]`. Simplify using `only [wt, Units.val_mk0, zpow_neg, Finset.prod_inv_distrib]`. Establish `hle : ∀ a, ‖X a‖ ≤ 1` using `fun a => by`. Distinguish the cases in `ha : a = ⊥`. Simplify using `[ha, hX0]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `ha' : a ⊔ m = ⊤`. Conclude with `(hXn a ha ha').le`. Simplify using `[hXz a ha']`. Take `⟨r, c, B, M, F, hB, hM, hper, hinv, hdec⟩` from `GlobalTheory.T.heckeLSeries_eq_sum_principalPartialSeries E I φ n m X hm hX0 hXm hXn hXz hβ`. Use `choose Λ hΛd hΛb hΛe using fun k => GlobalTheory.T.completed_heckePartialLSeries_entire_bounded_strips E I φ hφ n hn (M k) (F k) (hM k) (hper k) (hinv k)`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hB0 : ∀ k, ((B k : ℕ) : ℂ) ≠ 0` using `fun k => by exact_mod_cast (hB k).ne'`. Use `⟨fun s => ∑ k, c k * ((B k : ℕ) : ℂ) ^ s * Λ k s, ⟨?_, fun s hs => ?_⟩, ?_⟩` and prove the remaining obligations. Introduce `s`. Use `DifferentiableAt.fun_sum fun k _ => ?_` and prove the remaining obligations. Conclude with `((differentiableAt_const _).mul ((differentiableAt_id.const_cpow (Or.inl (hB0 k))))).mul ((hΛd k).differentiableAt)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use `⟨∑' a : Ideal (𝓞 E), X a * ((Ideal.absNorm a : ℕ) : ℂ) ^ (-s), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.tsum_ideal_mul_absNorm_cpow_eq_exp_tsum E X hX0 hX1 hXm hle s hs]`. Use `GlobalTheory.HeckeOne.hasProd_exp hu hs using 1` and compare the differences between its conclusion and the goal. Simplify using `only [hXP, GlobalTheory.HeckeOne.cf]`. Rewrite using `[hdec s hs, Finset.mul_sum]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[hΛe k s hs]`. Expand and normalize the polynomial expressions, which then agree. Introduce `a b hab choose C hC using fun k => hΛb k a b hab`. Use `⟨∑ k, ‖c k‖ * ((B k : ℝ) ^ b * |C k|), fun s h1 h2 => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `(norm_sum_le _ _).trans (Finset.sum_le_sum fun k _ => ?_)` and prove the remaining obligations. Rewrite using `[norm_mul, norm_mul, mul_assoc, Complex.norm_natCast_cpow_of_pos (hB k)]`. Establish `hB1 : (1 : ℝ) ≤ (B k : ℝ)` using `by exact_mod_cast hB k`. Use `gcongr`. Conclude with `(hC k s h1 h2).trans (le_abs_self _)`.
+A detailed English derivation is pending.
 -/
 theorem completedLBoundedInStrips : GlobalTheory.IndefiniteRowSideFullHecke.CompletedLStripBounds.CompletedLBoundedInStrips := by
   intro E _ _ _ I _ φ hφ χ n hu hi hn

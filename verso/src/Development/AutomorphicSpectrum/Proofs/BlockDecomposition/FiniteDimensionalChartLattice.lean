@@ -15,9 +15,9 @@ open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.Cha
 namespace GlobalTheory.CompanionTheory.GenericFibre
 
 /- English proof (translation)
-Take `⟨S, hS, rfl⟩` from `hP`. Use `⟨MvPolynomial.map (Int.castRingHom ℚ) '' S, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨f, hf, rfl⟩`. Take `⟨a, ha⟩` from `hS f hf`. Conclude with `⟨a, fun m hm k => ha m (MvPolynomial.support_map_subset _ _ hm) k⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `Ideal.map_span _ _`.
+A detailed English derivation is pending.
 -/
 theorem isMultiHomogIdeal_map_rat {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
     {P : Ideal (MRing ι)} (hP : IsMultiHomogIdeal P) :
@@ -30,9 +30,9 @@ theorem isMultiHomogIdeal_map_rat {K : Type} [Fintype K] {ι : K → Type} [∀ 
   · exact Ideal.map_span _ _
 
 /- English proof (translation)
-Introduce `K _ ι _ Ω _ _ y D b hV`. Use `letI : LinearOrder K := LinearOrder.lift' (Fintype.equivFin K) (Fintype.equivFin K).injective`. Use `letI : ∀ k, LinearOrder (ι k) := fun k => LinearOrder.lift' (Fintype.equivFin (ι k)) (Fintype.equivFin (ι k)).injective`. Take `⟨e⟩` from `ChartLatQCech.proof K ι Ω y (D + 1) b hV`. Establish `hQ` using `isMultiHomogIdeal_map_rat hV.2.1.2.1`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hG` using `QuotPartGraded.proof ℚ K ι _ hQ`. Establish `hS` using `PositivityTheory.HtPt.Ktw.a11 ℚ K ι _ (ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.KH.quotPart ℚ (Ideal.map (MvPolynomial.map (Int.castRingHom ℚ)) (mCoordIdeal y))) inferInstance inferInstance hG`. Use `haveI := hS.1 b 0`. Conclude with `Module.Finite.equiv e.symm`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem finiteDimensional_chartLatQ :
     ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] (Ω : Type) [Field Ω] [CharZero Ω]

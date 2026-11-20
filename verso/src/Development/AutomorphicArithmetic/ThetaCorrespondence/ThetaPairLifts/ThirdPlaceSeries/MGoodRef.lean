@@ -16,9 +16,9 @@ namespace UpperTheory.One.M.B
 end UpperTheory.One.M.B
 open UpperTheory.One.M.B in
 /- English proof (translation)
-Introduce `_ hL`. Unfold `_root_.GlobalTheory.LiftRef.ForallRowSideParameters`. Use `GlobalTheory.LiftRef.overRows_and_mono levSplit levSplit (fun K B f T w Z Wt hX z p0 Y h' _ => ?_)` and prove the remaining obligations. Introduce `Rw a M tup Q hMA _ j h1 h2 S hS hne s σ hσ`. Take `⟨i, rfl⟩ : ∃ i : Fin (w.st Z).toD7.R.m, i.1 + 1 = j` from `⟨⟨j - 1, by omega⟩, by simp only; omega⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨y, hy, hy0⟩` from `(Submodule.ne_bot_iff _).1 hne`. Establish `hry : (M _ _ h1 h2).real y ≠ 0` using `fun e => hy0 ((M _ _ h1 h2).real_inj (e.trans (map_zero _).symm))`. Take `⟨f', hf', hf0', hff'⟩` from `GlobalTheory.AutUnr.exists_fixed_of_isoTyp _ hS.1.stable {κ | κ ∈ Umax (w.st Z).toD7.host.E (w.st Z).toD7.R.nV ∧ TrivOutside {s.v} κ ∧ (s.v ∈ gPl (w.st Z).toD7 → IsPrincipalCongruenceAt s κ)} hy hry (fun κ hκ => GlobalTheory.SphInertRef.rt_real_eq_of_lev hMA i y κ (h' i (hMA.PV i …`. Conclude with `good_of_fix _ S hS s (fun hg => GlobalTheory.SplitTypeCompl.exists_padic_equiv _ s hg) f' hf' hf0' (fun κ a b c => hff' κ ⟨a, b, c⟩) σ hσ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem UpperTheory.One.M.goodRef_alt :
     _root_.GlobalTheory.HeightCounting.Up.PublishedInputsThirdLayerAlt → ∀ hL : _root_.UpperTheory.Zero.LLC.RecTExists, _root_.GlobalTheory.LiftRef.ForallRowSideParameters hL fun D _ _ _ a M => ∀ (j : ℕ) (h1 : 1 ≤ j) (h2 : j ≤ D.R.m) (S : Submodule ℂ (Formalism.AUTREP.GAf D.host.E D.R.nV → (M D.what₂.mu0 j h1 h2).wt.W)) (hS : NG.IsIrrRep (M D.what₂.mu0 j h1 h2).wt.ρ S), (NG.isoTyp (M D.what₂.mu0 j h1 h2).wt.ρ S).comap (M D.what₂.mu0 j h1 h2).real ≠ ⊥ → UpperTheory.One.M.GoodAU (GlobalTheory.LiftRef.autOf (M D.what₂.mu0 j h1 h2) S hS) := by

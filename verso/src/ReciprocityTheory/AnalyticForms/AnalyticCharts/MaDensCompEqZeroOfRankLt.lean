@@ -17,7 +17,7 @@ theorem hessC_eq_leviC {e : ℕ} (f : (Fin e → ℂ) → ℝ) (z : Fin e → �
     hessC f z i j = leviC (fderiv ℝ (fderiv ℝ f) z) (Pi.single i 1) (Pi.single j 1) := rfl
 
 /- English proof (translation)
-Unfold `leviC`. Simplify using `only [smul_add, map_add, ContinuousLinearMap.add_apply]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem leviC_add {e : ℕ} (H : (Fin e → ℂ) →L[ℝ] (Fin e → ℂ) →L[ℝ] ℝ) (a a' b : Fin e → ℂ) :
     leviC H (a + a') b = leviC H a b + leviC H a' b := by
@@ -27,13 +27,13 @@ theorem leviC_add {e : ℕ} (H : (Fin e → ℂ) →L[ℝ] (Fin e → ℂ) →L[
   ring
 
 /- English proof (translation)
-Establish `hc : c • a = (c.re : ℝ) • a + (c.im : ℝ) • (I • a)`. Use function extensionality and compare the values at `k`. Simplify using `only [Pi.add_apply, Pi.smul_apply, smul_eq_mul, Complex.real_smul]`. Use `conv_lhs => rw [← Complex.re_add_im c]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `hc' : I • (c • a) = (c.re : ℝ) • (I • a) + (-c.im : ℝ) • a`. Use function extensionality and compare the values at `k`. Simplify using `only [Pi.add_apply, Pi.smul_apply, smul_eq_mul, Complex.real_smul, Complex.ofReal_neg]`. Use `conv_lhs => rw [← Complex.re_add_im c]`. Take the linear combination `(↑c.im * a k) * Complex.I_sq`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `leviC`. Rewrite using `[hc', hc]`. Simplify using `only [map_add, map_smul, ContinuousLinearMap.add_apply, ContinuousLinearMap.coe_smul', Pi.smul_apply, smul_eq_mul]`. Use `push_cast`. Use `conv_rhs => rw [← Complex.re_add_im c]`.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Put the polynomial expressions in normal form. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Put the polynomial expressions in normal form. Simplify using `only [Complex.I_sq]`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem leviC_smul {e : ℕ} (H : (Fin e → ℂ) →L[ℝ] (Fin e → ℂ) →L[ℝ] ℝ) (c : ℂ) (a b : Fin e → ℂ) :
     leviC H (c • a) b = c * leviC H a b := by
@@ -58,9 +58,9 @@ theorem leviC_smul {e : ℕ} (H : (Fin e → ℂ) →L[ℝ] (Fin e → ℂ) →L
   ring
 
 /- English proof (translation)
-Establish `hv : v = ∑ i, v i • (Pi.single i 1 : Fin e → ℂ)`. Use function extensionality and compare the values at `k`. Simplify using `[Pi.single_apply]`. Establish `key : ∀ s : Finset (Fin e), leviC H (∑ i ∈ s, v i • (Pi.single i 1 : Fin e → ℂ)) b = ∑ i ∈ s, v i * leviC H (Pi.single i 1) b`. Introduce `s`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `Finset.induction_on s ?_ ?_` and prove the remaining obligations. Simplify using `using leviC_smul H 0 0 b`. Introduce `i s hi ih`. Rewrite using `[Finset.sum_insert hi, Finset.sum_insert hi, leviC_add, leviC_smul, ih]`. Rewrite using `[← key, ← hv]`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem sum_mul_leviC {e : ℕ} (H : (Fin e → ℂ) →L[ℝ] (Fin e → ℂ) →L[ℝ] ℝ) (v b : Fin e → ℂ) :
     ∑ i, v i * leviC H (Pi.single i 1) b = leviC H v b := by
@@ -77,15 +77,15 @@ theorem sum_mul_leviC {e : ℕ} (H : (Fin e → ℂ) →L[ℝ] (Fin e → ℂ) �
   rw [← key, ← hv]
 
 /- English proof (translation)
-Establish `hτev : ∀ᶠ x in 𝓝 z, AnalyticAt ℂ τ x` using `hτ.eventually_analyticAt`. Establish `hφev : ∀ᶠ y in 𝓝 (τ z), DifferentiableAt ℝ φ y` using `(hφ.eventually (by simp)).mono fun y hy => hy.differentiableAt (by norm_num)`. Establish `hφev' : ∀ᶠ x in 𝓝 z, DifferentiableAt ℝ φ (τ x)` using `hτ.continuousAt.tendsto.eventually hφev`. Establish `heq : (fun x => fderiv ℝ (φ ∘ τ) x b) =ᶠ[𝓝 z] (fun x => fderiv ℝ φ (τ x) (fderiv ℂ τ x b))` using `by filter_upwards [hτev, hφev'] with x hx hφx`. Establish `hxR : DifferentiableAt ℝ τ x` using `hx.differentiableAt.restrictScalars ℝ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[fderiv_comp x hφx hxR, hx.differentiableAt.fderiv_restrictScalars ℝ]`. Both sides reduce to the same expression. Establish `hf2 : ContDiffAt ℝ 2 (φ ∘ τ) z` using `hφ.comp z ((hτ.contDiffAt (n := 2)).restrict_scalars ℝ)`. Establish `hD : DifferentiableAt ℝ (fderiv ℝ (φ ∘ τ)) z` using `(hf2.fderiv_right (m := 1) (by norm_num)).differentiableAt one_ne_zero`. Establish `h1 : fderiv ℝ (fderiv ℝ (φ ∘ τ)) z w b = fderiv ℝ (fun x => fderiv ℝ (φ ∘ τ) x b) z w`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[fderiv_clm_apply hD (differentiableAt_const b)]`. Simplify using the standard rewrite rules. Rewrite using `[h1, heq.fderiv_eq]`. Establish `hφ2 : DifferentiableAt ℝ (fderiv ℝ φ) (τ z)` using `(hφ.fderiv_right (m := 1) (by norm_num)).differentiableAt one_ne_zero`. Establish `hτR : DifferentiableAt ℝ τ z` using `hτ.differentiableAt.restrictScalars ℝ`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc : HasFDerivAt (fun x => fderiv ℝ φ (τ x)) ((fderiv ℝ (fderiv ℝ φ) (τ z)).comp (fderiv ℝ τ z)) z` using `hφ2.hasFDerivAt.comp z hτR.hasFDerivAt`. Establish `hg : DifferentiableAt ℂ (fun x => fderiv ℂ τ x b) z` using `hτ.fderiv.differentiableAt.clm_apply (differentiableAt_const b)`. Establish `hu : HasFDerivAt (fun x => fderiv ℂ τ x b) ((fderiv ℂ (fun x => fderiv ℂ τ x b) z).restrictScalars ℝ) z` using `hg.hasFDerivAt.restrictScalars ℝ`. Rewrite using `[(hc.clm_apply hu).fderiv]`. Establish `hwR : fderiv ℝ τ z w = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hτ.differentiableAt.fderiv_restrictScalars ℝ]`. Conclude with `hw`. Simplify using `[hwR]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hess_comp_of_ker {N e : ℕ} (φ : (Fin N → ℂ) → ℝ) (τ : (Fin e → ℂ) → (Fin N → ℂ))
     (z : Fin e → ℂ) (hτ : AnalyticAt ℂ τ z) (hφ : ContDiffAt ℝ 2 φ (τ z))
@@ -129,13 +129,13 @@ theorem hess_comp_of_ker {N e : ℕ} (φ : (Fin N → ℂ) → ℝ) (τ : (Fin e
   simp [hwR]
 
 /- English proof (translation)
-Establish `hH : ∀ b, leviC (fderiv ℝ (fderiv ℝ (φ ∘ τ)) z) v b = 0`. Introduce `b`. Establish `hIv : fderiv ℂ τ z (Complex.I • v) = 0` using `by rw [map_smul, hv, smul_zero]`. Establish `hdiff : DifferentiableAt ℂ (fun x => fderiv ℂ τ x b) z` using `(hτ.fderiv.differentiableAt).clm_apply (differentiableAt_const b)`. Establish `hB : fderiv ℂ (fun x => fderiv ℂ τ x (Complex.I • b)) z = Complex.I • fderiv ℂ (fun x => fderiv ℂ τ x b) z`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0 : (fun x => fderiv ℂ τ x (Complex.I • b)) = fun x => Complex.I • fderiv ℂ τ x b`. Use function extensionality and compare the values at `x`. Rewrite using `[map_smul]`. Rewrite using `[h0]`. Conclude with `fderiv_const_smul hdiff Complex.I`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Unfold `leviC`. Rewrite using `[hess_comp_of_ker φ τ z hτ hφ v b hv, hess_comp_of_ker φ τ z hτ hφ v _ hv, hess_comp_of_ker φ τ z hτ hφ _ b hIv, hess_comp_of_ker φ τ z hτ hφ _ _ hIv, hB]`. Simplify using `only [map_smul, ContinuousLinearMap.smul_apply, smul_smul, Complex.I_mul_I, neg_one_smul, map_neg]`. Simplify using the standard rewrite rules. Use function extensionality and compare the values at `j`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion repeatedly using the stated equalities.
 
-Use `show ∑ i, v i * hessC (φ ∘ τ) z i j = 0`. Repeatedly rewrite using `[hessC_eq_leviC]`. Rewrite using `[sum_mul_leviC, hH]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem vecMul_hessC_comp_eq_zero {N e : ℕ} (φ : (Fin N → ℂ) → ℝ) (τ : (Fin e → ℂ) → (Fin N → ℂ))
     (z : Fin e → ℂ) (hτ : AnalyticAt ℂ τ z) (hφ : ContDiffAt ℝ 2 φ (τ z))
@@ -165,11 +165,11 @@ theorem vecMul_hessC_comp_eq_zero {N e : ℕ} (φ : (Fin N → ℂ) → ℝ) (τ
   rw [sum_mul_leviC, hH]
 
 /- English proof (translation)
-Choose the witnesses or unpack the hypotheses as in `⟨v, hv0, hv⟩ : ∃ v : Fin e → ℂ, v ≠ 0 ∧ fderiv ℂ τ z v = 0 := by`. Establish `h1` using `LinearMap.finrank_range_add_finrank_ker (fderiv ℂ τ z).toLinearMap`. Rewrite `h1` using `[Module.finrank_fin_fun]`. Establish `h2 : 0 < Module.finrank ℂ (LinearMap.ker (fderiv ℂ τ z).toLinearMap)` using `by omega`. Take `⟨x, hx⟩` from `Module.finrank_pos_iff_exists_ne_zero.mp h2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨x, fun h => hx (Subtype.ext h), x.2⟩`. Establish `hvm : ∀ S : Finset (Fin e), v ᵥ* (∑ k ∈ S, hessC (φ k ∘ τ) z) = 0`. Introduce `S`. Use `Finset.induction_on S ?_ ?_` and prove the remaining obligations. Simplify using the standard rewrite rules.
+Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Introduce `k S hk ih`. Rewrite using `[Finset.sum_insert hk, Matrix.vecMul_add, ih, vecMul_hessC_comp_eq_zero (φ k) τ z hτ (hφ k) v hv, add_zero]`. Establish `hdet : ∀ S : Finset (Fin e), (∑ k ∈ S, hessC (φ k ∘ τ) z).det = 0` using `fun S => Matrix.exists_vecMul_eq_zero_iff.mp ⟨v, hv0, hvm S⟩`. Unfold `maDens mdisc`. Simplify using `[hdet]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem maDens_comp_eq_zero_of_rank_lt {N e : ℕ} (φ : Fin e → (Fin N → ℂ) → ℝ)
     (τ : (Fin e → ℂ) → (Fin N → ℂ)) (z : Fin e → ℂ) (hτ : AnalyticAt ℂ τ z)

@@ -14,7 +14,7 @@ def qs_SM {A : Type*} [CommRing A] (G : Matrix (Fin n) (Fin n) A) (b : ℕ) : Ma
   fun α β => MvPolynomial.coeff (symMono α) (∏ m : Fin n, (∑ a : Fin n, MvPolynomial.C (G a m) * X a) ^ (β.1 m : ℕ))
 
 /- English proof (translation)
-Simplify using `only [qs_cnt]`. Rewrite using `[← Finset.card_eq_sum_card_fiberwise (f := a) (s := univ) (t := univ) (fun _ _ => by simp)]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma qs_sum_cnt {ι : Type*} [Fintype ι] (a : ι → Fin n) : ∑ x, qs_cnt a x = Fintype.card ι := by
   classical
@@ -23,13 +23,13 @@ lemma qs_sum_cnt {ι : Type*} [Fintype ι] (a : ι → Fin n) : ∑ x, qs_cnt a 
   simp
 
 /- English proof (translation)
-Establish `h1 : (∏ x : Fin n, (∑ a : Fin n, (MvPolynomial.C (G a x) * X a : MvPolynomial (Fin n) A)) ^ (β x)) = ∏ c : ι, ∑ a : Fin n, MvPolynomial.C (G a (m c)) * X a`. Rewrite using `[← Finset.prod_fiberwise (s := univ) (g := m)]`. Use `Finset.prod_congr rfl fun x _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.prod_congr rfl (g := fun _ => ∑ a : Fin n, (MvPolynomial.C (G a x) * X a : MvPolynomial (Fin n) A)) (fun c hc => by rw [(Finset.mem_filter.1 hc).2]), Finset.prod_const, ← hβ x]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[h1, Fintype.prod_sum, MvPolynomial.coeff_sum]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Establish `h2 : (∏ c : ι, (MvPolynomial.C (G (a c) (m c)) * X (a c) : MvPolynomial (Fin n) A)) = MvPolynomial.monomial (∑ c : ι, Finsupp.single (a c) 1) (∏ c, G (a c) (m c))`. Rewrite using `[MvPolynomial.monomial_sum_prod]`. Use `Finset.prod_congr rfl fun c _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[MvPolynomial.C_mul_X_eq_monomial]`. Rewrite using `[h2, MvPolynomial.coeff_monomial]`. Establish `h3 : (∑ c : ι, Finsupp.single (a c) 1 = α) ↔ ∀ x, qs_cnt a x = α x`. Rewrite using `[Finsupp.ext_iff]`. Use `forall_congr' fun x => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Finsupp.finsetSum_apply, qs_cnt, Finset.card_filter]`. Simplify using `only [Finsupp.single_apply]`. Simplify using `only [h3]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 lemma qs_sym_mul {ι : Type*} [Fintype ι] [DecidableEq ι] {A : Type*} [CommRing A] (G : Matrix (Fin n) (Fin n) A)
     (m : ι → Fin n) (β : Fin n → ℕ) (hβ : ∀ x, qs_cnt m x = β x) (α : Fin n →₀ ℕ) :
@@ -65,11 +65,9 @@ def qs_mon {ι : Type*} [Fintype ι] {b : ℕ} (hb : Fintype.card ι = b) (m : �
     omega⟩, by simpa using (qs_sum_cnt m).trans hb⟩
 
 /- English proof (translation)
-Rewrite using `[Finset.sum_eq_single (qs_mon hb m)]`. Establish `h0 : ∀ x, qs_cnt m x = ((qs_mon hb m).1 x : ℕ)` using `fun x => rfl`. Rewrite using `[if_pos h0]`. Use `congr 1`. Conclude with `qs_sym_mul G m _ h0 (symMono α)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `β _ hβ`. Rewrite using `[if_neg, mul_zero]`. Introduce `h`. Conclude with `hβ (Subtype.ext (funext fun x => Fin.ext (h x).symm))`. Introduce `h`.
-
-Conclude with `absurd (Finset.mem_univ _) h`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem qs_sum_sym {ι : Type*} [Fintype ι] [DecidableEq ι] {A : Type*} [CommRing A] (G : Matrix (Fin n) (Fin n) A) {b : ℕ}
     (hb : Fintype.card ι = b) (m : ι → Fin n) (α : SymIdx n b) (r : A) :
@@ -103,11 +101,11 @@ Both sides reduce to the same expression.
 lemma qs_SymDMat_eq (n b : ℕ) : SymDMat n b = qs_SM (qs_gI n).transpose b := rfl
 
 /- English proof (translation)
-Establish `h1 : qs_gC n = (genMat ℤ n).map (algebraMap _ (GLCoord ℤ n))` using `rfl`. Establish `h2 : qs_gI n = (((detU n)⁻¹ : (GLCoord ℤ n)ˣ) : GLCoord ℤ n) • ((genMat ℤ n).adjugate).map (algebraMap _ (GLCoord ℤ n))`. Use extensionality with `a b`. Simplify using `[qs_gI, ginvC]`. Rewrite using `[h1, h2, Matrix.mul_smul, ← Matrix.map_mul, Matrix.mul_adjugate]`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `a b`. Distinguish the cases in `hab : a = b`. Substitute `hab` using the available equality. Simplify using `only [Matrix.smul_apply, Matrix.map_apply, Matrix.one_apply_eq, smul_eq_mul, mul_one]`. Conclude with `(detU n).inv_mul`.
+By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[Matrix.one_apply_ne hab]`.
+A detailed English derivation is pending.
 -/
 lemma qs_gC_mul_gI (n : ℕ) : qs_gC n * qs_gI n = 1 := by
   have h1 : qs_gC n = (genMat ℤ n).map (algebraMap _ (GLCoord ℤ n)) := rfl
@@ -123,17 +121,15 @@ lemma qs_gC_mul_gI (n : ℕ) : qs_gC n * qs_gI n = 1 := by
   · simp [Matrix.one_apply_ne hab]
 
 /- English proof (translation)
-Establish `h1 : ∀ x : Fin n, (∑ a : Fin n, (MvPolynomial.C (Matrix.diagonal d a x) * X a : MvPolynomial (Fin n) A)) = MvPolynomial.monomial (Finsupp.single x 1) (d x)`. Introduce `x`. Rewrite using `[Finset.sum_eq_single x]`. Rewrite using `[Matrix.diagonal_apply_eq, MvPolynomial.C_mul_X_eq_monomial]`. Introduce `a _ ha`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Matrix.diagonal_apply_ne _ ha]`. Simplify using the standard rewrite rules. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`. Rewrite using `[qs_SM]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities.
 
-Repeatedly rewrite using `[h1, MvPolynomial.monomial_pow]`. Rewrite using `[← MvPolynomial.monomial_sum_prod, MvPolynomial.coeff_monomial]`. Establish `h3 : (∑ x : Fin n, (β.1 x : ℕ) • Finsupp.single x 1 = symMono α) ↔ α = β`. Rewrite using `[Finsupp.ext_iff]`. Prove the components needed by the constructor for the conclusion.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Use `Subtype.ext (funext fun x => Fin.ext ?_)` and prove the remaining obligations. Use `h x` as an intermediate fact. Rewrite `this` using `[Finsupp.finsetSum_apply]`. Simplify using `only [Finsupp.smul_apply, Finsupp.single_apply, smul_eq_mul, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true] at this`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components.
 
-Conclude with `this.symm`. Introduce and unpack `rfl x`. Rewrite using `[Finsupp.finsetSum_apply]`. Simplify using `only [Finsupp.smul_apply, Finsupp.single_apply, smul_eq_mul, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Both sides reduce to the same expression.
-
-Simplify using `only [h3]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma qs_SM_diag {A : Type*} [CommRing A] (d : Fin n → A) (b : ℕ) (α β : SymIdx n b) :
     qs_SM (Matrix.diagonal d) b α β = if α = β then ∏ x, d x ^ (β.1 x : ℕ) else 0 := by
@@ -166,7 +162,7 @@ lemma qs_SM_diag {A : Type*} [CommRing A] (d : Fin n → A) (b : ℕ) (α β : S
   simp only [h3]
 
 /- English proof (translation)
-Rewrite using `[qs_SM, qs_SM, ← MvPolynomial.coeff_map]`. Simplify using `[map_prod, map_pow, map_sum]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma qs_SM_map {A B : Type*} [CommRing A] [CommRing B] (f : A →+* B) (G : Matrix (Fin n) (Fin n) A) (b : ℕ)
     (α β : SymIdx n b) : f (qs_SM G b α β) = qs_SM (G.map f) b α β := by

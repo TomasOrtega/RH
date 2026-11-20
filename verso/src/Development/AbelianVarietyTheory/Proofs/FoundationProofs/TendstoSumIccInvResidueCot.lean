@@ -5,11 +5,11 @@ open scoped Real
 namespace GlobalTheory
 
 /- English proof (translation)
-Proceed by induction on `N with`. Consider the case `zero => simp`. Consider the case `succ N ih`. Establish `h : Finset.Icc (-((N + 1 : ℕ) : ℤ)) ((N + 1 : ℕ) : ℤ) = insert (-((N:ℤ) + 1)) (insert ((N:ℤ) + 1) (Finset.Icc (-(N:ℤ)) N))`. Use extensionality with `k`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `only [Finset.mem_Icc, Finset.mem_insert]`. Use `push_cast`. Use linear arithmetic over natural numbers and integers. Rewrite using `[h, Finset.sum_insert, Finset.sum_insert, ih, Finset.sum_range_succ]`. Use `push_cast`.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Simplify using `only [one_div, sub_eq_add_neg]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [Finset.mem_Icc]`. Use linear arithmetic over natural numbers and integers. Simplify using `only [Finset.mem_Icc, Finset.mem_insert]`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules.
 
 Use linear arithmetic over natural numbers and integers.
 -/
@@ -33,13 +33,13 @@ lemma sum_Icc_inv_add_eq_cotTerm (w : ℂ) (N : ℕ) :
     · simp only [Finset.mem_Icc, Finset.mem_insert]; omega
 
 /- English proof (translation)
-Introduce `L z r hL hz`. Establish `hL0 : (L : ℂ) ≠ 0` using `by exact_mod_cast hL.ne'`. Use `set w : ℂ := (z + r) / L with hw`. Establish `hwL : z + r = w * L` using `by rw [hw]; field_simp`. Establish `hmem : w ∈ Complex.integerComplement`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨k, hk⟩`. Use `congrArg Complex.im hwL` as an intermediate fact. Rewrite `this` using `[← hk]`. Simplify using `at this`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `h1` using `((tendsto_logDeriv_euler_cot_sub hmem).const_add (1 / w)).const_mul (L : ℂ)⁻¹`. Establish `hlim : (L : ℂ)⁻¹ * (1 / w + (π * Complex.cot (π * w) - 1 / w)) = π / L * Complex.cot (π * w)` using `by ring`. Rewrite `h1` using `[hlim]`. Use `h1.congr fun N => ?_` and prove the remaining obligations. Use `sum_Icc_inv_add_eq_cotTerm w N` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [cotTerm]`. Rewrite using `[← this, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun n _ => ?_` and prove the remaining obligations. Rewrite using `[hwL, ← add_mul, mul_inv, mul_comm]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tendsto_sum_Icc_inv_residue_cot :
     ∀ (L : ℕ) (z : ℂ) (r : ℕ), 0 < L → 0 < z.im →

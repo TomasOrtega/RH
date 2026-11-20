@@ -16,9 +16,9 @@ noncomputable section
 namespace PositivityTheory.PlacePermOperatorBicommutantSpan
 
 /- English proof (translation)
-Introduce `F _ _ hF`. Establish `hw : ∀ w : InfinitePlace F, w.IsReal` using `hF.isReal`. Use `⟨⟨Pi.ringHom fun w => (InfinitePlace.Completion.ringEquivRealOfIsReal (hw w)).symm.toRingHom, continuous_pi fun w => (InfinitePlace.Completion.isometryEquivRealOfIsReal (hw w)).symm.continuous⟩, fun θ _ t w => ?_⟩` and prove the remaining obligations. Establish `h1 : ((InfinitePlace.Completion.ringEquivRealOfIsReal (hw w)).toRingHom.comp ((Pi.evalRingHom _ w).comp θ)) = RingHom.id ℝ` using `Subsingleton.elim _ _`. Establish `h2 : InfinitePlace.Completion.extensionEmbeddingOfIsReal (hw w) (θ t w) = t` using `DFunLike.congr_fun h1 t`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← (InfinitePlace.Completion.isometry_extensionEmbeddingOfIsReal (hw w)).norm_map_of_map_zero (map_zero _), h2, Real.norm_eq_abs]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem theta_real : ∀ (F : Type) [Field F] [NumberField F], IsTotallyReal F → (∃ θ : ℝ →+* InfiniteAdeleRing F, Continuous θ) ∧ ∀ θ : ℝ →+* InfiniteAdeleRing F, Continuous θ → ∀ (t : ℝ) (w : InfinitePlace F), ‖θ t w‖ = |t| := by
   intro F _ _ hF
@@ -33,9 +33,9 @@ theorem theta_real : ∀ (F : Type) [Field F] [NumberField F], IsTotallyReal F �
     Real.norm_eq_abs]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`. Establish `hf` using `Filter.eventually_cofinite.1 h1`. Use `⟨hf.toFinset, fun S hS => ⟨fun v hv => by_contra fun h => hv (hS (hf.mem_toFinset.2 h)), ?_⟩⟩` and prove the remaining obligations. Rewrite using `[← finprod_eq_prod_of_mulSupport_subset c fun v hv => hS (hf.mem_toFinset.2 hv), h2]`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `⟨S, h⟩`. Take `⟨h1, h2⟩` from `h S le_rfl`. Conclude with `⟨S.eventually_cofinite_notMem.mono h1, by`. Rewrite using `[finprod_eq_prod_of_mulSupport_subset c fun v hv => by_contra fun h => hv (h1 v h), h2]⟩`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 -/
 theorem up_fin {F : Type} [Field F] [NumberField F] {a : ℝ≥0} {c : HeightOneSpectrum (𝓞 F) → ℝ≥0} :
     IsUnitProd a c ↔ ∃ S₀ : Finset (HeightOneSpectrum (𝓞 F)), ∀ S, S₀ ⊆ S → (∀ v, v ∉ S → c v = 1) ∧ a * ∏ v ∈ S, c v = 1 := by
@@ -50,13 +50,13 @@ theorem up_fin {F : Type} [Field F] [NumberField F] {a : ℝ≥0} {c : HeightOne
       rw [finprod_eq_prod_of_mulSupport_subset c fun v hv => by_contra fun h => hv (h1 v h), h2]⟩
 
 /- English proof (translation)
-Introduce `F _ _ a b c e hc he`. Establish `hom : ∀ (f : ℝ≥0 →* ℝ≥0) {a : ℝ≥0} {c : HeightOneSpectrum (𝓞 F) → ℝ≥0}, IsUnitProd a c → IsUnitProd (f a) fun v => f (c v)` using `fun f a c h => by`. Take `⟨S, hS⟩` from `up_fin.1 h`. Conclude with `up_fin.2 ⟨S, fun T hT => ⟨fun v hv => by rw [(hS T hT).1 v hv, map_one], by`. Rewrite using `[← map_prod, ← map_mul, (hS T hT).2, map_one]⟩⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `mul : ∀ {a b : ℝ≥0} {c e : HeightOneSpectrum (𝓞 F) → ℝ≥0}, IsUnitProd a c → IsUnitProd b e → IsUnitProd (a * b) fun v => c v * e v` using `fun hc he => by`. Take `⟨S, hS⟩` from `up_fin.1 hc`. Take `⟨S', hS'⟩` from `up_fin.1 he`. Use `up_fin.2 ⟨S ∪ S', fun T hT => ?_⟩` and prove the remaining obligations. Take `⟨a1, a2⟩` from `hS T (Finset.subset_union_left.trans hT)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨b1, b2⟩` from `hS' T (Finset.subset_union_right.trans hT)`. Conclude with `⟨fun v hv => by rw [a1 v hv, b1 v hv, one_mul], by`. Rewrite using `[Finset.prod_mul_distrib, mul_mul_mul_comm, a2, b2, one_mul]⟩`. Take `⟨S, hS⟩` from `up_fin.1 hc`. Use `⟨left_ne_zero_of_mul_eq_one hc.2, fun v => ?_, mul hc he, hom invMonoidHom hc, ?_, hom (NNReal.sqrtHom : ℝ≥0 →*₀ ℝ≥0) hc, fun n => hom (powMonoidHom n) hc, S, hS⟩` and prove the remaining obligations.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Conclude with `Finset.prod_ne_zero_iff.1 (right_ne_zero_of_mul_eq_one (hS (insert v S) (Finset.subset_insert _ _)).2) v (Finset.mem_insert_self _ _)`. Simplify using `only [div_eq_mul_inv]`. Conclude with `mul hc (hom invMonoidHom he)`.
+A detailed English derivation is pending.
 -/
 theorem up_alg : ∀ (F : Type) [Field F] [NumberField F] (a b : ℝ≥0) (c e : HeightOneSpectrum (𝓞 F) → ℝ≥0), IsUnitProd a c → IsUnitProd b e → a ≠ 0 ∧ (∀ v, c v ≠ 0) ∧ IsUnitProd (a * b) (fun v => c v * e v) ∧ IsUnitProd a⁻¹ (fun v => (c v)⁻¹) ∧ IsUnitProd (a / b) (fun v => c v / e v) ∧ IsUnitProd (NNReal.sqrt a) (fun v => NNReal.sqrt (c v)) ∧ (∀ n : ℕ, IsUnitProd (a ^ n) (fun v => c v ^ n)) ∧ ∃ S₀ : Finset (HeightOneSpectrum (𝓞 F)), ∀ S, S₀ ⊆ S → (∀ v, v ∉ S → c v = 1) ∧ a * ∏ v ∈ S, c v = 1 := by
   intro F _ _ a b c e hc he

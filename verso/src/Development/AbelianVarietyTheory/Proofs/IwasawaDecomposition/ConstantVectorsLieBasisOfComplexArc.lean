@@ -18,11 +18,11 @@ open Matrix GlobalTheory.LieEigen GlobalTheory.ConstBasis
 open ReciprocityTheory.ChartRestriction.G.Chart (prodPts)
 
 /- English proof (translation)
-Use `⟨fun k => w (e.symm ⟨τ, k⟩), funext fun j => ?_⟩` and prove the remaining obligations. Take `⟨⟨τ', i⟩, rfl⟩` from `e.symm.surjective j`. Rewrite using `[Finset.sum_apply]`. Distinguish the cases in `h : τ' = τ`. Substitute `h` using the available equality.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Rewrite using `[Finset.sum_eq_single i (fun k _ hk => by`. Rewrite using `[Pi.smul_apply, Pi.single_eq_of_ne (by simpa using hk.symm), smul_zero]) (by simp)]`. Simplify using the standard rewrite rules. Establish `h₀ : w (e.symm ⟨τ', i⟩) = 0`. Assume the negation of the conclusion as `h₁`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Conclude with `h (by simpa using hw _ h₁)`. Rewrite using `[h₀]`. Use `(Finset.sum_eq_zero fun k _ => ?_).symm` and prove the remaining obligations. Rewrite using `[Pi.smul_apply, Pi.single_eq_of_ne (fun h₁ => h (congrArg Sigma.fst (e.symm.injective h₁))), smul_zero]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_comb_of_type {I : Type} {m : I → ℕ} {g : ℕ} (e : Fin g ≃ Σ τ : I, Fin (m τ)) (τ : I) {w : Fin g → ℂ}
     (hw : ∀ j, w j ≠ 0 → (e j).1 = τ) :
@@ -43,33 +43,31 @@ theorem exists_comb_of_type {I : Type} {m : I → ℕ} {g : ℕ} (e : Fin g ≃ 
     rw [Pi.smul_apply, Pi.single_eq_of_ne (fun h₁ => h (congrArg Sigma.fst (e.symm.injective h₁))), smul_zero]
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c _ _ σ r U Uw O _ β Y a χ W Ha e z hσ hz he`. Establish `hG` using `GlobalTheory.ArcCM.known_holds.laws.globalFns`. Take `⟨g, e₀, v, M, hev, hv, hu, hM⟩` from `ConstLie.exists_const_basis hG E H Dw l Xo c O β Y ℂ _ a χ W`. Establish `lin` using `ConstLin.lieImg_iff_isLieComb hG E H Dw l Xo c O β Y ℂ _ a χ W`. Take `⟨an₁, an₂, an₃, an₄⟩` from `ExpTan.anVec_bijective hG E H Dw l Xo c σ O β Y a χ W _ _ _ Ha`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `flat_of_injective ℂ (PowerSeries ℂ) PowerSeries.C_injective` as an intermediate fact. Set `ρ : (E →+* ℂ) → 𝓞 E → ℂ` to `fun τ x => σ (embK c τ x)`. Set `M' : 𝓞 E → Matrix (Fin g) (Fin g) (PowerSeries ℂ)` to `fun x => (M x).map (PowerSeries.C (R := ℂ))`. Establish `hM' : ∀ x i, IsLieComb (M' x i) v (v i ≫ W.t.act.act x)` using `hM`. Use `choose zz hzz using fun i => (an₁ _ (hev i).1).exists`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `L : (Fin g → ℂ) →ₗ[ℂ] (Fin Uw.g → ℂ)` to `Fintype.linearCombination ℂ zz`. Establish `comb : ∀ u ν, GtComb u e₀ ν ↔ AnVec Ha ν (L u)` using `fun u ν => an₄ g u e₀ zz ν hzz`. Establish `img : ∀ u ν, AnVec Ha ν (L u) → LieImg W ν (prodPts (fun j => PowerSeries.C (R` using `ℂ) (u j)) v) := fun u ν h => (lin g _ e₀ _ v _ (fun i => (hev i).2) ((comb u ν).2 h)).2 ((Chart.isLieComb_iff _ _ _).2 rfl)`. Establish `inj : Function.Injective L` using `fun u u' h => by`. Take `⟨ν, hν, -⟩` from `an₂ (L u)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `(hu ν (an₃ _ _ hν)).unique ((comb _ _).2 hν) ((comb _ _).2 (h ▸ hν))`. Establish `surj : Function.Surjective L` using `fun w => by`. Take `⟨ν, hν, -⟩` from `an₂ w`. Take `⟨u, h, -⟩` from `hu ν (an₃ _ _ hν)`. Conclude with `⟨u, (an₁ ν (an₃ _ _ hν)).unique ((comb _ _).1 h) hν⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `cm : ∀ x (u : Fin g → ℂ), (fun j => PowerSeries.C (R` using `ℂ) (u j)) ᵥ* M' x = fun j => PowerSeries.C (R := ℂ) ((u ᵥ* M x) j) := fun x u =>`. Use function extensionality and compare the values at `fun i => ((PowerSeries.C (R := ℂ)).map_vecMul (M x) u i).symm`. Establish `act : ∀ (x : 𝓞 E) u, L (u ᵥ* M x) = fun k => Formalism.L2.PjFree.relab c σ (Uw.e k).1 (x : E) * L u k` using `fun x u => by`. Distinguish the cases in `hx : x = 0`. Substitute `hx` using the available equality.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨ρ', hρ'⟩` from `exists_action hv W.t.act`. Establish `h₁` using `prodPts_injective hv ((hρ' 0 (fun j => PowerSeries.C (R := ℂ) (u j))).trans (prodPts_act hv hM' 0 _))`. Rewrite `h₁` using `[cm, map_zero]`. Establish `h₂ : u ᵥ* M 0 = 0` using `funext fun j => PowerSeries.C_injective (R := ℂ) ((congrFun h₁ j).symm.trans (map_zero _).symm)`. Rewrite using `[h₂, map_zero]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `k`. Simplify using the standard rewrite rules. Take `⟨ν, hν, -⟩` from `an₂ (L u)`. Take `⟨u₁, h₁⟩` from `surj fun k => Formalism.L2.PjFree.relab c σ (Uw.e k).1 (x : E) * L u k`. Take `⟨ν₁, hν₁, -⟩` from `an₂ (L u₁)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h₂` using `ArcType.act_eq Ha hx hν (img _ _ hν) (isTangent_prodPts hv.1 _) (h₁ ▸ hν₁) (img _ _ hν₁) (isTangent_prodPts hv.1 _)`. Rewrite `h₂` using `[prodPts_act hv hM', cm]`. Establish `h₃ : u₁ = u ᵥ* M x` using `funext fun j => PowerSeries.C_injective (R := ℂ) (congrFun (prodPts_injective hv h₂) j)`. Rewrite using `[← h₃, h₁]`. Establish `typ : ∀ τ w, (∀ x, w ᵥ* M x = ρ τ x • w) ↔ ∀ j, L w j ≠ 0 → (Uw.e j).1 = τ` using `fun τ w => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun h j hj => ?_, fun h x => inj ?_⟩` and prove the remaining obligations. Use `(GlobalTheory.Relab.relab_good E H l c σ hσ).1.1 ?_` and prove the remaining obligations. Use `IsLocalization.ringHom_ext (nonZeroDivisors (𝓞 E)) (RingHom.ext fun x => ?_)` and prove the remaining obligations. Establish `h₁` using `congrFun (act x w) j`. Rewrite `h₁` using `[h x, map_smul]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `mul_right_cancel₀ hj h₁.symm`. Rewrite using `[act, map_smul]`. Use function extensionality and compare the values at `j`. Distinguish the cases in `hj : L w j = 0`. Simplify using `[hj]`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite using `[h j hj]`. Both sides reduce to the same expression. Use `choose u hu using fun τ k => surj (z τ k)`. Establish `imgu : ∀ τ k, LieImg W (e τ k) (prodPts (fun j => PowerSeries.C (R` using `ℂ) (u τ k j)) v) := fun τ k => img _ _ ((hu τ k).symm ▸ he τ k)`. Establish `eig : ∀ τ k x, u τ k ᵥ* M x = ρ τ x • u τ k` using `fun τ k => (typ τ _).2 ((hu τ k).symm ▸ (hz τ).2 k)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `key : ∀ τ (w : Fin g → PowerSeries ℂ), (∀ x, w ᵥ* M' x = PowerSeries.C (R` using `ℂ) (ρ τ x) • w) → ∃! cf : Fin (Dw.mult τ) → PowerSeries ℂ, w = ∑ k, cf k • (fun j => PowerSeries.C (R := ℂ) (u τ k j)) := by`. Introduce `τ`. Use `(commonEigenvectors_flat_baseChange ℂ (𝓞 E) g _ M (ρ τ)).1 ℂ (u τ) (eig τ) ?_ (PowerSeries ℂ)` and prove the remaining obligations. Establish `: ∀ w : Fin g → ℂ, (∀ x, w ᵥ* M x = ρ τ x • w) → ∃! cf : Fin (Dw.mult τ) → ℂ, w = ∑ k, cf k • u τ k` using `fun w hw => by`. Use `(existsUnique_congr fun cf => ?_).1 (LetterBasis.existsUnique_comb (hz τ).1 (fun k => exists_comb_of_type Uw.e τ ((hz τ).2 k)) (exists_comb_of_type Uw.e τ ((typ τ w).1 hw)))` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← inj.eq_iff, map_sum]`. Simplify using `only [map_smul, hu]`. Simplify using `using this`. Use `⟨_, imgu, fun τ => ⟨fun k => ⟨isTangent_prodPts hv.1 _, fun x => ?_⟩, fun w hw he => ?_⟩⟩` and prove the remaining obligations. Rewrite using `[eig_iff hv hM']`.
-
-Conclude with `vecMul_map _ (eig τ k x)`. Take `⟨d, rfl⟩` from `exists_prodPts hv hw`. Use `(existsUnique_congr fun cf => ?_).1 (key τ d fun x => (eig_iff hv hM' _ _ _).1 (he x))` and prove the remaining obligations. Rewrite using `[Chart.isLieComb_iff, prodPts_prodPts hv.1, (prodPts_injective hv).eq_iff]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem main : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) [Algebra (FractionRing ℂ) ℂ] [IsScalarTower ℂ (FractionRing ℂ) ℂ] (σ : c.F →+* ℂ) (r : ℕ) (U : Formalism.L2.PjFree.Unf Xo c σ r) (Uw : UnfWit U) (O : Type) [CommRing O] (β : O →+* c.F) (Y : Model Xo c β) (a : ArcIn Dw l β ℂ (σ.comp β)) (χ : Sp (PowerSeries ℂ) ⟶ Y.X) (W : Wit Y a χ) (Ha : HolArc Y σ a χ W Uw.F) (e : ∀ τ : E →+* ℂ, Fin (Dw.mult τ) → Out.GtPt a.D₀ (epsR ℂ)) (z : ∀ τ : E →+* ℂ, Fin (Dw.mult τ) → (Fin Uw.g → ℂ)), Formalism.L2.PjFree.GoodEmb c σ → (∀ τ, LinearIndependent ℂ (z τ) ∧ ∀ i j, z τ i j ≠ 0 → (Uw.e j).1 = τ) → (∀ τ i, AnVec Ha (e τ i) (z τ i)) → ArcBasis W (fun τ => σ.comp (embK c τ)) e := by
   intro E _ _ _ H Dw l Xo c _ _ σ r U Uw O _ β Y a χ W Ha e z hσ hz he

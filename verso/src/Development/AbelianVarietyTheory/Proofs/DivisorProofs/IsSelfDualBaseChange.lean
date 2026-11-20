@@ -15,7 +15,7 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.AbDatum
 
 /- English proof (translation)
-Establish `e : (lift a t).left ≫ m = u ≫ (lift a₀ t₀).left`. Apply `left_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, h₁, lift_left_fst_assoc, ha, Category.assoc, lift_left_fst]`. Rewrite using `[Category.assoc, h₂, lift_left_snd_assoc, ht, Category.assoc, lift_left_snd]`. Rewrite using `[evc, evc, cls_pull hP, ← pull_comp, ← pull_comp, e]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem evc_pull_eq_pull_evc {T T' : Scheme.{0}} {A B Y : Over T} {A' B' Y' : Over T'}
     {f : A'.left ⟶ A.left} {g : B'.left ⟶ B.left} {m : (A' ⊗ B').left ⟶ (A ⊗ B).left}
@@ -31,11 +31,11 @@ theorem evc_pull_eq_pull_evc {T T' : Scheme.{0}} {A B Y : Over T} {A' B' Y' : Ov
   rw [evc, evc, cls_pull hP, ← pull_comp, ← pull_comp, e]
 
 /- English proof (translation)
-Take `⟨hd, hs, ha⟩` from `h`. Establish `hP` using `hd.isLB`. Establish `hP' : (P.pull m).IsLB` using `pull_isLB hP m`. Use `⟨hd.baseChange hφ hφ h₁ h₂ hP' ((cls_eq_iff hP' hP').1 rfl), ?_, fun x ↦ ?_⟩` and prove the remaining obligations. Establish `e : evc hP (snd A A) (fst A A) = cls P hP` using `(cls_eq_iff (pull_isLB hP _) hP).2 hs`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `(cls_eq_iff (pull_isLB hP' _) hP').1 ?_` and prove the remaining obligations. Rewrite using `[cls_ev hP', evc_pull_eq_pull_evc h₁ h₂ hP hP' m _ _ (snd A A) (fst A A) h₂.symm h₁.symm, e, cls_pull hP]`. Establish `e : evc hP (fst A A ≫ j.act x) (snd A A) = evc hP (fst A A) (snd A A ≫ j.act (c x))` using `(cls_eq_iff (pull_isLB hP _) (pull_isLB hP _)).2 (ha x)`. Use `(cls_eq_iff (pull_isLB hP' _) (pull_isLB hP' _)).1 ?_` and prove the remaining obligations. Rewrite using `[cls_ev hP', cls_ev hP', evc_pull_eq_pull_evc h₁ h₂ hP hP' m _ _ (fst A A ≫ j.act x) (snd A A) ?_ h₂.symm, evc_pull_eq_pull_evc h₁ h₂ hP hP' m _ _ (fst A A) (snd A A ≫ j.act (c x)) h₁.symm ?_, e]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Over.comp_left, Over.comp_left, Category.assoc, hj.2, ← Category.assoc, ← h₂, Category.assoc]`. Rewrite using `[Over.comp_left, Over.comp_left, Category.assoc, hj.2, ← Category.assoc, ← h₁, Category.assoc]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem isSelfDual_baseChange (O : Type) [CommRing O] (c : O →+* O) (T T' : Scheme.{0}) (b : T' ⟶ T)
     (A : Over T) [GrpObj A] (A' : Over T') [GrpObj A'] (j : OAct O A) (j' : OAct O A') (φ : A'.left ⟶ A.left)

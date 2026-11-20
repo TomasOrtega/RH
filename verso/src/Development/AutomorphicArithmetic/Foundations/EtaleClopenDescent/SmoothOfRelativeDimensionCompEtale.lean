@@ -4,7 +4,7 @@ import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.OmegaPullOmeg
 open CategoryTheory AlgebraicGeometry ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory GlobalTheory.HodgeCoh GlobalTheory.CechDR KaehlerDifferential GlobalTheory.W1
 
 /- English proof (translation)
-Introduce `Z Y s s' c h d _ hc`. Substitute `h` using the available equality. Establish `h0 : SmoothOfRelativeDimension 0 c` using `(Etale.iff_smoothOfRelativeDimension_zero c).1 hc`. Establish `h1 : SmoothOfRelativeDimension (0 + d) (c ≫ s)` using `smoothOfRelativeDimension_comp 0 d c s`. Rewrite `h1` using `[Nat.zero_add]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem UpperTheory.Cb.smoothOfRelativeDimension_comp_etale :
     ∀ (Z Y : Scheme.{0}) (s : Z ⟶ Sp ℂ) (s' : Y ⟶ Sp ℂ) (c : Y ⟶ Z), c ≫ s = s' → ∀ (d : ℕ) [SmoothOfRelativeDimension d s], Etale c → SmoothOfRelativeDimension d s' := by

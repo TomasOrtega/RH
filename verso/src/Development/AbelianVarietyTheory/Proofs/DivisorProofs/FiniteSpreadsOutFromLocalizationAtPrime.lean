@@ -7,11 +7,9 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 namespace GlobalTheory
 
 /- English proof (translation)
-Use `letI : Algebra B (Rm ⊗[R] B) := Algebra.TensorProduct.rightAlgebra`. Use `haveI : IsLocalization (Algebra.algebraMapSubmonoid B M) (Rm ⊗[R] B) := IsLocalization.tensorRight Rm M`. Take `⟨⟨m, hm⟩, h1⟩` from `IsIntegral.exists_multiple_integral_of_isLocalization M _ hb`. Establish `h2 : IsIntegral R (algebraMap B (Rm ⊗[R] B) (m • b))`. Establish `e : algebraMap B (Rm ⊗[R] B) (m • b) = m • ((1 : Rm) ⊗ₜ[R] b)`.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← TensorProduct.tmul_smul]`. Both sides reduce to the same expression. Rewrite using `[e]`. Conclude with `h1`. Take `⟨m', hm', h3⟩` from `IsLocalization.exists_isIntegral_smul_of_isIntegral_map (Sₘ := Rm ⊗[R] B) M h2`.
-
-Conclude with `⟨m' * m, M.mul_mem hm' hm, by rwa [mul_smul]⟩`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_smul_isIntegral_of_isIntegral_one_tmul {R : Type} [CommRing R] (M : Submonoid R)
     (Rm : Type) [CommRing Rm] [Algebra R Rm] [IsLocalization M Rm]
@@ -30,21 +28,19 @@ theorem exists_smul_isIntegral_of_isIntegral_one_tmul {R : Type} [CommRing R] (M
   exact ⟨m' * m, M.mul_mem hm' hm, by rwa [mul_smul]⟩
 
 /- English proof (translation)
-Introduce `R _ q B _ _ hft hfin`. Take `⟨S, hS⟩` from `hft.out`. Establish `key : ∀ b : B, ∃ s ∈ q.asIdeal.primeCompl, IsIntegral R (s • b)` using `fun b => exists_smul_isIntegral_of_isIntegral_one_tmul q.asIdeal.primeCompl (Localization.AtPrime q.asIdeal) b (Algebra.IsIntegral.isIntegral _)`. Use `choose s hs hint using key`. Establish `hr : ∏ b ∈ S, s b ∈ q.asIdeal.primeCompl` using `Submonoid.prod_mem _ fun b _ => hs b`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨∏ b ∈ S, s b, hr, ?_⟩` and prove the remaining obligations. Use `set r := ∏ b ∈ S, s b with hrdef`. Set `A` to `Localization.Away r`. Establish `hint' : ∀ b ∈ S, IsIntegral A ((1 : A) ⊗ₜ[R] b)`. Introduce `b hb`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hu : IsUnit (algebraMap R A (s b))` using `isUnit_of_dvd_unit (map_dvd _ (Finset.dvd_prod_of_mem s hb)) (IsLocalization.Away.algebraMap_isUnit r)`. Take `⟨u, hu⟩` from `hu`. Establish `h1 : IsIntegral R ((1 : A) ⊗ₜ[R] (s b • b))` using `(hint b).map (Algebra.TensorProduct.includeRight (R := R) (A := A) (B := B))`. Establish `h2 : IsIntegral A ((1 : A) ⊗ₜ[R] (s b • b))` using `h1.tower_top`. Establish `e : (1 : A) ⊗ₜ[R] b = (↑u⁻¹ : A) • ((1 : A) ⊗ₜ[R] (s b • b))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[TensorProduct.tmul_smul, ← algebraMap_smul A (s b), ← hu, smul_smul]`. Simplify using the standard rewrite rules. Rewrite using `[e]`. Conclude with `h2.smul _`. Establish `hall : ∀ b : B, IsIntegral A ((1 : A) ⊗ₜ[R] b)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Proceed by induction.
 
-Introduce `b`. Establish `hb : b ∈ Algebra.adjoin R (S : Set B)` using `by rw [hS]; trivial`. Proceed by induction on `hb using Algebra.adjoin_induction with`. Consider the case `mem x hx => exact hint' x hx`. Consider the case `algebraMap x`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Conclude with `((isIntegral_algebraMap (R := R) (A := B) (x := x)).map (Algebra.TensorProduct.includeRight (R := R) (A := A) (B := B))).tower_top`. Consider the case `add x y _ _ hx hy => rw [TensorProduct.tmul_add]`. Conclude with `hx.add hy`. Consider the case `mul x y _ _ hx hy`. Use `hx.mul hy` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Rewrite `this` using `[Algebra.TensorProduct.tmul_mul_tmul, one_mul]`. Then use the resulting hypothesis. Use `haveI : Algebra.IsIntegral A (A ⊗[R] B) := ⟨fun x => by`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => exact isIntegral_zero`. Consider the case `tmul a b`.
-
-Use `(hall b).smul a` as an intermediate fact. Rewrite `this` using `[TensorProduct.smul_tmul', smul_eq_mul, mul_one]`. Then use the resulting hypothesis. Consider the case `add x y hx hy => exact hx.add hy⟩`. Conclude with `Algebra.IsIntegral.finite`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem exists_notMem_finite_away_of_finite_atPrime :
     ∀ (R : Type) [CommRing R] (q : PrimeSpectrum R) (B : Type) [CommRing B] [Algebra R B] [Algebra.FiniteType R B], Module.Finite (Localization.AtPrime q.asIdeal) ((Localization.AtPrime q.asIdeal) ⊗[R] B) → ∃ r : R, r ∉ q.asIdeal ∧ Module.Finite (Localization.Away r) (Localization.Away r ⊗[R] B) := by

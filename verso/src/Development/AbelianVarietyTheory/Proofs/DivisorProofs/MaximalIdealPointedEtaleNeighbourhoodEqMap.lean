@@ -19,7 +19,7 @@ instance isLocalHom_algebraMap_B {R : Type} [CommRing R] [IsLocalRing R] (i : Et
   exact this ha
 
 /- English proof (translation)
-The claim follows from `Algebra.FormallyUnramified.map_maximalIdeal.symm`.
+A detailed English derivation is pending.
 -/
 theorem maximalIdeal_B_eq_map (R : Type) [CommRing R] [IsLocalRing R] (i : EtNbhd R) :
     maximalIdeal i.B = (maximalIdeal R).map (algebraMap R i.B) :=

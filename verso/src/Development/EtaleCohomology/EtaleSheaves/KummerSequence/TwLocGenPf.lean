@@ -7,22 +7,22 @@ namespace LateralTheory.E.H2CurveOrder.TwLocGenPf
 open LateralTheory.E.H2CurveOrder.TwLocGenPfSec
 
 /- English proof (translation)
-Simplify using `only [Sec.res, op_comp, Functor.map_comp, ModuleCat.hom_comp, LinearMap.comp_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem res_comp {R : Type} [CommRing R] {F : Shv R} {W V U : Scheme.{0}} (h : W ⟶ V) (g : V ⟶ U) (y : Sec F U) :
     Sec.res (h ≫ g) y = Sec.res h (Sec.res g y) := by
   simp only [Sec.res, op_comp, Functor.map_comp, ModuleCat.hom_comp, LinearMap.comp_apply]
 
 /- English proof (translation)
-Introduce `q _ U y`. Establish `hT` using `TwSecLoc_of_alg AlgPow_of`. Use `loc_bind (loc_surj (twF q 1) U y) ?_` and prove the remaining obligations. Introduce and unpack `V g ⟨x, hx⟩`. Distinguish the cases in `hP : Nonempty (Prim q Γ(V, ⊤))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Consider separately whether the proposition holds or fails.
 
-Take `⟨ζ⟩` from `hP`. Use `loc_mono (hT q 1 V ζ (Sec.res g y)) ?_` and prove the remaining obligations. Introduce and unpack `W h ⟨c, hc⟩`. Use `right`. Conclude with `⟨ζ.map h.appTop.hom, c, by rw [res_comp]; exact hc⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `hx0 : x = 0` using `by haveI : IsEmpty (Prim q Γ(V, ⊤)) := not_nonempty_iff.mp hP`. Take `⟨z, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Establish `: z = 0` using `Subsingleton.elim _ _`. Rewrite using `[this]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations.
 
-Use `loc_mono (loc_true V) ?_` and prove the remaining obligations. Introduce `W h _`. Use `left`. Establish `hx' : Sec.res (F` using `tw q 1) g y = ofRings.sec (twF q 1) V x := hx`. Rewrite using `[res_comp, hx', hx0]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h0 : ofRings.sec (twF q 1) V 0 = 0` using `map_zero ((toSheafify Scheme.etaleTopology (Scheme.Γ ⋙ twF q 1)).app (op V)).hom`. Rewrite using `[h0]`. Conclude with `map_zero _`.
+A detailed English derivation is pending.
 -/
 theorem TwLocGen_of : LateralTheory.E.H2CurveOrder.LeafKumMuInjPf.TwLocGen := by
   intro q _ U y

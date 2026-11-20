@@ -42,7 +42,7 @@ private noncomputable def powSuccIso {S : Scheme.{0}} (A : Over S) (k : ℕ) :
         rw [Category.assoc, hgi, hbs] }
 
 /- English proof (translation)
-The claim follows from `| 0 => by have t : IsTerminal (GlobalTheory.KS.pow A 0) := IsTerminal.ofUniqueHom (fun Y => Pi.lift (fun i => i.elim0)) (fun Y m => Pi.hom_ext _ _ (fun i => i.elim0)) let e := t.uniqueUpToIso Over.mkIdTerminal have h1 : (GlobalTheory.KS.pow A 0).hom = e.hom.left := by simpa using …`.
+A detailed English derivation is pending.
 -/
 private theorem flat_pow {S : Scheme.{0}} (A : Over S) (h : Flat A.hom) :
     ∀ k, Flat (GlobalTheory.KS.pow A k).hom
@@ -67,7 +67,7 @@ private theorem flat_pow {S : Scheme.{0}} (A : Over S) (h : Flat A.hom) :
     infer_instance
 
 /- English proof (translation)
-Introduce `S A k`. Use `⟨fun h => flat_pow A inferInstance k, ?_⟩` and prove the remaining obligations. Introduce `X u v h1 h2`. Conclude with `GlobalTheory.KS.PowPB.pow_left_hom_ext u v h1 h2`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.crystallineComparison.Mod.powExt_of :
     PowExt := by

@@ -7,7 +7,7 @@ open IsLocalRing UpperTheory.V.Alg UpperTheory.V.W UpperTheory.V.Pa
 open scoped TensorProduct
 
 /- English proof (translation)
-Unfold `closureIdeal`. Simplify using `only [TwoSidedIdeal.mem_iInf]`. Introduce `N H`. Conclude with `TwoSidedIdeal.subset_span (Or.inl (Or.inl hx))`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 private theorem mem_closureIdeal_of_mem {A G : Type} [CommRing A] [Group G] [TopologicalSpace G] (I : Ideal A)
     (S : Set (MonoidAlgebra A G)) (x : MonoidAlgebra A G) (hx : x ∈ S) : x ∈ closureIdeal I S := by
@@ -17,15 +17,15 @@ private theorem mem_closureIdeal_of_mem {A G : Type} [CommRing A] [Group G] [Top
   exact TwoSidedIdeal.subset_span (Or.inl (Or.inl hx))
 
 /- English proof (translation)
-Introduce `l _ F O O' _ _ _ _ _ _ _ _ n r r' B B' _ _ _ _ _ _ u u' g _ hPhi hIp hg hM z hz`. Take `⟨hD, hψ⟩` from `hM`. Use `haveI : CompactSpace F.G₀ := isCompact_iff_compactSpace.mp (Subgroup.isClosed_of_isOpen _ F.η_open).isCompact`. Take `⟨hfin, ⟨χ, h, hmap, hmf⟩, -⟩` from `BC.pair_mf l F O n r B u hPhi`. Use `haveI := hfin`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨-, hstar, hoEl⟩` from `BC.star_map l F O O' B B' g hg`. Establish `hz' : z ∈ (u.D.map g).chBar (pairGens u')`. Rewrite using `[hD]`. Conclude with `hz`. Establish `hψ' : ∀ v, u'.ψ v = fun i => pushCh g (u.ψ v i)` using `fun v => funext fun i => (hψ v i).symm`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hin : ∀ x ∈ pairGens u, MonoidAlgebra.mapRingHom F.G₀ g x ∈ TwoSidedIdeal.span (MonoidAlgebra.mapRingHom F.G₀ g '' {y | y ∈ u.D.chBar (pairGens u)})` using `fun x hx => TwoSidedIdeal.subset_span ⟨x, mem_closureIdeal_of_mem _ _ x (Or.inr hx), rfl⟩`. Use `BC.closure_bc n h B B' F.G₀ u.D χ u.cont hmap hmf g (pairGens u) (pairGens u') ?_ z hz'` and prove the remaining obligations. Introduce `y hy`. Break down `hy with ⟨v, γ, hy | hy⟩ | ⟨w, γ, hγ, hy | hy⟩` into its components or cases. Establish `e` using `hin (F.oEl v (u.ψ v) γ) (Or.inl ⟨v, γ, Or.inl rfl⟩)`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `e` using `[hoEl, ← hψ', ← hy]`. Then use the resulting hypothesis. Establish `e` using `hin (F.star O B n (F.oEl v (u.ψ v) γ)) (Or.inl ⟨v, γ, Or.inr rfl⟩)`. Rewrite `e` using `[hstar, hoEl, ← hψ', ← hy]`. Then use the resulting hypothesis. Rewrite `hγ` using `[hIp]`. Establish `e` using `hin (MonoidAlgebra.single γ 1 - 1) (Or.inr ⟨w, γ, hγ, Or.inl rfl⟩)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `e` using `[map_sub, map_one, MonoidAlgebra.mapRingHom_single, map_one, ← hy]`. Then use the resulting hypothesis. Rewrite `hγ` using `[hIp]`. Establish `e` using `hin (F.star O B n (MonoidAlgebra.single γ 1) - 1) (Or.inr ⟨w, γ, hγ, Or.inr rfl⟩)`. Rewrite `e` using `[map_sub, map_one, hstar, MonoidAlgebra.mapRingHom_single, map_one, ← hy]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Pa.BC.mem_span_map_e0ker_of_pair_maps :
     ∀ (l : ℕ) [Fact l.Prime] (F : GFrame l) (O O' : Type) [CommRing O] [IsLocalRing O] [Finite (ResidueField O)] [CharP (ResidueField O) l] [Algebra ℤ_[l] O] [CommRing O'] [IsLocalRing O'] [Algebra ℤ_[l] O'] (n : ℕ) (r : Resid F O n) (r' : Resid F O' n) (B B' : Type) [CommRing B] [Algebra O B] [IsCO O B] [CommRing B'] [Algebra O' B'] [IsCO O' B'] (u : Pair r B) (u' : Pair r' B') (g : B →+* B') [IsLocalHom g], PhiCond F.G₀ l → (∀ w, r'.Ip w = r.Ip w) → (∀ a : ℤ_[l], g (algebraMap O B (algebraMap ℤ_[l] O a)) = algebraMap O' B' (algebraMap ℤ_[l] O' a)) → u.Maps g u'.D u'.ψ → ∀ z ∈ augmentationIdealKernel u', z ∈ TwoSidedIdeal.span (MonoidAlgebra.mapRingHom F.G₀ g '' augmentationIdealKernel u) := by

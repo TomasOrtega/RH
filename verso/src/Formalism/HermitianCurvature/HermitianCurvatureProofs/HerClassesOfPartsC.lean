@@ -18,11 +18,11 @@ namespace Formalism.FourierDecayAlt.P5
 open Formalism.REAL Formalism.QuantumDeterminants Formalism.FourierDecayAlt.Q Formalism.FourierDecayAlt.Wd
 
 /- English proof (translation)
-Introduce `hNF hKP hZS hAn Wp Wq _ _ _ _ _ _ S _ _ P z z' π π' X μ L st l0 D A mm hD hl1 hl2 hz hz' hπ hπ' _ _`. Take `⟨hAdj, hSD, hFI, hCor⟩` from `hAn Wp Wq S P z z' π π' X μ L st l0 D hD hl1 hl2 hz hz' hπ hπ'`. Establish `hXK` using `xKappaOfNF hNF hKP Wp Wq P z z' π π' X μ L st l0 hD`. Establish `hTD` using `topDensNonnegOfKappa Wp Wq S P z z' π π' X μ L st l0 (herK S P z z' π π' L st l0 D) hD hl1 hl2 hXK`. Establish `hTT` using `topTwistDensOfZeta hZS Wp Wq S P z z' π π' X μ L st l0 (herK S P z z' π π' L st l0 D) hD`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hFS` using `formSesqOfInt Wp Wq S P z z' π π' μ L st l0 _ hFI`. Use `⟨herK S P z z' π π' L st l0 D, hAdj, hTD, ?_, herK_sliceIn, hSD, herK_waveK, hFS, hCor, ?_⟩` and prove the remaining obligations. Introduce `w hw s Wv Wv' hW hW' x y hx hy c hc`. Conclude with `⟨herK_waveZ w hw s Wv Wv' hW hW' x hx, hTT w hw s Wv Wv' hW hW' x y hx hy c hc⟩`. Introduce `F ε hε hF hG`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨Φ, hΦ⟩` from `radJFExists Wp Wq P z z' π π' D F hD.1 hz hz' hπ hπ' ⟨hF, ε, hε, hG⟩`. Conclude with `⟨Φ, herK_jf F ⟨hF, ε, hε, hG⟩ Φ hΦ, hΦ⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem herClassesOfPartsD : HerClassesOfPartsD := by
   intro hNF hKP hZS hAn Wp Wq _ _ _ _ _ _ S _ _ P z z' π π' X μ L st l0 D A mm hD hl1 hl2 hz hz' hπ hπ' _ _
@@ -39,13 +39,13 @@ theorem herClassesOfPartsD : HerClassesOfPartsD := by
     exact ⟨Φ, herK_jf F ⟨hF, ε, hε, hG⟩ Φ hΦ, hΦ⟩
 
 /- English proof (translation)
-The claim follows from `thmPActualFromHer (herClassesOfPartsD hNF kappaFibrePos hZS hAn) waveCommQQAll`.
+A detailed English derivation is pending.
 -/
 theorem thmPActualOfNFZ (hNF : NormalFormActual) (hZS : NF.ActualZetaSmooth) (hAn : HerAnalyticCAll) : ThmPActual :=
   thmPActualFromHer (herClassesOfPartsD hNF kappaFibrePos hZS hAn) waveCommQQAll
 
 /- English proof (translation)
-The claim follows from `thmPActualOfNFZ Formalism.FourierDecayAlt.P.normal_form_actual hZS hAn`.
+A detailed English derivation is pending.
 -/
 theorem thmPActualOfZ (hZS : NF.ActualZetaSmooth) (hAn : HerAnalyticCAll) : ThmPActual :=
   thmPActualOfNFZ Formalism.FourierDecayAlt.P.normal_form_actual hZS hAn

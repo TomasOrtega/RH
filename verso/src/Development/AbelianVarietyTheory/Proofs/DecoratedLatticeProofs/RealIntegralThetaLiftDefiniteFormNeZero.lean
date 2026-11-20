@@ -25,9 +25,9 @@ noncomputable section
 namespace GlobalTheory.Core.Rk.RealOcc
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 T A Ks _ _ _ R F hC hF i t`. Take `⟨μ, 𝓕, hμ⟩` from `GlobalTheory.Size.exists_isCovolOne (Vc D i) (Wc D i)`. Establish `hL : GlobalTheory.RawLift.Laws R F` using `⟨hC.lev, hC.grp, hC.fam, hC.models, hC.thP⟩`. Take `⟨-, v, w, -, hne⟩` from `GlobalTheory.RawLift.vecNe D G Pl0 T A Ks R F hL hF i t μ 𝓕 hμ`. Use `⟨v, w, fun h => hne ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Unfold `GlobalTheory.RawLift.jointVec GlobalTheory.RawLift.thetaIP`. Rewrite using `[h]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem pt_ne : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T : Type) (A : FamIn D.what₂.LL G Pl0 T D.R.m) (Ks : Type)
     [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A), GlobalTheory.Hk3.Core R F → R.FullP →
@@ -45,13 +45,13 @@ theorem pt_ne : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T : Type) (A 
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 T A Ks _ _ _ R F hG hF i t y hy m hm`. Take `⟨v, w, hJ⟩` from `pt_ne D G Pl0 T A Ks R F hG.core hF i t`. Establish `hw : w ≠ 0`. Introduce and unpack `rfl`. Use `hJ ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_zero]`. Unfold `RealDat.ptP`. Conclude with `map_zero _`. Establish `H2` using `GlobalTheory.T.matrixCoeff_rightTranslate_definiteForm_scalar D G Pl0 T A Ks R F hG.core i t y m hm`. Take `⟨z2, h2, h2ne⟩` from `H2`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨innerₛₗ ℂ w, R.ioP i (PiTensorProduct.tprod ℂ v) w, fun ν 𝓕 hν mR hmR => ?_⟩` and prove the remaining obligations. Establish `H1` using `GlobalTheory.T.weilCoefficient_pureTensor_eq_smul_inner D G Pl0 T A Ks R F hG.core hF i t v ν 𝓕 hν`. Take `⟨z1, h1, h1ne⟩` from `H1`. Establish `e1 : ∀ b : GinfC (Vc D i), GlobalTheory.Core.Rk.IP.wcoef (R.ωP i t) ν 𝓕 (R.ptP i t (R.ioP i (PiTensorProduct.tprod ℂ v) w)) (R.ptP i t (R.ioP i (PiTensorProduct.tprod ℂ v) w)) b = z1 * ⟪w, (R.cV i).ρ (b : GA D (Vc D i)) w⟫_ℂ` using `fun b => h1 w b b.2`. Establish `e : ∀ b : GinfC (Vc D i), GlobalTheory.Core.Rk.IP.wcoef (R.ωP i t) ν 𝓕 (R.ptP i t (R.ioP i (PiTensorProduct.tprod ℂ v) w)) (R.ptP i t (R.ioP i (PiTensorProduct.tprod ℂ v) w)) b * GlobalTheory.Core.Rk.IP.rcoef m (fun g => innerₛₗ ℂ w (R.extV i t y g)) (fun g => innerₛₗ ℂ w (R.extV …` using `fun b => by`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← inner_conj_symm ((R.cV i).ρ (b : GA D (Vc D i)) w) w, Complex.ofReal_pow, ← Complex.mul_conj']`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[integral_congr_ae (Filter.Eventually.of_forall e), integral_const_mul, integral_complex_ofReal]`. Conclude with `mul_ne_zero (mul_ne_zero (h1ne w hJ) (h2ne hy)) (Complex.ofReal_ne_zero.2 (GlobalTheory.T.integral_normSq_matrix_coefficient_ne_zero_definite D (Vc D i) (D.sp.V_sig _) (hG.core.models.vpos i) (R.cV i) (hG.core.models.cV i) w hw mR hmR))`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem real_ne : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T : Type) (A : FamIn D.what₂.LL G Pl0 T D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A), GlobalTheory.LiftRows.Given R F → R.FullP → ∀ i t (y : (R.HV i t).H), y ≠ 0 → ∀ m : Measure (GA D (Vc D i)), m.IsHaarMeasure → ∃ (l : (R.cV i).W →ₗ[ℂ] ℂ) (P : PolF D (Wc D i).rank (Vc D i).rank), ∀ ν 𝓕, IsCovolOne (ratL (Wc D i) (Vc D i)) ν 𝓕 → ∀ mR : Measure (GinfC (Vc D i)), mR.IsHaarMeasure → ∫ b : GinfC (Vc D i), GlobalTheory.Core.Rk.IP.wcoef (R.ωP i t) ν 𝓕 (R.ptP i t P) (R.ptP i t P) b * GlobalTheory.Core.Rk.IP.rcoef m (fun g => l (R.extV i t y g)) (fun g => l (R.extV i t y g)) b ∂mR ≠ 0 := by
   intro D G _ _ Pl0 T A Ks _ _ _ R F hG hF i t y hy m hm

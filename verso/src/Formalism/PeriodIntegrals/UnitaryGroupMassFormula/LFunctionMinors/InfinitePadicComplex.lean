@@ -14,7 +14,7 @@ instance infinitePadicComplex (l : ℕ) [Fact l.Prime] : Infinite ℂ_[l] :=
   Infinite.of_injective (Nat.cast : ℕ → ℂ_[l]) Nat.cast_injective
 
 /- English proof (translation)
-Take `⟨hadd, hzero, -⟩` from `hLin Lt l N0 N1 Th`. Use `Finset.induction_on s ?_ ?_` and prove the remaining obligations. Simplify using `[hzero]`. Introduce `a s ha ih`. Rewrite using `[Finset.sum_insert ha, Finset.sum_insert ha, hadd, ih]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem Lfun_sum (hLin : LLin) {Lt : Type} (l : ℕ) [Fact l.Prime] (N0 N1 : ℕ)
     (Th : MvPowerSeries (Lt × Fin N0 × Fin N1) ℂ_[l]) {ι : Type} (s : Finset ι)
@@ -28,7 +28,7 @@ theorem Lfun_sum (hLin : LLin) {Lt : Type} (l : ℕ) [Fact l.Prime] (N0 N1 : ℕ
     rw [Finset.sum_insert ha, Finset.sum_insert ha, hadd, ih]
 
 /- English proof (translation)
-Unfold `applyQ Lfun wt`. Conclude with `Finset.sum_congr rfl fun α _ => by ring`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem applyQ_eq {Lt : Type} (l : ℕ) [Fact l.Prime] (N0 N1 : ℕ)
     (Th : MvPowerSeries (Lt × Fin N0 × Fin N1) ℂ_[l]) (Q : MvPolynomial (Lt × Fin N0 × ℕ) ℂ_[l])
@@ -39,13 +39,13 @@ theorem applyQ_eq {Lt : Type} (l : ℕ) [Fact l.Prime] (N0 N1 : ℕ)
   exact Finset.sum_congr rfl fun α _ => by ring
 
 /- English proof (translation)
-Introduce `Lt _ _ l _ N0 N1 nu Th ph Q hQ y'`. Rewrite using `[applyQ_eq l N0 N1 Th Q y']`. Establish `heval : ∀ (g : Lt × Fin N0 × ℕ → MvPolynomial (Lt × Fin N0 × Fin N1) ℂ_[l]) (z : Lt × Fin N0 × Fin N1 → ℂ_[l]), eval z (aeval g Q) = eval (fun v => eval z (g v)) Q`. Introduce `g z`. Establish `h : (aeval z).comp (aeval g) = aeval (R` using `ℂ_[l]) (fun v => aeval z (g v)) := MvPolynomial.algHom_ext fun v => by simp`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h2` using `congrArg (fun φ : MvPolynomial (Lt × Fin N0 × ℕ) ℂ_[l] →ₐ[ℂ_[l]] ℂ_[l] => φ Q) h`. Simplify `h2` using `[MvPolynomial.coe_aeval_eq_eval]`. Establish `hP : aeval (fun v : Lt × Fin N0 × ℕ => ∑ b : Fin N1, C (y' v.1 b v.2.2) * X ((v.1, v.2.1, b) : Lt × Fin N0 × Fin N1)) Q = ∑ I : ColChoice N1 nu, C (minY N1 nu I y') * Hpol l N0 N1 ph (Gxz N0 N1 nu I)`. Apply `MvPolynomial.funext` to reduce the goal to its premises. Introduce `z`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[heval]`. Establish `hy : (fun v : Lt × Fin N0 × ℕ => eval z (∑ b : Fin N1, C (y' v.1 b v.2.2) * X ((v.1, v.2.1, b) : Lt × Fin N0 × Fin N1))) = fun v => (fun s a j => ∑ b : Fin N1, z (s, a, b) * y' s b j) v.1 v.2.1 v.2.2`. Use function extensionality and compare the values at `v`. Simplify using `[mul_comm]`. Rewrite using `[hy, hQ (fun s a j => ∑ b : Fin N1, z (s, a, b) * y' s b j), hD Lt l N0 N1 nu z y']`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Simplify using `only [map_sum, map_mul, eval_C, C_mul', map_smul, smul_eq_mul, MvPolynomial.smul_eval, hE Lt l N0 N1 ph]`. Rewrite using `[hP, Lfun_sum hLin, finsum_eq_sum_of_fintype]`. Use `Finset.sum_congr rfl fun I _ => ?_` and prove the remaining obligations. Rewrite using `[(hLin Lt l N0 N1 Th).2.2, hL Lt l N0 N1 Th ph]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem wwMain_of (hE : EvalH) (hL : LH) (hLin : LLin) (hD : DeXCB) : WwMain := by
   intro Lt _ _ l _ N0 N1 nu Th ph Q hQ y'

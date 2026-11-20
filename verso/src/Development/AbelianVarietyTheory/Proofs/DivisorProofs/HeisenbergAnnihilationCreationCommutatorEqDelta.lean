@@ -10,11 +10,11 @@ namespace GlobalTheory.CCRFock.CommDM
 open GlobalTheory.CCRFock
 
 /- English proof (translation)
-Take `⟨j1, j2, j3⟩` from `j`. Distinguish the cases in `h1 : w = j1`. Substitute `h1` using the available equality. Distinguish the cases in `h2 : a = j2`. Substitute `h2` using the available equality.
+Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Substitute using the available equality. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Distinguish the cases in `h3 : b = j3`. Substitute `h3` using the available equality. Simplify using `[unitAt]`. Simplify using `[unitAt, h3, Ne.symm h3]`. Simplify using `[unitAt, h2, Ne.symm h2]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[unitAt, h1]`.
+Simplify using the standard rewrite rules.
 -/
 private lemma unitAt_apply_eq_ite {W : Type} [DecidableEq W] {P Q R S : ℕ} (j : W × (Ix P Q × Ix R S)) (z : ℂ)
     (w : W) (a : Ix P Q) (b : Ix R S) : unitAt j z w a b = if (w, (a, b)) = j then z else 0 := by
@@ -31,11 +31,11 @@ private lemma unitAt_apply_eq_ite {W : Type} [DecidableEq W] {P Q R S : ℕ} (j 
   · simp [unitAt, h1]
 
 /- English proof (translation)
-Establish `key : ∀ (w : W) (a : Ix P Q) (b : Ix R S), lineSign a b * unitAt j z w a b * star (unitAt k z' w a b) = if (w, (a, b)) = j then (if j = k then lineSign j.2.1 j.2.2 * z * star z' else 0) else 0`. Introduce `w a b`. Rewrite using `[unitAt_apply_eq_ite, unitAt_apply_eq_ite]`. Distinguish the cases in `hj : (w, (a, b)) = j`. Substitute `hj` using the available equality.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Distinguish the cases in `hk : (w, (a, b)) = k`. Substitute `hk` using the available equality. Simplify using the standard rewrite rules. Simplify using `[hk]`. Simplify using `[hj]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [key]`. Rewrite using `[Fintype.sum_eq_single j.1, Fintype.sum_eq_single j.2.1, Fintype.sum_eq_single j.2.2]`. Apply the tactic sequence `all_goals first`. Consider the case `(intro x hx; simp [Prod.ext_iff, hx])`. Consider the case `simp`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem sum_unitAt {W : Type} [Fintype W] [DecidableEq W] {P Q R S : ℕ} (j k : W × (Ix P Q × Ix R S)) (z z' : ℂ) :
     (∑ w, ∑ a, ∑ b, lineSign a b * unitAt j z w a b * star (unitAt k z' w a b)) =
@@ -58,13 +58,13 @@ theorem sum_unitAt {W : Type} [Fintype W] [DecidableEq W] {P Q R S : ℕ} (j k :
     | simp
 
 /- English proof (translation)
-Apply the tactic sequence `rcases a with a | a <;> rcases b with b | b <;> simp [lineSign]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem lineSign_cases {P Q R S : ℕ} (a : Ix P Q) (b : Ix R S) : (lineSign a b : ℂ) = 1 ∨ (lineSign a b : ℂ) = -1 := by
   rcases a with a | a <;> rcases b with b | b <;> simp [lineSign]
 
 /- English proof (translation)
-Simplify using `only [neg_mul, mul_neg, smul_mul_assoc, mul_smul_comm, smul_smul, mul_add, add_mul, mul_sub, sub_mul, smul_add, smul_sub, smul_neg]`. Use `module`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem comm_expand {V : Type} [AddCommGroup V] [Module ℂ V] (A A' B B' : Module.End ℂ V) (c u v : ℂ) :
     -(c • (A + u • A')) * (c • (B - v • B')) - (c • (B - v • B')) * -(c • (A + u • A')) =
@@ -74,9 +74,9 @@ theorem comm_expand {V : Type} [AddCommGroup V] [Module ℂ V] (A A' B B' : Modu
   module
 
 /- English proof (translation)
-Rewrite using `[← mul_inv]`. Use `congr 1`. Establish `h : ((Real.sqrt (2 * Real.pi) : ℝ) : ℂ) * ((Real.sqrt (2 * Real.pi) : ℝ) : ℂ) = 2 * (Real.pi : ℂ)`. Rewrite using `[← Complex.ofReal_mul, Real.mul_self_sqrt (by positivity)]`. Use `push_cast`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Expand and normalize the polynomial expressions, which then agree. Take the linear combination `4 * h`.
+Expand and normalize the polynomial expressions, which then agree. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem inv_sq : (2 * ((Real.sqrt (2 * Real.pi) : ℝ) : ℂ))⁻¹ * (2 * ((Real.sqrt (2 * Real.pi) : ℝ) : ℂ))⁻¹ =
     (8 * (Real.pi : ℂ))⁻¹ := by
@@ -89,13 +89,13 @@ theorem inv_sq : (2 * ((Real.sqrt (2 * Real.pi) : ℝ) : ℂ))⁻¹ * (2 * ((Rea
   linear_combination 4 * h
 
 /- English proof (translation)
-Introduce `V _ _ W _ _ P Q R S H _ _ hcomm j k`. Simplify using `only [GlobalTheory.CCRFock.fockD, GlobalTheory.CCRFock.fockM]`. Rewrite using `[comm_expand, hcomm, hcomm, hcomm, hcomm, sum_unitAt, sum_unitAt, sum_unitAt, sum_unitAt, inv_sq]`. Distinguish the cases in `hjk : j = k`. Substitute `hjk` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Break down `lineSign_cases j.2.1 j.2.2 with h | h` into its components or cases. Simplify using `only [if_true, h] match_scalars`. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Put the polynomial expressions in normal form.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Put the polynomial expressions in normal form.
 
-Simplify using `[Complex.I_sq]`. Simplify using `only [if_true, h] match_scalars`. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Put the polynomial expressions in normal form.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Put the polynomial expressions in normal form.
 
-Simplify using `[Complex.I_sq]`. Simplify using `[hjk]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem fockD_fockM_comm : ∀ {V : Type} [AddCommGroup V] [Module ℂ V] {W : Type} [Fintype W] [DecidableEq W] {P Q R S : ℕ}
     (H : (W → Matrix (Ix P Q) (Ix R S) ℂ) → Module.End ℂ V),

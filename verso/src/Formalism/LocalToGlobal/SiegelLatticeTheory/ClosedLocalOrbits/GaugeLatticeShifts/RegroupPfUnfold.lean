@@ -25,9 +25,9 @@ def stabSub (N : Subgroup H) {C : Type*} (act : N → C → C) (h1 : ∀ c, act 
       _ = r := by rw [← hmul, inv_mul_cancel, h1]
 
 /- English proof (translation)
-Use `IsFundamentalDomain.mk' hm.nullMeasurableSet fun x => ?_` and prove the remaining obligations. Take `⟨g, hg, hgx⟩` from `hc x`. Use `⟨⟨g, hg⟩, hgx, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨k, hk⟩ hkx`. Establish `hkx' : k * x ∈ W` using `hkx`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `h` using `hu (g * x) hgx (k * g⁻¹) (R.mul_mem hk (R.inv_mem hg)) (by rwa [mul_assoc, inv_mul_cancel_left])`. Conclude with `Subtype.ext (mul_inv_eq_one.mp h)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isFund_of_exact (μ : Measure H) (R : Subgroup H) (W : Set H) (hm : MeasurableSet W)
     (hc : ∀ x, ∃ g ∈ R, g * x ∈ W) (hu : ∀ x ∈ W, ∀ g ∈ R, g * x ∈ W → g = 1) :
@@ -42,65 +42,55 @@ theorem isFund_of_exact (μ : Measure H) (R : Subgroup H) (W : Set H) (hm : Meas
   exact Subtype.ext (mul_inv_eq_one.mp h)
 
 /- English proof (translation)
-Apply the tactic sequence `have hsm : ∀ (n : N) (y : H), n⁻¹ • y = (n : H)⁻¹ * y := fun n y => by first | rfl | simp [Subgroup.smul_def]`. Establish `hFeq' : ∀ (n : N) (j : J) (y : H), F (act n (r j)) y = F (r j) (n⁻¹ • y)`. Introduce `n j y`. Rewrite using `[hFeq, hsm]`. Establish `hrinj : Function.Injective r` using `fun j j' h => huniq j j' 1 (by rw [h1, h])`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `haveI : Countable J := hrinj.countable`. Use `haveI : MeasurableConstSMul N H := by first`. Consider the case `infer_instance`. Consider the case `exact ⟨fun n => measurable_const_mul (n : H)⟩`. Use `haveI : SMulInvariantMeasure N H μ := by first`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Consider the case `infer_instance`. Consider the case `exact ⟨fun n ⦃s⦄ _ => measure_preimage_mul μ (n : H) s⟩`. Establish `hΩ : IsFundamentalDomain N Ω μ`. Use `isFund_of_exact μ N Ω hΩm (fun x => ?_) (fun x hx g hg hgx => ?_)` and prove the remaining obligations. Take `⟨n, hn⟩` from `hΩc x`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Conclude with `⟨n, n.2, hn⟩`. Use `hΩu x hx ⟨g, hg⟩ hgx` as an intermediate fact. Simplify using `using congrArg Subtype.val this`. Establish `hbij : ∀ y : H, Function.Bijective (fun p : ({p : J × N | p.2⁻¹ • y ∈ ΩJ p.1} : Set (J × N)) => act (p : J × N).2 (r (p : J × N).1))`. Introduce `y`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨j, n⟩, hy⟩ ⟨⟨j', n'⟩, hy'⟩ heq`. Establish `hy1 : n⁻¹ • y ∈ ΩJ j` using `hy`. Establish `hy2 : n'⁻¹ • y ∈ ΩJ j'` using `hy'`. Establish `heq' : act n (r j) = act n' (r j')` using `heq`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `e1 : act (n'⁻¹ * n) (r j) = r j'`. Rewrite using `[hmul, heq', ← hmul, inv_mul_cancel, h1]`. Take `rfl : j = j'` from `huniq j j' _ e1`. Establish `e2 : n'⁻¹ * n = 1`. Use `hJu j _ hy1 _ e1 ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hh : ((n'⁻¹ * n : N) : H) * (n⁻¹ • y) = n'⁻¹ • y`. Simplify using `only [hsm]`. Apply the tactic sequence `first | simp [mul_assoc] | group`. Rewrite using `[hh]`. Conclude with `hy2`.
+Extract witnesses or component facts from the available result. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `rfl : n = n'` from `(inv_mul_eq_one.mp e2).symm`. Both sides reduce to the same expression. Introduce `c`. Take `⟨j, n0, hc⟩` from `hcov c`. Take `⟨s, hs1, hs2⟩` from `hJc j (n0⁻¹ • y)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hmem : (n0 * s⁻¹)⁻¹ • y ∈ ΩJ j`. Establish `hh : (n0 * s⁻¹)⁻¹ • y = (s : H) * (n0⁻¹ • y)`. Simplify using `only [hsm]`. Apply the tactic sequence `first | simp [mul_assoc] | group`. Rewrite using `[hh]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hs2`. Use `⟨⟨(j, n0 * s⁻¹), hmem⟩, ?_⟩` and prove the remaining obligations. Use `show act (n0 * s⁻¹) (r j) = c`. Establish `hsi : act s⁻¹ (r j) = r j`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality.
 
-Rewrite using `[hmul, hsi, hc]`. Establish `key : ∀ (y : H) {M : Type} [AddCommMonoid M] [TopologicalSpace M] (G : C → M), ∑' p : J × N, ({p : J × N | p.2⁻¹ • y ∈ ΩJ p.1} : Set (J × N)).indicator (fun p => G (act p.2 (r p.1))) p = ∑' c, G c`. Introduce `y M _ _ G`. Rewrite using `[← tsum_subtype]`. Conclude with `(Equiv.ofBijective _ (hbij y)).tsum_eq G`.
+Consider separately whether the proposition holds or fails. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Take `⟨Ψ, hΨdef⟩ : ∃ Ψ : J × N → H → ℂ, Ψ = fun p y => (ΩJ p.1).indicator (F (r p.1)) (p.2⁻¹ • y)` from `⟨_, rfl⟩`. Establish `hΨ : ∀ y p, Ψ p y = ({p : J × N | p.2⁻¹ • y ∈ ΩJ p.1} : Set (J × N)).indicator (fun p => F (act p.2 (r p.1)) y) p`. Introduce `y p`. Substitute `hΨdef` using the available equality. Distinguish the cases in `h : p.2⁻¹ • y ∈ ΩJ p.1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Treat this case separately.
 
-Use `first`. Consider the case `simp only [Set.indicator_apply, Set.mem_setOf_eq, h, ↓reduceIte, hFeq']`. Consider the case `simp [Set.indicator_apply, h, hFeq']`. Use `first`. Consider the case `simp only [Set.indicator_apply, Set.mem_setOf_eq, h, ↓reduceIte]`.
+Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Consider the case `simp [Set.indicator_apply, h]`. Establish `hΨe : ∀ y p, ‖Ψ p y‖ₑ = ({p : J × N | p.2⁻¹ • y ∈ ΩJ p.1} : Set (J × N)).indicator (fun p => ‖F (act p.2 (r p.1)) y‖ₑ) p`. Introduce `y p`. Rewrite using `[hΨ y p]`. Distinguish the cases in `h : p.2⁻¹ • y ∈ ΩJ p.1`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `first`. Consider the case `simp only [Set.indicator_apply, Set.mem_setOf_eq, h, ↓reduceIte]`. Consider the case `simp [Set.indicator_apply, h]`. Use `first`. Consider the case `simp only [Set.indicator_apply, Set.mem_setOf_eq, h, ↓reduceIte, enorm_zero]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Consider the case `simp [Set.indicator_apply, h]`. Establish `hΨm : ∀ p, Measurable (Ψ p)`. Introduce `p`. Substitute `hΨdef` using the available equality. Simplify using `only [hsm]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Substitute using the available equality. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Conclude with `((hFm _).indicator (hJm _)).comp (measurable_const_mul _)`. Establish `sumC : ∀ y, ∑' p, Ψ p y = ∑' c, F c y` using `fun y => (tsum_congr (hΨ y)).trans (key y (fun c => F c y))`. Establish `sumE : ∀ y, ∑' p, ‖Ψ p y‖ₑ = ∑' c, ‖F c y‖ₑ` using `fun y => (tsum_congr (hΨe y)).trans (key y (fun c => ‖F c y‖ₑ))`. Establish `hT : ∑' p : J × N, ∫⁻ x in Ω, ‖Ψ p x‖ₑ ∂μ = ∫⁻ x in Ω, ∑' c, ‖F c x‖ₑ ∂μ`. Rewrite using `[← lintegral_tsum (fun p => (hΨm p).enorm.aemeasurable)]`.
+Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Treat this case separately.
 
-Conclude with `lintegral_congr (fun x => sumE x)`. Establish `hTfin : ∑' p : J × N, ∫⁻ x in Ω, ‖Ψ p x‖ₑ ∂μ ≠ ⊤`. Rewrite using `[hT]`. Conclude with `hint.ne`. Establish `hIJ : ∀ j, ∫ y in ΩJ j, F (r j) y ∂μ = ∑' n : N, ∫ y in Ω, Ψ (j, n) y ∂μ`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Chain the equalities or inequalities of the calculation. Substitute using the available equality. Both sides reduce to the same expression.
 
-Introduce `j`. Establish `hrow : ∫⁻ x, ‖(ΩJ j).indicator (F (r j)) x‖ₑ ∂μ = ∑' n : N, ∫⁻ x in Ω, ‖Ψ (j, n) x‖ₑ ∂μ`. Use `(hΩ.lintegral_eq_tsum' _).trans ?_` and prove the remaining obligations. Substitute `hΨdef` using the available equality. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Establish `hlt : ∑' n : N, ∫⁻ x in Ω, ‖Ψ (j, n) x‖ₑ ∂μ < ⊤`. Use `lt_of_le_of_lt ?_ (lt_top_iff_ne_top.mpr hTfin)` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Establish `hfi : Integrable ((ΩJ j).indicator (F (r j))) μ`. Use `⟨((hFm (r j)).indicator (hJm j)).aestronglyMeasurable, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Treat this case separately. Treat this case separately.
 
-Use `first`. Consider the case `(show ∫⁻ x, ‖(ΩJ j).indicator (F (r j)) x‖ₑ ∂μ < ⊤`. Rewrite using `[hrow]`. Conclude with `hlt)`. Consider the case `(rw [hasFiniteIntegral_iff_enorm, hrow]`.
+Treat this case separately. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hlt)`. Combine the equalities or inequalities in the displayed calculation. Substitute `hΨdef` using the available equality. Both sides reduce to the same expression. Establish `hmain : ∫ y in Ω, ∑' c, F c y ∂μ = ∑' p : J × N, ∫ y in Ω, Ψ p y ∂μ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Rewrite using `[← integral_tsum (fun p => (hΨm p).aestronglyMeasurable) hTfin]`. Use `first`. Consider the case `simp only [sumC]`. Consider the case `exact integral_congr_ae (Filter.Eventually.of_forall fun y => (sumC y).symm)`. Establish `hsplit : ∑' p : J × N, ∫ y in Ω, Ψ p y ∂μ = ∑' j, ∑' n : N, ∫ y in Ω, Ψ (j, n) y ∂μ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hasum : Summable fun p : J × N => ∫ y in Ω, Ψ p y ∂μ`. Use `Summable.of_norm (Summable.of_nonneg_of_le (fun p => norm_nonneg _) (fun p => ?_) (ENNReal.summable_toReal hTfin))` and prove the remaining obligations. Establish `h0` using `norm_integral_le_lintegral_norm (μ := μ.restrict Ω) (Ψ p)`. Use `first`. Consider the case `simpa only [ofReal_norm_eq_enorm] using h0`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `simpa using h0`. Consider the case `exact h0`. Conclude with `((hasum.hasSum.prod_fiberwise fun j => (hasum.prod_factor j).hasSum).tsum_eq).symm`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `hEm : Measurable fun y => ∑' c, ‖F c y‖ₑ` using `Measurable.ennreal_tsum fun c => (hFm c).enorm`.
-
-Establish `hfin_ae : ∀ᵐ y ∂(μ.restrict Ω), ∑' c, ‖F c y‖ₑ < ⊤` using `ae_lt_top hEm hint.ne`. Establish `hsN : ∀ y, ∑' c, ‖F c y‖ₑ < ⊤ → Summable fun c => ‖F c y‖`. Introduce `y hy`. Establish `h0` using `ENNReal.summable_toReal hy.ne`. Use `first`.
-
-Consider the case `simpa only [toReal_enorm] using h0`. Consider the case `simpa using h0`. Establish `hgint : Integrable (fun y => (∑' c, ‖F c y‖ₑ).toReal) (μ.restrict Ω)` using `integrable_toReal_of_lintegral_ne_top hEm.aemeasurable hint.ne`. Establish `hbound : ∀ᵐ y ∂(μ.restrict Ω), ‖∑' c, F c y‖ ≤ (∑' c, ‖F c y‖ₑ).toReal` using `by filter_upwards [hfin_ae] with y hy`. Apply the tactic sequence `rw [ENNReal.tsum_toReal_eq (fun c => by first | exact enorm_ne_top | simp)]`.
-
-Simplify using `only [toReal_enorm]`. Conclude with `norm_tsum_le_tsum_norm (hsN y hy)`. Establish `hgm : AEStronglyMeasurable (fun y => ∑' c, F c y) (μ.restrict Ω)` using `by haveI : Encodable C := Encodable.ofCountable C`. Establish `hlim : ∀ᵐ y ∂(μ.restrict Ω), Filter.Tendsto (fun s : Finset C => ∑ c ∈ s, F c y) Filter.atTop (nhds (∑' c, F c y))` using `by filter_upwards [hfin_ae] with y hy`. Conclude with `(Summable.of_norm (hsN y hy)).hasSum`.
-
-Establish `hfs : ∀ s : Finset C, Measurable fun y => ∑ c ∈ s, F c y` using `fun s => by first`. Consider the case `exact Finset.measurable_sum s (fun c _ => hFm c)`. Consider the case `fun_prop`. Use `first`. Consider the case `exact aestronglyMeasurable_of_tendsto_ae Filter.atTop (fun s => (hfs s).aestronglyMeasurable) hlim`.
-
-Consider the case `exact (aemeasurable_of_tendsto_metrizable_ae Filter.atTop (fun s => (hfs s).aemeasurable) hlim).aestronglyMeasurable`. Conclude with `Integrable.mono' hgint hgm hbound`. Rewrite using `[hmain, hsplit]`. Conclude with `tsum_congr fun j => (hIJ j).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem orbit_unfold (μ : Measure H) [μ.IsMulLeftInvariant]
     (N : Subgroup H) [Countable N] {C : Type*} [Countable C] (act : N → C → C) (h1 : ∀ c, act 1 c = c)

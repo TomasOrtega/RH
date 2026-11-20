@@ -4,7 +4,7 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.R
 open NumberField IsDedekindDomain Neutral.B1 Formalism.L2.Host Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.MainNotions.N Polynomial GlobalTheory.CuspRep GlobalTheory.HeckeGal GlobalTheory.GalOfCusp UpperTheory.V UpperTheory.V.Af UpperTheory.V.Af.Bc UpperTheory.V.Published
 
 /- English proof (translation)
-Establish `: w.asIdeal.LiesOver (w.under (𝓞 K)).asIdeal` using `⟨rfl⟩`. Use `w.isMaximal` as an intermediate fact. Use `(w.under (𝓞 K)).isMaximal` as an intermediate fact. Use `show Ideal.absNorm w.asIdeal = Ideal.absNorm (w.under (𝓞 K)).asIdeal ^ w.asIdeal.inertiaDeg (𝓞 K)`. Rewrite using `[← Ideal.absNorm_relNorm (𝓞 K) (𝓞 K') w.asIdeal, Ideal.relNorm_eq_pow_of_isMaximal w.asIdeal (w.under (𝓞 K)).asIdeal, map_pow]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem normV_under {K K' : Type} [Field K] [NumberField K] [Field K'] [NumberField K'] [Algebra K K']
     (w : HeightOneSpectrum (𝓞 K')) : normV w = normV (w.under (𝓞 K)) ^ w.asIdeal.inertiaDeg (𝓞 K) := by
@@ -16,9 +16,9 @@ private theorem normV_under {K K' : Type} [Field K] [NumberField K] [Field K'] [
     Ideal.relNorm_eq_pow_of_isMaximal w.asIdeal (w.under (𝓞 K)).asIdeal, map_pow]
 
 /- English proof (translation)
-Use `Filter.Tendsto.cofinite_of_finite_preimage_singleton fun v => ?_` and prove the remaining obligations. Establish `h0 : Ideal.map (algebraMap (𝓞 K) (𝓞 K')) v.asIdeal ≠ 0` using `fun h => v.ne_bot ((Ideal.map_eq_bot_iff_of_injective (FaithfulSMul.algebraMap_injective _ _)).1 h)`. Use `(Ideal.finite_factors h0).subset fun w hw => ?_` and prove the remaining obligations. Establish `e : w.under (𝓞 K) = v` using `hw`. Use `show w.asIdeal ∣ _`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Ideal.dvd_iff_le, Ideal.map_le_iff_le_comap, ← e]`. Conclude with `le_rfl`.
+A detailed English derivation is pending.
 -/
 private theorem tendsto_under' {K K' : Type} [Field K] [NumberField K] [Field K'] [NumberField K'] [Algebra K K'] :
     Filter.Tendsto (fun w : HeightOneSpectrum (𝓞 K') => w.under (𝓞 K)) Filter.cofinite Filter.cofinite := by
@@ -32,9 +32,7 @@ private theorem tendsto_under' {K K' : Type} [Field K] [NumberField K] [Field K'
   exact le_rfl
 
 /- English proof (translation)
-Establish `hl : l.Prime` using `Fact.out`. Establish `h0 : Ideal.span {((l : ℕ) : 𝓞 K)} ≠ 0`. Rewrite using `[Ne, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot]`. Conclude with `hl.ne_zero` after adjusting the coercions. Use `Filter.eventually_cofinite.2 ((Ideal.finite_factors h0).subset fun v hv => ?_)` and prove the remaining obligations.
-
-Conclude with `Ideal.dvd_span_singleton.mpr (not_not.1 hv)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem ev_notMem {K : Type} [Field K] [NumberField K] (l : ℕ) [Fact l.Prime] :
     ∀ᶠ v : HeightOneSpectrum (𝓞 K) in Filter.cofinite, ((l : ℕ) : 𝓞 K) ∉ v.asIdeal := by
@@ -46,9 +44,9 @@ private theorem ev_notMem {K : Type} [Field K] [NumberField K] (l : ℕ) [Fact l
   exact Ideal.dvd_span_singleton.mpr (not_not.1 hv)
 
 /- English proof (translation)
-Introduce `hR hV E Ω _ _ _ _ _ _ l _ ι χ μ ⟨_, art, n, ha, _, h⟩`. Use `filter_upwards [(tendsto_under' (K := maximalRealSubfield E) (K' := E)).eventually ((Filter.eventually_cofinite.2 (GlobalTheory.Mem.UnrAe.finite_ramified χ)).and (ev_notMem l))] with w ⟨hu, hl⟩`. Establish `hf` using `normV_under (K := maximalRealSubfield E) w`. Take `⟨h1, h2⟩` from `hV E χ w _ hf hu`. Use `⟨h1, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h2, Units.val_pow_eq_pow_val]`. Use `(hR (maximalRealSubfield E) E Ω l ι w _ hf).2 μ _ fun A hA => ⟨(h.unr_iff ha (Or.inl hl) hA).2 hu, fun σ hσ => ?_⟩` and prove the remaining obligations. Rewrite using `[map_inv, Units.val_inv_eq_inv_val, h.frob_unr ha (Or.inl hl) hu hA hσ, inv_inv, RingEquiv.apply_symm_apply]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.galois_norm_compatibility_of_frobenius_restriction :
     UpperTheory.V.Af.Bc.FrobRes → UpperTheory.V.Af.Bc.NormVal → UpperTheory.V.Af.Bc.NormGal := by

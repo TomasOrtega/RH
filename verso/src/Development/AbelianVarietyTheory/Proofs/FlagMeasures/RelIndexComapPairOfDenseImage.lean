@@ -10,9 +10,9 @@ open scoped Pointwise ENNReal Classical
 namespace GlobalTheory.HL
 
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.IndexComapCosets.index_comap_eq_of_cosets_hit`. Consider the case `exact _root_.GlobalTheory.IndexComapCosets.index_comap_eq_of_cosets_hit`. Consider the case `(apply _root_.GlobalTheory.IndexComapCosets.index_comap_eq_of_cosets_hit <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.IndexComapCosets.index_comap_eq_of_cosets_hit <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.IndexComapCosets.index_comap_eq_of_cosets_hit <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.IndexComapCosets.index_comap_eq_of_cosets_hit ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem index_comap_of_dense_image {A B : Type} [Group A] [Group B] (f : A →* B) (H : Subgroup B)
     (hf : ∀ b, ∃ a, (f a)⁻¹ * b ∈ H) : (H.comap f).index = H.index := by
@@ -25,11 +25,11 @@ theorem index_comap_of_dense_image {A B : Type} [Group A] [Group B] (f : A →* 
   | (intros; exact _root_.GlobalTheory.IndexComapCosets.index_comap_eq_of_cosets_hit ..)
 
 /- English proof (translation)
-Set `f : U.comap φ →* U` to `φ.subgroupComap U`. Establish `hc : (K.comap φ).subgroupOf (U.comap φ) = (K.subgroupOf U).comap f`. Use extensionality with `x`. Conclude with `Iff.rfl`. Establish `key` using `index_comap_of_dense_image f (K.subgroupOf U) (by`.
+Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Unfold both sides to obtain the same proposition, which implies itself. Establish an intermediate fact.
 
-Introduce and unpack `⟨b, hb⟩`. Take `⟨γ, hγK, hγU⟩` from `h b hb`. Establish `hγ : φ γ ∈ U`. Use `U.mul_mem hb (U.inv_mem hγU)` as an intermediate fact. Simplify using `using this`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `⟨⟨γ, hγ⟩, ?_⟩` and prove the remaining obligations. Conclude with `hγK)`. Simplify using `only [Subgroup.relIndex]`. Rewrite using `[hc, key]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem relIndex_comap_of_dense_image {Γ G : Type} [Group Γ] [Group G] (φ : Γ →* G)
     (K U : Subgroup G) (h : ∀ g ∈ U, ∃ γ, (φ γ)⁻¹ * g ∈ K ⊓ U) :
@@ -50,7 +50,7 @@ theorem relIndex_comap_of_dense_image {Γ G : Type} [Group Γ] [Group G] (φ : �
   rw [hc, key]
 
 /- English proof (translation)
-Introduce `Γ G _ _ φ K U h`. Use `⟨relIndex_comap_of_dense_image φ K U fun g hg => h g (Or.inr hg), ?_⟩` and prove the remaining obligations. Use `relIndex_comap_of_dense_image φ U K fun g hg => ?_` and prove the remaining obligations. Take `⟨γ, hγ⟩` from `h g (Or.inl hg)`. Conclude with `⟨γ, by rwa [inf_comm]⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem relIndex_pair_comap_of_dense_image : ∀ {Γ G : Type} [Group Γ] [Group G] (φ : Γ →* G) (K U : Subgroup G), (∀ g, g ∈ K ∨ g ∈ U → ∃ γ, (φ γ)⁻¹ * g ∈ K ⊓ U) → (K.comap φ).relIndex (U.comap φ) = K.relIndex U ∧ (U.comap φ).relIndex (K.comap φ) = U.relIndex K := by
   intro Γ G _ _ φ K U h

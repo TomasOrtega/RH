@@ -12,21 +12,21 @@ import Formalism.CyclotomicNorms.NonsquarefreeBounds.IrreducibilityOfRestriction
 namespace Formalism.CyclotomicNorms
 
 /- English proof (translation)
-The claim follows from `evaluation_bound`.
+A detailed English derivation is pending.
 -/
 theorem evaluation : Evaluation := evaluation_bound
 /- English proof (translation)
-The claim follows from `central_scalar_holds`.
+A detailed English derivation is pending.
 -/
 theorem centralScalar : CentralScalar := central_scalar_holds
 
 /- English proof (translation)
-The claim follows from `restriction_of_blocks_and_jordan blocks_form_cycle jordan_transitivity`.
+A detailed English derivation is pending.
 -/
 theorem restriction : Restriction := restriction_of_blocks_and_jordan blocks_form_cycle jordan_transitivity
 
 /- English proof (translation)
-The claim follows from `irreducibility_of_restriction restriction`.
+A detailed English derivation is pending.
 -/
 theorem irreducibility_of_good_tuple : IrreducibilityCriterion := irreducibility_of_restriction restriction
 

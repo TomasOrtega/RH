@@ -15,7 +15,7 @@ Both sides reduce to the same expression.
 theorem sig_apply (I : AutInst) (e : I.E) : I.cm.sig e = star e := rfl
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(Algebra.TensorProduct.map (AlgHom.id I.F _) I.cm.sig) (x ⊗ₜ e) = _`. Conclude with `Algebra.TensorProduct.map_tmul _ _ _ _`.
+Express the relevant assertion in an equivalent form by its definition. A detailed English derivation is pending.
 -/
 theorem sigV_tmul (I : AutInst) (v : HeightOneSpectrum (𝓞 I.F)) (x : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Fv I.F v)
     (e : I.E) : sigV I v (x ⊗ₜ e) = x ⊗ₜ star e := by
@@ -23,7 +23,7 @@ theorem sigV_tmul (I : AutInst) (v : HeightOneSpectrum (𝓞 I.F)) (x : Formalis
   exact Algebra.TensorProduct.map_tmul _ _ _ _
 
 /- English proof (translation)
-Proceed by induction on `a using TensorProduct.induction_on with`. Consider the case `zero => rw [map_zero, map_zero]`. Consider the case `tmul x e => rw [sigV_tmul, sigV_tmul, star_star]`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem sigV_invol (I : AutInst) (v : HeightOneSpectrum (𝓞 I.F))
     (a : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Fv I.F v ⊗[I.F] I.E) : sigV I v (sigV I v a) = a := by
@@ -33,14 +33,14 @@ theorem sigV_invol (I : AutInst) (v : HeightOneSpectrum (𝓞 I.F))
   | add x y hx hy => rw [map_add, map_add, hx, hy]
 
 /- English proof (translation)
-Conclude with `sigV_tmul I v 1 e`.
+A detailed English derivation is pending.
 -/
 theorem sigV_inclV (I : AutInst) (v : HeightOneSpectrum (𝓞 I.F)) (e : I.E) :
     sigV I v (inclV I v e) = inclV I v (star e) := by
   exact sigV_tmul I v 1 e
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i j`. Establish `h : starRingEnd I.E (I.J j i) = I.J i j` using `congrFun (congrFun I.J_herm i) j`. Use `show sigV I v (inclV I v (I.J j i)) = inclV I v (I.J i j)`. Rewrite using `[sigV_inclV]`. Conclude with `congrArg (inclV I v) h`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem herm_V (I : AutInst) (v : HeightOneSpectrum (𝓞 I.F)) :
     Formalism.UG.cT (sigV I v) (I.J.map (inclV I v)) = I.J.map (inclV I v) := by
@@ -51,11 +51,9 @@ theorem herm_V (I : AutInst) (v : HeightOneSpectrum (𝓞 I.F)) :
   exact congrArg (inclV I v) h
 
 /- English proof (translation)
-Introduce `I v hv g`. Set `_ : Field (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Fv I.F v ⊗[I.F] I.E)` to `hv.toField`. Establish `hinj : Function.Injective (inclV I v)` using `(inclV I v).injective`. Establish `hdet : (I.J.map (inclV I v)).det ≠ 0`. Rewrite using `[← RingHom.mapMatrix_apply, ← RingHom.map_det]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `h`. Conclude with `I.J_det (hinj (by rw [h, map_zero]))`. Establish `h2 : (2 : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Fv I.F v ⊗[I.F] I.E) ≠ 0`. Introduce `h`. Establish `: inclV I v 2 = inclV I v 0` using `by rw [map_ofNat, map_zero]; exact h`.
-
-Conclude with `two_ne_zero (hinj this)`. Conclude with `QRG.mem_S (sigV I v) (I.J.map (inclV I v)) (sigV_invol I v) (herm_V I v) hdet h2 g`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem q_reflection_generation : QReflGen := by
   intro I v hv g
@@ -72,9 +70,7 @@ theorem q_reflection_generation : QReflGen := by
   exact QRG.mem_S (sigV I v) (I.J.map (inclV I v)) (sigV_invol I v) (herm_V I v) hdet h2 g
 
 /- English proof (translation)
-Introduce `I v hv χ _ _ hK g`. Establish `hq : {s : Uv I v | IsQRefl I v s} ⊆ (χ.ker : Set (Uv I v))`. Introduce `s hs`. Take `⟨m, hm, hmK⟩` from `hP I v hv s hs`. Conclude with `MonoidHom.mem_ker.mpr (hK s ⟨m, hm, hmK⟩)`.
-
-Conclude with `MonoidHom.mem_ker.mp ((Subgroup.closure_le _).mpr hq (q_reflection_generation I v hv g))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem locInertChi_of_qReflPow (hP : QReflPow) : LocInertChi := by
   intro I v hv χ _ _ hK g

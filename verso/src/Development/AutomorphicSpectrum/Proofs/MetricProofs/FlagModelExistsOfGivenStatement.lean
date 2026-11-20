@@ -7,7 +7,7 @@ import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.RootOnFund
 open AlgebraicGeometry CategoryTheory NumberField ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.Top
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Ar.PB.FMX.flagModelExists | exact GlobalTheory.CompanionTheory.Ar.PB.FMX.flagModelExists | (intros; apply GlobalTheory.CompanionTheory.Ar.PB.FMX.flagModelExists <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.flag_model_exists_of_given : Given → PB.FlagModelExists := by
   first | exact @GlobalTheory.CompanionTheory.Ar.PB.FMX.flagModelExists | exact GlobalTheory.CompanionTheory.Ar.PB.FMX.flagModelExists | (intros; apply GlobalTheory.CompanionTheory.Ar.PB.FMX.flagModelExists <;> assumption)

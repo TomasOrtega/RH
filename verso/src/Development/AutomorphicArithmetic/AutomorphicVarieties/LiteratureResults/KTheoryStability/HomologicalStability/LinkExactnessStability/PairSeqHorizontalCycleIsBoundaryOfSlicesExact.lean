@@ -12,7 +12,7 @@ namespace DblRow
 variable {V W : Type}
 
 /- English proof (translation)
-Introduce `_ _ h` and use `(Prod.mk.inj h).1`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem pair_injective (w : List W) : Function.Injective (fun l : List V => (l, w)) :=
   fun _ _ h => (Prod.mk.inj h).1
@@ -30,9 +30,9 @@ def incl (w : List W) : (List V →₀ ℤ) →ₗ[ℤ] (List V × List W →₀
   Finsupp.lmapDomain ℤ ℤ (fun l : List V => (l, w))
 
 /- English proof (translation)
-Distinguish the cases in `h : w = w'`. Substitute `h` using the available equality. Rewrite using `[if_pos rfl]`. Conclude with `Finsupp.mapDomain_apply (pair_injective w) z l`. Rewrite using `[if_neg h]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Finsupp.mapDomain_notin_range` to reduce the goal to its premises. Introduce and unpack `⟨l', hl'⟩`. Conclude with `h (congrArg Prod.snd hl')`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem incl_apply (w w' : List W) (z : List V →₀ ℤ) (l : List V) :
     incl w z (l, w') = if w = w' then z l else 0 := by
@@ -46,9 +46,9 @@ theorem incl_apply (w w' : List W) (z : List V →₀ ℤ) (l : List V) :
     exact h (congrArg Prod.snd hl')
 
 /- English proof (translation)
-Establish `: (hbd V W).comp (incl w) = (incl w).comp (bd V)`. Apply `Finsupp.lhom_ext` to reduce the goal to its premises. Introduce `l c`. Simplify using `only [LinearMap.comp_apply]`. Rewrite using `[show Finsupp.single l c = c • Finsupp.single l (1 : ℤ) by simp, map_smul, map_smul, map_smul, map_smul]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Simplify using `only [incl, Finsupp.lmapDomain_apply, Finsupp.mapDomain_single, hbd, Finsupp.linearCombination_single, one_smul]`. Conclude with `LinearMap.congr_fun this z`.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hbd_incl (w : List W) (z : List V →₀ ℤ) : hbd V W (incl w z) = incl w (bd V z) := by
   have : (hbd V W).comp (incl w) = (incl w).comp (bd V) := by
@@ -63,9 +63,9 @@ theorem hbd_incl (w : List W) (z : List V →₀ ℤ) : hbd V W (incl w z) = inc
   exact LinearMap.congr_fun this z
 
 /- English proof (translation)
-Use extensionality with `⟨l, w'⟩`. Rewrite using `[Finsupp.finset_sum_apply]`. Simplify using `only [incl_apply, proj_apply]`. Rewrite using `[Finset.sum_ite_eq']`. Use `split_ifs with h`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Use `symm`. Assume the negation of the conclusion as `hne`. Conclude with `h (Finset.mem_image.2 ⟨(l, w'), Finsupp.mem_support_iff.2 (Ne.symm hne), rfl⟩)`.
+Use symmetry to reverse the relation. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem decomp (x : List V × List W →₀ ℤ) :
     x = ∑ w ∈ x.support.image Prod.snd, incl w (proj w x) := by
@@ -84,21 +84,21 @@ end DblRow
 open DblRow
 
 /- English proof (translation)
-Introduce `V W D a b hex x hx h0`. Establish `hsupp : ∀ z ∈ x.support, z ∈ D ∧ z.1.length = a ∧ z.2.length = b` using `fun z hz => hx hz`. Use `set T := x.support.image Prod.snd with hT`. Establish `h1 : hbd V W x = ∑ w ∈ T, incl w (bd V (proj w x))` using `by conv_lhs => rw [decomp x]`. Rewrite using `[map_sum]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [hbd_incl]`. Both sides reduce to the same expression. Establish `hbd0 : ∀ w ∈ T, bd V (proj w x) = 0`. Introduce `w hw`. Use extensionality with `l`.
+Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Use `congrArg (fun z => z (l, w)) h1` as an intermediate fact. Simplify using `only [h0, Finsupp.coe_zero, Pi.zero_apply, Finsupp.finset_sum_apply, incl_apply] at this`. Rewrite `this` using `[Finset.sum_ite_eq', if_pos hw]`. Simplify using `using this.symm`. Establish `hslice : ∀ w ∈ T, ∃ y ∈ chains {l | (l, w) ∈ D} (a + 1), bd V y = proj w x`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `w hw`. Take `⟨z, hz, rfl⟩` from `Finset.mem_image.1 hw`. Take `⟨hzD, -, hzb⟩` from `hsupp z hz`. Use `hex z.2 hzb ⟨z.1, hzD⟩ (proj z.2 x) ?_ (hbd0 z.2 hw)` and prove the remaining obligations. Introduce `l hl`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hl' : (l, z.2) ∈ x.support`. Establish `hl2` using `Finset.mem_coe.1 hl`. Rewrite `hl2`, the goal using `[Finsupp.mem_support_iff]`. Conclude with `hl2`. Take `⟨h2, h3, -⟩` from `hsupp _ hl'`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `⟨h2, h3⟩`. Use `choose! yw hyw hywb using hslice`. Use `⟨∑ w ∈ T, incl w (yw w), ?_, ?_⟩` and prove the remaining obligations. Use `Submodule.sum_mem _ fun w hw => ?_` and prove the remaining obligations. Introduce `z hz`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hz'` using `Finsupp.mapDomain_support hz`. Take `⟨l, hl, rfl⟩` from `Finset.mem_image.1 hz'`. Take `⟨h2, h3⟩` from `hyw w hw hl`. Take `⟨z0, hz0, rfl⟩` from `Finset.mem_image.1 hw`. Conclude with `⟨h2, h3, (hsupp z0 hz0).2.2⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_sum]`. Simplify using `only [hbd_incl]`. Use `conv_rhs => rw [decomp x]`. Use `Finset.sum_congr rfl fun w hw => ?_` and prove the remaining obligations. Rewrite using `[hywb w hw]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dblRow_exact : ∀ (V W : Type) (D : Set (List V × List W)) (a b : ℕ),
     (∀ w : List W, w.length = b → (∃ l, (l, w) ∈ D) → ExactAt {l | (l, w) ∈ D} a) →
@@ -152,9 +152,9 @@ end
 section
 open GlobalTheory.SeqCx
 /- English proof (translation)
-Use `first`. Consider the case `exact @GlobalTheory.SeqCx.dblRow_exact`. Consider the case `exact @GlobalTheory.SeqCx.DblRow.decomp`. Consider the case `exact @GlobalTheory.SeqCx.DblRow.hbd_incl`. Consider the case `exact @GlobalTheory.SeqCx.DblRow.incl_apply`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact @GlobalTheory.SeqCx.DblRow.proj_apply`. Consider the case `exact @GlobalTheory.SeqCx.DblRow.pair_injective`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.T.pairSeqHorizontalCycle_is_boundary_of_slices_exact : ∀ (V W : Type) (D : Set (List V × List W)) (a b : ℕ), (∀ w : List W, w.length = b → (∃ l, (l, w) ∈ D) → ExactAt {l | (l, w) ∈ D} a) → ∀ x ∈ chains2 D a b, hbd V W x = 0 → ∃ y ∈ chains2 D (a + 1) b, hbd V W y = x := by
   first

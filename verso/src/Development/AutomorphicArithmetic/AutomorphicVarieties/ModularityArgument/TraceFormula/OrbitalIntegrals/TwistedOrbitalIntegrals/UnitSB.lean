@@ -5,11 +5,9 @@ import GroundTheory.AutomorphicForms.Measures
 open MeasureTheory ValuativeRel PositivityTheory.Rg.Tf.Loc
 
 /- English proof (translation)
-Introduce `E _ _ _ _ n`. Use `GroundTheory.LocalField.t2Space_of_isNonarchimedeanLocalField E` as an intermediate fact. Establish `ho : IsOpen (unitGL (n` using `Fin n) E : Set (GL (Fin n) E)) := GroundTheory.Automorphic.GLnLocal.isOpen_integralGL E n`. Establish `hc : IsCompact (unitGL (n` using `Fin n) E : Set (GL (Fin n) E)) := GroundTheory.Automorphic.GLnLocal.isCompact_integralGL E n`. Use `⟨ho, hc, ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `(IsLocallyConstant.iff_eventually_eq _).2 fun x => ?_` and prove the remaining obligations. Distinguish the cases in `hx : x ∈ (unitGL (n := Fin n) E : Set (GL (Fin n) E))`. Use `filter_upwards [ho.mem_nhds hx] with y hy`. Simplify using `only [unitFnC, Set.indicator_of_mem hx, Set.indicator_of_mem hy, Pi.one_apply]`. Use `filter_upwards [hc.isClosed.isOpen_compl.mem_nhds hx] with y hy`.
-
-Simplify using `only [unitFnC, Set.indicator_of_notMem hx, Set.indicator_of_notMem hy]`. Conclude with `HasCompactSupport.intro hc fun x hx => Set.indicator_of_notMem hx _`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Tf.Orb.unitSB :
     UpperTheory.V.Z.Tf.Orb.UnitSB := by

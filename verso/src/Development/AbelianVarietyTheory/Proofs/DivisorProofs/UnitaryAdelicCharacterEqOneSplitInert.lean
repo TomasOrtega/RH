@@ -23,11 +23,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.InertSuppChar
 
 /- English proof (translation)
-Take `⟨g, hg⟩` from `GlobalTheory.BotFormula.exists_isFinPt_of_gram_one V hG y rfl`. Rewrite using `[← GlobalTheory.BotClassDict.finStd_of_isFinPt V hG hg]`. Take `⟨l, hl, e⟩` from `GlobalTheory.T.exists_prod_localComponents_eq_primePart V hG q hq g`. Rewrite using `[← e, map_list_prod, map_list_prod, List.map_map]`. Use `List.prod_eq_one (M := Circle) fun z hz => ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨h, hh, rfl⟩` from `List.mem_map.1 hz`. Take `⟨v, ε, hε, hqv, hs⟩` from `hl h hh`. Establish `hn : GlobalTheory.WeilParts.NonSplitAt D v ε` using `(GlobalTheory.InertPlace.inertQ_iff_nonSplitAt D q hq v ε hε hqv).1 hi`. Use `GlobalTheory.InertChar.char_eq_one_of_nonSplit D V _ (GlobalTheory.NormRatio.SphCoset.isSelfDualC_of_gram_one hG (Formalism.MainNotions.GlobalTheoryTheory.Inhab.stdL_isSD D V.rank)) v ε hn (μ.comp (GlobalTheory.BotClassDict.finStd V hG)) (fun k hk hst => ?_) h hs` and prove the remaining obligations. Take `⟨a1, a2⟩` from `GlobalTheory.T.nonSplitSupported_finitePart_integral_inert V hG v ε hn k hk hst`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `hμ _ a1 a2`.
+A detailed English derivation is pending.
 -/
 theorem eq_one_at_inert {D : Formalism.BasicNotions.D7} (V : Formalism.BasicNotions.TH.HSp D) (hG : V.gram = 1) (μ : Formalism.MainNotions.StandardLatticesGL3.GA D V.rank →* Circle)
     (hμ : ∀ k : Formalism.MainNotions.StandardLatticesGL3.GA D V.rank, Formalism.MainNotions.StandardLatticesGL3.SuppInert D (k : GL (Fin V.rank) (Formalism.MainNotions.StandardLatticesGL3.AE D)) →
@@ -49,11 +49,11 @@ theorem eq_one_at_inert {D : Formalism.BasicNotions.D7} (V : Formalism.BasicNoti
   exact hμ _ a1 a2
 
 /- English proof (translation)
-Introduce `D V hG ν hs hi x`. Use `GlobalTheory.T.eq_one_of_forall_circle_char_eq_one ν x fun μ hμ => ?_` and prove the remaining obligations. Rewrite using `[← GlobalTheory.NormSum.VacInt.part_mul_compl D (fun q => ¬ Formalism.MainNotions.StandardLatticesGL3.InertQ D q) x, map_mul, hμ _ (hs _ (GlobalTheory.NormSum.VacInt.suppSplit_part D x)), one_mul]`. Establish `hy` using `GlobalTheory.NormSum.VacInt.suppInert_part D x`. Generalize the expression as in `GlobalTheory.NormSum.VacInt.part D (fun q => ¬¬Formalism.MainNotions.StandardLatticesGL3.InertQ D q) x = y at hy ⊢`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable.
 
-Take `⟨s, hs1, hs2⟩` from `GlobalTheory.T.inertSupportedUnitaryPoint_integral_cofinite y hy`. Rewrite using `[← GlobalTheory.NormSum.VacInt.part_mul_compl D (fun p => p ∈ s) y, map_mul, hμ _ (hi _ (GlobalTheory.T.suppInert_unitaryAdelicPointComponentAtPrimes _ _ hy) hs2), mul_one]`. Establish `hloc : ∀ q, q.Prime → Formalism.MainNotions.StandardLatticesGL3.InertQ D q → μ (GlobalTheory.NormSum.VacInt.part D (fun p => p = q) y) = 1` using `fun q hq hqi => eq_one_at_inert V hG μ (fun k a1 a2 => hμ _ (hi k a1 a2)) hq hqi y`. Use `clear hs2`. Proceed by induction on `s using Finset.induction_on with`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Proceed by induction. Treat this case separately.
 
-Consider the case `empty => rw [(GlobalTheory.T.unitaryPrimeComponent_finset_prod y).1, map_one]`. Consider the case `insert q s hq ih`. Rewrite using `[(GlobalTheory.T.unitaryPrimeComponent_finset_prod y).2 q s hq, map_mul, hloc q (hs1 q (Finset.mem_insert_self q s)).1 (hs1 q (Finset.mem_insert_self q s)).2, one_mul]`. Conclude with `ih fun p hp => hs1 p (Finset.mem_insert_of_mem hp)`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem char_eq_one : ∀ {D : Formalism.BasicNotions.D7} (V : Formalism.BasicNotions.TH.HSp D), V.gram = 1 → ∀ (ν : Formalism.MainNotions.StandardLatticesGL3.GA D V.rank →* ℂˣ),
   (∀ k : Formalism.MainNotions.StandardLatticesGL3.GA D V.rank, Formalism.MainNotions.StandardLatticesGL3.SuppSplit D (k : GL (Fin V.rank) (Formalism.MainNotions.StandardLatticesGL3.AE D)) → ν k = 1) →

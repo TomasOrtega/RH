@@ -18,7 +18,7 @@ open ClsSpec
 variable {R : Type} [CommRing R]
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.etaleLocal_property_calculus_rules.1 U P h`.
+A detailed English derivation is pending.
 -/
 theorem loc_all {U : Scheme.{0}} {P : ∀ V : Scheme.{0}, (V ⟶ U) → Prop} (h : ∀ V g, P V g) : Loc U P :=
   GlobalTheory.T.etaleLocal_property_calculus_rules.1 U P h
@@ -26,7 +26,7 @@ theorem loc_all {U : Scheme.{0}} {P : ∀ V : Scheme.{0}, (V ⟶ U) → Prop} (h
 open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComplex.HomComplex in
 variable {R : Type} [CommRing R] in
 /- English proof (translation)
-Use extensionality with `U a`. Conclude with `h U.unop a`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 private theorem shv_hom_ext_of_sec_map_eq {S : Type} [CommRing S] {F G : _root_.GlobalTheory.EtC.Shv S}
     (φ ψ : F ⟶ G)
@@ -38,7 +38,7 @@ private theorem shv_hom_ext_of_sec_map_eq {S : Type} [CommRing S] {F G : _root_.
 open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComplex.HomComplex in
 variable {R : Type} [CommRing R] in
 /- English proof (translation)
-Simplify using `[_root_.GlobalTheory.EtC.Sec.map]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem sec_map_zero_apply {S : Type} [CommRing S] {F G : _root_.GlobalTheory.EtC.Shv S}
     {U : Scheme} (a : _root_.GlobalTheory.EtC.Sec F U) :
@@ -48,7 +48,7 @@ private theorem sec_map_zero_apply {S : Type} [CommRing S] {F G : _root_.GlobalT
 open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComplex.HomComplex in
 variable {R : Type} [CommRing R] in
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨⊤, GrothendieckTopology.top_mem _ _, fun V g _ => h V g⟩`.
+Supply the required witnesses or components.
 -/
 private theorem etLoc_of_forall {U : Scheme} {P : (V : Scheme) → (V ⟶ U) → Prop}
     (h : ∀ V g, P V g) : _root_.GlobalTheory.EtC.Loc U P :=
@@ -58,37 +58,31 @@ open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComp
 variable {R : Type} [CommRing R] in
 
 /- English proof (translation)
-Introduce `q _ i D ι hinj himg`. Use `haveI hmono : ∀ n, Mono (ι.f n) := fun n => (_root_.GlobalTheory.EtC.mono_epi_sections (ZMod q) (ι.f n)).1.2 (fun U => hinj n U)`. Take `⟨-, -, hIge, -, hterm, hAmono, hAd, -⟩` from `_root_.GlobalTheory.EtC.ResBasic.res_basic (ZMod q) (_root_.GlobalTheory.EtC.tw q i)`. Use `haveI := hIge`. Use `haveI := hAmono`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hA : _root_.GlobalTheory.EtC.resι (ZMod q) (_root_.GlobalTheory.EtC.tw q i) ≫ cokernel.π (ι.f 0) = 0`. Apply `shv_hom_ext_of_sec_map_eq` to reduce the goal to its premises. Introduce `U y`. Rewrite using `[sec_map_zero_apply, ← _root_.GlobalTheory.EtC.ClsSpec.map_comp]`. Take `⟨b, hb⟩` from `(himg 0 U (_root_.GlobalTheory.EtC.Sec.map (_root_.GlobalTheory.EtC.resι (ZMod q) (_root_.GlobalTheory.EtC.tw q i)) y)).2 (by`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Use `_root_.GlobalTheory.EtC.ClsSpec.loc_mono ((_root_.GlobalTheory.EtC.twist_sections q i).1 U y) ?_` and prove the remaining obligations. Introduce and unpack `V g (h | ⟨ζ, c, -⟩)`. Use `right`. Rewrite using `[_root_.GlobalTheory.EtC.ClsSpec.res_map, h, _root_.GlobalTheory.EtC.ClsSpec.smap_zero]`. Conclude with `Or.inl ζ.2.1)`.
+Prove the first alternative. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hb, _root_.GlobalTheory.EtC.ClsSpec.map_comp, cokernel.condition, sec_map_zero_apply]`. Establish `hA' : Abelian.monoLift (ι.f 0) _ hA ≫ ι.f 0 = _root_.GlobalTheory.EtC.resι (ZMod q) (_root_.GlobalTheory.EtC.tw q i)` using `Abelian.monoLift_comp _ _ _`. Establish `hd : Abelian.monoLift (ι.f 0) _ hA ≫ D.d 0 1 = 0`. Rewrite using `[← cancel_mono (ι.f 1), zero_comp, Category.assoc, ← ι.comm, ← Category.assoc, hA', hAd]`. Set `ε : _root_.GlobalTheory.EtC.sgl (_root_.GlobalTheory.EtC.tw q i) ⟶ D` to `HomologicalComplex.mkHomFromSingle (Abelian.monoLift (ι.f 0) _ hA) (by`.
+Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact.
 
-Introduce `k hk`. Establish `hk1 : k = 1` using `by simpa using hk.symm`. Substitute `hk1` using the available equality. Conclude with `hd)`. Establish `hε0 : ε.f 0 = (HomologicalComplex.singleObjXSelf (ComplexShape.up ℤ) 0 (_root_.GlobalTheory.EtC.tw q i)).hom ≫ Abelian.monoLift (ι.f 0) _ hA` using `HomologicalComplex.mkHomFromSingle_f _ _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `haug : (_root_.GlobalTheory.EtC.resAug (_root_.GlobalTheory.EtC.tw q i)).f 0 = (HomologicalComplex.singleObjXSelf (ComplexShape.up ℤ) 0 (_root_.GlobalTheory.EtC.tw q i)).hom ≫ _root_.GlobalTheory.EtC.resι (ZMod q) (_root_.GlobalTheory.EtC.tw q i)`. Rewrite using `[← hterm]`. Unfold `_root_.GlobalTheory.EtC.sglι`. Use `erw [Iso.hom_inv_id_assoc]`. Establish `hει : ε.f 0 ≫ ι.f 0 = (_root_.GlobalTheory.EtC.resAug (_root_.GlobalTheory.EtC.tw q i)).f 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[haug]`. Use `erw [hε0, Category.assoc, hA']`. Apply the tactic sequence `all_goals rfl`. Establish `hterm' : _root_.GlobalTheory.EtC.sglι (_root_.GlobalTheory.EtC.tw q i) ≫ ε.f 0 ≫ ι.f 0 = _root_.GlobalTheory.EtC.resι (ZMod q) (_root_.GlobalTheory.EtC.tw q i)`. Rewrite using `[hει, hterm]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Use `⟨fun U ζ => _root_.GlobalTheory.EtC.Sec.map (ε.f 0) (_root_.GlobalTheory.EtC.Sec.map (_root_.GlobalTheory.EtC.sglι (_root_.GlobalTheory.EtC.tw q i)) (_root_.GlobalTheory.EtC.twGen i ζ)), ?_, ?_⟩` and prove the remaining obligations. Unfold `_root_.GlobalTheory.EtC.IsTwRes`. Use `⟨?_, ε, ?_, fun U ζ => rfl⟩` and prove the remaining obligations. Rewrite using `[CochainComplex.isStrictlyGE_iff]`. Introduce `n hn`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `@IsZero.of_mono _ _ _ _ _ (ι.f n) (hmono n) (CochainComplex.isZero_of_isStrictlyGE _ 0 n hn)`. Use `⟨fun n => ?_⟩` and prove the remaining obligations. Break down `lt_trichotomy n 0 with hn | rfl | hn` into its components or cases. Rewrite using `[quasiIsoAt_iff_exactAt ε n (HomologicalComplex.exactAt_single_obj _ _ _ _ hn.ne)]`. Conclude with `ShortComplex.exact_of_isZero_X₂ _ (@IsZero.of_mono _ _ _ _ _ (ι.f n) (hmono n) (CochainComplex.isZero_of_isStrictlyGE _ 0 n hn))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[quasiIsoAt_iff' ε (-1) 0 1 (by simp) (by simp), ShortComplex.quasiIso_iff_of_zeros _ ?_ ?_ ?_]`. Prove the components needed by the constructor for the conclusion. Rewrite using `[_root_.GlobalTheory.EtC.exactIff]`. Introduce `U b hb`. Establish `hcyc : _root_.GlobalTheory.EtC.Sec.map ((_root_.GlobalTheory.EtC.res (ZMod q) (_root_.GlobalTheory.EtC.tw q i)).d 0 1) (_root_.GlobalTheory.EtC.Sec.map (ι.f 0) b) = 0` using `by erw [_root_.GlobalTheory.EtC.ClsSpec.map_comp, ι.comm, ← _root_.GlobalTheory.EtC.ClsSpec.map_comp, hb]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `_root_.GlobalTheory.EtC.ClsSpec.smap_zero _`. Take `⟨y, hy⟩` from `((_root_.GlobalTheory.EtC.resSec (ZMod q) (_root_.GlobalTheory.EtC.tw q i) U).1 _).1 hcyc`. Establish `hb' : _root_.GlobalTheory.EtC.Sec.map (ε.f 0) (_root_.GlobalTheory.EtC.Sec.map (_root_.GlobalTheory.EtC.sglι (_root_.GlobalTheory.EtC.tw q i)) y) = b`. Apply `hinj 0 U` to reduce the goal to its premises. Simplify using `only [_root_.GlobalTheory.EtC.ClsSpec.map_comp, Category.assoc, hterm', hy]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `etLoc_of_forall fun V g => ⟨_root_.GlobalTheory.EtC.Sec.res g (_root_.GlobalTheory.EtC.Sec.map (_root_.GlobalTheory.EtC.sglι (_root_.GlobalTheory.EtC.tw q i)) y), (_root_.GlobalTheory.EtC.ClsSpec.res_map (ε.f 0) g _).symm.trans (congrArg (_root_.GlobalTheory.EtC.Sec.res g) hb')⟩`. Establish `hcomp : Mono ((HomologicalComplex.singleObjXSelf (ComplexShape.up ℤ) 0 (_root_.GlobalTheory.EtC.tw q i)).hom ≫ _root_.GlobalTheory.EtC.resι (ZMod q) (_root_.GlobalTheory.EtC.tw q i))` using `@mono_comp _ _ _ _ _ _ (@IsIso.mono_of_iso _ _ _ _ _ (Iso.isIso_hom _)) _ hAmono`. Rewrite `hcomp` using `[← haug, ← hει]`. Conclude with `@mono_of_mono _ _ _ _ _ (ε.f 0) (ι.f 0) hcomp`. Conclude with `(HomologicalComplex.isZero_single_obj_X (ComplexShape.up ℤ) 0 (_root_.GlobalTheory.EtC.tw q i) (-1) (by norm_num)).eq_of_src _ _`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Conclude with `(HomologicalComplex.isZero_single_obj_X (ComplexShape.up ℤ) 0 (_root_.GlobalTheory.EtC.tw q i) 1 (by norm_num)).eq_of_tgt _ _`. Conclude with `(@IsZero.of_mono _ _ _ _ _ (ι.f (-1)) (hmono (-1)) (CochainComplex.isZero_of_isStrictlyGE _ 0 (-1) (by simp))).eq_of_src _ _`. Rewrite using `[quasiIsoAt_iff_exactAt ε n (HomologicalComplex.exactAt_single_obj _ _ _ _ hn.ne'), D.exactAt_iff' (n - 1) n (n + 1) (by simp) (by simp), _root_.GlobalTheory.EtC.exactIff]`. Introduce `U b hb`. Establish `hcyc : _root_.GlobalTheory.EtC.Sec.map ((_root_.GlobalTheory.EtC.res (ZMod q) (_root_.GlobalTheory.EtC.tw q i)).d n (n + 1)) (_root_.GlobalTheory.EtC.Sec.map (ι.f n) b) = 0` using `by erw [_root_.GlobalTheory.EtC.ClsSpec.map_comp, ι.comm, ← _root_.GlobalTheory.EtC.ClsSpec.map_comp, hb]`.
-
-Conclude with `_root_.GlobalTheory.EtC.ClsSpec.smap_zero _`. Establish `hex` using `(_root_.GlobalTheory.EtC.resSec (ZMod q) (_root_.GlobalTheory.EtC.tw q i) U).2.2.1 (n - 1) n (n + 1) hn (by ring) _ rfl hcyc`. Establish `hsupp` using `(himg n U (_root_.GlobalTheory.EtC.Sec.map (ι.f n) b)).1 ⟨b, rfl⟩`. Use `_root_.GlobalTheory.EtC.ClsSpec.loc_mono (_root_.GlobalTheory.EtC.ClsSpec.loc_and hex hsupp) ?_` and prove the remaining obligations. Introduce and unpack `V g ⟨⟨y, hy⟩, hq | hz⟩`.
-
-Take `⟨y', rfl⟩` from `(himg (n - 1) V y).2 (etLoc_of_forall fun W h => Or.inl (_root_.GlobalTheory.EtC.ClsSpec.unit_res h hq))`. Use `⟨y', hinj n V ?_⟩` and prove the remaining obligations. Conclude with `(_root_.GlobalTheory.EtC.ClsSpec.map_comp (D.d (n - 1) n) (ι.f n) y').trans ((congrArg (fun φ => _root_.GlobalTheory.EtC.Sec.map φ y') (ι.comm (n - 1) n).symm).trans ((_root_.GlobalTheory.EtC.ClsSpec.map_comp (ι.f (n - 1)) ((_root_.GlobalTheory.EtC.res (ZMod q) (_root_.GlobalTheo …`. Use `⟨0, ?_⟩ erw [_root_.GlobalTheory.EtC.ClsSpec.smap_zero]` and prove the remaining obligations. Apply `hinj n V` to reduce the goal to its premises.
-
-Conclude with `(_root_.GlobalTheory.EtC.ClsSpec.smap_zero _).trans (hz.symm.trans (_root_.GlobalTheory.EtC.ClsSpec.res_map _ g b))`. Introduce `U ζ`. Simplify using `only [_root_.GlobalTheory.EtC.ClsSpec.map_comp, Category.assoc, hterm']`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.EtC.SuppRes.supp_res : ∀ (q : ℕ) [NeZero q] (i : ℤ)
     (D : _root_.GlobalTheory.EtC.Cx (ZMod q))

@@ -23,7 +23,7 @@ section Witt
 variable (p : ℕ) [hp : Fact p.Prime]
 
 /- English proof (translation)
-Simplify using `[WittVector.FractionRing.frobenius]`.
+Simplify using the standard rewrite rules.
 -/
 theorem fractionRing_frobenius_algebraMap {k : Type*} [Field k] [CharP k p] [PerfectRing k p]
     (x : WittVector p k) : WittVector.FractionRing.frobenius p k (algebraMap _ _ x) =
@@ -31,13 +31,13 @@ theorem fractionRing_frobenius_algebraMap {k : Type*} [Field k] [CharP k p] [Per
   simp [WittVector.FractionRing.frobenius]
 
 /- English proof (translation)
-Establish `h1 : ∀ (m : ℕ) (x : WittVector p (GaloisField p n)), ∃ y : WittVector p (GaloisField p n), (∀ i, y.coeff i = x.coeff i ^ p ^ m) ∧ (WittVector.FractionRing.frobenius p (GaloisField p n) ^ m) (algebraMap _ _ x) = algebraMap _ (FractionRing (WittVector p (GaloisField p n))) y`. Introduce `m x`. Proceed by induction on `m with`. Consider the case `zero => exact ⟨x, by simp, rfl⟩`. Consider the case `succ m ih`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Take `⟨y, hy, h⟩` from `ih`. Use `⟨WittVector.frobenius y, fun i => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[WittVector.coeff_frobenius_charP, hy, ← pow_mul, pow_succ]`. Rewrite using `[pow_succ', RingAut.mul_apply, h, fractionRing_frobenius_algebraMap]`. Use `letI := Fintype.ofFinite (GaloisField p n)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Equip the data with the indicated structure.
 
-Establish `hc : Fintype.card (GaloisField p n) = p ^ n`. Rewrite using `[← Nat.card_eq_fintype_card, GaloisField.card p _ hn]`. Use `RingEquiv.toRingHom_injective (IsLocalization.ringHom_ext (nonZeroDivisors (WittVector p (GaloisField p n))) (RingHom.ext fun x => ?_))` and prove the remaining obligations. Take `⟨y, hy, h⟩` from `h1 n x`. Establish `: y = x`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use extensionality with `i`. Rewrite using `[hy, ← hc, FiniteField.pow_card]`. Conclude with `h.trans (by rw [this]; rfl)`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fractionRing_frobenius_pow {n : ℕ} (hn : n ≠ 0) :
     WittVector.FractionRing.frobenius p (GaloisField p n) ^ n = 1 := by

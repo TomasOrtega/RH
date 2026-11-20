@@ -37,13 +37,13 @@ variable (E : Type) [Field E] [NumberField E] [IsCMField E] {N : ℕ} [NeZero N]
 
 omit [IsDomain O] [IsDiscreteValuationRing O] [Algebra ℤ_[l] O] [Module.Finite ℤ_[l] O] in
 /- English proof (translation)
-Introduce `_ hg` and use `h.1 hg`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem levH_le_ker {s : ℕ} {χ : DirichletCharacter O N} (h : χ ∈ evenSet O H s) : levH ℚ Ω H ≤ (dirG ℚ Ω χ).ker :=
   fun _ hg => h.1 hg
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨Subgroup.index_comap_of_surjective _ (clsOnto Ω N).1, Subgroup.isOpen_mono (H₁ := (cls ℚ Ω N).ker) (fun g hg => by show cls ℚ Ω N g ∈ H rw [MonoidHom.mem_ker.1 hg]; exact one_mem _) (clsFacts ℚ Ω N).1⟩`.
+Supply the required witnesses or components.
 -/
 theorem levH_facts : (levH ℚ Ω H).index = H.index ∧ IsOpen (levH ℚ Ω H : Set (G ℚ Ω)) :=
   ⟨Subgroup.index_comap_of_surjective _ (clsOnto Ω N).1,
@@ -52,7 +52,7 @@ theorem levH_facts : (levH ℚ Ω H).index = H.index ∧ IsOpen (levH ℚ Ω H :
       rw [MonoidHom.mem_ker.1 hg]; exact one_mem _) (clsFacts ℚ Ω N).1⟩
 
 /- English proof (translation)
-Take `⟨c, hc, hp, hm⟩` from `partModel E N H hE l O Ω' D Ω e`. Rewrite using `[(levGal E N H hE).2.1, hp, hm]`. Conclude with `⟨fun hT => (signLe Ω N H l O h2 e _ c hc T hT.ge).trans (Finset.sum_le_sum fun χ hχ => eigLe Ω N H l O e _ he (levH_le_ker O Ω (hT.le hχ))), fun hT => (signLe Ω N H l O h2 e _ c hc T hT.ge).trans (Finset.sum_le_sum fun χ hχ => eigLe Ω N H l O e _ he (levH_le_ker O Ω (hT.le hχ)))⟩`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem reduction_to_dirichletChar_any_level (hE : HasLevel E N H) [HasEnoughRootsOfUnity O (Monoid.exponent ((ZMod N)ˣ ⧸ H))] (h2 : l ≠ 2)
     {e : ℕ} (he : e ≠ 0) (T : Finset (DirichletCharacter O N)) :
@@ -69,9 +69,9 @@ theorem reduction_to_dirichletChar_any_level (hE : HasLevel E N H) [HasEnoughRoo
 
 omit [IsDomain O] [IsDiscreteValuationRing O] [Algebra ℤ_[l] O] [Module.Finite ℤ_[l] O] in
 /- English proof (translation)
-Unfold `evenSet at h`. Establish `hH : H ≤ (MulChar.toUnitHom χ).ker` using `h.1`. Use `MonoidHom.ext fun g => ?_` and prove the remaining obligations. Rewrite using `[MonoidHom.pow_apply, MonoidHom.one_apply]`. Unfold `dirG`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[MonoidHom.comp_apply, ← map_pow, ← MonoidHom.mem_ker]`. Conclude with `hH (H.pow_index_mem _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dirG_pow {s : ℕ} {χ : DirichletCharacter O N} (h : χ ∈ evenSet O H s) : dirG ℚ Ω χ ^ H.index = 1 := by
   unfold evenSet at h
@@ -83,7 +83,7 @@ theorem dirG_pow {s : ℕ} {χ : DirichletCharacter O N} (h : χ ∈ evenSet O H
   exact hH (H.pow_index_mem _)
 
 /- English proof (translation)
-Establish `hopen : IsOpen ((dirG ℚ Ω χ).ker : Set (G ℚ Ω))` using `Subgroup.isOpen_mono (levH_le_ker (O := O) (Ω := Ω) h) (levH_facts (Ω := Ω) (H := H)).2`. Establish `hpow` using `dirG_pow (O := O) (Ω := Ω) h`. Conclude with `vLe Ω l O N' e H.index _ hN he Subgroup.index_ne_zero_of_finite hopen hpow`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem V_le_V' {s e : ℕ} (he : e ≠ 0) {χ : DirichletCharacter O N} (h : χ ∈ evenSet O H s) {N' : ℕ} (hN : N' ≠ 0) :
     V l e (dirG ℚ Ω χ) ≤ V' l N' e (dirG ℚ Ω χ) + ((N'.primeFactors.card * H.index.factorization l : ℕ) : ℕ∞) * eO l O ∧
@@ -94,9 +94,9 @@ theorem V_le_V' {s e : ℕ} (he : e ≠ 0) {χ : DirichletCharacter O N} (h : χ
   exact vLe Ω l O N' e H.index _ hN he Subgroup.index_ne_zero_of_finite hopen hpow
 
 /- English proof (translation)
-Establish `hrank : Module.finrank ℚ E = H.index` using `(levGal E N H hE).2.1`. Establish `key` using `reduction_to_dirichletChar_any_level (E := E) (O := O) (D := D) (Ω := Ω) hE h2 he T`. Establish `hsum : ∀ s, (↑T : Set (DirichletCharacter O N)) = evenSet O H s → ∑ χ ∈ T, (V l e (dirG ℚ Ω χ) + (loss l N (Module.finrank ℚ E) e : ℕ∞) * eO l O) ≤ ∑ χ ∈ T, (V' l N' e (dirG ℚ Ω χ) + ((loss l N (Module.finrank ℚ E) e + N'.primeFactors.card * (Module.finrank ℚ E).factorization l : …`. Introduce `s hT`. Use `Finset.sum_le_sum fun χ hχ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hχ' : χ ∈ evenSet O H s` using `by rw [← hT]; exact hχ`. Establish `h1` using `(V_le_V' (l := l) (O := O) (Ω := Ω) he hχ' hN).1`. Rewrite using `[hrank]`. Combine the equalities or inequalities in the displayed calculation. Conclude with `⟨fun hT => (key.1 hT).trans (hsum e hT), fun hT => (key.2 hT).trans (hsum (e + 1) hT)⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Supply the required witnesses or components.
 -/
 theorem reduction_to_dirichletChar_any_level_of_le (hE : HasLevel E N H) [HasEnoughRootsOfUnity O (Monoid.exponent ((ZMod N)ˣ ⧸ H))] (h2 : l ≠ 2)
     {e : ℕ} (he : e ≠ 0) (T : Finset (DirichletCharacter O N)) {N' : ℕ} (hN : N' ≠ 0) :

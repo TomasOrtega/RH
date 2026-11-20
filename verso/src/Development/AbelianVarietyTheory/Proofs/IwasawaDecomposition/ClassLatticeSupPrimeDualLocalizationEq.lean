@@ -19,11 +19,11 @@ set_option maxHeartbeats 1000000 in
 set_option synthInstance.maxHeartbeats 400000 in
 
 /- English proof (translation)
-Establish `key : ∀ x ∈ latS (F` using `F) (v.adicCompletion F) (intV E v) M, T • x ∈ latS (F := F) (v.adicCompletion F) (intV E v) L := by`. Introduce `x hx`. Unfold `latS at hx ⊢`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately.
 
-Take `⟨z, hz, rfl⟩` from `hx`. Use `Submodule.subset_span ⟨T • z, h z hz, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules. Consider the case `zero => simp`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Treat this case separately.
 
-Consider the case `add x y _ _ hx hy => rw [smul_add]`. Conclude with `add_mem hx hy`. Consider the case `smul a x _ hx => rw [smul_comm]`. Conclude with `Submodule.smul_mem _ a hx`. Conclude with `key w hw`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem nsmul_latS_of_nsmul {n : ℕ} (v : HeightOneSpectrum (𝓞 F)) (T : ℕ) (L M : Submodule (𝓞 E) (Fin n → E))
     (h : ∀ z ∈ M, T • z ∈ L) (w : Fin n → E ⊗[F] v.adicCompletion F)
@@ -48,15 +48,13 @@ set_option maxHeartbeats 1000000 in
 set_option synthInstance.maxHeartbeats 400000 in
 
 /- English proof (translation)
-Establish `hLb : Submodule.IsLattice E S.Lb` using `⟨Module.Finite.iff_fg.mp S.Lb_fin, S.Lb_span⟩`. Establish `hT : ∀ x ∈ dualL (σ : E →+* E) J S.Lb, T • x ∈ S.Lb`. Introduce `x hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx => rw [← Nat.cast_smul_eq_nsmul E]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Conclude with `S.Lb_dual x hx`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [smul_add]`. Conclude with `add_mem hx hy`. Consider the case `smul a x _ hx => rw [smul_comm]`.
+Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Submodule.smul_mem _ a hx`. Establish `hdual` using `GlobalTheory.T.unitary_completion_maps_dualLattices F E σ n J v L S.Lb y hJ hL hLb hy hyl`. Establish `h1 : (fun a => inclE (F` using `F) (v.adicCompletion F) (z a)) ∈ latS (F := F) (v.adicCompletion F) (intV E v) (dualL (σ : E →+* E) J L) := Submodule.subset_span ⟨z, hz, rfl⟩`. Establish `h2` using `nsmul_latS_of_nsmul v T S.Lb (dualL (σ : E →+* E) J S.Lb) hT _ ((hdual _).mp h1)`. Rewrite `h2` using `[← Matrix.mulVec_smul]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Establish `h3` using `(hyl _).mpr h2`. Establish `h4 : (fun a => inclE (F` using `F) (v.adicCompletion F) ((T • z) a)) ∈ latS (F := F) (v.adicCompletion F) (intV E v) L := by`. Use `h3 using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `a`. Simplify using the standard rewrite rules.
-
-Conclude with `GlobalTheory.T.exists_smul_mem_lattice_of_mem_completion F E v n L hL (T • z) h4`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem nsmul_dual_mem_loc {σ : E →ₐ[F] E} {n : ℕ} {J : Matrix (Fin n) (Fin n) E} {T f : ℕ}
     {bad : Set (HeightOneSpectrum (𝓞 F))} (S : StepLevel F E σ J T f bad) (hJ : IsUnit J.det)
@@ -93,7 +91,7 @@ set_option maxHeartbeats 1000000 in
 set_option synthInstance.maxHeartbeats 400000 in
 
 /- English proof (translation)
-Establish `hloc : ∀ x, x ∈ latS (F` using `F) (v.adicCompletion F) (intV E v) L ↔ ((bc (prV (E := E) v) y.1)⁻¹).1 *ᵥ x ∈ latS (F := F) (v.adicCompletion F) (intV E v) S.Lb := by`. Introduce `x`. Rewrite using `[← map_inv]`. Conclude with `Formalism.L2.GlobalTheoryTheory.LocalLatticeBases.rlv_yloc v y.1 hyl x`. Conclude with `nsmul_dual_mem_loc S hJ v L hL _ (Formalism.UG.P.afsplit_bc_mem σ J v y.1 y.2) hloc z hz`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nsmul_dual_mem_loc_adelic {σ : E →ₐ[F] E} {n : ℕ} {J : Matrix (Fin n) (Fin n) E} {T f : ℕ}
     {bad : Set (HeightOneSpectrum (𝓞 F))} (S : StepLevel F E σ J T f bad) (hJ : IsUnit J.det)
@@ -116,11 +114,11 @@ theorem nsmul_dual_mem_loc_adelic {σ : E →ₐ[F] E} {n : ℕ} {J : Matrix (Fi
 end Core
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Introduce `x hx`. Take `⟨s, hs, hsx⟩` from `(mem_loc res _ x).mp hx`. Establish `hle : M ⊔ RingHom.ker res • N ≤ loc res M`. Use `sup_le (le_loc res M) ?_` and prove the remaining obligations.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Submodule.smul_le]`. Introduce `a ha z hz`. Take `⟨s', b, hs', hsab⟩` from `hu.2 a (RingHom.mem_ker.mp ha)`. Apply `loc_sat res M s' _ hs'` to reduce the goal to its premises. Rewrite using `[smul_smul, hsab, mul_comm, ← smul_smul]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.smul_mem _ b (h z hz)`. Conclude with `loc_sat res M s x hs (hle hsx)`. Introduce `x hx`. Take `⟨s, hs, hsx⟩` from `(mem_loc res M x).mp hx`. Conclude with `(mem_loc res _ x).mpr ⟨s, hs, Submodule.mem_sup_left hsx⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem loc_sup_ker_smul {R V k : Type} [CommRing R] [AddCommGroup V] [Module R V] [Field k] (res : R →+* k) (t : R)
     (hu : Unram res t) (M N : Submodule R V) (h : ∀ z ∈ N, t • z ∈ loc res M) :
@@ -145,9 +143,9 @@ set_option maxHeartbeats 1000000 in
 set_option synthInstance.maxHeartbeats 400000 in
 
 /- English proof (translation)
-Introduce `D u A i hi K v c`. Use `loc_sup_ker_smul (A.res v) (((D.mem u).A.T : ℕ) : 𝓞 D.host.E) (GlobalTheory.T.levelPrime_unramifiedUniformizer D u A v) _ _ ?_` and prove the remaining obligations. Introduce `z hz`. Take `⟨r, hr, hrz⟩` from `nsmul_dual_mem_loc_adelic K.lev (bwB_gramN_det D i hi) (A.eV v).1 (clsCrd D u i hi c) (bwB_clsCrd_lat D u i hi c) (K.y c) (K.y_lat c) z hz`. Use `(mem_loc _ _ _).mpr ⟨algebraMap _ _ r, fun h0 => hr ((A.res_v v r).mpr h0), ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Nat.cast_smul_eq_nsmul]` and apply the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 -/
 theorem loc_lk_eq_loc_cls : ∀ (D : D7) (u : D.what₂.Word) (A : AtTTied u) (i : ℕ) (hi : i ≤ D.R.m) (K : ClsTied u i hi) (v : (D.mem u).A.vT) (c : (D.mem u).C.cls i), loc (A.res v) (Lk A i hi v c) = loc (A.res v) (clsCrd D u i hi c) := by
   intro D u A i hi K v c

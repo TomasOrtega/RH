@@ -18,9 +18,9 @@ attribute [-instance] GlobalTheory.CompHt.fintypePsi
 namespace GlobalTheory.CompanionTheory.Ar.Plug.MeanTop
 
 /- English proof (translation)
-Establish `e : (2 * d * (M : ℤ)).natAbs = 2 * d.natAbs * M`. Simplify using `[Int.natAbs_mul]`. Rewrite using `[e]`. Introduce `p hp`. Rewrite `hp` using `[Nat.mem_primeFactors]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨hp, hd, h0⟩` from `hp`. Break down `(Nat.Prime.dvd_mul hp).1 hd with h | h` into its components or cases. Conclude with `Finset.mem_union_left _ (Nat.mem_primeFactors.2 ⟨hp, h, fun h' => h0 (by rw [h', zero_mul])⟩)`. Conclude with `Finset.mem_union_right _ (Nat.mem_primeFactors.2 ⟨hp, h, fun h' => h0 (by rw [h', mul_zero])⟩)`.
+Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem primeFactors_sub (d : ℤ) (M : ℕ) :
     (2 * d * (M : ℤ)).natAbs.primeFactors ⊆ Nat.primeFactors (2 * d.natAbs) ∪ M.primeFactors := by
@@ -35,7 +35,7 @@ theorem primeFactors_sub (d : ℤ) (M : ℕ) :
   · exact Finset.mem_union_right _ (Nat.mem_primeFactors.2 ⟨hp, h, fun h' => h0 (by rw [h', mul_zero])⟩)
 
 /- English proof (translation)
-Unfold `Top.spread`. Use `Finset.sum_nonneg fun τ _ => ?_` and prove the remaining obligations. Establish `i0 : Fin N` using `⟨0, hN⟩`. Establish `h1` using `ciInf_le (Set.finite_range (fun i => u τ i)).bddBelow i0`. Establish `h2` using `le_ciSup (Set.finite_range (fun i => u τ i)).bddAbove i0`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
 Combine the linear equalities and inequalities to obtain the conclusion.
 -/
@@ -48,7 +48,7 @@ theorem spread_nonneg {Ψ : Type} [Fintype Ψ] {N : ℕ} (hN : 0 < N) (u : Top.W
   linarith
 
 /- English proof (translation)
-Unfold `GlobalTheory.CovHt.errX Top.spread reW`. Use `congr 2`. Use `rfl` and compare the differences between its conclusion and the goal.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Apply an available result and prove the equalities needed to match it to the conclusion.
 -/
 theorem errX_eq {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H}
     (s : ℝ) (u : GlobalTheory.AllWt.Weight Dw) (g : ℝ) :
@@ -65,35 +65,33 @@ open GlobalTheory.CompanionTheory.Ar.Plug.MeanTop in
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `hNef hG hII hG6 hGT hVT`. Take `⟨II, hII⟩` from `hII`. Take `⟨CT, hCT, hT⟩` from `GlobalTheory.T.full_intersection_good_level hG hGT hVT`. Use `⟨CT + 120, by linarith, ?_⟩` and prove the remaining obligations. Introduce `E _ _ _ _ H Dw l Xo c r U h e hLaws hUnif hFn hGood hA hq hpq hcardΨ hbad x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hqp : Dw.q < Dw.p` using `by omega`. Establish `hN : 4 ≤ Dw.p + Dw.q` using `by omega`. Establish `h128 : (128 : ℝ) ≤ 4 * (Fintype.card (CMType H) : ℝ) * ((Dw.p + Dw.q : ℕ) : ℝ) ^ 2`. Establish `a : (2 : ℝ) ≤ Fintype.card (CMType H)` using `by exact_mod_cast hcardΨ`. Establish `b : (4 : ℝ) ≤ ((Dw.p + Dw.q : ℕ) : ℝ)` using `by exact_mod_cast hN`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use the polynomial consequences of the given equalities and inequalities. Establish `hbadT : (2 * discr E * (l.M' : ℤ)).natAbs.primeFactors.card ≤ 4 * Fintype.card (CMType H) * (Dw.p + Dw.q) ^ 2` using `(Finset.card_le_card (primeFactors_sub _ _)).trans hbad`. Take `⟨Y, T, o, κ, -, hCO, hTbad, hProp, hT1, -, hMS⟩` from `hT E H Dw l Xo c II hII hFn hGood hA hq hpq hbadT`. Establish `hj : T.j = Dw.p` using `o.toTowerOrigin.j_eq`. Establish `hW` using `GlobalTheory.T.tower_weight_of_zero E H Dw l Xo c (T.M 0 (Classical.arbitrary T.Comp))`.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `u g hgap`. Take `⟨-, -, -, -, hl1, -, -, -, hB⟩` from `hW u`. Take `⟨hBeq, hWH⟩` from `hB g`. Establish `hWH' : Top.WeightHyp T.j (reW u) g` using `by rw [hj]; exact hWH hq hqp hgap`. Use `set B := GlobalTheory.CovHt.bndB u g with hBdef`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hB128 : (128 : ℝ) ≤ B`. Rewrite using `[hBeq]`. Unfold `Top.bigB0`. Establish `: 0 ≤ ‖reW u‖ / g` using `div_nonneg (norm_nonneg _) hgap.1.le`. Use the polynomial consequences of the given equalities and inequalities.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Establish `hBpos : 0 < B` using `by linarith`. Establish `hfl128 : 128 ≤ ⌊B⌋₊` using `Nat.le_floor (by exact_mod_cast hB128)`. Establish `hflt : Top.bigB0 (reW u) g < (⌊B⌋₊ : ℝ) + 1` using `by rw [← hBeq]; exact Nat.lt_floor_add_one B`. Establish `hKB : 4 * Fintype.card (CMType H) * (Dw.p + Dw.q) ^ 2 ≤ ⌊B⌋₊`. Use `Nat.le_floor ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hBeq]`. Unfold `Top.bigB0`. Establish `: 0 ≤ ‖reW u‖ / g` using `div_nonneg (norm_nonneg _) hgap.1.le`. Move the coercions through the operations in `at h128 ⊢`. Use the polynomial consequences of the given equalities and inequalities.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Establish `hTb : T.bad.card ≤ ⌊B⌋₊` using `by rw [hTbad]; exact hbadT.trans hKB`. Establish `hM` using `hMS (reW u) g hWH' ⌊B⌋₊ hfl128 hflt hTb`. Establish `hsl` using `fun Z => GlobalTheory.T.uniform_all_norm_height_bound hNef hG hG6 E H Dw l Xo c r U h e hLaws hUnif x hx Y T o κ II hCO hII hProp hT1 Z u g B hgap.2.1 hWH' (le_of_eq hBeq.symm)`. Take `⟨hc0, hc⟩` from `GlobalTheory.T.cost_two_log_bound E H l B hB128 (hbad.trans hKB)`. Use `⟨fun Z => T.slope II ⌊B⌋₊ (κ Z) (reW u) - 2 * costTwo l B * GlobalTheory.CovHt.l1 u, hsl, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hfin : (∑ᶠ Z, (T.slope II ⌊B⌋₊ (κ Z) (reW u) - 2 * costTwo l B * GlobalTheory.CovHt.l1 u)) = ∑ c', (T.slope II ⌊B⌋₊ c' (reW u) - 2 * costTwo l B * GlobalTheory.CovHt.l1 u)`. Rewrite using `[finsum_comp_equiv κ (f := fun c' => T.slope II ⌊B⌋₊ c' (reW u) - 2 * costTwo l B * GlobalTheory.CovHt.l1 u)]`. Conclude with `finsum_eq_sum_of_fintype _`. Establish `hcard : (Nat.card (Comp Xo c) : ℝ) = Fintype.card T.Comp`. Rewrite using `[Nat.card_congr κ, Nat.card_eq_fintype_card]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hn : (0 : ℝ) < Fintype.card T.Comp` using `by exact_mod_cast Fintype.card_pos`. Rewrite using `[hfin, hcard, Finset.sum_sub_distrib, Finset.sum_const, Finset.card_univ, nsmul_eq_mul, sub_div, mul_div_cancel_left₀ _ hn.ne']`. Use `set S := (∑ c', T.slope II ⌊B⌋₊ c' (reW u)) / (Fintype.card T.Comp : ℝ) with hS`. Establish `hmin : min T.j (Dw.p + Dw.q - T.j) = Dw.q` using `by rw [hj]; omega`. Unfold `Top.RootTower.bracket at hM`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite `hM` using `[hmin, ← hl1]`. Establish `hrd : 0 < hostRd E`. Unfold `hostRd`. Conclude with `Real.rpow_pos_of_pos (abs_pos.2 (by exact_mod_cast discr_ne_zero E)) _`. Establish `hfl : (0 : ℝ) < ⌊B⌋₊` using `by exact_mod_cast (show 0 < ⌊B⌋₊ by omega)`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hlog : Top.bigLam ⌊B⌋₊ (hostRd E) (hostLval H) ≤ Real.log B + Real.log (hostRd E) + |hostLval H|`. Unfold `Top.bigLam`. Rewrite using `[Real.log_mul hfl.ne' hrd.ne']`. Use `Real.log_le_log hfl (Nat.floor_le hBpos.le)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Establish `hsp0` using `spread_nonneg (by omega) (reW u)`. Establish `hL1 : 0 ≤ GlobalTheory.CovHt.l1 u`. Unfold `GlobalTheory.CovHt.l1`. Conclude with `Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => abs_nonneg _`. Establish `hq0 : (0 : ℝ) ≤ (Dw.q : ℝ)` using `Nat.cast_nonneg _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a1` using `mul_le_mul_of_nonneg_right hlog hL1`. Establish `a2 : 0 ≤ |hostLval H| * GlobalTheory.CovHt.l1 u` using `mul_nonneg (abs_nonneg _) hL1`. Establish `a3 : 0 ≤ (Dw.q : ℝ) * Top.spread (reW u)` using `mul_nonneg hq0 hsp0`. Establish `a4` using `mul_le_mul_of_nonneg_right hc hL1`. Establish `a5 : CT * (Top.bigLam ⌊B⌋₊ (hostRd E) (hostLval H) * GlobalTheory.CovHt.l1 u + (Dw.q : ℝ) * Top.spread (reW u)) ≤ CT * ((Real.log B + Real.log (hostRd E) + |hostLval H|) * GlobalTheory.CovHt.l1 u + (Dw.q : ℝ) * Top.spread (reW u))` using `mul_le_mul_of_nonneg_left (by linarith) hCT`.
-
-Establish `a6 : Real.log B * GlobalTheory.CovHt.l1 u + Real.log (hostRd E) * GlobalTheory.CovHt.l1 u ≤ (Real.log B + Real.log (hostRd E)) * GlobalTheory.CovHt.l1 u` using `by ring_nf; rfl`. Rewrite using `[errX_eq]`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem top_meanAll : GlobalTheory.CompanionTheory.Ar.Pub.NefRR → Top.Given → ArithIntersectionSystemStatement → BirationalPullbackPushforwardFormula → Top.GoodTowerExistsX → Top.VolumeTheoremX → ∃ C : ℝ, 0 ≤ C ∧ ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] [IsAbelianGalois ℚ E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (r : ℕ) (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r) (h : GenFrEx Xo c) (e : Comp Xo c → Rul Xo c), CompLaws U h e → Ref.UnifAll Xo c → FnAlgClosed Xo c → (∀ p : ℕ, p.Prime → l.GoodAt p) → l.A = 1 → 1 ≤ Dw.q → 3 * Dw.q + 1 ≤ Dw.p + Dw.q → 2 ≤ Fintype.card (CMType H) → (Nat.primeFactors (2 * (discr E).natAbs) ∪ l.M'.primeFactors).card ≤ 4 * Fintype.card (CMType H) * (Dw.p + Dw.q) ^ 2 → ∀ x : ℝ, (∀ σ, GoodEmb c σ → ∀ k (τ : E →+* ℂ), ‖τ ((U σ).X k).ξ0‖ = x) → GlobalTheory.CovHt.MeanAll U x (Real.log (hostRd E) + |hostLval H|) C := by
   intro hNef hG hII hG6 hGT hVT

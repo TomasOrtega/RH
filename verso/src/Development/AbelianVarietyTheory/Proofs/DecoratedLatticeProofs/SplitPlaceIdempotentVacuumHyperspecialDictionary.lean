@@ -21,9 +21,9 @@ open GlobalTheory.Hk3 (hyp IsVacAt UnrPl)
 namespace GlobalTheory.PlaceDict
 
 /- English proof (translation)
-Apply `HeightOneSpectrum.ext` to reduce the goal to its premises. Use extensionality with `x`. Use `show Formalism.L2.Col.cO _ x ∈ P.asIdeal ↔ x ∈ Ideal.map (Formalism.DivisionValues.cO D.host.E) P.asIdeal`. Rewrite using `[← Ideal.comap_symm, Ideal.mem_comap]`. Establish `: (Formalism.DivisionValues.cO D.host.E).symm x = Formalism.L2.Col.cO _ x`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `RingOfIntegers.ext` to reduce the goal to its premises. Simplify using `[Formalism.DivisionValues.cO, Formalism.L2.Col.cO]`. Both sides reduce to the same expression. Rewrite using `[this]`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conjP_eq_conjPl (D : D7) (P : HeightOneSpectrum (𝓞 D.host.E)) : Formalism.L2.Col.conjPrime₂ P = Formalism.DivisionValues.conjPl P := by
   apply HeightOneSpectrum.ext
@@ -37,11 +37,11 @@ theorem conjP_eq_conjPl (D : D7) (P : HeightOneSpectrum (𝓞 D.host.E)) : Forma
   rw [this]
 
 /- English proof (translation)
-Establish `hu : ∀ Q : HeightOneSpectrum (𝓞 D.host.E), Q.under (𝓞 D.host.F) = v ↔ Ideal.comap (algebraMap (𝓞 D.host.F) (𝓞 D.host.E)) Q.asIdeal = v.asIdeal` using `fun Q => ⟨fun h => congrArg HeightOneSpectrum.asIdeal h, fun h => HeightOneSpectrum.ext h⟩`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨P, Q, hPQ, hP, hQ⟩ hc`. Establish `hP'` using `(hu P).2 hP`. Establish `hQ'` using `(hu Q).2 hQ`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key : ∀ R : HeightOneSpectrum (𝓞 D.host.E), R.under (𝓞 D.host.F) = v → R = w` using `fun R hR => by`. Break down `GlobalTheory.GridPlaces.eq_or_eq_conjP (P := w) (Q := R) (by rw [hR, hvw]) with h | h` into its components or cases. Conclude with `h`. Rewrite using `[h, conjP_eq_conjPl, hc]`. Conclude with `hPQ ((key P hP').trans (key Q hQ').symm)`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `hne`. Use `⟨w, Formalism.DivisionValues.conjPl w, hne.symm, (hu w).1 hvw, (hu _).1 ?_⟩` and prove the remaining obligations. Rewrite using `[← conjP_eq_conjPl, GlobalTheory.GridPlaces.under_conjP, hvw]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isSplit_iff_conjPl_ne (D : D7) (v : HeightOneSpectrum (𝓞 D.host.F)) (w : HeightOneSpectrum (𝓞 D.host.E))
     (hvw : w.under (𝓞 D.host.F) = v) : IsSplit (E := D.host.E) v ↔ Formalism.DivisionValues.conjPl w ≠ w := by
@@ -62,7 +62,7 @@ theorem isSplit_iff_conjPl_ne (D : D7) (v : HeightOneSpectrum (𝓞 D.host.F)) (
     rw [← conjP_eq_conjPl, GlobalTheory.GridPlaces.under_conjP, hvw]
 
 /- English proof (translation)
-Introduce `D v w hvw`. Use `⟨isSplit_iff_conjPl_ne D v w hvw, GlobalTheory.T.unramified_char_trivial_on_integral_units_at_place D v w hvw, GlobalTheory.T.mem_hyperspecialSubgroupAtPlace_iff_local_stabilizer D v w hvw, fun ψ S T f hf => ?_, GlobalTheory.T.splitPlace_uniformiserIdele_value_unramifiedChar D v …` and prove the remaining obligations. Distinguish the cases in `hc : Formalism.DivisionValues.conjPl w = w`. Conclude with `GlobalTheory.T.theta_lattice_vacuum_nonsplit_place_vacuum_at_prime D v w hvw hc ψ S T f hf`. Conclude with `GlobalTheory.T.theta_lattice_vacuum_split_place_vacuum_at_prime D v w hvw hc ψ S T f hf`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. A detailed English derivation is pending.
 -/
 theorem dictionary : ∀ (D : D7) (v : HeightOneSpectrum (𝓞 D.host.F)) (w : HeightOneSpectrum (𝓞 D.host.E)), w.under (𝓞 D.host.F) = v → (IsSplit (E := D.host.E) v ↔ Formalism.DivisionValues.conjPl w ≠ w) ∧ (∀ χ : (AE D)ˣ →* Circle, (∀ w' : HeightOneSpectrum (𝓞 D.host.E), w'.under (𝓞 D.host.F) = v → UnrAt χ w') → UnrPl w χ) ∧ (∀ (V : HSp D) (g : GA D V), g ∈ hyp V w ↔ ∃ k ∈ Kv V v, g = embV V v k) ∧ (∀ (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (f : WO S T → ℂ), VacFin ψ S T v f → IsVacAt ψ S T w f) ∧ (IsSplit (E := D.host.E) v → ∀ χ : (AE D)ˣ →* Circle, UnrAt χ w → ∃ (e : AE D) (ϖ : 𝓞 D.host.E) (x : (AE D)ˣ), Formalism.L2.NTheta.IsIdemAt e w ∧ ϖ ∈ w.asIdeal ∧ ϖ ∉ w.asIdeal ^ 2 ∧ (x : AE D) = e * incA D (ϖ : D.host.E) + (1 - e) ∧ ∀ χ' : (AE D)ˣ →* Circle, UnrAt χ' w → ((χ' x : Circle) : ℂ) = ((val (F := D.host.F) χ' w : ℂˣ) : ℂ)) := by
   intro D v w hvw

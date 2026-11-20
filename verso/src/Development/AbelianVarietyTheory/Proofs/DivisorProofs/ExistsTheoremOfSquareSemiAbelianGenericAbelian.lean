@@ -19,27 +19,27 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.SquareGeneric
 
 /- English proof (translation)
-Introduce `R' _ _ _ _ _ G' _ hG hA N hN a`. Use `hG.comm` as an intermediate fact. Set `j` to `jK R'`. Set `πA` to `pullback.fst G'.hom j`. Establish `hp : IsProper (pullback.snd G'.hom j)` using `hA.proper`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Take `⟨t₀, ht₀⟩` from `GlobalTheory.RigCube.exists_gen_theta_generic G' hG hp hN`. Set `c : G' ⟶ G'` to `toUnit G' ≫ a`. Set `c' : G' ⟶ G'` to `toUnit G' ≫ a⁻¹`. Set `ℓ : G' ⟶ G3 G'` to `lift (𝟙 G') (lift c c')`. Set `h : pullback G'.hom j ⟶ pullback (G3 G').hom j` to `pullback.map _ _ _ _ ℓ.left (𝟙 _) (𝟙 _) (by rw [Category.comp_id, Over.w]) (by simp)`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hh : h ≫ pullback.fst (G3 G').hom j = πA ≫ ℓ.left` using `pullback.lift_fst _ _ _`. Set `t₁` to `LB.pullGen (Theta G' N) (fun _ => pullback.fst (G3 G').hom j) (fun _ => 1) t₀ h`. Establish `ht₁ : t₁.IsGen` using `DVR.pullGen_isGen _ _ _ _ ht₀ _`. Take `⟨t₂, ht₂⟩` from `gen_chartPull (chartPullIn N (thφ G' (x3 G')) thε (h ≫ pullback.fst (G3 G').hom j)) t₁ ht₁`. Establish `hcc : c * c' = 1`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Simplify using `only [c, c']`. Rewrite using `[← MonObj.comp_mul, _root_.mul_inv_cancel, MonObj.comp_one]`. Establish `hconst : ∀ s : 𝟙_ (Over (Sp R')) ⟶ G', ∃ i, ∀ y, (πA ≫ (toUnit G' ≫ s).left) y ∈ N.U i`. Introduce `s`. Take `⟨p₀⟩ : Nonempty (Spec (CommRingCat.of (FractionRing R')))` from `inferInstance`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨i, hi⟩` from `exists_chart hN ((j ≫ s.left) p₀)`. Establish `e : πA ≫ (toUnit G' ≫ s).left = pullback.snd G'.hom j ≫ j ≫ s.left`. Establish `w : (toUnit G').left = G'.hom` using `(Category.comp_id _).symm.trans (Over.w (toUnit G'))`. Rewrite using `[Over.comp_left, w, ← Category.assoc, pullback.condition, Category.assoc]`. Use `⟨i, fun y => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[e, Scheme.Hom.comp_apply, Subsingleton.elim ((pullback.snd G'.hom j) y) p₀]`. Conclude with `hi`. Set `s₃ : Fin 3 → (𝟙_ (Over (Sp R')) ⟶ G')` to `![a, a⁻¹, η[G']]`. Use `choose i hi using fun k => hconst (s₃ k)`. Set `φw : Fin 3 → (pullback G'.hom j ⟶ G'.left)` to `fun k => πA ≫ (toUnit G' ≫ s₃ k).left`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Take `⟨w, hw⟩` from `GlobalTheory.AbSquare.exists_gen_of_mem_chart hN φw ![1, 1, -2] i hi`. Set `ψ : Fin 3 → (G'.left ⟶ G'.left)` to `![(𝟙 G' * (toUnit G' ≫ a)).left, (𝟙 G' * (toUnit G' ≫ a⁻¹)).left, 𝟙 G'.left]`. Establish `hF : ReciprocityTheory.ChartRestriction.G.Geo.Tor.FormEq (Sum.elim (fun I => (h ≫ pullback.fst (G3 G').hom j) ≫ thφ G' (x3 G') I) φw) (Sum.elim (fun I => -thε I) ![1, 1, -2]) (fun k => πA ≫ ψ k) ![1, 1, -2]`. Introduce `U _ g`. Rewrite using `[Fintype.prod_sum_type]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify by unfolding definitions. Simplify using the standard rewrite rules.
 
-Simplify using `only [Sum.elim_inl, Sum.elim_inr]`. Simplify using `only [zpow_neg, Finset.prod_inv_distrib]`. Establish `e : ∀ I, (h ≫ pullback.fst (G3 G').hom j) ≫ thφ G' (x3 G') I = πA ≫ (ℓ.left ≫ thφ G' (x3 G') I)` using `fun I => by rw [hh, Category.assoc]`. Establish `e2 : (∏ I : thK, g ((h ≫ pullback.fst (G3 G').hom j) ≫ thφ G' (x3 G') I) ^ thε I) = ∏ I : thK, (fun q => g (πA ≫ q)) ((lift (𝟙 G') (lift c c')).left ≫ thφ G' (x3 G') I) ^ thε I` using `Finset.prod_congr rfl fun I _ => by rw [e I]`. Rewrite using `[e2, prod_cub (𝟙 G') c c' (fun q => g (πA ≫ q))]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[show 𝟙 G' * c * c' = 𝟙 G' by rw [_root_.mul_assoc, hcc, _root_.mul_one], hcc]`. Establish `f0 : φw 0 = πA ≫ c.left` using `rfl`. Establish `f1 : φw 1 = πA ≫ c'.left` using `rfl`. Establish `f2 : φw 2 = πA ≫ (1 : G' ⟶ G').left` using `rfl`. Establish `p0 : ψ 0 = (𝟙 G' * c).left` using `rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `p1 : ψ 1 = (𝟙 G' * c').left` using `rfl`. Establish `p2 : ψ 2 = Over.Hom.left (𝟙 G')` using `(Over.id_left _).symm`. Rewrite using `[Fin.prod_univ_three, Fin.prod_univ_three, f0, f1, f2, p0, p1, p2]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv, ofMul_zpow, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two, Matrix.head_cons, Matrix.tail_cons]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Extract witnesses or component facts from the available result.
 
-Normalize the expressions using the abelian group laws. Take `⟨u, hu, -⟩` from `ReciprocityTheory.ChartRestriction.G.Geo.Tor.exists_gen hN hF (LB.mulGen N _ _ _ _ (LB.invGen N _ _ t₂) w) (DVR.mulGen_isGen _ _ _ _ _ _ _ (DVR.invGen_isGen _ _ _ _ ht₂) hw)`. Take `⟨v, hv⟩` from `gen_chartPull (chartPullOut N ψ ![1, 1, -2] πA (fun k => πA ≫ ψ k) (fun _ => rfl)) u hu`. Conclude with `GlobalTheory.PicGenericInj.exists_gen_of_generic R' G' hG _ (LB.isLB_linComb hN _ _) ⟨v, hv⟩`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exists_gen_square :
     ∀ (R' : Type) [CommRing R'] [IsDomain R'] [IsNoetherianRing R'] [IsIntegrallyClosed R'] [IsLocalRing R'] (G' : Over (Sp R')) [GrpObj G'], IsSemiAbelian G' → IsAbelianScheme ((Over.pullback (jK R')).obj G') → ∀ N : LB G'.left, N.IsLB → ∀ a : 𝟙_ (Over (Sp R')) ⟶ G', ∃ t : LB.Gen (LB.LinComb N (K := Fin 3) ![(𝟙 G' * (toUnit G' ≫ a)).left, (𝟙 G' * (toUnit G' ≫ a⁻¹)).left, 𝟙 G'.left] ![1, 1, -2]), t.IsGen := by

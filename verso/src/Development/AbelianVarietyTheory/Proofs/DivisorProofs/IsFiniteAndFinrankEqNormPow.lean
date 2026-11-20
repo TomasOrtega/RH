@@ -33,9 +33,9 @@ def endHom {k : Type} [Field k] (X : GlobalTheory.AV.AbVar k) (F : Type) [Field 
     rw [GlobalTheory.AV.AbVar.add_hom, GlobalTheory.AV.AbVar.mk_hom, GlobalTheory.AV.AbVar.mk_hom, GlobalTheory.AV.AbVar.mk_hom, ρ.add]
 
 /- English proof (translation)
-Introduce `k _ _ A _ hA F _ _ ρ l d hl hl0 hcard c hc`. Set `X : GlobalTheory.AV.AbVar k` to `GlobalTheory.TateHondaBridge.toAbVar A hA`. Establish `h2` using `GlobalTheory.abMulN_holds k A X.dim l hA X.smooth hl0`. Rewrite `h2` using `[hcard]`. Establish `hdim : 2 * X.dim = d * Module.finrank ℚ F` using `(Nat.pow_right_injective hl.two_le h2).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Take `⟨hiso, hdeg⟩` from `GlobalTheory.AV.AbVar.isIsogeny_and_deg_eq_norm_pow k X F (endHom X F ρ) d hdim c hc`. Use `⟨hiso.1, ?_⟩` and prove the remaining obligations. Rewrite using `[← hdeg]`. Unfold `GlobalTheory.AV.AbVar.deg`. Rewrite using `[if_pos hiso]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/

@@ -19,7 +19,7 @@ noncomputable section
 namespace GlobalTheory.Core.Deg
 
 /- English proof (translation)
-Establish `h` using `Real.add_one_le_exp (-x)`. Establish `hp` using `Real.exp_pos x`. Establish `: Real.exp x * Real.exp (-x) = 1` using `by rw [← Real.exp_add]; simp`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem exp_le_inv_one_sub_pg (x : ℝ) (hx1 : x < 1) : Real.exp x * (1 - x) ≤ 1 := by
   have h := Real.add_one_le_exp (-x)
@@ -28,13 +28,13 @@ theorem exp_le_inv_one_sub_pg (x : ℝ) (hx1 : x < 1) : Real.exp x * (1 - x) ≤
   nlinarith
 
 /- English proof (translation)
-Establish `hb8 : (256 : ℝ) ≤ b ^ 8`. Use `pow_le_pow_left₀ (by norm_num : (0 : ℝ) ≤ 2) hb 8` as an intermediate fact. Evaluate the numerical expressions using `at this ⊢`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hk8 : k ≤ k ^ 8` using `le_self_pow₀ hk (by norm_num)`.
+Establish an intermediate fact. Establish an intermediate fact. Evaluate the numerical expressions. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `hkb : 256 * k ≤ (k * b) ^ 8`. Rewrite using `[mul_pow]`. Establish `: 256 * k ≤ k ^ 8 * 256` using `by nlinarith`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left hb8 (by positivity : (0 : ℝ) ≤ k ^ 8)]`. Establish `hg0 : 0 < g` using `by nlinarith`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Establish `hx : (f : ℝ) * (3 / g) ≤ 3 / 256`. Rewrite using `[mul_div_assoc', div_le_div_iff₀ hg0 (by norm_num)]`. Use the polynomial consequences of the given equalities and inequalities. Combine the equalities or inequalities in the displayed calculation. Apply `pow_le_pow_left₀ (by positivity)` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result.
 
-Use `Real.add_one_le_exp (3 / g)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Use `_ = Real.exp (f * (3 / g)) := by rw [← Real.exp_nat_mul]`. Use `_ ≤ Real.exp (3 / 256) := Real.exp_le_exp.2 hx`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem one_factor_sharp (k b g : ℝ) (f : ℕ) (hk : 1 ≤ k) (hb : 2 ≤ b) (hg : (k * b) ^ 8 ≤ g) (hf : (f : ℝ) ≤ k) :
     (1 + 3 / g) ^ f ≤ Real.exp (3 / 256) := by
@@ -58,7 +58,7 @@ theorem one_factor_sharp (k b g : ℝ) (f : ℕ) (hk : 1 ≤ k) (hb : 2 ≤ b) (
     _ ≤ Real.exp (3 / 256) := Real.exp_le_exp.2 hx
 
 /- English proof (translation)
-Rewrite using `[← Real.exp_add]`. Establish `h` using `exp_le_inv_one_sub_pg (3 / 256 + 3 / 256) (by norm_num)`. Establish `hp` using `Real.exp_pos (3 / 256 + 3 / 256 : ℝ)`. Evaluate the numerical expressions using `at h ⊢`. Use the polynomial consequences of the given equalities and inequalities.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Evaluate the numerical expressions. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem exp_pair_le_six_fifths : Real.exp (3 / 256) * Real.exp (3 / 256) ≤ 6 / 5 := by
   rw [← Real.exp_add]
@@ -68,11 +68,11 @@ theorem exp_pair_le_six_fifths : Real.exp (3 / 256) * Real.exp (3 / 256) ≤ 6 /
   nlinarith
 
 /- English proof (translation)
-Introduce `C' Cl Cg cb Cw cT CT C0 D large₂ X Y hH`. Establish `hPg` using `Formalism.L2.SG.Pf.SatGram.tt_eq' Formalism.L2.SG.Pf.splitPrimeLoc_holds Formalism.L2.SG.Pf.SatGramLoc.reduction_structure_holds Y.TR`. Unfold `Formalism.L2.SG.RowsConc.PgC`. Rewrite using `[hPg, Formalism.L2.SG.KappaOffDiagonal.PgLe.finrank_F X]`. Take `⟨⟨hS0, -, -⟩, hP⟩` from `hH`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨-, -, -, hfk, -⟩` from `hS0`. Establish `hg` using `hP.2.1`. Establish `hb` using `Formalism.MainNotions.KappaEndpoints.two_le_scale_b D large₂`. Establish `hk : (1 : ℝ) ≤ D.R.k`. Use `D.R.m_add_three_le_k; exact_mod_cast (by omega : 1 ≤ D.R.k)` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hf : (D.R.f : ℝ) ≤ D.R.k` using `by exact_mod_cast hfk`. Establish `h0` using `one_factor_sharp (D.R.k : ℝ) large₂.sc.b (D.host.g 0 : ℝ) D.R.f hk hb (hg 0).1 hf`. Establish `h1` using `one_factor_sharp (D.R.k : ℝ) large₂.sc.b (D.host.g 1 : ℝ) D.R.f hk hb (hg 1).1 hf`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem pgC_le_six_fifths : ∀ (C' Cl Cg cb Cw cT CT C0 : ℝ) (D : D7) (large₂ : SizeData₂ D) (X : HidaSetting D) (Y : Full X),
     Formalism.MainNotions.NonGenericAndKTwoTheorems.KTwoHypotheses D large₂ C' Cl Cg cb Cw cT CT C0 → PgC Y ≤ 6 / 5 := by

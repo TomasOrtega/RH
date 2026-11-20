@@ -21,13 +21,13 @@ def Good (E : Fin n → Fin n → Module.End ℂ M) (l : Fin n → ℂ) (ℓ : M
       (∏ k, (u + l k + ((Finset.univ.filter fun p => co p = k).card : ℂ))) • (ℓ ∘ₗ LinearMap.proj (fun _ => top) ∘ₗ g)
 
 /- English proof (translation)
-Use `symm`. Apply `Finset.card_bij (fun p _ => p.castSucc)` to reduce the goal to its premises. Introduce `p hp`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, Function.comp] at hp ⊢`. Use `⟨?_, hp.2⟩` and prove the remaining obligations.
+Use symmetry to reverse the relation. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `hp`, the goal using `[Fin.lt_def]`. Simplify using `using hp.1`. Introduce `a _ b _ h`. Conclude with `Fin.castSucc_injective _ h`. Introduce `b hb`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at hb`. Establish `h1 : (b : ℕ) < i` using `by simpa [Fin.lt_def] using hb.1`. Establish `h2 : (b : ℕ) < m` using `lt_trans h1 i.isLt`. Use `⟨⟨b, h2⟩, ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, Function.comp]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨by simpa [Fin.lt_def] using h1, ?_⟩` and prove the remaining obligations. Establish `hb' : (⟨b, h2⟩ : Fin m).castSucc = b` using `Fin.ext rfl`. Rewrite using `[hb']`. Conclude with `hb.2`. Conclude with `Fin.ext rfl`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card1 {m : ℕ} (co : Fin (m + 1) → Fin n) (i : Fin m) :
     (Finset.univ.filter fun p : Fin (m + 1) => p < i.castSucc ∧ co p = co i.castSucc).card =
@@ -54,13 +54,11 @@ theorem card1 {m : ℕ} (co : Fin (m + 1) → Fin n) (i : Fin m) :
     · exact Fin.ext rfl
 
 /- English proof (translation)
-Use `symm`. Apply `Finset.card_bij (fun p _ => p.castSucc)` to reduce the goal to its premises. Introduce `p hp`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, Function.comp] at hp ⊢`. Conclude with `⟨Fin.castSucc_lt_last p, hp⟩`.
+Use symmetry to reverse the relation. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 
-Introduce `a _ b _ h`. Conclude with `Fin.castSucc_injective _ h`. Introduce `b hb`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at hb`. Establish `h2 : (b : ℕ) < m` using `by simpa [Fin.lt_def] using hb.1`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨⟨b, h2⟩, ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, Function.comp]`. Establish `hb' : (⟨b, h2⟩ : Fin m).castSucc = b` using `Fin.ext rfl`. Rewrite using `[hb']`. Conclude with `hb.2`.
-
-Conclude with `Fin.ext rfl`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card2 {m : ℕ} (co : Fin (m + 1) → Fin n) :
     (Finset.univ.filter fun p : Fin (m + 1) => p < Fin.last m ∧ co p = co (Fin.last m)).card =
@@ -83,7 +81,7 @@ theorem card2 {m : ℕ} (co : Fin (m + 1) → Fin n) :
     · exact Fin.ext rfl
 
 /- English proof (translation)
-Rewrite using `[Finset.card_filter, Finset.card_filter, Fin.sum_univ_castSucc]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem card3 {m : ℕ} (co : Fin (m + 1) → Fin n) (k : Fin n) :
     (Finset.univ.filter fun p : Fin (m + 1) => co p = k).card =
@@ -92,7 +90,7 @@ theorem card3 {m : ℕ} (co : Fin (m + 1) → Fin n) (k : Fin n) :
   rfl
 
 /- English proof (translation)
-Take `⟨-, h2, h3, -⟩` from `hT n M (Fin m) E hE Finset.univ`. Unfold `xJ`. Conclude with `(h2 j (Finset.mem_univ _) a b).add_left (Commute.sum_left _ _ _ fun i _ => h3 _ (fun p => by simp) a b)`.
+Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem xJ_comm (hT : TensorGl) (E : Fin n → Fin n → Module.End ℂ M) (hE : GlRel E) (m : ℕ) (j : Fin m)
     (a b : Fin n) : Commute (xJ E j) (tE (Finset.univ : Finset (Fin m)) E a b) := by
@@ -102,13 +100,13 @@ theorem xJ_comm (hT : TensorGl) (E : Fin n → Fin n → Module.End ℂ M) (hE :
     (Commute.sum_left _ _ _ fun i _ => h3 _ (fun p => by simp) a b)
 
 /- English proof (translation)
-Use `⟨Subalgebra.one_mem _, ?_, fun j => j.elim0, ?_⟩` and prove the remaining obligations. Introduce `h`. Apply `hℓ` to reduce the goal to its premises. Use `LinearMap.ext fun v => ?_` and prove the remaining obligations. Use `LinearMap.congr_fun h (fun _ => v)` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `using this`. Introduce `u`. Establish `hc : ∀ a b : Fin n, (LinearMap.proj (fun _ : Fin 0 => top) : TV n M (Fin 0) →ₗ[ℂ] M) ∘ₗ tE (Finset.univ : Finset (Fin 0)) E a b = E a b ∘ₗ LinearMap.proj (fun _ : Fin 0 => top)`. Introduce `a b`. Use `LinearMap.ext fun x => ?_` and prove the remaining obligations.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[tE, lift]`. Establish `hq` using `qdet_comp (LinearMap.proj (fun _ : Fin 0 => top) : TV n M (Fin 0) →ₗ[ℂ] M) _ E hc u`. Use `LinearMap.ext fun x => ?_` and prove the remaining obligations. Establish `hx` using `LinearMap.congr_fun hq x`. Simplify using `only [LinearMap.comp_apply, Module.End.one_apply, LinearMap.smul_apply] at hx ⊢`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[hx, hl u]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem base (E : Fin n → Fin n → Module.End ℂ M) (l : Fin n → ℂ) (hl : HasChar E l) (ℓ : M →ₗ[ℂ] ℂ)
     (hℓ : ℓ ≠ 0) (top : Fin n) (co : Fin 0 → Fin n) : Good E l ℓ top 0 co 1 := by
@@ -132,17 +130,17 @@ theorem base (E : Fin n → Fin n → Module.End ℂ M) (l : Fin n → ℂ) (hl 
     simp
 
 /- English proof (translation)
-Introduce `g hg`. Proceed by induction on `hg using Algebra.adjoin_induction with`. Consider the case `mem x hx`. Take `⟨i, rfl⟩` from `hx`. Conclude with `⟨xJ E (Fin.castAdd 1 i), Algebra.subset_adjoin ⟨_, rfl⟩, (hC n M E m 1).2.2.1 i⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Consider the case `algebraMap c`. Use `⟨algebraMap ℂ _ c, Subalgebra.algebraMap_mem _ c, ?_⟩` and prove the remaining obligations. Use `LinearMap.ext fun x => ?_` and prove the remaining obligations. Use function extensionality and compare the values at `J I`. Simplify using `[lift, curF]`.
+Treat this case separately. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Consider the case `add x y _ _ hx hy`. Take `⟨x', hx', ex⟩` from `hx`. Take `⟨y', hy', ey⟩` from `hy`. Use `⟨x' + y', Subalgebra.add_mem _ hx' hy', ?_⟩` and prove the remaining obligations. Establish `hs : (lift (x + y) : Module.End ℂ (TV n (TV n M (Fin m)) (Fin 1))) = lift x + lift y`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `LinearMap.ext fun v => ?_` and prove the remaining obligations. Use function extensionality and compare the values at `J`. Simplify using `[lift]`. Rewrite using `[hs, LinearMap.comp_add, LinearMap.add_comp, ex, ey]`. Consider the case `mul x y _ _ hx hy`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Take `⟨x', hx', ex⟩` from `hx`. Take `⟨y', hy', ey⟩` from `hy`. Use `⟨x' * y', Subalgebra.mul_mem _ hx' hy', ?_⟩` and prove the remaining obligations. Establish `hs : (lift (x * y) : Module.End ℂ (TV n (TV n M (Fin m)) (Fin 1))) = lift x * lift y`. Use `LinearMap.ext fun v => ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use function extensionality and compare the values at `J`. Simplify using `[lift]`. Rewrite using `[hs, Module.End.mul_eq_comp, Module.End.mul_eq_comp, ← LinearMap.comp_assoc, ex, LinearMap.comp_assoc, ey, LinearMap.comp_assoc]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem liftAdj (hC : Curry) (E : Fin n → Fin n → Module.End ℂ M) (m : ℕ) :
     ∀ g ∈ Algebra.adjoin ℂ (Set.range fun j : Fin m => xJ E j), ∃ g' ∈ Algebra.adjoin ℂ
@@ -179,7 +177,7 @@ theorem liftAdj (hC : Curry) (E : Fin n → Fin n → Module.End ℂ M) (m : ℕ
       LinearMap.comp_assoc, ey, LinearMap.comp_assoc]
 
 /- English proof (translation)
-Use `LinearMap.ext fun v => funext fun I => ?_` and prove the remaining obligations. Simplify `LinearMap.congr_fun h (v I)` using `[lift]`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem pmap_lift_lemma {V W : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W]
     {P : Type} (f : V →ₗ[ℂ] W) (X : Module.End ℂ V) (Y : Module.End ℂ W) (h : f ∘ₗ X = Y ∘ₗ f) :
@@ -189,7 +187,7 @@ private theorem pmap_lift_lemma {V W : Type} [AddCommGroup V] [Module ℂ V] [Ad
   simpa [lift] using LinearMap.congr_fun h (v I)
 
 /- English proof (translation)
-Use `LinearMap.ext fun v => funext fun I => ?_` and prove the remaining obligations. Apply the tactic sequence `by_cases h : I p = a <;> simp [eAt, h]`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem pmap_eAt_lemma_2 {V W : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W]
     {P : Type} [DecidableEq P] (f : V →ₗ[ℂ] W) (p : P) (a b : Fin n) :
@@ -199,9 +197,9 @@ private theorem pmap_eAt_lemma_2 {V W : Type} [AddCommGroup V] [Module ℂ V] [A
   by_cases h : I p = a <;> simp [eAt, h]
 
 /- English proof (translation)
-Use `LinearMap.ext fun v => ?_` and prove the remaining obligations. Simplify using `only [Om, LinearMap.comp_apply, LinearMap.sum_apply, map_sum, Module.End.mul_apply]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Establish `hA` using `LinearMap.congr_fun (pmap_lift_lemma (P := P) f _ _ (h a b)) (eAt p b a v)`. Establish `hB` using `LinearMap.congr_fun (pmap_eAt_lemma_2 f p b a) v`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [LinearMap.comp_apply] at hA hB`. Rewrite using `[hA, hB]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 private theorem pmap_Om_lemma_3 {V W : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W]
     {P : Type} [DecidableEq P] (f : V →ₗ[ℂ] W) (E : Fin n → Fin n → Module.End ℂ V)
@@ -217,9 +215,9 @@ private theorem pmap_Om_lemma_3 {V W : Type} [AddCommGroup V] [Module ℂ V] [Ad
   rw [hA, hB]
 
 /- English proof (translation)
-Use `LinearMap.ext fun v => ?_` and prove the remaining obligations. Simplify using `only [tE, LinearMap.comp_apply, LinearMap.add_apply, LinearMap.sum_apply, map_sum, map_add]`. Establish `hA` using `LinearMap.congr_fun (pmap_lift_lemma (P := P) f _ _ (h a b)) v`. Simplify using `only [LinearMap.comp_apply] at hA`. Rewrite using `[hA]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations. Establish `hB` using `LinearMap.congr_fun (pmap_eAt_lemma_2 f p a b) v`. Simplify `hB` using `only [LinearMap.comp_apply]`.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem pmap_tE_lemma_4 {V W : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W]
     {P : Type} [DecidableEq P] (S : Finset P) (f : V →ₗ[ℂ] W) (E : Fin n → Fin n → Module.End ℂ V)
@@ -237,89 +235,81 @@ private theorem pmap_tE_lemma_4 {V W : Type} [AddCommGroup V] [Module ℂ V] [Ad
   simpa only [LinearMap.comp_apply] using hB
 
 /- English proof (translation)
-Take `⟨g, hG⟩` from `ih`. Unfold `Good at hG ⊢`. Take `⟨hgA, hg0, hgj, hgq⟩` from `hG`. Take `⟨hE'gl, -, -, -⟩` from `hT n M (Fin m) E hE Finset.univ`. Use `set E' : Fin n → Fin n → Module.End ℂ (TV n M (Fin m)) := tE (Finset.univ : Finset (Fin m)) E with hEe`.
+Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hgc : ∀ a b, Commute g (E' a b)` using `fun a b => adjoin_commute _ _ (by rintro x ⟨j, rfl⟩; exact xJ_comm hT E hE m j a b) g hgA`. Use `set ℓ' : TV n M (Fin m) →ₗ[ℂ] ℂ := ℓ ∘ₗ LinearMap.proj (fun _ : Fin m => top) ∘ₗ g with hℓe`. Use `set l' : Fin n → ℂ := fun k => l k + ((Finset.univ.filter fun p : Fin m => (co ∘ Fin.castSucc) p = k).card : ℂ) with hl'`. Establish `hq' : ∀ u, ℓ' ∘ₗ qdet E' u = (∏ k, (u + l' k)) • ℓ'`. Introduce `u`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hgq u]`. Use `congr 1`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Simplify using `only [hl']`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨N0, F0, hF0gl, -, hF0ch, hF0int, hN0⟩` from `hW n (TV n M (Fin m)) Unit (fun _ => E') (fun _ => hE'gl) (fun τ τ' h => absurd (Subsingleton.elim τ τ') h) (fun _ => l') ℓ' (fun _ u => hq' u)`. Establish `hFgl : GlRel (F0 ())` using `hF0gl ()`. Establish `hFch : HasChar (F0 ()) l'` using `hF0ch ()`. Establish `hFint : ∀ a b, N0.mkQ ∘ₗ E' a b = F0 () a b ∘ₗ N0.mkQ` using `hF0int ()`. Establish `hN0le : N0 ≤ LinearMap.ker ℓ'`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce `y hy`. Use `(hN0 y).1 hy 1 (Subalgebra.one_mem _)` as an intermediate fact. Simplify using `using this`. Use `set ψ := N0.liftQ ℓ' hN0le with hψe`. Establish `hψapp : ∀ z, ψ (N0.mkQ z) = ℓ' z` using `fun z => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[hψe]`. Conclude with `Submodule.liftQ_apply _ _ _`. Take `⟨-, -, hWhm⟩` from `hH n M E hE ℓ hWh top htop`. Take `⟨ψs, hψ1, hψ2, hψs⟩` from `hWhm m`. Establish `hψWh : IsWh (F0 ()) ψ`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `⟨ψs, hψ1, hψ2, fun a b hab => ?_⟩` and prove the remaining obligations. Apply `Submodule.linearMap_qext N0` to reduce the goal to its premises. Use `LinearMap.ext fun y => ?_` and prove the remaining obligations. Establish `hFy` using `LinearMap.congr_fun (hFint a b) y`. Simplify using `only [LinearMap.comp_apply, LinearMap.smul_apply] at hFy ⊢`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[← hFy, hψapp, hψapp]`. Establish `h1` using `LinearMap.congr_fun (hψs a b hab) (g y)`. Establish `h2` using `LinearMap.congr_fun (hgc a b).eq y`. Simplify using `only [LinearMap.comp_apply, LinearMap.smul_apply, Module.End.mul_apply] at h1 h2`. Simplify using `only [hℓe, LinearMap.comp_apply]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[h2]`. Conclude with `h1`. Establish `hψ0 : ψ ≠ 0`. Introduce `h`. Apply `hg0` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `LinearMap.ext fun y => ?_` and prove the remaining obligations. Use `hψapp y` as an intermediate fact. Rewrite `this` using `[h]`. Simplify using `using this.symm`. Take `⟨-, hnv, -⟩` from `hH n (TV n M (Fin m) ⧸ N0) (F0 ()) hFgl ψ hψWh top htop`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Take `⟨hkill, hSq⟩` from `hS n (TV n M (Fin m) ⧸ N0) (F0 ()) hFgl l' hFch`. Use `set L := (List.ofFn l').erase (l' (co (Fin.last m))) with hL`. Establish `hLlen : L.length = top`. Simplify using `only [hL]`. Rewrite using `[List.length_erase_of_mem (by simp), List.length_ofFn]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Use `set Om' := Om E' (0 : Fin 1) with hOm'`. Use `set OmF := Om (F0 ()) (0 : Fin 1) with hOmF`. Use `set PE : Module.End ℂ (TV n (TV n M (Fin m)) (Fin 1)) := (L.map fun r => Om' - algebraMap ℂ _ r).prod with hPE`. Use `set PF : Module.End ℂ (TV n (TV n M (Fin m) ⧸ N0) (Fin 1)) := (L.map fun r => OmF - algebraMap ℂ _ r).prod with hPF`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `set Q : TV n (TV n M (Fin m)) (Fin 1) →ₗ[ℂ] TV n (TV n M (Fin m) ⧸ N0) (Fin 1) := LinearMap.pi fun I : Fin 1 → Fin n => N0.mkQ ∘ₗ LinearMap.proj I with hQ`. Establish `hQOm : Q ∘ₗ Om' = OmF ∘ₗ Q` using `pmap_Om_lemma_3 N0.mkQ E' (F0 ()) hFint 0`. Establish `hQP : Q ∘ₗ PE = PF ∘ₗ Q` using `listSub_comp Q Om' OmF hQOm L`. Establish `hQsurj : Function.Surjective Q`. Introduce `y`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨fun I => (N0.mkQ_surjective (y I)).choose, funext fun I => ?_⟩` and prove the remaining obligations. Conclude with `(N0.mkQ_surjective (y I)).choose_spec`. Establish `hΦ : ∀ z, ℓ' (PE z (fun _ => top)) = ψ (PF (Q z) (fun _ => top))`. Introduce `z`. Establish `h` using `LinearMap.congr_fun hQP z`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [LinearMap.comp_apply] at h`. Rewrite using `[← h]`. Conclude with `(hψapp (PE z fun _ => top)).symm`. Take `⟨hcb, hctE, hccast, hcnat, -, -, -⟩` from `hC n M E m 1`. Establish `hnat : Fin.natAdd m (0 : Fin 1) = Fin.last m` using `Fin.ext (by simp)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hxJ0 : xJ E' (0 : Fin 1) = Om'`. Simplify using `[xJ, hOm']`. Establish `hcurX : curF n M m 1 ∘ₗ xJ E (Fin.last m) = Om' ∘ₗ curF n M m 1`. Use `hcnat 0` as an intermediate fact. Rewrite `this` using `[hnat, hxJ0]`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Conclude with `this`. Take `⟨g1, hg1A, hg1⟩` from `liftAdj hC E m g hgA`. Establish `hcurP : curF n M m 1 ∘ₗ (L.map fun r => xJ E (Fin.last m) - algebraMap ℂ (Module.End ℂ (TV n M (Fin (m + 1)))) r).prod = PE ∘ₗ curF n M m 1` using `listSub_comp _ _ _ hcurX L`. Establish `hliftP : ∀ X : Module.End ℂ (TV n M (Fin m)), (∀ a b, Commute X (E' a b)) → ∀ w, PE (lift X w) = lift X (PE w)`. Introduce `X hX w`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1 : Commute (lift X : Module.End ℂ (TV n (TV n M (Fin m)) (Fin 1))) Om'` using `pmap_Om_lemma_3 (P := Fin 1) X E' E' (fun a b => (hX a b).eq) 0`. Establish `h2` using `LinearMap.congr_fun (listSub_commute Om' (lift X) h1.symm L).eq w`. Simplify `h2` using `only [Module.End.mul_apply]`. Establish `happend : ∀ y : TV n M (Fin (m + 1)), y (fun _ => top) = curF n M m 1 y (fun _ => top) (fun _ => top)`. Introduce `y`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [curF, LinearMap.pi_apply, LinearMap.proj_apply]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Apply the tactic sequence `refine Fin.addCases (fun i => ?_) (fun j => ?_) i <;> simp`. Establish `hφ : ∀ x, ℓ (((L.map fun r => xJ E (Fin.last m) - algebraMap ℂ (Module.End ℂ (TV n M (Fin (m + 1)))) r).prod * g1) x (fun _ => top)) = ℓ' (PE (curF n M m 1 x) (fun _ => top))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Introduce `x`. Establish `h1` using `LinearMap.congr_fun hcurP (g1 x)`. Establish `h2` using `LinearMap.congr_fun hg1 x`. Simplify using `only [LinearMap.comp_apply] at h1 h2`. Use `(congrArg ℓ (happend _)).trans ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Rewrite using `[Module.End.mul_apply, h1, h2, hliftP g hgc]`. Both sides reduce to the same expression. Establish `hkill' : PF * (OmF - algebraMap ℂ _ (l' (co (Fin.last m)))) = 0` using `listSub_kill OmF l' (co (Fin.last m)) hkill`. Establish `hlastkey : ∀ w, ℓ' (PE (Om' w) (fun _ => top)) = l' (co (Fin.last m)) • ℓ' (PE w (fun _ => top))`. Introduce `w`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e1 : PE (Om' w) - l' (co (Fin.last m)) • PE w = PE (Om' w - l' (co (Fin.last m)) • w)`. Rewrite using `[map_sub, map_smul]`. Establish `e2 : Q (Om' w - l' (co (Fin.last m)) • w) = (OmF - algebraMap ℂ _ (l' (co (Fin.last m)))) (Q w)`. Use `LinearMap.congr_fun hQOm w` as an intermediate fact. Simplify using `only [LinearMap.comp_apply] at this`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_sub, map_smul, this, LinearMap.sub_apply, Module.algebraMap_end_apply]`. Establish `e3 : PF ((OmF - algebraMap ℂ _ (l' (co (Fin.last m)))) (Q w)) = 0`. Use `LinearMap.congr_fun hkill' (Q w)` as an intermediate fact. Simplify `this` using `only [Module.End.mul_apply, LinearMap.zero_apply]`. Establish `e4 : ℓ' (PE (Om' w - l' (co (Fin.last m)) • w) (fun _ => top)) = 0`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Rewrite using `[hΦ, e2, e3]`. Simplify using the standard rewrite rules. Rewrite `e4` using `[← e1]`. Establish `e5 : (PE (Om' w) - l' (co (Fin.last m)) • PE w) (fun _ => top) = PE (Om' w) (fun _ => top) - l' (co (Fin.last m)) • PE w (fun _ => top)` using `rfl`. Rewrite `e4` using `[e5, map_sub, map_smul, sub_eq_zero]`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `e4`. Take `⟨hTFgl, hOmFc, -, -⟩` from `hT n (TV n M (Fin m) ⧸ N0) (Fin 1) (F0 ()) hFgl Finset.univ`. Establish `hPFtE : ∀ a b, PF ∘ₗ tE Finset.univ (F0 ()) a b = tE Finset.univ (F0 ()) a b ∘ₗ PF` using `fun a b => (listSub_commute _ _ (hOmFc 0 (Finset.mem_univ _) a b) L).eq`. Establish `hWinv : ∀ a b, ∀ w ∈ LinearMap.range PF, tE Finset.univ (F0 ()) a b w ∈ LinearMap.range PF`. Introduce and unpack `a b _ ⟨y, rfl⟩`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨tE Finset.univ (F0 ()) a b y, ?_⟩` and prove the remaining obligations. Use `LinearMap.congr_fun (hPFtE a b) y` as an intermediate fact. Simplify `this` using `only [LinearMap.comp_apply]`. Establish `hOO` using `LinearMap.congr_fun (listSub_commute OmF OmF (Commute.refl _) L).eq`. Establish `hWO : ∀ w ∈ LinearMap.range PF, OmF w ∈ LinearMap.range PF`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce and unpack `_ ⟨y, rfl⟩`. Use `⟨OmF y, ?_⟩` and prove the remaining obligations. Simplify `hOO y` using `only [Module.End.mul_apply]`. Establish `hWsc : ∀ y, OmF (PF y) = l' (co (Fin.last m)) • PF y`. Introduce `y`.
+Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `h1` using `LinearMap.congr_fun hkill' y`. Establish `h2` using `hOO y`. Simplify using `only [Module.End.mul_apply, LinearMap.sub_apply, Module.algebraMap_end_apply, map_sub, map_smul, LinearMap.zero_apply] at h1 h2`. Rewrite using `[← h2]`. Conclude with `sub_eq_zero.mp h1`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hFW` using `hSq (LinearMap.range PF) (LinearMap.range PF) (fun a b => (tE Finset.univ (F0 ()) a b).restrict (hWinv a b)) LinearMap.id hWinv hWO (co (Fin.last m)) Function.surjective_id (fun a b w => rfl) (fun w => by`. Take `⟨_, y, rfl⟩` from `w`. Conclude with `Subtype.ext (hWsc y))`. Establish `hWchar : ∀ u y, qdet (tE Finset.univ (F0 ())) u (PF y) = (∏ k, (u + Function.update l' (co (Fin.last m)) (l' (co (Fin.last m)) + 1) k)) • PF y`. Introduce `u y`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data.
 
-Establish `hsub` using `LinearMap.congr_fun (qdet_comp (LinearMap.range PF).subtype (fun a b => (tE Finset.univ (F0 ()) a b).restrict (hWinv a b)) (tE Finset.univ (F0 ())) (fun a b => LinearMap.ext fun w => rfl) u) ⟨PF y, y, rfl⟩`. Simplify using `only [LinearMap.comp_apply] at hsub`. Rewrite `hsub` using `[hFW u]`. Simplify using `using hsub.symm`. Use `⟨(L.map fun r => xJ E (Fin.last m) - algebraMap ℂ (Module.End ℂ (TV n M (Fin (m + 1)))) r).prod * g1, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Treat this case separately. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `Subalgebra.mul_mem _ (list_prod_mem ?_) hg1A` and prove the remaining obligations. Introduce `x hx`. Take `⟨r, -, rfl⟩` from `List.mem_map.mp hx`. Conclude with `Subalgebra.sub_mem _ (Algebra.subset_adjoin ⟨Fin.last m, rfl⟩) (Subalgebra.algebraMap_mem _ r)`. Introduce `h0`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Apply `hnv hψ0 L hLlen` to reduce the goal to its premises. Use `LinearMap.ext fun v => ?_` and prove the remaining obligations. Take `⟨z, rfl⟩` from `hQsurj v`. Take `⟨x, rfl⟩` from `hcb.2 z`. Use `LinearMap.congr_fun h0 x` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [LinearMap.comp_apply, LinearMap.zero_apply, LinearMap.proj_apply] at this ⊢`. Rewrite using `[← hΦ, ← hφ]`. Conclude with `this`. Introduce `j`. Consider the cases of `j using Fin.lastCases with`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Consider the case `last`. Use `LinearMap.ext fun x => ?_` and prove the remaining obligations. Simplify using `only [LinearMap.comp_apply, LinearMap.smul_apply, LinearMap.proj_apply]`. Rewrite using `[hφ, hφ]`. Establish `hx` using `LinearMap.congr_fun hcurX x`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [LinearMap.comp_apply] at hx`. Rewrite using `[hx, hlastkey, card2]`. Consider the case `cast i`. Use `LinearMap.ext fun x => ?_` and prove the remaining obligations. Simplify using `only [LinearMap.comp_apply, LinearMap.smul_apply, LinearMap.proj_apply]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[hφ, hφ]`. Establish `hx` using `LinearMap.congr_fun (hccast i) x`. Simplify using `only [LinearMap.comp_apply] at hx`. Rewrite using `[card1, show Fin.castSucc i = Fin.castAdd 1 i from rfl, hx, hliftP (xJ E i) (fun a b => xJ_comm hT E hE m i a b)]`. Establish `hj` using `LinearMap.congr_fun (hgj i) (PE (curF n M m 1 x) (fun _ => top))`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `only [LinearMap.comp_apply, LinearMap.smul_apply] at hj`. Conclude with `hj`. Introduce `u`. Use `LinearMap.ext fun x => ?_` and prove the remaining obligations. Simplify using `only [LinearMap.comp_apply, LinearMap.smul_apply, LinearMap.proj_apply]`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[hφ, hφ]`. Establish `hq1` using `LinearMap.congr_fun (qdet_comp (curF n M m 1) _ _ hctE u) x`. Simplify using `only [LinearMap.comp_apply] at hq1`. Rewrite using `[hq1, hΦ, hΦ]`. Establish `hq2` using `LinearMap.congr_fun (qdet_comp Q _ _ (pmap_tE_lemma_4 Finset.univ N0.mkQ E' (F0 ()) hFint) u) (curF n M m 1 x)`.
-
-Simplify using `only [LinearMap.comp_apply] at hq2`. Rewrite using `[hq2]`. Establish `hq3` using `LinearMap.congr_fun (qdet_comp PF _ _ hPFtE u) (Q (curF n M m 1 x))`. Simplify using `only [LinearMap.comp_apply] at hq3`. Rewrite using `[hq3, hWchar, Pi.smul_apply, map_smul]`.
-
-Use `congr 1`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[card3]`. Distinguish the cases in `hk : k = co (Fin.last m)`. Substitute `hk` using the available equality.
-
-Simplify using `only [Function.update_self, if_true, hl']`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Function.update_of_ne hk, if_neg (Ne.symm hk)]`. Simplify using `only [hl']`.
-
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem step (hT : TensorGl) (hC : Curry) (hS : StepChar) (hH : Height) (hW : WallQuot)
     (E : Fin n → Fin n → Module.End ℂ M) (hE : GlRel E) (l : Fin n → ℂ) (ℓ : M →ₗ[ℂ] ℂ)
@@ -563,9 +553,9 @@ theorem step (hT : TensorGl) (hC : Curry) (hS : StepChar) (hH : Height) (hW : Wa
 end ChainP
 
 /- English proof (translation)
-Introduce `hT _ hC _ _ hS hH hW n M _ _ E hE l hl ℓ hℓ hWh top htop m`. Proceed by induction on `m with`. Consider the case `zero => intro co`. Conclude with `⟨1, ChainP.base E l hl ℓ hℓ top co⟩`. Consider the case `succ m ih`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Supply the required witnesses or components. Treat this case separately.
 
-Introduce `co`. Conclude with `ChainP.step hT hC hS hH hW E hE l ℓ hWh top htop m co (ih (co ∘ Fin.castSucc))`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem chain_of : TensorGl → JMComm → Curry → StepFormula → QdetFacts → StepChar → Height → WallQuot →
     Chain := by

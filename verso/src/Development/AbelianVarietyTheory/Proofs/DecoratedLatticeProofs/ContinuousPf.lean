@@ -14,7 +14,7 @@ namespace GlobalTheory.AdForm.RdLaw
 variable {D : D7}
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [PM, Matrix.map_apply, Matrix.add_apply, Matrix.smul_apply, Matrix.one_apply, smul_eq_mul, map_add, map_mul]`. Apply the tactic sequence `split_ifs <;> simp`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem PM_map {r : ℕ} {B : Type} [CommRing B] (f : AE D →+* B) (M : Matrix (Fin r) (Fin r) (AE D)) :
     (PM M).map f = f (eps D) • M.map f + f (1 - eps D) • (1 : Matrix (Fin r) (Fin r) B) := by
@@ -23,7 +23,7 @@ theorem PM_map {r : ℕ} {B : Type} [CommRing B] (f : AE D →+* B) (M : Matrix 
   split_ifs <;> simp
 
 /- English proof (translation)
-Unfold `cT`. Rewrite using `[PM_map, RingHom.map_sub, RingHom.map_one, sig_eps, Matrix.transpose_add, Matrix.transpose_smul, Matrix.transpose_smul, Matrix.transpose_one]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem cT_PM {r : ℕ} (M : Matrix (Fin r) (Fin r) (AE D)) :
     cT (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR (AF D.host.F) D.sp.cm.sig) (PM M) =
@@ -33,7 +33,7 @@ theorem cT_PM {r : ℕ} (M : Matrix (Fin r) (Fin r) (AE D)) :
     Matrix.transpose_one]
 
 /- English proof (translation)
-Rewrite using `[cT_PM, PM]`. Simplify using `only [add_mul, mul_add, Matrix.smul_mul, Matrix.mul_smul, smul_smul, Matrix.one_mul, Matrix.mul_one, eps_mul_self, one_sub_mul_self, eps_mul_one_sub, mul_comm (1 - eps D) (eps D), zero_smul, add_zero, zero_add, hM]`. Rewrite using `[← add_smul, add_sub_cancel, one_smul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem PM_unit {r : ℕ} (J M : Matrix (Fin r) (Fin r) (AE D))
     (hM : cT (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR (AF D.host.F) D.sp.cm.sig) M * J * M = J) :
@@ -49,7 +49,7 @@ def PGL (D : D7) (r : ℕ) : GL (Fin r) (AE D) →* GL (Fin r) (AE D) where
   map_mul' a b := Units.ext (PM_mul a.1 b.1)
 
 /- English proof (translation)
-The claim follows from `PM_unit _ g.1 hg`.
+A detailed English derivation is pending.
 -/
 theorem PGL_mem (V : HSp D) (g : GL (Fin V.rank) (AE D)) (hg : g ∈ HR (AF D.host.F) D.sp.cm.sig V.gram) :
     PGL D V.rank g ∈ HR (AF D.host.F) D.sp.cm.sig V.gram :=
@@ -64,7 +64,7 @@ Both sides reduce to the same expression.
 theorem mt_pf (V : HSp D) (h : GA D V) : Formalism.L2.Theta.mt V (pf V h) = PM (Formalism.L2.Theta.mt V h) := rfl
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Use `show PGL D V.rank (matHom V 1) = 1`. Rewrite using `[map_one, map_one]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pf_one (V : HSp D) : pf V 1 = 1 := by
   apply Subtype.ext
@@ -72,7 +72,7 @@ theorem pf_one (V : HSp D) : pf V 1 = 1 := by
   rw [map_one, map_one]
 
 /- English proof (translation)
-Use `show infHom V (pf V h) = 1`. Apply `Units.ext` to reduce the goal to its premises. Use `show (Formalism.L2.Theta.mt V (pf V h)).map (infPart D) = 1`. Rewrite using `[mt_pf, PM_map, infPart_eps, RingHom.map_sub, RingHom.map_one, infPart_eps, sub_zero, zero_smul, zero_add, one_smul]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pf_fin (V : HSp D) (h : GA D V) : pf V h ∈ GfC V := by
   show infHom V (pf V h) = 1
@@ -81,17 +81,17 @@ theorem pf_fin (V : HSp D) (h : GA D V) : pf V h ∈ GfC V := by
   rw [mt_pf, PM_map, infPart_eps, RingHom.map_sub, RingHom.map_one, infPart_eps, sub_zero, zero_smul, zero_add, one_smul]
 
 /- English proof (translation)
-Rewrite using `[finM_rfl, finM_rfl, mt_pf, PM_map, toEAf_eps, RingHom.map_sub, RingHom.map_one, toEAf_eps, sub_self, zero_smul, add_zero, one_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem finM_pf (V : HSp D) (h : GA D V) : finM V rfl (pf V h) = finM V rfl h := by
   rw [finM_rfl, finM_rfl, mt_pf, PM_map, toEAf_eps, RingHom.map_sub, RingHom.map_one, toEAf_eps, sub_self, zero_smul, add_zero, one_smul]
 
 /- English proof (translation)
-Use `Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.isTopRing (F := D.host.F) (E := D.host.E)` as an intermediate fact. Use `Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.topGroupHA D.sp.cm.sig V.gram` as an intermediate fact. Establish `hm : Continuous fun h : GA D V => Formalism.L2.Theta.mt V h` using `Units.continuous_val.comp continuous_subtype_val`. Establish `hP : Continuous fun M : Matrix (Fin V.rank) (Fin V.rank) (AE D) => PM M` using `(continuous_const_smul _).add continuous_const`. Use `Continuous.subtype_mk (f := fun h => PGL D V.rank (matHom V h)) (Units.continuous_iff.2 ⟨hP.comp hm, ?_⟩) _` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e : (fun h : GA D V => ((PGL D V.rank (matHom V h))⁻¹ : GL (Fin V.rank) (AE D)).val) = fun h => PM (Formalism.L2.Theta.mt V h⁻¹)`. Use function extensionality and compare the values at `h`. Rewrite using `[← map_inv, ← map_inv]`. Both sides reduce to the same expression. Rewrite using `[e]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hP.comp (hm.comp continuous_inv)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_pf (V : HSp D) : Continuous (pf V) := by
   have := Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.isTopRing (F := D.host.F) (E := D.host.E)

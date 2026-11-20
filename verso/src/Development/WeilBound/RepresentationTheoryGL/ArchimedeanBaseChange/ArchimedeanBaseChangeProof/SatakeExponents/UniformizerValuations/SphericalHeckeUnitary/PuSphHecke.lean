@@ -14,13 +14,13 @@ open PositivityTheory.Rg.BcB.F.Eig
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨HasCompactSupport.zero, fun _ _ _ => ⟨rfl, rfl⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem pu_hz {w : Pl E} (K : Subgroup (UL n w)) : IsHecke K (0 : UL n w → ℂ) :=
   ⟨HasCompactSupport.zero, fun _ _ _ => ⟨rfl, rfl⟩⟩
 
 /- English proof (translation)
-Establish `h` using `hB.2.1.1 w`. Rewrite `h` using `[hB.2.2 w hw]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pu_lev {S : Set (Pl E)} {B : Finset (Pl E)} {K' : ∀ w : Pl E, Subgroup (UL n w)} (hB : LevelOff S B K')
     (w : Pl E) (hw : w ∉ B) : IsLevel (MonoidHom.id _) (KL n w) (KL n w) := by
@@ -29,11 +29,11 @@ theorem pu_lev {S : Set (Pl E)} {B : Finset (Pl E)} {K' : ∀ w : Pl E, Subgroup
   exact h
 
 /- English proof (translation)
-Introduce `hD hL h1 hC hS E _ _ _ hE n S lam K' F B g R hB x hx`. Break down `x with c | ⟨w0, h⟩` into its components or cases. Use `⟨trivial, ?_⟩` and prove the remaining obligations. Unfold `UMod.op`. Rewrite using `[(hD _ _ R.blk _ 0 0).2.2.2]`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Take `⟨hw, hwB, hh⟩` from `hx`. Establish `hlev` using `pu_lev hB w0 hwB`. Use `⟨⟨hw, hwB, (hL E n w0 (SmIrr.triv _) (KL n w0) hlev h h hh hh).2.2.2.1⟩, ?_⟩` and prove the remaining obligations. Unfold `UMod.op`.
+Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Rewrite using `[(hD _ _ R.blk _ 0 0).2.2.2]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Conclude with `(hS E hE n w0 (F.σ i w0) (hC E n (F.π i) (F.comp i).1 w0 _ ((F.comp i).2.2.2 w0 hw).1) (sph_line h1 hE F hB i w0 hw hwB) h h hh hh).2.1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem uAdjOfU : DiagAlg → LocAlg → SphOne → CompUnit → SphStarU → UAdj := by
   intro hD hL h1 hC hS E _ _ _ hE n S lam K' F B g R hB x hx
@@ -69,14 +69,14 @@ theorem pu_sph_inr (w0 : Pl E) (h : UL n w0 → ℂ) (l : List (UGen E n)) (w : 
     UGen.sph (Sum.inr ⟨w0, h⟩ :: l) w = if hw : w0 = w then lconv (hw ▸ h) (UGen.sph l w) else UGen.sph l w := rfl
 
 /- English proof (translation)
-Rewrite using `[pu_sph_inr, dif_pos rfl]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem pu_sph_self (w0 : Pl E) (h : UL n w0 → ℂ) (l : List (UGen E n)) :
     UGen.sph (Sum.inr ⟨w0, h⟩ :: l) w0 = lconv h (UGen.sph l w0) := by
   rw [pu_sph_inr, dif_pos rfl]
 
 /- English proof (translation)
-Rewrite using `[pu_sph_inr, dif_neg hw]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem pu_sph_ne (w0 : Pl E) (h : UL n w0 → ℂ) (l : List (UGen E n)) (w : Pl E) (hw : w0 ≠ w) :
     UGen.sph (Sum.inr ⟨w0, h⟩ :: l) w = UGen.sph l w := by
@@ -86,13 +86,13 @@ def pu_pls (l : List (UGen E n)) : Finset (Pl E) :=
   (l.filterMap fun x => Sum.elim (fun _ => none) (fun y : Σ w : Pl E, UL n w → ℂ => some y.1) x).toFinset
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => rfl`. Consider the case `cons x l ih`. Establish `hw' : w ∉ pu_pls l` using `fun h => hw (by`. Unfold `pu_pls at h ⊢`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite `h`, the goal using `[List.mem_toFinset, List.mem_filterMap]`. Take `⟨a, ha, hb⟩` from `h`. Conclude with `⟨a, List.mem_cons_of_mem _ ha, hb⟩)`. Break down `x with c | ⟨w0, h⟩` into its components or cases. Rewrite using `[pu_sph_inl, ih hw']`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Establish `hne : w0 ≠ w`. Introduce and unpack `rfl`. Apply `hw` to reduce the goal to its premises. Unfold `pu_pls`. Rewrite using `[List.mem_toFinset, List.mem_filterMap]`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨_, List.mem_cons_self, rfl⟩`. Rewrite using `[pu_sph_ne _ _ _ _ hne, ih hw']`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 -/
 theorem pu_sph_off (l : List (UGen E n)) (w : Pl E) (hw : w ∉ pu_pls l) :
     UGen.sph l w = (KL n w : Set (UL n w)).indicator 1 := by
@@ -115,13 +115,11 @@ theorem pu_sph_off (l : List (UGen E n)) (w : Pl E) (hw : w ∉ pu_pls l) :
       rw [pu_sph_ne _ _ _ _ hne, ih hw']
 
 /- English proof (translation)
-Establish `hlev` using `pu_lev hB w hw`. Proceed by induction on `l with`. Consider the case `nil`. Establish `h` using `(hL E n w (SmIrr.triv _) (KL n w) hlev 0 0 (pu_hz _) (pu_hz _)).2.2.2.2.2.2.1`. Rewrite `h` using `[Subgroup.relIndex_self, Nat.cast_one]`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h`. Consider the case `cons x l ih`. Establish `ih'` using `ih fun y hy => hl y (List.mem_cons_of_mem _ hy)`. Break down `x with c | ⟨w0, h⟩` into its components or cases. Rewrite using `[pu_sph_inl]`.
+Treat this case separately. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Conclude with `ih'`. Distinguish the cases in `hw0 : w0 = w`. Substitute `hw0` using the available equality. Establish `hh : IsHecke (KL n w0) h` using `(hl _ List.mem_cons_self).2.2`. Rewrite using `[pu_sph_self]`.
-
-Conclude with `(hL E n w0 (SmIrr.triv _) (KL n w0) hlev h _ hh ih').2.2.1`. Rewrite using `[pu_sph_ne _ _ _ _ hw0]`. Conclude with `ih'`.
+Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pu_sph_hecke (hL : LocAlg) (hB : LevelOff S B K') (l : List (UGen E n)) (hl : ∀ x ∈ l, x.Ok S B)
     (w : Pl E) (hw : w ∉ B) : IsHecke (KL n w) (UGen.sph l w) := by
@@ -143,9 +141,9 @@ theorem pu_sph_hecke (hL : LocAlg) (hB : LevelOff S B K') (l : List (UGen E n)) 
       · rw [pu_sph_ne _ _ _ _ hw0]; exact ih'
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero`. Establish `h` using `hL E n w σ K hlev g g hg hg`. Conclude with `⟨h.2.2.2.2.2.2.1, by rw [pow_zero]; exact h.2.2.2.2.2.2.2⟩`. Consider the case `succ k ih`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Supply the required witnesses or components. Treat this case separately.
 
-Establish `h` using `hL E n w σ K hlev g _ hg ih.1`. Use `⟨h.2.2.1, ?_⟩` and prove the remaining obligations. Use `show locOp σ K (lconv g (lpow K g k)) = _`. Rewrite using `[h.2.2.2.2.1, ih.2, pow_succ']`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pu_lpow (hL : LocAlg) (w : Pl E) (K : Subgroup (UL n w)) (hlev : IsLevel (MonoidHom.id _) (KL n w) K)
     (g : UL n w → ℂ) (hg : IsHecke K g) (σ : SmIrr (UL n w)) (k : ℕ) :
@@ -168,7 +166,7 @@ variable {S : Set (Pl E)} {lam : InfinitePlace E → DomWeight n} {K' : ∀ w : 
   {F : UFam S lam K'} {B : Finset (Pl E)}
 
 /- English proof (translation)
-Establish `h` using `hS E hE n w (F.σ i w) (hC E n (F.π i) (F.comp i).1 w _ ((F.comp i).2.2.2 w hw).1) (sph_line h1 hE F hB i w hw hwB) h₁ h₂ hh₁ hh₂`. Conclude with `⟨h.1, h.2.2⟩`.
+Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem pu_tw (h1 : SphOne) (hC : CompUnit) (hS : SphStarU) (hE : GlobalTheory.BCT.Unr E) (hB : LevelOff S B K') (i : F.ι)
     (w : Pl E) (hw : w ∈ S) (hwB : w ∉ B) (h₁ h₂ : UL n w → ℂ) (hh₁ : IsHecke (KL n w) h₁) (hh₂ : IsHecke (KL n w) h₂) :
@@ -180,9 +178,9 @@ theorem pu_tw (h1 : SphOne) (hC : CompUnit) (hS : SphStarU) (hE : GlobalTheory.B
   exact ⟨h.1, h.2.2⟩
 
 /- English proof (translation)
-Use `(pu_pls l).finite_toSet.subset fun w hw => ?_` and prove the remaining obligations. Take `⟨⟨hwS, hwB⟩, hne⟩` from `hw`. Assume the negation of the conclusion as `hp`. Apply `hne` to reduce the goal to its premises. Use `show twTr (F.σ i w).ρ (KL n w) (KL n w) (UGen.sph l w) LinearMap.id = 1`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[pu_sph_off l w hp]`. Conclude with `(pu_tw h1 hC hS hE hB i w hwS hwB 0 0 (pu_hz _) (pu_hz _)).2`.
+A detailed English derivation is pending.
 -/
 theorem pu_supp (h1 : SphOne) (hC : CompUnit) (hS : SphStarU) (hE : GlobalTheory.BCT.Unr E) (hB : LevelOff S B K') (i : F.ι)
     (l : List (UGen E n)) :
@@ -196,17 +194,17 @@ theorem pu_supp (h1 : SphOne) (hC : CompUnit) (hS : SphStarU) (hE : GlobalTheory
   exact (pu_tw h1 hC hS hE hB i w hwS hwB 0 0 (pu_hz _) (pu_hz _)).2
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil`. Establish `h : ∏ᶠ w ∈ S \ ↑B, twTr (F.σ i w).ρ (KL n w) (KL n w) (UGen.sph ([] : List (UGen E n)) w) LinearMap.id = 1` using `(finprod_mem_congr (g := fun _ => (1 : ℂ)) rfl fun w hw => (pu_tw h1 hC hS hE hB i w hw.1 hw.2 0 0 (pu_hz _) (pu_hz _)).2).trans (finprod_mem_one _)`. Rewrite using `[h, mul_one]`. Both sides reduce to the same expression.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Consider the case `cons x l ih`. Establish `ih'` using `ih fun y hy => hl y (List.mem_cons_of_mem _ hy)`. Break down `x with c | ⟨w0, h⟩` into its components or cases. Rewrite using `[List.map_cons, List.prod_cons, ih'] show c * (UGen.sc l * _) = (c * UGen.sc l) * ∏ᶠ w ∈ S \ ↑B, twTr (F.σ i w).ρ (KL n w) (KL n w) (UGen.sph l w) LinearMap.id`. Rewrite using `[mul_assoc]`.
+Treat this case separately. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Take `⟨hw0, hw0B, hh⟩` from `hl _ List.mem_cons_self set t0 := twTr (F.σ i w0).ρ (KL n w0) (KL n w0) h LinearMap.id with ht0`. Establish `hP : ∏ᶠ w ∈ S \ ↑B, twTr (F.σ i w).ρ (KL n w) (KL n w) (UGen.sph (Sum.inr ⟨w0, h⟩ :: l) w) LinearMap.id = t0 * ∏ᶠ w ∈ S \ ↑B, twTr (F.σ i w).ρ (KL n w) (KL n w) (UGen.sph l w) LinearMap.id`. Rewrite using `[finprod_mem_congr (g := fun w => (if w = w0 then t0 else 1) * twTr (F.σ i w).ρ (KL n w) (KL n w) (UGen.sph l w) LinearMap.id) rfl ?_]`. Rewrite using `[finprod_mem_mul_distrib' ?_ (pu_supp h1 hC hS hE hB i l)]`. Use `congr 1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[finprod_eq_single _ w0 (fun x hx => by simp [hx])]`. Simplify using `[show w0 ∈ S \ ↑B from ⟨hw0, hw0B⟩]`. Use `(Set.finite_singleton w0).subset fun w hw => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hne`. Conclude with `hw.2 (if_neg hne)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `w hw`. Break down `eq_or_ne w w0 with rfl | hne` into its components or cases. Rewrite using `[if_pos rfl, pu_sph_self]`. Conclude with `(pu_tw h1 hC hS hE hB i w hw.1 hw.2 h _ hh (pu_sph_hecke hL hB l (fun y hy => hl y (List.mem_cons_of_mem _ hy)) w hw.2)).1`. Rewrite using `[if_neg hne, one_mul, pu_sph_ne _ _ _ _ (Ne.symm hne)]`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[List.map_cons, List.prod_cons, ih']`. Use `show t0 * (UGen.sc l * _) = (1 * UGen.sc l) * _`. Rewrite using `[hP, one_mul, mul_left_comm]`.
+A detailed English derivation is pending.
 -/
 theorem pu_prod (hL : LocAlg) (h1 : SphOne) (hC : CompUnit) (hS : SphStarU) (hE : GlobalTheory.BCT.Unr E) (hB : LevelOff S B K')
     (i : F.ι) (l : List (UGen E n)) (hl : ∀ x ∈ l, x.Ok S B) :
@@ -249,9 +247,9 @@ theorem pu_prod (hL : LocAlg) (h1 : SphOne) (hC : CompUnit) (hS : SphStarU) (hE 
       rw [hP, one_mul, mul_left_comm]
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil`. Simplify using `only [List.map_nil, List.prod_nil]`. Rewrite using `[(hD F.ι R.d R.blk 1 1 1).2.2.1, one_smul]`. Consider the case `cons x l ih`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Simplify using `only [List.map_cons, List.prod_cons]`. Rewrite using `[ih]`. Unfold `UMod.op`. Rewrite using `[← (hD F.ι R.d R.blk _ _ 0).1]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem pu_opprod (hD : DiagAlg) {g : ∀ w : Pl E, UL n w → ℂ} (R : UMod F B g) (l : List (UGen E n)) :
     (l.map R.op).prod = diagOp R.blk (fun i => (l.map fun x => x.p F i).prod) := by
@@ -269,15 +267,15 @@ theorem pu_opprod (hD : DiagAlg) {g : ∀ w : Pl E, UL n w → ℂ} (R : UMod F 
 end Word2
 
 /- English proof (translation)
-Introduce `hD hL h1 hC hS E _ _ _ hE n S lam K' F B g R hB hg k l hl`. Establish `hT : IsTest (KL n) K' (fam B K' g k l)`. Use `⟨fun w => ?_, ?_⟩` and prove the remaining obligations. Distinguish the cases in `hw : w ∈ B`. Rewrite using `[fam, if_pos hw]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(pu_lpow hL w (K' w) (hB.2.1.1 w) (g w) (hg w hw) (SmIrr.triv _) k).1`. Rewrite using `[fam, if_neg hw, hB.2.2 w hw]`. Conclude with `pu_sph_hecke hL hB l hl w hw`. Rewrite using `[Filter.eventually_cofinite]`. Use `(B ∪ pu_pls l).finite_toSet.subset fun w hw => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules.
 
-Assume the negation of the conclusion as `hc`. Simplify using `only [Finset.coe_union, Set.mem_union, Finset.mem_coe, not_or] at hc`. Conclude with `hw (by rw [fam, if_neg hc.1, pu_sph_off l w hc.2])`. Use `⟨hT, fun hreg => ?_⟩` and prove the remaining obligations. Establish `hloc : ∀ i, ∀ w ∈ B, locOp (F.σ i w) (K' w) (fam B K' g k l w) = locOp (F.σ i w) (K' w) (g w) ^ k` using `fun i w hw => by`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[fam, if_pos hw]`. Conclude with `(pu_lpow hL w (K' w) (hB.2.1.1 w) (g w) (hg w hw) (F.σ i w) k).2`. Establish `e1` using `R.tr k _ hT hloc`. Rewrite `e1` using `[F.tf _ hT hreg]`. Establish `e2 : (fun i => (l.map fun x => x.p F i).prod) = (fun _ => UGen.sc l) * fun i => ∏ᶠ w ∈ S \ ↑B, twTr (F.σ i w).ρ (KL n w) (KL n w) (fam B K' g k l w) LinearMap.id`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `i`. Rewrite using `[Pi.mul_apply, pu_prod hL h1 hC hS hE hB i l hl]`. Use `congr 1`. Conclude with `finprod_mem_congr rfl fun w hw => by rw [fam, if_neg (show w ∉ B from hw.2)]`. Rewrite using `[pu_opprod hD R l, e2, (hD F.ι R.d R.blk (fun _ => UGen.sc l) _ 0).1, (hD F.ι R.d R.blk 0 0 (UGen.sc l)).2.2.1, smul_mul_assoc, one_mul, mul_smul_comm, ContinuousLinearMap.toLinearMap_smul, map_smul, smul_eq_mul, e1]`.
+A detailed English derivation is pending.
 -/
 theorem uWordOfU : DiagAlg → LocAlg → SphOne → CompUnit → SphStarU → UWord := by
   intro hD hL h1 hC hS E _ _ _ hE n S lam K' F B g R hB hg k l hl

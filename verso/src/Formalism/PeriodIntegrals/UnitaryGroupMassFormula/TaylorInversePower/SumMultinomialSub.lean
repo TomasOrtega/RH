@@ -11,21 +11,21 @@ variable {σ : Type*} {A : Type*} [CommRing A]
 def deg (β : σ →₀ ℕ) : ℕ := β.sum fun _ n => n
 
 /- English proof (translation)
-The claim follows from `Finsupp.sum_add_index' (fun _ => rfl) (fun _ _ _ => rfl)`.
+A detailed English derivation is pending.
 -/
 theorem deg_add (β γ : σ →₀ ℕ) : deg (β + γ) = deg β + deg γ :=
   Finsupp.sum_add_index' (fun _ => rfl) (fun _ _ _ => rfl)
 
 /- English proof (translation)
-The claim follows from `Finsupp.sum_single_index rfl`.
+A detailed English derivation is pending.
 -/
 theorem deg_single (p : σ) (n : ℕ) : deg (Finsupp.single p n) = n :=
   Finsupp.sum_single_index rfl
 
 /- English proof (translation)
-Unfold `deg`. Rewrite using `[Finsupp.sum, Finset.sum_eq_zero_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Use extensionality with `i`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Distinguish the cases in `hi : i ∈ β.support`. Conclude with `h i hi`. Simplify using `using hi`. Introduce and unpack `rfl`. Simplify using the standard rewrite rules.
+Consider separately whether the proposition holds or fails. Simplify to obtain the desired conclusion from the available facts. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem deg_eq_zero {β : σ →₀ ℕ} : deg β = 0 ↔ β = 0 := by
   unfold deg
@@ -42,27 +42,27 @@ theorem deg_eq_zero {β : σ →₀ ℕ} : deg β = 0 ↔ β = 0 := by
 def cprod (c : σ →₀ A) (β : σ →₀ ℕ) : A := β.prod fun p b => c p ^ b
 
 /- English proof (translation)
-The claim follows from `Finsupp.prod_add_index' (fun _ => pow_zero _) (fun _ _ _ => pow_add _ _ _)`.
+A detailed English derivation is pending.
 -/
 theorem cprod_add (c : σ →₀ A) (β γ : σ →₀ ℕ) : cprod c (β + γ) = cprod c β * cprod c γ :=
   Finsupp.prod_add_index' (fun _ => pow_zero _) (fun _ _ _ => pow_add _ _ _)
 
 /- English proof (translation)
-The claim follows from `Finsupp.prod_single_index (pow_zero _)`.
+A detailed English derivation is pending.
 -/
 theorem cprod_single (c : σ →₀ A) (p : σ) (n : ℕ) : cprod c (Finsupp.single p n) = c p ^ n :=
   Finsupp.prod_single_index (pow_zero _)
 
 /- English proof (translation)
-Establish `hP : 0 < ∏ i ∈ β.support, (β i).factorial` using `Finset.prod_pos (fun i _ => Nat.factorial_pos _)`. Establish `key : ∀ p ∈ β.support, (∏ i ∈ β.support, (β i).factorial) * Nat.multinomial β.support (β - Finsupp.single p 1 : σ →₀ ℕ) = β p * (∑ i ∈ β.support, β i - 1).factorial`. Introduce `p hp`. Establish `hp' : β p ≠ 0` using `Finsupp.mem_support_iff.1 hp`. Establish `herase : ∀ i ∈ β.support.erase p, (β - Finsupp.single p 1 : σ →₀ ℕ) i = β i`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `i hi`. Establish `hne : p ≠ i` using `(Finset.ne_of_mem_erase hi).symm`. Rewrite using `[Finsupp.tsub_apply, Finsupp.single_apply, if_neg hne, Nat.sub_zero]`. Establish `hpp : (β - Finsupp.single p 1 : σ →₀ ℕ) p = β p - 1`. Rewrite using `[Finsupp.tsub_apply, Finsupp.single_eq_same]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hsum : ∑ i ∈ β.support, (β - Finsupp.single p 1 : σ →₀ ℕ) i = ∑ i ∈ β.support, β i - 1`. Rewrite using `[← Finset.add_sum_erase β.support _ hp, ← Finset.add_sum_erase β.support _ hp, Finset.sum_congr rfl herase, hpp]`. Establish `e : (∑ x ∈ β.support.erase p, β x) = (β.support.erase p).sum ⇑β` using `rfl`. Use linear arithmetic over natural numbers and integers. Establish `hprod : ∏ i ∈ β.support, (β i).factorial = β p * ∏ i ∈ β.support, ((β - Finsupp.single p 1 : σ →₀ ℕ) i).factorial`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Rewrite using `[← Finset.mul_prod_erase β.support _ hp, ← Finset.mul_prod_erase β.support (fun i => ((β - Finsupp.single p 1 : σ →₀ ℕ) i).factorial) hp, Finset.prod_congr rfl (fun i hi => congrArg Nat.factorial (herase i hi)), hpp, ← mul_assoc, Nat.mul_factorial_pred hp']`. Rewrite using `[hprod, mul_assoc, Nat.multinomial_spec, hsum]`. Apply `Nat.eq_of_mul_eq_mul_left hP` to reduce the goal to its premises. Rewrite using `[Finset.mul_sum, Finset.sum_congr rfl key, ← Finset.sum_mul, Nat.multinomial_spec]`. Take `⟨p, hp⟩` from `Finsupp.support_nonempty_iff.2 hβ`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hpos : β p ≤ ∑ i ∈ β.support, β i` using `Finset.single_le_sum (fun _ _ => Nat.zero_le _) hp`. Establish `hp' : β p ≠ 0` using `Finsupp.mem_support_iff.1 hp`. Conclude with `Nat.mul_factorial_pred (by omega)`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem sum_multinomial_sub (β : σ →₀ ℕ) (hβ : β ≠ 0) :
     ∑ p ∈ β.support, Nat.multinomial β.support (β - Finsupp.single p 1 : σ →₀ ℕ) =
@@ -105,15 +105,15 @@ def cf (c : σ →₀ A) (t : A) (k : ℕ) (β : σ →₀ ℕ) : A :=
     ((Nat.multinomial β.support β : ℕ) : A) * cprod c β * t ^ (k + deg β)
 
 /- English proof (translation)
-Distinguish the cases in `hβ : β = 0`. Substitute `hβ` using the available equality. Simplify using `only [cf, deg, cprod, Finsupp.sum_zero_index, Finsupp.prod_zero_index, Finsupp.support_zero, Finset.sum_empty, add_zero, Nat.multinomial_empty, pow_zero, Nat.choose_zero_right, Nat.cast_one, one_mul, mul_one]`. Take the linear combination `t ^ k * hst`. Take `⟨m, hm⟩ : ∃ m, deg β = m + 1` from `⟨deg β - 1, by have := mt deg_eq_zero.1 hβ; omega⟩`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Extract witnesses or component facts from the available result.
 
-Establish `hterm : ∀ p ∈ β.support, c p * cf c t (k + 1) (β - Finsupp.single p 1 : σ →₀ ℕ) = ((-1) ^ m * (((k + m).choose m : ℕ) : A) * cprod c β * t ^ (k + m + 1)) * ((Nat.multinomial β.support (β - Finsupp.single p 1 : σ →₀ ℕ) : ℕ) : A)`. Introduce `p hp`. Establish `hp' : 1 ≤ β p` using `Nat.one_le_iff_ne_zero.2 (Finsupp.mem_support_iff.1 hp)`. Establish `hdec : β - Finsupp.single p 1 + Finsupp.single p 1 = β` using `tsub_add_cancel_of_le (Finsupp.single_le_iff.2 hp')`. Establish `hdeg : deg (β - Finsupp.single p 1 : σ →₀ ℕ) = m`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `deg_add (β - Finsupp.single p 1 : σ →₀ ℕ) (Finsupp.single p 1)` as an intermediate fact. Rewrite `this` using `[hdec, deg_single]`. Use linear arithmetic over natural numbers and integers. Establish `hcp : cprod c β = cprod c (β - Finsupp.single p 1 : σ →₀ ℕ) * c p` using `by conv_lhs => rw [← hdec]`. Rewrite using `[cprod_add, cprod_single, pow_one]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hM : Nat.multinomial (β - Finsupp.single p 1 : σ →₀ ℕ).support (β - Finsupp.single p 1 : σ →₀ ℕ) = Nat.multinomial β.support (β - Finsupp.single p 1 : σ →₀ ℕ)` using `(Finsupp.multinomial_eq _).symm.trans (Finsupp.multinomial_of_support_subset Finsupp.support_tsub).symm`. Unfold `cf`. Rewrite using `[hdeg, hM, hcp, show k + 1 + m - 1 = k + m by omega, show k + 1 + m = k + m + 1 by omega]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Finset.sum_congr rfl hterm, ← Finset.mul_sum, ← Nat.cast_sum, sum_multinomial_sub β hβ]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Unfold `cf`. Rewrite using `[hm, show k + 1 + (m + 1) - 1 = k + m + 1 by omega, show k + (m + 1) - 1 = k + m by omega, Nat.choose_succ_succ]`. Use `push_cast`. Take the linear combination `((-1) ^ (m + 1) * ((((k + m).choose m : ℕ) : A) + (((k + m).choose (m + 1) : ℕ) : A)) * ((Nat.multinomial β.support β : ℕ) : A) * cprod c β * t ^ (k + m + 1)) * hst`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem cf_rec (c : σ →₀ A) (s t : A) (hst : s * t = 1) (k : ℕ) (β : σ →₀ ℕ) :
     s * cf c t (k + 1) β + ∑ p ∈ β.support, c p * cf c t (k + 1) (β - Finsupp.single p 1 : σ →₀ ℕ) =
@@ -163,9 +163,9 @@ Both sides reduce to the same expression.
 theorem coeff_F (c : σ →₀ A) (t : A) (k : ℕ) (β : σ →₀ ℕ) : coeff β (F c t k) = cf c t k β := rfl
 
 /- English proof (translation)
-Use extensionality with `β`. Rewrite using `[coeff_F, coeff_one]`. Use `split_ifs with h`. Substitute `h` using the available equality. Simplify using `[cf, deg, cprod]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Take `⟨m, hm⟩ : ∃ m, deg β = m + 1` from `⟨deg β - 1, by have := mt deg_eq_zero.1 h; omega⟩`. Simplify using `[cf, hm]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem F_zero (c : σ →₀ A) (t : A) : F c t 0 = 1 := by
   classical
@@ -178,13 +178,11 @@ theorem F_zero (c : σ →₀ A) (t : A) : F c t 0 = 1 := by
     simp [cf, hm]
 
 /- English proof (translation)
-Use extensionality with `β`. Rewrite using `[add_mul, map_add, coeff_C_mul, Finsupp.sum, Finset.sum_mul, map_sum]`. Establish `hterm : ∀ p, coeff β (C (c p) * X p * F c t (k + 1)) = if Finsupp.single p 1 ≤ β then c p * cf c t (k + 1) (β - Finsupp.single p 1 : σ →₀ ℕ) else 0`. Introduce `p`. Rewrite using `[mul_assoc, coeff_C_mul, X_def, coeff_monomial_mul, one_mul]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `split_ifs <;> simp [coeff_F]`. Rewrite using `[Finset.sum_congr rfl (fun p _ => hterm p)]`. Establish `h1 : ∑ p ∈ c.support, (if Finsupp.single p 1 ≤ β then c p * cf c t (k + 1) (β - Finsupp.single p 1 : σ →₀ ℕ) else 0) = ∑ p ∈ c.support ∪ β.support, (if Finsupp.single p 1 ≤ β then c p * cf c t (k + 1) (β - Finsupp.single p 1 : σ →₀ ℕ) else 0)` using `Finset.sum_subset Finset.subset_union_left (fun p _ hp => by simp [Finsupp.notMem_support_iff.1 hp])`. Establish `h2 : ∑ p ∈ β.support, (if Finsupp.single p 1 ≤ β then c p * cf c t (k + 1) (β - Finsupp.single p 1 : σ →₀ ℕ) else 0) = ∑ p ∈ c.support ∪ β.support, (if Finsupp.single p 1 ≤ β then c p * cf c t (k + 1) (β - Finsupp.single p 1 : σ →₀ ℕ) else 0)` using `Finset.sum_subset Finset.subset_union_right (fun p _ hp => by`. Rewrite using `[if_neg]`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `h`. Establish `h'` using `Finsupp.single_le_iff.1 h`. Conclude with `hp (Finsupp.mem_support_iff.2 (by omega)))`. Establish `h3 : ∑ p ∈ β.support, (if Finsupp.single p 1 ≤ β then c p * cf c t (k + 1) (β - Finsupp.single p 1 : σ →₀ ℕ) else 0) = ∑ p ∈ β.support, c p * cf c t (k + 1) (β - Finsupp.single p 1 : σ →₀ ℕ)` using `Finset.sum_congr rfl (fun p hp => if_pos (Finsupp.single_le_iff.2 (Nat.one_le_iff_ne_zero.2 (Finsupp.mem_support_iff.1 hp))))`. Rewrite using `[h1, ← h2, h3, coeff_F, coeff_F]`.
-
-Conclude with `cf_rec c s t hst k β`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem L_mul_F (c : σ →₀ A) (s t : A) (hst : s * t = 1) (k : ℕ) :
     (C s + c.sum (fun p a => C a * X p)) * F c t (k + 1) = F c t k := by
@@ -223,11 +221,11 @@ theorem L_mul_F (c : σ →₀ A) (s t : A) (hst : s * t = 1) (k : ℕ) :
 end
 
 /- English proof (translation)
-Introduce `σ A _ τ s t c hst hτ k β`. Establish `hu : τ s * τ t = 1` using `by rw [← map_mul, hst, map_one]`. Establish `hpow : ∀ k, (τ s) ^ k * F c t k = 1`. Introduce `k`. Proceed by induction on `k with`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `zero => rw [pow_zero, one_mul, F_zero]`. Consider the case `succ k ih => rw [pow_succ, mul_assoc, hτ, L_mul_F c s t hst k, ← hτ, ih]`. Establish `hk : τ (t ^ k) = F c t k`. Rewrite using `[map_pow]`. Combine the equalities or inequalities in the displayed calculation.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[hk, coeff_F]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem main.{u, v} : PI.TayInvPow.{u, v} := by
   intro σ A _ τ s t c hst hτ k β

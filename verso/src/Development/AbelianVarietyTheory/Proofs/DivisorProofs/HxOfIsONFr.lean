@@ -12,17 +12,15 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.AdTh
 
 /- English proof (translation)
-Introduce `E _ _ _ r g n X bas idx hs _ x ho`. Establish `hsg : ∀ a : ℕ, FD.sgn X.p0 a = 1 ∨ FD.sgn X.p0 a = -1` using `fun a => by`. Apply the tactic sequence `unfold FD.sgn; split_ifs <;> simp`. Establish `e (τ : X.Ψ) (i : Fin (r + 1)) : dmin X.Gm x τ i = ((psgn X.p0 i : ℝ) : ℂ)`. Unfold `dmin lminor`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[ho τ, sgnM, Matrix.submatrix_diagonal _ _ (Fin.castLE_injective _), Matrix.det_diagonal]`. Unfold `psgn`. Use `push_cast`. Conclude with `Fin.prod_univ_eq_prod_range (fun a => ((FD.sgn X.p0 a : ℝ) : ℂ)) (i : ℕ)`. Apply the tactic sequence `have h0 (i : ℕ) : psgn X.p0 i ≠ 0 := Finset.prod_ne_zero_iff.2 fun a _ => by rcases hsg a with h | h <;> rw [h] <;> norm_num`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Move the embeddings inside the algebraic operations. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Establish `hd : x ∈ X.dom`. Use `fun τ => ⟨fun h => ?_, fun i => ?_⟩` and prove the remaining obligations. Establish `h1 : FD.gram τ.1 X.Gm (mat x τ) = (mat x τ)ᵀ * X.Gm.map τ.1 * (mat x τ).map (starRingEnd ℂ)`. Use extensionality with `a b`. Simplify using `only [FD.gram, hermC, FD.col, Matrix.of_apply, Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply, Finset.sum_mul]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `Finset.sum_comm`. Establish `h2` using `congrArg Matrix.det (h1.symm.trans (ho τ))`. Rewrite `h2` using `[Matrix.det_mul, Matrix.det_mul, Matrix.det_transpose, h, zero_mul, zero_mul, sgnM, Matrix.det_diagonal]`. Use `Finset.prod_ne_zero_iff.2 (fun a _ => ?_) h2.symm` and prove the remaining obligations. Apply the tactic sequence `rcases hsg a with h | h <;> rw [h] <;> norm_num`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[e, Complex.ofReal_re]`. Conclude with `mul_self_pos.2 (h0 _)`. Use `⟨hd, fun τ i => ?_, (GlobalTheory.Dict.hx_ortho E r X g bas idx hs x hd ho).1⟩` and prove the remaining obligations. Rewrite using `[e, psgn]`. Use `push_cast`.
-
-Rewrite using `[norm_prod]`. Apply the tactic sequence `exact Finset.prod_eq_one fun a _ => by rcases hsg a with h | h <;> rw [h] <;> simp`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem hx_of_isONFr : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r g n : ℕ) (X : Data E r) (bas : (Fin g ⊕ Fin g → ℤ) ≃ₗ[ℤ] X.Λ) (idx : Fin g ≃ X.Ψ × Fin r), IsSympl X bas → Even n → ∀ x : Frame X.Ψ r, IsONFr X x → x ∈ X.dom ∧ IsUnitFr X x ∧ ∀ z w : Fin g → ℂ, hx X bas idx x z w = ∑ j, (X.c (idx j).1 : ℂ) * z j * conj (w j) := by
   intro E _ _ _ r g n X bas idx hs _ x ho

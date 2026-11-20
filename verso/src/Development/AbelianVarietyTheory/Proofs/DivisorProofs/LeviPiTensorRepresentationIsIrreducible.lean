@@ -16,13 +16,13 @@ variable {ι : Type} [Fintype ι] [DecidableEq ι] {V : ι → Type} [∀ i, Add
   [∀ i, Module ℂ (V i)]
 
 /- English proof (translation)
-It suffices to establish `H : ∀ S : Finset ι, ∀ x ∈ W, PiTensorProduct.map (fun c => if c ∈ S then f c else LinearMap.id) x ∈ W by`. Introduce `x hx`. Simplify using `using H Finset.univ x hx`. Introduce `S`. Proceed by induction on `S using Finset.induction_on with`.
+Reduce the argument to an intermediate assertion. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `empty`. Introduce `x hx`. Simplify `hx` using `[PiTensorProduct.map_id]`. Consider the case `insert a S ha ih`. Introduce `x hx`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e : (fun c => if c ∈ insert a S then f c else (LinearMap.id : V c →ₗ[ℂ] V c)) = fun c => (Function.update (fun c' => (LinearMap.id : V c' →ₗ[ℂ] V c')) a (f a)) c ∘ₗ (if c ∈ S then f c else LinearMap.id)`. Use function extensionality and compare the values at `c`. Distinguish the cases in `hc : c = a`. Substitute `hc` using the available equality. Simplify using `[ha]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[hc, Function.update_of_ne]`. Rewrite using `[e, PiTensorProduct.map_comp]`. Conclude with `h a (f a) _ (ih x hx)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_mem_of_position_stable (W : Submodule ℂ (PiTensorProduct ℂ V))
     (h : ∀ (c : ι) (f : V c →ₗ[ℂ] V c), ∀ x ∈ W, PiTensorProduct.map
@@ -51,13 +51,13 @@ theorem map_mem_of_position_stable (W : Submodule ℂ (PiTensorProduct ℂ V))
     exact h a (f a) _ (ih x hx)
 
 /- English proof (translation)
-Establish `hf : f ∈ Submodule.span ℂ (Set.range ρ)` using `hs ▸ Submodule.mem_top`. Proceed by induction on `hf using Submodule.span_induction with`. Consider the case `mem f hf`. Take `⟨g, rfl⟩` from `hf`. Conclude with `h g`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately.
 
-Consider the case `zero`. Introduce `x _`. Use `PiTensorProduct.map_update_smul (fun c' => (LinearMap.id : V c' →ₗ[ℂ] V c')) c (0 : ℂ) LinearMap.id` as an intermediate fact. Rewrite `this` using `[zero_smul, zero_smul]`. Rewrite using `[this]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Consider the case `add u v _ _ hu hv`. Introduce `x hx`. Rewrite using `[PiTensorProduct.map_update_add, LinearMap.add_apply]`. Conclude with `add_mem (hu x hx) (hv x hx)`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Consider the case `smul a u _ hu`. Introduce `x hx`. Rewrite using `[PiTensorProduct.map_update_smul, LinearMap.smul_apply]`. Conclude with `W.smul_mem _ (hu x hx)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem position_stable_of_span {c : ι} {G : Type} [Group G] (ρ : Representation ℂ G (V c))
     (hs : Submodule.span ℂ (Set.range ρ) = ⊤) (W : Submodule ℂ (PiTensorProduct ℂ V))
@@ -87,17 +87,15 @@ theorem position_stable_of_span {c : ι} {G : Type} [Group G] (ρ : Representati
     exact W.smul_mem _ (hu x hx)
 
 /- English proof (translation)
-Distinguish the cases in `hW : W = ⊥`. Conclude with `Or.inl hW`. Use `right`. Take `⟨x, hx, hx0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hW`. Set `e` to `fun c => Module.finBasis ℂ (V c)`.
+Consider separately whether the proposition holds or fails. Prove the first alternative. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `B` to `Basis.piTensorProduct e`. Choose the witnesses or unpack the hypotheses as in `⟨I, hI⟩ : ∃ I, B.repr x I ≠ 0 := by`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Conclude with `hx0 (B.repr.map_eq_zero_iff.1 (Finsupp.ext hc))`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression.
 
-Establish `hJ : ∀ J, B J ∈ W`. Introduce `J`. Set `f : ∀ c, V c →ₗ[ℂ] V c` to `fun c => ((e c).coord (I c)).smulRight (e c (J c))`. Establish `hf : PiTensorProduct.map f = (B.coord I).smulRight (B J)`. Use `B.ext fun p => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `hc : ∀ c, f c (e c (p c)) = (if p c = I c then (1 : ℂ) else 0) • e c (J c)`. Introduce `c`. Simplify using `[f, Finsupp.single_apply]`. Establish `hq : (∏ c, if p c = I c then (1 : ℂ) else 0) = if p = I then 1 else 0`. Rewrite using `[Finset.prod_ite_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[funext_iff]`. Rewrite using `[LinearMap.smulRight_apply, Module.Basis.coord_apply, Module.Basis.repr_self, Finsupp.single_apply]`. Simplify using `only [B, Basis.piTensorProduct_apply, PiTensorProduct.map_tprod, hc, MultilinearMap.map_smul_univ, hq]`. Establish `hm` using `h f x hx`. Rewrite `hm` using `[hf, LinearMap.smulRight_apply, Module.Basis.coord_apply]`.
-
-Conclude with `(W.smul_mem_iff hI).1 hm`. Use `eq_top_iff.2 ?_` and prove the remaining obligations. Rewrite using `[← B.span_eq]`. Conclude with `Submodule.span_le.2 (by rintro _ ⟨J, rfl⟩; exact hJ J)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_bot_or_top_of_map_stable [∀ i, FiniteDimensional ℂ (V i)]
     (W : Submodule ℂ (PiTensorProduct ℂ V))
@@ -134,7 +132,7 @@ theorem eq_bot_or_top_of_map_stable [∀ i, FiniteDimensional ℂ (V i)]
   exact Submodule.span_le.2 (by rintro _ ⟨J, rfl⟩; exact hJ J)
 
 /- English proof (translation)
-Set `B` to `Basis.piTensorProduct fun c => Module.finBasis ℂ (V c)`. Conclude with `⟨B fun c => ⟨0, Module.finrank_pos⟩, 0, B.ne_zero _⟩`.
+Introduce a local definition for the expression. Supply the required witnesses or components.
 -/
 theorem nontrivial_piTensorProduct [∀ i, FiniteDimensional ℂ (V i)] [∀ i, Nontrivial (V i)] :
     Nontrivial (PiTensorProduct ℂ V) := by
@@ -144,11 +142,11 @@ theorem nontrivial_piTensorProduct [∀ i, FiniteDimensional ℂ (V i)] [∀ i, 
 end General
 
 /- English proof (translation)
-Introduce `K _ _ _ r s b lam hs`. Establish `hirr` using `fun c => GlobalTheory.SerOSys.ZSum.isIrreducible_of_simple (lam c) (hs c)`. Establish `hspan` using `fun c => GlobalTheory.ClassFin.span_range_eq_top_of_isIrreducible _ _ (lam c).ρ (hirr c)`. Use `haveI : ∀ c, Nontrivial (lam c : Type) := fun c => GlobalTheory.OuterTensor.nontrivial_of_isIrreducible _ (hirr c)`. Use `haveI : Nontrivial (PiTensorProduct ℂ (fun c => (lam c : Type))) := nontrivial_piTensorProduct`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `{ exists_pair_ne := ⟨⊥, ⊤, fun h => ?_⟩, eq_bot_or_eq_top := fun S => ?_ }` and prove the remaining obligations. Conclude with `bot_ne_top (congrArg Subrepresentation.toSubmodule h : (⊥ : Submodule ℂ (PiTensorProduct ℂ (fun c => (lam c : Type)))) = ⊤)`. Establish `hstable : ∀ (c : Fin s) (f : (lam c : Type) →ₗ[ℂ] (lam c : Type)), ∀ x ∈ S.toSubmodule, PiTensorProduct.map (Function.update (fun c' => (LinearMap.id : (lam c' : Type) →ₗ[ℂ] (lam c' : Type))) c f) x ∈ S.toSubmodule`. Introduce `c`. Use `position_stable_of_span (lam c).ρ (hspan c) S.toSubmodule fun g x hx => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative.
 
-Rewrite using `[← leviTensor_blockExt b lam c g]`. Conclude with `S.apply_mem_toSubmodule _ hx`. Break down `eq_bot_or_top_of_map_stable S.toSubmodule (map_mem_of_position_stable _ hstable) with h | h` into its components or cases. Conclude with `Or.inl (Subrepresentation.toSubmodule_injective h)`. Conclude with `Or.inr (Subrepresentation.toSubmodule_injective h)`.
+Prove the second alternative. A detailed English derivation is pending.
 -/
 theorem leviTensor_isIrreducible : ∀ (K : Type) [Field K] [Fintype K] [DecidableEq K] (r s : ℕ)
     (b : Fin r → Fin s) (lam : ∀ c : Fin s, FDRep ℂ (GL {i // b i = c} K)),

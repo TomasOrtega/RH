@@ -17,9 +17,9 @@ section Flag
 variable {D : D7} {T : D.host.E}
 
 /- English proof (translation)
-Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨a, rfl⟩` from `hy`. Conclude with `F.z_orth a`. Consider the case `zero => simp`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately.
 
-Consider the case `add y w _ _ hy hw => simp [hy, hw]`. Consider the case `smul c y _ hy => simp [hy]`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem flag_span_orth (F : FlagG (VS D) D.R.rS T) {x : (VS D).V}
     (hx : x ∈ Submodule.span D.host.E (Set.range F.e)) : (VS D).hT x F.z = 0 := by
@@ -32,9 +32,9 @@ theorem flag_span_orth (F : FlagG (VS D) D.R.rS T) {x : (VS D).V}
   | smul c y _ hy => simp [hy]
 
 /- English proof (translation)
-Unfold `FlagG.fvec`. Rewrite using `[linearIndependent_finSnoc]`. Use `⟨F.e_indep, fun hz => hT ?_⟩` and prove the remaining obligations. Establish `h1` using `flag_span_orth F hz`. Rewrite `h1` using `[F.z_norm]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `neg_eq_zero.1 h1`.
+A detailed English derivation is pending.
 -/
 theorem flag_fvec_indep (hT : T ≠ 0) (F : FlagG (VS D) D.R.rS T) : LinearIndependent D.host.E F.fvec := by
   unfold FlagG.fvec
@@ -45,11 +45,11 @@ theorem flag_fvec_indep (hT : T ≠ 0) (F : FlagG (VS D) D.R.rS T) : LinearIndep
   exact neg_eq_zero.1 h1
 
 /- English proof (translation)
-Substitute `hTT` using the available equality. Establish `hze : ∀ (G : FlagG (VS D) D.R.rS T) (a : Fin D.R.rS), (VS D).hT G.z (G.e a) = 0`. Introduce `G a`. Rewrite using `[← (VS D).herm.eq (G.e a) G.z, G.z_orth a, map_zero]`. Proceed by induction on `i using Fin.lastCases with`.
+Substitute using the available equality. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Proceed by induction.
 
-Consider the case `last`. Proceed by induction on `j using Fin.lastCases with`. Consider the case `last => simp only [FlagG.fvec, Fin.snoc_last, F.z_norm, F'.z_norm]`. Consider the case `cast b => simp only [FlagG.fvec, Fin.snoc_last, Fin.snoc_castSucc, hze]`. Consider the case `cast a`.
+Treat this case separately. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Proceed by induction on `j using Fin.lastCases with`. Consider the case `last => simp only [FlagG.fvec, Fin.snoc_last, Fin.snoc_castSucc, F.z_orth, F'.z_orth]`. Consider the case `cast b => simp only [FlagG.fvec, Fin.snoc_castSucc, F.e_iso, F'.e_iso]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem flag_gram {T' : D.host.E} (hTT : T = T') (F : FlagG (VS D) D.R.rS T) (F' : FlagG (VS D) D.R.rS T')
     (i j : Fin (D.R.rS + 1)) :
@@ -69,19 +69,17 @@ theorem flag_gram {T' : D.host.E} (hTT : T = T') (F : FlagG (VS D) D.R.rS T) (F'
     | cast b => simp only [FlagG.fvec, Fin.snoc_castSucc, F.e_iso, F'.e_iso]
 
 /- English proof (translation)
-Establish `hind` using `flag_fvec_indep hT F`. Establish `hind'` using `flag_fvec_indep (hTT ▸ hT) F'`. Use `set U := Submodule.span D.host.E (Set.range F.fvec) with hU`. Set `b : Module.Basis (Fin (D.R.rS + 1)) D.host.E U` to `Module.Basis.span hind`. Set `f : U →ₗ[D.host.E] (VS D).V` to `Finsupp.linearCombination D.host.E F'.fvec ∘ₗ (b.repr : U →ₗ[D.host.E] (Fin (D.R.rS + 1) →₀ D.host.E))`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hfb : ∀ i, f (b i) = F'.fvec i`. Introduce `i`. Simplify using `[f, Module.Basis.repr_self, Finsupp.linearCombination_single]`. Establish `hbv : ∀ i, ((b i : U) : (VS D).V) = F.fvec i`. Introduce `i`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `congrArg Subtype.val (Module.Basis.span_apply hind i)`. Establish `hinj : Function.Injective f`. Establish `h2 : Function.Injective (Finsupp.linearCombination D.host.E F'.fvec)` using `hind'`. Conclude with `h2.comp b.repr.injective`. Establish `hB : ((VS D).hT.comp f).compl₂ f = ((VS D).hT.comp U.subtype).compl₂ U.subtype`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `LinearMap.ext_basis b b fun i j => ?_` and prove the remaining obligations. Simplify using `only [LinearMap.compl₂_apply, LinearMap.comp_apply, hfb, Submodule.subtype_apply, hbv]`. Conclude with `(flag_gram hTT F F' i j).symm`. Establish `hiso : ∀ x y : U, (VS D).hT (f x) (f y) = (VS D).hT x y`. Introduce `x y`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h` using `congrArg (fun B => B x y) hB`. Simplify `h` using `only [LinearMap.compl₂_apply, LinearMap.comp_apply, Submodule.subtype_apply]`. Take `⟨g, hg, hgf⟩` from `_root_.witt_extension_theorem D.host.E (VS D).V (VS D).hT (fun x y => (VS D).herm.eq x y) (fun x hx => (VS D).nondeg.1 x hx) U f hinj hiso`. Establish `hgi : ∀ i, g (F.fvec i) = F'.fvec i`. Introduce `i`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h` using `hgf (b i)`. Rewrite `h` using `[hbv, hfb]`. Conclude with `h`. Use `⟨g, hg, fun a => ?_, ?_⟩` and prove the remaining obligations. Establish `h` using `hgi (Fin.castSucc a)`.
-
-Simplify `h` using `only [FlagG.fvec, Fin.snoc_castSucc]`. Establish `h` using `hgi (Fin.last _)`. Simplify `h` using `only [FlagG.fvec, Fin.snoc_last]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem flag_witt {T' : D.host.E} (hT : T ≠ 0) (hTT : T = T') (F : FlagG (VS D) D.R.rS T)
     (F' : FlagG (VS D) D.R.rS T') :
@@ -126,9 +124,9 @@ theorem flag_witt {T' : D.host.E} (hT : T ≠ 0) (hTT : T = T') (F : FlagG (VS D
 end Flag
 
 /- English proof (translation)
-Establish `hT : ∀ u : D.what₂.Word, (((D.mem u).A.T : ℕ) : D.host.E) ≠ 0` using `fun u => Nat.cast_ne_zero.2 (D.mem u).A.T_prime.ne_zero`. Use `choose δ hδ he hz using fun u => flag_witt (hT u) rfl (X.Fu u) (Formalism.MainNotions.S.Inh.tie_flag0 D u)`. Use `⟨{ δ := δ, isom := hδ, e_eq := fun u a => ?_, z_eq := fun u => ?_ }⟩` and prove the remaining obligations. Establish `h` using `he u a`. Rewrite `h` using `[X.Fu_e u]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `h`. Establish `h` using `hz u`. Rewrite `h` using `[X.flagZVector u]`. Conclude with `h`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem WittExists_holds (D : D7) (X : HidaSetting D) : Formalism.L2.SG.TermTieOf.WittExists X := by
   have hT : ∀ u : D.what₂.Word, (((D.mem u).A.T : ℕ) : D.host.E) ≠ 0 := fun u =>

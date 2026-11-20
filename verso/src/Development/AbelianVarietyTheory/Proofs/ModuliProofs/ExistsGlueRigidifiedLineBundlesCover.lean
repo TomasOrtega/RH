@@ -20,7 +20,7 @@ namespace GlobalTheory.RigidBundleGlue
 variable {X Y Z : Scheme.{0}}
 
 /- English proof (translation)
-Take `⟨w, hw⟩` from `h.chartPull (chartPullId P) (chartPullPull Q (𝟙 X) (𝟙 X) rfl)`. Take `⟨t, ht⟩` from `H`. Take `⟨a, ha⟩` from `gen_chartPull (chartPullPull P (𝟙 X) (𝟙 X) rfl) t ht`. Take `⟨c, hc, -⟩` from `exists_up ((isGen_iff w).1 hw) hQ hP a ha`. Conclude with `gen_chartPull (chartPullUnpull Q _ (Category.id_comp _)) c hc`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exists_gen_of_lbIso {P Q : LB X} (hP : P.IsLB) (hQ : Q.IsLB) (h : LBIso P Q)
     (H : ∃ t : LB.Gen P, t.IsGen) : ∃ t : LB.Gen Q, t.IsGen := by
@@ -31,7 +31,7 @@ theorem exists_gen_of_lbIso {P Q : LB X} (hP : P.IsLB) (hQ : Q.IsLB) (h : LBIso 
   exact gen_chartPull (chartPullUnpull Q _ (Category.id_comp _)) c hc
 
 /- English proof (translation)
-The claim follows from `h.chartPull (chartPullPull P f f rfl) (chartPullPull Q f f rfl)`.
+A detailed English derivation is pending.
 -/
 theorem LBIso.pull {P Q : LB X} (h : LBIso P Q) (f : Y ⟶ X) : LBIso (P.pull f) (Q.pull f) :=
   h.chartPull (chartPullPull P f f rfl) (chartPullPull Q f f rfl)
@@ -42,11 +42,11 @@ def chartPullComp (L : LB X) (f : Y ⟶ X) (g : Z ⟶ Y) (c : Z ⟶ X) (e : c = 
   exact chartPullIn L (fun _ : PUnit => f) (fun _ => 1) g
 
 /- English proof (translation)
-Use `hA.smooth` as an intermediate fact. Use `hA.proper` as an intermediate fact. Use `forall_geometricallyIntegral_of_smooth_of_geometricallyConnected _ _ A.hom hA.smooth hA.geomConnected` as an intermediate fact. Use `GlobalFunctions.isIso_app FlatFibreInjective.injective_baseChange exists_noetherian_model_of_smooth A.hom V` as an intermediate fact. Take `⟨a, rfl⟩` from `(ConcreteCategory.bijective_of_isIso (A.hom.app V)).2 u`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `k : ∀ (q : S ⟶ S) (_ : q = 𝟙 S) (l : V ≤ q ⁻¹ᵁ V), (q.appLE V V l).hom a = a`. Introduce and unpack `_ rfl l`. Establish `: (𝟙 S : S ⟶ S).appLE V V l = 𝟙 _`. Simplify using `[Scheme.Hom.appLE]`. Conclude with `S.presheaf.map_id _`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Both sides reduce to the same expression. Establish `h₁ : (e.appLE _ V h).hom ((A.hom.app V).hom a) = a` using `(congrArg (fun q => q.hom a) (Scheme.Hom.comp_appLE e A.hom V V h)).symm.trans (k (e ≫ A.hom) he h)`. Rewrite using `[h₁.symm.trans hu, map_one]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_one_of_section {S : Scheme.{0}} (A : Over S) [GrpObj A] (hA : IsAbelianScheme A) {e : S ⟶ A.left}
     (he : e ≫ A.hom = 𝟙 S) (V : S.Opens) (u : Γ(A.left, A.hom ⁻¹ᵁ V)) (h : V ≤ e ⁻¹ᵁ (A.hom ⁻¹ᵁ V))
@@ -67,9 +67,9 @@ theorem eq_one_of_section {S : Scheme.{0}} (A : Over S) [GrpObj A] (hA : IsAbeli
   rw [h₁.symm.trans hu, map_one]
 
 /- English proof (translation)
-Establish `e` using `congrArg (fun z => z.left) (map_one (pushHom h (𝟙_ (Over S'))))`. Establish `e₁ : (1 : 𝟙_ (Over S') ⟶ G') = η[G']` using `by rw [Hom.one_def]; simp`. Rewrite `e` using `[e₁]`. Use `e.trans ?_` and prove the remaining obligations. Use `show (toUnit _ ≫ η[G]).left = _`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `[eSec]`.
+A detailed English derivation is pending.
 -/
 theorem eSec_comm {S S' : Scheme.{0}} {G : Over S} {G' : Over S'} [GrpObj G] [GrpObj G'] {f : S' ⟶ S}
     {φ : G'.left ⟶ G.left} (h : IsGrpPullback G' G f φ) : eSec G' ≫ φ = f ≫ eSec G := by
@@ -81,17 +81,15 @@ theorem eSec_comm {S S' : Scheme.{0}} {G : Over S} {G' : Over S'} [GrpObj G] [Gr
   simp [eSec]
 
 /- English proof (translation)
-Introduce `S I U A _ G _ ψ hU hψ hA _ M B a b hB hM hr hiso`. Establish `oi : ∀ i, IsOpenImmersion (ψ i)` using `fun i => CoverGlue.isOpenImmersion (hψ i).1`. Use `choose N hN₁ hN₂ hN₃ hN₄ using fun i => GlobalTheory.T.exists_cechData_pullback_of_lineBundle_on_open _ _ (ψ i) (M i) (hM i)`. Establish `hR : ∀ i x, x ∈ (ψ i).opensRange ↔ A.hom x ∈ U i` using `fun i x => CoverGlue.mem_range (hψ i).1 x`. Establish `hNU : ∀ i k, (N i).U k ≤ (ψ i).opensRange` using `fun i k => (le_iSup (N i).U k).trans (hN₁ i).le`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `e : S ⟶ A.left` to `eSec A`. Establish `he : e ≫ A.hom = 𝟙 S` using `Over.w η[A]`. Take `⟨L, hL, hLr, hLi⟩` from `GlobalTheory.T.exists_glue_rigidified_partial_line_bundles A.left S A.hom e I U N he (eq_one_of_section A hA he) hU (fun i => (hN₁ i).trans (TopologicalSpace.Opens.ext (Set.ext (hR i)))) hN₂ (fun i => by`. Use `(GlobalTheory.T.generator_iso_extend_from_open_containing_charts S (U i).toScheme (U i).ι).1 _ (fun k s hs => ?_) ?_` and prove the remaining obligations. Establish `h₁` using `(hR i _).1 (hNU i _ (mem_pull.1 hs))`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h₁` using `[← Scheme.Hom.comp_apply, he]`. Conclude with `⟨⟨s, h₁⟩, rfl⟩`. Set `e' : (U i).toScheme ⟶ (G i).left` to `eSec (G i)`. Establish `hc : e' ≫ ψ i = (U i).ι ≫ e` using `eSec_comm (hψ i)`. Take `⟨t, ht⟩` from `exists_gen_of_lbIso (pull_isLB (hM i) e') (pull_isLB (hN₃ i) e') (LBIso.pull (hN₄ i) e') (hr i)`.
+Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨t', ht'⟩` from `gen_chartPull (chartPullComp (N i) (ψ i) e' _ hc.symm) t ht`. Conclude with `gen_chartPull (chartPullOut (N i) (fun _ : PUnit => e) (fun _ => 1) (U i).ι _ fun _ => rfl) t' ht')`. Use the proof step `(fun i j => by`. Establish `: IsOpenImmersion (a i j)` using `MorphismProperty.of_isPullback (P := @IsOpenImmersion) (hB i j).flip (oi j)`. Use `(GlobalTheory.T.generator_iso_extend_from_open_containing_charts A.left (B i j) (a i j ≫ ψ i)).2 _ _ (fun k l x hx => ?_) ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨y, hy⟩` from `hNU i k hx.1`. Take `⟨y', hy'⟩` from `hNU j l hx.2`. Take `⟨z, hz, -⟩` from `Scheme.exists_preimage_of_isPullback (hB i j) y y' (hy.trans hy'.symm)`. Conclude with `⟨z, by rw [Scheme.Hom.comp_apply, hz, hy]⟩`. Use `LBIso.chartPull (chartPullComp (N i) (ψ i) (a i j) _ rfl) (chartPullComp (N j) (ψ j) (b i j) _ (hB i j).w) ?_` and prove the remaining obligations.
-
-Conclude with `((LBIso.pull (hN₄ i) (a i j)).symm.trans (pull_isLB (hN₃ i) _) (pull_isLB (hM i) _) (pull_isLB (hM j) _) (hiso i j)).trans (pull_isLB (hN₃ i) _) (pull_isLB (hM j) _) (pull_isLB (hN₃ j) _) (LBIso.pull (hN₄ j) (b i j)))`. Conclude with `⟨L, hL, hLr, fun i => (hN₄ i).trans (hM i) (hN₃ i) (pull_isLB hL _) (LBIso.pull (hLi i) (ψ i))⟩`.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_glue : ∀ (S : Scheme.{0}) (I : Type) (U : I → S.Opens) (A : Over S) [GrpObj A] (G : ∀ i, Over (U i).toScheme) [∀ i, GrpObj (G i)] (ψ : ∀ i, (G i).left ⟶ A.left), iSup U = ⊤ → (∀ i, IsGrpPullback (G i) A (U i).ι (ψ i)) → IsAbelianScheme A → (∀ i, IsAbelianScheme (G i)) → ∀ (M : ∀ i, LB (G i).left) (B : I → I → Scheme.{0}) (a : ∀ i j, B i j ⟶ (G i).left) (b : ∀ i j, B i j ⟶ (G j).left), (∀ i j, IsPullback (a i j) (b i j) (ψ i) (ψ j)) → (∀ i, (M i).IsLB) → (∀ i, Out.Rigidified (G i) (M i)) → (∀ i j, LBIso ((M i).pull (a i j)) ((M j).pull (b i j))) → ∃ L : LB A.left, L.IsLB ∧ Out.Rigidified A L ∧ ∀ i, LBIso (M i) (L.pull (ψ i)) := by
   intro S I U A _ G _ ψ hU hψ hA _ M B a b hB hM hr hiso

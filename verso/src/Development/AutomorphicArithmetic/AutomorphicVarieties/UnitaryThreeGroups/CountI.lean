@@ -10,7 +10,7 @@ open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.
 open UpperTheory.V UpperTheory.V.Base UpperTheory.V.HV UpperTheory.V.Alg UpperTheory.V.U3
 
 /- English proof (translation)
-Establish `h0 : 0 ≤ N` using `by linarith`. Establish `ht : 1 ≤ t` using `by linarith`. Establish `h1 : A ≤ N ^ k` using `hk.trans (pow_le_pow_left₀ (by norm_num) hN k)`. Establish `h2 : N ≤ N * t` using `le_mul_of_one_le_right h0 ht`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 private theorem absorb (A N t e : ℝ) (k a : ℕ) (hk : A ≤ 16 ^ k) (hN : 16 ≤ N) (he : 0 ≤ e) (het : e + 1 ≤ t) :
     A * N * (N * (e + 1)) ^ a ≤ (N * t) ^ (k + 1 + a) := by
@@ -23,43 +23,37 @@ private theorem absorb (A N t e : ℝ) (k a : ℕ) (hk : A ≤ 16 ^ k) (hN : 16 
     _ = (N * t) ^ (k + 1 + a) := by ring
 
 /- English proof (translation)
-Introduce `hC χ`. Take `⟨hpK, hpK4, hpK7, hpKcop⟩` from `(pK_pOne_prime_conditions χ).1`. Take `⟨hdisc, -, -, -⟩` from `kstar (pK χ) hpK hpK4`. Take `⟨c₅, A, hcor⟩` from `hC (Kstar (pK χ))`. Take `⟨r₁, hr₁B, hr₁⟩` from `Nat.exists_infinite_primes (30 * χ.N * pK χ + 1)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨r₂, hr₂B, hr₂⟩` from `Nat.exists_infinite_primes (r₁ + 1)`. Take `⟨k, hk⟩` from `pow_unbounded_of_one_lt (2 * (c₅ : ℝ) * (Real.log r₁ + Real.log r₂)) (by norm_num : (1 : ℝ) < 16)`. Use `⟨k + 1 + A, r₁, r₂, hr₁, hr₂, ?_⟩` and prove the remaining obligations. Introduce `h hχ h1q h1d h2q h2d t hBig e he het Ω _ _ _ c Ls hLs`. Substitute `hχ` using the available equality.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality.
 
-Use `haveI : IsAlgClosed Ω := IsAlgClosure.isAlgClosed ℚ`. Use `letI : Algebra (Kstar (pK h.chi)) Ω := (IsAlgClosed.lift (M := Ω) (R := ℚ) (S := Kstar (pK h.chi))).toRingHom.toAlgebra`. Take `⟨-, -, h16, -, -, hprimeN, -⟩` from `hostIndex h`. Establish `hN0` using `h.N_pos`. Establish `hqpos : 0 < h.chi.N` using `Nat.pos_of_ne_zero (h.chi.ne.out)`.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hnd : ∀ p : ℕ, p.Prime → 30 * h.chi.N * pK h.chi + 1 ≤ p → p < h.q1 → p < h.d → ¬ p ∣ 30 * h.N * (NumberField.discr (Kstar (pK h.chi))).natAbs`. Introduce `p hp hpB hpq hpd hdiv`. Rewrite `hdiv` using `[hdisc, Int.natAbs_neg, Int.natAbs_natCast]`. Establish `hp30 : 30 < p` using `by nlinarith [hpK7]`. Break down `(Nat.Prime.dvd_mul hp).1 hdiv with h1 | h1` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `(Nat.Prime.dvd_mul hp).1 h1 with h2 | h2` into its components or cases. Use `Nat.le_of_dvd (by norm_num) h2` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Break down `(hprimeN p hp).1 h2 with h3 | h3 | h3 | h3` into its components or cases. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Separate the alternatives or extract the components of the hypothesis. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Use `Nat.le_of_dvd hqpos h3` as an intermediate fact. Use polynomial arithmetic with `[hpK7]`. Use linear arithmetic over natural numbers and integers. Use linear arithmetic over natural numbers and integers. Use `Nat.le_of_dvd (by omega) h1` as an intermediate fact.
+Use the polynomial consequences of the given equalities and inequalities. Use linear arithmetic over natural numbers and integers. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Use polynomial arithmetic with `[hqpos]`. Establish `hnd1` using `hnd r₁ hr₁ hr₁B h1q h1d`. Establish `hnd2` using `hnd r₂ hr₂ (by omega) h2q h2d`. Establish `hne : r₁ ≠ r₂` using `by omega`. Use `set T : Finset (Subgroup (ZMod h.N)ˣ) := Ls.biUnion (fun l => (h.X (c l) e).image (fun ψ => (MulChar.toUnitHom ψ).ker)) with hT`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hcorK : ∀ K' : Subgroup (ZMod h.N)ˣ, (∀ l ∈ Ls.filter (fun l => ∃ ψ ∈ h.X (c l) e, (MulChar.toUnitHom ψ).ker = K'), ∀ ψ ∈ orb (c l) K', Vlen Ω (c l) e ψ ≠ ⊤) ∧ ∑ l ∈ Ls.filter (fun l => ∃ ψ ∈ h.X (c l) e, (MulChar.toUnitHom ψ).ker = K'), Real.log ((l : ℕ) : ℝ) * ∑ ψ ∈ orb (c l) K …`. Introduce `K'`. Use `hcor Ω e h.N K' r₁ r₂ hr₁ hr₂ hne hnd1 hnd2 c _ ?_` and prove the remaining obligations. Introduce `l hl`. Take `⟨hlLs, ψ, hψ, hker⟩` from `Finset.mem_filter.1 hl`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨hchar, hpar⟩` from `(Host.mem_X h).1 hψ`. Conclude with `⟨ψ, (mem_orb _).2 hker, gdOfHost h t hBig Ω l e (hLs l hlLs).1 he het (hLs l hlLs).2 _ ψ hchar hpar⟩`. Establish `hmapT : ∀ l ∈ Ls, ∀ ψ ∈ h.X (c l) e, (MulChar.toUnitHom ψ).ker ∈ T`. Introduce `l hl ψ hψ`. Rewrite using `[hT, Finset.mem_biUnion]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact.
 
-Conclude with `⟨l, hl, Finset.mem_image_of_mem _ hψ⟩`. Establish `hsumT : ∑ K' ∈ T, ((K'.index.totient : ℕ) : ℝ) ≤ (h.N : ℝ)`. Establish `hcyc : ∀ K' ∈ T, IsCyclic ((ZMod h.N)ˣ ⧸ K')`. Introduce `K' hK'`. Rewrite `hK'` using `[hT, Finset.mem_biUnion]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨l, -, hK'⟩` from `hK'`. Take `⟨ψ, -, rfl⟩` from `Finset.mem_image.1 hK'`. Conclude with `(orbFacts _ h.N ψ).2.1`. Establish `h1` using `orbSum (ZMod h.N)ˣ T hcyc`. Establish `h2 : Nat.card (ZMod h.N)ˣ ≤ h.N`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Nat.card_eq_fintype_card, ZMod.card_units_eq_totient]`. Conclude with `Nat.totient_le _`. Conclude with `h1.trans h2` after adjusting the coercions. Establish `hc5 : (0 : ℝ) ≤ c₅` using `by positivity`. Establish `hL : 0 ≤ Real.log r₁ + Real.log r₂` using `add_nonneg (Real.log_natCast_nonneg _) (Real.log_natCast_nonneg _)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hP : 0 ≤ ((h.N : ℝ) * ((e : ℝ) + 1)) ^ A` using `by positivity`. Establish `hN16 : (16 : ℝ) ≤ h.N` using `by exact_mod_cast Nat.le_of_dvd hN0 h16`. Establish `het' : (e : ℝ) + 1 ≤ t` using `by exact_mod_cast Nat.succ_le_of_lt het`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `l hl ψ hψ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(hcorK _).1 l (Finset.mem_filter.2 ⟨hl, ψ, hψ, rfl⟩) ψ ((mem_orb _).2 rfl)`. Establish `hstep : ∀ l ∈ Ls, Real.log ((l : ℕ) : ℝ) * ∑ ψ ∈ h.X (c l) e, Vn Ω (c l) e ψ ≤ ∑ K' ∈ T, if (∃ ψ ∈ h.X (c l) e, (MulChar.toUnitHom ψ).ker = K') then Real.log ((l : ℕ) : ℝ) * ∑ ψ ∈ orb (c l) K', Vn Ω (c l) e ψ else 0`. Introduce `l hl`. Establish `hlog : 0 ≤ Real.log ((l : ℕ) : ℝ)` using `Real.log_natCast_nonneg _`. Rewrite using `[← Finset.sum_fiberwise_of_maps_to (hmapT l hl), Finset.mul_sum]`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `Finset.sum_le_sum fun K' _ => ?_` and prove the remaining obligations. Use `split_ifs with hex`. Apply `mul_le_mul_of_nonneg_left _ hlog` to reduce the goal to its premises. Apply `Finset.sum_le_sum_of_subset_of_nonneg` to reduce the goal to its premises. Introduce `ψ hψ`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(mem_orb _).2 (Finset.mem_filter.1 hψ).2`. Introduce `ψ _ _`. Conclude with `Vn_nonneg Ω _ e ψ`. Establish `hempty : (h.X (c l) e).filter (fun ψ => (MulChar.toUnitHom ψ).ker = K') = ∅`. Rewrite using `[Finset.filter_eq_empty_iff]`.
-
-Introduce `ψ hψ hk`. Conclude with `hex ⟨ψ, hψ, hk⟩`. Rewrite using `[hempty, Finset.sum_empty, mul_zero]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.sum_comm]`.
-
-Use `Finset.sum_congr rfl fun K' _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_filter]`. Use `_ ≤ ∑ K' ∈ T, 2 * (c₅ : ℝ) * (K'.index.totient : ℝ) * ((h.N : ℝ) * ((e : ℝ) + 1)) ^ A * (Real.log r₁ + Real.log r₂) := Finset.sum_le_sum fun K' _ => (hcorK K').2`. Use `_ = (2 * (c₅ : ℝ) * (Real.log r₁ + Real.log r₂)) * ((h.N : ℝ) * ((e : ℝ) + 1)) ^ A * ∑ K' ∈ T, ((K'.index.totient : ℕ) : ℝ) := by`. Rewrite using `[Finset.mul_sum]`.
-
-Conclude with `Finset.sum_congr rfl fun K' _ => by ring`. Use `_ ≤ (2 * (c₅ : ℝ) * (Real.log r₁ + Real.log r₂)) * ((h.N : ℝ) * ((e : ℝ) + 1)) ^ A * (h.N : ℝ) := mul_le_mul_of_nonneg_left hsumT (mul_nonneg (mul_nonneg (mul_nonneg (by norm_num) hc5) hL) hP)`. Use `_ = (2 * (c₅ : ℝ) * (Real.log r₁ + Real.log r₂)) * (h.N : ℝ) * ((h.N : ℝ) * ((e : ℝ) + 1)) ^ A := by ring`. Use `_ ≤ ((h.N : ℝ) * (t : ℝ)) ^ (k + 1 + A) := absorb _ _ _ _ k A hk.le hN16 (Nat.cast_nonneg e) het'`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.U3.countI :
     CorGK → CountI := by

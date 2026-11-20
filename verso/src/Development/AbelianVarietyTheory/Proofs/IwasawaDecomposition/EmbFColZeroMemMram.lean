@@ -31,17 +31,17 @@ variable {K : Type} [Field K] [NumberField K] [StarRing K] (C : CSD K)
   Del _ := ⊥
 
 /- English proof (translation)
-Establish `hs : IsSesq (fun v (x y : C.Forms) => ∑ c, ((C.wt c : ℕ) : ℂ)⁻¹ * (valDatum C).pairAt v (x.1 c) (y.1 c))`. Introduce `v`. Use `⟨fun x x' y => ?_, fun x y y' => ?_, fun a x y => ?_, fun a x y => ?_⟩` and prove the remaining obligations. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← mul_add, ← GSD.pairAt_add_left]`. Both sides reduce to the same expression. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[← mul_add, ← GSD.pairAt_add_right]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[mul_left_comm, ← GSD.pairAt_smul_left]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[mul_left_comm, ← GSD.pairAt_smul_right]`. Both sides reduce to the same expression. Establish `hg : gramOf C.basis (fun (x y : C.Forms) => ∑ c, ((C.wt c : ℕ) : ℂ)⁻¹ * (valDatum C).pairAt v (x.1 c) (y.1 c)) = C.H.map v.embedding`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Use extensionality with `a a'`. Simplify using `only [gramOf, Matrix.of_apply, Matrix.map_apply, CSD.H, CSD.csum, map_sum, map_mul, map_inv₀, map_natCast]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Use `congr 1`. Conclude with `((valDatum C).pairAt_of_rat v _ _ fun i => C.basis_rat hb a c i).symm`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[sesq_eq_sum (isSesq_maj C.basis (stdFrame C.H)) C.basis v x y, sesq_eq_sum hs C.basis v x y, gramOf_maj, hg]`. Use `(frameOfSpec _ _ (hp v)).2` as an intermediate fact. Unfold `metOf at this`. Unfold `stdFrame`. Rewrite using `[this]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem majAt_eq_classSum (hb : C.HasRatBasis) (hp : ∀ v : InfinitePlace K, (C.H.map v.embedding).PosDef)
     (v : InfinitePlace K) (x y : C.Forms) :
@@ -103,30 +103,30 @@ theorem deco_smul (hΛ : ∀ b, Λ b = Λ₀) (b : β) (g : (stepY ST y β Λ Θ
     (g • p).1.1.deco = down pref hΛ b g • p.1.1.deco := rfl
 
 /- English proof (translation)
-Substitute `h` using the available equality. Conclude with `LevQFam.top_chr c`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem chr_eq_one {Θ' : LevQFam X.E X.K n Q} (h : Θ' = LevQFam.top X.E X.K n Q) (c : Θ'.grp) : Θ'.chr c = 1 := by
   subst h
   exact LevQFam.top_chr c
 
 /- English proof (translation)
-Substitute `h` using the available equality. Conclude with `(Subgroup.mem_pi _).2 fun _ _ => Subgroup.mem_top _`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem mem_grp {Θ' : LevQFam X.E X.K n Q} (h : Θ' = LevQFam.top X.E X.K n Q) (c : GLQ X.E n Q) : c ∈ Θ'.grp := by
   subst h
   exact (Subgroup.mem_pi _).2 fun _ _ => Subgroup.mem_top _
 
 /- English proof (translation)
-Substitute `h` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem chr_congr {Λ' : LevFam X.E X.K n SG} (h : Λ' = Λ₀) (a : Λ'.grp) : Λ'.chr a = Λ₀.chr ⟨a.1, h ▸ a.2⟩ := by
   subst h
   rfl
 
 /- English proof (translation)
-Establish `h : (stepY ST y β Λ Θ pref).chr b g = Λ₀.chr (down pref hΛ b g).2` using `by show (Λ b).chr g.2.1 * (Θ b).chr g.2.2 = _`. Rewrite using `[chr_eq_one (hΘ b), mul_one, chr_congr (hΛ b)]`. Both sides reduce to the same expression. Use `show (((stepY ST y β Λ Θ pref).chr b g : X.Kˣ) : X.K) • rhoVr X.emb lam ((stepY ST y β Λ Θ pref).gam b g) = _`. Rewrite using `[h]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem rho_eq (hΛ : ∀ b, Λ b = Λ₀) (hΘ : ∀ b, Θ b = LevQFam.top X.E X.K n Q) (b : β) (g : (stepY ST y β Λ Θ pref).G b) :
     (stepY ST y β Λ Θ pref).rho X.emb lam b g = (base ST lam Λ₀).ρ (down pref hΛ b g) := by
@@ -139,7 +139,7 @@ theorem rho_eq (hΛ : ∀ b, Λ b = Λ₀) (hΘ : ∀ b, Θ b = LevQFam.top X.E 
   rfl
 
 /- English proof (translation)
-Rewrite using `[rho_eq pref lam hΛ hΘ]`. Conclude with `φ.2 (down pref hΛ b g) p.1.1.deco`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem form_smul (hΛ : ∀ b, Λ b = Λ₀) (hΘ : ∀ b, Θ b = LevQFam.top X.E X.K n Q) (φ : (base ST lam Λ₀).EqFun) (b : β)
     (g : (stepY ST y β Λ Θ pref).G b) (p : (stepY ST y β Λ Θ pref).D b) :
@@ -148,7 +148,7 @@ theorem form_smul (hΛ : ∀ b, Λ b = Λ₀) (hΘ : ∀ b, Θ b = LevQFam.top X
   exact φ.2 (down pref hΛ b g) p.1.1.deco
 
 /- English proof (translation)
-Establish `h1` using `p.2`. Establish `h2` using `q.2`. Rewrite `h1`, `h2` using `[hy, Set.mem_singleton_iff]`. Conclude with `Subtype.ext (Prod.ext h (h1.trans h2.symm))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pt_ext (hy : ∀ N, y.ys N = {∅}) {p q : PtY ST SG Q y} (h : p.1.1 = q.1.1) : p = q := by
   have h1 := p.2
@@ -157,7 +157,7 @@ theorem pt_ext (hy : ∀ N, y.ys N = {∅}) {p q : PtY ST SG Q y} (h : p.1.1 = q
   exact Subtype.ext (Prod.ext h (h1.trans h2.symm))
 
 /- English proof (translation)
-Take `⟨c, hc⟩` from `GlobalTheory.FramedForms.exists_smul_of_deco_eq (p := ((g₀.1, g₀.2.1, 1) : UF X.E n × GLG X.E n SG × GLQ X.E n Q) • p.1.1) (q := q.1.1) h`. Use `⟨(g₀.1, ⟨g₀.2.1, (hΛ b).symm ▸ g₀.2.2⟩, ⟨c, mem_grp (hΘ b) c⟩), rfl, pt_ext hy ?_⟩` and prove the remaining obligations. Rewrite using `[hc, smul_smul]`. Simplify using `only [Prod.mk_mul_mk, one_mul, mul_one]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem exists_lift (hy : ∀ N, y.ys N = {∅}) (hΛ : ∀ b, Λ b = Λ₀) (hΘ : ∀ b, Θ b = LevQFam.top X.E X.K n Q) (b : β)
     (p q : (stepY ST y β Λ Θ pref).D b) (g₀ : FormG Λ₀) (h : g₀ • p.1.1.deco = q.1.1.deco) :
@@ -170,16 +170,16 @@ theorem exists_lift (hy : ∀ N, y.ys N = {∅}) (hΛ : ∀ b, Λ b = Λ₀) (h�
   rfl
 
 /- English proof (translation)
-Take `⟨γ, -, hγ⟩` from `GlobalTheory.SemilocalBasis.exists_equiv X.E n Q d.1.N d.2.lat`. Conclude with `⟨⟨(⟨(d, fun _ => γ), fun P x => hγ P.1 P.2 x⟩, ∅), by rw [hy]; rfl⟩, rfl⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_pt (hy : ∀ N, y.ys N = {∅}) (d : DecoSet X.E n ST SG) : ∃ p : PtY ST SG Q y, p.1.1.deco = d := by
   obtain ⟨γ, -, hγ⟩ := GlobalTheory.SemilocalBasis.exists_equiv X.E n Q d.1.N d.2.lat
   exact ⟨⟨(⟨(d, fun _ => γ), fun P x => hγ P.1 P.2 x⟩, ∅), by rw [hy]; rfl⟩, rfl⟩
 
 /- English proof (translation)
-Use `Nat.card_congr (Equiv.ofBijective (fun g => ⟨down pref hΛ b g.1, (deco_smul pref hΛ b g.1 p).symm.trans (congrArg (fun q => q.1.1.deco) g.2)⟩) ⟨?_, ?_⟩)` and prove the remaining obligations. Introduce `g g' h`. Establish `h1 : g.1.1 = g'.1.1` using `congrArg (fun a => a.1.1) h`. Establish `h2 : (g.1⁻¹ * g'.1) = 1` using `stepY_eq_one y β Λ Θ pref b _ p (g⁻¹ * g').2 (by show g.1.1⁻¹ * g'.1.1 = 1`. Rewrite using `[h1, inv_mul_cancel])`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Subtype.ext (inv_mul_eq_one.1 h2)`. Introduce `g₀`. Take `⟨g, h1, h2⟩` from `exists_lift pref hy hΛ hΘ b p p g₀.1 g₀.2`. Conclude with `⟨⟨g, h2⟩, Subtype.ext h1⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem card_stab (hy : ∀ N, y.ys N = {∅}) (hΛ : ∀ b, Λ b = Λ₀) (hΘ : ∀ b, Θ b = LevQFam.top X.E X.K n Q) (b : β)
     (p : (stepY ST y β Λ Θ pref).D b) :
@@ -201,7 +201,7 @@ def clMap (c : (stepY ST y β Λ Θ pref).Cl) : (base ST lam Λ₀).Cl :=
   (base ST lam Λ₀).cls ((stepY ST y β Λ Θ pref).rep c).1.1.deco
 
 /- English proof (translation)
-Use `conv_rhs => rw [← (stepY ST y β Λ Θ pref).mv_smul b p, deco_smul pref hΛ]`. Conclude with `((base ST lam Λ₀).cls_smul _ _).symm`.
+A detailed English derivation is pending.
 -/
 theorem clMap_cl (hΛ : ∀ b, Λ b = Λ₀) (b : β) (p : (stepY ST y β Λ Θ pref).D b) :
     clMap (Λ₀ := Λ₀) pref lam ((stepY ST y β Λ Θ pref).cl b p) = (base ST lam Λ₀).cls p.1.1.deco := by
@@ -209,11 +209,11 @@ theorem clMap_cl (hΛ : ∀ b, Λ b = Λ₀) (b : β) (p : (stepY ST y β Λ Θ 
   exact ((base ST lam Λ₀).cls_smul _ _).symm
 
 /- English proof (translation)
-Use `⟨?_, fun c₀ => ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨b, q⟩ ⟨b', q'⟩ h`. Take `rfl : b = b'` from `Subsingleton.elim _ _`. Take `⟨g₀, hg⟩` from `((base ST lam Λ₀).cls_eq_iff _ _).1 h`. Take `⟨g, -, h2⟩` from `exists_lift pref hy hΛ hΘ b _ _ g₀ hg`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `congr 1`. Rewrite using `[← (stepY ST y β Λ Θ pref).rp_spec b q, ← (stepY ST y β Λ Θ pref).rp_spec b q']`. Conclude with `Quotient.sound ⟨g, h2⟩`. Proceed by induction on `c₀ using Quotient.inductionOn' with`. Consider the case `h d`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨p, rfl⟩` from `exists_pt (Q := Q) hy d`. Conclude with `⟨(stepY ST y β Λ Θ pref).cl default p, clMap_cl pref lam hΛ default p⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem clMap_bijective [Unique β] (hy : ∀ N, y.ys N = {∅}) (hΛ : ∀ b, Λ b = Λ₀)
     (hΘ : ∀ b, Θ b = LevQFam.top X.E X.K n Q) :
@@ -249,11 +249,11 @@ def formMap (hΛ : ∀ b, Λ b = Λ₀) (hΘ : ∀ b, Θ b = LevQFam.top X.E X.K
   map_smul' _ _ := rfl
 
 /- English proof (translation)
-Use `⟨fun φ ψ e => ?_, fun f => ?_⟩` and prove the remaining obligations. Apply `((base ST lam Λ₀).resOf h₀ (sec pref lam hy hΛ hΘ)).injective` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `c`. Conclude with `congrFun (congrArg Subtype.val e) ((clEquiv pref lam hy hΛ hΘ).symm c)`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Introduce a local definition for the expression.
 
-Set `f₀ : ((base ST lam Λ₀).toCSDOf h₀ (sec pref lam hy hΛ hΘ)).Forms` to `⟨fun c => f.1 ((clEquiv pref lam hy hΛ hΘ).symm c), fun c g₀ => by`. Take `⟨g, h1, h2⟩` from `exists_lift pref hy hΛ hΘ _ _ _ g₀.1 g₀.2`. Establish `h3` using `f.2 ((clEquiv pref lam hy hΛ hΘ).symm c) ⟨g, h2⟩`. Establish `h4` using `rho_eq pref lam hΛ hΘ _ g`. Rewrite `h4` using `[h1]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(LinearMap.congr_fun h4 _).symm.trans h3⟩`. Use `⟨((base ST lam Λ₀).resOf h₀ (sec pref lam hy hΛ hΘ)).symm f₀, Subtype.ext (funext fun c => ?_)⟩` and prove the remaining obligations. Take `⟨c₀, rfl⟩` from `(clEquiv pref lam hy hΛ hΘ).symm.surjective c`. Conclude with `congrFun (congrArg Subtype.val (((base ST lam Λ₀).resOf h₀ (sec pref lam hy hΛ hΘ)).apply_symm_apply f₀)) c₀`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem formMap_bijective [Unique β] (hy : ∀ N, y.ys N = {∅}) (hΛ : ∀ b, Λ b = Λ₀)
     (hΘ : ∀ b, Θ b = LevQFam.top X.E X.K n Q) (h : ((stepY ST y β Λ Θ pref).fam X.emb lam).Ok) (h₀ : (base ST lam Λ₀).Ok) :
@@ -290,7 +290,7 @@ variable {X : Fields} {Pr : Primes X} {R : Ranks} (W : Wts X Pr.Word R) {Ch : Ch
   {G : ChGlob X R.m} {m2 : ℕ} (Tp : TopLev X Pr R (QE sel (mu : Chr X.F X.E X.K))) (u : Pr.Word)
 
 /- English proof (translation)
-The claim follows from `lt_of_lt_of_le (by norm_num) R.two_le_m`.
+A detailed English derivation is pending.
 -/
 theorem m_pos (R : Ranks) : 0 < R.m := lt_of_lt_of_le (by norm_num) R.two_le_m
 
@@ -301,7 +301,7 @@ theorem lamT_eq (j : ℕ) : lamT (W.hc u) j = W.lamTrue u j := rfl
 
 variable (sel mu cst) in
 /- English proof (translation)
-Establish `h : ¬ (0 + 1 = R.m)` using `by have := R.two_le_m; omega`. Unfold `ysAt`. Rewrite using `[if_neg h]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem ysAt_zero (N : Submodule (𝓞 X.E) (Sp X.E (R.N 0))) : (ysAt R sel mu cst 0).ys N = {∅} := by
   have h : ¬ (0 + 1 = R.m) := by have := R.two_le_m; omega
@@ -317,7 +317,7 @@ theorem ysAt_zero (N : Submodule (𝓞 X.E) (Sp X.E (R.N 0))) : (ysAt R sel mu c
     · exact Subtype.ext (congrArg some (hL.zero_uniq.choose_spec b))
 
 /- English proof (translation)
-Take `⟨_ | b, hb⟩` from `b`. Conclude with `absurd (hb.2 (m_pos R)) (by simp)`. Conclude with `hL.zero_G b`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem levGAt_zero (hL : L.Ok Ch sel mu cst G m2) (b : Idx sel mu L 0) : levGAt sel mu L Tp 0 b = colLev Ch 0 := by
   obtain ⟨_ | b, hb⟩ := b
@@ -325,7 +325,7 @@ theorem levGAt_zero (hL : L.Ok Ch sel mu cst G m2) (b : Idx sel mu L 0) : levGAt
   · exact hL.zero_G b
 
 /- English proof (translation)
-Take `⟨_ | b, hb⟩` from `b`. Conclude with `absurd (hb.2 (m_pos R)) (by simp)`. Conclude with `hL.zero_Q b`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem levQAt_zero (hL : L.Ok Ch sel mu cst G m2) (b : Idx sel mu L 0) :
     levQAt sel mu L Tp 0 b = LevQFam.top X.E X.K (R.N 0) _ := by
@@ -352,7 +352,7 @@ variable (rho : ∀ i (b : Idx sel mu L i), (stepAt sel mu cst L Tp u i).D b →
   (xi0 : X.E) (du : ℕ) (Ds Gp : ℝ) (σ : X.K →+* ℂ)
 
 /- English proof (translation)
-The claim follows from `inj_of_li σ _ (T.hlat emb lam h).b (T.lawBasis_of_ok emb σ lam h).1`.
+A detailed English derivation is pending.
 -/
 theorem embF_injective {E K ι : Type} [Field E] [NumberField E] [StarRing E] [Field K] [NumberField K] [StarRing K] [Fintype ι]
     {n : ℕ} (T : GStep E K n) (emb : ι → E →+* K) (σ : K →+* ℂ) (lam : ι → DomWeight n) (h : (T.fam emb lam).Ok) :
@@ -360,7 +360,7 @@ theorem embF_injective {E K ι : Type} [Field E] [NumberField E] [StarRing E] [F
   inj_of_li σ _ (T.hlat emb lam h).b (T.lawBasis_of_ok emb σ lam h).1
 
 /- English proof (translation)
-Rewrite using `[← (T.lawBasis_of_ok emb σ lam h).2]`. Conclude with `mem_span_basis_image σ (T.hlat emb lam h).b _ x`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem embF_mem_Fi {E K ι : Type} [Field E] [NumberField E] [StarRing E] [Field K] [NumberField K] [StarRing K] [Fintype ι]
     {n : ℕ} (T : GStep E K n) (emb : ι → E →+* K) (σ : K →+* ℂ) (lam : ι → DomWeight n) (h : (T.fam emb lam).Ok)

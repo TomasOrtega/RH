@@ -5,23 +5,21 @@ open MeasureTheory
 namespace GlobalTheory.CoordBox
 
 /- English proof (translation)
-Use `set n := Fintype.card K with hn`. Set `o : OrthonormalBasis K ℝ V` to `(stdOrthonormalBasis ℝ V).reindex (Fintype.equivFinOfCardEq hK).symm`. Set `v : K → V` to `fun k => (2 * t) • w k`. Set `a : V` to `-∑ k, t • w k`. Establish `hsub : {y : V | ∃ c : K → ℝ, (∀ k, |c k| ≤ t) ∧ y = ∑ k, c k • w k} ⊆ (fun x => x + a) '' parallelepiped v`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `y ⟨c, hc, rfl⟩`. Use `set s : K → ℝ := fun k => (c k + t) / (2 * t) with hs`. Establish `hkey : ∀ k, s k * (2 * t) = c k + t`. Introduce `k`. Break down `ht.eq_or_lt with h0 | hpos` into its components or cases.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hck : c k = 0`. Use `hc k` as an intermediate fact. Rewrite `this` using `[← h0]`. Conclude with `abs_nonpos_iff.mp this`. Simplify using `[hs, ← h0, hck]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [hs]`. Clear the denominators using the available nonvanishing facts. Use `⟨∑ k, s k • v k, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[mem_parallelepiped_iff]`. Use `⟨s, ?_, rfl⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Prove the components needed by the constructor for the conclusion. Introduce `k`. Establish `h1` using `(abs_le.mp (hc k)).1`. Conclude with `div_nonneg (by linarith) (by linarith)`. Introduce `k`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Establish an intermediate fact.
 
-Establish `h2` using `(abs_le.mp (hc k)).2`. Conclude with `div_le_one_of_le₀ (by linarith) (by linarith)`. Simplify using `only [v, a, smul_smul, hkey, add_smul, Finset.sum_add_distrib]`. Normalize the expressions using the abelian group laws. Establish `hvol : volume (parallelepiped v) = ENNReal.ofReal ((2 * t) ^ n * |o.toBasis.det w|)`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← o.addHaar_eq_volume, MeasureTheory.Measure.addHaar_parallelepiped]`. Use `congr 1`. Establish `hsm : o.toBasis.det v = (∏ _k : K, (2 * t)) • o.toBasis.det w` using `o.toBasis.det.toMultilinearMap.map_smul_univ (fun _ => 2 * t) w`. Rewrite using `[hsm, Finset.prod_const, Finset.card_univ, smul_eq_mul, abs_mul, abs_pow, abs_of_nonneg (by linarith : (0:ℝ) ≤ 2 * t)]`. Establish `hdet : |o.toBasis.det w| ≤ ∏ k, ‖w k‖`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Use `GlobalTheory.Hadamard.norm_orthonormalBasis_det_le (𝕜 := ℝ) o w` as an intermediate fact. Simplify `this` using `[Real.norm_eq_abs]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Set.image_add_right, measure_preimage_add_right]`. Use `_ = ENNReal.ofReal ((2 * t) ^ n * |o.toBasis.det w|) := hvol`.
-
-Use `_ ≤ ENNReal.ofReal ((2 * t) ^ Fintype.card K * ∏ k, ‖w k‖) := by`. Apply `ENNReal.ofReal_le_ofReal` to reduce the goal to its premises. Conclude with `mul_le_mul_of_nonneg_left hdet (pow_nonneg (by linarith) _)`.
+A detailed English derivation is pending.
 -/
 theorem volume_coordBox_le (V : Type) [NormedAddCommGroup V] [InnerProductSpace ℝ V]
     [FiniteDimensional ℝ V] [MeasurableSpace V] [BorelSpace V] (K : Type) [Fintype K]

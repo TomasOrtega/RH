@@ -8,11 +8,11 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `K L _ _ _ _ v v' f hf`. Use `letI := f.toAlgebra`. Introduce `hfd`. Use `letI : NontriviallyNormedField (v.adicCompletion K) := Valued.toNontriviallyNormedField _ _`. Use `haveI : CompleteSpace (v.adicCompletion K) := inferInstance`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations.
 
-Use `haveI : ContinuousSMul (v.adicCompletion K) (v'.adicCompletion L) := continuousSMul_of_algebraMap _ _ hf`. Use `⟨LinearMap.continuous_of_finiteDimensional _, ?_⟩` and prove the remaining obligations. Set `b` to `Module.finBasis (v.adicCompletion K) (v'.adicCompletion L)`. Establish `hn : (Algebra.norm (v.adicCompletion K) : v'.adicCompletion L → v.adicCompletion K) = fun y => (Algebra.leftMulMatrix b y).det`. Use function extensionality and compare the values at `y`.
+Introduce a local definition for the expression. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Algebra.norm_eq_matrix_det b y`. Rewrite using `[hn]`. Establish `hl : Continuous (fun y => Algebra.leftMulMatrix b y)` using `(LinearMap.continuous_of_finiteDimensional (Algebra.leftMulMatrix b).toLinearMap)`. Conclude with `hl.matrix_det`.
+A detailed English derivation is pending.
 -/
 theorem adicCompletion_trace_norm_continuous : ∀ (K L : Type) [Field K] [NumberField K] [Field L] [NumberField L] (v : HeightOneSpectrum (𝓞 K)) (v' : HeightOneSpectrum (𝓞 L)) (f : v.adicCompletion K →+* v'.adicCompletion L), Continuous f → letI := f.toAlgebra; FiniteDimensional (v.adicCompletion K) (v'.adicCompletion L) → Continuous (Algebra.trace (v.adicCompletion K) (v'.adicCompletion L)) ∧ Continuous (Algebra.norm (v.adicCompletion K) : v'.adicCompletion L → v.adicCompletion K) := by
   intro K L _ _ _ _ v v' f hf

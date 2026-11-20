@@ -7,9 +7,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.TwV.DelA
 
 /- English proof (translation)
-Introduce `p _ X D pos i n h a Q R hR`. Establish `hmem : Q ∈ (relPhi X D pos i h a).map (LinearMap.fst ℂ _ _)` using `Submodule.mem_map.2 ⟨(Q, R), hR, rfl⟩`. Establish `hsel : Realises X D pos i h a Q (phiC X D pos i h a Q)` using `selOf_mem (relPhi X D pos i h a) Q hmem`. Establish `hz : phiC X D pos i h a Q - R = 0`. Apply `GlobalTheory.T.evalModelPolynomialOnStdFrames_injective X D pos i h` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `f`. Rewrite using `[map_sub, Pi.sub_apply, hsel f, hR f, sub_self]`. Conclude with `sub_eq_zero.1 hz`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem phiC_eq_of_realises : ∀ {p : ℕ} [Fact p.Prime] (X : Sys p) (D : D7) (pos : (Σ v : X.Pl, Fin (X.G.P.n' v)) ≃ D.what₂.Tau) (i : ℕ) {n : ℕ} (h : (X.Pj i).m + 1 = n) (a : D.what₂.Tau → ℤ) (Q : MvPolynomial (GL3Theta.FrV D n) ℂ) (R : XR (X.Pj i) ℂ), Realises X D pos i h a Q R → phiC X D pos i h a Q = R := by
   intro p _ X D pos i n h a Q R hR

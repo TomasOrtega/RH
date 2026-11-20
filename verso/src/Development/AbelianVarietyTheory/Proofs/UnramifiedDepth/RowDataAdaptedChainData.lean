@@ -23,11 +23,11 @@ def intRing (V : VF C) : Subring C where
   neg_mem' := fun ha => ha.neg
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa [zero_pow (pow_pos V.l_prime.pos k).ne'] using VF.Ge.zero 1`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.sum_insert ha, Finset.sum_insert ha]`. Establish `hs : V.Ge 0 (∑ i ∈ s, f i)` using `VF.Ge.sum fun i _ => hf i`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨r, hr⟩` from `exists_add_pow_prime_pow_eq V.l_prime (⟨f a, hf a⟩ : intRing V) ⟨_, hs⟩ k`. Establish `hr'` using `congrArg Subtype.val hr`. Simplify using `only [Subring.coe_add, Subring.coe_mul, SubmonoidClass.coe_pow, Subring.coe_natCast] at hr'`. Establish `h1 : V.Ge 1 ((V.l : C) * (f a * (∑ i ∈ s, f i) * (r : C)))`. Simplify using `using (((hf a).mul_int hs).mul_int r.2).l_mul`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `h1.add ih` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Rewrite using `[hr']`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem frob_sum {ι : Type} (s : Finset ι) (f : ι → C) (hf : ∀ i, V.Ge 0 (f i)) (k : ℕ) :
     V.Ge 1 ((∑ i ∈ s, f i) ^ (V.l ^ k) - ∑ i ∈ s, f i ^ (V.l ^ k)) := by
@@ -46,11 +46,11 @@ theorem frob_sum {ι : Type} (s : Finset ι) (f : ι → C) (hf : ∀ i, V.Ge 0 
     rw [hr']; ring
 
 /- English proof (translation)
-Unfold `VF.Ge at h ⊢`. Rewrite `h` using `[V.v.map_pow]`. Proceed by induction on `hv : V.v x using WithTop.recTopCoe with`. Consider the case `top => exact le_top`. Consider the case `coe t`.
+Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Rewrite `h` using `[hv]`. Establish `h' : ((0 : ℝ) : WithTop ℝ) ≤ ((n • t : ℝ) : WithTop ℝ)`. Rewrite using `[WithTop.coe_nsmul]`. Conclude with `h`. Establish `h'' : (0 : ℝ) ≤ n • t` using `by exact_mod_cast h'`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h''` using `[nsmul_eq_mul]`. Establish `hn' : (0 : ℝ) < n` using `by exact_mod_cast Nat.pos_of_ne_zero hn`. Establish `: 0 ≤ t` using `by by_contra hc; push_neg at hc; nlinarith`. Conclude with `this` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem int_of_pow {x : C} {n : ℕ} (hn : n ≠ 0) (h : V.Ge 0 (x ^ n)) : V.Ge 0 x := by
   unfold VF.Ge at h ⊢
@@ -72,9 +72,7 @@ def admitted (V : VF C) (Q : Finset I) (P : Matrix I I C) : Prop :=
     ∀ c ∈ Q, ∀ x, x ∉ Q → P c x = 0
 
 /- English proof (translation)
-Use `⟨fun c x => ?_, by simp, fun c _ x => by simp [Matrix.one_apply, eq_comm], fun c hc x hx => ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.one_apply]`. Use `split_ifs`. Conclude with `VF.Ge.one`. Conclude with `VF.Ge.zero 0`.
-
-Conclude with `Matrix.one_apply_ne (fun h => hx (h ▸ hc))`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isAdmissibleIntegralBasisChange_one (Q : Finset I) : admitted V Q (1 : Matrix I I C) := by
   refine ⟨fun c x => ?_, by simp, fun c _ x => by simp [Matrix.one_apply, eq_comm], fun c hc x hx => ?_⟩
@@ -84,29 +82,27 @@ theorem isAdmissibleIntegralBasisChange_one (Q : Finset I) : admitted V Q (1 : M
   · exact Matrix.one_apply_ne (fun h => hx (h ▸ hc))
 
 /- English proof (translation)
-Distinguish the cases in `h0 : ∀ c ∈ Q, a c = 0`. Use `⟨1, Q, isAdmissibleIntegralBasisChange_one Q, subset_rfl, by omega, fun c hc => ?_⟩` and prove the remaining obligations. Simplify using `[Matrix.one_apply, h0 c hc]`. Use `push_neg at h0`. Take `⟨c1, hc1, ha1⟩` from `h0`.
+Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨c0, hc0, hmin⟩` from `Q.exists_min_image (fun c => V.v (a c)) ⟨c1, hc1⟩`. Establish `ha0 : a c0 ≠ 0`. Introduce `h`. Use `hmin c1 hc1` as an intermediate fact. Simplify using `only [h, V.v.map_zero, top_le_iff] at this`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `ha1 (by simpa using this)`. Establish `hint : ∀ c ∈ Q, V.Ge 0 (a c / a c0)`. Introduce `c hc`. Establish `h1` using `hmin c hc`. Establish `h2 : V.v (a c) = V.v (a c / a c0) + V.v (a c0)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← V.v.map_mul, div_mul_cancel₀ _ ha0]`. Establish `h3 : V.v (a c0) ≠ ⊤` using `by simpa using ha0`. Rewrite `h1` using `[h2]`. Unfold `VF.Ge`. Establish `: (0 : WithTop ℝ) + V.v (a c0) ≤ V.v (a c / a c0) + V.v (a c0)` using `by simpa using h1`.
+Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(WithTop.add_le_add_iff_right h3).mp this`. Use `set col : I → C := fun c => if c = c0 then 1 else if c ∈ Q then -(a c / a c0) else 0 with hcol`. Use `⟨Matrix.updateCol 1 c0 col, Q.erase c0, ⟨?_, ?_, ?_, ?_⟩, Finset.erase_subset _ _, ?_, ?_⟩` and prove the remaining obligations. Introduce `c x`. Rewrite using `[Matrix.updateCol_apply]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `split_ifs with h`. Simplify using `only [hcol] split_ifs with h1 h2`. Conclude with `VF.Ge.one`. Conclude with `(hint c h2).neg`. Conclude with `VF.Ge.zero 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Conclude with `(isAdmissibleIntegralBasisChange_one Q).1 c x`. Rewrite using `[← Matrix.cramer_apply, Matrix.cramer_one]`. Simplify using `[hcol]`. Introduce `c hc x`. Establish `: c ≠ c0` using `fun h => hc (h ▸ hc0)`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.updateCol_apply]`. Distinguish the cases in `h : x = c0`. Substitute `h` using the available equality. Simplify using `[hcol, this, hc, this.symm]`. Simplify using `[h, Matrix.one_apply, eq_comm]`.
+Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `c hc x hx`. Establish `: x ≠ c0` using `fun h => hx (h ▸ hc0)`. Rewrite using `[Matrix.updateCol_apply, if_neg this]`. Conclude with `Matrix.one_apply_ne (fun h => hx (h ▸ hc))`. Rewrite using `[Finset.card_erase_of_mem hc0]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Use linear arithmetic over natural numbers and integers. Introduce `c hc`. Take `⟨hne, hcQ⟩` from `Finset.mem_erase.mp hc`. Establish `: ∀ x, Matrix.updateCol (1 : Matrix I I C) c0 col c x * a x = (if x = c0 then -(a c) else 0) + (if x = c then a c else 0)`. Introduce `x`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[Matrix.updateCol_apply]`. Distinguish the cases in `h : x = c0`. Substitute `h` using the available equality. Simplify using `[hcol, hne, hcQ, hne.symm, ha0]`. Distinguish the cases in `h' : x = c`.
-
-Substitute `h'` using the available equality. Simplify using `[h]`. Simplify using `[h, h', Matrix.one_apply_ne (Ne.symm h')]`. Simplify using `only [this, Finset.sum_add_distrib]`. Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem elim_one (Q : Finset I) (a : I → C) : ∃ (P : Matrix I I C) (Q' : Finset I), admitted V Q P ∧ Q' ⊆ Q ∧
     Q.card ≤ Q'.card + 1 ∧ ∀ c ∈ Q', ∑ x, P c x * a x = 0 := by
@@ -170,11 +166,11 @@ theorem elim_one (Q : Finset I) (a : I → C) : ∃ (P : Matrix I I C) (Q' : Fin
     simp
 
 /- English proof (translation)
-Use `⟨fun c x => ?_, ?_, fun c hc x => ?_, fun c hc x hx => ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mul_apply]`. Conclude with `VF.Ge.sum fun y _ => (h'.1 _ _).mul_int (h.1 _ _)`. Rewrite using `[Matrix.det_mul, V.v.map_mul, h.2.1, h'.2.1, add_zero]`. Rewrite using `[Matrix.mul_apply]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [h'.2.2.1 c (fun hh => hc (hQ hh))]`. Simplify using `[h.2.2.1 c hc x]`. Rewrite using `[Matrix.mul_apply]`. Use `Finset.sum_eq_zero fun y _ => ?_` and prove the remaining obligations. Distinguish the cases in `hy : y ∈ Q`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h.2.2.2 y hy x hx, mul_zero]`. Distinguish the cases in `hc' : c ∈ Q'`. Rewrite using `[h'.2.2.2 c hc' y (fun hh => hy (hQ hh)), zero_mul]`. Rewrite using `[h'.2.2.1 c hc' y, if_neg (fun hh : y = c => hy (hh ▸ hc)), zero_mul]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem admitted.mul {Q Q' : Finset I} (hQ : Q' ⊆ Q) {P P' : Matrix I I C} (h : admitted V Q P)
     (h' : admitted V Q' P') : admitted V Q (P' * P) := by
@@ -193,13 +189,13 @@ theorem admitted.mul {Q Q' : Finset I} (hQ : Q' ⊆ Q) {P P' : Matrix I I C} (h 
       · rw [h'.2.2.1 c hc' y, if_neg (fun hh : y = c => hy (hh ▸ hc)), zero_mul]
 
 /- English proof (translation)
-Proceed by induction on `E using Finset.induction_on with`. Consider the case `empty => exact ⟨1, Q, isAdmissibleIntegralBasisChange_one Q, subset_rfl, by simp, by simp⟩`. Consider the case `insert e E he ih`. Take `⟨P, Q1, hP, h1, hc1, hz⟩` from `ih`. Take `⟨P', Q2, hP', h2, hc2, hz'⟩` from `elim_one (V := V) Q1 (fun y => ∑ x, P y x * a x e)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨P' * P, Q2, hP.mul h1 hP', h2.trans h1, by rw [Finset.card_insert_of_notMem he]; omega, ?_⟩` and prove the remaining obligations. Introduce `c hc e' he'`. Establish `key : ∑ x, (P' * P) c x * a x e' = ∑ y, P' c y * ∑ x, P y x * a x e'`. Simplify using `only [Matrix.mul_apply, Finset.sum_mul, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [mul_assoc]`. Rewrite using `[key]`. Break down `Finset.mem_insert.mp he' with rfl | he'` into its components or cases. Conclude with `hz' c hc`. Use `Finset.sum_eq_zero fun y _ => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hy : y ∈ Q1`. Rewrite using `[hz y hy e' he', mul_zero]`. Rewrite using `[hP'.2.2.2 c (h2 hc) y hy, zero_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem elim {M : Type} (Q : Finset I) (a : I → M → C) (E : Finset M) :
     ∃ (P : Matrix I I C) (Q' : Finset I), admitted V Q P ∧ Q' ⊆ Q ∧
@@ -224,9 +220,9 @@ theorem elim {M : Type} (Q : Finset I) (a : I → M → C) (E : Finset M) :
       · rw [hP'.2.2.2 c (h2 hc) y hy, zero_mul]
 
 /- English proof (translation)
-Establish `hpos : 0 < V.l ^ k` using `pow_pos V.l_prime.pos k`. Use `choose r hr using fun x e => IsAlgClosed.exists_pow_nat_eq (w x e) hpos`. Take `⟨P, Q', hP, h1, h2, h3⟩` from `elim (V := V) Q r E`. Use `⟨P, Q', hP, h1, h2, fun c hc e he => ?_⟩` and prove the remaining obligations. Use `(frob_sum (V := V) Finset.univ (fun x => P c x * r x e) (fun x => (hP.1 c x).mul_int (int_of_pow hpos.ne' (by rw [hr]; exact hw x e))) k).neg` as an intermediate fact.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[h3 c hc e he, zero_pow hpos.ne']`. Simplify `this` using `[mul_pow, hr]`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem elim_frob [IsAlgClosed C] {M : Type} (Q : Finset I) (w : I → M → C)
     (hw : ∀ x e, V.Ge 0 (w x e)) (E : Finset M) (k : ℕ) :
@@ -242,15 +238,15 @@ theorem elim_frob [IsAlgClosed C] {M : Type} (Q : Finset I) (w : I → M → C)
   simpa [mul_pow, hr] using this
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Establish `h1 : (Matrix.of fun c' => ∑ x, w x c' • (fun c => U c x) : Matrix ι ι C) = 1`. Use extensionality with `c' c`. Simplify using `only [Matrix.of_apply, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Matrix.one_apply]`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[show (if c' = c then (1 : C) else 0) = if c = c' then 1 else 0 by simp [eq_comm], ← h]`. Simplify using `only [mul_comm]`. Establish `h2 : (1 : C) = ∑ f : ι → I, (∏ c', w (f c') c') * (Matrix.of fun c' c => U c (f c')).det`. Establish `e` using `(Matrix.detRowAlternating (n := ι) (R := C)).toMultilinearMap.map_sum (fun c' x => w x c' • (fun c => U c x))`. Simplify using `only [MultilinearMap.map_smul_univ, smul_eq_mul] at e`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `e1 : (Matrix.of fun c' => ∑ x, w x c' • (fun c => U c x) : Matrix ι ι C).det = 1`. Rewrite using `[h1, Matrix.det_one]`. Rewrite using `[← e1]`. Conclude with `e`. Establish `h3 : (0 : WithTop ℝ) < V.v (1 : C)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[h2]`. Use `V.v.map_lt_sum WithTop.zero_ne_top fun f _ => ?_` and prove the remaining obligations. Rewrite using `[V.v.map_mul]`. Establish `a1 : V.Ge 0 (∏ c', w (f c') c')` using `VF.Ge.prod fun c _ => hw _ _`. Establish `a2 : V.Ge 0 (Matrix.of fun c' c => U c (f c')).det` using `det_int _ fun _ _ => hU _ _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `a3 : (0 : WithTop ℝ) < V.v (Matrix.of fun c' c => U c (f c')).det` using `lt_of_le_of_ne a2 (hcon f).symm`. Conclude with `lt_of_lt_of_le a3 (le_add_of_nonneg_left a1)`. Simplify using `at h3`.
+A detailed English derivation is pending.
 -/
 theorem exists_unit_minor {ι : Type} [Fintype ι] (U : ι → I → C) (w : I → ι → C)
     (hU : ∀ c x, V.Ge 0 (U c x)) (hw : ∀ x c, V.Ge 0 (w x c))
@@ -285,13 +281,13 @@ theorem exists_unit_minor {ι : Type} [Fintype ι] (U : ι → I → C) (w : I �
 variable {X : Cart V d I J}
 
 /- English proof (translation)
-Use function extensionality and compare the values at `k`. Rewrite using `[← S.cur_zero_inl, ← S'.cur_zero_inl, h]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 -/
 theorem tan_eq {S S' : Sys X} {c : I} (h : S'.cur c = S.cur c) : S'.tan c = S.tan c := by
   funext k; rw [← S.cur_zero_inl, ← S'.cur_zero_inl, h]
 
 /- English proof (translation)
-Rewrite using `[← S.cur_zero_inl]; exact S.pure c 0 _ (by simpa using h)`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem tan_pure (S : Sys X) {c k : I} (h : X.ty (Sum.inl k) ≠ X.ty (Sum.inl c)) : S.tan c k = 0 := by
   rw [← S.cur_zero_inl]; exact S.pure c 0 _ (by simpa using h)
@@ -299,21 +295,19 @@ theorem tan_pure (S : Sys X) {c k : I} (h : X.ty (Sum.inl k) ≠ X.ty (Sum.inl c
 def Stable (V : VF C) (L : AddSubgroup (I → C)) : Prop := ∀ r, V.Ge 0 r → ∀ u ∈ L, r • u ∈ L
 
 /- English proof (translation)
-Establish `lpos : ∀ k : ℕ, V.l ^ k ≠ 0` using `fun k => (pow_pos V.l_prime.pos k).ne'`. Establish `hty : ∀ c x, X.ty (Sum.inl x) ≠ X.ty (Sum.inl c) → P c x = 0`. Introduce `c x h`. Distinguish the cases in `hc : c ∈ Q`. Conclude with `hP.2.2.2 c hc x (fun hx => h (by rw [hQ c hc, hQ x hx]))`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hP.2.2.1 c hc x, if_neg (fun hh : x = c => h (by rw [hh]))]`. Establish `hval : ∀ c i n, (∑ x, teich V.l (P c x) (S.cur x)) i n = ∑ x, P c x ^ (V.l ^ i) * S.cur x i n`. Introduce `c i n`. Simplify using `[Finset.sum_apply, teich]`. Use `⟨⟨fun c k => (P * S.U) c k, fun c => ∑ x, teich V.l (P c x) (S.cur x), fun c => ⟨?_, ?_, ?_⟩, ?_⟩, fun c hc => ?_, fun c hc => ?_, hval⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `X.Ty.sum_mem fun x _ => X.teich_mem _ (hP.1 _ _) _ (S.mem x)`. Use function extensionality and compare the values at `n`. Rewrite using `[hval]`. Consider the cases of `n with`. Consider the case `inl k => simp [S.cur_zero_inl, Matrix.mul_apply, Sys.U]`.
+Rewrite the conclusion using the stated equalities. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Consider the case `inr j => simp [S.be_zero]`. Introduce `i n hn`. Rewrite using `[hval]`. Use `Finset.sum_eq_zero fun x _ => ?_` and prove the remaining obligations. Distinguish the cases in `hx : X.ty (Sum.inl x) = X.ty (Sum.inl c)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[S.pure x i n (by rw [hx]; exact hn), mul_zero]`. Rewrite using `[hty c x hx, zero_pow (lpos i), zero_mul]`. Use `show V.v (P * S.U).det = 0`. Rewrite using `[Matrix.det_mul, V.v.map_mul, hP.2.1, zero_add]`. Conclude with `S.unimod`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `i n show (∑ x, teich V.l (P c x) (S.cur x)) i n = _`. Rewrite using `[hval]`. Simplify using `[hP.2.2.1 c hc, zero_pow (lpos i)]`. Establish `: (fun k => (P * S.U) c k) = ∑ x, P c x • S.tan x`. Use function extensionality and compare the values at `k`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Simplify using `[Matrix.mul_apply, Sys.U, Finset.sum_apply]`. Use `show (fun k => (P * S.U) c k) ∈ L`. Rewrite using `[this]`. Use `L.sum_mem fun x _ => ?_` and prove the remaining obligations. Distinguish the cases in `hx : x ∈ Q`.
-
-Conclude with `hL _ (hP.1 _ _) _ (hQL x hx)`. Rewrite using `[hP.2.2.2 c hc x hx, zero_smul]`. Conclude with `L.zero_mem`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem change (S : Sys X) (b : ZMod d) (Q : Finset I) (hQ : ∀ c ∈ Q, X.ty (Sum.inl c) = b)
     (L : AddSubgroup (I → C)) (hL : Stable V L) (hQL : ∀ c ∈ Q, S.tan c ∈ L)
@@ -359,15 +353,15 @@ theorem change (S : Sys X) (b : ZMod d) (Q : Finset I) (hQ : ∀ c ∈ Q, X.ty (
     · rw [hP.2.2.2 c hc x hx, zero_smul]; exact L.zero_mem
 
 /- English proof (translation)
-Establish `: ∀ c, ∃ y, X.IsCurve (X.ty (Sum.inl c)) (S.tan c) y ∧ (c ∉ Q → y = S.cur c) ∧ (c ∈ Q → ∀ k, y 1 (Sum.inl k) = 0)`. Introduce `c`. Distinguish the cases in `hc : c ∈ Q`. Take `⟨z, hz, hz0, hzp⟩` from `X.t4 (X.ty (Sum.inl c) + 1) (fun k => S.cur c 1 (Sum.inl k)) (h c hc) (fun k hk => S.pure c 1 _ (by simpa using hk))`. Use `⟨S.cur c - Vpow 1 z, ⟨X.Ty.sub_mem (S.mem c) (X.V_mem _ hz), ?_, ?_⟩, fun hh => absurd hc hh, fun _ k => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use function extensionality and compare the values at `n`. Simplify using `[Vpow, (S.curve c).2.1]`. Introduce `i n hn`. Simplify using `only [Pi.sub_apply, S.pure c i n hn, Vpow]`. Use `split_ifs with hi`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Rewrite using `[hzp (i - 1) n, sub_zero]`. Rewrite using `[Nat.cast_sub (by omega)]`. Introduce `hh`. Apply `hn` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hh]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Simplify using `[Vpow, hz0]`. Conclude with `⟨S.cur c, S.curve c, fun _ => rfl, fun hh => absurd hh hc⟩`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Use `choose y h1 h2 h3 using this`. Conclude with `⟨⟨S.tan, y, h1, S.unimod⟩, h2, rfl, h3⟩`.
+A detailed English derivation is pending.
 -/
 theorem modify (S : Sys X) (Q : Finset I) (h : ∀ c ∈ Q, ∀ k, V.Ge 0 (S.cur c 1 (Sum.inl k))) :
     ∃ S' : Sys X, (∀ c, c ∉ Q → S'.cur c = S.cur c) ∧ S'.tan = S.tan ∧
@@ -395,13 +389,11 @@ theorem modify (S : Sys X) (Q : Finset I) (h : ∀ c ∈ Q, ∀ k, V.Ge 0 (S.cur
   exact ⟨⟨S.tan, y, h1, S.unimod⟩, h2, rfl, h3⟩
 
 /- English proof (translation)
-Take `⟨P, Q', hP, h1, h2, h3⟩` from `elim_frob (V := V) Q (fun x k => (V.l : C) * S.cur x 1 (Sum.inl k)) (fun x k => by simpa using (X.bound0 1 _ (S.mem x) (Sum.inl k)).l_mul) (Finset.univ.filter fun k => X.ty (Sum.inl k) = b + 1) 1`. Take `⟨S1, a1, a2, a3⟩` from `change S b Q hQ L hL hQL P hP`. Take `⟨S2, b1, b2, b3⟩` from `modify S1 Q' (by`. Introduce `c hc k`. Distinguish the cases in `hk : X.ty (Sum.inl k) = b + 1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Use `h3 c hc k (by simpa using hk)` as an intermediate fact. Establish `e : ∑ x, P c x ^ V.l ^ 1 * ((V.l : C) * S.cur x 1 (Sum.inl k)) = (V.l : C) * S1.cur c 1 (Sum.inl k)`. Rewrite using `[a3, Finset.mul_sum]; exact Finset.sum_congr rfl fun x _ => by ring`. Rewrite `this` using `[e]`. Simplify using `using this.of_l_mul`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[S1.pure c 1 _ (by rw [hQ c (h1 hc)]; simpa using hk)]`. Conclude with `VF.Ge.zero 0)`. Use `⟨S2, Q', h1, h2, fun c hc => ?_, fun c hc => ?_, b3⟩` and prove the remaining obligations. Rewrite using `[b1 c (fun hh => hc (h1 hh)), a1 c hc]`. Rewrite using `[b2]`.
-
-Conclude with `a2 c hc`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem stepA [IsAlgClosed C] (S : Sys X) (b : ZMod d) (Q : Finset I) (hQ : ∀ c ∈ Q, X.ty (Sum.inl c) = b)
     (L : AddSubgroup (I → C)) (hL : Stable V L) (hQL : ∀ c ∈ Q, S.tan c ∈ L) :
@@ -429,31 +421,25 @@ theorem stepA [IsAlgClosed C] (S : Sys X) (b : ZMod d) (Q : Finset I) (hQ : ∀ 
   · rw [b2]; exact a2 c hc
 
 /- English proof (translation)
-Establish `lpos : ∀ k : ℕ, V.l ^ k ≠ 0` using `fun k => (pow_pos V.l_prime.pos k).ne'`. Use `set w : I → I → C := fun x e => if x ∈ Q then S.co (fun n => (V.l : C) * S.cur x 2 n) e else 0 with hw`. Establish `hwi : ∀ x e, V.Ge 0 (w x e)`. Introduce `x e`. Simplify using `only [hw]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `split_ifs with hx`. Use `S.co_int (fun n => ?_) e` and prove the remaining obligations. Establish `hg : X.Good _ _ (S.cur x)` using `⟨S.curve x, hG x hx⟩`. Simplify using `using (hg.bound 0 n).l_mul`. Conclude with `VF.Ge.zero 0`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨P, Q', hP, h1, h2, h3⟩` from `elim_frob (V := V) Q w hwi E 2`. Take `⟨S1, a1, a2, a3⟩` from `change S b Q hQ L hL hQL P hP`. Use `⟨S1, Q', h1, h2, a1, a2, fun c hc k => ?_, fun c hc => ?_⟩` and prove the remaining obligations. Rewrite using `[a3]`. Use `Finset.sum_eq_zero fun x _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hx : x ∈ Q`. Rewrite using `[hG x hx, mul_zero]`. Rewrite using `[hP.2.2.2 c hc x hx, zero_pow (lpos 1), zero_mul]`. Use `set W : I → C := fun e => ∑ x, P c x ^ V.l ^ 2 * w x e with hW`. Establish `hWi : ∀ e, V.Ge 0 (W e)` using `fun e => VF.Ge.sum fun x _ => ((hP.1 _ _).pow _).mul_int (hwi _ _)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hmain : ∀ k, (V.l : C) * S1.cur c 2 (Sum.inl k) = ∑ e, W e * S.tan e k`. Introduce `k`. Rewrite using `[a3, Finset.mul_sum]`. Simplify using `only [hW, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Distinguish the cases in `hx : x ∈ Q`. Use `S.co_spec (fun n => (V.l : C) * S.cur x 2 n) k` as an intermediate fact. Simplify using `only [mul_assoc, ← Finset.mul_sum, hw, if_pos hx]`. Rewrite using `[show ∑ e, S.co (fun n => (V.l : C) * S.cur x 2 n) e * S.tan e k = (V.l : C) * S.cur x 2 (Sum.inl k) from this]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify by unfolding definitions.
 
-Expand and normalize the polynomial expressions, which then agree. Simplify using `[hP.2.2.2 c (h1 hc) x hx, zero_pow (lpos 2)]`. Use `⟨fun e => if X.ty (Sum.inl e) = b + 2 ∧ e ∉ E then W e else 0, fun k => if X.ty (Sum.inl k) = b + 2 then (V.l : C)⁻¹ * ∑ e ∈ E, W e * S.tan e k else 0, fun e => ?_, fun k => ?_, fun e he => ?_, fun k => ?_⟩` and prove the remaining obligations. Simplify using `only`. Use `split_ifs`.
+Simplify by unfolding definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Assume the negation of the conclusion and derive a contradiction.
 
-Conclude with `hWi e`. Conclude with `VF.Ge.zero 0`. Simplify using `only`. Use `split_ifs`. Establish `: V.Ge 1 (∑ e ∈ E, W e * S.tan e k)` using `VF.Ge.sum fun e he => by`.
+Simplify by unfolding definitions. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[mul_comm]`. Conclude with `(S.U_int e k).mul_int (h3 c hc e he)`. Simplify using `using this.l_inv_mul`. Conclude with `VF.Ge.zero 0`. Assume the negation of the conclusion as `hh`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `he (if_neg hh)`. Simplify using `only`. Distinguish the cases in `hk : X.ty (Sum.inl k) = b + 2`. Rewrite using `[if_pos hk, mul_inv_cancel_left₀ VF.l_ne_zero, hmain, ← Finset.sum_ite_mem_eq E, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun e _ => ?_` and prove the remaining obligations.
-
-Distinguish the cases in `he : e ∈ E`. Simplify using `[he]`. Distinguish the cases in `he' : X.ty (Sum.inl e) = b + 2`. Simplify using `[he, he']`. Simplify using `[he, he', tan_pure S (c := e) (k := k) (by rw [hk]; exact Ne.symm he')]`.
-
-Rewrite using `[if_neg hk, S1.pure c 2 _ (by rw [hQ c (h1 hc)]; simpa using hk), mul_zero, add_zero]`. Use `symm`. Use `Finset.sum_eq_zero fun e _ => ?_` and prove the remaining obligations. Use `split_ifs with he`. Rewrite using `[tan_pure S (by rw [he.1]; exact hk), mul_zero]`.
-
-Rewrite using `[zero_mul]`.
+Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem stepB [IsAlgClosed C] (S : Sys X) (b : ZMod d) (Q : Finset I) (hQ : ∀ c ∈ Q, X.ty (Sum.inl c) = b)
     (L : AddSubgroup (I → C)) (hL : Stable V L) (hQL : ∀ c ∈ Q, S.tan c ∈ L)
@@ -527,39 +513,37 @@ theorem stepB [IsAlgClosed C] (S : Sys X) (b : ZMod d) (Q : Finset I) (hQ : ∀ 
       · rw [zero_mul]
 
 /- English proof (translation)
-Proceed by induction on `K with`. Consider the case `zero`. Introduce `_ a _ S Q _ L _ hQL`. Conclude with `⟨S, fun _ => 0, fun _ _ => rfl, by simp, fun c hc _ => hQL c hc, by simp, by simp⟩`. Consider the case `succ K ih`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Treat this case separately.
 
-Introduce `hd a hsm S Q hQ L hL hQL`. Establish `hsh : ∀ s : ℕ, a + 2 + ((2 * s : ℕ) : ZMod d) = a + ((2 * (s + 1) : ℕ) : ZMod d)`. Introduce `s`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hne : ∀ s < K, a + 2 + ((2 * s : ℕ) : ZMod d) ≠ a`. Introduce `s hs h`. Rewrite `h` using `[hsh]`. Conclude with `hd (s + 1) (by omega) (by omega) (by simpa using h)`. Use `set T := Finset.univ.filter fun k => X.ty (Sum.inl k) = a + 2 with hT`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨S1, lev, p1, p2, -, p4, p5⟩` from `ih (fun s h1 h2 => hd s h1 (by omega)) (a + 2) (fun s hs => by rw [hsh]; exact hsm (s + 1) (by omega)) S T (fun c hc => by simpa [hT] using hc) ⊤ (fun _ _ _ _ => trivial) (fun _ _ => trivial)`. Establish `hS1 : ∀ c ∈ Q, S1.cur c = S.cur c` using `fun c hc => p1 c fun s hs => by rw [hQ c hc]; exact (hne s hs).symm`. Establish `hnQ : ∀ c, lev c < K → c ∉ Q` using `fun c hc hh => hne _ hc (by rw [← (p2 c hc).1, hQ c hh])`. Take `⟨S2, Q2, q1, q2, q3, q4, q5⟩` from `stepA S1 a Q hQ L hL (fun c hc => by rw [tan_eq (hS1 c hc)]; exact hQL c hc)`. Take `⟨S3, Q3, r1, r2, r3, r4, r5, r6⟩` from `stepB S2 a Q2 (fun c hc => hQ c (q1 hc)) L hL (fun c hc => q4 c (q1 hc)) q5 (T.filter fun c => ¬ lev c = 0)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h31 : ∀ c, c ∉ Q → S3.cur c = S1.cur c` using `fun c hc => by`. Rewrite using `[r3 c (fun hh => hc (q1 hh)), q3 c hc]`. Establish `hQ3 : ∀ c ∈ Q3, c ∈ Q` using `fun c hc => q1 (r1 hc)`. Use `⟨S3, fun c => if c ∈ Q3 then 0 else lev c + 1, fun c hc => ?_, fun c hc => ?_, fun c hc h0 => ?_, ?_, fun c hc => ?_⟩` and prove the remaining obligations. Rewrite using `[h31 c (fun hh => hc 0 (by omega) (by simpa using hQ c hh))]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Conclude with `p1 c fun s hs => by rw [hsh]; exact hc (s + 1) (by omega)`. Distinguish the cases in `h : c ∈ Q3`. Simplify using `only [if_pos h]`. Conclude with `⟨by simpa using hQ c (hQ3 c h), r5 c (r1 h)⟩`. Simplify using `only [if_neg h] at hc ⊢`.
+Supply the required witnesses or components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Establish `hc' : lev c < K` using `by omega`. Rewrite using `[h31 c (hnQ c hc'), ← hsh]`. Conclude with `p2 c hc'`. Distinguish the cases in `h : c ∈ Q3`. Conclude with `r4 c (r1 h)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[h] at h0`. Establish `e1 : Q3.card ≤ (Q.filter fun c => (if c ∈ Q3 then 0 else lev c + 1) = 0).card` using `Finset.card_le_card fun c hc => by simp [hc, hQ3 c hc]`. Establish `e2` using `Finset.card_filter_add_card_filter_not (s := T) (fun c => lev c = 0)`. Establish `e3` using `hsm 0 (by omega)`. Simplify using `only [mul_zero, Nat.cast_zero, add_zero] at e3`.
+Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Rewrite using `[Nat.succ_mul]`. Use `beta_reduce`. Use linear arithmetic over natural numbers and integers. Distinguish the cases in `h : c ∈ Q3`. Simplify using `only [if_pos h] at hc ⊢`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Take `⟨g, lam, g1, g2, g3, g4⟩` from `r6 c h`. Establish `hg : ∀ e, g e ≠ 0 → e ∉ Q ∧ lev e = 0`. Introduce `e he`. Take `⟨t1, t2⟩` from `g3 e he`. Establish `t3 : lev e = 0`.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result.
 
-Assume the negation of the conclusion as `hh; exact t2 (by simp [hT, t1, hh])`. Conclude with `⟨hnQ e (by omega), t3⟩`. Use `⟨g, lam, g1, g2, fun e he => ?_, fun k => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hh`. Take `⟨t1, t2⟩` from `hg e hh`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Apply `he` to reduce the goal to its premises. Rewrite using `[if_neg (fun h3 => t1 (hQ3 e h3)), t2]`. Rewrite using `[g4]`. Use `congr 1`. Use `Finset.sum_congr rfl fun e _ => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Distinguish the cases in `hh : g e = 0`. Simplify using `[hh]`. Rewrite using `[tan_eq (r3 e fun h2 => (hg e hh).1 (q1 h2))]`. Simplify using `only [if_neg h] at hc ⊢`. Take `⟨g, lam, g1, g2, g3, g4⟩` from `p5 c (by omega)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hg : ∀ e, g e ≠ 0 → e ∉ Q ∧ lev e = lev c + 1`. Introduce `e he`. Establish `t3 : lev e = lev c + 1`. Assume the negation of the conclusion as `hh`. Conclude with `he (g3 e hh)`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨hnQ e (by omega), t3⟩`. Use `⟨g, lam, g1, g2, fun e he => ?_, fun k => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hh`. Take `⟨t1, t2⟩` from `hg e hh`. Apply `he` to reduce the goal to its premises.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg (fun h3 => t1 (hQ3 e h3)), t2]`. Rewrite using `[h31 c (hnQ c (by omega)), g4]`. Use `congr 1`. Use `Finset.sum_congr rfl fun e _ => ?_` and prove the remaining obligations. Distinguish the cases in `hh : g e = 0`.
-
-Simplify using `[hh]`. Rewrite using `[tan_eq (h31 e (hg e hh).1)]`.
+A detailed English derivation is pending.
 -/
 theorem chain [IsAlgClosed C] (j' : ℕ) (K : ℕ) : (∀ s, 0 < s → s < K → ((2 * s : ℕ) : ZMod d) ≠ 0) →
     ∀ (a : ZMod d), (∀ s < K, (Finset.univ.filter fun k =>
@@ -674,7 +658,7 @@ def intSpan (V : VF C) {ι : Type} [Fintype ι] (U : ι → I → C) : AddSubgro
     exact ⟨-A, fun b => (h1 b).neg, fun x => by simp [h2]⟩
 
 /- English proof (translation)
-Introduce and unpack `r hr u ⟨A, h1, h2⟩`. Conclude with `⟨fun b => r * A b, fun b => hr.mul_int (h1 b), fun x => by`. Simplify using `[h2, Finset.mul_sum, mul_assoc]⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Simplify using the standard rewrite rules.
 -/
 theorem stable_intSpan {ι : Type} [Fintype ι] (U : ι → I → C) : Stable V (intSpan V U) := by
   rintro r hr u ⟨A, h1, h2⟩
@@ -682,29 +666,21 @@ theorem stable_intSpan {ι : Type} [Fintype ι] (U : ι → I → C) : Stable V 
     simp [h2, Finset.mul_sum, mul_assoc]⟩
 
 /- English proof (translation)
-Take `⟨f, hf⟩` from `exists_unit_minor U w hU hw h`. Establish `hne : (Matrix.of fun c' c => U c (f c')).det ≠ 0`. Introduce `h0`. Rewrite `hf` using `[h0, V.v.map_zero]`. Conclude with `WithTop.top_ne_zero hf`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hinj : Function.Injective f`. Introduce `c c' hcc`. Assume the negation of the conclusion as `hh`. Conclude with `hne (Matrix.det_zero_of_row_eq hh (by funext b; simp [hcc]))`. Establish `hty : ∀ c, X.ty (Sum.inl (f c)) = a`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Introduce `c`. Assume the negation of the conclusion as `hh`. Conclude with `hne (Matrix.det_eq_zero_of_row_eq_zero c (fun b => ha b _ hh))`. Use `set F : Matrix I ι C := Matrix.of fun x c => if x = f c then 1 else 0 with hF`. Use `set D : Matrix ι I C := Matrix.of fun c y => U c y - if y = f c then 1 else 0 with hD`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hrow : ∀ c y, (1 + F * D : Matrix I I C) (f c) y = U c y`. Introduce `c y`. Simplify using `[hF, hD, Matrix.mul_apply, hinj.eq_iff, Matrix.one_apply, eq_comm]`. Establish `hrow' : ∀ x, (∀ c, x ≠ f c) → ∀ y, (1 + F * D : Matrix I I C) x y = if x = y then 1 else 0`. Introduce `x hx y`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Simplify using `[hF, Matrix.mul_apply, hx, Matrix.one_apply]`. Establish `hdet : (1 + F * D).det = (Matrix.of fun c' c => U c (f c')).det`. Rewrite using `[Matrix.det_one_add_mul_comm, ← Matrix.det_transpose]`. Use `congr 1`. Use extensionality with `c' c`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[hF, hD, Matrix.mul_apply, hinj.eq_iff, Matrix.one_apply, eq_comm]`. Take `⟨S, hS⟩` from `sysExists X (fun x y => (1 + F * D : Matrix I I C) x y) (fun x y => by`. Distinguish the cases in `hx : ∃ c, x = f c`. Take `⟨c, rfl⟩` from `hx`. Rewrite using `[hrow]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hU _ _`. Use `push_neg at hx`. Rewrite using `[hrow' x hx]`. Use `split_ifs`. Conclude with `VF.Ge.one`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `VF.Ge.zero 0)`. Use the proof step `(fun x y hxy => by`. Distinguish the cases in `hx : ∃ c, x = f c`. Take `⟨c, rfl⟩` from `hx`. Rewrite using `[hrow]; exact ha _ _ (by rwa [hty] at hxy)`.
-
-Use `push_neg at hx`. Rewrite using `[hrow' x hx, if_neg (fun hh : x = y => hxy (by rw [hh]))])`. Use the proof step `(by rw [← hf, ← hdet]; rfl)`. Use `⟨S, Finset.univ.image f, fun c hc => ?_, ?_, fun c hc => ?_⟩` and prove the remaining obligations. Take `⟨b, -, rfl⟩` from `Finset.mem_image.mp hc`.
-
-Conclude with `hty b`. Rewrite using `[Finset.card_image_of_injective _ hinj, Finset.card_univ]`. Take `⟨b, -, rfl⟩` from `Finset.mem_image.mp hc`. Use `⟨fun b' => if b' = b then 1 else 0, fun b' => ?_, fun x => ?_⟩` and prove the remaining obligations. Simplify using `only`.
-
-Use `split_ifs`. Conclude with `VF.Ge.one`. Conclude with `VF.Ge.zero 0`. Rewrite using `[hS]`. Simplify using `only [hrow]`.
-
-Simplify using the standard rewrite rules.
+Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem adapted (X : Cart V d I J) {ι : Type} [Fintype ι] (U : ι → I → C) (w : I → ι → C)
     (hU : ∀ c x, V.Ge 0 (U c x)) (hw : ∀ x c, V.Ge 0 (w x c))
@@ -766,7 +742,7 @@ theorem adapted (X : Cart V d I J) {ι : Type} [Fintype ι] (U : ι → I → C)
     · rw [hS]; simp only [hrow]; simp
 
 /- English proof (translation)
-Establish `h2 : 2 ∣ d` using `hd.two_dvd`. Establish `e : a + ((2 * s : ℕ) : ZMod d) + 1 = ((a.val + 2 * s + 1 : ℕ) : ZMod d)` using `by push_cast; simp`. Rewrite using `[e, ZMod.val_natCast, Nat.even_iff, Nat.even_iff, Nat.mod_mod_of_dvd _ h2]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem even_val_iff {d : ℕ} [NeZero d] (hd : Even d) (a : ZMod d) (s : ℕ) :
     Even (a + ((2 * s : ℕ) : ZMod d) + 1).val ↔ ¬ Even a.val := by
@@ -777,18 +753,18 @@ theorem even_val_iff {d : ℕ} [NeZero d] (hd : Even d) (a : ZMod d) (s : ℕ) :
   omega
 
 /- English proof (translation)
-The claim follows from `VF.Ge.sum fun k _ => by rw [mul_comm]; exact (inv_int S.U S.U_int S.unimod k b).mul_int (hh k)`.
+A detailed English derivation is pending.
 -/
 theorem co_ge (S : Sys X) {r : ℝ} {h : I ⊕ J → C} (hh : ∀ k, V.Ge r (h (Sum.inl k))) (b : I) :
     V.Ge r (S.co h b) :=
   VF.Ge.sum fun k _ => by rw [mul_comm]; exact (inv_int S.U S.U_int S.unimod k b).mul_int (hh k)
 
 /- English proof (translation)
-Establish `h1 : S.U * S.U⁻¹ = 1` using `Matrix.mul_nonsing_inv _ (isUnit_iff_ne_zero.mpr S.U_det_ne)`. Establish `h2 : ∑ k, (∑ e, g e * S.tan e k) * S.U⁻¹ k b = g b`. Simplify using `only [Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Establish `: ∀ e, ∑ k, g e * S.tan e k * S.U⁻¹ k b = g e * (S.U * S.U⁻¹) e b`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `e`. Rewrite using `[Matrix.mul_apply, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun k _ => by simp [Sys.U, mul_assoc]`. Simplify using `[this, h1, Matrix.one_apply]`. Rewrite using `[eq_inv_mul_iff_mul_eq₀ VF.l_ne_zero, ← h2]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Sys.co, Finset.mul_sum, ← mul_assoc, e, add_mul, Finset.sum_add_distrib, Sum.elim_inl]`.
+A detailed English derivation is pending.
 -/
 theorem co_two (S : Sys X) (h : I ⊕ J → C) (g lam : I → C)
     (e : ∀ k, (V.l : C) * h (Sum.inl k) = ∑ e, g e * S.tan e k + (V.l : C) * lam k) (b : I) :
@@ -806,27 +782,23 @@ theorem co_two (S : Sys X) (h : I ⊕ J → C) (g lam : I → C)
   simp only [Sys.co, Finset.mul_sum, ← mul_assoc, e, add_mul, Finset.sum_add_distrib, Sum.elim_inl]
 
 /- English proof (translation)
-Introduce `C _ V d _ I J _ _ X hAlt g a hbig i hi hid U hU`. Use `haveI := X.algClosed`. Take `⟨⟨hUi, w, hw, hUw⟩, hUa⟩` from `hU`. Take `⟨S0, Q, hQ, hcard, hQL⟩` from `adapted (X.G g) U w hUi hw (fun c c' => by`. Rewrite using `[hUw]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use the proof step `congr) a hUa`. Establish `hK : 0 < Formalism.BaseCaseIdentities.Kn i ∧ 2 * Formalism.BaseCaseIdentities.Kn i = i + 1`. Take `⟨m, rfl⟩` from `hi`. Unfold `Formalism.BaseCaseIdentities.Kn`. Use linear arithmetic over natural numbers and integers.
+Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hsmall : ∀ s : ℕ, ¬ X.big g (a + ((2 * s : ℕ) : ZMod d) + 1)`. Introduce `s`. Establish `e` using `even_val_iff hAlt.1 a s`. Apply the tactic sequence `have hg : g = 0 ∨ g = 1 - 0 := by fin_cases g <;> simp`. Break down `hg with rfl | rfl` into its components or cases.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Separate the alternatives or extract the components of the hypothesis. Rewrite the hypotheses and the conclusion using the stated equalities. The claim follows by propositional logic.
 
-Rewrite `hbig`, the goal using `[hAlt.2]`. The claim follows by propositional logic. Rewrite `hbig`, the goal using `[X.big_compl, hAlt.2]`. The claim follows by propositional logic. Take `⟨S, lev, -, p2, p3, p4, p5⟩` from `chain (X := X.G g) X.j' (Formalism.BaseCaseIdentities.Kn i) (fun s h0 h1 h => by`.
+Rewrite the hypotheses and the conclusion using the stated equalities. The claim follows by propositional logic. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h` using `[ZMod.natCast_eq_zero_iff]`. Use `Nat.le_of_dvd (by omega) h` as an intermediate fact. Use the proof step `omega) a`. Use the proof step `(fun s _ => by`. Use `le_of_eq ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← X.rk_small g _ (hsmall s)]) S0 Q hQ _ (stable_intSpan U) hQL`. Establish `hgood : ∀ c, lev c < Formalism.BaseCaseIdentities.Kn i → (X.G g).Good _ _ (S.cur c)` using `fun c hc => ⟨S.curve c, (p2 c hc).2⟩`. Establish `hex : ∀ c, ∃ gg lam : I g → C, (∀ e, V.Ge 0 (gg e)) ∧ (∀ e, V.Ge 0 (lam e)) ∧ (lev c + 1 < Formalism.BaseCaseIdentities.Kn i → ∀ e, lev e ≠ lev c + 1 → gg e = 0) ∧ (lev c < Formalism.BaseCaseIdentities.Kn i → ∀ b, S.co (S.cur c 2) b = (V.l : C)⁻¹ * (gg b + (V.l : C) * lam b))`. Introduce `c`. Distinguish the cases in `h1 : lev c + 1 < Formalism.BaseCaseIdentities.Kn i`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨gg, lam, g1, g2, g3, g4⟩` from `p5 c h1`. Conclude with `⟨gg, S.co (Sum.elim lam 0), g1, co_ge S g2, fun _ => g3, fun _ => co_two S _ gg lam g4⟩`. Distinguish the cases in `h2 : lev c < Formalism.BaseCaseIdentities.Kn i`. Use `⟨fun b => (V.l : C) * S.co (S.cur c 2) b, 0, fun b => ?_, fun _ => VF.Ge.zero 0, fun h => absurd h h1, fun _ b => by simp [VF.l_ne_zero]⟩` and prove the remaining obligations. Simplify using `using (co_ge S (fun k => (hgood c h2).bound 0 (Sum.inl k)) b).l_mul`.
+Simplify to obtain the desired conclusion from the available facts. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `⟨0, 0, fun _ => VF.Ge.zero 0, fun _ => VF.Ge.zero 0, fun h => absurd h h1, fun h => absurd h h2⟩`. Use `choose gg lam g1 g2 g3 g4 using hex`. Use `set Q0 := Q.filter fun c => lev c = 0 with hQ0`. Establish `hmem : ∀ δ, (Q0.equivFin.symm δ).1 ∈ Q ∧ lev (Q0.equivFin.symm δ).1 = 0` using `fun δ => Finset.mem_filter.mp (Q0.equivFin.symm δ).2`. Establish `hl3 : 3 ≤ V.l`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `V.l_prime.two_le` as an intermediate fact. Use `X.l_odd` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Use `choose A hA1 hA2 using fun δ => p3 _ (hmem δ).1 (hmem δ).2`. Use `⟨S, Q0.card, { v := V.v, l := V.l, l_prime := V.l_prime, l_ge := hl3, v_l := V.v_l, i := i, i_odd := hi, good := fun c => lev c < Formalism.BaseCaseIdentities.Kn i, lev := lev, pure_good := fun _ h => h, ι := fun δ => (Q0.equivFin.symm δ).1, ι_inj := Subtype.val_injective.comp Q0 …` and prove the remaining obligations.
-
-Simplify using `only [Sys.al, S.cur_zero_inl]`. Conclude with `(S.co_spec (S.cur c k) x).symm`. Rewrite `p4` using `[hcard, Fintype.card_fin]`. Rewrite using `[Nat.succ_mul]`. Use linear arithmetic over natural numbers and integers.
-
-Simplify using `only [Sys.al, S.cur_zero_inl]`. Conclude with `hA2 δ x`.
+Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem adaptedChainData : ∀ (C : Type) [Field C] (V : VF C) (d : ℕ) [NeZero d] (I J : Fin 2 → Type)
     [∀ g, Fintype (I g)] [∀ g, Fintype (J g)] (X : RowData C V d I J), X.AdaptedChainData := by

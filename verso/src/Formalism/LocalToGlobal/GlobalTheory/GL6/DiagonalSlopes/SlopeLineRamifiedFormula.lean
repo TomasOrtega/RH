@@ -16,9 +16,9 @@ section Model
 variable {R : Ranks} {ι : Type} [Fintype ι] {hc : ι → HCParam R} {C : ColumnChain R ι hc}
 
 /- English proof (translation)
-Use function extensionality and compare the values at `w`. Rewrite using `[MulEquiv.piCongrRight_apply]`. Distinguish the cases in `h : w = v`. Substitute `h` using the available equality. Simplify using `only [Pi.mulSingle_eq_same]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `only [Pi.mulSingle_eq_of_ne h, map_one]`.
+Simplify using the standard rewrite rules.
 -/
 theorem rank_model_mulSingle (A : ColumnsAtT R C) (M : FreeRankModel A) (v : A.vT) (a : (A.Fv v)ˣ) :
     (MulEquiv.piCongrRight M.e) (Pi.mulSingle v a : ∀ v : A.vT, (A.Fv v)ˣ) = (Pi.mulSingle v (M.e v a) : A.vT → M.H) := by
@@ -47,31 +47,31 @@ def freeT_of_model (M : FreeRankModel (D.mem u).A) : Formalism.MainNotions.produ
       rw [MulEquiv.coe_toMonoidHom, rank_model_mulSingle] }
 
 /- English proof (translation)
-Conclude with `⟨freeT_of_model (free_rank_model_of_split Tf hS (splitAtT_of_tied Tf.atT)).some⟩`.
+Supply the required witnesses or components.
 -/
 theorem freeT_of_tied (Tf : Forms0 D u) (hS : Formalism.MainNotions.product_first_zeroth_parts.admS D u) : Nonempty (Formalism.MainNotions.product_first_zeroth_parts.FreeT D u) := by
   exact ⟨freeT_of_model (free_rank_model_of_split Tf hS (splitAtT_of_tied Tf.atT)).some⟩
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem slopeLine_iff_ramifiedSlopeFormula : Formalism.MainNotions.product_first_zeroth_parts.SlopeLine D u ↔ RamifiedSlopeFormula D u := Iff.rfl
 
 /- English proof (translation)
-Conclude with `slopeLine_iff_ramifiedSlopeFormula.2 (slope_formula_of_character_finite hS Tf hC hA)`.
+A detailed English derivation is pending.
 -/
 theorem slopeLine_of_tied (hS : Formalism.MainNotions.product_first_zeroth_parts.HidaSetting D u) (Tf : Forms0 D u) (hC : ChiFin0 Tf)
     (hA : Formalism.MainNotions.product_first_zeroth_parts.admS D u) : Formalism.MainNotions.product_first_zeroth_parts.SlopeLine D u := by
   exact slopeLine_iff_ramifiedSlopeFormula.2 (slope_formula_of_character_finite hS Tf hC hA)
 
 /- English proof (translation)
-Conclude with `freeT_of_tied Tf (admissible_stabilisers_of_compatible_forms Tf)`.
+A detailed English derivation is pending.
 -/
 theorem freeT_tied (Tf : Forms0 D u) : Nonempty (Formalism.MainNotions.product_first_zeroth_parts.FreeT D u) := by
   exact freeT_of_tied Tf (admissible_stabilisers_of_compatible_forms Tf)
 
 /- English proof (translation)
-Conclude with `slopeLine_of_tied hS Tf hC (admissible_stabilisers_of_compatible_forms Tf)`.
+A detailed English derivation is pending.
 -/
 theorem slopeLine_tied (hS : Formalism.MainNotions.product_first_zeroth_parts.HidaSetting D u) (Tf : Forms0 D u) (hC : ChiFin0 Tf) : Formalism.MainNotions.product_first_zeroth_parts.SlopeLine D u := by
   exact slopeLine_of_tied hS Tf hC (admissible_stabilisers_of_compatible_forms Tf)
@@ -85,12 +85,12 @@ open Formalism.BasicNotions Formalism.L2.Forms
 variable {D : D7} {u : D.what₂.Word}
 
 /- English proof (translation)
-The claim follows from `S0.freeT_tied T`.
+A detailed English derivation is pending.
 -/
 theorem freeT_0 (T : Forms0 D u) : Nonempty (Formalism.MainNotions.product_first_zeroth_parts.FreeT D u) := S0.freeT_tied T
 
 /- English proof (translation)
-The claim follows from `S0.slopeLine_tied hS T hC`.
+A detailed English derivation is pending.
 -/
 theorem slopeLine_0 (hS : Formalism.MainNotions.product_first_zeroth_parts.HidaSetting D u) (T : Forms0 D u) (hC : ChiFin0 T) : Formalism.MainNotions.product_first_zeroth_parts.SlopeLine D u := S0.slopeLine_tied hS T hC
 

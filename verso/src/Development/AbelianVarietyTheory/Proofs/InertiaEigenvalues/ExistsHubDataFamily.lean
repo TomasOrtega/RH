@@ -21,15 +21,15 @@ open NumberField IsDedekindDomain Formalism Formalism.ConjugateSelfDual Reciproc
 namespace GlobalTheory.NLink
 
 /- English proof (translation)
-Introduce `hP eps Fm C C₂ CT hTw hF`. Take `⟨i0⟩` from `Fm.Ix_zero`. Establish `he : 0 < eps` using `Fm.L_eps 0 i0 ▸ (Fm.L 0 i0).sc.eps_pos`. Take `⟨xa, hxa⟩` from `GlobalTheory.HTW.admissibleParameters_of_large_scale eps (Fm.PK.getD 7 0) he`. Take `⟨xb, hxb⟩` from `GlobalTheory.T.specialPrimes_small_along_family Fm 1 le_rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨xc, hxc⟩` from `hTw`. Use `⟨max xa (max xb xc), fun x hx hx1 i hsha exc => ?_⟩` and prove the remaining obligations. Establish `hxa' : xa ≤ x` using `le_trans (le_max_left _ _) hx`. Establish `hxb' : xb ≤ x` using `le_trans (le_trans (le_max_left _ _) (le_max_right _ _)) hx`. Establish `hxc' : xc ≤ x` using `le_trans (le_trans (le_max_right _ _) (le_max_right _ _)) hx`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨-, N0, S, hgood⟩` from `hxc x hxc' hx1 i`. Take `⟨hfa, -⟩` from `hF x hx1 i`. Take `⟨HW, F, ⟨Cm⟩⟩` from `GlobalTheory.T.exists_wachFunctor_comparison_of_bhattScholze hP.bs (Fm.D x i)`. Establish `hCLw : (Fm.params x hx1 i).CLw ≤ Fm.PK.getD 7 0`. Rewrite using `[← Fm.params_K x hx1 i]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `le_refl _`. Establish `hsx : xa ≤ (Fm.L x i).sc.x` using `by rw [Fm.L_x x i hx1]; exact hxa'`. Take `⟨hpar, hpar67⟩` from `hxa (Fm.D x i) (Fm.L x i) (Fm.params x hx1 i) (Fm.L_eps x i) hCLw hsx`. Take `⟨X, hcan, -, hexc, hI, -⟩` from `GlobalTheory.HubX.exists_hubData GlobalTheory.Published.cheb_holds (Fm.D x i) (Fm.L x i) HW (rowC C₂) hfa.adm.1.1.2.2.2.1 hfa.Conclusion1.1 (fun _ _ _ _ => 0) (fun _ => exc) ⟨twE Fm x hx1 i, N0, S⟩`. Take `⟨-, hbig, hsplit, -⟩` from `hxb x hxb' hx1 i`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hrow : GlobalTheory.PtCore.GoodPtRow (Fm.D x i)` using `GlobalTheory.Proof.LocalGlobalAssembly.main _ hfa.adm.1.1.1 hfa.Conclusion1.2.2 hfa.Conclusion2.2.2`. Establish `h6` using `GlobalTheory.JointSix.main GlobalTheory.Published.cheb_holds (Fm.D x i) (Fm.ex x hx1 i).nch X.r X.ρ hcan.fam hfa.nct hfa.trip hfa.same hrow (GlobalTheory.PtCore.residualAbsIrredGoodPoint_of_residualIrred _ hfa.rhoBar)`. Establish `hkill : KillingConditions.KillAt X.ρ` using `GlobalTheory.T.chosenTwist_annihilates_selmerGroups (Fm.D x i) (Fm.ex x hx1 i).nch X.I X.ρ hfa.nct (hI ▸ hgood) h6`. Conclude with `⟨HW, F, Cm, X, hexc, hfa.admJ _ hpar, ⟨hfa, hcan, hpar, hpar67, hbig, hsplit, hkill, hsha⟩⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_setup_large : Hypotheses₂ → ∀ {eps : ℝ} (Fm : FamP eps), ∀ (C C₂ : ℝ) (CT : ℕ), TwGood Fm → FactsF Fm C CT → ∃ x0 : ℝ, ∀ x ≥ x0, ∀ (hx : Fm.x1 < x) (i : Fm.Ix x), TwistedPlaces.ShaFinOdd (Fm.D x i) → ∀ exc : Finset ℕ, ∃ (HW : HWOf (Fm.D x i).loc) (F : FonOf (Fm.D x i).loc (Fm.D x i).locA HW) (_ : CmpOf (Fm.D x i).loc (Fm.D x i).locA HW F) (X : KillingConditions.HubData (Fm.D x i)), X.exc = exc ∧ AdmissibleParameterJ.AdmJ (Fm.L x i) ∧ Setup (Fm.L x i) (Fm.ex x hx i).nch HW X C₂ := by
   intro hP eps Fm C C₂ CT hTw hF

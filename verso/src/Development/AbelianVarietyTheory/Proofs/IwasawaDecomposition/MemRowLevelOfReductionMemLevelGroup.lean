@@ -15,7 +15,7 @@ namespace GlobalTheory.Mem.R3.RowDeco
 open GlobalTheory.Mem.R3.RowAd
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Simplify using `[Matrix.reindexAlgEquiv_apply]`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem reindex_symm_reindex {κ : Type} [CommRing κ] {a b : ℕ} (e : Fin a ≃ Fin b) (y : GL (Fin a) κ) :
     Units.map (Matrix.reindexAlgEquiv κ κ e.symm).toMonoidHom (Units.map (Matrix.reindexAlgEquiv κ κ e).toMonoidHom y) = y := by
@@ -24,11 +24,11 @@ theorem reindex_symm_reindex {κ : Type} [CommRing κ] {a b : ℕ} (e : Fin a �
   simp [Matrix.reindexAlgEquiv_apply]
 
 /- English proof (translation)
-Substitute `h` using the available equality. Rewrite `hy` using `[reindex_finCongr_rfl]`. Take `⟨hUT, h1⟩` from `Formalism.L2.Col.mem_HK.1 hy`. Establish `hb : y ∈ Formalism.L2.DIV.blockTri (Formalism.L2.DIV.blkOf r t)`. Introduce `i j hij`.
+Substitute using the available equality. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `hUT (show Formalism.L2.Col.coarse r (List.replicate m t) j.val < Formalism.L2.Col.coarse r (List.replicate m t) i.val from ?_)` and prove the remaining obligations. Rewrite using `[coarse_eq_blkOf hn, coarse_eq_blkOf hn]`. Conclude with `hij`. Use `⟨hb, ?_⟩` and prove the remaining obligations. Apply `Units.ext` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Formalism.L2.DIV.upper_block_val_submatrix hra (Formalism.L2.DIV.blockTri_blkOf_le r t hb), Units.val_one]`. Use extensionality with `i j`. Rewrite using `[Matrix.submatrix_apply, h1 _ _ i.2 j.2]`. Simplify using `[Matrix.one_apply, Fin.ext_iff]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem of_reindex_mem_HK {κ : Type} [CommRing κ] {a n r t m : ℕ} (h : a = n) (hn : n = r + m * t) (hra : r ≤ a)
     (y : GL (Fin a) κ)
@@ -50,9 +50,9 @@ theorem of_reindex_mem_HK {κ : Type} [CommRing κ] {a n r t m : ℕ} (h : a = n
   simp [Matrix.one_apply, Fin.ext_iff]
 
 /- English proof (translation)
-Substitute `h` using the available equality. Rewrite `hy` using `[reindex_finCongr_rfl]`. Introduce `i j hij`. Use `hy (show Formalism.L2.Col.coarse r [b] j.val < Formalism.L2.Col.coarse r [b] i.val from ?_)` and prove the remaining obligations. Rewrite using `[coarseBlockIndex_eq_twoBlock hn, coarseBlockIndex_eq_twoBlock hn]`.
+Substitute using the available equality. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hij`.
+A detailed English derivation is pending.
 -/
 theorem of_reindex_mem_HQ {κ : Type} [CommRing κ] {a n r b : ℕ} (h : a = n) (hn : n = r + b) (y : GL (Fin a) κ)
     (hy : Units.map (Matrix.reindexAlgEquiv κ κ (finCongr h)).toMonoidHom y ∈ Formalism.L2.Col.blockUT n κ r [b]) :
@@ -65,7 +65,7 @@ theorem of_reindex_mem_HQ {κ : Type} [CommRing κ] {a n r b : ℕ} (h : a = n) 
   exact hij
 
 /- English proof (translation)
-The claim follows from `redAt_reindex (finCongr (rank_X' X)) L.βX hL.beta.2 _ hSt (Formalism.L2.Col.congruence_subgroup_le_stabilizer _ _ _ hz) w.1`.
+A detailed English derivation is pending.
 -/
 theorem redG_ptE_of (X : Stages) {px : PreX X.B.toPre} (I : Col2.ColIn X.B px) {U : Set I.ι}
     (L : Formalism.IndefR.Links.LevCh X.toD7 (TupU I U)) (hL : LevOf X I U L) (t : TupU I U) (h : Bridge.Gf X.toD7.sp.X')
@@ -80,21 +80,19 @@ theorem redG_ptE_of (X : Stages) {px : PreX X.B.toPre} (I : Col2.ColIn X.B px) {
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `X px I U L hI hL t h hz hred`. Establish `hβ : L.βX = 1` using `hL.beta.2`. Establish `hSt : Formalism.UG.bc (swapAE X.toD7) ((h : Bridge.Gf X.toD7.sp.X') : GL _ _) ∈ Formalism.L2.DIV.St L.βX`. Establish `h1` using `reindex_mem_St_one (finCongr (rank_X' X)).symm (Formalism.L2.Col.congruence_subgroup_le_stabilizer _ _ _ hz)`. Establish `e2 : Units.map (Matrix.reindexAlgEquiv (Formalism.IndefR.Lev.EAf X.toD7) (Formalism.IndefR.Lev.EAf X.toD7) (finCongr (rank_X' X)).symm).toMonoidHom (ptE X h) = Formalism.UG.bc (swapAE X.toD7) ((h : Bridge.Gf X.toD7.sp.X') : GL _ _)` using `reindex_symm_reindex _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hβ]`. Conclude with `e2 ▸ h1`. Establish `hUA : Formalism.UG.bc (swapAE X.toD7) ((h : Bridge.Gf X.toD7.sp.X') : GL _ _) ∈ Formalism.L2.DIV.UA X.toD7.sp.cm X.toD7.sp.X'.gram`. Take `⟨g, hg⟩` from `h.2`. Rewrite using `[← hg]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `GlobalTheory.LevSplit.finE_mem_UA X.toD7.sp.X' g`. Establish `hw : ∀ w : Formalism.L2.Col.rowSG (X.B.primes px) I.sel t.1, Units.map (Matrix.reindexAlgEquiv (Formalism.L2.DIV.kP w.1) (Formalism.L2.DIV.kP w.1) (finCongr (rank_X' X))).toMonoidHom (Formalism.L2.DIV.redFn L.βX w.1 (Formalism.UG.bc (swapAE X.toD7) ((h : Bridge.Gf X.toD7.sp.X') : …` using `fun w => by`. Rewrite using `[← redG_ptE_of X I L hL t h hSt hz w]`. Conclude with `hred w (Set.mem_univ _)`. Establish `hG : ∀ PP ∈ (L.datXt t).Pg, Formalism.L2.DIV.redFn L.βX PP (Formalism.UG.bc (swapAE X.toD7) ((h : Bridge.Gf X.toD7.sp.X') : GL _ _)) ∈ Formalism.L2.DIV.blockTri (Formalism.L2.DIV.blkOf (L.datXt t).r (L.datXt t).t) ∧ Formalism.L2.DIV.upperLeftBlock (L.datXt t).hr (Formalism.L2.DIV …`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `PP hPP`. Establish `hP : PP ∈ (X.B.primes px).vGs`. Establish `hP' : PP ∈ L.Pg` using `hPP`. Rewrite `hP'` using `[hL.Pg]`. Conclude with `hP'`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hm` using `hw ⟨PP, by classical exact Finset.mem_union_left _ hP⟩`. Rewrite `hm` using `[Formalism.L2.Col.rowTyKK, Formalism.L2.Col.LevFam.glue_of_mem _ _ _ hP]`. Conclude with `of_reindex_mem_HK (rank_X' X) (Formalism.L2.Col.rank_X'_eq X.B.R) (L.datXt t).hr _ hm`. Establish `hQ : ∀ PP ∈ (L.datXt t).Q, Formalism.L2.DIV.redFn L.βX PP (Formalism.UG.bc (swapAE X.toD7) ((h : Bridge.Gf X.toD7.sp.X') : GL _ _)) ∈ Formalism.L2.DIV.blockTri (Formalism.L2.DIV.blk2 (L.datXt t).r)`. Introduce `PP hPP`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hq : PP ∈ Formalism.L2.Col.QE I.sel (t.1 : Formalism.L2.DIV.Chr _ _ _)`. Establish `hP' : PP ∈ L.Q t` using `hPP`. Establish `e : I.Q (ixOf I U t) = Formalism.L2.Col.QE I.sel (t.1 : Formalism.L2.DIV.Chr _ _ _)`. Simplify using `only [ColIn.Q, tup_ixOf]`. Rewrite `hP'` using `[hL.Q t, e]`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `hP'`. Establish `hm` using `hw ⟨PP, by classical exact Finset.mem_union_right _ hq⟩`. Distinguish the cases in `hP : PP ∈ (X.B.primes px).vGs`. Rewrite `hm` using `[Formalism.L2.Col.rowTyKK, Formalism.L2.Col.LevFam.glue_of_mem _ _ _ hP]`. Conclude with `Formalism.L2.DIV.blockTri_blkOf_le _ _ (of_reindex_mem_HK (rank_X' X) (Formalism.L2.Col.rank_X'_eq X.B.R) (L.datXt t).hr _ hm).1`.
-
-Rewrite `hm` using `[Formalism.L2.Col.rowTyKK, Formalism.L2.Col.LevFam.glue_of_not _ _ _ hP]`. Conclude with `of_reindex_mem_HQ (rank_X' X) (Formalism.L2.Col.rank_X'_eq X.B.R) _ hm`. Conclude with `⟨Formalism.L2.DIV.mem_parLev.2 ⟨hUA, hSt, fun PP hP => (hG PP hP).1, hQ⟩, Subgroup.mem_bot.2 (funext fun PP => (hG PP.1 PP.2).2)⟩`.
+A detailed English derivation is pending.
 -/
 theorem mem_J_of_redG_mem_grp : ∀ (X : Stages) (px : PreX X.B.toPre) (I : Col2.ColIn X.B px) (U : Set I.ι)
     (L : Formalism.IndefR.Links.LevCh X.toD7 (TupU I U)), I.Ok → LevOf X I U L →

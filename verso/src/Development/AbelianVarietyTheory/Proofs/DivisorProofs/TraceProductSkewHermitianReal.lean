@@ -6,9 +6,9 @@ open scoped ENNReal
 namespace GlobalTheory
 
 /- English proof (translation)
-Use extensionality with `i j`. Establish `h` using `hX (Pi.single i 1) (Pi.single j 1)`. Establish `c0 : cc (0 : E) = 0` using `map_zero _`. Establish `c1 : cc (1 : E) = 1` using `map_one _`. Establish `hc : ∀ b : Fin r, cc (if b = j then (1 : E) else 0) = if b = j then 1 else 0`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply the tactic sequence `intro b; split_ifs <;> simp [c0, c1]`. Simplify using `[herm, Matrix.mulVec_single, Pi.single_apply, c0, c1, hc, Matrix.mul_apply] at h ⊢`. Conclude with `h`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem skew_transpose_mul_add_mul_conj {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
     (G X : Matrix (Fin r) (Fin r) E)
@@ -24,9 +24,9 @@ theorem skew_transpose_mul_add_mul_conj {E : Type} [Field E] [NumberField E] [Is
   exact h
 
 /- English proof (translation)
-Establish `h` using `skew_transpose_mul_add_mul_conj G X hX`. Establish `hu : IsUnit G.det` using `isUnit_iff_ne_zero.mpr hG`. Establish `h2 : G * X.map (fun x => cc x) = -(Xᵀ * G)` using `eq_neg_of_add_eq_zero_right h`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hu, Matrix.one_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Use `_ = -(G⁻¹ * Xᵀ * G) := by rw [h2, Matrix.mul_neg, Matrix.mul_assoc]`.
+A detailed English derivation is pending.
 -/
 theorem conj_eq_of_skew {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
     (G X : Matrix (Fin r) (Fin r) E) (hG : G.det ≠ 0)
@@ -40,11 +40,11 @@ theorem conj_eq_of_skew {E : Type} [Field E] [NumberField E] [IsCMField E] {r : 
     _ = -(G⁻¹ * Xᵀ * G) := by rw [h2, Matrix.mul_neg, Matrix.mul_assoc]
 
 /- English proof (translation)
-Introduce `E _ _ _ r G X Y _ hG hX hY`. Establish `hu : IsUnit G.det` using `isUnit_iff_ne_zero.mpr hG`. Establish `hXc` using `conj_eq_of_skew G X hG hX`. Establish `hYc` using `conj_eq_of_skew G Y hG hY`. Rewrite using `[← IsCMField.complexConj_eq_self_iff]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `cc (X * Y).trace = (X * Y).trace`. Establish `hmap : cc (X * Y).trace = ((X * Y).map (fun x => cc x)).trace`. Simplify using `only [Matrix.trace, Matrix.diag, Matrix.map_apply]`. Conclude with `map_sum (IsCMField.complexConj E : E →+* E) _ _`. Establish `hmul : (X * Y).map (fun x => cc x) = X.map (fun x => cc x) * Y.map (fun x => cc x)` using `Matrix.map_mul (f := ((IsCMField.complexConj E : E ≃ₐ[maximalRealSubfield E] E) : E →+* E))`.
+Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hmap, hmul, hXc, hYc, neg_mul_neg]`. Establish `e1 : G⁻¹ * Xᵀ * G * (G⁻¹ * Yᵀ * G) = G⁻¹ * (Xᵀ * Yᵀ * G)`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc G G⁻¹, Matrix.mul_nonsing_inv _ hu, Matrix.one_mul]`. Rewrite using `[e1, Matrix.trace_mul_comm, Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hu, Matrix.mul_one, ← Matrix.transpose_mul, Matrix.trace_transpose, Matrix.trace_mul_comm]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem trace_mul_skew_mem_maximalRealSubfield :
     ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (G : Matrix (Fin r) (Fin r) E) (X Y : Matrix (Fin r) (Fin r) E), (∀ a b, cc (G a b) = G b a) → G.det ≠ 0 → (∀ u w, herm G (X *ᵥ u) w + herm G u (X *ᵥ w) = 0) → (∀ u w, herm G (Y *ᵥ u) w + herm G u (Y *ᵥ w) = 0) → (X * Y).trace ∈ maximalRealSubfield E := by

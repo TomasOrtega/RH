@@ -11,39 +11,35 @@ namespace GlobalTheory.VecInv
 open GlobalTheory.SplitScalar GlobalTheory.SplitHecke in
 
 /- English proof (translation)
-Introduce `D ψ S T ΛS ΛT χS χT om hW hS hT e he g h hg hh hlat x y hx hy f hf hv`. Use `set Λ := (latO S T (ΛS : Set (Fin S.rank → D.host.E)) (ΛT : Set (Fin T.rank → D.host.E)) fun _ => True) with hΛ`. Take `⟨hdual, -, -⟩` from `GlobalTheory.T.self_dual_lattice_pairing_dual D ψ S T ΛS ΛT hW.std hS hT`. Establish `hdd : ∀ u ∈ Λ, ∀ u' ∈ Λ, ψ (symplO S T u u') = 1` using `fun u hu u' hu' => (hdual u (GlobalTheory.SplitScalar.latO_fin hu)).1 hu u' hu'`. Establish `he' : IsSplitIdem D (cA D e)` using `GlobalTheory.SplitScalar.isSplitIdem_conj he`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hst : ∀ u ∈ Λ, cA D e • u ∈ Λ` using `GlobalTheory.SplitScalar.idem_smul_mem he'.1`. Establish `hst' : ∀ u ∈ Λ, cA D (cA D e) • u ∈ Λ`. Rewrite using `[GlobalTheory.DualPairCheck.cA_cA]`. Conclude with `GlobalTheory.SplitScalar.idem_smul_mem he.1`. Establish `hd : ∀ y, IsHalf e y → y ∉ Λ → ∃ l ∈ Λ, IsHalf (cA D e) l ∧ ψ (symplO S T l y) ≠ 1` using `fun y hy hyn => GlobalTheory.SplitScalar.exists_dual_half he hdual hst hy hyn`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hd' : ∀ y, IsHalf (cA D e) y → y ∉ Λ → ∃ l ∈ Λ, IsHalf e l ∧ ψ (symplO S T l y) ≠ 1`. Introduce `y hy hyn`. Establish `hex` using `GlobalTheory.SplitScalar.exists_dual_half he' hdual hst' hy hyn`. Rewrite `hex` using `[GlobalTheory.DualPairCheck.cA_cA]`. Then use the resulting hypothesis. Establish `hback : ∀ w, actO S T g h (actO S T g⁻¹ h⁻¹ w) = w` using `fun w => by`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify using `using GlobalTheory.SplitHecke.actO_inv_actO g⁻¹ h⁻¹ w`. Establish `hmem : ∀ w, actO S T g⁻¹ h⁻¹ w ∈ Λ ↔ w ∈ Λ` using `fun w => by`. Establish `hw` using `hlat (actO S T g⁻¹ h⁻¹ w)`. Rewrite `hw` using `[hback]`. Then use the resulting hypothesis. Establish `hR : ∀ u ∈ ({0} : Finset (WO S T)), actO S T g⁻¹ h⁻¹ u ∈ Λ ∧ IsHalf e u`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `u hu`. Rewrite `hu` using `[Finset.mem_singleton]`. Substitute `hu` using the available equality. Conclude with `⟨(hmem 0).2 (zero_mem _), GlobalTheory.SplitScalar.isHalf_zero e⟩`. Establish `hRu : ∀ w, actO S T g⁻¹ h⁻¹ w ∈ Λ → IsHalf e w → ∃! v, v ∈ ({0} : Finset (WO S T)) ∧ w - v ∈ Λ`.
+Substitute using the available equality. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `w hw _`. Use `⟨0, ⟨Finset.mem_singleton_self _, by simpa using (hmem w).1 hw⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `v ⟨hv0, -⟩`. Conclude with `Finset.mem_singleton.1 hv0`. Establish `hle : ∀ w ∈ Λ, IsHalf e w → actO S T g⁻¹ h⁻¹ w ∈ Λ` using `fun w hw _ => (hmem w).2 hw`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨r, hr, hom⟩` from `GlobalTheory.SplitHecke.om_eq_smul_sum hW he hdd hd hd' hg hh hx hy hR hRu hle`. Establish `key : om (g, h) f = ((r : ℂ) * (splitFacO χS χT x y : ℂ)) • f`. Establish `hk` using `hom f hf (fun u hu hue => hv.2 e he u hu hue) (fun u hu hue => hv.2 (cA D e) he' u hu hue)`. Rewrite `hk` using `[Finset.sum_singleton, GlobalTheory.WeilVacMove.heisO_zero]`. Then use the resulting hypothesis. Distinguish the cases in `hf0 : f = 0`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Substitute `hf0` using the available equality. Simplify using the standard rewrite rules. Take `⟨htop, hlc, hsc, ht2, hdisc, K, hK, hcov⟩` from `GlobalTheory.AdelicMatrixLattice.lattice D T S`. Use `haveI := htop`. Use `haveI := hlc`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `haveI := hsc`. Use `haveI := ht2`. Use `haveI := hdisc`. Use `haveI : BorelSpace (WO S T) := ⟨rfl⟩`. Take `⟨⟨μ, 𝓕, hμ, h𝓕, h1⟩, hN⟩` from `GlobalTheory.meanSquare_addFundamentalDomain_of_cocompact _ (ratL T S) K hK hcov`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses repeatedly using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `haveI := hμ`. Establish `hper` using `GlobalTheory.WeilVacMove.norm_periodic hW.std hf`. Take `⟨N, hNf⟩` from `hN f hf.cont hper`. Take `⟨-, -, hI, -⟩` from `hNf μ 𝓕 hμ h𝓕`. Establish `hu` using `hW.om_unit μ 𝓕 hμ h𝓕 (g, h) f hf`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hu` using `[key]`. Establish `hpt : ∀ w, ‖(((r : ℂ) * (splitFacO χS χT x y : ℂ)) • f) w‖ₑ ^ 2 = ‖(r : ℂ) * (splitFacO χS χT x y : ℂ)‖ₑ ^ 2 * ‖f w‖ₑ ^ 2` using `fun w => by`. Rewrite using `[Pi.smul_apply, smul_eq_mul, enorm_mul (a := (r : ℂ) * (splitFacO χS χT x y : ℂ)), mul_pow]`. Rewrite `hu` using `[hpt]`. Rewrite `hu` using `[lintegral_const_mul' _ _ (ENNReal.pow_ne_top enorm_ne_top), hI, h1, one_mul]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hN0 : (N : ENNReal) ≠ 0`. Introduce `hz`. Apply `hf0` to reduce the goal to its premises. Establish `h0 : ∫⁻ w in 𝓕, ‖f w‖ₑ ^ 2 ∂μ = 0` using `by rw [hI, hz, mul_zero]`. Rewrite `h0` using `[lintegral_eq_zero_iff' (hf.cont.measurable.enorm.pow_const 2).aemeasurable]`.
+Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Apply `GlobalTheory.WeilVacMove.eq_zero_of_ae_fundamentalDomain (ratL T S) μ 𝓕 h𝓕 f hf.cont hper` to reduce the goal to its premises. Use `filter_upwards [h0] with w hw`. Simplify using `using hw`. Establish `hnorm : ‖(r : ℂ) * (splitFacO χS χT x y : ℂ)‖ = r`. Rewrite using `[norm_mul, Complex.norm_real, Real.norm_eq_abs, abs_of_pos hr]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hs1 : ‖(splitFacO χS χT x y : ℂ)‖ = 1` using `by first`. Consider the case `exact Circle.norm_coe _`. Consider the case `exact Circle.abs_coe _`. Consider the case `simp`. Rewrite using `[hs1, mul_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hr1 : r = 1`. Establish `hc : ‖(r : ℂ) * (splitFacO χS χT x y : ℂ)‖₊ ^ 2 = 1`. Rewrite `hu` using `[enorm_eq_nnnorm]`. Establish `hN0' : N ≠ 0` using `fun hz => hN0 (by rw [hz]; rfl)`. Establish `h2 : ‖(r : ℂ) * (splitFacO χS χT x y : ℂ)‖₊ ^ 2 * N = 1 * N`.
-
-Rewrite using `[one_mul]`. Conclude with `hu` after adjusting the coercions. Conclude with `mul_right_cancel₀ hN0' h2`. Establish `hc' : ‖(r : ℂ) * (splitFacO χS χT x y : ℂ)‖ ^ 2 = 1`. Rewrite using `[← coe_nnnorm]`.
-
-Conclude with `hc` after adjusting the coercions. Rewrite `hc'` using `[hnorm]`. Use the polynomial consequences of the given equalities and inequalities. Rewrite using `[key, hr1]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem om_latVac_split : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (ΛS : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E)) (ΛT : Submodule (𝓞 D.host.E) (Fin T.rank → D.host.E)) (χS χT : (AE D)ˣ →* Circle) (om : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ)), IsWeilDatumO ψ S T χS χT om → IsSelfDualC S ΛS → IsSelfDualC T ΛT → ∀ e, IsSplitIdem D e → ∀ g h, Formalism.L2.Theta.SuppAt e S g → Formalism.L2.Theta.SuppAt e T h → (∀ u, u ∈ (latO S T (ΛS : Set (Fin S.rank → D.host.E)) (ΛT : Set (Fin T.rank → D.host.E)) fun _ => True) ↔ actO S T g h u ∈ (latO S T (ΛS : Set (Fin S.rank → D.host.E)) (ΛT : Set (Fin T.rank → D.host.E)) fun _ => True)) → ∀ x y, IsDetAt e S g x → IsDetAt e T h y → ∀ f, IsThetaFunO ψ S T f → IsLatVac (heisO ψ S T) (latO S T (ΛS : Set (Fin S.rank → D.host.E)) (ΛT : Set (Fin T.rank → D.host.E)) fun _ => True) f → om (g, h) f = ((splitFacO χS χT x y : Circle) : ℂ) • f := by
   intro D ψ S T ΛS ΛT χS χT om hW hS hT e he g h hg hh hlat x y hx hy f hf hv

@@ -3,16 +3,16 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.WeakShimuraTheory.
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC Formalism.MainNotions.N ReciprocityTheory.Gal IsLocalRing Polynomial UpperTheory.V UpperTheory.V.Base UpperTheory.V.Alg UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.Ws GlobalTheory.GalOfCusp
 
 /- English proof (translation)
-Rewrite using `[mem_roots M.charpoly_monic.ne_zero, Matrix.mem_spectrum_iff_isRoot_charpoly]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem mem_roots_iff_spec {K : Type} [Field K] {n : ℕ} (M : Matrix (Fin n) (Fin n) K) (z : K) :
     z ∈ M.charpoly.roots ↔ z ∈ spectrum K M := by
   rw [mem_roots M.charpoly_monic.ne_zero, Matrix.mem_spectrum_iff_isRoot_charpoly]
 
 /- English proof (translation)
-Rewrite `hw` using `[mem_roots_iff_spec]`. Establish `hnt : Nontrivial (Matrix (Fin n) (Fin n) K)`. Assume the negation of the conclusion as `h`. Rewrite `h` using `[not_nontrivial_iff_subsingleton]`. Conclude with `hw (isUnit_of_subsingleton _)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hw` using `[spectrum.map_polynomial_aeval_of_nonempty M p (spectrum.nonempty_of_isAlgClosed_of_finiteDimensional K M)]`. Take `⟨z, hz, rfl⟩` from `hw`. Conclude with `⟨z, (mem_roots_iff_spec M z).2 hz, rfl⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem roots_aeval {K : Type} [Field K] [IsAlgClosed K] {n : ℕ} (M : Matrix (Fin n) (Fin n) K) (p : K[X]) (w : K)
     (hw : w ∈ (aeval M p).charpoly.roots) : ∃ z ∈ M.charpoly.roots, p.eval z = w := by
@@ -26,9 +26,9 @@ private theorem roots_aeval {K : Type} [Field K] [IsAlgClosed K] {n : ℕ} (M : 
   exact ⟨z, (mem_roots_iff_spec M z).2 hz, rfl⟩
 
 /- English proof (translation)
-Proceed by induction on `s using Multiset.induction_on with`. Consider the case `empty => simp`. Consider the case `cons a s ih`. Rewrite using `[Multiset.sum_cons, ih (fun w hw => h w (Multiset.mem_cons_of_mem hw))]`. Break down `h a (Multiset.mem_cons_self _ _) with rfl | rfl` into its components or cases.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite using `[Multiset.count_cons_of_ne hc]`. Simplify using the standard rewrite rules. Rewrite using `[Multiset.count_cons_self]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem sum_eq_count {K : Type} [Field K] [DecidableEq K] (c : K) (hc : c ≠ 0) (s : Multiset K)
     (h : ∀ w ∈ s, w = 0 ∨ w = c) : s.sum = (s.count c : K) * c := by
@@ -41,29 +41,27 @@ private theorem sum_eq_count {K : Type} [Field K] [DecidableEq K] (c : K) (hc : 
     · rw [Multiset.count_cons_self]; push_cast; ring
 
 /- English proof (translation)
-Introduce `O K Γ S _ _ _ _ _ _ n ρ t d σ hcp y i hi z hz`. Establish `h1 : ∀ g, (W.mat ρ g).trace = ∑ j ∈ t, (W.mat (σ j) g).trace`. Introduce `g`. Simplify using `only [Matrix.trace_eq_sum_roots_charpoly]`. Rewrite using `[hcp g, roots_prod _ _ (Finset.prod_ne_zero_iff.2 fun j _ => (Matrix.charpoly_monic _).ne_zero), Multiset.sum_bind]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `h2 : ∀ x : MonoidAlgebra O Γ, (MonoidAlgebra.lift O (Matrix (Fin n) (Fin n) K) Γ (W.mat ρ) x).trace = ∑ j ∈ t, (MonoidAlgebra.lift O (Matrix (Fin (d j)) (Fin (d j)) K) Γ (W.mat (σ j)) x).trace`. Introduce `x`. Proceed by induction on `x using MonoidAlgebra.induction_linear with`. Consider the case `zero => simp`.
+Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `add a b ha hb => simp only [map_add, Matrix.trace_add, ha, hb, Finset.sum_add_distrib]`. Consider the case `single g a => simp only [MonoidAlgebra.lift_single, Matrix.trace_smul, h1, Finset.smul_sum]`. Use `set M := MonoidAlgebra.lift O (Matrix (Fin n) (Fin n) K) Γ (W.mat ρ) y with hM`. Use `set N := fun j => MonoidAlgebra.lift O (Matrix (Fin (d j)) (Fin (d j)) K) Γ (W.mat (σ j)) y with hN`. Establish `h3 : ∀ p : K[X], (aeval M p).trace = ∑ j ∈ t, (aeval (N j) p).trace`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Introduce `p`. Proceed by induction on `p using Polynomial.induction_on' with`. Consider the case `add a b ha hb => simp only [map_add, Matrix.trace_add, ha, hb, Finset.sum_add_distrib]`. Consider the case `monomial k a`. Use `h2 (y ^ k)` as an intermediate fact.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_pow] at this`. Simplify using `only [aeval_monomial, ← Algebra.smul_def, Matrix.trace_smul, hM, hN, this, Finset.smul_sum]`. Assume the negation of the conclusion as `hzM`. Set `T : Finset K` to `(M.charpoly.roots.toFinset ∪ t.biUnion fun j => (N j).charpoly.roots.toFinset).erase z`. Set `p : K[X]` to `∏ w ∈ T, (X - C w)`.
+Assume the negation of the conclusion and derive a contradiction. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hpz : p.eval z ≠ 0`. Simplify using `only [p, eval_prod, eval_sub, eval_X, eval_C]`. Conclude with `Finset.prod_ne_zero_iff.2 fun w hw => sub_ne_zero.2 (Finset.ne_of_mem_erase hw).symm`. Establish `hpT : ∀ w ∈ T, p.eval w = 0`. Introduce `w hw`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [p, eval_prod, eval_sub, eval_X, eval_C]`. Conclude with `Finset.prod_eq_zero hw (sub_self _)`. Establish `hM0 : (aeval M p).trace = 0`. Rewrite using `[Matrix.trace_eq_sum_roots_charpoly]`. Use `Multiset.sum_eq_zero fun w hw => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Take `⟨u, hu, rfl⟩` from `roots_aeval M p w hw`. Use `hpT u (Finset.mem_erase.2 ⟨?_, Finset.mem_union_left _ (Multiset.mem_toFinset.2 hu)⟩)` and prove the remaining obligations. Introduce and unpack `rfl`. Conclude with `hzM hu`. Establish `hNj : ∀ j ∈ t, (aeval (N j) p).trace = ((aeval (N j) p).charpoly.roots.count (p.eval z) : K) * p.eval z`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails.
 
-Introduce `j hj`. Rewrite using `[Matrix.trace_eq_sum_roots_charpoly]`. Use `sum_eq_count _ hpz _ fun w hw => ?_` and prove the remaining obligations. Take `⟨u, hu, rfl⟩` from `roots_aeval (N j) p w hw`. Distinguish the cases in `huz : u = z`.
+Prove the second alternative. Prove the first alternative. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Or.inr (by rw [huz])`. Conclude with `Or.inl (hpT u (Finset.mem_erase.2 ⟨huz, Finset.mem_union_right _ (Finset.mem_biUnion.2 ⟨j, hj, Multiset.mem_toFinset.2 hu⟩)⟩))`. Establish `h4` using `h3 p`. Rewrite `h4` using `[hM0, Finset.sum_congr rfl hNj, ← Finset.sum_mul, ← Nat.cast_sum]`. Establish `h5` using `(mul_eq_zero.1 h4.symm).resolve_right hpz`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h5` using `[Nat.cast_eq_zero, Finset.sum_eq_zero_iff]`. Establish `h6` using `h5 i hi`. Rewrite `h6` using `[Multiset.count_eq_zero]`. Apply `h6` to reduce the goal to its premises. Rewrite using `[mem_roots_iff_spec]`.
-
-Conclude with `spectrum.subset_polynomial_aeval (N i) p ⟨z, (mem_roots_iff_spec _ z).1 hz, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Ws.Pu.cpAlg :
     ∀ {O K Γ S : Type} [CommRing O] [Field K] [CharZero K] [IsAlgClosed K] [Algebra O K] [Group Γ] {n : ℕ} (ρ : Γ →* GL (Fin n) K) (t : Finset S) (d : S → ℕ) (σ : ∀ i, Γ →* GL (Fin (d i)) K),

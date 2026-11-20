@@ -12,19 +12,17 @@ namespace PrimeGermNullstellensatz
 variable {σ : Type} [Fintype σ] {w : σ → ℂ}
 
 /- English proof (translation)
-Proceed by induction on `hφ using Submodule.span_induction with`. Consider the case `mem φ hφ`. Take `⟨i, hi⟩` from `hφ`. Use `⟨fun j _ => if j = i then 1 else 0, fun j => analyticAt_const, ?_⟩` and prove the remaining obligations. Rewrite using `[hi]`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use function extensionality and compare the values at `z`. Simplify using the standard rewrite rules. Consider the case `zero`. Use `⟨fun _ _ => 0, fun _ => analyticAt_const, ?_⟩` and prove the remaining obligations.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Treat this case separately. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[show (fun z => ∑ i, (fun (_ : Fin k) (_ : σ → ℂ) => (0 : ℂ)) i z * p i z) = (0 : (σ → ℂ) → ℂ) by`. Use function extensionality and compare the values at `z`. Use the proof step `simp]`. Both sides reduce to the same expression. Consider the case `add x y _ _ hx hy`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨h₁, hh₁, e₁⟩` from `hx`. Take `⟨h₂, hh₂, e₂⟩` from `hy`. Use `⟨fun i z => h₁ i z + h₂ i z, fun i => (hh₁ i).add (hh₂ i), ?_⟩` and prove the remaining obligations. Use `show (x : Germ (𝓝 w) ℂ) + y = _`. Rewrite using `[e₁, e₂, ← Germ.coe_add]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `congr 1`. Use function extensionality and compare the values at `z`. Simplify using `[add_mul, Finset.sum_add_distrib]`. Consider the case `smul a x _ hx`. Take `⟨h, hh, e⟩` from `hx`.
+Simplify using the standard rewrite rules. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨fa, hfa, efa⟩ : ∃ f : (σ → ℂ) → ℂ, AnalyticAt ℂ f w ∧ (f : Germ (𝓝 w) ℂ) = a` from `a.2`. Use `⟨fun i z => fa z * h i z, fun i => hfa.mul (hh i), ?_⟩` and prove the remaining obligations. Use `show (a : Germ (𝓝 w) ℂ) * x = _`. Rewrite using `[e, ← efa, ← Germ.coe_mul]`. Use `congr 1`.
-
-Use function extensionality and compare the values at `z`. Simplify using `[Finset.mul_sum, mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_of_mem_holGermIdeal {k : ℕ} (p : Fin k → (σ → ℂ) → ℂ) {φ : holGerms w}
     (hφ : φ ∈ holGermIdeal w p) :
@@ -63,11 +61,11 @@ theorem exists_of_mem_holGermIdeal {k : ℕ} (p : Fin k → (σ → ℂ) → ℂ
     simp [Finset.mul_sum, mul_assoc]
 
 /- English proof (translation)
-Establish `hsum : φ = ∑ i, (⟨(h i : Germ (𝓝 w) ℂ), h i, hh i, rfl⟩ : holGerms w) * ⟨(p i : Germ (𝓝 w) ℂ), p i, hp i, rfl⟩`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[hφ, show (fun z => ∑ i, h i z * p i z : (σ → ℂ) → ℂ) = ∑ i, h i * p i by`. Use function extensionality and compare the values at `z`. Simplify using `[Finset.sum_apply]]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the hypotheses and the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Rewrite using `[show ((∑ i, h i * p i : (σ → ℂ) → ℂ) : Germ (𝓝 w) ℂ) = Germ.coeRingHom (𝓝 w) (∑ i, h i * p i) from rfl, map_sum, AddSubmonoidClass.coe_finsetSum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul]`. Both sides reduce to the same expression. Rewrite using `[hsum]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Ideal.sum_mem _ fun i _ => Ideal.mul_mem_left _ _ (Ideal.subset_span ⟨i, rfl⟩)`.
+A detailed English derivation is pending.
 -/
 theorem mem_holGermIdeal_of_eq {k : ℕ} {p : Fin k → (σ → ℂ) → ℂ} (hp : ∀ i, AnalyticAt ℂ (p i) w)
     {h : Fin k → (σ → ℂ) → ℂ} (hh : ∀ i, AnalyticAt ℂ (h i) w) (φ : holGerms w)
@@ -87,13 +85,11 @@ theorem mem_holGermIdeal_of_eq {k : ℕ} {p : Fin k → (σ → ℂ) → ℂ} (h
   exact Ideal.sum_mem _ fun i _ => Ideal.mul_mem_left _ _ (Ideal.subset_span ⟨i, rfl⟩)
 
 /- English proof (translation)
-Break down `Nat.eq_zero_or_pos N with hN | hN` into its components or cases. Substitute `hN` using the available equality. Conclude with `fun j => j.elim0`. Use `set Q : Polynomial ℂ := ∑ j : Fin N, Polynomial.C (c j) * Polynomial.X ^ (j : ℕ)`. Establish `hQe : ∀ s, Q.eval s = ∑ j, c j * s ^ (j : ℕ)`.
+Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `s`. Simplify using `[Q, Polynomial.eval_finsetSum]`. Establish `hdeg : Q.natDegree < Fintype.card (Fin N)`. Rewrite using `[Fintype.card_fin]`. Use `lt_of_le_of_lt (Polynomial.natDegree_sum_le_of_forall_le _ _ (n := N - 1) fun j _ => ?_) (Nat.sub_lt hN Nat.one_pos)` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `(Polynomial.natDegree_C_mul_X_pow_le _ _).trans (Nat.le_sub_one_of_lt j.isLt)`. Establish `hQ : Q = 0` using `Polynomial.eq_zero_of_natDegree_lt_card_of_eval_eq_zero Q ht (fun m => by rw [hQe]; exact hroot m) hdeg`. Introduce `j`. Establish `hj` using `congrArg (fun q : Polynomial ℂ => q.coeff (j : ℕ)) hQ`. Simplify using `only [Q, Polynomial.finsetSum_coeff, Polynomial.coeff_C_mul_X_pow, Polynomial.coeff_zero, Fin.val_inj] at hj`.
-
-Simplify using `using hj`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem coeff_eq_zero_of_distinct_roots {N : ℕ} (c t : Fin N → ℂ) (ht : Function.Injective t)
     (hroot : ∀ m, ∑ j, c j * t m ^ (j : ℕ) = 0) : ∀ j, c j = 0 := by
@@ -118,27 +114,23 @@ theorem coeff_eq_zero_of_distinct_roots {N : ℕ} (c t : Fin N → ℂ) (ht : Fu
   simpa using hj
 
 /- English proof (translation)
-Introduce `σ _ w k p g hp hg hP hvan`. Take `⟨d, A, ℓ, N, δ, hδ, hδP, hdiv, hsheet⟩` from `hCover σ w k p hp hP`. Take `⟨M, a, h, ha, hh, hrel⟩` from `hdiv g hg`. Establish `hoff : ∀ᶠ y in 𝓝 (A w), δ y ≠ 0 → ∀ j, a j y = 0` using `by filter_upwards [hsheet _ (hrel.and hvan)] with y hy hδy`. Take `⟨x, hx, hinj⟩` from `hy hδy`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `coeff_eq_zero_of_distinct_roots (fun j => a j y) (fun m => ℓ (x m)) hinj fun m => ?_` and prove the remaining obligations. Take `⟨⟨hr, hv⟩, hpx, hAx⟩` from `hx m`. Establish `hg0 : g (x m) = 0` using `hv hpx`. Establish `h0 : δ (A (x m)) ^ M * g (x m) - ∑ j, a j (A (x m)) * ℓ (x m) ^ (j : ℕ) = 0`. Rewrite using `[hr]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[hpx]`. Rewrite `h0` using `[hg0, mul_zero, zero_sub, neg_eq_zero, hAx]`. Conclude with `h0`. Establish `hδne : ¬ (δ =ᶠ[𝓝 (A w)] 0)`. Introduce `h0`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hδP` to reduce the goal to its premises. Use `⟨fun _ _ => 0, fun _ => analyticAt_const, ?_⟩` and prove the remaining obligations. Use `filter_upwards [(A.continuous.tendsto w).eventually h0] with z hz`. Simplify using `using hz`. Establish `hzero : ∀ᶠ y in 𝓝 (A w), ∀ j, a j y = 0`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hall : ∀ᶠ y in 𝓝 (A w), AnalyticAt ℂ δ y ∧ (∀ j, AnalyticAt ℂ (a j) y) ∧ (δ y ≠ 0 → ∀ j, a j y = 0)` using `hδ.eventually_analyticAt.and ((eventually_all.2 fun j => (ha j).eventually_analyticAt).and hoff)`. Take `⟨r, hr0, hrB⟩` from `Metric.eventually_nhds_iff_ball.1 hall`. Use `filter_upwards [Metric.ball_mem_nhds (A w) hr0] with y₀ hy₀ j`. Assume the negation of the conclusion as `hne`. Apply `hδne` to reduce the goal to its premises.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `hnear : δ =ᶠ[𝓝 y₀] 0`. Establish `hcont : ContinuousAt (a j) y₀` using `((hrB y₀ hy₀).2.1 j).continuousAt`. Use `filter_upwards [hcont.eventually_ne hne, Metric.isOpen_ball.mem_nhds hy₀] with y hy hyB`. Assume the negation of the conclusion as `hδy`. Conclude with `hy ((hrB y hyB).2.2 hδy j)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hon : AnalyticOnNhd ℂ δ (Metric.ball (A w) r)` using `fun y hy => (hrB y hy).1`. Establish `hEq` using `hon.eqOn_zero_of_preconnected_of_eventuallyEq_zero (convex_ball _ _).isPreconnected hy₀ hnear`. Use `filter_upwards [Metric.ball_mem_nhds (A w) hr0] with y hy using hEq hy`. Establish `hrel' : ∀ᶠ z in 𝓝 w, δ (A z) ^ M * g z = ∑ i, h i z * p i z` using `by filter_upwards [hrel, (A.continuous.tendsto w).eventually hzero] with z hz hz0`. Rewrite using `[← hz]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[hz0]`. Establish `hδA : AnalyticAt ℂ (fun z => δ (A z)) w` using `hδ.comp (A.analyticAt w)`. Set `G : holGerms w` to `⟨(g : Germ (𝓝 w) ℂ), g, hg, rfl⟩`. Set `Dg : holGerms w` to `⟨((fun z => δ (A z) : (σ → ℂ) → ℂ) : Germ (𝓝 w) ℂ), _, hδA, rfl⟩`. Establish `hmem : Dg ^ M * G ∈ holGermIdeal w p`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `mem_holGermIdeal_of_eq hp hh _ ?_` and prove the remaining obligations. Rewrite using `[show ((Dg ^ M * G : holGerms w) : Germ (𝓝 w) ℂ) = (((fun z => δ (A z)) ^ M * g : (σ → ℂ) → ℂ) : Germ (𝓝 w) ℂ) by`. Rewrite using `[Germ.coe_mul, Germ.coe_pow]`. Use the proof step `rfl]`. Conclude with `Germ.coe_eq.2 (hrel'.mono fun z hz => by simpa using hz)`.
-
-Establish `hDg : Dg ∉ holGermIdeal w p`. Introduce `hD`. Take `⟨h', hh', e⟩` from `exists_of_mem_holGermIdeal p hD`. Conclude with `hδP ⟨h', hh', Germ.coe_eq.1 e⟩`. Establish `hG : G ∈ holGermIdeal w p`.
-
-Break down `hP.mem_or_mem hmem with h1 | h1` into its components or cases. Conclude with `absurd (hP.mem_of_pow_mem M h1) hDg`. Conclude with `h1`. Take `⟨h', hh', e⟩` from `exists_of_mem_holGermIdeal p hG`. Conclude with `⟨h', hh', Germ.coe_eq.1 e⟩`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem proof (hCover : PrimeGermCanonicalCover.Statement) : PrimeGermNullstellensatz.Statement := by
   intro σ _ w k p g hp hg hP hvan

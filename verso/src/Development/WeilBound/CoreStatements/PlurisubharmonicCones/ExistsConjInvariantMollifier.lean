@@ -11,7 +11,7 @@ open ReciprocityTheory.AnForm (levi)
 namespace LevelTowerAlt
 
 /- English proof (translation)
-The claim follows from `(starL' ℝ : (Fin n → ℂ) ≃L[ℝ] (Fin n → ℂ)).contDiff`.
+A detailed English derivation is pending.
 -/
 theorem contDiff_star (n : ℕ) : ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (fun v : Fin n → ℂ => star v) := (starL' ℝ : (Fin n → ℂ) ≃L[ℝ] (Fin n → ℂ)).contDiff
 

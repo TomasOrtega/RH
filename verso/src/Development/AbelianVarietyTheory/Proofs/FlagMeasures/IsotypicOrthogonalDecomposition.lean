@@ -18,24 +18,24 @@ variable {G H L : Type} [Group G] [NormedAddCommGroup H] [InnerProductSpace ℂ 
 
 omit [CompleteSpace H] in
 /- English proof (translation)
-Set `e : H →ₗᵢ[ℂ] H` to `{ toLinearMap := (A : H →ₗ[ℂ] H), norm_map' := hA }`. Conclude with `e.inner_map_map x y`.
+Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem inner_of_norm (A : H →L[ℂ] H) (hA : ∀ u, ‖A u‖ = ‖u‖) (x y : H) : ⟪A x, A y⟫_ℂ = ⟪x, y⟫_ℂ := by
   let e : H →ₗᵢ[ℂ] H := { toLinearMap := (A : H →ₗ[ℂ] H), norm_map' := hA }
   exact e.inner_map_map x y
 
 /- English proof (translation)
-Establish `hinv : ∀ g (v : H), σ g (σ g⁻¹ v) = v`. Introduce `g v`. Rewrite using `[← ContinuousLinearMap.mul_apply, ← map_mul]`. Simplify using the standard rewrite rules. Establish `hSin : ∀ v x, ⟪v, ((ContinuousLinearMap.adjoint T) ∘L T') x⟫_ℂ = ⟪T v, T' x⟫_ℂ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `v x`. Rewrite using `[ContinuousLinearMap.comp_apply, ContinuousLinearMap.adjoint_inner_right]`. Establish `hcomm : ∀ g, (ContinuousLinearMap.adjoint T) ∘L T' * σ g = σ g * ((ContinuousLinearMap.adjoint T) ∘L T')`. Introduce `g`. Use `ContinuousLinearMap.ext fun x => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `ext_inner_left ℂ fun v => ?_` and prove the remaining obligations. Rewrite using `[ContinuousLinearMap.mul_apply, ContinuousLinearMap.mul_apply, hSin]`. Establish `h1 : T v = R g (T (σ g⁻¹ v))`. Use `congrArg (fun F : H →L[ℂ] L => F (σ g⁻¹ v)) (hT g)` as an intermediate fact. Simplify using `only [ContinuousLinearMap.comp_apply, hinv] at this`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `this`. Establish `h2 : T' (σ g x) = R g (T' x)`. Use `congrArg (fun F : H →L[ℂ] L => F x) (hT' g)` as an intermediate fact. Simplify `this` using `only [ContinuousLinearMap.comp_apply]`. Establish `h3 : ⟪v, σ g (((ContinuousLinearMap.adjoint T) ∘L T') x)⟫_ℂ = ⟪σ g⁻¹ v, ((ContinuousLinearMap.adjoint T) ∘L T') x⟫_ℂ` using `by conv_lhs => rw [← hinv g v]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `inner_of_norm (σ g) (hσ g) _ _`. Rewrite using `[h3, hSin, h1, h2, inner_of_norm (R g) (hR g)]`. Take `⟨c, hc⟩` from `GlobalTheory.schur_unitary_irreducible G H σ hσ hirr _ hcomm`. Establish `key : ∀ a b, ⟪T a, T' b⟫_ℂ = c * ⟪a, b⟫_ℂ`. Introduce `a b`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← hSin, hc, ContinuousLinearMap.smul_apply, ContinuousLinearMap.one_apply, inner_smul_right]`. Establish `hww : ⟪w, w⟫_ℂ = 1`. Rewrite using `[inner_self_eq_norm_sq_to_K, hw]`. Simplify using the standard rewrite rules. Rewrite using `[key, key w w, hww, mul_one]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inner_intertwiners (σ : G →* (H →L[ℂ] H)) (hσ : ∀ g u, ‖σ g u‖ = ‖u‖)
     (hirr : ∀ S : Submodule ℂ H, IsClosed (S : Set H) → (∀ g, ∀ u ∈ S, σ g u ∈ S) → S = ⊥ ∨ S = ⊤)
@@ -78,21 +78,21 @@ theorem inner_intertwiners (σ : G →* (H →L[ℂ] H)) (hσ : ∀ g u, ‖σ g
 omit [CompleteSpace H] [CompleteSpace L] in
 
 /- English proof (translation)
-Set `Φ : V →ₗ[ℂ] L` to `(ContinuousLinearMap.apply ℂ L w : (H →L[ℂ] L) →ₗ[ℂ] L) ∘ₗ V.subtype`. Establish `hΦ : ∀ T : V, Φ T = (T : H →L[ℂ] L) w` using `fun T => rfl`. Establish `hinj : Function.Injective Φ`. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `T hT`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Use `ContinuousLinearMap.ext fun u => ?_` and prove the remaining obligations. Establish `h` using `hV T T.2 T T.2 u u`. Rewrite `h` using `[← hΦ, hT, inner_zero_left, zero_mul]`. Simplify using `using (inner_self_eq_zero.mp h)`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hdim : Module.finrank ℂ (LinearMap.range Φ) = Module.finrank ℂ V` using `(LinearEquiv.ofInjective Φ hinj).finrank_eq.symm`. Set `b` to `(stdOrthonormalBasis ℂ (LinearMap.range Φ)).reindex (finCongr hdim)`. Establish `he : ∀ x, (((LinearEquiv.ofInjective Φ hinj).symm x : V) : H →L[ℂ] L) w = (x : L)`. Introduce `x`. Establish `h1` using `congrArg Subtype.val ((LinearEquiv.ofInjective Φ hinj).apply_symm_apply x)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `h1` using `[LinearEquiv.ofInjective_apply]`. Conclude with `h1`. Establish `hin : ∀ i j u u', ⟪(((LinearEquiv.ofInjective Φ hinj).symm (b i) : V) : H →L[ℂ] L) u, (((LinearEquiv.ofInjective Φ hinj).symm (b j) : V) : H →L[ℂ] L) u'⟫_ℂ = (if i = j then 1 else 0) * ⟪u, u'⟫_ℂ`. Introduce `i j u u'`. Rewrite using `[hV _ ((LinearEquiv.ofInjective Φ hinj).symm (b i)).2 _ ((LinearEquiv.ofInjective Φ hinj).symm (b j)).2, he, he, ← Submodule.coe_inner, orthonormal_iff_ite.mp b.orthonormal i j]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun i => (((LinearEquiv.ofInjective Φ hinj).symm (b i) : V) : H →L[ℂ] L), fun i => ((LinearEquiv.ofInjective Φ hinj).symm (b i)).2, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `i u`. Establish `h : ⟪(((LinearEquiv.ofInjective Φ hinj).symm (b i) : V) : H →L[ℂ] L) u, (((LinearEquiv.ofInjective Φ hinj).symm (b i) : V) : H →L[ℂ] L) u⟫_ℂ = ⟪u, u⟫_ℂ`. Rewrite using `[hin]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h2 : ‖(((LinearEquiv.ofInjective Φ hinj).symm (b i) : V) : H →L[ℂ] L) u‖ ^ 2 = ‖u‖ ^ 2`. Rewrite using `[← inner_self_eq_norm_sq (𝕜 := ℂ), ← inner_self_eq_norm_sq (𝕜 := ℂ), h]`. Use polynomial arithmetic with `[norm_nonneg ((((LinearEquiv.ofInjective Φ hinj).symm (b i) : V) : H →L[ℂ] L) u), norm_nonneg u]`. Introduce `i j hij u u'`. Rewrite using `[hin]`.
+Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[hij]`. Establish `hbasis : Submodule.span ℂ (Set.range fun i => (LinearEquiv.ofInjective Φ hinj).symm (b i)) = ⊤`. Use `(b.toBasis.map (LinearEquiv.ofInjective Φ hinj).symm).span_eq` as an intermediate fact. Rewrite using `[← this, Module.Basis.coe_map, OrthonormalBasis.coe_toBasis]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hr : Set.range (fun i => (((LinearEquiv.ofInjective Φ hinj).symm (b i) : V) : H →L[ℂ] L)) = V.subtype '' Set.range (fun i => (LinearEquiv.ofInjective Φ hinj).symm (b i))`. Rewrite using `[← Set.range_comp]`. Both sides reduce to the same expression. Rewrite using `[hr, Submodule.span_image, hbasis, Submodule.map_top, Submodule.range_subtype]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_frame (V : Submodule ℂ (H →L[ℂ] L)) [FiniteDimensional ℂ V] (w : H)
     (hV : ∀ T ∈ V, ∀ T' ∈ V, ∀ u u', ⟪T u, T' u'⟫_ℂ = ⟪T w, T' w⟫_ℂ * ⟪u, u'⟫_ℂ) :
@@ -149,11 +149,11 @@ theorem exists_frame (V : Submodule ℂ (H →L[ℂ] L)) [FiniteDimensional ℂ 
 end Abstract
 
 /- English proof (translation)
-Introduce `B d hd hfin hle`. Use `haveI := hfin`. Take `⟨hU, hI, -, hw, -⟩` from `GlobalTheory.T.completedTensorDiscreteSeries_irreducible_formalDegree B d hd`. Take `⟨h1, hmul, hnorm, -⟩` from `hU`. Set `σ : B.I.Ginf →* (B.Hs →L[ℂ] B.Hs)` to `{ toFun := B.σs, map_one' := h1, map_mul' := fun a b => hmul a b }`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hR` using `(GlobalTheory.RightRegFund.rightReg_unitary_continuous B).2.2.1`. Establish `hirr : ∀ S : Submodule ℂ B.Hs, IsClosed (S : Set B.Hs) → (∀ g, ∀ u ∈ S, σ g u ∈ S) → S = ⊥ ∨ S = ⊤`. Introduce `S hS hSinv`. Establish `hI' : ∀ S : Submodule ℂ B.Hs, IsClosed (S : Set B.Hs) → (∀ g, ∀ v ∈ S, B.σs g v ∈ S) → S = ⊥ ∨ S = ⊤`. Simplify `hI` using `[IsIrr]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Conclude with `hI' S hS hSinv`. Establish `hV : ∀ T ∈ B.I.eHom B.σs B.μf B.fund B.R B.Re, ∀ T' ∈ B.I.eHom B.σs B.μf B.fund B.R B.Re, ∀ u u', ⟪T u, T' u'⟫_ℂ = ⟪T (B.tens B.w), T' (B.tens B.w)⟫_ℂ * ⟪u, u'⟫_ℂ`. Introduce `T hT T' hT' u u'`. Conclude with `inner_intertwiners σ (fun g u => hnorm g u) hirr (fun g => B.R (g, 1)) (fun g u => hR (g, 1) u) (B.tens B.w) hw T T' (fun g => hle hT g) (fun g => hle hT' g) u u'`. Conclude with `exists_frame (B.I.eHom B.σs B.μf B.fund B.R B.Re) (B.tens B.w) hV`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem exists_orthonormal_frame : ∀ (B : RowsAut) (d : InfinitePlace B.I.F → ℝ), IsDSData B d → FiniteDimensional ℂ (B.I.eHom B.σs B.μf B.fund B.R B.Re) → B.I.eHom B.σs B.μf B.fund B.R B.Re ≤ B.I.HomS B.σs B.μf B.fund B.R → ∃ T : Fin B.D → (B.Hs →L[ℂ] B.I.L2 B.μf B.fund), (∀ i, T i ∈ B.I.eHom B.σs B.μf B.fund B.R B.Re) ∧ (∀ i u, ‖T i u‖ = ‖u‖) ∧ (∀ i j, i ≠ j → ∀ u u', ⟪T i u, T j u'⟫_ℂ = 0) ∧ Submodule.span ℂ (Set.range T) = B.I.eHom B.σs B.μf B.fund B.R B.Re := by
   intro B d hd hfin hle

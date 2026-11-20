@@ -77,7 +77,7 @@ section Potential
 variable {r : ℕ} {X : Data E r} {x0 x : Frame X.Ψ r}
 
 /- English proof (translation)
-Unfold `rhX`. Rewrite using `[neg_neg, Real.exp_log (Finset.prod_pos fun τ _ => (FramePotential.factor_mem X h0 hx τ).1)]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem exp_neg_rhX (h0 : IsOrth X x0) (hx : x ∈ X.dom) :
     Real.exp (-rhX X x0 x) = ∏ τ : X.Ψ, ‖dmin X.Gm x τ ⟨X.p0, Nat.lt_succ_of_le X.p0_le⟩‖ /
@@ -86,7 +86,7 @@ theorem exp_neg_rhX (h0 : IsOrth X x0) (hx : x ∈ X.dom) :
   rw [neg_neg, Real.exp_log (Finset.prod_pos fun τ _ => (FramePotential.factor_mem X h0 hx τ).1)]
 
 /- English proof (translation)
-Introduce `h`. Use `(FramePotential.factor_mem X h0 hx τ).1` as an intermediate fact. Rewrite `this` using `[h]`. Simplify using `at this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem lminor_inv_mul_ne_zero (h0 : IsOrth X x0) (hx : x ∈ X.dom) (τ : X.Ψ) :
     lminor ((mat x0 τ)⁻¹ * mat x τ) ⟨X.p0, Nat.lt_succ_of_le X.p0_le⟩ ≠ 0 := by
@@ -96,7 +96,7 @@ theorem lminor_inv_mul_ne_zero (h0 : IsOrth X x0) (hx : x ∈ X.dom) (τ : X.Ψ)
   simp at this
 
 /- English proof (translation)
-Unfold `rhX`. Rewrite using `[Real.log_prod (fun τ _ => (FramePotential.factor_mem X h0 hx τ).1.ne'), Finset.sum_neg_distrib]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem rhX_eq_sum_log (h0 : IsOrth X x0) (hx : x ∈ X.dom) :
     rhX X x0 x = ∑ τ : X.Ψ, -Real.log (‖dmin X.Gm x τ ⟨X.p0, Nat.lt_succ_of_le X.p0_le⟩‖ /
@@ -105,7 +105,7 @@ theorem rhX_eq_sum_log (h0 : IsOrth X x0) (hx : x ∈ X.dom) :
   rw [Real.log_prod (fun τ _ => (FramePotential.factor_mem X h0 hx τ).1.ne'), Finset.sum_neg_distrib]
 
 /- English proof (translation)
-Rewrite using `[rhX_eq_sum_log h0 hx, ← Finset.sum_neg_distrib, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[Real.log_div (norm_ne_zero_iff.2 (IW.dmin_ne_zero X hx τ _)) (pow_ne_zero _ (norm_ne_zero_iff.2 (lminor_inv_mul_ne_zero h0 hx τ)))]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem rhX_eq_sum (h0 : IsOrth X x0) (hx : x ∈ X.dom) :
     rhX X x0 x = -∑ τ : X.Ψ, Real.log ‖dmin X.Gm x τ ⟨X.p0, Nat.lt_succ_of_le X.p0_le⟩‖ +
@@ -117,7 +117,7 @@ theorem rhX_eq_sum (h0 : IsOrth X x0) (hx : x ∈ X.dom) :
   ring
 
 /- English proof (translation)
-Rewrite using `[rhX_eq_sum_log h0 hx]`. Conclude with `Finset.sum_nonneg fun τ _ => neg_nonneg.2 (Real.log_nonpos (FramePotential.factor_mem X h0 hx τ).1.le (FramePotential.factor_mem X h0 hx τ).2)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rhX_nonneg (h0 : IsOrth X x0) (hx : x ∈ X.dom) : 0 ≤ rhX X x0 x := by
   rw [rhX_eq_sum_log h0 hx]
@@ -125,7 +125,7 @@ theorem rhX_nonneg (h0 : IsOrth X x0) (hx : x ∈ X.dom) : 0 ≤ rhX X x0 x := b
     (FramePotential.factor_mem X h0 hx τ).1.le (FramePotential.factor_mem X h0 hx τ).2)
 
 /- English proof (translation)
-Rewrite using `[rhX_eq_sum_log h0 hx]`. Conclude with `Finset.single_le_sum (f := fun τ : X.Ψ => -Real.log (‖dmin X.Gm x τ ⟨X.p0, Nat.lt_succ_of_le X.p0_le⟩‖ / ‖lminor ((mat x0 τ)⁻¹ * mat x τ) ⟨X.p0, Nat.lt_succ_of_le X.p0_le⟩‖ ^ 2)) (fun τ _ => neg_nonneg.2 (Real.log_nonpos (FramePotential.factor_mem X h0 hx τ).1.le (FramePotential. …`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem neg_log_factor_le_rhX (h0 : IsOrth X x0) (hx : x ∈ X.dom) (τ : X.Ψ) :
     -Real.log (‖dmin X.Gm x τ ⟨X.p0, Nat.lt_succ_of_le X.p0_le⟩‖ /
@@ -139,7 +139,7 @@ theorem neg_log_factor_le_rhX (h0 : IsOrth X x0) (hx : x ∈ X.dom) (τ : X.Ψ) 
     (Finset.mem_univ τ)
 
 /- English proof (translation)
-Unfold `rhX`. Rewrite using `[Finset.prod_congr rfl fun τ _ => FramePotential.factor_rmul X x0 x hb τ _]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem rhX_rmul (x0 x : Frame X.Ψ r) {b : Frame X.Ψ r} (hb : b ∈ Bor X.Ψ r) :
     rhX X x0 (rmul x b) = rhX X x0 x := by
@@ -147,7 +147,7 @@ theorem rhX_rmul (x0 x : Frame X.Ψ r) {b : Frame X.Ψ r} (hb : b ∈ Bor X.Ψ r
   rw [Finset.prod_congr rfl fun τ _ => FramePotential.factor_rmul X x0 x hb τ _]
 
 /- English proof (translation)
-Unfold `rhX`. Rewrite using `[(FramePotential.frame_potential_basic r X x0 h0).2.2.2 z hz, Real.log_exp, neg_neg]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem rhX_cpt (h0 : IsOrth X x0) {z : V (nd X)} (hz : z ∈ OmF X x0) :
     rhX X x0 (cpt X x0 z) = rhF X x0 z := by
@@ -155,7 +155,7 @@ theorem rhX_cpt (h0 : IsOrth X x0) {z : V (nd X)} (hz : z ∈ OmF X x0) :
   rw [(FramePotential.frame_potential_basic r X x0 h0).2.2.2 z hz, Real.log_exp, neg_neg]
 
 /- English proof (translation)
-Unfold `rhX`. Rewrite using `[Finset.prod_eq_one, Real.log_one, neg_zero]`. Introduce `τ _`. Rewrite using `[FramePotential.norm_dmin_of_isOrth X h0, Matrix.nonsing_inv_mul _ (isUnit_iff_ne_zero.mpr (LUPf.orthogonalFrame_det_ne_zero X x0 h0 τ)), LUPf.lminor_one]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem rhX_self (h0 : IsOrth X x0) : rhX X x0 x0 = 0 := by
   unfold rhX
@@ -166,13 +166,13 @@ theorem rhX_self (h0 : IsOrth X x0) : rhX X x0 x0 = 0 := by
   simp
 
 /- English proof (translation)
-The claim follows from `(Real.measurable_log.comp (FramePotential.frame_potential_basic r X x0 h0).1).neg`.
+A detailed English derivation is pending.
 -/
 theorem measurable_rhX (h0 : IsOrth X x0) : Measurable (rhX X x0) :=
   (Real.measurable_log.comp (FramePotential.frame_potential_basic r X x0 h0).1).neg
 
 /- English proof (translation)
-Use `ContinuousOn.neg (ContinuousOn.log (continuousOn_finset_prod _ fun τ _ => ?_) fun x hx => (Finset.prod_pos fun τ _ => (FramePotential.factor_mem X h0 hx τ).1).ne')` and prove the remaining obligations. Use `ContinuousOn.div (ExtFPf.cont_dmin X τ _).norm.continuousOn ?_ fun x hx => pow_ne_zero _ (norm_ne_zero_iff.2 (lminor_inv_mul_ne_zero h0 hx τ))` and prove the remaining obligations. Establish `hm : Continuous fun x : Frame X.Ψ r => mat x τ` using `continuous_apply τ`. Conclude with `((((continuous_const.matrix_mul hm).matrix_submatrix _ _).matrix_det).norm.pow 2).continuousOn`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem continuousOn_rhX (h0 : IsOrth X x0) : ContinuousOn (rhX X x0) X.dom := by
   refine ContinuousOn.neg (ContinuousOn.log (continuousOn_finset_prod _ fun τ _ => ?_)
@@ -183,15 +183,15 @@ theorem continuousOn_rhX (h0 : IsOrth X x0) : ContinuousOn (rhX X x0) X.dom := b
   exact ((((continuous_const.matrix_mul hm).matrix_submatrix _ _).matrix_det).norm.pow 2).continuousOn
 
 /- English proof (translation)
-Introduce `τ` and use `by rw [MajInv.gram_lact X hγ, h0 τ]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isOrth_lact_of_isUStab {γ : GL (Fin r) E} (hγ : IsUStab X.Gm X.Λ γ) (h0 : IsOrth X x0) :
     IsOrth X (lact γ x0) := fun τ => by rw [MajInv.gram_lact X hγ, h0 τ]
 
 /- English proof (translation)
-Unfold `rhX`. Use `congr 2`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Establish `hu : IsUnit ((γ : Matrix (Fin r) (Fin r) E).map τ.1).det`. Rewrite using `[show ((γ : Matrix (Fin r) (Fin r) E).map τ.1).det = τ.1 (γ : Matrix (Fin r) (Fin r) E).det by rw [RingHom.map_det]; rfl]`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `((Matrix.isUnit_iff_isUnit_det _).1 γ.isUnit).map τ.1`. Establish `e : ∀ y : Frame X.Ψ r, mat (lact γ y) τ = (γ : Matrix (Fin r) (Fin r) E).map τ.1 * mat y τ` using `fun _ => rfl`. Unfold `dmin`. Rewrite using `[MajInv.gram_lact X hγ, e, e, Matrix.mul_inv_rev, Matrix.mul_assoc, Matrix.nonsing_inv_mul_cancel_left _ _ hu]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rhX_lact_lact {γ : GL (Fin r) E} (hγ : IsUStab X.Gm X.Λ γ) (x0 x : Frame X.Ψ r) :
     rhX X (lact γ x0) (lact γ x) = rhX X x0 x := by
@@ -209,14 +209,14 @@ theorem rhX_lact_lact {γ : GL (Fin r) E} (hγ : IsUStab X.Gm X.Λ γ) (x0 x : F
     Matrix.nonsing_inv_mul_cancel_left _ _ hu]
 
 /- English proof (translation)
-Rewrite using `[← rhX_lact_lact hγ (lact γ⁻¹ x0) x, ← FundSetPf.lact_mul, mul_inv_cancel, FundSetPf.lact_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem rhX_lact {γ : GL (Fin r) E} (hγ : IsUStab X.Gm X.Λ γ) (x0 x : Frame X.Ψ r) :
     rhX X x0 (lact γ x) = rhX X (lact γ⁻¹ x0) x := by
   rw [← rhX_lact_lact hγ (lact γ⁻¹ x0) x, ← FundSetPf.lact_mul, mul_inv_cancel, FundSetPf.lact_one]
 
 /- English proof (translation)
-The claim follows from `OntoB.levi_rh_nonneg RhGradFStatement_holds h0 hz ξ`.
+A detailed English derivation is pending.
 -/
 theorem leviRh_nonneg (h0 : IsOrth X x0) {z : V (nd X)} (hz : z ∈ OmF X x0) (ξ : Fin (nd X) → ℂ) :
     0 ≤ leviRh X x0 z ξ :=
@@ -229,9 +229,9 @@ section Dimension
 variable {r : ℕ} (X : Data E r)
 
 /- English proof (translation)
-Establish `hΨ : X.Ψ.card ≠ 0`. Take `⟨τ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Use `Finset.card_ne_zero.2 ?_` and prove the remaining obligations. Distinguish the cases in `h : τ ∈ X.Ψ`. Conclude with `⟨τ, h⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Supply the required witnesses or components.
 
-Conclude with `⟨_, not_not.1 fun h' => h ((X.cmType τ).2 h')⟩`. Use `X.p0_le` as an intermediate fact. Unfold `dimX`. Simplify using `only [Nat.mul_eq_zero, hΨ, false_or]`. Use linear arithmetic over natural numbers and integers.
+Supply the required witnesses or components. Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem dimX_eq_zero_iff : dimX X = 0 ↔ X.p0 = 0 ∨ X.p0 = r := by
   have hΨ : X.Ψ.card ≠ 0 := by
@@ -246,7 +246,7 @@ theorem dimX_eq_zero_iff : dimX X = 0 ↔ X.p0 = 0 ∨ X.p0 = r := by
   omega
 
 /- English proof (translation)
-Establish `h` using `dimX_eq_zero_iff X`. Use `X.p0_le` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem one_le_dimX_iff : 1 ≤ dimX X ↔ 0 < X.p0 ∧ X.p0 < r := by
   have h := dimX_eq_zero_iff X
@@ -270,7 +270,7 @@ def mixedEntEquiv :
     simp
 
 /- English proof (translation)
-Rewrite using `[Fintype.card_congr (mixedEntEquiv X)]`. Simplify using `[dimX]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem card_mixedEnt :
     Fintype.card {e : Ent X // (e.2.1.2 : ℕ) < X.p0 ∧ X.p0 ≤ (e.2.1.1 : ℕ)} = dimX X := by
@@ -284,18 +284,18 @@ section Ball
 variable {r : ℕ} {X : Data E r} {G G' : Subgroup (GL (Fin r) E)} {x0 x : Frame X.Ψ r} {ρ0 ρ1 : ℝ}
 
 /- English proof (translation)
-The claim follows from `h.1`.
+A detailed English derivation is pending.
 -/
 theorem FreeBall.le (h : FreeBall X G x0 ρ0) : X.Γ ≤ G := h.1
 
 /- English proof (translation)
-The claim follows from `h.2.1 γ hγ`.
+A detailed English derivation is pending.
 -/
 theorem FreeBall.isUStab (h : FreeBall X G x0 ρ0) {γ : GL (Fin r) E} (hγ : γ ∈ G) :
     IsUStab X.Gm X.Λ γ := h.2.1 γ hγ
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Conclude with `absurd (h.2.2 γ hγ hne x hx h1) (not_le.2 h2)`.
+Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem FreeBall.eq_one (h : FreeBall X G x0 ρ0) {γ : GL (Fin r) E} (hγ : γ ∈ G) (hx : x ∈ X.dom)
     (h1 : rhX X x0 x < ρ0) (h2 : rhX X x0 (lact γ x) < ρ0) : γ = 1 := by
@@ -303,7 +303,7 @@ theorem FreeBall.eq_one (h : FreeBall X G x0 ρ0) {γ : GL (Fin r) E} (hγ : γ 
   exact absurd (h.2.2 γ hγ hne x hx h1) (not_le.2 h2)
 
 /- English proof (translation)
-Use `h.eq_one (G.mul_mem hγ' (G.inv_mem hγ)) (MajInv.lact_mem_dom X (h.isUStab hγ) hx) h1 (by rwa [FundSetPf.lact_mul, FundSetPf.lact_inv])` as an intermediate fact. Conclude with `(mul_inv_eq_one.1 this).symm`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem FreeBall.unique (h : FreeBall X G x0 ρ0) {γ γ' : GL (Fin r) E} (hγ : γ ∈ G) (hγ' : γ' ∈ G)
     (hx : x ∈ X.dom) (h1 : rhX X x0 (lact γ x) < ρ0) (h2 : rhX X x0 (lact γ' x) < ρ0) : γ = γ' := by
@@ -312,19 +312,19 @@ theorem FreeBall.unique (h : FreeBall X G x0 ρ0) {γ γ' : GL (Fin r) E} (hγ :
   exact (mul_inv_eq_one.1 this).symm
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h.1, h.2.1, fun γ hγ hne x hx hlt => hρ.trans (h.2.2 γ hγ hne x hx (hlt.trans_le hρ))⟩`.
+Supply the required witnesses or components.
 -/
 theorem FreeBall.mono (h : FreeBall X G x0 ρ0) (hρ : ρ1 ≤ ρ0) : FreeBall X G x0 ρ1 :=
   ⟨h.1, h.2.1, fun γ hγ hne x hx hlt => hρ.trans (h.2.2 γ hγ hne x hx (hlt.trans_le hρ))⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h1, fun γ hγ => h.2.1 γ (h2 hγ), fun γ hγ => h.2.2 γ (h2 hγ)⟩`.
+Supply the required witnesses or components.
 -/
 theorem FreeBall.of_le (h : FreeBall X G x0 ρ0) (h1 : X.Γ ≤ G') (h2 : G' ≤ G) : FreeBall X G' x0 ρ0 :=
   ⟨h1, fun γ hγ => h.2.1 γ (h2 hγ), fun γ hγ => h.2.2 γ (h2 hγ)⟩
 
 /- English proof (translation)
-Establish `h1 : lact (γ'⁻¹ * γ) x0 = rmul x0 b` using `by rw [FundSetPf.lact_mul, e, FundSetPf.lact_inv]`. Use `h.eq_one (G.mul_mem (G.inv_mem hγ') hγ) (IW.orth_mem_dom X x0 h0) (by rwa [rhX_self h0]) (by rwa [h1, rhX_rmul x0 x0 hb, rhX_self h0])` as an intermediate fact. Conclude with `(inv_mul_eq_one.1 this).symm`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem FreeBall.eq_of_lact_eq (h : FreeBall X G x0 ρ0) (h0 : IsOrth X x0) (hρ : 0 < ρ0)
     {γ γ' : GL (Fin r) E} (hγ : γ ∈ G) (hγ' : γ' ∈ G) {b : Frame X.Ψ r} (hb : b ∈ Bor X.Ψ r)
@@ -335,9 +335,9 @@ theorem FreeBall.eq_of_lact_eq (h : FreeBall X G x0 ρ0) (h0 : IsOrth X x0) (hρ
   exact (inv_mul_eq_one.1 this).symm
 
 /- English proof (translation)
-Use `⟨h.1, h.2.1, fun γ hγ hne x hx hlt => ?_⟩` and prove the remaining obligations. Establish `hg'` using `h.isUStab (G.inv_mem hg)`. Rewrite `hlt`, the goal using `[← rhX_lact_lact hg', FundSetPf.lact_inv]`. Establish `hc : g⁻¹ * γ * g ≠ 1` using `fun hc => hne (by`. Establish `: γ = g * (g⁻¹ * γ * g) * g⁻¹` using `by group`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[this, hc]`. Use the proof step `group)`. Use `h.2.2 _ (G.mul_mem (G.mul_mem (G.inv_mem hg) hγ) hg) hc _ (MajInv.lact_mem_dom X hg' hx) hlt` as an intermediate fact. Rewrite `this` using `[← FundSetPf.lact_mul, mul_inv_cancel_right, FundSetPf.lact_mul]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem FreeBall.lact (h : FreeBall X G x0 ρ0) {g : GL (Fin r) E} (hg : g ∈ G) :
     FreeBall X G (lact g x0) ρ0 := by
@@ -358,7 +358,7 @@ variable {r : ℕ} {X : Data E r} {G G' : Subgroup (GL (Fin r) E)} {x0 x : Frame
   {κ κ' ε C C' δ : ℝ} {ψ : Frame X.Ψ r → ℝ}
 
 /- English proof (translation)
-Use `h.1 γ hγ x hx _ (ExtFPf.oneF_mem X)` as an intermediate fact. Rewrite `this` using `[ExtFPf.rmul_oneF]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem IsPole.lact (h : IsPole X G x0 κ ε C δ ψ) {γ : GL (Fin r) E} (hγ : γ ∈ G) (hx : x ∈ X.dom) :
     ψ (lact γ x) = ψ x := by
@@ -366,7 +366,7 @@ theorem IsPole.lact (h : IsPole X G x0 κ ε C δ ψ) {γ : GL (Fin r) E} (hγ :
   rwa [ExtFPf.rmul_oneF] at this
 
 /- English proof (translation)
-Use `h.1 1 G.one_mem x hx b hb` as an intermediate fact. Rewrite `this` using `[FundSetPf.lact_one]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem IsPole.rmul (h : IsPole X G x0 κ ε C δ ψ) (hx : x ∈ X.dom) {b : Frame X.Ψ r}
     (hb : b ∈ Bor X.Ψ r) : ψ (rmul x b) = ψ x := by
@@ -374,13 +374,13 @@ theorem IsPole.rmul (h : IsPole X G x0 κ ε C δ ψ) (hx : x ∈ X.dom) {b : Fr
   rwa [FundSetPf.lact_one] at this
 
 /- English proof (translation)
-Introduce `γ hγ` and use `h.1 γ (hG hγ)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem IsPole.isInvFn (h : IsPole X G x0 κ ε C δ ψ) (hG : X.Γ ≤ G) : IsInvFn X ψ :=
   fun γ hγ => h.1 γ (hG hγ)
 
 /- English proof (translation)
-Take `⟨h1, h2, h3, h4, h5⟩` from `h`. Use `⟨fun γ hγ => h1 γ (hG hγ), h2, fun x1 hx1 => ⟨(h3 x1 hx1).1, fun z hz ξ => ?_⟩, fun x hx hle => (h4 x hx hle).trans (by linarith), fun x hx ha hb => le_trans (by linarith) (h5 x hx ha hb)⟩` and prove the remaining obligations. Conclude with `le_trans (neg_le_neg (mul_le_mul_of_nonneg_right hκ (leviRh_nonneg hx1 hz ξ))) ((h3 x1 hx1).2 z hz ξ)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem IsPole.mono (h : IsPole X G x0 κ ε C δ ψ) (hG : G' ≤ G) (hκ : κ ≤ κ') (hC : C ≤ C') :
     IsPole X G' x0 κ' ε C' δ ψ := by
@@ -392,7 +392,7 @@ theorem IsPole.mono (h : IsPole X G x0 κ ε C δ ψ) (hG : G' ≤ G) (hκ : κ 
     ((h3 x1 hx1).2 z hz ξ)
 
 /- English proof (translation)
-Establish `hγ'` using `hG _ (G.inv_mem hγ)`. Rewrite `hle`, the goal using `[← rhX_lact_lact hγ', FundSetPf.lact_inv]`. Rewrite using `[← h.lact (G.inv_mem hγ) hx]`. Conclude with `h.2.2.2.1 _ (MajInv.lact_mem_dom X hγ' hx) hle`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsPole.le_log_orbit (h : IsPole X G x0 κ ε C δ ψ) (hG : ∀ γ ∈ G, IsUStab X.Gm X.Λ γ)
     {γ : GL (Fin r) E} (hγ : γ ∈ G) (hx : x ∈ X.dom) (hle : rhX X (ReciprocityTheory.ChartRestriction.G.FD.lact γ x0) x ≤ ε) :
@@ -403,7 +403,7 @@ theorem IsPole.le_log_orbit (h : IsPole X G x0 κ ε C δ ψ) (hG : ∀ γ ∈ G
   exact h.2.2.2.1 _ (MajInv.lact_mem_dom X hγ' hx) hle
 
 /- English proof (translation)
-Use `h.2.2.2.1 x0 (IW.orth_mem_dom X x0 h0) (by rwa [rhX_self h0])` as an intermediate fact. Rewrite `this` using `[rhX_self h0, zero_add]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem IsPole.centre (h : IsPole X G x0 κ ε C δ ψ) (h0 : IsOrth X x0) (hε : 0 ≤ ε) :
     ψ x0 ≤ dimX X * Real.log δ + C := by
@@ -411,11 +411,11 @@ theorem IsPole.centre (h : IsPole X G x0 κ ε C δ ψ) (h0 : IsOrth X x0) (hε 
   rwa [rhX_self h0, zero_add] at this
 
 /- English proof (translation)
-Use `⟨fun _ _ _ _ _ _ => rfl, fun _ _ => le_rfl, fun x1 hx1 => ⟨contDiffOn_const, fun z hz ξ => ?_⟩, fun x hx _ => ?_, fun _ _ _ _ => by linarith⟩` and prove the remaining obligations. Establish `e : leviO X x1 (fun _ => 0) z ξ = 0`. Establish `e1 : ∀ k, wdb (nd X) k (fun _ => (0 : ℂ)) = fun _ => 0` using `fun k => by`. Use function extensionality and compare the values at `y`. Simplify using `[wdb]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using `[leviO, leviM, leviV, e1, wd]`. Rewrite using `[e]`. Conclude with `neg_nonpos.2 (mul_nonneg hκ (leviRh_nonneg hx1 hz ξ))`. Establish `h1 : Real.log δ ≤ Real.log (rhX X x0 x + δ)` using `Real.log_le_log hδ (by linarith [rhX_nonneg h0 hx])`. Establish `h2` using `mul_le_mul_of_nonneg_left h1 (Nat.cast_nonneg (α := ℝ) (dimX X))`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 theorem isPole_zero (h0 : IsOrth X x0) (hκ : 0 ≤ κ) (hδ : 0 < δ) (hC : 0 ≤ C)
     (hC' : -(dimX X * Real.log δ) ≤ C) : IsPole X G x0 κ ε C δ fun _ => 0 := by
@@ -439,18 +439,16 @@ section Block
 variable {r : ℕ} {X : Data E r} {la la' : Wt X.Ψ r}
 
 /- English proof (translation)
-Introduce `_ _ _ h` and use `if_congr h rfl rfl`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem blockConst_ite (a a' : X.Ψ → ℤ) :
     BlockConst X fun τ i => if (i : ℕ) < X.p0 then a τ else a' τ :=
   fun _ _ _ h => if_congr h rfl rfl
 
 /- English proof (translation)
-Use `⟨fun h => ?_, ?_⟩` and prove the remaining obligations. Use `⟨fun τ => if hi : ∃ i : Fin r, (i : ℕ) < X.p0 then la τ hi.choose else 0, fun τ => if hi : ∃ i : Fin r, ¬ (i : ℕ) < X.p0 then la τ hi.choose else 0, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `τ i`. Use `beta_reduce`. Distinguish the cases in `hi : (i : ℕ) < X.p0`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Establish `hex : ∃ i : Fin r, (i : ℕ) < X.p0` using `⟨i, hi⟩`. Rewrite using `[if_pos hi, dif_pos hex]`. Conclude with `h τ _ _ (iff_of_true hi hex.choose_spec)`. Establish `hex : ∃ i : Fin r, ¬ (i : ℕ) < X.p0` using `⟨i, hi⟩`. Rewrite using `[if_neg hi, dif_pos hex]`.
-
-Conclude with `h τ _ _ (iff_of_false hi hex.choose_spec)`. Introduce and unpack `⟨a, a', rfl⟩`. Conclude with `blockConst_ite a a'`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem blockConst_iff : BlockConst X la ↔
     ∃ a a' : X.Ψ → ℤ, la = fun τ (i : Fin r) => if (i : ℕ) < X.p0 then a τ else a' τ := by
@@ -471,19 +469,19 @@ theorem blockConst_iff : BlockConst X la ↔
     exact blockConst_ite a a'
 
 /- English proof (translation)
-Introduce `τ i j hij` and use `by simp only [Pi.add_apply, h τ i j hij, h' τ i j hij]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem BlockConst.add (h : BlockConst X la) (h' : BlockConst X la') : BlockConst X (la + la') :=
   fun τ i j hij => by simp only [Pi.add_apply, h τ i j hij, h' τ i j hij]
 
 /- English proof (translation)
-Introduce `τ i j hij` and use `by simp only [Pi.smul_apply, h τ i j hij]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem BlockConst.zsmul (h : BlockConst X la) (k : ℤ) : BlockConst X (k • la) :=
   fun τ i j hij => by simp only [Pi.smul_apply, h τ i j hij]
 
 /- English proof (translation)
-Introduce `τ i j hij` and use `by simp only [Pi.smul_apply, h τ i j hij]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem BlockConst.nsmul (h : BlockConst X la) (k : ℕ) : BlockConst X (k • la) :=
   fun τ i j hij => by simp only [Pi.smul_apply, h τ i j hij]
@@ -493,27 +491,27 @@ end Block
 section Checks
 
 /- English proof (translation)
-Simplify using `[dimX, hp]`.
+Simplify using the standard rewrite rules.
 -/
 example (X : Data E 2) (hp : X.p0 = 1) : dimX X = X.Ψ.card := by simp [dimX, hp]
 
 /- English proof (translation)
-Simplify using `[dimX, hp, mul_comm]`.
+Simplify using the standard rewrite rules.
 -/
 example (X : Data E 5) (hp : X.p0 = 2) : dimX X = 6 * X.Ψ.card := by simp [dimX, hp, mul_comm]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨le_rfl, fun γ hγ => (inhab (E := E)).Γ_stab γ hγ, fun _ hγ hne => absurd (Subgroup.mem_bot.1 hγ) hne⟩`.
+Supply the required witnesses or components.
 -/
 example (x0 : Frame (inhab (E := E)).Ψ 1) (ρ0 : ℝ) : FreeBall (inhab (E := E)) ⊥ x0 ρ0 :=
   ⟨le_rfl, fun γ hγ => (inhab (E := E)).Γ_stab γ hγ, fun _ hγ hne => absurd (Subgroup.mem_bot.1 hγ) hne⟩
 
 /- English proof (translation)
-Introduce `h`. Establish `hb : (fun _ => (-1 : Matrix (Fin r) (Fin r) ℂ) : Frame X.Ψ r) ∈ Bor X.Ψ r` using `fun τ => ⟨by show (-1 : Matrix (Fin r) (Fin r) ℂ).det ≠ 0`. Rewrite using `[Matrix.det_neg]`. Use the proof step `simp,`. Use `fun a c hac => by show -(1 : Matrix (Fin r) (Fin r) ℂ) a c = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Matrix.one_apply_ne hac.ne', neg_zero]⟩`. Establish `e` using `h.eq_of_lact_eq h0 hρ hG G.one_mem hb (by`. Rewrite using `[FundSetPf.lact_one]`. Use function extensionality and compare the values at `τ`. Use `show (((-1 : GL (Fin r) E) : Matrix (Fin r) (Fin r) E).map τ.1 * mat x0 τ : Matrix (Fin r) (Fin r) ℂ) = mat x0 τ * (-1 : Matrix (Fin r) (Fin r) ℂ)`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[Units.val_neg, Units.val_one, ← RingHom.mapMatrix_apply, map_neg, map_one]`. Use the proof step `simp)`. Establish `e2` using `congrArg (fun γ : GL (Fin r) E => (γ : Matrix (Fin r) (Fin r) E) ⟨0, hr⟩ ⟨0, hr⟩) e`. Simplify using `only [Units.val_neg, Units.val_one, Matrix.neg_apply, Matrix.one_apply_eq] at e2`. Evaluate the numerical expressions using `at e2`.
+Evaluate the numerical expressions. A detailed English derivation is pending.
 -/
 example {r : ℕ} (hr : 0 < r) (X : Data E r) (G : Subgroup (GL (Fin r) E)) (hG : -1 ∈ G) {x0 : Frame X.Ψ r}
     (h0 : IsOrth X x0) {ρ0 : ℝ} (hρ : 0 < ρ0) : ¬ FreeBall X G x0 ρ0 := by
@@ -537,7 +535,7 @@ example {r : ℕ} (hr : 0 < r) (X : Data E r) (G : Subgroup (GL (Fin r) E)) (hG 
   norm_num at e2
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨ρ0 / 2, 0, by linarith, by linarith, fun _ hδ _ => ⟨_, isPole_zero h0 (by simp [hd]) hδ le_rfl (by simp [hd])⟩⟩`.
+Supply the required witnesses or components.
 -/
 example {r : ℕ} (X : Data E r) (hd : dimX X = 0) (G : Subgroup (GL (Fin r) E)) {x0 : Frame X.Ψ r}
     (h0 : IsOrth X x0) {ρ0 : ℝ} (hρ : 0 < ρ0) (θ : ℝ) :
@@ -546,7 +544,7 @@ example {r : ℕ} (X : Data E r) (hd : dimX X = 0) (G : Subgroup (GL (Fin r) E))
     ⟨_, isPole_zero h0 (by simp [hd]) hδ le_rfl (by simp [hd])⟩⟩
 
 /- English proof (translation)
-Introduce `h`. Establish `h1 : (1 : ℝ) ≤ dimX X` using `by exact_mod_cast hd`. Establish `h2` using `(h (Real.exp (-(|C| + 1))) (Real.exp_pos _) (Real.exp_le_one_iff.2 (by linarith [abs_nonneg C]))).centre h0 hε`. Rewrite `h2` using `[Real.log_exp]`. Use polynomial arithmetic with `[abs_nonneg C, le_abs_self C]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 -/
 example {r : ℕ} (X : Data E r) (hd : 1 ≤ dimX X) (G : Subgroup (GL (Fin r) E)) {x0 : Frame X.Ψ r}
     (h0 : IsOrth X x0) (κ C : ℝ) {ε : ℝ} (hε : 0 ≤ ε) :
@@ -559,7 +557,7 @@ example {r : ℕ} (X : Data E r) (hd : 1 ≤ dimX X) (G : Subgroup (GL (Fin r) E
   nlinarith [abs_nonneg C, le_abs_self C]
 
 /- English proof (translation)
-Introduce `h`. Use `h τ 0 1 (by simp [hp])` as an intermediate fact. Simplify using `[kapW] at this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 example (X : Data E 2) (hp : X.p0 = 2) (τ : X.Ψ) : ¬ BlockConst X (kapW X) := by
   intro h
@@ -567,7 +565,7 @@ example (X : Data E 2) (hp : X.p0 = 2) (τ : X.Ψ) : ¬ BlockConst X (kapW X) :=
   simp [kapW] at this
 
 /- English proof (translation)
-Rewrite using `[one_div, div_inv_eq_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 example (D θ r : ℝ) : D * θ / (1 / (49 * r ^ 2)) = D * θ * (49 * r ^ 2) := by
   rw [one_div, div_inv_eq_mul]

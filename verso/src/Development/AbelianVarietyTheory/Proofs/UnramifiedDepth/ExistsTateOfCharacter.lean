@@ -12,11 +12,11 @@ open GlobalTheory.ChTor
 namespace GlobalTheory.ChTor
 
 /- English proof (translation)
-Introduce `Γ _ U _ p hp hc e he κ hκ`. Establish `hpm : ∀ m : ℕ, 1 ≤ p ^ m` using `fun m => Nat.one_le_pow _ _ hp`. Establish `key : ∀ m : ℕ, ∃! s : Γ, s ^ (p ^ m) = 1 ∧ ∀ z, z ^ (p ^ m) = 1 → e (p ^ m) z s = κ z` using `fun m => (he (p ^ m) (hpm m)).2 κ (fun z z' hz hz' => hκ z z' ⟨m, hz⟩ ⟨m, hz'⟩)`. Use `choose s hs hu using key`. Use `⟨s, fun m => ⟨(hs m).1, ?_⟩, fun m => (hs m).2⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h1 : s (m + 1) ^ (p ^ m * p) = 1` using `by rw [← pow_succ]; exact (hs (m + 1)).1`. Apply `hu m` to reduce the goal to its premises. Use `⟨by rw [← pow_mul, mul_comm]; exact h1, fun z hz => ?_⟩` and prove the remaining obligations. Rewrite using `[← (he (p ^ m) (hpm m)).1 p z (s (m + 1)) hp hz h1, ← pow_succ]`. Apply `(hs (m + 1)).2` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[pow_succ, pow_mul, hz, one_pow]`.
+A detailed English derivation is pending.
 -/
 theorem exists_tate_of_character :
     ∀ (Γ : Type) [Group Γ] (U : Type) [CommGroup U] (p : ℕ), 1 ≤ p → (∀ a b : Γ, a * b = b * a) → ∀ e : ℕ → Γ → Γ → U, (∀ k : ℕ, 1 ≤ k → (∀ (l : ℕ) (z s : Γ), 1 ≤ l → z ^ k = 1 → s ^ (k * l) = 1 → e (k * l) z s = e k z (s ^ l)) ∧ ∀ κ : Γ → U, (∀ z z', z ^ k = 1 → z' ^ k = 1 → κ (z * z') = κ z * κ z') → ∃! s : Γ, s ^ k = 1 ∧ ∀ z, z ^ k = 1 → e k z s = κ z) → ∀ κ : Γ → U, (∀ z z', (∃ m, z ^ (p ^ m) = 1) → (∃ m, z' ^ (p ^ m) = 1) → κ (z * z') = κ z * κ z') → ∃ s : ℕ → Γ, (∀ m, s m ^ (p ^ m) = 1 ∧ s (m + 1) ^ p = s m) ∧ ∀ m z, z ^ (p ^ m) = 1 → e (p ^ m) z (s m) = κ z := by

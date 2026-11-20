@@ -12,7 +12,7 @@ def SidesIn (a b c d : ℝ) (B : Set ℂ) : Prop :=
   (∀ y ∈ Set.uIcc c d, (b : ℂ) + y * I ∈ B) ∧ (∀ y ∈ Set.uIcc c d, (a : ℂ) + y * I ∈ B)
 
 /- English proof (translation)
-The claim follows from `(hf.comp (by fun_prop) h).intervalIntegrable`.
+A detailed English derivation is pending.
 -/
 theorem int_hor {f : ℂ → ℂ} {B : Set ℂ} (hf : ContinuousOn f B) {a b c : ℝ}
     (h : ∀ x ∈ Set.uIcc a b, (x : ℂ) + c * I ∈ B) :
@@ -20,7 +20,7 @@ theorem int_hor {f : ℂ → ℂ} {B : Set ℂ} (hf : ContinuousOn f B) {a b c :
   (hf.comp (by fun_prop) h).intervalIntegrable
 
 /- English proof (translation)
-The claim follows from `(hf.comp (by fun_prop) h).intervalIntegrable`.
+A detailed English derivation is pending.
 -/
 theorem int_ver {f : ℂ → ℂ} {B : Set ℂ} (hf : ContinuousOn f B) {a c d : ℝ}
     (h : ∀ y ∈ Set.uIcc c d, (a : ℂ) + y * I ∈ B) :
@@ -28,7 +28,7 @@ theorem int_ver {f : ℂ → ℂ} {B : Set ℂ} (hf : ContinuousOn f B) {a c d :
   (hf.comp (by fun_prop) h).intervalIntegrable
 
 /- English proof (translation)
-Take `⟨h1, h2, h3, h4⟩` from `h`. Simplify using `only [bdInt]`. Rewrite using `[intervalIntegral.integral_add (int_hor hf h1) (int_hor hg h1), intervalIntegral.integral_add (int_hor hf h2) (int_hor hg h2), intervalIntegral.integral_add (int_ver hf h3) (int_ver hg h3), intervalIntegral.integral_add (int_ver hf h4) (int_ver hg h4)]`. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem bdInt_add {a b c d : ℝ} {B : Set ℂ} (h : SidesIn a b c d B) {f g : ℂ → ℂ}
     (hf : ContinuousOn f B) (hg : ContinuousOn g B) :
@@ -42,7 +42,7 @@ theorem bdInt_add {a b c d : ℝ} {B : Set ℂ} (h : SidesIn a b c d B) {f g : �
   ring
 
 /- English proof (translation)
-Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty => simp [bdInt]`. Consider the case `insert i S hi ih`. Simplify using `only [Finset.sum_insert hi]`. Rewrite using `[bdInt_add h (hf i (Finset.mem_insert_self _ _)) (continuousOn_finset_sum _ fun j hj => hf j (Finset.mem_insert_of_mem hj)), ih fun j hj => hf j (Finset.mem_insert_of_mem hj)]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem bdInt_sum {a b c d : ℝ} {B : Set ℂ} (h : SidesIn a b c d B) {ι : Type*} (S : Finset ι)
     {f : ι → ℂ → ℂ} (hf : ∀ i ∈ S, ContinuousOn (f i) B) :
@@ -57,7 +57,7 @@ theorem bdInt_sum {a b c d : ℝ} {B : Set ℂ} (h : SidesIn a b c d B) {ι : Ty
       ih fun j hj => hf j (Finset.mem_insert_of_mem hj)]
 
 /- English proof (translation)
-Take `⟨h1, h2, h3, h4⟩` from `h`. Simplify using `only [bdInt]`. Rewrite using `[intervalIntegral.integral_congr (g := fun x : ℝ => g (x + c * I)) fun x hx => hfg _ (h1 x hx), intervalIntegral.integral_congr (f := fun x : ℝ => f (x + d * I)) (g := fun x : ℝ => g (x + d * I)) fun x hx => hfg _ (h2 x hx), intervalIntegral.integral_congr (f := fun y : ℝ => f (b …`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem bdInt_congr {a b c d : ℝ} {B : Set ℂ} (h : SidesIn a b c d B) {f g : ℂ → ℂ}
     (hfg : ∀ s ∈ B, f s = g s) : bdInt a b c d f = bdInt a b c d g := by
@@ -72,7 +72,7 @@ theorem bdInt_congr {a b c d : ℝ} {B : Set ℂ} (h : SidesIn a b c d B) {f g :
       (g := fun y : ℝ => g (a + y * I)) fun x hx => hfg _ (h4 x hx)]
 
 /- English proof (translation)
-Use `intervalIntegral.integral_eq_sub_of_hasDerivAt (f := fun x : ℝ => F (x + c * I)) (fun x hx => ?_) (int_hor hf h)` and prove the remaining obligations. Establish `h1 : HasDerivAt (fun t : ℂ => F (t + c * I)) (f (x + c * I)) (x : ℂ)` using `HasDerivAt.comp_add_const (x : ℂ) (c * I) (hF _ (h x hx))`. Conclude with `h1.comp_ofReal`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem ftc_hor {F f : ℂ → ℂ} {B : Set ℂ} (hf : ContinuousOn f B)
     (hF : ∀ s ∈ B, HasDerivAt F (f s) s) {a b c : ℝ}
@@ -85,9 +85,9 @@ theorem ftc_hor {F f : ℂ → ℂ} {B : Set ℂ} (hf : ContinuousOn f B)
   exact h1.comp_ofReal
 
 /- English proof (translation)
-Rewrite using `[mul_comm, ← intervalIntegral.integral_mul_const]`. Use `intervalIntegral.integral_eq_sub_of_hasDerivAt (f := fun y : ℝ => F (a + y * I)) (fun y hy => ?_) ((int_ver hf h).mul_const I)` and prove the remaining obligations. Establish `h0 : HasDerivAt (fun t : ℂ => (a : ℂ) + t * I) I (y : ℂ)`. Simplify using `using ((hasDerivAt_id (y : ℂ)).mul_const I).const_add (a : ℂ)`. Establish `h1 : HasDerivAt (fun t : ℂ => F (a + t * I)) (f (a + y * I) * I) (y : ℂ)` using `HasDerivAt.comp (y : ℂ) (hF _ (h y hy)) h0`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Conclude with `h1.comp_ofReal`.
+A detailed English derivation is pending.
 -/
 theorem ftc_ver {F f : ℂ → ℂ} {B : Set ℂ} (hf : ContinuousOn f B)
     (hF : ∀ s ∈ B, HasDerivAt F (f s) s) {a c d : ℝ}
@@ -103,7 +103,7 @@ theorem ftc_ver {F f : ℂ → ℂ} {B : Set ℂ} (hf : ContinuousOn f B)
   exact h1.comp_ofReal
 
 /- English proof (translation)
-Take `⟨h1, h2, h3, h4⟩` from `h`. Simplify using `only [bdInt]`. Rewrite using `[ftc_hor hf hF h1, ftc_hor hf hF h2, ftc_ver hf hF h3, ftc_ver hf hF h4]`. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem bdInt_eq_zero_of_primitive {a b c d : ℝ} {B : Set ℂ} (h : SidesIn a b c d B)
     {F f : ℂ → ℂ} (hf : ContinuousOn f B) (hF : ∀ s ∈ B, HasDerivAt F (f s) s) :
@@ -114,11 +114,11 @@ theorem bdInt_eq_zero_of_primitive {a b c d : ℝ} {B : Set ℂ} (h : SidesIn a 
   ring
 
 /- English proof (translation)
-Use `⟨fun x _ hx => ?_, fun x _ hx => ?_, fun x _ hx => ?_, fun x _ hx => ?_⟩` and prove the remaining obligations. Use `congrArg Complex.im (Set.mem_singleton_iff.1 hx)` as an intermediate fact. Simplify using `at this`. Combine the linear equalities and inequalities to obtain the conclusion. Use `congrArg Complex.im (Set.mem_singleton_iff.1 hx)` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Simplify using `at this`. Combine the linear equalities and inequalities to obtain the conclusion. Use `congrArg Complex.re (Set.mem_singleton_iff.1 hx)` as an intermediate fact. Simplify using `at this`. Combine the linear equalities and inequalities to obtain the conclusion.
+Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Use `congrArg Complex.re (Set.mem_singleton_iff.1 hx)` as an intermediate fact. Simplify using `at this`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem sidesIn_compl {a b c d : ℝ} {p : ℂ} (h1 : a < p.re) (h2 : p.re < b) (h3 : c < p.im)
     (h4 : p.im < d) : SidesIn a b c d {p}ᶜ := by
@@ -129,9 +129,9 @@ theorem sidesIn_compl {a b c d : ℝ} {p : ℂ} (h1 : a < p.re) (h2 : p.re < b) 
   · have := congrArg Complex.re (Set.mem_singleton_iff.1 hx); simp at this; linarith
 
 /- English proof (translation)
-Use `bdInt_eq_zero_of_primitive (sidesIn_compl h1 h2 h3 h4) (F := fun s => -k * (s - p)⁻¹) ?_ fun s hs => ?_` and prove the remaining obligations. Conclude with `ContinuousOn.div (by fun_prop) (by fun_prop) fun s hs => pow_ne_zero _ (sub_ne_zero.2 hs)`. Establish `hs' : s - p ≠ 0` using `sub_ne_zero.2 hs`. Use `(((hasDerivAt_id s).sub_const p).inv hs').const_mul (-k)` as an intermediate fact. Use `this.congr_deriv ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [id]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem bdInt_sq {a b c d : ℝ} {p : ℂ} (h1 : a < p.re) (h2 : p.re < b) (h3 : c < p.im)
     (h4 : p.im < d) (k : ℂ) : bdInt a b c d (fun s => k / (s - p) ^ 2) = 0 := by
@@ -146,15 +146,15 @@ theorem bdInt_sq {a b c d : ℝ} {p : ℂ} (h1 : a < p.re) (h2 : p.re < b) (h3 :
     ring
 
 /- English proof (translation)
-Establish `hc : ∀ B : Set ℂ, (∀ s ∈ B, s - p ≠ 0) → ContinuousOn (fun s => k / (s - p)) B` using `fun B hB => ContinuousOn.div (by fun_prop) (by fun_prop) hB`. Establish `hc1` using `hc {s | s - p ∈ slitPlane} fun s hs => slitPlane_ne_zero hs`. Establish `hc2` using `hc {s | -(s - p) ∈ slitPlane} fun s hs => neg_ne_zero.1 (slitPlane_ne_zero hs)`. Establish `hd1 : ∀ s ∈ {s | s - p ∈ slitPlane}, HasDerivAt (fun s => k * log (s - p)) (k / (s - p)) s` using `fun s hs => by`. Use `(((hasDerivAt_id s).sub_const p).clog hs).const_mul k` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `this.congr_deriv ?_` and prove the remaining obligations. Simplify using `only [id]`. Expand and normalize the polynomial expressions, which then agree. Establish `hd2 : ∀ s ∈ {s | -(s - p) ∈ slitPlane}, HasDerivAt (fun s => k * log (-(s - p))) (k / (s - p)) s` using `fun s hs => by`. Use `(((hasDerivAt_id s).sub_const p).neg.clog hs).const_mul k` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `this.congr_deriv ?_` and prove the remaining obligations. Simplify using `only [id, Pi.neg_apply, neg_div_neg_eq]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [bdInt]`. Rewrite using `[ftc_hor hc1 hd1 (c := c) fun x _ => Or.inr (by simp; linarith), ftc_hor hc1 hd1 (c := d) fun x _ => Or.inr (by simp; linarith), ftc_ver hc1 hd1 (a := b) fun x _ => Or.inl (by simp; linarith), ftc_ver hc2 hd2 (a := a) fun x _ => Or.inl (by simp; linarith)]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `e1 : log (-((a : ℂ) + d * I - p)) = log ((a : ℂ) + d * I - p) - Real.pi * I`. Rewrite using `[Complex.log, Complex.log, norm_neg, arg_neg_eq_arg_sub_pi_of_im_pos (by simp; linarith)]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `e2 : log (-((a : ℂ) + c * I - p)) = log ((a : ℂ) + c * I - p) + Real.pi * I`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Rewrite using `[Complex.log, Complex.log, norm_neg, arg_neg_eq_arg_add_pi_of_im_neg (by simp; linarith)]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e1, e2]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem bdInt_inv {a b c d : ℝ} {p : ℂ} (h1 : a < p.re) (h2 : p.re < b) (h3 : c < p.im)
     (h4 : p.im < d) (k : ℂ) : bdInt a b c d (fun s => k / (s - p)) = 2 * Real.pi * I * k := by
@@ -189,29 +189,27 @@ theorem bdInt_inv {a b c d : ℝ} {p : ℂ} (h1 : a < p.re) (h2 : p.re < b) (h3 
   ring
 
 /- English proof (translation)
-Introduce `f z w S r hre him hS hf hp`. Use `choose! a g hg hfg using hp`. Use `set R : Set ℂ := Set.Icc z.re w.re ×ℂ Set.Icc z.im w.im with hR`. Set `P : ℂ → ℂ → ℂ` to `fun p s => a p / (s - p) ^ 2 + r p / (s - p)`. Establish `hP : ∀ p s, s ≠ p → DifferentiableAt ℂ (P p) s` using `fun p s hs => by`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs' : s - p ≠ 0` using `sub_ne_zero.2 hs`. Establish `hs2 : (s - p) ^ 2 ≠ 0` using `pow_ne_zero _ hs'`. Simplify using `only [P]`. Use `fun_prop (disch := assumption)`. Set `h : ℂ → ℂ` to `fun s => if s ∈ S then g s s - ∑ q ∈ S.erase s, P q s else f s - ∑ q ∈ S, P q s`.
+Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hopen : ∀ T : Finset ℂ, ∀ s ∉ T, ∀ᶠ t in nhds s, t ∉ T` using `fun T s hs => T.finite_toSet.isClosed.isOpen_compl.mem_nhds hs`. Establish `hh : DifferentiableOn ℂ h R`. Introduce `s hs`. Distinguish the cases in `hsS : s ∈ S`. Establish `hd : DifferentiableAt ℂ (fun t => g s t - ∑ q ∈ S.erase s, P q t) s` using `(hg s hsS).differentiableAt.sub (DifferentiableAt.fun_sum fun q hq => hP q s (Finset.ne_of_mem_erase hq).symm)`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Use `(hd.congr_of_eventuallyEq ?_).differentiableWithinAt` and prove the remaining obligations. Establish `e1` using `eventually_nhdsWithin_iff.1 (hfg s hsS)`. Use `filter_upwards [e1, hopen (S.erase s) s (Finset.notMem_erase s S)] with t ht1 ht2`. Distinguish the cases in `hts : t = s`. Substitute `hts` using the available equality.
+Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [h, if_pos hsS]`. Establish `htS : t ∉ S` using `fun ht => ht2 (Finset.mem_erase.2 ⟨hts, ht⟩)`. Simplify using `only [h, if_neg htS]`. Rewrite using `[ht1 hts, ← Finset.add_sum_erase S _ hsS]`. Simplify using `only [P]`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hd : DifferentiableWithinAt ℂ (fun t => f t - ∑ q ∈ S, P q t) R s`. Use `DifferentiableWithinAt.sub ?_ (DifferentiableAt.fun_sum fun q hq => hP q s fun e => hsS (e ▸ hq)).differentiableWithinAt` and prove the remaining obligations. Use `(hf s ⟨hs, hsS⟩).mono_of_mem_nhdsWithin ?_` and prove the remaining obligations. Conclude with `inter_mem_nhdsWithin R (hopen S s hsS)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `hd.congr_of_eventuallyEq ?_ (by simp only [h, if_neg hsS])` and prove the remaining obligations. Use `filter_upwards [mem_nhdsWithin_of_mem_nhds (hopen S s hsS)] with t ht`. Establish `ht' : t ∉ S` using `ht`. Simplify using `only [h, if_neg ht']`. Establish `hB : SidesIn z.re w.re z.im w.im (R \ S)`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[SidesIn, Set.uIcc_of_le hre.le, Set.uIcc_of_le him.le]`. Use `⟨fun x hx => ⟨?_, fun hm => ?_⟩, fun x hx => ⟨?_, fun hm => ?_⟩, fun x hx => ⟨?_, fun hm => ?_⟩, fun x hx => ⟨?_, fun hm => ?_⟩⟩` and prove the remaining obligations. Simplify using `[hR, mem_reProdIm, hx.1, hx.2, him.le]`. Simplify using `using (hS _ hm).2.2.1`. Simplify using `[hR, mem_reProdIm, hx.1, hx.2, him.le]`.
+Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify using `using (hS _ hm).2.2.2`. Simplify using `[hR, mem_reProdIm, hx.1, hx.2, hre.le]`. Simplify using `using (hS _ hm).2.1`. Simplify using `[hR, mem_reProdIm, hx.1, hx.2, hre.le]`. Simplify using `using (hS _ hm).1`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Establish `hPc : ∀ p ∈ S, ContinuousOn (P p) (R \ S)` using `fun p hp s hs => (hP p s fun e => hs.2 (e ▸ hp)).continuousAt.continuousWithinAt`. Establish `h0 : bdInt z.re w.re z.im w.im h = 0`. Use `integral_boundary_rect_eq_zero_of_differentiableOn h z w (by rwa [Set.uIcc_of_le hre.le, Set.uIcc_of_le him.le])` as an intermediate fact. Simplify `this` using `only [smul_eq_mul, bdInt]`. Express the relevant statement in the definitionally equal form `bdInt z.re w.re z.im w.im f = _`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Rewrite using `[bdInt_congr hB (g := fun s => h s + ∑ q ∈ S, P q s) (fun s hs => by`. Establish `ht' : s ∉ S` using `hs.2`. Simplify using `only [h, if_neg ht']`. Use the proof step `ring),`. Use `bdInt_add hB (hh.continuousOn.mono Set.diff_subset) (continuousOn_finset_sum _ hPc), h0,`.
-
-Use the proof step `zero_add, bdInt_sum hB S hPc, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun p hp => ?_` and prove the remaining obligations. Take `⟨h1, h2, h3, h4⟩` from `hS p hp`. Simplify using `only [P]`. Rewrite using `[bdInt_add (sidesIn_compl h1 h2 h3 h4) (f := fun s => a p / (s - p) ^ 2) (g := fun s => r p / (s - p)) (ContinuousOn.div (by fun_prop) (by fun_prop) fun s hs => pow_ne_zero _ (sub_ne_zero.2 hs)) (ContinuousOn.div (by fun_prop) (by fun_prop) fun s hs => sub_ne_zero.2 hs), bdInt_sq …`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem residue_rectangle :
     ∀ (f : ℂ → ℂ) (z w : ℂ) (S : Finset ℂ) (r : ℂ → ℂ), z.re < w.re → z.im < w.im → (∀ p ∈ S, z.re < p.re ∧ p.re < w.re ∧ z.im < p.im ∧ p.im < w.im) → DifferentiableOn ℂ f ((Set.Icc z.re w.re ×ℂ Set.Icc z.im w.im) \ S) → (∀ p ∈ S, ∃ (a : ℂ) (g : ℂ → ℂ), AnalyticAt ℂ g p ∧ ∀ᶠ s in nhdsWithin p {p}ᶜ, f s = a / (s - p) ^ 2 + r p / (s - p) + g s) → (∫ x : ℝ in z.re..w.re, f (x + z.im * I)) - (∫ x : ℝ in z.re..w.re, f (x + w.im * I)) + I * (∫ y : ℝ in z.im..w.im, f (w.re + y * I)) - I * (∫ y : ℝ in z.im..w.im, f (z.re + y * I)) = 2 * Real.pi * I * ∑ p ∈ S, r p := by

@@ -24,19 +24,19 @@ def ratHull (R : Subalgebra o Ω) : Subalgebra o Ω :=
     exact intCast_mem R n)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun ⟨_, ⟨n, hn, rfl⟩, h⟩ => ⟨n, nonZeroDivisors.ne_zero hn, h⟩, fun ⟨n, hn, h⟩ => ⟨_, ⟨n, mem_nonZeroDivisors_of_ne_zero hn, rfl⟩, h⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem mem_ratHull {R : Subalgebra o Ω} {x : Ω} : x ∈ ratHull R ↔ ∃ n : ℤ, n ≠ 0 ∧ (n : Ω) * x ∈ R :=
   ⟨fun ⟨_, ⟨n, hn, rfl⟩, h⟩ => ⟨n, nonZeroDivisors.ne_zero hn, h⟩,
     fun ⟨n, hn, h⟩ => ⟨_, ⟨n, mem_nonZeroDivisors_of_ne_zero hn, rfl⟩, h⟩⟩
 
 /- English proof (translation)
-The claim follows from `Subalgebra.le_saturation`.
+A detailed English derivation is pending.
 -/
 theorem le_ratHull (R : Subalgebra o Ω) : R ≤ ratHull R := Subalgebra.le_saturation
 
 /- English proof (translation)
-Introduce `_ hx` and use `let ⟨n, hn, hx⟩ := mem_ratHull.1 hx mem_ratHull.2 ⟨n, hn, h hx⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem ratHull_mono {R R' : Subalgebra o Ω} (h : R ≤ R') : ratHull R ≤ ratHull R' := fun _ hx =>
   let ⟨n, hn, hx⟩ := mem_ratHull.1 hx
@@ -45,7 +45,7 @@ theorem ratHull_mono {R R' : Subalgebra o Ω} (h : R ≤ R') : ratHull R ≤ rat
 abbrev toRat (R : Subalgebra o Ω) : R →+* ratHull R := (Subalgebra.inclusion (le_ratHull R)).toRingHom
 
 /- English proof (translation)
-Establish `h0 : (n : Ω) ≠ 0` using `Int.cast_ne_zero.2 hn`. Use `IsUnit.of_mul_eq_one ⟨(n : Ω)⁻¹, mem_ratHull.2 ⟨n, hn, by rw [mul_inv_cancel₀ h0]; exact one_mem _⟩⟩ (Subtype.ext ?_)` and prove the remaining obligations. Simplify using `using mul_inv_cancel₀ h0`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem isUnit_intCast_ratHull [CharZero Ω] (R : Subalgebra o Ω) {n : ℤ} (hn : n ≠ 0) : IsUnit (n : ratHull R) := by
   have h0 : (n : Ω) ≠ 0 := Int.cast_ne_zero.2 hn
@@ -54,11 +54,11 @@ theorem isUnit_intCast_ratHull [CharZero Ω] (R : Subalgebra o Ω) {n : ℤ} (hn
   simpa using mul_inv_cancel₀ h0
 
 /- English proof (translation)
-Use `letI := (toRat R).toAlgebra`. Use `(isLocalization_iff _ _).2 ⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨_, n, hn, rfl⟩`. Simplify using `using isUnit_intCast_ratHull R (nonZeroDivisors.ne_zero hn)`. Introduce and unpack `⟨x, hx⟩`.
+Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify to obtain the desired conclusion from the available facts. Assume the hypotheses and unpack their components.
 
-Take `⟨n, hn, h⟩` from `mem_ratHull.1 hx`. Use `⟨⟨⟨_, h⟩, ⟨_, n, mem_nonZeroDivisors_of_ne_zero hn, rfl⟩⟩, Subtype.ext ?_⟩` and prove the remaining obligations. Use `show x * ((algebraMap ℤ R n : R) : Ω) = n * x`. Simplify using `[mul_comm]`. Introduce `a b h`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Conclude with `⟨1, by rw [Subalgebra.inclusion_injective (le_ratHull R) h]⟩`.
+A detailed English derivation is pending.
 -/
 theorem isLocalization_ratHull [CharZero Ω] (R : Subalgebra o Ω) :
     letI := (toRat R).toAlgebra
@@ -76,9 +76,9 @@ theorem isLocalization_ratHull [CharZero Ω] (R : Subalgebra o Ω) :
     exact ⟨1, by rw [Subalgebra.inclusion_injective (le_ratHull R) h]⟩
 
 /- English proof (translation)
-Use `letI := (toRat R).toAlgebra`. Use `haveI := isLocalization_ratHull R`. Establish `hf : ∀ y : Algebra.algebraMapSubmonoid R (nonZeroDivisors ℤ), IsUnit (f y)`. Introduce and unpack `⟨_, n, hn, rfl⟩`. Simplify using `using hK n (nonZeroDivisors.ne_zero hn)`.
+Equip the data with the indicated structure. Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify to obtain the desired conclusion from the available facts. Supply the required witnesses or components.
 
-Conclude with `⟨IsLocalization.lift (S := ratHull R) hf, IsLocalization.lift_comp (S := ratHull R) hf, fun g hg => (IsLocalization.lift_unique (S := ratHull R) hf fun x => RingHom.congr_fun hg x).symm⟩`.
+A detailed English derivation is pending.
 -/
 theorem existsUnique_ratLift [CharZero Ω] (R : Subalgebra o Ω) {K : Type} [CommRing K]
     (hK : ∀ n : ℤ, n ≠ 0 → IsUnit (n : K)) (f : R →+* K) : ∃! g : ratHull R →+* K, g.comp (toRat R) = f := by
@@ -91,9 +91,7 @@ theorem existsUnique_ratLift [CharZero Ω] (R : Subalgebra o Ω) {K : Type} [Com
     (IsLocalization.lift_unique (S := ratHull R) hf fun x => RingHom.congr_fun hg x).symm⟩
 
 /- English proof (translation)
-Take `⟨g, hg, hu⟩` from `existsUnique_ratLift R (K := K) (fun n hn => IsUnit.mk0 _ (Int.cast_ne_zero.2 hn)) (Spec.preimage x).hom`. Use `⟨spMap g, ?_, fun y hy => ?_⟩` and prove the remaining obligations. Use `show spMap g ≫ _ = _`. Rewrite using `[← Spec.map_comp, ← CommRingCat.ofHom_comp, hg, CommRingCat.ofHom_hom, Spec.map_preimage]`. Rewrite using `[← hu (Spec.preimage y).hom (by rw [← hy, Spec.preimage_comp, Spec.preimage_map]; rfl)]`.
-
-Conclude with `(Spec.map_preimage y).symm`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem existsUnique_ratPoint [CharZero Ω] (R : Subalgebra o Ω) {K : Type} [Field K] [CharZero K] (x : Sp K ⟶ Sp R) :
     ∃! x' : Sp K ⟶ Sp (ratHull R), x' ≫ spMap (toRat R) = x := by
@@ -106,14 +104,14 @@ theorem existsUnique_ratPoint [CharZero Ω] (R : Subalgebra o Ω) {K : Type} [Fi
     exact (Spec.map_preimage y).symm
 
 /- English proof (translation)
-Rewrite using `[← Spec.map_comp]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem spMap_val_toRat (R : Subalgebra o Ω) :
     spMap (ratHull R).val.toRingHom ≫ spMap (toRat R) = spMap R.val.toRingHom := by
   rw [← Spec.map_comp]; rfl
 
 /- English proof (translation)
-The claim follows from `top_unique fun x _ => mem_ratHull.2 ⟨x.den, by simp, Algebra.mem_bot.2 ⟨x.num, by simp [Rat.den_mul_eq_num]⟩⟩`.
+A detailed English derivation is pending.
 -/
 example : ratHull (⊥ : Subalgebra ℤ ℚ) = ⊤ := top_unique fun x _ =>
   mem_ratHull.2 ⟨x.den, by simp, Algebra.mem_bot.2 ⟨x.num, by simp [Rat.den_mul_eq_num]⟩⟩
@@ -121,23 +119,21 @@ example : ratHull (⊥ : Subalgebra ℤ ℚ) = ⊤ := top_unique fun x _ =>
 end Rat
 
 /- English proof (translation)
-Take `⟨U, hU, hx, -⟩` from `exists_isAffineOpen_mem_and_subset (U := ⊤) (x := x) trivial`. Set `φ : ℚ →+* Γ(X, U)` to `(s.appLE ⊤ U le_top).hom.comp (Scheme.ΓSpecIso (CommRingCat.of ℚ)).inv.hom`. Establish `hφ : φ.FiniteType` using `RingHom.FiniteType.comp (HasRingHomProperty.appLE @LocallyOfFiniteType s inferInstance ⟨⊤, isAffineOpen_top _⟩ ⟨U, hU⟩ le_top) (RingHom.FiniteType.of_surjective _ (Scheme.ΓSpecIso (CommRingCat.of ℚ)).symm.commRingCatIsoToRingEquiv.surjective)`. Use `letI := φ.toAlgebra`. Take `⟨t, ht⟩ : Algebra.FiniteType ℚ Γ(X, U)` from `hφ`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Equip the data with the indicated structure. Extract witnesses or component facts from the available result.
 
-Set `p` to `hU.primeIdealOf ⟨x, hx⟩`. Set `Ω` to `p.asIdeal.ResidueField`. Set `ev : Γ(X, U) →+* Ω` to `algebraMap _ _`. Use `haveI : CharZero Ω := (RingHom.charZero_iff (ev.comp φ).injective).1 inferInstance`. Use `letI : Algebra ℤ Ω := Ring.toIntAlgebra Ω`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Equip the data with the indicated structure. Introduce a local definition for the expression.
 
-Set `R : Subalgebra ℤ Ω` to `Algebra.adjoin ℤ (t.image ev : Finset Ω)`. Establish `hR : ∀ a, ev a ∈ ratHull R` using `fun a => by`. Establish `ha : a ∈ Algebra.adjoin ℚ (t : Set Γ(X, U))` using `ht ▸ Algebra.mem_top`. Proceed by induction on `ha using Algebra.adjoin_induction with`. Consider the case `mem a ha => exact le_ratHull R (Algebra.subset_adjoin (by simpa using ⟨a, ha, rfl⟩))`.
+Establish an intermediate fact. Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `algebraMap q`. Use `mem_ratHull.2 ⟨q.den, by simp, ?_⟩` and prove the remaining obligations. Establish `: ((q.den : ℤ) : Ω) * ev (algebraMap ℚ _ q) = (q.num : Ω)`. Rewrite using `[show ev (algebraMap ℚ _ q) = (ev.comp φ) q from rfl, eq_ratCast]`. Conclude with `Rat.den_mul_eq_num q` after adjusting the coercions.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately.
 
-Conclude with `this ▸ intCast_mem R _`. Consider the case `add a b _ _ ha hb => exact map_add ev a b ▸ add_mem ha hb`. Consider the case `mul a b _ _ ha hb => exact map_mul ev a b ▸ mul_mem ha hb`. Use `⟨Ω, inferInstance, ⟨inferInstance, inferInstance, inferInstance, Int.cast_injective⟩, R, ⟨_, rfl⟩, fun z => ?_, spMap (ev.codRestrict (ratHull R) hR) ≫ hU.fromSpec, fun w => ?_⟩` and prove the remaining obligations. Take `⟨a, b, -, rfl⟩` from `IsFractionRing.div_surjective (Γ(X, U) ⧸ p.asIdeal) z`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨a, rfl⟩` from `Ideal.Quotient.mk_surjective a`. Take `⟨b, rfl⟩` from `Ideal.Quotient.mk_surjective b`. Take `⟨n, hn, ha⟩` from `mem_ratHull.1 (hR a)`. Take `⟨m, hm, hb⟩` from `mem_ratHull.1 (hR b)`. Use `⟨_, mul_mem (intCast_mem R m) ha, _, mul_mem (intCast_mem R n) hb, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hn' : (n : Ω) ≠ 0` using `Int.cast_ne_zero.2 hn`. Establish `hm' : (m : Ω) ≠ 0` using `Int.cast_ne_zero.2 hm`. Use `show ev a / ev b = _`. Rewrite using `[mul_left_comm, mul_div_mul_left _ _ hn', mul_div_mul_left _ _ hm']`. Establish `e : spMap (ratHull R).val.toRingHom ≫ spMap (ev.codRestrict (ratHull R) hR) = spMap ev`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← Spec.map_comp]`. Both sides reduce to the same expression. Establish `hp : spMap ev w = p`. Use `PrimeSpectrum.ext ?_` and prove the remaining obligations. Use `show Ideal.comap ev w.asIdeal = p.asIdeal`.
-
-Rewrite using `[Subsingleton.elim w (⊥ : PrimeSpectrum Ω)]`. Conclude with `Ideal.ker_algebraMap_residueField _`. Rewrite using `[← Category.assoc, e, Scheme.Hom.comp_apply, hp]`. Conclude with `hU.fromSpec_primeIdealOf ⟨x, hx⟩`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_ratPoint_of_finiteType {X : Scheme.{0}} (s : X ⟶ Sp ℚ) [LocallyOfFiniteType s] (x : X) :
     ∃ (Ω : Type) (_ : Field Ω) (_ : ArithBase ℤ Ω) (R : Subalgebra ℤ Ω), R.FG ∧ (∀ z : Ω, ∃ a ∈ R, ∃ b ∈ R, z = a / b) ∧
@@ -228,7 +224,7 @@ variable {Xo : Moduli D l} {c : Coeff l} {R R' : Type} [CommRing R] [CommRing R'
   {u : Sp R' ⟶ Xo.XF c}
 
 /- English proof (translation)
-Take `⟨G, _, α, β, hα, hβ, hL⟩` from `h`. Establish `hG` using `isGrpPullback_pullback G (spMap τ)`. Conclude with `⟨_, _, _, _, (hG.comp hα).congr (by rw [← Spec.map_comp]; rfl) rfl, (hG.comp hβ).congr (Category.assoc _ _ _).symm rfl, GenSpread.lbIso_pull_comp _ rfl rfl hL⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem UOver.comp (h : UOver Xo c P σ u) {R'' : Type} [CommRing R''] (τ : R' →+* R'') :
     UOver Xo c P (τ.comp σ) (spMap τ ≫ u) := by
@@ -238,9 +234,9 @@ theorem UOver.comp (h : UOver Xo c P σ u) {R'' : Type} [CommRing R''] (τ : R' 
     (hG.comp hβ).congr (Category.assoc _ _ _).symm rfl, GenSpread.lbIso_pull_comp _ rfl rfl hL⟩
 
 /- English proof (translation)
-Establish `e : spMap σ₁ ≫ spMap τ = spMap (σ₁.comp τ)` using `by rw [← Spec.map_comp]; rfl`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨G, _, α, β, hα, hβ, h⟩`. Conclude with `⟨G, _, α ≫ φ, β, (hα.comp hφ).congr e rfl, hβ, LBIso.trans (pull_isLB P.isLB _) (pull_isLB P₁.isLB _) (pull_isLB Xo.univ.t.PP.isLB _) (GenSpread.lbIso_pull_of_lbIso hL α rfl).symm h⟩`. Introduce and unpack `⟨G, _, α, β, hα, hβ, h⟩`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Establish `w : α ≫ P.A.hom = (G.hom ≫ spMap σ₁) ≫ spMap τ` using `by rw [Category.assoc, e]; exact hα.1.w`. Establish `e₁` using `hφ.1.lift_fst _ _ w`. Conclude with `⟨G, _, hφ.1.lift _ _ w, β, hφ.cancel (hα.congr e.symm e₁.symm) (hφ.1.lift_snd _ _ w), hβ, LBIso.trans (pull_isLB P₁.isLB _) (pull_isLB P.isLB _) (pull_isLB Xo.univ.t.PP.isLB _) (GenSpread.lbIso_pull_of_lbIso hL _ e₁.symm) h⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem uOver_baseChange_iff {R₁ : Type} [CommRing R₁] {P₁ : PolAV (Sp R₁)} {τ : R →+* R₁} {φ : P₁.A.left ⟶ P.A.left}
     (hφ : IsGrpPullback P₁.A P.A (spMap τ) φ) (hL : LBIso P₁.L (P.L.pull φ)) (σ₁ : R₁ →+* R') :
@@ -258,7 +254,7 @@ theorem uOver_baseChange_iff {R₁ : Type} [CommRing R₁] {P₁ : PolAV (Sp R�
         (GenSpread.lbIso_pull_of_lbIso hL _ e₁.symm) h⟩
 
 /- English proof (translation)
-Take `⟨P', g, hg, -, hm, t, ht⟩` from `polBaseChange_holds _ _ f P`. Use `⟨P', g, ⟨hg, fun T x y x₀ y₀ hx hy => ?_⟩, LBIso.symm ⟨t, ht⟩⟩` and prove the remaining obligations. Take `rfl : x₀ = toBase hg.w x` from `Over.OverMorphism.ext hx`. Take `rfl : y₀ = toBase hg.w y` from `Over.OverMorphism.ext hy`. Conclude with `congrArg (·.left) (hm T x y).symm`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exists_pol_baseChange {S S' : Scheme.{0}} (P : PolAV S) (f : S' ⟶ S) :
     ∃ (P' : PolAV S') (φ : P'.A.left ⟶ P.A.left), IsGrpPullback P'.A P.A f φ ∧ LBIso P'.L (P.L.pull φ) := by
@@ -269,7 +265,7 @@ theorem exists_pol_baseChange {S S' : Scheme.{0}} (P : PolAV S) (f : S' ⟶ S) :
   exact congrArg (·.left) (hm T x y).symm
 
 /- English proof (translation)
-Take `⟨P, g, hG, hL⟩` from `exists_pol_baseChange (Obj.toPolAV Xo.univ) (u ≫ pullback.fst _ _)`. Use `haveI : IsMonHom (Iso.refl P.A).hom := inferInstanceAs (IsMonHom (𝟙 P.A))`. Use `⟨P, P.A, inferInstance, 𝟙 _, g, (isGrpPullback_of_iso (Iso.refl P.A)).congr (Spec.map_id _).symm rfl, hG, ?_⟩` and prove the remaining obligations. Conclude with `LBIso.trans (pull_isLB P.isLB _) P.isLB (pull_isLB Xo.univ.t.PP.isLB _) (LBIso.chartPull (chartPullId _) (chartPullUnpull P.L _ rfl) (PolBaseChange.lbIso_refl (pull_isLB P.isLB _))) hL`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_uOver_id (u : Sp R' ⟶ Xo.XF c) : ∃ P : PolAV (Sp R'), UOver Xo c P (RingHom.id R') u := by
   obtain ⟨P, g, hG, hL⟩ := exists_pol_baseChange (Obj.toPolAV Xo.univ) (u ≫ pullback.fst _ _)
@@ -279,7 +275,7 @@ theorem exists_uOver_id (u : Sp R' ⟶ Xo.XF c) : ∃ P : PolAV (Sp R'), UOver X
     (LBIso.chartPull (chartPullId _) (chartPullUnpull P.L _ rfl) (PolBaseChange.lbIso_refl (pull_isLB P.isLB _))) hL
 
 /- English proof (translation)
-Take `⟨P, hP⟩` from `exists_uOver_id u`. Take `⟨R, P₀, φ, hR, -, hφ, hL⟩` from `KeyTf.exists_polAV_finiteType_subring R' P`. Conclude with `⟨R, P₀, hR, (uOver_baseChange_iff hφ hL _).1 hP⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_uOver_finiteType [IsDomain R'] [IsLocalRing R'] (u : Sp R' ⟶ Xo.XF c) :
     ∃ (R : Subring R') (P : PolAV (Sp R)), Algebra.FiniteType ℤ R ∧ UOver Xo c P R.subtype u := by
@@ -290,7 +286,7 @@ theorem exists_uOver_finiteType [IsDomain R'] [IsLocalRing R'] (u : Sp R' ⟶ Xo
 end UOver
 
 /- English proof (translation)
-Use `haveI := c.fin`. Use `haveI := Xo.smooth`. Use `haveI : Smooth Xo.s := SmoothOfRelativeDimension.smooth D.dim _`. Use `haveI : LocallyOfFiniteType (spMap (algebraMap ℚ c.F)) := (HasRingHomProperty.Spec_iff (P := @LocallyOfFiniteType)).2 (RingHom.finiteType_algebraMap.2 inferInstance)`. Conclude with `exists_ratPoint_of_finiteType (pullback.snd _ _ ≫ spMap (algebraMap ℚ c.F)) x`.
+A detailed English derivation is pending.
 -/
 theorem exists_ratPoint (Xo : Moduli D l) (c : Coeff l) (x : Xo.XF c) :
     ∃ (Ω : Type) (_ : Field Ω) (_ : ArithBase ℤ Ω) (R : Subalgebra ℤ Ω), R.FG ∧ (∀ z : Ω, ∃ a ∈ R, ∃ b ∈ R, z = a / b) ∧
@@ -305,21 +301,17 @@ theorem exists_ratPoint (Xo : Moduli D l) (c : Coeff l) (x : Xo.XF c) :
 section Spread
 
 /- English proof (translation)
-Use `a₁.proper` as an intermediate fact. Use `a₁.smooth` as an intermediate fact. Use `a₂.proper` as an intermediate fact. Use `a₂.smooth` as an intermediate fact. Take `⟨b₁, hb₁, H₁⟩` from `GenSpread.exists_hom G₁.hom G₂.hom h₁.1 α₂ (h₂.1.w.trans h₁.1.w.symm)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨b₂, hb₂, H₂⟩` from `GenSpread.exists_hom G₂.hom G₁.hom h₂.1 α₁ (h₁.1.w.trans h₂.1.w.symm)`. Use `⟨b₁ * b₂, mul_ne_zero hb₁ hb₂, fun B' _ g j hu hj e => ?_⟩` and prove the remaining obligations. Rewrite `hu` using `[map_mul, IsUnit.mul_iff]`. Establish `e' : spMap j ≫ spMap g = spMap (algebraMap B Ω)` using `by rw [← Spec.map_comp, ← e]; rfl`. Use `haveI : IsSchemeTheoreticallyDominant (spMap j) := ExtUnique.isSchemeTheoreticallyDominant_spec_of_injective _ hj`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨u, hu₁, hu₂⟩` from `H₁ B' g hu.1 _ (pullback.fst _ _) (pullback.snd _ _) pullback.condition`. Take `⟨v, hv₁, hv₂⟩` from `H₂ B' g hu.2 _ (pullback.fst _ _) (pullback.snd _ _) pullback.condition`. Establish `p₁` using `isGrpPullback_pullback G₁ (spMap g)`. Establish `p₂` using `isGrpPullback_pullback G₂ (spMap g)`. Establish `w₁ : α₁ ≫ G₁.hom = (G.hom ≫ spMap j) ≫ spMap g` using `by rw [Category.assoc, e']; exact h₁.1.w`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `w₂ : α₂ ≫ G₂.hom = (G.hom ≫ spMap j) ≫ spMap g` using `by rw [Category.assoc, e']; exact h₂.1.w`. Establish `q₁` using `p₁.cancel (h₁.congr e'.symm (pullback.lift_fst _ _ w₁).symm) (pullback.lift_snd _ _ w₁)`. Establish `q₂` using `p₂.cancel (h₂.congr e'.symm (pullback.lift_fst _ _ w₂).symm) (pullback.lift_snd _ _ w₂)`. Set `U : (Over.pullback (spMap g)).obj G₁ ⟶ (Over.pullback (spMap g)).obj G₂` to `Over.homMk (pullback.lift u (pullback.snd _ _) (hu₁.trans pullback.condition)) (pullback.lift_snd _ _ _)`. Set `V : (Over.pullback (spMap g)).obj G₂ ⟶ (Over.pullback (spMap g)).obj G₁` to `Over.homMk (pullback.lift v (pullback.snd _ _) (hv₁.trans pullback.condition)) (pullback.lift_snd _ _ _)`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hU : U.left ≫ pullback.fst _ _ = u` using `pullback.lift_fst _ _ _`. Establish `hV : V.left ≫ pullback.fst _ _ = v` using `pullback.lift_fst _ _ _`. Establish `eU : (Iso.refl G).hom.left ≫ pullback.lift _ _ w₂ = pullback.lift _ _ w₁ ≫ U.left`. Use `(Category.id_comp _).trans (pullback.hom_ext ?_ ?_)` and prove the remaining obligations. Conclude with `(pullback.lift_fst _ _ _).trans (((Category.assoc _ _ _).trans (congrArg _ hU)).trans (hu₂ _ (pullback.lift_fst _ _ _))).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(pullback.lift_snd _ _ _).trans (((Category.assoc _ _ _).trans (congrArg _ (Over.w U))).trans (pullback.lift_snd _ _ _)).symm`. Establish `eV : (Iso.refl G).inv.left ≫ pullback.lift _ _ w₁ = pullback.lift _ _ w₂ ≫ V.left`. Use `(Category.id_comp _).trans (pullback.hom_ext ?_ ?_)` and prove the remaining obligations. Conclude with `(pullback.lift_fst _ _ _).trans (((Category.assoc _ _ _).trans (congrArg _ hV)).trans (hv₂ _ (pullback.lift_fst _ _ _))).symm`. Conclude with `(pullback.lift_snd _ _ _).trans (((Category.assoc _ _ _).trans (congrArg _ (Over.w V))).trans (pullback.lift_snd _ _ _)).symm`.
-
-Use `haveI : Flat ((Over.pullback (spMap g)).obj G₁).hom := inferInstanceAs (Flat (pullback.snd _ _))`. Use `haveI : Flat ((Over.pullback (spMap g)).obj G₂).hom := inferInstanceAs (Flat (pullback.snd _ _))`. Use `haveI : IsSeparated ((Over.pullback (spMap g)).obj G₁).hom := inferInstanceAs (IsSeparated (pullback.snd _ _))`. Use `haveI : IsSeparated ((Over.pullback (spMap g)).obj G₂).hom := inferInstanceAs (IsSeparated (pullback.snd _ _))`. Use `haveI : IsIso U := ExtUnique.isIso_of_isPullback q₁.1 q₂.1 (Iso.refl G) U V eU eV`.
-
-Use `haveI : IsMonHom (Iso.refl G).hom := inferInstanceAs (IsMonHom (𝟙 G))`. Use `haveI : IsMonHom (asIso U).hom := ExtUnique.isMonHom_of_isGrpPullback q₁ q₂ (Iso.refl G).hom U eU`. Conclude with `⟨u, _, ((isGrpPullback_of_iso (asIso U)).comp p₂).congr (Category.id_comp _) hU, q₁, pullback.lift_fst _ _ _, hu₂ _ (pullback.lift_fst _ _ _)⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_spread_grp {B Ω : Type} [CommRing B] [IsDomain B] [Field Ω] [Algebra B Ω] [IsFractionRing B Ω]
     {G₁ G₂ : Over (Sp B)} [GrpObj G₁] [GrpObj G₂] (a₁ : IsAbelianScheme G₁) (a₂ : IsAbelianScheme G₂) {G : Over (Sp Ω)}
@@ -378,7 +370,7 @@ theorem exists_spread_grp {B Ω : Type} [CommRing B] [IsDomain B] [Field Ω] [Al
 variable {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨R ⊔ Algebra.adjoin o {(a : Ω)⁻¹}, le_sup_left, hR.sup (Subalgebra.fg_def.2 ⟨_, Set.finite_singleton _, rfl⟩), IsUnit.of_mul_eq_one ⟨_, le_ratHull _ ((le_sup_right : _ ≤ R ⊔ _) (Algebra.subset_adjoin rfl))⟩ (Subtype.ext (mul_inv_cancel₀ fun h => ha (Subtype.ext h)))⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_le_isUnit {R : Subalgebra o Ω} (hR : R.FG) {a : ratHull R} (ha : a ≠ 0) :
     ∃ (R' : Subalgebra o Ω) (h : R ≤ R'), R'.FG ∧ IsUnit ((Subalgebra.inclusion (ratHull_mono h)).toRingHom a) :=
@@ -387,19 +379,17 @@ theorem exists_le_isUnit {R : Subalgebra o Ω} (hR : R.FG) {a : ratHull R} (ha :
       (Subtype.ext (mul_inv_cancel₀ fun h => ha (Subtype.ext h)))⟩
 
 /- English proof (translation)
-Establish `fr : ∀ R' : Subalgebra o Ω, R ≤ R' → IsFractionRing (ratHull R') Ω` using `fun R' h => IsFractionRing.of_field _ _ fun z =>`. Set `⟨a, ha, b, hb, e⟩` to `hfr z`. Use the proof step `⟨⟨a, le_ratHull _ (h ha)⟩, ⟨b, le_ratHull _ (h hb)⟩, e⟩`. Take `⟨G, _, α, β, hα, hβ, hL⟩` from `h`. Establish `p₁` using `isGrpPullback_pullback P.A (spMap (toRat R))`.
+Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `p₂` using `isGrpPullback_pullback Xo.univ.t.G (u ≫ pullback.fst _ _)`. Establish `w₁ : α ≫ P.A.hom = (G.hom ≫ spMap (ratHull R).val.toRingHom) ≫ spMap (toRat R)`. Rewrite using `[Category.assoc, spMap_val_toRat]`. Conclude with `hα.1.w`. Establish `w₂ : β ≫ Xo.univ.t.G.hom = (G.hom ≫ spMap (ratHull R).val.toRingHom) ≫ u ≫ pullback.fst _ _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hβ.1.w]`. Simplify using `only [Category.assoc]`. Establish `q₁` using `p₁.cancel (hα.congr (spMap_val_toRat R).symm (pullback.lift_fst _ _ w₁).symm) (pullback.lift_snd _ _ w₁)`. Establish `q₂` using `p₂.cancel (hβ.congr (Category.assoc _ _ _) (pullback.lift_fst _ _ w₂).symm) (pullback.lift_snd _ _ w₂)`. Use `haveI := fr R le_rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `a₁` using `PolPull.isAbelianScheme_of_isGrpPullback P.isAb p₁`. Take `⟨a, ha, H₁⟩` from `exists_spread_grp (B := ratHull R) (Ω := Ω) a₁ (PolPull.isAbelianScheme_of_isGrpPullback (Obj.toPolAV Xo.univ).isAb p₂) q₁ q₂`. Take `⟨R₁, h₁, f₁, u₁⟩` from `exists_le_isUnit hR ha`. Take `⟨β₁, φ, g₂, gφ, e₁, e₂⟩` from `H₁ _ _ (ratHull R₁).val.toRingHom u₁ Subtype.val_injective rfl`. Establish `g₁` using `isGrpPullback_pullback ((Over.pullback (spMap (toRat R))).obj P.A) (spMap (Subalgebra.inclusion (ratHull_mono h₁)).toRingHom)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI := fr R₁ h₁`. Use `haveI := (PolPull.isAbelianScheme_of_isGrpPullback a₁ g₁).proper`. Establish `eα : φ ≫ pullback.fst _ _ ≫ pullback.fst P.A.hom (spMap (toRat R)) = α` using `(Category.assoc _ _ _).symm.trans ((congrArg (· ≫ _) e₁).trans (pullback.lift_fst _ _ _))`. Establish `eβ : φ ≫ β₁ ≫ pullback.fst Xo.univ.t.G.hom (u ≫ pullback.fst _ _) = β` using `(Category.assoc _ _ _).symm.trans ((congrArg (· ≫ _) e₂).trans (pullback.lift_fst _ _ _))`. Establish `hP` using `P.isLB`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hU` using `Xo.univ.t.PP.isLB`. Take `⟨a', ha', H₂⟩` from `GenSpread.exists_lbIso (R := ratHull R₁) (K := Ω) _ gφ.1 (pull_isLB hP _) (pull_isLB hU _) (LBIso.trans (pull_isLB (pull_isLB hP _) _) (pull_isLB hP _) (pull_isLB (pull_isLB hU _) _) (GenSpread.lbIso_pull_pull hP φ eα.symm).symm (LBIso.trans (pull_isLB hP _) (pull_isLB hU _) (pul …`. Take `⟨R₂, h₂, f₂, u₂⟩` from `exists_le_isUnit f₁ ha'`. Establish `g₃` using `isGrpPullback_pullback ((Over.pullback (spMap (Subalgebra.inclusion (ratHull_mono h₁)).toRingHom)).obj ((Over.pullback (spMap (toRat R))).obj P.A)) (spMap (Subalgebra.inclusion (ratHull_mono h₂)).toRingHom)`. Use `⟨R₂, h₁.trans h₂, f₂, _, _, _, _, (g₃.comp (g₁.comp p₁)).congr ?_ rfl, (g₃.comp (g₂.comp p₂)).congr ?_ rfl, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[← Spec.map_comp, ← Spec.map_comp]`. Both sides reduce to the same expression. Rewrite using `[← Category.assoc, ← Spec.map_comp, Category.assoc]`. Both sides reduce to the same expression. Conclude with `LBIso.trans (pull_isLB hP _) (pull_isLB (pull_isLB hP _) _) (pull_isLB hU _) (GenSpread.lbIso_pull_pull hP _ rfl) (LBIso.trans (pull_isLB (pull_isLB hP _) _) (pull_isLB (pull_isLB hU _) _) (pull_isLB hU _) (H₂ _ _ u₂ _ _ _ g₃.1.w) (GenSpread.lbIso_pull_pull hU _ rfl).symm)`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem UOver.exists_spread {Xo : Moduli D l} {c : Coeff l} {R : Subalgebra o Ω} (hR : R.FG)
     (hfr : ∀ z : Ω, ∃ a ∈ R, ∃ b ∈ R, z = a / b) {P : PolAV (Sp R)} {u : Sp (ratHull R) ⟶ Xo.XF c}
@@ -453,13 +443,13 @@ theorem UOver.exists_spread {Xo : Moduli D l} {c : Coeff l} {R : Subalgebra o Ω
 end Spread
 
 /- English proof (translation)
-Take `⟨Ω, _, hb, R₀, f₀, fr, u, hu⟩` from `exists_ratPoint Xo c x`. Take `⟨R₁, P₁, f₁, h₁⟩` from `exists_uOver_finiteType (spMap (ratHull R₀).val.toRingHom ≫ u)`. Establish `f₁' : (subalgebraOfSubring R₁).FG` using `(Subalgebra.fg_iff_finiteType _).2 f₁`. Set `R` to `R₀ ⊔ subalgebraOfSubring R₁`. Establish `frR : ∀ R' : Subalgebra ℤ Ω, R₀ ≤ R' → ∀ z : Ω, ∃ a ∈ R', ∃ b ∈ R', z = a / b` using `fun R' h z =>`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `⟨a, ha, b, hb, e⟩` to `fr z`. Use the proof step `⟨a, h ha, b, h hb, e⟩`. Establish `pt : ∀ (R' : Subalgebra ℤ Ω) (h : R₀ ≤ R'), spMap (ratHull R').val.toRingHom ≫ spMap (Subalgebra.inclusion (ratHull_mono h)).toRingHom ≫ u = spMap (ratHull R₀).val.toRingHom ≫ u` using `fun R' h => by`. Rewrite using `[← Category.assoc, ← Spec.map_comp]`. Both sides reduce to the same expression.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Introduce a local definition for the expression.
 
-Set `τ : R₁ →+* R` to `(Subalgebra.inclusion (le_sup_right : subalgebraOfSubring R₁ ≤ R)).toRingHom`. Take `⟨P, φ, hφ, hL⟩` from `exists_pol_baseChange P₁ (spMap τ)`. Take `⟨R', hle, f', h'⟩` from `UOver.exists_spread (f₀.sup f₁') (frR R le_sup_left) (P := P) (u := spMap (Subalgebra.inclusion (ratHull_mono (le_sup_left : R₀ ≤ R))).toRingHom ≫ u) (by rw [pt R le_sup_left]; exact (uOver_baseChange_iff hφ hL _).2 h₁)`. Take `⟨P', φ', hφ', hL'⟩` from `exists_pol_baseChange P (spMap (Subalgebra.inclusion hle).toRingHom)`. Use `⟨Ω, _, hb, R', f', frR R' (le_sup_left.trans hle), P', _, (uOver_baseChange_iff hφ' hL' _).2 h', fun w => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hu w, ← pt R le_sup_left, ← Category.assoc, ← Spec.map_comp]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_uOver_ratPoint (Xo : Moduli D l) (c : Coeff l) (x : Xo.XF c) :
     ∃ (Ω : Type) (_ : Field Ω) (_ : ArithBase ℤ Ω) (R : Subalgebra ℤ Ω), R.FG ∧ (∀ z : Ω, ∃ a ∈ R, ∃ b ∈ R, z = a / b) ∧
@@ -534,7 +524,7 @@ attribute [instance] UCompact.ring
 abbrev UCompact.i {Xo : Moduli D l} {c : Coeff l} (C : UCompact Xo c) : Xo.XF c ⟶ C.Z := C.iF ≫ pullback.fst _ _
 
 /- English proof (translation)
-Use `letI := C.b.toAlgebra`. Use `haveI := C.ded`. Use `haveI : FaithfulSMul C.o c.F := (faithfulSMul_iff_algebraMap_injective _ _).2 C.inj`. Conclude with `IsFractionRing.of_field _ _ C.frac`.
+Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem UCompact.isFractionRing {Xo : Moduli D l} {c : Coeff l} (C : UCompact Xo c) :
     letI := C.b.toAlgebra
@@ -545,7 +535,7 @@ theorem UCompact.isFractionRing {Xo : Moduli D l} {c : Coeff l} (C : UCompact Xo
   exact IsFractionRing.of_field _ _ C.frac
 
 /- English proof (translation)
-Use `letI := C.b.toAlgebra`. Use `haveI := C.isFractionRing`. Use `haveI := C.iF_open`. Use `haveI : IsPreimmersion (spMap C.b) := IsPreimmersion.of_isLocalization (nonZeroDivisors C.o)`. Use `infer_instance`.
+Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem UCompact.isPreimmersion_i {Xo : Moduli D l} {c : Coeff l} (C : UCompact Xo c) : IsPreimmersion C.i := by
   letI := C.b.toAlgebra
@@ -555,7 +545,7 @@ theorem UCompact.isPreimmersion_i {Xo : Moduli D l} {c : Coeff l} (C : UCompact 
   infer_instance
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨H.d, H.d_prime, by have := H.d_mod; exact Nat.odd_iff.2 (by omega), C.unit_d⟩`.
+Supply the required witnesses or components.
 -/
 theorem UCompact.exists_odd_prime_isUnit {Xo : Moduli D l} {c : Coeff l} (C : UCompact Xo c) :
     ∃ n : ℕ, n.Prime ∧ Odd n ∧ IsUnit (n : C.o) :=
@@ -596,13 +586,13 @@ variable {Xo : Moduli D l} {c : Coeff l} {C : UCompact Xo c} (X₁ : USetup C)
 abbrev USetup.uΩ : Sp X₁.Ω₁ ⟶ Xo.XF c := spMap (ratHull X₁.S.R).val.toRingHom ≫ X₁.u
 
 /- English proof (translation)
-The claim follows from `X₁.pulled.comp (ratHull X₁.S.R).val.toRingHom`.
+A detailed English derivation is pending.
 -/
 theorem USetup.pulled_uΩ : UOver Xo c X₁.ρ.P X₁.S.R.val.toRingHom X₁.uΩ :=
   X₁.pulled.comp (ratHull X₁.S.R).val.toRingHom
 
 /- English proof (translation)
-The claim follows from `C.thetaInt _ _ X₁.S X₁.ρ X₁.u X₁.pulled X₁.gen X₁.M X₁.π X₁.normal X₁.comp`.
+A detailed English derivation is pending.
 -/
 theorem USetup.hasDiv : X₁.M.HasDiv X₁.S.th :=
   C.thetaInt _ _ X₁.S X₁.ρ X₁.u X₁.pulled X₁.gen X₁.M X₁.π X₁.normal X₁.comp
@@ -611,7 +601,7 @@ def USetup.Lies {K : Type} [CommRing K] (x : Sp K ⟶ Sp X₁.S.R) (y : Sp K ⟶
   ∃ x' : Sp K ⟶ Sp (ratHull X₁.S.R), x' ≫ spMap (toRat X₁.S.R) = x ∧ x' ≫ X₁.u = y
 
 /- English proof (translation)
-Use `haveI := X₁.ar.char`. Take `⟨x', hx, hu⟩` from `existsUnique_ratPoint X₁.S.R x`. Conclude with `⟨_, ⟨x', hx, rfl⟩, fun _ ⟨x'', h, e⟩ => e ▸ hu x'' h ▸ rfl⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem USetup.existsUnique_lies {K : Type} [Field K] [CharZero K] (x : Sp K ⟶ Sp X₁.S.R) : ∃! y, X₁.Lies x y := by
   haveI := X₁.ar.char
@@ -619,12 +609,12 @@ theorem USetup.existsUnique_lies {K : Type} [Field K] [CharZero K] (x : Sp K ⟶
   exact ⟨_, ⟨x', hx, rfl⟩, fun _ ⟨x'', h, e⟩ => e ▸ hu x'' h ▸ rfl⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨_, spMap_val_toRat _, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem USetup.lies_uΩ : X₁.Lies (spMap X₁.S.R.val.toRingHom) X₁.uΩ := ⟨_, spMap_val_toRat _, rfl⟩
 
 /- English proof (translation)
-Take `⟨x', hx, rfl⟩` from `h`. Take `⟨g, rfl⟩` from `Spec.map_surjective x'`. Take `rfl : g.hom.comp (toRat X₁.S.R) = f` from `congrArg CommRingCat.Hom.hom (Spec.map_injective ((Spec.map_comp _ _).trans hx))`. Conclude with `X₁.pulled.comp g.hom`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem USetup.Lies.uOver {X₁ : USetup C} {K : Type} [CommRing K] {f : X₁.S.R →+* K} {y : Sp K ⟶ Xo.XF c}
     (h : X₁.Lies (spMap f) y) : UOver Xo c X₁.ρ.P f y := by

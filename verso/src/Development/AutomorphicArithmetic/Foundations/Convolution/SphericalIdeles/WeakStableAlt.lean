@@ -16,9 +16,9 @@ open GroundTheory.Automorphic GroundTheory.Automorphic.Reduction
 open UpperTheory.ConvolutionTheory UpperTheory.ConvolutionTheory.T GlobalTheory.CuspRep Formalism.L2.Host Formalism.ConjugateSelfDual UpperTheory.V.Published UpperTheory.CBC
 
 /- English proof (translation)
-Establish `hN` using `(places F E hp).2.2.2.2.1`. Use `filter_upwards [H, H'] with w a b`. Take `⟨B, hB, hB'⟩` from `a _ (hN w)`. Take `⟨C, hC, hC'⟩` from `b _ (hN w)`. Take `rfl` from `hB.unique hC`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨_, hB', hC'⟩`.
+A detailed English derivation is pending.
 -/
 private theorem weak_same {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] [IsGalois F E]
     [IsTotallyComplex F] [IsTotallyComplex E] {n : ℕ} (hp : (Module.finrank F E).Prime) (π : CuspSub F n)
@@ -32,15 +32,15 @@ private theorem weak_same {F E : Type} [Field F] [NumberField F] [Field E] [Numb
   exact ⟨_, hB', hC'⟩
 
 /- English proof (translation)
-Introduce `K M _ _ _ _ _ _ _ _ hp n hn π P hW`. Use `⟨?_, fun v => ?_, fun w => ?_⟩` and prove the remaining obligations. Use `haveI : Fact (Module.finrank K M).Prime := ⟨hp⟩ haveI : FiniteDimensional K M := Module.finite_of_finrank_pos hp.pos haveI : IsCyclic (M ≃ₐ[K] M) := isCyclic_of_prime_card (IsGalois.card_aut_eq_finrank K M)`. Take `⟨σ, hσ⟩` from `IsCyclic.exists_generator (α := M ≃ₐ[K] M)`. Set `μE : Measure (normOneGL M n)` to `Measure.haar`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `μF : Measure (normOneGL K n)` to `Measure.haar`. Take `⟨s, χ, χ', V, -, -, hχ, hχ', hV, -, -, -, hW', hOff, -⟩` from `UpperTheory.ConvolutionTheory.Sph.norm K M σ hσ hp n hn μE μF π P hW`. Take `⟨-, htw⟩` from `powTwist K M`. Take `⟨hi, hi', h1⟩` from `htw s χ χ' hχ hχ'`. Take `⟨-, hback, -⟩` from `h1 n hn`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨-, -, h2⟩` from `htw (-s) χ⁻¹ χ'⁻¹ hi hi'`. Take `⟨-, -, -, hCj, -⟩` from `h2 n hn`. Take `⟨c1, -, c3, -, -, θ, hθ, c6⟩` from `carryLift K M σ hσ hp n hn μE μF`. Take `⟨Λ, t, hAt⟩` from `c1 V hV.summand`. Take `⟨V₂, hV₂, hst, hAt₂⟩` from `coreLift ci Sph.gm K M σ hσ hp n hn μE μF θ hθ V Λ t hV.summand hAt (hOff Λ t hAt)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨P₂, hP₂, -⟩` from `Dp.exCusp M n μE V₂ hV₂`. Establish `hl` using `c3 _ P₂ V V₂ Λ t _ _ hV hP₂ hAt hAt₂ rfl (Filter.Eventually.of_forall fun _ => rfl)`. Establish `e : P₂ = P.twist χ'` using `Sph.smoEq M n hn P₂ (P.twist χ') (weak_same hp (π.twist χ) hl.1 hW')`. Rewrite `hP₂` using `[e]`. Introduce `g`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h` using `hCj (P.twist χ') _ ((c6 _ V₂ hP₂).2 hst g)`. Rewrite `h` using `[hback]`. Then use the resulting hypothesis. Conclude with `(LocEx.exists_isLocComp UpperTheory.V.Af.formsFiniteGL K n π v).imp fun _ h => h.1`. Conclude with `(LocEx.exists_isLocComp UpperTheory.V.Af.formsFiniteGL M n P w).imp fun _ h => h.1`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.Sph.weakStable :
     UpperTheory.ConvolutionTheory.Sph.WeakStable := by

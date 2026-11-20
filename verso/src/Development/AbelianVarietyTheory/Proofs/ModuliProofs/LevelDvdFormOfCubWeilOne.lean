@@ -19,7 +19,7 @@ set_option autoImplicit false
 namespace GlobalTheory.Coisotropic
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Apply `(Scheme.ΓSpecIso (CommRingCat.of R)).symm.commRingCatIsoToRingEquiv.injective` to reduce the goal to its premises. Rewrite using `[Units.val_one, map_one]`. Conclude with `congrArg Units.val h`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_one_of_unitOn_eq_one {R : Type} [CommRing R] {u : Rˣ} (h : unitOn u = 1) : u = 1 := by
   apply Units.ext
@@ -28,11 +28,11 @@ theorem eq_one_of_unitOn_eq_one {R : Type} [CommRing R] {u : Rˣ} (h : unitOn u 
   exact congrArg Units.val h
 
 /- English proof (translation)
-Introduce `hL E _ _ _ H D l B _ b X U j s o t μ₀ K _ _ u a a' p p' hp hp' h`. Establish `hβ : u ≫ s = spMap (Spec.preimage (u ≫ s)).hom` using `(Spec.map_preimage (u ≫ s)).symm`. Take `⟨-, I, -, hI, -⟩` from `o.geom K u _ hβ`. Establish `hA : IsAbelianScheme o.t.G` using `⟨o.t.semi.comm, o.t.semi.smooth, o.proper, o.t.semi.geomConnected⟩`. Establish `kill : ∀ c, I.ev l.A c ^ l.A = 1` using `fun c => (I.onto l.A l.A_pos _).2 ⟨c, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h₁ : CubWeil o.t.cub l.A (I.ev l.A a) (I.ev l.A a') (unitOn (I.ζ l.A ^ D.EF a a'))` using `(cubWeil_iff_weilIs hL.globalFns hA (kill a) (kill a') _).2 (I.isom l.A l.A_pos a a')`. Establish `h₂` using `GlobalTheory.T.cubicalBundlePairing_compatible_pullback X U j t.G o.t.G μ₀.cm μ₀.cart.1.w (fun T x y => Over.OverMorphism.ext (μ₀.cart.2 T x y _ _ rfl rfl).symm) _ _ _ _ μ₀.lin l.A _ _ _ _ h₁`. Establish `e : ∀ (c : D.La) (q : Over.mk (u ≫ j) ⟶ t.G), q.left = u ≫ (o.etaA c).left ≫ μ₀.φ → Out.toBase μ₀.cart.1.w (I.ev l.A c) = q` using `fun c q hq => Over.OverMorphism.ext (by`. Rewrite using `[hq, ← hI c]`. Use `show ((toUnit (Over.mk u)).left ≫ (o.etaA c).left) ≫ μ₀.φ = _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Category.assoc]`. Use the proof step `rfl)`. Rewrite `h₂` using `[e a p hp, e a' p' hp']`. Conclude with `((I.ζ_prim l.A l.A_pos).zpow_eq_one_iff_dvd _).1 (eq_one_of_unitOn_eq_one (h₂.unique h))`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem level_dvd_form_of_cubWeil_one : Out.Laws → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (B : Type) [CommRing B] (b : Base l B) (X U : Scheme.{0}) (j : U ⟶ X) (s : U ⟶ Sp B) (o : Obj D l b s) (t : SAB H X) (μ₀ : SABMap o.t t j), ∀ (K : Type) [Field K] [IsAlgClosed K] (u : Sp K ⟶ U) (a a' : D.La) (p p' : Over.mk (u ≫ j) ⟶ t.G), p.left = u ≫ (o.etaA a).left ≫ μ₀.φ → p'.left = u ≫ (o.etaA a').left ≫ μ₀.φ → CubWeil t.cub l.A p p' 1 → (l.A : ℤ) ∣ D.EF a a' := by
   intro hL E _ _ _ H D l B _ b X U j s o t μ₀ K _ _ u a a' p p' hp hp' h

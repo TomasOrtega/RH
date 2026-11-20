@@ -8,25 +8,23 @@ import Development.AutomorphicArithmetic.Foundations.Convolution.TwistedLocalOrb
 open MeasureTheory ValuativeRel GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.SplitWeil GlobalTheory.IndefiniteRowSideFullHecke.IwahoriDoubleCosets UpperTheory.ConvolutionTheory.Loc
 
 /- English proof (translation)
-Introduce `E _ _ _ _ n V _ _ π hs ϖ hϖ ψ d hψ hg`. Take `⟨l, v, hlv, hl⟩ : ∃ (l : Module.Dual ℂ V) (v : V), l v ≠ 0 ∧ ∀ u ∈ unipB E (Fin n), ∀ x, l (π u x) = (ψ (GlobalTheory.Whittaker.superDiag u) : ℂ) * l x` from `by haveI : Nontrivial (TwJacquet π (unipB E (Fin n)) (GlobalTheory.LocGL.whitChar ψ n)) := hg`. Take `⟨w, hw⟩` from `exists_ne (0 : TwJacquet π (unipB E (Fin n)) (GlobalTheory.LocGL.whitChar ψ n))`. Take `⟨l₀, h₀⟩` from `Module.Projective.exists_dual_ne_zero ℂ hw`. Take `⟨v, rfl⟩` from `Submodule.mkQ_surjective _ w`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨l₀ ∘ₗ Submodule.mkQ _, v, h₀, fun u hu x => ?_⟩` and prove the remaining obligations. Establish `h1 : π u x - (GlobalTheory.LocGL.whitChar ψ n ⟨u, hu⟩ : ℂ) • x ∈ twKer π (unipB E (Fin n)) (GlobalTheory.LocGL.whitChar ψ n)` using `Submodule.subset_span ⟨⟨u, hu⟩, x, rfl⟩`. Establish `h2 : (GlobalTheory.LocGL.whitChar ψ n ⟨u, hu⟩ : ℂ) = (ψ (GlobalTheory.Whittaker.superDiag u) : ℂ)`. Establish `: (∑ p : Fin n × Fin n with (p.2 : ℕ) = p.1 + 1, u.val p.1 p.2) = GlobalTheory.Whittaker.superDiag u`. Rewrite using `[GlobalTheory.Whittaker.superDiag, Finset.sum_filter, Fintype.sum_prod_type]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Finset.sum_filter]`. Rewrite using `[← this]`. Both sides reduce to the same expression. Establish `h3` using `(Submodule.Quotient.eq _).2 h1`. Simplify using `only [LinearMap.comp_apply, Submodule.mkQ_apply]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[h3, h2, Submodule.Quotient.mk_smul, map_smul, smul_eq_mul]`. Take `⟨a₀, h₀⟩` from `UpperTheory.V.Z.Tf.L4.lowFix E n ϖ hϖ d {g | π g v = v} ((hs v).mem_nhds (by simp))`. Use `⟨max 1 a₀, fun a ha => ?_⟩` and prove the remaining obligations. Establish `ha1 : 1 ≤ a` using `le_trans (le_max_left _ _) ha`. Establish `hψ' : HasConductor ψ (ϖ ^ (2 * a - (2 * a - d)))` using `by rwa [sub_sub_cancel]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨J, hJ, ho, hk⟩` from `UpperTheory.V.Z.Tf.L4.howeGroup E n ϖ hϖ a (2 * a - d) ha1`. Take `⟨hlc, hmul⟩` from `UpperTheory.V.Z.Tf.L4.howeChar E n ϖ hϖ a (2 * a - d) ha1 ψ hψ'`. Establish `hmem : ∀ x, x ∈ J ↔ x ∈ howeSet n ϖ a (2 * a - d)` using `fun x => by rw [← hJ]; rfl`. Use `haveI : LocallyCompactSpace (GL (Fin n) E) := hk.locallyCompactSpace_of_mem_nhds_of_group (ho.mem_nhds J.one_mem)`. Use `borelize (GL (Fin n) E)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Set `μ : Measure (GL (Fin n) E)` to `Measure.haar`. Take `⟨B, m, -, hB, hB1, -⟩` from `UpperTheory.V.Z.Tf.L4.idemOp (GL (Fin n) E) μ inferInstance J ho hk _ hlc (fun x => Circle.norm_coe _) (fun x hx y hy => by rw [hmul x ((hmem x).1 hx) y ((hmem y).1 hy), Circle.coe_mul]) V π hs`. Use `(Submodule.ne_bot_iff _).2 ⟨B v, fun x hx => hB1 v x ((hmem x).2 hx), fun h => ?_⟩` and prove the remaining obligations. Establish `h1` using `(hB v l).2`. Establish `e : (fun g => (J : Set (GL (Fin n) E)).indicator (fun x => ((ψ (GlobalTheory.Whittaker.superDiag x) : ℂ))⁻¹) g * l (π g v)) = (J : Set (GL (Fin n) E)).indicator fun _ => l v`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails.
 
-Use function extensionality and compare the values at `g`. Distinguish the cases in `hgJ : g ∈ (J : Set (GL (Fin n) E))`. Rewrite using `[Set.indicator_of_mem hgJ, Set.indicator_of_mem hgJ]`. Take `⟨u, hu, b, hb, hub, hlow⟩` from `UpperTheory.V.Z.Tf.L4.ulFact E n ϖ hϖ a (2 * a - d) ha1 g ((hmem g).1 hgJ)`. Establish `hbv : π b v = v` using `h₀ a (le_trans (le_max_right _ _) ha) b hb hlow`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `huJ : u ∈ J`. Establish `: u = g * b⁻¹` using `by rw [hub, mul_inv_cancel_right]`. Rewrite using `[this]`. Conclude with `J.mul_mem hgJ (J.inv_mem ((hmem b).2 hb))`. Establish `hsd : GlobalTheory.Whittaker.superDiag b = 0` using `Finset.sum_eq_zero fun i _ => Finset.sum_eq_zero fun j hj => hlow i j (by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `(Finset.mem_filter.1 hj).2` as an intermediate fact. Rewrite using `[Fin.lt_def]`. Use the proof step `omega)`. Rewrite using `[hub, hmul u ((hmem u).1 huJ) b hb, hsd, AddChar.map_zero_eq_one, mul_one, map_mul, Module.End.mul_apply, hbv, hl u hu, ← mul_assoc, inv_mul_cancel₀ (Circle.coe_ne_zero _), one_mul]`. Rewrite using `[Set.indicator_of_notMem hgJ, Set.indicator_of_notMem hgJ, zero_mul]`.
-
-Rewrite `h1` using `[e, h, map_zero, integral_indicator_const _ ho.measurableSet]`. Break down `smul_eq_zero.1 h1.symm with h2 | h2` into its components or cases. Conclude with `((ENNReal.toReal_pos (ho.measure_ne_zero μ ⟨1, J.one_mem⟩) hk.measure_lt_top.ne).ne') h2`. Conclude with `hlv h2`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Tf.L4.howeEx0 :
     ∀ (E : Type) [Field E] [ValuativeRel E] [TopologicalSpace E] [IsNonarchimedeanLocalField E] (n : ℕ) (V : Type) [AddCommGroup V] [Module ℂ V] (π : Representation ℂ (GL (Fin n) E) V), IsSmooth π →

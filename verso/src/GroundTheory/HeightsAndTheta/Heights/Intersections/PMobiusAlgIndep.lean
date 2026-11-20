@@ -5,31 +5,27 @@ set_option maxSynthPendingDepth 1
 namespace GroundTheory.Heights₂.Heights.Inter
 
 /- English proof (translation)
-Introduce `Ω _ Φ _ _ n a p q p' q' ha hdet`. Establish `hden : ∀ j, algebraMap Ω Φ p' + a j * algebraMap Ω Φ q' ≠ 0`. Introduce `j h`. Distinguish the cases in `hq' : q' = 0`. Substitute `hq'` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Establish `hp' : p' = 0` using `by simpa using h`. Conclude with `hdet (by simp [hp'])`. Apply `ha.transcendental j` to reduce the goal to its premises. Establish `hq : algebraMap Ω Φ q' ≠ 0` using `by simpa using hq'`. Establish `: a j = algebraMap Ω Φ (-p' / q')`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_div₀, map_neg]`. Clear the denominators using the available nonvanishing facts. Take the linear combination `h`. Rewrite using `[this]`. Conclude with `isAlgebraic_algebraMap _`.
+Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨hden, ?_⟩` and prove the remaining obligations. Use `set b : Fin n → Φ := fun j => (algebraMap Ω Φ p + a j * algebraMap Ω Φ q) / (algebraMap Ω Φ p' + a j * algebraMap Ω Φ q') with hb`. Establish `hrel : ∀ j, (algebraMap Ω Φ q' * b j - algebraMap Ω Φ q) * a j = algebraMap Ω Φ p - algebraMap Ω Φ p' * b j`. Introduce `j`. Establish `hbD : b j * (algebraMap Ω Φ p' + a j * algebraMap Ω Φ q') = algebraMap Ω Φ p + a j * algebraMap Ω Φ q` using `div_mul_cancel₀ _ (hden j)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take the linear combination `hbD`. Establish `hc : ∀ j, algebraMap Ω Φ q' * b j - algebraMap Ω Φ q ≠ 0`. Introduce `j h`. Establish `h2` using `hrel j`. Rewrite `h2` using `[h, zero_mul]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Apply `hdet` to reduce the goal to its premises. Apply `(algebraMap Ω Φ).injective` to reduce the goal to its premises. Simplify using `only [map_sub, map_mul, map_zero]`. Take the linear combination `algebraMap Ω Φ p' * h - algebraMap Ω Φ q' * h2`. Set `S : Set Φ` to `Set.range a ∪ Set.range b`.
+Take a linear combination of the given relations to obtain the conclusion. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `A` to `Algebra.adjoin Ω S`. Set `a' : Fin n → A` to `fun j => ⟨a j, Algebra.subset_adjoin (Or.inl ⟨j, rfl⟩)⟩`. Set `b' : Fin n → A` to `fun j => ⟨b j, Algebra.subset_adjoin (Or.inr ⟨j, rfl⟩)⟩`. Establish `ha' : AlgebraicIndependent Ω a'` using `AlgebraicIndependent.of_comp A.val ha`. Establish `halg : Algebra.IsAlgebraic (Algebra.adjoin Ω (Set.range b')) A`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨fun z => ?_⟩` and prove the remaining obligations. Establish `hz : z ∈ Algebra.adjoin Ω (((↑) : A → Φ) ⁻¹' S)`. Rewrite using `[Algebra.adjoin_adjoin_coe_preimage]`. Discharge the goal by the elementary cases of `trivial`. Use `IsAlgebraic.adjoin_of_forall_isAlgebraic (R := Ω) (s := ((↑) : A → Φ) ⁻¹' S) (t := Set.range b') ?_ (isAlgebraic_algebraMap (⟨z, hz⟩ : Algebra.adjoin Ω (((↑) : A → Φ) ⁻¹' S)))` and prove the remaining obligations.
+Check the elementary cases of the proposition. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Introduce and unpack `x ⟨hxS, hxb⟩`. Break down `hxS with ⟨j, hj⟩ | ⟨j, hj⟩` into its components or cases. Establish `hx : x = a' j` using `Subtype.ext hj.symm`. Substitute `hx` using the available equality. Set `bj : Algebra.adjoin Ω (Set.range b')` to `⟨b' j, Algebra.subset_adjoin ⟨j, rfl⟩⟩`.
+Substitute using the available equality. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Set `c : Algebra.adjoin Ω (Set.range b')` to `algebraMap Ω _ q' * bj - algebraMap Ω _ q`. Set `d : Algebra.adjoin Ω (Set.range b')` to `algebraMap Ω _ p - algebraMap Ω _ p' * bj`. Use `IsAlgebraic.of_mul (y := algebraMap _ A c) ?_ (isAlgebraic_algebraMap c) ?_` and prove the remaining obligations. Apply `mem_nonZeroDivisors_of_ne_zero` to reduce the goal to its premises. Introduce `h0`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `hc j` to reduce the goal to its premises. Establish `h1` using `congrArg (fun w : A => (w : Φ)) h0`. Conclude with `h1`. Establish `h3 : algebraMap _ A c * a' j = algebraMap _ A d`. Apply `Subtype.ext` to reduce the goal to its premises.
-
-Conclude with `hrel j`. Rewrite using `[h3]`. Conclude with `isAlgebraic_algebraMap d`. Conclude with `absurd ⟨j, Subtype.ext hj⟩ hxb`. Establish `hn : Cardinal.mk (Fin n) ≤ Algebra.trdeg Ω A` using `ha'.cardinalMk_le_trdeg`.
-
-Establish `hT` using `Algebra.IsAlgebraic.isTranscendenceBasis_of_le_trdeg_of_finite Ω b' hn`. Conclude with `hT.1.map' (f := A.val) Subtype.val_injective`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem MobiusAlgIndep.proof : MobiusAlgIndep.Statement := by
   intro Ω _ Φ _ _ n a p q p' q' ha hdet

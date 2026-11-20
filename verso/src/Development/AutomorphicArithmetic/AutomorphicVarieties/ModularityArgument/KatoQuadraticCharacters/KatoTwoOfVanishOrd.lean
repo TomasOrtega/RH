@@ -6,17 +6,15 @@ open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.
 namespace UpperTheory.V.Z.Kato
 
 /- English proof (translation)
-Establish `hdt : dt W = θ` using `MonoidHom.ext fun g => Units.ext (u.det g)`. Use `⟨hdt, u.level.cont, ?_, fun s hs => ?_, ?_, ⟨_, ?_, u.level.away⟩, ⟨f, 1, 1, le_rfl, fun _ _ => rfl, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[hdt]`. Conclude with `MonoidHom.ext u.θ_sq`. Rewrite using `[hdt]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨φ, hφ⟩` from `hs`. Establish `himag` using `u.imag`. Establish `h3 : (θ s : Qbar l) * θ s = 1` using `by rw [← sq, ← Units.val_pow_eq_pow_val, u.θ_sq s, Units.val_one]`. Use `Units.ext ((mul_self_eq_one_iff.1 h3).resolve_left fun h => ?_)` and prove the remaining obligations. Establish `h1 : s ∈ galOf ℚ K Ω` using `u.θ_ker ▸ (Units.ext h : θ s = 1)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `IsTotallyComplex.complexEmbedding_not_isReal (φ.comp (algebraMap K Ω)) ?_` and prove the remaining obligations. Rewrite using `[ComplexEmbedding.isReal_iff]`. Use extensionality with `x`. Rewrite using `[ComplexEmbedding.conjugate_coe_eq, RingHom.comp_apply, ← hφ, h1 x]`. Use `IrrTransfer.isIrr_of_range _ _ ?_ u.irr` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨τ, hτ⟩`. Establish `hmem : galEmb ℚ K Ω τ ∈ H0g W`. Use `Subgroup.mem_inf.2 ⟨MonoidHom.mem_ker.2 (MonoidHom.mem_ker.1 hτ : _), ?_⟩` and prove the remaining obligations. Rewrite using `[hdt, u.θ_ker]`. Conclude with `galEmb_mem ℚ K Ω τ`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨⟨_, hmem⟩, rfl⟩`. Conclude with `Nat.mul_pos u.N_pos (Int.natAbs_pos.2 (discr_ne_zero K))`. Rewrite using `[mul_one]`. Conclude with `hf`. Rewrite using `[hdt]`.
-
-Conclude with `u.flag`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Used.adm {l : ℕ} [Fact l.Prime] {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {K : Type} [Field K] [NumberField K]
     [Algebra K Ω] {e N : ℕ} {θ ψ : G ℚ Ω →* (Qbar l)ˣ} {W : G ℚ Ω →* GL (Fin 2) (Qbar l)} (u : Used l Ω K e N θ ψ W)

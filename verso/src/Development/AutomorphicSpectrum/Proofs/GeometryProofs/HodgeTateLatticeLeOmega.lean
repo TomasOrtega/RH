@@ -16,7 +16,7 @@ variable {X : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Spec (CommRingCat.of Ω) 
   {E : Type} [AddCommGroup E] [Module Ω E] {R : Type} [CommRing R] {L : Type} [AddCommGroup L] [Module R L]
 
 /- English proof (translation)
-Establish `key : ∀ e, M.pt (j e) = LieCarrier.epsHom k x ξ hx ≫ M₀.pt e` using `fun e => Over.OverMorphism.ext (hj e)`. Apply `M.inj` to reduce the goal to its premises. Rewrite using `[M.add, key, key, key, M₀.add, MonObj.comp_mul]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem map_add_of_compat (M : LieModel G ξ E) {x : Spec (CommRingCat.of R) ⟶ X} {k : R →+* Ω}
     (hx : Spec.map (CommRingCat.ofHom k) ≫ x = ξ) (M₀ : LieModel G x L) (j : L → E)
@@ -28,7 +28,7 @@ theorem map_add_of_compat (M : LieModel G ξ E) {x : Spec (CommRingCat.of R) ⟶
   rw [M.add, key, key, key, M₀.add, MonObj.comp_mul]
 
 /- English proof (translation)
-Apply `M.inj` to reduce the goal to its premises. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Rewrite using `[hj, M₀.smul, M.smul, hj, ← Category.assoc, ← Category.assoc, ← Spec.map_comp, ← Spec.map_comp, ← CommRingCat.ofHom_comp, ← CommRingCat.ofHom_comp, LieCarrier.dualMap_epsMul]`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem map_smul_of_compat (M : LieModel G ξ E) {x : Spec (CommRingCat.of R) ⟶ X} {k : R →+* Ω}
     (M₀ : LieModel G x L) (j : L → E)
@@ -40,9 +40,9 @@ theorem map_smul_of_compat (M : LieModel G ξ E) {x : Spec (CommRingCat.of R) �
     ← CommRingCat.ofHom_comp, ← CommRingCat.ofHom_comp, LieCarrier.dualMap_epsMul]
 
 /- English proof (translation)
-Take `⟨s, hs, h⟩` from `h`. Use `⟨s, hs, fun e => ?_⟩` and prove the remaining obligations. Take `⟨v, h1, h2, h3⟩` from `h e`. Use `⟨v, h1, h2, h3.trans ?_⟩` and prove the remaining obligations. Use `congr 2`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[Ideal.Quotient.eq, Ideal.mem_span_singleton]`. Conclude with `⟨-u e, by simp⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem isHT_add_natCast_smul {R : Type} [CommRing R] [IsDomain R] {T : Type} [CommGroup T] (Γ : BT.QFGroup R T)
     {S : Scheme.{0}} {G : Over S} [GrpObj G] {x : Spec (CommRingCat.of R) ⟶ S} {i : Γ.G.left ⟶ G.left}
@@ -58,9 +58,9 @@ theorem isHT_add_natCast_smul {R : Type} [CommRing R] [IsDomain R] {T : Type} [C
   exact ⟨-u e, by simp⟩
 
 /- English proof (translation)
-Take `⟨hd, T, _, Γ, i, L, _, _, M₀, j, χ, w₀, ht, hj, hHT, h0⟩` from `h`. Establish `hreg : ∀ e, ∃ r, k r = w (j e)` using `fun e => hw (j e) (M₀.pt e) (M₀.tan e) (hj e)`. Use `choose f hf using hreg`. Set `u : Module.Dual R L` to `{ toFun := f map_add' := fun a b => hk (by rw [map_add, hf, hf, hf, map_add_of_compat M hx M₀ j hj, map_add]) map_smul' := fun c e => hk (by`. Simplify using `only [RingHom.id_apply, smul_eq_mul, map_mul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hf, hf, map_smul_of_compat M M₀ j hj, map_smul, smul_eq_mul]) }`. Use `⟨hd, T, _, Γ, i, L, _, _, M₀, j, χ, w₀ + (N : R) • u, ht, hj, isHT_add_natCast_smul Γ hHT u, fun e => ?_⟩` and prove the remaining obligations. Establish `h1 : k (w₀ e) = 0` using `(h0 e).symm`. Establish `h2 : k (u e) = w (j e)` using `hf e`. Simplify using `[h1, h2]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem natCast_smul_isHTFormOver (M : LieModel G ξ E) (N : ℕ) {x : Spec (CommRingCat.of R) ⟶ X} {k : R →+* Ω}
     (hx : Spec.map (CommRingCat.ofHom k) ≫ x = ξ) (hk : Function.Injective k) (h : M.IsHTFormOver N x k 0)
@@ -87,11 +87,11 @@ end GlobalTheory.CompanionTheory.Ar.HtHoriz
 namespace GlobalTheory.CompanionTheory.Ar
 
 /- English proof (translation)
-Introduce `X Ω _ ξ G _ _ V _ _ M N p hξ _`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `w ⟨_, T, _, Γ, i, L, _, _, M₀, j, χ, w₀, -, hj, -, hw⟩ e he`. Take `⟨v, hv, hev⟩` from `((lieLat_carrier X G Ω ξ V M p).1 e).1 he`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Take `⟨e₀, rfl⟩` from `M₀.onto v hv`. Establish `: j e₀ = e` using `M.inj (Over.OverMorphism.ext ((hj e₀).trans hev.symm))`. Substitute `this` using the available equality. Conclude with `⟨w₀ e₀, (hw e₀).symm⟩`. Introduce `h w hw`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Submodule.subset_span (HtHoriz.natCast_smul_isHTFormOver M N (LieCarrier.genMap_fromSpecStalk p) (hξ.inj p) h w fun e v hv hev => hw e (Submodule.subset_span ⟨v, hv, hev⟩))`.
+A detailed English derivation is pending.
 -/
 theorem htLat_le_omLat_and_smul_mem : ∀ (X : Scheme.{0}) (Ω : Type) [Field Ω] (ξ : Sp Ω ⟶ X) (G : Over X) [GrpObj G]
     [IsCommMonObj G] (V : Type) [AddCommGroup V] [Module Ω V] (M : LieModel G ξ V) (N : ℕ) (p : Cpt ξ),

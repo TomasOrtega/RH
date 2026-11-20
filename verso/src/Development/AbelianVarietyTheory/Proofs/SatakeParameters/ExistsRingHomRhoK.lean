@@ -22,7 +22,7 @@ namespace GlobalTheory.KerStd.HypCoord
 def toKur (p : ℕ) [Fact p.Prime] (x : ℂ_[p]) : MaximalUnramifiedExtension p := if h : x ∈ MaximalUnramifiedExtension p then ⟨x, h⟩ else 0
 
 /- English proof (translation)
-Simplify using `[toKur, h]`.
+Simplify using the standard rewrite rules.
 -/
 theorem coe_toKur {p : ℕ} [Fact p.Prime] {x : ℂ_[p]} (h : x ∈ MaximalUnramifiedExtension p) : ((toKur p x : MaximalUnramifiedExtension p) : ℂ_[p]) = x := by
   simp [toKur, h]
@@ -53,11 +53,9 @@ def fOf' (D : D7) (p : ℕ) [Fact p.Prime] (σ : MaximalUnramifiedExtension p �
   ∑ t : ZMod (nP D p), if t.val % 2 = 0 then 0 else σ^[t.val] (oms e.1.2) * g (OrbitPlaces.orbMap D p e.1.1 t) e.2.1 e.2.2 i
 
 /- English proof (translation)
-Establish `hmem : ∀ y, tauEmb D lam (tauPl D z) y ∈ MaximalUnramifiedExtension p` using `fun y => by`. Take `⟨a, ha, -⟩` from `exists_kur_frob_tauEmb_posPl D p lam σ hσ hcl z y`. Rewrite using `[← ha]`. Conclude with `a.2`. Set `ρ0 : D.host.E →+* ℂ_[p]` to `lam.comp (Formalism.L2.KerInert.IntegralOrthonormalChange.embQ D (tauPl D z))`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `h0 : ∀ y, ρ0 y = tauEmb D lam (tauPl D z) y` using `fun y => by`. Simplify using `only [ρ0, RingHom.comp_apply, tauEmb, Formalism.L2.KerInert.IntegralOrthonormalChange.lamC_embT]`. Use `⟨ρ0.codRestrict (MaximalUnramifiedExtension p) (fun y => by rw [h0]; exact hmem y), fun y => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[rhoK, coe_toKur (hmem y)]`.
-
-Conclude with `(h0 y).symm`. Conclude with `h0 y`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_ringHom_rhoK (D : D7) {p : ℕ} [Fact p.Prime] (lam : Qbar →+* ℂ_[p]) (σ : MaximalUnramifiedExtension p →+* MaximalUnramifiedExtension p)
     (hσ : UnrOK (MaximalUnramifiedExtension p) p σ) (hcl : IsResidueClassZero D p ∨ IsSg D p) (z : Bool × HH D) :
@@ -75,7 +73,7 @@ theorem exists_ringHom_rhoK (D : D7) {p : ℕ} [Fact p.Prime] (lam : Qbar →+* 
   · exact h0 y
 
 /- English proof (translation)
-Take `⟨ρ, hρ⟩` from `exists_ringHom_rhoK D lam σ hσ hcl z`. Rewrite using `[(hρ y).1, (hρ y).2]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem coe_rhoK (D : D7) {p : ℕ} [Fact p.Prime] (lam : Qbar →+* ℂ_[p]) (σ : MaximalUnramifiedExtension p →+* MaximalUnramifiedExtension p)
     (hσ : UnrOK (MaximalUnramifiedExtension p) p σ) (hcl : IsResidueClassZero D p ∨ IsSg D p) (z : Bool × HH D) (y : D.host.E) :
@@ -84,7 +82,7 @@ theorem coe_rhoK (D : D7) {p : ℕ} [Fact p.Prime] (lam : Qbar →+* ℂ_[p]) (�
   rw [(hρ y).1, (hρ y).2]
 
 /- English proof (translation)
-Take `⟨a, ha, hsa⟩` from `exists_kur_frob_tauEmb_posPl D p lam σ hσ hcl z y`. Establish `e1 : rhoK D lam z y = a` using `Subtype.ext (by rw [coe_rhoK D lam σ hσ hcl, ha])`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[e1, coe_rhoK D lam σ hσ hcl, hsa]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem sigma_rhoK (D : D7) {p : ℕ} [Fact p.Prime] (lam : Qbar →+* ℂ_[p]) (σ : MaximalUnramifiedExtension p →+* MaximalUnramifiedExtension p)
     (hσ : UnrOK (MaximalUnramifiedExtension p) p σ) (hcl : IsResidueClassZero D p ∨ IsSg D p) (z : Bool × HH D) (y : D.host.E) :
@@ -95,7 +93,7 @@ theorem sigma_rhoK (D : D7) {p : ℕ} [Fact p.Prime] (lam : Qbar →+* ℂ_[p]) 
   rw [e1, coe_rhoK D lam σ hσ hcl, hsa]
 
 /- English proof (translation)
-The claim follows from `Formalism.L2.Th1.D.sigmaIsom (MaximalUnramifiedExtension p) p σ hσ x`.
+A detailed English derivation is pending.
 -/
 theorem norm_sigma_eq (p : ℕ) [Fact p.Prime] (σ : MaximalUnramifiedExtension p →+* MaximalUnramifiedExtension p) (hσ : UnrOK (MaximalUnramifiedExtension p) p σ) (x : MaximalUnramifiedExtension p) :
     ‖σ x‖ = ‖x‖ :=

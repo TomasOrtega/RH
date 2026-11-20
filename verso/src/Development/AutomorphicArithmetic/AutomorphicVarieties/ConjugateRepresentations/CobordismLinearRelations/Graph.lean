@@ -5,23 +5,21 @@ open UpperTheory.V.Af UpperTheory.V.AlgRepEndIrreducible UpperTheory.V.Lit Upper
 open scoped TensorProduct
 
 /- English proof (translation)
-Introduce `G V V' W _ _ _ _ _ _ _ ρ ρ' ρW σ T hTs hTg M hM R hlin hg hex hiff`. Establish `huniq : ∀ v w1 w2, w1 ∈ M → w2 ∈ M → R v w1 → R v w2 → w1 = w2`. Introduce `v w1 w2 m1 m2 r1 r2`. Establish `h` using `hlin (-1) v v w1 w2 r1 r2`. Establish `hm : σ (-1) • w1 + w2 ∈ M` using `M.add_mem (M.smul_mem _ m1) m2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0 : (-1 : ℂ) • v + v = 0` using `by simp`. Rewrite `h` using `[h0]`. Establish `h1` using `(hiff 0 _ hm h).1 rfl`. Rewrite `h1` using `[map_neg, map_one, neg_one_smul, neg_add_eq_zero]`. Conclude with `h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hR0 : R 0 0`. Take `⟨w, hw, hr⟩` from `hex 0`. Rewrite `hr` using `[(hiff 0 w hw hr).1 rfl]`. Then use the resulting hypothesis. Use `choose j hjM hjR using fun v' : V' => hex (T.symm v')`. Establish `hTsymm_smul : ∀ (c : ℂ) (v' : V'), T.symm (c • v') = σ.symm c • T.symm v'`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `c v'`. Apply `T.injective` to reduce the goal to its premises. Rewrite using `[hTs, AddEquiv.apply_symm_apply, AddEquiv.apply_symm_apply, RingEquiv.apply_symm_apply]`. Establish `hTsymm_g : ∀ (g : G) (v' : V'), T.symm (ρ' g v') = ρ g (T.symm v')`. Introduce `g v'`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `T.injective` to reduce the goal to its premises. Rewrite using `[hTg, AddEquiv.apply_symm_apply, AddEquiv.apply_symm_apply]`. Set `J : V' →ₗ[ℂ] W` to `{ toFun := j map_add' := by`. Introduce `a b`. Apply `huniq (T.symm (a + b)) _ _ (hjM _) (M.add_mem (hjM a) (hjM b)) (hjR _)` to reduce the goal to its premises.
+Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h` using `hlin 1 _ _ _ _ (hjR a) (hjR b)`. Simplify `h` using `[map_add]`. Use the proof step `map_smul' := by`. Introduce `c a`. Apply `huniq (T.symm (c • a)) _ _ (hjM _) (M.smul_mem c (hjM a)) (hjR _)` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h` using `hlin (σ.symm c) _ _ _ _ (hjR a) hR0`. Simplify `h }` using `[hTsymm_smul]`. Use `⟨J, ?_, hjM, ?_⟩` and prove the remaining obligations. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `v' hv'`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h` using `(hiff (T.symm v') (j v') (hjM v') (hjR v')).2 hv'`. Simplify using `using congrArg T h`. Introduce `g v'`. Apply `huniq (T.symm (ρ' g v')) _ _ (hjM _) (hM g _ (hjM v')) (hjR _)` to reduce the goal to its premises. Rewrite using `[hTsymm_g]`.
-
-Conclude with `hg g _ _ (hjR v')`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Cj.graph :
     UpperTheory.V.Cj.Graph := by

@@ -9,9 +9,9 @@ open ReciprocityTheory.ChartRestriction.G.Pdiv.ChartF ReciprocityTheory.ChartRes
 namespace GlobalTheory
 
 /- English proof (translation)
-Rewrite using `[RingHom.injective_iff_ker_eq_bot]`. Apply `Ideal.eq_bot_of_comap_eq_bot (R := ℤ)` to reduce the goal to its premises. Rewrite using `[eq_bot_iff]`. Introduce `n hn`. Simplify using `only [Ideal.mem_comap, RingHom.mem_ker, eq_intCast, map_intCast, Int.cast_eq_zero] at hn`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `using hn`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem ringOfIntegers_hom_injective (E : Type) [Field E] [NumberField E] (C : Type) [Field C]
     [CharZero C] (f : 𝓞 E →+* C) : Function.Injective f := by
@@ -23,27 +23,25 @@ theorem ringOfIntegers_hom_injective (E : Type) [Field E] [NumberField E] (C : T
   simpa using hn
 
 /- English proof (translation)
-Introduce `E _ _ p hp hd C _ _ _ v O _ _ _ hv hpu σ σ' hcong`. Assume the negation of the conclusion as `hne`. Establish `hinj : Function.Injective (algebraMap O C)` using `hv.hom_inj`. Establish `hext : ∀ s : 𝓞 E →+* O, ∃ τ : E →ₐ[ℚ] C, ∀ x : 𝓞 E, τ (algebraMap (𝓞 E) E x) = algebraMap O C (s x)`. Introduce `s`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨(IsFractionRing.lift (K := E) (ringOfIntegers_hom_injective E C ((algebraMap O C).comp s))).toRatAlgHom, fun x => ?_⟩` and prove the remaining obligations. Simplify using the standard rewrite rules. Take `⟨τ, hτ⟩` from `hext σ`. Take `⟨τ', hτ'⟩` from `hext σ'`. Establish `hττ : τ ≠ τ'`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `h`. Apply `hne` to reduce the goal to its premises. Use extensionality with `x`. Apply `hinj` to reduce the goal to its premises. Rewrite using `[← hτ, ← hτ', h]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `hmem : ∀ (φ : E →ₐ[ℚ] C) (x : 𝓞 E), ∃ y : O, algebraMap O C y = φ (algebraMap (𝓞 E) E x)`. Introduce `φ x`. Establish `h1 : IsIntegral ℤ (φ (algebraMap (𝓞 E) E x))` using `(x.isIntegral_coe).map (φ.toRingHom.toIntAlgHom)`. Establish `h2 : IsIntegral O (φ (algebraMap (𝓞 E) E x))` using `h1.tower_top`. Conclude with `hv.exists_of_le_one (hv.mem_of_integral h2)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Use `choose F hF using hmem`. Set `ι` to `Module.Free.ChooseBasisIndex ℤ (𝓞 E)`. Set `e : ι ≃ (E →ₐ[ℚ] C)` to `Fintype.equivOfCardEq (by`. Rewrite using `[AlgHom.card, Module.finrank_eq_card_basis (integralBasis E)])`. Set `N : Matrix ι ι O` to `fun i j => F (e j) (RingOfIntegers.basis E i)`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `hN : (algebraMap O C).mapMatrix N = Algebra.embeddingsMatrixReindex ℚ C (integralBasis E) e`. Use extensionality with `i j`. Use `show algebraMap O C (F (e j) (RingOfIntegers.basis E i)) = _`. Simplify using `[hF, Algebra.embeddingsMatrixReindex, integralBasis_apply]`. Establish `hdisc : ((NumberField.discr E : ℤ) : O) = N.det ^ 2`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Apply `hinj` to reduce the goal to its premises. Rewrite using `[map_pow, RingHom.map_det, hN, ← Algebra.discr_eq_det_embeddingsMatrixReindex_pow_two, ← NumberField.coe_discr]`. Simplify using the standard rewrite rules. Establish `hdet : N.det ∈ maximalIdeal O`. Rewrite using `[← IsLocalRing.residue_eq_zero_iff, RingHom.map_det]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Apply `Matrix.det_zero_of_column_eq (i := e.symm τ) (j := e.symm τ') (fun h => hττ (e.symm.injective h))` to reduce the goal to its premises. Introduce `k`. Use `show residue O (F (e (e.symm τ)) (RingOfIntegers.basis E k)) = residue O (F (e (e.symm τ')) (RingOfIntegers.basis E k))`. Simplify using `only [Equiv.apply_symm_apply]`. Establish `a1 : F τ (RingOfIntegers.basis E k) = σ (RingOfIntegers.basis E k)` using `hinj (by rw [hF, hτ])`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `a2 : F τ' (RingOfIntegers.basis E k) = σ' (RingOfIntegers.basis E k)` using `hinj (by rw [hF, hτ'])`. Rewrite using `[a1, a2, ← sub_eq_zero, ← map_sub, IsLocalRing.residue_eq_zero_iff]`. Conclude with `hcong _`. Establish `hdm : ((NumberField.discr E : ℤ) : O) ∈ maximalIdeal O`. Rewrite using `[hdisc]`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Ideal.pow_mem_of_mem _ hdet 2 (by norm_num)`. Establish `hpm : (p : O) ∈ maximalIdeal O` using `hpu`. Establish `hcop : IsCoprime (p : ℤ) (NumberField.discr E)` using `(Nat.prime_iff_prime_int.mp hp).irreducible.coprime_iff_not_dvd.mpr hd`. Take `⟨a, b, hab⟩` from `hcop`. Establish `h1 : (1 : O) ∈ maximalIdeal O`.
-
-Use `congrArg (Int.cast : ℤ → O) hab` as an intermediate fact. Move the coercions through the operations in `at this`. Rewrite using `[← this]`. Conclude with `Ideal.add_mem _ (Ideal.mul_mem_left _ _ hpm) (Ideal.mul_mem_left _ _ hdm)`. Conclude with `(maximalIdeal.isMaximal O).ne_top ((Ideal.eq_top_iff_one _).mpr h1)`.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ringOfIntegers_hom_eq_of_congr_maximalIdeal :
     ∀ (E : Type) [Field E] [NumberField E] (p : ℕ), p.Prime → ¬ ((p : ℤ) ∣ NumberField.discr E) → ∀ (C : Type) [Field C] [IsAlgClosed C] [CharZero C] (v : Valuation C NNReal) (O : Type) [CommRing O] [IsLocalRing O] [Algebra O C], v.Integers O → ¬ IsUnit (p : O) → ∀ σ σ' : 𝓞 E →+* O, (∀ x, σ x - σ' x ∈ maximalIdeal O) → σ = σ' := by

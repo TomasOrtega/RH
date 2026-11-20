@@ -6,9 +6,9 @@ open MeasureTheory
 namespace GlobalTheory.UnitaryBC
 
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.FinitePointsDetect.finite_points_detect`. Consider the case `exact _root_.GlobalTheory.FinitePointsDetect.finite_points_detect`. Consider the case `(apply _root_.GlobalTheory.FinitePointsDetect.finite_points_detect <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.FinitePointsDetect.finite_points_detect <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.FinitePointsDetect.finite_points_detect <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.FinitePointsDetect.finite_points_detect ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem exists_finset_detecting_of_finiteDimensional {X : Type} (W : Submodule ℂ (X → ℂ))
     [FiniteDimensional ℂ W] :
@@ -22,11 +22,11 @@ theorem exists_finset_detecting_of_finiteDimensional {X : Type} (W : Submodule �
   | (intros; exact _root_.GlobalTheory.FinitePointsDetect.finite_points_detect ..)
 
 /- English proof (translation)
-Take `⟨s, hs⟩` from `exists_finset_detecting_of_finiteDimensional W`. Set `r : W →ₗ[ℂ] (s → ℂ)` to `LinearMap.pi fun x : s => (LinearMap.proj (x : X)) ∘ₗ W.subtype`. Establish `hr : LinearMap.ker r = ⊥`. Rewrite using `[LinearMap.ker_eq_bot']`. Introduce `v hv`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hs v fun x hx => congrFun hv ⟨x, hx⟩`. Take `⟨L, hL⟩` from `r.exists_leftInverse_of_injective hr`. Use `⟨s, fun x => (L fun j => if x = j then 1 else 0 : W), fun v hv y => ?_⟩` and prove the remaining obligations. Establish `h1 : L (r ⟨v, hv⟩) = ⟨v, hv⟩` using `LinearMap.congr_fun hL ⟨v, hv⟩`. Rewrite `h1` using `[LinearMap.pi_apply_eq_sum_univ]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h2` using `congrFun (congrArg Subtype.val h1) y`. Simplify using `only [Submodule.coe_sum, Finset.sum_apply, Submodule.coe_smul, Pi.smul_apply, smul_eq_mul] at h2`. Conclude with `h2.symm`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_interpolation_of_finiteDimensional {X : Type} (W : Submodule ℂ (X → ℂ))
     [FiniteDimensional ℂ W] :
@@ -48,15 +48,15 @@ theorem exists_interpolation_of_finiteDimensional {X : Type} (W : Submodule ℂ 
   exact h2.symm
 
 /- English proof (translation)
-Set `A : StarSubalgebra ℂ C(K, ℂ)` to `{ carrier := {φ | (φ : K → ℂ) ∈ R} mul_mem' := fun ha hb => R.mul_mem ha hb add_mem' := fun ha hb => R.add_mem ha hb algebraMap_mem' := fun c => R.algebraMap_mem c star_mem' := fun ha => hs _ ha }`. Establish `hA : A.SeparatesPoints`. Introduce `x y hxy`. Take `⟨p, hp, hne⟩` from `hsep x y hxy`. Conclude with `⟨p, ⟨⟨p, hc p hp⟩, hp, rfl⟩, hne⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `htop` using `ContinuousMap.starSubalgebra_topologicalClosure_eq_top_of_separatesPoints A hA`. Set `G : C(K, ℂ)` to `⟨g, hg⟩`. Establish `hcont : Continuous fun φ : C(K, ℂ) => ∫ k, g k * φ k ∂μ`. Establish `h1 : Continuous fun φ : C(K, ℂ) => ∫ k, (ContinuousMap.toLp (E` using `ℂ) 1 μ ℂ (G * φ)) k ∂μ := MeasureTheory.continuous_integral.comp ((ContinuousMap.toLp (E := ℂ) 1 μ ℂ).continuous.comp (continuous_const.mul continuous_id))`. Use `h1 using 2 with φ` and compare the differences between its conclusion and the goal.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Conclude with `(integral_congr_ae (ContinuousMap.coeFn_toLp (E := ℂ) (p := 1) (𝕜 := ℂ) μ (G * φ))).symm`. Establish `hcl : IsClosed {φ : C(K, ℂ) | ∫ k, g k * φ k ∂μ = 0}` using `isClosed_eq hcont continuous_const`. Establish `hmem : star G ∈ closure (A : Set C(K, ℂ))`. Establish `: star G ∈ A.topologicalClosure` using `htop ▸ StarSubalgebra.mem_top`. Conclude with `this`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsub : (A : Set C(K, ℂ)) ⊆ {φ : C(K, ℂ) | ∫ k, g k * φ k ∂μ = 0}` using `fun φ hφ => h0 _ hφ`. Establish `hz : ∫ k, g k * (starRingEnd ℂ) (g k) ∂μ = 0` using `closure_minimal hsub hcl hmem`. Simplify using `only [Complex.mul_conj] at hz`. Rewrite `hz` using `[integral_complex_ofReal]`. Establish `hz' : ∫ k, Complex.normSq (g k) ∂μ = 0` using `by exact_mod_cast hz`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcn : Continuous fun k => Complex.normSq (g k)` using `Complex.continuous_normSq.comp hg`. Establish `hae` using `(integral_eq_zero_iff_of_nonneg (fun k => Complex.normSq_nonneg (g k)) (hcn.integrable_of_hasCompactSupport (HasCompactSupport.of_compactSpace _))).1 hz'`. Use `(Continuous.ae_eq_iff_eq μ hcn continuous_zero).1 hae` as an intermediate fact. Use function extensionality and compare the values at `k`. Conclude with `Complex.normSq_eq_zero.1 (congrFun this k)`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_integral_mul_eq_zero_of_separating {K : Type} [TopologicalSpace K]
     [CompactSpace K] [T2Space K] [MeasurableSpace K] [BorelSpace K] (μ : Measure K)
@@ -101,39 +101,35 @@ theorem eq_zero_of_integral_mul_eq_zero_of_separating {K : Type} [TopologicalSpa
   exact Complex.normSq_eq_zero.1 (congrFun this k)
 
 /- English proof (translation)
-Introduce `K _ _ _ _ _ R hc hs hsep hsplit f hf hfd`. Use `borelize K`. Set `μ : Measure K` to `Measure.haar`. Establish `hint : ∀ u : K → ℂ, Continuous u → Integrable u μ` using `fun u hu => hu.integrable_of_hasCompactSupport (HasCompactSupport.of_compactSpace _)`. Establish `hfx : ∀ x : K, Continuous fun k => f (x * k)` using `fun x => hf.comp (continuous_const.mul continuous_id)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨s, w, hw⟩` from `exists_interpolation_of_finiteDimensional (Submodule.span ℂ (Set.range fun k : K => fun x : K => f (x * k)))`. Establish `hdec : ∀ y k, f (y * k) = ∑ x : s, f (x * k) * w x y` using `fun y k => hw _ (Submodule.subset_span ⟨k, rfl⟩) y`. Establish `hconv : ∀ p ∈ R, (fun y => ∫ k, f (y * k) * p k ∂μ) ∈ R`. Introduce `p hp`. Take `⟨m, a, b, hab, hp'⟩` from `hsplit p hp`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `: (fun y => ∫ k, f (y * k) * p k ∂μ) = ∑ i, (∫ k, f k * b i k ∂μ) • a i`. Use function extensionality and compare the values at `y`. Establish `h1` using `integral_mul_left_eq_self (μ := μ) (fun k => f k * p (y⁻¹ * k)) y`. Simplify using `only [inv_mul_cancel_left] at h1`. Rewrite using `[h1]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [hp', Finset.mul_sum, Finset.sum_apply, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[integral_finset_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← integral_mul_const]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `k`. Expand and normalize the polynomial expressions, which then agree. Introduce `i _`. Conclude with `hint _ (hf.mul (continuous_const.mul (hab i).2))`. Rewrite using `[this]`.
+Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `R.sum_mem fun i _ => R.smul_mem (hab i).1 _`. Set `T : R →ₗ[ℂ] (s → ℂ)` to `{ toFun := fun p x => ∫ k, f (x * k) * (p : K → ℂ) k ∂μ map_add' := fun p q => by`. Use function extensionality and compare the values at `x`. Simplify using `only [Subalgebra.coe_add, Pi.add_apply, mul_add]`. Conclude with `integral_add (hint _ ((hfx x).mul (hc _ p.2))) (hint _ ((hfx x).mul (hc _ q.2)))`.
+Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use the proof step `map_smul' := fun c p => by`. Use function extensionality and compare the values at `x`. Simplify using `only [Subalgebra.coe_smul, Pi.smul_apply, smul_eq_mul, RingHom.id_apply]`. Rewrite using `[← integral_const_mul]`. Use `congr 1`.
+Apply function extensionality and compare values at an arbitrary argument. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Use function extensionality and compare the values at `k`. Use `ring }`. Establish `hmem : (fun x : s => f x) ∈ LinearMap.range T`. Assume the negation of the conclusion as `hne`. Take `⟨l, hl1, hl0⟩` from `Submodule.exists_dual_map_eq_bot_of_notMem hne inferInstance`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Set `c : s → ℂ` to `fun x => l fun j => if x = j then 1 else 0`. Establish `hl : ∀ v : s → ℂ, l v = ∑ x, v x * c x` using `fun v => LinearMap.pi_apply_eq_sum_univ l v`. Establish `hg : (fun k => ∑ x : s, f (x * k) * c x) = 0`. Use `eq_zero_of_integral_mul_eq_zero_of_separating μ R hc hs hsep _ (continuous_finset_sum _ fun x _ => (hfx x).mul continuous_const) fun p hp => ?_` and prove the remaining obligations. Establish `h1 : l (T ⟨p, hp⟩) = 0`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `: l (T ⟨p, hp⟩) ∈ Submodule.map l (LinearMap.range T)` using `Submodule.mem_map_of_mem ⟨_, rfl⟩`. Rewrite `this` using `[hl0]`. Conclude with `(Submodule.mem_bot ℂ).1 this`. Rewrite `h1` using `[hl]`. Rewrite using `[← h1]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Simplify using `only [Finset.sum_mul]`. Rewrite using `[integral_finset_sum]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ = (∫ k, f (x * k) * p k ∂μ) * c x`. Rewrite using `[← integral_mul_const]`.
+Apply function extensionality and compare values at an arbitrary argument. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use function extensionality and compare the values at `k`. Expand and normalize the polynomial expressions, which then agree. Introduce `x _`. Conclude with `hint _ (((hfx x).mul continuous_const).mul (hc p hp))`.
+Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Apply `hl1` to reduce the goal to its premises. Rewrite using `[hl]`. Simplify using `using congrFun hg 1`. Take `⟨p, hp⟩` from `hmem`. Establish `hfeq : f = fun y => ∫ k, f (y * k) * (p : K → ℂ) k ∂μ`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `y`. Establish `h1` using `hdec y 1`. Simplify using `only [mul_one] at h1`. Rewrite using `[h1]`. Establish `h2 : ∀ k, f (y * k) * (p : K → ℂ) k = ∑ x : s, f (x * k) * (p : K → ℂ) k * w x y`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Introduce `k`. Rewrite using `[hdec y k, Finset.sum_mul]`. Conclude with `Finset.sum_congr rfl fun x _ => by ring`. Simplify using `only [h2]`. Rewrite using `[integral_finset_sum]`.
-
-Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Rewrite using `[integral_mul_const]`. Use `congr 1`. Conclude with `(congrFun hp x).symm`. Introduce `x _`.
-
-Conclude with `hint _ (((hfx x).mul (hc _ p.2)).mul continuous_const)`. Rewrite using `[hfeq]`. Conclude with `hconv _ p.2`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_of_finiteDimensional_span_rightTranslates :
     ∀ (K : Type) [Group K] [TopologicalSpace K] [IsTopologicalGroup K] [CompactSpace K] [T2Space K] (R : Subalgebra ℂ (K → ℂ)), (∀ p ∈ R, Continuous p) → (∀ p ∈ R, star p ∈ R) → (∀ x y : K, x ≠ y → ∃ p ∈ R, p x ≠ p y) → (∀ p ∈ R, ∃ (m : ℕ) (a b : Fin m → K → ℂ), (∀ i, a i ∈ R ∧ Continuous (b i)) ∧ ∀ x k, p (x⁻¹ * k) = ∑ i, a i x * b i k) → ∀ f : K → ℂ, Continuous f → FiniteDimensional ℂ (Submodule.span ℂ (Set.range fun k : K => fun x : K => f (x * k))) → f ∈ R := by

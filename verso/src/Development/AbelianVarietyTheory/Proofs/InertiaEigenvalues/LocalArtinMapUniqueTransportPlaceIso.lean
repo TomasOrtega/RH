@@ -21,9 +21,9 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 namespace GlobalTheory.LocLanglands
 
 /- English proof (translation)
-Introduce `hG hC E Ω _ _ _ _ _ A w h E' Ω' _ _ _ _ _ A' w' h' φ j i hP a a' ha ha' σ σ' hσ`. Take `⟨art, hart⟩` from `hG E Ω`. Take `⟨art', hart'⟩` from `hG E' Ω'`. Set `x : (w.adicCompletion E)ˣ` to `Units.map i.symm.toRingHom.toMonoidHom (a' σ')`. Establish `hx : Units.map i.toRingHom.toMonoidHom x = a' σ'`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `ext`. Simplify using `[x]`. Establish `h1` using `GlobalTheory.T.globalArtin_compat_localDegreeOne E Ω A w h E' Ω' A' w' h' φ j i hP art art' hart hart' σ σ' x hσ (by rw [hx]; exact ha'.glob art' hart' σ')`. Establish `h2 : x = a σ` using `GlobalTheory.T.globalArtin_localIdele_injective hC E Ω art hart w (h1.trans (ha.glob art hart σ).symm)`. Rewrite using `[← hx, h2]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem isLocalArtin_transport : GlobalArtinReciprocity → ChevalleyUnits → ∀ (E Ω : Type) [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω] (A : ValuationSubring Ω) (w : HeightOneSpectrum (𝓞 E)) (h : IsPlaceOver A w) (E' Ω' : Type) [Field E'] [NumberField E'] [Field Ω'] [Algebra E' Ω'] [IsAlgClosure E' Ω'] (A' : ValuationSubring Ω') (w' : HeightOneSpectrum (𝓞 E')) (h' : IsPlaceOver A' w') (φ : Ω ≃+* Ω') (j : E →+* E') (i : w.adicCompletion E ≃+* w'.adicCompletion E'), PlaceIso A w A' w' φ j i → ∀ (a : Weil h →* (w.adicCompletion E)ˣ) (a' : Weil h' →* (w'.adicCompletion E')ˣ), IsLocalArtin h a → IsLocalArtin h' a' → ∀ σ σ', WeilRel φ σ σ' → a' σ' = Units.map i.toRingHom.toMonoidHom (a σ) := by
   intro hG hC E Ω _ _ _ _ _ A w h E' Ω' _ _ _ _ _ A' w' h' φ j i hP a a' ha ha' σ σ' hσ

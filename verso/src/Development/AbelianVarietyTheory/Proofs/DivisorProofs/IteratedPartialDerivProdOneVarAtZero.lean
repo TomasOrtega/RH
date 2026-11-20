@@ -9,7 +9,7 @@ open scoped Classical MatrixGroups nonZeroDivisors
 namespace GlobalTheory.IterDProd
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simpa using hf`. Consider the case `succ n ih => rw [iteratedDeriv_succ]`. Conclude with `ih.deriv Metric.isOpen_ball`.
+Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem diffOn_iteratedDeriv {r : ℝ} {f : ℂ → ℂ} (hf : DifferentiableOn ℂ f (Metric.ball 0 r))
     (n : ℕ) : DifferentiableOn ℂ (iteratedDeriv n f) (Metric.ball 0 r) := by
@@ -18,11 +18,11 @@ theorem diffOn_iteratedDeriv {r : ℝ} {f : ℂ → ℂ} (hf : DifferentiableOn 
   | succ n ih => rw [iteratedDeriv_succ]; exact ih.deriv Metric.isOpen_ball
 
 /- English proof (translation)
-Unfold `HasLineDerivAt`. Establish `h1 : (fun t : ℂ ↦ A * ∏ i, φ i ((z + t • (Pi.single j (1 : ℂ) : I → ℂ)) i)) = fun t ↦ A * (φ j (z j + t) * ∏ i ∈ Finset.univ.erase j, φ i (z i))`. Use function extensionality and compare the values at `t`. Rewrite using `[← Finset.mul_prod_erase Finset.univ _ (Finset.mem_univ j)]`. Use `congr 2`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Simplify using the standard rewrite rules. Use `Finset.prod_congr rfl fun i hi ↦ ?_` and prove the remaining obligations. Simplify using `[Pi.single_eq_of_ne (Finset.ne_of_mem_erase hi)]`. Establish `h2 : HasDerivAt (fun t : ℂ ↦ φ j (z j + t)) (deriv (φ j) (z j)) 0`. Establish `h : HasDerivAt (φ j) (deriv (φ j) (z j)) (z j + 0)` using `by simpa using hj.hasDerivAt`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `h.comp_const_add (z j) 0`. Use `show HasDerivAt (fun t : ℂ ↦ A * ∏ i, φ i ((z + t • (Pi.single j (1 : ℂ) : I → ℂ)) i)) _ 0`. Rewrite using `[h1]`. Conclude with `(h2.mul_const _).const_mul A`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasLineDerivAt_prod {I : Type} [Fintype I] [DecidableEq I] (φ : I → ℂ → ℂ) (A : ℂ)
     (z : I → ℂ) (j : I) (hj : DifferentiableAt ℂ (φ j) (z j)) :
@@ -45,13 +45,11 @@ theorem hasLineDerivAt_prod {I : Type} [Fintype I] [DecidableEq I] (φ : I → �
   exact (h2.mul_const _).const_mul A
 
 /- English proof (translation)
-Proceed by induction on `u with`. Consider the case `nil => intro z _`. Simplify using `[iterD]`. Consider the case `cons j u ih`. Introduce `z hz`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hzj : z j ∈ Metric.ball (0 : ℂ) r`. Rewrite `hz`, the goal using `[mem_ball_zero_iff]`. Conclude with `(norm_le_pi_norm z j).trans_lt hz`. Establish `hev : iterD u (fun z ↦ A * ∏ i, ψ i (z i)) =ᶠ[nhds z] fun z ↦ A * ∏ i, iteratedDeriv (u.count i) (ψ i) (z i)` using `Filter.eventually_of_mem (Metric.isOpen_ball.mem_nhds hz) ih`. Establish `hd` using `hasLineDerivAt_prod (fun i ↦ iteratedDeriv (u.count i) (ψ i)) A z j ((diffOn_iteratedDeriv (hψ j) _).differentiableAt (Metric.isOpen_ball.mem_nhds hzj))`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `show lineDeriv ℂ (iterD u (fun z ↦ A * ∏ i, ψ i (z i))) z (Pi.single j 1) = _`. Rewrite using `[hev.lineDeriv_eq, hd.lineDeriv, ← Finset.mul_prod_erase Finset.univ _ (Finset.mem_univ j)]`. Use `congr 2`. Rewrite using `[List.count_cons_self, iteratedDeriv_succ]`. Use `Finset.prod_congr rfl fun i hi ↦ ?_` and prove the remaining obligations.
-
-Rewrite using `[List.count_cons_of_ne (Finset.ne_of_mem_erase hi).symm]`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem iterD_prod_ball {I : Type} [Fintype I] [DecidableEq I] (u : List I) (r : ℝ)
     (ψ : I → ℂ → ℂ) (A : ℂ) (hr : 0 < r) (hψ : ∀ i, DifferentiableOn ℂ (ψ i) (Metric.ball 0 r)) :
@@ -78,7 +76,7 @@ theorem iterD_prod_ball {I : Type} [Fintype I] [DecidableEq I] (u : List I) (r :
       rw [List.count_cons_of_ne (Finset.ne_of_mem_erase hi).symm]
 
 /- English proof (translation)
-Introduce `I _ _ u r ψ A hr hψ`. Conclude with `iterD_prod_ball u r ψ A hr hψ 0 (Metric.mem_ball_self hr)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem iterD_prod : ∀ (I : Type) [Fintype I] [DecidableEq I] (u : List I) (r : ℝ) (ψ : I → ℂ → ℂ) (A : ℂ), 0 < r → (∀ i, DifferentiableOn ℂ (ψ i) (Metric.ball 0 r)) → iterD u (fun z ↦ A * ∏ i, ψ i (z i)) 0 = A * ∏ i, iteratedDeriv (u.count i) (ψ i) 0 := by
   intro I _ _ u r ψ A hr hψ

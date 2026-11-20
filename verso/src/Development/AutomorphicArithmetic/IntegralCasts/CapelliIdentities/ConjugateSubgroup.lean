@@ -2,9 +2,7 @@ import Mathlib
 import Development.WeilBound.ThetaLifts.EigenvalueEndgame.SignatureSplitting.RightOfFd
 
 /- English proof (translation)
-Introduce `G _ _ _ _ _ _ _ _ Γ A hA L f c h γ hγ h1 h2 hf x`. Use `haveI : LocallyCompactSpace A := hA.isClosedEmbedding_subtypeVal.locallyCompactSpace`. Use `haveI : SecondCountableTopology A := Topology.IsInducing.subtypeVal.secondCountableTopology`. Set `e : A ≃ₜ* A` to `{ toFun := fun u => ⟨γ⁻¹ * u * γ, h1 u u.2⟩ invFun := fun u => ⟨γ * u * γ⁻¹, h2 u u.2⟩ left_inv := fun u => Subtype.ext (by simp [mul_assoc]) right_inv := fun u => Subtype.ext (by simp [mul_assoc]) map_mul' := fun u v => Subtype.ext (by simp [mul_assoc]) continuous_toFun := Conti …`. Use `PositivityTheory.ThKEnd.Two.IsAv.conj (ι := A.subtype) L h e (fun u => ?_) (fun u => ?_) hf x` and prove the remaining obligations.
-
-Conclude with `(Γ.mul_mem_cancel_right hγ).trans (Γ.mul_mem_cancel_left (inv_mem hγ))`. Conclude with `show (u : G) * γ = γ * (γ⁻¹ * u * γ) by group`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.ConjugateSubgroup.conj_sub :
     ∀ {G : Type} [inst : Group G] [inst_1 : TopologicalSpace G] [IsTopologicalGroup G]

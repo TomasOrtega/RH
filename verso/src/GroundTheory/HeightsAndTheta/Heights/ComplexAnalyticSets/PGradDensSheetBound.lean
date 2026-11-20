@@ -14,9 +14,9 @@ noncomputable section
 namespace GradDensSheetBound
 
 /- English proof (translation)
-Establish `e : (Fin.cons X (fun i => c • W i) : Fin (n + 1) → Matrix (Fin (n + 1)) (Fin (n + 1)) ℂ) = fun k => (c • (1 : Matrix (Fin (n + 1)) (Fin (n + 1)) ℂ)) * (Fin.cons (c⁻¹ • X) W : Fin (n + 1) → Matrix (Fin (n + 1)) (Fin (n + 1)) ℂ) k * 1`. Use function extensionality and compare the values at `k`. Use `Fin.cases ?_ (fun i => ?_) k` and prove the remaining obligations. Simplify using `[smul_smul, hc]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[e, mdisc_mul_mul, mdisc_cons_smul_fst, Matrix.det_smul, det_one, Fintype.card_fin]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem mdisc_cons_smul_tail {n : ℕ} (c : ℂ) (hc : c ≠ 0)
     (X : Matrix (Fin (n + 1)) (Fin (n + 1)) ℂ) (W : Fin n → Matrix (Fin (n + 1)) (Fin (n + 1)) ℂ) :
@@ -34,7 +34,7 @@ theorem mdisc_cons_smul_tail {n : ℕ} (c : ℂ) (hc : c ≠ 0)
   ring
 
 /- English proof (translation)
-Use extensionality with `j k`. Simplify using `[vecMulVec_apply]`. Expand and normalize the polynomial expressions, which then agree.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem vecMulVec_real_smul {m : ℕ} (r r' : ℝ) (a b : Fin m → ℂ) :
     vecMulVec ((r : ℂ) • a) (star ((r' : ℂ) • b)) = ((r * r' : ℝ) : ℂ) • vecMulVec a (star b) := by
@@ -43,23 +43,21 @@ theorem vecMulVec_real_smul {m : ℕ} (r r' : ℝ) (a b : Fin m → ℂ) :
   ring
 
 /- English proof (translation)
-Establish `hA : ∀ i, (A i).IsHermitian` using `fun i => by`. Use `IsHermitian.ext fun j k => ?_` and prove the remaining obligations. Establish `e1` using `(hle i).1.apply j k`. Establish `e2` using `(hge i).1.apply j k`. Simplify using `only [Matrix.sub_apply, Matrix.add_apply, Matrix.smul_apply, smul_eq_mul, star_sub, star_add] at e1 e2`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Take the linear combination `(e2 - e1) / 2`. Establish `hNM : vecMulVec x (star x) + vecMulVec y (star y) - (vecMulVec x (star y) + vecMulVec y (star x)) = vecMulVec (x - y) (star (x - y))`. Use extensionality with `j k`. Simplify using `[vecMulVec_apply]`. Expand and normalize the polynomial expressions, which then agree.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hMN : vecMulVec x (star y) + vecMulVec y (star x) + (vecMulVec x (star x) + vecMulVec y (star y)) = vecMulVec (x + y) (star (x + y))`. Use extensionality with `j k`. Simplify using `[vecMulVec_apply]`. Expand and normalize the polynomial expressions, which then agree. Establish `hB` using `norm_mdisc_le_of_abs_le (Fin.cons (vecMulVec x (star y) + vecMulVec y (star x)) A : Fin (n + 1) → Matrix (Fin (n + 1)) (Fin (n + 1)) ℂ) (Fin.cons (vecMulVec x (star x) + vecMulVec y (star y)) (fun i => (c : ℂ) • W i)) (fun k => by`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Use `Fin.cases ?_ (fun i => ?_) k` and prove the remaining obligations. Simplify using `only [Fin.cons_zero]`. Rewrite using `[hNM]`. Conclude with `posSemidef_vecMulVec_self_star _`. Simplify using `using hle i)`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations.
 
-Use the proof step `(fun k => by`. Use `Fin.cases ?_ (fun i => ?_) k` and prove the remaining obligations. Simplify using `only [Fin.cons_zero]`. Rewrite using `[hMN]`. Conclude with `posSemidef_vecMulVec_self_star _`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `using hge i)`. Establish `hM : (mdisc (Fin.cons (vecMulVec x (star y) + vecMulVec y (star x)) A : Fin (n + 1) → Matrix (Fin (n + 1)) (Fin (n + 1)) ℂ)).re = 2 * (mdisc (Fin.cons (vecMulVec x (star y)) A : Fin (n + 1) → Matrix (Fin (n + 1)) (Fin (n + 1)) ℂ)).re`. Establish `e` using `mdisc_cons_smul_add 1 1 (vecMulVec x (star y)) (vecMulVec y (star x)) A`. Simplify using `only [one_smul, one_mul] at e`. Establish `hsw : vecMulVec y (star x) = (vecMulVec x (star y))ᴴ`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[conjTranspose_vecMulVec, star_star]`. Rewrite using `[e, Complex.add_re, hsw, re_mdisc_cons_conjTranspose _ _ hA]`. Expand and normalize the polynomial expressions, which then agree. Establish `hN : (mdisc (Fin.cons (vecMulVec x (star x) + vecMulVec y (star y)) (fun i => (c : ℂ) • W i) : Fin (n + 1) → Matrix (Fin (n + 1)) (Fin (n + 1)) ℂ)).re = c ^ n * ((mdisc (Fin.cons (vecMulVec x (star x)) W : Fin (n + 1) → Matrix (Fin (n + 1)) (Fin (n + 1)) ℂ)).re + (mdisc (Fin.cons …`. Establish `e` using `mdisc_cons_smul_add 1 1 (vecMulVec x (star x)) (vecMulVec y (star y)) W`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [one_smul, one_mul] at e`. Rewrite using `[mdisc_cons_smul_tail _ (Complex.ofReal_ne_zero.2 hc.ne'), e, ← Complex.ofReal_pow, Complex.re_ofReal_mul, Complex.add_re]`. Establish `h1` using `Complex.abs_re_le_norm (mdisc (Fin.cons (vecMulVec x (star y) + vecMulVec y (star x)) A : Fin (n + 1) → Matrix (Fin (n + 1)) (Fin (n + 1)) ℂ))`. Rewrite `h1` using `[hM, abs_mul, abs_two]`. Rewrite `hB` using `[hN]`.
-
-Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem two_abs_re_mdisc_le {n : ℕ} (x y : Fin (n + 1) → ℂ)
     (A W : Fin n → Matrix (Fin (n + 1)) (Fin (n + 1)) ℂ) (c : ℝ) (hc : 0 < c)
@@ -122,7 +120,7 @@ theorem two_abs_re_mdisc_le {n : ℕ} (x y : Fin (n + 1) → ℂ)
   linarith
 
 /- English proof (translation)
-The claim follows from `|X| ≤ K * Real.sqrt P * Real.sqrt Q := by rcases hP.eq_or_lt with hP0 | hPpos · rw [← hP0, Real.sqrt_zero, mul_zero, zero_mul] by_contra hX push Not at hX have hkq : 0 ≤ K * Q := mul_nonneg hK hQ have hu := h ((K * Q + 1) / |X|) (by positivity) rw [← hP0, inv_div, mul_zero, zero_ …`.
+A detailed English derivation is pending.
 -/
 theorem abs_le_of_forall_pos {X P Q K : ℝ} (hP : 0 ≤ P) (hQ : 0 ≤ Q) (hK : 0 ≤ K)
     (h : ∀ u : ℝ, 0 < u → 2 * |X| ≤ K * (u * P + u⁻¹ * Q)) :
@@ -166,29 +164,29 @@ theorem abs_le_of_forall_pos {X P Q K : ℝ} (hP : 0 ≤ P) (hQ : 0 ≤ Q) (hK :
   linarith
 
 /- English proof (translation)
-Establish `hs : IsSymmSndFDerivAt ℝ φ x` using `h2.isSymmSndFDerivAt (by simp)`. Establish `hH` using `hessC_isHermitian φ x h2`. Establish `hM0 : 0 ≤ M` using `(ContinuousLinearMap.opNorm_nonneg _).trans hM`. Establish `hI : ((c : ℂ) • (1 : Matrix (Fin e) (Fin e) ℂ)).IsHermitian`. Simplify using `[IsHermitian, conjTranspose_smul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hq : ∀ ξ : Fin e → ℂ, (star ξ ⬝ᵥ (hessC φ x *ᵥ ξ)).im = 0 ∧ |(star ξ ⬝ᵥ (hessC φ x *ᵥ ξ)).re| ≤ c * ∑ j, ‖ξ j‖ ^ 2`. Introduce `ξ`. Use `set H := fderiv ℝ (fderiv ℝ φ) x with hHdef`. Establish `key : star ξ ⬝ᵥ (hessC φ x *ᵥ ξ) = leviC H (star ξ) (star ξ)`. Simplify using `only [dotProduct, mulVec, hessC_eq_leviC, sum_leviC_mul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `sum_mul_leviC _ (star ξ) (star ξ)`. Rewrite using `[key]`. Use `⟨by simp only [leviC, hHdef]; rw [hs (star ξ) (Complex.I • star ξ)]; simp, ?_⟩` and prove the remaining obligations. Establish `hre : (leviC H (star ξ) (star ξ)).re = (H (star ξ) (star ξ) + H (Complex.I • star ξ) (Complex.I • star ξ)) / 4`. Simplify using `[leviC]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hn : ‖star ξ‖ ^ 2 ≤ ∑ j, ‖ξ j‖ ^ 2`. Establish `hle : ‖star ξ‖ ≤ Real.sqrt (∑ j, ‖ξ j‖ ^ 2)`. Use `(pi_norm_le_iff_of_nonneg (Real.sqrt_nonneg _)).2 fun j => ?_` and prove the remaining obligations. Rewrite using `[Pi.star_apply, norm_star]`. Conclude with `Real.le_sqrt_of_sq_le (Finset.single_le_sum (f := fun j => ‖ξ j‖ ^ 2) (fun j _ => by positivity) (Finset.mem_univ j))`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hIa : ‖Complex.I • star ξ‖ = ‖star ξ‖` using `by rw [norm_smul, Complex.norm_I, one_mul]`. Establish `h1 : |H (star ξ) (star ξ)| ≤ M * ‖star ξ‖ ^ 2`. Use `H.le_opNorm₂ (star ξ) (star ξ)` as an intermediate fact. Rewrite `this` using `[Real.norm_eq_abs]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use polynomial arithmetic with `[mul_le_mul_of_nonneg_right hM (sq_nonneg ‖star ξ‖)]`. Establish `h2 : |H (Complex.I • star ξ) (Complex.I • star ξ)| ≤ M * ‖star ξ‖ ^ 2`. Use `H.le_opNorm₂ (Complex.I • star ξ) (Complex.I • star ξ)` as an intermediate fact. Rewrite `this` using `[Real.norm_eq_abs, hIa]`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_right hM (sq_nonneg ‖star ξ‖)]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Rewrite using `[hre, abs_div, abs_of_pos (by norm_num : (0 : ℝ) < 4), div_le_iff₀ (by norm_num)]`. Establish `h3` using `abs_add_le (H (star ξ) (star ξ)) (H (Complex.I • star ξ) (Complex.I • star ξ))`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left hn hM0, mul_le_mul_of_nonneg_right hc (Finset.sum_nonneg (fun j _ => sq_nonneg ‖ξ j‖) : 0 ≤ ∑ j, ‖ξ j‖ ^ 2)]`. Establish `hval : ∀ ξ : Fin e → ℂ, star ξ ⬝ᵥ (((c : ℂ) • (1 : Matrix (Fin e) (Fin e) ℂ)) *ᵥ ξ) = ((c * ∑ j, ‖ξ j‖ ^ 2 : ℝ) : ℂ)`. Introduce `ξ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Establish `hmv : ((c : ℂ) • (1 : Matrix (Fin e) (Fin e) ℂ)) *ᵥ ξ = (c : ℂ) • ξ`. Use extensionality with `j`. Simplify using `[mulVec, dotProduct, Matrix.one_apply]`. Rewrite using `[hmv, dotProduct_smul, smul_eq_mul]`. Simplify using `only [dotProduct, Pi.star_apply, Complex.star_def, Complex.conj_mul']`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Prove the components needed by the constructor for the conclusion.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Prove the components needed by the constructor for the conclusion. Use `PosSemidef.of_dotProduct_mulVec_nonneg (hI.sub hH) fun ξ => ?_` and prove the remaining obligations. Take `⟨him, hre⟩` from `hq ξ`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[sub_mulVec, dotProduct_sub, hval, Complex.nonneg_iff]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Simplify using `only [Complex.sub_re, Complex.ofReal_re]`. Combine the linear relations using `[(abs_le.1 hre).2]`. Rewrite using `[Complex.sub_im, Complex.ofReal_im, him]`.
+Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Evaluate the numerical expressions. Use `PosSemidef.of_dotProduct_mulVec_nonneg (hH.add hI) fun ξ => ?_` and prove the remaining obligations. Take `⟨him, hre⟩` from `hq ξ`. Rewrite using `[add_mulVec, dotProduct_add, hval, Complex.nonneg_iff]`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Complex.add_re, Complex.ofReal_re]`. Combine the linear relations using `[(abs_le.1 hre).1]`. Rewrite using `[Complex.add_im, Complex.ofReal_im, him]`. Evaluate the numerical expressions.
+Evaluate the numerical expressions. A detailed English derivation is pending.
 -/
 theorem hessC_pm_posSemidef {e : ℕ} (φ : (Fin e → ℂ) → ℝ) (x : Fin e → ℂ)
     (h2 : ContDiffAt ℝ 2 φ x) (M c : ℝ) (hM : ‖fderiv ℝ (fderiv ℝ φ) x‖ ≤ M) (hc : M / 2 ≤ c) :
@@ -258,9 +256,9 @@ theorem hessC_pm_posSemidef {e : ℕ} (φ : (Fin e → ℂ) → ℝ) (x : Fin e 
     · rw [Complex.add_im, Complex.ofReal_im, him]; norm_num
 
 /- English proof (translation)
-Establish `hcont : ContinuousOn (fun x => ∑ i, ‖fderiv ℝ (fderiv ℝ (φ i)) x‖) U` using `continuousOn_finsetSum _ fun i _ => (((hφ i).fderiv_of_isOpen hU (m := 1) (by norm_num)).continuousOn_fderiv_of_isOpen hU le_rfl).norm`. Take `⟨M, hM⟩` from `hK.exists_bound_of_continuousOn (hcont.mono hKU)`. Use `⟨max M 0 / 2 + 1, by positivity, fun x hx i => ?_⟩` and prove the remaining obligations. Establish `h2 : ContDiffAt ℝ 2 (φ i) x` using `(hφ i).contDiffAt (hU.mem_nhds (hKU hx))`. Establish `hMi : ‖fderiv ℝ (fderiv ℝ (φ i)) x‖ ≤ max M 0` using `(((Finset.single_le_sum (f := fun i => ‖fderiv ℝ (fderiv ℝ (φ i)) x‖) (fun i _ => ContinuousLinearMap.opNorm_nonneg _) (Finset.mem_univ i)).trans ((le_abs_self _).trans ((Real.norm_eq_abs _).symm.le.trans (hM x hx))))).trans (le_max_left _ _)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hessC_pm_posSemidef (φ i) x h2 _ _ hMi (by linarith)`.
+A detailed English derivation is pending.
 -/
 theorem exists_hessC_bound {n d : ℕ} (φ : Fin d → (Fin n → ℂ) → ℝ) (U K : Set (Fin n → ℂ))
     (hU : IsOpen U) (hK : IsCompact K) (hKU : K ⊆ U) (hφ : ∀ i, ContDiffOn ℝ 2 (φ i) U) :
@@ -282,7 +280,7 @@ theorem exists_hessC_bound {n d : ℕ} (φ : Fin d → (Fin n → ℂ) → ℝ) 
   exact hessC_pm_posSemidef (φ i) x h2 _ _ hMi (by linarith)
 
 /- English proof (translation)
-Establish `e : Jᵀ = (J.map (starRingEnd ℂ))ᴴ`. Use extensionality with `i j`. Simplify using `[conjTranspose_apply]`. Rewrite using `[e]`. Conclude with `hP.conjTranspose_mul_mul_same _`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem posSemidef_transpose_mul_mul_conj {n m : ℕ} (J : Matrix (Fin n) (Fin m) ℂ)
     {P : Matrix (Fin n) (Fin n) ℂ} (hP : P.PosSemidef) :
@@ -295,25 +293,21 @@ theorem posSemidef_transpose_mul_mul_conj {n m : ℕ} (J : Matrix (Fin n) (Fin m
 end GradDensSheetBound
 
 /- English proof (translation)
-Introduce `n d φ U K hU hK hKU hφ`. Take `⟨c, hc, hcK⟩` from `exists_hessC_bound φ U K hU hK hKU hφ`. Use `⟨3 ^ (d + 1) * c ^ d, by positivity, fun s y v w hs hsy => ?_⟩` and prove the remaining obligations. Establish `hE : ContDiffAt ℝ 2 (euclPot : (Fin n → ℂ) → ℝ) (s y)` using `((contDiff_euclPot n).of_le (WithTop.coe_le_coe.mpr le_top)).contDiffAt`. Establish `hW : hessC (euclPot ∘ s) y = (jacC s y)ᵀ * (1 : Matrix (Fin n) (Fin n) ℂ) * (jacC s y).map (starRingEnd ℂ)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : (euclPot : (Fin n → ℂ) → ℝ) = fun w => ∑ i, Complex.normSq (w i)`. Use function extensionality and compare the values at `w`. Simplify using `[euclPot, Complex.normSq_eq_norm_sq]`. Rewrite using `[hessC_comp _ _ _ hs hE, e, hessC_sum_normSq]`. Establish `hA : ∀ i, hessC (φ i ∘ s) y = (jacC s y)ᵀ * hessC (φ i) (s y) * (jacC s y).map (starRingEnd ℂ)` using `fun i => hessC_comp _ _ _ hs ((hφ i).contDiffAt (hU.mem_nhds (hKU hsy)))`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hle : ∀ i, ((c : ℂ) • hessC (euclPot ∘ s) y - hessC (φ i ∘ s) y).PosSemidef`. Introduce `i`. Establish `e : (c : ℂ) • ((jacC s y)ᵀ * (1 : Matrix (Fin n) (Fin n) ℂ) * (jacC s y).map (starRingEnd ℂ)) - (jacC s y)ᵀ * hessC (φ i) (s y) * (jacC s y).map (starRingEnd ℂ) = (jacC s y)ᵀ * ((c : ℂ) • (1 : Matrix (Fin n) (Fin n) ℂ) - hessC (φ i) (s y)) * (jacC s y).map (starRingEnd ℂ)`. Rewrite using `[Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_smul, Matrix.smul_mul]`. Rewrite using `[hW, hA, e]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `posSemidef_transpose_mul_mul_conj _ (hcK _ hsy i).1`. Establish `hge : ∀ i, (hessC (φ i ∘ s) y + (c : ℂ) • hessC (euclPot ∘ s) y).PosSemidef`. Introduce `i`. Establish `e : (jacC s y)ᵀ * hessC (φ i) (s y) * (jacC s y).map (starRingEnd ℂ) + (c : ℂ) • ((jacC s y)ᵀ * (1 : Matrix (Fin n) (Fin n) ℂ) * (jacC s y).map (starRingEnd ℂ)) = (jacC s y)ᵀ * (hessC (φ i) (s y) + (c : ℂ) • (1 : Matrix (Fin n) (Fin n) ℂ)) * (jacC s y).map (starRingEnd ℂ)`. Rewrite using `[Matrix.mul_add, Matrix.add_mul, Matrix.mul_smul, Matrix.smul_mul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hW, hA, e]`. Conclude with `posSemidef_transpose_mul_mul_conj _ (hcK _ hsy i).2`. Establish `hWpsd : (hessC (euclPot ∘ s) y).PosSemidef`. Rewrite using `[hW]`. Conclude with `posSemidef_transpose_mul_mul_conj _ PosSemidef.one`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Replace the chosen expression with an arbitrary variable.
 
-Unfold `gradDens`. Simplify using `only [gradMat_eq_vecMulVec]`. Generalize the expression as in `(fun j => dz j (cplx v) y) = a`. Generalize the expression as in `(fun k => dz k (cplx w) y) = b`. Generalize the expression as in `hessC (euclPot ∘ s) y = W at hle hge hWpsd ⊢`.
+Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hN : (0 : ℝ) ≤ ((d + 1).factorial : ℝ) * (2 / Real.pi) ^ (d + 1)` using `by positivity`. Use `set N : ℝ := ((d + 1).factorial : ℝ) * (2 / Real.pi) ^ (d + 1) with hNdef`. Use `set X := (mdisc (Fin.cons (vecMulVec a (star b)) (fun i => hessC (φ i ∘ s) y) : Fin (d + 1) → Matrix (Fin (d + 1)) (Fin (d + 1)) ℂ)).re with hXdef`. Use `set P := (mdisc (Fin.cons (vecMulVec a (star a)) (fun _ : Fin d => W) : Fin (d + 1) → Matrix (Fin (d + 1)) (Fin (d + 1)) ℂ)).re with hPdef`. Use `set Q := (mdisc (Fin.cons (vecMulVec b (star b)) (fun _ : Fin d => W) : Fin (d + 1) → Matrix (Fin (d + 1)) (Fin (d + 1)) ℂ)).re with hQdef`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hP : 0 ≤ P` using `re_mdisc_cons_vecMulVec_nonneg a (fun _ : Fin d => W) (fun _ => hWpsd)`. Establish `hQ : 0 ≤ Q` using `re_mdisc_cons_vecMulVec_nonneg b (fun _ : Fin d => W) (fun _ => hWpsd)`. Establish `key : |X| ≤ 3 ^ (d + 1) * c ^ d * Real.sqrt P * Real.sqrt Q`. Use `abs_le_of_forall_pos hP hQ (by positivity) fun u hu => ?_` and prove the remaining obligations. Establish `hsu` using `Real.sqrt_pos.2 hu`.
-
-Establish `ht` using `two_abs_re_mdisc_le ((Real.sqrt u : ℂ) • a) ((((Real.sqrt u)⁻¹ : ℝ) : ℂ) • b) (fun i => hessC (φ i ∘ s) y) (fun _ => W) c hc hle hge`. Rewrite `ht` using `[vecMulVec_real_smul, vecMulVec_real_smul, vecMulVec_real_smul, mul_inv_cancel₀ hsu.ne', Complex.ofReal_one, one_smul, mdisc_cons_smul_fst, mdisc_cons_smul_fst, Complex.re_ofReal_mul, Complex.re_ofReal_mul, Real.mul_self_sqrt hu.le, ← mul_inv, Real.mul_self_sqrt hu.le]`. Conclude with `ht`. Rewrite using `[abs_mul, abs_of_nonneg hN, Real.sqrt_mul hN, Real.sqrt_mul hN]`. Establish `sN` using `Real.mul_self_sqrt hN`.
-
-Combine the equalities or inequalities in the displayed calculation. Take the linear combination `(-(3 ^ (d + 1) * c ^ d * Real.sqrt P * Real.sqrt Q)) * sN`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem GradDensSheetBound.proof : GradDensSheetBound.Statement := by
   intro n d φ U K hU hK hKU hφ

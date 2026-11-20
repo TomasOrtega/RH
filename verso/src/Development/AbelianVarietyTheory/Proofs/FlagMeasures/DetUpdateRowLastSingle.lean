@@ -5,7 +5,7 @@ namespace GlobalTheory
 open Matrix
 
 /- English proof (translation)
-Rewrite using `[← Matrix.adjugate_apply, Matrix.adjugate_fin_succ_eq_det_submatrix]`. Simplify using `[← two_mul, pow_mul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem det_updateRow_last_single {K : Type} [CommRing K] (r : ℕ)
     (Z : Matrix (Fin (r + 1)) (Fin (r + 1)) K) :
@@ -15,13 +15,11 @@ theorem det_updateRow_last_single {K : Type} [CommRing K] (r : ℕ)
   simp [← two_mul, pow_mul]
 
 /- English proof (translation)
-Use `set l := Fin.last r with hl`. Use `set D : K → Matrix (Fin (r + 1)) (Fin (r + 1)) K := fun c => Matrix.diagonal fun i => if i = l then c else 0 with hD`. Establish `h1 : Matrix.fromBlocks Z (D a) (D b) W = (Matrix.fromBlocks Z 0 (D b) W).updateRow (Sum.inl l) (Matrix.fromBlocks Z 0 (D b) W (Sum.inl l) + a • Pi.single (Sum.inr l) 1)`. Apply the tactic sequence `ext (i | i) (j | j) <;> by_cases hi : i = l <;> by_cases hj : j = l <;>`. Apply the tactic sequence `simp [Matrix.updateRow_apply, hD, Matrix.diagonal_apply, Pi.single_apply, hi, hj, eq_comm] <;> grind`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `h2 : (Matrix.fromBlocks Z 0 (D b) W).updateRow (Sum.inl l) (Pi.single (Sum.inr l) 1) = (Matrix.fromBlocks (Z.updateRow l 0) (D 1) 0 W).updateRow (Sum.inr l) (Matrix.fromBlocks (Z.updateRow l 0) (D 1) 0 W (Sum.inr l) + b • Pi.single (Sum.inl l) 1)`. Apply the tactic sequence `ext (i | i) (j | j) <;> by_cases hi : i = l <;> by_cases hj : j = l <;>`. Apply the tactic sequence `simp [Matrix.updateRow_apply, hD, Matrix.diagonal_apply, Pi.single_apply, hi, hj, eq_comm] <;> grind`. Establish `h3 : (Matrix.fromBlocks (Z.updateRow l 0) (D 1) 0 W).updateRow (Sum.inr l) (Pi.single (Sum.inl l) 1) = (Matrix.fromBlocks (Z.updateRow l (Pi.single l 1)) 0 0 (W.updateRow l (Pi.single l 1))).submatrix (Equiv.swap (Sum.inl l) (Sum.inr l)) id`. Apply the tactic sequence `ext (i | i) (j | j) <;> by_cases hi : i = l <;> by_cases hj : j = l <;>`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Apply the tactic sequence `simp [Matrix.updateRow_apply, hD, Matrix.diagonal_apply, Pi.single_apply, hi, hj, eq_comm, Equiv.swap_apply_def] <;> grind`. Establish `h0 : (Z.updateRow l 0).det = 0` using `Matrix.det_eq_zero_of_row_eq_zero l (by simp)`. Express the relevant statement in the definitionally equal form `(Matrix.fromBlocks Z (D a) (D b) W).det = _`. Rewrite using `[h1, Matrix.det_updateRow_add, Matrix.updateRow_eq_self, Matrix.det_updateRow_smul, h2, Matrix.det_updateRow_add, Matrix.updateRow_eq_self, Matrix.det_updateRow_smul, h3, Matrix.det_permute, Equiv.Perm.sign_swap (by simp), Matrix.det_fromBlocks_zero₁₂, Matrix.det_fromBlocks_zero₂ …`. Simplify using the standard rewrite rules.
-
-Expand and normalize the polynomial expressions, which then agree.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem det_fromBlocks_corner {K : Type} [CommRing K] (r : ℕ)
     (Z W : Matrix (Fin (r + 1)) (Fin (r + 1)) K) (a b : K) :
@@ -62,9 +60,9 @@ theorem det_fromBlocks_corner {K : Type} [CommRing K] (r : ℕ)
   ring
 
 /- English proof (translation)
-Establish `hs : (Matrix.fromBlocks 0 1 1 0 : Matrix (Fin (r + 1) ⊕ Fin (r + 1)) (Fin (r + 1) ⊕ Fin (r + 1)) K).det = (-1) ^ (r + 1)`. Establish `h : (Matrix.fromBlocks 0 1 1 0 : Matrix (Fin (r + 1) ⊕ Fin (r + 1)) (Fin (r + 1) ⊕ Fin (r + 1)) K) = Matrix.fromBlocks 1 (-1) 0 1 * Matrix.fromBlocks 1 1 1 0`. Simplify using `[Matrix.fromBlocks_multiply]`. Rewrite using `[h, Matrix.det_mul, Matrix.det_fromBlocks_zero₂₁, Matrix.det_fromBlocks_one₁₁]`. Simplify using `[Matrix.det_neg]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hm : Matrix.fromBlocks (Matrix.diagonal fun i => if i = Fin.last r then -T else 0) Z W (Matrix.diagonal fun i => if i = Fin.last r then -T' else 0) = Matrix.fromBlocks Z (Matrix.diagonal fun i => if i = Fin.last r then -T else 0) (Matrix.diagonal fun i => if i = Fin.last r then - …`. Simplify using `[Matrix.fromBlocks_multiply]`. Rewrite using `[hm, Matrix.det_mul, hs, det_fromBlocks_corner]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem det_gram_two_frames {K : Type} [CommRing K] (r : ℕ)
     (Z W : Matrix (Fin (r + 1)) (Fin (r + 1)) K) (T T' : K) :

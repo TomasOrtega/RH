@@ -14,7 +14,7 @@ namespace GlobalTheory.CompanionTheory.NuRed
 variable {l : ℕ} [Fact l.Prime] {K : IntermediateField ℚ_[l] (PadicAlgCl l)}
 
 /- English proof (translation)
-Proceed by induction on `N with`. Consider the case `zero => rfl`. Consider the case `succ N ih => rw [Mid.phiP_succ, Mid.phiP_succ, ← ih]`. Conclude with `(pdOk_frob _).red_acr h _`.
+Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem red_phiP {m n : ℕ} (h : n ≤ m) (N : ℕ) (x : (base l).Acr m) :
     (base l).red h (Mid.phiP l m N x) = Mid.phiP l n N ((base l).red h x) := by
@@ -40,7 +40,7 @@ theorem ptOut_snd (r : CrystallineSemistableComparison.Res l K) {N : ℕ} (hT : 
     ((Mid.ptOut F n hT).app B₀ y).1.2 = y.1.2 := rfl
 
 /- English proof (translation)
-Rewrite using `[ptOut_snd, SH.base_snd, SH.base_snd, ptOut_snd]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem nu_pt (r : CrystallineSemistableComparison.Res l K) {N : ℕ} (hT : Mid.TeichmullerCongruence r N) (F : B.Fn (OK l K)) {m n : ℕ} (h : n ≤ m)
     (B₀ : CommRingCat.{0}) (y : (F.ptK (Mid.κm r n)).obj B₀) :
@@ -49,7 +49,7 @@ theorem nu_pt (r : CrystallineSemistableComparison.Res l K) {N : ℕ} (hT : Mid.
   rw [ptOut_snd, SH.base_snd, SH.base_snd, ptOut_snd]
 
 /- English proof (translation)
-Introduce `l _ K r N hT M n j x`. Unfold `Mid.nu Mid.nuMor B.redHc B.redMor redT`. Conclude with `cr_square (Mid.mOut r M (n + 1) hT) (redLm r M (Nat.le_succ n)) (redLc M (Nat.le_succ n)) (Mid.mOut r M n hT) (Mid.phiP_cris _ N) (B.red_cris _ (Nat.le_succ n)) (B.red_cris _ (Nat.le_succ n)) (Mid.phiP_cris _ N) (red_phiP (Nat.le_succ n) N) (nu_pt r hT _ (Nat.le_succ n)) j x`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem nu_red : ∀ {l : ℕ} [Fact l.Prime] {K : IntermediateField ℚ_[l] (PadicAlgCl l)} (r : CrystallineSemistableComparison.Res l K) {N : ℕ}
     (hT : Mid.TeichmullerCongruence r N) (M : Model l K) (n j : ℕ) (x : B.Hc (B.schFn M.p) (okToOC l K) true (n + 1) j),

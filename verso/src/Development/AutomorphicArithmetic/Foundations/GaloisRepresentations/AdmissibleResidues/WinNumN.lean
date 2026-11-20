@@ -23,11 +23,11 @@ open GlobalTheory.GalOfCusp UpperTheory.V.CongNum
 section
 
 /- English proof (translation)
-Establish `h : normV w = Ideal.absNorm w.asIdeal`. Rewrite using `[Ideal.absNorm_apply, Submodule.cardQuot_apply]`. Both sides reduce to the same expression. Establish `hN : Ideal.absNorm (Ideal.span {((p : ℕ) : 𝓞 ℚ)}) = p`. Rewrite using `[Ideal.absNorm_span_natCast, NumberField.RingOfIntegers.rank]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Establish `hd : Ideal.absNorm w.asIdeal ∣ p` using `hN ▸ Ideal.absNorm_dvd_absNorm_of_le ((Ideal.span_singleton_le_iff_mem _).2 hw)`. Rewrite using `[h]`. Use `((Nat.dvd_prime hp).1 hd).resolve_left ?_` and prove the remaining obligations. Rewrite using `[Ideal.absNorm_eq_one_iff]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `w.isPrime.ne_top`.
+A detailed English derivation is pending.
 -/
 private theorem normV_rat {p : ℕ} (hp : p.Prime) (w : HeightOneSpectrum (𝓞 ℚ)) (hw : (p : 𝓞 ℚ) ∈ w.asIdeal) :
     normV w = p := by
@@ -44,23 +44,21 @@ private theorem normV_rat {p : ℕ} (hp : p.Prime) (w : HeightOneSpectrum (𝓞 
   exact w.isPrime.ne_top
 
 /- English proof (translation)
-Establish `hp' : (5 : ℝ) ≤ p` using `by exact_mod_cast hp`. Use `set x : ℝ := (p : ℝ) ^ ((((e : ℤ) + 1 : ℤ) : ℝ) / 2) with hx`. Use `set y : ℝ := (p : ℝ) ^ e with hy`. Establish `hx0 : 0 ≤ x` using `by positivity`. Establish `hxx : x * x = p * y`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[hx, ← Real.rpow_add (by linarith), hy, ← pow_succ', ← Real.rpow_natCast]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hy2 : (p : ℝ) ^ 2 ≤ y` using `pow_le_pow_right₀ (by linarith) he`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hy0 : 0 ≤ y` using `by positivity`. Establish `hxy : 2 * x ≤ y`. Use `abs_le_of_sq_le_sq' ?_ hy0 |>.2` and prove the remaining obligations. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_right hy2 hy0, mul_nonneg (show (0:ℝ) ≤ p - 4 by linarith) (mul_nonneg (show (0:ℝ) ≤ p by linarith) hy0)]`. Establish `hsx : Real.sqrt p * x ≤ y`.
+Reduce the conclusion to the remaining proof obligations. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `abs_le_of_sq_le_sq' ?_ hy0 |>.2` and prove the remaining obligations. Rewrite using `[mul_pow, Real.sq_sqrt (by linarith), pow_two x, hxx]`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_right hy2 hy0]`. Use `replace ht : ‖t‖ ≤ 7 / 2 * y := by linarith`. Establish `n1 : ‖(p : ℂ) ^ (e + 1) * z₁‖ = p * y` using `by simp [h1, hy, pow_succ']`.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `n2 : ‖(p : ℂ) ^ e * z₂‖ = y` using `by simp [h2, hy]`. Establish `n3 : ‖(p : ℂ) * z₃‖ = p` using `by simp [h3]`. Establish `hr : ‖t - ((p : ℂ) ^ e * z₂ + (p : ℂ) * z₃ + 1)‖ ≤ 7 / 2 * y + (y + p + 1)`. Use `(norm_sub_le _ _).trans (add_le_add ht ?_)` and prove the remaining obligations. Use `(norm_add_le _ _).trans ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[norm_one, ← n2, ← n3]`. Use `norm_add_le ((p : ℂ) ^ e * z₂) ((p : ℂ) * z₃)` as an intermediate fact. Simplify using `using this`. Establish `hE : t - eis4 p e z₁ z₂ z₃ = (t - ((p : ℂ) ^ e * z₂ + (p : ℂ) * z₃ + 1)) - (p : ℂ) ^ (e + 1) * z₁`. Rewrite using `[eis4]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hlt : 7 / 2 * y + (y + p + 1) < p * y` using `by nlinarith`. Prove the components needed by the constructor for the conclusion. Introduce `h0`. Rewrite `h0` using `[hE, sub_eq_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hr` using `[h0, n1]`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[hE]`. Use `(norm_sub_le _ _).trans ?_` and prove the remaining obligations. Rewrite using `[n1, mul_comm 2, pow_mul, pow_succ' (p : ℝ) e, ← hy]`.
-
-Establish `: (2 : ℝ) ≤ p * y` using `by nlinarith`. Use the polynomial consequences of the given equalities and inequalities.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 private theorem est {p e : ℕ} (hp : 5 ≤ p) (he : 2 ≤ e) {t z₁ z₂ z₃ : ℂ} (h1 : ‖z₁‖ = 1) (h2 : ‖z₂‖ = 1) (h3 : ‖z₃‖ = 1)
     (ht : ‖t‖ ≤ 3 * (Real.sqrt p * (p : ℝ) ^ ((((e : ℤ) + 1 : ℤ) : ℝ) / 2)) + (p : ℝ) ^ ((((e : ℤ) + 1 : ℤ) : ℝ) / 2)) :
@@ -106,11 +104,9 @@ private theorem est {p e : ℕ} (hp : 5 ≤ p) (he : 2 ≤ e) {t z₁ z₂ z₃ 
     nlinarith
 
 /- English proof (translation)
-Establish `hl : 0 ≤ Real.log p` using `Real.log_natCast_nonneg p`. Establish `h1 : N * d * (2 * (e + 1)) ≤ c * 2 ^ A * 2 * d * (M * (e + 1)) ^ (A + 1)`. Establish `a1 : (M * (e + 1 + 1)) ^ A ≤ 2 ^ A * (M * (e + 1)) ^ A`. Rewrite using `[← mul_pow]; exact Nat.pow_le_pow_left (by nlinarith) _`. Establish `a2 : e + 1 ≤ M * (e + 1)` using `Nat.le_mul_of_pos_left _ hM`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Conclude with `hN.trans (by gcongr)`. Use `_ = _ := by ring`. Rewrite using `[Real.log_pow, ← mul_assoc]`. Use `mul_le_mul_of_nonneg_right ?_ hl` and prove the remaining obligations.
-
-Conclude with `h1` after adjusting the coercions.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem size {c A M e N d p : ℕ} (hN : N ≤ c * (M * (e + 1 + 1)) ^ A) (hM : 1 ≤ M) (hp : 5 ≤ p) :
     ((N * d : ℕ) : ℝ) * Real.log ((p : ℝ) ^ (2 * (e + 1))) ≤

@@ -20,14 +20,14 @@ noncomputable def torsionLift (G : Over S) [GrpObj G] {T : Over S} (f : T ⟶ G)
 
 @[reassoc]
 /- English proof (translation)
-The claim follows from `pullback.lift_fst _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem torsionLift_ι (G : Over S) [GrpObj G] {T : Over S} (f : T ⟶ G) (n : ℕ) (hf : f ^ n = 1) :
     torsionLift G f n hf ≫ torsion.ι G n = f :=
   pullback.lift_fst _ _ _
 
 /- English proof (translation)
-Rewrite using `[← GlobalTheory.GrpTangent.comp_mulN, Hom.one_def]`. Conclude with `pullback.condition.trans (congrArg (· ≫ η) (toUnit_unique _ _))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem torsion_ι_pow (G : Over S) [GrpObj G] (n : ℕ) : torsion.ι G n ^ n = 1 := by
   rw [← GlobalTheory.GrpTangent.comp_mulN, Hom.one_def]

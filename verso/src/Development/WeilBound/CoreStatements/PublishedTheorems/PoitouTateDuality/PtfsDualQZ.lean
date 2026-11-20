@@ -8,7 +8,7 @@ open GroundTheory.ProfCoh
 namespace PositivityTheory.Lit1.PTN
 
 /- English proof (translation)
-Rewrite using `[← Nat.cast_smul_eq_nsmul (ZMod N), ZMod.natCast_self, zero_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem nsmul_eq_zero_of_zmod {N : ℕ} {X : Type} [AddCommGroup X] [Module (ZMod N) X] (a : X) :
     N • a = 0 := by

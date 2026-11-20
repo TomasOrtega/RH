@@ -18,9 +18,7 @@ open PositivityTheory.AutomorphicGaloisHodgeTate.Div (DivWCoreLac SenWLac HTLac 
 open UpperTheory.Gal.Int.Div
 
 /- English proof (translation)
-Set `s : Set (Qbar l)` to `Set.range (fun p : Fin n × Fin n => (A : Matrix (Fin n) (Fin n) (Qbar l)) p.1 p.2) ∪ Set.range (fun p : Fin n × Fin n => ((A⁻¹ : GL (Fin n) (Qbar l)) : Matrix (Fin n) (Fin n) (Qbar l)) p.1 p.2)`. Establish `hs : s.Finite` using `(Set.finite_range _).union (Set.finite_range _)`. Use `haveI : Finite s := hs.to_subtype`. Use `⟨⟨IntermediateField.adjoin ℚ_[l] s, IntermediateField.finiteDimensional_adjoin fun x _ => Algebra.IsIntegral.isIntegral x⟩, fun i j => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Conclude with `IntermediateField.subset_adjoin _ _ (Or.inl ⟨(i, j), rfl⟩)`.
-
-Conclude with `IntermediateField.subset_adjoin _ _ (Or.inr ⟨(i, j), rfl⟩)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem exists_finExt_gl {l n : ℕ} [Fact l.Prime] (A : GL (Fin n) (Qbar l)) :
     ∃ K : FinExt l, ∀ i j, (A : Matrix (Fin n) (Fin n) (Qbar l)) i j ∈ K.1 ∧
@@ -35,7 +33,7 @@ private theorem exists_finExt_gl {l n : ℕ} [Fact l.Prime] (A : GL (Fin n) (Qba
   · exact IntermediateField.subset_adjoin _ _ (Or.inr ⟨(i, j), rfl⟩)
 
 /- English proof (translation)
-Take `⟨LL', r₀, hm, hc⟩` from `hr`. Take `⟨h, M, hM⟩` from `GlobalTheory.ConjCrys.exists_conj_model A K hA hm`. Take `⟨-, hdR2, -, -⟩` from `GlobalTheory.Pst.local_ext P Bw h r₀`. Conclude with `⟨_, _, hM, (GlobalTheory.ConjCrys.local_conj P Bw _ M _).2.1 (hdR2.2 hc)⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private theorem isdRAt_conj' {l : ℕ} [Fact l.Prime] {P : LocPrime l} {E Ω : Type} [Field E] [Field Ω] [Algebra E Ω]
     {O : Type} [CommRing O] [Algebra ℤ_[l] O] [TopologicalSpace O] {Gw : Subgroup (Ω ≃ₐ[E] Ω)}
@@ -49,9 +47,9 @@ private theorem isdRAt_conj' {l : ℕ} [Fact l.Prime] {P : LocPrime l} {E Ω : T
   exact ⟨_, _, hM, (GlobalTheory.ConjCrys.local_conj P Bw _ M _).2.1 (hdR2.2 hc)⟩
 
 /- English proof (translation)
-Take `⟨LL', r₀, hm, hc⟩` from `h`. Take `⟨T⟩` from `hT`. Use `⟨LL', r₀, hm, ?_⟩` and prove the remaining obligations. Establish `h1` using `(GlobalTheory.Per.CrisDR.isDR_of_isCrys l P AI T Bw.Kw LL' _ _ hc).1`. Unfold `Formalism.BasicNotions.LocBridge.IsdRE`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `Formalism.MainNotions.N.IsDR at h1`. Simplify `h1` using `only [Module.finrank_fin_fun]`.
+Replace the relevant objects with their definitions. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem isdRAt_of_isCrysAt {l : ℕ} [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P)
     (hT : Nonempty (LocTied l P AI)) {E Ω : Type} [Field E] [Field Ω] [Algebra E Ω]
@@ -67,13 +65,11 @@ private theorem isdRAt_of_isCrysAt {l : ℕ} [Fact l.Prime] (P : LocPrime l) (AI
   simpa only [Module.finrank_fin_fun] using h1
 
 /- English proof (translation)
-Introduce `l _ P AI hT E Ω _ _ _ _ _ A O _ _ _ Bw a r r'`. Establish `pst : ∀ {s : ↥(Dec (F` using `E) A) →* GL (Fin a) (Qbar l)}, IsCrysAt P Bw s → IsPstAt P Bw s := fun {s} h => GlobalTheory.GalCut.IwaTwist.isPstAt_of_isSstAt P AI hT Bw s (GlobalTheory.CrysSst.isSstAt_of_isCrysAt l P AI hT E Ω _ O Bw a s h)`. Use `⟨fun h => ⟨isdRAt_of_isCrysAt P AI hT h, pst h⟩, fun hiso => ?_⟩` and prove the remaining obligations. Take `⟨g, hg⟩` from `id hiso`. Take `⟨K, hK⟩` from `exists_finExt_gl (g⁻¹)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `e : r' = (MulAut.conj (g⁻¹)⁻¹).toMonoidHom.comp r` using `by ext1 x`. Simplify using `[hg, MulAut.conj_apply]`. Establish `c' : IsCrysAt P Bw r → IsCrysAt P Bw r'` using `fun h => by`. Rewrite using `[e]`. Conclude with `GlobalTheory.ConjCrys.isCrysAt_conj _ K hK h`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨c', fun h => ?_, fun τ J h => ?_, fun ι w hw hj h => ?_⟩` and prove the remaining obligations. Rewrite using `[e]`. Conclude with `isdRAt_conj' _ K hK h`. Rewrite using `[e]`. Conclude with `GlobalTheory.ConjCrys.isJumpsAt_conj _ K hK h`.
-
-Conclude with `GlobalTheory.ConjGal.wdAt_conj P ι Bw hw hj r r' g hg (pst h) (pst (c' h))`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.Int.Div.locConj_of :
     LocConj := by

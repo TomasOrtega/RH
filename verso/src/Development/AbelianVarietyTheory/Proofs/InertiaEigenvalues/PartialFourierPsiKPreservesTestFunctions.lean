@@ -6,9 +6,9 @@ open GlobalTheory.JR Matrix MeasureTheory Filter Topology
 namespace GlobalTheory.JR.Hyp.PtTest
 
 /- English proof (translation)
-Establish `hcl : IsClosed (Function.support g)`. Use `(hg.isOpen_fiber 0).isClosed_compl` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use `ext`. Simplify using `[Function.mem_support]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use `show IsCompact (closure (Function.support g))`. Rewrite using `[hcl.closure_eq]`. Conclude with `hC.of_isClosed_subset hcl fun x hx => by`. Assume the negation of the conclusion as `h`. Conclude with `hx (hz x h)`.
+Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem hasCompactSupport_of_loc {X : Type} [TopologicalSpace X] (g : X → ℂ) (hg : IsLocallyConstant g)
     (C : Set X) (hC : IsCompact C) (hz : ∀ x ∉ C, g x = 0) : HasCompactSupport g := by
@@ -23,11 +23,11 @@ theorem hasCompactSupport_of_loc {X : Type} [TopologicalSpace X] (g : X → ℂ)
     exact hx (hz x h)
 
 /- English proof (translation)
-Establish `hC : IsCompact (Prod.snd '' tsupport Φ)` using `hΦ.2.isCompact.image continuous_snd`. Establish `h` using `hC.eventually_forall_of_forall_eventually (x₀ := a) (P := fun a' b => Φ (a', b) = Φ (a, b)) fun y _ => by`. Establish `h1 : ∀ᶠ z in 𝓝 (a, y), Φ z = Φ (a, y)` using `(IsLocallyConstant.iff_eventually_eq Φ).1 hΦ.1 (a, y)`. Establish `hc : Continuous fun z : X × Y => (a, z.2)` using `continuous_const.prodMk continuous_snd`. Establish `h2 : ∀ᶠ z in 𝓝 (a, y), Φ (a, z.2) = Φ (a, y)` using `(hc.tendsto (a, y)).eventually ((IsLocallyConstant.iff_eventually_eq Φ).1 hΦ.1 (a, y))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `filter_upwards [h1, h2] with z hz1 hz2`. Rewrite using `[hz1, hz2]`. Use `filter_upwards [h] with a' ha'`. Use function extensionality and compare the values at `b`. Distinguish the cases in `hb : b ∈ Prod.snd '' tsupport Φ`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Conclude with `ha' b hb`. Establish `h0 : ∀ c, Φ (c, b) = 0` using `fun c => by`. Assume the negation of the conclusion as `hne`. Conclude with `hb ⟨(c, b), subset_tsupport _ hne, rfl⟩`. Rewrite using `[h0, h0]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem slice_eventually {X Y : Type} [TopologicalSpace X] [TopologicalSpace Y] (Φ : X × Y → ℂ) (hΦ : IsTest Φ)
     (a : X) : ∀ᶠ a' in 𝓝 a, (fun b => Φ (a', b)) = fun b => Φ (a, b) := by
@@ -50,7 +50,7 @@ theorem slice_eventually {X Y : Type} [TopologicalSpace X] [TopologicalSpace Y] 
     rw [h0, h0]
 
 /- English proof (translation)
-Establish `hl : IsLocallyConstant fun b => Φ (a, b)` using `hΦ.1.comp_continuous (continuous_const.prodMk continuous_id)`. Use `⟨hl, hasCompactSupport_of_loc _ hl _ (hΦ.2.isCompact.image continuous_snd) fun b hb => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hne`. Conclude with `hb ⟨(a, b), subset_tsupport _ hne, rfl⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem slice_isTest {X Y : Type} [TopologicalSpace X] [TopologicalSpace Y] (Φ : X × Y → ℂ) (hΦ : IsTest Φ)
     (a : X) : IsTest fun b => Φ (a, b) := by
@@ -65,25 +65,23 @@ end GlobalTheory.JR.Hyp.PtTest
 open GlobalTheory.JR.Hyp.PtTest in
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ A ψ hψ x ν hν Φ hΦ`. Set `β : LinearMap.BilinForm F A.K` to `LinearMap.comp (Algebra.traceForm F A.K) (LinearMap.mulLeft F (x : A.K))`. Establish `hβapp : ∀ u b, β u b = Algebra.trace F A.K ((x : A.K) * u * b)` using `fun u b => by simp [β, Algebra.traceForm_apply, mul_assoc]`. Establish `hsymm : β.IsSymm`. Use `⟨fun u b => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [RingHom.id_apply, hβapp]`. Put the polynomial expressions in normal form. Establish `htr` using `(GlobalTheory.T.etaleHermitianPair_structure_facts F E A).2.2.1`. Establish `hsepL : ∀ u : A.K, (∀ b, β u b = 0) → u = 0` using `fun u hu => by`. Establish `h1 : (x : A.K) * u = 0` using `htr.1 _ fun b => by simpa [hβapp] using hu b`.
+Simplify using the standard rewrite rules. Put the polynomial expressions in normal form. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `using congrArg (fun t => ((x⁻¹ : A.Kˣ) : A.K) * t) h1`. Establish `hnd : β.Nondegenerate` using `⟨hsepL, fun b hb => hsepL b fun u => by`. Use `hb u` as an intermediate fact. Rewrite `this` using `[hβapp]`. Rewrite using `[hβapp, mul_right_comm]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `this⟩`. Establish `hF : ∀ f : A.K → ℂ, IsTest f → IsTest (fourB ν (kx A ψ (x : A.K)) f)` using `fun f hf => (GlobalTheory.T.selfDual_measure_exists_unique_fourier_inversion F E ψ hψ A.K β hsymm hnd).2 ν hν f hf`. Establish `hG : ∀ p, Hyp.pt A ν ψ x Φ p = fourB ν (kx A ψ (x : A.K)) (fun b => Φ (p.1, b)) p.2` using `fun p => rfl`. Establish `hloc : IsLocallyConstant (Hyp.pt A ν ψ x Φ)`. Rewrite using `[IsLocallyConstant.iff_eventually_eq]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨a, u⟩`. Establish `h1` using `slice_eventually Φ hΦ a`. Establish `h2` using `(IsLocallyConstant.iff_eventually_eq _).1 (hF _ (slice_isTest Φ hΦ a)).1 u`. Rewrite using `[nhds_prod_eq]`. Use `filter_upwards [h1.prod_mk h2] with q hq`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hG, hG, hq.1]`. Conclude with `hq.2`. Use `⟨hloc, ?_⟩` and prove the remaining obligations. Establish `hC1 : IsCompact (Prod.fst '' tsupport Φ)` using `hΦ.2.isCompact.image continuous_fst`. Take `⟨t, -, ht⟩` from `hC1.elim_nhds_subcover (fun a => {a' | (fun b => Φ (a', b)) = fun b => Φ (a, b)}) fun a _ => slice_eventually Φ hΦ a`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Assume the negation of the conclusion and derive a contradiction.
 
-Use `hasCompactSupport_of_loc _ hloc ((Prod.fst '' tsupport Φ) ×ˢ ⋃ i ∈ t, tsupport (fourB ν (kx A ψ (x : A.K)) fun b => Φ (i, b))) (hC1.prod (t.isCompact_biUnion fun i _ => (hF _ (slice_isTest Φ hΦ i)).2.isCompact)) ?_` and prove the remaining obligations. Introduce and unpack `⟨a, u⟩ hq`. Assume the negation of the conclusion as `hne`. Apply `hq` to reduce the goal to its premises. Establish `ha : a ∈ Prod.fst '' tsupport Φ`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `ha`. Apply `hne` to reduce the goal to its premises. Establish `h0 : ∀ b, Φ (a, b) = 0` using `fun b => by`. Assume the negation of the conclusion as `hb`. Conclude with `ha ⟨(a, b), subset_tsupport _ hb, rfl⟩`.
+Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[hG, fourB, h0]`. Use `⟨ha, ?_⟩` and prove the remaining obligations. Take `⟨i, hi, hai⟩` from `Set.mem_iUnion₂.1 (ht ha)`. Use `Set.mem_iUnion₂.2 ⟨i, hi, subset_tsupport _ ?_⟩` and prove the remaining obligations. Rewrite `hne` using `[hG]`.
-
-Simplify using `only [Set.mem_setOf_eq] at hai`. Rewrite using `[Function.mem_support]`. Rewrite `hne` using `[hai]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.JR.Hyp.pt_isTest : ∀ (F E : Type) [NontriviallyNormedField F] [NontriviallyNormedField E] [NormedAlgebra F E] [StarRing E] [Unram F E] (A : Et F E) (ψ : AddChar F ℂ), IsStdChar ψ → ∀ (x : A.Kˣ) (ν : Measure A.K), ν.IsAddHaarMeasure → ∀ Φ : A.K × A.K → ℂ, IsTest Φ → IsTest (Hyp.pt A ν ψ x Φ) := by
   intro F E _ _ _ _ _ A ψ hψ x ν hν Φ hΦ

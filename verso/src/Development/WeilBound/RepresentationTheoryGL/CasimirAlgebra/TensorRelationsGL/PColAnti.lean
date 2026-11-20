@@ -15,7 +15,7 @@ def Q (L : TV n M (Fin m) →ₗ[ℂ] ℂ) (σ : Equiv.Perm (Fin m)) : Prop :=
   L ∘ₗ pm σ = ((Equiv.Perm.sign σ : ℤ) : ℂ) • L
 
 /- English proof (translation)
-Unfold `Q at *`. Rewrite using `[pm_mul, Module.End.mul_eq_comp, ← LinearMap.comp_assoc, h1, LinearMap.smul_comp, h2, smul_smul, Equiv.Perm.sign_mul]`. Use `push_cast`. Put the polynomial expressions in normal form.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Put the polynomial expressions in normal form.
 -/
 theorem Q_mul (L : TV n M (Fin m) →ₗ[ℂ] ℂ) {σ τ : Equiv.Perm (Fin m)} (h1 : Q L σ) (h2 : Q L τ) :
     Q L (σ * τ) := by
@@ -26,14 +26,14 @@ theorem Q_mul (L : TV n M (Fin m) →ₗ[ℂ] ℂ) {σ τ : Equiv.Perm (Fin m)} 
   ring_nf
 
 /- English proof (translation)
-Unfold `Q`. Simplify using `[Module.End.one_eq_id]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem Q_one (L : TV n M (Fin m) →ₗ[ℂ] ℂ) : Q L 1 := by
   unfold Q
   simp [Module.End.one_eq_id]
 
 /- English proof (translation)
-Unfold `Q`. Rewrite using `[Equiv.Perm.sign_swap h]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem Q_swap_iff (L : TV n M (Fin m) →ₗ[ℂ] ℂ) {p q : Fin m} (h : p ≠ q) :
     Q L (Equiv.swap p q) ↔ L ∘ₗ pm (Equiv.swap p q) = -L := by
@@ -48,15 +48,15 @@ theorem pm_top (σ : Equiv.Perm (Fin m)) (top : Fin n) (g : TV n M (Fin m)) :
     pm σ g (fun _ => top) = g (fun _ => top) := rfl
 
 /- English proof (translation)
-Establish `hne : i ≠ j` using `by intro h; rw [h] at hij; omega`. Rewrite using `[Q_swap_iff _ hne]`. Take `⟨R, hD, hR⟩` from `split E col hmono hc hP i j hij hcol`. Use `set P : Module.End ℂ (TV n M (Fin m)) := pm (Equiv.swap i j) with hPdef`. Establish `hx` using `(hP i j hij).1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `PP : P * P = 1` using `by rw [hPdef, ← pm_mul, Equiv.swap_mul_self, pm_one]`. Establish `h2 : xJ E i * P = P * xJ E j - 1`. Combine the equalities or inequalities in the displayed calculation. Establish `hTP : (xJ E i - xJ E j + 1) * P = P * (1 + 1 - (xJ E i - xJ E j + 1)) - (1 + 1)`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `key : colD E col * P = P * (R + R - colD E col) - (R + R)`. Rewrite using `[hD]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_assoc, hR, ← mul_assoc]`. Use `_ = (P * (1 + 1 - (xJ E i - xJ E j + 1)) - (1 + 1)) * R := by rw [hTP]`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `_ = _ := by noncomm_ring`. Use `LinearMap.ext fun f => ?_` and prove the remaining obligations. Establish `e : colD E col (P f) = (colD E col * P) f` using `rfl`. Simplify using `only [LinearMap.comp_apply, LinearMap.neg_apply, LinearMap.proj_apply]`. Rewrite using `[e, key]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `only [LinearMap.sub_apply, LinearMap.add_apply, Module.End.mul_apply, Pi.sub_apply, Pi.add_apply, pm_top, map_sub, map_add]`. Simplify using `only [hPdef, pm_top]`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem Q_adj (E : Fin n → Fin n → Module.End ℂ M) (ℓ : M →ₗ[ℂ] ℂ) (top : Fin n) (col : Fin m → ℕ)
     (hmono : Monotone col) (hc : ∀ i j : Fin m, Commute (xJ E i) (xJ E j))
@@ -96,11 +96,11 @@ theorem Q_adj (E : Fin n → Fin n → Module.End ℂ M) (ℓ : M →ₗ[ℂ] �
   ring
 
 /- English proof (translation)
-Introduce `d`. Proceed by induction on `d with`. Consider the case `zero => intro p q h hc; exact hadj p q (by omega) hc`. Consider the case `succ d ih`. Introduce `p q h hc`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `r : Fin m` to `⟨(q : ℕ) - 1, by omega⟩`. Establish `hpr : col p = col r` using `le_antisymm (hmono (show p ≤ r from Fin.le_def.mpr (by simp [r]; omega))) (hc ▸ hmono (show r ≤ q from Fin.le_def.mpr (by simp [r])))`. Establish `hrq : col r = col q` using `hpr ▸ hc`. Establish `h1 : p ≠ r` using `fun e => by rw [Fin.ext_iff] at e; simp [r] at e; omega`. Establish `h2 : p ≠ q` using `fun e => by rw [Fin.ext_iff] at e; omega`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs : Equiv.swap p q = Equiv.swap r q * Equiv.swap p r * Equiv.swap r q`. Rewrite using `[Equiv.swap_mul_swap_mul_swap h1 h2, Equiv.swap_comm]`. Rewrite using `[hs]`. Establish `A` using `hadj r q (by simp [r]; omega) hrq`. Conclude with `Q_mul L (Q_mul L A (ih p r (by simp [r]; omega) hpr)) A`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem Q_lt (L : TV n M (Fin m) →ₗ[ℂ] ℂ) (col : Fin m → ℕ) (hmono : Monotone col)
     (hadj : ∀ i j : Fin m, (i : ℕ) + 1 = j → col i = col j → Q L (Equiv.swap i j)) :
@@ -123,15 +123,13 @@ theorem Q_lt (L : TV n M (Fin m) →ₗ[ℂ] ℂ) (col : Fin m → ℕ) (hmono :
     exact Q_mul L (Q_mul L A (ih p r (by simp [r]; omega) hpr)) A
 
 /- English proof (translation)
-Introduce `σ hσ`. Proceed by induction on `h : σ.support.card using Nat.strong_induction_on generalizing σ with`. Consider the case `_ k ih`. Distinguish the cases in `h1 : σ = 1`. Rewrite using `[h1]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Q_one L`. Choose the witnesses or unpack the hypotheses as in `⟨x, hx⟩ : ∃ x, σ x ≠ x := by`. Assume the negation of the conclusion as `hh`. Use `push Not at hh`. Conclude with `h1 (Equiv.ext hh)`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hmem : ∀ p, col (σ p) = col p` using `by simpa [colG] using hσ`. Establish `hτ : Equiv.swap x (σ x) * σ ∈ colG col`. Simplify using `only [colG, Finset.mem_filter, Finset.mem_univ, true_and, Equiv.Perm.mul_apply]`. Introduce `p`. Rewrite using `[Equiv.swap_apply_def]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `split_ifs with e1 e2`. Rewrite using `[hmem x, ← e1, hmem]`. Rewrite using `[← hmem x, ← e2, hmem]`. Conclude with `hmem p`. Establish `hlt` using `Equiv.Perm.card_support_swap_mul hx`.
-
-Establish `hq` using `ih _ (h ▸ hlt) _ hτ rfl`. Establish `hs` using `hsw x (σ x) hx.symm (hmem x).symm`. Use `Q_mul L hs hq` as an intermediate fact. Rewrite `this` using `[← mul_assoc, Equiv.swap_mul_self, one_mul]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem Q_colG (L : TV n M (Fin m) →ₗ[ℂ] ℂ) (col : Fin m → ℕ)
     (hsw : ∀ p q : Fin m, p ≠ q → col p = col q → Q L (Equiv.swap p q)) :
@@ -159,9 +157,9 @@ theorem Q_colG (L : TV n M (Fin m) →ₗ[ℂ] ℂ) (col : Fin m → ℕ)
       rwa [← mul_assoc, Equiv.swap_mul_self, one_mul] at this
 
 /- English proof (translation)
-Use function extensionality and compare the values at `J`. Simplify using `only [pm_apply, Pi.single_apply]`. Use `congr 1`. Apply `propext` to reduce the goal to its premises. Prove the components needed by the constructor for the conclusion.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `rfl`. Use function extensionality and compare the values at `x`. Simplify using the standard rewrite rules. Introduce and unpack `rfl`. Use function extensionality and compare the values at `x`.
+Assume the hypotheses and unpack their components. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Apply function extensionality and compare values at an arbitrary argument.
 
 Simplify using the standard rewrite rules.
 -/
@@ -179,33 +177,31 @@ end ColumnAntisymmetry
 
 open ColumnAntisymmetry in
 /- English proof (translation)
-Introduce `_ hJM hH n M _ _ E hE ℓ hWh top htop m col b hmono hb`. Take `⟨hc, hP, _⟩` from `hJM n M E hE m`. Take `⟨hH1, _, _⟩` from `hH n M E hE ℓ hWh top htop`. Establish `hdeg` using `hH1 (Fin m) (npairs col) (colD E col) (deg_colD E col)`. Use `set L : TV n M (Fin m) →ₗ[ℂ] ℂ := ℓ ∘ₗ LinearMap.proj (fun _ => top) ∘ₗ colD E col with hL`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hLs : ∀ I v, L (Pi.single I v) = ℓ (colD E col (Pi.single I v) fun _ => top)` using `fun _ _ => rfl`. Establish `hsw : ∀ p q : Fin m, p ≠ q → col p = col q → Q L (Equiv.swap p q)`. Establish `hadj` using `fun i j hij hcol => Q_adj E ℓ top col hmono hc hP i j hij hcol`. Introduce `p q hpq hcol`. Break down `lt_or_gt_of_ne hpq with h | h` into its components or cases.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Q_lt L col hmono hadj ((q : ℕ) - p - 1) p q (by omega) hcol`. Rewrite using `[Equiv.swap_comm]`. Conclude with `Q_lt L col hmono hadj ((p : ℕ) - q - 1) q p (by omega) hcol.symm`. Establish `hQ` using `Q_colG L col hsw`. Establish `hbinj : ColInj col b` using `hb.1`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components.
 
-Choose the witnesses or unpack the hypotheses as in `⟨c, hcb⟩ : ∃ c : ℂ, ∀ v, L (Pi.single b v) = c * ℓ v := by`. Break down `(npairs_le col top htop b hbinj).lt_or_eq with hlt | heq` into its components or cases. Conclude with `⟨0, fun v => by rw [hLs, (hdeg b).1 hlt v]; simp⟩`. Take `⟨c, hc⟩` from `(hdeg b).2 heq`. Conclude with `⟨c, fun v => by rw [hLs, hc v]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hmemG : ∀ σ ∈ colG col, ∀ p, col (σ p) = col p` using `fun σ hσ => by simpa [colG] using hσ`. Establish `hval : ∀ σ ∈ colG col, ∀ v, L (Pi.single (b ∘ σ) v) = ((Equiv.Perm.sign σ : ℤ) : ℂ) * (c * ℓ v)`. Introduce `σ hσ v`. Establish `hσ' : σ⁻¹ ∈ colG col`. Simplify using `only [colG, Finset.mem_filter, Finset.mem_univ, true_and]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Introduce `p`. Use `hmemG σ hσ (σ⁻¹ p)` as an intermediate fact. Simplify using `at this`. Conclude with `this.symm`. Establish `e : (Pi.single (b ∘ σ) v : TV n M (Fin m)) = pm σ⁻¹ (Pi.single b v)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[pm_single, inv_inv]`. Rewrite using `[e, ← LinearMap.comp_apply, hQ _ hσ', LinearMap.smul_apply, hcb, Equiv.Perm.sign_inv, smul_eq_mul]`. Establish `hzero : ∀ I : Fin m → Fin n, I ∉ (colG col).image (fun σ : Equiv.Perm (Fin m) => b ∘ ⇑σ) → ∀ v, L (Pi.single I v) = 0`. Introduce `I hI v`. Distinguish the cases in `hinj : ColInj col I`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. It suffices to derive a contradiction.
 
-Establish `hle` using `npairs_le col top htop I hinj`. Break down `hle.lt_or_eq with hlt | heq` into its components or cases. Rewrite using `[hLs, (hdeg I).1 hlt v]`. It suffices to derive a contradiction. Take `⟨σ, hσ, e⟩` from `eq_of_le col top htop b I hb hinj heq.ge`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hI (Finset.mem_image.mpr ⟨σ, hσ, e.symm⟩)`. Simplify using `only [ColInj, not_forall] at hinj`. Take `⟨p, q, hcol, hIpq, hpq⟩` from `hinj`. Establish `hfix : (Pi.single I v : TV n M (Fin m)) = pm (Equiv.swap p q) (Pi.single I v)`. Rewrite using `[pm_single, Equiv.swap_inv]`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use function extensionality and compare the values at `x`. Simplify using `only [Function.comp_apply, Equiv.swap_apply_def]`. Use `split_ifs with h1 h2`. Rewrite using `[h1, hIpq]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[h2, hIpq]`. Both sides reduce to the same expression. Establish `h` using `(Q_swap_iff L hpq).mp (hsw p q hpq hcol)`. Establish `h2 : L (Pi.single I v) = -L (Pi.single I v)` using `by conv_lhs => rw [hfix]`. Rewrite using `[← LinearMap.comp_apply, h, LinearMap.neg_apply]`.
+Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `h3 : (2 : ℂ) * L (Pi.single I v) = 0` using `by linear_combination h2`. Simplify using `using h3`. Use `⟨c, LinearMap.ext fun f => ?_⟩` and prove the remaining obligations. Use `show L f = c * ℓ (cA col b f)`. Rewrite using `[cA_apply, alt_apply, map_sum]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `conv_lhs => rw [← Finset.univ_sum_single f, map_sum]`. Rewrite using `[← Finset.sum_subset (Finset.subset_univ ((colG col).image (fun σ : Equiv.Perm (Fin m) => b ∘ ⇑σ))) (fun I _ hI => hzero I hI (f I))]`. Rewrite using `[Finset.sum_image]`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun σ hσ => ?_` and prove the remaining obligations.
-
-Rewrite using `[hval σ hσ, map_smul, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Introduce `σ hσ τ hτ e`. Use `Equiv.ext fun p => hb.1 _ _ ?_ (congrFun e p)` and prove the remaining obligations. Rewrite using `[hmemG σ hσ, hmemG τ hτ]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem colAnti_of : TensorGl → JMComm → Height → ColAnti := by
   intro _ hJM hH n M _ _ E hE ℓ hWh top htop m col b hmono hb

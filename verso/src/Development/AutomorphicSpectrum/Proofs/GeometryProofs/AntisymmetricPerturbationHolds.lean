@@ -6,7 +6,7 @@ import GroundTheory.HeightsAndTheta.Heights.ElementarySymmetric.PAntisymDivisibl
 namespace GlobalTheory.CompanionTheory.Ar.Link
 
 /- English proof (translation)
-The claim follows from `@GroundTheory.Heights₂.Heights.AntisymPerturbation.proof (@GroundTheory.Heights₂.Heights.AntisymStability.proof GroundTheory.Heights₂.Heights.AntisymDivisible.proof)`.
+A detailed English derivation is pending.
 -/
 theorem antisymPerturbation_holds : GroundTheory.Heights₂.Heights.AntisymPerturbation.Statement :=
   @GroundTheory.Heights₂.Heights.AntisymPerturbation.proof

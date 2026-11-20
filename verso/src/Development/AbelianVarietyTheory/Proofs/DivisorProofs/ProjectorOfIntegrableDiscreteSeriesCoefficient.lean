@@ -14,9 +14,9 @@ namespace GlobalTheory.CoefProjector
 variable {p q : ℕ} {T : GrpData p q}
 
 /- English proof (translation)
-Establish `h : Integrable (fun g => e g • πU.π g x) T.haar`. Use `Integrable.mono' (hi.norm.mul_const ‖x‖) (hc.smul (πU.cont x)).aestronglyMeasurable (Filter.Eventually.of_forall fun g => ?_)` and prove the remaining obligations. Rewrite using `[norm_smul, πU.isom]`. Unfold `opE`. Rewrite using `[← integral_inner h]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [inner_smul_right]`.
+Simplify using the standard rewrite rules.
 -/
 theorem inner_opE (πU : URep T) {e : T.G → ℂ} (hi : Integrable e T.haar)
     (hc : Continuous e) (z x : πU.H) :
@@ -30,19 +30,19 @@ theorem inner_opE (πU : URep T) {e : T.G → ℂ} (hi : Integrable e T.haar)
   simp only [inner_smul_right]
 
 /- English proof (translation)
-The claim follows from `continuous_const.mul (continuous_const.inner (D.U.cont _)).star`.
+A detailed English derivation is pending.
 -/
 theorem continuous_eFun (D : DSRep T) (v : D.HK.V) : Continuous (eFun D v) :=
   continuous_const.mul (continuous_const.inner (D.U.cont _)).star
 
 /- English proof (translation)
-Rewrite using `[map_mul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem pi_mul (πU : URep T) (g h : T.G) (x : πU.H) : πU.π (g * h) x = πU.π g (πU.π h x) := by
   rw [map_mul]; rfl
 
 /- English proof (translation)
-Simplify using `only [eFun, mcoef]`. Rewrite using `[← inner_pi_left]`. Simplify using `[inner_conj_symm]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem eFun_inv (D : DSRep T) (v : D.HK.V) (g : T.G) : eFun D v g⁻¹ = star (eFun D v g) := by
   simp only [eFun, mcoef]
@@ -50,14 +50,14 @@ theorem eFun_inv (D : DSRep T) (v : D.HK.V) (g : T.G) : eFun D v g⁻¹ = star (
   simp [inner_conj_symm]
 
 /- English proof (translation)
-Conclude with `D.fdeg_pos.ne'` after adjusting the coercions.
+A detailed English derivation is pending.
 -/
 theorem fdeg_ne (D : DSRep T) : (D.fdeg : ℂ) ≠ 0 := by exact_mod_cast D.fdeg_pos.ne'
 
 /- English proof (translation)
-Establish `h` using `(GlobalTheory.SchurPol.schur_polarised p q T D u w (D.ι v) (D.ι v)).2`. Establish `h2 : ∀ g, eFun D v g * inner ℂ w (D.U.π g u) = (D.fdeg : ℂ) * (inner ℂ w (D.U.π g u) * star (inner ℂ (D.ι v) (D.U.π g (D.ι v))))`. Introduce `g`. Simplify using `only [eFun, mcoef]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `only [h2]`. Rewrite using `[integral_const_mul, h]`. Use `fdeg_ne D` as an intermediate fact. Establish `h3 : star (inner ℂ (D.ι v) w) = inner ℂ w (D.ι v)` using `inner_conj_symm _ _`. Rewrite using `[h3]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
 Clear the denominators using the available nonvanishing facts.
 -/
@@ -75,7 +75,7 @@ theorem integral_eFun_mul (D : DSRep T) (v : D.HK.V) (w u : D.U.H) :
   field_simp
 
 /- English proof (translation)
-Use `ext_inner_left ℂ fun w => ?_` and prove the remaining obligations. Rewrite using `[inner_opE D.U hi (continuous_eFun D v), integral_eFun_mul, inner_smul_right]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem opE_self (D : DSRep T) (v : D.HK.V) (hi : Integrable (eFun D v) T.haar) (u : D.U.H) :
     opE T D.U.π (eFun D v) u = inner ℂ (D.ι v) u • D.ι v := by
@@ -83,7 +83,7 @@ theorem opE_self (D : DSRep T) (v : D.HK.V) (hi : Integrable (eFun D v) T.haar) 
   rw [inner_opE D.U hi (continuous_eFun D v), integral_eFun_mul, inner_smul_right]
 
 /- English proof (translation)
-Use `haveI := (GlobalTheory.HolDS.haar_unimodular p q T).2`. Rewrite using `[← inner_conj_symm, inner_opE πU hi (continuous_eFun D v), inner_opE πU hi (continuous_eFun D v), ← integral_conj, ← integral_inv_eq_self]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun g => ?_)` and prove the remaining obligations. Simplify using `only [map_mul, inner_conj_symm, inner_pi_left, inv_inv, eFun_inv]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem opE_selfAdjoint (D : DSRep T) (v : D.HK.V) (hi : Integrable (eFun D v) T.haar) (πU : URep T)
     (x y : πU.H) :
@@ -96,11 +96,11 @@ theorem opE_selfAdjoint (D : DSRep T) (v : D.HK.V) (hi : Integrable (eFun D v) T
   simp
 
 /- English proof (translation)
-Establish `h2 : ∀ g, eFun D v g * eFun D v (x⁻¹ * (g⁻¹ * h)) = (D.fdeg : ℂ) * (eFun D v g * inner ℂ (D.U.π h (D.ι v)) (D.U.π g (D.U.π x (D.ι v))))`. Introduce `g`. Establish `: eFun D v (x⁻¹ * (g⁻¹ * h)) = (D.fdeg : ℂ) * inner ℂ (D.U.π h (D.ι v)) (D.U.π g (D.U.π x (D.ι v)))`. Simplify using `only [eFun, mcoef]`. Rewrite using `[pi_mul, pi_mul, ← inner_pi_left, ← inner_pi_left]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Conclude with `inner_conj_symm _ _`. Rewrite using `[this]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [h2]`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[integral_const_mul, integral_eFun_mul]`. Simplify using `only [eFun, mcoef]`. Establish `h3 : star (inner ℂ (D.ι v) (D.U.π h (D.ι v))) = inner ℂ (D.U.π h (D.ι v)) (D.ι v)` using `inner_conj_symm _ _`. Rewrite using `[h3]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem eFun_conv (D : DSRep T) (v : D.HK.V) (x h : T.G) :
     ∫ g, eFun D v g * eFun D v (x⁻¹ * (g⁻¹ * h)) ∂T.haar = mcoef D v x * eFun D v h := by
@@ -122,15 +122,15 @@ theorem eFun_conv (D : DSRep T) (v : D.HK.V) (x h : T.G) :
   rw [h3]; ring
 
 /- English proof (translation)
-Establish `hc` using `continuous_eFun D v`. Use `ext_inner_left ℂ fun z => ?_` and prove the remaining obligations. Rewrite using `[inner_smul_right, inner_opE πU hi hc, inner_opE πU hi hc z y, ← integral_const_mul]`. Establish `h1 : ∀ g, eFun D v g * inner ℂ z (πU.π g (πU.π x (opE T πU.π (eFun D v) y))) = ∫ h, eFun D v g * eFun D v (x⁻¹ * (g⁻¹ * h)) * inner ℂ z (πU.π h y) ∂T.haar`. Introduce `g`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e1 : inner ℂ z (πU.π g (πU.π x (opE T πU.π (eFun D v) y))) = inner ℂ (πU.π (g * x)⁻¹ z) (opE T πU.π (eFun D v) y)`. Rewrite using `[inner_pi_left, inv_inv, pi_mul]`. Rewrite using `[e1, inner_opE πU hi hc, ← integral_const_mul, ← integral_mul_left_eq_self _ (g * x)⁻¹]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun h => ?_)` and prove the remaining obligations. Simplify using `only`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[pi_mul, inner_pi_pi, mul_inv_rev, mul_assoc x⁻¹, mul_assoc]`. Simplify using `only [h1]`. Establish `hi' : Integrable (fun k => eFun D v (x⁻¹ * k)) T.haar` using `hi.comp_mul_left x⁻¹`. Establish `hp` using `((measurePreserving_prod_inv_mul T.haar T.haar).integrable_comp_of_integrable (hi.mul_prod hi'))`. Establish `hcont : Continuous fun h : T.G × T.G => inner ℂ z (πU.π h.2 y)` using `(continuous_const.inner (πU.cont y)).comp continuous_snd`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hp2` using `hp.mul_bdd (c := ‖z‖ * ‖y‖) hcont.aestronglyMeasurable (Filter.Eventually.of_forall fun h => by`. Simplify `norm_inner_le_norm (𝕜 := ℂ) z (πU.π h.2 y))` using `[πU.isom]`. Rewrite using `[integral_integral_swap hp2]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun h => ?_)` and prove the remaining obligations. Simplify using `only`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[integral_mul_const, eFun_conv, mul_assoc]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem opE_pi_opE (D : DSRep T) (v : D.HK.V) (hi : Integrable (eFun D v) T.haar) (πU : URep T)
     (x : T.G) (y : πU.H) :
@@ -164,9 +164,9 @@ theorem opE_pi_opE (D : DSRep T) (v : D.HK.V) (hi : Integrable (eFun D v) T.haar
   rw [integral_mul_const, eFun_conv, mul_assoc]
 
 /- English proof (translation)
-Establish `: Dense ((LinearMap.range (Finsupp.linearCombination ℂ fun g : T.G => D.U.π g u) : Submodule ℂ D.U.H) : Set D.U.H)`. Rewrite using `[Submodule.dense_iff_topologicalClosure_eq_top, Submodule.topologicalClosure_eq_top_iff, Submodule.eq_bot_iff]`. Introduce `w hw`. Establish `h` using `ext_orbit D u hu (innerSL ℂ w) 0 fun g => by`. Use `Submodule.inner_left_of_mem_orthogonal ?_ hw` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `⟨Finsupp.single g 1, by simp⟩`. Establish `h2` using `congrArg (fun f : D.U.H →L[ℂ] ℂ => f w) h`. Simplify using `using h2`. Conclude with `this`.
+Supply the required witnesses or components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem dense_orbit (D : DSRep T) (u : D.U.H) (hu : u ≠ 0) :
     DenseRange (Finsupp.linearCombination ℂ fun g : T.G => D.U.π g u) := by
@@ -183,17 +183,15 @@ theorem dense_orbit (D : DSRep T) (u : D.U.H) (hu : u ≠ 0) :
   exact this
 
 /- English proof (translation)
-Establish `hu : D.ι v ≠ 0`. Introduce `h`. Rewrite `hv` using `[h, norm_zero]`. Conclude with `zero_ne_one hv`. Use `set A := Finsupp.linearCombination ℂ fun g : T.G => D.U.π g (D.ι v) with hA`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set B := Finsupp.linearCombination ℂ fun g : T.G => πU.π g ξ with hB`. Establish `hd : DenseRange A` using `dense_orbit D _ hu`. Establish `hgram : ∀ g h, inner ℂ (πU.π g ξ) (πU.π h ξ) = inner ℂ (D.U.π g (D.ι v)) (D.U.π h (D.ι v)) * inner ℂ ξ ξ`. Introduce `g h`. Rewrite using `[inner_pi_left, inner_pi_left, ← pi_mul, ← pi_mul, hξ, mcoef]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hn : ∀ c, ‖B c‖ = ‖ξ‖ * ‖A c‖`. Introduce `c`. Establish `h : inner ℂ (B c) (B c) = inner ℂ (A c) (A c) * inner ℂ ξ ξ`. Simplify using `only [hA, hB, Finsupp.linearCombination_apply, Finsupp.sum, sum_inner, inner_sum, inner_smul_left, inner_smul_right, hgram, Finset.sum_mul, mul_assoc]`. Rewrite `h` using `[inner_self_eq_norm_sq_to_K, inner_self_eq_norm_sq_to_K, inner_self_eq_norm_sq_to_K]`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h' : ‖B c‖ ^ 2 = (‖ξ‖ * ‖A c‖) ^ 2`. Rewrite using `[mul_pow, mul_comm]`. Conclude with `h` after adjusting the coercions. Conclude with `(pow_left_inj₀ (norm_nonneg _) (by positivity) two_ne_zero).1 h'`. Establish `hT : ∀ c, B.extendOfNorm A (A c) = B c` using `LinearMap.extendOfNorm_eq hd ⟨‖ξ‖, fun c => (hn c).le⟩`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hg : ∀ g, B.extendOfNorm A (D.U.π g (D.ι v)) = πU.π g ξ` using `fun g => by`. Simplify `hT (Finsupp.single g 1)` using `[hA, hB]`. Use `⟨B.extendOfNorm A, fun g => ext_orbit D _ hu _ _ fun h => ?_, ?_, fun x => ?_⟩` and prove the remaining obligations. Use `show B.extendOfNorm A (D.U.π g (D.U.π h (D.ι v))) = πU.π g (B.extendOfNorm A (D.U.π h (D.ι v)))`. Rewrite using `[← pi_mul, hg, hg, pi_mul]`.
-
-Simplify using `using hg 1`. Use `hd.induction_on (p := fun x => ‖B.extendOfNorm A x‖ = ‖ξ‖ * ‖x‖) x (isClosed_eq (by fun_prop) (by fun_prop)) fun c => ?_` and prove the remaining obligations. Rewrite using `[hT, hn]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_intertwiner (D : DSRep T) (v : D.HK.V) (hv : ‖D.ι v‖ = 1) (πU : URep T) (ξ : πU.H)
     (hξ : ∀ g, inner ℂ ξ (πU.π g ξ) = mcoef D v g * inner ℂ ξ ξ) :
@@ -229,9 +227,9 @@ theorem exists_intertwiner (D : DSRep T) (v : D.HK.V) (hv : ‖D.ι v‖ = 1) (�
     rw [hT, hn]
 
 /- English proof (translation)
-Introduce `p q T D v hv hi`. Use `⟨opE_self D v hi, fun πU => ⟨opE_selfAdjoint D v hi πU, opE_pi_opE D v hi πU, fun ξ hξ => ?_⟩⟩` and prove the remaining obligations. Use `exists_intertwiner D v hv πU ξ fun g => ?_` and prove the remaining obligations. Establish `h1` using `opE_selfAdjoint D v hi πU ξ (πU.π g (opE T πU.π (eFun D v) ξ))`. Rewrite `h1` using `[opE_pi_opE D v hi, hξ, inner_smul_right]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h1`.
+A detailed English derivation is pending.
 -/
 theorem projector_of_integrable_coefficient :
     ∀ (p q : ℕ) (T : GrpData p q) (D : DSRep T) (v : D.HK.V), ‖D.ι v‖ = 1 → MeasureTheory.Integrable (eFun D v) T.haar → (∀ u, opE T D.U.π (eFun D v) u = inner ℂ (D.ι v) u • D.ι v) ∧ ∀ πU : URep T, (∀ x y, inner ℂ (opE T πU.π (eFun D v) x) y = inner ℂ x (opE T πU.π (eFun D v) y)) ∧ (∀ g x, opE T πU.π (eFun D v) (πU.π g (opE T πU.π (eFun D v) x)) = mcoef D v g • opE T πU.π (eFun D v) x) ∧ ∀ ξ, opE T πU.π (eFun D v) ξ = ξ → ∃ io : D.U.H →L[ℂ] πU.H, IsHomG D πU io ∧ io (D.ι v) = ξ ∧ ∀ x, ‖io x‖ = ‖ξ‖ * ‖x‖ := by

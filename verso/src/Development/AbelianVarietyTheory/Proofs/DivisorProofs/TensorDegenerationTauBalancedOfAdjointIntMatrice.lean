@@ -22,11 +22,11 @@ open GlobalTheory.TensAct
 open ReciprocityTheory.ChartRestriction.G.DVR (cP cPoint_add)
 
 /- English proof (translation)
-Proceed by induction on `hc using Submodule.span_induction with`. Consider the case `mem x hx => obtain ⟨p, rfl⟩ := hx`. Conclude with `GlobalTheory.T.isStronglyTrivial_cubicalThetaFinsupp_tensor R D D' W T hB _ _ _`. Consider the case `zero => exact GlobalTheory.T.isStronglyTrivialFormalSumTensor_zero R D D' W T`. Consider the case `add x y _ _ hx hy => exact GlobalTheory.T.isStronglyTrivialFormalSumTensor_add R D D' W T _ _ hx hy`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `smul n x _ hx`. Proceed by induction on `n using Int.induction_on with`. Consider the case `zero => rw [zero_smul]`. Conclude with `GlobalTheory.T.isStronglyTrivialFormalSumTensor_zero R D D' W T`. Consider the case `succ k ih => rw [add_smul, one_smul]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Conclude with `GlobalTheory.T.isStronglyTrivialFormalSumTensor_add R D D' W T _ _ ih hx`. Consider the case `pred k ih`. Rewrite using `[sub_smul, one_smul, sub_eq_add_neg]`. Conclude with `GlobalTheory.T.isStronglyTrivialFormalSumTensor_add R D D' W T _ _ ih (GlobalTheory.T.isStronglyTrivialFormalSumTensor_neg R D D' W T _ hx)`.
+A detailed English derivation is pending.
 -/
 theorem triv_span {R : Type} [CommRing R] [IsDomain R] {D D' : DegPre R} {r : ℕ} {W : Matrix (Fin r) (Fin r) ℤ}
     (T : Tens D D' W) (hB : D.TauBimult) {c : Vec r →₀ ℤ}
@@ -44,7 +44,7 @@ theorem triv_span {R : Type} [CommRing R] [IsDomain R] {D D' : DegPre R} {r : �
       exact GlobalTheory.T.isStronglyTrivialFormalSumTensor_add R D D' W T _ _ ih (GlobalTheory.T.isStronglyTrivialFormalSumTensor_neg R D D' W T _ hx)
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.TauBalBox.tau_val D' hJ', T.psi _ z J J' hJ hJ', T.psi _ z J J' hJ hJ', T.psi _ z J J' hJ hJ']`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem tau_tens {R : Type} [CommRing R] [IsDomain R] {D D' : DegPre R} {r : ℕ} {W : Matrix (Fin r) (Fin r) ℤ}
     (T : Tens D D' W) {z : (TK R).left} {J J'} (hJ : Good D.P.L z J) (hJ' : Good D'.P.L z J') (p q : D'.X) :
@@ -55,19 +55,19 @@ theorem tau_tens {R : Type} [CommRing R] [IsDomain R] {D D' : DegPre R} {r : ℕ
   rfl
 
 /- English proof (translation)
-Introduce `R _ _ I D D' r W T A A' hA u' hu' hn' y y'`. Take `⟨Ξ, hΞ, hΞ0, hΞv⟩` from `triv_span T D.tau_bimult (GlobalTheory.T.rosatiBalanceFormalSum_mem_span_cubicalTheta W A A' hA)`. Use `corr_of_val D'.toPre.P.isLB fun z J' hJ' => ?_` and prove the remaining obligations. Take `⟨J, hJ⟩` from `GlobalTheory.BoxFamily.exists_good_at D.toPre.P.isLB z`. Establish `key` using `GlobalTheory.T.rosatiGenerator_tensorPower_corresponds_formalSum R D.toPre D'.toPre W T A A' u' hu' hn' Ξ hΞ hΞ0 z J J' hJ hJ' y y'`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `key` using `[hΞv z J hJ y y', GlobalTheory.T.rosatiBalanceFormalSum_psiValues_eq_tauProduct R D.toPre D'.toPre W T D.tau_bimult A A' z J hJ y y']`. Establish `pr` using `prod_ros (matAct T A) (matAct T A') (cP D'.toPre (TK R) y) (cP D'.toPre (TK R) y') (isoV T.w z J J')`. Establish `l₁ : cP D'.toPre (TK R) y ≫ matAct T A = cP D'.toPre (TK R) (latAct T A y)`. Rewrite using `[cP, cP, c_lin, Category.assoc]`. Establish `l₂ : cP D'.toPre (TK R) y' ≫ matAct T A' = cP D'.toPre (TK R) (latAct T A' y')`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[cP, cP, c_lin, Category.assoc]`. Rewrite `pr` using `[l₁, l₂, ← cPoint_add, ← cPoint_add]`. Express the relevant statement in the definitionally equal form `∏ a, isoV T.w z J J' (D'.toPre.pt2 y y' ≫ rosatiφ D'.toPre.P.A (matAct T A) (matAct T A') a) ^ rosatiε a = _ at pr`. Rewrite `key` using `[pr]`. Rewrite using `[val_mul hJ', val_pull hJ', Category.id_comp, tau_tens T hJ hJ', tau_tens T hJ hJ']`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `e0 : rosatiε 0 = 1` using `rfl`. Establish `e1 : rosatiε 1 = -1` using `rfl`. Establish `e2 : rosatiε 2 = -1` using `rfl`. Establish `e3 : rosatiε 3 = -1` using `rfl`. Establish `e4 : rosatiε 4 = 1` using `rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e5 : rosatiε 5 = 1` using `rfl`. Establish `r0 : rosLat T A A' y y' 0 = latAct T A y + y'` using `rfl`. Establish `r1 : rosLat T A A' y y' 1 = latAct T A y` using `rfl`. Establish `r2 : rosLat T A A' y y' 2 = y'` using `rfl`. Establish `r3 : rosLat T A A' y y' 3 = y + latAct T A' y'` using `rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `r4 : rosLat T A A' y y' 4 = y` using `rfl`. Establish `r5 : rosLat T A A' y y' 5 = latAct T A' y'` using `rfl`. Simplify using `only [Fin.prod_univ_six, e0, e1, e2, e3, e4, e5, r0, r1, r2, r3, r4, r5] at key`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Establish `k'` using `congrArg Additive.ofMul key`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Simplify using `only [ofMul_mul, ofMul_inv, ofMul_zpow] at k' ⊢`. Take the linear combination `(norm := abel) k'`.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem tauBal_tens : ∀ (R : Type) [CommRing R] [IsDomain R] (I : Ideal R) (D D' : DegData R I) {r : ℕ} (W : Matrix (Fin r) (Fin r) ℤ) (T : Tens D.toPre D'.toPre W) (A A' : Matrix (Fin r) (Fin r) ℤ), A.transpose * (W + W.transpose) = (W + W.transpose) * A' → D'.toPre.TauBal (GlobalTheory.TensAct.matAct T A) (GlobalTheory.TensAct.matAct T A') (GlobalTheory.TensAct.latAct T A) (GlobalTheory.TensAct.latAct T A') := by
   intro R _ _ I D D' r W T A A' hA u' hu' hn' y y'

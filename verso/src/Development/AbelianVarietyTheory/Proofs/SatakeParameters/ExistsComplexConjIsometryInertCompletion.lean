@@ -10,9 +10,9 @@ open scoped TensorProduct Matrix
 namespace GlobalTheory.InertConj
 
 /- English proof (translation)
-Establish `h' : Ideal.map (algebraMap (𝓞 (maximalRealSubfield E)) (𝓞 E)) v.asIdeal = P.asIdeal` using `h`. Establish `key : P.asIdeal ≤ Ideal.comap (IsCMField.ringOfIntegersComplexConj E : 𝓞 E →+* 𝓞 E) P.asIdeal` using `by conv_lhs => rw [← h']`. Rewrite using `[Ideal.map_le_iff_le_comap]`. Introduce `s hs`. Rewrite using `[Ideal.mem_comap, Ideal.mem_comap]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `IsCMField.ringOfIntegersComplexConj E _ ∈ _`. Rewrite using `[AlgEquiv.commutes, ← h']`. Conclude with `Ideal.mem_map_of_mem _ hs`. Conclude with `key hx`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conj_mem_of_inert {E : Type} [Field E] [NumberField E] [IsCMField E]
     {v : HeightOneSpectrum (𝓞 (maximalRealSubfield E))} {P : HeightOneSpectrum (𝓞 E)}
@@ -31,21 +31,19 @@ theorem conj_mem_of_inert {E : Type} [Field E] [NumberField E] [IsCMField E]
   exact key hx
 
 /- English proof (translation)
-Introduce `E _ _ _ _ v P h`. Establish `h' : Ideal.map (algebraMap (𝓞 (maximalRealSubfield E)) (𝓞 E)) v.asIdeal = P.asIdeal` using `h`. Establish `hc : Mem.Chr.ConjPl (IsCMField.complexConj E).toRingEquiv P P`. Rewrite using `[Mem.Chr.conjPl_iff_mem]`. Introduce `x y hxy`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e : y = IsCMField.ringOfIntegersComplexConj E x` using `RingOfIntegers.ext hxy`. Rewrite using `[e]`. Use `⟨conj_mem_of_inert h, fun hx => ?_⟩` and prove the remaining obligations. Establish `h2` using `conj_mem_of_inert h hx`. Establish `e2 : IsCMField.ringOfIntegersComplexConj E (IsCMField.ringOfIntegersComplexConj E x) = x` using `by ext; simp`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h2` using `[e2]`. Then use the resulting hypothesis. Take `⟨σ, σ1, σ2, σ3⟩` from `UnramCompletion.exists_ringEquiv P _ hc`. Establish `σ2' : ∀ x : E, σ (algebraMap E (P.adicCompletion E) x) = algebraMap E (P.adicCompletion E) (ReciprocityTheory.ChartRestriction.G.FD.cc x)` using `σ2`. Choose the witnesses or unpack the hypotheses as in `⟨s, hs, hs2⟩ : ∃ s ∈ v.asIdeal, algebraMap (𝓞 (maximalRealSubfield E)) (𝓞 E) s ∉ P.asIdeal ^ 2 := by`. Assume the negation of the conclusion as `hn`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction.
 
-Use `push Not at hn`. Establish `h1 : P.asIdeal ≤ P.asIdeal ^ 2` using `by conv_lhs => rw [← h']`. Conclude with `Ideal.map_le_iff_le_comap.2 hn`. Conclude with `(Ideal.pow_lt_self _ P.ne_bot P.isPrime.ne_top 2 le_rfl).not_ge h1`. Establish `hs1 : algebraMap (𝓞 (maximalRealSubfield E)) (𝓞 E) s ∈ P.asIdeal` using `h' ▸ Ideal.mem_map_of_mem _ hs`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hval : ∀ a : 𝓞 E, Valued.v (algebraMap E (P.adicCompletion E) (a : E)) = P.valuation E (algebraMap (𝓞 E) E a)` using `fun a => HeightOneSpectrum.valuedAdicCompletion_eq_valuation' P _`. Use `⟨σ, algebraMap E _ (algebraMap (𝓞 (maximalRealSubfield E)) (𝓞 E) s : E), σ2', ?_, σ3, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `x`. Use `congrFun (UnramCompletion.ringHom_ext_of_continuous P (f := fun x => σ (σ x)) (σ1.comp σ1) continuous_id fun k => ?_) x` and prove the remaining obligations. Simplify using `[σ2', ReciprocityTheory.ChartRestriction.G.FD.cc]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨x, hx⟩` from `exists_sub_conj_notMem P.asIdeal P.isPrime.ne_top`. Use `⟨algebraMap E _ (x : E), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hval]`. Conclude with `P.valuation_le_one x`. Express the relevant statement in the definitionally equal form `Valued.v (σ _ - _) = 1`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[Valuation.map_sub_swap, σ2', ← map_sub]`. Conclude with `(hval (x - IsCMField.ringOfIntegersComplexConj E x)).trans ((HeightOneSpectrum.valuation_eq_one_iff_notMem P).2 hx)`. Express the relevant statement in the definitionally equal form `σ _ = _`. Rewrite using `[σ2', cc_algebraMap]`. Unfold `IsUnifV`.
-
-Rewrite using `[hval, HeightOneSpectrum.valuation_of_algebraMap]`. Conclude with `UnramCompletion.intValuation_eq_of_notMem_sq P hs1 hs2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_conj_completion : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] [Algebra.Unramified (𝓞 (maximalRealSubfield E)) (𝓞 E)] (v : HeightOneSpectrum (𝓞 (maximalRealSubfield E))) (P : HeightOneSpectrum (𝓞 E)), IsInertAt (maximalRealSubfield E) E v P → ∃ (σ : P.adicCompletion E →+* P.adicCompletion E) (ϖ : P.adicCompletion E), (∀ x : E, σ (algebraMap E (P.adicCompletion E) x) = algebraMap E (P.adicCompletion E) (ReciprocityTheory.ChartRestriction.G.FD.cc x)) ∧ (∀ x, σ (σ x) = x) ∧ (∀ x, Valued.v (σ x) = Valued.v x) ∧ (∃ x, Valued.v x ≤ 1 ∧ Valued.v (σ x - x) = 1) ∧ σ ϖ = ϖ ∧ IsUnifV E P ϖ := by
   intro E _ _ _ _ v P h

@@ -41,19 +41,17 @@ noncomputable section
 namespace GlobalTheory.Mum
 
 /- English proof (translation)
-Use `set c : FractionRing R := algebraMap R (FractionRing R) r with hc`. Establish `hc0 : c ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective R (FractionRing R))).2 hr`. Establish `hall : ∀ k : ℕ, ∃ s : R, c ^ 4 * y ^ k = algebraMap R _ s`. Introduce `k`. Take `⟨p, q, u, v, hk⟩` from `Nat.sum_four_squares k`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨s1, h1⟩` from `h p`. Take `⟨s2, h2⟩` from `h q`. Take `⟨s3, h3⟩` from `h u`. Take `⟨s4, h4⟩` from `h v`. Use `⟨s1 * s2 * s3 * s4, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hk, map_mul, map_mul, map_mul, ← h1, ← h2, ← h3, ← h4, pow_add, pow_add, pow_add]`. Expand and normalize the polynomial expressions, which then agree. Set `S : Subalgebra R (FractionRing R)` to `Algebra.adjoin R {y}`. Establish `hle : Subalgebra.toSubmodule S ≤ Submodule.span R {(c ^ 4)⁻¹}` using `by show Subalgebra.toSubmodule (Algebra.adjoin R {y}) ≤ _`. Rewrite using `[Algebra.adjoin_eq_span, Submodule.span_le]`.
+Expand and normalize the polynomial expressions, which then agree. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `z hz`. Take `⟨k, rfl⟩` from `Submonoid.mem_closure_singleton.mp hz`. Take `⟨s, hs⟩` from `hall k`. Establish `hc4 : c ^ 4 ≠ 0` using `pow_ne_zero _ hc0`. Establish `: y ^ k = s • (c ^ 4)⁻¹`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Algebra.smul_def, ← hs]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[SetLike.mem_coe, this]`. Conclude with `Submodule.smul_mem _ s (Submodule.mem_span_singleton_self _)`. Establish `hfg : (Subalgebra.toSubmodule S).FG` using `by haveI := isNoetherian_of_fg_of_noetherian _ (Submodule.fg_span_singleton (R := R) ((c ^ 4)⁻¹ : FractionRing R))`.
+Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : ((Subalgebra.toSubmodule S).comap (Submodule.span R {(c ^ 4)⁻¹}).subtype).FG` using `IsNoetherian.noetherian _`. Establish `h2` using `h1.map (Submodule.span R {(c ^ 4)⁻¹}).subtype`. Rewrite `h2` using `[Submodule.map_comap_subtype, inf_eq_right.mpr hle]`. Then use the resulting hypothesis. Establish `hint : IsIntegral R y` using `IsIntegral.of_mem_of_fg S hfg y (Algebra.self_mem_adjoin_singleton R y)`. Take `⟨s, hs⟩` from `IsIntegrallyClosed.isIntegral_iff.mp hint`.
-
-Conclude with `⟨s, hs.symm⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem integral_of_sqPow_bdd (R : Type) [CommRing R] [IsDomain R] [IsNoetherianRing R] [IsIntegrallyClosed R]
     (y : FractionRing R) (r : R) (hr : r ≠ 0)
@@ -93,35 +91,31 @@ theorem integral_of_sqPow_bdd (R : Type) [CommRing R] [IsDomain R] [IsNoetherian
   exact ⟨s, hs.symm⟩
 
 /- English proof (translation)
-Introduce `R _ _ _ hB D A G _ _ U V _ _ _ φ D' A' G' _ _ U' U₀ F C hV hφ hI hU`. Take `⟨⟨h₁, h₂, -, -, -⟩, -⟩` from `GlobalTheory.lawsAndExpansions`. Establish `hE` using `GlobalTheory.LN.ega_of_laws h₁ h₂`. Establish `hR : AdmBase R (maximalIdeal R)` using `hB.1`. Use `haveI : IsNoetherianRing R := hR.1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : IsIntegrallyClosed R := hR.2.2.1`. Establish `hmR : maximalIdeal R ≠ ⊤` using `(maximalIdeal.isMaximal R).ne_top`. Use `hV.1` as an intermediate fact. Establish `hV' : AdmBase V (maximalIdeal V)` using `⟨inferInstance, inferInstance, inferInstance, hV.2.1⟩`. Establish `hm : maximalIdeal V ≠ ⊤` using `(maximalIdeal.isMaximal V).ne_top`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hIm : (maximalIdeal R).map φ ≤ maximalIdeal V` using `Ideal.map_le_iff_le_comap.2 hI.ge`. Take `⟨σ, hσ0⟩` from `GlobalTheory.T.exists_nonzero_section_preUniformised_completeNormal R hB D A G U`. Take `⟨f, hf, -⟩` from `GlobalTheory.CompleteBaseExpansion.main h₁ h₂ hE R _ hR hmR D A G U 1 σ`. Take `⟨σ', f', hf', hσσ, hff⟩` from `GlobalTheory.ExpCmp.expT_cmp R V _ _ φ hIm D D'.toPre A A' G G' U U' F C 1 σ f hf`. Establish `hcmp : GlobalTheory.PsiRing.SecCmp D D'.toPre C.β C.v C.xe f f'` using `hff`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hrel'` using `GlobalTheory.T.psiRel_of_expT' h₁ h₂ V _ hV' D' A' G' U' U₀ hU σ' f' hf'`. Establish `hσ'0` using `GlobalTheory.T.pullback_nonzero_section_injective_domain_map R hB D A G U V φ D'.toPre A' G' U' F C hV hφ σ σ' hσσ hσ0`. Establish `hne' : ∀ α, ∃ j, (f' α).f j ≠ 0` using `GlobalTheory.T.forall_term_ne_zero_of_psiRelation V D'.toPre f' hrel' (GlobalTheory.T.exists_nonzero_expansionTerm_completeDVR V hV D' A' G' U' U₀ hU σ' f' hf' hσ'0)`. Establish `hne` using `GlobalTheory.PsiRing.ne_zero_of_secCmp C.pbB.1.w hcmp hne'`. Take `⟨psi, h, hrel⟩` from `GlobalTheory.exists_psi_psiRel h₁ h₂ R D f hne`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `E : DegPre R` to `GlobalTheory.LN.withPsi D psi h`. Establish `hrelE : GlobalTheory.UU.PsiRel E (𝟙_ _) f` using `hrel`. Establish `hrig : GlobalTheory.PsiRing.RigCmp φ E D'.toPre C.β C.v` using `GlobalTheory.T.rigidification_comparison_uniformisation R V _ _ φ hm hIm D D'.toPre A G A' G' U U' F C`. Take `⟨gam, hgam⟩` from `GlobalTheory.PsiRing.exists_generic_map hφ`. Establish `hpsi : GlobalTheory.PsiRing.PsiCmp E D'.toPre C.β C.v C.xe gam` using `GlobalTheory.T.psiCmp_of_secCmp' R V φ E D'.toPre C.β C.v C.xe C.pbB C.v_gen C.c_pr hrig f f' hcmp hrelE hrel' (hne' 0) gam hgam`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hev : E.PsiEven` using `GlobalTheory.T.psiEven_descend_baseChange h₁.globalFns R V φ E D'.toPre C.β C.v C.xe C.pbB C.v_gen C.c_pr gam hgam hpsi D'.psi_even`. Establish `hbi : E.TauBimult` using `GlobalTheory.T.tauBimult_of_baseChange' h₁.globalFns R V φ E D'.toPre C.β C.v C.xe C.pbB C.v_gen C.c_pr hrig gam hgam hpsi D'.tau_bimult`. Take `⟨ga, a, hS⟩` from `GlobalTheory.exists_psiScal R E`. Take `⟨th, hth, hmul⟩` from `GlobalTheory.T.exists_thetaSection_nonzeroFibres_localRing h₂.secTwist R D`. Take `⟨q, hq⟩` from `hmul (f 0)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `choose b hb using fun χ : D.X => GlobalTheory.T.exists_twistedSection_thetaTranslate_coef R D th hmul χ (ga χ) (hS χ).1 (f χ)`. Establish `hab : ∀ χ, algebraMap R (FractionRing R) q * (a χ).val = algebraMap R (FractionRing R) (b χ)` using `fun χ => GlobalTheory.T.psiScalar_eq_expansionCoef_ratio R E ga a f th hS hrelE hth χ q (b χ) hq (hb χ)`. Establish `hq0 : q ≠ 0`. Introduce and unpack `rfl`. Take `⟨j, hj⟩` from `hne 0`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Apply `hj` to reduce the goal to its premises. Rewrite using `[GlobalTheory.T.secIsMul_of_baseMultiple_thetaSection R D th (f 0) 0 hq j]`. Simplify using `[scal]`. Establish `hint : ∀ χ, ∃ c : R, ((a χ : (FractionRing R)ˣ) : FractionRing R) = algebraMap R _ c` using `fun χ => by`. Use `integral_of_sqPow_bdd R _ q hq0 fun n => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨u, hu⟩` from `GlobalTheory.T.psiScalar_nsmul_eq_unit_mul_pow_sq R E ga a hS hev hbi χ n`. Use `⟨((u⁻¹ : Rˣ) : R) * b (n • χ), ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, ← hab, hu]`. Establish `hu1 : algebraMap R (FractionRing R) ((u⁻¹ : Rˣ) : R) * algebraMap R _ (u : R) = 1`. Rewrite using `[← map_mul, Units.inv_mul, map_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Take the linear combination `(-(algebraMap R (FractionRing R) q * ((a χ : (FractionRing R)ˣ) : FractionRing R) ^ (n ^ 2))) * hu1`. Use `choose c hc using hint`. Establish `hbc : ∀ χ, b χ = q * c χ` using `fun χ => by`. Apply `IsFractionRing.injective R (FractionRing R)` to reduce the goal to its premises. Conclude with `(hab χ).symm.trans (by rw [map_mul, ← hc χ])`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcm : ∀ χ : D.X, χ ≠ 0 → c χ ∈ maximalIdeal R` using `fun χ hχ => by`. Take `⟨x, rfl⟩` from `C.xe.surjective χ`. Take `⟨m, hm₁, hm₂⟩` from `GlobalTheory.T.psiScalar_mem_of_psi_mem_ideal R V φ E D'.toPre C.β C.v C.xe C.pbB C.v_gen C.c_pr gam hgam hpsi ga a hS x _ (D'.psi_pos x fun h0 => hχ (by rw [h0, map_zero])) _ q (hab _)`. Establish `hm₃ : φ q * φ (c (C.xe x)) = φ q * m` using `by rw [← map_mul, ← hbc]; exact hm₂`. Establish `hφq : φ q ≠ 0` using `(map_ne_zero_iff _ hφ).2 hq0`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Establish `e` using `mul_left_cancel₀ hφq hm₃`. Establish `hmem : c (C.xe x) ∈ (maximalIdeal V).comap φ` using `Ideal.mem_comap.2 (by rw [e]; exact hm₁)`. Conclude with `(Set.ext_iff.1 (congrArg (fun J : Ideal R => (J : Set R)) hI) _).1 hmem`. Use `choose G₁ hG₁ using fun χ : D.X => GlobalTheory.T.exists_translatedThetaCoefficient_section R D th χ (ga χ) (hS χ).1 (c χ)`. Use `choose H₁ hH₁ using fun χ : D.X => GlobalTheory.T.exists_translatedThetaCoefficient_section R D th χ (ga χ) (hS χ).1 1`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Set `g : ∀ α, GlobalTheory.UU.SecBT D (𝟙_ _) 1 α` to `fun α => if h0 : α = 0 then h0 ▸ th else G₁ α`. Use `⟨σ, f, g, q, hq0, hf, fun α => ?_, ?_, fun α hα => ⟨c α, hcm α hα, H₁ α, ?_⟩⟩` and prove the remaining obligations. Distinguish the cases in `h0 : α = 0`. Substitute `h0` using the available equality. Simplify using `only [g, dif_pos rfl]`.
-
-Conclude with `GlobalTheory.T.secIsMul_of_baseMultiple_thetaSection R D th (f 0) q hq`. Simplify using `only [g, dif_neg h0]`. Conclude with `GlobalTheory.T.secIsMul_of_translatedThetaCoefficient_proportional R D α (ga α) th (f α) (G₁ α) (b α) (c α) q (hb α) (hG₁ α) (hbc α)`. Simplify using `only [g, dif_pos rfl]`. Conclude with `hth`.
-
-Simplify using `only [g, dif_neg hα]`. Conclude with `GlobalTheory.T.secIsMul_of_translatedThetaCoefficient_proportional R D α (ga α) th (G₁ α) (H₁ α) (c α) 1 (c α) (hG₁ α) (hH₁ α) (_root_.mul_one _).symm`.
+A detailed English derivation is pending.
 -/
 theorem exists_coefData_of_ne_zero : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], Base R → ∀ (D : DegPre R) (A : PolAV (Sp (FractionRing R))) (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G] (U : GlobalTheory.UU.PreU (maximalIdeal R) D A G) (V : Type) [CommRing V] [IsDomain V] [IsLocalRing V] (φ : R →+* V) (D' : DegData V (maximalIdeal V)) (A' : PolAV (Sp (FractionRing V))) (G' : Over (Sp V)) [GrpObj G'] [IsCommMonObj G'] (U' : GlobalTheory.UU.PreU (maximalIdeal V) D'.toPre A' G') (U₀ : Unif (maximalIdeal V) D' A' G') (F : G'.left ⟶ G.left), GlobalTheory.LN.Cmp φ U U' F → GlobalTheory.LN.CDvr V → Function.Injective φ → (maximalIdeal V).comap φ = maximalIdeal R → GlobalTheory.LN.Under U' U₀.toUnifPre → ∃ (σ : U.SecGT (𝟙_ _) 1) (f g : ∀ α, GlobalTheory.UU.SecBT D (𝟙_ _) 1 α) (q : R), q ≠ 0 ∧ U.ExpT (𝟙_ _) 1 σ f ∧ (∀ α, ReciprocityTheory.ChartRestriction.G.DVR.SecIsMul (𝟙_ _ ⊗ D.P.A).hom q (f α) (g α)) ∧ GlobalTheory.PsiRing.FibNZ (𝟙_ _ ⊗ D.P.A).hom (g 0) ∧ ∀ α, α ≠ 0 → ∃ a ∈ maximalIdeal R, ∃ h : GlobalTheory.UU.SecBT D (𝟙_ _) 1 α, ReciprocityTheory.ChartRestriction.G.DVR.SecIsMul (𝟙_ _ ⊗ D.P.A).hom a (g α) h := by
 

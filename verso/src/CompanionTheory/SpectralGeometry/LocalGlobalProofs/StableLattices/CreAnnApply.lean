@@ -24,17 +24,17 @@ def coef (c d : Fin n) (i j : NC ε) : ℝ :=
 def gg (c d : Fin n) (A B : Finset (NC ε)) : ℝ := ∑ i : NC ε, ∑ j : NC ε, coef c d i j * hh i j A B
 
 /- English proof (translation)
-Simplify using `[sg, sgR]`.
+Simplify using the standard rewrite rules.
 -/
 lemma sg_eq (i : NC ε) (A : Finset (NC ε)) : sg i A = (sgR i A : ℂ) := by
   simp [sg, sgR]
 
 /- English proof (translation)
-Unfold `sgR`. Use `congr 2`. Use extensionality with `j`. Simplify using `only [mem_filter, mem_erase]`. Prove the components needed by the constructor for the conclusion.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨⟨_, h⟩, h'⟩`. Conclude with `⟨h, h'⟩`. Introduce and unpack `⟨h, h'⟩`. Use `⟨⟨?_, h⟩, h'⟩` and prove the remaining obligations. Introduce and unpack `rfl`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Conclude with `lt_irrefl _ h'`.
+A detailed English derivation is pending.
 -/
 lemma sgR_erase (i : NC ε) (A : Finset (NC ε)) : sgR i (A.erase i) = sgR i A := by
   unfold sgR
@@ -49,14 +49,14 @@ lemma sgR_erase (i : NC ε) (A : Finset (NC ε)) : sgR i (A.erase i) = sgR i A :
     exact lt_irrefl _ h'
 
 /- English proof (translation)
-Unfold `sgR`. Rewrite using `[← mul_pow]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma sgR_mul_self (i : NC ε) (A : Finset (NC ε)) : sgR i A * sgR i A = 1 := by
   unfold sgR
   rw [← mul_pow]; simp
 
 /- English proof (translation)
-Unfold `hh`. Distinguish the cases in `h : i ∈ A ∧ j ∈ B ∧ A.erase i = B.erase j`. Rewrite using `[if_pos h, if_pos ⟨h.2.1, h.1, h.2.2.symm⟩, mul_comm]`. Rewrite using `[if_neg h, if_neg (fun h' => h ⟨h'.2.1, h'.1, h'.2.2.symm⟩)]`.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 lemma hh_symm (i j : NC ε) (A B : Finset (NC ε)) : hh i j A B = hh j i B A := by
   unfold hh
@@ -65,7 +65,7 @@ lemma hh_symm (i j : NC ε) (A B : Finset (NC ε)) : hh i j A B = hh j i B A := 
   · rw [if_neg h, if_neg (fun h' => h ⟨h'.2.1, h'.1, h'.2.2.symm⟩)]
 
 /- English proof (translation)
-Unfold `coef`. Use `congr 1`. Conclude with `if_congr ⟨fun h => ⟨h.2.1, h.1, h.2.2.symm⟩, fun h => ⟨h.2.1, h.1, h.2.2.symm⟩⟩ rfl rfl`. Conclude with `if_congr ⟨fun h => ⟨h.2.1, h.1, h.2.2.symm⟩, fun h => ⟨h.2.1, h.1, h.2.2.symm⟩⟩ rfl rfl`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 lemma coef_symm (c d : Fin n) (i j : NC ε) : coef c d i j = coef d c j i := by
   unfold coef
@@ -74,17 +74,17 @@ lemma coef_symm (c d : Fin n) (i j : NC ε) : coef c d i j = coef d c j i := by
   · exact if_congr ⟨fun h => ⟨h.2.1, h.1, h.2.2.symm⟩, fun h => ⟨h.2.1, h.1, h.2.2.symm⟩⟩ rfl rfl
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(if i ∈ A then sg i A • (if j ∈ A.erase i then 0 else sg j (A.erase i) • x (insert j (A.erase i))) else 0) = _`. Distinguish the cases in `hi : i ∈ A`. Rewrite using `[if_pos hi]`. Distinguish the cases in `hj : j ∈ A.erase i`. Rewrite using `[if_pos hj, smul_zero]`.
+Express the relevant assertion in an equivalent form by its definition. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Use `symm`. Use `Finset.sum_eq_zero fun B _ => ?_` and prove the remaining obligations. Establish `: ¬ (i ∈ A ∧ j ∈ B ∧ A.erase i = B.erase j)`. Introduce and unpack `⟨_, _, h⟩`. Rewrite `hj` using `[h]`.
+Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `Finset.notMem_erase _ _ hj`. Simplify using `only [hh, if_neg this, Complex.ofReal_zero, zero_smul]`. Rewrite using `[if_neg hj, Finset.sum_eq_single (insert j (A.erase i))]`. Establish `: i ∈ A ∧ j ∈ insert j (A.erase i) ∧ A.erase i = (insert j (A.erase i)).erase j` using `⟨hi, mem_insert_self _ _, (Finset.erase_insert hj).symm⟩`. Rewrite using `[hh, if_pos this, Finset.erase_insert hj, sgR_erase, smul_smul, sg_eq, sg_eq, Complex.ofReal_mul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `B _ hB`. Establish `: ¬ (i ∈ A ∧ j ∈ B ∧ A.erase i = B.erase j)`. Introduce and unpack `⟨_, h1, h⟩`. Apply `hB` to reduce the goal to its premises. Rewrite using `[h, Finset.insert_erase h1]`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [hh, if_neg this, Complex.ofReal_zero, zero_smul]`. Introduce `h`. Conclude with `absurd (mem_univ _) h`. Rewrite using `[if_neg hi]`. Use `symm`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `Finset.sum_eq_zero fun B _ => ?_` and prove the remaining obligations. Establish `: ¬ (i ∈ A ∧ j ∈ B ∧ A.erase i = B.erase j)` using `fun h => hi h.1`. Simplify using `only [hh, if_neg this, Complex.ofReal_zero, zero_smul]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma cre_ann_apply {V : Type} [AddCommGroup V] [Module ℂ V] (i j : NC ε) (x : Ch ε V)
     (A : Finset (NC ε)) :
@@ -121,9 +121,9 @@ lemma cre_ann_apply {V : Type} [AddCommGroup V] [Module ℂ V] (i j : NC ε) (x 
     simp only [hh, if_neg this, Complex.ofReal_zero, zero_smul]
 
 /- English proof (translation)
-Establish `hc : ∀ i j : NC ε, ((if i.1.1 = c ∧ j.1.1 = d ∧ i.1.2 = j.1.2 then 1 else 0) - (if i.1.2 = d ∧ j.1.2 = c ∧ i.1.1 = j.1.1 then 1 else 0) : ℂ) = (coef c d i j : ℂ)`. Introduce `i j`. Unfold `coef`. Apply the tactic sequence `split_ifs <;> simp`. Unfold `Gop gg`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation. Replace the relevant objects with their definitions.
 
-Simplify using `only [hc, LinearMap.sum_apply, Finset.sum_apply, LinearMap.smul_apply, Pi.smul_apply, cre_ann_apply, Complex.ofReal_sum, Complex.ofReal_mul, Finset.sum_smul, Finset.smul_sum, smul_smul]`. Use `symm`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`.
+Simplify using the standard rewrite rules. Use symmetry to reverse the relation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 lemma Gop_apply {V : Type} [AddCommGroup V] [Module ℂ V] (c d : Fin n) (x : Ch ε V)
     (A : Finset (NC ε)) : Gop ε c d x A = ∑ B, (gg c d A B : ℂ) • x B := by
@@ -142,11 +142,9 @@ lemma Gop_apply {V : Type} [AddCommGroup V] [Module ℂ V] (c d : Fin n) (x : Ch
   rw [Finset.sum_comm]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `c`. Establish `key : ∀ (p : NC ε → Prop) [DecidablePred p], ((A.filter p).card : ℝ) = (((A.erase i).filter p).card : ℝ) + if p i then 1 else 0`. Introduce `p _`. Use `conv_lhs => rw [← Finset.insert_erase hi, Finset.filter_insert]`. Use `split_ifs with h`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.card_insert_of_notMem (by simp)]; simp`. Simplify using the standard rewrite rules. Simplify using `only [wtA, Pi.sub_apply, Pi.add_apply, Pi.single_apply]`. Rewrite using `[key (fun i => i.1.1 = c), key (fun i => i.1.2 = c)]`. Simplify using `only [eq_comm (a := c)]`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 lemma wtA_erase (i : NC ε) (A : Finset (NC ε)) (hi : i ∈ A) :
     wtA A = wtA (A.erase i) + Pi.single i.1.1 1 - Pi.single i.1.2 1 := by
@@ -164,9 +162,9 @@ lemma wtA_erase (i : NC ε) (A : Finset (NC ε)) (hi : i ∈ A) :
   ring
 
 /- English proof (translation)
-Take `⟨i, -, h⟩` from `Finset.exists_ne_zero_of_sum_ne_zero h`. Take `⟨j, -, h⟩` from `Finset.exists_ne_zero_of_sum_ne_zero h`. Use `⟨i, j, ?_, ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `h'`. Rewrite `h'` using `[not_or]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `left_ne_zero_of_mul h (by rw [coef, if_neg h'.1, if_neg h'.2, sub_zero])`. Assume the negation of the conclusion as `h'`. Conclude with `right_ne_zero_of_mul h (by rw [hh, if_neg h'])`.
+Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 lemma exists_of_ne {c d : Fin n} {A B : Finset (NC ε)} (h : gg c d A B ≠ 0) :
     ∃ i j : NC ε, ((i.1.1 = c ∧ j.1.1 = d ∧ i.1.2 = j.1.2) ∨ (i.1.2 = d ∧ j.1.2 = c ∧ i.1.1 = j.1.1)) ∧
@@ -181,17 +179,17 @@ lemma exists_of_ne {c d : Fin n} {A B : Finset (NC ε)} (h : gg c d A B ≠ 0) :
     exact right_ne_zero_of_mul h (by rw [hh, if_neg h'])
 
 /- English proof (translation)
-Establish `h1 : ∀ i : NC ε, ∑ j : NC ε, coef c c i j * hh i j A B = coef c c i i * hh i i A B`. Introduce `i`. Use `Finset.sum_eq_single i (fun j _ hj => ?_) (fun h => absurd (mem_univ _) h)` and prove the remaining obligations. Establish `e1 : ¬ (i.1.1 = c ∧ j.1.1 = c ∧ i.1.2 = j.1.2)`. Introduce and unpack `⟨a, b, e⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Conclude with `hj (Subtype.ext (Prod.ext (b.trans a.symm) e.symm))`. Establish `e2 : ¬ (i.1.2 = c ∧ j.1.2 = c ∧ i.1.1 = j.1.1)`. Introduce and unpack `⟨a, b, e⟩`. Conclude with `hj (Subtype.ext (Prod.ext e.symm (b.trans a.symm)))`. Rewrite using `[coef, if_neg e1, if_neg e2, sub_zero, zero_mul]`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
-Unfold `gg`. Simplify using `only [h1]`. Use `split_ifs with h`. Substitute `h` using the available equality. Establish `h2 : ∀ i : NC ε, hh i i A A = if i ∈ A then 1 else 0`.
+Substitute using the available equality. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails.
 
-Introduce `i`. Unfold `hh`. Distinguish the cases in `hi : i ∈ A`. Simplify using `[hi, sgR_mul_self]`. Simplify using `[hi]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [h2, mul_ite, mul_one, mul_zero]`. Rewrite using `[Finset.sum_ite_mem, Finset.univ_inter]`. Simplify using `[coef, wtA, Finset.sum_sub_distrib]`. Use `Finset.sum_eq_zero fun i _ => ?_` and prove the remaining obligations. Establish `: ¬ (i ∈ A ∧ i ∈ B ∧ A.erase i = B.erase i)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `⟨a, b, e⟩`. Apply `h` to reduce the goal to its premises. Rewrite using `[← Finset.insert_erase a, e, Finset.insert_erase b]`. Rewrite using `[hh, if_neg this, mul_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma gg_diag (c : Fin n) (A B : Finset (NC ε)) : gg c c A B = if A = B then wtA A c else 0 := by
   have h1 : ∀ i : NC ε, ∑ j : NC ε, coef c c i j * hh i j A B = coef c c i i * hh i i A B := by
@@ -225,19 +223,17 @@ lemma gg_diag (c : Fin n) (A B : Finset (NC ε)) : gg c c A B = if A = B then wt
     rw [hh, if_neg this, mul_zero]
 
 /- English proof (translation)
-Introduce `n ε`. Use `⟨gg, fun V _ _ c d x A => Gop_apply c d x A, fun c d A B => ?_, fun c d A B h => ?_, gg_diag, fun c d A hdc => ?_⟩` and prove the remaining obligations. Unfold `gg`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[coef_symm, hh_symm]`. Take `⟨i, j, hc, hi, hj, e⟩` from `exists_of_ne h`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← Finset.card_erase_add_one hi, e, Finset.card_erase_add_one hj]`. Rewrite using `[wtA_erase i A hi, wtA_erase j B hj, e]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Break down `hc with ⟨a, b, f⟩ | ⟨a, b, f⟩` into its components or cases. Rewrite using `[a, b, f]`. Normalize the expressions using the abelian group laws. Rewrite using `[a, b, f]`. Normalize the expressions using the abelian group laws.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Assume the negation of the conclusion as `h`. Take `⟨i, j, hc, hi, hj, e⟩` from `exists_of_ne h`. Establish `hn : i ∉ (A1 ε).erase j` using `e ▸ Finset.notMem_erase i A`. Apply `hn` to reduce the goal to its premises. Simplify using `only [A1, mem_filter, mem_univ, true_and, mem_erase] at hj ⊢`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Break down `hc with ⟨a, b, f⟩ | ⟨a, b, f⟩` into its components or cases. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `rfl`. Conclude with `hdc.ne (b.symm.trans a)`. Rewrite using `[a, f]`.
+Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hj` using `[b]`. Conclude with `hj.trans hdc`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `rfl`. Conclude with `hdc.ne (a.symm.trans b)`.
-
-Rewrite using `[a, f]`. Rewrite `hj` using `[b]`. Conclude with `hdc.trans hj`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gFacts : GFacts := by
   intro n ε

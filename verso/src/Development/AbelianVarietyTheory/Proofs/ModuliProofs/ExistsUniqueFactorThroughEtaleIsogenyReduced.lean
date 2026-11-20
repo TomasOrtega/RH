@@ -14,11 +14,9 @@ open GlobalTheory.HkFam
 namespace GlobalTheory.HkFactor
 
 /- English proof (translation)
-Set `K : T → Type` to `fun t => AlgebraicClosure (T.residueField t)`. Set `pts : (∐ fun t : T => Sp (K t)) ⟶ T` to `Sigma.desc fun t => Spec.map (CommRingCat.ofHom (algebraMap (T.residueField t) (K t))) ≫ T.fromSpecResidueField t`. Establish `: Surjective pts`. Use `⟨fun t => ⟨Sigma.ι (fun t : T => Sp (K t)) t (IsLocalRing.closedPoint (K t)), ?_⟩⟩` and prove the remaining obligations. Establish `e : (Sigma.ι (fun t : T => Sp (K t)) t ≫ pts) (IsLocalRing.closedPoint (K t)) = t`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `only [pts, Sigma.ι_desc]`. Conclude with `(Scheme.Hom.comp_apply _ _ _).trans (Scheme.fromSpecResidueField_apply _ _)`. Conclude with `(Scheme.Hom.comp_apply _ _ _).symm.trans e`. Use `ext_of_isDominant_of_isSeparated q h pts ?_` and prove the remaining obligations. Use `Sigma.hom_ext _ _ fun t => ?_` and prove the remaining obligations.
-
-Simplify `H (K t) _` using `only [pts, Sigma.ι_desc_assoc]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 lemma ext_of_geometricPoints {T X Z : Scheme.{0}} [IsReduced T] (q : X ⟶ Z) [IsSeparated q]
     (f g : T ⟶ X) (h : f ≫ q = g ≫ q)
@@ -40,17 +38,17 @@ lemma ext_of_geometricPoints {T X Z : Scheme.{0}} [IsReduced T] (q : X ⟶ Z) [I
   simpa only [pts, Sigma.ι_desc_assoc] using H (K t) _
 
 /- English proof (translation)
-Introduce `S _ A B B' _ _ _ ψ g _ _ hsep hψ hfin het hsurj hg H`. Set `T : Over S` to `pullback ψ η[B]`. Set `i : T ⟶ A` to `pullback.fst ψ η[B]`. Establish `hker : IsPullback i (toUnit T) ψ η[B]`. Establish `hp` using `IsPullback.of_hasPullback ψ η[B]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hp` using `[toUnit_unique (pullback.snd ψ η[B]) (toUnit T)]`. Then use the resulting hypothesis. Establish `: IsReduced T.left`. Establish `hp : IsPullback i.left (toUnit T).left ψ.left (η[B]).left` using `hker.map (Over.forget S)`. Establish `: Etale (toUnit T).left` using `MorphismProperty.of_isPullback hp het`. Establish `: IsReduced (𝟙_ (Over S)).left` using `by dsimp; infer_instance`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `GlobalTheory.isReduced_of_smooth_of_isReduced (toUnit T).left`. Use `hsep` as an intermediate fact. Establish `hf : i ≫ g = toUnit T ≫ η[B']`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Use `ext_of_geometricPoints B'.hom _ _ (by rw [Over.w, Over.w]) ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `k _ _ x`. Set `xo : Over.mk (x ≫ T.hom) ⟶ T` to `Over.homMk x`. Establish `e1 : (xo ≫ i) ≫ ψ = 1`. Rewrite using `[Category.assoc, hker.w, ← Category.assoc, Hom.one_def, toUnit_unique (xo ≫ toUnit T) (toUnit _)]`. Establish `e3 : xo ≫ (i ≫ g) = xo ≫ (toUnit T ≫ η[B'])`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Category.assoc, H k (x ≫ T.hom) (xo ≫ i) e1, Hom.one_def, ← Category.assoc, toUnit_unique (xo ≫ toUnit T) (toUnit _)]`. Simplify `congrArg CommaMorphism.left e3` using `only [xo, Over.comp_left, Over.homMk_left]`. Use `hψ` as an intermediate fact. Use `hg` as an intermediate fact. Use `hfin` as an intermediate fact.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `het` as an intermediate fact. Use `hsurj` as an intermediate fact. Take `⟨β, hβ, hψβ⟩` from `FlatQuotient.exists_desc ψ i g hker hf`. Establish `: Epi ψ` using `FlatQuotient.epi_of_flat_surjective ψ`. Conclude with `⟨β, hβ, hψβ, fun g'' h'' => (cancel_epi ψ).1 (h''.trans hψβ.symm)⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_unique_factor : ∀ (S : Scheme.{0}) [IsReduced S] (A B B' : Over S) [GrpObj A] [GrpObj B] [GrpObj B'] (ψ : A ⟶ B) (g : A ⟶ B'), IsAbelianScheme A → IsAbelianScheme B → IsSeparated B'.hom → IsMonHom ψ → IsFinite ψ.left → Etale ψ.left → Surjective ψ.left → IsMonHom g → (∀ (k : Type) [Field k] [IsAlgClosed k] (t : Sp k ⟶ S) (x : Over.mk t ⟶ A), x ≫ ψ = 1 → x ≫ g = 1) → ∃ g' : B ⟶ B', IsMonHom g' ∧ ψ ≫ g' = g ∧ ∀ g'' : B ⟶ B', ψ ≫ g'' = g → g'' = g' := by
   intro S _ A B B' _ _ _ ψ g _ _ hsep hψ hfin het hsurj hg H

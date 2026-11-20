@@ -28,11 +28,11 @@ open GlobalTheory.Member
 namespace GlobalTheory.Member
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c hpq hg`. Establish `hS : ReciprocityTheory.ChartRestriction.G.Out.SecBaseChangeSt` using `GlobalTheory.firstFiveLaws.1.secBaseChange`. Establish `hT : ReciprocityTheory.ChartRestriction.G.Out.SecTwistSt` using `GlobalTheory.firstFiveLaws.2.1.secTwist`. Establish `hP : PartI` using `GlobalTheory.T.compactifiedModuli_partOne`. Establish `hA : N1ab` using `GlobalTheory.Moduli.moduli_scheme_exists`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hC : N1c` using `GlobalTheory.closing_of_abelianSchemeLaws`. Establish `h3` using `GlobalTheory.Frames.algebraic_laws hS E H Dw l Xo c`. Establish `hR` using `GlobalTheory.Reg.sCharts_and_transfer_of_good_level hP hA E H Dw l Xo c hpq hg`. Use `⟨h3.2.2.1, h3.2.2.2.2.2.1, GlobalTheory.integralAlgebraicFramedPoint_exists hP hA hC hS hT E H Dw l Xo c hpq hg, (Formalism.L2.PjFree.intAll_iff Xo c).1 (GlobalTheory.IntegralFrames.intAll hP hA hS hT E H Dw l Xo c hpq hg), GlobalTheory.Frames.allTest_of_secBaseChange hS E H Dw l …` and prove the remaining obligations. Conclude with `(Formalism.L2.PjFree.regP_ofPj U).1 (hR.2.1 r _)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `(Formalism.L2.PjFree.cuspMul_ofPj U).1 (GlobalTheory.CuspProduct.cuspMul_holds E H Dw l Xo c r _)`. Establish `h0 : GoodEmb c (goodOf c c.F.val.toRingHom)` using `goodEmb_goodOf c _`. Conclude with `(Formalism.L2.PjFree.cuspFD_ofPj U).1 (GlobalTheory.cuspForms_finiteDimensional_of_isUnf hS E H Dw l Xo c r (fun σ => Formalism.L2.PjFree.Unf.ofPj (U σ)) _ h0 ((Formalism.L2.PjFree.isUnf_ofPj (U _)).2 (hU _ h0)))`. Conclude with `(Formalism.L2.PjFree.supDef_ofPj U).1 (GlobalTheory.supNorm_definite_on_cusp E H Dw l Xo c r _ fun σ hσ => (Formalism.L2.PjFree.isUnf_ofPj (U σ)).2 (hU σ hσ))`.
+A detailed English derivation is pending.
 -/
 theorem algebraic_laws_of_good_level :
     ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l), 1 ≤ Dw.p + Dw.q → (∀ p : ℕ, p.Prime → l.GoodAt p) → EvalWD (K := c.F) (fun S _ _ => FrPt Xo c S) (fun φ y z => FrMap φ y z) ∧ UnitIndep Xo c ∧ IntFrNe Xo c (algCls Xo c) ∧ IntAll Xo c ∧ AllTest Xo c ∧ ∀ (r : ℕ) (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r), regular₂ Xo c U ∧ CuspMul Xo c U ∧ ((∀ σ, GoodEmb c σ → IsUnf (U σ)) → CuspFD Xo c U ∧ SupDef Xo c U) := by

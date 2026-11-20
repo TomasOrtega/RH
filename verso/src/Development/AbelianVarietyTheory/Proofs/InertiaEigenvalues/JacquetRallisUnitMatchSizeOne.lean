@@ -8,22 +8,22 @@ noncomputable section
 namespace GlobalTheory.JR.SizeOne
 
 /- English proof (translation)
-Unfold `eta`. Rewrite using `[if_pos ⟨1, by simp⟩]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem eta_one' {F : Type} [NormedField F] : eta (1 : F) = 1 := by
   unfold eta
   rw [if_pos ⟨1, by simp⟩]
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ M a _`. Use `letI := M.mG`. Use `letI := M.mU`. Establish `hG : M.μG Set.univ = 1`. Rewrite using `[← M.volG]`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use extensionality with `g`. Simplify using `[glO]`. Establish `hU : M.μU Set.univ = 1`. Rewrite using `[← M.volU]`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use extensionality with `g`. Simplify using `[uO]`. Establish `hw : ∀ Y : Gl 0 F, omega Y = 1`. Introduce `Y`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `: lastDet Y = 1` using `by simp [lastDet, Fin.last]`. Rewrite using `[omega, this, eta_one']`. Use `⟨fun X hX => ?_, fun hn => (hn ⟨(0, 0, a.2.2), ?_⟩).elim⟩` and prove the remaining obligations. Establish `hl : X.2.2 = a.2.2` using `(algebraMap F E).injective (congrArg (fun t => t.2.2) hX)`. Apply the tactic sequence `by_cases hb : ‖a.2.2‖ ≤ 1 <;>`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Simplify using `[orbG, orbU, hw, unitG, unitU, act, actU, sec, Set.indicator, hl, hb, Measure.real, hG, hU]`. Conclude with `Prod.ext (Subsingleton.elim _ _) (Prod.ext (Subsingleton.elim _ _) rfl)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem unitMatch_zero : UnitMatch 0 := by
   intro F E _ _ _ _ _ M a _

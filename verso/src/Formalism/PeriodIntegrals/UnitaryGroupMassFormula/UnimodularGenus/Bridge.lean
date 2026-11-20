@@ -7,7 +7,7 @@ namespace PI.UG.W
 open NumberField
 
 /- English proof (translation)
-Introduce `E _ _ _ n hE N hN p hp hu`. Conclude with `ReciprocityTheory.ChartRestriction.L3.exists_isom_loc hE (hStd_isSymm E n) (stdLat_isOrtho E n) hN p hp hu`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem isomLocStd : IsomLocStd := by
   intro E _ _ _ n hE N hN p hp hu

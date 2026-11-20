@@ -26,7 +26,7 @@ def NSConcl (CH CE C6 C18 : ℝ) (p : ℕ) {n' : ℕ} [NeZero n'] {O : Type} [Co
           ((p : KK O) ^ κ * fock G (∑ q, sig q) / (((∏ s, (d s).factorial : ℕ) : ℕ) : KK O))
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨DX, hDX, h⟩`.
+Supply the required witnesses or components.
 -/
 theorem nsAt_of (CH CE C6 C18 : ℝ) (p : ℕ) {n' : ℕ} [NeZero n'] {O : Type} [CommRing O] [IsDomain O]
     [IsDiscreteValuationRing O] (w : O) {m : ℕ} (r : ℕ) (TT : Finset (Fin n')) (d deg : Fin n' → ℕ) (K : ℕ) [NeZero r]
@@ -90,7 +90,7 @@ def Proposition5At (C CD CLa CH CE C6 C18 : ℝ) : Prop :=
         (cPrime n' r TT.card c0 cpp cStar) (kapFl p (m + 1) (dT TT lam0)) DX G
 
 /- English proof (translation)
-Introduce `p W Qq O Kf _ _ _ _ _ _ _ _ _ _ ι σ j w n' m r _ _ TT L₁ L₂ de h x lam0 aT bT a Y cpp c0 Dp cStar hSet H K _ _ hk hrk F hF E' hE' nb B hB hli hc`. Establish `hD : DataII C CLa p W Qq O Kf ι σ j w n' m r TT L₁ L₂ de h x lam0 aT bT a Y cpp c0 Dp cStar K F nb B` using `⟨hSet, H, hF, ⟨E', hE', hB⟩, hli, hc⟩`. Take `⟨DX, hDX, hP'⟩` from `hP p W Qq O Kf ι σ j w n' m r TT L₁ L₂ de h x lam0 aT bT a Y cpp c0 Dp cStar K hk hrk F nb B hD`. Conclude with `nsAt_of CH CE C6 C18 p w r TT (dT TT lam0) (flatDeg lam0) K hk hrk F _ _ Y c0 _ _ _ B DX hDX fun G h1 h2 h3 h4 => hP' G h1 h2 h3 h4 (hM p W Qq O Kf ι σ j w n' m r TT L₁ L₂ de h x lam0 aT bT a Y cpp c0 Dp cStar K hk hrk F nb B hD G h1)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem nsStep_of (C CD CLa CH CE C6 C18 : ℝ) (hM : MemStep C CLa) (hP : Proposition5At C CD CLa CH CE C6 C18) :
     NSStep C CD CLa CH CE C6 C18 := by
@@ -110,7 +110,7 @@ def Proposition5Gram (D : Formalism.BasicNotions.D7) (CLa Ck Crk Cdeg CH CE C6 C
   tableLineDegreeFive.admitted D CLa Ck Crk Cdeg → ∃ CDf C₁ : ℝ, 0 < CDf ∧ 0 < C₁ ∧ ∀ C : ℝ, C₁ ≤ C → Proposition5At C CDf CLa CH CE C6 C18
 
 /- English proof (translation)
-Introduce `hA`. Take `⟨C₁, h1, hM'⟩` from `hM hA`. Take `⟨CDf, C₂, h2, h3, hP'⟩` from `hP hA`. Use `⟨CDf, max C₁ C₂, h2, lt_max_of_lt_left h1, fun C hC => ?_⟩` and prove the remaining obligations. Conclude with `nsStep_of C CDf CLa CH CE C6 C18 (hM' C (le_trans (le_max_left _ _) hC)) (hP' C (le_trans (le_max_right _ _) hC))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem restNS_of (D : Formalism.BasicNotions.D7) (CLa Ck Crk Cdeg CH CE C6 C18 : ℝ)
     (hM : RestMEM D CLa Ck Crk Cdeg) (hP : Proposition5Gram D CLa Ck Crk Cdeg CH CE C6 C18) :

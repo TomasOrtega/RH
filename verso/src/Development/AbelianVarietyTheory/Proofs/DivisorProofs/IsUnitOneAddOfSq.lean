@@ -23,20 +23,20 @@ Both sides reduce to the same expression.
 theorem toLA_apply (M : Mat E a) : toLA M = toL M := rfl
 
 /- English proof (translation)
-The claim follows from `Measure.pi.isAddHaarMeasure (fun _ : Fin a => (volume : Measure (Cinf E)))`.
+A detailed English derivation is pending.
 -/
 theorem isAddHaar_row : (volume : Measure (Fin a → Cinf E)).IsAddHaarMeasure :=
   Measure.pi.isAddHaarMeasure (fun _ : Fin a => (volume : Measure (Cinf E)))
 
 /- English proof (translation)
-Use `haveI := isAddHaar_row (E := E) (a := a)`. Conclude with `Measure.pi.isAddHaarMeasure (fun _ : Fin a => (volume : Measure (Fin a → Cinf E)))`.
+A detailed English derivation is pending.
 -/
 theorem isAddHaar_lie : (volume : Measure (Lie E a)).IsAddHaarMeasure := by
   haveI := isAddHaar_row (E := E) (a := a)
   exact Measure.pi.isAddHaarMeasure (fun _ : Fin a => (volume : Measure (Fin a → Cinf E)))
 
 /- English proof (translation)
-Establish `hN : IsNilpotent (L - 1)` using `⟨2, by rw [pow_two, hK]⟩`. Establish `h` using `(hN.neg).charpoly_eq_X_pow_finrank`. Establish `h2` using `LinearMap.eval_charpoly (-(L - 1)) 1`. Rewrite `h2` using `[h]`. Simplify using `using h2.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem det_eq_one_of_sq {W : Type} [AddCommGroup W] [Module ℝ W] [Module.Finite ℝ W]
     {L : W →ₗ[ℝ] W} (hK : (L - 1) * (L - 1) = 0) : LinearMap.det L = 1 := by
@@ -56,7 +56,7 @@ def mulL (P : Mat E a) : Lie E a →ₗ[ℝ] Lie E a where
     rw [Matrix.mul_smul]; rfl
 
 /- English proof (translation)
-Use `LinearMap.ext fun w => ?_` and prove the remaining obligations. Use `show toL (P * (P' * Matrix.of w)) = toL (P * P' * Matrix.of w)`. Rewrite using `[Matrix.mul_assoc]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mulL_mul (P P' : Mat E a) : mulL P * mulL P' = mulL (P * P') := by
   refine LinearMap.ext fun w => ?_
@@ -64,7 +64,7 @@ theorem mulL_mul (P P' : Mat E a) : mulL P * mulL P' = mulL (P * P') := by
   rw [Matrix.mul_assoc]
 
 /- English proof (translation)
-Use `LinearMap.ext fun w => ?_` and prove the remaining obligations. Use `show toL ((0 : Mat E a) * Matrix.of w) = 0`. Rewrite using `[Matrix.zero_mul]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem mulL_zero : mulL (0 : Mat E a) = 0 := by
   refine LinearMap.ext fun w => ?_
@@ -72,7 +72,7 @@ theorem mulL_zero : mulL (0 : Mat E a) = 0 := by
   rw [Matrix.zero_mul]; rfl
 
 /- English proof (translation)
-Use `show w + toL (P * Matrix.of w) = _`. Rewrite using `[Matrix.add_mul, Matrix.one_mul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem one_add_mulL_apply (P : Mat E a) (w : Lie E a) :
     (1 + mulL P) w = toL ((1 + P) * Matrix.of w) := by
@@ -80,7 +80,7 @@ theorem one_add_mulL_apply (P : Mat E a) (w : Lie E a) :
   rw [Matrix.add_mul, Matrix.one_mul]; rfl
 
 /- English proof (translation)
-Use `show w - toL (P * Matrix.of w) = _`. Rewrite using `[Matrix.sub_mul, Matrix.one_mul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem one_sub_mulL_apply (P : Mat E a) (w : Lie E a) :
     (1 - mulL P) w = toL ((1 - P) * Matrix.of w) := by
@@ -99,21 +99,21 @@ def shear (P : Mat E a) (hP : P * P = 0) : Lie E a ≃ₗ[ℝ] Lie E a :=
         _ = 1 := by rw [mulL_mul, hP, mulL_zero, sub_zero])
 
 /- English proof (translation)
-The claim follows from `one_add_mulL_apply P w`.
+A detailed English derivation is pending.
 -/
 theorem shear_apply (P : Mat E a) (hP : P * P = 0) (w : Lie E a) :
     shear P hP w = toL ((1 + P) * Matrix.of w) := one_add_mulL_apply P w
 
 /- English proof (translation)
-The claim follows from `one_sub_mulL_apply P w`.
+A detailed English derivation is pending.
 -/
 theorem shear_symm_apply (P : Mat E a) (hP : P * P = 0) (w : Lie E a) :
     (shear P hP).symm w = toL ((1 - P) * Matrix.of w) := one_sub_mulL_apply P w
 
 /- English proof (translation)
-Use `haveI := isAddHaar_lie (E := E) (a := a)`. Use `⟨(shear P hP).toContinuousLinearEquiv.continuous.measurable, ?_⟩` and prove the remaining obligations. Establish `hdet : LinearMap.det (1 + mulL P : Lie E a →ₗ[ℝ] Lie E a) = 1` using `det_eq_one_of_sq (by rw [add_sub_cancel_left, mulL_mul, hP, mulL_zero])`. Establish `h` using `Measure.map_linearMap_addHaar_eq_smul_addHaar (μ := (volume : Measure (Lie E a))) (f := 1 + mulL P) (by rw [hdet]; norm_num)`. Rewrite `h` using `[hdet]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [inv_one, abs_one, ENNReal.ofReal_one, one_smul] at h`. Conclude with `h`.
+A detailed English derivation is pending.
 -/
 theorem measurePreserving_shear (P : Mat E a) (hP : P * P = 0) :
     MeasurePreserving (shear P hP).toContinuousLinearEquiv.toHomeomorph.toMeasurableEquiv volume volume := by
@@ -128,7 +128,7 @@ theorem measurePreserving_shear (P : Mat E a) (hP : P * P = 0) :
   exact h
 
 /- English proof (translation)
-Unfold `altPoint`. Rewrite using `[Finset.sum_mul_sum]`. Use `Finset.sum_eq_zero fun i _ => Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> simp [hY]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem altPoint_sq {m : ℕ} {Y : Fin m → Mat E a} (hY : ∀ i j, Y i * Y j = 0) (ε : Fin m → Bool) :
     altPoint Y ε * altPoint Y ε = 0 := by
@@ -138,7 +138,7 @@ theorem altPoint_sq {m : ℕ} {Y : Fin m → Mat E a} (hY : ∀ i j, Y i * Y j =
   split_ifs <;> simp [hY]
 
 /- English proof (translation)
-Unfold `altPoint`. Rewrite using `[← toLA_apply, map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> simp [toLA_apply]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem toL_altPoint {m : ℕ} (Y : Fin m → Mat E a) (ε : Fin m → Bool) :
     toL (altPoint Y ε) = altPoint (fun i => toL (Y i)) ε := by
@@ -148,9 +148,9 @@ theorem toL_altPoint {m : ℕ} (Y : Fin m → Mat E a) (ε : Fin m → Bool) :
   split_ifs <;> simp [toLA_apply]
 
 /- English proof (translation)
-Rewrite using `[toL_altPoint]`. Unfold `altPoint`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_le_sum fun i _ => ?_` and prove the remaining obligations. Use `split_ifs`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hR i`. Rewrite using `[norm_zero]`. Conclude with `(norm_nonneg _).trans (hR i)`. Use `_ = m * R := by simp`.
+A detailed English derivation is pending.
 -/
 theorem norm_toL_altPoint_le {m : ℕ} {Y : Fin m → Mat E a} {R : ℝ} (hR : ∀ i, ‖toL (Y i)‖ ≤ R)
     (ε : Fin m → Bool) : ‖toL (altPoint Y ε)‖ ≤ m * R := by
@@ -166,9 +166,9 @@ theorem norm_toL_altPoint_le {m : ℕ} {Y : Fin m → Mat E a} {R : ℝ} (hR : �
     _ = m * R := by simp
 
 /- English proof (translation)
-Establish `h1 : altPoint (fun i => -(Y i * Matrix.of v)) ε = -(altPoint Y ε * Matrix.of v)`. Unfold `altPoint`. Rewrite using `[Finset.sum_mul, ← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> simp`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[← toL_altPoint (fun i => -(Y i * Matrix.of v)), h1, Matrix.sub_mul, Matrix.one_mul, sub_eq_add_neg, ← toLA_apply, ← toLA_apply, map_add]`. Both sides reduce to the same expression.
+Rewrite the hypotheses and the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem add_altPoint_eq {m : ℕ} (Y : Fin m → Mat E a) (ε : Fin m → Bool) (v : Lie E a) :
     v + altPoint (fun i => toL (-(Y i * Matrix.of v))) ε = toL ((1 - altPoint Y ε) * Matrix.of v) := by
@@ -182,9 +182,9 @@ theorem add_altPoint_eq {m : ℕ} (Y : Fin m → Mat E a) (ε : Fin m → Bool) 
   rfl
 
 /- English proof (translation)
-Establish `h0 : 0 ≤ (a : ℝ) * ‖toL Y‖ * ‖toL X‖` using `by positivity`. Use `(pi_norm_le_iff_of_nonneg h0).2 fun i => (pi_norm_le_iff_of_nonneg h0).2 fun j => ?_` and prove the remaining obligations. Establish `hY : ∀ l, ‖Y i l‖ ≤ ‖toL Y‖` using `fun l => (norm_le_pi_norm (toL Y i) l).trans (norm_le_pi_norm (toL Y) i)`. Establish `hX : ∀ l, ‖X l j‖ ≤ ‖toL X‖` using `fun l => (norm_le_pi_norm (toL X l) j).trans (norm_le_pi_norm (toL X) l)`. Use `show ‖(Y * X) i j‖ ≤ _`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.mul_apply]`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem norm_toL_mul_le (Y X : Mat E a) : ‖toL (Y * X)‖ ≤ a * ‖toL Y‖ * ‖toL X‖ := by
   have h0 : 0 ≤ (a : ℝ) * ‖toL Y‖ * ‖toL X‖ := by positivity
@@ -200,19 +200,19 @@ theorem norm_toL_mul_le (Y X : Mat E a) : ‖toL (Y * X)‖ ≤ a * ‖toL Y‖ 
     _ = a * ‖toL Y‖ * ‖toL X‖ := by simp [mul_assoc]
 
 /- English proof (translation)
-The claim follows from `continuous_id`.
+A detailed English derivation is pending.
 -/
 theorem continuous_of_lie : Continuous (fun y : Lie E a => (Matrix.of y : Mat E a)) := continuous_id
 
 /- English proof (translation)
-The claim follows from `continuous_id`.
+A detailed English derivation is pending.
 -/
 theorem continuous_toL : Continuous (fun M : Mat E a => toL M) := continuous_id
 
 def sqBall (r : ℝ) : Set (Lie E a) := {y | ‖y‖ ≤ r ∧ Matrix.of y * Matrix.of y = 0}
 
 /- English proof (translation)
-Use `(isCompact_closedBall (0 : Lie E a) r).of_isClosed_subset ?_ fun y hy => ?_` and prove the remaining obligations. Conclude with `(isClosed_le continuous_norm continuous_const).inter (isClosed_eq (continuous_of_lie.matrix_mul continuous_of_lie) continuous_const)`. Rewrite using `[mem_closedBall_zero_iff]`. Conclude with `hy.1`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isCompact_sqBall (r : ℝ) : IsCompact (sqBall (E := E) (a := a) r) := by
   refine (isCompact_closedBall (0 : Lie E a) r).of_isClosed_subset ?_ fun y hy => ?_
@@ -223,14 +223,14 @@ theorem isCompact_sqBall (r : ℝ) : IsCompact (sqBall (E := E) (a := a) r) := b
 def act (p : Lie E a × Lie E a) : Lie E a := toL ((1 + Matrix.of p.1) * Matrix.of p.2)
 
 /- English proof (translation)
-The claim follows from `continuous_toL.comp ((continuous_const.add (continuous_of_lie.comp continuous_fst)).matrix_mul (continuous_of_lie.comp continuous_snd))`.
+A detailed English derivation is pending.
 -/
 theorem continuous_act : Continuous (act (E := E) (a := a)) :=
   continuous_toL.comp ((continuous_const.add (continuous_of_lie.comp continuous_fst)).matrix_mul
     (continuous_of_lie.comp continuous_snd))
 
 /- English proof (translation)
-Use `⟨⟨1 + P, 1 - P, ?_, ?_⟩, rfl⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation.
+Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation.
 -/
 theorem isUnit_one_add_of_sq {P : Mat E a} (hP : P * P = 0) : IsUnit (1 + P) := by
   refine ⟨⟨1 + P, 1 - P, ?_, ?_⟩, rfl⟩
@@ -240,35 +240,31 @@ theorem isUnit_one_add_of_sq {P : Mat E a} (hP : P * P = 0) : IsUnit (1 + P) := 
       _ = 1 := by rw [hP, sub_zero]
 
 /- English proof (translation)
-Introduce `E _ _ a β hβ hβc hβu m R`. Use `haveI := isAddHaar_lie (E := E) (a := a)`. Take `⟨Bm, hBm⟩` from `exists_norm_altSum_le (E := Lie E a) (F := ℂ) hβ hβc m`. Use `set Q : Set (Lie E a) := act '' (sqBall (m * R) ×ˢ tsupport β) with hQdef`. Establish `hQc : IsCompact Q` using `((isCompact_sqBall _).prod hβc).image continuous_act`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `hQu : Q ⊆ invSet E a`. Introduce and unpack `_ ⟨⟨y, w⟩, ⟨hy, hw⟩, rfl⟩`. Use `show IsUnit ((1 + Matrix.of y) * Matrix.of w)`. Conclude with `(isUnit_one_add_of_sq hy.2).mul (hβu hw)`. Take `⟨Rq, hRq⟩` from `hQc.exists_bound_of_continuousOn continuous_id.continuousOn`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `set Bm' := max Bm 0 with hBm'`. Use `set Rq' := max Rq 0 with hRq'`. Establish `hBm0 : 0 ≤ Bm'` using `le_max_right _ _`. Establish `hRq0 : 0 ≤ Rq'` using `le_max_right _ _`. Use `⟨Bm' * ((a : ℝ) * Rq') ^ m * volume.real Q, Q, by positivity, hQc, hQu, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Introduce `f hf F hF hFQ Y hY hR`. Establish `hP : ∀ ε, altPoint Y ε * altPoint Y ε = 0` using `altPoint_sq hY`. Establish `hmemQ : ∀ ε v, toL ((1 - altPoint Y ε) * Matrix.of v) ∈ tsupport β → v ∈ Q`. Introduce `ε v hv`. Use `⟨(toL (altPoint Y ε), toL ((1 - altPoint Y ε) * Matrix.of v)), ⟨⟨norm_toL_altPoint_le hR ε, hP ε⟩, hv⟩, ?_⟩` and prove the remaining obligations.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `show toL ((1 + altPoint Y ε) * ((1 - altPoint Y ε) * Matrix.of v)) = v`. Establish `h1 : (1 + altPoint Y ε) * (1 - altPoint Y ε) = 1`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Matrix.mul_assoc, h1, Matrix.one_mul]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hstep : ∀ ε, ∫ w, f (toL ((1 + altPoint Y ε) * Matrix.of w)) * β w = ∫ v, f v * β (toL ((1 - altPoint Y ε) * Matrix.of v))`. Introduce `ε`. Establish `hmp` using `measurePreserving_shear (altPoint Y ε) (hP ε)`. Rewrite using `[← hmp.integral_comp' (g := fun v => f v * β (toL ((1 - altPoint Y ε) * Matrix.of v)))]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun w => ?_)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : (shear _ (hP ε)).toContinuousLinearEquiv.toHomeomorph.toMeasurableEquiv w = shear _ (hP ε) w` using `rfl`. Simplify using `only [e1]`. Rewrite using `[← shear_symm_apply _ (hP ε), LinearEquiv.symm_apply_apply, shear_apply]`. Establish `hint : ∀ ε, Integrable (fun v => f v * β (toL ((1 - altPoint Y ε) * Matrix.of v)))`. Introduce `ε`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hg : Continuous fun v : Lie E a => toL ((1 - altPoint Y ε) * Matrix.of v)` using `continuous_toL.comp (continuous_const.matrix_mul continuous_of_lie)`. Establish `hsub : tsupport (fun v => f v * β (toL ((1 - altPoint Y ε) * Matrix.of v))) ⊆ Q` using `(tsupport_mul_subset_right).trans ((tsupport_comp_subset_preimage β hg).trans fun v hv => hmemQ ε v hv)`. Conclude with `Continuous.integrable_of_hasCompactSupport ((hf.mul (hβ.continuous.comp hg).continuousOn).continuous_of_tsupport_subset isOpen_invSet (hsub.trans hQu)) (hQc.of_isClosed_subset (isClosed_tsupport _) hsub)`. Establish `hA : ∀ v, ∑ ε : Fin m → Bool, (altSign ε : ℂ) * (f v * β (toL ((1 - altPoint Y ε) * Matrix.of v))) = f v * altSum m β (fun i => toL (-(Y i * Matrix.of v))) v`. Introduce `v`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[altSum_eq_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun ε _ => ?_` and prove the remaining obligations. Rewrite using `[add_altPoint_eq, zsmul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Repeatedly rewrite using `[hstep, ← integral_const_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← integral_finsetSum _ (fun ε _ => (hint ε).const_mul _)]`. Repeatedly rewrite using `[hA]`. Establish `hpt : ∀ v, ‖f v * altSum m β (fun i => toL (-(Y i * Matrix.of v))) v‖ ≤ Q.indicator (fun _ => F * (Bm' * (((a : ℝ) * Rq') ^ m * ∏ i, ‖toL (Y i)‖))) v`. Introduce `v`. Distinguish the cases in `hv : v ∈ Q`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[Set.indicator_of_mem hv, norm_mul]`. Use `mul_le_mul (hFQ v hv) ?_ (norm_nonneg _) hF` and prove the remaining obligations. Use `(hBm _ _).trans ?_` and prove the remaining obligations. Establish `hv' : ‖v‖ ≤ Rq'` using `(hRq v hv).trans (le_max_left _ _)`. Establish `hprod : ∏ i, ‖toL (-(Y i * Matrix.of v))‖ ≤ ((a : ℝ) * Rq') ^ m * ∏ i, ‖toL (Y i)‖`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Fin.prod_const, ← Finset.prod_mul_distrib]`. Use `Finset.prod_le_prod (fun i _ => norm_nonneg _) fun i _ => ?_` and prove the remaining obligations. Establish `hn : ‖toL (-(Y i * Matrix.of v))‖ = ‖toL (Y i * Matrix.of v)‖` using `by show ‖-(toL (Y i * Matrix.of v))‖ = _`. Conclude with `norm_neg _`. Rewrite using `[hn]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Establish `hnv : ‖toL (Matrix.of v : Mat E a)‖ = ‖v‖` using `rfl`. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Set.indicator_of_notMem hv]`. Establish `hz : altSum m β (fun i => toL (-(Y i * Matrix.of v))) v = 0`.
-
-Rewrite using `[altSum_eq_sum]`. Use `Finset.sum_eq_zero fun ε _ => ?_` and prove the remaining obligations. Rewrite using `[add_altPoint_eq]`. Distinguish the cases in `hs : toL ((1 - altPoint Y ε) * Matrix.of v) ∈ tsupport β`. Conclude with `absurd (hmemQ ε v hs) hv`.
-
-Rewrite using `[image_eq_zero_of_notMem_tsupport hs, smul_zero]`. Rewrite using `[hz, mul_zero, norm_zero]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[integral_indicator hQc.measurableSet, setIntegral_const, smul_eq_mul, mul_comm]`. Use `_ = Bm' * ((a : ℝ) * Rq') ^ m * volume.real Q * F * ∏ i, ‖toL (Y i)‖ := by ring`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_sum_altSign_integral_le : ∀ (E : Type) [Field E] [NumberField E] (a : ℕ) (β : Lie E a → ℂ), ContDiff ℝ ∞ β →
     HasCompactSupport β → tsupport β ⊆ invSet E a → ∀ (m : ℕ) (R : ℝ), ∃ (c : ℝ) (Q : Set (Lie E a)),

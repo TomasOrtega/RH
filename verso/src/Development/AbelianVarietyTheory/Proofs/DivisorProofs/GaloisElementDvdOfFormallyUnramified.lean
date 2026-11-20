@@ -6,27 +6,27 @@ open scoped TensorProduct
 namespace GlobalTheory.GoodEtale
 
 /- English proof (translation)
-Introduce `R C O _ _ _ _ _ _ _ G _ _ act b n x y hxy σ hinj h`. Take `⟨t, ht1, ht2⟩` from `(Algebra.FormallyUnramified.iff_exists_tensorProduct (R := O) (S := O ⊗[R] C)).mp inferInstance`. Set `τ : O ⊗[R] C →ₐ[O] O` to `(Pi.evalAlgHom O (fun _ : G => O) h).comp (galMap act σ)`. Set `ψ : (O ⊗[R] C) ⊗[O] (O ⊗[R] C) →ₐ[O] O ⊗[R] C` to `Algebra.TensorProduct.lift (AlgHom.id O _) ((Algebra.ofId O (O ⊗[R] C)).comp τ) (fun _ _ => Commute.all _ _)`. Establish `hψ : ∀ a c, ψ (a ⊗ₜ c) = a * algebraMap O (O ⊗[R] C) (τ c)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `a c`. Simplify using `[ψ]`. Use `set e := ψ t with he`. Establish `hi : ∀ s, s * e = algebraMap O (O ⊗[R] C) (τ s) * e`. Introduce `s`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `congrArg ψ (ht1 s)` as an intermediate fact. Rewrite `this` using `[map_mul, map_sub, hψ, hψ, map_zero]`. Simplify using `only [map_one, one_mul, mul_one] at this`. Rewrite `this` using `[← he]`. Rewrite `this` using `[sub_mul, sub_eq_zero]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `this.symm`. Establish `hii : τ e = 1`. Establish `hcomp : τ.comp ψ = τ.comp (Algebra.TensorProduct.lmul' O)`. Apply `Algebra.TensorProduct.ext'` to reduce the goal to its premises. Introduce `a c`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [AlgHom.comp_apply, hψ, map_mul, AlgHom.commutes, Algebra.TensorProduct.lmul'_apply_tmul]`. Simplify using `only [Algebra.algebraMap_self, RingHom.id_apply]`. Use `congrArg (fun f => f t) hcomp` as an intermediate fact. Simplify using `only [AlgHom.comp_apply] at this`. Rewrite using `[he, this, ht2, map_one]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hfix : galElt act σ x y h * e = galElt act σ x y h`. Apply `hinj` to reduce the goal to its premises. Rewrite using `[map_mul, galMap_galElt act σ x y b hxy h]`. Use function extensionality and compare the values at `g`. Distinguish the cases in `hg : g = h`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact.
 
-Substitute `hg` using the available equality. Establish `: galMap act σ e g = τ e` using `rfl`. Simplify using `[this, hii]`. Simplify using `[Pi.single_apply, hg]`. Use `⟨e, ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← hfix]`. Simplify using `only [galElt, Finset.sum_mul]`. Establish `hterm : ∀ i, σ (x i) ⊗ₜ[R] act h⁻¹ (y i) * e = algebraMap O (O ⊗[R] C) (σ (x i) * σ (y i)) * e`. Introduce `i`. Establish `hsplit : σ (x i) ⊗ₜ[R] act h⁻¹ (y i) = algebraMap O (O ⊗[R] C) (σ (x i)) * ((1 : O) ⊗ₜ[R] act h⁻¹ (y i))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[Algebra.TensorProduct.algebraMap_apply, Algebra.TensorProduct.tmul_mul_tmul]`. Rewrite using `[hsplit, mul_assoc, hi, ← mul_assoc, ← map_mul]`. Use `congr 3`. Establish `: τ ((1 : O) ⊗ₜ[R] act h⁻¹ (y i)) = σ (act h (act h⁻¹ (y i)))`. Simplify using `[τ, galMap_tmul]`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[this]`. Use `congr 2`. Rewrite using `[← AlgEquiv.mul_apply, ← map_mul, mul_inv_cancel, map_one, AlgEquiv.one_apply]`. Repeatedly rewrite using `[hterm, ← Finset.sum_mul, ← map_sum, ← map_mul, ← map_sum]`. Establish `h1` using `hxy 1`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [map_one, AlgEquiv.one_apply, if_true] at h1`. Rewrite using `[h1, AlgHom.commutes, Algebra.smul_def]`.
+A detailed English derivation is pending.
 -/
 theorem galElt_dvd_of_unramified : ∀ (R C O : Type) [CommRing R] [CommRing C] [Algebra R C] [CommRing O] [Algebra R O]
     [Algebra.FormallyUnramified O (O ⊗[R] C)] [Algebra.EssFiniteType O (O ⊗[R] C)]

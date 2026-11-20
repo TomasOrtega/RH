@@ -10,9 +10,9 @@ namespace GlobalTheory.FlatFibre
 variable {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] {g : ℕ}
 
 /- English proof (translation)
-Simplify using `only [Matrix.det_apply']`. Use `DifferentiableAt.fun_sum fun σ _ => ?_` and prove the remaining obligations. Use `DifferentiableAt.const_mul ?_ _` and prove the remaining obligations. Establish `h' : ∀ i, DifferentiableAt ℝ (fun y => M y (σ i) i) x` using `fun i => hM _ _`. Use `first`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Treat this case separately.
 
-Consider the case `fun_prop`. Consider the case `exact DifferentiableAt.finset_prod (fun i _ => h' i)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem det_differentiableAt {F : Type} [NormedAddCommGroup F] [NormedSpace ℝ F] {n : ℕ}
     {M : F → Matrix (Fin n) (Fin n) ℝ} {x : F}
@@ -27,9 +27,9 @@ theorem det_differentiableAt {F : Type} [NormedAddCommGroup F] [NormedSpace ℝ 
   | exact DifferentiableAt.finset_prod (fun i _ => h' i)
 
 /- English proof (translation)
-Simplify using `only [Matrix.inv_def, Ring.inverse_eq_inv', Matrix.smul_apply, smul_eq_mul, Matrix.adjugate_apply]`. Use `DifferentiableAt.mul ((det_differentiableAt hM).inv hdet) ?_` and prove the remaining obligations. Use `det_differentiableAt fun k l => ?_` and prove the remaining obligations. Distinguish the cases in `hk : k = j`. Substitute `hk` using the available equality.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using `only [Matrix.updateRow_self]`. Conclude with `differentiableAt_const _`. Simplify using `only [Matrix.updateRow_ne hk]`. Conclude with `hM k l`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem inv_entry_differentiableAt {F : Type} [NormedAddCommGroup F] [NormedSpace ℝ F] {n : ℕ}
     {M : F → Matrix (Fin n) (Fin n) ℝ} {x : F}
@@ -47,13 +47,11 @@ theorem inv_entry_differentiableAt {F : Type} [NormedAddCommGroup F] [NormedSpac
     exact hM k l
 
 /- English proof (translation)
-Establish `hτe : ∀ i j, DifferentiableAt ℝ (fun Q : Pt E g => τ Q.1 i j) P` using `fun i j => (((hτ.2.1 i j).differentiableAt (hτ.1.mem_nhds hP.1)).restrictScalars ℝ).comp P differentiableAt_fst`. Establish `hre : ∀ i j, DifferentiableAt ℝ (fun Q : Pt E g => (τ Q.1).map Complex.re i j) P` using `fun i j => Complex.reCLM.differentiableAt.comp P (hτe i j)`. Establish `him : ∀ i j, DifferentiableAt ℝ (fun Q : Pt E g => (τ Q.1).map Complex.im i j) P` using `fun i j => Complex.imCLM.differentiableAt.comp P (hτe i j)`. Establish `hdet : ((τ P.1).map Complex.im).det ≠ 0` using `(hτ.2.2 P.1 hP.1).2.det_pos.ne'`. Establish `hinv` using `inv_entry_differentiableAt him hdet`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hzre : ∀ i, DifferentiableAt ℝ (fun Q : Pt E g => (Q.2 i).re) P` using `fun i => Complex.reCLM.differentiableAt.comp P ((ContinuousLinearMap.proj (R := ℝ) (φ := fun _ : Fin g => ℂ) i).differentiableAt.comp P differentiableAt_snd)`. Establish `hzim : ∀ i, DifferentiableAt ℝ (fun Q : Pt E g => (Q.2 i).im) P` using `fun i => Complex.imCLM.differentiableAt.comp P ((ContinuousLinearMap.proj (R := ℝ) (φ := fun _ : Fin g => ℂ) i).differentiableAt.comp P differentiableAt_snd)`. Establish `hp : ∀ i, DifferentiableAt ℝ (fun Q : Pt E g => ((fun k => (Q.2 k).im) ᵥ* ((τ Q.1).map Complex.im)⁻¹) i) P`. Introduce `i`. Simplify using `only [Matrix.vecMul, dotProduct]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Conclude with `DifferentiableAt.fun_sum fun k _ => (hzim k).mul (hinv k i)`. Rewrite using `[differentiableAt_pi]`. Introduce and unpack `(i | i)`. Conclude with `hp i`. Use `show DifferentiableAt ℝ (fun Q : Pt E g => (Q.2 i).re - (((fun k => (Q.2 k).im) ᵥ* ((τ Q.1).map Complex.im)⁻¹) ᵥ* (τ Q.1).map Complex.re) i) P`.
-
-Use `(hzre i).sub ?_` and prove the remaining obligations. Simplify using `only [Matrix.vecMul, dotProduct] at hp ⊢`. Conclude with `DifferentiableAt.fun_sum fun k _ => (hp k).mul (hre k i)`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem flat_differentiableAt {B : Set E} {τ : E → Matrix (Fin g) (Fin g) ℂ}
     (hτ : IsPeriodMap B τ) {P : Pt E g} (hP : P ∈ cov B g) :
@@ -103,11 +101,11 @@ def flatOfLin (T : Matrix (Fin g) (Fin g) ℂ) : (Fin g → ℂ) →ₗ[ℝ] Fl 
       simp only [mul_sub, Finset.mul_sum]
 
 /- English proof (translation)
-Establish `hd` using `flat_differentiableAt hτ hP`. Set `L : (Fin g → ℂ) →L[ℝ] Fl g` to `LinearMap.toContinuousLinearMap (flatOfLin (τ P.1))`. Establish `h1 : HasFDerivAt (fun z => flat τ (P.1, z)) L P.2`. Establish `: (fun z => flat τ (P.1, z)) = L` using `by funext z; rfl`. Rewrite using `[this]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `L.hasFDerivAt`. Establish `hin : HasFDerivAt (fun z : Fin g → ℂ => (P.1, z)) ((0 : (Fin g → ℂ) →L[ℝ] E).prod (ContinuousLinearMap.id ℝ (Fin g → ℂ))) P.2` using `(hasFDerivAt_const P.1 P.2).prodMk (hasFDerivAt_id P.2)`. Establish `hd' : DifferentiableAt ℝ (flat τ) (P.1, P.2)` using `hd`. Establish `h2` using `hd'.hasFDerivAt.comp P.2 hin`. Establish `h3` using `congrArg (fun T => T v) (h1.unique h2)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `h3.symm` using `[dflat, L, flatOfLin]`.
+A detailed English derivation is pending.
 -/
 theorem dflat_vert {B : Set E} {τ : E → Matrix (Fin g) (Fin g) ℂ}
     (hτ : IsPeriodMap B τ) {P : Pt E g} (hP : P ∈ cov B g) (v : Fin g → ℂ) :
@@ -127,17 +125,15 @@ theorem dflat_vert {B : Set E} {τ : E → Matrix (Fin g) (Fin g) ℂ}
   simpa [dflat, L, flatOfLin] using h3.symm
 
 /- English proof (translation)
-Use `set Yi := (T.map Complex.im)⁻¹ with hYi`. Use `set X := T.map Complex.re with hX`. Establish `sYi : Yiᵀ = Yi` using `(hT.map Complex.im).inv`. Establish `sX : Xᵀ = X` using `hT.map Complex.re`. Use `set a : Fin g → ℝ := fun i => (v i).im`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Use `set b : Fin g → ℝ := fun i => (v i).re`. Use `set a' : Fin g → ℝ := fun i => (w i).im`. Use `set b' : Fin g → ℝ := fun i => (w i).re`. Establish `hr : ∀ (p q p' q' : Fin g → ℝ), riem (Sum.elim p q) (Sum.elim p' q') = q ⬝ᵥ p' - p ⬝ᵥ q'`. Introduce `p q p' q'`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[riem, dotProduct, Finset.sum_sub_distrib]`. Establish `hu_re : ∀ i, ((v ᵥ* Yi.map (fun t : ℝ => (t : ℂ))) i).re = (b ᵥ* Yi) i`. Introduce `i`. Simplify using `[Matrix.vecMul, dotProduct, Complex.re_sum, b]`. Establish `hu_im : ∀ i, ((v ᵥ* Yi.map (fun t : ℝ => (t : ℂ))) i).im = (a ᵥ* Yi) i`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `i`. Simplify using `[Matrix.vecMul, dotProduct, Complex.im_sum, a]`. Establish `hh : (herm T v w).im = (a ᵥ* Yi) ⬝ᵥ b' - (b ᵥ* Yi) ⬝ᵥ a'`. Simplify using `only [herm, ← hYi]`. Simplify using `only [dotProduct, Complex.im_sum, ← Finset.sum_sub_distrib]`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [Pi.star_apply, Complex.mul_im, Complex.star_def, Complex.conj_re, Complex.conj_im, hu_re, hu_im, a', b']`. Expand and normalize the polynomial expressions, which then agree. Establish `e1 : (b ᵥ* Yi) ⬝ᵥ a' = b ⬝ᵥ (a' ᵥ* Yi)`. Rewrite using `[← dotProduct_mulVec, ← Matrix.vecMul_transpose, sYi]`.
-
-Establish `e2 : ((a ᵥ* Yi) ᵥ* X) ⬝ᵥ (a' ᵥ* Yi) = (a ᵥ* Yi) ⬝ᵥ ((a' ᵥ* Yi) ᵥ* X)`. Rewrite using `[← dotProduct_mulVec, ← Matrix.vecMul_transpose, sX]`. Use `show riem (Sum.elim (a ᵥ* Yi) (b - (a ᵥ* Yi) ᵥ* X)) (Sum.elim (a' ᵥ* Yi) (b' - (a' ᵥ* Yi) ᵥ* X)) = _`. Rewrite using `[hr, hh, sub_dotProduct, dotProduct_sub, e1, e2, dotProduct_comm b (a' ᵥ* Yi)]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem riem_flatOf (T : Matrix (Fin g) (Fin g) ℂ) (hT : T.IsSymm) (v w : Fin g → ℂ) :
     riem (flatOf T v) (flatOf T w) = -(herm T v w).im := by
@@ -176,19 +172,19 @@ theorem riem_flatOf (T : Matrix (Fin g) (Fin g) ℂ) (hT : T.IsSymm) (v w : Fin 
   ring
 
 /- English proof (translation)
-Use `set Yi := (T.map Complex.im)⁻¹ with hYi`. Establish `hpd : Yi.PosDef` using `hT.inv`. Use `set a : Fin g → ℝ := fun i => (v i).im`. Use `set b : Fin g → ℝ := fun i => (v i).re`. Establish `hu_re : ∀ i, ((v ᵥ* Yi.map (fun t : ℝ => (t : ℂ))) i).re = (b ᵥ* Yi) i`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `i`. Simplify using `[Matrix.vecMul, dotProduct, Complex.re_sum, b]`. Establish `hu_im : ∀ i, ((v ᵥ* Yi.map (fun t : ℝ => (t : ℂ))) i).im = (a ᵥ* Yi) i`. Introduce `i`. Simplify using `[Matrix.vecMul, dotProduct, Complex.im_sum, a]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hh : (herm T v v).re = b ⬝ᵥ (Yi *ᵥ b) + a ⬝ᵥ (Yi *ᵥ a)`. Rewrite using `[dotProduct_mulVec, dotProduct_mulVec, dotProduct_comm (b ᵥ* Yi), dotProduct_comm (a ᵥ* Yi)]`. Simplify using `only [herm, ← hYi]`. Simplify using `only [dotProduct, Complex.re_sum, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Simplify using `only [Pi.star_apply, Complex.mul_re, Complex.star_def, Complex.conj_re, Complex.conj_im, hu_re, hu_im, a, b]`. Expand and normalize the polynomial expressions, which then agree. Establish `hnn : ∀ x : Fin g → ℝ, 0 ≤ x ⬝ᵥ (Yi *ᵥ x)` using `fun x => by`. Simplify using `using hpd.posSemidef.dotProduct_mulVec_nonneg x`. Rewrite using `[hh]`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `ha : a = 0`. Establish `hb : b ≠ 0`. Introduce `hb`. Apply `hv` to reduce the goal to its premises. Use function extensionality and compare the values at `i`.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 
-Apply `Complex.ext` to reduce the goal to its premises. Simplify `congrFun hb i` using `[b]`. Simplify `congrFun ha i` using `[a]`. Use `hpd.dotProduct_mulVec_pos hb` as an intermediate fact. Simplify using `only [star_trivial] at this`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Combine the linear relations using `[hnn a]`. Use `hpd.dotProduct_mulVec_pos ha` as an intermediate fact. Simplify using `only [star_trivial] at this`. Combine the linear relations using `[hnn b]`.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem herm_self_re_pos (T : Matrix (Fin g) (Fin g) ℂ) (hT : (T.map Complex.im).PosDef)
     {v : Fin g → ℂ} (hv : v ≠ 0) : 0 < (herm T v v).re := by
@@ -230,11 +226,11 @@ theorem herm_self_re_pos (T : Matrix (Fin g) (Fin g) ℂ) (hT : (T.map Complex.i
     linarith [hnn b]
 
 /- English proof (translation)
-Introduce `hτ`. Establish `key : ∀ P ∈ cov B g, ∀ v w : Fin g → ℂ, om0 τ P ![(0, v), (0, w)] = -(herm (τ P.1) v w).im`. Introduce `P hP v w`. Establish `h0 : om0 τ P ![(0, v), (0, w)] = riem (dflat τ P (0, v)) (dflat τ P (0, w))` using `rfl`. Rewrite using `[h0, dflat_vert hτ hP, dflat_vert hτ hP]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `riem_flatOf _ (hτ.2.2 P.1 hP.1).1 v w`. Use `⟨key, fun P hP v hv => ?_⟩` and prove the remaining obligations. Rewrite using `[key P hP]`. Establish `: herm (τ P.1) v (Complex.I • v) = -Complex.I * herm (τ P.1) v v`. Simplify using `only [herm, star_smul, dotProduct_smul, smul_eq_mul, Complex.star_def, Complex.conj_I]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Establish `hpos` using `herm_self_re_pos (τ P.1) (hτ.2.2 P.1 hP.1).2 hv`. Simplify `hpos` using `[Complex.mul_im]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem flat_fibre {g : ℕ} {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E]
     [FiniteDimensional ℂ E] {B : Set E} {τ : E → Matrix (Fin g) (Fin g) ℂ} :

@@ -11,21 +11,19 @@ open scoped BigOperators ComplexConjugate Real Classical
 namespace GlobalTheory.UnitaryTheta.Graph
 
 /- English proof (translation)
-Introduce `V _ _ _ _ _ μ _ H hH a ha hdet B hB1 Λ Λ' _ hle haΛ α hα hαa Fd hFd M _ s hs huniq`. Use `haveI : ProperSpace V := FiniteDimensional.proper ℂ V`. Use `haveI : Countable Λ := TopologicalSpace.separableSpace_iff_countable.1 inferInstance`. Use `haveI : Countable Λ' := (AddSubgroup.inclusion_injective hle).countable`. Take `⟨κ, hκ, hg⟩` from `integral_gaussian_unitary_pos V μ H hH a ha hdet`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨κ, hκ, ?_⟩` and prove the remaining obligations. Establish `hint : ∀ x, Integrable (term H a α x) μ` using `fun x => by`. Establish `: term H a α x = _` using `funext fun z => term_eq H a ha α x (B x) z (hB1 x)`. Rewrite using `[this]`. Conclude with `(hg (B x) _).1.const_mul _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hval : ∀ x, ∫ z, term H a α x z ∂μ = κ / LinearMap.det (1 - (a : V →ₗ[ℂ] V)) * (α x * cexp (-((π : ℂ) * I) * ((H (B x) x).im : ℂ)))` using `fun x => by`. Simplify using `only [fun z => term_eq H a ha α x (B x) z (hB1 x)]`. Rewrite using `[integral_const_mul, (hg (B x) _).2, ← value_eq H hH a ha x (B x) (hB1 x)]`. Expand and normalize the polynomial expressions, which then agree. Set `f : M × Λ' → Λ` to `fun p => ⟨s p.1 - ((p.2 : V) - a p.2), Λ.sub_mem (hs _) (Λ.sub_mem (hle p.2.2) (haΛ _ p.2.2))⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hf : Function.Bijective f`. Prove the components needed by the constructor for the conclusion. Introduce `p q hpq`. Conclude with `(huniq _ (f p).2).unique rfl (congrArg Subtype.val hpq)`. Introduce `x`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨p, hp, -⟩` from `huniq x x.2`. Conclude with `⟨p, Subtype.ext hp.symm⟩`. Establish `hsum : ∀ z, kerSum H Λ α z (a z) * cexp (-(π : ℂ) * H z z) = ∑ m, ∑' y : Λ', term H a α (s m) (z + y)` using `fun z => by`. Establish `h1 : Summable (fun x : Λ => term H a α x z)` using `((GlobalTheory.UnitaryTheta.KerSum.kerSum_spec V H hH Λ α hα).1 (a z) z).mul_right _`. Establish `h2` using `(Equiv.ofBijective f hf).summable_iff.2 h1`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[kerSum, ← tsum_mul_right]`. Express the relevant statement in the definitionally equal form `∑' x : Λ, term H a α x z = _`. Rewrite using `[← (Equiv.ofBijective f hf).tsum_eq]`. Use `(h2.tsum_prod).trans ?_` and prove the remaining obligations. Rewrite using `[tsum_fintype]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `Finset.sum_congr rfl fun m _ => tsum_congr fun y => ?_` and prove the remaining obligations. Conclude with `term_shift H hH a ha Λ α hα (s m) y z (hs m) (hle y.2) (haΛ _ y.2) (hαa _ y.2)`. Establish `hu` using `fun m => GlobalTheory.integral_unfold_fundamentalDomain V μ Λ' Fd hFd _ (hint (s m))`. Simplify using `only [hsum]`. Rewrite using `[integral_finset_sum _ (fun m _ => (hu m).1)]`.
-
-Simplify using `only [fun m => (hu m).2, hval]`. Rewrite using `[← Finset.mul_sum]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integral_kerSum_graph_eq : ∀ (V : Type) [NormedAddCommGroup V] [NormedSpace ℂ V] [FiniteDimensional ℂ V] [MeasurableSpace V] [BorelSpace V] (μ : Measure V) [μ.IsAddHaarMeasure] (H : Sesq V), IsPosHerm H → ∀ a : V ≃ₗ[ℂ] V, (∀ z w, H (a z) (a w) = H z w) → LinearMap.det (1 - (a : V →ₗ[ℂ] V)) ≠ 0 → ∀ (B : V →ₗ[ℂ] V), (∀ x, B x - a (B x) = x) → ∀ (Λ Λ' : AddSubgroup V) [DiscreteTopology Λ], Λ' ≤ Λ → (∀ y ∈ Λ', a y ∈ Λ) → ∀ α : V → ℂ, IsSemichar H Λ α → (∀ y ∈ Λ', α (a y) = α y) → ∀ Fd : Set V, IsAddFundamentalDomain Λ' Fd μ → ∀ (M : Type) [Fintype M] (s : M → V), (∀ m, s m ∈ Λ) → (∀ x ∈ Λ, ∃! p : M × Λ', x = s p.1 - ((p.2 : V) - a p.2)) → ∃ κ : ℝ, 0 < κ ∧ ∫ z in Fd, kerSum H Λ α z (a z) * cexp (-(π : ℂ) * H z z) ∂μ = κ / LinearMap.det (1 - (a : V →ₗ[ℂ] V)) * ∑ m, α (s m) * cexp (-((π : ℂ) * I) * ((H (B (s m)) (s m)).im : ℂ)) := by
   intro V _ _ _ _ _ μ _ H hH a ha hdet B hB1 Λ Λ' _ hle haΛ α hα hαa Fd hFd M _ s hs huniq

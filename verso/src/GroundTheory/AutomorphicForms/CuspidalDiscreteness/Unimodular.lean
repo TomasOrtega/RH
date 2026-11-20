@@ -16,9 +16,9 @@ variable {G : Type*} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [Loca
   (Γ : Subgroup G) [DiscreteTopology Γ]
 
 /- English proof (translation)
-Use `IsFundamentalDomain.mk' ((measurableSet_fundamentalDomain Γ).preimage (measurable_mul_const g)).nullMeasurableSet fun x => ?_` and prove the remaining obligations. Take `⟨γ, hγ, huniq⟩` from `existsUnique_smul_mem_fundamentalDomain Γ (x * g)`. Use `⟨γ, ?_, fun δ hδ => huniq δ ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `γ • x * g ∈ fundamentalDomain Γ`. Rewrite using `[Subgroup.smul_def, smul_eq_mul, mul_assoc]` and apply the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 
-Express the relevant statement in the definitionally equal form `δ • x * g ∈ fundamentalDomain Γ at hδ`. Rewrite `hδ` using `[Subgroup.smul_def, smul_eq_mul, mul_assoc]`. Then use the resulting hypothesis.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem isFundamentalDomain_preimage_mulRight (μ : Measure G) (g : G) :
     IsFundamentalDomain Γ ((· * g) ⁻¹' fundamentalDomain Γ) μ := by
@@ -33,9 +33,9 @@ theorem isFundamentalDomain_preimage_mulRight (μ : Measure G) (g : G) :
     rwa [Subgroup.smul_def, smul_eq_mul, mul_assoc] at hδ
 
 /- English proof (translation)
-Establish `hq : quotientMeasure Γ μ univ = μ (fundamentalDomain Γ)`. Rewrite using `[quotientMeasure, Measure.map_apply (measurable_mk Γ) MeasurableSet.univ, preimage_univ, Measure.restrict_apply_univ]`. Rewrite using `[← hq]`. Use `⟨?_, measure_lt_top _ _⟩` and prove the remaining obligations. Take `⟨x⟩ : Nonempty (RightCosetSpace Γ)` from `⟨mk Γ 1⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `(isOpen_univ.measure_pos (quotientMeasure Γ μ) ⟨x, mem_univ x⟩)`.
+A detailed English derivation is pending.
 -/
 theorem measure_fundamentalDomain_pos_lt_top (μ : Measure G) [μ.IsHaarMeasure]
     [IsFiniteMeasure (quotientMeasure Γ μ)] :
@@ -49,13 +49,13 @@ theorem measure_fundamentalDomain_pos_lt_top (μ : Measure G) [μ.IsHaarMeasure]
   exact (isOpen_univ.measure_pos (quotientMeasure Γ μ) ⟨x, mem_univ x⟩)
 
 /- English proof (translation)
-Use `⟨fun g => ?_⟩` and prove the remaining obligations. Establish `hmap : Measure.map (· * g) μ = Measure.modularCharacterFun g • μ` using `Measure.map_right_mul_eq_modularCharacterFun_smul μ g`. Take `⟨hpos, hfin⟩` from `measure_fundamentalDomain_pos_lt_top Γ μ`. Establish `hF` using `isFundamentalDomain_fundamentalDomain Γ μ`. Establish `hF'` using `isFundamentalDomain_preimage_mulRight Γ μ g`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `heq : Measure.map (· * g) μ (fundamentalDomain Γ) = μ (fundamentalDomain Γ)`. Rewrite using `[Measure.map_apply (measurable_mul_const g) (measurableSet_fundamentalDomain Γ)]`. Conclude with `hF'.measure_eq hF`. Rewrite `heq` using `[hmap, Measure.smul_apply]`. Establish `hc : (Measure.modularCharacterFun g : ENNReal) = 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : (Measure.modularCharacterFun g : ENNReal) * μ (fundamentalDomain Γ) = 1 * μ (fundamentalDomain Γ)`. Rewrite using `[one_mul]`. Simplify `heq` using `[ENNReal.smul_def]`. Conclude with `(ENNReal.mul_left_inj hpos.ne' hfin.ne).1 h1`. Rewrite using `[hmap]`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: Measure.modularCharacterFun g = 1` using `by exact_mod_cast hc`. Rewrite using `[this, one_smul]`.
+A detailed English derivation is pending.
 -/
 theorem isMulRightInvariant_of_isFiniteMeasure_quotientMeasure (μ : Measure G) [μ.IsHaarMeasure]
     [IsFiniteMeasure (quotientMeasure Γ μ)] : μ.IsMulRightInvariant := by
@@ -86,7 +86,7 @@ namespace Reduction
 variable {K : Type*} [Field K] [NumberField K] {n : ℕ}
 
 /- English proof (translation)
-Use `isFiniteMeasure_quotientMeasure (K := K) (n := n) μ` as an intermediate fact. Conclude with `RightCosetSpace.isMulRightInvariant_of_isFiniteMeasure_quotientMeasure (rationalGLOne K n) μ`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isMulRightInvariant_normOneGL (μ : Measure (normOneGL K n)) [μ.IsHaarMeasure] :
     μ.IsMulRightInvariant := by

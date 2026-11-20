@@ -20,19 +20,19 @@ namespace GlobalTheory.CompanionTheory.BZPhiPG.MemC
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.mirabolic_compact_mod_parabolic k i t`.
+A detailed English derivation is pending.
 -/
 theorem cocompact (i t : ℕ) : ∃ C : Set (Mir k ((i + 1) + t)), IsCompact C ∧
     ∀ g : Mir k ((i + 1) + t), ∃ h ∈ MirabolicParabolic k (i + 1) t, ∃ c ∈ C, g = h * c := GlobalTheory.T.mirabolic_compact_mod_parabolic k i t
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.isOpen_right_invariance_local_coefficient k i t ψ τ σ f`.
+A detailed English derivation is pending.
 -/
 theorem smooth_eC {i t : ℕ} (ψ : AddChar k Circle) (τ : MRep k (i + 1)) (σ : GRep k (t + 1)) (f : XS τ σ) :
     IsOpen {g : Mir k ((i + 1) + t) | ∀ m, eC ψ f (m * g) = eC ψ f m} := GlobalTheory.T.isOpen_right_invariance_local_coefficient k i t ψ τ σ f
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.parabolic_proj_shifted_embedding k i t h`.
+A detailed English derivation is pending.
 -/
 theorem conj_data {i t : ℕ} (h : MirabolicParabolic k (i + 1) t) :
     ∃ η : HPG k (i + 1) (t + 1), (η : Mir k ((i + 1) + t + 1)) = sEmb k ((i + 1) + t) (h : Mir k ((i + 1) + t)) ∧
@@ -40,7 +40,7 @@ theorem conj_data {i t : ℕ} (h : MirabolicParabolic k (i + 1) t) :
         (((gpProj k (i + 1) t h).2 : Mir k t) : GL (Fin (t + 1)) k)) := GlobalTheory.T.parabolic_proj_shifted_embedding k i t h
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.unipotent_commute_shifted_embedding k i t h d`.
+A detailed English derivation is pending.
 -/
 theorem conj_d {i t : ℕ} (h : MirabolicParabolic k (i + 1) t) (d : Fin (t + 1) → k) :
     ∃ u : HPG k (i + 1) (t + 1), (pgProj k (i + 1) (t + 1) u).1 ∈ MirUin k (i + 1) ∧ (pgProj k (i + 1) (t + 1) u).2 = 1 ∧
@@ -49,14 +49,14 @@ theorem conj_d {i t : ℕ} (h : MirabolicParabolic k (i + 1) t) (d : Fin (t + 1)
           dEmb k i t (((((gpProj k (i + 1) t h).2 : Mir k t) : GL (Fin (t + 1)) k)⁻¹ : GL (Fin (t + 1)) k).val *ᵥ d) := GlobalTheory.T.unipotent_commute_shifted_embedding k i t h d
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.coinvariant_unipotent_action_trivial k i t τ σ u h1 h2 w`.
+A detailed English derivation is pending.
 -/
 theorem qC_sigX_unip {i t : ℕ} (τ : MRep k (i + 1)) (σ : GRep k (t + 1)) (u : HPG k (i + 1) (t + 1))
     (h1 : (pgProj k (i + 1) (t + 1) u).1 ∈ MirUin k (i + 1)) (h2 : (pgProj k (i + 1) (t + 1) u).2 = 1)
     (w : τ.V ⊗[ℂ] σ.V) : qC τ σ (sigX τ σ u w) = qC τ σ w := GlobalTheory.T.coinvariant_unipotent_action_trivial k i t τ σ u h1 h2 w
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.coinvariant_levi_action_modulus k i t τ σ h η hη w`.
+A detailed English derivation is pending.
 -/
 theorem qC_sigX_levi {i t : ℕ} (τ : MRep k (i + 1)) (σ : GRep k (t + 1)) (h : MirabolicParabolic k (i + 1) t) (η : HPG k (i + 1) (t + 1))
     (hη : pgProj k (i + 1) (t + 1) η = (levi k (i + 1) (gpProj k (i + 1) t h).1,
@@ -67,7 +67,7 @@ theorem qC_sigX_levi {i t : ℕ} (τ : MRep k (i + 1)) (σ : GRep k (t + 1)) (h 
       sigC τ σ h (qC τ σ w) := GlobalTheory.T.coinvariant_levi_action_modulus k i t τ σ h η hη w
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.modulus_mirabolic_block_factor k i t s h`.
+A detailed English derivation is pending.
 -/
 theorem dpowM_hgp {i t : ℕ} (s : ℝ) (h : MirabolicParabolic k (i + 1) t) :
     dpowM ((i + 1) + t) s (h : Mir k ((i + 1) + t)) =
@@ -75,7 +75,7 @@ theorem dpowM_hgp {i t : ℕ} (s : ℝ) (h : MirabolicParabolic k (i + 1) t) :
         dpow (t + 1) s (((gpProj k (i + 1) t h).2 : Mir k t) : GL (Fin (t + 1)) k) := GlobalTheory.T.modulus_mirabolic_block_factor k i t s h
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.integral_linear_change_modulus k t W A φ l c`.
+A detailed English derivation is pending.
 -/
 theorem smInt_scale {t : ℕ} {W : Type} [AddCommGroup W] [Module ℂ W] (A : GL (Fin t) k) (φ : (Fin t → k) → W)
     (l : IsLocallyConstant φ) (c : HasCompactSupport φ) :
@@ -83,7 +83,7 @@ theorem smInt_scale {t : ℕ} {W : Type} [AddCommGroup W] [Module ℂ W] (A : GL
       ((dpow t 1 A : ℂˣ) : ℂ) • @GlobalTheory.CompanionTheory.Rodier.smInt _ _ (borel _) _ _ (muD k t) φ := GlobalTheory.T.integral_linear_change_modulus k t W A φ l c
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.local_constancy_twisted_translate k i t ψ hψ τ σ f y`.
+A detailed English derivation is pending.
 -/
 theorem integrand_lc {i t : ℕ} (ψ : AddChar k Circle) (hψ : Continuous ψ) {τ : MRep k (i + 1)} {σ : GRep k (t + 1)}
     (f : XS τ σ) (y : Mir k ((i + 1) + t + 1)) :
@@ -91,7 +91,7 @@ theorem integrand_lc {i t : ℕ} (ψ : AddChar k Circle) (hψ : Continuous ψ) {
     HasCompactSupport (fun d : Fin (t + 1) → k => (((Circle.toUnits (ψ (d (Fin.last t))))⁻¹ : ℂˣ) : ℂ) • evX f (dEmb k i t d * y)) := GlobalTheory.T.local_constancy_twisted_translate k i t ψ hψ τ σ f y
 
 /- English proof (translation)
-Unfold `dpow`. Rewrite using `[Complex.ofReal_add, absPow_add]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem dpow_add (n : ℕ) (a b : ℝ) (g : GL (Fin n) k) : dpow n (a + b) g = dpow n a g * dpow n b g := by
   unfold dpow
@@ -99,7 +99,7 @@ theorem dpow_add (n : ℕ) (a b : ℝ) (g : GL (Fin n) k) : dpow n (a + b) g = d
   rfl
 
 /- English proof (translation)
-Unfold `dpow`. Rewrite using `[Complex.ofReal_zero, absPow_zero]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem dpow_zero (n : ℕ) (g : GL (Fin n) k) : dpow n 0 g = 1 := by
   unfold dpow
@@ -107,7 +107,7 @@ theorem dpow_zero (n : ℕ) (g : GL (Fin n) k) : dpow n 0 g = 1 := by
   rfl
 
 /- English proof (translation)
-Use `letI : MeasurableSpace (Fin t → k) := borel _`. Use `haveI : BorelSpace (Fin t → k) := ⟨rfl⟩`. Unfold `muD`. Use `infer_instance`.
+Equip the data with the indicated structure. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem isFinite_muD (t : ℕ) : @MeasureTheory.IsFiniteMeasureOnCompacts (Fin t → k) (_root_.borel _) _ (muD k t) := by
   letI : MeasurableSpace (Fin t → k) := borel _
@@ -116,16 +116,16 @@ theorem isFinite_muD (t : ℕ) : @MeasureTheory.IsFiniteMeasureOnCompacts (Fin t
   infer_instance
 
 /- English proof (translation)
-The claim follows from `(f : smoothPart (ind (HPG k (i + 1) (t + 1)) (sigX τ σ))).1.2 h x`.
+A detailed English derivation is pending.
 -/
 theorem eval_mul {i t : ℕ} {τ : MRep k (i + 1)} {σ : GRep k (t + 1)} (f : XS τ σ) (h : HPG k (i + 1) (t + 1))
     (x : Mir k ((i + 1) + (t + 1))) : evX f ((h : Mir k ((i + 1) + (t + 1))) * x) = sigX τ σ h (evX f x) :=
   (f : smoothPart (ind (HPG k (i + 1) (t + 1)) (sigX τ σ))).1.2 h x
 
 /- English proof (translation)
-Take `⟨η, hη1, hη2⟩` from `conj_data h`. Take `⟨u, hu1, hu2, hu3⟩` from `conj_d h d`. Rewrite using `[hu3, ← hη1, mul_assoc, mul_assoc]`. Establish `e1` using `eval_mul f η ((u : Mir k ((i + 1) + t + 1)) * (dEmb k i t (((((gpProj k (i + 1) t h).2 : Mir k t) : GL (Fin (t + 1)) k)⁻¹ : GL (Fin (t + 1)) k).val *ᵥ d) * y))`. Establish `e2` using `eval_mul f u (dEmb k i t (((((gpProj k (i + 1) t h).2 : Mir k t) : GL (Fin (t + 1)) k)⁻¹ : GL (Fin (t + 1)) k).val *ᵥ d) * y)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(congrArg (qC τ σ) e1).trans ?_` and prove the remaining obligations. Rewrite using `[qC_sigX_levi τ σ h η hη2]`. Use `congrArg _ (congrArg _ ?_)` and prove the remaining obligations. Use `(congrArg (qC τ σ) e2).trans ?_` and prove the remaining obligations. Conclude with `qC_sigX_unip τ σ u hu1 hu2 _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem pointwise {i t : ℕ} (ψ : AddChar k Circle) {τ : MRep k (i + 1)} {σ : GRep k (t + 1)} (f : XS τ σ)
     (h : MirabolicParabolic k (i + 1) t) (y : Mir k ((i + 1) + t + 1)) (d : Fin (t + 1) → k) :
@@ -145,16 +145,16 @@ theorem pointwise {i t : ℕ} (ψ : AddChar k Circle) {τ : MRep k (i + 1)} {σ 
   exact qC_sigX_unip τ σ u hu1 hu2 _
 
 /- English proof (translation)
-The claim follows from `mulVec_last_of_mem k _ (inv_mem p.2) d`.
+A detailed English derivation is pending.
 -/
 theorem last_inv {t : ℕ} (p : Mir k t) (d : Fin (t + 1) → k) :
     (((p : GL (Fin (t + 1)) k)⁻¹ : GL (Fin (t + 1)) k).val *ᵥ d) (Fin.last t) = d (Fin.last t) :=
   mulVec_last_of_mem k _ (inv_mem p.2) d
 
 /- English proof (translation)
-Establish `h1 : dpow (i + 1) (-1 / 2) g * dpow (i + 1) (1 / 2) g = 1`. Rewrite using `[← dpow_add, show (-1 / 2 + 1 / 2 : ℝ) = 0 by norm_num, dpow_zero]`. Establish `h2 : dpow (t + 1) (-1 / 2) A * dpow (t + 1) (-1 / 2) A * dpow (t + 1) 1 A = 1`. Rewrite using `[← dpow_add, ← dpow_add, show (-1 / 2 + -1 / 2 + 1 : ℝ) = 0 by norm_num, dpow_zero]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Simplify using `only [mul_comm, mul_left_comm, mul_assoc]`. Use `_ = 1 := by rw [h1, h2, one_mul]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem scalar_one {i t : ℕ} (g : GL (Fin (i + 1)) k) (A : GL (Fin (t + 1)) k) :
     (dpow (i + 1) (-1 / 2) g * dpow (t + 1) (-1 / 2) A) * (dpow (t + 1) 1 A * (dpow (i + 1) (1 / 2) g * dpow (t + 1) (-1 / 2) A)) = 1 := by
@@ -167,19 +167,19 @@ theorem scalar_one {i t : ℕ} (g : GL (Fin (i + 1)) k) (A : GL (Fin (t + 1)) k)
     _ = 1 := by rw [h1, h2, one_mul]
 
 /- English proof (translation)
-Use `letI : MeasurableSpace (Fin (t + 1) → k) := _root_.borel _`. Use `haveI : BorelSpace (Fin (t + 1) → k) := ⟨rfl⟩`. Use `haveI := isFinite_muD (k := k) (t + 1)`. Take `⟨g, hg⟩ : ∃ g, g = (gpProj k (i + 1) t h).1` from `⟨_, rfl⟩`. Take `⟨A, hA⟩ : ∃ A : GL (Fin (t + 1)) k, A = (((gpProj k (i + 1) t h).2 : Mir k t) : GL (Fin (t + 1)) k)` from `⟨_, rfl⟩`.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨η, hη⟩ : ∃ η, η = sEmb k ((i + 1) + t) (h : Mir k ((i + 1) + t))` from `⟨_, rfl⟩`. Take `⟨y, hy⟩ : ∃ y, y = sEmb k ((i + 1) + t) m` from `⟨_, rfl⟩`. Take `⟨κ, hκ⟩ : ∃ κ : ℂˣ, κ = dpow (i + 1) (1 / 2) g * dpow (t + 1) (-1 / 2) A` from `⟨_, rfl⟩`. Establish `hp` using `fun d => pointwise ψ f h y d`. Rewrite `hp` using `[← hη, ← hg, ← hA, ← hκ]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨l, c⟩` from `integrand_lc ψ hψ f y`. Take `⟨l', c'⟩` from `integrand_lc ψ hψ f (η * y)`. Set `T : τ.V ⊗[ℂ] σ.V →ₗ[ℂ] (psiN τ).V ⊗[ℂ] σ.V` to `(κ : ℂ) • ((sigC τ σ h) ∘ₗ (qC τ σ))`. Establish `e1 : qC τ σ (intC ψ f (η * y)) = ((dpow (t + 1) 1 A : ℂˣ) : ℂ) • T (intC ψ f y)`. Establish `a1` using `GlobalTheory.CompanionTheory.Rodier.SmIntEl.smInt_linear (muD k (t + 1)) (qC τ σ) l' c'`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a2` using `GlobalTheory.CompanionTheory.Rodier.SmIntEl.smInt_linear (muD k (t + 1)) T l c`. Establish `a3` using `smInt_scale A (T ∘ fun d : Fin (t + 1) → k => (((Circle.toUnits (ψ (d (Fin.last t))))⁻¹ : ℂˣ) : ℂ) • evX f (dEmb k i t d * y)) (IsLocallyConstant.comp l T) (c.comp_left (map_zero T))`. Use `a1.symm.trans (Eq.trans ?_ (a3.trans (congrArg _ a2)))` and prove the remaining obligations. Use `congr 1`. Use function extensionality and compare the values at `d`.
+Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `b` using `hp d`. Rewrite `b` using `[mul_assoc]`. Simplify using `only [Function.comp, map_smul]`. Rewrite using `[b, hA, last_inv, ← hA]`. Simplify using `only [T, LinearMap.smul_apply, LinearMap.comp_apply, map_smul, Units.smul_def]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key : (((dpow (i + 1) (-1 / 2) g * dpow (t + 1) (-1 / 2) A : ℂˣ) : ℂ)) * (((dpow (t + 1) 1 A : ℂˣ) : ℂ) * (κ : ℂ)) = 1`. Use `congrArg (fun u : ℂˣ => (u : ℂ)) (scalar_one g A)` as an intermediate fact. Simplify `this` using `only [Units.val_mul, Units.val_one, hκ]`. Use `show ((dpowM ((i + 1) + t) (-1 / 2) ((h : Mir k ((i + 1) + t)) * m) : ℂˣ) : ℂ) • qC τ σ (intC ψ f (sEmb k _ ((h : Mir k ((i + 1) + t)) * m))) = sigC τ σ h (((dpowM ((i + 1) + t) (-1 / 2) m : ℂˣ) : ℂ) • qC τ σ (intC ψ f (sEmb k _ m)))`. Rewrite using `[map_mul (sEmb k ((i + 1) + t)), ← hη, ← hy, e1, map_mul (dpowM ((i + 1) + t) (-1 / 2)), dpowM_hgp, ← hg, ← hA, map_smul]`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Take a linear combination of the given relations to obtain the conclusion.
 
-Simplify using `only [T, LinearMap.smul_apply, LinearMap.comp_apply, smul_smul, Units.val_mul] at key ⊢`. Use `congr 1`. Take the linear combination `((dpowM ((i + 1) + t) (-1 / 2) m : ℂˣ) : ℂ) * key`.
+A detailed English derivation is pending.
 -/
 theorem equiv_eC {i t : ℕ} (ψ : AddChar k Circle) (hψ : Continuous ψ) {τ : MRep k (i + 1)} {σ : GRep k (t + 1)} (f : XS τ σ)
     (h : MirabolicParabolic k (i + 1) t) (m : Mir k ((i + 1) + t)) :
@@ -222,9 +222,9 @@ theorem equiv_eC {i t : ℕ} (ψ : AddChar k Circle) (hψ : Continuous ψ) {τ :
   linear_combination ((dpowM ((i + 1) + t) (-1 / 2) m : ℂˣ) : ℂ) * key
 
 /- English proof (translation)
-Introduce `k _ _ _ _ i t ψ hψ τ σ _ _ f`. Establish `hind : eC ψ f ∈ indSpace (MirabolicParabolic k (i + 1) t) (sigC τ σ)` using `fun h g => equiv_eC ψ hψ f h g`. Establish `hsm : (⟨eC ψ f, hind⟩ : indSpace (MirabolicParabolic k (i + 1) t) (sigC τ σ)) ∈ smoothPart (ind (MirabolicParabolic k (i + 1) t) (sigC τ σ))` using `by show IsOpen {g | ind (MirabolicParabolic k (i + 1) t) (sigC τ σ) g ⟨eC ψ f, hind⟩ = ⟨eC ψ f, hind⟩}`. Use `smooth_eC ψ τ σ f using 3 with g` and compare the differences between its conclusion and the goal. Rewrite using `[Subtype.ext_iff, funext_iff]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Take `⟨C, hC, hcov⟩` from `cocompact (k := k) i t`. Conclude with `⟨⟨⟨_, hsm⟩, C, hC, fun g _ => hcov g⟩, rfl⟩`.
+Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem memC : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (i t : ℕ) (ψ : AddChar k Circle) (hψ : Continuous ψ) (τ : MRep k (i + 1)) (σ : GRep k (t + 1)) (hτ : IsSmooth τ.ρ) (hσ : IsSmooth σ.ρ) (f : XS τ σ),
     ∃ y : cIndSpace (MirabolicParabolic k (i + 1) t) (sigC τ σ), (y : smoothPart (ind (MirabolicParabolic k (i + 1) t) (sigC τ σ))).1.1 = eC ψ f := by

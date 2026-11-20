@@ -6,11 +6,9 @@ open GlobalTheory.JR Matrix MeasureTheory Filter Topology
 namespace GlobalTheory.JR.WeilMix
 
 /- English proof (translation)
-Use `haveI : ProperSpace F := ProperSpace.of_locallyCompactSpace F`. Establish `hc : Continuous (fun b : Fin r → F => f (Y.1, b, Y.2.2.1, Y.2.2.2) * ψ (b ⬝ᵥ Y.2.1))`. Use `Continuous.mul ?_ ?_` and prove the remaining obligations. Conclude with `hf.1.continuous.comp (by fun_prop)`. Conclude with `hψ.continuous.comp (by fun_prop)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `hc.integrable_of_hasCompactSupport ?_` and prove the remaining obligations. Establish `hK : IsCompact ((fun Z : Gl r F => Z.2.1) '' tsupport f)` using `hf.2.isCompact.image (by fun_prop)`. Use `HasCompactSupport.intro hK ?_` and prove the remaining obligations. Introduce `b hb`. Establish `: (Y.1, b, Y.2.2.1, Y.2.2.2) ∉ tsupport f` using `fun h => hb ⟨_, h, rfl⟩`.
-
-Simplify using `[image_eq_zero_of_notMem_tsupport this]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem integrable_mixedModel_partialFourier_integrand {F : Type} [NontriviallyNormedField F] [LocallyCompactSpace F]
     [MeasurableSpace F] [BorelSpace F] {r : ℕ} (μ : Measure F) [μ.IsAddHaarMeasure]
@@ -33,11 +31,9 @@ theorem integrable_mixedModel_partialFourier_integrand {F : Type} [NontriviallyN
 end GlobalTheory.JR.WeilMix
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ hU r M ψ hψ c f f' hf hf'`. Use `letI := M.mF`. Use `haveI := M.bF`. Use `haveI := M.haarF`. Use `haveI : LocallyCompactSpace F := hU.lcF`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Establish `hlc : IsLocallyConstant (fun x => ψ x)` using `((GlobalTheory.T.unramifiedStandardAddChar_conductor_properties F E).2 ψ hψ).1`. Use function extensionality and compare the values at `Y`. Establish `h1` using `WeilMix.integrable_mixedModel_partialFourier_integrand M.μF ψ hlc f hf Y`. Establish `h2` using `WeilMix.integrable_mixedModel_partialFourier_integrand M.μF ψ hlc f' hf' Y`. Simplify using `only [WeilMix.ptrB, Pi.add_apply, Pi.smul_apply, smul_eq_mul, add_mul, mul_assoc]`.
-
-Rewrite using `[integral_add (h1.const_mul c) h2, integral_const_mul]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.JR.WeilMix.ptrB_linear : ∀ (F E : Type) [NontriviallyNormedField F] [NontriviallyNormedField E] [NormedAlgebra F E] [StarRing E] [Unram F E] (r : ℕ) (M : Meas r F E) (ψ : AddChar F ℂ), IsStdChar ψ → ∀ (c : ℂ) (f f' : Gl r F → ℂ), IsTest f → IsTest f' → WeilMix.ptrB M ψ (c • f + f') = c • WeilMix.ptrB M ψ f + WeilMix.ptrB M ψ f' := by
   intro F E _ _ _ _ hU r M ψ hψ c f f' hf hf'

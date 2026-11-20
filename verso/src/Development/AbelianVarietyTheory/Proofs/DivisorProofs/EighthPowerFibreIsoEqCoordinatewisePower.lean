@@ -22,7 +22,7 @@ namespace GlobalTheory.PoincDiag
 
 @[reassoc]
 /- English proof (translation)
-Simplify using `only [Over.pullback_map_left]`. Conclude with `pullback.lift_fst _ _ _`. Use the proof step `@[reassoc]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mapFst {S S' : Scheme.{0}} (t : S' ⟶ S) {X Y : Over S} (φ : X ⟶ Y) :
     ((Over.pullback t).map φ).left ≫ pullback.fst Y.hom t = pullback.fst X.hom t ≫ φ.left := by
@@ -30,14 +30,14 @@ theorem mapFst {S S' : Scheme.{0}} (t : S' ⟶ S) {X Y : Over S} (φ : X ⟶ Y) 
 
 @[reassoc]
 /- English proof (translation)
-Simplify using `only [Over.pullback_map_left]`. Conclude with `pullback.lift_snd _ _ _`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mapSnd {S S' : Scheme.{0}} (t : S' ⟶ S) {X Y : Over S} (φ : X ⟶ Y) :
     ((Over.pullback t).map φ).left ≫ pullback.snd Y.hom t = pullback.snd X.hom t := by
   simp only [Over.pullback_map_left]; exact pullback.lift_snd _ _ _
 
 /- English proof (translation)
-Introduce `R R' _ _ f B _ g hB hd`. Conclude with `GlobalTheory.AbBaseChange.isAbelianScheme_and_relDim_of_isGrpPullback f B _ _ g (ReciprocityTheory.ChartRestriction.G.Geo.Tor.isGrpPullback_pullback B (spMap f)) hB hd`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem abBC : ∀ (R R' : Type) [CommRing R] [CommRing R'] (f : R →+* R') (B : Over (Sp R)) [GrpObj B] (g : ℕ), IsAbelianScheme B → SmoothOfRelativeDimension g B.hom → IsAbelianScheme ((Over.pullback (spMap f)).obj B) ∧ SmoothOfRelativeDimension g ((Over.pullback (spMap f)).obj B).hom := by
   intro R R' _ _ f B _ g hB hd
@@ -45,17 +45,17 @@ theorem abBC : ∀ (R R' : Type) [CommRing R] [CommRing R'] (f : R →+* R') (B 
     (ReciprocityTheory.ChartRestriction.G.Geo.Tor.isGrpPullback_pullback B (spMap f)) hB hd
 
 /- English proof (translation)
-Introduce `S S' t X _ z y n hy hz`. Establish `hgp` using `ReciprocityTheory.ChartRestriction.G.Geo.Tor.isGrpPullback_pullback X t`. Set `k : Over.mk ((𝟙_ (Over S')).hom ≫ t) ⟶ Over.mk t` to `Over.homMk (𝟙 _) (by simp)`. Establish `hw : ((1 : 𝟙_ (Over S') ⟶ (Over.pullback t).obj X).left ≫ pullback.fst X.hom t) ≫ X.hom = (Over.mk t).hom`. Establish `e` using `Over.w (1 : 𝟙_ (Over S') ⟶ (Over.pullback t).obj X)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Category.assoc, pullback.condition, ← Category.assoc]`. Simplify using `only [Over.pullback_obj_hom] at e`. Rewrite using `[e]`. Simplify using the standard rewrite rules. Set `u : Over.mk t ⟶ X` to `Over.homMk ((1 : 𝟙_ (Over S') ⟶ (Over.pullback t).obj X).left ≫ pullback.fst X.hom t) hw`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Establish `hu : u = 1`. Establish `h` using `hgp.2 (𝟙_ (Over S')) 1 1 (k ≫ u) (k ≫ u) (by simp [k, u]) (by simp [k, u])`. Rewrite `h` using `[← MonObj.comp_mul, _root_.mul_one]`. Establish `e : u * u = u` using `Over.OverMorphism.ext (by simpa [k, u] using h)`. Conclude with `mul_eq_left.1 e`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hp : ∀ m : ℕ, (y ^ m).left = (z ^ m).left ≫ pullback.fst X.hom t`. Introduce `m`. Proceed by induction on `m with`. Consider the case `zero`. Simplify using `only [pow_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hu]`. Both sides reduce to the same expression. Consider the case `succ m ih`. Establish `h` using `hgp.2 (𝟙_ (Over S')) (z ^ m) z (k ≫ y ^ m) (k ≫ y) (by simp [k, ih]) (by simp [k, hy])`. Rewrite `h` using `[← MonObj.comp_mul, ← pow_succ, ← pow_succ]`.
+Both sides reduce to the same expression. Treat this case separately. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `h` using `[k]`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Rewrite using `[hp n, hz, ← hu]`. Both sides reduce to the same expression.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem torsPull : ∀ (S S' : Scheme.{0}) (t : S' ⟶ S) (X : Over S) [GrpObj X] (z : 𝟙_ (Over S') ⟶ (Over.pullback t).obj X) (y : Over.mk t ⟶ X) (n : ℕ), y.left = z.left ≫ pullback.fst X.hom t → z ^ n = 1 → y ^ n = 1 := by
   intro S S' t X _ z y n hy hz
@@ -89,23 +89,21 @@ theorem torsPull : ∀ (S S' : Scheme.{0}) (t : S' ⟶ S) (X : Over S) [GrpObj X
   rfl
 
 /- English proof (translation)
-Introduce `l hl hodd W hW j hj V V₁ _ _ _ _ _ hlu Q ρ hρ D pr w hpr huniv hw K _ _ ev σ f hf hL htor`. Use `haveI := D.P.isAb.comm`. Establish `hfw : f ≫ ((Over.pullback (spMap (σ.toRingHom.comp ev))).obj D.P.A).hom = ((Over.pullback (spMap ev)).obj D.P.A).hom`. Simplify using `using hf.1.w`. Set `F : (Over.pullback (spMap ev)).obj D.P.A ⟶ (Over.pullback (spMap (σ.toRingHom.comp ev))).obj D.P.A` to `Over.homMk f hfw`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `haveI : IsIso f := hf.1.isIso_fst_of_isIso`. Use `haveI hFi : IsIso F := by`. Establish `: IsIso ((Over.forget _).map F)` using `by change IsIso f; infer_instance`. Conclude with `isIso_of_reflects_iso F (Over.forget _)`. Use `haveI hFm : IsMonHom F := GlobalTheory.AmpleRigid.isMonHom_of_mul_comp F (fun T x y => GlobalTheory.AmpleRigid.mul_comp_of_grpPullback_id F hf x y)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨hm₀, hu₀⟩` from `GlobalTheory.T.isMonHom_pullback_pr_and_unique_lift_fin_eight _ _ (spMap ev) D.P.A _ pr hpr huniv`. Take `⟨hm₁, hu₁⟩` from `GlobalTheory.T.isMonHom_pullback_pr_and_unique_lift_fin_eight _ _ (spMap (σ.toRingHom.comp ev)) D.P.A _ pr hpr huniv`. Establish `hBab` using `abBC V V₁ ρ Q.B Q.g Q.isAb Q.smoothDim`. Establish `hB₀` using `(abBC V₁ K ev _ Q.g hBab.1 hBab.2).1`. Establish `hB₁` using `(abBC V₁ K (σ.toRingHom.comp ev) _ Q.g hBab.1 hBab.2).1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `hlK : (l : K) ≠ 0`. Use `hlu.map ev` as an intermediate fact. Rewrite `this` using `[map_natCast]`. Conclude with `this.ne_zero`. Establish `key : ∀ (z : 𝟙_ (Over (Sp K)) ⟶ (Over.pullback (spMap ev)).obj D.P.A), (∃ k : ℕ, z ^ (l ^ k) = 1) → ∀ a, (z ≫ F ≫ (Over.pullback (spMap (σ.toRingHom.comp ev))).map (pr a)).left ≫ pullback.fst ((Over.pullback (spMap ρ)).obj Q.B).hom (spMap (σ.toRingHom.comp ev)) = spMap σ.toRingHo …`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Introduce a local definition for the expression.
 
-Introduce and unpack `z ⟨k, hk⟩ a`. Establish `hzw : z.left ≫ pullback.snd D.P.A.hom (spMap ev) = 𝟙 _` using `by simpa using Over.w z`. Establish `hyw : (z.left ≫ pullback.fst D.P.A.hom (spMap ev)) ≫ D.P.A.hom = (Over.mk (spMap ev)).hom`. Rewrite using `[Category.assoc, pullback.condition, ← Category.assoc, hzw, Category.id_comp]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Set `y : Over.mk (spMap ev) ⟶ D.P.A` to `Over.homMk (z.left ≫ pullback.fst D.P.A.hom (spMap ev)) hyw`. Establish `hy : y ^ (l ^ k) = 1` using `torsPull _ _ (spMap ev) D.P.A z y (l ^ k) rfl hk`. Establish `h` using `htor y ⟨k, hy⟩ z.left rfl hzw`. Simplify using `only [Over.comp_left, Category.assoc]`. Rewrite using `[mapFst, mapFst]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Express the relevant statement in the definitionally equal form `z.left ≫ f ≫ _ = _`. Rewrite using `[reassoc_of% h]`. Both sides reduce to the same expression. Establish `htors : ∀ (z z' : 𝟙_ (Over (Sp K)) ⟶ (Over.pullback (spMap ev)).obj D.P.A), (∃ k : ℕ, z ^ (l ^ k) = 1) → (∃ k : ℕ, z' ^ (l ^ k) = 1) → ∀ a a', z ≫ (Over.pullback (spMap ev)).map (pr a) = z' ≫ (Over.pullback (spMap ev)).map (pr a') → z ≫ F ≫ (Over.pullback (spMap (σ.toRingHom.comp …`. Introduce `z z' hz hz' a a' he`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[key z hz a, key z' hz' a', he]`. Conclude with `(Over.w (z ≫ F ≫ (Over.pullback (spMap (σ.toRingHom.comp ev))).map (pr a))).trans (Over.w (z' ≫ F ≫ (Over.pullback (spMap (σ.toRingHom.comp ev))).map (pr a'))).symm`. Take `⟨f₁', hm, hiso, hco⟩` from `GlobalTheory.T.eighthPower_iso_diagonal_of_lPower_torsion_action K _ _ _ _ (GlobalTheory.isSemiAbelian_of_isAbelianScheme _ hB₀) (GlobalTheory.isSemiAbelian_of_isAbelianScheme _ hB₁) l hl hlK _ _ hm₀ hm₁ hu₀ hu₁ F hFm hFi htors`.
-
-Take `⟨f₁, hf₁, hcoord⟩` from `GlobalTheory.T.fibre_iso_grpPullback_identity_transport V V₁ K Q.B ρ ev σ f₁' hm hiso`. Use `⟨f₁, hf₁, fun a T x y h1 h2 => ?_⟩` and prove the remaining obligations. Establish `hc : f ≫ ((Over.pullback (spMap (σ.toRingHom.comp ev))).map (pr a)).left = ((Over.pullback (spMap ev)).map (pr a)).left ≫ f₁'.left` using `congrArg (·.left) (hco a)`. Use `hcoord T (x ≫ ((Over.pullback (spMap ev)).map (pr a)).left) y (by rw [h1, Category.assoc, mapFst_assoc]) (by rw [h2, Category.assoc, mapSnd])` as an intermediate fact. Rewrite using `[← this, Category.assoc, ← reassoc_of% hc, mapFst_assoc]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fibreIso_eq_pow : ∀ (l : ℕ), l.Prime → Odd l → ∀ W : Matrix (Fin 8) (Fin 8) ℤ, IsE8 W → ∀ j, 1 ≤ j → ∀ (V V₁ : Type) [CommRing V] [IsDomain V] [CommRing V₁] [IsDomain V₁] [IsLocalRing V₁], IsUnit (l : V₁) → ∀ (Q : Data V) (ρ : V →+* V₁), Function.Injective ρ → ∀ (D : DegPre V₁), ∀ (pr : Fin 8 → (D.P.A ⟶ (Over.pullback (spMap ρ)).obj Q.B)) (w : LB.Iso D.P.L (LB.LinComb Q.M.L (K := (Fin 8 × Fin 8) × Fin 4) (fun k => lamPts (pr k.1.1) (pr k.1.2) k.2 ≫ pullback.fst Q.B.hom (spMap ρ)) (fun k => -(W k.1.1 k.1.2 * negε k.2)))), (∀ a, IsMonHom (pr a)) → (∀ (T : Over (Sp V₁)) (y : Fin 8 → (T ⟶ (Over.pullback (spMap ρ)).obj Q.B)), ∃! x : T ⟶ D.P.A, ∀ a, x ≫ pr a = y a) → w.IsGen → ∀ (K : Type) [Field K] [IsAlgClosed K] (ev : V₁ →+* K) (σ : K ≃+* K), ∀ (f : ((Over.pullback (spMap ev)).obj D.P.A).left ⟶ ((Over.pullback (spMap (σ.toRingHom.comp ev))).obj D.P.A).left), IsGrpPullback ((Over.pullback (spMap ev)).obj D.P.A) ((Over.pullback (spMap (σ.toRingHom.comp ev))).obj D.P.A) (𝟙 _) f → LBIso (D.P.L.pull (pullback.fst D.P.A.hom (spMap ev))) (D.P.L.pull (f ≫ pullback.fst D.P.A.hom (spMap (σ.toRingHom.comp ev)))) → (∀ (y : Over.mk (spMap ev) ⟶ D.P.A), (∃ k : ℕ, y ^ (l ^ k) = 1) → ∀ q : Sp K ⟶ ((Over.pullback (spMap ev)).obj D.P.A).left, q ≫ pullback.fst D.P.A.hom (spMap ev) = y.left → q ≫ pullback.snd D.P.A.hom (spMap ev) = 𝟙 _ → q ≫ f ≫ pullback.fst D.P.A.hom (spMap (σ.toRingHom.comp ev)) = spMap σ.toRingHom ≫ y.left) → ∃ f₁ : ((Over.pullback (spMap (ev.comp ρ))).obj Q.B).left ⟶ ((Over.pullback (spMap (σ.toRingHom.comp (ev.comp ρ)))).obj Q.B).left, IsGrpPullback ((Over.pullback (spMap (ev.comp ρ))).obj Q.B) ((Over.pullback (spMap (σ.toRingHom.comp (ev.comp ρ)))).obj Q.B) (𝟙 _) f₁ ∧ ∀ (a : Fin 8) (T : Scheme.{0}) (x : T ⟶ ((Over.pullback (spMap ev)).obj D.P.A).left) (y : T ⟶ ((Over.pullback (spMap (ev.comp ρ))).obj Q.B).left), y ≫ pullback.fst Q.B.hom (spMap (ev.comp ρ)) = x ≫ pullback.fst D.P.A.hom (spMap ev) ≫ (pr a).left ≫ pullback.fst Q.B.hom (spMap ρ) → y ≫ pullback.snd Q.B.hom (spMap (ev.comp ρ)) = x ≫ pullback.snd D.P.A.hom (spMap ev) → x ≫ f ≫ pullback.fst D.P.A.hom (spMap (σ.toRingHom.comp ev)) ≫ (pr a).left ≫ pullback.fst Q.B.hom (spMap ρ) = y ≫ f₁ ≫ pullback.fst Q.B.hom (spMap (σ.toRingHom.comp (ev.comp ρ))) := by
   intro l hl hodd W hW j hj V V₁ _ _ _ _ _ hlu Q ρ hρ D pr w hpr huniv hw K _ _ ev σ f hf hL htor

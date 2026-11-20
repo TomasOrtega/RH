@@ -27,13 +27,13 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
   {n n' : Type} [Fintype n] [DecidableEq n] [Fintype n'] [DecidableEq n'] {c : ℕ} {q : Unif k}
 
 /- English proof (translation)
-Establish `h1 : ∀ (L₁ L₂ : Submodule 𝒪[k] (n → k)) (f₁ f₂ : n → k), IsGlue L₁ f₁ → IsGlue L₂ f₂ → ∃ g : GL n k, g • L₁ = L₂ ∧ g • f₁ - f₂ ∈ L₂`. Introduce `L₁ L₂ f₁ f₂ g₁ g₂`. Take `⟨g, hg⟩` from `MulAction.exists_smul_eq (GL n k) (glue g₁) (glue g₂)`. Use `⟨g, by rw [← glue_ker g₁, ← Pair.smul_ker, hg, glue_ker], ?_⟩` and prove the remaining obligations. Use `(glue_hasVal g₁).gl_smul g` as an intermediate fact.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `this` using `[hg, Pair.hasVal_one_iff (glue_hasVal g₂), glue_ker]`. Then use the resulting hypothesis. Use `⟨h1, fun L₀ _ Q h₀ e h => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Introduce and unpack `⟨u, hu, L'', f'', hG, H⟩`. Take `⟨g, hg, hg'⟩` from `h1 _ _ _ _ (Pair.isGlue Q.hasVal_vec) hG`. Use `⟨u * embX c g, mul_mem (Subgroup.mem_sup_right hu) (Subgroup.mem_sup_left ⟨g, rfl⟩), (u * embX c g * h₀)⁻¹ * h, ?_, by group⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[MulAction.mem_stabilizer_iff, mul_smul, inv_smul_eq_iff, mul_smul, mul_smul, e, embX_smul_gluedS, hg, H, gluedS_congr hg']`. Introduce and unpack `⟨r, hr, κ, hκ, rfl⟩`. Take `⟨g, u, hu, rfl⟩` from `Radical.exists_of_mem_R hr`. Use `⟨_, Radical.conj_mem g hu, g • Q.ker, g • Q.vec, ?_, ?_⟩` and prove the remaining obligations. Simplify using `using Pair.isGlue (Q.hasVal_vec.gl_smul g)`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[← embX_smul_gluedS, ← e, mul_smul _ κ, show κ • L₀ = L₀ from hκ]`. Simplify using `only [mul_smul, inv_smul_smul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem oneOrbit : OneOrbit k n c q := by
   have h1 : ∀ (L₁ L₂ : Submodule 𝒪[k] (n → k)) (f₁ f₂ : n → k), IsGlue L₁ f₁ → IsGlue L₂ f₂ →

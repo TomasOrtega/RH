@@ -9,9 +9,9 @@ open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.Cha
 open GroundTheory.Heights₂.Heights.LowerBoundFree GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.Top GlobalTheory.CompanionTheory.Ar.Top.FlDeg
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp [m.degree_one, m.leadingCoeff_one]`. Consider the case `insert a s has ih`. Take `⟨ih1, ih2⟩` from `ih fun i hi => h i (Finset.mem_insert_of_mem hi)`. Take `⟨ha1, ha2⟩` from `h a (Finset.mem_insert_self a s)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hne : ∀ f : MvPolynomial σ ℝ, m.leadingCoeff f = 1 → f ≠ 0` using `fun f hf => m.leadingCoeff_ne_zero_iff.mp (by rw [hf]; exact one_ne_zero)`. Rewrite using `[Finset.prod_insert has, Finset.sum_insert has, m.degree_mul (hne _ ha2) (hne _ ih2), m.leadingCoeff_mul, ha1, ih1, ha2, ih2]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem degree_prod_monic {σ ι : Type*} (m : MonomialOrder σ) (s : Finset ι)
     (P : ι → MvPolynomial σ ℝ) (d : ι → σ →₀ ℕ)
@@ -30,13 +30,13 @@ theorem degree_prod_monic {σ ι : Type*} (m : MonomialOrder σ) (s : Finset ι)
     simp
 
 /- English proof (translation)
-Establish `hlt : ∀ s, a < s → (MonomialOrder.lex : MonomialOrder σ).toSyn (Finsupp.single (v s) 1) < (MonomialOrder.lex : MonomialOrder σ).toSyn (Finsupp.single (v a) 1)` using `fun s hs => MonomialOrder.lex_lt_iff.mpr (Finsupp.Lex.single_strictAnti (hv hs))`. Establish `hzero : (MonomialOrder.lex : MonomialOrder σ).toSyn 0 < (MonomialOrder.lex : MonomialOrder σ).toSyn (Finsupp.single (v a) 1)`. Rewrite using `[map_zero, ← MonomialOrder.bot_eq_zero]`. Use `bot_lt_iff_ne_bot.mpr fun h => ?_` and prove the remaining obligations. Rewrite `h` using `[MonomialOrder.bot_eq_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h0` using `(MonomialOrder.lex : MonomialOrder σ).toSyn.injective (h.trans (map_zero _).symm)`. Simplify using `at h0`. Establish `hdegX : (MonomialOrder.lex : MonomialOrder σ).degree (X (v a) : MvPolynomial σ ℝ) = Finsupp.single (v a) 1` using `MonomialOrder.degree_X`. Establish `hrest : (MonomialOrder.lex : MonomialOrder σ).toSyn ((MonomialOrder.lex : MonomialOrder σ).degree (∑ s ∈ Finset.Ioo a b, (X (v s) : MvPolynomial σ ℝ))) < (MonomialOrder.lex : MonomialOrder σ).toSyn ((MonomialOrder.lex : MonomialOrder σ).degree (X (v a) : MvPolynomial σ ℝ))`. Rewrite using `[hdegX, MonomialOrder.degree_lt_iff hzero]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `c hc`. Take `⟨s, hs, hcs⟩` from `Finset.mem_biUnion.mp (MvPolynomial.support_sum hc)`. Rewrite `hcs` using `[X, support_monomial, if_neg one_ne_zero, Finset.mem_singleton]`. Rewrite using `[hcs]`. Conclude with `hlt s (Finset.mem_Ioo.mp hs).1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Finset.Ioo_insert_left hab, Finset.sum_insert (by simp)]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[MonomialOrder.degree_add_of_lt hrest, hdegX]`. Rewrite using `[MonomialOrder.leadingCoeff_add_of_lt hrest, MonomialOrder.leadingCoeff_X]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lex_sum_Ico {σ : Type*} [LinearOrder σ] [WellFoundedGT σ] {n : ℕ} (v : Fin n → σ)
     (hv : StrictMono v) {a b : Fin n} (hab : a < b) :
@@ -80,9 +80,9 @@ open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.Cha
 open GroundTheory.Heights₂.Heights.LowerBoundFree GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.Top GlobalTheory.CompanionTheory.Ar.Top.FlDeg
 
 /- English proof (translation)
-Use extensionality with `⟨τ, a⟩`. Simplify using `only [Finsupp.coe_finset_sum, Finset.sum_apply, Finset.sum_const, smul_eq_mul, Finsupp.coe_smul, Pi.smul_apply, Finsupp.single_apply, Prod.mk.injEq]`. Rewrite using `[Finset.sum_eq_single τ, Finset.sum_eq_single a]`. Simplify using `[rhoM, Fin.card_Ioi]`. Introduce `b _ hb`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[hb]`. Simplify using the standard rewrite rules. Introduce `τ' _ h`. Simplify using `[h]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem rhoM_eq_sum (Ψ : Type) [Fintype Ψ] [DecidableEq Ψ] (N : ℕ) :
     (∑ τ : Ψ, ∑ a : Fin N, ∑ _b ∈ Finset.Ioi a, Finsupp.single (τ, a) 1 : (Ψ × Fin N) →₀ ℕ)
@@ -98,11 +98,9 @@ theorem rhoM_eq_sum (Ψ : Type) [Fintype Ψ] [DecidableEq Ψ] (N : ℕ) :
   · simp
 
 /- English proof (translation)
-Set `e` to `Fintype.equivFin Ψ`. Use `letI : LinearOrder (Ψ × Fin N) := LinearOrder.lift' (fun p => toLex (e p.1, p.2)) (fun p q h => by`. Establish `h' : (e p.1, p.2) = (e q.1, q.2)` using `toLex.injective h`. Take `⟨h1, h2⟩` from `Prod.mk.inj h'`. Conclude with `Prod.ext (e.injective h1) h2)`.
+Introduce a local definition for the expression. Equip the data with the indicated structure. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `haveI : WellFoundedGT (Ψ × Fin N) := Finite.to_wellFoundedGT`. Establish `hv : ∀ τ : Ψ, StrictMono (fun s : Fin N => (τ, s))` using `fun τ s t hst => by show toLex (e τ, s) < toLex (e τ, t)`. Conclude with `Prod.Lex.toLex_lt_toLex.mpr (Or.inr ⟨rfl, hst⟩)`. Establish `key` using `CoeffDelta.degree_prod_monic (MonomialOrder.lex : MonomialOrder (Ψ × Fin N)) Finset.univ (fun τ : Ψ => ∏ a : Fin N, ∏ b ∈ Finset.Ioi a, ∑ s ∈ Finset.Ico a b, (X (τ, s) : MvPolynomial _ ℝ)) (fun τ => ∑ a : Fin N, ∑ _b ∈ Finset.Ioi a, Finsupp.single (τ, a) 1) (fun τ _ => CoeffDelta …`. Establish `h2` using `key.2`.
-
-Rewrite `h2` using `[MonomialOrder.leadingCoeff, key.1, rhoM_eq_sum]`. Conclude with `h2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coeff_rhoM_gapDelta (Ψ : Type) [Fintype Ψ] [DecidableEq Ψ] (N : ℕ) :
     coeff (rhoM Ψ N) (gapDelta Ψ N) = 1 := by

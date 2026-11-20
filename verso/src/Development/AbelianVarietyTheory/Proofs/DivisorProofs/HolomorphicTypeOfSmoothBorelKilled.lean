@@ -18,13 +18,13 @@ open TorusLaw
 variable {n : ℕ}
 
 /- English proof (translation)
-Take `⟨hx, -⟩` from `units_of_orth h`. Establish `hD` using `h.2`. Use `set D : Mt n := diagonal fun a : Fin n => -((ReciprocityTheory.ChartRestriction.G.FD.sgn q (a : ℕ) : ℝ) : ℂ) with hDd`. Establish `hDh : Dᴴ = D`. Rewrite using `[hDd, diagonal_conjTranspose]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Use function extensionality and compare the values at `a`. Simplify using the standard rewrite rules. Establish `e : H = (x⁻¹)ᴴ * D * x⁻¹`. Rewrite using `[← hD]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: (x⁻¹)ᴴ * (xᴴ * H * x) * x⁻¹ = (x * x⁻¹)ᴴ * H * (x * x⁻¹)`. Rewrite using `[conjTranspose_mul]`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[this, mul_nonsing_inv _ hx]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `Hᴴ = H`. Rewrite using `[e, conjTranspose_mul, conjTranspose_mul, conjTranspose_conjTranspose, hDh, Matrix.mul_assoc]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma herm_of_orth {H x : Mt n} {q : ℕ} (h : OrthFr H q x) : H.IsHermitian := by
   obtain ⟨hx, -⟩ := units_of_orth h
@@ -41,28 +41,28 @@ lemma herm_of_orth {H x : Mt n} {q : ℕ} (h : OrthFr H q x) : H.IsHermitian := 
   rw [e, conjTranspose_mul, conjTranspose_mul, conjTranspose_conjTranspose, hDh, Matrix.mul_assoc]
 
 /- English proof (translation)
-Unfold `conjH`. Rewrite using `[conjTranspose_add, Matrix.mul_add, Matrix.add_mul, neg_add]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 lemma conjH_add (H Z Z' : Mt n) : conjH H (Z + Z') = conjH H Z + conjH H Z' := by
   unfold conjH
   rw [conjTranspose_add, Matrix.mul_add, Matrix.add_mul, neg_add]
 
 /- English proof (translation)
-Unfold `conjH`. Rewrite using `[conjTranspose_smul, Matrix.mul_smul, Matrix.smul_mul, smul_neg]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 lemma conjH_smul (H : Mt n) (z : ℂ) (Z : Mt n) : conjH H (z • Z) = star z • conjH H Z := by
   unfold conjH
   rw [conjTranspose_smul, Matrix.mul_smul, Matrix.smul_mul, smul_neg]
 
 /- English proof (translation)
-Unfold `conjH`. Rewrite using `[conjTranspose_sub, Matrix.mul_sub, Matrix.sub_mul]`. Normalize the expressions using the abelian group laws.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 lemma conjH_sub (H Z Z' : Mt n) : conjH H (Z - Z') = conjH H Z - conjH H Z' := by
   unfold conjH
   rw [conjTranspose_sub, Matrix.mul_sub, Matrix.sub_mul]; abel
 
 /- English proof (translation)
-Unfold `conjH`. Rewrite using `[conjTranspose_neg, conjTranspose_mul, conjTranspose_mul, conjTranspose_conjTranspose, conjTranspose_nonsing_inv, hH.eq, Matrix.mul_neg, Matrix.neg_mul, neg_neg, nonsing_inv_mul_cancel_left _ _ hu, nonsing_inv_mul_cancel_right _ _ hu]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 lemma conjH_conjH {H : Mt n} (hH : H.IsHermitian) (hu : IsUnit H.det) (Z : Mt n) : conjH H (conjH H Z) = Z := by
   unfold conjH
@@ -70,9 +70,9 @@ lemma conjH_conjH {H : Mt n} (hH : H.IsHermitian) (hu : IsUnit H.det) (Z : Mt n)
     hH.eq, Matrix.mul_neg, Matrix.neg_mul, neg_neg, nonsing_inv_mul_cancel_left _ _ hu, nonsing_inv_mul_cancel_right _ _ hu]
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `Xᴴ * H + H * X = 0 ↔ -(H⁻¹ * Xᴴ * H) = X`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Rewrite using `[Matrix.mul_assoc, eq_neg_of_add_eq_zero_left h, Matrix.mul_neg, neg_neg, nonsing_inv_mul_cancel_left _ _ hu]`. Introduce `h nth_rewrite 2 [← h]`.
+Express the relevant assertion in an equivalent form by its definition. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Matrix.mul_neg, Matrix.mul_assoc, mul_nonsing_inv_cancel_left _ _ hu, add_neg_cancel]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma mem_lieH_iff {H : Mt n} (hu : IsUnit H.det) (X : Mt n) : X ∈ lieH H ↔ conjH H X = X := by
   change Xᴴ * H + H * X = 0 ↔ -(H⁻¹ * Xᴴ * H) = X
@@ -84,7 +84,7 @@ lemma mem_lieH_iff {H : Mt n} (hu : IsUnit H.det) (X : Mt n) : X ∈ lieH H ↔ 
     rw [Matrix.mul_neg, Matrix.mul_assoc, mul_nonsing_inv_cancel_left _ _ hu, add_neg_cancel]
 
 /- English proof (translation)
-Rewrite using `[mem_lieH_iff hu, conjH_smul, conjH_add, conjH_conjH hH hu, add_comm]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma re_mem {H : Mt n} (hH : H.IsHermitian) (hu : IsUnit H.det) (Z : Mt n) :
     (1 / 2 : ℂ) • (Z + conjH H Z) ∈ lieH H := by
@@ -92,7 +92,7 @@ lemma re_mem {H : Mt n} (hH : H.IsHermitian) (hu : IsUnit H.det) (Z : Mt n) :
   simp
 
 /- English proof (translation)
-Rewrite using `[mem_lieH_iff hu, conjH_smul, conjH_sub, conjH_conjH hH hu, ← neg_sub, smul_neg, ← neg_smul]`. Use `congr 1`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 -/
 lemma im_mem {H : Mt n} (hH : H.IsHermitian) (hu : IsUnit H.det) (Z : Mt n) :
     (1 / (2 * Complex.I)) • (Z - conjH H Z) ∈ lieH H := by
@@ -101,17 +101,17 @@ lemma im_mem {H : Mt n} (hH : H.IsHermitian) (hu : IsUnit H.det) (Z : Mt n) :
   simp
 
 /- English proof (translation)
-Take `⟨hx, -⟩` from `units_of_orth h`. Establish `hD` using `h.2`. Use `set s : Fin n → ℂ := fun a : Fin n => -((ReciprocityTheory.ChartRestriction.G.FD.sgn q (a : ℕ) : ℝ) : ℂ) with hs`. Establish `hs2 : ∀ a, s a * s a = 1` using `fun a => sgn_sq q a`. Establish `hs3 : ∀ a, star (s a) = s a` using `fun a => by simp [hs]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set Y : Mt n := x⁻¹ * Z * x with hY`. Use `set X : Mt n := Matrix.of fun a c => if c < a then Y a c else if a < c then -(s a * s c * star (Y c a)) else 0 with hX`. Establish `hXD : Xᴴ * diagonal s + diagonal s * X = 0`. Use extensionality with `a c`. Simplify using `only [hX, Matrix.add_apply, mul_diagonal, diagonal_mul, conjTranspose_apply, of_apply, Matrix.zero_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Break down `lt_trichotomy a c with hac | hac | hac` into its components or cases. Rewrite using `[if_pos hac, if_neg (not_lt.2 hac.le), if_pos hac]`. Take the linear combination `(-(s c * star (Y c a))) * hs2 a`. Substitute `hac` using the available equality. Simplify using the standard rewrite rules.
+Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[if_neg (not_lt.2 hac.le), if_pos hac, if_pos hac, star_neg, star_mul, star_mul, star_star, hs3, hs3]`. Take the linear combination `(-(s a * Y a c)) * hs2 c`. Use `⟨x * X * x⁻¹, ?_, Y - X, ?_, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(x * X * x⁻¹)ᴴ * H + H * (x * X * x⁻¹) = 0`. Establish `e : (x * X * x⁻¹)ᴴ * H + H * (x * X * x⁻¹) = (x⁻¹)ᴴ * (Xᴴ * (xᴴ * H * x) + (xᴴ * H * x) * X) * x⁻¹`.
+Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `e1 : (x⁻¹)ᴴ * xᴴ = 1` using `by rw [← conjTranspose_mul, mul_nonsing_inv _ hx, conjTranspose_one]`. Simplify using `only [conjTranspose_mul, Matrix.mul_add, Matrix.add_mul, Matrix.mul_assoc, mul_nonsing_inv _ hx, Matrix.mul_one]`. Rewrite using `[← Matrix.mul_assoc x⁻¹ᴴ xᴴ, e1, Matrix.one_mul]`. Rewrite using `[e, hD, hXD]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Introduce `a c hc`. Simplify using `[hX, hc]`. Rewrite using `[← Matrix.add_mul, ← Matrix.mul_add, add_sub_cancel, hY, ← Matrix.mul_assoc, mul_nonsing_inv_cancel_right _ _ hx, mul_nonsing_inv_cancel_left _ _ hx]`.
+A detailed English derivation is pending.
 -/
 lemma decomp {H x : Mt n} {q : ℕ} (h : OrthFr H q x) (Z : Mt n) :
     ∃ X ∈ lieH H, ∃ B : Mt n, (∀ a c, c < a → B a c = 0) ∧ Z = X + x * B * x⁻¹ := by
@@ -144,29 +144,29 @@ lemma decomp {H x : Mt n} {q : ℕ} (h : OrthFr H q x) (Z : Mt n) :
       mul_nonsing_inv_cancel_left _ _ hx]
 
 /- English proof (translation)
-Take `⟨hx, hu⟩` from `units_of_orth h`. Use `set M : Mt n → ℂ := fun Z => L ((1 / 2 : ℂ) • (Z + conjH H Z)) + Complex.I * L ((1 / (2 * Complex.I)) • (Z - conjH H Z)) with hM`. Establish `hadd : ∀ Z Z', M (Z + Z') = M Z + M Z'`. Introduce `Z Z'`. Simplify using `only [hM, conjH_add]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[add_add_add_comm Z, add_sub_add_comm Z, smul_add, smul_add (1 / (2 * Complex.I)), map_add, map_add]`. Expand and normalize the polynomial expressions, which then agree. Establish `hr : ∀ (r : ℝ) Z, M ((r : ℂ) • Z) = r * M Z`. Introduce `r Z`. Simplify using `only [hM, conjH_smul]`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Complex.star_def, Complex.conj_ofReal, ← smul_add, ← smul_sub, smul_comm _ (r : ℂ), smul_comm _ (r : ℂ), Complex.coe_smul, Complex.coe_smul, L.map_smul r, L.map_smul r, Complex.real_smul, Complex.real_smul]`. Expand and normalize the polynomial expressions, which then agree. Establish `hI : ∀ Z, M (Complex.I • Z) = Complex.I * M Z`. Introduce `Z`. Simplify using `only [hM, conjH_smul]`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `e1 : (1 / 2 : ℂ) • (Complex.I • Z + star Complex.I • conjH H Z) = -((1 / (2 * Complex.I)) • (Z - conjH H Z))`. Rewrite using `[Complex.star_def, Complex.conj_I, neg_smul, ← sub_eq_add_neg, ← smul_sub, smul_smul, ← neg_smul]`. Use `congr 1`. Clear the denominators using the available nonvanishing facts. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Clear the denominators using the available nonvanishing facts. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `e2 : (1 / (2 * Complex.I)) • (Complex.I • Z - star Complex.I • conjH H Z) = (1 / 2 : ℂ) • (Z + conjH H Z)`. Rewrite using `[Complex.star_def, Complex.conj_I, neg_smul, sub_neg_eq_add, ← smul_add, smul_smul]`. Use `congr 1`. Clear the denominators using the available nonvanishing facts. Rewrite using `[e1, e2, map_neg]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `(-L ((1 / (2 * Complex.I)) • (Z - conjH H Z))) * Complex.I_mul_I`. Establish `hsm : ∀ (z : ℂ) Z, M (z • Z) = z * M Z`. Introduce `z Z`. Establish `e : z • Z = (z.re : ℂ) • Z + (z.im : ℂ) • (Complex.I • Z)`. Rewrite using `[smul_smul, ← add_smul, Complex.re_add_im]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, hadd, hr, hr, hI]`. Use `nth_rewrite 3 [← Complex.re_add_im z]`. Expand and normalize the polynomial expressions, which then agree. Set `M' : Mt n →ₗ[ℂ] ℂ` to `⟨⟨M, hadd⟩, hsm⟩`. Establish `h1 : ∀ X ∈ lieH H, M X = L X`.
+Expand and normalize the polynomial expressions, which then agree. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `X hX`. Simplify using `only [hM, (mem_lieH_iff hu X).1 hX]`. Rewrite using `[sub_self, smul_zero, map_zero, mul_zero, add_zero, ← two_smul ℂ X, smul_smul]`. Simplify using the standard rewrite rules. Establish `h2 : ∀ B : Mt n, (∀ a c, c < a → B a c = 0) → M (x * B * x⁻¹) = L (x * B * x⁻¹)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `B hB'`. Rewrite using `[hB B hB']`. Express the relevant statement in the definitionally equal form `M' _ = _`. Use `nth_rewrite 1 [matrix_eq_sum_single B]`. Simplify using `only [Matrix.mul_sum, Matrix.sum_mul, map_sum]`.
+Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Establish `e : ∀ c, M' (x * Matrix.single a c (B a c) * x⁻¹) = B a c * if a = c then d a else 0`. Introduce `c`. Break down `le_or_gt a c with hac | hac` into its components or cases. Rewrite using `[← hK a c hac _ rfl]`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `: Matrix.single a c (B a c) = B a c • Matrix.single a c (1 : ℂ)` using `by simp`. Rewrite using `[this, Matrix.mul_smul, Matrix.smul_mul, map_smul]`. Both sides reduce to the same expression. Simplify using `[hB' a c hac]`. Simplify using `[e]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `h3 : ∀ Z, M Z = L Z`. Introduce `Z`. Take `⟨X, hX, B, hB', rfl⟩` from `decomp h Z`. Rewrite using `[hadd, map_add, h1 X hX, h2 B hB']`. Rewrite using `[← h3, ← h3, hsm]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma complex_linear {H x : Mt n} {q : ℕ} (h : OrthFr H q x) (L : Mt n →ₗ[ℝ] ℂ) (d : Fin n → ℂ)
     (hK : ∀ a c, a ≤ c → ∀ Z, Z = x * Matrix.single a c 1 * x⁻¹ →
@@ -236,7 +236,7 @@ lemma complex_linear {H x : Mt n} {q : ℕ} (h : OrthFr H q x) (L : Mt n →ₗ[
   rw [← h3, ← h3, hsm]
 
 /- English proof (translation)
-Establish `h1 : gᴴ * H * g = H` using `hg`. Establish `h2 : g'ᴴ * H * g' = H` using `hg'`. Express the relevant statement in the definitionally equal form `(g * g')ᴴ * H * (g * g') = H`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Chain the equalities or inequalities of the calculation.
 -/
 lemma uh_mul {H g g' : Mt n} (hg : g ∈ Formalism.QuantumDeterminants.UH H) (hg' : g' ∈ Formalism.QuantumDeterminants.UH H) : g * g' ∈ Formalism.QuantumDeterminants.UH H := by
   have h1 : gᴴ * H * g = H := hg
@@ -246,7 +246,7 @@ lemma uh_mul {H g g' : Mt n} (hg : g ∈ Formalism.QuantumDeterminants.UH H) (hg
     _ = H := by rw [h1, h2]
 
 /- English proof (translation)
-Establish `h1 : gᴴ * H * g = H` using `hg`. Rewrite `hu` using `[← h1, det_mul]`. Conclude with `isUnit_of_mul_isUnit_right hu`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 lemma uh_unit {H g : Mt n} (hu : IsUnit H.det) (hg : g ∈ Formalism.QuantumDeterminants.UH H) : IsUnit g.det := by
   have h1 : gᴴ * H * g = H := hg
@@ -254,7 +254,7 @@ lemma uh_unit {H g : Mt n} (hu : IsUnit H.det) (hg : g ∈ Formalism.QuantumDete
   exact isUnit_of_mul_isUnit_right hu
 
 /- English proof (translation)
-Establish `h1 : gᴴ * H * g = H` using `hg`. Establish `h2` using `uh_unit hu hg`. Express the relevant statement in the definitionally equal form `(g⁻¹)ᴴ * H * g⁻¹ = H`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Chain the equalities or inequalities of the calculation.
 -/
 lemma uh_inv {H g : Mt n} (hu : IsUnit H.det) (hg : g ∈ Formalism.QuantumDeterminants.UH H) : g⁻¹ ∈ Formalism.QuantumDeterminants.UH H := by
   have h1 : gᴴ * H * g = H := hg
@@ -265,9 +265,9 @@ lemma uh_inv {H g : Mt n} (hu : IsUnit H.det) (hg : g ∈ Formalism.QuantumDeter
     _ = H := by rw [mul_nonsing_inv _ h2]; simp
 
 /- English proof (translation)
-Establish `hX' : (t • X)ᴴ * J + J * (t • X) = 0`. Establish `h0 : Xᴴ * J + J * X = 0` using `hX`. Rewrite using `[conjTranspose_smul, star_trivial, Matrix.smul_mul, Matrix.mul_smul, ← smul_add, h0, smul_zero]`. Generalize the expression as in `t • X = Y at hX'`. Establish `h1 : Yᴴ = J * (-Y) * J⁻¹`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact.
 
-Rewrite using `[mul_neg, ← eq_neg_of_add_eq_zero_left hX', mul_nonsing_inv_cancel_right _ _ hJ]`. Express the relevant statement in the definitionally equal form `(NormedSpace.exp Y)ᴴ * J * NormedSpace.exp Y = J`. Rewrite using `[← Matrix.exp_conjTranspose, h1, Matrix.exp_conj _ _ ((isUnit_iff_isUnit_det J).2 hJ), nonsing_inv_mul_cancel_right _ _ hJ, mul_assoc, ← Matrix.exp_add_of_commute _ _ (Commute.refl Y).neg_left, neg_add_cancel, NormedSpace.exp_zero, mul_one]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 lemma exp_mem {J X : Mt n} (hJ : IsUnit J.det) (hX : X ∈ lieH J) (t : ℝ) :
     NormedSpace.exp (t • X) ∈ Formalism.QuantumDeterminants.UH J := by
@@ -283,11 +283,9 @@ lemma exp_mem {J X : Mt n} (hJ : IsUnit J.det) (hX : X ∈ lieH J) (t : ℝ) :
     neg_add_cancel, NormedSpace.exp_zero, mul_one]
 
 /- English proof (translation)
-Use `open scoped Matrix.Norms.Operator in`. Establish `h1` using `hasDerivAt_exp_smul_const (𝕂 := ℝ) X (0 : ℝ)`. Use `open scoped Matrix.Norms.Operator in`. Establish `h2 : HasDerivAt (fun u : ℝ => NormedSpace.exp (u • X) i j) (X i j) 0`. Set `L : Matrix (Fin n) (Fin n) ℂ →L[ℝ] ℂ` to `LinearMap.toContinuousLinearMap (Matrix.entryLinearMap ℝ ℂ i j)`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `L.hasFDerivAt.comp_hasDerivAt (0 : ℝ) h1` as an intermediate fact. Establish `e : NormedSpace.exp ((0 : ℝ) • X) * X = X` using `by simp`. Establish `e2 : X i j = (NormedSpace.exp ((0 : ℝ) • X) * X) i j` using `by rw [e]`. Rewrite using `[e2]`. Conclude with `this`.
-
-Conclude with `h2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma hasDerivAt_exp_entry (X : Mt n) (i j : Fin n) :
     HasDerivAt (fun t : ℝ => NormedSpace.exp (t • X) i j) (X i j) 0 := by
@@ -305,18 +303,18 @@ lemma hasDerivAt_exp_entry (X : Mt n) (i j : Fin n) :
   exact h2
 
 /- English proof (translation)
-Introduce `_ _ h` and use `hb.2 _ _ h`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 lemma upT_tri {b : Mt n} (hb : UpT b) : b.BlockTriangular id := fun _ _ h => hb.2 _ _ h
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨by rw [det_mul]; exact mul_ne_zero hb.1 hb'.1, fun _ _ h => (upT_tri hb).mul (upT_tri hb') h⟩`.
+Supply the required witnesses or components.
 -/
 lemma upT_mul {b b' : Mt n} (hb : UpT b) (hb' : UpT b') : UpT (b * b') :=
   ⟨by rw [det_mul]; exact mul_ne_zero hb.1 hb'.1, fun _ _ h => (upT_tri hb).mul (upT_tri hb') h⟩
 
 /- English proof (translation)
-Use `⟨(isUnit_nonsing_inv_det _ hb.1.isUnit).ne_zero, fun _ _ h => ?_⟩` and prove the remaining obligations. Use `letI := invertibleOfIsUnitDet b hb.1.isUnit`. Conclude with `blockTriangular_inv_of_blockTriangular (upT_tri hb) h`.
+Reduce the conclusion to the remaining proof obligations. Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 lemma upT_inv {b : Mt n} (hb : UpT b) : UpT b⁻¹ := by
   refine ⟨(isUnit_nonsing_inv_det _ hb.1.isUnit).ne_zero, fun _ _ h => ?_⟩
@@ -324,12 +322,12 @@ lemma upT_inv {b : Mt n} (hb : UpT b) : UpT b⁻¹ := by
   exact blockTriangular_inv_of_blockTriangular (upT_tri hb) h
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨by simp, fun _ _ h => one_apply_ne h.ne'⟩`.
+Supply the required witnesses or components.
 -/
 lemma upT_one : UpT (1 : Mt n) := ⟨by simp, fun _ _ h => one_apply_ne h.ne'⟩
 
 /- English proof (translation)
-Rewrite using `[mul_apply, Finset.sum_eq_single a]`. Introduce `c _ hc`. Break down `lt_or_gt_of_ne hc with h | h` into its components or cases. Rewrite using `[hb.2 _ _ h, zero_mul]`. Rewrite using `[hb'.2 _ _ h, mul_zero]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/
@@ -342,7 +340,7 @@ lemma upT_mul_diag {b b' : Mt n} (hb : UpT b) (hb' : UpT b') (a : Fin n) : (b * 
   · simp
 
 /- English proof (translation)
-Use `hb.1` as an intermediate fact. Rewrite `this` using `[det_of_upperTriangular (upT_tri hb)]`. Conclude with `Finset.prod_ne_zero_iff.1 this a (Finset.mem_univ a)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 lemma upT_diag_ne {b : Mt n} (hb : UpT b) (a : Fin n) : b a a ≠ 0 := by
   have := hb.1
@@ -355,7 +353,7 @@ def chi (w : ι → Fin n → ℤ) (b : ι → Mt n) : ℂ := ∏ τ, ∏ a, b �
 
 omit [DecidableEq ι] in
 /- English proof (translation)
-Unfold `chi`. Simplify using `only [← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun τ _ => Finset.prod_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[upT_mul_diag (hb τ) (hb' τ), mul_zpow]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 lemma chi_mul (w : ι → Fin n → ℤ) {b b' : ι → Mt n} (hb : ∀ τ, UpT (b τ)) (hb' : ∀ τ, UpT (b' τ)) :
     chi w (fun τ => b τ * b' τ) = chi w b * chi w b' := by
@@ -365,7 +363,7 @@ lemma chi_mul (w : ι → Fin n → ℤ) {b b' : ι → Mt n} (hb : ∀ τ, UpT 
   rw [upT_mul_diag (hb τ) (hb' τ), mul_zpow]
 
 /- English proof (translation)
-Unfold `chi`. Rewrite using `[Finset.prod_eq_single τ]`. Simplify using the standard rewrite rules. Introduce `ρ _ h`. Simplify using `[Pi.mulSingle_eq_of_ne h]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
 Simplify using the standard rewrite rules.
 -/
@@ -380,9 +378,9 @@ lemma chi_mulSingle (w : ι → Fin n → ℤ) (τ : ι) (b : Mt n) : chi w (Pi.
 def co (g : ι → Mt n) : ι → Fin n → Fin n → ℂ := fun τ a c => g τ a c
 
 /- English proof (translation)
-Use `hasDerivAt_pi.2 fun ρ => hasDerivAt_pi.2 fun i => hasDerivAt_pi.2 fun j => ?_` and prove the remaining obligations. Simplify using `only [co, Pi.mul_apply]`. Distinguish the cases in `h : ρ = τ`. Substitute `h` using the available equality. Simplify using `only [Pi.mulSingle_eq_same, Pi.single_eq_same]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `only [mul_apply]`. Conclude with `HasDerivAt.fun_sum fun k _ => (HasDerivAt.fun_sum fun l _ => (hc l k).const_mul _).mul_const _`. Simplify using `only [Pi.mulSingle_eq_of_ne h, Pi.single_eq_of_ne h]`. Conclude with `hasDerivAt_const _ _`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma curve_deriv (A C : ι → Mt n) (τ : ι) (c : ℝ → Mt n) (Z : Mt n)
     (hc : ∀ i j, HasDerivAt (fun t => c t i j) (Z i j) 0) :
@@ -398,9 +396,9 @@ lemma curve_deriv (A C : ι → Mt n) (τ : ι) (c : ℝ → Mt n) (Z : Mt n)
     exact hasDerivAt_const _ _
 
 /- English proof (translation)
-Establish `h1 : ∀ a, HasDerivAt (fun t : ℝ => (1 + t • B) a a ^ w a) (B a a * w a) 0`. Introduce `a`. Establish `h2 : HasDerivAt (fun z : ℂ => 1 + z * B a a) (B a a) 0`. Simplify using `using ((hasDerivAt_id (0 : ℂ)).mul_const (B a a)).const_add 1`. Establish `h3` using `(hasDerivAt_zpow (w a) (1 + (0 : ℂ) * B a a) (Or.inl (by simp))).comp (0 : ℂ) h2`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `h4 : HasDerivAt (fun z : ℂ => (1 + z * B a a) ^ w a) (B a a * w a) ((0 : ℝ) : ℂ)`. Simplify `h3` using `[mul_comm, Function.comp_def]`. Simplify using `using h4.comp_ofReal`. Establish `h` using `HasDerivAt.fun_finsetProd (u := Finset.univ) fun a _ => h1 a`. Simplify using `using h`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 lemma chi_deriv (w : Fin n → ℤ) (B : Mt n) :
     HasDerivAt (fun t : ℝ => ∏ a, (1 + t • B) a a ^ w a) (∑ a, B a a * w a) 0 := by
@@ -418,43 +416,37 @@ lemma chi_deriv (w : Fin n → ℤ) (B : Mt n) :
 variable {Hm : ι → Mt n} {q : ι → ℕ} {x₀ : ι → Mt n} {w : ι → Fin n → ℤ}
 
 /- English proof (translation)
-Use `set D := fderiv ℝ P (co (u * x₀ * b)) with hD`. Establish `hcurve : ∀ τ (c : ℝ → Mt n) (Z : Mt n), c 0 = 1 → (∀ i j, HasDerivAt (fun t => c t i j) (Z i j) 0) → HasDerivAt (fun t => P (co (u * Pi.mulSingle τ (c t) * (x₀ * b)))) (D (co (Pi.single τ (u τ * Z * (x₀ * b) τ)))) 0`. Introduce `τ c Z h0 hc`. Establish `h1 : HasFDerivAt P D (co (u * Pi.mulSingle τ (c 0) * (x₀ * b)))`. Rewrite using `[h0, Pi.mulSingle_one, mul_one, ← mul_assoc]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hd.hasFDerivAt`. Conclude with `h1.comp_hasDerivAt (0 : ℝ) (curve_deriv u (x₀ * b) τ c Z hc)`. Establish `hsingle : ∀ τ (z : ℂ) (v : Mt n), D (co (Pi.single τ (z • v))) = z * D (co (Pi.single τ v))`. Introduce `τ`. Take `⟨hx, hH⟩` from `units_of_orth (h τ)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Set `L : Mt n →ₗ[ℝ] ℂ` to `{ toFun := fun Z => D (co (Pi.single τ (u τ * Z * (x₀ * b) τ))) map_add' := fun Z Z' => by`. Rewrite using `[← map_add, Matrix.mul_add, Matrix.add_mul, Pi.single_add]`. Both sides reduce to the same expression. Use the proof step `map_smul' := fun r Z => by`. Rewrite using `[← map_smul, Matrix.mul_smul, Matrix.smul_mul, Pi.single_smul]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `rfl }`. Establish `hL : ∀ X ∈ lieH (Hm τ), L X = chi w b * der τ X f u`. Introduce `X hX`. Apply the tactic sequence `have h1 := hcurve τ (fun t => NormedSpace.exp (t • X)) X (by simp) (hasDerivAt_exp_entry X)`. Establish `e : (fun t : ℝ => P (co (u * Pi.mulSingle τ (NormedSpace.exp (t • X)) * (x₀ * b)))) = fun t : ℝ => chi w b * f (u * Pi.mulSingle τ (NormedSpace.exp (t • X)))`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Use function extensionality and compare the values at `t`. Rewrite using `[← mul_assoc]`. Use `hP _ (fun ρ => uh_mul (hu ρ) ?_) b hb` and prove the remaining obligations. Distinguish the cases in `hρ : ρ = τ`. Substitute `hρ` using the available equality.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[Pi.mulSingle_eq_same]`. Conclude with `exp_mem hH hX t`. Rewrite using `[Pi.mulSingle_eq_of_ne hρ]`. Simplify using `[Formalism.QuantumDeterminants.UH]`. Rewrite `h1` using `[e]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Unfold `der`. Rewrite using `[← deriv_const_mul_field]`. Conclude with `h1.deriv.symm`. Establish `hlin` using `complex_linear (h τ) L (fun a => chi w b * ((w τ a : ℂ) * f u)) ?_ ?_`. Introduce `z v`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `hu'` using `uh_unit hH (hu τ)`. Establish `hxb : IsUnit ((x₀ * b) τ).det`. Rewrite using `[Pi.mul_apply, det_mul]`. Conclude with `hx.mul (hb τ).1.isUnit`. Establish `e : ∀ v : Mt n, D (co (Pi.single τ v)) = L ((u τ)⁻¹ * v * ((x₀ * b) τ)⁻¹)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `v`. Express the relevant statement in the definitionally equal form `_ = D _`. Rewrite using `[← Matrix.mul_assoc, nonsing_inv_mul_cancel_right _ _ hxb, mul_nonsing_inv_cancel_left _ _ hu']`. Rewrite using `[e, e, ← hlin, Matrix.mul_smul, Matrix.smul_mul]`. Introduce `a c hac Z hZ`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Take a linear combination of the given relations to obtain the conclusion.
 
-Establish `h1` using `hk τ a c hac u hu`. Rewrite `h1` using `[← hZ]`. Unfold `derC at h1`. Rewrite using `[hL _ (re_mem (herm_of_orth (h τ)) hH Z), hL _ (im_mem (herm_of_orth (h τ)) hH Z)]`. Use `split_ifs at h1 ⊢`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← h1]`. Expand and normalize the polynomial expressions, which then agree. Take the linear combination `chi w b * h1`. Introduce `B hB`. Establish `h1` using `hcurve τ (fun t => 1 + t • (x₀ τ * B * (x₀ τ)⁻¹)) (x₀ τ * B * (x₀ τ)⁻¹) (by simp) (fun i j => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Simplify using `using ((hasDerivAt_id (0 : ℝ)).smul_const ((x₀ τ * B * (x₀ τ)⁻¹) i j)).const_add ((1 : Mt n) i j))`. Establish `h2` using `((chi_deriv (w τ) B).mul_const (chi w b)).mul_const (f u)`. Establish `hev : ∀ᶠ t : ℝ in nhds 0, (1 + t • B).det ≠ 0`. Establish `hc : Continuous fun t : ℝ => (1 + t • B).det` using `by fun_prop`. Conclude with `hc.continuousAt.eventually_ne (by simp)`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h3 : (fun t : ℝ => P (co (u * Pi.mulSingle τ (1 + t • (x₀ τ * B * (x₀ τ)⁻¹)) * (x₀ * b)))) =ᶠ[nhds 0] fun t : ℝ => (∏ a, (1 + t • B) a a ^ w τ a) * chi w b * f u` using `by filter_upwards [hev] with t ht`. Establish `hT : ∀ ρ, UpT ((Pi.mulSingle τ (1 + t • B) : ι → Mt n) ρ)`. Introduce `ρ`. Distinguish the cases in `hρ : ρ = τ`. Substitute `hρ` using the available equality.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Rewrite using `[Pi.mulSingle_eq_same]`. Conclude with `⟨ht, fun a c hc => by simp [hB a c hc, one_apply_ne hc.ne']⟩`. Rewrite using `[Pi.mulSingle_eq_of_ne hρ]`. Conclude with `upT_one`. Establish `e : u * Pi.mulSingle τ (1 + t • (x₀ τ * B * (x₀ τ)⁻¹)) * (x₀ * b) = u * x₀ * fun ρ => (Pi.mulSingle τ (1 + t • B) : ι → Mt n) ρ * b ρ`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `ρ`. Simplify using `only [Pi.mul_apply]`. Distinguish the cases in `hρ : ρ = τ`. Substitute `hρ` using the available equality. Simplify using `only [Pi.mulSingle_eq_same, Matrix.mul_add, Matrix.add_mul, Matrix.mul_smul, Matrix.smul_mul, Matrix.mul_assoc, Matrix.one_mul, Matrix.mul_one, nonsing_inv_mul_cancel_left _ _ hx]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Simplify using `only [Pi.mulSingle_eq_of_ne hρ, Matrix.mul_assoc, Matrix.one_mul, Matrix.mul_one]`. Rewrite using `[e, hP u hu _ (fun ρ => upT_mul (hT ρ) (hb ρ)), chi_mul w hT hb, chi_mulSingle]`. Establish `h4` using `(h1.congr_of_eventuallyEq h3.symm).unique h2`. Express the relevant statement in the definitionally equal form `D _ = _`. Rewrite using `[h4, Finset.sum_mul, Finset.sum_mul]`.
-
-Conclude with `Finset.sum_congr rfl fun a _ => by ring`. Establish `hsm : ∀ (z : ℂ) v, D (z • v) = z • D v`. Introduce `z v`. Proceed by induction on `v using Pi.single_induction with`. Consider the case `zero => simp`.
-
-Consider the case `add v v' h1 h2 => rw [smul_add, map_add, map_add, h1, h2, smul_add]`. Consider the case `single τ v`. Rewrite using `[← Pi.single_smul]`. Conclude with `hsingle τ z v`. Set `D' : (ι → Fin n → Fin n → ℂ) →L[ℂ] ℂ` to `⟨⟨⟨D, D.map_add⟩, hsm⟩, D.continuous⟩`.
-
-Conclude with `(hasFDerivAt_of_restrictScalars ℝ (f' := D') hd.hasFDerivAt (by ext; rfl)).differentiableAt`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 lemma core (h : ∀ τ, OrthFr (Hm τ) (q τ) (x₀ τ)) {f : (ι → Mt n) → ℂ} (hk : KilledFn Hm x₀ w f)
     {P : (ι → Fin n → Fin n → ℂ) → ℂ}
@@ -561,14 +553,14 @@ section Smooth
 variable {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ E] {U : Set E}
 
 /- English proof (translation)
-Simplify using `only [det_apply']`. Conclude with `ContDiffOn.sum fun σ _ => contDiffOn_const.mul (contDiffOn_prod fun i _ => hg _ _)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma cd_det {g : E → Mt n} (hg : ∀ a c, ContDiffOn ℝ ∞ (fun x => g x a c) U) : ContDiffOn ℝ ∞ (fun x => (g x).det) U := by
   simp only [det_apply']
   exact ContDiffOn.sum fun σ _ => contDiffOn_const.mul (contDiffOn_prod fun i _ => hg _ _)
 
 /- English proof (translation)
-Simplify using `only [mul_apply]`. Conclude with `ContDiffOn.sum fun k _ => (hg _ _).mul (hg' _ _)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma cd_mulM {g g' : E → Mt n} (hg : ∀ a c, ContDiffOn ℝ ∞ (fun x => g x a c) U)
     (hg' : ∀ a c, ContDiffOn ℝ ∞ (fun x => g' x a c) U) (a c : Fin n) : ContDiffOn ℝ ∞ (fun x => (g x * g' x) a c) U := by
@@ -576,9 +568,7 @@ lemma cd_mulM {g g' : E → Mt n} (hg : ∀ a c, ContDiffOn ℝ ∞ (fun x => g 
   exact ContDiffOn.sum fun k _ => (hg _ _).mul (hg' _ _)
 
 /- English proof (translation)
-Simplify using `only [inv_def, Ring.inverse_eq_inv', Matrix.smul_apply, smul_eq_mul, adjugate_apply]`. Use `((cd_det hg).inv h0).mul (cd_det fun i j => ?_)` and prove the remaining obligations. Simplify using `only [updateRow_apply]`. Use `split_ifs`. Conclude with `contDiffOn_const`.
-
-Conclude with `hg _ _`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma cd_inv {g : E → Mt n} (hg : ∀ a c, ContDiffOn ℝ ∞ (fun x => g x a c) U) (h0 : ∀ x ∈ U, (g x).det ≠ 0) (a c : Fin n) :
     ContDiffOn ℝ ∞ (fun x => (g x)⁻¹ a c) U := by
@@ -598,39 +588,35 @@ namespace GlobalTheory.HolDict
 open TorusLaw HolOf in
 
 /- English proof (translation)
-Introduce `n ι _ _ Hm q x₀ w h f hs hk`. Use `choose β hβ hβ' using fun τ => GlobalTheory.HolDict.GS.smooth_gramSchmidt n (Hm τ) (q τ) (x₀ τ) (h τ)`. Take `⟨hopen, -, hstab, hx₀⟩` from `GlobalTheory.HolDict.frDoms_open_preconnected_stable n ι Hm q x₀ h`. Set `bb : (ι → Fin n → Fin n → ℂ) → ι → Mt n` to `fun x τ => Matrix.of (β τ (x τ))`. Set `γ : (ι → Fin n → Fin n → ℂ) → ι → Mt n` to `fun x τ => Matrix.of (x τ) * (bb x τ)⁻¹ * (x₀ τ)⁻¹`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `P : (ι → Fin n → Fin n → ℂ) → ℂ` to `fun x => chi w (bb x) * f (γ x)`. Establish `hbb : ∀ x ∈ frDoms Hm q, ∀ τ, UpT (bb x τ)` using `fun x hx τ => (hβ' τ _ (hx τ)).1`. Establish `hγ : ∀ x ∈ frDoms Hm q, γ x ∈ UG Hm` using `fun x hx τ => (hβ' τ _ (hx τ)).2`. Establish `hdec : ∀ x ∈ frDoms Hm q, ∀ τ, γ x τ * x₀ τ * bb x τ = Matrix.of (x τ)`. Introduce `x hx τ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [γ]`. Rewrite using `[nonsing_inv_mul_cancel_right _ _ (units_of_orth (h τ)).1, nonsing_inv_mul_cancel_right _ _ (hbb x hx τ).1.isUnit]`. Establish `hdec' : ∀ x ∈ frDoms Hm q, co (γ x * x₀ * bb x) = x` using `fun x hx => funext fun τ => hdec x hx τ`. Establish `hP : ∀ u ∈ UG Hm, ∀ b : ι → Mt n, (∀ τ, UpT (b τ)) → P (co (u * x₀ * b)) = chi w b * f u`. Introduce `u hu b hb`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hx : co (u * x₀ * b) ∈ frDoms Hm q` using `hstab u hu b hb _ hx₀`. Use `set x := co (u * x₀ * b) with hxd`. Establish `e : ∀ τ, γ x τ = u τ * (x₀ τ * (b τ * (bb x τ)⁻¹) * (x₀ τ)⁻¹)`. Introduce `τ`. Express the relevant statement in the definitionally equal form `(u τ * x₀ τ * b τ) * (bb x τ)⁻¹ * (x₀ τ)⁻¹ = _`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [Matrix.mul_assoc]`. Establish `h1 : ∀ τ, x₀ τ * (b τ * (bb x τ)⁻¹) * (x₀ τ)⁻¹ ∈ Formalism.QuantumDeterminants.UH (Hm τ)`. Introduce `τ`. Establish `hH` using `(units_of_orth (h τ)).2`. Use `uh_mul (uh_inv hH (hu τ)) (hγ x hx τ)` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Rewrite `this` using `[e, nonsing_inv_mul_cancel_left _ _ (uh_unit hH (hu τ))]`. Then use the resulting hypothesis. Use `choose s hs' using fun τ => GlobalTheory.HolDict.diag_of_upT_unitary n (Hm τ) (q τ) (x₀ τ) (h τ) _ (upT_mul (hb τ) (upT_inv (hbb x hx τ))) (h1 τ)`. Establish `e2 : γ x = u * torEl x₀ s`. Use function extensionality and compare the values at `τ`. Rewrite using `[e, hs']`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Establish `e3 : chi w b = torCh w s * chi w (bb x)`. Establish `e4 : b = fun τ => (b τ * (bb x τ)⁻¹) * bb x τ`. Use function extensionality and compare the values at `τ`. Rewrite using `[nonsing_inv_mul_cancel_right _ _ (hbb x hx τ).1.isUnit]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Replace the relevant objects with their definitions.
 
-Rewrite using `[e4, chi_mul w (fun τ => upT_mul (hb τ) (upT_inv (hbb x hx τ))) (hbb x hx)]`. Use `congr 1`. Unfold `chi torCh`. Simplify using `only [hs', diagonal_apply_eq]`. Express the relevant statement in the definitionally equal form `chi w (bb x) * f (γ x) = _`.
+Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Rewrite using `[e2, torus_law_of_killed n ι Hm q x₀ w h f hs hk u hu s, e3]`. Expand and normalize the polynomial expressions, which then agree. Establish `hbs : ∀ τ a c, ContDiffOn ℝ ∞ (fun x => bb x τ a c) (frDoms Hm q)`. Introduce `τ a c`. Establish `h1 : ContDiffOn ℝ ∞ (fun x : ι → Fin n → Fin n → ℂ => β τ (x τ)) (frDoms Hm q)` using `(hβ τ).comp (by fun_prop) fun x hx => hx τ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `contDiffOn_pi.1 (contDiffOn_pi.1 h1 a) c`. Establish `hγs : ContDiffOn ℝ ∞ (fun x => co (γ x)) (frDoms Hm q)`. Use `contDiffOn_pi.2 fun τ => contDiffOn_pi.2 fun a => contDiffOn_pi.2 fun c => ?_` and prove the remaining obligations. Use `cd_mulM (g' := fun _ => (x₀ τ)⁻¹) (cd_mulM (g := fun x : ι → Fin n → Fin n → ℂ => Matrix.of (x τ)) (fun a c => ?_) (cd_inv (hbs τ) fun x hx => (hbb x hx τ).1)) (fun _ _ => contDiffOn_const) a c` and prove the remaining obligations. Simplify using `only [of_apply]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Use `fun_prop`. Establish `hfs : ContDiffOn ℝ ∞ (fun x => f (γ x)) (frDoms Hm q)` using `(GlobalTheory.HolDict.Chart.main n ι Hm (fun τ => ⟨herm_of_orth (h τ), (units_of_orth (h τ)).2.ne_zero⟩) f hs _ _ _ hopen hγs hγ).1`. Establish `hcs : ContDiffOn ℝ ∞ (fun x => chi w (bb x)) (frDoms Hm q)`. Unfold `chi`. Use `contDiffOn_prod fun τ _ => contDiffOn_prod fun a _ => ?_` and prove the remaining obligations.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Consider the cases of `w τ a with`. Consider the case `ofNat m => simpa using (hbs τ a a).pow m`. Consider the case `negSucc m`. Simplify using `only [zpow_negSucc]`. Conclude with `((hbs τ a a).pow (m + 1)).inv fun x hx => pow_ne_zero _ (upT_diag_ne (hbb x hx τ) a)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hPd : DifferentiableOn ℝ P (frDoms Hm q)` using `(hcs.mul hfs).differentiableOn (by simp)`. Use `⟨P, ⟨fun x hx => ?_, fun x hx b hb => ?_⟩, fun u hu => ?_⟩` and prove the remaining obligations. Establish `h1` using `(hPd x hx).differentiableAt (hopen.mem_nhds hx)`. Rewrite `h1` using `[← hdec' x hx]`. Establish `h2` using `core h hk hP (hγ x hx) (hbb x hx) h1`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite `h2` using `[hdec' x hx]`. Conclude with `h2.differentiableWithinAt`. Establish `h1` using `hP (γ x) (hγ x hx) (fun τ => bb x τ * b τ) fun τ => upT_mul (hbb x hx τ) (hb τ)`. Establish `e : co (γ x * x₀ * fun τ => bb x τ * b τ) = fun τ => (Matrix.of (x τ) * b τ : Mt n)`. Use function extensionality and compare the values at `τ`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Rewrite using `[← hdec x hx τ, Matrix.mul_assoc]`. Both sides reduce to the same expression. Rewrite `h1` using `[e, chi_mul w (hbb x hx) hb]`. Rewrite using `[h1]`. Express the relevant statement in the definitionally equal form `_ = chi w b * (chi w (bb x) * f (γ x))`.
-
-Expand and normalize the polynomial expressions, which then agree. Establish `h1` using `hP u hu 1 fun _ => upT_one`. Rewrite `h1` using `[mul_one]`. Establish `e : chi w (1 : ι → Mt n) = 1` using `by simp [chi]`. Rewrite `h1` using `[e, one_mul]`.
-
-Conclude with `h1.symm`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem holFn_of_killed : ∀ (n : ℕ) (ι : Type) [Fintype ι] [DecidableEq ι] (Hm : ι → Mt n) (q : ι → ℕ) (x₀ : ι → Mt n) (w : ι → Fin n → ℤ), (∀ τ, OrthFr (Hm τ) (q τ) (x₀ τ)) → ∀ f, SmFn Hm f → KilledFn Hm x₀ w f → HolFn Hm q x₀ w f := by
   intro n ι _ _ Hm q x₀ w h f hs hk

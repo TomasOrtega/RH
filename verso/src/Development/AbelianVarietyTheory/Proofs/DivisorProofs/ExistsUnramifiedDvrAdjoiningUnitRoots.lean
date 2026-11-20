@@ -6,11 +6,11 @@ open IsLocalRing Polynomial
 namespace GlobalTheory.KummerUnram
 
 /- English proof (translation)
-Establish `hk0 : k ≠ 0`. Introduce and unpack `rfl`. Conclude with `not_isUnit_zero (M₀ := R) (by simpa using hk)`. Establish `hm : (X ^ k - C (u : R)).Monic` using `monic_X_pow_sub_C _ hk0`. Establish `h1 : AdjoinRoot.root (X ^ k - C (u : R)) ^ k = algebraMap R _ (u : R)`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `AdjoinRoot.eval₂_root (X ^ k - C (u : R))` as an intermediate fact. Simplify `this` using `[sub_eq_zero]`. Establish `hr : IsUnit (AdjoinRoot.root (X ^ k - C (u : R)))` using `(isUnit_pow_iff hk0).1 (h1 ▸ (u.isUnit.map _))`. Set `P : StandardEtalePair R` to `⟨X ^ k - C (u : R), hm, derivative (X ^ k - C (u : R)), 1, 0, 1, by simp⟩`. Establish `h : IsUnit (AdjoinRoot.mk (X ^ k - C (u : R)) (derivative (X ^ k - C (u : R))))`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : AdjoinRoot.mk (X ^ k - C (u : R)) (derivative (X ^ k - C (u : R))) = algebraMap R _ (k : R) * AdjoinRoot.root _ ^ (k - 1)`. Simplify using `[derivative_X_pow, AdjoinRoot.algebraMap_eq]`. Rewrite using `[e]`. Conclude with `(hk.map _).mul (hr.pow _)`. Conclude with `.of_equiv (P.equivAwayAdjoinRoot.trans ((IsLocalization.atUnit _ (Localization.Away (AdjoinRoot.mk _ (derivative (X ^ k - C (u : R))))) _ h).symm.restrictScalars R))`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem etale_adjoinRoot_pow_sub {R : Type} [CommRing R] [Nontrivial R] {k : ℕ} (hk : IsUnit (k : R)) (u : Rˣ) :
     Algebra.Etale R (AdjoinRoot (X ^ k - C (u : R))) := by
@@ -39,15 +39,15 @@ end GlobalTheory.KummerUnram
 namespace GlobalTheory.KummerUnram
 
 /- English proof (translation)
-Use `etale_adjoinRoot_pow_sub hk u` as an intermediate fact. Set `ρ : T →+* AlgebraicClosure (ResidueField T)` to `(algebraMap (ResidueField T) _).comp (residue T)`. Set `ε : AdjoinRoot (X ^ k - C (u : T)) →+* AlgebraicClosure (ResidueField T)` to `AdjoinRoot.lift ρ ub (by simp [ρ, hub])`. Establish `hερ : ε.comp (algebraMap T _) = ρ`. Use extensionality with `t`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `[ε, AdjoinRoot.algebraMap_eq]`. Establish `hε : IsLocalHom (ε.comp (algebraMap T (AdjoinRoot (X ^ k - C (u : T)))))`. Rewrite using `[hερ]`. Use `infer_instance`. Take `⟨B, _, _, _, ψ, ρ', j', -, h2, h3, h4, h5⟩` from `TorsionUnram.exists_local_of_etale ε hε T.subtype Subtype.val_injective`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨hD, f, hf, hirr⟩` from `UnramSub.range (i := j') h3`. Use `⟨j'.range, ⟨hD, f.comp (ψ.comp (algebraMap T _)), fun v => ?_, fun π hπ => hirr _ (h5 π hπ)⟩, j' (ψ (AdjoinRoot.root _)), ⟨_, rfl⟩, ?_, fun n hn hy => hn ?_⟩` and prove the remaining obligations. Rewrite using `[RingHom.comp_apply, hf]`. Conclude with `congr($h4 v)`. Establish `h1 : AdjoinRoot.root (X ^ k - C (u : T)) ^ k = algebraMap T _ (u : T)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `AdjoinRoot.eval₂_root (X ^ k - C (u : T))` as an intermediate fact. Simplify `this` using `[sub_eq_zero]`. Rewrite using `[← map_pow, ← map_pow, h1]`. Conclude with `congr($h4 (u : T))`. Establish `e1 : ψ (AdjoinRoot.root (X ^ k - C (u : T))) ^ n = 1` using `h3 (by rw [map_pow, hy, map_one])`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `e2 : ρ' (ψ (AdjoinRoot.root (X ^ k - C (u : T)))) = ub`. Rewrite using `[← RingHom.comp_apply, h2]`. Simplify using `[ε]`. Rewrite using `[← e2, ← map_pow, e1, map_one]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_root_step {F : Type} [Field F] [IsAlgClosed F] (T : Subring F)
     [IsDiscreteValuationRing T] {k : ℕ} (hk : IsUnit (k : T)) (u : Tˣ)
@@ -88,11 +88,11 @@ end GlobalTheory.KummerUnram
 namespace GlobalTheory.KummerUnram
 
 /- English proof (translation)
-Set `ρ : T →+* AlgebraicClosure (ResidueField T)` to `(algebraMap (ResidueField T) _).comp (residue T)`. Establish `hkΩ : ((k : ℕ) : AlgebraicClosure (ResidueField T)) ≠ 0`. Simplify `(hk.map ρ).ne_zero` using `[ρ]`. Establish `hk0 : 0 < k` using `Nat.pos_of_ne_zero (by rintro rfl; simp at hkΩ)`. Use `haveI : NeZero ((k : ℕ) : AlgebraicClosure (ResidueField T)) := ⟨hkΩ⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨ub, hub⟩` from `HasEnoughRootsOfUnity.exists_primitiveRoot (AlgebraicClosure (ResidueField T)) k`. Take `⟨T', hT', y, hyT, hy, hyn⟩` from `exists_root_step T hk 1 ub (by simp [hub.pow_eq_one])`. Establish `hy1 : y ^ k = 1` using `by simpa using hy`. Establish `hprim : IsPrimitiveRoot y k` using `IsPrimitiveRoot.mk_of_lt y hk0 hy1 fun l hl hlk => hyn l (hub.pow_ne_one_of_pos_of_lt hl.ne' hlk)`. Use `⟨T', hT', fun z hz => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `haveI : NeZero k := ⟨hk0.ne'⟩`. Take `⟨i, -, rfl⟩` from `hprim.eq_pow_of_pow_eq_one hz`. Conclude with `pow_mem hyT i`.
+A detailed English derivation is pending.
 -/
 theorem exists_rootsOfUnity {F : Type} [Field F] [IsAlgClosed F] (T : Subring F)
     [IsDiscreteValuationRing T] {k : ℕ} (hk : IsUnit (k : T)) :
@@ -120,17 +120,17 @@ namespace GlobalTheory
 open KummerUnram in
 
 /- English proof (translation)
-Introduce `F _ _ T _ k hk U hU`. Take `⟨T₁, h₁, hroots⟩` from `exists_rootsOfUnity T hk`. It suffices to establish `key : ∃ T' : Subring F, UnramSub T.subtype T' ∧ T₁ ≤ T' ∧ ∀ x : F, (∃ u ∈ U, x ^ k = ((u : T) : F)) → x ∈ T' by`. Take `⟨T', h, -, h'⟩` from `key`. Conclude with `⟨T', h, h'⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the argument to an intermediate assertion. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Proceed by induction on `U, hU using Set.Finite.induction_on with`. Consider the case `empty => exact ⟨T₁, h₁, le_rfl, by simp⟩`. Consider the case `@insert a s _ _ ih`. Take `⟨T', hT', hle, hmem⟩` from `ih`. Use `haveI := hT'.isDVR`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hTT' : T ≤ T'` using `fun z hz => hT'.mem ⟨z, hz⟩`. Set `ι : T →+* T'` to `Subring.inclusion hTT'`. Establish `hk' : IsUnit (k : T')` using `by simpa [ι] using hk.map ι`. Set `a' : T'ˣ` to `Units.map ι.toMonoidHom a`. Establish `hk0 : k ≠ 0` using `by rintro rfl; exact not_isUnit_zero (M₀ := T) (by simpa using hk)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨ub, hub⟩` from `IsAlgClosed.exists_pow_nat_eq (algebraMap (ResidueField T') (AlgebraicClosure (ResidueField T')) (residue T' a')) (Nat.pos_of_ne_zero hk0)`. Take `⟨T'', hT'', y, hyT, hy, -⟩` from `exists_root_step T' hk' a' ub hub`. Establish `hy' : y ^ k = ((a : T) : F)` using `by simpa [a', ι] using hy`. Establish `ha0 : ((a : T) : F) ≠ 0` using `fun h => a.ne_zero (Subtype.ext h)`. Establish `hy0 : y ≠ 0` using `by rintro rfl; exact ha0 (by rw [← hy', zero_pow hk0])`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hle' : T' ≤ T''` using `UnramSub.le hT''`. Use `⟨T'', hT'.trans hT'', hle.trans hle', fun x ⟨u, hu, hx⟩ => ?_⟩` and prove the remaining obligations. Break down `Set.mem_insert_iff.1 hu with rfl | hu` into its components or cases. Establish `hz : (x / y) ^ k = 1` using `by rw [div_pow, hx, hy', div_self ha0]`. Establish `: x = (x / y) * y` using `by field_simp`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Conclude with `mul_mem (hle' (hle (hroots _ hz))) hyT`. Conclude with `hle' (hmem x ⟨u, hu, hx⟩)`.
+A detailed English derivation is pending.
 -/
 theorem exists_unramSub_of_pow_eq_units : ∀ (F : Type) [Field F] [IsAlgClosed F] (T : Subring F) [IsDiscreteValuationRing T] (k : ℕ), IsUnit (k : T) → ∀ U : Set Tˣ, U.Finite → ∃ T' : Subring F, GlobalTheory.UnramSub T.subtype T' ∧ ∀ x : F, (∃ u ∈ U, x ^ k = ((u : T) : F)) → x ∈ T' := by
   intro F _ _ T _ k hk U hU

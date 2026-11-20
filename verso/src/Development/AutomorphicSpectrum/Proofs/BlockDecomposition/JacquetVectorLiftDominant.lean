@@ -12,15 +12,15 @@ section SlopeTestRemainingChoices
 variable {G : Type} [Group G] {V : Type} [AddCommGroup V] [Module ℂ V]
 
 /- English proof (translation)
-Rewrite using `[map_mul, Module.End.mul_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem pi_mul (π : Representation ℂ G V) (a b : G) (v : V) : π a (π b v) = π (a * b) v := by
   rw [map_mul, Module.End.mul_apply]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hv h hh`. Establish `h1 : ∀ h : H, π (h : G) v = (((1 : H →* ℂˣ) h : ℂˣ) : ℂ) • v` using `hv`. Simplify using `using h1 ⟨h, hh⟩`. Introduce `hv show ∀ h : H, π (h : G) v = (((1 : H →* ℂˣ) h : ℂˣ) : ℂ) • v`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Simplify using `using hv h h.2`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem mem_fixed_iff (π : Representation ℂ G V) (H : Subgroup G) (v : V) :
     v ∈ fixed π H ↔ ∀ h ∈ H, π h v = v := by
@@ -34,7 +34,7 @@ theorem mem_fixed_iff (π : Representation ℂ G V) (H : Subgroup G) (v : V) :
     simpa using hv h h.2
 
 /- English proof (translation)
-Establish `hr' : (r : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 hr.ne'`. Rewrite using `[map_smul, map_sum, Finset.sum_congr rfl (fun i _ => h i), Finset.sum_const, Finset.card_univ, Fintype.card_fin, ← Nat.cast_smul_eq_nsmul ℂ, smul_smul, inv_mul_cancel₀ hr', one_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem mkQ_avg (W : Submodule ℂ V) (r : ℕ) (hr : 0 < r) (f : Fin r → V) (m : V ⧸ W)
     (h : ∀ i, W.mkQ (f i) = m) : W.mkQ (((r : ℂ)⁻¹) • ∑ i, f i) = m := by
@@ -50,21 +50,17 @@ variable {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
   {V : Type} [AddCommGroup V] [Module ℂ V]
 
 /- English proof (translation)
-Use `haveI : CompactSpace K := isCompact_iff_compactSpace.1 hK`. Set `H' : Subgroup K` to `{ carrier := {g | π (g : G) u = u} mul_mem' := by`. Introduce `a b ha hb`. Use `show π ((a * b : K) : G) u = u`. Rewrite using `[Subgroup.coe_mul, ← pi_mul, show π (b : G) u = u from hb, show π (a : G) u = u from ha]`.
+Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Use the proof step `one_mem' := by show π ((1 : K) : G) u = u`. Simplify using the standard rewrite rules. Use the proof step `inv_mem' := by`. Introduce `a ha`. Use `show π ((a⁻¹ : K) : G) u = u`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ha' : π (a : G) u = u` using `ha`. Use `conv_lhs => rw [← ha']`. Rewrite using `[pi_mul]`. Simplify using `}`. Establish `hH' : IsOpen (H' : Set K)` using `(hπ u).preimage continuous_subtype_val`.
+Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hcomp : IsCompact (((⊤ : Subgroup K)) : Set K)`. Simplify using `using (isCompact_univ : IsCompact (Set.univ : Set K))`. Take `⟨r, hr, x, hxA, hx⟩` from `GlobalTheory.T.compact_group_finite_coset_reps K ⊤ H' (A.subgroupOf K) hcomp hH' le_top le_top (by`. Introduce `y _`. Take `⟨a, ha, hau⟩` from `hc y y.2`.
+Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨⟨a, hA ha⟩, Subgroup.mem_subgroupOf.2 ha, ?_⟩` and prove the remaining obligations. Use `show π (((⟨a, hA ha⟩ : K)⁻¹ * y : K) : G) u = u`. Simplify using `using hau)`. Use `⟨r, fun i => (x i : G), hr, fun i => Subgroup.mem_subgroupOf.1 (hxA i), hE u (H'.map K.subtype) ?_ ?_ r _ hr (fun i => (x i).2) ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨g, _, rfl⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `g.2`. Introduce and unpack `_ ⟨g, hg, rfl⟩`. Conclude with `hg`. Introduce `y hy`. Take `⟨i, hi, huniq⟩` from `hx ⟨y, hy⟩ trivial`.
-
-Use `⟨i, ⟨(x i)⁻¹ * ⟨y, hy⟩, hi, by simp⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `i' ⟨g, hg, e⟩`. Use `huniq i' ?_` and prove the remaining obligations. Establish `: (x i')⁻¹ * ⟨y, hy⟩ = g`. Apply `Subtype.ext` to reduce the goal to its premises.
-
-Simplify using `using e.symm`. Use `show (x i')⁻¹ * ⟨y, hy⟩ ∈ H'`. Rewrite using `[this]`. Conclude with `hg`.
+Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_avg (K : Subgroup G) (hK : IsCompact (K : Set G)) (π : Representation ℂ G V)
     (hπ : IsSmooth π) (E : V →ₗ[ℂ] V)
@@ -125,11 +121,9 @@ section Dom
 variable {G : Type} [Group G] [TopologicalSpace G]
 
 /- English proof (translation)
-Proceed by induction on `j with`. Consider the case `zero => intro b hb`. Simplify using `using hb`. Consider the case `succ j ih`. Introduce `b hb`.
+Proceed by induction. Treat this case separately. Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h` using `(hd.2.2 _ (ih b hb)).2`. Establish `e : ((t : G) ^ (j + 1))⁻¹ * b * (t : G) ^ (j + 1) = (t : G)⁻¹ * (((t : G) ^ j)⁻¹ * b * (t : G) ^ j) * (t : G)`. Rewrite using `[pow_succ]`. Use `group`. Rewrite using `[e]`.
-
-Conclude with `h`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conj_pow_mem (D : CassData G) (t : D.T) (hd : D.IsDom t) (j : ℕ) :
     ∀ b ∈ D.J ⊓ D.T, ((t : G) ^ j)⁻¹ * b * (t : G) ^ j ∈ D.J ⊓ D.T := by
@@ -147,33 +141,31 @@ theorem conj_pow_mem (D : CassData G) (t : D.T) (hd : D.IsDom t) (j : ℕ) :
 end Dom
 
 /- English proof (translation)
-Introduce `G _ _ _ D V _ _ π hπ t ht w hw`. Take `⟨u, rfl⟩` from `Submodule.Quotient.mk_surjective _ w`. Take `⟨hd, -, hsh⟩` from `ht`. Take `⟨j, hj⟩` from `hsh {g | π g u = u} (hπ u) (by simp)`. Establish `hwT` using `(mem_fixed_iff _ _ _).1 hw`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hKc : IsCompact ((D.J ⊓ D.T : Subgroup G) : Set G)`. Rewrite using `[Subgroup.coe_inf]`. Conclude with `D.isCompact_J.inter_right D.isClosed_alt`. Establish `hN : ∀ n ∈ D.N, ∀ v : V, (twKer π D.N 1).mkQ (π n v) = (twKer π D.N 1).mkQ v`. Introduce `n hn v`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `(Submodule.Quotient.eq _).2 (Submodule.subset_span ⟨⟨n, hn⟩, v, by simp⟩)` and prove the remaining obligations. Take `⟨x, hxdef⟩ : ∃ x, x = π ((t : G) ^ j) u` from `⟨_, rfl⟩`. Establish `hxNm : ∀ n ∈ D.J ⊓ D.Nm, π n x = x`. Introduce `n hn`. Establish `h1 : π (((t : G) ^ j)⁻¹ * n * (t : G) ^ j) u = u` using `hj n hn`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hxdef]`. Use `conv_rhs => rw [← h1]`. Rewrite using `[pi_mul, pi_mul]`. Use `congr 2`. Use `group`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨E1, hE1fix, -, -, -, hE1⟩` from `GlobalTheory.T.compact_fixed_vector_projection G (D.J ⊓ D.T) hKc V π hπ`. Take `⟨r, b, hr, hb, hy⟩` from `exists_avg (D.J ⊓ D.T) hKc π hπ E1 hE1 x (D.J ⊓ D.T) le_rfl (fun y hy => ⟨y, hy, by simp⟩)`. Take `⟨y, hydef⟩ : ∃ y, y = E1 x` from `⟨_, rfl⟩`. Rewrite `hy` using `[← hydef]`. Establish `hyK : ∀ k ∈ D.J ⊓ D.T, π k y = y`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hydef]`. Conclude with `(mem_fixed_iff _ _ _).1 (hE1fix x)`. Establish `hyNm : ∀ n ∈ D.J ⊓ D.Nm, π n y = y`. Introduce `n hn`. Rewrite using `[hy, map_smul, map_sum]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `congr 1`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `hbi` using `hb i`. Establish `hn' : (b i)⁻¹ * n * b i ∈ D.J ⊓ D.Nm`. Use `⟨D.J.mul_mem (D.J.mul_mem (inv_mem hbi.1) hn.1) hbi.1, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2` using `(Subgroup.mem_normalizer_iff.1 (D.norm_Nm _ (inv_mem hbi.2)) n).1 hn.2`. Simplify using `using h2`. Establish `h3` using `hxNm _ hn'`. Use `conv_rhs => rw [← h3]`. Rewrite using `[pi_mul, pi_mul]`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `congr 2`. Use `group`. Establish `hmk : (twKer π D.N 1).mkQ y = D.piN π (t ^ j) (Submodule.Quotient.mk u)`. Rewrite using `[hy]`. Use `mkQ_avg _ r hr _ _ fun i => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Establish `hc` using `conj_pow_mem D t hd j (b i) (hb i)`. Establish `hfix` using `hwT ⟨_, hc.2⟩ hc.1`. Establish `h4 : π (b i) x = π ((t : G) ^ j) (π (((t : G) ^ j)⁻¹ * b i * (t : G) ^ j) u)`. Rewrite using `[hxdef, pi_mul, pi_mul]`. Use `congr 2`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `group`. Rewrite using `[h4]`. Establish `h5 : (twKer π D.N 1).mkQ (π (((t : G) ^ j)⁻¹ * b i * (t : G) ^ j) u) = Submodule.Quotient.mk u` using `hfix`. Establish `h6 : ∀ m : V, (twKer π D.N 1).mkQ (π ((t : G) ^ j) m) = D.piN π (t ^ j) ((twKer π D.N 1).mkQ m)`. Introduce `m`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `: (((t ^ j : D.T)) : G) = (t : G) ^ j` using `by simp`. Rewrite using `[← this]`. Both sides reduce to the same expression. Rewrite using `[h6, h5]`. Take `⟨E2, hE2fix, -, -, -, hE2⟩` from `GlobalTheory.T.compact_fixed_vector_projection G D.J D.isCompact_J V π hπ`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨r2, c, hr2, hc, hv⟩` from `exists_avg D.J D.isCompact_J π hπ E2 hE2 y (D.J ⊓ D.N) inf_le_left (fun g hg => by`. Take `⟨c, hc, b', hb', a, ha, rfl⟩` from `D.fact_up g hg`. Use `⟨c, hc, ?_⟩` and prove the remaining obligations. Establish `e : c⁻¹ * (c * b' * a) = b' * a` using `by group`. Rewrite using `[e, ← pi_mul, hyNm a ha, hyK b' hb'])`.
-
-Use `⟨j, ⟨E2 y, hE2fix y⟩, ?_⟩` and prove the remaining obligations. Use `show (twKer π D.N 1).mkQ (E2 y) = _`. Rewrite using `[hv]`. Use `mkQ_avg _ r2 hr2 _ _ fun i => ?_` and prove the remaining obligations. Rewrite using `[hN _ (hc i).2, hmk]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_fixed_proj_eq_piN_pow : ∀ (G : Type) [Group G] [TopologicalSpace G] [IsTopologicalGroup G] (D : PositivityTheory.SphericalProduct.CassData G), ∀ (V : Type) [AddCommGroup V] [Module ℂ V] (π : Representation ℂ G V), IsSmooth π → ∀ t : D.T, D.IsStrDom t → ∀ w ∈ fixed (D.piN π) D.JT, ∃ j : ℕ, ∃ v : fixed π D.J, D.proj π (v : V) = D.piN π (t ^ j) w := by
   intro G _ _ _ D V _ _ π hπ t ht w hw

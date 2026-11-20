@@ -22,9 +22,9 @@ def occC2phi (dual : Bool) (ε : Fin n → Bool) (η f : Fin n → smD ε (rreg 
   toL2 ε (occCoef dual (rreg ε) (fun c => ((η c : smD ε (rreg ε)) : L2 ε)) (fun c => ((f c : smD ε (rreg ε)) : L2 ε)))
 
 /- English proof (translation)
-Unfold `occC2phi`. Establish `e : (fun c => (((f + f') c : smD ε (rreg ε)) : L2 ε)) = (fun c => ((f c : smD ε (rreg ε)) : L2 ε)) + (fun c => ((f' c : smD ε (rreg ε)) : L2 ε))`. Use function extensionality and compare the values at `c`. Simplify using the standard rewrite rules. Rewrite using `[e, occurrence_coef_add]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `toL2_add_smooth ε (occA_coef_memLp dual (rreg_isURepOn ε) hW η f hη hf) (occA_coef_memLp dual (rreg_isURepOn ε) hW η f' hη hf')`.
+A detailed English derivation is pending.
 -/
 theorem occurrence_phi_add (dual : Bool)
     (hW : ∀ v ∈ genSub (smE ε (rreg ε)) (datumV ε Ψ v₀), ∀ w ∈ genSub (smE ε (rreg ε)) (datumV ε Ψ v₀),
@@ -43,9 +43,9 @@ theorem occurrence_phi_add (dual : Bool)
     (occA_coef_memLp dual (rreg_isURepOn ε) hW η f' hη hf')
 
 /- English proof (translation)
-Unfold `occC2phi`. Establish `e : (fun c => (((a • f) c : smD ε (rreg ε)) : L2 ε)) = a • (fun c => ((f c : smD ε (rreg ε)) : L2 ε))`. Use function extensionality and compare the values at `c`. Simplify using the standard rewrite rules. Rewrite using `[e, occurrence_coef_smul]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `toL2_smul_smooth ε a _`.
+A detailed English derivation is pending.
 -/
 theorem occurrence_phi_smul (dual : Bool) (η f : Fin n → smD ε (rreg ε)) (a : ℂ) :
     occC2phi dual ε η (a • f) = a • occC2phi dual ε η f := by
@@ -56,9 +56,9 @@ theorem occurrence_phi_smul (dual : Bool) (η f : Fin n → smD ε (rreg ε)) (a
   exact toL2_smul_smooth ε a _
 
 /- English proof (translation)
-Unfold `occC2phi`. Rewrite using `[rightRegular_toL2 ε _ (cf_kset_sub hk)]`. Apply `toL2_congr_of_forall_inUJ_eq` to reduce the goal to its premises. Introduce `g hg`. Use `show ∑ c, _ = ∑ c, _`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[occA_tensGrp_mul dual (rreg_isURepOn ε) hg hk, ← hff]`.
+A detailed English derivation is pending.
 -/
 theorem occurrence_phi_k_equivariant (dual : Bool) (η f f' : Fin n → smD ε (rreg ε)) {k : Matrix (Fin n) (Fin n) ℂ}
     (hk : k ∈ Kset ε)
@@ -80,21 +80,19 @@ variable {ε : Fin n → Bool} {lam lam' : Fin n → ℝ} {T : S7.KType ε (lowK
   {v₀ : T.V} {v₀' : T'.V}
 
 /- English proof (translation)
-Establish `hσ` using `rreg_isURepOn ε`. Establish `hD` using `isDerivedOn_smE hσ`. Establish `hV` using `datumV_isKIrrHW hP hv₀`. Take `⟨j, hj⟩` from `tensor_generated_mem_layer hD.glRep hV.2.1 hf`. Use `set W := layer ε (smE ε (rreg ε)) (datumV ε Ψ v₀) j with hWdef`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `: FiniteDimensional ℂ W` using `finiteDimensional_layer hV.1 j`. Establish `hWM : ∀ u : Fin n → W, (fun c => ((u c : W) : smD ε (rreg ε))) ∈ tensSub (genSub (smE ε (rreg ε)) (datumV ε Ψ v₀))` using `fun u => (tset_mem).2 fun c => layer_le_genSub j (u c).2`. Set `P` to `(Hlam ε Ψ' v₀').starProjection`. Set `Φ : (Fin n → W) →ₗ[ℂ] L2 ε` to `{ toFun := fun u => P (occC2phi dual ε η (fun c => ((u c : W) : smD ε (rreg ε)))) map_add' := fun u u' => by`. Establish `e : (fun c => (((u + u') c : W) : smD ε (rreg ε))) = (fun c => ((u c : W) : smD ε (rreg ε))) + (fun c => ((u' c : W) : smD ε (rreg ε)))`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `c`. Simplify using the standard rewrite rules. Rewrite using `[e, occurrence_phi_add dual hW hη (hWM u) (hWM u'), map_add]`. Use the proof step `map_smul' := fun a u => by`. Establish `e : (fun c => (((a • u) c : W) : smD ε (rreg ε))) = a • (fun c => ((u c : W) : smD ε (rreg ε)))`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `c`. Simplify using the standard rewrite rules. Simplify using `only [RingHom.id_apply]`. Rewrite using `[e, occurrence_phi_smul, map_smul] }`. Establish `hSf : FiniteDimensional ℂ (LinearMap.range Φ)` using `LinearMap.finiteDimensional_range Φ`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `hS : LinearMap.range Φ ≤ closGen (smE ε (rreg ε)) (datumV ε Ψ' v₀')`. Introduce and unpack `x ⟨u, rfl⟩`. Conclude with `Submodule.starProjection_apply_mem (Hlam ε Ψ' v₀') _`. Establish `hSK : ∀ k ∈ Kset ε, ∀ x ∈ LinearMap.range Φ, rreg ε k x ∈ LinearMap.range Φ`. Introduce and unpack `k hk x ⟨u, rfl⟩`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hy` using `fun d => layer_k_stable hσ hD hV.2.1 (datumV_kStable hP v₀) j k hk (u d : W) (u d).2`. Use `choose y hyW hy using hy`. Set `u' : Fin n → W` to `fun c => ∑ d, (cond dual (star (k c d)) (k c d)) • (⟨y d, hyW d⟩ : W)`. Use `⟨u', ?_⟩` and prove the remaining obligations. Use `show P _ = rreg ε k (P _)`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Rewrite using `[← projection_commutes_right_regular hgap' hP' hv₀' k (cf_kset_sub hk)]`. Use `congr 1`. Use `(occurrence_phi_k_equivariant dual η _ _ hk ?_).symm` and prove the remaining obligations. Use function extensionality and compare the values at `c`. Simplify using `only [u', kDiag, Submodule.coe_sum, Submodule.coe_smul, hy]`.
-
-Establish `hle` using `data_kfin_le hgap' hσ hD (datumV_isKIrrHW hP' hv₀') (datumV_casimir hP' v₀') (datumV_kStable hP' v₀') (LinearMap.range Φ) hS hSf hSK`. Apply `hle` to reduce the goal to its premises. Use `⟨fun c => ⟨f c, hj c⟩, ?_⟩` and prove the remaining obligations. Both sides reduce to the same expression.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem occurrence_projection_mem (dual : Bool) (hP : IsPsiFor ε lam T Ψ) (hv₀ : v₀ ≠ 0)
     (hgap' : StdGap ε lam') (hP' : IsPsiFor ε lam' T' Ψ') (hv₀' : v₀' ≠ 0)

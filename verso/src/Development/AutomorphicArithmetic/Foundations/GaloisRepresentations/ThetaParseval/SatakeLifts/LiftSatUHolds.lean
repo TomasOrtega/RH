@@ -22,26 +22,26 @@ import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.Theta
 namespace UpperTheory.Gal.TP.Loc
 
 /- English proof (translation)
-The claim follows from `liftIso_of (pairOfLift leftSmooth keepsSB modelDict separates) srcGood contraIrr (contraUnit contraIrr)`.
+A detailed English derivation is pending.
 -/
 theorem liftIso_holds : LiftIso :=
   liftIso_of (pairOfLift leftSmooth keepsSB modelDict separates) srcGood contraIrr (contraUnit contraIrr)
 
 /- English proof (translation)
-The claim follows from `liftSat_of liftIso_holds srcGood contraIrr (contraUnit contraIrr) (satContra (contraUnit contraIrr)) satTwist satInvT satDet satProd segInv`.
+A detailed English derivation is pending.
 -/
 theorem liftSat_holds : LiftSat :=
   liftSat_of liftIso_holds srcGood contraIrr (contraUnit contraIrr) (satContra (contraUnit contraIrr)) satTwist satInvT satDet
     satProd segInv
 
 /- English proof (translation)
-The claim follows from `pairSat liftSat_holds pullGood contraIrr (contraUnit contraIrr) (satContra (contraUnit contraIrr))`.
+A detailed English derivation is pending.
 -/
 theorem pairSat_holds : PairSat :=
   pairSat liftSat_holds pullGood contraIrr (contraUnit contraIrr) (satContra (contraUnit contraIrr))
 
 /- English proof (translation)
-The claim follows from `liftSatU pairSat_holds compUnit`.
+A detailed English derivation is pending.
 -/
 theorem liftSatU_holds : LiftSatU := liftSatU pairSat_holds compUnit
 

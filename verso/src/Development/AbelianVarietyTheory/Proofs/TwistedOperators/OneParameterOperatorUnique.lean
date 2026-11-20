@@ -26,7 +26,7 @@ open scoped ENNReal
 open GlobalTheory.WeilAdm.HaarSplit
 
 /- English proof (translation)
-Use `haveI : SecondCountableTopology (mixedEmbedding.mixedSpace F) := inferInstance`. Use `haveI : BorelSpace (mixedEmbedding.mixedSpace F) := inferInstance`. Use `infer_instance`.
+A detailed English derivation is pending.
 -/
 private theorem opensMeasurableSpace_pi_mixedSpace (F : Type) [Field F] [NumberField F] (κ : Type) [Fintype κ] :
     OpensMeasurableSpace (κ → mixedEmbedding.mixedSpace F) := by
@@ -35,23 +35,19 @@ private theorem opensMeasurableSpace_pi_mixedSpace (F : Type) [Field F] [NumberF
   infer_instance
 
 /- English proof (translation)
-Use `haveI := opensMeasurableSpace_pi_mixedSpace F κ`. Use `letI : LocallyCompactSpace (FiniteAdeleRing (𝓞 F) F) := GlobalTheory.AdelicUnitaryTop.locallyCompact_finiteAdele F`. Use `haveI : SecondCountableTopology (FiniteAdeleRing (𝓞 F) F) := GlobalTheory.AdelicUnitaryTop.secondCountable_finiteAdele F`. Use `haveI : T2Space (FiniteAdeleRing (𝓞 F) F) := GlobalTheory.AdelicUnitaryTop.t2Space_finiteAdeleRing_of_numberField F`. Use `letI : MeasurableSpace (FiniteAdeleRing (𝓞 F) F) := borel _`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Use `haveI : BorelSpace (FiniteAdeleRing (𝓞 F) F) := ⟨rfl⟩`. Use `letI mA : MeasurableSpace (κ → AdeleRing (𝓞 F) F) := borel _`. Use `haveI : BorelSpace (κ → AdeleRing (𝓞 F) F) := ⟨rfl⟩`. Take `⟨ν, hν⟩ : ∃ ν : Measure (κ → FiniteAdeleRing (𝓞 F) F), ν = Measure.addHaar` from `⟨_, rfl⟩`. Use `haveI : ν.IsAddHaarMeasure := by rw [hν]; infer_instance`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `haveI : SFinite ν := by rw [hν]; infer_instance`. Use `haveI : SFinite μ := inferInstance`. Use `haveI : MeasurableAdd (κ → FiniteAdeleRing (𝓞 F) F) := inferInstance`. Use `haveI : MeasurableAdd (κ → mixedEmbedding.mixedSpace F) := inferInstance`. Set `h : ((κ → mixedEmbedding.mixedSpace F) × (κ → FiniteAdeleRing (𝓞 F) F)) ≃ₜ (κ → AdeleRing (𝓞 F) F)` to `{ toEquiv := (splitE F κ).toEquiv continuous_toFun := continuous_splitE F κ continuous_invFun := continuous_splitE_symm F κ }`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations.
 
-Set `m` to `h.toMeasurableEquiv`. Establish `hm : (m : _ → _) = splitE F κ` using `rfl`. Establish `hgc : Continuous g` using `hg.1.continuous`. Use `⟨(μ.prod ν).map m, ?_, ∫⁻ y, ‖g y‖ₑ ^ 2 ∂ν, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hm]`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `AddEquiv.isAddHaarMeasure_map (μ.prod ν) (splitE F κ) (continuous_splitE F κ) (continuous_splitE_symm F κ)`. Apply `ne_of_gt` to reduce the goal to its premises. Establish `hU : IsOpen {y | g y = g 0}` using `hg.1.isOpen_fiber _`. Establish `hpos : 0 < ν {y | g y = g 0}` using `hU.measure_pos ν ⟨0, rfl⟩`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `lintegral_mono fun y => ?_` and prove the remaining obligations. Distinguish the cases in `hy : g y = g 0`. Simplify using `[Set.indicator, hy]`. Simplify using `[Set.indicator, hy]`. Establish `hs : HasCompactSupport fun y => ‖g y‖ ^ 2` using `hg.2.comp_left (g := fun z : ℂ => ‖z‖ ^ 2) (by simp)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hint : Integrable (fun y => ‖g y‖ ^ 2) ν` using `(hgc.norm.pow 2).integrable_of_hasCompactSupport hs`. Establish `h2` using `hint.2`. Unfold `HasFiniteIntegral at h2`. Use `ne_of_lt (lt_of_le_of_lt (le_of_eq ?_) h2)` and prove the remaining obligations. Use `lintegral_congr fun y => ?_` and prove the remaining obligations.
-
-Rewrite using `[enorm_pow, enorm_norm]`. Introduce `f`. Rewrite using `[lintegral_map_equiv, hm]`. Establish `hpt : ∀ p : (κ → mixedEmbedding.mixedSpace F) × (κ → FiniteAdeleRing (𝓞 F) F), ‖GlobalTheory.WeilM.pureA F f g (splitE F κ p)‖ₑ ^ 2 = ‖f p.1‖ₑ ^ 2 * ‖g p.2‖ₑ ^ 2`. Introduce `p`.
-
-Rewrite using `[pureA_splitE, enorm_mul, mul_pow]`. Repeatedly rewrite using `[hpt]`. Rewrite using `[mul_comm]`. Conclude with `lintegral_prod_mul (μ := μ) (ν := ν) (f := fun z => ‖f z‖ₑ ^ 2) (g := fun y => ‖g y‖ₑ ^ 2) (f.continuous.measurable.enorm.pow_const 2).aemeasurable (hgc.measurable.enorm.pow_const 2).aemeasurable`.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_haar (F : Type) [Field F] [NumberField F] (κ : Type) [Fintype κ]
     (μ : Measure (κ → mixedEmbedding.mixedSpace F)) [μ.IsAddHaarMeasure]
@@ -115,7 +111,7 @@ theorem exists_haar (F : Type) [Field F] [NumberField F] (κ : Type) [Fintype κ
       (f.continuous.measurable.enorm.pow_const 2).aemeasurable (hgc.measurable.enorm.pow_const 2).aemeasurable
 
 /- English proof (translation)
-Establish `hc : Continuous fun x => ‖f x‖ ^ 2` using `hf.norm.pow 2`. Rewrite using `[integral_eq_lintegral_of_nonneg_ae (f := fun x => ‖f x‖ ^ 2) (Filter.Eventually.of_forall fun x => by positivity) hc.aestronglyMeasurable]`. Use `congr 1`. Use `lintegral_congr fun x => ?_` and prove the remaining obligations. Rewrite using `[ENNReal.ofReal_pow (norm_nonneg _), ofReal_norm_eq_enorm]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem integral_sq_eq {V : Type} [TopologicalSpace V] [MeasurableSpace V] [OpensMeasurableSpace V] (μ : Measure V)
     {f : V → ℂ} (hf : Continuous f) : ∫ x, ‖f x‖ ^ 2 ∂μ = (∫⁻ x, ‖f x‖ₑ ^ 2 ∂μ).toReal := by
@@ -127,13 +123,13 @@ theorem integral_sq_eq {V : Type} [TopologicalSpace V] [MeasurableSpace V] [Open
   rw [ENNReal.ofReal_pow (norm_nonneg _), ofReal_norm_eq_enorm]
 
 /- English proof (translation)
-The claim follows from `opensMeasurableSpace_pi_mixedSpace F κ`.
+A detailed English derivation is pending.
 -/
 theorem opensMeasurable (F : Type) [Field F] [NumberField F] (κ : Type) [Fintype κ] :
     OpensMeasurableSpace (κ → mixedEmbedding.mixedSpace F) := opensMeasurableSpace_pi_mixedSpace F κ
 
 /- English proof (translation)
-Establish `h` using `hz (((0 : InfiniteAdeleRing F), (1 : FiniteAdeleRing (𝓞 F) F)) : AdeleRing (𝓞 F) F) (by show InfiniteAdeleRing.ringEquiv_mixedSpace F 0 = 0`. Conclude with `map_zero _)`. Establish `h2 : (((0 : InfiniteAdeleRing F), (1 : FiniteAdeleRing (𝓞 F) F)) * ((z i).1, (z i).2)).2 = (0 : InfiniteAdeleRing F × FiniteAdeleRing (𝓞 F) F).2` using `congrArg Prod.snd (congrFun h i)`. Simplify using `using h2`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem snd_eq_zero {F : Type} [Field F] [NumberField F] {κ : Type} {z : κ → AF F} (hz : At (evI F) z) (i : κ) :
     (z i).2 = 0 := by
@@ -145,19 +141,17 @@ theorem snd_eq_zero {F : Type} [Field F] [NumberField F] {κ : Type} {z : κ →
   simpa using h2
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ a a' B G X om om' hT γ _ T hAct μ hμ t f`. Use `haveI := hμ`. Use `haveI := opensMeasurable F (Fin a × Fin (a + a'))`. Use `set g : (Fin a × Fin (a + a') → FiniteAdeleRing (𝓞 F) F) → ℂ := (GlobalTheory.SchANonzero.intPts F (Fin a × Fin (a + a'))).indicator 1 with hgdef`. Establish `hgSB : g ∈ GlobalTheory.WeilM.SB _` using `GlobalTheory.SchANonzero.indicator_intPts_mem_SB F _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `h0mem : (0 : Fin a × Fin (a + a') → FiniteAdeleRing (𝓞 F) F) ∈ GlobalTheory.SchANonzero.intPts F _`. Introduce `i _ v`. Simplify using the standard rewrite rules. Establish `hg0 : g 0 ≠ 0`. Rewrite using `[hgdef, Set.indicator_of_mem h0mem]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Take `⟨μA, hμA, c, hc0, hctop, hc⟩` from `exists_haar F (Fin a × Fin (a + a')) μ g hgSB hg0`. Establish `hU` using `(GlobalTheory.WeilM.IsUWeilPair.isUSplitting hT.weil).unit`. Set `r : (Fin a × Fin (a + a') → AF F) → ℂ` to `fun x => g (fun i => (x i).2)`. Establish `htens : ∀ φ : SInf F (Fin a × Fin (a + a')), tens (evI F) (φ : _ → ℂ) r = GlobalTheory.WeilM.pureA F φ g` using `fun φ => rfl`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments.
 
-Establish `hRest : Rest (evI F) (f : _ → ℂ) r`. Use `⟨fun x z hz => ?_, ?_⟩` and prove the remaining obligations. Use `show g _ = g _`. Use `congr 1`. Use function extensionality and compare the values at `i`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `show (x i).2 + (z i).2 = (x i).2`. Rewrite using `[snd_eq_zero hz i, add_zero]`. Rewrite using `[htens]`. Conclude with `Submodule.subset_span ⟨f, g, hgSB, rfl⟩`. Establish `hA` using `hAct t f r hRest`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hA` using `[htens, htens]`. Establish `hmem : GlobalTheory.WeilM.pureA F f g ∈ GlobalTheory.WeilM.schA F (Fin a × Fin (a + a'))` using `Submodule.subset_span ⟨f, g, hgSB, rfl⟩`. Establish `hu` using `hU μA hμA (1, γ (Multiplicative.ofAdd t)) _ hmem`. Rewrite `hu` using `[hA, hc, hc]`. Establish `hl` using `(ENNReal.mul_right_inj hc0 hctop).1 hu`.
-
-Rewrite using `[integral_sq_eq μ (T t f).continuous, integral_sq_eq μ f.continuous, hl]`.
+A detailed English derivation is pending.
 -/
 theorem integral_norm_sq_eq : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
     {a a' : ℕ} (B : Base F E) (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W),

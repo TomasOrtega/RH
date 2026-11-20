@@ -11,15 +11,13 @@ open MvPolynomial MeasureTheory Filter Topology Matrix ComplexSets
 open scoped ContDiff
 
 /- English proof (translation)
-Introduce `n d J u φ hJ hdim hu hφ`. Take `⟨I, hI, hIdim, hgood⟩` from `hBr n d J u hJ hdim hu`. Use `⟨I, hI, hIdim, fun q hqJ hqu hqI => ?_⟩` and prove the remaining obligations. Take `⟨W, hWm, hqW, hone, hWloc, m, γ, ord, π, hcov, hsl, hmeet, hvan, hbij⟩` from `hgood q hqJ hqu hqI`. Take `⟨N, hN, hlim⟩` from `hLim n d J W u q m γ ord π φ hJ hdim hu hWm hqW hφ hWloc hcov hsl hmeet hvan hbij`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hmult` using `hOrd n d J W u q m γ ord hJ hdim hu hWm hqW hcov hsl hmeet hvan`. Establish `hclosed : ∀ W' : Ideal (MvPolynomial (Fin n) ℂ), IsClosed (zeroSet W')` using `fun W' => by`. Establish `: zeroSet W' = ⋂ p ∈ W', {x : Fin n → ℂ | MvPolynomial.eval x p = 0}`. Use extensionality with `x`. Simplify using `[zeroSet]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[this]`. Conclude with `isClosed_biInter fun p _ => isClosed_eq (MvPolynomial.continuous_eval p) continuous_const`. Use `set O := ⋂ W' ∈ (J ⊔ Ideal.span {linForm u}).minimalPrimes \ {W}, (zeroSet W')ᶜ`. Establish `hO : O ∈ 𝓝 q` using `(Filter.biInter_mem ((Ideal.finite_minimalPrimes_of_isNoetherianRing _ _).sdiff)).2 fun W' hW' => (hclosed W').isOpen_compl.mem_nhds fun h => hW'.2 (hone W' hW'.1 h)`. Use `⟨N ∩ O, Filter.inter_mem hN hO, fun f hf hfc hfN => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hL : (∑ᶠ (W' : Ideal (MvPolynomial (Fin n) ℂ)) (_ : W' ∈ (J ⊔ Ideal.span {linForm u}).minimalPrimes), (localMult (J ⊔ Ideal.span {linForm u}) W' : ℝ) * varInt W' d f φ) = (localMult (J ⊔ Ideal.span {linForm u}) W : ℝ) * varInt W d f φ`. Rewrite using `[finsum_eq_single _ W fun W' hne => ?_, finsum_eq_dif, dif_pos hWm]`. Rewrite using `[finsum_eq_dif]`. Use `split_ifs with hW'`. Rewrite using `[varInt_eq_zero_of_vanish W' f φ fun x hx => image_eq_zero_of_notMem_tsupport fun hxs => Set.mem_iInter₂.1 (hfN hxs).2 W' ⟨hW', hne⟩ hx, mul_zero]`.
-
-Both sides reduce to the same expression. Rewrite using `[hL, hmult]`. Conclude with `hlim f hf hfc fun x hx => (hfN hx).1`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem LelongLimitGoodPoints.proof (hBr : DivisorGeneralPointBranches.Statement)
     (hLim : LelongLimitAtBranches.Statement) (hOrd : LocalOrder.Statement) :

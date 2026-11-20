@@ -4,7 +4,7 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.Bern
 open Finset UpperTheory.V.Bern
 
 /- English proof (translation)
-Substitute `e` using the available equality. Establish `hψψ : ψ = ψ'` using `DirichletCharacter.changeLevel_injective h hψ`. Substitute `hψψ` using the available equality. Conclude with `⟨rfl, fun _ => rfl⟩`.
+Substitute using the available equality. Establish an intermediate fact. Substitute using the available equality. Supply the required witnesses or components.
 -/
 private theorem key_primeq {R : Type} [CommRing R] [Algebra ℚ R] {M c c' : ℕ} [NeZero M] (k : ℕ)
     (ψ : DirichletCharacter R c) (ψ' : DirichletCharacter R c') (e : c = c') (h : c ∣ M) (h' : c' ∣ M)
@@ -16,7 +16,7 @@ private theorem key_primeq {R : Type} [CommRing R] [Algebra ℚ R] {M c c' : ℕ
   exact ⟨rfl, fun _ => rfl⟩
 
 /- English proof (translation)
-Introduce `R _ _ N _ k χ`. Use `⟨fun hp => ?_, fun M _ h => ?_⟩` and prove the remaining obligations. Conclude with `key_primeq k χ.primitiveCharacter χ hp χ.conductor_dvd_level (dvd_refl N) (by rw [DirichletCharacter.changeLevel_primitiveCharacter, DirichletCharacter.changeLevel_self])`. Use `key_primeq k (DirichletCharacter.changeLevel h χ).primitiveCharacter χ.primitiveCharacter (DirichletCharacter.conductor_changeLevel χ h) (DirichletCharacter.conductor_dvd_level _) (χ.conductor_dvd_level.trans h) ?_` and prove the remaining obligations. Rewrite using `[DirichletCharacter.changeLevel_primitiveCharacter, DirichletCharacter.changeLevel_trans _ χ.conductor_dvd_level h, DirichletCharacter.changeLevel_primitiveCharacter]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Bern.b_primeq :
     ∀ {R : Type} [CommRing R] [Algebra ℚ R] {N : ℕ} [NeZero N] (k : ℕ) (χ : DirichletCharacter R N), (χ.IsPrimitive → Bprim k χ = genB k χ ∧ ∀ a : ℕ, primVal χ a = χ (a : ZMod N)) ∧ ∀ (M : ℕ) [NeZero M] (h : N ∣ M), Bprim k (DirichletCharacter.changeLevel h χ) = Bprim k χ ∧ ∀ a : ℕ, primVal (DirichletCharacter.changeLevel h χ) a = primVal χ a := by

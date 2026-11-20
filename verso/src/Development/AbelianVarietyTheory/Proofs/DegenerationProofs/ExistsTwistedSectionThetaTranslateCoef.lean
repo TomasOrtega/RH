@@ -18,7 +18,7 @@ namespace GlobalTheory.PsiCoef
 variable {R : Type} [CommRing R] [IsDomain R] (D : DegPre R)
 
 /- English proof (translation)
-Establish `h : D.c 0 = D.c 0 * D.c 0`. Use `D.c_add 0 0` as an intermediate fact. Rewrite `this` using `[add_zero]`. Then use the resulting hypothesis. Establish `h1 : D.c 0 = 1` using `left_eq_mul.1 h`. Rewrite using `[cT, h1, MonObj.comp_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem cT_zero (T : Over (Spec (CommRingCat.of R))) : cT D T 0 = 1 := by
   have h : D.c 0 = D.c 0 * D.c 0 := by
@@ -28,25 +28,25 @@ theorem cT_zero (T : Over (Spec (CommRingCat.of R))) : cT D T 0 = 1 := by
   rw [cT, h1, MonObj.comp_one]
 
 /- English proof (translation)
-Rewrite using `[← Category.assoc, comp_toUnit]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem comp_cT {T T' : Over (Spec (CommRingCat.of R))} (r : T ⟶ T') (α : D.X) : r ≫ cT D T' α = cT D T α := by
   rw [← Category.assoc, comp_toUnit]
 
 /- English proof (translation)
-Set `Y : Over (Spec (CommRingCat.of R))` to `𝟙_ _ ⊗ D.P.A`. Set `τ : Y ⟶ Y` to `lift (toUnit Y) (snd _ _ * (cT D Y χ)⁻¹)`. Establish `hF : FormEq (Sum.elim (fun k => τ.left ≫ famφT D (𝟙_ _) χ k) (fun k => (toUnit Y).left ≫ Sum.elim (fun _ : PUnit => (D.c χ).left) (fun _ : PUnit => eSec D.P.A) k)) (Sum.elim (DegPre.famε 1) (fun k => -(Sum.elim (fun _ => -1) (fun _ => 1) k))) (famφT D (𝟙_ _) 0) (DegPre.famε 1)`. Introduce `U _ h`. Establish `e₀ : famφT D (𝟙_ _) 0 0 = famφT D (𝟙_ _) 0 1`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `(snd _ _ : Y ⟶ D.P.A).left = (snd _ _ * cT D Y 0).left`. Rewrite using `[cT_zero, _root_.mul_one]`. Establish `e₀' : famφT D (𝟙_ _) 0 2 = famφT D (𝟙_ _) 0 3`. Express the relevant statement in the definitionally equal form `(cT D Y 0).left = (1 : Y ⟶ D.P.A).left`. Rewrite using `[cT_zero]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Establish `e₁ : τ.left ≫ famφT D (𝟙_ _) χ 1 = famφT D (𝟙_ _) 0 1`. Express the relevant statement in the definitionally equal form `(τ ≫ (snd _ _ * cT D Y χ)).left = (snd _ _ * cT D Y 0).left`. Rewrite using `[cT_zero, _root_.mul_one, MonObj.comp_mul, comp_cT, lift_snd, inv_mul_cancel_right]`. Establish `e₂ : τ.left ≫ famφT D (𝟙_ _) χ 2 = famφT D (𝟙_ _) χ 2`. Express the relevant statement in the definitionally equal form `(τ ≫ cT D Y χ).left = (cT D Y χ).left`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[comp_cT]`. Establish `e₃ : τ.left ≫ famφT D (𝟙_ _) χ 3 = famφT D (𝟙_ _) 0 3`. Express the relevant statement in the definitionally equal form `(τ ≫ (1 : Y ⟶ D.P.A)).left = (1 : Y ⟶ D.P.A).left`. Rewrite using `[MonObj.comp_one]`. Establish `e₄ : (toUnit Y).left ≫ (D.c χ).left = famφT D (𝟙_ _) χ 2` using `rfl`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e₅ : (toUnit Y).left ≫ eSec D.P.A = famφT D (𝟙_ _) 0 3` using `rfl`. Simplify using `only [Fintype.prod_sum_type, Sum.elim_inl, Sum.elim_inr, Fintype.prod_unique, Fin.prod_univ_four, e₀, e₀', e₁, e₂, e₃, e₄, e₅]`. Simplify using `[DegPre.famε, _root_.mul_assoc]`. Take `⟨g₀, hg₀⟩` from `exists_sec D.P.isLB hF (pullMulSec g τ.left (LB.invGen D.P.L _ _ (LB.pullGen D.P.L _ _ (LB.mulGen D.P.L _ _ _ _ u D.rig) (toUnit Y).left)) (DVR.invGen_isGen _ _ _ _ (DVR.pullGen_isGen _ _ _ _ (DVR.mulGen_isGen _ _ _ _ _ _ _ hu D.rig_gen) _)))`. Use `⟨g₀, fun T y z J hJ => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e₂ : (lift (toUnit T) (y * cT D T χ)).left ≫ τ.left = (lift (toUnit T) y).left`. Rewrite using `[← Over.comp_left]`. Use `congr 1`. Use `(comp_lift _ _ _).trans (congrArg₂ lift (toUnit_unique _ _) ?_)` and prove the remaining obligations. Rewrite using `[MonObj.comp_mul, GrpObj.comp_inv, comp_cT, lift_snd, mul_inv_cancel_right]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `e₃ : (lift (toUnit T) (y * cT D T χ)).left ≫ (toUnit Y).left = (toUnit T).left`. Rewrite using `[← Over.comp_left]`. Conclude with `congrArg _ (toUnit_unique _ _)`. Rewrite using `[hg₀ _ _ z J hJ, sval_pullMulSec _ _ _ _ _ _ hJ, e₂, val_inv, val_pull hJ, e₃, val_mul hJ]`. Use `congr 5`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem exists_untwist (χ : D.X)
     (u : LB.Gen (LB.LinComb D.P.L (K := PUnit) (fun _ => (D.c χ).left) (fun _ => -1))) (hu : u.IsGen)
@@ -98,9 +98,9 @@ theorem exists_untwist (χ : D.X)
   congr 5
 
 /- English proof (translation)
-Introduce `R _ _ D th hth χ u hu g`. Take `⟨g₀, hg₀⟩` from `exists_untwist D χ u hu g`. Take `⟨b, hb⟩` from `hth g₀`. Use `⟨b, fun T y z J hJ => ?_⟩` and prove the remaining obligations. Establish `e₁ : (lift (toUnit T) (y * cT D T χ)).left ≫ (𝟙_ _ ⊗ D.P.A).hom = T.hom` using `Over.w _`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h` using `hb _ (lift (toUnit T) (y * cT D T χ)).left z J hJ`. Rewrite `h` using `[e₁, hg₀ T y z J hJ, Units.mul_inv_eq_iff_eq_mul]`. Rewrite using `[h]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem exists_coef : ∀ (R : Type) [CommRing R] [IsDomain R] (D : DegPre R) (th : SecBT D (𝟙_ _) 1 0), (∀ g : SecBT D (𝟙_ _) 1 0, ∃ b : R, Mult D th g b) → ∀ (χ : D.X) (u : LB.Gen (LB.LinComb D.P.L (K := PUnit) (fun _ => (D.c χ).left) (fun _ => -1))), u.IsGen → ∀ g : SecBT D (𝟙_ _) 1 χ, ∃ b : R, Coef D χ u th g b := by
   intro R _ _ D th hth χ u hu g

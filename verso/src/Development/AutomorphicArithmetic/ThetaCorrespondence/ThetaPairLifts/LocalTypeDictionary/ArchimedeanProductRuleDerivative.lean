@@ -18,19 +18,17 @@ namespace GlobalTheory.ArchProdRule
 open Filter Topology
 open scoped Classical in
 /- English proof (translation)
-Introduce `hP F E _ _ _ _ _ σ n d X W M ψ χX χW om hCM hψ hW k γ hγ T hT hadd h0 f y c hc`. Establish `hQ : ∀ i g, ∃ q, Tendsto (fun t : ℝ => t⁻¹ • (T i t g - g)) (𝓝[≠] 0) (𝓝 q)` using `fun i g => _root_.GlobalTheory.T.schwartz_function_slope_estimate hP M ψ χX χW om hCM hψ hW (γ i) (hγ i) (T i) (hT i) (hadd i) (h0 i) g`. Use `choose Q hQ using hQ`. Establish `hcont : ∀ i t, Continuous (T i t)` using `fun i => _root_.GlobalTheory.T.archimedean_weil_representation_continuous hP M ψ χX χW om hCM hψ hW (γ i) (hγ i) (T i) (hT i) (hadd i) (h0 i)`. Establish `hprod` using `slope_prod k T Q hcont h0 hQ f`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `ev : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.SInf F (Fin n × Fin d) →L[ℂ] ℂ` to `(BoundedContinuousFunction.evalCLM ℂ y).comp (SchwartzMap.toBoundedContinuousFunctionCLM ℂ _ ℂ)`. Establish `hev : ∀ (s : ℝ) (g h : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.SInf F (Fin n × Fin d)), ev (s • (g - h)) = s • (g y - h y)`. Introduce `s g h`. Rewrite using `[ContinuousLinearMap.map_smul_of_tower, map_sub]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hevq : ∀ g : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.SInf F (Fin n × Fin d), ev g = g y` using `fun g => rfl`. Establish `hci : ∀ i, c i = Q i f y`. Introduce `i`. Establish `h1` using `hasDerivAt_iff_tendsto_slope_zero.1 (hc i)`. Establish `h2` using `(ev.continuous.tendsto _).comp (hQ i f)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[hevq]`. Simplify using `only [zero_add, h0] at h1`. Use `tendsto_nhds_unique h1 (h2.congr fun t => ?_)` and prove the remaining obligations. Conclude with `hev _ _ _`. Establish `hsum : (∑ i, c i) = ev (∑ i, Q i f)`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => (hci i).trans (hevq _).symm`. Rewrite using `[hasDerivAt_iff_tendsto_slope_zero, hsum]`. Establish `hp0 : (List.ofFn fun i => T i 0).prod = 1`. Establish `e : (fun i => T i 0) = fun _ => (1 : Module.End ℂ (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.SInf F (Fin n × Fin d)))`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `fun i => LinearMap.ext (h0 i)`. Rewrite using `[e, List.ofFn_const, List.prod_replicate, one_pow]`. Establish `h1` using `(ev.continuous.tendsto _).comp hprod`. Use `h1.congr fun t => ?_` and prove the remaining obligations. Simplify using `only [Function.comp_apply, zero_add, hp0]`.
-
-Conclude with `hev _ _ _`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem archimedean_hasDerivAt_prod : _root_.GlobalTheory.FunPr.ThetaLocalInputs → ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     {σ : E →ₐ[F] E} {n d : ℕ} {X : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Spc F E n} {W : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Spc F E d}
@@ -94,7 +92,7 @@ open GlobalTheory.SquareComm GlobalTheory.SquareAgree
 open GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.ArchProdRule.archimedean_hasDerivAt_prod | exact _root_.GlobalTheory.ArchProdRule.archimedean_hasDerivAt_prod | (intros; apply _root_.GlobalTheory.ArchProdRule.archimedean_hasDerivAt_prod <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.archimedean_product_rule_derivative : _root_.GlobalTheory.FunPr.ThetaLocalInputs → ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     {σ : E →ₐ[F] E} {n d : ℕ} {X : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Spc F E n} {W : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Spc F E d}

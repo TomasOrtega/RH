@@ -5,33 +5,33 @@ namespace GlobalTheory.CompanionTheory.RgEisDGood
 open PositivityTheory.RgEis PositivityTheory.RgEis.MG
 
 /- English proof (translation)
-Take `⟨B, hB⟩ : ∃ B : ℝ, B = max |b| |c|` from `⟨_, rfl⟩`. Establish `hbB : |b| ≤ B` using `hB ▸ le_max_left _ _`. Establish `hcB : |c| ≤ B` using `hB ▸ le_max_right _ _`. Establish `hB0 : 0 ≤ B` using `(abs_nonneg b).trans hbB`. Take `⟨T, hTdef⟩ : ∃ T : ℝ, T = 1 + B` from `⟨_, rfl⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hT : 1 ≤ T` using `by linarith`. Use `⟨16 * T ^ 4 * Real.exp (B ^ 2), by positivity, fun z h1 h2 => ?_⟩` and prove the remaining obligations. Take `⟨x, hxdef⟩ : ∃ x : ℝ, x = z.re` from `⟨_, rfl⟩`. Take `⟨y, hydef⟩ : ∃ y : ℝ, y = z.im` from `⟨_, rfl⟩`. Establish `hx : |x| ≤ B`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[abs_le]`. Prove the components needed by the constructor for the conclusion. Use `neg_abs_le b` as an intermediate fact. Rewrite using `[hxdef]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Use `le_abs_self c` as an intermediate fact. Rewrite using `[hxdef]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hx2 : x ^ 2 ≤ B ^ 2`. Use `pow_le_pow_left₀ (abs_nonneg x) hx 2` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[sq_abs]`. Then use the resulting hypothesis. Establish `hnorm : ‖Complex.exp (z ^ 2)‖ = Real.exp (x ^ 2 - y ^ 2)`. Rewrite using `[Complex.norm_exp]`. Use `congr 1`. Simplify using `[pow_two, hxdef, hydef]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Establish `hz : ‖z‖ ≤ |x| + |y|`. Rewrite using `[hxdef, hydef]`. Conclude with `Complex.norm_le_abs_re_add_abs_im z`. Take `⟨u, hudef⟩ : ∃ u : ℝ, u = T + |y|` from `⟨_, rfl⟩`. Establish `hy0` using `abs_nonneg y`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hu1 : 1 ≤ u` using `by linarith`. Establish `h1z : 1 + ‖z‖ ≤ u` using `by linarith`. Take `⟨E, hEdef⟩ : ∃ E : ℝ, E = Real.exp (y ^ 2 / 2)` from `⟨_, rfl⟩`. Establish `hE0 : 0 < E` using `hEdef ▸ Real.exp_pos _`. Establish `hE : 1 + y ^ 2 / 2 ≤ E`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Real.add_one_le_exp (y ^ 2 / 2)` as an intermediate fact. Rewrite using `[hEdef]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hEE : E ^ 2 = Real.exp (y ^ 2)`. Rewrite using `[hEdef, ← Real.exp_nat_mul]`.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hu2 : u ^ 2 ≤ 4 * T ^ 2 * E`. Establish `hsq : |y| ^ 2 = y ^ 2` using `sq_abs y`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hA : u ^ 2 ≤ 2 * T ^ 2 + 2 * y ^ 2`. Rewrite using `[hudef]`. Use polynomial arithmetic with `[sq_nonneg (T - |y|)]`. Establish `hT2 : 1 ≤ T ^ 2` using `one_le_pow₀ hT`. Establish `hC : 2 * T ^ 2 + 2 * y ^ 2 ≤ 4 * T ^ 2 * (1 + y ^ 2 / 2)`.
+Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Use polynomial arithmetic with `[mul_nonneg (sq_nonneg y) (sub_nonneg.2 hT2), sq_nonneg T]`. Establish `hD : 4 * T ^ 2 * (1 + y ^ 2 / 2) ≤ 4 * T ^ 2 * E` using `mul_le_mul_of_nonneg_left hE (by positivity)`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hu4 : u ^ 4 ≤ 16 * T ^ 4 * Real.exp (y ^ 2)`. Establish `h` using `pow_le_pow_left₀ (by positivity) hu2 2`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hz3 : (1 + ‖z‖) ^ 3 ≤ u ^ 4`. Establish `h0 : 0 ≤ 1 + ‖z‖` using `by positivity`. Combine the equalities or inequalities in the displayed calculation. Establish `hexp : Real.exp (x ^ 2 - y ^ 2) ≤ Real.exp (B ^ 2) * Real.exp (-y ^ 2)`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Real.exp_add]`. Apply `Real.exp_le_exp.2` to reduce the goal to its premises. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[hnorm]`. Combine the equalities or inequalities in the displayed calculation.
+Reduce the claim to the hypotheses of an applicable result. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Real.exp_add]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem gauss_bound (b c : ℝ) : ∃ M : ℝ, 0 ≤ M ∧ ∀ z : ℂ, b ≤ z.re → z.re ≤ c →
     ‖Complex.exp (z ^ 2)‖ * (1 + ‖z‖) ^ 3 ≤ M := by
@@ -108,15 +108,15 @@ theorem gauss_bound (b c : ℝ) : ∃ M : ℝ, 0 ≤ M ∧ ∀ z : ℂ, b ≤ z.
         rw [← Real.exp_add]; simp
 
 /- English proof (translation)
-Introduce `a N ha`. Take `⟨hd, hg⟩` from `ha`. Establish `hE : Differentiable ℂ fun z : ℂ => Complex.exp (z ^ 2) * a z` using `(Complex.differentiable_exp.comp (differentiable_id.pow 2)).mul hd`. Establish `key : ∀ b c : ℝ, ∃ M : ℝ, 0 ≤ M ∧ ∀ z : ℂ, b ≤ z.re → z.re ≤ c → ‖Complex.exp (z ^ 2) * a z‖ * (1 + ‖z‖) ≤ M`. Introduce `b c`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨M₁, hM₁, h₁⟩` from `gauss_bound b c`. Take `⟨M₂, h₂⟩` from `hg b c`. Use `⟨|M₂| * M₁, by positivity, fun z hb hc => ?_⟩` and prove the remaining obligations. Establish `hz` using `h₁ z hb hc`. Establish `ha' : ‖a z‖ ≤ |M₂| * (1 + ‖z‖) ^ 2` using `(h₂ z hb hc).trans (mul_le_mul_of_nonneg_right (le_abs_self _) (by positivity))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[norm_mul]`. Combine the equalities or inequalities in the displayed calculation. Use `⟨⟨hE, fun b c => ?_⟩, ⟨(differentiable_id.sub_const N).mul hE, fun b c => ?_⟩⟩` and prove the remaining obligations. Take `⟨M, _, h⟩` from `key b c`. Use `⟨M, fun z hb hc => (?_ : _ ≤ _).trans (h z hb hc)⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `le_mul_of_one_le_right (norm_nonneg _) (by linarith [norm_nonneg z])`. Take `⟨M, hM, h⟩` from `key b c`. Use `⟨(1 + ‖N‖) * M, fun z hb hc => ?_⟩` and prove the remaining obligations. Establish `hzN : ‖z - N‖ ≤ (1 + ‖N‖) * (1 + ‖z‖)`. Use `norm_sub_le z N` as an intermediate fact.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Use polynomial arithmetic with `[norm_nonneg z, norm_nonneg N, mul_nonneg (norm_nonneg z) (norm_nonneg N)]`. Rewrite using `[norm_mul]`. Combine the equalities or inequalities in the displayed calculation. Use `h z hb hc` as an intermediate fact. Use `gcongr`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem dGood : DGood := by
   intro a N ha

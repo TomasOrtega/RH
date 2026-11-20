@@ -14,16 +14,16 @@ noncomputable def intLattice (W : Submodule k (Fin a → k)) : Submodule R (Fin 
 
 omit [IsDomain R] [IsDiscreteValuationRing R] [IsFractionRing R k] in
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 lemma mem_intLattice {W : Submodule k (Fin a → k)} {x : Fin a → R} :
     x ∈ intLattice (R := R) W ↔ (fun i => algebraMap R k (x i)) ∈ W := Iff.rfl
 
 omit [IsDomain R] [IsDiscreteValuationRing R] in
 /- English proof (translation)
-Rewrite `*` using `[mem_intLattice]`. Establish `h' : algebraMap R k r • (fun i => algebraMap R k (x i)) ∈ W`. Use `h using 1` and compare the differences between its conclusion and the goal. Use extensionality with `i`. Simplify using `[Algebra.smul_def]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Conclude with `(W.smul_mem_iff ((map_ne_zero_iff _ (IsFractionRing.injective R k)).mpr hr)).mp h'`.
+A detailed English derivation is pending.
 -/
 lemma mem_intLattice_of_smul {W : Submodule k (Fin a → k)} {r : R} (hr : r ≠ 0)
     {x : Fin a → R} (h : r • x ∈ intLattice (R := R) W) : x ∈ intLattice (R := R) W := by
@@ -36,9 +36,9 @@ lemma mem_intLattice_of_smul {W : Submodule k (Fin a → k)} {r : R} (hr : r ≠
 
 omit [IsDiscreteValuationRing R] in
 /- English proof (translation)
-Take `⟨⟨b, hb⟩, h⟩` from `IsLocalization.exist_integer_multiples (nonZeroDivisors R) Finset.univ y`. Use `choose x hx using fun i => h i (Finset.mem_univ i)`. Use `⟨b, nonZeroDivisors.ne_zero hb, x, ?_⟩` and prove the remaining obligations. Use extensionality with `i`. Rewrite using `[hx i]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[Algebra.smul_def]`.
+A detailed English derivation is pending.
 -/
 lemma exists_integral_multiple (y : Fin a → k) :
     ∃ d : R, d ≠ 0 ∧ ∃ x : Fin a → R,
@@ -65,9 +65,7 @@ noncomputable def redLattice (L : Submodule R (Fin a → R)) :
 
 omit [IsFractionRing R k] in
 /- English proof (translation)
-Establish `: ∀ i, ϖ ∣ x i` using `fun i => by`. Establish `h1 : residue R (x i) = 0` using `congrFun h i`. Rewrite `h1` using `[residue_eq_zero_iff, hϖ, Ideal.mem_span_singleton]`. Conclude with `h1`. Use `choose z hz using this`.
-
-Conclude with `⟨z, funext fun i => by simp [hz i]⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 lemma exists_eq_smul_of_residue_eq_zero {ϖ : R} (hϖ : maximalIdeal R = Ideal.span {ϖ})
     {x : Fin a → R} (h : (fun i => residue R (x i)) = 0) : ∃ z : Fin a → R, x = ϖ • z := by
@@ -79,59 +77,49 @@ lemma exists_eq_smul_of_residue_eq_zero {ϖ : R} (hϖ : maximalIdeal R = Ideal.s
   exact ⟨z, funext fun i => by simp [hz i]⟩
 
 /- English proof (translation)
-Take `⟨ϖ, hϖirr⟩` from `IsDiscreteValuationRing.exists_irreducible R`. Establish `hϖ : maximalIdeal R = Ideal.span {ϖ}` using `(IsDiscreteValuationRing.irreducible_iff_uniformizer ϖ).mp hϖirr`. Establish `hϖ0 : ϖ ≠ 0` using `hϖirr.ne_zero`. Establish `hϖm : ϖ ∈ maximalIdeal R` using `hϖ ▸ Ideal.mem_span_singleton_self ϖ`. Establish `hϖres : residue R ϖ = 0` using `(residue_eq_zero_iff ϖ).mpr hϖm`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hinj` using `IsFractionRing.injective R k`. Use `set L := intLattice (R := R) W with hLdef`. Use `haveI : NoZeroSMulDivisors R ((Fin a → R) ⧸ L) := by`. Use `⟨fun {r q} h => ?_⟩` and prove the remaining obligations. Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective L q`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Prove the first alternative.
 
-Distinguish the cases in `hr : r = 0`. Conclude with `Or.inl hr`. Use `right`. Rewrite `h` using `[← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero]`. Conclude with `(Submodule.Quotient.mk_eq_zero L).mpr (mem_intLattice_of_smul hr h)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `haveI : Module.Free R ((Fin a → R) ⧸ L) := Module.free_of_finite_type_torsion_free'`. Establish `hmemL : ∀ {y : Fin a → k}, y ∈ W → ∀ {d : R} {x : Fin a → R}, (fun i => algebraMap R k (x i)) = algebraMap R k d • y → x ∈ L`. Introduce `y hy d x hx`. Use `show (fun i => algebraMap R k (x i)) ∈ W`. Rewrite using `[hx]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `W.smul_mem _ hy`. Establish `hA : redLattice L ≠ ⊥`. Introduce `hbot`. Establish `hle : L ≤ maximalIdeal R • L`. Introduce `x hx`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `h0 : (fun i => residue R (x i)) = 0`. Establish `hm : (fun i => residue R (x i)) ∈ redLattice L` using `⟨x, hx, rfl⟩`. Rewrite `hm` using `[hbot]`. Conclude with `(Submodule.mem_bot _).mp hm`. Take `⟨z, rfl⟩` from `exists_eq_smul_of_residue_eq_zero hϖ h0`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.smul_mem_smul hϖm (mem_intLattice_of_smul hϖ0 hx)`. Establish `hL : L = ⊥` using `Submodule.eq_bot_of_le_smul_of_le_jacobson_bot (maximalIdeal R) L (IsNoetherian.noetherian L) hle (maximalIdeal_le_jacobson _)`. Take `⟨y, hyW, hy0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hW0`. Take `⟨d, hd, x, hx⟩` from `exists_integral_multiple (R := R) y`. Establish `hxL` using `hmemL hyW hx`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hxL` using `[hL, Submodule.mem_bot]`. Substitute `hxL` using the available equality. Establish `h2 : algebraMap R k d • y = 0`. Rewrite using `[← hx]`. Use extensionality with `i`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Simplify using the standard rewrite rules. Break down `smul_eq_zero.mp h2 with h | h` into its components or cases. Conclude with `hd (hinj (by simpa using h))`. Conclude with `hy0 h`. Establish `hT : redLattice L ≠ ⊤`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Introduce `htop`. Establish `hle : (⊤ : Submodule R ((Fin a → R) ⧸ L)) ≤ maximalIdeal R • ⊤`. Introduce `q _`. Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective L q`. Establish `hm : (fun i => residue R (x i)) ∈ redLattice L` using `htop ▸ Submodule.mem_top`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨l, hl, hlx⟩` from `hm`. Establish `h0 : (fun i => residue R ((x - l) i)) = 0`. Use extensionality with `i`. Use `congrFun hlx i` as an intermediate fact. Simplify using `only [Pi.sub_apply, map_sub, Pi.zero_apply] at this ⊢`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[this, sub_self]`. Take `⟨z, hz⟩` from `exists_eq_smul_of_residue_eq_zero hϖ h0`. Establish `hq : Submodule.Quotient.mk (p` using `L) x = ϖ • Submodule.Quotient.mk z := by`. Rewrite using `[← Submodule.Quotient.mk_smul, ← hz, Submodule.Quotient.eq, sub_sub_cancel]`. Conclude with `hl`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hq]`. Conclude with `Submodule.smul_mem_smul hϖm Submodule.mem_top`. Establish `htopQ` using `Submodule.eq_bot_of_le_smul_of_le_jacobson_bot (maximalIdeal R) ⊤ Module.Finite.fg_top hle (maximalIdeal_le_jacobson _)`. Apply `hWt` to reduce the goal to its premises. Rewrite using `[eq_top_iff]`.
+Assume the negation of the conclusion and derive a contradiction. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Introduce `y _`. Take `⟨d, hd, x, hx⟩` from `exists_integral_multiple (R := R) y`. Establish `hxL : x ∈ L`. Establish `h1 : Submodule.Quotient.mk (p` using `L) x ∈ (⊤ : Submodule R ((Fin a → R) ⧸ L)) := Submodule.mem_top`. Rewrite `h1` using `[htopQ]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `(Submodule.Quotient.mk_eq_zero L).mp ((Submodule.mem_bot _).mp h1)`. Establish `hdy : algebraMap R k d • y ∈ W`. Rewrite using `[← hx]`. Conclude with `hxL`. Conclude with `(W.smul_mem_iff ((map_ne_zero_iff _ hinj).mpr hd)).mp hdy`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hnot : ∃ v ∈ redLattice L, (B.map (residue R)).mulVec v ∉ redLattice L`. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Break down `hB _ hcon with h | h` into its components or cases. Conclude with `hA h`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result.
 
-Conclude with `hT h`. Take `⟨_, ⟨w, hwL, rfl⟩, hBw⟩` from `hnot`. Establish `hres : (B.map (residue R)).mulVec (fun i => residue R (w i)) = fun i => residue R (B.mulVec w i)`. Use extensionality with `i`. Conclude with `(RingHom.map_mulVec (residue R) B w i).symm`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite `hBw` using `[hres]`. Establish `hnotsmul : ∀ z : Fin a → R, Submodule.Quotient.mk (p` using `L) (B.mulVec w) ≠ ϖ • Submodule.Quotient.mk z := by`. Introduce `z hz`. Rewrite `hz` using `[← Submodule.Quotient.mk_smul, Submodule.Quotient.eq]`. Apply `hBw` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Use `⟨B.mulVec w - ϖ • z, hz, ?_⟩` and prove the remaining obligations. Use extensionality with `i`. Simplify using `[hϖres]`. Set `b` to `Module.Free.chooseBasis R ((Fin a → R) ⧸ L)`. Establish `hj : ∃ j, b.repr (Submodule.Quotient.mk (B.mulVec w)) j ∉ maximalIdeal R`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Establish `hdv : ∀ j, ϖ ∣ b.repr (Submodule.Quotient.mk (B.mulVec w)) j` using `fun j => by`. Use `hcon j` as an intermediate fact. Rewrite `this` using `[hϖ, Ideal.mem_span_singleton]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `choose c hc using hdv`. Take `⟨z, hz⟩` from `Submodule.Quotient.mk_surjective L (b.repr.symm (Finsupp.equivFunOnFinite.symm c))`. Apply `hnotsmul z` to reduce the goal to its premises. Apply `b.repr.injective` to reduce the goal to its premises. Use extensionality with `j`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite using `[hc j, hz, map_smul, LinearEquiv.apply_symm_apply, Finsupp.smul_apply, smul_eq_mul]`. Simplify using the standard rewrite rules. Take `⟨j, hjm⟩` from `hj`. Set `φ : (Fin a → R) →ₗ[R] R` to `(b.coord j).comp L.mkQ`. Establish `hφ : ∀ x, φ x = b.repr (Submodule.Quotient.mk x) j` using `fun x => by`.
-
-Simplify using `[φ, Module.Basis.coord_apply]`. Set `f : Fin a → R` to `fun i => φ (fun j' => if i = j' then 1 else 0)`. Establish `hf : ∀ x, f ⬝ᵥ x = φ x`. Introduce `x`. Rewrite using `[LinearMap.pi_apply_eq_sum_univ φ x, dotProduct]`.
-
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `[f, smul_eq_mul, mul_comm]`. Use `⟨w, f, hwL, ?_, ?_⟩` and prove the remaining obligations. Introduce `y hy`. Take `⟨d, hd, x, hx⟩` from `exists_integral_multiple (R := R) y`.
-
-Establish `hxL` using `hmemL hy hx`. Establish `hφx : φ x = 0`. Rewrite using `[hφ, (Submodule.Quotient.mk_eq_zero L).mpr hxL, map_zero, Finsupp.zero_apply]`. Establish `e1 : (fun i => algebraMap R k (f i)) ⬝ᵥ (fun i => algebraMap R k (x i)) = algebraMap R k (f ⬝ᵥ x)`. Simplify using `[dotProduct, map_sum, map_mul]`.
-
-Rewrite `e1` using `[hx, dotProduct_smul, smul_eq_mul, hf, hφx, map_zero]`. Break down `mul_eq_zero.mp e1 with h | h` into its components or cases. Conclude with `absurd h ((map_ne_zero_iff _ hinj).mpr hd)`. Conclude with `h`. Rewrite using `[hf, hφ]`.
-
-Assume the negation of the conclusion as `hu`. Conclude with `hjm ((mem_maximalIdeal _).mpr (mem_nonunits_iff.mpr hu))`.
+Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem main (B : Matrix (Fin a) (Fin a) R)
     (hB : ∀ W : Submodule (ResidueField R) (Fin a → ResidueField R),
@@ -290,7 +278,7 @@ end GlobalTheory.Cong.UnitPairing
 namespace GlobalTheory.Cong
 
 /- English proof (translation)
-Introduce `R k _ _ _ _ _ _ a B hB W hW0 hWt`. Conclude with `UnitPairing.main B hB W hW0 hWt`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem exists_integral_unit_pairing_of_irreducible_reduction : ∀ (R k : Type) [CommRing R] [IsDomain R] [IsDiscreteValuationRing R] [Field k] [Algebra R k] [IsFractionRing R k] (a : ℕ) (B : Matrix (Fin a) (Fin a) R), (∀ W : Submodule (IsLocalRing.ResidueField R) (Fin a → IsLocalRing.ResidueField R), (∀ v ∈ W, (B.map (IsLocalRing.residue R)).mulVec v ∈ W) → W = ⊥ ∨ W = ⊤) → ∀ W : Submodule k (Fin a → k), W ≠ ⊥ → W ≠ ⊤ → ∃ w f : Fin a → R, (fun i => algebraMap R k (w i)) ∈ W ∧ (∀ y ∈ W, (fun i => algebraMap R k (f i)) ⬝ᵥ y = 0) ∧ IsUnit (f ⬝ᵥ B.mulVec w) := by
   intro R k _ _ _ _ _ _ a B hB W hW0 hWt

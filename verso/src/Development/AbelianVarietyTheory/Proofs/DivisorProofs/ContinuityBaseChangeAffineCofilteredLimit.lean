@@ -9,9 +9,9 @@ open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComp
 namespace GlobalTheory.EtC
 
 /- English proof (translation)
-Introduce `n`. Use `⟨fun x y hxy => ?_, fun x => ⟨pull R (inv f) F n x, ?_⟩⟩` and prove the remaining obligations. Establish `hx` using `pull_comp R (inv f) f F n x`. Establish `hy` using `pull_comp R (inv f) f F n y`. Rewrite `hx`, `hy` using `[IsIso.inv_hom_id, pull_id]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hx, hy, hxy]`. Rewrite using `[← pull_comp, IsIso.hom_inv_id, pull_id]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 private theorem eqv_of_isIso' (R : Type) [CommRing R] (F : Shv R) {E E' : Spc} (f : E ⟶ E') [IsIso f] : Eqv R f F := by
   intro n
@@ -23,11 +23,11 @@ private theorem eqv_of_isIso' (R : Type) [CommRing R] (F : Shv R) {E E' : Spc} (
   · rw [← pull_comp, IsIso.hom_inv_id, pull_id]
 
 /- English proof (translation)
-Introduce `R _ F hF S I _ _ G c hc hG W r hW`. Use `haveI : IsConnected I := IsCofiltered.isConnected I`. Take `⟨e, -⟩` from `bc_sch_iso S W r`. Set `P : Over S ⥤ Scheme.{0}` to `Over.pullback r ⋙ Over.forget W`. Establish `hlim : IsLimit (P.mapCone c)` using `isLimitOfPreserves P hc`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `haff : ∀ i, IsAffine ((G ⋙ P).obj i)`. Introduce `i`. Express the relevant statement in the definitionally equal form `IsAffine (pullback (G.obj i).hom r)`. Use `haveI := hG i`. Conclude with `isAffine_of_isAffineHom (pullback.snd (G.obj i).hom r)`.
+Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1 : ContCone R F (sch.mapCone (P.mapCone c))` using `GlobalTheory.T.cohomologyContinuous_cofiltered_affine_limit R F hF I (G ⋙ P) (P.mapCone c) hlim haff`. Set `α : (G ⋙ P) ⋙ sch ⟶ G ⋙ bc (sch.map r)` to `{ app := fun i => e.hom.app (G.obj i) naturality := fun i j f => e.hom.naturality (G.map f) }`. Use `(ContCone.iff_of_eqv R F I _ _ (sch.mapCone (P.mapCone c)) ((bc (sch.map r)).mapCone c) α (e.hom.app c.pt) (fun i => e.hom.naturality (c.π.app i)) (fun i => eqv_of_isIso' R F _) (eqv_of_isIso' R F _)).1 h1` and prove the remaining obligations.
+A detailed English derivation is pending.
 -/
 theorem contCone_bc_affine : ∀ (R : Type) [CommRing R] (F : Shv R), Finitary F → ∀ (S : Scheme.{0}) (I : Type) [SmallCategory I] [IsCofiltered I] (G : I ⥤ Over S) (c : Cone G), IsLimit c → (∀ i, IsAffineHom (G.obj i).hom) → ∀ (W : Scheme.{0}) (r : W ⟶ S), IsAffine W → ContCone R F ((bc (sch.map r)).mapCone c) := by
   intro R _ F hF S I _ _ G c hc hG W r hW

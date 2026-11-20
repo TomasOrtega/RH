@@ -22,11 +22,11 @@ attribute [local instance] isDiscreteModule_units
 include hf in
 
 /- English proof (translation)
-Rewrite using `[restrictAb_localArtinMap]`. Apply `(bijective_abelianizationOf _).1` to reduce the goal to its premises. Rewrite using `[of_localReciprocityAbelian_symm]`. Establish `hrec` using `reciprocity_lubinTate_sup hπ hf hn E hE u k τ hτd hτ`. Establish `h2` using `localReciprocity_symm_mk_baseUnitsEquiv (lubinTateField Ω hπ hf n ⊔ E) (baseUnitsEquiv.symm (unitUniformizerPow hπ u k))`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h2` using `[MulEquiv.apply_symm_apply]`. Rewrite using `[h2]`. Establish `h3 : ((localClassFieldData K Ω).reciprocityAbEquiv (le_top : fixingOpenSubgroup (lubinTateField Ω hπ hf n ⊔ E) ≤ ⊤) (classFieldAxiom_units K Ω)).symm ((baseUnitsEquiv.symm (unitUniformizerPow hπ u k) : fixedModule Ωˣ ((⊤ : OpenSubgroup (Ω ≃ₐ[K] Ω)) : Subgroup (Ω ≃ₐ[K] Ω))) : tate …`. Rewrite using `[MulEquiv.symm_apply_eq, ClassFieldData.reciprocityAbEquiv_of]`. Conclude with `hrec.symm`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h3, abelianizationCongr_of, baseQuotientEquiv_mk]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem restrictAb_localArtinMap_lubinTate {n : ℕ} (hn : 0 < n) (E : IntermediateField K Ω)
     [FiniteDimensional K E] [IsGalois K E] (hE : E ≤ maximalUnramifiedExtension K Ω)
@@ -66,13 +66,13 @@ variable {n : ℕ} (hn : 0 < n) {E : IntermediateField K Ω} [FiniteDimensional 
 include hn hE in
 
 /- English proof (translation)
-Establish `hT` using `map_upperRamificationGroup_restrictAut (le_sup_left : lubinTateField Ω hπ hf n ≤ lubinTateField Ω hπ hf n ⊔ E) v`. Rewrite `hT` using `[upperRamificationGroup_lubinTateField]`. Establish `hEv` using `map_upperRamificationGroup_restrictAut (le_sup_right : E ≤ lubinTateField Ω hπ hf n ⊔ E) v`. Rewrite `hEv` using `[upperRamificationGroup_eq_bot_of_ramificationIndex_eq_one hE.ramificationIndex_eq_one hv]`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Introduce `hσ`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `Subgroup.mem_map_of_mem (restrictAut (le_sup_right : E ≤ lubinTateField Ω hπ hf n ⊔ E)) hσ` as an intermediate fact. Rewrite `this` using `[hEv, Subgroup.mem_bot]`. Then use the resulting hypothesis. Rewrite using `[← hT]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Subgroup.mem_map_of_mem _ hσ`. Introduce and unpack `⟨h1, h2⟩`. Rewrite `h2` using `[← hT]`. Take `⟨σ', hσ', he⟩` from `h2`. Establish `h1' : restrictAut (le_sup_right : E ≤ lubinTateField Ω hπ hf n ⊔ E) σ' = 1`.
+Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Subgroup.mem_map_of_mem (restrictAut (le_sup_right : E ≤ lubinTateField Ω hπ hf n ⊔ E)) hσ'` as an intermediate fact. Rewrite `this` using `[hEv, Subgroup.mem_bot]`. Then use the resulting hypothesis. Establish `: σ' = σ` using `(bijective_restrictAut_prod hπ hf hn hE).1 (Prod.ext he (h1'.trans h1.symm))`. Conclude with `this ▸ hσ'`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem mem_upperRamificationGroup_lubinTateField_sup {v : ℝ} (hv : -1 < v)
     (σ : (lubinTateField Ω hπ hf n ⊔ E : IntermediateField K Ω) ≃ₐ[K]
@@ -107,13 +107,13 @@ theorem mem_upperRamificationGroup_lubinTateField_sup {v : ℝ} (hv : -1 < v)
 include hn hE in
 
 /- English proof (translation)
-Take `⟨τ, hτd, hτ⟩` from `exists_lubinTate_action (Ω := Ω) hπ hf hn u 0`. Establish `hx : unitsIncl K u = unitUniformizerPow hπ u 0`. Rewrite using `[unitUniformizerPow_eq, zpow_zero, one_mul]`. Rewrite using `[hx, restrictAb_localArtinMap_lubinTate hπ hf hn E hE.le_maximalUnramifiedExtension u 0 τ hτd hτ]`. Establish `hτ1 : τ ∈ (maximalUnramifiedExtension K Ω).fixingSubgroup`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← ker_unramifiedDegree, MonoidHom.mem_ker, hτd]`. Simplify using the standard rewrite rules. Use `⟨?_, ?_⟩` and prove the remaining obligations. Apply `AlgEquiv.ext` to reduce the goal to its premises. Introduce `x`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[restrictAut_apply, AlgEquiv.one_apply, AlgEquiv.restrictNormalHom_apply]`. Conclude with `(IntermediateField.mem_fixingSubgroup_iff _ _).1 hτ1 x (hE.le_maximalUnramifiedExtension x.2)`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[lubinTateChar_eq_of_apply hπ hf le_sup_left _ ((u⁻¹ : 𝒪[K]ˣ) : 𝒪[K]), coe_unitsMk]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x hx`. Rewrite using `[AlgEquiv.restrictNormalHom_apply, ← hτ x hx, lubinTateGalPointMap_val]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem restrictAut_localArtinMap_unitsIncl
     [IsAbelianGalois K (lubinTateField Ω hπ hf n ⊔ E : IntermediateField K Ω)] (u : 𝒪[K]ˣ) :
@@ -143,13 +143,13 @@ theorem restrictAut_localArtinMap_unitsIncl
 include hn hE in
 
 /- English proof (translation)
-Use extensionality with `σ`. Establish `hj : (-1 : ℝ) < j` using `by have := j.cast_nonneg (α := ℝ); linarith`. Rewrite using `[mem_upperRamificationGroup_lubinTateField_sup hπ hf hn hE hj, Int.ceil_natCast, Int.toNat_natCast, Subgroup.mem_map]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, ⟨u, hu, rfl⟩, rfl⟩`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Take `⟨h1, h2⟩` from `restrictAut_localArtinMap_unitsIncl hπ hf hn hE u`. Use `⟨h1, ?_⟩` and prove the remaining obligations. Rewrite using `[lubinTateUnitSubgroup, Subgroup.mem_comap]`. Conclude with `⟨u⁻¹, inv_mem hu, h2.symm⟩`. Introduce and unpack `⟨h1, w, hw, hwσ⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Use `⟨unitsIncl K w⁻¹, ⟨w⁻¹, inv_mem hw, rfl⟩, ?_⟩` and prove the remaining obligations. Take `⟨g1, g2⟩` from `restrictAut_localArtinMap_unitsIncl hπ hf hn hE w⁻¹`. Apply `(bijective_restrictAut_prod hπ hf hn hE).1` to reduce the goal to its premises. Use `Prod.ext ?_ (g1.trans h1.symm)` and prove the remaining obligations. Apply `(lubinTateGalEquiv hπ hf n).injective` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Express the relevant statement in the definitionally equal form `lubinTateChar hπ hf n le_sup_left _ = _`. Rewrite using `[MonoidHom.comp_apply, g2, inv_inv]`. Conclude with `hwσ`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_unitFiltrationUnits_lubinTateField_sup
     [IsAbelianGalois K (lubinTateField Ω hπ hf n ⊔ E : IntermediateField K Ω)] (j : ℕ) :
@@ -190,7 +190,7 @@ omit [ValuativeRel K] [TopologicalSpace K] [IsNonarchimedeanLocalField K] [Valua
   [TopologicalSpace Ω] [IsValuativeTopology Ω] [ValuativeExtension K Ω] in
 
 /- English proof (translation)
-Use `MonoidHom.ext fun σ => AlgEquiv.ext fun x => Subtype.ext ?_` and prove the remaining obligations. Rewrite using `[MonoidHom.comp_apply, restrictAut_apply, restrictAb_apply, restrictAb_apply]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem restrictAb_eq_restrictAut_comp {L M : IntermediateField K Ω} [Normal K L] [Normal K M]
     (h : L ≤ M) (hM : M ≤ maximalAbelianExtension K Ω) :
@@ -201,7 +201,7 @@ theorem restrictAb_eq_restrictAut_comp {L M : IntermediateField K Ω} [Normal K 
 variable (L : IntermediateField K Ω) [FiniteDimensional K L] [IsAbelianGalois K L]
 
 /- English proof (translation)
-Establish `: IsSepClosed Ω` using `IsSepClosure.sep_closed K`. Take `⟨π, hπ⟩` from `IsDiscreteValuationRing.exists_irreducible 𝒪[K]`. Take `⟨n, m, hLM⟩` from `exists_le_lubinTateField_sup_unramifiedTower hπ (isLubinTateSeries_ltPoly π) L`. Conclude with `⟨π, hπ, n + 1, unramifiedTower K Ω m, n.succ_pos, isUnramifiedSubextension_unramifiedTower m, hLM⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_le_lubinTateField_sup :
     ∃ (π : 𝒪[K]) (hπ : Irreducible π) (n : ℕ) (E : IntermediateField K Ω),
@@ -214,9 +214,9 @@ theorem exists_le_lubinTateField_sup :
     hLM⟩
 
 /- English proof (translation)
-Establish `: IsSepClosed Ω` using `IsSepClosure.sep_closed K`. Take `⟨π, hπ, k, E, hk, hE, hLM⟩` from `exists_le_lubinTateField_sup L (Ω := Ω)`. Use `hE.1` as an intermediate fact. Use `hE.isGalois` as an intermediate fact. Use `isAbelianGalois_lubinTateField_sup hπ (isLubinTateSeries_ltPoly π) hk hE` as an intermediate fact.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[restrictAb_eq_restrictAut_comp hLM (le_maximalAbelianExtension _), MonoidHom.comp_assoc, ← Subgroup.map_map, map_unitFiltrationUnits_lubinTateField_sup hπ (isLubinTateSeries_ltPoly π) hk hE, map_upperRamificationGroup_restrictAut hLM]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem map_unitFiltrationUnits_restrictAb_localArtinMap (n : ℕ) :
     (unitFiltrationUnits K n).map
@@ -232,11 +232,11 @@ theorem map_unitFiltrationUnits_restrictAb_localArtinMap (n : ℕ) :
     map_upperRamificationGroup_restrictAut hLM]
 
 /- English proof (translation)
-Break down `le_or_gt v (-1) with hv | hv` into its components or cases. Establish `hc : ((⌈v⌉ : ℤ) : ℝ) ≤ -1`. Establish `: ⌈v⌉ ≤ -1` using `Int.ceil_le.2 (by push_cast; exact hv)`. Conclude with `this` after adjusting the coercions. Rewrite using `[upperRamificationGroup_of_nonpos (by linarith), lowerRamificationGroupReal_eq_top hv, upperRamificationGroup_of_nonpos (by linarith), lowerRamificationGroupReal_eq_top hc]`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: IsSepClosed Ω` using `IsSepClosure.sep_closed K`. Take `⟨π, hπ, k, E, hk, hE, hLM⟩` from `exists_le_lubinTateField_sup L (Ω := Ω)`. Use `hE.1` as an intermediate fact. Use `hE.isGalois` as an intermediate fact. Establish `hv' : -1 < ((⌈v⌉ : ℤ) : ℝ)` using `hv.trans_le (Int.le_ceil v)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← map_upperRamificationGroup_restrictAut hLM v, ← map_upperRamificationGroup_restrictAut hLM (⌈v⌉ : ℝ)]`. Use `congr 1`. Use extensionality with `σ`. Rewrite using `[mem_upperRamificationGroup_lubinTateField_sup hπ _ hk hE hv, mem_upperRamificationGroup_lubinTateField_sup hπ _ hk hE hv', Int.ceil_intCast]`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem upperRamificationGroup_eq_ceil (v : ℝ) :
     upperRamificationGroup K L v = upperRamificationGroup K L ⌈v⌉ := by

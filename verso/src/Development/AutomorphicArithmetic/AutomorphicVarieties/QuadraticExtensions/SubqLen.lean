@@ -4,33 +4,29 @@ open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.
 open scoped Pointwise
 
 /- English proof (translation)
-Introduce `l _ N Q P _ _ _ _ π j hπ hj htor`. Establish `key : ∀ a b : QZ l, ∃ c : ℤ_[l], a = c • b ∨ b = c • a`. Introduce `a b`. Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective (ZlSub l) a`. Take `⟨y, rfl⟩` from `Submodule.Quotient.mk_surjective (ZlSub l) b`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `step : ∀ x y : ℚ_[l], ‖x‖ ≤ ‖y‖ → ∃ c : ℤ_[l], x = c • y`. Introduce `x y h`. Distinguish the cases in `hy : y = 0`. Substitute `hy` using the available equality. Use `⟨0, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `h` using `[norm_zero]`. Rewrite using `[norm_le_zero_iff.mp h, zero_smul]`. Use `⟨⟨x / y, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[norm_div]`. Conclude with `div_le_one_of_le₀ h (norm_nonneg _)`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `show x = (x / y) * y`. Rewrite using `[div_mul_cancel₀ _ hy]`. Break down `le_total ‖x‖ ‖y‖ with h | h` into its components or cases. Take `⟨c, hc⟩` from `step x y h`. Conclude with `⟨c, Or.inl (by rw [hc]; rfl)⟩`.
+Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨c, hc⟩` from `step y x h`. Conclude with `⟨c, Or.inr (by rw [hc]; rfl)⟩`. Establish `hQ : ∀ q1 q2 : Q, ∃ c : ℤ_[l], q1 = c • q2 ∨ q2 = c • q1`. Introduce `q1 q2`. Take `⟨n1, rfl⟩` from `hπ q1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨n2, rfl⟩` from `hπ q2`. Take `⟨c, h | h⟩` from `key (n1 : QZ l) (n2 : QZ l)`. Use `⟨c, Or.inl ?_⟩` and prove the remaining obligations. Rewrite using `[← map_smul]`. Use `congr 1`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Subtype.ext h`. Use `⟨c, Or.inr ?_⟩` and prove the remaining obligations. Rewrite using `[← map_smul]`. Use `congr 1`. Conclude with `Subtype.ext h`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hP : ∀ x y : P, x ≠ 0 → y ∈ Submodule.span ℤ_[l] {x}`. Introduce `x y hx`. Take `⟨c, h | h⟩` from `hQ (j y) (j x)`. Rewrite `h` using `[← map_smul]`. Rewrite using `[hj h]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Conclude with `Submodule.smul_mem _ _ (Submodule.mem_span_singleton_self x)`. Rewrite `h` using `[← map_smul]`. Establish `hxy` using `hj h`. Distinguish the cases in `hc : IsUnit c`. Take `⟨u, rfl⟩` from `hc`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. It suffices to derive a contradiction. Establish an intermediate fact.
 
-Establish `hy : y = ((u⁻¹ : ℤ_[l]ˣ) : ℤ_[l]) • x`. Rewrite using `[hxy, smul_smul, Units.inv_mul, one_smul]`. Rewrite using `[hy]`. Conclude with `Submodule.smul_mem _ _ (Submodule.mem_span_singleton_self x)`. It suffices to derive a contradiction.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Establish `hn : ‖c‖ < 1` using `PadicInt.mem_nonunits.mp hc`. Take `⟨d, rfl⟩` from `(PadicInt.norm_lt_one_iff_dvd c).mp hn`. Apply `hx` to reduce the goal to its premises. Rewrite using `[hxy, mul_comm, mul_smul, htor, smul_zero]`. Break down `subsingleton_or_nontrivial P with hsub | hnt` into its components or cases.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Prove the first alternative. Extract witnesses or component facts from the available result.
 
-Rewrite using `[Module.length_eq_zero]`. Conclude with `zero_le`. Use `haveI : IsSimpleModule ℤ_[l] P := by`. Rewrite using `[isSimpleModule_iff]`. Use `IsSimpleOrder.mk (fun S => ?_)` and prove the remaining obligations.
-
-Distinguish the cases in `hS : S = ⊥`. Conclude with `Or.inl hS`. Use `right`. Take `⟨x, hxS, hx0⟩` from `(Submodule.ne_bot_iff S).mp hS`. Rewrite using `[eq_top_iff]`.
-
-Introduce `y _`. Conclude with `(Submodule.span_le.mpr (Set.singleton_subset_iff.mpr hxS)) (hP x y hx0)`. Rewrite using `[Module.length_eq_one]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Two.subqLen :
     ∀ (l : ℕ) [Fact l.Prime] (N : Submodule ℤ_[l] (QZ l)) (Q P : Type) [AddCommGroup Q] [Module ℤ_[l] Q] [AddCommGroup P] [Module ℤ_[l] P] (π : N →ₗ[ℤ_[l]] Q) (j : P →ₗ[ℤ_[l]] Q),

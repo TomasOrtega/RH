@@ -5,11 +5,11 @@ open Finset
 namespace Formalism.BranchingDeterminantCap
 
 /- English proof (translation)
-Unfold `ConstituentRange`. Introduce `n lam sg mu h1 h2 h3 i`. Unfold `Interlace at h1 h2`. Establish `hmu` using `h2 i`. Establish `hle : mu i - lam i.succ ≤ d0 lam mu`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `d0`. Conclude with `Finset.single_le_sum (f := fun j => mu j - lam j.succ) (fun j _ => sub_nonneg.mpr (h2 j).2) (Finset.mem_univ i)`. Unfold `rset`. Rewrite using `[Finset.mem_Icc]`. Use `⟨hmu.2, le_min hmu.1 ?_⟩` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 theorem memBranchRangeOfDefectEq : ConstituentRange := by
   unfold ConstituentRange

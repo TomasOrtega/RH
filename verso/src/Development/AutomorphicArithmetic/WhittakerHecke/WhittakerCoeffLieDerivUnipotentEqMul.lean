@@ -12,11 +12,11 @@ open UpperTheory.ConvolutionTheory.R2.G (FS2 nE)
 open scoped Classical
 
 /- English proof (translation)
-Introduce `E _ _ _ D f hf hl y k`. Take `⟨c0, cadd, cd, -⟩` from `UpperTheory.archimedeanConjugateCurve_oneParameterSubgroup E D k`. Establish `h1` using `UpperTheory.hasDerivAt_whittakerPeriod_oneParameter E D f (cv D k) (toL (XB D k)) (em E (aE y) * k) c0 cadd cd hf.1 (hl _).1 (hl _).2`. Establish `e : (fun t : ℝ => Wo D f.1 (em E (aE y) * k * infGL E 2 (cv D k t))) = fun t : ℝ => Complex.exp (2 * Real.pi * Complex.I * ((t : ℂ) * (re (y : A ℚ) : ℂ))) * Wo D f.1 (em E (aE y) * k)`. Use function extensionality and compare the values at `t`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[UpperTheory.diagonal_mul_archimedeanCurve_eq_unipotent_mul, UpperTheory.whittaker_unipotent_mul_eq_additiveChar_mul E D f.1 hf]`. Establish `e1 : (![0, TR.sInf ℚ fun _ => t * re (y : A ℚ)] : Fin 2 → A ℚ) 1 = TR.sInf ℚ fun _ => t * re (y : A ℚ)` using `rfl`. Rewrite using `[e1, UpperTheory.standardAddChar_neg_archimedean_rat]`. Use `push_cast`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression.
 
-Rewrite `h1` using `[e]`. Establish `a : HasDerivAt (fun t : ℝ => (t : ℂ)) 1 0` using `(hasDerivAt_id (0 : ℝ)).ofReal_comp`. Establish `h2` using `(((a.mul_const (re (y : A ℚ) : ℂ)).const_mul (2 * Real.pi * Complex.I)).cexp).mul_const (Wo D f.1 (em E (aE y) * k))`. Establish `h3` using `h1.unique h2`. Rewrite using `[h3]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/

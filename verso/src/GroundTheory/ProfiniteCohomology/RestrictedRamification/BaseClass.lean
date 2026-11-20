@@ -36,7 +36,7 @@ theorem cochainOf_constCochain {F : Type} [Group F] [TopologicalSpace F] [IsTopo
   rfl
 
 /- English proof (translation)
-Rewrite using `[cochainOf_d]`. Simplify using `[inhomogeneousCochains.d_hom_apply, cochainOf_constCochain, sub_eq_add_neg]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem cochainOf_d_constCochain {F : Type} [Group F] [TopologicalSpace F] [IsTopologicalGroup F]
     (B : Rep.{0} k F) [IsDiscreteRep B] (m : B) (σ : Fin 1 → F) :
@@ -61,7 +61,7 @@ theorem cochainOf_localRes_f_apply (A : Rep.{0} k G) [IsDiscreteRep A] (Aᵥ : �
   rfl
 
 /- English proof (translation)
-Rewrite using `[map_sub]`. Use `congr 1`. Conclude with `Rep.hom_comm_apply f g a`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem hom_res_sub {F F' : Type} [Monoid F] [Monoid F'] (ψ : F →* F') {X : Rep.{0} k F'} {B : Rep.{0} k F}
     (f : Rep.res ψ X ⟶ B) (g : F) (a : X) : f.hom (X.ρ (ψ g) a - a) = B.ρ g (f.hom a) - f.hom a := by
@@ -70,7 +70,7 @@ theorem hom_res_sub {F F' : Type} [Monoid F] [Monoid F'] (ψ : F →* F') {X : R
   exact Rep.hom_comm_apply f g a
 
 /- English proof (translation)
-Rewrite using `[map_add, hA]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem ρ_add_sub_of_invariant {F : Type} [Monoid F] (B : Rep.{0} k F) (g : F) {A M : B} (hA : B.ρ g A = A) :
     B.ρ g (A + M) - (A + M) = B.ρ g M - M := by
@@ -101,13 +101,11 @@ def dataCochain (x : (cochainsComplex U).X 1) (y : ∀ v, Ωᵥ v) :
   ((x, piConst Ωᵥ y) : (cochainsComplex U).X 1 × (piComplex fun v => cochainsComplex (Ωᵥ v)).X 0)
 
 /- English proof (translation)
-Use `(mappingCoconeNatD_apply (localRes φ U Ωᵥ fun v => (Rep.resFunctor (φ v).toMonoidHom).map j ≫ l v) 1 x (piConst Ωᵥ y)).trans (Prod.ext hx ?_)` and prove the remaining obligations. Rewrite using `[shiftNegOneD_succ_apply, shiftNegOneSucc_apply]`. Use function extensionality and compare the values at `v`. Use `show (((localRes φ U Ωᵥ fun v => (Rep.resFunctor (φ v).toMonoidHom).map j ≫ l v).f 1).hom x) v + (-(((piComplex fun v => cochainsComplex (Ωᵥ v)).d 0 1).hom (piConst Ωᵥ y))) v = 0`. Rewrite using `[show (-(((piComplex fun v => cochainsComplex (Ωᵥ v)).d 0 1).hom (piConst Ωᵥ y))) v = -((((piComplex fun v => cochainsComplex (Ωᵥ v)).d 0 1).hom (piConst Ωᵥ y)) v) from rfl, piComplex_d_hom_apply, piConst_apply]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `cochainOf_injective` to reduce the goal to its premises. Use function extensionality and compare the values at `h`. Establish `hh : (⇑(φ v).toMonoidHom ∘ h) = ![(φ v).toMonoidHom (h 0)]`. Use function extensionality and compare the values at `i`. Use `fin_cases i`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[cochainOf_add, cochainOf_neg', Pi.add_apply, Pi.neg_apply, cochainOf_zero, Pi.zero_apply]`. Use `erw [cochainOf_d_constCochain, cochainOf_localRes_f_apply]`. Rewrite using `[comp_hom_apply', hh]`. Express the relevant statement in the definitionally equal form `(l v).hom (j.hom (cochainOf U x ![(φ v).toMonoidHom (h 0)])) + _ = _`.
-
-Rewrite using `[hy v (h 0), add_neg_cancel]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem d_dataCochain (x : (cochainsComplex U).X 1) (y : ∀ v, Ωᵥ v)
     (hx : ((cochainsComplex U).d 1 2).hom x = 0)
@@ -142,7 +140,7 @@ def dataCycle (x : (cochainsComplex U).X 1) (y : ∀ v, Ωᵥ v)
   (compactCochains φ U Ωᵥ _).cyclesMk (dataCochain φ j Ωᵥ l x y) 2 (by simp) (d_dataCochain φ j Ωᵥ l x y hx hy)
 
 /- English proof (translation)
-The claim follows from `(compactCochains φ U Ωᵥ _).i_cyclesMk _ _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem iCycles_dataCycle (x : (cochainsComplex U).X 1) (y : ∀ v, Ωᵥ v)
     (hx : ((cochainsComplex U).d 1 2).hom x = 0)
@@ -178,7 +176,7 @@ theorem dataCochain_zero : dataCochain φ j Ωᵥ l 0 0 = 0 :=
   rfl
 
 /- English proof (translation)
-Substitute `ex ey` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem dataCycle_congr {x x' : (cochainsComplex U).X 1} {y y' : ∀ v, Ωᵥ v} (ex : x = x') (ey : y = y')
     (hx : ((cochainsComplex U).d 1 2).hom x = 0) (hx' : ((cochainsComplex U).d 1 2).hom x' = 0)
@@ -189,7 +187,7 @@ theorem dataCycle_congr {x x' : (cochainsComplex U).X 1} {y y' : ∀ v, Ωᵥ v}
   rfl
 
 /- English proof (translation)
-Rewrite using `[map_add, hx, hx', add_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem d_add_eq_zero {x x' : (cochainsComplex U).X 1} (hx : ((cochainsComplex U).d 1 2).hom x = 0)
     (hx' : ((cochainsComplex U).d 1 2).hom x' = 0) : ((cochainsComplex U).d 1 2).hom (x + x') = 0 := by
@@ -197,7 +195,7 @@ theorem d_add_eq_zero {x x' : (cochainsComplex U).X 1} (hx : ((cochainsComplex U
 
 omit [∀ v, IsTopologicalGroup (H v)] [∀ v, IsDiscreteRep (Ωᵥ v)] in
 /- English proof (translation)
-Introduce `v σ` and use `by rw [cochainOf_add, Pi.add_apply, map_add, map_add, hy v σ, hy' v σ, Pi.add_apply, map_add] abel`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem hy_add {x x' : (cochainsComplex U).X 1} {y y' : ∀ v, Ωᵥ v}
     (hy : ∀ v (σ : H v), (l v).hom (j.hom (cochainOf U x ![(φ v).toMonoidHom σ])) = (Ωᵥ v).ρ σ (y v) - y v)
@@ -208,7 +206,7 @@ theorem hy_add {x x' : (cochainsComplex U).X 1} {y y' : ∀ v, Ωᵥ v}
   abel
 
 /- English proof (translation)
-Apply `(ModuleCat.mono_iff_injective ((compactCochains φ U Ωᵥ _).iCycles 1)).1 inferInstance` to reduce the goal to its premises. Rewrite using `[map_add, iCycles_dataCycle, iCycles_dataCycle, iCycles_dataCycle, dataCochain_add]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem dataCycle_add (x x' : (cochainsComplex U).X 1) (y y' : ∀ v, Ωᵥ v)
     (hx : ((cochainsComplex U).d 1 2).hom x = 0) (hx' : ((cochainsComplex U).d 1 2).hom x' = 0)
@@ -223,7 +221,7 @@ theorem dataCycle_add (x x' : (cochainsComplex U).X 1) (y y' : ∀ v, Ωᵥ v)
   rw [map_add, iCycles_dataCycle, iCycles_dataCycle, iCycles_dataCycle, dataCochain_add]
 
 /- English proof (translation)
-Apply `(ModuleCat.mono_iff_injective ((compactCochains φ U Ωᵥ _).iCycles 1)).1 inferInstance` to reduce the goal to its premises. Rewrite using `[map_zero, iCycles_dataCycle, dataCochain_zero]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem dataCycle_zero (hx : ((cochainsComplex U).d 1 2).hom 0 = 0)
     (hy : ∀ v (σ : H v), (l v).hom (j.hom (cochainOf U (0 : (cochainsComplex U).X 1) ![(φ v).toMonoidHom σ])) =
@@ -259,17 +257,17 @@ theorem dataHom_apply {D : Type} [AddCommGroup D] (xOf : D →+ (cochainsComplex
   rfl
 
 /- English proof (translation)
-Establish `hd : ((piComplex fun v => cochainsComplex (Ωᵥ v)).d 0 1).hom (piConst Ωᵥ y) = 0`. Use function extensionality and compare the values at `v`. Rewrite using `[piComplex_d_hom_apply, piConst_apply]`. Apply `cochainOf_injective` to reduce the goal to its premises. Use function extensionality and compare the values at `h`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[cochainOf_d_constCochain, hy0, sub_self]`. Both sides reduce to the same expression. Take `⟨c, hc⟩` from `exists_iCycles_eq_of_d_eq_zero _ 0 (piConst Ωᵥ y) hd`. Establish `hv : ∀ v, ((piComplex fun v => cochainsComplex (Ωᵥ v)).homologyπ 0 ≫ HomologicalComplex.homologyMap (piProj (fun v => cochainsComplex (Ωᵥ v)) v) 0).hom c = (H0Iso (Ωᵥ v)).inv.hom ⟨y v, (Representation.mem_invariants _ _).2 (hy0 v)⟩` using `fun v => by`. Take `⟨z0, hz0, hz0c⟩` from `exists_cocycle_H0Iso_inv (Ωᵥ v) ⟨y v, (Representation.mem_invariants _ _).2 (hy0 v)⟩`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[HomologicalComplex.homologyπ_naturality, ModuleCat.hom_comp, LinearMap.comp_apply, ← hz0]`. Use `congr 1`. Apply `(ModuleCat.mono_iff_injective ((cochainsComplex (Ωᵥ v)).iCycles 0)).1 inferInstance` to reduce the goal to its premises. Use `(hom_apply_hom_apply_eq_of_comp_eq (HomologicalComplex.cyclesMap_i _ _) c).trans ?_` and prove the remaining obligations. Rewrite using `[hc, piProj_f_hom_apply, piConst_apply]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Apply `cochainOf_injective` to reduce the goal to its premises. Conclude with `(funext fun _ => rfl : cochainOf (Ωᵥ v) (constCochain (Ωᵥ v) (y v)) = fun _ => y v).trans hz0c.symm`. Establish `h1 : (localCohomologyIso Ωᵥ 0).hom.hom (((piComplex fun v => cochainsComplex (Ωᵥ v)).homologyπ 0).hom c) = fun v => (H0Iso (Ωᵥ v)).inv.hom ⟨y v, (Representation.mem_invariants _ _).2 (hy0 v)⟩`. Use function extensionality and compare the values at `fun v => (piHomologyIso_hom_apply _ 0 _ v).trans (hv v)`. Take `⟨c', hc', hc'i⟩` from `mappingCoconeNat.exists_homologyδ_homologyπ (localRes φ U Ωᵥ fun v => (Rep.resFunctor (φ v).toMonoidHom).map j ≫ l v) 0 c`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h2 : dataCycle φ j Ωᵥ l 0 y hx hy = c'`. Apply `(ModuleCat.mono_iff_injective ((compactCochains φ U Ωᵥ _).iCycles 1)).1 inferInstance` to reduce the goal to its premises. Rewrite using `[iCycles_dataCycle]`. Use `Eq.trans ?_ hc'i.symm` and prove the remaining obligations. Rewrite using `[hc]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Rewrite using `[h2]`. Use `hc'.symm.trans ?_` and prove the remaining obligations. Rewrite using `[← h1]`. Conclude with `congrArg (mappingCoconeNat.homologyδ _ 0).hom (Iso.hom_inv_id_apply (localCohomologyIso Ωᵥ 0) _).symm`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem homologyπ_dataCycle_zero_of_invariant (y : ∀ v, Ωᵥ v) (hy0 : ∀ v (σ : H v), (Ωᵥ v).ρ σ (y v) = y v)
     (hx : ((cochainsComplex U).d 1 2).hom 0 = 0)
@@ -315,7 +313,7 @@ theorem homologyπ_dataCycle_zero_of_invariant (y : ∀ v, Ωᵥ v) (hy0 : ∀ v
   exact congrArg (mappingCoconeNat.homologyδ _ 0).hom (Iso.hom_inv_id_apply (localCohomologyIso Ωᵥ 0) _).symm
 
 /- English proof (translation)
-Establish `hy' : ∀ v (σ : H v), (l v).hom (j.hom (cochainOf U (0 : (cochainsComplex U).X 1) ![(φ v).toMonoidHom σ])) = (Ωᵥ v).ρ σ (y v) - y v` using `fun v σ => by`. Rewrite using `[cochainOf_zero, Pi.zero_apply, map_zero, map_zero, hy0, sub_self]`. Rewrite using `[dataHom_apply, dataCycle_congr φ j Ωᵥ l hx0 hyd (hx d) (map_zero _) (hy d) hy']`. Conclude with `homologyπ_dataCycle_zero_of_invariant φ j Ωᵥ l y hy0 _ hy'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dataHom_eq_localToCompact {D : Type} [AddCommGroup D] (xOf : D →+ (cochainsComplex U).X 1)
     (yOf : D →+ (∀ v, Ωᵥ v)) (hx : ∀ d, ((cochainsComplex U).d 1 2).hom (xOf d) = 0)
@@ -354,14 +352,14 @@ theorem sUnitsToUnits_sInvRatio (t : sInvariantSubgroup (F := K.1) ℚ̄ S) (σ 
   rfl
 
 /- English proof (translation)
-The claim follows from `Additive.toMul.injective (Subtype.ext (galUnitsHom_mul_inv_eq S σ (t : (maxUnramifiedOutside K.1 ℚ̄ S)ˣ) t'))`.
+A detailed English derivation is pending.
 -/
 theorem sInvRatio_mul (t t' : sInvariantSubgroup (F := K.1) ℚ̄ S) (σ : galUnramifiedOutside K.1 ℚ̄ S) :
     sInvRatio S (t * t') σ = sInvRatio S t σ + sInvRatio S t' σ :=
   Additive.toMul.injective (Subtype.ext (galUnitsHom_mul_inv_eq S σ (t : (maxUnramifiedOutside K.1 ℚ̄ S)ˣ) t'))
 
 /- English proof (translation)
-Use `IsLocallyConstant.desc _ (sUnitsToUnits S (maxUnramifiedOutside K.1 ℚ̄ S)).hom ?_ (sUnitsToUnits_injective S _)` and prove the remaining obligations. Establish `: (sUnitsToUnits S (maxUnramifiedOutside K.1 ℚ̄ S)).hom ∘ sInvRatio S t = fun σ => (galUnits.{0, 0} K.1 (maxUnramifiedOutside K.1 ℚ̄ S)).ρ σ (Additive.ofMul (t : (maxUnramifiedOutside K.1 ℚ̄ S)ˣ)) - Additive.ofMul (t : (maxUnramifiedOutside K.1 ℚ̄ S)ˣ)`. Use function extensionality and compare the values at `fun σ => sUnitsToUnits_sInvRatio S t σ`. Rewrite using `[this]`. Conclude with `(isLocallyConstant_apply _ _).sub (IsLocallyConstant.const _)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isLocallyConstant_sInvRatio (t : sInvariantSubgroup (F := K.1) ℚ̄ S) :
     IsLocallyConstant (sInvRatio S t) := by
@@ -387,14 +385,14 @@ theorem cochainOf_sInvCochain (t : sInvariantSubgroup (F := K.1) ℚ̄ S) (σ : 
   rfl
 
 /- English proof (translation)
-The claim follows from `cochainOf_injective (funext fun σ => sInvRatio_mul S t t' (σ 0))`.
+A detailed English derivation is pending.
 -/
 theorem sInvCochain_mul (t t' : sInvariantSubgroup (F := K.1) ℚ̄ S) :
     sInvCochain S (t * t') = sInvCochain S t + sInvCochain S t' :=
   cochainOf_injective (funext fun σ => sInvRatio_mul S t t' (σ 0))
 
 /- English proof (translation)
-Apply `cochainOf_injective` to reduce the goal to its premises. Use function extensionality and compare the values at `σ`. Rewrite using `[cochainOf_cochainsMap_f]`. Conclude with `(sUnitsToUnits_sInvRatio S t (σ 0)).trans (cochainOf_d_constCochain _ _ σ).symm`.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cochainsMap_sUnitsToUnits_sInvCochain (t : sInvariantSubgroup (F := K.1) ℚ̄ S) :
     ((cochainsMap (sUnitsToUnits S (maxUnramifiedOutside K.1 ℚ̄ S))).f 1).hom (sInvCochain S t) =
@@ -406,11 +404,11 @@ theorem cochainsMap_sUnitsToUnits_sInvCochain (t : sInvariantSubgroup (F := K.1)
   exact (sUnitsToUnits_sInvRatio S t (σ 0)).trans (cochainOf_d_constCochain _ _ σ).symm
 
 /- English proof (translation)
-Establish `hinj : Function.Injective ((cochainsMap (sUnitsToUnits S (maxUnramifiedOutside K.1 ℚ̄ S))).f 2).hom` using `fun x y hxy => by`. Apply `cochainOf_injective` to reduce the goal to its premises. Use function extensionality and compare the values at `σ`. Apply `sUnitsToUnits_injective S (maxUnramifiedOutside K.1 ℚ̄ S)` to reduce the goal to its premises. Use `congrFun (congrArg (cochainOf _) hxy) σ` as an intermediate fact.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Rewrite `this` using `[cochainOf_cochainsMap_f, cochainOf_cochainsMap_f]`. Then use the resulting hypothesis. Apply `hinj` to reduce the goal to its premises. Rewrite using `[map_zero]`. Establish `hc` using `hom_apply_hom_apply_eq_of_comp_eq ((cochainsMap (sUnitsToUnits S (maxUnramifiedOutside K.1 ℚ̄ S))).comm 1 2) (sInvCochain S t)`. Use `hc.symm.trans ?_` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[cochainsMap_sUnitsToUnits_sInvCochain]`. Conclude with `hom_apply_hom_apply_of_comp_eq ((cochainsComplex _).d_comp_d 0 1 2) _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem d_sInvCochain (t : sInvariantSubgroup (F := K.1) ℚ̄ S) :
     ((cochainsComplex (galSUnitsMax K.1 ℚ̄ S)).d 1 2).hom (sInvCochain S t) = 0 := by
@@ -453,7 +451,7 @@ def dataLocalUnit (t : sInvariantSubgroup (F := K.1) ℚ̄ S) (v : S)
   localUnitsAlgHom S v a + sInvLocalHom S ιs v (Additive.ofMul t)
 
 /- English proof (translation)
-The claim follows from `(congrArg₂ (· + ·) (map_add (localUnitsAlgHom S v) a a') (map_add (sInvLocalHom S ιs v) _ _)).trans (add_add_add_comm _ _ _ _)`.
+A detailed English derivation is pending.
 -/
 theorem dataLocalUnit_add (t t' : sInvariantSubgroup (F := K.1) ℚ̄ S) (v : S)
     (a a' : Additive ((v : HeightOneSpectrum (𝓞 K.1)).adicCompletion K.1)ˣ) :
@@ -462,7 +460,7 @@ theorem dataLocalUnit_add (t t' : sInvariantSubgroup (F := K.1) ℚ̄ S) (v : S)
     (add_add_add_comm _ _ _ _)
 
 /- English proof (translation)
-The claim follows from `congrArg Additive.ofMul (Units.ext (σ.commutes _))`.
+A detailed English derivation is pending.
 -/
 theorem galUnits_ρ_algebraMap (v : S)
     (σ : Gal(AlgebraicClosure ((v : HeightOneSpectrum (𝓞 K.1)).adicCompletion K.1) /
@@ -475,7 +473,7 @@ theorem galUnits_ρ_algebraMap (v : S)
   congrArg Additive.ofMul (Units.ext (σ.commutes _))
 
 /- English proof (translation)
-The claim follows from `((congrArg (gsUnitsLocalMor.{0} S ιs v).hom (sUnitsToUnits_sInvRatio S t _)).trans (hom_res_sub _ (gsUnitsLocalMor.{0} S ιs v) σ _)).trans (ρ_add_sub_of_invariant _ σ (M := (gsUnitsLocalMor.{0} S ιs v).hom (Additive.ofMul (t : (maxUnramifiedOutside K.1 ℚ̄ S)ˣ))) (galUnits_ρ_algeb …`.
+A detailed English derivation is pending.
 -/
 theorem dataLocalUnit_compat (t : sInvariantSubgroup (F := K.1) ℚ̄ S)
     (a : ∀ v : S, Additive ((v : HeightOneSpectrum (𝓞 K.1)).adicCompletion K.1)ˣ) (v : S)
@@ -493,7 +491,7 @@ abbrev GsUnitsDatum :=
   Additive (sInvariantSubgroup (F := K.1) ℚ̄ S) × (∀ v : S, Additive ((v : HeightOneSpectrum (𝓞 K.1)).adicCompletion K.1)ˣ)
 
 /- English proof (translation)
-The claim follows from `cochainOf_injective (funext fun σ => Additive.toMul.injective (Subtype.ext (by change galUnitsHom K.1 _ (σ 0) 1 * (1 : (maxUnramifiedOutside K.1 ℚ̄ S)ˣ)⁻¹ = 1 rw [map_one, inv_one, mul_one])))`.
+A detailed English derivation is pending.
 -/
 theorem sInvCochain_one : sInvCochain S (1 : sInvariantSubgroup (F := K.1) ℚ̄ S) = 0 :=
   cochainOf_injective (funext fun σ => Additive.toMul.injective (Subtype.ext (by
@@ -542,7 +540,7 @@ theorem gsUnitsData_eq (d : GsUnitsDatum S) :
   rfl
 
 /- English proof (translation)
-The claim follows from `dataHom_eq_localToCompact _ _ _ _ _ _ _ _ ((0 : Additive (sInvariantSubgroup (F := K.1) ℚ̄ S)), a) (map_zero (sInvCochainHom S)) (fun v => localUnitsAlgHom S v (a v)) (funext fun v => (congrArg (localUnitsAlgHom S v (a v) + ·) (map_zero (sInvLocalHom S ιs v))).trans (add_zero _)) …`.
+A detailed English derivation is pending.
 -/
 theorem gsUnitsData_zero_local (a : ∀ v : S, Additive ((v : HeightOneSpectrum (𝓞 K.1)).adicCompletion K.1)ˣ) :
     gsUnitsData S ιs (0, a) =

@@ -14,9 +14,9 @@ namespace GlobalTheory.SplitLagrF
 open GlobalTheory.SplitInvFormF GlobalTheory.WeilSchrodinger.DblTargetF
 
 /- English proof (translation)
-Establish `: (ν.map T).IsAddHaarMeasure` using `AddEquiv.isAddHaarMeasure_map ν T hc hc'`. Set `hT : G ≃ₜ G` to `{ toEquiv := T.toEquiv, continuous_toFun := hc, continuous_invFun := hc' }`. Establish `hemb : MeasurableEmbedding T` using `hT.measurableEmbedding`. Use `⟨((ν.map T).addHaarScalarFactor ν : ℝ), NNReal.coe_pos.2 (Measure.addHaarScalarFactor_pos_of_isAddHaarMeasure _ _), ?_⟩` and prove the remaining obligations. Introduce `φ`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e` using `Measure.isAddLeftInvariant_eq_smul (ν.map T) ν`. Rewrite using `[← hemb.integral_map φ]`. Use `(congrArg (fun μ : Measure G => ∫ y, φ y ∂μ) e).trans ?_` and prove the remaining obligations. Use `show ∫ y, φ y ∂(((ν.map T).addHaarScalarFactor ν) • ν) = _`. Rewrite using `[integral_smul_nnreal_measure, NNReal.smul_def, Complex.real_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integral_comp_addEquiv {G : Type} [AddGroup G] [TopologicalSpace G] [IsTopologicalAddGroup G]
     [LocallyCompactSpace G] [SecondCountableTopology G] [MeasurableSpace G] [BorelSpace G]
@@ -38,11 +38,9 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 variable {σ : E →ₐ[F] E} {nS nT : ℕ} {JS : Matrix (Fin nS) (Fin nS) E} {JT : Matrix (Fin nT) (Fin nT) E} {ξ₀ : E}
 
 /- English proof (translation)
-Take `⟨-, i2, i3, i4, -⟩` from `GlobalTheory.AdelicMatrixLatticeF.lattice F E nS nT`. Use `GlobalTheory.HeisThetaF.isTopologicalRing_AEF (F := F) (E := E)` as an intermediate fact. Establish `: LocallyCompactSpace (conjHalf σ e nS nT)` using `(isClosed_conjHalf e).isClosedEmbedding_subtypeVal.locallyCompactSpace`. Establish `: SecondCountableTopology (conjHalf σ e nS nT)` using `Topology.IsInducing.subtypeVal.secondCountableTopology`. Set `T : conjHalf σ e nS nT ≃+ conjHalf σ e nS nT` to `{ toFun := fun x => ⟨M * x.1, mul_mem_conjHalf M x.2⟩ invFun := fun x => ⟨M⁻¹ * x.1, mul_mem_conjHalf M⁻¹ x.2⟩ left_inv := fun x => Subtype.ext (Matrix.nonsing_inv_mul_cancel_left M x.1 hM) right_inv := fun x => Subtype.ext (Matrix.mul_nonsing_inv_cancel_left M x.1 hM) map_add' : …`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hc : Continuous T` using `by show Continuous fun x : conjHalf σ e nS nT => (⟨M * x.1, mul_mem_conjHalf M x.2⟩ : conjHalf σ e nS nT)`. Conclude with `Continuous.subtype_mk (continuous_const.matrix_mul continuous_subtype_val) _`. Establish `hc' : Continuous T.symm` using `by show Continuous fun x : conjHalf σ e nS nT => (⟨M⁻¹ * x.1, mul_mem_conjHalf M⁻¹ x.2⟩ : conjHalf σ e nS nT)`. Conclude with `Continuous.subtype_mk (continuous_const.matrix_mul continuous_subtype_val) _`. Take `⟨r, hr, hφ⟩` from `integral_comp_addEquiv μ T hc hc'`.
-
-Conclude with `⟨r, hr, fun φ => hφ fun x => φ x.1⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem integral_mul_left (e : AEF F E) [MeasurableSpace (conjHalf σ e nS nT)] [BorelSpace (conjHalf σ e nS nT)]
     [IsTopologicalAddGroup (WOF F E nS nT)]
@@ -72,9 +70,9 @@ theorem integral_mul_left (e : AEF F E) [MeasurableSpace (conjHalf σ e nS nT)] 
 variable {B : Base F E}
 
 /- English proof (translation)
-Use `GlobalTheory.HeisThetaF.isTopologicalRing_AEF (F := F) (E := E)` as an intermediate fact. Take `⟨U, hU, hUf⟩` from `hf.level`. Set `m : conjHalf σ e nS nT →+ WOF F E nS (nT + nT)` to `AddMonoidHom.mk' (fun y => aC F E nT * y.1) fun a b => Matrix.mul_add _ a.1 b.1`. Establish `hm : Continuous m` using `continuous_const.matrix_mul continuous_subtype_val`. Use `⟨U.comap m, hU.preimage hm, fun t l hl => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[AddSubgroup.coe_add, ← prof_heis_aC ν 𝓕 he f t.2 l.2, hUf (aC F E nT * l.1) hl (GlobalTheory.SplitVacF.fin_of_mem he (mul_mem_conjHalf _ l.2))]`.
+Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem prof_level (ν : Measure (WOF F E nS nT)) (𝓕 : Set (WOF F E nS nT)) {e : AEF F E} (he : IsSplitIdemF σ e)
     {f : WOF F E nS (nT + nT) → ℂ} (hf : IsThetaFunOF σ JS (dblG JT) ξ₀ B.ψ f) :
@@ -91,9 +89,9 @@ theorem prof_level (ν : Measure (WOF F E nS nT)) (𝓕 : Set (WOF F E nS nT)) {
     hUf (aC F E nT * l.1) hl (GlobalTheory.SplitVacF.fin_of_mem he (mul_mem_conjHalf _ l.2))]
 
 /- English proof (translation)
-Take `⟨K, hK, hKs⟩` from `exists_compact_ann (JS := JS) hB hS hT hξ hσξ he (fun g => heisOF σ JS (dblG JT) ξ₀ B.ψ (dC F E nT * ((-hlf F E) • g : WOF F E nS nT)) f = f) (fun g hg => by`. Take `⟨k, hk, h⟩` from `exists_nsmul_fix (GlobalTheory.SplitVacF.isSplitIdemF_conj he) (mul_mem_conjHalf (dC F E nT) (smul_mem_conjHalf (-hlf F E) hg)) hf`. Use `⟨k, hk, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_comm, Matrix.mul_smul])` and apply the resulting hypothesis. Use `⟨K, hK, fun t ht => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations.
 
-Assume the negation of the conclusion as `hne`. Use `ht (hKs t fun g hg => ?_)` and prove the remaining obligations. Establish `h` using `prof_heis_lift hB hS hT hξ hσξ hν h𝓕 hf g t`. Rewrite `h` using `[hg]`. Conclude with `(mul_eq_right₀ hne).1 h.symm`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem prof_support (hB : B.IsGood σ) (hS : IsHermND σ JS) (hT : IsHermND σ JT) (hξ : ξ₀ ≠ 0) (hσξ : σ ξ₀ = -ξ₀)
     {ν : Measure (WOF F E nS nT)} {𝓕 : Set (WOF F E nS nT)} (hν : ν.IsAddHaarMeasure)
@@ -115,13 +113,11 @@ theorem prof_support (hB : B.IsGood σ) (hS : IsHermND σ JS) (hT : IsHermND σ 
   exact (mul_eq_right₀ hne).1 h.symm
 
 /- English proof (translation)
-Take `⟨-, i2, i3, i4, -⟩` from `GlobalTheory.AdelicMatrixLatticeF.lattice F E nS nT`. Establish `: T2Space (conjHalf σ e nS nT)` using `inferInstance`. Establish `: R1Space (conjHalf σ e nS nT)` using `T2Space.r1Space`. Take `⟨U, hU, hUf⟩` from `prof_level (JT := JT) ν 𝓕 he hf`. Take `⟨K, hK, hKs⟩` from `prof_support hB hS hT hξ hσξ hν h𝓕 he hf`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `Continuous.integrable_of_hasCompactSupport ?_ (HasCompactSupport.intro hK hKs)` and prove the remaining obligations. Use `IsLocallyConstant.continuous ?_` and prove the remaining obligations. Rewrite using `[IsLocallyConstant.iff_eventually_eq]`. Introduce `t`. Establish `hn : {s : conjHalf σ e nS nT | s - t ∈ U} ∈ nhds t`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `IsOpen.mem_nhds (hU.preimage (continuous_id.sub continuous_const)) ?_` and prove the remaining obligations. Use `show t - t ∈ U`. Rewrite using `[sub_self]`. Conclude with `U.zero_mem`. Use `filter_upwards [hn] with s hs`.
-
-Establish `h1` using `hUf t _ hs`. Rewrite `h1` using `[add_sub_cancel]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem prof_integrable (hB : B.IsGood σ) (hS : IsHermND σ JS) (hT : IsHermND σ JT) (hξ : ξ₀ ≠ 0) (hσξ : σ ξ₀ = -ξ₀)
     {ν : Measure (WOF F E nS nT)} {𝓕 : Set (WOF F E nS nT)} (hν : ν.IsAddHaarMeasure)
@@ -148,13 +144,13 @@ theorem prof_integrable (hB : B.IsGood σ) (hS : IsHermND σ JS) (hT : IsHermND 
   rwa [add_sub_cancel] at h1
 
 /- English proof (translation)
-Establish `hψ : Continuous B.ψ` using `hB.std.1`. Take `⟨K, hK⟩` from `GlobalTheory.HeisThetaF.exists_openAddSubgroup_psi_fin B.ψ hψ`. Set `φ : WOF F E nS nT → AF F` to `fun u => symplOHF σ JS JT ξ₀ g u - symplOHF σ JS JT ξ₀ u g`. Establish `hφ : Continuous φ` using `(GlobalTheory.HeisThetaF.continuous_symplOHF_right g).sub (GlobalTheory.HeisThetaF.continuous_symplOHF_left g)`. Set `ρ : conjHalf σ e nS nT → Af F` to `fun u => (φ u.1).2`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hρ : Continuous ρ` using `continuous_snd.comp (hφ.comp continuous_subtype_val)`. Establish `h0 : ρ 0 = 0` using `by show (symplOHF σ JS JT ξ₀ g 0 - symplOHF σ JS JT ξ₀ 0 g).2 = 0`. Rewrite using `[GlobalTheory.HeisThetaF.symplOHF_zero_left, GlobalTheory.HeisThetaF.symplOHF_zero_right, sub_zero]`. Both sides reduce to the same expression. Establish `hn : ρ ⁻¹' (K : Set (Af F)) ∈ nhds (0 : conjHalf σ e nS nT)` using `(K.isOpen.preimage hρ).mem_nhds (by rw [Set.mem_preimage, h0]; exact K.zero_mem)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Use `filter_upwards [hn] with u hu`. Establish `h1 : pairA F 1 0 • u.1 = 0` using `GlobalTheory.HeisThetaF.smul_eq_zero_of_map_infPartF (GlobalTheory.SplitVacF.fin_of_mem he u.2)`. Establish `hfst : fstA F (φ u.1) = 0`. Rewrite using `[← GlobalTheory.HeisThetaF.fstA_mul_idem]`. Use `show fstA F (pairA F 1 0 * (symplOHF σ JS JT ξ₀ g u.1 - symplOHF σ JS JT ξ₀ u.1 g)) = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[mul_sub, ← GlobalTheory.HeisThetaF.symplOHF_smul_left (pairA F 1 0) u.1 g, ← GlobalTheory.HeisThetaF.symplOHF_smul_right (pairA F 1 0) g u.1, h1, GlobalTheory.HeisThetaF.symplOHF_zero_left, GlobalTheory.HeisThetaF.symplOHF_zero_right, sub_zero, map_zero]`. Establish `hφu : φ u.1 = pairA F 0 (ρ u)` using `Prod.ext hfst rfl`. Use `show B.ψ (φ u.1) = 1`. Rewrite using `[hφu]`. Conclude with `hK _ hu`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem commF_eventually (hB : B.IsGood σ) {e : AEF F E} (he : IsSplitIdemF σ e) (g : WOF F E nS nT) :
     ∀ᶠ y : conjHalf σ e nS nT in nhds 0, commF σ JS JT ξ₀ B.ψ g y = 1 := by
@@ -186,15 +182,13 @@ theorem commF_eventually (hB : B.IsGood σ) {e : AEF F E} (he : IsSplitIdemF σ 
   exact hK _ hu
 
 /- English proof (translation)
-Take `⟨U, hU, hUf⟩` from `prof_level (JT := JT) ν 𝓕 he hf`. Take `⟨K, hK, hKs⟩` from `prof_support hB hS hT hξ hσξ hν h𝓕 he hf`. Take `⟨G, -, hG⟩` from `exists_open_sep (JS := JS) hB hS hT hξ hσξ he U hU`. Set `L : AddSubgroup (conjHalf σ e nS nT)` to `{ carrier := {y | ∀ g ∈ G, commF σ JS JT ξ₀ B.ψ g (y : WOF F E nS nT) = 1} add_mem' := fun {a b} ha hb g hg => by`. Rewrite using `[AddSubgroup.coe_add, GlobalTheory.SplitVacF.commF_add_right, ha g hg, hb g hg, one_mul]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `zero_mem' := fun g _ => GlobalTheory.SplitVacF.commF_zero_right g`. Use the proof step `neg_mem' := fun {a} ha g hg => by`. Use `GlobalTheory.SplitVacF.commF_neg_right (σ := σ) (JS := JS) (JT := JT) (xi0 := ξ₀) (ψ := B.ψ) g (a : WOF F E nS nT)` as an intermediate fact. Rewrite using `[ha g hg, mul_one] at this }` and apply the resulting hypothesis. Establish `hL : IsOpen (L : Set (conjHalf σ e nS nT))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `AddSubgroup.isOpen_of_mem_nhds L (g := 0) ?_` and prove the remaining obligations. Conclude with `(Filter.eventually_all_finset G).2 fun g _ => commF_eventually hB he g`. Establish `hφ` using `GlobalTheory.fourier_uniqueness_of_openSubgroup μ (fun (a : WOF F E nS nT) (t : conjHalf σ e nS nT) => commF σ JS JT ξ₀ B.ψ a t) (fun a s t => GlobalTheory.SplitVacF.commF_add_right a s.1 t.1) (fun a => GlobalTheory.SplitVacF.commF_zero_right a) (fun t => GlobalTheory.SplitVacF.c …`. Establish `hx' : ¬ ∀ g ∈ G, commF σ JS JT ξ₀ B.ψ g (x : WOF F E nS nT) = 1` using `hx`. Use `push_neg at hx'`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Take `⟨g, hg, hne⟩` from `hx'`. Conclude with `⟨g, fun l hl => hl g hg, hne⟩)`. Use the proof step `(fun t => prof σ JS JT ξ₀ B.ψ ν 𝓕 f t) K hK hKs (fun t l hl => hUf t l (hG l hl))`. Use the proof step `(fun a _ => by`. Rewrite using `[← hall (dC F E nT * ((-hlf F E) • a : WOF F E nS nT))]`.
-
-Simplify using `only [prof_heis_lift hB hS hT hξ hσξ hν h𝓕 hf])`. Rewrite using `[← prof_zero (σ := σ) (JS := JS) (JT := JT) (ξ₀ := ξ₀) (ψ := B.ψ)]`. Conclude with `congrFun hφ 0`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lagrInt_eq_zero (hB : B.IsGood σ) (hS : IsHermND σ JS) (hT : IsHermND σ JT) (hξ : ξ₀ ≠ 0) (hσξ : σ ξ₀ = -ξ₀)
     {ν : Measure (WOF F E nS nT)} {𝓕 : Set (WOF F E nS nT)} (hν : ν.IsAddHaarMeasure)

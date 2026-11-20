@@ -22,20 +22,20 @@ def graphPt (p : MvPolynomial (Fin n) ℂ) (x : Fin n → ℂ) : Fin (n + 1) →
   Fin.snoc x (eval x p)
 
 /- English proof (translation)
-Simplify using `[graphHom]`.
+Simplify using the standard rewrite rules.
 -/
 theorem graphHom_X_castSucc (p : MvPolynomial (Fin n) ℂ) (i : Fin n) :
     graphHom p (X (Fin.castSucc i)) = X i := by
   simp [graphHom]
 
 /- English proof (translation)
-Simplify using `[graphHom]`.
+Simplify using the standard rewrite rules.
 -/
 theorem graphHom_X_last (p : MvPolynomial (Fin n) ℂ) : graphHom p (X (Fin.last n)) = p := by
   simp [graphHom]
 
 /- English proof (translation)
-Rewrite using `[graphHom, aeval_rename]`. Establish `: (Fin.snoc (X : Fin n → MvPolynomial (Fin n) ℂ) p : Fin (n + 1) → MvPolynomial (Fin n) ℂ) ∘ Fin.castSucc = X`. Use function extensionality and compare the values at `fun i => by simp`. Rewrite using `[this, aeval_X_left_apply]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 -/
 theorem graphHom_rename (p q : MvPolynomial (Fin n) ℂ) : graphHom p (rename Fin.castSucc q) = q := by
   rw [graphHom, aeval_rename]
@@ -44,15 +44,15 @@ theorem graphHom_rename (p q : MvPolynomial (Fin n) ℂ) : graphHom p (rename Fi
   rw [this, aeval_X_left_apply]
 
 /- English proof (translation)
-Introduce `q` and use `⟨rename Fin.castSucc q, graphHom_rename p q⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem graphHom_surjective (p : MvPolynomial (Fin n) ℂ) : Function.Surjective (graphHom p) :=
   fun q => ⟨rename Fin.castSucc q, graphHom_rename p q⟩
 
 /- English proof (translation)
-Establish `h : (eval (graphPt p x) : MvPolynomial (Fin (n + 1)) ℂ →+* ℂ) = (eval x).comp (graphHom p).toRingHom`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `a`. Simplify using the standard rewrite rules. Introduce `i`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `Fin.lastCases ?_ (fun j => ?_) i` and prove the remaining obligations. Simplify using `[graphPt, graphHom]`. Simplify using `[graphPt, graphHom]`. Conclude with `congrArg (fun φ : MvPolynomial (Fin (n + 1)) ℂ →+* ℂ => φ q) h`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem eval_graphPt (p : MvPolynomial (Fin n) ℂ) (x : Fin n → ℂ) (q : MvPolynomial (Fin (n + 1)) ℂ) :
     eval (graphPt p x) q = eval x (graphHom p q) := by
@@ -68,26 +68,26 @@ theorem eval_graphPt (p : MvPolynomial (Fin n) ℂ) (x : Fin n → ℂ) (q : MvP
   exact congrArg (fun φ : MvPolynomial (Fin (n + 1)) ℂ →+* ℂ => φ q) h
 
 /- English proof (translation)
-Simplify using `[graphPt]`.
+Simplify using the standard rewrite rules.
 -/
 theorem graphPt_init (p : MvPolynomial (Fin n) ℂ) (x : Fin n → ℂ) : Fin.init (graphPt p x) = x := by
   simp [graphPt]
 
 /- English proof (translation)
-Simplify using `[graphPt]`.
+Simplify using the standard rewrite rules.
 -/
 theorem graphPt_last (p : MvPolynomial (Fin n) ℂ) (x : Fin n → ℂ) : graphPt p x (Fin.last n) = eval x p := by
   simp [graphPt]
 
 /- English proof (translation)
-The claim follows from `Ideal.comap_isPrime _ _`.
+A detailed English derivation is pending.
 -/
 theorem graphIdeal_isPrime {J : Ideal (MvPolynomial (Fin n) ℂ)} (hJ : J.IsPrime) (p : MvPolynomial (Fin n) ℂ) :
     (graphIdeal J p).IsPrime :=
   Ideal.comap_isPrime _ _
 
 /- English proof (translation)
-Introduce `q hq`. Rewrite using `[eval_graphPt]`. Conclude with `hx _ hq`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem graphPt_mem_zeroSet {J : Ideal (MvPolynomial (Fin n) ℂ)} (p : MvPolynomial (Fin n) ℂ) {x : Fin n → ℂ}
     (hx : x ∈ zeroSet J) : graphPt p x ∈ zeroSet (graphIdeal J p) := by
@@ -96,7 +96,7 @@ theorem graphPt_mem_zeroSet {J : Ideal (MvPolynomial (Fin n) ℂ)} (p : MvPolyno
   exact hx _ hq
 
 /- English proof (translation)
-Introduce `q hq`. Establish `h` using `hx (rename Fin.castSucc q) (by rw [graphIdeal, Ideal.mem_comap, graphHom_rename]; exact hq)`. Rewrite `h` using `[eval_rename]`. Conclude with `h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem init_mem_zeroSet {J : Ideal (MvPolynomial (Fin n) ℂ)} (p : MvPolynomial (Fin n) ℂ)
     {x : Fin (n + 1) → ℂ} (hx : x ∈ zeroSet (graphIdeal J p)) : Fin.init x ∈ zeroSet J := by
@@ -106,9 +106,9 @@ theorem init_mem_zeroSet {J : Ideal (MvPolynomial (Fin n) ℂ)} (p : MvPolynomia
   exact h
 
 /- English proof (translation)
-Establish `h` using `hx (X (Fin.last n) - rename Fin.castSucc p) (by rw [graphIdeal, Ideal.mem_comap, map_sub, graphHom_X_last, graphHom_rename, sub_self]; exact J.zero_mem)`. Rewrite `h` using `[map_sub, eval_X, eval_rename, sub_eq_zero]`. Rewrite using `[graphPt]`. Use `conv_rhs => rw [← Fin.snoc_init_self x]`. Rewrite using `[h]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem graphPt_init_of_mem_zeroSet {J : Ideal (MvPolynomial (Fin n) ℂ)} (p : MvPolynomial (Fin n) ℂ)
     {x : Fin (n + 1) → ℂ} (hx : x ∈ zeroSet (graphIdeal J p)) : graphPt p (Fin.init x) = x := by
@@ -121,9 +121,9 @@ theorem graphPt_init_of_mem_zeroSet {J : Ideal (MvPolynomial (Fin n) ℂ)} (p : 
   rfl
 
 /- English proof (translation)
-Set `g : MvPolynomial (Fin (n + 1)) ℂ →+* MvPolynomial (Fin n) ℂ ⧸ J` to `(Ideal.Quotient.mk J).comp (graphHom p).toRingHom`. Establish `hg : Function.Surjective g` using `Ideal.Quotient.mk_surjective.comp (graphHom_surjective p)`. Establish `hker : RingHom.ker g = graphIdeal J p`. Rewrite using `[← RingHom.comap_ker, Ideal.mk_ker]`. Both sides reduce to the same expression.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Conclude with `ringKrullDim_eq_of_ringEquiv ((Ideal.quotEquivOfEq hker.symm).trans (RingHom.quotientKerEquivOfSurjective hg))`.
+A detailed English derivation is pending.
 -/
 theorem ringKrullDim_graphIdeal (J : Ideal (MvPolynomial (Fin n) ℂ)) (p : MvPolynomial (Fin n) ℂ) :
     ringKrullDim (MvPolynomial (Fin (n + 1)) ℂ ⧸ graphIdeal J p) = ringKrullDim (MvPolynomial (Fin n) ℂ ⧸ J) := by
@@ -136,7 +136,7 @@ theorem ringKrullDim_graphIdeal (J : Ideal (MvPolynomial (Fin n) ℂ)) (p : MvPo
   exact ringKrullDim_eq_of_ringEquiv ((Ideal.quotEquivOfEq hker.symm).trans (RingHom.quotientKerEquivOfSurjective hg))
 
 /- English proof (translation)
-Rewrite using `[graphIdeal, Ideal.mem_comap, graphHom_X_last]`. Conclude with `hp`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem X_last_not_mem_graphIdeal {J : Ideal (MvPolynomial (Fin n) ℂ)} {p : MvPolynomial (Fin n) ℂ} (hp : p ∉ J) :
     X (Fin.last n) ∉ graphIdeal J p := by
@@ -144,9 +144,9 @@ theorem X_last_not_mem_graphIdeal {J : Ideal (MvPolynomial (Fin n) ℂ)} {p : Mv
   exact hp
 
 /- English proof (translation)
-Establish `hs` using `graphHom_surjective p`. Establish `hmap : (graphIdeal J p ⊔ Ideal.span {X (Fin.last n)}).map (graphHom p) = J ⊔ Ideal.span {p}`. Rewrite using `[Ideal.map_sup, graphIdeal, Ideal.map_comap_of_surjective _ hs, Ideal.map_span, Set.image_singleton, graphHom_X_last]`. Rewrite using `[← hmap]`. Use `show _ = Ideal.comap (graphHom p) (Ideal.map (graphHom p) _)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Ideal.comap_map_of_surjective _ hs]`. Use `(sup_eq_left.mpr ?_).symm` and prove the remaining obligations. Conclude with `le_sup_of_le_left (Ideal.comap_mono bot_le)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem graphIdeal_sup_span (J : Ideal (MvPolynomial (Fin n) ℂ)) (p : MvPolynomial (Fin n) ℂ) :
     graphIdeal J p ⊔ Ideal.span {X (Fin.last n)} = graphIdeal (J ⊔ Ideal.span {p}) p := by
@@ -161,7 +161,7 @@ theorem graphIdeal_sup_span (J : Ideal (MvPolynomial (Fin n) ℂ)) (p : MvPolyno
   exact le_sup_of_le_left (Ideal.comap_mono bot_le)
 
 /- English proof (translation)
-Rewrite using `[graphIdeal_sup_span, graphIdeal]`. Conclude with `Ideal.comap_minimalPrimes_eq_of_surjective (graphHom_surjective p) _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem minimalPrimes_graphIdeal_sup (J : Ideal (MvPolynomial (Fin n) ℂ)) (p : MvPolynomial (Fin n) ℂ) :
     (graphIdeal J p ⊔ Ideal.span {X (Fin.last n)}).minimalPrimes =
@@ -170,13 +170,13 @@ theorem minimalPrimes_graphIdeal_sup (J : Ideal (MvPolynomial (Fin n) ℂ)) (p :
   exact Ideal.comap_minimalPrimes_eq_of_surjective (graphHom_surjective p) _
 
 /- English proof (translation)
-The claim follows from `Ideal.comap_injective_of_surjective _ (graphHom_surjective p)`.
+A detailed English derivation is pending.
 -/
 theorem graphIdeal_injective (p : MvPolynomial (Fin n) ℂ) : Function.Injective (fun W => graphIdeal W p) :=
   Ideal.comap_injective_of_surjective _ (graphHom_surjective p)
 
 /- English proof (translation)
-The claim follows from `Ideal.comap_mono h`.
+A detailed English derivation is pending.
 -/
 theorem graphIdeal_mono {J W : Ideal (MvPolynomial (Fin n) ℂ)} (p : MvPolynomial (Fin n) ℂ) (h : J ≤ W) :
     graphIdeal J p ≤ graphIdeal W p :=

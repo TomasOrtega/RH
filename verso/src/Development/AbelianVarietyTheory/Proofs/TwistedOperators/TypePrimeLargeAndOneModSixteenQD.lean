@@ -12,9 +12,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.TypePrimeSize
 
 /- English proof (translation)
-Take `⟨Y, h1, -, -, h4⟩` from `P.g_Y`. Establish `hL : 0 ≤ L.sc.L`. Unfold `Scale.L; exact Real.rpow_nonneg (by linarith [L.sc.one_lt_alt]) _`. Establish `hb : 1 ≤ L.sc.b` using `by unfold Scale.b; exact Real.one_le_exp hL`. Establish `hk : (0 : ℝ) ≤ D.R.k` using `Nat.cast_nonneg _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : (D.R.k : ℝ) ≤ D.R.k * L.sc.b` using `le_mul_of_one_le_right hk hb`. Establish `h3 : (D.R.k : ℝ) ^ 8 ≤ (D.R.k * L.sc.b) ^ 8` using `pow_le_pow_left₀ hk h2 8`. Establish `: (D.R.k : ℝ) ^ 8 ≤ D.host.g i` using `h3.trans (h1.trans (h4 i).1)`. Conclude with `this` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem k_pow_le_g {D : D7} {L : SizeData₂ D} (P : ParameterChoice' D L) (i : Fin 2) : D.R.k ^ 8 ≤ D.host.g i := by
   obtain ⟨Y, h1, -, -, h4⟩ := P.g_Y
@@ -28,21 +28,21 @@ theorem k_pow_le_g {D : D7} {L : SizeData₂ D} (P : ParameterChoice' D L) (i : 
   exact_mod_cast this
 
 /- English proof (translation)
-Introduce `D L P i`. Establish `hg` using `k_pow_le_g P i`. Establish `hE : Module.finrank ℚ D.host.E = 4 * D.R.ord` using `D.host.finrank_cmField`. Establish `he` using `D.host.two_le_e`. Establish `h4 : 2 ^ 2 ≤ 2 ^ D.R.e` using `Nat.pow_le_pow_right (by norm_num) he`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hf` using `D.R.f_le_k`. Establish `hfo : D.R.f = 2 * D.R.ord` using `rfl`. Establish `ho : 2 ^ D.R.e ≤ D.R.ord` using `Nat.le_of_dvd D.R.ord_pos D.R.toFrame.two_pow_dvd_ord`. Establish `hm` using `D.R.m_add_three_le_k`. Establish `hm2` using `D.R.two_le_m`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ht` using `D.R.rank_add_five_le`. Establish `hk8 : 8 ≤ D.R.k` using `by omega`. Establish `hr : D.R.r ≤ 2 * D.R.k` using `by unfold Ranks.r; omega`. Establish `hr1 : 1 ≤ D.R.r` using `by unfold Ranks.r; omega`. Establish `hE' : Module.finrank ℚ D.host.E ≤ 2 * D.R.k`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2f : D.R.f = 2 * D.R.ord` using `rfl`. Establish `hfk : D.R.f ≤ D.R.k` using `hf`. Use linear arithmetic over natural numbers and integers. Establish `hk6 : 8 ^ 6 ≤ D.R.k ^ 6` using `Nat.pow_le_pow_left hk8 6`. Establish `hk2 : 8 ^ 2 ≤ D.R.k ^ 2` using `Nat.pow_le_pow_left hk8 2`.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpow : 8 ^ 6 * D.R.k ^ 2 ≤ D.R.k ^ 8`. Combine the equalities or inequalities in the displayed calculation. Establish `hprod : Module.finrank ℚ D.host.E * D.R.r ≤ 4 * D.R.k ^ 2`. Combine the equalities or inequalities in the displayed calculation. Take `⟨hq, hd, hq8, hd16, -⟩` from `D.host.hyp`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Extract witnesses or component facts from the available result.
 
-Establish `hb` using `D.host.qd_big.1`. Use `⟨by omega, hq, hd, by omega, by omega, by omega, ?_, ?_, by omega⟩` and prove the remaining obligations. Establish `h1 : 5 * 1 ≤ D.R.t * D.R.r` using `Nat.mul_le_mul (by omega) hr1`. Establish `h2 : 4 * D.R.t * D.R.r = 4 * (D.R.t * D.R.r)` using `by ring`. Conclude with `le_max_of_le_left (by omega)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc` using `D.ntypes.g_cond i`. Establish `hdvd : 16 * D.host.q * D.host.d ∣ D.host.QS * D.host.q * D.host.d`. Establish `h16 : 16 ∣ D.host.QS` using `(pow_dvd_pow 2 (by omega : 4 ≤ D.R.e + 2)).trans D.host.tower_dvd`. Conclude with `Nat.mul_dvd_mul_right (Nat.mul_dvd_mul_right h16 _) _`. Use `hdvd.trans ⟨D.host.g i / (D.host.QS * D.host.q * D.host.d), ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Use `Nat.div_add_mod (D.host.g i) (D.host.QS * D.host.q * D.host.d)` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+A detailed English derivation is pending.
 -/
 theorem typePrime_large_and_ok : ∀ (D : D7) (L : SizeData₂ D), ParameterChoice' D L → ∀ k : Fin 2,
     Module.finrank ℚ D.host.E * D.R.r + 1 < D.host.g k ∧

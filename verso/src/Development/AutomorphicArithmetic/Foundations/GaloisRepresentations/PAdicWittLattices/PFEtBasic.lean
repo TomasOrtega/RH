@@ -8,14 +8,14 @@ open UpperTheory.Gal.Int.Geo (FEt Cover gen piece IsHEig)
 universe u v
 
 /- English proof (translation)
-The claim follows from `(UpperTheory.Gal.TranscendenceTraces.fibFin_of UpperTheory.Gal.TranscendenceTraces.chart_of r K x).to_subtype`.
+A detailed English derivation is pending.
 -/
 private theorem fib_finite {V U : Scheme.{0}} (r : V ⟶ U) [IsFinite r] (K : Type) [Field K]
     (x : Spec (CommRingCat.of K) ⟶ U) : Finite {y : Spec (CommRingCat.of K) ⟶ V // y ≫ r = x} :=
   (UpperTheory.Gal.TranscendenceTraces.fibFin_of UpperTheory.Gal.TranscendenceTraces.chart_of r K x).to_subtype
 
 /- English proof (translation)
-Use `⟨MorphismProperty.of_isPullback (P := @IsFinite) h hs.1, MorphismProperty.of_isPullback (P := @Etale) h hs.2.1, fun K _ _ x => ?_⟩` and prove the remaining obligations. Set `eqv : {y' : Spec (CommRingCat.of K) ⟶ P // y' ≫ s' = x} ≃ {y : Spec (CommRingCat.of K) ⟶ Y // y ≫ s = x ≫ g}` to `{ toFun := fun y' => ⟨y'.1 ≫ v, by rw [Category.assoc, h.w, ← Category.assoc, y'.2]⟩ invFun := fun y => ⟨h.lift y.1 x y.2, h.lift_snd _ _ _⟩ left_inv := fun y' => Subtype.ext (h.hom_ext (by rw [h.lift_fst]) (by rw [h.lift_snd, y'.2])) right_inv := fun y => Subtype.ext (h.lift_fst …`. Rewrite using `[Nat.card_congr eqv]`. Conclude with `hs.2.2 K (x ≫ g)`.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem fEt_of_pullback {P Y Z' Z : Scheme.{0}} (v : P ⟶ Y) (s' : P ⟶ Z') (s : Y ⟶ Z) (g : Z' ⟶ Z)
     (d : ℕ) (h : IsPullback v s' s g) (hs : FEt s d) : FEt s' d := by
@@ -31,11 +31,9 @@ private theorem fEt_of_pullback {P Y Z' Z : Scheme.{0}} (v : P ⟶ Y) (s' : P �
   exact hs.2.2 K (x ≫ g)
 
 /- English proof (translation)
-Use `haveI := hr.1`. Use `haveI := hr.2.1`. Use `haveI := hs.1`. Use `haveI := hs.2.1`. Use `⟨inferInstance, inferInstance, fun K _ _ x => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Simplify by unfolding definitions.
 
-Use `haveI : Fintype {y : Spec (CommRingCat.of K) ⟶ Y // y ≫ s = x} := @Fintype.ofFinite _ (fib_finite s K x)`. Use `haveI hfin : ∀ y : {y : Spec (CommRingCat.of K) ⟶ Y // y ≫ s = x}, Finite {w : Spec (CommRingCat.of K) ⟶ W // w ≫ r = y.1} := fun y => fib_finite r K y.1`. Set `eqv : {w : Spec (CommRingCat.of K) ⟶ W // w ≫ r ≫ s = x} ≃ Σ y : {y : Spec (CommRingCat.of K) ⟶ Y // y ≫ s = x}, {w : Spec (CommRingCat.of K) ⟶ W // w ≫ r = y.1}` to `{ toFun := fun w => ⟨⟨w.1 ≫ r, by rw [Category.assoc]; exact w.2⟩, ⟨w.1, rfl⟩⟩ invFun := fun p => ⟨p.2.1, by rw [← Category.assoc, p.2.2, p.1.2]⟩ left_inv := fun w => rfl right_inv := by`. Introduce `p`. Break down `p with ⟨⟨y, hy⟩, ⟨w, hw⟩⟩` into its components or cases.
-
-Simplify using `only at hw`. Substitute `hw` using the available equality. Use `rfl }`. Rewrite using `[Nat.card_congr eqv, Nat.card_sigma, Finset.sum_congr rfl (fun y _ => hr.2.2 K y.1), Finset.sum_const, Finset.card_univ, ← Nat.card_eq_fintype_card, hs.2.2 K x, smul_eq_mul]`.
+Substitute using the available equality. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem fEt_comp {W Y Z : Scheme.{0}} (r : W ⟶ Y) (s : Y ⟶ Z) (d e : ℕ) (hr : FEt r e) (hs : FEt s d) :
     FEt (r ≫ s) (d * e) := by
@@ -64,13 +62,13 @@ private theorem fEt_comp {W Y Z : Scheme.{0}} (r : W ⟶ Y) (s : Y ⟶ Z) (d e :
     Finset.sum_const, Finset.card_univ, ← Nat.card_eq_fintype_card, hs.2.2 K x, smul_eq_mul]
 
 /- English proof (translation)
-Use `haveI := h.1`. Use `haveI := h.2.1`. Use `haveI := h.2.2.1`. Use `⟨inferInstance, inferInstance, fun Ω _ _ x => ?_⟩` and prove the remaining obligations. Take `⟨w, hw⟩` from `Surjective.surj (f := c) (UpperTheory.Gal.TranscendenceTraces.pt x)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨z, hz, -⟩` from `UpperTheory.Gal.TranscendenceTraces.ptLift_of c Ω x w hw`. Establish `hsp` using `h.2.2.2.2.2`. Establish `hac : ∀ g, a g ≫ c = c` using `hsp.1`. Establish `key : ∀ y : Spec (CommRingCat.of Ω) ⟶ W, y ≫ c = x → ∃! g : G, z ≫ a g = y` using `fun y hy => hp c c G a hsp Ω z y (by rw [hy, hz])`. Set `f : G → {y : Spec (CommRingCat.of Ω) ⟶ W // y ≫ c = x}` to `fun g => ⟨z ≫ a g, by rw [Category.assoc, hac, hz]⟩`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hbij : Function.Bijective f`. Prove the components needed by the constructor for the conclusion. Introduce `g g' hgg`. Establish `hv : z ≫ a g = z ≫ a g'` using `congrArg Subtype.val hgg`. Take `⟨g0, _, hu⟩` from `key (z ≫ a g) (f g).2`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `(hu g rfl).trans (hu g' hv.symm).symm`. Introduce and unpack `⟨y, hy⟩`. Take `⟨g, hg, _⟩` from `key y hy`. Conclude with `⟨g, Subtype.ext hg⟩`. Conclude with `(Nat.card_congr (Equiv.ofBijective f hbij)).symm`.
+A detailed English derivation is pending.
 -/
 private theorem fEt_galois (hp : PtsOfSplits) {W Z : Scheme.{0}} (c : W ⟶ Z) (G : Type) [Group G] [Finite G]
     (a : G → (W ⟶ W)) (h : IsGalois c G a) : FEt c (Nat.card G) := by
@@ -98,7 +96,7 @@ private theorem fEt_galois (hp : PtsOfSplits) {W Z : Scheme.{0}} (c : W ⟶ Z) (
   exact (Nat.card_congr (Equiv.ofBijective f hbij)).symm
 
 /- English proof (translation)
-Introduce `hp`. Conclude with `⟨fun v s' s g d h hs => fEt_of_pullback v s' s g d h hs, fun r s d e hr hs => fEt_comp r s d e hr hs, fun c G _ _ a h => fEt_galois hp c G a h⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem UpperTheory.Gal.G3.pFEtBasic :
     PtsOfSplits → FEtBasic := by

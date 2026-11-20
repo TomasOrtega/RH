@@ -92,7 +92,7 @@ def pairLattice {E : Type} [Field E] [NumberField E] [StarRing E] {T : Type} (S 
 variable (D : D7)
 
 /- English proof (translation)
-Unfold `Ranks.N`. Use the polynomial consequences of the given equalities and inequalities.
+Replace the relevant objects with their definitions. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem N_le_succ (i : ℕ) : D.R.N i ≤ D.R.N (i + 1) := by
   unfold Ranks.N; nlinarith

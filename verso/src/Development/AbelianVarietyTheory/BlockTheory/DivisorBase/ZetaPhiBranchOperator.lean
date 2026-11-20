@@ -91,9 +91,9 @@ end Tensors
 section Maps
 
 /- English proof (translation)
-Take `⟨s, hs⟩` from `f.rangeRestrict.exists_rightInverse_of_surjective f.range_rangeRestrict`. Take `⟨g, hg⟩` from `s.exists_extend`. Use `⟨g, fun v => ?_⟩` and prove the remaining obligations. Establish `h1 : g (f v) = s (f.rangeRestrict v)` using `LinearMap.congr_fun hg (f.rangeRestrict v)`. Establish `h2` using `congrArg Subtype.val (LinearMap.congr_fun hs (f.rangeRestrict v))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[h1]`. Simplify using `using h2`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem exists_section {K V W : Type} [Field K] [AddCommGroup V] [Module K V] [AddCommGroup W] [Module K W]
     (f : V →ₗ[K] W) : ∃ g : W →ₗ[K] V, ∀ v, f (g (f v)) = f v := by
@@ -119,7 +119,7 @@ def branchT (lam : ι → DomWeight (n + 1)) (sg : ι → DomWeight n) : VV K la
     (branch K lam sg).dualMap ∘ₗ pairB lam ∘ₗ (VV K lam).subtype
 
 /- English proof (translation)
-Simplify using `[branchT, LinearMap.BilinForm.apply_toDual_symm_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem pair_branchT (lam : ι → DomWeight (n + 1)) (sg : ι → DomWeight n) (x : VV K lam) (y : VV K sg) :
     pairBK sg (branchT K lam sg x) y = pairB lam x.1 (branch K lam sg y) := by
@@ -140,7 +140,7 @@ def extLat {K : Type} [Field K] [NumberField K] {n : ℕ} (M : Submodule (𝓞 K
     (Submodule.span (𝓞 K) {t}).comap (LinearMap.proj (Fin.last n))
 
 /- English proof (translation)
-Simplify using `only [extLat, Submodule.mem_inf, Submodule.mem_comap, Submodule.mem_span_singleton, LinearMap.proj_apply]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem mem_extLat {K : Type} [Field K] [NumberField K] {n : ℕ} (M : Submodule (𝓞 K) (Fin n → K)) (t : K)
     (x : Fin (n + 1) → K) :
@@ -159,16 +159,16 @@ def PTildeIntegral : Prop :=
 end Statement
 
 /- English proof (translation)
-Simplify using `[zOp, piGen, phiGen, degDiff]`.
+Simplify using the standard rewrite rules.
 -/
 example (K : Type) [Field K] (lam : DomWeight 1) (sg : DomWeight 0) (t : Gen lam sg) :
     zOp K lam sg = 1 ∧ piGen K lam sg t = 1 ∧ phiGen K lam sg t = 1 ∧ degDiff lam sg = lam.w 0 := by
   simp [zOp, piGen, phiGen, degDiff]
 
 /- English proof (translation)
-Establish `h1 : ∀ t, piAll K lam sg t = C (t.sum fun _ c => c)`. Introduce `t`. Simplify using `[piAll, piGen, ten, Finsupp.linearCombination_apply, Finsupp.sum, smul_eq_C_mul]`. Establish `h2 : ∀ t, zPhiAll K lam sg t = C (t.sum fun _ c => c)`. Introduce `t`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[zPhiAll, zOp, phiGen, ten, Finsupp.linearCombination_apply, Finsupp.sum, smul_eq_C_mul]`. Introduce `t ht`. Rewrite `ht` using `[LinearMap.mem_ker, h1, C_eq_zero]`. Rewrite using `[LinearMap.mem_ker, h2, ht, C_0]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 example (K : Type) [Field K] (ι : Type) [Fintype ι] (lam : ι → DomWeight 1) (sg : ι → DomWeight 0) :
     LinearMap.ker (piAll K lam sg) ≤ LinearMap.ker (zPhiAll K lam sg) := by
@@ -183,7 +183,7 @@ example (K : Type) [Field K] (ι : Type) [Fintype ι] (lam : ι → DomWeight 1)
   rw [LinearMap.mem_ker, h2, ht, C_0]
 
 /- English proof (translation)
-Simplify using `[capelli, fOp, eOp, Fin.sum_univ_two, pderiv_X, Pi.single_apply, add_mul]`.
+Simplify using the standard rewrite rules.
 -/
 example (K : Type) [Field K] (u : ℤ) :
     capelli K 1 u (X (0, 0)) = u • (X (0, 0) : MvPolynomial (Fin 2 × Fin 2) K) := by

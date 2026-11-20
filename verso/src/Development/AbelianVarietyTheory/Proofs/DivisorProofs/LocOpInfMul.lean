@@ -19,9 +19,9 @@ def coneFun {n d n₁ d₁ : ℕ} {X : Spc F E n} {W : Spc F E d} (B : Base F E)
   ∫ y, l (coneInfInt B M om ei u ν z f g y.1) ∂μ
 
 /- English proof (translation)
-Apply `locOpInf_eq` to reduce the goal to its premises. Introduce `r hr`. Establish `h1` using `acts_locOpInf (hex h hh f) r hr`. Establish `hr' : Rest (evI F) (locOpInf (om (h, 1)) f) r` using `⟨hr.1, by rw [← h1]; exact hpres _ _ hr.2⟩`. Establish `h2` using `acts_locOpInf (hex g hg _) r hr'`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[show ((g * h, (1 : UA σ W.J)) : UA σ X.J × UA σ W.J) = (g, 1) * (h, 1) by simp, map_mul, Module.End.mul_apply, h1, h2]`.
+Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem locOpInf_mul {n d : ℕ} {X : Spc F E n} {W : Spc F E d} {om : Rep σ X W}
     (hex : ∀ g ∈ UAt σ X (evI F), ∀ f : SInf F (Fin n × Fin d), ∃ f₁ : SInf F (Fin n × Fin d),
@@ -38,7 +38,7 @@ theorem locOpInf_mul {n d : ℕ} {X : Spc F E n} {W : Spc F E d} {om : Rep σ X 
     Module.End.mul_apply, h1, h2]
 
 /- English proof (translation)
-Simplify using `[fac]`.
+Simplify using the standard rewrite rules.
 -/
 theorem fac_one (χ : Chr F E) (z : ℝ) : fac χ z 1 = 1 := by
   simp [fac]

@@ -17,7 +17,7 @@ def ModelCurvesLift.Statement : Prop :=
             baseComap F k₀ e W = P
 
 /- English proof (translation)
-Use function extensionality and compare the values at `⟨⟨⟩, i⟩`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression.
 -/
 theorem ModelCurvesLift.oneBlock_pnPt (F : Type) [Field F] :
     IndefiniteRowSideFullHecke.Kleiman2.oneBlock (IndefiniteRowSideFullHecke.Kleiman2.blockVec (IndefiniteRowSideFullHecke.Kleiman2.pnPt F 1) () ∘ (Equiv.refl (Fin (1 + 1))).symm) =
@@ -26,7 +26,7 @@ theorem ModelCurvesLift.oneBlock_pnPt (F : Type) [Field F] :
   rfl
 
 /- English proof (translation)
-Use `⟨IndefiniteRowSideFullHecke.Kleiman2.isModelWithBase_pnPt F 1, ?_⟩` and prove the remaining obligations. Rewrite using `[ModelCurvesLift.oneBlock_pnPt, IndefiniteRowSideFullHecke.Kleiman2.mIdealOver_pnPt]`. Conclude with `NumbersDVR.isMultiProjPrime_bot`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ModelCurvesLift.hyps (F : Type) [Field F] :
     IndefiniteRowSideFullHecke.Kleiman2.IsModelWithBase F (IndefiniteRowSideFullHecke.Kleiman2.pnPt F 1) () ∧

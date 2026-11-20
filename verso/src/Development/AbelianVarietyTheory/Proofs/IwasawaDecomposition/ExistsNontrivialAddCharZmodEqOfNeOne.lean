@@ -13,9 +13,9 @@ open GlobalTheory.TwistChoice (Reading ReadsAt)
 namespace GlobalTheory
 
 /- English proof (translation)
-Distinguish the cases in `hP : Pr`. Conclude with `⟨φ, h hP, fun _ => rfl⟩`. Use `⟨ZMod.stdAddChar, ?_, fun h' => absurd h' hP⟩` and prove the remaining obligations. Introduce `h1`. Establish `hprim` using `ZMod.isPrimitive_stdAddChar p`.
+Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Apply `hprim (a := 1) one_ne_zero` to reduce the goal to its premises. Rewrite using `[AddChar.mulShift_one, h1]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_nontrivial_addChar_eq_of_ne (p : ℕ) [Fact p.Prime] (Pr : Prop) (φ : AddChar (ZMod p) ℂ) (h : Pr → φ ≠ 1) :
     ∃ ψ' : AddChar (ZMod p) ℂ, ψ' ≠ 1 ∧ (Pr → ψ' = φ) := by

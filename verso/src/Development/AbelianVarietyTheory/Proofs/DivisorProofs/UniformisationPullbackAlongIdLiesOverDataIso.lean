@@ -18,7 +18,7 @@ namespace GlobalTheory.Mum.Two.PullLin
 open GlobalTheory.Mum.Two.HomConst
 
 /- English proof (translation)
-Simplify using `[fstG, pullback.lift_fst]`.
+Simplify using the standard rewrite rules.
 -/
 theorem map_fstG {R : Type} [CommRing R] (I : Ideal R) (e : ℕ) (G : Over (Sp R)) (ψ : G ⟶ G) :
     ((Over.pullback (thick R I e)).map ψ).left ≫ (fstG I e G).left = (fstG I e G).left ≫ ψ.left := by
@@ -29,21 +29,19 @@ end GlobalTheory.Mum.Two.PullLin
 open GlobalTheory.Mum.Two.PullLin GlobalTheory.Mum.Two.HomConst in
 
 /- English proof (translation)
-Introduce `R _ _ _ hB D A G _ _ hG U D' A' U' hD ψ bc b hψ hbc hb hP`. Take `⟨hR, -⟩` from `hB`. Take `⟨wL, -, he, -, hlev⟩` from `hP.lg`. Establish `lev : ∀ e, ∃ h : (thickObj R (maximalIdeal R) e G).left ⟶ (thickObj R (maximalIdeal R) e G).left, h = ((Over.pullback (thick R (maximalIdeal R) e)).map ψ).left ∧ (U'.gt e).pG.left ≫ hD.e.hom.left ≫ pullback.fst D.toPre.P.A.hom (specOf (RingHom.id R)) = h ≫ (U.gt e).pG.left ∧ (∀ x …`. Introduce `e`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨h, h1, h2, h3, -⟩` from `hlev e`. Establish `: Mono (fstG (maximalIdeal R) e G).left` using `inferInstanceAs (Mono (pullback.fst G.hom (thick R (maximalIdeal R) e)))`. Use `⟨h, (cancel_mono (fstG (maximalIdeal R) e G).left).1 ?_, h2, h3⟩` and prove the remaining obligations. Rewrite using `[h1, hbc, map_fstG]`. Use `⟨fun e => ?_, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨h, rfl, h2, -⟩` from `lev e`. Establish `: Mono (pullback.fst D.toPre.P.A.hom (thick R (maximalIdeal R) e))` using `inferInstance`. Use `Over.OverMorphism.ext ((cancel_mono (pullback.fst D.toPre.P.A.hom (thick R (maximalIdeal R) e))).1 ?_)` and prove the remaining obligations. Rewrite `h2` using `[hb]`. Use `clear lev hlev hP wL he`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Over.comp_left, Category.assoc]`. Use `Eq.trans ?_ (h2.symm.trans ?_)` and prove the remaining obligations. Both sides reduce to the same expression. Use `show (U'.gt e).q.left ≫ pullback.fst D'.toPre.P.A.hom (thick R (maximalIdeal R) e) ≫ b.left = _`. Use `congr 1`.
+Reduce the conclusion to the remaining proof obligations. Both sides reduce to the same expression. Reduce the equality to equality of the corresponding arguments. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `(pullback.lift_fst _ _ _).symm`. Take `⟨-, -, -, hC⟩` from `id hR`. Take `⟨h₀, hT⟩` from `GlobalTheory.Mum.Two.unifPre_hom_character_const R (maximalIdeal R) hR D' D A' A G G U'.toUnifPre U.toUnifPre ψ hψ`. Establish `key : (h₀ : D.toPre.X → D'.toPre.X) = hD.xe.symm` using `by haveI := hC`. Take `⟨t, ht, hi⟩` from `hT 0`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `acts_unique (U'.gt 0) (U.gt 0) (acts_of_torusHomOf _ _ _ ht hi) ?_` and prove the remaining obligations. Take `⟨h, rfl, -, h3⟩` from `lev 0`. Use `clear lev hlev hP wL he hT ht hi`. Introduce `Z r z J₁ J₂ hJ₁ hJ₂ c χ`. Take `⟨x, rfl⟩` from `hD.xe.surjective χ`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[AddEquiv.symm_apply_apply]`. Take `⟨hψk, M⟩` from `h3 x`. Establish `P` using `(maps_iff hD.w _ _ Oinvε _ _ _ _ (GeneratorPullback.pullAlong_le _ _ _ _ _ hψk ·) (fun _ => rfl)).1 M`. Establish `e` using `P Z r z (fun k => J₂ ((r ≫ D'.toPre.Oφ (U'.gt 0).pG x k) ≫ hD.e.hom.left ≫ pullback.fst D.toPre.P.A.hom (specOf (RingHom.id R)))) (fun k => J₁ (r ≫ D'.toPre.Oφ (U'.gt 0).pG x k)) (fun k => hJ₂ _) (fun k => hJ₁ _)`. Establish `h1` using `GlobalTheory.ArcLieCompare.prod_Oφ_zero (D := D'.toPre) (U'.gt 0).pG r (r ≫ (fstG (maximalIdeal R) 0 G).left ≫ G.hom) (c.trans (by simp only [Category.assoc])) x (fun f => gw hD.w f z (J₂ (f ≫ hD.e.hom.left ≫ pullback.fst D.toPre.P.A.hom (specOf (RingHom.id R)))) (J₁ f))`.
-
-Rewrite `e` using `[h1, _root_.one_mul]`. Rewrite using `[val_of _ _ z J₂ (fun k => J₂ ((r ≫ D'.toPre.Oφ (U'.gt 0).pG x k) ≫ hD.e.hom.left ≫ pullback.fst D.toPre.P.A.hom (specOf (RingHom.id R)))) (fun k => by simp only [Category.assoc, hψk k]), val_of _ r z J₁ (fun k => J₁ (r ≫ D'.toPre.Oφ (U'.gt 0).pG x k)) (fun k => rfl)]`. Conclude with `e`. Rewrite `hT` using `[key]`. Conclude with `hT`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.Mum.Two.isPullUnif_id_over₀_onTorus : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], Base R → ∀ (D : DegData R (maximalIdeal R)) (A : PolAV (Sp (FractionRing R))) (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G], IsSemiAbelian G → ∀ U : Unif (maximalIdeal R) D A G, ∀ (D' : DegData R (maximalIdeal R)) (A' : PolAV (Sp (FractionRing R))) (U' : Unif (maximalIdeal R) D' A' G), ∀ (hD : IsPullDeg (RingHom.id R) D.toPre D'.toPre) (ψ : G ⟶ G) (bc : G ≅ (Over.pullback (specOf (RingHom.id R))).obj G) (b : D'.toPre.P.A ⟶ D.toPre.P.A), IsMonHom ψ → bc.hom.left ≫ pullback.fst G.hom (specOf (RingHom.id R)) = ψ.left → hD.e.hom.left ≫ pullback.fst D.toPre.P.A.hom (specOf (RingHom.id R)) = b.left → IsPullUnif (RingHom.id R) hD bc U U' → Over₀ U'.toUnifPre U.toUnifPre ψ b ∧ OnTorus U'.toUnifPre U.toUnifPre ψ hD.xe.symm := by
   intro R _ _ _ hB D A G _ _ hG U D' A' U' hD ψ bc b hψ hbc hb hP

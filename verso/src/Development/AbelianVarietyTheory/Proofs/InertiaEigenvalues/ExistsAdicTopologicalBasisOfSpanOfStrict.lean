@@ -16,13 +16,13 @@ def Approx (x : A) (f : ι → S) : Prop :=
   ∀ n : ℕ, ∃ F : Finset ι, (∀ i, i ∉ F → f i ∈ I ^ n) ∧ x - ∑ i ∈ F, s (f i) * b i ∈ (I ^ n).map s
 
 /- English proof (translation)
-Rewrite using `[SModEq.sub_mem, smul_eq_mul, Ideal.mul_top]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem smodEq_iff (x y : S) (n : ℕ) : x ≡ y [SMOD (I ^ n • ⊤ : Submodule S S)] ↔ x - y ∈ I ^ n := by
   rw [SModEq.sub_mem, smul_eq_mul, Ideal.mul_top]
 
 /- English proof (translation)
-Rewrite using `[← Finset.sum_sdiff (Finset.inter_subset_left : F ∩ G ⊆ F), ← Finset.sum_sdiff (Finset.inter_subset_right : F ∩ G ⊆ G), add_sub_add_right_eq_sub]`. Use `sub_mem (Ideal.sum_mem _ fun i hi => Ideal.mul_mem_right _ _ (Ideal.mem_map_of_mem s (hG i fun h => ?_))) (Ideal.sum_mem _ fun i hi => Ideal.mul_mem_right _ _ (Ideal.mem_map_of_mem s (hF i fun h => ?_)))` and prove the remaining obligations. Conclude with `(Finset.mem_sdiff.1 hi).2 (Finset.mem_inter.2 ⟨(Finset.mem_sdiff.1 hi).1, h⟩)`. Conclude with `(Finset.mem_sdiff.1 hi).2 (Finset.mem_inter.2 ⟨h, (Finset.mem_sdiff.1 hi).1⟩)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem sum_sub_sum_mem {f : ι → S} {n : ℕ} {F G : Finset ι} (hF : ∀ i, i ∉ F → f i ∈ I ^ n)
     (hG : ∀ i, i ∉ G → f i ∈ I ^ n) :
@@ -36,7 +36,7 @@ theorem sum_sub_sum_mem {f : ι → S} {n : ℕ} {F G : Finset ι} (hF : ∀ i, 
   · exact (Finset.mem_sdiff.1 hi).2 (Finset.mem_inter.2 ⟨h, (Finset.mem_sdiff.1 hi).1⟩)
 
 /- English proof (translation)
-Take `⟨G, hG, hx⟩` from `h n`. Use `sub_mem hx (sum_sub_sum_mem (s := s) (b := b) hF hG)` as an intermediate fact. Rewrite `this` using `[sub_sub_sub_cancel_right]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem Approx.approx {x : A} {f : ι → S} (h : Approx s I b x f) (n : ℕ) (F : Finset ι)
     (hF : ∀ i, i ∉ F → f i ∈ I ^ n) : x - ∑ i ∈ F, s (f i) * b i ∈ (I ^ n).map s := by
@@ -45,18 +45,18 @@ theorem Approx.approx {x : A} {f : ι → S} (h : Approx s I b x f) (n : ℕ) (F
   rwa [sub_sub_sub_cancel_right] at this
 
 /- English proof (translation)
-Take `⟨F, hF, -⟩` from `h n`. Conclude with `F.finite_toSet.subset fun i hi => by_contra fun h' => hi (hF i h')`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem Approx.finite {x : A} {f : ι → S} (h : Approx s I b x f) (n : ℕ) : {i | f i ∉ I ^ n}.Finite := by
   obtain ⟨F, hF, -⟩ := h n
   exact F.finite_toSet.subset fun i hi => by_contra fun h' => hi (hF i h')
 
 /- English proof (translation)
-Introduce `n`. Take `⟨F, hF, -⟩` from `hx n`. Take `⟨G, hG, -⟩` from `hy n`. Use `⟨F ∪ G, fun i hi => ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [Finset.mem_union, not_or] at hi`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Conclude with `add_mem (hF i hi.1) (hG i hi.2)`. Establish `h1` using `hx.approx n (F ∪ G) fun i hi => hF i fun h => hi (Finset.mem_union_left _ h)`. Establish `h2` using `hy.approx n (F ∪ G) fun i hi => hG i fun h => hi (Finset.mem_union_right _ h)`. Use `add_mem h1 h2 using 1` and compare the differences between its conclusion and the goal. Simplify using `only [Pi.add_apply, map_add, add_mul, Finset.sum_add_distrib]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem Approx.add {x y : A} {f g : ι → S} (hx : Approx s I b x f) (hy : Approx s I b y g) :
     Approx s I b (x + y) (f + g) := by
@@ -74,7 +74,7 @@ theorem Approx.add {x y : A} {f g : ι → S} (hx : Approx s I b x f) (hy : Appr
     ring
 
 /- English proof (translation)
-Introduce `n`. Take `⟨F, hF, h⟩` from `hx n`. Use `⟨F, fun i hi => Ideal.mul_mem_left _ _ (hF i hi), ?_⟩` and prove the remaining obligations. Use `Ideal.mul_mem_left _ (s a) h using 1` and compare the differences between its conclusion and the goal. Simplify using `only [map_mul, mul_sub, Finset.mul_sum, mul_assoc]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules.
 -/
 theorem Approx.mul {x : A} {f : ι → S} (hx : Approx s I b x f) (a : S) :
     Approx s I b (s a * x) (fun i => a * f i) := by
@@ -85,7 +85,7 @@ theorem Approx.mul {x : A} {f : ι → S} (hx : Approx s I b x f) (a : S) :
   simp only [map_mul, mul_sub, Finset.mul_sum, mul_assoc]
 
 /- English proof (translation)
-Introduce `n`. Use `⟨{i}, fun j hj => ?_, by simp⟩` and prove the remaining obligations. Rewrite using `[Pi.single_eq_of_ne (by simpa using hj)]`. Conclude with `zero_mem _`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem approx_single [DecidableEq ι] (i : ι) : Approx s I b (b i) (Pi.single i 1) := by
   intro n
@@ -94,11 +94,11 @@ theorem approx_single [DecidableEq ι] (i : ι) : Approx s I b (b i) (Pi.single 
   exact zero_mem _
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Use `hH.haus (h i) fun n => ?_` and prove the remaining obligations. Rewrite using `[smodEq_iff, sub_zero]`. Take `⟨m, hm⟩` from `hst n`. Take `⟨F, hF, hs⟩` from `hh (max n m)`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Distinguish the cases in `hi : i ∈ F`. Establish `key` using `hm (Finsupp.onFinset F (fun j => if j ∈ F then h j else 0) (fun j hj => by by_contra hj'; simp [hj'] at hj)) ?_ i`. Simplify `key` using `[hi]`. Rewrite using `[Finsupp.onFinset_sum _ (fun j => by simp)]`. Establish `e : ∑ j ∈ F, s (if j ∈ F then h j else 0) * b j = -(0 - ∑ j ∈ F, s (h j) * b j)`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[zero_sub, neg_neg]`. Conclude with `Finset.sum_congr rfl fun j hj => by rw [if_pos hj]`. Rewrite using `[e]`. Conclude with `neg_mem (Ideal.map_mono (Ideal.pow_le_pow_right (le_max_right n m)) hs)`. Conclude with `Ideal.pow_le_pow_right (le_max_left n m) (hF i hi)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Approx.eq_zero (hH : IsHausdorff I S)
     (hst : ∀ n : ℕ, ∃ m : ℕ, ∀ a : ι →₀ S, a.sum (fun i y => s y * b i) ∈ (I ^ m).map s → ∀ i, a i ∈ I ^ n)
@@ -128,17 +128,17 @@ namespace GlobalTheory.BSP.TopBasisCons
 variable {S A : Type} [CommRing S] [CommRing A] {s : S →+* A} {I : Ideal S} {ι : Type} {b : ι → A}
 
 /- English proof (translation)
-Set `T : A → Prop` to `fun y => ∃ a : ι →₀ S, (∀ i, a i ∈ I ^ n) ∧ y - a.sum (fun i c => s c * b i) ∈ (I ^ (n + 1)).map s`. Establish `T0 : T 0` using `⟨0, fun _ => zero_mem _, by simp⟩`. Establish `Tadd : ∀ y y', T y → T y' → T (y + y')`. Introduce and unpack `y y' ⟨a, ha, hy⟩ ⟨a', ha', hy'⟩`. Use `⟨a + a', fun i => add_mem (ha i) (ha' i), ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Finsupp.sum_add_index' (fun _ => by simp) (fun _ _ _ => by rw [map_add, add_mul])]`. Use `add_mem hy hy' using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree. Establish `T1 : ∀ t ∈ I ^ n, ∀ w : A, T (s t * w)`. Introduce `t ht w`.
+Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨a, ha⟩` from `hsp w`. Use `⟨t • a, fun i => by rw [Finsupp.smul_apply, smul_eq_mul]; exact Ideal.mul_mem_right _ _ ht, ?_⟩` and prove the remaining obligations. Rewrite using `[Finsupp.sum_smul_index (fun _ => by simp)]`. Establish `e : s t * w - a.sum (fun i c => s (t * c) * b i) = s t * (w - a.sum (fun i c => s c * b i))`. Rewrite using `[mul_sub, Finsupp.mul_sum]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [map_mul, mul_assoc]`. Rewrite using `[e, Ideal.map_pow, pow_succ]`. Conclude with `Ideal.mul_mem_mul (by rw [← Ideal.map_pow]; exact Ideal.mem_map_of_mem s ht) ha`. Establish `key : ∀ y' ∈ Submodule.span A (s '' ((I ^ n : Ideal S) : Set S)), ∀ z, T (z * y')`. Introduce `y' hy'`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Proceed by induction on `hy' using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨t, ht, rfl⟩` from `hx`. Conclude with `fun z => by rw [mul_comm]; exact T1 t ht z`. Consider the case `zero => exact fun z => by rw [mul_zero]; exact T0`.
+Treat this case separately. Extract witnesses or component facts from the available result. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Treat this case separately. Treat this case separately.
 
-Consider the case `add x x' _ _ hx hx' => exact fun z => by rw [mul_add]; exact Tadd _ _ (hx z) (hx' z)`. Consider the case `smul a x _ hx => exact fun z => by rw [smul_eq_mul, ← mul_assoc]; exact hx (z * a)`. Simplify using `using key y hy 1`.
+Treat this case separately. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem exists_step (hsp : ∀ x : A, ∃ a : ι →₀ S, x - a.sum (fun i y => s y * b i) ∈ I.map s) (n : ℕ) (y : A)
     (hy : y ∈ (I ^ n).map s) : ∃ a : ι →₀ S, (∀ i, a i ∈ I ^ n) ∧
@@ -175,23 +175,21 @@ theorem exists_step (hsp : ∀ x : A, ∃ a : ι →₀ S, x - a.sum (fun i y =>
   simpa using key y hy 1
 
 /- English proof (translation)
-Set `r : ℕ → A` to `fun n => Nat.rec x (fun k rk => rk - (g k rk).sum (fun i c => s c * b i)) n`. Establish `hrs : ∀ k, r (k + 1) = r k - (g k (r k)).sum (fun i c => s c * b i)` using `fun k => rfl`. Establish `hrm : ∀ k, r k ∈ (I ^ k).map s`. Introduce `k`. Proceed by induction on `k with`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `zero => simp [r, Ideal.map_top]`. Consider the case `succ k ih => rw [hrs]`. Conclude with `hg2 k _ ih`. Set `a : ℕ → ι →₀ S` to `fun k => g k (r k)`. Establish `ha : ∀ k i, a k i ∈ I ^ k` using `fun k => hg1 k _ (hrm k)`.
+Treat this case separately. Treat this case separately. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hrx : ∀ N, r N = x - ∑ k ∈ Finset.range N, (a k).sum (fun i c => s c * b i)`. Introduce `N`. Proceed by induction on `N with`. Consider the case `zero => simp [r]`. Consider the case `succ N ih => rw [hrs, Finset.sum_range_succ, ← sub_sub, ← ih]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Introduce a local definition for the expression.
 
-Set `P : ℕ → ι → S` to `fun N i => ∑ k ∈ Finset.range N, a k i`. Establish `hP : ∀ i m n, m ≤ n → P n i - P m i ∈ I ^ m`. Introduce `i m n hmn`. Rewrite using `[← Finset.sum_Ico_eq_sub _ hmn]`. Conclude with `Ideal.sum_mem _ fun k hk => Ideal.pow_le_pow_right (Finset.mem_Ico.1 hk).1 (ha k i)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hlim : ∀ i, ∃ L, ∀ N, P N i - L ∈ I ^ N`. Introduce `i`. Take `⟨L, hL⟩` from `hS.prec (f := fun N => P N i) fun {m n} hmn => by`. Rewrite using `[smodEq_iff, ← neg_sub]`. Conclude with `neg_mem (hP i m n hmn)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression.
 
-Conclude with `⟨L, fun N => (smodEq_iff _ _ _).1 (hL N)⟩`. Use `choose f hf using hlim`. Use `⟨f, fun n => ?_⟩` and prove the remaining obligations. Set `F : Finset ι` to `(Finset.range n).biUnion fun k => (a k).support`. Establish `hPF : ∀ i, i ∉ F → P n i = 0` using `fun i hi => Finset.sum_eq_zero fun k hk => by`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Assume the negation of the conclusion as `h`. Conclude with `hi (Finset.mem_biUnion.2 ⟨k, hk, Finsupp.mem_support_iff.2 h⟩)`. Use `⟨F, fun i hi => ?_, ?_⟩` and prove the remaining obligations. Use `neg_mem (hf i n)` as an intermediate fact. Rewrite `this` using `[hPF i hi, zero_sub, neg_neg]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hsum : ∑ k ∈ Finset.range n, (a k).sum (fun i c => s c * b i) = ∑ i ∈ F, s (P n i) * b i`. Rewrite using `[Finset.sum_congr rfl fun k hk => Finsupp.sum_of_support_subset (a k) (s := F) (fun i hi => Finset.mem_biUnion.2 ⟨k, hk, hi⟩) (fun i c => s c * b i) (fun _ _ => by simp), Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [P, map_sum, Finset.sum_mul]`. Establish `e : x - ∑ i ∈ F, s (f i) * b i = r n + ∑ i ∈ F, s (P n i - f i) * b i`.
-
-Rewrite using `[hrx, hsum]`. Simplify using `only [map_sub, sub_mul, Finset.sum_sub_distrib]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `add_mem (hrm n) (Ideal.sum_mem _ fun i _ => Ideal.mul_mem_right _ _ (Ideal.mem_map_of_mem s (hf i n)))`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_approx (hS : IsPrecomplete I S) (g : ℕ → A → ι →₀ S)
     (hg1 : ∀ n y, y ∈ (I ^ n).map s → ∀ i, g n y i ∈ I ^ n)
@@ -249,19 +247,17 @@ end GlobalTheory.BSP.TopBasisCons
 open GlobalTheory.BSP.TopBasisCons in
 
 /- English proof (translation)
-Introduce `S A _ _ s I ι b i₀ hb0 _ hS hA hsp hst`. Use `choose! g hg1 hg2 using exists_step (s := s) (I := I) (b := b) hsp`. Establish `hex : ∀ x, ∃ f, Approx s I b x f` using `exists_approx hS.toIsPrecomplete g hg1 hg2`. Use `choose coef hcoef using hex`. Establish `huniq : ∀ {x : A} {f g : ι → S}, Approx s I b x f → Approx s I b x g → f = g`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `x f g hf hg`. Establish `h` using `hf.add (hg.mul (-1))`. Establish `e : x + s (-1) * x = 0` using `by simp`. Rewrite `h` using `[e]`. Use `h.eq_zero hS.toIsHausdorff hst` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `i`. Establish `hi` using `congrFun this i`. Simplify using `only [Pi.add_apply, Pi.zero_apply, neg_one_mul] at hi`. Conclude with `sub_eq_zero.1 (by rw [sub_eq_add_neg]; exact hi)`. Set `c : ι → A →+ S` to `fun i => AddMonoidHom.mk' (fun x => coef x i) fun x y => congrFun (huniq (hcoef (x + y)) ((hcoef x).add (hcoef y))) i`.
+Simplify using the standard rewrite rules. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition.
 
-Use `⟨⟨b, c, ?_, ?_, ?_, ?_, ?_, hA, i₀, hb0⟩, rfl⟩` and prove the remaining obligations. Introduce `i a x`. Express the relevant statement in the definitionally equal form `coef (s a * x) i = a * coef x i`. Rewrite using `[huniq (hcoef (s a * x)) ((hcoef x).mul a)]`. Introduce `i`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Express the relevant statement in the definitionally equal form `coef (b i) i = 1`. Rewrite using `[huniq (hcoef (b i)) (approx_single i)]`. Simplify using the standard rewrite rules. Introduce `i j hij`. Express the relevant statement in the definitionally equal form `coef (b j) i = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[huniq (hcoef (b j)) (approx_single j)]`. Conclude with `Pi.single_eq_of_ne hij _`. Introduce `x n`. Conclude with `(hcoef x).finite n`. Introduce `x n F hF`.
-
-Conclude with `(hcoef x).approx n F hF`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.BSP.exists_topBasis_of_span_of_strict : ∀ (S A : Type) [CommRing S] [CommRing A] (s : S →+* A)
     (I : Ideal S) (ι : Type) (b : ι → A) (i₀ : ι), b i₀ = 1 → I.FG → IsAdicComplete I S →

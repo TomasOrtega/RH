@@ -9,9 +9,9 @@ noncomputable section
 namespace GlobalTheory.FlatCore.CMDiff0
 
 /- English proof (translation)
-Establish `: detSpan K 0 N = detSpan K 0 L`. Unfold `detSpan`. Use `congr 1`. Use extensionality with `w`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[idx, this]`. Conclude with `(Ideal.eq_top_iff_one _).2 (Submodule.mem_colon.2 fun _ h => by simpa using h)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem idxZero {K V : Type} [Field K] [NumberField K] [AddCommGroup V] [Module K V] [Module (𝓞 K) V]
     [IsScalarTower (𝓞 K) K V] (L N : Submodule (𝓞 K) V) : idx K 0 L N = ⊤ := by
@@ -24,45 +24,41 @@ theorem idxZero {K V : Type} [Field K] [NumberField K] [AddCommGroup V] [Module 
   exact (Ideal.eq_top_iff_one _).2 (Submodule.mem_colon.2 fun _ h => by simpa using h)
 
 /- English proof (translation)
-Introduce `E _ _ _ H hH _ χ hχ K _ _ ρ σ₁ p q X F h hF hq τ hτ`. Substitute `hq` using the available equality. Set `FA : ∀ b, GenFib (X.A b).pol` to `fun b => (GenFib.nonempty_of_baseChange GlobalTheory.polBaseChange_holds K (X.A b).pol).some`. Establish `hM : ∀ j : Fin p ⊕ Fin 0, ∃ M, (FA j.isLeft).IsDiffOf F (X.φ j) M` using `fun j => (DiffCoord.existsUnique_isDiffOf K _ (FA j.isLeft) _ F (X.φ j) (X.lin j).1).1.exists`. Use `choose M hM using hM`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨gP, gQ, hg⟩` from `GlobalTheory.T.exists_gramMatrices_cmUnitaryShimuraObject E H K ρ σ₁ p 0 X`. Establish `hD : IsDiffs (FA true) (FA false) F (fun a => M (.inl a)) (fun a => M (.inr a))` using `⟨fun a => hM (.inl a), fun a => hM (.inr a)⟩`. Take `⟨𝔫, h𝔫₀, hid₀⟩` from `GlobalTheory.T.cmDefinite_lieIndex_ideal_eq_norm_ideal E H hH K ρ σ₁ p X gP gQ hg`. Establish `hQd : gQ.det = 1` using `Matrix.det_fin_zero`. Establish `h𝔫 : 𝔫 * 𝔫.map (H.bar : 𝓞 E →+* 𝓞 E) = Ideal.span {gP.det * gQ.det}`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hQd, mul_one]`. Conclude with `h𝔫₀`. Establish `hid' : idx K p (F.eigLat X.B.t.act τ) (subP (FA true) F (fun a => M (.inl a)) τ) * Ideal.span {τ gQ.det} = 𝔫.map τ * idx K 0 (F.eigLat X.B.t.act (τ.comp (H.bar : 𝓞 E →+* 𝓞 E))) (subQ (FA false) F (fun a => M (.inr a)) (τ.comp (H.bar : 𝓞 E →+* 𝓞 E)))`. Rewrite using `[hQd, map_one, Ideal.span_singleton_one, Ideal.mul_top, idxZero, Ideal.mul_top]`. Conclude with `hid₀ (FA true) F (fun a => M (.inl a)) hD.1 τ hτ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨hP0, hQ0, hdP, hdQ⟩` from `GlobalTheory.T.degree_images_eigenLines_cmUnitaryShimuraObject GlobalTheory.cmCurve_closed GlobalTheory.thetaUnifAV_all GlobalTheory.abelianSchemeLaws_all.1 GlobalTheory.homExtension_semiAbelian_dvr_unconditional E H K ρ σ₁ p 0 X χ hχ gP gQ hg (FA true) (FA false) F _ _ hD h hF τ …`. Take `⟨hle, hrk1, -, hind, -⟩` from `GlobalTheory.CM.Indep.letters_independent GlobalTheory.thetaUnifAV_all GlobalTheory.abelianSchemeLaws_all.1 E H K ρ σ₁ p 0 X FA F M hM`. Use `set τb : 𝓞 E →+* 𝓞 K := τ.comp (H.bar : 𝓞 E →+* 𝓞 E) with hτb`. Establish `hρ : ρ ≠ 0` using `fun h0 => by`. Use `X.ρ_sq` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite `this` using `[h0]`. Conclude with `H.d_prime.ne_zero (by simpa using this)`. Establish `hτb' : τb H.rt = -ρ`. Simplify using `[hτb, GlobalTheory.CM.EigDec.bar_rt, hτ]`. Establish `hne : ¬ τb H.rt = ρ`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hτb']`. Introduce `e`. Establish `: (2 : 𝓞 K) * ρ = 0` using `by linear_combination -e`. Conclude with `hρ ((mul_eq_zero.1 this).resolve_left two_ne_zero)`. Establish `hdec` using `(GlobalTheory.CM.EigDec.eigen_decomposition E H K ρ X.B F p 0 X.split X.typeB X.ρ_sq).1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hrkP : latRank K (F.eigLat X.B.t.act τ) = p` using `by rw [hdec, if_pos hτ]`. Establish `hrkQ : latRank K (F.eigLat X.B.t.act τb) = 0` using `by rw [hdec, if_neg hne]`. Establish `hfg : ∀ σ, (F.eigLat X.B.t.act σ).FG` using `fun σ => Submodule.FG.of_le (LieLattice.lieLat_fg_and_span_eq_top K _ F).1 (Submodule.span_mono fun c ⟨u, hu, _⟩ => ⟨u, hu⟩)`. Establish `hsubP : subP (FA true) F (fun a => M (.inl a)) τ ≤ F.eigLat X.B.t.act τ` using `iSup_le fun a => hle (.inl a, τ)`. Establish `hsubQ : subQ (FA false) F (fun a => M (.inr a)) τb ≤ F.eigLat X.B.t.act τb` using `iSup_le fun a => hle (.inr a, τb)`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hrsP : latRank K (subP (FA true) F (fun a => M (.inl a)) τ) = p`. Unfold `subP`. Use `beta_reduce`. Use `(GlobalTheory.FlatCore.CMDiff.latRank_iSup (fun a : Fin p => ((FA true).eigLat (X.A true).t.act τ).map ((M (.inl a)).restrictScalars (𝓞 K))) (iSupIndep.comp hind (f := fun a : Fin p => ((Sum.inl a : Fin p ⊕ Fin 0), τ)) fun a b e => by simpa using e)).trans ?_` and prove the remaining obligations. Establish `h1 : ∀ a : Fin p, latRank K (((FA true).eigLat (X.A true).t.act τ).map ((M (.inl a)).restrictScalars (𝓞 K))) = 1` using `fun a => by`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `hrk1 (.inl a, τ)` as an intermediate fact. Simplify `this` using `[hτ]`. Combine the equalities or inequalities in the displayed calculation. Establish `hrsQ : latRank K (subQ (FA false) F (fun a => M (.inr a)) τb) = 0`. Unfold `subQ`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `beta_reduce`. Use `(GlobalTheory.FlatCore.CMDiff.latRank_iSup (fun a : Fin 0 => ((FA false).eigLat (X.A false).t.act τb).map ((M (.inr a)).restrictScalars (𝓞 K))) (iSupIndep.comp hind (f := fun a : Fin 0 => ((Sum.inr a : Fin p ⊕ Fin 0), τb)) fun a b e => by simpa using e)).trans ?_` and prove the remaining obligations. Simplify using the standard rewrite rules. Take `⟨hneP, hdegP⟩` from `GlobalTheory.T.lattice_degree_eq_sublattice_degree_add_log_index K _ h p _ _ hsubP (hfg τ) hrkP hrsP`. Take `⟨hneQ, hdegQ⟩` from `GlobalTheory.T.lattice_degree_eq_sublattice_degree_add_log_index K _ h 0 _ _ hsubQ (hfg τb) hrkQ hrsQ`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact.
 
-Rewrite using `[hdegP, hdegQ, hdP, hdQ]`. Establish `hdvd` using `(GlobalTheory.T.absNorm_map_ringOfIntegers_hom' E K τ ⊥).1`. Establish `hfE : 0 < Module.finrank ℚ E` using `Module.finrank_pos`. Establish `hfK : 0 < Module.finrank ℚ K` using `Module.finrank_pos`. Use `set n := Module.finrank ℚ K / Module.finrank ℚ E with hn`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Establish `hnK : (Module.finrank ℚ K : ℝ) = n * Module.finrank ℚ E`. Rewrite using `[hn, Nat.cast_div hdvd (by exact_mod_cast hfE.ne')]`. Clear the denominators using the available nonvanishing facts. Establish `hn0 : 0 < n` using `Nat.div_pos (Nat.le_of_dvd hfK hdvd) hfE`. Establish `hbar : Ideal.absNorm (𝔫.map (H.bar : 𝓞 E →+* 𝓞 E)) = Ideal.absNorm 𝔫`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[(GlobalTheory.T.absNorm_map_ringOfIntegers_hom' E E _ 𝔫).2, Nat.div_self hfE, pow_one]`. Establish `hnorm : ∀ x : 𝓞 E, (Ideal.absNorm (Ideal.span {x}) : ℝ) = |((Algebra.norm ℚ (x : E) : ℚ) : ℝ)|` using `fun x => by`. Rewrite using `[Ideal.absNorm_span_singleton, ← Algebra.coe_norm_int, Nat.cast_natAbs]`. Use `push_cast`. Both sides reduce to the same expression.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hspan : Ideal.span {τ gQ.det} = (Ideal.span {gQ.det}).map τ`. Rewrite using `[Ideal.map_span, Set.image_singleton]`. Rewrite `hid'` using `[hspan]`. Establish `e1` using `congrArg Ideal.absNorm hid'`. Rewrite `e1` using `[map_mul, map_mul, (GlobalTheory.T.absNorm_map_ringOfIntegers_hom' E K τ _).2, (GlobalTheory.T.absNorm_map_ringOfIntegers_hom' E K τ _).2]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `e2` using `congrArg Ideal.absNorm h𝔫`. Rewrite `e2` using `[map_mul, hbar, ← Ideal.span_singleton_mul_span_singleton, map_mul]`. Establish `hA : (Ideal.absNorm (idx K p (F.eigLat X.B.t.act τ) (subP (FA true) F (fun a => M (.inl a)) τ)) : ℝ) ≠ 0`. Conclude with `(Ideal.absNorm_eq_zero_iff.not.2 hneP)` after adjusting the coercions. Establish `hB : (Ideal.absNorm (idx K 0 (F.eigLat X.B.t.act τb) (subQ (FA false) F (fun a => M (.inr a)) τb)) : ℝ) ≠ 0`.
+Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `(Ideal.absNorm_eq_zero_iff.not.2 hneQ)` after adjusting the coercions. Establish `hP1 : (Ideal.absNorm (Ideal.span {gP.det}) : ℝ) ≠ 0`. Conclude with `(Ideal.absNorm_eq_zero_iff.not.2 (Ideal.span_singleton_eq_bot.not.2 hP0))` after adjusting the coercions. Establish `hQ1 : (Ideal.absNorm (Ideal.span {gQ.det}) : ℝ) ≠ 0`. Conclude with `(Ideal.absNorm_eq_zero_iff.not.2 (Ideal.span_singleton_eq_bot.not.2 hQ0))` after adjusting the coercions.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hN1 : (Ideal.absNorm 𝔫 : ℝ) ≠ 0`. Introduce `h0`. Establish `: ((Ideal.absNorm 𝔫 * Ideal.absNorm 𝔫 : ℕ) : ℝ) = 0` using `by push_cast; rw [h0, zero_mul]`. Rewrite `this` using `[e2]`. Move the coercions through the operations in `at this`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Take a linear combination of the given relations to obtain the conclusion.
 
-Conclude with `(mul_ne_zero hP1 hQ1) this`. Establish `l1` using `congrArg (fun m : ℕ => Real.log (m : ℝ)) e1`. Establish `l2` using `congrArg (fun m : ℕ => Real.log (m : ℝ)) e2`. Simplify using `only [Nat.cast_mul, Nat.cast_pow] at l1 l2`. Rewrite `l1` using `[Real.log_mul hA (pow_ne_zero _ hQ1), Real.log_mul (pow_ne_zero _ hN1) hB, Real.log_pow, Real.log_pow]`.
-
-Rewrite `l2` using `[Real.log_mul hN1 hN1, Real.log_mul hP1 hQ1]`. Rewrite using `[← hnorm, ← hnorm]`. Establish `hfE' : (Module.finrank ℚ E : ℝ) ≠ 0` using `by exact_mod_cast hfE.ne'`. Establish `hn' : (n : ℝ) ≠ 0` using `by exact_mod_cast hn0.ne'`. Establish `key : Real.log (Ideal.absNorm (idx K p (F.eigLat X.B.t.act τ) (subP (FA true) F (fun a => M (.inl a)) τ)) : ℝ) / Module.finrank ℚ K - Real.log (Ideal.absNorm (idx K 0 (F.eigLat X.B.t.act τb) (subQ (FA false) F (fun a => M (.inr a)) τb)) : ℝ) / Module.finrank ℚ K = Real.log (Ideal …`.
-
-Rewrite using `[← sub_div, ← sub_div, hnK]`. Rewrite using `[div_eq_div_iff (mul_ne_zero hn' hfE') (mul_ne_zero two_ne_zero hfE')]`. Take the linear combination `(2 * Module.finrank ℚ E : ℝ) * l1 + (n : ℝ) * (Module.finrank ℚ E : ℝ) * l2`. Take the linear combination `key`.
+A detailed English derivation is pending.
 -/
 theorem cmDiff_definite : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E), GlobalTheory.IndefiniteRowSideFullHecke.EigenvectorLieDegree.IsHostField H → ∀ [NeZero H.d] (χ : DirichletCharacter ℂ H.d), GlobalTheory.IsKroneckerChar χ → ∀ (K : Type) [Field K] [NumberField K] (ρ : 𝓞 K) (σ₁ : K →+* ℂ) (p q : ℕ) (X : GlobalTheory.CM.CMObj H K ρ σ₁ p q) (F : GlobalTheory.CM.GenFib X.B.pol) (h : ReciprocityTheory.GeometryOfNumbersTheory.HermFam K (Fin F.P₀.g → K)), F.IsHerm h → q = 0 → ∀ τ : 𝓞 E →+* 𝓞 K, τ H.rt = ρ → ReciprocityTheory.GeometryOfNumbersTheory.deg h (F.eigLat X.B.t.act τ) - ReciprocityTheory.GeometryOfNumbersTheory.deg h (F.eigLat X.B.t.act (τ.comp (H.bar : 𝓞 E →+* 𝓞 E))) = ((p : ℝ) - q) / 2 * (GlobalTheory.CM.logOm E χ).re := by
 

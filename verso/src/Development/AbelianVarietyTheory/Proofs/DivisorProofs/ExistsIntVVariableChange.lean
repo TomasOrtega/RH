@@ -9,21 +9,21 @@ open WeierstrassCurve
 namespace GlobalTheory.CMModel
 
 /- English proof (translation)
-Establish `: IsIntegrallyClosedIn V ℂ` using `(isIntegrallyClosed_iff_isIntegrallyClosedIn ℂ).1 inferInstance`. Establish `ht : HasRationalTorsion W ℂ 12`. Introduce `x y h hn`. Conclude with `⟨⟨x, rfl⟩, ⟨y, rfl⟩⟩`. Take `⟨C, W₀, e, h₀⟩` from `exists_integral_model V (L := ℂ) (W := W) ⟨⟨W.j, hj⟩, rfl⟩ ht`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Establish `hΔ : ((C.u⁻¹ : ℂˣ) : ℂ) ^ 12 * W.Δ = 1`. Rewrite using `[← variableChange_Δ, e, WeierstrassCurve.baseChange, map_Δ, h₀, map_one]`. Establish `hCu : (C.u : ℂ) ≠ 0` using `C.u.ne_zero`. Establish `hu0 : (u : ℂ) ≠ 0` using `u.ne_zero`. Establish `hΔ' : W.Δ = (C.u : ℂ) ^ 12`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hΔ` using `[Units.val_inv_eq_inv_val]`. Clear denominators, using `at hΔ` for the nonvanishing conditions. Conclude with `hΔ`. Establish `hv : V.valuation (u : ℂ) = V.valuation (C.u : ℂ)`. Rewrite `hu` using `[hΔ', map_pow]`.
+Rewrite the indicated hypotheses using the stated equalities. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(pow_left_inj₀ zero_le' zero_le' (by norm_num)).1 hu`. Establish `hw : (C.u : ℂ) / u ∈ V`. Rewrite using `[← V.valuation_le_one_iff, map_div₀, hv, div_self]`. Conclude with `(map_ne_zero _).2 hCu`. Establish `h1 : (C • W).a₁ ∈ V` using `by rw [e]; exact W₀.a₁.2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : (C • W).a₂ ∈ V` using `by rw [e]; exact W₀.a₂.2`. Establish `h3 : (C • W).a₃ ∈ V` using `by rw [e]; exact W₀.a₃.2`. Establish `h4 : (C • W).a₄ ∈ V` using `by rw [e]; exact W₀.a₄.2`. Establish `h6 : (C • W).a₆ ∈ V` using `by rw [e]; exact W₀.a₆.2`. Use `⟨C.r, C.s, C.t, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts.
 
-Use `V.mul_mem _ _ hw h1 using 1` and compare the differences between its conclusion and the goal. Simplify using `only [variableChange_a₁, Units.val_inv_eq_inv_val]`. Clear the denominators using the available nonvanishing facts. Use `V.mul_mem _ _ (pow_mem hw 2) h2 using 1` and compare the differences between its conclusion and the goal. Simplify using `only [variableChange_a₂, Units.val_inv_eq_inv_val]`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules.
 
-Clear the denominators using the available nonvanishing facts. Use `V.mul_mem _ _ (pow_mem hw 3) h3 using 1` and compare the differences between its conclusion and the goal. Simplify using `only [variableChange_a₃, Units.val_inv_eq_inv_val]`. Clear the denominators using the available nonvanishing facts. Use `V.mul_mem _ _ (pow_mem hw 4) h4 using 1` and compare the differences between its conclusion and the goal.
+Clear the denominators using the available nonvanishing facts. Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Simplify using `only [variableChange_a₄, Units.val_inv_eq_inv_val]`. Clear the denominators using the available nonvanishing facts. Use `V.mul_mem _ _ (pow_mem hw 6) h6 using 1` and compare the differences between its conclusion and the goal. Simplify using `only [variableChange_a₆, Units.val_inv_eq_inv_val]`. Clear the denominators using the available nonvanishing facts.
+Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem exists_intV_variableChange (W : WeierstrassCurve ℂ) [W.IsElliptic] (V : ValuationSubring ℂ)
     (u : ℂˣ) (hj : W.j ∈ V) (hu : V.valuation (u : ℂ) ^ 12 = V.valuation W.Δ) :

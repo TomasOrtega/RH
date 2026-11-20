@@ -17,7 +17,7 @@ variable {F E : Type} [Field F] [Field E] [Algebra F E] {σ : E →ₐ[F] E} {n 
   {J : Matrix (Fin n) (Fin n) E} in
 
 /- English proof (translation)
-Simplify using `only [_root_.Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.hE, _root_.Formalism.UG.P.hform_eq_dot, dotProduct, Matrix.mulVec, Function.comp, Finset.mul_sum, map_sum, map_mul, AlgHom.coe_toRingHom, RingHom.coe_coe, hσ, hJ]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem _root_.GlobalTheory.FrameGram.hE_swap (hσ : ∀ x, σ (σ x) = x)
     (hJ : ∀ i j, σ (J j i) = J i j) (x y : Fin n → E) :
@@ -29,15 +29,15 @@ theorem _root_.GlobalTheory.FrameGram.hE_swap (hσ : ∀ x, σ (σ x) = x)
   ring
 
 /- English proof (translation)
-Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `c hc`. Establish `hcj : ∀ j, ∑ b, c b * inclR (F` using `F) R (X b j) = 0 := fun j => by`. Simplify `congrFun hc j` using `[Finset.sum_apply, ratTup]`. Establish `hu : IsUnit ((gramE σ J X).map (inclR (F` using `F) R)).det := by`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Use `(inclR (F := F) (E := E) R).map_det (gramE σ J X)` as an intermediate fact. Rewrite `this` using `[RingHom.mapMatrix_apply]`. Rewrite using `[← this]`. Conclude with `(IsUnit.mk0 _ hX).map _`. Establish `h0 : ((gramE σ J X).map (inclR (F` using `F) R)).mulVec c = 0 := by`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `a`. Simplify using `only [Matrix.mulVec, dotProduct, Matrix.map_apply, gramE, hE, Formalism.UG.hform, map_sum, map_mul, Finset.sum_mul, Pi.zero_apply]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_eq_zero fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations. Use `congrArg (fun t => inclR (F := F) R ((σ : E →+* E) (X a i)) * inclR (F := F) R (J i j) * t) (hcj j)` as an intermediate fact. Simplify using `only [Finset.mul_sum, mul_zero] at this`. Rewrite using `[← this]`. Conclude with `Finset.sum_congr rfl fun b _ => by ring`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hinj` using `Matrix.mulVec_injective_of_isUnit ((Matrix.isUnit_iff_isUnit_det _).2 hu)`. Establish `: c = 0` using `hinj (by rw [h0, Matrix.mulVec_zero])`. Conclude with `fun b => congrFun this b`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
 -/
 theorem linearIndependent_ratTup_of_det_ne_zero (R : Type) [CommRing R] [Algebra F R] {m : ℕ}
     (X : Fin m → Fin n → E) (hX : (gramE σ J X).det ≠ 0) :
@@ -70,17 +70,17 @@ theorem linearIndependent_ratTup_of_det_ne_zero (R : Type) [CommRing R] [Algebra
   exact fun b => congrFun this b
 
 /- English proof (translation)
-Introduce `h`. Take `⟨c, hc0, hc⟩` from `Matrix.exists_mulVec_eq_zero_iff.2 h`. Establish `hy' : ∀ i j, hE σ J (y i) (y j) = if i = Fin.last r ∧ j = Fin.last r then t else 0` using `hy`. Establish `hf' : ∀ a b : Fin r, hE σ J (f a) (y b.castSucc) = if a = b then 1 else 0` using `fun a b => by`. Rewrite using `[← hE_swap hσ hJ, hf]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hab : a = b`. Simplify using `[hab]`. Simplify using `[hab, Ne.symm hab]`. Establish `row : ∀ k, ∑ b : Fin r, hE σ J (Fin.append y f k) (y b.castSucc) * c (Fin.castAdd r b.castSucc) + hE σ J (Fin.append y f k) (y (Fin.last r)) * c (Fin.castAdd r (Fin.last r)) + ∑ b : Fin r, hE σ J (Fin.append y f k) (f b) * c (Fin.natAdd (r + 1) b) = 0` using `fun k => by`. Use `congrFun hc k` as an intermediate fact.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Matrix.mulVec, dotProduct, gramE, Pi.zero_apply] at this`. Rewrite `this` using `[Fin.sum_univ_add, Fin.sum_univ_castSucc]`. Simplify `this` using `only [Fin.append_left, Fin.append_right]`. Establish `h1 : ∀ a : Fin r, c (Fin.natAdd (r + 1) a) = 0` using `fun a => by`. Use `row (Fin.castAdd r a.castSucc)` as an intermediate fact.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify `this` using `[Fin.append_left, hy', hf, Fin.castSucc_ne_last]`. Establish `h2 : c (Fin.castAdd r (Fin.last r)) = 0`. Use `row (Fin.castAdd r (Fin.last r))` as an intermediate fact. Simplify `this` using `[Fin.append_left, hy', h1, Fin.castSucc_ne_last, ht]`. Establish `h3 : ∀ a : Fin r, c (Fin.castAdd r a.castSucc) = 0` using `fun a => by`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Use `row (Fin.natAdd (r + 1) a)` as an intermediate fact. Simplify using `only [Fin.append_right, hf', h1, h2] at this`. Simplify using `using this`. Apply `hc0` to reduce the goal to its premises. Use function extensionality and compare the values at `k`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `Fin.addCases (fun i => ?_) (fun a => h1 a) k` and prove the remaining obligations. Conclude with `Fin.lastCases h2 h3 i`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem det_gram_append_ne_zero (hσ : ∀ x, σ (σ x) = x) (hJ : ∀ i j, σ (J j i) = J i j) {r : ℕ}
     (y : Fin (r + 1) → Fin n → E) (f : Fin r → Fin n → E) (t : E) (ht : t ≠ 0)
@@ -118,7 +118,7 @@ theorem det_gram_append_ne_zero (hσ : ∀ x, σ (σ x) = x) (hJ : ∀ i j, σ (
   exact Fin.lastCases h2 h3 i
 
 /- English proof (translation)
-Establish `hze : ∀ a, hE σ J z (e a) = 0` using `fun a => by rw [← hE_swap hσ hJ, hez, map_zero]`. Apply the tactic sequence `refine Fin.lastCases ?_ (fun a => ?_) i <;> refine Fin.lastCases ?_ (fun b => ?_) j <;>`. Simplify using `[gramE, he, hez, hze, hz, Fin.castSucc_ne_last]`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem gram_snoc (hσ : ∀ x, σ (σ x) = x) (hJ : ∀ i j, σ (J j i) = J i j) {r : ℕ}
     (e : Fin r → Fin n → E) (z : Fin n → E) (t : E) (he : ∀ a b, hE σ J (e a) (e b) = 0)
@@ -134,7 +134,7 @@ end Alg
 open scoped TensorProduct in
 
 /- English proof (translation)
-Take `⟨-, -, -, hτ⟩` from `h`. Set `τ : E →+* ℂ` to `(IsAlgClosed.lift : E →ₐ[ℚ] ℂ).toRingHom`. Apply `τ.injective` to reduce the goal to its premises. Rewrite using `[hτ, hτ, star_star]`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem _root_.GlobalTheory.FrameGram.conj_invol {F E : Type} [Field F] [NumberField F] [Field E]
     [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} (h : _root_.Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.IsCMExt F E σ) (x : E) : σ (σ x) = x := by
@@ -144,9 +144,9 @@ theorem _root_.GlobalTheory.FrameGram.conj_invol {F E : Type} [Field F] [NumberF
   rw [hτ, hτ, star_star]
 
 /- English proof (translation)
-Establish `hd` using `det_gram_append_ne_zero (conj_invol hσ) hJ.1 y f _ ((map_ne_zero (algebraMap F E)).2 (neg_ne_zero.2 hT)) hy hf`. Use `⟨hd, fun i j => hE_swap (conj_invol hσ) hJ.1 _ _, fun i j => hE_swap (conj_invol hσ) hJ.1 _ _, fun R _ _ => ?_⟩` and prove the remaining obligations. Establish `h` using `(linearIndependent_ratTup_of_det_ne_zero R _ hd).comp (Fin.castAdd r) (Fin.castAdd_injective _ _)`. Establish `e : ratTup (F` using `F) R (Fin.append y f) ∘ Fin.castAdd r = ratTup (F := F) R y := by`. Use function extensionality and compare the values at `a i`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `[ratTup, Fin.append_left]`. Rewrite `h` using `[e]`. Then use the resulting hypothesis.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem frame_gram {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     {σ : E →ₐ[F] E} (hσ : IsCMExt F E σ) {n : ℕ} {J : Matrix (Fin n) (Fin n) E}
@@ -172,7 +172,7 @@ theorem frame_gram {F E : Type} [Field F] [NumberField F] [Field E] [NumberField
   rwa [e] at h
 
 /- English proof (translation)
-Substitute `hw hy` using the available equality. Establish `hg` using `gram_snoc (conj_invol hσ) hJ.1 e z _ he hez hz`. Take `⟨h1, h2, h3, h4⟩` from `frame_gram hσ hJ _ f T hT hg (fun a b => by simpa using hf a b)`. Conclude with `⟨h1, h2, h3, hg, h4⟩`.
+Substitute using the available equality. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem frame_gram_snoc {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E]
     [Algebra F E] {σ : E →ₐ[F] E} (hσ : IsCMExt F E σ) {n : ℕ} {J : Matrix (Fin n) (Fin n) E}

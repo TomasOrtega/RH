@@ -65,11 +65,11 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : _root_.Reciproc
   {l : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level H} in
 
 /- English proof (translation)
-Unfold `_root_.GlobalTheory.IndefiniteRowSideFullHecke.HeckePrimeDetection.IsHeckePrime`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hmax, hsplit, hM, hp, hpP⟩`. Use `⟨hmax, hsplit, hp, hpP, fun hdvd => hM ?_⟩` and prove the remaining obligations. Take `⟨k, hk⟩` from `hdvd`.
+Replace the relevant objects with their definitions. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hk, Nat.cast_mul]`. Conclude with `P.mul_mem_right _ hpP`. Introduce and unpack `⟨hmax, hsplit, hp, hpP, hndvd⟩`. Use `⟨hmax, hsplit, fun hM => hmax.ne_top ?_, hp, hpP⟩` and prove the remaining obligations. Establish `hcop : IsCoprime (p : ℤ) (l.M' : ℤ)` using `Nat.isCoprime_iff_coprime.mpr ((Nat.Prime.coprime_iff_not_dvd hp).mpr hndvd)`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨u, v, huv⟩` from `hcop.map (Int.castRingHom (𝓞 E))`. Rewrite using `[Ideal.eq_top_iff_one, ← huv]`. Simplify using `only [eq_intCast, Int.cast_natCast]`. Conclude with `P.add_mem (P.mul_mem_left _ hpP) (P.mul_mem_left _ hM)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.IndefiniteRowSideFullHecke.HeckePrimeDetection.isHeckePrime_iff {P : Ideal (𝓞 E)} {p : ℕ} :
     _root_.GlobalTheory.IndefiniteRowSideFullHecke.HeckePrimeDetection.IsHeckePrime l P p ↔ P.IsMaximal ∧ P ⊔ P.map (H.bar : 𝓞 E →+* 𝓞 E) = ⊤ ∧
@@ -91,7 +91,7 @@ theorem _root_.GlobalTheory.IndefiniteRowSideFullHecke.HeckePrimeDetection.isHec
     exact P.add_mem (P.mul_mem_left _ hpP) (P.mul_mem_left _ hM)
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 example (Xo : Moduli Dw l) (c : Coeff l) (a : (E →+* ℂ) × ℕ → ℕ) (n : ℕ) :
     DetectAt Xo c a n ↔ ∀ g ∈ sec Xo c a n,

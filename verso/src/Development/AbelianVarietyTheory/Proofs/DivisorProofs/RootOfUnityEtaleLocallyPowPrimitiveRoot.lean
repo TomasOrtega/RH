@@ -7,11 +7,11 @@ open CategoryTheory Limits AlgebraicGeometry Opposite GlobalTheory.EtC
 namespace GlobalTheory.EtC.RootLoc
 
 /- English proof (translation)
-Introduce `q _ U hq ω hω`. Apply `GlobalTheory.EtC.loc_trans` to reduce the goal to its premises. Use `GlobalTheory.EtC.loc_mono _ _ _ ((PrimLoc.prim_loc q U).1 hq) ?_` and prove the remaining obligations. Introduce and unpack `V g ⟨ζ⟩`. Establish `hx : (g.appTop.hom (ω : Γ(U, ⊤))) ^ q = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Rewrite using `[← map_pow, ← Units.val_pow_eq_pow_val, hω, Units.val_one, map_one]`. Use `GlobalTheory.EtC.loc_mono _ _ _ ((PrimLoc.prim_loc q V).2.2.1 ζ _ hx) ?_` and prove the remaining obligations. Introduce and unpack `W k ⟨a, ha⟩`. Use `⟨ζ.map k.appTop.hom, a, ?_⟩` and prove the remaining obligations. Rewrite using `[Units.coe_map]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(PrimLoc.appTop_comp g k _).trans ha`.
+A detailed English derivation is pending.
 -/
 theorem root_loc_pow_prim : ∀ (q : ℕ) [NeZero q] (U : Scheme.{0}), IsUnit (q : Γ(U, ⊤)) → ∀ ω : (Γ(U, ⊤))ˣ, ω ^ q = 1 →
     Loc U fun V g => ∃ (ζ : Prim q Γ(V, ⊤)) (a : ℕ), (Units.map g.appTop.hom.toMonoidHom ω : Γ(V, ⊤)) = ζ.1 ^ a := by

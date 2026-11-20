@@ -9,13 +9,13 @@ import Development.AutomorphicArithmetic.Foundations.Convolution.GeneralizedMeas
 open UpperTheory.ConvolutionTheory UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.E
 
 /- English proof (translation)
-The claim follows from `indCs (indNorm (coreInd cix hG (T.liftAll (T.liftStep (T.coreLift ci hG)))))`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.E.indCs_of_gm (hG : GM.GM) : IndCs :=
   indCs (indNorm (coreInd cix hG (T.liftAll (T.liftStep (T.coreLift ci hG)))))
 
 /- English proof (translation)
-The claim follows from `indCs_of_gm (GM.gm_of_bcfl h)`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.E.indCs_of_bcfl (h : PositivityTheory.Rg.Tf.Loc.BCFLUnit) : IndCs :=
   indCs_of_gm (GM.gm_of_bcfl h)

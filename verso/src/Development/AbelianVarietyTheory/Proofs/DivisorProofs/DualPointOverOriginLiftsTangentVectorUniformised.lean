@@ -12,17 +12,17 @@ open GlobalTheory.MBLow.Cl Matrix
 namespace GlobalTheory.MBLow.Cl
 
 /- English proof (translation)
-Introduce `R _ _ _ D x φ hφ he b hb`. Establish `hTF : (TF (R` using `R) ℂ).hom = spMap ((algebraMap (FractionRing R) ℂ).comp (algebraMap R (FractionRing R))) := by`. Simplify using `only [TF, Over.mk_hom, jFK, jK, spMap, ← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Establish `hw : b.left ≫ D.P.A.hom = spMap (algebraMap ℂ (DualNumber ℂ)) ≫ spMap ((algebraMap (FractionRing R) ℂ).comp (algebraMap R (FractionRing R)))`. Rewrite using `[Over.w b, ← hTF]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Set `l` to `hφ.1.lift b.left (spMap (algebraMap ℂ (DualNumber ℂ))) hw`. Establish `hl1 : l ≫ φ = b.left` using `hφ.1.lift_fst _ _ _`. Establish `hl2 : l ≫ x.P.A.hom = spMap (algebraMap ℂ (DualNumber ℂ))` using `hφ.1.lift_snd _ _ _`. Use `⟨Over.homMk l hl2, ?_, hl1⟩` and prove the remaining obligations.
+Both sides reduce to the same expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `show spMap (TrivSqZeroExt.fstHom ℂ ℂ ℂ).toRingHom ≫ l = eSec x.P.A`. Apply `hφ.1.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, hl1, he]`. Express the relevant statement in the definitionally equal form `redE ℂ ≫ b.left = _`. Rewrite using `[hb, DegPre.zeroF, Over.comp_left, ← hTF]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Rewrite using `[Category.assoc, hl2]`. Establish `h1 : eSec x.P.A ≫ x.P.A.hom = 𝟙 _`. Simplify using `only [eSec]`. Rewrite using `[Over.w η[x.P.A]]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Rewrite using `[h1]`. Simplify using `only [spMap, ← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Establish `: (TrivSqZeroExt.fstHom ℂ ℂ ℂ).toRingHom.comp (algebraMap ℂ (DualNumber ℂ)) = RingHom.id ℂ`. Use extensionality with `z`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Rewrite using `[this, CommRingCat.ofHom_id, Spec.map_id]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem tangent_lift_of_pullback : ∀ (R : Type) [CommRing R] [IsDomain R] [Algebra (FractionRing R) ℂ] (D : DegPre R) (x : KeyIn ℂ)
     (φ : x.P.A.left ⟶ D.P.A.left), IsGrpPullback x.P.A D.P.A (spMap ((algebraMap (FractionRing R) ℂ).comp (algebraMap R (FractionRing R)))) φ →

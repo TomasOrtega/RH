@@ -15,11 +15,11 @@ namespace GlobalTheory.CompanionTheory.GL2Factorization.ZUSum
 open scoped NNReal
 
 /- English proof (translation)
-Establish `hq' : (q : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 hq`. Establish `hpos : (0 : ℝ) < (q : ℝ)` using `by exact_mod_cast Nat.pos_of_ne_zero hq`. Establish `hr2 : r = Complex.exp (Complex.log (q : ℂ) / 2)`. Establish `h1 : ((NNReal.sqrt (q : ℝ≥0) : ℝ)) = Real.exp (Real.log (q : ℝ) / 2)`. Rewrite using `[Real.coe_sqrt, Real.exp_half, Real.exp_log hpos]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Rewrite using `[hr, h1, Complex.ofReal_exp, Complex.ofReal_div, Complex.natCast_log]`. Simplify using the standard rewrite rules. Establish `hqe : ∀ k : ℤ, (q : ℂ) ^ k = Complex.exp ((k : ℂ) * Complex.log (q : ℂ))`. Introduce `k`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Complex.exp_int_mul, Complex.exp_log hq']`. Rewrite using `[hr2, hqe, ← Complex.exp_int_mul, Complex.cpow_def_of_ne_zero hq', Complex.cpow_def_of_ne_zero hq', Complex.cpow_def_of_ne_zero hq', ← Complex.exp_nat_mul, ← Complex.exp_add, ← Complex.exp_add, ← Complex.exp_add]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem term_identity (q : ℕ) (hq : q ≠ 0) (r : ℂ) (hr : r = ((NNReal.sqrt (q : ℝ≥0) : ℝ) : ℂ))
     (s : ℂ) (m n : ℕ) :
@@ -44,17 +44,17 @@ theorem term_identity (q : ℕ) (hq : q ≠ 0) (r : ℂ) (hr : r = ((NNReal.sqrt
   ring
 
 /- English proof (translation)
-Introduce `F _ _ _ _ W W' S S' s R hW hW' hS`. Establish `hinj : Function.Injective (fun p : ℕ × ℕ => (((p.1 : ℤ), (p.2 : ℤ)) : ℤ × ℤ))`. Introduce `p p' h`. Simplify using `only [Prod.mk.injEq, Nat.cast_inj] at h`. Conclude with `Prod.ext h.1 h.2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions.
 
-Unfold `zU`. Use `HasSum.tsum_eq ((hinj.hasSum_iff ?_).1 ?_)` and prove the remaining obligations. Introduce `p hp`. Establish `hneg : ¬ (0 ≤ p.1 ∧ 0 ≤ p.2)`. Introduce and unpack `⟨h1, h2⟩`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use `hp ⟨(p.1.toNat, p.2.toNat), ?_⟩` and prove the remaining obligations. Simplify using `[Int.toNat_of_nonneg h1, Int.toNat_of_nonneg h2]`. Establish `hc : ¬ (p.2 ≤ p.1 + p.2 ∧ 0 ≤ p.2)`. Introduce and unpack `⟨h1, h2⟩`. Conclude with `hneg ⟨by omega, h2⟩`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hW, if_neg hc]`. Simplify using the standard rewrite rules. Use `hS using 2 with p` and compare the differences between its conclusion and the goal. Take `⟨m, n⟩` from `p`. Establish `h1 : ((n : ℤ) ≤ (m : ℤ) + (n : ℤ) ∧ (0 : ℤ) ≤ (n : ℤ))` using `by omega`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : (n : ℤ) ≤ (m : ℤ) + (n : ℤ)` using `by omega`. Establish `hid` using `term_identity (residueCard F) GroundTheory.LocalField.residueCard_ne_zero (Spherical.sqrtQ F) rfl s m n`. Establish `hsub : (m : ℤ) + (n : ℤ) - (n : ℤ) = (m : ℤ)` using `by ring`. Simplify using `only [Function.comp_apply]`. Rewrite using `[hW, hW', if_pos h1, if_pos h2, hsub, ← hid]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem zU_eq_of_hasSum : ∀ (F : Type) [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] (W : GL (Fin 3) F → ℂ) (W' : GL (Fin 2) F → ℂ) (S S' : ℤ → ℤ → ℂ) (s R : ℂ), (∀ a b : ℤ, W (dg (unifUnit F ^ a) (unifUnit F ^ b) 1) = if b ≤ a ∧ 0 ≤ b then (residueCard F : ℂ) ^ (-a) * S a b else 0) → (∀ a b : ℤ, W' (d2 (unifUnit F ^ a) (unifUnit F ^ b)) = if b ≤ a then Spherical.sqrtQ F ^ (-(a - b)) * S' a b else 0) → HasSum (fun p : ℕ × ℕ => S ((p.1 + p.2 : ℕ) : ℤ) (p.2 : ℤ) * S' ((p.1 + p.2 : ℕ) : ℤ) (p.2 : ℤ) * ((residueCard F : ℂ) ^ (-s)) ^ (p.1 + 2 * p.2)) R → zU W W' s = R := by
   intro F _ _ _ _ W W' S S' s R hW hW' hS

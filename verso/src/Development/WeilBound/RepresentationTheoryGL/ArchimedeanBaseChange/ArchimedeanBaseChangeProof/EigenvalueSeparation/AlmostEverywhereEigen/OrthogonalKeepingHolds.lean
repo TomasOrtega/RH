@@ -25,34 +25,34 @@ namespace PositivityTheory.Rg.BcB.E2
 open E1
 
 /- English proof (translation)
-The claim follows from `P.spec P.gelf P.point P.specmeas P.speciso`.
+A detailed English derivation is pending.
 -/
 theorem spec_holds : Spec := P.spec P.gelf P.point P.specmeas P.speciso
 
 /- English proof (translation)
-The claim follows from `P.desint P.jointrep P.tonelli P.weakae (P.eigae P.weakae) (P.locint P.tonelli) P.nonzero (P.smooth P.convcont)`.
+A detailed English derivation is pending.
 -/
 theorem desint_holds : Desint :=
   P.desint P.jointrep P.tonelli P.weakae (P.eigae P.weakae) (P.locint P.tonelli) P.nonzero (P.smooth P.convcont)
 
 /- English proof (translation)
-The claim follows from `P.fdata (P.rowsex kerBasic vecEx vecNorm vecInner) (P.rowseig P.aeeq (P.unfold kerBasic P.convcont))`.
+A detailed English derivation is pending.
 -/
 theorem fData_holds : FData :=
   P.fdata (P.rowsex kerBasic vecEx vecNorm vecInner) (P.rowseig P.aeeq (P.unfold kerBasic P.convcont))
 
 /- English proof (translation)
-The claim follows from `oneStep_of spec_holds fData_holds desint_holds P.hssep`.
+A detailed English derivation is pending.
 -/
 theorem oneStep_holds : OneStep := oneStep_of spec_holds fData_holds desint_holds P.hssep
 
 /- English proof (translation)
-The claim follows from `orthogonal_keeping_of_estimate oneStep_holds`.
+A detailed English derivation is pending.
 -/
 theorem orthogonal_keeping_holds : E.OrthogonalKeepingOperator := orthogonal_keeping_of_estimate oneStep_holds
 
 /- English proof (translation)
-The claim follows from `duality_diagonalClass_of_affineProperBaseChange orthogonal_keeping_holds`.
+A detailed English derivation is pending.
 -/
 theorem proper_base_change : E.E2 := duality_diagonalClass_of_affineProperBaseChange orthogonal_keeping_holds
 

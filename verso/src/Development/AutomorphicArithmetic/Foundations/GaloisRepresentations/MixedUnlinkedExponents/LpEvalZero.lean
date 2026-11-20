@@ -10,20 +10,20 @@ attribute [-instance] Formalism.DoubleCosetMeasures.instMeasGL
 open UpperTheory.Gal.GamX
 
 /- English proof (translation)
-Simplify using `[UpperTheory.Gal.GamX.lp]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem lp_zero' : UpperTheory.Gal.GamX.lp (0 : Multiset ℂˣ) = 1 := by
   simp [UpperTheory.Gal.GamX.lp]
 
 /- English proof (translation)
-Simplify using `[UpperTheory.Gal.GamX.lp]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem lp_cons' (a : ℂˣ) (A : Multiset ℂˣ) :
     UpperTheory.Gal.GamX.lp (a ::ₘ A) = (1 - Polynomial.C (a : ℂ) * Polynomial.X) * UpperTheory.Gal.GamX.lp A := by
   simp [UpperTheory.Gal.GamX.lp]
 
 /- English proof (translation)
-Proceed by induction on `A using Multiset.induction_on with`. Consider the case `empty => simp [lp_zero']`. Consider the case `cons a A ih => rw [lp_cons', Polynomial.eval_mul, ih]`. Simplify using the standard rewrite rules.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules.
 -/
 private theorem lp_eval_zero (A : Multiset ℂˣ) : (UpperTheory.Gal.GamX.lp A).eval 0 = 1 := by
   induction A using Multiset.induction_on with
@@ -31,7 +31,7 @@ private theorem lp_eval_zero (A : Multiset ℂˣ) : (UpperTheory.Gal.GamX.lp A).
   | cons a A ih => rw [lp_cons', Polynomial.eval_mul, ih]; simp
 
 /- English proof (translation)
-Introduce `h`. Establish `h1` using `lp_eval_zero A`. Rewrite `h1` using `[h]`. Simplify using `at h1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem lp_ne_zero (A : Multiset ℂˣ) : UpperTheory.Gal.GamX.lp A ≠ 0 := by
   intro h
@@ -40,7 +40,7 @@ private theorem lp_ne_zero (A : Multiset ℂˣ) : UpperTheory.Gal.GamX.lp A ≠ 
   simp at h1
 
 /- English proof (translation)
-Establish `ha : (a : ℂ) ≠ 0` using `a.ne_zero`. Rewrite using `[Units.val_inv_eq_inv_val, mul_sub, ← Polynomial.C_mul, neg_mul, mul_inv_cancel₀ ha, Polynomial.C_neg, Polynomial.C_neg, Polynomial.C_1]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem lin_eq (a : ℂˣ) :
     (1 - Polynomial.C (a : ℂ) * Polynomial.X : ℂ[X]) =
@@ -51,14 +51,14 @@ private theorem lin_eq (a : ℂˣ) :
   ring
 
 /- English proof (translation)
-Rewrite using `[lin_eq, Polynomial.roots_C_mul _ (by simp), Polynomial.roots_X_sub_C]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem lin_roots (a : ℂˣ) :
     (1 - Polynomial.C (a : ℂ) * Polynomial.X : ℂ[X]).roots = {((a⁻¹ : ℂˣ) : ℂ)} := by
   rw [lin_eq, Polynomial.roots_C_mul _ (by simp), Polynomial.roots_X_sub_C]
 
 /- English proof (translation)
-Proceed by induction on `A using Multiset.induction_on with`. Consider the case `empty => simp [lp_zero']`. Consider the case `cons a A ih`. Rewrite using `[lp_cons', Polynomial.roots_mul (by rw [← lp_cons']; exact lp_ne_zero _), lin_roots, ih, Multiset.map_cons, Multiset.singleton_add]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 private theorem lp_roots (A : Multiset ℂˣ) :
     (UpperTheory.Gal.GamX.lp A).roots = A.map (fun a => ((a⁻¹ : ℂˣ) : ℂ)) := by
@@ -69,7 +69,7 @@ private theorem lp_roots (A : Multiset ℂˣ) :
       Multiset.map_cons, Multiset.singleton_add]
 
 /- English proof (translation)
-Introduce `A B h`. Establish `h1` using `congrArg Polynomial.roots h`. Rewrite `h1` using `[lp_roots, lp_roots]`. Conclude with `Multiset.map_injective (fun a b hab => inv_injective (Units.ext hab)) h1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.GamX.lpInj :
     UpperTheory.Gal.GamX.LpInj := by

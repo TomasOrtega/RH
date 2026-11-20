@@ -20,9 +20,9 @@ namespace GlobalTheory.GtDescent
 variable {p : ℕ} [Fact p.Prime]
 
 /- English proof (translation)
-Establish `hv : ValuativeCriterion q`. Rewrite `hp` using `[IsProper.eq_valuativeCriterion]`. Conclude with `hp.1.1.1`. Set `Q : ValuativeCommSq q` to `{ R := OO p, K := PadicAlgCl p, i₁ := x, i₂ := c, commSq := ⟨hx⟩ }`. Take `⟨U⟩` from `hv Q`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨U.default.l, ⟨U.default.fac_right, U.default.fac_left⟩, fun ψ hψ => ?_⟩` and prove the remaining obligations. Conclude with `congrArg CommSq.LiftStruct.l (U.uniq ⟨ψ, hψ.2, hψ.1⟩)`.
+A detailed English derivation is pending.
 -/
 theorem existsUnique_ext {X S : Scheme.{0}} (q : X ⟶ S) [hp : IsProper q] (c : Sp (OO p) ⟶ S)
     (x : Sp (PadicAlgCl p) ⟶ X) (hx : x ≫ q = gPt p ≫ c) : ∃! y : Sp (OO p) ⟶ X, y ≫ q = c ∧ gPt p ≫ y = x := by
@@ -35,13 +35,13 @@ theorem existsUnique_ext {X S : Scheme.{0}} (q : X ⟶ S) [hp : IsProper q] (c :
   exact congrArg CommSq.LiftStruct.l (U.uniq ⟨ψ, hψ.2, hψ.1⟩)
 
 /- English proof (translation)
-Set `K₁` to `IntermediateField.adjoin ℚ_[p] ((s.image (OO p).subtype : Finset _) : Set (PadicAlgCl p))`. Establish `: FiniteDimensional ℚ_[p] K₁` using `IntermediateField.finiteDimensional_adjoin fun x _ => Algebra.IsIntegral.isIntegral x`. Set `E : IntermediateField ℚ_[p] (PadicAlgCl p)` to `K ⊔ K₁`. Establish `: FiniteDimensional ℚ_[p] E` using `IntermediateField.finiteDimensional_sup K K₁`. Establish `hd : IsDiscreteValuationRing (integralClosure ℤ_[p] E)` using `ReciprocityTheory.ChartRestriction.G.T0.FiniteAlgebraLocalCompletion.cl_dvr ℤ_[p] ℚ_[p] E`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hf : Module.Finite ℤ_[p] (integralClosure ℤ_[p] E)` using `IsIntegralClosure.finite ℤ_[p] ℚ_[p] E _`. Use `CompleteFiniteExtension.isAdicComplete_of_finite_local ℤ_[p] (integralClosure ℤ_[p] E)` as an intermediate fact. Set `κ` to `integralClosureToPadicAlgClIntegers E`. Establish `hl : IsLocalHom κ` using `isLocalHom_integralClosureToPadicAlgClIntegers E`. Establish `hκ : Function.Injective κ` using `fun a b h => Subtype.ext (Subtype.ext (congrArg (fun z : OO p => (z : PadicAlgCl p)) h))`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `f₁ : V →+* E` to `((OO p).subtype.comp j).codRestrict E fun x => (le_sup_left : K ≤ E) (hK x)`. Set `f : V →+* integralClosure ℤ_[p] E` to `f₁.codRestrict (integralClosure ℤ_[p] E) fun x => (mem_integralClosure_padicInt_iff E _).2 ((mem_OO_iff _).1 (j x).2)`. Establish `hc : κ.comp f = j` using `RingHom.ext fun x => rfl`. Use `⟨integralClosure ℤ_[p] E, inferInstance, inferInstance, f, κ, hκ, hl, hc, fun x hx => ?_, isAdicComplete_of_ne (fun h => ?_) (fun h => ?_)⟩` and prove the remaining obligations. Conclude with `⟨⟨⟨x, (le_sup_right : K₁ ≤ E) (IntermediateField.subset_adjoin _ _ (by simpa using hx))⟩, (mem_integralClosure_padicInt_iff E _).2 ((mem_OO_iff _).1 x.2)⟩, rfl⟩`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components.
 
-Establish `hi : Function.Injective f` using `fun a b h => hj (by rw [← hc]; exact congrArg κ h)`. Conclude with `IsDiscreteValuationRing.not_a_field V ((Ideal.map_eq_bot_iff_of_injective hi).1 h)`. Establish `: (IsLocalRing.maximalIdeal V).map f ≤ IsLocalRing.maximalIdeal _` using `Ideal.map_le_iff_le_comap.2 fun x hx hu => hx (IsLocalHom.map_nonunit (f := j) x (hu.map κ))`. Conclude with `(IsLocalRing.maximalIdeal.isMaximal _).ne_top (top_le_iff.1 (h ▸ this))`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_ring {V : Type} [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] (j : V →+* OO p) [IsLocalHom j]
     (hj : Function.Injective j) (K : IntermediateField ℚ_[p] (PadicAlgCl p)) [FiniteDimensional ℚ_[p] K]
@@ -80,7 +80,7 @@ variable {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω] {S : ThetaSys o Ω
   {y₀ : S.R →+* PadicAlgCl p} (u : ρ.UTest p y₀)
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `_ = jFK (R := u.V) (PadicAlgCl p) ≫ jK u.V`. Rewrite using `[← Spec.map_comp, ← Spec.map_comp]`. Both sides reduce to the same expression.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem gPt_j : gPt p ≫ spMap u.j = (TF (R := u.V) (PadicAlgCl p)).hom := by
   change _ = jFK (R := u.V) (PadicAlgCl p) ≫ jK u.V
@@ -88,11 +88,11 @@ theorem gPt_j : gPt p ≫ spMap u.j = (TF (R := u.V) (PadicAlgCl p)).hom := by
   rfl
 
 /- English proof (translation)
-Establish `: IsProper u.D.toPre.P.A.hom` using `u.D.toPre.P.isAb.proper`. Establish `hL` using `u.D.toPre.P.isLB`. Establish `H : ∀ x : Sp (PadicAlgCl p) ⟶ u.D.toPre.P.A.left, ∃ i, ∀ ψ : Sp (OO p) ⟶ u.D.toPre.P.A.left, ψ ≫ u.D.toPre.P.A.hom = spMap u.j → gPt p ≫ ψ = x → ⊤ ≤ ψ ⁻¹ᵁ u.D.toPre.P.L.U i` using `fun x => by`. Distinguish the cases in `h : ∃ ψ : Sp (OO p) ⟶ u.D.toPre.P.A.left, ψ ≫ u.D.toPre.P.A.hom = spMap u.j ∧ gPt p ≫ ψ = x`. Take `⟨ψ, h₁, h₂⟩` from `h`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Take `⟨i, hi⟩` from `exists_chart hL (ψ (cpt (OO p)))`. Use `⟨i, fun ψ' h₁' h₂' => ?_⟩` and prove the remaining obligations. Take `rfl : ψ' = ψ` from `(existsUnique_ext u.D.toPre.P.A.hom (spMap u.j) x (by rw [← h₂, Category.assoc, h₁])).unique ⟨h₁', h₂'⟩ ⟨h₁, h₂⟩`. Conclude with `(top_le_iff_cpt _ _).2 hi`. Take `⟨i, -⟩` from `exists_chart hL (x (cpt (PadicAlgCl p)))`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨i, fun ψ h₁ h₂ => (h ⟨ψ, h₁, h₂⟩).elim⟩`. Use `choose J hJ using H`. Conclude with `⟨J, fun ψ h => hJ _ ψ h rfl⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_intGood : ∃ J, u.IntGood J := by
   have : IsProper u.D.toPre.P.A.hom := u.D.toPre.P.isAb.proper
@@ -112,36 +112,34 @@ theorem exists_intGood : ∃ J, u.IntGood J := by
   exact ⟨J, fun ψ h => hJ _ ψ h rfl⟩
 
 /- English proof (translation)
-The claim follows from `IsLocalRing.comap_closedPoint f`.
+A detailed English derivation is pending.
 -/
 theorem spMap_cpt {A B : Type} [CommRing A] [CommRing B] [IsLocalRing A] [IsLocalRing B] (f : A →+* B) [IsLocalHom f] :
     spMap f (cpt B) = cpt A := IsLocalRing.comap_closedPoint f
 
 /- English proof (translation)
-Apply the tactic sequence `fin_cases k <;> exact Over.w _`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem gtφT_over {R : Type} [CommRing R] [IsDomain R] {D : DegPre R} {T : Over (Spec (CommRingCat.of R))}
     (b : T ⟶ D.P.A) (χ : D.X) (k : Fin 4) : DegPre.gtφT D T b χ k ≫ D.P.A.hom = T.hom := by
   fin_cases k <;> exact Over.w _
 
 /- English proof (translation)
-Establish `: IsProper u.D.toPre.P.A.hom` using `u.D.toPre.P.isAb.proper`. Establish `hL` using `u.D.toPre.P.isLB`. Take `⟨J, hJ⟩` from `exists_intGood u`. Take `⟨b₀, ⟨hb₁, hb₂⟩, -⟩` from `existsUnique_ext u.D.toPre.P.A.hom (spMap u.j) g.b.left ((Over.w g.b).trans (gPt_j u).symm)`. Take `⟨s₀, hs₀⟩` from `exists_factor u.D.toPre.P.A.hom u.j b₀ hb₁`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `: AddGroup.FG u.D.toPre.X` using `Module.Finite.iff_addGroup_fg.1 inferInstance`. Take `⟨X₀, hX₀⟩` from `(AddGroup.fg_iff_addMonoid_fg.1 this).fg_top`. Establish `hv : ∀ χ, ‖valF (𝟙 (Sp (PadicAlgCl p))) _ ((g.s χ).s (fun k => J (DegPre.gtφ u.D.toPre (PadicAlgCl p) g.b χ k))).val‖ = 1` using `fun χ => by`. Rewrite using `[hg J hJ χ]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Set `v : u.D.toPre.X → OO p` to `fun χ => ⟨_, (mem_OO_iff _).2 (hv χ).le⟩`. Establish `hu : ∀ χ, IsUnit (v χ)` using `fun χ => by`. Assume the negation of the conclusion as `h`. Conclude with `((not_isUnit_OO_iff _).1 h).ne (hv χ)`. Take `⟨W, _, _, f, κ, hκ, hκl, hc, hs, hW⟩` from `exists_ring u.j hj K hK (s₀ ∪ X₀.image v)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨b', hb₃, hb₄⟩` from `hs₀ W f κ hκ hc fun x hx => hs x (Finset.mem_union_left _ hx)`. Establish `eκ : spMap ((OO p).subtype.comp κ) = gPt p ≫ spMap κ`. Rewrite using `[← Spec.map_comp]`. Both sides reduce to the same expression. Establish `ef : spMap κ ≫ spMap f = spMap u.j`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Spec.map_comp, ← hc]`. Both sides reduce to the same expression. Set `π : TF (R` to `u.V) (PadicAlgCl p) ⟶ Over.mk (spMap f) := Over.homMk (spMap ((OO p).subtype.comp κ)) (by`. Rewrite using `[← gPt_j, ← ef, eκ]`. Conclude with `Category.assoc _ _ _)`.
+Both sides reduce to the same expression. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `b : Over.mk (spMap f) ⟶ u.D.toPre.P.A` to `Over.homMk b' hb₃`. Establish `hb : spMap ((OO p).subtype.comp κ) ≫ b' = g.b.left` using `by rw [eκ, Category.assoc, hb₄, hb₂]`. Set `ξ' : GtPt u.D.toPre (TF (R` to `u.V) (PadicAlgCl p)) := ⟨g.b, g.s, g.isGen, g.s_zero, g.mult⟩`. Take `⟨ξ, h₁, h₂⟩` from `exists_descend π (appTop_injective _ (Subtype.val_injective.comp hκ)) ξ' b (Over.OverMorphism.ext hb) X₀ hX₀ fun χ hχ => by`. Take `⟨a, ha⟩` from `hs (v χ) (Finset.mem_union_right _ (Finset.mem_image_of_mem v hχ))`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hau : IsUnit a` using `IsLocalHom.map_nonunit (f := κ) a (ha ▸ hu χ)`. Establish `hφ : ∀ k, spMap ((OO p).subtype.comp κ) ≫ DegPre.gtφT u.D.toPre _ b χ k = DegPre.gtφ u.D.toPre (PadicAlgCl p) g.b χ k` using `fun k => by`. Use `(TorusCoord.comp_eq_of_left b g.b (spMap ((OO p).subtype.comp κ)) (𝟙 _) (hb.trans (Category.id_comp _).symm)).1 χ k` as an intermediate fact. Rewrite `this` using `[Category.id_comp, ← TorusCoord.gtφT_eq]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `exists_gen_extend hL ((OO p).subtype.comp κ) hφ (g.s χ) (g.isGen χ) (fun k => J (DegPre.gtφ u.D.toPre (PadicAlgCl p) g.b χ k)) ?_ hau.unit (congrArg Subtype.val ha)` and prove the remaining obligations. Use `(top_le_iff_cpt (𝟙 (Sp W)) (LB.wchart u.D.toPre.P.L (DegPre.gtφT u.D.toPre _ b χ) (fun k => J (DegPre.gtφ u.D.toPre (PadicAlgCl p) g.b χ k)))).2 ?_` and prove the remaining obligations. Use `Set.mem_iInter.2 fun k => ?_` and prove the remaining obligations. Establish `h3` using `(top_le_iff_cpt _ _).1 (hJ (spMap κ ≫ DegPre.gtφT u.D.toPre _ b χ k) ((Category.assoc _ _ _).trans ((congrArg _ (gtφT_over b χ k)).trans ef)))`. Rewrite `h3` using `[← Category.assoc, ← eκ, hφ k, Scheme.Hom.comp_apply, spMap_cpt]`.
-
-Conclude with `h3`. Conclude with `⟨W, inferInstance, inferInstance, f, κ, hκl, hc, hW, ξ, by rw [h₁]; exact hb, h₂⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_model (hl : IsLocalHom u.j) (hj : Function.Injective u.j) (K : IntermediateField ℚ_[p] (PadicAlgCl p))
     [FiniteDimensional ℚ_[p] K] (hK : ∀ x, (u.j x : PadicAlgCl p) ∈ K) (g : GtPtF u.D.toPre (PadicAlgCl p))
@@ -199,21 +197,19 @@ theorem exists_model (hl : IsLocalHom u.j) (hj : Function.Injective u.j) (K : In
   exact ⟨W, inferInstance, inferInstance, f, κ, hκl, hc, hW, ξ, by rw [h₁]; exact hb, h₂⟩
 
 /- English proof (translation)
-Introduce `_ o Ω _ _ _ _ S ρ p _ y₀ u g hg`. Take `⟨-, hl, hj, K, hK, hK'⟩` from `GlobalTheory.T.testField_finite_over_padic o Ω S ρ p y₀ u`. Take `⟨W, _, _, f, κ, hκ, hc, hW, ξ, h₁, h₂⟩` from `exists_model u hl hj K (fun x => by`. Rewrite using `[← SetLike.mem_coe, hK']`. Conclude with `⟨_, rfl⟩) g hg`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Establish `hL` using `u.D.toPre.P.isLB`. Take `⟨x, hx, -⟩` from `FormalPoint.existsUnique_isPointOf u.U.toUnifPre ξ`. Establish `eκ : spMap ((OO p).subtype.comp κ) = gPt p ≫ spMap κ`. Rewrite using `[← Spec.map_comp]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `ef : spMap κ ≫ spMap f = spMap u.j`. Rewrite using `[← Spec.map_comp, ← hc]`. Both sides reduce to the same expression. Use `⟨spMap κ ≫ x.left, (Category.assoc _ _ _).trans ((congrArg _ (Over.w x)).trans ef), spMap κ ≫ ξ.b.left, by rw [← Category.assoc, ← eκ, h₁], fun e ce hce => ?_⟩` and prove the remaining obligations. Take `⟨a₁, a₂⟩` from `(FormalPoint.hasCoords_iff _ _ _ _ _).1 (hx e _ (spMap (Ideal.Quotient.mk (u.lev e)) ≫ spMap κ) ce (hce.trans (Category.assoc _ _ _).symm))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨a₁.trans (Category.assoc _ _ _), fun χ jj hjj => ?_⟩` and prove the remaining obligations. Establish `hne : u.lev e ≠ ⊤` using `fun h => by`. Establish `: u.lev e ≤ IsLocalRing.maximalIdeal _` using `Ideal.map_le_iff_le_comap.2 fun x hx hu => Ideal.pow_le_self e.succ_ne_zero hx (IsLocalHom.map_nonunit (f := u.j) x hu)`. Conclude with `(IsLocalRing.maximalIdeal.isMaximal _).ne_top (top_le_iff.1 (h ▸ this))`. Establish `: Nontrivial (OO p ⧸ u.lev e)` using `Ideal.Quotient.nontrivial_iff.mpr hne`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsLocalRing (OO p ⧸ u.lev e)` using `IsLocalRing.of_surjective' (Ideal.Quotient.mk _) Ideal.Quotient.mk_surjective`. Establish `: IsLocalHom (Ideal.Quotient.mk (u.lev e))` using `IsLocalHom.of_surjective _ Ideal.Quotient.mk_surjective`. Establish `hφ` using `(TorusCoord.comp_eq_of_left ξ.b (u.U.gt e).pG _ ce a₁.symm).1 χ`. Establish `hφ' : ∀ k, spMap ((OO p).subtype.comp κ) ≫ DegPre.gtφT u.D.toPre _ ξ.b χ k = 𝟙 _ ≫ DegPre.gtφ u.D.toPre (PadicAlgCl p) g.b χ k` using `fun k => by`. Use `(TorusCoord.comp_eq_of_left ξ.b g.b (spMap ((OO p).subtype.comp κ)) (𝟙 _) (h₁.trans (Category.id_comp _).symm)).1 χ k` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[← TorusCoord.gtφT_eq]`. Conclude with `this`. Establish `hm` using `mem_wchart_of_eq _ _ (fun k => (hφ k).symm) _ ((top_le_iff_cpt _ _).1 hjj)`. Rewrite `hm` using `[Scheme.Hom.comp_apply, spMap_cpt]`. Establish `ht` using `(top_le_iff_cpt (spMap κ) _).2 hm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨t₁, v₁⟩` from `CrdCalc.valR_spMap (OO p).subtype (spMap κ) _ ht`. Take `⟨t₂, v₂⟩` from `CrdCalc.valR_spMap (Ideal.Quotient.mk (u.lev e)) (spMap κ) _ ht`. Use `⟨valR (spMap κ) _ ((ξ.s χ).s jj).val, (v₁ _).symm.trans ?_, (v₂ _).symm.trans ?_⟩` and prove the remaining obligations. Rewrite `t₁`, the goal using `[← eκ]`. Conclude with `valR_transfer hL (ξ.isGen χ) (g.isGen χ) _ (𝟙 _) hφ' (h₂ χ) t₁`.
-
-Conclude with `valR_transfer hL (ξ.isGen χ) ((u.U.gt e).t_gen χ) _ ce hφ (fun z J hJ => (a₂ χ z J hJ).symm) t₂`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_integral_point : GlobalTheory.UT.LL → ∀ (o Ω : Type) [CommRing o] [Field Ω] [Algebra o Ω] [ArithBase o Ω] (S : ThetaSys o Ω) (ρ : S.Real) (p : ℕ) [Fact p.Prime] (y₀ : S.R →+* PadicAlgCl p) (u : ρ.UTest p y₀) (g : GtPtF u.D.toPre (PadicAlgCl p)), u.GtN g 0 → ∃ c : Sp (OO p) ⟶ u.G.left, c ≫ u.G.hom = spMap u.j ∧ u.Lev c g := by
   intro _ o Ω _ _ _ _ S ρ p _ y₀ u g hg

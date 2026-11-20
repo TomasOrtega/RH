@@ -26,27 +26,25 @@ namespace GlobalTheory.FrameRelBC
 open Formalism.L2.LamCM GlobalTheory.Frames GlobalTheory.LamT.FieldPoly
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c K _ _ y₀ e k he F hF G hG S _ _ φ z z' Y s hY hz hz'`. Establish `hS : Out.SecBaseChangeSt` using `GlobalTheory.lawsFieldsSeparately.2.1`. Use `haveI : CharZero K := charZero_of_injective_algebraMap (algebraMap c.F K).injective`. Use `haveI : Infinite K := inferInstance`. Take `⟨P, N, hP⟩` from `GlobalTheory.FrameDenseZ.exists_poly_div_det_secZ E H Dw l Xo c K y₀ e F hF`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hevK : ∀ (n : (E →+* ℂ) → ℕ) (X : ∀ b : E →+* ℂ, Matrix (Fin (Dw.mult b)) (Fin (Dw.mult b)) K), evalFr (∏ b, blockDetPoly K Dw.mult b ^ n b) X = ∏ b, (X b).det ^ n b` using `fun n X => by`. Simplify using `only [← evalFr_blockDetPoly Dw.mult _ X]`. Simplify using `only [evalFr, map_prod, map_pow]`. Establish `hevS : ∀ (n : (E →+* ℂ) → ℕ) (X : ∀ b : E →+* ℂ, Matrix (Fin (Dw.mult b)) (Fin (Dw.mult b)) S), evalFr (MvPolynomial.map φ.toRingHom (∏ b, blockDetPoly K Dw.mult b ^ n b)) X = ∏ b, (X b).det ^ n b` using `fun n X => by`. Simplify using `only [← evalFr_map_blockDetPoly φ.toRingHom Dw.mult _ X]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [evalFr, map_prod, map_pow]`. Establish `hid : (∏ b, blockDetPoly K Dw.mult b ^ N) * G = (∏ b, blockDetPoly K Dw.mult b ^ k b) * P`. Assume the negation of the conclusion as `hne`. Take `⟨X, hX, hX0⟩` from `GlobalTheory.FrameDenseZ.exists_frame_evalFr_ne_zero Dw.mult _ (sub_ne_zero.2 hne)`. Take `⟨y', hy', -⟩` from `GlobalTheory.Frames.existsUnique_frChg E H Dw l Xo c K y₀ (fun b => (X b).transpose) 1 (fun b => by rw [Matrix.det_transpose]; exact (hX b).isUnit)`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hy'` using `[Units.val_one]`. Establish `h1` using `hG y' X hX hy'`. Establish `h2` using `hP K (AlgHom.id c.F K) y₀ y' X (fun b => (hX b).isUnit) (GlobalTheory.Frames.frMap_unique_refl_iff E H Dw l Xo c K K (AlgHom.id c.F K) y₀).2.1 hy'`. Rewrite `h2` using `[show (AlgHom.id c.F K).toRingHom = RingHom.id K from rfl, MvPolynomial.map_id]`. Apply `hX0` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `e1 : evalFr ((∏ b, blockDetPoly K Dw.mult b ^ N) * G - (∏ b, blockDetPoly K Dw.mult b ^ k b) * P) X = evalFr (∏ b, blockDetPoly K Dw.mult b ^ N) X * evalFr G X - evalFr (∏ b, blockDetPoly K Dw.mult b ^ k b) X * evalFr P X`. Simplify using `only [evalFr, map_mul, map_sub]`. Rewrite using `[e1, hevK, hevK, ← h1, ← h2, Finset.prod_pow]`. Expand and normalize the polynomial expressions, which then agree. Establish `hidS : (∏ b, (Y b).det ^ N) * evalFr (MvPolynomial.map φ.toRingHom G) Y = (∏ b, (Y b).det ^ k b) * evalFr (MvPolynomial.map φ.toRingHom P) Y`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h` using `congrArg (fun Q => evalFr (MvPolynomial.map φ.toRingHom Q) Y) hid`. Rewrite using `[← hevS, ← hevS]`. Simplify `h` using `only [evalFr, map_mul]`. Establish `hYt : ∀ b, IsUnit ((Y b).transpose.det)` using `fun b => by`. Rewrite using `[Matrix.det_transpose]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `(hY b).isUnit`. Take `⟨z1, h1, -⟩` from `GlobalTheory.Frames.existsUnique_frChg E H Dw l Xo c S z (fun b => (Y b).transpose) 1 hYt`. Take `⟨z2, h2, -⟩` from `GlobalTheory.Frames.existsUnique_frChg E H Dw l Xo c S z1 (fun _ => 1) s (fun _ => by simp)`. Establish `h3` using `(GlobalTheory.Frames.frChg_refl_and_comp E H Dw l Xo c S z z1 z2).2 _ _ _ _ h1 h2`. Simplify using `only [Units.val_one, _root_.mul_one, _root_.one_mul] at h1 h3`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Substitute using the available equality. Introduce a local definition for the expression.
 
-Establish `e' : z2 = z'` using `(GlobalTheory.Frames.existsUnique_frChg E H Dw l Xo c S z (fun b => (Y b).transpose) s hYt).unique h3 hz'`. Substitute `e'` using the available equality. Set `t : Formalism.L2.Pj.Ix Dw → Sˣ` to `fun i => match i with`. Consider the case `none => s`. Consider the case `some _ => 1`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb : FrBor t z1 z2` using `((GlobalTheory.Frames.frBor_calculus E H Dw l Xo c S z1 z2 z2).1 t).2 ⟨fun _ => 1, fun τ i j hij => Matrix.one_apply_ne hij.ne, fun τ i => Matrix.one_apply_eq i, h2⟩`. Establish `hw` using `GlobalTheory.evR_frBor_of_mem_secZ hS Xo c e hF S t z1 z2 hb`. Establish `ht1 : ((∏ i, t i ^ e i : Sˣ) : S) = 1`. Simplify using `[Fintype.prod_option, t, he]`. Rewrite `hw` using `[ht1, _root_.one_mul]`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hv` using `hP S φ z z1 Y (fun b => (hY b).isUnit) hz h1`. Rewrite using `[hw]`. Establish `hu : (∏ b, (Y b).det ^ N) ≠ 0` using `Finset.prod_ne_zero_iff.2 fun b _ => pow_ne_zero _ (hY b)`. Apply `mul_left_cancel₀ hu` to reduce the goal to its premises. Rewrite using `[hidS, ← hv, Finset.prod_pow]`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem relation_baseChange_field : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H)
     (Xo : Moduli Dw l) (c : Coeff l) (K : Type) [Field K] [Algebra c.F K] (y₀ : FrPt Xo c K) (e : Formalism.L2.Pj.Ix Dw → ℤ) (k : (E →+* ℂ) → ℕ),

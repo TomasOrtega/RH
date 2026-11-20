@@ -3,9 +3,9 @@ import Mathlib
 open ValuativeRel
 
 /- English proof (translation)
-Rewrite using `[isOpen_iff_mem_nhds]`. Introduce `x hx`. Rewrite using `[IsValuativeTopology.mem_nhds_iff]`. Use `⟨1, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨z, hz, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Conclude with `hs x hx z (by simpa using hz)`.
+A detailed English derivation is pending.
 -/
 private lemma UpperTheory.isOpen_of_add_small {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsValuativeTopology k] (s : Set k)
@@ -18,21 +18,21 @@ private lemma UpperTheory.isOpen_of_add_small {k : Type} [Field k] [ValuativeRel
   exact hs x hx z (by simpa using hz)
 
 /- English proof (translation)
-The claim follows from `UpperTheory.isOpen_of_add_small _ fun _ hx _ hz => (valuation k).map_add_le hx hz.le`.
+A detailed English derivation is pending.
 -/
 private lemma UpperTheory.isOpen_valuation_le_one (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsValuativeTopology k] : IsOpen {x : k | valuation k x ≤ 1} :=
   UpperTheory.isOpen_of_add_small _ fun _ hx _ hz => (valuation k).map_add_le hx hz.le
 
 /- English proof (translation)
-The claim follows from `UpperTheory.isOpen_of_add_small _ fun _ hx _ hz => (valuation k).map_add_lt hx hz`.
+A detailed English derivation is pending.
 -/
 private lemma UpperTheory.isOpen_setOf_valuation_lt_one (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsValuativeTopology k] : IsOpen {x : k | valuation k x < 1} :=
   UpperTheory.isOpen_of_add_small _ fun _ hx _ hz => (valuation k).map_add_lt hx hz
 
 /- English proof (translation)
-Rewrite using `[← isOpen_compl_iff]`. Use `UpperTheory.isOpen_of_add_small _ fun x hx z hz h => hx ?_` and prove the remaining obligations. Establish `h' : valuation k (x + z - z) < 1` using `(valuation k).map_sub_lt h hz`. Simplify using `using h'`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 private lemma UpperTheory.isClosed_valuation_lt_one (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsValuativeTopology k] : IsClosed {x : k | valuation k x < 1} := by
@@ -42,19 +42,17 @@ private lemma UpperTheory.isClosed_valuation_lt_one (k : Type) [Field k] [Valuat
   simpa using h'
 
 /- English proof (translation)
-Introduce `k _ _ _ _ n S hS`. Establish `c1 : ∀ i j, Continuous fun g : Matrix.GeneralLinearGroup (Fin n) k => g.val i j` using `fun i j => Units.continuous_val.matrix_elem i j`. Establish `c2 : ∀ i j, Continuous fun g : Matrix.GeneralLinearGroup (Fin n) k => (g⁻¹).val i j` using `fun i j => Units.continuous_coe_inv.matrix_elem i j`. Use `haveI : T2Space k := by`. Use `letI := IsTopologicalAddGroup.rightUniformSpace k`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Equip the data with the indicated structure. Prove the components needed by the constructor for the conclusion.
 
-Use `haveI := isUniformAddGroup_of_addCommGroup (G := k)`. Use `infer_instance`. Prove the components needed by the constructor for the conclusion. Establish `e : S = (⋂ i, ⋂ j, (fun g : Matrix.GeneralLinearGroup (Fin n) k => g.val i j) ⁻¹' {x : k | valuation k x ≤ 1}) ∩ ((⋂ i, ⋂ j, (fun g : Matrix.GeneralLinearGroup (Fin n) k => (g⁻¹).val i j) ⁻¹' {x : k | valuation k x ≤ 1}) ∩ ⋂ i, ⋂ j, ⋂ (_ : j < i), (fun g : Matrix.GeneralLinearGro …`. Use extensionality with `g`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Rewrite using `[hS]`. Simplify using `only [Set.mem_inter_iff, Set.mem_iInter, Set.mem_preimage]`. Both sides reduce to the same expression. Rewrite using `[e]`. Use `IsOpen.inter ?_ (IsOpen.inter ?_ ?_)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `isOpen_iInter_of_finite fun i => isOpen_iInter_of_finite fun j => (UpperTheory.isOpen_valuation_le_one k).preimage (c1 i j)`. Conclude with `isOpen_iInter_of_finite fun i => isOpen_iInter_of_finite fun j => (UpperTheory.isOpen_valuation_le_one k).preimage (c2 i j)`. Conclude with `isOpen_iInter_of_finite fun i => isOpen_iInter_of_finite fun j => isOpen_iInter_of_finite fun _ => (UpperTheory.isOpen_setOf_valuation_lt_one k).preimage (c1 i j)`. Set `M : Set (Matrix (Fin n) (Fin n) k)` to `Set.univ.pi fun _ => Set.univ.pi fun _ => {x : k | valuation k x ≤ 1}`. Establish `hM : IsCompact M` using `isCompact_univ_pi fun _ => isCompact_univ_pi fun _ => IsNonarchimedeanLocalField.isCompact_closedBall k 1`.
+Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Establish `hP : IsCompact (M ×ˢ (MulOpposite.op '' M))` using `hM.prod (hM.image MulOpposite.continuous_op)`. Establish `hK` using `(Units.isClosedEmbedding_embedProduct (α := Matrix (Fin n) (Fin n) k)).isCompact_preimage hP`. Establish `hC : IsClosed (⋂ i, ⋂ j, ⋂ (_ : j < i), (fun g : Matrix.GeneralLinearGroup (Fin n) k => g.val i j) ⁻¹' {x : k | valuation k x < 1})` using `isClosed_iInter fun i => isClosed_iInter fun j => isClosed_iInter fun _ => (UpperTheory.isClosed_valuation_lt_one k).preimage (c1 i j)`. Use `hK.inter_right hC using 1` and compare the differences between its conclusion and the goal. Use extensionality with `g`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Rewrite using `[hS]`. Simplify using `only [Set.mem_inter_iff, Set.mem_iInter, Set.mem_preimage, Set.mem_prod]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2, h3⟩`. Conclude with `⟨⟨fun i _ j _ => h1 i j, (g⁻¹).val, fun i _ j _ => h2 i j, rfl⟩, h3⟩`.
-
-Introduce and unpack `⟨⟨h1, m, hm, hme⟩, h3⟩`. Establish `hm' : m = (g⁻¹).val` using `MulOpposite.op_injective hme`. Substitute `hm'` using the available equality. Conclude with `⟨fun i j => h1 i trivial j trivial, fun i j => hm i trivial j trivial, h3⟩`.
+Establish an intermediate fact. Substitute using the available equality. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.iwahori_subgroup_open :
     ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (n : ℕ)

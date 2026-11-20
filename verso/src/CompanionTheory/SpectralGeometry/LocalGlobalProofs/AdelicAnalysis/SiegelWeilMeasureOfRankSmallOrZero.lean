@@ -14,15 +14,15 @@ open scoped TensorProduct ENNReal NNReal Matrix
 namespace GlobalTheory.CompanionTheory.SW.AllFrames
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hσ n`. Proceed by induction on `n with`. Consider the case `zero`. Introduce `M J hJ _ T hT hd`. Conclude with `GlobalTheory.T.siegel_weil_measure_rank_zero F E σ hσ M J hJ T hT hd`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Treat this case separately.
 
-Consider the case `succ n ih`. Introduce `M J hJ hn T hT hd`. Establish `hM : n + 3 ≤ M` using `by omega`. Take `⟨t, x, ht, hx⟩` from `GlobalTheory.CompanionTheory.SW.HermRep.exists_repr F E σ hσ n T ⟨hT, hd⟩`. Take `⟨g, T₁, hT₁, hb, -⟩` from `GlobalTheory.CompanionTheory.SW.AlgSplit.split_anisotropic F E σ hσ n T ⟨hT, hd⟩ t x ht hx`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨hdet, hblk, -, -⟩` from `GlobalTheory.CompanionTheory.SW.BlockAlg.block_alg F E σ hσ n T₁ t`. Establish `hT'` using `hblk hT₁.1`. Establish `htE : algebraMap F E t ≠ 0`. Simplify using `using ht`. Establish `hd' : (blockOne (algebraMap F E t) T₁).det ≠ 0`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hdet]`. Conclude with `mul_ne_zero htE hT₁.2`. Use `GlobalTheory.T.siegel_weil_measure_of_congruent_target F E σ hσ M J hJ (n + 1) T hT hd g _ hT' hb ?_` and prove the remaining obligations. Distinguish the cases in `hrep : ∃ y : Fin M → E, hE σ J y y = algebraMap F E t`. Take `⟨y, hy⟩` from `hrep`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨M₁, rfl⟩ : ∃ M₁, M = M₁ + 1` from `⟨M - 1, by omega⟩`. Take `⟨g', J₁, hJ₁, hb', -⟩` from `GlobalTheory.CompanionTheory.SW.AlgSplit.split_anisotropic F E σ hσ M₁ J hJ t y ht hy`. Use `GlobalTheory.T.siegel_weil_measure_of_congruent_form F E σ hσ (M₁ + 1) J hJ g' _ hb' (n + 1) _ hT' hd' ?_` and prove the remaining obligations. Conclude with `GlobalTheory.T.siegel_weil_measure_add_rank_one_block F E σ hσ M₁ J₁ hJ₁ t ht n (by omega) T₁ hT₁.1 hT₁.2 hT' (ih M₁ J₁ hJ₁ (Or.inr (by omega)) T₁ hT₁.1 hT₁.2)`. Conclude with `GlobalTheory.T.siegel_weil_measure_block_one_of_not_represented F E σ hσ M J hJ t ht n hM T₁ hT₁.1 hT₁.2 hT' (fun y hy => hrep ⟨y, hy⟩)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem swMeas_all : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (n M : ℕ) (J : Matrix (Fin M) (Fin M) E), IsHermND σ J →

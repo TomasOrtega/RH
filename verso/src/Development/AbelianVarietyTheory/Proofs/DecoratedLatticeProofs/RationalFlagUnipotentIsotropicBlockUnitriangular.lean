@@ -17,7 +17,7 @@ namespace GlobalTheory.Unf.RatBlock
 variable {D : D7}
 
 /- English proof (translation)
-Take `⟨u, hu, b, c, rfl⟩` from `((flag_jacobi_structure D V V₀ ρ d).1 n).1 hn`. Establish `h1 : mt V (d.levi u * (d.nB b * d.nC c)) ⬝ d.jX = d.jX ⬝ u.1`. Rewrite using `[mt_mul, mt_mul, Matrix.mul_assoc, Matrix.mul_assoc, d.nC_jX, d.nB_jX, d.levi_jX]`. Use `⟨u, hu, ?_⟩` and prove the remaining obligations. Rewrite using `[blockX, h1, ← Matrix.mul_assoc d.pX d.jX, d.pX_jX, Matrix.one_mul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem blockX_mem_UX {V V₀ : HSp D} {ρ : ℕ} (d : HypDec V V₀ ρ) {n : GA D V} (hn : n ∈ flagN d) :
     ∃ u ∈ UX D ρ, blockX d n = u.1 := by
@@ -28,7 +28,7 @@ theorem blockX_mem_UX {V V₀ : HSp D} {ρ : ℕ} (d : HypDec V V₀ ρ) {n : GA
   rw [blockX, h1, ← Matrix.mul_assoc d.pX d.jX, d.pX_jX, Matrix.one_mul]
 
 /- English proof (translation)
-Establish `hcol : ∀ l, (mt V g ⬝ d.jX) l k = d.jX l k` using `fun l => by`. Use `congrFun (congrFun (mem_fixer.1 h) l) 0` as an intermediate fact. Simplify `this` using `[Matrix.mul_apply, Matrix.submatrix_apply]`. Rewrite using `[← d.pX_jX, blockX, Matrix.mul_apply, Matrix.mul_apply]`. Conclude with `Finset.sum_congr rfl fun l _ => by rw [hcol l]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem blockX_col_of_fix {V V₀ : HSp D} {ρ : ℕ} (d : HypDec V V₀ ρ) {g : GA D V} (k : Fin ρ)
     (h : g ∈ fixer V (d.jX.submatrix id fun _ : Fin 1 => k)) (i : Fin ρ) :
@@ -44,17 +44,15 @@ end GlobalTheory.Unf.RatBlock
 open GlobalTheory.Unf.RatBlock in
 
 /- English proof (translation)
-Introduce `D V V₀ ρ d γ hq hn`. Take `⟨M, hM⟩` from `(mem_GQ_iff V γ).1 hq`. Establish `hM' : rat M = mt V γ` using `hM`. Establish `hb : (rat (d.qX * (M * d.e)) : Mx D ρ ρ) = blockX d γ`. Rewrite using `[blockX, ← hM', rat_mul, rat_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Take `⟨v, hv, hvb⟩` from `blockX_mem_UX d hn`. Establish `hent : ∀ i k, incA D ((d.qX * (M * d.e)) i k) = v.1 i k` using `fun i k => by`. Use `congrFun (congrFun (hb.trans hvb) i) k` as an intermediate fact. Conclude with `this`.
+Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdiag : ∀ i, (d.qX * (M * d.e)) i i = 1` using `fun i => incA_injective (by rw [map_one, hent]; exact ((mem_UX.1 hv) i i).2)`. Establish `hlow : ∀ i k, k < i → (d.qX * (M * d.e)) i k = 0` using `fun i k hki => incA_injective (by rw [map_zero, hent]; exact ((mem_UX.1 hv) i k).1 hki)`. Establish `hdet : (d.qX * (M * d.e)).det = 1`. Rewrite using `[Matrix.det_of_upperTriangular (fun i k (hki : k < i) => hlow i k hki)]`. Simplify using `[hdiag]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hu : IsUnit (d.qX * (M * d.e)).det` using `by rw [hdet]; exact isUnit_one`. Use `⟨d.qX * (M * d.e), (d.qX * (M * d.e))⁻¹, hb, Matrix.mul_nonsing_inv _ hu, Matrix.nonsing_inv_mul _ hu, hdiag, hlow, fun j hj i k hkj => ?_⟩` and prove the remaining obligations. Establish `hfix : γ ∈ fixer V (d.jX.submatrix id fun _ : Fin 1 => k)`. Establish `h2` using `(Subgroup.mem_inf.1 hj).2`. Conclude with `(Subgroup.mem_iInf.1 h2) ⟨k, hkj⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Apply `incA_injective` to reduce the goal to its premises. Establish `e1` using `blockX_col_of_fix d k hfix i`. Rewrite `e1` using `[← hb]`. Express the relevant statement in the definitionally equal form `incA D _ = _ at e1`. Rewrite using `[e1, Matrix.one_apply]`.
-
-Apply the tactic sequence `split_ifs <;> simp`.
+Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.Unf.ratBlock_unitri : ∀ (D : D7) (V V₀ : HSp D) (ρ : ℕ) (d : HypDec V V₀ ρ) (γ : GA D V), γ ∈ GQ V → γ ∈ flagN d → ∃ u u' : Matrix (Fin ρ) (Fin ρ) D.host.E, (rat u : Mx D ρ ρ) = blockX d γ ∧ u * u' = 1 ∧ u' * u = 1 ∧ (∀ i, u i i = 1) ∧ (∀ i k, k < i → u i k = 0) ∧ ∀ j : Fin ρ, γ ∈ Nfix d j → ∀ i k, k ≤ j → u i k = if i = k then 1 else 0 := by
   intro D V V₀ ρ d γ hq hn

@@ -21,11 +21,11 @@ def thrE {n : ℕ} (ε : Fin n → Bool) : ℝ :=
   max (thrDS ε) (16 * (n : ℝ) * (min (pOf ε) (qOf ε) : ℕ) + 8 * Real.sqrt (2 * ((min (pOf ε) (qOf ε) : ℕ) : ℝ)))
 
 /- English proof (translation)
-Establish `hpn : pOf ε ≤ n` using `(Finset.card_filter_le _ _).trans (by simp)`. Establish `hm : ((min (pOf ε) (qOf ε) : ℕ) : ℝ) ≤ n` using `by exact_mod_cast (min_le_left _ _).trans hpn`. Establish `hm0 : (0 : ℝ) ≤ ((min (pOf ε) (qOf ε) : ℕ) : ℝ)` using `Nat.cast_nonneg _`. Establish `h1` using `thrDS_le ε`. Establish `hn3 : (1 : ℝ) ≤ (n : ℝ) ^ 3` using `one_le_pow₀ (by linarith)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `thrE`. Generalize the expression as in `((min (pOf ε) (qOf ε) : ℕ) : ℝ) = q at hm hm0 ⊢`. Establish `hs0 : 0 ≤ Real.sqrt (2 * q)` using `Real.sqrt_nonneg _`. Establish `hs2 : Real.sqrt (2 * q) ^ 2 = 2 * q` using `Real.sq_sqrt (by linarith)`. Establish `hsn : Real.sqrt (2 * q) ≤ n` using `by nlinarith`.
+Replace the relevant objects with their definitions. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `max_le` to reduce the goal to its premises. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hnq : (n : ℝ) * q ≤ (n : ℝ) * n` using `mul_le_mul_of_nonneg_left hm (by linarith)`. Use the polynomial consequences of the given equalities and inequalities.
+Reduce the claim to the hypotheses of an applicable result. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem thrE_le {n : ℕ} (ε : Fin n → Bool) (hn : (5 : ℝ) ≤ n) : thrE ε ≤ 4 * (n : ℝ) ^ 3 := by
   have hpn : pOf ε ≤ n := (Finset.card_filter_le _ _).trans (by simp)
@@ -63,7 +63,7 @@ def HCAdmDSG : Prop :=
     Formalism.MainNotions.GapDS.thrDS ε < h → AdmProjAt ε σ
 
 /- English proof (translation)
-Introduce `n ε lam H _ _ _ σ hl hDS g hg hng x hx`. Establish `hσ : IsURepOn (UJset ε) σ` using `hDS.2.2.1`. Take `⟨S, hfd, hxS, hst⟩` from `hx`. Take `⟨e, he, hfix, hrange⟩` from `hc (KG ε) (muK ε) H (fun k : KG ε => σ (toMK k)) hσ.1.1 (fun a b => hσ.1.2 _ (umat_mem (a : UJ ε)) _ (umat_mem (b : UJ ε))) (fun a v => hσ.2.1 _ (umat_mem (a : UJ ε)) v) (fun v => (cont_orbit hσ v).comp continuous_subtype_val) S hfd (fun a v hv => hst _ a.2 v hv)`. Conclude with `⟨e, _, he, h n ε lam H σ hl hDS g hg hng S hfd hst, hrange, hfix x hxS⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem HCAdmDSG_of (h : HCMultDSG) (hc : CompactProj) : HCAdmDSG := by
   intro n ε lam H _ _ _ σ hl hDS g hg hng x hx
@@ -76,7 +76,7 @@ theorem HCAdmDSG_of (h : HCMultDSG) (hc : CompactProj) : HCAdmDSG := by
   exact ⟨e, _, he, h n ε lam H σ hl hDS g hg hng S hfd hst, hrange, hfix x hxS⟩
 
 /- English proof (translation)
-The claim follows from `HCAdmDSG_of h compactProj`.
+A detailed English derivation is pending.
 -/
 theorem HCAdmDSG_of_mult (h : HCMultDSG) : HCAdmDSG := HCAdmDSG_of h compactProj
 
@@ -185,13 +185,13 @@ noncomputable def thrX {n : ℕ} (ε : Fin n → Bool) : ℝ :=
   max (thrDS ε) (120 * (n : ℝ) * ((min (pOf ε) (qOf ε) : ℕ) : ℝ) ^ ((3 : ℝ) / 2))
 
 /- English proof (translation)
-Establish `hpn : pOf ε ≤ n` using `(Finset.card_filter_le _ _).trans (by simp)`. Unfold `thrE thrX`. Use `max_le_max le_rfl ?_` and prove the remaining obligations. Take `⟨m, hmd⟩ : ∃ m, min (pOf ε) (qOf ε) = m` from `⟨_, rfl⟩`. Establish `hmn : m ≤ n` using `hmd ▸ (min_le_left _ _).trans hpn`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[hmd]`. Break down `Nat.eq_zero_or_pos m with h0 | h0` into its components or cases. Substitute `h0` using the available equality. Simplify using `only [Nat.cast_zero, mul_zero, zero_add, Real.sqrt_zero]`. Rewrite using `[Real.zero_rpow (by norm_num)]`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Establish `h1 : (1 : ℝ) ≤ m` using `by exact_mod_cast h0`. Establish `hn1 : (1 : ℝ) ≤ n` using `by exact_mod_cast h0.trans_le hmn`. Establish `hmr : (m : ℝ) ≤ (m : ℝ) ^ ((3 : ℝ) / 2)`. Combine the equalities or inequalities in the displayed calculation.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `hs0 : 0 ≤ Real.sqrt (2 * (m : ℝ))` using `Real.sqrt_nonneg _`. Establish `hs2 : Real.sqrt (2 * (m : ℝ)) ^ 2 = 2 * m` using `Real.sq_sqrt (by linarith)`. Establish `hs : Real.sqrt (2 * (m : ℝ)) ≤ 2 * m` using `by nlinarith`. Establish `hA` using `mul_le_mul_of_nonneg_left hmr (show (0 : ℝ) ≤ 120 * n by positivity)`. Establish `hnm : (m : ℝ) ≤ n * m` using `by nlinarith`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
 Use the polynomial consequences of the given equalities and inequalities.
 -/
@@ -220,15 +220,15 @@ theorem thrE_le_thrX {n : ℕ} (ε : Fin n → Bool) : thrE ε ≤ thrX ε := by
     nlinarith
 
 /- English proof (translation)
-Establish `hpn : pOf ε ≤ n` using `(Finset.card_filter_le _ _).trans (by simp)`. Establish `hmn : ((min (pOf ε) (qOf ε) : ℕ) : ℝ) ≤ n` using `by exact_mod_cast (min_le_left _ _).trans hpn`. Establish `hm0 : (0 : ℝ) ≤ ((min (pOf ε) (qOf ε) : ℕ) : ℝ)` using `Nat.cast_nonneg _`. Establish `hn0 : (0 : ℝ) < n` using `by linarith`. Establish `hpow : ((min (pOf ε) (qOf ε) : ℕ) : ℝ) ^ ((3 : ℝ) / 2) ≤ (n : ℝ) ^ ((3 : ℝ) / 2)` using `Real.rpow_le_rpow hm0 hmn (by norm_num)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsplit : (n : ℝ) ^ ((3 : ℝ) / 2) = n * Real.sqrt n`. Rewrite using `[show (3 : ℝ) / 2 = 1 + 1 / 2 by norm_num, Real.rpow_add hn0, Real.rpow_one, Real.sqrt_eq_rpow]`. Establish `hs0 : 0 ≤ Real.sqrt (n : ℝ)` using `Real.sqrt_nonneg _`. Establish `hs2 : Real.sqrt (n : ℝ) ^ 2 = n` using `Real.sq_sqrt hn0.le`. Establish `h30 : (30 : ℝ) ≤ Real.sqrt (n : ℝ)` using `by nlinarith`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `thrDS_le ε`. Establish `hn3 : (1 : ℝ) ≤ (n : ℝ) ^ 3` using `one_le_pow₀ (by linarith)`. Unfold `thrX`. Apply `max_le` to reduce the goal to its premises. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Rewrite `hpow` using `[hsplit]`. Establish `hB : 120 * (n : ℝ) * ((min (pOf ε) (qOf ε) : ℕ) : ℝ) ^ ((3 : ℝ) / 2) ≤ 120 * n * (n * Real.sqrt n)` using `mul_le_mul_of_nonneg_left hpow (by positivity)`. Establish `hC : 120 * (n : ℝ) * (n * Real.sqrt n) ≤ 4 * (n : ℝ) ^ 3`. Generalize the expression as in `Real.sqrt (n : ℝ) = s at hs0 hs2 h30 ⊢`. Rewrite using `[← hs2]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Rewrite the conclusion using the stated equalities.
 
-Use polynomial arithmetic with `[mul_nonneg (pow_nonneg hs0 5) (sub_nonneg.2 h30)]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Use the polynomial consequences of the given equalities and inequalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem thrX_le {n : ℕ} (ε : Fin n → Bool) (hn : (900 : ℝ) ≤ n) : thrX ε ≤ 4 * (n : ℝ) ^ 3 := by
   have hpn : pOf ε ≤ n := (Finset.card_filter_le _ _).trans (by simp)
@@ -269,7 +269,7 @@ def DiscreteSeriesExistsFallback : Prop :=
       (σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)), IsDS ε lam σ
 
 /- English proof (translation)
-Introduce `n ε lam hl g hg hlt`. Conclude with `h n ε lam hl g hg (lt_of_le_of_lt (Formalism.MainNotions.GapDS.thrE_le_thrX ε) hlt)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem exists_fallback_of_exists_gapped (h : DiscreteSeriesExistsG) : DiscreteSeriesExistsFallback := by
   intro n ε lam hl g hg hlt

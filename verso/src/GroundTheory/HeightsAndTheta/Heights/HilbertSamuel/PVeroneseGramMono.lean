@@ -16,15 +16,15 @@ namespace VeroneseGramMono
 variable {D : ℕ}
 
 /- English proof (translation)
-Establish `hs : ∀ g : Fin (D + 1) × Fin (D + 1) → ℝ, ∑ q : Ix (Veronese.Idx D), g q.2.1 = ∑ p, if p.1 ≤ p.2 then g p else 0`. Introduce `g`. Rewrite using `[Fintype.sum_sigma, Fintype.sum_unique, ← Finset.sum_filter]`. Conclude with `(Finset.sum_subtype _ (fun p => by simp) g).symm`. Establish `hw : ∀ q : Ix (Veronese.Idx D), Veronese.wt q = if q.2.1.1 = q.2.1.2 then 1 else 2` using `fun q => rfl`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [hw]`. Rewrite using `[hs (fun p => (if p.1 = p.2 then 1 else 2) * (a p.1 * a p.2)), sq, Finset.sum_mul_sum, ← Fintype.sum_prod_type']`. Establish `hswap : ∑ p : Fin (D + 1) × Fin (D + 1), (if p.2 < p.1 then a p.1 * a p.2 else 0) = ∑ p : Fin (D + 1) × Fin (D + 1), (if p.1 < p.2 then a p.1 * a p.2 else 0)`. Rewrite using `[← (Equiv.prodComm _ _).sum_comp]`. Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [Equiv.prodComm_apply, Prod.fst_swap, Prod.snd_swap, mul_comm]`. Establish `hsplit : ∑ p : Fin (D + 1) × Fin (D + 1), a p.1 * a p.2 = ∑ p : Fin (D + 1) × Fin (D + 1), ((if p.1 ≤ p.2 then a p.1 * a p.2 else 0) + (if p.2 < p.1 then a p.1 * a p.2 else 0))`. Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations. Break down `le_or_gt p.1 p.2 with h | h` into its components or cases. Simplify using `[h, not_lt.mpr h]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[h, not_le.mpr h]`. Rewrite using `[hsplit, Finset.sum_add_distrib, hswap, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations. Break down `lt_trichotomy p.1 p.2 with h | h | h` into its components or cases. Simplify using `[h.le, h.ne, h]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Simplify using `[h]`. Simplify using `[not_le.mpr h, not_lt.mpr h.le]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sum_wt_mul (a : Fin (D + 1) → ℝ) :
     ∑ q : Ix (Veronese.Idx D), Veronese.wt q * (a q.2.1.1 * a q.2.1.2) = (∑ i, a i) ^ 2 := by
@@ -59,9 +59,9 @@ theorem sum_wt_mul (a : Fin (D + 1) → ℝ) :
   · simp [not_le.mpr h, not_lt.mpr h.le]
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `‖WithLp.toLp 2 (Veronese.scale D (Veronese.map D w))‖ = _`. Rewrite using `[EuclideanSpace.norm_eq]`. Establish `h : ∀ q : Ix (Veronese.Idx D), ‖Veronese.scale D (Veronese.map D w) q‖ ^ 2 = Veronese.wt q * (‖w q.2.1.1‖ ^ 2 * ‖w q.2.1.2‖ ^ 2)` using `fun q => by`. Simplify using `only [Veronese.scale, Veronese.map, norm_mul, Complex.norm_real, Real.norm_of_nonneg (Real.sqrt_nonneg _), mul_pow, Real.sq_sqrt (Veronese.wt_pos q).le]`. Simplify using `only [h]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[sum_wt_mul (fun i => ‖w i‖ ^ 2)]`. Conclude with `Real.sqrt_sq (normSq2_nonneg w)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rho_map (w : Fin (D + 1) → ℂ) :
     (Veronese.metric D).ρ (Veronese.map D w) = normSq2 w := by
@@ -76,7 +76,7 @@ theorem rho_map (w : Fin (D + 1) → ℂ) :
   exact Real.sqrt_sq (normSq2_nonneg w)
 
 /- English proof (translation)
-Establish `h : conjPt (Veronese.map D w) = Veronese.map D (fun i => starRingEnd ℂ (w i))`. Use function extensionality and compare the values at `q`. Simplify using `[conjPt, Veronese.map, map_mul]`. Rewrite using `[h, rho_map]`. Simplify using `[normSq2]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem rho_conj_map (w : Fin (D + 1) → ℂ) :
     (Veronese.metric D).ρ (conjPt (Veronese.map D w)) = normSq2 w := by
@@ -87,7 +87,7 @@ theorem rho_conj_map (w : Fin (D + 1) → ℂ) :
   simp [normSq2]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `q`. Simplify using `[conjPt, Veronese.map, map_mul]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem conjPt_map (w : Fin (D + 1) → ℂ) :
     conjPt (Veronese.map D w) = Veronese.map D (fun i => starRingEnd ℂ (w i)) := by
@@ -98,9 +98,9 @@ def phi (D : ℕ) : MvPolynomial (Ix (Veronese.Idx D)) ℚ →ₐ[ℚ] MvPolynom
   bind₁ fun q => X q.2.1.1 * X q.2.1.2
 
 /- English proof (translation)
-Proceed by induction on `f using MvPolynomial.induction_on with`. Consider the case `C a`. Rewrite using `[aeval_C, phi, bind₁_C_right]`. Conclude with `congrArg (fun g : ℚ →+* Veronese.Fld D => g a) (Subsingleton.elim _ ((algebraMap (MvPolynomial (Fin (D + 1)) ℚ) (Veronese.Fld D)).comp C))`. Consider the case `add p q hp hq => rw [map_add, map_add, map_add, hp, hq]`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately.
 
-Consider the case `mul_X p q hp`. Rewrite using `[map_mul, map_mul, map_mul, hp, aeval_X]`. Simplify using `[phi, Veronese.x, Veronese.t]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem aeval_alt (f : MvPolynomial (Ix (Veronese.Idx D)) ℚ) :
     aeval (Veronese.x D) f = algebraMap (MvPolynomial (Fin (D + 1)) ℚ) (Veronese.Fld D) (phi D f) := by
@@ -115,7 +115,7 @@ theorem aeval_alt (f : MvPolynomial (Ix (Veronese.Idx D)) ℚ) :
     simp [phi, Veronese.x, Veronese.t]
 
 /- English proof (translation)
-Apply `IsFractionRing.injective (MvPolynomial (Fin (D + 1)) ℚ) (Veronese.Fld D)` to reduce the goal to its premises. Rewrite using `[← aeval_alt, h]`. Simplify using `[map_sum, map_mul, map_prod, map_pow, Veronese.t]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem phi_eq {N : ℕ} (b : MvPolynomial (Ix (Veronese.Idx D)) ℚ)
     (c : Fin (Finset.Nat.antidiagonalTuple (D + 1) N).card → ℤ)
@@ -126,7 +126,7 @@ theorem phi_eq {N : ℕ} (b : MvPolynomial (Ix (Veronese.Idx D)) ℚ)
   simp [map_sum, map_mul, map_prod, map_pow, Veronese.t]
 
 /- English proof (translation)
-Rewrite using `[phi, aeval_bind₁, eval_map, aeval_def]`. Use `congr 1`. Use function extensionality and compare the values at `q`. Simplify using `[Veronese.map]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem eval_map_phi (w : Fin (D + 1) → ℂ) (f : MvPolynomial (Ix (Veronese.Idx D)) ℚ) :
     eval (Veronese.map D w) (MvPolynomial.map (algebraMap ℚ ℂ) f) = aeval w (phi D f) := by
@@ -136,7 +136,7 @@ theorem eval_map_phi (w : Fin (D + 1) → ℂ) (f : MvPolynomial (Ix (Veronese.I
   simp [Veronese.map]
 
 /- English proof (translation)
-Rewrite using `[eval_map_phi, phi_eq b c h]`. Simplify using `[map_sum, map_mul, map_prod, map_pow]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem eval_b {N : ℕ} (w : Fin (D + 1) → ℂ) (b : MvPolynomial (Ix (Veronese.Idx D)) ℚ)
     (c : Fin (Finset.Nat.antidiagonalTuple (D + 1) N).card → ℤ)
@@ -147,7 +147,7 @@ theorem eval_b {N : ℕ} (w : Fin (D + 1) → ℂ) (b : MvPolynomial (Ix (Verone
   simp [map_sum, map_mul, map_prod, map_pow]
 
 /- English proof (translation)
-Rewrite using `[conjPt_map, eval_b _ b c h]`. Simplify using `[map_sum, map_mul, map_prod, map_pow]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem eval_conj_b {N : ℕ} (w : Fin (D + 1) → ℂ) (b : MvPolynomial (Ix (Veronese.Idx D)) ℚ)
     (c : Fin (Finset.Nat.antidiagonalTuple (D + 1) N).card → ℤ)
@@ -161,14 +161,14 @@ def ex (D N : ℕ) (l : Fin (Finset.Nat.antidiagonalTuple (D + 1) N).card) : Fin
   Finsupp.equivFunOnFinite.symm (adtEnum D N l)
 
 /- English proof (translation)
-Rewrite using `[Finsupp.degree_eq_sum]`. Simplify `adtEnum_sum D N l` using `[ex]`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem ex_degree {N : ℕ} (l : Fin (Finset.Nat.antidiagonalTuple (D + 1) N).card) : (ex D N l).degree = N := by
   rw [Finsupp.degree_eq_sum]
   simpa [ex] using adtEnum_sum D N l
 
 /- English proof (translation)
-Rewrite using `[eval_monomial, one_mul, Finsupp.prod_fintype _ _ (fun i => pow_zero _)]`. Simplify using `[ex]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem eval_ex {N : ℕ} (l : Fin (Finset.Nat.antidiagonalTuple (D + 1) N).card) (w : Fin (D + 1) → ℂ) :
     eval w (monomial (ex D N l) (1 : ℂ)) = ∏ i, w i ^ adtEnum D N l i := by
@@ -176,14 +176,14 @@ theorem eval_ex {N : ℕ} (l : Fin (Finset.Nat.antidiagonalTuple (D + 1) N).card
   simp [ex]
 
 /- English proof (translation)
-Rewrite using `[rho_map, pow_mul (norm2 w), norm2, Real.sq_sqrt (normSq2_nonneg w)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem veroneseMetric_pow_eq (w : Fin (D + 1) → ℂ) (n : ℕ) :
     (Veronese.metric D).ρ (Veronese.map D w) ^ (2 * n) = norm2 w ^ (2 * (2 * n)) := by
   rw [rho_map, pow_mul (norm2 w), norm2, Real.sq_sqrt (normSq2_nonneg w)]
 
 /- English proof (translation)
-Rewrite using `[rho_conj_map, pow_mul (norm2 w), norm2, Real.sq_sqrt (normSq2_nonneg w)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem veroneseMetric_conj_pow_eq (w : Fin (D + 1) → ℂ) (n : ℕ) :
     (Veronese.metric D).ρ (conjPt (Veronese.map D w)) ^ (2 * n) = norm2 w ^ (2 * (2 * n)) := by
@@ -196,9 +196,9 @@ variable {n r : ℕ} (b : Fin r → MvPolynomial (Ix (Veronese.Idx D)) ℚ)
 include hA
 
 /- English proof (translation)
-Unfold `pairVal`. Rewrite using `[veroneseMetric_pow_eq, eval_b w (b k) _ (hA k), eval_b w (b l) _ (hA l)]`. Simplify using `only [monoInner, eval_ex]`. Rewrite using `[map_sum, Finset.sum_mul_sum, Finset.sum_div]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Finset.sum_div]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Simplify using `only [map_mul, map_intCast]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem pairVal_map (k l : Fin r) (w : Fin (D + 1) → ℂ) :
     pairVal (Veronese.metric D) n (b k) (b l) (Veronese.map D w) =
@@ -214,9 +214,9 @@ theorem pairVal_map (k l : Fin r) (w : Fin (D + 1) → ℂ) :
   ring
 
 /- English proof (translation)
-Unfold `pairVal`. Rewrite using `[veroneseMetric_conj_pow_eq, eval_conj_b w (b k) _ (hA k), eval_conj_b w (b l) _ (hA l), Complex.conj_conj]`. Simplify using `only [monoInner, eval_ex]`. Rewrite using `[map_sum, Finset.sum_mul_sum, Finset.sum_div]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Finset.sum_div]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Simplify using `only [map_mul, map_intCast, map_prod, map_pow]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem pairVal_conj_map (k l : Fin r) (w : Fin (D + 1) → ℂ) :
     pairVal (Veronese.metric D) n (b k) (b l) (conjPt (Veronese.map D w)) =
@@ -233,7 +233,7 @@ theorem pairVal_conj_map (k l : Fin r) (w : Fin (D + 1) → ℂ) :
 
 omit hA in
 /- English proof (translation)
-The claim follows from `(continuous_monoInner_rep (ex_degree i) (ex_degree j)).integrable_of_hasCompactSupport (HasCompactSupport.of_compactSpace _)`.
+A detailed English derivation is pending.
 -/
 theorem integrable_monoInner_ex (i j : Fin (Finset.Nat.antidiagonalTuple (D + 1) (2 * n)).card) :
     Integrable (fun p : CP D => monoInner (2 * n) (ex D (2 * n) i) (ex D (2 * n) j) p.rep) (CP.fsMeasure D) :=
@@ -243,9 +243,9 @@ theorem integrable_monoInner_ex (i j : Fin (Finset.Nat.antidiagonalTuple (D + 1)
 omit hA in
 
 /- English proof (translation)
-Use `split_ifs with h`. Substitute `h` using the available equality. Establish `e` using `integral_monoInner_self (N := D) (ex D (2 * n) i)`. Rewrite `e` using `[ex_degree]`. Rewrite using `[e, monoNormSq, adtEnum_sum]`.
+Substitute using the available equality. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Simplify using `[ex]`. Establish `hne : ex D (2 * n) i ≠ ex D (2 * n) j` using `fun e => h (adtEnum_injective D _ (by simpa [ex] using e))`. Establish `e` using `integral_monoInner_eq_zero hne ((ex_degree j).trans (ex_degree i).symm)`. Rewrite `e` using `[ex_degree]`. Then use the resulting hypothesis.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem integral_monoInner_ex (i j : Fin (Finset.Nat.antidiagonalTuple (D + 1) (2 * n)).card) :
     ∫ p : CP D, monoInner (2 * n) (ex D (2 * n) i) (ex D (2 * n) j) p.rep ∂CP.fsMeasure D =
@@ -263,9 +263,9 @@ theorem integral_monoInner_ex (i j : Fin (Finset.Nat.antidiagonalTuple (D + 1) (
     rwa [ex_degree] at e
 
 /- English proof (translation)
-Establish `hi : ∀ i j, Integrable (fun p : CP D => ((A k i : ℂ) * (A l j : ℂ)) * monoInner (2 * n) (ex D (2 * n) j) (ex D (2 * n) i) p.rep) (CP.fsMeasure D)` using `fun i j => (integrable_monoInner_ex j i).const_mul _`. Repeatedly rewrite using `[pairVal_map b A hA k l]`. Rewrite using `[integral_finsetSum _ fun i _ => integrable_finsetSum _ fun j _ => hi i j, Complex.ofReal_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[integral_finsetSum _ fun j _ => hi i j]`.
+Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [integral_const_mul, integral_monoInner_ex, mul_ite, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem integral_pairVal (k l : Fin r) :
     ∫ p : CP D, pairVal (Veronese.metric D) n (b k) (b l) (Veronese.map D p.rep) ∂CP.fsMeasure D =
@@ -283,9 +283,9 @@ theorem integral_pairVal (k l : Fin r) :
   ring
 
 /- English proof (translation)
-Establish `hi : ∀ i j, Integrable (fun p : CP D => ((A k i : ℂ) * (A l j : ℂ)) * monoInner (2 * n) (ex D (2 * n) i) (ex D (2 * n) j) p.rep) (CP.fsMeasure D)` using `fun i j => (integrable_monoInner_ex i j).const_mul _`. Repeatedly rewrite using `[pairVal_conj_map b A hA k l]`. Rewrite using `[integral_finsetSum _ fun i _ => integrable_finsetSum _ fun j _ => hi i j, Complex.ofReal_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[integral_finsetSum _ fun j _ => hi i j]`.
+Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [integral_const_mul, integral_monoInner_ex, mul_ite, mul_zero, Finset.sum_ite_eq, Finset.mem_univ, if_true]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem integral_pairVal_conj (k l : Fin r) :
     ∫ p : CP D, pairVal (Veronese.metric D) n (b k) (b l) (conjPt (Veronese.map D p.rep)) ∂CP.fsMeasure D =
@@ -305,9 +305,9 @@ theorem integral_pairVal_conj (k l : Fin r) :
 end VeroneseGramMono
 
 /- English proof (translation)
-Introduce `D n r b A hA`. Use extensionality with `k l`. Express the relevant statement in the definitionally equal form `(1 / 2) * ((∫ p : CP D, pairVal (Veronese.metric D) n (b k) (b l) (Veronese.map D p.rep) ∂CP.fsMeasure D).re + (∫ p : CP D, pairVal (Veronese.metric D) n (b k) (b l) (conjPt (Veronese.map D p.rep)) ∂CP.fsMeasure D).re) = _`. Rewrite using `[VeroneseGramMono.integral_pairVal b A hA, VeroneseGramMono.integral_pairVal_conj b A hA, Complex.ofReal_re]`. Rewrite using `[Matrix.mul_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Matrix.mul_diagonal, Matrix.transpose_apply, Matrix.map_apply]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem VeroneseGramMono.proof : VeroneseGramMono.Statement := by
   intro D n r b A hA

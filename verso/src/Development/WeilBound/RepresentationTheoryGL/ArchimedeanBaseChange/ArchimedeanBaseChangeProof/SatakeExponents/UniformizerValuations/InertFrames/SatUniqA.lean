@@ -13,23 +13,21 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 namespace PositivityTheory.Rg.BcB.F.Inert
 
 /- English proof (translation)
-Introduce `E _ _ _ n w hw b b' ϖ ϖ' q q' σ α α' hb hb' hϖ hϖ' hU hU' hS hS'`. Take `⟨p, σ₁, hp, hα, ⟨e1⟩⟩` from `hS`. Take `⟨p', σ₂, hp', hα', ⟨e2⟩⟩` from `hS'`. Establish `hq : q = q'` using `Nat.pow_left_injective two_ne_zero (hU.2.2.2.2.2.2.symm.trans hU'.2.2.2.2.2.2)`. Substitute `hq` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality.
 
-Establish `hb2 : cT (cj w) b.1 * b.1 = antiJ _ n` using `hb.2`. Establish `hb'2 : cT (cj w) b'.1 * b'.1 = antiJ _ n` using `hb'.2`. Establish `hkm : b⁻¹ * b' ∈ GU (cj w) n`. Establish `hc : cT (cj w) (b⁻¹).1 * cT (cj w) b.1 = 1` using `by rw [← cT_mul, Units.mul_inv, cT_one]`. Establish `hd : b.1 * (b⁻¹).1 = 1` using `Units.mul_inv b`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `_ * _ * _ = _`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Units.val_mul, cT_mul, ← hb2]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = antiJ _ n := by rw [hc, hd, Matrix.mul_one, Matrix.mul_one, hb'2]`.
+Express the relevant assertion in an equivalent form by its definition. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Set `k : GU (cj w) n` to `⟨b⁻¹ * b', hkm⟩`. Establish `hcomm : ∀ u, p u * k = k * p' u` using `fun u => Subtype.ext (by`. Rewrite using `[Subgroup.coe_mul, Subgroup.coe_mul, hp, hp']`. Use `show b⁻¹ * u.1 * b * (b⁻¹ * b') = b⁻¹ * b' * (b'⁻¹ * u.1 * b')`. Use the proof step `group)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `L1` to `e1.toLinearEquiv`. Set `L2` to `e2.toLinearEquiv`. Establish `h1 : ∀ g v, L1 (σ.ρ g v) = σ₁.ρ (p g) (L1 v)` using `fun g v => LinearMap.congr_fun (e1.isIntertwining' g) v`. Establish `h2 : ∀ g v, L2 (σ.ρ g v) = σ₂.ρ (p' g) (L2 v)` using `fun g v => LinearMap.congr_fun (e2.isIntertwining' g) v`. Set `F : σ₁.V →ₗ[ℂ] σ₂.V` to `L2.toLinearMap ∘ₗ L1.symm.toLinearMap ∘ₗ σ₁.ρ k`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hF : ∀ g y, F (σ₁.ρ g y) = σ₂.ρ g (F y)`. Introduce `g y`. Take `⟨u, rfl⟩` from `p'.surjective g`. Establish `e : ∀ z, L1.symm (σ₁.ρ (p u) z) = σ.ρ u (L1.symm z)` using `fun z => by`. Apply `L1.injective` to reduce the goal to its premises.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1, L1.apply_symm_apply, L1.apply_symm_apply]`. Simplify using `only [F, LinearMap.comp_apply, LinearEquiv.coe_coe]`. Rewrite using `[← Module.End.mul_apply, ← map_mul, ← hcomm u, map_mul, Module.End.mul_apply, e, h2]`. Establish `hkinj : Function.Injective (σ₁.ρ k)` using `fun a c h => by`. Establish `h'` using `congrArg (σ₁.ρ k⁻¹) h`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite `h'` using `[← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one, ← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one]`. Then use the resulting hypothesis. Establish `hFinj : Function.Injective F` using `L2.injective.comp (L1.symm.injective.comp hkinj)`. Take `⟨x, hx⟩` from `hα.exists_vec`. Establish `hFx : F x ≠ 0` using `fun h => hx.1 (hFinj (h.trans (map_zero F).symm))`. Establish `h2x : GlobalTheory.LFun.IsSatVecU (ϖ : w.adicCompletion E) q σ₂.ρ (F x) α` using `hx.map hU F hF hFx`.
-
-Establish `h3 : GlobalTheory.LFun.IsSatVecU (ϖ' : w.adicCompletion E) q σ₂.ρ (F x) α` using `h2x.of_unif hU hU'`. Conclude with `h3.unique hU' (hα'.2 _ h2x.2.1 hFx)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem satUniq : SatUniq := by
   intro E _ _ _ n w hw b b' ϖ ϖ' q q' σ α α' hb hb' hϖ hϖ' hU hU' hS hS'

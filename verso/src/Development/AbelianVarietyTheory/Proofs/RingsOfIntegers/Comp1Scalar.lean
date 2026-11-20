@@ -6,9 +6,9 @@ noncomputable section
 namespace GlobalTheory.AdditiveBiext
 variable {R : Type} [CommRing R] {d : ℕ}
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Establish `h : ∀ (j : Fin 1) (l : Fin d), constantCoeff ((![p] : Fin 1 → Pt R n d) j l) = 0`. Introduce `j l`. Use `fin_cases j`. Simplify using `using hp l`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Replace the relevant objects with their definitions.
 
-Unfold `comp1`. Rewrite using `[ev_mul _ h, ev_C, ev_X _ h]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma comp1_scalar {n : ℕ} (a : R) (p : Pt R n d) (hp : ∀ i, constantCoeff (p i) = 0) :
     comp1 (fun i => (C a * X ((0:Fin 1), i) : PS R 1 d)) p = fun i => C a * p i := by
@@ -18,9 +18,9 @@ lemma comp1_scalar {n : ℕ} (a : R) (p : Pt R n d) (hp : ∀ i, constantCoeff (
   unfold comp1
   rw [ev_mul _ h, ev_C, ev_X _ h]; simp
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Establish `h : ∀ (j : Fin 2) (l : Fin d), constantCoeff ((![p, q] : Fin 2 → Pt R n d) j l) = 0`. Introduce `j l`. Use `fin_cases j`. Simplify using `using hp l`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using hq l`. Use `show ev ![p, q] (X ((0 : Fin 2), i) + X ((1 : Fin 2), i)) = _`. Rewrite using `[ev_add _ h, ev_X _ h, ev_X _ h]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma addLaw_add {n : ℕ} (p q : Pt R n d) (hp : ∀ i, constantCoeff (p i) = 0) (hq : ∀ i, constantCoeff (q i) = 0) :
     (addLaw R d).add p q = fun i => p i + q i := by
@@ -52,7 +52,7 @@ def scalarAct (R : Type) [CommRing R] (d : ℕ) : OAct R (addLaw R d) where
 def additiveFB (R : Type) [CommRing R] [StarRing R] (d : ℕ) : FB R d R := FB.triv (addLaw R d) (scalarAct R d)
 
 /- English proof (translation)
-Introduce `R _ _ d` and use `⟨additiveFB R d, fun _ => rfl, fun _ _ => rfl⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem main : ∀ (R : Type) [CommRing R] [StarRing R] (d : ℕ), ∃ B : FB R d R,
     (∀ i, B.G.F i = X ((0 : Fin 2), i) + X ((1 : Fin 2), i)) ∧ ∀ a i, B.A.act a i = C a * X ((0 : Fin 1), i) :=

@@ -10,7 +10,7 @@ open scoped BigOperators
 namespace GlobalTheory.ArchTop
 
 /- English proof (translation)
-Introduce `hI`. Take `⟨C, hC, h⟩` from `GlobalTheory.ArchNorm.norm_meanInf_posLog_le`. Use `⟨C, hC, ?_⟩` and prove the remaining obligations. Introduce `D cc δ t0 Q hc ht hQ K _ _ _ σ ι N B L P P' zA zA' hN hB h1 hL hd hs hn i`. Conclude with `⟨h D (hI D) cc δ t0 Q hc ht hQ K σ N B L (P i) (zA i) hN hB h1 hL hd (hs i).1 (hn i).1, h D (hI D) cc δ t0 Q hc ht hQ K σ N B L (P' i) (zA' i) hN hB h1 hL hd (hs i).2 (hn i).2⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem archSt_of_inp : (∀ D, Inp D) → ArchSt := by
   intro hI

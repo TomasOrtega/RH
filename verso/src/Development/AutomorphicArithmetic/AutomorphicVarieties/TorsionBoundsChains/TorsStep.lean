@@ -4,7 +4,7 @@ import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.TorsSte
 open CategoryTheory UpperTheory.V.KH
 
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.Qf15.torsStep`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.KH.torsStep :
     ∀ (A B C : Type) [AddCommGroup A] [AddCommGroup B] [AddCommGroup C] (f : A →+ B) (g : B →+ C)

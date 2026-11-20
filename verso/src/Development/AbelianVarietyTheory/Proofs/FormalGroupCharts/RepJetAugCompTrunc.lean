@@ -10,21 +10,21 @@ namespace GlobalTheory.JetSer
 variable {R : Type} [CommRing R]
 
 /- English proof (translation)
-The claim follows from `jet_ext fun j => (jetAug_zR m j).trans (jetAug_zR (m + 1) j).symm`.
+A detailed English derivation is pending.
 -/
 theorem rep_jetAug_comp_trunc (κ : Type) (m : ℕ) :
     (jetAug R κ m).comp (jetTruncR R κ m) = jetAug R κ (m + 1) :=
   jet_ext fun j => (jetAug_zR m j).trans (jetAug_zR (m + 1) j).symm
 
 /- English proof (translation)
-The claim follows from `jet_ext fun j => (jetAug_zR 0 j).trans (jetAug_zR m j).symm`.
+A detailed English derivation is pending.
 -/
 theorem rep_jetAug_comp_zero (κ : Type) (m : ℕ) :
     (jetAug R κ 0).comp (jetZeroR R κ m) = jetAug R κ m :=
   jet_ext fun j => (jetAug_zR 0 j).trans (jetAug_zR m j).symm
 
 /- English proof (translation)
-Use `⟨hx.1, fun m => ?_⟩` and prove the remaining obligations. Rewrite using `[← rep_jetAug_comp_zero, ← spMap_comp, Category.assoc, hx.2.1 m]`. Conclude with `MonObj.comp_one _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isFPt_of_isUnivChart {G : Over (Spec (CommRingCat.of R))} [GrpObj G] {d : ℕ} {x : Fam G (Fin d)}
     (hx : IsUnivChart G d x) : IsFPt x := by
@@ -33,31 +33,29 @@ theorem isFPt_of_isUnivChart {G : Over (Spec (CommRingCat.of R))} [GrpObj G] {d 
   exact MonObj.comp_one _
 
 /- English proof (translation)
-Introduce `R _ G _ d x hx κ _`. Take `⟨hτ, htr, hinj, hsur, hsub⟩` from `hJ R κ`. Establish `hxa` using `(isFPt_of_isUnivChart hx).2`. Establish `haug : ∀ (a : Fin d → MvPowerSeries κ R), (∀ j, constantCoeff (a j) = 0) → ∀ m (ψ : JetR R (Fin d) m →ₐ[R] JetR R κ m), (∀ j, ψ (zR m j) = toJet m (a j)) → (jetAug R κ m).comp ψ = jetAug R (Fin d) m`. Introduce `a ha m ψ hψ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `jet_ext fun j => ?_` and prove the remaining obligations. Rewrite using `[AlgHom.comp_apply, hψ, (htr m _).2, ha, jetAug_zR]`. Establish `hfp : ∀ a (y : Fam G κ), Rep x a y → IsFPt y`. Introduce and unpack `a y ⟨ha, hy⟩`. Use `choose ψ hψ hy using hy`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun m => ?_, fun m => ?_⟩` and prove the remaining obligations. Establish `e : (jetTruncR R κ m).comp (ψ (m + 1)) = (ψ m).comp (jetTruncR R (Fin d) m)`. Use `jet_ext fun j => ?_` and prove the remaining obligations. Rewrite using `[AlgHom.comp_apply, hψ, (htr m _).1]`. Conclude with `(hψ m j).symm`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hy, hy, ← Category.assoc, spMap_comp, e, ← spMap_comp, Category.assoc, hx.1]`. Rewrite using `[hy, ← Category.assoc, spMap_comp, haug a ha m _ (hψ m), hxa]`. Use `⟨fun a ha => ?_, fun y hy => ?_, hfp, ⟨fun j => by simp, fun m => ?_⟩, ?_⟩` and prove the remaining obligations. Use `choose ψ hψ using fun m => (hsub (Fin d) a ha m).1`. Use `⟨fun m => spMap (ψ m) ≫ x m, ⟨ha, fun m => ⟨ψ m, hψ m, rfl⟩⟩, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result.
 
-Introduce and unpack `y ⟨-, hy⟩`. Use function extensionality and compare the values at `m`. Take `⟨ψ', h1, h2⟩` from `hy m`. Establish `: ψ' = ψ m` using `jet_ext fun j => (h1 j).trans (hψ m j).symm`. Rewrite using `[h2, this]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hU` using `fun m => hx.2.2 (JetR R κ m) (jetAug R κ m) m (ker_jetAug_pow κ m) (y m) (hy.2 m) choose ψ hψ hu using hU`. Establish `hc : ∀ m, (jetTruncR R κ m).comp (ψ (m + 1)) = (ψ m).comp (jetTruncR R (Fin d) m)`. Introduce `m`. Establish `hk : RingHom.ker (jetAug R κ m) ^ (m + 1 + 1) = ⊥`. Rewrite using `[pow_succ (RingHom.ker (jetAug R κ m)) (m + 1), ker_jetAug_pow, Ideal.bot_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `(hx.2.2 (JetR R κ m) (jetAug R κ m) (m + 1) hk (y m) (hy.2 m)).unique ⟨?_, ?_⟩ ⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← AlgHom.comp_assoc, rep_jetAug_comp_trunc, (hψ (m + 1)).1]`. Rewrite using `[← spMap_comp, Category.assoc, ← (hψ (m + 1)).2, hy.1 m]`. Rewrite using `[← AlgHom.comp_assoc, (hψ m).1, rep_jetAug_comp_trunc]`. Rewrite using `[← spMap_comp, Category.assoc, hx.1 m, ← (hψ m).2]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hex : ∀ j, ∃ g : MvPowerSeries κ R, ∀ m, toJet m g = ψ m (zR m j)` using `fun j => hsur (fun m => ψ m (zR m j)) (fun m => AlgHom.congr_fun (hc m) (zR (m + 1) j))`. Use `choose a ha using hex`. Use `⟨a, ⟨fun j => ?_, fun m => ⟨ψ m, fun j => (ha j m).symm, (hψ m).2⟩⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[← (htr 0 _).2, ha, ← jetAug_zR (R := R) 0 j]`. Conclude with `AlgHom.congr_fun (hψ 0).1 _`.
+Assume the hypotheses and unpack their components. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `a' ⟨ha', hy'⟩`. Use function extensionality and compare the values at `j`. Use `hinj _ _ fun m => ?_` and prove the remaining obligations. Take `⟨ψ', h1, h2⟩` from `hy' m`. Rewrite using `[ha, ← h1, hu m ψ' ⟨haug a' ha' m ψ' h1, h2⟩]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Use `⟨(Algebra.ofId R _).comp (jetAug R (Fin d) m), fun j => ?_, ?_⟩` and prove the remaining obligations. Take `⟨τ, h, -⟩` from `hτ m`. Rewrite using `[AlgHom.comp_apply, jetAug_zR, map_zero, Pi.zero_apply, ← h, map_zero]`. Rewrite using `[← spMap_comp, Category.assoc, hxa]`. Conclude with `(MonObj.comp_one _).symm`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `κ' _ b ψ hb hψ a y ⟨ha, hy⟩`. Take `⟨-, htr', -, -, hsub'⟩` from `hJ R κ'`. Establish `hs` using `fun m => (hsub' κ b hb m).2 (ψ m) (hψ m)`. Use `⟨fun j => ?_, fun m => ?_⟩` and prove the remaining obligations. Establish `e : (jetAug R κ' 0).comp (ψ 0) = jetAug R κ 0`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `jet_ext fun i => ?_` and prove the remaining obligations. Rewrite using `[AlgHom.comp_apply, hψ, (htr' 0 _).2, hb, jetAug_zR]`. Rewrite using `[← (htr' 0 _).2, ← hs, ← ha j, ← (htr 0 _).2]`. Conclude with `AlgHom.congr_fun e _`. Take `⟨φ, h1, h2⟩` from `hy m`.
-
-Use `⟨(ψ m).comp φ, fun j => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[AlgHom.comp_apply, h1, hs]`. Use `show spMap (ψ m) ≫ y m = _`. Rewrite using `[h2, ← Category.assoc, spMap_comp]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem repSt_of_jetAlgSt (hJ : JetAlgSt) : RepSt := by
   intro R _ G _ d x hx κ _

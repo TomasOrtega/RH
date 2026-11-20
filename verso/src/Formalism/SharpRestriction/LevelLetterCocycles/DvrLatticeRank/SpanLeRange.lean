@@ -19,13 +19,13 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     (W : LocWach PD LL O v n) (T : LocLat G Qp LL O) (c : ZMod n) (ζ : LL)
 
 /- English proof (translation)
-The claim follows from `W.N_φ T x hx`.
+A detailed English derivation is pending.
 -/
 theorem N_φ' (x : W.DD T) (hx : x ∈ W.N T) : ∃ k : ℕ, W.Q ^ k • W.φD T x ∈ W.N T :=
   W.N_φ T x hx
 
 /- English proof (translation)
-Rewrite using `[show K = (K - k) + k by omega, pow_add, mul_smul]`. Conclude with `Submodule.smul_mem _ _ hk`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Qpow_mono {x : W.DD T} {k K : ℕ} (hk : W.Q ^ k • W.φD T x ∈ W.N T) (hK : k ≤ K) :
     W.Q ^ K • W.φD T x ∈ W.N T := by
@@ -33,7 +33,7 @@ theorem Qpow_mono {x : W.DD T} {k K : ℕ} (hk : W.Q ^ k • W.φD T x ∈ W.N T
   exact Submodule.smul_mem _ _ hk
 
 /- English proof (translation)
-Establish `h0 : W.Q ^ K • W.φD T 0 ∈ W.N T` using `by rw [map_zero, smul_zero]; exact Submodule.zero_mem _`. Rewrite using `[LV_eq W T c ζ K _ h0]`. Rewrite using `[show (⟨_, h0⟩ : ↥(W.N T)) = 0 from Subtype.ext (by simp), map_zero]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem LV_zero (K : ℕ) : LV W T c ζ K 0 = 0 := by
   have h0 : W.Q ^ K • W.φD T 0 ∈ W.N T := by rw [map_zero, smul_zero]; exact Submodule.zero_mem _
@@ -42,9 +42,9 @@ theorem LV_zero (K : ℕ) : LV W T c ζ K 0 = 0 := by
   rfl
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Use `⟨by rw [Finset.sum_empty, map_zero, smul_zero]; exact Submodule.zero_mem _, ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.sum_empty, Finset.sum_empty, LV_zero]`. Consider the case `insert a s ha ih`.
+Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Rewrite using `[Finset.sum_insert ha, Finset.sum_insert ha]`. Use `⟨by rw [map_add, smul_add]; exact Submodule.add_mem _ (hf a) ih.1, ?_⟩` and prove the remaining obligations. Rewrite using `[LV_add W T c ζ K _ _ (hf a) ih.1, ih.2]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem LV_sum {ι : Type} (K : ℕ) (s : Finset ι) (f : ι → W.DD T)
     (hf : ∀ i, W.Q ^ K • W.φD T (f i) ∈ W.N T) :
@@ -61,7 +61,7 @@ theorem LV_sum {ι : Type} (K : ℕ) (s : Finset ι) (f : ι → W.DD T)
     rw [LV_add W T c ζ K _ _ (hf a) ih.1, ih.2]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `only [Pi.mul_apply, letE, Pi.single_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem letE_idem (d : ZMod n) : (letE d : LetA O n) * letE d = letE d := by
   funext i
@@ -71,45 +71,39 @@ theorem letE_idem (d : ZMod n) : (letE d : LetA O n) * letE d = letE d := by
 variable {Pt : ZMod n → LL → (K →ₐ[Qp] LL) → Prop}
 
 /- English proof (translation)
-Use `set R := LinearMap.range (UniversalLiftFrames.Phi W T c ζ rep)`. Use `set c1 := PowerSeries.coeff 1 (W.lev c ζ W.Q)`. Establish `hvan : ∀ (x : W.DD T) (hx : x ∈ W.N T) (K : ℕ) (hK : W.Q ^ K • W.φD T x ∈ W.N T) (j : ℤ), j < K → W.levN T c ζ ⟨_, hK⟩ j = 0` using `fun x hx K hK j hj => ((hp4.2 c ζ τ hPt).1.1 ⟨x, hx⟩ K hK j).2 hj`. Establish `hLV : ∀ (x : W.DD T) (hx : x ∈ W.N T) (K : ℕ) (hK : W.Q ^ K • W.φD T x ∈ W.N T), LV W T c ζ K x = c1 ^ K • valAt W T c ζ x`. Introduce `x hx K hK`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[LV_eq W T c ζ K _ hK, levN_val W T c ζ hp4 hPt hc0 hc1 x hx K hK]`. Establish `hcancel : ∀ (K : ℕ) (u : T.V ⊗[Qp] BdR), c1 ^ K • u ∈ R → u ∈ R`. Introduce `K u hu`. Use `Submodule.smul_mem R ((c1 ^ K)⁻¹) hu` as an intermediate fact. Rewrite `this` using `[smul_smul, inv_mul_cancel₀ (pow_ne_zero _ hc1), one_smul]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hrepR : ∀ k, valAt W T c ζ (rep k) ∈ R`. Introduce `k`. Use `⟨Pi.single k 1, ?_⟩` and prove the remaining obligations. Rewrite using `[UniversalLiftFrames.Phi_apply]`. Simplify using `[Pi.single_apply]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hA : ∀ y (hy : y ∈ NcS W T (c - 1)), valAt W T c ζ y ∈ R`. Introduce `y hy`. Use `set p := (PiNS W T π' 1).comap (NcS W T (c - 1)).subtype`. Use `set o := bL.repr (mkL W T π' c y hy)`. Establish `h2 : (∑ k, o k • bL k) = p.mkQ (∑ k, o k • (⟨rep k, hrep k⟩ : ↥(NcS W T (c - 1))))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, hbrep]`. Both sides reduce to the same expression. Establish `h3 : (Submodule.Quotient.mk (⟨y, hy⟩ : ↥(NcS W T (c - 1))) : LcQ W T π' c) = Submodule.Quotient.mk (∑ k, o k • (⟨rep k, hrep k⟩ : ↥(NcS W T (c - 1))))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `bL.sum_repr (mkL W T π' c y hy)` as an intermediate fact. Rewrite `this` using `[h2]`. Conclude with `this.symm`. Establish `h4` using `(Submodule.Quotient.eq p).1 h3`. Rewrite `h4` using `[Submodule.mem_comap]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hz : y - ∑ k, o k • rep k ∈ PiNS W T π' 1` using `by simpa using h4`. Take `⟨⟨y', hy'N, hy'⟩, -⟩` from `(mem_PiNS W T π' 1 _).1 hz`. Establish `hyeq : y = ∑ k, o k • rep k + π' • y'`. Rewrite `hy'` using `[pow_one]`. Rewrite using `[hy']`.
+Normalize the expressions using the abelian group laws. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Normalize the expressions using the abelian group laws. Establish `hyN` using `((mem_NcS W T _ y).1 hy).1`. Establish `hrN : ∀ k, rep k ∈ W.N T` using `fun k => ((mem_NcS W T _ _).1 (hrep k)).1`. Use `choose Kr hKr using fun k => N_φ' W T (rep k) (hrN k)`. Take `⟨Ky, hKy⟩` from `N_φ' W T y hyN`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨Kz, hKz⟩` from `N_φ' W T y' hy'N`. Use `set K := Ky + ∑ k, Kr k + Kz`. Establish `hKk : ∀ k, W.Q ^ K • W.φD T (rep k) ∈ W.N T` using `fun k => Qpow_mono W T (hKr k) (by`. Use `Finset.single_le_sum (f := Kr) (fun _ _ => Nat.zero_le _) (Finset.mem_univ k)` as an intermediate fact. Use the proof step `omega)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hKo : ∀ k, W.Q ^ K • W.φD T (o k • rep k) ∈ W.N T` using `fun k => (LV_smulO W T c ζ K (o k) (rep k) (hKk k)).1`. Establish `hKz' : W.Q ^ K • W.φD T y' ∈ W.N T` using `Qpow_mono W T hKz (by omega)`. Establish `hKy' : W.Q ^ K • W.φD T y ∈ W.N T` using `Qpow_mono W T hKy (by omega)`. Take `⟨hKπ, hLπ⟩` from `LV_smulA W T c ζ K π' y' hKz' (hvan y' hy'N K hKz')`. Take `⟨hKs, hLs⟩` from `LV_sum W T c ζ K Finset.univ (fun k => o k • rep k) hKo`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Apply `hcancel K` to reduce the goal to its premises. Rewrite using `[← hLV y hyN K hKy']`. Establish `e : LV W T c ζ K y = LV W T c ζ K (∑ k, o k • rep k + π' • y')` using `by rw [← hyeq]`. Rewrite using `[e, LV_add W T c ζ K _ _ hKs hKπ, hLs, hLπ, hφπ, zero_smul, add_zero]`. Use `Submodule.sum_mem _ fun k _ => ?_` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[(LV_smulO W T c ζ K (o k) (rep k) (hKk k)).2, hLV _ (hrN k) K (hKk k), smul_comm]`. Conclude with `Submodule.smul_mem _ _ (Submodule.smul_mem _ _ (hrepR k))`. Rewrite using `[← (hp4.2 c ζ τ hPt).1.2]`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨x, k, hk, rfl⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `set d : ZMod n := c - 1`. Establish `hx'N : (letE d : LetA O n) • (x : W.DD T) ∈ W.N T` using `Submodule.smul_mem _ _ x.2`. Establish `ek : (letE c : LetA O n) • (W.Q ^ k • W.φD T x) = W.Q ^ k • W.φD T ((letE d : LetA O n) • (x : W.DD T))`. Rewrite using `[show d = c - 1 from rfl, φD_letE, smul_comm]`. Establish `hk' : W.Q ^ k • W.φD T ((letE d : LetA O n) • (x : W.DD T)) ∈ W.N T` using `ek ▸ Submodule.smul_mem _ _ hk`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hw : W.levN T c ζ ⟨_, hk⟩ k = W.levN T c ζ ⟨_, hk'⟩ k`. Rewrite using `[← levN_letE W T c ζ ⟨_, hk⟩ k]`. Rewrite using `[show (letE c : LetA O n) • (⟨_, hk⟩ : ↥(W.N T)) = ⟨_, hk'⟩ from Subtype.ext (by rw [Submodule.coe_smul]; exact ek)]`. Rewrite using `[SetLike.mem_coe, hw, levN_val W T c ζ hp4 hPt hc0 hc1 _ hx'N k hk']`. Use `Submodule.smul_mem _ _ ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `set x' := (letE d : LetA O n) • (x : W.DD T)`. Take `⟨a, hax, -⟩` from `hbu x' hx'N`. Establish `hx'eq : x' = ∑ j, a j • ((letE d : LetA O n) • b j)`. Establish `h1 : x' = (letE d : LetA O n) • x'` using `by show _ = (letE d : LetA O n) • ((letE d : LetA O n) • (x : W.DD T))`. Rewrite using `[smul_smul, letE_idem]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[h1, hax, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[smul_comm]`. Establish `hebN : ∀ j, (letE d : LetA O n) • b j ∈ NcS W T (c - 1)`. Introduce `j`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `(mem_NcS W T _ _).2 ⟨Submodule.smul_mem _ _ (hbΔ j).1, fun δ hδ => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[γD_letE, (hbΔ j).2 δ hδ]`. Rewrite using `[smul_smul, letE_idem]`. Establish `hebN' : ∀ j, (letE d : LetA O n) • b j ∈ W.N T` using `fun j => ((mem_NcS W T _ _).1 (hebN j)).1`. Use `choose Kb hKb using fun j => N_φ' W T _ (hebN' j)`.
-
-Use `set K := k + ∑ j, Kb j`. Establish `hKb' : ∀ j, W.Q ^ K • W.φD T ((letE d : LetA O n) • b j) ∈ W.N T` using `fun j => Qpow_mono W T (hKb j) (by`. Use `Finset.single_le_sum (f := Kb) (fun _ _ => Nat.zero_le _) (Finset.mem_univ j)` as an intermediate fact. Use the proof step `omega)`. Establish `hKa : ∀ j, W.Q ^ K • W.φD T (a j • ((letE d : LetA O n) • b j)) ∈ W.N T` using `fun j => (LV_smulA W T c ζ K (a j) _ (hKb' j) (hvan _ (hebN' j) K (hKb' j))).1`.
-
-Establish `hKx : W.Q ^ K • W.φD T x' ∈ W.N T` using `Qpow_mono W T hk' (by omega)`. Apply `hcancel K` to reduce the goal to its premises. Rewrite using `[← hLV x' hx'N K hKx]`. Establish `e : LV W T c ζ K x' = LV W T c ζ K (∑ j, a j • ((letE d : LetA O n) • b j))`. Rewrite using `[← hx'eq]`.
-
-Rewrite using `[e, (LV_sum W T c ζ K Finset.univ _ hKa).2]`. Use `Submodule.sum_mem _ fun j _ => ?_` and prove the remaining obligations. Rewrite using `[(LV_smulA W T c ζ K (a j) _ (hKb' j) (hvan _ (hebN' j) K (hKb' j))).2, hLV _ (hebN' j) K (hKb' j)]`. Conclude with `Submodule.smul_mem _ _ (Submodule.smul_mem _ _ (hA _ (hebN j)))`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem span_le_range (hp4 : Formalism.MainNotions.DeltaInvariantLattices.p4 W Pt T) {τ : K →ₐ[Qp] LL} (hPt : Pt c ζ τ)
     (hc0 : PowerSeries.constantCoeff (W.lev c ζ W.Q) = 0) (hc1 : PowerSeries.coeff 1 (W.lev c ζ W.Q) ≠ 0)

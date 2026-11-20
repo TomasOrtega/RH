@@ -12,9 +12,9 @@ namespace GlobalTheory.ShFam.ParamTwo
 open GlobalTheory.ShFam.Pad GlobalTheory.TrueGeo
 
 /- English proof (translation)
-Establish `key : (numL num d).comp (MvPolynomial.rename f).toLinearMap = numL (fun M => num (M.map f)) d`. Use `(MvPolynomial.basisMonomials A ℝ).ext fun m => ?_` and prove the remaining obligations. Establish `hdeg : (Finsupp.mapDomain f m).degree = m.degree` using `Finsupp.degree_mapDomain f m`. Establish `hb : (MvPolynomial.monomial (Finsupp.mapDomain f m) (1 : ℝ)) = MvPolynomial.basisMonomials B ℝ (Finsupp.mapDomain f m)`. Simplify using `[MvPolynomial.coe_basisMonomials]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[LinearMap.comp_apply, AlgHom.toLinearMap_apply, MvPolynomial.coe_basisMonomials, MvPolynomial.rename_monomial, hb, numL, numL, Module.Basis.constr_basis, ← MvPolynomial.coe_basisMonomials, Module.Basis.constr_basis, hdeg, Finsupp.toMultiset_map]`. Conclude with `congrArg (fun L => L P) key`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem numL_rename {A B : Type} (num : Multiset B → ℝ) (d : ℕ) (f : A → B) (P : MvPolynomial A ℝ) :
     numL num d (MvPolynomial.rename f P) = numL (fun M => num (M.map f)) d P := by
@@ -31,11 +31,9 @@ theorem numL_rename {A B : Type} (num : Multiset B → ℝ) (d : ℕ) (f : A →
   exact congrArg (fun L => L P) key
 
 /- English proof (translation)
-Rewrite using `[P.as_sum, map_sum, map_sum]`. Use `Finset.sum_congr rfl fun m hm => ?_` and prove the remaining obligations. Establish `h2 : MvPolynomial.monomial m (P.coeff m) = P.coeff m • MvPolynomial.basisMonomials A ℝ m`. Simplify using `[MvPolynomial.smul_monomial]`. Rewrite using `[h2, map_smul, map_smul, numL, numL, Module.Basis.constr_basis, Module.Basis.constr_basis]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use `split_ifs`. Use `h _ fun a ha => ?_` and prove the remaining obligations. Establish `hv : a ∈ P.vars` using `(MvPolynomial.mem_vars a).2 ⟨m, hm, (Finsupp.mem_toMultiset _ _).1 ha⟩`. Conclude with `(MvPolynomial.mem_supported.1 hP) hv`.
-
-Both sides reduce to the same expression.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem numL_congr_supported {A : Type} (num num' : Multiset A → ℝ) (d : ℕ) (s : Set A)
     (h : ∀ M : Multiset A, (∀ a ∈ M, a ∈ s) → num M = num' M) (P : MvPolynomial A ℝ)
@@ -54,7 +52,7 @@ theorem numL_congr_supported {A : Type} (num num' : Multiset A → ℝ) (d : ℕ
   · rfl
 
 /- English proof (translation)
-Proceed by induction on `s using Multiset.induction_on with`. Consider the case `empty => simp`. Consider the case `cons a s ih => simp [Multiset.powerset_cons, ih, Multiset.map_map]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem powerset_map {α β : Type} (f : α → β) (s : Multiset α) :
     (s.map f).powerset = s.powerset.map (Multiset.map f) := by
@@ -63,9 +61,9 @@ theorem powerset_map {α β : Type} (f : α → β) (s : Multiset α) :
   | cons a s ih => simp [Multiset.powerset_cons, ih, Multiset.map_map]
 
 /- English proof (translation)
-Unfold `polar`. Rewrite using `[Multiset.card_map, powerset_map, Multiset.map_map]`. Use `congr 2`. Use `Multiset.map_congr rfl fun T hT => ?_` and prove the remaining obligations. Simplify using `only [Function.comp, Multiset.card_map]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[← map_multiset_sum, h T (Multiset.mem_powerset.1 hT)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem polar_map {A B : Type} [AddCommMonoid A] [AddCommMonoid B] (top : A → ℝ) (top' : B → ℝ) (f : A →+ B)
     (M : Multiset A) (h : ∀ T ≤ M, top' (f T.sum) = top T.sum) :
@@ -78,9 +76,9 @@ theorem polar_map {A B : Type} [AddCommMonoid A] [AddCommMonoid B] (top : A → 
   rw [← map_multiset_sum, h T (Multiset.mem_powerset.1 hT)]
 
 /- English proof (translation)
-Proceed by induction on `T using Multiset.induction_on with`. Consider the case `empty => simp`. Consider the case `cons w T ih`. Introduce `b hb`. Rewrite `hb` using `[Multiset.sum_cons]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Break down `Finset.mem_union.1 (Finsupp.support_add hb) with h1 | h1` into its components or cases. Conclude with `h w (Multiset.mem_cons_self _ _) b h1`. Conclude with `ih (fun w' hw' => h w' (Multiset.mem_cons_of_mem hw')) b h1`.
+Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem support_sum {A : Type} (P : A → Prop) (T : Multiset (A →₀ ℤ)) (h : ∀ w ∈ T, ∀ b ∈ w.support, P b) :
     ∀ b ∈ T.sum.support, P b := by
@@ -102,7 +100,7 @@ section Free
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H}
 
 /- English proof (translation)
-Use function extensionality and compare the values at `z`. Unfold `expo`. Apply the tactic sequence `rw [Finsupp.sum_mapDomain_index (by intro; simp) (by intros; split_ifs <;> simp)]`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation. Both sides reduce to the same expression.
 -/
 theorem expo_lift2 (w : Sym E →₀ ℤ) : expo Dw (w.mapDomain lift2) = expo Dw w := by
   funext z
@@ -111,7 +109,7 @@ theorem expo_lift2 (w : Sym E →₀ ℤ) : expo Dw (w.mapDomain lift2) = expo D
   rfl
 
 /- English proof (translation)
-Establish `hn : w.support.Nonempty` using `Finsupp.support_nonempty_iff.2 hw`. Unfold `parOf`. Rewrite using `[dif_pos hn]`. Conclude with `h _ hn.choose_spec`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem parOf_of_hasPar {R : ℝ} {w : Sym E →₀ ℤ} (h : HasPar R w) (hw : w ≠ 0) : parOf w = some R := by
   have hn : w.support.Nonempty := Finsupp.support_nonempty_iff.2 hw
@@ -120,7 +118,7 @@ theorem parOf_of_hasPar {R : ℝ} {w : Sym E →₀ ℤ} (h : HasPar R w) (hw : 
   exact h _ hn.choose_spec
 
 /- English proof (translation)
-Introduce `b hb`. Take `⟨a, ha, rfl⟩` from `Finset.mem_image.1 (Finsupp.mapDomain_support hb)`. Simplify using `[lift2, h a ha]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 -/
 theorem hasPar_lift2 {R : ℝ} {w : Sym E →₀ ℤ} (h : HasPar R w) : HasPar (max R 2) (w.mapDomain lift2) := by
   intro b hb
@@ -128,9 +126,9 @@ theorem hasPar_lift2 {R : ℝ} {w : Sym E →₀ ℤ} (h : HasPar R w) : HasPar 
   simp [lift2, h a ha]
 
 /- English proof (translation)
-Establish `hinj : Set.InjOn lift2 (w.support : Set (Sym E))`. Introduce `a ha b hb e`. Establish `e1` using `congrArg Prod.fst e`. Establish `e3` using `congrArg (fun t : Sym E => t.2.2) e`. Establish `hab : a.2.1 = b.2.1` using `(h a ha).trans (h b hb).symm`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Prod.ext e1 (Prod.ext hab e3)`. Rewrite using `[← Finsupp.support_nonempty_iff, Finsupp.mapDomain_support_of_injOn w hinj, Finset.image_nonempty]`. Conclude with `Finsupp.support_nonempty_iff.2 hw`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lift_two_ne_zero {R : ℝ} {w : Sym E →₀ ℤ} (h : HasPar R w) (hw : w ≠ 0) : w.mapDomain lift2 ≠ 0 := by
   classical
@@ -147,9 +145,9 @@ variable {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {O : Type} [CommRing O] 
   {F : Type} [Field F] [NumberField F] {e : F ≃+* c.F} (Y : FlagCpt Z e)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `v ε y`. Unfold `lgOf`. Use `split_ifs with hp`. Simplify using `only`. Rewrite using `[expo_lift2, Finsupp.sum_mapDomain_index (by intro; simp) (by intros; push_cast; ring)]`.
+Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem lgOf_lift2 (w : Sym E →₀ ℤ) : lgOf Y (w.mapDomain lift2) = lgOf Y w := by
   funext v ε y
@@ -161,7 +159,7 @@ theorem lgOf_lift2 (w : Sym E →₀ ℤ) : lgOf Y (w.mapDomain lift2) = lgOf Y 
   · rfl
 
 /- English proof (translation)
-Unfold `adlOf`. Rewrite using `[hp, lgOf_lift2, expo_lift2]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem adlOf_lift2 {C : CxSt F} (hm : Mets Y C) (w : Sym E →₀ ℤ) (hp : hm (parOf (w.mapDomain lift2)) = hm (parOf w)) :
     adlOf Y hm (w.mapDomain lift2) = adlOf Y hm w := by
@@ -169,7 +167,7 @@ theorem adlOf_lift2 {C : CxSt F} (hm : Mets Y C) (w : Sym E →₀ ℤ) (hp : hm
   rw [hp, lgOf_lift2, expo_lift2]
 
 /- English proof (translation)
-Distinguish the cases in `hw : w = 0`. Substitute `hw` using the available equality. Rewrite using `[Finsupp.mapDomain_zero]`. Rewrite using `[adlOf_lift2 Y hm w (by rw [parOf_of_hasPar h hw, parOf_of_hasPar (hasPar_lift2 h) (lift_two_ne_zero h hw), hR])]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem arTop_lift2 {C : CxSt F} (hm : Mets Y C) {R : ℝ} (hR : hm (some (max R 2)) = hm (some R))
     {w : Sym E →₀ ℤ} (h : HasPar R w) : (adlOf Y hm (w.mapDomain lift2)).arTop = (adlOf Y hm w).arTop := by
@@ -178,9 +176,9 @@ theorem arTop_lift2 {C : CxSt F} (hm : Mets Y C) {R : ℝ} (hR : hm (some (max R
   · rw [adlOf_lift2 Y hm w (by rw [parOf_of_hasPar h hw, parOf_of_hasPar (hasPar_lift2 h) (lift_two_ne_zero h hw), hR])]
 
 /- English proof (translation)
-Introduce `b hb`. Unfold `rootSym at hb`. Apply the tactic sequence `split_ifs at hb <;>`. Use `Finsupp.support_single_subset hb` as an intermediate fact. Rewrite `this` using `[Finset.mem_singleton]`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Substitute `this` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem hasPar_rootSym (a : ℕ → Bool) (R : ℝ) (τ : E →+* ℂ) (i : ℕ) : HasPar R (rootSym Dw a (some R) τ i) := by
   intro b hb
@@ -192,7 +190,7 @@ theorem hasPar_rootSym (a : ℕ → Bool) (R : ℝ) (τ : E →+* ℂ) (i : ℕ)
       rfl
 
 /- English proof (translation)
-Unfold `rootSym`. Apply the tactic sequence `split_ifs <;> simp only [Finsupp.mapDomain_single] <;> rfl`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem lift_two_root_symbol (a : ℕ → Bool) (R : ℝ) (τ : E →+* ℂ) (i : ℕ) :
     (rootSym Dw a (some R) τ i).mapDomain lift2 = rootSym Dw a (some (max R 2)) τ i := by
@@ -202,7 +200,7 @@ theorem lift_two_root_symbol (a : ℕ → Bool) (R : ℝ) (τ : E →+* ℂ) (i 
 end Free
 
 /- English proof (translation)
-Introduce `b hb`. Apply the tactic sequence `cases k <;>`. Use `Finsupp.support_single_subset hb` as an intermediate fact. Rewrite `this` using `[Finset.mem_singleton]`. Substitute `this` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality.
 
 Both sides reduce to the same expression.
 -/
@@ -216,7 +214,7 @@ theorem hasPar_wholeSym {E : Type} [Field E] (a : ℕ → Bool) (R : ℝ) {g : �
       rfl
 
 /- English proof (translation)
-Apply the tactic sequence `cases k <;> simp only [wholeSym, Finsupp.mapDomain_single] <;> rfl`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem lift_two_whole_symbol {E : Type} [Field E] (a : ℕ → Bool) (R : ℝ) {g : ℕ} (k : Fin g ⊕ Fin g) :
     (wholeSym (E := E) a (some R) k).mapDomain lift2 = wholeSym a (some (max R 2)) k := by
@@ -239,7 +237,7 @@ noncomputable def mixE (Sx : Finset ℕ) (R : ℝ) (p : ℕ) : MvPolynomial (Vm 
         ∑ l : Fin (D.R.f * N) ⊕ Fin (D.R.f * N), MvPolynomial.X (wholeSym (Function.update (ArIn.ind Sx) p b) (some R) l) ^ k
 
 /- English proof (translation)
-Use `MvPolynomial.algHom_ext fun v => ?_` and prove the remaining obligations. Break down `v with ⟨b, x⟩ | ⟨b, m⟩` into its components or cases. Simplify using `only [mixE, MvPolynomial.aeval_X, AlgHom.comp_apply, MvPolynomial.rename_X, lift_two_root_symbol]`. Simplify using `only [mixE, MvPolynomial.aeval_X, AlgHom.comp_apply, map_mul, map_sum, map_pow, MvPolynomial.rename_X, MvPolynomial.rename_C, lift_two_whole_symbol]`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem mixE_max (Sx : Finset ℕ) (R : ℝ) (p : ℕ) :
     mixE (S := S) (N := N) Sx (max R 2) p = (MvPolynomial.rename (Finsupp.mapDomain lift2)).comp (mixE (S := S) Sx R p) := by
@@ -250,13 +248,11 @@ theorem mixE_max (Sx : Finset ℕ) (R : ℝ) (p : ℕ) :
       MvPolynomial.rename_C, lift_two_whole_symbol]
 
 /- English proof (translation)
-Proceed by induction on `Q using MvPolynomial.induction_on with`. Consider the case `C a => rw [← MvPolynomial.algebraMap_eq, AlgHom.commutes]`. Conclude with `Subalgebra.algebraMap_mem _ a`. Consider the case `add P Q hP hQ => rw [map_add]`. Conclude with `Subalgebra.add_mem _ hP hQ`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Consider the case `mul_X P v hP`. Rewrite using `[map_mul]`. Use `Subalgebra.mul_mem _ hP ?_` and prove the remaining obligations. Break down `v with ⟨b, x⟩ | ⟨b, m⟩` into its components or cases. Simplify using `only [mixE, MvPolynomial.aeval_X]`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `MvPolynomial.X_mem_supported.2 (hasPar_rootSym _ _ _ _)`. Simplify using `only [mixE, MvPolynomial.aeval_X]`. Use `Subalgebra.mul_mem _ ?_ (Subalgebra.sum_mem _ fun l _ => Subalgebra.pow_mem _ ?_ _)` and prove the remaining obligations. Rewrite using `[← MvPolynomial.algebraMap_eq]`. Conclude with `Subalgebra.algebraMap_mem _ _`.
-
-Conclude with `MvPolynomial.X_mem_supported.2 (hasPar_wholeSym _ _ _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mixE_supported (Sx : Finset ℕ) (R : ℝ) (p : ℕ) (Q : MvPolynomial (Vm D.what₂.Tau N) ℝ) :
     mixE (S := S) Sx R p Q ∈ MvPolynomial.supported ℝ {w | HasPar R w} := by
@@ -277,7 +273,7 @@ theorem mixE_supported (Sx : Finset ℕ) (R : ℝ) (p : ℕ) (Q : MvPolynomial (
 variable (fl : s.Flag) {C : CxSt D.what₂.LL} (hm : ∀ k, Mets (fl.C k) C)
 
 /- English proof (translation)
-Unfold `ArIn.mixEv mixE`. Use `congr 1`. Use function extensionality and compare the values at `v`. Break down `v with ⟨b, x⟩ | ⟨b, m⟩` into its components or cases. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Separate the alternatives or extract the components of the hypothesis. Both sides reduce to the same expression.
 
 Both sides reduce to the same expression.
 -/
@@ -292,7 +288,7 @@ theorem mixEv_eq (Sx : Finset ℕ) (R : ℝ) (p : ℕ) (k : s.Comp) :
   · rfl
 
 /- English proof (translation)
-Rewrite using `[ArIn.arMix, LinearMap.sum_apply]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.comp_apply, AlgHom.toLinearMap_apply]`. Conclude with `congrArg (fun f : MvPolynomial (Vm D.what₂.Tau N) ℝ →ₐ[ℝ] MvPolynomial (Sym D.host.E →₀ ℤ) ℝ => numL (polar fun w => (adlOf (fl.C k) (hm k) w).arTop) (Formalism.DegreeFormula.dimFl D.what₂.Tau N + 1) (f Q)) (mixEv_eq s fl hm Sx R p k)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem arMix_apply (Sx : Finset ℕ) (R : ℝ) (p : ℕ) (Q : MvPolynomial (Vm D.what₂.Tau N) ℝ) :
     (arIn s fl hm).arMix Sx R p Q = ∑ k, numL (polar fun w => (adlOf (fl.C k) (hm k) w).arTop)
@@ -304,9 +300,9 @@ theorem arMix_apply (Sx : Finset ℕ) (R : ℝ) (p : ℕ) (Q : MvPolynomial (Vm 
     numL (polar fun w => (adlOf (fl.C k) (hm k) w).arTop) (Formalism.DegreeFormula.dimFl D.what₂.Tau N + 1) (f Q)) (mixEv_eq s fl hm Sx R p k)
 
 /- English proof (translation)
-Use `LinearMap.ext fun Q => ?_` and prove the remaining obligations. Rewrite using `[arMix_apply, arMix_apply]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[mixE_max, AlgHom.comp_apply, numL_rename]`. Use `numL_congr_supported _ _ _ {w | HasPar R w} (fun M hM => ?_) _ (mixE_supported Sx R p Q)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Express the relevant statement in the definitionally equal form `polar (fun w => (adlOf (fl.C k) (hm k) w).arTop) (M.map (Finsupp.mapDomain.addMonoidHom lift2)) = polar (fun w => (adlOf (fl.C k) (hm k) w).arTop) M`. Use `polar_map _ _ _ M fun T hT => ?_` and prove the remaining obligations. Rewrite using `[Finsupp.mapDomain.addMonoidHom_apply]`. Conclude with `arTop_lift2 (fl.C k) (hm k) (hR k R) (support_sum _ T fun w hw => hM w (Multiset.mem_of_le hT hw))`.
+Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem arMix_max (hR : ∀ k R, hm k (some (max R 2)) = hm k (some R)) (Sx : Finset ℕ) (R : ℝ) (p : ℕ) :
     (arIn s fl hm).arMix Sx (max R 2) p = (arIn s fl hm).arMix Sx R p := by
@@ -325,9 +321,9 @@ theorem arMix_max (hR : ∀ k R, hm k (some (max R 2)) = hm k (some R)) (Sx : Fi
 end FinalTheorems
 
 /- English proof (translation)
-Establish `hw : ∀ σ, x.wt σ (max R 2) = x.wt σ R` using `fun σ => funext fun y => by`. Simplify using `only [ToroidalCompactificationData.wt, max_eq_left (le_max_right R 2)]`. Use function extensionality and compare the values at `σ n`. Simplify using `only [metsOf, ToroidalCompactificationData.eigMetAt]`. Use `congr 2`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Conclude with `hw _`.
+A detailed English derivation is pending.
 -/
 theorem metsOf_max {D : D7} {A : Amb D} {N j : ℕ} {S : Sig A N j} {κ : Lv A} {s : FinalTheorems S κ} (x : ToroidalCompactificationData s)
     (Φ : s.Flag) (k : s.Comp) (R : ℝ) : metsOf x Φ k (some (max R 2)) = metsOf x Φ k (some R) := by
@@ -339,7 +335,7 @@ theorem metsOf_max {D : D7} {A : Amb D} {N j : ℕ} {S : Sig A N j} {κ : Lv A} 
   exact hw _
 
 /- English proof (translation)
-Introduce `D O hO Sx R p`. Take `⟨x, P, h⟩` from `hO`. Express the relevant statement in the definitionally equal form `(arIn O.s O.Φ O.met.hm).arMix Sx R p = (arIn O.s O.Φ O.met.hm).arMix Sx (max R 2) p`. Rewrite using `[h.hm_eq]`. Conclude with `(arMix_max O.s O.Φ (metsOf x O.Φ) (fun k R => metsOf_max x O.Φ k R) Sx R p).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem arMix_eq_max_two : ∀ (D : D7) (O : Setup D), O.Core → ∀ (Sx : Finset ℕ) (R : ℝ) (p : ℕ),
     O.Y.arMix Sx R p = O.Y.arMix Sx (max R 2) p := by

@@ -12,7 +12,7 @@ noncomputable section
 namespace GlobalTheory.Mum
 
 /- English proof (translation)
-Simplify using `[Functor.monObjObj]`. Rewrite using `[← pullback.condition_assoc]`. Simplify using the standard rewrite rules. Conclude with `pullback.lift_fst _ _ _`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem pullback_one_left_fst {S P : Scheme.{0}} (f : P ⟶ S) (G' : Over S) [GrpObj G'] :
     (η[(Over.pullback f).obj G'] : _ ⟶ _).left ≫ pullback.fst G'.hom f = f ≫ η[G'].left := by
@@ -21,15 +21,15 @@ theorem pullback_one_left_fst {S P : Scheme.{0}} (f : P ⟶ S) (G' : Over S) [Gr
   exact pullback.lift_fst _ _ _
 
 /- English proof (translation)
-Introduce `R _ _ _ _ S π hP hS hI G' _ G β hβ φ hφ hc`. Establish `sq : IsPullback π (𝟙 S) (𝟙 (Sp R)) π` using `IsPullback.of_id_snd`. Establish `hfl : Flat (𝟙 (Sp R))` using `inferInstance`. Establish `heq : pullback.fst π π ≫ (η[G'].left ≫ β) = pullback.snd π π ≫ (η[G'].left ≫ β)`. Establish `h1` using `pullback_one_left_fst (pullback.fst π π) G'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `pullback_one_left_fst (pullback.snd π π) G'`. Establish `hu : (η : _ ⟶ (Over.pullback (pullback.fst π π)).obj G').left ≫ φ.hom.left = (η : _ ⟶ (Over.pullback (pullback.snd π π)).obj G').left`. Rewrite using `[← Over.comp_left, IsMonHom.one_hom]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[reassoc_of% h1]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Use `_ = (η : _ ⟶ (Over.pullback (pullback.fst π π)).obj G').left ≫ φ.hom.left ≫ pullback.fst G'.hom (pullback.snd π π) ≫ β := by rw [hc]`. Use `_ = pullback.snd π π ≫ (η[G'].left ≫ β) := by rw [reassoc_of% hu, reassoc_of% h2]`. Take `⟨h₀, hh₀, -⟩` from `GlobalTheory.T.exists_descent_of_equalised_proper_cover_normal R S (Sp R) S G.left π (𝟙 _) π (𝟙 S) hP hS hI hfl sq _ heq`. Establish `hepi : ∀ {W : Scheme.{0}} (a b : Sp R ⟶ W), π ≫ a = π ≫ b → a = b`. Introduce `W a b hab`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨c, -, hc'⟩` from `GlobalTheory.T.exists_descent_of_equalised_proper_cover_normal R S (Sp R) S W π (𝟙 _) π (𝟙 S) hP hS hI hfl sq (π ≫ a) (by rw [pullback.condition_assoc])`. Conclude with `(hc' a rfl).trans (hc' b hab.symm).symm`. Establish `hsec : h₀ ≫ G.hom = 𝟙 (Sp R)`. Apply `hepi` to reduce the goal to its premises. Rewrite using `[reassoc_of% hh₀, hβ.w]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Use `⟨Over.homMk h₀ (by simpa using hsec), fun T => ?_⟩` and prove the remaining obligations. Simplify using `[Hom.one_def]`. Rewrite using `[hh₀]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem descend_one : ∀ (R : Type) [CommRing R] [IsDomain R] [IsNoetherianRing R] [IsIntegrallyClosed R] (S : Scheme.{0})
     (π : S ⟶ Sp R), IsProper π → Surjective π → IsIntegral S → ∀ (G' : Over S) [GrpObj G'] (G : Over (Sp R))

@@ -9,13 +9,13 @@ open MvPolynomial Finset Formalism.GM
 variable {p : ℕ} [hp : Fact p.Prime] {σ : Type} {r : ℕ} (w e : Fin r → σ)
 
 /- English proof (translation)
-Unfold `mX`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem mX_zero (J : ℕ) (u v : MvPolynomial σ ℚ_[p]) : mX w e J 0 u v = M.fockK u v := by
   unfold mX; simp
 
 /- English proof (translation)
-Establish `hp1 : (1 : ℝ) < p` using `by exact_mod_cast hp.out.one_lt`. Establish `hp0 : (p : ℚ_[p]) ≠ 0` using `by exact_mod_cast hp.out.ne_zero`. Rewrite using `[norm_mul, norm_pow, Padic.norm_p, Padic.norm_eq_zpow_neg_valuation hc, Real.logb_mul (pow_ne_zero _ (inv_ne_zero (by linarith))) (zpow_ne_zero _ (by linarith)), Real.logb_pow, Real.logb_inv, Real.logb_self_eq_one hp1, neg_add, Formalism.GM.MeanGammaLemmas.neglog_zpow]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem neglog_pow_mul (x0 : ℕ) (c : ℚ_[p]) (hc : c ≠ 0) :
     -Real.logb p ‖(p : ℚ_[p]) ^ x0 * c‖ = (x0 : ℝ) + c.valuation := by
@@ -27,23 +27,19 @@ theorem neglog_pow_mul (x0 : ℕ) (c : ℚ_[p]) (hc : c ≠ 0) :
   ring
 
 /- English proof (translation)
-Use `set J := min o n with hJ`. Establish `hp0 : (p : ℚ_[p]) ≠ 0` using `by exact_mod_cast hp.out.ne_zero`. Use `set c : Fin n₁ → Fin n₁ → ℕ → ℚ_[p] := fun a b => cW (o + n + r - 1) J (fun l => (p : ℚ_[p]) ^ x0 * (mX w e J l (T (f a)) (f b) / dF)) with hc`. Establish `hlb` using `lead_bound p n₁ J c (fun a => (p : ℚ_[p]) ^ x0 * (M.fockK (T (f a)) (f a) / dF)) (fun a b => by`. Simplify using `only [hc]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[cW_top, mX_zero]`. Use `split_ifs with hab`. Rewrite using `[hab]`. Rewrite using `[horth a b hab, mul_zero])`. Use the proof step `((x0 : ℝ) + D1z) Λ`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `(fun a => ⟨mul_ne_zero (pow_ne_zero _ hp0) (hsmall a).1, by`. Rewrite using `[neglog_pow_mul x0 _ (hsmall a).1]`. Establish `: ((M.fockK (T (f a)) (f a) / dF).valuation : ℝ) ≤ (D1z : ℝ)` using `by exact_mod_cast (hsmall a).2`. Use the proof step `linarith⟩) hV`. Use `hGW p σ n₁ J h W k ((x0 : ℝ) + D1z + Λ) z0 (fun i u v => M.fockK (tiePhi w e o n (z0 + i) (T u)) v / dF) f (fun i => (p : ℚ_[p]) ^ x0 * ((o + n + r + (z0 + i) - 1).choose J : ℚ_[p])) c hli (fun i a u v => by show M.fockK (tiePhi w e o n (z0 + i) (T (a • u))) v / dF = _` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[map_smul, map_smul, ProjS.fockK_smul_left, mul_div_assoc])`. Use the proof step `(fun i u u' v => by show M.fockK (tiePhi w e o n (z0 + i) (T (u + u'))) v / dF = _`. Rewrite using `[map_add, map_add, ProjS.fockK_add_left, add_div])`. Use the proof step `(fun i a u v => by show M.fockK (tiePhi w e o n (z0 + i) (T u)) (a • v) / dF = _`. Rewrite using `[ProjS.fockK_smul_right, mul_div_assoc])`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `(fun i u v v' => by show M.fockK (tiePhi w e o n (z0 + i) (T u)) (v + v') / dF = _`. Rewrite using `[ProjS.fockK_add_right, add_div])`. Use `hW hWh hJh hk (fun a b i => cW_norm _ _ _ (fun l hl => hint l hl a b) i) hlb.1 hlb.2 ?_`. Introduce `i _`. Establish `hJM : J ≤ o + n + r + (z0 + i) - 1` using `by omega`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `⟨mul_ne_zero (pow_ne_zero _ hp0) (by exact_mod_cast (Nat.choose_pos hJM).ne'), ?_, fun a b => ?_⟩` and prove the remaining obligations. Rewrite using `[norm_mul, norm_pow, Padic.norm_p]`. Establish `hp1 : (1 : ℝ) < p` using `by exact_mod_cast hp.out.one_lt`. Establish `h1 : ‖(((o + n + r + (z0 + i) - 1).choose J : ℕ) : ℚ_[p])‖ ≤ 1`. Rewrite using `[← PadicInt.coe_natCast, ← PadicInt.norm_def]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `PadicInt.norm_le_one _`. Establish `h2 : ((p : ℝ)⁻¹) ^ x0 ≤ 1` using `pow_le_one₀ (by positivity) (inv_le_one_of_one_le₀ hp1.le)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.map_apply, Formalism.GM.MeanGammaLemmas.binMatK_eval_nat]`. Simplify using `only [hc]`.
-
-Rewrite using `[cW_sum (o + n + r - 1) J (z0 + i) (by omega)]`. Establish `hpp` using `phi_pair w e hw he hwe hr o n (z0 + i) (T (f a)) (f b) (hbi b)`. Rewrite `hpp` using `[← hJ]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hpp, Finset.sum_div, Finset.mul_sum]`.
-
-Use `Finset.sum_congr rfl fun l hl => ?_` and prove the remaining obligations. Establish `hl' : l ≤ J` using `by simp only [mem_range] at hl; omega`. Rewrite using `[show o + n + r - 1 + (z0 + i) - l = o + n + r + (z0 + i) - 1 - l by omega]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem win_abs (hGW : GramWindow2) (hw : Function.Injective w) (he : Function.Injective e) (hwe : ∀ c d, w c ≠ e d)
     (hr : 1 ≤ r) (o n : ℕ) (T : MvPolynomial σ ℚ_[p] →ₗ[ℚ_[p]] MvPolynomial σ ℚ_[p]) (dF : ℚ_[p])

@@ -20,37 +20,33 @@ open GlobalTheory.NormRatio
 namespace GlobalTheory.NormRatio
 
 /- English proof (translation)
-Introduce `D 𝔪 h𝔪 hcop a a' R hR hRu`. Take `⟨ρ, hρ⟩` from `GlobalTheory.T.exists_reduction_maxLevel_unitary_mod_ideal D 𝔪 h𝔪 a`. Establish `hker : ∀ k : ↥(intG D a), ρ k = 1 ↔ CongOne D 𝔪 (k : Formalism.MainNotions.StandardLatticesGL3.GA D a)`. Introduce `k`. Prove the components needed by the constructor for the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion.
 
-Introduce `h i j`. Establish `h1` using `(hρ k i j (((1 : Matrix (Fin a) (Fin a) (𝓞 D.host.E)) i j))).1 (by`. Rewrite using `[h]`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using the standard rewrite rules. Simplify using `[Matrix.one_apply_ne hij])`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Simplify `h1` using `[Matrix.sub_apply]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `h1` using `[Matrix.sub_apply, Matrix.one_apply_ne hij]`. Introduce `h`. Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Use `((hρ k i j (((1 : Matrix (Fin a) (Fin a) (𝓞 D.host.E)) i j))).2 ?_).trans ?_` and prove the remaining obligations.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1` using `h i j`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Simplify `h1` using `[Matrix.sub_apply]`. Simplify `h1` using `[Matrix.sub_apply, Matrix.one_apply_ne hij]`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 
-Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Matrix.one_apply_ne hij]`. Establish `hsurj : Function.Surjective ρ`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `g'`. Use `choose g hg using fun i j => Ideal.Quotient.mk_surjective (I := 𝔪) (((g' : GL (Fin a) (𝓞 D.host.E ⧸ 𝔪)) : Matrix (Fin a) (Fin a) (𝓞 D.host.E ⧸ 𝔪)) i j)`. Establish `hgm : (Matrix.of g).map (Ideal.Quotient.mk 𝔪) = ((g' : GL (Fin a) (𝓞 D.host.E ⧸ 𝔪)) : Matrix (Fin a) (Fin a) (𝓞 D.host.E ⧸ 𝔪))`. Use extensionality with `i j`. Simplify using `[hg]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Take `⟨k, hk, hk'⟩` from `GlobalTheory.T.exists_maxLevel_unitary_congr_mod_ideal D 𝔪 h𝔪 hcop a (Matrix.of g) (by rw [hgm]; exact Matrix.isUnits_det_units g')`. Simplify using `only [Matrix.of_apply] at hk'`. Use `⟨⟨k, hk⟩, ?_⟩` and prove the remaining obligations. Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Introduce a local definition for the expression.
 
-Conclude with `((hρ ⟨k, hk⟩ i j (g i j)).2 (hk' i j)).trans (hg i j)`. Set `f : R → GL (Fin a) (𝓞 D.host.E ⧸ 𝔪)` to `fun r => ρ ⟨r.1, hR r.1 r.2⟩`. Establish `hf : Function.Bijective f`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨r, hr⟩ ⟨r', hr'⟩ h`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : ρ (⟨r, hR r hr⟩⁻¹ * ⟨r', hR r' hr'⟩) = 1`. Rewrite using `[map_mul, map_inv]`. Conclude with `inv_mul_eq_one.2 h`. Establish `h2 : CongOne D 𝔪 (r⁻¹ * r')` using `(hker _).1 h1`. Establish `h3 : CongOne D 𝔪 (r'⁻¹ * r')`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[inv_mul_cancel]`. Conclude with `(hker 1).1 (map_one ρ)`. Take `⟨r₀, -, hu⟩` from `hRu r' (hR r' hr')`. Conclude with `Subtype.ext ((hu r ⟨hr, h2⟩).trans (hu r' ⟨hr', h3⟩).symm)`. Introduce `g'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨k, rfl⟩` from `hsurj g'`. Take `⟨r, ⟨hr, hc⟩, -⟩` from `hRu k.1 k.2`. Use `⟨⟨r, hr⟩, ?_⟩` and prove the remaining obligations. Establish `h1 : ρ (⟨r, hR r hr⟩⁻¹ * k) = 1` using `(hker _).2 hc`. Rewrite `h1` using `[map_mul, map_inv]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `(inv_mul_eq_one.1 h1)`. Establish `hcard : R.card = Nat.card (GL (Fin a) (𝓞 D.host.E ⧸ 𝔪))`. Rewrite using `[← Nat.card_eq_finsetCard, Nat.card_congr (Equiv.ofBijective f hf)]`. Rewrite using `[hcard, GlobalTheory.T.card_GL_ringOfIntegers_quotient_prod_factors _ 𝔪 h𝔪 a, GlobalTheory.StdLoc.absNorm_eq_prod h𝔪, ← Finset.prod_pow, ← Finset.prod_inv_distrib, ← Finset.prod_mul_distrib, locNorm]`. Use `Finset.prod_congr rfl fun w hw => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `hq : (Ideal.absNorm w : ℝ) ≠ 0`. Establish `hw0 : w ≠ ⊥` using `fun h => by`. Rewrite `hw` using `[h]`. Conclude with `zero_notMem_normalizedFactors _ (Multiset.mem_toFinset.1 hw)`. Conclude with `(Ideal.absNorm_eq_zero_iff.not.2 hw0)` after adjusting the coercions.
-
-Use `set q : ℝ := (Ideal.absNorm w : ℝ)`. Use `set c := (normalizedFactors 𝔪).count w`. Establish `e : (q ^ c) ^ (a * (a + a')) = q ^ (c * a ^ 2) * q ^ (c * a * a')`. Rewrite using `[← pow_mul, ← pow_add]`. Use `congr 1`.
-
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, mul_inv, ← mul_assoc, mul_comm (q ^ (c * a ^ 2)) _, mul_assoc, mul_assoc, mul_inv_cancel_left₀ (pow_ne_zero _ hq)]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the hypotheses and the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem card_transversal_mul : ∀ (D : D7) (𝔪 : Ideal (𝓞 D.host.E)), 𝔪 ≠ ⊥ → 𝔪 ⊔ D.host.conj • 𝔪 = ⊤ → ∀ (a a' : ℕ) (R : Finset (Formalism.MainNotions.StandardLatticesGL3.GA D a)),
   (∀ r ∈ R, r ∈ intG D a) → (∀ k ∈ intG D a, ∃! r, r ∈ R ∧ CongOne D 𝔪 (r⁻¹ * k)) →

@@ -4,27 +4,27 @@ open NumberField Matrix GlobalTheory.UPel.HT GlobalTheory.UPel.HT.Gen GlobalTheo
 open scoped TensorProduct
 
 /- English proof (translation)
-Introduce `hCU E _ _ _ M hM t htc hg`. Take `⟨hin, e, he, hz⟩` from `id hg`. Establish `h1 : InCodiff (1 : E)`. Introduce `x`. Establish `hx : IsIntegral ℤ (Algebra.trace ℚ E (x : E))` using `Algebra.isIntegral_trace x.2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Take `⟨m, hm⟩` from `IsIntegrallyClosed.isIntegral_iff.mp hx`. Conclude with `⟨m, by rw [one_mul, ← hm]; simp⟩`. Take `⟨N, hN⟩` from `exists_nat_gt (∑ τ : E →+* ℂ, |(τ t).re|)`. Establish `hbound : ∀ τ : E →+* ℂ, |(τ t).re| < N` using `fun τ => lt_of_le_of_lt (Finset.single_le_sum (f := fun τ : E →+* ℂ => |(τ t).re|) (fun _ _ => abs_nonneg _) (Finset.mem_univ τ)) hN`. Establish `hin' : InCodiff (t + (M : E) * (N : E))`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `x`. Take `⟨a, ha⟩` from `hin x`. Take `⟨b, hb⟩` from `h1 x`. Use `⟨a + M * N * b, ?_⟩` and prove the remaining obligations. Establish `hs : (t + (M : E) * (N : E)) * (x : E) = t * x + ((M : ℚ) * (N : ℚ)) • (1 * (x : E))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[Algebra.smul_def]`. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hs, map_add, map_smul, ha, hb]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Take `⟨x, hx⟩` from `hz 1 h1`. Establish `hgen : GenCodiff M (t + (M : E) * (N : E))`. Use `hCU E M hM t _ hg hin' ?_` and prove the remaining obligations. Introduce `P hP hMP`. Establish `heP : (e : 𝓞 E) ∉ P`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `h`. Establish `hc : ((e.gcdA M : ℤ) : 𝓞 E) * (e : 𝓞 E) + ((e.gcdB M : ℤ) : 𝓞 E) * (M : 𝓞 E) = 1`. Use `Nat.gcd_eq_gcd_ab e M` as an intermediate fact. Rewrite `this` using `[he.gcd_eq_one]`. Establish `h2 : ((e : ℤ) * e.gcdA M + (M : ℤ) * e.gcdB M) = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← this]`. Simplify using the standard rewrite rules. Establish `h3` using `congrArg (Int.cast : ℤ → 𝓞 E) h2`. Move the coercions through the operations in `at h3`. Rewrite using `[← h3]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Apply `hP.ne_top` to reduce the goal to its premises. Rewrite using `[Ideal.eq_top_iff_one, ← hc]`. Conclude with `P.add_mem (P.mul_mem_left _ h) (P.mul_mem_left _ hMP)`. Use `⟨(e : 𝓞 E), (e : 𝓞 E) + (M : 𝓞 E) * ((N : 𝓞 E) * x), heP, ?_, ?_⟩` and prove the remaining obligations.
+Expand and normalize the polynomial expressions, which then agree. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Conclude with `heP ((P.add_mem_iff_left (P.mul_mem_right _ hMP)).mp h)`. Establish `hx' : (e : E) = t * x` using `by simpa using hx`. Use `push_cast`. Take the linear combination `((M : E) * (N : E)) * hx'`.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `⟨t + (M : E) * (N : E), ?_, hgen, ?_⟩` and prove the remaining obligations. Simplify using `[htc]`. Introduce `τ`. Establish `hb` using `abs_lt.mp (hbound τ)`. Establish `hM1 : (1 : ℝ) ≤ M` using `by exact_mod_cast hM`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hN0 : (0 : ℝ) ≤ N` using `Nat.cast_nonneg N`. Establish `hre : (τ (t + (M : E) * (N : E))).re = (τ t).re + (M : ℝ) * (N : ℝ)`. Simplify using the standard rewrite rules. Rewrite using `[hre]`. Use polynomial arithmetic with `[hb.1]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.W2.Seed.pPosGen :
     CodiffUnit → PosGen := by

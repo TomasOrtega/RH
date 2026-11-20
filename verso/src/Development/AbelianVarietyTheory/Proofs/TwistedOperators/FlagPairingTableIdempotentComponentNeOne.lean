@@ -19,9 +19,9 @@ namespace GlobalTheory.SeeConjRead.RevTab
 open Classical Formalism.L2.SG.HidaSetting
 
 /- English proof (translation)
-Use `⟨fun a c => hZ _ (t1 a c), fun a j => hZ _ (t2 a j), fun a => hZ _ (t3 a), fun a c => hZ _ (t4 a c), fun i a => hZ _ (t5 i a), fun i j => ?_, fun i => hZ _ (t7 i), fun i a => hZ _ (t8 i a), fun a => hZ _ (t9 a), fun j => hZ _ (t10 j), hZ _ t11, fun a => hZ _ (t12 a), fun a c => h …` and prove the remaining obligations. Establish `h` using `hZ _ (t6 i j)`. Distinguish the cases in `hij : i = j`. Simplify using `only [hij, if_true] at h ⊢`. Use `hadd _ _ h hu` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite `this` using `[show p (b' j) (b j) - u + (u - 1) = p (b' j) (b j) - 1 by abel]`. Then use the resulting hypothesis. Simplify `h` using `only [hij, if_false]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem pairTable_of {M A : Type} [Ring A] (p : M → M → A) (Z sm : A → Prop) (hZ : ∀ c, Z c → sm c)
     (hadd : ∀ a b, sm a → sm b → sm (a + b)) {ρ k : ℕ} (e f : Fin ρ → M) (b b' : Fin k → M) (z : M) (u : A)
@@ -48,7 +48,7 @@ theorem pairTable_of {M A : Type} [Ring A] (p : M → M → A) (Z sm : A → Pro
 variable {D : D7}
 
 /- English proof (translation)
-Unfold `SmallAt at *`. Rewrite using `[RingHom.map_add]`. Conclude with `Valuation.map_add_lt _ ha hb`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem smallAt_add {PP : Pl D.host.E} {a b : EAf D} (ha : SmallAt PP a) (hb : SmallAt PP b) : SmallAt PP (a + b) := by
   unfold SmallAt at *
@@ -56,9 +56,9 @@ theorem smallAt_add {PP : Pl D.host.E} {a b : EAf D} (ha : SmallAt PP a) (hb : S
   exact Valuation.map_add_lt _ ha hb
 
 /- English proof (translation)
-Unfold `SmallAt`. Establish `hv : Valued.v (g : PP.adicCompletion D.host.E) < 1`. Use `(PP.valuation_lt_one_iff_mem (K := D.host.E) (g : 𝓞 D.host.E)).2 hg` as an intermediate fact. Rewrite `this` using `[← Formalism.UG.P.levelaf_valued_algebraMap]`. Simplify using `using this`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[RingHom.map_mul, map_natCast, Valuation.map_mul]`. Establish `h1` using `(GlobalTheory.AdIsom.mem_OA t).1 ht PP`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem smallAt_of_mul {PP : Pl D.host.E} {g : ℕ} (hg : (g : 𝓞 D.host.E) ∈ PP.asIdeal) {t : EAf D}
     (ht : t ∈ GlobalTheory.StdFrames.OA D) : SmallAt PP ((g : EAf D) * t) := by
@@ -86,7 +86,7 @@ section Cong
 variable {I : Formalism.MainNotions.S.AutInst} {g : ℕ}
 
 /- English proof (translation)
-Use `unitaryCongruence.Z_sig I g h` as an intermediate fact. Rewrite `this` using `[map_sub, ← unitaryCongruence.hA_symm]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem zmod_swap {x y : VA I} {d : I.E ⊗[I.F] Formalism.MainNotions.S.Af I.F} (h : ZMod' I g (hA I x y - d)) :
     ZMod' I g (hA I y x - sigA I d) := by
@@ -94,14 +94,14 @@ theorem zmod_swap {x y : VA I} {d : I.E ⊗[I.F] Formalism.MainNotions.S.Af I.F}
   rwa [map_sub, ← unitaryCongruence.hA_symm] at this
 
 /- English proof (translation)
-Use `unitaryCongruence.Z_sig I g h` as an intermediate fact. Rewrite `this` using `[← unitaryCongruence.hA_symm]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem zmod_swap0 {x y : VA I} (h : ZMod' I g (hA I x y)) : ZMod' I g (hA I y x) := by
   have := unitaryCongruence.Z_sig I g h
   rwa [← unitaryCongruence.hA_symm] at this
 
 /- English proof (translation)
-Use `zmod_swap h` as an intermediate fact. Distinguish the cases in `hac : a = c`. Substitute `hac` using the available equality. Simplify using `using this`. Simplify `this` using `[hac, Ne.symm hac]`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem zmod_swap_delta {ρ : ℕ} {x y : VA I} {a c : Fin ρ} (h : ZMod' I g (hA I x y - if c = a then 1 else 0)) :
     ZMod' I g (hA I y x - if a = c then 1 else 0) := by
@@ -112,9 +112,9 @@ theorem zmod_swap_delta {ρ : ℕ} {x y : VA I} {a c : Fin ρ} (h : ZMod' I g (h
   · simpa [hac, Ne.symm hac] using this
 
 /- English proof (translation)
-Use `zmod_swap (hD (Fin.rev j) (Fin.rev i))` as an intermediate fact. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Simplify using `using this`. Establish `h2 : ¬ Fin.rev j = Fin.rev i` using `fun h => hij (Fin.rev_injective h).symm`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify `this` using `[hij, h2]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem zmod_diag {k : ℕ} {bw bwd : Fin k → VA I} {ew : I.E ⊗[I.F] Formalism.MainNotions.S.Af I.F}
     (hD : ∀ i j, ZMod' I g (hA I (bwd i) (bw j) - if i = j then ew else 0)) (i j : Fin k) :
@@ -131,11 +131,11 @@ end Cong
 variable {D : D7}
 
 /- English proof (translation)
-Establish `h0 : GlobalTheory.StdFrames.cpt PP ew = 0`. Establish `h1` using `congrArg (GlobalTheory.StdFrames.cpt PP) hid`. Rewrite `h1` using `[map_mul]`. Establish `h2 : GlobalTheory.StdFrames.cpt PP ew * (GlobalTheory.StdFrames.cpt PP ew - 1) = 0` using `by rw [mul_sub, h1, mul_one, sub_self]`. Break down `mul_eq_zero.1 h2 with h | h` into its components or cases.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `h`. Conclude with `absurd (sub_eq_zero.1 h) hne`. Take `⟨t, ht, hc⟩` from `hc0`. Establish `hs` using `smallAt_of_mul hg ht`. Rewrite `hs` using `[← hc]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `e1 : GlobalTheory.StdFrames.sg D ew - 1 = -(1 - ew - GlobalTheory.StdFrames.sg D ew) - ew` using `by ring`. Unfold `SmallAt at *`. Rewrite using `[e1, map_sub, map_neg, h0, sub_zero, Valuation.map_neg]`. Conclude with `hs`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem smallAt_sg_sub_one {PP : Pl D.host.E} {g : ℕ} (hg : (g : 𝓞 D.host.E) ∈ PP.asIdeal) {ew : EAf D}
     (hc0 : ∃ t ∈ GlobalTheory.StdFrames.OA D, 1 - ew - GlobalTheory.StdFrames.sg D ew = (g : EAf D) * t) (hid : ew * ew = ew)
@@ -162,13 +162,13 @@ namespace GlobalTheory.SeeConjRead
 open Formalism.L2.SG.HidaSetting Formalism.L2.SG.Pf RevTab
 
 /- English proof (translation)
-Introduce `D X h PP hg hne`. Establish `hc0 : ZMod' X.B.I X.B.g (1 - X.ew - sigA X.B.I X.ew)`. Establish `hz` using `X.vectorsInLattice.2.1`. Establish `h2 : ZMod' X.B.I X.B.g (hA X.B.I X.z0 ((1 - X.ew - sigA X.B.I X.ew) • X.z0))` using `unitaryCongruence.mL_Qs X.B.I X.B.g hz (X.ew_full _ hz)`. Rewrite `h2` using `[unitaryCongruence.hA_smul_right]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hint : (1 - X.ew - sigA X.B.I X.ew) ∈ Formalism.MainNotions.S.IntAf X.B.I.F X.B.I.E` using `sub_mem (sub_mem (one_mem _) X.ew_int) (unitaryCongruence.sigA_mem _ X.ew_int)`. Establish `h4` using `unitaryCongruence.Z_sub X.B.I X.B.g (unitaryCongruence.Z_smul X.B.I X.B.g hint X.formsAtZero.1) h2`. Rewrite `h4` using `[show (1 - X.ew - sigA X.B.I X.ew) * (hA X.B.I X.z0 X.z0 + 1) - (1 - X.ew - sigA X.B.I X.ew) * hA X.B.I X.z0 X.z0 = 1 - X.ew - sigA X.B.I X.ew by ring]`. Then use the resulting hypothesis. Establish `hG` using `X.gramIntegral`. Establish `hZ` using `X.formsAtZero`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hW` using `X.weightVectorsIntegral`. Establish `hD` using `X.bw_dual`. Establish `hgq` using `X.g_eq`. Establish `hid` using `X.ew_idem`. Take `⟨⟨I⟩⟩` from `X`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Simplify using `only at h hc0 hG hZ hW hD hgq hid hne ⊢`. Substitute `h` using the available equality. Substitute `hgq` using the available equality. Use `pairTable_of (hY D) (ZMod' (Formalism.L2.SG.InstExistsPf.instOf D) (D.host.g 0 * D.host.g 1)) (SmallAt PP) (fun c ⟨t, ht, hc⟩ => hc ▸ smallAt_of_mul hg ht) (fun a b => smallAt_add) _ _ _ _ _ _ (smallAt_sg_sub_one hg hc0 hid hne) (fun a c => zmod_swap_delta (hG c a).2.2) (fun a j …` and prove the remaining obligations.
+Simplify by unfolding definitions. Substitute using the available equality. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem pairTable_rev : ∀ {D : D7} (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (h : X.B.I = Formalism.L2.SG.InstExistsPf.instOf D) (PP : Pl D.host.E), ((D.host.g 0 * D.host.g 1 : ℕ) : 𝓞 D.host.E) ∈ PP.asIdeal → GlobalTheory.StdFrames.cpt PP (ewT X h) ≠ 1 → PairTable (hY D) (SmallAt PP) (e0T X h) (f0T X h) (fun i => bwdT X h (Fin.rev i)) (fun i => bwT X h (Fin.rev i)) (z0T X h) := by
   intro D X h PP hg hne

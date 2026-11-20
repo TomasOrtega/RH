@@ -11,7 +11,7 @@ section
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Introduce `F0 Λ hrow x y y' hrel hsc`. Take `⟨n, hn, m, hm, hfr, hzt⟩` from `hrel`. Conclude with `PI.UnitaryGroupMassFormula.ScalRelRepFree.scalRel_move Λ hrow.2.1.1 _ _ (lf D F0) x.1.1 y.1.1 y'.1.1 n m ⟨hrow.2.1.2.2.1, y.1.2.1, hn, hm, hfr, hzt⟩ hsc`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem scalar_rep_free (D : Formalism.BasicNotions.D7) (u u' : D.what₂.Word) : PI.ScalRelRepFree.ScalarRepFree D u u' := by
   intro F0 Λ hrow x y y' hrel hsc

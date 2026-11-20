@@ -16,13 +16,13 @@ namespace GlobalTheory.TriStep
 variable {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {σ : ℕ} {S : Dbl2 ψ σ}
 
 /- English proof (translation)
-Use function extensionality and compare the values at `g`. Simplify using `[rTrans, mul_assoc]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem rTrans_rTrans {G : Type} [Semigroup G] (a b : G) (F : G → ℂ) : rTrans a (rTrans b F) = rTrans (a * b) F := by
   funext g; simp [rTrans, mul_assoc]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `g`. Simplify using `[rTrans]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem rTrans_one {G : Type} [Monoid G] (F : G → ℂ) : rTrans 1 F = F := by
   funext g; simp [rTrans]
@@ -62,9 +62,9 @@ def space (Q : QStep S) : Submodule ℂ (GA D S.B'.V → ℂ) where
       rw [e1]
 
 /- English proof (translation)
-Take `⟨hc, U, hU, hfU⟩` from `hf`. Use `⟨fun y' => ?_, U.comap (MulAut.conj y⁻¹).toMonoidHom, ?_, fun u hu => ?_⟩` and prove the remaining obligations. Rewrite using `[rTrans_rTrans, ← map_mul]`. Conclude with `hc _`. Establish `hc : Continuous fun x : GL (Q.n₂ ⊕ Fin (Q.c + 1)) Q.k => y⁻¹ * x * y⁻¹⁻¹` using `(continuous_const.mul continuous_id).mul continuous_const`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hU.preimage hc`. Establish `hu' : y⁻¹ * u * y ∈ U` using `by simpa using hu`. Rewrite using `[rTrans_rTrans, ← map_mul, show u * y = y * (y⁻¹ * u * y) by group, map_mul, ← rTrans_rTrans, hfU _ hu']`.
+Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_translate (Q : QStep S) (y : GL (Q.n₂ ⊕ Fin (Q.c + 1)) Q.k) {f : GA D S.B'.V → ℂ} (hf : f ∈ space Q) :
     rTrans (Q.gl₂ y) f ∈ space Q := by
@@ -97,11 +97,9 @@ def valK (S : Dbl2 ψ σ) (Q : QStep S) (c₁ : WO S.B.A S.J.W₀ →₀ ℂ) (c
   S.B'.per ψ (biLift S.oma S.omb S.B.vA S.J.v0 φ (biComb ψ S.B.A S.J.W₀ S.B'.A c₁ c₂ (Λ Ξ))) f
 
 /- English proof (translation)
-Introduce `v`. Take `⟨-, U, hU, hfU⟩` from `v.2`. Set `H : Subgroup (GL (Q.n₂ ⊕ Fin (Q.c + 1)) Q.k)` to `{ carrier := {g | rep Q g v = v} one_mem' := by simp mul_mem' := fun {a b} ha hb => by`. Simplify using `only [Set.mem_setOf_eq, map_mul, Module.End.mul_apply] at *`. Rewrite using `[hb, ha]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `inv_mem' := fun {a} ha => by`. Simplify using `only [Set.mem_setOf_eq] at *`. Use `conv_lhs => rw [← ha]`. Rewrite using `[← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply] }`. Establish `hle : U ≤ H` using `fun u hu => Subtype.ext (hfU u hu)`.
-
-Conclude with `Subgroup.isOpen_mono hle hU`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem smooth (Q : QStep S) : IsSmoothRep (rep Q) := by
   intro v

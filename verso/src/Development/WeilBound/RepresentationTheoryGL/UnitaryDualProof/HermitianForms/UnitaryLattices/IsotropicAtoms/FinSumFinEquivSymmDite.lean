@@ -13,9 +13,9 @@ open PositivityTheory.RgUd.Form
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Use `split_ifs with h`. Rewrite using `[Equiv.symm_apply_eq]`. Use `ext`. Simplify using the standard rewrite rules. Rewrite using `[Equiv.symm_apply_eq]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Use `ext`. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem finSumFinEquiv_symm_dite (n r : ℕ) (x : Fin (n + r)) :
     finSumFinEquiv.symm x = if h : (x : ℕ) < n then Sum.inl ⟨x, h⟩ else Sum.inr ⟨x - n, by omega⟩ := by
@@ -24,9 +24,9 @@ theorem finSumFinEquiv_symm_dite (n r : ℕ) (x : Fin (n + r)) :
   · rw [Equiv.symm_apply_eq]; ext; simp; omega
 
 /- English proof (translation)
-Use `show (1 + colMat k n v.toAdd) a b = _`. Rewrite using `[Matrix.add_apply, one_apply]`. Use `congr 1`. Establish `hb : (b = Fin.last n) ↔ (b : ℕ) = n` using `by rw [Fin.ext_iff, Fin.val_last]`. Proceed by induction on `a using Fin.lastCases with`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Proceed by induction. Treat this case separately.
 
-Consider the case `last => simp [colMat]`. Consider the case `cast a => simp [colMat, hb]`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem unip_val_apply (n : ℕ) (v : Multiplicative (Fin n → k)) (a b : Fin (n + 1)) :
     ((unip k n v : GL (Fin (n + 1)) k) : Matrix (Fin (n + 1)) (Fin (n + 1)) k) a b =
@@ -40,7 +40,7 @@ theorem unip_val_apply (n : ℕ) (v : Multiplicative (Fin n → k)) (a b : Fin (
   | cast a => simp [colMat, hb]
 
 /- English proof (translation)
-Use `show glEmbMat k n (g : Matrix (Fin n) (Fin n) k) a b = _`. Apply the tactic sequence `induction a using Fin.lastCases <;> induction b using Fin.lastCases <;>`. Simplify using `[glEmbMat, Fin.castSucc_ne_last, (Fin.castSucc_ne_last _).symm]`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem glEmb_val_apply (n : ℕ) (g : GL (Fin n) k) (a b : Fin (n + 1)) :
     ((glEmb k n g : GL (Fin (n + 1)) k) : Matrix (Fin (n + 1)) (Fin (n + 1)) k) a b =
@@ -51,11 +51,11 @@ theorem glEmb_val_apply (n : ℕ) (g : GL (Fin n) k) (a b : Fin (n + 1)) :
     simp [glEmbMat, Fin.castSucc_ne_last, (Fin.castSucc_ne_last _).symm]
 
 /- English proof (translation)
-Establish `hh` using `(mem_Mir_iff k (p : GL (Fin (n + 1)) k)).1 p.2`. Use `ext1`. Rewrite using `[Units.val_mul]`. Use `show _ = (1 + colMat k n _) * glEmbMat k n (blockMat k n (p : GL (Fin (n + 1)) k))`. Rewrite using `[add_mul, one_mul, colMat_mul_glEmbMat]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Proceed by induction.
 
-Use extensionality with `a b`. Proceed by induction on `a using Fin.lastCases with`. Consider the case `last`. Rewrite using `[hh]`. Apply the tactic sequence `induction b using Fin.lastCases <;>`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Treat this case separately.
 
-Simplify using `[glEmbMat, colMat, eLast, Fin.castSucc_ne_last, Pi.single_apply]`. Consider the case `cast a`. Apply the tactic sequence `induction b using Fin.lastCases <;>`. Simplify using `[glEmbMat, colMat, blockMat, Fin.castSucc_ne_last]`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem eq_unip_glEmb' {n : ℕ} (p : Mir k n) :
     (p : GL (Fin (n + 1)) k) =
@@ -77,9 +77,9 @@ theorem eq_unip_glEmb' {n : ℕ} (p : Mir k n) :
       simp [glEmbMat, colMat, blockMat, Fin.castSucc_ne_last]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hg i j hj`. Use `congrFun (hg j hj) i` as an intermediate fact. Simplify `this` using `[mulVec, dotProduct, Pi.single_apply, eq_comm]`. Introduce `hg j hj`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Use function extensionality and compare the values at `i`. Simplify using `[mulVec, dotProduct, Pi.single_apply, hg i j hj]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem mem_colFix_iff' (N n : ℕ) (g : GL (Fin N) k) :
     g ∈ colFix k N n ↔ ∀ i j : Fin N, (j : ℕ) < n → (g : Matrix (Fin N) (Fin N) k) i j = if i = j then 1 else 0 := by
@@ -92,9 +92,9 @@ theorem mem_colFix_iff' (N n : ℕ) (g : GL (Fin N) k) :
     simp [mulVec, dotProduct, Pi.single_apply, hg i j hj]
 
 /- English proof (translation)
-Use `show (reindexAlgEquiv k k (finCongr (Nat.add_sub_cancel' h)) (reindexAlgEquiv k k finSumFinEquiv (fromBlocks (g : Matrix (Fin n) (Fin n) k) 0 0 1))) i j = _`. Rewrite using `[coe_reindexAlgEquiv, coe_reindexAlgEquiv, reindex_apply, reindex_apply, submatrix_apply, submatrix_apply]`. Simplify using `only [finCongr_symm, finCongr_apply, finSumFinEquiv_symm_dite, Fin.val_cast]`. Apply the tactic sequence `by_cases hi : (i : ℕ) < n <;> by_cases hj : (j : ℕ) < n <;>`. Simplify using `[hi, hj, fromBlocks_apply₁₁, fromBlocks_apply₁₂, fromBlocks_apply₂₁, fromBlocks_apply₂₂, one_apply, Fin.ext_iff]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `all_goals (try split_ifs) <;> first | rfl | omega`.
+A detailed English derivation is pending.
 -/
 theorem blkAt_val_apply (n N : ℕ) (h : n ≤ N) (g : GL (Fin n) k) (i j : Fin N) :
     ((blkAt k n N h g : GL (Fin N) k) : Matrix (Fin N) (Fin N) k) i j =
@@ -110,22 +110,22 @@ theorem blkAt_val_apply (n N : ℕ) (h : n ≤ N) (g : GL (Fin n) k) (i j : Fin 
   all_goals (try split_ifs) <;> first | rfl | omega
 
 /- English proof (translation)
-Simplify using `only [colEl, ofAdd_add, map_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem colEl_add (m N : ℕ) (h : m + 2 ≤ N) (x y : Fin (m + 1) → k) :
     colEl k m N h (x + y) = colEl k m N h x * colEl k m N h y := by
   simp only [colEl, ofAdd_add, map_mul]
 
 /- English proof (translation)
-Simplify using `[colEl]`.
+Simplify using the standard rewrite rules.
 -/
 theorem colEl_zero (m N : ℕ) (h : m + 2 ≤ N) : colEl k m N h 0 = 1 := by
   simp [colEl]
 
 /- English proof (translation)
-Rewrite using `[colEl, blkAt_val_apply]`. Apply the tactic sequence `by_cases hi : (i : ℕ) < m + 2 <;> by_cases hj : (j : ℕ) < m + 2 <;> simp only [hi, hj, dite_true, dite_false]`. Rewrite using `[unip_val_apply]`. Simplify using `only [Fin.ext_iff, toAdd_ofAdd]`. Simplify using `[Fin.ext_iff, show ¬ (i : ℕ) = j by omega, show ¬ (j : ℕ) = m + 1 by omega]`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[Fin.ext_iff]`. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. Introduce `h1 h2`. Use linear arithmetic over natural numbers and integers.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Use linear arithmetic over natural numbers and integers.
 -/
 theorem colEl_val_apply (m N : ℕ) (h : m + 2 ≤ N) (x : Fin (m + 1) → k) (i j : Fin N) :
     ((colEl k m N h x : GL (Fin N) k) : Matrix (Fin N) (Fin N) k) i j =
@@ -141,9 +141,9 @@ theorem colEl_val_apply (m N : ℕ) (h : m + 2 ≤ N) (x : Fin (m + 1) → k) (i
     omega
 
 /- English proof (translation)
-Establish `hc : Continuous fun x => ((colEl k m N h x : GL (Fin N) k) : Matrix (Fin N) (Fin N) k)`. Use `continuous_matrix fun i j => ?_` and prove the remaining obligations. Simplify using `only [colEl_val_apply]`. Apply the tactic sequence `by_cases hi : (i : ℕ) < m + 1 <;> by_cases hj : (j : ℕ) = m + 1 <;> simp only [hi, hj, dite_true, dite_false, if_true, if_false] <;> fun_prop`. Establish `hinv : ∀ x, ((colEl k m N h x)⁻¹ : GL (Fin N) k) = colEl k m N h (-x)` using `fun x => by`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Rewrite using `[eq_comm, eq_inv_iff_mul_eq_one, ← colEl_add, neg_add_cancel, colEl_zero]`. Rewrite using `[Units.continuous_iff]`. Use `⟨hc, ?_⟩` and prove the remaining obligations. Conclude with `(hc.comp continuous_neg).congr fun x => by simp only [Function.comp, hinv]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuous_colEl (m N : ℕ) (h : m + 2 ≤ N) : Continuous (colEl k m N h) := by
   have hc : Continuous fun x => ((colEl k m N h x : GL (Fin N) k) : Matrix (Fin N) (Fin N) k) := by
@@ -158,7 +158,7 @@ theorem continuous_colEl (m N : ℕ) (h : m + 2 ≤ N) : Continuous (colEl k m N
   exact (hc.comp continuous_neg).congr fun x => by simp only [Function.comp, hinv]
 
 /- English proof (translation)
-Use extensionality with `i j`. Rewrite using `[blkAt_val_apply, blkAt_val_apply]`. Apply the tactic sequence `by_cases hi : (i : ℕ) < m + 2 <;> by_cases hj : (j : ℕ) < m + 2 <;>`. Simplify using `only [hi, hj, dite_true, dite_false, glEmb_val_apply]`. Apply the tactic sequence `all_goals (try split_ifs) <;> simp_all [Fin.ext_iff] <;> omega`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem blkAt_glEmb (m N : ℕ) (h : m + 2 ≤ N) (g : GL (Fin (m + 1)) k) :
     blkAt k (m + 2) N h (glEmb k (m + 1) g) = blkAt k (m + 1) N (by omega) g := by
@@ -169,9 +169,9 @@ theorem blkAt_glEmb (m N : ℕ) (h : m + 2 ≤ N) (g : GL (Fin (m + 1)) k) :
   all_goals (try split_ifs) <;> simp_all [Fin.ext_iff] <;> omega
 
 /- English proof (translation)
-Use `ext`. Rewrite using `[Matrix.GeneralLinearGroup.val_det_apply, Matrix.GeneralLinearGroup.val_det_apply]`. Use `show (glEmbMat k n (g : Matrix (Fin n) (Fin n) k)).det = _`. Rewrite using `[Matrix.det_succ_row _ (Fin.last n), Fin.sum_univ_castSucc]`. Establish `e : (glEmbMat k n (g : Matrix (Fin n) (Fin n) k)).submatrix (Fin.last n).succAbove (Fin.last n).succAbove = (g : Matrix (Fin n) (Fin n) k)`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `a b`. Simplify using `[glEmbMat]`. Simplify using `only [e]`. Simplify using `[glEmbMat, ← two_mul]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem det_glEmb (n : ℕ) (g : GL (Fin n) k) :
     Matrix.GeneralLinearGroup.det (glEmb k n g) = Matrix.GeneralLinearGroup.det g := by
@@ -187,9 +187,9 @@ theorem det_glEmb (n : ℕ) (g : GL (Fin n) k) :
   simp [glEmbMat, ← two_mul]
 
 /- English proof (translation)
-Use `ext`. Rewrite using `[Matrix.GeneralLinearGroup.val_det_apply, Units.val_one, Matrix.det_of_isUpperTriangular]`. Use `Finset.prod_eq_one fun a _ => ?_` and prove the remaining obligations. Rewrite using `[unip_val_apply]`. Apply the tactic sequence `split_ifs <;> first | rfl | (exfalso; omega) | simp_all`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Introduce `a b hab`. Rewrite using `[unip_val_apply]`. Establish `hab' : (b : ℕ) < a` using `hab`. Apply the tactic sequence `split_ifs <;> first | (exfalso; omega) | simp_all [Fin.ext_iff]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem det_unip (n : ℕ) (x : Multiplicative (Fin n → k)) : Matrix.GeneralLinearGroup.det (unip k n x) = 1 := by
   ext
@@ -203,7 +203,7 @@ theorem det_unip (n : ℕ) (x : Multiplicative (Fin n → k)) : Matrix.GeneralLi
     split_ifs <;> first | (exfalso; omega) | simp_all [Fin.ext_iff]
 
 /- English proof (translation)
-Rewrite using `[← blkAt_glEmb m N h g, colEl, colEl, ← map_mul, ← map_mul, glEmb_mul_unip']`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem blkAt_mul_colEl (m N : ℕ) (h : m + 2 ≤ N) (g : GL (Fin (m + 1)) k) (x : Fin (m + 1) → k) :
     blkAt k (m + 1) N (by omega) g * colEl k m N h x =
@@ -212,20 +212,20 @@ theorem blkAt_mul_colEl (m N : ℕ) (h : m + 2 ≤ N) (g : GL (Fin (m + 1)) k) (
   rfl
 
 /- English proof (translation)
-Conclude with `MirU_le_Mir k (m + 1) ⟨_, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem unip_mem_Mir (m : ℕ) (x : Fin (m + 1) → k) : unip k (m + 1) (Multiplicative.ofAdd x) ∈ Mir k (m + 1) := by
   exact MirU_le_Mir k (m + 1) ⟨_, rfl⟩
 
 /- English proof (translation)
-The claim follows from `glEmb_mem_Mir k (m + 1) g`.
+A detailed English derivation is pending.
 -/
 theorem glEmb_mem_Mir' (m : ℕ) (g : GL (Fin (m + 1)) k) : glEmb k (m + 1) g ∈ Mir k (m + 1) := glEmb_mem_Mir k (m + 1) g
 
 /- English proof (translation)
-Establish `e : p = _` using `eq_unip_glEmb' (⟨p, hp⟩ : Mir k (m + 1))`. Use `⟨fun r => (p : Matrix (Fin (m + 2)) (Fin (m + 2)) k) (Fin.castSucc r) (Fin.last (m + 1)), mirabolicProjection k (m + 1) ⟨p, hp⟩, ?_, ?_⟩` and prove the remaining obligations. Use `conv_lhs => rw [e]`. Rewrite using `[map_mul, ← blkAt_glEmb m N h]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem mir_decomp (m N : ℕ) (h : m + 2 ≤ N) (p : GL (Fin (m + 2)) k) (hp : p ∈ Mir k (m + 1)) :
     ∃ (x : Fin (m + 1) → k) (g : GL (Fin (m + 1)) k),
@@ -242,27 +242,25 @@ theorem mir_decomp (m N : ℕ) (h : m + 2 ≤ N) (p : GL (Fin (m + 2)) k) (hp : 
       _ = _ := by rw [map_mul, det_unip, one_mul, det_glEmb]
 
 /- English proof (translation)
-Establish `hu1` using `(mem_unipB k).1 (Subgroup.mem_inf.1 hu).1`. Establish `hcf` using `(mem_colFix_iff' N (m + 1) u).1 (Subgroup.mem_inf.1 hu).2`. Establish `hlow : ∀ i j : Fin N, (j : ℕ) < i → (u : Matrix (Fin N) (Fin N) k) i j = 0` using `fun i j hij => hu1.1 i j hij`. Establish `hdiag` using `hu1.2`. Use `set r : Fin N := ⟨m + 1, by omega⟩ with hr`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set x : Fin (m + 1) → k := fun i => (u : Matrix (Fin N) (Fin N) k) ⟨i, by omega⟩ r with hx`. Use `set u' : GL (Fin N) k := colEl k m N h (-x) * u with hu'def`. Establish `hent : ∀ i j, (u' : Matrix (Fin N) (Fin N) k) i j = (u : Matrix (Fin N) (Fin N) k) i j - (if hi : (i : ℕ) < m + 1 then x ⟨i, hi⟩ * (u : Matrix (Fin N) (Fin N) k) r j else 0)`. Introduce `i j`. Rewrite using `[hu'def, Units.val_mul, mul_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Simplify using `only [colEl_val_apply, add_mul, Finset.sum_add_distrib, ite_mul, one_mul, zero_mul, Finset.sum_ite_eq, Finset.mem_univ, if_true]`. Distinguish the cases in `hi : (i : ℕ) < m + 1`. Simplify using `only [hi, dite_true, ite_mul, zero_mul]`. Rewrite using `[Finset.sum_eq_single r (fun b _ hb => if_neg (fun e => hb (Fin.ext e))) (by simp)]`. Simplify using `[hr, sub_eq_add_neg]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[hi]`. Establish `hu' : u' ∈ derUnip k N (m + 2)`. Use `Subgroup.mem_inf.2 ⟨(mem_unipB k).2 ⟨fun i j hij => ?_, fun i => ?_⟩, (mem_colFix_iff' N (m + 2) u').2 fun i j hj => ?_⟩` and prove the remaining obligations. Establish `hij' : (j : ℕ) < i` using `hij`. Rewrite using `[hent, hlow i j hij']`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `split_ifs with hi`. Rewrite using `[hlow r j (by simp [hr]; omega)]; simp`. Simplify using the standard rewrite rules. Rewrite using `[hent, hdiag] split_ifs with hi`. Rewrite using `[hlow r i (by simp [hr]; omega)]; simp`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Rewrite using `[hent]`. Distinguish the cases in `hj' : (j : ℕ) < m + 1`. Rewrite using `[hcf i j hj', hcf r j hj']`. Simplify using `[hr, Fin.ext_iff]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `_ e`. Use linear arithmetic over natural numbers and integers. Establish `hjr : j = r` using `Fin.ext (by simp [hr]; omega)`. Rewrite using `[hjr, hdiag r]`. Distinguish the cases in `hi : (i : ℕ) < m + 1`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[hi, hx, hr, Fin.ext_iff, show (i : ℕ) ≠ m + 1 by omega]`. Distinguish the cases in `hir : i = r`. Rewrite using `[hir, hdiag r]`. Simplify using `[hr]`. Establish `: (r : ℕ) < i`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
 
-Use `Fin.val_ne_of_ne hir` as an intermediate fact. Simplify using `[hr] at this ⊢`. Use linear arithmetic over natural numbers and integers. Rewrite using `[hlow i r this]`. Simplify using `[hi, hir]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨x, u', hu', ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hu'def, ← mul_assoc, ← colEl_add, add_neg_cancel, colEl_zero, one_mul]`. Establish `hs : (∑ p : Fin N × Fin N with (p.2 : ℕ) = p.1 + 1 ∧ m + 1 ≤ (p.1 : ℕ), (u : Matrix (Fin N) (Fin N) k) p.1 p.2) = ∑ p : Fin N × Fin N with (p.2 : ℕ) = p.1 + 1 ∧ m + 2 - 1 ≤ (p.1 : ℕ), (u' : Matrix (Fin N) (Fin N) k) p.1 p.2`. Use `Finset.sum_congr rfl fun p hp => ?_` and prove the remaining obligations. Establish `hp'` using `(Finset.mem_filter.1 hp).2`.
-
-Rewrite using `[hent, dif_neg (by omega), sub_zero]`. Conclude with `congrArg (fun t => ((Circle.toUnits (ψ t) : ℂˣ) : ℂ)) hs`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem derUnip_decomp (ψ : AddChar k Circle) (m N : ℕ) (h : m + 2 ≤ N) (u : GL (Fin N) k)
     (hu : u ∈ derUnip k N (m + 1)) :

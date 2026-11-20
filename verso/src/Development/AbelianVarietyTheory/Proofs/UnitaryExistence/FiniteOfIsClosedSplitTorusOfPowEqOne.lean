@@ -10,9 +10,9 @@ open ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestrictio
 namespace GlobalTheory
 
 /- English proof (translation)
-Rewrite using `[Hom.mul_def, Hom.mul_def, Functor.obj.μ_def, ← Category.assoc, adj.homEquiv_naturality_right_symm]`. Use `congr 1`. Use `ext`. Rewrite using `[← adj.homEquiv_naturality_right_symm]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← adj.homEquiv_naturality_right_symm]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem adjunction_homEquiv_symm_mul {C D : Type*} [Category C] [Category D]
     [CartesianMonoidalCategory C] [CartesianMonoidalCategory D] {L : C ⥤ D} {R : D ⥤ C}
@@ -48,15 +48,13 @@ theorem splitTorusPoint_left (t : Multiplicative X →* kˣ) :
       Spec.map (CommRingCat.ofHom (torusEval t).toRingHom) ≫ (torusIso k X).hom := rfl
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `s t h`. Establish `h1` using `congrArg (·.left) h`. Simplify using `only [splitTorusPoint_left] at h1`. Establish `h2` using `Spec.map_injective ((cancel_mono _).1 h1)`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `torusEval_bijective.1 (AlgHom.coe_ringHom_injective (congrArg (·.hom) h2))`. Introduce `x`. Set `g : Spec (.of k) ⟶ Spec (.of (AddMonoidAlgebra k X))` to `x.left ≫ (torusIso k X).inv`. Establish `hg : CommRingCat.ofHom (algebraMap k (AddMonoidAlgebra k X)) ≫ Spec.preimage g = 𝟙 _`. Apply `Spec.map_injective` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Spec.map_comp, Spec.map_preimage, ← torusIso_hom_hom, Spec.map_id]`. Simplify using `only [g]`. Use `erw [Category.assoc, Iso.inv_hom_id_assoc]`. Conclude with `Over.w x`. Take `⟨t, ht⟩` from `torusEval_bijective.2 ⟨(Spec.preimage g).hom, fun r => congr($hg r)⟩`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Use `⟨t, Over.OverMorphism.ext ?_⟩` and prove the remaining obligations. Rewrite using `[splitTorusPoint_left, ht]`. Express the relevant statement in the definitionally equal form `Spec.map (Spec.preimage g) ≫ _ = _`. Rewrite using `[Spec.map_preimage]`. Simplify using `only [g]`.
-
-Use `erw [Category.assoc, Iso.inv_hom_id, Category.comp_id]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem splitTorusPoint_bijective :
     Function.Bijective (splitTorusPoint : (Multiplicative X →* kˣ) → _) := by
@@ -89,7 +87,7 @@ noncomputable def splitTorusDown (x : 𝟙_ (Over (Sp k)) ⟶ splitTorus (Sp k) 
     ((Over.mapPullbackAdj (toZ (Sp k))).homEquiv _ _).symm x
 
 /- English proof (translation)
-Simplify using `[splitTorusDown, Adjunction.homEquiv_symm_apply, torusFst]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem splitTorusDown_left (x : 𝟙_ (Over (Sp k)) ⟶ splitTorus (Sp k) X) :
     (splitTorusDown x).left = x.left ≫ torusFst (Sp k) X := by
@@ -97,7 +95,7 @@ theorem splitTorusDown_left (x : 𝟙_ (Over (Sp k)) ⟶ splitTorus (Sp k) X) :
   rfl
 
 /- English proof (translation)
-Unfold `splitTorusDown`. Rewrite using `[← comp_mul]`. Conclude with `congrArg _ (adjunction_homEquiv_symm_mul (Over.mapPullbackAdj _) x y)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem splitTorusDown_mul (x y : 𝟙_ (Over (Sp k)) ⟶ splitTorus (Sp k) X) :
     splitTorusDown (x * y) = splitTorusDown x * splitTorusDown y := by
@@ -106,7 +104,7 @@ theorem splitTorusDown_mul (x y : 𝟙_ (Over (Sp k)) ⟶ splitTorus (Sp k) X) :
   exact congrArg _ (adjunction_homEquiv_symm_mul (Over.mapPullbackAdj _) x y)
 
 /- English proof (translation)
-Introduce `x y h`. Establish `h1` using `congrArg (·.left) h`. Simplify using `only [splitTorusDown_left] at h1`. Conclude with `Over.OverMorphism.ext (pullback.hom_ext h1 ((Over.w x).trans (Over.w y).symm))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem splitTorusDown_injective :
     Function.Injective (splitTorusDown : (𝟙_ (Over (Sp k)) ⟶ splitTorus (Sp k) X) → _) := by
@@ -120,9 +118,9 @@ noncomputable def torusEvalInt (t : Multiplicative X →* kˣ) :
   AddMonoidAlgebra.lift _ k X ((Units.coeHom k).comp t)
 
 /- English proof (translation)
-Use `Over.OverMorphism.ext ?_` and prove the remaining obligations. Rewrite using `[splitTorusDown_left, splitTorusPoint_left]`. Use `erw [Category.assoc, torusIso_hom_fst, ← Spec.map_comp]`. Express the relevant statement in the definitionally equal form `_ = Spec.map (CommRingCat.ofHom (torusEvalInt t).toRingHom)`. Rewrite using `[← CommRingCat.ofHom_comp]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 2`. Use `ringHom_ext_ZU fun y => ?_` and prove the remaining obligations. Simplify using `[torusEvalInt]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem splitTorusDown_point (t : Multiplicative X →* kˣ) :
     splitTorusDown (splitTorusPoint t) = Spec.mapMulEquiv (WithConv.toConv (torusEvalInt t)) := by
@@ -136,7 +134,7 @@ theorem splitTorusDown_point (t : Multiplicative X →* kˣ) :
   simp [torusEvalInt]
 
 /- English proof (translation)
-Apply `WithConv.ofConv_injective` to reduce the goal to its premises. Apply `AlgHom.coe_ringHom_injective` to reduce the goal to its premises. Use `ringHom_ext_ZU fun y => ?_` and prove the remaining obligations. Simplify using `[torusEvalInt, AlgHom.convMul_def]`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem torusEvalInt_mul (s t : Multiplicative X →* kˣ) :
     WithConv.toConv (torusEvalInt (s * t)) =
@@ -147,7 +145,7 @@ theorem torusEvalInt_mul (s t : Multiplicative X →* kˣ) :
   simp [torusEvalInt, AlgHom.convMul_def]
 
 /- English proof (translation)
-Apply `splitTorusDown_injective` to reduce the goal to its premises. Rewrite using `[splitTorusDown_mul, splitTorusDown_point, splitTorusDown_point, splitTorusDown_point, torusEvalInt_mul, map_mul]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem splitTorusPoint_mul (s t : Multiplicative X →* kˣ) :
     splitTorusPoint (s * t) = splitTorusPoint s * splitTorusPoint t := by
@@ -162,9 +160,9 @@ noncomputable def splitTorusPointEquiv :
   { Equiv.ofBijective _ splitTorusPoint_bijective with map_mul' := splitTorusPoint_mul }
 
 /- English proof (translation)
-Establish `h : ∀ p, (splitTorusPoint t).left p = (torusIso k X).hom (torusPrime t)` using `fun p => by`. Establish `hp : p = (⟨⊥, Ideal.isPrime_bot⟩ : PrimeSpectrum k)` using `Subsingleton.elim (α := PrimeSpectrum k) _ _`. Rewrite using `[hp]`. Both sides reduce to the same expression. Use extensionality with `z`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. By extensionality, compare the relevant components.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨p, rfl⟩`. Conclude with `h p`. Introduce and unpack `rfl`. Conclude with `⟨_, h (⟨⊥, Ideal.isPrime_bot⟩ : PrimeSpectrum k)⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem range_splitTorusPoint_left (t : Multiplicative X →* kˣ) :
     Set.range (splitTorusPoint t).left = {(torusIso k X).hom (torusPrime t)} := by
@@ -181,11 +179,11 @@ theorem range_splitTorusPoint_left (t : Multiplicative X →* kˣ) :
     exact ⟨_, h (⟨⊥, Ideal.isPrime_bot⟩ : PrimeSpectrum k)⟩
 
 /- English proof (translation)
-Introduce `k _ _ X _ _ _ n hp hn C Z hZ hC htors`. Use `haveI : NeZero (n : k) := ⟨hn⟩`. Set `e` to `splitTorusPointEquiv k X`. Establish `hcl : @IsClosed _ (torusZariski k X) (C.comap e.toMonoidHom : Set (Multiplicative X →* kˣ))`. Use `isClosed_induced_iff.2 ⟨(torusIso k X).hom ⁻¹' Z, hZ.preimage (torusIso k X).hom.continuous, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Use extensionality with `t`. Express the relevant statement in the definitionally equal form `_ ↔ splitTorusPoint t ∈ C`. Rewrite using `[hC, range_splitTorusPoint_left, Set.singleton_subset_iff]`. Both sides reduce to the same expression. Establish `h` using `finite_of_isClosed_torusZariski_of_pow_eq_one hp.two_le hcl fun s hs h1 => e.injective (by rw [map_one]; exact htors _ hs (by rw [← map_pow, h1, map_one]))`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e' : C.comap e.toMonoidHom ≃ C` using `e.toEquiv.subtypeEquiv fun _ => Iff.rfl`. Conclude with `e'.finite_iff.1 h.1`.
+A detailed English derivation is pending.
 -/
 theorem finite_of_isClosed_splitTorus_of_pow_eq_one :
     ∀ (k : Type) [Field k] [IsAlgClosed k] (X : Type) [AddCommGroup X] [Module.Free ℤ X]

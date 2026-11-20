@@ -20,9 +20,9 @@ def GaussRow (B : Ker.Base D cc δ) : Prop :=
 def Lat0IsLat (B : Ker.Base D cc δ) (N N' : ℕ) : Prop := IsLat (La0 B N N')
 
 /- English proof (translation)
-Establish `hinj : Function.Injective ((LinearMap.id - (φ.symm : V →ₗ[ℂ] V)) : V →ₗ[ℂ] V)`. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `x hx`. Establish `: x - φ.symm x = 0` using `hx`. Conclude with `h x (sub_eq_zero.mp this).symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Supply the required witnesses or components.
 
-Conclude with `⟨LinearEquiv.ofInjectiveEndo _ hinj, fun x => rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_cay {V : Type} [AddCommGroup V] [Module ℂ V] [FiniteDimensional ℂ V] (φ : V ≃ₗ[ℂ] V)
     (h : ∀ x, φ.symm x = x → x = 0) : ∃ Ae : V ≃ₗ[ℂ] V, ∀ x, Ae x = x - φ.symm x := by
@@ -36,9 +36,9 @@ theorem exists_cay {V : Type} [AddCommGroup V] [Module ℂ V] [FiniteDimensional
 variable {B : Ker.Base D cc δ}
 
 /- English proof (translation)
-Introduce `θ hθ hθ0 F hF`. Take `⟨a, ha⟩` from `hSp θ hθ`. Take `⟨b, hb⟩` from `hSp F hF`. Establish `ha0 : a ≠ 0`. Introduce and unpack `rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Conclude with `hθ0 (by rw [ha, zero_smul])`. Conclude with `⟨b * a⁻¹, by rw [ha, hb, smul_smul, inv_mul_cancel_right₀ ha0]⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem line_of_spans {N N' : ℕ} (hSp : B.ThZeroSpans N N') :
     AtMostLine (Ker.formV (TaylorLogMetric.area (TaylorLogMetric.tor0 D cc δ).abelian₂) D.what₂.Tau N N') (TaylorLogMetric.al D (TaylorLogMetric.tor0 D cc δ)) (La0 B N N') := by
@@ -51,7 +51,7 @@ theorem line_of_spans {N N' : ℕ} (hSp : B.ThZeroSpans N N') :
   exact ⟨b * a⁻¹, by rw [ha, hb, smul_smul, inv_mul_cancel_right₀ ha0]⟩
 
 /- English proof (translation)
-Establish `a0 : TaylorLogMetric.admitted D N N' (StandardLatticesGL3.stdL D N) (StandardLatticesGL3.stdL D N')` using `admissible_of_integral_conj_le hN hN' (sd0 N) (sd0 N')`. Establish `a1 : TaylorLogMetric.admitted D N N' (SDLat.smulLat (γ : Matrix (Fin N) (Fin N) D.host.E) (StandardLatticesGL3.stdL D N)) (SDLat.smulLat (γ' : Matrix (Fin N') (Fin N') D.host.E) (StandardLatticesGL3.stdL D N'))` using `admissible_of_integral_conj_le hN hN' (smulSD D N _ γ (sd0 N)) (smulSD D N' _ γ' (sd0 N'))`. Establish `hi : imgLat ((phiU γ γ' : TaylorLogMetric.VC D N N' ≃ₗ[ℂ] TaylorLogMetric.VC D N N') : TaylorLogMetric.VC D N N' →ₗ[ℂ] TaylorLogMetric.VC D N N') (La0 B N N') = TaylorLogMetric.La D (TaylorLogMetric.tor0 D cc δ) (SDLat.smulLat (γ : Matrix (Fin N) (Fin N) D.host.E) (StandardLattic …` using `la_img _ _ _ _ _ _ _ _`. Conclude with `{ herm := formV_herm' _ _ _ _ pos := formV_pos (area_pos' B) _ _ _ selfDual := (hL.1 N N' _ _ a0).1 semi := (hL.1 N N' _ _ a0).2 isom := phiL_isom _ _ _ _ _ _ _ semi' := by rw [hi]; exact (hL.1 N N' _ _ a1).2 inv := fun x _ => al_phi _ _ _ _ _ _ x idx₁ := by rw [hi]; exact (hL.2 …`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem unitaryData (hL : B.LatAll) {N N' : ℕ} (hN : Even N) (hN' : Even N')
     (γ : Matrix.unitaryGroup (Fin N) D.host.E) (γ' : Matrix.unitaryGroup (Fin N') D.host.E)
@@ -78,9 +78,9 @@ theorem unitaryData (hL : B.LatAll) {N N' : ℕ} (hN : Even N) (hN' : Even N')
       cay := hA }
 
 /- English proof (translation)
-Take `⟨Ae, hA⟩` from `exists_cay (phiU γ 1 : TaylorLogMetric.VC D N N' ≃ₗ[ℂ] TaylorLogMetric.VC D N N') (nofix γ hγ)`. Take `⟨Ae₁, hA₁⟩` from `exists_cay (phiU γ 1 : TaylorLogMetric.VC D N 1 ≃ₗ[ℂ] TaylorLogMetric.VC D N 1) (nofix γ hγ)`. Establish `c : Copies (rowE D N N') (Ker.formV (TaylorLogMetric.area (TaylorLogMetric.tor0 D cc δ).abelian₂) D.what₂.Tau N N') (Ker.formV (TaylorLogMetric.area (TaylorLogMetric.tor0 D cc δ).abelian₂) D.what₂.Tau N 1) (TaylorLogMetric.al D (TaylorLogMetric.tor0 D cc δ)) (TaylorLogMetric.al D …` using `{ form := form_row _ N N' char := al_row B hS N N' lat := lat_row B N N' map := map_row γ cay := fun x i => by`. Rewrite using `[hA, hA₁, map_sub, Pi.sub_apply, symm_coord (rowE D N N') _ _ (map_row γ)] }`. Establish `h` using `const_copies hLat (unitaryData hL hN hN' γ 1 Ae hA) (line_of_spans hSp) c (formV_herm' _ _ _ _) (formV_pos (area_pos' B) _ _ _) (phiL_isom _ _ _ _ _ _ _) hA₁ (by rw [Fintype.card_fin]; exact hN') (by rw [finrank_row]; exact hN.mul_left _) (fun S₁ hS₁ => hG N γ Ae₁ hN hA₁ S₁ hS₁) …`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h` using `[det_row, Fintype.card_fin]`. Establish `hi : imgLat ((phiU γ 1 : TaylorLogMetric.VC D N N' ≃ₗ[ℂ] TaylorLogMetric.VC D N N') : TaylorLogMetric.VC D N N' →ₗ[ℂ] TaylorLogMetric.VC D N N') (La0 B N N') = TaylorLogMetric.La D (TaylorLogMetric.tor0 D cc δ) (SDLat.smulLat (γ : Matrix (Fin N) (Fin N) D.host.E) (StandardLattice …` using `la_img _ _ _ _ _ _ _ _`. Rewrite `h` using `[hi, Formalism.BasicNotions.Examples₂.smulLat_one]`. Conclude with `h`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem J1at_of_ne (hS : B.StdOK) (hL : B.LatAll) (hG : GaussRow B) {N N' : ℕ} (hN : Even N) (hN' : Even N')
     (hLat : Lat0IsLat B N N') (hSp : B.ThZeroSpans N N') (γ : Matrix.unitaryGroup (Fin N) D.host.E)
@@ -108,13 +108,13 @@ theorem J1at_of_ne (hS : B.StdOK) (hL : B.LatAll) (hG : GaussRow B) {N N' : ℕ}
   exact h
 
 /- English proof (translation)
-Establish `hfix₁` using `nofix (N' := 1) (cjU γ') (ne_cjU γ' hγ)`. Establish `hfix : ∀ x : TaylorLogMetric.VC D N N', (phiU 1 γ').symm x = x → x = 0`. Introduce `x hx`. Apply `(colE D N N').injective` to reduce the goal to its premises. Use function extensionality and compare the values at `j`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[map_zero]`. Use `hfix₁ _ ?_` and prove the remaining obligations. Rewrite using `[← symm_coord (colE D N N') _ _ (map_col γ'), hx]`. Take `⟨Ae, hA⟩` from `exists_cay (phiU 1 γ' : TaylorLogMetric.VC D N N' ≃ₗ[ℂ] TaylorLogMetric.VC D N N') hfix`. Take `⟨Ae₁, hA₁⟩` from `exists_cay (phiU (cjU γ') 1 : TaylorLogMetric.VC D N' 1 ≃ₗ[ℂ] TaylorLogMetric.VC D N' 1) hfix₁`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `c : Copies (colE D N N') (Ker.formV (TaylorLogMetric.area (TaylorLogMetric.tor0 D cc δ).abelian₂) D.what₂.Tau N N') (Ker.formV (TaylorLogMetric.area (TaylorLogMetric.tor0 D cc δ).abelian₂) D.what₂.Tau N' 1) (TaylorLogMetric.al D (TaylorLogMetric.tor0 D cc δ)) (TaylorLogMetric.al …` using `{ form := form_col _ N N' char := al_col B hS N N' lat := lat_col B N N' map := map_col γ' cay := fun x i => by`. Rewrite using `[hA, hA₁, map_sub, Pi.sub_apply, symm_coord (colE D N N') _ _ (map_col γ')] }`. Establish `h` using `const_copies hLat (unitaryData hL hN hN' 1 γ' Ae hA) (line_of_spans hSp) c (formV_herm' _ _ _ _) (formV_pos (area_pos' B) _ _ _) (phiL_isom _ _ _ _ _ _ _) hA₁ (by rw [Fintype.card_fin]; exact hN) (by rw [finrank_row]; exact hN'.mul_left _) (fun S₁ hS₁ => hG N' (cjU γ') Ae₁ hN' hA …`. Rewrite `h` using `[det_row, Fintype.card_fin, det_cjU, star_star]`. Establish `hi : imgLat ((phiU 1 γ' : TaylorLogMetric.VC D N N' ≃ₗ[ℂ] TaylorLogMetric.VC D N N') : TaylorLogMetric.VC D N N' →ₗ[ℂ] TaylorLogMetric.VC D N N') (La0 B N N') = TaylorLogMetric.La D (TaylorLogMetric.tor0 D cc δ) (SDLat.smulLat (1 : Matrix (Fin N) (Fin N) D.host.E) (StandardLattic …` using `la_img _ _ _ _ _ _ _ _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h` using `[hi, Formalism.BasicNotions.Examples₂.smulLat_one]`. Conclude with `h`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem J2at_of_ne (hS : B.StdOK) (hL : B.LatAll) (hG : GaussRow B) {N N' : ℕ} (hN : Even N) (hN' : Even N')
     (hLat : Lat0IsLat B N N') (hSp : B.ThZeroSpans N N') (γ' : Matrix.unitaryGroup (Fin N') D.host.E)

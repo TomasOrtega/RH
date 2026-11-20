@@ -20,13 +20,13 @@ noncomputable section
 namespace GlobalTheory.SiegelAvgCore
 
 /- English proof (translation)
-Introduce `g hg`. Use `haveI : T2Space (FiniteAdeleRing (𝓞 F) F) := GlobalTheory.AdelicUnitaryTop.t2Space_finiteAdeleRing_of_numberField F`. Take `⟨U, hU⟩` from `hl _ (GlobalTheory.ThK.Adapt.slice_mem_SB ε 0 hg)`. Take `⟨T, hT⟩` from `GlobalTheory.ThK.Adapt.exists_slice ε (0 : κa → mixedEmbedding.mixedSpace F)`. Use `⟨U.comp T, fun f => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ContinuousLinearMap.comp_apply, ← hU]`. Simplify using `only [LinearMap.comp_apply]`. Use `congr 1`. Use function extensionality and compare the values at `b`. Simplify using `only [LinearMap.funLeft_apply, pureA, hT]`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[GlobalTheory.ThK.Adapt.glue_map ε (fun z : AF F => InfiniteAdeleRing.ringEquiv_mixedSpace F z.1), GlobalTheory.ThK.Adapt.glue_map ε (fun z : AF F => z.2)]`. Simplify using `only [Pi.zero_apply]`. Establish `h1 : (fun _ : κa => InfiniteAdeleRing.ringEquiv_mixedSpace F (0 : AF F).1) = 0`. Use function extensionality and compare the values at `k`. Conclude with `map_zero (InfiniteAdeleRing.ringEquiv_mixedSpace F)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[h1]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem sliceAdm {F : Type} [Field F] [NumberField F] {κ κa κb : Type} [Fintype κ] [Fintype κa] [Fintype κb]
     (ε : κ ≃ κa ⊕ κb) (l : ((κb → AF F) → ℂ) →ₗ[ℂ] ℂ) (hl : l ∈ (adeleClass F).adm κb) :
@@ -50,23 +50,23 @@ theorem sliceAdm {F : Type} [Field F] [NumberField F] {κ κa κb : Type} [Finty
   rfl
 
 /- English proof (translation)
-Introduce `hP F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hpair d₁ W₁ H' i₀ i₁ M₁ om₁ r₁ s₁ hH hpair₁ d' hd' d₁' hd₁' dd hdd dd₁ hdd₁ ed hmaps hheis hinv hadm hne μ₁ hμ₁ μ hμ g hg`. Take `⟨κa, _, ε, C, S, hC, hS, hSa, hTheis, hTinv, hTne, htr⟩` from `GlobalTheory.T.adapted_pair_descent_model hP F E σ B n d X W M χX χW om r s r' s' hpair d₁ W₁ H' i₀ i₁ M₁ om₁ r₁ s₁ hH hpair₁ d' hd' d₁' hd₁' dd hdd dd₁ hdd₁`. Set `T` to `LinearMap.funLeft ℂ ℂ (fun v => GlobalTheory.ThK.Adapt.glue ε 0 v) ∘ₗ S`. Establish `hTap : ∀ Φ, T Φ = fun v => S Φ (GlobalTheory.ThK.Adapt.glue ε 0 v)` using `fun Φ => rfl`. Establish `hT1 : ∀ Φ ∈ schA F ((Fin n × Fin d) ⊕ (Fin n × Fin d)), T Φ ∈ schA F ((Fin n × Fin d₁) ⊕ (Fin n × Fin d₁))` using `fun Φ hΦ => by rw [hTap]; exact GlobalTheory.ThK.Adapt.slice_mem_schA ε 0 (hS Φ hΦ)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hT2 : ∀ (z : Matrix (Fin d₁) (Fin n ⊕ Fin n) (AE F E)), ∀ Φ ∈ schA F ((Fin n × Fin d) ⊕ (Fin n × Fin d)), T (dd.rho B.ψ (incM F H'.ι * z) Φ) = dd₁.rho B.ψ z (T Φ)` using `fun z Φ hΦ => by`. Rewrite using `[hTap, hTap]`. Conclude with `hTheis z Φ hΦ`. Establish `hT3 : ∀ (y : Fin n ⊕ Fin n → AE F E), ∀ Φ ∈ schA F ((Fin n × Fin d) ⊕ (Fin n × Fin d)), T (dd.rho B.ψ (Matrix.vecMulVec (incV F H'.x) y) Φ) = T Φ` using `fun y Φ hΦ => by`. Rewrite using `[hTap, hTap]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `funext (hTinv y Φ hΦ)`. Establish `hT4 : ∀ l ∈ (adeleClass F).adm ((Fin n × Fin d₁) ⊕ (Fin n × Fin d₁)), l ∘ₗ T ∈ (adeleClass F).adm ((Fin n × Fin d) ⊕ (Fin n × Fin d))`. Introduce `l hl g' hg'`. Take `⟨l', hl', e⟩` from `hSa _ (sliceAdm ε l hl)`. Take `⟨U, hU⟩` from `hl' g' hg'`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Conclude with `⟨U, fun f => by rw [← hU f, e _ (Submodule.subset_span ⟨f, g', hg', rfl⟩)]; rfl⟩`. Establish `hT5 : ∃ Φ ∈ schA F ((Fin n × Fin d) ⊕ (Fin n × Fin d)), T Φ ≠ 0`. Take `⟨Φ, hΦ, h⟩` from `hTne`. Conclude with `⟨Φ, hΦ, h⟩`. Take `⟨c, hc⟩` from `GlobalTheory.T.seesaw_pair_restriction_global_factor hP F E σ B n d X W M χX χW om r s r' s' hpair d₁ W₁ H' i₀ i₁ M₁ om₁ r₁ s₁ hH hpair₁ d' hd' d₁' hd₁' dd hdd dd₁ hdd₁ T hT1 hT2 hT3 hT4 hT5 ed hmaps hheis hinv hadm`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨hint, Λ, hΛ, hΛeq⟩` from `GlobalTheory.T.trace_nondegenerate_partial_fourier_integral F E n ((Fin n × Fin d) ⊕ (Fin n × Fin d)) κa (Fin n × Fin d₁) ε C hC μ₁ hμ₁ μ hμ`. Take `⟨l', hl', hl'eq⟩` from `hSa Λ hΛ`. Take `⟨U, hU⟩` from `hl' g hg`. Establish `hψ : IsStd B.ψ` using `hpair.base.std`. Establish `hΦ : ∀ f : SchwartzMap ((Fin n × Fin d) ⊕ (Fin n × Fin d) → NumberField.mixedEmbedding.mixedSpace F) ℂ, pureA F f g ∈ schA F ((Fin n × Fin d) ⊕ (Fin n × Fin d))` using `fun f => Submodule.subset_span ⟨f, g, hg, rfl⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `key : ∀ f : SchwartzMap ((Fin n × Fin d) ⊕ (Fin n × Fin d) → NumberField.mixedEmbedding.mixedSpace F) ℂ, ∀ y : Fin n → AE F E, GlobalTheory.DiagSiegel.diagInt μ₁ (ed (GlobalTheory.SiegelAvg.starFam dd B.ψ (incV F H'.y) y (pureA F f g))) = c * GlobalTheory.DiagSiegel.diagInt μ₁ (f …` using `F) (AF F) (C k j) * y j)) v)) := by`. Introduce `f y`. Establish `hm : GlobalTheory.SiegelAvg.starFam dd B.ψ (incV F H'.y) y (pureA F f g) ∈ schA F ((Fin n × Fin d) ⊕ (Fin n × Fin d))` using `GlobalTheory.HeisSchA.schr_mem_schA B.ψ hψ (dd.e (Matrix.vecMulVec (incV F H'.y) (Sum.elim y y))) _ (hΦ f)`. Rewrite using `[hc _ hm]`. Establish `e1 : c • T (GlobalTheory.SiegelAvg.starFam dd B.ψ (incV F H'.y) y (pureA F f g)) = fun v => c * S (pureA F f g) (GlobalTheory.ThK.Adapt.glue ε (fun k => ∑ j, Algebra.trace (AF F) (AE F E) (inclR (F` using `F) (AF F) (C k j) * y j)) v) := by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `v`. Rewrite using `[Pi.smul_apply, smul_eq_mul, hTap]`. Conclude with `congrArg (c * ·) (htr y _ (hΦ f) v)`. Rewrite using `[e1]`. Unfold `GlobalTheory.DiagSiegel.diagInt`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations. Equip the data with the indicated structure.
 
-Use `letI : MeasurableSpace ((Fin n × Fin d₁) → AF F) := borel _`. Conclude with `integral_const_mul c _`. Use `⟨c • U, fun f => ?_⟩` and prove the remaining obligations. Use `letI : MeasurableSpace (Fin n → AE F E) := borel _`. Establish `hk : (fun y => GlobalTheory.DiagSiegel.diagInt μ₁ (ed (GlobalTheory.SiegelAvg.starFam dd B.ψ (incV F H'.y) y (pureA F f g)))) = fun y => c * GlobalTheory.DiagSiegel.diagInt μ₁ (fun v => S (pureA F f g) (GlobalTheory.ThK.Adapt.glue ε (fun k => ∑ j, Algebra.trace (AF F) (AE F E) (i …` using `F) (AF F) (C k j) * y j)) v)) :=`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `(key f)`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hk]`. Conclude with `(hint _ (hS _ (hΦ f))).const_mul c`. Rewrite using `[hk, integral_const_mul, ← hΛeq _ (hS _ (hΦ f)), ← hl'eq _ (hΦ f), hU, ContinuousLinearMap.smul_apply, smul_eq_mul]`.
+A detailed English derivation is pending.
 -/
 theorem main : GlobalTheory.FunPr.Hypotheses₂ → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (n d : ℕ) (X : Spc F E n) (W : Spc F E d)
     (M : Model σ X W) (χX χW : Chr F E) (om : Rep σ X W) (r s r' s' : ℕ), IsPair B M χX χW om r s r' s' →

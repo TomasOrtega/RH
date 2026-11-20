@@ -6,11 +6,9 @@ open Complex DirichletCharacter ArithmeticFunction MeasureTheory Filter Topology
 namespace GlobalTheory.ZeroDensityMult
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hc`. Use `push Not at hc`. Distinguish the cases in `h1 : χ = 1`. Establish `hN : N = 1`. Establish `h` using `hχ`.
+Assume the negation of the conclusion and derive a contradiction. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[DirichletCharacter.isPrimitive_def, h1, DirichletCharacter.conductor_one]`. Conclude with `h.symm`. Substitute `hN` using the available equality. Rewrite `h` using `[LFunction_modOne_eq]`. Conclude with `riemannZeta_ne_zero_of_one_le_re hc h`.
-
-Conclude with `LFunction_ne_zero_of_one_le_re χ (Or.inl h1) hc h`.
+Substitute using the available equality. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem re_lt_one_of_zero {N : ℕ} [NeZero N] (χ : DirichletCharacter ℂ N) (hχ : χ.IsPrimitive)
     {ρ : ℂ} (h : LFunction χ ρ = 0) : ρ.re < 1 := by
@@ -27,11 +25,11 @@ theorem re_lt_one_of_zero {N : ℕ} [NeZero N] (χ : DirichletCharacter ℂ N) (
   · exact LFunction_ne_zero_of_one_le_re χ (Or.inl h1) hc h
 
 /- English proof (translation)
-Establish `h0` using `abs_nonneg t`. Establish `h1 : N * (|t| + 2) ≤ Q ^ 3`. Establish `: N * (|t| + 2) ≤ Q * (Q + 3)` using `mul_le_mul hN (by linarith) (by linarith) (by linarith)`. Establish `h4 : Q + 3 ≤ Q ^ 2` using `by nlinarith`. Establish `h5 : Q * (Q + 3) ≤ Q * Q ^ 2` using `mul_le_mul_of_nonneg_left h4 (by linarith)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h6 : Q * Q ^ 2 = Q ^ 3` using `by ring`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h2 : Real.log (N * (|t| + 2)) ≤ Real.log (Q ^ 3)` using `Real.log_le_log (by positivity) h1`. Establish `h3` using `Real.log_le_rpow_div (x := Q) (ε := (1 : ℝ) / 8) (by linarith) (by norm_num)`. Rewrite `h2` using `[Real.log_pow]`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Move the coercions through the operations in `at h2`. Combine the linear equalities and inequalities to obtain the conclusion.
+Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem log_le {Q N t : ℝ} (hQ : 3 ≤ Q) (hN0 : 0 < N) (hN : N ≤ Q) (ht : |t| ≤ Q + 1) :
     Real.log (N * (|t| + 2)) ≤ 24 * Q ^ ((1 : ℝ) / 8) := by
@@ -49,27 +47,27 @@ theorem log_le {Q N t : ℝ} (hQ : 3 ≤ Q) (hN0 : 0 < N) (hN : N ≤ Q) (ht : |
   linarith
 
 /- English proof (translation)
-Take `⟨C₁, hC₁, H₁⟩` from `GlobalTheory.ZeroWindow.count_zeros_window`. Take `⟨C₂, hC₂, H₂⟩` from `GlobalTheory.T.ncard_unitCells_dirichletLZeros_near_one_le`. Use `⟨C₂ * (C₁ * 24), by positivity, ?_⟩` and prove the remaining obligations. Introduce `Q hQ T hT`. Establish `hQ0 : 0 < Q` using `by linarith`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hcard` using `H₂ Q hQ T hT`. Use `set g : (Σ N : ℕ, DirichletCharacter ℂ (N + 1) × ℂ) → (Σ N : ℕ, DirichletCharacter ℂ (N + 1) × ℤ) := fun p => ⟨p.1, p.2.1, ⌊p.2.2.im⌋⟩ with hg`. Rewrite `hcard` using `[← Finset.coe_image, Set.ncard_coe_finset]`. Use `push_cast`. Rewrite using `[← Finset.sum_fiberwise_of_maps_to (s := T) (t := T.image g) (g := g) (fun p hp => Finset.mem_image_of_mem g hp)]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hcell : ∀ c ∈ T.image g, ∑ p ∈ T with g p = c, ((analyticOrderNatAt (LFunction p.2.1) p.2.2 : ℕ) : ℝ) ≤ C₁ * (24 * Q ^ ((1 : ℝ) / 8))`. Introduce `c hc`. Take `⟨⟨n, χ, z⟩, hz, rfl⟩` from `Finset.mem_image.1 hc`. Take `⟨a1, a2, -, -, a5⟩` from `hT _ hz`. Simplify using `only at a1 a2 a5`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Take `⟨hfin, hsum⟩` from `H₁ (n + 1) χ a2 (⌊z.im⌋ : ℤ)`. Rewrite `hsum` using `[finsum_mem_eq_finite_toFinset_sum _ hfin]`. Establish `hl : Real.log (((n + 1 : ℕ) : ℝ) * (|((⌊z.im⌋ : ℤ) : ℝ)| + 2)) ≤ 24 * Q ^ ((1 : ℝ) / 8)`. Use `log_le hQ (by positivity) a1 ?_` and prove the remaining obligations. Establish `b1` using `Int.floor_le z.im`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `b2` using `Int.lt_floor_add_one z.im`. Rewrite `a5`, the goal using `[abs_le]`. Apply the tactic sequence `constructor <;> linarith [a5.1, a5.2]`. Use `le_trans ?_ (hsum.trans (mul_le_mul_of_nonneg_left hl hC₁.le))` and prove the remaining obligations. Establish `hinj : Function.Injective (fun ρ : ℂ => (⟨n, χ, ρ⟩ : Σ N : ℕ, DirichletCharacter ℂ (N + 1) × ℂ))`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x y h`. Simplify using `using h`. Establish `e` using `Finset.sum_image (s := hfin.toFinset) (g := fun ρ : ℂ => (⟨n, χ, ρ⟩ : Σ N : ℕ, DirichletCharacter ℂ (N + 1) × ℂ)) (f := fun p => ((analyticOrderNatAt (LFunction p.2.1) p.2.2 : ℕ) : ℝ)) hinj.injOn`. Use `le_trans ?_ e.le` and prove the remaining obligations. Use `Finset.sum_le_sum_of_subset_of_nonneg ?_ fun _ _ _ => Nat.cast_nonneg _` and prove the remaining obligations.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨m, ψ, ρ⟩ hp`. Rewrite `hp` using `[Finset.mem_filter]`. Take `⟨hp, hgp⟩` from `hp`. Take `⟨-, b2, b3, b4, -⟩` from `hT _ hp`. Simplify using `only [hg] at hgp b2 b3 b4`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Take `⟨rfl, h2⟩` from `Sigma.mk.inj_iff.1 hgp`. Establish `h3` using `eq_of_heq h2`. Take `⟨rfl, h4⟩` from `Prod.mk.inj h3`. Use `Finset.mem_image.2 ⟨ρ, ?_, rfl⟩` and prove the remaining obligations. Rewrite using `[Set.Finite.mem_toFinset]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨by linarith, re_lt_one_of_zero _ b2 b3, ?_, b3⟩` and prove the remaining obligations. Establish `c1` using `Int.floor_le ρ.im`. Establish `c2` using `Int.lt_floor_add_one ρ.im`. Rewrite using `[← h4, abs_le]`. Apply the tactic sequence `constructor <;> linarith`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations.
 
-Use `(Finset.sum_le_card_nsmul _ _ _ hcell).trans ?_` and prove the remaining obligations. Rewrite using `[nsmul_eq_mul]`. Establish `hp : Q ^ ((1 : ℝ) / 4) = Q ^ ((1 : ℝ) / 8) * Q ^ ((1 : ℝ) / 8)`. Rewrite using `[← Real.rpow_add hQ0]`. Evaluate the numerical expressions.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hp]`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem zero_density_mult : ∃ C : ℝ, 0 < C ∧ ∀ Q : ℝ, 3 ≤ Q → ∀ T : Finset (Σ N : ℕ, DirichletCharacter ℂ (N + 1) × ℂ), (∀ p ∈ T, ((p.1 + 1 : ℕ) : ℝ) ≤ Q ∧ p.2.1.IsPrimitive ∧ LFunction p.2.1 p.2.2 = 0 ∧ 1 - 1 / 400 ≤ p.2.2.re ∧ |p.2.2.im| ≤ Q) → ((∑ p ∈ T, analyticOrderNatAt (LFunction p.2.1) p.2.2 : ℕ) : ℝ) ≤ C * Q ^ ((1 : ℝ) / 4) := by
   classical

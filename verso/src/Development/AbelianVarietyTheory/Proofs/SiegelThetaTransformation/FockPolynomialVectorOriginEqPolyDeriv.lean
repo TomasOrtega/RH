@@ -19,7 +19,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.Ker.FockOrigin
 
 /- English proof (translation)
-Proceed by induction on `L with`. Consider the case `nil => simp`. Consider the case `cons a L ih`. Rewrite using `[List.map_cons, List.prod_cons, ih, List.map_cons, List.prod_cons, List.map_cons, ← Multiset.cons_coe, ← Multiset.singleton_add, map_add, Multiset.toFinsupp_singleton, MvPolynomial.X, MvPolynomial.C_mul', smul_mul_smul_comm, MvPolynomial.monomial_mul, one_mul]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem prod_C_mul_X {σ σ' : Type} [DecidableEq σ'] (c : σ → ℂ) (f : σ → σ') (L : List σ) :
     (L.map fun v => MvPolynomial.C (c v) * MvPolynomial.X (f v)).prod =
@@ -32,11 +32,11 @@ theorem prod_C_mul_X {σ σ' : Type} [DecidableEq σ'] (c : σ → ℂ) (f : σ 
       MvPolynomial.X, MvPolynomial.C_mul', smul_mul_smul_comm, MvPolynomial.monomial_mul, one_mul]
 
 /- English proof (translation)
-Establish `h1` using `prod_C_mul_X (fun _ : σ => (1 : ℂ)) id (Finsupp.toMultiset m).toList`. Simplify using `only [map_one, one_mul, id, List.map_id, List.map_const', List.prod_replicate, one_pow, one_smul, Multiset.coe_toList, Finsupp.toMultiset_toFinsupp] at h1`. Rewrite using `[← h1, map_list_prod, List.map_map]`. Establish `h2 : (⇑(MvPolynomial.aeval (fun v => MvPolynomial.C (c v) * MvPolynomial.X (f v)) : MvPolynomial σ ℂ →ₐ[ℂ] MvPolynomial σ' ℂ) ∘ fun v => MvPolynomial.X v) = fun v => MvPolynomial.C (c v) * MvPolynomial.X (f v)`. Use function extensionality and compare the values at `v`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using the standard rewrite rules. Rewrite using `[h2, prod_C_mul_X, I2.polyDeriv_smul, I2.polyDeriv_monomial_one, I2.pdTerm_eq_itD, Multiset.toFinsupp_toMultiset]`. Use `congr 1`. Use `congrFun (I2.ct_itD_perm hθ ?_) x` and prove the remaining obligations. Establish `h3 : ((Finsupp.toMultiset m).toList.map fun v => u (f v)) = ((Finsupp.toMultiset m).toList.map f).map u` using `by rw [List.map_map]; rfl`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[h3]`. Use `List.Perm.map u ?_` and prove the remaining obligations. Rewrite using `[← Multiset.coe_eq_coe, Multiset.coe_toList]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem polyDeriv_aeval_monomial {σ σ' W : Type} [NormedAddCommGroup W] [NormedSpace ℂ W]
     (c : σ → ℂ) (f : σ → σ') (u : σ' → W) {θ : W → ℂ} (hθ : ContDiff ℂ (⊤ : ℕ∞) θ) (m : σ →₀ ℕ) (x : W) :
@@ -63,33 +63,33 @@ theorem polyDeriv_aeval_monomial {σ σ' W : Type} [NormedAddCommGroup W] [Norme
   rw [← Multiset.coe_eq_coe, Multiset.coe_toList]
 
 /- English proof (translation)
-Introduce `D S T C B hB G θ hθ hG Q`. Take `⟨R, -, -, hadd, -⟩` from `GlobalTheory.KerReal.real_points D S T C`. Take `⟨-, -, -, -, hdir, -⟩` from `(GlobalTheory.T.thetaKernel_orthonormalFrame_inDomain_periodLinear D S T C).2 B hB`. Use `set x := C.xB B with hx0`. Set `f : FVar D T.rank S.rank → Harm.Var C.X.Ψ C.q0 C.X.p0 (Fin S.rank)` to `fun v => (C.m.e v.1, (rowIdx C.hr).symm v.2.1, v.2.2)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `c : FVar D T.rank S.rank → ℂ` to `fun v => ((2 / fockScale D v.1 : ℝ) : ℂ)`. Set `u : FVar D T.rank S.rank → Fin S.rank → Fin C.g → ℂ` to `fun v => letterDir C.X C.hr C.idx (f v)`. Set `lam : FVar D T.rank S.rank → (Fin S.rank → Fin C.g → ℂ) → ℂ` to `fun v z => -(π * ∑ k, hx C.X C.bas C.idx x (u v k) (z k))`. Set `Dl : FVar D T.rank S.rank → ((Fin S.rank → Fin C.g → ℂ) → ℂ) → (Fin S.rank → Fin C.g → ℂ) → ℂ` to `fun l Φ z => lam l z * Φ z + (1 / 2 : ℂ) * (fderiv ℝ Φ z (u l) - I * fderiv ℝ Φ z (I • u l))`. Establish `hlam : ∀ l, (∀ a b, lam l (a + b) = lam l a + lam l b) ∧ ∀ (t : ℂ) a, lam l (t • a) = conj t * lam l a`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `l`. Use `⟨fun a b => ?_, fun t a => ?_⟩` and prove the remaining obligations. Simplify using `only [lam, GlobalTheory.Dict.hx, Pi.add_apply, mulVec_add, star_add, dotProduct_add, Finset.sum_add_distrib]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [lam, GlobalTheory.Dict.hx, Pi.smul_apply, mulVec_smul, star_smul, dotProduct_smul, smul_eq_mul, ← Finset.mul_sum, RCLike.star_def]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hops` using `GlobalTheory.Ker.CreOp.foldr_creation_zero _ _ u lam θ hlam hθ Dl (fun _ _ _ => rfl)`. Set `A` to `aPlusAll (heisO C.ψ S T) C.θ (fun τ => cplxO 1 (C.sB B τ)) (fun _ => 1) B`. Establish `key : ∀ L : List (FVar D T.rank S.rank), ∀ w, IsRealPt w → L.foldr (fun i g => A i g) G w = gaussR C.X C.bas C.idx x (C.zOf x w) * ((L.map c).prod * L.foldr Dl θ (C.zOf x w))`. Introduce `L`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Proceed by induction on `L with`. Consider the case `nil => intro w hw`. Simplify using `using hG w hw`. Consider the case `cons a L ih`. Introduce `w hw`.
+Treat this case separately. Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hd : Differentiable ℝ (L.foldr Dl θ)` using `(hops L).1.differentiable (by simp)`. Establish `h` using `(GlobalTheory.T.annihilation_creation_periodCoordinates D S T C B hB _ (fun z => (L.map c).prod * L.foldr Dl θ z) (hd.const_mul _) ih a.1 (unitMap 1 (B a.1) a.2.1 a.2.2) (u a) (hdir a.1 a.2.1 a.2.2).symm w hw).2`. Rewrite using `[List.foldr_cons]`. Express the relevant statement in the definitionally equal form `((fockScale D a.1 : ℂ)⁻¹) * crea (heisO C.ψ S T) C.θ a.1 (cplxO 1 (C.sB B a.1)) (unitMap 1 (B a.1) a.2.1 a.2.2) (L.foldr (fun i g => A i g) G) w = _`. Rewrite using `[h, fderiv_const_mul (hd _)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [List.foldr_cons, List.map_cons, List.prod_cons, _root_.smul_apply, smul_eq_mul]`. Simplify using `only [Dl, lam, c, ← hx0]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `h0 : C.zOf x 0 = 0`.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : C.realPt 0 = 0`. Use `hadd 0 0` as an intermediate fact. Rewrite `this` using `[add_zero]`. Conclude with `left_eq_add.mp this`. Use function extensionality and compare the values at `k i`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [Ctx.zOf, h1, zR, Pi.zero_apply, mulVec_zero]`. Use `split_ifs`. Simplify using `[hermC]`. Both sides reduce to the same expression. Establish `hr0 : IsRealPt (0 : WO S T)`.
+Both sides reduce to the same expression. Establish an intermediate fact. Replace the relevant objects with their definitions. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Unfold `IsRealPt`. Use extensionality with `i j`. Simplify using the standard rewrite rules. Establish `hg0 : gaussR C.X C.bas C.idx x (0 : Fin S.rank → Fin C.g → ℂ) = 1`. Simplify using `[gaussR, GlobalTheory.Dict.hx]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Proceed by induction. Treat this case separately.
 
-Establish `hsm` using `I2.contDiff_of_diff hθ`. Proceed by induction on `Q using MvPolynomial.induction_on' with`. Consider the case `add P P' hP hP'`. Rewrite using `[map_add, I2.polyDeriv_add, ← hP, ← hP', Ctx.fvec, map_add]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Consider the case `monomial m a`. Establish `e : MvPolynomial.monomial m a = a • MvPolynomial.monomial m (1 : ℂ)`. Rewrite using `[MvPolynomial.smul_monomial, smul_eq_mul, mul_one]`. Rewrite using `[e, map_smul, I2.polyDeriv_smul, Ctx.fvec, map_smul, Pi.smul_apply, smul_eq_mul]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `h2 : pureTensorO C.ψ C.θ S T (fun _ => 1) (C.sB B) (fun _ => 1) B G (MvPolynomial.monomial m (1 : ℂ)) = opPow A m G`. Use `(MvPolynomial.basisMonomials (FVar D T.rank S.rank) ℂ).constr_basis ℂ (fun k => opPow A k G) m` as an intermediate fact. Rewrite `this` using `[MvPolynomial.coe_basisMonomials]`. Then use the resulting hypothesis. Rewrite using `[h2, opPow, key _ 0 hr0, h0, hg0, one_mul, (hops _).2]`. Use `Eq.trans ?_ (polyDeriv_aeval_monomial c f _ hsm m 0).symm` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Rewrite using `[I2.ct_iter_eq_itD_ofFn]`. Use `congr 1`. Conclude with `List.ofFn_getElem_eq_map _ u`.
+A detailed English derivation is pending.
 -/
 theorem fvec_zero_eq_polyDeriv : ∀ (D : D7) (S T : HSp D) (C : Ctx S T), ∀ B, C.IsB B → ∀ (G : WO S T → ℂ) (θ : (Fin S.rank → Fin C.g → ℂ) → ℂ), Differentiable ℂ θ → (∀ w, IsRealPt w → G w = gaussR C.X C.bas C.idx (C.xB B) (C.zOf (C.xB B) w) * θ (C.zOf (C.xB B) w)) → ∀ Q : MvPolynomial (FVar D T.rank S.rank) ℂ, C.fvec B G Q 0 = polyDeriv (C.toH Q) (letterDir C.X C.hr C.idx) θ 0 := by
   intro D S T C B hB G θ hθ hG Q

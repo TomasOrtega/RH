@@ -13,7 +13,7 @@ open scoped ComplexOrder
 noncomputable section
 
 /- English proof (translation)
-Use extensionality with `j k`. Apply the tactic sequence `by_cases h : j = k <;> simp [h]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem MCBounds.map_smul_one_sub {g : ℕ} (s : ℝ) (A : Matrix (Fin g) (Fin g) ℝ) :
     (s • (1 : Matrix (Fin g) (Fin g) ℝ) - A).map (fun x : ℝ => (x : ℂ)) =
@@ -22,7 +22,7 @@ theorem MCBounds.map_smul_one_sub {g : ℕ} (s : ℝ) (A : Matrix (Fin g) (Fin g
   by_cases h : j = k <;> simp [h]
 
 /- English proof (translation)
-Use extensionality with `j k`. Apply the tactic sequence `by_cases h : j = k <;> simp [h]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem MCBounds.map_sub_smul_one {g : ℕ} (s : ℝ) (A : Matrix (Fin g) (Fin g) ℝ) :
     (A - s • (1 : Matrix (Fin g) (Fin g) ℝ)).map (fun x : ℝ => (x : ℂ)) =
@@ -31,7 +31,7 @@ theorem MCBounds.map_sub_smul_one {g : ℕ} (s : ℝ) (A : Matrix (Fin g) (Fin g
   by_cases h : j = k <;> simp [h]
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_smul, Matrix.mul_one, Matrix.smul_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem MCBounds.conj_smul_one_sub {g k : ℕ} (F : Matrix (Fin g) (Fin k) ℂ) (s : ℂ)
     (Z : Matrix (Fin g) (Fin g) ℂ) :
@@ -39,7 +39,7 @@ theorem MCBounds.conj_smul_one_sub {g k : ℕ} (F : Matrix (Fin g) (Fin k) ℂ) 
   rw [Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_smul, Matrix.mul_one, Matrix.smul_mul]
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_smul, Matrix.mul_one, Matrix.smul_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem MCBounds.conj_sub_smul_one {g k : ℕ} (F : Matrix (Fin g) (Fin k) ℂ) (s : ℂ)
     (Z : Matrix (Fin g) (Fin g) ℂ) :
@@ -47,40 +47,38 @@ theorem MCBounds.conj_sub_smul_one {g k : ℕ} (F : Matrix (Fin g) (Fin k) ℂ) 
   rw [Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_smul, Matrix.mul_one, Matrix.smul_mul]
 
 /- English proof (translation)
-Rewrite using `[det_smul, Fintype.card_fin, ← Complex.ofReal_pow, Complex.re_ofReal_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem MCBounds.re_det_ofReal_smul {k : ℕ} (s : ℝ) (H : Matrix (Fin k) (Fin k) ℂ) :
     ((s : ℂ) • H).det.re = s ^ k * H.det.re := by
   rw [det_smul, Fintype.card_fin, ← Complex.ofReal_pow, Complex.re_ofReal_mul]
 
 /- English proof (translation)
-Introduce `D`. Take `⟨C1, hC1, hY⟩` from `exists_Y_le D`. Take `⟨δ, M, hδ, hM, hG⟩` from `exists_gram_bounds D`. Use `set C2 : ℝ := (D.rk : ℝ) * (|Real.log C1| + 1) + |Real.log δ| with hC2`. Use `set C3 : ℝ := |Real.log (D.c⁻¹ ^ D.rk * M)| with hC3`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hCC1 : C1 ≤ max C1 (max C2 (max C3 1))` using `le_max_left _ _`. Establish `hCC2 : C2 ≤ max C1 (max C2 (max C3 1))` using `(le_max_left _ _).trans (le_max_right _ _)`. Establish `hCC3 : C3 ≤ max C1 (max C2 (max C3 1))` using `((le_max_left _ _).trans (le_max_right _ _)).trans (le_max_right _ _)`. Use `set C := max C1 (max C2 (max C3 1)) with hC`. Use `⟨C, by linarith, fun p hp hps => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hz : p.1 ∈ D.U` using `(D.K_subset hp).1`. Establish `hr1 : 1 ≤ D.radius p.1` using `one_le_radius D hz`. Establish `hlog1 : 1 ≤ Real.log (D.radius p.1)` using `one_le_log_radius D hz`. Use `set r := D.radius p.1 with hr`. Establish `hYc : (D.Y p.1 - D.c • (1 : Matrix (Fin D.g) (Fin D.g) ℝ)).PosSemidef` using `D.Y_ge p.1 hps`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hYpd : (D.Y p.1).PosDef` using `posDef_of_ge D.c_pos hYc`. Establish `hYle1` using `hY p hp`. Establish `hYle : ((C * r) • (1 : Matrix (Fin D.g) (Fin D.g) ℝ) - D.Y p.1).PosSemidef`. Establish `e : (C * r) • (1 : Matrix (Fin D.g) (Fin D.g) ℝ) - D.Y p.1 = ((C1 * r) • (1 : Matrix (Fin D.g) (Fin D.g) ℝ) - D.Y p.1) + ((C - C1) * r) • (1 : Matrix (Fin D.g) (Fin D.g) ℝ)`. Rewrite using `[sub_mul, sub_smul]`.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Normalize the expressions using the abelian group laws. Rewrite using `[e]`. Conclude with `hYle1.add (PosSemidef.one.smul (by nlinarith))`. Use `set F := D.f p with hF`. Use `set Yc := (D.Y p.1)⁻¹.map (fun x : ℝ => (x : ℂ)) with hYcdef`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hYcPSD : Yc.PosSemidef` using `posSemidef_map_ofReal hYpd.inv.posSemidef`. Establish `hGPSD : (Fᴴ * Yc * F).PosSemidef` using `hYcPSD.conjTranspose_mul_mul_same F`. Establish `hHPSD : (Fᴴ * F).PosSemidef` using `posSemidef_conjTranspose_mul_self F`. Establish `hup : (((D.c⁻¹ : ℝ) : ℂ) • (Fᴴ * F) - Fᴴ * Yc * F).PosSemidef`. Establish `h1` using `posSemidef_map_ofReal (inv_le_of_ge D.c_pos hYc)`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `h1` using `[map_smul_one_sub]`. Use `h1.conjTranspose_mul_mul_same F` as an intermediate fact. Rewrite `this` using `[conj_smul_one_sub]`. Then use the resulting hypothesis. Establish `hdup : (Fᴴ * Yc * F).det.re ≤ D.c⁻¹ ^ D.rk * (Fᴴ * F).det.re`. Use `MCDet.re_det_mono hGPSD hup` as an intermediate fact.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [RCLike.re_to_complex] at this`. Rewrite `this` using `[re_det_ofReal_smul]`. Then use the resulting hypothesis. Establish `hlow : ∀ l : ℝ, 0 < l → (l • (1 : Matrix (Fin D.g) (Fin D.g) ℝ) - D.Y p.1).PosSemidef → l⁻¹ ^ D.rk * (Fᴴ * F).det.re ≤ (Fᴴ * Yc * F).det.re`. Introduce `l hl hle`. Establish `h1` using `posSemidef_map_ofReal (inv_ge_of_le hl hYpd hle)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `h1` using `[map_sub_smul_one]`. Establish `h2` using `h1.conjTranspose_mul_mul_same F`. Rewrite `h2` using `[conj_sub_smul_one]`. Establish `h3 : (((l⁻¹ : ℝ) : ℂ) • (Fᴴ * F)).PosSemidef` using `hHPSD.smul (Complex.zero_le_real.mpr (inv_nonneg.mpr hl.le))`. Use `MCDet.re_det_mono h3 h2` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [RCLike.re_to_complex] at this`. Rewrite `this` using `[re_det_ofReal_smul]`. Then use the resulting hypothesis. Establish `hδp` using `(hG p hp).1`. Establish `hMp` using `(hG p hp).2`. Establish `hl1 : 0 < C1 * r` using `by positivity`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hdlow1` using `hlow (C1 * r) hl1 hYle1`. Establish `hdlowC` using `hlow (C * r) (by nlinarith) hYle`. Establish `hμpos : 0 < (C1 * r)⁻¹ ^ D.rk * δ` using `by positivity`. Establish `hμ : (C1 * r)⁻¹ ^ D.rk * δ ≤ (Fᴴ * Yc * F).det.re` using `le_trans (mul_le_mul_of_nonneg_left hδp (by positivity)) hdlow1`. Establish `hdpos : 0 < (Fᴴ * Yc * F).det.re` using `lt_of_lt_of_le hμpos hμ`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hu : D.u p = Real.log (Fᴴ * Yc * F).det.re` using `rfl`. Use `⟨hYc, hYle, hdlowC, hdup, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hu]`. Establish `h1` using `Real.log_le_log hμpos hμ`. Rewrite `h1` using `[Real.log_mul (by positivity) hδ.ne', Real.log_pow, Real.log_inv, Real.log_mul hC1.ne' (by linarith)]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 
-Establish `a1 : Real.log C1 ≤ |Real.log C1| * Real.log r` using `(le_abs_self _).trans (le_mul_of_one_le_right (abs_nonneg _) hlog1)`. Establish `a2 : -Real.log δ ≤ |Real.log δ| * Real.log r` using `(neg_le_abs _).trans (le_mul_of_one_le_right (abs_nonneg _) hlog1)`. Establish `hk : (0 : ℝ) ≤ D.rk` using `Nat.cast_nonneg _`. Establish `b1` using `mul_le_mul_of_nonneg_left a1 hk`. Establish `b2` using `mul_le_mul_of_nonneg_right hCC2 (by linarith : (0 : ℝ) ≤ Real.log r)`.
-
-Rewrite `b2` using `[hC2]`. Use the polynomial consequences of the given equalities and inequalities. Rewrite using `[hu]`. Establish `h1` using `Real.log_le_log hdpos (hdup.trans (mul_le_mul_of_nonneg_left hMp (pow_nonneg (inv_nonneg.mpr D.c_pos.le) _)))`. Conclude with `h1.trans ((le_abs_self _).trans hCC3)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem ChartBounds.proof : ChartBounds.Statement := by
   intro D

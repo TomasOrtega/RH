@@ -20,13 +20,13 @@ open GlobalTheory.Doubling (absE)
 set_option synthInstance.maxHeartbeats 400000 in
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Introduce `hK F E _ _ _ _ _ σ B a a' G X om om' hT d₁ W₁ H' i₀ i₁ hA Φ hΦ μ 𝓕 hμ h𝓕 h1 n hn h`. Establish `hp` using `GlobalTheory.ThK.Inhab.pairV' hT`. Establish `hS : Φ ∈ schA F (Fin a' × Fin (a + a'))`. Establish `hle : G.M'.So B.ψ B.τ₁ ≤ schA F (Fin a' × Fin (a + a'))`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `_ ⟨f, φ, h1, h2, -, rfl⟩`. Conclude with `GlobalTheory.TensUniq.pure_mem_schA f φ h1 ((h2.and hp.good.std).mono fun w hw => hw.1.trans hw.2)`. Conclude with `hle hΦ`. Establish `hf : ∀ γ ∈ ratU σ G.W.J, ∀ y, G.M'.I om' Φ (γ * y) = G.M'.I om' Φ y`. Introduce `γ hγ y`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments.
 
-Unfold `Model.I`. Use `congr 1`. Use function extensionality and compare the values at `x`. Simplify using `only [theta]`. Establish `e : om' (x, γ * y) Φ = om' (1, γ) (om' (x, y) Φ)`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Module.End.mul_apply, ← map_mul, Prod.mk_mul_mk, one_mul]`. Rewrite using `[e]`. Conclude with `GlobalTheory.T.thetaSum_invariant_rational_unitary hK.base F E σ B a' (a + a') G.V' G.W G.M' _ _ om' _ _ _ _ hp 1 (one_mem _) γ hγ _ (hp.weil.isUSplitting.pres _ _ hS)`. Establish `hc` using `GlobalTheory.T.constant_term_unipotent_integral F E σ B a a' G X om om' hT d₁ W₁ H' i₀ i₁ hA (G.M'.I om' Φ) hf μ 𝓕 hμ h𝓕 h1`. Conclude with `GlobalTheory.CTInv.ct_mul_left_unip F E σ (a + a') d₁ G.W H' (G.M'.I om' Φ) (GlobalTheory.CtTyp.ctf H' μ 𝓕 (G.M'.I om' Φ)) hc ⟨μ, 𝓕, hμ, h𝓕, h1⟩ n hn h`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.T.triple_unipotent_period_integral_two : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (a a' : ℕ) (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W), IsTriple B G X om om' → ∀ (d₁ : ℕ) (W₁ : Spc F E d₁) (H' : Plane E (a + a') d₁) (i₀ i₁ : ℕ), H'.IsAdapted σ B G.W W₁ i₀ i₁ → ∀ Φ ∈ G.M'.So B.ψ B.τ₁, ∀ (μ : Measure (unip σ G.W H')) (𝓕 : Set (unip σ G.W H')), μ.IsHaarMeasure → IsFundamentalDomain ((ratU σ G.W.J).subgroupOf (unip σ G.W H')) 𝓕 μ → μ 𝓕 = 1 → ∀ n ∈ unip σ G.W H', ∀ h : UA σ G.W.J, GlobalTheory.CtTyp.ctf H' μ 𝓕 (G.M'.I om' Φ) (n * h) = GlobalTheory.CtTyp.ctf H' μ 𝓕 (G.M'.I om' Φ) h := by
   intro hK F E _ _ _ _ _ σ B a a' G X om om' hT d₁ W₁ H' i₀ i₁ hA Φ hΦ μ 𝓕 hμ h𝓕 h1 n hn h

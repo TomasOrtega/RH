@@ -6,9 +6,9 @@ open MeasureTheory
 namespace GlobalTheory.CompanionTheory.HaarProd
 
 /- English proof (translation)
-Introduce `G A B _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ μ _ α _ e`. Establish `: (μ.map e).IsHaarMeasure` using `e.isHaarMeasure_map μ`. Set `β₀ : Measure B` to `Measure.haar`. Establish `hc` using `Measure.isMulLeftInvariant_eq_smul (μ.map e) (α.prod β₀)`. Establish `hpos` using `Measure.haarScalarFactor_pos_of_isHaarMeasure (μ.map e) (α.prod β₀)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨Measure.haarScalarFactor (μ.map e) (α.prod β₀) • β₀, ?_, ?_⟩` and prove the remaining obligations. Conclude with `Measure.IsHaarMeasure.nnreal_smul _ hpos.ne'`. Rewrite using `[Measure.prod_smul_right]`. Conclude with `hc`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem haarSplit : HaarSplit := by
   intro G A B _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ μ _ α _ e

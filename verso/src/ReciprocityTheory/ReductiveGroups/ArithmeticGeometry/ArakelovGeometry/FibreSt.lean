@@ -14,21 +14,19 @@ def prFib (x : Ix κ → Ω) (e : Fin (D + 1) → Ix κ) (w : Fin (D + 1) → �
   {z | z ∈ pts (coordIdeal ℤ x) ∧ ∀ k, z (e k) = w k}
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`. Choose the witnesses or unpack the hypotheses as in `⟨i, hi⟩ : ∃ i, z i ≠ 0 := by`. Assume the negation of the conclusion as `h`. Use `push Not at h`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `hz.1 (funext h)`. Take `⟨q, hqm, hq⟩` from `hfr.integral i`. Establish `hg : ∀ j, ∃ g, coneMap ℤ (x ∘ e) g = ((q.coeff j : coneRing ℤ (x ∘ e)) : Polynomial Ω)` using `fun j => (q.coeff j).2`. Use `choose g hg using hg`. Use `set n := q.natDegree`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Set `Q : MvPolynomial (Ix κ) ℤ` to `∑ j ∈ Finset.range (n + 1), rename e (g j) * X i ^ j`. Establish `hQ : Q ∈ coordIdeal ℤ x`. Rewrite using `[coordIdeal, RingHom.mem_ker]`. Rewrite `hq` using `[Polynomial.eval₂_eq_sum_range]`. Simplify using `only [Q, map_sum, map_mul, map_pow, Fib.coneMap_rename, hg]`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hq using 2` and compare the differences between its conclusion and the goal. Simplify using `[coneMap]`. Establish `hz0` using `Fib.coneMap_eq_zero_of_mem_pts (coordIdeal_isHomogIdeal ℤ x) hz hQ`. Establish `hze : z ∘ e = 0` using `funext hcon`. Establish `hcn : constantCoeff (g n) = 1`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h1` using `congrArg (fun p => Polynomial.coeff p 0) (hg n)`. Simplify using `only [coeff_coneMap, homogeneousComponent_zero, aeval_C] at h1`. Rewrite `h1` using `[hqm.coeff_natDegree]`. Simplify using `at h1`. Conclude with `h1` after adjusting the coercions.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h2` using `congrArg (fun p => Polynomial.coeff p n) hz0`. Simplify using `only [Q, map_sum, map_mul, map_pow, Fib.coneMap_rename, hze] at h2`. Establish `h3 : ∀ j, coneMap ℤ (0 : Fin (D + 1) → ℂ) (g j) = Polynomial.C ((constantCoeff (g j) : ℤ) : ℂ)`. Introduce `j`. Simplify using `[coneMap]`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hX : coneMap ℤ z (X i) = Polynomial.C (z i) * Polynomial.X` using `by simp [coneMap]`. Simplify using `only [h3, hX, Polynomial.finsetSum_coeff, Polynomial.coeff_zero] at h2`. Rewrite `h2` using `[Finset.sum_eq_single n]`. Rewrite `h2` using `[mul_pow, ← Polynomial.C_pow, ← mul_assoc, ← Polynomial.C_mul, Polynomial.coeff_C_mul_X_pow, if_pos rfl, hcn]`. Simplify using `at h2`.
-
-Conclude with `hi h2.1`. Introduce `j _ hj`. Rewrite using `[mul_pow, ← Polynomial.C_pow, ← mul_assoc, ← Polynomial.C_mul, Polynomial.coeff_C_mul_X_pow, if_neg (Ne.symm hj)]`. Introduce `h`. Simplify using `at h`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_proj_ne_zero {x : Ix κ → Ω} {e : Fin (D + 1) → Ix κ} (hfr : IsProjFrame x e)
     {z : Ix κ → ℂ} (hz : z ∈ pts (coordIdeal ℤ x)) : ∃ k, z (e k) ≠ 0 := by
@@ -84,23 +82,23 @@ def IsDiscr (x : Ix κ → Ω) (e : Fin (D + 1) → Ix κ) (Δ : MvPolynomial (F
       eval w (map (Int.castRingHom ℂ) g) = ∑ᶠ z ∈ prFib x e w, eval z (map (Int.castRingHom ℂ) f)
 
 /- English proof (translation)
-Take `⟨G, hdeg, hTr, hsc⟩` from `Fib.exists_gen x e hfr`. Establish `hy0 : (x ∘ e) 0 ≠ 0` using `Fib.coord_ne_zero _ hfr.free 0`. Establish `hx0 : x (e 0) ≠ 0` using `hy0`. Set `Δ0 : MvPolynomial (Fin (D + 1)) ℤ` to `X 0 * Fib.homog 0 G.dd.totalDegree G.dd * Fib.homog 0 G.cc.totalDegree G.cc`. Establish `hevΔ : ∀ w : Fin (D + 1) → ℂ, w 0 ≠ 0 → eval w (map (Int.castRingHom ℂ) Δ0) = w 0 * (w 0 ^ G.dd.totalDegree * Fib.deh w 0 G.dd) * (w 0 ^ G.cc.totalDegree * Fib.deh w 0 G.cc)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `w hw0`. Rewrite using `[eval_map]`. Simplify using `only [Δ0, eval₂_mul, eval₂_X, Fib.eval₂_homog w 0 hw0 _ le_rfl]`. Establish `hgood : ∀ w : Fin (D + 1) → ℂ, eval w (map (Int.castRingHom ℂ) Δ0) ≠ 0 → G.Good w`. Introduce `w hw`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hw0 : w 0 ≠ 0`. Introduce `h0`. Apply `hw` to reduce the goal to its premises. Rewrite using `[eval_map]`. Simplify using `[Δ0, h0]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite `hw` using `[hevΔ w hw0]`. Use `⟨hw0, fun m hm => ?_, fun h0 => hw (by rw [h0]; ring), fun h0 => hw (by rw [h0]; ring)⟩` and prove the remaining obligations. Conclude with `Fib.deh_eq_zero_of_deh_eq_zero (x ∘ e) w 0 hy0 hw0 (fun f hf => by rw [hfr.free, Ideal.mem_bot] at hf; simp [hf]) hm`. Use `⟨map (Int.castRingHom ℂ) Δ0, ?_, fun w hw => ?_⟩` and prove the remaining obligations. Introduce `h0`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h1 : Δ0 = 0` using `map_injective _ (RingHom.injective_int (Int.castRingHom ℂ)) (by rw [h0, map_zero])`. Establish `h2 : aeval (x ∘ e) Δ0 = (x ∘ e) 0 * ((x ∘ e) 0 ^ G.dd.totalDegree * Fib.deh (x ∘ e) 0 G.dd) * ((x ∘ e) 0 ^ G.cc.totalDegree * Fib.deh (x ∘ e) 0 G.cc)`. Simplify using `only [Δ0, aeval_def, algebraMap_int_eq, eval₂_mul, eval₂_X, Fib.eval₂_homog _ 0 hy0 _ le_rfl]`. Rewrite `h2` using `[h1, map_zero]`. Conclude with `(mul_ne_zero (mul_ne_zero hy0 (mul_ne_zero (pow_ne_zero _ hy0) G.dd_ne)) (mul_ne_zero (pow_ne_zero _ hy0) G.cc_ne)) h2.symm`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hgw` using `hgood w hw`. Establish `hfib : prFib x e w = Fib.fib x e w` using `rfl`. Use `⟨hfib ▸ G.fib_finite hx0 hgw, by rw [hfib, G.fib_ncard hx0 hgw, hdeg], ?_, ?_⟩` and prove the remaining obligations. Introduce `z hz`. Establish `hWo : IsOpen {w : Fin (D + 1) → ℂ | eval w (map (Int.castRingHom ℂ) Δ0) ≠ 0}` using `isOpen_ne_fun (MvPolynomial.continuous_eval _) continuous_const`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨U, γ, hU, hwU, hγ, hγw, hγf⟩` from `G.exists_section hx0 hWo (fun w' hw' => hgood w' hw') (w := w) hw (z := z) hz`. Conclude with `⟨U, γ, hU, hwU, hγ, hγw, hγf⟩`. Introduce `n f g hf hg hfg`. Establish `hdf : aeval x f = x (e 0) ^ n * Fib.deh x (e 0) f` using `Fib.aeval_eq_pow_mul_deh x (e 0) hx0 hf`. Establish `hdg : aeval (x ∘ e) g = (x ∘ e) 0 ^ n * Fib.deh (x ∘ e) 0 g` using `Fib.aeval_eq_pow_mul_deh (x ∘ e) 0 hy0 hg`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hT : Fib.deh (x ∘ e) 0 g = fnTrace x e (Fib.deh x (e 0) f)`. Rewrite `hfg` using `[hdg, secTrace, hdf, mul_div_cancel_left₀ _ (pow_ne_zero _ hx0)]`. Conclude with `mul_left_cancel₀ (pow_ne_zero _ hy0) hfg`. Establish `htw` using `G.trace_w hgw (fnTrace x e) hTr hsc hT`. Establish `hw0` using `hgw.w0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hfib, G.finsum_fib hx0 hgw, eval_map, ← algebraMap_int_eq, ← aeval_def, Fib.aeval_eq_pow_mul_deh w 0 hw0 hg, htw, ← Multiset.sum_map_mul_left]`. Use `congr 1`. Use `Multiset.map_congr rfl fun ρ hρ => ?_` and prove the remaining obligations. Establish `hρ'` using `(G.mem_roots).1 hρ`. Rewrite using `[eval_map, ← aeval_def, Fib.aeval_eq_pow_mul_deh _ (e 0) (by rw [G.zOf_e hgw hρ' 0]; exact hw0) hf, G.zOf_e hgw hρ' 0]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_isDiscr {x : Ix κ → Ω} {e : Fin (D + 1) → Ix κ} (hfr : IsProjFrame x e) :
     ∃ Δ, IsDiscr x e Δ := by

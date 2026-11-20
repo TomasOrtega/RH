@@ -11,14 +11,14 @@ namespace GlobalTheory.DlRescale
 def mulN (N : ℕ) : ℚ →+ ℚ := AddMonoidHom.mulLeft (N : ℚ)
 
 /- English proof (translation)
-Establish `: (0:ℚ) < N` using `by exact_mod_cast hN`. Simplify using `[mulN, mul_le_mul_iff_of_pos_left this]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem mulN_le (N : ℕ) (hN : 0 < N) (g g' : ℚ) : mulN N g ≤ mulN N g' ↔ g ≤ g' := by
   have : (0:ℚ) < N := by exact_mod_cast hN
   simp [mulN, mul_le_mul_iff_of_pos_left this]
 
 /- English proof (translation)
-Introduce `g g' h` and use `le_antisymm ((mulN_le N hN g g').1 h.le) ((mulN_le N hN g' g).1 h.ge)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem mulN_inj (N : ℕ) (hN : 0 < N) : Function.Injective (mulN N) := fun g g' h =>
   le_antisymm ((mulN_le N hN g g').1 h.le) ((mulN_le N hN g' g).1 h.ge)
@@ -29,7 +29,7 @@ def resc (N : ℕ) (hN : 0 < N) : HahnSeries ℚ Ω →+* HahnSeries ℚ Ω :=
   HahnSeries.embDomainRingHom (mulN N) (mulN_inj N hN) (mulN_le N hN)
 
 /- English proof (translation)
-Establish `hN' : (N:ℚ) ≠ 0` using `by exact_mod_cast hN.ne'`. Establish `e : r = mulN N (r / N)` using `by simp [mulN]; field_simp`. Use `conv_lhs => rw [e]`. Simplify using `only [resc, HahnSeries.embDomainRingHom_apply]`. Conclude with `HahnSeries.embDomain_coeff (f := ⟨⟨mulN N, mulN_inj N hN⟩, mulN_le N hN _ _⟩)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem resc_coeff (N : ℕ) (hN : 0 < N) (ψ : HahnSeries ℚ Ω) (r : ℚ) :
     (resc N hN ψ).coeff r = ψ.coeff (r / N) := by
@@ -40,7 +40,7 @@ theorem resc_coeff (N : ℕ) (hN : 0 < N) (ψ : HahnSeries ℚ Ω) (r : ℚ) :
   exact HahnSeries.embDomain_coeff (f := ⟨⟨mulN N, mulN_inj N hN⟩, mulN_le N hN _ _⟩)
 
 /- English proof (translation)
-Establish `hN' : (N:ℚ) ≠ 0` using `by exact_mod_cast hN.ne'`. Use `⟨fun h r => ?_, fun h r => h _⟩` and prove the remaining obligations. Use `h (N * r)` as an intermediate fact. Rewrite `this` using `[mul_div_cancel_left₀ r hN']`. Then use the resulting hypothesis.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem forall_div (N : ℕ) (hN : 0 < N) (Q : ℚ → Prop) : (∀ r : ℚ, Q (r / N)) ↔ ∀ r, Q r := by
   have hN' : (N:ℚ) ≠ 0 := by exact_mod_cast hN.ne'
@@ -49,7 +49,7 @@ theorem forall_div (N : ℕ) (hN : 0 < N) (Q : ℚ → Prop) : (∀ r : ℚ, Q (
   rwa [mul_div_cancel_left₀ r hN'] at this
 
 /- English proof (translation)
-Use extensionality with `r`. Simplify using `only [theta, resc_coeff]`. Use `congr 2`. Expand and normalize the polynomial expressions, which then agree.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem theta_resc (N : ℕ) (hN : 0 < N) (s : ℚ) (ψ : HahnSeries ℚ Ω) :
     theta (s / N) (resc N hN ψ) = resc N hN (theta s ψ) := by
@@ -59,11 +59,11 @@ theorem theta_resc (N : ℕ) (hN : 0 < N) (s : ℚ) (ψ : HahnSeries ℚ Ω) :
   ring
 
 /- English proof (translation)
-Unfold `Prim`. Simplify using `only [resc_coeff]`. Rewrite using `[forall_div N hN (fun r => ψ.coeff r ∈ A)]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, r, h2, h3⟩`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨h1, r / N, h2, h3⟩`. Introduce and unpack `⟨h1, r, h2, h3⟩`. Establish `hN' : (N:ℚ) ≠ 0` using `by exact_mod_cast hN.ne'`. Use `⟨h1, N * r, ?_⟩` and prove the remaining obligations. Rewrite using `[mul_div_cancel_left₀ r hN']`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨h2, h3⟩`.
+Supply the required witnesses or components.
 -/
 theorem prim_resc (A : ValuationSubring Ω) (N : ℕ) (hN : 0 < N) (ψ : HahnSeries ℚ Ω) :
     Prim A (resc N hN ψ) ↔ Prim A ψ := by
@@ -78,7 +78,7 @@ theorem prim_resc (A : ValuationSubring Ω) (N : ℕ) (hN : 0 < N) (ψ : HahnSer
     rw [mul_div_cancel_left₀ r hN']; exact ⟨h2, h3⟩
 
 /- English proof (translation)
-Unfold `eOm`. Simplify using `only [Rat.cast_zero, mul_zero, Complex.exp_zero]`. Rewrite using `[← map_one ε]`. Conclude with `Function.leftInverse_invFun ε.injective 1`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eOm_zero (ε : Ω →+* ℂ) : eOm ε 0 = 1 := by
   unfold eOm
@@ -87,11 +87,11 @@ theorem eOm_zero (ε : Ω →+* ℂ) : eOm ε 0 = 1 := by
   exact Function.leftInverse_invFun ε.injective 1
 
 /- English proof (translation)
-Establish `hdet : (0 : ℤ) < (!![(N : ℤ), 0; 0, 1] : Matrix (Fin 2) (Fin 2) ℤ).det`. Simplify using `[Matrix.det_fin_two]`. Conclude with `hN` after adjusting the coercions. Establish `e00 : ent (toGQ !![(N : ℤ), 0; 0, 1]) 0 0 = N` using `by simp [ent, toGQ, hN, Matrix.GeneralLinearGroup.mkOfDetNeZero]`. Establish `e01 : ent (toGQ !![(N : ℤ), 0; 0, 1]) 0 1 = 0` using `by simp [ent, toGQ, hN, Matrix.GeneralLinearGroup.mkOfDetNeZero]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e10 : ent (toGQ !![(N : ℤ), 0; 0, 1]) 1 0 = 0` using `by simp [ent, toGQ, hN, Matrix.GeneralLinearGroup.mkOfDetNeZero]`. Establish `e11 : ent (toGQ !![(N : ℤ), 0; 0, 1]) 1 1 = 1` using `by simp [ent, toGQ, hN, Matrix.GeneralLinearGroup.mkOfDetNeZero]`. Establish `hN' : (N:ℚ) ≠ 0` using `by exact_mod_cast hN.ne'`. Use extensionality with `r`. Rewrite using `[resc_coeff]`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h` using `X.exp_upper (toGQ !![(N : ℤ), 0; 0, 1]) e10 u (r / N)`. Rewrite `h` using `[e00, e01, e11, mul_zero, zero_div, eOm_zero, one_mul, div_one, div_mul_cancel₀ r hN']`. Conclude with `h`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exp_sl_diag (ε : Ω →+* ℂ) (X : Tower Ω ε) (N : ℕ) (hN : 0 < N) (u : X.K) :
     X.exp (X.sl (toGQ !![(N : ℤ), 0; 0, 1]) u) = resc N hN (X.exp u) := by
@@ -114,19 +114,15 @@ end
 
 open GlobalTheory.DlRescale in
 /- English proof (translation)
-Introduce `Ω _ _ _ ε X _ l _ A _ n N s f φ φ' hN hφ`. Establish `hφ' : φ' = resc N hN φ` using `by ext r; rw [hφ, resc_coeff]`. Substitute `hφ'` using the available equality. Establish `hexp` using `exp_sl_diag ε X N hN`. Use `set g := toGQ !![(N : ℤ), 0; 0, 1]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key : ∀ a b : X.K, (∀ r, CgA A l n ((resc N hN φ * X.exp (X.sl g a) * X.exp (X.sl g b)).coeff r) ((theta (s / N) (X.exp (X.sl g a)) * X.exp (X.sl g b) - X.exp (X.sl g a) * theta (s / N) (X.exp (X.sl g b))).coeff r)) ↔ ∀ r, CgA A l n ((φ * X.exp a * X.exp b).coeff r) ((theta s (X. …`. Introduce `a b`. Simplify using `only [hexp, theta_resc, ← map_mul, ← map_sub, resc_coeff]`. Conclude with `forall_div N hN (fun r => CgA A l n ((φ * X.exp a * X.exp b).coeff r) ((theta s (X.exp a) * X.exp b - X.exp a * theta s (X.exp b)).coeff r))`. Establish `hA : (∀ r, (resc N hN φ).coeff r ∈ A) ↔ ∀ r, φ.coeff r ∈ A`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Simplify using `only [resc_coeff]`. Conclude with `forall_div N hN (fun r => φ.coeff r ∈ A)`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h0, a, b, κ, hκ, hfb, pa, pb, hc⟩`. Use `⟨hA.2 h0, X.sl g a, X.sl g b, κ, hκ, ?_, ?_, ?_, (key a b).2 hc⟩` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← map_mul, hfb, map_mul, AlgEquiv.commutes]`. Rewrite using `[hexp]`. Conclude with `(prim_resc A N hN _).2 pa`. Rewrite using `[hexp]`. Conclude with `(prim_resc A N hN _).2 pb`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce and unpack `⟨h0, a', b', κ, hκ, hfb, pa, pb, hc⟩`. Take `⟨a, rfl⟩` from `(X.sl g).surjective a'`. Take `⟨b, rfl⟩` from `(X.sl g).surjective b'`. Use `⟨hA.1 h0, a, b, κ, hκ, ?_, ?_, ?_, (key a b).1 hc⟩` and prove the remaining obligations. Apply `(X.sl g).injective` to reduce the goal to its premises.
-
-Rewrite using `[map_mul, map_mul, AlgEquiv.commutes]`. Conclude with `hfb`. Rewrite `pa` using `[hexp]`. Conclude with `(prim_resc A N hN _).1 pa`. Rewrite `pb` using `[hexp]`.
-
-Conclude with `(prim_resc A N hN _).1 pb`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.Glue.isDl_rescale : ∀ {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (ε : Ω →+* ℂ) (X : GlobalTheory.KZ.Tower Ω ε), (∃ φ : ℂ → ℂ, DifferentiableOn ℂ φ Hs ∧ X.an X.jK = (φ : Mero)) →
   ∀ (l : ℕ) [Fact l.Prime] (A : ValuationSubring Ω), ((l : ℕ) : Ω) ∈ A.nonunits → ∀ (n N : ℕ) (s : ℚ) (f : X.K) (φ φ' : HahnSeries ℚ Ω), 0 < N → (∀ r : ℚ, φ'.coeff r = φ.coeff (r / N)) → (IsDl X A l n s f φ ↔ IsDl X A l n (s / N) (X.sl (toGQ !![(N : ℤ), 0; 0, 1]) f) φ') := by

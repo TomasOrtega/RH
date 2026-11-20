@@ -26,7 +26,7 @@ def pullEqn (i : B.ι) {y : X} (hy : f y ∈ B.U i) : X.functionFieldˣ :=
     exact not_not.1 (mt (B.mem_support_iff i hg).2 h))))
 
 /- English proof (translation)
-Take `⟨u, hu⟩` from `((B.associated_germ i i' _ hi hi').map (f.stalkMap y).hom)`. Rewrite `hu` using `[Scheme.Hom.germ_stalkMap_apply, Scheme.Hom.germ_stalkMap_apply]`. Establish `e` using `congrArg (algebraMap _ X.functionField) hu`. Rewrite `e` using `[map_mul, algebraMap_germ (U := f ⁻¹ᵁ B.U i) hi, algebraMap_germ (U := f ⁻¹ᵁ B.U i') hi']`. Conclude with `germOf_eq_iff.2 ⟨u, u.isUnit, (eq_div_iff (Units.ne_zero _)).2 ((mul_comm _ _).trans e)⟩`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem germOf_pullEqn {i i' : B.ι} {y : X} (hi : f y ∈ B.U i) (hi' : f y ∈ B.U i') :
     germOf y (pullEqn B f h i hi) = germOf y (pullEqn B f h i' hi') := by
@@ -42,20 +42,20 @@ def pullDiv : CartierDiv X :=
       fun _ hz => germOf_pullEqn B f h _ hz⟩⟩
 
 /- English proof (translation)
-The claim follows from `germOf_pullEqn B f h _ hy`.
+A detailed English derivation is pending.
 -/
 theorem isEqn_pullDiv (i : B.ι) {y : X} (hy : f y ∈ B.U i) : (pullDiv B f h).IsEqn y (pullEqn B f h i hy) :=
   germOf_pullEqn B f h _ hy
 
 /- English proof (translation)
-Introduce `y` and use `have ⟨i, hi⟩ := B.exists_mem (f y) ⟨_, isEqn_pullDiv B f h i hi, by rw [one_mul]; exact regAt_fnOf (U := f ⁻¹ᵁ B.U i) hi _ _⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem eff_pullDiv : (pullDiv B f h).Eff := fun y =>
   have ⟨i, hi⟩ := B.exists_mem (f y)
   ⟨_, isEqn_pullDiv B f h i hi, by rw [one_mul]; exact regAt_fnOf (U := f ⁻¹ᵁ B.U i) hi _ _⟩
 
 /- English proof (translation)
-Take `⟨i, hi⟩` from `B.exists_mem (f y)`. Rewrite using `[← not_iff_not, CartierDiv.notMem_supp_iff, (isEqn_pullDiv B f h i hi).generatesAt_iff, one_mul, B.mem_support_iff i hi, not_not]`. Conclude with `(unitAt_fnOf_iff (U := f ⁻¹ᵁ B.U i) hi _ _).trans (by rw [← Scheme.preimage_basicOpen]; rfl)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_supp_pullDiv (y : X) : y ∈ (pullDiv B f h).supp ↔ f y ∈ B.idealSheaf.support := by
   obtain ⟨i, hi⟩ := B.exists_mem (f y)
@@ -74,9 +74,9 @@ def qDiv {C : CxSt F} (A : Adl C Y) : ℚ ⊗[ℤ] Y.Dv := ((A.n : ℕ) : ℚ)�
 omit [NumberField F] in
 
 /- English proof (translation)
-Use `⟨fun h => ?_, fun ⟨q, hq, h⟩ => ?_⟩` and prove the remaining obligations. Take `⟨⟨c, hc⟩, e⟩` from `(IsLocalizedModule.eq_iff_exists (nonZeroDivisors ℤ) (TensorProduct.mk ℤ ℚ Y.Dv 1)).1 h`. Use `⟨c.natAbs, Int.natAbs_pos.2 (nonZeroDivisors.ne_zero hc), ?_⟩` and prove the remaining obligations. Use `replace e : c • Δ = c • Δ' := e`. Rewrite using `[← natCast_zsmul, ← natCast_zsmul, ← Int.sign_mul_self_eq_natAbs, mul_smul, mul_smul, e]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `congrArg ((q : ℚ)⁻¹ ⊗ₜ[ℤ] ·) h` as an intermediate fact. Simplify using `only [← natCast_zsmul, ← TensorProduct.smul_tmul, zsmul_eq_mul, Int.cast_natCast] at this`. Rewrite `this` using `[mul_inv_cancel₀ (Nat.cast_pos.2 hq).ne']`. Then use the resulting hypothesis.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem one_tmul_eq_iff {Δ Δ' : Y.Dv} : (1 : ℚ) ⊗ₜ[ℤ] Δ = 1 ⊗ₜ Δ' ↔ ∃ q : ℕ, 0 < q ∧ q • Δ = q • Δ' := by
   refine ⟨fun h => ?_, fun ⟨q, hq, h⟩ => ?_⟩
@@ -100,7 +100,7 @@ def combDen : ℕ+ := ⟨∏ i, (t i / ((ρ i).n : ℕ)).den, Finset.prod_pos fu
 def combNum (i : ι) : ℤ := ((combDen ρ t : ℕ) * (t i / ((ρ i).n : ℕ))).num
 
 /- English proof (translation)
-Take `⟨c, hc⟩ : (t i / ((ρ i).n : ℕ)).den ∣ (combDen ρ t : ℕ)` from `Finset.dvd_prod_of_mem _ (Finset.mem_univ i)`. Establish `e : ((combDen ρ t : ℕ) : ℚ) * (t i / ((ρ i).n : ℕ)) = ((c * (t i / ((ρ i).n : ℕ)).num : ℤ) : ℚ)`. Rewrite using `[hc, Nat.cast_mul, mul_right_comm, Rat.den_mul_eq_num, mul_comm, Int.cast_mul, Int.cast_natCast]`. Rewrite using `[combNum, e, Rat.num_intCast, ← e, mul_assoc, div_mul_cancel₀ _ (Nat.cast_ne_zero.2 (ρ i).n.ne_zero)]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem combNum_mul (i : ι) : (combNum ρ t i : ℚ) * ((ρ i).n : ℕ) = (combDen ρ t : ℕ) * t i := by
   obtain ⟨c, hc⟩ : (t i / ((ρ i).n : ℕ)).den ∣ (combDen ρ t : ℕ) := Finset.dvd_prod_of_mem _ (Finset.mem_univ i)
@@ -111,9 +111,9 @@ theorem combNum_mul (i : ι) : (combNum ρ t i : ℚ) * ((ρ i).n : ℕ) = (comb
 def combEqn (x : Y.X) : Y.Fnˣ := ∏ i, eqn (ρ i).D x ^ combNum ρ t i
 
 /- English proof (translation)
-Unfold `combEqn`. Proceed by induction on `(Finset.univ : Finset ι) using Finset.induction_on with`. Consider the case `empty => exact CartierDiv.isEqn_zero x`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.sum_insert ha, Finset.prod_insert ha]`.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Conclude with `((Base.isEqn_eqn _ x).zsmul _).add ih`.
+A detailed English derivation is pending.
 -/
 theorem isEqn_combEqn (x : Y.X) : (∑ i, combNum ρ t i • (ρ i).D).IsEqn x (combEqn ρ t x) := by
   classical
@@ -137,13 +137,13 @@ def comb : Adl (cxSt F) Y where
     eqn (∑ i, combNum ρ t i • (ρ i).D) (below y.1) : Y.Fn))) + ∑ i, combNum ρ t i * (ρ i).lg v e y
 
 /- English proof (translation)
-Establish `e (x : Y.X) : genAt (comb ρ t g).D x ^ 1 / ∏ i, genAt (ρ i).D x ^ combNum ρ t i = (combEqn ρ t x : Y.Fn) / eqn (comb ρ t g).D x`. Simplify using `[genAt, combEqn, div_eq_mul_inv, mul_comm]`. Use `⟨1, combNum ρ t, one_pos, fun i => ?_, one_smul _ _, fun σ z => ?_, fun v w y => ?_⟩` and prove the remaining obligations. Rewrite using `[Nat.cast_one, one_mul]`. Use `congrArg (Rat.cast : ℚ → ℝ) (combNum_mul ρ t i).symm` as an intermediate fact.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Move the coercions through the operations in `at this`. Conclude with `this`. Establish `h₁ : z ∈ Var.eqnSet σ (comb ρ t g).D (eqn (comb ρ t g).D (under z))` using `Base.isEqn_eqn _ _`. Establish `h₂` using `Var.tv_ne_zero h₁ (isEqn_combEqn ρ t (under z))`. Establish `h₃ : (cxSt F).pn Y σ _ ((comb ρ t g).m σ) ((cxSt F).cx Y σ (genAt (comb ρ t g).D (under z))) z = _` using `Var.pn_frame h₁`.
+Move the embeddings inside the algebraic operations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨(mul_pos (pow_pos (norm_pos_iff.2 h₂) 2) (Real.exp_pos _)).trans_eq h₃.symm, ?_⟩` and prove the remaining obligations. Rewrite using `[e, ← Var.val_cx, lnAdl, lnN, h₃]`. Use `erw [Real.log_mul (pow_ne_zero 2 (norm_ne_zero_iff.2 h₂)) (Real.exp_ne_zero _)]`. Rewrite using `[Real.log_exp, Real.log_pow]`. Simplify using `only [comb, Var.tv, Pi.zero_apply]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, Nat.cast_one, one_mul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem isComb_comb : IsComb (comb ρ t g) ρ (fun i => t i) g := by
   have e (x : Y.X) : genAt (comb ρ t g).D x ^ 1 / ∏ i, genAt (ρ i).D x ^ combNum ρ t i =
@@ -169,9 +169,9 @@ theorem isComb_comb : IsComb (comb ρ t g) ρ (fun i => t i) g := by
     rfl
 
 /- English proof (translation)
-Simplify using `only [qDiv, comb, TensorProduct.tmul_sum, ← TensorProduct.smul_tmul, TensorProduct.smul_tmul', zsmul_eq_mul, smul_eq_mul]`. Use `Finset.sum_congr rfl fun i _ => congrArg (· ⊗ₜ _) ?_` and prove the remaining obligations. Establish `h₁ : ((combDen ρ t : ℕ) : ℚ) ≠ 0` using `Nat.cast_ne_zero.2 (combDen ρ t).ne_zero`. Establish `h₂ : (((ρ i).n : ℕ) : ℚ) ≠ 0` using `Nat.cast_ne_zero.2 (ρ i).n.ne_zero`. Clear the denominators using the available nonvanishing facts.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts.
 
-Rewrite using `[combNum_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem qDiv_comb : qDiv (comb ρ t g) = ∑ i, t i • qDiv (ρ i) := by
   simp only [qDiv, comb, TensorProduct.tmul_sum, ← TensorProduct.smul_tmul, TensorProduct.smul_tmul', zsmul_eq_mul,
@@ -197,7 +197,7 @@ def fund (τ : T) (i : Fin N) : T → Fin N → ℝ := fun τ' a => if τ' = τ 
 def coef (u : T → Fin N → ℝ) (τ : T) (i : Fin N) : ℝ := if h : (i : ℕ) + 1 < N then u τ i - u τ ⟨i + 1, h⟩ else u τ i
 
 /- English proof (translation)
-Set `U : ℕ → ℝ` to `fun n => if h : n < N then u τ ⟨n, h⟩ else 0`. Establish `e (i : Fin N) : coef u τ i * fund τ i τ a = if (a : ℕ) ≤ i then U i - U (i + 1) else 0`. Apply the tactic sequence `by_cases h : (i : ℕ) + 1 < N <;> simp [coef, fund, U, h]`. Rewrite using `[Finset.sum_eq_single τ (fun τ' _ h => by simp [fund, h.symm]) (by simp), Finset.sum_congr rfl fun i _ => e i, Fin.sum_univ_eq_sum_range (fun n => if (a : ℕ) ≤ n then U n - U (n + 1) else 0), ← Finset.sum_filter, show (Finset.range N).filter ((a : ℕ) ≤ ·) = Finset.Ico (a : ℕ) N b …`. Simplify using `[U]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem sum_coef_fund [Fintype T] (u : T → Fin N → ℝ) (τ : T) (a : Fin N) :
     ∑ τ', ∑ i, coef u τ' i * fund τ' i τ a = u τ a := by
@@ -212,7 +212,7 @@ theorem sum_coef_fund [Fintype T] (u : T → Fin N → ℝ) (τ : T) (a : Fin N)
   simp [U]
 
 /- English proof (translation)
-Rewrite using `[coef, dif_pos hi]`. Conclude with `sub_nonneg.2 (h τ (Nat.le_succ _))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coef_nonneg {u : T → Fin N → ℝ} (h : ∀ τ, Antitone (u τ)) (τ : T) {i : Fin N} (hi : (i : ℕ) + 1 < N) :
     0 ≤ coef u τ i := by
@@ -222,7 +222,7 @@ theorem coef_nonneg {u : T → Fin N → ℝ} (h : ∀ τ, Antitone (u τ)) (τ 
 def ratOf (r : ℝ) : ℚ := Classical.epsilon fun q : ℚ => r = q
 
 /- English proof (translation)
-The claim follows from `(Rat.cast_injective (Classical.epsilon_spec (p := fun q' : ℚ => (q : ℝ) = q') ⟨q, rfl⟩)).symm`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem ratOf_cast (q : ℚ) : ratOf q = q :=
   (Rat.cast_injective (Classical.epsilon_spec (p := fun q' : ℚ => (q : ℝ) = q') ⟨q, rfl⟩)).symm
@@ -232,7 +232,7 @@ end Weights
 variable {D : D7} {A : Amb D} {N j : ℕ} {S : Sig A N j} {κ : Lv A} {s : FinalTheorems S κ} (Φ : s.Flag)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h => mem_genBd_iff.2 (s.T.BD_supp _ h), s.T.BD_pos _⟩`.
+Supply the required witnesses or components.
 -/
 theorem mem_support_BD_iff (k : s.Comp) (y : (Φ.C k).Y.X) :
     ((Φ.C k).π ≫ genι s.T.Z) y ∈ s.T.BD.idealSheaf.support ↔ (Φ.C k).π y ∈ genBd s.T.Z :=
@@ -243,12 +243,12 @@ def bdPull (k : s.Comp) : (Φ.C k).Y.Dv :=
     (((Φ.C k).bd_supp _).2 ((mem_support_BD_iff Φ k _).1 h))
 
 /- English proof (translation)
-The claim follows from `eff_pullDiv _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem eff_bdPull (k : s.Comp) : (bdPull Φ k).Eff := eff_pullDiv _ _ _
 
 /- English proof (translation)
-The claim follows from `(mem_supp_pullDiv _ _ _ y).trans (mem_support_BD_iff Φ k y)`.
+A detailed English derivation is pending.
 -/
 theorem mem_supp_bdPull (k : s.Comp) (y : (Φ.C k).Y.X) : y ∈ (bdPull Φ k).supp ↔ (Φ.C k).π y ∈ genBd s.T.Z :=
   (mem_supp_pullDiv _ _ _ y).trans (mem_support_BD_iff Φ k y)
@@ -279,9 +279,7 @@ def thW (k : s.Comp) (σ : D.what₂.LL →+* ℂ) (u : D.what₂.Tau → Fin N 
   fun c y ξ => -∑ x : DV.Rt D.what₂.Tau N, u x.1 x.2 * curvMet (h0 k σ (rootExp S x)) c y ξ
 
 /- English proof (translation)
-Use `conv_lhs => rw [phW]`. Use `enter [2, 2, x]`. Rewrite using `[← sum_coef_fund u x.1 x.2]`. Simplify using `only [phW, Finset.mul_sum, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`.
-
-Use `Finset.sum_congr rfl fun _ _ => Finset.sum_comm.trans ?_` and prove the remaining obligations. Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem phW_eq_sum (k : s.Comp) (σ : D.what₂.LL →+* ℂ) (u : D.what₂.Tau → Fin N → ℝ) (y : Pts (Φ.C k).Y σ) :
     phW hm h0 k σ u y = ∑ τ, ∑ i, coef u τ i * phW hm h0 k σ (fund τ i) y := by
@@ -348,7 +346,7 @@ variable {hm h0} (P : PolDat s Φ hm h0)
 def m : ℕ := 2 * P.b * s.T.m0
 
 /- English proof (translation)
-The claim follows from `Nat.mul_pos (Nat.mul_pos two_pos P.b_pos) s.T.torModel_multiplicity_pos`.
+A detailed English derivation is pending.
 -/
 theorem m_pos : 0 < P.m := Nat.mul_pos (Nat.mul_pos two_pos P.b_pos) s.T.torModel_multiplicity_pos
 
@@ -359,13 +357,13 @@ def dirQ : D.what₂.Tau → Fin N → ℚ := dirOf s P.b P.η P.μ
 def dir : D.what₂.Tau → Fin N → ℝ := fun τ i => P.dirQ τ i
 
 /- English proof (translation)
-Simplify using `[dir, dirQ, dirOf, m]`.
+Simplify using the standard rewrite rules.
 -/
 theorem dir_apply (τ : D.what₂.Tau) (i : Fin N) : P.dir τ i = P.m * (varpi j i : ℚ) + P.η * P.μ i := by
   simp [dir, dirQ, dirOf, m]
 
 /- English proof (translation)
-Introduce `a b h` and use `by have h₁ : (varpi j b : ℝ) ≤ varpi j a := by have : (a : ℕ) < b := h unfold varpi split_ifs <;> first | omega | simp have h₂ : (P.μ b : ℝ) < P.μ a := Int.cast_lt.2 (P.μ_anti h) have h₃ : (0 : ℝ) < P.η := Rat.cast_pos.2 P.η_pos rw [dir_apply, dir_apply] exact add_lt_add_of_le_of …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem strictAnti_dir (τ : D.what₂.Tau) : StrictAnti (P.dir τ) := fun a b h => by
   have h₁ : (varpi j b : ℝ) ≤ varpi j a := by
@@ -378,12 +376,12 @@ theorem strictAnti_dir (τ : D.what₂.Tau) : StrictAnti (P.dir τ) := fun a b h
   exact add_lt_add_of_le_of_lt (by gcongr) (by gcongr)
 
 /- English proof (translation)
-The claim follows from `P.ab_div k`.
+A detailed English derivation is pending.
 -/
 theorem qDiv_ab (k : s.Comp) : qDiv (P.ab k) = qL Φ k P.dirQ - 1 ⊗ₜ P.bd k := P.ab_div k
 
 /- English proof (translation)
-Unfold `bd`. Proceed by induction on `P.b with`. Consider the case `zero => exact zero_nsmul (bdPull Φ k) ▸ CartierDiv.eff_zero`. Consider the case `succ n ih => exact succ_nsmul (bdPull Φ k) n ▸ ih.add (eff_bdPull Φ k)`.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem eff_bd (k : s.Comp) : (P.bd k).Eff := by
   unfold bd
@@ -392,7 +390,7 @@ theorem eff_bd (k : s.Comp) : (P.bd k).Eff := by
   | succ n ih => exact succ_nsmul (bdPull Φ k) n ▸ ih.add (eff_bdPull Φ k)
 
 /- English proof (translation)
-Take `⟨g, hg⟩` from `(bdPull Φ k).exists_isEqn y`. Take `⟨r, hr⟩` from `CartierDiv.eff_iff.1 (eff_bdPull Φ k) y g hg`. Rewrite using `[← mem_supp_bdPull, hg.mem_supp_iff, bd, (hg.nsmul _).mem_supp_iff, Units.val_pow_eq_pow_val, ← hr, ← map_pow]`. Establish `e (a : (Φ.C k).Y.X.presheaf.stalk y) : UnitAt y (algebraMap _ (Φ.C k).Y.X.functionField a) ↔ IsUnit a` using `⟨fun ⟨_, hb, e⟩ => IsFractionRing.injective _ (Φ.C k).Y.X.functionField e ▸ hb, fun h => ⟨a, h, rfl⟩⟩`. Rewrite using `[e, e, isUnit_pow_iff P.b_pos.ne']`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem mem_supp_bd (k : s.Comp) (y : (Φ.C k).Y.X) : y ∈ (P.bd k).supp ↔ (Φ.C k).π y ∈ genBd s.T.Z := by
   obtain ⟨g, hg⟩ := (bdPull Φ k).exists_isEqn y
@@ -403,7 +401,7 @@ theorem mem_supp_bd (k : s.Comp) (y : (Φ.C k).Y.X) : y ∈ (P.bd k).supp ↔ (�
   rw [e, e, isUnit_pow_iff P.b_pos.ne']
 
 /- English proof (translation)
-The claim follows from `have ⟨M, L, q, h⟩ := P.ab_model k; ⟨M, L, q, 0, h⟩`.
+A detailed English derivation is pending.
 -/
 theorem nefFib_ab (k : s.Comp) : (P.ab k).NefFib := have ⟨M, L, q, h⟩ := P.ab_model k; ⟨M, L, q, 0, h⟩
 
@@ -417,7 +415,7 @@ def reg (k : s.Comp) (σ : D.what₂.LL →+* ℂ) (u : D.what₂.Tau → Fin N 
 variable (k : s.Comp) (σ : D.what₂.LL →+* ℂ)
 
 /- English proof (translation)
-Simplify using `only [reg, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun τ _ => Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [coef, Pi.add_apply]`. Apply the tactic sequence `split_ifs <;> ring`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem reg_add (u v : D.what₂.Tau → Fin N → ℝ) (t : ℝ) (y : Pts (Φ.C k).Y σ) :
     P.reg k σ (u + v) t y = P.reg k σ u t y + P.reg k σ v t y := by
@@ -427,7 +425,7 @@ theorem reg_add (u v : D.what₂.Tau → Fin N → ℝ) (t : ℝ) (y : Pts (Φ.C
   split_ifs <;> ring
 
 /- English proof (translation)
-Simplify using `only [reg, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun τ _ => Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [coef, Pi.smul_apply, smul_eq_mul]`. Apply the tactic sequence `split_ifs <;> ring`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem reg_smul (r : ℝ) (u : D.what₂.Tau → Fin N → ℝ) (t : ℝ) (y : Pts (Φ.C k).Y σ) :
     P.reg k σ (r • u) t y = r * P.reg k σ u t y := by
@@ -437,7 +435,7 @@ theorem reg_smul (r : ℝ) (u : D.what₂.Tau → Fin N → ℝ) (t : ℝ) (y : 
   split_ifs <;> ring
 
 /- English proof (translation)
-Rewrite using `[phW_eq_sum]`. Use `Finset.sum_congr rfl fun τ _ => Finset.sum_congr rfl fun i _ => congrArg _ ?_` and prove the remaining obligations. Simplify using `[regFund, extBd, hy, rho_zero (P.om_kaehler k σ) (P.exph_is k σ)]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem reg_zero (u : D.what₂.Tau → Fin N → ℝ) {y : Pts (Φ.C k).Y σ} (hy : y ∈ offBd Φ k σ) :
     P.reg k σ u 0 y = phW hm h0 k σ u y := by
@@ -446,7 +444,7 @@ theorem reg_zero (u : D.what₂.Tau → Fin N → ℝ) {y : Pts (Φ.C k).Y σ} (
   simp [regFund, extBd, hy, rho_zero (P.om_kaehler k σ) (P.exph_is k σ)]
 
 /- English proof (translation)
-Rewrite using `[phW_eq_sum]`. Use `Finset.sum_congr rfl fun τ _ => Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Distinguish the cases in `h : (i : ℕ) + 1 < N`. Simplify using `[coef, h, hu τ i ⟨i + 1, h⟩]`. Simplify using `[regFund, extBd, hy, h]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem reg_central {u : D.what₂.Tau → Fin N → ℝ} (hu : ∀ τ a b, u τ a = u τ b) (t : ℝ) {y : Pts (Φ.C k).Y σ}
     (hy : y ∈ offBd Φ k σ) : P.reg k σ u t y = phW hm h0 k σ u y := by
@@ -464,7 +462,7 @@ def mbarQ (B : ℝ) (u : D.what₂.Tau → Fin N → ℚ) (r : ℚ) : Adl (cxSt 
     fun σ y => P.reg k σ (fun τ i => u τ i - r * P.dir τ i) (Real.exp (-((r : ℝ) ^ 2)⁻¹)) y / 2
 
 /- English proof (translation)
-Establish `e (x : DV.Rt D.what₂.Tau N) : qDiv (P.gens k B (some x)) = 1 ⊗ₜ divOf (Φ.C k) (rootExp S x)`. Simplify using `[gens, qDiv, adlOf, expo_rootSym]`. Rewrite using `[mbarQ, qDiv_comb, Fintype.sum_option, show P.gens k B none = P.ab k from rfl, qDiv_ab]`. Simplify using `only [e, qL, Option.elim, smul_sub, smul_neg, Finset.smul_sum, TensorProduct.smul_tmul', smul_eq_mul, mul_one, TensorProduct.neg_tmul, TensorProduct.sub_tmul, Finset.sum_neg_distrib, Finset.sum_sub_distrib]`. Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 theorem qDiv_mbarQ (B : ℝ) (u : D.what₂.Tau → Fin N → ℚ) (r : ℚ) :
     qDiv (P.mbarQ k B u r) = qL Φ k u - r ⊗ₜ P.bd k := by
@@ -486,7 +484,7 @@ def mbarOf (P : PolDat s Φ hm h0) (B : ℝ) (u : D.what₂.Tau → Fin N → �
   if (∀ τ i, ∃ q : ℚ, u τ i = q) ∧ 0 < r then P.mbarQ k B (fun τ i => ratOf (u τ i)) r else Adl.triv _ _
 
 /- English proof (translation)
-Rewrite using `[mbarOf, if_pos ⟨fun τ i => ⟨_, rfl⟩, hr⟩]`. Simplify using `only [ratOf_cast]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem mbarOf_cast (P : PolDat s Φ hm h0) (B : ℝ) (u : D.what₂.Tau → Fin N → ℚ) {r : ℚ} (hr : 0 < r) (k : s.Comp) :
     mbarOf P B (fun τ i => u τ i) r k = P.mbarQ k B u r := by
@@ -494,7 +492,7 @@ theorem mbarOf_cast (P : PolDat s Φ hm h0) (B : ℝ) (u : D.what₂.Tau → Fin
   simp only [ratOf_cast]
 
 /- English proof (translation)
-Use `choose q hq using hu`. Take `rfl : u = fun τ i => (q τ i : ℝ)` from `funext₂ hq`. Rewrite using `[mbarOf_cast P B q hr]`. Use `cast (congrArg (IsComb _ _ · _) (funext fun o => ?_)) (isComb_comb (P.gens k B) (fun o => o.elim r fun x => -(q x.1 x.2 - r * P.dirQ x.1 x.2)) _)` and prove the remaining obligations. Apply the tactic sequence `cases o <;> simp [PolDat.dir]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem isComb_mbarOf (P : PolDat s Φ hm h0) (B : ℝ) {u : D.what₂.Tau → Fin N → ℝ} (hu : ∀ τ i, ∃ q : ℚ, u τ i = q) {r : ℚ}
     (hr : 0 < r) (k : s.Comp) : IsComb (mbarOf P B u r k) (P.gens k B)
@@ -508,7 +506,7 @@ theorem isComb_mbarOf (P : PolDat s Φ hm h0) (B : ℝ) {u : D.what₂.Tau → F
   cases o <;> simp [PolDat.dir]
 
 /- English proof (translation)
-Introduce and unpack `B - u r hu hr _ rfl - c`. Rewrite using `[h, h₁, h₂, h₃, O.setB_eq]`. Conclude with `isComb_mbarOf P B hu hr c`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mbIs_of_eq (O : Setup D) (P : PolDat O.s O.Φ O.met.hm O.met.h0) (h₁ : O.met.ab = P.ab) (h₂ : O.met.dir = P.dir)
     (h₃ : O.met.reg = P.reg) (h : O.Mb = mbarOf P) : O.MbIs := by
@@ -523,7 +521,7 @@ example (O : Setup D) (c : O.s.Comp) (σ : D.what₂.LL →+* ℂ) (u : D.what�
     phW O.met.hm O.met.h0 c σ u z = 2 * O.chg c none u σ z := rfl
 
 /- English proof (translation)
-Simplify using `only [coef, dif_pos h, varpi]`. Apply the tactic sequence `split_ifs <;> first | omega | simp`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 example (i : Fin N) (h : (i : ℕ) + 1 < N) :
     coef (fun (_ : Unit) a => (varpi j a : ℝ)) () i = if (i : ℕ) + 1 = j then 1 else 0 := by
@@ -531,7 +529,7 @@ example (i : Fin N) (h : (i : ℕ) + 1 < N) :
   split_ifs <;> first | omega | simp
 
 /- English proof (translation)
-Simplify using `[qDiv_comb, smul_smul]`.
+Simplify using the standard rewrite rules.
 -/
 example {F : Type} [Field F] [NumberField F] {Y : Var F} (M : Adl (cxSt F) Y) :
     (2 : ℚ) • qDiv (comb (fun _ : Unit => M) (fun _ => 1 / 2) fun _ _ => 0) = qDiv M := by

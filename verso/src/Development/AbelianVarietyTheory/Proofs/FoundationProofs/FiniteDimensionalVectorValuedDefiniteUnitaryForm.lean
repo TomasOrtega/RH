@@ -8,15 +8,15 @@ open scoped Topology
 namespace GlobalTheory.DefU
 
 /- English proof (translation)
-Introduce `E _ _ _ n S _ _ _ ρ K hK M hM`. Take `⟨S₀, hS₀⟩` from `GlobalTheory.DefU.ClassFin.classSet_finite E n K hK`. Set `T : M →ₗ[ℂ] (S₀ → Module.Dual ℂ S)` to `{ toFun := fun f s => (LinearMap.proj (R := ℂ) (φ := fun _ : UA E n => ℂ) (s : UA E n)).comp f.1 map_add' := fun _ _ => rfl map_smul' := fun _ _ => rfl }`. Establish `hT : Function.Injective T`. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `f hf`. Take `⟨hl, hr, hk⟩` from `hM f.1 f.2`. Establish `h0 : ∀ s ∈ S₀, ∀ v, f.1 v s = 0` using `fun s hs v => LinearMap.congr_fun (congrFun hf ⟨s, hs⟩) v`. Apply `Subtype.ext` to reduce the goal to its premises. Use `LinearMap.ext fun v => funext fun g => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨γ, hγ, s, hs, x, hx, k, hkK, rfl⟩` from `hS₀ g`. Establish `e1 : f.1 v (γ * s * x * (k : UA E n)) = f.1 v (γ * s * x)`. Use `congrFun (hk k hkK v) (γ * s * x)` as an intermediate fact. Rewrite using `[← this]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `e3 : f.1 v (s * x) = f.1 (ρ ⟨x, hx⟩ v) s`. Rewrite using `[hr ⟨x, hx⟩ v]`. Both sides reduce to the same expression. Rewrite using `[e1, mul_assoc γ s x, hl v γ hγ, e3, h0 s hs]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Conclude with `Module.Finite.of_injective T hT`.
+A detailed English derivation is pending.
 -/
 theorem finiteDimensional_vecForms : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (n : ℕ) (S : Type) [AddCommGroup S] [Module ℂ S] [FiniteDimensional ℂ S] (ρ : Representation ℂ (infU E n) S) (K : Subgroup (finU E n)), IsOpen (K : Set (finU E n)) → ∀ M : Submodule ℂ (S →ₗ[ℂ] (UA E n → ℂ)), (∀ f ∈ M, (∀ v, ∀ γ ∈ ratU E n, ∀ g, f v (γ * g) = f v g) ∧ (∀ (x : infU E n) v, f (ρ x v) = RU E n x (f v)) ∧ ∀ k ∈ K, ∀ v, RU E n (k : UA E n) (f v) = f v) → FiniteDimensional ℂ M := by
   intro E _ _ _ n S _ _ _ ρ K hK M hM

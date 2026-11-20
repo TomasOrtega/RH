@@ -21,7 +21,7 @@ open Filter Topology
 variable {ι : Type} [Fintype ι]
 
 /- English proof (translation)
-Establish `h1 : fderiv ℝ (fun v => f v + g v) =ᶠ[𝓝 z] fun v => fderiv ℝ f v + fderiv ℝ g v` using `by filter_upwards [hf.eventually (by simp), hg.eventually (by simp)] with v hfv hgv`. Conclude with `fderiv_add (hfv.differentiableAt (by norm_num)) (hgv.differentiableAt (by norm_num))`. Rewrite using `[h1.fderiv_eq]`. Conclude with `fderiv_add ((hf.fderiv_right (m := 1) (by norm_num)).differentiableAt (by norm_num)) ((hg.fderiv_right (m := 1) (by norm_num)).differentiableAt (by norm_num))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fderiv2_add {f g : (ι → ℂ) → ℝ} {z : ι → ℂ} (hf : ContDiffAt ℝ 2 f z) (hg : ContDiffAt ℝ 2 g z) :
     fderiv ℝ (fderiv ℝ (fun v => f v + g v)) z = fderiv ℝ (fderiv ℝ f) z + fderiv ℝ (fderiv ℝ g) z := by
@@ -33,7 +33,7 @@ theorem fderiv2_add {f g : (ι → ℂ) → ℝ} {z : ι → ℂ} (hf : ContDiff
     ((hg.fderiv_right (m := 1) (by norm_num)).differentiableAt (by norm_num))
 
 /- English proof (translation)
-Establish `h1 : fderiv ℝ (fun v => c * f v) =ᶠ[𝓝 z] fun v => c • fderiv ℝ f v` using `by filter_upwards [hf.eventually (by simp)] with v hfv`. Conclude with `fderiv_const_mul (hfv.differentiableAt (by norm_num)) c`. Rewrite using `[h1.fderiv_eq]`. Conclude with `fderiv_const_smul ((hf.fderiv_right (m := 1) (by norm_num)).differentiableAt (by norm_num)) c`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fderiv2_const_mul {f : (ι → ℂ) → ℝ} {z : ι → ℂ} (c : ℝ) (hf : ContDiffAt ℝ 2 f z) :
     fderiv ℝ (fderiv ℝ (fun v => c * f v)) z = c • fderiv ℝ (fderiv ℝ f) z := by
@@ -44,7 +44,7 @@ theorem fderiv2_const_mul {f : (ι → ℂ) → ℝ} {z : ι → ℂ} (c : ℝ) 
   exact fderiv_const_smul ((hf.fderiv_right (m := 1) (by norm_num)).differentiableAt (by norm_num)) c
 
 /- English proof (translation)
-Simplify using `only [ReciprocityTheory.AnForm.levi, fderiv2_add hf hg, ContinuousLinearMap.add_apply]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem levi_add {f g : (ι → ℂ) → ℝ} {z : ι → ℂ} (hf : ContDiffAt ℝ 2 f z) (hg : ContDiffAt ℝ 2 g z)
     (w : ι → ℂ) : ReciprocityTheory.AnForm.levi (fun v => f v + g v) z w =
@@ -53,7 +53,7 @@ theorem levi_add {f g : (ι → ℂ) → ℝ} {z : ι → ℂ} (hf : ContDiffAt 
   ring
 
 /- English proof (translation)
-Simplify using `only [ReciprocityTheory.AnForm.levi, fderiv2_const_mul c hf, ContinuousLinearMap.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem levi_const_mul {f : (ι → ℂ) → ℝ} {z : ι → ℂ} (c : ℝ) (hf : ContDiffAt ℝ 2 f z) (w : ι → ℂ) :
     ReciprocityTheory.AnForm.levi (fun v => c * f v) z w = c * ReciprocityTheory.AnForm.levi f z w := by
@@ -61,9 +61,9 @@ theorem levi_const_mul {f : (ι → ℂ) → ℝ} {z : ι → ℂ} (c : ℝ) (hf
   ring
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp [ReciprocityTheory.AnForm.levi]`. Consider the case `insert i s hi ih`. Establish `hs : ∀ i ∈ s, ContDiffAt ℝ 2 (F i) z` using `fun k hk => hF k (Finset.mem_insert_of_mem hk)`. Simplify using `only [Finset.sum_insert hi]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[levi_add (hF i (Finset.mem_insert_self i s)) (ContDiffAt.sum fun k hk => hs k hk), ih hs]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem levi_sum {α : Type} (s : Finset α) {F : α → (ι → ℂ) → ℝ} {z : ι → ℂ}
     (hF : ∀ i ∈ s, ContDiffAt ℝ 2 (F i) z) (w : ι → ℂ) :
@@ -77,7 +77,7 @@ theorem levi_sum {α : Type} (s : Finset α) {F : α → (ι → ℂ) → ℝ} {
     rw [levi_add (hF i (Finset.mem_insert_self i s)) (ContDiffAt.sum fun k hk => hs k hk), ih hs]
 
 /- English proof (translation)
-Establish `h2 : fderiv ℝ f =ᶠ[𝓝 z] fderiv ℝ g` using `h.fderiv`. Simplify using `only [ReciprocityTheory.AnForm.levi, h2.fderiv_eq]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem levi_congr {f g : (ι → ℂ) → ℝ} {z : ι → ℂ} (h : f =ᶠ[𝓝 z] g) (w : ι → ℂ) :
     ReciprocityTheory.AnForm.levi f z w = ReciprocityTheory.AnForm.levi g z w := by
@@ -89,27 +89,23 @@ end GlobalTheory.LeviRed
 open Filter Topology in
 
 /- English proof (translation)
-Introduce `p2 ph D O hc hR A T H h c a j y hy hZ u`. Use `set I := h.man c`. Use `set ch := ((T.M c).A a).chart j with hch`. Use `set x0 := ch.symm y with hx0`. Take `⟨Q, hQ, hlevi⟩` from `(h.an c).th u a`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hP : ∀ x, ∃ f : (O.var c).Fn, ∀ z ∈ (Q x).U x0, CartierDiv.GeneratesAt (Pad.divOf (O.Φ.C c) (O.ex x)) (under ((I.pt a) z)) f ∧ PosAt (O.met.h0 c (I.ε a) (O.ex x)) ((I.pt a) z) ∧ (Q x).φ x0 z = -lnN (O.met.h0 c (I.ε a) (O.ex x)) f ((I.pt a) z)` using `fun x => (hQ x).1 x0`. Use `choose f hf using hP`. Use `⟨f, fun x => (hf x x0 ((Q x).mem_U x0)).1, fun w => ?_⟩` and prove the remaining obligations. Establish `hZc : IsClosed ((T.M c).Z a)` using `((T.M c).bd a).1`. Use `set S : Set ((T.M c).X a) := (⋂ x, (Q x).U x0) ∩ ((T.M c).Z a)ᶜ with hS`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hSo : IsOpen S` using `(isOpen_iInter_of_finite fun x => (Q x).isOpen_U x0).inter hZc.isOpen_compl`. Establish `hW : ch.target ∩ ch.symm ⁻¹' S ∈ 𝓝 y`. Use `(ch.isOpen_inter_preimage_symm hSo).mem_nhds ⟨hy, ?_⟩` and prove the remaining obligations. Use `⟨Set.mem_iInter.2 fun x => (Q x).mem_U x0, hZ⟩` and prove the remaining obligations. Establish `h2inf : (2 : WithTop ℕ∞) ≤ ((⊤ : ℕ∞) : WithTop ℕ∞)` using `WithTop.coe_le_coe.2 le_top`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hθ : ContDiffAt ℝ 2 (((T.F c).th u a).φ x0 ∘ ch.symm) y`. Establish `h1` using `(T.th_pot c u a).1 x0 j`. Use `(h1.contDiffAt ?_).of_le h2inf` and prove the remaining obligations. Conclude with `(ch.isOpen_inter_preimage_symm (((T.F c).th u a).isOpen_U x0)).mem_nhds ⟨hy, ((T.F c).th u a).mem_U x0⟩`. Establish `hq : ∀ x, ContDiffAt ℝ 2 ((Q x).φ x0 ∘ ch.symm) y` using `fun x => by`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h1` using `(hQ x).2.1 x0 j`. Use `(h1.contDiffAt ?_).of_le h2inf` and prove the remaining obligations. Conclude with `(ch.isOpen_inter_preimage_symm ((Q x).isOpen_U x0)).mem_nhds ⟨hy, (Q x).mem_U x0⟩`. Establish `hφ : ContDiffAt ℝ 2 ((T.F c).ph u a ∘ ch.symm) y`. Establish `h1` using `GlobalTheory.HodgeChgSmooth.smoothOn_ph p2 ph D O hc hR A T H h c u a j`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Use `(h1.contDiffAt ?_).of_le h2inf` and prove the remaining obligations. Conclude with `(ch.isOpen_inter_preimage_symm hZc.isOpen_compl).mem_nhds ⟨hy, hZ⟩`. Use `set g : (Fin (WeightThresholdDefs.dimY O.Y) → ℂ) → ℝ := fun v => ∑ x : DV.Rt D.what₂.Tau O.N, u x.1 x.2 * lnN (O.met.hm c none (I.ε a) (O.ex x)) (f x) ((I.pt a) (ch.symm v)) with hg`. Establish `hEq : (T.F c).ph u a ∘ ch.symm =ᶠ[𝓝 y] fun v => g v + ∑ x : DV.Rt D.what₂.Tau O.N, u x.1 x.2 * ((Q x).φ x0 ∘ ch.symm) v` using `by filter_upwards [hW] with v hv`. Establish `hvZ : ch.symm v ∉ (T.M c).Z a` using `hv.2.2`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `hvU : ∀ x, ch.symm v ∈ (Q x).U x0` using `fun x => Set.mem_iInter.1 hv.2.1 x`. Simplify using `only [Function.comp_apply, hg]`. Rewrite using `[(h.an c).ph u a _ hvZ]`. Unfold `Setup.chg`. Rewrite using `[← Finset.sum_add_distrib]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Rewrite using `[lnRatio_eq (hf x _ (hvU x)).1 (hc.posAt_hm c _ none _ _) (hc.referenceMetric_posAt c _ _ _), (hf x _ (hvU x)).2.2]`. Expand and normalize the polynomial expressions, which then agree. Establish `hgs : ContDiffAt ℝ 2 g y`. Establish `h2 : ContDiffAt ℝ 2 (fun v => ((T.F c).ph u a ∘ ch.symm) v - ∑ x : DV.Rt D.what₂.Tau O.N, u x.1 x.2 * ((Q x).φ x0 ∘ ch.symm) v) y` using `hφ.sub (ContDiffAt.sum fun x _ => contDiffAt_const.mul (hq x))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `h2.congr_of_eventuallyEq ?_` and prove the remaining obligations. Use `filter_upwards [hEq] with v hv`. Rewrite using `[hv]`. Expand and normalize the polynomial expressions, which then agree. Establish `hθl : ReciprocityTheory.AnForm.levi (((T.F c).th u a).φ x0 ∘ ch.symm) y w = ∑ x : DV.Rt D.what₂.Tau O.N, -u x.1 x.2 * ReciprocityTheory.AnForm.levi ((Q x).φ x0 ∘ ch.symm) y w` using `hlevi j y hy w`.
-
-Establish `hsum : ReciprocityTheory.AnForm.levi (fun v => ∑ x : DV.Rt D.what₂.Tau O.N, u x.1 x.2 * ((Q x).φ x0 ∘ ch.symm) v) y w = ∑ x : DV.Rt D.what₂.Tau O.N, u x.1 x.2 * ReciprocityTheory.AnForm.levi ((Q x).φ x0 ∘ ch.symm) y w`. Rewrite using `[levi_sum _ (fun x _ => contDiffAt_const.mul (hq x))]`. Conclude with `Finset.sum_congr rfl fun x _ => levi_const_mul _ (hq x) w`. Express the relevant statement in the definitionally equal form `ReciprocityTheory.AnForm.levi (fun v => (((T.F c).th u a).φ x0 ∘ ch.symm) v + ((T.F c).ph u a ∘ ch.symm) v) y w = _`. Rewrite using `[levi_add hθ hφ, levi_congr hEq, levi_add hgs (ContDiffAt.sum fun x _ => contDiffAt_const.mul (hq x)), hsum, hθl]`.
-
-Simplify using `only [neg_mul, Finset.sum_neg_distrib]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.LeviRed.levi_th_add_ph : Hypotheses2 → HypothesesH → OnObj fun D O _ T _ h => ∀ (c : O.Y.Comp) (a : Fin ((T.M c).n + 1)) (j : Fin ((T.M c).A a).n),
   ∀ y ∈ (((T.M c).A a).chart j).target, (((T.M c).A a).chart j).symm y ∉ (T.M c).Z a →

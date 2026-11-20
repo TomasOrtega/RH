@@ -5,7 +5,7 @@ import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.PrincipalIde
 namespace GlobalTheory.Published
 
 /- English proof (translation)
-Introduce `h` and use `⟨h.heckeLAdicCharacter, h.principalIdealSt⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem GlobalArtinReciprocity.heckeLAdicCharacter_and_principalIdealSt :
     GlobalArtinReciprocity → HeckeLAdicCharacter ∧ PrincipalIdealSt :=

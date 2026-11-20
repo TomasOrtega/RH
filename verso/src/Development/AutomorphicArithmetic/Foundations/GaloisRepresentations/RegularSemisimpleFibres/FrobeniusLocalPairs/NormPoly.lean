@@ -24,11 +24,9 @@ variable {k K : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarch
     [Algebra k K] [ValuativeExtension k K] [FiniteDimensional k K]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨γ, hγ⟩`. Take `⟨c, hc⟩` from `ValuativeRel.valuation_surjective (γ : ValueGroupWithZero F)`. Use `⟨c, ?_, fun z hz => hγ ⟨z, by simpa [hc] using hz, rfl⟩⟩` and prove the remaining obligations. Introduce and unpack `rfl`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Rewrite `hc` using `[map_zero]`. Conclude with `γ.ne_zero hc.symm`. Introduce and unpack `⟨c, hc, h⟩`. Use `⟨Units.mk0 (valuation F c) (by simpa using hc), ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨z, hz, rfl⟩`.
-
-Conclude with `h z hz`.
+Rewrite the indicated hypotheses using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 private theorem exists_image_add_valuation_lt_subset_iff {F : Type} [Field F] [ValuativeRel F] (x : F) (u : Set F) :
     (∃ γ : (ValueGroupWithZero F)ˣ, (fun y => x + y) '' {z | valuation F z < γ} ⊆ u) ↔
@@ -46,23 +44,19 @@ private theorem exists_image_add_valuation_lt_subset_iff {F : Type} [Field F] [V
     exact h z hz
 
 /- English proof (translation)
-Establish `hle : ∀ a b : M, valuation M a ≤ valuation M b ↔ valuation L (e a) ≤ valuation L (e b)`. Introduce `a b`. Rewrite using `[← Valuation.Compatible.vle_iff_le, ← Valuation.Compatible.vle_iff_le, hv]`. Establish `hlt : ∀ a b : M, valuation M a < valuation M b ↔ valuation L (e a) < valuation L (e b)`. Introduce `a b`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← not_le, ← not_le, hle]`. Use `haveI : IsValuativeTopology M := ⟨fun {u x} => by`. Rewrite using `[exists_image_add_valuation_lt_subset_iff, he.nhds_eq_comap x, Filter.mem_comap]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨t, ht, hts⟩`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `ht` using `[IsValuativeTopology.mem_nhds_iff, exists_image_add_valuation_lt_subset_iff]`. Take `⟨c₁, hc₁, h⟩` from `ht`. Use `⟨e.symm c₁, by simpa using hc₁, fun z hz => hts ?_⟩` and prove the remaining obligations. Rewrite `hz` using `[hlt, RingEquiv.apply_symm_apply]`. Use `show e (x + z) ∈ t`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Rewrite using `[map_add]`. Conclude with `h _ hz`. Introduce and unpack `⟨c, hc, h⟩`. Use `⟨e '' u, ?_, fun z hz => ?_⟩` and prove the remaining obligations. Rewrite using `[IsValuativeTopology.mem_nhds_iff, exists_image_add_valuation_lt_subset_iff]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨e c, by simpa using hc, fun w hw => ?_⟩` and prove the remaining obligations. Use `⟨x + e.symm w, h _ ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hlt, RingEquiv.apply_symm_apply]`. Conclude with `hw`. Rewrite using `[map_add, RingEquiv.apply_symm_apply]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨z', hz', hzz⟩` from `hz`. Rewrite `hz'` using `[e.injective hzz]`. Conclude with `hz'⟩`. Use `haveI : LocallyCompactSpace M := he.locallyCompactSpace (by`. Rewrite using `[Set.range_eq_univ.mpr e.surjective]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `isOpen_univ.isLocallyClosed)`. Use `haveI : IsNontrivial M := by`. Take `⟨γ, h0, h1⟩` from `(inferInstance : IsNontrivial L).condition`. Take `⟨a, rfl⟩` from `ValuativeRel.valuation_surjective γ`. Use `⟨⟨valuation M (e.symm a), ?_, ?_⟩⟩` and prove the remaining obligations.
-
-Simplify using `using h0`. Introduce `h`. Apply `h1` to reduce the goal to its premises. Establish `h' : valuation M (e.symm a) = valuation M 1` using `by rw [h, map_one]`. Establish `h2` using `le_antisymm ((hle _ _).1 h'.le) ((hle _ _).1 h'.ge)`.
-
-Simplify using `using h2`. Conclude with `⟨⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem isNonarchimedeanLocalField_of_ringEquiv_of_isInducing {L M : Type} [Field L] [ValuativeRel L] [TopologicalSpace L]
     [IsNonarchimedeanLocalField L] [Field M] [ValuativeRel M] [TopologicalSpace M] (e : M ≃+* L)
@@ -112,11 +106,11 @@ private theorem isNonarchimedeanLocalField_of_ringEquiv_of_isInducing {L M : Typ
   exact ⟨⟩
 
 /- English proof (translation)
-Establish `h2` using `@isNonarchimedeanLocalField_of_ringEquiv_of_isInducing L L _ _ _ _ _ (ValuativeRel.ofValuation ((valuation L).comap (s : L →+* L))) (TopologicalSpace.induced s ‹_›) (s : L ≃+* L) (fun a b => (Valuation.Compatible.vle_iff_le (v := valuation L) (s a) (s b)).symm) (@Topology.IsInduc …`. Establish `hext : @ValuativeExtension F L _ _ _ (ValuativeRel.ofValuation ((valuation L).comap (s : L →+* L))) _`. Use `@ValuativeExtension.mk F L _ _ _ (ValuativeRel.ofValuation ((valuation L).comap (s : L →+* L))) _ (fun a b => ?_)` and prove the remaining obligations. Use `show valuation L (s (algebraMap F L a)) ≤ valuation L (s (algebraMap F L b)) ↔ a ≤ᵥ b`. Rewrite using `[AlgEquiv.commutes, AlgEquiv.commutes, ← Valuation.Compatible.vle_iff_le, ValuativeExtension.vle_iff_vle]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `heq` using `GroundTheory.LocalField.valuativeRel_unique F (L := L) (v₁ := ‹ValuativeRel L›) (t₁ := ‹TopologicalSpace L›) inferInstance h2 inferInstance hext`. Establish `hx1 : y ≤ᵥ 1`. Rewrite using `[Valuation.Compatible.vle_iff_le (v := valuation L), map_one]`. Conclude with `hy`. Establish `h3 : @ValuativeRel.vle L _ (ValuativeRel.ofValuation ((valuation L).comap (s : L →+* L))) y 1` using `cast (congrArg (fun V : ValuativeRel L => @ValuativeRel.vle L _ V y 1) heq) hx1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h4 : valuation L (s y) ≤ valuation L (s 1)` using `h3`. Rewrite `h4` using `[map_one, map_one]`. Conclude with `h4`.
+A detailed English derivation is pending.
 -/
 private theorem valuation_algEquiv_le_one_of_le_one {F L : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
     [IsNonarchimedeanLocalField F] [Field L] [ValuativeRel L] [TopologicalSpace L]
@@ -145,7 +139,7 @@ private theorem valuation_algEquiv_le_one_of_le_one {F L : Type} [Field F] [Valu
   exact h4
 
 /- English proof (translation)
-Conclude with `(Valuation.mem_integer_iff _ _).2 (valuation_algEquiv_le_one_of_le_one s (x : K) ((Valuation.mem_integer_iff _ _).1 x.2))`.
+A detailed English derivation is pending.
 -/
 private theorem mem_int (s : K ≃ₐ[k] K) (x : 𝒪[K]) : s (x : K) ∈ 𝒪[K] := by
   exact (Valuation.mem_integer_iff _ _).2
@@ -169,7 +163,7 @@ end
 end UpperTheory.Gal.InertialTypesAlt.L
 
 /- English proof (translation)
-Establish `h : g x ∈ Submodule.map g (J • ⊤ : Submodule R M)` using `Submodule.mem_map_of_mem hx`. Rewrite `h` using `[Submodule.map_smul'']`. Conclude with `Submodule.smul_mono le_rfl le_top h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem linearMap_apply_mem_ideal_smul_of_mem {R M N : Type*} [CommRing R] [AddCommGroup M] [Module R M]
     [AddCommGroup N] [Module R N] (J : Ideal R) (g : M →ₗ[R] N) (x : M)
@@ -179,11 +173,11 @@ private theorem linearMap_apply_mem_ideal_smul_of_mem {R M N : Type*} [CommRing 
   exact Submodule.smul_mono le_rfl le_top h
 
 /- English proof (translation)
-Use `⟨fun f hf => ?_⟩` and prove the remaining obligations. Take `⟨L, hL⟩` from `hM.prec (f := fun n => e.symm (f n)) (fun {m n} hmn => by`. Establish `h` using `hf hmn`. Rewrite `h`, the goal using `[SModEq.sub_mem]`. Rewrite using `[← map_sub]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `linearMap_apply_mem_ideal_smul_of_mem _ e.symm.toLinearMap _ h)`. Use `⟨e L, fun n => ?_⟩` and prove the remaining obligations. Establish `h` using `hL n`. Rewrite `h`, the goal using `[SModEq.sub_mem]`. Establish `h2` using `linearMap_apply_mem_ideal_smul_of_mem _ e.toLinearMap _ h`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using h2`.
+A detailed English derivation is pending.
 -/
 private theorem isPrecomplete_of_linearEquiv {R M N : Type*} [CommRing R] [AddCommGroup M] [Module R M]
     [AddCommGroup N] [Module R N] (I : Ideal R) (e : M ≃ₗ[R] N) [hM : IsPrecomplete I M] :
@@ -201,13 +195,13 @@ private theorem isPrecomplete_of_linearEquiv {R M N : Type*} [CommRing R] [AddCo
   simpa using h2
 
 /- English proof (translation)
-Use `⟨fun f hf => ?_⟩` and prove the remaining obligations. Establish `hc : ∀ i : ι, ∃ L : R, ∀ n, f n i ≡ L [SMOD (I ^ n • ⊤ : Submodule R R)]`. Introduce `i`. Conclude with `hR.prec (f := fun n => f n i) (fun {m n} hmn => by`. Establish `h` using `hf hmn`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite `h`, the goal using `[SModEq.sub_mem]`. Conclude with `linearMap_apply_mem_ideal_smul_of_mem _ (LinearMap.proj i) _ h)`. Use `choose L hL using hc`. Use `⟨L, fun n => ?_⟩` and prove the remaining obligations. Rewrite using `[SModEq.sub_mem]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Establish `hx : f n - L = ∑ i, (f n i - L i) • (Pi.single i (1 : R) : ι → R)`. Use extensionality with `j`. Simplify using `[Finset.sum_apply, Pi.single_apply]`. Rewrite using `[hx]`. Use `Submodule.sum_mem _ (fun i _ => ?_)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hi` using `hL i n`. Rewrite `hi` using `[SModEq.sub_mem]`. Establish `hi' : f n i - L i ∈ I ^ n` using `by simpa using hi`. Conclude with `Submodule.smul_mem_smul hi' Submodule.mem_top`.
+A detailed English derivation is pending.
 -/
 private theorem isPrecomplete_pi_of_fintype {R ι : Type*} [CommRing R] [Fintype ι] (I : Ideal R)
     [hR : IsPrecomplete I R] : IsPrecomplete I (ι → R) := by
@@ -233,7 +227,7 @@ private theorem isPrecomplete_pi_of_fintype {R ι : Type*} [CommRing R] [Fintype
   exact Submodule.smul_mem_smul hi' Submodule.mem_top
 
 /- English proof (translation)
-Establish `pb` using `AdjoinRoot.powerBasis' hψ`. Use `haveI : Module.Finite R (AdjoinRoot ψ) := pb.finite`. Use `haveI : IsPrecomplete (IsLocalRing.maximalIdeal R) (Fin pb.dim → R) := isPrecomplete_pi_of_fintype _`. Establish `h2 : IsPrecomplete (IsLocalRing.maximalIdeal R) (AdjoinRoot ψ)` using `isPrecomplete_of_linearEquiv _ pb.basis.equivFun.symm`. Conclude with `{ toIsHausdorff := IsHausdorff.map_algebraMap_iff.mpr inferInstance toIsPrecomplete := IsPrecomplete.map_algebraMap_iff.mpr h2 }`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem isAdicComplete_map_maximalIdeal_adjoinRoot_of_monic {R : Type*} [CommRing R] [IsNoetherianRing R] [IsLocalRing R]
     [IsAdicComplete (IsLocalRing.maximalIdeal R) R] (ψ : R[X]) (hψ : ψ.Monic) :
@@ -248,23 +242,23 @@ private theorem isAdicComplete_map_maximalIdeal_adjoinRoot_of_monic {R : Type*} 
           toIsPrecomplete := IsPrecomplete.map_algebraMap_iff.mpr h2 }
 
 /- English proof (translation)
-Establish `key : ∀ φ' : R →+* R, ψ.map φ' = ψ → ∃ f : AdjoinRoot ψ →+* AdjoinRoot ψ, ∀ g, f (AdjoinRoot.mk ψ g) = AdjoinRoot.mk ψ (g.map φ')`. Introduce `φ' h`. Use `⟨AdjoinRoot.lift ((AdjoinRoot.of ψ).comp φ') (AdjoinRoot.root ψ) ?_, fun g => ?_⟩` and prove the remaining obligations. Rewrite using `[← Polynomial.eval₂_map, h]`. Conclude with `AdjoinRoot.eval₂_root ψ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[AdjoinRoot.lift_mk, ← Polynomial.eval₂_map, ← AdjoinRoot.aeval_eq, Polynomial.aeval_def]`. Both sides reduce to the same expression. Establish `hψ' : ψ.map (φ.symm : R →+* R) = ψ` using `by conv_lhs => rw [← hψ]`. Rewrite using `[Polynomial.map_map]`. Use `Polynomial.map_id` and compare the differences between its conclusion and the goal.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components.
 
-Use extensionality with `x`. Simplify using the standard rewrite rules. Take `⟨f, hf⟩` from `key _ hψ`. Take `⟨f', hf'⟩` from `key _ hψ'`. Establish `e1 : f'.comp f = RingHom.id _`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `RingHom.ext fun x => ?_` and prove the remaining obligations. Proceed by induction on `x using AdjoinRoot.induction_on with`. Consider the case `ih g`. Simplify using `only [RingHom.comp_apply, hf, hf', Polynomial.map_map, RingHom.id_apply]`. Use `congr 1`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use `Polynomial.map_id` and compare the differences between its conclusion and the goal. Use extensionality with `x`. Simplify using the standard rewrite rules. Establish `e2 : f.comp f' = RingHom.id _`. Use `RingHom.ext fun x => ?_` and prove the remaining obligations.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Proceed by induction.
 
-Proceed by induction on `x using AdjoinRoot.induction_on with`. Consider the case `ih g`. Simplify using `only [RingHom.comp_apply, hf, hf', Polynomial.map_map, RingHom.id_apply]`. Use `congr 1`. Use `Polynomial.map_id` and compare the differences between its conclusion and the goal.
+Treat this case separately. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components.
 
-Use extensionality with `x`. Simplify using the standard rewrite rules. Use `⟨RingEquiv.ofRingHom f f' e2 e1, fun j => ?_⟩` and prove the remaining obligations. Proceed by induction on `j with`. Consider the case `zero`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `g`. Rewrite using `[Function.iterate_zero_apply, pow_zero]`. Conclude with `(congrArg (AdjoinRoot.mk ψ) (Polynomial.map_id (p := g))).symm`. Consider the case `succ j ih`. Introduce `g`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Function.iterate_succ_apply]`. Establish `: (RingEquiv.ofRingHom f f' e2 e1) (AdjoinRoot.mk ψ g) = AdjoinRoot.mk ψ (g.map (φ : R →+* R))` using `hf g`. Rewrite using `[this, ih, Polynomial.map_map, pow_succ]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 private theorem exists_adjoinRoot_ringEquiv_iterate_mk_of_map_eq {R : Type*} [CommRing R] (ψ : R[X]) (φ : R ≃+* R)
     (hψ : ψ.map (φ : R →+* R) = ψ) :
@@ -319,9 +313,9 @@ private theorem exists_adjoinRoot_ringEquiv_iterate_mk_of_map_eq {R : Type*} [Co
     rfl
 
 /- English proof (translation)
-Take `⟨q, hq⟩ : X ∣ ψ - C (ψ.coeff 0)` from `Polynomial.X_dvd_iff.mpr (by simp)`. Establish `h : AdjoinRoot.root ψ * AdjoinRoot.mk ψ q = -(AdjoinRoot.of ψ (ψ.coeff 0))`. Rewrite using `[← AdjoinRoot.mk_X, ← map_mul, ← hq, map_sub, AdjoinRoot.mk_self, AdjoinRoot.mk_C, zero_sub]`. Use `isUnit_of_mul_isUnit_left (y := AdjoinRoot.mk ψ q) ?_` and prove the remaining obligations. Rewrite using `[h]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(hc.map (AdjoinRoot.of ψ)).neg`.
+A detailed English derivation is pending.
 -/
 private theorem isUnit_adjoinRoot_root_of_isUnit_coeff_zero {R : Type*} [CommRing R] (ψ : R[X]) (hc : IsUnit (ψ.coeff 0)) :
     IsUnit (AdjoinRoot.root ψ) := by
@@ -333,7 +327,7 @@ private theorem isUnit_adjoinRoot_root_of_isUnit_coeff_zero {R : Type*} [CommRin
   exact (hc.map (AdjoinRoot.of ψ)).neg
 
 /- English proof (translation)
-Use `⟨AdjoinRoot.lift ((AdjoinRoot.of (ψ.map r)).comp r) (AdjoinRoot.root (ψ.map r)) ?_, fun g => ?_⟩` and prove the remaining obligations. Rewrite using `[← Polynomial.eval₂_map]`. Conclude with `AdjoinRoot.eval₂_root _`. Rewrite using `[AdjoinRoot.lift_mk, ← Polynomial.eval₂_map, ← AdjoinRoot.aeval_eq, Polynomial.aeval_def]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 private theorem normPoly_lemma_8 {R S : Type*} [CommRing R] [CommRing S] (r : R →+* S) (ψ : R[X]) :
     ∃ ρ : AdjoinRoot ψ →+* AdjoinRoot (ψ.map r),
@@ -346,11 +340,11 @@ private theorem normPoly_lemma_8 {R S : Type*} [CommRing R] [CommRing S] (r : R 
     rfl
 
 /- English proof (translation)
-Establish `hit : ∀ (j : ℕ) (z : F₁), (((sb.toRingEquiv : F₁ →+* F₁)) ^ j) z = z ^ (Fintype.card F₀ ^ j)`. Introduce `j`. Proceed by induction on `j with`. Consider the case `zero => intro z`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules.
 
-Consider the case `succ j ih`. Introduce `z`. Rewrite using `[pow_succ, RingHom.mul_def, RingHom.comp_apply, ih]`. Use `show (sb z) ^ _ = _`. Rewrite using `[hfrob, ← pow_mul, pow_succ, mul_comm (Fintype.card F₀ ^ j)]`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `RingHom.ext fun z => ?_` and prove the remaining obligations. Rewrite using `[hit, ← Module.card_eq_pow_finrank, FiniteField.pow_card]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 private theorem gal_pow_finrank_eq_one_of_eq_pow_card {F₀ F₁ : Type*} [Field F₀] [Fintype F₀] [Field F₁] [Fintype F₁]
     [Algebra F₀ F₁] (sb : Gal(F₁/F₀)) (hfrob : ∀ z, sb z = z ^ Fintype.card F₀) :
@@ -369,27 +363,25 @@ private theorem gal_pow_finrank_eq_one_of_eq_pow_card {F₀ F₁ : Type*} [Field
   rfl
 
 /- English proof (translation)
-Use `set n := Module.finrank F₀ F₁ with hn`. Use `set f : R →+* R := (φ : R →+* R) with hf`. Take `⟨b, hb⟩ : ∃ b : F₁, Algebra.trace F₀ F₁ b ≠ 0` from `by by_contra! h`. Establish `h1` using `(traceForm_nondegenerate F₀ F₁).1 1 (fun b => by`. Simplify `h b)` using `[Algebra.traceForm_apply]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `one_ne_zero h1`. Use `set c := Algebra.trace F₀ F₁ b`. Establish `hz : algebraMap F₀ F₁ (Algebra.trace F₀ F₁ (algebraMap F₀ F₁ c⁻¹ * b)) = 1`. Rewrite using `[← Algebra.smul_def, LinearMap.map_smul, smul_eq_mul, inv_mul_cancel₀ hb, map_one]`. Rewrite `hz` using `[FiniteField.algebraMap_trace_eq_sum_pow, Nat.card_eq_fintype_card]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Take `⟨a₀, ha₀⟩` from `hr (algebraMap F₀ F₁ c⁻¹ * b)`. Establish `hri : ∀ (i : ℕ) (x : R), r ((f ^ i) x) = (r x) ^ (Fintype.card F₀ ^ i)`. Introduce `i`. Proceed by induction on `i with`. Consider the case `zero => intro x`.
+Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Consider the case `succ i ih`. Introduce `x`. Rewrite using `[pow_succ, RingHom.mul_def, RingHom.comp_apply, ih, hf, RingEquiv.coe_toRingHom, hcomm, hfrob, ← pow_mul, pow_succ, mul_comm (Fintype.card F₀ ^ i)]`. Use `set t := ∑ i ∈ Finset.range n, (f ^ i) a₀ with ht`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hrt : r t = 1`. Rewrite using `[ht, map_sum]`. Repeatedly rewrite using `[hri, ha₀]`. Conclude with `hz`. Establish `htu : IsUnit t`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← IsLocalRing.notMem_maximalIdeal, ← hker, hrt]`. Conclude with `one_ne_zero`. Establish `hft : f t = t`. Rewrite using `[ht, map_sum]`. Establish `e : ∀ i, f ((f ^ i) a₀) = (f ^ (i + 1)) a₀`.
+Rewrite the conclusion repeatedly using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Introduce `i`. Rewrite using `[pow_succ', RingHom.mul_def, RingHom.comp_apply]`. Repeatedly rewrite using `[e]`. Break down `Nat.eq_zero_or_pos n with h0 | h0` into its components or cases. Rewrite using `[h0]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Simplify using the standard rewrite rules. Take `⟨m, hm⟩ : ∃ m, n = m + 1` from `⟨n - 1, by omega⟩`. Rewrite using `[hm, Finset.sum_range_succ, Finset.sum_range_succ' (fun i => (f ^ i) a₀), ← hm, hper, pow_zero]`. Establish `hfit : ∀ i, (f ^ i) t = t`. Introduce `i`.
+Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `i with`. Consider the case `zero => simp`. Consider the case `succ i ih => rw [pow_succ', RingHom.mul_def, RingHom.comp_apply, ih, hft]`. Take `⟨u, hu⟩` from `htu`. Use `⟨a₀ * ↑u⁻¹, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities.
 
-Establish `hinv : ∀ i, (f ^ i) (↑u⁻¹ : R) = ↑u⁻¹`. Introduce `i`. Establish `h1 : (f ^ i) (↑u⁻¹ : R) * t = 1`. Rewrite using `[← hfit i, ← map_mul, ← hu, Units.inv_mul, map_one]`. Combine the equalities or inequalities in the displayed calculation.
-
-Rewrite using `[← hu, mul_assoc, Units.mul_inv, mul_one]`. Use `_ = ↑u⁻¹ := by rw [h1, one_mul]`. Repeatedly rewrite using `[map_mul, hinv]`. Rewrite using `[← Finset.sum_mul, ← ht, ← hu, Units.mul_inv]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem exists_sum_pow_apply_eq_one_of_lift_frobenius {R F₀ F₁ : Type*} [CommRing R] [IsLocalRing R] [Field F₀] [Fintype F₀]
     [Field F₁] [Fintype F₁] [Algebra F₀ F₁]
@@ -456,13 +448,11 @@ private theorem exists_sum_pow_apply_eq_one_of_lift_frobenius {R F₀ F₁ : Typ
   rw [← Finset.sum_mul, ← ht, ← hu, Units.mul_inv]
 
 /- English proof (translation)
-Proceed by induction on `z using AdjoinRoot.induction_on with`. Consider the case `ih g`. Rewrite `hz` using `[hρ, AdjoinRoot.mk_eq_zero]`. Take `⟨hb, hhb⟩` from `hz`. Take `⟨h, rfl⟩` from `Polynomial.map_surjective r hr hb`.
+Proceed by induction. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `set g' := g - ψ * h with hg'`. Establish `hg'0 : ∀ i, g'.coeff i ∈ J`. Introduce `i`. Apply `hker` to reduce the goal to its premises. Rewrite using `[← Polynomial.coeff_map, hg', Polynomial.map_sub, Polynomial.map_mul, hhb, sub_self, Polynomial.coeff_zero]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hmk : AdjoinRoot.mk ψ g = AdjoinRoot.mk ψ g'`. Rewrite using `[hg', map_sub, map_mul, AdjoinRoot.mk_self, zero_mul, sub_zero]`. Rewrite using `[hmk, g'.as_sum_range_C_mul_X_pow, map_sum]`. Use `Ideal.sum_mem _ (fun i _ => ?_)` and prove the remaining obligations. Rewrite using `[map_mul, AdjoinRoot.mk_C, ← AdjoinRoot.algebraMap_eq]`.
-
-Conclude with `Ideal.mul_mem_right _ _ (Ideal.mem_map_of_mem _ (hg'0 i))`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem mem_map_of_adjoinRoot_hom_eq_zero_of_ker_le {R S : Type*} [CommRing R] [CommRing S] (r : R →+* S)
     (hr : Function.Surjective r) (J : Ideal R) (hker : ∀ x, r x = 0 → x ∈ J) (ψ : R[X])
@@ -488,47 +478,39 @@ private theorem mem_map_of_adjoinRoot_hom_eq_zero_of_ker_le {R S : Type*} [CommR
     exact Ideal.mul_mem_right _ _ (Ideal.mem_map_of_mem _ (hg'0 i))
 
 /- English proof (translation)
-Use `set n := Module.finrank F₀ F₁ with hn`. Take `⟨τ, hτ⟩` from `exists_adjoinRoot_ringEquiv_iterate_mk_of_map_eq ψ φ hψφ`. Establish `hsbψ : (ψ.map r).map ((sb.toRingEquiv : F₁ →+* F₁)) = ψ.map r`. Use extensionality with `i`. Rewrite using `[Polynomial.coeff_map, Polynomial.coeff_map]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨c, hc⟩` from `hψr i`. Rewrite using `[hc]`. Conclude with `sb.commutes c`. Take `⟨τ₀, hτ₀⟩` from `exists_adjoinRoot_ringEquiv_iterate_mk_of_map_eq (ψ.map r) sb.toRingEquiv hsbψ`. Establish `hsbn` using `gal_pow_finrank_eq_one_of_eq_pow_card sb hfrob`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `haveI : Module.Finite F₁ (AdjoinRoot (ψ.map r)) := (AdjoinRoot.powerBasis' (hψ.map r)).finite`. Use `haveI : Finite (AdjoinRoot (ψ.map r)) := Module.finite_of_finite F₁`. Take `⟨y₀, hy₀⟩` from `UpperTheory.Gal.InertialTypesAlt.L.normFin F₀ F₁ sb hfrob (AdjoinRoot (ψ.map r)) τ₀ (fun z => by`. Establish `h1` using `hτ₀ 1 (C z)`. Rewrite `h1` using `[Function.iterate_one, pow_one, Polynomial.map_C, AdjoinRoot.mk_C, AdjoinRoot.mk_C]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[AdjoinRoot.algebraMap_eq, h1]`. Use the proof step `rfl)`. Use the proof step `(fun x => by`. Proceed by induction on `x using AdjoinRoot.induction_on with`. Consider the case `ih g`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hτ₀, hsbn]`. Conclude with `congrArg _ Polynomial.map_id)`. Use the proof step `(AdjoinRoot.root (ψ.map r))`. Use the proof step `(isUnit_adjoinRoot_root_of_isUnit_coeff_zero _ (by rw [Polynomial.coeff_map]; exact hψ0.map r))`. Use the proof step `(by`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `h1` using `hτ₀ 1 X`. Rewrite `h1` using `[Function.iterate_one, Polynomial.map_X, AdjoinRoot.mk_X]`. Conclude with `h1)`. Take `⟨ρ, hρ⟩` from `normPoly_lemma_8 r ψ`. Establish `hρsurj : Function.Surjective ρ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Establish an intermediate fact.
 
-Introduce `w`. Proceed by induction on `w using AdjoinRoot.induction_on with`. Consider the case `ih g`. Take `⟨g', rfl⟩` from `Polynomial.map_surjective r hr g`. Conclude with `⟨_, hρ g'⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hrφ : r.comp (φ : R →+* R) = ((sb.toRingEquiv : F₁ →+* F₁)).comp r` using `RingHom.ext fun x => hcomm x`. Establish `hρτ : ∀ a, ρ (τ a) = τ₀ (ρ a)`. Introduce `a`. Proceed by induction on `a using AdjoinRoot.induction_on with`. Consider the case `ih g`.
+Proceed by induction. Treat this case separately. Both sides reduce to the same expression. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1` using `hτ 1 g`. Establish `h2` using `hτ₀ 1 (g.map r)`. Rewrite `h1`, `h2` using `[Function.iterate_one, pow_one]`. Rewrite using `[h1, hρ, hρ, h2, Polynomial.map_map, Polynomial.map_map, hrφ]`. Establish `hρit : ∀ i a, ρ ((⇑τ)^[i] a) = (⇑τ₀)^[i] (ρ a)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Introduce `i`. Proceed by induction on `i with`. Consider the case `zero => intro a`. Both sides reduce to the same expression. Consider the case `succ i ih`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `a`. Rewrite using `[Function.iterate_succ_apply', Function.iterate_succ_apply', hρτ, ih]`. Establish `hρN : ∀ a, ρ (UpperTheory.Gal.InertialTypesAlt.L.itN τ n a) = UpperTheory.Gal.InertialTypesAlt.L.itN τ₀ n (ρ a)`. Introduce `a`. Simplify using `only [UpperTheory.Gal.InertialTypesAlt.L.itN, map_prod, hρit]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨y, hy⟩` from `hρsurj y₀`. Establish `hdiff : ρ (UpperTheory.Gal.InertialTypesAlt.L.itN τ n y - AdjoinRoot.root ψ) = 0`. Establish `hr0 : ρ (AdjoinRoot.root ψ) = AdjoinRoot.root (ψ.map r)`. Rewrite using `[← AdjoinRoot.mk_X, hρ, Polynomial.map_X, AdjoinRoot.mk_X]`. Rewrite using `[map_sub, hρN, hy, hy₀, hr0, sub_self]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hI` using `mem_map_of_adjoinRoot_hom_eq_zero_of_ker_le r hr _ (fun x hx => (hker x).1 hx) ψ ρ hρ _ hdiff`. Establish `hφJ : ∀ x ∈ IsLocalRing.maximalIdeal R, φ x ∈ IsLocalRing.maximalIdeal R`. Introduce `x hx`. Rewrite `hx`, the goal using `[← hker]`. Rewrite using `[hcomm, hx, map_zero]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hof : ∀ (i : ℕ) (a : R), (⇑τ)^[i] (AdjoinRoot.of ψ a) = AdjoinRoot.of ψ ((((φ : R →+* R)) ^ i) a)`. Introduce `i a`. Establish `h1` using `hτ i (C a)`. Rewrite `h1` using `[Polynomial.map_C, AdjoinRoot.mk_C, AdjoinRoot.mk_C]`. Conclude with `h1`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities.
 
-Establish `hτI : ∀ x ∈ (IsLocalRing.maximalIdeal R).map (algebraMap R (AdjoinRoot ψ)), τ x ∈ (IsLocalRing.maximalIdeal R).map (algebraMap R (AdjoinRoot ψ))`. Establish `hle : (IsLocalRing.maximalIdeal R).map (algebraMap R (AdjoinRoot ψ)) ≤ ((IsLocalRing.maximalIdeal R).map (algebraMap R (AdjoinRoot ψ))).comap τ`. Rewrite using `[Ideal.map_le_iff_le_comap]`. Introduce `x hx`. Rewrite using `[Ideal.mem_comap, Ideal.mem_comap, AdjoinRoot.algebraMap_eq]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Establish `h1` using `hof 1 x`. Rewrite `h1` using `[Function.iterate_one, pow_one]`. Rewrite using `[h1, ← AdjoinRoot.algebraMap_eq]`. Conclude with `Ideal.mem_map_of_mem _ (hφJ x hx)`. Conclude with `fun x hx => hle hx`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨a, ha⟩` from `exists_sum_pow_apply_eq_one_of_lift_frobenius r hr hker φ sb hfrob hcomm hper`. Establish `htr : ∑ i ∈ Finset.range n, (⇑τ)^[i] (AdjoinRoot.of ψ a) = 1`. Repeatedly rewrite using `[hof]`. Rewrite using `[← map_sum, ha, map_one]`. Establish `hper' : ∀ x, (⇑τ)^[n] x = x`.
-
-Introduce `x`. Proceed by induction on `x using AdjoinRoot.induction_on with`. Consider the case `ih g`. Rewrite using `[hτ, hper]`. Conclude with `congrArg _ Polynomial.map_id`.
-
-Use `haveI := isAdicComplete_map_maximalIdeal_adjoinRoot_of_monic ψ hψ`. Take `⟨y', hy'⟩` from `UpperTheory.Gal.InertialTypesAlt.L.normAdic (AdjoinRoot ψ) ((IsLocalRing.maximalIdeal R).map (algebraMap R (AdjoinRoot ψ))) τ n hper' hτI (AdjoinRoot.of ψ a) htr (AdjoinRoot.root ψ) y (isUnit_adjoinRoot_root_of_isUnit_coeff_zero ψ hψ0) (by`. Establish `h1` using `hτ 1 X`. Rewrite `h1` using `[Function.iterate_one, Polynomial.map_X, AdjoinRoot.mk_X]`. Conclude with `h1)`.
-
-Use `hI`. Take `⟨p, rfl⟩` from `AdjoinRoot.mk_surjective y'`. Use `⟨p, ?_⟩` and prove the remaining obligations. Rewrite using `[← AdjoinRoot.mk_eq_zero, map_sub, map_prod, AdjoinRoot.mk_X, sub_eq_zero]`. Repeatedly rewrite using `[← hτ]`.
-
-Conclude with `hy'`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem normPoly_lemma_7 {R F₀ F₁ : Type} [CommRing R] [IsNoetherianRing R] [IsLocalRing R]
     [IsAdicComplete (IsLocalRing.maximalIdeal R) R] [Field F₀] [Fintype F₀] [Field F₁] [Fintype F₁]
@@ -648,9 +630,9 @@ private theorem normPoly_lemma_7 {R F₀ F₁ : Type} [CommRing R] [IsNoetherian
   exact hy'
 
 /- English proof (translation)
-Establish `hle : ∀ a b : F, valuation L (algebraMap F L a) ≤ valuation L (algebraMap F L b) ↔ valuation F a ≤ valuation F b`. Introduce `a b`. Rewrite using `[← Valuation.Compatible.vle_iff_le, ← Valuation.Compatible.vle_iff_le, ValuativeExtension.vle_iff_vle]`. Establish `h1` using `hle c 1`. Establish `h2` using `hle 1 c`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1`, `h2` using `[map_one, map_one]`. Use `⟨h1, ⟨fun h => le_antisymm (h1.1 h.le) (h2.1 h.ge), fun h => le_antisymm (h1.2 h.le) (h2.2 h.ge)⟩⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 -/
 private theorem valuation_algebraMap_le_one_iff_and_eq_one_iff {F L : Type} [Field F] [ValuativeRel F] [Field L] [ValuativeRel L]
     [Algebra F L] [ValuativeExtension F L] (c : F) :
@@ -668,31 +650,27 @@ private theorem valuation_algebraMap_le_one_iff_and_eq_one_iff {F L : Type} [Fie
 
 open UpperTheory.Gal.InertialTypesAlt.L in
 /- English proof (translation)
-Introduce `k K _ _ _ _ _ _ _ _ _ _ _ _ _ F₀ F₁ _ _ _ _ _ rk rK s sb hres χ hmon hint hunit`. Establish `hmemK : ∀ c : k, valuation k c ≤ 1 → algebraMap k K c ∈ 𝒪[K]` using `fun c hc => (Valuation.mem_integer_iff _ _).2 ((valuation_algebraMap_le_one_iff_and_eq_one_iff (L := K) c).1.2 hc)`. Establish `hlift : χ.map (algebraMap k K) ∈ Polynomial.lifts (𝒪[K]).subtype`. Rewrite using `[Polynomial.lifts_iff_coeff_lifts]`. Introduce `i`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Polynomial.coeff_map]`. Conclude with `⟨⟨_, hmemK _ (hint i)⟩, rfl⟩`. Take `⟨ψ, hψmap, -, hψmon⟩` from `Polynomial.lifts_and_degree_eq_and_monic hlift (hmon.map _)`. Establish `hψc : ∀ i, ((ψ.coeff i : 𝒪[K]) : K) = algebraMap k K (χ.coeff i)`. Introduce `i`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `congrArg (fun q => q.coeff i) hψmap` as an intermediate fact. Simplify `this` using `[Polynomial.coeff_map]`. Establish `hkerK : ∀ x : 𝒪[K], rK x = 0 ↔ x ∈ IsLocalRing.maximalIdeal 𝒪[K]`. Establish `hmax : (RingHom.ker rK).IsMaximal` using `RingHom.ker_isMaximal_of_surjective rK hres.onto₁`. Establish `h` using `IsLocalRing.eq_maximalIdeal hmax`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `x`. Rewrite using `[← h, RingHom.mem_ker]`. Establish `hcomm : ∀ x, rK (UpperTheory.Gal.InertialTypesAlt.L.resE s x) = sb (rK x)` using `fun x => hres.gal x (UpperTheory.Gal.InertialTypesAlt.L.resE s x) rfl`. Establish `hsn : s ^ Module.finrank k K = 1`. Rewrite using `[← IsGalois.card_aut_eq_finrank]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `pow_card_eq_one'`. Establish `hφpow : ∀ (i : ℕ) (x : 𝒪[K]), (((((UpperTheory.Gal.InertialTypesAlt.L.resE s : 𝒪[K] ≃+* 𝒪[K]) : 𝒪[K] →+* 𝒪[K]) ^ i) x : 𝒪[K]) : K) = (s ^ i) (x : K)`. Introduce `i`. Proceed by induction on `i with`. Consider the case `zero => intro x`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Consider the case `succ i ih`. Introduce `x`. Rewrite using `[pow_succ', RingHom.mul_def, RingHom.comp_apply, pow_succ', AlgEquiv.mul_apply, ← ih]`. Both sides reduce to the same expression.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hper : ((UpperTheory.Gal.InertialTypesAlt.L.resE s : 𝒪[K] ≃+* 𝒪[K]) : 𝒪[K] →+* 𝒪[K]) ^ Module.finrank F₀ F₁ = 1`. Rewrite using `[hres.deg]`. Use `RingHom.ext fun x => Subtype.ext ?_` and prove the remaining obligations. Rewrite using `[hφpow, hsn]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hψφ : ψ.map ((UpperTheory.Gal.InertialTypesAlt.L.resE s : 𝒪[K] ≃+* 𝒪[K]) : 𝒪[K] →+* 𝒪[K]) = ψ`. Apply `Polynomial.map_injective (𝒪[K]).subtype Subtype.val_injective` to reduce the goal to its premises. Use extensionality with `i`. Rewrite using `[Polynomial.coeff_map, Polynomial.coeff_map, Polynomial.coeff_map]`. Use `show (((UpperTheory.Gal.InertialTypesAlt.L.resE s) (ψ.coeff i) : 𝒪[K]) : K) = ((ψ.coeff i : 𝒪[K]) : K)`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `show s ((ψ.coeff i : 𝒪[K]) : K) = ((ψ.coeff i : 𝒪[K]) : K)`. Rewrite using `[hψc, AlgEquiv.commutes]`. Establish `hψ0 : IsUnit (ψ.coeff 0)`. Rewrite using `[(Valuation.integer.integers (valuation K)).isUnit_iff_valuation_eq_one]`. Use `show valuation K ((ψ.coeff 0 : 𝒪[K]) : K) = 1`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Equip the data with the indicated structure. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hψc]`. Conclude with `(valuation_algebraMap_le_one_iff_and_eq_one_iff (L := K) _).2.2 hunit`. Establish `hψr : ∀ i, ∃ c : F₀, rK (ψ.coeff i) = algebraMap F₀ F₁ c` using `fun i => ⟨rk ⟨χ.coeff i, (Valuation.mem_integer_iff _ _).2 (hint i)⟩, hres.inc ⟨χ.coeff i, (Valuation.mem_integer_iff _ _).2 (hint i)⟩ (ψ.coeff i) (hψc i)⟩`. Use `letI : UniformSpace K := IsTopologicalAddGroup.rightUniformSpace K`. Use `haveI : IsUniformAddGroup K := isUniformAddGroup_of_addCommGroup`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨p, hp⟩` from `normPoly_lemma_7 rK hres.onto₁ hkerK (UpperTheory.Gal.InertialTypesAlt.L.resE s) sb hres.frob hcomm hper ψ hψmon hψφ hψ0 hψr`. Use `⟨p.map (𝒪[K]).subtype, fun i => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Polynomial.coeff_map]`. Conclude with `(Valuation.mem_integer_iff _ _).1 (p.coeff i).2`. Establish `h` using `Polynomial.map_dvd (𝒪[K]).subtype hp`.
-
-Rewrite `h` using `[hψmap, Polynomial.map_sub, Polynomial.map_X, Polynomial.map_prod, hres.deg]`. Use `h.trans (dvd_of_eq ?_)` and prove the remaining obligations. Use `congr 1`. Use `Finset.prod_congr rfl (fun i _ => ?_)` and prove the remaining obligations. Rewrite using `[Polynomial.map_map, Polynomial.map_map]`.
-
-Use `congr 1`. Conclude with `RingHom.ext fun x => hφpow i x`.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.InertialTypesAlt.L.normPoly :
     UpperTheory.Gal.InertialTypesAlt.L.NormPoly := by

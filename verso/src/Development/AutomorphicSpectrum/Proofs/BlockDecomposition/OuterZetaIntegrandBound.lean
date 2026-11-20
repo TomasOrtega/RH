@@ -18,7 +18,7 @@ variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchim
 omit [MeasurableSpace F] [BorelSpace F] in
 
 /- English proof (translation)
-Establish `h0 : (0 : ℝ) < (modulus (a : F) : ℝ)` using `by exact_mod_cast modulus_pos a.ne_zero`. Rewrite using `[mp]`. Conclude with `Complex.norm_cpow_eq_rpow_re_of_pos h0 z`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_mp_eq (a : Fˣ) (z : ℂ) : ‖mp a z‖ = (modulus (a : F) : ℝ) ^ z.re := by
   have h0 : (0 : ℝ) < (modulus (a : F) : ℝ) := by exact_mod_cast modulus_pos a.ne_zero
@@ -28,7 +28,7 @@ theorem norm_mp_eq (a : Fˣ) (z : ℂ) : ‖mp a z‖ = (modulus (a : F) : ℝ) 
 omit [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] [MeasurableSpace F] [BorelSpace F] in
 
 /- English proof (translation)
-Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [dg2, Matrix.mul_apply, Fin.sum_univ_two, mul_comm]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem diag_torus_factor_scalar (a b : Fˣ) : (dg2 (a * b) b : GL (Fin 2) F) = dg2 b b * dg2 a 1 := by
   ext i j
@@ -37,7 +37,7 @@ theorem diag_torus_factor_scalar (a b : Fˣ) : (dg2 (a * b) b : GL (Fin 2) F) = 
 omit [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] [MeasurableSpace F] [BorelSpace F] in
 
 /- English proof (translation)
-Rewrite using `[hI, diag_torus_factor_scalar, mul_assoc]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem hI_central (p : Fˣ × Fˣ × GL (Fin 2) F) : hI p = dg2 p.2.1 p.2.1 * (dg2 p.1 1 * p.2.2) := by
   rw [hI, diag_torus_factor_scalar, mul_assoc]
@@ -45,9 +45,9 @@ theorem hI_central (p : Fˣ × Fˣ × GL (Fin 2) F) : hI p = dg2 p.2.1 p.2.1 * (
 omit [MeasurableSpace F] [BorelSpace F] in
 
 /- English proof (translation)
-Establish `e0 : (dg2 c b * x).val 1 0 = (b : F) * x.val 1 0`. Simplify using `[dg2, Matrix.mul_apply, Fin.sum_univ_two]`. Establish `e1 : (dg2 c b * x).val 1 1 = (b : F) * x.val 1 1`. Simplify using `[dg2, Matrix.mul_apply, Fin.sum_univ_two]`. Establish `hb : (0 : ℝ) ≤ (modulus (b : F) : ℝ)` using `NNReal.coe_nonneg _`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [mx, e2r, Matrix.cons_val_zero, Matrix.cons_val_one, e0, e1, modulus_mul, NNReal.coe_mul]`. Conclude with `(mul_max_of_nonneg _ _ hb).symm`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sup_norm_second_vector_diag_mul (c b : Fˣ) (x : GL (Fin 2) F) :
     mx (e2r (dg2 c b * x)) = (modulus (b : F) : ℝ) * mx (e2r x) := by
@@ -60,14 +60,14 @@ theorem sup_norm_second_vector_diag_mul (c b : Fˣ) (x : GL (Fin 2) F) :
   exact (mul_max_of_nonneg _ _ hb).symm
 
 /- English proof (translation)
-Use `GlobalTheory.CompanionTheory.GJTwo.WhB.mx_bottom_integral hk` as an intermediate fact. Simplify `this` using `[mx, e2r]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem sup_norm_second_vector_maxCompact {k : GL (Fin 2) F} (hk : k ∈ K2 F) : mx (e2r k) = 1 := by
   have := GlobalTheory.CompanionTheory.GJTwo.WhB.mx_bottom_integral hk
   simpa [mx, e2r] using this
 
 /- English proof (translation)
-Establish `hk : modulus ((p.2.2).val).det = 1` using `GlobalTheory.CompanionTheory.GJTwo.WhB.modulus_det_integral hp`. Establish `hd : ((dg2 (p.1 * p.2.1) p.2.1 : GL (Fin 2) F).val).det = (p.1 : F) * p.2.1 * p.2.1`. Simplify using `[dg2, Matrix.det_fin_two]`. Rewrite using `[hI, Units.val_mul, Units.val_mul, Matrix.det_mul, Matrix.det_mul, hd, modulus_mul, modulus_mul, modulus_mul, modulus_mul, hk]`. Use `push_cast`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -85,25 +85,23 @@ theorem modulus_det_hI_mul (p : Fˣ × Fˣ × GL (Fin 2) F) (hp : p.2.2 ∈ K2 F
 end L
 
 /- English proof (translation)
-Introduce `F _ _ _ _ _ _ ψ _ W₀ W' Φ s C₀ C₁ C₂ B R ε h0 h1 h2 hε hε2 hcen hW₀ hW' hP g p hk`. Establish `hW0eq : W₀ (hI p) = W₀ (dg2 p.1 1 * p.2.2)` using `by rw [hI_central, hcen]`. Establish `hmx : mx (e2r (hI p)) = (modulus (p.2.1 : F) : ℝ)`. Rewrite using `[hI, sup_norm_second_vector_diag_mul, sup_norm_second_vector_maxCompact hk, mul_one]`. Establish `hA : (0 : ℝ) < (modulus (p.1 : F) : ℝ)` using `by exact_mod_cast modulus_pos p.1.ne_zero`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hB : (0 : ℝ) < (modulus (p.2.1 : F) : ℝ)` using `by exact_mod_cast modulus_pos p.2.1.ne_zero`. Distinguish the cases in `hc : (∀ i j, (modulus (g.val i j) : ℝ) ≤ R) ∧ (modulus (p.2.1 : F) : ℝ) ≤ R ∧ (modulus (p.1 : F) : ℝ) ≤ B`. Rewrite using `[Mj, if_pos hc] set A : ℝ := (modulus (p.1 : F) : ℝ) with hAdef set b : ℝ := (modulus (p.2.1 : F) : ℝ) with hbdef set Q : ℝ := (modulus (g.val).det : ℝ) / mx (e2r (p.2.2 * g)) ^ 2 with hQdef`. Establish `hQ : 0 ≤ Q`. Establish `hm : 0 ≤ mx (e2r (p.2.2 * g))` using `le_max_of_le_left (NNReal.coe_nonneg _)`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `div_nonneg (NNReal.coe_nonneg _) (by positivity)`. Establish `e1 : ‖W₀ (hI p)‖ ≤ C₀ * A ^ (1 / 2 - ε)`. Rewrite using `[hW0eq]`. Conclude with `(hW₀ p.1 p.2.2 hk).1`. Establish `hq : (modulus ((hI p * g).val).det : ℝ) / mx (e2r (hI p * g)) ^ 2 = A * Q`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hrow : mx (e2r (hI p * g)) = b * mx (e2r (p.2.2 * g))`. Rewrite using `[hI, mul_assoc, sup_norm_second_vector_diag_mul]`. Rewrite using `[modulus_det_hI_mul p hk, hrow, hQdef, mul_pow, ← hAdef, ← hbdef, show A * b ^ 2 * (modulus (g.val).det : ℝ) = b ^ 2 * (A * (modulus (g.val).det : ℝ)) by ring, mul_div_mul_left _ _ (pow_ne_zero 2 hB.ne'), mul_div_assoc]`. Establish `e2 : ‖W' (hI p * g)‖ ≤ C₁ * (A * Q) ^ (1 / 2 - ε)`. Use `hW' (hI p * g)` as an intermediate fact.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Rewrite `this` using `[hq]`. Then use the resulting hypothesis. Establish `e3 : ‖pFT ψ Φ g.val (e2r (hI p))‖ ≤ C₂` using `(hP _ _).1`. Establish `e4 : ‖mp (GeneralLinearGroup.det (hI p)) s‖ = A ^ s.re * b ^ (2 * s.re)`. Establish `h2s : (2 * s).re = 2 * s.re` using `by simp`. Rewrite using `[GlobalTheory.CompanionTheory.DampedZetaMajorant.Iter.mp_det_hI p hk, norm_mul, norm_mp_eq, norm_mp_eq, h2s]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hexp : A ^ (s.re + 1 - 2 * ε) = A ^ (1 / 2 - ε) * A ^ (1 / 2 - ε) * A ^ s.re`. Rewrite using `[← Real.rpow_add hA, ← Real.rpow_add hA]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Establish `hsplit : (A * Q) ^ (1 / 2 - ε) = A ^ (1 / 2 - ε) * Q ^ (1 / 2 - ε)` using `Real.mul_rpow hA.le hQ`.
+Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `n1 : 0 ≤ A ^ (1 / 2 - ε)` using `Real.rpow_nonneg hA.le _`. Establish `n2 : 0 ≤ (A * Q) ^ (1 / 2 - ε)` using `Real.rpow_nonneg (mul_nonneg hA.le hQ) _`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[e4]`. Establish `n3 : 0 ≤ A ^ s.re * b ^ (2 * s.re)` using `mul_nonneg (Real.rpow_nonneg hA.le _) (Real.rpow_nonneg hB.le _)`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Use `gcongr`. Use `_ = C₀ * C₁ * C₂ * (A ^ (s.re + 1 - 2 * ε) * b ^ (2 * s.re) * Q ^ (1 / 2 - ε)) := by`. Rewrite using `[hexp, hsplit]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Mj, if_neg hc, mul_zero]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hz : Bq ψ W₀ W' Φ s g (hI p) = 0`. Assume the negation of the conclusion as `hne`. Establish `hw : W₀ (hI p) ≠ 0` using `fun e => hne (by simp [Bq, e])`. Establish `hf : pFT ψ Φ g.val (e2r (hI p)) ≠ 0` using `fun e => hne (by simp [Bq, e])`. Take `⟨r1, r2⟩` from `(hP _ _).2 hf`.
-
-Rewrite `r2` using `[hmx]`. Rewrite `hw` using `[hW0eq]`. Conclude with `hc ⟨r1, r2, (hW₀ p.1 p.2.2 hk).2 hw⟩`. Rewrite using `[hz, norm_zero]`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem main : ForS fun F _ _ _ _ _ _ ψ => ∀ (W₀ W' : GL (Fin 2) F → ℂ) (Φ : Matrix (Fin 2) (Fin 3) F → ℂ) (s : ℂ) (C₀ C₁ C₂ B R ε : ℝ),
   0 ≤ C₀ → 0 ≤ C₁ → 0 ≤ C₂ → 0 < ε → ε < 1 / 2 →

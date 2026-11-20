@@ -11,13 +11,13 @@ namespace GlobalTheory.TwV.Xc.Emat
 open Matrix
 
 /- English proof (translation)
-Use extensionality with `i k`. Establish `h` using `hCo (Pi.single i 1) (Pi.single k 1)`. Rewrite using `[Matrix.mul_apply]`. Establish `hl : ∀ a, (star (LinearMap.toMatrix' (co : (Fin N → E) →ₗ[E] (Fin N → E)))) i a * LinearMap.toMatrix' (co : (Fin N → E) →ₗ[E] (Fin N → E)) a k = σ (co (Pi.single i 1) a) * co (Pi.single k 1) a`. Introduce `a`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Matrix.star_apply, LinearMap.toMatrix'_apply, LinearMap.toMatrix'_apply, hσ]`. Both sides reduce to the same expression. Rewrite using `[Finset.sum_congr rfl fun a _ => hl a, h]`. Rewrite using `[Finset.sum_eq_single i, Finset.sum_eq_single k]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `b _ hb`. Simplify using `[hb]`. Introduce `hh`. Conclude with `absurd (Finset.mem_univ _) hh`. Introduce `b _ hb`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_eq_zero fun b' _ => ?_` and prove the remaining obligations. Simplify using `[Pi.single_apply, hb]`. Introduce `hh`. Conclude with `absurd (Finset.mem_univ _) hh`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem gram_of_orth {E : Type} [Field E] [StarRing E] (σ : E →+* E) (hσ : ∀ x, σ x = star x) {N : ℕ}
     (J : Matrix (Fin N) (Fin N) E) (co : (Fin N → E) ≃ₗ[E] (Fin N → E)) (hCo : IsOrthCo σ J co) :
@@ -44,7 +44,7 @@ theorem gram_of_orth {E : Type} [Field E] [StarRing E] (σ : E →+* E) (hσ : �
     exact absurd (Finset.mem_univ _) hh
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[toLE, LinearMap.toMatrix'_apply, Matrix.GeneralLinearGroup.toLin, Matrix.mulVec, dotProduct, Pi.single_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem toMatrix_toLE {E : Type} [Field E] {N : ℕ} (γ : GL (Fin N) E) :
     LinearMap.toMatrix' ((toLE γ : (Fin N → E) ≃ₗ[E] (Fin N → E)) : (Fin N → E) →ₗ[E] (Fin N → E)) = γ := by
@@ -52,9 +52,9 @@ theorem toMatrix_toLE {E : Type} [Field E] {N : ℕ} (γ : GL (Fin N) E) :
   simp [toLE, LinearMap.toMatrix'_apply, Matrix.GeneralLinearGroup.toLin, Matrix.mulVec, dotProduct, Pi.single_apply]
 
 /- English proof (translation)
-Substitute `hk` using the available equality. Establish `e2 : ∀ A : Matrix (Fin n) (Fin n) E', A.submatrix (finCongr rfl) (finCongr rfl) = A` using `fun A => by ext x y; rfl`. Rewrite using `[e2, mul_eq_one_comm]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [star_mul, Matrix.mul_assoc]`.
+Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules.
 
-Use `_ = star coi * (star co * co) * coi := by rw [h1, h2]`. Use `_ = star (co * coi) * (co * coi) := by simp only [star_mul, Matrix.mul_assoc]`. Use `_ = 1 := by rw [h3, star_one, Matrix.one_mul]`.
+A detailed English derivation is pending.
 -/
 theorem unit_mat' {n N : ℕ} (hk : n = N) {E' : Type} [Field E'] [StarRing E'] (co coi γ J : Matrix (Fin N) (Fin N) E')
     (h1 : star co * co = J) (h2 : star γ * J * γ = J) (h3 : co * coi = 1) :
@@ -69,7 +69,7 @@ theorem unit_mat' {n N : ℕ} (hk : n = N) {E' : Type} [Field E'] [StarRing E'] 
     _ = 1 := by rw [h3, star_one, Matrix.one_mul]
 
 /- English proof (translation)
-Use extensionality with `i k`. Simplify using `[cT, Matrix.star_apply, hσ]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem star_eq_cT {E : Type} [Field E] [StarRing E] (σ : E →+* E) (hσ : ∀ x, σ x = star x) {N : ℕ} (M : Matrix (Fin N) (Fin N) E) :
     star M = cT σ M := by
@@ -77,11 +77,11 @@ theorem star_eq_cT {E : Type} [Field E] [StarRing E] (σ : E →+* E) (hσ : ∀
   simp [cT, Matrix.star_apply, hσ]
 
 /- English proof (translation)
-Introduce `x y`. Use `set M := LinearMap.toMatrix' (co : (Fin N → E) →ₗ[E] (Fin N → E)) with hMdef`. Establish `hx : ∀ z, co z = M *ᵥ z` using `fun z => by rw [hMdef, LinearMap.toMatrix'_mulVec]; rfl`. Rewrite using `[← hM]`. Simplify using `only [hx, Matrix.mulVec, dotProduct, cT, Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply, map_sum, map_mul, Finset.sum_mul, Finset.mul_sum]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. By extensionality, compare the relevant components.
 
-Use `conv_lhs => arg 2`. Use extensionality with `a`. Rewrite using `[Finset.sum_comm]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun b _ => Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem orth_of_gram {E : Type} [Field E] (σ : E →+* E) {N : ℕ} (J : Matrix (Fin N) (Fin N) E) (co : (Fin N → E) ≃ₗ[E] (Fin N → E))
     (hM : cT σ (LinearMap.toMatrix' (co : (Fin N → E) →ₗ[E] (Fin N → E))) * LinearMap.toMatrix' (co : (Fin N → E) →ₗ[E] (Fin N → E)) = J) :
@@ -100,7 +100,7 @@ theorem orth_of_gram {E : Type} [Field E] (σ : E →+* E) {N : ℕ} (J : Matrix
   ring
 
 /- English proof (translation)
-Rewrite using `[← toMatrix_toLE γ, ← LinearMap.toMatrix'_comp, ← LinearMap.toMatrix'_comp]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem toMatrix_stdG {E : Type} [Field E] {N : ℕ} (σ : E →+* E) (J : Matrix (Fin N) (Fin N) E) (γ : GL (Fin N) E) :
     LinearMap.toMatrix' ((stdG σ J γ : (Fin N → E) ≃ₗ[E] (Fin N → E)) : (Fin N → E) →ₗ[E] (Fin N → E)) =
@@ -110,7 +110,7 @@ theorem toMatrix_stdG {E : Type} [Field E] {N : ℕ} (σ : E →+* E) (J : Matri
   rfl
 
 /- English proof (translation)
-Rewrite using `[← LinearMap.toMatrix'_comp, LinearEquiv.comp_symm, LinearMap.toMatrix'_id]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem toMatrix_co_mul_symm {E : Type} [Field E] {N : ℕ} (co : (Fin N → E) ≃ₗ[E] (Fin N → E)) :
     LinearMap.toMatrix' (co : (Fin N → E) →ₗ[E] (Fin N → E)) * LinearMap.toMatrix' ((co.symm : (Fin N → E) ≃ₗ[E] (Fin N → E)) : (Fin N → E) →ₗ[E] (Fin N → E)) = 1 := by
@@ -123,11 +123,11 @@ end
 open GlobalTheory.TwV.Xc.Emat in
 
 /- English proof (translation)
-Introduce `E _ _ _ σ hσ a N hr J crd hcrd`. Substitute `hr` using the available equality. Establish `hco : IsOrthCo σ J (stdCo σ J)`. Use `Classical.epsilon_spec (p := IsOrthCo σ J) ⟨toLE crd, ?_⟩` and prove the remaining obligations. Use `orth_of_gram σ J _ ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[toMatrix_toLE]`. Conclude with `hcrd`. Use `⟨hco, fun g hg => ?_⟩` and prove the remaining obligations. Establish `hg' : star (g : Matrix (Fin a) (Fin a) E) * J * (g : Matrix (Fin a) (Fin a) E) = J`. Rewrite using `[star_eq_cT σ hσ]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Conclude with `hg`. Unfold `eMat`. Rewrite using `[toMatrix_stdG]`. Use `⟨unit_mat' rfl _ _ _ J (gram_of_orth σ hσ J _ hco) hg' (toMatrix_co_mul_symm _), ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.det_submatrix_equiv_self, Matrix.det_mul, Matrix.det_mul, mul_right_comm, ← Matrix.det_mul, toMatrix_co_mul_symm, Matrix.det_one, one_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.TwV.Xc.eMat_unitary_det : ∀ (E : Type) [Field E] [NumberField E] [StarRing E] (σ : E →+* E), (∀ x, σ x = star x) → ∀ (a N : ℕ) (hr : a = N) (J : Matrix (Fin N) (Fin N) E) (crd : GL (Fin N) E), cT σ crd.1 * crd.1 = J → IsOrthCo σ J (stdCo σ J) ∧ ∀ g ∈ UJ σ J, eMat hr σ J g * star (eMat hr σ J g) = 1 ∧ (eMat hr σ J g).det = g.1.det := by
   intro E _ _ _ σ hσ a N hr J crd hcrd

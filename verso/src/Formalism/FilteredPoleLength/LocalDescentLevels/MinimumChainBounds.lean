@@ -5,15 +5,15 @@ namespace Formalism.LatticeBaseChangeAlt
 open Real
 
 /- English proof (translation)
-Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih`. Establish `hx : 0 ≤ x` using `hy.trans hyx`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Establish `hxy : 0 ≤ x - y` using `sub_nonneg.2 hyx`. Establish `hMn : 0 ≤ M ^ n` using `pow_nonneg (by linarith) n`. Establish `hyn : y ^ n ≤ M ^ n` using `by first`. Consider the case `exact pow_le_pow_left hy (hyx.trans hxM) n`. Consider the case `exact pow_le_pow_left₀ hy (hyx.trans hxM) n`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Treat this case separately. Treat this case separately.
 
-Consider the case `(gcongr <;> linarith)`. Establish `hMn1 : M ^ n ≤ M ^ (n + 1)`. Rewrite using `[pow_succ]`. Use polynomial arithmetic with `[mul_nonneg hMn (sub_nonneg.2 hM)]`. Establish `h1 : x * (x ^ n - y ^ n) ≤ x * (n * (x - y) * M ^ n)` using `mul_le_mul_of_nonneg_left ih hx`.
+Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Establish `h2 : x * (n * (x - y) * M ^ n) ≤ M * (n * (x - y) * M ^ n)` using `mul_le_mul_of_nonneg_right hxM (mul_nonneg (mul_nonneg (Nat.cast_nonneg n) hxy) hMn)`. Establish `h3 : (x - y) * y ^ n ≤ (x - y) * M ^ (n + 1)` using `mul_le_mul_of_nonneg_left (hyn.trans hMn1) hxy`. Establish `e : x ^ (n + 1) - y ^ (n + 1) = x * (x ^ n - y ^ n) + (x - y) * y ^ n` using `by ring`. Establish `e2 : M * (n * (x - y) * M ^ n) = n * (x - y) * M ^ (n + 1)` using `by ring`. Rewrite using `[e]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion.
+Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 private theorem pow_sub_pow_le_mul_sub_mul_pow {x y M : ℝ} (hy : 0 ≤ y) (hyx : y ≤ x) (hxM : x ≤ M) (hM : 1 ≤ M) :
     ∀ n : ℕ, x ^ n - y ^ n ≤ n * (x - y) * M ^ n := by
@@ -43,9 +43,9 @@ private theorem pow_sub_pow_le_mul_sub_mul_pow {x y M : ℝ} (hy : 0 ≤ y) (hyx
     linarith
 
 /- English proof (translation)
-Introduce `i c ε hε hε1`. Establish `h2 : (0 : ℝ) ≤ 2 ^ c` using `by positivity`. Establish `hM : (1 : ℝ) ≤ 2 ^ c + 1` using `by linarith`. Establish `key` using `pow_sub_pow_le_mul_sub_mul_pow h2 (by linarith : (2 : ℝ) ^ c ≤ 2 ^ c + ε) (by linarith : (2 : ℝ) ^ c + ε ≤ 2 ^ c + 1) hM i`. Establish `e : (2 : ℝ) ^ c + ε - 2 ^ c = ε` using `by ring`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `key` using `[e]`. Rewrite using `[pow_mul]`. Conclude with `key`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem detProductRest : DetProductRest := by
   intro i c ε hε hε1

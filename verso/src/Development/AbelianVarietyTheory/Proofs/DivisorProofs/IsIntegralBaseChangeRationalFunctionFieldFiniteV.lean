@@ -12,11 +12,9 @@ open scoped TensorProduct
 namespace GlobalTheory.PureTransc
 
 /- English proof (translation)
-Set `P` to `MvPolynomial σ k`. Set `K` to `FractionRing P`. Use `letI : Algebra (P ⊗[k] A) (K ⊗[k] A) := (Algebra.TensorProduct.map (IsScalarTower.toAlgHom k P K) (AlgHom.id k A)).toAlgebra`. Use `haveI : IsScalarTower P (P ⊗[k] A) (K ⊗[k] A) := .of_algebraMap_eq fun x => by simp [RingHom.algebraMap_toAlgebra]`. Use `haveI := IsLocalization.tensorProduct_tensorProduct k A (nonZeroDivisors P) K (by ext; simp [RingHom.algebraMap_toAlgebra])`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Equip the data with the indicated structure. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `e : P ⊗[k] A ≃+* MvPolynomial σ A` to `((Algebra.TensorProduct.comm k P A).toRingEquiv.trans (MvPolynomial.scalarRTensorAlgEquiv).toRingEquiv)`. Use `haveI : IsDomain (P ⊗[k] A) := e.toMulEquiv.isDomain`. Establish `hinj : Function.Injective (algebraMap P (P ⊗[k] A))` using `Algebra.TensorProduct.includeLeft_injective (S := P) (algebraMap k A).injective`. Use `IsLocalization.isDomain_of_le_nonZeroDivisors (K ⊗[k] A) (M := Algebra.algebraMapSubmonoid (P ⊗[k] A) (nonZeroDivisors P)) ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨p, hp, rfl⟩`.
-
-Conclude with `mem_nonZeroDivisors_of_ne_zero fun h => nonZeroDivisors.ne_zero hp (hinj (h.trans (map_zero _).symm))`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem isDomain_tensor (k : Type) [Field k] (σ : Type) (A : Type) [CommRing A] [IsDomain A]
     [Algebra k A] : IsDomain (FractionRing (MvPolynomial σ k) ⊗[k] A) := by
@@ -41,25 +39,21 @@ theorem isDomain_tensor (k : Type) [Field k] (σ : Type) (A : Type) [CommRing A]
     nonZeroDivisors.ne_zero hp (hinj (h.trans (map_zero _).symm))
 
 /- English proof (translation)
-Introduce `k _ N X X' _ f f' π H`. Establish `chart (x : X) : ∃ (A : Type) (_ : CommRing A) (_ : Algebra k A) (_ : IsDomain A) (j : Sp A ⟶ X) (_ : IsOpenImmersion j) (q : PrimeSpectrum A), j q = x ∧ j ≫ f = spMap (algebraMap k A)`. Take `⟨A, _, _, j, _, q, hq, hj⟩` from `exists_affine_chart_over f x`. Establish `: Nonempty (Spec (.of A))` using `⟨q⟩`. Establish `: IsIntegral (Spec (.of A))` using `isIntegral_of_isOpenImmersion j`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsDomain A` using `(affine_isIntegral_iff (.of A)).1 this`. Conclude with `⟨A, _, _, this, j, inferInstance, q, hq, hj⟩`. Establish `lift {A : Type} [CommRing A] [Algebra k A] [IsDomain A] (j : Sp A ⟶ X) [IsOpenImmersion j] (hj : j ≫ f = spMap (algebraMap k A)) (x' : X') (hx : π x' ∈ Set.range j) : ∃ (j₀ : Sp (FractionRing (MvPolynomial (Fin N) k) ⊗[k] A) ⟶ X') (_ : IsOpenImmersion j₀), x' ∈ Set.range j₀`. Take `⟨j₀, hj₀, H'⟩` from `exists_affine_chart_of_isPullback H j hj`. Use `⟨j₀, hj₀, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hr : x' ∈ Set.range (Limits.pullback.fst π j)`. Rewrite using `[Scheme.Pullback.range_fst]`. Conclude with `hx`. Take `⟨z, rfl⟩` from `hr`. Conclude with `⟨H'.isoPullback.inv z, by rw [← Scheme.Hom.comp_apply, H'.isoPullback_inv_fst]⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `hflat : Flat π`. Use `MorphismProperty.of_isPullback H.flip ?_` and prove the remaining obligations. Use `(HasRingHomProperty.Spec_iff (P := @Flat)).2 ?_` and prove the remaining obligations. Conclude with `GlobalTheory.GeomIrr.flat_of_field _`. Establish `: IsReduced X'`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `(x' : X') : _root_.IsReduced (X'.presheaf.stalk x')`. Take `⟨A, _, _, _, j, _, q, hq, hj⟩` from `chart (π x')`. Take `⟨j₀, _, z, rfl⟩` from `lift j hj x' ⟨q, hq⟩`. Use `isDomain_tensor k (Fin N) A` as an intermediate fact. Conclude with `isReduced_of_injective (asIso (j₀.stalkMap z)).commRingCatIsoToRingEquiv.toRingHom (asIso (j₀.stalkMap z)).commRingCatIsoToRingEquiv.injective`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `isReduced_of_isReduced_stalk X'`. Establish `: IrreducibleSpace X'`. Take `⟨A, _, _, _, j, _, q, hq, hj⟩` from `chart (genericPoint X)`. Take `⟨j₀, hj₀, H'⟩` from `exists_affine_chart_of_isPullback H j hj`. Use `isDomain_tensor k (Fin N) A` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hirr : IsIrreducible (Set.range j₀)`. Rewrite using `[← Set.image_univ]`. Conclude with `(IrreducibleSpace.isIrreducible_univ _).image _ j₀.continuous.continuousOn`. Establish `hdense : closure (Set.range j₀) = Set.univ`. Use `Set.eq_univ_of_forall fun x' => ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `⟨y, hy, e⟩` from `Flat.generalizingMap π (genericPoint_specializes (π x'))`. Establish `hr : y ∈ Set.range (Limits.pullback.fst π j)`. Rewrite using `[Scheme.Pullback.range_fst, Set.mem_preimage, e]`. Conclude with `⟨q, hq⟩`. Take `⟨z, hz⟩` from `hr`.
-
-Establish `hy' : y ∈ Set.range j₀` using `⟨H'.isoPullback.inv z, by rw [← Scheme.Hom.comp_apply, H'.isoPullback_inv_fst, hz]⟩`. Conclude with `closure_mono (Set.singleton_subset_iff.2 hy') (specializes_iff_mem_closure.1 hy)`. Use `(irreducibleSpace_def X').2 ?_` and prove the remaining obligations. Rewrite using `[Set.top_eq_univ, ← hdense]`. Conclude with `hirr.closure`.
-
-Conclude with `isIntegral_of_irreducibleSpace_of_isReduced X'`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isIntegral_of_isPullback : ∀ (k : Type) [Field k] (N : ℕ) (X X' : Scheme.{0}) [IsIntegral X]
     (f : X ⟶ Sp k) (f' : X' ⟶ Sp (FractionRing (MvPolynomial (Fin N) k))) (π : X' ⟶ X),

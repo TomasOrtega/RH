@@ -23,7 +23,7 @@ open GlobalTheory.IndefiniteRowSideFullHecke
 open scoped CategoryTheory.Obj
 
 /- English proof (translation)
-Establish `h : LB.Gen.Corr M.L _ _ _ _ c.t c'.t` using `AbLaw.Cube.corr_of_val_section M.isLB hs (lift 1 (lift 1 1)) (φ := thφ G (x3 G)) (ε := thε) (φ' := thφ G (x3 G)) (ε' := thε) (fun _ _ _ => rfl) c.isGen c'.isGen fun _ _ hJ => ((isCub_cubV c hJ).face 1 1).trans ((isCub_cubV c' hJ).face 1 1).symm`. Establish `e : c.t = c'.t` using `TorusExt.gen_ext_val M.isLB (φ := thφ G (x3 G)) (ε := thε) c.isGen c'.isGen fun _ _ hJ => val_corr hJ h _`. Consider the cases of `c`. Consider the cases of `c'`. Consider the cases of `e`.
+Establish an intermediate fact. Establish an intermediate fact. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data.
 
 Both sides reduce to the same expression.
 -/
@@ -44,9 +44,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E}
 variable {R : Type} [CommRing R] [IsDomain R] {I : Ideal R} {t : SAB H (Sp R)}
 
 /- English proof (translation)
-Use `P.U.smooth` as an intermediate fact. Establish `hs` using `SymExtend.surjective_cube_of_generic GlobalTheory.globalFns_holds t.G P.A.isAb P.U.gen`. Establish `key : ∀ (M : RigLB t.G) (c : CubicalStr t.G M), M = t.PP → HEq c t.cub`. Introduce and unpack `M c rfl`. Conclude with `heq_of_eq (cubical_eq hs c t.cub)`.
-
-Conclude with `key _ _ P.bundle`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem cubG_heq (P : PELUnif I t) : HEq P.U.cubG t.cub := by
   have := P.U.smooth
@@ -72,7 +70,7 @@ variable (P : PELUnif I t) (F : Type) [Field F] [Algebra (FractionRing R) F]
 abbrev genMap : P.A.A.left ⟶ t.G.left := P.U.gen.inv.left ≫ pullback.fst t.G.hom (jK R)
 
 /- English proof (translation)
-Use `P.U.gen_hom` as an intermediate fact. Establish `: IsMonHom P.U.gen.symm.hom` using `by show IsMonHom P.U.gen.inv; infer_instance`. Conclude with `((isGrpPullback_of_iso P.U.gen.symm).comp (isGrpPullback_pullback t.G (jK R))).congr (Category.id_comp _) rfl`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem genMap_cart : IsGrpPullback P.A.A t.G (jK R) (genMap P) := by
   have := P.U.gen_hom
@@ -82,7 +80,7 @@ theorem genMap_cart : IsGrpPullback P.A.A t.G (jK R) (genMap P) := by
 abbrev pt (x : TF (R := R) F ⟶ t.G) : TFK (R := R) F ⟶ P.A.A := (pelEquiv I t P).unif.ptA F x
 
 /- English proof (translation)
-Establish `hi : P.U.gen.hom.left ≫ P.U.gen.inv.left = 𝟙 _`. Rewrite using `[← Over.comp_left, Iso.hom_inv_id, Over.id_left]`. Use `show ((UniformTorsionIsomorphism.toGen x).left ≫ P.U.gen.hom.left) ≫ P.U.gen.inv.left ≫ _ = _`. Rewrite using `[Category.assoc, ← Category.assoc P.U.gen.hom.left, hi, Category.id_comp]`. Conclude with `UniformTorsionIsomorphism.toGen_fst x`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pt_left (x : TF (R := R) F ⟶ t.G) : (pt P F x).left ≫ genMap P = x.left := by
   have hi : P.U.gen.hom.left ≫ P.U.gen.inv.left = 𝟙 _ := by
@@ -92,7 +90,7 @@ theorem pt_left (x : TF (R := R) F ⟶ t.G) : (pt P F x).left ≫ genMap P = x.l
   exact UniformTorsionIsomorphism.toGen_fst x
 
 /- English proof (translation)
-The claim follows from `Over.OverMorphism.ext ((genMap_cart P).1.hom_ext h (by rw [Over.w x, Over.w y]))`.
+A detailed English derivation is pending.
 -/
 theorem ext_genMap {x y : TFK (R := R) F ⟶ P.A.A} (h : x.left ≫ genMap P = y.left ≫ genMap P) : x = y :=
   Over.OverMorphism.ext ((genMap_cart P).1.hom_ext h (by rw [Over.w x, Over.w y]))

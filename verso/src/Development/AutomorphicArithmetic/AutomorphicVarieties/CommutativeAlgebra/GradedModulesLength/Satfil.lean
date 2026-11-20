@@ -3,9 +3,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.CommutativeAlgebra
 open IsLocalRing Filter Formalism.MainNotions.V.Pf.V2.Calc UpperTheory.V.Alg UpperTheory.V.Alg.M
 
 /- English proof (translation)
-Simplify using `only [Finsupp.weight_apply, Finsupp.sum]`. Use `push_cast`. Rewrite using `[← Finset.sum_sub_distrib]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `i _`.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [posW, negW, nsmul_eq_mul, smul_eq_mul]`. Use `push_cast`. Rewrite using `[← mul_sub, Int.toNat_sub_toNat_neg]`.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 -/
 private theorem satfil_wt {τ : Type} (wt : τ → ℤ) (ν : τ →₀ ℕ) :
     Finsupp.weight wt ν = (Finsupp.weight (posW wt) ν : ℤ) - (Finsupp.weight (negW wt) ν : ℤ) := by
@@ -19,9 +19,9 @@ private theorem satfil_wt {τ : Type} (wt : τ → ℤ) (ν : τ →₀ ℕ) :
   rw [← mul_sub, Int.toNat_sub_toNat_neg]
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(∑ i ∈ ν.support, ν i) ≤ _`. Simplify using `only [Finsupp.weight_apply, Finsupp.sum]`. Rewrite using `[← Finset.sum_add_distrib]`. Apply `Finset.sum_le_sum` to reduce the goal to its premises. Introduce `i _`.
+Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hi : 1 ≤ posW wt i + negW wt i`. Simplify using `only [posW, negW]`. Use `h i` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Simplify using `only [smul_eq_mul]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules.
 
 Use the polynomial consequences of the given equalities and inequalities.
 -/
@@ -40,27 +40,25 @@ private theorem satfil_deg {τ : Type} (wt : τ → ℤ) (h : ∀ i, wt i ≠ 0)
   nlinarith
 
 /- English proof (translation)
-Introduce `O _ _ _ _ _ A _ _ 𝒜 _ _ x hx τ _ wt φ hφ`. Establish `hnz : ∀ i, wt i ≠ 0`. Introduce `i`. Apply the tactic sequence `rcases hφ.wts i with h | h | h | h <;> omega`. Establish `hlow : ∀ y ∈ RingHom.ker x ^ 2, ∀ ν : τ →₀ ℕ, Finsupp.degree ν ≤ 1 → MvPowerSeries.coeff ν (φ y) = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Introduce `y hy`. Rewrite `hy` using `[pow_two]`. Use `Submodule.mul_induction_on hy ?_ ?_` and prove the remaining obligations. Introduce `m hm n hn ν hν classical`. Rewrite using `[map_mul, MvPowerSeries.coeff_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `p hp`. Rewrite `hp` using `[Finset.HasAntidiagonal.mem_antidiagonal]`. Establish `hd : Finsupp.degree p.1 + Finsupp.degree p.2 ≤ 1`. Rewrite using `[← map_add, hp]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hν`. Establish `hm0 : MvPowerSeries.coeff 0 (φ m) = 0`. Rewrite using `[MvPowerSeries.coeff_zero_eq_constantCoeff_apply, hφ.const, RingHom.mem_ker.mp hm, map_zero]`. Establish `hn0 : MvPowerSeries.coeff 0 (φ n) = 0`. Rewrite using `[MvPowerSeries.coeff_zero_eq_constantCoeff_apply, hφ.const, RingHom.mem_ker.mp hn, map_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `h1 : Finsupp.degree p.1 = 0`. Rewrite using `[(Finsupp.degree_eq_zero_iff _).mp h1, hm0, zero_mul]`. Establish `h2 : Finsupp.degree p.2 = 0` using `by omega`. Rewrite using `[(Finsupp.degree_eq_zero_iff _).mp h2, hn0, mul_zero]`. Introduce `a b ha hb ν hν`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_add, map_add, ha ν hν, hb ν hν, add_zero]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `f hf hsat ν hν`. Take `⟨c, hc, hcf⟩` from `hsat`. Assume the negation of the conclusion as `hne`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `hw : Finsupp.weight wt ν = -1`. Assume the negation of the conclusion as `h'`. Conclude with `hne (hφ.graded (-1) f hf ν h')`. Establish `e` using `satfil_wt wt ν`. Establish `hdeg` using `satfil_deg wt hnz ν`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hd1 : Finsupp.degree ν ≤ 1` using `by omega`. Establish `h0` using `hlow _ hcf ν hd1`. Rewrite `h0` using `[map_smul, ← algebraMap_smul (FractionRing O) c (φ f), map_smul, smul_eq_mul]`. Establish `hc' : algebraMap O (FractionRing O) c ≠ 0`. Introduce `hz`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Conclude with `hc (IsFractionRing.injective O (FractionRing O) (by rw [hz, map_zero]))`. Conclude with `hne ((mul_eq_zero.mp h0).resolve_left hc')`. Introduce `b hb hxb ν hν`. Assume the negation of the conclusion as `hne`. Establish `hw : Finsupp.weight wt ν = 0`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `h'`. Conclude with `hne (hφ.graded 0 b hb ν h')`. Establish `e` using `satfil_wt wt ν`. Establish `hdeg` using `satfil_deg wt hnz ν`. Establish `hd : Finsupp.degree ν = 0` using `by omega`.
-
-Rewrite `hne` using `[(Finsupp.degree_eq_zero_iff _).mp hd, MvPowerSeries.coeff_zero_eq_constantCoeff_apply, hφ.const, hxb, map_zero]`. Conclude with `hne rfl`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Alg.M.satfil_holds :
     ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [IsAdicComplete (maximalIdeal O) O] [CharZero O]

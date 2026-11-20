@@ -35,13 +35,13 @@ def IsLagrModel (M : Model σ X Y) (ψ : AddChar (AF F) ℂ) (v : Pl F) (A A' : 
     ι φ₁ (co x) = ψ (symp (cA σ) (-1) (incM F X.J) (incM F Y.J) x u) * ι φ (co x)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun v => (h.vac v).1, fun _ _ => rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem isFinPart_vac {M : Model σ X Y} {ψ : AddChar (AF F) ℂ} (h : M.IsGood ψ) (T : Finset (Pl F)) : IsFinPart M T M.vac :=
   ⟨fun v => (h.vac v).1, fun _ _ => rfl⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h.bij, fun u hu => h.trans u hu.1 hu.2, fun u hu φ hφ φ₁ hφ₁ a x hx => h.mult u hu.1 hu.2 φ hφ φ₁ hφ₁ a x hx.1 hx.2⟩`.
+Supply the required witnesses or components.
 -/
 theorem isLagrModel_of_isLin {M : Model σ X Y} {ψ : AddChar (AF F) ℂ} {v : Pl F} {π₁ π₀ : AE F E →+* Fv F v} {co ι}
     (h : M.IsLin ψ π₁ π₀ co ι) :

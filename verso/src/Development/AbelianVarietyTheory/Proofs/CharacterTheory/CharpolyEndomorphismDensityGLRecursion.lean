@@ -9,13 +9,13 @@ open Polynomial GlobalTheory.CuspGL
 namespace GlobalTheory.CuspGL
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h U hU hv`. Establish `h1 : U.comap (e : V →ₗ[F] V') = ⊤`. Use `h _ (fun x hx => ?_) hv` and prove the remaining obligations. Use `hU (e x) hx` as an intermediate fact.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify `this` using `[LinearEquiv.conj_apply]`. Use `eq_top_iff.2 fun y _ => ?_` and prove the remaining obligations. Establish `: e.symm y ∈ U.comap (e : V →ₗ[F] V')` using `h1 ▸ Submodule.mem_top`. Simplify using `using this`. Introduce `h U hU hv`.
+Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1 : U.comap (e.symm : V' →ₗ[F] V) = ⊤`. Use `h _ (fun x hx => ?_) (by simpa using hv)` and prove the remaining obligations. Use `hU (e.symm x) hx` as an intermediate fact. Simplify `this` using `[LinearEquiv.conj_apply]`. Use `eq_top_iff.2 fun y _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: e y ∈ U.comap (e.symm : V' →ₗ[F] V)` using `h1 ▸ Submodule.mem_top`. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem cyclic_conj {F : Type} [Field F] {V V' : Type} [AddCommGroup V] [Module F V]
     [AddCommGroup V'] [Module F V'] (e : V ≃ₗ[F] V') (g : Module.End F V) (v : V) :
@@ -40,16 +40,14 @@ theorem cyclic_conj {F : Type} [Field F] {V V' : Type} [AddCommGroup V] [Module 
     simpa using this
 
 /- English proof (translation)
-Unfold `glCard`. Conclude with `(Nat.card_pos (α := GL (Fin n) F)).ne'` after adjusting the coercions.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem glCard_ne_zero_of_finite (F : Type) [Field F] [Finite F] (n : ℕ) : glCard F n ≠ 0 := by
   unfold glCard
   exact_mod_cast (Nat.card_pos (α := GL (Fin n) F)).ne'
 
 /- English proof (translation)
-Unfold `mass`. Use `haveI : Finite V := Module.finite_of_finite F`. Use `haveI : Finite (Module.End F V) := Finite.of_injective (fun g : Module.End F V => (g : V → V)) DFunLike.coe_injective`. Establish `hs : {g : Module.End F V | LinearMap.charpoly g = P}.Finite` using `Set.toFinite _`. Rewrite using `[finsum_mem_eq_finite_toFinset_sum _ hs, finsum_mem_eq_finite_toFinset_sum _ hs]`.
-
-Simplify using `[mul_comm]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mass_const {F : Type} [Field F] [Finite F] {V : Type} [AddCommGroup V] [Module F V]
     [FiniteDimensional F V] (c : ℂ) (P : F[X]) :
@@ -63,15 +61,13 @@ theorem mass_const {F : Type} [Field F] [Finite F] {V : Type} [AddCommGroup V] [
   simp [mul_comm]
 
 /- English proof (translation)
-Unfold `mu`. Establish `h : ∀ n : ℕ, n = 0 → mass (fun _ : Module.End F (Fin n → F) => (1 : ℂ)) 1 / glCard F n = 1`. Introduce and unpack `n rfl`. Establish `h1 : glCard F 0 = 1`. Unfold `glCard`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Use `haveI : Subsingleton (GL (Fin 0) F) := ⟨fun a b => Units.ext (Subsingleton.elim _ _)⟩`. Rewrite using `[Nat.card_unique]`. Simplify using the standard rewrite rules. Establish `h2 : {g : Module.End F (Fin 0 → F) | LinearMap.charpoly g = 1} = {0}`. Use extensionality with `g`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Establish `hg : g = 0` using `Subsingleton.elim _ _`. Establish `hc : LinearMap.charpoly g = 1`. Apply `(LinearMap.charpoly_monic g).natDegree_eq_zero.1` to reduce the goal to its premises. Rewrite using `[LinearMap.charpoly_natDegree]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [Set.mem_setOf_eq, Set.mem_singleton_iff]`. Conclude with `⟨fun _ => hg, fun _ => hc⟩`. Unfold `mass`. Rewrite using `[h1, h2, finsum_mem_singleton]`. Simplify using the standard rewrite rules.
-
-Conclude with `h _ natDegree_one`.
+Supply the required witnesses or components. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mu_one (F : Type) [Field F] : mu (1 : F[X]) = 1 := by
   unfold mu
@@ -98,13 +94,11 @@ theorem mu_one (F : Type) [Field F] : mu (1 : F[X]) = 1 := by
   exact h _ natDegree_one
 
 /- English proof (translation)
-Introduce `F _ _ P hP`. Use `⟨?_, mu_one F⟩` and prove the remaining obligations. Establish `key` using `GlobalTheory.T.endomorphismMass_mul_parabolic_induction_trivial F (Fin P.natDegree → F) (fun V _ _ _ g => (Nat.card {v : V // ∀ U : Submodule F V, (∀ x ∈ U, g x ∈ U) → v ∈ U → U = ⊤} : ℂ)) (by`. Introduce `V V' _ _ _ _ _ _ e g`. Use `congr 1`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the equality to equality of the corresponding arguments.
 
-Conclude with `(Nat.card_congr (e.toEquiv.subtypeEquiv fun v => cyclic_conj e g v)).symm)`. Use `P hP (by simp)`. Simplify using `only [GlobalTheory.T.finsum_card_cyclic_vectors_invariant_subspaces] at key`. Rewrite `key` using `[mass_const]`. Establish `hr : conv (fun D : F[X] => mass (fun g : Module.End F (Fin D.natDegree → F) => (Nat.card {v : Fin D.natDegree → F // ∀ U : Submodule F (Fin D.natDegree → F), (∀ x ∈ U, g x ∈ U) → v ∈ U → U = ⊤} : ℂ)) D / glCard F D.natDegree) mu P = conv (fun _ => 1) mu P`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Unfold `conv`. Use `finsum_mem_congr rfl fun x hx => ?_` and prove the remaining obligations. Use `beta_reduce`. Rewrite using `[GlobalTheory.T.endomorphismMassOfCharpoly_card_cyclic_vectors F x.1 hx.1, div_self (glCard_ne_zero_of_finite F _)]`. Rewrite using `[← hr, ← key]`.
-
-Unfold `mu`. Simplify using `[mul_div_assoc]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mu_rec : ∀ (F : Type) [Field F] [Finite F] (P : F[X]), P.Monic →
     (Nat.card F : ℂ) ^ P.natDegree * mu P = conv (fun _ => 1) mu P ∧ mu (1 : F[X]) = 1 := by

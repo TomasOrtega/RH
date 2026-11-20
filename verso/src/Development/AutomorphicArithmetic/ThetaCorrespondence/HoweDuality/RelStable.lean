@@ -10,15 +10,15 @@ open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.Genus
 open UpperTheory.Lit.HoweDuality GlobalTheory.HoweGlobalPair
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ n d X W M ψ om v ω ρ hL g hg x hx`. Take `⟨h, hh, hact⟩` from `hg`. Establish `h1X : (1 : UA σ X.J) ∈ UAt σ X ⇑(evFin F v)` using `by show At _ (mat (1 : UA σ X.J) - 1)`. Introduce `u _`. Rewrite using `[show mat (1 : UA σ X.J) = 1 from rfl, sub_self, smul_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `h1W : (1 : UA σ W.J) ∈ UAt σ W ⇑(evFin F v)` using `by show At _ (mat (1 : UA σ W.J) - 1)`. Introduce `u _`. Rewrite using `[show mat (1 : UA σ W.J) = 1 from rfl, sub_self, smul_zero]`. Establish `hgx : ((g x : SB (Fin n × Fin d → Fv F v)) : (Fin n × Fin d → Fv F v) → ℂ) = ω (1, h) (x : (Fin n × Fin d → Fv F v) → ℂ)` using `(hL.acts 1 h1X h hh x x.2 _).1 (hact x)`. Establish `key : augAt om v ≤ (augAt om v).comap (ω (1, h))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Submodule.span_le.mpr ?_` and prove the remaining obligations. Introduce and unpack `z ⟨g', hg', φ, hφ, φ₁, hφ₁, hA, rfl⟩`. Establish `e1 : φ₁ = ω (g', 1) φ` using `(hL.acts g' hg' 1 h1W φ hφ φ₁).1 hA`. Substitute `e1` using the available equality. Establish `m1` using `hL.mul 1 h1X h hh g' hg' 1 h1W φ hφ`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact.
 
-Establish `m2` using `hL.mul g' hg' 1 h1W 1 h1X h hh φ hφ`. Simplify using `only [one_mul, mul_one] at m1 m2`. Establish `hp : ω (1, h) φ ∈ SB (Fin n × Fin d → Fv F v)` using `hL.pres 1 h1X h hh φ hφ`. Simplify using `only [SetLike.mem_coe, Submodule.mem_comap, map_sub]`. Rewrite using `[← m1, m2]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.subset_span ⟨g', hg', ω (1, h) φ, hp, ω (g', 1) (ω (1, h) φ), hL.pres g' hg' 1 h1W _ hp, (hL.acts g' hg' 1 h1W _ hp _).2 rfl, rfl⟩`. Establish `hx' : (x : (Fin n × Fin d → Fv F v) → ℂ) ∈ augAt om v` using `hx`. Use `show ((g x : SB (Fin n × Fin d → Fv F v)) : (Fin n × Fin d → Fv F v) → ℂ) ∈ augAt om v`. Rewrite using `[hgx]`. Conclude with `key hx'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Lit.HoweDuality.relStable :
     ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} {n d : ℕ} {X : Spc F E n} {W : Spc F E d} {M : Model σ X W} {ψ : AddChar (AF F) ℂ} {om : Rep σ X W} {v : Pl F} {ω : UA σ X.J × UA σ W.J → Module.End ℂ (PositivityTheory.ThK.Fn F n d v)} {ρ : Matrix (Fin n) (Fin d) (AE F E) → Module.End ℂ (PositivityTheory.ThK.Fn F n d v)}, PositivityTheory.ThK.IsLocRep M ψ om v ω ρ → Stable (opFin om v) (relFin om v) := by

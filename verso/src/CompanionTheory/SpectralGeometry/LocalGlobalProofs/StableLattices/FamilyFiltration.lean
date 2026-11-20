@@ -20,7 +20,7 @@ def wInt (f : ℝ → ℂ) (s : ℝ) : ℝ≥0∞ :=
   ∫⁻ t in Set.Ioi (0 : ℝ), ‖f t‖ₑ ^ 2 * ENNReal.ofReal (Real.exp (-2 * s * t))
 
 /- English proof (translation)
-Unfold `wInt`. Use `setLIntegral_mono' measurableSet_Ioi fun t ht => ?_` and prove the remaining obligations. Establish `ht0 : (0 : ℝ) < t` using `ht`. Establish `: -2 * s' * t ≤ -2 * s * t` using `by nlinarith`. Use `gcongr`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem wInt_anti {s s' : ℝ} (h : s ≤ s') (f : ℝ → ℂ) : wInt f s' ≤ wInt f s := by
   unfold wInt
@@ -30,9 +30,9 @@ theorem wInt_anti {s s' : ℝ} (h : s ≤ s') (f : ℝ → ℂ) : wInt f s' ≤ 
   gcongr
 
 /- English proof (translation)
-Establish `h : ‖a + b‖₊ ^ 2 ≤ 2 * ‖a‖₊ ^ 2 + 2 * ‖b‖₊ ^ 2`. Rewrite using `[← NNReal.coe_le_coe]`. Use `push_cast`. Use polynomial arithmetic with `[norm_add_le a b, norm_nonneg a, norm_nonneg b, norm_nonneg (a + b), sq_nonneg (‖a‖ - ‖b‖)]`. Simplify using `only [enorm_eq_nnnorm]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Use the polynomial consequences of the given equalities and inequalities. Simplify using the standard rewrite rules.
 
-Conclude with `h` after adjusting the coercions.
+A detailed English derivation is pending.
 -/
 theorem enorm_add_sq_le (a b : ℂ) : ‖a + b‖ₑ ^ 2 ≤ 2 * ‖a‖ₑ ^ 2 + 2 * ‖b‖ₑ ^ 2 := by
   have h : ‖a + b‖₊ ^ 2 ≤ 2 * ‖a‖₊ ^ 2 + 2 * ‖b‖₊ ^ 2 := by
@@ -43,7 +43,7 @@ theorem enorm_add_sq_le (a b : ℂ) : ‖a + b‖ₑ ^ 2 ≤ 2 * ‖a‖ₑ ^ 2 
   exact_mod_cast h
 
 /- English proof (translation)
-Establish `h1 : Measurable fun t : ℝ => ‖f t‖ₑ` using `hf.measurable.enorm`. Establish `h2 : Measurable fun t : ℝ => ENNReal.ofReal (Real.exp (-2 * s * t))` using `ENNReal.measurable_ofReal.comp (by fun_prop)`. Conclude with `(h1.pow_const 2).mul h2`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem measurable_integrand {f : ℝ → ℂ} (hf : Continuous f) (s : ℝ) :
     Measurable fun t : ℝ => ‖f t‖ₑ ^ 2 * ENNReal.ofReal (Real.exp (-2 * s * t)) := by
@@ -81,7 +81,7 @@ def weightedL2Continuous (s : ℝ) : Submodule ℂ (ℝ → ℂ) where
     exact ENNReal.mul_lt_top (by simp [ENNReal.pow_lt_top]) hf'
 
 /- English proof (translation)
-Unfold `Formalism.REAL.inUJ at *`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.conjTranspose_mul, Matrix.mul_assoc]`. Use `_ = Formalism.REAL.Jm ε := by rw [hg, hh]`.
+Replace the relevant objects with their definitions. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem inUJ_mul {ε : Fin n → Bool} {g h : Matrix (Fin n) (Fin n) ℂ} (hg : Formalism.REAL.inUJ ε g)
     (hh : Formalism.REAL.inUJ ε h) : Formalism.REAL.inUJ ε (g * h) := by
@@ -99,9 +99,9 @@ def line (c : ι → X.V →ₗ[ℂ] (Matrix (Fin n) (Fin n) ℂ → ℂ)) (A g 
     ℝ → ℂ := fun t => c i u (g * NormedSpace.exp ((t : ℂ) • A))
 
 /- English proof (translation)
-Establish `h` using `hc.1 i u A hA (g * NormedSpace.exp ((t : ℂ) • A)) (inUJ_mul hg (Formalism.REAL.exp_indefinite_unitary_holds n ε A hA t))`. Establish `h' : HasDerivAt (fun t' : ℝ => c i u (g * NormedSpace.exp ((t : ℂ) • A) * NormedSpace.exp (((t' - t : ℝ) : ℂ) • A))) (c i (actM X.E A u) (g * NormedSpace.exp ((t : ℂ) • A))) t` using `HasDerivAt.comp_sub_const t t (by simpa using h)`. Use `h'.congr_of_eventuallyEq (Filter.Eventually.of_forall fun r => ?_)` and prove the remaining obligations. Establish `e` using `exp_add_smul A t (r - t)`. Simplify using `only [line]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[Matrix.mul_assoc, ← e]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem line_hasDerivAt (hc : IsCoefFam ε X c) (hA : Formalism.REAL.inG ε A) {g : Matrix (Fin n) (Fin n) ℂ}
     (hg : Formalism.REAL.inUJ ε g) (i : ι) (u : X.V) (t : ℝ) :
@@ -117,14 +117,14 @@ theorem line_hasDerivAt (hc : IsCoefFam ε X c) (hA : Formalism.REAL.inG ε A) {
   simp
 
 /- English proof (translation)
-The claim follows from `continuous_iff_continuousAt.2 fun t => (line_hasDerivAt hc hA hg i u t).continuousAt`.
+A detailed English derivation is pending.
 -/
 theorem line_continuous (hc : IsCoefFam ε X c) (hA : Formalism.REAL.inG ε A) {g : Matrix (Fin n) (Fin n) ℂ}
     (hg : Formalism.REAL.inUJ ε g) (i : ι) (u : X.V) : Continuous (line c A g i u) :=
   continuous_iff_continuousAt.2 fun t => (line_hasDerivAt hc hA hg i u t).continuousAt
 
 /- English proof (translation)
-Use `forall_congr' fun i => Filter.eventually_congr (Filter.Eventually.of_forall fun x => ?_)` and prove the remaining obligations. Conclude with `⟨fun h => ⟨line_continuous hc hA x.2 i u, h⟩, fun h => h.2⟩`.
+Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components.
 -/
 theorem mem_NSet_iff (hc : IsCoefFam ε X c) (hA : Formalism.REAL.inG ε A) (μ : Measure (S7.UJ ε)) (s : ℝ) (u : X.V) :
     u ∈ NSet ε c A μ s ↔ ∀ i, ∀ᵐ x ∂μ, line c A (S7.toM x) i u ∈ weightedL2Continuous s := by
@@ -163,11 +163,11 @@ def Nsub (hc : IsCoefFam ε X c) (hA : Formalism.REAL.inG ε A) (μ : Measure (S
     exact (weightedL2Continuous s).smul_mem a h1
 
 /- English proof (translation)
-Establish `h0 : A * Y = Y * A + (k : ℂ) • Y` using `by rw [← hY]; abel`. Establish `h1 : ((t : ℂ) • A) * Y = Y * ((t : ℂ) • A + ((k * t : ℂ)) • (1 : Matrix (Fin n) (Fin n) ℂ))`. Rewrite using `[Matrix.smul_mul, h0, Matrix.mul_add, Matrix.mul_smul, Matrix.mul_smul, Matrix.mul_one, smul_add, smul_smul, mul_comm (t : ℂ)]`. Establish `h2 : NormedSpace.exp (((k * t : ℂ)) • (1 : Matrix (Fin n) (Fin n) ℂ)) = ((Real.exp (k * t) : ℝ) : ℂ) • (1 : Matrix (Fin n) (Fin n) ℂ)`. Rewrite using `[Matrix.smul_one_eq_diagonal, Matrix.exp_diagonal, Matrix.smul_one_eq_diagonal]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use function extensionality and compare the values at `a`. Rewrite using `[Pi.coe_exp, ← Complex.exp_eq_exp_ℂ]`. Use `push_cast`. Both sides reduce to the same expression.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression.
 
-Rewrite using `[GlobalTheory.IndLine.Iwasawa.exp_mul_eq h1, Matrix.exp_add_of_commute _ _ ((Commute.one_right _).smul_right _), h2]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem exp_conj_eq {A Y : Matrix (Fin n) (Fin n) ℂ} {k : ℤ} (hY : A * Y - Y * A = (k : ℂ) • Y) (t : ℝ) :
     NormedSpace.exp ((t : ℂ) • A) * Y = ((Real.exp (k * t) : ℝ) : ℂ) • (Y * NormedSpace.exp ((t : ℂ) • A)) := by
@@ -188,11 +188,11 @@ theorem exp_conj_eq {A Y : Matrix (Fin n) (Fin n) ℂ} {k : ℤ} (hY : A * Y - Y
   simp
 
 /- English proof (translation)
-Set `Φ : Matrix (Fin n) (Fin n) ℂ →ₗ[ℂ] ℂ` to `∑ c', ∑ d, ((l c' d).sum fun i' r => r * c i' u g) • Matrix.entryLinearMap ℂ ℂ c' d`. Establish `hΦ : ∀ M : Matrix (Fin n) (Fin n) ℂ, Φ M = ∑ c', ∑ d, M c' d * (l c' d).sum fun i' r => r * c i' u g`. Introduce `M`. Simplify using `only [Φ, LinearMap.sum_apply, LinearMap.smul_apply, Matrix.entryLinearMap_apply, smul_eq_mul]`. Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => mul_comm _ _`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hY : g * Y * g⁻¹ = ∑ a, ∑ b, Y a b • (g * Matrix.single a b (1 : ℂ) * g⁻¹)` using `by conv_lhs => rw [Matrix.matrix_eq_sum_single Y]`. Simplify using `only [Finset.mul_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[show Matrix.single a b (Y a b) = Y a b • Matrix.single a b (1 : ℂ) by simp [Matrix.smul_single], Matrix.mul_smul, Matrix.smul_mul]`. Establish `hL : c i (actM X.E Y u) g = ∑ a, ∑ b, Y a b * Φ (g * Matrix.single a b (1 : ℂ) * g⁻¹)`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [hΦ, ← hl _ _ u g hg, actM, LinearMap.sum_apply, LinearMap.smul_apply, map_sum, map_smul, Finset.sum_apply, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[hL, ← hΦ, hY]`. Simplify using `only [map_sum, map_smul, smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem left_expand {i : ι} {l : Fin n → Fin n → ι →₀ ℂ}
     (hl : ∀ (a b : Fin n) (u : X.V) (g : Matrix (Fin n) (Fin n) ℂ), Formalism.REAL.inUJ ε g →
@@ -220,9 +220,9 @@ theorem left_expand {i : ι} {l : Fin n → Fin n → ι →₀ ℂ}
   simp only [map_sum, map_smul, smul_eq_mul]
 
 /- English proof (translation)
-Unfold `wInt`. Use `lintegral_congr fun t => ?_` and prove the remaining obligations. Establish `e : ‖((Real.exp (k * t) : ℝ) : ℂ)‖ₑ ^ 2 * ENNReal.ofReal (Real.exp (-2 * (s + k) * t)) = ENNReal.ofReal (Real.exp (-2 * s * t))`. Establish `e1 : ‖((Real.exp (k * t) : ℝ) : ℂ)‖ₑ = ENNReal.ofReal (Real.exp (k * t))`. Rewrite using `[← ofReal_norm, Complex.norm_real, Real.norm_of_nonneg (Real.exp_pos _).le]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e1, ← ENNReal.ofReal_pow (Real.exp_pos _).le, ← ENNReal.ofReal_mul (by positivity), sq, ← Real.exp_add, ← Real.exp_add]`. Use `congr 2`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hp t, enorm_mul, mul_pow, mul_comm (_ ^ 2) (_ ^ 2), mul_assoc, e]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 -/
 theorem wInt_shift {f h : ℝ → ℂ} {k s : ℝ} (hp : ∀ t, f t = ((Real.exp (k * t) : ℝ) : ℂ) * h t) :
     wInt f (s + k) = wInt h s := by
@@ -239,19 +239,17 @@ theorem wInt_shift {f h : ℝ → ℂ} {k s : ℝ} (hp : ∀ t, f t = ((Real.exp
   rw [hp t, enorm_mul, mul_pow, mul_comm (_ ^ 2) (_ ^ 2), mul_assoc, e]
 
 /- English proof (translation)
-Establish `hu'` using `(mem_NSet_iff hc hA μ s u).1 hu`. Use `(mem_NSet_iff hc hA μ (s + k) _).2 fun i => ?_` and prove the remaining obligations. Take `⟨l, hl⟩` from `hc.2 i`. Establish `hall : ∀ᵐ x ∂μ, ∀ c' d, ∀ i' ∈ (l c' d).support, line c A (S7.toM x) i' u ∈ weightedL2Continuous s`. Rewrite using `[ae_all_iff]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `c'`. Rewrite using `[ae_all_iff]`. Introduce `d`. Conclude with `(Filter.eventually_all_finset _).2 fun i' _ => hu' i'`. Use `filter_upwards [hall] with x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `K : Matrix (Fin n) (Fin n) ℂ` to `S7.toM x * Y * (S7.toM x)⁻¹`. Set `h : ℝ → ℂ` to `∑ c', ∑ d, K c' d • ∑ i' ∈ (l c' d).support, (l c' d i') • line c A (S7.toM x) i' u`. Establish `hh : h ∈ weightedL2Continuous s` using `Submodule.sum_mem _ fun c' _ => Submodule.sum_mem _ fun d _ => Submodule.smul_mem _ _ (Submodule.sum_mem _ fun i' hi => Submodule.smul_mem _ _ (hx c' d i' hi))`. Establish `hpt : ∀ t, line c A (S7.toM x) i (actM X.E Y u) t = ((Real.exp (k * t) : ℝ) : ℂ) * h t`. Introduce `t`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hE : NormedSpace.exp ((t : ℂ) • A) * (NormedSpace.exp ((t : ℂ) • A))⁻¹ = 1` using `Matrix.mul_nonsing_inv _ ((Matrix.isUnit_iff_isUnit_det _).1 (Matrix.isUnit_exp _))`. Establish `hconj : (S7.toM x * NormedSpace.exp ((t : ℂ) • A)) * Y * (S7.toM x * NormedSpace.exp ((t : ℂ) • A))⁻¹ = ((Real.exp (k * t) : ℝ) : ℂ) • K`. Rewrite using `[Matrix.mul_inv_rev, Matrix.mul_assoc (S7.toM x), exp_conj_eq hY t]`. Simplify using `only [K, Matrix.mul_smul, Matrix.smul_mul]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules.
 
-Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = _ := by rw [hE, Matrix.mul_one]`. Establish `hgU : Formalism.REAL.inUJ ε (S7.toM x * NormedSpace.exp ((t : ℂ) • A))` using `inUJ_mul x.2 (Formalism.REAL.exp_indefinite_unitary_holds n ε A hA t)`. Express the relevant statement in the definitionally equal form `c i (actM X.E Y u) (S7.toM x * NormedSpace.exp ((t : ℂ) • A)) = _`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[left_expand hl Y u hgU, hconj]`. Simplify using `only [h, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Matrix.smul_apply, Finset.mul_sum, Finsupp.sum, line]`. Use `Finset.sum_congr rfl fun c' _ => Finset.sum_congr rfl fun d _ => Finset.sum_congr rfl fun i' _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Conclude with `⟨line_continuous hc hA x.2 i _, by`.
-
-Use `wInt_shift (s := s) (k := (k : ℝ)) hpt` as an intermediate fact. Rewrite using `[this]`. Conclude with `hh.2⟩`.
+Expand and normalize the polynomial expressions, which then agree. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem shift_mem (hc : IsCoefFam ε X c) (hA : Formalism.REAL.inG ε A) (μ : Measure (S7.UJ ε))
     (Y : Matrix (Fin n) (Fin n) ℂ) (k : ℤ) (hY : A * Y - Y * A = (k : ℂ) • Y) (s : ℝ) (u : X.V)
@@ -297,13 +295,13 @@ theorem shift_mem (hc : IsCoefFam ε X c) (hA : Formalism.REAL.inG ε A) (μ : M
     exact hh.2⟩
 
 /- English proof (translation)
-Rewrite `hu` using `[mem_NSet_iff hc hA μ s' u]`. Take `⟨i, hi⟩` from `not_forall.1 hu`. Establish `hv'` using `(mem_NSet_iff hc hA μ s' _).1 hv i`. Establish `ht` using `(mem_NSet_iff hc hA μ s u).1 (htop u) i`. Establish `ode : ∀ (x : S7.UJ ε) (t : ℝ), HasDerivAt (line c A (S7.toM x) i u) (z * line c A (S7.toM x) i u t + line c A (S7.toM x) i (actM X.E A u - z • u) t) t`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `x t`. Establish `h` using `line_hasDerivAt hc hA x.2 i u t`. Use `h using 1` and compare the differences between its conclusion and the goal. Simplify using `[line]`. Prove the components needed by the constructor for the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Assume the negation of the conclusion as `hz`. Use `hi ?_` and prove the remaining obligations. Use `filter_upwards [hv'] with x hg`. Conclude with `⟨line_continuous hc hA x.2 i u, GlobalTheory.T.NilpotentOdeFirst z s' (not_le.1 hz) _ _ (fun t _ => ode x t) hg.1 hg.2⟩`. Assume the negation of the conclusion as `hz`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `hz' : s ≤ z.re` using `not_lt.1 hz`. Use `hi ?_` and prove the remaining obligations. Use `filter_upwards [hv', ht] with x hg hf`. Conclude with `⟨line_continuous hc hA x.2 i u, GlobalTheory.T.NilpotentOdeSecond z s' s (lt_of_lt_of_le hlt hz') hz' _ _ (fun t _ => ode x t) hg.1 hg.2 hf.2⟩`.
+Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem eig_bounds (hc : IsCoefFam ε X c) (hA : Formalism.REAL.inG ε A) (μ : Measure (S7.UJ ε)) {s s' : ℝ}
     (hlt : s' < s) (htop : ∀ u, u ∈ NSet ε c A μ s) (z : ℂ) (u : X.V) (hu : u ∉ NSet ε c A μ s')
@@ -334,11 +332,9 @@ theorem eig_bounds (hc : IsCoefFam ε X c) (hA : Formalism.REAL.inG ε A) (μ : 
 end Fam
 
 /- English proof (translation)
-Introduce `n ε X ι c A μ hc hA _ hs`. Take `⟨s0, h0⟩` from `hs`. Establish `hG : Formalism.REAL.inG ε A` using `hA.1`. Use `⟨⟨Nsub hc hG μ, ?_, ?_, ?_, ?_⟩, fun s u => Iff.rfl⟩` and prove the remaining obligations. Introduce `s s' hss u hu i filter_upwards [hu i] with x h`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `lt_of_le_of_lt (wInt_anti hss _) h`. Conclude with `⟨s0, eq_top_iff.2 fun u _ => h0 u⟩`. Introduce `Y k hY s u hu`. Conclude with `shift_mem hc hG μ Y k hY s u hu`. Introduce `s s' hlt htop z u hu hv`.
-
-Conclude with `eig_bounds hc hG μ hlt (fun v => by`. Establish `: v ∈ Nsub hc hG μ s` using `by rw [htop]; trivial`. Conclude with `this) z u hu hv`.
+Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem famFilt : CompanionTheory.RgExh.Dec.J.FamFilt := by
   intro n ε X ι c A μ hc hA _ hs

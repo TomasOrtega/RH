@@ -17,23 +17,23 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {w : Pl E} {K : Glob
   (e : K.E ≃+* w.adicCompletion E) {B : GlobalTheory.UnitLemma.InvAlg K} {m : ℕ} (b : Module.Basis (Fin m) K.E B.A)
 
 /- English proof (translation)
-The claim follows from `Units.ext (by change (h.val)ᵀᵀ = h.val; exact transpose_transpose _)`.
+A detailed English derivation is pending.
 -/
 theorem invT_invT (h : GLw m w) : invT m _ (invT m _ h) = h :=
   Units.ext (by change (h.val)ᵀᵀ = h.val; exact transpose_transpose _)
 
 /- English proof (translation)
-Introduce `x y hxy` and use `by rw [← invT_invT x, hxy, invT_invT]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem invT_injective : Function.Injective (invT m (w.adicCompletion E)) := fun x y hxy => by
   rw [← invT_invT x, hxy, invT_invT]
 
 /- English proof (translation)
-Unfold `GlobalTheory.TwLat.dlt`. Rewrite using `[dif_pos hβ, dif_pos hβ']`. Establish `hth : thL m w g = PhiU m _ * invT m _ (GeneralLinearGroup.map (cj w) g) * (PhiU m _)⁻¹`. Simplify using `only [thL, if_neg hw]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Establish `hinv : g⁻¹ = invT m _ (invT m _ g⁻¹)` using `(invT_invT _).symm`. Establish `key : g⁻¹ * (invT m _ hβ.unit * (PhiU m _)⁻¹) * thL m w g = invT m _ (invT m _ g⁻¹ * hβ.unit * GeneralLinearGroup.map (cj w) g) * (PhiU m _)⁻¹`. Rewrite using `[hth, map_mul, map_mul, ← hinv]`. Use `group`. Rewrite using `[key, mul_left_inj, invT_injective.eq_iff, Units.ext_iff, eq_comm]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem dlt_eq_iff (hw : ¬ IsSplitAt w) (β β' : B.A) (hβ : IsUnit (GlobalTheory.TwLat.gram e b β)) (hβ' : IsUnit (GlobalTheory.TwLat.gram e b β'))
     (g : GLw m w) :
@@ -50,30 +50,30 @@ theorem dlt_eq_iff (hw : ¬ IsSplitAt w) (β β' : B.A) (hβ : IsUnit (GlobalThe
   rfl
 
 /- English proof (translation)
-Unfold `GlobalTheory.UnitLemma.InvAlg.herm`. Rewrite using `[Finset.mul_sum, Finset.sum_mul, map_sum]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem herm_sum_left (β z : B.A) (f : Fin m → B.A) : B.herm β (∑ i, f i) z = ∑ i, B.herm β (f i) z := by
   unfold GlobalTheory.UnitLemma.InvAlg.herm
   rw [Finset.mul_sum, Finset.sum_mul, map_sum]
 
 /- English proof (translation)
-Unfold `GlobalTheory.UnitLemma.InvAlg.herm`. Rewrite using `[map_sum, Finset.mul_sum, map_sum]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem herm_sum_right (β y : B.A) (f : Fin m → B.A) : B.herm β y (∑ i, f i) = ∑ i, B.herm β y (f i) := by
   unfold GlobalTheory.UnitLemma.InvAlg.herm
   rw [map_sum, Finset.mul_sum, map_sum]
 
 /- English proof (translation)
-Unfold `GlobalTheory.UnitLemma.InvAlg.herm`. Rewrite using `[mul_sub, sub_mul, map_sub]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem herm_sub_left (β y y' z : B.A) : B.herm β (y - y') z = B.herm β y z - B.herm β y' z := by
   unfold GlobalTheory.UnitLemma.InvAlg.herm
   rw [mul_sub, sub_mul, map_sub]
 
 /- English proof (translation)
-Use `conv_lhs => rw [← b.sum_repr y, ← b.sum_repr z]`. Rewrite using `[herm_sum_left]`. Simplify using `only [herm_sum_right, GlobalTheory.UnitLemma.Basic.herm_smul_left, GlobalTheory.UnitLemma.Basic.herm_smul_right, map_sum, map_mul, he]`. Simplify using `only [dotProduct, mulVec, crd, GlobalTheory.TwLat.gram, Matrix.of_apply, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem herm_crd (he : ∀ x, e (K.c x) = cj w (e x)) (β y z : B.A) :
     e (B.herm β y z) = crd e b y ⬝ᵥ (GlobalTheory.TwLat.gram e b β *ᵥ fun l => cj w (crd e b z l)) := by
@@ -86,20 +86,20 @@ theorem herm_crd (he : ∀ x, e (K.c x) = cj w (e x)) (β y z : B.A) :
   ring
 
 /- English proof (translation)
-Take `⟨k, rfl⟩` from `e.surjective z`. Rewrite using `[← he, ← he, K.c_c]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem cj_cj (he : ∀ x, e (K.c x) = cj w (e x)) (z : w.adicCompletion E) : cj w (cj w z) = z := by
   obtain ⟨k, rfl⟩ := e.surjective z
   rw [← he, ← he, K.c_c]
 
 /- English proof (translation)
-Establish `h1 : ∀ v, (crd e b d ᵥ* GlobalTheory.TwLat.gram e b β) ⬝ᵥ v = 0`. Introduce `v`. Establish `h` using `congrArg e (hd (ofCrd e b fun l => cj w (v l)))`. Rewrite `h` using `[herm_crd e b he, map_zero, dotProduct_mulVec]`. Establish `hv : (fun l => cj w (crd e b (ofCrd e b fun l => cj w (v l)) l)) = v`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `l`. Rewrite using `[crd_ofCrd, cj_cj e he]`. Rewrite `h` using `[hv]`. Then use the resulting hypothesis. Establish `h2 : crd e b d ᵥ* GlobalTheory.TwLat.gram e b β = 0`. Use function extensionality and compare the values at `j`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `h1 (Pi.single j 1)` as an intermediate fact. Simplify `this` using `[dotProduct_single]`. Establish `h3 : crd e b d = 0`. Establish `: crd e b d = (crd e b d ᵥ* (hβ.unit : Matrix (Fin m) (Fin m) (w.adicCompletion E))) ᵥ* ((hβ.unit⁻¹ : (Matrix (Fin m) (Fin m) (w.adicCompletion E))ˣ) : Matrix (Fin m) (Fin m) (w.adicCompletion E))`. Rewrite using `[vecMul_vecMul, Units.mul_inv, vecMul_one]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, IsUnit.unit_spec, h2, zero_vecMul]`. Apply `crd_injective e b` to reduce the goal to its premises. Rewrite using `[h3]`. Use function extensionality and compare the values at `i`. Simplify using `[crd]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem eq_zero_of_herm (he : ∀ x, e (K.c x) = cj w (e x)) (β : B.A) (hβ : IsUnit (GlobalTheory.TwLat.gram e b β)) (d : B.A)
     (hd : ∀ t, B.herm β d t = 0) : d = 0 := by
@@ -129,47 +129,45 @@ namespace GlobalTheory.TwLatInj
 open GlobalTheory.TwOrbLat GlobalTheory.TwLat
 
 /- English proof (translation)
-Introduce `E _ _ _ _ w hw K e he _ _ B m b u hu β₀ hβ₀ hG x x' hx hx'`. Take `⟨ε, hε⟩ : ∃ ε : B.A, ε = (-1) ^ (m - 1)` from `⟨_, rfl⟩`. Rewrite `hβ₀` using `[← hε]`. Establish `hε2 : ε * ε = 1` using `by rw [hε, ← mul_pow]; simp`. Establish `hεa : ε = algebraMap K.E B.A ((-1) ^ (m - 1))` using `by rw [hε]; simp`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hasym : ∀ t : B.A, B.σ t = t → ∀ y z, K.c (B.herm ((β₀ : B.A) * t) y z) = B.herm ((β₀ : B.A) * t) (ε * u * z) y`. Introduce `t ht y z`. Unfold `GlobalTheory.UnitLemma.InvAlg.herm`. Rewrite using `[← GlobalTheory.UnitLemma.Basic.trace_sigma, map_mul B.σ, map_mul B.σ, map_mul B.σ, hβ₀, ht, B.σ_σ]`. Use `congr 1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Expand and normalize the polynomial expressions, which then agree. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨g, hg⟩`. Rewrite `hg` using `[dlt_eq_iff e b hw _ _ (hG x) (hG x') g]`. Set `φ : B.A → B.A` to `fun a => ofCrd e b (g.val *ᵥ crd e b a)`.
+Expand and normalize the polynomial expressions, which then agree. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression.
 
-Establish `hcφ : ∀ a, crd e b (φ a) = g.val *ᵥ crd e b a` using `fun a => crd_ofCrd e b _`. Establish `hφs : ∀ (k : K.E) (a : B.A), φ (k • a) = k • φ a`. Introduce `k a`. Apply `crd_injective e b` to reduce the goal to its premises. Rewrite using `[hcφ, crd_smul, crd_smul, hcφ, mulVec_smul]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `hφadd : ∀ a a', φ (a + a') = φ a + φ a'`. Introduce `a a'`. Apply `crd_injective e b` to reduce the goal to its premises. Rewrite using `[hcφ, crd_add, crd_add, hcφ, hcφ, mulVec_add]`. Establish `hφsurj : ∀ t, φ (ofCrd e b ((g⁻¹ : GLw m w).val *ᵥ crd e b t)) = t`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `t`. Apply `crd_injective e b` to reduce the goal to its premises. Rewrite using `[hcφ, crd_ofCrd, mulVec_mulVec, ← Units.val_mul, mul_inv_cancel, Units.val_one, one_mulVec]`. Establish `hiso : ∀ y z, B.herm ((β₀ : B.A) * x) (φ y) (φ z) = B.herm ((β₀ : B.A) * x') y z`. Introduce `y z`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `e.injective` to reduce the goal to its premises. Rewrite using `[herm_crd e b he, herm_crd e b he, hcφ, hcφ, ← hg]`. Establish `hc : (fun l => cj w ((g.val *ᵥ crd e b z) l)) = g.val.map (cj w) *ᵥ fun l => cj w (crd e b z l)`. Use function extensionality and compare the values at `l`. Conclude with `RingHom.map_mulVec (cj w) g.val (crd e b z) l`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Establish `ht : g.val *ᵥ crd e b y = crd e b y ᵥ* g.valᵀ` using `(vecMul_transpose _ _).symm`. Rewrite using `[hc, ht]`. Simplify using `only [dotProduct_mulVec, vecMul_vecMul]`. Establish `hv : ∀ z, φ (ε * u * z) = ε * u * φ z`. Introduce `z`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `key : ∀ y, B.herm ((β₀ : B.A) * x) (φ (ε * u * z) - ε * u * φ z) (φ y) = 0`. Introduce `y`. Rewrite using `[herm_sub_left, hiso, ← hasym x' hx', ← hiso, hasym x hx, sub_self]`. Conclude with `sub_eq_zero.1 (eq_zero_of_herm e b he _ (hG x) _ fun t => by rw [← hφsurj t]; exact key _)`. Establish `hφu : ∀ z, φ (u * z) = u * φ z`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `z`. Establish `h1 : φ (ε * u * z) = ε * φ (u * z)`. Rewrite using `[mul_assoc, hεa, ← Algebra.smul_def, ← Algebra.smul_def, hφs]`. Establish `h2` using `(hv z).symm.trans h1`. Take the linear combination `(-ε) * h2 - (φ (u * z) - u * φ z) * hε2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hφmul : ∀ a c, φ (a * c) = a * φ c`. Introduce `a`. Establish `ha : a ∈ Algebra.adjoin K.E {u}` using `by rw [hu]; trivial`. Proceed by induction on `ha using Algebra.adjoin_induction with`. Consider the case `mem z hz`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality.
 
-Rewrite `hz` using `[Set.mem_singleton_iff]`. Substitute `hz` using the available equality. Conclude with `hφu`. Consider the case `algebraMap r`. Introduce `c`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← Algebra.smul_def, ← Algebra.smul_def, hφs]`. Consider the case `add a₁ a₂ _ _ h₁ h₂`. Introduce `c`. Rewrite using `[add_mul, hφadd, h₁, h₂, add_mul]`. Consider the case `mul a₁ a₂ _ _ h₁ h₂`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `c`. Rewrite using `[mul_assoc, h₁, h₂, mul_assoc]`. Establish `hφ : ∀ a, φ a = a * φ 1` using `fun a => by rw [← hφmul, mul_one]`. Take `⟨a₀, ha₀⟩ : ∃ a₀, φ a₀ = 1` from `⟨_, hφsurj 1⟩`. Set `c : B.Aˣ` to `⟨φ 1, a₀, by rw [mul_comm, ← hφ, ha₀], by rw [← hφ, ha₀]⟩`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨c, ?_⟩` and prove the remaining obligations. Establish `hc : (c : B.A) = φ 1` using `rfl`. Establish `hxx : (x : B.A) * ((x⁻¹ : B.Aˣ) : B.A) = 1` using `Units.mul_inv x`. Establish `hd : ∀ t, B.herm ((β₀ : B.A) * x) (((x⁻¹ : B.Aˣ) : B.A) * (x' - x * (c * B.σ c))) t = 0`. Introduce `t`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions.
 
-Establish `h1` using `hiso 1 t`. Rewrite `h1` using `[hφ t, ← hc]`. Unfold `GlobalTheory.UnitLemma.InvAlg.herm at h1 ⊢`. Establish `h3 : (β₀ : B.A) * x * (((x⁻¹ : B.Aˣ) : B.A) * (x' - x * (c * B.σ c))) * B.σ t = (β₀ : B.A) * x' * 1 * B.σ t - (β₀ : B.A) * x * c * B.σ (t * c)`. Rewrite using `[map_mul B.σ]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take the linear combination `((β₀ : B.A) * (x' - x * (c * B.σ c)) * B.σ t) * hxx`. Rewrite using `[h3, map_sub, h1, sub_self]`. Establish `h0` using `eq_zero_of_herm e b he _ (hG x) _ hd`. Establish `: (x' : B.A) - x * (c * B.σ c) = 0`. Rewrite using `[← one_mul ((x' : B.A) - _), ← hxx, mul_assoc, h0, mul_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `sub_eq_zero.1 this`. Introduce and unpack `⟨a, ha⟩`. Use `⟨mulGL e b a, ?_⟩` and prove the remaining obligations. Rewrite using `[dlt_eq_iff e b hw _ _ (hG x) (hG x')]`. Use extensionality with `i j`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : GlobalTheory.TwLat.gram e b ((β₀ : B.A) * x') i j = e (B.herm ((β₀ : B.A) * x) (a * b i) (a * b j))`. Simplify using `only [GlobalTheory.TwLat.gram, Matrix.of_apply]`. Rewrite using `[ha, ← mul_assoc, GlobalTheory.UnitLemma.Basic.herm_norm]`. Rewrite using `[h1, herm_crd e b he]`. Establish `hcol : ∀ i, crd e b ((a : B.A) * b i) = fun k => (mulGL e b a).val k i`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Introduce `i`. Use function extensionality and compare the values at `k`. Rewrite using `[mulGL_val, ← mulHom_eq, mulHom_apply]`. Both sides reduce to the same expression. Rewrite using `[hcol, hcol]`.
-
-Simplify using `only [dotProduct, mulVec, mul_apply, transpose_apply, map_apply, Finset.sum_mul, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Simplify using `only [mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem dlt_twConj_iff : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E], Unr E → ∀ (w : Pl E), ¬ IsSplitAt w →
     ∀ (K : GlobalTheory.UnitLemma.UQ) (e : K.E ≃+* w.adicCompletion E), (∀ x, e (K.c x) = cj w (e x)) →

@@ -10,9 +10,9 @@ private noncomputable def UpperTheory.Gal.W2.Seed.pDomSt_dL {I : Type} (a : I �
   map_smul' r z := by funext k; simp [mul_left_comm]
 
 /- English proof (translation)
-Take `⟨τ, i⟩` from `k`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul r y`. Establish `h : r ⊗ₜ[ℤ] y = r • ((1 : ℝ) ⊗ₜ[ℤ] y)`.
+Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Rewrite using `[TensorProduct.smul_tmul', smul_eq_mul, mul_one]`. Rewrite using `[h, LinearMap.map_smul, hM, LinearEquiv.map_smul, LinearEquiv.map_smul, Pi.smul_apply, Pi.smul_apply, hΘ, hΘ, Complex.real_smul, Complex.real_smul]`. Simplify using `[Pi.smul_apply, smul_eq_mul, map_mul]`. Expand and normalize the polynomial expressions, which then agree. Consider the case `add a b ha hb => simp only [map_add, Pi.add_apply, ha, hb, mul_add]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Treat this case separately.
 -/
 private theorem UpperTheory.Gal.W2.Seed.pDomSt_theta_mul {E : Type} [Field E] [NumberField E] [IsCMField E] (A : Arith E) {n : ℕ}
     (Θ : ℝ ⊗[ℤ] (Fin n → 𝓞 E) ≃ₗ[ℝ] (Phi A × Fin n → ℂ))
@@ -33,9 +33,9 @@ private theorem UpperTheory.Gal.W2.Seed.pDomSt_theta_mul {E : Type} [Field E] [N
   | add a b ha hb => simp only [map_add, Pi.add_apply, ha, hb, mul_add]
 
 /- English proof (translation)
-Establish `hD' : D = (D.im : ℂ) * Complex.I`. Apply the tactic sequence `apply Complex.ext <;> simp [hD]`. Establish `hH' : H = (H.re : ℂ)`. Apply the tactic sequence `apply Complex.ext <;> simp [hH]`. Establish `h1 : D * H * ((e : ℂ) * Complex.I * z) * (starRingEnd ℂ) z = D * H * e * Complex.I * (z * (starRingEnd ℂ) z)` using `by ring`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Rewrite using `[h1, Complex.mul_conj, hD', hH']`. Establish `h2 : (D.im : ℂ) * Complex.I * (H.re : ℂ) * (e : ℂ) * Complex.I * (Complex.normSq z : ℂ) = ((-D.im * H.re * e * Complex.normSq z : ℝ) : ℂ)`. Use `push_cast`. Take the linear combination `((D.im : ℂ) * H.re * e * Complex.normSq z) * Complex.I_sq`. Rewrite using `[h2, Complex.ofReal_re]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/
@@ -56,7 +56,7 @@ private theorem UpperTheory.Gal.W2.Seed.pDomSt_term (D H z : ℂ) (e : ℝ) (hD 
   simp
 
 /- English proof (translation)
-Establish `h : ∀ k, (if k = k0 then (1 : ℝ) else -1) * y k = 2 * (if k = k0 then y k else 0) - y k`. Introduce `k`. Apply the tactic sequence `split_ifs <;> ring`. Simplify using `only [h, Finset.sum_sub_distrib, ← Finset.mul_sum, Finset.sum_ite_eq', Finset.mem_univ, if_true]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 private theorem UpperTheory.Gal.W2.Seed.pDomSt_sum {I : Type} [Fintype I] [DecidableEq I] (k0 : I) (y : I → ℝ) :
     ∑ k, (if k = k0 then (1 : ℝ) else -1) * y k = 2 * y k0 - ∑ k, y k := by
@@ -66,49 +66,47 @@ private theorem UpperTheory.Gal.W2.Seed.pDomSt_sum {I : Type} [Fintype I] [Decid
   simp only [h, Finset.sum_sub_distrib, ← Finset.mul_sum, Finset.sum_ite_eq', Finset.mem_univ, if_true]
 
 /- English proof (translation)
-Introduce `hT hR hF hS hD E _ _ _ A n hn`. Take `⟨Θ, hΘ⟩` from `hR E A n`. Take `⟨-, hsum, -, him⟩` from `hT E A`. Set `k0 : Phi A × Fin n` to `(⟨A.τ₀, rfl⟩, ⟨0, hn⟩)`. Establish `hk0 : ∀ k : Phi A × Fin n, (InfinitePlace.mk k.1.1 = InfinitePlace.mk A.τ₀ ∧ (k.2 : ℕ) = 0) ↔ k = k0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce and unpack `⟨⟨τ, hτ⟩, i⟩`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`. Break down `InfinitePlace.mk_eq_iff.mp h1 with h | h` into its components or cases. Conclude with `Prod.ext (Subtype.ext h) (Fin.ext h2)`.
+Assume the hypotheses and unpack their components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction.
 
-It suffices to derive a contradiction. Apply `him` to reduce the goal to its premises. Establish `h3 : A.τ₀ (A.ω : E) = (starRingEnd ℂ) (τ (A.ω : E))`. Rewrite using `[← h, ComplexEmbedding.conjugate_coe_eq]`. Rewrite `h3` using `[hτ]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Complex.conj_eq_iff_im.mp h3.symm`. Introduce `h`. Rewrite using `[h]`. Conclude with `⟨rfl, rfl⟩`. Set `ε : Phi A × Fin n → ℝ` to `fun k => if k = k0 then 1 else -1`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `a : Phi A × Fin n → ℂ` to `fun k => (ε k : ℂ) * Complex.I`. Establish `ha2 : ∀ k, a k * a k = -1`. Introduce `k`. Establish `h' : (ε k : ℂ) * (ε k) = 1`. Simplify using `only [ε]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `split_ifs <;> norm_num`. Simplify using `only [a]`. Take the linear combination `Complex.I ^ 2 * h' + Complex.I_sq`. Establish `hca : ∀ k, (starRingEnd ℂ) (a k) = -a k`. Introduce `k`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `only [a, map_mul, Complex.conj_ofReal, Complex.conj_I]`. Expand and normalize the polynomial expressions, which then agree. Set `J` to `Θ.symm.toLinearMap ∘ₗ pDomSt_dL a ∘ₗ Θ.toLinearMap`. Establish `hJ : ∀ x k, Θ (J x) k = a k * Θ x k`. Introduce `x k`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[J, pDomSt_dL]`. Establish `hpos : ∀ k : Phi A × Fin n, 0 < -(k.1.1 A.δ).im * ((k.1.1 (A.hd n k.2 : E)).re * ε k)`. Introduce `k`. Establish `h1` using `A.δ_sign k.1.1 k.1.2`. Take `⟨-, -, hp, hm⟩` from `hS E A n k.1.1 k.2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Establish `h2 : 0 < (k.1.1 (A.hd n k.2 : E)).re * ε k`. Distinguish the cases in `hk : k = k0`. Use `hp ((hk0 k).mpr hk)` as an intermediate fact. Rewrite using `[show ε k = 1 from if_pos hk, mul_one]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Use `hm (fun h => hk ((hk0 k).mp h))` as an intermediate fact. Rewrite using `[show ε k = -1 from if_neg hk, mul_neg_one]`. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `mul_pos (by linarith) h2`. Use `⟨J, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Introduce `x`. Apply `Θ.injective` to reduce the goal to its premises. Use function extensionality and compare the values at `k`. Rewrite using `[hJ, hJ, map_neg, Pi.neg_apply, ← mul_assoc, ha2]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `x y`. Rewrite using `[hF E A n Θ hΘ, hF E A n Θ hΘ]`. Use `Finset.sum_congr rfl (fun k _ => ?_)` and prove the remaining obligations. Rewrite using `[hJ, hJ, map_mul, hca]`. Use `congr 2`.
+Reduce the equality to equality of the corresponding arguments. Take a linear combination of the given relations to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take the linear combination `(-(k.1.1 A.δ * k.1.1 (A.hd n k.2 : E) * Θ x k * (starRingEnd ℂ) (Θ y k))) * ha2 k`. Introduce `x hx`. Rewrite using `[hF E A n Θ hΘ]`. Establish `hx' : Θ x ≠ 0` using `by simpa using hx`. Choose the witnesses or unpack the hypotheses as in `⟨k1, hk1⟩ : ∃ k, Θ x k ≠ 0 := by`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Assume the negation of the conclusion as `h`. Use `push_neg at h`. Conclude with `hx' (funext h)`. Establish `hterm : ∀ k : Phi A × Fin n, 2 * (k.1.1 A.δ * k.1.1 (A.hd n k.2 : E) * Θ (J x) k * (starRingEnd ℂ) (Θ x k)).re = 2 * ((-(k.1.1 A.δ).im * ((k.1.1 (A.hd n k.2 : E)).re * ε k)) * Complex.normSq (Θ x k))`. Introduce `k`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Take `⟨hH, hD0, -, -⟩` from `hS E A n k.1.1 k.2`. Rewrite using `[hJ]`. Simplify using `only [a]`. Rewrite using `[pDomSt_term _ _ _ _ hD0 hH]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[Finset.sum_congr rfl (fun k _ => hterm k)]`. Apply `Finset.sum_pos'` to reduce the goal to its premises. Introduce `k _`. Conclude with `mul_nonneg (by norm_num) (mul_nonneg (hpos k).le (Complex.normSq_nonneg _))`. Conclude with `⟨k1, Finset.mem_univ _, mul_pos (by norm_num) (mul_pos (hpos k1) (Complex.normSq_pos.mpr hk1))⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Introduce `b M hM`. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `x`. Apply `Θ.injective` to reduce the goal to its premises. Use function extensionality and compare the values at `k`.
+Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Simplify by unfolding definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [LinearMap.comp_apply]`. Rewrite using `[hJ, pDomSt_theta_mul A Θ hΘ b M hM, pDomSt_theta_mul A Θ hΘ b M hM, hJ]`. Expand and normalize the polynomial expressions, which then agree. Introduce `c M hM dsimp only`. Establish `htrM : LinearMap.trace ℝ _ M = 2 * (∑ k : Phi A × Fin n, k.1.1 (c : E)).re`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← LinearMap.trace_conj' M Θ]`. Use `hD _ (fun k : Phi A × Fin n => k.1.1 (c : E)) _ (fun z k => ?_)` and prove the remaining obligations. Rewrite using `[LinearEquiv.conj_apply_apply, pDomSt_theta_mul A Θ hΘ c M hM, LinearEquiv.apply_symm_apply]`. Establish `htrJM : LinearMap.trace ℝ _ (J ∘ₗ M) = 2 * (∑ k : Phi A × Fin n, a k * k.1.1 (c : E)).re`. Rewrite using `[← LinearMap.trace_conj' (J ∘ₗ M) Θ]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `hD _ (fun k : Phi A × Fin n => a k * k.1.1 (c : E)) _ (fun z k => ?_)` and prove the remaining obligations. Rewrite using `[LinearEquiv.conj_apply_apply, LinearMap.comp_apply, hJ, pDomSt_theta_mul A Θ hΘ c M hM, LinearEquiv.apply_symm_apply]`. Expand and normalize the polynomial expressions, which then agree. Establish `hre : (∑ k : Phi A × Fin n, a k * k.1.1 (c : E)).re = -∑ k, ε k * (k.1.1 (c : E)).im`. Rewrite using `[Complex.re_sum, ← Finset.sum_neg_distrib]`.
+Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `Finset.sum_congr rfl (fun k _ => ?_)` and prove the remaining obligations. Simplify using `[a, Complex.mul_re]`. Rewrite using `[hsum (fun τ => (n : ℂ) * τ (c : E))]`. Prove the components needed by the constructor for the conclusion. Rewrite using `[htrM]`.
-
-Simplify using `[ComplexEmbedding.conjugate_coe_eq, Fintype.sum_prod_type, Complex.re_sum, Finset.mul_sum]`. Rewrite using `[htrJM, hre, pDomSt_sum k0 (fun k => (k.1.1 (c : E)).im)]`. Simplify using `[k0, ComplexEmbedding.conjugate_coe_eq, Fintype.sum_prod_type, Complex.im_sum, Finset.mul_sum]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.W2.Seed.pDomSt :
     TraceType → RealIso → FormCoord → HdSign → DiagTrace → DomSt := by

@@ -20,7 +20,7 @@ namespace PositivityTheory.PrwZar.Z2
 variable {Ω : Type} [Field Ω] [IsAlgClosed Ω]
 
 /- English proof (translation)
-Establish `sec : σ.left ≫ G'.hom = 𝟙 _` using `by simpa using Over.w σ`. Take `⟨τ, hτ⟩` from `GlobalTheory.exists_factor_of_lift_fromSpecResidueField G'.hom p (Scheme.fromSpecResidueField _ p ≫ σ.left) (by rw [Category.assoc, sec, Category.comp_id]; rfl) a (ha.trans (congrArg (fun q => σ.left q) (Scheme.fromSpecResidueField_apply p _)).symm)`. Rewrite using `[← hτ]`. Simplify using `only [Category.assoc, sec, Category.comp_id]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem pfiF_fib_subset_lemma {G' : Over (Sp Ω)} (σ : 𝟙_ (Over (Sp Ω)) ⟶ G') {K : Type} [Field K]
     (a : Spec (CommRingCat.of K) ⟶ G'.left) (p : (𝟙_ (Over (Sp Ω))).left)
@@ -35,11 +35,7 @@ private theorem pfiF_fib_subset_lemma {G' : Over (Sp Ω)} (σ : 𝟙_ (Over (Sp 
   simp only [Category.assoc, sec, Category.comp_id]
 
 /- English proof (translation)
-Use `haveI : IsFinite H.hom := hH`. Use `haveI : IsProper G.hom := hG.proper`. Use `haveI : IsLocallyArtinian H.left := .of_locallyQuasiFinite H.hom`. Use `haveI : CompactSpace H.left := QuasiCompact.compactSpace_of_compactSpace H.hom`. Use `haveI : IsProper (j.left ≫ G.hom) := by rw [Over.w j]; infer_instance`.
-
-Use `haveI : IsProper j.left := IsProper.of_comp j.left G.hom`. Use `haveI : Finite H.left := finite_of_compact_of_discrete`. Use `⟨Set.finite_range _, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨h, rfl⟩`. Establish `hc` using `j.left.isClosedMap {h} (isClosed_discrete _)`.
-
-Simplify `hc` using `[Set.image_singleton]`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem pfiF_range_finite_closed {G : Over (Sp Ω)} [GrpObj G] (hG : IsAbelianScheme G) (H : Over (Sp Ω))
     (j : H ⟶ G) (hH : IsFinite H.hom) :
@@ -57,17 +53,15 @@ theorem pfiF_range_finite_closed {G : Over (Sp Ω)} [GrpObj G] (hG : IsAbelianSc
   simpa [Set.image_singleton] using hc
 
 /- English proof (translation)
-Set `T : Over (Sp Ω)` to `Over.mk (G.left.fromSpecResidueField y ≫ G.hom)`. Set `x : T ⟶ G` to `Over.homMk (G.left.fromSpecResidueField y) rfl`. Set `c : T ⟶ G` to `toUnit T ≫ s`. Establish `e1` using `Scheme.fromSpecResidueField_apply y (IsLocalRing.closedPoint (G.left.residueField y))`. Establish `hfy : (G.left.fromSpecResidueField y ≫ f.left) (IsLocalRing.closedPoint _) = (s ≫ f).left p` using `(congrArg f.left e1).trans hy`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key` using `pfiF_fib_subset_lemma (s ≫ f) (G.left.fromSpecResidueField y ≫ f.left) p hfy`. Establish `hxc : x ≫ f = c ≫ f`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `G.left.fromSpecResidueField y ≫ f.left = (toUnit T ≫ (s ≫ f)).left`. Establish `hb : (G.left.fromSpecResidueField y ≫ f.left) ≫ G'.hom = (toUnit T).left`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact.
 
-Simplify using `[T]`. Rewrite using `[Over.comp_left]`. Conclude with `key.trans (congrArg (· ≫ (s ≫ f).left) hb)`. Establish `hx' : (x * c⁻¹) ≫ f = 1`. Express the relevant statement in the definitionally equal form `(IsMonHom.monoidHom f T) (x * c⁻¹) = 1`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul, map_inv]`. Express the relevant statement in the definitionally equal form `(x ≫ f) * (c ≫ f)⁻¹ = 1`. Rewrite using `[hxc, mul_inv_cancel]`. Take `⟨z, hz⟩` from `hj T _ hx'`. Establish `hxz : x = z ≫ (j * (toUnit H ≫ s))`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm : z ≫ (j * (toUnit H ≫ s)) = (z ≫ j) * c`. Rewrite using `[Hom.mul_def, Hom.mul_def, ← Category.assoc, comp_lift, ← Category.assoc z (toUnit H) s, toUnit_unique (z ≫ toUnit H) (toUnit T)]`. Rewrite using `[hm, hz, inv_mul_cancel_right]`. Use `⟨z.left (IsLocalRing.closedPoint (G.left.residueField y)), ?_⟩` and prove the remaining obligations. Establish `h2` using `congrArg (fun g : T ⟶ G => g.left (IsLocalRing.closedPoint (G.left.residueField y))) hxz`.
-
-Conclude with `h2.symm.trans e1`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem pfiF_fib_closed_lemma_2 {G G' : Over (Sp Ω)} [GrpObj G] [GrpObj G'] (f : G ⟶ G')
     [IsMonHom f] (H : Over (Sp Ω)) (j : H ⟶ G)
@@ -106,9 +100,9 @@ private theorem pfiF_fib_closed_lemma_2 {G G' : Over (Sp Ω)} [GrpObj G] [GrpObj
   exact h2.symm.trans e1
 
 /- English proof (translation)
-Use `haveI : LocallyOfFiniteType G.hom := by haveI := hG.smooth; infer_instance`. Take `⟨s, hs⟩` from `GlobalTheory.RationalPoint.exists_pt_mem (X := G) hx ⟨x, rfl⟩`. Establish `hsx : s.left (IsLocalRing.closedPoint Ω) = x` using `hs`. Establish `hsub : f.left ⁻¹' {f.left x} ⊆ Set.range (j * (toUnit H ≫ s)).left` using `fun y hy => pfiF_fib_closed_lemma_2 f H j hj s (IsLocalRing.closedPoint Ω) y ((hy : f.left y = f.left x).trans (congrArg f.left hsx).symm)`. Take `⟨hfin, hcl⟩` from `pfiF_range_finite_closed hG H (j * (toUnit H ≫ s)) hH`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨hfin.subset hsub, fun z hz => hcl z (hsub hz)⟩`.
+A detailed English derivation is pending.
 -/
 theorem pfiF_fib_closed {G G' : Over (Sp Ω)} [GrpObj G] [GrpObj G'] (hG : IsAbelianScheme G) (f : G ⟶ G')
     [IsMonHom f] (H : Over (Sp Ω)) (j : H ⟶ G) (hH : IsFinite H.hom)
@@ -125,9 +119,7 @@ theorem pfiF_fib_closed {G G' : Over (Sp Ω)} [GrpObj G] [GrpObj G'] (hG : IsAbe
   exact ⟨hfin.subset hsub, fun z hz => hcl z (hsub hz)⟩
 
 /- English proof (translation)
-Use `haveI : IsProper G.hom := hG.proper`. Use `haveI : IsProper G'.hom := hG'.proper`. Use `haveI : IsProper (f.left ≫ G'.hom) := by rw [Over.w f]; infer_instance`. Use `haveI : IsProper f.left := IsProper.of_comp f.left G'.hom`. Use `haveI : JacobsonSpace G.left := LocallyOfFiniteType.jacobsonSpace (Y := Spec _) G.hom`.
-
-Use `haveI : LocallyQuasiFinite f.left := GlobalTheory.locallyQuasiFinite_of_finite_fibres_closedPoints f.left fun y hy => (pfiF_fib_closed hG f H j hH hj y hy).1`. Conclude with `IsFinite.of_isProper_of_locallyQuasiFinite f.left`.
+A detailed English derivation is pending.
 -/
 theorem isFinite_of_ker {Ω : Type} [Field Ω] [IsAlgClosed Ω] {G G' : Over (Sp Ω)} [GrpObj G] [GrpObj G']
     (hG : IsAbelianScheme G) (hG' : IsAbelianScheme G') (f : G ⟶ G') [IsMonHom f] (H : Over (Sp Ω))

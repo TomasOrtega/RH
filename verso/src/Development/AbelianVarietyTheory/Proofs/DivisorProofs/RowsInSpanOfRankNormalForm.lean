@@ -8,15 +8,15 @@ open ValuativeRel Matrix
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `i`. Establish `hle : Submodule.span K (Set.range (H * X)) ≤ Submodule.span K (Set.range X)`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨j, rfl⟩`. Establish `: (H * X) j = ∑ a, H j a • X a`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Use extensionality with `d`. Simplify using `[Matrix.mul_apply, Finset.sum_apply]`. Rewrite using `[this]`. Conclude with `Submodule.sum_mem _ fun a _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨a, rfl⟩)`. Establish `h1 : r ≤ (H * X).rank`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Matrix.rank_mul_le_left (H * X) Q` as an intermediate fact. Rewrite `this` using `[Matrix.rank_of_isUnit _ hU]`. Simplify using `using this`. Establish `heq : Submodule.span K (Set.range (H * X)) = Submodule.span K (Set.range X)`. Apply `Submodule.eq_of_le_of_finrank_le hle` to reduce the goal to its premises.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `e1 : X.rank = Module.finrank K (Submodule.span K (Set.range X))` using `Matrix.rank_eq_finrank_span_row X`. Establish `e2 : (H * X).rank = Module.finrank K (Submodule.span K (Set.range (H * X)))` using `Matrix.rank_eq_finrank_span_row (H * X)`. Use linear arithmetic over natural numbers and integers. Establish `hi : X i ∈ Submodule.span K (Set.range (H * X))` using `heq ▸ Submodule.subset_span ⟨i, rfl⟩`. Take `⟨c, hc⟩` from `(Submodule.mem_span_range_iff_exists_fun K).1 hi`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨c, ?_⟩` and prove the remaining obligations. Rewrite using `[← hc]`. Use extensionality with `d`. Simplify using `[Matrix.vecMul, dotProduct, Finset.sum_apply, mul_comm]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem rows_mem_span_of_isUnit_mul (K : Type) [Field K] (A D : Type) [Fintype A] [DecidableEq A]
     [Fintype D] [DecidableEq D] (r : ℕ) (X : Matrix A D K) (H : Matrix (Fin r) A K)

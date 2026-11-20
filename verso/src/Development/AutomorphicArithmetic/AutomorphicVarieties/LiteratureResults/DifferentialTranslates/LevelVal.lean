@@ -15,15 +15,15 @@ private def cmp (j : Fin d) : S ⊗[ℂ] (Fin d → ℂ) →ₗ[ℂ] S :=
   (TensorProduct.rid ℂ S).toLinearMap ∘ₗ (LinearMap.proj j : (Fin d → ℂ) →ₗ[ℂ] ℂ).lTensor S
 
 /- English proof (translation)
-Simplify using `[cmp]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem cmp_tmul (j : Fin d) (φ : S) (v : Fin d → ℂ) : cmp j (φ ⊗ₜ[ℂ] v) = v j • φ := by
   simp [cmp]
 
 /- English proof (translation)
-Proceed by induction on `m using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul φ v`. Simplify using `only [cmp_tmul, TensorProduct.smul_tmul]`. Rewrite using `[← TensorProduct.tmul_sum]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use extensionality with `i`. Simplify using `[Finset.sum_apply, Pi.single_apply]`. Consider the case `add x y hx hy => simp only [map_add, TensorProduct.add_tmul, Finset.sum_add_distrib, hx, hy]`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Treat this case separately.
 -/
 private theorem sum_cmp (m : S ⊗[ℂ] (Fin d → ℂ)) :
     ∑ j, cmp j m ⊗ₜ[ℂ] (Pi.single j 1 : Fin d → ℂ) = m := by
@@ -38,7 +38,7 @@ private theorem sum_cmp (m : S ⊗[ℂ] (Fin d → ℂ)) :
   | add x y hx hy => simp only [map_add, TensorProduct.add_tmul, Finset.sum_add_distrib, hx, hy]
 
 /- English proof (translation)
-Proceed by induction on `m using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul φ v => simp [cmp_tmul, smul_smul]`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy, map_add, map_add, smul_add]`. Normalize the expressions using the abelian group laws.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Normalize the expressions using the abelian group laws.
 -/
 private theorem cmp_sum (L : Module.End ℂ S) (c : ℂ) (j : Fin d) (m : S ⊗[ℂ] (Fin d → ℂ)) :
     cmp j ((L.rTensor (Fin d → ℂ) + (Matrix.toLin' (c • (1 : Matrix (Fin d) (Fin d) ℂ))).lTensor S) m) =
@@ -51,7 +51,7 @@ private theorem cmp_sum (L : Module.End ℂ S) (c : ℂ) (j : Fin d) (m : S ⊗[
 end Components
 
 /- English proof (translation)
-Proceed by induction on `m using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul φ v => simp [cmp_tmul, mul_comm]`. Consider the case `add x y hx hy => simp [hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 private theorem cmp_apply {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a d : ℕ}
     (m : Sm E a ⊗[ℂ] (Fin d → ℂ)) (j : Fin d) (g : GA E a) : (cmp j m).1 g = ev m g j := by
@@ -61,15 +61,15 @@ private theorem cmp_apply {E : Type} [Field E] [NumberField E] [IsTotallyComplex
   | add x y hx hy => simp [hx, hy]
 
 /- English proof (translation)
-Introduce `E _ _ _ a U Ξ m`. Use `⟨fun hm => ?_, fun hl hr h0 => ?_⟩` and prove the remaining obligations. Proceed by induction on `hm using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨φ, v, hφ, rfl⟩` from `hx`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Use `⟨fun γ g => ?_, fun u hu g => ?_⟩` and prove the remaining obligations. Rewrite using `[ev_tmul, ev_tmul, hφ.1]`. Establish `h : φ.1 (g * finGL E a u) = φ.1 g` using `congrFun (congrArg Subtype.val (hφ.2.1 u hu)) g`. Rewrite using `[ev_tmul, ev_tmul, h]`. Consider the case `zero => exact ⟨fun γ g => by simp, fun u _ g => by simp⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `add x y _ _ hx hy`. Conclude with `⟨fun γ g => by simp only [map_add, Pi.add_apply, hx.1 γ g, hy.1 γ g], fun u hu g => by simp only [map_add, Pi.add_apply, hx.2 u hu g, hy.2 u hu g]⟩`. Consider the case `smul c x _ hx`. Conclude with `⟨fun γ g => by simp only [map_smul, Pi.smul_apply, hx.1 γ g], fun u hu g => by simp only [map_smul, Pi.smul_apply, hx.2 u hu g]⟩`. Rewrite using `[← sum_cmp m]`.
+Treat this case separately. Supply the required witnesses or components. Treat this case separately. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Use `Submodule.sum_mem _ fun j _ => Submodule.subset_span ⟨cmp j m, _, ⟨fun γ g => ?_, fun u hu => ?_, fun c hc => ?_⟩, rfl⟩` and prove the remaining obligations. Rewrite using `[cmp_apply, cmp_apply, hl]`. Use `Subtype.ext (funext fun g => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(cmp j m).1 (g * finGL E a u) = (cmp j m).1 g`. Rewrite using `[cmp_apply, cmp_apply, hr u hu]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Establish `h` using `cmp_sum (lie E a (oneL E a)) c j m`. Rewrite `h` using `[← hc]`. Establish `h1 : cmp j (smLie Ξ (oneL E a) m) = 0` using `by rw [h0, map_zero]`. Rewrite using `[neg_smul]`. Conclude with `eq_neg_of_add_eq_zero_left (h.symm.trans h1)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem levelVal : LevelVal := by
   intro E _ _ _ a U Ξ m

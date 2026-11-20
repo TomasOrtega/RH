@@ -8,11 +8,11 @@ open scoped CategoryTheory.Obj
 namespace GlobalTheory.Serre
 
 /- English proof (translation)
-Introduce `T A' B' C _ _ _ r pr' hpr huniv Φ hΦ`. Establish `hcomp : ∀ u, IsMonHom (pr' u)` using `hpr`. Establish `hΦu : ∀ u, IsMonHom (Φ ≫ pr' u)` using `hΦ`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Take `⟨x, -, hx⟩` from `huniv (𝟙_ (Over T)) (fun u => η[C] ≫ Φ ≫ pr' u)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `h1 : η[C] ≫ Φ = x` using `hx _ (fun u => by simp)`. Establish `h2 : (η[B'] : 𝟙_ (Over T) ⟶ B') = x` using `hx _ (fun u => by haveI := hcomp u; haveI := hΦu u`. Rewrite using `[IsMonHom.one_hom, IsMonHom.one_hom (Φ ≫ pr' u)])`. Rewrite using `[h1, h2]`. Take `⟨x, -, hx⟩` from `huniv (C ⊗ C) (fun u => μ[C] ≫ Φ ≫ pr' u)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `h1 : μ[C] ≫ Φ = x` using `hx _ (fun u => by simp)`. Establish `h2 : (Φ ⊗ₘ Φ) ≫ μ[B'] = x` using `hx _ (fun u => by haveI := hcomp u; haveI := hΦu u`. Rewrite using `[Category.assoc, IsMonHom.mul_hom (Φ ≫ pr' u), IsMonHom.mul_hom (pr' u), ← Category.assoc, tensorHom_comp_tensorHom])`. Rewrite using `[h1, h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem isMonHom_of_components : ∀ (T : Scheme.{0}) (A' B' C : Over T) [GrpObj A'] [GrpObj B'] [GrpObj C] (r : ℕ) (pr' : Fin r → (B' ⟶ A')), (∀ u, IsMonHom (pr' u)) → (∀ (X : Over T) (y : Fin r → (X ⟶ A')), ∃! x : X ⟶ B', ∀ u, x ≫ pr' u = y u) → ∀ Φ : C ⟶ B', (∀ u, IsMonHom (Φ ≫ pr' u)) → IsMonHom Φ := by
   intro T A' B' C _ _ _ r pr' hpr huniv Φ hΦ

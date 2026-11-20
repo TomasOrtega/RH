@@ -12,9 +12,9 @@ namespace UpperTheory.V.Sd.Tw
 section
 variable {Ω : Type} [Field Ω]
 /- English proof (translation)
-Introduce `hn`. Take `⟨a, b, hab⟩` from `Nat.isCoprime_iff_coprime.2 h`. Establish `e : (1 : Ω) = (a : Ω) * q + (b : Ω) * n` using `by exact_mod_cast congrArg (Int.cast : ℤ → Ω) hab.symm`. Establish `h1 : ∀ (a : ℤ) (x : Ω), A.valuation x < 1 → A.valuation ((a : Ω) * x) < 1` using `fun a x hx => by`. Rewrite using `[map_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `lt_of_le_of_lt (mul_le_of_le_one_left' ((A.valuation_le_one_iff _).2 (intCast_mem A a))) hx`. Use `Valuation.map_add_lt A.valuation (h1 a _ hq) (h1 b _ hn)` as an intermediate fact. Rewrite `this` using `[← e, map_one]`. Conclude with `lt_irrefl _ this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem not_lt_of_coprime (A : ValuationSubring Ω) {q n : ℕ} (hq : A.valuation (q : Ω) < 1) (h : q.Coprime n) :
     ¬ A.valuation (n : Ω) < 1 := by
@@ -29,7 +29,7 @@ private theorem not_lt_of_coprime (A : ValuationSubring Ω) {q n : ℕ} (hq : A.
   exact lt_irrefl _ this
 variable [CharZero Ω] [IsAlgClosure ℚ Ω]
 /- English proof (translation)
-Use `(Chr.clsFacts ℚ Ω N).2.2.1 t _ fun ζ hζ => ?_` and prove the remaining obligations. Rewrite using `[ZMod.coe_unitOfCoprime, ZMod.val_natCast, ← pow_eq_pow_mod q hζ]`. Use `eq_of_pow_eq_one A (not_lt_of_coprime A hq h) ?_ ?_ (ht.2 ζ (valuation_eq_one_of_pow_eq_one A (NeZero.ne N) hζ).le)` and prove the remaining obligations. Rewrite using `[← map_pow, hζ, map_one]`. Rewrite using `[← pow_mul, mul_comm, pow_mul, hζ, one_pow]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 private theorem cls_frob {A : ValuationSubring Ω} {q N : ℕ} [NeZero N] (hq : A.valuation (q : Ω) < 1) (h : q.Coprime N)
     {t : G ℚ Ω} (ht : IsFrob (F := ℚ) A q t) : Chr.cls ℚ Ω N t = ZMod.unitOfCoprime q h := by
@@ -40,9 +40,9 @@ private theorem cls_frob {A : ValuationSubring Ω} {q N : ℕ} [NeZero N] (hq : 
   · rw [← map_pow, hζ, map_one]
   · rw [← pow_mul, mul_comm, pow_mul, hζ, one_pow]
 /- English proof (translation)
-Use `haveI : Fact q.Prime := ⟨hp⟩`. Take `⟨v, hv⟩` from `(places ℚ Ω q A).1 fun hA => ((places ℚ Ω q A).2.1 hA).2 hq`. Establish `hl : ((l : ℕ) : 𝓞 ℚ) ∉ v.asIdeal` using `fun hm => not_lt_of_coprime A hq h (((places ℚ Ω l A).2.2.1 v hv).2 hm)`. Establish `e : ((cycZ ℚ Ω l t : ℤ_[l]ˣ) : ℤ_[l]) = (q : ℤ_[l])` using `PadicInt.ext_of_toZModPow.mp fun n => cycZ_toZModPow_eq hl hv ht.2 n`. Express the relevant statement in the definitionally equal form `((algebraMap ℚ_[l] (Qbar l)).comp PadicInt.Coe.ringHom) ((cycZ ℚ Ω l t : ℤ_[l]ˣ) : ℤ_[l]) = _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, map_natCast]`.
+A detailed English derivation is pending.
 -/
 private theorem cyc_frob {l : ℕ} [Fact l.Prime] {A : ValuationSubring Ω} {q : ℕ} (hp : q.Prime) (hq : A.valuation (q : Ω) < 1)
     (h : q.Coprime l) {t : G ℚ Ω} (ht : IsFrob (F := ℚ) A q t) : ((cycBar ℚ Ω l t : (Qbar l)ˣ) : Qbar l) = q := by
@@ -55,7 +55,7 @@ private theorem cyc_frob {l : ℕ} [Fact l.Prime] {A : ValuationSubring Ω} {q :
   change ((algebraMap ℚ_[l] (Qbar l)).comp PadicInt.Coe.ringHom) ((cycZ ℚ Ω l t : ℤ_[l]ˣ) : ℤ_[l]) = _
   rw [e, map_natCast]
 /- English proof (translation)
-The claim follows from `((continuous_algebraMap ℚ_[l] (Qbar l)).comp continuous_subtype_val).comp ((Units.continuous_val (M := ℤ_[l])).comp (continuous_cycZ ℚ Ω l))`.
+A detailed English derivation is pending.
 -/
 private theorem continuous_cyc (l : ℕ) [Fact l.Prime] :
     Continuous fun t : G ℚ Ω => ((cycBar ℚ Ω l t : (Qbar l)ˣ) : Qbar l) :=
@@ -64,9 +64,9 @@ private theorem continuous_cyc (l : ℕ) [Fact l.Prime] :
 variable (K : Type) [Field K] [NumberField K] [Algebra K Ω]
 omit [IsAlgClosure ℚ Ω] in
 /- English proof (translation)
-Take `⟨j, hj⟩` from `hc`. Introduce `h`. Use `IsTotallyComplex.complexEmbedding_not_isReal (j.comp (algebraMap K Ω)) ?_` and prove the remaining obligations. Rewrite using `[ComplexEmbedding.isReal_iff]`. Use extensionality with `x`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Use `hj (algebraMap K Ω x)` as an intermediate fact. Rewrite `this` using `[h x]`. Conclude with `this.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem cc_notMem [IsTotallyComplex K] {c : G ℚ Ω} (hc : Sd.IsCC c) : c ∉ galOf ℚ K Ω := by
   obtain ⟨j, hj⟩ := hc
@@ -79,7 +79,7 @@ private theorem cc_notMem [IsTotallyComplex K] {c : G ℚ Ω} (hc : Sd.IsCC c) :
   exact this.symm
 omit [IsAlgClosure ℚ Ω] in
 /- English proof (translation)
-Take `⟨j, hj⟩` from `hc`. Use extensionality with `x`. Apply `j.injective` to reduce the goal to its premises. Rewrite using `[AlgEquiv.mul_apply, hj, hj, Complex.conj_conj, AlgEquiv.one_apply]`.
+Extract witnesses or component facts from the available result. By extensionality, compare the relevant components. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 private theorem cc_sq {c : G ℚ Ω} (hc : Sd.IsCC c) : c * c = 1 := by
   obtain ⟨j, hj⟩ := hc
@@ -87,11 +87,11 @@ private theorem cc_sq {c : G ℚ Ω} (hc : Sd.IsCC c) : c * c = 1 := by
   apply j.injective
   rw [AlgEquiv.mul_apply, hj, hj, Complex.conj_conj, AlgEquiv.one_apply]
 /- English proof (translation)
-Establish `hker : (Chr.cls ℚ Ω N).ker ≤ galOf ℚ K Ω` using `fun s hs => quadMu K Ω hK s fun ζ hζ => by`. Rewrite `hζ` using `[← hN]`. Rewrite using `[Chr.cls_spec N s ζ hζ, MonoidHom.mem_ker.1 hs, Units.val_one, ZMod.val_one_eq_one_mod, ← pow_eq_pow_mod 1 hζ, pow_one]`. Establish `hi : (galOf ℚ K Ω).index = 2` using `(galEmbTop ℚ K Ω).2.2.trans hK`. Set `δ : G ℚ Ω →* ℂˣ` to `MonoidHom.mk' (fun s => if s ∈ galOf ℚ K Ω then 1 else -1) fun a b => by`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Apply the tactic sequence `by_cases ha : a ∈ galOf ℚ K Ω <;> by_cases hb : b ∈ galOf ℚ K Ω <;>`. Simplify using `[Subgroup.mul_mem_iff_of_index_two hi, ha, hb]`. Establish `hδ : (Chr.cls ℚ Ω N).ker ≤ δ.ker` using `fun s hs => if_pos (hker hs)`. Establish `hs` using `(Chr.clsOnto Ω N).1`. Establish `e : ∀ t, (Chr.cls ℚ Ω N).liftOfSurjective hs ⟨δ, hδ⟩ (Chr.cls ℚ Ω N t) = δ t` using `fun t => MonoidHom.liftOfRightInverse_comp_apply _ _ _ _ t`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨hker, (Chr.cls ℚ Ω N).liftOfSurjective hs ⟨δ, hδ⟩, MonoidHom.ext fun u => ?_, fun t ht => (e t).trans (if_neg ht)⟩` and prove the remaining obligations. Take `⟨t, rfl⟩` from `hs u`. Rewrite using `[MonoidHom.pow_apply, e]`. Express the relevant statement in the definitionally equal form `(if t ∈ galOf ℚ K Ω then (1 : ℂˣ) else -1) ^ 2 = 1`. Apply the tactic sequence `split_ifs <;> simp`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem exists_chi [IsAlgClosure K Ω] (hK : Module.finrank ℚ K = 2) (N : ℕ) [NeZero N] (hN : N = (discr K).natAbs) :
     (Chr.cls ℚ Ω N).ker ≤ galOf ℚ K Ω ∧ ∃ χ : (ZMod N)ˣ →* ℂˣ, χ ^ 2 = 1 ∧
@@ -114,11 +114,11 @@ private theorem exists_chi [IsAlgClosure K Ω] (hK : Module.finrank ℚ K = 2) (
   change (if t ∈ galOf ℚ K Ω then (1 : ℂˣ) else -1) ^ 2 = 1
   split_ifs <;> simp
 /- English proof (translation)
-Take `⟨hemb, hopen, hi⟩` from `galEmbTop ℚ K Ω`. Establish `hsq : ∀ t : G ℚ Ω, ∃ s, galEmb ℚ K Ω s = t * t` using `fun t => by`. Use `Subgroup.mul_self_mem_of_index_two (hi.trans hK) t` as an intermediate fact. Rewrite `this` using `[← range_galEmb]`. Conclude with `this`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `choose g hg using hsq`. Establish `hgc : Continuous g` using `hemb.continuous_iff.2 ((continuous_id.mul continuous_id).congr fun t => (hg t).symm)`. Establish `hcl : IsClosed {t : G ℚ Ω | (κ (g t) : Qbar l) * (cycBar ℚ Ω l t : (Qbar l)ˣ) = -1}` using `isClosed_eq ((Units.continuous_val.comp (hκ.comp hgc)).mul (continuous_cyc l)) continuous_const`. Establish `key : (κ (g t) : Qbar l) * (cycBar ℚ Ω l t : (Qbar l)ˣ) = -1`. Assume the negation of the conclusion as `hne`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨q, A, φ, hq, hqT, hA, hφ, h1, h2⟩` from `ML.chebQ Ω _ (hcl.isOpen_compl.inter ((galOf ℚ K Ω).isClosed_of_isOpen hopen).isOpen_compl) ⟨t, hne, ht⟩ T hT`. Conclude with `h1 (H q A φ (g φ) hq hqT hA hφ h2 (hg φ))`. Rewrite `key` using `[hemb.injective ((hg t).trans hs.symm)]`. Rewrite using `[← mul_left_inj (cycBar ℚ Ω l t), neg_mul, inv_mul_cancel]`. Conclude with `Units.ext key`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem ver_of_frob [IsAlgClosure K Ω] (hK : Module.finrank ℚ K = 2) {l : ℕ} [Fact l.Prime] (κ : G K Ω →* (Qbar l)ˣ)
     (hκ : Continuous κ) (T : ℕ) (hT : T ≠ 0)
@@ -147,29 +147,27 @@ end
 end UpperTheory.V.Sd.Tw
 open UpperTheory.V.Sd.Tw in
 /- English proof (translation)
-Introduce `hP K Ω _ _ _ _ _ _ _ hK l hl hl2 hld ι c hc`. Use `haveI : IsAlgClosure K Ω := ⟨IsAlgClosure.isAlgClosed ℚ, Algebra.IsAlgebraic.tower_top (K := ℚ) K⟩`. Use `set N := (discr K).natAbs with hN`. Establish `hN3 : 3 ≤ N`. Use `abs_discr_gt_two (K := K) (by omega)` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Rewrite `this` using `[Int.abs_eq_natAbs]`. Use linear arithmetic over natural numbers and integers. Use `haveI : NeZero N := ⟨by omega⟩`. Take `⟨hker, χ, hχ2, hχ⟩` from `exists_chi (Ω := Ω) K hK N hN`. Establish `hχ1 : χ (-1) = -1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← (Chr.clsFacts ℚ Ω N).2.2.2.1 c hc]`. Conclude with `hχ c (cc_notMem K hc)`. Take `⟨Y, a, τ, hYa, ha1, ha0, hYu, ⟨m, hm0, hml, hm⟩, hYv⟩` from `hecke K hK l hl.out hl2 hld N hN3 χ hχ2 hχ1`. Take `⟨art, hart⟩ : ∃ art : Ideles K →* Gab K Ω, IsGlobalArtin art` from `hP.litN.aut.art K Ω`. Take `⟨κ, hκ, hL⟩` from `hart.exists_isLAdicOf ι (isAlgPos_of_isAlg hYa)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Establish `hNd : ∀ v : HeightOneSpectrum (𝓞 K), ((discr K : ℤ) : 𝓞 K) ∉ v.asIdeal → (N : 𝓞 K) ∉ v.asIdeal` using `fun v hv h => by`. Apply `hv` to reduce the goal to its premises. Break down `Int.natAbs_eq (discr K) with e | e` into its components or cases. Rewrite using `[e, Int.cast_natCast]`. Conclude with `h`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[e, Int.cast_neg, Int.cast_natCast]`. Conclude with `neg_mem h`. Establish `hnat : ∀ (A : ValuationSubring Ω) (w : HeightOneSpectrum (𝓞 K)), IsPlaceOver A w → ∀ n : ℤ, ¬ A.valuation (n : Ω) < 1 → (n : 𝓞 K) ∉ w.asIdeal` using `fun A w hw n hn h => by`. Use `(hw (n : 𝓞 K)).2 h` as an intermediate fact. Conclude with `hn (by simpa using this)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hnat' : ∀ (A : ValuationSubring Ω) (w : HeightOneSpectrum (𝓞 K)), IsPlaceOver A w → ∀ n : ℕ, ¬ A.valuation (n : Ω) < 1 → (n : 𝓞 K) ∉ w.asIdeal` using `fun A w hw n hn => by`. Simplify `hn)` using `using hnat A w hw n (by simpa`. Establish `hver` using `ver_of_frob K hK κ hκ (l * N) (mul_ne_zero hl.out.ne_zero (NeZero.ne N)) fun q A t s hq hqT hA ht htK hs => by`. Establish `hc'` using `(Nat.Prime.coprime_iff_not_dvd hq).2 hqT`. Establish `hql` using `hc'.coprime_mul_right_right`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hqN` using `hc'.coprime_mul_left_right`. Establish `hAN` using `not_lt_of_coprime A hA hqN`. Take `⟨w, hw, hwq, hfr⟩` from `inert K Ω hK q hq A hA (((Chr.clsFacts ℚ Ω N).2.2.2.2 A hAN).trans hker) t ht htK`. Rewrite using `[hL.frob_unr hart (Or.inl (hnat' A w hw l (not_lt_of_coprime A hA hql))) (hYu w (hnat' A w hw N hAN)) hw (hfr s hs), hYv q hqN w hwq, ← cls_frob hA hqN ht, hχ t htK, cyc_frob hq hA hql ht]`. Establish `hq0 : (q : Qbar l) ≠ 0` using `Nat.cast_ne_zero.2 hq.ne_zero`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `[hq0]`. Use `⟨κ, hκ, ⟨art, Y, a, τ, hart, isAlgPos_of_isAlg hYa, hL, ha1, ha0, fun v hv => hYu v (hNd v hv)⟩, fun s s' h => ?_, hver, fun A hAl hAd s hs => ?_, m, hm0, hml, fun A hAl s hs => ?_⟩` and prove the remaining obligations. Establish `hi : (galOf ℚ K Ω).index = 2` using `(galEmbTop ℚ K Ω).2.2.trans hK`. Establish `h1 : galEmb ℚ K Ω s * c ∉ galOf ℚ K Ω` using `fun h' => cc_notMem K hc (((galOf ℚ K Ω).mul_mem_cancel_left (galEmb_mem ℚ K Ω s)).1 h')`. Establish `h2 : c⁻¹ = c` using `inv_eq_of_mul_eq_one_right (cc_sq hc)`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Both sides reduce to the same expression. Consider separately whether the proposition holds or fails.
 
-Establish `h3 : cycBar ℚ Ω l c = -1`. Establish `h4 : cycZ ℚ Ω l c = -1` using `IsConjOm.cyc (E := ℚ) (show IsConjOm c.toRingEquiv from hc)`. Express the relevant statement in the definitionally equal form `Units.map _ (cycZ ℚ Ω l c) = -1`. Rewrite using `[h4]`. Conclude with `Units.ext (by simp)`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← map_mul, hver (s * s') _ h1 (by rw [map_mul, h, h2]; simp only [mul_assoc]), map_mul, h3, mul_neg_one, inv_neg, neg_neg]`. Both sides reduce to the same expression. Distinguish the cases in `hA : A = ⊤`. Rewrite `hs` using `[((places K Ω l A).2.1 hA).1, Subgroup.mem_bot]`. Rewrite using `[hs, map_one]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨w, hw⟩` from `(places K Ω l A).1 hA`. Conclude with `(hL.unr_iff hart (Or.inl (hnat' A w hw l hAl)) hw).2 (hYu w (hNd w (hnat A w hw _ hAd))) s hs`. Distinguish the cases in `hA : A = ⊤`. Rewrite `hs` using `[((places K Ω l A).2.1 hA).1, Subgroup.mem_bot]`. Rewrite using `[hs, map_one, one_pow]`.
-
-Take `⟨w, hw⟩` from `(places K Ω l A).1 hA`. Take `⟨x, hx, e⟩` from `(hL.ine_image hart (Or.inl (hnat' A w hw l hAl)) hw _).1 ⟨s, hs, rfl⟩`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[Units.val_pow_eq_pow_val, ← e, ← map_pow, ← Units.val_pow_eq_pow_val, hm w x hx]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Sd.twist_of_printed_results :
     _root_.UpperTheory.V.Af.Hypotheses' → UpperTheory.V.Sd.Twist := by

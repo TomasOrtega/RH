@@ -10,32 +10,32 @@ namespace PI.LocGlobInclWork
 variable {K : Type} [Field K] [NumberField K]
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_localization_iff {W : Type} [AddCommGroup W] [Module (𝓞 K) W] (p : Ideal (𝓞 K)) [p.IsPrime]
     (L : Submodule (𝓞 K) W) (x : W) :
     x ∈ Formalism.HermitianLatticesTheory.localization₂ p L ↔ ∃ s ∈ p.primeCompl, s • x ∈ L := Iff.rfl
 
 /- English proof (translation)
-Introduce `x hx` and use `(mem_localization_iff p L x).mpr ⟨1, p.primeCompl.one_mem, by rw [one_smul]; exact hx⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem self_le_locP {W : Type} [AddCommGroup W] [Module (𝓞 K) W] (p : Ideal (𝓞 K)) [p.IsPrime]
     (L : Submodule (𝓞 K) W) : L ≤ Formalism.HermitianLatticesTheory.localization₂ p L :=
   fun x hx => (mem_localization_iff p L x).mpr ⟨1, p.primeCompl.one_mem, by rw [one_smul]; exact hx⟩
 
 /- English proof (translation)
-Use `haveI := hm`. Conclude with `(Ideal.bot_lt_of_maximal m (NumberField.RingOfIntegers.not_isField K)).ne'`.
+A detailed English derivation is pending.
 -/
 theorem maximal_ne_bot (m : Ideal (𝓞 K)) (hm : m.IsMaximal) : m ≠ ⊥ := by
   haveI := hm
   exact (Ideal.bot_lt_of_maximal m (NumberField.RingOfIntegers.not_isField K)).ne'
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hx`. Establish `hI : N.comap (LinearMap.toSpanSingleton (𝓞 K) W x) ≠ ⊤`. Introduce `htop`. Apply `hx` to reduce the goal to its premises. Establish `h1 : (1 : 𝓞 K) ∈ N.comap (LinearMap.toSpanSingleton (𝓞 K) W x)`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Rewrite using `[htop]`. Conclude with `Submodule.mem_top`. Rewrite `h1` using `[Submodule.mem_comap, LinearMap.toSpanSingleton_apply, one_smul]`. Conclude with `h1`. Take `⟨m, hm, hle⟩` from `Ideal.exists_le_maximal _ hI`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result.
 
-Take `⟨s, hs, hsx⟩` from `h ⟨m, hm.isPrime, maximal_ne_bot m hm⟩`. Apply `hs` to reduce the goal to its premises. Apply `hle` to reduce the goal to its premises. Rewrite using `[Submodule.mem_comap, LinearMap.toSpanSingleton_apply]`. Conclude with `hsx`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_of_local {W : Type} [AddCommGroup W] [Module (𝓞 K) W] (N : Submodule (𝓞 K) W) (x : W)
     (h : ∀ w : HeightOneSpectrum (𝓞 K), ∃ s : 𝓞 K, s ∉ w.asIdeal ∧ s • x ∈ N) : x ∈ N := by
@@ -55,11 +55,11 @@ theorem mem_of_local {W : Type} [AddCommGroup W] [Module (𝓞 K) W] (N : Submod
   exact hsx
 
 /- English proof (translation)
-Rewrite using `[FractionalIdeal.coeIdeal_pow]`. Distinguish the cases in `hk : 0 ≤ k`. Take `⟨n, rfl⟩` from `Int.eq_ofNat_of_zero_le hk`. Simplify using the standard rewrite rules. Use `push_neg at hk`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Take `⟨n, rfl⟩` from `Int.exists_eq_neg_ofNat hk.le`. Establish `h0 : (-(n : ℤ)).toNat = 0` using `Int.toNat_of_nonpos hk.le`. Rewrite using `[h0, pow_zero, zpow_neg, zpow_natCast]`. Establish `h1 : (v.asIdeal : FractionalIdeal (nonZeroDivisors (𝓞 K)) K) ^ n ≤ 1`. Rewrite using `[← FractionalIdeal.coeIdeal_pow]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `FractionalIdeal.coeIdeal_le_one`. Establish `h2 : (v.asIdeal : FractionalIdeal (nonZeroDivisors (𝓞 K)) K) ^ n ≠ 0` using `pow_ne_zero _ (FractionalIdeal.coeIdeal_ne_zero.mpr v.ne_bot)`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem coe_pow_toNat_le (v : HeightOneSpectrum (𝓞 K)) (k : ℤ) :
     ((v.asIdeal ^ k.toNat : Ideal (𝓞 K)) : FractionalIdeal (nonZeroDivisors (𝓞 K)) K) ≤
@@ -81,11 +81,11 @@ theorem coe_pow_toNat_le (v : HeightOneSpectrum (𝓞 K)) (k : ℤ) :
       _ ≤ ((v.asIdeal : FractionalIdeal (nonZeroDivisors (𝓞 K)) K) ^ n)⁻¹ := FractionalIdeal.inv_anti_mono h2 one_ne_zero h1
 
 /- English proof (translation)
-Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert v S hv ih`. Rewrite using `[Finset.prod_insert hv, Finset.prod_insert hv, FractionalIdeal.coeIdeal_mul]`. Rewrite using `[← FractionalIdeal.coe_le_coe, FractionalIdeal.coe_mul, FractionalIdeal.coe_mul]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `h1` using `FractionalIdeal.coe_le_coe.mpr (coe_pow_toNat_le v (n v))`. Establish `h2` using `FractionalIdeal.coe_le_coe.mpr ih`. Use `first`. Consider the case `exact mul_le_mul' h1 h2`. Consider the case `exact Submodule.mul_le_mul' h1 h2`.
+Establish an intermediate fact. Establish an intermediate fact. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact Submodule.mul_le_mul_of_le_of_le h1 h2`.
+A detailed English derivation is pending.
 -/
 theorem coe_prod_le (S : Finset (HeightOneSpectrum (𝓞 K))) (n : HeightOneSpectrum (𝓞 K) → ℤ) :
     ((∏ v ∈ S, v.asIdeal ^ (n v).toNat : Ideal (𝓞 K)) : FractionalIdeal (nonZeroDivisors (𝓞 K)) K) ≤
@@ -104,11 +104,11 @@ theorem coe_prod_le (S : Finset (HeightOneSpectrum (𝓞 K))) (n : HeightOneSpec
       | exact Submodule.mul_le_mul_of_le_of_le h1 h2
 
 /- English proof (translation)
-Use `haveI : w.asIdeal.IsPrime := w.isPrime`. Establish `hP : ¬ (∏ v ∈ S, v.asIdeal ^ (n v).toNat) ≤ w.asIdeal`. Introduce `hle`. Break down `S.eq_empty_or_nonempty with hS | hS` into its components or cases. Substitute `hS` using the available equality.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hle` using `[Finset.prod_empty, Ideal.one_eq_top]`. Conclude with `w.isPrime.ne_top (top_le_iff.mp hle)`. Take `⟨v, hv, hvle⟩` from `(Ideal.IsPrime.prod_le w.isPrime).mp hle`. Establish `h1 : v.asIdeal ≤ w.asIdeal` using `Ideal.IsPrime.le_of_pow_le hvle`. Establish `h2 : v.asIdeal = w.asIdeal` using `v.isMaximal.eq_of_le w.isPrime.ne_top h1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `h3 : v = w` using `IsDedekindDomain.HeightOneSpectrum.ext h2`. Conclude with `hw (h3 ▸ hv)`. Take `⟨t, htP, htw⟩` from `SetLike.not_le_iff_exists.mp hP`. Use `⟨t, htw, ?_⟩` and prove the remaining obligations. Conclude with `coe_prod_le S n ((FractionalIdeal.mem_coeIdeal _).mpr ⟨t, htP, rfl⟩)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_unit_at (w : HeightOneSpectrum (𝓞 K)) (S : Finset (HeightOneSpectrum (𝓞 K)))
     (hw : w ∉ S) (n : HeightOneSpectrum (𝓞 K) → ℤ) :
@@ -135,11 +135,9 @@ variable [StarRing K] {W : Type} [AddCommGroup W] [Module K W] [Module (𝓞 K) 
   [IsScalarTower (𝓞 K) K W]
 
 /- English proof (translation)
-Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem z hz`. Take `⟨c, hc, b, hb, rfl⟩` from `hz`. Apply `Submodule.subset_span` to reduce the goal to its premises. Use `⟨c * algebraMap (𝓞 K) K t, FractionalIdeal.mul_mem_mul hc ht, b, hb, ?_⟩` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← smul_assoc, Algebra.smul_def, mul_comm]`. Consider the case `zero => rw [smul_zero]`. Conclude with `Submodule.zero_mem _`. Consider the case `add y z _ _ hy hz => rw [smul_add]`. Conclude with `Submodule.add_mem _ hy hz`.
-
-Consider the case `smul r y _ hy => rw [smul_comm]`. Conclude with `Submodule.smul_mem _ r hy`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem smul_mem_idealSmul (I J : FractionalIdeal (nonZeroDivisors (𝓞 K)) K)
     (B : Submodule (𝓞 K) W) (t : 𝓞 K) (ht : algebraMap (𝓞 K) K t ∈ J) {y : W}
@@ -157,17 +155,15 @@ theorem smul_mem_idealSmul (I J : FractionalIdeal (nonZeroDivisors (𝓞 K)) K)
   | smul r y _ hy => rw [smul_comm]; exact Submodule.smul_mem _ r hy
 
 /- English proof (translation)
-Introduce `K W _ _ _ _ _ _ _ M B T a hT hnT x hx`. Unfold `Formalism.AtG.denIdeal`. Apply `mem_of_local` to reduce the goal to its premises. Introduce `w`. Use `haveI : w.asIdeal.IsPrime := w.isPrime`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hw : w ∈ T`. Take `⟨s, hs, hsx⟩` from `(mem_localization_iff w.asIdeal _ x).mp (hT w hw ((self_le_locP w.asIdeal M) hx))`. Take `⟨t, ht, htJ⟩` from `exists_unit_at w (T.erase w) (by simp) (fun v => -(a v))`. Establish `htJ' : algebraMap (𝓞 K) K t ∈ ∏ v ∈ T.erase w, (v.asIdeal : FractionalIdeal (nonZeroDivisors (𝓞 K)) K) ^ (-(a v))` using `htJ`. Use `⟨t * s, fun hmem => (w.isPrime.mem_or_mem hmem).elim ht hs, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_smul]`. Establish `e : (w.asIdeal : FractionalIdeal (nonZeroDivisors (𝓞 K)) K) ^ (-(a w)) * ∏ v ∈ T.erase w, (v.asIdeal : FractionalIdeal (nonZeroDivisors (𝓞 K)) K) ^ (-(a v)) = ∏ v ∈ T, (v.asIdeal : FractionalIdeal (nonZeroDivisors (𝓞 K)) K) ^ (-(a v))` using `Finset.mul_prod_erase T (fun v => (v.asIdeal : FractionalIdeal (nonZeroDivisors (𝓞 K)) K) ^ (-(a v))) hw`. Establish `hm` using `smul_mem_idealSmul _ _ B t htJ' hsx`. Rewrite `hm` using `[e]`. Conclude with `hm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨s, hs, hsx⟩` from `(mem_localization_iff w.asIdeal _ x).mp (hnT w hw ((self_le_locP w.asIdeal M) hx))`. Take `⟨t, ht, htJ⟩` from `exists_unit_at w T hw (fun v => -(a v))`. Establish `htJ' : algebraMap (𝓞 K) K t ∈ ∏ v ∈ T, (v.asIdeal : FractionalIdeal (nonZeroDivisors (𝓞 K)) K) ^ (-(a v))` using `htJ`. Use `⟨t * s, fun hmem => (w.isPrime.mem_or_mem hmem).elim ht hs, ?_⟩` and prove the remaining obligations. Rewrite using `[mul_smul]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hB : s • x ∈ Formalism.HermitianLatticesTheory.idealSmul ((1 : FractionalIdeal (nonZeroDivisors (𝓞 K)) K) : Submodule (𝓞 K) K) B`. Apply `Submodule.subset_span` to reduce the goal to its premises. Use `⟨1, ?_, s • x, hsx, (one_smul K _).symm⟩` and prove the remaining obligations. Rewrite using `[FractionalIdeal.coe_one]`. Conclude with `Submodule.one_le.mp le_rfl`.
-
-Establish `hm` using `smul_mem_idealSmul 1 _ B t htJ' hB`. Rewrite `hm` using `[one_mul]`. Conclude with `hm`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem main : PI.LocGlobIncl := by
   intro K W _ _ _ _ _ _ _ M B T a hT hnT x hx

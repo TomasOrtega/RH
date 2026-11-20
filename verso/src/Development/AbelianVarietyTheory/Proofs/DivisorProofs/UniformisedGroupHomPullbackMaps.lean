@@ -16,7 +16,7 @@ open GlobalTheory.ArcPull GlobalTheory.PullLinear
 open GlobalTheory.PsiEvenPull (proj)
 
 /- English proof (translation)
-Establish `h1 : u'.left ≫ e₂.left = e.left ≫ ((Over.pullback f).map u).left` using `congrArg (·.left) h`. Rewrite using `[← Category.assoc, h1, Category.assoc, map_left_fst, Category.assoc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem act_proj₂ {S S' : Scheme.{0}} (f : S' ⟶ S) {A B : Over S} {A' B' : Over S'}
     (e : A' ⟶ (Over.pullback f).obj A) (e₂ : B' ⟶ (Over.pullback f).obj B) {u : A ⟶ B} {u' : A' ⟶ B'}
@@ -26,9 +26,9 @@ theorem act_proj₂ {S S' : Scheme.{0}} (f : S' ⟶ S) {A B : Over S} {A' B' : O
   rw [← Category.assoc, h1, Category.assoc, map_left_fst, Category.assoc]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `H Z r z χ`. Rewrite using `[← H χ]`. Conclude with `((gm_res r z (V := ⊤) _ trivial _).trans (gm_pull r t.left z ⊤ trivial _)).symm`. Introduce `H χ`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `unit_ext fun z _ => ?_` and prove the remaining obligations. Rewrite using `[← H]`. Conclude with `(gm_res (𝟙 _) z (V := ⊤) _ trivial _).trans (gm_pull (𝟙 _) t.left z ⊤ trivial _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem torusHomOf_iff' {S : Scheme.{0}} {X X' : Type} [AddCommGroup X] [AddCommGroup X'] (h : X' → X)
     (t : splitTorus S X ⟶ splitTorus S X') :
@@ -46,27 +46,27 @@ theorem torusHomOf_iff' {S : Scheme.{0}} {X X' : Type} [AddCommGroup X] [AddComm
 set_option maxHeartbeats 800000 in
 
 /- English proof (translation)
-Introduce `R R' _ _ _ _ I I' φ D₁ D₂ A₁ A₂ G₁ G₂ _ _ _ _ U₁ U₂ D₁' D₂' A₁' A₂' hD₁ hD₂ U₁' U₂' hU₁ hU₂ a b h hL`. Take `⟨homA, homB, hq0, hi0⟩` from `hL`. Take `⟨_wL₁, -, _he₁, -, H₁⟩` from `(isPullUnif_iff_stalks R R' I I' φ D₁ D₁' hD₁ A₁ A₁' G₁ _ (Iso.refl _) U₁ U₁').1 hU₁`. Take `⟨_wL₂, -, _he₂, -, H₂⟩` from `(isPullUnif_iff_stalks R R' I I' φ D₂ D₂' hD₂ A₂ A₂' G₂ _ (Iso.refl _) U₂ U₂').1 hU₂`. Use `choose h₁ hf₁ hpt₁ _hw₁ using H₁`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `choose h₂ hf₂ hpt₂ _hw₂ using H₂`. Use `hD₁.e_hom` as an intermediate fact. Use `hD₂.e_hom` as an intermediate fact. Take `⟨b', homB', hB⟩ : ∃ b' : D₁'.toPre.P.A ⟶ D₂'.toPre.P.A, IsMonHom b' ∧ b' ≫ hD₂.e.hom = hD₁.e.hom ≫ (Over.pullback (specOf φ)).map b` from `⟨hD₁.e.hom ≫ (Over.pullback (specOf φ)).map b ≫ hD₂.e.inv, inferInstance, by simp⟩`. Take `⟨h', hx⟩ : ∃ h' : D₂'.toPre.X →+ D₁'.toPre.X, ∀ χ, hD₁.xe (h' χ) = h (hD₂.xe χ)` from `⟨hD₁.xe.symm.toAddMonoidHom.comp (h.comp hD₂.xe.toAddMonoidHom), fun χ => hD₁.xe.apply_symm_apply _⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hG : (Over.pullback (specOf φ)).map a ≫ (Iso.refl ((Over.pullback (specOf φ)).obj G₂)).hom = (Iso.refl ((Over.pullback (specOf φ)).obj G₁)).hom ≫ (Over.pullback (specOf φ)).map a` using `by simp`. Establish `hact : ∀ e : ℕ, ((Over.pullback (thick R' I' e)).map ((Over.pullback (specOf φ)).map a)).left ≫ h₂ e = h₁ e ≫ ((Over.pullback (thick R I e)).map a).left`. Introduce `e`. Establish `hf' : h₂ e ≫ pullback.fst G₂.hom (thick R I e) = pullback.fst ((Over.pullback (specOf φ)).obj G₂).hom (thick R' I' e) ≫ (Iso.refl ((Over.pullback (specOf φ)).obj G₂)).hom.left ≫ pullback.fst G₂.hom (specOf φ)` using `hf₂ e`. Establish `hf₁' : h₁ e ≫ pullback.fst G₁.hom (thick R I e) = pullback.fst ((Over.pullback (specOf φ)).obj G₁).hom (thick R' I' e) ≫ (Iso.refl ((Over.pullback (specOf φ)).obj G₁)).hom.left ≫ pullback.fst G₁.hom (specOf φ)` using `hf₁ e`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsClosedImmersion (thick R I e)` using `IsClosedImmersion.spec_of_surjective _ Ideal.Quotient.mk_surjective`. Establish `hmono : Mono (pullback.fst G₂.hom (thick R I e))` using `inferInstance`. Rewrite using `[← cancel_mono (pullback.fst G₂.hom (thick R I e)), Category.assoc, hf', Category.assoc, map_left_fst, ← Category.assoc (h₁ e), hf₁', ← Category.assoc (((Over.pullback (thick R' I' e)).map ((Over.pullback (specOf φ)).map a)).left), map_left_fst, Category.assoc, act_proj₂ _ (Iso.r …`. Simplify using `only [Category.assoc]`. Establish `k : ∀ {S : Type} [CommRing S] [IsDomain S] {J : Ideal S} {E : DegPre S} {e : ℕ} {K : Over (Spec (CommRingCat.of S))} [GrpObj K] [IsCommMonObj K] (g : GtCoord J E e K) {B : Over (Spec (CommRingCat.of S))} (u : E.P.A ⟶ B), (g.q ≫ (Over.pullback (thick S J e)).map u).left ≫ pullback …`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `S _ _ J E e K _ _ g B u`. Rewrite using `[Over.comp_left, Category.assoc, map_left_fst, pG_left, Category.assoc]`. Establish `hB'` using `act_proj₂ (specOf φ) hD₁.e.hom hD₂.e.hom hB`. Establish `k₂ : ∀ e, (Over.map (thick R' I' e)).map ((Over.pullback (thick R' I' e)).map ((Over.pullback (specOf φ)).map a)) ≫ (U₂'.gt e).pG = (U₁'.gt e).pG ≫ b'`. Introduce `e`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `k₁ : ((Over.pullback (thick R I e)).map a).left ≫ (U₂.gt e).pG.left = (U₁.gt e).pG.left ≫ b.left`. Rewrite using `[← k, ← hq0 e]`. Conclude with `(Category.assoc _ _ _).symm`. Use `ext_of_iso_pullback _ hD₂.e ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(((Over.pullback (thick R' I' e)).map ((Over.pullback (specOf φ)).map a)).left ≫ (U₂'.gt e).pG.left) ≫ _ = ((U₁'.gt e).pG.left ≫ b'.left) ≫ _`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Category.assoc, Category.assoc, hB', (hpt₂ e).1, ← Category.assoc (U₁'.gt e).pG.left, (hpt₁ e).1, ← Category.assoc, hact, Category.assoc, Category.assoc, k₁]`. Establish `hq : ∀ e : ℕ, (Over.pullback (thick R' I' e)).map ((Over.pullback (specOf φ)).map a) ≫ (U₂'.gt e).q = (U₁'.gt e).q ≫ (Over.pullback (thick R' I' e)).map b'`. Introduce `e`. Use `ext_of_pullback _ ?_` and prove the remaining obligations. Rewrite using `[k, Over.comp_left, Category.assoc]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `congrArg (·.left) (k₂ e)`. Use `⟨b', h', ⟨inferInstance, homB', hq, fun e => ?_⟩, hB, hx⟩` and prove the remaining obligations. Take `⟨t, ht, hi⟩` from `hi0 e`. Establish `hk : ((U₁'.gt e).i ≫ (Over.pullback (thick R' I' e)).map ((Over.pullback (specOf φ)).map a)) ≫ (U₂'.gt e).q = toUnit _ ≫ η[thickObj R' I' e D₂'.toPre.P.A]`. Rewrite using `[Category.assoc, hq, ← Category.assoc, (U₁'.gt e).isKernel.w, Category.assoc, IsMonHom.one_hom]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `hi'` using `(U₂'.gt e).isKernel.lift_fst _ _ hk`. Generalize the expression as in `(U₂'.gt e).isKernel.lift _ _ hk = t' at hi'`. Use `⟨t', ?_, hi'.symm⟩` and prove the remaining obligations. Take `⟨s, τ, hτ⟩` from `exists_point (U₁.gt e) (U₁'.gt e) (hpt₁ e).1 ((hpt₁ e).2 0).1 (𝟙 _)`. Establish `hτ' : ((τ ≫ t) ≫ (U₂.gt e).i).left = (t' ≫ (U₂'.gt e).i).left ≫ h₂ e`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[Category.assoc, ← hi, ← Category.assoc, Over.comp_left, hτ, hi', Category.id_comp, Over.comp_left, Category.assoc, Category.assoc, hact]`. Introduce `χ`. Use `unit_ext fun z _ => ?_` and prove the remaining obligations. Establish `e₁` using `char_eq (U₂.gt e) (U₂'.gt e) hD₂.w ((hpt₂ e).2 χ).1 ((hpt₂ e).2 χ).2 t' (τ ≫ t) hτ' z`. Establish `e₂` using `char_eq (U₁.gt e) (U₁'.gt e) hD₁.w ((hpt₁ e).2 (h' χ)).1 ((hpt₁ e).2 (h' χ)).2 (𝟙 _) τ hτ z`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `e₃` using `(torusHomOf_iff' _ t).1 ht _ τ.left z (hD₂.xe χ)`. Rewrite `e₂` using `[hx]`. Use `((gm_res (𝟙 _) z (V := ⊤) _ trivial _).trans (gm_pull (𝟙 _) t'.left z ⊤ trivial _)).trans ?_` and prove the remaining obligations. Rewrite using `[Category.id_comp]`. Conclude with `e₁.symm.trans (e₃.trans e₂)`.
+A detailed English derivation is pending.
 -/
 theorem linPull : ∀ (R R' : Type) [CommRing R] [IsDomain R] [CommRing R'] [IsDomain R'] (I : Ideal R) (I' : Ideal R') (φ : R →+* R') (D₁ D₂ : DegData R I) (A₁ A₂ : PolAV (Sp (FractionRing R))) (G₁ G₂ : Over (Sp R)) [GrpObj G₁] [IsCommMonObj G₁] [GrpObj G₂] [IsCommMonObj G₂] (U₁ : Unif I D₁ A₁ G₁) (U₂ : Unif I D₂ A₂ G₂) (D₁' D₂' : DegData R' I') (A₁' A₂' : PolAV (Sp (FractionRing R'))) (hD₁ : IsPullDeg φ D₁.toPre D₁'.toPre) (hD₂ : IsPullDeg φ D₂.toPre D₂'.toPre) (U₁' : Unif I' D₁' A₁' ((Over.pullback (specOf φ)).obj G₁)) (U₂' : Unif I' D₂' A₂' ((Over.pullback (specOf φ)).obj G₂)), IsPullUnif φ hD₁ (Iso.refl _) U₁ U₁' → IsPullUnif φ hD₂ (Iso.refl _) U₂ U₂' → ∀ (a : G₁ ⟶ G₂) (b : D₁.toPre.P.A ⟶ D₂.toPre.P.A) (h : D₂.toPre.X →+ D₁.toPre.X), Lin U₁.toUnifPre U₂.toUnifPre a b h → ∃ (b' : D₁'.toPre.P.A ⟶ D₂'.toPre.P.A) (h' : D₂'.toPre.X →+ D₁'.toPre.X), Lin U₁'.toUnifPre U₂'.toUnifPre ((Over.pullback (specOf φ)).map a) b' h' ∧ b' ≫ hD₂.e.hom = hD₁.e.hom ≫ (Over.pullback (specOf φ)).map b ∧ ∀ χ, hD₁.xe (h' χ) = h (hD₂.xe χ) := by
   intro R R' _ _ _ _ I I' φ D₁ D₂ A₁ A₂ G₁ G₂ _ _ _ _ U₁ U₂ D₁' D₂' A₁' A₂' hD₁ hD₂ U₁' U₂' hU₁ hU₂ a b h hL

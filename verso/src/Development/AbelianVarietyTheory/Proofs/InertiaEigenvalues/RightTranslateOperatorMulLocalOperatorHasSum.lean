@@ -21,7 +21,7 @@ variable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.w
   {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL]
 
 /- English proof (translation)
-Introduce `g h hgh`. Establish `h1 : matHom V g = matHom V h` using `Units.ext hgh`. Conclude with `(HR (AF D.host.F) D.sp.cm.sig V.gram).subtype_injective h1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem unitaryAdeleMatrix_injective (V : HSp D) : Function.Injective (Formalism.L2.Theta.mt V) := by
   intro g h hgh
@@ -29,7 +29,7 @@ theorem unitaryAdeleMatrix_injective (V : HSp D) : Function.Injective (Formalism
   exact (HR (AF D.host.F) D.sp.cm.sig V.gram).subtype_injective h1
 
 /- English proof (translation)
-Unfold `Formalism.L2.Theta.mt`. Rewrite using `[map_mul]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem unitaryAdeleMatrix_mul (V : HSp D) (g h : GA D V) : Formalism.L2.Theta.mt V (g * h) = Formalism.L2.Theta.mt V g * Formalism.L2.Theta.mt V h := by
   unfold Formalism.L2.Theta.mt
@@ -41,9 +41,9 @@ Both sides reduce to the same expression.
 theorem unitaryAdeleMatrix_one (V : HSp D) : Formalism.L2.Theta.mt V 1 = 1 := rfl
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Use extensionality with `a b`. Rewrite using `[Matrix.smul_apply, smul_eq_mul]`. Conclude with `h a b`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h a b`. Use `congrFun (congrFun h a) b` as an intermediate fact. Rewrite `this` using `[Matrix.smul_apply, smul_eq_mul]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem supportedAtIdempotent_iff_smul_matrix_sub_one (V : HSp D) (f : AE D) (g : GA D V) :
     SuppF V f g ↔ f • (Formalism.L2.Theta.mt V g - 1) = Formalism.L2.Theta.mt V g - 1 := by
@@ -52,7 +52,7 @@ theorem supportedAtIdempotent_iff_smul_matrix_sub_one (V : HSp D) (f : AE D) (g 
   · intro h a b; have := congrFun (congrFun h a) b; rw [Matrix.smul_apply, smul_eq_mul] at this; exact this
 
 /- English proof (translation)
-Rewrite `*` using `[supportedAtIdempotent_iff_smul_matrix_sub_one]`. Establish `e : Formalism.L2.Theta.mt V (g * h) - 1 = (Formalism.L2.Theta.mt V g - 1) * (Formalism.L2.Theta.mt V h - 1) + (Formalism.L2.Theta.mt V g - 1) + (Formalism.L2.Theta.mt V h - 1)`. Rewrite using `[unitaryAdeleMatrix_mul]`. Use `noncomm_ring`. Rewrite using `[e, smul_add, smul_add, ← Matrix.smul_mul, hg, hh]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem supportedAtAdeleIdempotent_mul_closed (V : HSp D) (f : AE D) {g h : GA D V} (hg : SuppF V f g) (hh : SuppF V f h) :
     SuppF V f (g * h) := by
@@ -63,9 +63,9 @@ theorem supportedAtAdeleIdempotent_mul_closed (V : HSp D) (f : AE D) {g h : GA D
   rw [e, smul_add, smul_add, ← Matrix.smul_mul, hg, hh]
 
 /- English proof (translation)
-Rewrite `*` using `[supportedAtIdempotent_iff_smul_matrix_sub_one]`. Establish `hm : Formalism.L2.Theta.mt V g⁻¹ * Formalism.L2.Theta.mt V g = 1` using `by rw [← unitaryAdeleMatrix_mul, inv_mul_cancel]; rfl`. Establish `e : Formalism.L2.Theta.mt V g⁻¹ - 1 = -(Formalism.L2.Theta.mt V g⁻¹ * (Formalism.L2.Theta.mt V g - 1))`. Rewrite using `[Matrix.mul_sub, hm]`. Use `noncomm_ring`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, smul_neg, ← Matrix.mul_smul, hg]`.
+A detailed English derivation is pending.
 -/
 theorem supportedAtAdeleIdempotent_inv_closed (V : HSp D) (f : AE D) {g : GA D V} (hg : SuppF V f g) : SuppF V f g⁻¹ := by
   rw [supportedAtIdempotent_iff_smul_matrix_sub_one] at *
@@ -75,7 +75,7 @@ theorem supportedAtAdeleIdempotent_inv_closed (V : HSp D) (f : AE D) {g : GA D V
   rw [e, smul_neg, ← Matrix.mul_smul, hg]
 
 /- English proof (translation)
-Rewrite `hg` using `[supportedAtIdempotent_iff_smul_matrix_sub_one, zero_smul]`. Apply `unitaryAdeleMatrix_injective V` to reduce the goal to its premises. Rewrite using `[unitaryAdeleMatrix_one]`. Conclude with `(sub_eq_zero.mp hg.symm)`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem supportedAtIdempotent_zero_eq_one (V : HSp D) {g : GA D V} (hg : SuppF V 0 g) : g = 1 := by
   rw [supportedAtIdempotent_iff_smul_matrix_sub_one, zero_smul] at hg
@@ -84,7 +84,7 @@ theorem supportedAtIdempotent_zero_eq_one (V : HSp D) {g : GA D V} (hg : SuppF V
   exact (sub_eq_zero.mp hg.symm)
 
 /- English proof (translation)
-Establish `hex` using `hTL.2.2.1 γ hγ`. Unfold `Bop`. Rewrite using `[dif_pos hex]`. Conclude with `hex.choose_spec.2`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rightTranslatePairingOperator_spec {R : RealDat D A Ks} {i : Fin D.R.m} (hTL : TransLaws R i) {γ : GA D (Wc D i)}
     (hγ : γ ∈ GfC (Wc D i)) : ∀ x y, trPair R i γ x y = ⟪x, Bop R i γ y⟫_ℂ := by
@@ -94,7 +94,7 @@ theorem rightTranslatePairingOperator_spec {R : RealDat D A Ks} {i : Fin D.R.m} 
   exact hex.choose_spec.2
 
 /- English proof (translation)
-Apply `ContinuousLinearMap.ext` to reduce the goal to its premises. Introduce `y`. Apply `ext_inner_left ℂ` to reduce the goal to its premises. Introduce `x`. Rewrite using `[← rightTranslatePairingOperator_spec hTL hγ x y, hB]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem rightTranslatePairingOperator_eq_of_forms {R : RealDat D A Ks} {i : Fin D.R.m} (hTL : TransLaws R i) {γ : GA D (Wc D i)}
     (hγ : γ ∈ GfC (Wc D i)) (B : (R.HW i (sg0 D A)).H →L[ℂ] (R.HW i (sg0 D A)).H)
@@ -104,7 +104,7 @@ theorem rightTranslatePairingOperator_eq_of_forms {R : RealDat D A Ks} {i : Fin 
   rw [← rightTranslatePairingOperator_spec hTL hγ x y, hB]
 
 /- English proof (translation)
-Apply `rightTranslatePairingOperator_eq_of_forms hTL hγk` to reduce the goal to its premises. Introduce `x y`. Use `hTL.2.2.2.1 γ hγ 1 (levW R i).one_mem k hk x y` as an intermediate fact. Rewrite `this` using `[one_mul]`. Rewrite using `[this, rightTranslatePairingOperator_spec hTL hγ]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem finite_mul_liftLevel_mem_finite {R : RealDat D A Ks} {i : Fin D.R.m} (hTL : TransLaws R i) {γ k : GA D (Wc D i)}
     (hγ : γ ∈ GfC (Wc D i)) (hk : k ∈ levW R i) (hγk : γ * k ∈ GfC (Wc D i)) : Bop R i (γ * k) = Bop R i γ := by
@@ -115,13 +115,13 @@ theorem finite_mul_liftLevel_mem_finite {R : RealDat D A Ks} {i : Fin D.R.m} (hT
   rw [this, rightTranslatePairingOperator_spec hTL hγ]
 
 /- English proof (translation)
-Establish `hCG : ∀ δ ∈ C, δ ∈ GfC (Wc D i)` using `fun δ hδ => (hC.1 δ hδ).1`. Apply `ContinuousLinearMap.ext` to reduce the goal to its premises. Introduce `y`. Take `⟨y', -, hy'⟩` from `hTL.2.1 v f hf α hα C hCs hC y`. Establish `e1 : y' = ∑ δ ∈ C, Bop R i δ y`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Apply `ext_inner_left ℂ` to reduce the goal to its premises. Introduce `x`. Rewrite using `[inner_sum, ← hTL.2.2.2.2.2 x y', hy' 1 (GfC (Wc D i)).one_mem x]`. Use `Finset.sum_congr rfl fun δ hδ => ?_` and prove the remaining obligations. Rewrite using `[one_mul, rightTranslatePairingOperator_spec hTL (hCG δ hδ)]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ContinuousLinearMap.mul_apply, ContinuousLinearMap.sum_apply, ContinuousLinearMap.sum_apply, ← e1]`. Apply `ext_inner_left ℂ` to reduce the goal to its premises. Introduce `x`. Rewrite using `[inner_sum, ← rightTranslatePairingOperator_spec hTL hγ, hy' γ hγ x]`. Use `Finset.sum_congr rfl fun δ hδ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[rightTranslatePairingOperator_spec hTL (mul_mem hγ (hCG δ hδ))]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem rightTranslatePairingOperator_hecke_relation {R : RealDat D A Ks} {i : Fin D.R.m} (hTL : TransLaws R i) {v : HeightOneSpectrum (𝓞 D.host.F)}
     {f : AE D} (hf : IsFinIdem D v f) {α : GA D (Wc D i)} (hα : SuppF (Wc D i) f α) (C : Finset (GA D (Wc D i)))
@@ -148,21 +148,21 @@ def mkLX (R : RealDat D A Ks) (i : Fin D.R.m) (v : HeightOneSpectrum (𝓞 D.hos
   Quotient.mk _ ⟨g, hg⟩
 
 /- English proof (translation)
-The claim follows from `(Quotient.out x).2`.
+A detailed English derivation is pending.
 -/
 theorem levelCosetRepresentative_mem_supportedSet {R : RealDat D A Ks} {i : Fin D.R.m} {v : HeightOneSpectrum (𝓞 D.host.F)} (x : LX R i v) :
     rep x ∈ locSet R i v := (Quotient.out x).2
 
 /- English proof (translation)
-The claim follows from `Quotient.out_eq x`.
+A detailed English derivation is pending.
 -/
 theorem placeSupportedLevelCoset_representative_eq {R : RealDat D A Ks} {i : Fin D.R.m} {v : HeightOneSpectrum (𝓞 D.host.F)} (x : LX R i v) :
     mkLX R i v (rep x) (levelCosetRepresentative_mem_supportedSet x) = x := Quotient.out_eq x
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `h2` using `Quotient.exact h`. Conclude with `QuotientGroup.leftRel_apply.mp h2`. Introduce `h`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Quotient.sound` to reduce the goal to its premises. Conclude with `QuotientGroup.leftRel_apply.mpr h`.
+A detailed English derivation is pending.
 -/
 theorem placeSupportedLevelCoset_eq_iff {R : RealDat D A Ks} {i : Fin D.R.m} {v : HeightOneSpectrum (𝓞 D.host.F)}
     {g g' : GA D (Wc D i)} (hg : g ∈ locSet R i v) (hg' : g' ∈ locSet R i v) :
@@ -176,7 +176,7 @@ theorem placeSupportedLevelCoset_eq_iff {R : RealDat D A Ks} {i : Fin D.R.m} {v 
     exact QuotientGroup.leftRel_apply.mpr h
 
 /- English proof (translation)
-Establish `h` using `placeSupportedLevelCoset_representative_eq (mkLX R i v g hg)`. Rewrite `h` using `[placeSupportedLevelCoset_eq_iff]`. Use `⟨g⁻¹ * rep (mkLX R i v g hg), ?_, by group⟩` and prove the remaining obligations. Use `(levW R i).inv_mem h` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem representative_placeSupportedLevelCoset_rel {R : RealDat D A Ks} {i : Fin D.R.m} {v : HeightOneSpectrum (𝓞 D.host.F)}
     {g : GA D (Wc D i)} (hg : g ∈ locSet R i v) : ∃ k ∈ levW R i, rep (mkLX R i v g hg) = g * k := by
@@ -187,9 +187,9 @@ theorem representative_placeSupportedLevelCoset_rel {R : RealDat D A Ks} {i : Fi
   simpa using this
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `rfl`. Rewrite using `[inv_mul_cancel]`. Conclude with `(levW R i).one_mem`. Introduce `h`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `(placeSupportedLevelCoset_eq_iff (levelCosetRepresentative_mem_supportedSet x) (levelCosetRepresentative_mem_supportedSet y)).mpr h` as an intermediate fact. Rewrite `this` using `[placeSupportedLevelCoset_representative_eq, placeSupportedLevelCoset_representative_eq]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem levelCoset_eq_iff_representative_rel {R : RealDat D A Ks} {i : Fin D.R.m} {v : HeightOneSpectrum (𝓞 D.host.F)} (x y : LX R i v) :
     x = y ↔ (rep x)⁻¹ * rep y ∈ levW R i := by
@@ -200,7 +200,7 @@ theorem levelCoset_eq_iff_representative_rel {R : RealDat D A Ks} {i : Fin D.R.m
     rwa [placeSupportedLevelCoset_representative_eq, placeSupportedLevelCoset_representative_eq] at this
 
 /- English proof (translation)
-Establish `e : lx0 R i v = mkLX R i v 1 (one_mem_locSet R i v)` using `rfl`. Use `conv_lhs => rw [e, ← placeSupportedLevelCoset_representative_eq x]`. Rewrite using `[placeSupportedLevelCoset_eq_iff, mul_one, inv_mem_iff]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_trivialLevelCoset_iff_representative_mem {R : RealDat D A Ks} {i : Fin D.R.m} {v : HeightOneSpectrum (𝓞 D.host.F)} (x : LX R i v) :
     x = lx0 R i v ↔ rep x ∈ levW R i := by
@@ -209,13 +209,13 @@ theorem eq_trivialLevelCoset_iff_representative_mem {R : RealDat D A Ks} {i : Fi
   rw [placeSupportedLevelCoset_eq_iff, mul_one, inv_mem_iff]
 
 /- English proof (translation)
-Unfold `fid`. Rewrite using `[dif_pos h]`. Conclude with `h.choose_spec`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chosenFinitePlaceIdempotent_spec {v : HeightOneSpectrum (𝓞 D.host.F)} (h : ∃ f, IsFinIdem D v f) : IsFinIdem D v (fid D v) := by
   unfold fid; rw [dif_pos h]; exact h.choose_spec
 
 /- English proof (translation)
-Unfold `fid`. Rewrite using `[dif_neg h]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem chosenFinitePlaceIdempotent_eq_zero_of_not_exists {v : HeightOneSpectrum (𝓞 D.host.F)} (h : ¬ ∃ f, IsFinIdem D v f) : fid D v = 0 := by
   unfold fid; rw [dif_neg h]
@@ -243,15 +243,13 @@ def dcMap {R : RealDat D A Ks} {i : Fin D.R.m} {v : HeightOneSpectrum (𝓞 D.ho
   mkLX R i v p.2.1 ⟨((hC p.1).1 p.2.1 p.2.2).1, hCs p.1 p.2.1 p.2.2⟩
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨b, δ, hδ⟩ ⟨b', δ', hδ'⟩ h replace h : δ⁻¹ * δ' ∈ levW R i := (placeSupportedLevelCoset_eq_iff _ _).mp h`. Establish `hs : SuppF (Wc D i) (fid D v) (δ⁻¹ * δ')` using `supportedAtAdeleIdempotent_mul_closed _ _ (supportedAtAdeleIdempotent_inv_closed _ _ (hCs b δ hδ)) (hCs b' δ' hδ')`. Take `⟨-, k₁, ⟨h1l, h1s⟩, k₂, ⟨h2l, h2s⟩, e⟩` from `(hC b).1 δ hδ`. Take `⟨-, l₁, ⟨g1l, g1s⟩, l₂, ⟨g2l, g2s⟩, e'⟩` from `(hC b').1 δ' hδ'`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hbb : b = b'`. Apply `Quotient.out_equiv_out.mp` to reduce the goal to its premises. Use `⟨l₁⁻¹ * k₁, ⟨mul_mem ((levW R i).inv_mem g1l) h1l, supportedAtAdeleIdempotent_mul_closed _ _ (supportedAtAdeleIdempotent_inv_closed _ _ g1s) h1s⟩, k₂ * (δ⁻¹ * δ') * l₂⁻¹, ⟨mul_mem (mul_mem h2l h) ((levW R i).inv_mem g2l), supportedAtAdeleIdempotent_mul_closed _ _ (supportedAtAdel …` and prove the remaining obligations. Rewrite using `[e, e']`. Use `group`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Substitute using the available equality.
 
-Substitute `hbb` using the available equality. Establish `hu` using `(hC b).2 δ' ⟨l₁, ⟨g1l, g1s⟩, l₂, ⟨g2l, g2s⟩, e'⟩`. Establish `hdd : δ = δ'` using `hu.unique ⟨hδ, h, hs⟩ ⟨hδ', by rw [inv_mul_cancel]; exact (levW R i).one_mem, by rw [inv_mul_cancel]; exact (Model.trivAt_one _ _).2⟩`. Substitute `hdd` using the available equality. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x`. Take `⟨k₁, hk₁, k₂, hk₂, e⟩` from `Quotient.mk_out (s := dcSetoid R i v) x`. Take `⟨γ, ⟨hγC, hγK⟩, -⟩` from `(hC (Quotient.mk _ x)).2 (rep x) ⟨k₁, hk₁, k₂, hk₂, e⟩`. Use `⟨⟨Quotient.mk _ x, γ, hγC⟩, ?_⟩` and prove the remaining obligations. Unfold `dcMap`.
-
-Use `conv_rhs => rw [← placeSupportedLevelCoset_representative_eq x]`. Conclude with `(placeSupportedLevelCoset_eq_iff _ _).mpr hγK.1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem placeSupportedDoubleCosetMap_bijective {R : RealDat D A Ks} {i : Fin D.R.m} {v : HeightOneSpectrum (𝓞 D.host.F)}
     (C : Quotient (dcSetoid R i v) → Finset (GA D (Wc D i)))
@@ -285,19 +283,17 @@ theorem placeSupportedDoubleCosetMap_bijective {R : RealDat D A Ks} {i : Fin D.R
     exact (placeSupportedLevelCoset_eq_iff _ _).mpr hγK.1
 
 /- English proof (translation)
-Take `⟨s, -, -, hs⟩` from `hLS μ 𝓕 hμ`. Use `summable_of_sum_le (c := ‖acoef R i t μ 𝓕 v (lx0 R i v)‖ + s v) (fun _ => norm_nonneg _) ?_` and prove the remaining obligations. Introduce `u`. Rewrite using `[← Finset.sum_filter_add_sum_filter_not u (fun x => x = lx0 R i v)]`. Use `gcongr`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Apply `Finset.sum_le_sum_of_subset_of_nonneg` to reduce the goal to its premises. Introduce `x hx`. Rewrite `hx` using `[Finset.mem_filter]`. Rewrite using `[Finset.mem_singleton]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume the hypotheses.
 
-Conclude with `hx.2`. Use `intros`. Conclude with `norm_nonneg _`. Use `_ = _ := Finset.sum_singleton _ _`. Establish `hinj : Set.InjOn (fun x : LX R i v => rep x) ↑(u.filter (fun x => ¬ x = lx0 R i v))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Introduce `x _ y _ hxy`. Rewrite using `[levelCoset_eq_iff_representative_rel]`. Simplify using `only at hxy`. Rewrite using `[hxy, inv_mul_cancel]`. Conclude with `(levW R i).one_mem`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e` using `Finset.sum_image (f := fun g => ‖coef R i t μ 𝓕 g‖) hinj`. Unfold `acoef`. Rewrite using `[← e]`. Apply `hs v (fid D v) hf` to reduce the goal to its premises. Introduce `g hg`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨x, hx, rfl⟩` from `Finset.mem_image.mp hg`. Rewrite `hx` using `[Finset.mem_filter]`. Conclude with `⟨(levelCosetRepresentative_mem_supportedSet x).2, fun h => hx.2 ((eq_trivialLevelCoset_iff_representative_mem x).mpr h)⟩`. Introduce `g hg g' hg' h`. Take `⟨x, -, rfl⟩` from `Finset.mem_image.mp hg`.
-
-Take `⟨y, -, rfl⟩` from `Finset.mem_image.mp hg'`. Rewrite using `[(levelCoset_eq_iff_representative_rel x y).mpr h]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem localCoefficient_summable_nontrivialCosets {R : RealDat D A Ks} {i : Fin D.R.m} {t : T} (hLS : LocSmall R i t)
     {μ : Measure (WO (Vc D i) (Wc D i))} {𝓕 : Set (WO (Vc D i) (Wc D i))}
@@ -334,19 +330,15 @@ theorem localCoefficient_summable_nontrivialCosets {R : RealDat D A Ks} {i : Fin
 
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Establish `key : ∀ δ : ↥(C b), acoef R i t μ 𝓕 v (dcMap C hCs hC ⟨b, δ⟩) = coef R i t μ 𝓕 (rep (Quotient.out b)) ∧ Bop R i (γ * rep (dcMap C hCs hC ⟨b, δ⟩)) = Bop R i (γ * δ.1) ∧ Bop R i (rep (dcMap C hCs hC ⟨b, δ⟩)) = Bop R i δ.1`. Introduce `δ`. Take `⟨k, hk, hrep⟩ : ∃ k ∈ levW R i, rep (dcMap C hCs hC ⟨b, δ⟩) = δ.1 * k` from `representative_placeSupportedLevelCoset_rel _`. Establish `hδG : δ.1 ∈ GfC (Wc D i)` using `((hC b).1 δ.1 δ.2).1`. Take `⟨k₁, ⟨h1l, -⟩, k₂, ⟨h2l, -⟩, e⟩` from `((hC b).1 δ.1 δ.2).2`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hrG : rep (dcMap C hCs hC ⟨b, δ⟩) ∈ GfC (Wc D i)` using `(levelCosetRepresentative_mem_supportedSet _).1`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Unfold `acoef`. Rewrite using `[hrep, Model.coef_mul_lev R i t hLF μ 𝓕 _ _ hk, e, Model.coef_mul_lev R i t hLF μ 𝓕 _ _ h2l]`. Conclude with `hleft k₁ h1l _`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hrep, ← mul_assoc]`. Use `finite_mul_liftLevel_mem_finite hTL (mul_mem hγ hδG) hk ?_` and prove the remaining obligations. Rewrite using `[mul_assoc, ← hrep]`. Conclude with `mul_mem hγ hrG`. Rewrite using `[hrep]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `finite_mul_liftLevel_mem_finite hTL hδG hk (hrep ▸ hrG)`. Establish `hlast : ∀ δ : ↥(C b), Bop R i γ * (coef R i t μ 𝓕 (rep (Quotient.out b)) • Bop R i δ.1) = Bop R i γ * (acoef R i t μ 𝓕 v (dcMap C hCs hC ⟨b, δ⟩) • Bop R i (rep (dcMap C hCs hC ⟨b, δ⟩)))`. Introduce `δ`. Take `⟨h1, -, h2⟩` from `key δ`. Conclude with `congrArg (Bop R i γ * ·) (congrArg₂ (· • ·) h1.symm h2.symm)`.
+Extract witnesses or component facts from the available result. Chain the equalities or inequalities of the calculation. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Finset.smul_sum, Finset.sum_coe_sort (C b) (fun δ => Bop R i (γ * δ))]`. Use `_ = coef R i t μ 𝓕 (rep (Quotient.out b)) • (Bop R i γ * ∑ δ ∈ C b, Bop R i δ) := by`. Rewrite using `[rightTranslatePairingOperator_hecke_relation (R := R) hTL hf (α := rep (Quotient.out b)) (levelCosetRepresentative_mem_supportedSet (Quotient.out b)).2 (C b) (hCs b) (hC b) hγ]`. Use `_ = ∑ δ ∈ C b, Bop R i γ * (coef R i t μ 𝓕 (rep (Quotient.out b)) • Bop R i δ) := by`.
-
-Rewrite using `[Finset.mul_sum, Finset.smul_sum]`. Use `Finset.sum_congr rfl (fun δ _ => ?_)` and prove the remaining obligations. Apply `ContinuousLinearMap.ext` to reduce the goal to its premises. Introduce `y`. Use `show coef R i t μ 𝓕 (rep (Quotient.out b)) • Bop R i γ (Bop R i δ y) = Bop R i γ ((coef R i t μ 𝓕 (rep (Quotient.out b)) • Bop R i δ) y)`.
-
-Rewrite using `[ContinuousLinearMap.smul_apply, map_smul]`. Use `_ = ∑ δ : ↥(C b), Bop R i γ * (coef R i t μ 𝓕 (rep (Quotient.out b)) • Bop R i δ.1) := (Finset.sum_coe_sort (C b) (fun δ => Bop R i γ * (coef R i t μ 𝓕 (rep (Quotient.out b)) • Bop R i δ))).symm`. Use `_ = ∑ δ : ↥(C b), Bop R i γ * (acoef R i t μ 𝓕 v (dcMap C hCs hC ⟨b, δ⟩) • Bop R i (rep (dcMap C hCs hC ⟨b, δ⟩))) := by`. Conclude with `Finset.sum_congr rfl (fun δ _ => hlast δ)`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem localCoefficient_fiber_sum_eq {R : RealDat D A Ks} {i : Fin D.R.m} {t : T} (hTL : TransLaws R i) (hLF : LevFix R i t)
     {μ : Measure (WO (Vc D i) (Wc D i))} {𝓕 : Set (WO (Vc D i) (Wc D i))}
@@ -404,23 +396,19 @@ end Local
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 T A Ks _ _ _ R i t hLS hTL hLF μ 𝓕 hμ hleft v γ hγ`. Distinguish the cases in `hex : ∃ f, IsFinIdem D v f`. Establish `hf : IsFinIdem D v (fid D v)` using `chosenFinitePlaceIdempotent_spec hex`. Establish `hsa` using `localCoefficient_summable_nontrivialCosets hLS hμ hf (R := R)`. Establish `hs1 : Summable (fun x : LX R i v => acoef R i t μ 𝓕 v x • Bop R i (rep x))`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Summable.of_norm_bounded hsa (fun x => ?_)` and prove the remaining obligations. Rewrite using `[norm_smul]`. Conclude with `mul_le_of_le_one_right (norm_nonneg _) (bop_norm R i _)`. Establish `hs2 : Summable (fun x : LX R i v => acoef R i t μ 𝓕 v x • Bop R i (γ * rep x))`. Use `Summable.of_norm_bounded hsa (fun x => ?_)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[norm_smul]`. Conclude with `mul_le_of_le_one_right (norm_nonneg _) (bop_norm R i _)`. Establish `h1 : HasSum (fun x : LX R i v => Bop R i γ * (acoef R i t μ 𝓕 v x • Bop R i (rep x))) (Bop R i γ * Zop R i t μ 𝓕 v)` using `hs1.hasSum.mul_left (Bop R i γ)`. Use `choose C hCs hC using fun b : Quotient (dcSetoid R i v) => hTL.1 v (fid D v) hf (rep (Quotient.out b)) (levelCosetRepresentative_mem_supportedSet (Quotient.out b)).2`. Set `e` to `Equiv.ofBijective (dcMap C hCs hC) (placeSupportedDoubleCosetMap_bijective C hCs hC)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `g1` using `(e.hasSum_iff).mpr h1`. Establish `g2` using `((e.summable_iff).mpr hs2).hasSum`. Establish `k1` using `g1.sigma (fun b => hasSum_fintype _)`. Establish `k2` using `g2.sigma (fun b => hasSum_fintype _)`. Establish `hfib` using `localCoefficient_fiber_sum_eq (R := R) hTL hLF hleft hf C hCs hC hγ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hfun : (fun b => ∑ c : ↥(C b), ((fun x : LX R i v => acoef R i t μ 𝓕 v x • Bop R i (γ * rep x)) ∘ e) ⟨b, c⟩) = (fun b => ∑ c : ↥(C b), ((fun x : LX R i v => Bop R i γ * (acoef R i t μ 𝓕 v x • Bop R i (rep x))) ∘ e) ⟨b, c⟩)`. Use function extensionality and compare the values at `fun b => hfib b`. Rewrite `k2` using `[hfun]`. Establish `hk` using `k2.unique k1`. Rewrite using `[← hk]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(e.hasSum_iff).mp g2`. Establish `h0` using `chosenFinitePlaceIdempotent_eq_zero_of_not_exists hex`. Establish `hall : ∀ x : LX R i v, rep x = 1` using `fun x => supportedAtIdempotent_zero_eq_one _ (h0 ▸ (levelCosetRepresentative_mem_supportedSet x).2)`. Use `haveI : Subsingleton (LX R i v) := ⟨fun x y => (levelCoset_eq_iff_representative_rel x y).mpr (by`. Rewrite using `[hall x, hall y, inv_one, one_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `(levW R i).one_mem)⟩`. Establish `hs1 : Summable (fun x : LX R i v => acoef R i t μ 𝓕 v x • Bop R i (rep x))` using `Summable.of_finite`. Establish `hF : (fun x : LX R i v => acoef R i t μ 𝓕 v x • Bop R i (γ * rep x)) = fun x => Bop R i γ * (acoef R i t μ 𝓕 v x • Bop R i (rep x))`. Use function extensionality and compare the values at `x`. Rewrite using `[hall x, mul_one, bop_one hTL]`.
-
-Apply `ContinuousLinearMap.ext` to reduce the goal to its premises. Introduce `y`. Use `show (acoef R i t μ 𝓕 v x • Bop R i γ) y = Bop R i γ ((acoef R i t μ 𝓕 v x • (1 : (R.HW i (sg0 D A)).H →L[ℂ] (R.HW i (sg0 D A)).H)) y)`. Rewrite using `[ContinuousLinearMap.smul_apply, ContinuousLinearMap.smul_apply, map_smul]`. Both sides reduce to the same expression.
-
-Rewrite using `[hF]`. Conclude with `hs1.hasSum.mul_left (Bop R i γ)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bop_mul_zop_hasSum : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T : Type) (A : FamIn D.what₂.LL G Pl0 T D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks), ∀ i t, LocSmall R i t → TransLaws R i → LevFix R i t → ∀ (μ : Measure (WO (Vc D i) (Wc D i))) (𝓕 : Set (WO (Vc D i) (Wc D i))), IsCovolOne (ratL (Wc D i) (Vc D i)) μ 𝓕 → (∀ k ∈ levW R i, ∀ g, coef R i t μ 𝓕 (k * g) = coef R i t μ 𝓕 g) → ∀ v, ∀ γ ∈ GfC (Wc D i), HasSum (fun x : Eu.LX R i v => Eu.acoef R i t μ 𝓕 v x • Eu.Bop R i (γ * Eu.rep x)) (Eu.Bop R i γ * Eu.Zop R i t μ 𝓕 v) := by
   intro D G _ _ Pl0 T A Ks _ _ _ R i t hLS hTL hLF μ 𝓕 hμ hleft v γ hγ

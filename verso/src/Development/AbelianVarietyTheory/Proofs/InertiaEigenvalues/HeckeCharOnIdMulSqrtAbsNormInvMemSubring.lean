@@ -12,7 +12,7 @@ open Formalism.L2.Host
 variable {L : Type} [Field L] [NumberField L]
 
 /- English proof (translation)
-Use `(Filter.eventually_cofinite.1 (FractionalIdeal.finite_factors J)).subset fun v hv h => hv ?_` and prove the remaining obligations. Simplify using `[h]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem finite_supp (χ : HChar L) (J : FractionalIdeal (𝓞 L)⁰ L) :
     (Function.mulSupport fun v : HeightOneSpectrum (𝓞 L) => χ.val v ^ FractionalIdeal.count L v J).Finite := by
@@ -20,7 +20,7 @@ theorem finite_supp (χ : HChar L) (J : FractionalIdeal (𝓞 L)⁰ L) :
   simp [h]
 
 /- English proof (translation)
-Unfold `HChar.onId`. Rewrite using `[← finprod_mul_distrib (finite_supp χ _) (finite_supp χ _)]`. Use `finprod_congr fun v => ?_` and prove the remaining obligations. Rewrite using `[FractionalIdeal.count_mul L v ha hb, zpow_add]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem onId_mul (χ : HChar L) {a b : FractionalIdeal (𝓞 L)⁰ L} (ha : a ≠ 0) (hb : b ≠ 0) :
     χ.onId (a * b) = χ.onId a * χ.onId b := by
@@ -30,14 +30,14 @@ theorem onId_mul (χ : HChar L) {a b : FractionalIdeal (𝓞 L)⁰ L} (ha : a �
   rw [FractionalIdeal.count_mul L v ha hb, zpow_add]
 
 /- English proof (translation)
-Unfold `HChar.onId`. Simplify using `[FractionalIdeal.count_one]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem onId_one (χ : HChar L) : χ.onId (1 : FractionalIdeal (𝓞 L)⁰ L) = 1 := by
   unfold HChar.onId
   simp [FractionalIdeal.count_one]
 
 /- English proof (translation)
-Unfold `HChar.onId`. Rewrite using `[finprod_eq_single _ v, FractionalIdeal.count_self, zpow_one]`. Introduce `w hw`. Rewrite using `[FractionalIdeal.count_maximal_coprime L w (Ne.symm hw), zpow_zero]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem onId_prime (χ : HChar L) (v : HeightOneSpectrum (𝓞 L)) :
     χ.onId ((v.asIdeal : Ideal (𝓞 L)) : FractionalIdeal (𝓞 L)⁰ L) = χ.val v := by
@@ -47,15 +47,15 @@ theorem onId_prime (χ : HChar L) (v : HeightOneSpectrum (𝓞 L)) :
   rw [FractionalIdeal.count_maximal_coprime L w (Ne.symm hw), zpow_zero]
 
 /- English proof (translation)
-Proceed by induction on `cc using UniqueFactorizationMonoid.induction_on_prime with`. Consider the case `h₁ => intro h`. Conclude with `absurd rfl h`. Consider the case `h₂ I hI`. Introduce `_ _`.
+Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hI' : I = ⊤` using `Ideal.isUnit_iff.1 hI`. Substitute `hI'` using the available equality. Rewrite using `[FractionalIdeal.coeIdeal_top, onId_one, Ideal.absNorm_top]`. Simplify using the standard rewrite rules. Consider the case `h₃ I p hI hp ih`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `_ hP`. Set `v : HeightOneSpectrum (𝓞 L)` to `⟨p, Ideal.isPrime_of_prime hp, hp.ne_zero⟩`. Establish `hv` using `hP v Ideal.mul_le_left`. Establish `hrest` using `ih hI fun P hle => hP P (le_trans Ideal.mul_le_right hle)`. Rewrite using `[FractionalIdeal.coeIdeal_mul, onId_mul χ (FractionalIdeal.coeIdeal_ne_zero.2 hp.ne_zero) (FractionalIdeal.coeIdeal_ne_zero.2 hI), map_mul, Nat.cast_mul, Real.sqrt_mul (Nat.cast_nonneg _), Units.val_mul, Complex.ofReal_mul]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e : χ.onId ((p : Ideal (𝓞 L)) : FractionalIdeal (𝓞 L)⁰ L) = χ.val v` using `onId_prime χ v`. Rewrite using `[e]`. Establish `: (((χ.val v : ℂˣ) : ℂ) * (χ.onId (I : FractionalIdeal (𝓞 L)⁰ L) : ℂ) * (((Real.sqrt (Ideal.absNorm p) : ℝ) : ℂ) * ((Real.sqrt (Ideal.absNorm I) : ℝ) : ℂ)))⁻¹ = (((χ.val v : ℂˣ) : ℂ) * ((Real.sqrt (Ideal.absNorm v.asIdeal) : ℝ) : ℂ))⁻¹ * (((χ.onId (I : FractionalIdeal (𝓞 L)⁰ L) : …`. Rewrite using `[← mul_inv]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`. Conclude with `O.mul_mem hv hrest`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inv_mem (L : Type) [Field L] [NumberField L] (χ : Formalism.L2.Host.HChar L) (O : Subring ℂ) (cc : Ideal (𝓞 L)) :
     cc ≠ ⊥ → (∀ P : HeightOneSpectrum (𝓞 L), cc ≤ P.asIdeal →

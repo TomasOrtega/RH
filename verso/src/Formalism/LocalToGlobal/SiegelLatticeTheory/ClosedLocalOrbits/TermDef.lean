@@ -61,9 +61,9 @@ def FeqFFun : Prop := ∀ x y : Carrier P, Rel Λ F P x y →
   ((∃ n ∈ NLam Λ F, ∀ a, n (frame F a) = frame x.1 a) ↔ (∃ n ∈ NLam Λ F, ∀ a, n (frame F a) = frame y.1 a))
 
 /- English proof (translation)
-Simplify using `only [NLam, IsAutLam, Set.mem_setOf_eq]`. Use `⟨⟨one_mem _, ?_⟩, fun j x _ => ?_, fun x _ => ?_⟩` and prove the remaining obligations. Unfold `Formalism.HermitianLatticesTheory.gmap`. Use extensionality with `v`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[show (1 : S.V ≃ₗ[E] S.V) x = x from rfl, sub_self]`. Conclude with `zero_mem _`. Rewrite using `[show (1 : S.V ≃ₗ[E] S.V) x = x from rfl, sub_self]`. Conclude with `zero_mem _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem one_mem_NLam {T₀ : E} (F₀ : LFlag S r T₀) : (1 : S.V ≃ₗ[E] S.V) ∈ NLam Λ F₀ := by
   simp only [NLam, IsAutLam, Set.mem_setOf_eq]
@@ -77,7 +77,7 @@ theorem one_mem_NLam {T₀ : E} (F₀ : LFlag S r T₀) : (1 : S.V ≃ₗ[E] S.V
     exact zero_mem _
 
 /- English proof (translation)
-Unfold `DCRel`. Conclude with `⟨1, one_mem_NLam Λ F, 1, one_mem_NLam Λ F₁, fun _ => rfl, rfl⟩`.
+Replace the relevant objects with their definitions. Supply the required witnesses or components.
 -/
 theorem dcrel_refl (F₁ : LFlag S r T') : DCRel Λ F F₁ F₁ := by
   unfold DCRel
@@ -86,29 +86,29 @@ theorem dcrel_refl (F₁ : LFlag S r T') : DCRel Λ F F₁ F₁ := by
 variable {Λ F P}
 
 /- English proof (translation)
-Conclude with `congrArg (Quot.lift f hf) h`.
+A detailed English derivation is pending.
 -/
 theorem const_of_mk {β : Sort*} (f : Carrier P → β) (hf : ∀ x y, Rel Λ F P x y → f x = f y)
     {x y : Carrier P} (h : mk Λ F P x = mk Λ F P y) : f x = f y := by
   exact congrArg (Quot.lift f hf) h
 
 /- English proof (translation)
-Unfold `Rep`. Conclude with `⟨x.2, rfl⟩`.
+Replace the relevant objects with their definitions. Supply the required witnesses or components.
 -/
 theorem rep_mk (x : Carrier P) : Rep Λ F P (mk Λ F P x) x.1 := by
   unfold Rep
   exact ⟨x.2, rfl⟩
 
 /- English proof (translation)
-Conclude with `const_of_mk (fun y : Carrier P => Gval F y.1) hG (Quot.out_eq (mk Λ F P x))`.
+A detailed English derivation is pending.
 -/
 theorem Gt_mk (hG : GFun Λ F P) (x : Carrier P) : Gt Λ F P (mk Λ F P x) = Gval F x.1 := by
   exact const_of_mk (fun y : Carrier P => Gval F y.1) hG (Quot.out_eq (mk Λ F P x))
 
 /- English proof (translation)
-Unfold `IsRel`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨F', ⟨h, e⟩, hr⟩`. Establish `e'` using `const_of_mk (fun y : Carrier P => Relevant K F.fl y.1.fl) (fun a b r => propext (hR a b r)) e`. Conclude with `cast e' hr`.
+Replace the relevant objects with their definitions. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hr`. Conclude with `⟨x.1, rep_mk x, hr⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isRel_mk (K : Type) [Field K] [Algebra K E] (hR : RelFun Λ F P K) (x : Carrier P) :
     IsRel Λ F P K (mk Λ F P x) ↔ Relevant K F.fl x.1.fl := by
@@ -121,9 +121,9 @@ theorem isRel_mk (K : Type) [Field K] [Algebra K E] (hR : RelFun Λ F P K) (x : 
     exact ⟨x.1, rep_mk x, hr⟩
 
 /- English proof (translation)
-Unfold `IsGen`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨F', ⟨h, e⟩, hr⟩`. Establish `e'` using `const_of_mk (fun y : Carrier P => IsGeneric Λ g F y.1) (fun a b r => propext (hR a b r)) e`. Conclude with `cast e' hr`.
+Replace the relevant objects with their definitions. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hr`. Conclude with `⟨x.1, rep_mk x, hr⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isGen_mk (g : ℕ) (hR : GenFun Λ F P g) (x : Carrier P) :
     IsGen Λ F P g (mk Λ F P x) ↔ IsGeneric Λ g F x.1 := by
@@ -136,9 +136,9 @@ theorem isGen_mk (g : ℕ) (hR : GenFun Λ F P g) (x : Carrier P) :
     exact ⟨x.1, rep_mk x, hr⟩
 
 /- English proof (translation)
-Unfold `IsFeqF`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨F', ⟨h, e⟩, hr⟩`. Establish `e'` using `const_of_mk (fun y : Carrier P => ∃ n ∈ NLam Λ F, ∀ a, n (frame F a) = frame y.1 a) (fun a b r => propext (hR a b r)) e`. Conclude with `cast e' hr`.
+Replace the relevant objects with their definitions. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hr`. Conclude with `⟨x.1, rep_mk x, hr⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isFeqF_mk (hR : FeqFFun Λ F P) (x : Carrier P) :
     IsFeqF Λ F P (mk Λ F P x) ↔ ∃ n ∈ NLam Λ F, ∀ a, n (frame F a) = frame x.1 a := by
@@ -152,9 +152,9 @@ theorem isFeqF_mk (hR : FeqFFun Λ F P) (x : Carrier P) :
     exact ⟨x.1, rep_mk x, hr⟩
 
 /- English proof (translation)
-Unfold `AtPt`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨F', ⟨h, e⟩, hg, hc⟩`. Establish `e1` using `const_of_mk (fun y : Carrier P => Gval F y.1) hG e`. Establish `e2` using `const_of_mk (fun y : Carrier P => IsInCell (ZhatOM (ZhatL F y.1)) w) (fun a b r => propext (hC a b r w)) e`.
+Replace the relevant objects with their definitions. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `⟨fun h0 => hg (e1.trans h0), cast e2 hc⟩`. Introduce and unpack `⟨hg, hc⟩`. Conclude with `⟨x.1, rep_mk x, hg, hc⟩`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem atPt_mk (hG : GFun Λ F P) (hC : CellFun Λ F P) (x : Carrier P) (w : Point E (r + 1)) :
     AtPt Λ F P (mk Λ F P x) w ↔ Gval F x.1 ≠ 0 ∧ IsInCell (ZhatOM (ZhatL F x.1)) w := by
@@ -239,7 +239,7 @@ def Term.toSig {u u' : D.what₂.Word} {F0 : FlagG (VS D) D.R.rS ((Tu D u : ℕ)
     Σ Λ : {Λ // Λ ∈ what₂}, TermsOf D u' F0 Λ.1 := ⟨⟨t.lam, t.mem⟩, t.cls⟩
 
 /- English proof (translation)
-Introduce `t1 t2 h`. Consider the cases of `t1`. Consider the cases of `t2`. Consider the cases of `h`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Both sides reduce to the same expression.
 -/
 theorem Term.toSig_injective {u u' : D.what₂.Word} {F0 : FlagG (VS D) D.R.rS ((Tu D u : ℕ) : D.host.E)}
     {what₂ : Finset (Submodule (𝓞 D.host.E) (VS D).V)} :
@@ -251,7 +251,7 @@ theorem Term.toSig_injective {u u' : D.what₂.Word} {F0 : FlagG (VS D) D.R.rS (
   rfl
 
 /- English proof (translation)
-Establish `hfin' : ∀ Λ : {Λ // Λ ∈ what₂}, {c : TermsOf D u' F0 Λ.1 | AtPt Λ.1 (lf D F0) (PD D Λ.1 (lf D F0) u') c w}.Finite` using `fun Λ => hfin hsig F0 Λ.1 (hrows.1 Λ.1 Λ.2) w`. Use `(Set.finite_iUnion fun Λ : {Λ // Λ ∈ what₂} => (hfin' Λ).image (fun c => (⟨Λ.1, Λ.2, c⟩ : Term D u u' F0 what₂))).subset ?_` and prove the remaining obligations. Introduce and unpack `⟨l, m, c⟩ ht`. Conclude with `Set.mem_iUnion.2 ⟨⟨l, m⟩, c, ht, rfl⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem term_atPt_finite {u u' : D.what₂.Word} (hfin : TermsAtFinite D u u') (hsig : (VS D).SigOK)
     (F0 : FlagG (VS D) D.R.rS ((Tu D u : ℕ) : D.host.E)) (what₂ : Finset (Submodule (𝓞 D.host.E) (VS D).V))
@@ -266,13 +266,13 @@ theorem term_atPt_finite {u u' : D.what₂.Word} (hfin : TermsAtFinite D u u') (
   exact Set.mem_iUnion.2 ⟨⟨l, m⟩, c, ht, rfl⟩
 
 /- English proof (translation)
-Take `⟨_, hfix, hX⟩` from `hΛ`. Take `⟨_, _, hlift, hconv⟩` from `hfix`. Unfold `PD`. Use `⟨hlift, ?_, ?_⟩` and prove the remaining obligations. Unfold `IsAdmissible AdmWit`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Use `⟨1, fun a b hab => Matrix.one_apply_ne hab.ne', fun a => Matrix.one_apply_eq a, fun b => ?_⟩` and prove the remaining obligations. Establish `h0 : frameAct (frame (lf D F0)) (1 : Matrix (Fin (D.R.rS + 1)) (Fin (D.R.rS + 1)) (𝓞 D.host.E)) b = frame (lf D F0) b`. Unfold `frameAct`. Rewrite using `[Finset.sum_eq_single b]`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `a _ hab`. Simplify using `[Matrix.one_apply_ne hab]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ b) h`. Rewrite using `[h0, sub_self]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Unfold `ModG`. Introduce `P _`. Conclude with `zero_mem _`. Unfold `FrameOK`. Conclude with `⟨hconv, hX⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem pd_self {u : D.what₂.Word} (F0 : FlagG (VS D) D.R.rS ((Tu D u : ℕ) : D.host.E))
     (Λ : Submodule (𝓞 D.host.E) (VS D).V) (hΛ : IsRowLat D F0 Λ) :
@@ -310,7 +310,7 @@ def TermFeqFIff (D : D7) (u : D.what₂.Word) : Prop :=
       IsFeqF Λ (lf D F0) (PD D Λ (lf D F0) u) t ↔ t = mk _ _ _ ⟨lf D F0, pd_self F0 Λ hΛ⟩
 
 /- English proof (translation)
-Unfold `Term.FeqF IsFeqF`. Conclude with `⟨lf D F0, rep_mk _, 1, one_mem_NLam _ _, fun _ => rfl⟩`.
+Replace the relevant objects with their definitions. Supply the required witnesses or components.
 -/
 theorem idTerm_FeqF {u : D.what₂.Word} (F0 : FlagG (VS D) D.R.rS ((Tu D u : ℕ) : D.host.E))
     (what₂ : Finset (Submodule (𝓞 D.host.E) (VS D).V)) (hrows : IsRowReps D F0 what₂)
@@ -319,13 +319,13 @@ theorem idTerm_FeqF {u : D.what₂.Word} (F0 : FlagG (VS D) D.R.rS ((Tu D u : �
   exact ⟨lf D F0, rep_mk _, 1, one_mem_NLam _ _, fun _ => rfl⟩
 
 /- English proof (translation)
-Introduce `F0 Λ hΛ t`. Unfold `IsFeqF`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨F', ⟨h, rfl⟩, n, hn, hfr⟩`. Use `symm`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Use symmetry to reverse the relation.
 
-Apply `Quot.sound` to reduce the goal to its premises. Unfold `Rel DCRel`. Establish `hz : F'.zt = F'.fl.z`. Take `⟨⟨_, hz⟩, _⟩` from `h`. Conclude with `hz`.
+Reduce the claim to the hypotheses of an applicable result. Replace the relevant objects with their definitions. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hlast` using `hfr (Fin.last _)`. Simplify using `only [frame, FlagG.fvec, Fin.snoc_last] at hlast`. Use `⟨n, hn, 1, one_mem_NLam _ _, fun a => (hfr a).symm, ?_⟩` and prove the remaining obligations. Rewrite using `[hz]`. Conclude with `hlast.symm`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `rfl`. Conclude with `⟨lf D F0, rep_mk _, 1, one_mem_NLam _ _, fun _ => rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem termFeqFIff_holds (D : D7) (u : D.what₂.Word) : TermFeqFIff D u := by
   intro F0 Λ hΛ t

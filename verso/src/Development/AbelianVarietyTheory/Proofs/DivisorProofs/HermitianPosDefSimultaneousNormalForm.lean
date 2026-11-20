@@ -6,9 +6,9 @@ open Matrix
 namespace GlobalTheory.SimNormal
 
 /- English proof (translation)
-Use extensionality with `i j`. Establish `e` using `congrFun (congrFun h i) j`. Simplify using `only [diagonal_mul, mul_diagonal] at e ⊢`. Distinguish the cases in `hg : g i j = 0`. Simplify using `[hg]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Establish `: d i = d j` using `mul_right_cancel₀ hg (e.trans (mul_comm _ _))`. Rewrite using `[hf i j this, mul_comm]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem diagonal_comm_of_comm {n : ℕ} {d f : Fin n → ℂ} {g : Matrix (Fin n) (Fin n) ℂ}
     (h : diagonal d * g = g * diagonal d) (hf : ∀ i j, d i = d j → f i = f j) :
@@ -22,45 +22,41 @@ theorem diagonal_comm_of_comm {n : ℕ} {d f : Fin n → ℂ} {g : Matrix (Fin n
     rw [hf i j this, mul_comm]
 
 /- English proof (translation)
-Introduce `n J P hJ hJd hP hpos`. Take `⟨Q₀, hQ₀⟩` from `GlobalTheory.ThK.SqIntMaxCpt.exists_congr_one hP hpos`. Use `set M := Q₀.1ᴴ * J * Q₀.1 with hMdef`. Establish `hM : M.IsHermitian` using `isHermitian_conjTranspose_mul_mul _ hJ`. Use `set U : Matrix (Fin n) (Fin n) ℂ := hM.eigenvectorUnitary.1 with hU`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : Uᴴ * U = 1` using `Matrix.mem_unitaryGroup_iff'.1 hM.eigenvectorUnitary.2`. Establish `h1' : U * Uᴴ = 1` using `Matrix.mem_unitaryGroup_iff.1 hM.eigenvectorUnitary.2`. Use `set d : Fin n → ℝ := hM.eigenvalues with hd`. Use `set D : Matrix (Fin n) (Fin n) ℂ := diagonal fun i => (d i : ℂ) with hD`. Establish `h3 : Uᴴ * M * U = D`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hM.conjStarAlgAut_star_eigenvectorUnitary` as an intermediate fact. Simplify `this` using `[Unitary.conjStarAlgAut_apply, Matrix.star_eq_conjTranspose, Function.comp_def]`. Establish `hdne : ∀ i, d i ≠ 0`. Establish `hUd : Uᴴ.det * U.det = 1` using `by rw [← det_mul, h1, det_one]`. Establish `hQd : Q₀.1.det ≠ 0` using `((Matrix.isUnit_iff_isUnit_det _).1 Q₀.isUnit).ne_zero`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hDd : D.det ≠ 0`. Rewrite using `[← h3, hMdef, det_mul, det_mul, det_mul, det_mul]`. Establish `hU1 : Uᴴ.det ≠ 0` using `left_ne_zero_of_mul_eq_one hUd`. Establish `hU2 : U.det ≠ 0` using `right_ne_zero_of_mul_eq_one hUd`. Establish `hQ2 : Q₀.1ᴴ.det ≠ 0` using `by rw [det_conjTranspose]; simpa using hQd`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. The claim follows by propositional logic. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `only [ne_eq, mul_eq_zero, not_or]`. The claim follows by propositional logic. Introduce `i hi`. Apply `hDd` to reduce the goal to its premises. Rewrite using `[hD, det_diagonal]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.prod_eq_zero (Finset.mem_univ i) (by simp [hi])`. Establish `hMU : U * D * Uᴴ = M`. Rewrite using `[← h3]`. Simplify using `only [← Matrix.mul_assoc, h1', Matrix.one_mul]`. Rewrite using `[Matrix.mul_assoc, h1', Matrix.mul_one]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `set s : Fin n → ℝ := fun i => (Real.sqrt |d i|)⁻¹ with hs`. Establish `hsq : ∀ i, 0 < Real.sqrt |d i|` using `fun i => Real.sqrt_pos.2 (abs_pos.2 (hdne i))`. Set `S : GL (Fin n) ℂ` to `⟨diagonal fun i => (s i : ℂ), diagonal fun i => (Real.sqrt |d i| : ℂ), by`. Rewrite using `[diagonal_mul_diagonal, ← diagonal_one]`. Use `congr 1`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `i`. Simplify using `only [hs, Complex.ofReal_inv]; exact inv_mul_cancel₀ (by exact_mod_cast (hsq i).ne'), by`. Rewrite using `[diagonal_mul_diagonal, ← diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `i`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Simplify using `only [hs, Complex.ofReal_inv]; exact mul_inv_cancel₀ (by exact_mod_cast (hsq i).ne')⟩`. Set `Ug : GL (Fin n) ℂ` to `⟨U, Uᴴ, h1', h1⟩`. Use `⟨fun i => decide (0 < d i), Q₀ * Ug * S, ?_, fun g hgP hgJ => ?_⟩` and prove the remaining obligations. Establish `hSh : (S.1)ᴴ = S.1` using `by show (diagonal fun i => (s i : ℂ))ᴴ = _`. Rewrite using `[diagonal_conjTranspose]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Use `congr 1`. Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules. Establish `: (Q₀ * Ug * S).1ᴴ * J * (Q₀ * Ug * S).1 = S.1 * (Uᴴ * M * U) * S.1`. Simplify using `only [Units.val_mul, conjTranspose_mul, hSh, Matrix.mul_assoc, hMdef]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Rewrite using `[this, h3]`. Use `show diagonal _ * diagonal _ * diagonal _ = _`. Rewrite using `[diagonal_mul_diagonal, diagonal_mul_diagonal]`. Use `congr 1`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Use function extensionality and compare the values at `i`. Establish `hsi : s i * s i = |d i|⁻¹`. Simplify using `only [hs]`. Rewrite using `[← mul_inv, Real.mul_self_sqrt (abs_nonneg _)]`. Establish `: (s i : ℂ) * d i * s i = ((d i * (s i * s i) : ℝ) : ℂ)` using `by push_cast; ring`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[this, hsi]`. Break down `lt_or_gt_of_ne (hdne i) with h | h` into its components or cases. Simplify using `[h, not_lt.2 h.le, abs_of_neg h, (hdne i)]`. Simplify using `[h, abs_of_pos h, (hdne i)]`. Establish `hi : (Q₀⁻¹).1ᴴ * Q₀.1ᴴ = 1`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← Matrix.conjTranspose_mul, Units.mul_inv, Matrix.conjTranspose_one]`. Establish `hPi : (Q₀⁻¹).1ᴴ * (Q₀⁻¹).1 = P`. Use `congrArg (fun A => (Q₀⁻¹).1ᴴ * A * (Q₀⁻¹).1) hQ₀` as an intermediate fact. Simplify `this.symm` using `only [← Matrix.mul_assoc, hi, Matrix.one_mul, Matrix.mul_one, Units.mul_inv_cancel_right]`. Establish `hJi : (Q₀⁻¹).1ᴴ * M * (Q₀⁻¹).1 = J`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hMdef]`. Simplify using `only [← Matrix.mul_assoc, hi, Matrix.one_mul, Units.mul_inv_cancel_right]`. Use `set g' := Uᴴ * (Q₀⁻¹).1 * g * Q₀.1 * U with hg'`. Establish `hg'1 : g'ᴴ * g' = 1`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [hg', conjTranspose_mul, conjTranspose_conjTranspose, Matrix.mul_assoc]`. Use `_ = Uᴴ * (Q₀.1ᴴ * P * Q₀.1) * U := by`. Rewrite using `[h1', Matrix.mul_one, hPi, hgP]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = 1 := by rw [hQ₀, Matrix.mul_one, h1]`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hg'D : g'ᴴ * D * g' = D`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [hg', conjTranspose_mul, conjTranspose_conjTranspose, Matrix.mul_assoc]`. Use `_ = Uᴴ * (Q₀.1ᴴ * J * Q₀.1) * U := by`. Rewrite using `[hMU, hJi, hgJ]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [Matrix.mul_assoc]`. Use `_ = D := by rw [← hMdef, h3]`. Establish `hg'2 : g' * g'ᴴ = 1` using `mul_eq_one_comm.1 hg'1`. Establish `hcomm : D * g' = g' * D`. Combine the equalities or inequalities in the displayed calculation.
-
-Establish `hQinv : ((Q₀ * Ug * S)⁻¹).1 * g * (Q₀ * Ug * S).1 = (S⁻¹).1 * g' * S.1`. Simplify using `only [_root_.mul_inv_rev, Units.val_mul, hg', Matrix.mul_assoc]`. Both sides reduce to the same expression. Establish `hSc : (S⁻¹).1 * g' = g' * (S⁻¹).1` using `diagonal_comm_of_comm (f := fun i => (Real.sqrt |d i| : ℂ)) hcomm fun i j h => by`. Establish `: d i = d j` using `by exact_mod_cast h`.
-
-Simplify using `[this]`. Establish `hfin : (S⁻¹).1 * g' * S.1 = g'`. Rewrite using `[hSc, Matrix.mul_assoc, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.mul_one]`. Rewrite using `[hQinv, hfin]`. Conclude with `hg'1`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem simultaneous_normal_form : ∀ {n : ℕ} {J P : Matrix (Fin n) (Fin n) ℂ}, J.IsHermitian → J.det ≠ 0 → P.IsHermitian →
     (∀ x : Fin n → ℂ, x ≠ 0 → 0 < (star x ⬝ᵥ P *ᵥ x).re) →

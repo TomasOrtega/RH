@@ -13,7 +13,7 @@ namespace PositivityTheory.Lit1.PTN
 attribute [local instance 2000] Rep.hV2
 
 /- English proof (translation)
-Apply the tactic sequence `apply invCmp' <;> assumption`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem invCmp (Kf : FiniteSubfield) [NumberField Kf.1] [IsAlgClosure Kf.1 (AlgebraicClosure ℚ)]
     (S : Set (HeightOneSpectrum (𝓞 Kf.1))) [Fintype S] {l r : ℕ} [Fact l.Prime] (hr : 0 < r)

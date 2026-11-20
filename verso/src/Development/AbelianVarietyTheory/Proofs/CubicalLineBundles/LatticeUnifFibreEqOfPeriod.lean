@@ -9,21 +9,21 @@ open scoped CategoryTheory.Obj UpperHalfPlane
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `hU R _ P v s L c₀ ω hg hv H hc hL P' φ hφ u`. Take `⟨v', hv', -⟩` from `existsUnique_isVecOver hφ.2.1.1 v`. Establish `htan : IsTangent v'` using `IsVecOver.isTangent hφ.2.1 hv' hv`. Take `⟨w, hw, -⟩` from `(GlobalTheory.T.holomorphicUniformisation_tangent_unimodular_riemannForm hU P' u).1 v' htan`. Take `⟨hw0, hwL⟩` from `H P' φ v' u w hφ hv' hw`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hg' : P'.g = 1` using `hφ.1.trans hg`. Establish `i0 : Fin P'.g` using `⟨0, by omega⟩`. Establish `: Subsingleton (Fin P'.g)` using `by rw [hg']; infer_instance`. Establish `hwi : w i0 ≠ 0`. Introduce `h`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `hw0` to reduce the goal to its premises. Use function extensionality and compare the values at `i`. Rewrite using `[Subsingleton.elim i i0, h]`. Both sides reduce to the same expression. Use `⟨c₀ * w i0, mul_ne_zero hc hwi, fun z => ?_⟩` and prove the remaining obligations.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨t, ht⟩ : ∃ t, t = z i0 / w i0` from `⟨_, rfl⟩`. Establish `hz : z = t • w`. Use function extensionality and compare the values at `i`. Rewrite using `[Subsingleton.elim i i0, Pi.smul_apply, smul_eq_mul, ht, div_mul_cancel₀ _ hwi]`. Prove the components needed by the constructor for the conclusion.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Introduce `hzm`. Rewrite `hzm` using `[hz]`. Take `⟨m, n, hmn⟩` from `(hL t).1 ((hwL t).2 hzm)`. Use `⟨m, n, ?_⟩` and prove the remaining obligations. Rewrite using `[hz]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `i`. Rewrite using `[Subsingleton.elim i i0, Pi.smul_apply, smul_eq_mul, hmn]`. Expand and normalize the polynomial expressions, which then agree. Introduce and unpack `⟨m, n, hmn⟩`. Establish `hzi : z i0 = c₀ * w i0 * (m + n * ω)` using `congrFun hmn i0`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `htL : t ∈ L.lattice`. Rewrite using `[hL]`. Use `⟨m, n, ?_⟩` and prove the remaining obligations. Rewrite using `[ht, hzi]`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Rewrite using `[hz]`. Conclude with `(hwL t).1 htL`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lattice_unif_fibre_eq_of_period : ThetaUnifAV → ∀ (R : Type) [CommRing R] (P : Out.PolAV (Sp R)) (v : epsR R ⟶ P.A) (s : R →+* ℂ) (L : PeriodPair) (c₀ ω : ℂ), P.g = 1 → IsTangent v → (∀ (P' : Out.PolAV (Sp ℂ)) (φ' : P'.A.left ⟶ P.A.left) (v' : epsR ℂ ⟶ P'.A) (u' : HolUnif P'.A P'.L P'.g) (w' : Fin P'.g → ℂ), IsPolFibre s P P' φ' → IsVecOver s φ' v v' → u'.IsDiff w' v' → w' ≠ 0 ∧ ∀ z : ℂ, z ∈ L.lattice ↔ z • w' ∈ u'.Λ) → c₀ ≠ 0 → (∀ z, z ∈ L.lattice ↔ ∃ m n : ℤ, z = c₀ * (m + n * ω)) → ∀ (P' : Out.PolAV (Sp ℂ)) (φ : P'.A.left ⟶ P.A.left), IsPolFibre s P P' φ → ∀ u : HolUnif P'.A P'.L P'.g, ∃ c : ℂ, c ≠ 0 ∧ ∀ z, z ∈ u.Λ ↔ ∃ m n : ℤ, z = fun _ => c * (m + n * ω) := by
   intro hU R _ P v s L c₀ ω hg hv H hc hL P' φ hφ u

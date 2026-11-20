@@ -21,7 +21,7 @@ namespace UpperTheory.Gal.Ord.CntStalk
 variable {k : Type} [Field k]
 
 /- English proof (translation)
-Substitute `hx` using the available equality. Conclude with `⟨(Scheme.stalkClosedPointTo g).hom, Scheme.Spec_stalkClosedPointTo_fromSpecStalk g⟩`.
+Substitute using the available equality. Supply the required witnesses or components.
 -/
 private theorem exists_stalk_factor {X : Scheme.{0}} (x : X) {T : Type} [CommRing T] [IsLocalRing T] (g : Sp T ⟶ X)
     (hx : g (IsLocalRing.closedPoint T) = x) :
@@ -33,7 +33,7 @@ private def stalkAlg (K : Over (Sp k)) (x : K.left) : CommRingCat.of k ⟶ K.lef
   (Scheme.ΓSpecIso (CommRingCat.of k)).inv ≫ K.hom.appTop ≫ K.left.presheaf.germ ⊤ x trivial
 
 /- English proof (translation)
-Rewrite using `[stalkAlg, Spec.map_comp, Spec.map_comp, ← Scheme.fromSpecStalk_toSpecΓ_assoc, ← Scheme.toSpecΓ_naturality, Category.assoc, Category.assoc, toSpecΓ_SpecMap_ΓSpecIso_inv, Category.comp_id]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem spec_stalkAlg (K : Over (Sp k)) (x : K.left) :
     Spec.map (stalkAlg K x) = K.left.fromSpecStalk x ≫ K.hom := by
@@ -42,11 +42,9 @@ private theorem spec_stalkAlg (K : Over (Sp k)) (x : K.left) :
     Category.comp_id]
 
 /- English proof (translation)
-Establish `hA : IsAffine K.left` using `isAffine_of_isAffineHom K.hom`. Establish `h1 : K.hom.appTop.hom.Finite` using `K.hom.finite_appTop`. Establish `h0 : (Scheme.ΓSpecIso (CommRingCat.of k)).inv.hom.Finite` using `RingHom.Finite.of_surjective _ (Scheme.ΓSpecIso (CommRingCat.of k)).commRingCatIsoToRingEquiv.symm.surjective`. Establish `h01 : (K.hom.appTop.hom.comp (Scheme.ΓSpecIso (CommRingCat.of k)).inv.hom).Finite` using `h1.comp h0`. Use `letI : Algebra k Γ(K.left, ⊤) := (K.hom.appTop.hom.comp (Scheme.ΓSpecIso (CommRingCat.of k)).inv.hom).toAlgebra`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Equip the data with the indicated structure.
 
-Use `haveI : Module.Finite k Γ(K.left, ⊤) := h01`. Use `haveI : IsArtinianRing Γ(K.left, ⊤) := IsArtinianRing.of_finite k _`. Use `letI := TopCat.Presheaf.algebra_section_stalk K.left.presheaf (⟨x, trivial⟩ : (⊤ : K.left.Opens))`. Establish `hloc` using `(isAffineOpen_top K.left).isLocalization_stalk ⟨x, trivial⟩`. Establish `hs : Function.Surjective (algebraMap Γ(K.left, ⊤) (K.left.presheaf.stalk x))` using `IsArtinianRing.localization_surjective ((isAffineOpen_top K.left).primeIdealOf ⟨x, trivial⟩).asIdeal.primeCompl _`.
-
-Establish `h2 : (K.left.presheaf.germ ⊤ x trivial).hom.Finite` using `RingHom.Finite.of_surjective _ hs`. Conclude with `h2.comp h01`.
+Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem stalkAlg_finite (K : Over (Sp k)) [IsFinite K.hom] (x : K.left) : (stalkAlg K x).hom.Finite := by
   have hA : IsAffine K.left := isAffine_of_isAffineHom K.hom
@@ -74,9 +72,9 @@ private def stalkPt (K : Over (Sp k)) (x : K.left) :
   Over.homMk (K.left.fromSpecStalk x) (spec_stalkAlg K x).symm
 
 /- English proof (translation)
-Take `⟨u, hu⟩` from `exists_stalk_factor x g.left hx`. Set `u' : K.left.presheaf.stalk x ⟶ CommRingCat.of T` to `CommRingCat.ofHom u`. Establish `hc : stalkAlg K x ≫ u' = CommRingCat.ofHom (algebraMap k T)`. Apply `Spec.map_injective` to reduce the goal to its premises. Rewrite using `[Spec.map_comp, spec_stalkAlg, ← Category.assoc]`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(congrArg (· ≫ K.hom) hu).trans (Over.w g)`. Use `⟨{ u with commutes' := fun a => ?_ }, ?_⟩` and prove the remaining obligations. Conclude with `congrArg (fun f => f.hom a) hc`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Conclude with `hu`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 private theorem exists_alg (K : Over (Sp k)) (x : K.left) {T : Type} [CommRing T] [IsLocalRing T] [Algebra k T]
     (g : Over.mk (spMap (algebraMap k T)) ⟶ K) (hx : g.left (IsLocalRing.closedPoint T) = x) :
@@ -93,7 +91,7 @@ private theorem exists_alg (K : Over (Sp k)) (x : K.left) {T : Type} [CommRing T
     exact hu
 
 /- English proof (translation)
-Use `haveI : IsLocalHom (TrivSqZeroExt.fstHom k k k).toRingHom := ⟨fun a ha => TrivSqZeroExt.isUnit_iff_isUnit_fst.mpr ha⟩`. Conclude with `Spec_closedPoint (R := CommRingCat.of (DualNumber k)) (S := CommRingCat.of k) (f := CommRingCat.ofHom (TrivSqZeroExt.fstHom k k k).toRingHom)`.
+A detailed English derivation is pending.
 -/
 private theorem closed_eps : (spMap (TrivSqZeroExt.fstHom k k k).toRingHom) (IsLocalRing.closedPoint k) =
     IsLocalRing.closedPoint (DualNumber k) := by
@@ -103,11 +101,11 @@ private theorem closed_eps : (spMap (TrivSqZeroExt.fstHom k k k).toRingHom) (IsL
     (f := CommRingCat.ofHom (TrivSqZeroExt.fstHom k k k).toRingHom)
 
 /- English proof (translation)
-Use `set g₁ : Over.mk (spMap (algebraMap k k)) ⟶ K := 1 with hg₁`. Use `set x₀ : K.left := g₁.left (IsLocalRing.closedPoint k) with hx₀`. Use `haveI : Module.Finite k (K.left.presheaf.stalk x₀) := stalkAlg_finite K x₀`. Take `⟨c, hc⟩` from `exists_alg K x₀ g₁ rfl`. Use `⟨K.left.presheaf.stalk x₀, inferInstance, inferInstance, inferInstance, inferInstance, stalkPt K x₀, ?_, fun x => GlobalTheory.T.finite_group_scheme_stalk_length_constant k K inferInstance x x₀, ⟨c, hc⟩, fun v hv => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `show Mono (K.left.fromSpecStalk x₀) infer_instance`. Apply `exists_alg` to reduce the goal to its premises. Establish `h1 : spMap (algebraMap k k) = 𝟙 (Sp k)` using `by show Spec.map (CommRingCat.ofHom (RingHom.id k)) = _`. Rewrite using `[CommRingCat.ofHom_id, Spec.map_id]`. Establish `hg : g₁.left = Over.Hom.left η`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[hg₁, GlobalTheory.HTSummand.LieMod.one_left, h1, Category.id_comp]`. Unfold `IsTangent at hv`. Rewrite using `[← closed_eps, hx₀, hg, ← hv]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 private theorem exists_stalkPt [IsAlgClosed k] (K : Over (Sp k)) [GrpObj K] [IsFinite K.hom] :
     ∃ (B : Type) (_ : CommRing B) (_ : IsLocalRing B) (_ : Algebra k B) (_ : Module.Finite k B)
@@ -139,27 +137,25 @@ end UpperTheory.Gal.Ord.CntStalk
 namespace UpperTheory.Gal.Ord.CntLie
 
 /- English proof (translation)
-Take `⟨g, hg⟩` from `GlobalTheory.AbelianDim.exists_relDim k o.A o.ab`. Establish `HL : LieExact o.A` using `(GlobalTheory.abelianDeRham.2.1 k o.A g o.ab hg).1`. Set `a` to `OActN.toF D o.act`. Establish `e1 : ∀ (c : 𝓞 D.F) (V : GlobalTheory.Serre.Lie a), (c • V).hom = V.hom ≫ o.act.act (algebraMap (𝓞 D.F) D.O c)` using `fun c V => rfl`. Establish `e2 : ∀ (l : k) (V : GlobalTheory.Serre.Lie a), (l • V).hom = GlobalTheory.GrpTangent.epsScale l ≫ V.hom` using `fun l V => rfl`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e3 : (0 : GlobalTheory.Serre.Lie a).hom = 1` using `rfl`. Take `⟨h1, ⟨h₀, hne, hspan⟩, -⟩` from `UpperTheory.Gal.Ord.lie p D R b N hN hNp hm k hk β o i w f hw hq hf π`. Use `set T := HL.toLie a with hT`. Establish `Tker : ∀ h, T h = 0 ↔ h ∈ Fil o.A` using `fun h => by`. Rewrite using `[← LinearMap.mem_ker, hT, LieExact.ker_toLie]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `Tcrys : ∀ (c : 𝓞 D.F) h, T (UpperTheory.Gal.Ord.hom o c h) = c • T h` using `fun c h => GlobalTheory.HTLieRho.toLie_crys o HL c h`. Establish `hzero : ∀ c ∈ w, β (b.t i c) = 0` using `fun c hc => by`. Rewrite `hc` using `[← hw]`. Conclude with `RingHom.mem_ker.mp hc`. Establish `stepA : ∀ c ∈ w, ∀ h, c • T (UpperTheory.Gal.Ord.hom o π.ε h) = 0` using `fun c hc h => by`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Tcrys, Tker]`. Use `h1 c h` as an intermediate fact. Rewrite `this` using `[hzero c hc, zero_smul, sub_zero]`. Then use the resulting hypothesis. Establish `killed : ∀ (V : GlobalTheory.Serre.Lie a), KilledBy o w V.hom → ∀ c ∈ w, c • V = 0` using `fun V hV c hc => GlobalTheory.Serre.Lie.ext (by rw [e1, e3]; exact hV c hc)`. Establish `stepB : ∀ V : GlobalTheory.Serre.Lie a, (∀ c ∈ w, c • V = 0) → ∃ h, V = T (UpperTheory.Gal.Ord.hom o π.ε h)` using `fun V hV => by`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨h', rfl⟩` from `LieExact.toLie_surjective HL a V`. Use `⟨h', ?_⟩` and prove the remaining obligations. Rewrite using `[Tcrys]`. Establish `h2` using `hV (π.ε - 1) π.one`. Rewrite `h2` using `[sub_smul, one_smul, sub_eq_zero]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `h2.symm`. Establish `stepC : ∀ h, ∃ l : k, T (UpperTheory.Gal.Ord.hom o π.ε h) = l • T (UpperTheory.Gal.Ord.hom o π.ε h₀)` using `fun h => by`. Take `⟨l, hl⟩` from `hspan h`. Use `⟨l, ?_⟩` and prove the remaining obligations. Rewrite using `[← map_smul, ← sub_eq_zero, ← map_sub, Tker]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hl`. Establish `ne0 : T (UpperTheory.Gal.Ord.hom o π.ε h₀) ≠ 0` using `fun h => hne ((Tker _).mp h)`. Use `⟨⟨(T (UpperTheory.Gal.Ord.hom o π.ε h₀)).hom, (T (UpperTheory.Gal.Ord.hom o π.ε h₀)).isTangent, fun h => ne0 (GlobalTheory.Serre.Lie.ext (by rw [h, e3])), ?_⟩, ?_⟩` and prove the remaining obligations. Introduce `c hc`. Rewrite using `[← e1, stepA c hc, e3]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Introduce `v₁ v₂ hv₁ hv₂ hk₁ hk₂ hne₁`. Take `⟨g₁, hg₁⟩` from `stepB _ (killed (GlobalTheory.Serre.Lie.mk a v₁ hv₁) hk₁)`. Take `⟨g₂, hg₂⟩` from `stepB _ (killed (GlobalTheory.Serre.Lie.mk a v₂ hv₂) hk₂)`. Take `⟨l₁, hl₁⟩` from `stepC g₁`. Take `⟨l₂, hl₂⟩` from `stepC g₂`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `hl₁0 : l₁ ≠ 0`. Introduce and unpack `rfl`. Apply `hne₁` to reduce the goal to its premises. Use `congrArg GlobalTheory.Serre.Lie.hom (hg₁.trans hl₁)` as an intermediate fact. Rewrite `this` using `[zero_smul, e3]`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `this`. Use `⟨l₂ / l₁, ?_⟩` and prove the remaining obligations. Establish `h3 : GlobalTheory.Serre.Lie.mk a v₂ hv₂ = (l₂ / l₁) • GlobalTheory.Serre.Lie.mk a v₁ hv₁`. Rewrite using `[hg₂, hl₂, hg₁, hl₁, smul_smul, div_mul_cancel₀ _ hl₁0]`. Use `congrArg GlobalTheory.Serre.Lie.hom h3` as an intermediate fact.
-
-Rewrite `this` using `[e2]`. Conclude with `this`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem lie_line (p : ℕ) [Fact p.Prime] (D : Datum p) (R : Type) [CommRing R] (b : Base D R) (N : ℕ) (hN : 3 ≤ N) (hNp : N.Coprime p) (hm : D.m = 1)
     (k : Type) [Field k] [IsAlgClosed k] (hk : (p : k) = 0) (β : R →+* k) (o : Obj b N (spMap β)) (i : Fin D.a) (w : Ideal (𝓞 D.F)) (f : ℕ)
@@ -231,9 +227,9 @@ namespace UpperTheory.Gal.Ord.CntPt
 variable {k : Type} [Field k] {B : Type} [CommRing B] [Algebra k B] {A : Over (Sp k)} [GrpObj A]
 
 /- English proof (translation)
-Establish `key : ∀ d : B →ₐ[k] k, RingHom.ker d.toRingHom = IsLocalRing.maximalIdeal B` using `fun d => IsLocalRing.eq_maximalIdeal (RingHom.ker_isMaximal_of_surjective _ (fun a => ⟨algebraMap k B a, by simp⟩))`. Use extensionality with `b`. Establish `hm : b - algebraMap k B (c b) ∈ RingHom.ker c'.toRingHom`. Rewrite using `[key c', ← key c, RingHom.mem_ker]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite `hm` using `[RingHom.mem_ker]`. Simplify using `only [AlgHom.toRingHom_eq_coe, RingHom.coe_coe, map_sub, AlgHom.commutes, Algebra.algebraMap_self, RingHom.id_apply, sub_eq_zero] at hm`. Conclude with `hm.symm`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem algHom_unique [IsLocalRing B] (c c' : B →ₐ[k] k) : c = c' := by
   have key : ∀ d : B →ₐ[k] k, RingHom.ker d.toRingHom = IsLocalRing.maximalIdeal B := fun d =>
@@ -258,16 +254,16 @@ private def scA (l : k) : DualNumber k →ₐ[k] DualNumber k :=
       simp [epsScaleR, TrivSqZeroExt.algebraMap_eq_inl] }
 
 /- English proof (translation)
-Use `show TrivSqZeroExt.snd (epsScaleR l x) = _`. Simplify using `[epsScaleR]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem snd_scA (l : k) (x : DualNumber k) : TrivSqZeroExt.snd (scA l x) = l * TrivSqZeroExt.snd x := by
   show TrivSqZeroExt.snd (epsScaleR l x) = _
   simp [epsScaleR]
 
 /- English proof (translation)
-Establish `h1` using `congrArg (fun f => f.left) h`. Simplify using `only [Over.comp_left] at h1`. Establish `h2 : (spOver u).left = (spOver u').left` using `(cancel_mono z.left).mp h1`. Establish `h3 : CommRingCat.ofHom (u : B →+* T) = CommRingCat.ofHom (u' : B →+* T)` using `Spec.map_injective h2`. Use extensionality with `b`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Conclude with `congrArg (fun f => f.hom b) h3`.
+A detailed English derivation is pending.
 -/
 private theorem spOver_inj (z : Over.mk (spMap (algebraMap k B)) ⟶ A) (hz : Mono z.left) {T : Type} [CommRing T] [Algebra k T]
     {u u' : B →ₐ[k] T} (h : spOver u ≫ z = spOver u' ≫ z) : u = u' := by
@@ -279,11 +275,11 @@ private theorem spOver_inj (z : Over.mk (spMap (algebraMap k B)) ⟶ A) (hz : Mo
   exact congrArg (fun f => f.hom b) h3
 
 /- English proof (translation)
-Establish `hcu : (fstA (k` using `k)).comp u = c := algHom_unique _ _`. Establish `h1` using `congrArg (fun f => f.left) hc`. Simplify using `only [Over.comp_left, GlobalTheory.HTSummand.LieMod.one_left] at h1`. Establish `h2 : (spOver (fstA (k` using `k)) ≫ spOver u).left = (spOver c).left := by`. Rewrite using `[spOver_comp, hcu]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h2` using `[Over.comp_left]`. Unfold `IsTangent`. Rewrite using `[Over.comp_left, ← Category.assoc]`. Use `erw [h2, h1]`. Simplify using `only [Algebra.algebraMap_self]`.
+Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `show Spec.map (CommRingCat.ofHom (RingHom.id k)) ≫ _ = _`. Rewrite using `[CommRingCat.ofHom_id, Spec.map_id, Category.id_comp]`.
+A detailed English derivation is pending.
 -/
 private theorem tangent_of [IsLocalRing B] (z : Over.mk (spMap (algebraMap k B)) ⟶ A) (c : B →ₐ[k] k) (hc : spOver c ≫ z = 1)
     (u : B →ₐ[k] DualNumber k) : IsTangent (spOver u ≫ z) := by
@@ -301,9 +297,9 @@ private theorem tangent_of [IsLocalRing B] (z : Over.mk (spMap (algebraMap k B))
   rw [CommRingCat.ofHom_id, Spec.map_id, Category.id_comp]
 
 /- English proof (translation)
-Establish `h1` using `congrArg (fun f => f.left) hc`. Simplify using `only [Over.comp_left, GlobalTheory.HTSummand.LieMod.one_left] at h1`. Establish `hw` using `Over.w (spOver (inlA (k := k)))`. Simplify using `only [Over.mk_hom] at hw`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[GlobalTheory.HTSummand.LieMod.one_left, ← spOver_comp, Category.assoc, Over.comp_left, Over.comp_left, h1, ← Category.assoc, hw]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem const_eq_one (z : Over.mk (spMap (algebraMap k B)) ⟶ A) (c : B →ₐ[k] k) (hc : spOver c ≫ z = 1) :
     spOver (inlA.comp c) ≫ z = (1 : epsR k ⟶ A) := by
@@ -316,7 +312,7 @@ private theorem const_eq_one (z : Over.mk (spMap (algebraMap k B)) ⟶ A) (c : B
     ← Category.assoc, hw]
 
 /- English proof (translation)
-Use `spOver_inj z hz (h.trans (const_eq_one z c hc).symm)` as an intermediate fact. Introduce `x`. Rewrite using `[this]`. Simplify using `[inlA, Algebra.ofId_apply, TrivSqZeroExt.algebraMap_eq_inl]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem eq_const_of_one (z : Over.mk (spMap (algebraMap k B)) ⟶ A) (hz : Mono z.left) (c : B →ₐ[k] k)
     (hc : spOver c ≫ z = 1) (u : B →ₐ[k] DualNumber k) (h : spOver u ≫ z = (1 : epsR k ⟶ A)) :
@@ -327,7 +323,7 @@ private theorem eq_const_of_one (z : Over.mk (spMap (algebraMap k B)) ⟶ A) (hz
   simp [inlA, Algebra.ofId_apply, TrivSqZeroExt.algebraMap_eq_inl]
 
 /- English proof (translation)
-Establish `he : GlobalTheory.GrpTangent.epsScale l = spOver (scA l)` using `Over.OverMorphism.ext rfl`. Rewrite using `[he, ← Category.assoc, spOver_comp]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 private theorem scale_comp (z : Over.mk (spMap (algebraMap k B)) ⟶ A) (l : k) (u : B →ₐ[k] DualNumber k) :
     GlobalTheory.GrpTangent.epsScale l ≫ spOver u ≫ z = spOver ((scA l).comp u) ≫ z := by
@@ -335,9 +331,9 @@ private theorem scale_comp (z : Over.mk (spMap (algebraMap k B)) ⟶ A) (l : k) 
   rw [he, ← Category.assoc, spOver_comp]
 
 /- English proof (translation)
-Establish `hs` using `(isSimpleModule_self_iff_isUnit.mp (Module.length_eq_one_iff.mp h)).2`. Use `AlgHom.ext fun b => ?_` and prove the remaining obligations. Establish `hb : b = algebraMap k B (c b)`. Assume the negation of the conclusion as `hne`. Establish `hu` using `(hs (b - algebraMap k B (c b)) (sub_ne_zero.mpr hne)).map c`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Simplify using `at hu`. Rewrite using `[hb, AlgHom.commutes, AlgHom.commutes]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 private theorem const_of_length [IsLocalRing B] (h : Module.length B B = 1) (c : B →ₐ[k] k) (u : B →ₐ[k] DualNumber k) :
     u = inlA.comp c := by
@@ -352,57 +348,49 @@ private theorem const_of_length [IsLocalRing B] (h : Module.length B B = 1) (c :
 end UpperTheory.Gal.Ord.CntPt
 
 /- English proof (translation)
-Introduce `p _ D R _ b N hN hNp hm k _ _ hk β o i₀ w f hw hq hf π`. Use `haveI : CharP k p := (CharP.charP_iff_prime_eq_zero (Fact.out : p.Prime)).mpr hk`. Establish `hPne : p ^ f ≠ 0` using `pow_ne_zero f (Fact.out : p.Prime).ne_zero`. Establish `hP2 : 2 ≤ p ^ f` using `le_trans (Fact.out : p.Prime).two_le (Nat.le_self_pow hf.ne' p)`. Establish `hwP : w.IsPrime` using `hw ▸ RingHom.ker_isPrime _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpw : ((p : ℕ) : 𝓞 D.F) ∈ w`. Rewrite using `[← hw, RingHom.mem_ker, RingHom.comp_apply, map_natCast, map_natCast, hk]`. Establish `hw0 : w ≠ ⊥`. Introduce and unpack `rfl`. Rewrite `hq` using `[Ideal.absNorm_bot]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hPne hq.symm`. Establish `hwM : w.IsMaximal` using `hwP.isMaximal hw0`. Take `⟨K, _, i, hiMon, hiMono, hdeg, hiff⟩` from `GlobalTheory.HTTors.htTorsion p D R b N (Sp k) (spMap β) o w hw0`. Establish `hKiff : ∀ (T : Over (Sp k)) (x : T ⟶ o.A), GlobalTheory.IwLevel.InSub i x ↔ KilledBy o w x` using `fun T x => (hiff T x).trans ((GlobalTheory.HTTors.killedBy_map o w x).trans Iff.rfl)`. Establish `hqK : (toUnit K).left = K.hom` using `by simpa using Over.w (toUnit K)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Use `haveI : IsFinite K.hom := hqK ▸ hdeg.fin`. Take `⟨B, _, _, _, _, y, hyMono, hlen, ⟨c, hc⟩, hfac⟩` from `UpperTheory.Gal.Ord.CntStalk.exists_stalkPt K`. Set `z : Over.mk (spMap (algebraMap k B)) ⟶ o.A` to `y ≫ i`. Establish `hzMono : Mono z.left` using `by show Mono (y ≫ i).left`. Rewrite using `[Over.comp_left]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `mono_comp _ _`. Establish `hzc : spOver c ≫ z = 1` using `by show spOver c ≫ y ≫ i = 1`. Rewrite using `[← Category.assoc, hc]`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Rewrite using `[Over.comp_left, GlobalTheory.HTSummand.LieMod.one_left, GlobalTheory.HTSummand.LieMod.one_left, Category.assoc]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `congr 1`. Rewrite using `[← Over.comp_left, IsMonHom.one_hom]`. Establish `hkill : ∀ {T : Type} [CommRing T] [Algebra k T] (u : B →ₐ[k] T), KilledBy o w (spOver u ≫ z)`. Introduce `T _ _ u`. Conclude with `(hKiff _ _).mp ⟨spOver u ≫ y, Category.assoc _ _ _⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Set `pt : ↥(Sp k)` to `IsLocalRing.closedPoint k`. Establish `hI` using `GlobalTheory.T.finrank_fiber_eq_card_sections_mul_length k K.left K.hom inferInstance (Module.length B B) hlen pt`. Establish `hrank : Scheme.Hom.finrank K.hom pt = (Ideal.absNorm w ^ D.m) ^ D.n`. Rewrite using `[← hqK]`. Conclude with `hdeg.rank pt`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hI` using `[hrank, hm, pow_one, hq]`. Set `e₁ : (Over.mk (𝟙 (Sp k)) ⟶ K) ≃ {s : Sp k ⟶ K.left // s ≫ K.hom = 𝟙 (Sp k)}` to `{ toFun := fun g => ⟨g.left, by simpa using Over.w g⟩ invFun := fun s => Over.homMk s.1 (by simpa using s.2) left_inv := fun g => Over.OverMorphism.ext rfl right_inv := fun s => rfl }`. Set `e₂` to `GlobalTheory.UPel.HT.ES.OrdCount.subEquiv (T := Over.mk (𝟙 (Sp k))) i (fun g : Over.mk (𝟙 (Sp k)) ⟶ o.A => KilledBy o w g) (hKiff _)`. Establish `hcard : Nat.card {s : Sp k ⟶ K.left // s ≫ K.hom = 𝟙 (Sp k)} = Nat.card {g : Over.mk (𝟙 (Sp k)) ⟶ o.A // KilledBy o w g}` using `(Nat.card_congr e₁.symm).trans (Nat.card_congr e₂)`. Rewrite `hI` using `[hcard]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `set M := Nat.card {g : Over.mk (𝟙 (Sp k)) ⟶ o.A // KilledBy o w g} with hM`. Establish `hM0 : M ≠ 0`. Introduce `h0`. Rewrite `hI` using `[h0, Nat.cast_zero, zero_mul]`. Conclude with `pow_ne_zero _ hPne (by exact_mod_cast hI)`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Choose the witnesses or unpack the hypotheses as in `⟨L, hL⟩ : ∃ L : ℕ, Module.length B B = L := by`. Establish `hne : Module.length B B ≠ ⊤`. Introduce `htop`. Rewrite `hI` using `[htop, ENat.mul_top (by exact_mod_cast hM0)]`. Conclude with `ENat.coe_ne_top _ hI`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨L, hL⟩` from `ENat.ne_top_iff_exists.mp hne`. Conclude with `⟨L, hL.symm⟩`. Rewrite `hI` using `[hL]`. Establish `hIN : (p ^ f) ^ D.n = M * L` using `by exact_mod_cast hI`. Set `ψ` to `o.act.act (algebraMap (𝓞 D.F) D.O ((p : ℕ) : 𝓞 D.F))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `eψ : {g : Over.mk (𝟙 (Sp k)) ⟶ o.A // g ≫ ψ = 1 ∧ KilledBy o w g} ≃ {g : Over.mk (𝟙 (Sp k)) ⟶ o.A // KilledBy o w g}` using `Equiv.subtypeEquivRight fun g => ⟨fun h => h.2, fun h => ⟨h _ hpw, h⟩⟩`. Use `haveI : Finite {g : Over.mk (𝟙 (Sp k)) ⟶ o.A // KilledBy o w g} := Nat.finite_of_card_ne_zero hM0`. Use `haveI : Finite {g : Over.mk (𝟙 (Sp k)) ⟶ o.A // g ≫ ψ = 1 ∧ KilledBy o w g} := Finite.of_equiv _ eψ.symm`. Take `⟨j', hj'⟩` from `GlobalTheory.UPel.HT.ES.card_kerW_eq_pow o o ψ (o.act.hom _) (fun a => by rw [← o.act.mul, ← o.act.mul, ← map_mul, ← map_mul, mul_comm]) w hwM (𝟙 (Sp k)) inferInstance`. Establish `hMpow : M = (p ^ f) ^ j'`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[hM, ← Nat.card_congr eψ, hj', hq]`. Take `⟨⟨v₀, hv₀t, hv₀1, hv₀k⟩, hline⟩` from `UpperTheory.Gal.Ord.CntLie.lie_line p D R b N hN hNp hm k hk β o i₀ w f hw hq hf π`. Take `⟨v₀', hv₀'⟩` from `(hKiff _ v₀).mpr hv₀k`. Establish `hv₀'t : IsTangent v₀'`. Unfold `IsTangent at hv₀t ⊢`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `(cancel_mono i.left).mp` to reduce the goal to its premises. Rewrite using `[Category.assoc, ← Over.comp_left, hv₀', hv₀t, ← Over.comp_left, IsMonHom.one_hom]`. Take `⟨u₀, hu₀⟩` from `hfac v₀' hv₀'t`. Establish `hL1 : L ≠ 1`. Introduce `hL1`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hlen1 : Module.length B B = 1` using `by rw [hL, hL1]; rfl`. Establish `hu` using `UpperTheory.Gal.Ord.CntPt.const_of_length hlen1 c u₀`. Apply `hv₀1` to reduce the goal to its premises. Rewrite using `[← hv₀', ← hu₀, hu, Category.assoc]`. Conclude with `UpperTheory.Gal.Ord.CntPt.const_eq_one z c hzc`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hdim : ∀ (u v : B →ₐ[k] DualNumber k), (∃ x, TrivSqZeroExt.snd (u x) ≠ 0) → ∃ l : k, ∀ x, TrivSqZeroExt.snd (v x) = l * TrivSqZeroExt.snd (u x)`. Introduce `u v ⟨x, hx⟩`. Establish `h1 : spOver u ≫ z ≠ 1` using `fun h => hx (UpperTheory.Gal.Ord.CntPt.eq_const_of_one z hzMono c hzc u h x)`. Take `⟨l, hl⟩` from `hline _ _ (UpperTheory.Gal.Ord.CntPt.tangent_of z c hzc u) (UpperTheory.Gal.Ord.CntPt.tangent_of z c hzc v) (hkill u) (hkill v) h1`. Rewrite `hl` using `[UpperTheory.Gal.Ord.CntPt.scale_comp]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `hv` using `UpperTheory.Gal.Ord.CntPt.spOver_inj z hzMono hl`. Use `⟨l, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[hv]`. Conclude with `UpperTheory.Gal.Ord.CntPt.snd_scA l (u x)`. Distinguish the cases in `hlt : ((p ^ f : ℕ) : ℕ∞) < Module.length B B`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `right`. Take `⟨T, _, _, τ, j, u, hj, hpow, x, hx⟩` from `UpperTheory.Gal.Ord.art p k B f hf hdim hlt`. Use `⟨spOver (τ.comp u) ≫ z, UpperTheory.Gal.Ord.CntPt.tangent_of z c hzc _, fun h => hx (UpperTheory.Gal.Ord.CntPt.eq_const_of_one z hzMono c hzc _ h x), T, inferInstance, inferInstance, τ, j, spOver u ≫ z, hj, hpow, hkill u, ?_⟩` and prove the remaining obligations. Rewrite using `[← spOver_comp, Category.assoc]`. Both sides reduce to the same expression.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `left push_neg at hlt`. Establish `hLle : L ≤ p ^ f`. Rewrite `hlt` using `[hL]`. Conclude with `hlt` after adjusting the coercions. Establish `hL0 : L ≠ 0`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `rfl`. Rewrite `hIN` using `[mul_zero]`. Conclude with `pow_ne_zero _ hPne hIN`. Establish `hjle : j' ≤ D.n`. Assume the negation of the conclusion as `hcon`.
+It suffices to derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 
-Use `push_neg at hcon`. Establish `h1 : (p ^ f) ^ D.n < (p ^ f) ^ j'` using `Nat.pow_lt_pow_right hP2 hcon`. Establish `h2 : (p ^ f) ^ j' ≤ (p ^ f) ^ j' * L` using `Nat.le_mul_of_pos_right _ (Nat.pos_of_ne_zero hL0)`. Rewrite `h1` using `[hIN, hMpow]`. Conclude with `absurd (lt_of_lt_of_le h1 h2) (lt_irrefl _)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hLeq : L = (p ^ f) ^ (D.n - j')`. Establish `h3 : (p ^ f) ^ D.n = (p ^ f) ^ j' * (p ^ f) ^ (D.n - j')`. Rewrite using `[← pow_add, Nat.add_sub_cancel' hjle]`. Rewrite `h3` using `[hIN, hMpow]`. Conclude with `Nat.eq_of_mul_eq_mul_left (pow_pos (Nat.pos_of_ne_zero hPne) j') h3`.
-
-Establish `hd : D.n - j' = 1`. Break down `Nat.lt_trichotomy (D.n - j') 1 with h | h | h` into its components or cases. It suffices to derive a contradiction. Apply `hL1` to reduce the goal to its premises. Rewrite using `[hLeq, Nat.lt_one_iff.mp h, pow_zero]`.
-
-Conclude with `h`. It suffices to derive a contradiction. Establish `h4 : (p ^ f) ^ 2 ≤ (p ^ f) ^ (D.n - j')` using `Nat.pow_le_pow_right (Nat.pos_of_ne_zero hPne) h`. Establish `h5 : p ^ f < (p ^ f) ^ 2`. Rewrite using `[pow_two]`.
-
-Use the polynomial consequences of the given equalities and inequalities. Establish `h6 : (p ^ f) ^ (D.n - j') ≤ p ^ f`. Rewrite using `[← hLeq]`. Conclude with `hLle`. Conclude with `absurd (lt_of_lt_of_le h5 (h4.trans h6)) (lt_irrefl _)`.
-
-Establish `hjn : j' = D.n - 1` using `by omega`. Use `⟨inferInstance, hwP, hpw, ?_⟩` and prove the remaining obligations. Use `show M = _`. Rewrite using `[hMpow, hjn, hm, Nat.one_mul, hq]`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.Ord.cnt :
     ∀ (p : ℕ) [Fact p.Prime] (D : Datum p) (R : Type) [CommRing R] (b : Base D R) (N : ℕ), 3 ≤ N → N.Coprime p → D.m = 1 →

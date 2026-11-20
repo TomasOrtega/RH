@@ -12,9 +12,9 @@ noncomputable section
 namespace GlobalTheory.Mean4O.Cauchy
 
 /- English proof (translation)
-Establish `h1 : fderiv ℝ (fun x => f x + g x) =ᶠ[𝓝 z] fun x => fderiv ℝ f x + fderiv ℝ g x` using `by filter_upwards [hf.eventually (by simp), hg.eventually (by simp)] with x hx hy`. Conclude with `fderiv_fun_add (hx.differentiableAt (by norm_num)) (hy.differentiableAt (by norm_num))`. Establish `hf' : DifferentiableAt ℝ (fderiv ℝ f) z` using `(hf.fderiv_right (m := 1) (by norm_num)).differentiableAt (by norm_num)`. Establish `hg' : DifferentiableAt ℝ (fderiv ℝ g) z` using `(hg.fderiv_right (m := 1) (by norm_num)).differentiableAt (by norm_num)`. Unfold `levi`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1.fderiv_eq, fderiv_fun_add hf' hg']`. Simplify using `only [add_apply]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem levi_add_divisor {e : ℕ} {f g : (Fin e → ℂ) → ℝ} {z : Fin e → ℂ} (hf : ContDiffAt ℝ 2 f z) (hg : ContDiffAt ℝ 2 g z)
     (w : Fin e → ℂ) : levi (fun x => f x + g x) z w = levi f z w + levi g z w := by
@@ -31,9 +31,9 @@ theorem levi_add_divisor {e : ℕ} {f g : (Fin e → ℂ) → ℝ} {z : Fin e �
   ring
 
 /- English proof (translation)
-Establish `h1 : fderiv ℝ (fun x => c * f x) =ᶠ[𝓝 z] fun x => c • fderiv ℝ f x` using `by filter_upwards [hf.eventually (by simp)] with x hx`. Conclude with `fderiv_const_mul (hx.differentiableAt (by norm_num)) c`. Establish `hf' : DifferentiableAt ℝ (fderiv ℝ f) z` using `(hf.fderiv_right (m := 1) (by norm_num)).differentiableAt (by norm_num)`. Unfold `levi`. Rewrite using `[h1.fderiv_eq, fderiv_fun_const_smul hf']`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem levi_const_mul_divisor {e : ℕ} {f : (Fin e → ℂ) → ℝ} {z : Fin e → ℂ} (c : ℝ) (hf : ContDiffAt ℝ 2 f z)
     (w : Fin e → ℂ) : levi (fun x => c * f x) z w = c * levi f z w := by
@@ -55,7 +55,7 @@ def Loc (A : FinHolAtlas e X) (P : LocPot X) : Prop :=
   ∀ j, ∀ y ∈ (A.chart j).target, ContDiffAt ℝ 2 (P.φ ((A.chart j).symm y) ∘ (A.chart j).symm) y
 
 /- English proof (translation)
-Establish `ho : IsOpen ((A.chart j).target ∩ (A.chart j).symm ⁻¹' U)` using `(A.chart j).isOpen_inter_preimage_symm hU`. Conclude with `((hf j).contDiffAt (ho.mem_nhds ⟨hy, hy'⟩)).of_le (WithTop.coe_le_coe.2 (le_top : (2 : ℕ∞) ≤ ⊤))`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem contDiffAt_of_smoothOn {U : Set X} (hU : IsOpen U) {f : X → ℝ} (hf : A.SmoothOn U f) (j : Fin A.n)
     {y : Fin e → ℂ} (hy : y ∈ (A.chart j).target) (hy' : (A.chart j).symm y ∈ U) :
@@ -64,47 +64,47 @@ theorem contDiffAt_of_smoothOn {U : Set X} (hU : IsOpen U) {f : X → ℝ} (hf :
   exact ((hf j).contDiffAt (ho.mem_nhds ⟨hy, hy'⟩)).of_le (WithTop.coe_le_coe.2 (le_top : (2 : ℕ∞) ≤ ⊤))
 
 /- English proof (translation)
-Introduce `j _ hy` and use `contDiffAt_of_smoothOn (P.isOpen_U _) (h.1 _) j hy (P.mem_U _)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem loc_pot {P : LocPot X} (h : IsPotential A P) : Loc A P := fun j _ hy =>
   contDiffAt_of_smoothOn (P.isOpen_U _) (h.1 _) j hy (P.mem_U _)
 
 /- English proof (translation)
-Introduce `j _ hy` and use `contDiffAt_of_smoothOn isOpen_univ h j hy (Set.mem_univ _)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem loc_fun {f : X → ℝ} (h : A.Smooth f) : Loc A (LocPot.ofFun f) := fun j _ hy =>
   contDiffAt_of_smoothOn isOpen_univ h j hy (Set.mem_univ _)
 
 /- English proof (translation)
-Introduce `j y hy` and use `(hP j y hy).add (hQ j y hy)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem loc_add {P Q : LocPot X} (hP : Loc A P) (hQ : Loc A Q) : Loc A (P + Q) := fun j y hy =>
   (hP j y hy).add (hQ j y hy)
 
 /- English proof (translation)
-Introduce `j y hy` and use `contDiffAt_const.mul (hP j y hy)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem loc_rsmul {P : LocPot X} (c : ℝ) (hP : Loc A P) : Loc A (P.rsmul c) := fun j y hy =>
   contDiffAt_const.mul (hP j y hy)
 
 /- English proof (translation)
-The claim follows from `levi_add_divisor (hP j y hy) (hQ j y hy) w`.
+A detailed English derivation is pending.
 -/
 theorem leviAt_add {P Q : LocPot X} (hP : Loc A P) (hQ : Loc A Q) (j : Fin A.n) {y : Fin e → ℂ}
     (hy : y ∈ (A.chart j).target) (w : Fin e → ℂ) : leviAt A (P + Q) j y w = leviAt A P j y w + leviAt A Q j y w :=
   levi_add_divisor (hP j y hy) (hQ j y hy) w
 
 /- English proof (translation)
-The claim follows from `levi_const_mul_divisor c (hP j y hy) w`.
+A detailed English derivation is pending.
 -/
 theorem leviAt_rsmul {P : LocPot X} (c : ℝ) (hP : Loc A P) (j : Fin A.n) {y : Fin e → ℂ}
     (hy : y ∈ (A.chart j).target) (w : Fin e → ℂ) : leviAt A (P.rsmul c) j y w = c * leviAt A P j y w :=
   levi_const_mul_divisor c (hP j y hy) w
 
 /- English proof (translation)
-Rewrite using `[continuous_iff_continuousAt]`. Introduce `x`. Take `⟨j, hj⟩` from `A.cover x`. Establish `h1` using `(contDiffAt_of_smoothOn isOpen_univ h j ((A.chart j).map_source hj) (Set.mem_univ _)).continuousAt`. Establish `h2 : ContinuousAt ((f ∘ (A.chart j).symm) ∘ A.chart j) x` using `h1.comp ((A.chart j).continuousAt hj)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `h2.congr ?_` and prove the remaining obligations. Use `filter_upwards [(A.chart j).open_source.mem_nhds hj] with z hz`. Simplify using `[(A.chart j).left_inv hz]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem continuous_of_smooth {f : X → ℝ} (h : A.Smooth f) : Continuous f := by
   rw [continuous_iff_continuousAt]
@@ -117,13 +117,13 @@ theorem continuous_of_smooth {f : X → ℝ} (h : A.Smooth f) : Continuous f := 
   simp [(A.chart j).left_inv hz]
 
 /- English proof (translation)
-Introduce `j` and use `(hf j).sub (hg j)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem smooth_sub {f g : X → ℝ} (hf : A.Smooth f) (hg : A.Smooth g) : A.Smooth (f - g) := fun j =>
   (hf j).sub (hg j)
 
 /- English proof (translation)
-Take `⟨-, T, c, h1, h2⟩` from `hQ`. Conclude with `⟨hP, T, c, h1, fun j y hy hz w => (h j y hy w).trans (h2 j y hy hz w)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem comb_of_leviEq {Z : Set X} {r : X → ℝ} {Om : LocPot X} {K : ℝ} {P Q : LocPot X} (hP : IsPotential A P)
     (h : LeviEq A P Q) (hQ : Comb A Z r Om K Q) : Comb A Z r Om K P := by
@@ -133,7 +133,7 @@ theorem comb_of_leviEq {Z : Set X} {r : X → ℝ} {Om : LocPot X} {K : ℝ} {P 
 end One
 
 /- English proof (translation)
-Introduce `j y hy w`. Establish `l` using `fun x => loc_pot (K.firstChern_isPotential x σ)`. Rewrite using `[K.isOneCochain_add _ _ σ j y hy w, leviAt_add (l _) (l _) j hy, K.isOneCochain_add _ _ σ j y hy w, leviAt_add (l _) (l _) j hy, K.firstChern_smul_leviEq _ _ σ j y hy w, leviAt_rsmul _ (l _) j hy, K.c1_ar g hg σ j y hy w, hv j y hy w, ha j y hy w, leviAt_add (loc_add (loc_pot hP) …`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem first_chern_form_levi_sum {e : ℕ} {M : Man e} (K : Calc M) (v a : K.V) (s : ℝ) (g : M.Fun) (hg : M.Smooth g) (σ : Fin (M.n + 1))
     {P Q : LocPot (M.X σ)} (hP : IsPotential (M.A σ) P) (hQ : IsPotential (M.A σ) Q)
@@ -147,7 +147,7 @@ theorem first_chern_form_levi_sum {e : ℕ} {M : Man e} (K : Calc M) (v a : K.V)
     leviAt_add (loc_pot hP) (loc_rsmul _ (loc_pot hQ)) j hy, leviAt_rsmul _ (loc_pot hQ) j hy]
 
 /- English proof (translation)
-The claim follows from `|K.top (v + K.ar g) - K.top (v + K.ar g')| ≤ (e + 1 : ℝ) * (M.κ * ∑ σ, b σ) := by have hs : M.Smooth (g' - g) := fun σ => smooth_sub (hg' σ) (hg σ) have e1 : v + K.ar g + K.ar (g' - g) = v + K.ar g' := by rw [map_sub]; abel have h := GlobalTheory.Mean4O.top_add_ar_sub e M K (v + …`.
+A detailed English derivation is pending.
 -/
 theorem top_sub_le {e : ℕ} {M : Man e} (K : Calc M) (v : K.V) (g g' : M.Fun) (hg : M.Smooth g) (hg' : M.Smooth g')
     (S : ∀ σ, LocPot (M.X σ) → Prop) (h1 : ∀ σ, S σ (K.c1 (v + K.ar g) σ)) (h2 : ∀ σ, S σ (K.c1 (v + K.ar g') σ))
@@ -171,13 +171,13 @@ theorem top_sub_le {e : ℕ} {M : Man e} (K : Calc M) (v : K.V) (g g' : M.Fun) (
   · simpa [hl] using h1 σ
 
 /- English proof (translation)
-Establish `h1 : (1 : ℝ) ≤ R` using `le_trans (Real.one_le_exp (by norm_num)) hR`. Establish `h0 : 0 < R` using `by linarith`. Establish `hl : 2 ≤ Real.log R` using `by rw [Real.le_log_iff_exp_le h0]; exact hR`. Establish `hs0 : 0 < Real.sqrt R` using `Real.sqrt_pos.2 h0`. Establish `hs1 : Real.sqrt R ≤ R`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Real.sqrt_le_left h0.le]`. Use the polynomial consequences of the given equalities and inequalities. Establish `hp : 1 ≤ Real.log R ^ (e + 1)` using `one_le_pow₀ (by linarith)`. Establish `a1 : 1 / R ≤ Real.log R ^ (e + 1) / Real.sqrt R` using `div_le_div₀ (by linarith) hp hs0 hs1`. Establish `a2 : Real.log (Real.sqrt R) ^ (e + 1) / Real.sqrt R ≤ Real.log R ^ (e + 1) / Real.sqrt R`.
+Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Real.log_sqrt h0.le]`. Use `gcongr`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `a3 : 0 ≤ Real.log (Real.sqrt R) ^ (e + 1) / Real.sqrt R`. Rewrite using `[Real.log_sqrt h0.le]`.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the signs of the components of the expression.
 
-Check the signs of the components of the expression. Establish `b1 : C * (1 / R) ≤ |C| * (Real.log R ^ (e + 1) / Real.sqrt R)` using `mul_le_mul (le_abs_self C) a1 (by positivity) (abs_nonneg C)`. Establish `b2 : C * (Real.log (Real.sqrt R) ^ (e + 1) / Real.sqrt R) ≤ |C| * (Real.log R ^ (e + 1) / Real.sqrt R)` using `mul_le_mul (le_abs_self C) a2 a3 (abs_nonneg C)`. Establish `c1` using `mul_le_mul_of_nonneg_left (add_le_add b1 b2) (show 0 ≤ 2 * K by linarith)`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem rate_le (e : ℕ) {K C R : ℝ} (hK : 0 ≤ K) (hR : Real.exp 2 ≤ R) :
     2 * K / R * C + 2 * K * (C * Real.log (Real.sqrt R) ^ (e + 1) / Real.sqrt R) ≤
@@ -206,23 +206,21 @@ theorem rate_le (e : ℕ) {K C R : ℝ} (hK : 0 ≤ K) (hR : Real.exp 2 ≤ R) :
     _ = _ := by ring
 
 /- English proof (translation)
-Introduce `D Y T hF Λ`. Use `choose K hK using fun c => hF c Λ`. Use `choose C hC using fun c σ => GlobalTheory.T.mixed_integral_tail_bound_exists _ _ ((T.M c).A σ) ((T.M c).Z σ) ((T.M c).r σ) ((T.M c).Om σ) ((T.M c).bd σ) (K c)`. Set `G : Y.Comp → ℝ` to `fun c => (dimY Y + 1 : ℝ) * ((T.M c).κ * ∑ σ, (3 * K c) ^ dimY Y * (4 * K c * |C c σ|))`. Use `⟨∑ c, |G c|, fun B c u hu hΛ s hs R R' hR hR' => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hR2 : Real.exp 2 ≤ R'` using `hR.trans hR'`. Establish `h0 : 0 < R` using `lt_of_lt_of_le (Real.exp_pos _) hR`. Establish `hl : 2 ≤ Real.log R` using `by rw [Real.le_log_iff_exp_le h0]; exact hR`. Establish `k1` using `hK c u hu hΛ s hs R hR`. Establish `k2` using `hK c u hu hΛ s hs R' hR2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hK0 : 0 ≤ K c`. Take `⟨-, ⟨-, _, _, h, -⟩, -⟩` from `k1 0`. Conclude with `(abs_nonneg _).trans (h 0).2`. Establish `hq : 0 ≤ Real.log R ^ (dimY Y + 1) / Real.sqrt R` using `by positivity`. Establish `hsq : Real.exp 1 ≤ Real.sqrt R`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Use `Real.le_sqrt_of_sq_le ?_` and prove the remaining obligations. Rewrite using `[← Real.exp_nat_mul]`. Simplify using `using hR`. Establish `hc : ∀ R₁, Real.exp 2 ≤ R₁ → ∀ σ, Comb ((T.M c).A σ) ((T.M c).Z σ) ((T.M c).r σ) ((T.M c).Om σ) (K c) ((T.K B c).c1 (T.L B c u + s • T.a B c + (T.K B c).ar ((T.F c).phR R₁ u)) σ)` using `fun R₁ h₁ σ => comb_of_leviEq ((T.K B c).firstChern_isPotential _ σ) (first_chern_form_levi_sum _ _ _ s _ (fun σ => (hK c u hu hΛ s hs R₁ h₁ σ).1) σ (T.th_pot c u σ) (T.a_pot c σ) (T.c1_L B c u σ) (T.firstChern_leviEq_constant B c σ)) (hK c u hu hΛ s hs R₁ h₁ σ).2.1`. Establish `main` using `top_sub_le (T.K B c) (T.L B c u + s • T.a B c) ((T.F c).phR R u) ((T.F c).phR R' u) (fun σ => (k1 σ).1) (fun σ => (k2 σ).1) _ (hc R hR) (hc R' hR2) (fun σ => (3 * K c) ^ dimY Y * (4 * K c * |C c σ|) * (Real.log R ^ (dimY Y + 1) / Real.sqrt R)) (by`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `σ P hP`. Establish `h` using `GlobalTheory.T.mixed_integral_continuity_estimate _ _ _ _ _ _ ((T.M c).bd σ) (K c) (C c σ) hK0 (hC c σ) P ((T.F c).phR R' u σ - (T.F c).phR R u σ) (2 * K c / R) (2 * K c) (Real.sqrt R) hP (continuous_of_smooth (smooth_sub (k2 σ).1 (k1 σ).1)) (by positivity) (by positivity) hsq (f …`. Establish `a1` using `((k1 σ).2.2 x hx).2 hr`. Establish `a2` using `((k2 σ).2.2 x hx).2 (hr.trans (Real.sqrt_le_sqrt hR'))`. Establish `a3 : K c / R' ≤ K c / R` using `div_le_div_of_nonneg_left hK0 h0 hR'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `a4 : 2 * K c / R = K c / R + K c / R` using `by ring`. Rewrite `a1`, `a2`, the goal using `[abs_le]`. Rewrite using `[Pi.sub_apply]`. Apply the tactic sequence `constructor <;> linarith [a1.1, a1.2, a2.1, a2.2])`. Use the proof step `(fun x hx _ => by`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `a1` using `((k1 σ).2.2 x hx).1`. Establish `a2` using `((k2 σ).2.2 x hx).1`. Rewrite `a1`, `a2`, the goal using `[abs_le]`. Rewrite using `[Pi.sub_apply]`. Apply the tactic sequence `constructor <;> linarith [a1.1, a1.2, a2.1, a2.2])`.
+Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules.
 
-Use `h.trans ?_` and prove the remaining obligations. Conclude with `(mul_le_mul_of_nonneg_left (rate_le (C := C c σ) (dimY Y) hK0 hR) (pow_nonneg (show 0 ≤ 3 * K c by linarith) (dimY Y))).trans_eq (mul_assoc _ _ _).symm)`. Establish `hG : G c ≤ ∑ c, |G c|` using `(le_abs_self _).trans (Finset.single_le_sum (f := fun c => |G c|) (fun _ _ => abs_nonneg _) (Finset.mem_univ c))`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [G, ← Finset.sum_mul]`.
-
-Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ (∑ c, |G c|) * (Real.log R ^ (dimY Y + 1) / Real.sqrt R) := mul_le_mul_of_nonneg_right hG hq`. Use `_ = _ := by ring`.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem cauchy_rate : ∀ (D : D7) (Y : ShimX D.what₂.Tau) (T : Real0 Y), (∀ c, (T.F c).FamR Y.j) → ∀ Λ : ℝ, ∃ C : ℝ, ∀ (B : ℝ) (c : Y.Comp) (u : Wt Y), DomL Y.j u → ‖u‖ ≤ Λ → ∀ s ∈ Set.Icc (0 : ℝ) 1, ∀ R R' : ℝ, Real.exp 2 ≤ R → R ≤ R' → |T.fR B c u s R - T.fR B c u s R'| ≤ C * Real.log R ^ (dimY Y + 1) / Real.sqrt R := by
   intro D Y T hF Λ

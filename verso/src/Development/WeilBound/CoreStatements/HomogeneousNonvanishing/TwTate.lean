@@ -7,23 +7,21 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 namespace PositivityTheory.UnitarySelfGeneration
 
 /- English proof (translation)
-Introduce `E _ _ _ H D g a k _ Q _ act e I`. Establish `ev_nsmul : ∀ (n : ℕ), 0 < n → ∀ y : D.La, I.ev n (n • y) = 1` using `fun n hn y => (I.ker n hn (n • y)).mpr ⟨y, rfl⟩`. Establish `ev_split : ∀ (n : ℕ), 0 < n → ∀ (c : D.La) (f : TwMod g.s D.La), I.ev n (((a.a n c + n • f : TwMod g.s D.La)) : D.La) = I.ev n (a.a n c)`. Introduce `n hn c f`. Establish `h1 : I.ev n (((a.a n c + n • f : TwMod g.s D.La)) : D.La) = I.ev n (a.a n c) * I.ev n (n • (f : D.La))` using `I.add n _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h0 : I.ev n (n • (f : D.La)) = 1` using `ev_nsmul n hn f`. Conclude with `h1.trans ((congrArg (fun q => I.ev n (a.a n c) * q) h0).trans (_root_.mul_one _))`. Use `⟨{ ζ := I.ζ, ζ_prim := I.ζ_prim, ζ_pow := I.ζ_pow, ev := fun n x => I.ev n (a.a n x), add := ?_, lin := ?_, ker := ?_, onto := ?_, tower := ?_, isom := ?_ }, rfl, fun _ _ => rfl⟩` and prove the remaining obligations. Introduce `n x y`. Rewrite using `[map_add]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `I.add n _ _`. Introduce `n c x`. Rewrite using `[map_smul]`. Conclude with `I.lin n (g.s c) (a.a n x)`. Introduce `n hn x`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Conclude with `(I.ker n hn (a.a n x)).trans (a.inj n hn x)`. Introduce `n hn x`. Use `(I.onto n hn x).trans ⟨?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨b, rfl⟩`. Take `⟨c, f, hb⟩` from `a.surj n hn b`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Use `⟨c, ?_⟩` and prove the remaining obligations. Establish `h3 : I.ev n b = I.ev n (((a.a n c + n • f : TwMod g.s D.La)) : D.La)`. Rewrite using `[hb]`. Conclude with `(ev_split n hn c f).symm.trans h3.symm`. Introduce and unpack `⟨c, rfl⟩`.
+Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `⟨_, rfl⟩`. Introduce `n m hn hm x`. Take `⟨f, hf⟩` from `a.compat n m hn hm x`. Establish `h4 : I.ev (n * m) (a.a (n * m) x) ^ m = I.ev n (a.a (n * m) x)` using `I.tower n m hn hm _`. Establish `h5 : I.ev n (a.a (n * m) x) = I.ev n (((a.a n x + n • f : TwMod g.s D.La)) : D.La)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[hf]`. Conclude with `h4.trans (h5.trans (ev_split n hn x f))`. Introduce `n hn x y`. Establish `h` using `I.isom n hn (a.a n x) (a.a n y)`. Take `⟨t, ht⟩` from `a.isom n hn x y`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `hpow : I.ζ n ^ n = 1` using `(I.ζ_prim n hn).pow_eq_one`. Establish `heq : I.ζ n ^ (D.EF (a.a n x : D.La)) (a.a n y : D.La) = I.ζ n ^ (D.EF x) y`. Establish `h2 : (D.EF (a.a n x : D.La)) (a.a n y : D.La) = (D.EF x) y + (n : ℤ) * t`. Establish `: (twForm D g ((a.a n) x)) ((a.a n) y) = (D.EF (a.a n x : D.La)) (a.a n y : D.La)` using `rfl`. Rewrite using `[← this]`.
-
-Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[h2, zpow_add, zpow_mul, zpow_natCast, hpow, one_zpow, _root_.mul_one]`. Use `show e n (I.ev n (a.a n x)) (I.ev n (a.a n y)) (I.ζ n ^ (D.EF x) y)`. Rewrite using `[← heq]`. Conclude with `h`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tw_tate : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (g : HostAut H) (a : TwIso D g) (k : Type) [Field k] (Q : Type) [Group Q] (act : 𝓞 E → Q → Q) (e : ℕ → Q → Q → kˣ → Prop) (I : TateIso D k Q act e), ∃ J : TateIso D k Q (fun c y => act (g.s c) y) e, J.ζ = I.ζ ∧ ∀ n x, J.ev n x = I.ev n (a.a n x) := by
   intro E _ _ _ H D g a k _ Q _ act e I

@@ -20,9 +20,9 @@ noncomputable section
 namespace GlobalTheory.ZH.ThetaData
 
 /- English proof (translation)
-Establish `h'` using `(CrdCalc.top_le_iff x U).2 h`. Rewrite using `[CrdCalc.valR_eq x U h', gs_eq x _ U h]`. Establish `e` using `germ_stalkClosedPointIso_hom (CommRingCat.of R)`. Express the relevant statement in the definitionally equal form `(Scheme.ΓSpecIso (CommRingCat.of R)).hom.hom (((Sp R).presheaf.map (homOfLE h').op).hom ((x.app U).hom f)) = _`. Rewrite using `[← e]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Conclude with `congrArg (stalkClosedPointIso (CommRingCat.of R)).hom.hom (TopCat.Presheaf.germ_res_apply (Sp R).presheaf (homOfLE h') _ trivial _)`.
+A detailed English derivation is pending.
 -/
 theorem valR_eq_gs {R : Type} [CommRing R] [IsLocalRing R] {X : Scheme.{0}} (x : Sp R ⟶ X) (U : X.Opens)
     (h : x (IsLocalRing.closedPoint R) ∈ U) (f : Γ(X, U)) :
@@ -37,7 +37,7 @@ theorem valR_eq_gs {R : Type} [CommRing R] [IsLocalRing R] {X : Scheme.{0}} (x :
     (TopCat.Presheaf.germ_res_apply (Sp R).presheaf (homOfLE h') _ trivial _)
 
 /- English proof (translation)
-Take `⟨l, c, hl, hv⟩` from `H`. Establish `m` using `(CrdCalc.top_le_iff x _).1 hl`. Establish `m' : (x ≫ h) (IsLocalRing.closedPoint R) ∈ A.U (a.idx l)` using `a.le l m`. Use `⟨a.idx l, c, (CrdCalc.top_le_iff _ _).2 m', fun j => ?_⟩` and prove the remaining obligations. Rewrite using `[hv, valR_eq_gs x _ m, valR_eq_gs _ _ m', gs_chartSec a (s j) x _ l m]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem crd_of_chartSec {R : Type} [CommRing R] [IsLocalRing R] {Y Y' : Scheme.{0}} {A' : LB Y'} {A : LB Y}
     {h : Y' ⟶ Y} (a : ChartPull A' A h) {J : Type} (s : J → A.Sec) (x : Sp R ⟶ Y') (v : J → R)
@@ -49,9 +49,9 @@ theorem crd_of_chartSec {R : Type} [CommRing R] [IsLocalRing R] {Y Y' : Scheme.{
   rw [hv, valR_eq_gs x _ m, valR_eq_gs _ _ m', gs_chartSec a (s j) x _ l m]
 
 /- English proof (translation)
-Take `⟨l, c, hl, hv⟩` from `H`. Establish `m'` using `(CrdCalc.top_le_iff _ _).1 hl`. Establish `m : x (IsLocalRing.closedPoint R) ∈ (A.pull h).U (fun _ => l)` using `mem_pull.2 m'`. Use `⟨fun _ => l, c, (CrdCalc.top_le_iff _ _).2 m, fun j => ?_⟩` and prove the remaining obligations. Rewrite using `[hv, valR_eq_gs x _ m, valR_eq_gs _ _ m']`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `congrArg (fun q => (c : R) * (stalkClosedPointIso (CommRingCat.of R)).hom.hom q) (gs_chartSec (GlobalTheory.chartPullPull A h) (s j) x _ (fun _ => l) m).symm`.
+A detailed English derivation is pending.
 -/
 theorem crd_secPull {R : Type} [CommRing R] [IsLocalRing R] {Y Y' : Scheme.{0}} {A : LB Y}
     (h : Y' ⟶ Y) {J : Type} (s : J → A.Sec) (x : Sp R ⟶ Y') (v : J → R)
@@ -65,19 +65,17 @@ theorem crd_secPull {R : Type} [CommRing R] [IsLocalRing R] {Y Y' : Scheme.{0}} 
     (gs_chartSec (GlobalTheory.chartPullPull A h) (s j) x _ (fun _ => l) m).symm
 
 /- English proof (translation)
-Establish `e : κ ≫ m.left = n ≫ F`. Rewrite using `[← hm, Over.comp_left, ← Category.assoc, ← hn, Category.assoc, hF]`. Take `⟨θ, hθ⟩` from `exists_sec hL (φ := fun _ : Fin 1 => F) (ε := fun _ => 1) (φ' := fun _ : PUnit => F) (ε' := fun _ => 1) (fun U _ h => by simp) (VVRank.pullTo (φ := fun _ : Fin 1 => (snd T A).left) (ε := fun _ => 1) th κ (fun _ => hF))`. Establish `hu` using `LB.isGen_invGen L _ _ _ (LB.isGen_pullGen L _ _ α hα κ)`. Establish `hσ : ∀ j, ∃ σ : (L.pull (n ≫ F)).Sec, ∀ (Z : Scheme.{0}) (r : Z ⟶ Y) (z : Z) (I), Good L z I → sval (φ` using `fun _ : PUnit => n ≫ F) (ε := fun _ => 1) σ r z I = VVRank.sv A (s j) (r ≫ κ) z I * ((val α (r ≫ κ) z I)⁻¹).val := by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `j`. Take `⟨σ, hσ⟩` from `exists_sec hL (φ' := fun _ : PUnit => n ≫ F) (ε' := fun _ => 1) (fun U _ h => by simp [Fintype.prod_sum_type, e]) (pullMulSec (φ := fun _ : Fin 1 => (snd T A).left) (ε := fun _ => a) (s j) κ _ hu)`. Use `⟨σ, fun Z r z I hI => (hσ Z r z I hI).trans ((sval_pullMulSec _ κ _ hu r z hI).trans ?_)⟩` and prove the remaining obligations. Rewrite using `[val_inv, val_pull hI]`. Use `choose σ hσ using hσ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Set `c` to `chartPullLinComb L F (fun _ : PUnit => n) (fun _ : PUnit => n ≫ F) (fun _ => 1) (𝟙 Y) (fun _ => (Category.id_comp _).symm)`. Use `⟨θ, fun j => chartSec c (σ j), fun K _ x v hv => ?_, fun y j hj => ?_⟩` and prove the remaining obligations. Take `⟨l, u, hl, hv⟩` from `crd_of_chartSec c σ x v hv`. Rewrite `hl`, `hv` using `[Category.comp_id]`. Establish `m₁` using `(CrdCalc.top_le_iff _ _).1 hl`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨I, hI, eI⟩` from `exists_good L hL (IsLocalRing.closedPoint K : Sp K) (fun _ : PUnit => x ≫ n ≫ F) l (fun _ _ _ => rfl) (fun k => Set.mem_iInter.1 m₁ k)`. Establish `m₂` using `hI.mem (fun _ : Fin 1 => (snd T A).left) (x ≫ κ)`. Use `⟨fun _ => I ((x ≫ κ) ≫ (snd T A).left), u * Units.map (stalkClosedPointIso (CommRingCat.of K)).hom.hom.toMonoidHom (val α (x ≫ κ) _ I)⁻¹, (CrdCalc.top_le_iff _ _).2 m₂, fun j => ?_⟩` and prove the remaining obligations. Establish `e₁` using `(sval_of (φ := fun _ : PUnit => n ≫ F) (ε := fun _ => 1) (σ j) x _ I l eI).symm.trans (hσ j _ x _ I hI)`. Use `(hv j).trans ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `(congrArg (_ * ·) ((valR_eq_gs x _ m₁ _).trans ((congrArg _ e₁).trans (map_mul _ _ _)))).trans ?_` and prove the remaining obligations. Rewrite using `[Units.val_mul, _root_.mul_assoc, _root_.mul_comm (Units.val (Units.map _ _))]`. Conclude with `congrArg (fun q => (u : K) * (q * _)) (valR_eq_gs (x ≫ κ) _ m₂ _).symm`. Establish `m₁ : (n ≫ F) y ∈ L.U (j PUnit.unit)` using `mem_pull (F := F).1 hj`. Take `⟨I, hI, eI⟩` from `exists_good L hL y (fun _ : PUnit => n ≫ F) j (fun _ _ _ => rfl) (fun k => m₁)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `(gs_chartSec c (σ i₀) (𝟙 Y) y (fun _ => j) (mem_pull (F := n).2 hj)).trans ?_` and prove the remaining obligations. Establish `e₁` using `(sval_of (φ := fun _ : PUnit => n ≫ F) (ε := fun _ => 1) (σ i₀) (𝟙 Y ≫ 𝟙 Y) y I j (fun k => by simpa using eI k)).symm.trans (hσ i₀ _ _ _ I hI)`. Establish `e₂` using `(sval_of (φ := fun _ : PUnit => F) (ε := fun _ => 1) θ n y I j eI).symm.trans ((hθ _ n y I hI).trans (VVRank.sval_pullTo _ _ _ _ _ hI))`. Use `e₁.trans (Eq.trans ?_ e₂.symm)` and prove the remaining obligations. Rewrite using `[VVRank.sv_of_isTwistPull A H _ y hI, mul_right_comm, Units.mul_inv, _root_.one_mul, hn]`.
-
-Simplify using `only [Category.id_comp]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_twist_sections {S : Scheme.{0}} (A : Over S) [GrpObj A] {L : LB A.left} (hL : L.IsLB) {T : Over S}
     {ψ : T ⊗ A ⟶ T ⊗ A} {m : T ⊗ A ⟶ A} {hm : ψ ≫ snd T A = m} {a : ℤ}
@@ -133,7 +131,7 @@ theorem exists_twist_sections {S : Scheme.{0}} (A : Over S) [GrpObj A] {L : LB A
     simp only [Category.id_comp]
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => rfl`. Consider the case `succ n ih => rw [pow_succ, ← ih]`. Both sides reduce to the same expression.
+Proceed by induction. Treat this case separately. Treat this case separately. Both sides reduce to the same expression.
 -/
 theorem mulN_eq_id_pow {S : Scheme.{0}} (G : Over S) [GrpObj G] (n : ℕ) : mulN G n = (𝟙 G) ^ n := by
   induction n with
@@ -141,9 +139,9 @@ theorem mulN_eq_id_pow {S : Scheme.{0}} (G : Over S) [GrpObj G] (n : ℕ) : mulN
   | succ n ih => rw [pow_succ, ← ih]; rfl
 
 /- English proof (translation)
-Establish `e` using `congrArg (fun q => q.left) (map_pow (pushHom h G') (𝟙 G') n)`. Establish `e₂ : pushHom h G' (𝟙 G') ≫ 𝟙 G ^ n = pushHom h G' (𝟙 G') ^ n`. Rewrite using `[MonObj.comp_pow, Category.comp_id]`. Rewrite `e` using `[← e₂, ← mulN_eq_id_pow]`. Use `Eq.trans e ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Express the relevant statement in the definitionally equal form `(𝟙 _ ≫ φ) ≫ _ = _`. Rewrite using `[Category.id_comp]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem mulN_comp {S S' : Scheme.{0}} {G : Over S} {G' : Over S'} [GrpObj G] [IsCommMonObj G]
     [GrpObj G'] [IsCommMonObj G'] {f : S' ⟶ S} {φ : G'.left ⟶ G.left} (h : IsGrpPullback G' G f φ) (n : ℕ) :
@@ -159,17 +157,17 @@ theorem mulN_comp {S S' : Scheme.{0}} {G : Over S} {G' : Over S'} [GrpObj G] [Is
 variable {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω]
 
 /- English proof (translation)
-Establish `: IsIso (snd (baseOver (Sp S.R)) ρ.P.A).left` using `inferInstanceAs (IsIso (pullback.snd (𝟙 (Sp S.R)) ρ.P.A.hom))`. Set `κ` to `F ≫ inv (snd (baseOver (Sp S.R)) ρ.P.A).left`. Establish `hκ : κ ≫ (snd (baseOver (Sp S.R)) ρ.P.A).left = F` using `by simp [κ]`. Establish `hn : (mulN A' (ρ.n ^ ρ.k)).left ≫ κ = κ ≫ (mulT ρ.P.A (baseOver (Sp S.R)) (ρ.n ^ ρ.k)).left`. Rewrite using `[← cancel_mono (snd (baseOver (Sp S.R)) ρ.P.A).left, Category.assoc, hκ, mulN_comp h, Category.assoc, ← Over.comp_left, mulT, lift_snd, ← hκ, Category.assoc, ← Over.comp_left, MonObj.comp_pow, Category.comp_id]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨θ, t, ht, hθ⟩` from `exists_twist_sections ρ.P.A ρ.P.isLB ρ.α_gen ρ.s ρ.th₁ ρ.i₀ ρ.s_zero κ F hκ _ hn`. Establish `hH` using `LB.isLB_pull (LB.isLB_pull ρ.P.isLB F) (mulN A' (ρ.n ^ ρ.k)).left`. Establish `hcov : ⨆ j, nonzeroLocus (t j) = ⊤`. Use `top_le_iff.1 fun y _ => ?_` and prove the remaining obligations. Take `⟨K, _, p, hp⟩` from `CrdIso.exists_pt y`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨v, hv⟩` from `CrdCalc.crd_exists hH t p`. Establish `h₀` using `(ThetaSys.Real.immBy_basis hLL o Ω S ρ).1`. Establish `h₁ : (p ≫ κ) (IsLocalRing.closedPoint K) ∈ ⨆ i ∈ (Set.univ : Set S.J), nonzeroLocus (ρ.s i)`. Rewrite using `[h₀]`. Discharge the goal by the elementary cases of `trivial`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition.
 
-Take `⟨i, hi⟩` from `TopologicalSpace.Opens.mem_iSup.1 h₁`. Take `⟨-, hi⟩` from `TopologicalSpace.Opens.mem_iSup.1 hi`. Establish `h₂` using `(CrdCalc.crd_isUnit_iff i (ht K p v hv)).2 ((CrdCalc.top_le_iff _ _).2 hi)`. Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨i, (hp _).1 ((CrdCalc.crd_isUnit_iff i hv).1 h₂)⟩`. Take `⟨w, hw, hs⟩` from `CrdIso.exists_iso_of_crd _ _ (O.pull a) _ t (fun j => secPull (st j) a) hH (LB.isLB_pull hO a) hcov (fun K _ x v hv => crd_secPull a st x v (hc K x v ⟨x ≫ κ, by rw [Category.assoc, hκ], ht K x v hv⟩))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨θ, w, hw, fun x i j hi hj => ?_⟩` and prove the remaining obligations. Establish `e` using `hs ρ.i₀ x (fun _ => j) (fun _ => i) (mem_pull.2 hj) (mem_pull.2 hi)`. Rewrite `e` using `[hθ x j hj]`. Use `Eq.trans ?_ e` and prove the remaining obligations. Establish `e'` using `gs_chartSec (GlobalTheory.chartPullPull O a) (st ρ.i₀) (𝟙 _) x (fun _ => i) (mem_pull.2 hi)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e'` using `[Category.id_comp]`. Conclude with `e'.symm`.
+A detailed English derivation is pending.
 -/
 theorem exists_iso [ArithBase o Ω] (hLL : GlobalTheory.UT.LL) {S : ThetaSys o Ω} (ρ : S.Real) {B : Scheme.{0}} (A' : Over B)
     [GrpObj A'] [IsCommMonObj A'] [IsIntegral A'.left] {f : B ⟶ Sp S.R} {F : A'.left ⟶ ρ.P.A.left}
@@ -212,17 +210,17 @@ theorem exists_iso [ArithBase o Ω] (hLL : GlobalTheory.UT.LL) {S : ThetaSys o �
   exact e'.symm
 
 /- English proof (translation)
-Introduce `hLL o Ω _ _ _ _ S ρ M U₀ EE hB Q ex hS hG`. Use `ArithBase.ded (o := o) (Ω := Ω)` as an intermediate fact. Establish `: Algebra.FiniteType o S.R` using `(Subalgebra.fg_iff_finiteType _).1 S.fg`. Establish `: IsNoetherianRing S.R` using `Algebra.FiniteType.isNoetherianRing o S.R`. Establish `: IsLocallyNoetherian (Sp S.R)` using `inferInstanceAs (IsLocallyNoetherian (Spec (CommRingCat.of S.R)))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `ex.ab.comm` as an intermediate fact. Establish `hI : IsIntegral ex.core.A.left`. Use `ex.core.isIntegral_G` as an intermediate fact. Use `ex.core.isOpenImmersion_a` as an intermediate fact. Use `ex.core.nonempty_A` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `isIntegral_of_isOpenImmersion ex.core.a`. Establish `: IsIntegral ((Over.pullback Q.u₀).obj ρ.P.A).left` using `hI`. Establish `h` using `isGrpPullback_pullback ρ.P.A Q.u₀`. Take `⟨c⟩` from `(hLL.1.cube _ ρ.P ⟨ρ.P.L, ρ.rig, ρ.P.isLB, ρ.rig_gen⟩ rfl).1`. Take `⟨hL, hr, ⟨c', -⟩, -⟩` from `hLL.2.2.1.cubePull _ _ _ _ (cubeMapOf h) _ c`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨θ, w, hw, hs⟩` from `exists_iso hLL ρ _ h ex.a (LB.isLB_pull Q.isLB Q.G.ι) (fun j => secPull (Q.st j) Q.G.ι) (fun K _ x v hv => crd_secPull _ _ _ _ (by`. Establish `e` using `Q.crd K x v hv`. Rewrite `e` using `[← ex.a_eq]`. Rewrite using `[Category.assoc]`. Conclude with `e))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm : IsUnit ((ρ.n ^ ρ.k : ℕ) : Γ(M.Z, ⊤))`. Establish `h₁ : IsUnit ((ρ.n ^ ρ.k : ℕ) : o)` using `isUnit_of_dvd_unit (Nat.cast_dvd_cast (ρ.N_eq ▸ Dvd.dvd.mul_left (dvd_pow_self _ two_ne_zero) S.r)) S.unit`. Establish `h₂` using `h₁.map (M.s.appTop.hom.comp (Scheme.ΓSpecIso (CommRingCat.of o)).inv.hom)`. Rewrite `h₂` using `[map_natCast]`. Then use the resulting hypothesis. Use `⟨⟨_, c', θ, ρ.n ^ ρ.k, hm, _, LB.isLB_pull Q.isLB Q.G.ι, secPull (Q.st ρ.i₀) Q.G.ι, w, hw, hs, fun z hz => ?_⟩, lbIso_refl hL⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨x, hx, hG', e⟩` from `GlobalTheory.T.exists_theta_pullback_nonzero_on_closed_fibre hLL o Ω S ρ M U₀ EE hB Q hS hG z hz`. Use `⟨⟨x, hG'⟩, ?_, e⟩` and prove the remaining obligations. Use `erw [nonzeroLocus_secPull]`. Conclude with `hx`.
+A detailed English derivation is pending.
 -/
 theorem exists_theta : GlobalTheory.UT.LL → ∀ (o Ω : Type) [CommRing o] [Field Ω] [Algebra o Ω] [ArithBase o Ω] (S : ThetaSys o Ω) (ρ : S.Real) (M : RatModel o Ω) (U₀ : M.Z.Opens) (EE : M.Lat S.J), BaseFacts S M U₀ EE → ∀ (Q : Clos ρ M U₀ EE) (ex : Q.Ext), S.Big → ρ.HasGeo → ∃ T : ex.core.Theta, LBIso T.L.L (ρ.P.L.pull (pullback.fst ρ.P.A.hom Q.u₀)) := by
   intro hLL o Ω _ _ _ _ S ρ M U₀ EE hB Q ex hS hG

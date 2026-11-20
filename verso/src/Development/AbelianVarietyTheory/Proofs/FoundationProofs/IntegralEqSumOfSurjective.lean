@@ -10,21 +10,19 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.ClassUnfold
 
 /- English proof (translation)
-Use `choose h hh using fun c => hπ (y c)`. Establish `hS : ∀ c, {γ : G | γ ∈ Γ ∧ (h c)⁻¹ * γ * h c ∈ J.comap π} = Subtype.val '' (Bridge.stab (π.comp Γ.subtype) J (y c) : Set Γ)`. Introduce `c`. Use extensionality with `γ`. Simplify using `only [Set.mem_setOf_eq, Set.mem_image, SetLike.mem_coe, Bridge.mem_stab, Subgroup.mem_comap, map_mul, map_inv, hh]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, b⟩`. Conclude with `⟨⟨γ, a⟩, b, rfl⟩`. Introduce and unpack `⟨δ, b, rfl⟩`. Conclude with `⟨δ.2, b⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `hfin : ∀ c, (Bridge.stab (π.comp Γ.subtype) J (y c) : Set Γ).Finite` using `fun c => hf c`. Establish `key` using `GlobalTheory.Ker.integral_fundamentalDomain_eq_sum_doubleCoset G ν Γ (J.comap π) 𝓖 h𝓖 ho (by rw [h1]; exact ENNReal.one_ne_top) I h ?_ (fun c => by rw [hS]; exact (hfin c).image _) (fun x => Φ (π x)) ?_ ?_`. Rewrite using `[key.2.2, h1]`. Simplify using `only [ENNReal.toReal_one, Complex.ofReal_one, one_mul]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hS, Set.ncard_image_of_injective _ Subtype.val_injective, hh]`. Both sides reduce to the same expression. Introduce `x`. Use `(existsUnique_congr fun i => ?_).1 (hy (π x))` and prove the remaining obligations. Prove the components needed by the constructor for the conclusion.
+Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨γ, k, e⟩`. Use `⟨γ, γ.2, (γ * h i)⁻¹ * x, ?_, by group⟩` and prove the remaining obligations. Rewrite using `[Subgroup.mem_comap, map_mul, map_inv, map_mul, hh, e]`. Express the relevant statement in the definitionally equal form `(π γ * y i)⁻¹ * (π γ * y i * k) ∈ J`. Rewrite using `[inv_mul_cancel_left]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Conclude with `k.2`. Introduce and unpack `⟨γ, hγ, k, hk, rfl⟩`. Conclude with `⟨⟨γ, hγ⟩, ⟨π k, hk⟩, by rw [map_mul, map_mul, hh]; rfl⟩`. Introduce `γ hγ x`. Use `hΦ ⟨γ, hγ⟩ (π x) 1` as an intermediate fact.
+Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `this` using `[OneMemClass.coe_one, mul_one]`. Rewrite using `[map_mul]`. Conclude with `this`. Introduce `k hk x`. Use `hΦ 1 (π x) ⟨π k, hk⟩` as an intermediate fact.
-
-Rewrite `this` using `[map_one, one_mul]`. Rewrite using `[map_mul]`. Conclude with `this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integral_eq_sum_of_surjective {G H : Type} [Group G] [Group H] [TopologicalSpace G] [IsTopologicalGroup G]
     [MeasurableSpace G] [BorelSpace G] (ν : Measure G) [ν.IsMulLeftInvariant] (Γ : Subgroup G) [Countable Γ]
@@ -77,11 +75,9 @@ theorem integral_eq_sum_of_surjective {G H : Type} [Group G] [Group H] [Topologi
     exact this
 
 /- English proof (translation)
-Introduce `D V β L μ 𝓕 hL hμ I _ y hy hf Φ hΦ`. Use `haveI : IsTopologicalGroup (GA D V) := Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.topGroupHA _ _`. Use `haveI : BorelSpace (GA D V) := ⟨rfl⟩`. Use `haveI : Countable (GQ V) := Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.countableGamma D.sp.cm.sig V.gram`. Use `haveI := hμ.1.1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Establish `hK : (levEnv V β L).J.comap (finHom V).rangeRestrict = (lev D.sp.cm V.gram β L).comap (finE V)`. Use extensionality with `g`. Express the relevant statement in the definitionally equal form `(finE V g ∈ parLev D.sp.cm V.gram β L ∧ rTup β L (finE V g) ∈ (⊥ : Subgroup _)) ↔ (finE V g ∈ parLev D.sp.cm V.gram β L ∧ rTup β L (finE V g) ∈ L.P.H)`. Rewrite using `[hL]`. Use `integral_eq_sum_of_surjective μ (GQ V) (finHom V).rangeRestrict (finHom V).rangeRestrict_surjective (levEnv V β L).J 𝓕 hμ.2 ?_ ?_ I y hy hf Φ hΦ` and prove the remaining obligations.
-
-Use `Subgroup.isOpen_of_mem_nhds _ (g := 1) ?_ filter_upwards [GlobalTheory.ThetaIntegrand.eventually_level V β L] with κ hκ` and prove the remaining obligations. Conclude with `hκ.1`. Rewrite using `[hK]`. Conclude with `GlobalTheory.Mass.Levels.measure_comap_finE hμ.1`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integral_eq_classSum : ∀ {D : D7} (V : HSp D) (β : GL (Fin V.rank) (Lev.EAf D)) (L : LevDat D.host.E ℂ V.rank) (μ : Measure (GA D V)) (𝓕 : Set (GA D V)), L.P.H = ⊥ → IsMeasDef V (lev D.sp.cm V.gram β L) μ 𝓕 → ∀ (I : Type) [Fintype I] (y : I → Bridge.Gf V), Bridge.IsReps (Bridge.ratF V) (levEnv V β L).J y → (∀ c, Finite (Bridge.stab (Bridge.ratF V) (levEnv V β L).J (y c))) → ∀ Φ : Bridge.Gf V → ℂ, (∀ (γ : GQ V) h (k : (levEnv V β L).J), Φ (Bridge.ratF V γ * h * k) = Φ h) → ∫ h in 𝓕, Φ (fin V h) ∂μ = ∑ c, (Nat.card (Bridge.stab (Bridge.ratF V) (levEnv V β L).J (y c)) : ℂ)⁻¹ * Φ (y c) := by
   intro D V β L μ 𝓕 hL hμ I _ y hy hf Φ hΦ

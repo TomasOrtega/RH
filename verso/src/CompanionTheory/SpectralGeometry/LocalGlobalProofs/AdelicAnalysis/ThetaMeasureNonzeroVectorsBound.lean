@@ -20,7 +20,7 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.SW.MeanCount
 
 /- English proof (translation)
-Introduce `_ hX` and use `⟨hX.1, hX.2.trans h⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem box_mono {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E] {d M n : ℕ}
     (b : Module.Basis (Fin d) F E) (N : ℕ) {r r' : ℝ} (h : r ≤ r') :
@@ -28,7 +28,7 @@ theorem box_mono {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E] 
   fun _ hX => ⟨hX.1, hX.2.trans h⟩
 
 /- English proof (translation)
-Establish `h1` using `abs_nonneg C₁`. Establish `h2` using `abs_nonneg C₂`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem real_bound {C₁ C₂ x y z : ℝ} (hx : 0 ≤ x) (hy : 0 ≤ y) (hz : 0 ≤ z) (hxy : x ≤ y) :
     C₁ * x ≤ (|C₁| + |C₂|) * (y + z) := by
@@ -40,31 +40,29 @@ theorem real_bound {C₁ C₂ x y z : ℝ} (hx : 0 ≤ x) (hy : 0 ≤ y) (hz : 0
         mul_le_mul (by linarith) (by linarith) hy (by linarith)
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hCM M J hJ hM d b μ 𝓕 hμ h𝓕 N hN`. Take `⟨⟨lcA, scA, t2A⟩, -⟩` from `GlobalTheory.T.adeles_locally_compact_second_countable F`. Use `haveI := lcA`. Use `haveI := scA`. Use `haveI := t2A`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨-, -, -, t2K, -, -, -, borelK, -, -⟩` from `GlobalTheory.T.tensor_locally_compact_ring F E σ hCM (AF F)`. Use `haveI := t2K`. Use `haveI := borelK 1 M`. Establish `hact` using `(GlobalTheory.T.adelic_unitary_group_locally_compact F E σ hCM M J hJ (AF F))`. Establish `hgram : ∀ (h : HA (AF F) σ J) (X : Fin 1 → Fin M → AF F ⊗[F] E), gramR (AF F) σ J (actW (AF F) σ J h X) = gramR (AF F) σ J X` using `(hact.2.2.2.2.2 1).2.2.2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨hfin1, hfin2, -⟩` from `GlobalTheory.T.rational_gram_adelic_compact_finite F E σ hCM M J hJ`. Establish `h0 : μ 𝓕 ≠ 0` using `((GlobalTheory.T.haar_fundamental_domain_exists_unitary F E σ hCM M J hJ).2 μ hμ).2.2 𝓕 h𝓕`. Establish `hc : (μ 𝓕)⁻¹ ≠ ⊤` using `ENNReal.inv_ne_top.2 h0`. Take `⟨r₀, hr₀, hsmall⟩` from `GlobalTheory.T.small_box_gram_scalar_zero F E σ hCM M J hJ d b N hN`. Establish `hr₁ : 0 < min r₀ 1` using `lt_min hr₀ one_pos`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact.
 
-Take `⟨C₁, hC₁⟩` from `GlobalTheory.T.isotropic_vector_count_box_bound F E σ hCM M J hJ hM μ 𝓕 hμ h𝓕 d b N hN`. Take `⟨C₂, hC₂⟩` from `GlobalTheory.T.counting_vectors_bounded_large_radius F E σ hCM M J hJ hM μ 𝓕 hμ h𝓕 d b N (min r₀ 1) hN hr₁`. Use `⟨((μ 𝓕)⁻¹).toReal * (|C₁| + |C₂|), fun r hr => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `thetaMeas σ J μ 𝓕 {X : Fin 1 → Fin M → E | X ≠ 0} (box b N r) ≤ _`. Establish `hmeas : MeasurableSet (box b N r : Set (Fin 1 → Fin M → AF F ⊗[F] E))` using `((GlobalTheory.T.adelic_boxes_compact_exhaust F E σ hCM d b 1 M).1 N r hN).measurableSet`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hval : thetaMeas σ J μ 𝓕 {X : Fin 1 → Fin M → E | X ≠ 0} (box b N r) = (μ 𝓕)⁻¹ * cntI σ J μ 𝓕 {X : Fin 1 → Fin M → E | X ≠ 0} (Set.indicator (box b N r) (fun _ => (1 : ℝ≥0∞)))`. Establish `h` using `GlobalTheory.T.theta_measure_integral_formula F E σ hCM M J hJ μ 𝓕 hμ h𝓕 1 {X : Fin 1 → Fin M → E | X ≠ 0} (Set.indicator (box b N r) (fun _ => (1 : ℝ≥0∞))) (measurable_const.indicator hmeas)`. Rewrite `h` using `[lintegral_indicator_const hmeas, one_mul]`. Conclude with `h`. Establish `hx : 0 ≤ r ^ (Module.finrank ℚ F * M)` using `by positivity`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hy : 0 ≤ r ^ (2 * Module.finrank ℚ F * M)` using `by positivity`. Establish `hbound : cntI σ J μ 𝓕 {X : Fin 1 → Fin M → E | X ≠ 0} (Set.indicator (box b N r) (fun _ => (1 : ℝ≥0∞))) ≤ ENNReal.ofReal ((|C₁| + |C₂|) * (r ^ (Module.finrank ℚ F * M) + r ^ (2 * Module.finrank ℚ F * M)))`. Break down `le_total r (min r₀ 1) with hle | hle` into its components or cases. Establish `hrr₀ : r ≤ r₀` using `hle.trans (min_le_left _ _)`. Establish `hr1 : r ≤ 1` using `hle.trans (min_le_right _ _)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hiso : ∀ (h : HA (AF F) σ J) (X : Fin 1 → Fin M → E), actW (AF F) σ J h⁻¹ (ratTup (AF F) X) ∈ (box b N r : Set (Fin 1 → Fin M → AF F ⊗[F] E)) → gramE σ J X = 0`. Introduce `h X hX`. Take `⟨t, ht⟩` from `hfin1 X`. Establish `hY : gramR (AF F) σ J (actW (AF F) σ J h⁻¹ (ratTup (AF F) X)) = fun _ _ => inclR (AF F) (algebraMap F E t)`. Rewrite using `[hgram, hfin2, ht]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Establish `ht0 : t = 0` using `hsmall t _ (box_mono b N hrr₀ hX) hY`. Rewrite using `[ht, ht0]`. Use function extensionality and compare the values at `a c`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `heq : cntI σ J μ 𝓕 {X : Fin 1 → Fin M → E | X ≠ 0} (Set.indicator (box b N r) (fun _ => (1 : ℝ≥0∞))) = cntI σ J μ 𝓕 {X : Fin 1 → Fin M → E | X ≠ 0 ∧ gramE σ J X = 0} (Set.indicator (box b N r) (fun _ => (1 : ℝ≥0∞)))`. Unfold `cntI`. Use `lintegral_congr fun h => ?_` and prove the remaining obligations. Rewrite using `[tsum_subtype {X : Fin 1 → Fin M → E | X ≠ 0} (fun X => Set.indicator (box b N r) (fun _ => (1 : ℝ≥0∞)) (actW (AF F) σ J h⁻¹ (ratTup (AF F) X))), tsum_subtype {X : Fin 1 → Fin M → E | X ≠ 0 ∧ gramE σ J X = 0} (fun X => Set.indicator (box b N r) (fun _ => (1 : ℝ≥0∞)) (actW (AF F) …`. Use `congr 1`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `X`. Distinguish the cases in `hB : actW (AF F) σ J h⁻¹ (ratTup (AF F) X) ∈ (box b N r : Set (Fin 1 → Fin M → AF F ⊗[F] E))`. Establish `hg` using `hiso h X hB`. Distinguish the cases in `hX : X ≠ 0`. Rewrite using `[Set.indicator_of_mem (show X ∈ {X : Fin 1 → Fin M → E | X ≠ 0} from hX), Set.indicator_of_mem (show X ∈ {X : Fin 1 → Fin M → E | X ≠ 0 ∧ gramE σ J X = 0} from ⟨hX, hg⟩)]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Set.indicator_of_notMem (show X ∉ {X : Fin 1 → Fin M → E | X ≠ 0} from hX), Set.indicator_of_notMem (show X ∉ {X : Fin 1 → Fin M → E | X ≠ 0 ∧ gramE σ J X = 0} from fun h' => hX h'.1)]`. Simplify using `only [Set.indicator, hB, if_false, ite_self]`. Rewrite using `[heq]`. Use `(hC₁ r hr).trans (ENNReal.ofReal_le_ofReal ?_)` and prove the remaining obligations. Establish `hexp : Module.finrank ℚ F * M ≤ 2 * Module.finrank ℚ F * (M - 1)`.
+Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : M ≤ 2 * (M - 1)` using `by omega`. Combine the equalities or inequalities in the displayed calculation. Conclude with `real_bound (by positivity) hx hy (pow_le_pow_of_le_one hr.le hr1 hexp)`. Use `(hC₂ r hle).trans (ENNReal.ofReal_le_ofReal ?_)` and prove the remaining obligations. Use `real_bound (C₁ := C₂) (C₂ := C₁) hy hy hx le_rfl` as an intermediate fact.
-
-Rewrite `this` using `[add_comm |C₂|, add_comm (r ^ (2 * Module.finrank ℚ F * M))]`. Conclude with `this`. Rewrite using `[hval, mul_assoc, ENNReal.ofReal_mul ENNReal.toReal_nonneg, ENNReal.ofReal_toReal hc]`. Conclude with `mul_le_mul_right hbound _`.
+A detailed English derivation is pending.
 -/
 theorem mean_count_box : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (M : ℕ) (J : Matrix (Fin M) (Fin M) E), IsHermND σ J → 3 ≤ M → ∀ (d : ℕ) (b : Module.Basis (Fin d) F E) (μ : Measure (HA (AF F) σ J)) (𝓕 : Set (HA (AF F) σ J)), IsHaarH F E σ M J μ → IsFDH F E σ M J μ 𝓕 → ∀ N : ℕ, 0 < N → ∃ C : ℝ, ∀ r : ℝ, 0 < r → thetaMeas σ J μ 𝓕 {X : Fin 1 → Fin M → E | X ≠ 0} {X | (∀ v, (fun a i => (N : Fv F v ⊗[F] E) * projV v (projFin X) a i) ∈ latV b v) ∧ sizeTup b (projInf X) ≤ r} ≤ ENNReal.ofReal (C * (r ^ (Module.finrank ℚ F * M) + r ^ (2 * Module.finrank ℚ F * M))) := by
   intro F E _ _ _ _ _ σ hCM M J hJ hM d b μ 𝓕 hμ h𝓕 N hN

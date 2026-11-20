@@ -12,15 +12,13 @@ section Abstract
 variable {G : Type*} [Group G]
 
 /- English proof (translation)
-Establish `e1 : a'⁻¹ * a = b' * c' * c⁻¹ * b⁻¹`. Establish `: a = a' * b' * c' * c⁻¹ * b⁻¹` using `by rw [← h]; group`. Rewrite using `[this]`. Use `group`. Establish `m1 : a'⁻¹ * a ∈ A ⊓ P` using `⟨A.mul_mem (A.inv_mem ha') ha, by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e1]`. Conclude with `P.mul_mem (P.mul_mem (P.mul_mem (hB hb') (hC hc')) (P.inv_mem (hC hc))) (P.inv_mem (hB hb))⟩`. Rewrite `m1` using `[hAP, Subgroup.mem_bot]`. Establish `haa : a = a'` using `(inv_mul_eq_one.1 m1).symm`. Substitute `haa` using the available equality.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : b * c = b' * c'` using `by simpa [mul_assoc] using h`. Establish `e2 : b'⁻¹ * b = c' * c⁻¹`. Establish `: b = b' * c' * c⁻¹` using `by rw [← h2]; group`. Rewrite using `[this]`. Use `group`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `m2 : b'⁻¹ * b ∈ B ⊓ C` using `⟨B.mul_mem (B.inv_mem hb') hb, by`. Rewrite using `[e2]`. Conclude with `C.mul_mem hc' (C.inv_mem hc)⟩`. Rewrite `m2` using `[hBC, Subgroup.mem_bot]`. Establish `hbb : b = b'` using `(inv_mul_eq_one.1 m2).symm`.
-
-Substitute `hbb` using the available equality. Conclude with `⟨rfl, rfl, mul_left_cancel h2⟩`.
+Establish an intermediate fact. Substitute using the available equality. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem fac_unique {A B C P : Subgroup G} (hB : B ≤ P) (hC : C ≤ P) (hAP : A ⊓ P = ⊥) (hBC : B ⊓ C = ⊥)
     {a a' b b' c c' : G} (ha : a ∈ A) (ha' : a' ∈ A) (hb : b ∈ B) (hb' : b' ∈ B) (hc : c ∈ C)
@@ -46,7 +44,7 @@ theorem fac_unique {A B C P : Subgroup G} (hB : B ≤ P) (hC : C ≤ P) (hAP : A
   exact ⟨rfl, rfl, mul_left_cancel h2⟩
 
 /- English proof (translation)
-The claim follows from `fac_unique hB hC hAP hBC (tA _ ha) ha (tB _ hb) hb (tC _ hc) hc (by rwa [map_mul, map_mul] at h)`.
+A detailed English derivation is pending.
 -/
 theorem fac_descent (θ : G →* G) {A B C P : Subgroup G} (hB : B ≤ P) (hC : C ≤ P) (hAP : A ⊓ P = ⊥)
     (hBC : B ⊓ C = ⊥) (tA : ∀ x ∈ A, θ x ∈ A) (tB : ∀ x ∈ B, θ x ∈ B) (tC : ∀ x ∈ C, θ x ∈ C)
@@ -55,7 +53,7 @@ theorem fac_descent (θ : G →* G) {A B C P : Subgroup G} (hB : B ≤ P) (hC : 
   fac_unique hB hC hAP hBC (tA _ ha) ha (tB _ hb) hb (tC _ hc) hc (by rwa [map_mul, map_mul] at h)
 
 /- English proof (translation)
-The claim follows from `Subgroup.mem_normalizer_iff.2 fun x => by simpa [Subgroup.mem_subgroupOf] using Subgroup.mem_normalizer_iff.1 h x`.
+A detailed English derivation is pending.
 -/
 theorem norm_subgroupOf {H S : Subgroup G} {t : H} (h : (t : G) ∈ Subgroup.normalizer (S : Set G)) :
     t ∈ Subgroup.normalizer ((S.subgroupOf H : Subgroup H) : Set H) :=
@@ -72,31 +70,31 @@ def tau (σ : L →+* L) (M : Matrix (Fin n) (Fin n) L) : Matrix (Fin n) (Fin n)
   fun i j => σ (M (Fin.rev j) (Fin.rev i))
 
 /- English proof (translation)
-The claim follows from `if_pos (by have := i.2; rw [Fin.val_rev]; omega)`.
+A detailed English derivation is pending.
 -/
 theorem antiJ_self_rev (i : Fin n) : antiJ L n i (Fin.rev i) = 1 :=
   if_pos (by have := i.2; rw [Fin.val_rev]; omega)
 
 /- English proof (translation)
-The claim follows from `if_pos (by have := i.2; rw [Fin.val_rev]; omega)`.
+A detailed English derivation is pending.
 -/
 theorem antiJ_rev_self (i : Fin n) : antiJ L n (Fin.rev i) i = 1 :=
   if_pos (by have := i.2; rw [Fin.val_rev]; omega)
 
 /- English proof (translation)
-The claim follows from `if_neg fun e => h (Fin.ext (by have := i.2; rw [Fin.val_rev]; omega))`.
+A detailed English derivation is pending.
 -/
 theorem antiJ_ne {i k : Fin n} (h : k ≠ Fin.rev i) : antiJ L n i k = 0 :=
   if_neg fun e => h (Fin.ext (by have := i.2; rw [Fin.val_rev]; omega))
 
 /- English proof (translation)
-The claim follows from `if_neg fun e => h (Fin.ext (by have := j.2; rw [Fin.val_rev]; omega))`.
+A detailed English derivation is pending.
 -/
 theorem antiJ_ne' {j k : Fin n} (h : k ≠ Fin.rev j) : antiJ L n k j = 0 :=
   if_neg fun e => h (Fin.ext (by have := j.2; rw [Fin.val_rev]; omega))
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single (Fin.rev i)]`. Rewrite using `[antiJ_self_rev, one_mul]`. Introduce `k _ hk`. Rewrite using `[antiJ_ne hk, zero_mul]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem antiJ_mul (M : Matrix (Fin n) (Fin n) L) (i j : Fin n) :
     (antiJ L n * M) i j = M (Fin.rev i) j := by
@@ -107,7 +105,7 @@ theorem antiJ_mul (M : Matrix (Fin n) (Fin n) L) (i j : Fin n) :
   · simp
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single (Fin.rev j)]`. Rewrite using `[antiJ_rev_self, mul_one]`. Introduce `k _ hk`. Rewrite using `[antiJ_ne' hk, mul_zero]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem mul_antiJ (M : Matrix (Fin n) (Fin n) L) (i j : Fin n) :
     (M * antiJ L n) i j = M i (Fin.rev j) := by
@@ -118,9 +116,9 @@ theorem mul_antiJ (M : Matrix (Fin n) (Fin n) L) (i j : Fin n) :
   · simp
 
 /- English proof (translation)
-Use extensionality with `i j`. Rewrite using `[antiJ_mul, Matrix.one_apply]`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Rewrite using `[antiJ_rev_self, if_pos rfl]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[antiJ_ne (fun e => h (by simpa using e.symm)), if_neg h]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem antiJ_mul_self : antiJ L n * antiJ L n = 1 := by
   ext i j
@@ -131,7 +129,7 @@ theorem antiJ_mul_self : antiJ L n * antiJ L n = 1 := by
   · rw [antiJ_ne (fun e => h (by simpa using e.symm)), if_neg h]
 
 /- English proof (translation)
-Use extensionality with `i j`. Rewrite using `[mul_antiJ, antiJ_mul]`. Simplify using `[tau, cT]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem tau_eq (σ : L →+* L) (M : Matrix (Fin n) (Fin n) L) :
     tau σ M = antiJ L n * cT σ M * antiJ L n := by
@@ -140,7 +138,7 @@ theorem tau_eq (σ : L →+* L) (M : Matrix (Fin n) (Fin n) L) :
   simp [tau, cT]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [tau, Matrix.mul_apply, map_sum, map_mul]`. Rewrite using `[← Equiv.sum_comp Fin.revPerm]`. Simplify using `[mul_comm]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem tau_mul (σ : L →+* L) (M N : Matrix (Fin n) (Fin n) L) :
     tau σ (M * N) = tau σ N * tau σ M := by
@@ -150,9 +148,9 @@ theorem tau_mul (σ : L →+* L) (M N : Matrix (Fin n) (Fin n) L) :
   simp [mul_comm]
 
 /- English proof (translation)
-Use extensionality with `i j`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify using `[tau]`. Establish `: ¬ Fin.rev j = Fin.rev i` using `fun e => h (Fin.rev_injective e).symm`.
+By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[tau, Matrix.one_apply, this, h]`.
+Simplify using the standard rewrite rules.
 -/
 theorem tau_one (σ : L →+* L) : tau σ (1 : Matrix (Fin n) (Fin n) L) = 1 := by
   ext i j
@@ -177,15 +175,15 @@ theorem theta_val (σ : L →+* L) (g : GL (Fin n) L) :
       tau σ ((g⁻¹ : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) := rfl
 
 /- English proof (translation)
-Establish `hJ` using `antiJ_mul_self (L := L) (n := n)`. Establish `key : g ∈ GU σ n ↔ tau σ (g : Matrix (Fin n) (Fin n) L) * (g : Matrix (Fin n) (Fin n) L) = 1` using `by show cT σ (g : Matrix (Fin n) (Fin n) L) * antiJ L n * (g : Matrix (Fin n) (Fin n) L) = antiJ L n ↔ _`. Rewrite using `[tau_eq]`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Matrix.mul_assoc (antiJ L n * _), Matrix.mul_assoc (antiJ L n), ← Matrix.mul_assoc (cT σ _), h, hJ]`. Introduce `h`. Use `congrArg (antiJ L n * ·) h` as an intermediate fact. Simplify using `only [← Matrix.mul_assoc, hJ, Matrix.one_mul, Matrix.mul_one] at this`. Conclude with `this`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[key]`. Establish `h1 : tau σ ((g⁻¹ : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) * tau σ (g : Matrix (Fin n) (Fin n) L) = 1`. Rewrite using `[← tau_mul, ← Units.val_mul, mul_inv_cancel, Units.val_one, tau_one]`. Establish `h2 : tau σ (g : Matrix (Fin n) (Fin n) L) * tau σ ((g⁻¹ : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) = 1`. Rewrite using `[← tau_mul, ← Units.val_mul, inv_mul_cancel, Units.val_one, tau_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[theta_val]`. Combine the equalities or inequalities in the displayed calculation.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Establish `: ((theta σ g : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) = g` using `by rw [h]`. Rewrite `this` using `[theta_val]`. Rewrite `h2` using `[this]`. Conclude with `h2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_GU_iff [Valued L (WithZero (Multiplicative ℤ))] {σ : L →+* L} {g : GL (Fin n) L} :
     g ∈ GU σ n ↔ theta σ g = g := by
@@ -220,9 +218,9 @@ theorem mem_GU_iff [Valued L (WithZero (Multiplicative ℤ))] {σ : L →+* L} {
     exact h2
 
 /- English proof (translation)
-Establish `h` using `mem_upSub.1 (upSub.inv_mem hg)`. Use `mem_upSub.2 ⟨fun i j hij => ?_, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[theta_val] show σ _ = 0`. Rewrite using `[h.1 _ _ (Fin.rev_lt_rev.2 hij), map_zero]`. Rewrite using `[theta_val] show σ _ = 1`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h.2, map_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem theta_up (σ : L →+* L) {g : GL (Fin n) L} (hg : g ∈ (upSub : Subgroup (GL (Fin n) L))) :
     theta σ g ∈ (upSub : Subgroup (GL (Fin n) L)) := by
@@ -236,9 +234,9 @@ theorem theta_up (σ : L →+* L) {g : GL (Fin n) L} (hg : g ∈ (upSub : Subgro
     rw [h.2, map_one]
 
 /- English proof (translation)
-Establish `h` using `mem_lowSub.1 (lowSub.inv_mem hg)`. Use `mem_lowSub.2 ⟨fun i j hij => ?_, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[theta_val] show σ _ = 0`. Rewrite using `[h.1 _ _ (Fin.rev_lt_rev.2 hij), map_zero]`. Rewrite using `[theta_val] show σ _ = 1`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h.2, map_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem theta_low (σ : L →+* L) {g : GL (Fin n) L} (hg : g ∈ (lowSub : Subgroup (GL (Fin n) L))) :
     theta σ g ∈ (lowSub : Subgroup (GL (Fin n) L)) := by
@@ -252,7 +250,7 @@ theorem theta_low (σ : L →+* L) {g : GL (Fin n) L} (hg : g ∈ (lowSub : Subg
     rw [h.2, map_one]
 
 /- English proof (translation)
-Establish `h` using `mem_diagSub.1 (diagSub.inv_mem hg)`. Use `mem_diagSub.2 fun i j hij => ?_` and prove the remaining obligations. Rewrite using `[theta_val]`. Use `show σ _ = 0`. Rewrite using `[h _ _ (fun e => hij (Fin.rev_injective e).symm), map_zero]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem theta_diag (σ : L →+* L) {g : GL (Fin n) L} (hg : g ∈ (diagSub : Subgroup (GL (Fin n) L))) :
     theta σ g ∈ (diagSub : Subgroup (GL (Fin n) L)) := by
@@ -263,9 +261,9 @@ theorem theta_diag (σ : L →+* L) {g : GL (Fin n) L} (hg : g ∈ (diagSub : Su
   rw [h _ _ (fun e => hij (Fin.rev_injective e).symm), map_zero]
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify using `[h2]`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[h1 i j h, h]`.
+Simplify using the standard rewrite rules.
 -/
 theorem eq_one_of_entries {g : GL (Fin n) L}
     (h1 : ∀ i j : Fin n, i ≠ j → (g : Matrix (Fin n) (Fin n) L) i j = 0)
@@ -277,7 +275,7 @@ theorem eq_one_of_entries {g : GL (Fin n) L}
   · simp [h1 i j h, h]
 
 /- English proof (translation)
-The claim follows from `(Subgroup.eq_bot_iff_forall _).2 fun g hg => by obtain ⟨h1, h2⟩ := hg have h1' := mem_lowSub.1 h1 refine eq_one_of_entries (fun i j hij => ?_) h1'.2 rcases lt_or_gt_of_ne hij with h | h · exact h1'.1 i j h · exact h2 h`.
+A detailed English derivation is pending.
 -/
 theorem low_inf_bt : (lowSub : Subgroup (GL (Fin n) L)) ⊓ btSub (id : Fin n → Fin n) = ⊥ :=
   (Subgroup.eq_bot_iff_forall _).2 fun g hg => by
@@ -289,7 +287,7 @@ theorem low_inf_bt : (lowSub : Subgroup (GL (Fin n) L)) ⊓ btSub (id : Fin n �
     · exact h2 h
 
 /- English proof (translation)
-The claim follows from `(Subgroup.eq_bot_iff_forall _).2 fun g hg => by obtain ⟨h1, h2⟩ := hg have h1' := mem_upSub.1 h1 refine eq_one_of_entries (fun i j hij => ?_) h1'.2 rcases lt_or_gt_of_ne hij with h | h · exact h2 (show OrderDual.toDual j < OrderDual.toDual i from h) · exact h1'.1 i j h`.
+A detailed English derivation is pending.
 -/
 theorem up_inf_bt : (upSub : Subgroup (GL (Fin n) L)) ⊓ btSub (OrderDual.toDual : Fin n → (Fin n)ᵒᵈ) = ⊥ :=
   (Subgroup.eq_bot_iff_forall _).2 fun g hg => by
@@ -301,14 +299,14 @@ theorem up_inf_bt : (upSub : Subgroup (GL (Fin n) L)) ⊓ btSub (OrderDual.toDua
     · exact h1'.1 i j h
 
 /- English proof (translation)
-The claim follows from `(Subgroup.eq_bot_iff_forall _).2 fun g hg => eq_one_of_entries (mem_diagSub.1 hg.1) (mem_upSub.1 hg.2).2`.
+A detailed English derivation is pending.
 -/
 theorem diag_inf_up : (diagSub : Subgroup (GL (Fin n) L)) ⊓ upSub = ⊥ :=
   (Subgroup.eq_bot_iff_forall _).2 fun g hg =>
     eq_one_of_entries (mem_diagSub.1 hg.1) (mem_upSub.1 hg.2).2
 
 /- English proof (translation)
-The claim follows from `(Subgroup.eq_bot_iff_forall _).2 fun g hg => eq_one_of_entries (mem_diagSub.1 hg.1) (mem_lowSub.1 hg.2).2`.
+A detailed English derivation is pending.
 -/
 theorem diag_inf_low : (diagSub : Subgroup (GL (Fin n) L)) ⊓ lowSub = ⊥ :=
   (Subgroup.eq_bot_iff_forall _).2 fun g hg =>
@@ -321,7 +319,7 @@ section Val
 variable {L : Type} [Field L] [Valued L (WithZero (Multiplicative ℤ))] {n : ℕ}
 
 /- English proof (translation)
-Use `continuous_of_continuousAt_zero σ ?_` and prove the remaining obligations. Rewrite using `[ContinuousAt, map_zero]`. Use `((Valued.hasBasis_nhds_zero L _).tendsto_iff (Valued.hasBasis_nhds_zero L _)).2 fun γ _ => ⟨γ, trivial, fun x hx => ?_⟩` and prove the remaining obligations. Rewrite using `[Set.mem_setOf_eq, show Valued.v.restrict (σ x) = Valued.v.restrict x from (Valuation.restrict_inj _).2 (hv x)]` and apply the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 -/
 theorem continuous_sigma {σ : L →+* L} (hv : ∀ x, Valued.v (σ x) = Valued.v x) : Continuous σ := by
   refine continuous_of_continuousAt_zero σ ?_
@@ -331,7 +329,7 @@ theorem continuous_sigma {σ : L →+* L} (hv : ∀ x, Valued.v (σ x) = Valued.
   rwa [Set.mem_setOf_eq, show Valued.v.restrict (σ x) = Valued.v.restrict x from (Valuation.restrict_inj _).2 (hv x)]
 
 /- English proof (translation)
-Establish `hc : Continuous fun g : GL (Fin n) L => cT σ (g : Matrix (Fin n) (Fin n) L)`. Unfold `cT`. Conclude with `(Units.continuous_val.matrix_map (continuous_sigma hv)).matrix_transpose`. Conclude with `isClosed_eq ((hc.matrix_mul continuous_const).matrix_mul Units.continuous_val) continuous_const`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem isClosed_GU {σ : L →+* L} (hv : ∀ x, Valued.v (σ x) = Valued.v x) :
     IsClosed ((GU σ n : Subgroup (GL (Fin n) L)) : Set (GL (Fin n) L)) := by
@@ -341,9 +339,9 @@ theorem isClosed_GU {σ : L →+* L} (hv : ∀ x, Valued.v (σ x) = Valued.v x) 
   exact isClosed_eq ((hc.matrix_mul continuous_const).matrix_mul Units.continuous_val) continuous_const
 
 /- English proof (translation)
-Rewrite using `[Subtype.isCompact_iff]`. Establish `: ((↑) '' ((IwU σ n : Subgroup (GU σ n)) : Set (GU σ n)) : Set (GL (Fin n) L)) = ((IwGL L n : Subgroup (GL (Fin n) L)) : Set (GL (Fin n) L)) ∩ ((GU σ n : Subgroup (GL (Fin n) L)) : Set (GL (Fin n) L))`. Use extensionality with `g`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨Subgroup.mem_subgroupOf.1 hx, x.2⟩`. Introduce and unpack `⟨h1, h2⟩`. Conclude with `⟨⟨g, h2⟩, Subgroup.mem_subgroupOf.2 h1, rfl⟩`. Rewrite using `[this]`. Conclude with `(isCompact_IwGL h).inter_right (isClosed_GU h.2.1)`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isCompact_IwU [CompleteSpace L] {ϖ : L} {σ : L →+* L} {q : ℕ} (h : IsUnramInv ϖ σ q) :
     IsCompact ((IwU σ n : Subgroup (GU σ n)) : Set (GU σ n)) := by
@@ -363,9 +361,9 @@ theorem isCompact_IwU [CompleteSpace L] {ϖ : L} {σ : L →+* L} {q : ℕ} (h :
 variable {ϖ : L} {σ : L →+* L}
 
 /- English proof (translation)
-Take `⟨a, ⟨haJ, haN⟩, b, ⟨hbJ, hbT⟩, c, ⟨hcJ, hcN⟩, e⟩` from `fact_low hϖ (Subgroup.mem_subgroupOf.1 hx)`. Establish `hx' : theta σ (a * b * c) = a * b * c`. Rewrite using `[← e]`. Conclude with `mem_GU_iff.1 x.2`. Take `⟨ta, tb, tc⟩` from `fac_descent (theta σ) (C := upSub) (B := diagSub) (A := lowSub) (P := btSub (id : Fin n → Fin n)) inf_le_left (fun _ hg => hg.1) low_inf_bt diag_inf_up (fun _ => theta_low σ) (fun _ => theta_diag σ) (fun _ => theta_up σ) haN hbT hcN hx'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨⟨a, mem_GU_iff.2 ta⟩, ⟨haJ, haN⟩, ⟨b, mem_GU_iff.2 tb⟩, ⟨hbJ, hbT⟩, ⟨c, mem_GU_iff.2 tc⟩, ⟨hcJ, hcN⟩, Subtype.ext e⟩`.
+A detailed English derivation is pending.
 -/
 theorem desc_low
     (hϖ : Valued.v ϖ = ((Multiplicative.ofAdd (-1 : ℤ) : Multiplicative ℤ) : WithZero (Multiplicative ℤ)))
@@ -382,9 +380,9 @@ theorem desc_low
     ⟨hcJ, hcN⟩, Subtype.ext e⟩
 
 /- English proof (translation)
-Take `⟨c, ⟨hcJ, hcN⟩, b, ⟨hbJ, hbT⟩, a, ⟨haJ, haN⟩, e⟩` from `fact_up hϖ (Subgroup.mem_subgroupOf.1 hx)`. Establish `hx' : theta σ (c * b * a) = c * b * a`. Rewrite using `[← e]`. Conclude with `mem_GU_iff.1 x.2`. Take `⟨tc, tb, ta⟩` from `fac_descent (theta σ) (C := lowSub) (B := diagSub) (A := upSub) (P := btSub (OrderDual.toDual : Fin n → (Fin n)ᵒᵈ)) inf_le_right (fun _ hg => hg.1) up_inf_bt diag_inf_low (fun _ => theta_up σ) (fun _ => theta_diag σ) (fun _ => theta_low σ) hcN hbT haN hx'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨⟨c, mem_GU_iff.2 tc⟩, ⟨hcJ, hcN⟩, ⟨b, mem_GU_iff.2 tb⟩, ⟨hbJ, hbT⟩, ⟨a, mem_GU_iff.2 ta⟩, ⟨haJ, haN⟩, Subtype.ext e⟩`.
+A detailed English derivation is pending.
 -/
 theorem desc_up
     (hϖ : Valued.v ϖ = ((Multiplicative.ofAdd (-1 : ℤ) : Multiplicative ℤ) : WithZero (Multiplicative ℤ)))
@@ -403,9 +401,9 @@ theorem desc_up
 end Val
 
 /- English proof (translation)
-Introduce `L _ _ _ ϖ σ q h n`. Establish `hϖ` using `h.2.2.2.1`. Establish `cN : IsClosed ((upSub : Subgroup (GL (Fin n) L)) : Set (GL (Fin n) L))` using `isClosed_triSub _ _`. Establish `cNm : IsClosed ((lowSub : Subgroup (GL (Fin n) L)) : Set (GL (Fin n) L))` using `isClosed_triSub _ _`. Establish `cT' : IsClosed ((diagSub : Subgroup (GL (Fin n) L)) : Set (GL (Fin n) L))` using `(isClosed_btSub _).inter (isClosed_btSub _)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨{ N := upSub.subgroupOf (GU σ n), Nm := lowSub.subgroupOf (GU σ n), T := diagSub.subgroupOf (GU σ n), J := IwU σ n isOpen_J := isOpen_IwGL.preimage continuous_subtype_val isCompact_J := isCompact_IwU h isClosed_N := cN.preimage continuous_subtype_val isClosed_Nm := cNm.preimage …` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations.
 -/
 theorem iwahoriU : PositivityTheory.SphericalProduct.IwahoriU := by
   intro L _ _ _ ϖ σ q h n

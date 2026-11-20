@@ -12,7 +12,7 @@ import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.Inert
 namespace UpperTheory.Gal.UnramifiedFromSplittingCriterion
 
 /- English proof (translation)
-The claim follows from `unrSplit_of groupStep (unrCharPP (ordPrime (kumMove moveRoot normVal)) charOrd decPow) (freshSplit freshChar_holds) exFld layerOf_holds degOf splitIff`.
+A detailed English derivation is pending.
 -/
 theorem unrSplit_holds : UnrSplit :=
   unrSplit_of groupStep (unrCharPP (ordPrime (kumMove moveRoot normVal)) charOrd decPow) (freshSplit freshChar_holds) exFld

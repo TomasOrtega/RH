@@ -9,29 +9,27 @@ namespace PI.FJMB
 variable {σ : Type*}
 
 /- English proof (translation)
-Rewrite using `[MvPolynomial.aeval_monomial, MvPolynomial.aeval_monomial, map_one, one_mul, one_mul]`. Distinguish the cases in `hoff : ∃ v ∈ e.support, v ∈ offD ι`. Take `⟨v, hv, hvo⟩` from `hoff`. Establish `h1 : (e.prod fun v k => killS (offD ι) v ^ k) = 0`. Use `Finset.prod_eq_zero hv ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [killS, if_pos hvo]`. Conclude with `zero_pow (Finsupp.mem_support_iff.mp hv)`. Establish `h2 : (e.prod fun v k => diagOne' ι v ^ k) = 0`. Use `Finset.prod_eq_zero hv ?_` and prove the remaining obligations. Simplify using `only [diagOne', if_pos hvo]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `zero_pow (Finsupp.mem_support_iff.mp hv)`. Rewrite using `[h1, h2, mul_zero]`. Use `push_neg at hoff`. Establish `hsum : ∀ i, ∑ k : Fin m, e (ι (i, k)) = e (ι (i, i))`. Introduce `i`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Rewrite using `[Finset.sum_eq_single i]`. Introduce `k _ hk`. Assume the negation of the conclusion as `hne`. Conclude with `hoff (ι (i, k)) (Finsupp.mem_support_iff.mpr hne) ⟨i, k, rfl, fun h => hk (Fin.ext h).symm⟩`. Introduce `h`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `absurd (Finset.mem_univ i) h`. Simplify using `only [hsum]`. Establish `hL : (e.prod fun v k => killS (offD ι) v ^ k) = ∏ v ∈ e.support, (X v : MvPolynomial σ ℂ) ^ e v`. Unfold `Finsupp.prod`. Use `Finset.prod_congr rfl fun v hv => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [killS, if_neg (hoff v hv)]`. Establish `hR : (e.prod fun v k => diagOne' ι v ^ k) = ∏ v ∈ e.support, (if (∃ i k, ι (i, k) = v ∧ (i : ℕ) = k) then 1 else (X v : MvPolynomial σ ℂ) ^ e v)`. Unfold `Finsupp.prod`. Use `Finset.prod_congr rfl fun v hv => ?_` and prove the remaining obligations. Simplify using `only [diagOne', if_neg (hoff v hv)]`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `split_ifs <;> simp`. Establish `hsplit : ∏ v ∈ e.support, (X v : MvPolynomial σ ℂ) ^ e v = (∏ v ∈ e.support, if (∃ i k, ι (i, k) = v ∧ (i : ℕ) = k) then (X v : MvPolynomial σ ℂ) ^ e v else 1) * ∏ v ∈ e.support, (if (∃ i k, ι (i, k) = v ∧ (i : ℕ) = k) then 1 else (X v : MvPolynomial σ ℂ) ^ e v)`. Rewrite using `[← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun v _ => ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> simp`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hF : ∏ v ∈ e.support.filter (fun v => ∃ i k, ι (i, k) = v ∧ (i : ℕ) = k), (X v : MvPolynomial σ ℂ) ^ e v = ∏ v ∈ e.support, if (∃ i k, ι (i, k) = v ∧ (i : ℕ) = k) then (X v : MvPolynomial σ ℂ) ^ e v else 1`. Rewrite using `[Finset.prod_filter]`. Establish `hinj : Function.Injective (fun i : Fin m => ι (i, i))` using `fun a b h => (Prod.mk.inj (hι h)).1`. Establish `himg : ∏ i, (X (ι (i, i)) : MvPolynomial σ ℂ) ^ e (ι (i, i)) = ∏ v ∈ Finset.univ.image (fun i : Fin m => ι (i, i)), (X v : MvPolynomial σ ℂ) ^ e v`. Rewrite using `[Finset.prod_image (fun a _ b _ h => hinj h)]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hL, hR, hsplit, ← hF, himg]`. Use `congr 1`. Apply `Finset.prod_subset` to reduce the goal to its premises. Introduce `v hv`. Rewrite `hv` using `[Finset.mem_filter]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨i, k, hik, hk⟩` from `hv.2`. Rewrite using `[Finset.mem_image]`. Use `⟨i, Finset.mem_univ _, ?_⟩` and prove the remaining obligations. Rewrite using `[← hik, ← Fin.ext hk]`. Introduce `v hv hvf`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hv` using `[Finset.mem_image]`. Take `⟨i, _, rfl⟩` from `hv`. Establish `h0 : e (ι (i, i)) = 0`. Assume the negation of the conclusion as `hne`. Conclude with `hvf (Finset.mem_filter.mpr ⟨Finsupp.mem_support_iff.mpr hne, i, i, rfl, rfl⟩)`.
-
-Rewrite using `[h0, pow_zero]`.
+A detailed English derivation is pending.
 -/
 theorem cd_mono_factor {m : ℕ} (ι : Fin m × Fin m → σ) (hι : Function.Injective ι) (e : σ →₀ ℕ) :
     aeval (killS (offD ι)) (monomial e (1 : ℂ)) =
@@ -99,11 +97,9 @@ theorem cd_mono_factor {m : ℕ} (ι : Fin m × Fin m → σ) (hι : Function.In
       rw [h0, pow_zero]
 
 /- English proof (translation)
-Introduce `σ m ι hι α P hP`. Use `conv_lhs => rw [P.as_sum]`. Use `conv_rhs => rw [P.as_sum]`. Rewrite using `[map_sum, map_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun e he => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hm : MvPolynomial.monomial e (P.coeff e) = MvPolynomial.C (P.coeff e) * MvPolynomial.monomial e 1`. Rewrite using `[MvPolynomial.C_mul_monomial, mul_one]`. Rewrite using `[hm, map_mul, map_mul, cd_mono_factor ι hι e]`. Establish `hs : ∀ i, ∑ k : Fin m, e (ι (i, k)) = α i` using `hP e he`. Simplify using `only [hs, MvPolynomial.aeval_C]`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem diagonal_hypothesis : HypDiag := by
   intro σ m ι hι α P hP
@@ -119,23 +115,19 @@ theorem diagonal_hypothesis : HypDiag := by
   ring
 
 /- English proof (translation)
-Introduce `σ m n ι hι P`. Establish `hC : ∀ c : ℂ, ∀ e ∈ (MvPolynomial.C c : MvPolynomial σ ℂ).support, ∀ x, e (ι x) = 0`. Introduce `c e he x`. Rewrite `he` using `[MvPolynomial.C_apply]`. Establish `h0` using `MvPolynomial.support_monomial_subset he`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h0` using `[Finset.mem_singleton]`. Rewrite using `[h0]`. Both sides reduce to the same expression. Establish `hadd : ∀ Q R : MvPolynomial σ ℂ, (∀ e ∈ Q.support, ∀ x, e (ι x) = 0) → (∀ e ∈ R.support, ∀ x, e (ι x) = 0) → ∀ e ∈ (Q + R).support, ∀ x, e (ι x) = 0`. Introduce `Q R hQ hR e he x`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Break down `Finset.mem_union.mp (MvPolynomial.support_add he) with h | h` into its components or cases. Conclude with `hQ e h x`. Conclude with `hR e h x`. Establish `hmul : ∀ Q R : MvPolynomial σ ℂ, (∀ e ∈ Q.support, ∀ x, e (ι x) = 0) → (∀ e ∈ R.support, ∀ x, e (ι x) = 0) → ∀ e ∈ (Q * R).support, ∀ x, e (ι x) = 0`. Introduce `Q R hQ hR e he x`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨a, ha, b, hb, rfl⟩` from `Finset.mem_add.mp (MvPolynomial.support_mul Q R he)`. Rewrite using `[Finsupp.add_apply, hQ a ha x, hR b hb x]`. Establish `hgen : ∀ w, ∀ e ∈ (diagOne' ι w).support, ∀ x, e (ι x) = 0`. Introduce `w`. Unfold `diagOne'`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 
-Use `split_ifs with h1 h2`. Simplify using `using hC 0`. Simplify using `using hC 1`. Introduce `e he x`. Establish `hne : w ≠ ι x`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails.
 
-Introduce and unpack `rfl`. Take `⟨i, k⟩` from `x`. Distinguish the cases in `hik : (i : ℕ) = k`. Conclude with `h2 ⟨i, k, rfl, hik⟩`. Conclude with `h1 ⟨i, k, rfl, hik⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Proceed by induction. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `he` using `[MvPolynomial.support_X, Finset.mem_singleton]`. Rewrite using `[he, Finsupp.single_apply, if_neg hne]`. Proceed by induction on `P using MvPolynomial.induction_on`. Use `next a =>`. Rewrite using `[MvPolynomial.aeval_C, MvPolynomial.algebraMap_eq]`.
-
-Conclude with `hC a`. Use `next p q hp hq =>`. Rewrite using `[map_add]`. Conclude with `hadd _ _ hp hq`. Use `next p w hp =>`.
-
-Rewrite using `[map_mul, MvPolynomial.aeval_X]`. Conclude with `hmul _ _ hp (hgen w)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem diagonal_image_block_free : HypFree := by
   intro σ m n ι hι P

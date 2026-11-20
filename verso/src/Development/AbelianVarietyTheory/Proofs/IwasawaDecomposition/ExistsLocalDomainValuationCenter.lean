@@ -6,33 +6,29 @@ open IsLocalRing GlobalTheory.Toroidal TensorProduct
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `A B k _ _ _ _ _ _ φ V C hker hft hic hle hfrac`. Set `ψ : C →+* V` to `(φ.comp C.val.toRingHom).codRestrict V (fun c => (V.valuation_le_one_iff _).1 (hle c c.2))`. Set `p : Ideal C` to `(maximalIdeal V).comap ψ`. Establish `hmem : ∀ c : C, c ∈ p ↔ V.valuation (φ c) < 1`. Introduce `c`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `V.valuation_lt_one_iff (ψ c)`. Use `haveI : p.IsPrime := Ideal.comap_isPrime _ _`. Set `D` to `Localization.AtPrime p`. Use `haveI : IsDomain D := IsLocalization.isDomain_localization p.primeCompl_le_nonZeroDivisors`. Establish `hval1 : ∀ y : p.primeCompl, V.valuation (φ (y : C)) = 1`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `y`. Establish `h1` using `hle (y : C) (y : C).2`. Establish `h2 : ¬ V.valuation (φ (y : C)) < 1` using `fun h => y.2 ((hmem _).2 h)`. Conclude with `le_antisymm h1 (not_lt.1 h2)`. Establish `hunit : ∀ y : p.primeCompl, IsUnit (C.val (y : C))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `y`. Assume the negation of the conclusion as `hnu`. Establish `hm : ((y : C) : B) ∈ maximalIdeal B` using `(IsLocalRing.mem_maximalIdeal _).2 hnu`. Rewrite `hm` using `[← hker, RingHom.mem_ker]`. Use `hval1 y` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `this` using `[hm, map_zero]`. Conclude with `zero_ne_one this`. Set `ι : D →ₐ[A] B` to `IsLocalization.liftAlgHom (M := p.primeCompl) (S := D) (f := C.val) hunit`. Establish `hιalg : ∀ c : C, ι (algebraMap C D c) = c`. Introduce `c`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[ι, IsLocalization.liftAlgHom_apply, IsLocalization.lift_eq]`. Establish `hrep : ∀ d : D, ∃ c : C, ∃ s : p.primeCompl, ((s : C) : B) * ι d = c ∧ d * algebraMap C D s = algebraMap C D c`. Introduce `d`. Take `⟨⟨c, s⟩, rfl⟩` from `IsLocalization.mk'_surjective p.primeCompl d`. Use `⟨c, s, ?_, IsLocalization.mk'_spec _ _ _⟩` and prove the remaining obligations.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `(IsLocalization.lift_mk'_spec (M := p.primeCompl) (S := D) (hg := hunit) c (IsLocalization.lift hunit (IsLocalization.mk' D c s)) s).1 rfl` as an intermediate fact. Simplify `this.symm` using `[ι, IsLocalization.liftAlgHom_apply]`. Establish `hvald : ∀ d : D, ∃ c : C, V.valuation (φ (ι d)) = V.valuation (φ c) ∧ (d ∈ maximalIdeal D → c ∈ p)`. Introduce `d`. Take `⟨c, s, h1, h2⟩` from `hrep d`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨c, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← h1, map_mul, Valuation.map_mul, hval1 s, one_mul]`. Introduce `hd`. Establish `: algebraMap C D c ∈ maximalIdeal D`. Rewrite using `[← h2]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Ideal.mul_mem_right _ _ hd`. Establish `h3 : c ∈ (maximalIdeal D).under C` using `Ideal.mem_comap.2 this`. Rewrite `h3` using `[IsLocalization.AtPrime.comap_maximalIdeal D p]`. Then use the resulting hypothesis. Use `⟨D, inferInstance, inferInstance, inferInstance, inferInstance, ι, ?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `isIntegrallyClosed_of_isLocalization D p.primeCompl p.primeCompl_le_nonZeroDivisors`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `infer_instance`. Use `show Function.Injective (IsLocalization.lift hunit : D → B)`. Rewrite using `[IsLocalization.lift_injective_iff]`. Introduce `x y`. Prove the components needed by the constructor for the conclusion.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Use `congrArg (IsLocalization.lift (S := D) hunit) h` as an intermediate fact. Simplify `this` using `[IsLocalization.lift_eq]`. Introduce `h`. Rewrite using `[Subtype.ext (show (x : B) = y from h)]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `d`. Take `⟨c, hc, -⟩` from `hvald d`. Rewrite using `[hc]`. Conclude with `hle c c.2`. Introduce `d hd`.
-
-Take `⟨c, hc, hp⟩` from `hvald d`. Rewrite using `[hc]`. Conclude with `(hmem c).1 (hp hd)`. Introduce `b`. Take `⟨a, ha, s, hs, hu, hsb⟩` from `hfrac b`.
-
-Use `⟨algebraMap C D ⟨a, ha⟩, algebraMap C D ⟨s, hs⟩, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hιalg]`. Conclude with `hu`. Rewrite using `[hιalg, hιalg]`. Conclude with `hsb`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem valuativeChart_localise :
     ∀ (A B k : Type) [CommRing A] [CommRing B] [IsDomain B] [IsLocalRing B] [Algebra A B] [Field k]

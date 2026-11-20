@@ -9,15 +9,13 @@ open scoped Classical
 open GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hP`. Establish `h0` using `fun T hT => Dense.pol_dense M hP.base hP.herm hP.skew T hT`. Rewrite using `[Submodule.dense_iff_topologicalClosure_eq_top]`. Assume the negation of the conclusion as `hnd`. Choose the witnesses or unpack the hypotheses as in `⟨x, hx⟩ : ∃ x, x ∉ (M.Pol B.ψ B.emb).topologicalClosure := by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Assume the negation of the conclusion as `h`. Use `push Not at h`. Conclude with `hnd (eq_top_iff.2 fun x _ => h x)`. Take `⟨f, u, hfs, hfx⟩` from `RCLike.geometric_hahn_banach_closed_point (𝕜 := ℂ) (((M.Pol B.ψ B.emb).topologicalClosure.restrictScalars ℝ).convex) (M.Pol B.ψ B.emb).isClosed_topologicalClosure hx`. Establish `hf0 : ∀ a ∈ (M.Pol B.ψ B.emb).topologicalClosure, f a = 0`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Introduce `a ha`. Assume the negation of the conclusion as `hne`. Establish `hmem : ((((|u| + 1 : ℝ) : ℂ) / f a) • a) ∈ (M.Pol B.ψ B.emb).topologicalClosure` using `(M.Pol B.ψ B.emb).topologicalClosure.smul_mem _ ha`. Establish `hlt` using `hfs _ hmem`. Rewrite `hlt` using `[map_smul, smul_eq_mul, div_mul_cancel₀ _ hne]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Apply the tactic sequence `simp at hlt <;> linarith [le_abs_self u]`. Establish `hfz : f = 0` using `h0 f (fun g hg => hf0 g ((M.Pol B.ψ B.emb).le_topologicalClosure hg))`. Establish `h00` using `hfs 0 (Submodule.zero_mem _)`. Rewrite `hfx` using `[hfz]`. Simplify using `at hfx h00`.
-
-Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem polDense : PositivityTheory.ThKG.PolDense := by
   intro F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hP

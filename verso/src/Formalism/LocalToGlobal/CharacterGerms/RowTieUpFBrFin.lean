@@ -18,7 +18,7 @@ variable {T : CDVR} {io : c.F →+* T.Fr} {y : IntFr Xo c T io} {C3 : IntChart T
 variable {C : Type} [Field C] [CharZero C] {V : VF C} {ie : T.Fr →+* C}
 
 /- English proof (translation)
-The claim follows from `upCharS_at_chartL Pl.place_doubling_condition hL hie hd hY ha hg hr o Hc`.
+A detailed English derivation is pending.
 -/
 theorem upCharS_chartL (hL : UpFLaw V.l T.V (𝓞 E) (chD C3.ch) C3.FT C3.actT)
     (hie : EmbOK T V ie) (hd : ¬ ((V.l : ℤ) ∣ Algebra.discr ℤ (Module.Free.chooseBasis ℤ (𝓞 E))))

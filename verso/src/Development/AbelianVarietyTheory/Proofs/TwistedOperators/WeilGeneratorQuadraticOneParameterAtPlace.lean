@@ -19,7 +19,7 @@ open scoped Classical
 namespace GlobalTheory.ArchRec.Gen
 
 /- English proof (translation)
-Establish `hs : ∀ (a : ℂ) v, GlobalTheory.RealWeil.Sm ρ (a • dH ρ v f)` using `fun a v => (smS ρ).smul_mem a (hd v)`. Establish `ha : ∀ (a : ℂ) u v, GlobalTheory.RealWeil.Sm ρ (dH ρ u f + a • dH ρ v f)` using `fun a u v => (smS ρ).add_mem (hd u) (hs a v)`. Simplify using `only [xOp, dOp, dH_smul _ _ (ha _ _ _), dH_add _ (hd _) (hs _ _), dH_smul _ _ (hd _), Fintype.sum_prod_type, Fintype.sum_bool, if_true, Bool.false_eq_true, if_false, one_smul]`. Use `module`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem xOp_dOp {ι : Type} [Fintype ι] [DecidableEq ι] {B : Type} [NormedAddCommGroup B] [NormedSpace ℂ B]
     (ρ : (ι → ℂ) → B →L[ℂ] B) (H : Matrix ι ι ℂ) (k l : ι) {f : B} (hd : ∀ v, GlobalTheory.RealWeil.Sm ρ (dH ρ v f)) :
@@ -37,9 +37,9 @@ variable {D : D7} {θ : InfFam D} {σ : (D.what₂.Tau → ℂ) →+ Formalism.L
   {S T : HSp D}
 
 /- English proof (translation)
-Establish `e : v = vecL (Pi.single τ (cpt v τ) : D.what₂.Tau → Matrix (Fin T.rank) (Fin S.rank) ℂ)`. Use function extensionality and compare the values at `⟨⟨a, a'⟩, t⟩`. Express the relevant statement in the definitionally equal form `_ = (Pi.single τ (cpt v τ) : D.what₂.Tau → Matrix (Fin T.rank) (Fin S.rank) ℂ) t a a'`. Distinguish the cases in `ht : t = τ`. Substitute `ht` using the available equality.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Rewrite using `[Pi.single_eq_same]`. Both sides reduce to the same expression. Rewrite using `[Pi.single_eq_of_ne ht]`. Conclude with `hv _ ht`. Rewrite using `[← GlobalTheory.DefLift.Gen.coe_dH h hψ F hF, ← e]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coe_dH_at (h : GlobalTheory.FockCompare.Chart θ σ) (hψ : IsStdChar D ψ (-1)) (F : BB ψ S T)
     (hF : IsThetaFunO ψ S T F.1) (τ : D.what₂.Tau) (v : GlobalTheory.RealWeil.Ix S T → ℂ) (hv : ∀ k, k.2 ≠ τ → v k = 0) :
@@ -58,9 +58,9 @@ theorem coe_dH_at (h : GlobalTheory.FockCompare.Chart θ σ) (hψ : IsStdChar D 
 open scoped ComplexOrder in
 
 /- English proof (translation)
-Establish `: HM S T * blk (fun τ => ((2 * (tauE D τ D.host.xi0).im : ℝ) : ℂ)⁻¹ • (gramAt D T τ)⁻¹) (gramAt D S) = 1`. Unfold `HM`. Rewrite using `[blk_mul, ← blk_one]`. Apply the tactic sequence `congr 1 <;> funext τ`. Rewrite using `[Matrix.smul_mul, Matrix.mul_smul, smul_smul, mul_inv_cancel₀ (two_im_pos τ).ne', one_smul, mul_nonsing_inv _ (GlobalTheory.SmoothForms.RealPts.gramAt_unit T τ)]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_nonsing_inv _ (GlobalTheory.SmoothForms.RealPts.gramAt_unit S τ)]`. Rewrite using `[inv_eq_right_inv this, WeylAction.blk_apply, if_neg hkl]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem HM_inv_apply (k l : GlobalTheory.RealWeil.Ix S T) (hkl : k.2 ≠ l.2) : (HM S T)⁻¹ k l = 0 := by
   have : HM S T * blk (fun τ => ((2 * (tauE D τ D.host.xi0).im : ℝ) : ℂ)⁻¹ • (gramAt D T τ)⁻¹) (gramAt D S) = 1 := by
@@ -73,19 +73,17 @@ theorem HM_inv_apply (k l : GlobalTheory.RealWeil.Ix S T) (hkl : k.2 ≠ l.2) : 
   rw [inv_eq_right_inv this, WeylAction.blk_apply, if_neg hkl]
 
 /- English proof (translation)
-Set `e` to `(Fintype.equivFin (GlobalTheory.RealWeil.Ix S T × GlobalTheory.RealWeil.Ix S T × Bool × Bool)).symm`. Set `c : GlobalTheory.RealWeil.Ix S T × GlobalTheory.RealWeil.Ix S T × Bool × Bool → ℂ` to `fun a => X a.1 a.2.1 * (-(1 / (4 * Real.pi)) * (if a.2.2.1 then -Complex.I else 1) * (if a.2.2.2 then Complex.I else 1))`. Set `u : GlobalTheory.RealWeil.Ix S T × GlobalTheory.RealWeil.Ix S T × Bool × Bool → GlobalTheory.RealWeil.Ix S T → ℂ` to `fun a => (if a.2.2.1 then Complex.I else 1) • Pi.single a.1 1`. Set `u' : GlobalTheory.RealWeil.Ix S T × GlobalTheory.RealWeil.Ix S T × Bool × Bool → GlobalTheory.RealWeil.Ix S T → ℂ` to `fun a => (if a.2.2.2 then Complex.I else 1) • (HM S T)⁻¹ *ᵥ Pi.single a.2.1 1`. Use `⟨_, c ∘ e, fun i => cpt (u (e i)) τ, fun i => cpt (u' (e i)) τ, fun F hF => ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Establish `th` using `GlobalTheory.DefLift.Gen.theta_dH h hψ F hF`. Establish `e1 : nOp (rhoV hψ σ S T) (HM S T) X F = ∑ a, c a • dH (rhoV hψ σ S T) (u a) (dH (rhoV hψ σ S T) (u' a) F)`. Rewrite using `[nOp, Fintype.sum_prod_type (f := fun a => c a • dH (rhoV hψ σ S T) (u a) (dH (rhoV hψ σ S T) (u' a) F))]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Fintype.sum_prod_type (f := fun a => c (k, a) • dH (rhoV hψ σ S T) (u (k, a)) (dH (rhoV hψ σ S T) (u' (k, a)) F))]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[xOp_dOp _ _ _ _ fun v => sm_of_theta h hψ _ (th v), Finset.smul_sum]`. Conclude with `Finset.sum_congr rfl fun b _ => smul_smul _ _ _`. Set `j : BB ψ S T →ₗ[ℂ] (WO S T → ℂ)` to `⟨⟨fun G => G.1, fun _ _ => rfl⟩, fun _ _ => rfl⟩`. Express the relevant statement in the definitionally equal form `j _ = _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e1, map_sum, ← e.sum_comp]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, Function.comp_apply]`. Use `beta_reduce`. Generalize the expression as in `e i = a`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Distinguish the cases in `ha : a.1.2 ≠ τ ∨ a.2.1.2 ≠ τ`. Establish `: c a = 0` using `by simp only [c, hX _ _ ha, zero_mul]`. Rewrite using `[this, zero_smul, zero_smul]`. Use `push Not at ha`. Establish `h1 : ∀ k, k.2 ≠ τ → u a k = 0` using `fun k hk => by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `: k ≠ a.1` using `fun e => hk (e ▸ ha.1)`. Simplify using `only [u, Pi.smul_apply, Pi.single_eq_of_ne this, smul_zero]`. Establish `h2 : ∀ k, k.2 ≠ τ → u' a k = 0` using `fun k hk => by`. Simplify using `only [u', Pi.smul_apply, mulVec_single_one, col_apply, HM_inv_apply k a.2.1 (ha.2 ▸ hk), smul_zero]`. Rewrite using `[← coe_dH_at h hψ F hF τ _ h2, ← coe_dH_at h hψ _ (th _) τ _ h1]`.
-
-Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem nOp_at (h : GlobalTheory.FockCompare.Chart θ σ) (hψ : IsStdChar D ψ (-1)) (τ : D.what₂.Tau)
     (X : Matrix (GlobalTheory.RealWeil.Ix S T) (GlobalTheory.RealWeil.Ix S T) ℂ) (hX : ∀ k l, k.2 ≠ τ ∨ l.2 ≠ τ → X k l = 0) :
@@ -132,17 +130,17 @@ theorem nOp_at (h : GlobalTheory.FockCompare.Chart θ σ) (hψ : IsStdChar D ψ 
 variable {χS χT : (AE D)ˣ →* Circle} {ω : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ)}
 
 /- English proof (translation)
-Establish `hψ` using `hω.std`. Take `⟨σ, h⟩` from `GlobalTheory.RealLineAt.exists_inverse_chart hθ`. Establish `hW` using `GlobalTheory.Ker.isWeak_of_datum hω`. Take `⟨lam, hl⟩` from `GenZero.exists_generator D θ σ h ψ hψ S T ω hW hω.om_cont γ h1 h2 h3 X h4`. Take `⟨lam', hl'⟩` from `GlobalTheory.Mem.LiftGen.hasDerivAt_om D θ σ h ψ hψ S T ω hW hω.om_cont γ h1 h2 h3 X h4`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨n, c, z, z', hq⟩` from `nOp_at h hψ τ X hX`. Use `⟨n, c, z, z', lam, fun f hf => ?_⟩` and prove the remaining obligations. Take `⟨F, rfl⟩ : ∃ F : BB ψ S T, (F.1 : WO S T → ℂ) = f` from `⟨toB hψ f hf, coe_toB hψ f hf⟩`. Take `⟨u, hu, hud⟩` from `hl F hf`. Rewrite using `[← hq F hf, GlobalTheory.DefLift.Gen.coe_add_smul]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Establish `hl2` using `hl' F hf`. Generalize the expression as in `nOp (rhoV hψ σ S T) (HM S T) X F + lam • F = G at hud ⊢`. Generalize the expression as in `nOp (rhoV hψ σ S T) (HM S T) X F + lam' • F = G' at hl2`. Establish `e : (G.1 : WO S T → ℂ) = G'.1` using `funext fun w => by`. Establish `a1` using `((ev _ _ w).restrictScalars ℝ).hasFDerivAt.comp_hasDerivAt (0 : ℝ) hud`.
+Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a2` using `hl2 1 w`. Simplify using `only [one_mul, map_one, Module.End.one_apply] at a2`. Use `HasDerivAt.unique ?_ a2` and prove the remaining obligations. Conclude with `a1.congr_of_eventuallyEq (Filter.Eventually.of_forall fun t => (congrFun (hu t) w).symm)`. Use `⟨fun g w => by rw [e]; exact hl2 g w, fun μ 𝓕 hμ h𝓕 E hE => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨E, rfl⟩ : ∃ F : BB ψ S T, (F.1 : WO S T → ℂ) = E` from `⟨toB hψ E hE, coe_toB hψ E hE⟩`. Take `⟨i1, i2, i3, -⟩` from `GlobalTheory.AdelicMatrixLattice.lattice D T S`. Establish `i6 : BorelSpace (WO S T)` using `⟨rfl⟩`. Establish `: IsFiniteMeasure (μ.restrict 𝓕)` using `isFiniteMeasure_restrict.2 (GlobalTheory.Size.measure_dom hμ h𝓕).2`. Set `Φ : BB ψ S T →L[ℂ] ℂ` to `(innerSL ℂ (toL2 _ _ (μ.restrict 𝓕) E)).comp (toL2 _ _ (μ.restrict 𝓕))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hΦ : ∀ A : BB ψ S T, ipTh μ 𝓕 A.1 E.1 = Φ A` using `fun A => (BoundedContinuousFunction.inner_toLp (μ.restrict 𝓕) E.1 A.1).symm`. Simplify using `only [← hu, hΦ]`. Conclude with `(Φ.restrictScalars ℝ).hasFDerivAt.comp_hasDerivAt (0 : ℝ) hud`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem quadGen_of_supp (hθ : IsInfFam θ) (hω : IsWeilDatumO ψ S T χS χT ω) (τ : D.what₂.Tau)
     (γ : ℝ → GA D S × GA D T) (h1 : Continuous γ) (h2 : ∀ s t, γ (s + t) = γ s * γ t)
@@ -180,13 +178,11 @@ theorem quadGen_of_supp (hθ : IsInfFam θ) (hω : IsWeilDatumO ψ S T χS χT �
   exact (Φ.restrictScalars ℝ).hasFDerivAt.comp_hasDerivAt (0 : ℝ) hud
 
 /- English proof (translation)
-Introduce `D ψ θ S T χS χT ω τ hθ hω`. Establish `supp : ∀ (b : D.what₂.Tau → Matrix (Fin T.rank) (Fin T.rank) ℂ) (a : D.what₂.Tau → Matrix (Fin S.rank) (Fin S.rank) ℂ), (∀ t, t ≠ τ → b t = 0 ∨ a t = 0) → ∀ k l : GlobalTheory.RealWeil.Ix S T, k.2 ≠ τ ∨ l.2 ≠ τ → blk b a k l = 0`. Introduce `b a hab k l hkl`. Rewrite using `[WeylAction.blk_apply]`. Use `split_ifs with e`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `rcases hab k.2 (hkl.elim id fun h => e ▸ h) with h | h <;> simp [h]`. Both sides reduce to the same expression. Use `⟨fun X hX => ?_, fun Y hY => ?_⟩` and prove the remaining obligations. Use `quadGen_of_supp hθ hω τ _ ((continuous_oneP hθ hX).prodMk continuous_const) (fun s t => by rw [oneP_add hθ hX, Prod.mk_mul_mk, one_mul]) (fun t => ⟨(isAtTau_oneP hθ hX t).1, one_mem _⟩) (blk (fun _ => 1) (Pi.single τ (-X))) (fun k l => ?_) (supp _ _ fun t ht => Or.inr (Pi.single_ …` and prove the remaining obligations. Simplify using `only [mM_apply, WeylAction.oneP_inv hθ hX, GlobalTheory.WeilVacMove.mt_one, GlobalTheory.WeilVacMove.compAt_one, WeylAction.blk_apply]`.
+Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `split_ifs`. Conclude with `(WeylAction.hasDerivAt_comp hθ (WeylAction.neg_mem_lieAt hX) _ _ _).const_mul _`. Conclude with `hasDerivAt_const _ _`. Use `quadGen_of_supp hθ hω τ _ (continuous_const.prodMk (continuous_oneP hθ hY)) (fun s t => by rw [oneP_add hθ hY, Prod.mk_mul_mk, one_mul]) (fun t => ⟨one_mem _, (isAtTau_oneP hθ hY t).1⟩) (blk (Pi.single τ Y) fun _ => 1) (fun k l => ?_) (supp _ _ fun t ht => Or.inl (Pi.single_eq_of …` and prove the remaining obligations. Simplify using `only [mM_apply, inv_one, GlobalTheory.WeilVacMove.mt_one, GlobalTheory.WeilVacMove.compAt_one, WeylAction.blk_apply]`.
-
-Use `split_ifs`. Conclude with `(WeylAction.hasDerivAt_comp hθ hY _ _ _).mul_const _`. Conclude with `hasDerivAt_const _ _`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem quadGen_oneP : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (S T : HSp D) (χS χT : (AE D)ˣ →* Circle) (ω : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ)) (τ : D.what₂.Tau), IsInfFam θ → IsWeilDatumO ψ S T χS χT ω → (∀ X ∈ lieAt S τ, QuadGen ψ θ τ ω fun t => (oneP θ S τ X t, 1)) ∧ ∀ Y ∈ lieAt T τ, QuadGen ψ θ τ ω fun t => (1, oneP θ T τ Y t) := by
   intro D ψ θ S T χS χT ω τ hθ hω

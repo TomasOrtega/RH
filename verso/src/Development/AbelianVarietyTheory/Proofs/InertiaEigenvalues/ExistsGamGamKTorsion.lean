@@ -10,13 +10,11 @@ namespace GlobalTheory.PadicUnitSub
 variable {l : ℕ} [hl : Fact l.Prime]
 
 /- English proof (translation)
-Distinguish the cases in `h0 : ∀ j, f j = 0`. Take `⟨i⟩` from `‹Nonempty ι›`. Conclude with `⟨i, fun j => by rw [h0 j, h0 i]⟩`. Use `push_neg at h0`. Establish `hex : ∃ n, ∃ j, f j ≠ 0 ∧ (f j).valuation = n`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨j, hj⟩` from `h0`. Conclude with `⟨_, j, hj, rfl⟩`. Take `⟨i, hi, hiv⟩` from `Nat.find_spec hex`. Use `⟨i, fun j => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hj : f j = 0`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hj, norm_zero]`. Conclude with `norm_nonneg _`. Establish `hle : Nat.find hex ≤ (f j).valuation` using `Nat.find_min' hex ⟨j, hj, rfl⟩`. Rewrite using `[PadicInt.norm_eq_zpow_neg_valuation hj, PadicInt.norm_eq_zpow_neg_valuation hi, hiv]`. Apply `zpow_le_zpow_right₀ (by exact_mod_cast hl.out.one_lt.le)` to reduce the goal to its premises.
-
-Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem exists_max_norm {ι : Type*} [Nonempty ι] (f : ι → ℤ_[l]) :
     ∃ i, ∀ j, ‖f j‖ ≤ ‖f i‖ := by
@@ -38,9 +36,9 @@ theorem exists_max_norm {ι : Type*} [Nonempty ι] (f : ι → ℤ_[l]) :
       omega
 
 /- English proof (translation)
-Establish `e` using `GlobalTheory.Cyc.norm_pow_nat_sub_one k hk.ne' x hx h2`. Rewrite `e` using `[h, sub_self, norm_zero]`. Establish `hk' : ‖(k : ℤ_[l])‖ ≠ 0`. Rewrite using `[norm_ne_zero_iff]`. Conclude with `hk.ne'` after adjusting the coercions.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `mul_eq_zero.1 e.symm with h' | h'` into its components or cases. Conclude with `sub_eq_zero.1 (norm_eq_zero.1 h')`. Conclude with `absurd h' hk'`.
+A detailed English derivation is pending.
 -/
 theorem eq_one_of_pow_eq_one (x : ℤ_[l]) (hx : ‖x - 1‖ ≤ (l : ℝ)⁻¹)
     (h2 : l = 2 → ‖x - 1‖ < (l : ℝ)⁻¹) (k : ℕ) (hk : 0 < k) (h : x ^ k = 1) : x = 1 := by
@@ -53,9 +51,9 @@ theorem eq_one_of_pow_eq_one (x : ℤ_[l]) (hx : ‖x - 1‖ ≤ (l : ℝ)⁻¹)
   · exact absurd h' hk'
 
 /- English proof (translation)
-Establish `hw : IsOfFinOrder (u * v⁻¹)` using `hu.mul hv.inv`. Establish `hnorm : ‖((u * v⁻¹ : ℤ_[l]ˣ) : ℤ_[l]) - 1‖ = ‖(u : ℤ_[l]) - v‖`. Establish `e : ((u * v⁻¹ : ℤ_[l]ˣ) : ℤ_[l]) - 1 = ((u : ℤ_[l]) - v) * ((v⁻¹ : ℤ_[l]ˣ) : ℤ_[l])`. Rewrite using `[sub_mul, Units.mul_inv, Units.val_mul]`. Rewrite using `[e, norm_mul, PadicInt.norm_units, mul_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `h1` using `eq_one_of_pow_eq_one _ (by rw [hnorm]; exact hx) (fun h => by rw [hnorm]; exact h2 h) (orderOf (u * v⁻¹)) hw.orderOf_pos (by rw [← Units.val_pow_eq_pow_val, pow_orderOf_eq_one, Units.val_one])`. Establish `: u * v⁻¹ = 1` using `Units.ext (h1.trans Units.val_one.symm)`. Conclude with `mul_inv_eq_one.1 this`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem eq_of_torsion (u v : ℤ_[l]ˣ) (hu : IsOfFinOrder u) (hv : IsOfFinOrder v)
     (hx : ‖(u : ℤ_[l]) - v‖ ≤ (l : ℝ)⁻¹)
@@ -72,7 +70,7 @@ theorem eq_of_torsion (u v : ℤ_[l]ˣ) (hu : IsOfFinOrder u) (hv : IsOfFinOrder
   exact mul_inv_eq_one.1 this
 
 /- English proof (translation)
-Rewrite using `[PadicInt.norm_le_pow_iff_mem_span_pow, ← PadicInt.ker_toZModPow, RingHom.mem_ker, map_sub, h, sub_self]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem norm_le_of_toZModPow_eq (n : ℕ) (a b : ℤ_[l])
     (h : PadicInt.toZModPow n a = PadicInt.toZModPow n b) : ‖a - b‖ ≤ (l : ℝ) ^ (-(n : ℤ)) := by
@@ -80,9 +78,9 @@ theorem norm_le_of_toZModPow_eq (n : ℕ) (a b : ℤ_[l])
     sub_self]
 
 /- English proof (translation)
-Establish `: NeZero (l ^ 2)` using `⟨pow_ne_zero _ hl.out.ne_zero⟩`. Use `Set.Finite.of_finite_image (f := fun u : ℤ_[l]ˣ => PadicInt.toZModPow 2 (u : ℤ_[l])) (Set.toFinite _) ?_` and prove the remaining obligations. Introduce `u hu v hv huv`. Establish `hle` using `norm_le_of_toZModPow_eq 2 (u : ℤ_[l]) v huv`. Establish `hlt : (l : ℝ) ^ (-((2 : ℕ) : ℤ)) < (l : ℝ)⁻¹`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : (1 : ℝ) < l` using `by exact_mod_cast hl.out.one_lt`. Rewrite using `[← zpow_neg_one]`. Conclude with `zpow_lt_zpow_right₀ h1 (by norm_num)`. Conclude with `eq_of_torsion u v hu hv (hle.trans hlt.le) (fun _ => hle.trans_lt hlt)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finite_torsion : {u : ℤ_[l]ˣ | IsOfFinOrder u}.Finite := by
   have : NeZero (l ^ 2) := ⟨pow_ne_zero _ hl.out.ne_zero⟩
@@ -97,20 +95,20 @@ theorem finite_torsion : {u : ℤ_[l]ˣ | IsOfFinOrder u}.Finite := by
   exact eq_of_torsion u v hu hv (hle.trans hlt.le) (fun _ => hle.trans_lt hlt)
 
 /- English proof (translation)
-Use `(PadicInt.norm_lt_pow_iff_norm_le_pow_sub_one x 0).1 (by simpa using h)` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem norm_le_inv_of_lt_one (x : ℤ_[l]) (h : ‖x‖ < 1) : ‖x‖ ≤ (l : ℝ)⁻¹ := by
   have := (PadicInt.norm_lt_pow_iff_norm_le_pow_sub_one x 0).1 (by simpa using h)
   simpa using this
 
 /- English proof (translation)
-Rewrite using `[← RingHom.mem_ker, PadicInt.ker_toZMod, IsLocalRing.mem_maximalIdeal, PadicInt.mem_nonunits]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem norm_lt_one_iff_toZMod (x : ℤ_[l]) : ‖x‖ < 1 ↔ PadicInt.toZMod x = 0 := by
   rw [← RingHom.mem_ker, PadicInt.ker_toZMod, IsLocalRing.mem_maximalIdeal, PadicInt.mem_nonunits]
 
 /- English proof (translation)
-Use `le_antisymm (PadicInt.norm_le_one _) (not_lt.1 fun hlt => h ?_)` and prove the remaining obligations. Use `(PadicInt.norm_int_lt_one_iff_dvd (n : ℤ)).1 (by rw [Int.cast_natCast]; exact hlt)` as an intermediate fact. Conclude with `this` after adjusting the coercions.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private lemma norm_natCast_padicInt_eq_one_of_not_dvd (n : ℕ) (h : ¬ l ∣ n) : ‖(n : ℤ_[l])‖ = 1 := by
   refine le_antisymm (PadicInt.norm_le_one _) (not_lt.1 fun hlt => h ?_)
@@ -118,13 +116,13 @@ private lemma norm_natCast_padicInt_eq_one_of_not_dvd (n : ℕ) (h : ¬ l ∣ n)
   exact_mod_cast this
 
 /- English proof (translation)
-Establish `hl2` using `hl.out.two_le`. Use `set F : Polynomial ℤ_[l] := Polynomial.X ^ (l - 1) - 1 with hF`. Establish `hder : ‖F.derivative.aeval (g : ℤ_[l])‖ = 1`. Establish `hn : ¬ l ∣ (l - 1)` using `Nat.not_dvd_of_pos_of_lt (by omega) (by omega)`. Simplify using `only [hF, Polynomial.derivative_sub, Polynomial.derivative_X_pow, Polynomial.derivative_one, sub_zero, Polynomial.aeval_mul, Polynomial.aeval_C, Polynomial.aeval_X_pow, Algebra.algebraMap_self, RingHom.id_apply, norm_mul, norm_pow, PadicInt.norm_units, one_pow, mul_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `norm_natCast_padicInt_eq_one_of_not_dvd (l - 1) hn` after adjusting the coercions. Establish `hval : ‖F.aeval (g : ℤ_[l])‖ < 1`. Establish `hg0 : PadicInt.toZMod (g : ℤ_[l]) ≠ 0` using `(g.isUnit.map PadicInt.toZMod).ne_zero`. Rewrite using `[norm_lt_one_iff_toZMod]`. Simplify using `only [hF, Polynomial.aeval_sub, Polynomial.aeval_X_pow, Polynomial.aeval_X, Polynomial.aeval_one, map_sub, map_pow, map_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[ZMod.pow_card_sub_one_eq_one hg0, sub_self]`. Take `⟨z, hz, hzg, -, -⟩` from `hensels_lemma (F := F) (a := (g : ℤ_[l])) (by rw [hder, one_pow]; exact hval)`. Rewrite `hzg` using `[hder]`. Establish `hz' : z ^ (l - 1) = 1`. Simplify `hz` using `[hF, sub_eq_zero]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hu : IsUnit z` using `IsUnit.of_pow_eq_one hz' (by omega)`. Use `⟨hu.unit, isOfFinOrder_iff_pow_eq_one.2 ⟨l - 1, by omega, Units.ext ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[Units.val_pow_eq_pow_val, IsUnit.unit_spec, hz', Units.val_one]`. Rewrite using `[IsUnit.unit_spec]`. Conclude with `hzg`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_teich (g : ℤ_[l]ˣ) :
     ∃ w : ℤ_[l]ˣ, IsOfFinOrder w ∧ ‖(w : ℤ_[l]) - g‖ < 1 := by
@@ -154,7 +152,7 @@ theorem exists_teich (g : ℤ_[l]ˣ) :
   · rw [IsUnit.unit_spec]; exact hzg
 
 /- English proof (translation)
-Use `le_antisymm (PadicInt.norm_le_one _) (not_lt.1 fun hlt => h ?_)` and prove the remaining obligations. Use `(PadicInt.norm_int_lt_one_iff_dvd (n : ℤ)).1 (by rw [Int.cast_natCast]; exact hlt)` as an intermediate fact. Conclude with `this` after adjusting the coercions.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private lemma padicInt_norm_natCast_eq_one_of_not_dvd (n : ℕ) (h : ¬ l ∣ n) : ‖(n : ℤ_[l])‖ = 1 := by
   refine le_antisymm (PadicInt.norm_le_one _) (not_lt.1 fun hlt => h ?_)
@@ -162,41 +160,39 @@ private lemma padicInt_norm_natCast_eq_one_of_not_dvd (n : ℕ) (h : ¬ l ∣ n)
   exact_mod_cast this
 
 /- English proof (translation)
-Introduce `l _ s Γ hs hs2 hΓ`. Establish `hlp : l.Prime` using `Fact.out`. Establish `: NeZero l` using `⟨hlp.ne_zero⟩`. Establish `hl1 : (1 : ℝ) < l` using `by exact_mod_cast hlp.one_lt`. Establish `hls : ‖((l : ℤ_[l]) ^ s)‖ = (l : ℝ) ^ (-(s : ℤ))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[norm_pow, PadicInt.norm_p, zpow_neg, zpow_natCast, inv_pow]`. Establish `hlt1 : ‖((l : ℤ_[l]) ^ s)‖ < 1`. Rewrite using `[hls]; exact zpow_lt_one_of_neg₀ hl1 (by omega)`. Establish `hunit : IsUnit (1 + (l : ℤ_[l]) ^ s)`. Rewrite using `[PadicInt.isUnit_iff, GlobalTheory.Cyc.padicInt_norm_add_eq_of_lt (by rwa [norm_one]), norm_one]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hg0 : (hunit.unit : ℤ_[l]) = 1 + (l : ℤ_[l]) ^ s` using `hunit.unit_spec`. Establish `hg0Γ : hunit.unit ∈ Γ` using `hΓ _ (by rw [hg0, add_sub_cancel_left])`. Establish `hTfin : ((CommGroup.torsion Γ : Subgroup Γ) : Set Γ).Finite`. Use `(finite_torsion.preimage Subtype.val_injective.injOn).subset ?_` and prove the remaining obligations. Introduce `g hg`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨k, hk, hgk⟩` from `isOfFinOrder_iff_pow_eq_one.1 ((CommGroup.mem_torsion g).1 hg)`. Conclude with `isOfFinOrder_iff_pow_eq_one.2 ⟨k, hk, by rw [← Subgroup.coe_pow, hgk, Subgroup.coe_one]⟩`. Establish `hD : ∀ g, g ∈ hTfin.toFinset ↔ ∃ k : ℕ, 0 < k ∧ g ^ k = 1`. Introduce `g`. Rewrite using `[Set.Finite.mem_toFinset, SetLike.mem_coe, CommGroup.mem_torsion, isOfFinOrder_iff_pow_eq_one]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hDcard : hTfin.toFinset.card = Nat.card (CommGroup.torsion Γ)`. Rewrite using `[← Nat.card_eq_card_finite_toFinset hTfin]`. Both sides reduce to the same expression. Establish `hDpow : ∀ g ∈ CommGroup.torsion Γ, g ^ hTfin.toFinset.card = 1`. Introduce `g hg`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h1` using `congrArg Subtype.val (pow_card_eq_one' (G := CommGroup.torsion Γ) (x := ⟨g, hg⟩))`. Rewrite using `[hDcard]`. Rewrite `h1` using `[Subgroup.coe_pow, Subgroup.coe_one]`. Then use the resulting hypothesis. Establish `hNpos : 0 < hTfin.toFinset.card` using `Finset.card_pos.2 ⟨1, (hD 1).2 ⟨1, one_pos, one_pow _⟩⟩`. Take `⟨gmax, hgmax⟩` from `exists_max_norm (l := l) (fun g : Γ => ((g : ℤ_[l]ˣ) : ℤ_[l]) ^ hTfin.toFinset.card - 1)`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Choose the witnesses or unpack the hypotheses as in `⟨gamK, hK1, hK2⟩ : ∃ gamK : Γ, (∀ g : Γ, ‖((g : ℤ_[l]ˣ) : ℤ_[l]) ^ hTfin.toFinset.card - 1‖ ≤ ‖((gamK : ℤ_[l]ˣ) : ℤ_[l]) ^ hTfin.toFinset.card - 1‖) ∧ ((∀ g : Γ, ‖((g : ℤ_[l]ˣ) : ℤ_[l]) ^ hTfin.toFinset.card - 1‖ ≤ ‖(((⟨hunit.unit, hg0Γ⟩ : Γ) : ℤ_[l]ˣ) : ℤ_[l]) ^ hTfin.toFinset.c …`. Distinguish the cases in `hc : ∀ g : Γ, ‖((g : ℤ_[l]ˣ) : ℤ_[l]) ^ hTfin.toFinset.card - 1‖ ≤ ‖(((⟨hunit.unit, hg0Γ⟩ : Γ) : ℤ_[l]ˣ) : ℤ_[l]) ^ hTfin.toFinset.card - 1‖`. Conclude with `⟨⟨hunit.unit, hg0Γ⟩, hc, fun _ => rfl⟩`. Conclude with `⟨gmax, hgmax, fun h => absurd h hc⟩`. Use `⟨⟨hunit.unit, hg0Γ⟩, gamK, hTfin.toFinset, ?_, hD, hK1, hK2, ?_⟩` and prove the remaining obligations.
+Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `show ‖(hunit.unit : ℤ_[l]) - 1‖ = _`. Rewrite using `[hg0, add_sub_cancel_left, hls]`. Introduce `hs1 hl2`. Substitute `hs1` using the available equality. Apply `hK2` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcard : hTfin.toFinset.card < l`. Establish `hle : hTfin.toFinset.card ≤ (Finset.univ.erase (0 : ZMod l)).card`. Use `Finset.card_le_card_of_injOn (fun g : Γ => PadicInt.toZMod ((g : ℤ_[l]ˣ) : ℤ_[l])) ?_ ?_` and prove the remaining obligations. Introduce `g _`. Simplify using `only [Finset.coe_erase, Finset.coe_univ, Set.mem_diff, Set.mem_univ, Set.mem_singleton_iff, true_and, Finset.mem_erase, Finset.mem_univ, and_true]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `((g : ℤ_[l]ˣ).isUnit.map PadicInt.toZMod).ne_zero`. Introduce `g hg h hh hgh`. Establish `hgD` using `(hD g).1 hg`. Establish `hhD` using `(hD h).1 hh`. Take `⟨a, ha, hga⟩` from `hgD`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨b, hb, hhb⟩` from `hhD`. Establish `hlt : ‖((g : ℤ_[l]ˣ) : ℤ_[l]) - ((h : ℤ_[l]ˣ) : ℤ_[l])‖ < 1`. Rewrite using `[norm_lt_one_iff_toZMod, map_sub, sub_eq_zero]`. Conclude with `hgh`. Apply `Subtype.ext` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `eq_of_torsion _ _ (isOfFinOrder_iff_pow_eq_one.2 ⟨a, ha, ?_⟩) (isOfFinOrder_iff_pow_eq_one.2 ⟨b, hb, ?_⟩) (norm_le_inv_of_lt_one _ hlt) (fun h2 => absurd h2 hl2)` and prove the remaining obligations. Rewrite using `[← Subgroup.coe_pow, hga, Subgroup.coe_one]`. Rewrite using `[← Subgroup.coe_pow, hhb, Subgroup.coe_one]`. Rewrite `hle` using `[Finset.card_erase_of_mem (Finset.mem_univ _), Finset.card_univ, ZMod.card]`. Use `hlp.two_le` as an intermediate fact.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use linear arithmetic over natural numbers and integers. Establish `hN : ‖((hTfin.toFinset.card : ℕ) : ℤ_[l])‖ = 1` using `padicInt_norm_natCast_eq_one_of_not_dvd _ (Nat.not_dvd_of_pos_of_lt hNpos hcard)`. Establish `hgam1 : ‖(hunit.unit : ℤ_[l]) - 1‖ = (l : ℝ)⁻¹`. Rewrite using `[hg0, add_sub_cancel_left, pow_one, PadicInt.norm_p]`. Establish `hgam : ‖(hunit.unit : ℤ_[l]) ^ hTfin.toFinset.card - 1‖ = (l : ℝ)⁻¹`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[GlobalTheory.Cyc.norm_pow_nat_sub_one _ hNpos.ne' _ hgam1.le (fun h2 => absurd h2 hl2), hgam1, hN, mul_one]`. Introduce `g`. Use `show _ ≤ ‖(hunit.unit : ℤ_[l]) ^ hTfin.toFinset.card - 1‖`. Rewrite using `[hgam]`. Take `⟨w, hw, hwg⟩` from `exists_teich (g : ℤ_[l]ˣ)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hwΓ : w ∈ Γ`. Establish `hmul : w * (g : ℤ_[l]ˣ)⁻¹ ∈ Γ`. Apply `hΓ` to reduce the goal to its premises. Rewrite using `[pow_one, ← PadicInt.norm_lt_one_iff_dvd]`. Establish `e : ((w * (g : ℤ_[l]ˣ)⁻¹ : ℤ_[l]ˣ) : ℤ_[l]) - 1 = ((w : ℤ_[l]) - ((g : ℤ_[l]ˣ) : ℤ_[l])) * (((g : ℤ_[l]ˣ)⁻¹ : ℤ_[l]ˣ) : ℤ_[l])`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Rewrite using `[sub_mul, Units.mul_inv, Units.val_mul]`. Rewrite using `[e, norm_mul, PadicInt.norm_units, mul_one]`. Conclude with `hwg`. Use `Γ.mul_mem hmul g.2` as an intermediate fact. Rewrite `this` using `[inv_mul_cancel_right]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result.
 
-Establish `hwT : (⟨w, hwΓ⟩ : Γ) ∈ CommGroup.torsion Γ`. Take `⟨k, hk, hwk⟩` from `isOfFinOrder_iff_pow_eq_one.1 hw`. Conclude with `isOfFinOrder_iff_pow_eq_one.2 ⟨k, hk, Subtype.ext (by rw [Subgroup.coe_pow, Subgroup.coe_one]; exact hwk)⟩`. Establish `hwN : (w : ℤ_[l]) ^ hTfin.toFinset.card = 1`. Establish `h1` using `congrArg (fun x : Γ => ((x : ℤ_[l]ˣ) : ℤ_[l])) (hDpow _ hwT)`.
-
-Simplify using `using h1`. Take `⟨c, hc⟩` from `sub_dvd_pow_sub_pow ((g : ℤ_[l]ˣ) : ℤ_[l]) (w : ℤ_[l]) hTfin.toFinset.card`. Apply `norm_le_inv_of_lt_one` to reduce the goal to its premises. Rewrite using `[← hwN, hc, norm_mul, norm_sub_rev]`. Conclude with `lt_of_le_of_lt (mul_le_of_le_one_right (norm_nonneg _) (PadicInt.norm_le_one c)) hwg`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_gam_gamK_torsion :
     ∀ (l : ℕ) [Fact l.Prime] (s : ℕ) (Γ : Subgroup ℤ_[l]ˣ), 1 ≤ s → (l = 2 → 2 ≤ s) → (∀ u : ℤ_[l]ˣ, (l : ℤ_[l]) ^ s ∣ (u : ℤ_[l]) - 1 → u ∈ Γ) → ∃ (gam gamK : ↥Γ) (D : Finset ↥Γ), ‖((gam : ℤ_[l]ˣ) : ℤ_[l]) - 1‖ = (l : ℝ) ^ (-(s : ℤ)) ∧ (∀ g, g ∈ D ↔ ∃ k : ℕ, 0 < k ∧ g ^ k = 1) ∧ (∀ g : ↥Γ, ‖((g : ℤ_[l]ˣ) : ℤ_[l]) ^ D.card - 1‖ ≤ ‖((gamK : ℤ_[l]ˣ) : ℤ_[l]) ^ D.card - 1‖) ∧ ((∀ g : ↥Γ, ‖((g : ℤ_[l]ˣ) : ℤ_[l]) ^ D.card - 1‖ ≤ ‖((gam : ℤ_[l]ˣ) : ℤ_[l]) ^ D.card - 1‖) → gamK = gam) ∧ (s = 1 → l ≠ 2 → gamK = gam) := by

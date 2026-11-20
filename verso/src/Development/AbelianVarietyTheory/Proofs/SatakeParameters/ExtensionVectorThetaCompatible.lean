@@ -16,14 +16,14 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 namespace GlobalTheory.EigTransport
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.standardFrame_mem_hyperspecial_iff_maxCompact_trivOutside`.
+A detailed English derivation is pending.
 -/
 theorem frame_hyp : ∀ {D : D7} (hF : D.host.F = maximalRealSubfield D.host.E) {V : TH.HSp D} {n : ℕ}
     (Ps : Formalism.IndefR.principalLevelFrame.RowPsi V n), GlobalTheory.NJoin.StdFrame hF Ps → ∀ (sp : SplitPlace D.host.E)
     (κ : Formalism.AUTREP.GAf D.host.E n), Ps.ψ κ ∈ GlobalTheory.Hk3.hyp V sp.w ↔ κ ∈ Umax D.host.E n ∧ TrivOutside {sp.v} κ := GlobalTheory.T.standardFrame_mem_hyperspecial_iff_maxCompact_trivOutside
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.standardElement_splitPlace_label`.
+A detailed English derivation is pending.
 -/
 theorem exists_std : ∀ {D : D7} (hF : D.host.F = maximalRealSubfield D.host.E) {V : TH.HSp D} {n : ℕ}
     (Ps : Formalism.IndefR.principalLevelFrame.RowPsi V n), GlobalTheory.NJoin.StdFrame hF Ps → V.rank = n → ∀ (sp : SplitPlace D.host.E)
@@ -34,7 +34,7 @@ theorem exists_std : ∀ {D : D7} (hF : D.host.F = maximalRealSubfield D.host.E)
         Formalism.IndefR.Mult.DivAt V e (ϖ' : D.host.E) (List.replicate k 1 ++ List.replicate (n - k) 0) (Ps.ψ x₀) := GlobalTheory.T.standardElement_splitPlace_label
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.mem_heckeSplitPlaceSet_iff_doubleCoset`.
+A detailed English derivation is pending.
 -/
 theorem tSet_dc : ∀ {L : Type} [Field L] [NumberField L] [IsCMField L] (n : ℕ) (sp : SplitPlace L)
     (ϖ : (sp.v).adicCompletion (maximalRealSubfield L)) (k : ℕ), ∀ x₀ ∈ Formalism.AUTREP.tSet L n sp ϖ k,
@@ -42,7 +42,7 @@ theorem tSet_dc : ∀ {L : Type} [Field L] [NumberField L] [IsCMField L] (n : �
       ∃ k₂, (k₂ ∈ Umax L n ∧ TrivOutside {sp.v} k₂) ∧ κ = k₁ * x₀ * k₂ := GlobalTheory.T.mem_heckeSplitPlaceSet_iff_doubleCoset
 
 /- English proof (translation)
-Rewrite using `[List.pairwise_append]`. Use `⟨List.pairwise_replicate.2 (Or.inr le_rfl), List.pairwise_replicate.2 (Or.inr le_rfl), ?_⟩` and prove the remaining obligations. Introduce `a ha b hb`. Rewrite using `[List.eq_of_mem_replicate ha, List.eq_of_mem_replicate hb]`. Evaluate the numerical expressions.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 -/
 theorem pairwise_lab (k m : ℕ) : List.Pairwise (fun a b : ℤ => b ≤ a) (List.replicate k 1 ++ List.replicate m 0) := by
   rw [List.pairwise_append]
@@ -56,7 +56,7 @@ end GlobalTheory.EigTransport
 namespace GlobalTheory.EigTransport
 
 /- English proof (translation)
-Take `⟨x₀, -, e, f, ϖ', h1, h2, h3, h4, h5⟩` from `exists_std hF Ps hs hn sp ϖ hϖ k hk`. Conclude with `GlobalTheory.SphLabelOps.isLab_of_divAt h1 h2 h3 (pairwise_lab _ _) h4 h5`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem isLab_std {D : D7} (hF : D.host.F = maximalRealSubfield D.host.E) {V : TH.HSp D} {n : ℕ}
     (Ps : Formalism.IndefR.principalLevelFrame.RowPsi V n) (hs : GlobalTheory.NJoin.StdFrame hF Ps) (hn : V.rank = n) (sp : SplitPlace D.host.E)
@@ -67,15 +67,15 @@ theorem isLab_std {D : D7} (hF : D.host.F = maximalRealSubfield D.host.E) {V : T
   exact GlobalTheory.SphLabelOps.isLab_of_divAt h1 h2 h3 (pairwise_lab _ _) h4 h5
 
 /- English proof (translation)
-Take `⟨x₀, hx₀, e, f, ϖ', h1, h2, h3, h4, h5⟩` from `exists_std hF Ps hs hn sp ϖ hϖ k hk`. Establish `hLab` using `GlobalTheory.SphLabelOps.isLab_of_divAt h1 h2 h3 (pairwise_lab _ _) h4 h5`. Take `⟨K, hK⟩` from `GlobalTheory.SphLabelOps.exists_hyp V sp.w`. Establish `hR` using `GlobalTheory.SphLabelOps.reps_of_sphOp hK h1 h2 h3 h4 h5 (GlobalTheory.SphLabelOps.sphOp_rep hLab)`. Establish `memK : ∀ l, l ∈ K ↔ l ∈ GlobalTheory.Hk3.hyp V sp.w` using `fun l => by rw [hK]; rfl`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `pre : ∀ l ∈ K, ∃ m, (m ∈ Umax D.host.E n ∧ TrivOutside {sp.v} m) ∧ Ps.ψ m = l`. Introduce `l hl`. Establish `hl'` using `(memK l).1 hl`. Take `⟨m, rfl⟩` from `Ps.onto l hl'.1.1`. Conclude with `⟨m, (frame_hyp hF Ps hs sp m).1 hl', rfl⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `img : ∀ m, (m ∈ Umax D.host.E n ∧ TrivOutside {sp.v} m) → Ps.ψ m ∈ K` using `fun m hm => (memK _).2 ((frame_hyp hF Ps hs sp m).2 hm)`. Prove the components needed by the constructor for the conclusion. Introduce `hκ`. Take `⟨k₁, hk₁, k₂, hk₂, rfl⟩` from `(tSet_dc n sp ϖ k x₀ hx₀ κ).1 hκ`. Take `⟨γ, ⟨hγ, hm⟩, -⟩` from `hR.2 (Ps.ψ (k₁ * x₀ * k₂)) ⟨Ps.ψ k₁, img _ hk₁, Ps.ψ k₂, img _ hk₂, by rw [map_mul, map_mul]⟩`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨γ, hγ, (memK _).1 hm⟩`. Introduce and unpack `⟨γ, hγ, hm⟩`. Take `⟨l₁, hl₁, l₂, hl₂, hγe⟩` from `hR.1 γ hγ`. Establish `hl : γ⁻¹ * Ps.ψ κ ∈ K` using `(memK _).2 hm`. Take `⟨m₁, hm₁, e₁⟩` from `pre l₁ hl₁`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨m₂, hm₂, e₂⟩` from `pre (l₂ * (γ⁻¹ * Ps.ψ κ)) (mul_mem hl₂ hl)`. Use `(tSet_dc n sp ϖ k x₀ hx₀ κ).2 ⟨m₁, hm₁, m₂, hm₂, Ps.inj ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, map_mul, e₁, e₂, ← mul_assoc, ← mul_assoc, ← hγe, mul_inv_cancel, one_mul]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem tSet_iff {D : D7} (hF : D.host.F = maximalRealSubfield D.host.E) {V : TH.HSp D} {n : ℕ}
     (Ps : Formalism.IndefR.principalLevelFrame.RowPsi V n) (hs : GlobalTheory.NJoin.StdFrame hF Ps) (hn : V.rank = n) (sp : SplitPlace D.host.E)
@@ -117,11 +117,11 @@ namespace GlobalTheory.EigTransport
 open Classical in
 
 /- English proof (translation)
-Establish `hsupp : (Function.support fun c : G ⧸ J => if hc : ∃ y ∈ T, (y : G ⧸ J) = c then F (g * hc.choose) else 0) ⊆ ↑(R.image fun γ => (x γ : G ⧸ J))`. Introduce `c hc`. Distinguish the cases in `h : ∃ y ∈ T, (y : G ⧸ J) = c`. Take `⟨y, hy, rfl⟩` from `h`. Take `⟨γ, hγ, hm⟩` from `h2 y hy`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `Finset.mem_coe.2 (Finset.mem_image.2 ⟨γ, hγ, QuotientGroup.eq.2 hm⟩)`. Conclude with `absurd (by simp [h]) hc`. Rewrite using `[finsum_eq_sum_of_support_subset _ hsupp, Finset.sum_image]`. Use `Finset.sum_congr rfl fun γ hγ => ?_` and prove the remaining obligations. Establish `hc : ∃ y ∈ T, (y : G ⧸ J) = (x γ : G ⧸ J)` using `⟨x γ, h1 γ hγ, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[dif_pos hc]`. Take `⟨hy, he⟩` from `hc.choose_spec`. Conclude with `(hF _ hy _ (h1 γ hγ) (QuotientGroup.eq.1 he) g).symm`. Introduce `γ hγ γ' hγ' e`. Conclude with `h3 γ hγ γ' hγ' (QuotientGroup.eq.1 e)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem finsum_cosets {G W ι : Type} [Group G] [AddCommGroup W] (J : Subgroup G) (T : Set G) (R : Finset ι)
     (x : ι → G) (F : G → W) (h1 : ∀ γ ∈ R, x γ ∈ T) (h2 : ∀ y ∈ T, ∃ γ ∈ R, (x γ)⁻¹ * y ∈ J)
@@ -149,7 +149,7 @@ theorem finsum_cosets {G W ι : Type} [Group G] [AddCommGroup W] (J : Subgroup G
     exact h3 γ hγ γ' hγ' (QuotientGroup.eq.1 e)
 
 /- English proof (translation)
-Introduce `v hv` and use `by have e : (x * y).1.1 = x.1.1 * y.1.1 := rfl show (x * y).1.1.map (compAt D.host.E v) = 1 rw [e, Matrix.map_mul] rw [show x.1.1.map (compAt D.host.E v) = 1 from hx v hv, show y.1.1.map (compAt D.host.E v) = 1 from hy v hv, mul_one]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem triv_mul {D : D7} {n : ℕ} {T : Set (HeightOneSpectrum (𝓞 (maximalRealSubfield D.host.E)))}
     {x y : Formalism.AUTREP.GAf D.host.E n} (hx : TrivOutside T x) (hy : TrivOutside T y) : TrivOutside T (x * y) :=
@@ -160,7 +160,7 @@ theorem triv_mul {D : D7} {n : ℕ} {T : Set (HeightOneSpectrum (𝓞 (maximalRe
     rw [show x.1.1.map (compAt D.host.E v) = 1 from hx v hv, show y.1.1.map (compAt D.host.E v) = 1 from hy v hv, mul_one]
 
 /- English proof (translation)
-Introduce `v hv` and use `by have e : (x⁻¹).1.1.map (compAt D.host.E v) * x.1.1.map (compAt D.host.E v) = 1 := by rw [← Matrix.map_mul] have : (x⁻¹).1.1 * x.1.1 = 1 := by show (x⁻¹ * x).1.1 = 1 rw [inv_mul_cancel] rfl rw [this, Matrix.map_one _ (map_zero _) (map_one _)] show (x⁻¹).1.1.map (compAt D.host.E …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem triv_inv {D : D7} {n : ℕ} {T : Set (HeightOneSpectrum (𝓞 (maximalRealSubfield D.host.E)))}
     {x : Formalism.AUTREP.GAf D.host.E n} (hx : TrivOutside T x) : TrivOutside T x⁻¹ := fun v hv => by
@@ -175,7 +175,7 @@ theorem triv_inv {D : D7} {n : ℕ} {T : Set (HeightOneSpectrum (𝓞 (maximalRe
   rwa [show x.1.1.map (compAt D.host.E v) = 1 from hx v hv, mul_one] at e
 
 /- English proof (translation)
-Take `⟨K, hK⟩` from `GlobalTheory.SphLabelOps.exists_hyp V P`. Take `⟨g₀, -, hR⟩` from `GlobalTheory.SphLabelOps.exists_reps hK (GlobalTheory.SphLabelOps.sphOp_rep hd)`. Introduce `γ hγ γ' hγ' hm`. Rewrite `hm` using `[hK]`. Conclude with `(hR.2 γ' (hR.1 γ' hγ')).unique ⟨hγ, hm⟩ ⟨hγ', by rw [inv_mul_cancel]; exact one_mem K⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rep_inj {D : D7} (V : TH.HSp D) (P : HeightOneSpectrum (𝓞 D.host.E)) (d : List ℤ)
     (hd : GlobalTheory.Hk3.IsLab V P d) : ∀ γ ∈ GlobalTheory.Hk3.rep V P d, ∀ γ' ∈ GlobalTheory.Hk3.rep V P d,
@@ -191,7 +191,7 @@ end GlobalTheory.EigTransport
 namespace GlobalTheory.EigTransport
 
 /- English proof (translation)
-Rewrite using `[Finsupp.support_single_ne_zero _ one_ne_zero, Finset.sum_singleton, Finsupp.single_eq_same, one_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem sum_single {M : Type} [AddCommGroup M] [Module ℂ M] (d : List ℤ) (G : List ℤ → M) :
     ∑ d' ∈ (Finsupp.single d (1 : ℂ)).support, (Finsupp.single d (1 : ℂ)) d' • G d' = G d := by
@@ -201,9 +201,9 @@ end GlobalTheory.EigTransport
 namespace GlobalTheory.EigTransport
 
 /- English proof (translation)
-Establish `hc : (X.R.cV j).Is` using `X.given.core.models.cV j`. Establish `e1` using `hOps P hG (Finsupp.single d 1) y`. Establish `e2` using `hEig P d hG hd`. Establish `e4 : GlobalTheory.Hk3.hkF (Formalism.IndefR.Links.Vc D j) P (Finsupp.single d 1) ((X.R.HV j (X.tupT μ)).e y) = s P d • (X.R.HV j (X.tupT μ)).e y` using `e1.symm.trans ((congrArg (X.R.HV j (X.tupT μ)).e e2).trans (map_smul _ _ _))`. Establish `e3` using `((congrArg (fun F => (X.R.cV j).ext F g) e4).symm.trans (GlobalTheory.DefLiftHecke.ext_hkF (X.R.cV j) hc P (Finsupp.single d 1) ((X.R.HV j (X.tupT μ)).e y) g)).trans (sum_single d _)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hy2 : ∀ x, (X.R.cV j).ext ((X.R.HV j (X.tupT μ)).e y) x = X.fn hμ j f x` using `fun x => (show X.R.extV j (X.tupT μ) y x = (X.R.cV j).ext ((X.R.HV j (X.tupT μ)).e y) x from rfl).symm.trans (congrFun hy x)`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem eig_sum {D : D7} {cf : CharFrame D} {nch : NChoice D} {tp : TupTied D cf nch}
     (X : GlobalTheory.NJoin.RealAt D cf nch tp) {μ : D.what₂.Tup} (hμ : Formalism.IndefR.RecTie.Used0 D μ) (j : Fin D.R.m)
@@ -237,27 +237,25 @@ end GlobalTheory.EigTransport
 namespace GlobalTheory.EigTransport
 
 /- English proof (translation)
-Introduce `_ hL D P X A _ _ _ i hμ j hj f y hy h hOps s hEig sp hG hJ ϖ hϖ k hk`. Establish `hn : (Formalism.IndefR.Links.Vc D j).rank = D.R.nV` using `D.sp.V_rank _ (Nat.le_add_left _ _) j.2`. Establish `hLab` using `isLab_std A.hF (A.PV j) (A.stdV j) hn sp ϖ hϖ k hk`. Establish `hsum` using `eig_sum X hμ j f y hy h hOps s hEig sp.w hG (List.replicate k 1 ++ List.replicate (D.R.nV - k) 0) hLab`. Establish `hGf` using `GlobalTheory.DefLiftHecke.rep_mem_GfC (Formalism.IndefR.Links.Vc D j) sp.w (List.replicate k 1 ++ List.replicate (D.R.nV - k) 0)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `xi : Formalism.L2.Theta.GA D (Formalism.IndefR.Links.Vc D j) → Formalism.AUTREP.GAf D.host.E D.R.nV` to `fun γ => if hγ : γ ∈ Formalism.L2.Theta.GfC (Formalism.IndefR.Links.Vc D j) then ((A.PV j).onto γ hγ).choose else 1`. Establish `hxi : ∀ γ ∈ GlobalTheory.Hk3.rep (Formalism.IndefR.Links.Vc D j) sp.w (List.replicate k 1 ++ List.replicate (D.R.nV - k) 0), (A.PV j).ψ (xi γ) = γ` using `fun γ hγ => by`. Simplify using `only [xi, dif_pos (hGf γ hγ)]`. Conclude with `((A.PV j).onto γ (hGf γ hγ)).choose_spec`. Establish `hT : ∀ x ∈ Formalism.AUTREP.tSet D.host.E D.R.nV sp ϖ k, TrivOutside {sp.v} x` using `fun x hx => hx.1`.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the argument to an intermediate assertion.
 
-It suffices to establish `key : ∀ (m : ℕ) (e : j.1 + 1 = m) (p1 : 1 ≤ m) (p2 : m ≤ D.R.m), (∀ κ : Formalism.AUTREP.GAf D.host.E D.R.nV, TrivOutside {sp.v} κ → (κ ∈ (P.M (D.nd.mu i) m p1 p2).J ↔ κ ∈ Umax D.host.E D.R.nV) ∧ ∀ hκ : κ ∈ (P.M (D.nd.mu i) m p1 p2).J, (P.M (D.nd.mu i) m p1 p2).χ ⟨κ, hκ⟩ = 1) → N …`. Introduce `m e`. Substitute `e` using the available equality. Introduce `p1 p2 hJ`. Establish `hF : ∀ g, (P.M (D.nd.mu i) (j.1 + 1) p1 p2).real f g = A.eW _ hμ j (X.fn hμ j f ((A.PV j).ψ ((A.a j)⁻¹ * g)))` using `fun g => A.real (D.nd.mu i) hμ j f g`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hinv : ∀ κ (hκ : κ ∈ (P.M (D.nd.mu i) (j.1 + 1) p1 p2).J), (P.M (D.nd.mu i) (j.1 + 1) p1 p2).χ ⟨κ, hκ⟩ = 1 → ∀ g, (P.M (D.nd.mu i) (j.1 + 1) p1 p2).real f (g * κ) = (P.M (D.nd.mu i) (j.1 + 1) p1 p2).real f g`. Introduce `κ hκ h1 g`. Establish `hmem : (P.M (D.nd.mu i) (j.1 + 1) p1 p2).real f ∈ Formalism.L2.NG.TypeSp (P.M (D.nd.mu i) (j.1 + 1) p1 p2).wt.ρ (P.M (D.nd.mu i) (j.1 + 1) p1 p2).J (P.M (D.nd.mu i) (j.1 + 1) p1 p2).χ`. Rewrite using `[← (P.M (D.nd.mu i) (j.1 + 1) p1 p2).real_range]`. Conclude with `LinearMap.mem_range_self _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `congrFun (hmem.2 ⟨κ, hκ⟩) g` as an intermediate fact. Rewrite `this` using `[h1]`. Simplify using `only [Units.val_one, one_smul] at this`. Conclude with `this`. Establish `hmemT : ∀ γ ∈ GlobalTheory.Hk3.rep (Formalism.IndefR.Links.Vc D j) sp.w (List.replicate k 1 ++ List.replicate (D.R.nV - k) 0), xi γ ∈ Formalism.AUTREP.tSet D.host.E D.R.nV sp ϖ k`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `γ hγ`. Use `(tSet_iff A.hF (A.PV j) (A.stdV j) hn sp ϖ hϖ k hk _).2 ⟨γ, hγ, ?_⟩` and prove the remaining obligations. Rewrite using `[hxi γ hγ, inv_mul_cancel]`. Conclude with `GlobalTheory.DefLiftHecke.one_mem_hyp _ _`. Use function extensionality and compare the values at `g`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `show (∑ᶠ c : Formalism.AUTREP.GAf D.host.E D.R.nV ⧸ (P.M (D.nd.mu i) (j.1 + 1) p1 p2).J, if hc : ∃ x ∈ Formalism.AUTREP.tSet D.host.E D.R.nV sp ϖ k, (x : Formalism.AUTREP.GAf D.host.E D.R.nV ⧸ (P.M (D.nd.mu i) (j.1 + 1) p1 p2).J) = c then (P.M (D.nd.mu i) (j.1 + 1) p1 p2).real f …`. Rewrite using `[finsum_cosets (P.M (D.nd.mu i) (j.1 + 1) p1 p2).J _ (GlobalTheory.Hk3.rep (Formalism.IndefR.Links.Vc D j) sp.w (List.replicate k 1 ++ List.replicate (D.R.nV - k) 0)) xi _ ?h1 ?h2 ?h3 ?h4 g]`. Use `case h1 => exact hmemT`. Use `case h2 =>`. Introduce `x hx`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Treat this case separately.
 
-Take `⟨γ, hγ, hm⟩` from `(tSet_iff A.hF (A.PV j) (A.stdV j) hn sp ϖ hϖ k hk x).1 hx`. Use `⟨γ, hγ, ?_⟩` and prove the remaining obligations. Rewrite `hm` using `[← hxi γ hγ, ← map_inv, ← map_mul]`. Take `⟨hU, hT'⟩` from `(frame_hyp A.hF (A.PV j) (A.stdV j) sp _).1 hm`. Conclude with `(hJ _ hT').1.2 hU`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `case h3 =>`. Introduce `γ hγ γ' hγ' hm`. Establish `ht` using `triv_mul (triv_inv (hT _ (hmemT γ hγ))) (hT _ (hmemT γ' hγ'))`. Establish `hU` using `(hJ _ ht).1.1 hm`. Establish `hh` using `(frame_hyp A.hF (A.PV j) (A.stdV j) sp _).2 ⟨hU, ht⟩`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hh` using `[map_mul, map_inv, hxi γ hγ, hxi γ' hγ']`. Conclude with `rep_inj _ _ _ hLab γ hγ γ' hγ' hh`. Use `case h4 =>`. Introduce `y hy y' hy' hm g0`. Establish `ht` using `triv_mul (triv_inv (hT _ hy)) (hT _ hy')`.
-
-Use `hinv _ hm ((hJ _ ht).2 hm) (g0 * y)` as an intermediate fact. Rewrite `this` using `[mul_assoc, mul_inv_cancel_left]`. Conclude with `this`. Rewrite using `[Pi.smul_apply, hF g]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem transport : GlobalTheory.Published.AutomorphicFormsFiniteGL → ∀ (hL : GlobalTheory.Published.LocalLanglandsGL) (D : D7) (P : Pin hL D), ∀ (X : GlobalTheory.NJoin.RealAt D P.cf P.C P.tp) (_ : GlobalTheory.NJoin.Agree X P.M P.rep), Formalism.MainNotions.SumRepresentations.Conclusion41 D → Formalism.MainNotions.SumRepresentations.adm7 D → Formalism.MainNotions.SumRepresentations.tieLab D → ∀ (i : D.nd.Loc) (hμ : Formalism.IndefR.RecTie.Used0 D (D.nd.mu i)) (j : Fin D.R.m) (hj : j.1 + 1 = D.nd.j i), ∀ f : D.what₂.Mt (D.nd.mu i) (j.1 + 1), ∀ y, X.R.extV j (X.tupT (D.nd.mu i)) y = X.fn hμ j f → ∀ h, GlobalTheory.Hk3.IsOpsV X.R j (X.tupT (D.nd.mu i)) h → ∀ (s : GlobalTheory.DownLift.Sys D), GlobalTheory.DownLift.IsEigV X.R j (X.tupT (D.nd.mu i)) h s y → ∀ sp : SplitPlace D.host.E, GlobalTheory.Hk3.Good X.R (X.tupT (D.nd.mu i)) sp.w → (∀ κ : GAf D.host.E D.R.nV, TrivOutside {sp.v} κ → (κ ∈ (P.M.loc i).J ↔ κ ∈ Umax D.host.E D.R.nV) ∧ ∀ hκ : κ ∈ (P.M.loc i).J, (P.M.loc i).χ ⟨κ, hκ⟩ = 1) → ∀ ϖ, IsUnif D.host.E sp.v ϖ → ∀ k ≤ D.R.nV, NG.heckeD (P.M.loc i).J (Formalism.AUTREP.tSet D.host.E D.R.nV sp ϖ k) ((P.M.loc i).real (hj ▸ f : D.what₂.Mt (D.nd.mu i) (D.nd.j i))) = s sp.w (List.replicate k 1 ++ List.replicate (D.R.nV - k) 0) • (P.M.loc i).real (hj ▸ f : D.what₂.Mt (D.nd.mu i) (D.nd.j i)) := by
   intro _ hL D P X A _ _ _ i hμ j hj f y hy h hOps s hEig sp hG hJ ϖ hϖ k hk

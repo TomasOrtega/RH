@@ -33,14 +33,14 @@ Both sides reduce to the same expression.
 theorem af_zero (w : HeightOneSpectrum (𝓞 F)) : (0 : Af F) w = 0 := rfl
 
 /- English proof (translation)
-Use `show ((0 : Ainf F), y + z) = ((0 : Ainf F), y) + ((0 : Ainf F), z)`. Rewrite using `[Prod.mk_add_mk, add_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem adele_pairing_zero_add (y z : Af F) : pairA F 0 (y + z) = pairA F 0 y + pairA F 0 z := by
   show ((0 : Ainf F), y + z) = ((0 : Ainf F), y) + ((0 : Ainf F), z)
   rw [Prod.mk_add_mk, add_zero]
 
 /- English proof (translation)
-Use `show ((0 : Ainf F), m • y) = m • ((0 : Ainf F), y)`. Rewrite using `[Prod.smul_mk, smul_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pairA_nsmul0 (m : ℕ) (y : Af F) : pairA F 0 (m • y) = m • pairA F 0 y := by
   show ((0 : Ainf F), m • y) = m • ((0 : Ainf F), y)
@@ -48,7 +48,7 @@ theorem pairA_nsmul0 (m : ℕ) (y : Af F) : pairA F 0 (m • y) = m • pairA F 
 
 open Classical in
 /- English proof (translation)
-Use `show (Pi.single v t : ∀ w : HeightOneSpectrum (𝓞 F), Fv F w) v = t`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem singleV_self (v : HeightOneSpectrum (𝓞 F)) (t : Fv F v) : singleV F v t v = t := by
   show (Pi.single v t : ∀ w : HeightOneSpectrum (𝓞 F), Fv F w) v = t
@@ -56,16 +56,16 @@ theorem singleV_self (v : HeightOneSpectrum (𝓞 F)) (t : Fv F v) : singleV F v
 
 open Classical in
 /- English proof (translation)
-Use `show (Pi.single v t : ∀ w : HeightOneSpectrum (𝓞 F), Fv F w) w = 0`. Simplify using `[h]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem singleV_ne (v w : HeightOneSpectrum (𝓞 F)) (h : w ≠ v) (t : Fv F v) : singleV F v t w = 0 := by
   show (Pi.single v t : ∀ w : HeightOneSpectrum (𝓞 F), Fv F w) w = 0
   simp [h]
 
 /- English proof (translation)
-Establish `hK : IsCompact ((v.adicCompletionIntegers F : Set (Fv F v)))` using `ReciprocityTheory.GeneralLinearIntegers.GeneralLinearIntegersOpenCompact.isCompact_integers v`. Establish `hP : ∀ s ∈ (v.adicCompletionIntegers F : Set (Fv F v)), ∀ᶠ z : Fv F v × Fv F v in 𝓝 ((0 : Fv F v), s), z.1 * z.2 ∈ W`. Introduce `s _`. Establish `hc : Continuous (fun z : Fv F v × Fv F v => z.1 * z.2)` using `continuous_fst.mul continuous_snd`. Use `hc.continuousAt.preimage_mem_nhds ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `using hW`. Establish `h` using `hK.eventually_forall_of_forall_eventually (x₀ := (0 : Fv F v)) (P := fun e s => e * s ∈ W) hP`. Take `⟨n, hn⟩` from `((unifV_spec v).2.1.eventually h).exists`. Conclude with `⟨n, hn⟩`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem ev_pow_mul_sub (v : HeightOneSpectrum (𝓞 F)) {W : Set (Fv F v)} (hW : W ∈ 𝓝 (0 : Fv F v)) :
     ∃ n : ℕ, ∀ s ∈ v.adicCompletionIntegers F, unifV v ^ n * s ∈ W := by
@@ -98,9 +98,9 @@ def U0 (I : Finset (HeightOneSpectrum (𝓞 F))) (n : HeightOneSpectrum (𝓞 F)
     · rw [af_neg, mul_neg]; exact neg_mem (hy2 w hw)
 
 /- English proof (translation)
-Establish `h1 : IsOpen {y : Af F | ∀ w, y w ∈ w.adicCompletionIntegers F}` using `RestrictedProduct.isOpen_forall_mem (fun w => ReciprocityTheory.GeneralLinearIntegers.GeneralLinearIntegersOpenCompact.isOpen_integers w)`. Establish `h2 : ∀ w ∈ I, IsOpen {y : Af F | (unifV w ^ n w)⁻¹ * y w ∈ w.adicCompletionIntegers F}` using `fun w _ => (ReciprocityTheory.GeneralLinearIntegers.GeneralLinearIntegersOpenCompact.isOpen_integers w).preimage (continuous_const.mul (RestrictedProduct.continuous_eval w))`. Establish `e : (U0 I n : Set (Af F)) = {y : Af F | ∀ w, y w ∈ w.adicCompletionIntegers F} ∩ ⋂ w ∈ I, {y : Af F | (unifV w ^ n w)⁻¹ * y w ∈ w.adicCompletionIntegers F}`. Use extensionality with `y`. Simplify using `[U0]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[e]`. Conclude with `h1.inter (isOpen_biInter_finset h2)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isOpen_adelic_neighbourhood (I : Finset (HeightOneSpectrum (𝓞 F))) (n : HeightOneSpectrum (𝓞 F) → ℕ) :
     IsOpen (U0 I n : Set (Af F)) := by
@@ -117,27 +117,25 @@ theorem isOpen_adelic_neighbourhood (I : Finset (HeightOneSpectrum (𝓞 F))) (n
   exact h1.inter (isOpen_biInter_finset h2)
 
 /- English proof (translation)
-Use `set U : Set (AF F) := {x | 1 / 2 < (ψ x).re} with hUdef`. Establish `hU : IsOpen U` using `isOpen_lt continuous_const (Complex.continuous_re.comp hψ.1)`. Set `Φ : (∀ v : HeightOneSpectrum (𝓞 F), ((v.adicCompletionIntegers F : Set (v.adicCompletion F)))) → AF F` to `fun x => pairA F 0 (RestrictedProduct.structureMap _ _ Filter.cofinite x)`. Establish `hΦ : Continuous Φ` using `continuous_const.prodMk RestrictedProduct.isEmbedding_structureMap.continuous`. Set `x0 : ∀ v : HeightOneSpectrum (𝓞 F), ((v.adicCompletionIntegers F : Set (v.adicCompletion F)))` to `fun v => ⟨0, zero_mem _⟩`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hx0 : Φ x0 = 0` using `by show pairA F 0 _ = 0`. Establish `: (RestrictedProduct.structureMap _ _ Filter.cofinite x0 : Af F) = 0`. Apply `RestrictedProduct.ext` to reduce the goal to its premises. Introduce `j`. Both sides reduce to the same expression.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Both sides reduce to the same expression. Establish `hx0U : x0 ∈ Φ ⁻¹' U`. Simplify using `only [Set.mem_preimage, hx0, hUdef, Set.mem_setOf_eq, AddChar.map_zero_eq_one, Complex.one_re]`. Evaluate the numerical expressions.
+Both sides reduce to the same expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Evaluate the numerical expressions. Extract witnesses or component facts from the available result.
 
-Take `⟨I, u, hu, hsub⟩` from `isOpen_pi_iff.1 (hU.preimage hΦ) x0 hx0U`. Establish `hn : ∀ w : HeightOneSpectrum (𝓞 F), ∃ m : ℕ, w ∈ I → ∀ s ∈ w.adicCompletionIntegers F, ∃ h : unifV w ^ m * s ∈ ((w.adicCompletionIntegers F : Set (w.adicCompletion F))), (⟨unifV w ^ m * s, h⟩ : ((w.adicCompletionIntegers F : Set (w.adicCompletion F)))) ∈ u w`. Introduce `w`. Distinguish the cases in `hw : w ∈ I`. Take `⟨t, ht, hte⟩` from `isOpen_induced_iff.1 (hu w hw).1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h0 : (0 : Fv F w) ∈ t`. Use `(hu w hw).2` as an intermediate fact. Rewrite `this` using `[← hte]`. Conclude with `this`. Take `⟨m, hm⟩` from `ev_pow_mul_sub w (ht.mem_nhds h0)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨m, fun _ s hs => ⟨mul_mem (pow_mem (unifV_spec w).2.2 m) hs, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[← hte]`. Conclude with `hm s hs`. Conclude with `⟨0, fun h => absurd h hw⟩`. Use `choose n hn using hn`.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression.
 
-Use `⟨I, n, ?_⟩` and prove the remaining obligations. Establish `hbig : ∀ y ∈ U0 I n, 1 / 2 < (ψ (pairA F 0 y)).re`. Introduce `y hy`. Set `x : ∀ v : HeightOneSpectrum (𝓞 F), ((v.adicCompletionIntegers F : Set (v.adicCompletion F)))` to `fun w => ⟨y w, hy.1 w⟩`. Establish `hx : x ∈ (I : Set _).pi u`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `w hw`. Establish `hne : unifV w ^ n w ≠ 0` using `pow_ne_zero _ (unifV_spec w).1`. Take `⟨h, hmem⟩` from `hn w hw _ (hy.2 w hw)`. Establish `e : (⟨unifV w ^ n w * ((unifV w ^ n w)⁻¹ * y w), h⟩ : ((w.adicCompletionIntegers F : Set (w.adicCompletion F)))) = x w`. Apply `Subtype.ext` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the equality to equality of the corresponding arguments.
 
-Use `show unifV w ^ n w * ((unifV w ^ n w)⁻¹ * y w) = y w`. Rewrite using `[mul_inv_cancel_left₀ hne]`. Rewrite using `[← e]`. Conclude with `hmem`. Establish `e : Φ x = pairA F 0 y` using `by show pairA F 0 _ = _`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `congr 1`. Use `hsub hx` as an intermediate fact. Simplify using `only [Set.mem_preimage, e, hUdef, Set.mem_setOf_eq] at this`. Conclude with `this`. Introduce `y hy`.
-
-Apply `eq_one_of_pow _ (hψ.2.1 _)` to reduce the goal to its premises. Introduce `k`. Rewrite using `[← AddChar.map_nsmul_eq_pow, ← pairA_nsmul0]`. Conclude with `hbig _ (AddSubgroup.nsmul_mem _ hy _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem adele_character_trivial_open (ψ : AddChar (AF F) ℂ) (hψ : IsCharAF F ψ) :
     ∃ (I : Finset (HeightOneSpectrum (𝓞 F))) (n : HeightOneSpectrum (𝓞 F) → ℕ),
@@ -244,9 +242,9 @@ def chiInf (ψ : AddChar (AF F) ℂ) : AddChar (InfiniteAdeleRing F) ℂ where
       rw [add_zero]
 
 /- English proof (translation)
-Use `Prod.ext ?_ ?_` and prove the remaining obligations. Use `show (algebraMap F (AF F) a).1 = algebraMap F (Ainf F) a + 0`. Rewrite using `[add_zero]`. Both sides reduce to the same expression. Use `show (algebraMap F (AF F) a).2 = 0 + algebraMap F (Af F) a`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[zero_add]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem algebraMap_AF (a : F) :
     algebraMap F (AF F) a = pairA F (algebraMap F (Ainf F) a) 0 + pairA F 0 (algebraMap F (Af F) a) := by
@@ -259,7 +257,7 @@ theorem algebraMap_AF (a : F) :
     rfl
 
 /- English proof (translation)
-Establish `h1` using `hψ.2.2.1 a`. Rewrite `h1` using `[algebraMap_AF, AddChar.map_add_eq_mul, h, mul_one]`. Conclude with `h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem psi_fin_of_char (ψ : AddChar (AF F) ℂ) (hψ : IsCharAF F ψ) (a : F) (h : ψ (pairA F 0 (algebraMap F (Af F) a)) = 1) :
     chiInf ψ (algebraMap F (InfiniteAdeleRing F) a) = 1 := by
@@ -268,49 +266,45 @@ theorem psi_fin_of_char (ψ : AddChar (AF F) ℂ) (hψ : IsCharAF F ψ) (a : F) 
   exact h1
 
 /- English proof (translation)
-Introduce `F _ _ ψ hψ`. Take `⟨I, n, hU⟩` from `adele_character_trivial_open ψ hψ`. Assume the negation of the conclusion as `hne`. Rewrite `hne` using `[Filter.not_eventually, Filter.frequently_cofinite_iff_infinite]`. Use `set X := {v : HeightOneSpectrum (𝓞 F) | ¬∀ t : Fv F v, (∀ s ∈ v.adicCompletionIntegers F, psiV F ψ v (s * t) = 1) → t ∈ v.adicCompletionIntegers F} with hX`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `key : ∀ v ∈ X, v ∉ I → ∃ a : F, 1 < Valued.v (algebraMap F (Fv F v) a) ∧ a ∈ lamPsi ψ`. Introduce `v hvX hvI`. Simplify using `only [hX, Set.mem_setOf_eq, not_forall] at hvX`. Take `⟨t, ht, htO⟩` from `hvX`. Establish `ht1 : 1 < Valued.v t` using `(HeightOneSpectrum.notMem_adicCompletionIntegers (𝓞 F) F v).1 htO`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨a, ha⟩` from `hS F (U0 I n) (isOpen_adelic_neighbourhood I n) (singleV F v t)`. Establish `hdv : (singleV F v t - algebraMap F (Af F) a) v = t - algebraMap F (Fv F v) a`. Rewrite using `[af_sub, singleV_self]`. Both sides reduce to the same expression. Establish `hdw : ∀ w, w ≠ v → (singleV F v t - algebraMap F (Af F) a) w = - algebraMap F (Fv F w) a`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `w hw`. Rewrite using `[af_sub, singleV_ne v w hw, zero_sub]`. Both sides reduce to the same expression. Establish `hta : Valued.v (t - algebraMap F (Fv F v) a) < Valued.v t`. Use `ha.1 v` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[hdv, HeightOneSpectrum.mem_adicCompletionIntegers]`. Conclude with `lt_of_le_of_lt this ht1`. Establish `hav : Valued.v (algebraMap F (Fv F v) a) = Valued.v t`. Use `Valuation.map_sub_eq_of_lt_left Valued.v hta` as an intermediate fact. Rewrite `this` using `[sub_sub_cancel]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨a, hav ▸ ht1, ?_⟩` and prove the remaining obligations. Introduce `r`. Establish `hrint : ∀ w : HeightOneSpectrum (𝓞 F), algebraMap F (Fv F w) (r : F) ∈ w.adicCompletionIntegers F`. Introduce `w`. Rewrite using `[HeightOneSpectrum.mem_adicCompletionIntegers]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : Valued.v (((r : F) : w.adicCompletion F)) = w.valuation F (r : F)` using `HeightOneSpectrum.valuedAdicCompletion_eq_valuation' w (r : F)`. Conclude with `(e ▸ w.valuation_le_one r : Valued.v (((r : F) : w.adicCompletion F)) ≤ 1)`. Use `set y : Af F := algebraMap F (Af F) ((r : F) * a) with hy`. Establish `hyw : ∀ w, y w = algebraMap F (Fv F w) (r : F) * algebraMap F (Fv F w) a`. Introduce `w`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hy, map_mul]`. Both sides reduce to the same expression. Establish `hz : y - singleV F v (y v) ∈ U0 I n`. Use `⟨fun w => ?_, fun w hw => ?_⟩` and prove the remaining obligations. Rewrite using `[af_sub]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hwv : w = v`. Substitute `hwv` using the available equality. Rewrite using `[singleV_self, sub_self]`. Conclude with `zero_mem _`. Rewrite using `[singleV_ne v w hwv, sub_zero, hyw]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `mul_mem (hrint w) ?_` and prove the remaining obligations. Use `neg_mem (ha.1 w)` as an intermediate fact. Rewrite `this` using `[hdw w hwv, neg_neg]`. Then use the resulting hypothesis. Establish `hwv : w ≠ v` using `fun h => hvI (h ▸ hw)`. Rewrite using `[af_sub, singleV_ne v w hwv, sub_zero, hyw, mul_left_comm]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `mul_mem (hrint w) ?_` and prove the remaining obligations. Use `neg_mem (ha.2 w hw)` as an intermediate fact. Rewrite `this` using `[hdw w hwv, mul_neg, neg_neg]`. Then use the resulting hypothesis. Establish `hsplit : pairA F 0 y = pairA F 0 (y - singleV F v (y v)) + pairA F 0 (singleV F v (y v))`. Rewrite using `[← adele_pairing_zero_add, sub_add_cancel]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `show ψ (pairA F 0 y) = 1`. Rewrite using `[hsplit, AddChar.map_add_eq_mul, hU _ hz, one_mul]`. Use `show psiV F ψ v (y v) = 1`. Establish `ht0 : t ≠ 0`. Introduce and unpack `rfl`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `at ht1`. Establish `hq : y v / t ∈ v.adicCompletionIntegers F`. Rewrite using `[HeightOneSpectrum.mem_adicCompletionIntegers, map_div₀, hyw, map_mul, hav, mul_div_assoc, div_self ((Valuation.ne_zero_iff _).2 ht0), mul_one]`. Conclude with `(HeightOneSpectrum.mem_adicCompletionIntegers (𝓞 F) F v).1 (hrint v)`. Use `ht _ hq` as an intermediate fact.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite `this` using `[div_mul_cancel₀ _ ht0]`. Then use the resulting hypothesis. Establish `hne' : ∀ c : F, ∃ v, v ∈ X ∧ v ∉ I ∧ v ∉ HeightOneSpectrum.Support (𝓞 F) c`. Introduce `c`. Take `⟨v, hv⟩` from `((hne.diff I.finite_toSet).diff (HeightOneSpectrum.Support.finite (𝓞 F) c)).nonempty`. Conclude with `⟨v, hv.1.1, hv.1.2, hv.2⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h0 : ∃ c : F, c ≠ 0 ∧ c ∈ lamPsi ψ`. Take `⟨v, hvX, hvI, -⟩` from `hne' 1`. Take `⟨a, ha1, ha⟩` from `key v hvX hvI`. Use `⟨a, ?_, ha⟩` and prove the remaining obligations. Introduce and unpack `rfl`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `at ha1`. Establish `hb : ∀ c : F, c ≠ 0 → ¬ ∀ a ∈ lamPsi ψ, ∃ r : 𝓞 F, a = c * r`. Introduce `c _ hall`. Take `⟨v, hvX, hvI, hvc⟩` from `hne' c`. Take `⟨a, ha1, ha⟩` from `key v hvX hvI`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Take `⟨r, rfl⟩` from `hall a ha`. Simplify using `only [HeightOneSpectrum.Support, Set.mem_setOf_eq, not_lt] at hvc`. Establish `hc : Valued.v (algebraMap F (Fv F v) c) ≤ 1`. Establish `e : Valued.v ((c : v.adicCompletion F)) = v.valuation F c` using `HeightOneSpectrum.valuedAdicCompletion_eq_valuation' v c`. Conclude with `(e ▸ hvc : Valued.v ((c : v.adicCompletion F)) ≤ 1)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `hr : Valued.v (algebraMap F (Fv F v) (r : F)) ≤ 1`. Establish `e : Valued.v (((r : F) : v.adicCompletion F)) = v.valuation F (r : F)` using `HeightOneSpectrum.valuedAdicCompletion_eq_valuation' v (r : F)`. Conclude with `(e ▸ v.valuation_le_one r : Valued.v (((r : F) : v.adicCompletion F)) ≤ 1)`. Rewrite `ha1` using `[map_mul, map_mul]`. Establish `: Valued.v (algebraMap F (Fv F v) c) * Valued.v (algebraMap F (Fv F v) (r : F)) ≤ 1` using `mul_le_one' hc hr`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result.
 
-Conclude with `absurd ha1 (not_lt.2 this)`. Establish `hχc : Continuous (chiInf ψ)` using `hψ.1.comp (continuous_id.prodMk continuous_const)`. Establish `hΛ : ∀ a ∈ lamPsi ψ, chiInf ψ (algebraMap F (InfiniteAdeleRing F) a) = 1`. Introduce `a ha`. Apply `psi_fin_of_char ψ hψ a` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Normalize the expressions using the abelian group laws. Normalize the expressions using the abelian group laws.
 
-Use `ha 1` as an intermediate fact. Simplify using `using this`. Establish `hall` using `hC F (lamPsi ψ) h0 hb (chiInf ψ) hχc hΛ`. Take `⟨x, hx⟩` from `hψ.2.2.2`. Apply `hx` to reduce the goal to its premises.
-
-Take `⟨a, ha⟩` from `hS F (U0 I n) (isOpen_adelic_neighbourhood I n) x.2`. Establish `e : x = algebraMap F (AF F) a + pairA F (x.1 - algebraMap F (Ainf F) a) 0 + pairA F 0 (x.2 - algebraMap F (Af F) a)`. Rewrite using `[algebraMap_AF]`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Use `show x.1 = algebraMap F (Ainf F) a + 0 + (x.1 - algebraMap F (Ainf F) a) + 0`.
-
-Normalize the expressions using the abelian group laws. Use `show x.2 = 0 + algebraMap F (Af F) a + 0 + (x.2 - algebraMap F (Af F) a)`. Normalize the expressions using the abelian group laws. Rewrite using `[e, AddChar.map_add_eq_mul, AddChar.map_add_eq_mul, hψ.2.2.1 a, hU _ ha, one_mul, mul_one]`. Conclude with `hall _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem condExact_of (hS : SAf) (hC : ChInf) : CondExact := by
   intro F _ _ ψ hψ

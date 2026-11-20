@@ -13,9 +13,9 @@ noncomputable section
 namespace GenSecSeparable
 
 /- English proof (translation)
-Establish `hinj : Function.Injective (IsScalarTower.toAlgHom k (MvPolynomial (Par e n) k) (GenParField k e n))` using `IsFractionRing.injective (MvPolynomial (Par e n) k) (GenParField k e n)`. Establish `h` using `(MvPolynomial.algebraicIndependent_X (Par e n) k).map' hinj`. Establish `hc : (⇑(IsScalarTower.toAlgHom k (MvPolynomial (Par e n) k) (GenParField k e n)) ∘ X) = genPar k e n`. Use function extensionality and compare the values at `p`. Simplify using `only [Function.comp_apply, IsScalarTower.coe_toAlgHom', genPar]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Rewrite `h` using `[hc]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem genPar_algIndep (k : Type*) [Field k] (e n : ℕ) :
     AlgebraicIndependent k (genPar k e n) := by
@@ -30,7 +30,7 @@ theorem genPar_algIndep (k : Type*) [Field k] (e n : ℕ) :
   rwa [hc] at h
 
 /- English proof (translation)
-Establish `h : Set.range (secCoord Q y) = Set.range (Ideal.Quotient.mkₐ E (secIdeal Q y) ∘ X)` using `rfl`. Rewrite using `[h, Set.range_comp, ← AlgHom.map_adjoin, MvPolynomial.adjoin_range_X, Algebra.map_top, AlgHom.range_eq_top]`. Conclude with `Ideal.Quotient.mkₐ_surjective E _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem adjoin_secCoord {E : Type*} [Field E] {n e : ℕ} (Q : Ideal (MvPolynomial (Fin n) E))
     (y : Par e n → E) : Algebra.adjoin E (Set.range (secCoord Q y)) = ⊤ := by
@@ -40,7 +40,7 @@ theorem adjoin_secCoord {E : Type*} [Field E] {n e : ℕ} (Q : Ideal (MvPolynomi
   exact Ideal.Quotient.mkₐ_surjective E _
 
 /- English proof (translation)
-Establish `h : Ideal.Quotient.mk (secIdeal Q y) (secForm y i) = 0` using `Ideal.Quotient.eq_zero_iff_mem.2 (Ideal.mem_sup_left (Ideal.mem_sup_right (Ideal.subset_span ⟨i, rfl⟩)))`. Rewrite using `[← h, secForm, linForm, map_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem secCoord_form {E : Type*} [Field E] {n e : ℕ} (Q : Ideal (MvPolynomial (Fin n) E))
     (y : Par e n → E) (i : Fin e) :
@@ -54,9 +54,9 @@ theorem secCoord_form {E : Type*} [Field E] {n e : ℕ} (Q : Ideal (MvPolynomial
   rfl
 
 /- English proof (translation)
-Establish `h : Ideal.Quotient.mk (secIdeal Q y) (chartForm y) = 1`. Rewrite using `[← map_one (Ideal.Quotient.mk _), Ideal.Quotient.eq]`. Conclude with `Ideal.mem_sup_right (Ideal.subset_span rfl)`. Rewrite using `[← h, chartForm, linForm, map_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem secCoord_chart {E : Type*} [Field E] {n e : ℕ} (Q : Ideal (MvPolynomial (Fin n) E))
     (y : Par e n → E) : ∑ j, algebraMap E (SecAlg Q y) (y (.inr j)) * secCoord Q y j = 1 := by
@@ -69,11 +69,11 @@ theorem secCoord_chart {E : Type*} [Field E] {n e : ℕ} (Q : Ideal (MvPolynomia
   rfl
 
 /- English proof (translation)
-Use `set I := secIdeal (Q.map (MvPolynomial.map (algebraMap k (GenParField k e n)))) (genPar k e n)`. Establish `key : ((aeval (secCoord (Q.map (MvPolynomial.map (algebraMap k (GenParField k e n)))) (genPar k e n)) : MvPolynomial (Fin n) k →ₐ[k] GenSec k e Q) : MvPolynomial (Fin n) k →+* _) = (Ideal.Quotient.mk I).comp (MvPolynomial.map (algebraMap k (GenParField k e n)))`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `a`. Simplify using `only [RingHom.coe_coe, aeval_C, RingHom.coe_comp, Function.comp_apply, map_C]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[IsScalarTower.algebraMap_apply k (GenParField k e n) (GenSec k e Q)]`. Both sides reduce to the same expression. Introduce `j`. Simplify using `only [RingHom.coe_coe, aeval_X, RingHom.coe_comp, Function.comp_apply, map_X]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `h` using `congrArg (fun φ => φ f) key`. Simplify using `only [RingHom.coe_coe, RingHom.coe_comp, Function.comp_apply] at h`. Rewrite using `[h, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `Ideal.mem_sup_left (Ideal.mem_sup_left (Ideal.mem_map_of_mem _ hf))`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem aeval_secCoord (k : Type*) [Field k] (e : ℕ) {n : ℕ} (Q : Ideal (MvPolynomial (Fin n) k))
     (f : MvPolynomial (Fin n) k) (hf : f ∈ Q) :
@@ -99,7 +99,7 @@ end GenSecSeparable
 
 open GenSecSeparable in
 /- English proof (translation)
-Introduce `k _ _ n e Q g hQ hg`. Establish `: Module.Finite (GenParField k e n) (GenSec k e Q)` using `h₁ k (GenParField k e n) n e Q g (genPar k e n) (genPar_algIndep k e n) hQ hg`. Establish `: IsDomain (GenSec k e Q)` using `h₂ k n e Q g hQ hg`. Set `: Field (GenSec k e Q)` to `(isField_of_isIntegral_of_isField' (R := GenParField k e n) (Field.toIsField _)).toField`. Conclude with `h₄ k n e (GenSec k e Q) _ (adjoin_secCoord _ _) (secCoord_form _ _) (secCoord_chart _ _) fun j₀ hj₀ => h₃ k (GenSec k e Q) n e Q g hQ hg _ j₀ (aeval_secCoord k e Q) hj₀`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem GenSecSeparable.proof (h₁ : SecAlgFinite.Statement) (h₂ : GenSecDomain.Statement)
     (h₃ : ChartPointTrdeg.Statement) (h₄ : SecPointSeparable.Statement) :

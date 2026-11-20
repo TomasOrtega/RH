@@ -9,43 +9,41 @@ noncomputable section
 namespace Formalism.GradedWeylDivisibility
 
 /- English proof (translation)
-Introduce `R K _ _ _ k n ν g hg F hF`. Unfold `nablaL at hF`. Rewrite `hF` using `[Submodule.mem_comap, Submodule.mem_map]`. Take `⟨G, hG, hGF⟩` from `hF`. Establish `hGF' : map (algebraMap R K) G = rowAct K g F` using `hGF`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hGK : map (algebraMap R K) G ∈ dualWeyl K k n ν`. Unfold `dualWeyl at hG ⊢`. Rewrite `hG`, the goal using `[Submodule.mem_inf]`. Take `⟨hG1, hG2⟩` from `hG`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `hG1`, the goal using `[mem_weightedHomogeneousSubmodule]`. Introduce `d hd`. Apply `hG1` to reduce the goal to its premises. Introduce `h0`. Apply `hd` to reduce the goal to its premises.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[coeff_map, h0, map_zero]`. Simplify using `only [Submodule.mem_iInf, LinearMap.mem_ker] at hG2 ⊢`. Introduce `l j hlj`. Establish `e` using `hG2 l j hlj`. Establish `hc : ∀ p : MvPolynomial (Fin k × Fin n) R, colAddGen K l j (map (algebraMap R K) p) = map (algebraMap R K) (colAddGen R l j p)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `p`. Proceed by induction on `p using MvPolynomial.induction_on`. Name the introduced variables `a`. Simplify using `[colAddGen]`. Name the introduced variables `p q hp hq`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_add, hp, hq]`. Name the introduced variables `p v hp`. Simplify using `only [map_mul, hp]`. Use `congr 1`. Simplify using `only [colAddGen, map_X, aeval_X]`.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `split_ifs <;> simp`. Simplify using `only [LinearMap.sub_apply, AlgHom.toLinearMap_apply] at e ⊢`. Rewrite using `[hc, ← map_rename, ← map_sub, e, map_zero]`. Establish `hinv : ∀ (A : Matrix (Fin k) (Fin k) K) (P : MvPolynomial (Fin k × Fin n) K), P ∈ dualWeyl K k n ν → rowAct K A P ∈ dualWeyl K k n ν`. Introduce `A P hP`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Unfold `dualWeyl at hP ⊢`. Rewrite `hP`, the goal using `[Submodule.mem_inf]`. Take `⟨hP1, hP2⟩` from `hP`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite `hP1`, the goal using `[mem_weightedHomogeneousSubmodule]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `hXw : ∀ v : Fin k × Fin n, IsWeightedHomogeneous (colW k n) (rowAct K A (X v)) (colW k n v)`. Introduce `v`. Simplify using `only [rowAct, aeval_X]`. Apply `IsWeightedHomogeneous.sum` to reduce the goal to its premises. Introduce `b _`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Establish `h` using `(isWeightedHomogeneous_C (colW k n) (A v.1 b)).mul (isWeightedHomogeneous_X K (colW k n) (b, v.2))`. Simplify `h` using `[colW]`. Rewrite using `[P.as_sum, map_sum]`. Apply `IsWeightedHomogeneous.sum` to reduce the goal to its premises. Introduce `d hd`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[← hP1 (mem_support_iff.mp hd), monomial_eq, map_mul, map_finsuppProd, Finsupp.weight_apply]`. Simplify using `only [map_pow]`. Establish `hC : rowAct K A (C (coeff d P) : MvPolynomial (Fin k × Fin n) K) = C (coeff d P)`. Simplify using `[rowAct]`. Rewrite using `[hC]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules.
 
-Establish `h` using `(isWeightedHomogeneous_C (colW k n) (coeff d P)).mul (IsWeightedHomogeneous.prod d.support _ _ fun v _ => (hXw v).pow (d v))`. Simplify `h` using `[Finsupp.prod, Finsupp.sum]`. Simplify using `only [Submodule.mem_iInf, LinearMap.mem_ker] at hP2 ⊢`. Introduce `l j hlj`. Establish `e` using `hP2 l j hlj`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Simplify using `only [LinearMap.sub_apply, AlgHom.toLinearMap_apply] at e ⊢`. Set `A' : MvPolynomial (Option (Fin k × Fin n)) K →ₐ[K] MvPolynomial (Option (Fin k × Fin n)) K` to `aeval fun o => o.elim (X none) (fun v => ∑ b : Fin k, C (A v.1 b) * X (some (b, v.2)))`. Establish `h1 : (colAddGen K l j).comp (rowAct K A) = A'.comp (colAddGen K (r` using `k) l j) := by`. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `v`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `hv : v.2 = j`. Simplify using `[A', colAddGen, rowAct, hv, Finset.mul_sum, Finset.sum_add_distrib, mul_add, mul_left_comm]`. Simplify using `[A', colAddGen, rowAct, hv]`. Establish `h2 : (rename (R` using `K) (some : Fin k × Fin n → Option (Fin k × Fin n))).comp (rowAct K A) = A'.comp (rename some) := by`. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `v`. Simplify using `[A', rowAct]`. Establish `e1` using `congrArg (fun Φ => Φ P) h1`. Establish `e2` using `congrArg (fun Φ => Φ P) h2`. Simplify using `only [AlgHom.comp_apply] at e1 e2`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[e1, e2, ← map_sub, e, map_zero]`. Establish `hid : rowAct K (1 : Matrix (Fin k) (Fin k) K) F = F`. Establish `e1 : rowAct K (n` using `n) (1 : Matrix (Fin k) (Fin k) K) = AlgHom.id K _ := by`. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `v`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [rowAct, aeval_X, AlgHom.coe_id, id_eq, Matrix.one_apply]`. Rewrite using `[Finset.sum_eq_single v.1]`. Simplify using the standard rewrite rules. Introduce `c _ hc`. Simplify using `[Ne.symm hc]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Simplify using the standard rewrite rules. Rewrite using `[e1]`. Both sides reduce to the same expression. Establish `e` using `congrArg (fun Φ => Φ F) (row_action_mul K k n g⁻¹ g)`. Simplify using `only [AlgHom.comp_apply] at e`.
-
-Rewrite `e` using `[Matrix.mul_nonsing_inv g hg, hid]`. Rewrite using `[← e, ← hGF']`. Conclude with `hinv _ _ hGK`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nabla_weight_le : NablaLLe := by
   intro R K _ _ _ k n ν g hg F hF

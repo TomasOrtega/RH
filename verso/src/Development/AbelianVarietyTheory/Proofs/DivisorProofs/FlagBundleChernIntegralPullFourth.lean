@@ -16,7 +16,7 @@ open scoped Classical
 namespace GlobalTheory.FibLog
 
 /- English proof (translation)
-Establish `h1 : IntervalIntegrable (fun t : ℝ => Real.log (1 - t)) volume 0 1`. Use `(intervalIntegral.intervalIntegrable_log' (a := 0) (b := 1)).comp_sub_left 1` as an intermediate fact. Simplify using `using this.symm`. Conclude with `((intervalIntegrable_iff_integrableOn_Icc_of_le zero_le_one).1 h1).div_const 2`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem integrableOn_log_one_sub : IntegrableOn (fun t : ℝ => Real.log (1 - t) / 2) (Set.Icc 0 1) := by
   have h1 : IntervalIntegrable (fun t : ℝ => Real.log (1 - t)) volume 0 1 := by
@@ -25,7 +25,7 @@ theorem integrableOn_log_one_sub : IntegrableOn (fun t : ℝ => Real.log (1 - t)
   exact ((intervalIntegrable_iff_integrableOn_Icc_of_le zero_le_one).1 h1).div_const 2
 
 /- English proof (translation)
-Rewrite using `[integral_Icc_eq_integral_Ioc, ← intervalIntegral.integral_of_le zero_le_one, intervalIntegral.integral_div]`. Establish `: ∫ t in (0 : ℝ)..1, Real.log (1 - t) = ∫ t in (0 : ℝ)..1, Real.log t`. Rewrite using `[intervalIntegral.integral_comp_sub_left (fun t => Real.log t) 1]`. Simplify using the standard rewrite rules. Rewrite using `[this, integral_log]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
 Evaluate the numerical expressions.
 -/
@@ -36,11 +36,11 @@ theorem integral_log_one_sub : ∫ t in Set.Icc (0 : ℝ) 1, Real.log (1 - t) / 
   rw [this, integral_log]; norm_num
 
 /- English proof (translation)
-Introduce `k _ B Y _ _ q p d hB hY π w E h H flB fl hfl A σ v hv`. Establish `hm : Measurable v` using `GlobalTheory.T.flag_bundle_hermitian_line_pullback_form k B Y q p d hB hY π w E h H flB fl hfl A σ v hv`. Establish `hG : Measurable (fun t : ℝ => Real.log (1 - t) / 2)` using `((Real.measurable_log.comp (measurable_const.sub measurable_id))).div_const 2`. Establish `key : ∀ (μ : Measure (CxPts p σ)) (C : ENNReal), Measure.map v μ = C • volume.restrict (Set.Icc (0 : ℝ) 1) → ∫ y, Real.log (1 - v y) / 2 ∂μ = C.toReal * (-1 / 2)`. Introduce `μ C hμ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `integral_map (μ := μ) hm.aemeasurable (f := fun t : ℝ => Real.log (1 - t) / 2) hG.aestronglyMeasurable` as an intermediate fact. Rewrite using `[← this, hμ, integral_smul_measure, GlobalTheory.FibLog.integral_log_one_sub, smul_eq_mul]`. Use `⟨fun α hα ε => ?_, fun φ hφ => ?_⟩` and prove the remaining obligations. Take `⟨C, hC, hle⟩` from `GlobalTheory.T.flag_bundle_hermitian_line_degree_identity k B Y q p d hB hY π w E h H flB fl hfl A σ v hv α hα ε`. Establish `hi : Integrable (fun t : ℝ => Real.log (1 - t) / 2) (Measure.map v ((hY.atlas σ).part α ε))` using `(GlobalTheory.FibLog.integrableOn_log_one_sub.smul_measure hC).mono_measure hle`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `(integrable_map_measure hG.aestronglyMeasurable hm.aemeasurable).1 hi`. Establish `h1` using `key _ _ (GlobalTheory.T.flag_bundle_hermitian_line_integral_formula k B Y q p d hB hY π w E h H flB fl hfl A σ v hv φ hφ 1)`. Establish `h2` using `key _ _ (GlobalTheory.T.flag_bundle_hermitian_line_integral_formula k B Y q p d hB hY π w E h H flB fl hfl A σ v hv φ hφ (-1))`. Rewrite using `[wInt, h1, h2, HolAtlas.integral, neg_neg, Measure.real, Measure.real]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem wInt_log_one_sub : ∀ (k : Type) [CommRing k] (B Y : Scheme.{0}) [IsIntegral B] [IsIntegral Y] (q : B ⟶ Sp k) (p : Y ⟶ Sp k) (d : ℕ)
     (hB : IsRegVar q d) (hY : IsRegVar p (d + 1)) (π : Y ⟶ B) (w : π ≫ q = p) (E : B.Modules) (h : VMetric q E 2) (H : h.IsCInf)

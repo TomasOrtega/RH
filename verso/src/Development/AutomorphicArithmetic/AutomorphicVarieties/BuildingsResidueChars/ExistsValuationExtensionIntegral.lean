@@ -2,7 +2,7 @@ import Mathlib
 import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.IntegralExtensionAlgClosed
 
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.IntegralExtensionAlgClosed.exists_ringHom_extension_of_integral R S K hinj b`.
+A detailed English derivation is pending.
 -/
 private theorem UpperTheory.exists_ringHom_extension_of_integral (R S K : Type) [CommRing R] [CommRing S] [Algebra R S]
     [Algebra.IsIntegral R S] [Field K] [IsAlgClosed K]
@@ -11,11 +11,11 @@ private theorem UpperTheory.exists_ringHom_extension_of_integral (R S K : Type) 
   _root_.UpperTheory.Reformulated.B.IntegralExtensionAlgClosed.exists_ringHom_extension_of_integral R S K hinj b
 
 /- English proof (translation)
-Introduce `R S K _ _ _ _ _ _ V hinj b`. Take `⟨Φ, hΦ⟩` from `UpperTheory.exists_ringHom_extension_of_integral R S K hinj ((algebraMap V K).comp b)`. Establish `hmem : ∀ s : S, Φ s ∈ V`. Introduce `s`. Establish `hs : IsIntegral R s` using `Algebra.IsIntegral.isIntegral s`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h2 : IsIntegral V (Φ s)` using `hs.map_of_comp_eq b Φ hΦ.symm`. Take `⟨y, hy⟩` from `(IsIntegrallyClosed.isIntegral_iff (R := V) (K := K)).1 h2`. Rewrite using `[← hy]`. Conclude with `y.2`. Use `⟨Φ.codRestrict V hmem, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Use extensionality with `r`. Conclude with `RingHom.congr_fun hΦ r`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.exists_valuation_extension_integral :
     ∀ (R S K : Type) [CommRing R] [CommRing S] [Algebra R S] [Algebra.IsIntegral R S] [Field K] [IsAlgClosed K] (V : ValuationSubring K), Function.Injective (algebraMap R S) → ∀ b : R →+* V, ∃ Φ : S →+* V, Φ.comp (algebraMap R S) = b := by

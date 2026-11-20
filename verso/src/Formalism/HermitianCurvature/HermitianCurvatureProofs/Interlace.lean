@@ -5,7 +5,7 @@ namespace Formalism.FourierDecayAlt.P.Interlace
 open Finset Formalism.FourierDecayAlt.I
 
 /- English proof (translation)
-Introduce `i hi`. Take `⟨a, b, c, d⟩` from `h i hi`. Conclude with `⟨b, a, d, c⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 lemma interlaces_swap {k : ℕ} {u u' ρ : ℕ → ℝ} (h : Interlaces k u u' ρ) :
     Interlaces k u' u ρ := by
@@ -14,7 +14,7 @@ lemma interlaces_swap {k : ℕ} {u u' ρ : ℕ → ℝ} (h : Interlaces k u u' �
   exact ⟨b, a, d, c⟩
 
 /- English proof (translation)
-Introduce `i j hi hij hjk`. Proceed by induction on `j, hij using Nat.le_induction with`. Consider the case `base => exact le_refl _`. Consider the case `succ n hn ih => exact (h n (by omega) hjk).trans (ih (by omega))`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 lemma antitone_on {f : ℕ → ℝ} {k : ℕ} (h : ∀ i, 1 ≤ i → i + 1 ≤ k → f (i + 1) ≤ f i) :
     ∀ i j, 1 ≤ i → i ≤ j → j ≤ k → f j ≤ f i := by
@@ -24,7 +24,7 @@ lemma antitone_on {f : ℕ → ℝ} {k : ℕ} (h : ∀ i, 1 ≤ i → i + 1 ≤ 
   | succ n hn ih => exact (h n (by omega) hjk).trans (ih (by omega))
 
 /- English proof (translation)
-Introduce `i h1 h2`. Take `⟨a, b, c, d⟩` from `h i (mem_Icc.2 ⟨h1, by omega⟩)`. Combine the linear equalities and inequalities to obtain the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 lemma u_step {k : ℕ} {u u' ρ : ℕ → ℝ} (h : Interlaces k u u' ρ) :
     ∀ i, 1 ≤ i → i + 1 ≤ k → u (i + 1) ≤ u i := by
@@ -33,15 +33,15 @@ lemma u_step {k : ℕ} {u u' ρ : ℕ → ℝ} (h : Interlaces k u u' ρ) :
   linarith
 
 /- English proof (translation)
-Establish `hu` using `antitone_on (u_step h)`. Establish `hu'` using `antitone_on (u_step (interlaces_swap h))`. Establish `hcard : (filter (fun i => ¬ i < l) (Icc 1 (k - 1))).card = k - l`. Establish `: filter (fun i => ¬ i < l) (Icc 1 (k - 1)) = Icc l (k - 1)`. Use extensionality with `i`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `only [mem_filter, mem_Icc]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[this, Nat.card_Icc]`. Use linear arithmetic over natural numbers and integers. Establish `key : (-1 : ℝ) ^ (k - l) * xpoly k ρ (Y + e) = ∏ i ∈ Icc 1 (k - 1), ((if i < l then (1 : ℝ) else -1) * (Y + e + ρ i))`.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Rewrite using `[prod_mul_distrib, prod_ite, prod_const_one, one_mul, prod_const, hcard]`. Both sides reduce to the same expression. Rewrite using `[key]`. Apply `prod_pos` to reduce the goal to its premises. Introduce `i hi`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hi'` using `mem_Icc.1 hi`. Take `⟨a, b, c, d⟩` from `h i hi`. Use `split_ifs with hil`. Use `hu' (i + 1) l (by omega) (by omega) hlk` as an intermediate fact. Rewrite using `[one_mul]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Use `hu l i hl1 (by omega) (by omega)` as an intermediate fact. Rewrite using `[neg_one_mul]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 lemma sign_core (k : ℕ) (u u' ρ : ℕ → ℝ) (l : ℕ) (Y : ℝ) (hl1 : 1 ≤ l) (hlk : l ≤ k)
     (h : Interlaces k u u' ρ) (hA : u l + 2 ≤ -Y ∧ -Y ≤ u' l - 2) (e : ℝ)
@@ -69,9 +69,9 @@ lemma sign_core (k : ℕ) (u u' ρ : ℕ → ℝ) (l : ℕ) (Y : ℝ) (hl1 : 1 �
     rw [neg_one_mul]; linarith
 
 /- English proof (translation)
-Introduce `k u u' ρ l Y hl1 hlk h hc e he`. Establish `he' : -1 ≤ e ∧ e ≤ 1`. Simplify using `only [mem_insert, mem_singleton] at he`. Apply the tactic sequence `rcases he with rfl | rfl | rfl <;> norm_num`. Break down `hc with hA | hB` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `sign_core k u u' ρ l Y hl1 hlk h hA e he'`. Conclude with `sign_core k u' u ρ l Y hl1 hlk (interlaces_swap h) hB e he'`.
+A detailed English derivation is pending.
 -/
 theorem interlaceSign : InterlaceSign := by
   intro k u u' ρ l Y hl1 hlk h hc e he
@@ -83,13 +83,13 @@ theorem interlaceSign : InterlaceSign := by
   · exact sign_core k u' u ρ l Y hl1 hlk (interlaces_swap h) hB e he'
 
 /- English proof (translation)
-Establish `hu` using `antitone_on (u_step h)`. Establish `hu'` using `antitone_on (u_step (interlaces_swap h))`. Establish `hl : l ∈ Icc 1 k` using `mem_Icc.2 ⟨hl1, hlk⟩`. Rewrite using `[← mul_prod_erase _ _ hl]`. Apply `mul_neg_of_neg_of_pos` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Apply the tactic sequence `apply mul_neg_of_neg_of_pos <;> linarith`. Apply `prod_pos` to reduce the goal to its premises. Introduce `i hi`. Establish `hne` using `ne_of_mem_erase hi`. Establish `hi'` using `mem_Icc.1 (mem_of_mem_erase hi)`.
+Apply the first step, then apply the next step to every resulting obligation. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Break down `lt_or_gt_of_ne hne with hil | hil` into its components or cases. Take `⟨a, b, c, d⟩` from `h i (mem_Icc.2 ⟨hi'.1, by omega⟩)`. Establish `h1` using `hu' (i + 1) l (by omega) (by omega) hlk`. Establish `h2` using `hu' i l hi'.1 (by omega) hlk`. Apply the tactic sequence `apply mul_pos <;> linarith`.
+Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Take `⟨j, rfl⟩ : ∃ j, i = j + 1` from `⟨i - 1, by omega⟩`. Take `⟨a, b, c, d⟩` from `h j (mem_Icc.2 ⟨by omega, by omega⟩)`. Establish `h1` using `hu l (j + 1) hl1 (by omega) hi'.2`. Establish `h2` using `hu l j hl1 (by omega) (by omega)`. Apply the tactic sequence `apply mul_pos_of_neg_of_neg <;> linarith`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma q_core (k : ℕ) (u u' ρ : ℕ → ℝ) (l : ℕ) (Y : ℝ) (hl1 : 1 ≤ l) (hlk : l ≤ k)
     (h : Interlaces k u u' ρ) (hA : u l + 2 ≤ -Y ∧ -Y ≤ u' l - 2) :
@@ -116,9 +116,9 @@ lemma q_core (k : ℕ) (u u' ρ : ℕ → ℝ) (l : ℕ) (Y : ℝ) (hl1 : 1 ≤ 
       apply mul_pos_of_neg_of_neg <;> linarith
 
 /- English proof (translation)
-Introduce `k u u' ρ l Y T T' hl1 hlk h hc hT hT'`. Establish `hTT : 0 < T * T'` using `mul_pos hT hT'`. Establish `hP : ∏ i ∈ Icc 1 k, ((Y + 1/2 + u i) * (Y + 1/2 + u' i)) < 0`. Break down `hc with hA | hB` into its components or cases. Conclude with `q_core k u u' ρ l Y hl1 hlk h hA`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Use `q_core k u' u ρ l Y hl1 hlk (interlaces_swap h) hB` as an intermediate fact. Rewrite `this` using `[prod_congr rfl (fun i _ => mul_comm (Y + 1/2 + u' i) (Y + 1/2 + u i))]`. Then use the resulting hypothesis. Unfold `qpoly`. Use the polynomial consequences of the given equalities and inequalities.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Replace the relevant objects with their definitions. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem qPositive : QPositive := by
   intro k u u' ρ l Y T T' hl1 hlk h hc hT hT'
@@ -132,7 +132,7 @@ theorem qPositive : QPositive := by
   nlinarith
 
 /- English proof (translation)
-The claim follows from `|(∏ i ∈ Icc 1 k, (Y + 1/2 + u i)) * (∏ i ∈ Icc 1 k, (Y + 1/2 + u' i))| := by have hu := antitone_on (u_step h) have hu' := antitone_on (u_step (interlaces_swap h)) set g : ℕ → ℝ := fun j => |Y + 1/2 + u j| * |Y + 1/2 + u' j| with hg have hl : l ∈ Icc 1 k := mem_Icc.2 ⟨hl1, hlk⟩ h …`.
+A detailed English derivation is pending.
 -/
 lemma ratio_core (k : ℕ) (u u' ρ : ℕ → ℝ) (l : ℕ) (Y : ℝ) (hl1 : 1 ≤ l) (hlk : l ≤ k)
     (h : Interlaces k u u' ρ) (hA : u l + 2 ≤ -Y ∧ -Y ≤ u' l - 2) :
@@ -183,7 +183,7 @@ lemma ratio_core (k : ℕ) (u u' ρ : ℕ → ℝ) (l : ℕ) (Y : ℝ) (hl1 : 1 
       nlinarith
 
 /- English proof (translation)
-Introduce `k u u' ρ l Y hl1 hlk h hc`. Break down `hc with hA | hB` into its components or cases. Conclude with `ratio_core k u u' ρ l Y hl1 hlk h hA`. Use `ratio_core k u' u ρ l Y hl1 hlk (interlaces_swap h) hB` as an intermediate fact. Rewrite `this` using `[mul_comm (|Y + 1/2 + u' l|), mul_comm (∏ i ∈ Icc 1 k, (Y + 1/2 + u' i))]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem interlaceRatio : InterlaceRatio := by
   intro k u u' ρ l Y hl1 hlk h hc
@@ -195,14 +195,14 @@ theorem interlaceRatio : InterlaceRatio := by
 end Formalism.FourierDecayAlt.P.Interlace
 
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.Interlace.interlaceSign`.
+A detailed English derivation is pending.
 -/
 theorem Formalism.FourierDecayAlt.P.interlacing_sign : Formalism.FourierDecayAlt.I.InterlaceSign := Formalism.FourierDecayAlt.P.Interlace.interlaceSign
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.Interlace.qPositive`.
+A detailed English derivation is pending.
 -/
 theorem Formalism.FourierDecayAlt.P.q_positive_interlacing : Formalism.FourierDecayAlt.I.QPositive := Formalism.FourierDecayAlt.P.Interlace.qPositive
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.Interlace.interlaceRatio`.
+A detailed English derivation is pending.
 -/
 theorem Formalism.FourierDecayAlt.P.interlacing_ratio : Formalism.FourierDecayAlt.I.InterlaceRatio := Formalism.FourierDecayAlt.P.Interlace.interlaceRatio

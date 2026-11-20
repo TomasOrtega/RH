@@ -6,7 +6,7 @@ open CategoryTheory Limits AlgebraicGeometry CochainComplex CochainComplex.HomCo
 namespace LateralTheory.E.RelDescPf
 
 /- English proof (translation)
-Take `⟨y, rfl⟩` from `x.mk_surjective`. Use `congrArg CohomologyClass.mk (Cocycle.ext ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(Cochain.ofHom (a ≫ b)).comp y.1 (zero_add n) = (Cochain.ofHom a).comp ((Cochain.ofHom b).comp y.1 (zero_add n)) (zero_add n)`. Rewrite using `[← Cochain.comp_assoc_of_first_is_zero_cochain, ← Cochain.ofHom_comp]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem hkpull_comp (R : Type) [CommRing R] {K L M : Cx R} (a : K ⟶ L) (b : L ⟶ M) (F : Shv R) (n : ℤ)
     (x : HK R M F n) : HK.pull R (a ≫ b) F n x = HK.pull R a F n (HK.pull R b F n x) := by
@@ -17,7 +17,7 @@ theorem hkpull_comp (R : Type) [CommRing R] {K L M : Cx R} (a : K ⟶ L) (b : L 
   rw [← Cochain.comp_assoc_of_first_is_zero_cochain, ← Cochain.ofHom_comp]
 
 /- English proof (translation)
-Simplify using `only [rmap, Functor.map_comp]`. Conclude with `mappingCone.map_comp _ _ _ _ _ _ _ _ _`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem rmap_comp (R : Type) [CommRing R] {U E U' E' U'' E'' : Spc} (f : U ⟶ E) (f' : U' ⟶ E') (f'' : U'' ⟶ E'')
     (u : U' ⟶ U) (e : E' ⟶ E) (u' : U'' ⟶ U') (e' : E'' ⟶ E') (comm : f' ≫ e = u ≫ f) (comm' : f'' ≫ e' = u' ≫ f')
@@ -27,7 +27,7 @@ theorem rmap_comp (R : Type) [CommRing R] {U E U' E' U'' E'' : Spc} (f : U ⟶ E
   exact mappingCone.map_comp _ _ _ _ _ _ _ _ _
 
 /- English proof (translation)
-Simplify using `only [rpull]`. Rewrite using `[rmap_comp R f f' f'' u e u' e' comm comm' comm'']`. Conclude with `hkpull_comp R _ _ F n y`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rpull_comp (R : Type) [CommRing R] {U E U' E' U'' E'' : Spc} (f : U ⟶ E) (f' : U' ⟶ E') (f'' : U'' ⟶ E'')
     (u : U' ⟶ U) (e : E' ⟶ E) (u' : U'' ⟶ U') (e' : E'' ⟶ E') (comm : f' ≫ e = u ≫ f) (comm' : f'' ≫ e' = u' ≫ f')
@@ -58,11 +58,9 @@ def LevelInj : Prop := Hyp → ∀ (q : ℕ) [NeZero q] (i n : ℤ) {A Y : CommR
     Function.Injective (rpull (ZMod q) g (sch.map (Spec.map φ'')) j0 i0 h0 (tw q i) n)
 
 /- English proof (translation)
-Introduce `hH q _ i n A Y φ hq P hP hE hB D d hD Y' w φ' hpo E e Y'' u φ'' he hs hPE hpo'`. Take `⟨g, hA, i0, j0, h0, hi, hj, hinj⟩` from `hL hH q i n φ hq P hP hE hB D d hD Y' w φ' hpo E e Y'' u φ'' he hs hPE hpo'`. Take `⟨hCe, hCu⟩` from `hC hH q i φ' e u φ'' he hs hpo'`. Establish `h1` using `hEq (ZMod q) (tw q i) (sch.map (Spec.map φ')) g (cechAug (Spec.map u)) (cechAug (Spec.map e)) hA hCu hCe n`. Establish `key : ∀ (a : sch.obj (Spec Y'') ⟶ sch.obj (Spec Y')) (b : sch.obj (Spec E) ⟶ sch.obj (Spec D)) (ha : j0 ≫ cechAug (Spec.map u) = a) (hb : i0 ≫ cechAug (Spec.map e) = b) (c : sch.map (Spec.map φ'') ≫ b = a ≫ sch.map (Spec.map φ')), Function.Injective (rpull (ZMod q) (sch.map (Spec …`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `a b ha hb c`. Substitute `ha hb` using the available equality. Introduce `x y hxy`. Rewrite `hxy` using `[rpull_comp _ _ g _ _ _ _ _ hA h0 c, rpull_comp _ _ g _ _ _ _ _ hA h0 c]`. Conclude with `h1 (hinj hxy)`.
-
-Conclude with `key _ _ hj hi _`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem relDesc_of (hEq : RelEqvInj) (hC : CechEqv) (hL : LevelInj) : LateralTheory.E.TruncationKernel.RelDesc := by
   intro hH q _ i n A Y φ hq P hP hE hB D d hD Y' w φ' hpo E e Y'' u φ'' he hs hPE hpo'
@@ -81,13 +79,13 @@ theorem relDesc_of (hEq : RelEqvInj) (hC : CechEqv) (hL : LevelInj) : LateralThe
   exact key _ _ hj hi _
 
 /- English proof (translation)
-The claim follows from `HasRingHomProperty.Spec_iff.mpr he`.
+A detailed English derivation is pending.
 -/
 theorem etale_spec {D E : CommRingCat.{0}} (e : D ⟶ E) (he : Et e) : Etale (Spec.map e) :=
   HasRingHomProperty.Spec_iff.mpr he
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `x`. Take `⟨Q, hQ, hQr⟩` from `hs x.asIdeal x.isPrime`. Conclude with `⟨⟨Q, hQ⟩, PrimeSpectrum.ext hQr⟩`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem surj_spec {D E : CommRingCat.{0}} (e : D ⟶ E) (hs : SpS e) : Surjective (Spec.map e) := by
   constructor
@@ -96,9 +94,9 @@ theorem surj_spec {D E : CommRingCat.{0}} (e : D ⟶ E) (hs : SpS e) : Surjectiv
   exact ⟨⟨Q, hQ⟩, PrimeSpectrum.ext hQr⟩
 
 /- English proof (translation)
-Introduce `hH q _ i D Y' E Y'' φ' e u φ'' he hs hpo`. Establish `hpb` using `isPullback_SpecMap_of_isPushout φ' e u φ'' hpo`. Establish `hE : Etale (Spec.map e)` using `etale_spec e he`. Establish `hS : Surjective (Spec.map e)` using `surj_spec e hs`. Establish `hEu : Etale (Spec.map u)` using `MorphismProperty.of_isPullback (P := @Etale) hpb.flip hE`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hSu : Surjective (Spec.map u)` using `MorphismProperty.of_isPullback (P := @Surjective) hpb.flip hS`. Conclude with `⟨hH.2.1 (ZMod q) (Spec.map e) (tw q i), hH.2.1 (ZMod q) (Spec.map u) (tw q i)⟩`.
+Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem cechEqv : CechEqv := by
   intro hH q _ i D Y' E Y'' φ' e u φ'' he hs hpo

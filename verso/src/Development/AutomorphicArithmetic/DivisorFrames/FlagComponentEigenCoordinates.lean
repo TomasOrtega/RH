@@ -17,9 +17,9 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
 
 open Classical in
 /- English proof (translation)
-Take `rfl` from `h`. Rewrite using `[mixLog_eq (b := b) (by simp [hb])]`. Establish `hl' : Real.log (resP v) ≠ 0` using `(Real.log_pos (by exact_mod_cast hl.one_lt)).ne'`. Simplify using `only [symLog, mixLog, lnStep, dif_pos hl, dif_pos i.2, hb, true_and]`. Use `split_ifs`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts.
 
-Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
+Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem symLog_eq' {b : ℕ → Bool} {l : ℕ} (hl : l.Prime) (hb : b l = true) (σ : E →+* ℂ) (i : Fin (Dw.mult σ))
     (v : HeightOneSpectrum (𝓞 F)) (e : TrueGeo.Ext v) (y : AlgPt C.Y) (h : resP v = l) :
@@ -35,11 +35,11 @@ private theorem symLog_eq' {b : ℕ → Bool} {l : ℕ} (hl : l.Prime) (hb : b l
   · simp
 
 /- English proof (translation)
-Take `⟨k, hk⟩` from `k`. Establish `hP (y : C.Y.X) : ∏ x : Pad.Letter Dw, dg C y x.1 x.2 ^ expo Dw w x = dg C y σ ⟨k, hk⟩ ^ n`. Rewrite using `[Finset.prod_eq_single ⟨σ, ⟨k, hk⟩⟩ (fun x _ hx => by`. Rewrite using `[hw, expo_single, if_neg (by simpa [letterOf, hk] using hx.symm), zpow_zero]) (by simp), hw, expo_single,`. Use `if_pos (by simp [letterOf, hk])]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun y => ?_, fun v e y => ?_⟩` and prove the remaining obligations. Establish `h₁ : (divOf C (expo Dw w)).IsEqn y (∏ x : Pad.Letter Dw, dg C y x.1 x.2 ^ expo Dw w x)` using `isEqn_sum _ y fun x => ((fr_spec C y).2 x.1 x.2).zsmul _`. Rewrite `h₁` using `[hP]`. Simplify `(Base.isEqn_eqn _ y).iff_unitAt.1 h₁` using `[div_eq_mul_inv]`. Rewrite using `[lgOf_eq_lgCopy, lgCopy_eq, hP]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Rewrite using `[hw]`. Conclude with `Finsupp.sum_single_index (h := fun (a : Pad.Sym E) (n : ℤ) => (n : ℝ) * symLog C a.1 a.2.2 v e y) (by simp)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem single_spec (b : ℕ → Bool) (R : Option ℝ) (σ : E →+* ℂ) (k : Fin (Dw.mult σ)) (n : ℤ)
     {w : Pad.Sym E →₀ ℤ} (hw : w = Finsupp.single (b, R, .inl (σ, (k : ℕ))) n) :
@@ -65,15 +65,15 @@ private theorem single_spec (b : ℕ → Bool) (R : Option ℝ) (σ : E →+* �
 end Flags
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c Z F _ _ ε C τ hτ a R p hp ha`. Establish `hc : ¬ conjEmb τ (H.rt : E) = H.rt0` using `GlobalTheory.AllWt.conj_not_mem ⟨τ, hτ⟩`. Establish `m₁ : Dw.mult τ = Dw.p` using `by simp [Datum.mult, hτ]`. Establish `m₂ : Dw.mult (conjEmb τ) = Dw.q` using `by simp [Datum.mult, hc]`. Use `⟨fun i => ?_, fun i => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hi : (i : ℕ) < Dw.p` using `m₁ ▸ i.2`. Take `⟨h₁, h₂⟩` from `single_spec C a R τ i 1 (w := rootSym Dw a R τ i) (if_pos hi)`. Establish `e₀ (x : C.Y.X) : genAt (divOf C (expo Dw (rootSym Dw a R τ i))) x * (dg C x τ i : C.Y.Fn) = (((dg C x τ i ^ (1 : ℤ)) * (eqn (divOf C (expo Dw (rootSym Dw a R τ i))) x)⁻¹ : C.Y.Fnˣ) : C.Y.Fn)`. Rewrite using `[zpow_one, Units.val_mul, mul_comm]`. Use `⟨fun x => e₀ x ▸ h₁ x, fun v e y hv => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[e₀, h₂, symLog_eq' C hp ha τ i v e y hv, if_pos hτ]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hi : (i : ℕ) < Dw.q` using `m₂ ▸ i.2`. Establish `hw : rootSym Dw a R τ (Dw.p + Dw.q - 1 - i) = Finsupp.single (a, R, .inl (conjEmb τ, (i : ℕ))) (-1)`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[rootSym, if_neg (by omega), show Dw.p + Dw.q - 1 - (Dw.p + Dw.q - 1 - i) = i by omega]`. Take `⟨h₁, h₂⟩` from `single_spec C a R (conjEmb τ) i (-1) hw`. Establish `e₀ (x : C.Y.X) : (genAt (divOf C (expo Dw (rootSym Dw a R τ (Dw.p + Dw.q - 1 - i)))) x)⁻¹ * (dg C x (conjEmb τ) i : C.Y.Fn) = (((dg C x (conjEmb τ) i ^ (-1 : ℤ)) * (eqn (divOf C (expo Dw (rootSym Dw a R τ (Dw.p + Dw.q - 1 - i)))) x)⁻¹ : C.Y.Fnˣ) : C.Y.Fn)⁻¹`. Rewrite using `[zpow_neg_one, Units.val_mul, mul_inv, mul_comm, Units.val_inv_eq_inv_val (dg C x (conjEmb τ) i), inv_inv]`. Use `⟨fun x => e₀ x ▸ (h₁ x).inv, fun v e y hv => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[e₀, h₂, symLog_eq' C hp ha (conjEmb τ) i v e y hv, if_neg hc, GlobalTheory.LineNorm.Neg.valAt_inv (h₁ _), map_inv₀, Real.log_inv]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem UpperTheory.flag_component_eigen_coordinates :
     ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (Z : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Model Xo c (algebraMap (𝓞 c.F) c.F)) (F : Type) [Field F] [NumberField F] (ε : F ≃+* c.F) (C : FlagCpt Z ε) (τ : E →+* ℂ), τ (H.rt : E) = H.rt0 → ∀ (a : ℕ → Bool) (R : Option ℝ) (p : ℕ), p.Prime → a p = true → (∀ i : Fin (Dw.mult τ), (∀ x, UnitAt x (genAt (divOf C (expo Dw (rootSym Dw a R τ i))) x * (dg C x τ i : C.Y.Fn))) ∧ ∀ v e y, resP v = p → lgOf C (rootSym Dw a R τ i) v e y = Real.log (e.w (TrueGeo.valAt y.1 (genAt (divOf C (expo Dw (rootSym Dw a R τ i))) (below y.1) * (dg C (below y.1) τ i : C.Y.Fn)))) + stepLog Z.t (C.π ≫ genι Z) (fun y => (fr C y).v τ) p i v e y + vDiff E p * Real.log (e.w (p : AlgebraicClosure F))) ∧ ∀ i : Fin (Dw.mult (conjEmb τ)), (∀ x, UnitAt x ((genAt (divOf C (expo Dw (rootSym Dw a R τ (Dw.p + Dw.q - 1 - i)))) x)⁻¹ * (dg C x (conjEmb τ) i : C.Y.Fn))) ∧ ∀ v e y, resP v = p → -lgOf C (rootSym Dw a R τ (Dw.p + Dw.q - 1 - i)) v e y = Real.log (e.w (TrueGeo.valAt y.1 ((genAt (divOf C (expo Dw (rootSym Dw a R τ (Dw.p + Dw.q - 1 - i)))) (below y.1))⁻¹ * (dg C (below y.1) (conjEmb τ) i : C.Y.Fn)))) + stepLog Z.t (C.π ≫ genι Z) (fun y => (fr C y).v (conjEmb τ)) p i v e y + 0 * Real.log (e.w (p : AlgebraicClosure F)) := by

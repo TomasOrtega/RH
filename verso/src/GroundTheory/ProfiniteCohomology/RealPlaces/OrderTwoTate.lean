@@ -22,7 +22,7 @@ abbrev act (A : Rep.{0} k G) (c : G) : A →+ A := (A.ρ c).toAddMonoidHom
 
 omit [TopologicalSpace G] [IsTopologicalGroup G] [DiscreteTopology G] [IsDiscreteRep A] in
 /- English proof (translation)
-Rewrite using `[mem_fixedSub, AddMonoidHom.neg_apply, neg_eq_iff_add_eq_zero, add_comm]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem mem_fixedSub_neg_act {α : A} : α ∈ fixedSub (-act A c) ↔ α + A.ρ c α = 0 := by
   rw [mem_fixedSub, AddMonoidHom.neg_apply, neg_eq_iff_add_eq_zero, add_comm]
@@ -30,13 +30,13 @@ theorem mem_fixedSub_neg_act {α : A} : α ∈ fixedSub (-act A c) ↔ α + A.ρ
 
 omit [TopologicalSpace G] [IsTopologicalGroup G] [DiscreteTopology G] [IsDiscreteRep A] in
 /- English proof (translation)
-The claim follows from `mem_fixedSub`.
+A detailed English derivation is pending.
 -/
 theorem mem_fixedSub_act {a : A} : a ∈ fixedSub (act A c) ↔ A.ρ c a = a :=
   mem_fixedSub
 
 /- English proof (translation)
-Apply `cocycles_ext` to reduce the goal to its premises. Rewrite using `[map_add, cochainOf_add, cochainOf_cocycleOne, cochainOf_cocycleOne, cochainOf_cocycleOne]`. Use function extensionality and compare the values at `v`. Simplify using `only [cochainOne, Pi.add_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem cocycleOne_add (α β : A) (hα : α + A.ρ c α = 0) (hβ : β + A.ρ c β = 0)
     (hαβ : α + β + A.ρ c (α + β) = 0) :
@@ -48,7 +48,7 @@ theorem cocycleOne_add (α β : A) (hα : α + A.ρ c α = 0) (hβ : β + A.ρ c
   split_ifs <;> simp
 
 /- English proof (translation)
-Apply `cocycles_ext` to reduce the goal to its premises. Rewrite using `[map_add, cochainOf_add, cochainOf_cocycleTwo, cochainOf_cocycleTwo, cochainOf_cocycleTwo]`. Use function extensionality and compare the values at `v`. Simplify using `only [cochainTwo, Pi.add_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem cocycleTwo_add (a b : A) (ha : A.ρ c a = a) (hb : A.ρ c b = b)
     (hab : A.ρ c (a + b) = a + b) :
@@ -173,7 +173,7 @@ variable {k G : Type} [CommRing k] [Group G] [TopologicalSpace G] [IsTopological
 omit [TopologicalSpace G] [IsTopologicalGroup G] [Fintype G] [IsDiscreteRep A] in
 include hG in
 /- English proof (translation)
-Introduce `g`. Break down `hG g with rfl | rfl` into its components or cases. Rewrite using `[map_one, Module.End.one_apply]`. Conclude with `ha`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_invariants_of_fixed {a : A} (ha : A.ρ c a = a) : a ∈ A.ρ.invariants := by
   intro g
@@ -201,7 +201,7 @@ theorem h0Hom_apply (a : fixedSub (act A c)) :
 
 omit [Fintype G] in
 /- English proof (translation)
-The claim follows from `(ModuleCat.mono_iff_injective _).1 inferInstance`.
+A detailed English derivation is pending.
 -/
 theorem H0Iso_inv_injective : Function.Injective (H0Iso A).inv.hom :=
   (ModuleCat.mono_iff_injective _).1 inferInstance

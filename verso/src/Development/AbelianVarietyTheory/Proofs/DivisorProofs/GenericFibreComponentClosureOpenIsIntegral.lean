@@ -10,11 +10,11 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 namespace GlobalTheory.DetLine
 
 /- English proof (translation)
-Introduce `E _ _ _ H D l Xo c O _ β Y U hn _ hU`. Establish `hint` using `isIntegral_open_of_geometricallyConnected E H D l Xo c U hU`. Use `GlobalTheory.IsNormalScheme.of_pred hn` as an intermediate fact. Establish `: IsReduced (gen Y)` using `GlobalTheory.IsNormalScheme.isReduced`. Use `isProper_genStr Y` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsLocallyNoetherian (gen Y)` using `LocallyOfFiniteType.isLocallyNoetherian (genStr Y)`. Use `Y.jQ_open` as an intermediate fact. Establish `hop : IsOpen (compactOf Y U)` using `GlobalTheory.FlatRow.isOpen_closure_of_isOpen_components (fun z => GlobalTheory.IsNormalScheme.isOpen_of_mem_irreducibleComponents (irreducibleComponent_mem_irreducibleComponents z)) (Y.jQ.isOpenEmbedding.isOpenMap _ U.isOpen)`. Establish `hUirr : IsIrreducible (U : Set (Xo.XF c))` using `isIrreducible_iff_irreducibleSpace.2 (inferInstanceAs (IrreducibleSpace U.toScheme))`. Establish `hirr : IsIrreducible (compactOf Y U)` using `(hUirr.image _ Y.jQ.continuous.continuousOn).closure`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `V : (gen Y).Opens` to `⟨compactOf Y U, hop⟩`. Establish `: IrreducibleSpace V.toScheme` using `Subtype.irreducibleSpace hirr`. Conclude with `⟨V, rfl, isIntegral_of_irreducibleSpace_of_isReduced _⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem exists_open_compactOf_isIntegral :
     ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Y : Model Xo c β) (U : (Xo.XF c).Opens), ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme (gen Y) → IsClosed (U : Set (Xo.XF c)) → GeometricallyConnected (U.ι ≫ toF Xo c) → ∃ V : (gen Y).Opens, (V : Set (gen Y)) = compactOf Y U ∧ IsIntegral V.toScheme := by

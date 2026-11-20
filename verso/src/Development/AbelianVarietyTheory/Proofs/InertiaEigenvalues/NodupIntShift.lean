@@ -10,9 +10,9 @@ open Formalism.BasicNotions Formalism.MainNotions.N Formalism.ConjugateSelfDual 
 namespace GlobalTheory.RowRegAlg
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `R.k_even`. Take `⟨b, hb⟩` from `R.m_even`. Establish `h2` using `R.two_le_m`. Take `⟨c, hc⟩ : ∃ c : ℕ, R.r = 2 * c + 1` from `⟨a + b - 1, by simp only [Ranks.r]; omega⟩`. Use `⟨hn, fun z hz => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨n, rfl⟩` from `hi z hz`. Use `⟨n - c, ?_⟩` and prove the remaining obligations. Rewrite using `[hc]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem nodup_int_shift (R : Ranks) (S : Multiset ℂ) (hn : S.Nodup) (hi : ∀ z ∈ S, ∃ n : ℤ, z = (n : ℂ)) :
     S.Nodup ∧ ∀ z ∈ S, ∃ n : ℤ, z = (n : ℂ) + ((R.r : ℂ) - 1) / 2 := by
@@ -28,11 +28,11 @@ theorem nodup_int_shift (R : Ranks) (S : Multiset ℂ) (hn : S.Nodup) (hi : ∀ 
   ring
 
 /- English proof (translation)
-Introduce `D π h`. Rewrite using `[D.naut.ralg_def]`. Introduce `φ`. Take `⟨τ, hτ | hτ⟩` from `Formalism.L2.GlobalTheoryTheory.IntegralLatticeDensity.FL.emb_cases D φ`. Establish `e : φ = embTau D τ` using `hτ`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[e, (h τ).1]`. Conclude with `nodup_int_shift D.R _ (GlobalTheory.Survey.EmbeddingValuationsAnti.nodup_hcSigma _) (hcSigma_int _)`. Establish `e : φ = embTauBar D τ` using `hτ`. Rewrite using `[e, (h τ).2]`. Use `nodup_int_shift D.R _ ((GlobalTheory.Survey.EmbeddingValuationsAnti.nodup_hcSigma _).map neg_injective) fun z hz => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨y, hy, rfl⟩` from `Multiset.mem_map.1 hz`. Take `⟨n, rfl⟩` from `hcSigma_int _ y hy`. Conclude with `⟨-n, by push_cast; ring⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem ralg_of_infG : ∀ (D : D7) (π : D.naut.CG D.R.r),
     (∀ τ : D.what₂.Tau, D.naut.infG π (embTau D τ) = hcSigma (D.hc τ) ∧

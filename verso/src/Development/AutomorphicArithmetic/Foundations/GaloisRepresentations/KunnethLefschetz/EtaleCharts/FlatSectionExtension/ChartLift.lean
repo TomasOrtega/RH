@@ -6,7 +6,7 @@ open CategoryTheory Limits AlgebraicGeometry GlobalTheory.EtC CrystallineSemista
 namespace UpperTheory.Gal.KunnethLefschetz.G.PX
 
 /- English proof (translation)
-Rewrite using `[Scheme.Hom.appLE, hU.fromSpec_app_self, Category.assoc, ← Functor.map_comp]`. Use `Category.comp_id _ using 2` and compare the differences between its conclusion and the goal. Conclude with `CategoryTheory.Functor.map_id _ _`.
+Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. A detailed English derivation is pending.
 -/
 private theorem fromSpec_appLE_top {X : Scheme.{0}} {U : X.Opens} (hU : IsAffineOpen U)
     (h : ⊤ ≤ hU.fromSpec ⁻¹ᵁ U) : hU.fromSpec.appLE U ⊤ h = (Scheme.ΓSpecIso Γ(X, U)).inv := by
@@ -15,7 +15,7 @@ private theorem fromSpec_appLE_top {X : Scheme.{0}} {U : X.Opens} (hU : IsAffine
   exact CategoryTheory.Functor.map_id _ _
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `a.app ⊤ ≫ V.presheaf.map (homOfLE e).op = a.app ⊤`. Conclude with `(congrArg (a.app ⊤ ≫ ·) (V.presheaf.map_id _)).trans (Category.comp_id _)`.
+Express the relevant assertion in an equivalent form by its definition. A detailed English derivation is pending.
 -/
 private theorem appLE_top_top {V X : Scheme.{0}} (a : V ⟶ X) (e : (⊤ : V.Opens) ≤ a ⁻¹ᵁ ⊤) :
     a.appLE ⊤ ⊤ e = a.appTop := by
@@ -23,9 +23,9 @@ private theorem appLE_top_top {V X : Scheme.{0}} (a : V ⟶ X) (e : (⊤ : V.Ope
   exact (congrArg (a.app ⊤ ≫ ·) (V.presheaf.map_id _)).trans (Category.comp_id _)
 
 /- English proof (translation)
-Establish `e₁ : ⊤ ≤ hU.fromSpec ⁻¹ᵁ U` using `hU.fromSpec_preimage_self.ge`. Establish `e₂ : (⊤ : V.Opens) ≤ (V.toSpecΓ ≫ Spec.map f) ⁻¹ᵁ ⊤` using `fun _ _ => trivial`. Use `⟨(V.toSpecΓ ≫ Spec.map f) ≫ hU.fromSpec, ?_, ?_⟩` and prove the remaining obligations. Conclude with `e₂.trans (Scheme.Hom.preimage_mono _ e₁)`. Rewrite using `[← Scheme.Hom.appLE_comp_appLE _ _ U ⊤ ⊤ e₁ e₂, fromSpec_appLE_top]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: (V.toSpecΓ ≫ Spec.map f).appLE ⊤ ⊤ e₂ = (Spec.map f).appTop ≫ (Scheme.ΓSpecIso Γ(V, ⊤)).hom`. Rewrite using `[appLE_top_top, Scheme.Hom.comp_appTop, Scheme.toSpecΓ_appTop]`. Rewrite using `[this, Scheme.ΓSpecIso_naturality, Iso.inv_hom_id_assoc]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem exists_hom_of_ring {V X : Scheme.{0}} {U : X.Opens} (hU : IsAffineOpen U) (f : Γ(X, U) ⟶ Γ(V, ⊤)) :
     ∃ (y : V ⟶ X) (h : ⊤ ≤ y ⁻¹ᵁ U), y.appLE U ⊤ h = f := by
@@ -39,13 +39,13 @@ private theorem exists_hom_of_ring {V X : Scheme.{0}} {U : X.Opens} (hU : IsAffi
     rw [this, Scheme.ΓSpecIso_naturality, Iso.inv_hom_id_assoc]
 
 /- English proof (translation)
-Establish `key : ∀ (c : V ⟶ X) (hc : ⊤ ≤ c ⁻¹ᵁ U), ∃ c' : V ⟶ Spec Γ(X, U), c' ≫ hU.fromSpec = c ∧ c'.appTop = (Scheme.ΓSpecIso Γ(X, U)).hom ≫ c.appLE U ⊤ hc`. Introduce `c hc`. Establish `hr : Set.range c ⊆ Set.range hU.fromSpec`. Rewrite using `[hU.range_fromSpec]`. Introduce and unpack `_ ⟨x, rfl⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Conclude with `hc (Set.mem_univ x)`. Use `⟨IsOpenImmersion.lift hU.fromSpec c hr, IsOpenImmersion.lift_fac _ _ _, ?_⟩` and prove the remaining obligations. Establish `e₁ : ⊤ ≤ hU.fromSpec ⁻¹ᵁ U` using `hU.fromSpec_preimage_self.ge`. Establish `e₂ : (⊤ : V.Opens) ≤ (IsOpenImmersion.lift hU.fromSpec c hr) ⁻¹ᵁ ⊤` using `fun _ _ => trivial`. Use `Scheme.Hom.appLE_comp_appLE (IsOpenImmersion.lift hU.fromSpec c hr) hU.fromSpec U ⊤ ⊤ e₁ e₂` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[fromSpec_appLE_top, appLE_top_top]`. Establish `h2 : (IsOpenImmersion.lift hU.fromSpec c hr ≫ hU.fromSpec).appLE U ⊤ (by rw [IsOpenImmersion.lift_fac]; exact hc) = c.appLE U ⊤ hc`. Simplify using `only [IsOpenImmersion.lift_fac]`. Rewrite using `[← this.trans h2, Iso.hom_inv_id_assoc]`. Take `⟨a', ha', ea⟩` from `key a ha`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨b', hb', eb⟩` from `key b hb`. Rewrite using `[← ha', ← hb', ext_of_isAffine (f := a') (g := b') (by rw [ea, eb, h])]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem hom_eq_of_appLE {V X : Scheme.{0}} {U : X.Opens} (hU : IsAffineOpen U) (a b : V ⟶ X)
     (ha : ⊤ ≤ a ⁻¹ᵁ U) (hb : ⊤ ≤ b ⁻¹ᵁ U) (h : a.appLE U ⊤ ha = b.appLE U ⊤ hb) : a = b := by
@@ -72,23 +72,21 @@ private theorem hom_eq_of_appLE {V X : Scheme.{0}} {U : X.Opens} (hU : IsAffineO
 end UpperTheory.Gal.KunnethLefschetz.G.PX
 
 /- English proof (translation)
-Introduce `K _ W Z Y q i π D d B T j r hpb α k V p hp w hk`. Establish `ht : ∀ m, ((p ≫ i).appLE (B.V α) ⊤ hp).hom ((B.c α).t m) = 0`. Introduce `m`. Establish `hm : (B.c α).t m ∈ RingHom.ker (i.app (B.V α)).hom`. Rewrite using `[(B.c α).ker]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Ideal.subset_span ⟨m, rfl⟩`. Rewrite using `[Scheme.Hom.comp_appLE, CommRingCat.hom_comp, RingHom.comp_apply, RingHom.mem_ker.mp hm, map_zero]`. Set `ψ` to `MvPolynomial.eval₂Hom (π.appLE (B.V α) ((B.c α).C k) ((B.c α).C_le k)).hom ((B.c α).u k)`. Set `φ : MvPolynomial (Fin d) Γ(Z, B.V α) →+* Γ(V, ⊤)` to `MvPolynomial.eval₂Hom ((p ≫ i).appLE (B.V α) ⊤ hp).hom w`. Establish `hφC : ∀ a, φ (MvPolynomial.C a) = ((p ≫ i).appLE (B.V α) ⊤ hp).hom a` using `fun a => MvPolynomial.eval₂_C _ _ _`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hker : RingHom.ker ψ ≤ RingHom.ker φ`. Express the relevant statement in the definitionally equal form `RingHom.ker (MvPolynomial.eval₂Hom _ _) ≤ _`. Rewrite using `[(B.c α).rel k, Ideal.span_le]`. Introduce and unpack `x (rfl | ⟨m, rfl⟩)`. Simplify using `[φ, hk]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `φ _ = 0`. Rewrite using `[map_sub, map_mul, hφC, hφC, ht, ht, zero_mul, sub_zero]`. Set `f : Γ(Y, (B.c α).C k) →+* Γ(V, ⊤)` to `RingHom.liftOfSurjective ψ ((B.c α).surj k) ⟨φ, hker⟩`. Establish `hf : ∀ x, f (ψ x) = φ x` using `fun x => RingHom.liftOfRightInverse_comp_apply ψ _ _ ⟨φ, hker⟩ x`. Take `⟨y₀, h₀, hy₀⟩` from `exists_hom_of_ring ((B.c α).C_aff k) (CommRingCat.ofHom f)`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hπ : ⊤ ≤ (y₀ ≫ π) ⁻¹ᵁ B.V α` using `h₀.trans (Scheme.Hom.preimage_mono _ ((B.c α).C_le k))`. Establish `hc : y₀ ≫ π = p ≫ i`. Use `hom_eq_of_appLE (B.c α).affine _ _ hπ hp ?_` and prove the remaining obligations. Rewrite using `[← Scheme.Hom.appLE_comp_appLE _ _ _ _ _ ((B.c α).C_le k) h₀, hy₀]`. Use extensionality with `a`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Use `hf (MvPolynomial.C a)` as an intermediate fact. Simplify `this` using `[ψ, φ]`. Establish `hyj : hpb.lift y₀ p hc ≫ j = y₀` using `hpb.lift_fst _ _ _`. Use `⟨hpb.lift y₀ p hc, by rw [hyj]; exact h₀, hpb.lift_snd _ _ _, ?_⟩` and prove the remaining obligations. Establish `gen : ∀ (y' : V ⟶ Y) (e : y' = y₀) (h : ⊤ ≤ y' ⁻¹ᵁ (B.c α).C k), uV B α k y' h = w`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `y' e h`. Establish `hy' : Scheme.Hom.appLE y' _ ⊤ h = CommRingCat.ofHom f`. Substitute `e` using the available equality. Conclude with `hy₀`. Use function extensionality and compare the values at `m`.
+Establish an intermediate fact. Substitute using the available equality. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `hf (MvPolynomial.X m)` as an intermediate fact. Simplify using `only [ψ, φ, MvPolynomial.coe_eval₂Hom, MvPolynomial.eval₂_X] at this`. Unfold `uV`. Rewrite using `[hy']`. Conclude with `this`.
-
-Conclude with `gen _ hyj _`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.KunnethLefschetz.G.PX.chartLift :
     ∀ {K : Type} [CommRing K] {W Z Y : Scheme.{0}} {q : Z ⟶ Spec (CommRingCat.of K)} {i : W ⟶ Z} {π : Y ⟶ Z} {D : E.LineData Y} {d : ℕ} (B : Blow q i π D d) {T : Scheme.{0}} (j : T ⟶ Y) (r : T ⟶ W), IsPullback j r π i → ∀ (α : B.ι) (k : Fin d) {V : Scheme.{0}} (p : V ⟶ W), ⊤ ≤ (p ≫ i) ⁻¹ᵁ B.V α → ∀ (w : Fin d → Γ(V, ⊤)), w k = 1 → ∃ (y : V ⟶ T) (h : ⊤ ≤ (y ≫ j) ⁻¹ᵁ (B.c α).C k), y ≫ r = p ∧ uV B α k (y ≫ j) h = w := by

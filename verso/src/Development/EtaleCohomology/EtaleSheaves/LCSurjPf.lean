@@ -16,7 +16,7 @@ def Descent : Prop := ∀ (q : ℕ) [NeZero q] (i : ℤ) m, IsLCMap q i m →
       Loc (Spec (CommRingCat.of B)) fun _ g => Sec.res g y = Sec.res g (m B ζ ψ)
 
 /- English proof (translation)
-Take `⟨S, hS, hab⟩` from `h`. Conclude with `(LateralTheory.E.L_sec_gluePf.typeSheaf F S hS).isSeparatedFor.ext fun V g hg => hab V g hg`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem sec_sep {R : Type} [CommRing R] (F : Shv R) (U : Scheme.{0}) (a b : Sec F U)
     (h : Loc U fun _ g => Sec.res g a = Sec.res g b) : a = b := by
@@ -24,7 +24,7 @@ theorem sec_sep {R : Type} [CommRing R] (F : Shv R) (U : Scheme.{0}) (a b : Sec 
   exact (LateralTheory.E.L_sec_gluePf.typeSheaf F S hS).isSeparatedFor.ext fun V g hg => hab V g hg
 
 /- English proof (translation)
-Introduce `q _ i m hm B _ ζ y`. Take `⟨ψ, hψ⟩` from `hD q i m hm B ζ y (hL q i B ζ y)`. Conclude with `⟨ψ, (sec_sep _ _ _ _ hψ).symm⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem LCSurj_of (hL : LocForm) (hD : Descent) : LateralTheory.E.LCBijPf.LCSurj := by
   intro q _ i m hm B _ ζ y

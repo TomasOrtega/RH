@@ -7,7 +7,7 @@ open MvPolynomial Finset
 namespace Formalism.MainNotions.PlaneGram
 
 /- English proof (translation)
-Proceed by induction on `x using WithTop.recTopCoe with`. Consider the case `top => exact le_top`. Consider the case `coe n => exact le_rfl`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem coe_untopD_le (x : WithTop ℤ) : ((x.untopD 0 : ℤ) : WithTop ℤ) ≤ x := by
   induction x using WithTop.recTopCoe with
@@ -22,9 +22,9 @@ def pullL : MvPolynomial (D.ML × Fin D.r) K →ₗ[K] MvPolynomial (Fin (D.nB j
   lsup fun ζ => monomial (D.pullE j ζ) 1
 
 /- English proof (translation)
-Unfold `coefOut`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun α _ => ?_` and prove the remaining obligations. Use `split_ifs`. Rewrite using `[pullL, lsup_monomial, pullE_eIn, smul_monomial, smul_eq_mul, mul_one]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_zero]`.
+A detailed English derivation is pending.
 -/
 theorem pullL_coefOut (μ : D.EM) (Z : MvPolynomial (D.ML × Fin D.r) K) :
     D.pullL j (coefOut (D.outSeg j) μ Z) =
@@ -37,9 +37,9 @@ theorem pullL_coefOut (μ : D.EM) (Z : MvPolynomial (D.ML × Fin D.r) K) :
   · rw [map_zero]
 
 /- English proof (translation)
-Rewrite using `[pullL_coefOut, map_sum]`. Unfold `coefOut`. Use `Finset.sum_congr rfl fun α _ => ?_` and prove the remaining obligations. Use `split_ifs`. Rewrite using `[rename_monomial, mapDomain_pullE]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_zero]`.
+A detailed English derivation is pending.
 -/
 theorem rename_pullL_coefOut (μ : D.EM) (Z : MvPolynomial (D.ML × Fin D.r) K) :
     rename (Prod.map (D.e0 j) id) (D.pullL j (coefOut (D.outSeg j) μ Z)) = coefOut (D.outSeg j) μ Z := by
@@ -54,13 +54,13 @@ variable {ι : Type} [Fintype ι]
   (cc : (Fin (D.nB j + D.r) × Fin D.r →₀ ℕ) → ι → K) (PP : ι → MvPolynomial (D.ML × Fin D.r) K)
 
 /- English proof (translation)
-Establish `h : ∀ μ, D.TT j cc PP (D.pullL j (coefOut (D.outSeg j) μ Z)) = ∑ α ∈ Z.support, if eOut (D.outSeg j) α = μ then Z.coeff α • D.TT j cc PP (monomial (D.pullE j α) 1) else 0`. Introduce `μ`. Rewrite using `[pullL_coefOut, map_sum]`. Use `Finset.sum_congr rfl fun α _ => ?_` and prove the remaining obligations. Use `split_ifs`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `: monomial (D.pullE j α) (Z.coeff α) = Z.coeff α • monomial (D.pullE j α) (1 : K)`. Rewrite using `[smul_monomial, smul_eq_mul, mul_one]`. Rewrite using `[this, map_smul]`. Rewrite using `[map_zero]`. Repeatedly rewrite using `[h, Finset.mul_sum]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_comm, Th, lsup_apply]`. Use `Finset.sum_congr rfl fun α hα => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_eq_single (eOut (D.outSeg j) α)]`. Rewrite using `[if_pos rfl, mul_smul_comm]`. Introduce `μ _ hμ`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg (Ne.symm hμ), mul_zero]`. Introduce `h2`. Conclude with `absurd (Finset.mem_image_of_mem _ hα) h2`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem Th_eq (Z : MvPolynomial (D.ML × Fin D.r) K) :
     D.Th j cc PP Z = ∑ μ ∈ Z.support.image (eOut (D.outSeg j)),
@@ -87,31 +87,25 @@ theorem Th_eq (Z : MvPolynomial (D.ML × Fin D.r) K) :
     exact absurd (Finset.mem_image_of_mem _ hα) h2
 
 /- English proof (translation)
-Rewrite using `[Th_eq]`. Use `vala_sum _ _ fun μ hμ => ?_` and prove the remaining obligations. Take `⟨α0, hα0, rfl⟩` from `Finset.mem_image.mp hμ`. Use `vala_mul_left_nonneg ?_ ?_` and prove the remaining obligations. Apply `valS_nonneg_of_free` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `α hα i hi a`. Establish `h1` using `support_monomial_subset hα`. Rewrite `h1` using `[Finset.mem_singleton]`. Rewrite using `[h1, eOut_apply]`. Simplify using `only [YPset, Finset.mem_union, Finset.mem_image] at hi`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Break down `hi with ⟨b, hb, rfl⟩ | ⟨m', -, rfl⟩` into its components or cases. Rewrite using `[if_neg]`. Conclude with `not_not.mpr ((D.range_first_embedding j _).mpr (Or.inl ⟨b, (Finset.mem_filter.mp hb).2, rfl⟩))`. Use `split_ifs`. Conclude with `(hpre α0 hα0).2.2 m' a`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Use `set Q := D.pullL j (coefOut (D.outSeg j) (eOut (D.outSeg j) α0) Z) with hQdef`. Establish `hQK : Q ∈ PolK K D.r (fun k => D.dO (D.eA j k))`. Rewrite using `[hQdef, pullL_coefOut]`. Use `Submodule.sum_mem _ fun α hα => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `split_ifs`. Conclude with `monomial_mem_PolK_sg _ _ _ (D.pullE_deg j α (hpre α hα))`. Conclude with `Submodule.zero_mem _`. Establish `hQint : Integral v Q`. Rewrite using `[hQdef, pullL_coefOut]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `integral_sum' _ _ fun α _ => ?_` and prove the remaining obligations. Use `split_ifs`. Conclude with `integral_monomial' _ (hZ α)`. Conclude with `integral_zero'`. Establish `hout : ∀ i ∈ D.TLset j m, ¬ D.outSeg j i`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Introduce `i hi`. Simplify using `only [TLset, Finset.mem_union, Finset.mem_image] at hi`. Break down `hi with ⟨b, hb, rfl⟩ | ⟨m', -, rfl⟩` into its components or cases. Conclude with `not_not.mpr ((D.range_first_embedding j _).mpr (Or.inl ⟨b, (Finset.mem_filter.mp hb).2, rfl⟩))`. Conclude with `not_not.mpr ((D.range_first_embedding j _).mpr (Or.inr ⟨m', rfl⟩))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hQval : ((⌈θ⌉ : ℤ) : WithTop ℤ) ≤ valS (D.msg ∘ D.e0 j) (initSet (D.nB j + D.r) (D.stg j m)) Q`. Establish `h1` using `valS_rename (D.e0 j) (D.index_embedding_injective j) D.msg (D.TLset j m) Q`. Rewrite `h1` using `[hQdef, rename_pullL_coefOut, TL_preimage, ← hQdef]`. Rewrite using `[← h1]`. Conclude with `le_trans ((vala_iff _ _ _ _).mp hθ) (valS_coefOut_le (D.outSeg j) D.msg _ hout _ Z)`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Establish `hlt : D.stg j m < D.nB j + D.r + 1` using `by unfold stg; omega`. Set `i0 : Fin (D.nB j + D.r + 1)` to `⟨D.stg j m, hlt⟩`. Set `th : Fin (D.nB j + D.r + 1) → ℤ` to `fun i => if i = i0 then ⌈θ⌉ else (valS (D.msg ∘ D.e0 j) (initSet (D.nB j + D.r) i.val) Q).untopD 0`. Establish `hmem : ∀ i : Fin (D.nB j + D.r + 1), Q ∈ Aset (D.msg ∘ D.e0 j) (initSet (D.nB j + D.r) i.val) (th i)`. Introduce `i`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `show ((th i : ℤ) : WithTop ℤ) ≤ _`. Distinguish the cases in `hi : i = i0`. Simplify using `only [th, if_pos hi]`. Rewrite using `[hi]`. Conclude with `hQval`.
-
-Simplify using `only [th, if_neg hi]`. Conclude with `coe_untopD_le _`. Take `⟨c, -, hc1, hc2⟩` from `(h7 th Q) ⟨⟨hQK, hQint⟩, hmem⟩`. Rewrite using `[D.TT_expand j cc PP Ψ hli hcc Q hQK c hc2]`. Use `vala_sum _ _ fun b _ => ?_` and prove the remaining obligations.
-
-Distinguish the cases in `hcb : c b = 0`. Rewrite using `[hcb, zero_smul]`. Conclude with `vala_zero θ`. Use `vala_smul _ ?_` and prove the remaining obligations. Rewrite using `[vala_iff]`.
-
-Establish `h2` using `hc1 b hcb i0`. Simplify using `only [th, if_true] at h2`. Conclude with `le_trans (WithTop.coe_le_coe.mpr h2) (hPPval b m i0 rfl)`.
+A detailed English derivation is pending.
 -/
 theorem Th_val [NeZero D.r] {v : AddValuation K (WithTop ℚ)}
     (Ψ : ι → MvPolynomial (Fin (D.nB j + D.r) × Fin D.r) K)
@@ -197,21 +191,19 @@ theorem Th_val [NeZero D.r] {v : AddValuation K (WithTop ℚ)}
 end TwistData
 
 /- English proof (translation)
-Introduce `hD D hr _ j`. Use `haveI : NeZero D.r := ⟨hr.ne'⟩`. Take `⟨ι, hι, Ψ, path, ncol, col, cidx, hts, occ, h3, h4, h5, h7, h8, h10, h11, h14, h16, h17⟩` from `hS hD (D.nB j + D.r) D.r (D.msg ∘ D.e0 j) (fun k => D.dO (D.eA j k))`. Establish `hmon : ∀ lam : Fin (D.nB j + D.r) × Fin D.r →₀ ℕ, (∀ k, ldeg lam k = D.dO (D.eA j k)) → monomial lam (1 : K) ∈ PolO v D.r (fun k => D.dO (D.eA j k))` using `fun lam h => ⟨monomial_mem_PolK_sg _ _ _ h, integral_monomial' _ (by simp)⟩`. Set `cc : (Fin (D.nB j + D.r) × Fin D.r →₀ ℕ) → ι → K` to `fun lam => if h : monomial lam (1 : K) ∈ PolO v D.r (fun k => D.dO (D.eA j k)) then (h5 _ h).choose else 0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hcc : ∀ lam, (∀ k, ldeg lam k = D.dO (D.eA j k)) → monomial lam (1 : K) = ∑ b, cc lam b • Ψ b`. Introduce `lam h`. Simplify using `only [cc, dif_pos (hmon lam h)]`. Conclude with `(h5 _ (hmon lam h)).choose_spec.2`. Establish `hccint : ∀ lam, (∀ k, ldeg lam k = D.dO (D.eA j k)) → ∀ b, 0 ≤ v (cc lam b)`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `lam h b`. Simplify using `only [cc, dif_pos (hmon lam h)]`. Conclude with `(h5 _ (hmon lam h)).choose_spec.1 b`. Set `PP : ι → MvPolynomial (D.ML × Fin D.r) K` to `fun b => D.PsiP j (col b) (occ b)`. Establish `hPPint : ∀ b, Integral v (PP b)` using `fun b => D.PsiP_integral j (col b) (occ b) (h8 b ▸ (h3 b).2)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hPPph : ∀ b, D.ph p (PP b) = rename (Prod.map (D.eA j) id) (Ψ b)`. Introduce `b`. Rewrite using `[h8 b]`. Conclude with `D.PsiP_ph j p (col b) (occ b)`. Establish `hPPsupp : ∀ b, ∀ ξ ∈ (PP b).support, D.PostE j ξ ∧ ∀ i, ¬ D.SegL j i → ∀ a, ξ (i, a) = 0` using `fun b ξ hξ => D.PsiP_support j (col b) (occ b) (h10 b) (h11 b) ξ hξ`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hPPval : ∀ b (m : Fin D.r) (i0 : Fin (D.nB j + D.r + 1)), i0.val = D.stg j m → ((path b i0 (lastIdx D.r) : ℤ) : WithTop ℤ) ≤ valS D.msg (D.YPset j m) (PP b)`. Introduce `b m i0 hi0`. Rewrite using `[h17 b i0]`. Use `D.PsiP_val j (col b) (occ b) (h10 b) (cidx b) (fun k => hts b k i0) m ?_ ?_` and prove the remaining obligations. Introduce `k hk`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `h14 b k i0 hk` as an intermediate fact. Rewrite `this` using `[hi0]`. Then use the resulting hypothesis. Introduce `k`. Use `h16 b k i0` as an intermediate fact. Rewrite `this` using `[hi0]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Use `⟨D.Th j cc PP, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `fun ζ hζ => D.Th_integral j cc PP hccint hPPint ζ hζ`. Conclude with `fun ζ hζ => D.Th_ph j cc PP p Ψ hcc hPPph ζ hζ`. Conclude with `fun ζ hζ ζ' hζ' => D.Th_post j cc PP hPPsupp ζ hζ ζ' hζ'`. Conclude with `fun Z hZ hpre m θ _ hθ => D.Th_val j cc PP Ψ path h4 hcc h7 hPPval Z hZ hpre m θ hθ`.
-
-Conclude with `fun S hS' Z => D.Th_away j cc PP (fun b ξ hξ => (hPPsupp b ξ hξ).2) S hS' Z`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
 -/
 theorem segStep_of {K : Type} [Field K] [CharZero K] {v : AddValuation K (WithTop ℚ)} {p : ℕ}
     (hS : SPAN K v p) : SegStep K v p := by

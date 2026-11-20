@@ -9,11 +9,11 @@ open Finset
 variable {k : ℕ} {B R : Type} [CommRing B] [CommRing R] [Algebra B R]
 
 /- English proof (translation)
-Establish `hu : (univ : Finset (Fin (n + 1))) = insert 0 ((univ : Finset (Fin n)).image Fin.succ)`. Use extensionality with `i`. Simplify using `only [mem_univ, mem_insert, mem_image, true_and, true_iff]`. Break down `Fin.eq_zero_or_eq_succ i with h | ⟨j, h⟩` into its components or cases. Conclude with `Or.inl h`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative.
 
-Conclude with `Or.inr ⟨j, h.symm⟩`. Establish `h0 : (0 : Fin (n + 1)) ∉ (univ : Finset (Fin n)).image Fin.succ`. Simplify using `only [mem_image, mem_univ, true_and, not_exists]`. Conclude with `fun j => Fin.succ_ne_zero j`. Establish `hinj : Function.Injective (fun J : Finset (Fin n) => J.image Fin.succ)` using `Finset.image_injective (Fin.succ_injective n)`.
+Prove the second alternative. Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact.
 
-Rewrite using `[hu, Finset.sum_powerset_insert h0, Finset.powerset_image, Finset.sum_image (fun a _ b _ hab => hinj hab), Finset.sum_image (fun a _ b _ hab => hinj hab)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem sum_powerset_fin_succ {n : ℕ} (f : Finset (Fin (n + 1)) → ℤ) :
     ∑ I ∈ (univ : Finset (Fin (n + 1))).powerset, f I =
@@ -34,17 +34,17 @@ theorem sum_powerset_fin_succ {n : ℕ} (f : Finset (Fin (n + 1)) → ℤ) :
     Finset.sum_image (fun a _ b _ hab => hinj hab), Finset.sum_image (fun a _ b _ hab => hinj hab)]
 
 /- English proof (translation)
-Proceed by induction on `ts with`. Consider the case `nil`. Introduce `F _ m`. Establish `: (Finset.univ : Finset (Fin ([] : List (Deg k × R)).length)) = ∅` using `rfl`. Rewrite using `[this, Finset.powerset_empty, Finset.sum_singleton, Finset.sum_empty, sub_zero, Finset.card_empty, pow_zero, one_mul]`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Consider the case `cons p ts ih`. Take `⟨d, s⟩` from `p`. Introduce `F h m`. Establish `hs : ∀ x : F.M, s • x = 0` using `h (d, s) List.mem_cons_self`.
+Both sides reduce to the same expression. Treat this case separately. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hts : ∀ p ∈ ts, ∀ x : F.M, p.2 • x = 0` using `fun p hp => h p (List.mem_cons_of_mem _ hp)`. Rewrite using `[chi_cons_of_zero ts F d s hs m, ih F hts m, ih F hts (m - d)]`. Use `show _ = ∑ I ∈ (Finset.univ : Finset (Fin (ts.length + 1))).powerset, (-1 : ℤ) ^ I.card * ((Module.length B (F.gr (m - ∑ i ∈ I, (((d, s) :: ts).get i).1))).toNat : ℤ)`. Rewrite using `[sum_powerset_fin_succ, sub_eq_add_neg, ← Finset.sum_neg_distrib]`. Establish `hsum : ∀ J : Finset (Fin ts.length), ∑ i ∈ J.image Fin.succ, (((d, s) :: ts).get i).1 = ∑ j ∈ J, (ts.get j).1` using `fun J => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_image (fun a _ b _ hab => Fin.succ_injective _ hab)]`. Both sides reduce to the same expression. Establish `h0 : ∀ J : Finset (Fin ts.length), (0 : Fin (ts.length + 1)) ∉ J.image Fin.succ` using `fun J => by`. Simplify using `only [mem_image, not_exists, not_and]`. Conclude with `fun j _ => Fin.succ_ne_zero j`.
+Both sides reduce to the same expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Use `Finset.sum_congr rfl fun J _ => ?_` and prove the remaining obligations. Rewrite using `[hsum, Finset.card_image_of_injective _ (Fin.succ_injective _)]`. Use `Finset.sum_congr rfl fun J _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_insert (h0 J), Finset.card_insert_of_notMem (h0 J), hsum, Finset.card_image_of_injective _ (Fin.succ_injective _), pow_succ]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: m - d - ∑ j ∈ J, (ts.get j).1 = m - ((((d, s) :: ts).get (0 : Fin (ts.length + 1))).1 + ∑ j ∈ J, (ts.get j).1)` using `by show _ = m - (d + _)`. Rewrite using `[sub_sub]`. Rewrite using `[this]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem euler_char_all_zero (ts : List (Deg k × R)) : ∀ (F : GMod B R k),
     (∀ p ∈ ts, ∀ x : F.M, p.2 • x = 0) → ∀ m,
@@ -89,7 +89,7 @@ theorem euler_char_all_zero (ts : List (Deg k × R)) : ∀ (F : GMod B R k),
       ring
 
 /- English proof (translation)
-Introduce `_ _ ts F h m` and use `euler_char_all_zero ts F h m`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem ruleAll0 : RuleAll0 := fun _ _ ts F h m => euler_char_all_zero ts F h m
 

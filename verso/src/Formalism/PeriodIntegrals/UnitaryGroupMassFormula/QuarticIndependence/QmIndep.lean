@@ -7,11 +7,11 @@ namespace PI.QmIndepW
 open Complex
 
 /- English proof (translation)
-Apply `indepPoly Y Y' hY z` to reduce the goal to its premises. Introduce and unpack `β α ⟨n, rfl⟩`. Establish `h9` using `indepC ((Y - β) * (Y' - β) * ((Y' + (β + n)) * (Y + (β + n))) * z (0, 0) (0, 0)) ((Y - β) * (Y' - β) * ((Y' + (β + n) - 1) * z (0, 0) (0, 1) + (Y + (β + n)) * z (0, 0) (1, 0))) ((Y - β) * (Y' - β) * z (0, 0) (1, 1)) (((Y' - β) * z (0, 1) (0, 0) + (Y - β + 1) * z (1, 0) (0, 0)) * …`. Introduce `c hc`. Establish `h` using `hz c hc β n`.
+Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hne : ((‖c‖ : ℂ) ^ (2 * β)) * c ^ n ≠ 0`. Use `mul_ne_zero ?_ (zpow_ne_zero n hc)` and prove the remaining obligations. Rewrite using `[Ne, Complex.cpow_eq_zero_iff]`. Simplify using `[hc]`. Use `(mul_eq_zero.mp ?_).resolve_left hne` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← h]`. Simplify using `only [nine, Fintype.sum_prod_type, Fin.sum_univ_two, Prod.mk.injEq, Fin.isValue, Fin.val_zero, Fin.val_one, zero_ne_one, one_ne_zero, and_true, and_false, true_and, false_and, if_true, if_false, add_zero, zero_add]`. Use the proof step `ring)`. Take `⟨h1, h2, h3, h4, h5, h6, h7, h8, h9⟩` from `h9`. Conclude with `⟨h1, h2, h3, h4, h5, h6, h7, h8, h9⟩`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem scalar (z : Fin 2 × Fin 2 → Fin 2 × Fin 2 → ℂ) (Y Y' : ℂ) (hY : Y' ≠ Y + 1)
     (hz : ∀ (c : ℂ), c ≠ 0 → ∀ (β : ℂ) (n : ℤ),
@@ -50,9 +50,9 @@ theorem scalar (z : Fin 2 × Fin 2 → Fin 2 × Fin 2 → ℂ) (Y Y' : ℂ) (hY 
   exact ⟨h1, h2, h3, h4, h5, h6, h7, h8, h9⟩
 
 /- English proof (translation)
-Introduce `V _ _ x Y Y' hY hx A B`. Rewrite using `[← Module.forall_dual_apply_eq_zero_iff ℂ]`. Introduce `φ`. Use `scalar (fun A B => φ (x A B)) Y Y' hY (fun c hc β n => ?_) A B` and prove the remaining obligations. Establish `h` using `congrArg φ (hx c hc β n)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `only [map_sum, map_smul, smul_eq_mul, map_zero] at h`. Conclude with `h`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem qmIndep : PI.RTTIndependence := by
   intro V _ _ x Y Y' hY hx A B

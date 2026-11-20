@@ -6,7 +6,7 @@ namespace GlobalTheory.CompanionTheory.DigammaBound
 open Finset
 
 /- English proof (translation)
-Establish `h` using `Complex.abs_re_le_norm (z + (x : ℂ))`. Establish `h2 : (z + (x : ℂ)).re = z.re + x` using `by simp`. Rewrite `h` using `[h2]`. Use `le_abs_self (z.re + x)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 lemma add_half_le_norm (z : ℂ) (hz : 1 / 2 ≤ z.re) (x : ℝ) (hx : 0 ≤ x) :
     x + 1 / 2 ≤ ‖z + (x : ℂ)‖ := by
@@ -17,11 +17,11 @@ lemma add_half_le_norm (z : ℂ) (hz : 1 / 2 ≤ z.re) (x : ℝ) (hx : 0 ≤ x) 
   linarith
 
 /- English proof (translation)
-Establish `hk : (0 : ℝ) ≤ (k : ℝ) + 1` using `by positivity`. Establish `hc : ((k : ℂ) + 1) = (((k : ℝ) + 1 : ℝ) : ℂ)` using `by push_cast; rfl`. Establish `hN` using `add_half_le_norm z hz ((k : ℝ) + 1) hk`. Establish `h2 : z + (((k : ℝ) + 1 : ℝ) : ℂ) ≠ 0`. Introduce `h0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hN` using `[h0, norm_zero]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h1 : (((k : ℝ) + 1 : ℝ) : ℂ) ≠ 0`. Rewrite using `[← hc]`. Conclude with `Nat.succ_ne_zero k` after adjusting the coercions.
+Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hc]`. Establish `: 1 / (((k : ℝ) + 1 : ℝ) : ℂ) - 1 / (z + (((k : ℝ) + 1 : ℝ) : ℂ)) = z / ((((k : ℝ) + 1 : ℝ) : ℂ) * (z + (((k : ℝ) + 1 : ℝ) : ℂ)))`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this, norm_div, norm_mul, Complex.norm_real, Real.norm_of_nonneg hk]`.
+Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma term_eq (z : ℂ) (hz : 1 / 2 ≤ z.re) (k : ℕ) :
     ‖1 / ((k : ℂ) + 1) - 1 / (z + ((k : ℂ) + 1))‖ =
@@ -44,11 +44,11 @@ lemma term_eq (z : ℂ) (hz : 1 / 2 ≤ z.re) (k : ℕ) :
   rw [this, norm_div, norm_mul, Complex.norm_real, Real.norm_of_nonneg hk]
 
 /- English proof (translation)
-Rewrite using `[term_eq z hz k]`. Establish `ha : (0 : ℝ) < (k : ℝ) + 1` using `by positivity`. Establish `hN` using `add_half_le_norm z hz ((k : ℝ) + 1) ha.le`. Establish `hz' : ‖z‖ ≤ ‖z + (((k : ℝ) + 1 : ℝ) : ℂ)‖ + ((k : ℝ) + 1)`. Establish `h` using `norm_sub_le (z + (((k : ℝ) + 1 : ℝ) : ℂ)) (((k : ℝ) + 1 : ℝ) : ℂ)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h` using `[add_sub_cancel_right, Complex.norm_real, Real.norm_of_nonneg ha.le]`. Conclude with `h`. Establish `hNpos : 0 < ‖z + (((k : ℝ) + 1 : ℝ) : ℂ)‖` using `by linarith`. Rewrite using `[div_le_iff₀ (by positivity)]`. Establish `: 2 * ((k : ℝ) + 1)⁻¹ * (((k : ℝ) + 1) * ‖z + (((k : ℝ) + 1 : ℝ) : ℂ)‖) = 2 * ‖z + (((k : ℝ) + 1 : ℝ) : ℂ)‖`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts.
 
-Clear the denominators using the available nonvanishing facts. Rewrite using `[this]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 lemma term_le_two (z : ℂ) (hz : 1 / 2 ≤ z.re) (k : ℕ) :
     ‖1 / ((k : ℂ) + 1) - 1 / (z + ((k : ℂ) + 1))‖ ≤ 2 * ((k : ℝ) + 1)⁻¹ := by
@@ -68,7 +68,7 @@ lemma term_le_two (z : ℂ) (hz : 1 / 2 ≤ z.re) (k : ℕ) :
   linarith
 
 /- English proof (translation)
-Rewrite using `[term_eq z hz k]`. Establish `ha : (0 : ℝ) < (k : ℝ) + 1` using `by positivity`. Establish `hN` using `add_half_le_norm z hz ((k : ℝ) + 1) ha.le`. Apply `div_le_div_of_nonneg_left (norm_nonneg z) (by positivity)` to reduce the goal to its premises. Use the polynomial consequences of the given equalities and inequalities.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Use the polynomial consequences of the given equalities and inequalities.
 -/
 lemma term_le_sq (z : ℂ) (hz : 1 / 2 ≤ z.re) (k : ℕ) :
     ‖1 / ((k : ℂ) + 1) - 1 / (z + ((k : ℂ) + 1))‖ ≤ ‖z‖ / ((k : ℝ) + 1) ^ 2 := by
@@ -79,13 +79,13 @@ lemma term_le_sq (z : ℂ) (hz : 1 / 2 ≤ z.re) (k : ℕ) :
   nlinarith
 
 /- English proof (translation)
-Proceed by induction on `n, hn using Nat.le_induction with`. Consider the case `base`. Simplify using `only [sub_self, mul_zero, add_zero, mul_sum]`. Conclude with `sum_le_sum fun i _ => term_le_two z hz i`. Consider the case `succ n hn ih`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[sum_range_succ]`. Establish `hn0 : (0 : ℝ) < n` using `by exact_mod_cast (lt_of_lt_of_le hM hn)`. Establish `ht` using `term_le_sq z hz n`. Establish `htel : ‖z‖ / ((n : ℝ) + 1) ^ 2 ≤ ‖z‖ * (1 / (n : ℝ) - 1 / ((n : ℝ) + 1))`. Rewrite using `[div_eq_mul_inv]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `mul_le_mul_of_nonneg_left _ (norm_nonneg z)` to reduce the goal to its premises. Establish `: 1 / (n : ℝ) - 1 / ((n : ℝ) + 1) = ((n : ℝ) * ((n : ℝ) + 1))⁻¹`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`.
+Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `inv_anti₀ (by positivity)` to reduce the goal to its premises. Use the polynomial consequences of the given equalities and inequalities. Use `push_cast`. Use polynomial arithmetic with `[ih, ht, htel]`.
+Use the polynomial consequences of the given equalities and inequalities. Move the embeddings inside the algebraic operations. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 lemma sum_terms_le (z : ℂ) (hz : 1 / 2 ≤ z.re) (M : ℕ) (hM : 1 ≤ M) (n : ℕ) (hn : M ≤ n) :
     ∑ i ∈ range n, ‖1 / ((i : ℂ) + 1) - 1 / (z + ((i : ℂ) + 1))‖ ≤
@@ -111,31 +111,29 @@ lemma sum_terms_le (z : ℂ) (hz : 1 / 2 ≤ z.re) (M : ℕ) (hM : 1 ≤ M) (n :
     nlinarith [ih, ht, htel]
 
 /- English proof (translation)
-Simplify using `[harmonic]`.
+Simplify using the standard rewrite rules.
 -/
 lemma harmonic_cast (n : ℕ) : ((harmonic n : ℚ) : ℝ) = ∑ i ∈ range n, ((i : ℝ) + 1)⁻¹ := by
   simp [harmonic]
 
 /- English proof (translation)
-Establish `hM0 : (0 : ℝ) < M` using `by exact_mod_cast hM`. Establish `hn1 : 1 ≤ n` using `hM.trans hn`. Establish `hn0 : (0 : ℝ) < n` using `by exact_mod_cast hn1`. Use `set H : ℝ := ∑ i ∈ range n, ((i : ℝ) + 1)⁻¹ with hH`. Establish `hlow : Real.log n ≤ H`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `log_add_one_le_harmonic n`. Rewrite `h` using `[harmonic_cast]`. Establish `h2 : Real.log n ≤ Real.log ((n : ℝ) + 1)` using `Real.log_le_log hn0 (by linarith)`. Move the coercions through the operations in `at h`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `hup : H ≤ 1 + Real.log n`. Establish `h` using `harmonic_le_one_add_log n`. Rewrite `h` using `[harmonic_cast]`. Conclude with `h`. Establish `hHc : ((H : ℝ) : ℂ) = ∑ i ∈ range n, 1 / ((i : ℂ) + 1)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[hH]`. Use `push_cast`. Simplify using the standard rewrite rules. Establish `hdecomp : ((Real.log n : ℝ) : ℂ) - ∑ k ∈ range (n + 1), 1 / (z + (k : ℂ)) = ((Real.log n - H : ℝ) : ℂ) + ∑ i ∈ range n, (1 / ((i : ℂ) + 1) - 1 / (z + ((i : ℂ) + 1))) - 1 / z`. Rewrite using `[sum_range_succ', sum_sub_distrib, ← hHc]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Simplify using the standard rewrite rules.
 
-Use `push_cast`. Simplify using `only [add_zero]`. Expand and normalize the polynomial expressions, which then agree. Establish `h1 : ‖((Real.log n - H : ℝ) : ℂ)‖ ≤ 1`. Rewrite using `[Complex.norm_real, Real.norm_eq_abs, abs_le]`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Apply the tactic sequence `constructor <;> linarith`. Establish `h2 : ‖∑ i ∈ range n, (1 / ((i : ℂ) + 1) - 1 / (z + ((i : ℂ) + 1)))‖ ≤ 2 * (1 + Real.log M) + 1`. Use `(norm_sum_le _ _).trans ((sum_terms_le z hz M hM n hn).trans ?_)` and prove the remaining obligations. Establish `hHM` using `harmonic_le_one_add_log M`. Rewrite `hHM` using `[harmonic_cast]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : ‖z‖ * (1 / (M : ℝ) - 1 / (n : ℝ)) ≤ 1`. Establish `h4 : ‖z‖ * (1 / (M : ℝ)) ≤ 1`. Rewrite using `[mul_one_div]`. Conclude with `(div_le_one hM0).2 hzM`. Establish `h5 : 0 ≤ ‖z‖ * (1 / (n : ℝ))` using `by positivity`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Rewrite using `[mul_sub]`. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h3 : ‖1 / z‖ ≤ 2`. Establish `hzn : 1 / 2 ≤ ‖z‖` using `hz.trans ((le_abs_self _).trans (Complex.abs_re_le_norm z))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[norm_div, norm_one, div_le_iff₀ (by linarith)]`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[hdecomp]`. Combine the equalities or inequalities in the displayed calculation. Conclude with `norm_add_le _ _`.
-
-Use `_ ≤ 6 + 2 * Real.log M := by linarith`.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 lemma partial_le (z : ℂ) (hz : 1 / 2 ≤ z.re) (M : ℕ) (hM : 1 ≤ M) (hzM : ‖z‖ ≤ M)
     (n : ℕ) (hn : M ≤ n) :
@@ -197,13 +195,13 @@ lemma partial_le (z : ℂ) (hz : 1 / 2 ≤ z.re) (M : ℕ) (hM : 1 ≤ M) (hzM :
     _ ≤ 6 + 2 * Real.log M := by linarith
 
 /- English proof (translation)
-Use `⟨11, by norm_num, fun z hz => ?_⟩` and prove the remaining obligations. Establish `hzn : 1 / 2 ≤ ‖z‖` using `hz.trans ((le_abs_self _).trans (Complex.abs_re_le_norm z))`. Use `set M : ℕ := ⌈‖z‖⌉₊ + 1 with hMdef`. Establish `hM : 1 ≤ M` using `by omega`. Establish `hzM : ‖z‖ ≤ M`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hMdef]`. Use `push_cast`. Combine the linear relations using `[Nat.le_ceil ‖z‖]`. Establish `hMle : (M : ℝ) ≤ ‖z‖ + 2`. Rewrite using `[hMdef]`.
+Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Combine the linear relations using `[Nat.ceil_lt_add_one (norm_nonneg z)]`. Establish `hM0 : (0 : ℝ) < M` using `by exact_mod_cast hM`. Establish `hlogM : Real.log M ≤ Real.log (‖z‖ + 2)` using `Real.log_le_log hM0 hMle`. Establish `hlim` using `(GlobalTheory.CompanionTheory.DigammaLimit.tendsto_log_sub_sum_digamma z (by linarith)).norm`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hbd : ‖Complex.digamma z‖ ≤ 6 + 2 * Real.log M` using `le_of_tendsto hlim ((Filter.eventually_ge_atTop M).mono fun n hn => partial_le z hz M hM hzM n hn)`. Establish `hL : (2 : ℝ) / 3 ≤ Real.log (‖z‖ + 2)`. Establish `h2 : Real.log 2 ≤ Real.log (‖z‖ + 2)` using `Real.log_le_log (by norm_num) (by linarith)`. Combine the linear relations using `[Real.log_two_gt_d9]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem digamma_bound :
     ∃ C : ℝ, 0 < C ∧ ∀ z : ℂ, 1 / 2 ≤ z.re → ‖Complex.digamma z‖ ≤ C * Real.log (‖z‖ + 2) := by

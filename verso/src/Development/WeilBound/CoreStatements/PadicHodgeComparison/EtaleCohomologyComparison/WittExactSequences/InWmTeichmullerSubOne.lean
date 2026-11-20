@@ -11,12 +11,12 @@ namespace CrystallineSemistableComparison.D
 variable (l : ℕ) [Fact l.Prime]
 
 /- English proof (translation)
-The claim follows from `out_of_rin l (CrystallineSemistableComparison.R.forD l)`.
+A detailed English derivation is pending.
 -/
 theorem out : Out l := out_of_rin l (CrystallineSemistableComparison.R.forD l)
 
 /- English proof (translation)
-Introduce `h` and use `by have := h.map (PreTilt.untilt (O := OC l) (p := l)) rw [untilt_pFlat] at this exact (Fact.out : ¬ IsUnit (l : OC l)) this`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem not_isUnit_pFlat : ¬ IsUnit (pFlat l) := fun h => by
   have := h.map (PreTilt.untilt (O := OC l) (p := l))
@@ -24,9 +24,9 @@ theorem not_isUnit_pFlat : ¬ IsUnit (pFlat l) := fun h => by
   exact (Fact.out : ¬ IsUnit (l : OC l)) this
 
 /- English proof (translation)
-Introduce `i hi`. Consider the cases of `i with`. Consider the case `zero`. Rewrite `hi` using `[rtW, WittVector.teichmuller_coeff_zero]`. Use `hi.map (iterateFrobeniusEquiv (Ob l) l k)` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `this` using `[rt, RingEquiv.apply_symm_apply]`. Conclude with `not_isUnit_pFlat l this`. Consider the case `succ i`. Rewrite `hi` using `[rtW, WittVector.teichmuller_coeff_pos l _ _ (Nat.succ_pos i)]`. Conclude with `not_isUnit_pFlat l (isUnit_of_dvd_unit (dvd_zero _) hi)`.
+Rewrite the indicated hypotheses using the stated equalities. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inWm_rtW (k : ℕ) : InWm l (rtW l k) := by
   intro i hi
@@ -41,7 +41,7 @@ theorem inWm_rtW (k : ℕ) : InWm l (rtW l k) := by
     exact not_isUnit_pFlat l (isUnit_of_dvd_unit (dvd_zero _) hi)
 
 /- English proof (translation)
-Rewrite using `[WittVector.ext_iff]`. Use `forall_congr' fun i => ?_` and prove the remaining obligations. Rewrite using `[WittVector.map_coeff, WittVector.zero_coeff, IsLocalRing.residue_eq_zero_iff]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem inWm_iff [IsLocalRing (Ob l)] (s : Ainf l) : InWm l s ↔ WittVector.map (IsLocalRing.residue (Ob l)) s = 0 := by
   rw [WittVector.ext_iff]
@@ -50,14 +50,14 @@ theorem inWm_iff [IsLocalRing (Ob l)] (s : Ainf l) : InWm l s ↔ WittVector.map
   rfl
 
 /- English proof (translation)
-Take `⟨_, _, _⟩` from `h`. Use `infer_instance`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem isLocalRing_Ob (h : ObFacts l) : IsLocalRing (Ob l) := by
   obtain ⟨_, _, _⟩ := h
   infer_instance
 
 /- English proof (translation)
-Use `isLocalRing_Ob l h` as an intermediate fact. Establish `e : IsLocalRing.residue (Ob l) x = 1`. Rewrite using `[← sub_eq_zero, ← map_one (IsLocalRing.residue (Ob l)), ← map_sub, IsLocalRing.residue_eq_zero_iff]`. Conclude with `hx`. Rewrite using `[inWm_iff, map_sub, WittVector.map_teichmuller, e, map_one, map_one, sub_self]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inWm_teichmuller_sub_one (h : ObFacts l) (x : Ob l) (hx : ¬ IsUnit (x - 1)) :
     InWm l (WittVector.teichmuller l x - 1) := by
@@ -68,7 +68,7 @@ theorem inWm_teichmuller_sub_one (h : ObFacts l) (x : Ob l) (hx : ¬ IsUnit (x -
   rw [inWm_iff, map_sub, WittVector.map_teichmuller, e, map_one, map_one, sub_self]
 
 /- English proof (translation)
-Use `isLocalRing_Ob l h` as an intermediate fact. Rewrite `hs`, the goal using `[inWm_iff]`. Rewrite using `[map_mul, hs, mul_zero]`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem InWm.mul_left (h : ObFacts l) (a : Ainf l) {s : Ainf l} (hs : InWm l s) : InWm l (a * s) := by
   have := isLocalRing_Ob l h

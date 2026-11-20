@@ -19,9 +19,9 @@ open AlgebraicGeometry CategoryTheory NumberField Formalism.BasicNotions Formali
 namespace GlobalTheory.HeightParts
 
 /- English proof (translation)
-Introduce `p2 pH ts D O hc hN A T H hr`. Take `⟨x, P, hxP⟩` from `id hc`. Take `⟨C₀, h₀⟩` from `GlobalTheory.T.lie_lattice_field_uniform_base p2 pH ts D O hc hN A T H hr x P hxP`. Use `⟨C₀, fun C hC y hy => ?_⟩` and prove the remaining obligations. Take `⟨K₀, i1, i2, io₀, hK⟩` from `h₀ y hy`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨K, i3, i4, io, j, L, h, hj, hL⟩` from `GlobalTheory.T.lie_lattice_number_field_extension p2 pH D O x P hxP y K₀ io₀`. Take `⟨F, h', r, ε, q, hF, hE⟩` from `hK K io j hj L h hL`. Conclude with `⟨K, i3, i4, L, h, hL.isLieAt, F, h', r, ε, q, hF, torusExt_mono hE hC⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem lieLat_torusExt_at_boundary : Hypotheses2 → HypothesesH → GlobalTheory.IndefiniteRowSideFullHecke.LieAlgebraMaps.TorusSaturated → OnObj fun D O _ _ H _ => ∃ C₀ : ℝ, ∀ C : ℝ, C₀ ≤ C →
   ∀ y : Pt O.s, y ∉ H.int → ∃ (K : Type) (_ : Field K) (_ : NumberField K) (L : Submodule (𝓞 K) (Fin (D.R.f * O.N) → K))

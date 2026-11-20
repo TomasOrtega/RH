@@ -21,11 +21,9 @@ open Formalism.DworkPowerSeriesWeights (JetsIntegral jetPair jetPairPoly minorPr
 namespace GramFrameLocalizationLemmas
 
 /- English proof (translation)
-Take `⟨h4, -, h8, hp⟩` from `hcm`. Establish `hb : Odd b₀`. Break down `Int.even_or_odd b₀ with ⟨k, hk⟩ | hk` into its components or cases. It suffices to derive a contradiction. Substitute `hk` using the available equality.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Substitute using the available equality.
 
-Establish `h4' : (dK : ℤ) = 4 * ((a₀ : ℤ) * c₀ - k * k)` using `by linear_combination (-1 : ℤ) * h4`. Take `⟨m, hm⟩ : (4 : ℤ) ∣ (dK : ℤ)` from `⟨_, h4'⟩`. Use linear arithmetic over natural numbers and integers. Conclude with `hk`. Use `⟨(Nat.prime_iff.mp hp).squarefree, by omega, ?_⟩` and prove the remaining obligations.
-
-Conclude with `Formalism.L2.Th1.F.hasCMByScale dK _ lam hlam (Formalism.L2.Th1.F.cmPairHasCMBy a₀ b₀ c₀ dK ha hdK h4 hb)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Use linear arithmetic over natural numbers and integers. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem data {a₀ : ℕ} {b₀ c₀ : ℤ} {dK : ℕ} (ha : 0 < a₀) (hdK : 0 < dK) (lam : ℂ) (hlam : lam ≠ 0)
     (hcm : CmOK a₀ b₀ c₀ dK) :

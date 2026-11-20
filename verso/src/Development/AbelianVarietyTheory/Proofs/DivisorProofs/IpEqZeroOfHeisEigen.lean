@@ -32,20 +32,20 @@ def InHat (I : FractionalIdeal (𝓞 E)⁰ E) (x : FiniteAdeleRing (𝓞 E) E) :
   ∀ w : HeightOneSpectrum (𝓞 E), Valued.v (x w) ≤ WithZero.exp (-(FractionalIdeal.count E w I))
 
 /- English proof (translation)
-Simplify using `only [InHat, FractionalIdeal.count_one, neg_zero, WithZero.exp_zero]`.
+Simplify using the standard rewrite rules.
 -/
 theorem inHat_one_iff (x : FiniteAdeleRing (𝓞 E) E) : InHat 1 x ↔ ∀ w, Valued.v (x w) ≤ 1 := by
   simp only [InHat, FractionalIdeal.count_one, neg_zero, WithZero.exp_zero]
 
 /- English proof (translation)
-Introduce `w` and use `by have : (0 : FiniteAdeleRing (𝓞 E) E) w = 0 := rfl rw [this, map_zero]; exact zero_le`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem inHat_zero (I : FractionalIdeal (𝓞 E)⁰ E) : InHat I 0 := fun w => by
   have : (0 : FiniteAdeleRing (𝓞 E) E) w = 0 := rfl
   rw [this, map_zero]; exact zero_le
 
 /- English proof (translation)
-Introduce `w` and use `by have : (t * x) w = t w * x w := rfl rw [this, map_mul] exact (mul_le_of_le_one_left' ((inHat_one_iff t).1 ht w)).trans (hx w)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem InHat.mul_left {I : FractionalIdeal (𝓞 E)⁰ E} {t x : FiniteAdeleRing (𝓞 E) E} (ht : InHat 1 t) (hx : InHat I x) :
     InHat I (t * x) := fun w => by
@@ -54,7 +54,7 @@ theorem InHat.mul_left {I : FractionalIdeal (𝓞 E)⁰ E} {t x : FiniteAdeleRin
   exact (mul_le_of_le_one_left' ((inHat_one_iff t).1 ht w)).trans (hx w)
 
 /- English proof (translation)
-Introduce `w` and use `by have : (x + y) w = x w + y w := rfl rw [this] exact (Valued.v.map_add _ _).trans (max_le (hx w) (hy w))`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem InHat.add {I : FractionalIdeal (𝓞 E)⁰ E} {x y : FiniteAdeleRing (𝓞 E) E} (hx : InHat I x) (hy : InHat I y) :
     InHat I (x + y) := fun w => by
@@ -63,7 +63,7 @@ theorem InHat.add {I : FractionalIdeal (𝓞 E)⁰ E} {x y : FiniteAdeleRing (�
   exact (Valued.v.map_add _ _).trans (max_le (hx w) (hy w))
 
 /- English proof (translation)
-Introduce `w` and use `by have : (-x) w = -x w := rfl rw [this, Valuation.map_neg] exact hx w`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem InHat.neg {I : FractionalIdeal (𝓞 E)⁰ E} {x : FiniteAdeleRing (𝓞 E) E} (hx : InHat I x) : InHat I (-x) := fun w => by
   have : (-x) w = -x w := rfl
@@ -94,7 +94,7 @@ def finMat {n : ℕ} (y : Formalism.MainNotions.StandardLatticesGL3.GA D n) : Ma
   ((y : GL (Fin n) (Formalism.MainNotions.StandardLatticesGL3.AE D)) : Matrix (Fin n) (Fin n) (Formalism.MainNotions.StandardLatticesGL3.AE D)).map (GlobalTheory.BotFormula.toFinE D)
 
 /- English proof (translation)
-Take `⟨e, he, -⟩` from `GlobalTheory.AdSplit.exists_adele_equiv D.host.F D.host.E`. Use `⟨e.symm (0, (GlobalTheory.LFun.finAdEquiv D.host.F D.host.E).symm s), ?_, ?_⟩` and prove the remaining obligations. Conclude with `(he _).1.symm.trans (by rw [e.apply_symm_apply])`. Establish `: finPart D (e.symm (0, (GlobalTheory.LFun.finAdEquiv D.host.F D.host.E).symm s)) = (GlobalTheory.LFun.finAdEquiv D.host.F D.host.E).symm s` using `(he _).2.symm.trans (by rw [e.apply_symm_apply])`. Rewrite using `[fe_apply, this, RingEquiv.apply_symm_apply]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_fe (s : FA D) : ∃ σ : AE D, infPart D σ = 0 ∧ fe D σ = s := by
   obtain ⟨e, he, -⟩ := GlobalTheory.AdSplit.exists_adele_equiv D.host.F D.host.E
@@ -105,13 +105,13 @@ theorem exists_fe (s : FA D) : ∃ σ : AE D, infPart D σ = 0 ∧ fe D σ = s :
     rw [fe_apply, this, RingEquiv.apply_symm_apply]
 
 /- English proof (translation)
-Establish `key` using `GlobalTheory.Size.ipO_heisO hψ hν.1 hν.2.1 h₁ h₂ v`. Rewrite `key` using `[e₁, e₂]`. Establish `e : GlobalTheory.Ker.ipO ν 𝓕 (α • f₁) (β • f₂) = (α * starRingEnd ℂ β) * ip A B ν 𝓕 f₁ f₂`. Unfold `GlobalTheory.Ker.ipO ip`. Rewrite using `[← integral_const_mul]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `integral_congr_ae (.of_forall fun w => ?_)` and prove the remaining obligations. Simplify using `only [Pi.smul_apply, smul_eq_mul, map_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `e' : GlobalTheory.Ker.ipO ν 𝓕 f₁ f₂ = ip A B ν 𝓕 f₁ f₂` using `rfl`. Rewrite `key` using `[e, e']`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hb : starRingEnd ℂ β * β = 1`. Rewrite using `[mul_comm, Complex.mul_conj, Complex.normSq_eq_norm_sq, hβ]`. Simplify using the standard rewrite rules. Establish `hne' : α * starRingEnd ℂ β ≠ 1` using `fun h => hne (by`. Use `congrArg (· * β) h` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [one_mul, mul_assoc, hb, mul_one] at this`. Conclude with `this)`. Establish `: (α * starRingEnd ℂ β - 1) * ip A B ν 𝓕 f₁ f₂ = 0` using `by rw [sub_mul, key, one_mul, sub_self]`. Conclude with `(mul_eq_zero.1 this).resolve_left (sub_ne_zero.2 hne')`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem ip_eq_zero_of_heis_eigen {A B : HSp D} {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1))
     {ν : Measure (WO A B)} {𝓕 : Set (WO A B)} (hν : IsCovolOne (ratL B A) ν 𝓕) {f₁ f₂ : WO A B → ℂ}

@@ -13,13 +13,11 @@ open scoped Pointwise ENNReal Classical
 namespace GlobalTheory.DegAsm.FixedForm
 
 /- English proof (translation)
-Set `q : ι → MulAction.orbitRel.Quotient G α` to `fun i => Quotient.mk _ (x i)`. Establish `hinj : ∀ i ∈ t, ∀ i' ∈ t, q i = q i' → i = i'`. Introduce `i hi i' hi' h`. Establish `h1 : (MulAction.orbitRel G α) (x i') (x i)` using `Quotient.exact h.symm`. Rewrite `h1` using `[MulAction.orbitRel_apply]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hd i hi i' hi' h1`. Establish `h1 : ∑ i ∈ t, w (x i) = ∑ o ∈ t.image q, if Q o.out then w o.out else 0`. Rewrite using `[Finset.sum_image hinj]`. Use `Finset.sum_congr rfl fun i hi => ?_` and prove the remaining obligations. Establish `h2 : (MulAction.orbitRel G α) (q i).out (x i)` using `Quotient.exact (Quotient.out_eq (q i))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[MulAction.orbitRel_apply]`. Take `⟨ρ, hρ⟩` from `h2`. Establish `hρ' : ρ • x i = (q i).out` using `hρ`. Rewrite using `[← hρ', if_pos (hQ i hi ρ).1, (hQ i hi ρ).2]`. Rewrite using `[h1]`.
-
-Conclude with `ENNReal.sum_le_tsum _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_le_orbit {G α ι : Type} [Group G] [MulAction G α] (Q : α → Prop) (w : α → ℝ≥0∞)
     (t : Finset ι) (x : ι → α) (hQ : ∀ i ∈ t, ∀ ρ : G, Q (ρ • x i) ∧ w (ρ • x i) = w (x i))
@@ -43,7 +41,7 @@ theorem sum_le_orbit {G α ι : Type} [Group G] [MulAction G α] (Q : α → Pro
   exact ENNReal.sum_le_tsum _
 
 /- English proof (translation)
-Unfold `NF.nD`. Use `split_ifs`. Check the signs of the components of the expression. Conclude with `le_rfl`.
+Replace the relevant objects with their definitions. Check the signs of the components of the expression. A detailed English derivation is pending.
 -/
 theorem nD_nonneg {K V : Type} [Field K] [NumberField K] [StarRing K] [AddCommGroup V] [Module K V]
     [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] {H : HermSpace K V} {r : ℕ} (N : NF H r) (l : ℕ) :
@@ -54,23 +52,21 @@ theorem nD_nonneg {K V : Type} [Field K] [NumberField K] [StarRing K] [AddCommGr
   · exact le_rfl
 
 /- English proof (translation)
-Introduce `K V _ _ _ _ _ _ _ _ H hK r N g Λ₀ ι s Λ hg h0 hs hd`. Use `set B : ℝ := (N.Del / N.gI g Λ₀) ^ ((Module.finrank K N.Wt : ℝ) / 2) * N.Del ^ (cf K + 2) * (N.Db * N.Del * N.NT) ^ (10000 * (r + 1) ^ 3) with hB`. Establish `hDel : 0 ≤ N.Del` using `nD_nonneg N _`. Establish `hDb : 0 ≤ N.Db` using `Finset.prod_nonneg fun l _ => nD_nonneg N l`. Establish `hNT : 0 ≤ N.NT` using `by unfold NF.NT; positivity`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hB0 : 0 ≤ B` using `by rw [hB]; positivity`. Establish `hom` using `(GlobalTheory.DegAsm.WeightInf.main K V H hK r).1 N g`. Set `f : ι → Submodule (𝓞 K) V` to `fun i => latL N.F' N.F (Λ i)`. Establish `hcard : ((s.image f).card : ℝ) ≤ N.NT ^ 2`. Establish `h1` using `GlobalTheory.T.card_innerLattices_with_definite_trace_le_norm K V H hK r N g Λ₀ hg h0`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : ((s.image f : Finset _) : Set (Submodule (𝓞 K) V)) ⊆ {L' : Submodule (𝓞 K) V | ∃ Λ', N.IsTerm g Λ' ∧ L' = latL N.F' N.F Λ' ∧ flagPairDefinitePartLattice N.F' N.F Λ' = flagPairDefinitePartLattice N.F' N.F Λ₀}`. Introduce `L hL`. Rewrite `hL` using `[Finset.mem_coe, Finset.mem_image]`. Take `⟨i, hi, rfl⟩` from `hL`. Conclude with `⟨Λ i, (hs i hi).1, rfl, (hs i hi).2.2.1⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `h3` using `(ENat.toENNReal_le.2 (Set.encard_le_encard h2)).trans h1`. Rewrite `h3` using `[Set.encard_coe_eq_coe_finsetCard, ENat.toENNReal_coe, ← ENNReal.ofReal_natCast, ENNReal.ofReal_le_ofReal_iff (by positivity)]`. Conclude with `h3`. Establish `hfib : ∀ L ∈ s.image f, ∑ i ∈ s with f i = L, N.om (Λ i) ≤ B`. Introduce `L hL`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨i₀, hi₀, rfl⟩` from `Finset.mem_image.1 hL`. Establish `h1` using `GlobalTheory.T.hermFrame_weightSum_sameDatum_le K V H hK r N g (Λ i₀) hg (hs i₀ hi₀).1`. Establish `hgI : N.gI g (Λ i₀) = N.gI g Λ₀`. Unfold `NF.gI latLa flagPairDefinitePartLattice`. Rewrite using `[(hs i₀ hi₀).2.1, (hs i₀ hi₀).2.2.2]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h1` using `[hgI, ← hB]`. Establish `h2` using `sum_le_orbit (G := N.R) (fun Λ' => N.IsTerm g Λ' ∧ N.SameDat g (Λ i₀) Λ') (fun Λ' => ENNReal.ofReal (N.om Λ')) (s.filter fun i => f i = f i₀) Λ (by`. Introduce `i hi ρ`. Take `⟨hi, hfi⟩` from `Finset.mem_filter.1 hi`. Take `⟨a1, ⟨a2, a3, a4⟩, -⟩` from `GlobalTheory.DegCnt.StabInv.main K V H hK r N g (Λ i) hg (hs i hi).1 ρ.1 ρ.2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Use `⟨⟨a1, a2.trans ((hs i hi).2.1.trans (hs i₀ hi₀).2.1.symm), a3.trans hfi, a4.trans ((hs i hi).2.2.2.trans (hs i₀ hi₀).2.2.2.symm)⟩, ?_⟩` and prove the remaining obligations. Conclude with `congrArg ENNReal.ofReal ((hom (Λ i) hg (hs i hi).1).2 ρ.1 ρ.2))`. Use the proof step `(by`. Introduce and unpack `i hi i' hi' ⟨ρ, hρ⟩`. Conclude with `hd i (Finset.mem_filter.1 hi).1 i' (Finset.mem_filter.1 hi').1 ⟨ρ.1, ρ.2, hρ⟩)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h3 : ∑ i ∈ s with f i = f i₀, ENNReal.ofReal (N.om (Λ i)) ≤ ENNReal.ofReal B`. Use `le_trans ?_ h1` and prove the remaining obligations. Unfold `NF.omSum`. Use `h2` and compare the differences between its conclusion and the goal. Rewrite `h3` using `[← ENNReal.ofReal_sum_of_nonneg (fun i hi => (hom (Λ i) hg (hs i (Finset.mem_filter.1 hi).1).1).1.le), ENNReal.ofReal_le_ofReal_iff hB0]`.
-
-Conclude with `h3`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem main : ∀ (K V : Type) [Field K] [NumberField K] [StarRing K] [AddCommGroup V] [Module K V] [FiniteDimensional K V] [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] (H : HermSpace K V), Formalism.HermitianLatticesTheory.IsCMUnram K → ∀ (r : ℕ), ∀ (N : NF H r) (g : ℕ) (Λ₀ : Submodule (𝓞 K) V) (ι : Type) (s : Finset ι) (Λ : ι → Submodule (𝓞 K) V), 1 ≤ g → N.IsTerm g Λ₀ → (∀ i ∈ s, N.IsTerm g (Λ i) ∧ latL N.F N.F' (Λ i) = latL N.F N.F' Λ₀ ∧ flagPairDefinitePartLattice N.F' N.F (Λ i) = flagPairDefinitePartLattice N.F' N.F Λ₀ ∧ iotaGraph N.F N.F' (Λ i) (g : 𝓞 K) = iotaGraph N.F N.F' Λ₀ (g : 𝓞 K)) → (∀ i ∈ s, ∀ i' ∈ s, (∃ ρ ∈ N.R, ρ • Λ i = Λ i') → i = i') → ∑ i ∈ s, N.om (Λ i) ≤ N.NT ^ 2 * ((N.Del / N.gI g Λ₀) ^ ((Module.finrank K N.Wt : ℝ) / 2) * N.Del ^ (cf K + 2) * (N.Db * N.Del * N.NT) ^ (10000 * (r + 1) ^ 3)) := by
   intro K V _ _ _ _ _ _ _ _ H hK r N g Λ₀ ι s Λ hg h0 hs hd

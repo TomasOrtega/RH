@@ -16,9 +16,9 @@ open GlobalTheory.LocM GlobalTheory.LocM.Cht
 namespace GlobalTheory.LocM.Cht.FamPf
 
 /- English proof (translation)
-Establish `e' : ∀ x (hx : x ∈ c.V W), g x = h x` using `fun x hx => congrArg (fun f => f ⟨x, hx⟩) e`. Use extensionality with `x`. Distinguish the cases in `h0 : x = 0`. Simplify using `[h0]`. Break down `(c.V W).mem_or_inv_mem x with h1 | h1` into its components or cases.
+Establish an intermediate fact. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `e' x h1`. Establish `h2` using `e' _ h1`. Establish `hg : g x * g x⁻¹ = 1` using `by rw [← map_mul, mul_inv_cancel₀ h0, map_one]`. Establish `hh : h x * h x⁻¹ = 1` using `by rw [← map_mul, mul_inv_cancel₀ h0, map_one]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem hom_ext_V {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {l : Level H}
     (c : Coeff l) (W : ValuationSubring ℂ) {R : Type} [CommRing R] (g h : c.F →+* R)
@@ -37,7 +37,7 @@ theorem hom_ext_V {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Recipr
       _ = h x := by rw [hg, one_mul]
 
 /- English proof (translation)
-Introduce and unpack `_ ⟨s, rfl⟩`. Establish `e : spMap φ (⟨⊥, Ideal.isPrime_bot⟩ : PrimeSpectrum k') = s` using `(inferInstance : Subsingleton (PrimeSpectrum k)).elim _ _`. Rewrite using `[← e]`. Conclude with `h ⟨_, rfl⟩`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem range_of_base {k k' : Type} [Field k] [Field k'] (φ : k →+* k') {X : Scheme.{0}} (x : Sp k ⟶ X) {T : Set X}
     (h : Set.range (spMap φ ≫ x) ⊆ T) : Set.range x ⊆ T := by
@@ -47,7 +47,7 @@ theorem range_of_base {k k' : Type} [Field k] [Field k'] (φ : k →+* k') {X : 
   exact h ⟨_, rfl⟩
 
 /- English proof (translation)
-The claim follows from `congrArg CommRingCat.Hom.hom (Spec.map_injective h)`.
+A detailed English derivation is pending.
 -/
 theorem spMap_inj {A B : Type} [CommRing A] [CommRing B] {f g : A →+* B} (h : spMap f = spMap g) : f = g :=
   congrArg CommRingCat.Hom.hom (Spec.map_injective h)
@@ -58,14 +58,14 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   {Xo : ∀ l : Level H, Moduli Dw l} {p : ℕ} {W : ValuationSubring ℂ} {Y : LocalSystem Xo p W} {i₀ : Idx H p}
 
 /- English proof (translation)
-The claim follows from `m.cart.1.hom_ext h hv`.
+A detailed English derivation is pending.
 -/
 theorem vec_eq_of_cart {X' X : Scheme.{0}} {t' : SAB H X'} {t : SAB H X} {g : X' ⟶ X} (m : SABMap t' t g) {T : Scheme.{0}}
     {v v' : T ⟶ t'.G.left} (hv : v ≫ t'.G.hom = v' ≫ t'.G.hom) (h : v ≫ m.φ = v' ≫ m.φ) : v = v' :=
   m.cart.1.hom_ext h hv
 
 /- English proof (translation)
-Take `⟨b, π', r, hb, h1, h2, -⟩` from `h`. Conclude with `⟨b, hb, by rw [← h1, ← h2, Category.assoc, Category.assoc, pullback.condition]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_incl_of_isTrans {i i₂ : Idx H p} {τ : (Y i₂).X ⟶ (Y i).X} {mu : SABMap (Y i₂).t (Y i).t τ} (h : IsTrans i i₂ τ mu) :
     ∃ b : i.c.V W →+* i₂.c.V W, IsIncl b ∧ τ ≫ (Y i).s = (Y i₂).s ≫ spMap b := by
@@ -73,9 +73,9 @@ theorem exists_incl_of_isTrans {i i₂ : Idx H p} {τ : (Y i₂).X ⟶ (Y i).X} 
   exact ⟨b, hb, by rw [← h1, ← h2, Category.assoc, Category.assoc, pullback.condition]⟩
 
 /- English proof (translation)
-Establish `h : g₂.comp (IntermediateField.inclusion hc).toRingHom = g`. Use `hom_ext_V i.c W _ _ ?_` and prove the remaining obligations. Rewrite using `[e]`. Use extensionality with `x`. Conclude with `congrArg g₂ (Subtype.ext (hb x).symm)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← h]`. Conclude with `congrArg g₂ (Subtype.ext rfl)`.
+A detailed English derivation is pending.
 -/
 theorem emb_agree {i i₂ : Idx H p} (hc : i.c.F ≤ i₂.c.F) {b : i.c.V W →+* i₂.c.V W} (hb : IsIncl b) {R : Type} [CommRing R]
     (g : i.c.F →+* R) (g₂ : i₂.c.F →+* R)
@@ -90,7 +90,7 @@ theorem emb_agree {i i₂ : Idx H p} (hc : i.c.F ≤ i₂.c.F) {b : i.c.V W →+
   exact congrArg g₂ (Subtype.ext rfl)
 
 /- English proof (translation)
-Establish `e : ∀ Q : PointsOfFlagModel.PtC (Y i) C, Q.x0 = spMap (intO ↥C.S).subtype ≫ Q.yt` using `fun Q => Q.ext.symm`. Establish `e' : P'.x0 = spMap (intO ↥C.S).subtype ≫ P'.yt` using `P'.ext.symm`. Rewrite using `[e, e', Category.assoc, h]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem x0_trans {C : SCF p} {i i₂ : Idx H p} {τ : (Y i₂).X ⟶ (Y i).X} (P : PointsOfFlagModel.PtC (Y i) C) (P' : PointsOfFlagModel.PtC (Y i₂) C)
     (h : P'.yt ≫ τ = P.yt) : P'.x0 ≫ τ = P.x0 := by
@@ -99,14 +99,14 @@ theorem x0_trans {C : SCF p} {i i₂ : Idx H p} {τ : (Y i₂).X ⟶ (Y i).X} (P
   rw [e, e', Category.assoc, h]
 
 /- English proof (translation)
-Establish `e : P.x0 = spMap (intO ↥C.S).subtype ≫ P.yt` using `P.ext.symm`. Rewrite using `[e, Category.assoc, P.yt_over, ← spMap_comp, P.compat]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem x0_s {C : SCF p} {i : Idx H p} (P : PointsOfFlagModel.PtC (Y i) C) : P.x0 ≫ (Y i).s = spMap (P.fK.comp (i.c.V W).subtype) := by
   have e : P.x0 = spMap (intO ↥C.S).subtype ≫ P.yt := P.ext.symm
   rw [e, Category.assoc, P.yt_over, ← spMap_comp, P.compat]
 
 /- English proof (translation)
-Take `⟨b, hb, hs⟩` from `exists_incl_of_isTrans ht`. Use `emb_agree hc hb _ _ (spMap_inj ?_) σ a` and prove the remaining obligations. Establish `e` using `x0_s (W := W) P`. Rewrite `e` using `[← x0_trans P P' h, Category.assoc, hs, ← Category.assoc, x0_s, ← spMap_comp]`. Conclude with `e.symm`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fK_agree {C : SCF p} {i i₂ : Idx H p} (hc : i.c.F ≤ i₂.c.F) {τ : (Y i₂).X ⟶ (Y i).X} {mu : SABMap (Y i₂).t (Y i).t τ}
     (ht : IsTrans i i₂ τ mu) (P : PointsOfFlagModel.PtC (Y i) C) (P' : PointsOfFlagModel.PtC (Y i₂) C) (h : P'.yt ≫ τ = P.yt) (σ : E →+* ℂ) (a : 𝓞 E) :
@@ -118,9 +118,9 @@ theorem fK_agree {C : SCF p} {i i₂ : Idx H p} (hc : i.c.F ≤ i₂.c.F) {τ : 
   exact e.symm
 
 /- English proof (translation)
-Take `⟨a, φ, h1, h2, -⟩` from `h`. Establish `e : φ.comp (Z.alg a) = P.fK`. Use `hom_ext_V _ W _ _ (spMap_inj ?_)` and prove the remaining obligations. Establish `e1 : g ≫ Z.s = spMap (P.fK.comp (Z.i.c.V W).subtype)`. Rewrite using `[← Z.π_s, ← Category.assoc, hg, x0_s]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e2 : g ≫ Z.s = spMap ((φ.comp (Z.alg a)).comp (Z.i.c.V W).subtype)`. Rewrite using `[← h1, Category.assoc, Z.alg_s, ← spMap_comp]`. Conclude with `e2.symm.trans e1`. Rewrite `h2` using `[hg, e]`. Conclude with `h2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem frame_of_flagAt {C : SCF p} (Z : Mdl Y i₀) (P : PointsOfFlagModel.PtC (Y Z.i) C) (g : Sp ↥C.S ⟶ Z.X) (hg : g ≫ Z.π = P.x0)
     (u : Vecs Dw (Y Z.i).t ↥C.S) (h : Z.FlagAt g u) : IsFrame (Y Z.i).t P.fK P.x0 u := by
@@ -136,7 +136,7 @@ theorem frame_of_flagAt {C : SCF p} (Z : Mdl Y i₀) (P : PointsOfFlagModel.PtC 
   exact h2
 
 /- English proof (translation)
-Establish `hp` using `(Y i₃).m.cart.1`. Use `hC E H Dw Xo p W Y i₁ i₂ i₃ τ mu τ' mu' τ'' mu'' h₁ h₂ t₁ t₂ t₃` as an intermediate fact. Rewrite using `[← hp.lift_fst v e hv, Category.assoc, Category.assoc, this]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem vec_cocycle (hC : CocycleSt) {i₁ i₂ i₃ : Idx H p} {τ : (Y i₂).X ⟶ (Y i₁).X} {mu : SABMap (Y i₂).t (Y i₁).t τ}
     {τ' : (Y i₃).X ⟶ (Y i₂).X} {mu' : SABMap (Y i₃).t (Y i₂).t τ'} {τ'' : (Y i₃).X ⟶ (Y i₁).X}
@@ -150,31 +150,27 @@ theorem vec_cocycle (hC : CocycleSt) {i₁ i₂ i₃ : Idx H p} {τ : (Y i₂).X
 open Classical in
 
 /- English proof (translation)
-Establish `tr : ∀ Z' : Mdl Y i₀, ∃ (τ : (Y Z'.i).X ⟶ (Y i₀).X) (mu : SABMap (Y Z'.i).t (Y i₀).t τ), IsTrans i₀ Z'.i τ mu` using `fun Z' => ⟨_, exists_isTrans hN i₀ Z'.i Z'.dvd Z'.le⟩`. Use `choose τ₀ mu₀ h₀ using tr`. Establish `hyg : y.gen ≫ Z.π = (P Z.i).x0`. Establish `e : (P Z.i).x0 = spMap (intO ↥C.S).subtype ≫ (P Z.i).yt` using `(P Z.i).ext.symm`. Rewrite using `[e, ← hy, ← y.z_π, PtAt.gen, Category.assoc]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Set `u₀ : Vecs Dw (Y i₀).t ↥C.S` to `fun σ i => u σ i ≫ (mu₀ Z).φ`. Establish `hu₀ : IsFrame (Y i₀).t (P i₀).fK (P i₀).x0 u₀`. Establish `h1` using `(hM E H Dw i₀.l Z.i.l i₀.c Z.i.c _ _ (Y i₀).t (Y Z.i).t (τ₀ Z) (mu₀ Z) ↥C.S (P i₀).fK (P Z.i).fK (P Z.i).x0 (fK_agree Z.le (h₀ Z) _ _ (hP _ _ _ _ Z.dvd (h₀ Z)))).1 u (frame_of_flagAt Z (P Z.i) y.gen hyg u hu)`. Rewrite `h1` using `[x0_trans _ _ (hP _ _ _ _ Z.dvd (h₀ Z))]`. Conclude with `h1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `Good : ∀ Z' : Mdl Y i₀, (Sp ↥C.S ⟶ Z'.X) → Vecs Dw (Y Z'.i).t ↥C.S → Prop` to `fun Z' g u' => g ≫ Z'.π = (P Z'.i).x0 ∧ Z'.FlagAt g u' ∧ ∀ σ i, u' σ i ≫ (mu₀ Z').φ = u₀ σ i`. Establish `good_y : Good Z y.gen u` using `⟨hyg, hu, fun _ _ => rfl⟩`. Establish `ex : ∀ Z' : Mdl Y i₀, ∃ (q : PtAt Z' C) (u' : Vecs Dw (Y Z'.i).t ↥C.S), Good Z' q.gen u'`. Introduce `Z'`. Establish `hx` using `hP _ _ _ _ Z'.dvd (h₀ Z')`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨u', hu', e⟩` from `(hM E H Dw i₀.l Z'.i.l i₀.c Z'.i.c _ _ (Y i₀).t (Y Z'.i).t (τ₀ Z') (mu₀ Z') ↥C.S (P i₀).fK (P Z'.i).fK (P Z'.i).x0 (fK_agree Z'.le (h₀ Z') _ _ hx)).2 u₀ (by rw [x0_trans _ _ hx]; exact hu₀)`. Take `⟨w', ⟨hw1, hw2⟩, -⟩` from `Z'.bij ↥C.S (P Z'.i).fK (P Z'.i).y (P Z'.i).y_over u' hu'`. Establish `hr : Set.range w' ⊆ Z'.opn`. Introduce and unpack `_ ⟨s, rfl⟩`. Use `⟨(P Z'.i).y s, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(congrArg (fun f => f s) hw1).symm`. Establish `hs : w' ≫ Z'.s = spMap ((intO ↥C.S).subtype.comp (P Z'.i).alg)`. Rewrite using `[← Z'.π_s, ← Category.assoc, hw1, (P Z'.i).compat]`. Conclude with `x0_s (P Z'.i)`. Take `⟨q, hq⟩` from `(hE E H Dw Xo p W Y i₀).2.2 Z' C w' (P Z'.i).alg hr hs`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `⟨q, u', by rw [hq]; exact ⟨hw1, hw2, e⟩⟩`. Use `choose q uq hq using ex`. Establish `key : ∀ (Z₁ Z₂ : Mdl Y i₀) (g₁ : Sp ↥C.S ⟶ Z₁.X) (g₂ : Sp ↥C.S ⟶ Z₂.X) (u₁ : Vecs Dw (Y Z₁.i).t ↥C.S) (u₂ : Vecs Dw (Y Z₂.i).t ↥C.S), Good Z₁ g₁ u₁ → Good Z₂ g₂ u₂ → ∀ (τ : (Y Z₁.i).X ⟶ (Y Z₂.i).X) (mu : SABMap (Y Z₁.i).t (Y Z₂.i).t τ), Z₂.i.l.Dvd Z₁.i.l → IsTrans Z₂.i Z₁.i τ mu …`. Introduce `Z₁ Z₂ g₁ g₂ u₁ u₂ G₁ G₂ τ mu hd ht`. Use function extensionality and compare the values at `σ i`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `f₁` using `(frame_of_flagAt Z₁ (P Z₁.i) g₁ G₁.1 u₁ G₁.2.1).1 σ i`. Establish `f₂` using `(frame_of_flagAt Z₂ (P Z₂.i) g₂ G₂.1 u₂ G₂.2.1).1 σ i`. Establish `hx` using `hP _ _ _ _ hd ht`. Use `vec_eq_of_cart (mu₀ Z₂) ?_ ?_` and prove the remaining obligations. Rewrite using `[f₂.1.1, Category.assoc, mu.cart.1.w, ← Category.assoc, f₁.1.1, Category.assoc, x0_trans _ _ hx]`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Category.assoc, G₂.2.2 σ i, ← G₁.2.2 σ i]`. Conclude with `vec_cocycle hC Z₂.dvd hd (h₀ Z₂) ht (h₀ Z₁) (u₁ σ i) (spMap (algebraMap ↥C.S (DualNumber ↥C.S)) ≫ (P Z₁.i).y) (by rw [f₁.1.1, Category.assoc]; rfl)`. Set `pt : ∀ Z' : Mdl Y i₀, PtAt Z' C` to `Function.update q Z y`. Establish `hpt : pt Z = y` using `Function.update_self _ _ _`. Establish `good : ∀ Z' : Mdl Y i₀, ∃ u' : Vecs Dw (Y Z'.i).t ↥C.S, Good Z' (pt Z').gen u'`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Introduce `Z'`. Distinguish the cases in `h : Z' = Z`. Substitute `h` using the available equality. Conclude with `⟨u, by rw [hpt]; exact good_y⟩`. Use `⟨uq Z', ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `: pt Z' = q Z'` using `Function.update_of_ne h _ _`. Rewrite using `[this]`. Conclude with `hq Z'`. Use `⟨⟨pt, fun Z₁ Z₂ hc => ?_⟩, hpt, fun Z' τ mu hd ht => ?_⟩` and prove the remaining obligations. Take `⟨u₁, G₁⟩` from `good Z₁`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨u₂, G₂⟩` from `good Z₂`. Take `⟨mu, ht⟩` from `exists_isTrans hN Z₂.i Z₁.i hc.1 hc.2.1`. Establish `hx` using `hP _ _ _ _ hc.1 ht`. Use `⟨_, mu, u₁, ht, ?_, G₁.2.1, ?_⟩` and prove the remaining obligations. Rewrite using `[G₂.1, ← Category.assoc, G₁.1]`.
-
-Conclude with `(x0_trans _ _ hx).symm`. Rewrite using `[key Z₁ Z₂ _ _ u₁ u₂ G₁ G₂ _ mu hc.1 ht]`. Conclude with `G₂.2.1`. Take `⟨u₂, G₂⟩` from `good Z'`. Use `⟨G₂.1, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[key Z Z' _ _ u u₂ good_y G₂ τ mu hd ht]`. Conclude with `G₂.2.1`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fam_core (hE : ExtendSt) (hM : FrameMoveSt) (hC : CocycleSt) (hN : N2 Y) {C : SCF p}
     (P : ∀ i : Idx H p, PointsOfFlagModel.PtC (Y i) C)
@@ -258,19 +254,19 @@ theorem fam_core (hE : ExtendSt) (hM : FrameMoveSt) (hC : CocycleSt) (hN : N2 Y)
     exact G₂.2.1
 
 /- English proof (translation)
-Take `⟨a, φ, e1, e2, -⟩` from `h₁`. Establish `hbc : spMap K.subtype ≫ w ≫ Z.π ≫ τ = P'.x0`. Rewrite using `[← x0_trans P' P hP, ← hw]`. Simplify using `only [Category.assoc]`. Establish `hr : Set.range (w ≫ Z.π ≫ τ) ⊆ Set.range (Y Z'.i).j`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `range_of_base K.subtype _ ?_` and prove the remaining obligations. Rewrite using `[hbc]`. Introduce and unpack `_ ⟨s, rfl⟩`. Conclude with `⟨P'.y s, rfl⟩`. Take `⟨f, yK, h1, h2⟩` from `(hE E H Dw Xo p W Y i₀).1 Z'.i ↥K (w ≫ Z.π ≫ τ) hr`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `⟨b, hb, hs⟩` from `exists_incl_of_isTrans ht`. Establish `hV : f.comp (Z'.i.c.V W).subtype = (((φ.comp (Z.alg a))).comp (Z.i.c.V W).subtype).comp b`. Use `spMap_inj ?_` and prove the remaining obligations. Establish `l1 : (w ≫ Z.π ≫ τ) ≫ (Y Z'.i).s = spMap (f.comp (Z'.i.c.V W).subtype)`. Rewrite using `[← h2, spMap_comp, ← h1, Model.j, Category.assoc, Category.assoc, pullback.condition, ← Category.assoc (Y Z'.i).jQ, (Y Z'.i).jQ_over, Category.assoc]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `l2 : (w ≫ Z.π ≫ τ) ≫ (Y Z'.i).s = spMap (((φ.comp (Z.alg a)).comp (Z.i.c.V W).subtype).comp b)`. Establish `e3 : w ≫ Z.s = spMap ((φ.comp (Z.alg a)).comp (Z.i.c.V W).subtype)`. Rewrite using `[← e1, Category.assoc, Z.alg_s, ← spMap_comp]`. Rewrite using `[Category.assoc, Category.assoc, hs, ← Category.assoc Z.π, Z.π_s, ← Category.assoc, e3, ← spMap_comp]`. Conclude with `l1.symm.trans l2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hfr` using `(hM E H Dw Z'.i.l Z.i.l Z'.i.c Z.i.c _ _ (Y Z'.i).t (Y Z.i).t τ mu ↥K f (φ.comp (Z.alg a)) (w ≫ Z.π) (emb_agree hc hb _ _ hV)).1 u₁ e2`. Establish `hx : (w ≫ Z.π) ≫ τ = yK ≫ (Y Z'.i).j` using `by rw [h2, Category.assoc]`. Rewrite `hfr` using `[hx]`. Take `⟨w', ⟨hw1, hw2⟩, -⟩` from `Z'.bij ↥K f yK h1 _ hfr`. Establish `hbase` using `(hF E H Dw Xo p W Y i₀ Z' ↥K w').2 ↥C.S K.subtype _ hw2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `heq : Vecs.bc K.subtype (fun σ i => u₁ σ i ≫ mu.φ) = fun σ i => (u₁.bc K.subtype) σ i ≫ mu.φ`. Use function extensionality and compare the values at `σ i`. Simplify using `only [Vecs.bc, Category.assoc]`. Rewrite `hbase` using `[heq]`. Establish `hg' : (spMap K.subtype ≫ w') ≫ Z'.π = P'.x0`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Category.assoc, hw1, h2, hbc]`. Establish `hF'` using `frame_of_flagAt Z' P' g hg _ hf`. Conclude with `⟨w', (Z'.bij ↥C.S P'.fK P'.y P'.y_over _ hF').unique ⟨hg', hbase⟩ ⟨hg, hf⟩⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem rat_core (hE : ExtendSt) (hF : FlagBaseSt) (hM : FrameMoveSt) {C : SCF p} (K : Subfield ↥C.S)
     (Z Z' : Mdl Y i₀) (hc : Z'.i.c.F ≤ Z.i.c.F) {τ : (Y Z.i).X ⟶ (Y Z'.i).X} {mu : SABMap (Y Z.i).t (Y Z'.i).t τ}

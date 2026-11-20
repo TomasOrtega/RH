@@ -15,9 +15,9 @@ variable {G : Type*} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [Loca
   [T2Space G] [MeasurableSpace G] [BorelSpace G]
 
 /- English proof (translation)
-Use extensionality with `s hs`. Establish `hmono : Monotone (fun n => s ∩ compactCovering G n)` using `fun m n hmn => inter_subset_inter_right _ (compactCovering_subset G hmn)`. Establish `hU : (⋃ n, s ∩ compactCovering G n) = s`. Rewrite using `[← inter_iUnion, iUnion_compactCovering, inter_univ]`. Establish `key : ∀ n, μ' (s ∩ compactCovering G n) = haarScalarFactor μ' μ • μ (s ∩ compactCovering G n)` using `fun n => measure_isMulInvariant_eq_smul_of_isCompact_closure_of_measurableSet μ' μ (hs.inter (isCompact_compactCovering G n).isClosed.measurableSet) ((isCompact_compactCovering G n).closure_of_subset inter_subset_right)`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← hU, hmono.measure_iUnion, Measure.smul_apply, hmono.measure_iUnion]`. Simplify using `only [key, ENNReal.smul_def, smul_eq_mul]`. Rewrite using `[ENNReal.mul_iSup]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem um_eq_smul_of_sigmaCompact [SigmaCompactSpace G] (μ' μ : Measure G) [IsHaarMeasure μ]
     [IsFiniteMeasureOnCompacts μ'] [IsMulLeftInvariant μ'] :
@@ -39,13 +39,13 @@ theorem um_eq_smul_of_sigmaCompact [SigmaCompactSpace G] (μ' μ : Measure G) [I
 def umD (Γ H : Subgroup G) (x : G) : Set G := {y | ∃ γ ∈ Γ, ∃ h ∈ H, y = γ * x * h}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨1, Γ.one_mem, 1, H.one_mem, by simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem um_self_mem_D (Γ H : Subgroup G) (x : G) : x ∈ umD Γ H x :=
   ⟨1, Γ.one_mem, 1, H.one_mem, by simp⟩
 
 /- English proof (translation)
-Take `⟨γ, hγ, h, hh, rfl⟩` from `hz`. Introduce and unpack `y ⟨γ', hγ', h', hh', rfl⟩`. Conclude with `⟨γ' * γ, Γ.mul_mem hγ' hγ, h * h', H.mul_mem hh hh', by group⟩`.
+Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem um_D_subset (Γ H : Subgroup G) {x z : G} (hz : z ∈ umD Γ H x) :
     umD Γ H z ⊆ umD Γ H x := by
@@ -54,7 +54,7 @@ theorem um_D_subset (Γ H : Subgroup G) {x z : G} (hz : z ∈ umD Γ H x) :
   exact ⟨γ' * γ, Γ.mul_mem hγ' hγ, h * h', H.mul_mem hh hh', by group⟩
 
 /- English proof (translation)
-Use `(um_D_subset Γ H hz).antisymm (um_D_subset Γ H ?_)` and prove the remaining obligations. Take `⟨γ, hγ, h, hh, rfl⟩` from `hz`. Conclude with `⟨γ⁻¹, Γ.inv_mem hγ, h⁻¹, H.inv_mem hh, by group⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem um_D_eq (Γ H : Subgroup G) {x z : G} (hz : z ∈ umD Γ H x) : umD Γ H z = umD Γ H x := by
   refine (um_D_subset Γ H hz).antisymm (um_D_subset Γ H ?_)
@@ -62,11 +62,11 @@ theorem um_D_eq (Γ H : Subgroup G) {x z : G} (hz : z ∈ umD Γ H x) : umD Γ H
   exact ⟨γ⁻¹, Γ.inv_mem hγ, h⁻¹, H.inv_mem hh, by group⟩
 
 /- English proof (translation)
-Establish `: umD Γ H x = ⋃ γ : Γ, (fun z => (γ : G) * x * z) '' (H : Set G)`. Use extensionality with `y`. Simplify using `only [umD, mem_ofPred_eq, mem_iUnion, mem_image, SetLike.mem_coe, Subtype.exists, exists_prop]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨γ, hγ, h, hh, rfl⟩`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨γ, hγ, h, hh, rfl⟩`. Introduce and unpack `⟨γ, hγ, h, hh, rfl⟩`. Conclude with `⟨γ, hγ, h, hh, rfl⟩`. Rewrite using `[this]`. Use `isOpen_iUnion fun γ => ?_` and prove the remaining obligations.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: (fun z => (γ : G) * x * z) = (Homeomorph.mulLeft ((γ : G) * x))` using `rfl`. Rewrite using `[this]`. Conclude with `(Homeomorph.mulLeft ((γ : G) * x)).isOpenMap _ hH`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem um_D_open (Γ H : Subgroup G) (hH : IsOpen (H : Set G)) (x : G) :
     IsOpen (umD Γ H x) := by
@@ -86,9 +86,9 @@ theorem um_D_open (Γ H : Subgroup G) (hH : IsOpen (H : Set G)) (x : G) :
   exact (Homeomorph.mulLeft ((γ : G) * x)).isOpenMap _ hH
 
 /- English proof (translation)
-Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z, ⟨γ', hγ', h, hh, rfl⟩, rfl⟩`. Conclude with `⟨γ * γ', Γ.mul_mem γ.2 hγ', h, hh, by show (γ : G) * (γ' * x * h) = _; group⟩`. Introduce and unpack `⟨γ', hγ', h, hh, rfl⟩`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Use `⟨(γ : G)⁻¹ * γ' * x * h, ⟨(γ : G)⁻¹ * γ', Γ.mul_mem (Γ.inv_mem γ.2) hγ', h, hh, rfl⟩, ?_⟩` and prove the remaining obligations. Use `show (γ : G) * ((γ : G)⁻¹ * γ' * x * h) = _`. Use `group`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem um_D_smul (Γ H : Subgroup G) (x : G) (γ : Γ) : γ • umD Γ H x = umD Γ H x := by
   ext y
@@ -101,7 +101,7 @@ theorem um_D_smul (Γ H : Subgroup G) (x : G) (γ : Γ) : γ • umD Γ H x = um
     group
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun γ s _ => by have : (fun x : G => γ • x) = fun x => (γ : G) * x := rfl rw [this] exact measure_preimage_mul μ γ s⟩`.
+Supply the required witnesses or components.
 -/
 theorem um_smulInv (Γ : Subgroup G) (μ : Measure G) [IsMulLeftInvariant μ] :
     SMulInvariantMeasure Γ G μ :=
@@ -111,31 +111,25 @@ theorem um_smulInv (Γ : Subgroup G) (μ : Measure G) [IsMulLeftInvariant μ] :
     exact measure_preimage_mul μ γ s⟩
 
 /- English proof (translation)
-Use `um_smulInv Γ μ` as an intermediate fact. Take `⟨V, hVc, hV1⟩` from `exists_compact_mem_nhds (1 : G)`. Use `set W : Set G := V ∪ V⁻¹ with hWdef`. Establish `hWc : IsCompact W` using `hVc.union hVc.inv`. Establish `hWinv : W⁻¹ = W` using `by rw [hWdef, Set.union_inv, inv_inv, union_comm]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set H : Subgroup G := Subgroup.closure V with hHdef`. Establish `hHo : IsOpen (H : Set G)` using `Subgroup.isOpen_of_mem_nhds H (Filter.mem_of_superset hV1 Subgroup.subset_closure)`. Establish `hPc : ∀ n : ℕ, IsCompact (W ^ n)`. Introduce `n`. Proceed by induction on `n with`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `zero => rw [pow_zero]`. Conclude with `isCompact_singleton`. Consider the case `succ n ih => rw [pow_succ]`. Conclude with `ih.mul hWc`. Establish `hHc : (H : Set G) ⊆ ⋃ n : ℕ, W ^ n`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Introduce `x hx`. Proceed by induction on `hx using Subgroup.closure_induction with`. Consider the case `mem x hx => exact mem_iUnion.2 ⟨1, by rw [pow_one]; exact Or.inl hx⟩`. Consider the case `one => exact mem_iUnion.2 ⟨0, by rw [pow_zero]; exact Set.mem_one.2 rfl⟩`. Consider the case `mul x y _ _ hx hy`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨m, hm⟩` from `mem_iUnion.1 hx`. Take `⟨n, hn⟩` from `mem_iUnion.1 hy`. Conclude with `mem_iUnion.2 ⟨m + n, by rw [pow_add]; exact Set.mul_mem_mul hm hn⟩`. Consider the case `inv x _ hx`. Take `⟨n, hn⟩` from `mem_iUnion.1 hx`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `mem_iUnion.2 ⟨n, ?_⟩` and prove the remaining obligations. Establish `h' : (W ^ n)⁻¹ = W ^ n` using `by rw [← inv_pow, hWinv]`. Rewrite using `[← h']`. Conclude with `Set.inv_mem_inv.2 hn`. Set `ι` to `↥(range (umD Γ H))`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `hpos : ∀ d : ι, 0 < μ ((d : Set G) ∩ 𝓕)`. Introduce and unpack `⟨d, x, rfl⟩`. Use `pos_iff_ne_zero.2 fun h0 => ?_` and prove the remaining obligations. Establish `h1` using `h𝓕.measure_zero_of_invariant (umD Γ H x) (um_D_smul Γ H x) h0`. Conclude with `(um_D_open Γ H hHo x).measure_ne_zero μ ⟨x, um_self_mem_D Γ H x⟩ h1`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `hdisj : Pairwise (Disjoint on fun d : ι => (d : Set G) ∩ 𝓕)`. Introduce and unpack `⟨d, x, rfl⟩ ⟨d', x', rfl⟩ hne`. Use `Disjoint.mono inter_subset_left inter_subset_left ?_` and prove the remaining obligations. Use `Set.disjoint_left.2 fun z hz hz' => hne ?_` and prove the remaining obligations. Conclude with `Subtype.ext ((um_D_eq Γ H hz).symm.trans (um_D_eq Γ H hz'))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hctbl : Countable ι`. Use `Measure.countable_meas_pos_of_disjoint_of_meas_iUnion_ne_top₀ μ (As := fun d : ι => (d : Set G) ∩ 𝓕) (fun d => by` as an intermediate fact. Break down `d with ⟨_, x, rfl⟩` into its components or cases. Conclude with `(um_D_open Γ H hHo x).measurableSet.nullMeasurableSet.inter h𝓕.nullMeasurableSet)`. Use the proof step `hdisj.aedisjoint`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use the proof step `(ne_top_of_le_ne_top hfin.ne (measure_mono (iUnion_subset fun _ => inter_subset_right)))`. Establish `hall : {d : ι | 0 < μ ((d : Set G) ∩ 𝓕)} = univ` using `eq_univ_of_forall hpos`. Rewrite `this` using `[hall]`. Conclude with `countable_univ_iff.1 this`. Set `rep : ι → G` to `fun d => d.2.choose`.
-
-Establish `hrep : ∀ d : ι, umD Γ H (rep d) = d` using `fun d => d.2.choose_spec`. Set `K : ι × Γ × ℕ → Set G` to `fun p => (fun z => (p.2.1 : G) * rep p.1 * z) '' (W ^ p.2.2)`. Establish `hK : ∀ p, IsCompact (K p)` using `fun p => (hPc p.2.2).image (by fun_prop)`. Establish `hcov : (⋃ p, K p) = univ`. Use `eq_univ_of_forall fun y => ?_` and prove the remaining obligations.
-
-Set `d : ι` to `⟨umD Γ H y, y, rfl⟩`. Establish `hy : y ∈ umD Γ H (rep d)` using `by rw [hrep d]; exact um_self_mem_D Γ H y`. Take `⟨γ, hγ, h, hh, hyeq⟩` from `hy`. Take `⟨n, hn⟩` from `mem_iUnion.1 (hHc hh)`. Conclude with `mem_iUnion.2 ⟨(d, ⟨γ, hγ⟩, n), h, hn, hyeq.symm⟩`.
-
-Rewrite using `[← isSigmaCompact_univ_iff, ← hcov]`. Conclude with `isSigmaCompact_iUnion_of_isCompact K hK`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem um_sigmaCompact (Γ : Subgroup G) [Countable Γ] (μ : Measure G) [IsHaarMeasure μ]
     (𝓕 : Set G) (h𝓕 : IsFundamentalDomain Γ 𝓕 μ) (hfin : μ 𝓕 < ⊤) : SigmaCompactSpace G := by
@@ -204,15 +198,13 @@ theorem um_sigmaCompact (Γ : Subgroup G) [Countable Γ] (μ : Measure G) [IsHaa
   exact isSigmaCompact_iUnion_of_isCompact K hK
 
 /- English proof (translation)
-Use `um_sigmaCompact Γ μ 𝓕 h𝓕 hfin` as an intermediate fact. Use `um_smulInv Γ μ` as an intermediate fact. Establish `h0 : μ 𝓕 ≠ 0`. Introduce `h0`. Use `h𝓕.measure_zero_of_invariant univ (fun g => smul_set_univ) (by rw [univ_inter]; exact h0)` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `isOpen_univ.measure_ne_zero μ univ_nonempty this`. Use `⟨fun g => ?_⟩` and prove the remaining obligations. Use `set c := haarScalarFactor (map (· * g) μ) μ with hcdef`. Establish `hc : map (· * g) μ = c • μ` using `um_eq_smul_of_sigmaCompact _ _`. Establish `hqmp : QuasiMeasurePreserving (· * g) μ μ` using `⟨measurable_mul_const g, by rw [hc]; exact smul_absolutelyContinuous⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h𝓕' : IsFundamentalDomain Γ ((· * g) ⁻¹' 𝓕) μ` using `h𝓕.preimage_of_equiv hqmp (e := id) Function.bijective_id (fun γ x => by simp [Subgroup.smul_def, mul_assoc])`. Establish `hm : μ ((· * g) ⁻¹' 𝓕) = c * μ 𝓕`. Establish `: μ ((· * g) ⁻¹' 𝓕) = map (· * g) μ 𝓕` using `((MeasurableEquiv.mulRight g).map_apply 𝓕).symm`. Rewrite using `[this, hc, Measure.smul_apply, ENNReal.smul_def, smul_eq_mul]`. Establish `hcoe : (c : ℝ≥0∞) = 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `h𝓕'.measure_eq h𝓕` as an intermediate fact. Rewrite `this` using `[hm]`. Rewrite using `[← ENNReal.mul_left_inj h0 hfin.ne, one_mul]`. Conclude with `this`. Establish `hc1 : c = 1` using `by exact_mod_cast hcoe`.
-
-Rewrite using `[hc, hc1, one_smul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem um_rightInv (Γ : Subgroup G) [Countable Γ] (μ : Measure G) [IsHaarMeasure μ]
     (𝓕 : Set G) (h𝓕 : IsFundamentalDomain Γ 𝓕 μ) (hfin : μ 𝓕 < ⊤) : IsMulRightInvariant μ := by
@@ -251,13 +243,13 @@ open Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes PI.VolFromSW PI.A
 open scoped TensorProduct
 
 /- English proof (translation)
-Establish `: Countable E` using `Finsupp.Countable.of_moduleFinite (R := ℚ)`. Establish `: Countable (Matrix (Fin M) (Fin M) E)` using `inferInstanceAs (Countable (Fin M → Fin M → E))`. Establish `: Countable (GL (Fin M) E)` using `Function.Injective.countable (f := fun u : GL (Fin M) E => (u : Matrix (Fin M) (Fin M) E)) (fun _ _ h => Units.ext h)`. Establish `hx : ∀ x : HFinIn (AF F) σ J, ∃ u : GL (Fin M) E, Formalism.UG.bc (inclR (AF F)) u = ((x : HR (AF F) σ J) : GL (Fin M) (AF F ⊗[F] E))`. Introduce `x`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h : ((x : HR (AF F) σ J) : GL (Fin M) (AF F ⊗[F] E)) ∈ HFin (AF F) σ J` using `Subgroup.mem_subgroupOf.1 x.2`. Unfold `HFin at h`. Take `⟨u, -, hu⟩` from `Subgroup.mem_map.1 h`. Conclude with `⟨u, hu⟩`. Use `Function.Injective.countable (f := fun x => (hx x).choose) ?_` and prove the remaining obligations.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `x y hxy`. Establish `h1` using `(hx x).choose_spec`. Establish `h2` using `(hx y).choose_spec`. Simplify using `only at hxy`. Rewrite `h1` using `[hxy]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `Subtype.ext (Subtype.ext (h1.symm.trans h2))`.
+A detailed English derivation is pending.
 -/
 theorem um_countable_HFinIn (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E]
     [Algebra F E] (σ : E →ₐ[F] E) (M : ℕ) (J : Matrix (Fin M) (Fin M) E) :
@@ -288,9 +280,9 @@ instance t2Space_adelic_unitary (F E : Type) [Field F] [NumberField F] [Field E]
     T2Space (HA (AF F) σ J) := inferInstanceAs (T2Space (HR (AF F) σ J))
 
 /- English proof (translation)
-Take `⟨μ, hμ⟩` from `h.1`. Establish `: μ.IsHaarMeasure` using `hμ`. Set `Γ : Subgroup (HA (AF F) σ J)` to `HFinIn (AF F) σ J`. Establish `: Countable Γ` using `um_countable_HFinIn F E σ M J`. Take `⟨𝓕, h𝓕⟩` from `(h.2 μ hμ).1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `um_sigmaCompact Γ μ 𝓕 h𝓕 ((h.2 μ hμ).2 𝓕 h𝓕)`.
+A detailed English derivation is pending.
 -/
 theorem um_sigmaCompact_HA (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E]
     [Algebra F E] [FiniteDimensional F E] (σ : E →ₐ[F] E) (M : ℕ)
@@ -303,9 +295,9 @@ theorem um_sigmaCompact_HA (F E : Type) [Field F] [NumberField F] [Field E] [Num
   exact um_sigmaCompact Γ μ 𝓕 h𝓕 ((h.2 μ hμ).2 𝓕 h𝓕)
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hσ M J _ hSWa1 _ _ _ _ _ _ _ μ hμ`. Establish `: FiniteDimensional F E` using `Module.finite_of_finrank_pos (by rw [hσ.2.2.1]; norm_num)`. Establish `: μ.IsHaarMeasure` using `hμ`. Set `Γ : Subgroup (HA (AF F) σ J)` to `HFinIn (AF F) σ J`. Establish `: Countable Γ` using `um_countable_HFinIn F E σ M J`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Take `⟨𝓕, h𝓕⟩` from `(hSWa1.2 μ hμ).1`. Conclude with `um_rightInv Γ μ 𝓕 h𝓕 ((hSWa1.2 μ hμ).2 𝓕 h𝓕)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem unimod_holds : Unimod := by
   intro F E _ _ _ _ _ σ hσ M J _ hSWa1 _ _ _ _ _ _ _ μ hμ

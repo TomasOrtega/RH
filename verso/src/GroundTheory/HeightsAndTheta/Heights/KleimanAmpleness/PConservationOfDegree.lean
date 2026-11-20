@@ -11,9 +11,9 @@ open MvPolynomial Filter
 universe u w
 
 /- English proof (translation)
-Introduce `S _ _ F _ _ _ Ω _ _ _ _ N x M 𝔪 h𝔪 qq hq hconst hsub`. Establish `h1` using `hA S F Ω N x M 𝔪 h𝔪 qq hq hconst hsub`. Establish `h2` using `hB S F Ω N x M 𝔪 h𝔪 qq hq hconst hsub`. Rewrite using `[interNum]`. Use `Tendsto.limUnder_eq (tendsto_const_nhds.congr' ?_)` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `filter_upwards [h1, h2] with c e1 e2`. Rewrite using `[e1, e2]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ConservationOfDegree.proof (hA : FibreHilbertFlat.Statement.{u, w})
     (hB : FibreCycleDegree.Statement.{u, w}) : ConservationOfDegree.Statement.{u, w} := by

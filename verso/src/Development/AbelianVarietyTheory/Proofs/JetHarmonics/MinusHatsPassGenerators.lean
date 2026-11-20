@@ -14,7 +14,7 @@ variable {A : Type} [Ring A] [StarRing A] [Algebra ℂ A] [StarModule ℂ A] {P 
 
 omit [Algebra ℂ A] [StarModule ℂ A] in
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => simp`. Consider the case `cons a l ih => simp [List.prod_cons, star_mul, ih, List.prod_append]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem star_listProd (l : List A) : star l.prod = (l.map star).reverse.prod := by
   induction l with
@@ -23,7 +23,7 @@ theorem star_listProd (l : List A) : star l.prod = (l.map star).reverse.prod := 
 
 omit [StarModule ℂ A] in
 /- English proof (translation)
-Unfold `nfSpan`. Use `Submodule.subset_span ⟨b, hb, [X], rfl, ?_⟩` and prove the remaining obligations. Simplify using `[hX]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem mem_span (d : Q.NFData P A) {b X : A} (hb : b ∈ bmon d) (hX : X ∈ hats d.L) :
     b * X ∈ nfSpan d (hats d.L) 0 0 1 := by
@@ -33,11 +33,11 @@ theorem mem_span (d : Q.NFData P A) {b X : A} (hb : b ∈ bmon d) (hX : X ∈ ha
 
 omit [StarModule ℂ A] in
 /- English proof (translation)
-Take `⟨-, -, hR, -, -, -, hk⟩` from `h`. Establish `hf : ∀ g ∈ d.L.fns, Commute (d.κ f) g` using `fun g hg => hR.2.1 f g (Or.inl hg)`. Establish `hn : Commute (d.κ f) d.L.nabs` using `hR.2.1 f _ (Or.inr (by simp))`. Establish `hpb : ∀ l, Commute (d.κ f) (d.L.pb l)` using `fun l => hk f _ (by simp [TL.siteOps])`. Take `⟨hA, hB⟩` from `Formalism.FourierDecayAlt.P.MAx3.Q.comm_Tvprod d.L (d.κ f) hpb (fun l => hf _ (m_cb d.L l)) (fun l => hf _ (m_cbi d.L l)) y`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hA' : Commute (d.κ f) (d.L.Avr y)` using `hA`. Establish `hB' : Commute (d.κ f) (d.L.Bvr y)` using `hB`. Establish `hDr : Commute (d.κ f) d.L.Dr` using `Commute.list_prod_right _ _ fun x hx => by`. Take `⟨l, rfl⟩` from `List.mem_ofFn.1 hx`. Conclude with `hf _ (m_c d.L l)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hDrb : Commute (d.κ f) d.L.Drb` using `Commute.list_prod_right _ _ fun x hx => by`. Take `⟨l, rfl⟩` from `List.mem_ofFn.1 hx`. Conclude with `hf _ (m_cb d.L l)`. Establish `hm : Commute (d.κ f) (d.L.m0 y)` using `hn.neg_right.sub_right ((Algebra.commutes _ _).symm |> fun h : Commute (d.κ f) (algebraMap ℂ A (y - 1/2)) => h.mul_right ((hf _ (m_ζ d.L)).mul_right (hf _ (m_GGi d.L))))`. Conclude with `⟨hDrb.mul_right hA', (hDr.mul_right (hf _ (m_GG d.L))).mul_right ((hm.mul_right hA').add_right hB')⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem kap_comm (d : Q.NFData P A) (h : HatHyp d) (f : M.Ty P → ℂ) (y : ℂ) :
     Commute (d.κ f) (d.L.Ahatv y) ∧ Commute (d.κ f) (d.L.R0v y) := by
@@ -60,7 +60,7 @@ theorem kap_comm (d : Q.NFData P A) (h : HatHyp d) (f : M.Ty P → ℂ) (y : ℂ
 
 omit [StarModule ℂ A] in
 /- English proof (translation)
-Take `⟨-, -, hR, -⟩` from `h`. Take `⟨h1, h2⟩` from `hR.2.2.2.2.1 i hi`. Establish `hc` using `hR.2.2.1 i`. Establish `h` using `Formalism.FourierDecayAlt.P.intertwinerConjugation _ P.r d.L (d.SS i) 0 (fun x hx => (hc x (Or.inl (Or.inl hx))).symm) (fun l => (hc _ (Or.inl (Or.inr ⟨l, rfl⟩))).symm) (fun l => (hc _ (Or.inr ⟨l, rfl⟩)).symm) h1 h2 (fun x _ => by simp) (fun l => by simp) (fun l => by simp) (by s …`. Conclude with `⟨h.2.2.1, h.2.2.2.1⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem ss_rule (d : Q.NFData P A) (h : HatHyp d) (i : ℕ) (hi : i ∈ Finset.Icc 1 (P.k - 1)) (Y : ℂ) :
     d.L.Ahatv Y * ssn d i = ssn d i * d.L.Ahatv (Y - 1) ∧ d.L.R0v Y * ssn d i = ssn d i * d.L.R0v (Y - 1) := by
@@ -73,37 +73,33 @@ theorem ss_rule (d : Q.NFData P A) (h : HatHyp d) (i : ℕ) (hi : i ∈ Finset.I
   exact ⟨h.2.2.1, h.2.2.2.1⟩
 
 /- English proof (translation)
-Take `⟨-, hS, hR, sp, sc, sci, -⟩` from `h`. Take `⟨h1, h2⟩` from `hR.2.2.2.2.1 i hi`. Establish `hc` using `hR.2.2.1 i`. Take `⟨sz, szb, szi, szbi, sg, sgi⟩` from `Formalism.FourierDecayAlt.P.TLA.M2.star_fns d.L hS`. Establish `sn : star d.L.nab = d.L.nabs` using `hS.2.1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `sns : star d.L.nabs = d.L.nab` using `by rw [← sn, star_star]`. Establish `scb : ∀ l, star (d.L.cb l) = d.L.c l` using `fun l => by rw [← sc, star_star]`. Establish `scbi : ∀ l, star (d.L.cbi l) = d.L.ci l` using `fun l => by rw [← sci, star_star]`. Establish `spb : ∀ l, star (d.L.pb l) = -d.L.p l` using `fun l => by`. Rewrite using `[← star_star (d.L.p l), sp, star_neg, neg_neg]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `sf : ∀ x ∈ d.L.fns, star x ∈ d.L.fns`. Introduce `x hx`. Simplify using `only [LevelData.fns, Set.mem_union, Set.mem_range, Set.mem_insert_iff, Set.mem_singleton_iff] at hx`. Break down `hx with ((((⟨l, rfl⟩ | ⟨l, rfl⟩) | ⟨l, rfl⟩) | ⟨l, rfl⟩) | (rfl | rfl | rfl | rfl | rfl | rfl))` into its components or cases. Rewrite using `[sc]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Conclude with `m_cb d.L l`. Rewrite using `[sci]`. Conclude with `m_cbi d.L l`. Rewrite using `[scb]`. Conclude with `m_c d.L l`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[scbi]`. Conclude with `m_ci d.L l`. Rewrite using `[sz]`. Conclude with `m_ζb d.L`. Rewrite using `[szi]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `m_ζbi d.L`. Rewrite using `[szb]`. Conclude with `m_ζ d.L`. Rewrite using `[szbi]`. Conclude with `m_ζi d.L`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[sg]`. Conclude with `m_GG d.L`. Rewrite using `[sgi]`. Conclude with `m_GGi d.L`. Establish `hf : ∀ x ∈ d.L.fns, Commute (star (d.SS i)) x` using `fun x hx => by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `(hc _ (Or.inl (Or.inl (sf x hx)))).star_star` as an intermediate fact. Rewrite `this` using `[star_star]`. Then use the resulting hypothesis. Establish `hp : ∀ l, Commute (star (d.SS i)) (d.L.p l)` using `fun l => by`. Use `(hc _ (Or.inr ⟨l, rfl⟩)).star_star` as an intermediate fact. Rewrite `this` using `[spb]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `Commute.neg_right_iff.1 this`. Establish `hpb : ∀ l, Commute (star (d.SS i)) (d.L.pb l)` using `fun l => by`. Use `(hc _ (Or.inl (Or.inr ⟨l, rfl⟩))).star_star` as an intermediate fact. Rewrite `this` using `[sp]`. Conclude with `Commute.neg_right_iff.1 this`.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `c1 : star (d.SS i) * (d.L.GGi * d.L.ζb) = d.L.ζb * d.L.GGi * star (d.SS i)`. Rewrite using `[((hf _ (m_GGi d.L)).mul_right (hf _ (m_ζb d.L))).eq, d.L.fns_comm _ (m_GGi d.L) _ (m_ζb d.L)]`. Establish `c2 : star (d.SS i) * (d.L.GGi * d.L.ζ) = d.L.ζ * d.L.GGi * star (d.SS i)`. Rewrite using `[((hf _ (m_GGi d.L)).mul_right (hf _ (m_ζ d.L))).eq, d.L.fns_comm _ (m_GGi d.L) _ (m_ζ d.L)]`. Establish `k1 : d.L.nab * star (d.SS i) = star (d.SS i) * d.L.nab + d.L.ζb * d.L.GGi * star (d.SS i)`.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `congrArg star h2` as an intermediate fact. Rewrite `this` using `[star_mul, star_sub, star_mul, star_mul, star_mul, sns, sz, sgi]`. Rewrite using `[← c1, this]`. Normalize the expressions using the abelian group laws. Establish `k2 : d.L.nabs * star (d.SS i) = star (d.SS i) * d.L.nabs + d.L.ζ * d.L.GGi * star (d.SS i)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `congrArg star h1` as an intermediate fact. Rewrite `this` using `[star_mul, star_sub, star_mul, star_mul, star_mul, sn, szb, sgi]`. Rewrite using `[← c2, this]`. Normalize the expressions using the abelian group laws. Establish `sDrb : star d.L.Drb = d.L.Dr`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Unfold `LevelData.Drb LevelData.Dr`. Rewrite using `[star_listProd, List.map_ofFn]`. Establish `: (star ∘ d.L.cb) = d.L.c` using `funext scb`. Rewrite using `[this, rev_prod d.L]`. Introduce `x hx`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨l, rfl⟩` from `List.mem_ofFn.1 hx`. Conclude with `memF d.L (m_c d.L l)`. Establish `sDri : star d.L.Dri = d.L.Drbi`. Unfold `LevelData.Dri LevelData.Drbi`. Rewrite using `[star_listProd, List.map_ofFn]`.
-
-Establish `: (star ∘ d.L.ci) = d.L.cbi` using `funext sci`. Rewrite using `[this, rev_prod d.L]`. Introduce `x hx`. Take `⟨l, rfl⟩` from `List.mem_ofFn.1 hx`. Conclude with `memF d.L (m_cbi d.L l)`.
-
-Establish `e : star (ssn d i) = star (d.SS i) * (d.L.Dr * d.L.Drbi)`. Rewrite using `[ssn, star_mul, star_mul, sDrb, sDri, cl_comm d.L (memDrbi d.L) (memDr d.L)]`. Establish `h` using `Formalism.FourierDecayAlt.P.intertwinerConjugation _ P.r d.L 0 (star (d.SS i)) (fun x _ => by simp) (fun l => by simp) (fun l => by simp) (by simp) (by simp) (fun x hx => (hf x hx).symm) (fun l => (hp l).symm) (fun l => (hpb l).symm) k1 k2 Y`. Rewrite using `[e]`. Conclude with `⟨h.2.2.2.2.2.2.1, h.2.2.2.2.2.2.2⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem sss_rule (d : Q.NFData P A) (h : HatHyp d) (i : ℕ) (hi : i ∈ Finset.Icc 1 (P.k - 1)) (Y : ℂ) :
     d.L.Ahatv Y * star (ssn d i) = star (ssn d i) * d.L.Ahatv (Y + 1) ∧
@@ -178,19 +174,19 @@ theorem sss_rule (d : Q.NFData P A) (h : HatHyp d) (i : ℕ) (hi : i ∈ Finset.
 end
 
 /- English proof (translation)
-Introduce `P A _ _ _ _ d h b hb y`. Establish `gen : ∀ {x}, x ∈ bset d → x ∈ bmon d` using `fun h => Submonoid.subset_closure h`. Establish `mDD : d.L.D * d.L.Dbi ∈ bmon d` using `gen (Or.inl (Or.inl (Or.inl (by simp))))`. Establish `mDbD : d.L.Db * d.L.Di ∈ bmon d` using `gen (Or.inl (Or.inl (Or.inl (by simp))))`. Establish `mζi : d.L.ζi ∈ bmon d` using `gen (Or.inl (Or.inl (Or.inl (by simp))))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `mζbi : d.L.ζbi ∈ bmon d` using `gen (Or.inl (Or.inl (Or.inl (by simp))))`. Establish `hdrv : d.L.Dr * d.L.Dbi ∈ bmon d`. Rewrite using `[drv_eq]`. Conclude with `Submonoid.mul_mem _ mDD mζi`. Establish `sA : ∀ {x}, x ∈ bmon d → ∀ y, x * d.L.Ahatv y ∈ nfSpan d (hats d.L) 0 0 1` using `fun hx y => mem_span d hx (Or.inl (Or.inr ⟨y, rfl⟩))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `sR : ∀ {x}, x ∈ bmon d → ∀ y, x * d.L.R0v y ∈ nfSpan d (hats d.L) 0 0 1` using `fun hx y => mem_span d hx (Or.inr ⟨y, rfl⟩)`. Establish `hInv` using `Formalism.FourierDecayAlt.P.inverseCommutators _ P.r d.L y`. Establish `hb'` using `gen hb`. Break down `hb with (((hb | ⟨f, rfl⟩) | ⟨i, hi, rfl⟩) | ⟨i, hi, rfl⟩)` into its components or cases. Simplify using `only [Set.mem_insert_iff, Set.mem_singleton_iff] at hb`.
+Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `hb with rfl | rfl | rfl | rfl` into its components or cases. Rewrite using `[← hInv.2.2.2.2.2.1, ← hInv.2.2.2.2.2.2.1]`. Conclude with `⟨sA hb' _, sR hb' _⟩`. Rewrite using `[← hInv.2.2.1, vgen_ζbi_R]`. Use `⟨sA hb' _, Submodule.add_mem _ (sR hb' _) ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [List.map_cons, List.map_nil, List.sum_cons, List.sum_nil, add_zero]`. Conclude with `Submodule.add_mem _ (Submodule.smul_mem _ _ (sA mDD _)) (Submodule.smul_mem _ _ (sA (Submonoid.mul_mem _ (Submonoid.mul_mem _ mζi mζbi) mDD) _))`. Rewrite using `[vgen_DD_A, vgen_DD_R]`. Conclude with `⟨sA hb' _, Submodule.add_mem _ (sR hb' _) (Submodule.smul_mem _ _ (sA (Submonoid.mul_mem _ mDD hdrv) _))⟩`. Rewrite using `[vgen_DbD_A, vgen_DbD_R]`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨sA hb' _, Submodule.add_mem _ (sR hb' _) (Submodule.smul_mem _ _ (sA (Submonoid.mul_mem _ mDbD hdrv) _))⟩`. Rewrite using `[← (kap_comm d h f y).1.eq, ← (kap_comm d h f y).2.eq]`. Conclude with `⟨sA hb' _, sR hb' _⟩`. Use `ss_rule d h i (Finset.mem_Icc.2 (Set.mem_Icc.1 hi)) y` as an intermediate fact. Rewrite using `[this.1, this.2]`.
+Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact.
 
-Conclude with `⟨sA hb' _, sR hb' _⟩`. Use `sss_rule d h i (Finset.mem_Icc.2 (Set.mem_Icc.1 hi)) y` as an intermediate fact. Simplify using `only [] at hb' ⊢`. Rewrite using `[this.1, this.2]`. Conclude with `⟨sA hb' _, sR hb' _⟩`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem minus_hats_pass_generators :
     ∀ (P : M.Par) (A : Type) [Ring A] [StarRing A] [Algebra ℂ A] [StarModule ℂ A] (d : Q.NFData P A), HatHyp d →

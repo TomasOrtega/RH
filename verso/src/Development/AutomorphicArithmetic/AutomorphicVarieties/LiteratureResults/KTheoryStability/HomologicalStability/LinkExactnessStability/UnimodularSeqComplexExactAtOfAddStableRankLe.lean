@@ -7,7 +7,7 @@ open GlobalTheory.SeqCx Matrix UpperTheory.V.KL
 namespace GlobalTheory
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.exactAt_unimodularSeqs_of_add_stableRank_le`.
+A detailed English derivation is pending.
 -/
 theorem uniSeq_exactAt_stableRange : ∀ (R : Type) [CommRing R] (s : ℕ), StableRangeLe R s →
     ∀ m q : ℕ, q + s ≤ m → ExactAt (uniSeq R m) q :=
@@ -18,7 +18,7 @@ end GlobalTheory
 section
 open GlobalTheory.SeqCx Matrix UpperTheory.V.KL
 /- English proof (translation)
-Use `first`. Consider the case `exact @GlobalTheory.uniSeq_exactAt_stableRange`. Consider the case `exact @GlobalTheory.rests`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.T.unimodularSeqComplex_exactAt_of_add_stableRank_le : ∀ (R : Type) [CommRing R] (s : ℕ), StableRangeLe R s → ∀ m q : ℕ, q + s ≤ m → ExactAt (uniSeq R m) q := by
   first

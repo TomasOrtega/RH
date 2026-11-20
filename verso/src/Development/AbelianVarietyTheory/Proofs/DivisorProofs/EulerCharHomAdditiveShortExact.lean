@@ -30,7 +30,7 @@ theorem homPi_homMap {E F G : X.Modules} {U V : X.Opens} {ι : Type} [Fintype ι
     homPi he h ((homMap (𝟙 E) β).app V ψ) i = β.app V (homPi he h ψ i) := rfl
 
 /- English proof (translation)
-Use extensionality with `V ψ : 3`. Use `VB.hom_ext fun W h s => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(S.f ≫ S.g).app W (homApp ψ h s) = 0`. Rewrite using `[S.zero]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem homMap_comp_zero (E : X.Modules) (S : ShortComplex X.Modules) :
     homMap (𝟙 E) S.f ≫ homMap (𝟙 E) S.g = 0 := by
@@ -41,15 +41,13 @@ theorem homMap_comp_zero (E : X.Modules) (S : ShortComplex X.Modules) :
   rfl
 
 /- English proof (translation)
-Use `hS.mono_f` as an intermediate fact. Use `hS.epi_g` as an intermediate fact. Use `ShortComplex.ShortExact.mk' (DualExact.exact_of_locally _ fun V x hx => ?_) (QCoh.mono_of_locally_app_injective _ fun V x hx => ⟨V, hx, le_rfl, fun a b hab => ?_⟩) (QCoh.epi_of_locally_app_surjective _ fun V x hx => ?_)` and prove the remaining obligations. Take `⟨U, e, -, hxU, hle, he⟩` from `hE.exists_affine hx`. Use `⟨U, hle, hxU, fun (t : Γ(homMod E S.X₂, U)) (ht : (homMap (𝟙 E) S.g).app U t = 0) => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `H (i : Fin r) : ∃ u, S.f.app U u = homPi he le_rfl t i` using `(QCoh.exact_app_of_exact_of_mono hS.exact U _).1 (by`. Rewrite using `[← homPi_homMap, ht, map_zero]`. Use the proof step `rfl)`. Use `choose u hu using H`. Use `⟨(homPi he le_rfl).symm u, (homPi he le_rfl).injective (funext fun i => ?_)⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← hu]`. Use `(homPi_homMap he le_rfl S.f _ i).trans ?_` and prove the remaining obligations. Rewrite using `[LinearEquiv.apply_symm_apply]`. Use `VB.hom_ext fun W h s => QCoh.injective_app_of_mono S.f W ?_` and prove the remaining obligations. Conclude with `congrArg (fun ψ : Γ(homMod E S.X₂, V) => homApp ψ h s) hab`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨U, e, hU, hxU, hle, he⟩` from `hE.exists_affine hx`. Use `⟨U, hxU, hle, fun (t : Γ(homMod E S.X₃, U)) => ?_⟩` and prove the remaining obligations. Use `choose u hu using fun i => QCoh.surjective_app_of_epi S.g hU (homPi he le_rfl t i)`. Use `⟨(homPi he le_rfl).symm u, (homPi he le_rfl).injective (funext fun i => ?_)⟩` and prove the remaining obligations. Rewrite using `[← hu]`.
-
-Use `(homPi_homMap he le_rfl S.g _ i).trans ?_` and prove the remaining obligations. Rewrite using `[LinearEquiv.apply_symm_apply]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem shortExact_homMod {E : X.Modules} {r : ℕ} (hE : IsVB E r) (S : ShortComplex X.Modules)
     (hS : S.ShortExact) [S.X₂.IsQuasicoherent] [S.X₃.IsQuasicoherent] :
@@ -81,7 +79,7 @@ theorem shortExact_homMod {E : X.Modules} {r : ℕ} (hE : IsVB E r) (S : ShortCo
     rw [LinearEquiv.apply_symm_apply]
 
 /- English proof (translation)
-Use `chi_shortExact (k := k) hS h₁ h₃` as an intermediate fact. Conclude with `this`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem chi_shortExact_mk (k : Type) [Field k] [Algebra k Γ(X, ⊤)] {F G H : X.Modules}
     {f : F ⟶ G} {g : G ⟶ H} {w : f ≫ g = 0} (hS : (ShortComplex.mk f g w).ShortExact)
@@ -90,9 +88,9 @@ theorem chi_shortExact_mk (k : Type) [Field k] [Algebra k Γ(X, ⊤)] {F G H : X
   exact this
 
 /- English proof (translation)
-Introduce `k _ T _ _ hT E r hE S hS h₁ h₂ h₃`. Establish `i₁ : QCoh.IsFiniteQC (homMod E S.X₁)` using `isFiniteQC_homMod hE`. Establish `i₃ : QCoh.IsFiniteQC (homMod E S.X₃)` using `isFiniteQC_homMod hE`. Establish `f₁ : FiniteCoh k (homMod E S.X₁)` using `finiteCoh_of_isProjOver (algebraMap_eq_strHom k T) _ hT.isProjOver`. Establish `f₃ : FiniteCoh k (homMod E S.X₃)` using `finiteCoh_of_isProjOver (algebraMap_eq_strHom k T) _ hT.isProjOver`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hx` using `shortExact_homMod hE S hS`. Conclude with `chi_shortExact_mk k hx f₁ f₃`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem chi_homMod_shortExact : ∀ (k : Type) [Field k] (T : Scheme.{0}) [Algebra k Γ(T, ⊤)] [IsIntegral T], IsProjSurface k T → ∀ (E : T.Modules) (r : ℕ), IsVB E r → ∀ (S : ShortComplex T.Modules), S.ShortExact → QCoh.IsFiniteQC S.X₁ → QCoh.IsFiniteQC S.X₂ → QCoh.IsFiniteQC S.X₃ → chi k (homMod E S.X₂) = chi k (homMod E S.X₁) + chi k (homMod E S.X₃) := by
   intro k _ T _ _ hT E r hE S hS h₁ h₂ h₃

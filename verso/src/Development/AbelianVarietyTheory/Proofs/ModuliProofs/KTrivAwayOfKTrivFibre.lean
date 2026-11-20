@@ -16,13 +16,13 @@ open GlobalTheory.ZM
 namespace GlobalTheory
 
 /- English proof (translation)
-Use `⟨IsPullback.of_hasPullback _ _, ?_⟩` and prove the remaining obligations. Introduce `T x y x₀ y₀ hx hy`. Establish `e : (lift x₀ y₀).left = (lift x y).left ≫ (Functor.LaxMonoidal.μ (Over.pullback f) G G).left ≫ pullback.fst (G ⊗ G).hom f`. Apply `pullback.hom_ext` to reduce the goal to its premises. Simplify using `only [Category.assoc]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Rewrite using `[Over.μ_pullback_left_fst_fst]`. Simplify using `only [Over.lift_left, pullback.lift_fst, pullback.lift_fst_assoc, hx]`. Simplify using `only [Category.assoc]`. Rewrite using `[Over.μ_pullback_left_fst_snd]`. Simplify using `only [Over.lift_left, pullback.lift_snd, pullback.lift_snd_assoc, pullback.lift_fst_assoc, hy]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Hom.mul_def, Hom.mul_def, Over.comp_left, Over.comp_left, e, Functor.obj.μ_def, Over.comp_left]`. Simplify using `only [Category.assoc]`. Use `congrArg (_ ≫ ·) (congrArg (_ ≫ ·) ?_)` and prove the remaining obligations. Use `first`. Consider the case `exact (pullback.lift_fst _ _ _).symm`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Treat this case separately. Treat this case separately.
 
-Consider the case `(erw [Over.pullback_map_left]; simp)`.
+A detailed English derivation is pending.
 -/
 private theorem isGrpPullback_pullback_obj {S S' : Scheme.{0}} (G : Over S) [GrpObj G] (f : S' ⟶ S) :
     IsGrpPullback ((Over.pullback f).obj G) G f (pullback.fst G.hom f) := by
@@ -46,7 +46,7 @@ private theorem isGrpPullback_pullback_obj {S S' : Scheme.{0}} (G : Over S) [Grp
     | (erw [Over.pullback_map_left]; simp)
 
 /- English proof (translation)
-Introduce `_ R _ _ A _ L K _ x hA hL hR hK`. Take `⟨f, hf, H⟩` from `GlobalTheory.T.exists_basicOpen_kTriv_of_fibre R A L K x ((Over.pullback (spMap x)).obj A) (pullback.fst A.hom (spMap x)) hA hL hR (isGrpPullback_pullback_obj A (spMap x)) hK`. Conclude with `⟨f, hf, H (Localization.Away f) (algebraMap R (Localization.Away f)) _ _ (IsLocalization.Away.algebraMap_isUnit f) (isGrpPullback_pullback_obj A _)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem kTriv_away_of_kTriv_fibre : Out.GlobalFnsSt → ∀ (R : Type) [CommRing R] [IsNoetherianRing R] (A : Over (Sp R)) [GrpObj A] (L : LB A.left) (K : Type) [Field K] (x : R →+* K), IsAbelianScheme A → L.IsLB → Out.RelAmple A L → Out.KTriv ((Over.pullback (spMap x)).obj A) (L.pull (pullback.fst A.hom (spMap x))) → ∃ f : R, x f ≠ 0 ∧ Out.KTriv ((Over.pullback (spMap (algebraMap R (Localization.Away f)))).obj A) (L.pull (pullback.fst A.hom (spMap (algebraMap R (Localization.Away f))))) := by
   intro _ R _ _ A _ L K _ x hA hL hR hK

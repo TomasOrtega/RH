@@ -18,13 +18,13 @@ open scoped UpperHalfPlane MatrixGroups ModularForm Manifold BigOperators in
 open ModularForm (E₄ E₆) in
 
 /- English proof (translation)
-Introduce `R N w f hN hinv hq`. Take `⟨a, ha, haR⟩` from `hq`. Establish `hmf : _root_.ReciprocityTheory.ChartRestriction.L1.IsMF (12 * w) f` using `_root_.GlobalTheory.QFam.isMF_of_invariant_of_hasQ N _ f a hN hinv ha`. Establish `h1 : _root_.GlobalTheory.QFam.HasQ 1 f fun n => PowerSeries.coeff n (UpperHalfPlane.qExpansion 1 f)`. Rewrite using `[_root_.GlobalTheory.QFam.hasQ_coeff_iff_hasQExpansion]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨g, hg⟩` from `hmf`. Establish `hgf : (⇑g : ℍ → ℂ) = f` using `funext hg`. Establish `h` using `_root_.GlobalTheory.hasQExpansion_modularForm g`. Rewrite `h` using `[hgf]`. Simplify using `using h`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hN'` using `_root_.GlobalTheory.QFam.hasQ_mul_spread 1 N f _ one_pos hN h1`. Rewrite `hN'` using `[one_mul]`. Establish `heq` using `_root_.GlobalTheory.QFam.HasQ.coeff_unique hN ha hN'`. Establish `hcoeff : _root_.ReciprocityTheory.ChartRestriction.L1.CoeffIn R (UpperHalfPlane.qExpansion 1 f)`. Introduce `m`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h` using `haR (N * m)`. Rewrite `h` using `[heq]`. Simplify `h` using `[_root_.GlobalTheory.QFam.spread, Nat.mul_div_cancel_left _ hN]`. Take `⟨P, hPR, -, hP⟩` from `_root_.ReciprocityTheory.ChartRestriction.L1.qPrin R w f hmf hcoeff`. Conclude with `⟨P, hPR, hP⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem _root_.GlobalTheory.QFam.exists_eq_DD_pow_mul_eval_jT : ∀ (R : Subring ℂ) (N w : ℕ)
     (f : ℍ → ℂ), 0 < N →

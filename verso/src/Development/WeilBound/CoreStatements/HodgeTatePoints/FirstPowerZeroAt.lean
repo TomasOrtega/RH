@@ -9,9 +9,9 @@ namespace PositivityTheory.HtPt.Cc
 variable {R : Type} [CommRing R] {d : ℕ} {O : Type} [CommRing O] [StarRing O] (B : FB R d O) {l : ℕ}
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero`. Rewrite using `[act_zero_at, symmetric_zero_right_at B hx]`. Simplify using `only [second_power_zero, first_power_zero, ev_one, pow_zero, mul_one]`. Consider the case `succ n ih`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately.
 
-Rewrite using `[second_power_succ_at B n hx hz, first_power_succ_at B n hz hx, act_succ_at B n hz, pow_succ]`. Establish `hl` using `sy_law_at B hx (Z_comp1 (Z_act B.A (n : O)) hz) hz`. Take the linear combination `(ev ![x, comp1 (B.A.act (n : O)) z, z] B.ph2 * ev ![x, z] B.sy) * ih + ev ![z, x] (pow1 B n) * hl`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem pow_sy_at {x z : Pt R l d} (hx : Z x) (hz : Z z) (n : ℕ) :
     ev ![x, z] (pow2 B n) * ev ![x, z] B.sy ^ n =
@@ -27,7 +27,7 @@ theorem pow_sy_at {x z : Pt R l d} (hx : Z x) (hz : Z z) (n : ℕ) :
       + ev ![z, x] (pow1 B n) * hl
 
 /- English proof (translation)
-Proceed by induction on `m with`. Consider the case `zero => simp only [first_power_zero, ev_one]`. Consider the case `succ k ih`. Rewrite using `[first_power_succ_at B k hx Z_zero, ih, first_form_zero_right_at B (Z_comp1 (Z_act _ _) hx) hx, one_mul]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem first_power_zero_at {x : Pt R l d} (hx : Z x) (m : ℕ) : ev ![x, 0] (pow1 B m) = 1 := by
   induction m with
@@ -36,9 +36,9 @@ theorem first_power_zero_at {x : Pt R l d} (hx : Z x) (m : ℕ) : ev ![x, 0] (po
     rw [first_power_succ_at B k hx Z_zero, ih, first_form_zero_right_at B (Z_comp1 (Z_act _ _) hx) hx, one_mul]
 
 /- English proof (translation)
-Proceed by induction on `m with`. Consider the case `zero => rw [act_zero_at, second_form_zero_left_at B hz hw, first_power_zero, ev_one, ev_one, ev_one]`. Simplify using the standard rewrite rules. Consider the case `succ m ih`. Establish `hm : Z (comp1 (B.A.act (m : O)) x)` using `by ztac`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Establish an intermediate fact.
 
-Rewrite using `[first_power_succ_at B m hx hz, first_power_succ_at B m hx hw, first_power_succ_at B m hx (Z_add _ hz hw), act_succ_at B m hx, pow_succ]`. Establish `h1` using `interchange_at B hm hx hz hw`. Take the linear combination `(ev ![x, z] (pow1 B m) * ev ![x, w] (pow1 B m)) * h1 + (ev ![x, z, w] B.ph2 * ev ![comp1 (B.A.act (m : O)) x, x, addOf B.G.F z w] B.ph1) * ih`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem first_power_add_at {x z w : Pt R l d} (hx : Z x) (hz : Z z) (hw : Z w) (m : ℕ) :
     ev ![x, z] (pow1 B m) * ev ![x, w] (pow1 B m) * ev ![comp1 (B.A.act (m : O)) x, z, w] B.ph2 =
@@ -54,9 +54,9 @@ theorem first_power_add_at {x z w : Pt R l d} (hx : Z x) (hz : Z z) (hw : Z w) (
       (ev ![x, z, w] B.ph2 * ev ![comp1 (B.A.act (m : O)) x, x, addOf B.G.F z w] B.ph1) * ih
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => rw [act_zero_at, first_power_zero_at B hx, second_power_zero, ev_one, ev_one]`. Simplify using the standard rewrite rules. Consider the case `succ n ih`. Establish `hn : Z (comp1 (B.A.act (n : O)) z)` using `by ztac`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Establish an intermediate fact.
 
-Establish `hm : Z (comp1 (B.A.act (m : O)) x)` using `by ztac`. Rewrite using `[second_power_succ_at B n hx hz, second_power_succ_at B n hm hz, act_succ_at B n hz, pow_succ, mul_pow]`. Establish `h1` using `first_power_add_at B hx hn hz m`. Take the linear combination `(-ev ![x, z] (pow2 B n) ^ m) * h1 + (ev ![x, z] (pow1 B m) * ev ![comp1 (B.A.act (m : O)) x, comp1 (B.A.act (n : O)) z, z] B.ph2) * ih`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem pow_inter_at {x z : Pt R l d} (hx : Z x) (hz : Z z) (m n : ℕ) :
     ev ![x, z] (pow2 B n) ^ m * ev ![x, comp1 (B.A.act (n : O)) z] (pow1 B m) =
@@ -72,9 +72,9 @@ theorem pow_inter_at {x z : Pt R l d} (hx : Z x) (hz : Z z) (m n : ℕ) :
       (ev ![x, z] (pow1 B m) * ev ![comp1 (B.A.act (m : O)) x, comp1 (B.A.act (n : O)) z, z] B.ph2) * ih
 
 /- English proof (translation)
-Establish `hφ : Z φ` using `h.c₁`. Establish `hb : ZZ ![X, Y, z]` using `ZZ_cons hX (ZZ_cons hY (ZZ_cons hz ZZ_nil))`. Establish `e` using `congrArg (ev ![X, Y, z]) h.ph1`. Simplify using `only [FGLaw.add] at e`. Simplify using `only [ev_mul' hb] at e`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite `e` using `[ev_ev hb (ZZ_cons (Z_add B₂.G (Z_pt 0) (Z_pt 1)) (ZZ_cons (Z_pt 2) ZZ_nil)), ev_ev hb (ZZ_cons (Z_pt 0) (ZZ_cons (Z_pt 2) ZZ_nil)), ev_ev hb (ZZ_cons (Z_pt 1) (ZZ_cons (Z_pt 2) ZZ_nil)), ev_ev hb (ZZ_cons (Z_comp1 hφ (Z_pt 0)) (ZZ_cons (Z_comp1 hφ (Z_pt 1)) (ZZ_cons (Z_comp1 hφ …`. Simplify using `only [evV_cons, evV_nil, evalPoints_coordinatePoint hb, evalPoints_add hb _ (Z_pt _) (Z_pt _), evalPoints_comp hb _ (Z_pt _)] at e`. Simplify using `using e`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem ev_ph1_mul_ev_lam_addOf_of_isIso {B B₂ : FB R d O} {φ ψ : Pt R 1 d} {lam : PS R 2 d} (h : IsIso B B₂ φ ψ lam)
     {X Y z : Pt R l d} (hX : Z X) (hY : Z Y) (hz : Z z) :
@@ -93,7 +93,7 @@ private theorem ev_ph1_mul_ev_lam_addOf_of_isIso {B B₂ : FB R d O} {φ ψ : Pt
   simpa using e
 
 /- English proof (translation)
-Establish `hb : ZZ ![z]` using `ZZ_cons hz ZZ_nil`. Establish `e` using `congrArg (ev ![z]) h.ax.1`. Rewrite `e` using `[ev_ev hb (ZZ_cons Z_zero (ZZ_cons (Z_pt 0) ZZ_nil)), ev_one]`. Simplify `e` using `[evV_cons, evV_nil, evalPoints_zero, evalPoints_coordinatePoint hb]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem ev_zero_lam_eq_one_of_isIso {B B₂ : FB R d O} {φ ψ : Pt R 1 d} {lam : PS R 2 d} (h : IsIso B B₂ φ ψ lam)
     {z : Pt R l d} (hz : Z z) : ev ![0, z] lam = 1 := by
@@ -103,11 +103,11 @@ private theorem ev_zero_lam_eq_one_of_isIso {B B₂ : FB R d O} {φ ψ : Pt R 1 
   simpa [evV_cons, evV_nil, evalPoints_zero, evalPoints_coordinatePoint hb] using e
 
 /- English proof (translation)
-Establish `hφ : Z φ` using `h.c₁`. Proceed by induction on `n with`. Consider the case `zero`. Rewrite using `[act_zero_at, ev_zero_lam_eq_one_of_isIso h hz]`. Simplify using `only [first_power_zero, ev_one, pow_zero, mul_one]`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Consider the case `succ n ih`. Rewrite using `[first_power_succ_at B₂ n hx hz, act_succ_at B₂ n hx, first_power_succ_at B n (Z_comp1 hφ hx) (Z_comp1 hφ hz), pow_succ]`. Establish `hP` using `ev_ph1_mul_ev_lam_addOf_of_isIso h (Z_comp1 (Z_act B₂.A (n : O)) hx) hx hz`. Establish `hc : comp1 φ (comp1 (B₂.A.act (n : O)) x) = comp1 (B.A.act (n : O)) (comp1 φ x)`. Rewrite using `[← germComp1_germComp1_eq_substitute φ (Z_act B₂.A _) hx, h.act, germComp1_germComp1_eq_substitute _ hφ hx]`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hP` using `[hc]`. Take the linear combination `ev ![x, z] (pow1 B₂ n) * hP + (ev ![x, z] lam * ev ![comp1 (B.A.act (n : O)) (comp1 φ x), comp1 φ x, comp1 φ z] B.ph1) * ih`.
+Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem iso_first_power_at {B} {B₂ : FB R d O} {φ ψ : Pt R 1 d} {lam : PS R 2 d} (h : IsIso B B₂ φ ψ lam)
     {x z : Pt R l d} (hx : Z x) (hz : Z z) (n : ℕ) :
@@ -128,7 +128,7 @@ theorem iso_first_power_at {B} {B₂ : FB R d O} {φ ψ : Pt R 1 d} {lam : PS R 
       + (ev ![x, z] lam * ev ![comp1 (B.A.act (n : O)) (comp1 φ x), comp1 φ x, comp1 φ z] B.ph1) * ih
 
 /- English proof (translation)
-Introduce `R _ d O _ _ B n`. Establish `e` using `pow_sy_at B (Z_pt (R := R) (d := d) (0 : Fin 2)) (Z_pt 1) n`. Simplify using `only [eval_identity_two] at e`. Conclude with `e`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem pow_sy : ∀ (R : Type) [CommRing R] (d : ℕ) (O : Type) [CommRing O] [StarRing O] (B : FB R d O) (n : ℕ), pow2 B n * B.sy ^ n = ev (n := 2) ![pt R d 0, comp1 (B.A.act (n : O)) (pt R d 1)] B.sy * ev (n := 2) ![pt R d 1, pt R d 0] (pow1 B n) := by
   intro R _ d O _ _ B n
@@ -137,7 +137,7 @@ theorem pow_sy : ∀ (R : Type) [CommRing R] (d : ℕ) (O : Type) [CommRing O] [
   exact e
 
 /- English proof (translation)
-Introduce `R _ d O _ _ B m n`. Establish `e` using `pow_inter_at B (Z_pt (R := R) (d := d) (0 : Fin 2)) (Z_pt 1) m n`. Simplify using `only [eval_identity_two] at e`. Conclude with `e`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem pow_inter : ∀ (R : Type) [CommRing R] (d : ℕ) (O : Type) [CommRing O] [StarRing O] (B : FB R d O) (m n : ℕ), pow2 B n ^ m * ev (n := 2) ![pt R d 0, comp1 (B.A.act (n : O)) (pt R d 1)] (pow1 B m) = pow1 B m ^ n * ev (n := 2) ![comp1 (B.A.act (m : O)) (pt R d 0), pt R d 1] (pow2 B n) := by
   intro R _ d O _ _ B m n
@@ -146,7 +146,7 @@ theorem pow_inter : ∀ (R : Type) [CommRing R] (d : ℕ) (O : Type) [CommRing O
   exact e
 
 /- English proof (translation)
-Introduce `R _ d O _ _ B B₂ φ ψ lam n h`. Establish `e` using `iso_first_power_at h (Z_pt (R := R) (d := d) (0 : Fin 2)) (Z_pt 1) n`. Simplify using `only [eval_identity_two] at e`. Conclude with `e`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem iso_first_power : ∀ (R : Type) [CommRing R] (d : ℕ) (O : Type) [CommRing O] [StarRing O] (B : FB R d O) (B₂ : FB R d O) (φ ψ : Pt R 1 d) (lam : PS R 2 d) (n : ℕ), IsIso B B₂ φ ψ lam → pow1 B₂ n * ev (n := 2) ![comp1 (B₂.A.act (n : O)) (pt R d 0), pt R d 1] lam = lam ^ n * ev (n := 2) ![comp1 φ (pt R d 0), comp1 φ (pt R d 1)] (pow1 B n) := by
   intro R _ d O _ _ B B₂ φ ψ lam n h

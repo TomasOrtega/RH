@@ -21,7 +21,7 @@ namespace Unif
 variable (q : Unif k)
 
 /- English proof (translation)
-Introduce `h` and use `q.2.ne_zero (Subtype.ext h)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem ne_zero : ((q.1 : 𝒪[k]) : k) ≠ 0 := fun h => q.2.ne_zero (Subtype.ext h)
 
@@ -30,25 +30,25 @@ def unit : kˣ := Units.mk0 _ q.ne_zero
 def inv : k := ((q.1 : 𝒪[k]) : k)⁻¹
 
 /- English proof (translation)
-Rewrite using `[q.2.maximalIdeal_eq, Ideal.mem_span_singleton]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mem_max_iff {a : 𝒪[k]} : a ∈ maximalIdeal 𝒪[k] ↔ q.1 ∣ a := by
   rw [q.2.maximalIdeal_eq, Ideal.mem_span_singleton]
 
 /- English proof (translation)
-The claim follows from `q.mem_max_iff.2 dvd_rfl`.
+A detailed English derivation is pending.
 -/
 theorem mem_max : q.1 ∈ maximalIdeal 𝒪[k] := q.mem_max_iff.2 dvd_rfl
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `((q.1 : 𝒪[k]) : k) • q.inv • x = x`. Rewrite using `[smul_smul, inv, mul_inv_cancel₀ q.ne_zero, one_smul]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 @[simp] theorem smul_inv_smul {n : Type*} (x : n → k) : q.1 • q.inv • x = x := by
   change ((q.1 : 𝒪[k]) : k) • q.inv • x = x
   rw [smul_smul, inv, mul_inv_cancel₀ q.ne_zero, one_smul]
 
 /- English proof (translation)
-Rewrite using `[smul_comm, smul_inv_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 @[simp] theorem inv_smul_smul {n : Type*} (x : n → k) : q.inv • q.1 • x = x := by
   rw [smul_comm, smul_inv_smul]
@@ -74,50 +74,48 @@ def HasVal (P : Pair k n) (x : n → k) (a : 𝓀[k]) : Prop := ∃ h : x ∈ P.
 variable {P Q : Pair k n} {x y e : n → k} {a b : 𝓀[k]}
 
 /- English proof (translation)
-The claim follows from `h.1`.
+A detailed English derivation is pending.
 -/
 theorem HasVal.mem (h : P.HasVal x a) : x ∈ P.lat := h.1
 
 /- English proof (translation)
-The claim follows from `h.2.symm.trans h'.2`.
+A detailed English derivation is pending.
 -/
 theorem HasVal.unique (h : P.HasVal x a) (h' : P.HasVal x b) : a = b := h.2.symm.trans h'.2
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨x.2, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem hasVal_fn (P : Pair k n) (x : P.lat) : P.HasVal x (P.fn x) := ⟨x.2, rfl⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h => ⟨_, h, rfl⟩, fun ⟨_, h⟩ => h.1⟩`.
+Supply the required witnesses or components.
 -/
 theorem mem_lat_iff : x ∈ P.lat ↔ ∃ a, P.HasVal x a := ⟨fun h => ⟨_, h, rfl⟩, fun ⟨_, h⟩ => h.1⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨add_mem h.1 h'.1, by rw [← h.2, ← h'.2, ← map_add]; rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem HasVal.add (h : P.HasVal x a) (h' : P.HasVal y b) : P.HasVal (x + y) (a + b) :=
   ⟨add_mem h.1 h'.1, by rw [← h.2, ← h'.2, ← map_add]; rfl⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨sub_mem h.1 h'.1, by rw [← h.2, ← h'.2, ← map_sub]; rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem HasVal.sub (h : P.HasVal x a) (h' : P.HasVal y b) : P.HasVal (x - y) (a - b) :=
   ⟨sub_mem h.1 h'.1, by rw [← h.2, ← h'.2, ← map_sub]; rfl⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨P.lat.smul_mem s h.1, by rw [← h.2, ← ResidueField.algebraMap_eq, ← Algebra.smul_def, ← map_smul]; rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem HasVal.smul (h : P.HasVal x a) (s : 𝒪[k]) : P.HasVal (s • x) (residue 𝒪[k] s * a) :=
   ⟨P.lat.smul_mem s h.1, by
     rw [← h.2, ← ResidueField.algebraMap_eq, ← Algebra.smul_def, ← map_smul]; rfl⟩
 
 /- English proof (translation)
-Take `⟨L, hL, f, hf⟩` from `P`. Take `⟨L', hL', f', hf'⟩` from `Q`. Establish `: L = L'`. Use extensionality with `x`. Conclude with `(mem_lat_iff (P := ⟨L, hL, f, hf⟩)).trans ((exists_congr (h x)).trans (mem_lat_iff (P := ⟨L', hL', f', hf'⟩)).symm)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Substitute using the available equality.
 
-Substitute `this` using the available equality. Establish `: f = f'`. Use extensionality with `x`. Conclude with `((h x _).1 ⟨x.2, rfl⟩).2.symm`. Substitute `this` using the available equality.
-
-Both sides reduce to the same expression.
+Establish an intermediate fact. By extensionality, compare the relevant components. Substitute using the available equality. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem ext (h : ∀ x a, P.HasVal x a ↔ Q.HasVal x a) : P = Q := by
   obtain ⟨L, hL, f, hf⟩ := P
@@ -134,9 +132,7 @@ theorem ext (h : ∀ x a, P.HasVal x a ↔ Q.HasVal x a) : P = Q := by
   rfl
 
 /- English proof (translation)
-Choose the witnesses or unpack the hypotheses as in `⟨x, hx⟩ : ∃ x, P.fn x ≠ 0 := by`. Assume the negation of the conclusion as `h`. Use `push Not at h`. Conclude with `P.fn_ne (LinearMap.ext h)`. Take `⟨s, hs⟩` from `residue_surjective (R := 𝒪[k]) (P.fn x)⁻¹`.
-
-Conclude with `⟨s • (x : n → k), by simpa [hs, inv_mul_cancel₀ hx] using (P.hasVal_fn x).smul s⟩`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_hasVal_one (P : Pair k n) : ∃ e, P.HasVal e 1 := by
   obtain ⟨x, hx⟩ : ∃ x, P.fn x ≠ 0 := by
@@ -149,18 +145,18 @@ theorem exists_hasVal_one (P : Pair k n) : ∃ e, P.HasVal e 1 := by
 def ker (P : Pair k n) : Submodule 𝒪[k] (n → k) := (LinearMap.ker P.fn).map P.lat.subtype
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun ⟨y, hy, h⟩ => h ▸ ⟨y.2, hy⟩, fun ⟨h, h'⟩ => ⟨⟨x, h⟩, h', rfl⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem mem_ker : x ∈ P.ker ↔ P.HasVal x 0 :=
   ⟨fun ⟨y, hy, h⟩ => h ▸ ⟨y.2, hy⟩, fun ⟨h, h'⟩ => ⟨⟨x, h⟩, h', rfl⟩⟩
 
 /- English proof (translation)
-Introduce `_ h` and use `(mem_ker.1 h).mem`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem ker_le (P : Pair k n) : P.ker ≤ P.lat := fun _ h => (mem_ker.1 h).mem
 
 /- English proof (translation)
-Use `(P.hasVal_fn ⟨x, hx⟩).smul s` as an intermediate fact. Rewrite `this` using `[(residue_eq_zero_iff s).2 hs, zero_mul]`. Conclude with `mem_ker.2 this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem smul_mem_ker {s : 𝒪[k]} (hs : s ∈ maximalIdeal 𝒪[k]) (hx : x ∈ P.lat) : s • x ∈ P.ker := by
   have := (P.hasVal_fn ⟨x, hx⟩).smul s
@@ -168,9 +164,9 @@ theorem smul_mem_ker {s : 𝒪[k]} (hs : s ∈ maximalIdeal 𝒪[k]) (hx : x ∈
   exact mem_ker.2 this
 
 /- English proof (translation)
-Take `⟨q⟩ : Nonempty (Unif k)` from `inferInstance`. Use `haveI := P.isLat`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `haveI : IsNoetherian 𝒪[k] P.lat := inferInstance`. Conclude with `(IsNoetherian.noetherian _).map _`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[eq_top_iff, ← P.isLat.span_eq_top, Submodule.span_le]`. Introduce `x hx`. Rewrite using `[← q.inv_smul_smul x]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span (smul_mem_ker q.mem_max hx))`.
+A detailed English derivation is pending.
 -/
 theorem ker_isLat (P : Pair k n) : P.ker.IsLattice k := by
   obtain ⟨q⟩ : Nonempty (Unif k) := inferInstance
@@ -186,14 +182,14 @@ theorem ker_isLat (P : Pair k n) : P.ker.IsLattice k := by
 def vec (P : Pair k n) : n → k := P.exists_hasVal_one.choose
 
 /- English proof (translation)
-The claim follows from `P.exists_hasVal_one.choose_spec`.
+A detailed English derivation is pending.
 -/
 theorem hasVal_vec (P : Pair k n) : P.HasVal P.vec 1 := P.exists_hasVal_one.choose_spec
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Take `⟨s, rfl⟩` from `residue_surjective (R := 𝒪[k]) a`. Conclude with `⟨s, rfl, mem_ker.2 (by simpa using h.sub (he.smul s))⟩`. Introduce and unpack `⟨s, rfl, h⟩`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Simplify using `using (mem_ker.1 h).add (he.smul s)`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem hasVal_iff (he : P.HasVal e 1) :
     P.HasVal x a ↔ ∃ s : 𝒪[k], residue 𝒪[k] s = a ∧ x - s • e ∈ P.ker := by
@@ -205,18 +201,18 @@ theorem hasVal_iff (he : P.HasVal e 1) :
     simpa using (mem_ker.1 h).add (he.smul s)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h => mem_ker.2 (by simpa using h.sub he), fun h => by simpa using (mem_ker.1 h).add he⟩`.
+Supply the required witnesses or components.
 -/
 theorem hasVal_one_iff (he : P.HasVal e 1) : P.HasVal x 1 ↔ x - e ∈ P.ker :=
   ⟨fun h => mem_ker.2 (by simpa using h.sub he), fun h => by simpa using (mem_ker.1 h).add he⟩
 
 /- English proof (translation)
-The claim follows from `(hasVal_one_iff P.hasVal_vec).1 he`.
+A detailed English derivation is pending.
 -/
 theorem sub_vec_mem (he : P.HasVal e 1) : e - P.vec ∈ P.ker := (hasVal_one_iff P.hasVal_vec).1 he
 
 /- English proof (translation)
-Use `le_antisymm (fun x hx => ?_) (sup_le P.ker_le ((Submodule.span_singleton_le_iff_mem _ _).2 he.mem))` and prove the remaining obligations. Take `⟨s, -, h⟩` from `(hasVal_iff he).1 (P.hasVal_fn ⟨x, hx⟩)`. Use `Submodule.add_mem_sup h (Submodule.smul_mem _ s (Submodule.mem_span_singleton_self e))` as an intermediate fact. Simplify using `using this`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem lat_eq (he : P.HasVal e 1) : P.lat = P.ker ⊔ Submodule.span 𝒪[k] {e} := by
   refine le_antisymm (fun x hx => ?_) (sup_le P.ker_le ((Submodule.span_singleton_le_iff_mem _ _).2 he.mem))
@@ -225,7 +221,7 @@ theorem lat_eq (he : P.HasVal e 1) : P.lat = P.ker ⊔ Submodule.span 𝒪[k] {e
   simpa using this
 
 /- English proof (translation)
-The claim follows from `ext fun _ _ => by rw [hasVal_iff he, hasVal_iff he', hk]`.
+A detailed English derivation is pending.
 -/
 theorem ext_ker (hk : P.ker = Q.ker) (he : P.HasVal e 1) (he' : Q.HasVal e 1) : P = Q :=
   ext fun _ _ => by rw [hasVal_iff he, hasVal_iff he', hk]
@@ -238,7 +234,7 @@ structure IsGlue (L : Submodule 𝒪[k] (n → k)) (e : n → k) : Prop where
   smul_mem : ∀ s ∈ maximalIdeal 𝒪[k], s • e ∈ L
 
 /- English proof (translation)
-Use `⟨fun h => ⟨h.1, h.2, h.3 _ q.mem_max⟩, fun h => ⟨h.1, h.2.1, fun s hs => ?_⟩⟩` and prove the remaining obligations. Take `⟨t, rfl⟩` from `q.mem_max_iff.1 hs`. Rewrite using `[mul_comm, mul_smul]`. Conclude with `L.smul_mem _ h.2.2`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isGlue_iff (q : Unif k) {L : Submodule 𝒪[k] (n → k)} {e : n → k} :
     IsGlue L e ↔ L.IsLattice k ∧ e ∉ L ∧ q.1 • e ∈ L := by
@@ -248,13 +244,13 @@ theorem isGlue_iff (q : Unif k) {L : Submodule 𝒪[k] (n → k)} {e : n → k} 
   exact L.smul_mem _ h.2.2
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨P.ker_isLat, fun h => one_ne_zero (he.unique (Pair.mem_ker.1 h)), fun _ hs => Pair.smul_mem_ker hs he.mem⟩`.
+Supply the required witnesses or components.
 -/
 theorem Pair.isGlue {P : Pair k n} {e : n → k} (he : P.HasVal e 1) : IsGlue P.ker e :=
   ⟨P.ker_isLat, fun h => one_ne_zero (he.unique (Pair.mem_ker.1 h)), fun _ hs => Pair.smul_mem_ker hs he.mem⟩
 
 /- English proof (translation)
-Use `⟨fun hs => ?_, h.smul_mem s⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hn`. Take `⟨u, rfl⟩` from `notMem_maximalIdeal.1 hn`. Apply `h.not_mem` to reduce the goal to its premises. Simplify `L.smul_mem ((u⁻¹ : 𝒪[k]ˣ) : 𝒪[k]) hs` using `[smul_smul]`.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem IsGlue.smul_mem_iff {L : Submodule 𝒪[k] (n → k)} {e : n → k} (h : IsGlue L e) {s : 𝒪[k]} :
     s • e ∈ L ↔ s ∈ maximalIdeal 𝒪[k] := by
@@ -265,21 +261,19 @@ theorem IsGlue.smul_mem_iff {L : Submodule 𝒪[k] (n → k)} {e : n → k} (h :
   simpa [smul_smul] using L.smul_mem ((u⁻¹ : 𝒪[k]ˣ) : 𝒪[k]) hs
 
 /- English proof (translation)
-Set `j : 𝒪[k] →ₗ[𝒪[k]] (n → k) ⧸ L` to `L.mkQ ∘ₗ LinearMap.toSpanSingleton 𝒪[k] _ e`. Establish `hj : ∀ s, j s = 0 ↔ s ∈ maximalIdeal 𝒪[k]` using `fun s => by`. Rewrite using `[← h.smul_mem_iff]`. Conclude with `Submodule.Quotient.mk_eq_zero L`. Set `ι : 𝓀[k] →ₗ[𝒪[k]] (n → k) ⧸ L` to `(maximalIdeal 𝒪[k]).liftQ j fun s hs => (hj s).2 hs`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hι : ∀ s, ι (residue 𝒪[k] s) = L.mkQ (s • e)` using `fun s => rfl`. Establish `hinj : Function.Injective ι`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `a ha`. Take `⟨s, rfl⟩` from `residue_surjective (R := 𝒪[k]) a`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Conclude with `(residue_eq_zero_iff s).2 ((hj s).1 ha)`. Set `M` to `L ⊔ Submodule.span 𝒪[k] {e}`. Establish `hM : ∀ x : M, (L.mkQ ∘ₗ M.subtype) x ∈ LinearMap.range ι`. Introduce and unpack `⟨x, hx⟩`. Take `⟨y, hy, z, hz, rfl⟩` from `Submodule.mem_sup.1 hx`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨s, rfl⟩` from `Submodule.mem_span_singleton.1 hz`. Use `⟨residue _ s, ?_⟩` and prove the remaining obligations. Simplify using `[hι, (Submodule.Quotient.mk_eq_zero L).2 hy]`. Set `f : M →ₗ[𝒪[k]] 𝓀[k]` to `(LinearEquiv.ofInjective ι hinj).symm.toLinearMap ∘ₗ LinearMap.codRestrict _ _ hM`. Establish `hf : ∀ x : M, ι (f x) = L.mkQ x` using `fun x => by`.
+Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(LinearEquiv.ofInjective ι hinj).apply_symm_apply (LinearMap.codRestrict _ _ hM x)` as an intermediate fact. Conclude with `congrArg Subtype.val this`. Establish `he : e ∈ M` using `Submodule.mem_sup_right (Submodule.mem_span_singleton_self e)`. Establish `hfe : f ⟨e, he⟩ = 1` using `hinj (by rw [hf, ← map_one (residue 𝒪[k]), hι, one_smul])`. Use `haveI := h.isLat`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Establish `hlat : M.IsLattice k` using `Submodule.IsLattice.of_le_of_isLattice_of_fg k (M := L) le_sup_left (h.isLat.fg.sup (Submodule.fg_span_singleton e))`. Use `⟨⟨M, hlat, f, fun h0 => by simp [h0] at hfe⟩, ?_, he, hfe⟩` and prove the remaining obligations. Use extensionality with `x`. Rewrite using `[Pair.mem_ker]`. Prove the components needed by the constructor for the conclusion.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce and unpack `⟨hx, h0⟩`. Use `hf ⟨x, hx⟩` as an intermediate fact. Rewrite `this` using `[show f ⟨x, hx⟩ = 0 from h0, map_zero]`. Conclude with `(Submodule.Quotient.mk_eq_zero L).1 this.symm`. Introduce `hx`.
-
-Use `⟨Submodule.mem_sup_left hx, hinj ?_⟩` and prove the remaining obligations. Rewrite using `[map_zero]`. Conclude with `(hf _).trans ((Submodule.Quotient.mk_eq_zero L).2 hx)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsGlue.exists_pair {L : Submodule 𝒪[k] (n → k)} {e : n → k} (h : IsGlue L e) :
     ∃ P : Pair k n, P.ker = L ∧ P.HasVal e 1 := by
@@ -330,35 +324,35 @@ section
 variable {L L' : Submodule 𝒪[k] (n → k)} {e e' : n → k}
 
 /- English proof (translation)
-The claim follows from `h.exists_pair.choose_spec.1`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem glue_ker (h : IsGlue L e) : (glue h).ker = L := h.exists_pair.choose_spec.1
 
 /- English proof (translation)
-The claim follows from `h.exists_pair.choose_spec.2`.
+A detailed English derivation is pending.
 -/
 theorem glue_hasVal (h : IsGlue L e) : (glue h).HasVal e 1 := h.exists_pair.choose_spec.2
 
 /- English proof (translation)
-Rewrite using `[Pair.lat_eq (glue_hasVal h), glue_ker]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem glue_lat (h : IsGlue L e) : (glue h).lat = L ⊔ Submodule.span 𝒪[k] {e} := by
   rw [Pair.lat_eq (glue_hasVal h), glue_ker]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun hP => hP ▸ ⟨glue_ker h, glue_hasVal h⟩, fun hP => Pair.ext_ker (hP.1.trans (glue_ker h).symm) hP.2 (glue_hasVal h)⟩`.
+Supply the required witnesses or components.
 -/
 theorem eq_glue_iff (h : IsGlue L e) {P : Pair k n} : P = glue h ↔ P.ker = L ∧ P.HasVal e 1 :=
   ⟨fun hP => hP ▸ ⟨glue_ker h, glue_hasVal h⟩, fun hP => Pair.ext_ker (hP.1.trans (glue_ker h).symm) hP.2 (glue_hasVal h)⟩
 
 /- English proof (translation)
-The claim follows from `((eq_glue_iff _).2 ⟨rfl, he⟩).symm`.
+A detailed English derivation is pending.
 -/
 theorem Pair.glue_self {P : Pair k n} (he : P.HasVal e 1) : glue (Pair.isGlue he) = P :=
   ((eq_glue_iff _).2 ⟨rfl, he⟩).symm
 
 /- English proof (translation)
-Rewrite using `[eq_glue_iff, glue_ker, Pair.hasVal_one_iff (glue_hasVal h), glue_ker]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem glue_eq_glue_iff (h : IsGlue L e) (h' : IsGlue L' e') : glue h = glue h' ↔ L = L' ∧ e' - e ∈ L := by
   rw [eq_glue_iff, glue_ker, Pair.hasVal_one_iff (glue_hasVal h), glue_ker]
@@ -384,11 +378,11 @@ def Pair.toGlue (P : Pair k n) : GluePair k n where
   smul_cls s hs := (Submodule.Quotient.mk_eq_zero _).2 (Pair.smul_mem_ker hs P.hasVal_vec.mem)
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `P Q h`. Establish `hk : P.ker = Q.ker` using `congrArg GluePair.ker h`. Establish `key : ∀ (G G' : GluePair k n) (x y : n → k), G = G' → G.cls = G.ker.mkQ x → G'.cls = G'.ker.mkQ y → x - y ∈ G'.ker`. Introduce and unpack `G _ x y rfl h1 h2`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Conclude with `(Submodule.Quotient.eq _).1 (h1.symm.trans h2)`. Conclude with `Pair.ext_ker hk P.hasVal_vec ((Pair.hasVal_one_iff Q.hasVal_vec).2 (key _ _ _ _ h rfl rfl))`. Introduce and unpack `⟨L, hL, c, hc, hs⟩`. Take `⟨e, rfl⟩` from `L.mkQ_surjective c`. Establish `h : IsGlue L e` using `⟨hL, fun h => hc ((Submodule.Quotient.mk_eq_zero _).2 h), fun s hs' => (Submodule.Quotient.mk_eq_zero _).1 (hs s hs')⟩`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨P, rfl, hP⟩` from `h.exists_pair`. Use `⟨P, ?_⟩` and prove the remaining obligations. Establish `: P.ker.mkQ P.vec = P.ker.mkQ e` using `((Submodule.Quotient.eq _).2 (Pair.sub_vec_mem hP)).symm`. Simplify using `only [Pair.toGlue, this]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem Pair.toGlue_bijective : Function.Bijective (Pair.toGlue : Pair k n → GluePair k n) := by
   constructor
@@ -424,7 +418,7 @@ Both sides reduce to the same expression.
 @[simp] theorem dia_lat (c : 𝓀[k]ˣ) (P : Pair k n) : (c • P).lat = P.lat := rfl
 
 /- English proof (translation)
-The claim follows from `exists_congr fun _ => by change (c : 𝓀[k]) * _ = a ↔ _ rw [Units.eq_inv_mul_iff_mul_eq]`.
+A detailed English derivation is pending.
 -/
 theorem dia_hasVal {c : 𝓀[k]ˣ} {P : Pair k n} {x : n → k} {a : 𝓀[k]} :
     (c • P).HasVal x a ↔ P.HasVal x ((c⁻¹ : 𝓀[k]ˣ) * a) :=
@@ -437,14 +431,14 @@ instance : MulAction 𝓀[k]ˣ (Pair k n) where
   mul_smul c d P := ext fun x a => by simp only [dia_hasVal, _root_.mul_inv_rev, Units.val_mul, mul_assoc]
 
 /- English proof (translation)
-Use extensionality with `x`. Simplify using `[mem_ker, dia_hasVal]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 @[simp] theorem dia_ker (c : 𝓀[k]ˣ) (P : Pair k n) : (c • P).ker = P.ker := by
   ext x
   simp [mem_ker, dia_hasVal]
 
 /- English proof (translation)
-Rewrite using `[dia_hasVal, ← hs]`. Conclude with `he.smul s`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dia_hasVal_one {c : 𝓀[k]ˣ} {P : Pair k n} {e : n → k} (he : P.HasVal e 1) {s : 𝒪[k]}
     (hs : residue 𝒪[k] s = (c⁻¹ : 𝓀[k]ˣ)) : (c • P).HasVal (s • e) 1 := by
@@ -456,12 +450,12 @@ open Classical in
 def ev (P : Pair k n) (x : n → k) : 𝓀[k] := if h : x ∈ P.lat then P.fn ⟨x, h⟩ else 0
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h, by simp [ev, h]⟩`.
+Supply the required witnesses or components.
 -/
 theorem hasVal_ev {P : Pair k n} {x : n → k} (h : x ∈ P.lat) : P.HasVal x (P.ev x) := ⟨h, by simp [ev, h]⟩
 
 /- English proof (translation)
-The claim follows from `(hasVal_ev h.mem).unique h`.
+A detailed English derivation is pending.
 -/
 theorem HasVal.ev_eq {P : Pair k n} {x : n → k} {a : 𝓀[k]} (h : P.HasVal x a) : P.ev x = a :=
   (hasVal_ev h.mem).unique h
@@ -486,16 +480,16 @@ instance : IsScalarTower 𝒪[k] 𝓀[k] (Red L) :=
 def mk : L →ₗ[𝒪[k]] Red L := (maximalIdeal 𝒪[k] • ⊤ : Submodule 𝒪[k] L).mkQ
 
 /- English proof (translation)
-The claim follows from `Submodule.mkQ_surjective _`.
+A detailed English derivation is pending.
 -/
 theorem mk_surjective : Function.Surjective (mk L) := Submodule.mkQ_surjective _
 
 variable {L}
 
 /- English proof (translation)
-Use `(Submodule.Quotient.mk_eq_zero _).trans ?_` and prove the remaining obligations. Rewrite using `[q.2.maximalIdeal_eq, Submodule.ideal_span_singleton_smul, Submodule.mem_smul_pointwise_iff_exists]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, -, rfl⟩`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 
-Introduce `h`. Conclude with `⟨⟨_, h⟩, trivial, Subtype.ext (q.smul_inv_smul _)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem mk_eq_zero (q : Unif k) {x : L} : mk L x = 0 ↔ q.inv • (x : n → k) ∈ L := by
   refine (Submodule.Quotient.mk_eq_zero _).trans ?_
@@ -507,14 +501,14 @@ theorem mk_eq_zero (q : Unif k) {x : L} : mk L x = 0 ↔ q.inv • (x : n → k)
     exact ⟨⟨_, h⟩, trivial, Subtype.ext (q.smul_inv_smul _)⟩
 
 /- English proof (translation)
-The claim follows from `algebraMap_smul 𝓀[k] s x`.
+A detailed English derivation is pending.
 -/
 theorem residue_smul (s : 𝒪[k]) (x : Red L) : residue 𝒪[k] s • x = s • x := algebraMap_smul 𝓀[k] s x
 
 def out (x : Red L) : L := (mk_surjective L x).choose
 
 /- English proof (translation)
-The claim follows from `(mk_surjective L x).choose_spec`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem mk_out (x : Red L) : mk L x.out = x := (mk_surjective L x).choose_spec
 
@@ -527,7 +521,7 @@ instance [L.IsLattice k] : Finite (Red L) := Module.finite_of_finite 𝓀[k]
 instance [L.IsLattice k] : Finite (Module.Dual 𝓀[k] (Red L)) := Module.finite_of_finite 𝓀[k]
 
 /- English proof (translation)
-Set `e : TensorProduct 𝒪[k] 𝓀[k] L ≃ₗ[𝒪[k]] Red L` to `TensorProduct.quotTensorEquivQuotSMul L (maximalIdeal 𝒪[k])`. Set `e' : TensorProduct 𝒪[k] 𝓀[k] L ≃ₗ[𝓀[k]] Red L` to `e.extendScalarsOfSurjective residue_surjective`. Rewrite using `[← e'.finrank_eq, Module.finrank_baseChange, Submodule.IsLattice.finrank_of_pi k L]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 -/
 theorem finrank_eq [Fintype n] [L.IsLattice k] : Module.finrank 𝓀[k] (Red L) = Fintype.card n := by
   let e : TensorProduct 𝒪[k] 𝓀[k] L ≃ₗ[𝒪[k]] Red L := TensorProduct.quotTensorEquivQuotSMul L (maximalIdeal 𝒪[k])
@@ -535,7 +529,7 @@ theorem finrank_eq [Fintype n] [L.IsLattice k] : Module.finrank 𝓀[k] (Red L) 
   rw [← e'.finrank_eq, Module.finrank_baseChange, Submodule.IsLattice.finrank_of_pi k L]
 
 /- English proof (translation)
-Rewrite using `[Module.natCard_eq_pow_finrank (K := 𝓀[k]), finrank_eq]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem card_eq [Fintype n] [L.IsLattice k] : Nat.card (Red L) = SplitWeil.resCard k ^ Fintype.card n := by
   rw [Module.natCard_eq_pow_finrank (K := 𝓀[k]), finrank_eq]
@@ -555,7 +549,7 @@ Both sides reduce to the same expression.
 @[simp] theorem Pair.red_mk (P : Pair k n) (x : P.lat) : P.red (Red.mk _ x) = P.fn x := rfl
 
 /- English proof (translation)
-Introduce `h` and use `P.fn_ne (LinearMap.ext fun x => by rw [← P.red_mk, h]; rfl)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Pair.red_ne (P : Pair k n) : P.red ≠ 0 := fun h =>
   P.fn_ne (LinearMap.ext fun x => by rw [← P.red_mk, h]; rfl)
@@ -577,7 +571,7 @@ Both sides reduce to the same expression.
 @[simp] theorem ofDual_lat (f : {f : Module.Dual 𝓀[k] (Red L) // f ≠ 0}) : (ofDual L f).lat = L := rfl
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨x.2, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem ofDual_hasVal (f : {f : Module.Dual 𝓀[k] (Red L) // f ≠ 0}) (x : L) :
     (ofDual L f).HasVal x (f.1 (Red.mk L x)) := ⟨x.2, rfl⟩
@@ -601,7 +595,7 @@ def latEquiv : {f : Module.Dual 𝓀[k] (Red L) // f ≠ 0} ≃ {P : Pair k n //
 variable (q : Unif k)
 
 /- English proof (translation)
-The claim follows from `(isGlue_iff q).2 ⟨hL, fun h => hx ((Red.mk_eq_zero q).2 h), by simp⟩`.
+A detailed English derivation is pending.
 -/
 theorem isGlue_inv_smul {x : L} (hx : Red.mk L x ≠ 0) : IsGlue L (q.inv • (x : n → k)) :=
   (isGlue_iff q).2 ⟨hL, fun h => hx ((Red.mk_eq_zero q).2 h), by simp⟩
@@ -610,12 +604,12 @@ def up (x : {x : Red L // x ≠ 0}) : Pair k n :=
   glue (isGlue_inv_smul L q (x := x.1.out) (by simpa using x.2))
 
 /- English proof (translation)
-The claim follows from `glue_ker _`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem up_ker (x : {x : Red L // x ≠ 0}) : (up L q x).ker = L := glue_ker _
 
 /- English proof (translation)
-Rewrite using `[up, Pair.hasVal_one_iff (glue_hasVal _), glue_ker, ← smul_sub, ← Submodule.coe_sub, ← Red.mk_eq_zero q, map_sub, Red.mk_out, sub_eq_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem up_hasVal_iff (x : {x : Red L // x ≠ 0}) (y : L) :
     (up L q x).HasVal (q.inv • (y : n → k)) 1 ↔ Red.mk L y = x.1 := by
@@ -623,7 +617,7 @@ theorem up_hasVal_iff (x : {x : Red L // x ≠ 0}) (y : L) :
     map_sub, Red.mk_out, sub_eq_zero]
 
 /- English proof (translation)
-The claim follows from `(eq_glue_iff _).2 ⟨up_ker _ _ _, (up_hasVal_iff _ _ _ _).2 rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem up_mk {y : L} (hy : Red.mk L y ≠ 0) : up L q ⟨_, hy⟩ = glue (isGlue_inv_smul L q hy) :=
   (eq_glue_iff _).2 ⟨up_ker _ _ _, (up_hasVal_iff _ _ _ _).2 rfl⟩
@@ -646,7 +640,7 @@ def kerEquiv : {x : Red L // x ≠ 0} ≃ {P : Pair k n // P.ker = L} :=
 end
 
 /- English proof (translation)
-Break down `Set.eq_empty_or_nonempty {P : Pair k n | P.lat = L} with h | ⟨P, rfl⟩` into its components or cases. Simplify using `[h]`. Conclude with `Finite.of_equiv _ (latEquiv P.lat)`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem finite_lat (L : Submodule 𝒪[k] (n → k)) : {P : Pair k n | P.lat = L}.Finite := by
   rcases Set.eq_empty_or_nonempty {P : Pair k n | P.lat = L} with h | ⟨P, rfl⟩
@@ -654,7 +648,7 @@ theorem finite_lat (L : Submodule 𝒪[k] (n → k)) : {P : Pair k n | P.lat = L
   · exact Finite.of_equiv _ (latEquiv P.lat)
 
 /- English proof (translation)
-Take `⟨q⟩ : Nonempty (Unif k)` from `inferInstance`. Break down `Set.eq_empty_or_nonempty {P : Pair k n | P.ker = L} with h | ⟨P, rfl⟩` into its components or cases. Simplify using `[h]`. Conclude with `Finite.of_equiv _ (kerEquiv P.ker q)`.
+Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem finite_ker (L : Submodule 𝒪[k] (n → k)) : {P : Pair k n | P.ker = L}.Finite := by
   obtain ⟨q⟩ : Nonempty (Unif k) := inferInstance
@@ -667,19 +661,19 @@ def withLat (L : Submodule 𝒪[k] (n → k)) : Finset (Pair k n) := (finite_lat
 def withKer (L : Submodule 𝒪[k] (n → k)) : Finset (Pair k n) := (finite_ker L).toFinset
 
 /- English proof (translation)
-The claim follows from `(finite_lat L).mem_toFinset`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem mem_withLat {L : Submodule 𝒪[k] (n → k)} {P : Pair k n} : P ∈ withLat L ↔ P.lat = L :=
   (finite_lat L).mem_toFinset
 
 /- English proof (translation)
-The claim follows from `(finite_ker L).mem_toFinset`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem mem_withKer {L : Submodule 𝒪[k] (n → k)} {P : Pair k n} : P ∈ withKer L ↔ P.ker = L :=
   (finite_ker L).mem_toFinset
 
 /- English proof (translation)
-Use `haveI : Fintype {P : Pair k n // P.lat = L} := Fintype.ofEquiv _ (latEquiv L)`. Rewrite using `[Finset.sum_subtype (withLat L) (p := fun P => P.lat = L) (fun _ => mem_withLat)]`. Conclude with `((latEquiv L).sum_comp fun P => F P.1).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_withLat {M : Type*} [AddCommMonoid M] (L : Submodule 𝒪[k] (n → k)) [L.IsLattice k]
     [Fintype {f : Module.Dual 𝓀[k] (Red L) // f ≠ 0}] (F : Pair k n → M) :
@@ -689,7 +683,7 @@ theorem sum_withLat {M : Type*} [AddCommMonoid M] (L : Submodule 𝒪[k] (n → 
   exact ((latEquiv L).sum_comp fun P => F P.1).symm
 
 /- English proof (translation)
-Use `haveI : Fintype {P : Pair k n // P.ker = L} := Fintype.ofEquiv _ (kerEquiv L q)`. Rewrite using `[Finset.sum_subtype (withKer L) (p := fun P => P.ker = L) (fun _ => mem_withKer)]`. Conclude with `((kerEquiv L q).sum_comp fun P => F P.1).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_withKer {M : Type*} [AddCommMonoid M] (L : Submodule 𝒪[k] (n → k)) [L.IsLattice k] (q : Unif k)
     [Fintype {x : Red L // x ≠ 0}] (F : Pair k n → M) :
@@ -701,7 +695,7 @@ theorem sum_withKer {M : Type*} [AddCommMonoid M] (L : Submodule 𝒪[k] (n → 
 def cross (q : Unif k) (P₁ P : Pair k n) : 𝓀[k] := P.ev (q.1 • P₁.vec)
 
 /- English proof (translation)
-Establish `h1 : q.1 • P₁.vec ∈ P.lat` using `h ▸ Pair.smul_mem_ker q.mem_max P₁.hasVal_vec.mem`. Establish `h2 : q.1 • (e - P₁.vec) ∈ P.ker` using `Pair.smul_mem_ker q.mem_max (h ▸ Pair.sub_vec_mem he)`. Simplify `(Pair.mem_ker.1 h2).add (Pair.hasVal_ev h1)` using `[smul_sub, cross]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem cross_hasVal (q : Unif k) {P₁ P : Pair k n} (h : P.lat = P₁.ker) {e : n → k} (he : P₁.HasVal e 1) :
     P.HasVal (q.1 • e) (cross q P₁ P) := by
@@ -710,7 +704,7 @@ theorem cross_hasVal (q : Unif k) {P₁ P : Pair k n} (h : P.lat = P₁.ker) {e 
   simpa [smul_sub, cross] using (Pair.mem_ker.1 h2).add (Pair.hasVal_ev h1)
 
 /- English proof (translation)
-Establish `h` using `cross_hasVal q (P := P) (up_ker P.lat q x).symm ((up_hasVal_iff _ q x x.1.out).2 (Red.mk_out _))`. Rewrite `h` using `[q.smul_inv_smul]`. Rewrite using `[h.unique (P.hasVal_fn _), ← P.red_mk, Red.mk_out]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem cross_up (q : Unif k) (P : Pair k n) (x : {x : Red P.lat // x ≠ 0}) :
     cross q (up P.lat q x) P = P.red x.1 := by
@@ -719,7 +713,7 @@ theorem cross_up (q : Unif k) (P : Pair k n) (x : {x : Red P.lat // x ≠ 0}) :
   rw [h.unique (P.hasVal_fn _), ← P.red_mk, Red.mk_out]
 
 /- English proof (translation)
-Establish `h` using `cross_hasVal q (P := ofDual L f) (up_ker L q x).symm ((up_hasVal_iff _ q x x.1.out).2 (Red.mk_out _))`. Rewrite `h` using `[q.smul_inv_smul]`. Rewrite using `[h.unique (ofDual_hasVal L f _), Red.mk_out]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem cross_up_ofDual (q : Unif k) (L : Submodule 𝒪[k] (n → k)) [L.IsLattice k] (x : {x : Red L // x ≠ 0})
     (f : {f : Module.Dual 𝓀[k] (Red L) // f ≠ 0}) : cross q (up L q x) (ofDual L f) = f.1 x.1 := by
@@ -728,7 +722,7 @@ theorem cross_up_ofDual (q : Unif k) (L : Submodule 𝒪[k] (n → k)) [L.IsLatt
   rw [h.unique (ofDual_hasVal L f _), Red.mk_out]
 
 /- English proof (translation)
-Establish `h1` using `Pair.dia_hasVal.1 (cross_hasVal q (P := c • P) h P₁.hasVal_vec)`. Rewrite using `[← h1.unique (cross_hasVal q h P₁.hasVal_vec), Units.mul_inv_cancel_left]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem cross_dia_right (q : Unif k) {P₁ P : Pair k n} (h : P.lat = P₁.ker) (c : 𝓀[k]ˣ) :
     cross q P₁ (c • P) = c * cross q P₁ P := by
@@ -736,7 +730,7 @@ theorem cross_dia_right (q : Unif k) {P₁ P : Pair k n} (h : P.lat = P₁.ker) 
   rw [← h1.unique (cross_hasVal q h P₁.hasVal_vec), Units.mul_inv_cancel_left]
 
 /- English proof (translation)
-Take `⟨s, hs⟩` from `residue_surjective (R := 𝒪[k]) (c⁻¹ : 𝓀[k]ˣ)`. Establish `h1` using `cross_hasVal q (P₁ := c • P₁) (h.trans (Pair.dia_ker _ _).symm) (Pair.dia_hasVal_one P₁.hasVal_vec hs)`. Rewrite `h1` using `[smul_comm]`. Rewrite using `[h1.unique ((cross_hasVal q h P₁.hasVal_vec).smul s), hs]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem cross_dia_left (q : Unif k) {P₁ P : Pair k n} (h : P.lat = P₁.ker) (c : 𝓀[k]ˣ) :
     cross q (c • P₁) P = (c⁻¹ : 𝓀[k]ˣ) * cross q P₁ P := by
@@ -749,7 +743,7 @@ section Action
 variable [Fintype n] [DecidableEq n]
 
 /- English proof (translation)
-Use `(Submodule.mem_smul_pointwise_iff_exists x g L).trans ?_` and prove the remaining obligations. Conclude with `⟨fun ⟨y, hy, h⟩ => by simpa [← h] using hy, fun h => ⟨_, h, smul_inv_smul _ _⟩⟩`.
+Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components.
 -/
 theorem mem_smul_iff {g : GL n k} {L : Submodule 𝒪[k] (n → k)} {x : n → k} : x ∈ g • L ↔ g⁻¹ • x ∈ L := by
   refine (Submodule.mem_smul_pointwise_iff_exists x g L).trans ?_
@@ -788,7 +782,7 @@ Both sides reduce to the same expression.
 @[simp] theorem smul_lat (g : GL n k) (P : Pair k n) : (g • P).lat = g • P.lat := rfl
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun ⟨h, h'⟩ => ⟨mem_smul_iff.1 h, h'⟩, fun ⟨h, h'⟩ => ⟨mem_smul_iff.2 h, h'⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem smul_hasVal {g : GL n k} {P : Pair k n} {x : n → k} {a : 𝓀[k]} :
     (g • P).HasVal x a ↔ P.HasVal (g⁻¹ • x) a :=
@@ -802,20 +796,20 @@ instance : SMulCommClass (GL n k) 𝓀[k]ˣ (Pair k n) where
   smul_comm g c P := ext fun x a => by simp only [smul_hasVal, dia_hasVal]
 
 /- English proof (translation)
-The claim follows from `smul_hasVal.2 (by simpa using h)`.
+A detailed English derivation is pending.
 -/
 theorem HasVal.gl_smul {P : Pair k n} {x : n → k} {a : 𝓀[k]} (h : P.HasVal x a) (g : GL n k) :
     (g • P).HasVal (g • x) a := smul_hasVal.2 (by simpa using h)
 
 /- English proof (translation)
-Use extensionality with `x`. Rewrite using `[mem_ker, smul_hasVal, mem_smul_iff, mem_ker]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 -/
 @[simp] theorem smul_ker (g : GL n k) (P : Pair k n) : (g • P).ker = g • P.ker := by
   ext x
   rw [mem_ker, smul_hasVal, mem_smul_iff, mem_ker]
 
 /- English proof (translation)
-Rewrite using `[← hasVal_one_iff he]`. Conclude with `⟨fun h => ⟨by rw [← smul_ker, h], by simpa [h] using he.gl_smul g⟩, fun h => ext_ker ((smul_ker g P).trans h.1) (he.gl_smul g) h.2⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem smul_eq_iff {g : GL n k} {P : Pair k n} {e : n → k} (he : P.HasVal e 1) :
     g • P = P ↔ g • P.ker = P.ker ∧ g • e - e ∈ P.ker := by
@@ -826,7 +820,7 @@ theorem smul_eq_iff {g : GL n k} {P : Pair k n} {e : n → k} (he : P.HasVal e 1
 end Pair
 
 /- English proof (translation)
-Establish `h1` using `cross_hasVal q (P₁ := g • P₁) (P := g • P) (by simp [h]) (P₁.hasVal_vec.gl_smul g)`. Rewrite `h1` using `[← smul_comm g]`. Conclude with `h1.unique ((cross_hasVal q h P₁.hasVal_vec).gl_smul g)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cross_smul (q : Unif k) {P₁ P : Pair k n} (h : P.lat = P₁.ker) (g : GL n k) :
     cross q (g • P₁) (g • P) = cross q P₁ P := by
@@ -835,11 +829,11 @@ theorem cross_smul (q : Unif k) {P₁ P : Pair k n} (h : P.lat = P₁.ker) (g : 
   exact h1.unique ((cross_hasVal q h P₁.hasVal_vec).gl_smul g)
 
 /- English proof (translation)
-Set `b` to `Module.Free.chooseBasis 𝒪[k] L`. Set `E : (n → k) ≃ₗ[k] (n → k)` to `(b.extendOfIsLattice k).equiv ((b.map e).extendOfIsLattice k) (Equiv.refl _)`. Use `⟨Matrix.GeneralLinearGroup.toLin.symm (LinearMap.GeneralLinearGroup.ofLinearEquiv E), ?_⟩` and prove the remaining obligations. Establish `: (E.toLinearMap.restrictScalars 𝒪[k]) ∘ₗ L.subtype = L'.subtype ∘ₗ e.toLinearMap`. Use `b.ext fun i => ?_` and prove the remaining obligations.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `(b.extendOfIsLattice k).equiv_apply i ((b.map e).extendOfIsLattice k) (Equiv.refl _)` as an intermediate fact. Simplify `this` using `[E]`. Introduce `x`. Use `Eq.trans ?_ (LinearMap.congr_fun this x)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `LinearMap.toMatrix' E.toLinearMap *ᵥ (x : n → k) = E x`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[LinearMap.toMatrix'_mulVec]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem exists_gl_of_equiv {L L' : Submodule 𝒪[k] (n → k)} [L.IsLattice k] [L'.IsLattice k] (e : L ≃ₗ[𝒪[k]] L') :
     ∃ g : GL n k, ∀ x : L, g • (x : n → k) = e x := by
@@ -859,13 +853,13 @@ theorem exists_gl_of_equiv {L L' : Submodule 𝒪[k] (n → k)} [L.IsLattice k] 
 omit [Fintype n] [DecidableEq n] in
 
 /- English proof (translation)
-Take `⟨F, hF⟩` from `Module.projective_lifting_property (Algebra.linearMap 𝒪[k] 𝓀[k]) P.fn residue_surjective`. Establish `hF' : ∀ x, residue 𝒪[k] (F x) = P.fn x` using `fun x => LinearMap.congr_fun hF x`. Establish `hu : IsUnit (F ⟨P.vec, P.hasVal_vec.mem⟩)`. Rewrite using `[← notMem_maximalIdeal, ← residue_eq_zero_iff, hF', P.hasVal_vec.2]`. Conclude with `one_ne_zero`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨u, hu⟩` from `hu`. Take `⟨v, hv⟩ : ∃ v, F v = 1` from `⟨(u⁻¹ : 𝒪[k]ˣ).val • ⟨P.vec, P.hasVal_vec.mem⟩, by rw [map_smul, ← hu, smul_eq_mul, Units.inv_mul]⟩`. Set `j` to `(LinearMap.ker F).subtype.coprod (LinearMap.toSpanSingleton 𝒪[k] _ v)`. Establish `hj : ∀ z, F (j z) = z.2` using `fun z => by`. Use `z.1.2` as an intermediate fact.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[LinearMap.mem_ker]`. Simplify using `[j, hv, this]`. Use `⟨LinearMap.ker F, LinearEquiv.ofBijective j ⟨?_, fun x => ?_⟩, fun z => by rw [← hF', ← hj]; rfl⟩` and prove the remaining obligations. Rewrite using `[injective_iff_map_eq_zero]`. Introduce and unpack `⟨y, s⟩ h`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `hs : s = 0` using `by simpa [h] using (hj (y, s)).symm`. Substitute `hs` using the available equality. Simplify `h` using `[j]`. Conclude with `⟨(⟨x - F x • v, by simp [hv]⟩, F x), by simp [j]⟩`.
+Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem Pair.exists_split (P : Pair k n) :
     ∃ (K : Submodule 𝒪[k] P.lat) (e : (K × 𝒪[k]) ≃ₗ[𝒪[k]] P.lat), ∀ z, P.fn (e z) = residue 𝒪[k] z.2 := by
@@ -927,7 +921,7 @@ def stdLat : Submodule 𝒪[k] (n → k) := LinearMap.range ((Algebra.linearMap 
 omit [Fintype n] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun ⟨y, hy⟩ i => hy ▸ (y i).2, fun h => ⟨fun i => ⟨x i, h i⟩, rfl⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem mem_stdLat {x : n → k} : x ∈ stdLat k n ↔ ∀ i, x i ∈ 𝒪[k] :=
   ⟨fun ⟨y, hy⟩ i => hy ▸ (y i).2, fun h => ⟨fun i => ⟨x i, h i⟩, rfl⟩⟩
@@ -958,7 +952,7 @@ def stdPair (i : n) : Pair k n where
     exact one_ne_zero ((map_one (residue 𝒪[k])).symm.trans this)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun ⟨h, h'⟩ => ⟨mem_stdLat.1 h, h'⟩, fun ⟨h, h'⟩ => ⟨mem_stdLat.2 h, h'⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem stdPair_hasVal {i : n} {x : n → k} {a : 𝓀[k]} :
     (stdPair k i).HasVal x a ↔ ∃ h : ∀ j, x j ∈ 𝒪[k], residue 𝒪[k] ⟨x i, h i⟩ = a :=

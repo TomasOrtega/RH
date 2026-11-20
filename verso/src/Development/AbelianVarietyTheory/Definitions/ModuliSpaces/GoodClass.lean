@@ -145,18 +145,18 @@ Both sides reduce to the same expression.
 example (k : ℕ) (J : Type) (b : TBase o k) (s : S ⟶ Sp o) : (TObj.zero k J b s).pol = Out.Inh.zeroPolAV S := rfl
 
 /- English proof (translation)
-The claim follows from `h.1`.
+A detailed English derivation is pending.
 -/
 example (t : TObj g k J b s) (w w' : J) (h : t.Prim w w') : lift (t.act w) (t.act w') ≫ μ[t.A] = 𝟙 t.A := h.1
 
 /- English proof (translation)
-Introduce `_` and use `⟨0, fun h => hq ((Ideal.eq_top_iff_one q).2 h)⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 example (n N' : ℕ) {R : Type} [CommRing R] (q : Ideal R) (hq : q ≠ ⊤) : Coset (g := g) n N' (fun _ => (1 : R)) q :=
   fun _ => ⟨0, fun h => hq ((Ideal.eq_top_iff_one q).2 h)⟩
 
 /- English proof (translation)
-Introduce `h` and use `(h 0).elim fun _ hc => hc q.zero_mem`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 example (n N' : ℕ) {R : Type} [CommRing R] (q : Ideal R) : ¬ Coset (g := g) n N' (fun _ => (0 : R)) q :=
   fun h => (h 0).elim fun _ hc => hc q.zero_mem

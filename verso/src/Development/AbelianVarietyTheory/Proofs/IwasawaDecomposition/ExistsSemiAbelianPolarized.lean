@@ -24,9 +24,9 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Da
   {c : Coeff l}
 
 /- English proof (translation)
-Unfold `Model.j`. Establish `: IsIso (pullback.fst Y.s (spMap (RingHom.id c.F)))`. Establish `: IsIso (spMap (RingHom.id c.F))` using `by show IsIso (Spec.map (CommRingCat.ofHom (RingHom.id c.F)))`. Rewrite using `[show CommRingCat.ofHom (RingHom.id c.F) = 𝟙 (CommRingCat.of c.F) from rfl, Spec.map_id]`. Use `infer_instance`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `infer_instance`. Use `Y.jQ_open` as an intermediate fact. Use `infer_instance`.
+A detailed English derivation is pending.
 -/
 theorem isOpenImmersion_j_id (Y : Model Xo c (RingHom.id c.F)) : IsOpenImmersion Y.j := by
   unfold Model.j
@@ -40,7 +40,7 @@ theorem isOpenImmersion_j_id (Y : Model Xo c (RingHom.id c.F)) : IsOpenImmersion
   infer_instance
 
 /- English proof (translation)
-Introduce and unpack `_ ⟨w, rfl⟩`. Establish `h : Y.jQ w ∈ pullback.fst Y.s (spMap β) ⁻¹' abLocus Y.t.G` using `by rw [Y.ab_gen]; exact ⟨w, rfl⟩`. Conclude with `h`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem range_j_subset_abLocus {O : Type} [CommRing O] {β : O →+* c.F} (Y : Model Xo c β) :
     Set.range Y.j ⊆ abLocus Y.t.G := by
@@ -49,11 +49,11 @@ theorem range_j_subset_abLocus {O : Type} [CommRing O] {β : O →+* c.F} (Y : M
   exact h
 
 /- English proof (translation)
-Establish `hj` using `isOpenImmersion_j_id Y`. Establish `hab : Set.range ξ ⊆ abLocus Y.t.G` using `hr.trans (range_j_subset_abLocus Y)`. Take `⟨ξ', hξ'⟩ : ∃ ξ' : Sp R ⟶ Xo.XF c, ξ' ≫ Y.j = ξ` from `⟨IsOpenImmersion.lift Y.j ξ hr, IsOpenImmersion.lift_fac _ _ _⟩`. Substitute `hξ'` using the available equality. Choose the witnesses or unpack the hypotheses as in `⟨t, ⟨m⟩⟩ : ∃ t : SAB H (Sp R), Nonempty (SABMap t Y.t (ξ' ≫ Y.j)) := by`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Substitute using the available equality. Extract witnesses or component facts from the available result.
 
-Take `⟨_, _, _, _, _, m, -⟩` from `sabPull Out.CubePf.cubePull (ξ' ≫ Y.j) Y.t`. Conclude with `⟨_, ⟨m⟩⟩`. Establish `m' : SABMap t Y.oF.t ξ'` using `(sabCancel pullCubCancel E H _ _ _ _ _ _ _ _ Y.m m).choose`. Establish `hPI : PushInvertible Y.oF.t.G Y.oF.t.PP.L` using `PushInv.pushInvertible_any GlobalTheory.allSixLaws.2.1.secBaseChangeAny GlobalTheory.allSixLaws.1.globalSectionsRank _ (GlobalTheory.Obj.toPolAV Y.oF)`. Use `⟨t, m, GoodTrait.polAt_of_point Y m (jK R) (jK R ≫ ξ') (Category.assoc _ _ _), ThetaLocal.thetaNZ_of_pushInvertible E H _ Y.oF.t hPI R ξ' t m', fun x => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(abLocus_pullback abLocusOne Y.t.semi m.cart.1 x).1 (hab ⟨x, rfl⟩)`.
+A detailed English derivation is pending.
 -/
 theorem exists_sab (Y : Model Xo c (RingHom.id c.F)) (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R]
     (ξ : Sp R ⟶ Y.X) (_ : IsCN R) (hr : Set.range ξ ⊆ Set.range Y.j) :

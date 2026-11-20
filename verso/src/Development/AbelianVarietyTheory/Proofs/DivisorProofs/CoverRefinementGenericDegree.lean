@@ -10,9 +10,9 @@ open Formalism.BasicNotions GlobalTheory GlobalTheory.Cartier GlobalTheory.CxPts
 namespace GlobalTheory.CoverDeg
 
 /- English proof (translation)
-Establish `hs : Function.Surjective (f.residueFieldMap x).hom`. Introduce `y`. Take `⟨s, rfl⟩` from `Scheme.residue_surjective X x y`. Take `⟨t, rfl⟩` from `SurjectiveOnStalks.stalkMap_surjective (f := f) x s`. Conclude with `⟨Y.residue (f x) t, rfl⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use `letI : Algebra (Y.residueField (f x)) (X.residueField x) := (f.residueFieldMap x).hom.toAlgebra`. Establish `hb : Function.Bijective (algebraMap (Y.residueField (f x)) (X.residueField x))` using `⟨RingHom.injective (algebraMap (Y.residueField (f x)) (X.residueField x)), hs⟩`. Establish `e` using `(AlgEquiv.ofBijective (Algebra.ofId (Y.residueField (f x)) (X.residueField x)) hb).toLinearEquiv`. Unfold `Scheme.Hom.residueDegree`. Rewrite using `[← e.finrank_eq, Module.finrank_self]`.
+Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem residueDegree_eq_one_of_surjectiveOnStalks {X Y : Scheme} (f : X ⟶ Y) [SurjectiveOnStalks f]
     (x : X) : f.residueDegree x = 1 := by
@@ -33,19 +33,17 @@ end GlobalTheory.CoverDeg
 namespace GlobalTheory.CoverDeg
 
 /- English proof (translation)
-Use `haveI := V.int`. Use `haveI := V.intG`. Set `η : Sp F` to `⟨⊥, Ideal.bot_prime⟩`. Establish `hη : ∀ w : Sp F, (spMap (algebraMap (𝓞 F) F) w).asIdeal = ⊥`. Introduce `w`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `hw : w.asIdeal = ⊥`. Break down `Ideal.eq_bot_or_top w.asIdeal with h | h` into its components or cases. Conclude with `h`. Conclude with `absurd h w.isPrime.ne_top`. Express the relevant statement in the definitionally equal form `Ideal.comap _ w.asIdeal = ⊥`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hw, ← RingHom.ker_eq_comap_bot]`. Conclude with `(RingHom.injective_iff_ker_eq_bot _).mp (NumberField.RingOfIntegers.coe_injective)`. Establish `hw` using `V.pb.w`. Establish `hpj : ∀ z : V.G, (V.p (V.j z)).asIdeal = ⊥`. Introduce `z`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `: V.p (V.j z) = spMap (algebraMap (𝓞 F) F) ((V.π ≫ Y.str) z)`. Rewrite using `[← Scheme.Hom.comp_apply, hw, Scheme.Hom.comp_apply]`. Rewrite using `[this, hη]`. Establish `hpX : V.p (genericPoint V.X) = spMap (algebraMap (𝓞 F) F) η`. Apply `PrimeSpectrum.ext` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hη]`. Establish `hs : genericPoint V.X ⤳ V.j (genericPoint V.G)` using `genericPoint_specializes _`. Use `(PrimeSpectrum.le_iff_specializes _ _).mpr (hs.map V.p.continuous)` as an intermediate fact. Conclude with `le_bot_iff.mp ((hpj _) ▸ this)`. Choose the witnesses or unpack the hypotheses as in `⟨w, hw'⟩ : genericPoint V.X ∈ Set.range (Limits.pullback.fst V.p (spMap (algebraMap (𝓞 F) F))) := by`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Scheme.Pullback.range_fst]`. Conclude with `⟨η, hpX.symm⟩`. Establish `hz : V.j (V.pb.isoPullback.inv w) = genericPoint V.X`. Establish `e : V.pb.isoPullback.inv ≫ V.j = Limits.pullback.fst V.p (spMap (algebraMap (𝓞 F) F))`. Rewrite using `[Iso.inv_comp_eq, V.pb.isoPullback_hom_fst]`.
-
-Rewrite using `[← hw', ← e, Scheme.Hom.comp_apply]`. Establish `h1 : V.j (genericPoint V.G) ⤳ genericPoint V.X`. Rewrite using `[← hz]`. Conclude with `(genericPoint_specializes _).map V.j.continuous`. Conclude with `(h1.antisymm (genericPoint_specializes _)).eq`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem j_genericPoint {F : Type} [Field F] [NumberField F] {Y : Var F} (V : Cover Y) :
     V.j (genericPoint V.G) = genericPoint V.X := by
@@ -90,7 +88,7 @@ end GlobalTheory.CoverDeg
 namespace GlobalTheory.CoverDeg
 
 /- English proof (translation)
-Use `haveI := CoverHt.isPreimmersion_j V`. Conclude with `residueDegree_eq_one_of_surjectiveOnStalks V.j x`.
+A detailed English derivation is pending.
 -/
 theorem j_residueDegree {F : Type} [Field F] [NumberField F] {Y : Var F} (V : Cover Y) (x : V.G) :
     V.j.residueDegree x = 1 := by
@@ -98,11 +96,11 @@ theorem j_residueDegree {F : Type} [Field F] [NumberField F] {Y : Var F} (V : Co
   exact residueDegree_eq_one_of_surjectiveOnStalks V.j x
 
 /- English proof (translation)
-Introduce `F _ _ Y V V' b _ g hjb hπ hg`. Establish `hpt : b (genericPoint V'.X) = genericPoint V.X`. Rewrite using `[← j_genericPoint V', ← Scheme.Hom.comp_apply, hjb, Scheme.Hom.comp_apply, hg, j_genericPoint V]`. Use `⟨hpt, ?_⟩` and prove the remaining obligations. Establish `h1` using `CurveDegreesCompare.residueDegree_comp V'.j b (genericPoint V'.G)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h2` using `CurveDegreesCompare.residueDegree_comp g V.j (genericPoint V'.G)`. Establish `h3` using `CurveDegreesCompare.residueDegree_comp g V.π (genericPoint V'.G)`. Rewrite `h1` using `[hjb, h2]`. Rewrite `h1` using `[j_residueDegree, j_residueDegree, mul_one, one_mul, j_genericPoint V']`. Unfold `Cover.deg`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[← hπ, h3, hg, h1, mul_comm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem map_genericPoint_and_deg : ∀ (F : Type) [Field F] [NumberField F] (Y : Var F) (V : Cover Y)
     (V' : Cover Y) (b : V'.X ⟶ V.X) (hb : b ≫ V.p = V'.p) (g : V'.G ⟶ V.G),

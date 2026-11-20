@@ -17,7 +17,7 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   {σ : E →ₐ[F] E} {n : ℕ} {J : Matrix (Fin n) (Fin n) E} {r : ℕ} {X Y : Matrix (Fin n) (Fin r) E}
 
 /- English proof (translation)
-Use extensionality with `x`. Simplify using `only [Subgroup.mem_subgroupOf, Subgroup.mem_inf]`. Conclude with `⟨fun h => h.1, fun h => ⟨h, hNP x.2⟩⟩`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 theorem ratPts_inf_subgroupOf {N P : Subgroup (GAd σ J)} (hNP : N ≤ P) :
     (ratPts σ J ⊓ P).subgroupOf N = (ratPts σ J).subgroupOf N := by
@@ -26,9 +26,9 @@ theorem ratPts_inf_subgroupOf {N P : Subgroup (GAd σ J)} (hNP : N ≤ P) :
   exact ⟨fun h => h.1, fun h => ⟨h, hNP x.2⟩⟩
 
 /- English proof (translation)
-Establish `e` using `ratPts_inf_subgroupOf (σ := σ) (J := J) hNP`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Take `⟨μ, 𝓕, h1, h2, h3⟩` from `exists_mass_one hc`. Use function extensionality and compare the values at `g`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[h μ 𝓕 h1 h2 h3 g, GlobalTheory.Cusp.constTermOn_eq_of_measure_eq_one (e ▸ h2) h3 hφ g]`. Introduce and unpack `rfl μ 𝓕 h1 h2 h3 g`. Conclude with `GlobalTheory.Cusp.constTermOn_eq_of_measure_eq_one (e ▸ h2) h3 hφ g`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem isConstTermOn_iff_ratPts_inf {N P : Subgroup (GAd σ J)} [LocallyCompactSpace N] (hNP : N ≤ P)
     (hc : Cocompact (ratPts σ J) N) {φ c : GAd σ J → ℂ} (hφ : LeftInv (ratPts σ J ⊓ P) φ) :
@@ -43,7 +43,7 @@ theorem isConstTermOn_iff_ratPts_inf {N P : Subgroup (GAd σ J)} [LocallyCompact
     exact GlobalTheory.Cusp.constTermOn_eq_of_measure_eq_one (e ▸ h2) h3 hφ g
 
 /- English proof (translation)
-Unfold `Cocompact`. Rewrite using `[ratPts_inf_subgroupOf hNP]`. Conclude with `hc`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cocompact_ratPts_inf {N P : Subgroup (GAd σ J)} (hNP : N ≤ P) (hc : Cocompact (ratPts σ J) N) :
     Cocompact (ratPts σ J ⊓ P) N := by
@@ -57,15 +57,15 @@ variable (h : IsCMExt F E σ) (hJ : IsHermND σ J) (hW : IsWittFrame σ J X Y)
 include h hJ hW
 
 /- English proof (translation)
-The claim follows from `(isClosed_unip S h hJ hW).isClosedEmbedding_subtypeVal.locallyCompactSpace`.
+A detailed English derivation is pending.
 -/
 theorem locallyCompact_unip (S : Finset (Fin r)) : LocallyCompactSpace (unip σ J X S) :=
   (isClosed_unip S h hJ hW).isClosedEmbedding_subtypeVal.locallyCompactSpace
 
 /- English proof (translation)
-Distinguish the cases in `hS0 : S = ∅`. Substitute `hS0` using the available equality. Use `⟨{1}, isCompact_singleton, fun u => ⟨u⁻¹, ?_, by simp⟩⟩` and prove the remaining obligations. Establish `hu : (u : GAd σ J) = 1` using `Subgroup.mem_bot.1 (le_of_eq (unip_empty (σ := σ) (J := J) (X := X)) u.2)`. Rewrite using `[Subgroup.mem_subgroupOf, Subgroup.coe_inv, hu, inv_one]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `one_mem _`. Take `⟨m, hm, hm'⟩ : ∃ m ∈ S, ∀ k ∈ S, k ≤ m` from `⟨S.max' (Finset.nonempty_iff_ne_empty.2 hS0), S.max'_mem _, fun k hk => S.le_max' k hk⟩`. Rewrite using `[GlobalTheory.ConstTrans.unip_eq_unipFlag F E σ h n J hJ r X Y hW S m hm hm']`. Conclude with `cocompact_unipFlag hJ (sigma_sigma h) (isIsoCols_of_isWittFrame hW (sigma_sigma h) hJ m.2) _`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cocompact_unip_std (S : Finset (Fin r)) : Cocompact (ratPts σ J) (unip σ J X S) := by
   by_cases hS0 : S = ∅
@@ -80,9 +80,9 @@ theorem cocompact_unip_std (S : Finset (Fin r)) : Cocompact (ratPts σ J) (unip 
   exact cocompact_unipFlag hJ (sigma_sigma h) (isIsoCols_of_isWittFrame hW (sigma_sigma h) hJ m.2) _
 
 /- English proof (translation)
-Distinguish the cases in `hT0 : T = ∅`. Substitute `hT0` using the available equality. Rewrite `hu`, the goal using `[unip_empty, Subgroup.mem_bot]`. Simplify using `[hu]`. Take `⟨m, hm, hm'⟩ : ∃ m ∈ T, ∀ k ∈ T, k ≤ m` from `⟨T.max' (Finset.nonempty_iff_ne_empty.2 hT0), T.max'_mem _, fun k hk => T.le_max' k hk⟩`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Establish `hσ` using `sigma_sigma h`. Establish `eT` using `GlobalTheory.ConstTrans.unip_eq_unipFlag F E σ h n J hJ r X Y hW T m hm hm'`. Rewrite `hu`, the goal using `[eT]`. Conclude with `conj_mem_unipFlag hJ hσ (isIsoCols_of_isWittFrame hW hσ hJ m.2) _ (GlobalTheory.ConstTrans.unip_le_parFlag F E σ h n J hJ r X Y hW S T m hTS hm hm' hp) hu`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conj_mem_unip_of_subset {S T : Finset (Fin r)} (hTS : T ⊆ S) {p u : GAd σ J} (hp : p ∈ unip σ J X S)
     (hu : u ∈ unip σ J X T) : p * u * p⁻¹ ∈ unip σ J X T := by
@@ -99,15 +99,13 @@ theorem conj_mem_unip_of_subset {S T : Finset (Fin r)} (hTS : T ⊆ S) {p u : GA
     (GlobalTheory.ConstTrans.unip_le_parFlag F E σ h n J hJ r X Y hW S T m hTS hm hm' hp) hu
 
 /- English proof (translation)
-Use `⟨fun S => ?_, fun S T hTS => ⟨unip_mono_of_subset F E σ h n J hJ r X Y hW S T hTS, ?_⟩, fun S φ c c' h1 h2 => ?_, fun S φ hφ => ?_, fun S T φ c c' hTS hφc hφ hc hc' => ?_⟩` and prove the remaining obligations. Use `haveI := locallyCompact_unip h hJ hW S`. Conclude with `⟨cocompact_unip_std h hJ hW S, exists_mass_one (cocompact_unip_std h hJ hW S)⟩`. Introduce `g hg`. Simplify using `only [levi, Subgroup.mem_iInf] at hg ⊢`.
+Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Conclude with `fun k hk => hg k (hTS hk)`. Use `haveI := locallyCompact_unip h hJ hW S`. Conclude with `IsConstTermOn.unique (cocompact_unip_std h hJ hW S) h1 h2`. Use `haveI := locallyCompact_unip h hJ hW S`. Conclude with `⟨_, isConstTermOn_constTermOn (N := unip σ J X S) fun γ hγ g => hφ γ hγ.1 hγ.2 g⟩`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI := locallyCompact_unip h hJ hW S haveI := locallyCompact_unip h hJ hW T`. Establish `hle : unip σ J X T ≤ unip σ J X S` using `unip_mono_of_subset F E σ h n J hJ r X Y hW S T hTS`. Establish `cS` using `cocompact_unip_std h hJ hW S`. Establish `cT` using `cocompact_unip_std h hJ hW T`. Establish `hfΓ : LeftInv (ratPts σ J ⊓ unip σ J X S) φ` using `fun γ hγ g => hφ γ hγ.1 hγ.2 g`.
+Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hnorm : ∀ p ∈ unip σ J X S, ∀ u ∈ unip σ J X T, p * u * p⁻¹ ∈ unip σ J X T` using `fun p hp u hu => conj_mem_unip_of_subset h hJ hW hTS hp hu`. Establish `hc0 : c = constTermOn (ratPts σ J ⊓ unip σ J X S) (unip σ J X T) φ` using `(isConstTermOn_iff_ratPts_inf hle cT hfΓ).1 hc`. Substitute `hc0` using the available equality. Establish `hcΓ : LeftInv (ratPts σ J ⊓ unip σ J X S) (constTermOn (ratPts σ J ⊓ unip σ J X S) (unip σ J X T) φ)` using `fun γ hγ g => GlobalTheory.Cusp.constTermOn_mul_left_of_normalizer hfΓ hγ (fun m => ⟨hnorm _ hγ.2 m, fun hm => by simpa [mul_assoc] using hnorm _ (inv_mem hγ.2) _ hm⟩) g`. Establish `st : constTermOn (ratPts σ J ⊓ unip σ J X S) (unip σ J X S) φ = constTermOn (ratPts σ J ⊓ unip σ J X S) (unip σ J X S) (constTermOn (ratPts σ J ⊓ unip σ J X S) (unip σ J X T) φ)` using `funext fun x => GlobalTheory.Cusp.Stages.constTermOn_stages (GAd σ J) (ratPts σ J ⊓ unip σ J X S) (unip σ J X S) (unip σ J X T) hle hnorm (cocompact_ratPts_inf le_rfl cS) (cocompact_ratPts_inf hle cT) φ hfΓ hφc x`.
-
-Express the relevant statement in the definitionally equal form `IsConstTermOn σ J (unip σ J X S) _ c' at hc'`. Express the relevant statement in the definitionally equal form `IsConstTermOn σ J (unip σ J X S) φ c'`. Rewrite `hc'` using `[isConstTermOn_iff_ratPts_inf le_rfl cS hcΓ]`. Rewrite using `[isConstTermOn_iff_ratPts_inf le_rfl cS hfΓ, st]`. Conclude with `hc'`.
+Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem constAlong_cocompact_unique_stages :
     (∀ S : Finset (Fin r), Cocompact (ratPts σ J) (unip σ J X S) ∧

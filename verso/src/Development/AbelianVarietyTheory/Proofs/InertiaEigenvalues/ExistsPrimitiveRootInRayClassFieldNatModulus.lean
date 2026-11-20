@@ -14,19 +14,19 @@ open NumberField IsDedekindDomain GlobalTheory.NT
 namespace GlobalTheory.RayRootOfUnity
 
 /- English proof (translation)
-Set `c : (K →ₐ[ℚ] ℂ) → (K →ₐ[ℚ] ℂ)` to `fun φ => { (starRingEnd ℂ).comp φ.toRingHom with commutes' := fun a => by`. Express the relevant statement in the definitionally equal form `starRingEnd ℂ (φ (algebraMap ℚ K a)) = _`. Rewrite using `[φ.commutes]`. Simplify using `}`. Establish `hc : ∀ φ e, c φ e = starRingEnd ℂ (φ e)` using `fun _ _ => rfl`.
+Introduce a local definition for the expression. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hφ : ∀ φ : K →ₐ[ℚ] ℂ, φ x ≠ 0` using `fun φ => (map_ne_zero _).2 hx`. Establish `hn : ∀ φ : K →ₐ[ℚ] ℂ, (‖φ x‖ : ℂ) ≠ 0` using `fun φ => by`. Conclude with `(norm_ne_zero_iff.2 (hφ φ))` after adjusting the coercions. Establish `h1 : ∏ φ : K →ₐ[ℚ] ℂ, (φ x / (‖φ x‖ : ℂ)) = 1`. Use `Finset.prod_involution (fun φ _ => c φ) (fun φ _ => ?_) (fun φ _ hne he => ?_) (fun _ _ => Finset.mem_univ _) (fun φ _ => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hc, Complex.norm_conj, div_mul_div_comm, Complex.mul_conj, Complex.normSq_eq_norm_sq]`. Use `hn φ` as an intermediate fact. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Apply `hne` to reduce the goal to its premises.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `hr : ∀ e, ((φ e).re : ℂ) = φ e` using `fun e => Complex.conj_eq_iff_re.1 (by rw [← hc, he])`. Set `τ : K →+* ℝ` to `{ toFun := fun e => (φ e).re, map_one' := by simp, map_zero' := by simp, map_add' := by simp, map_mul' := fun a b => by`. Apply `Complex.ofReal_injective` to reduce the goal to its premises. Rewrite using `[Complex.ofReal_mul, hr, hr, hr, map_mul] }`. Establish `hτ : 0 < (φ x).re` using `h τ`.
+Introduce a local definition for the expression. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hr x, Complex.norm_real, Real.norm_eq_abs, abs_of_pos hτ]`. Conclude with `div_self (by exact_mod_cast hτ.ne')`. Use extensionality with `e`. Simplify using `[hc]`. Rewrite `h1` using `[Finset.prod_div_distrib, div_eq_one_iff_eq (Finset.prod_ne_zero_iff.2 fun φ _ => hn φ), ← Algebra.norm_eq_prod_embeddings ℚ ℂ x]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `h2 : ((Algebra.norm ℚ x : ℚ) : ℝ) = ∏ φ : K →ₐ[ℚ] ℂ, ‖φ x‖`. Apply `Complex.ofReal_injective` to reduce the goal to its premises. Use `push_cast`. Rewrite using `[← h1]`. Both sides reduce to the same expression.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: (0 : ℝ) < ((Algebra.norm ℚ x : ℚ) : ℝ)`. Rewrite using `[h2]`. Conclude with `Finset.prod_pos fun φ _ => norm_pos_iff.2 (hφ φ)`. Conclude with `this` after adjusting the coercions.
+A detailed English derivation is pending.
 -/
 theorem norm_pos_of_pos_real {K : Type} [Field K] [NumberField K] {x : K} (hx : x ≠ 0)
     (h : ∀ τ : K →+* ℝ, 0 < τ x) : 0 < Algebra.norm ℚ x := by
@@ -71,17 +71,17 @@ theorem norm_pos_of_pos_real {K : Type} [Field K] [NumberField K] {x : K} (hx : 
   exact_mod_cast this
 
 /- English proof (translation)
-Take `⟨hα, hβ, _, hcβ, hd, hpos⟩` from `hαβ`. Establish `hpos' : 0 < Algebra.norm ℤ α * Algebra.norm ℤ β`. Establish `hx : ((α * β : 𝓞 K) : K) ≠ 0` using `by simpa using mul_ne_zero hα hβ`. Use `norm_pos_of_pos_real hx fun τ => by` as an intermediate fact. Use `hpos τ` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify `this` using `[map_mul]`. Rewrite `this` using `[← Algebra.coe_norm_int, map_mul]`. Conclude with `this` after adjusting the coercions. Establish `h1` using `congrArg Ideal.absNorm hI`. Rewrite `h1` using `[map_mul, Ideal.absNorm_span_singleton, Ideal.absNorm_span_singleton]`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : (Ideal.absNorm I : ℤ) * Algebra.norm ℤ β * Algebra.norm ℤ β = Algebra.norm ℤ α * Algebra.norm ℤ β`. Establish `e` using `congrArg (Nat.cast : ℕ → ℤ) h1`. Rewrite `e` using `[Nat.cast_mul, Int.natCast_natAbs, Int.natCast_natAbs]`. Establish `e2 : (Ideal.absNorm I : ℤ) * |Algebra.norm ℤ β| * |Algebra.norm ℤ β| = |Algebra.norm ℤ α| * |Algebra.norm ℤ β|` using `by rw [e]`. Rewrite `e2` using `[mul_assoc, abs_mul_abs_self, ← abs_mul, abs_of_pos hpos']`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_assoc]`. Conclude with `e2`. Establish `h3` using `GlobalTheory.Mem.RayNorm.norm_cast_eq K p (hq hd)`. Take `⟨u, hu, v, hv, huv⟩` from `Ideal.isCoprime_iff_exists.1 hcβ`. Take `⟨b, rfl⟩` from `Ideal.mem_span_singleton'.1 hu`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h4` using `GlobalTheory.Mem.RayNorm.norm_cast_eq K p (x := b * β) (y := 1) (by`. Establish `: b * β - 1 = -v` using `by linear_combination huv`. Rewrite using `[this]`. Conclude with `neg_mem (hq hv))`. Rewrite `h4` using `[map_mul, map_one]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
-Establish `h5` using `congrArg (Int.cast : ℤ → ZMod p) h2`. Move the coercions through the operations in `at h4 h5`. Rewrite using `[← ZMod.natCast_eq_natCast_iff]`. Use `push_cast`. Take the linear combination `((Algebra.norm ℤ b : ℤ) : ZMod p) ^ 2 * h5 + ((Algebra.norm ℤ b : ℤ) : ZMod p) ^ 2 * ((Algebra.norm ℤ β : ℤ) : ZMod p) * h3 + (((Algebra.norm ℤ b : ℤ) : ZMod p) * ((Algebra.norm ℤ β : ℤ) : ZMod p) + 1) * (1 - (Ideal.absNorm I : ZMod p)) * h4`.
+Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem absNorm_modEq_one {K : Type} [Field K] [NumberField K] {𝔮 : Ideal (𝓞 K)} {p : ℕ}
     (hq : 𝔮 ≤ Ideal.span {(p : 𝓞 K)}) {I : Ideal (𝓞 K)} {α β : 𝓞 K} (hαβ : RayPair 𝔮 α β)
@@ -123,15 +123,15 @@ end GlobalTheory.RayRootOfUnity
 namespace GlobalTheory.RayRootOfUnity
 
 /- English proof (translation)
-Introduce `K H _ _ _ _ _ _ n hn hR`. Establish `hRF : GlobalTheory.Mem.Fld.IsRayField K H (Ideal.span {(n : 𝓞 K)})` using `⟨inferInstance, hR⟩`. Establish `h𝔮 : Ideal.span {(n : 𝓞 K)} ≠ ⊥` using `by simpa using hn`. Set `ψ : H →+* ℂ` to `(IsAlgClosed.lift : H →ₐ[ℚ] ℂ).toRingHom`. Set `z : ℂ` to `Complex.exp (2 * Real.pi * Complex.I / n)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hz : IsPrimitiveRoot z n` using `Complex.isPrimitiveRoot_exp n hn`. Take `⟨S, hSa, hS⟩` from `GlobalTheory.Mem.BaseField.exists_gens H`. Take `⟨L, hfd, hgal, hSL, -, -⟩` from `GlobalTheory.exists_galois_subfield_conj_stable (insert z S) (by`. Introduce `w hw`. Break down `Finset.mem_insert.1 hw with rfl | hw` into its components or cases.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Use `exacts [GlobalTheory.Mem.BaseField.isAlgebraic_exp n, hSa w hw])`. Establish `hψL : ∀ x, ψ x ∈ L` using `hS L (fun w hw => hSL w (Finset.mem_insert_of_mem hw)) ψ`. Establish `hzL : z ∈ L` using `hSL z (Finset.mem_insert_self _ _)`. Establish `: NumberField L` using `{}`. Use `letI : Algebra H L := (ψ.codRestrict L hψL).toAlgebra`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Equip the data with the indicated structure. Equip the data with the indicated structure.
 
-Use `letI : Algebra K L := ((ψ.codRestrict L hψL).comp (algebraMap K H)).toAlgebra`. Establish `: IsScalarTower K H L` using `IsScalarTower.of_algebraMap_eq fun _ => rfl`. Establish `: IsGalois K L` using `IsGalois.tower_top_of_isGalois ℚ K L`. Take `⟨x, hx⟩` from `GlobalTheory.Mem.RayZeta.root_mem_rayField K H L _ n hn le_rfl hRF (GlobalTheory.RayMaximal.closure_isFrob_eq_top L h𝔮) (fun I α β hαβ hI => absNorm_modEq_one le_rfl hαβ hI) ⟨z, hzL⟩ (Subtype.ext (by simpa using hz.pow_eq_one))`. Establish `e : ψ x = z` using `congrArg Subtype.val hx`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 
-Conclude with `⟨x, IsPrimitiveRoot.of_map_of_injective (f := ψ) (by rw [e]; exact hz) ψ.injective⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_isPrimitiveRoot_of_isRay : ∀ {K H : Type} [Field K] [NumberField K] [Field H] [NumberField H]
     [Algebra K H] [IsAbelianGalois K H] {n : ℕ}, n ≠ 0 → GlobalTheory.FieldSize.IsRay H (Ideal.span {(n : 𝓞 K)}) →

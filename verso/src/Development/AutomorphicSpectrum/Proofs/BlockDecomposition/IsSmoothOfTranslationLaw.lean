@@ -10,17 +10,15 @@ namespace GlobalTheory.CompanionTheory.GodementFix
 variable {F : Type*} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F]
 
 /- English proof (translation)
-Take `⟨N, M, hMN, hinv, hsupp⟩` from `exists_invariant_of_mem_schwartzBruhat2 hΦ`. Use `⟨max (N - M).toNat (max (quasiCharConductor χ) 1), fun u hu ↦ ?_⟩` and prove the remaining obligations. Use `set m := max (N - M).toNat (max (quasiCharConductor χ) 1) with hm`. Establish `hu0 : u ∈ GLnLocal.integralGL F 2` using `GLnLocal.congruenceSubgroup_le F 2 m hu`. Use `⟨?_, ?_, fun s ↦ ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `x`. Simplify using `only [rightTranslate]`. Distinguish the cases in `hx : x ∈ box F M`. Use `set D : Matrix (Fin 2) (Fin 2) F := (u : Matrix (Fin 2) (Fin 2) F) - 1 with hD`. Establish `hxD : x ᵥ* D ∈ box F N`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `box_antitone (show N ≤ M + m by omega) (mem_box.2 fun j ↦ ?_)` and prove the remaining obligations. Simplify using `only [Matrix.vecMul, dotProduct, Fin.sum_univ_two]`. Conclude with `add_mem (mul_mem_valBall (mem_box.1 hx 0) (sub_one_mem_valBall_of_mem_congruenceSubgroup hu 0 j)) (mul_mem_valBall (mem_box.1 hx 1) (sub_one_mem_valBall_of_mem_congruenceSubgroup hu 1 j))`. Establish `he : x ᵥ* (u : Matrix (Fin 2) (Fin 2) F) = x + x ᵥ* D`. Rewrite using `[hD, Matrix.vecMul_sub, Matrix.vecMul_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Normalize the expressions using the abelian group laws. Rewrite using `[he, hinv x _ hxD]`. Establish `h0 : Φ x = 0`. Assume the negation of the conclusion as `h`. Conclude with `hx (hsupp x h)`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : Φ (x ᵥ* (u : Matrix (Fin 2) (Fin 2) F)) = 0`. Assume the negation of the conclusion as `h`. Conclude with `hx ((vecMul_mem_box_iff hu0 M x).1 (hsupp _ h))`. Rewrite using `[h0, h1]`. Establish `hmem : detU u ∈ unitFiltrationUnits F m` using `(mem_unitFiltrationUnits_iff_valBall (by omega)).2 (det_sub_one_mem_valBall hu)`.
-
-Conclude with `unitFiltrationUnits_quasiCharConductor_le_ker h (unitFiltrationUnits_antitone (by omega) hmem)`. Rewrite using `[modPow_units_eq_zpow, ord_det_eq_zero hu0]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_congruence_fix {χ : Fˣ →* ℂˣ} (h : Continuous χ) {Φ : (Fin 2 → F) → ℂ}
     (hΦ : Φ ∈ schwartzBruhat2 F) :

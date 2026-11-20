@@ -11,9 +11,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AlgebraTools.Conne
 open IsLocalRing UpperTheory.V.AlgebraTools.Conn
 
 /- English proof (translation)
-Introduce `O R _ _ _ _ _ _ _ h p hp`. Use `haveI : IsDomain (R ⧸ p) := Ideal.Quotient.isDomain p`. Use `haveI : IsLocalRing (R ⧸ p) := IsLocalRing.of_surjective' (Ideal.Quotient.mk p) Ideal.Quotient.mk_surjective`. Establish `hS : UpperTheory.V.CA.IsCL O (R ⧸ p)` using `UpperTheory.V.CA.cl_quot O R (R ⧸ p) (Ideal.Quotient.mkₐ O p) (Ideal.Quotient.mkₐ_surjective O p) h`. Take `⟨h1, h2⟩` from `UpperTheory.V.CA.cl_nn O (R ⧸ p) hS`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Distinguish the cases in `hi : Function.Injective (algebraMap O (R ⧸ p))`. Take `⟨d, φ, hφ, hf, -, -⟩` from `h1 hi`. Conclude with `⟨MvPowerSeries (Fin d) O, inferInstance, inferInstance, φ.toRingHom, psBase O (dvrBase O) d, hφ, hf⟩`. Take `⟨d, φ, hφ, hf, -, -⟩` from `h2 hi`. Conclude with `⟨MvPowerSeries (Fin d) (ResidueField O), inferInstance, inferInstance, φ.toRingHom, psBase (ResidueField O) (isBase_field _) d, hφ, hf⟩`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.AlgebraTools.Conn.cohen :
     ∀ {O R : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [IsAdicComplete (maximalIdeal O) O]

@@ -20,41 +20,37 @@ noncomputable section
 namespace GlobalTheory.ChernReg.ExphLoc
 
 /- English proof (translation)
-Introduce `k _ Y p σ d _ R a ha c y hy`. Take `⟨hsm, hdet, hform⟩` from `GlobalTheory.ChernReg.MatSmooth.matIn_smooth_unit_form k Y p σ d R a ha c`. Take `⟨r, hr, hrt⟩` from `Metric.isOpen_iff.1 c.e.open_target (c.e y) (c.e.map_source hy)`. Use `set C := Metric.closedBall (c.e y) (r / 2) with hCdef`. Establish `hCU : C ⊆ c.e.target` using `(Metric.closedBall_subset_ball (by linarith)).trans hrt`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hC : IsCompact C` using `isCompact_closedBall _ _`. Establish `hjet` using `fun n => GlobalTheory.ChernReg.jet_contDiffOn_and_homogeneous d c.e.target (matIn a c) c.e.open_target hsm hdet n`. Take `⟨f, hf, hfj⟩` from `GlobalTheory.BorelParam.borel_param d c.e.target C c.e.open_target hC hCU (jet (matIn a c)) (fun n => (hjet n).1) (fun n z hz t ξ => by`. Use `(hjet n).2 z hz (t : ℂ) ξ` as an intermediate fact. Rewrite using `[Complex.coe_smul, ← Complex.ofReal_pow, Complex.coe_smul] at this)` and apply the resulting hypothesis.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `hf0 : ∀ z ∈ C, f (z, 0) = z` using `fun z hz => by`. Use `hfj z hz 0 0` as an intermediate fact. Simplify `this` using `[jet_zero]`. Establish `hcont : ContinuousOn (fun x : ReciprocityTheory.L2DbarEstimates.V d × ReciprocityTheory.L2DbarEstimates.V d => a c (c.e.symm x.1) x.2.ofLp) (C ×ˢ Set.univ)`. Establish `h1 : ContinuousOn (fun x : ReciprocityTheory.L2DbarEstimates.V d × ReciprocityTheory.L2DbarEstimates.V d => ((x.2.ofLp ᵥ* matIn a c x.1) ⬝ᵥ star x.2.ofLp).re) (C ×ˢ Set.univ)`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm : ∀ i j, ContinuousOn (fun x : ReciprocityTheory.L2DbarEstimates.V d × ReciprocityTheory.L2DbarEstimates.V d => matIn a c x.1 i j) (C ×ˢ Set.univ)` using `fun i j => ((hsm i j).continuousOn.mono hCU).comp continuousOn_fst fun x hx => hx.1`. Use `Complex.continuous_re.comp_continuousOn ?_` and prove the remaining obligations. Simplify using `only [dotProduct, vecMul]`. Use `continuousOn_finset_sum _ fun i _ => ContinuousOn.mul ?_ ?_` and prove the remaining obligations. Use `continuousOn_finset_sum _ fun j _ => ContinuousOn.mul ?_ (hm j i)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `((PiLp.continuous_apply 2 _ j).comp continuous_snd).continuousOn`. Conclude with `(continuous_star.comp ((PiLp.continuous_apply 2 _ i).comp continuous_snd)).continuousOn`. Use `h1.congr fun x hx => ?_` and prove the remaining obligations. Use `hform x.1 (hCU hx.1) x.2` as an intermediate fact. Simplify using `only`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[← this, Complex.ofReal_re]`. Take `⟨ε, hε, hεU⟩` from `GlobalTheory.T.quadratic_form_positive_near_compact d C c.e.target f (fun z η => a c (c.e.symm z) η.ofLp) hC c.e.open_target hCU hf.continuous hf0 hcont (fun z hz t η => (continuous_and_smul ha (c.e.map_target (hCU hz))).2 t η.ofLp) (fun z hz η hη => ha.2 c _ (c.e.map_target (hCU …`. Use `set W := c.e.symm '' Metric.ball (c.e y) (r / 2) with hWdef`. Establish `hWC : ∀ y' ∈ W, c.e y' ∈ C`. Introduce and unpack `_ ⟨z, hz, rfl⟩`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Rewrite using `[c.e.right_inv (hCU (Metric.ball_subset_closedBall hz))]`. Conclude with `Metric.ball_subset_closedBall hz`. Establish `hWs : W ⊆ c.e.source`. Introduce and unpack `_ ⟨z, hz, rfl⟩`. Conclude with `c.e.map_target (hCU (Metric.ball_subset_closedBall hz))`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hWo : IsOpen W` using `c.e.isOpen_image_symm_of_subset_target Metric.isOpen_ball fun z hz => hCU (Metric.ball_subset_closedBall hz)`. Establish `hyW : y ∈ W` using `⟨c.e y, Metric.mem_ball_self (by linarith), c.e.left_inv hy⟩`. Establish `hεW : ∀ y' ∈ W, ∀ η : ReciprocityTheory.L2DbarEstimates.V d, a c y' η.ofLp < ε → f (c.e y', η) ∈ c.e.target`. Introduce `y' hy' η hη`. Use `hεU _ (hWC y' hy') η ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Simplify `hη` using `only [c.e.left_inv (hWs hy')]`. Use `⟨locMap c f, W, ε, hWo, hyW, hWs, hε, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `c₁ c₂ y' h₁ h₂ ξ`. Distinguish the cases in `hs : y' ∈ c.e.source`. Unfold `locMap`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite using `[ExphOn.dtrans_dtrans c₁ c₂ c h₁ h₂ hs]`. Simplify using `only [locMap, hs, false_and, if_false]`. Introduce `c₀ v hv hvW ξ hξ`. Take `⟨Φ, hΦ, hΦt, hΦe⟩` from `GlobalTheory.T.smooth_map_stays_in_chart_target k Y p σ d R a ha c c₀ f W ε hf hWs hεW v hv hvW ξ hξ`. Conclude with `((c.e.continuousAt_symm hΦt).comp hΦ.continuousAt).congr hΦe.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Introduce `c₀ c' v hv hvW ξ hξ hE`. Take `⟨Φ, hΦ, hΦt, hΦe⟩` from `GlobalTheory.T.smooth_map_stays_in_chart_target k Y p σ d R a ha c c₀ f W ε hf hWs hεW v hv hvW ξ hξ`. Establish `hE' : c.e.symm (Φ (v, ξ)) ∈ c'.e.source`. Use `hΦe.eq_of_nhds` as an intermediate fact. Simplify using `only at this`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← this]` and apply the resulting hypothesis. Establish `ho` using `ChartGlue.isOpen_over c.e c'.e.open_source`. Establish `hτ : ContDiffAt ℝ ∞ (c'.e ∘ c.e.symm) (Φ (v, ξ))` using `(((contDiffOn_piLp 2).2 fun i => ReciprocityTheory.L2DbarEstimates.contDiffOn_of_differentiableOn d _ _ ho (differentiableOn_euclidean.1 (c.holo_trans c') i)).restrict_scalars ℝ).contDiffAt (ho.mem_nhds ⟨hΦt, hE'⟩)`. Use `(hτ.comp _ hΦ).congr_of_eventuallyEq ?_` and prove the remaining obligations. Conclude with `hΦe.fun_comp c'.e`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `c₀ y' h₀ hW'`. Establish `hs` using `hWs hW'`. Establish `e0 : c₀.dtrans c y' 0 = 0` using `by simpa using dtrans_smul c c₀ y' 0 0`. Rewrite using `[locMap_of_mem c c₀ f ⟨hs, by rw [e0, WithLp.toLp_zero, hf0 _ (hWC y' hW')]; exact c.e.map_source hs⟩, e0, WithLp.toLp_zero, hf0 _ (hWC y' hW'), c.e.left_inv hs]`. Introduce `c₀ y' h₀ hW' ξ n`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs` using `hWs hW'`. Establish `hz` using `hWC y' hW'`. Use `set η : ReciprocityTheory.L2DbarEstimates.V d := WithLp.toLp 2 (c₀.dtrans c y' ξ.ofLp) with hη`. Use `set g : ℝ → ReciprocityTheory.L2DbarEstimates.V d := fun t => f (c.e y', t • η) with hg`. Establish `hgc : ContDiff ℝ ∞ g` using `hf.comp (contDiff_const.prodMk (contDiff_id.smul contDiff_const))`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hg0 : g 0 = c.e y'` using `by simp only [hg, zero_smul]; exact hf0 _ hz`. Establish `hgt : g 0 ∈ c.e.target` using `hg0 ▸ c.e.map_source hs`. Establish `hev : ∀ᶠ t in 𝓝 (0:ℝ), g t ∈ c.e.target` using `hgc.continuous.continuousAt.preimage_mem_nhds (c.e.open_target.mem_nhds hgt)`. Establish `hu : (fun t : ℝ => locMap c f c₀ y' (t • ξ.ofLp)) =ᶠ[𝓝 0] fun t => c.e.symm (g t)` using `by filter_upwards [hev] with t ht`. Establish `e1 : WithLp.toLp 2 (c₀.dtrans c y' (t • ξ.ofLp)) = t • η`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[dtrans_smul, WithLp.toLp_smul]`. Rewrite using `[locMap_of_mem c c₀ f ⟨hs, by rw [e1]; exact ht⟩, e1]`. Establish `hcu : (fun t : ℝ => c.e (locMap c f c₀ y' (t • ξ.ofLp))) =ᶠ[𝓝 0] g` using `by filter_upwards [hu, hev] with t h1 h2`. Rewrite using `[h1, c.e.right_inv h2]`. Establish `hu0 : locMap c f c₀ y' ((0:ℝ) • ξ.ofLp) = y'`.
-
-Use `hu.eq_of_nhds` as an intermediate fact. Simplify using `only at this`. Rewrite using `[this, hg0, c.e.left_inv hs]`. Establish `key` using `GlobalTheory.ChernReg.ExphOn.iteratedDeriv_chart_trans k Y p σ d R a ha c c₀ (fun t => locMap c f c₀ y' (t • ξ.ofLp)) η (by simp only [hu0]; exact hs) (by simp only [hu0]; exact h₀) (((c.e.continuousAt_symm hgt).comp hgc.continuous.continuousAt).congr hu.symm) (hgc.contDiffAt.con …`. Simplify using `only [hu0] at key`.
-
-Rewrite using `[key, hη, WithLp.ofLp_toLp, ExphOn.dtrans_dtrans c₀ c c₀ h₀ hs h₀, ExphOn.dtrans_self c₀ h₀, WithLp.toLp_ofLp]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_isExphOn : ∀ (k : Type) [CommRing k] (Y : Scheme.{0}) (p : Y ⟶ Sp k) (σ : k →+* ℂ) (d : ℕ) [SmoothOfRelativeDimension d p] (R : AnRead p σ d) (a : ChartForm p σ d), IsKaehlerForm R a → ∀ (c : AlgChart p σ d), ∀ y ∈ c.e.source, ∃ (E : ChartMap p σ d) (W : Set (CxPts p σ)) (ε : ℝ), IsOpen W ∧ y ∈ W ∧ W ⊆ c.e.source ∧ 0 < ε ∧ ExphOn.IsExphOn a E W ε := by
   intro k _ Y p σ d _ R a ha c y hy

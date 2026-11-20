@@ -24,7 +24,7 @@ def IsUnitaryAtAll {G : Type} [Group G] (r : Representation K G S.Forms) : Prop 
     csumAt S σ (r g f : S.Cl → S.V) (r g f' : S.Cl → S.V) = csumAt S σ (f : S.Cl → S.V) (f' : S.Cl → S.V)
 
 /- English proof (translation)
-Simplify using `only [pairAt, map_smul, Finsupp.smul_apply, smul_eq_mul, map_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem pairAt_smul (a b : K) (x y : S.V) :
     pairAt S σ (a • x) (b • y) = starRingEnd ℂ (σ a) * σ b * pairAt S σ x y := by
@@ -32,7 +32,7 @@ theorem pairAt_smul (a b : K) (x y : S.V) :
   refine Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring
 
 /- English proof (translation)
-Simplify using `only [csumAt, Pi.smul_apply, pairAt_smul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun c _ => by ring` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem csumAt_smul (a b : K) (f f' : S.Cl → S.V) :
     csumAt S σ (a • f) (b • f') = starRingEnd ℂ (σ a) * σ b * csumAt S σ f f' := by
@@ -40,9 +40,9 @@ theorem csumAt_smul (a b : K) (f f' : S.Cl → S.V) :
   refine Finset.sum_congr rfl fun c _ => by ring
 
 /- English proof (translation)
-Use `conv_rhs => rw [← S.bV.sum_repr x, ← S.bV.sum_repr y]`. Simplify using `only [pairAt, map_sum, LinearMap.sum_apply, LinearMap.map_smulₛₗ, LinearMap.smul_apply, smul_eq_mul, map_mul, CSD.gramV, Matrix.of_apply, RingHom.id_apply, starRingEnd_apply, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[h, starRingEnd_apply]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem pairAt_eq (h : ∀ a, σ (star a) = starRingEnd ℂ (σ a)) (x y : S.V) : pairAt S σ x y = σ (S.pair x y) := by
   conv_rhs => rw [← S.bV.sum_repr x, ← S.bV.sum_repr y]
@@ -82,7 +82,7 @@ def FiniteGroupActsUnitarily : Prop :=
     R.Char F → GroupUnitary R
 
 /- English proof (translation)
-Introduce `h`. Use `h (Units.mk0 2 two_ne_zero) 1 1` as an intermediate fact. Simplify using `[Units.smul_def] at this`. Evaluate the numerical expressions using `[map_ofNat] at this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Evaluate the numerical expressions.
 -/
 example : ¬ IsUnitaryRep (G := ℂˣ) (H := ℂ) (Representation.ofDistribMulAction ℂ ℂˣ ℂ) := by
   intro h
@@ -91,7 +91,7 @@ example : ¬ IsUnitaryRep (G := ℂˣ) (H := ℂ) (Representation.ofDistribMulAc
   norm_num [map_ofNat] at this
 
 /- English proof (translation)
-Use `h g x x` as an intermediate fact. Rewrite `this` using `[inner_self_eq_norm_sq_to_K, inner_self_eq_norm_sq_to_K]`. Establish `h2 : ‖ρ g x‖ ^ 2 = ‖x‖ ^ 2` using `by exact_mod_cast this`. Conclude with `(pow_left_inj₀ (norm_nonneg _) (norm_nonneg _) two_ne_zero).1 h2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 example {G H : Type} [Group G] [NormedAddCommGroup H] [InnerProductSpace ℂ H] (ρ : Representation ℂ G H)
     (h : IsUnitaryRep ρ) (g : G) (x : H) : ‖ρ g x‖ = ‖x‖ := by

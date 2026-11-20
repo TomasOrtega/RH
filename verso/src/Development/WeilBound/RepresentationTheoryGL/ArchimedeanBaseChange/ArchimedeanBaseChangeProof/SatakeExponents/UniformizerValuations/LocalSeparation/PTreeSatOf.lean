@@ -15,7 +15,7 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 namespace PositivityTheory.Rg.BcB.F.RS
 
 /- English proof (translation)
-Use `(L.toAddMonoidHom.map_finsum (finite_heckeVec hK hh ρ x)).trans (finsum_congr fun c => ?_)` and prove the remaining obligations. Simplify using `[hL]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem tso_map_heckeVec {G V X : Type} [Group G] [AddCommGroup V] [Module ℂ V] [AddCommGroup X] [Module ℂ X]
     {ρ : Representation ℂ G V} {τ : Representation ℂ G X} {K : Subgroup G} {h : G → ℂ} (hK : IsCommensurated K)
@@ -25,7 +25,7 @@ theorem tso_map_heckeVec {G V X : Type} [Group G] [AddCommGroup V] [Module ℂ V
   simp [hL]
 
 /- English proof (translation)
-Unfold `heckeVec`. Conclude with `finsum_induction (· ∈ S) S.zero_mem (fun _ _ => S.add_mem) fun c => S.smul_mem _ (hS _ _ hx)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem tso_heckeVec_mem {G V : Type} [Group G] [AddCommGroup V] [Module ℂ V] {ρ : Representation ℂ G V}
     {K : Subgroup G} {h : G → ℂ} (S : Submodule ℂ V) (hS : ∀ g, ∀ y ∈ S, ρ g y ∈ S) {x : V} (hx : x ∈ S) :
@@ -34,26 +34,24 @@ theorem tso_heckeVec_mem {G V : Type} [Group G] [AddCommGroup V] [Module ℂ V] 
   exact finsum_induction (· ∈ S) S.zero_mem (fun _ _ => S.add_mem) fun c => S.smul_mem _ (hS _ _ hx)
 
 /- English proof (translation)
-Simplify using `[heckeVec]`.
+Simplify using the standard rewrite rules.
 -/
 theorem tso_heckeVec_zero {G V : Type} [Group G] [AddCommGroup V] [Module ℂ V] {ρ : Representation ℂ G V}
     {K : Subgroup G} {h : G → ℂ} : heckeVec ρ K h 0 = 0 := by
   simp [heckeVec]
 
 /- English proof (translation)
-Introduce `hT E _ _ _ N t P w hg hu htp ⟨φ0, hφ0S, hφ00, hφ0K⟩`. Take `⟨hinv, J, L, heq, hsep⟩` from `hT E N t P w hg hu htp`. Establish `hKo` using `(GlobalTheory.LFun.SatCompare.isOpen_isCompact_KGL w N).1`. Establish `hKc` using `Final.GLintComm E w N`. Establish `fixK : ∀ φ, (∀ k ∈ KGL w N, finRep E N (locGL E N w k) φ = φ) → φ ∈ fixed ((finRep E N).comp (locGL E N w)) (KGL w N)` using `fun φ h => GlobalTheory.LGrp.mem_fixed.2 fun k hk => h k hk`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `smK : ∀ φ, φ ∈ fixed ((finRep E N).comp (locGL E N w)) (KGL w N) → SmVec ((finRep E N).comp (locGL E N w)) φ` using `fun φ h => ⟨_, hKo, h⟩`. Establish `hLfix : ∀ j φ, φ ∈ t.space → φ ∈ fixed ((finRep E N).comp (locGL E N w)) (KGL w N) → L j φ ∈ fixed (lp P w) (KGL w N)` using `fun j φ hS hf => GlobalTheory.LGrp.mem_fixed.2 fun k hk => by rw [← heq j k φ hS (smK _ hf), GlobalTheory.LGrp.mem_fixed.1 hf k hk]`. Choose the witnesses or unpack the hypotheses as in `⟨j, hj⟩ : ∃ j, L j φ0 ≠ 0 := by`. Assume the negation of the conclusion as `hc`. Use `push Not at hc`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Conclude with `hφ00 (hsep φ0 hφ0S (smK _ (fixK _ hφ0K)) hc)`. Take `⟨b, hb, -⟩` from `GlobalTheory.SatInd.exists_sat_multiProd P.h (π := fun i => (P.σ i w).ρ) (fun i => (P.σ i w).smooth) (fun i => (P.σ i w).irred) (hLfix j φ0 hφ0S (fixK _ hφ0K)) hj`. Establish `hvec : ∀ f ∈ fixed (lp P w) (KGL w N), f ≠ 0 → IsSatVecGL w (lp P w) f (∑ i, b i)` using `fun f hf hf0 => by`. Take `⟨S, hS, hfS⟩` from `GlobalTheory.SatInd.exists_sat_multiProd P.h (π := fun i => (P.σ i w).ρ) (fun i => (P.σ i w).smooth) (fun i => (P.σ i w).irred) hf hf0`. Establish `e : S = b` using `funext fun a => (hS a).unique (hb a)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← e]`. Conclude with `hfS`. Establish `hcard : (∑ i, b i).card = N` using `(hvec _ (hLfix j φ0 hφ0S (fixK _ hφ0K)) hj).2.2.1`. Use `⟨_, ⟨b, fun i => ⟨(hb i).1, hb i⟩, rfl⟩, fun φ hφS hφ0 hφK => ?_⟩` and prove the remaining obligations. Establish `hf` using `fixK _ hφK`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨hφ0, hf, hcard, fun ϖ hϖ i hi => ?_⟩` and prove the remaining obligations. Establish `hh` using `GlobalTheory.LFun.Tj_mem_hecke (n := N) hϖ i`. Establish `hTS` using `tso_heckeVec_mem (K := KGL w N) (h := Tj ℂ N (Ov E w) ϖ i) t.space hinv hφS`. Establish `hTf` using `GlobalTheory.LFun.SatCompare.heckeVec_mem_fixed hKc hh hf`. Use `sub_eq_zero.1 (hsep _ (t.space.sub_mem hTS (t.space.smul_mem _ hφS)) (smK _ (sub_mem hTf (Submodule.smul_mem _ _ hf))) fun j' => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `key` using `tso_map_heckeVec (τ := lp P w) hKc hh (L j') fun g => heq j' g φ hφS (smK _ hf)`. Rewrite using `[LinearMap.map_sub, LinearMap.map_smul]`. Use `sub_eq_zero.2 (key.trans ?_)` and prove the remaining obligations. Distinguish the cases in `h0 : L j' φ = 0`. Conclude with `(congrArg (heckeVec (lp P w) (KGL w N) (Tj ℂ N (Ov E w) ϖ i)) h0).trans (tso_heckeVec_zero.trans ((smul_zero _).symm.trans (congrArg _ h0.symm)))`.
-
-Conclude with `(hvec _ (hLfix j' φ hφS hf) h0).2.2.2 ϖ hϖ i hi`.
+Consider separately whether the proposition holds or fails. A detailed English derivation is pending.
 -/
 theorem treeSatOf_holds : TreeSatOf := by
   intro hT E _ _ _ N t P w hg hu htp ⟨φ0, hφ0S, hφ00, hφ0K⟩

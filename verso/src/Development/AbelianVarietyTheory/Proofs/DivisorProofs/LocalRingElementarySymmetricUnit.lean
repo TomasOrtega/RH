@@ -8,17 +8,15 @@ namespace GlobalTheory
 open Polynomial in
 
 /- English proof (translation)
-Introduce `R _ _ A _ y a₀ h`. Assume the negation of the conclusion as `hne`. Use `push_neg at hne`. Use `set s := Finset.univ.val.map y with hs`. Establish `hcard : Multiset.card s = Fintype.card A` using `by simp [s, Finset.card_univ]`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key` using `congrArg (Polynomial.eval (1 : R)) (Multiset.prod_X_sub_X_eq_sum_esymm s)`. Establish `h0 : ((s.map fun t => X - C t).prod).eval 1 = 0`. Rewrite using `[Polynomial.eval_multiset_prod]`. Apply `Multiset.prod_eq_zero` to reduce the goal to its premises. Rewrite using `[Multiset.map_map, Multiset.mem_map]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `⟨y a₀, by simp [s], by simp [h]⟩`. Rewrite `key` using `[h0, Polynomial.eval_finset_sum, Finset.sum_range_succ']`. Simplify using `only [eval_mul, eval_pow, eval_neg, eval_one, eval_C, eval_X, one_pow, mul_one, pow_zero, one_mul] at key`. Establish `he0 : s.esymm 0 = 1` using `by simp [Multiset.esymm, Multiset.powersetCard_zero_left]`. Rewrite `key` using `[he0]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hmem : ∑ j ∈ Finset.range (Multiset.card s), (-1 : R) ^ (j + 1) * s.esymm (j + 1) ∈ IsLocalRing.maximalIdeal R`. Apply `Ideal.sum_mem` to reduce the goal to its premises. Introduce `j hj`. Apply `Ideal.mul_mem_left` to reduce the goal to its premises. Rewrite using `[IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `hne (j + 1) (by omega)` to reduce the goal to its premises. Rewrite using `[← hcard]`. Conclude with `Finset.mem_range.mp hj`. Establish `h1 : (1 : R) = -∑ j ∈ Finset.range (Multiset.card s), (-1 : R) ^ (j + 1) * s.esymm (j + 1)`. Take the linear combination `-key`.
-
-Establish `: (1 : R) ∈ IsLocalRing.maximalIdeal R`. Rewrite using `[h1]`. Conclude with `neg_mem hmem`. Conclude with `(IsLocalRing.maximalIdeal.isMaximal R).ne_top ((Ideal.eq_top_iff_one _).mpr this)`.
+Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_isUnit_esymm_of_eq_one :
     ∀ (R : Type) [CommRing R] [IsLocalRing R] (A : Type) [Fintype A] (y : A → R) (a₀ : A),

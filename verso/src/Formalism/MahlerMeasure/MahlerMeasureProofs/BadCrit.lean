@@ -5,13 +5,11 @@ namespace Formalism.GM
 open Module
 
 /- English proof (translation)
-Establish `hp : (1 : ℝ) < p` using `by exact_mod_cast (Fact.out : p.Prime).one_lt`. Establish `ha : a ≠ 0`. Introduce and unpack `rfl`. Rewrite `h` using `[norm_zero]`. Conclude with `absurd h (not_le.2 (by positivity))`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[PadicInt.norm_eq_zpow_neg_valuation ha, zpow_le_zpow_iff_right₀ hp, neg_le_neg_iff]`. Establish `hv : a.valuation ≤ E` using `by exact_mod_cast h`. Establish `hsp` using `PadicInt.unitCoeff_spec ha`. Use `set u := PadicInt.unitCoeff ha`. Establish `hu : (u : ℤ_[p]) * ((u⁻¹ : ℤ_[p]ˣ) : ℤ_[p]) = 1` using `by simp`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 
-Use `⟨((u⁻¹ : ℤ_[p]ˣ) : ℤ_[p]) * (p : ℤ_[p]) ^ (E - a.valuation), ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← pow_add, Nat.add_sub_cancel' hv]`. Use `_ = ((u : ℤ_[p]) * ((u⁻¹ : ℤ_[p]ˣ) : ℤ_[p])) * (p : ℤ_[p]) ^ a.valuation * (p : ℤ_[p]) ^ (E - a.valuation) := by rw [hu, one_mul]`. Use `_ = ((u : ℤ_[p]) * (p : ℤ_[p]) ^ a.valuation) * (((u⁻¹ : ℤ_[p]ˣ) : ℤ_[p]) * (p : ℤ_[p]) ^ (E - a.valuation)) := by ring`.
-
-Use `_ = _ := by rw [← hsp]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem badCrit_dvd_pow_of_norm {p : ℕ} [Fact p.Prime] {a : ℤ_[p]} {E : ℕ}
     (h : (p : ℝ) ^ (-(E : ℤ)) ≤ ‖a‖) : a ∣ (p : ℤ_[p]) ^ E := by
@@ -35,17 +33,15 @@ theorem badCrit_dvd_pow_of_norm {p : ℕ} [Fact p.Prime] {a : ℤ_[p]} {E : ℕ}
     _ = _ := by rw [← hsp]
 
 /- English proof (translation)
-Establish `hp0 : (0 : ℝ) < p` using `by exact_mod_cast (Fact.out : p.Prime).pos`. Take `⟨n, S⟩` from `N.smithNormalForm (Pi.basisFun ℤ_[p] (Fin m))`. Establish `hr : ∀ j, j ∈ Set.range S.f`. Introduce `j`. Assume the negation of the conclusion as `hj`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Take `⟨v, hv, hn⟩` from `h (S.bM.coord j) ⟨S.bM j, by simp⟩`. Establish `h0 : S.bM.coord j v = 0` using `S.le_ker_coord_of_notMem_range hj hv`. Rewrite `hn` using `[h0, norm_zero]`. Conclude with `absurd hn (not_le.2 (zpow_pos hp0 _))`. Establish `hd : ∀ i, S.a i ∣ (p : ℤ_[p]) ^ E`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i`. Take `⟨v, hv, hn⟩` from `h (S.bM.coord (S.f i)) ⟨S.bM (S.f i), by simp⟩`. Establish `hc : S.bM.coord (S.f i) v = S.a i * S.bN.coord i ⟨v, hv⟩` using `by show S.bM.repr ((⟨v, hv⟩ : N) : Fin m → ℤ_[p]) (S.f i) = S.a i * S.bN.repr ⟨v, hv⟩ i`. Rewrite using `[S.repr_apply_embedding_eq_repr_smul]`. Conclude with `congrArg (· i) (S.bN.repr.map_smul (S.a i) ⟨v, hv⟩)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Chain the equalities or inequalities of the calculation.
 
-Apply `badCrit_dvd_pow_of_norm` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation. Establish `hb : ∀ j, (p : ℤ_[p]) ^ E • S.bM j ∈ N`. Introduce `j`. Take `⟨i, rfl⟩` from `hr j`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨t, ht⟩` from `hd i`. Rewrite using `[ht, mul_comm, mul_smul, ← S.snf i]`. Conclude with `N.smul_mem t (S.bN i).2`. Introduce `z`. Rewrite using `[← S.bM.sum_repr z, Finset.smul_sum]`.
-
-Use `N.sum_mem fun j _ => ?_` and prove the remaining obligations. Rewrite using `[smul_comm]`. Conclude with `N.smul_mem _ (hb j)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem badCrit_core {p : ℕ} [Fact p.Prime] {m : ℕ} (E : ℕ) (N : Submodule ℤ_[p] (Fin m → ℤ_[p]))
     (h : ∀ l : (Fin m → ℤ_[p]) →ₗ[ℤ_[p]] ℤ_[p], (∃ z, l z = 1) →
@@ -90,27 +86,27 @@ variable {p : ℕ} [Fact p.Prime] {Vs : Type} [AddCommGroup Vs] [Module ℚ_[p] 
     [IsScalarTower ℤ_[p] ℚ_[p] Vs]
 
 /- English proof (translation)
-Rewrite using `[← algebraMap_smul ℚ_[p] c x, PadicInt.algebraMap_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem badCrit_smul_eq (c : ℤ_[p]) (x : Vs) : c • x = (c : ℚ_[p]) • x := by
   rw [← algebraMap_smul ℚ_[p] c x, PadicInt.algebraMap_apply]
 
 /- English proof (translation)
-Rewrite using `[badCrit_smul_eq, map_smul, LinearMap.smul_apply, smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem badCrit_be_smul_left (be : Vs →ₗ[ℚ_[p]] Vs →ₗ[ℚ_[p]] ℚ_[p]) (c : ℤ_[p]) (x y : Vs) :
     be (c • x) y = (c : ℚ_[p]) * be x y := by
   rw [badCrit_smul_eq, map_smul, LinearMap.smul_apply, smul_eq_mul]
 
 /- English proof (translation)
-Rewrite using `[badCrit_smul_eq, map_smul, smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem badCrit_be_smul_right (be : Vs →ₗ[ℚ_[p]] Vs →ₗ[ℚ_[p]] ℚ_[p]) (c : ℤ_[p]) (x y : Vs) :
     be x (c • y) = (c : ℚ_[p]) * be x y := by
   rw [badCrit_smul_eq, map_smul, smul_eq_mul]
 
 /- English proof (translation)
-The claim follows from `Module.IsTorsionFree.of_smul_eq_zero fun r x h => by rw [badCrit_smul_eq, smul_eq_zero] at h rcases h with h | h · exact Or.inl (PadicInt.ext (h.trans PadicInt.coe_zero.symm)) · exact Or.inr h`.
+A detailed English derivation is pending.
 -/
 theorem badCrit_torsionFree : Module.IsTorsionFree ℤ_[p] Vs :=
   Module.IsTorsionFree.of_smul_eq_zero fun r x h => by
@@ -120,11 +116,11 @@ theorem badCrit_torsionFree : Module.IsTorsionFree ℤ_[p] Vs :=
     · exact Or.inr h
 
 /- English proof (translation)
-Use `⟨Module.finrank ℤ_[p] L, ?_⟩` and prove the remaining obligations. Introduce and unpack `n ⟨x, y, hx, hy, hxy⟩`. Establish `hli : LinearIndependent ℤ_[p] (fun i => (⟨x i, hx i⟩ : L))`. Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `g hg i`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1` using `congrArg (fun v : L => be (v : Vs) (y i)) hg`. Simplify using `only [Submodule.coe_sum, Submodule.coe_smul, map_sum, LinearMap.sum_apply, Submodule.coe_zero, map_zero, LinearMap.zero_apply] at h1`. Simplify using `only [badCrit_be_smul_left, hxy, mul_ite, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true] at h1`. Establish `hp : (p : ℚ_[p]) ^ D ≠ 0` using `zpow_ne_zero _ (by exact_mod_cast (Fact.out : p.Prime).ne_zero)`. Conclude with `PadicInt.ext (((mul_eq_zero.1 h1).resolve_right hp).trans PadicInt.coe_zero.symm)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using hli.fintype_card_le_finrank`.
+A detailed English derivation is pending.
 -/
 theorem badCrit_goodCount_bdd (be : Vs →ₗ[ℚ_[p]] Vs →ₗ[ℚ_[p]] ℚ_[p]) (L : Submodule ℤ_[p] Vs) (D : ℤ)
     [Module.Finite ℤ_[p] L] :
@@ -150,43 +146,37 @@ variable {p : ℕ} [Fact p.Prime] {Vs : Type} [AddCommGroup Vs] [Module ℚ_[p] 
     [IsScalarTower ℤ_[p] ℚ_[p] Vs]
 
 /- English proof (translation)
-Use `badCrit_torsionFree (p := p) (Vs := Vs)` as an intermediate fact. Establish `: Module.Finite ℤ_[p] L₁` using `Module.Finite.of_injective (Submodule.inclusion hle) (Submodule.inclusion_injective hle)`. Use `set m := Module.finrank ℤ_[p] L₁`. Set `u` to `Module.finBasis ℤ_[p] L₁`. Set `bL` to `Module.finBasis ℤ_[p] L`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hp1 : (1 : ℝ) < p` using `by exact_mod_cast (Fact.out : p.Prime).one_lt`. Establish `hp0 : (0 : ℝ) < p` using `by linarith`. Establish `hpq : (p : ℚ_[p]) ≠ 0` using `by exact_mod_cast (Fact.out : p.Prime).ne_zero`. Use `set C : ℝ := ∑ a, ∑ b, ‖be (u a) (bL b)‖`. Establish `hC : ∀ w ∈ L, ∀ a, ‖be (u a) w‖ ≤ C`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `w hw a`. Establish `hw' : w = ∑ b, (bL.repr ⟨w, hw⟩ b) • (bL b : Vs)`. Use `congrArg Subtype.val (bL.sum_repr ⟨w, hw⟩)` as an intermediate fact. Rewrite `this` using `[Submodule.coe_sum]`. Simplify using `using this.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[hw', map_sum]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[badCrit_be_smul_right, norm_mul, ← PadicInt.norm_def]`. Conclude with `mul_le_of_le_one_left (norm_nonneg _) (PadicInt.norm_le_one _)`. Use `_ ≤ C := Finset.single_le_sum (f := fun a => ∑ b, ‖be (u a) (bL b)‖) (fun a _ => Finset.sum_nonneg fun b _ => norm_nonneg _) (Finset.mem_univ a)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨E, hE⟩` from `pow_unbounded_of_one_lt (C * (p : ℝ) ^ D) hp1`. Establish `hCE : C ≤ (p : ℝ) ^ ((E : ℤ) - D)`. Rewrite using `[zpow_sub₀ hp0.ne', zpow_natCast, le_div_iff₀ (zpow_pos hp0 _)]`. Conclude with `hE.le`. Establish `hnp : ∀ z : ℤ, ‖(p : ℚ_[p]) ^ z‖ = (p : ℝ) ^ (-z)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Introduce `z`. Conclude with `Padic.norm_p_zpow z`. Establish `hint : ∀ w ∈ L, ∀ a, ‖(p : ℚ_[p]) ^ ((E : ℤ) - D) * be (u a) w‖ ≤ 1`. Introduce `w hw a`. Rewrite using `[norm_mul, hnp]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result.
 
-Combine the equalities or inequalities in the displayed calculation. Set `g : L → Fin m → ℤ_[p]` to `fun w a => ⟨(p : ℚ_[p]) ^ ((E : ℤ) - D) * be (u a) w, hint w.1 w.2 a⟩`. Establish `hg : ∀ w a, ((g w a : ℤ_[p]) : ℚ_[p]) = (p : ℚ_[p]) ^ ((E : ℤ) - D) * be (u a) w` using `fun _ _ => rfl`. Set `G : L →ₗ[ℤ_[p]] (Fin m → ℤ_[p])` to `{ toFun := g map_add' := fun w w' => by`. Use function extensionality and compare the values at `a`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Apply `PadicInt.ext` to reduce the goal to its premises. Rewrite using `[Pi.add_apply, PadicInt.coe_add, hg, hg, hg, Submodule.coe_add, map_add, mul_add]`. Use the proof step `map_smul' := fun c w => by`. Use function extensionality and compare the values at `a`. Apply `PadicInt.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Pi.smul_apply, RingHom.id_apply, smul_eq_mul, PadicInt.coe_mul, hg, hg, Submodule.coe_smul, badCrit_be_smul_right]`. Use `ring }`. Establish `hG : ∀ w a, ((G w a : ℤ_[p]) : ℚ_[p]) = (p : ℚ_[p]) ^ ((E : ℤ) - D) * be (u a) w` using `fun _ _ => rfl`. Establish `hcore` using `badCrit_core E (LinearMap.range G) (by`. Introduce and unpack `l ⟨z0, hz0⟩`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Use `set c : Fin m → ℤ_[p] := fun a => l (fun j => if a = j then 1 else 0)`. Establish `hl : ∀ z, l z = ∑ a, z a * c a` using `fun z => by`. Rewrite using `[LinearMap.pi_apply_eq_sum_univ l z]`. Both sides reduce to the same expression. Use `set uu : L₁ := u.equivFun.symm c`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `huu : (uu : Vs) = ∑ a, c a • (u a : Vs)` using `by show ((u.equivFun.symm c : L₁) : Vs) = _`. Rewrite using `[Basis.equivFun_symm_apply, Submodule.coe_sum]`. Both sides reduce to the same expression. Establish `hprim' : ∀ (b : ℤ_[p]) (x : Vs), x ∈ L₁ → (uu : Vs) = b • x → IsUnit b`. Introduce `b x hx hbx`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Establish `h1 : uu = b • (⟨x, hx⟩ : L₁)` using `Subtype.ext hbx`. Establish `h2 : c = b • u.equivFun ⟨x, hx⟩`. Rewrite using `[← u.equivFun.apply_symm_apply c]`. Express the relevant statement in the definitionally equal form `u.equivFun uu = _`. Rewrite using `[h1, map_smul]`.
+Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Apply `IsUnit.of_mul_eq_one (∑ a, z0 a * u.equivFun ⟨x, hx⟩ a)` to reduce the goal to its premises. Rewrite using `[← hz0, hl, h2, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Take `⟨u', hu', hn⟩` from `hprim uu uu.2 hprim'`. Use `⟨G ⟨u', hu'⟩, LinearMap.mem_range_self _ _, ?_⟩` and prove the remaining obligations. Establish `hq : ((l (G ⟨u', hu'⟩) : ℤ_[p]) : ℚ_[p]) = (p : ℚ_[p]) ^ ((E : ℤ) - D) * be uu u'`. Rewrite using `[hl, PadicInt.coe_sum, huu, map_sum, LinearMap.sum_apply, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Put the polynomial expressions in normal form. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[PadicInt.coe_mul, hG, badCrit_be_smul_left]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[PadicInt.norm_def, hq, norm_mul, hnp]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← zpow_add₀ hp0.ne']`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Put the polynomial expressions in normal form. Use `_ ≤ _ := by gcongr)`. Establish `hw : ∀ j : Fin m, ∃ w : L, G w = (p : ℤ_[p]) ^ E • Pi.single j 1` using `fun j => LinearMap.mem_range.1 (hcore (Pi.single j 1))`. Use `choose w hw using hw`. Use `⟨fun i => (u i : Vs), fun j => (w j : Vs), fun i => hle (u i).2, fun j => (w j).2, ?_⟩` and prove the remaining obligations.
-
-Introduce `i j`. Establish `h1` using `congrArg (fun z => ((z i : ℤ_[p]) : ℚ_[p])) (hw j)`. Simplify using `only [hG] at h1`. Establish `h2 : ((((p : ℤ_[p]) ^ E • (Pi.single j 1 : Fin m → ℤ_[p])) i : ℤ_[p]) : ℚ_[p]) = (p : ℚ_[p]) ^ ((E : ℤ) - D) * (if i = j then (p : ℚ_[p]) ^ D else 0)`. Rewrite using `[Pi.smul_apply, Pi.single_apply, smul_eq_mul]`.
-
-Use `split_ifs`. Rewrite using `[mul_one, ← zpow_add₀ hpq]`. Use `push_cast`. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
-
-Rewrite `h1` using `[h2]`. Conclude with `mul_left_cancel₀ (zpow_ne_zero _ hpq) h1`.
+Move the embeddings inside the algebraic operations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem badCrit_pairs (be : Vs →ₗ[ℚ_[p]] Vs →ₗ[ℚ_[p]] ℚ_[p]) (L L₁ : Submodule ℤ_[p] Vs) (D : ℤ)
     [Module.Finite ℤ_[p] L] (hle : L₁ ≤ L)
@@ -299,7 +289,7 @@ theorem badCrit_pairs (be : Vs →ₗ[ℚ_[p]] Vs →ₗ[ℚ_[p]] ℚ_[p]) (L L�
 end
 
 /- English proof (translation)
-Introduce `p _ Vs _ _ _ _ be L L₁ D hfin hle _hsat hprim`. Take `⟨x, y, hx, hy, hxy⟩` from `badCrit_pairs be L L₁ D hle hprim`. Establish `hg : Module.finrank ℤ_[p] L₁ ≤ M.goodCount p (fun x y => be x y) L D` using `le_csSup (badCrit_goodCount_bdd be L D) ⟨x, y, hx, hy, hxy⟩`. Unfold `M.bad`. Use linear arithmetic over natural numbers and integers.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers.
 -/
 theorem bad_criterion_holds : M.BadCrit := by
   intro p _ Vs _ _ _ _ be L L₁ D hfin hle _hsat hprim

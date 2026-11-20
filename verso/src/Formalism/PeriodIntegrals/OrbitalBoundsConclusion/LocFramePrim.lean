@@ -5,7 +5,7 @@ import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.LocalPrimitiveFrame.Dua
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.LocalPrimitiveFrame.Assemble
 
 /- English proof (translation)
-The claim follows from `PI.LocFramePrimWork.Steps_top PI.LocFramePrimWork.localDifferentPowerSpan PI.LocFramePrimWork.dualFunctionalsExist PI.LocFramePrimWork.primitiveOfDualFunctionals`.
+A detailed English derivation is pending.
 -/
 theorem locFramePrim : PI.LocFramePrim.Statement :=
   PI.LocFramePrimWork.Steps_top PI.LocFramePrimWork.localDifferentPowerSpan PI.LocFramePrimWork.dualFunctionalsExist

@@ -12,11 +12,11 @@ open scoped InnerProductSpace ENNReal
 namespace GlobalTheory.MomLem8
 
 /- English proof (translation)
-Unfold `ev`. Rewrite using `[Finset.sum_comm]`. Establish `key : ∀ j, ∑ i, (star (Γ i e) * Γ i j) = if e = j then 1 else 0`. Introduce `j`. Establish `h` using `congrFun (congrFun h2 e) j`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `h` using `[Matrix.mul_apply, Matrix.one_apply]`. Rewrite using `[← h]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `: star (Γ i e) = Γ e i`. Use `congrFun (congrFun hH e) i` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[Matrix.conjTranspose_apply]`. Then use the resulting hypothesis. Rewrite using `[this]`. Repeatedly rewrite using `[← Finset.sum_smul, key]`. Simplify using the standard rewrite rules.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem ev_col {k r : ℕ} {ι : Type} [Fintype ι] [DecidableEq ι] (Γ : Matrix ι ι ℂ) (hH : Γᴴ = Γ)
     (h2 : Γ * Γ = 1) (R : BranchingSupport.Rep k r) (x : ι → R.H) (e : ι) :
@@ -37,7 +37,7 @@ theorem ev_col {k r : ℕ} {ι : Type} [Fintype ι] [DecidableEq ι] (Γ : Matri
   simp
 
 /- English proof (translation)
-Rewrite using `[Matrix.mem_unitaryGroup_iff, Matrix.star_eq_conjTranspose]`. Establish `: (Γᵀ)ᴴ = Γᵀ`. Rewrite using `[show (Γᵀ)ᴴ = (Γᴴ)ᵀ from rfl, hH]`. Rewrite using `[this, ← Matrix.transpose_mul, h2, Matrix.transpose_one]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem transpose_unitary {ι : Type} [Fintype ι] [DecidableEq ι] (Γ : Matrix ι ι ℂ) (hH : Γᴴ = Γ)
     (h2 : Γ * Γ = 1) : Γᵀ ∈ Matrix.unitaryGroup ι ℂ := by
@@ -47,7 +47,7 @@ theorem transpose_unitary {ι : Type} [Fintype ι] [DecidableEq ι] (Γ : Matrix
   rw [this, ← Matrix.transpose_mul, h2, Matrix.transpose_one]
 
 /- English proof (translation)
-Break down `ht.eq_or_lt with h0 | h0` into its components or cases. Simplify using `[← h0]`. Rewrite `h` using `[ENNReal.ofReal_mul' ht]`. Conclude with `(ENNReal.mul_le_mul_iff_left (by simpa using h0) ENNReal.ofReal_ne_top).1 h`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem div_step (b t : ℝ) (ht : 0 ≤ t) (L : ℝ≥0∞)
     (h : ENNReal.ofReal (b * t * t) ≤ L * ENNReal.ofReal t) : ENNReal.ofReal (b * t) ≤ L := by
@@ -57,29 +57,27 @@ theorem div_step (b t : ℝ) (ht : 0 ≤ t) (L : ℝ≥0∞)
     exact (ENNReal.mul_le_mul_iff_left (by simpa using h0) ENNReal.ofReal_ne_top).1 h
 
 /- English proof (translation)
-Introduce `hy k r ι κ _ _ _ _ ρ Γ d R RI io pr ep ε mu muI Wp _ _ _ _ z π u μW μN μG νq om Bm BI β hR hRI hinj hρ hT hS hB hBI hβ I hI y hy'`. Establish `hK : PI.KFinSmooth` using `hy.1.2.2.1`. Take `⟨hadj, -, hev, hnorm, -⟩` from `GlobalTheory.TensAdj.tens_adj hK k r ι κ ρ Γ d R RI io pr ep ε mu muI hR hRI hρ hT`. Take `⟨hae, hcont, -, hmB⟩` from `GlobalTheory.T.quotientMeasure_ae_mem_and_measurable_besselModel hK k r ε mu R Wp z π u μW μN μG νq hR hS`. Take `⟨-, -, -, hmI⟩` from `GlobalTheory.T.quotientMeasure_ae_mem_and_measurable_besselModel hK k r ε (muI I) (RI I) Wp z π u μW μN μG νq (hRI I) hS`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hf` using `hmI (BI I) hI.1 y hy'`. Establish `hH` using `hρ.1`. Establish `h2` using `hρ.2.1`. Establish `hc` using `hρ.2.2.2.2.2.1`. Establish `hph : ∀ e, AEStronglyMeasurable (fun x : Formalism.QuantumDeterminants.Mt k r => Formalism.QuantumDeterminants.herm Γ (ρ (Matrix.of x) *ᵥ fun c => Γ c e) om) νq`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `e`. Use `hcont ℂ (fun g => Formalism.QuantumDeterminants.herm Γ (ρ g *ᵥ fun c => Γ c e) om) ?_` and prove the remaining obligations. Simplify using `only [Formalism.QuantumDeterminants.herm, dotProduct, Matrix.mulVec]`. Use `continuousOn_finsetSum _ fun i _ => continuousOn_const.mul ?_` and prove the remaining obligations. Use `continuousOn_finsetSum _ fun j _ => continuousOn_const.mul ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `continuousOn_finsetSum _ fun l _ => (hc j l).mul continuousOn_const`. Establish `hstep : ∀ e, ENNReal.ofReal (‖β I‖ ^ 2 * ‖io I e y‖ ^ 2) ≤ ∫⁻ x, ENNReal.ofReal (‖Formalism.QuantumDeterminants.herm Γ (ρ (Matrix.of x) *ᵥ fun c => Γ c e) om‖ ^ 2 * ‖BI I ((RI I).σ (Matrix.of x) y)‖ ^ 2) ∂νq`. Introduce `e`. Establish `hw : io I e y ∈ R.sm` using `(hT.raw.io_sm I e).mem y hy'`. Establish `hpair` using `GlobalTheory.T.tensor_moment_transfer hy k r ι κ ρ Γ d R RI io pr ε mu muI Wp z π u μW μN μG νq om Bm BI β hR hRI hinj hT.raw hS hB.1 hBI hβ I hI y hy' (fun c => Γ c e) (io I e y) hw`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcs` using `GlobalTheory.T.norm_sq_integral_inner_weight_le (Formalism.QuantumDeterminants.Mt k r) Wp νq _ _ _ hf (hmB Bm hB.1 _ hw) (hph e)`. Rewrite `hcs` using `[hpair]`. Establish `hiso` using `hB.2 _ hw`. Establish `hg : ∫⁻ x, ENNReal.ofReal (‖Bm (R.σ (Matrix.of x) (io I e y))‖ ^ 2) ∂νq = ENNReal.ofReal (‖io I e y‖ ^ 2)`. Rewrite using `[← hiso]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Unfold `PI.BesselPeriodGGP.l2SG`. Use `lintegral_congr fun x => ?_` and prove the remaining obligations. Rewrite using `[ENNReal.ofReal_pow (norm_nonneg _), ofReal_norm]`. Both sides reduce to the same expression. Rewrite `hcs` using `[hg]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h1` using `hadj I y hy' (tm R (fun c => Γ c e) (io I e y)) (fun c => R.smSub.smul_mem _ hw)`. Rewrite `h1` using `[hev, ev_col Γ hH h2]`. Establish `h3 : ‖⟪y, ∑ c, pr I c (tm R (fun c => Γ c e) (io I e y) c)⟫_ℂ‖ = ‖io I e y‖ ^ 2`. Rewrite using `[norm_inner_symm]`. Establish `h4` using `congrArg norm h1`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hep : ‖(ep I : ℂ)‖ = 1`. Apply the tactic sequence `rcases hT.ep_sq I with h | h <;> simp [h]`. Rewrite `h4` using `[norm_mul, hep, one_mul, inner_self_eq_norm_sq_to_K]`. Rewrite using `[← h4]`. Simplify using the standard rewrite rules.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hcs` using `[norm_mul, h3]`. Use `div_step _ _ (by positivity) _ ?_` and prove the remaining obligations. Use `hcs using 2` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree. Establish `hsum : ENNReal.ofReal (‖β I‖ ^ 2 * ‖y‖ ^ 2) ≤ ∑ e, ENNReal.ofReal (‖β I‖ ^ 2 * ‖io I e y‖ ^ 2)`.
+Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← ENNReal.ofReal_sum_of_nonneg (fun e _ => by positivity), ← Finset.mul_sum]`. Conclude with `ENNReal.ofReal_le_ofReal (mul_le_mul_of_nonneg_left (hnorm I y hy') (by positivity))`. Use `hsum.trans ((Finset.sum_le_sum fun e _ => hstep e).trans (le_of_eq ?_))` and prove the remaining obligations. Rewrite using `[← lintegral_finsetSum']`. Use `lintegral_congr_ae ?_ filter_upwards [hae] with x hx` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← ENNReal.ofReal_sum_of_nonneg (fun e _ => by positivity), ← Finset.sum_mul]`. Use `GlobalTheory.T.sum_norm_sq_herm_translates_orthonormal k r ι ρ Γ Γᵀ d om hρ (transpose_unitary Γ hH h2) _ hx` as an intermediate fact. Rewrite using `[← this]`. Both sides reduce to the same expression. Introduce `e _`.
-
-Conclude with `(((hph e).norm.aemeasurable.pow_const 2).mul (hf.norm.aemeasurable.pow_const 2)).ennreal_ofReal`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem moment_lemma_pieri : Hyps → ∀ (k r : ℕ) (ι κ : Type) [Fintype ι] [DecidableEq ι] [Fintype κ] [DecidableEq κ] (ρ : Mx k r → Matrix ι ι ℂ) (Γ : Matrix ι ι ℂ) (d : ℕ) (R : Rep k r) (RI : κ → Rep k r) (io : ∀ I, ι → (RI I).H → R.H) (pr : ∀ I, ι → R.H → (RI I).H) (ep : κ → ℝ) (ε : Fin (2 * r + k + 1) → Bool) (mu : Fin (2 * r + k + 1) → ℝ) (muI : κ → Fin (2 * r + k + 1) → ℝ) (Wp : Type) [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [CompleteSpace Wp] [FiniteDimensional ℂ Wp] (z : Fin (2 * r + k + 1) → ℂ) (π : Mx k r → (Wp →L[ℂ] Wp)) (u : ℕ → ℝ) (μW μN μG νq : Measure (Formalism.QuantumDeterminants.Mt k r)) (om : ι → ℂ) (Bm : R.H → Wp) (BI : ∀ I, (RI I).H → Wp) (β : κ → ℂ), R.IsDS ε mu → (∀ I, (RI I).IsDS ε (muI I)) → Function.Injective muI → IsFRep ρ Γ d → TensH ρ Γ R RI io pr ep → SideG k r z π u μW μN μG νq → IsIsoB R z π νq Bm → (∀ I, IsIsoB (RI I) z π νq (BI I) ∨ β I = 0) → (∀ I, ∀ y ∈ (RI I).sm, Bm (ev Γ R om (fun c => io I c y)) = β I • BI I y) → ∀ I, IsIsoB (RI I) z π νq (BI I) → ∀ y ∈ (RI I).sm, ENNReal.ofReal (‖β I‖ ^ 2 * ‖y‖ ^ 2) ≤ ∫⁻ x, ENNReal.ofReal ((∑ i, ‖(ρ (Matrix.of x)⁻¹ *ᵥ om) i‖ ^ 2) * ‖BI I ((RI I).σ (Matrix.of x) y)‖ ^ 2) ∂νq := by
   intro hy k r ι κ _ _ _ _ ρ Γ d R RI io pr ep ε mu muI Wp _ _ _ _ z π u μW μN μG νq om Bm BI β hR hRI hinj hρ hT

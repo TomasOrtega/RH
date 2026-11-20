@@ -20,9 +20,9 @@ open CategoryTheory AlgebraicGeometry ReciprocityTheory.ChartRestriction.G Recip
 namespace GlobalTheory.HodgeSeqSheaf
 
 /- English proof (translation)
-Take `⟨e, he⟩` from `(GlobalTheory.HodgeSeqSheaf.isDeRhamSheaf_iff A H).1 hH`. Take `⟨i, hi⟩` from `GlobalTheory.T.hodge_into_de_rham_injective hP T A g hA hg H e he`. Take `⟨β, hβ, w⟩` from `GlobalTheory.PrincipalPolPairing.exists_iso_dual hP.p5 T A g hA hg hc H e he _ i fun V hV x => by`. Rewrite using `[← (hi V hV).2.1]`. Conclude with `LinearMap.mem_range_self _ x`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hV` using `GlobalTheory.DeRhamSheaf.VB.isVB_of_isDeRhamSheaf hP.p5 T A g hA hg H hH`. Use `haveI := hg`. Establish `hF` using `GlobalTheory.IndefiniteRowSideFullHecke.ZeroSectionBase.isVB_hodge A hA g`. Conclude with `⟨ShortComplex.mk i (β ≫ GlobalTheory.VB.dualMap i) w, GlobalTheory.VB.lagrangian_shortExact T g _ H hF hV i β hβ (fun V hV => ⟨(hi V hV).1, (hi V hV).2.2⟩) w, ⟨Iso.refl _⟩, ⟨Iso.refl _⟩, ⟨Iso.refl _⟩⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_shortExact (hP : GlobalTheory.CovTop.Hypotheses2) (T : Scheme.{0}) (A : Over T) [GrpObj A] (g : ℕ)
     (hA : IsAbelianScheme A) (hg : SmoothOfRelativeDimension g A.hom)
@@ -45,7 +45,7 @@ theorem exists_shortExact (hP : GlobalTheory.CovTop.Hypotheses2) (T : Scheme.{0}
     ⟨Iso.refl _⟩, ⟨Iso.refl _⟩, ⟨Iso.refl _⟩⟩
 
 /- English proof (translation)
-Introduce `_ hP _ T A _ g hA hg hc H hH` and use `exists_shortExact hP T A g hA hg hc H hH`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem main : GlobalTheory.CovTop.HypothesesXH → GlobalTheory.CovTop.Hypotheses2 → GlobalTheory.Published.PoincareDeRhamDuality → ∀ (T : Scheme.{0}) (A : Over T) [GrpObj A] (g : ℕ),
     IsAbelianScheme A → SmoothOfRelativeDimension g A.hom → (∃ c, GlobalTheory.IndefiniteRowSideFullHecke.ZeroSectionBase.IsPrincipalPol A c) →

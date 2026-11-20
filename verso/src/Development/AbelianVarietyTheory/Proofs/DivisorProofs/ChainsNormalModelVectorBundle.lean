@@ -44,7 +44,7 @@ open GlobalTheory.ChainDesc
 namespace GlobalTheory.ChainDesc
 
 /- English proof (translation)
-Take `⟨u, hu⟩` from `h`. Use `⟨Units.map f.appTop.hom.toMonoidHom u, ?_⟩` and prove the remaining obligations. Rewrite using `[Units.coe_map, ← map_pow, hu, map_mul, map_natCast]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem isRootOfP_pull {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] {p : ℕ} {B B' : Vert.Model O}
     (f : B'.X ⟶ B.X) {a : Γ(B.X, ⊤)} {k : ℕ} (h : IsRootOfP p a k) : IsRootOfP p (f.appTop a) k := by
@@ -54,7 +54,7 @@ theorem isRootOfP_pull {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuation
   rfl
 
 /- English proof (translation)
-Introduce `h0` and use `by obtain ⟨u, hu⟩ := h let χ : Γ(B.X, ⊤) →+* R := (φ.comp (algebraMap Γ(B.X, U.1) U.Bp)).comp (resG B.X le_top) have h1 : χ a = 0 := h0 have h2 := congrArg χ hu have hp2 : 2 ≤ p := (Fact.out : p.Prime).two_le rw [map_pow, h1, zero_pow (by omega), map_mul, map_natCast, eq_comm, (u …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem map_cstBp_ne_zero {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] {p : ℕ} [Fact p.Prime]
     {B : Vert.Model O} {a : Γ(B.X, ⊤)} (h : IsRootOfP p a (p - 1)) (U : AffOp B.X) {R : Type} [CommRing R]
@@ -68,11 +68,11 @@ theorem map_cstBp_ne_zero {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuat
   exact hp h2
 
 /- English proof (translation)
-Use `haveI := B.isProper`. Use `haveI : CompactSpace B.X := QuasiCompact.compactSpace_of_compactSpace B.str`. Use `haveI : B.X.IsSeparated := ⟨by rw [← terminal.comp_from B.str]; infer_instance⟩`. Use `⟨?_, fun U U' => ⟨U.2.1.inf U'.2.1, ?_⟩⟩` and prove the remaining obligations. Take `⟨t, ht⟩` from `isCompact_univ.elim_finite_subcover (fun U : AffOp B.X => (U.1 : Set B.X)) (fun U => U.1.isOpen) fun z _ => by`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨U, hU, hy, -⟩` from `QCoh.exists_affine_mem_le (U := ⊤) z trivial`. Conclude with `Set.mem_iUnion.2 ⟨⟨U, hU, ⟨⟨_, hy⟩⟩⟩, hy⟩`. Use `⟨t, inferInstance, fun i => i.1, fun z => ?_⟩` and prove the remaining obligations. Take `⟨U, hU, hz⟩` from `Set.mem_iUnion₂.1 (ht (Set.mem_univ z))`. Conclude with `⟨⟨U, hU⟩, hz⟩`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨x⟩` from `U.2.2`. Take `⟨y⟩` from `U'.2.2`. Take `⟨z, hz⟩` from `nonempty_preirreducible_inter U.1.isOpen U'.1.isOpen ⟨_, x.2⟩ ⟨_, y.2⟩`. Conclude with `⟨⟨z, hz⟩⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_finite_affOp_cover {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (B : Vert.Model O) :
     (∃ (I : Type) (_ : Finite I) (U : I → AffOp B.X), ∀ z : B.X, ∃ i, z ∈ (U i).1) ∧
@@ -94,14 +94,14 @@ theorem exists_finite_affOp_cover {O : Type} [CommRing O] [IsDomain O] [IsDiscre
     exact ⟨⟨z, hz⟩⟩
 
 /- English proof (translation)
-Rewrite using `[mv, Matrix.map_one _ Int.cast_zero Int.cast_one, Matrix.one_mulVec]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem mv_one {A A' : Type} [CommRing A] [CommRing A'] (φ : A →+* A') {h : ℕ} (x : Fin h → A) :
     mv φ 1 x = piMap φ (Fin h) x := by
   rw [mv, Matrix.map_one _ Int.cast_zero Int.cast_one, Matrix.one_mulVec]; rfl
 
 /- English proof (translation)
-Take `⟨z, hz⟩` from `Submodule.Quotient.mk_surjective _ (C.ρ w)`. Take `⟨y, rfl⟩` from `Submodule.Quotient.mk_surjective _ z`. Conclude with `⟨y, hz.symm⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_rho_lift {A : Type} [CommRing A] {p h o : ℕ} {π : A} {γ : ℕ → A} {Lie Om : Type} [AddCommGroup Lie]
     [Module A Lie] [AddCommGroup Om] [Module A Om] (C : RChain p A h o π γ Lie Om) (w : Om) :
@@ -111,7 +111,7 @@ theorem exists_rho_lift {A : Type} [CommRing A] {p h o : ℕ} {π : A} {γ : ℕ
   exact ⟨y, hz.symm⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨⟨_, k.mem 0 _ y.2⟩, rfl, e ▸ k.ρ w y _ rfl hy⟩`.
+Supply the required witnesses or components.
 -/
 theorem map_rho_lift {A A' : Type} [CommRing A] [CommRing A'] {p h o : ℕ} {π : A} {γ : ℕ → A} {Lie Om : Type}
     [AddCommGroup Lie] [Module A Lie] [AddCommGroup Om] [Module A Om] {π' : A'} {γ' : ℕ → A'} {Lie' Om' : Type}
@@ -132,7 +132,7 @@ def RhoAt (U : AffOp B.X) (s : Γ(Om.V, U.1) × (C U).L 0) : Prop :=
   (C U).ρ (1 ⊗ₜ s.1) = Submodule.Quotient.mk (Submodule.Quotient.mk s.2)
 
 /- English proof (translation)
-The claim follows from `exists_rho_lift (C U) (1 ⊗ₜ w)`.
+A detailed English derivation is pending.
 -/
 theorem exists_rhoAt (U : AffOp B.X) (w : Γ(Om.V, U.1)) : ∃ y : (C U).L 0, RhoAt C U (w, y) :=
   exists_rho_lift (C U) (1 ⊗ₜ w)
@@ -142,7 +142,7 @@ variable {C}
 set_option maxHeartbeats 800000 in
 
 /- English proof (translation)
-Take `⟨-, l, m, -, hm, k⟩` from `hS.1 U U' hle`. Take `⟨y', h1, h2⟩` from `map_rho_lift k (hm w) hy`. Conclude with `⟨(resM Om.V hle w, y'), rfl, h1.trans (mv_one _ _), h2⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem RhoAt.res (hS : IsSys C M) {U U' : AffOp B.X} (hle : U'.1 ≤ U.1) {w : Γ(Om.V, U.1)} {y : (C U).L 0}
     (hy : RhoAt C U (w, y)) : ∃ s : Γ(Om.V, U'.1) × (C U').L 0,
@@ -154,7 +154,7 @@ theorem RhoAt.res (hS : IsSys C M) {U U' : AffOp B.X} (hle : U'.1 ≤ U.1) {w : 
 set_option maxHeartbeats 800000 in
 
 /- English proof (translation)
-Take `⟨l, m, -, hm, k⟩` from `hS.2 U a`. Take `⟨y', h1, h2⟩` from `map_rho_lift k (hm w) hy`. Conclude with `⟨((Om.ρ a : Om.V ⟶ Om.V).app _ w, y'), rfl, h1, h2⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem RhoAt.act (hS : IsSys C M) (a : Λ) {U : AffOp B.X} {w : Γ(Om.V, U.1)} {y : (C U).L 0}
     (hy : RhoAt C U (w, y)) : ∃ s : Γ(Om.V, U.1) × (C U).L 0,
@@ -164,7 +164,7 @@ theorem RhoAt.act (hS : IsSys C M) (a : Λ) {U : AffOp B.X} {w : Γ(Om.V, U.1)} 
   exact ⟨((Om.ρ a : Om.V ⟶ Om.V).app _ w, y'), rfl, h1, h2⟩
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.chain_finite_relations_affine_open O p B Λ h o r r' Lie Om π γ C vL vO U S hf h0 hS`.
+A detailed English derivation is pending.
 -/
 theorem exists_down [Fact p.Prime] {r r' : ℕ} (vL : GlobalTheory.VB.IsVB Lie.V r) (vO : GlobalTheory.VB.IsVB Om.V r') (U : AffOp B.X)
     (S : Set (Γ(Om.V, U.1) × (C U).L 0)) (hf : S.Finite) (h0 : cstBp U π ≠ 0) (hS : ∀ s ∈ S, RhoAt C U s) :
@@ -178,29 +178,25 @@ end Pairs
 set_option maxHeartbeats 800000 in
 
 /- English proof (translation)
-Introduce `O _ _ _ p _ _ _ B Λ _ _ h o r r' Lie Om π γ M C hB aL aO vL vO hπ hS`. Establish `qL` using `vL.isQuasicoherent`. Establish `qO` using `vO.isQuasicoherent`. Take `⟨⟨I, _, U, hU⟩, hinf⟩` from `exists_finite_affOp_cover B`. Set `U₂ : I → I → AffOp B.X` to `fun i k => ⟨(U i).1 ⊓ (U k).1, hinf _ _⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Take `⟨G, hG⟩ : ∃ G : Finset Λ, Submodule.span ℤ (G : Set Λ) = ⊤` from `Module.Finite.fg_top`. Establish `hπ0 : ∀ U : AffOp B.X, cstBp U π ≠ 0` using `fun U => map_cstBp_ne_zero hπ U (RingHom.id _) fun h0 => GlobalTheory.Vert.Model.natCast_prime_ne_zero_kbar O p B (by simpa using congrArg Subtype.val h0)`. Use `choose Wg hWg using fun U : AffOp B.X => (GlobalTheory.T.vector_bundle_sections_finite_projective B.X Om.V r' vO U.1 U.2.1).1.fg_top`. Use `choose y hy using fun (U : AffOp B.X) (w : Γ(Om.V, U.1)) => exists_rhoAt C U w`. Use `choose rs hrs1 hrs2 hrs3 using fun (U U' : AffOp B.X) (hle : U'.1 ≤ U.1) (w : Γ(Om.V, U.1)) => RhoAt.res hS hle (hy U w)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Assume the hypotheses and unpack their components.
 
-Use `choose ac hac1 hac2 hac3 using fun (U : AffOp B.X) (a : Λ) (w : Γ(Om.V, U.1)) => RhoAt.act hS a (hy U w)`. Set `S : ∀ i, Set (Γ(Om.V, (U i).1) × (C (U i)).L 0)` to `fun i => (fun w => (w, y (U i) w)) '' (Wg (U i)) ∪ ⋃ a ∈ G, ac (U i) a '' (Wg (U i))`. Set `S₂ : ∀ i k, Set (Γ(Om.V, (U₂ i k).1) × (C (U₂ i k)).L 0)` to `fun i k => rs (U i) (U₂ i k) inf_le_left '' (Wg (U i)) ∪ rs (U k) (U₂ i k) inf_le_right '' (Wg (U k))`. Use `choose T hT hTD using fun i => exists_down (C := C) vL vO (U i) (S i) (((Wg _).finite_toSet.image _).union (G.finite_toSet.biUnion fun a _ => (Wg _).finite_toSet.image _)) (hπ0 _) (by`. Introduce and unpack `s (⟨w, -, rfl⟩ | hs)`.
+Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `hy _ _`. Take `⟨a, -, w, -, rfl⟩` from `Set.mem_iUnion₂.1 hs`. Conclude with `hac3 _ _ _)`. Use `choose T₂ hT₂ hTD₂ using fun i k => exists_down (C := C) vL vO (U₂ i k) (S₂ i k) (((Wg _).finite_toSet.image _).union ((Wg _).finite_toSet.image _)) (hπ0 _) (by`. Apply the tactic sequence `rintro s (⟨w, -, rfl⟩ | ⟨w, -, rfl⟩) <;> exact hrs3 _ _ _ _)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hbase : ∀ (U : AffOp B.X) (n : ℕ) (x : Fin h → U.Bp), cstBp U π • x ∈ (C U).L n` using `fun U n x => (C U).base_le n (Submodule.smul_mem_pointwise_smul _ _ _ Submodule.mem_top)`. Establish `hdvd : ∀ U : AffOp B.X, cstBp U π ∣ (p : U.Bp)` using `fun U => by`. Take `⟨u, hu⟩` from `hπ`. Establish `hp2 : 2 ≤ p` using `(Fact.out : p.Prime).two_le`. Establish `h1 : π ∣ (p : Γ(B.X, ⊤))` using `(Units.dvd_mul_left (u := u)).1 (hu ▸ dvd_pow_self π (by omega))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Simplify `map_dvd ((algebraMap Γ(B.X, U.1) U.Bp).comp (resG B.X le_top)) h1` using `[cstBp]`. Take `⟨B', f, g, E, ι, hn, hd, hfin, hinj, halg, hres, hTg, hE⟩` from `GlobalTheory.T.lattice_family_finite_locally_free O p B hB (Fin (o + 1)) h (fun j U => (C U).L j) ((⋃ i, Sigma.mk (U i) '' T i) ∪ ⋃ i, ⋃ k, Sigma.mk (U₂ i k) '' T₂ i k) ((Set.finite_iUnion fun i => (hT i).image _).union (Set.finite_iUnion fun i => Set.finite_iUnion fun k => (hT₂ …`. Take `⟨c, hc⟩` from `hdvd U`. Rewrite using `[hc, mul_smul]`. Conclude with `hbase U j _⟩)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Use the proof step `(fun j U U' hle => (hS.1 U U' hle).1 j)`. Establish `hc : IsCov f g` using `⟨hn, hfin, hinj, halg, hres⟩`. Set `c : ℕ → Fin (o + 1)` to `fun n => ⟨min n o, Nat.lt_succ_of_le (min_le_right n o)⟩`. Establish `hl : IsLatOf C f g fun n => ι (c n)` using `fun n => by`. Take `⟨h1, h2, h3⟩` from `hE (c n)`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨h1, h2, fun U => ?_⟩` and prove the remaining obligations. Establish `h4 : (C U).L (min n o) = Submodule.span U.Bp (piMap (g U) (Fin h) '' (latOf (ι (c n)) (f.f ⁻¹ᵁ U.1) : Set _))`. Use `(h3 U).trans (congrArg _ (Set.ext fun x => ⟨?_, ?_⟩))` and prove the remaining obligations. Introduce and unpack `⟨s, hs⟩`. Conclude with `⟨_, ⟨s, rfl⟩, funext fun i => (hs i).symm⟩`.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `⟨_, ⟨s, rfl⟩, rfl⟩`. Conclude with `⟨s, fun i => rfl⟩`. Conclude with `⟨GlobalTheory.T.lattice_span_bounded_denominators O B B' f g hc h _ _ h1 h2 U _ _ (hπ0 U) (hbase U _) h4, h4⟩`. Use `choose D hD using fun i => hTD i B' f g hc fun x hx => hTg ⟨U i, x⟩ (Or.inl (Set.mem_iUnion.2 ⟨i, x, hx, rfl⟩))`. Use `choose D₂ hD₂ using fun i k => hTD₂ i k B' f g hc fun x hx => hTg ⟨U₂ i k, x⟩ (Or.inr (Set.mem_iUnion.2 ⟨i, Set.mem_iUnion.2 ⟨k, x, hx, rfl⟩⟩))`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components.
 
-Use `⟨B', f, g, _, fun n => ι (c n), I, U, S, D, hd, hc, hl, hU, hD, fun i => hc.isAffineOpen _, fun x => hU (f.f x), fun i k => hc.isAffineOpen (U₂ i k), fun n => ⟨(hl n).1, (hl n).2.1⟩, fun i => (hD i).fits hl, fun i k => ⟨D₂ i k, (hD₂ i k).fits hl, ?_, ?_⟩, fun i => ?_⟩` and prove the remaining obligations. Use `GlobalTheory.T.chain_quasicoherent_cover_compat O p B B' Λ h o Lie Om π γ M C f g qL qO hS hc (U i) (U₂ i k) inf_le_left _ _ _ _ (hD i) (hD₂ i k) (top_le_iff.1 ((hWg _).ge.trans (Submodule.span_mono fun w hw => ?_)))` and prove the remaining obligations. Conclude with `⟨_, Or.inl ⟨w, hw, rfl⟩, rfl, _, Or.inl ⟨w, hw, rfl⟩, hrs1 _ _ _ _, hrs2 _ _ _ _⟩`. Use `GlobalTheory.T.chain_quasicoherent_cover_compat O p B B' Λ h o Lie Om π γ M C f g qL qO hS hc (U k) (U₂ i k) inf_le_right _ _ _ _ (hD k) (hD₂ i k) (top_le_iff.1 ((hWg _).ge.trans (Submodule.span_mono fun w hw => ?_)))` and prove the remaining obligations. Conclude with `⟨_, Or.inl ⟨w, hw, rfl⟩, rfl, _, Or.inr ⟨w, hw, rfl⟩, hrs1 _ _ _ _, hrs2 _ _ _ _⟩`.
-
-Use `GlobalTheory.T.matrix_action_generated_additive p h o _ Λ _ _ _ _ (D i) M _ _ G (fun a b s => ?_) (fun a b s => ?_) hG fun a ha => ?_` and prove the remaining obligations. Rewrite using `[PullHT.isAdd_pullA f.f aL a b]`. Both sides reduce to the same expression. Rewrite using `[PullHT.isAdd_pullA f.f aO a b]`. Both sides reduce to the same expression.
-
-Use `GlobalTheory.T.chain_quasicoherent_cover_unique O p B B' Λ h o Lie Om π γ M C f g qL qO hS hc (U i) _ _ a (hD i) (top_le_iff.1 ((hWg _).ge.trans (Submodule.span_mono fun w hw => ?_)))` and prove the remaining obligations. Conclude with `⟨_, Or.inl ⟨w, hw, rfl⟩, rfl, _, Or.inr (Set.mem_iUnion₂.2 ⟨a, ha, w, hw, rfl⟩), hac1 _ _ _, hac2 _ _ _⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_stage : ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (p : ℕ) [Fact p.Prime] [CharZero O] [CharP (ResidueField O) p] (B : GlobalTheory.Vert.Model O) (Λ : Type) [CommRing Λ] [Module.Finite ℤ Λ] (h o r r' : ℕ) (Lie Om : AM B Λ) (π : Γ(B.X, ⊤)) (γ : ℕ → Γ(B.X, ⊤)) (M : Λ →+* Matrix (Fin h) (Fin h) ℤ) (C : ChainsBp p h o Lie Om π γ), GlobalTheory.IsNormalScheme B.X → IsAdd Lie → IsAdd Om → GlobalTheory.VB.IsVB Lie.V r → GlobalTheory.VB.IsVB Om.V r' → IsRootOfP p π (p - 1) → IsSys C M → ∃ (B' : GlobalTheory.Vert.Model O) (f : GlobalTheory.Vert.Model.Hom B' B) (g : ∀ U : AffOp B.X, Γ(B'.X, f.f ⁻¹ᵁ U.1) →+* U.Bp) (E : ℕ → B'.X.Modules) (ι : ∀ n, E n ⟶ freeModule B'.X (Fin h)) (I : Type) (U : I → AffOp B.X) (S : ∀ i, Set (Γ(Om.V, (U i).1) × (C (U i)).L 0)) (D : ∀ i, ChainUp p h o Lie Om π γ f (f.f ⁻¹ᵁ (U i).1)), f.relDim = 0 ∧ IsCov f g ∧ IsLatOf C f g ι ∧ (∀ z : B.X, ∃ i, z ∈ (U i).1) ∧ (∀ i, IsDown C f g (U i) (S i) (D i)) ∧ IsLoc M ι (fun i => f.f ⁻¹ᵁ (U i).1) D := by
   intro O _ _ _ p _ _ _ B Λ _ _ h o r r' Lie Om π γ M C hB aL aO vL vO hπ hS
@@ -282,13 +278,13 @@ theorem exists_stage : ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValua
       exact ⟨_, Or.inl ⟨w, hw, rfl⟩, rfl, _, Or.inr (Set.mem_iUnion₂.2 ⟨a, ha, w, hw, rfl⟩), hac1 _ _ _, hac2 _ _ _⟩
 
 /- English proof (translation)
-Introduce `O _ _ _ p _ _ _ B Λ _ _ h o r r' Lie Om π γ M C hB aL aO vL vO hπ hγ hS`. Take `⟨B', f, g, E, ι, I, U, S, D, hd, hc, hl, hU, hD, hL⟩` from `exists_stage O p B Λ h o r r' Lie Om π γ M C hB aL aO vL vO hπ hS`. Establish `qL` using `vL.isQuasicoherent`. Establish `qO` using `vO.isQuasicoherent`. Establish `qL' : ((pullA f.f).obj Lie).V.IsQuasicoherent` using `(vL.pullback f.f).isQuasicoherent`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `qO' : ((pullA f.f).obj Om).V.IsQuasicoherent` using `(vO.pullback f.f).isQuasicoherent`. Establish `hp` using `GlobalTheory.MixedLocalChains.FrobQuot.natCast_eq_zero_fibI p B'`. Take `⟨q, l, tq, tl, hq, hl', hstep⟩` from `GlobalTheory.T.local_chains_glue_root_of_p O p B' Λ h o _ _ _ _ M E ι I _ D (isRootOfP_pull f.f hπ) hL`. Establish `hq0` using `hq 0 (Nat.zero_le o)`. Take `⟨j, hjk, hj, hj'⟩` from `GlobalTheory.T.local_chains_glue_quasicoherent O p B' Λ h o _ _ _ _ M E ι I _ D qL' hL _ _ hq0`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨ρ, hρe, hρ⟩` from `GlobalTheory.T.local_chains_glue_lie_differentials O p B' Λ h o _ _ _ _ M E ι I _ D qL' qO' hL _ _ hq0 j hj hj'`. Establish `hJ : ∀ U : AffOp B.X, JUp C f g U (ι 0) (tq 0) j.hom` using `GlobalTheory.T.pullback_chain_cover_additive O p B B' Λ h o Lie Om π γ M C f g E ι _ _ j hS hc hl hq0 fun z => (hU z).elim fun i hi => ⟨U i, hi, GlobalTheory.T.pullback_chain_cover_free_module O p B B' Λ h o Lie Om π γ M C f g E ι _ _ _ qL hS hc hl _ _ _ (hD i) (hj i)⟩`. Establish `hR : ∀ U : AffOp B.X, RUp C f g U (ι 0) (tq 0 ≫ (cokernel.π j).hom) ρ.hom` using `GlobalTheory.T.pullback_chain_cover_exact O p B B' Λ h o Lie Om π γ M C f g E ι _ _ j ρ qL hS hc hl hq0 hJ fun z => (hU z).elim fun i hi => ⟨U i, hi, GlobalTheory.T.pullback_chain_cover_quotient O p B B' Λ h o Lie Om π γ M C f g E ι _ _ _ qO hS hc hl _ _ _ (hD i) (hρ i)⟩`. Use `⟨B', f, { g := f.f.appTop (γ 0) γ := fun n => f.f.appTop (γ n) π_root := isRootOfP_pull f.f hπ g_root := isRootOfP_pull f.f (by simpa using hγ 0 (Nat.zero_le o)) γ_root := fun n hn => isRootOfP_pull f.f (hγ n hn.le) hp := hp q := q l := l step := hstep l_free := fun n hn => Globa …` and prove the remaining obligations. Take `⟨φ, h1, rfl⟩` from `GlobalTheory.T.integral_point_factors_affine_cover O B B' f g hc K R hR' w U₀ hw`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `hπR : φ (cstBp U₀ π) ∈ nonZeroDivisors R` using `mem_nonZeroDivisors_of_ne_zero (map_cstBp_ne_zero hπ U₀ φ fun h0 => hpK (by simpa using congrArg Subtype.val h0))`. Conclude with `⟨φ, h1, GlobalTheory.T.pullback_chain_cover_unique O p B B' Λ h o Lie Om π γ M C f g E ι _ _ j hc hl hq0 U₀ (hJ U₀) R φ hπR hw, GlobalTheory.T.pullback_chain_cover_compat O p B B' Λ h o Lie Om π γ M C f g E ι _ _ j ρ hc qL hl hq0 U₀ (hJ U₀) (hR U₀) R φ hπR hw⟩`.
+Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem exists_preChain_kerMatch : ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (p : ℕ) [Fact p.Prime] [CharZero O] [CharP (ResidueField O) p] (B : GlobalTheory.Vert.Model O) (Λ : Type) [CommRing Λ] [Module.Finite ℤ Λ] (h o r r' : ℕ) (Lie Om : AM B Λ) (π : Γ(B.X, ⊤)) (γ : ℕ → Γ(B.X, ⊤)) (M : Λ →+* Matrix (Fin h) (Fin h) ℤ) (C : ChainsBp p h o Lie Om π γ), GlobalTheory.IsNormalScheme B.X → IsAdd Lie → IsAdd Om → GlobalTheory.VB.IsVB Lie.V r → GlobalTheory.VB.IsVB Om.V r' → IsRootOfP p π (p - 1) → (∀ k ≤ o, IsRootOfP p (γ k) (p ^ (k + 1))) → IsSys C M → ∃ (B' : GlobalTheory.Vert.Model O) (f : GlobalTheory.Vert.Model.Hom B' B) (P : PreChain p o ((pullA f.f).obj Lie) ((pullA f.f).obj Om) (f.f.appTop π)), GlobalTheory.IsNormalScheme B'.X ∧ f.relDim = 0 ∧ KerMatch C f.f P.j.hom P.ρ.hom := by
   intro O _ _ _ p _ _ _ B Λ _ _ h o r r' Lie Om π γ M C hB aL aO vL vO hπ hγ hS

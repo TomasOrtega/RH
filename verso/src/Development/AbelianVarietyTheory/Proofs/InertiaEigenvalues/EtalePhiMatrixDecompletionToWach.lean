@@ -21,9 +21,9 @@ variable {l : ℕ} [Fact l.Prime] {P : LocPrime l} {AI : LocAinf l P} {K : FinEx
   {LL : FinExt l} {Γ : GamS P K s LL} {R : WSer Γ}
 
 /- English proof (translation)
-Apply `Γ.χΓ_inj` to reduce the goal to its premises. Rewrite using `[map_one]`. Apply `Units.ext` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Use `Γ.χΓ_res g` as an intermediate fact.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Rewrite `this` using `[P.PD_χ, h1, Units.val_one, map_one]`. Conclude with `this`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem res_eq_one (Γ : GamS P K s LL) (g : ↥(GK K)) (h1 : P.χQ (g : GQ l) = 1) :
     Γ.resΓ g = 1 := by
@@ -36,7 +36,7 @@ theorem res_eq_one (Γ : GamS P K s LL) (g : ↥(GK K)) (h1 : P.χQ (g : GQ l) =
   exact this
 
 /- English proof (translation)
-The claim follows from `((cyc_basic l P.χQ P.χQ_cyc).2.2 K g (IntermediateField.fixingSubgroup_antitone (inf_le_left : K0 K ≤ K.1) (Hinf_le_GK h hg))).2.1 hg`.
+A detailed English derivation is pending.
 -/
 theorem chi_eq_one (P : LocPrime l) (h : Good K s LL) {g : GQ l} (hg : g ∈ Hinf K) :
     P.χQ g = 1 :=
@@ -44,13 +44,13 @@ theorem chi_eq_one (P : LocPrime l) (h : Good K s LL) {g : GQ l} (hg : g ∈ Hin
     (IntermediateField.fixingSubgroup_antitone (inf_le_left : K0 K ≤ K.1) (Hinf_le_GK h hg))).2.1 hg
 
 /- English proof (translation)
-Introduce `g hg h1` and use `io_fixed I ⟨g, hg⟩ (res_eq_one Γ ⟨g, hg⟩ h1) e`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem fixH_io (I : IoS AI R) (e : R.EE) : FixH AI K (I.ioE e) :=
   fun g hg h1 => io_fixed I ⟨g, hg⟩ (res_eq_one Γ ⟨g, hg⟩ h1) e
 
 /- English proof (translation)
-Establish `h` using `fixH_io I (algebraMap (LetA ↥(OL LL) (Module.finrank ℚ_[l] ↥(K0 K))) R.EE letπ)`. Rewrite `h` using `[io_pi I]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fixH_pi (I : IoS AI R) : FixH AI K (piR AI LL s) := by
   have h := fixH_io I (algebraMap (LetA ↥(OL LL) (Module.finrank ℚ_[l] ↥(K0 K))) R.EE letπ)
@@ -58,7 +58,7 @@ theorem fixH_pi (I : IoS AI R) : FixH AI K (piR AI LL s) := by
   exact h
 
 /- English proof (translation)
-Use `choose k hk using fun i => exists_pow_mul AI s ((crd (basisO LL) i x).coeff 0)`. Use `⟨Finset.univ.sup k, (nearPi_iff_crd AI LL s _ _).2 fun i => ?_⟩` and prove the remaining obligations. Take `⟨z, hz⟩` from `hk i _ (Finset.le_sup (f := k) (Finset.mem_univ i))`. Conclude with `⟨z, by rw [crd_piR_pow, hz, pow_zero, one_mul]⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_pole_RW (AI : LocAinf l P) (LL : FinExt l) (s : ℕ) (x : RW LL) :
     ∃ k, NearPi AI LL s 0 (piR AI LL s ^ k * x) := by
@@ -70,11 +70,11 @@ theorem exists_pole_RW (AI : LocAinf l P) (LL : FinExt l) (s : ℕ) (x : RW LL) 
 set_option synthInstance.maxHeartbeats 400000 in
 
 /- English proof (translation)
-Take `⟨u, hu, hu'⟩` from `exists_inv_perfI I l`. Use `exists_near AI K LL s _ (algebraMap_mem_perfI I l) u hu hu' (lift_closure _ _ ?_) (fun g hg => fixH_pi I g (Hinf_le_GK h hg) (chi_eq_one P h hg)) x (fun g hg => hx g (Hinf_le_GK h hg) (chi_eq_one P h hg)) m` and prove the remaining obligations. Introduce and unpack `y (⟨j, rfl⟩ | ⟨z, hz, k, hk, hl, hzk, hy⟩)`. Use `mem_perfI_of_iterate I l j (l ^ s) _ ?_` and prove the remaining obligations. Use `(GlobalTheory.TorsionBoundCompare.tmul_iter LL j _).trans ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[frob_iter_teich, εroot_pow]`. Conclude with `piR_add_one_pow AI LL s`. Establish `hint : ∀ i, Γ.emb i ⟨z, hz⟩ ∈ OL LL` using `fun i => by`. Use `IsIntegral.of_pow hk ?_` and prove the remaining obligations. Establish `: (⟨z, hz⟩ : ↥(K0 K)) ^ k = 1` using `Subtype.ext hzk`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← map_pow, this, map_one]`. Conclude with `isIntegral_one`. Conclude with `mem_perfI_of_io I l (hI ⟨z, hz⟩ k hk hl hzk y hy (fun i => ⟨_, hint i⟩) fun _ => rfl)`.
+A detailed English derivation is pending.
 -/
 theorem exists_near_perfI (h : Good K s LL) (I : IoS AI R) (hI : IoW I) (x : RW LL)
     (hx : FixH AI K x) (m : ℕ) : ∃ u ∈ perfI I l, NearPi AI LL s m (x - u) := by
@@ -95,14 +95,14 @@ theorem exists_near_perfI (h : Good K s LL) (I : IoS AI R) (hI : IoW I) (x : RW 
     exact mem_perfI_of_io I l (hI ⟨z, hz⟩ k hk hl hzk y hy (fun i => ⟨_, hint i⟩) fun _ => rfl)
 
 /- English proof (translation)
-The claim follows from `mem_fixSub.trans ⟨fun h g h1 h2 => h g ⟨h1, h2⟩, fun h g hg => h g hg.1 hg.2⟩`.
+A detailed English derivation is pending.
 -/
 theorem mem_fixSub_iff (AI : LocAinf l P) (K : FinExt l) (x : RW LL) :
     x ∈ fixSub AI LL {g | g ∈ GK K ∧ P.χQ g = 1} ↔ FixH AI K x :=
   mem_fixSub.trans ⟨fun h g h1 h2 => h g ⟨h1, h2⟩, fun h g hg => h g hg.1 hg.2⟩
 
 /- English proof (translation)
-The claim follows from `haveI := (GlobalTheory.HWL.TensorWitt.main l LL).1 isUnit_one_add x`.
+A detailed English derivation is pending.
 -/
 theorem isUnit_one_add_RW (LL : FinExt l) (x : RW LL) : IsUnit (1 + (l : RW LL) * x) :=
   haveI := (GlobalTheory.HWL.TensorWitt.main l LL).1
@@ -111,7 +111,7 @@ theorem isUnit_one_add_RW (LL : FinExt l) (x : RW LL) : IsUnit (1 + (l : RW LL) 
 end Concrete
 
 /- English proof (translation)
-Take `⟨e, V, h1, h2, h3⟩` from `conj_io (ι := (ι : A →+* R)) (φ := (φ : R →+* R)) (io := (io : E →+* R)) (τ := τ) rfl ht hp h3 meet comp hφS hioS hD hpole h2 hφt hJ (fun X Y hX hXY i j => (hS _).2 fun h hh => map_eq_of_mul_eq_one (g h : R →+* R) (fun i j => (hS _).1 (hX i j) h hh) hXY i j) hsat sep compS compE …`. Conclude with `⟨V, e, h2, h1, h3⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem conj_io' {O E A R : Type} [CommRing O] [CommRing E] [CommRing A] [CommRing R]
     [Algebra O E] [Algebra O A] [Algebra O R] {n : Type} [Fintype n] [DecidableEq n]
@@ -149,7 +149,7 @@ theorem conj_io' {O E A R : Type} [CommRing O] [CommRing E] [CommRing A] [CommRi
 set_option synthInstance.maxHeartbeats 400000 in
 
 /- English proof (translation)
-Introduce `l _ P AI K s LL h Γ R I hI r F hu hF`. Establish `hl` using `GlobalTheory.Decompl.FixL.fixSub_ladic l P AI LL {g | g ∈ GK K ∧ P.χQ g = 1}`. Take `⟨V, e, h1, h2, h3⟩` from `conj_io' (inclR LL) l ((1 : ↥(OL LL)) ⊗ₜ[ℤ_[l]] piW AI s) (φRW LL) I.ioE (fixSub AI LL {g | g ∈ GK K ∧ P.χQ g = 1}) (isUnit_pi I) (Fact.out : l.Prime).two_le (near_φ AI LL s) (meet_RW AI LL s) (GlobalTheory.Decompl.fixSub_nearPi_complete l P AI LL s _ ((mem_fixSub_iff AI K _).2 ( …`. Conclude with `⟨V, e, h1, fun i j => (mem_fixSub_iff AI K _).1 (h2 i j), h3⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem decompletion : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P) (K : FinExt l) (s : ℕ) (LL : FinExt l), Good K s LL → ∀ (Γ : GamS P K s LL) (R : WSer Γ) (I : IoS AI R), IoW I → ∀ (r : ℕ) (F : Matrix (Fin r) (Fin r) (RW LL)), IsUnit F → (∀ i j, FixH AI K (F i j)) → ∃ (V : Matrix (Fin r) (Fin r) (RW LL)) (F' : Matrix (Fin r) (Fin r) R.EE), IsUnit V ∧ (∀ i j, FixH AI K (V i j)) ∧ F * V.map (φRW LL) = V * F'.map I.ioE := by
   intro l _ P AI K s LL h Γ R I hI r F hu hF

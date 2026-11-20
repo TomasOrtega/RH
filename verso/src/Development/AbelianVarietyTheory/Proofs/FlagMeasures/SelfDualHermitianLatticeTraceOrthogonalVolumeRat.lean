@@ -12,9 +12,9 @@ namespace GlobalTheory.HL.VolPerp
 open GlobalTheory.HL.DualInter
 
 /- English proof (translation)
-Establish `h1 : (M ⊔ Z) ⊓ A = M ⊔ (Z ⊓ A)` using `sup_inf_assoc_of_le Z h`. Establish `h2 : M ≤ (M ⊔ Z) ⊓ A` using `le_inf le_sup_left h`. Rewrite using `[← AddSubgroup.relIndex_mul_relIndex M _ A h2 inf_le_right]`. Use `congr 1`. Rewrite using `[h1, AddSubgroup.relIndex_sup_left, ← AddSubgroup.inf_relIndex_right M, inf_comm Z A, ← inf_assoc, inf_eq_left.2 h]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[AddSubgroup.inf_relIndex_right, ← AddSubgroup.relIndex_sup_right A (M ⊔ Z), ← sup_assoc, sup_eq_left.2 h]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem relIndex_split {G : Type} [AddCommGroup G] {M A : AddSubgroup G} (Z : AddSubgroup G)
     (h : M ≤ A) : M.relIndex A = (M ⊓ Z).relIndex (A ⊓ Z) * (M ⊔ Z).relIndex (A ⊔ Z) := by
@@ -28,7 +28,7 @@ theorem relIndex_split {G : Type} [AddCommGroup G] {M A : AddSubgroup G} (Z : Ad
       ← sup_assoc, sup_eq_left.2 h]
 
 /- English proof (translation)
-Rewrite using `[← AddSubgroup.inf_relIndex_left, relIndex_split Z inf_le_left]`. Use `congr 1`. Rewrite using `[inf_inf_distrib_right, AddSubgroup.inf_relIndex_left]`. Rewrite using `[← AddSubgroup.inf_relIndex_left (A ⊔ Z) (B ⊔ Z), AddSubgroup.relIndex_mul_relIndex _ _ _ (le_inf (sup_le_sup_right inf_le_left _) (sup_le_sup_right inf_le_right _)) inf_le_left]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem relIndex_split' {G : Type} [AddCommGroup G] (A B Z : AddSubgroup G) :
     B.relIndex A = (B ⊓ Z).relIndex (A ⊓ Z) *
@@ -45,7 +45,7 @@ variable {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E]
 variable {L : LocE F E} {n : ℕ} {Hm : Matrix (Fin n) (Fin n) E}
 
 /- English proof (translation)
-Take `⟨a, rfl⟩` from `(Submodule.mem_span_range_iff_exists_fun E).1 hv`. Simplify using `[sum_l, smul_l, hbc]`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 -/
 theorem expand {m : ℕ} {b c : Fin m → Fin n → E}
     (hbc : ∀ i j, hf L Hm (b i) (c j) = if i = j then 1 else 0) {v : Fin n → E}
@@ -54,9 +54,9 @@ theorem expand {m : ℕ} {b c : Fin m → Fin n → E}
   simp [sum_l, smul_l, hbc]
 
 /- English proof (translation)
-Use `le_antisymm ?_ (Submodule.span_le.2 ?_)` and prove the remaining obligations. Introduce and unpack `v ⟨hv, hvY⟩`. Rewrite using `[expand hbc hvY]`. Use `Submodule.sum_mem _ fun j _ => ?_` and prove the remaining obligations. Conclude with `Submodule.smul_mem (Submodule.span L.O (Set.range b)) ⟨_, (hΛ.2 _).2 (hc j) _ hv⟩ (Submodule.subset_span ⟨j, rfl⟩)`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ ⟨j, rfl⟩`. Conclude with `⟨hb j, Submodule.subset_span ⟨j, rfl⟩⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem inter_eq {Λ : Submodule L.O (Fin n → E)} (hΛ : IsSD L Hm Λ) {m : ℕ}
     {b c : Fin m → Fin n → E} (hb : ∀ i, b i ∈ Λ) (hc : ∀ i, c i ∈ Λ)
@@ -73,13 +73,11 @@ theorem inter_eq {Λ : Submodule L.O (Fin n → E)} (hΛ : IsSD L Hm Λ) {m : �
     exact ⟨hb j, Submodule.subset_span ⟨j, rfl⟩⟩
 
 /- English proof (translation)
-Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨v, hv, rfl⟩`. Express the relevant statement in the definitionally equal form `φ v ∈ Submodule.span L.O (Set.range w)`. Rewrite using `[hφ]`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use `Submodule.sum_mem _ fun j _ => ?_` and prove the remaining obligations. Conclude with `Submodule.smul_mem (Submodule.span L.O (Set.range w)) ⟨_, (hΛ.2 _).2 (hb j) _ hv⟩ (Submodule.subset_span ⟨j, rfl⟩)`. Introduce `hx`. Establish `: Submodule.span L.O (Set.range w) ≤ Λ.map (φ.restrictScalars L.O)`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ ⟨j, rfl⟩`. Use `⟨c j, hc j, ?_⟩` and prove the remaining obligations. Establish `: ∀ i, hf L Hm (c j) (b i) = if i = j then 1 else 0` using `fun i => by`. Apply the tactic sequence `rw [← cj_hf h, hbc]; split_ifs <;> simp`. Simplify using `[hφ, this]`.
-
-Conclude with `this hx`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem map_eq (h : IsHermND L Hm) {Λ : Submodule L.O (Fin n → E)} (hΛ : IsSD L Hm Λ) {m : ℕ}
     {b c : Fin m → Fin n → E} (hb : ∀ i, b i ∈ Λ) (hc : ∀ i, c i ∈ Λ)
@@ -106,31 +104,29 @@ theorem map_eq (h : IsHermND L Hm) {Λ : Submodule L.O (Fin n → E)} (hΛ : IsS
     exact this hx
 
 /- English proof (translation)
-Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible 𝒪[F]`. Use `L.free` as an intermediate fact. Establish `: Nontrivial E` using `Module.nontrivial_of_finrank_pos (R := F) (by rw [L.rank]; omega)`. Take `⟨b, c, hb, hc, hs, hbc⟩` from `exists_dual_family h hΛ m y hy`. Take `⟨b', c', hb', hc', hs', hbc'⟩` from `exists_dual_family h hΛ' m y hy`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hQ : Λ ⊓ Y = Submodule.span L.O (Set.range b)`. Rewrite using `[hY, ← hs]`. Conclude with `inter_eq hΛ hb hc hbc`. Establish `hQ' : Λ' ⊓ Y = Submodule.span L.O (Set.range b')`. Rewrite using `[hY, ← hs']`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Conclude with `inter_eq hΛ' hb' hc' hbc'`. Set `A : Matrix (Fin m) (Fin m) E` to `fun i j => hf L Hm (b' j) (c i)`. Set `B : Matrix (Fin m) (Fin m) E` to `fun i j => hf L Hm (b j) (c' i)`. Establish `hA : ∀ j, b' j = ∑ i, A i j • b i` using `fun j => expand hbc (by rw [hs, ← hs']; exact Submodule.subset_span ⟨j, rfl⟩)`. Establish `hBA : B * A = 1`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Use extensionality with `k j`. Use `hbc' j k` as an intermediate fact. Rewrite `this` using `[hA j, sum_l]`. Simplify using `only [smul_l] at this`. Rewrite using `[Matrix.mul_apply, Matrix.one_apply, ← if_congr eq_comm rfl rfl, ← this]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `Finset.sum_congr rfl fun i _ => mul_comm _ _`. Establish `hu : IsUnit A.det` using `Matrix.isUnit_det_of_left_inverse hBA`. Take `⟨d, hd⟩` from `(L.cj_fix (A.det * L.cj A.det)).1 (by rw [map_mul, L.cj_cj, mul_comm])`. Establish `hd0 : d ≠ 0`. Introduce and unpack `rfl`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `(hu.mul (hu.map L.cj)).ne_zero (by rw [← hd, map_zero])`. Establish `hli : LinearIndependent E b`. Use `Fintype.linearIndependent_iff.2 fun g hg k => ?_` and prove the remaining obligations. Use `congrArg (fun v => hf L Hm v (c k)) hg` as an intermediate fact. Simplify using `only [sum_l, smul_l, hbc] at this`.
+Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify `this` using `[hf]`. Take `⟨-, p2, p3⟩` from `GlobalTheory.T.relIndex_span_lattice_matrix_det_norm L ϖ hϖ b hli A d hd0 hd.symm (Λ ⊓ Y) (Λ' ⊓ Y) hQ (by rw [hQ']; congr 2; exact funext hA)`. Establish `hdet : (cT L A).det = L.cj A.det`. Establish `: cT L A = ((L.cj : E →+* E).mapMatrix A).transpose` using `rfl`. Rewrite using `[this, Matrix.det_transpose, ← RingHom.map_det]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Take `⟨-, -, r3⟩` from `GlobalTheory.T.relIndex_span_lattice_matrix_det_norm L ϖ hϖ (Pi.basisFun E (Fin m)) (Pi.basisFun E (Fin m)).linearIndependent (cT L A) d hd0 (by rw [hdet, L.cj_cj, mul_comm, hd]) _ _ rfl rfl`. Set `φ : (Fin n → E) →ₗ[E] (Fin m → E)` to `LinearMap.pi fun j => hfL L Hm (b' j)`. Establish `hφ : ∀ v k, φ v k = hf L Hm v (b' k)` using `fun v k => rfl`. Establish `m1` using `map_eq h hΛ' hb' hc' hbc' φ (Pi.basisFun E (Fin m)) (fun v => by ext k; simp [hφ, Pi.single_apply])`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `m2` using `map_eq h hΛ hb hc hbc φ (fun j => ∑ i, cT L A i j • Pi.basisFun E (Fin m) i) (fun v => by`. Use extensionality with `k`. Rewrite using `[hφ, hA k]`. Simplify using `[sum_r, smul_r, cT, Pi.single_apply, mul_comm])`. Rewrite `r3` using `[← m1, ← m2, AddSubgroup.relIndex_map_map, AddSubgroup.relIndex_map_map]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Establish `hker : φ.toAddMonoidHom.ker = Z.toAddSubgroup`. Use extensionality with `x`. Rewrite using `[hZ, ← hs']`. Prove the components needed by the constructor for the conclusion. Introduce `hx v hv`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← cj_hf h, hf_eq_zero_of_span (S := Set.range b') ?_ v hv, map_zero]`. Introduce and unpack `_ ⟨j, rfl⟩`. Establish `: hf L Hm x (b' j) = 0` using `congrFun hx j`. Rewrite using `[← cj_hf h, this, map_zero]`. Introduce `hx`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Use function extensionality and compare the values at `j`. Conclude with `hx _ (Submodule.subset_span ⟨j, rfl⟩)`. Rewrite `r3` using `[hker]`. Use `⟨p2, ?_⟩` and prove the remaining obligations. Apply `Nat.cast_injective (R := ℝ)` to reduce the goal to its premises.
-
-Use `push_cast`. Rewrite using `[p3, r3]`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem key (h : IsHermND L Hm) {Λ Λ' : Submodule L.O (Fin n → E)} (hΛ : IsSD L Hm Λ)
     (hΛ' : IsSD L Hm Λ') {m : ℕ} (y : Fin m → Fin n → E) (hy : LinearIndependent E y)
@@ -210,11 +206,11 @@ theorem key (h : IsHermND L Hm) {Λ Λ' : Submodule L.O (Fin n → E)} (hΛ : Is
   ring
 
 /- English proof (translation)
-Establish `hY : (⊤ : Submodule L.O (Fin n → E)) = (Submodule.span E (Set.range (Pi.basisFun E (Fin n)))).restrictScalars L.O`. Rewrite using `[Module.Basis.span_eq]`. Both sides reduce to the same expression. Establish `hZ : (⊥ : Submodule L.O (Fin n → E)) = (perp L Hm (Submodule.span E (Set.range (Pi.basisFun E (Fin n))))).restrictScalars L.O`. Rewrite using `[Module.Basis.span_eq, eq_comm, eq_bot_iff]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `x hx`. Use `eq_zero_of_hf h fun v => ?_` and prove the remaining obligations. Rewrite using `[← cj_hf h, hx v trivial, map_zero]`. Take `⟨k1, k2⟩` from `key h hΛ hΛ' _ (Pi.basisFun E (Fin n)).linearIndependent hY hZ`. Simplify using `only [inf_top_eq, Submodule.bot_toAddSubgroup, sup_bot_eq] at k1 k2`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Conclude with `⟨k1, Nat.mul_self_inj.1 k2⟩`.
+Supply the required witnesses or components.
 -/
 theorem relIndex_symm (h : IsHermND L Hm) {Λ Λ' : Submodule L.O (Fin n → E)} (hΛ : IsSD L Hm Λ)
     (hΛ' : IsSD L Hm Λ') : Λ.toAddSubgroup.relIndex Λ'.toAddSubgroup ≠ 0 ∧
@@ -233,13 +229,13 @@ theorem relIndex_symm (h : IsHermND L Hm) {Λ Λ' : Submodule L.O (Fin n → E)}
   exact ⟨k1, Nat.mul_self_inj.1 k2⟩
 
 /- English proof (translation)
-Introduce `F _ _ _ _ _ E _ _ _ L n Hm h Λ Λ' hΛ hΛ' m y hy Y Z hY hZ`. Take `⟨k1, k2⟩` from `key h hΛ hΛ' y hy hY hZ`. Take `⟨a1, a2⟩` from `relIndex_symm h hΛ hΛ'`. Establish `s1` using `relIndex_split' Λ.toAddSubgroup Λ'.toAddSubgroup Z.toAddSubgroup`. Establish `s2` using `relIndex_split' Λ'.toAddSubgroup Λ.toAddSubgroup Z.toAddSubgroup`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `s2` using `[inf_comm Λ'.toAddSubgroup Λ.toAddSubgroup, inf_comm (Λ'.toAddSubgroup ⊔ _)]`. Establish `e1 : (Λ ⊓ Z).toAddSubgroup = Λ.toAddSubgroup ⊓ Z.toAddSubgroup` using `rfl`. Establish `e2 : (Λ' ⊓ Z).toAddSubgroup = Λ'.toAddSubgroup ⊓ Z.toAddSubgroup` using `rfl`. Rewrite using `[e1, e2]`. Establish `b1` using `a2 ▸ a1`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `b1` using `[s1]`. Rewrite `a2` using `[s1, s2]`. Rewrite `a1` using `[s2]`. Simplify using `only [ne_eq, mul_eq_zero, not_or] at a1 b1`. Use `⟨a1.1, k1, ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `a2` using `[mul_left_comm, mul_left_comm _ (AddSubgroup.relIndex (_ ⊓ _ ⊔ _) _)]`. Establish `a3` using `mul_left_cancel₀ a1.2.1 a2`. Use `mul_right_cancel₀ b1.2.2 ?_` and prove the remaining obligations. Rewrite using `[mul_assoc, mul_comm (AddSubgroup.relIndex (Λ' ⊓ Y).toAddSubgroup _), ← k2, ← mul_assoc, a3]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem vol_perp : ∀ {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] [CharZero F] {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] (L : LocE F E), ∀ {n : ℕ} (Hm : Matrix (Fin n) (Fin n) E), IsHermND L Hm → ∀ Λ Λ', IsSD L Hm Λ → IsSD L Hm Λ' → ∀ (m : ℕ) (y : Fin m → Fin n → E), LinearIndependent E y → ∀ Y Z : Submodule L.O (Fin n → E), Y = (Submodule.span E (Set.range y)).restrictScalars L.O → Z = (perp L Hm (Submodule.span E (Set.range y))).restrictScalars L.O → (Λ ⊓ Z).toAddSubgroup.relIndex (Λ' ⊓ Z).toAddSubgroup ≠ 0 ∧ (Λ ⊓ Y).toAddSubgroup.relIndex (Λ' ⊓ Y).toAddSubgroup ≠ 0 ∧ (Λ ⊓ Z).toAddSubgroup.relIndex (Λ' ⊓ Z).toAddSubgroup * (Λ' ⊓ Y).toAddSubgroup.relIndex (Λ ⊓ Y).toAddSubgroup = (Λ' ⊓ Z).toAddSubgroup.relIndex (Λ ⊓ Z).toAddSubgroup * (Λ ⊓ Y).toAddSubgroup.relIndex (Λ' ⊓ Y).toAddSubgroup := by
   intro F _ _ _ _ _ E _ _ _ L n Hm h Λ Λ' hΛ hΛ' m y hy Y Z hY hZ

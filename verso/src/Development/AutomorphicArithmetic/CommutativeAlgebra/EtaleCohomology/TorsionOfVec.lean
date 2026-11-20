@@ -15,29 +15,25 @@ variable {R F A C T N ι : Type*} [CommRing R] [CommRing F] [Algebra R F] [CommR
   [CommRing C] [Algebra F C] [AddCommGroup T] [Module R T] [AddCommGroup N] [Module A N] [Fintype ι]
 
 /- English proof (translation)
-Use `letI : Algebra A C := c.toAlgebra`. Establish `hsm : ∀ (b : A) (x : C), b • x = c b * x` using `fun b x => Algebra.smul_def b x`. Use `haveI : IsLocalization (Submonoid.powers t) C := { map_units := by`. Introduce and unpack `⟨_, n, rfl⟩`. Express the relevant statement in the definitionally equal form `IsUnit (c (t ^ n))`.
+Equip the data with the indicated structure. Establish an intermediate fact. Assume the hypotheses and unpack their components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_pow]`. Conclude with `ht.pow n`. Use `surj := fun z => by`. Take `⟨n, b, hb⟩` from `loc z`. Use `⟨⟨b, ⟨t ^ n, n, rfl⟩⟩, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `z * c (t ^ n) = c b`. Rewrite using `[map_pow, mul_comm, hb]`. Use `exists_of_eq := fun {x y} hxy => by`. Establish `: c (x - y) = 0`. Rewrite using `[map_sub]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `sub_eq_zero.2 hxy`. Take `⟨n, hn⟩` from `ker _ this`. Use `⟨⟨t ^ n, n, rfl⟩, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `t ^ n * x = t ^ n * y`. Rewrite `hn` using `[mul_sub]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `sub_eq_zero.1 hn }`. Set `P` to `C ⊗[A] (A ⊗[R] T)`. Establish `hloc : IsLocalizedModule (Submonoid.powers t) (TensorProduct.mk A C (A ⊗[R] T) 1)` using `(isLocalizedModule_iff_isBaseChange (Submonoid.powers t) C _).2 (TensorProduct.isBaseChange A (A ⊗[R] T) C)`. Set `B : F →+ T →+ C →+ P` to `AddMonoidHom.mk' (fun q => AddMonoidHom.mk' (fun w => AddMonoidHom.mk' (fun x => (q • x) ⊗ₜ[A] ((1 : A) ⊗ₜ[R] w)) (fun x y => by rw [smul_add, add_tmul])) (fun w w' => by ext x; simp [tmul_add])) (fun q q' => by ext w x; simp [add_smul, add_tmul])`. Establish `hB : ∀ q w x, B q w x = (q • x) ⊗ₜ[A] ((1 : A) ⊗ₜ[R] w)` using `fun _ _ _ => rfl`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Introduce a local definition for the expression. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hRF : ∀ (s : R) (q : F) (x : C), (s • q) • x = algebraMap R A s • (q • x)` using `fun s q x => by`. Rewrite using `[hsm, Algebra.smul_def s q, Algebra.smul_def q x, Algebra.smul_def (algebraMap R F s * q) x, map_mul, hz, mul_assoc]`. Set `ψ₁ : F ⊗[R] T →+ C →+ P` to `TensorProduct.liftAddHom B (fun s q w => by`. Use extensionality with `x`. Rewrite using `[hB, hB, hRF, TensorProduct.smul_tmul, Algebra.algebraMap_eq_smul_one, TensorProduct.smul_tmul', smul_eq_mul, mul_one]`.
+Introduce a local definition for the expression. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Conclude with `congrArg _ (TensorProduct.smul_tmul s (1 : A) w))`. Establish `hψ₁ : ∀ q w x, ψ₁ (q ⊗ₜ[R] w) x = (q • x) ⊗ₜ[A] ((1 : A) ⊗ₜ[R] w)` using `fun _ _ _ => rfl`. Set `ψ : (F ⊗[R] T) ⊗[F] C →+ P` to `TensorProduct.liftAddHom ψ₁ (fun f m x => by`. Proceed by induction on `m with`. Consider the case `zero => simp`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Consider the case `add m m' hm hm' => simp only [smul_add, map_add, AddMonoidHom.add_apply, hm, hm']`. Consider the case `tmul q w`. Rewrite using `[TensorProduct.smul_tmul', hψ₁, hψ₁, smul_eq_mul, mul_comm, mul_smul])`. Establish `hψ : ∀ q w x, ψ ((q ⊗ₜ[R] w) ⊗ₜ[F] x) = (q • x) ⊗ₜ[A] ((1 : A) ⊗ₜ[R] w)` using `fun _ _ _ => rfl`. Establish `h1 : ∑ k, (c (a k) * Ring.inverse (c t) ^ r) ⊗ₜ[A] ((1 : A) ⊗ₜ[R] v k) = 0`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congrArg ψ h` as an intermediate fact. Rewrite `this` using `[map_sum, map_zero]`. Simplify `this` using `only [hψ, one_smul]`. Establish `hinv : c t * Ring.inverse (c t) = 1` using `Ring.mul_inverse_cancel _ ht`. Establish `h2 : (TensorProduct.mk A C (A ⊗[R] T) 1) (∑ k, (a k ⊗ₜ[R] v k : A ⊗[R] T)) = 0`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e : (TensorProduct.mk A C (A ⊗[R] T) 1) (∑ k, (a k ⊗ₜ[R] v k : A ⊗[R] T)) = t ^ r • ∑ k, (c (a k) * Ring.inverse (c t) ^ r) ⊗ₜ[A] ((1 : A) ⊗ₜ[R] v k)`. Rewrite using `[map_sum, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Establish `e1 : t ^ r • (c (a k) * Ring.inverse (c t) ^ r) = a k • (1 : C)`. Rewrite using `[hsm, hsm, map_pow, mul_one, mul_left_comm, ← mul_pow, hinv, one_pow, mul_one]`.
-
-Establish `e2 : (a k ⊗ₜ[R] v k : A ⊗[R] T) = a k • ((1 : A) ⊗ₜ[R] v k)`. Rewrite using `[TensorProduct.smul_tmul', smul_eq_mul, mul_one]`. Rewrite using `[TensorProduct.smul_tmul', e1, TensorProduct.mk_apply, e2, TensorProduct.smul_tmul]`. Rewrite using `[e, h1, smul_zero]`. Take `⟨⟨_, u, rfl⟩, hu⟩` from `(IsLocalizedModule.eq_zero_iff (Submonoid.powers t) _).1 h2`.
-
-Conclude with `⟨u, hu⟩`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem torsion_of_vec (t : A) (c : A →+* C) (ht : IsUnit (c t))
     (loc : ∀ x : C, ∃ (r : ℕ) (a : A), c t ^ r * x = c a) (ker : ∀ a : A, c a = 0 → ∃ r : ℕ, t ^ r * a = 0)
@@ -110,11 +106,11 @@ private theorem torsion_of_vec (t : A) (c : A →+* C) (ht : IsUnit (c t))
   exact ⟨u, hu⟩
 
 /- English proof (translation)
-Set `B : A →+ T →+ N` to `AddMonoidHom.mk' (fun x => AddMonoidHom.mk' (fun w => x • h w) (fun w w' => by rw [map_add, smul_add])) (fun x y => by ext w; simp [add_smul])`. Establish `hB : ∀ x w, B x w = x • h w` using `fun _ _ => rfl`. Set `φ : A ⊗[R] T →+ N` to `TensorProduct.liftAddHom B (fun r x w => by`. Rewrite using `[hB, hB, hh, Algebra.smul_def, mul_smul, smul_comm])`. Establish `hφ : ∀ x w, φ (x ⊗ₜ[R] w) = x • h w` using `fun _ _ => rfl`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hφs : ∀ (b : A) (y : A ⊗[R] T), φ (b • y) = b • φ y` using `fun b y => by`. Proceed by induction on `y with`. Consider the case `zero => simp`. Consider the case `add y y' hy hy' => simp only [smul_add, map_add, hy, hy']`. Consider the case `tmul x w => rw [TensorProduct.smul_tmul', hφ, hφ, smul_eq_mul, mul_smul]`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Use `congrArg φ hs` as an intermediate fact. Rewrite `this` using `[hφs, map_sum, map_zero]`. Simplify `this` using `only [hφ]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem apply_tensor (h : T →+ N) (hh : ∀ (s : R) (w : T), h (s • w) = algebraMap R A s • h w)
     (v : ι → T) (a : ι → A) (s : A) (hs : s • ∑ k, (a k ⊗ₜ[R] v k : A ⊗[R] T) = 0) :
@@ -142,7 +138,7 @@ open CategoryTheory CrystallineSemistableComparison CrystallineSemistableCompari
 variable {l : ℕ} [Fact l.Prime] {K : IntermediateField ℚ_[l] (PadicAlgCl l)}
 
 /- English proof (translation)
-Take `⟨f, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Establish `h : s • f = 0` using `Subtype.ext (funext fun t => hs _ _)`. Rewrite using `[← Submodule.Quotient.mk_smul, h, Submodule.Quotient.mk_zero]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 private theorem h_torsion {R : Type} [CommRing R] {C : Type*} [Category C] (F : C ⥤ ModuleCat.{0} R) (s : R)
     (hs : ∀ (T : C) (y : F.obj T), s • y = 0) (j : ℕ) (x : CH.H F j) : s • x = 0 := by
@@ -151,7 +147,7 @@ private theorem h_torsion {R : Type} [CommRing R] {C : Type*} [Category C] (F : 
   rw [← Submodule.Quotient.mk_smul, h, Submodule.Quotient.mk_zero]
 
 /- English proof (translation)
-Establish `h : A.mkAcr n ((l : A.Acr0) ^ n) = 0` using `Ideal.Quotient.eq_zero_iff_mem.2 (Ideal.subset_span rfl)`. Rewrite `h` using `[map_pow, map_natCast]`. Rewrite using `[Algebra.smul_def, map_pow, map_natCast, h, zero_mul]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 private theorem acr_torsion (A : PAlg l) (n : ℕ) (y : A.Acr n) : ((l : Acris l) ^ n) • y = 0 := by
   have h : A.mkAcr n ((l : A.Acr0) ^ n) = 0 := Ideal.Quotient.eq_zero_iff_mem.2 (Ideal.subset_span rfl)
@@ -159,13 +155,13 @@ private theorem acr_torsion (A : PAlg l) (n : ℕ) (y : A.Acr n) : ((l : Acris l
   rw [Algebra.smul_def, map_pow, map_natCast, h, zero_mul]
 
 /- English proof (translation)
-The claim follows from `h_torsion _ _ (fun _ y => acr_torsion _ n y) j x`.
+A detailed English derivation is pending.
 -/
 private theorem mh_torsion (P : PAlg l ⥤ Type) (n j : ℕ) (x : MH P n j) : ((l : Acris l) ^ n) • x = 0 :=
   h_torsion _ _ (fun _ y => acr_torsion _ n y) j x
 
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.Qi53.zA_smul n hN z y`.
+A detailed English derivation is pending.
 -/
 private theorem zA_smul {N : Type*} [AddCommGroup N] [Module (Acris l) N] (n : ℕ)
     (hN : ∀ y : N, ((l : Acris l) ^ n) • y = 0) (z : ℤ_[l]) (y : N) :
@@ -173,7 +169,7 @@ private theorem zA_smul {N : Type*} [AddCommGroup N] [Module (Acris l) N] (n : �
   _root_.UpperTheory.Reformulated.B.Qi53.zA_smul n hN z y
 
 /- English proof (translation)
-Establish `hk : (z • w).lev n = (PadicInt.toZModPow n z).val • w.lev n` using `HtL.smul_eq l n n le_rfl _ _ _ z ((show Hl l M.spc j 0 from w).1 n)`. Establish `h2` using `zA_smul n (mh_torsion M.P n j) z (e M n j (w.lev n))`. Establish `h3` using `map_nsmul (e M n j) (PadicInt.toZModPow n z).val (w.lev n)`. Establish `h1` using `congrArg (fun x => e M n j x) hk`. Conclude with `h1.trans (h3.trans h2.symm)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem lev_smul (e : EtFam l K) (M : Model l K) (n j : ℕ) (z : ℤ_[l]) (w : M.T j) :
     e M n j ((z • w).lev n) = zA l z • e M n j (w.lev n) := by
@@ -189,9 +185,9 @@ private def levAdd (e : EtFam l K) (M : Model l K) (n j : ℕ) : M.T j →+ M.MH
 
 set_option maxHeartbeats 8000000 in
 /- English proof (translation)
-Introduce `l _ K B e _ M j ι _ v c r h`. Establish `h' : ∑ k, ((1 : ℚ_[l]) ⊗ₜ[ℤ_[l]] (v k)) ⊗ₜ[ℚ_[l]] (B.c (c k) * Ring.inverse (B.c (tA l)) ^ r) = 0` using `h`. Use `letI : Algebra ℤ_[l] (Acris l) := (zA l).toAlgebra`. Take `⟨u, hu⟩` from `torsion_of_vec (R := ℤ_[l]) (F := ℚ_[l]) (T := M.T j) (tA l) B.c B.t_unit B.loc B.ker (fun x => B.z_c x) v c r h'`. Use `⟨0, u, fun n => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[pow_zero, one_mul]`. Establish `h2` using `apply_tensor (R := ℤ_[l]) (N := M.MH n j) (levAdd e M n j) (fun z w => lev_smul e M n j z w) v c (tA l ^ u) hu`. Conclude with `h2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem vecZero : VecZero := by
   intro l _ K B e _ M j ι _ v c r h

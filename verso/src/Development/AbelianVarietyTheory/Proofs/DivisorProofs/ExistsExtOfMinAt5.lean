@@ -19,14 +19,14 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.MinExt
 
 /- English proof (translation)
-Simplify using `[spMap, ← Spec.map_comp]`.
+Simplify using the standard rewrite rules.
 -/
 theorem spMap_comp_eq {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (g : B →+* C) :
     spMap (g.comp f) = spMap g ≫ spMap f := by
   simp [spMap, ← Spec.map_comp]
 
 /- English proof (translation)
-Substitute `e` using the available equality. Establish `w : ψ ≫ G.hom = (G''.hom ≫ g) ≫ f` using `by rw [n.1.w, Category.assoc]`. Conclude with `⟨h.1.lift ψ (G''.hom ≫ g) w, h.cancel (n.congr rfl (h.1.lift_fst _ _ w).symm) (h.1.lift_snd _ _ w)⟩`.
+Substitute using the available equality. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem exists_factor {S S' S'' : Scheme.{0}} {G : Over S} {G' : Over S'} {G'' : Over S''} [GrpObj G] [GrpObj G']
     [GrpObj G''] {f : S' ⟶ S} {g : S'' ⟶ S'} {k : S'' ⟶ S} {φ : G'.left ⟶ G.left} {ψ : G''.left ⟶ G.left}
@@ -37,23 +37,19 @@ theorem exists_factor {S S' S'' : Scheme.{0}} {G : Over S} {G' : Over S'} {G'' :
   exact ⟨h.1.lift ψ (G''.hom ≫ g) w, h.cancel (n.congr rfl (h.1.lift_fst _ _ w).symm) (h.1.lift_snd _ _ w)⟩
 
 /- English proof (translation)
-Introduce `g n F Z z i OZ h R _ _ _ _ _ _ G₁ _ _ hG₁ y α₁ hα₁ b hyb`. Take `⟨o', _, β, S', s', U, c, π, G, _, e, _, N, ⟨-, hz, -, hiz, -, hOZ, hamp⟩, ⟨-, -, -, -, -, hcfin, hcsurj, hUπ, -, -, hπp, -⟩, ⟨hGsa, hGsm, he⟩, ⟨-, hL⟩⟩` from `h`. Use `haveI := hcfin`. Use `haveI := hcsurj`. Use `haveI := hπp`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `haveI : IsProper z := by`. Take `⟨m, j, hj, rfl⟩` from `hz`. Use `isProper_str (cycAway n) m` as an intermediate fact. Use `infer_instance`. Take `⟨K', _, _, _, y', hy'⟩` from `GlobalTheory.T.exists_fieldPoint_lift_finite_surjective_morphism U.toScheme F.X c (FractionRing R) y`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Take `⟨R', _, _, _, _, _, ρ, eR, -, hinj, hcomp, hmeet⟩` from `GlobalTheory.T.exists_local_normal_domain_finite_extension R K'`. Use `haveI : CharZero R' := charZero_of_injective_ringHom hinj`. Set `gam : FractionRing R →+* FractionRing R'` to `(eR.symm : K' →+* FractionRing R').comp (algebraMap (FractionRing R) K')`. Establish `E1 : spMap gam = spMap (eR.symm : K' →+* FractionRing R') ≫ spMap (algebraMap (FractionRing R) K')` using `spMap_comp_eq _ _`. Establish `E2 : spMap gam ≫ jK R = jK R' ≫ spMap ρ`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `spMap gam ≫ spMap (algebraMap R (FractionRing R)) = spMap (algebraMap R' (FractionRing R')) ≫ spMap ρ`. Rewrite using `[← spMap_comp_eq, ← spMap_comp_eq]`. Use `congr 1`. Use extensionality with `r`. Simplify using `only [RingHom.comp_apply, gam]`.
+Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← hcomp r]`. Simplify using the standard rewrite rules. Set `yy : Sp (FractionRing R') ⟶ S'` to `spMap (eR.symm : K' →+* FractionRing R') ≫ y' ≫ U.ι`. Establish `E4 : spMap gam ≫ y = (spMap (eR.symm : K' →+* FractionRing R') ≫ y') ≫ c`. Rewrite using `[Category.assoc, hy', E1, Category.assoc]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `E3 : yy ≫ π = spMap gam ≫ y ≫ i`. Simplify using `only [yy, Category.assoc]`. Rewrite using `[hUπ, ← Category.assoc y' c i, hy', E1]`. Simplify using `only [Category.assoc]`. Set `G₁'` to `(Over.pullback (spMap ρ)).obj G₁`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hG₁' : IsSemiAbelian G₁'` using `IsSemiAbelian.pullback (spMap ρ) G₁ hG₁`. Use `haveI : IsCommMonObj G₁' := hG₁'.comm`. Establish `h1` using `((isGrpPullback_pullback G₁' (jK R')).comp (isGrpPullback_pullback G₁ (spMap ρ))).congr E2.symm rfl`. Take `⟨φ1, hφ1⟩` from `exists_factor (isGrpPullback_pullback G₁ (jK R)) h1 rfl`. Establish `h2` using `(hφ1.comp hα₁).congr E4 rfl`.
-
-Take `⟨φ2, hφ2⟩` from `exists_factor (isGrpPullback_pullback F.univ.A c) h2 rfl`. Establish `h3` using `(hφ2.comp he).congr (Category.assoc _ _ _) rfl`. Establish `hyz : yy ≫ π ≫ z = jK R' ≫ spMap (ρ.comp b)`. Rewrite using `[← Category.assoc, E3, Category.assoc, Category.assoc, hiz, hyb, ← Category.assoc, E2, spMap_comp_eq, Category.assoc]`. Take `⟨a', ha'⟩` from `GlobalTheory.T.exists_minimalCompactification_extension_of_cover (cycAway n) g Z S' z π OZ hOZ hamp G N hGsa hGsm hL R' (ρ.comp b) G₁' hG₁' yy _ h3 hyz`.
-
-Establish `hmeet' : ∀ (x : FractionRing R) (w : R'), algebraMap R' _ w = gam x → ∃ r : R, algebraMap R _ r = x` using `fun x w hw => hmeet x w (by rw [hw]; simp [gam])`. Conclude with `GlobalTheory.T.exists_extension_generic_point_fraction_meet Z R R' gam hmeet' (y ≫ i) a' (ha'.trans E3)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_ext_of_minAt5 : ∀ (g n : ℕ) (F : SFam g n (zetaAway n)) (Z : Scheme.{0}) (z : Z ⟶ Sp (cycAway n)) (i : F.X ⟶ Z) (OZ : LB Z), MinAt5 F z i OZ → ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] [IsNoetherianRing R] [IsIntegrallyClosed R] [CharZero R] (G₁ : Over (Sp R)) [GrpObj G₁] [IsCommMonObj G₁], IsSemiAbelian G₁ → ∀ (y : Sp (FractionRing R) ⟶ F.X) (α₁ : pullback G₁.hom (jK R) ⟶ F.univ.A.left), IsGenFibre F y α₁ → ∀ b : cycAway n →+* R, y ≫ F.s = jK R ≫ spMap b → ∃ a : Sp R ⟶ Z, jK R ≫ a = y ≫ i := by
   intro g n F Z z i OZ h R _ _ _ _ _ _ G₁ _ _ hG₁ y α₁ hα₁ b hyb

@@ -5,11 +5,11 @@ open AlgebraicGeometry CategoryTheory Limits
 open UpperTheory.Gal.LocalSmoothExtension
 
 /- English proof (translation)
-Introduce `Y Z s _ _ I _`. Take `⟨k, ⟨e⟩⟩` from `Finite.exists_equiv_fin I`. Establish `hfold` using `GlobalTheory.Et.TrivTors.isFinite_sigmaDesc_fin Y k`. Set `i : (∐ fun _ : I => Y) ≅ ∐ fun _ : Fin k => Y` to `Sigma.whiskerEquiv (f := fun _ : I => Y) (g := fun _ : Fin k => Y) e fun _ => Iso.refl Y`. Establish `hd : (Sigma.desc fun _ : I => s) = i.hom ≫ (Sigma.desc fun _ : Fin k => 𝟙 Y) ≫ s`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Apply `Sigma.hom_ext` to reduce the goal to its premises. Introduce `a`. Simplify using `[i]`. Use `⟨by rw [hd]; infer_instance, ?_⟩` and prove the remaining obligations. Use `HasRingHomProperty.instIsZariskiLocalAtSource (P := @Etale)` as an intermediate fact.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `IsZariskiLocalAtSource.sigmaDesc (P := @Etale) fun _ => inferInstance`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.LocalSmoothExtension.sigmaFEt_of :
     SigmaFEt := by

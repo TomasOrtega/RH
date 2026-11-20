@@ -20,11 +20,11 @@ namespace FunctorialResolution.EmbeddedResolution
 namespace EtaleCoordinates
 
 /- English proof (translation)
-Establish `hzero : ⁅partialDeriv k ι T i, partialDeriv k ι T j⁆ = (0 : Derivation k T T)`. Use `derivation_ext_of_coord k ι T T _ _ ?_` and prove the remaining obligations. Introduce `l`. Rewrite using `[Derivation.commutator_apply]`. Simplify using `only [partialDeriv_coord]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `split_ifs <;> simp`. Establish `h2 : ⁅partialDeriv k ι T i, partialDeriv k ι T j⁆ a = 0`. Rewrite using `[hzero]`. Simplify using the standard rewrite rules. Rewrite `h2` using `[Derivation.commutator_apply]`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Take the linear combination `h2`.
+Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem partialDeriv_comm (k : Type*) [CommRing k] (ι : Type*) [Fintype ι] [DecidableEq ι]
     (T : Type*) [CommRing T] [Algebra k T] [Algebra (MvPolynomial ι k) T]
@@ -46,11 +46,11 @@ theorem partialDeriv_comm (k : Type*) [CommRing k] (ι : Type*) [Fintype ι] [De
 end EtaleCoordinates
 
 /- English proof (translation)
-Set `_ : Algebra (MvPolynomial ι k) A` to `(MvPolynomial.aeval w : MvPolynomial ι k →ₐ[k] A).toRingHom.toAlgebra`. Establish `: IsScalarTower k (MvPolynomial ι k) A` using `IsScalarTower.of_algebraMap_eq fun a => by`. Rewrite using `[RingHom.algebraMap_toAlgebra]`. Simplify using `[MvPolynomial.algebraMap_eq]`. Establish `: Algebra.FormallyEtale (MvPolynomial ι k) A` using `EtaleCoordinates.formallyEtale_aeval_of_isUnit_det e w hdet`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hcoord : ∀ i : ι, EtaleCoordinates.coord k ι A i = w i`. Introduce `i`. Rewrite using `[EtaleCoordinates.coord_def, RingHom.algebraMap_toAlgebra]`. Simplify using the standard rewrite rules. Use `⟨fun i => EtaleCoordinates.partialDeriv k ι A i, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `i j`. Rewrite using `[← hcoord j]`. Conclude with `EtaleCoordinates.partialDeriv_coord k ι A i j`. Introduce `i j a`. Conclude with `EtaleCoordinates.partialDeriv_comm k ι A i j a`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 private theorem exists_commuting_dual_derivations (k : Type*) [CommRing k] (ι : Type*) [Fintype ι]
     [DecidableEq ι] (A : Type*) [CommRing A] [Algebra k A] [Algebra.FormallySmooth k A]
@@ -79,21 +79,21 @@ private theorem exists_commuting_dual_derivations (k : Type*) [CommRing k] (ι :
     exact EtaleCoordinates.partialDeriv_comm k ι A i j a
 
 /- English proof (translation)
-Take `⟨g, w, J, hgq, -, hspan, -, hgdet, -⟩` from `EtaleCoordinates.exists_adapted_parameters k ι S q A`. Set `_ : Algebra (MvPolynomial ι k) A` to `((algebraMap S A).comp (algebraMap (MvPolynomial ι k) S)).toAlgebra`. Establish `halg : (algebraMap (MvPolynomial ι k) A) = (algebraMap S A).comp (algebraMap (MvPolynomial ι k) S)` using `rfl`. Establish `: IsScalarTower (MvPolynomial ι k) S A` using `IsScalarTower.of_algebraMap_eq fun z => by rw [halg]; rfl`. Establish `: IsScalarTower k (MvPolynomial ι k) A` using `IsScalarTower.of_algebraMap_eq fun a => by`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[halg, RingHom.comp_apply, ← IsScalarTower.algebraMap_apply k (MvPolynomial ι k) S, ← IsScalarTower.algebraMap_apply k S A]`. Establish `: Algebra.FormallyEtale S A` using `Algebra.FormallyEtale.of_isLocalization q.primeCompl`. Establish `: Algebra.FormallyEtale (MvPolynomial ι k) A` using `Algebra.FormallyEtale.comp (MvPolynomial ι k) S A`. Establish `: Algebra.FormallySmooth k A` using `Algebra.FormallySmooth.comp k (MvPolynomial ι k) A`. Choose the witnesses or unpack the hypotheses as in `⟨e, he⟩ : ∃ e : Module.Basis ι A (KaehlerDifferential k A), IsUnit (e.det fun i : ι => KaehlerDifferential.D k A (algebraMap S A (w i))) := by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨EtaleCoordinates.basisKaehler k ι A, ?_⟩` and prove the remaining obligations. Rewrite using `[← EtaleCoordinates.algebraMap_det_basisKaehler k ι S A w, ← hgdet]`. Conclude with `IsLocalization.map_units (M := q.primeCompl) A ⟨g, hgq⟩`. Take `⟨D, hD, hDD⟩` from `exists_commuting_dual_derivations k ι A e (fun i => algebraMap S A (w i)) he`. Choose the witnesses or unpack the hypotheses as in `⟨h, ix, hix, hrange⟩ : ∃ (h : ℕ) (ix : Fin h → ι), Function.Injective ix ∧ Set.range ix = (↑J : Set ι) := by`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨J.card, fun i => ((J.equivFin.symm i : {a : ι // a ∈ J}) : ι), ?_, ?_⟩` and prove the remaining obligations. Introduce `a b hab`. Conclude with `J.equivFin.symm.injective (Subtype.ext hab)`. Use extensionality with `l`. Simplify using `only [Set.mem_range, Finset.mem_coe]`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨i, rfl⟩`. Conclude with `(J.equivFin.symm i).2`. Introduce `hl`. Conclude with `⟨J.equivFin ⟨l, hl⟩, by simp⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Establish `hset : (algebraMap S A) '' (w '' (↑J : Set ι)) = Set.range fun i => algebraMap S A (w (ix i))`. Rewrite using `[← hrange]`. Use extensionality with `a`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨b, ⟨l, ⟨i, rfl⟩, rfl⟩, rfl⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Conclude with `⟨i, rfl⟩`. Introduce and unpack `⟨i, rfl⟩`. Conclude with `⟨w (ix i), ⟨ix i, ⟨i, rfl⟩, rfl⟩, rfl⟩`. Use `⟨h, fun i => algebraMap S A (w (ix i)), fun i => D (ix i), ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← hspan, Ideal.map_span, hset]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `i j`. Rewrite using `[hD]`. Simplify using `only [show (ix i = ix j) ↔ (i = j) from ⟨fun hc => hix hc, fun hc => by rw [hc]⟩]`. Introduce `i j a`. Conclude with `hDD (ix i) (ix j) a`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem exists_regularParameters_of_formallyEtale (k : Type*) [CommRing k] (ι : Type*) [Fintype ι]
     [DecidableEq ι] (S : Type*) [CommRing S] [Algebra k S] [Algebra (MvPolynomial ι k) S]
@@ -159,13 +159,13 @@ theorem exists_regularParameters_of_formallyEtale (k : Type*) [CommRing k] (ι :
     exact hDD (ix i) (ix j) a
 
 /- English proof (translation)
-Set `_` to `stalkAlgebra k p x`. Take `⟨U, m, hxU, hU, ⟨c⟩⟩` from `exists_etaleChart p x`. Set `_` to `sectionsAlgebra k p U`. Set `_` to `c.algebra`. Set `_ : DecidableEq (ULift.{u} (Fin m))` to `Classical.decEq _`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Use `c.algebra_formallyEtale hU` as an intermediate fact. Use `c.isScalarTower` as an intermediate fact. Set `_ : Algebra Γ(X, U) (X.presheaf.stalk x)` to `(X.presheaf.germ U x hxU).hom.toAlgebra`. Establish `: IsScalarTower k Γ(X, U) (X.presheaf.stalk x)` using `isScalarTower_stalk k p U x hxU (algebraMap_sectionsAlgebra k p U) (algebraMap_stalkAlgebra k p x) rfl`. Establish `: IsLocalization ((hU.primeIdealOf ⟨x, hxU⟩).asIdeal).primeCompl (X.presheaf.stalk x)` using `hU.isLocalization_stalk ⟨x, hxU⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `isNoetherianRing_stalk k p x` as an intermediate fact. Set `_ : Algebra k (IsLocalRing.ResidueField (X.presheaf.stalk x))` to `((IsLocalRing.residue (X.presheaf.stalk x)).comp (stalkAlgebraMap k p x)).toAlgebra`. Establish `: IsScalarTower k (X.presheaf.stalk x) (IsLocalRing.ResidueField (X.presheaf.stalk x))` using `IsScalarTower.of_algebraMap_eq fun a => by`. Rewrite using `[IsLocalRing.ResidueField.algebraMap_eq]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `formallySmooth_residueField k p x rfl` as an intermediate fact. Conclude with `exists_regularParameters_of_formallyEtale k (ULift.{u} (Fin m)) Γ(X, U) ((hU.primeIdealOf ⟨x, hxU⟩).asIdeal) (X.presheaf.stalk x)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_regularParameters_stalk_of_smooth (k : Type u) [Field k] [CharZero k] {X : Scheme.{u}}
     (p : X ⟶ Spec (CommRingCat.of k)) [AlgebraicGeometry.Smooth p] (x : X) :
@@ -201,7 +201,7 @@ theorem exists_regularParameters_stalk_of_smooth (k : Type u) [Field k] [CharZer
     ((hU.primeIdealOf ⟨x, hxU⟩).asIdeal) (X.presheaf.stalk x)
 
 /- English proof (translation)
-Set `_` to `stalkAlgebra k p x`. Use `isNoetherianRing_stalk k p x` as an intermediate fact. Take `⟨h, y, D, hspan, hD, hDD⟩` from `exists_regularParameters_stalk_of_smooth k p x`. Simplify using `only [orderAt_eq_idealOrder, stalkIdeal_mul]`. Conclude with `idealOrder_mul y D hspan hD hDD (fun n hn => isUnit_natCast_stalk k p x hn) (stalkIdeal I x) (stalkIdeal J x)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem orderAt_mul (k : Type u) [Field k] [CharZero k] {X : Scheme.{u}}
     (p : X ⟶ Spec (CommRingCat.of k)) [AlgebraicGeometry.Smooth p]
@@ -215,7 +215,7 @@ theorem orderAt_mul (k : Type u) [Field k] [CharZero k] {X : Scheme.{u}}
     (stalkIdeal I x) (stalkIdeal J x)
 
 /- English proof (translation)
-Set `_` to `stalkAlgebra k p x`. Use `isNoetherianRing_stalk k p x` as an intermediate fact. Take `⟨h, y, D, hspan, hD, hDD⟩` from `exists_regularParameters_stalk_of_smooth k p x`. Simplify using `only [orderAt_eq_idealOrder, stalkIdeal_pow]`. Conclude with `idealOrder_pow y D hspan hD hDD (fun n hn => isUnit_natCast_stalk k p x hn) (stalkIdeal I x) c`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem orderAt_pow (k : Type u) [Field k] [CharZero k] {X : Scheme.{u}}
     (p : X ⟶ Spec (CommRingCat.of k)) [AlgebraicGeometry.Smooth p]
@@ -229,13 +229,13 @@ theorem orderAt_pow (k : Type u) [Field k] [CharZero k] {X : Scheme.{u}}
     (stalkIdeal I x) c
 
 /- English proof (translation)
-Proceed by induction on `a using ENat.recTopCoe with`. Consider the case `top`. Establish `hc0 : (c : ℕ∞) ≠ 0`. Simplify using `only [ne_eq, Nat.cast_eq_zero]`. Use linear arithmetic over natural numbers and integers.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Establish `htop : (c : ℕ∞) * ⊤ = ⊤` using `by simp [hc0]`. Simplify using `[htop]`. Consider the case `coe n`. Prove the components needed by the constructor for the conclusion. Introduce `hle`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Treat this case separately. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h' : c * m ≤ c * n` using `by exact_mod_cast hle`. Establish `h'' : m ≤ n` using `Nat.le_of_mul_le_mul_left h' (by omega)`. Conclude with `h''` after adjusting the coercions. Introduce `hle`. Establish `h' : m ≤ n` using `by exact_mod_cast hle`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h'' : c * m ≤ c * n` using `Nat.mul_le_mul (le_refl c) h'`. Conclude with `h''` after adjusting the coercions.
+A detailed English derivation is pending.
 -/
 theorem natCast_mul_le_mul_iff {c : ℕ} (hc : 1 ≤ c) (m : ℕ) (a : ℕ∞) :
     (c : ℕ∞) * (m : ℕ∞) ≤ (c : ℕ∞) * a ↔ (m : ℕ∞) ≤ a := by
@@ -258,7 +258,7 @@ theorem natCast_mul_le_mul_iff {c : ℕ} (hc : 1 ≤ c) (m : ℕ) (a : ℕ∞) :
       exact_mod_cast h''
 
 /- English proof (translation)
-Use extensionality with `x`. Rewrite using `[mem_orderAtLeastLocus_iff, mem_orderAtLeastLocus_iff, orderAt_pow k p I c x, Nat.cast_mul]`. Conclude with `natCast_mul_le_mul_iff hc m (orderAt I x)`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem orderAtLeastLocus_pow_mul (k : Type u) [Field k] [CharZero k] {X : Scheme.{u}}
     (p : X ⟶ Spec (CommRingCat.of k)) [AlgebraicGeometry.Smooth p]

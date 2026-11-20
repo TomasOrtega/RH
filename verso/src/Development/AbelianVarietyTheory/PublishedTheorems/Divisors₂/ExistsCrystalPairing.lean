@@ -46,7 +46,7 @@ variable {V K : Type} [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] [Fie
   [IsFractionRing V K] {A B : Over (Sp V)} [GrpObj A] [GrpObj B]
 
 /- English proof (translation)
-Conclude with `homExtension_semiAbelian_dvr V K A B (isSemiAbelian_of_isAbelianScheme A hA) (isSemiAbelian_of_isAbelianScheme B hB) f hf`.
+A detailed English derivation is pending.
 -/
 theorem hom_extends (hA : IsAbelianScheme A) (hB : IsAbelianScheme B)
     (f : (Over.pullback (spMap (algebraMap V K))).obj A ⟶ (Over.pullback (spMap (algebraMap V K))).obj B)
@@ -62,7 +62,7 @@ variable {R R₀ : Type} [CommRing R] [CommRing R₀] {I : Ideal R} {κ : Divide
   {g g' : ℕ}
 
 /- English proof (translation)
-Establish `C : CupSquare (dp0 R) (𝟙 _) (A ⊗ B)` using `cupSquare_of_free H.1 (ReciprocityTheory.ChartRestriction.G.Geo.Tor.AbelianSchemeGerms.isAbelianScheme_tensor A B hA hB) (smooth_prod hg hg')`. Take `⟨φ, hφ⟩` from `exists_isCorrForm C hP.isLB hP.zero_left hP.zero_right`. Conclude with `⟨⟨φ, hφ, fun φ' hφ' => IsCorrForm.unique C hP.isLB hφ' hφ⟩, fun φ hφ => IsCorrForm.perfect H hA hg hB hg' hP hφ⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem duality (H : AbelianDeRham) (hA : IsAbelianScheme A) (hg : SmoothOfRelativeDimension g A.hom)
     (hB : IsAbelianScheme B) (hg' : SmoothOfRelativeDimension g' B.hom) {P : LB (A ⊗ B).left}
@@ -76,11 +76,9 @@ theorem duality (H : AbelianDeRham) (hA : IsAbelianScheme A) (hg : SmoothOfRelat
     fun φ hφ => IsCorrForm.perfect H hA hg hB hg' hP hφ⟩
 
 /- English proof (translation)
-Establish `C0 : CupSquare (dp0 R) (𝟙 _) A` using `cupSquare_of_free H hA hg`. Establish `hs : Smooth (A.hom ≫ 𝟙 _)`. Rewrite using `[Category.comp_id]`. Conclude with `hA.smooth`. Establish `hsep : IsSeparated (A.hom ≫ 𝟙 _)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Category.comp_id]`. Use `haveI := hA.proper`. Use `infer_instance`. Establish `hqc : QuasiCompact (A.hom ≫ 𝟙 _)`. Rewrite using `[Category.comp_id]`.
-
-Use `haveI := hA.proper`. Use `infer_instance`. Establish `hpb : IsPullback i A₀.hom (A.hom ≫ 𝟙 _) (spMap π)` using `by simpa using h`. Take `⟨h1, h2⟩` from `H' R I κ hκ R₀ π hπ hI A.left A₀.left (A.hom ≫ 𝟙 _) A₀.hom i hs hsep hqc hpb m.isMor`. Conclude with `CupSquare.of_bijective C0 m h1 h2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem cupSquare_crys (H : AbelianDeRham.Free) (H' : CrystallineDeRham) (hκ : IsNilDP κ)
     (hπ : Function.Surjective π) (hI : RingHom.ker π = I) (hA : IsAbelianScheme A)
@@ -98,7 +96,7 @@ theorem cupSquare_crys (H : AbelianDeRham.Free) (H' : CrystallineDeRham) (hκ : 
   exact CupSquare.of_bijective C0 m h1 h2
 
 /- English proof (translation)
-Take `⟨l, l₁, l₂⟩` from `exists_prod_pullback h k`. Conclude with `cupSquare_crys H H' hκ hπ hI (ReciprocityTheory.ChartRestriction.G.Geo.Tor.AbelianSchemeGerms.isAbelianScheme_tensor A B hA hB) (smooth_prod hg hg') (isPullback_prod h.1 k.1 l₁ l₂) (grpMor_prod (liftMor κ h) (liftMor κ k) l₁ l₂)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem cupSquare_crys_prod (H : AbelianDeRham.Free) (H' : CrystallineDeRham) (hκ : IsNilDP κ)
     (hπ : Function.Surjective π) (hI : RingHom.ker π = I) (hA : IsAbelianScheme A)
@@ -110,7 +108,7 @@ theorem cupSquare_crys_prod (H : AbelianDeRham.Free) (H' : CrystallineDeRham) (h
     (smooth_prod hg hg') (isPullback_prod h.1 k.1 l₁ l₂) (grpMor_prod (liftMor κ h) (liftMor κ k) l₁ l₂)
 
 /- English proof (translation)
-Take `⟨φ', h₁, h₂⟩` from `IsCorrForm.pull hφ hP (liftMor κ h) (liftMor κ k) l₁ l₂ hP₀ e`. Use `⟨φ', h₁, fun x y => h₂ _ _ _ _ (fun c => ?_) (fun c => ?_)⟩` and prove the remaining obligations. Conclude with `(crysToDR_apply κ h x c).symm`. Conclude with `(crysToDR_apply κ k y c).symm`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_crystal_pairing (κ : DividedPowers I) (h : IsGrpPullback A₀ A (spMap π) i)
     (k : IsGrpPullback B₀ B (spMap π) j) {l : (A₀ ⊗ B₀).left ⟶ (A ⊗ B).left}
@@ -124,13 +122,13 @@ theorem exists_crystal_pairing (κ : DividedPowers I) (h : IsGrpPullback A₀ A 
   · exact (crysToDR_apply κ k y c).symm
 
 /- English proof (translation)
-Take `⟨n, a, b, ha, rfl⟩` from `h`. Take `⟨n', a', b', ha', rfl⟩` from `h'`. Establish `hz` using `((GlobalTheory.Cris.isChern_existsUnique_and_iso R I κ G.left (G.hom ≫ t)).1 L hL).unique ha ha'`. Use `LinearMap.ext fun x => LinearMap.ext fun y => ?_` and prove the remaining obligations. Use `set E := AllPrim.dualEquiv κ t C.allPrim`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hx : ∀ c : prim κ t G, x c = E.symm x c.1` using `fun c => by conv_lhs => rw [← E.apply_symm_apply x]`. Both sides reduce to the same expression. Establish `hy : ∀ c : prim κ t G, y c = E.symm y c.1` using `fun c => by conv_lhs => rw [← E.apply_symm_apply y]`. Both sides reduce to the same expression. Take `⟨Λ, hΛ⟩` from `C.wedge (E.symm x) (E.symm y)`.
+Both sides reduce to the same expression. Establish an intermediate fact. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `key : ∀ {m : ℕ} (a b : Fin m → prim κ t G), wedgeForm κ t G a b x y = Λ (∑ k, cup _ (a k).1 (b k).1)`. Introduce `m a b`. Rewrite using `[wedgeForm_apply, map_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[hΛ, hx (a k), hx (b k), hy (a k), hy (b k)]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[key, key, hz]`.
+A detailed English derivation is pending.
 -/
 theorem polForm_unique {S : Scheme.{0}} {t : S ⟶ Sp R} {G : Over S} [GrpObj G] (C : CupSquare κ t G)
     {L : LB G.left} (hL : L.IsLB) {ψ ψ' : LinearMap.BilinForm R (Crys κ t G)} (h : IsPolForm κ t G L ψ)

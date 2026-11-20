@@ -10,7 +10,7 @@ open PowerSeries Formalism.WeaklyAdmissibleFiltrations Formalism.BasicNotions Fo
 namespace GlobalTheory.DelParam
 
 /- English proof (translation)
-Establish `hs : HasSubst (j X)` using `HasSubst.of_constantCoeff_zero' (X_dvd_iff.1 hj)`. Use `algHom_ext_X j (substAlgHom hs) hj (by rw [coe_substAlgHom, subst_X hs])` as an intermediate fact. Rewrite using `[← coe_substAlgHom hs, ← this]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem algHom_eq_subst {O : Type} [CommRing O] (j : O⟦X⟧ →ₐ[O] O⟦X⟧) (hj : (X : O⟦X⟧) ∣ j X)
     (a : O⟦X⟧) : j a = a.subst (j X) := by
@@ -19,17 +19,17 @@ theorem algHom_eq_subst {O : Type} [CommRing O] (j : O⟦X⟧ →ₐ[O] O⟦X⟧
   rw [← coe_substAlgHom hs, ← this]
 
 /- English proof (translation)
-Proceed by induction on `e generalizing E b c with`. Consider the case `zero => intro k hk`. Use linear arithmetic over natural numbers and integers. Consider the case `succ e ih`. Establish `hE` using `Polynomial.X_mul_divX_add E`.
+Proceed by induction. Treat this case separately. Use linear arithmetic over natural numbers and integers. Treat this case separately. Establish an intermediate fact.
 
-Establish `h0 : a ∣ E.coeff 0`. Establish `h1` using `congrArg constantCoeff h`. Rewrite `h1` using `[← hE]`. Simplify using `only [map_add, map_mul, Polynomial.aeval_X, Polynomial.aeval_C, hξ, map_pow, constantCoeff_X, zero_pow hs.ne', zero_pow (Nat.mul_pos e.succ_pos hs).ne', mul_zero, zero_mul, zero_add, constantCoeff_C, PowerSeries.algebraMap_apply, Algebra.algebraMap_self, RingHom.id_apply] at h1`. Conclude with `⟨_, h1⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 
-Take `⟨d, hd⟩` from `h0`. Take `⟨w', hw'⟩` from `hw.exists_right_inv`. Establish `h2 : X ^ s * (w * Polynomial.aeval ξ E.divX - X ^ (e * s) * b) = C a * (c - C d)`. Rewrite `h` using `[← hE, map_add, map_mul, Polynomial.aeval_X, Polynomial.aeval_C, hd]`. Establish `hC : algebraMap O O⟦X⟧ (a * d) = C a * C d` using `by rw [← map_mul]; rfl`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h` using `[hC]`. Use `nth_rewrite 1 [hξ] at h`. Take the linear combination `h`. Establish `h3 : ∃ c', w * Polynomial.aeval ξ E.divX - X ^ (e * s) * b = C a * c'`. Use `⟨PowerSeries.mk fun k => coeff (k + s) (c - C d), ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Use extensionality with `k`. Rewrite using `[coeff_C_mul, coeff_mk, ← coeff_C_mul, ← h2, coeff_X_pow_mul]`. Take `⟨c', hc'⟩` from `h3`. Establish `h4` using `ih E.divX (w' * b) (w' * c') (by`. Take the linear combination `w' * hc' - Polynomial.aeval ξ E.divX * hw')`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `k hk`. Consider the cases of `k with`. Consider the case `zero => exact ⟨d, hd⟩`. Consider the case `succ k => rw [← Polynomial.coeff_divX]; exact h4 k (by omega)`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem dvd_coeff_of_aeval {O : Type} [CommRing O] (a : O) (ξ w : O⟦X⟧) (s e : ℕ) (hs : 0 < s)
     (hw : IsUnit w) (hξ : ξ = w * X ^ s) (E : Polynomial O) (b c : O⟦X⟧)
@@ -67,7 +67,7 @@ theorem dvd_coeff_of_aeval {O : Type} [CommRing O] (a : O) (ξ w : O⟦X⟧) (s 
     | succ k => rw [← Polynomial.coeff_divX]; exact h4 k (by omega)
 
 /- English proof (translation)
-Rewrite using `[hE, Fin.prod_univ_one, h, map_neg, sub_neg_eq_add]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem prod_one_root {O : Type} [CommRing O] (ϖ : Fin 1 → O) (a : O) (E : Polynomial O)
     (hE : E = ∏ τ, (Polynomial.X - Polynomial.C (ϖ τ))) (h : ϖ 0 = -a) :
@@ -75,9 +75,9 @@ theorem prod_one_root {O : Type} [CommRing O] (ϖ : Fin 1 → O) (a : O) (E : Po
   rw [hE, Fin.prod_univ_one, h, map_neg, sub_neg_eq_add]
 
 /- English proof (translation)
-Take `⟨r, hr⟩` from `exists_add_pow_prime_eq (Fact.out : l.Prime) (1 : O⟦X⟧) X`. Establish `h1` using `mul_lvl (l := l) (O := O) 0`. Simplify using `only [pow_zero, pow_one, zero_add, add_sub_cancel_left] at h1`. Use `⟨r, mul_left_cancel₀ (X_ne_zero (R := O)) ?_⟩` and prove the remaining obligations. Establish `h2 : (X : O⟦X⟧) ^ l = X * X ^ (l - 1)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[← pow_succ', Nat.sub_add_cancel (Fact.out : l.Prime).one_le]`. Rewrite using `[h1, hr, map_natCast, h2]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem lvl_zero_mod {l : ℕ} [Fact l.Prime] (O : Type) [CommRing O] [IsDomain O] :
     ∃ r : O⟦X⟧, lvl l O 0 = X ^ (l - 1) + C (l : O) * r := by
@@ -116,17 +116,17 @@ def HasEis (l e : ℕ) (ξ : O⟦X⟧) : Prop :=
 include hp
 
 /- English proof (translation)
-Establish `hγ : ∀ g, W.γ₀ g = GlobalTheory.Cyc.act l O (χ g : ℤ_[l])` using `fun g => by`. Rewrite using `[γ₀_eq W hp χ hχ g]`. Use `algHom_ext_X _ _ (X_dvd_act_X _) ?_` and prove the remaining obligations. Rewrite using `[act_X, GlobalTheory.Cyc.Series.act_X, GlobalTheory.Cyc.Series.cyc_eq]`. Establish `hχi : Function.Injective χ` using `fun a b hab => W.χΓ_inj (Units.ext (by rw [← hχ, ← hχ, hab]))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Set `Δ : Subgroup ℤ_[l]ˣ` to `(CommGroup.torsion W.Gam).map χ`. Establish `hΔ : (Δ : Set ℤ_[l]ˣ) = ↑(W.DelF.image χ)`. Use extensionality with `x`. Simplify using `only [Δ, Subgroup.coe_map, Set.mem_image, SetLike.mem_coe, CommGroup.mem_torsion, Finset.coe_image, Finset.mem_coe, mem_DelF_iff]`. Establish `hfa : ∀ p : ℤ_[l]ˣ → Prop, (∀ δ ∈ Δ, p δ) ↔ ∀ δ ∈ W.DelF, p (χ δ)`.
+Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `p`. Simplify using `only [← SetLike.mem_coe, hΔ, Finset.coe_image, Set.forall_mem_image]`. Establish `: Finite Δ`. Express the relevant statement in the definitionally equal form `Finite (Δ : Set ℤ_[l]ˣ)`. Rewrite using `[hΔ]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use `infer_instance`. Set `_ : Fintype Δ` to `Fintype.ofFinite _`. Establish `hcard : Fintype.card Δ = W.DelF.card`. Rewrite using `[← Nat.card_eq_fintype_card]`. Express the relevant statement in the definitionally equal form `Nat.card (Δ : Set ℤ_[l]ˣ) = _`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hΔ, Nat.card_coe_set_eq, Set.ncard_coe_finset, Finset.card_image_of_injective _ hχi]`. Take `⟨w, hw⟩` from `hξ.symm`. Take `⟨h1, h2⟩` from `GlobalTheory.Cyc.invariants_param l O (Nat.cast_ne_zero.2 (Fact.out : l.Prime).ne_zero) hu Δ ξ w w.isUnit (by rw [hcard, ← hw, mul_comm]) (fun d => (hfa fun d => GlobalTheory.Cyc.act l O (d : ℤ_[l]) ξ = ξ).2 (fun δ hδ => by`. Rewrite using `[← hγ]`. Conclude with `hinv δ hδ) d d.2)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨hcard ▸ h1, fun b => ?_⟩` and prove the remaining obligations. Rewrite using `[← h2, Subtype.forall, hfa fun d => GlobalTheory.Cyc.act l O (d : ℤ_[l]) b = b]`. Simplify using `only [hγ]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem free_and_invariants_gen [IsDiscreteValuationRing O]
     [IsAdicComplete (IsLocalRing.maximalIdeal O) O] (hu : ¬ IsUnit (l : O))
@@ -169,23 +169,23 @@ theorem free_and_invariants_gen [IsDiscreteValuationRing O]
   simp only [hγ]
 
 /- English proof (translation)
-Substitute `hEd` using the available equality. Take `⟨-, -, hφ, hγ, -, hs, hX, hE⟩` from `ht`. Establish `hes` using `R.es`. Establish `h2l` using `(Fact.out : l.Prime).two_le`. Establish `hs0 : 0 < R.s` using `Nat.pos_of_ne_zero fun h0 => by rw [h0] at hes; omega`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `he0 : R.e ≠ 0` using `fun h0 => by rw [h0] at hes; omega`. Establish `hl0 : (l : O) ≠ 0` using `Nat.cast_ne_zero.2 (by omega)`. Establish `hj : (X : O⟦X⟧) ∣ j X` using `(dvd_pow_self X hs0.ne').trans hX.symm.dvd`. Establish `hq` using `(φ₀_eq W hp).2`. Rewrite using `[EisAt, ← hs]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hjE : Polynomial.aeval (j X) (∏ τ, (Polynomial.X - Polynomial.C (R.ϖ τ))) = j R.E`. Rewrite using `[R.E_def, map_prod, map_prod]`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[map_sub, map_sub, Polynomial.aeval_X, Polynomial.aeval_C, algHom_C]`. Use `⟨fun τ τ' hτ => ?_, Polynomial.monic_prod_of_monic _ _ fun τ _ => Polynomial.monic_X_sub_C _, ?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Assume the negation of the conclusion as `hne`. Establish `h1` using `R.ϖ_sub τ τ' hne`. Rewrite `h1` using `[hτ, sub_self, ← hτ]`. Establish `h2` using `R.ϖ_val τ`. Rewrite `h2` using `[(associated_zero_iff_eq_zero _).1 h1.symm, zero_pow he0]`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hl0 ((associated_zero_iff_eq_zero _).1 h2.symm)`. Rewrite using `[Polynomial.natDegree_prod_of_monic _ _ fun τ _ => Polynomial.monic_X_sub_C _]`. Simplify using the standard rewrite rules. Take `⟨w, hw⟩` from `hX.symm`. Take `⟨u, hu⟩` from `hE.symm`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨r, hr⟩` from `lvl_zero_mod (l := l) O`. Use `dvd_coeff_of_aeval _ (j X) w R.s R.e hs0 w.isUnit (by rw [← hw, mul_comm]) _ u (r * u) ?_` and prove the remaining obligations. Rewrite using `[hjE, ← hu, hq, hr, hes]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨u, hu⟩` from `hE.symm`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h1` using `congrArg constantCoeff hu`. Rewrite `h1` using `[map_mul, hq, constantCoeff_lvl, constantCoeff_algHom j hj, R.E_def, map_prod]`. Rewrite using `[Polynomial.coeff_zero_prod]`. Simplify using `only [map_sub, constantCoeff_X, constantCoeff_C] at h1`. Simplify using `only [Polynomial.coeff_sub, Polynomial.coeff_X_zero, Polynomial.coeff_C_zero]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← h1]`. Conclude with `associated_mul_unit_left _ _ (u.isUnit.map _)`. Rewrite using `[hjE]`. Conclude with `hE`. Use `⟨R.u, R.u.isUnit, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hφ, R.φ_X, map_mul, map_mul, map_pow, hjE, algHom_eq_subst j hj R.u]`. Use `⟨R.κ, R.κ.isUnit, ?_⟩` and prove the remaining obligations. Rewrite using `[← hγ, R.γ_X, map_mul, map_add, map_one, map_mul, hjE, algHom_eq_subst j hj R.κ]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem eisenstein_gen (R : Fr l O) (j : O⟦X⟧ →ₐ[O] O⟦X⟧) (ht : FrTie W R j)
     (E : Polynomial O) (hEd : E = ∏ τ, (Polynomial.X - Polynomial.C (R.ϖ τ))) :
@@ -237,7 +237,7 @@ theorem eisenstein_gen (R : Fr l O) (j : O⟦X⟧ →ₐ[O] O⟦X⟧) (ht : FrTi
 omit hp [CharZero O] [Algebra ℤ_[l] O] in
 
 /- English proof (translation)
-Take `⟨E, ϖ, hE, -, hr, -, hA⟩` from `hA`. Substitute `he₀` using the available equality. Take `⟨ζ, hζ, hd⟩` from `hr 0`. Rewrite `hA` using `[prod_one_root ϖ _ E hE (eq_neg_of_root hu _ _ ζ hζ hd hq)]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Substitute using the available equality. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem eisAt_one [IsLocalRing O] [IsAdicComplete (IsLocalRing.maximalIdeal O) O]
     (hu : ¬ IsUnit (l : O)) (ξ : O⟦X⟧) (hq : lvl l O 0 ∣ ξ + (l : O⟦X⟧)) (e₀ : ℕ) (he₀ : e₀ = 1)
@@ -254,9 +254,9 @@ variable {l : ℕ} [Fact l.Prime] {P : LocPrime l} (H : LocHW l P) {K LL : FinEx
 include hl
 
 /- English proof (translation)
-Establish `hc` using `GlobalTheory.TorsionCard.card_torsion_mul_finrank P K LL (H.W K 1 LL h) hl h.2.2.1`. Establish `h2l` using `(Fact.out : l.Prime).two_le`. Establish `h0 : 0 < Module.finrank ↥(K0 K) ↥K.1` using `Nat.pos_of_ne_zero fun h0 => by`. Rewrite `hc` using `[h0]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Rewrite using `[← hc, Nat.mul_div_cancel _ h0]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem card_eq : (H.W K 1 LL h).DelF.card = (l - 1) / Module.finrank ↥(K0 K) ↥K.1 := by
   have hc := GlobalTheory.TorsionCard.card_torsion_mul_finrank P K LL (H.W K 1 LL h) hl h.2.2.1
@@ -268,7 +268,7 @@ theorem card_eq : (H.W K 1 LL h).DelF.card = (l - 1) / Module.finrank ↥(K0 K) 
 omit hl in
 
 /- English proof (translation)
-Take `⟨_, _, hu⟩` from `GlobalTheory.FinExtIntegers.dvr_complete LL`. Take `⟨χ, hχ, -⟩` from `GlobalTheory.exists_cyclotomicChar_padicInt_units P K LL (H.W K 1 LL h)`. Conclude with `free_and_invariants_gen (H.W K 1 LL h) (P.PD_p K) hu χ hχ ξ hξ hinv`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem free_and_invariants (ξ : (↥(OL LL))⟦X⟧)
     (hξ : Associated ξ (X ^ (H.W K 1 LL h).DelF.card))
@@ -282,7 +282,7 @@ theorem free_and_invariants (ξ : (↥(OL LL))⟦X⟧)
   exact free_and_invariants_gen (H.W K 1 LL h) (P.PD_p K) hu χ hχ ξ hξ hinv
 
 /- English proof (translation)
-Take `⟨R, j, jE, hj, he, ht, -, hr, -⟩` from `exists_attached H h hl ξ hξ hinv`. Establish `h1 : HasEis (H.W K 1 LL h) l R.e (j X)` using `⟨_, R.ϖ, rfl, R.ϖ_val, hr, eisenstein_gen (H.W K 1 LL h) (P.PD_p K) R j ht _ rfl⟩`. Rewrite `h1` using `[hj, he]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem exists_eisenstein (ξ : (↥(OL LL))⟦X⟧)
     (hξ : Associated ξ (X ^ (H.W K 1 LL h).DelF.card))
@@ -296,9 +296,9 @@ theorem exists_eisenstein (ξ : (↥(OL LL))⟦X⟧)
 set_option maxHeartbeats 800000 in
 
 /- English proof (translation)
-Establish `hc` using `card_eq H h hl`. Rewrite `hc` using `[h1, Nat.div_one]`. Take `⟨χ, hχ, -⟩` from `GlobalTheory.exists_cyclotomicChar_padicInt_units P K LL (H.W K 1 LL h)`. Take `⟨p2, p3, p4⟩` from `π₀₁_spec (H.W K 1 LL h) (P.PD_p K) χ hχ hl hc`. Take `⟨_, _, hu⟩` from `GlobalTheory.FinExtIntegers.dvr_complete LL`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨hc, p2, p3, eisAt_one (H.W K 1 LL h) hu _ p4 _ h1 (exists_eisenstein H h hl _ p2 p3)⟩`.
+Supply the required witnesses or components.
 -/
 theorem trace_param (h1 : Module.finrank ↥(K0 K) ↥K.1 = 1) :
     (H.W K 1 LL h).DelF.card = l - 1 ∧

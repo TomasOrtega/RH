@@ -9,14 +9,14 @@ noncomputable section
 namespace GlobalTheory.DiagBlock
 
 /- English proof (translation)
-The claim follows from `((Fin.castLE_injective hn).prodMap (Fin.castLE_injective hn)).sumMap ((Fin.castLE_injective hn).prodMap (Fin.castLE_injective hn))`.
+A detailed English derivation is pending.
 -/
 lemma embV_inj {n0 n : ℕ} (hn : n0 ≤ n) : Function.Injective (embV hn) :=
   ((Fin.castLE_injective hn).prodMap (Fin.castLE_injective hn)).sumMap
     ((Fin.castLE_injective hn).prodMap (Fin.castLE_injective hn))
 
 /- English proof (translation)
-Use extensionality with `m`. Rewrite using `[MvPowerSeries.coeff_killCompl, Finsupp.embDomain_eq_mapDomain]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 lemma restr_eq {C : Type} [Field C] {n0 n : ℕ} (hn : n0 ≤ n) (G : MvPowerSeries (PVar n) C) :
     restr hn G = MvPowerSeries.killCompl ⟨embV hn, embV_inj hn⟩ G := by
@@ -25,7 +25,7 @@ lemma restr_eq {C : Type} [Field C] {n0 n : ℕ} (hn : n0 ≤ n) (G : MvPowerSer
   rfl
 
 /- English proof (translation)
-Introduce `C _ n0 n hn G G'`. Rewrite using `[restr_eq, restr_eq, restr_eq, map_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem restrictMul : RestrictMul := by
   intro C _ n0 n hn G G'
@@ -39,9 +39,9 @@ private lemma coeff_mvExp' {C : Type} [Field C] {σ : Type} (h : MvPowerSeries �
       ∑ k ∈ Finset.range (m.degree + 1), MvPowerSeries.coeff m (h ^ k) / (k.factorial : C) := rfl
 
 /- English proof (translation)
-Introduce `C _ _ n0 n hn h`. Use extensionality with `m`. Rewrite using `[restr_eq, restr_eq, MvPowerSeries.coeff_killCompl, coeff_mvExp', coeff_mvExp']`. Establish `hdeg : (Finsupp.embDomain ⟨embV hn, embV_inj hn⟩ m).degree = m.degree`. Rewrite using `[Finsupp.embDomain_eq_mapDomain, Finsupp.degree_mapDomain]`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hdeg]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[← map_pow, MvPowerSeries.coeff_killCompl]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem restrictExp : RestrictExp := by
   intro C _ _ n0 n hn h
@@ -61,7 +61,7 @@ def kill (S : σ → Prop) [DecidablePred S] : MvPolynomial σ R →ₐ[R] MvPol
   MvPolynomial.aeval fun x => if S x then 0 else MvPolynomial.X x
 
 /- English proof (translation)
-Rewrite using `[kill, MvPolynomial.aeval_X]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma kill_X (S : σ → Prop) [DecidablePred S] (x : σ) :
     kill (R := R) S (MvPolynomial.X x) = if S x then 0 else MvPolynomial.X x := by
@@ -69,11 +69,9 @@ lemma kill_X (S : σ → Prop) [DecidablePred S] (x : σ) :
 
 open Classical in
 /- English proof (translation)
-Rewrite using `[kill, MvPolynomial.aeval_monomial, MvPolynomial.algebraMap_eq]`. Use `split_ifs with h`. Rewrite using `[MvPolynomial.monomial_eq]`. Use `congr 1`. Use `Finsupp.prod_congr fun x hx => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg]`. Introduce `hS`. Conclude with `(Finsupp.mem_support_iff.1 hx) (h x hS)`. Use `push Not at h`. Take `⟨x, hS, hx⟩` from `h`.
-
-Rewrite using `[Finsupp.prod, Finset.prod_eq_zero (Finsupp.mem_support_iff.2 hx), mul_zero]`. Rewrite using `[if_pos hS, zero_pow hx]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma kill_monomial (S : σ → Prop) [DecidablePred S] (m : σ →₀ ℕ) (c : R) :
     kill S (MvPolynomial.monomial m c) =
@@ -93,9 +91,9 @@ lemma kill_monomial (S : σ → Prop) [DecidablePred S] (m : σ →₀ ℕ) (c :
 
 open Classical in
 /- English proof (translation)
-Use `MvPolynomial.induction_on' P (fun m c => ?_) (fun p q hp hq => ?_)` and prove the remaining obligations. Rewrite using `[kill_monomial]`. Distinguish the cases in `hme : m = e`. Apply the tactic sequence `subst hme split_ifs <;> simp`. Apply the tactic sequence `split_ifs <;> simp [MvPolynomial.coeff_monomial, hme]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `rw [map_add, MvPolynomial.coeff_add, hp, hq, MvPolynomial.coeff_add] split_ifs <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma coeff_kill (S : σ → Prop) [DecidablePred S] (P : MvPolynomial σ R) (e : σ →₀ ℕ) :
     MvPolynomial.coeff e (kill S P) =
@@ -112,13 +110,13 @@ lemma coeff_kill (S : σ → Prop) [DecidablePred S] (P : MvPolynomial σ R) (e 
 end Kill
 
 /- English proof (translation)
-Establish `hblock` using `Matrix.twoBlockTriangular_det M (fun i : Fin n => i.val < n0) (by`. Introduce `i hi j hj`. Use `hM i j (not_lt.1 hi) ?_` and prove the remaining obligations. Introduce and unpack `rfl`. Conclude with `hi hj)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hblock]`. Use `congr 1`. Set `e : Fin n0 ≃ {i : Fin n // i.val < n0}` to `{ toFun := fun b => ⟨Fin.castLE hn b, b.isLt⟩ invFun := fun i => ⟨i.1.val, i.2⟩ left_inv := fun b => rfl right_inv := fun i => rfl }`. Rewrite using `[← Matrix.det_submatrix_equiv_self e]`. Both sides reduce to the same expression.
+Reduce the equality to equality of the corresponding arguments. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hdiag : (Matrix.toSquareBlockProp M fun i : Fin n => ¬ i.val < n0) = Matrix.diagonal fun i : {i : Fin n // ¬ i.val < n0} => M i i`. Use extensionality with `i j`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Simplify using `[Matrix.toSquareBlockProp, Matrix.toBlock]`.
+By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.diagonal_apply_ne _ hij]`. Conclude with `hM i j (not_lt.1 i.2) (fun h => hij (Subtype.ext h.symm))`. Rewrite using `[hdiag, Matrix.det_diagonal]`. Conclude with `(Finset.prod_subtype _ (fun ρ => by simp) (fun ρ => M ρ ρ)).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma det_diag_rows {A : Type} [CommRing A] {n0 n : ℕ} (hn : n0 ≤ n) (M : Matrix (Fin n) (Fin n) A)
     (hM : ∀ ρ c : Fin n, n0 ≤ ρ.val → c ≠ ρ → M ρ c = 0) :
@@ -151,13 +149,13 @@ lemma det_diag_rows {A : Type} [CommRing A] {n0 n : ℕ} (hn : n0 ≤ n) (M : Ma
     exact (Finset.prod_subtype _ (fun ρ => by simp) (fun ρ => M ρ ρ)).symm
 
 /- English proof (translation)
-Rewrite using `[map_pow, AlgHom.map_det]`. Establish `hM : (kill (R` using `R) S).mapMatrix (Matrix.of fun b c : Fin n => (MvPolynomial.X (f b c) : MvPolynomial σ R)) = Matrix.of fun b c : Fin n => if S (f b c) then 0 else MvPolynomial.X (f b c) := by`. Use extensionality with `b c`. Simplify using `[AlgHom.mapMatrix_apply, kill_X]`. Rewrite using `[hM, det_diag_rows hn _ (by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Introduce `ρ c hρ hc`. Simplify using `[(hf ρ c).2 ⟨hρ, hc⟩])]`. Establish `hsub : (Matrix.of fun b c : Fin n => if S (f b c) then (0 : MvPolynomial σ R) else MvPolynomial.X (f b c)).submatrix (Fin.castLE hn) (Fin.castLE hn) = Matrix.of fun b c : Fin n0 => (MvPolynomial.X (f (Fin.castLE hn b) (Fin.castLE hn c)) : MvPolynomial σ R)`. Use extensionality with `b c`. Simplify using `[hf, not_le.2 b.isLt]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Establish `hdiag : ∀ ρ : Fin n, (Matrix.of fun b c : Fin n => if S (f b c) then (0 : MvPolynomial σ R) else MvPolynomial.X (f b c)) ρ ρ = MvPolynomial.X (f ρ ρ)`. Introduce `ρ`. Simplify using `[hf]`. Rewrite using `[hsub, Finset.prod_congr rfl (fun ρ _ => hdiag ρ), mul_pow, ← Finset.prod_pow, MvPolynomial.monomial_sum_one]`. Use `congr 1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `Finset.prod_congr rfl fun ρ _ => ?_` and prove the remaining obligations. Rewrite using `[MvPolynomial.X_pow_eq_monomial]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 lemma kill_det_pow {R : Type} [CommRing R] {σ : Type} (S : σ → Prop) [DecidablePred S]
     {n0 n : ℕ} (hn : n0 ≤ n) (f : Fin n → Fin n → σ)
@@ -192,11 +190,11 @@ lemma kill_det_pow {R : Type} [CommRing R] {σ : Type} (S : σ → Prop) [Decida
   rw [MvPolynomial.X_pow_eq_monomial]
 
 /- English proof (translation)
-Rewrite using `[Finsupp.finsetSum_apply]`. Distinguish the cases in `hρ : n0 ≤ ρ.val`. Rewrite using `[Finset.sum_eq_single ρ]`. Distinguish the cases in `hc : c = ρ`. Substitute `hc` using the available equality.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using `[hρ]`. Simplify using `[hc]`. Introduce `b _ hb`. Simplify using `[hb]`. Introduce `h`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `absurd (Finset.mem_filter.2 ⟨Finset.mem_univ ρ, hρ⟩) h`. Rewrite using `[if_neg (fun h => hρ h.1)]`. Use `Finset.sum_eq_zero fun b hb => ?_` and prove the remaining obligations. Establish `hb' : b ≠ ρ` using `fun h => hρ (h ▸ (Finset.mem_filter.1 hb).2)`. Simplify using `[hb']`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private lemma diag_single_sum_apply (n0 n Y : ℕ) (ρ c : Fin n) :
     (∑ ρ' ∈ (Finset.univ : Finset (Fin n)).filter (fun ρ' => n0 ≤ ρ'.val), Finsupp.single (ρ', ρ') Y) (ρ, c) =
@@ -217,11 +215,11 @@ private lemma diag_single_sum_apply (n0 n Y : ℕ) (ρ c : Fin n) :
     simp [hb']
 
 /- English proof (translation)
-Introduce `R _ n0 n hn Y e he`. Establish `hS : ∀ x : Fin n × Fin n, (n0 ≤ x.1.val ∧ x.2 ≠ x.1) → e x = 0`. Introduce and unpack `⟨ρ, c⟩ ⟨h1, h2⟩`. Rewrite using `[he ρ c h1, if_neg h2]`. Establish `hk` using `coeff_kill (R := R) (fun x : Fin n × Fin n => n0 ≤ x.1.val ∧ x.2 ≠ x.1) ((Matrix.of fun b c : Fin n => (MvPolynomial.X (b, c) : MvPolynomial (Fin n × Fin n) R)).det ^ Y) e`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hk` using `[if_pos hS]`. Rewrite using `[← hk, kill_det_pow _ hn (fun b c => (b, c)) (fun ρ c => Iff.rfl) Y]`. Establish `hsplit : e = e.filter (fun x => x.1.val < n0) + ∑ ρ ∈ (Finset.univ : Finset (Fin n)).filter (fun ρ => n0 ≤ ρ.val), Finsupp.single (ρ, ρ) Y`. Use extensionality with `⟨ρ, c⟩`. Rewrite using `[Finsupp.add_apply, Finsupp.filter_apply, diag_single_sum_apply]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hρ : n0 ≤ ρ.val`. Simplify using `[hρ, he ρ c hρ, not_lt.2 hρ]`. Simplify using `[hρ, not_le.1 hρ]`. Use `conv_lhs => rw [hsplit]`. Rewrite using `[MvPolynomial.coeff_mul_monomial, mul_one]`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem detPowDiag : DetPowDiag := by
   intro R _ n0 n hn Y e he
@@ -244,17 +242,15 @@ theorem detPowDiag : DetPowDiag := by
   rw [MvPolynomial.coeff_mul_monomial, mul_one]
 
 /- English proof (translation)
-Rewrite using `[MvPowerSeries.coeff_mul, Finset.sum_eq_single (a, b)]`. Introduce and unpack `⟨u, v⟩ huv hne`. Establish `huv'` using `Finset.HasAntidiagonal.mem_antidiagonal.1 huv`. Simplify using `only at huv'`. Assume the negation of the conclusion as `hprod`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Simplify using the standard rewrite rules. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `hu` using `hG u (left_ne_zero_of_mul hprod)`. Establish `hv` using `hH v (right_ne_zero_of_mul hprod)`. Apply `hne` to reduce the goal to its premises. Establish `key : ∀ x, u x = a x ∧ v x = b x`. Introduce `x`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hx` using `congrArg (fun f => f x) huv'`. Simplify using `only [Finsupp.add_apply] at hx`. Distinguish the cases in `hpx : p x`. Establish `h1 : v x = 0`. Assume the negation of the conclusion as `h0`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Conclude with `hv x (Finsupp.mem_support_iff.2 h0) hpx`. Establish `h2 : b x = 0`. Assume the negation of the conclusion as `h0`. Conclude with `hb x (Finsupp.mem_support_iff.2 h0) hpx`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `h1 : u x = 0`. Assume the negation of the conclusion as `h0`. Conclude with `hpx (hu x (Finsupp.mem_support_iff.2 h0))`. Establish `h2 : a x = 0`. Assume the negation of the conclusion as `h0`.
-
-Conclude with `hpx (ha x (Finsupp.mem_support_iff.2 h0))`. Use linear arithmetic over natural numbers and integers. Conclude with `Prod.ext (Finsupp.ext fun x => (key x).1) (Finsupp.ext fun x => (key x).2)`. Introduce `h`. Conclude with `(h (by simp)).elim`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 lemma coeff_mul_split {C : Type} [Field C] {σ : Type} (p : σ → Prop)
     (G H : MvPowerSeries σ C)
@@ -291,9 +287,9 @@ lemma coeff_mul_split {C : Type} [Field C] {σ : Type} (p : σ → Prop)
     exact (h (by simp)).elim
 
 /- English proof (translation)
-Rewrite using `[Matrix.det_apply, ← MvPolynomial.mem_weightedHomogeneousSubmodule]`. Use `Submodule.sum_mem _ fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[Units.smul_def]`. Use `zsmul_mem ?_ _` and prove the remaining obligations. Rewrite using `[MvPolynomial.mem_weightedHomogeneousSubmodule]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hprod` using `MvPolynomial.IsWeightedHomogeneous.prod Finset.univ (fun i => (Matrix.of fun b c : Fin n => (MvPolynomial.X (f b c) : MvPolynomial σ C)) (τ i) i) (fun i => r (τ i)) (w := w) (fun i _ => by`. Simplify `MvPolynomial.isWeightedHomogeneous_X C w (f (τ i) i))` using `[Matrix.of_apply, h]`. Rewrite `hprod` using `[Equiv.sum_comp τ r]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 lemma det_homog {C : Type} [Field C] {σ : Type} {n : ℕ} (w : σ → ℕ) (f : Fin n → Fin n → σ)
     (r : Fin n → ℕ) (h : ∀ b c, w (f b c) = r b) :
@@ -311,17 +307,17 @@ lemma det_homog {C : Type} [Field C] {σ : Type} {n : ℕ} (w : σ → ℕ) (f :
   rwa [Equiv.sum_comp τ r] at hprod
 
 /- English proof (translation)
-Set `wL : PVar n → ℕ` to `Sum.elim (fun p => if p.1 = ρ then 1 else 0) (fun _ => 0)`. Set `wR : PVar n → ℕ` to `Sum.elim (fun _ => 0) (fun p => if p.1 = ρ then 1 else 0)`. Establish `hLL : (detL C n).IsWeightedHomogeneous wL 1`. Use `det_homog (C := C) wL (fun b c => Sum.inl (b, c)) (fun b => if b = ρ then 1 else 0) (fun b c => rfl)` as an intermediate fact. Simplify `this` using `[detL]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hRL : (detR C n).IsWeightedHomogeneous wL 0`. Use `det_homog (C := C) wL (fun b c => Sum.inr (b, c)) (fun _ => 0) (fun b c => rfl)` as an intermediate fact. Simplify `this` using `[detR]`. Establish `hLR : (detL C n).IsWeightedHomogeneous wR 0`. Use `det_homog (C := C) wR (fun b c => Sum.inl (b, c)) (fun _ => 0) (fun b c => rfl)` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify `this` using `[detL]`. Establish `hRR : (detR C n).IsWeightedHomogeneous wR 1`. Use `det_homog (C := C) wR (fun b c => Sum.inr (b, c)) (fun b => if b = ρ then 1 else 0) (fun b c => rfl)` as an intermediate fact. Simplify `this` using `[detR]`. Establish `h1` using `((hLL.pow a).mul (hRL.pow b)) hm`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `h2` using `((hLR.pow a).mul (hRR.pow b)) hm`. Establish `hwL : Finsupp.weight wL m = rowDegZ m ρ`. Rewrite using `[Finsupp.weight_apply, Finsupp.sum_fintype _ _ (by simp)]`. Simplify using `[rowDegZ, Fintype.sum_sum_type, Fintype.sum_prod_type, wL]`. Rewrite using `[Finset.sum_eq_single ρ (fun b _ hb => by simp [hb]) (fun h => absurd (Finset.mem_univ ρ) h)]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Establish `hwR : Finsupp.weight wR m = rowDegZ' m ρ`. Rewrite using `[Finsupp.weight_apply, Finsupp.sum_fintype _ _ (by simp)]`. Simplify using `[rowDegZ', Fintype.sum_sum_type, Fintype.sum_prod_type, wR]`. Rewrite using `[Finset.sum_eq_single ρ (fun b _ hb => by simp [hb]) (fun h => absurd (Finset.mem_univ ρ) h)]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Rewrite `h1` using `[hwL]`. Rewrite `h2` using `[hwR]`. Simplify using `at h1 h2`. Conclude with `⟨h1, h2⟩`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 lemma rowDeg_of_mem {C : Type} [Field C] {n : ℕ} (a b : ℕ) (m : PVar n →₀ ℕ)
     (hm : MvPolynomial.coeff m (detL C n ^ a * detR C n ^ b) ≠ 0) (ρ : Fin n) :
@@ -361,11 +357,11 @@ lemma rowDeg_of_mem {C : Type} [Field C] {n : ℕ} (a b : ℕ) (m : PVar n →�
   exact ⟨h1, h2⟩
 
 /- English proof (translation)
-Rewrite using `[diagMon, Finsupp.finsetSum_apply]`. Distinguish the cases in `hρ : n0 ≤ ρ.val`. Rewrite using `[Finset.sum_eq_single ρ]`. Distinguish the cases in `hc : c = ρ`. Substitute `hc` using the available equality.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using `[hρ]`. Simplify using `[hc]`. Introduce `b _ hb`. Simplify using `[hb]`. Introduce `h`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `absurd (Finset.mem_filter.2 ⟨Finset.mem_univ ρ, hρ⟩) h`. Rewrite using `[if_neg (fun h => hρ h.1)]`. Use `Finset.sum_eq_zero fun b hb => ?_` and prove the remaining obligations. Establish `hb' : b ≠ ρ` using `fun h => hρ (h ▸ (Finset.mem_filter.1 hb).2)`. Simplify using `[hb']`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma diagMon_inl (n0 n L y : ℕ) (ρ c : Fin n) :
     diagMon n0 n L y (Sum.inl (ρ, c)) = if n0 ≤ ρ.val ∧ c = ρ then L * y else 0 := by
@@ -385,11 +381,11 @@ lemma diagMon_inl (n0 n L y : ℕ) (ρ c : Fin n) :
     simp [hb']
 
 /- English proof (translation)
-Rewrite using `[diagMon, Finsupp.finsetSum_apply]`. Distinguish the cases in `hρ : n0 ≤ ρ.val`. Rewrite using `[Finset.sum_eq_single ρ]`. Distinguish the cases in `hc : c = ρ`. Substitute `hc` using the available equality.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using `[hρ]`. Simplify using `[hc]`. Introduce `b _ hb`. Simplify using `[hb]`. Introduce `h`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `absurd (Finset.mem_filter.2 ⟨Finset.mem_univ ρ, hρ⟩) h`. Rewrite using `[if_neg (fun h => hρ h.1)]`. Use `Finset.sum_eq_zero fun b hb => ?_` and prove the remaining obligations. Establish `hb' : b ≠ ρ` using `fun h => hρ (h ▸ (Finset.mem_filter.1 hb).2)`. Simplify using `[hb']`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma diagMon_inr (n0 n L y : ℕ) (ρ c : Fin n) :
     diagMon n0 n L y (Sum.inr (ρ, c)) = if n0 ≤ ρ.val ∧ c = ρ then y else 0 := by
@@ -409,9 +405,7 @@ lemma diagMon_inr (n0 n L y : ℕ) (ρ c : Fin n) :
     simp [hb']
 
 /- English proof (translation)
-Rewrite `hx` using `[Finsupp.mem_support_iff]`. Break down `x with ⟨ρ, c⟩ | ⟨ρ, c⟩` into its components or cases. Rewrite `hx`, `with`, `h` using `[diagMon_inl] at hx split_ifs`. Conclude with `h.1`. Conclude with `absurd rfl hx`.
-
-Rewrite `hx`, `with`, `h` using `[diagMon_inr] at hx split_ifs`. Conclude with `h.1`. Conclude with `absurd rfl hx`.
+Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 lemma diagMon_row {n0 n L y : ℕ} (x : PVar n) (hx : x ∈ (diagMon n0 n L y).support) :
     n0 ≤ (rowOf x).val := by
@@ -427,15 +421,15 @@ lemma diagMon_row {n0 n L y : ℕ} (x : PVar n) (hx : x ∈ (diagMon n0 n L y).s
     · exact absurd rfl hx
 
 /- English proof (translation)
-Establish `hcard : ((Finset.univ : Finset (Fin n)).filter fun ρ => n0 ≤ ρ.val).card = n - n0`. Establish `h1` using `Finset.card_filter_add_card_filter_not (s := (Finset.univ : Finset (Fin n))) (fun ρ : Fin n => ρ.val < n0)`. Rewrite `h1` using `[Fin.card_filter_val_lt, Finset.card_univ, Fintype.card_fin]`. Simplify using `only [not_lt] at h1`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Establish `key : ∀ t : ℕ, ∏ ρ : Fin n, ∏ c : Fin n, (if n0 ≤ ρ.val ∧ c = ρ then t else 0).factorial = t.factorial ^ (n - n0)`. Introduce `t`. Establish `hrow : ∀ ρ : Fin n, ∏ c : Fin n, (if n0 ≤ ρ.val ∧ c = ρ then t else 0).factorial = if n0 ≤ ρ.val then t.factorial else 1`. Introduce `ρ`. Distinguish the cases in `hρ : n0 ≤ ρ.val`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[if_pos hρ, Finset.prod_eq_single ρ]`. Simplify using `[hρ]`. Introduce `c _ hc`. Simplify using `[hc]`. Introduce `h`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `absurd (Finset.mem_univ ρ) h`. Simplify using `[hρ]`. Rewrite using `[Finset.prod_congr rfl (fun ρ _ => hrow ρ), ← Finset.prod_filter, Finset.prod_const, hcard]`. Rewrite using `[mfact, Finsupp.prod_fintype _ _ (fun _ => Nat.factorial_zero), Fintype.prod_sum_type, Fintype.prod_prod_type, Fintype.prod_prod_type]`. Simplify using `only [diagMon_inl, diagMon_inr]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[key, key, mul_pow]`.
+A detailed English derivation is pending.
 -/
 lemma mfact_diagMon {n0 n : ℕ} (L y : ℕ) :
     mfact (diagMon n0 n L y) = ((L * y).factorial * y.factorial) ^ (n - n0) := by
@@ -467,7 +461,7 @@ lemma mfact_diagMon {n0 n : ℕ} (L y : ℕ) :
   rw [key, key, mul_pow]
 
 /- English proof (translation)
-Apply the tactic sequence `constructor <;>`. Use `Finset.sum_le_sum fun c _ => ?_` and prove the remaining obligations. Rewrite using `[Finsupp.filter_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma rowDeg_filter_le {n : ℕ} (p : PVar n → Prop) [DecidablePred p] (m : PVar n →₀ ℕ) (ρ : Fin n) :
     rowDegZ (m.filter p) ρ ≤ rowDegZ m ρ ∧ rowDegZ' (m.filter p) ρ ≤ rowDegZ' m ρ := by
@@ -477,11 +471,11 @@ lemma rowDeg_filter_le {n : ℕ} (p : PVar n → Prop) [DecidablePred p] (m : PV
     split_ifs <;> simp
 
 /- English proof (translation)
-Rewrite using `[show detL C n = (Matrix.of fun b c : Fin n => (MvPolynomial.X (Sum.inl (b, c)) : MvPolynomial (PVar n) C)).det from rfl, show detR C n = (Matrix.of fun b c : Fin n => (MvPolynomial.X (Sum.inr (b, c)) : MvPolynomial (PVar n) C)).det from rfl, show detL C n0 = (Matrix.of fun b c : …`. Rewrite using `[map_mul, kill_det_pow S hn (fun b c => Sum.inl (b, c)) hS1, kill_det_pow S hn (fun b c => Sum.inr (b, c)) hS2, map_mul, map_pow, map_pow, AlgHom.map_det, AlgHom.map_det]`. Establish `e1 : (MvPolynomial.rename (R` using `C) (embV hn)).mapMatrix (Matrix.of fun b c : Fin n0 => (MvPolynomial.X (Sum.inl (b, c)) : MvPolynomial (PVar n0) C)) = Matrix.of fun b c : Fin n0 => MvPolynomial.X (Sum.inl (Fin.castLE hn b, Fin.castLE hn c)) := by`. Use extensionality with `b c`. Simplify using `[AlgHom.mapMatrix_apply, embV]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Establish `e2 : (MvPolynomial.rename (R` using `C) (embV hn)).mapMatrix (Matrix.of fun b c : Fin n0 => (MvPolynomial.X (Sum.inr (b, c)) : MvPolynomial (PVar n0) C)) = Matrix.of fun b c : Fin n0 => MvPolynomial.X (Sum.inr (Fin.castLE hn b, Fin.castLE hn c)) := by`. Use extensionality with `b c`. Simplify using `[AlgHom.mapMatrix_apply, embV]`. Establish `hmon : ∀ a b : PVar n →₀ ℕ, MvPolynomial.monomial (a + b) (1 : C) = MvPolynomial.monomial a 1 * MvPolynomial.monomial b 1` using `fun a b => by`. Rewrite using `[MvPolynomial.monomial_mul, one_mul]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e1, e2, diagMon, Finset.sum_add_distrib, hmon]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 private lemma kill_detL_pow_mul_detR_pow {C : Type} [Field C] {n0 n : ℕ} (hn : n0 ≤ n) (L y : ℕ)
     (S : PVar n → Prop) [DecidablePred S]
@@ -518,13 +512,11 @@ private lemma kill_detL_pow_mul_detR_pow {C : Type} [Field C] {n0 n : ℕ} (hn :
   ring
 
 /- English proof (translation)
-Establish `hab` using `Finsupp.filter_add_filter_not m (fun x => (rowOf x).val < n0)`. Establish `hsplit` using `coeff_mul_split (fun x => (rowOf x).val < n0) G1 H hG1 (fun m' hm' x hx => not_lt.2 (hH m' hm' x hx)) (m.filter fun x => (rowOf x).val < n0) (m.filter fun x => ¬ (rowOf x).val < n0) (fun x hx => by`. Rewrite `hx` using `[Finsupp.support_filter, Finset.mem_filter]`. Conclude with `hx.2)`. Use the proof step `(fun x hx => by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hx` using `[Finsupp.support_filter, Finset.mem_filter]`. Conclude with `hx.2)`. Rewrite `hsplit` using `[hab]`. Rewrite `hmG` using `[hsplit]`. Establish `hb` using `right_ne_zero_of_mul hmG`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hrow` using `rowDeg_of_mem (L * y) y m hm`. Rewrite using `[hHd _ (fun x hx => by`. Rewrite `hx` using `[Finsupp.support_filter, Finset.mem_filter]`. Conclude with `not_lt.1 hx.2)`. Use the proof step `(fun ρ _ => ⟨(rowDeg_filter_le _ m ρ).1.trans (hrow ρ).1.le, (rowDeg_filter_le _ m ρ).2.trans (hrow ρ).2.le⟩)] at hb`.
-
-Use `split_ifs at hb with hbeq`. Conclude with `hbeq`. Conclude with `absurd rfl hb`.
+A detailed English derivation is pending.
 -/
 private lemma filter_nondiag_eq_diagMon_of_coeff_ne_zero {C : Type} [Field C] {n0 n : ℕ} (L y : ℕ) (G1 H : MvPowerSeries (PVar n) C)
     (hG1 : ∀ m : PVar n →₀ ℕ, MvPowerSeries.coeff m G1 ≠ 0 → ∀ x ∈ m.support, (rowOf x).val < n0)
@@ -560,31 +552,27 @@ private lemma filter_nondiag_eq_diagMon_of_coeff_ne_zero {C : Type} [Field C] {n
   · exact absurd rfl hb
 
 /- English proof (translation)
-Introduce `C _ _ n0 n hn L y G1 H hG1 hH hHd`. Establish `hkill` using `kill_detL_pow_mul_detR_pow (C := C) hn L y (fun x : PVar n => n0 ≤ (rowOf x).val ∧ Sum.elim Prod.snd Prod.snd x ≠ rowOf x) (fun ρ c => Iff.rfl) (fun ρ c => Iff.rfl)`. Establish `havoid : ∀ m : PVar n →₀ ℕ, MvPolynomial.coeff m (detL C n ^ (L * y) * detR C n ^ y) ≠ 0 → MvPowerSeries.coeff m (G1 * H) ≠ 0 → ∀ x, (n0 ≤ (rowOf x).val ∧ Sum.elim Prod.snd Prod.snd x ≠ rowOf x) → m x = 0`. Introduce `m hm hmG x hx`. Establish `hb` using `filter_nondiag_eq_diagMon_of_coeff_ne_zero L y G1 H hG1 hH hHd m hm hmG`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hmx : m x = (m.filter fun x => ¬ (rowOf x).val < n0) x`. Rewrite using `[Finsupp.filter_apply, if_pos (not_lt.2 hx.1)]`. Rewrite using `[hmx, hb]`. Break down `x with ⟨ρ, c⟩ | ⟨ρ, c⟩` into its components or cases. Rewrite using `[diagMon_inl, if_neg]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `⟨-, rfl⟩`. Conclude with `hx.2 rfl`. Rewrite using `[diagMon_inr, if_neg]`. Introduce and unpack `⟨-, rfl⟩`. Conclude with `hx.2 rfl`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `h3 : jetAt0 (detL C n ^ (L * y) * detR C n ^ y) (G1 * H) = jetAt0 (kill (fun x : PVar n => n0 ≤ (rowOf x).val ∧ Sum.elim Prod.snd Prod.snd x ≠ rowOf x) (detL C n ^ (L * y) * detR C n ^ y)) (G1 * H)`. Rewrite using `[GlobalTheory.UnitCase.jetAt0_eq_sum (kill (fun x : PVar n => n0 ≤ (rowOf x).val ∧ Sum.elim Prod.snd Prod.snd x ≠ rowOf x) (detL C n ^ (L * y) * detR C n ^ y)) (G1 * H) (detL C n ^ (L * y) * detR C n ^ y).support ?_, jetAt0]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[coeff_kill]`. Use `split_ifs with h`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Both sides reduce to the same expression. Distinguish the cases in `h0 : MvPowerSeries.coeff m (G1 * H) = 0`. Simplify using `[h0]`. Distinguish the cases in `h1 : MvPolynomial.coeff m (detL C n ^ (L * y) * detR C n ^ y) = 0`. Simplify using `[h1]`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `absurd (havoid m h1 h0) h`. Introduce `m hm`. Rewrite `hm` using `[MvPolynomial.mem_support_iff, coeff_kill]`. Rewrite using `[MvPolynomial.mem_support_iff]`. Use `split_ifs at hm`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hm`. Conclude with `absurd rfl hm`. Rewrite using `[h3, hkill]`. Establish `hsupp : (MvPolynomial.rename (embV hn) (detL C n0 ^ (L * y) * detR C n0 ^ y) * MvPolynomial.monomial (diagMon n0 n L y) (1 : C)).support ⊆ (detL C n0 ^ (L * y) * detR C n0 ^ y).support.image (fun u => u.mapDomain (embV hn) + diagMon n0 n L y)`. Introduce `m hm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `hm` using `[MvPolynomial.mem_support_iff, MvPolynomial.coeff_mul_monomial']`. Use `split_ifs at hm with hle`. Rewrite `hm` using `[mul_one]`. Establish `hm' : m - diagMon n0 n L y ∈ (MvPolynomial.rename (embV hn) (detL C n0 ^ (L * y) * detR C n0 ^ y)).support` using `MvPolynomial.mem_support_iff.2 hm`. Rewrite `hm'` using `[MvPolynomial.support_rename_of_injective (embV_inj hn), Finset.mem_image]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis.
 
-Take `⟨u, hu, hue⟩` from `hm'`. Conclude with `Finset.mem_image.2 ⟨u, hu, by rw [hue, tsub_add_cancel_of_le hle]⟩`. Conclude with `absurd rfl hm`. Rewrite using `[GlobalTheory.UnitCase.jetAt0_eq_sum _ _ _ hsupp, Finset.sum_image (fun u _ v _ h => Finsupp.mapDomain_injective (embV_inj hn) (add_right_cancel h)), jetAt0, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun u _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[MvPolynomial.coeff_mul_monomial, mul_one, MvPolynomial.coeff_rename_mapDomain _ (embV_inj hn)]`. Establish `hU : ∀ x ∈ (u.mapDomain (embV hn)).support, (rowOf x).val < n0`. Introduce `x hx`. Take `⟨v, -, rfl⟩` from `Finset.mem_image.1 (Finsupp.mapDomain_support hx)`. Break down `v with ⟨b, c⟩ | ⟨b, c⟩` into its components or cases.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Conclude with `b.isLt`. Conclude with `b.isLt`. Establish `hDrow : ∀ x ∈ (diagMon n0 n L y).support, ¬ (rowOf x).val < n0` using `fun x hx => not_lt.2 (diagMon_row x hx)`. Rewrite using `[coeff_mul_split (fun x => (rowOf x).val < n0) G1 H hG1 (fun m hm x hx => not_lt.2 (hH m hm x hx)) _ _ hU hDrow]`. Establish `hHD : MvPowerSeries.coeff (diagMon n0 n L y) H = 1`.
-
-Rewrite using `[hHd _ (fun x hx => diagMon_row x hx) (fun ρ hρ => ⟨by simp [rowDegZ, diagMon_inl, hρ], by simp [rowDegZ', diagMon_inr, hρ]⟩), if_pos rfl]`. Establish `hdisj : Disjoint (u.mapDomain (embV hn)).support (diagMon n0 n L y).support` using `Finset.disjoint_left.2 fun x hx1 hx2 => hDrow x hx2 (hU x hx1)`. Establish `hmf : mfact (u.mapDomain (embV hn) + diagMon n0 n L y) = mfact u * ((L * y).factorial * y.factorial) ^ (n - n0)`. Rewrite using `[← mfact_diagMon, mfact, mfact, mfact, Finsupp.prod_add_index_of_disjoint hdisj, Finsupp.prod_mapDomain_index_inj (embV_inj hn)]`. Establish `hr : MvPowerSeries.coeff u (restr hn G1) = MvPowerSeries.coeff (u.mapDomain (embV hn)) G1` using `rfl`.
-
-Rewrite using `[hHD, mul_one, hmf, hr]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem blockJet : BlockJet := by
   intro C _ _ n0 n hn L y G1 H hG1 hH hHd
@@ -674,7 +662,7 @@ theorem blockJet : BlockJet := by
   ring
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨detPowDiag, blockJet, restrictMul, restrictExp⟩`.
+Supply the required witnesses or components.
 -/
 theorem main : DetPowDiag ∧ BlockJet ∧ RestrictMul ∧ RestrictExp := ⟨detPowDiag, blockJet, restrictMul, restrictExp⟩
 

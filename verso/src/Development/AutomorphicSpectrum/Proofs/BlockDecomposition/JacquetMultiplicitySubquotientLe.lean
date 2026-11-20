@@ -17,9 +17,9 @@ variable {F G U V W : Type} [Field F] [Group G] [AddCommGroup U] [Module F U] [A
   [AddCommGroup W] [Module F W]
 
 /- English proof (translation)
-Take `⟨S, f, hf⟩` from `h`. Unfold `GlobalTheory.SmGL.OccursTimes at ho ⊢`. Take `⟨A, B, hBA, hAB, hiso⟩` from `ho`. Set `ι : Representation.IntertwiningMap S.toRepresentation P` to `⟨S.toSubmodule.subtype, fun _ => LinearMap.ext fun _ => rfl⟩`. Establish `hι : Function.Injective ι` using `fun a b hab => Subtype.val_injective hab`.
+Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `⟨fun i => GlobalTheory.JHMult.subMap ι (GlobalTheory.JHMult.subComap f (A i)), fun i => GlobalTheory.JHMult.subMap ι (GlobalTheory.JHMult.subComap f (B i)), fun i => GlobalTheory.JHMult.subMap_mono ι (GlobalTheory.JHMult.subComap_mono f (hBA i)), fun i j hij => GlobalTheory.JHMul …` and prove the remaining obligations. Conclude with `GlobalTheory.JHMult.step_iff.mpr (GlobalTheory.JHMult.step_map ι hι (GlobalTheory.JHMult.step_comap f hf (GlobalTheory.JHMult.step_iff.mp (hiso i))))`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem occursTimes_of_isSubquotient {σ : Representation F G U} {π : Representation F G V}
     {P : Representation F G W} (h : IsSubquotient π P) {r : ℕ} (ho : OccursTimes σ π r) :
@@ -41,7 +41,7 @@ theorem occursTimes_of_isSubquotient {σ : Representation F G U} {π : Represent
         (GlobalTheory.JHMult.step_iff.mp (hiso i))))
 
 /- English proof (translation)
-Unfold `GlobalTheory.SmGL.jhMult`. Conclude with `iSup₂_le fun r hr => le_iSup₂_of_le r (GlobalTheory.CompanionTheory.JmMono.occursTimes_of_isSubquotient h hr) le_rfl`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem jhMult_le_of_isSubquotient (σ : Representation F G U) {π : Representation F G V}
     {P : Representation F G W} (h : IsSubquotient π P) : jhMult σ π ≤ jhMult σ P := by
@@ -51,7 +51,7 @@ theorem jhMult_le_of_isSubquotient (σ : Representation F G U) {π : Representat
 end General
 
 /- English proof (translation)
-Unfold `Zc.jm`. Conclude with `GlobalTheory.CompanionTheory.JmMono.jhMult_le_of_isSubquotient _ (GlobalTheory.JacquetExact.isSubquotient_jac _ hP h)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem jm_le_of_isSubquotient {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] {h N : ℕ} (y : Fin h → IrrGL k) (hy : ∑ a, (y a).1 = N) {V W : Type}

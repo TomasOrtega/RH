@@ -22,7 +22,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   [Algebra c.F K]
 
 /- English proof (translation)
-Use `haveI := isProper_genStr Z`. Take `⟨χ, h1, h2⟩` from `GlobalTheory.exists_valuativeExtension (genStr Z) (spMap φ) (GlobalTheory.AllWt.ptF y ≫ Z.jQ) (by`. Rewrite using `[Category.assoc, Z.jQ_over, ← Geo.Tor.spMap_comp, hφ]`. Conclude with `pullback.lift_snd _ _ _)`. Conclude with `⟨χ, h2, h1.symm⟩`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_genPt (Z : Model Xo c β) (φ : c.F →+* V) (hφ : (algebraMap V K).comp φ = algebraMap c.F K)
     (y : FrPt Xo c K) : ∃ χ : Sp V ⟶ gen Z, χ ≫ genStr Z = spMap φ ∧ GlobalTheory.AllWt.ptF y ≫ Z.jQ = spMap (algebraMap V K) ≫ χ := by
@@ -33,9 +33,9 @@ theorem exists_genPt (Z : Model Xo c β) (φ : c.F →+* V) (hφ : (algebraMap V
   exact ⟨χ, h2, h1.symm⟩
 
 /- English proof (translation)
-Take `⟨mF, h1⟩` from `sabCancel pullCubCancel E H _ _ _ Xo.univ.t Z.oF.t tK (pullback.fst _ _) (GlobalTheory.AllWt.ptF y) Z.m0.toSABMap mK`. Take `⟨mJ, h2⟩` from `sabComp pullCubComp E H _ _ _ Z.t Z.oF.t tK (Z.jQ ≫ pullback.fst _ _) (GlobalTheory.AllWt.ptF y) Z.m mF`. Establish `hj : GlobalTheory.AllWt.ptF y ≫ Z.jQ ≫ pullback.fst _ _ = spMap (algebraMap V K) ≫ χ ≫ genι Z`. Rewrite using `[← Category.assoc, hχ, Category.assoc]`. Take `⟨a, h3⟩` from `sabCancel pullCubCancel E H _ _ _ Z.t t tK (χ ≫ genι Z) (spMap (algebraMap V K)) m (PullbackSections.sabMapCast mJ hj)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨a, mF, h1.symm, by rw [← h2, ← PullbackSections.sabMapCast_φ mJ hj, h3]⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_genIdent (Z : Model Xo c β) {χ : Sp V ⟶ gen Z} {y : FrPt Xo c K}
     (hχ : GlobalTheory.AllWt.ptF y ≫ Z.jQ = spMap (algebraMap V K) ≫ χ) {tK : SAB H (Sp K)}
@@ -54,9 +54,9 @@ theorem exists_genIdent (Z : Model Xo c β) {χ : Sp V ⟶ gen Z} {y : FrPt Xo c
 variable {O' : Type} [CommRing O'] {β' : O' →+* c.F}
 
 /- English proof (translation)
-Rewrite using `[mem_genBd_iff, ← Scheme.Hom.comp_apply, abLocus_pullback abLocusOne Z.t.semi m.cart.1 p]`. Rewrite `h` using `[mem_genBd_iff, ← Scheme.Hom.comp_apply, abLocus_pullback abLocusOne Z'.t.semi m'.cart.1 p]`. Establish `e` using `abLocus_pullback abLocusOne t'.semi ψ.cart.1 p`. Establish `e0 : (𝟙 (Sp V)) p = p` using `rfl`. Rewrite `e` using `[e0]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `fun hp => h (e.2 hp)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem mem_genBd_of_mem_genBd {Z : Model Xo c β} {Z' : Model Xo c β'} {χ : Sp V ⟶ gen Z} {χ' : Sp V ⟶ gen Z'}
     {t t' : SAB H (Sp V)} (m : SABMap t Z.t (χ ≫ genι Z)) (m' : SABMap t' Z'.t (χ' ≫ genι Z'))
@@ -74,9 +74,9 @@ variable {Z : Model Xo c β} {Z' : Model Xo c β'} {x : Sp V ⟶ Z.X} {x' : Sp V
   (m : SABMap t Z.t x) (m' : SABMap t' Z'.t x') (ψ : SABMap t t' (𝟙 (Sp V))) {φ : c.F →+* V}
 
 /- English proof (translation)
-Establish `h1 : IsEigBasis Z'.t φ (𝟙 _ ≫ x') τ v'` using `by rwa [Category.id_comp]`. Take `⟨v₁, hv₁, h₁⟩` from `isEigBasis_pull m' h1`. Establish `h2 : IsEigBasis t' φ (𝟙 _ ≫ 𝟙 _) τ v₁` using `by rwa [Category.id_comp]`. Take `⟨v₂, hv₂, h₂⟩` from `isEigBasis_pull ψ h2`. Use `⟨v₂, fun i => by rw [hv₂, hv₁], fun i => by rw [(h₂.1 i).1, Category.comp_id], ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `isEigBasis_push m h₂` as an intermediate fact. Rewrite `this` using `[Category.id_comp]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem exists_isEigBasis_chain {τ : E →+* ℂ} {n : ℕ} {v' : Fin n → (Sp (DualNumber V) ⟶ Z'.t.G.left)}
     (h : IsEigBasis Z'.t φ x' τ v') : ∃ v : Fin n → (Sp (DualNumber V) ⟶ t.G.left),
@@ -101,15 +101,15 @@ variable {Z : Model Xo c β} {Z' : Model Xo c β'} {χ : Sp V ⟶ gen Z} {χ' : 
   {mF : SABMap tK Z.oF.t (GlobalTheory.AllWt.ptF y)} {mF' : SABMap tK Z'.oF.t (GlobalTheory.AllWt.ptF y)}
 
 /- English proof (translation)
-Establish `hx : GlobalTheory.AllWt.ptF y ≫ pullback.fst _ _ = y.x` using `pullback.lift_fst _ _ _`. Take `⟨u, hu1, hu2⟩` from `exists_lift mK (spMap (algebraMap K (DualNumber K))) u' (by rw [hu', ← hx])`. Establish `hbase : spMap (algebraMap K (DualNumber K)) ≫ spMap (algebraMap V K) = spMap (dualMap (algebraMap V K)) ≫ spMap (algebraMap V (DualNumber V))`. Rewrite using `[OpenReg.spMap_comp, OpenReg.spMap_comp, PullbackSections.dualMap_comp_alg]`. Establish `e1 : u ≫ mF'.φ = w'`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Apply `Z'.m0.toSABMap.cart.1.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, hF0', hu2, hw2]`. Rewrite using `[Category.assoc, mF'.cart.1.w, ← Category.assoc, hu1, hw1]`. Establish `e2 : u ≫ a.φ = spMap (dualMap (algebraMap V K)) ≫ v`. Apply `ψ.cart.1.hom_ext` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[Category.assoc, hψ]`. Apply `m'.cart.1.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, ← hFm', ← Category.assoc, e1, hw3]`. Simplify using `only [Category.assoc]`. Rewrite using `[Category.assoc, a'.cart.1.w, ← Category.assoc, hu1, hbase]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Category.assoc, ψ.cart.1.w, Category.comp_id, hv]`. Rewrite using `[Category.assoc, a.cart.1.w, ← Category.assoc, hu1, Category.assoc, hv, hbase]`. Use `⟨u ≫ mF.φ, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, mF.cart.1.w, ← Category.assoc, hu1]`. Rewrite using `[Category.assoc, hF0, hu2]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Category.assoc, hFm, ← Category.assoc, e2, Category.assoc]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_lift_frameVec (hψ : a.φ ≫ ψ.φ = a'.φ) (hF0 : mF.φ ≫ Z.m0.toSABMap.φ = mK.φ)
     (hFm : mF.φ ≫ Z.m.φ = a.φ ≫ m.φ) (hF0' : mF'.φ ≫ Z'.m0.toSABMap.φ = mK.φ) (hFm' : mF'.φ ≫ Z'.m.φ = a'.φ ≫ m'.φ)
@@ -147,11 +147,11 @@ theorem exists_lift_frameVec (hψ : a.φ ≫ ψ.φ = a'.φ) (hF0 : mF.φ ≫ Z.m
 end Frame
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c O _ β Z O' _ β' Z' V K _ _ _ _ _ _ _ φ y hφ h`. Take `⟨χ', g', e1', e2', hw', hb'⟩` from `h`. Take `⟨χ, e1, e2⟩` from `exists_genPt Z φ hφ y`. Take `⟨tK, ⟨mK⟩⟩` from `GlobalTheory.ModFam.exists_sabPull (GlobalTheory.AllWt.ptF y ≫ pullback.fst _ _) Xo.univ.t`. Take `⟨t, ⟨m⟩⟩` from `GlobalTheory.ModFam.exists_sabPull (χ ≫ genι Z) Z.t`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨t', ⟨m'⟩⟩` from `GlobalTheory.ModFam.exists_sabPull (χ' ≫ genι Z') Z'.t`. Take `⟨a, mF, hF0, hFm⟩` from `exists_genIdent Z e2 mK m`. Take `⟨a', mF', hF0', hFm'⟩` from `exists_genIdent Z' e2' mK m'`. Take `⟨ψ, hψ, -⟩` from `GlobalTheory.ModelUniqueChecks.existsUnique_map V K t t' tK a a'`. Use `choose v hv1 hv2 hv3 using fun τ => exists_isEigBasis_chain m m' ψ (EigFrame.isEigBasis g' τ)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨χ, eigFrameOf (fun τ i => v τ i ≫ m.φ) hv3, e1, e2, fun τ i => ?_, mem_genBd_of_mem_genBd m m' ψ _ hb'⟩` and prove the remaining obligations. Take `⟨w', hw1, hw2, hw3⟩` from `hw' τ i`. Rewrite `hw3` using `[← hv1 τ i]`. Conclude with `exists_lift_frameVec hψ hF0 hFm hF0' hFm' (hv2 τ i) (y.tan τ i).1 hw1 hw2 hw3`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bdExt_of_bdExt : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Z : Model Xo c β) (O' : Type) [CommRing O'] (β' : O' →+* c.F) (Z' : Model Xo c β') (V K : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] [Field K] [Algebra V K] [IsFractionRing V K] [Algebra c.F K] (φ : c.F →+* V) (y : FrPt Xo c K), (algebraMap V K).comp φ = algebraMap c.F K → BdExt Z' φ y → BdExt Z φ y := by
   intro E _ _ _ H Dw l Xo c O _ β Z O' _ β' Z' V K _ _ _ _ _ _ _ φ y hφ h

@@ -17,25 +17,23 @@ namespace GlobalTheory.KTypeUnderMaps
 open Formalism.MainNotions.S
 
 /- English proof (translation)
-Take `⟨hfd, hst, hirr, ⟨u, huS, hu0, huw⟩, hdom⟩` from `hS`. Establish `hpull : ∀ T : Submodule ℂ H, IsKStableOn ε σ T → S ⊓ T.comap L = ⊥ ∨ S ⊓ T.comap L = S`. Introduce `T hT`. Use `hirr _ inf_le_left ?_` and prove the remaining obligations. Introduce `g hg x hx`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨hst g hg x hx.1, ?_⟩` and prove the remaining obligations. Establish `h2 : L x ∈ T` using `hx.2`. Express the relevant statement in the definitionally equal form `L (σ g x) ∈ T`. Rewrite using `[← hL g hg]`. Conclude with `hT g hg _ h2`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hinj : ∀ x ∈ S, L x = 0 → x = 0`. Introduce `x hx hx0`. Establish `hbot : IsKStableOn ε σ (⊥ : Submodule ℂ H)`. Introduce `g _ y hy`. Rewrite `hy`, the goal using `[Submodule.mem_bot]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hy, map_zero]`. Break down `hpull ⊥ hbot with h | h` into its components or cases. Establish `: x ∈ S ⊓ (⊥ : Submodule ℂ H).comap L` using `⟨hx, by simpa using hx0⟩`. Rewrite `this` using `[h]`. Simplify using `using this`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `: v ∈ S ⊓ (⊥ : Submodule ℂ H).comap L` using `by rw [h]; exact hv`. Conclude with `absurd (by simpa using this.2) hLv`. Use `⟨?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `haveI := hfd infer_instance`. Introduce and unpack `g hg _ ⟨x, hx, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `⟨σ g x, hst g hg x hx, (hL g hg x).symm⟩`. Introduce `T hTle hT`. Break down `hpull T hT with h | h` into its components or cases. Use `left`. Rewrite using `[eq_bot_iff]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `y hy`. Take `⟨x, hx, rfl⟩` from `hTle hy`. Establish `: x ∈ S ⊓ T.comap L` using `⟨hx, hy⟩`. Rewrite `this` using `[h, Submodule.mem_bot]`. Rewrite using `[this, map_zero]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Submodule.zero_mem _`. Use `right`. Use `le_antisymm hTle ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Establish `: x ∈ S ⊓ T.comap L` using `by rw [h]; exact hx`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `this.2`. Use `⟨L u, ⟨u, huS, rfl⟩, fun h => hu0 (hinj u huS h), ?_⟩` and prove the remaining obligations. Introduce `θ hθ`. Rewrite using `[hL _ hθ, huw θ hθ, map_smul]`. Introduce and unpack `μ _ ⟨x, hx, rfl⟩ hx0 hw`.
-
-Use `hdom μ x hx (fun h => hx0 (by rw [h, map_zero])) ?_` and prove the remaining obligations. Introduce `θ hθ`. Rewrite using `[← sub_eq_zero]`. Use `hinj _ (S.sub_mem (hst _ hθ x hx) (S.smul_mem _ hx)) ?_` and prove the remaining obligations. Rewrite using `[map_sub, map_smul, ← hL _ hθ, hw θ hθ, sub_self]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isKTypeOf_map {n : ℕ} {ε : Fin n → Bool} {H : Type} [NormedAddCommGroup H]
     [InnerProductSpace ℂ H] {σ : Matrix (Fin n) (Fin n) ℂ → H →L[ℂ] H} {Λ : Fin n → ℝ}

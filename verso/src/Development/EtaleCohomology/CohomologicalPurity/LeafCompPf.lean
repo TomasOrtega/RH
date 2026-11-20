@@ -5,11 +5,11 @@ noncomputable section
 namespace LateralTheory.CohomologicalPurity.Hz
 
 /- English proof (translation)
-Use `⟨RingHom.Etale.of_bijective e.bijective, ⟨(Ideal.Quotient.mk I).comp (e.symm : S →+* A), ?_⟩, fun s => ⟨e.symm s, ?_⟩, ?_⟩` and prove the remaining obligations. Use extensionality with `a`. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Introduce `B _ J _ ψ _`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨ψ.comp (e.symm : S →+* A), ?_, fun χ hχ => ?_⟩` and prove the remaining obligations. Use extensionality with `a`. Simplify using the standard rewrite rules. Use extensionality with `s`. Use `congrArg (fun f : A →+* B => f (e.symm s)) hχ` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Simplify using `using this`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem good_iso (A S : Type) [CommRing A] [CommRing S] (e : A ≃+* S) (I : Ideal A) : Good (e : A →+* S) I := by
   refine ⟨RingHom.Etale.of_bijective e.bijective, ⟨(Ideal.Quotient.mk I).comp (e.symm : S →+* A), ?_⟩, fun s => ⟨e.symm s, ?_⟩, ?_⟩
@@ -23,21 +23,17 @@ theorem good_iso (A S : Type) [CommRing A] [CommRing S] (e : A ≃+* S) (I : Ide
       simpa using this
 
 /- English proof (translation)
-Take `⟨r1, hr1⟩` from `h1.retr`. Take `⟨r2, hr2⟩` from `h2.retr`. Establish `hk : I.map φ ≤ RingHom.ker r1`. Rewrite using `[Ideal.map_le_iff_le_comap]`. Introduce `a ha`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Express the relevant statement in the definitionally equal form `(r1.comp φ) a = 0`. Rewrite using `[hr1]`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.2 ha`. Use `⟨RingHom.Etale.stableUnderComposition φ ψ h1.etale h2.etale, ⟨(Ideal.Quotient.lift (I.map φ) r1 (fun a ha => hk ha)).comp r2, ?_⟩, fun t => ?_, ?_⟩` and prove the remaining obligations. Use extensionality with `a`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Establish `e2 : r2 (ψ (φ a)) = Ideal.Quotient.mk (I.map φ) (φ a)` using `congrArg (fun f : S →+* S ⧸ I.map φ => f (φ a)) hr2`. Simplify using `only [RingHom.comp_apply, e2, Ideal.Quotient.lift_mk]`. Conclude with `congrArg (fun f : A →+* A ⧸ I => f a) hr1`. Take `⟨s, hs⟩` from `h2.surj t`. Take `⟨a, ha⟩` from `h1.surj s`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `⟨a, ?_⟩` and prove the remaining obligations. Rewrite `hs` using `[Ideal.map_map]`. Establish `h3 : ψ (s - φ a) ∈ (I.map φ).map ψ` using `Ideal.mem_map_of_mem ψ ha`. Rewrite `h3` using `[Ideal.map_map]`. Establish `: t - (ψ.comp φ) a = (t - ψ s) + ψ (s - φ a)` using `by simp [map_sub]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[this]`. Conclude with `Ideal.add_mem _ hs h3`. Introduce `B _ J hB χ0 hI`. Take `⟨χ1, hχ1, hu1⟩` from `h1.univ B J hB χ0 hI`. Establish `hI2 : I.map φ ≤ J.comap χ1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Ideal.map_le_iff_le_comap, Ideal.comap_comap, hχ1]`. Conclude with `hI`. Take `⟨χ2, hχ2, hu2⟩` from `h2.univ B J hB χ1 hI2`. Use `⟨χ2, ?_, fun χ hχ => ?_⟩` and prove the remaining obligations. Use `show χ2.comp (ψ.comp φ) = χ0`.
-
-Rewrite using `[← RingHom.comp_assoc, hχ2, hχ1]`. Apply `hu2` to reduce the goal to its premises. Apply `hu1` to reduce the goal to its premises. Use `show (χ.comp ψ).comp φ = χ0`. Rewrite using `[RingHom.comp_assoc]`.
-
-Conclude with `hχ`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem good_comp (A S T : Type) [CommRing A] [CommRing S] [CommRing T] (φ : A →+* S) (ψ : S →+* T) (I : Ideal A)
     (h1 : Good φ I) (h2 : Good ψ (I.map φ)) : Good (ψ.comp φ) I := by
@@ -80,7 +76,7 @@ theorem good_comp (A S T : Type) [CommRing A] [CommRing S] [CommRing T] (φ : A 
       exact hχ
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨good_iso, good_comp⟩`.
+Supply the required witnesses or components.
 -/
 theorem LeafComp_of : LeafComp := ⟨good_iso, good_comp⟩
 

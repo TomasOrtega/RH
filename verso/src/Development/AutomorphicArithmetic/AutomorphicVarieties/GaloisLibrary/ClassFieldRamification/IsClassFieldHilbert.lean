@@ -31,25 +31,25 @@ def relIncl : Gal(H/K) →* Gal(H/k) := AlgEquiv.restrictScalarsHom k
 def resTo [Normal k K] : Gal(H/k) →* Gal(K/k) := AlgEquiv.restrictNormalHom K
 
 /- English proof (translation)
-The claim follows from `AlgEquiv.restrictNormal_commutes σ K x`.
+A detailed English derivation is pending.
 -/
 theorem resTo_commutes [Normal k K] (σ : Gal(H/k)) (x : K) :
     algebraMap K H (resTo k K H σ x) = σ (algebraMap K H x) := AlgEquiv.restrictNormal_commutes σ K x
 
 /- English proof (translation)
-The claim follows from `AlgEquiv.restrictNormalHom_surjective H`.
+A detailed English derivation is pending.
 -/
 theorem resTo_surjective [Normal k K] [Normal k H] : Function.Surjective (resTo k K H) :=
   AlgEquiv.restrictNormalHom_surjective H
 
 /- English proof (translation)
-Use extensionality with `σ`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨τ, rfl⟩`. Rewrite using `[MonoidHom.mem_ker]`. Use extensionality with `x`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Apply `(algebraMap K H).injective` to reduce the goal to its premises. Rewrite using `[resTo_commutes]`. Simplify using `[relIncl]`. Introduce `h`. Rewrite `h` using `[MonoidHom.mem_ker]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hc : ∀ x : K, σ (algebraMap K H x) = algebraMap K H x`. Introduce `x`. Rewrite using `[← resTo_commutes, h]`. Both sides reduce to the same expression. Use `⟨{ σ with commutes' := hc }, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations.
 
-Use extensionality with `y`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Both sides reduce to the same expression.
 -/
 theorem range_relIncl [Normal k K] : (relIncl k K H).range = (resTo k K H).ker := by
   ext σ
@@ -78,7 +78,7 @@ def UnramAt (L : Type) [Field L] [NumberField L] (p : ℕ) : Prop :=
 def phi (p : ℕ) (P : Type) [Group P] : Subgroup P := Subgroup.closure (Set.range fun g : P => g ^ p) ⊔ commutator P
 
 /- English proof (translation)
-The claim follows from `le_sup_right`.
+A detailed English derivation is pending.
 -/
 theorem commutator_le_phi (p : ℕ) (P : Type) [Group P] : commutator P ≤ phi p P := le_sup_right
 
@@ -92,7 +92,7 @@ instance phi_normal (p : ℕ) (P : Type) [Group P] : (phi p P).Normal where
 def aug (R G : Type) [CommRing R] [Group G] : MonoidAlgebra R G →ₐ[R] R := MonoidAlgebra.lift R R G 1
 
 /- English proof (translation)
-Simplify using `[aug]`.
+Simplify using the standard rewrite rules.
 -/
 theorem aug_single (R G : Type) [CommRing R] [Group G] (g : G) (r : R) : aug R G (MonoidAlgebra.single g r) = r := by
   simp [aug]

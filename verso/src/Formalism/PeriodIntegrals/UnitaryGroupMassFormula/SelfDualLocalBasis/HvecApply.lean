@@ -25,17 +25,17 @@ theorem hvec_apply {E : Type} [Field E] {n m : ℕ} (σ : E →+* E) (J : Matrix
     hvec σ J x y i = hform σ J (x i) y := rfl
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ n σ J Lb T hfin hdual hT`. Assume the negation of the conclusion as `hne`. Establish `hlt : Module.finrank E (Submodule.span E (Lb : Set (Fin n → E))) < n`. Establish `h` using `Submodule.finrank_lt hne`. Rewrite `h` using `[Module.finrank_fin_fun]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Set `b` to `Module.finBasis E (Submodule.span E (Lb : Set (Fin n → E)))`. Set `x : Fin (Module.finrank E (Submodule.span E (Lb : Set (Fin n → E)))) → Fin n → E` to `fun i => (b i : Fin n → E)`. Establish `hker : LinearMap.ker (hvec (σ : E →+* E) J x) ≠ ⊥`. Introduce `hbot`. Establish `h1` using `LinearMap.finrank_range_add_finrank_ker (hvec (σ : E →+* E) J x)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `h1` using `[hbot, finrank_bot, add_zero, Module.finrank_fin_fun]`. Establish `h2` using `Submodule.finrank_le (LinearMap.range (hvec (σ : E →+* E) J x))`. Rewrite `h2` using `[Module.finrank_fin_fun]`. Use linear arithmetic over natural numbers and integers. Take `⟨y, hy, hy0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hker`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result.
 
-Apply `hy0` to reduce the goal to its premises. Use `hN F E n σ J Lb T hfin hdual hT y fun z hz => ?_` and prove the remaining obligations. Establish `hzV : z ∈ Submodule.span E (Lb : Set (Fin n → E))` using `Submodule.subset_span hz`. Establish `hz' : z = ∑ i, (b.repr ⟨z, hzV⟩ i) • x i`. Establish `h` using `congrArg Subtype.val (b.sum_repr ⟨z, hzV⟩)`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h` using `[Submodule.coe_sum]`. Conclude with `h.symm`. Rewrite using `[hz', hform_sum_left]`. Use `Finset.sum_eq_zero fun i _ => ?_` and prove the remaining obligations. Rewrite using `[hform_smul_left]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hi : hform (σ : E →+* E) J (x i) y = 0`. Rewrite using `[← hvec_apply]`. Conclude with `congrFun (LinearMap.mem_ker.mp hy) i`. Rewrite using `[hi, mul_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem spanTop_of (hN : Nondeg) : SpanTop := by
   intro F E _ _ _ _ _ n σ J Lb T hfin hdual hT
@@ -70,11 +70,11 @@ theorem spanTop_of (hN : Nondeg) : SpanTop := by
   rw [hi, mul_zero]
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ n σ J x _ hnd`. Establish `hinj : Function.Injective (hvec (σ : E →+* E) J x)`. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `y hy`. Conclude with `hnd y fun i => by rw [← hvec_apply, hy]; rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression.
 
-Set `e` to `LinearEquiv.ofInjectiveEndo (hvec (σ : E →+* E) J x) hinj`. Establish `he : ∀ v, e v = hvec (σ : E →+* E) J x v` using `fun v => rfl`. Use `⟨fun j => e.symm (Pi.single j 1), fun i j => ?_, fun w => ⟨fun j => e w j, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[← hvec_apply, ← he, LinearEquiv.apply_symm_apply, Pi.single_apply]`. Apply `e.injective` to reduce the goal to its premises.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_sum]`. Simplify using `only [map_smul, LinearEquiv.apply_symm_apply]`. Use extensionality with `i`. Simplify using `[Finset.sum_apply, Pi.single_apply]`.
+Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem dualBasis : DualBasis := by
   intro F E _ _ _ _ _ n σ J x _ hnd

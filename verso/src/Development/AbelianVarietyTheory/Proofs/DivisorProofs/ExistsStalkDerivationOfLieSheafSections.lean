@@ -24,7 +24,7 @@ def tanVal {U : G.left.Opens} {V' : S.Opens} (hV : V' ≤ V) (he : V' ≤ unitSe
   ∑ i, w i * β (S.presheaf.germ V' s hs' (dualApp (τ i) hV (dUnit G he f)))
 
 /- English proof (translation)
-Unfold `tanVal`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← resM_dUnit G he k f, dualApp_resM]`. Use `congr 2`. Conclude with `TopCat.Presheaf.germ_res_apply _ _ _ _ _`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem tanVal_mono {U : G.left.Opens} {V' V'' : S.Opens} (hV : V' ≤ V) (he : V' ≤ unitSec G ⁻¹ᵁ U)
     (hs' : s ∈ V') (k : V'' ≤ V') (hs'' : s ∈ V'') (f : Γ(G.left, U)) :
@@ -36,7 +36,7 @@ theorem tanVal_mono {U : G.left.Opens} {V' V'' : S.Opens} (hV : V' ≤ V) (he : 
   exact TopCat.Presheaf.germ_res_apply _ _ _ _ _
 
 /- English proof (translation)
-The claim follows from `(tanVal_mono G s β τ w hV₁ he₁ hs₁ (inf_le_left : V₁ ⊓ V₂ ≤ V₁) ⟨hs₁, hs₂⟩ f).symm.trans (tanVal_mono G s β τ w hV₂ he₂ hs₂ (inf_le_right : V₁ ⊓ V₂ ≤ V₂) ⟨hs₁, hs₂⟩ f)`.
+A detailed English derivation is pending.
 -/
 theorem tanVal_indep {U : G.left.Opens} {V₁ V₂ : S.Opens} (hV₁ : V₁ ≤ V) (he₁ : V₁ ≤ unitSec G ⁻¹ᵁ U)
     (hs₁ : s ∈ V₁) (hV₂ : V₂ ≤ V) (he₂ : V₂ ≤ unitSec G ⁻¹ᵁ U) (hs₂ : s ∈ V₂) (f : Γ(G.left, U)) :
@@ -45,7 +45,7 @@ theorem tanVal_indep {U : G.left.Opens} {V₁ V₂ : S.Opens} (hV₁ : V₁ ≤ 
     (tanVal_mono G s β τ w hV₂ he₂ hs₂ (inf_le_right : V₁ ⊓ V₂ ≤ V₂) ⟨hs₁, hs₂⟩ f)
 
 /- English proof (translation)
-Unfold `tanVal`. Simplify using `only [dUnit_resG]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem tanVal_resG {U U' : G.left.Opens} (k : U' ≤ U) {V' : S.Opens} (hV : V' ≤ V)
     (he : V' ≤ unitSec G ⁻¹ᵁ U') (hs' : s ∈ V') (f : Γ(G.left, U)) :
@@ -57,7 +57,7 @@ theorem tanVal_resG {U U' : G.left.Opens} (k : U' ≤ U) {V' : S.Opens} (hV : V'
 variable {s}
 
 /- English proof (translation)
-The claim follows from `Opens.mem_inf.2 ⟨hs, hU⟩`.
+A detailed English derivation is pending.
 -/
 theorem mem_inf_unitSec (hs : s ∈ V) {U : G.left.Opens} (hU : unitSec G s ∈ U) : s ∈ V ⊓ unitSec G ⁻¹ᵁ U :=
   Opens.mem_inf.2 ⟨hs, hU⟩
@@ -66,7 +66,7 @@ def tanCan (hs : s ∈ V) {U : G.left.Opens} (hU : unitSec G s ∈ U) (f : Γ(G.
   tanVal G s β τ w (V' := V ⊓ unitSec G ⁻¹ᵁ U) inf_le_left inf_le_right (mem_inf_unitSec G hs hU) f
 
 /- English proof (translation)
-The claim follows from `tanVal_indep G s β τ w _ _ _ _ _ _ f`.
+A detailed English derivation is pending.
 -/
 theorem tanCan_eq (hs : s ∈ V) {U : G.left.Opens} (hU : unitSec G s ∈ U) {V' : S.Opens} (hV : V' ≤ V)
     (he : V' ≤ unitSec G ⁻¹ᵁ U) (hs' : s ∈ V') (f : Γ(G.left, U)) :
@@ -74,7 +74,7 @@ theorem tanCan_eq (hs : s ∈ V) {U : G.left.Opens} (hU : unitSec G s ∈ U) {V'
   tanVal_indep G s β τ w _ _ _ _ _ _ f
 
 /- English proof (translation)
-Rewrite using `[tanCan, tanVal_resG]`. Conclude with `(tanCan_eq G β τ w hs (k hU') _ _ _ f).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tanCan_res (hs : s ∈ V) {U U' : G.left.Opens} (k : U' ≤ U) (hU' : unitSec G s ∈ U') (f : Γ(G.left, U)) :
     tanCan G β τ w hs hU' (resG _ k f) = tanCan G β τ w hs (k hU') f := by
@@ -82,7 +82,7 @@ theorem tanCan_res (hs : s ∈ V) {U U' : G.left.Opens} (k : U' ≤ U) (hU' : un
   exact (tanCan_eq G β τ w hs (k hU') _ _ _ f).symm
 
 /- English proof (translation)
-Take `⟨W, hW, iU, iU', e⟩` from `TopCat.Presheaf.germ_eq _ _ hU hU' f f' h`. Establish `h1` using `tanCan_res G β τ w hs iU.le hW f`. Establish `h2` using `tanCan_res G β τ w hs iU'.le hW f'`. Establish `e' : resG _ iU.le f = resG _ iU'.le f'` using `e`. Rewrite using `[← h1, ← h2, e']`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem tanCan_germ_eq (hs : s ∈ V) {U U' : G.left.Opens} (hU : unitSec G s ∈ U) (hU' : unitSec G s ∈ U')
     (f : Γ(G.left, U)) (f' : Γ(G.left, U'))
@@ -95,7 +95,7 @@ theorem tanCan_germ_eq (hs : s ∈ V) {U U' : G.left.Opens} (hU : unitSec G s �
   rw [← h1, ← h2, e']
 
 /- English proof (translation)
-Unfold `tanCan tanVal`. Simplify using `only [map_add, mul_add, Finset.sum_add_distrib]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem tanCan_add (hs : s ∈ V) {U : G.left.Opens} (hU : unitSec G s ∈ U) (a b : Γ(G.left, U)) :
     tanCan G β τ w hs hU (a + b) = tanCan G β τ w hs hU a + tanCan G β τ w hs hU b := by
@@ -103,7 +103,7 @@ theorem tanCan_add (hs : s ∈ V) {U : G.left.Opens} (hU : unitSec G s ∈ U) (a
   simp only [map_add, mul_add, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Rewrite using `[hε, hε]`. Unfold `tanCan tanVal`. Simplify using `only [dUnit_mul, map_add, map_smul, smul_eq_mul, map_mul, Finset.mul_sum, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun i _ => by ring` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem tanCan_mul (hs : s ∈ V) {U : G.left.Opens} (hU : unitSec G s ∈ U) (a b : Γ(G.left, U))
     (ε : G.left.presheaf.stalk (unitSec G s) →+* S.presheaf.stalk s)
@@ -121,7 +121,7 @@ def tanStalk (hs : s ∈ V) (x : G.left.presheaf.stalk (unitSec G s)) : R :=
     (TopCat.Presheaf.germ_exist _ x).choose_spec.choose_spec.choose
 
 /- English proof (translation)
-Unfold `tanStalk`. Apply `tanCan_germ_eq` to reduce the goal to its premises. Conclude with `(TopCat.Presheaf.germ_exist _ _).choose_spec.choose_spec.choose_spec`.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem tanStalk_germ (hs : s ∈ V) {U : G.left.Opens} (hU : unitSec G s ∈ U) (f : Γ(G.left, U)) :
     tanStalk G β τ w hs (G.left.presheaf.germ U _ hU f) = tanCan G β τ w hs hU f := by
@@ -132,7 +132,7 @@ theorem tanStalk_germ (hs : s ∈ V) {U : G.left.Opens} (hU : unitSec G s ∈ U)
 end TanDer
 
 /- English proof (translation)
-Take `⟨U₁, h₁, a, rfl⟩` from `TopCat.Presheaf.germ_exist _ x`. Take `⟨U₂, h₂, b, rfl⟩` from `TopCat.Presheaf.germ_exist _ y`. Conclude with `⟨U₁ ⊓ U₂, Opens.mem_inf.2 ⟨h₁, h₂⟩, resG _ inf_le_left a, resG _ inf_le_right b, TopCat.Presheaf.germ_res_apply _ _ _ _ _, TopCat.Presheaf.germ_res_apply _ _ _ _ _⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem germ_exist_two {X : Scheme.{0}} (p : X) (x y : X.presheaf.stalk p) :
     ∃ (U : X.Opens) (hU : p ∈ U) (a b : Γ(X, U)), X.presheaf.germ U p hU a = x ∧ X.presheaf.germ U p hU b = y := by
@@ -142,15 +142,13 @@ theorem germ_exist_two {X : Scheme.{0}} (p : X) (x y : X.presheaf.stalk p) :
     TopCat.Presheaf.germ_res_apply _ _ _ _ _, TopCat.Presheaf.germ_res_apply _ _ _ _ _⟩
 
 /- English proof (translation)
-Introduce `S G _ R _ s π ε m β n V hs τ w hD`. Establish `hI` using `GlobalTheory.T.groupSchemeUnitStalkData_germ S G s π ε m hD`. Use `⟨AddMonoidHom.mk' (tanStalk G β τ w hs) ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `x y`. Take `⟨U, hU, a, b, rfl, rfl⟩` from `germ_exist_two (unitSec G s) x y`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← map_add, tanStalk_germ, tanStalk_germ, tanStalk_germ, tanCan_add]`. Introduce `x y`. Take `⟨U, hU, a, b, rfl, rfl⟩` from `germ_exist_two (unitSec G s) x y`. Simplify using `only [AddMonoidHom.mk'_apply]`. Rewrite using `[← map_mul, tanStalk_germ, tanStalk_germ, tanStalk_germ, tanCan_mul G β τ w hs hU a b ε (fun f => hI.2.1 U hU _ _ inf_le_right f)]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Introduce `a`. Take `⟨V₀, h₀, a₀, rfl⟩` from `TopCat.Presheaf.germ_exist _ a`. Establish `hU : unitSec G s ∈ G.hom ⁻¹ᵁ V₀` using `by show (unitSec G ≫ G.hom) s ∈ V₀`. Rewrite using `[sec_hom]`. Conclude with `h₀`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hI.1 V₀ h₀ _ hU le_rfl a₀]`. Simplify using `only [AddMonoidHom.mk'_apply, tanStalk_germ, tanCan, tanVal, dUnit_base, map_zero, mul_zero, Finset.sum_const_zero]`. Introduce `U hU V' hV he hs' f`. Simplify using `only [AddMonoidHom.mk'_apply]`. Rewrite using `[tanStalk_germ]`.
-
-Conclude with `tanCan_eq G β τ w hs hU hV he hs' f`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_stalkDer_of_lie : ∀ (S : Scheme.{0}) (G : Over S) [GrpObj G] (R : Type) [CommRing R], ∀ (s : S) (π : S.presheaf.stalk s →+* G.left.presheaf.stalk (unitSec G s)) (ε : G.left.presheaf.stalk (unitSec G s) →+* S.presheaf.stalk s) (m : G.left.presheaf.stalk (unitSec G s) →+* G.left.presheaf.stalk (unitSec G s)) (β : S.presheaf.stalk s →+* R) (n : ℕ) (V : S.Opens) (hs : s ∈ V) (τ : Fin n → Γ(Lie G, V)) (w : Fin n → R), StalkData G s π ε m → ∃ δ : G.left.presheaf.stalk (unitSec G s) →+ R, (∀ f g, δ (f * g) = β (ε f) * δ g + β (ε g) * δ f) ∧ (∀ a, δ (π a) = 0) ∧ ∀ (U : G.left.Opens) (hU : unitSec G s ∈ U) (V' : S.Opens) (hV : V' ≤ V) (he : V' ≤ unitSec G ⁻¹ᵁ U) (hs' : s ∈ V') (f : Γ(G.left, U)), δ (G.left.presheaf.germ U _ hU f) = ∑ i, w i * β (S.presheaf.germ V' s hs' (dualApp (τ i) hV (dUnit G he f))) := by
   intro S G _ R _ s π ε m β n V hs τ w hD

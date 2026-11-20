@@ -25,9 +25,9 @@ variable {σ : E ≃ₐ[F] E} {A : Type*} [CommRing A] [Algebra F A] {r : ℕ}
   {G G' : Matrix (Fin r) (Fin r) E}
 
 /- English proof (translation)
-Take `⟨P, hP, rfl⟩` from `h`. Set `ι : E →+* A ⊗[F] E` to `Algebra.TensorProduct.includeRight.toRingHom`. Use `⟨P.map ι, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[show (P.map ι).det = ι P.det from (RingHom.map_det ι P).symm]`. Conclude with `hP.isUnit.map ι`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `(Pᵀ * G * P.map σ).map ι = (P.map ι)ᵀ * G.map ι * _`. Rewrite using `[Matrix.map_mul, Matrix.map_mul, Matrix.transpose_map]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem CongrOver.of_congr
     (h : ∃ P : Matrix (Fin r) (Fin r) E, P.det ≠ 0 ∧ G' = Pᵀ * G * P.map σ) :
@@ -42,11 +42,11 @@ theorem CongrOver.of_congr
     rfl
 
 /- English proof (translation)
-Take `⟨P, ⟨p, hp⟩, h⟩` from `h`. Set `ι : E →+* A ⊗[F] E` to `Algebra.TensorProduct.includeRight.toRingHom`. Establish `h1 : ι G'.det = p * ι G.det * baseConj σ A p`. Rewrite using `[RingHom.map_det, RingHom.map_det, hp, AlgHom.map_det, ← Matrix.det_transpose P, ← Matrix.det_mul, ← Matrix.det_mul]`. Conclude with `congrArg Matrix.det h`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : ι (G.det / G'.det) * ι G'.det = ι G.det` using `by rw [← map_mul, div_mul_cancel₀ _ hd']`. Establish `h3 : baseConj σ A p * baseConj σ A (p⁻¹ : (A ⊗[F] E)ˣ) = 1`. Rewrite using `[← map_mul, p.mul_inv, map_one]`. Use `⟨(p⁻¹ : (A ⊗[F] E)ˣ), ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `ι (G.det / G'.det) = _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations.
 
-Use `((hd'.isUnit.map ι).mul_left_inj).1 ?_` and prove the remaining obligations. Rewrite using `[h2, h1]`. Take the linear combination `(-ι G.det) * p.mul_inv - (p * (p⁻¹ : (A ⊗[F] E)ˣ) * ι G.det) * h3`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem CongrOver.det_norm (hd' : G'.det ≠ 0) (h : CongrOver σ A G G') :
     ∃ z : A ⊗[F] E, (1 : A) ⊗ₜ[F] (G.det / G'.det) = z * baseConj σ A z := by
@@ -66,15 +66,15 @@ theorem CongrOver.det_norm (hd' : G'.det ≠ 0) (h : CongrOver σ A G G') :
   linear_combination (-ι G.det) * p.mul_inv - (p * (p⁻¹ : (A ⊗[F] E)ˣ) * ι G.det) * h3
 
 /- English proof (translation)
-Take `⟨P, hP, h⟩` from `h`. Use `letI : Algebra F ℂ := (τ.comp (algebraMap F E)).toAlgebra`. Set `ψ' : A →ₐ[F] ℂ` to `{ ψ with commutes' := hψτ }`. Set `τ' : E →ₐ[F] ℂ` to `{ τ with commutes' := fun _ => rfl }`. Set `Φ : A ⊗[F] E →+* ℂ` to `(Algebra.TensorProduct.productMap ψ' τ').toRingHom`.
+Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hΦ : ∀ (a : A) (x : E), Φ (a ⊗ₜ[F] x) = ψ a * τ x` using `fun a x => Algebra.TensorProduct.productMap_apply_tmul ψ' τ' a x`. Establish `hc : ∀ z, Φ (baseConj σ A z) = conj (Φ z)`. Introduce `z`. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `tmul a x`. Rewrite using `[Algebra.TensorProduct.map_tmul, hΦ, hΦ, map_mul, hψ, ← hτ]`. Both sides reduce to the same expression. Consider the case `add x y hx hy => rw [map_add, map_add, map_add, map_add, hx, hy]`. Establish `e : ∀ M : Matrix (Fin r) (Fin r) E, (M.map fun x => (1 : A) ⊗ₜ[F] x).map Φ = M.map τ`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Treat this case separately. Establish an intermediate fact.
 
-Introduce `M`. Use extensionality with `a b`. Simplify using `[hΦ]`. Use `⟨P.map Φ, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[show (P.map Φ).det = Φ P.det from (RingHom.map_det Φ P).symm]`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(hP.map Φ).ne_zero`. Rewrite using `[← e, h, Matrix.map_mul, Matrix.map_mul, Matrix.transpose_map, e]`. Use `congr 1`. Use extensionality with `a b`. Conclude with `hc _`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem CongrOver.complex (h : CongrOver σ A G G') (τ : E →+* ℂ) (hτ : ∀ x, τ (σ x) = conj (τ x))
     (ψ : A →+* ℂ) (hψ : ∀ a, conj (ψ a) = ψ a)
@@ -114,17 +114,15 @@ section Quadratic
 variable {F E : Type*} [Field F] [Field E] [Algebra F E]
 
 /- English proof (translation)
-Establish `hcard : Nat.card (E ≃ₐ[F] E) = 2`. Use `le_antisymm ?_ ?_` and prove the remaining obligations. Rewrite using `[← Algebra.IsQuadraticExtension.finrank_eq_two F E]`. Simplify using `using AlgEquiv.card_le (F := F) (K := E)`. Establish `: Nontrivial (E ≃ₐ[F] E)` using `⟨σ, 1, hσ⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Conclude with `Finite.one_lt_card`. Establish `: IsGalois F E` using `IsGalois.of_card_aut_eq_finrank F E (hcard.trans (Algebra.IsQuadraticExtension.finrank_eq_two F E).symm)`. Take `⟨τ, -, hτ⟩` from `(Nat.card_eq_two_iff' (1 : E ≃ₐ[F] E)).1 hcard`. Establish `hall : ∀ ρ : E ≃ₐ[F] E, ρ = 1 ∨ ρ = σ` using `fun ρ => by`. Distinguish the cases in `h : ρ = 1`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Prove the first alternative.
 
-Conclude with `Or.inl h`. Conclude with `Or.inr ((hτ ρ h).trans (hτ σ hσ).symm)`. Establish `hc : ∀ t, σ (σ t) = t` using `fun t => by`. Break down `hall (σ * σ) with h | h` into its components or cases. Conclude with `DFunLike.congr_fun h t`.
+Prove the second alternative. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction.
 
-Conclude with `absurd (by simpa using h) hσ`. Choose the witnesses or unpack the hypotheses as in `⟨u, hu⟩ : ∃ u : E, σ u ≠ u := by`. Assume the negation of the conclusion as `h`. Use `push Not at h`. Conclude with `hσ (AlgEquiv.ext h)`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Both sides reduce to the same expression. Assume the hypotheses and unpack their components.
 
-Use `⟨hc, fun t => ⟨fun h => ?_, ?_⟩, u - σ u, sub_ne_zero.2 hu.symm, ?_⟩` and prove the remaining obligations. Use `(IsGalois.mem_range_algebraMap_iff_fixed t).2 fun ρ => ?_` and prove the remaining obligations. Break down `hall ρ with rfl | rfl` into its components or cases. Both sides reduce to the same expression. Conclude with `h`.
-
-Introduce and unpack `⟨s, rfl⟩`. Conclude with `σ.commutes s`. Rewrite using `[map_sub, hc, neg_sub]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem involutive_and_fixed [Algebra.IsQuadraticExtension F E] {σ : E ≃ₐ[F] E} (hσ : σ ≠ 1) :
     (∀ t, σ (σ t) = t) ∧ (∀ t : E, σ t = t ↔ ∃ s : F, algebraMap F E s = t) ∧
@@ -162,9 +160,9 @@ theorem involutive_and_fixed [Algebra.IsQuadraticExtension F E] {σ : E ≃ₐ[F
 variable {σ : E ≃ₐ[F] E}
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `(hF ((x + σ x) / 2)).1 (by rw [map_div₀, map_add, hc, map_ofNat, add_comm])`. Take `⟨b, hb⟩` from `(hF ((x - σ x) / (2 * θ))).1 (by`. Rewrite using `[map_div₀, map_sub, hc, map_mul, map_ofNat, hθ]`. Clear the denominators using the available nonvanishing facts. Use the proof step `ring)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨a, b, ?_⟩` and prove the remaining obligations. Rewrite using `[ha, hb]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem exists_coord [CharZero E] (hc : ∀ t, σ (σ t) = t)
     (hF : ∀ t : E, σ t = t ↔ ∃ s : F, algebraMap F E s = t) {θ : E} (h0 : θ ≠ 0) (hθ : σ θ = -θ)
@@ -180,15 +178,15 @@ theorem exists_coord [CharZero E] (hc : ∀ t, σ (σ t) = t)
   ring
 
 /- English proof (translation)
-Take `⟨z, hz⟩` from `h.det_norm hd'`. Establish `hs : ∀ s : F, (1 : A) ⊗ₜ[F] algebraMap F E s = algebraMap A (A ⊗[F] E) (algebraMap F A s)`. Introduce `s`. Rewrite using `[← IsScalarTower.algebraMap_apply]`. Conclude with `(Algebra.TensorProduct.algebraMap_apply' s).symm`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨p, q, rfl⟩ : ∃ p q : A, z = algebraMap A _ p + algebraMap A _ q * (1 : A) ⊗ₜ[F] θ` from `by clear hz`. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => exact ⟨0, 0, by simp⟩`. Consider the case `tmul u x`. Take `⟨s, t, rfl⟩` from `exists_coord hc hF h0 hθ x`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨u * algebraMap F A s, u * algebraMap F A t, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, map_mul, ← hs, ← hs]`. Simplify using `[TensorProduct.tmul_add]`. Consider the case `add x y hx hy`. Take `⟨p, q, rfl⟩` from `hx`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨p', q', rfl⟩` from `hy`. Conclude with `⟨p + p', q + q', by simp only [map_add]; ring⟩`. Use `⟨p, q, (algebraMap A (A ⊗[F] E)).injective ?_⟩` and prove the remaining obligations. Establish `h1 : baseConj σ A ((1 : A) ⊗ₜ[F] θ) = -((1 : A) ⊗ₜ[F] θ)`. Rewrite using `[Algebra.TensorProduct.map_tmul, ← TensorProduct.tmul_neg, ← hθ]`.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Establish `h2 : algebraMap A (A ⊗[F] E) (algebraMap F A d) = (1 : A) ⊗ₜ[F] θ * (1 : A) ⊗ₜ[F] θ`. Rewrite using `[← hs, hd, Algebra.TensorProduct.tmul_mul_tmul, one_mul]`. Rewrite using `[← hs, ha, hz, map_add, map_mul, AlgHom.commutes, AlgHom.commutes, h1, map_sub, map_mul, map_pow, map_pow, h2]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem CongrOver.exists_sq_sub [CharZero E] (hc : ∀ t, σ (σ t) = t)
     (hF : ∀ t : E, σ t = t ↔ ∃ s : F, algebraMap F E s = t) {θ : E} (h0 : θ ≠ 0) (hθ : σ θ = -θ)
@@ -232,13 +230,13 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   {σ : E ≃ₐ[F] E}
 
 /- English proof (translation)
-Set `τ` to `ComplexEmbedding.lift E (Complex.ofRealHom.comp ρ)`. Establish `hτ : ∀ s : F, τ (algebraMap F E s) = (ρ s : ℂ)` using `fun s => ComplexEmbedding.lift_algebraMap_apply E _ s`. Establish `h1 : τ θ * τ θ = (ρ d : ℂ)` using `by rw [← map_mul, ← hd, hτ]`. Establish `h2` using `congrArg Complex.re h1`. Establish `h3` using `congrArg Complex.im h1`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Complex.mul_re, Complex.mul_im, Complex.ofReal_re, Complex.ofReal_im] at h2 h3`. Establish `h4 : (τ θ).re = 0`. Assume the negation of the conclusion as `hne`. Establish `: (τ θ).im = 0`. Establish `: (τ θ).re * (τ θ).im = 0` using `by linarith`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(mul_eq_zero.1 this).resolve_left hne`. Rewrite `h2` using `[this]`. Use polynomial arithmetic with `[mul_self_nonneg (τ θ).re]`. Establish `h5 : conj (τ θ) = -τ θ`. Apply the tactic sequence `apply Complex.ext <;> simp [h4]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨τ, fun x => ?_, hτ⟩` and prove the remaining obligations. Take `⟨a, b, rfl⟩` from `exists_coord hc hF h0 hθ x`. Simplify using `only [map_add, map_mul, AlgEquiv.commutes, hθ, map_neg, hτ, Complex.conj_ofReal, h5]`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_embedding_conj (hc : ∀ t, σ (σ t) = t)
     (hF : ∀ t : E, σ t = t ↔ ∃ s : F, algebraMap F E s = t) {θ : E} (h0 : θ ≠ 0) (hθ : σ θ = -θ)
@@ -265,23 +263,21 @@ theorem exists_embedding_conj (hc : ∀ t, σ (σ t) = t)
   simp only [map_add, map_mul, AlgEquiv.commutes, hθ, map_neg, hτ, Complex.conj_ofReal, h5]
 
 /- English proof (translation)
-Take `⟨d, hd⟩` from `(hF (θ * θ)).1 (by rw [map_mul, hθ]; ring)`. Use `choose γ hγ' using fun i => (hF (g i)).1 (hg i)`. Take `⟨κ, hκ'⟩` from `(hF b).1 hb`. Establish `hγ : ∀ i, γ i ≠ 0` using `fun i h => hg0 i (by rw [← hγ', h, map_zero])`. Establish `hκ : κ ≠ 0` using `fun h => hb0 (by rw [← hκ', h, map_zero])`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hd0 : d ≠ 0` using `fun h => mul_ne_zero h0 h0 (by rw [← hd, h, map_zero])`. Set `a : Option (Fin r ⊕ Fin r) → F` to `fun o => o.elim (-κ) (Sum.elim γ fun i => -d * γ i)`. Establish `ha : ∀ o, a o ≠ 0`. Introduce and unpack `(_ | i | i)`. Conclude with `neg_ne_zero.mpr hκ`.
+Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hγ i`. Conclude with `mul_ne_zero (neg_ne_zero.mpr hd0) (hγ i)`. Take `⟨x, hx, hx0⟩` from `isotropic_of_indefinite GlobalTheory.QNorm.hasseNormSt F a (by simp; omega) ha (by`. Introduce `ρ`. Break down `lt_or_gt_of_ne ((map_ne_zero ρ).2 hd0) with hρ | hρ` into its components or cases.
+Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Take `⟨τ, hτ, hτρ⟩` from `exists_embedding_conj hc hF h0 hθ hd ρ hρ`. Take `⟨i, hi⟩` from `hs τ hτ`. Rewrite `hi` using `[← hγ', ← hκ', hτρ, hτρ, Complex.ofReal_re, Complex.ofReal_re]`. Establish `n1 : ρ (γ i) ≠ 0` using `(map_ne_zero ρ).mpr (hγ i)`. Break down `lt_or_gt_of_ne ((map_ne_zero ρ).mpr hκ) with h | h` into its components or cases.
+Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 
-Use `⟨some (Sum.inl i), none, ?_, ?_⟩` and prove the remaining obligations. Conclude with `lt_of_le_of_ne (not_lt.mp fun h' => absurd (hi.mp h') h.not_gt) n1`. Simplify `h` using `[a]`. Use `⟨none, some (Sum.inl i), ?_, hi.mpr h⟩` and prove the remaining obligations. Simplify `h` using `[a]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Set `i : Fin r` to `⟨0, by omega⟩`. Establish `e : ρ (a (some (Sum.inr i))) = -(ρ d * ρ (γ i))` using `by simp [a]`. Break down `lt_or_gt_of_ne ((map_ne_zero ρ).mpr (hγ i)) with h | h` into its components or cases. Conclude with `⟨some (Sum.inl i), some (Sum.inr i), h, by rw [e]; nlinarith⟩`. Conclude with `⟨some (Sum.inr i), some (Sum.inl i), by rw [e]; nlinarith, h⟩)`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Take `⟨w, hw, hw0⟩` from `exists_zero_coord_ne_zero ha hx hx0 none`. Rewrite `hw0` using `[Fintype.sum_option, Fintype.sum_sum_type]`. Establish `hw1` using `congrArg (algebraMap F E) hw0`. Establish `hw2 : algebraMap F E (w none) ≠ 0` using `(map_ne_zero _).2 hw`. Simplify using `only [a, Option.elim, Sum.elim_inl, Sum.elim_inr, map_add, map_mul, map_neg, map_pow, map_sum, hγ', hκ', hd, map_zero] at hw1`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Clear the denominators using the available nonvanishing facts.
 
-Use `⟨fun i => (algebraMap F E (w (some (Sum.inl i))) + algebraMap F E (w (some (Sum.inr i))) * θ) / algebraMap F E (w none), ?_⟩` and prove the remaining obligations. Simplify using `only [dotProduct, Matrix.mulVec_diagonal, Function.comp_apply, map_div₀, map_add, map_mul, RingHom.coe_coe, AlgEquiv.commutes, hθ]`. Establish `: ∀ i, (algebraMap F E (w (some (Sum.inl i))) + algebraMap F E (w (some (Sum.inr i))) * θ) / algebraMap F E (w none) * (g i * ((algebraMap F E (w (some (Sum.inl i))) + algebraMap F E (w (some (Sum.inr i))) * -θ) / algebraMap F E (w none))) = (g i * algebraMap F E (w (some (Sum.in …`. Introduce `i`. Clear the denominators using the available nonvanishing facts.
-
-Expand and normalize the polynomial expressions, which then agree. Simplify using `only [this, ← Finset.sum_div, Finset.sum_add_distrib]`. Rewrite using `[div_eq_iff (pow_ne_zero 2 hw2)]`. Take the linear combination `hw1`.
+Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem exists_represent (hc : ∀ t, σ (σ t) = t)
     (hF : ∀ t : E, σ t = t ↔ ∃ s : F, algebraMap F E s = t) {θ : E} (h0 : θ ≠ 0) (hθ : σ θ = -θ)
@@ -345,9 +341,9 @@ theorem exists_represent (hc : ∀ t, σ (σ t) = t)
 omit [NumberField F] [NumberField E] in
 
 /- English proof (translation)
-Take `⟨P, hP, rfl⟩` from `h`. Establish `h : (P.map (σ : E →+* E)).map τ = (P.map τ).map conj`. Use extensionality with `a b`. Conclude with `hτ _`. Rewrite using `[Matrix.map_mul, Matrix.map_mul, Matrix.transpose_map, h, GlobalTheory.Inertia.posIndex_congr]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[show (P.map τ).det = τ P.det from (RingHom.map_det τ P).symm]`. Conclude with `(map_ne_zero τ).2 hP`.
+A detailed English derivation is pending.
 -/
 theorem posIndex_of_congr {τ : E →+* ℂ} (hτ : ∀ x, τ (σ x) = conj (τ x)) {r : ℕ}
     {G G' : Matrix (Fin r) (Fin r) E} (h : Congr (σ : E →+* E) G G') :
@@ -361,21 +357,19 @@ theorem posIndex_of_congr {τ : E →+* ℂ} (hτ : ∀ x, τ (σ x) = conj (τ 
   exact (map_ne_zero τ).2 hP
 
 /- English proof (translation)
-Proceed by induction on `r with`. Consider the case `zero`. Introduce `g g' _ _ _ _ _ _`. Conclude with `⟨1, by simp, Subsingleton.elim _ _⟩`. Consider the case `succ r ih`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Treat this case separately.
 
-Introduce `g g' hg hg' h0 h0' hs ⟨x, hx⟩`. Choose the witnesses or unpack the hypotheses as in `⟨z, hz⟩ : ∃ z : Fin (r + 1) → E, z ⬝ᵥ Matrix.diagonal g *ᵥ ((σ : E →+* E) ∘ z) = g' 0 := by`. Break down `Nat.eq_zero_or_pos r with rfl | hr` into its components or cases. Simplify using `only [Fin.prod_univ_succ, Fin.prod_univ_zero, mul_one] at hx`. Establish `hx0 : x ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce and unpack `rfl`. Conclude with `h0 0 (by simpa using hx)`. Establish `hx1 : σ x ≠ 0` using `(map_ne_zero σ).2 hx0`. Use `⟨fun _ => x⁻¹, ?_⟩` and prove the remaining obligations. Simplify using `only [dotProduct, Matrix.mulVec_diagonal, Function.comp_apply, map_inv₀, Fin.sum_univ_succ, Fin.sum_univ_zero, add_zero, hx, RingHom.coe_coe]`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts.
 
-Clear the denominators using the available nonvanishing facts. Conclude with `exists_represent hc hF hθ0 hθ (by omega) hg h0 (hg' 0) (h0' 0) fun τ hτ => exists_sign_iff τ (hs τ hτ) 0`. Establish `hG : ∀ a b, (σ : E →+* E) (Matrix.diagonal g a b) = Matrix.diagonal g b a`. Introduce `a b`. Distinguish the cases in `hab : a = b`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts.
 
-Substitute `hab` using the available equality. Simplify using `using hg a`. Simplify using `[Matrix.diagonal_apply_ne _ hab, Matrix.diagonal_apply_ne _ (Ne.symm hab)]`. Take `⟨P, k, hP, hPk, hk, hk0, -, hk1⟩` from `GlobalTheory.HermDiag.exists_congr_diagonal_col_eq (c := (σ : E →+* E)) two_ne_zero hc hG (x := z) (hz ▸ h0' 0) 0`. Establish `hp : ∏ i, g i ≠ 0` using `Finset.prod_ne_zero_iff.mpr fun i _ => h0 i`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hk0` using `hk0 (by rwa [Matrix.det_diagonal])`. Establish `hcg : Congr (σ : E →+* E) (Matrix.diagonal g) (Matrix.diagonal k)` using `⟨P, hP, hPk.symm⟩`. Establish `hk2 : k 0 = g' 0` using `hk1.trans hz`. Use `hcg.trans (congr_diagonal_of_tail hk2 (ih _ _ (fun i => hk _) (fun i => hg' _) (fun i => hk0 _) (fun i => h0' _) (fun τ hτ => ?_) ?_))` and prove the remaining obligations. Establish `h1` using `posIndex_of_congr hτ hcg`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `h1` using `[posIndex_diagonal_map, posIndex_diagonal_map, hs τ hτ, posCount_succ, posCount_succ τ g', hk2]`. Conclude with `Nat.add_left_cancel h1`. Take `⟨y, -, hy⟩` from `hcg.det`. Rewrite `hy` using `[Matrix.det_diagonal, Matrix.det_diagonal, hx, Fin.prod_univ_succ, Fin.prod_univ_succ, hk2]`. Use `⟨y * x, mul_left_cancel₀ (h0' 0) ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[hy, map_mul, RingHom.coe_coe]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem congr_diagonal (hc : ∀ t, σ (σ t) = t)
     (hF : ∀ t : E, σ t = t ↔ ∃ s : F, algebraMap F E s = t) {θ : E} (hθ0 : θ ≠ 0) (hθ : σ θ = -θ)
@@ -433,11 +427,11 @@ theorem congr_diagonal (hc : ∀ t, σ (σ t) = t)
 variable [Algebra.IsQuadraticExtension F E] {r : ℕ} {G G' : Matrix (Fin r) (Fin r) E}
 
 /- English proof (translation)
-Take `⟨hc, hF, θ, h0, hθ⟩` from `involutive_and_fixed hσ`. Take `⟨x, hx⟩` from `hn`. Take `⟨P, g, hP, hPg, hg, hg0⟩` from `GlobalTheory.HermDiag.exists_congr_diagonal (c := (σ : E →+* E)) two_ne_zero hc (G := G) hG`. Take `⟨P', g', hP', hPg', hg', hg0'⟩` from `GlobalTheory.HermDiag.exists_congr_diagonal (c := (σ : E →+* E)) two_ne_zero hc (G := G') hG'`. Establish `h1 : Congr (σ : E →+* E) G (Matrix.diagonal g)` using `⟨P, hP, hPg.symm⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h1' : Congr (σ : E →+* E) G' (Matrix.diagonal g')` using `⟨P', hP', hPg'.symm⟩`. Use `(h1.trans (congr_diagonal hc hF h0 hθ r g g' hg hg' (hg0 hd) (hg0' hd') (fun τ hτ => ?_) ?_)).trans h1'.symm` and prove the remaining obligations. Rewrite using `[← posIndex_diagonal_map, ← posIndex_diagonal_map, posIndex_of_congr hτ h1, posIndex_of_congr hτ h1', hs τ hτ]`. Take `⟨y, -, hy⟩` from `h1.det`. Take `⟨y', -, hy'⟩` from `h1'.symm.det`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite `hx` using `[div_eq_iff hd']`. Rewrite `hy`, `hy'` using `[Matrix.det_diagonal]`. Use `⟨y * x * y', ?_⟩` and prove the remaining obligations. Rewrite using `[hy, hx, hy']`. Simplify using `only [map_mul, RingHom.coe_coe]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -471,9 +465,9 @@ theorem congr_of_invariants (hσ : σ ≠ 1) (hG : ∀ a b, σ (G a b) = G b a)
 omit [NumberField F] in
 
 /- English proof (translation)
-Establish `hρ : ComplexEmbedding.IsReal (Complex.ofRealHom.comp ρ)` using `ComplexEmbedding.isReal_iff.2 (by ext x; simp)`. Establish `hv : (InfinitePlace.mk (Complex.ofRealHom.comp ρ)).IsReal` using `⟨_, hρ, rfl⟩`. Use `⟨_, InfinitePlace.Completion.extensionEmbeddingOfIsReal hv, fun s => ?_⟩` and prove the remaining obligations. Apply `Complex.ofReal_injective` to reduce the goal to its premises. Rewrite using `[InfinitePlace.Completion.extensionEmbeddingOfIsReal_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Use `InfinitePlace.Completion.extensionEmbedding_coe (InfinitePlace.mk (Complex.ofRealHom.comp ρ)) ((WithAbs.equiv _).symm s)` as an intermediate fact. Rewrite `this` using `[RingEquiv.apply_symm_apply, InfinitePlace.embedding_mk_eq_of_isReal hρ]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_real_extension (ρ : F →+* ℝ) :
     ∃ (v : InfinitePlace F) (φ : v.Completion →+* ℝ), ∀ s : F, φ (algebraMap F _ s) = ρ s := by
@@ -489,17 +483,17 @@ theorem exists_real_extension (ρ : F →+* ℝ) :
   exact this
 
 /- English proof (translation)
-Take `⟨hc, hF, θ, h0, hθ⟩` from `involutive_and_fixed hσ`. Use `congr_of_invariants hσ hG hG' hd hd' (fun τ hτ => ?_) ?_` and prove the remaining obligations. Take `⟨Q, hQ, h⟩` from `hi τ hτ`. Rewrite using `[h, GlobalTheory.Inertia.posIndex_congr _ hQ]`. Establish `hdet : ∀ M : Matrix (Fin r) (Fin r) E, (∀ a b, σ (M a b) = M b a) → σ M.det = M.det`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `M hM`. Rewrite using `[← Matrix.det_transpose M]`. Use `(RingHom.map_det (σ : E →+* E) Mᵀ).trans ?_` and prove the remaining obligations. Rewrite using `[Matrix.det_transpose M]`. Use `congr 1`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use extensionality with `a b`. Conclude with `hM b a`. Take `⟨a, ha⟩` from `(hF (G.det / G'.det)).1 (by rw [map_div₀, hdet G hG, hdet G' hG'])`. Take `⟨d, hdθ⟩` from `(hF (θ * θ)).1 (by rw [map_mul, hθ]; ring)`. Establish `hd0 : d ≠ 0` using `fun h => mul_ne_zero h0 h0 (by rw [← hdθ, h, map_zero])`.
+By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ha0 : a ≠ 0` using `fun h => div_ne_zero hd hd' (by rw [← ha, h, map_zero])`. Take `⟨x, y, hxy⟩` from `GlobalTheory.QNorm.hasseNormSt F d a hd0 ha0 (fun ρ => by`. Break down `lt_or_gt_of_ne ((map_ne_zero ρ).2 hd0) with hρ | hρ` into its components or cases. Take `⟨τ, hτ, hτρ⟩` from `exists_embedding_conj hc hF h0 hθ hdθ ρ hρ`. Establish `h2` using `GlobalTheory.Published.Landherr.re_det_div_pos hd τ (hi τ hτ)`.
+Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[← ha, hτρ, Complex.ofReal_re]`. Conclude with `⟨√(ρ a), 0, by rw [Real.sq_sqrt h2.le]; ring⟩`. Conclude with `GlobalTheory.Published.HasseNormSt.of_isSquare hρ.ne' (Real.isSquare_iff.2 hρ.le) _)`. Use the proof step `(fun v => (hf v).exists_sq_sub hc hF h0 hθ hdθ hd' ha)`. Use `⟨algebraMap F E x + algebraMap F E y * θ, ?_⟩` and prove the remaining obligations.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[← ha, hxy]`. Simplify using `only [map_add, map_sub, map_mul, map_pow, AlgEquiv.commutes, hθ, hdθ]`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem congr_of_local_complex (hσ : σ ≠ 1) (hG : ∀ a b, σ (G a b) = G b a)
     (hG' : ∀ a b, σ (G' a b) = G' b a) (hd : G.det ≠ 0) (hd' : G'.det ≠ 0)
@@ -538,9 +532,9 @@ theorem congr_of_local_complex (hσ : σ ≠ 1) (hG : ∀ a b, σ (G a b) = G b 
     ring
 
 /- English proof (translation)
-Use `congr_of_local_complex hσ hG hG' hd hd' hf fun τ hτ => ?_` and prove the remaining obligations. Establish `hre : ComplexEmbedding.IsReal (τ.comp (algebraMap F E))` using `ComplexEmbedding.isReal_iff.2 (by`. Use extensionality with `s`. Express the relevant statement in the definitionally equal form `conj (τ (algebraMap F E s)) = τ (algebraMap F E s)`. Rewrite using `[← hτ, AlgEquiv.commutes])`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Take `⟨v, φ, hφ⟩` from `exists_real_extension hre.embedding`. Conclude with `(hi v).complex τ hτ (Complex.ofRealHom.comp φ) (fun a => by simp) (fun s => by`. Express the relevant statement in the definitionally equal form `((φ (algebraMap F _ s) : ℝ) : ℂ) = _`. Rewrite using `[hφ]`. Conclude with `hre.coe_embedding_apply s)`.
+Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem congr_of_local (hσ : σ ≠ 1) (hG : ∀ a b, σ (G a b) = G b a)
     (hG' : ∀ a b, σ (G' a b) = G' b a) (hd : G.det ≠ 0) (hd' : G'.det ≠ 0)
@@ -578,13 +572,13 @@ def HermitianHassePrinciple : Prop :=
       ∃ P : Matrix (Fin r) (Fin r) E, P.det ≠ 0 ∧ G' = Pᵀ * G * P.map σ
 
 /- English proof (translation)
-Introduce `_ _ _ _ _ _ _ _ _ hσ _ _ _ hG hG' hd hd' hf hi` and use `congr_of_local hσ hG hG' hd hd' hf hi`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem hermitianHassePrinciple_holds : HermitianHassePrinciple :=
   fun _ _ _ _ _ _ _ _ _ hσ _ _ _ hG hG' hd hd' hf hi => congr_of_local hσ hG hG' hd hd' hf hi
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h => ⟨fun _ => .of_congr h, fun _ => .of_congr h⟩, fun h => congr_of_local hσ hG hG' hd hd' h.1 h.2⟩`.
+Supply the required witnesses or components.
 -/
 theorem HermitianHassePrinciple.iff {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E]
     [Algebra F E] [Algebra.IsQuadraticExtension F E] {σ : E ≃ₐ[F] E} (hσ : σ ≠ 1) {r : ℕ}

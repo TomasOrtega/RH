@@ -7,27 +7,25 @@ open scoped WithZero
 namespace GlobalTheory.QNorm
 
 /- English proof (translation)
-Establish `key : ∀ c : K, c ≠ 0 → ∃ n : ℤ, w c ^ 2 = WithZero.exp (2 * n)`. Introduce `c hc`. Establish `h0 : w c ≠ 0` using `by simpa using hc`. Use `⟨WithZero.log (w c), ?_⟩` and prove the remaining obligations. Rewrite using `[two_mul, WithZero.exp_add, WithZero.exp_log h0, sq]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `a b hab`. Establish `ha2 : w (a ^ 2) = w a ^ 2` using `map_pow _ _ _`. Establish `hb2 : w (δ * b ^ 2) = w b ^ 2` using `by rw [map_mul, hδ, one_mul, map_pow]`. Break down `lt_trichotomy (w a) (w b) with h | h | h` into its components or cases. Establish `hb : b ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Introduce and unpack `rfl`. Simplify using `at h`. Establish `hlt : w (a ^ 2) < w (δ * b ^ 2)`. Rewrite using `[ha2, hb2]`. Conclude with `pow_lt_pow_left₀ h zero_le two_ne_zero`.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[w.map_sub_eq_of_lt_right hlt, hb2]`. Conclude with `key b hb`. Establish `ha : a ≠ 0`. Introduce and unpack `rfl`. Break down `hab with h' | h'` into its components or cases.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `h' rfl`. Rewrite `h` using `[map_zero]`. Conclude with `h' (by simpa using h.symm)`. Establish `ha0 : w a ≠ 0` using `by simpa using ha`. Establish `hb : b ≠ 0`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `rfl`. Rewrite `h` using `[map_zero]`. Conclude with `ha0 h`. Establish `hle : w (a ^ 2 - δ * b ^ 2) ≤ w a ^ 2`. Use `(w.map_sub _ _).trans (max_le ha2.le ?_)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Rewrite using `[hb2, h]`. Break down `hle.lt_or_eq with hlt | heq` into its components or cases. It suffices to derive a contradiction. Apply `hn` to reduce the goal to its premises. Establish `e : δ * (b / a) ^ 2 - 1 = -((a ^ 2 - δ * b ^ 2) / a ^ 2)` using `by field_simp; ring`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hs : IsSquare (δ * (b / a) ^ 2)`. Apply `hsq` to reduce the goal to its premises. Rewrite using `[e, Valuation.map_neg, map_div₀, ha2, div_lt_one₀ (pow_pos (zero_lt_iff.2 ha0) 2)]`. Conclude with `hlt`. Take `⟨r, hr⟩` from `hs`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `⟨r * a / b, ?_⟩` and prove the remaining obligations. Establish `: δ = (δ * (b / a) ^ 2) * (a / b) ^ 2` using `by field_simp`. Rewrite using `[this, hr]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[heq]`.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `key a ha`. Establish `ha : a ≠ 0`. Introduce and unpack `rfl`. Simplify using `at h`. Establish `hlt : w (δ * b ^ 2) < w (a ^ 2)`.
-
-Rewrite using `[ha2, hb2]`. Conclude with `pow_lt_pow_left₀ h zero_le two_ne_zero`. Rewrite using `[w.map_sub_eq_of_lt_left hlt, ha2]`. Conclude with `key a ha`.
+A detailed English derivation is pending.
 -/
 theorem evenNorms_of_unit_nonsquare {K : Type} [Field K] (w : Valuation K ℤᵐ⁰)
     (hsq : ∀ x : K, w (x - 1) < 1 → IsSquare x) (δ : K) (hδ : w δ = 1) (hn : ¬ IsSquare δ) :
@@ -85,9 +83,9 @@ theorem evenNorms_of_unit_nonsquare {K : Type} [Field K] (w : Valuation K ℤᵐ
     exact key a ha
 
 /- English proof (translation)
-Introduce `F _ _ v h2 δ hδ hn`. Use `evenNorms_of_unit_nonsquare _ (fun x hx => ?_) δ hδ hn` and prove the remaining obligations. Apply `GlobalTheory.LocalQuad.isSquare_of_valued_sub_one_lt F v x` to reduce the goal to its premises. Establish `: (4 : v.adicCompletion F) = 2 * 2` using `by norm_num`. Rewrite using `[this, map_mul, h2, one_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hx`.
+A detailed English derivation is pending.
 -/
 theorem evenNorms_of_odd_place : ∀ (F : Type) [Field F] [NumberField F]
     (v : HeightOneSpectrum (𝓞 F)), Valued.v (2 : v.adicCompletion F) = 1 →

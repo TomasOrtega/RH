@@ -5,27 +5,23 @@ open Filter UpperTheory.V.AlgebraTools
 open scoped TensorProduct
 
 /- English proof (translation)
-Introduce `R _ n P hP hdeg`. Establish `hroot0 : Polynomial.eval₂ (algebraMap R (SplitAlg P (n + 1))) (SplitAlg.root P (n + 1) 0) P = 0`. Rewrite using `[Polynomial.eval₂_eq_eval_map, ← SplitAlg.prod_root, Polynomial.eval_prod]`. Conclude with `Finset.prod_eq_zero (Finset.mem_univ 0) (by simp)`. Set `φ : AdjoinRoot P →+* SplitAlg P (n + 1)` to `AdjoinRoot.lift (algebraMap R (SplitAlg P (n + 1))) (SplitAlg.root P (n + 1) 0) hroot0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Equip the data with the indicated structure.
 
-Use `letI alg : Algebra (AdjoinRoot P) (SplitAlg P (n + 1)) := φ.toAlgebra`. Establish `hφ : ∀ r : R, algebraMap (AdjoinRoot P) (SplitAlg P (n + 1)) (algebraMap R (AdjoinRoot P) r) = algebraMap R (SplitAlg P (n + 1)) r` using `fun r => AdjoinRoot.lift_of hroot0`. Use `haveI tower : IsScalarTower R (AdjoinRoot P) (SplitAlg P (n + 1)) := IsScalarTower.of_algebraMap_eq (fun r => (hφ r).symm)`. Establish `hr0 : algebraMap (AdjoinRoot P) (SplitAlg P (n + 1)) (AdjoinRoot.root P) = SplitAlg.root P (n + 1) 0` using `AdjoinRoot.lift_root hroot0`. Use `⟨alg, tower, hr0, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `set Q := (P.map (algebraMap R (AdjoinRoot P))) /ₘ (Polynomial.X - Polynomial.C (AdjoinRoot.root P)) with hQ`. Establish `hfac : P.map (algebraMap R (AdjoinRoot P)) = (Polynomial.X - Polynomial.C (AdjoinRoot.root P)) * Q`. Rewrite using `[hQ, eq_comm, Polynomial.mul_divByMonic_eq_iff_isRoot, AdjoinRoot.algebraMap_eq]`. Conclude with `AdjoinRoot.isRoot_root P`. Establish `hmapS : P.map (algebraMap R (SplitAlg P (n + 1))) = (Polynomial.X - Polynomial.C (SplitAlg.root P (n + 1) 0)) * Q.map (algebraMap (AdjoinRoot P) (SplitAlg P (n + 1)))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[IsScalarTower.algebraMap_eq R (AdjoinRoot P) (SplitAlg P (n + 1)), ← Polynomial.map_map, hfac, Polynomial.map_mul, Polynomial.map_sub, Polynomial.map_X, Polynomial.map_C, hr0]`. Establish `hg : ∏ i : Fin n, (Polynomial.X - Polynomial.C (SplitAlg.root P (n + 1) i.succ)) = Q.map (algebraMap (AdjoinRoot P) (SplitAlg P (n + 1)))`. Establish `h1` using `SplitAlg.prod_root P (n + 1)`. Rewrite `h1` using `[Fin.prod_univ_succ, hmapS]`. Conclude with `(Polynomial.monic_X_sub_C _).isRegular.left h1`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Set `g : SplitAlg Q n →ₐ[AdjoinRoot P] SplitAlg P (n + 1)` to `SplitAlg.lift Q n (fun i => SplitAlg.root P (n + 1) i.succ) hg`. Set `a : Fin (n + 1) → SplitAlg Q n` to `Fin.cons (algebraMap (AdjoinRoot P) (SplitAlg Q n) (AdjoinRoot.root P)) (SplitAlg.root Q n)`. Establish `hf : ∏ i, (Polynomial.X - Polynomial.C (a i)) = P.map (algebraMap R (SplitAlg Q n))`. Rewrite using `[Fin.prod_univ_succ]`. Simplify using `only [a, Fin.cons_zero, Fin.cons_succ]`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[SplitAlg.prod_root, IsScalarTower.algebraMap_eq R (AdjoinRoot P) (SplitAlg Q n), ← Polynomial.map_map, hfac, Polynomial.map_mul, Polynomial.map_sub, Polynomial.map_X, Polynomial.map_C]`. Set `f : SplitAlg P (n + 1) →ₐ[R] SplitAlg Q n` to `SplitAlg.lift P (n + 1) a hf`. Establish `hf0 : f (SplitAlg.root P (n + 1) 0) = algebraMap (AdjoinRoot P) (SplitAlg Q n) (AdjoinRoot.root P)`. Simplify using `only [f, SplitAlg.lift_root, a, Fin.cons_zero]`. Establish `hfs : ∀ i : Fin n, f (SplitAlg.root P (n + 1) i.succ) = SplitAlg.root Q n i`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Introduce `i`. Simplify using `only [f, SplitAlg.lift_root, a, Fin.cons_succ]`. Establish `hfK : f.comp (IsScalarTower.toAlgHom R (AdjoinRoot P) (SplitAlg P (n + 1))) = IsScalarTower.toAlgHom R (AdjoinRoot P) (SplitAlg Q n)`. Apply `AdjoinRoot.algHom_ext` to reduce the goal to its premises. Rewrite using `[AlgHom.comp_apply, IsScalarTower.coe_toAlgHom', IsScalarTower.coe_toAlgHom', hr0, hf0]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Set `fK : SplitAlg P (n + 1) →ₐ[AdjoinRoot P] SplitAlg Q n` to `{ f with commutes' := fun k => DFunLike.congr_fun hfK k }`. Establish `hgs : ∀ i : Fin n, g (SplitAlg.root Q n i) = SplitAlg.root P (n + 1) i.succ`. Introduce `i`. Conclude with `SplitAlg.lift_root Q n _ hg i`. Use `⟨AlgEquiv.ofAlgHom fK g ?_ ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `SplitAlg.hom_ext` to reduce the goal to its premises. Introduce `i`. Use `show f (g (SplitAlg.root Q n i)) = SplitAlg.root Q n i`. Rewrite using `[hgs, hfs]`. Apply `AlgHom.restrictScalars_injective R` to reduce the goal to its premises.
-
-Apply `SplitAlg.hom_ext` to reduce the goal to its premises. Introduce `i`. Use `show g (f (SplitAlg.root P (n + 1) i)) = SplitAlg.root P (n + 1) i`. Use `Fin.cases ?_ (fun j => ?_) i` and prove the remaining obligations. Rewrite using `[hf0, AlgHom.commutes, hr0]`.
-
-Rewrite using `[hfs, hgs]`. Introduce `i`. Conclude with `hfs i`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.AlgebraTools.splitAlg_succ_equiv :
     ∀ (R : Type) [CommRing R] (n : ℕ) (P : Polynomial R), P.Monic → P.natDegree = n + 1 →

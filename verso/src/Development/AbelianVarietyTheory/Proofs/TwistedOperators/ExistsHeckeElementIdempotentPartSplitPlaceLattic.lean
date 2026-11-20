@@ -16,9 +16,9 @@ open IsDedekindDomain Formalism.L2.NTheta
 open scoped Matrix
 
 /- English proof (translation)
-Take `⟨x, hx, hx0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot P.ne_bot`. Establish `hx0' : ((x : D.host.E)) ≠ 0` using `fun h => hx0 (RingOfIntegers.ext h)`. Rewrite using `[eq_top_iff, ← hL, Submodule.span_le]`. Introduce `w hw`. Establish `hm : x • w ∈ (P.asIdeal • L : Submodule (𝓞 D.host.E) (Fin n → D.host.E))` using `Submodule.smul_mem_smul hx hw`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `: w = (x : D.host.E)⁻¹ • (x • w)`. Rewrite using `[← algebraMap_smul D.host.E x w]`. Rewrite using `[smul_smul, inv_mul_cancel₀ (by simpa using hx0'), one_smul]`. Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span hm)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem span_smul_top {D : D7} {n : ℕ} (P : Formalism.L2.DIV.Pl D.host.E) (L : Submodule (𝓞 D.host.E) (Fin n → D.host.E))
     (hL : Submodule.span D.host.E (L : Set (Fin n → D.host.E)) = ⊤) :
@@ -35,17 +35,17 @@ theorem span_smul_top {D : D7} {n : ℕ} (P : Formalism.L2.DIV.Pl D.host.E) (L :
   exact Submodule.smul_mem _ _ (Submodule.subset_span hm)
 
 /- English proof (translation)
-Introduce `D V P e ϖ k g M he hϖ1 hϖ2 hPM hMΛ hidx`. Take `⟨v, π, s, h1, h2, h3, h4, h5⟩` from `GlobalTheory.SplitCoord.exists_coord e he.1`. Take `⟨B, hB⟩` from `GlobalTheory.SplitLatBasis.exists_basis V e v π s he.1.1 h2 h3 h4 (GlobalTheory.LatDual.lamHat_selfDual_and_module V).2`. Take `⟨t, ht, hch⟩` from `GlobalTheory.T.idempotent_part_completed_lattice_local_chart D V e v π s B he.1.1 h2 h3 h4 hB`. Take `⟨hfg, hsp, -, -, hhat, -⟩` from `GlobalTheory.Member.latG_lattice_and_completion D V g`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hMfg : M.FG`. Establish `hN : IsNoetherian (𝓞 D.host.E) (latG V g)` using `isNoetherian_of_fg_of_noetherian _ hfg`. Establish `hc` using `(IsNoetherian.noetherian (M.comap (latG V g).subtype)).map (latG V g).subtype`. Rewrite `hc` using `[Submodule.map_comap_subtype, inf_eq_right.2 hMΛ]`. Then use the resulting hypothesis. Establish `hMsp : Submodule.span D.host.E (M : Set (Fin V.rank → D.host.E)) = ⊤` using `eq_top_iff.2 ((span_smul_top P _ hsp).symm.le.trans (Submodule.span_mono hPM))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Take `⟨C, hC⟩` from `GlobalTheory.T.exists_local_matrix_chart_split_idempotent_completion D e v π s V.rank M he.1.1 h2 h3 h4 hMfg hMsp`. Establish `hT : ∀ y : Fin V.rank → GlobalTheory.SplitPlace.RF D, finPart D e • y ∈ GlobalTheory.AdLat.hat D.host.F (latG V g : Set (Fin V.rank → D.host.E)) ↔ ∀ i, ((t • (GlobalTheory.SplitPlace.comp V π B g⁻¹ * B⁻¹).1) *ᵥ fun j => π (y j)) i ∈ Formalism.UG.Ov D.host.F v`. Introduce `y`. Rewrite using `[← hhat, Units.val_mul]`. Conclude with `hch g y`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨Z, hZ1, hZ2, hZ3, hZM⟩` from `GlobalTheory.T.exists_localHeckeMatrix_intermediateLattice D P e ϖ k V.rank v π s (latG V g) M t _ C he hϖ1 hϖ2 h1 h2 h3 h4 h5 hfg hsp hPM hMΛ hidx ht hT hC`. Take `⟨a₀, hsupp, hcomp⟩` from `(GlobalTheory.SplitPlace.comp_bij (V := V) (B := B) he.1 h1 h2).1 Z`. Establish `hu` using `GlobalTheory.SplitPlace.isUnif he h4 h5 ϖ hϖ1 hϖ2`. Establish `hϖ0` using `(GlobalTheory.SplitPlace.unif_facts hu).1`. Use `⟨a₀, (GlobalTheory.SplitPlace.hecke_iff he.1 h1 h2 h3 h4 hB hϖ0 k a₀).2 ⟨hsupp, ?_, ?_, ?_⟩, fun w _ => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hcomp]`. Conclude with `hZ1`. Rewrite using `[hcomp]`. Conclude with `hZ2`. Rewrite using `[hcomp]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hZ3`. Rewrite using `[hch, hZM]`. Establish `: (GlobalTheory.SplitPlace.comp V π B (g * a₀)⁻¹).1 = (Z⁻¹).1 * (GlobalTheory.SplitPlace.comp V π B g⁻¹).1`. Rewrite using `[mul_inv_rev, map_mul, map_inv, hcomp, Units.val_mul]`. Rewrite using `[this, Units.val_mul, Matrix.mul_assoc, Matrix.mul_smul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_hecke_ePart : ∀ (D : D7) (V : HSp D) (P : Formalism.L2.DIV.Pl D.host.E) (e : AE D) (ϖ : 𝓞 D.host.E) (k : ℕ) (g : GA D V)
     (M : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E)),

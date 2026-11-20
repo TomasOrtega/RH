@@ -18,13 +18,11 @@ structure IsExtension (a : V →ₛₗ[algebraMap K F] W) : Prop where
   coord : ∀ ℓ : F →ₗ[K] K, ∃ Λ, IsCoord a ℓ Λ
 
 /- English proof (translation)
-Establish `key : ∀ y ∈ Submodule.span F (Set.range a), ∀ c : F, p (c • y)`. Introduce `y hy`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨v, rfl⟩` from `hy`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Conclude with `fun c => hb c v`. Consider the case `zero => intro c`. Rewrite using `[smul_zero]`. Conclude with `h0`. Consider the case `add y z _ _ hy hz => intro c`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[smul_add]`. Conclude with `hadd _ _ (hy c) (hz c)`. Consider the case `smul d y _ hy => intro c`. Rewrite using `[smul_smul]`. Conclude with `hy (c * d)`.
-
-Establish `hx : x ∈ Submodule.span F (Set.range a)` using `by rw [h]; exact Submodule.mem_top`. Simplify using `using key x hx 1`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 private theorem semilinear_range_span_induction {a : V →ₛₗ[algebraMap K F] W}
     (h : Submodule.span F (Set.range a) = ⊤) (p : W → Prop) (h0 : p 0)
@@ -42,7 +40,7 @@ private theorem semilinear_range_span_induction {a : V →ₛₗ[algebraMap K F]
   simpa using key x hx 1
 
 /- English proof (translation)
-Conclude with `semilinear_range_span_induction h (fun x => f x = g x) (by simp) (fun x y hx hy => by simp only [map_add, hx, hy]) e x`.
+A detailed English derivation is pending.
 -/
 theorem addHom_ext {a : V →ₛₗ[algebraMap K F] W} (h : Submodule.span F (Set.range a) = ⊤)
     {M : Type} [AddCommGroup M] {f g : W →+ M} (e : ∀ (c : F) v, f (c • a v) = g (c • a v)) (x : W) :
@@ -51,7 +49,7 @@ theorem addHom_ext {a : V →ₛₗ[algebraMap K F] W} (h : Submodule.span F (Se
     (fun x y hx hy => by simp only [map_add, hx, hy]) e x
 
 /- English proof (translation)
-Establish `key` using `addHom_ext h (f := Λ'.comp θ'.toAddMonoidHom) (g := θ.toAddMonoidHom.comp Λ) (fun c v => by show Λ' (θ' (c • a v)) = θ (Λ (c • a v))`. Rewrite using `[map_smul, hθ, hΛ' c (θ v), hΛ c v, map_smul]) x`. Conclude with `key`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsCoord.natural {V' W' : Type} [AddCommGroup V'] [Module K V'] [AddCommGroup W'] [Module F W']
     {a : V →ₛₗ[algebraMap K F] W} {a' : V' →ₛₗ[algebraMap K F] W'}
@@ -65,13 +63,13 @@ theorem IsCoord.natural {V' W' : Type} [AddCommGroup V'] [Module K V'] [AddCommG
   exact key
 
 /- English proof (translation)
-Use `semilinear_range_span_induction h (fun x => ∃ S : Finset ι, (∀ i ∉ S, Λ i x = 0) ∧ ∀ S' : Finset ι, S ⊆ S' → x = ∑ i ∈ S', b i • a (Λ i x)) ?_ ?_ ?_ x` and prove the remaining obligations. Conclude with `⟨∅, fun i _ => map_zero _, fun S' _ => by simp⟩`. Introduce and unpack `x y ⟨S₁, h₁, h₁'⟩ ⟨S₂, h₂, h₂'⟩`. Use `⟨S₁ ∪ S₂, fun i hi => ?_, fun S' hS' => ?_⟩` and prove the remaining obligations. Rewrite `hi` using `[Finset.mem_union, not_or]`.
+Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[map_add, h₁ i hi.1, h₂ i hi.2, add_zero]`. Simplify using `only [map_add, smul_add, Finset.sum_add_distrib]`. Rewrite using `[← h₁' S' (Finset.union_subset_left hS'), ← h₂' S' (Finset.union_subset_right hS')]`. Introduce `c v`. Use `⟨(b.repr c).support, fun i hi => ?_, fun S' hS' => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hΛ i c v, Module.Basis.coord_apply, Finsupp.notMem_support_iff.mp hi, zero_smul]`. Establish `hterm : ∀ i, b i • a (Λ i (c • a v)) = (b.repr c i • b i) • a v`. Introduce `i`. Rewrite using `[hΛ i c v, Module.Basis.coord_apply, LinearMap.map_smulₛₗ, smul_smul, Algebra.smul_def (b.repr c i) (b i), mul_comm (b i)]`. Rewrite using `[Finset.sum_congr rfl (fun i _ => hterm i), ← Finset.sum_smul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use `conv_lhs => rw [← b.linearCombination_repr c]`. Rewrite using `[Finsupp.linearCombination_apply, Finsupp.sum_of_support_subset _ hS' (fun i r => r • b i) (fun i _ => zero_smul _ _)]`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_expansion {ι : Type} (b : Module.Basis ι K F) {a : V →ₛₗ[algebraMap K F] W}
     (h : Submodule.span F (Set.range a) = ⊤) {Λ : ι → W →+ V} (hΛ : ∀ i, IsCoord a (b.coord i) (Λ i))
@@ -102,9 +100,9 @@ theorem exists_expansion {ι : Type} (b : Module.Basis ι K F) {a : V →ₛₗ[
         Finsupp.sum_of_support_subset _ hS' (fun i r => r • b i) (fun i _ => zero_smul _ _)]
 
 /- English proof (translation)
-Set `β` to `Module.Free.chooseBasis K F`. Use `choose Λ hΛ using fun i => h.coord (β.coord i)`. Take `⟨S₁, -, h₁⟩` from `exists_expansion β h.span hΛ x`. Take `⟨S₂, -, h₂⟩` from `exists_expansion β h.span hΛ y`. Rewrite using `[h₁ (S₁ ∪ S₂) Finset.subset_union_left, h₂ (S₁ ∪ S₂) Finset.subset_union_right]`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl (fun i _ => ?_)` and prove the remaining obligations. Rewrite using `[e _ _ (hΛ i)]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsExtension.eq_of_coord {a : V →ₛₗ[algebraMap K F] W} (h : IsExtension a) {x y : W}
     (e : ∀ ℓ Λ, IsCoord a ℓ Λ → Λ x = Λ y) : x = y := by
@@ -118,9 +116,9 @@ theorem IsExtension.eq_of_coord {a : V →ₛₗ[algebraMap K F] W} (h : IsExten
   rw [e _ _ (hΛ i)]
 
 /- English proof (translation)
-Use `semilinear_range_span_induction h.span (fun x => ∃ (n : ℕ) (c : Fin n → F) (v : Fin n → V), x = ∑ i, c i • a (v i)) ?_ ?_ ?_ x` and prove the remaining obligations. Conclude with `⟨0, Fin.elim0, Fin.elim0, by simp⟩`. Introduce and unpack `x y ⟨n, c, v, rfl⟩ ⟨m, c', v', rfl⟩`. Use `⟨n + m, Fin.append c c', Fin.append v v', ?_⟩` and prove the remaining obligations. Rewrite using `[Fin.sum_univ_add]`.
+Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Fin.append_left, Fin.append_right]`. Introduce `c v`. Conclude with `⟨1, fun _ => c, fun _ => v, by simp⟩`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem IsExtension.exists_sum {a : V →ₛₗ[algebraMap K F] W} (h : IsExtension a) (x : W) :
     ∃ (n : ℕ) (c : Fin n → F) (v : Fin n → V), x = ∑ i, c i • a (v i) := by
@@ -135,17 +133,15 @@ theorem IsExtension.exists_sum {a : V →ₛₗ[algebraMap K F] W} (h : IsExtens
     exact ⟨1, fun _ => c, fun _ => v, by simp⟩
 
 /- English proof (translation)
-Establish `hcoord : ∀ ℓ : F →ₗ[K] K, ∃ Λ, IsCoord a ℓ Λ`. Introduce `ℓ`. Use `choose Λj hΛj using fun j => (hb j).coord ℓ`. Use `choose f hf using desc ℓ Λj hΛj`. Establish `uniq : ∀ v v' : V, (∀ j, π j v = π j v') → v = v'` using `fun v v' e => sub_eq_zero.mp (inj _ (fun j _ => by rw [map_sub, e j, sub_self]))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨{ toFun := f map_zero' := uniq _ _ (fun j => by simp [hf]) map_add' := fun x y => uniq _ _ (fun j => by simp [hf]) }, fun c v => ?_⟩` and prove the remaining obligations. Use `uniq _ _ (fun j => ?_)` and prove the remaining obligations. Use `show π j (f (c • a v)) = π j (ℓ c • v)`. Rewrite using `[hf, map_smul, comm, hΛj j c (π j v), map_smul]`. Use `⟨?_, hcoord⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `β` to `Module.Free.chooseBasis K F`. Use `choose Λj hΛj using fun j i => (hb j).coord (β.coord i)`. Rewrite using `[eq_top_iff]`. Introduce `x _`. Use `choose v hv using fun i => desc (β.coord i) (fun j => Λj j i) (fun j => hΛj j i) x`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `choose S hS hS' using fun j => exists_expansion β (hb j).span (fun i => hΛj j i) (π' j x)`. Establish `hv0 : ∀ i ∉ T.biUnion S, v i = 0` using `fun i hi => inj _ (fun j hj => by`. Rewrite using `[hv i j]`. Conclude with `hS j i (fun h => hi (Finset.mem_biUnion.mpr ⟨j, hj, h⟩)))`. Establish `hx : x = ∑ i ∈ T.biUnion S, β i • a (v i)`.
+Simplify using the standard rewrite rules. Use symmetry to reverse the relation. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `(sub_eq_zero.mp (inj' _ (fun j => ?_)))` and prove the remaining obligations. Rewrite using `[map_sub, sub_eq_zero, map_sum]`. Simplify using `only [map_smul, comm, hv]`. Use `conv_lhs => rw [hS' j (T.biUnion S ∪ S j) Finset.subset_union_right]`. Use `symm`.
-
-Apply `Finset.sum_subset Finset.subset_union_left` to reduce the goal to its premises. Introduce `i _ hi`. Rewrite using `[← hv i j, hv0 i hi, map_zero, map_zero, smul_zero]`. Rewrite using `[hx]`. Conclude with `Submodule.sum_mem _ (fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨v i, rfl⟩))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsExtension.of_proj {J : Type} {P Q : J → Type} [∀ j, AddCommGroup (P j)] [∀ j, Module K (P j)]
     [∀ j, AddCommGroup (Q j)] [∀ j, Module F (Q j)] (a : V →ₛₗ[algebraMap K F] W)
@@ -190,13 +186,11 @@ theorem IsExtension.of_proj {J : Type} {P Q : J → Type} [∀ j, AddCommGroup (
   exact Submodule.sum_mem _ (fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨v i, rfl⟩))
 
 /- English proof (translation)
-Establish `hb : ∀ (c : F) (v : A), H.out.equiv (c ⊗ₜ v) = c • a v`. Introduce `c v`. Rewrite using `[IsBaseChange.equiv_tmul, ha]`. Both sides reduce to the same expression. Use `⟨?_, fun ℓ => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[eq_top_iff]`. Introduce and unpack `y -`. Take `⟨t, rfl⟩` from `H.out.equiv.surjective y`. Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => rw [map_zero]`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately.
 
-Conclude with `Submodule.zero_mem _`. Consider the case `tmul c v => rw [hb]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨v, rfl⟩)`. Consider the case `add s t hs ht => rw [map_add]`. Conclude with `Submodule.add_mem _ hs ht`.
-
-Use `⟨(TensorProduct.lid K A).toLinearMap.toAddMonoidHom.comp ((TensorProduct.map ℓ LinearMap.id).toAddMonoidHom.comp H.out.equiv.symm.toLinearMap.toAddMonoidHom), fun c v => ?_⟩ show TensorProduct.lid K A (TensorProduct.map ℓ LinearMap.id (H.out.equiv.symm (c • a v))) = ℓ c • v` and prove the remaining obligations. Rewrite using `[← hb, LinearEquiv.symm_apply_apply, TensorProduct.map_tmul, TensorProduct.lid_tmul, LinearMap.id_apply]`.
+Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isExtension_of_isPushout {A B : Type} [CommRing A] [CommRing B] [Algebra K A] [Algebra F B]
     [Algebra K B] [Algebra A B] [IsScalarTower K A B] [IsScalarTower K F B] [H : Algebra.IsPushout K F A B]
@@ -231,23 +225,23 @@ variable {R : Type} [CommRing R] [IsDomain R] [Algebra R K] [IsFractionRing R K]
   [∀ j, AddCommGroup (P j)] [∀ j, Module K (P j)] [∀ j, AddCommGroup (P' j)] [∀ j, Module F (P' j)]
 
 /- English proof (translation)
-Establish `key : ∀ v w, E' v w → ∀ (ℓ : F →ₗ[K] K) (Λa : V' →+ V) (Λd : W' →+ W), IsCoord a ℓ Λa → IsCoord d ℓ Λd → E (Λa v) (Λd w)`. Introduce `v w hvw ℓ Λa Λd hΛa hΛd`. Take `⟨n, c, x, hx, rfl, hw⟩` from `(hE' v w).mp hvw`. Use `choose Λb hΛb using fun j => (hb j).coord ℓ`. Take `⟨t, ht⟩` from `IsLocalization.exist_integer_multiples_of_finite (nonZeroDivisors R) (fun i => ℓ (c i))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `choose s hs using fun i => RingHom.mem_rangeS.mp (ht i)`. Establish `hcoef : ∀ i, algebraMap R K (s i) = algebraMap R K (t : R) * ℓ (c i)`. Introduce `i`. Rewrite using `[hs i, Algebra.smul_def]`. Rewrite using `[hE]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨t, nonZeroDivisors.ne_zero t.2, ∑ i, s i • x i, Submodule.sum_mem _ (fun i _ => Submodule.smul_mem _ _ (hx i)), ?_, fun j => ?_⟩` and prove the remaining obligations. Rewrite using `[Prod.fst_sum, map_sum, map_sum, Finset.smul_sum]`. Use `Finset.sum_congr rfl (fun i _ => ?_)` and prove the remaining obligations. Rewrite using `[Prod.smul_fst, LinearMap.map_smulₛₗ, hΛa (c i) _, hcoef i, smul_smul]`. Establish `hnat` using `IsCoord.natural hd.span hΛd (hΛb j) (π j) (π' j) (comm j) w`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← hnat, hw j, map_sum, Prod.snd_sum, Finset.sum_apply, map_sum, Finset.smul_sum]`. Use `Finset.sum_congr rfl (fun i _ => ?_)` and prove the remaining obligations. Rewrite using `[Prod.smul_snd, Pi.smul_apply, LinearMap.map_smulₛₗ, hΛb j (c i) _, hcoef i, smul_smul]`. Establish `hne : ∀ r : R, r ≠ 0 → algebraMap K F (algebraMap R K r) ≠ 0` using `fun r hr => (map_ne_zero _).mpr ((map_ne_zero_iff _ (IsFractionRing.injective R K)).mpr hr)`. Establish `hcancel : ∀ (c : F) (r : R), r ≠ 0 → (c * (algebraMap K F (algebraMap R K r))⁻¹) * algebraMap K F (algebraMap R K r) = c` using `fun c r hr => by rw [mul_assoc, inv_mul_cancel₀ (hne r hr), mul_one]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨fun v => ?_, fun w => ?_⟩` and prove the remaining obligations. Take `⟨n, c, u, rfl⟩` from `ha.exists_sum v choose φ hφ using fun i => (bij.1 (u i)).exists choose r hr y hy hy₁ hy₂ using fun i => (hE _ _).mp (hφ i)`. Establish `h₀ : E' (∑ i, c i • a (u i)) (∑ i, c i • d (φ i))`. Rewrite using `[hE']`. Use `⟨n, fun i => c i * (algebraMap K F (algebraMap R K (r i)))⁻¹, y, hy, ?_, fun j => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl (fun i _ => ?_)` and prove the remaining obligations. Rewrite using `[hy₁, LinearMap.map_smulₛₗ, smul_smul, hcancel _ _ (hr i)]`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl (fun i _ => ?_)` and prove the remaining obligations. Rewrite using `[map_smul, comm, hy₂, LinearMap.map_smulₛₗ, smul_smul, hcancel _ _ (hr i)]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨_, h₀, fun w' hw' => hd.eq_of_coord (fun ℓ Λd hΛd => ?_)⟩` and prove the remaining obligations. Take `⟨Λa, hΛa⟩` from `ha.coord ℓ`. Conclude with `(bij.1 _).unique (key _ _ hw' ℓ Λa Λd hΛa hΛd) (key _ _ h₀ ℓ Λa Λd hΛa hΛd)`. Take `⟨n, c, u, rfl⟩` from `hd.exists_sum w choose φ hφ using fun i => (bij.2 (u i)).exists choose r hr y hy hy₁ hy₂ using fun i => (hE _ _).mp (hφ i)`. Establish `h₀ : E' (∑ i, c i • a (φ i)) (∑ i, c i • d (u i))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hE']`. Use `⟨n, fun i => c i * (algebraMap K F (algebraMap R K (r i)))⁻¹, y, hy, ?_, fun j => ?_⟩` and prove the remaining obligations. Use `Finset.sum_congr rfl (fun i _ => ?_)` and prove the remaining obligations. Rewrite using `[hy₁, LinearMap.map_smulₛₗ, smul_smul, hcancel _ _ (hr i)]`. Rewrite using `[map_sum]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl (fun i _ => ?_)` and prove the remaining obligations. Rewrite using `[map_smul, comm, hy₂, LinearMap.map_smulₛₗ, smul_smul, hcancel _ _ (hr i)]`. Use `⟨_, h₀, fun v' hv' => ha.eq_of_coord (fun ℓ Λa hΛa => ?_)⟩` and prove the remaining obligations. Take `⟨Λd, hΛd⟩` from `hd.coord ℓ`. Conclude with `(bij.2 _).unique (key _ _ hv' ℓ Λa Λd hΛa hΛd) (key _ _ h₀ ℓ Λa Λd hΛa hΛd)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem graph_bijective (X : Submodule R (V₀ × ∀ j, P₀ j))
     (ρ : V₀ →ₛₗ[algebraMap R K] V) (ρ' : ∀ j, P₀ j →ₛₗ[algebraMap R K] P j)

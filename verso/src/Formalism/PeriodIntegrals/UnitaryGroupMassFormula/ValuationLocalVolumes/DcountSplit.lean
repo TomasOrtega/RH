@@ -11,7 +11,7 @@ namespace PI.OmVe
 open PI.VolStabSW Matrix
 
 /- English proof (translation)
-Rewrite using `[_root_.zpow_neg, _root_.zpow_neg, zpow_natCast, zpow_natCast]`. Establish `hxn : x ^ n ≠ 0` using `pow_ne_zero _ hx`. Establish `hxn1 : x ^ (n + 1) ≠ 0` using `pow_ne_zero _ hx`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem keySplit (x : ℝ) (hx : x ≠ 0) (n : ℕ) :
     (x ^ 2) ^ (n + 1) - (2 * x ^ (n + 1) - 1) - (x - 1) * (x ^ (2 * n + 1) * (1 - x ^ (-((n + 1 : ℕ) : ℤ)))) =
@@ -23,21 +23,19 @@ theorem keySplit (x : ℝ) (hx : x ≠ 0) (n : ℕ) :
   ring
 
 /- English proof (translation)
-Use `Fintype.ofFinite k` as an intermediate fact. Establish `hk0 : 0 < Nat.card k` using `Nat.card_pos`. Establish `e2 : Nat.card k ^ M = Nat.card k ^ (M - a') * Nat.card k ^ a'`. Rewrite using `[← pow_add, Nat.sub_add_cancel haM]`. Establish `h1` using `card_half_snd J T0 hu Y hY`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2` using `card_half_fst J T0 hu Y hY`. Rewrite `h1`, `h2` using `[e2]`. Establish `c1` using `Nat.eq_of_mul_eq_mul_right (pow_pos hk0 _) h1`. Establish `c2` using `Nat.eq_of_mul_eq_mul_right (pow_pos hk0 _) h2`. Simplify using `only [Nat.card_eq_fintype_card, Fintype.card_subtype] at c1 c2 ⊢`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `set s1 := Finset.univ.filter (fun x : Fin M → k × k => (∀ j, ffH (RingEquiv.prodComm (R := k) (S := k)).toRingHom J (Y j) x = 0) ∧ ∀ l, (x l).2 = 0)`. Use `set s2 := Finset.univ.filter (fun x : Fin M → k × k => (∀ j, ffH (RingEquiv.prodComm (R := k) (S := k)).toRingHom J (Y j) x = 0) ∧ ∀ l, (x l).1 = 0)`. Establish `hs : Finset.univ.filter (fun x : Fin M → k × k => (∀ j, ffH (RingEquiv.prodComm (R` using `k) (S := k)).toRingHom J (Y j) x = 0) ∧ ffH (RingEquiv.prodComm (R := k) (S := k)).toRingHom J x x = 0 ∧ ¬ ∀ c : k × k, c • x = 0 → c = 0) = s1 ∪ s2 := by`. Use extensionality with `x`. Simplify using `only [s1, s2, Finset.mem_filter, Finset.mem_union, Finset.mem_univ, true_and]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Rewrite using `[notFree_iff]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hP, _, h | h⟩`. Conclude with `Or.inr ⟨hP, h⟩`. Conclude with `Or.inl ⟨hP, h⟩`.
+Assume the hypotheses and unpack their components. Prove the second alternative. Prove the first alternative. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `(⟨hP, h⟩ | ⟨hP, h⟩)`. Conclude with `⟨hP, ffH_self_of_snd J x h, Or.inr h⟩`. Conclude with `⟨hP, ffH_self_of_fst J x h, Or.inl h⟩`. Establish `hi : s1 ∩ s2 = {0}`. Use extensionality with `x`.
+Supply the required witnesses or components. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Simplify using `only [s1, s2, Finset.mem_filter, Finset.mem_inter, Finset.mem_univ, true_and, Finset.mem_singleton]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨_, h2⟩, ⟨_, h1⟩⟩`. Use function extensionality and compare the values at `l`. Conclude with `Prod.ext (h1 l) (h2 l)`.
+Assume the hypotheses and unpack their components. Apply function extensionality and compare values at an arbitrary argument. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact.
 
-Introduce and unpack `rfl`. Conclude with `⟨⟨fun j => ffH_zero_right _ _ _, fun l => rfl⟩, ⟨fun j => ffH_zero_right _ _ _, fun l => rfl⟩⟩`. Establish `hu2` using `Finset.card_union_add_card_inter s1 s2`. Rewrite `hu2` using `[hi, Finset.card_singleton, c1, c2]`. Rewrite using `[hs, hu2]`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem dcount_split {k : Type} [Field k] [Finite k] {M : ℕ} (J : Matrix (Fin M) (Fin M) (k × k)) {a' : ℕ}
     (haM : a' ≤ M) (T0 : Matrix (Fin a') (Fin a') (k × k)) (hu : IsUnit T0.det)

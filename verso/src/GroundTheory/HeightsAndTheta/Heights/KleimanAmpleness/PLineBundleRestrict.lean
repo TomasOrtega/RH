@@ -21,9 +21,9 @@ variable (hsp : primeOf (S := k) x ≤ primeOf (S := k) y) (hxy : ∀ i, y i ≠
 include hsp
 
 /- English proof (translation)
-Take `⟨c, hc⟩` from `ha.exists_right_inv`. Establish `hc' : (a : Ω) * (c : Ω) = 1` using `congrArg Subtype.val hc`. Establish `haL` using `chartRing_sub_locAt hsp hxy I a.2`. Establish `hcL` using `chartRing_sub_locAt hsp hxy J c.2`. Use `⟨haL.1, _, hcL.2, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← (locAt_mul hsp haL.1 hcL.1).2, hc', (locAt_one hsp).2]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem redAt_isUnit_of_isUnit {I J : Chart y} (h : I.1 ⊆ J.1)
     (a : chartRing k x (liftChart hxy I))
@@ -37,7 +37,7 @@ theorem redAt_isUnit_of_isUnit {I J : Chart y} (h : I.1 ⊆ J.1)
   rw [← (locAt_mul hsp haL.1 hcL.1).2, hc', (locAt_one hsp).2]
 
 /- English proof (translation)
-Establish `hIJ : I.1 ⊆ (restrictUnion I J).1` using `Finset.subset_union_left`. Take `⟨a, ha, haz⟩` from `(Q.mem_iff (liftChart hxy I) (liftChart hxy (restrictUnion I J)) hIJ z).mp hz`. Take `⟨haL, b, -, hb⟩` from `redAt_isUnit_of_isUnit hsp hxy hIJ a ha`. Rewrite `haz` using `[smul_eq_mul]`. Conclude with `⟨a, a.2, haL, left_ne_zero_of_mul_eq_one hb, haz⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 -/
 theorem exists_mul_mem_of_mem_restrictUnion (Q : LineBundle k x) (I J : Chart y) {z : Ω}
     (hz : z ∈ Q.sub (liftChart hxy (restrictUnion I J))) :
@@ -50,19 +50,17 @@ theorem exists_mul_mem_of_mem_restrictUnion (Q : LineBundle k x) (I J : Chart y)
   exact ⟨a, a.2, haL, left_ne_zero_of_mul_eq_one hb, haz⟩
 
 /- English proof (translation)
-Distinguish the cases in `hI : Nonempty (Chart y)`. Use `swap`. Conclude with `⟨1, one_ne_zero, fun I => (hI ⟨I⟩).elim, fun I => (hI ⟨I⟩).elim⟩`. Take `⟨I₀⟩` from `hI`. Take `⟨M, hM⟩` from `Q.invertible (liftChart hxy I₀)`.
+Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hA : ∀ {q m : Ω}, q ∈ Q.sub (liftChart hxy I₀) → m ∈ M → q * m ∈ locAt k x y` using `fun hq hm => (chartRing_sub_locAt hsp hxy I₀ (mul_mem_chartRing_of_mul_eq_one hM hq hm)).1`. Establish `h1 : (1 : Ω) ∈ Q.sub (liftChart hxy I₀) * M`. Rewrite using `[hM]`. Conclude with `Submodule.mem_one.mpr ⟨1, map_one _⟩`. Choose the witnesses or unpack the hypotheses as in `⟨γ, hγ, m₀, hm₀, hne⟩ : ∃ γ ∈ Q.sub (liftChart hxy I₀), ∃ m₀ ∈ M, redAt k x y (γ * m₀) ≠ 0 := by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`. Use `Submodule.mul_induction_on (C := fun z => z ∈ locAt k x y ∧ redAt k x y z = 0) h1 (fun q hq m hm => ⟨hA hq hm, hcon q hq m hm⟩) (fun u v hu hv => ⟨(locAt_add hsp hu.1 hv.1).1, by` as an intermediate fact. Rewrite using `[(locAt_add hsp hu.1 hv.1).2, hu.2, hv.2, add_zero]⟩)`. Rewrite `this` using `[(locAt_one hsp).2]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `one_ne_zero this.2`. Establish `hγm` using `hA hγ hm₀`. Establish `hγm0` using `(locAt_inv hsp hγm hne).1`. Establish `hγ0 : γ ≠ 0` using `left_ne_zero_of_mul hγm0`. Establish `hm0 : m₀ ≠ 0` using `right_ne_zero_of_mul hγm0`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨γ, hγ0, ?_, ?_⟩` and prove the remaining obligations. Introduce `I q hq`. Establish `hsub : I.1 ⊆ (restrictUnion I₀ I).1` using `Finset.subset_union_right`. Take `⟨a, -, haL, har, haq⟩` from `exists_mul_mem_of_mem_restrictUnion hsp hxy Q I₀ I (Q.mono (liftChart hxy I) (liftChart hxy (restrictUnion I₀ I)) hsub q hq)`. Establish `ha0 : a ≠ 0` using `(locAt_inv hsp haL har).1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hnum` using `hA haq hm₀`. Establish `hden` using `locAt_mul hsp haL hγm`. Establish `hden0 : redAt k x y (a * (γ * m₀)) ≠ 0` using `by rw [hden.2]; exact mul_ne_zero har hne`. Establish `heq : q / γ = a * q * m₀ / (a * (γ * m₀))`. Rewrite using `[mul_assoc a q m₀, mul_div_mul_left _ _ ha0, mul_div_mul_right _ _ hm0]`.
-
-Rewrite using `[heq]`. Conclude with `(locAt_div hsp hnum hden.1 hden0).1`. Introduce `I`. Establish `hsub : I₀.1 ⊆ (restrictUnion I I₀).1` using `Finset.subset_union_right`. Conclude with `exists_mul_mem_of_mem_restrictUnion hsp hxy Q I I₀ (Q.mono (liftChart hxy I₀) (liftChart hxy (restrictUnion I I₀)) hsub γ hγ)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_restrict_gen (Q : LineBundle k x) :
     ∃ γ : Ω, γ ≠ 0 ∧ RedGood hxy Q.toSubSystem γ ∧ ∀ I : Chart y,
@@ -111,13 +109,13 @@ theorem exists_restrict_gen (Q : LineBundle k x) :
 variable {γ : Ω} {Q : LineBundle k x}
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Use `Submodule.span_le.mpr ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨q, hq, rfl⟩`. Establish `hq' : q ∈ Submodule.span (chartRing k x (liftChart hxy I)) s` using `by rw [hs]; exact hq`. Use `Submodule.span_induction (p := fun q _ => redAt k x y (q / γ) ∈ Submodule.span (chartRing k y I) ((fun q => redAt k x y (q / γ)) '' s)) ?_ ?_ ?_ ?_ hq'` and prove the remaining obligations.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `q hq`. Conclude with `Submodule.subset_span ⟨q, hq, rfl⟩`. Rewrite using `[zero_div, (locAt_zero hsp).2]`. Conclude with `Submodule.zero_mem _`. Introduce `u v hu hv ihu ihv`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[add_div, (locAt_add hsp (hg I u (hs ▸ hu)) (hg I v (hs ▸ hv))).2]`. Conclude with `Submodule.add_mem _ ihu ihv`. Introduce `c u hu ihu`. Rewrite using `[chartRing_smul_def, mul_div_assoc, (locAt_mul hsp (chartRing_sub_locAt hsp hxy I c.2).1 (hg I u (hs ▸ hu))).2]`. Use `Submodule.smul_mem _ (⟨_, (chartRing_sub_locAt hsp hxy I c.2).2⟩ : chartRing k y I) ihu` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Rewrite `this` using `[chartRing_smul_def]`. Then use the resulting hypothesis. Use `Submodule.span_le.mpr ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨q, hq, rfl⟩`. Establish `hq' : q ∈ Q.sub (liftChart hxy I)` using `by rw [← hs]; exact Submodule.subset_span hq`. Conclude with `Submodule.subset_span ⟨q, hq', rfl⟩`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem redSys_sub_eq_span (hg : RedGood hxy Q.toSubSystem γ) (I : Chart y) {s : Set Ω}
     (hs : Submodule.span (chartRing k x (liftChart hxy I)) s = Q.sub (liftChart hxy I)) :
@@ -145,13 +143,13 @@ theorem redSys_sub_eq_span (hg : RedGood hxy Q.toSubSystem γ) (I : Chart y) {s 
     exact Submodule.subset_span ⟨q, hq', rfl⟩
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hz`. Take `⟨q, hq, rfl⟩` from `(mem_redSys_iff hsp hxy hg J z).mp hz`. Take `⟨b, hb, hbq⟩` from `(Q.mem_iff (liftChart hxy I) (liftChart hxy J) h q).mp hq`. Take `⟨hbL, b', hb'A, hbb'⟩` from `redAt_isUnit_of_isUnit hsp hxy h b hb`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hbI` using `(chartRing_sub_locAt hsp hxy I b.2).2`. Use `⟨⟨_, hbI⟩, IsUnit.of_mul_eq_one ⟨b', hb'A⟩ (Subtype.ext hbb'), ?_⟩` and prove the remaining obligations. Rewrite `hbq` using `[smul_eq_mul]`. Express the relevant statement in the definitionally equal form `redAt k x y b * redAt k x y (q / γ) ∈ (redSys hxy Q.toSubSystem γ).sub I`. Rewrite using `[← (locAt_mul hsp hbL (hg J q hq)).2, ← mul_div_assoc]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.subset_span ⟨_, hbq, rfl⟩`. Introduce and unpack `⟨c, hc, hcz⟩`. Take `⟨c', hc'⟩` from `hc.exists_left_inv`. Establish `hc'' : (c' : K') * (c : K') = 1` using `congrArg Subtype.val hc'`. Use `Submodule.smul_mem _ c' ((redSys hxy Q.toSubSystem γ).mono I J h _ hcz)` as an intermediate fact.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `this` using `[chartRing_smul_def, smul_eq_mul, ← mul_assoc, hc'', one_mul]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem redSys_mem_iff (hg : RedGood hxy Q.toSubSystem γ) (I J : Chart y) (h : I.1 ⊆ J.1) (z : K') :
     z ∈ (redSys hxy Q.toSubSystem γ).sub J ↔ ∃ c : chartRing k y I, IsUnit (chartIncl h c) ∧
@@ -174,19 +172,15 @@ theorem redSys_mem_iff (hg : RedGood hxy Q.toSubSystem γ) (I J : Chart y) (h : 
     rwa [chartRing_smul_def, smul_eq_mul, ← mul_assoc, hc'', one_mul] at this
 
 /- English proof (translation)
-Take `⟨b, -, hbL, hbr, hbγ⟩` from `hb`. Take `⟨M, hM⟩` from `Q.invertible (liftChart hxy I)`. Use `⟨Submodule.span (chartRing k y I) ((fun m => redAt k x y (m * γ)) '' M), ?_⟩` and prove the remaining obligations. Establish `hA : ∀ {q m : Ω}, q ∈ Q.sub (liftChart hxy I) → m ∈ M → q * m ∈ chartRing k x (liftChart hxy I)` using `fun hq hm => mul_mem_chartRing_of_mul_eq_one hM hq hm`. Establish `hb0 : b ≠ 0` using `(locAt_inv hsp hbL hbr).1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmg : ∀ {m : Ω}, m ∈ M → m * γ ∈ locAt k x y`. Introduce `m hm`. Establish `h1` using `(chartRing_sub_locAt hsp hxy I (hA hbγ hm)).1`. Establish `heq : m * γ = b * γ * m / b` using `by rw [eq_div_iff hb0]; ring`. Rewrite using `[heq]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(locAt_div hsp h1 hbL hbr).1`. Establish `hsplit : ∀ q m : Ω, q * m = q / γ * (m * γ)` using `fun q m => by field_simp`. Apply `le_antisymm` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `Submodule.span _ _ * Submodule.span _ _ ≤ 1`. Rewrite using `[Submodule.span_mul_span, Submodule.span_le]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ ⟨_, ⟨q, hq, rfl⟩, _, ⟨m, hm, rfl⟩, rfl⟩`. Use `show redAt k x y (q / γ) * redAt k x y (m * γ) ∈ (1 : Submodule (chartRing k y I) K')`. Rewrite using `[← (locAt_mul hsp (hg I q hq) (hmg hm)).2, ← hsplit]`. Conclude with `Submodule.mem_one.mpr ⟨⟨_, (chartRing_sub_locAt hsp hxy I (hA hq hm)).2⟩, rfl⟩`. Rewrite using `[Submodule.one_le]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : (1 : Ω) ∈ Q.sub (liftChart hxy I) * M`. Rewrite using `[hM]`. Conclude with `Submodule.mem_one.mpr ⟨1, map_one _⟩`. Use `Submodule.mul_induction_on (C := fun z => z ∈ locAt k x y ∧ redAt k x y z ∈ (redSys hxy Q.toSubSystem γ).sub I * Submodule.span (chartRing k y I) ((fun m => redAt k x y (m * γ)) '' M)) h1 (fun q hq m hm => ⟨(chartRing_sub_locAt hsp hxy I (hA hq hm)).1, by` as an intermediate fact. Rewrite using `[hsplit, (locAt_mul hsp (hg I q hq) (hmg hm)).2]`.
-
-Conclude with `Submodule.mul_mem_mul (Submodule.subset_span ⟨q, hq, rfl⟩) (Submodule.subset_span ⟨m, hm, rfl⟩)⟩)`. Use the proof step `(fun u v hu hv => ⟨(locAt_add hsp hu.1 hv.1).1, by`. Rewrite using `[(locAt_add hsp hu.1 hv.1).2]`. Conclude with `Submodule.add_mem _ hu.2 hv.2⟩)`. Rewrite `this` using `[(locAt_one hsp).2]`.
-
-Conclude with `this.2`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem redSys_invertible (hγ0 : γ ≠ 0) (hg : RedGood hxy Q.toSubSystem γ) (I : Chart y)
     (hb : ∃ b ∈ chartRing k x (liftChart hxy I), b ∈ locAt k x y ∧ redAt k x y b ≠ 0 ∧
@@ -230,9 +224,9 @@ theorem redSys_invertible (hγ0 : γ ≠ 0) (hg : RedGood hxy Q.toSubSystem γ) 
 omit hsp in
 
 /- English proof (translation)
-Introduce `k _ Ω _ _ N x K' _ _ y hxy hsp Q`. Take `⟨γ, hγ0, hg, hb⟩` from `exists_restrict_gen hsp hxy Q`. Use `⟨LineBundle.mk (SubFamily.mk (redSys hxy Q.toSubSystem γ) (redSys_mem_iff hsp hxy hg)) ?_ ?_, _, restrictData_redSys hsp hxy hg _ rfl⟩` and prove the remaining obligations. Introduce `I`. Take `⟨s, hs⟩` from `Q.fg (liftChart hxy I)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite using `[redSys_sub_eq_span hsp hxy hg I hs]`. Conclude with `Submodule.fg_span (s.finite_toSet.image _)`. Introduce `I`. Conclude with `redSys_invertible hsp hxy hγ0 hg I (hb I)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem LineBundleRestrict.proof : LineBundleRestrict.Statement.{u, w} := by
   intro k _ Ω _ _ N x K' _ _ y hxy hsp Q

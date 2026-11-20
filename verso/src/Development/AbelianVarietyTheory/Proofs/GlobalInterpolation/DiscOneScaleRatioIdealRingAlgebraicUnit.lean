@@ -24,9 +24,9 @@ def scalePair (L : PeriodPair) (c : ℂ) (hc : c ≠ 0) : PeriodPair :=
     exact LinearIndependent.pair_iff.1 L.indep s t h'⟩
 
 /- English proof (translation)
-Rewrite using `[PeriodPair.mem_lattice, PeriodPair.mem_lattice]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨m, n, h⟩`. Use `⟨m, n, mul_left_cancel₀ hc ?_⟩` and prove the remaining obligations. Simplify using `only [scalePair] at h`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Take the linear combination `h`. Introduce and unpack `⟨m, n, rfl⟩`. Conclude with `⟨m, n, by simp only [scalePair]; ring⟩`.
+Take a linear combination of the given relations to obtain the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem mem_scalePair (L : PeriodPair) (c : ℂ) (hc : c ≠ 0) (z : ℂ) :
     c * z ∈ (scalePair L c hc).lattice ↔ z ∈ L.lattice := by
@@ -40,9 +40,9 @@ theorem mem_scalePair (L : PeriodPair) (c : ℂ) (hc : c ≠ 0) (z : ℂ) :
     exact ⟨m, n, by simp only [scalePair]; ring⟩
 
 /- English proof (translation)
-Set `e : (L.lattice : Set ℂ) ≃ ((scalePair L c hc).lattice : Set ℂ)` to `(Equiv.mulLeft₀ c hc).subtypeEquiv fun w => by`. Simplify using `using (mem_scalePair L c hc w).symm`. Establish `h2 : ∀ P : PeriodPair, P.G k = ∑' w : (P.lattice : Set ℂ), ((w : ℂ) ^ k)⁻¹` using `fun _ => rfl`. Rewrite using `[h2, h2, ← e.tsum_eq, ← tsum_mul_left]`. Use `tsum_congr fun w => ?_` and prove the remaining obligations.
+Introduce a local definition for the expression. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: ((e w : ((scalePair L c hc).lattice : Set ℂ)) : ℂ) = c * w` using `rfl`. Rewrite using `[this, mul_pow, mul_inv, ← mul_assoc, mul_inv_cancel₀ (pow_ne_zero _ hc), one_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem G_scale (L : PeriodPair) (c : ℂ) (hc : c ≠ 0) (k : ℕ) :
     L.G k = c ^ k * (scalePair L c hc).G k := by
@@ -56,14 +56,14 @@ theorem G_scale (L : PeriodPair) (c : ℂ) (hc : c ≠ 0) (k : ℕ) :
   rw [this, mul_pow, mul_inv, ← mul_assoc, mul_inv_cancel₀ (pow_ne_zero _ hc), one_mul]
 
 /- English proof (translation)
-Simplify using `only [PeriodPair.g₂, G_scale L c hc 4]`. Clear the denominators using the available nonvanishing facts.
+Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts.
 -/
 theorem g₂_scale (L : PeriodPair) (c : ℂ) (hc : c ≠ 0) : (scalePair L c hc).g₂ = L.g₂ / c ^ 4 := by
   simp only [PeriodPair.g₂, G_scale L c hc 4]
   field_simp
 
 /- English proof (translation)
-Simplify using `only [PeriodPair.g₃, G_scale L c hc 6]`. Clear the denominators using the available nonvanishing facts.
+Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts.
 -/
 theorem g₃_scale (L : PeriodPair) (c : ℂ) (hc : c ≠ 0) : (scalePair L c hc).g₃ = L.g₃ / c ^ 6 := by
   simp only [PeriodPair.g₃, G_scale L c hc 6]
@@ -72,11 +72,11 @@ theorem g₃_scale (L : PeriodPair) (c : ℂ) (hc : c ≠ 0) : (scalePair L c hc
 variable {q : ℕ} [Fact q.Prime]
 
 /- English proof (translation)
-Take `⟨h0, h1, h2, h3, h4, h6, hΔ, hg2, hg3⟩` from `hM`. Use `⟨div_ne_zero h0 hc, h1, h2, h3, h4, h6, hΔ, ?_, ?_⟩` and prove the remaining obligations. Establish `: (scalePair M.L c hc).g₂ / (M.c / c) ^ 4 = M.L.g₂ / M.c ^ 4`. Rewrite using `[g₂_scale]`. Clear the denominators using the available nonvanishing facts.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Use `show M.W.c₄ / 12 = M.ι _`. Rewrite using `[this]`. Conclude with `hg2`. Establish `: (scalePair M.L c hc).g₃ / (M.c / c) ^ 6 = M.L.g₃ / M.c ^ 6`. Rewrite using `[g₃_scale]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities.
 
-Clear the denominators using the available nonvanishing facts. Use `show M.W.c₆ / 216 = M.ι _`. Rewrite using `[this]`. Conclude with `hg3`.
+A detailed English derivation is pending.
 -/
 theorem ok_scale (M : Mdl q) (hM : M.Ok) (c : ℂ) (hc : c ≠ 0) :
     (Mdl.mk M.ι (scalePair M.L c hc) (M.c / c) M.W).Ok := by
@@ -92,13 +92,13 @@ theorem ok_scale (M : Mdl q) (hM : M.Ok) (c : ℂ) (hc : c ≠ 0) :
     rw [this]; exact hg3
 
 /- English proof (translation)
-Establish `hc : (N : ℂ) ≠ 0` using `by exact_mod_cast hN0`. Establish `hL` using `Basic.isOK_okPair d hd.pos`. Take `⟨M, hMι, hML, hOk, -⟩` from `exists_model d q ι _ hd h16 hL`. Establish `hIs : IsOK d M.L` using `hML ▸ hL`. Substitute `hMι` using the available equality.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality.
 
-Establish `hk` using `GlobalTheory.T.norm_discriminant_superlattice_odd_index_eq q (Mdl.mk M.ι (scalePair M.L N hc) (M.c / N) M.W) L' N hq (ok_scale M hOk N hc) hN (fun z hz => by`. Establish `e : z = (N : ℂ) * (z / N)` using `by field_simp`. Establish `hz' : (N : ℂ) * (z / N) ∈ (scalePair M.L N hc).lattice` using `by rw [← e]; exact hz`. Rewrite using `[e]`. Conclude with `h1 _ ((hIs _).1 ((mem_scalePair M.L N hc _).1 hz')))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use the proof step `(fun x hx => (mem_scalePair M.L N hc x).2 ((hIs x).2 (h2 x hx)))`. Establish `e : (scalePair M.L N hc).g₂ ^ 3 - 27 * (scalePair M.L N hc).g₃ ^ 2 = (M.L.g₂ ^ 3 - 27 * M.L.g₃ ^ 2) / (N : ℂ) ^ 12`. Rewrite using `[g₂_scale, g₃_scale]`. Clear the denominators using the available nonvanishing facts. Establish `hnorm : ‖M.ι (N : ℂ)‖ = 1`.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_natCast]`. Conclude with `Basic.norm_nat_eq_one (Nat.Coprime.symm (Nat.coprime_mul_iff_right.1 hN).2)`. Use `hk.trans ?_` and prove the remaining obligations. Use `show ‖M.ι ((scalePair M.L N hc).g₂ ^ 3 - 27 * (scalePair M.L N hc).g₃ ^ 2)‖ = _`. Rewrite using `[e, map_div₀, norm_div, map_pow, norm_pow, hnorm, one_pow, div_one, (Basic.discr_eq hIs).1]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_disc_ring (ι : ℂ ≃+* ℂ_[q]) {d : ℕ} (hd : d.Prime) (h16 : d % 16 = 7) (L' : PeriodPair) (N : ℕ)
     (hq : q ≠ 2) (hN : Nat.Coprime N (2 * q)) (hN0 : N ≠ 0)
@@ -131,21 +131,19 @@ end Scale
 open NumberField Formalism.BasicNotions Classical Formalism.MainNotions Formalism.MainNotions.TaylorLogMetric Formalism.L2.Ker GlobalTheory.MomN
 
 /- English proof (translation)
-Introduce `D cc δ δ₀ hcc hδ hδ₀ q _ hq hNq`. Take `⟨hdp, h16, hOK, -, hlam⟩` from `GlobalTheory.T.cmBaseField_integers_and_curveIdeal_facts D`. Take `⟨hne, hcop⟩` from `hcc`. Establish `hN0 : Ideal.absNorm cc ≠ 0` using `fun h => hne (Ideal.absNorm_eq_zero_iff.1 h)`. Establish `hN2 : Nat.Coprime (Ideal.absNorm cc) (2 * q)` using `Nat.coprime_mul_iff_right.2 ⟨(Nat.coprime_mul_iff_right.1 hcop).1, hNq⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨L', hL'⟩` from `Formalism.L2.PairingIndexBounds.Rec.exists_pp D cc hne`. Establish `hmem : ((Ideal.absNorm cc : ℕ) : 𝓞 D.host.K) ∈ cc` using `Ideal.absNorm_mem cc`. Establish `hΔ : Formalism.MainNotions.TaylorLogMetric.discr (Formalism.MainNotions.TaylorLogMetric.lamOf D cc 1) = L'.g₂ ^ 3 - 27 * L'.g₃ ^ 2`. Establish `h4` using `Formalism.L2.PairingIndexBounds.Rec.eisG_eq_G _ L' hL' 2 (by norm_num)`. Establish `h6` using `Formalism.L2.PairingIndexBounds.Rec.eisG_eq_G _ L' hL' 3 (by norm_num)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `Formalism.MainNotions.TaylorLogMetric.discr Formalism.MainNotions.TaylorLogMetric.g2 Formalism.MainNotions.TaylorLogMetric.g3`. Rewrite using `[h4, h6]`. Simplify using `[PeriodPair.g₂, PeriodPair.g₃]`. Establish `h1 : ∀ z, GlobalTheory.MomOne.InOK D.host.d z → ((Ideal.absNorm cc : ℕ) : ℂ) * z ∈ L'.lattice`. Introduce `z hz`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨x, rfl⟩` from `(hOK z).1 hz`. Use `(hL' _).1 ((hlam cc 1 hne).2 _ |>.2 ⟨((Ideal.absNorm cc : ℕ) : 𝓞 D.host.K) * x, cc.mul_mem_right x hmem, ?_⟩)` and prove the remaining obligations. Simplify using the standard rewrite rules. Establish `h2 : ∀ x ∈ L'.lattice, GlobalTheory.MomOne.InOK D.host.d x`. Introduce `x hx`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨c, -, rfl⟩` from `((hlam cc 1 hne).2 x).1 ((hL' x).2 hx)`. Conclude with `(hOK _).2 ⟨c, by simp⟩`. Establish `hne₀ : GlobalTheory.MomOne.discr D.host.d ≠ 0` using `(GlobalTheory.MomOne.Basic.discr_eq (GlobalTheory.MomOne.Basic.isOK_okPair _ hdp.pos)).2`. Establish `hδ₀0 : δ₀ ≠ 0`. Introduce and unpack `rfl`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Conclude with `hne₀ (by rw [← hδ₀]; simp)`. Establish `key : ∀ ι : ℂ ≃+* ℂ_[q], ‖ι (δ / δ₀)‖ = 1`. Introduce `ι`. Establish `h` using `norm_disc_ring ι hdp h16 L' _ hq hN2 hN0 h1 h2`. Establish `hδ' : δ ^ 12 = L'.g₂ ^ 3 - 27 * L'.g₃ ^ 2` using `by rw [← hΔ]; exact hδ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h` using `[← hδ', ← hδ₀, map_pow, map_pow, norm_pow, norm_pow]`. Establish `hι₀ : ‖ι δ₀‖ ≠ 0` using `by simpa using hδ₀0`. Establish `h12 : ‖ι (δ / δ₀)‖ ^ 12 = 1`. Rewrite using `[map_div₀, norm_div, div_pow, h, div_self (pow_ne_zero _ hι₀)]`. Conclude with `(pow_eq_one_iff_of_nonneg (norm_nonneg _) (by norm_num)).1 h12`.
-
-Take `⟨ι⟩` from `GlobalTheory.MomOne.Basic.nonempty_iso q`. Conclude with `⟨GlobalTheory.MomOne.mem_algebraicClosure_of_norm_le q ι _ 1 fun ι' _ => (key ι').le, key⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem delta_ratio : ∀ (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ δ₀ : ℂ), IsCurveIdeal D cc → IsDiscriminantTwelfthRootOfIdealLattice D cc δ →
     δ₀ ^ 12 = GlobalTheory.MomOne.discr D.host.d → ∀ (q : ℕ) [Fact q.Prime], q ≠ 2 → Nat.Coprime (Ideal.absNorm cc) q →

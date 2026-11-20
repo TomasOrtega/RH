@@ -4,24 +4,24 @@ import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.NormLeO
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.GaloisCohomology UpperTheory.V UpperTheory.V.Base
 
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.NormLeOneOfIsIntegral.norm_le_one_of_isIntegral l x hx`.
+A detailed English derivation is pending.
 -/
 private theorem norm_le_one_of_int (l : ℕ) [Fact l.Prime] (x : PadicAlgCl l) (hx : IsIntegral ℤ_[l] x) :
     ‖x‖ ≤ 1 :=
   _root_.UpperTheory.Reformulated.B.NormLeOneOfIsIntegral.norm_le_one_of_isIntegral l x hx
 
 /- English proof (translation)
-Introduce `l _ O _ _ a ha`. Establish `hle : ∀ x : O, ‖(x : PadicAlgCl l)‖ ≤ 1` using `fun x => norm_le_one_of_int l _ ((Algebra.IsIntegral.isIntegral (R := ℤ_[l]) x).map O.val)`. Establish `hu : ∀ u : Oˣ, ‖((u : O) : PadicAlgCl l)‖ = 1`. Introduce `u`. Establish `h1 : ‖((u : O) : PadicAlgCl l)‖ * ‖((u⁻¹ : Oˣ) : O).1‖ = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[← norm_mul, ← Subalgebra.coe_mul, Units.mul_inv]`. Simplify using the standard rewrite rules. Establish `h2` using `hle u`. Establish `h3` using `hle (u⁻¹ : Oˣ)`. Establish `h4` using `norm_nonneg ((u : O) : PadicAlgCl l)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use the polynomial consequences of the given equalities and inequalities. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible O`. Establish `key : ∀ x : O, x ≠ 0 → ‖(x : PadicAlgCl l)‖ = ‖(ϖ : PadicAlgCl l)‖ ^ (IsDiscreteValuationRing.addVal O x).toNat`. Introduce `x hx`. Take `⟨n, u, h⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible hx hϖ`.
+Use the polynomial consequences of the given equalities and inequalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite using `[IsDiscreteValuationRing.addVal_def x u hϖ n h, h]`. Simplify using `[hu]`. Establish `hl0 : (l : O) ≠ 0`. Introduce `h`. Establish `h' : ((l : O) : PadicAlgCl l) = 0` using `by rw [h]; rfl`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `: (l : PadicAlgCl l) = 0` using `by simpa using h'`. Conclude with `(Nat.cast_ne_zero.2 (Fact.out : l.Prime).ne_zero) this`. Establish `hl : ‖((l : O) : PadicAlgCl l)‖ = (l : ℝ)⁻¹`. Establish `: ((l : O) : PadicAlgCl l) = algebraMap ℚ_[l] (PadicAlgCl l) (l : ℚ_[l])` using `by simp`. Rewrite using `[this, norm_algebraMap', Padic.norm_p]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `he : eO l O = IsDiscreteValuationRing.addVal O (l : O)` using `Ring.ord_eq_addVal (l : O)`. Rewrite using `[he, ← hl, key a ha, key _ hl0, ← pow_mul, ← pow_mul, mul_comm]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Base.normO :
     ∀ (l : ℕ) [Fact l.Prime] (O : Subalgebra ℤ_[l] (PadicAlgCl l)) [IsDiscreteValuationRing O] [Module.Finite ℤ_[l] O] (a : O), a ≠ 0 →

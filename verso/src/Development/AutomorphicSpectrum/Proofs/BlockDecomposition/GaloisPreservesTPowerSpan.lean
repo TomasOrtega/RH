@@ -10,9 +10,9 @@ open GroundTheory.PAdicHodge Formalism.Per6 DividedPowers CrystallineSemistableC
 namespace GlobalTheory.CompanionTheory.LatGal
 
 /- English proof (translation)
-Rewrite `hx`, the goal using `[IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]`. Introduce `hu`. Apply `hx` to reduce the goal to its premises. Establish `h1 : galBdRHom σ⁻¹ (galBdRHom σ x) = x`. Rewrite using `[← RingHom.comp_apply, ← galBdRHom_mul, inv_mul_cancel, galBdRHom_one, RingHom.id_apply]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← h1]`. Conclude with `hu.map _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem galBdRHom_mem_maximalIdeal {p : ℕ} [Fact p.Prime] {K : IntermediateField ℚ_[p] (PadicAlgCl p)}
     (σ : PadicAlgCl p ≃ₐ[K] PadicAlgCl p) (x : BDeRhamPlus (normInteger ℂ_[p]) p)
@@ -27,9 +27,9 @@ private theorem galBdRHom_mem_maximalIdeal {p : ℕ} [Fact p.Prime] {K : Interme
   exact hu.map _
 
 /- English proof (translation)
-Rewrite using `[Ideal.span_le, Set.singleton_subset_iff, SetLike.mem_coe, Ideal.mem_comap, map_pow]`. Establish `ht : Lat.gP l g (tBdR l) ∈ Ideal.span {tBdR l}`. Rewrite using `[← maximalIdeal_eq_span_tBdR]`. Conclude with `galBdRHom_mem_maximalIdeal _ _ (by rw [maximalIdeal_eq_span_tBdR]; exact Ideal.mem_span_singleton_self _)`. Take `⟨c, hc⟩` from `Ideal.mem_span_singleton'.mp ht`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hc, mul_pow]`. Conclude with `Ideal.mul_mem_left _ _ (Ideal.mem_span_singleton_self _)`.
+A detailed English derivation is pending.
 -/
 theorem span_tBdR_pow_le_comap (l : ℕ) [Fact l.Prime] (K : IntermediateField ℚ_[l] (PadicAlgCl l))
     (k : ℕ) (g : K.fixingSubgroup) :

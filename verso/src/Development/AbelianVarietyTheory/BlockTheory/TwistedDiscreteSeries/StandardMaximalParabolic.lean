@@ -48,15 +48,15 @@ def TypeConstTermVanish : Prop :=
     Integrable (fun u : N => f (x * u * y)) ν ∧ ∫ u : N, f (x * u * y) ∂ν = 0
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨by rintro ⟨u, hu, rfl⟩; simpa [mul_assoc] using hu, fun h => ⟨_, h, by simp [mul_assoc]⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem mem_conjBy {G : Type} [Group G] {g x : G} {H : Subgroup G} : x ∈ conjBy g H ↔ g⁻¹ * x * g ∈ H :=
   ⟨by rintro ⟨u, hu, rfl⟩; simpa [mul_assoc] using hu, fun h => ⟨_, h, by simp [mul_assoc]⟩⟩
 
 /- English proof (translation)
-Rewrite using `[stdMaxParab, mem_parab_two]`. Use `⟨fun H i j hj hi => ?_, fun H j i => H _ _ (by simp) (by simp)⟩` and prove the remaining obligations. Use `H ⟨i - a, by omega⟩ ⟨j, hj⟩` as an intermediate fact. Establish `e1 : stdSum h (Sum.inr ⟨i - a, by omega⟩) = i` using `Fin.ext (by simp; omega)`. Establish `e2 : stdSum h (Sum.inl ⟨j, hj⟩) = j` using `Fin.ext (by simp)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[e1, e2]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem mem_stdMaxParab {R : Type} [CommRing R] {a b r : ℕ} (h : a + b = r) {g : GL (Fin r) R} :
     g ∈ stdMaxParab R h ↔ ∀ i j : Fin r, (j : ℕ) < a → a ≤ (i : ℕ) → (g : Matrix (Fin r) (Fin r) R) i j = 0 := by
@@ -68,9 +68,9 @@ theorem mem_stdMaxParab {R : Type} [CommRing R] {a b r : ℕ} (h : a + b = r) {g
   rwa [e1, e2] at this
 
 /- English proof (translation)
-Establish `h' : ∑ i, ![a, b] i = r` using `by simpa using h`. Use `⟨_, _, ⟨2, ![a, b], h', 1, rfl, rfl⟩, 1, fun g hg => ?_⟩` and prove the remaining obligations. Rewrite `hg`, the goal using `[mem_conjBy]`. Rewrite using `[stdMaxParab, mem_parab_two]`. Introduce `j i`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `mem_parab_iff.1 hg 1 0 j i (by decide)` as an intermediate fact. Establish `e1 : stdBlocks ![a, b] h' ⟨1, j⟩ = stdSum h (Sum.inr j)` using `Fin.ext (((stdBlocks_val ![a, b] h' 1 j).trans (congrArg (· + (j : ℕ)) (Fin.sum_univ_one _))).trans (stdSum_inr h j).symm)`. Establish `e2 : stdBlocks ![a, b] h' ⟨0, i⟩ = stdSum h (Sum.inl i)` using `Fin.ext (((stdBlocks_val ![a, b] h' 0 i).trans (zero_add _)).trans (stdSum_inl h i).symm)`. Conclude with `e1 ▸ e2 ▸ this`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 example {R : Type} [CommRing R] {a b r : ℕ} (h : a + b = r) :
     ∃ P N : Subgroup (GL (Fin r) R), IsParabRad P N ∧ ∃ g₀, P ≤ conjBy g₀ (stdMaxParab R h) := by
@@ -88,7 +88,7 @@ example {R : Type} [CommRing R] {a b r : ℕ} (h : a + b = r) :
   exact e1 ▸ e2 ▸ this
 
 /- English proof (translation)
-Introduce `h` and use `one_ne_zero (h 1 fun _ _ => rfl)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 example {Q : Type} [Group Q] (H : Subgroup Q) : ¬ NoFixed (Representation.trivial ℂ Q ℂ) H :=
   fun h => one_ne_zero (h 1 fun _ _ => rfl)

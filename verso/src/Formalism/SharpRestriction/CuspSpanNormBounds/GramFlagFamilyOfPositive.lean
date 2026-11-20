@@ -13,19 +13,19 @@ open NumberField Module IsDedekindDomain Formalism.BasicNotions Formalism.MainNo
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Establish `hSt : Cnt.Stand D u u'` using `hH.2.1`. Establish `hPr` using `Formalism.MainNotions.VanishingOnXAndXPlus.primeHyp_of_stand D u u' hSt`. Establish `hF : FixedHyp D Λ (lf D F0)` using `hΛr.2.1`. Establish `hg : gS D ≠ 0`. Unfold `gS`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Conclude with `Nat.mul_ne_zero hSt.2.2.2.2.2.2.2.1.ne_zero hSt.2.2.2.2.2.2.2.2.1.ne_zero`. Establish `hU1 : HU Λ (lf D F0) F'` using `a_HU Λ hF.1 _ _ hF.2.2.1.2 hT'.1.1.2`. Take `⟨_, _, h2, h3, _⟩` from `lemma_one_section D u (Tu D u') Λ (lf D F0) F' hF hPr hT'.1`. Establish `hbot` using `generic_B_eq_bot hg hF.2.2.1 hT'.1.1 hF.2.2.2 hT'.2.1 hgen`. Establish `hle` using `generic_index_one D large₂ u u' C' Cl Cg cb Cu cT CT C0 A hH F0 he hz0 Λ hΛr F' hT' hgen`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hLa : La Λ (gS D) (lf D F0) F' = Thp Λ (lf D F0) F'` using `le_antisymm hle (c_Thp_le_La hU1)`. Establish `hc1 : Nat.card (gB Λ (gS D) (lf D F0) F') = 1` using `by rw [hbot]; exact Nat.card_unique`. Establish `hi : iIdx Λ (gS D) (lf D F0) F' = 1`. Unfold `iIdx idx`. Rewrite using `[Submodule.comap_subtype_eq_top.2 hle]`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Nat.card_unique`. Establish `hNE : 0 < NE (E` using `D.host.E) (gS D) ^ (D.R.rS + 1) := by`. Unfold `NE`. Establish `: (0 : ℝ) < (gS D : ℝ)` using `by exact_mod_cast Nat.pos_of_ne_zero hg`. Check the signs of the components of the expression.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Check the signs of the components of the expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hlow : NE (E` using `D.host.E) (gS D) ^ (D.R.rS + 1) ≤ (Nat.card (BQ Λ (lf D F0) F') : ℝ) := by`. Rewrite `h2` using `[hc1, Nat.cast_one, le_div_iff₀ hNE, one_mul]`. Conclude with `h2`. Establish `hun : Formalism.HermitianLatticesTheory.IsUnimodular (hS D).hT Λ` using `hΛr.2.1.2.1`. Establish `hdet : 1 ≤ latDet (hS D) (La Λ (gS D) (lf D F0) F')`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hLa]`. Conclude with `rows_one_le_latDet _ fun x hx y hy => Submodule.mem_one.1 (i_int Λ hun (Submodule.mem_inf.1 hy).1 (Submodule.mem_inf.1 hx).1)`. Establish `hB : 0 < (Nat.card (BQ Λ (lf D F0) F') : ℝ)` using `lt_of_lt_of_le hNE hlow`. Rewrite `h3` using `[hi, Nat.cast_one, mul_one]`. Establish `hNG : NG Λ (lf D F0) F' = latDet (hS D) (La Λ (gS D) (lf D F0) F') * (Nat.card (BQ Λ (lf D F0) F') : ℝ)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h3]`. Clear the denominators using the available nonvanishing facts. Unfold `G0`. Rewrite using `[le_div_iff₀ hNE, one_mul, hNG]`. Use the polynomial consequences of the given equalities and inequalities.
+Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem one_le_generic_gram_value (D : D7) (large₂ : SizeData₂ D) (u u' : D.what₂.Word) {C' Cl Cg cb Cu cT CT C0 A : ℝ}
     (hH : Hyp D large₂ u u' C' Cl Cg cb Cu cT CT C0 A)

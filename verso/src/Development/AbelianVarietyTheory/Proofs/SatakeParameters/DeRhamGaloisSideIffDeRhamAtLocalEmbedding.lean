@@ -12,9 +12,9 @@ namespace GlobalTheory.DeRhamRead
 open Formalism.BasicNotions.Loc
 
 /- English proof (translation)
-Set `f : ↥L.1 →+* Om l` to `algebraMap ↥L.1 (Om l)`. Set `M : Γ → Matrix (Fin a) (Fin a) ↥L.1` to `fun g => Matrix.of fun i j => ⟨(r g : Matrix (Fin a) (Fin a) (Om l)) i j, hL g i j⟩`. Establish `hinj : Function.Injective (f.mapMatrix : Matrix (Fin a) (Fin a) ↥L.1 →+* Matrix (Fin a) (Fin a) (Om l))` using `fun A B h => Matrix.ext fun i j => f.injective (by simpa using congrFun (congrFun h i) j)`. Establish `hM : ∀ g, f.mapMatrix (M g) = (r g : Matrix (Fin a) (Fin a) (Om l))` using `fun g => Matrix.ext fun i j => rfl`. Set `ρ : Γ →* GL (Fin a) ↥L.1` to `{ toFun := fun g => ⟨M g, M g⁻¹, hinj (by rw [map_mul, hM, hM, map_one, ← Units.val_mul, ← map_mul, mul_inv_cancel, map_one, Units.val_one]), hinj (by rw [map_mul, hM, hM, map_one, ← Units.val_mul, ← map_mul, inv_mul_cancel, map_one, Units.val_one])⟩ map_one' := Units.ext (hinj ( …`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Rewrite using `[map_mul, hM, hM, hM, map_mul, Units.val_mul])) }`. Use `⟨ρ, ?_, ?_⟩` and prove the remaining obligations. Use `continuous_pi fun i => continuous_pi fun j => ?_` and prove the remaining obligations. Conclude with `continuous_induced_rng.2 ((continuous_apply j).comp ((continuous_apply i).comp hr))`. Conclude with `MonoidHom.ext fun g => Units.ext (hM g)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_model_of_mem {l : ℕ} [Fact l.Prime] {Γ : Type} [Group Γ] [TopologicalSpace Γ] {a : ℕ}
     (r : Γ →* GL (Fin a) (Om l)) (hr : Continuous (fun g => (r g : Matrix (Fin a) (Fin a) (Om l)))) (L : FinExt l)
@@ -41,9 +41,9 @@ theorem exists_model_of_mem {l : ℕ} [Fact l.Prime] {Γ : Type} [Group Γ] [Top
   · exact MonoidHom.ext fun g => Units.ext (hM g)
 
 /- English proof (translation)
-Introduce `D T W l _ ι w hw O _ _ _ B hj a r hr`. Take `⟨LL', hL, hmem⟩` from `GlobalTheory.CompactRepField.exists_finExt_entries_mem l (G D.host.E D.nd.Om) a r hr B.LL`. Take `⟨r₁, c₁, rfl⟩` from `exists_model_of_mem r hr LL' hmem`. Take `⟨-, H⟩` from `W.loc l ι w hw _ B hj ((algebraMap ↥B.LL.1 (Om l)).comp B.toLL) (fun _ => rfl)`. Establish `hm : GlobalTheory.Pst.IsModel B (GlobalTheory.Pst.resDec D.nd.plOm.1 (mapRep (algebraMap ↥LL'.1 (Qbar l)) r₁) w) LL' (r₁.comp (Dec (F` using `D.host.E) (D.nd.plOm.1 w)).subtype) := ⟨hL, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `(H LL' hL a r₁ c₁).2.1.trans (hm.isdRAt_iff (D.loc l)).symm`.
+A detailed English derivation is pending.
 -/
 theorem isdRW_iff_isdRAt : ∀ (D : D7) (T : WDTie D.nd D.naut) (W : WDSide D T) (l : ℕ) [Fact l.Prime] (ι : Qbar l ≃+* ℂ) (w : HeightOneSpectrum (𝓞 D.host.E)), w ∈ placesOver D.host.E l → ∀ (O : Type) [CommRing O] [Algebra ℤ_[l] O] [TopologicalSpace O] (Bw : LocBridge l D.host.E D.nd.Om (Dec (F := D.host.E) (D.nd.plOm.1 w)) O), GlobalTheory.Pst.Induces Bw → ∀ (a : ℕ) (r : G D.host.E D.nd.Om →* GL (Fin a) (Qbar l)), Continuous (fun g => ((r g : GL (Fin a) (Qbar l)) : Matrix (Fin a) (Fin a) (Qbar l))) → (W.IsdRW l ι r w ↔ GlobalTheory.Pst.IsdRAt (D.loc l) Bw (GlobalTheory.Pst.resDec D.nd.plOm.1 r w)) := by
   intro D T W l _ ι w hw O _ _ _ B hj a r hr

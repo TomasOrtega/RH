@@ -11,9 +11,9 @@ open UpperTheory.V.Af.Bc (res)
 open UpperTheory.Gal.Int.Core
 
 /- English proof (translation)
-Set `f : 𝓞 K ⧸ (w.under (𝓞 K)).asIdeal →+* 𝓞 M ⧸ w.asIdeal` to `Ideal.quotientMap w.asIdeal (algebraMap (𝓞 K) (𝓞 M)) le_rfl`. Establish `hf : Function.Injective f` using `Ideal.quotientMap_injective' le_rfl`. Establish `hd : normV (w.under (𝓞 K)) ∣ normV w`. Establish `h1` using `AddSubgroup.card_addSubgroup_dvd_card f.toAddMonoidHom.range`. Rewrite `h1` using `[← Nat.card_congr (AddMonoidHom.ofInjective (f := f.toAddMonoidHom) hf).toEquiv]`. Then use the resulting hypothesis.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Break down `(Nat.dvd_prime hp).1 hd with h | h` into its components or cases. Use `exfalso haveI : (w.under (𝓞 K)).asIdeal.IsPrime := (w.under (𝓞 K)).isPrime`. Establish `h2` using `(Nat.card_eq_one_iff_unique.1 h).1`. Conclude with `not_subsingleton (𝓞 K ⧸ (w.under (𝓞 K)).asIdeal) h2`. Conclude with `h`.
+Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem normV_under_eq_of_normV_prime {K M : Type} [Field K] [NumberField K] [Field M] [NumberField M] [Algebra K M]
     (w : HeightOneSpectrum (𝓞 M)) (hp : (normV w).Prime) : normV (w.under (𝓞 K)) = normV w := by
@@ -31,19 +31,17 @@ private theorem normV_under_eq_of_normV_prime {K M : Type} [Field K] [NumberFiel
   · exact h
 
 /- English proof (translation)
-Introduce `F Ω _ _ _ _ _ K _ _ _ _ _ _ M _ _ _ _ _ _ _ _ _ l _ ι a sat r hK`. Unfold `AttOne at hK ⊢`. Establish `hT : Filter.Tendsto (fun w : HeightOneSpectrum (𝓞 M) => w.under (𝓞 K)) Filter.cofinite Filter.cofinite`. Use `((Filter.tendstoCofinite_iff_finite_preimage_singleton _).2 ?_).tendsto_cofinite` and prove the remaining obligations. Introduce `v`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `(Ideal.finite_factors (I := v.asIdeal.map (algebraMap (𝓞 K) (𝓞 M))) ?_).subset ?_` and prove the remaining obligations. Conclude with `Ideal.map_ne_bot_of_ne_bot v.ne_bot`. Introduce `w hw`. Simplify using `only [Set.mem_preimage, Set.mem_singleton_iff] at hw`. Use `show w.asIdeal ∣ _`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Ideal.dvd_iff_le, Ideal.map_le_iff_le_comap, ← hw]`. Conclude with `le_rfl`. Use `filter_upwards [hT.eventually hK] with w hw hp`. Establish `hn` using `normV_under_eq_of_normV_prime (K := K) w hp`. Take `⟨B, hB, hF⟩` from `hw (hn ▸ hp)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Use `⟨B, ?_, ?_⟩` and prove the remaining obligations. Use `hB using 2` and compare the differences between its conclusion and the goal. Use extensionality with `x`. Use `show algebraMap (𝓞 F) (𝓞 M) x ∈ w.asIdeal ↔ algebraMap (𝓞 K) (𝓞 M) (algebraMap (𝓞 F) (𝓞 K) x) ∈ w.asIdeal`. Rewrite using `[show algebraMap (𝓞 K) (𝓞 M) (algebraMap (𝓞 F) (𝓞 K) x) = algebraMap (𝓞 F) (𝓞 M) x from Subtype.ext (IsScalarTower.algebraMap_apply F K M (x : F)).symm]`.
+Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hF` using `[hn]`. Introduce `A hA`. Establish `hA' : IsPlaceOver A (w.under (𝓞 K))`. Introduce `x`. Rewrite using `[show algebraMap K Ω (x : K) = algebraMap M Ω ((algebraMap (𝓞 K) (𝓞 M) x : 𝓞 M) : M) from IsScalarTower.algebraMap_apply K M Ω (x : K)]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Conclude with `hA _`. Take `⟨hI, hFr⟩` from `hF A hA'`. Use `⟨fun s hs => hI _ ?_, fun σ hσ => ?_⟩` and prove the remaining obligations. Take `⟨hs1, hs2⟩` from `hs`. Conclude with `⟨hs1, fun x hx => hs2 x hx⟩`.
-
-Establish `h3` using `hFr (res K Ω M σ) ⟨hσ.1, fun x hx => by rw [hn]; exact hσ.2 x hx⟩`. Rewrite using `[MonoidHom.comp_apply, map_inv]`. Conclude with `h3`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.Int.Core.oneTower_holds :
     OneTower := by

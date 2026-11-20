@@ -13,7 +13,7 @@ namespace GroundTheory.GroupCoh
 variable {k G H : Type u} [CommRing k] [Group G] [Group H]
 
 /- English proof (translation)
-Simplify using `[Fin.partialProd, ← List.map_ofFn, ← List.map_take, map_list_prod]`.
+Simplify using the standard rewrite rules.
 -/
 theorem partialProd_comp {M N : Type*} [Monoid M] [Monoid N] (f : M →* N) {m : ℕ}
     (x : Fin m → M) (i : Fin (m + 1)) :
@@ -39,7 +39,7 @@ theorem resTensorHom_tmul (φ₁ : res f A₁ ⟶ B₁) (φ₂ : res f A₂ ⟶ 
   rfl
 
 /- English proof (translation)
-Rewrite using `[cupCochain_apply, resTensorHom_tmul, cupCochain_apply, partialProd_comp]`. Conclude with `congrArg _ (Rep.hom_comm_apply φ₂ _ _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem resTensorHom_cupCochain (φ₁ : res f A₁ ⟶ B₁) (φ₂ : res f A₂ ⟶ B₂) (h : p + q = n)
     (x : (Fin p → H) → A₁) (y : (Fin q → H) → A₂) (g : Fin n → G) :
@@ -49,7 +49,7 @@ theorem resTensorHom_cupCochain (φ₁ : res f A₁ ⟶ B₁) (φ₂ : res f A�
   exact congrArg _ (Rep.hom_comm_apply φ₂ _ _)
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(π A n ≫ map f φ n).hom z = (cocyclesMap f φ n ≫ π B n).hom z`. Rewrite using `[π_map]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem map_π_apply' {A : Rep k H} {B : Rep k G} (φ : res f A ⟶ B) (z : cocycles A n) :
     map f φ n (π A n z) = π B n (cocyclesMap f φ n z) := by
@@ -57,7 +57,7 @@ theorem map_π_apply' {A : Rep k H} {B : Rep k G} (φ : res f A ⟶ B) (z : cocy
   rw [π_map]
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(cocyclesMap f φ n ≫ iCocycles B n).hom z = _`. Rewrite using `[HomologicalComplex.cyclesMap_i]`. Both sides reduce to the same expression.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem iCocycles_cocyclesMap' {A : Rep k H} {B : Rep k G} (φ : res f A ⟶ B)
     (z : cocycles A n) :
@@ -67,9 +67,9 @@ theorem iCocycles_cocyclesMap' {A : Rep k H} {B : Rep k G} (φ : res f A ⟶ B)
   rfl
 
 /- English proof (translation)
-Use `groupCohomology_induction_on a fun z => ?_` and prove the remaining obligations. Use `groupCohomology_induction_on b fun w => ?_` and prove the remaining obligations. Establish `key : cocyclesMap (A` using `A₁ ⊗ A₂) f (resTensorHom f φ₁ φ₂) n (cupCocycles h z w) = cupCocycles h (cocyclesMap f φ₁ p z) (cocyclesMap f φ₂ q w) := by`. Use `cocycles_ext ?_` and prove the remaining obligations. Rewrite using `[iCocycles_cocyclesMap', iCocycles_cupCocycles, iCocycles_cupCocycles, iCocycles_cocyclesMap', iCocycles_cocyclesMap']`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `g`. Conclude with `resTensorHom_cupCochain f φ₁ φ₂ h _ _ g`. Rewrite using `[cupH_π, map_π_apply', map_π_apply', map_π_apply', cupH_π, key]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_resTensorHom_cupH (φ₁ : res f A₁ ⟶ B₁) (φ₂ : res f A₂ ⟶ B₂) (h : p + q = n)
     (a : groupCohomology A₁ p) (b : groupCohomology A₂ q) :

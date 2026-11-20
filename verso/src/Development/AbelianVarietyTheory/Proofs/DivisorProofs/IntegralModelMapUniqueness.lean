@@ -20,35 +20,31 @@ open GlobalTheory.FlatModel
 namespace GlobalTheory.FlatModel
 
 /- English proof (translation)
-Introduce `hP1 hP2 hP3 E _ _ _ H Dw l l' Xo Xo' c c' W Y r ν hle r₀ U x hL Z τ s la p Xw hp hcov A _ _ _ ξ β hξ hs hpu hbot g e U₁ h₁ U₂ h₂ htan heig hd₁ hd₂ 𝔭 hht hnr`. Use `haveI hN : IsNoetherianRing A := GlobalTheory.T.integral_model_open_noetherian E H Dw l' Xo' c' W Y A ξ hξ`. Set `P0 : PrimeSpectrum A` to `⟨⊥, Ideal.isPrime_bot⟩`. Establish `hbotR : ξ P0 ∈ Set.range Y.j` using `hcov.2.2.2.2.1 hbot`. Take `⟨u₀, hu₀⟩` from `GlobalTheory.T.integral_model_map_extension hP1 hP2 hP3 E H Dw l l' Xo Xo' c c' W Y r ν hle r₀ U x hL Z τ s la p Xw hp hcov A ξ β hξ hs hpu hbot g e U₁ h₁ U₂ h₂ htan heig hd₁ hd₂ P0 hbotR`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨T, iT, hiT, hloc, hval⟩` from `GlobalTheory.T.section_value_unit_at_boundary_height_one_prime hP1 hP2 hP3 E H Dw l l' Xo Xo' c c' W Y r ν hle r₀ U x hL Z τ s la p Xw hp hcov A ξ β hξ hs hpu hbot g e U₁ h₁ U₂ h₂ htan heig hd₁ hd₂ 𝔭 hht hnr`. Use `set gT : A →+* T.Fr := (algebraMap T.V T.Fr).comp (iT.comp (algebraMap A (Localization.AtPrime 𝔭.asIdeal))) with hgT`. Establish `hAinj : Function.Injective (algebraMap A (Localization.AtPrime 𝔭.asIdeal))` using `IsLocalization.injective _ (Ideal.primeCompl_le_nonZeroDivisors 𝔭.asIdeal)`. Establish `hgTinj : Function.Injective gT` using `(IsFractionRing.injective T.V T.Fr).comp (hiT.comp hAinj)`. Establish `hunits : ∀ b : P0.asIdeal.primeCompl, IsUnit (gT b)` using `fun b => isUnit_iff_ne_zero.2 fun h => b.2 (by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `: (b : A) = 0` using `hgTinj (by rw [h, map_zero])`. Simplify using `[P0, this])`. Set `κ : Localization.AtPrime P0.asIdeal →+* T.Fr` to `IsLocalization.lift hunits`. Establish `hκ : κ.comp (algebraMap A _) = gT` using `IsLocalization.lift_comp hunits`. Take `⟨w, hw⟩` from `hval (κ u₀) fun k _ φ => by`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `h0` using `hu₀ k (φ.comp κ)`. Rewrite `h0` using `[RingHom.comp_assoc, hκ]`. Then use the resulting hypothesis. Take `⟨⟨a, b⟩, hab⟩` from `IsLocalization.mk'_surjective P0.asIdeal.primeCompl (u₀ : Localization.AtPrime P0.asIdeal)`. Establish `h1 : gT a = gT b * algebraMap T.V T.Fr w` using `(IsLocalization.lift_mk'_spec _ _ _ _).1 (by simp only at hab; rw [hab, hw])`. Establish `h2 : iT (algebraMap A _ a) = iT (algebraMap A _ b) * w`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts.
 
-Apply `IsFractionRing.injective T.V T.Fr` to reduce the goal to its premises. Simplify `h1` using `[hgT, map_mul]`. Take `⟨u, hu⟩` from `GlobalTheory.T.exists_local_unit_of_dvr_unit A 𝔭 hht T.V iT hiT hloc a b ⟨w, h2⟩`. Use `⟨u, fun k _ φ => ?_⟩` and prove the remaining obligations. Use `set ψ : A →+* k := φ.comp (algebraMap A (Localization.AtPrime 𝔭.asIdeal)) with hψ`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact.
 
-Distinguish the cases in `hk : Function.Injective ψ`. Establish `hunits' : ∀ b : P0.asIdeal.primeCompl, IsUnit (ψ b)` using `fun b => isUnit_iff_ne_zero.2 fun h => b.2 (by`. Establish `: (b : A) = 0` using `hk (by rw [h, map_zero])`. Simplify using `[P0, this])`. Set `φ' : Localization.AtPrime P0.asIdeal →+* k` to `IsLocalization.lift hunits'`.
+Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hφ' : φ'.comp (algebraMap A _) = ψ` using `IsLocalization.lift_comp hunits'`. Establish `hle' : 𝔭.asIdeal.primeCompl ≤ P0.asIdeal.primeCompl.comap (RingHom.id A)` using `fun x hx hx0 => by`. Apply `hx` to reduce the goal to its premises. Establish `: x = 0` using `by simpa [P0] using hx0`. Rewrite using `[this]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `𝔭.asIdeal.zero_mem`. Set `mp : Localization.AtPrime 𝔭.asIdeal →+* Localization.AtPrime P0.asIdeal` to `IsLocalization.map _ (RingHom.id A) hle'`. Establish `hφ : φ = φ'.comp mp`. Apply `IsLocalization.ringHom_ext 𝔭.asIdeal.primeCompl` to reduce the goal to its premises. Rewrite using `[RingHom.comp_assoc, IsLocalization.map_comp, RingHom.comp_id, hφ']`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hmu : mp u = u₀`. Rewrite using `[← hab, IsLocalization.eq_mk'_iff_mul_eq]`. Use `congrArg mp hu` as an intermediate fact. Rewrite `this` using `[map_mul]`. Simplify `this` using `[mp, IsLocalization.map_eq]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e2 : φ u = φ' u₀`. Rewrite using `[← hmu]`. Conclude with `congrArg (fun f : Localization.AtPrime 𝔭.asIdeal →+* k => f u) hφ`. Rewrite using `[e2, ← hφ']`. Conclude with `hu₀ k φ'`.
+It suffices to derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Introduce `_ yy hyy`. It suffices to derive a contradiction. Apply `hnr` to reduce the goal to its premises. Establish `hker : RingHom.ker ψ = 𝔭.asIdeal`. Establish `hle : RingHom.ker ψ ≤ 𝔭.asIdeal` using `fun x hx => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hx'`. Establish `hu' : IsUnit (algebraMap A (Localization.AtPrime 𝔭.asIdeal) x)` using `IsLocalization.map_units _ (⟨x, hx'⟩ : 𝔭.asIdeal.primeCompl)`. Use `(hu'.map φ).ne_zero` as an intermediate fact. Conclude with `this hx`. Establish `hne : RingHom.ker ψ ≠ ⊥` using `fun h => hk ((RingHom.injective_iff_ker_eq_bot ψ).2 h)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Assume the negation of the conclusion as `hne'`. Establish `hlt : RingHom.ker ψ < 𝔭.asIdeal` using `lt_of_le_of_ne hle hne'`. Establish `hlt0 : (⊥ : Ideal A) < RingHom.ker ψ` using `bot_lt_iff_ne_bot.2 hne`. Establish `a1` using `Ideal.height_add_one_le_of_lt_of_isPrime hlt0`. Establish `a2` using `Ideal.height_add_one_le_of_lt_of_isPrime hlt`.
-
-Rewrite `*` using `[Ideal.height_bot, hht]`. Rewrite `a1` using `[zero_add]`. Establish `: (1 : ℕ∞) + 1 ≤ 1` using `(add_le_add a1 le_rfl).trans a2`. Conclude with `absurd this (by decide)`. Establish `hpt : (spMap ψ) (⟨⊥, Ideal.isPrime_bot⟩ : PrimeSpectrum k) = 𝔭` using `PrimeSpectrum.ext hker`.
-
-Use `⟨yy (⟨⊥, Ideal.isPrime_bot⟩ : PrimeSpectrum k), ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem flatSec_unit_at_bdry_height_one : GlobalTheory.CovTop.Hypotheses2 → GlobalTheory.Published.CanonicalExtensionRankOne → GlobalTheory.Published.DeRhamCanonicalExtension →
   ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H)

@@ -15,13 +15,13 @@ noncomputable def UpperTheory.Reformulated.B.Qe19.LiftEquiv :
                     ∀ (x : X), (Rep.Hom.hom f : (↑A : Type) → (↑B : Type)) (ψ x) = φ x
 
 /- English proof (translation)
-Use `haveI := Fintype.ofFinite H`. Take `⟨a, ha⟩` from `hf b`. Establish `hc : (Fintype.card H : ℂ) ≠ 0` using `Nat.cast_ne_zero.mpr Fintype.card_ne_zero`. Use `⟨(Fintype.card H : ℂ)⁻¹ • ∑ k : H, A.ρ k a, ?_, ?_⟩` and prove the remaining obligations. Introduce `h hh`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_smul, map_sum]`. Use `congr 1`. Use `Fintype.sum_equiv (Equiv.mulLeft (⟨h, hh⟩ : H)) _ _ ?_` and prove the remaining obligations. Introduce `k`. Simplify using `[map_mul]`.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_smul, map_sum]`. Establish `h1 : ∀ k : H, (Rep.Hom.hom f) (A.ρ k a) = b`. Introduce `k`. Rewrite using `[Rep.hom_comm_apply, ha, hb k k.2]`. Simplify using `only [h1, Finset.sum_const, Finset.card_univ]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Nat.cast_smul_eq_nsmul ℂ, smul_smul, inv_mul_cancel₀ hc, one_smul]`.
+A detailed English derivation is pending.
 -/
 private theorem UpperTheory.Reformulated.B.Qe19.fixed_lift {Γ : Type} [Group Γ] (H : Subgroup Γ) [Finite H]
     (A B : Rep.{0, 0, 0} ℂ Γ) (f : A ⟶ B) (hf : Function.Surjective (Rep.Hom.hom f))
@@ -46,17 +46,15 @@ private theorem UpperTheory.Reformulated.B.Qe19.fixed_lift {Γ : Type} [Group Γ
     rw [← Nat.cast_smul_eq_nsmul ℂ, smul_smul, inv_mul_cancel₀ hc, one_smul]
 
 /- English proof (translation)
-Introduce `Γ X _ _ hfin A B f hf φ hφ`. Establish `h1 : ∀ x : X, ∃ a : A, (∀ h ∈ MulAction.stabilizer Γ x, A.ρ h a = a) ∧ (Rep.Hom.hom f) a = φ x`. Introduce `x`. Use `haveI := hfin x`. Use `UpperTheory.Reformulated.B.Qe19.fixed_lift _ A B f hf (φ x) ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h hh`. Rewrite using `[← hφ, MulAction.mem_stabilizer_iff.mp hh]`. Use `choose a ha hfa using h1`. Establish `h2 : ∃ r : X → X, (∀ (g : Γ) (x : X), r (g • x) = r x) ∧ ∀ x, ∃ g : Γ, g • r x = x`. Use `⟨fun x => (Quotient.mk (MulAction.orbitRel Γ X) x).out, ?_, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `g x`. Establish `: Quotient.mk (MulAction.orbitRel Γ X) (g • x) = Quotient.mk (MulAction.orbitRel Γ X) x` using `Quotient.sound (MulAction.orbitRel_apply.mpr (MulAction.mem_orbit x g))`. Simplify using `only [this]`. Introduce `x`. Establish `h` using `Quotient.exact (Quotient.out_eq (Quotient.mk (MulAction.orbitRel Γ X) x)).symm`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `MulAction.mem_orbit_iff.mp (MulAction.orbitRel_apply.mp h)`. Take `⟨r, hr, hg⟩` from `h2`. Use `choose s hs using hg`. Use `⟨fun x => A.ρ (s x) (a (r x)), ?_, ?_⟩` and prove the remaining obligations. Introduce `g x`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hm : (s (g • x))⁻¹ * (g * s x) ∈ MulAction.stabilizer Γ (r x)`. Rewrite using `[MulAction.mem_stabilizer_iff, mul_smul, mul_smul, hs x, inv_smul_eq_iff, ← hr g x, hs]`. Establish `h3` using `congrArg (A.ρ (s (g • x))) (ha (r x) _ hm)`. Rewrite `h3` using `[← Module.End.mul_apply, ← map_mul, mul_inv_cancel_left, map_mul, Module.End.mul_apply]`. Simplify using `only [hr g x]`.
-
-Conclude with `h3.symm`. Introduce `x show (Rep.Hom.hom f) (A.ρ (s x) (a (r x))) = φ x`. Rewrite using `[Rep.hom_comm_apply, hfa, ← hφ, hs]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.Qe19.pins_of_closed_subgroup_padic_character_inv :
     UpperTheory.Reformulated.B.Qe19.LiftEquiv := by

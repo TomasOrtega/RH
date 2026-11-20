@@ -15,11 +15,11 @@ open GlobalTheory.PRep GlobalTheory.BZMir GroundTheory.LocalField Matrix
 namespace GlobalTheory.CompanionTheory.MirFourier
 
 /- English proof (translation)
-Introduce `k _ _ _ _ ψ hψ hψ1 m V _ _ τ hτ v h0 hg`. Establish `hρ : IsSmooth (τ.comp (unipMir k (m + 1)))` using `GlobalTheory.T.mirabolic_restriction_unipotent_smooth k (m + 1) V τ hτ`. Establish `hall : ∀ a : Fin (m + 1) → k, v ∈ twKer (τ.comp (unipMir k (m + 1))) ⊤ (chiOn k ψ a ⊤)`. Introduce `a`. Distinguish the cases in `ha : a = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Substitute `ha` using the available equality. Conclude with `mem_chi_zero ψ τ h0`. Take `⟨g, hgr⟩` from `GlobalTheory.T.exists_invertible_matrix_last_line_given k m a ha`. Establish `e : (fun j => (g : Matrix (Fin (m + 1)) (Fin (m + 1)) k) (Fin.last m) j) = a` using `funext hgr`. Use `mem_chi_row ψ τ g (hg g)` as an intermediate fact.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[e, ← Module.End.mul_apply, ← map_mul, ← map_mul, inv_mul_cancel, map_one, map_one, Module.End.one_apply]`. Conclude with `this`. Take `⟨N, hN⟩` from `GlobalTheory.T.smooth_vector_fixed_by_small_box k (m + 1) V _ hρ v`. Take `⟨J, hJ⟩` from `GlobalTheory.T.uniform_twisted_invariance_on_ball k ψ hψ (m + 1) V _ v (addCharConductor ψ - N) (fun a => GlobalTheory.T.twisted_invariant_small_boxes k (m + 1) V _ (chi k ψ a) v (hall a))`. Conclude with `GlobalTheory.T.twisted_kernel_of_small_box_character k ψ hψ hψ1 (m + 1) V _ hρ v N (min J N) (min_le_right _ _) hN (fun a ha => hJ (min J N) (min_le_left _ _) a ha)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_forall_twKer : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (ψ : AddChar k Circle), Continuous ψ → ψ ≠ 1 → ∀ (m : ℕ) (V : Type) [AddCommGroup V] [Module ℂ V] (τ : Representation ℂ (Mir k (m + 1)) V), IsSmooth τ → ∀ v : V, v ∈ twKer τ (MirUin k (m + 1)) 1 → (∀ g : GL (Fin (m + 1)) k, τ (levi k (m + 1) g) v ∈ twKer τ (MirUin k (m + 1)) (mirChar k ψ m)) → v = 0 := by
   intro k _ _ _ _ ψ hψ hψ1 m V _ _ τ hτ v h0 hg

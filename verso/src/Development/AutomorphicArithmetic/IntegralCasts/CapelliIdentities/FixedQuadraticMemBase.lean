@@ -1,19 +1,19 @@
 import Mathlib
 
 /- English proof (translation)
-Introduce `F E _ _ _ h σ α hα x hx`. Assume the negation of the conclusion as `hxr`. Establish `hfin : FiniteDimensional F E` using `Module.finite_of_finrank_pos (by omega)`. Establish `li : LinearIndependent F ![(1 : E), x]`. Rewrite using `[LinearIndependent.pair_iff]`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `s t hst`. Establish `ht : t = 0`. Assume the negation of the conclusion as `ht`. Apply `hxr` to reduce the goal to its premises. Use `⟨-(s / t), ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hst' : algebraMap F E s + algebraMap F E t * x = 0`. Simplify `hst` using `[Algebra.smul_def]`. Establish `ht' : algebraMap F E t ≠ 0`. Simplify using `using ht`. Rewrite using `[map_neg, map_div₀]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Clear the denominators using the available nonvanishing facts. Take the linear combination `-hst'`. Substitute `ht` using the available equality. Simplify using `only [zero_smul, add_zero, Algebra.smul_def, mul_one] at hst`. Conclude with `⟨by simpa using hst, rfl⟩`.
+Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion. Substitute using the available equality. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 
-Establish `hspan : Submodule.span F (Set.range ![(1 : E), x]) = ⊤` using `li.span_eq_top_of_card_eq_finrank' (by simp [h])`. Establish `hmem : α ∈ Submodule.span F (Set.range ![(1 : E), x])`. Rewrite using `[hspan]`. Conclude with `Submodule.mem_top`. Use `hα ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Proceed by induction.
 
-Use `clear hα`. Proceed by induction on `hmem using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨i, rfl⟩` from `hy`. Use `fin_cases i`.
+Treat this case separately. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Treat this case separately.
 
-Simplify using the standard rewrite rules. Simplify using `using hx`. Consider the case `zero => simp`. Consider the case `add a b _ _ ha hb => rw [map_add, ha, hb]`. Consider the case `smul c a _ ha => rw [map_smul, ha]`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem UpperTheory.fixed_quadratic_mem_base :
     ∀ {F E : Type} [Field F] [Field E] [Algebra F E], Module.finrank F E = 2 → ∀ (σ : E →ₐ[F] E) (α : E), σ α ≠ α → ∀ x, σ x = x → x ∈ (algebraMap F E).range := by

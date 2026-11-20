@@ -30,7 +30,7 @@ open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions F
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Establish `: ∀ x, wtA (wEt D j i) x = 0`. Introduce `x`. Simplify using `[wtA, wEt, WeightAlgebra.wscalar, ext0]`. Simplify using `[lieFac, this]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem lieFac_scalar {D : D7} (T : Top D) (j i : ℕ) : lieFac (T.Q.Dw j) (xiR D) (wtA (wEt D j i)) = 1 := by
   have : ∀ x, wtA (wEt D j i) x = 0 := by
@@ -39,11 +39,9 @@ theorem lieFac_scalar {D : D7} (T : Top D) (j i : ℕ) : lieFac (T.Q.Dw j) (xiR 
   simp [lieFac, this]
 
 /- English proof (translation)
-Take `⟨h1, h2, h3⟩` from `h`. Unfold `wadd wsmul`. Use `congr 1`. Use function extensionality and compare the values at `τ i`. Rewrite using `[add_comm]`.
+Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h2 τ i`. Use function extensionality and compare the values at `τ i`. Rewrite using `[add_comm]`. Conclude with `h3 τ i`. Rewrite using `[add_comm]`.
-
-Conclude with `h1`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem weight_add_eq_smul_of_G2 {D : D7} {j : ℕ} {wL wF w2 : WeightFamilies.Wt D j} (h : IsG2 wL wF w2) :
     wadd wF w2 = wsmul (WeightFamilies.dimY D j + 4) wL := by
@@ -55,11 +53,11 @@ theorem weight_add_eq_smul_of_G2 {D : D7} {j : ℕ} {wL wF w2 : WeightFamilies.W
   · rw [add_comm]; exact h1
 
 /- English proof (translation)
-Establish `hf : 0 < ReciprocityTheory.ChartRestriction.G.I2.PT.f D.host.E`. Unfold `ReciprocityTheory.ChartRestriction.G.I2.PT.f`. Establish `h1` using `IsTotallyComplex.finrank D.host.E`. Establish `h2 : 0 < Module.finrank ℚ D.host.E` using `Module.finrank_pos`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Establish `hrd : 0 < ReciprocityTheory.ChartRestriction.G.I2.PT.rd D.host.E`. Unfold `ReciprocityTheory.ChartRestriction.G.I2.PT.rd`. Conclude with `Real.rpow_pos_of_pos (abs_pos.2 (Int.cast_ne_zero.2 (NumberField.discr_ne_zero D.host.E))) _`. Establish `h0` using `hg 0`. Establish `h1` using `hg 1`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `thR I2.th I2.RR`. Check the signs of the components of the expression.
+Check the signs of the components of the expression. A detailed English derivation is pending.
 -/
 theorem thR_pos {D : D7} {j : ℕ} (w : WeightFamilies.Wt D j) (hg : ∀ i, 0 < D.host.g i) (hd : 0 < DF w) : 0 < thR w := by
   have hf : 0 < ReciprocityTheory.ChartRestriction.G.I2.PT.f D.host.E := by
@@ -79,19 +77,19 @@ set_option maxHeartbeats 4000000 in
 set_option synthInstance.maxHeartbeats 400000 in
 
 /- English proof (translation)
-Introduce `D T h j hj large₂ H C2 A2 CT ka wL wF Tn nP nW h0 S nus hG hP hC G hGen hEta`. Take `⟨⟨g0, hg0, -⟩, hnz⟩` from `GlobalTheory.T.exists_cuspForm_nonzero_everyComponent D T h j hj large₂ H C2 A2 CT ka wL wF Tn nP nW h0 hG hP`. Take `⟨hT, hN, hlN, hZ, hLow⟩` from `hGen`. Establish `hZb : 0 ≤ Zb D large₂`. Establish `hs` using `hP.hyp.2.1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hd : DomAt D large₂ j nW H.C1` using `hs.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2`. Conclude with `le_trans (by positivity) hd.2.1`. Establish `hC2 : 0 ≤ C2`. Establish `hs` using `hP.hyp.2.1`. Establish `hd : DomAt D large₂ j nW H.C1` using `hs.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hd.1` as an intermediate fact. Rewrite `this` using `[hP.tie.1]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hrow` using `(GlobalTheory.T.lowerBoundConst_at_large_multiple_numerical_bounds D _ _ j (recPJ h j hj) large₂ H C2 A2 CT ka wL wF Tn nP nW h0 1 G.N 1 hj hP one_pos hN one_pos hlN (by rw [Nat.cast_one, Real.log_one]; positivity)).2.2.2.2.2.2.2.2.1`. Establish `hc0 : 0 ≤ cc D large₂ C2 A2 7 wL`.
+Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : 0 ≤ zBase large₂` using `hZb`. Establish `h2 : 0 ≤ D.host.rdE` using `le_trans (by positivity) hP.frd`. Unfold `cc WeightFamilies.RRv WeightFamilies.PPv`. Check the signs of the components of the expression. Take `⟨hsz, PL, lN, -, -, hI1, w2, hw2, th2, -, hth2, -⟩` from `(FamilyHypotheses.fourthHypothesis_iff_sizes_and_index large₂ (recPJ h j hj) H C2 A2 7 ka wL wF Tn nW).1 hC.2.2.2.2.2.2.1`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Check the signs of the components of the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hth : 0 < thR wL` using `thR_pos wL (fun i => lt_of_le_of_lt (Nat.zero_le _) (hsz.2.2.2.2.2 i)) (lt_of_lt_of_le (by norm_num) hP.df)`. Use `⟨g0, hT.1, ?_, ⟨WeightFamilies.dimY D j + 4, w2, th2, weight_add_eq_smul_of_G2 hw2, (hnz w2 th2 hth2).1⟩, hg0⟩` and prove the remaining obligations. Use `GlobalTheory.T.set_constants_good_embedding_recursion D T h j hj hG ka wL wF (gd2Xplus G (extAll h j hj) (intAtExt_extAll h j hj)) (cc D large₂ C2 A2 7 wL) large₂ H.CK H.C1 H.A1 h0 Tn nP nW hP.hyp.2.1 hZ (fun hjm => ?_) hc0 (by linarith) (fun hjm => ?_)` and prove the remaining obligations. Take `⟨hi, hcu, -, -, hA, -⟩` from `hEta hjm`. Use `⟨hi, hcu.2, T.σ₀, T.toCore.good_σ₀, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e : Fin (G.N - 1 + 1) ≃ Fin G.N` using `finCongr (by omega)`. Use `GlobalTheory.BigRec.phRec_of_firstMin D T h j hj T.σ₀ wL G.N (G.N - 1) G.iet G.w e G.et (thR wL) (p14R wL) (DF wL) (200000 * zBase large₂ ^ 2) _ T.toCore.good_σ₀ hth (fun σ hσ k x hx => ?_) hZ (fun k x hx => ?_)` and prove the remaining obligations. Establish `h1` using `hLow σ hσ k x hx`. Rewrite `h1` using `[← e.sum_comp]`. Conclude with `h1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1` using `hA T.σ₀ T.toCore.good_σ₀ k x hx`. Rewrite `h1` using `[lieFac_scalar, one_mul]`. Conclude with `h1`. Take `⟨w1, hw1, th1, -, hth1, -⟩` from `hI1 hjm`. Conclude with `⟨w1, hw1, th1, hth1⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem curveHyp_of_run : ∀ (D : D7) (T : Top D) (h : LawsP T) (j : ℕ) (hj : InR D j) (large₂ : SizeData₂ D) (H : KHyp) (C2 A2 CT : ℝ) (ka wL wF : WeightFamilies.Wt D j) (Tn nP nW : ℕ) (h0 : ℝ) (S : Scal (recB h.toLawsCore)) (nus : HeightOneSpectrum (𝓞 (recB h.toLawsCore).KO) → ℝ) (hG : GenFrEx (T.Q.Xo j) T.Q.c), PageOK large₂ (recPJ h j hj) H C2 A2 CT ka wL wF Tn nP nW h0 → HypC large₂ (recPJ h j hj) H C2 A2 7 0 CT S ka wL wF Tn nP nW h0 nus → ∀ G : GlobalFamilyData (recPJ h j hj) ka wL wF, GenOK h j hj large₂ G S (cc D large₂ C2 A2 7 wL) → (j < D.R.m → EtaOK h j hj large₂ wL G.iet G.et) → ∃ g0 : (recB h.toLawsCore).Cusp j wF, CurveHyp h j hj hG ka wL wF (gd2Xplus G (extAll h j hj) (intAtExt_extAll h j hj)) S g0 := by
   intro D T h j hj large₂ H C2 A2 CT ka wL wF Tn nP nW h0 S nus hG hP hC G hGen hEta

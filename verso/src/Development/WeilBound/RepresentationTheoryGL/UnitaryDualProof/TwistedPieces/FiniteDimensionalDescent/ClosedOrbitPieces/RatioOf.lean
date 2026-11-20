@@ -19,7 +19,7 @@ abbrev dA (A : Subalgebra k (Matrix (Fin N) (Fin N) k)) (e : Matrix (Fin N) (Fin
   finrank k (A.toSubmodule.map (LinearMap.mulLeft k e))
 
 /- English proof (translation)
-Take `⟨h0, hd, h⟩` from `pi_ratio hA.1 he.1 he.2.1 he.2.2.1 (fun a ha => pi_field hA he ha)`. Conclude with `⟨h0, hd, by rw [h, Nat.mul_div_cancel _ h0]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem ratio_of (A : Subalgebra k (Matrix (Fin N) (Fin N) k)) (hA : CR A) {e : Matrix (Fin N) (Fin N) k}
     (he : e ∈ primIdem A) :
@@ -29,7 +29,7 @@ theorem ratio_of (A : Subalgebra k (Matrix (Fin N) (Fin N) k)) (hA : CR A) {e : 
   exact ⟨h0, hd, by rw [h, Nat.mul_div_cancel _ h0]⟩
 
 /- English proof (translation)
-Unfold `mu`. Rewrite using `[finsum_mem_eq_finite_toFinset_sum _ (pi_fin hA)]`. Conclude with `Finset.sum_congr rfl fun e he => (ratio_of A hA ((Set.Finite.mem_toFinset _).mp he)).2.2`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mu_sum (A : Subalgebra k (Matrix (Fin N) (Fin N) k)) (hA : CR A) :
     mu A = ∑ e ∈ (pi_fin hA).toFinset, (e.rank / dA A e) ^ 2 := by
@@ -38,9 +38,9 @@ theorem mu_sum (A : Subalgebra k (Matrix (Fin N) (Fin N) k)) (hA : CR A) :
   exact Finset.sum_congr rfl fun e he => (ratio_of A hA ((Set.Finite.mem_toFinset _).mp he)).2.2
 
 /- English proof (translation)
-Take `⟨h0, hd, -⟩` from `ratio_of A hA he`. Establish `hr` using `rank_pos_of_ne he.2.2.1`. Take `⟨c, hc⟩` from `hd`. Rewrite using `[hc, Nat.mul_div_cancel_left _ h0]`. Break down `Nat.eq_zero_or_pos c with rfl | h` into its components or cases.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Simplify using `at hc`. Use linear arithmetic over natural numbers and integers. Conclude with `h`.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem m_pos (A : Subalgebra k (Matrix (Fin N) (Fin N) k)) (hA : CR A) {e : Matrix (Fin N) (Fin N) k}
     (he : e ∈ primIdem A) : 1 ≤ e.rank / dA A e := by
@@ -54,25 +54,21 @@ theorem m_pos (A : Subalgebra k (Matrix (Fin N) (Fin N) k)) (hA : CR A) {e : Mat
 
 open Classical in
 /- English proof (translation)
-Establish `hS` using `sx_cr D hZ hx hχ`. Use `set P := (pi_fin hS).toFinset with hP`. Use `set Q := (pi_fin hZ).toFinset with hQ`. Establish `mP : ∀ {e}, e ∈ P ↔ e ∈ primIdem (Sx D x)` using `fun {e} => Set.Finite.mem_toFinset _`. Establish `mQ : ∀ {f}, f ∈ Q ↔ f ∈ primIdem Z` using `fun {f} => Set.Finite.mem_toFinset _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hsplit : mu (Sx D x) = ∑ f ∈ Q, ∑ e ∈ P with e * f = e, (e.rank / dA (Sx D x) e) ^ 2`. Rewrite using `[mu_sum _ hS]`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_congr rfl fun e he => ?_` and prove the remaining obligations. Take `⟨f₀, hf₀, hef₀⟩` from `ef_exists D hZ hx hχ (mP.mp he)`.
+Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_eq_single_of_mem f₀ (mQ.mpr hf₀) fun f hf hne => if_neg fun h => hne (ef_unique D hZ hx hχ (mP.mp he) (mQ.mp hf) hf₀ h hef₀), if_pos hef₀]`. Use `_ = ∑ f ∈ Q, ∑ e ∈ P with e * f = e, (e.rank / dA (Sx D x) e) ^ 2 := by`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun f _ => (Finset.sum_filter _ _).symm`. Establish `hfib : ∀ f ∈ Q, ∑ e ∈ P with e * f = e, (e.rank / dA (Sx D x) e) ^ 2 ≤ (f.rank / dA Z f) ^ 2 ∧ (∑ e ∈ P with e * f = e, (e.rank / dA (Sx D x) e) ^ 2 = (f.rank / dA Z f) ^ 2 → f ∈ primIdem (Sx D x) ∧ dA (Sx D x) f ≤ dA Z f)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `f hf`. Establish `hf'` using `mQ.mp hf`. Establish `hmem : ∀ e ∈ P.filter (fun e => e * f = e), e ∈ primIdem (Sx D x) ∧ e * f = e` using `fun e he => ⟨mP.mp (Finset.mem_filter.mp he).1, (Finset.mem_filter.mp he).2⟩`. Establish `hfs` using `fib_sum D hZ hx hχ hf'`. Take `⟨hdF, hdvF, -⟩` from `ratio_of Z hZ hf'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hsum : f.rank / dA Z f * dA Z f = ∑ e ∈ P with e * f = e, e.rank / dA (Sx D x) e * dA (Sx D x) e`. Rewrite using `[Nat.div_mul_cancel hdvF]`. Use `conv_lhs => rw [← hfs]`. Rewrite using `[rank_sum_orth _ _ (fun e he => (hmem e he).1.2.1) (fun e he e' he' hne => pi_orth hS (hmem e he).1 (hmem e' he').1 hne)]`. Conclude with `Finset.sum_congr rfl fun e he => (Nat.div_mul_cancel (ratio_of _ hS (hmem e he).1).2.1).symm`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨hle, heq⟩` from `num_fib (P.filter (fun e => e * f = e)) (fun e => e.rank / dA (Sx D x) e) (fun e => dA (Sx D x) e) (f.rank / dA Z f) (dA Z f) hdF (fun e he => m_pos _ hS (hmem e he).1) (fun e he => dim_le D hZ hx hχ (hmem e he).1 hf' (hmem e he).2) hsum`. Use `⟨hle, fun h => ?_⟩` and prove the remaining obligations. Establish `hne : (P.filter (fun e => e * f = e)).Nonempty`. Rewrite using `[Finset.nonempty_iff_ne_empty]`. Introduce `h0`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality. Supply the required witnesses or components.
 
-Rewrite `hfs` using `[h0, Finset.sum_empty]`. Conclude with `hf'.2.2.1 hfs.symm`. Take `⟨e, he⟩` from `hne`. Take `⟨hsing, hde⟩` from `heq h ⟨e, he⟩ e he`. Establish `hef : e = f` using `by rw [← hfs, hsing, Finset.sum_singleton]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Prove the first alternative. Establish an intermediate fact.
 
-Substitute `hef` using the available equality. Conclude with `⟨(hmem e he).1, hde⟩`. Establish `hle : mu (Sx D x) ≤ mu Z`. Rewrite using `[hsplit, mu_sum _ hZ]`. Conclude with `Finset.sum_le_sum fun f hf => (hfib f hf).1`.
-
-Distinguish the cases in `hlt : mu (Sx D x) < mu Z`. Conclude with `Or.inl hlt`. Use `right`. Establish `heq : mu (Sx D x) = mu Z` using `le_antisymm hle (not_lt.mp hlt)`. Rewrite `heq` using `[hsplit, mu_sum _ hZ]`.
-
-Establish `hall` using `(Finset.sum_eq_sum_iff_of_le fun f hf => (hfib f hf).1).mp heq`. Conclude with `zn_of_eq D hZ hx hχ fun f hf => (hfib f (mQ.mpr hf)).2 (hall f (mQ.mpr hf))`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem dich_pt {Z : Subalgebra k (Matrix (Fin N) (Fin N) k)} {χ : k[X]} {q : ℕ} (D : SData Z χ q)
     {x : Matrix (Fin N) (Fin N) k} (hZ : CR Z) (hx : x ∈ Bz Z) (hχ : aeval x χ = 0) :
@@ -138,7 +134,7 @@ theorem dich_pt {Z : Subalgebra k (Matrix (Fin N) (Fin N) k)} {χ : k[X]} {q : �
 
 variable (k) in
 /- English proof (translation)
-Introduce `N q Z hZ χ D τ x₀ hx₀`. Conclude with `dich_pt D hZ hx₀.1 hx₀.2.1`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem dich : PositivityTheory.RgUd.TP.Desc.Piece.Dich k := by
   intro N q Z hZ χ D τ x₀ hx₀

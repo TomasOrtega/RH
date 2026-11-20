@@ -9,11 +9,11 @@ open Formalism.BasicNotions Formalism.BasicNotions.Loc GlobalTheory.Cyc
 namespace GlobalTheory.CycInvariants
 
 /- English proof (translation)
-Establish `: Fintype (H ⧸ N.subgroupOf H)` using `Fintype.ofFinite _`. Use `⟨Finset.univ.image (fun q : H ⧸ N.subgroupOf H => ((q.out : H) : G)), ?_, ?_⟩` and prove the remaining obligations. Introduce `s hs`. Take `⟨q, -, rfl⟩` from `Finset.mem_image.1 hs`. Conclude with `q.out.2`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h hh`. Use `⟨((QuotientGroup.mk (⟨h, hh⟩ : H) : H ⧸ N.subgroupOf H).out : H), ⟨Finset.mem_image.2 ⟨_, Finset.mem_univ _, rfl⟩, ?_⟩, ?_⟩` and prove the remaining obligations. Establish `h1` using `QuotientGroup.out_eq' (QuotientGroup.mk (⟨h, hh⟩ : H) : H ⧸ N.subgroupOf H)`. Establish `h2` using `QuotientGroup.eq.1 h1`. Simplify `h2` using `[Subgroup.mem_subgroupOf]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `s ⟨hs, hsN⟩`. Take `⟨q, -, rfl⟩` from `Finset.mem_image.1 hs`. Establish `: (QuotientGroup.mk q.out : H ⧸ N.subgroupOf H) = QuotientGroup.mk (⟨h, hh⟩ : H)` using `QuotientGroup.eq.2 (by simpa [Subgroup.mem_subgroupOf] using hsN)`. Rewrite `this` using `[QuotientGroup.out_eq']`. Rewrite using `[this]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_reps {G : Type} [Group G] (H N : Subgroup G) [(N.subgroupOf H).FiniteIndex] :
     ∃ S : Finset G, (∀ s ∈ S, s ∈ H) ∧ ∀ h ∈ H, ∃! s, s ∈ S ∧ s⁻¹ * h ∈ N := by
@@ -37,9 +37,9 @@ theorem exists_reps {G : Type} [Group G] (H N : Subgroup G) [(N.subgroupOf H).Fi
       rw [this]
 
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.LeftTransversalSum.sum_mul_left_transversal`. Consider the case `exact _root_.GlobalTheory.LeftTransversalSum.sum_mul_left_transversal`. Consider the case `(apply _root_.GlobalTheory.LeftTransversalSum.sum_mul_left_transversal <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.LeftTransversalSum.sum_mul_left_transversal <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.LeftTransversalSum.sum_mul_left_transversal <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.LeftTransversalSum.sum_mul_left_transversal ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem sum_reps_invariant {G M : Type} [Group G] [AddCommMonoid M] (H N : Subgroup G)
     (S : Finset G) (hS : ∀ s ∈ S, s ∈ H) (hu : ∀ h ∈ H, ∃! s, s ∈ S ∧ s⁻¹ * h ∈ N)
@@ -56,11 +56,11 @@ theorem sum_reps_invariant {G M : Type} [Group G] [AddCommMonoid M] (H N : Subgr
 variable {l : ℕ} [Fact l.Prime]
 
 /- English proof (translation)
-Use `⟨?_⟩` and prove the remaining obligations. Rewrite using `[MulAction.index_stabilizer]`. Establish `hint : IsIntegral ℚ_[l] x` using `Algebra.IsIntegral.isIntegral x`. Establish `hfin : (MulAction.orbit (GQ l) x).Finite`. Use `((minpoly ℚ_[l] x).rootSet_finite (Om l)).subset ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `_ ⟨g, rfl⟩`. Rewrite using `[Polynomial.mem_rootSet]`. Use `⟨minpoly.ne_zero hint, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Polynomial.aeval (g x) _ = 0`. Rewrite using `[Polynomial.aeval_algEquiv]`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Conclude with `((Set.ncard_pos hfin).2 ⟨x, MulAction.mem_orbit_self x⟩).ne'`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem stabilizer_finiteIndex (x : Om l) : (MulAction.stabilizer (GQ l) x).FiniteIndex := by
   refine ⟨?_⟩
@@ -77,13 +77,13 @@ theorem stabilizer_finiteIndex (x : Om l) : (MulAction.stabilizer (GQ l) x).Fini
   exact ((Set.ncard_pos hfin).2 ⟨x, MulAction.mem_orbit_self x⟩).ne'
 
 /- English proof (translation)
-Use `stabilizer_finiteIndex x` as an intermediate fact. Use `set N := (MulAction.stabilizer (GQ l) x).normalCore with hN`. Use `set L := IntermediateField.fixedField (F.fixingSubgroup ⊓ N) with hL`. Establish `hle : F.fixingSubgroup ⊓ N ≤ L.fixingSubgroup` using `(IntermediateField.le_iff_le _ _).1 le_rfl`. Establish `hfi : (L.fixingSubgroup.subgroupOf F.fixingSubgroup).FiniteIndex`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `Subgroup.finiteIndex_of_le (H := N.subgroupOf F.fixingSubgroup) ?_` and prove the remaining obligations. Introduce `g hg`. Conclude with `hle ⟨g.2, hg⟩`. Take `⟨S, hS, hu⟩` from `exists_reps F.fixingSubgroup L.fixingSubgroup`. Use `⟨L, S, ?_, ?_, ?_, hS, hu⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hL, IntermediateField.mem_fixedField_iff]`. Introduce `g hg`. Conclude with `Subgroup.normalCore_le _ hg.2`. Conclude with `(IntermediateField.le_iff_le _ _).2 inf_le_left`. Introduce `h hh y hy`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite `hy`, the goal using `[hL, IntermediateField.mem_fixedField_iff]`. Introduce `g hg`. Establish `h1 : h⁻¹ * g * h ∈ F.fixingSubgroup ⊓ N` using `⟨Subgroup.mul_mem _ (Subgroup.mul_mem _ (Subgroup.inv_mem _ hh) hg.1) hh, by simpa using (Subgroup.normalCore_normal _).conj_mem g hg.2 h⁻¹⟩`. Establish `h2` using `congrArg h (hy _ h1)`. Simplify using `using h2`.
+A detailed English derivation is pending.
 -/
 theorem exists_field (F : IntermediateField ℚ_[l] (Om l)) (x : Om l) :
     ∃ (L : IntermediateField ℚ_[l] (Om l)) (S : Finset (GQ l)), x ∈ L ∧ F ≤ L ∧
@@ -114,29 +114,27 @@ theorem exists_field (F : IntermediateField ℚ_[l] (Om l)) (x : Om l) :
     simpa using h2
 
 /- English proof (translation)
-Introduce `l _ act hact K y hy`. Establish `hl0 : (0 : ℝ) < l` using `by exact_mod_cast (Fact.out : l.Prime).pos`. Establish `hl1 : (1 : ℝ) < l` using `by exact_mod_cast (Fact.out : l.Prime).one_lt`. Prove the components needed by the constructor for the conclusion. Introduce `hfix`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Ohat, Metric.mem_closure_iff]`. Introduce `ε hε`. Use `set δ : ℝ := min (ε / 2) 1 with hδ`. Establish `hδ0 : 0 < δ` using `lt_min (by linarith) one_pos`. Take `⟨x, hx⟩` from `(UniformSpace.Completion.denseRange_coe (α := Om l)).exists_dist_lt y (div_pos hδ0 hl0)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hx` using `[dist_eq_norm]`. Take `⟨L, S, hxL, hKL, hst, hS, hu⟩` from `exists_field (Kinf K) x`. Establish `hnl : ‖(l : Om l)‖ = (l : ℝ)⁻¹`. Rewrite using `[← map_natCast (algebraMap ℚ_[l] (Om l))]`. Conclude with `(PadicAlgCl.norm_extends l _).trans Padic.norm_p`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hlne : (l : Om l) ≠ 0` using `by exact_mod_cast (Fact.out : l.Prime).ne_zero`. Take `⟨b, hbL, hb1, hb⟩` from `GlobalTheory.T.cyclotomicTower_trace_almost_surjective l K L S hKL hst hS hu (l : Om l) (natCast_mem _ _) (by rw [hnl]; exact inv_lt_one_of_one_lt₀ hl1)`. Use `set w : Om l := ∑ s ∈ S, s (b * x) with hw`. Establish `hwK : w ∈ Kinf K`. Rewrite using `[← InfiniteGalois.fixedField_fixingSubgroup (Kinf K), IntermediateField.mem_fixedField_iff]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `h hh`. Rewrite using `[hw, map_sum]`. Use `sum_reps_invariant _ _ S hS hu (fun g => g (b * x)) ?_ h hh` and prove the remaining obligations. Introduce `g n hn`. Use `(IntermediateField.mem_fixingSubgroup_iff _ _).1 hn _ (L.mul_mem hbL hxL)` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [AlgEquiv.mul_apply, this]`. Use `set ι := algebraMap (Om l) (PadicComplex l) with hι`. Establish `hιn : ∀ u, ‖ι u‖ = ‖u‖` using `fun u => PadicComplex.norm_extends l u`. Establish `hιa : ∀ g u, act g (ι u) = ι (g u)` using `hact.1`. Establish `hdiff : ι l * y - ι w = ∑ s ∈ S, act s (ι b * (y - ι x))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← hb, hw, map_sum, map_sum, Finset.sum_mul, ← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun s hs => ?_` and prove the remaining obligations. Rewrite using `[map_mul (act s), map_sub, hfix s (hS s hs), hιa, hιa, map_mul, map_mul, mul_sub]`. Establish `hle : ‖ι l * y - ι w‖ ≤ δ / l`. Rewrite using `[hdiff]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg (div_pos hδ0 hl0).le ?_` and prove the remaining obligations. Introduce `s _`. Rewrite using `[hact.2, norm_mul, hιn]`. Combine the equalities or inequalities in the displayed calculation. Establish `hle' : ‖y - ι (w / l)‖ ≤ δ`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1 : ι l * y - ι w = ι l * (y - ι (w / l))`. Rewrite using `[mul_sub, ← map_mul, mul_div_cancel₀ _ hlne]`. Rewrite `hle` using `[h1, norm_mul, hιn, hnl, div_eq_inv_mul δ]`. Conclude with `le_of_mul_le_mul_left hle (inv_pos.2 hl0)`. Use `⟨ι (w / l), ⟨⟨w / l, div_mem hwK (natCast_mem _ _), rfl⟩, ?_⟩, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : ι (w / l) = y + -(y - ι (w / l))` using `by ring`. Rewrite using `[h1]`. Use `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le hy ?_)` and prove the remaining obligations. Rewrite using `[norm_neg]`. Conclude with `hle'.trans (min_le_right _ _)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[dist_eq_norm]`. Conclude with `lt_of_le_of_lt (hle'.trans (min_le_left _ _)) (by linarith)`. Introduce `hyO h hh`. Establish `hc : Continuous (act h)` using `(AddMonoidHomClass.isometry_of_norm (act h) (hact.2 h)).continuous`. Use `closure_minimal (t := {z | act h z = z}) ?_ (isClosed_eq hc continuous_id) hyO` and prove the remaining obligations.
-
-Introduce and unpack `_ ⟨⟨u, hu, rfl⟩, -⟩`. Express the relevant statement in the definitionally equal form `act h (u : PadicComplex l) = (u : PadicComplex l)`. Rewrite using `[hact.1, (IntermediateField.mem_fixingSubgroup_iff _ _).1 hh u hu]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fixed_iff_mem_Ohat : ∀ (l : ℕ) [Fact l.Prime]
     (act : GQ l →* (PadicComplex l ≃+* PadicComplex l)), IsActC act →

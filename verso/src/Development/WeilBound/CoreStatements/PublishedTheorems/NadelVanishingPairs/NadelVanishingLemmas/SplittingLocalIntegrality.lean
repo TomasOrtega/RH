@@ -12,7 +12,7 @@ open GlobalTheory GlobalTheory.DI
 namespace GlobalTheory.DI
 
 /- English proof (translation)
-Unfold `forms`. Apply `AddSubgroup.closure_mono` to reduce the goal to its premises. Introduce and unpack `x ⟨b, hb, v, hv, rfl⟩`. Conclude with `⟨b, hB hb, v, fun k => hL (hv k), rfl⟩`.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 private theorem forms_mono' {K : Type} [CommRing K] {V : Type} [AddCommGroup V] [Module K V]
     {B B' : Set K} {L L' : Set V} (hB : B ⊆ B') (hL : L ⊆ L') (q : ℕ) :
@@ -23,7 +23,7 @@ private theorem forms_mono' {K : Type} [CommRing K] {V : Type} [AddCommGroup V] 
   exact ⟨b, hB hb, v, fun k => hL (hv k), rfl⟩
 
 /- English proof (translation)
-Unfold `forms`. Apply `AddSubgroup.subset_closure` to reduce the goal to its premises. Use `⟨1, A.one_mem, fun _ => w, fun _ => trivial, ?_⟩` and prove the remaining obligations. Rewrite using `[one_smul, ExteriorAlgebra.ιMulti_apply]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem iota_mem_forms_one' {K : Type} [CommRing K] {V : Type} [AddCommGroup V] [Module K V]
     (A : Subring K) (w : V) : ExteriorAlgebra.ι K w ∈ forms (A : Set K) (Set.univ : Set V) 1 := by
@@ -34,7 +34,7 @@ private theorem iota_mem_forms_one' {K : Type} [CommRing K] {V : Type} [AddCommG
   simp
 
 /- English proof (translation)
-Rewrite using `[nsmul_eq_mul, ← map_natCast (algebraMap K (ExteriorAlgebra K V)), CharP.cast_eq_zero, map_zero, zero_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem psmul_zero' {K : Type} [CommRing K] {V : Type} [AddCommGroup V] [Module K V]
     (p : ℕ) [CharP K p] (x : ExteriorAlgebra K V) : p • x = 0 := by
@@ -42,13 +42,11 @@ private theorem psmul_zero' {K : Type} [CommRing K] {V : Type} [AddCommGroup V] 
     zero_mul]
 
 /- English proof (translation)
-Introduce `K _ V _ _ ι _ p _ _ d f h γ P U A B L N T hd hD hγ hNm hTm hTd hNu hNp hNU hT hfA hhA hC`. Take `⟨Φ, hΦ⟩` from `GlobalTheory.T.exists_frobenius_splitting_datum p d f h hD`. Take `⟨h0, hcl⟩` from `GlobalTheory.T.frobenius_splitting_closed p d f h Φ hd hD hΦ`. Establish `hvan` using `(GlobalTheory.T.cechAntisymmetrizedCupProduct_vanish_above_degree p f h).2 Φ hΦ`. Apply `GlobalTheory.T.cechZero_of_hypZero_of_cartier d N T Φ hd.sq hNm hTm hTd h0 hcl` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `a u t x hu htu hx`. Establish `hxu : x ∈ forms (Set.univ : Set K) (Set.univ : Set V) a` using `hNu a u hu hx`. Use `⟨fun q hq => ?_, fun hlt => hvan a x hxu t hlt⟩` and prove the remaining obligations. Apply `hT q u _ hu` to reduce the goal to its premises. Use `GlobalTheory.T.splitting_integral_forms_bound p f h Φ (⊤ : Subring K) Set.univ Set.univ t hΦ (fun i _ v _ => iota_mem_forms_one' ⊤ (f i v)) (fun _ _ _ _ _ _ => Subring.mem_top _) a q t subset_rfl hq x hxu` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Conclude with `forms_mono' (Set.subset_univ _) subset_rfl q this`. Introduce `y hy`. Conclude with `GlobalTheory.T.splitting_integral_forms_bound p f h Φ (A y) (B y) (L y) u hΦ (hfA u y hy) (hhA u y hy) a q t htu hq x (hNU a u hu y hy hx)`. Introduce `s j hj`. Establish `hs : s.Nonempty` using `⟨j, hj⟩`.
-
-Conclude with `GlobalTheory.T.cartierPropertyAt_sign_mul_factorial_scaling p d (γ j).toAddMonoidHom (fun x => Φ x {j}) (fun a => N a s) (fun a => T a s) (psmul_zero' p) (fun a ha => hNp a s hs ha) (fun a x hx => (GlobalTheory.T.cechAntisymmetrizedCupProduct_leading_term p f h).2 Φ j (γ j) hΦ (h …`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem decomp_pointwise : ∀ {K : Type} [CommRing K] {V : Type} [AddCommGroup V] [Module K V] {ι : Type} [LinearOrder ι] (p : ℕ) [Fact p.Prime] [CharP K p] (d : ExteriorAlgebra K V →+ ExteriorAlgebra K V) (f : ι → V →+ V) (h : ι → ι → V →+ K) (γ : ι → ExteriorAlgebra K V →+* ExteriorAlgebra K V) {P : Type} (U : Finset ι → Set P) (A : P → Subring K) (B : P → Set K) (L : P → Set V) (N T : ℕ → Finset ι → AddSubgroup (ExteriorAlgebra K V)), IsOddDer d → IsDatum p d f h → (∀ i, IsGamma p (f i) (γ i)) → (∀ q s t, s.Nonempty → s ⊆ t → N q s ≤ N q t) → (∀ q s t, s.Nonempty → s ⊆ t → T q s ≤ T q t) → (∀ q s x, x ∈ T q s → d x ∈ T (q + 1) s) → (∀ a s, s.Nonempty → N a s ≤ forms (Set.univ : Set K) (Set.univ : Set V) a) → (∀ a s, s.Nonempty → p ≤ a → N a s = ⊥) → (∀ a s, s.Nonempty → ∀ y ∈ U s, N a s ≤ forms (B y) (L y) a) → (∀ q s x, s.Nonempty → x ∈ forms (Set.univ : Set K) (Set.univ : Set V) q → (∀ y ∈ U s, x ∈ forms {z | ∃ c ∈ B y, ∃ b ∈ A y, z = c ^ p * b} (L y) q) → x ∈ T q s) → (∀ s, ∀ y ∈ U s, ∀ i ∈ s, ∀ v ∈ L y, ExteriorAlgebra.ι K (f i v) ∈ forms (A y : Set K) (L y) 1) → (∀ s, ∀ y ∈ U s, ∀ i ∈ s, ∀ j ∈ s, ∀ v ∈ L y, h i j v ∈ A y) → (∀ s, ∀ j ∈ s, CartierAt d (γ j) (fun a => N a s) (fun a => T a s)) → ∀ a b, HypZero d T (a + b) → CechZero (N a) b := by
   intro K _ V _ _ ι _ p _ _ d f h γ P U A B L N T hd hD hγ hNm hTm hTd hNu hNp hNU hT hfA hhA hC

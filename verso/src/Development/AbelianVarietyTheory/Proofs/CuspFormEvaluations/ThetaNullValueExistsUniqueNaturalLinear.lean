@@ -23,13 +23,13 @@ section Val
 variable {X : Scheme.{0}} (A : Over X) [GrpObj A] (L : LB A.left) (a : ℤ)
 
 /- English proof (translation)
-Substitute `e` using the available equality. Establish `hU : ∀ j, (τ.s j).val = (τ'.s j).val`. Introduce `j`. Apply `TopCat.Presheaf.section_ext T.left.sheaf` to reduce the goal to its premises. Introduce `y hy`.
+Substitute using the available equality. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hyU : (𝟙 T.left : T.left ⟶ T.left) y ∈ (LB.LinComb L (Y` using `T.left) (K := Fin 1) (fun _ => z.left) (fun _ => a)).U j := hy`. Establish `key` using `hτ j y hy hy`. Use `clear hτ h`. Unfold `gm at key`. Rewrite `key` using `[dif_pos hyU]`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `key2` using `congrArg Units.val key`. Simplify using `only [MonoidHom.comp_apply] at key2`. Unfold `pullU at key2`. Simplify using `only [Units.coe_map, MonoidHom.coe_coe] at key2`. Conclude with `key2`.
+Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses.
 
-Unfold `IsValueAt at h ⊢`. Introduce `j`. Rewrite using `[← hU j]`. Conclude with `h j`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isValueAt_congr {T : Over X} {s : LB.Sec (LPow A L a T)} {z z' : T ⟶ A} (e : z = z')
     {τ : LB.Gen (LB.LinComb L (Y := T.left) (K := Fin 1) (fun _ => z.left) (fun _ => a))}
@@ -58,9 +58,9 @@ theorem isValueAt_congr {T : Over X} {s : LB.Sec (LPow A L a T)} {z z' : T ⟶ A
   exact h j
 
 /- English proof (translation)
-Unfold `gm`. Rewrite using `[dif_pos (show (𝟙 Y : Y ⟶ Y) y ∈ U from hVU hy)]`. Simplify using `only [MonoidHom.comp_apply]`. Unfold `pullU`. Simplify using `only [Units.coe_map, MonoidHom.coe_coe]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
-Rewrite using `[Y.presheaf.germ_res_apply]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private lemma gm_id_eq_germ_map {Y : Scheme.{0}} {U V : Y.Opens} (hVU : V ≤ U) (y : Y) (hy : y ∈ V)
     (x : Γ(Y, U)ˣ) :
@@ -75,7 +75,7 @@ private lemma gm_id_eq_germ_map {Y : Scheme.{0}} {U V : Y.Opens} (hVU : V ≤ U)
   rfl
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[gm_id_eq_germ_map h₁ y hy, gm_id_eq_germ_map h₂ y hy]`. Establish `e2` using `congrArg Units.val e`. Simplify using `only [Units.coe_map, MonoidHom.coe_coe] at e2`. Rewrite using `[e2]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 private lemma gm_id_eq_of_units_map_eq {Y : Scheme.{0}} {U₁ U₂ V : Y.Opens} (h₁ : V ≤ U₁) (h₂ : V ≤ U₂) (x₁ : Γ(Y, U₁)ˣ)
     (x₂ : Γ(Y, U₂)ˣ) (y : Y) (hy : y ∈ V)
@@ -89,9 +89,9 @@ private lemma gm_id_eq_of_units_map_eq {Y : Scheme.{0}} {U₁ U₂ V : Y.Opens} 
   rw [e2]
 
 /- English proof (translation)
-Establish `h1` using `Formalism.MainNotions.ModuliIntegralCharts.H1.LBPull.isValueAt_pull A L a g 1 hs hv`. Establish `hc` using `Formalism.MainNotions.ModuliIntegralCharts.H1.LBPull.corr_rigT_pull A L ρ g a`. Establish `e : g ≫ (1 : T ⟶ A) = 1` using `by simp`. Use `isValueAt_congr A L a e ?_ h1` and prove the remaining obligations. Introduce `j y hy hy'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Unfold `LB.Gen.Corr at hc`. Establish `key` using `hc j j (fun k₁ k₂ _ => by rw [Subsingleton.elim k₁ k₂]) (fun k₁ k₂ _ => by rw [Subsingleton.elim k₁ k₂]) (fun k k' _ => by rw [Subsingleton.elim k k'])`. Unfold `res at key`. Use `gm_id_eq_of_units_map_eq _ _ _ _ y ?_ key` and prove the remaining obligations. Conclude with `⟨hy, hy'⟩`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components.
 -/
 theorem isValueAt_one_pull (ρ : LB.Gen (L.pull (eSec A))) {T T' : Over X} (g : T' ⟶ T)
     {s : LB.Sec (LPow A L a T)} {s' : LB.Sec (LPow A L a T')}
@@ -116,17 +116,15 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : D
   {Xo : Moduli Dw l} {c : Coeff l}
 
 /- English proof (translation)
-Take `⟨F, hVt, hV⟩` from `hw`. Establish `hx : spMap ψ.toRingHom ≫ y.x = z.x`. Unfold `FrMap at hm`. Conclude with `hm.1.symm`. Set `g : ptO Xo z.x ⟶ ptO Xo y.x` to `Over.homMk (spMap ψ.toRingHom) hx`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hg : g.left = spMap ψ.toRingHom` using `rfl`. Establish `hs` using `GlobalTheory.FramedBaseChange.isPullSec ψ hm g hg`. Establish `hF` using `GlobalTheory.VVRank.isPullSec_pullS (A := Xo.univ.t.G) (L := Xo.univ.t.PP.L) ((N : ℤ) ^ 2) g F`. Establish `hpg : p' = g ≫ p`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Over.comp_left, hg]`. Conclude with `hp`. Establish `hL : Xo.univ.t.PP.L.IsLB` using `Xo.univ.t.PP.isLB`. Unfold `IsNullVal`. Use `⟨GlobalTheory.VVRank.pullS Xo.univ.t.G ((N : ℤ) ^ 2) g F, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result.
 
-Unfold `IsVtOver at hVt ⊢`. Take `⟨t', α₀, α, s₁, U, ht', hok, g₀, hnm, cα, tw, hsym, hact⟩` from `hVt`. Establish `hok' : t' = p` using `hok`. Take `⟨α', cα', tw'⟩` from `GlobalTheory.VtBaseChange.exists_mulTwist Xo.univ.t.G hL N g hs g₀ cα tw`. Take `⟨θ', -, -, hsymP, hactP⟩` from `GlobalTheory.ThetaPullback.exists_thetaGrp_pullback _ Xo.univ.t.G Xo.univ.t.PP.L hL ((N : ℤ) ^ 2) _ _ g U`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨g ≫ t', α₀, α', _, θ', ?_, ?_, g₀, hnm, cα', tw', hsymP _ _ hsym, hactP _ _ _ _ hact (GlobalTheory.VVRank.isPullSec_pullS (A := Xo.univ.t.G) (L := Xo.univ.t.PP.L) _ g s₁) hF⟩` and prove the remaining obligations. Rewrite using `[hpg, hok']`. Use `show g ≫ t' = p'`. Rewrite using `[hpg, hok']`. Establish `h1` using `isValueAt_one_pull Xo.univ.t.G Xo.univ.t.PP.L ((N : ℤ) ^ 2) Xo.univ.t.PP.rig g hF hV`.
-
-Establish `e2 : g.left.appTop.hom (toΓ S w) = toΓ T (ψ w)` using `GlobalTheory.NabLinear.appTop_toΓ ψ.toRingHom w`. Rewrite `h1` using `[e2]`. Conclude with `h1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem baseChange {N : ℕ} {S T : Type} [CommRing S] [Algebra c.F S] [CommRing T] [Algebra c.F T]
     (ψ : S →ₐ[c.F] T) {y : FrPt Xo c S} {z : FrPt Xo c T} (hm : FrMap ψ y z)
@@ -166,11 +164,11 @@ theorem baseChange {N : ℕ} {S T : Type} [CommRing S] [Algebra c.F S] [CommRing
 open GlobalTheory.ThetaValueWeight in
 
 /- English proof (translation)
-Establish `hxx : y'.x = y.x`. Unfold `FrBor at hb`. Conclude with `hb.1`. Take `⟨d, rfl⟩` from `GlobalTheory.ThetaValueWeight.exists_reframe y y' hxx`. Establish `hpp : p' = p` using `Over.OverMorphism.ext hp`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality.
 
-Substitute `hpp` using the available equality. Take `⟨F, hVt, hV⟩` from `hw`. Establish `hgen` using `fun i => GlobalTheory.ThetaValueWeight.gen_eq d hb i`. Unfold `IsNullVal`. Use `⟨scaleSec Xo.univ.t.G (toΓ S (t none : S)) F, ?_, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `isVtOver_scale Xo.univ.t.G Xo.univ.t.PP (T := ptO Xo y.x) (s := y.s) (s₀ := d.s) (toΓ S (t none : S)) (fun j => hgen j) hVt`. Establish `h1` using `GlobalTheory.NabLinear.isValueAt_scale Xo.univ.t.G Xo.univ.t.PP.L ((N : ℤ) ^ 2) (𝟙 (ptO Xo y.x)) (F := F) (F' := scaleSec Xo.univ.t.G (toΓ S (t none : S)) F) (r := toΓ S (t none : S)) (fun _ => rfl) (isPullSec_id Xo.univ.t.G F) (isPullSec_id Xo.univ.t.G _) hV`. Use `h1 using 1` and compare the differences between its conclusion and the goal. Rewrite using `[map_mul]`. Both sides reduce to the same expression.
+Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem triangular {N : ℕ} {S : Type} [CommRing S] [Algebra c.F S] {y y' : FrPt Xo c S} {t : Ix Dw → Sˣ}
     (hb : FrBor t y y') (p : ptO Xo y.x ⟶ Xo.univ.t.G) (p' : ptO Xo y'.x ⟶ Xo.univ.t.G) (hp : p'.left = p.left)
@@ -199,9 +197,9 @@ end GlobalTheory.NullValue
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `hL E _ _ _ H Dw l Xo c N hN`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `S _ _ y p hp`. Take `⟨w, hw⟩` from `GlobalTheory.EtaForm.Model.exists_isNullVal Xo c hL hN y p hp`. Conclude with `⟨w, hw, fun w' hw' => GlobalTheory.EtaForm.Model.isNullVal_unique Xo c hL hN y p hp hw' hw⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Introduce `S T _ _ _ _ ψ y z hm p p' hp w hw`. Conclude with `NullValue.baseChange ψ hm p p' hp hw`. Introduce `S _ _ y y' t hb p p' hp w hw`. Conclude with `NullValue.triangular hb p p' hp hw`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem nullValue_existsUnique_natural_linear : Laws → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (N : ℕ), Odd N → (∀ (S : Type) [CommRing S] [Algebra c.F S] (y : FrPt Xo c S) (p : ptO Xo y.x ⟶ Xo.univ.t.G), p ^ (N ^ 2) = 1 → ∃! w, IsNullVal Xo c N y p w) ∧ (∀ (S T : Type) [CommRing S] [Algebra c.F S] [CommRing T] [Algebra c.F T] (ψ : S →ₐ[c.F] T) (y : FrPt Xo c S) (z : FrPt Xo c T), FrMap ψ y z → ∀ (p : ptO Xo y.x ⟶ Xo.univ.t.G) (p' : ptO Xo z.x ⟶ Xo.univ.t.G), p'.left = spMap ψ.toRingHom ≫ p.left → ∀ w, IsNullVal Xo c N y p w → IsNullVal Xo c N z p' (ψ w)) ∧ ∀ (S : Type) [CommRing S] [Algebra c.F S] (y y' : FrPt Xo c S) (t : Ix Dw → Sˣ), FrBor t y y' → ∀ (p : ptO Xo y.x ⟶ Xo.univ.t.G) (p' : ptO Xo y'.x ⟶ Xo.univ.t.G), p'.left = p.left → ∀ w, IsNullVal Xo c N y p w → IsNullVal Xo c N y' p' ((t none : Sˣ) * w) := by
   intro hL E _ _ _ H Dw l Xo c N hN

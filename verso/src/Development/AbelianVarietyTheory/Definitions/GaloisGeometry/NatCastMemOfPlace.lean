@@ -105,21 +105,21 @@ variable {D : D7} {cc : Ideal (𝓞 D.host.K)} {a b : ℕ} {SS : Finset (HeightO
   {N : Submodule (𝓞 D.host.E) (Fin a → D.host.E)} {N' : Submodule (𝓞 D.host.E) (Fin b → D.host.E)}
 
 /- English proof (translation)
-Introduce `x x' hx` and use `congrArg f (h x x' hx)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem DatLoc.comp {Ξ : Formalism.L2.Col.HomE D.host.E a b → ℂ} (h : DatLoc D cc SS cl N N' Ξ) (f : ℂ → ℂ) :
     DatLoc D cc SS cl N N' fun x => f (Ξ x) :=
   fun x x' hx => congrArg f (h x x' hx)
 
 /- English proof (translation)
-The claim follows from `h.comp fun y => k * y`.
+A detailed English derivation is pending.
 -/
 theorem DatLoc.const_mul {Ξ : Formalism.L2.Col.HomE D.host.E a b → ℂ} (h : DatLoc D cc SS cl N N' Ξ) (k : ℂ) :
     DatLoc D cc SS cl N N' fun x => k * Ξ x :=
   h.comp fun y => k * y
 
 /- English proof (translation)
-Introduce `x x' hx` and use `by show Ξ x + Ξ' x = Ξ x' + Ξ' x' rw [h x x' hx, h' x x' hx]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem DatLoc.add {Ξ Ξ' : Formalism.L2.Col.HomE D.host.E a b → ℂ} (h : DatLoc D cc SS cl N N' Ξ) (h' : DatLoc D cc SS cl N N' Ξ') :
     DatLoc D cc SS cl N N' fun x => Ξ x + Ξ' x :=
@@ -128,7 +128,7 @@ theorem DatLoc.add {Ξ Ξ' : Formalism.L2.Col.HomE D.host.E a b → ℂ} (h : Da
     rw [h x x' hx, h' x x' hx]
 
 /- English proof (translation)
-Introduce `x x' hx` and use `by show Ξ x * Ξ' x = Ξ x' * Ξ' x' rw [h x x' hx, h' x x' hx]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem DatLoc.mul {Ξ Ξ' : Formalism.L2.Col.HomE D.host.E a b → ℂ} (h : DatLoc D cc SS cl N N' Ξ) (h' : DatLoc D cc SS cl N N' Ξ') :
     DatLoc D cc SS cl N N' fun x => Ξ x * Ξ' x :=
@@ -137,7 +137,7 @@ theorem DatLoc.mul {Ξ Ξ' : Formalism.L2.Col.HomE D.host.E a b → ℂ} (h : Da
     rw [h x x' hx, h' x x' hx]
 
 /- English proof (translation)
-Introduce `x x' hx` and use `h x x' fun P hP => hM P hP ▸ hx P hP`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem DatLoc.of_locP_eq {M : Submodule (𝓞 D.host.E) (Fin a → D.host.E)} {M' : Submodule (𝓞 D.host.E) (Fin b → D.host.E)}
     {Ξ : Formalism.L2.Col.HomE D.host.E a b → ℂ} (h : DatLoc D cc SS cl N N' Ξ)
@@ -146,9 +146,9 @@ theorem DatLoc.of_locP_eq {M : Submodule (𝓞 D.host.E) (Fin a → D.host.E)} {
   fun x x' hx => h x x' fun P hP => hM P hP ▸ hx P hP
 
 /- English proof (translation)
-Use `h _ _ fun P hP => ?_` and prove the remaining obligations. Rewrite using `[add_sub_cancel_left]`. Establish `h1` using `(Submodule.mem_iInf _).1 hm P`. Establish `h2 : Formalism.L2.Ker.expS SS P = 1`. Unfold `Formalism.L2.Ker.expS`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[if_pos hP]`. Rewrite `h1` using `[h2, zpow_one]`. Conclude with `h1`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem DatLoc.add_halfBO {Ξ : Formalism.L2.Col.HomE D.host.E a b → ℂ} (h : DatLoc D cc SS cl N N' Ξ)
     (x m : Formalism.L2.Col.HomE D.host.E a b) (hm : m ∈ halfBO SS (perO (aaOf D cc) N N') cl) : Ξ (x + m) = Ξ x := by
@@ -162,9 +162,9 @@ theorem DatLoc.add_halfBO {Ξ : Formalism.L2.Col.HomE D.host.E a b → ℂ} (h :
   exact h1
 
 /- English proof (translation)
-Establish `hon : ∀ x, onV emb δ Ξ (embH emb δ x) = Ξ x`. Introduce `x`. Establish `hx : ∃ y, embH emb δ y = embH emb δ x` using `⟨x, rfl⟩`. Unfold `onV`. Rewrite using `[dif_pos hx]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Conclude with `congrArg Ξ (hinj hx.choose_spec)`. Introduce and unpack `_ ⟨x, -, rfl⟩ _ - ⟨m, hm, rfl⟩`. Rewrite using `[← map_add, hon, hon]`. Conclude with `h.add_halfBO x m hm`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem DatLoc.invOn {Ξ : Formalism.L2.Col.HomE D.host.E a b → ℂ} (h : DatLoc D cc SS cl N N' Ξ) {ι : Type} [Fintype ι]
     (emb : ι → D.host.E →+* ℂ) (δ : ℂ) (hinj : Function.Injective (embH (a := a) (b := b) emb δ)) :
@@ -186,7 +186,7 @@ section LawApi
 variable {p : ℕ} [Fact p.Prime] {X : Sys p} {Kc : Type} [Field Kc] [Algebra (FormalGroupSystem.K0 p) Kc] [Algebra X.G.Kf Kc]
 
 /- English proof (translation)
-Introduce `j hj c L La' γ hL hL'`. Establish `hγ : (X.Pj j).IsLatTup ((X.Lv.lev j c).smul γ L)` using `(Formalism.MainNotions.FormalGroupSystem.Pf.latTup_smul _ _ γ L).2 hL`. Rewrite using `[he j hj (c, (X.Lv.lev j c).smul γ L) La' hγ hL', he j hj (c, L) La' hL hL']`. Conclude with `h j hj c L La' γ hL hL'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem KapLawLt.congr {Th Th' : ∀ j, X.Lt j → X.Lt (j + 1) → MvPowerSeries (X.ZA j) Kc} (h : KapLawLt X Kc Th)
     (he : ∀ j < X.mm, ∀ (La : X.Lt j) (La' : X.Lt (j + 1)), (X.Pj j).IsLatTup La.2 → (X.Pj (j + 1)).IsLatTup La'.2 →
@@ -197,7 +197,7 @@ theorem KapLawLt.congr {Th Th' : ∀ j, X.Lt j → X.Lt (j + 1) → MvPowerSerie
   exact h j hj c L La' γ hL hL'
 
 /- English proof (translation)
-Use `h j hj c L La' ε hL hL'` as an intermediate fact. Rewrite `this` using `[hε]`. Conclude with `this.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem KapLawLt.stab {Th : ∀ j, X.Lt j → X.Lt (j + 1) → MvPowerSeries (X.ZA j) Kc} (h : KapLawLt X Kc Th) {j : ℕ} (hj : j < X.mm)
     (c : X.Lv.comp j) (L : (X.Pj j).Tup) (La' : X.Lt (j + 1)) (ε : (X.Lv.lev j c).Γ) (hL : (X.Pj j).IsLatTup L)
@@ -220,7 +220,7 @@ variable {p : ℕ} [Fact p.Prime] {D : D7} (X : Sys p) (E : CEmb X.G)
   (ρ : ∀ v : X.Pl, D.host.E →+* X.G.P.Qq v)
 
 /- English proof (translation)
-Unfold `FrecG pPow scal0 xiM`. Use `congr 3`. Use function extensionality and compare the values at `z`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem frecG_eq (c : ℂ_[p]) (j : ℕ) (La : X.Lt j) (La' : X.Lt (j + 1)) :
     FrecG E pos fd B χ lam SS cl Ξ₀ muT c j La La' =
@@ -234,7 +234,7 @@ theorem frecG_eq (c : ℂ_[p]) (j : ℕ) (La : X.Lt j) (La' : X.Lt (j + 1)) :
   ring
 
 /- English proof (translation)
-Establish `hp : (p : ℂ_[p]) ≠ 0` using `Nat.cast_ne_zero.2 (Fact.out : p.Prime).ne_zero`. Unfold `pPow`. Proceed by induction on `(Finset.univ : Finset X.Pl) using Finset.cons_induction with`. Consider the case `empty => simp`. Consider the case `cons a s ha ih => rw [Finset.sum_cons, Finset.prod_cons, zpow_add₀ hp, ih]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem pPow_eq_prod (j : ℕ) (La : X.Lt j) (La' : X.Lt (j + 1)) :
     pPow X j La La' = ∏ v : X.Pl, (p : ℂ_[p]) ^ (X.vm v (j + 1) * (len X v (j + 1) La'.2 - len X v j La.2)) := by
@@ -253,23 +253,23 @@ theorem twG_eq_tw (v : X.Pl) (s : Fin (X.G.P.n' v)) :
     twG X E v s = tw X ℂ_[p] v s := rfl
 
 /- English proof (translation)
-Rewrite using `[h v s x, if_neg hs]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem LamPos.even (h : LamPos X E pos lam ρ) (v : X.Pl) (s : Fin (X.G.P.n' v)) (hs : ¬ IsOddPos s) (x : D.host.E) :
     TaylorLogMetric.lamC lam (TaylorLogMetric.embT D (pos ⟨v, s⟩) x) = twG X E v s (ρ v x) := by
   rw [h v s x, if_neg hs]
 
 /- English proof (translation)
-Rewrite using `[h v s x, if_pos hs]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem LamPos.odd (h : LamPos X E pos lam ρ) (v : X.Pl) (s : Fin (X.G.P.n' v)) (hs : IsOddPos s) (x : D.host.E) :
     TaylorLogMetric.lamC lam (TaylorLogMetric.embT D (pos ⟨v, s⟩) x) = twG X E v s (ρ v (D.host.conj x)) := by
   rw [h v s x, if_pos hs]
 
 /- English proof (translation)
-Set `_` to `wittFractionAlgebraCp p`. Set `_` to `algKfC E`. Establish `hp : (p : ℂ_[p]) ≠ 0` using `Nat.cast_ne_zero.2 (Fact.out : p.Prime).ne_zero`. Rewrite using `[lsmul_one, kapG_one X ℂ_[p] hp, gamAt_one]`. Use `⟨fun v => ?_, by rw [mul_one, inv_one, one_mul]⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Matrix.map_one _ (map_zero _) (map_one _)]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 example (j : ℕ) (c : X.Lv.comp j) (L : (X.Pj j).Tup) (La' : X.Lt (j + 1)) :
     letI := wittFractionAlgebraCp p
@@ -289,7 +289,7 @@ example (j : ℕ) (c : X.Lv.comp j) (L : (X.Pj j).Tup) (La' : X.Lt (j + 1)) :
   simp
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h y hy => h _ ⟨y, hy, rfl⟩, fun h _ ⟨y, hy, hy'⟩ => hy' ▸ h y hy⟩`.
+Supply the required witnesses or components.
 -/
 example {a b : ℕ} (e : Matrix (Fin a) (Fin a) D.host.E) (N : Submodule (𝓞 D.host.E) (Fin a → D.host.E))
     (N' : Submodule (𝓞 D.host.E) (Fin b → D.host.E)) (x : Formalism.L2.Col.HomE D.host.E a b) :
@@ -297,7 +297,7 @@ example {a b : ℕ} (e : Matrix (Fin a) (Fin a) D.host.E) (N : Submodule (𝓞 D
   ⟨fun h y hy => h _ ⟨y, hy, rfl⟩, fun h _ ⟨y, hy, hy'⟩ => hy' ▸ h y hy⟩
 
 /- English proof (translation)
-Unfold `xiM`. Rewrite using `[h, h']`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 example (j : ℕ) (La : X.Lt j) (La' : X.Lt (j + 1)) (h : fd.trG j La = LinearEquiv.refl _ _)
     (h' : fd.trG (j + 1) La' = LinearEquiv.refl _ _) : xiM X fd Ξ₀ j La La' = Ξ₀ j La La' := by

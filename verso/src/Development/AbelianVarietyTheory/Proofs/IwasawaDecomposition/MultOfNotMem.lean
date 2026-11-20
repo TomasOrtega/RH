@@ -18,13 +18,13 @@ def InDom {H : Host E} {Dw : Datum H} (z : GlobalTheory.AllWt.Psi H → Matrix (
   ∀ τ, (1 - (z τ)ᴴ * z τ).PosDef
 
 /- English proof (translation)
-Simplify using `[Datum.mult, h]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mult_of_mem {H : Host E} (Dw : Datum H) {τ : E →+* ℂ} (h : τ (H.rt : E) = H.rt0) : Dw.mult τ = Dw.p := by
   simp [Datum.mult, h]
 
 /- English proof (translation)
-Simplify using `[Datum.mult, h]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mult_of_not_mem {H : Host E} (Dw : Datum H) {τ : E →+* ℂ} (h : ¬ τ (H.rt : E) = H.rt0) :
     Dw.mult τ = Dw.q := by

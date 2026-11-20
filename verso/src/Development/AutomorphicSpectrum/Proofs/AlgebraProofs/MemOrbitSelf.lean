@@ -10,11 +10,11 @@ open GlobalTheory.CompanionTheory.FreeQuotProof GlobalTheory.CompanionTheory.Hyp
 namespace GlobalTheory.CompanionTheory.FreeQuotProof
 
 /- English proof (translation)
-Establish `h1 : lift (1 : X ⟶ G) (𝟙 X) ≫ snd G X = 𝟙 X` using `lift_snd _ _`. Establish `h2 : lift (1 : X ⟶ G) (𝟙 X) ≫ (γ[G, X] : G ⊗ X ⟶ X) = 𝟙 X`. Use `one_smul (X ⟶ G) (𝟙 X)` as an intermediate fact. Rewrite `this` using `[Hom.smul_def]`. Then use the resulting hypothesis. Establish `h1' : (lift (1 : X ⟶ G) (𝟙 X)).left ≫ (snd G X).left = 𝟙 X.left`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Rewrite using `[← Over.comp_left, h1, Over.id_left]`. Establish `h2' : (lift (1 : X ⟶ G) (𝟙 X)).left ≫ (γ[G, X] : G ⊗ X ⟶ X).left = 𝟙 X.left`. Rewrite using `[← Over.comp_left, h2, Over.id_left]`. Use `⟨(lift (1 : X ⟶ G) (𝟙 X)).left x, ?_, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(snd G X).left ((lift (1 : X ⟶ G) (𝟙 X)).left x) = x`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[← Scheme.Hom.comp_apply, h1']`. Both sides reduce to the same expression. Rewrite using `[← Scheme.Hom.comp_apply, h2']`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem mem_orbit_self {S : Scheme.{0}} (G X : Over S) [GrpObj G] [ModObj G X] (x : X.left) :
     x ∈ orbit G X x := by

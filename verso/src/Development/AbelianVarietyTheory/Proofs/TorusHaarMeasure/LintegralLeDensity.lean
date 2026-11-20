@@ -10,17 +10,17 @@ open scoped ContDiff ENNReal Matrix
 namespace GlobalTheory.PointSup
 
 /- English proof (translation)
-Break down `le_or_gt p 0 with hp | hp` into its components or cases. Simplify using `[ENNReal.ofReal_of_nonpos hp]`. Establish `hK : 0 < K` using `hk.trans_le hkK`. Establish `hwt : w ≠ ⊤`. Introduce and unpack `rfl`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `h1 : ENNReal.ofReal p ≠ 0` using `(ENNReal.ofReal_pos.2 hp).ne'`. Establish `h2 : ENNReal.ofReal k⁻¹ ≠ 0` using `(ENNReal.ofReal_pos.2 (inv_pos.2 hk)).ne'`. Rewrite `hfin` using `[ENNReal.mul_top h1, ENNReal.top_mul h2]`. Conclude with `lt_irrefl _ hfin`. Establish `hS2 : ENNReal.ofReal e / w ≤ S ^ 2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `ENNReal.pow_le_pow_left (n := 2) hS`. Establish `h' : ((ENNReal.ofReal e / w) ^ (1 / 2 : ℝ)) ^ 2 = ENNReal.ofReal e / w`. Rewrite using `[← ENNReal.rpow_natCast, ← ENNReal.rpow_mul]`. Evaluate the numerical expressions. Rewrite `h` using `[h']`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `he : ENNReal.ofReal e ≤ S ^ 2 * w` using `(ENNReal.div_le_iff hw hwt).1 hS2`. Establish `hreal : 1 ≤ k⁻¹ * (K / c) * e`. Establish `h1 : 1 ≤ K / k` using `by rw [le_div_iff₀ hk]; linarith`. Establish `h2 : 1 ≤ e / c` using `by rw [le_div_iff₀ hc]; linarith`. Establish `h3 : k⁻¹ * (K / c) * e = (K / k) * (e / c)` using `by simp only [div_eq_mul_inv]; ring`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h3]`. Use the polynomial consequences of the given equalities and inequalities. Establish `hone : 1 ≤ w * ENNReal.ofReal k⁻¹ * (ENNReal.ofReal (K / c) * S ^ 2)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[ENNReal.ofReal_mul (mul_nonneg (inv_nonneg.2 hk.le) (div_nonneg hK.le hc.le)), ENNReal.ofReal_mul (inv_nonneg.2 hk.le)]`.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Use `_ ≤ ENNReal.ofReal k⁻¹ * ENNReal.ofReal (K / c) * (S ^ 2 * w) := by gcongr`. Use `_ = w * ENNReal.ofReal k⁻¹ * (ENNReal.ofReal (K / c) * S ^ 2) := by ring`. Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem point_le {p k K e c : ℝ} {w S : ℝ≥0∞} (hk : 0 < k) (hkK : k ≤ K) (hc : 0 < c) (hce : c ≤ e)
     (hw : w ≠ 0) (hS : (ENNReal.ofReal e / w) ^ (1 / 2 : ℝ) ≤ S)
@@ -62,9 +62,9 @@ theorem point_le {p k K e c : ℝ} {w S : ℝ≥0∞} (hk : 0 < k) (hkK : k ≤ 
     _ = _ := by ring
 
 /- English proof (translation)
-Establish `hmv` using `ReciprocityTheory.L2DbarEstimates.C.mv n 0 R u (fun _ => 1) hu measurable_const`. Simplify using `only [mul_one, setLIntegral_one] at hmv`. Establish `hfin : ∀ᵐ z ∂(volume.restrict (Metric.ball (0 : V n) R)), g z < ⊤` using `ae_lt_top hg (hgJ.trans_lt hJ).ne`. Establish `hae : ∀ᵐ z ∂(volume.restrict (Metric.ball (0 : V n) R)), ‖u z‖ₑ ^ 2 ≤ g z * A` using `by filter_upwards [hfin, ae_restrict_mem measurableSet_ball] with z hz hzb`. Rewrite using `[← ofReal_norm, ← ENNReal.ofReal_pow (norm_nonneg _)]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hpt z hzb hz`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem mean_le {n : ℕ} {R : ℝ} {u : V n → ℂ} (hu : DifferentiableOn ℂ u (Metric.ball 0 R))
     {g : V n → ℝ≥0∞} (hg : Measurable g) {J A : ℝ≥0∞} (hJ : J < ⊤)
@@ -88,9 +88,9 @@ theorem mean_le {n : ℕ} {R : ℝ} {u : V n → ℂ} (hu : DifferentiableOn ℂ
     _ ≤ J * A := by gcongr
 
 /- English proof (translation)
-Establish `hμ : ENNReal.ofReal c • volume.restrict B ≤ (volume.restrict O).withDensity fun z => ENNReal.ofReal (d z)`. Use `Measure.le_iff.2 fun s hs => ?_` and prove the remaining obligations. Rewrite using `[Measure.smul_apply, Measure.restrict_apply hs, withDensity_apply _ hs, Measure.restrict_restrict hs, smul_eq_mul]`. Combine the equalities or inequalities in the displayed calculation. Establish `hc0 : ENNReal.ofReal c ≠ 0` using `(ENNReal.ofReal_pos.2 hc).ne'`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← mul_assoc, ENNReal.inv_mul_cancel hc0 ENNReal.ofReal_ne_top, one_mul]`. Use `_ = (ENNReal.ofReal c)⁻¹ * ∫⁻ z, g z ∂(ENNReal.ofReal c • volume.restrict B) := by`. Rewrite using `[lintegral_smul_measure, smul_eq_mul]`. Use `_ ≤ _ := by gcongr`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lintegral_le_density {n : ℕ} {B O : Set (V n)} (hB : MeasurableSet B) (hBO : B ⊆ O)
     {d : V n → ℝ} {c : ℝ} (hc : 0 < c) (hd : ∀ z ∈ B, c ≤ d z) (g : V n → ℝ≥0∞) :
@@ -116,11 +116,9 @@ theorem lintegral_le_density {n : ℕ} {B O : Set (V n)} (hB : MeasurableSet B) 
     _ ≤ _ := by gcongr
 
 /- English proof (translation)
-Establish `hJv : J / v ≠ ⊤` using `ENNReal.div_ne_top hJ.ne hv`. Establish `ht0 : 0 ≤ (J / v).toReal` using `ENNReal.toReal_nonneg`. Establish `h1 : a ^ 2 ≤ J / v * (ENNReal.ofReal (K * k) * S ^ 2)`. Rewrite using `[← ENNReal.mul_div_right_comm, ENNReal.le_div_iff_mul_le (Or.inl hv) (Or.inl hvt)]`. Conclude with `h`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e1 : (Real.sqrt ((J / v).toReal * K) * Real.sqrt k) ^ 2 = (J / v).toReal * (K * k)`. Rewrite using `[mul_pow, Real.sq_sqrt (mul_nonneg ht0 hK), Real.sq_sqrt hk]`. Expand and normalize the polynomial expressions, which then agree. Establish `h2 : a ^ 2 ≤ (ENNReal.ofReal (Real.sqrt ((J / v).toReal * K) * Real.sqrt k) * S) ^ 2`. Rewrite using `[mul_pow, ← ENNReal.ofReal_pow (by positivity), e1, ENNReal.ofReal_mul ht0, ENNReal.ofReal_toReal hJv, mul_assoc]`.
-
-Conclude with `h1`. Conclude with `(ENNReal.pow_le_pow_left_iff two_ne_zero).1 h2`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem root_le {a S J v : ℝ≥0∞} {K k : ℝ} (hJ : J < ⊤) (hv : v ≠ 0) (hvt : v ≠ ⊤) (hK : 0 ≤ K)
     (hk : 0 ≤ k) (h : a ^ 2 * v ≤ J * (ENNReal.ofReal (K * k) * S ^ 2)) :
@@ -141,39 +139,37 @@ theorem root_le {a S J v : ℝ≥0∞} {K k : ℝ} (hJ : J < ⊤) (hv : v ≠ 0)
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
 /- English proof (translation)
-Introduce `hMI hU _ r X x0 hx0 la W bb κ hκ hW hWL F P hIn hP hPF ρ hρ _`. Take `⟨hκm, hκpos, hκB, hκka, -, ρ1, C1, hρ1, hκloc⟩` from `hκ`. Take `⟨ρ0, c0, C0, hρ0, hc0, hU0⟩` from `hU r X la`. Take `⟨cw, hcw, hWl⟩` from `hWL`. Take `⟨φ, hφ⟩ : ∃ φ : Frame X.Ψ r → ℝ≥0∞, φ = fun y => OntoE.phiF X P W y * ENNReal.ofReal (κ y)⁻¹` from `⟨_, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hφm : Measurable φ`. Rewrite using `[hφ]`. Conclude with `(OntoE.phiF_meas X hP.1.continuousOn hW.1).mul (ENNReal.measurable_ofReal.comp hκm.inv)`. Establish `hφB : ∀ y ∈ X.dom, ∀ b ∈ Bor X.Ψ r, φ (rmul y b) = φ y`. Introduce `y hy b hb`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hφ]`. Simplify using `only`. Rewrite using `[OntoE.phiF_B X hP.2 hW y hy b hb, hκB y hy b hb]`. Establish `hφdom : ∀ y ∈ X.dom, φ y = ENNReal.ofReal (‖P y‖ ^ 2) * W y * ENNReal.ofReal (κ y)⁻¹`. Introduce `y hy`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hφ]`. Simplify using `only`. Rewrite using `[OntoE.phiF_dom X P W hy]`. Establish `hφout : ∀ y, y ∉ X.dom → φ y = 0`. Introduce `y hy`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hφ]`. Simplify using `[OntoE.phiF, Set.piecewise, hy]`. Establish `hI : ∫⁻ z, φ (cpt X x0 z) ∂muF X x0 < ⊤`. Use `lt_of_le_of_lt (lintegral_mono fun z => ?_) hIn` and prove the remaining obligations. Distinguish the cases in `hz : cpt X x0 z ∈ X.dom`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hφdom _ hz, hPF z hz, hκka z hz, div_eq_mul_inv, ENNReal.ofReal_mul (sq_nonneg _)]`. Conclude with `le_of_eq (by ring)`. Rewrite using `[hφout _ hz]`. Conclude with `zero_le`. Take `⟨R, hR⟩ : ∃ R : ℝ, R = min ρ (min ρ0 ρ1)` from `⟨_, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hRpos : 0 < R` using `by rw [hR]; exact lt_min hρ (lt_min hρ0 hρ1)`. Establish `hball : ∀ z ∈ Metric.ball (0 : V (nd X)) R, ‖z‖ < ρ ∧ ‖z‖ < ρ0 ∧ ‖z‖ < ρ1`. Introduce `z hz`. Rewrite `hz` using `[Metric.mem_ball, dist_zero_right]`. Rewrite `hz` using `[hR]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `⟨hz.trans_le (min_le_left _ _), hz.trans_le ((min_le_right _ _).trans (min_le_left _ _)), hz.trans_le ((min_le_right _ _).trans (min_le_right _ _))⟩`. Take `⟨J, hJ⟩ : ∃ J : ℝ≥0∞, J = (ENNReal.ofReal c0)⁻¹ * ∫⁻ z, φ (cpt X x0 z) ∂muF X x0` from `⟨_, rfl⟩`. Establish `hJfin : J < ⊤`. Rewrite using `[hJ]`. Conclude with `ENNReal.mul_lt_top (ENNReal.inv_lt_top.2 (ENNReal.ofReal_pos.2 hc0)) hI`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hv : volume (Metric.ball (0 : V (nd X)) R) ≠ 0` using `(Metric.measure_ball_pos volume _ hRpos).ne'`. Establish `hvt : volume (Metric.ball (0 : V (nd X)) R) ≠ ⊤` using `measure_ball_lt_top.ne`. Establish `hK0 : 0 ≤ max C1 0 / c0 ^ 2` using `div_nonneg (le_max_right _ _) (sq_nonneg _)`. Use `⟨Real.sqrt ((J / volume (Metric.ball (0 : V (nd X)) R)).toReal * (max C1 0 / c0 ^ 2)), fun x hx => ?_⟩` and prove the remaining obligations. Establish `hxd : x ∈ X.dom` using `IW.orth_mem_dom X x hx`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hκx : 0 < κ x` using `(hκpos x hxd).1`. Establish `hcd : Differentiable ℂ (fun z : V (nd X) => cpt X x z)`. Rewrite using `[differentiable_pi]`. Introduce `τ`. Rewrite using `[differentiable_pi]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `a`. Rewrite using `[differentiable_pi]`. Introduce `b`. Conclude with `(IW.cpt_entry_cd X x τ a b).differentiable (by simp)`. Establish `hmaps : ∀ z ∈ Metric.ball (0 : V (nd X)) R, cpt X x z ∈ X.dom` using `fun z hz => (hU0 x hx z (hball z hz).2.1).1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `hu : DifferentiableOn ℂ (fun z => P (cpt X x z)) (Metric.ball (0 : V (nd X)) R)` using `hP.1.comp hcd.differentiableOn hmaps`. Establish `hg : Measurable fun z => φ (cpt X x z)` using `hφm.comp hcd.continuous.measurable`. Establish `hgJ : ∫⁻ z in Metric.ball (0 : V (nd X)) R, φ (cpt X x z) ≤ J`. Combine the equalities or inequalities in the displayed calculation. Establish `key : ∀ S : ℝ≥0∞, (∀ z : V (nd X), ‖z‖ < ρ → cpt X x z ∈ X.dom → (ENNReal.ofReal (Real.exp (-phla X la (cpt X x z))) / W (cpt X x z)) ^ (1 / 2 : ℝ) ≤ S) → ENNReal.ofReal ‖P x‖ ≤ ENNReal.ofReal (Real.sqrt ((J / volume (Metric.ball (0 : V (nd X)) R)).toReal * (max C1 0 / c0 ^ 2)) * …`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Introduce `S hSle`. Establish `hpt : ∀ z ∈ Metric.ball (0 : V (nd X)) R, φ (cpt X x z) < ⊤ → ENNReal.ofReal (‖P (cpt X x z)‖ ^ 2) ≤ φ (cpt X x z) * (ENNReal.ofReal (max C1 0 / c0 ^ 2 * κ x) * S ^ 2)`. Introduce `z hz hfin`. Take `⟨hzρ, hzρ0, hzρ1⟩` from `hball z hz`. Take `⟨hyd, -, -, hn1, -⟩` from `hU0 x hx z hzρ0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hky : 0 < κ (cpt X x z)` using `(hκpos _ hyd).1`. Establish `hkK : κ (cpt X x z) ≤ max C1 0 * κ x` using `(hκloc x hx z hzρ1).trans (mul_le_mul_of_nonneg_right (le_max_left _ _) hκx.le)`. Establish `hce : c0 ^ 2 ≤ Real.exp (-phla X la (cpt X x z))`. Establish `hn : 0 < X.nfac la (cpt X x z)` using `hc0.trans_le hn1`. Establish `h2 : Real.exp (-phla X la (cpt X x z)) = X.nfac la (cpt X x z) ^ 2` using `by show Real.exp (-(-2 * Real.log (X.nfac la (cpt X x z)))) = _`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Rewrite using `[neg_mul, neg_neg, two_mul, Real.exp_add, Real.exp_log hn]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h2]`. Use the polynomial consequences of the given equalities and inequalities. Establish `hw : W (cpt X x z) ≠ 0` using `(lt_of_lt_of_le (ENNReal.ofReal_pos.2 (mul_pos hcw (Real.exp_pos _))) (hWl _ hyd)).ne'`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite `hfin`, the goal using `[hφdom _ hyd]`. Establish `h` using `point_le hky hkK (pow_pos hc0 2) hce hw (hSle z hzρ hyd) hfin`. Rewrite `h` using `[show max C1 0 * κ x / c0 ^ 2 = max C1 0 / c0 ^ 2 * κ x by ring]`. Then use the resulting hypothesis. Establish `hmean` using `mean_le hu hg hJfin hgJ hpt`. Simplify using `only [IW.cpt_zero] at hmean`.
-
-Conclude with `root_le hJfin hv hvt hK0 hκx.le hmean`. Conclude with `key _ fun z hz hd => le_iSup_of_le z (le_iSup_of_le hz (le_iSup_of_le hd le_rfl))`.
+A detailed English derivation is pending.
 -/
 theorem pointSup : (MeasInvStatement (E := E)) → (∀ (r : ℕ) (X : Data E r) (la : Wt X.Ψ r), ∃ ρ c C : ℝ, 0 < ρ ∧ 0 < c ∧ ∀ x, IsOrth X x → ∀ z : V (nd X), ‖z‖ < ρ → cpt X x z ∈ X.dom ∧ c ≤ densF X x z ∧ densF X x z ≤ C ∧ c ≤ X.nfac la (cpt X x z) ∧ X.nfac la (cpt X x z) ≤ C) → (NfacRmulStatement (E := E) ∧ NfacLactStatement (E := E) ∧ PnormInvStatement (E := E)) → (∀ (r : ℕ) (X : Data E r) (x0 : Frame X.Ψ r), IsOrth X x0 → ∀ (la : Wt X.Ψ r) (W : Frame X.Ψ r → ℝ≥0∞) (bb : ℝ) (κ : Frame X.Ψ r → ℝ), (Measurable κ ∧ (∀ x ∈ X.dom, 0 < κ x ∧ κ x ≤ 1) ∧ (∀ x ∈ X.dom, ∀ b ∈ Bor X.Ψ r, κ (rmul x b) = κ x) ∧ (∀ z ∈ OmF X x0, κ (cpt X x0 z) = kaF X x0 bb z) ∧ (∃ C : ℝ≥0∞, C < ⊤ ∧ ∀ x ∈ X.dom, ∑' γ : X.Γ, ENNReal.ofReal (Real.sqrt (κ (lact γ.1 x))) ≤ C) ∧ ∃ ρ C : ℝ, 0 < ρ ∧ ∀ x, IsOrth X x → ∀ z : V (nd X), ‖z‖ < ρ → κ (cpt X x z) ≤ C * κ x) → IsMetricW X la W → WLower X la W → ∀ (F : V (nd X) → ℂ) (P : Frame X.Ψ r → ℂ), InAt X x0 W bb F → IsBEq X la P → (∀ z ∈ OmF X x0, P (cpt X x0 z) = F z) → ∀ ρ : ℝ, 0 < ρ → ρ ≤ 1 → ∃ C : ℝ, ∀ x, IsOrth X x → ENNReal.ofReal ‖P x‖ ≤ ENNReal.ofReal (C * Real.sqrt (κ x)) * ⨆ (z : V (nd X)) (_ : ‖z‖ < ρ) (_ : cpt X x z ∈ X.dom), (ENNReal.ofReal (Real.exp (-phla X la (cpt X x z))) / W (cpt X x z)) ^ (1 / 2 : ℝ)) := by
   intro hMI hU _ r X x0 hx0 la W bb κ hκ hW hWL F P hIn hP hPF ρ hρ _

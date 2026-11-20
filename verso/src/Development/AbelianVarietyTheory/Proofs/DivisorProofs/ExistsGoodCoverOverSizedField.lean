@@ -21,7 +21,7 @@ open scoped IntermediateField
 namespace GlobalTheory.CovTop.SizedCover
 
 /- English proof (translation)
-Establish `h` using `@AlgHom.fieldRange_of_normal ℚ ℂ _ _ _ R (by convert hN; exact Subsingleton.elim _ _) (s.toRingHom.toRatAlgHom.comp R.val)`. Conclude with `h.le ⟨⟨a, ha⟩, rfl⟩`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem stable_of_normal (R : IntermediateField ℚ ℂ) [hN : Normal ℚ R] (s : ℂ ≃+* ℂ) (a : ℂ) (ha : a ∈ R) : s a ∈ R := by
   have h := @AlgHom.fieldRange_of_normal ℚ ℂ _ _ _ R (by convert hN; exact Subsingleton.elim _ _)
@@ -29,35 +29,35 @@ theorem stable_of_normal (R : IntermediateField ℚ ℂ) [hN : Normal ℚ R] (s 
   exact h.le ⟨⟨a, ha⟩, rfl⟩
 
 /- English proof (translation)
-Establish `hdm` using `H.d_mod`. Establish `hd0 : 0 < H.d` using `H.d_prime.pos`. Take `⟨hfin, h2⟩` from `RayExistCurve.finrank_adjoin hd0 H.sqrt_neg_disc_sq`. Establish `hr0 : H.rt0 ∈ ℚ⟮H.rt0⟯` using `IntermediateField.mem_adjoin_simple_self ℚ H.rt0`. Generalize the expression as in `ℚ⟮H.rt0⟯ = K₀ at hfin h2 hr0`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable.
 
-Establish `hNF : NumberField K₀` using `NumberField.mk`. Establish `hr : (⟨H.rt0, hr0⟩ : K₀) ^ 2 = -(H.d : K₀)` using `Subtype.ext (by simpa using H.sqrt_neg_disc_sq)`. Establish `hD : discr K₀ = -(H.d : ℤ)` using `discr_eq_neg_of_sq_eq h2 H.d_prime.squarefree (by omega) hr`. Establish `hTC : IsTotallyComplex K₀`. Use `⟨fun v => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← InfinitePlace.not_isReal_iff_isComplex]`. Introduce `hv`. Establish `h1 : InfinitePlace.embedding_of_isReal hv ⟨H.rt0, hr0⟩ ^ 2 = -(H.d : ℝ)`. Rewrite using `[← map_pow, hr, map_neg, map_natCast]`. Establish `h3 : (0 : ℝ) < H.d` using `by exact_mod_cast hd0`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use polynomial arithmetic with `[sq_nonneg (InfinitePlace.embedding_of_isReal hv ⟨H.rt0, hr0⟩)]`. Establish `hQ : Algebra.IsQuadraticExtension ℚ K₀` using `⟨h2⟩`. Establish `hG : IsGalois ℚ K₀` using `inferInstance`. Take `⟨w, hw, hgen⟩` from `exists_integer_generator_of_sq_eq_neg h2 H.d_prime.squarefree (by omega) hr`. Set `φ : K₀ →+* ℂ` to `algebraMap K₀ ℂ`.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `hw' : φ w = (1 + H.rt0) / 2`. Use `congrArg φ hw` as an intermediate fact. Rewrite `this` using `[map_mul, map_add, map_one, map_ofNat]`. Express the relevant statement in the definitionally equal form `_ = 1 + H.rt0 at this`. Take the linear combination `this / 2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Take a linear combination of the given relations to obtain the conclusion.
 
-Establish `hc : ∀ a b : ℤ, φ ((a : 𝓞 K₀) + b * w : 𝓞 K₀) = a + b * ((1 + H.rt0) / 2)` using `fun a b => by`. Rewrite using `[← hw']`. Simplify using the standard rewrite rules. Establish `hn0 : (n : 𝓞 K₀) ≠ 0` using `by exact_mod_cast (show n ≠ 0 by omega)`. Take `⟨L, _, _, _, hL⟩` from `GlobalTheory.Mem.Fld.rayField_iff.1 hRF K₀ (Ideal.span {(n : 𝓞 K₀)}) (by rwa [Ne, Ideal.span_singleton_eq_bot])`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Set `ψ : L →ₐ[K₀] ℂ` to `IsAlgClosed.lift`. Set `e₀ : L ≃ₐ[K₀] ψ.fieldRange` to `AlgEquiv.ofInjectiveField ψ`. Establish `hfR : FiniteDimensional K₀ ψ.fieldRange` using `e₀.toLinearEquiv.finiteDimensional`. Establish `hLR` using `fun (_ : NumberField ψ.fieldRange) => hL.of_algEquiv e₀`. Generalize the expression as in `ψ.fieldRange = R at hfR hLR`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable.
 
-Establish `hNR : NumberField R` using `NumberField.of_module_finite K₀ R`. Establish `hin` using `(hLR hNR).isRayFieldIn_restrictScalars`. Take `⟨hab, hR⟩` from `hLR hNR`. Express the relevant statement in the definitionally equal form `IsRay R (Ideal.span {(n : 𝓞 K₀)}) at hR`. Establish `hGR : IsGalois ℚ R` using `GlobalTheory.RayNatGalois.isGalois_of_isRay_nat ℚ (L := K₀) (by omega) hR`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact.
 
-Establish `hGR' : Normal ℚ (R.restrictScalars ℚ)` using `hGR.to_normal`. Take `⟨hdeg, hsz⟩` from `GlobalTheory.Mem.Fld.RaySize.degOver_le_and_sz K₀ _ n _ hin (by omega)`. Establish `hNR' : NumberField (R.restrictScalars ℚ)` using `hNR`. Establish `hdpos` using `GlobalTheory.Mem.Fld.degOver_pos _ _ hin.emb_mem`. Use `⟨R.restrictScalars ℚ, _, _, hsz, ?_, stable_of_normal _, R.algebraMap_mem (⟨H.rt0, hr0⟩ : K₀), GlobalTheory.Mem.RayRoots.rootOne_mem_of_isRayFieldIn K₀ _ n n _ (by omega) dvd_rfl hin, fun F hRle P hP => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hcl` using `classNumber_le_abs_discr_of_finrank_eq_two K₀ h2`. Generalize the expression as in `GlobalTheory.Mem.Fld.degOver _ _ hin.emb_mem = m at hdeg hdpos`. Rewrite `hdeg` using `[h2]`. Rewrite `hcl` using `[hD]`. Rewrite using `[h2, hD]`.
+Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Int.cast_neg, Int.cast_natCast, abs_neg, Nat.abs_cast, Nat.cast_ofNat] at hcl ⊢`. Establish `hd1 : (1 : ℝ) ≤ H.d` using `by exact_mod_cast hd0`. Establish `hn1 : (1 : ℝ) ≤ n` using `by exact_mod_cast (show 1 ≤ n by omega)`. Establish `hm : (0 : ℝ) < m` using `by exact_mod_cast hdpos`. Establish `hm' : (m : ℝ) ≤ H.d * (n : ℝ) ^ 2`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: (m : ℝ) ≤ classNumber K₀ * (n : ℝ) ^ 2` using `by exact_mod_cast hdeg`. Conclude with `this.trans (by gcongr)`. Establish `h1` using `Real.log_le_log hm hm'`. Rewrite `h1` using `[Real.log_mul (by positivity) (by positivity), Real.log_pow]`. Establish `h3` using `Real.log_nonneg hd1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h4` using `Real.log_nonneg hn1`. Establish `h5` using `Real.log_le_sub_one_of_pos (show (0 : ℝ) < 2 by norm_num)`. Move the coercions through the operations in `at h1`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hW` using `GlobalTheory.T.weberInvariantTorsionValues_subset_rayClassField K₀ h2 (by omega) P (fun z => ?_) n hn R hR`.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Supply the required witnesses or components.
 
-Conclude with `⟨hRle (hW (Set.mem_insert _ _)), fun s hs => hRle (hW (Set.mem_insert_of_mem _ ⟨_, (hP _).2 ⟨s, rfl⟩, hs, rfl⟩))⟩`. Rewrite using `[hP]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨s, rfl⟩`. Conclude with `⟨_, hc s.1 s.2⟩`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨a, rfl⟩`. Take `⟨a, b, rfl⟩` from `hgen a`. Conclude with `⟨(a, b), hc a b⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_ray (hRF : GlobalTheory.NT.RayField) {E : Type} [Field E] [NumberField E] [IsCMField E]
     (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (n : ℕ) (hn : 3 ≤ n) :
@@ -143,23 +143,21 @@ theorem exists_ray (hRF : GlobalTheory.NT.RayField) {E : Type} [Field E] [Number
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `hRF D T hQ j hj h5 h15 e`. Take `⟨s, hs⟩` from `Inhab.exists_root h5`. Establish `hpos` using `Inhab.rank_pos T hQ j hj`. Take `⟨I, hK, hp, hI⟩` from `Inhab.exists_half T.Q.H s (by rw [hQ.1.1]; exact hs) e`. Take `⟨l₂, l1, l2, l3, l4, l5, l6⟩` from `GlobalTheory.CoverHalf.exists_coverLevel T.Q.l hQ.2.1.2 (15 ^ e) I (Odd.pow (by decide)) (by rw [hQ.2.1.1]; exact h15.pow_left e) hK hp hI`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨Xo₂⟩` from `GlobalTheory.Moduli.moduli_scheme_exists _ _ (T.Q.Dw j) l₂ hpos`. Establish `hM' : l₂.M' = l₂.M` using `by show Nat.lcm l₂.M l₂.A = l₂.M`. Rewrite using `[l6, Nat.lcm_one_right]`. Take `⟨R, a, b, hsz, hab, hst, hrt, hz, hW⟩` from `exists_ray hRF T.Q.H l₂.M l₂.three_le`. Use `haveI := T.Q.c.fin`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hsz0 : Sz T.Q.c.F (Real.log (Module.finrank ℚ T.Q.c.F)) (Real.log |(discr T.Q.c.F : ℝ)| / (Module.finrank ℚ T.Q.c.F : ℝ))` using `⟨T.Q.c.fin, le_rfl, le_rfl⟩`. Take `⟨hN, hN1, hN2⟩` from `GlobalTheory.FieldSize.sz_sup _ _ _ _ _ _ hsz0 hsz`. Establish `h1 : T.Q.c.F ≤ T.Q.c.F ⊔ R` using `le_sup_left`. Establish `h2 : R ≤ T.Q.c.F ⊔ R` using `le_sup_right`. Establish `hst' : ∀ s : ℂ ≃+* ℂ, (∀ a ∈ T.Q.c.F, s a = a) → ∀ a ∈ T.Q.c.F ⊔ R, s a ∈ T.Q.c.F ⊔ R` using `fun s hs a ha => by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: T.Q.c.F ⊔ R ≤ (T.Q.c.F ⊔ R).comap s.toRingHom.toRatAlgHom` using `sup_le (fun x hx => show s x ∈ T.Q.c.F ⊔ R from (hs x hx).symm ▸ h1 hx) fun x hx => h2 (hst s x hx)`. Conclude with `this ha`. Establish `hKA : KA l₂ ≤ T.Q.c.F ⊔ R`. Use `IntermediateField.adjoin_le_iff.2 ?_` and prove the remaining obligations. Introduce and unpack `x (rfl | rfl)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Conclude with `h2 hrt`. Rewrite using `[l6]`. Simplify `one_mem (T.Q.c.F ⊔ R)` using `[zeta]`. Generalize the expression as in `T.Q.c.F ⊔ R = N at hN hN1 hN2 h1 h2 hst' hKA`. Use `haveI : NumberField N := NumberField.mk`.
+Replace the chosen expression with an arbitrary variable. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `c' : Coeff T.Q.l` to `⟨N, hN, fun τ a => h1 (T.Q.c.conj τ a), h1 T.Q.c.zeta_mem, T.Q.c.le.trans h1⟩`. Set `c₂ : Coeff l₂` to `⟨N, hN, fun τ a => h1 (T.Q.c.conj τ a), hM' ▸ h2 hz, hKA⟩`. Establish `hfa : FnAlgClosed Xo₂ c₂` using `GlobalTheory.FinalJoin.FieldAlg.fnAlgClosed_of_weberIn D T.Q hQ j hj l₂ Xo₂ c₂ l₂.M (by have := l₂.three_le; omega) hM'.dvd (Or.inl (hW N h2))`. Establish `hsize : fieldSz c₂.F ≤ fieldSz T.Q.c.F + 20 * (Real.log ((D.host.g 0 : ℝ) * D.host.g 1 * 15 ^ e) + Real.log D.host.d + 1)`. Rewrite `hab` using `[l2, hQ.2.1.1, hQ.1.1]`.
+Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact.
 
-Move the coercions through the operations in `at hab`. Unfold `fieldSz`. Establish `h3 : Real.log (Module.finrank ℚ c₂.F : ℝ) ≤ _` using `hN1`. Establish `h4 : Real.log |(discr c₂.F : ℝ)| / (Module.finrank ℚ c₂.F : ℝ) ≤ _` using `hN2`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. Extract witnesses or component facts from the available result. Simplify by unfolding definitions. Substitute using the available equality. Extract witnesses or component facts from the available result.
 
-Take `⟨⟨pd', I', l₂', Xo₂', c₂', hF, r, mm, nab, cδ, φ₀⟩, a1, a2, a3, e₁, e₂, -, a4, a5⟩` from `GlobalTheory.LevelCover.exists_deltaDat_isLev _ _ _ _ (T.Q.Xo j) c' hpos 0 (15 ^ e) I l₂ Xo₂ c₂ rfl l1 l2 l3 l4 l5`. Simplify using `only at a3 e₁ e₂`. Substitute `a3` using the available equality. Take `rfl` from `eq_of_heq e₁`. Take `rfl` from `eq_of_heq e₂`.
-
-Take `⟨U, dict, Kf, h⟩` from `Inhab.exists_good_of_cover T hQ j hj c' h1 _ e a1 a4 l6 hfa hst'`. Conclude with `⟨_, h.mono hsize⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_good_sized : GlobalTheory.Published.RayClassFieldSt → ∀ (D : D7) (T : Core D), T.Q.Pins → ∀ j : ℕ, InR D j → 5 ≤ D.host.splitBound → Nat.Coprime 15 (D.host.g 0 * D.host.g 1) → ∀ e : ℕ, ∃ Y : Deep T j, Y.Good e (fieldSz T.Q.c.F + 20 * (Real.log ((D.host.g 0 : ℝ) * D.host.g 1 * 15 ^ e) + Real.log D.host.d + 1)) := by
   intro hRF D T hQ j hj h5 h15 e

@@ -24,7 +24,7 @@ end Jets
 section Vals
 
 /- English proof (translation)
-Rewrite using `[val_of t (κ ≫ r) w J (fun k => J (κ ≫ r ≫ φ k)) fun k => by rw [Category.assoc]]`. Establish `h : r (κ w) ∈ LB.wchart L φ fun k => J (κ ≫ r ≫ φ k)` using `Set.mem_iInter.2 fun k => hJ (κ ≫ r ≫ φ k)`. Conclude with `Units.ext ((congrArg (κ.stalkMap w).hom (gm_val r (κ w) _ h _)).trans ((Scheme.Hom.germ_stalkMap_apply κ (r ⁻¹ᵁ (LB.wchart L φ fun k => J (κ ≫ r ≫ φ k))) w h _).trans (gm_val (κ ≫ r) w _ h _).symm))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem val_comp_stalkMap {X Y Z W : Scheme.{0}} {L : LB X} {K : Type} [Fintype K] {φ : K → (Y ⟶ X)} {ε : K → ℤ}
     (t : LB.Gen (LB.LinComb L φ ε)) (κ : W ⟶ Z) (r : Z ⟶ Y) {w : W} {J : (W ⟶ X) → L.ι} (hJ : Good L w J) :

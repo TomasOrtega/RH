@@ -7,9 +7,9 @@ namespace GlobalTheory.SUCong.LevKer
 variable {A : Type} [CommRing A]
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => simpa using h`. Consider the case `succ k ih`. Apply `ih` to reduce the goal to its premises. Establish `h' : ϖ * (ϖ ^ k * a - ϖ ^ k * b) = 0`.
+Proceed by induction. Treat this case separately. Treat this case separately. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Rewrite using `[mul_sub, ← mul_assoc, ← mul_assoc, ← pow_succ', h, sub_self]`. Conclude with `sub_eq_zero.mp (hϖ _ h')`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pow_cancel (ϖ : A) (hϖ : ∀ a : A, ϖ * a = 0 → a = 0) (k : ℕ) (a b : A)
     (h : ϖ ^ k * a = ϖ ^ k * b) : a = b := by
@@ -22,9 +22,9 @@ theorem pow_cancel (ϖ : A) (hϖ : ∀ a : A, ϖ * a = 0 → a = 0) (k : ℕ) (a
     exact sub_eq_zero.mp (hϖ _ h')
 
 /- English proof (translation)
-Establish `e : {x : S | (x : A) = ϖ} = {(⟨ϖ, hϖ⟩ : S)}`. Use extensionality with `x`. Simplify using `[Subtype.ext_iff]`. Unfold `piIdeal`. Rewrite using `[e, Ideal.mem_span_singleton']`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, ha⟩`. Conclude with `⟨a, a.2, by rw [← ha, Subring.coe_mul, mul_comm]⟩`. Introduce and unpack `⟨t, ht, e'⟩`. Conclude with `⟨⟨t, ht⟩, Subtype.ext (by rw [Subring.coe_mul, e', mul_comm])⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem mem_piIdeal_iff (S : Subring A) (ϖ : A) (hϖ : ϖ ∈ S) (s : S) :
     s ∈ piIdeal S ϖ ↔ ∃ t ∈ S, (s : A) = ϖ * t := by
@@ -39,7 +39,7 @@ theorem mem_piIdeal_iff (S : Subring A) (ϖ : A) (hϖ : ϖ ∈ S) (s : S) :
     exact ⟨⟨t, ht⟩, Subtype.ext (by rw [Subring.coe_mul, e', mul_comm])⟩
 
 /- English proof (translation)
-Unfold `red`. Rewrite using `[dif_pos hs, Ideal.Quotient.eq_zero_iff_mem, mem_piIdeal_iff S ϖ hϖ]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem red_eq_zero_iff (S : Subring A) (ϖ : A) (hϖ : ϖ ∈ S) (s : A) (hs : s ∈ S) :
     red S ϖ s = 0 ↔ ∃ t ∈ S, s = ϖ * t := by
@@ -51,15 +51,15 @@ end GlobalTheory.SUCong.LevKer
 namespace GlobalTheory.SUCong
 
 /- English proof (translation)
-Introduce `A _ n _ _ S σ H ϖ q k hR g hg`. Establish `hϖS : ϖ ∈ S` using `hR.2.2.1`. Establish `hnzd : ∀ a : A, ϖ * a = 0 → a = 0` using `hR.2.2.2.2.1`. Take `⟨h1, h2, h3, h4, h5⟩` from `hg`. Establish `key : ∀ i j, (levMap S ϖ k (g : Matrix n n A) i j = 0 ↔ InPow S ϖ (k + 1) (((g : Matrix n n A) - 1) i j))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `i j`. Establish `hk` using `h5 i j`. Establish `hs` using `(Classical.choose_spec hk).1`. Establish `he` using `(Classical.choose_spec hk).2`. Simplify using `only [levMap, dif_pos hk]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[LevKer.red_eq_zero_iff S ϖ hϖS _ hs]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨t, ht, et⟩`. Conclude with `⟨t, ht, by rw [he, et, pow_succ, mul_assoc]⟩`. Introduce and unpack `⟨t, ht, et⟩`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Use `⟨t, ht, LevKer.pow_cancel ϖ hnzd k _ _ ?_⟩` and prove the remaining obligations. Rewrite using `[← he, et, pow_succ, mul_assoc]`. Prove the components needed by the constructor for the conclusion. Introduce `h0`. Use `⟨h1, h2, h3, h4, fun i j => (key i j).1 ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[h0]`. Both sides reduce to the same expression. Introduce and unpack `⟨-, -, -, -, h6⟩`. Use extensionality with `i j`. Conclude with `(key i j).2 (h6 i j)`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Assume the hypotheses and unpack their components. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem levMap_eq_zero_iff_mem_succ : ∀ {A : Type} [CommRing A] {n : Type} [Fintype n] [DecidableEq n] (S : Subring A) (σ : A →+* A) (H : Matrix n n A) (ϖ : A) (q k : ℕ), GoodRing S σ ϖ q → ∀ (g : GL n A), g ∈ congSU S σ H ϖ k → (levMap S ϖ k (g : Matrix n n A) = 0 ↔ g ∈ congSU S σ H ϖ (k + 1)) := by
   intro A _ n _ _ S σ H ϖ q k hR g hg

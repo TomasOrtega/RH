@@ -15,14 +15,14 @@ variable {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {V W : HSp D} {χV χW ν : (
   {om om' : GA D V × GA D W →* Module.End ℂ (WO V W → ℂ)}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h.1, fun η _ a => by rw [hF, pow_zero]⟩`.
+Supply the required witnesses or components.
 -/
 theorem resEta_zero_of_triv {χ : (AE D)ˣ →* Circle} {n : ℕ} (h : ResEta D χ n) (hF : ∀ a, ν (idF D a) = 1) :
     ResEta D ν 0 :=
   ⟨h.1, fun η _ a => by rw [hF, pow_zero]⟩
 
 /- English proof (translation)
-Take `⟨o, h1, h2⟩` from `GlobalTheory.WeilChange.exists_weilDatum_twist D ψ ho.std V W χV χW ν ν om ho hν hν (resEta_zero_of_triv ho.resS hF) (resEta_zero_of_triv ho.resS hF)`. Use `⟨o, h1, fun h g x y hx hy => ?_⟩` and prove the remaining obligations. Rewrite using `[h2 h g x y hx hy, Circle.coe_mul, Circle.coe_inv, mul_comm]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_twist_root (ho : IsWeilDatumO ψ V W χV χW om) (hν : IsHeckeChar D ν) (hF : ∀ a, ν (idF D a) = 1) :
     ∃ om', IsWeilDatumO ψ V W (χV * ν) (χW * ν) om' ∧ ∀ h g x y, IsDetRoot V h x → IsDetRoot W g y →
@@ -33,7 +33,7 @@ theorem exists_twist_root (ho : IsWeilDatumO ψ V W χV χW om) (hν : IsHeckeCh
   rw [h2 h g x y hx hy, Circle.coe_mul, Circle.coe_inv, mul_comm]
 
 /- English proof (translation)
-Take `⟨o, h1, h2⟩` from `exists_twist_root ho hν hF`. Rewrite using `[GlobalTheory.WeilUniq.weilDatum_unique D ψ ho.std V W _ _ om' o ho' h1 _ f hf, h2 h g x y hx hy, LinearMap.smul_apply]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem twist_eq_root (ho : IsWeilDatumO ψ V W χV χW om) (hν : IsHeckeChar D ν) (hF : ∀ a, ν (idF D a) = 1)
     (ho' : IsWeilDatumO ψ V W (χV * ν) (χW * ν) om') {h : GA D V} {g : GA D W} {x y : (AE D)ˣ}
@@ -43,7 +43,7 @@ theorem twist_eq_root (ho : IsWeilDatumO ψ V W χV χW om) (hν : IsHeckeChar D
   rw [GlobalTheory.WeilUniq.weilDatum_unique D ψ ho.std V W _ _ om' o ho' h1 _ f hf, h2 h g x y hx hy, LinearMap.smul_apply]
 
 /- English proof (translation)
-Take `⟨o, h1, h2⟩` from `exists_twist_root ho hν hF`. Use `⟨o, h1, fun h g => ?_⟩` and prove the remaining obligations. Take `⟨x, hx⟩` from `hV.1 h`. Take `⟨y, hy⟩` from `hW.1 g`. Rewrite using `[h2 h g x y hx hy, hV.2 h x hx, hW.2 g y hy]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_twist (ho : IsWeilDatumO ψ V W χV χW om) (hν : IsHeckeChar D ν) (hF : ∀ a, ν (idF D a) = 1)
     {nV : GA D V → ℂ} {nW : GA D W → ℂ} (hV : MuVal V ν nV) (hW : MuVal W ν nW) :
@@ -55,7 +55,7 @@ theorem exists_twist (ho : IsWeilDatumO ψ V W χV χW om) (hν : IsHeckeChar D 
   rw [h2 h g x y hx hy, hV.2 h x hx, hW.2 g y hy]
 
 /- English proof (translation)
-Take `⟨x, hx⟩` from `hV.1 h`. Take `⟨y, hy⟩` from `hW.1 g`. Rewrite using `[twist_eq_root ho hν hF ho' hx hy hf, hV.2 h x hx, hW.2 g y hy]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem twist_eq (ho : IsWeilDatumO ψ V W χV χW om) (hν : IsHeckeChar D ν) (hF : ∀ a, ν (idF D a) = 1)
     (ho' : IsWeilDatumO ψ V W (χV * ν) (χW * ν) om') {nV : GA D V → ℂ} {nW : GA D W → ℂ} (hV : MuVal V ν nV)
@@ -66,7 +66,7 @@ theorem twist_eq (ho : IsWeilDatumO ψ V W χV χW om) (hν : IsHeckeChar D ν) 
   rw [twist_eq_root ho hν hF ho' hx hy hf, hV.2 h x hx, hW.2 g y hy]
 
 /- English proof (translation)
-Unfold `thetaKO`. Rewrite using `[twist_eq ho hν hF ho' hV hW h g hf, Pi.smul_apply, smul_eq_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem thetaKO_twist (ho : IsWeilDatumO ψ V W χV χW om) (hν : IsHeckeChar D ν) (hF : ∀ a, ν (idF D a) = 1)
     (ho' : IsWeilDatumO ψ V W (χV * ν) (χW * ν) om') {nV : GA D V → ℂ} {nW : GA D W → ℂ} (hV : MuVal V ν nV)
@@ -76,7 +76,7 @@ theorem thetaKO_twist (ho : IsWeilDatumO ψ V W χV χW om) (hν : IsHeckeChar D
   rw [twist_eq ho hν hF ho' hV hW h g hf, Pi.smul_apply, smul_eq_mul]
 
 /- English proof (translation)
-Unfold `chrTh tup`. Rewrite using `[mul_right_comm]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem chrTh_tup {C : Type*} [CommGroup C] (μ : ℕ → C) (η ν : C) (j : ℕ) :
     chrTh (tup μ ν) η j = ((chrTh μ η j).1 * ν, (chrTh μ η j).2 * ν) := by
@@ -84,7 +84,7 @@ theorem chrTh_tup {C : Type*} [CommGroup C] (μ : ℕ → C) (η ν : C) (j : �
   rw [mul_right_comm]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `j`. Unfold `tup`. Rewrite using `[mul_assoc]`.
+Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem tup_mul {C : Type*} [CommGroup C] (μ : ℕ → C) (ξ ν : C) : tup μ (ξ * ν) = tup (tup μ ξ) ν := by
   funext j
@@ -92,7 +92,7 @@ theorem tup_mul {C : Type*} [CommGroup C] (μ : ℕ → C) (ξ ν : C) : tup μ 
   rw [mul_assoc]
 
 /- English proof (translation)
-Use `⟨?_, fun nV nW hV hW => ⟨exists_twist ho hν hF hV hW, fun om' ho' h g f hf => twist_eq ho hν hF ho' hV hW h g hf⟩, fun om₁ h1 => GlobalTheory.WeilUniq.weilDatum_unique D ψ ho.std V W χV χW om₁ om h1 ho⟩` and prove the remaining obligations. Take `⟨nV, hV, -⟩` from `GlobalTheory.Member.exists_muVal D V ν hν hF`. Take `⟨nW, hW, -⟩` from `GlobalTheory.Member.exists_muVal D W ν hν hF`. Conclude with `⟨nV, nW, hV, hW⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem change_of_splitting_pair (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (V W : HSp D) (χV χW ν : (AE D)ˣ →* Circle)
     (om : GA D V × GA D W →* Module.End ℂ (WO V W → ℂ)) (ho : IsWeilDatumO ψ V W χV χW om) (hν : IsHeckeChar D ν)
@@ -110,7 +110,7 @@ theorem change_of_splitting_pair (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (V W 
   exact ⟨nV, nW, hV, hW⟩
 
 /- English proof (translation)
-Rewrite using `[chrTh_tup]`. Conclude with `change_of_splitting_pair D ψ V W _ _ ν om ho hν hF`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem change_of_splitting (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (V W : HSp D) (μ : ℕ → (AE D)ˣ →* Circle)
     (η ν : (AE D)ˣ →* Circle) (j : ℕ) (om : GA D V × GA D W →* Module.End ℂ (WO V W → ℂ))

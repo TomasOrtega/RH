@@ -20,9 +20,9 @@ def chartMonomial (i : ∀ k, ι k) (e : K → ℕ) : MRing ι F :=
   ∏ k, (X ⟨k, i k⟩ : MRing ι F) ^ e k
 
 /- English proof (translation)
-Establish `h : IsWeightedHomogeneous (blockWeight ι) (chartMonomial (F` using `F) i e) (∑ k ∈ Finset.univ, e k • blockWeight ι ⟨k, i k⟩) := IsWeightedHomogeneous.prod _ _ _ fun k _ => (isWeightedHomogeneous_X (R := F) (blockWeight ι) ⟨k, i k⟩).pow (e k)`. Establish `he : (∑ k ∈ Finset.univ, e k • blockWeight ι ⟨k, i k⟩) = e`. Use function extensionality and compare the values at `k'`. Simplify using `[blockWeight, Finset.sum_apply, Pi.single_apply]`. Rewrite `h` using `[he]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h`.
+A detailed English derivation is pending.
 -/
 theorem isMultiHomog_chartMonomial (i : ∀ k, ι k) (e : K → ℕ) :
     IsMultiHomog (chartMonomial (F := F) i e) e := by
@@ -40,7 +40,7 @@ def chartUnitIdeal (i : ∀ k, ι k) : Ideal (MRing ι F) :=
   Ideal.span (Set.range fun k => (X ⟨k, i k⟩ : MRing ι F) - 1)
 
 /- English proof (translation)
-Rewrite using `[← sub_eq_zero, ← map_one (Ideal.Quotient.mk _), ← map_sub, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `Ideal.subset_span ⟨k, rfl⟩`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mk_X_chart (i : ∀ k, ι k) (k : K) :
     Ideal.Quotient.mk (chartUnitIdeal (F := F) i) (X ⟨k, i k⟩) = 1 := by
@@ -48,22 +48,22 @@ theorem mk_X_chart (i : ∀ k, ι k) (k : K) :
   exact Ideal.subset_span ⟨k, rfl⟩
 
 /- English proof (translation)
-Simplify using `[chartMonomial, map_prod, map_pow, mk_X_chart]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mk_chartMonomial (i : ∀ k, ι k) (e : K → ℕ) :
     Ideal.Quotient.mk (chartUnitIdeal (F := F) i) (chartMonomial i e) = 1 := by
   simp [chartMonomial, map_prod, map_pow, mk_X_chart]
 
 /- English proof (translation)
-Proceed by induction on `p using MvPolynomial.induction_on with`. Consider the case `C a`. Use `⟨0, fun N' _ => ⟨C a * chartMonomial i N', ?_, ?_⟩⟩` and prove the remaining obligations. Conclude with `IsWeightedHomogeneous.C_mul (isMultiHomog_chartMonomial i N') a`. Rewrite using `[map_mul, mk_chartMonomial, mul_one]`.
+Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `add p q hp hq`. Take `⟨Np, hp⟩` from `hp`. Take `⟨Nq, hq⟩` from `hq`. Use `⟨Np ⊔ Nq, fun N' hN => ?_⟩` and prove the remaining obligations. Take `⟨a, ha, ha'⟩` from `hp N' (le_sup_left.trans hN)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨b, hb, hb'⟩` from `hq N' (le_sup_right.trans hN)`. Conclude with `⟨a + b, IsWeightedHomogeneous.add ha hb, by rw [map_add, map_add, ha', hb']⟩`. Consider the case `mul_X p s hp`. Take `⟨Np, hp⟩` from `hp`. Use `⟨Np + blockWeight ι s, fun N' hN => ?_⟩` and prove the remaining obligations.
+Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h1 : Np ≤ N' - blockWeight ι s` using `fun k => Nat.le_sub_of_add_le (hN k)`. Establish `h2 : N' - blockWeight ι s + blockWeight ι s = N'`. Use function extensionality and compare the values at `k`. Conclude with `Nat.sub_add_cancel (le_trans (Nat.le_add_left _ _) (hN k))`. Take `⟨a, ha, ha'⟩` from `hp _ h1`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨a * X s, ?_, by rw [map_mul, map_mul, ha']⟩` and prove the remaining obligations. Use `IsWeightedHomogeneous.mul ha (isWeightedHomogeneous_X (R := F) (blockWeight ι) s)` as an intermediate fact. Rewrite `this` using `[h2]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem exists_homog_congr (i : ∀ k, ι k) (p : MRing ι F) :
     ∃ N : K → ℕ, ∀ N', N ≤ N' → ∃ h : MRing ι F, IsMultiHomog h N' ∧
@@ -112,7 +112,7 @@ theorem cls_apply (f : MRing ι F) :
     cls V f = algebraMap (MRing ι F ⧸ V) _ (Ideal.Quotient.mk V f) := rfl
 
 /- English proof (translation)
-Rewrite using `[cls_apply, map_eq_zero_iff _ (IsFractionRing.injective _ _), Ideal.Quotient.eq_zero_iff_mem]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem cls_eq_zero_iff (f : MRing ι F) : cls V f = 0 ↔ f ∈ V := by
   rw [cls_apply, map_eq_zero_iff _ (IsFractionRing.injective _ _), Ideal.Quotient.eq_zero_iff_mem]
@@ -120,7 +120,7 @@ theorem cls_eq_zero_iff (f : MRing ι F) : cls V f = 0 ↔ f ∈ V := by
 variable {V}
 
 /- English proof (translation)
-Introduce `h` and use `hp ((cls_eq_zero_iff V _).1 h)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem xc_ne_zero {p : Σ k, ι k} (hp : (X p : MRing ι F) ∉ V) : xc V p ≠ 0 :=
   fun h => hp ((cls_eq_zero_iff V _).1 h)
@@ -129,17 +129,17 @@ variable (i : ∀ k, ι k) (hi : ∀ k, (X ⟨k, i k⟩ : MRing ι F) ∉ V)
 include hi
 
 /- English proof (translation)
-The claim follows from `Finset.prod_ne_zero_iff.2 fun k _ => pow_ne_zero _ (xc_ne_zero (hi k))`.
+A detailed English derivation is pending.
 -/
 theorem chartProd_ne_zero (a : K → ℕ) : ∏ k, xc V ⟨k, i k⟩ ^ a k ≠ 0 :=
   Finset.prod_ne_zero_iff.2 fun k _ => pow_ne_zero _ (xc_ne_zero (hi k))
 
 /- English proof (translation)
-Proceed by induction on `m using Finsupp.induction_linear with`. Consider the case `zero => simp`. Consider the case `add m m' hm hm'`. Rewrite using `[← mul_one (1 : F), ← monomial_mul, map_mul, map_mul, map_add, ← hm, ← hm']`. Simplify using `only [Pi.add_apply, pow_add, Finset.prod_mul_distrib]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Consider the case `single p n`. Establish `hy : xc V ⟨p.1, i p.1⟩ ≠ 0` using `xc_ne_zero (hi p.1)`. Rewrite using `[← X_pow_eq_monomial, map_pow, map_pow, Finsupp.weight_single, Fintype.prod_eq_single p.1 (fun k hk => by simp [blockWeight, hk])]`. Simplify using `only [dehom, aeval_X, blockWeight, Pi.smul_apply, Pi.single_eq_same, smul_eq_mul, mul_one, div_pow]`.
+Expand and normalize the polynomial expressions, which then agree. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[div_mul_cancel₀ _ (pow_ne_zero _ hy)]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem dehom_monomial_mul (m : (Σ k, ι k) →₀ ℕ) :
     dehom V i (monomial m 1) * ∏ k, xc V ⟨k, i k⟩ ^ (Finsupp.weight (blockWeight ι) m k) =
@@ -160,9 +160,9 @@ theorem dehom_monomial_mul (m : (Σ k, ι k) →₀ ℕ) :
     rfl
 
 /- English proof (translation)
-Use `conv_rhs => rw [h.as_sum]`. Use `conv_lhs => rw [h.as_sum]`. Rewrite using `[map_sum, map_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun m hm => ?_` and prove the remaining obligations. Establish `hw : Finsupp.weight (blockWeight ι) m = a` using `hh (mem_support_iff.mp hm)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hmon : monomial m (coeff m h) = coeff m h • monomial m (1 : F)`. Rewrite using `[smul_monomial, smul_eq_mul, mul_one]`. Rewrite using `[hmon, map_smul, map_smul, smul_mul_assoc, ← hw, dehom_monomial_mul i hi]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dehom_mul_of_isMultiHomog {h : MRing ι F} {a : K → ℕ} (hh : IsMultiHomog h a) :
     dehom V i h * ∏ k, xc V ⟨k, i k⟩ ^ a k = cls V h := by
@@ -176,9 +176,9 @@ theorem dehom_mul_of_isMultiHomog {h : MRing ι F} {a : K → ℕ} (hh : IsMulti
   rw [hmon, map_smul, map_smul, smul_mul_assoc, ← hw, dehom_monomial_mul i hi]
 
 /- English proof (translation)
-Establish `: chartUnitIdeal (F` using `F) i ≤ RingHom.ker (dehom V i) := by`. Use `Ideal.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨k, rfl⟩`. Simplify using `only [SetLike.mem_coe, RingHom.mem_ker, map_sub, map_one, dehom, aeval_X]`. Rewrite using `[div_self (xc_ne_zero (hi k)), sub_self]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `this hf`.
+A detailed English derivation is pending.
 -/
 theorem dehom_chartUnitIdeal {f : MRing ι F} (hf : f ∈ chartUnitIdeal i) : dehom V i f = 0 := by
   have : chartUnitIdeal (F := F) i ≤ RingHom.ker (dehom V i) := by
@@ -189,7 +189,7 @@ theorem dehom_chartUnitIdeal {f : MRing ι F} (hf : f ∈ chartUnitIdeal i) : de
   exact this hf
 
 /- English proof (translation)
-Rewrite using `[← sum_weightedHomogeneousComponent (blockWeight ι) f, finsum_eq_sum _ (weightedHomogeneousComponent_finsupp f), map_sum]`. Use `Finset.sum_eq_zero fun b _ => ?_` and prove the remaining obligations. Establish `h1` using `dehom_mul_of_isMultiHomog i hi (weightedHomogeneousComponent_isWeightedHomogeneous (w := blockWeight ι) (n := b) (φ := f))`. Rewrite `h1` using `[(cls_eq_zero_iff V _).2 (hV f hf b)]`. Conclude with `(mul_eq_zero.mp h1).resolve_right (chartProd_ne_zero i hi b)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dehom_eq_zero_of_mem (hV : IsMultiHomogIdeal V) {f : MRing ι F} (hf : f ∈ V) :
     dehom V i f = 0 := by
@@ -202,7 +202,7 @@ theorem dehom_eq_zero_of_mem (hV : IsMultiHomogIdeal V) {f : MRing ι F} (hf : f
   exact (mul_eq_zero.mp h1).resolve_right (chartProd_ne_zero i hi b)
 
 /- English proof (translation)
-Establish `: ReciprocityTheory.ChartRestriction.G.AI.I1.chartIdeal V i ≤ RingHom.ker (dehom V i)` using `sup_le (fun g hg => dehom_eq_zero_of_mem i hi hV hg) (fun g hg => dehom_chartUnitIdeal i hi hg)`. Conclude with `this hf`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem dehom_eq_zero_of_mem_chartIdeal (hV : IsMultiHomogIdeal V) {f : MRing ι F}
     (hf : f ∈ ReciprocityTheory.ChartRestriction.G.AI.I1.chartIdeal V i) : dehom V i f = 0 := by
@@ -211,11 +211,11 @@ theorem dehom_eq_zero_of_mem_chartIdeal (hV : IsMultiHomogIdeal V) {f : MRing ι
   exact this hf
 
 /- English proof (translation)
-Take `⟨N, hN⟩` from `exists_homog_congr i f`. Take `⟨h, hh, hc⟩` from `hN N le_rfl`. Establish `hfh : f - h ∈ chartUnitIdeal i` using `Ideal.Quotient.eq.mp hc`. Establish `h0 : dehom V i h = 0`. Use `dehom_chartUnitIdeal i hi hfh` as an intermediate fact.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[map_sub, hf, zero_sub, neg_eq_zero]`. Then use the resulting hypothesis. Establish `hV : h ∈ V`. Rewrite using `[← cls_eq_zero_iff, ← dehom_mul_of_isMultiHomog i hi hh, h0, zero_mul]`. Establish `: f = (f - h) + h` using `by ring`. Rewrite using `[this]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Ideal.add_mem _ (Ideal.mem_sup_right hfh) (Ideal.mem_sup_left hV)`.
+A detailed English derivation is pending.
 -/
 theorem mem_chartIdeal_of_dehom_eq_zero {f : MRing ι F} (hf : dehom V i f = 0) :
     f ∈ ReciprocityTheory.ChartRestriction.G.AI.I1.chartIdeal V i := by
@@ -234,7 +234,7 @@ theorem mem_chartIdeal_of_dehom_eq_zero {f : MRing ι F} (hf : dehom V i f = 0) 
 end Dehom
 
 /- English proof (translation)
-The claim follows from `hV.isPrime Module.finrank F (MRing ι F ⧸ ReciprocityTheory.ChartRestriction.G.AI.I1.chartIdeal V i) = Module.finrank F (FieldNumbers.homFracDegZero V) := by haveI := hV.isPrime set H := FieldNumbers.homFracDegZero V let ρ := Ideal.Quotient.liftₐ (ReciprocityTheory.ChartRestrictio …`.
+A detailed English derivation is pending.
 -/
 theorem finrank_chart_eq (V : Ideal (MRing ι F)) (hV : IsMultiProjPrime V) (i : ∀ k, ι k)
     (hi : ∀ k, (X ⟨k, i k⟩ : MRing ι F) ∉ V)
@@ -284,9 +284,9 @@ theorem finrank_chart_eq (V : Ideal (MRing ι F)) (hV : IsMultiProjPrime V) (i :
     IntermediateField.finrank_eq_finrank_subalgebra]
 
 /- English proof (translation)
-Introduce `F _ K _ _ ι _ V i hV hdim hi`. Use `haveI := hV.isPrime`. Establish `hrel : FieldNumbers.relDim V = 0`. Rewrite using `[FieldNumbers.relDim, hdim]`. Establish `: (((0 + Fintype.card K : ℕ) : ℤ) - Fintype.card K) = 0` using `by simp`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `congrArg (fun z : ℤ => ((z : WithTop ℤ) : WithBot (WithTop ℤ))) this`. Take `⟨hfin, hnum⟩` from `hBase F K ι V hV hrel`. Rewrite using `[hnum, ReciprocityTheory.ChartRestriction.G.AI.I1.ptDeg, finrank_chart_eq V hV i hi hfin]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem proof (hBase : FieldNumbers.IntNumBase.Statement.{u}) : IntNumPoint.Statement.{u} := by
   intro F _ K _ _ ι _ V i hV hdim hi

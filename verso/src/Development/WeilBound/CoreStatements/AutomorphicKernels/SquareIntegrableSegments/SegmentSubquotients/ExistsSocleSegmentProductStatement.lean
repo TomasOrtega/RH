@@ -5,7 +5,7 @@ import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.Irreducibl
 import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.SegmentRepresentation
 open GlobalTheory.PRep GlobalTheory.SplitWeil GlobalTheory.SmGL GlobalTheory.LocGL GlobalTheory.JHMult Zc Zc.Seg
 /- English proof (citation)
-Apply `GlobalTheory.CompanionTheory.LkSegSocle.exists_isSocle_prodIrr_dec` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FWeilBound%2FCoreStatements%2FAutomorphicKernels%2FSquareIntegrableSegments%2FSegmentSubquotients%2FExistsSocleSegmentProduct.lean&line=33#L33)
 -/

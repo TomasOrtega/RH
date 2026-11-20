@@ -12,7 +12,7 @@ section Gen
 variable {F E : Type} [Field F] [Field E] [Algebra F E] (σ : E →ₐ[F] E) {r : ℕ}
 
 /- English proof (translation)
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a x => simp [sigR]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem map_sigR {A B : Type} [CommRing A] [Algebra F A] [CommRing B] [Algebra F B] (p : A →ₐ[F] B) (z : A ⊗[F] E) :
     (Algebra.TensorProduct.map p (AlgHom.id F E)).toRingHom (sigR A σ z) =
@@ -23,7 +23,7 @@ theorem map_sigR {A B : Type} [CommRing A] [Algebra F A] [CommRing B] [Algebra F
   | add x y hx hy => simp only [map_add, hx, hy]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[JR, inclR]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem map_JR {A B : Type} [CommRing A] [Algebra F A] [CommRing B] [Algebra F B] (p : A →ₐ[F] B)
     (J : Matrix (Fin r) (Fin r) E) :
@@ -31,7 +31,7 @@ theorem map_JR {A B : Type} [CommRing A] [Algebra F A] [CommRing B] [Algebra F B
   ext i j; simp [JR, inclR]
 
 /- English proof (translation)
-Rewrite using `[Matrix.map_mul, Matrix.map_mul, map_JR]`. Use `congr 2`. Use extensionality with `i j`. Conclude with `map_sigR σ p _`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem map_unit {A B : Type} [CommRing A] [Algebra F A] [CommRing B] [Algebra F B] (p : A →ₐ[F] B)
     (J : Matrix (Fin r) (Fin r) E) (g : Matrix (Fin r) (Fin r) (A ⊗[F] E)) :
@@ -46,29 +46,21 @@ theorem map_unit {A B : Type} [CommRing A] [Algebra F A] [CommRing B] [Algebra F
 end Gen
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ r J`. Set `pInf : AF F ⊗[F] E →+* Ainf F ⊗[F] E` to `(Algebra.TensorProduct.map (fstA F) (AlgHom.id F E)).toRingHom`. Set `pFin : AF F ⊗[F] E →+* Af F ⊗[F] E` to `(Algebra.TensorProduct.map (sndA F) (AlgHom.id F E)).toRingHom`. Take `⟨e, he, hc, hc'⟩` from `GlobalTheory.AdSplit.exists_adele_equiv F E`. Establish `ext : ∀ {M N : Matrix (Fin r) (Fin r) (AF F ⊗[F] E)}, M.map pInf = N.map pInf → M.map pFin = N.map pFin → M = N` using `fun {M N} h1 h2 => by`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use extensionality with `i j`. Use `e.injective (Prod.ext ?_ ?_)` and prove the remaining obligations. Rewrite using `[(he _).1, (he _).1]`. Conclude with `congrFun (congrFun h1 i) j`. Rewrite using `[(he _).2, (he _).2]`.
+By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Conclude with `congrFun (congrFun h2 i) j`. Set `gl : Matrix (Fin r) (Fin r) (Ainf F ⊗[F] E) → Matrix (Fin r) (Fin r) (Af F ⊗[F] E) → Matrix (Fin r) (Fin r) (AF F ⊗[F] E)` to `fun M N => Matrix.of fun i j => e.symm (M i j, N i j)`. Establish `g1 : ∀ M N, (gl M N).map pInf = M` using `fun M N => by`. Use extensionality with `i j`. Conclude with `((he _).1.symm.trans (congrArg Prod.fst (e.apply_symm_apply _)))`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. By extensionality, compare the relevant components. Introduce a local definition for the expression.
 
-Establish `g2 : ∀ M N, (gl M N).map pFin = N` using `fun M N => by`. Use extensionality with `i j`. Conclude with `((he _).2.symm.trans (congrArg Prod.snd (e.apply_symm_apply _)))`. Set `χ : HA (AF F) σ J →* HA (Ainf F) σ J × HA (Af F) σ J` to `{ toFun := fun h => ((⟨Formalism.UG.bc pInf (HA.mat _ _ _ h), (by`. Use `congrArg (fun M => M.map pInf) (show Formalism.UG.cT _ _ * _ * _ = _ from h.2)` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression.
 
-Rewrite `this` using `[map_unit σ (fstA F), map_JR (fstA F)]`. Conclude with `this)⟩ : HR (Ainf F) σ J),`. Use the proof step `(⟨Formalism.UG.bc pFin (HA.mat _ _ _ h), (by`. Use `congrArg (fun M => M.map pFin) (show Formalism.UG.cT _ _ * _ * _ = _ from h.2)` as an intermediate fact. Rewrite `this` using `[map_unit σ (sndA F), map_JR (sndA F)]`.
+By extensionality, compare the relevant components. By extensionality, compare the relevant components. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `this)⟩ : HR (Af F) σ J))`. Use the proof step `map_one' := Prod.ext (Subtype.ext (map_one (Formalism.UG.bc pInf))) (Subtype.ext (map_one (Formalism.UG.bc pFin)))`. Use the proof step `map_mul' := fun a b => Prod.ext (Subtype.ext (map_mul (Formalism.UG.bc pInf) _ _)) (Subtype.ext (map_mul (Formalism.UG.bc pFin) _ _)) }`. Set `ω : HA (Ainf F) σ J × HA (Af F) σ J → HA (AF F) σ J` to `fun g => (⟨⟨gl g.1.1.val g.2.1.val, gl g.1.1.inv g.2.1.inv,`. Use extensionality with `(by rw [Matrix.map_mul, g1, g1, g.1.1.val_inv]; simp) (by rw [Matrix.map_mul, g2, g2, g.2.1.val_inv]; simp),`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use extensionality with `(by rw [Matrix.map_mul, g1, g1, g.1.1.inv_val]; simp) (by rw [Matrix.map_mul, g2, g2, g.2.1.inv_val]; simp)⟩,`. Use extensionality with `((map_unit σ (fstA F) J _).trans (Eq.trans (by`. Rewrite using `[g1]`. Conclude with `g.1.2) (map_JR (fstA F) J).symm)) ((map_unit σ (sndA F) J _).trans (Eq.trans (by`. Rewrite using `[g2]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `g.2.2) (map_JR (sndA F) J).symm))⟩ : HR (AF F) σ J)`. Establish `l1 : Function.LeftInverse ω χ` using `fun h => Subtype.ext (Units.ext (ext (g1 _ _) (g2 _ _)))`. Establish `l2 : Function.RightInverse ω χ` using `fun g => Prod.ext (Subtype.ext (Units.ext (g1 _ _))) (Subtype.ext (Units.ext (g2 _ _)))`. Set `ψ : HA (AF F) σ J ≃* HA (Ainf F) σ J × HA (Af F) σ J` to `{ χ with invFun := ω, left_inv := l1, right_inv := l2 }`. Establish `hp1 : Continuous pInf` using `(continuous_fst.comp hc).congr fun z => (he z).1`.
-
-Establish `hp2 : Continuous pFin` using `(continuous_snd.comp hc).congr fun z => (he z).2`. Establish `hv : Continuous fun h : HA (AF F) σ J => HA.mat _ _ _ h` using `continuous_subtype_val`. Establish `c1 : Continuous ψ`. Use `Continuous.prodMk (Continuous.subtype_mk (Units.continuous_iff.2 ⟨?_, ?_⟩) _) (Continuous.subtype_mk (Units.continuous_iff.2 ⟨?_, ?_⟩) _)` and prove the remaining obligations. Conclude with `(Units.continuous_val.comp hv).matrix_map hp1`.
-
-Conclude with `(Units.continuous_coe_inv.comp hv).matrix_map hp1`. Conclude with `(Units.continuous_val.comp hv).matrix_map hp2`. Conclude with `(Units.continuous_coe_inv.comp hv).matrix_map hp2`. Establish `c2 : Continuous ψ.symm`. Use `Continuous.subtype_mk (Units.continuous_iff.2 ⟨?_, ?_⟩) _` and prove the remaining obligations.
-
-Use `continuous_matrix fun i j => hc'.comp (Continuous.prodMk ?_ ?_)` and prove the remaining obligations. Conclude with `(Units.continuous_val.comp (continuous_subtype_val.comp continuous_fst)).matrix_elem i j`. Conclude with `(Units.continuous_val.comp (continuous_subtype_val.comp continuous_snd)).matrix_elem i j`. Use `continuous_matrix fun i j => hc'.comp (Continuous.prodMk ?_ ?_)` and prove the remaining obligations. Conclude with `(Units.continuous_coe_inv.comp (continuous_subtype_val.comp continuous_fst)).matrix_elem i j`.
-
-Conclude with `(Units.continuous_coe_inv.comp (continuous_subtype_val.comp continuous_snd)).matrix_elem i j`. Conclude with `⟨{ ψ with continuous_toFun := c1, continuous_invFun := c2 }, fun h => ⟨rfl, rfl⟩⟩`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_adelic_split : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (M : ℕ) (J : Matrix (Fin M) (Fin M) E), ∃ e : HA (AF F) σ J ≃ₜ* HA (Ainf F) σ J × HA (Af F) σ J, ∀ h, ((HA.mat (Af F) σ J (e h).2 : GL (Fin M) (Af F ⊗[F] E)) : Matrix (Fin M) (Fin M) (Af F ⊗[F] E)) = finMat σ J h ∧ ((HA.mat (Ainf F) σ J (e h).1 : GL (Fin M) (Ainf F ⊗[F] E)) : Matrix (Fin M) (Fin M) (Ainf F ⊗[F] E)) = ((HA.mat (AF F) σ J h : GL (Fin M) (AF F ⊗[F] E)) : Matrix (Fin M) (Fin M) (AF F ⊗[F] E)).map (Algebra.TensorProduct.map (fstA F) (AlgHom.id F E)) := by
   intro F E _ _ _ _ _ σ r J

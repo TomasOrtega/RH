@@ -1,7 +1,7 @@
 import Mathlib
 
 /- English proof (translation)
-Introduce `Ω inst`. Use `infer_instance`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.GenericMap.aux1 :
     ∀ {Ω : Type} [inst : Field Ω],
@@ -50,7 +50,7 @@ noncomputable def UpperTheory.Reformulated.B.GenericMap.Cpt :
           (@UpperTheory.Reformulated.B.GenericMap.genPt X Ω inst ξ) p
 
 /- English proof (translation)
-Introduce `X Ω inst ξ p`. Conclude with `p.2`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.GenericMap.aux4 :
     ∀ {X : AlgebraicGeometry.Scheme} {Ω : Type} [inst : Field Ω]
@@ -75,7 +75,7 @@ theorem UpperTheory.Reformulated.B.GenericMap.aux4 :
   exact p.2
 
 /- English proof (translation)
-Introduce `Ω inst`. Use `infer_instance`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.GenericMap.aux5 :
     ∀ {Ω : Type} [inst : Field Ω],
@@ -417,13 +417,13 @@ noncomputable def UpperTheory.Reformulated.B.GenericMap.Char0 :
 
 namespace UpperTheory.Reformulated.B.GenericMap.Hlp
 /- English proof (translation)
-Introduce `n`. Proceed by induction on `n using Nat.recOnMul with`. Consider the case `zero => intro h`. Conclude with `absurd rfl h`. Consider the case `one => intro _`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules.
 
-Simplify using `[S.one_mem]`. Consider the case `prime p hpp => intro _`. Conclude with `hp p hpp`. Consider the case `mul a b ha hb`. Introduce `hab`.
+Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ha0 : a ≠ 0` using `fun h => hab (by simp [h])`. Establish `hb0 : b ≠ 0` using `fun h => hab (by simp [h])`. Take `⟨a1, a2, a3⟩` from `ha ha0`. Take `⟨b1, b2, b3⟩` from `hb hb0`. Use `⟨by push_cast; exact mul_ne_zero a1 b1, by push_cast; exact S.mul_mem a2 b2, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Rewrite using `[mul_inv]`. Conclude with `S.mul_mem a3 b3`.
+A detailed English derivation is pending.
 -/
 private theorem units_nat {Ω : Type} [Field Ω] (S : Subring Ω)
     (hp : ∀ r : ℕ, r.Prime → ((r : Ω) ≠ 0 ∧ (r : Ω) ∈ S ∧ (r : Ω)⁻¹ ∈ S)) :
@@ -444,9 +444,7 @@ private theorem units_nat {Ω : Type} [Field Ω] (S : Subring Ω)
 end UpperTheory.Reformulated.B.GenericMap.Hlp
 
 /- English proof (translation)
-Introduce `X Ω inst ξ q hq n hn`. Establish `key` using `UpperTheory.Reformulated.B.GenericMap.Hlp.units_nat (UpperTheory.Reformulated.B.GenericMap.regAt ξ q) (fun r hr => by`. Use `hq r hr` as an intermediate fact. Unfold `UpperTheory.Reformulated.B.GenericMap.InFibre at this`. Conclude with `not_not.mp this) n hn`.
-
-Conclude with `key`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.GenericMap.main :
     ∀ {X : AlgebraicGeometry.Scheme} {Ω : Type} [inst : Field Ω]

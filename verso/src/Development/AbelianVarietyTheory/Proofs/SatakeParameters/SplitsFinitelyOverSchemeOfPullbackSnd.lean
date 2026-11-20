@@ -5,11 +5,11 @@ open CategoryTheory Limits AlgebraicGeometry
 namespace GlobalTheory.EtC.Tr
 
 /- English proof (translation)
-Introduce and unpack `⟨m, s, hs, hiso⟩`. Use `⟨m, fun j => s j ≫ pullback.fst f x, fun j => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, pullback.condition, ← Category.assoc, hs j]`. Establish `heq : (Sigma.desc (fun j => pullback.lift (s j ≫ pullback.fst f x) (𝟙 V) (by rw [Category.assoc, pullback.condition, ← Category.assoc, hs j, Category.id_comp])) : ∐ (fun _ : Fin m => V) ⟶ pullback f (v ≫ x)) = (Sigma.desc (fun j => pullback.lift (s j) (𝟙 V) (by rw [hs j, Category …`. Apply `Sigma.hom_ext` to reduce the goal to its premises.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `j`. Rewrite using `[Sigma.ι_desc, Sigma.ι_desc_assoc]`. Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[pullback.lift_fst, Category.assoc, pullbackLeftPullbackSndIso_hom_fst, pullback.lift_fst_assoc]`. Rewrite using `[pullback.lift_snd, Category.assoc, pullbackLeftPullbackSndIso_hom_snd, pullback.lift_snd]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[heq]`. Use `infer_instance`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem splits_of_splits_pullback_snd {Z X S V : Scheme.{0}} (f : Z ⟶ X) (x : S ⟶ X) (v : V ⟶ S) :
     GlobalTheory.EtC.Tr.Splits (pullback.snd f x) v → GlobalTheory.EtC.Tr.Splits f (v ≫ x) := by

@@ -11,7 +11,7 @@ open scoped NumberField.AdeleRing ValuativeRel
 namespace GlobalTheory.CompanionTheory.WS.Comp
 
 /- English proof (translation)
-Apply the tactic sequence `ext <;>`. Apply the tactic sequence `simp only [GlobalTheory.CompanionTheory.WS.rowAct, Units.val_mul, Matrix.mul_apply, Fin.sum_univ_two] <;> ring`.
+Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem rowAct_rowAct {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
     [IsNonarchimedeanLocalField F] [MeasurableSpace F] [BorelSpace F]
@@ -21,7 +21,7 @@ theorem rowAct_rowAct {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
     simp only [GlobalTheory.CompanionTheory.WS.rowAct, Units.val_mul, Matrix.mul_apply, Fin.sum_univ_two] <;> ring
 
 /- English proof (translation)
-Apply the tactic sequence `ext <;> simp [GlobalTheory.CompanionTheory.WS.rowAct]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem rowAct_one {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
     [IsNonarchimedeanLocalField F] [MeasurableSpace F] [BorelSpace F] (v : F × F) :
@@ -29,7 +29,7 @@ theorem rowAct_one {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
   ext <;> simp [GlobalTheory.CompanionTheory.WS.rowAct]
 
 /- English proof (translation)
-Unfold `GlobalTheory.CompanionTheory.WS.rowAct`. Use `fun_prop`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem continuous_rowAct {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
     [IsNonarchimedeanLocalField F] [MeasurableSpace F] [BorelSpace F] (g : GL (Fin 2) F) :
@@ -48,7 +48,7 @@ def rowActHomeo {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
   continuous_invFun := continuous_rowAct g⁻¹
 
 /- English proof (translation)
-Introduce `F _ _ _ _ _ _ Ψ hΨ g`. Conclude with `⟨hΨ.1.comp_continuous (continuous_rowAct g), hΨ.2.comp_homeomorph (rowActHomeo g)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem isSB_comp_rowAct : ∀ (F : Type) [Field F] [ValuativeRel F] [TopologicalSpace F]
     [IsNonarchimedeanLocalField F] [MeasurableSpace F] [BorelSpace F] (Ψ : F × F → ℂ),

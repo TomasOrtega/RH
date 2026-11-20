@@ -15,14 +15,14 @@ namespace UpperTheory.Kd.L.One
 variable {Ω : Type} [Field Ω] [Algebra ℚ Ω] {ε : Ω →+* ℂ}
 
 /- English proof (translation)
-Establish `h : Function.invFun ε (ε 1) = 1` using `Function.leftInverse_invFun ε.injective 1`. Simplify `h` using `[eOm]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem eOm_zero' : eOm ε 0 = 1 := by
   have h : Function.invFun ε (ε 1) = 1 := Function.leftInverse_invFun ε.injective 1
   simpa [eOm] using h
 
 /- English proof (translation)
-Rewrite `hf` using `[mem_lev_iff]`. Establish `hζ` using `isPrimitiveRoot_eOm ε hM`. Conclude with `X.recip M f (Nat.pos_of_ne_zero hM) hf _ hζ s 1 (by rw [zpow_one]; exact (mem_fixMu_iff s).1 hs _ hζ.pow_eq_one) g g (by simp)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem gal_sl_g [IsAlgClosed Ω] (X : Tower Ω ε) {M : ℕ} (hM : M ≠ 0) {s : Ω ≃ₐ[ℚ] Ω} (hs : s ∈ fixMu Ω M)
     (g : SL(2, ℤ)) {f : X.K} (hf : f ∈ topL X M) : X.gal s (X.sl (ofSL g) f) = X.sl (ofSL g) (X.gal s f) := by
@@ -32,9 +32,9 @@ private theorem gal_sl_g [IsAlgClosed Ω] (X : Tower Ω ε) {M : ℕ} (hM : M �
     (by rw [zpow_one]; exact (mem_fixMu_iff s).1 hs _ hζ.pow_eq_one) g g (by simp)
 
 /- English proof (translation)
-Establish `h : (0 : ℤ) < (!![(D : ℤ), 0; 0, 1] : Matrix (Fin 2) (Fin 2) ℤ).det`. Simplify using `[Matrix.det_fin_two]`. Conclude with `hD` after adjusting the coercions. Rewrite using `[toGQ, dif_pos h]`. Use `show (!![(D : ℤ), 0; 0, 1] : Matrix (Fin 2) (Fin 2) ℤ).map (Int.castRingHom ℚ) = _`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 
-Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp`.
+A detailed English derivation is pending.
 -/
 private theorem coe_diag {D : ℕ} (hD : 0 < D) :
     (((toGQ !![(D : ℤ), 0; 0, 1] : GQ) : GL (Fin 2) ℚ) : Matrix (Fin 2) (Fin 2) ℚ) = !![(D : ℚ), 0; 0, 1] := by
@@ -46,9 +46,9 @@ private theorem coe_diag {D : ℕ} (hD : 0 < D) :
   fin_cases i <;> fin_cases j <;> simp
 
 /- English proof (translation)
-Establish `he : ((ModularGroup.T ^ k : SL(2, ℤ)) : Matrix (Fin 2) (Fin 2) ℤ) = !![1, (k : ℤ); 0, 1]`. Rewrite using `[← ModularGroup.coe_T_zpow, zpow_natCast]`. Use `show ((ModularGroup.T ^ k : SL(2, ℤ)) : Matrix (Fin 2) (Fin 2) ℤ).map (Int.castRingHom ℚ) = _`. Rewrite using `[he]`. Use extensionality with `i j`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp`.
+A detailed English derivation is pending.
 -/
 private theorem coe_T (k : ℕ) :
     (((ofSL (ModularGroup.T ^ k) : GQ) : GL (Fin 2) ℚ) : Matrix (Fin 2) (Fin 2) ℚ) = !![1, (k : ℚ); 0, 1] := by
@@ -60,18 +60,18 @@ private theorem coe_T (k : ℕ) :
   fin_cases i <;> fin_cases j <;> simp
 
 /- English proof (translation)
-Rewrite using `[ent, coe_diag hD]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem ent_diag {D : ℕ} (hD : 0 < D) (i j : Fin 2) :
     ent (toGQ !![(D : ℤ), 0; 0, 1]) i j = (!![(D : ℚ), 0; 0, 1] : Matrix (Fin 2) (Fin 2) ℚ) i j := by
   rw [ent, coe_diag hD]
 
 /- English proof (translation)
-Apply `exp_injective X` to reduce the goal to its premises. Use extensionality with `r`. Establish `hD' : (D : ℚ) ≠ 0` using `by exact_mod_cast hD.ne'`. Establish `key : ∀ (h : X.K), (X.exp (X.sl (toGQ !![(D : ℤ), 0; 0, 1]) h)).coeff r = (X.exp h).coeff (r / D)`. Introduce `h`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `X.exp_upper (toGQ !![(D : ℤ), 0; 0, 1]) (by rw [ent_diag hD]; simp) h (r / D)` as an intermediate fact. Simplify using `only [ent_diag hD] at this`. Simplify using `at this`. Rewrite `this` using `[div_mul_cancel₀ _ hD', eOm_zero', one_mul]`. Conclude with `this`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[X.gal_exp, key, key, X.gal_exp]`.
+A detailed English derivation is pending.
 -/
 private theorem gal_sl_diag (X : Tower Ω ε) {D : ℕ} (hD : 0 < D) (s : Ω ≃ₐ[ℚ] Ω) (f : X.K) :
     X.gal s (X.sl (toGQ !![(D : ℤ), 0; 0, 1]) f) = X.sl (toGQ !![(D : ℤ), 0; 0, 1]) (X.gal s f) := by
@@ -88,7 +88,7 @@ private theorem gal_sl_diag (X : Tower Ω ε) {D : ℕ} (hD : 0 < D) (s : Ω ≃
   rw [X.gal_exp, key, key, X.gal_exp]
 
 /- English proof (translation)
-Use `⟨⟨fun r => φ.coeff (r / D), ?_⟩, fun r => rfl⟩` and prove the remaining obligations. Establish `h` using `φ.isPWO_support.image_of_monotone (f := fun r : ℚ => r * D) (fun a b hab => mul_le_mul_of_nonneg_right hab hD.le)`. Use `h.mono ?_` and prove the remaining obligations. Introduce `r hr`. Conclude with `⟨r / D, hr, div_mul_cancel₀ _ hD.ne'⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 private theorem rescale_series (φ : HahnSeries ℚ Ω) {D : ℚ} (hD : 0 < D) :
     ∃ φ' : HahnSeries ℚ Ω, ∀ r : ℚ, φ'.coeff r = φ.coeff (r / D) := by
@@ -100,9 +100,9 @@ private theorem rescale_series (φ : HahnSeries ℚ Ω) {D : ℚ} (hD : 0 < D) :
   exact ⟨r / D, hr, div_mul_cancel₀ _ hD.ne'⟩
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Use `show (((toGQ !![(D : ℤ), 0; 0, 1] : GQ) : GL (Fin 2) ℚ) : Matrix (Fin 2) (Fin 2) ℚ) * (((ofSL (ModularGroup.T ^ L) : GQ) : GL (Fin 2) ℚ) : Matrix (Fin 2) (Fin 2) ℚ) = (((ofSL (ModularGroup.T ^ (D * L)) : GQ) : GL (Fin 2) ℚ) : Matrix (Fin 2) (Fin 2) ℚ) * (((toGQ !![(D : ℤ), 0; 0, …`. Rewrite using `[coe_diag hD, coe_T, coe_T]`. Use extensionality with `i j`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_two]`.
+A detailed English derivation is pending.
 -/
 private theorem diag_mul_T_pow_eq_T_pow_mul_mul_diag (D L : ℕ) (hD : 0 < D) :
     toGQ !![(D : ℤ), 0; 0, 1] * ofSL (ModularGroup.T ^ L) = ofSL (ModularGroup.T ^ (D * L)) * toGQ !![(D : ℤ), 0; 0, 1] := by
@@ -117,7 +117,7 @@ private theorem diag_mul_T_pow_eq_T_pow_mul_mul_diag (D L : ℕ) (hD : 0 < D) :
   fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_two]
 
 /- English proof (translation)
-Establish `he : ((ModularGroup.T ^ M : SL(2, ℤ)) : Matrix (Fin 2) (Fin 2) ℤ) = !![1, (M : ℤ); 0, 1]`. Rewrite using `[← ModularGroup.coe_T_zpow, zpow_natCast]`. Rewrite using `[CongruenceSubgroup.Gamma_mem]`. Simplify using `[he]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem T_mem_Gamma (M : ℕ) : (ModularGroup.T ^ M : SL(2, ℤ)) ∈ CongruenceSubgroup.Gamma M := by
   have he : ((ModularGroup.T ^ M : SL(2, ℤ)) : Matrix (Fin 2) (Fin 2) ℤ) = !![1, (M : ℤ); 0, 1] := by
@@ -126,11 +126,11 @@ private theorem T_mem_Gamma (M : ℕ) : (ModularGroup.T ^ M : SL(2, ℤ)) ∈ Co
   simp [he]
 
 /- English proof (translation)
-Rewrite using `[KT.mem_def]`. Rewrite `hy` using `[mem_lev_iff]`. Establish `hn : g * ModularGroup.T ^ (D * L) * g⁻¹ ∈ CongruenceSubgroup.Gamma (L * D)`. Use `(CongruenceSubgroup.Gamma_normal (L * D)).conj_mem _ (T_mem_Gamma (L * D)) g` as an intermediate fact. Rewrite `this`, the goal using `[mul_comm L D]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Use the resulting assumption.
 
-Establish `h1` using `hy _ hn`. Simplify using `only [← X.sl_mul]`. Rewrite using `[mul_assoc, diag_mul_T_pow_eq_T_pow_mul_mul_diag D L hD, ← mul_assoc]`. Establish `e : ofSL g * ofSL (ModularGroup.T ^ (D * L)) = ofSL (g * ModularGroup.T ^ (D * L) * g⁻¹) * ofSL g`. Simplify using `[map_mul]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[e, mul_assoc, X.sl_mul, h1]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem e_mem_KT (X : Tower Ω ε) {D L : ℕ} (hD : 0 < D) (g : SL(2, ℤ)) {y : X.K} (hy : y ∈ topL X (L * D)) :
     X.sl (toGQ !![(D : ℤ), 0; 0, 1]) (X.sl (ofSL g) y) ∈ KT X L := by
@@ -153,11 +153,9 @@ namespace UpperTheory.Kd.L.One
 variable {Ω : Type} [Field Ω] [Algebra ℚ Ω] {ε : Ω →+* ℂ}
 
 /- English proof (translation)
-Establish `hz : ζ ≠ 0`. Introduce and unpack `rfl`. Rewrite `h` using `[zero_pow hk]`. Conclude with `zero_ne_one h`. Break down `A.mem_or_inv_mem ζ with h1 | h1` into its components or cases.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result.
 
-Conclude with `h1`. Take `⟨j, rfl⟩` from `Nat.exists_eq_succ_of_ne_zero hk`. Establish `: ζ = (ζ⁻¹) ^ j`. Rewrite using `[inv_pow]`. Rewrite `h` using `[pow_succ]`.
-
-Conclude with `eq_inv_of_mul_eq_one_right h`. Rewrite using `[this]`. Conclude with `pow_mem h1 j`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem root_mem (A : ValuationSubring Ω) {ζ : Ω} {k : ℕ} (hk : k ≠ 0) (h : ζ ^ k = 1) : ζ ∈ A := by
   have hz : ζ ≠ 0 := by
@@ -175,7 +173,7 @@ private theorem root_mem (A : ValuationSubring Ω) {ζ : Ω} {k : ℕ} (hk : k �
     exact pow_mem h1 j
 
 /- English proof (translation)
-Establish `hζ` using `isPrimitiveRoot_eOm ε hM.ne'`. Establish `hz : ∀ e : ℤ, eOm ε (1 / (M : ℚ)) ^ e ∈ A` using `fun e => by`. Use `root_mem A hM.ne' ?_` and prove the remaining obligations. Rewrite using `[← zpow_natCast, ← zpow_mul, mul_comm, zpow_mul, zpow_natCast, hζ.pow_eq_one, one_zpow]`. Conclude with `GlobalTheory.T.smoothedEisensteinFxCoefficientSeq_one_mem_subring Ω A.toSubring c M _ a b hM hc h (hz b) (hz (-b)) k`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem smF_mem [IsAlgClosed Ω] [CharZero Ω] (A : ValuationSubring Ω) {c M : ℕ} (hM : 0 < M) (hc : Nat.Coprime c M) {a : ℤ} (b : ℤ)
     (h : ¬ (M : ℤ) ∣ a) (k : ℕ) : smF (c : ℤ) 1 M (eOm ε (1 / (M : ℚ))) a b k ∈ A := by
@@ -186,13 +184,13 @@ private theorem smF_mem [IsAlgClosed Ω] [CharZero Ω] (A : ValuationSubring Ω)
   exact GlobalTheory.T.smoothedEisensteinFxCoefficientSeq_one_mem_subring Ω A.toSubring c M _ a b hM hc h (hz b) (hz (-b)) k
 
 /- English proof (translation)
-Introduce `h1` and use `ha ((Int.natCast_dvd_natCast.2 h).trans h1)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem not_dvd_of {l M : ℕ} {a : ℤ} (h : l ∣ M) (ha : ¬ (l : ℤ) ∣ a) : ¬ (M : ℤ) ∣ a :=
   fun h1 => ha ((Int.natCast_dvd_natCast.2 h).trans h1)
 
 /- English proof (translation)
-Unfold `coefQ`. Use `split_ifs`. Conclude with `sum_mem fun i _ => mul_mem (hf _) (hg _)`. Conclude with `zero_mem _`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 private theorem coefQ_cmul_mem (A : ValuationSubring Ω) {f g : ℕ → Ω} (hf : ∀ k, f k ∈ A) (hg : ∀ k, g k ∈ A) (L : ℕ) (r : ℚ) :
     coefQ L (cmul f g) r ∈ A := by
@@ -202,7 +200,7 @@ private theorem coefQ_cmul_mem (A : ValuationSubring Ω) {f g : ℕ → Ω} (hf 
   · exact zero_mem _
 
 /- English proof (translation)
-Establish `h` using `isPrimitiveRoot_eOm ε (pow_ne_zero k hl)`. Rewrite `h` using `[Nat.cast_pow]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem zt_pow [IsAlgClosed Ω] (ε : Ω →+* ℂ) {l : ℕ} (hl : l ≠ 0) (k : ℕ) : IsPrimitiveRoot (zt ε l k) (l ^ k) := by
   have h := isPrimitiveRoot_eOm ε (pow_ne_zero k hl)
@@ -216,57 +214,49 @@ open UpperTheory.Kd.L.One
 attribute [local instance] algMdl in
 set_option maxHeartbeats 2000000 in
 /- English proof (translation)
-Introduce `l _`. Distinguish the cases in `h2 : l = 2`. Conclude with `⟨0, fun ε X N _ c d gm hP => absurd h2 hP.odd⟩`. Take `⟨cc, hcc⟩` from `GlobalTheory.T.siegelUnit_edgeClass_kummer_dlog_congruence l h2`. Use `⟨cc, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `Ω _ _ _ _ ε X N _ c d gm hP A hA x m n hm hn g hg hg0 hg1`. Use `haveI : IsAlgClosed Ω := IsAlgClosure.isAlgClosed ℚ`. Establish `hlp : l.Prime` using `Fact.out`. Establish `hl0 : l ≠ 0` using `hlp.ne_zero`. Establish `hN0 : 0 < N` using `Nat.pos_of_ne_zero (NeZero.ne N)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlZ : Prime (l : ℤ)` using `Nat.prime_iff_prime_int.1 hlp`. Establish `hlN : ¬ (l : ℤ) ∣ (N : ℤ)` using `fun h => hP.cop (Int.natCast_dvd_natCast.1 h)`. Establish `hnd : ∀ e : ℕ, Nat.Coprime e (6 * l * N) → ¬ (l : ℤ) ∣ (e : ℤ)` using `fun e he h => by`. Establish `h1 : l ∣ Nat.gcd e (6 * l * N)` using `Nat.dvd_gcd (Int.natCast_dvd_natCast.1 h) (dvd_mul_of_dvd_left (dvd_mul_left l 6) N)`. Rewrite `h1` using `[he]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hlp.one_lt.ne' (Nat.dvd_one.1 h1)`. Establish `hL0 : m + n ≠ 0` using `by omega`. Establish `hlL : (l : ℤ) ∣ (l : ℤ) ^ (m + n)` using `dvd_pow_self _ hL0`. Use `set w1 : ℤ := (N : ℤ) + (x.val : ℤ) * (topT l (m + n) N : ℤ) * (l : ℤ) ^ (m + n) with hw1`. Use `set w2 : ℤ := en g 0 0 * (topT l (m + n) N : ℤ) * (l : ℤ) ^ (m + n) + en g 1 0 with hw2`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Establish `hA1 : ¬ (l : ℤ) ∣ en g 0 0 * w1`. Introduce `h`. Break down `hlZ.dvd_or_dvd h with h | h` into its components or cases. Conclude with `hg0 h`. Conclude with `hlN ((dvd_add_left (hlL.mul_left _)).1 h)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hB1 : ¬ (l : ℤ) ∣ w2` using `fun h => hg1 ((dvd_add_right (hlL.mul_left _)).1 h)`. Establish `hMl : l ∣ N * l ^ (m + n)` using `(dvd_pow_self l hL0).mul_left N`. Establish `hM0 : 0 < N * l ^ (m + n)` using `Nat.mul_pos hN0 (pow_pos hlp.pos _)`. Establish `hcop : ∀ e : ℕ, Nat.Coprime e (6 * l * N) → Nat.Coprime e (N * l ^ (m + n))` using `fun e he => Nat.Coprime.mul_right (he.coprime_dvd_right (dvd_mul_left _ _)) (Nat.Coprime.pow_right _ (he.coprime_dvd_right (dvd_mul_of_dvd_left (dvd_mul_left l 6) N)))`. Establish `hEE : ∀ r, EE ε l (m + n) N x c d g r ∈ A` using `fun r => coefQ_cmul_mem A (fun k => smF_mem A hM0 (hcop c hP.cc) _ (not_dvd_of hMl hA1) k) (fun k => smF_mem A hM0 (hcop d hP.dc) _ (not_dvd_of hMl hB1) k) _ r`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨hEE, ?_⟩` and prove the remaining obligations. Take `⟨⟨huF, hu0, hvF, hv0⟩, hun⟩` from `units ε X l N c d gm hP x m n hm`. Take `⟨hu1, hu2⟩` from `hun g hg`. Take `⟨hη, hW⟩` from `topex ε X l N c d gm hP x m n hm`. Establish `hMM : topMu l n m N ≠ 0` using `NeZero.ne _`.
+Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hlM : l ^ n ∣ topMu l n m N` using `(pow_dvd_pow l (Nat.le_add_left n m)).mul_right _`. Establish `hco : ∀ e : ℕ, Nat.Coprime e (6 * l * N) → Nat.Coprime e (6 * N ^ 3 * l)` using `fun e he => Nat.Coprime.mul_right (Nat.Coprime.mul_right (he.coprime_dvd_right (dvd_mul_of_dvd_left (dvd_mul_right 6 l) N)) (Nat.Coprime.pow_right 3 (he.coprime_dvd_right (dvd_mul_left N _)))) (he.coprime_dvd_right (dvd_mul_of_dvd_left (dvd_mul_left l 6) N))`. Establish `hN2 : ∀ a : ℤ, ¬ (l : ℤ) ∣ a → ¬ (l : ℤ) ∣ (N : ℤ) ^ 2 * a` using `fun a ha h => by`. Break down `hlZ.dvd_or_dvd h with h | h` into its components or cases. Conclude with `hlN (hlZ.dvd_of_dvd_pow h)`.
+Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `ha h`. Establish `hj : ∃ φ : ℂ → ℂ, DifferentiableOn ℂ φ Hs ∧ X.an X.jK = (φ : Mero)`. Take `⟨φ, h1, h2⟩` from `X.j_hol`. Conclude with `⟨φ, h2, h1⟩`. Use `haveI hnorm : Normal (topF X (topMu l n m N)) (topL X (topMu l n m N)) := UpperTheory.normal_modularTowerTop_algebraModel X _ hMM`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Set `e : topL X (topMu l n m N) →+* X.K` to `((X.sl (toGQ !![((N * N : ℕ) : ℤ), 0; 0, 1]) : X.K →+* X.K).comp (X.sl (ofSL g) : X.K →+* X.K)).comp (topL X (topMu l n m N)).subtype`. Establish `he : ∀ y, e y = X.sl (toGQ !![((N * N : ℕ) : ℤ), 0; 0, 1]) (X.sl (ofSL g) (y : X.K))` using `fun _ => rfl`. Establish `hNN : 0 < N * N` using `Nat.mul_pos hN0 hN0`. Establish `heT : ∀ y, e y ∈ KT X (l ^ (m + n))` using `fun y => e_mem_KT X hNN g y.2`. Take `⟨ξ, hξ, hmain⟩` from `hcc ε X hj A hA (m + n) n (N ^ 3) c d ((N : ℤ) ^ 2 * (en g 0 0 * w1)) ((N : ℤ) ^ 2 * ((N : ℤ) ^ 2 * en g 0 1)) ((N : ℤ) * en g 0 1) ((N : ℤ) ^ 2 * w2) ((N : ℤ) ^ 2 * ((N : ℤ) * en g 1 1)) (en g 1 1) (by push_cast; ring_nf; rfl) (by push_cast; ring_nf; rfl) (by push_cast; exact ⟨( …`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hD0 : (0 : ℚ) < ((N * N : ℕ) : ℚ)` using `by exact_mod_cast hNN`. Use `⟨fun r => ξ (r * ((N * N : ℕ) : ℚ)), fun r => hξ _, ?_⟩` and prove the remaining obligations. Introduce `s hs hSt t ht φ hφ r`. Establish `hsi : s⁻¹ ∈ fixMu Ω (topMu l n m N)` using `inv_mem hs`. Take `⟨φ', hφ'⟩` from `rescale_series φ hD0`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hdl` using `(GlobalTheory.T.isLogDerivQExpansionModPrimePow_rescale ε X hj l A hA n (N * N) _ _ φ φ' hNN hφ').1 hφ`. Establish `hq : (((topMu l n m N : ℕ) : ℚ)) / ((N * N : ℕ) : ℚ) = (l : ℚ) ^ (m + n)`. Establish `: ((N * N : ℕ) : ℚ) ≠ 0` using `hD0.ne'`. Rewrite using `[topMu, Nat.cast_mul, mul_div_assoc, div_self this, mul_one, Nat.cast_pow]`. Rewrite `hdl` using `[hq]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hStab : Stab A s⁻¹` using `fun y => by`. Use `hSt (s⁻¹ y)` as an intermediate fact. Rewrite `this` using `[show s (s⁻¹ y) = y from s.apply_symm_apply y]`. Conclude with `this.symm`. Establish `hzL : s⁻¹ (zt ε l (m + n)) = zt ε l (m + n)` using `(mem_fixMu_iff _).1 hsi _ ((zt_pow ε hl0 _).pow_eq_one_iff_dvd _ |>.2 (Dvd.intro _ rfl))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hzn : s⁻¹ (zt ε l n) = zt ε l n` using `(mem_fixMu_iff _).1 hsi _ ((zt_pow ε hl0 _).pow_eq_one_iff_dvd _ |>.2 hlM)`. Establish `hgalF : ∀ f : topF X (topMu l n m N), X.gal s⁻¹ (e (algebraMap (topF X (topMu l n m N)) (topL X (topMu l n m N)) f)) = e (algebraMap (topF X (topMu l n m N)) (topL X (topMu l n m N)) f)` using `fun f => by`. Establish `hf` using `(mem_mdl_iff X _ _ _).1 f.2`. Rewrite using `[he]`. Use `show X.gal s⁻¹ (X.sl _ (X.sl _ (f : X.K))) = X.sl _ (X.sl _ (f : X.K))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[gal_sl_diag X hNN, gal_sl_g X hMM hsi g hf.1, hf.2 _ hsi]`. Establish `hlift` using `isTopLift_topLift X hMM hs`. Establish `hσ : ∀ k k' : topL X (topMu l n m N), e k' = X.gal s⁻¹ (e k) → ((topLift X (topMu l n m N) s)⁻¹) (algebraMap (topL X (topMu l n m N)) (topBar X (topMu l n m N)) k) = algebraMap (topL X (topMu l n m N)) (topBar X (topMu l n m N)) k'` using `fun k k' hk => by`. Rewrite `hk` using `[he, he, gal_sl_diag X hNN, gal_sl_g X hMM hsi g k.2]`. Establish `hk' : (k' : X.K) = X.gal s⁻¹ k` using `(X.sl (ofSL g)).injective ((X.sl _).injective hk)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨f', ef, hf'⟩` from `hlift k'`. Establish `: f' = k` using `Subtype.ext (by rw [ef, hk', ← gal_mul_apply, mul_inv_cancel, gal_one_apply])`. Rewrite using `[← this, ← hf', ← AlgEquiv.mul_apply, inv_mul_cancel, AlgEquiv.one_apply]`. Establish `htv : ∃ v : ℕ, t.val + (-t).val = l ^ n * v`. Establish `h0 : ((t.val + (-t).val : ℕ) : ZMod (l ^ n)) = 0` using `by haveI : NeZero (l ^ n) := ⟨pow_ne_zero n hl0⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `push_cast`. Rewrite using `[ZMod.natCast_zmod_val, ZMod.natCast_zmod_val, add_neg_cancel]`. Conclude with `(ZMod.natCast_eq_zero_iff _ _).1 h0`. Take `⟨v, hv⟩` from `htv`. Establish `hzt1 : zt ε l n ^ t.val * zt ε l n ^ (-t).val = 1`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← pow_add, hv, pow_mul, (zt_pow ε hl0 n).pow_eq_one, one_pow]`. Establish `hzz : s⁻¹ (zt ε l (m + n + n)) = zt ε l n ^ (-t).val * zt ε l (m + n + n)`. Establish `h1` using `congrArg (s⁻¹ : Ω ≃ₐ[ℚ] Ω) ht`. Rewrite `h1` using `[show s⁻¹ (s (zt ε l (m + n + n))) = zt ε l (m + n + n) from s.symm_apply_apply _, map_mul, map_pow, hzn]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hzt1, one_mul]`. Use `_ = zt ε l n ^ (-t).val * (zt ε l n ^ t.val * s⁻¹ (zt ε l (m + n + n))) := by ring`. Use `_ = zt ε l n ^ (-t).val * zt ε l (m + n + n) := by rw [← h1]`. Establish `hfin` using `hmain s⁻¹ hStab hzL hgalF _ hσ _ φ' (-t) (TopW.isTopW_topW_of_exists (hW _)) hdl hzz (r * ((N * N : ℕ) : ℚ))`. Establish `hcnd : ∀ e : ℕ, Nat.Coprime e (6 * l * N) → ∀ a : ℤ, ¬ (l : ℤ) ∣ a → ¬ (l : ℤ) ∣ (e : ℤ) * a` using `fun e he a ha h => by`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Break down `hlZ.dvd_or_dvd h with h | h` into its components or cases. Conclude with `hnd e he h`. Conclude with `ha h`. Establish `hres` using `resc ε (N ^ 2) (N * l ^ (m + n)) c d (l ^ (m + n)) (en g 0 0 * w1) ((N : ℤ) ^ 2 * en g 0 1) w2 ((N : ℤ) * en g 1 1) (pow_pos hN0 2) hM0 (pow_pos hlp.pos _) (not_dvd_of hMl hA1) (not_dvd_of hMl (hcnd c hP.cc _ hA1)) (not_dvd_of hMl hB1) (not_dvd_of hMl (hcnd d hP.dc _ hB1)) (r * ( …`. Establish `hNeq : N ^ 2 * (N * l ^ (m + n)) = N ^ 3 * l ^ (m + n)` using `by ring`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Establish `hcz : ((N ^ 2 : ℕ) : ℤ) = (N : ℤ) ^ 2` using `by push_cast; rfl`. Establish `hrq : r * ((N * N : ℕ) : ℚ) / ((N ^ 2 : ℕ) : ℚ) = r`. Rewrite using `[show N ^ 2 = N * N by ring]`. Conclude with `mul_div_cancel_right₀ _ hD0.ne'`. Rewrite `hres` using `[hNeq, hcz, hrq]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hEr : EE ε l (m + n) N x c d g r = coefQ (l ^ (m + n)) (cmul (smF c 1 (N * l ^ (m + n)) (eOm ε (1 / ((N * l ^ (m + n) : ℕ) : ℚ))) (en g 0 0 * w1) ((N : ℤ) ^ 2 * en g 0 1)) (smF d 1 (N * l ^ (m + n)) (eOm ε (1 / ((N * l ^ (m + n) : ℕ) : ℚ))) w2 ((N : ℤ) * en g 1 1))) r` using `rfl`. Rewrite `hres` using `[← hEr]`. Take `⟨z0, hz0, e0⟩` from `hfin`. Rewrite `e0` using `[hres, hφ', mul_div_cancel_right₀ _ hD0.ne']`. Establish `e1 : (s⁻¹ : Ω ≃ₐ[ℚ] Ω).symm (ξ (r * ((N * N : ℕ) : ℚ))) = s (ξ (r * ((N * N : ℕ) : ℚ)))` using `rfl`.
-
-Rewrite `e0` using `[e1]`. Establish `hdet : en g 0 0 * en g 1 1 - en g 0 1 * en g 1 0 = 1`. Use `g.det_coe` as an intermediate fact. Rewrite `this` using `[Matrix.det_fin_two]`. Conclude with `this`.
-
-Establish `hZ : (N : ℤ) ^ 2 * (en g 0 0 * w1) * en g 1 1 - (N : ℤ) * en g 0 1 * ((N : ℤ) ^ 2 * w2) = (N : ℤ) ^ 3 + (l : ℤ) ^ (m + n) * ((N : ℤ) ^ 2 * en g 0 0 * (x.val : ℤ) * (topT l (m + n) N : ℤ) * en g 1 1 - (N : ℤ) ^ 3 * en g 0 1 * en g 0 0 * (topT l (m + n) N : ℤ))`. Rewrite using `[hw1, hw2]`. Take the linear combination `(N : ℤ) ^ 3 * hdet`. Use `set Q : ℤ := (N : ℤ) ^ 2 * en g 0 0 * (x.val : ℤ) * (topT l (m + n) N : ℤ) * en g 1 1 - (N : ℤ) ^ 3 * en g 0 1 * en g 0 0 * (topT l (m + n) N : ℤ) with hQ`. Establish `hZΩ : (((N : ℤ) ^ 2 * (en g 0 0 * w1) * en g 1 1 - (N : ℤ) * en g 0 1 * ((N : ℤ) ^ 2 * w2) : ℤ) : Ω) = (N : Ω) ^ 3 + (l : Ω) ^ (m + n) * (Q : Ω)`.
-
-Rewrite using `[hZ]`. Use `push_cast`. Both sides reduce to the same expression. Establish `hvΩ : (t.val : Ω) + ((-t).val : Ω) = (l : Ω) ^ n * (v : Ω)` using `by exact_mod_cast congrArg (Nat.cast (R := Ω)) hv`. Use `⟨z0 - (l : Ω) ^ cc * EE ε l (m + n) N x c d g r * ((N : Ω) ^ 3 * (v : Ω) + (l : Ω) ^ m * (Q : Ω) * ((-t).val : Ω)), sub_mem hz0 (mul_mem (mul_mem (pow_mem (natCast_mem A l) _) (hEE r)) (add_mem (mul_mem (pow_mem (natCast_mem A N) _) (natCast_mem A v)) (mul_mem (mul_mem (pow_mem ( …` and prove the remaining obligations.
-
-Use `beta_reduce`. Take the linear combination `e0 - (l : Ω) ^ cc * ((-t).val : Ω) * EE ε l (m + n) N x c d g r * hZΩ - (l : Ω) ^ cc * (N : Ω) ^ 3 * EE ε l (m + n) N x c d g r * hvΩ`.
+Reduce the conclusion to the remaining proof obligations. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Kd.L.one :
     ∀ (l : ℕ) [Fact l.Prime], ∃ cc : ℕ, ∀ {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] [CharZero Ω] (ε : Ω →+* ℂ) (X : Tower Ω ε) (N : ℕ) [NeZero N] (c d : ℕ) (gm : (ZMod l)ˣ → SL(2, ℤ)), Par l N c d gm → ∀ (A : ValuationSubring Ω), ((l : ℕ) : Ω) ∈ A.nonunits → ∀ (x : ZMod N) (m n : ℕ), 1 ≤ m → 1 ≤ n → ∀ g ∈ CongruenceSubgroup.Gamma0 N, ¬ (l : ℤ) ∣ en g 0 0 → ¬ (l : ℤ) ∣ en g 1 0 → (∀ r, EE ε l (m + n) N x c d g r ∈ A) ∧ ∃ ξ : ℚ → Ω, (∀ r, ξ r ∈ A) ∧ ∀ s ∈ fixMu Ω (topMu l n m N), Stab A s → ∀ t : ZMod (l ^ n), s (zt ε l (m + n + n)) = zt ε l n ^ t.val * zt ε l (m + n + n) → ∀ φ : HahnSeries ℚ Ω, IsDl X A l n ((topMu l n m N) : ℚ) (X.sl (ofSL g) (wkMu X l n m N x c d s)) φ → ∀ r : ℚ, CgA A l n ((l : Ω) ^ cc * φ.coeff r) (s (ξ r) - ξ r + (l : Ω) ^ cc * ((N : Ω) ^ 3 * EE ε l (m + n) N x c d g r * (t.val : Ω))) := by

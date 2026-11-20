@@ -10,7 +10,7 @@ namespace UpperTheory.V.Fr
 def pq (a : Fin 3) : ZMod 2 := ((w 3 a : ℤ) : ZMod 2)
 
 /- English proof (translation)
-The claim follows from `Int.cast_sub _ _`.
+A detailed English derivation is pending.
 -/
 theorem pw_eq (a b : Fin 3) : pw a b = pq a - pq b := Int.cast_sub _ _
 

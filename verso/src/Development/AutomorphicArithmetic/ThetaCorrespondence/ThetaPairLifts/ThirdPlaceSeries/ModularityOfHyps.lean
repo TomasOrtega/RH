@@ -11,7 +11,7 @@ open GlobalTheory.HeckeGal GlobalTheory.Pst GlobalTheory.TripleGal GlobalTheory.
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 namespace GlobalTheory.Published.CharCrysModel
 /- English proof (translation)
-The claim follows from `of_three hD hB hW`.
+A detailed English derivation is pending.
 -/
 theorem of_hypotheses_m_alt (hD : HeckeLAdicCharacterDeRham) (hB : DeRhamPotSemistable) (hW : AlgebraicCharacterWD)
     (_hL : _root_.UpperTheory.Zero.LLC.RecTExists) : HeckeLAdicCharacterCrystalline := of_three hD hB hW

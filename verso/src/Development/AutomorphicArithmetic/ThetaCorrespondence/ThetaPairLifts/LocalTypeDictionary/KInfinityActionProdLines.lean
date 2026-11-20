@@ -25,9 +25,9 @@ end GlobalTheory.KInfLines
 namespace GlobalTheory.KInfLines
 variable {D : D7} {W : HSp D} {V : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Spc D.host.F D.host.E W.rank}
 /- English proof (translation)
-Introduce `_ D θ W Bs V r s hJ hθ _ hV k hk`. Take `rfl` from `Eqv.eq_thetaC D hθ`. Use `choose C hC using cartan_data hJ Bs hV hk`. Use `choose Z hZ using fun t => exists_log_of_cartan (GlobalTheory.SmoothForms.RealPts.gramAt_herm W t) (hC t).1 (unitFam_gsOf hJ k t) (hC t).2.1`. Use `⟨Finset.univ.toList.map fun t => (t, Z t), ?_, prod_eq hJ hk.1 Z fun t => ⟨(hZ t).1, (hZ t).2.2⟩⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `q hq`. Take `⟨t, -, rfl⟩` from `List.mem_map.1 hq`. Conclude with `⟨(hZ t).1, line_mem hJ Bs C (fun t => (hC t).2.2) (hZ t).1 (hZ t).2.1⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem kInfinity_prod_lines : _root_.GlobalTheory.FunPr.ThetaLocalInputs → ∀ (D : D7) (θ : InfFam D) (W : HSp D) (Bs : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Base D.host.F D.host.E)
     (V : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Spc D.host.F D.host.E W.rank) (r s : ℕ) (hJ : V.J = (1 : D.host.E) • W.gram),
@@ -60,7 +60,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.SquareComm GlobalTheory.SquareAgree
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.KInfLines.kInfinity_prod_lines | exact _root_.GlobalTheory.KInfLines.kInfinity_prod_lines | (intros; apply _root_.GlobalTheory.KInfLines.kInfinity_prod_lines <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.kInfinity_action_prod_lines : _root_.GlobalTheory.FunPr.ThetaLocalInputs → ∀ (D : D7) (θ : InfFam D) (W : HSp D) (Bs : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Base D.host.F D.host.E)
     (V : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Spc D.host.F D.host.E W.rank) (r s : ℕ) (hJ : V.J = (1 : D.host.E) • W.gram),

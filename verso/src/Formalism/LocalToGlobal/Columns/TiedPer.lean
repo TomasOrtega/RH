@@ -15,23 +15,23 @@ namespace GSD.Ev
 variable {K : Type} [Field K] [NumberField K] [StarRing K] {S : GSD K} {σ : K →+* ℂ} (E : S.Ev σ)
 
 /- English proof (translation)
-The claim follows from `Submodule.sum_mem _ fun _ _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨_, rfl⟩)`.
+A detailed English derivation is pending.
 -/
 theorem sharp_mem (ℓ : S.V →ₛₗ[σ] ℂ) : E.sharp ℓ ∈ Submodule.span ℂ (Set.range E.ev) :=
   Submodule.sum_mem _ fun _ _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨_, rfl⟩)
 
 /- English proof (translation)
-Rewrite using `[← E.extend_eq_ip hG, E.extend_ev]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem ip_sharp_ev (hG : IsUnit E.gram.det) (ℓ : S.V →ₛₗ[σ] ℂ) (x : S.V) : E.ip (E.sharp ℓ) (E.ev x) = ℓ x := by
   rw [← E.extend_eq_ip hG, E.extend_ev]
 
 /- English proof (translation)
-Take `⟨z, rfl⟩` from `E.span_ev_le_range_lin hf`. Take `⟨z', rfl⟩` from `E.span_ev_le_range_lin hf'`. Use `congr 1`. Establish `key : ∀ (w : S.ιV → ℂ) (j : S.ιV), E.ip (E.lin w) (E.ev (S.bV j)) = ((fun i => starRingEnd ℂ (w i)) ᵥ* E.gram) j`. Introduce `w j`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [lin, Fintype.linearCombination_apply, map_sum, LinearMap.map_smulₛₗ, LinearMap.sum_apply, LinearMap.smul_apply, smul_eq_mul, Matrix.vecMul, dotProduct, gram, Matrix.of_apply]`. Establish `h1 : (fun i => starRingEnd ℂ (z i)) ᵥ* E.gram = (fun i => starRingEnd ℂ (z' i)) ᵥ* E.gram`. Use function extensionality and compare the values at `j`. Rewrite using `[← key, ← key]`. Conclude with `h _`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2` using `congrArg (fun v => v ᵥ* E.gram⁻¹) h1`. Simplify using `only [Matrix.vecMul_vecMul, Matrix.mul_nonsing_inv _ hG, Matrix.vecMul_one] at h2`. Use function extensionality and compare the values at `i`. Conclude with `(starRingEnd ℂ).injective (congrFun h2 i)`.
+Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem eq_of_ip_ev (hG : IsUnit E.gram.det) {f f' : E.Y → ℂ} (hf : f ∈ Submodule.span ℂ (Set.range E.ev))
     (hf' : f' ∈ Submodule.span ℂ (Set.range E.ev)) (h : ∀ x, E.ip f (E.ev x) = E.ip f' (E.ev x)) : f = f' := by
@@ -53,11 +53,9 @@ theorem eq_of_ip_ev (hG : IsUnit E.gram.det) {f f' : E.Y → ℂ} (hf : f ∈ Su
   exact (starRingEnd ℂ).injective (congrFun h2 i)
 
 /- English proof (translation)
-Proceed by induction on `hf using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨v, rfl⟩` from `hx`. Rewrite using `[E.tr_ev]`. Conclude with `Submodule.subset_span ⟨_, rfl⟩`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `zero => rw [map_zero]`. Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `add_mem hx hy`. Consider the case `smul a x _ hx => rw [map_smul]`.
-
-Conclude with `Submodule.smul_mem _ _ hx`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem tr_mem_span (g : S.G) {f : E.Y → ℂ} (hf : f ∈ Submodule.span ℂ (Set.range E.ev)) :
     E.tr g f ∈ Submodule.span ℂ (Set.range E.ev) := by
@@ -71,9 +69,9 @@ theorem tr_mem_span (g : S.G) {f : E.Y → ℂ} (hf : f ∈ Submodule.span ℂ (
   | smul a x _ hx => rw [map_smul]; exact Submodule.smul_mem _ _ hx
 
 /- English proof (translation)
-Proceed by induction on `hf using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨v, rfl⟩` from `hy`. Rewrite using `[E.tr_ev, E.ip_ev, E.ip_ev, h.inv]`. Consider the case `zero => simp only [map_zero, LinearMap.zero_apply]`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `add y y' _ _ hy hy' => rw [map_add, map_add, map_add, LinearMap.add_apply, LinearMap.add_apply, hy, hy']`. Consider the case `smul a y _ hy => rw [map_smul, LinearMap.map_smulₛₗ, LinearMap.map_smulₛₗ, LinearMap.smul_apply, LinearMap.smul_apply, hy]`.
+Treat this case separately. Treat this case separately.
 -/
 theorem ip_tr_ev (h : S.Ok) (g : S.G) {f : E.Y → ℂ} (hf : f ∈ Submodule.span ℂ (Set.range E.ev)) (x : S.V) :
     E.ip (E.tr g f) (E.ev (S.ρ g x)) = E.ip f (E.ev x) := by
@@ -86,9 +84,9 @@ theorem ip_tr_ev (h : S.Ok) (g : S.G) {f : E.Y → ℂ} (hf : f ∈ Submodule.sp
   | smul a y _ hy => rw [map_smul, LinearMap.map_smulₛₗ, LinearMap.map_smulₛₗ, LinearMap.smul_apply, LinearMap.smul_apply, hy]
 
 /- English proof (translation)
-Use `E.eq_of_ip_ev hG (E.tr_mem_span g (E.sharp_mem ℓ)) (E.sharp_mem ℓ) fun x => ?_` and prove the remaining obligations. Establish `e : S.ρ g (S.ρ g⁻¹ x) = x`. Rewrite using `[← Module.End.mul_apply, ← map_mul, mul_inv_cancel, map_one]`. Both sides reduce to the same expression. Rewrite using `[E.ip_sharp_ev hG]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Use `conv_lhs => rw [← e]`. Rewrite using `[E.ip_tr_ev h g (E.sharp_mem ℓ), E.ip_sharp_ev hG, ← hℓ, e]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tr_sharp (h : S.Ok) (hG : IsUnit E.gram.det) (g : S.G) (ℓ : S.V →ₛₗ[σ] ℂ) (hℓ : ∀ x, ℓ (S.ρ g x) = ℓ x) :
     E.tr g (E.sharp ℓ) = E.sharp ℓ := by
@@ -131,18 +129,16 @@ Both sides reduce to the same expression.
 theorem semi_apply (y : S'.V) (x : S.V) : P.semi σ y x = σ (P.B x y) := rfl
 
 /- English proof (translation)
-Rewrite using `[← Module.End.mul_apply, ← map_mul, mul_inv_cancel, map_one]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem rho_rho_inv (g : S.G) (x : S.V) : S.ρ g (S.ρ g⁻¹ x) = x := by
   rw [← Module.End.mul_apply, ← map_mul, mul_inv_cancel, map_one]
   rfl
 
 /- English proof (translation)
-Use `choose θ hθ using fun v : S.V => P.repr (S.pair v)`. Use `⟨⟨fun d' => θ ((φ : S.D → S.V) (P.eD.symm d')), fun g' d' => ?_⟩, fun d x => ?_⟩` and prove the remaining obligations. Apply `P.ext` to reduce the goal to its premises. Introduce `x`. Establish `e0 : P.eD.symm (g' • d') = P.eG.symm g' • P.eD.symm d'`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Equiv.symm_apply_eq, P.smul, Equiv.apply_symm_apply, Equiv.apply_symm_apply]`. Use `show P.B x (θ ((φ : S.D → S.V) (P.eD.symm (g' • d')))) = P.B x (S'.ρ g' (θ ((φ : S.D → S.V) (P.eD.symm d'))))`. Rewrite using `[hθ, e0, φ.2]`. Use `conv_lhs => rw [← rho_rho_inv (P.eG.symm g') x]`. Rewrite using `[h.inv, ← hθ, ← P.inv (P.eG.symm g'), rho_rho_inv, Equiv.apply_symm_apply]`.
-
-Use `show P.B x (θ ((φ : S.D → S.V) (P.eD.symm (P.eD d)))) = _`. Rewrite using `[hθ, Equiv.symm_apply_apply]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem partner (h : S.Ok) (φ : S.EqFun) :
     ∃ ψ : S'.EqFun, ∀ (d : S.D) (x : S.V), P.B x ((ψ : S'.D → S'.V) (P.eD d)) = S.pair ((φ : S.D → S.V) d) x := by
@@ -165,13 +161,13 @@ def jOf (b : ι → S'.EqFun) (z : ι → ℂ) : S.Cl → E.Y → ℂ :=
   fun c => ∑ a, starRingEnd ℂ (z a) • E.sharp (P.semi σ ((b a : S'.D → S'.V) (P.eD (S.outSec.rep c))))
 
 /- English proof (translation)
-The claim follows from `Submodule.sum_mem _ fun _ _ => Submodule.smul_mem _ _ (E.sharp_mem _)`.
+A detailed English derivation is pending.
 -/
 theorem jOf_mem (b : ι → S'.EqFun) (z : ι → ℂ) (c : S.Cl) : P.jOf E b z c ∈ Submodule.span ℂ (Set.range E.ev) :=
   Submodule.sum_mem _ fun _ _ => Submodule.smul_mem _ _ (E.sharp_mem _)
 
 /- English proof (translation)
-Simplify using `only [jOf, map_sum, LinearMap.map_smulₛₗ, LinearMap.sum_apply, LinearMap.smul_apply, Complex.conj_conj, smul_eq_mul]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[E.ip_sharp_ev hG, semi_apply]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem ip_jOf (hG : IsUnit E.gram.det) (b : ι → S'.EqFun) (z : ι → ℂ) (c : S.Cl) (x : S.V) :
     E.ip (P.jOf E b z c) (E.ev x) = ∑ a, z a * σ (P.B x ((b a : S'.D → S'.V) (P.eD (S.outSec.rep c)))) := by
@@ -180,11 +176,11 @@ theorem ip_jOf (hG : IsUnit E.gram.det) (b : ι → S'.EqFun) (z : ι → ℂ) (
   rw [E.ip_sharp_ev hG, semi_apply]
 
 /- English proof (translation)
-Rewrite using `[E.mem_Fi_iff h]`. Introduce `c`. Use `⟨P.jOf_mem E b z c, fun γ hγ => ?_⟩` and prove the remaining obligations. Unfold `jOf`. Rewrite using `[map_sum]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul]`. Use `congr 1`. Use `E.tr_sharp h hG γ _ fun x => ?_` and prove the remaining obligations. Rewrite using `[semi_apply, semi_apply]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Establish `e1` using `(b a).2 (P.eG γ) (P.eD (S.outSec.rep c))`. Rewrite `e1` using `[← P.smul, MulAction.mem_stabilizer_iff.1 hγ]`. Use `conv_lhs => rw [e1]`. Conclude with `P.inv γ x _`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem jOf_mem_Fi (h : S.Ok) (hG : IsUnit E.gram.det) (b : ι → S'.EqFun) (z : ι → ℂ) : P.jOf E b z ∈ E.Fi := by
   rw [E.mem_Fi_iff h]
@@ -204,11 +200,11 @@ theorem jOf_mem_Fi (h : S.Ok) (hG : IsUnit E.gram.det) (b : ι → S'.EqFun) (z 
   exact P.inv γ x _
 
 /- English proof (translation)
-Take `⟨ψ, hψ⟩` from `P.partner h φ`. Use `⟨fun a => σ (b.repr ψ a), ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `c`. Use `E.eq_of_ip_ev hG (P.jOf_mem E b _ c) (Submodule.subset_span ⟨_, rfl⟩) fun x => ?_` and prove the remaining obligations. Rewrite using `[P.ip_jOf E hG, E.emb_apply, E.ip_ev, ← hψ]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `conv_rhs => rw [← b.sum_repr ψ]`. Simplify using `only [← map_mul, ← map_sum]`. Use `congr 1`. Rewrite using `[Submodule.coe_sum, Finset.sum_apply, map_sum]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Submodule.coe_smul, Pi.smul_apply, map_smul, smul_eq_mul]`.
+A detailed English derivation is pending.
 -/
 theorem jOf_partner (h : S.Ok) (hG : IsUnit E.gram.det) (b : Basis ι K S'.EqFun) (φ : S.EqFun) :
     ∃ z, P.jOf E b z = E.emb φ := by
@@ -225,27 +221,27 @@ theorem jOf_partner (h : S.Ok) (hG : IsUnit E.gram.det) (b : Basis ι K S'.EqFun
   rw [Submodule.coe_smul, Pi.smul_apply, map_smul, smul_eq_mul]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `c`. Simplify using `only [jOf, Pi.add_apply, map_add, add_smul, Finset.sum_add_distrib]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem jOf_add (b : ι → S'.EqFun) (z z' : ι → ℂ) : P.jOf E b (z + z') = P.jOf E b z + P.jOf E b z' := by
   funext c
   simp only [jOf, Pi.add_apply, map_add, add_smul, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `c`. Simplify using `only [jOf, Pi.smul_apply, smul_eq_mul, map_mul, mul_smul, Finset.smul_sum]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem jOf_smul (b : ι → S'.EqFun) (t : ℂ) (z : ι → ℂ) : P.jOf E b (t • z) = starRingEnd ℂ t • P.jOf E b z := by
   funext c
   simp only [jOf, Pi.smul_apply, smul_eq_mul, map_mul, mul_smul, Finset.smul_sum]
 
 /- English proof (translation)
-Unfold `GSD.Ev.Fi at hF`. Proceed by induction on `hF using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨φ, rfl⟩` from `hx`. Conclude with `P.jOf_partner E h hG b φ`.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately.
 
-Consider the case `zero`. Use `⟨0, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `c`. Simplify using `[jOf]`. Consider the case `add x y _ _ hx hy`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨z, rfl⟩` from `hx`. Take `⟨z', rfl⟩` from `hy`. Conclude with `⟨z + z', P.jOf_add E b z z'⟩`. Consider the case `smul t x _ hx`. Take `⟨z, rfl⟩` from `hx`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨starRingEnd ℂ t • z, by rw [P.jOf_smul, Complex.conj_conj]⟩`.
+A detailed English derivation is pending.
 -/
 theorem jOf_onto (h : S.Ok) (hG : IsUnit E.gram.det) (b : Basis ι K S'.EqFun) (F : S.Cl → E.Y → ℂ) (hF : F ∈ E.Fi) :
     ∃ z, P.jOf E b z = F := by
@@ -275,7 +271,7 @@ section Pair
 variable {E K : Type} [Field E] [Field K] {ι : Type} [Fintype ι] {n : ℕ}
 
 /- English proof (translation)
-Simplify using `only [map_smul, LinearMap.smul_apply, smul_eq_mul]`. Rewrite using `[pairingBInvariant_holds, ← mul_assoc, mul_comm t s, hst, one_mul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem per_pair_smul (emb : ι → E →+* K) (lam : ι → DomWeight n) (γ : GL (Fin n) E) (s t : K) (hst : s * t = 1) (x y : VV K lam) :
     pairBK lam (s • rhoVr emb lam γ x) (t • rhoV emb lam γ y) = pairBK lam x y := by
@@ -283,9 +279,9 @@ theorem per_pair_smul (emb : ι → E →+* K) (lam : ι → DomWeight n) (γ : 
   rw [pairingBInvariant_holds, ← mul_assoc, mul_comm t s, hst, one_mul]
 
 /- English proof (translation)
-Establish `hnd` using `pairingBNondegenerate_holds K ι n lam`. Establish `hinj : Function.Injective (pairBK (K` using `K) lam).flip := by`. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `y hy`. Conclude with `hnd.2 y fun x => LinearMap.congr_fun hy x`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `: FiniteDimensional K (VV K lam)` using `Module.Finite.of_basis (bVV K lam)`. Establish `hsurj : Function.Surjective (pairBK (K` using `K) lam).flip := (LinearMap.injective_iff_surjective_of_finrank_eq_finrank (Subspace.dual_finrank_eq).symm).1 hinj`. Take `⟨y, hy⟩` from `hsurj ℓ`. Conclude with `⟨y, fun x => by rw [← hy]; rfl⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem per_pair_repr [CharZero K] (lam : ι → DomWeight n) (ℓ : VV K lam →ₗ[K] K) : ∃ y : VV K lam, ∀ x, pairBK lam x y = ℓ x := by
   have hnd := pairingBNondegenerate_holds K ι n lam
@@ -300,7 +296,7 @@ theorem per_pair_repr [CharZero K] (lam : ι → DomWeight n) (ℓ : VV K lam �
   exact ⟨y, fun x => by rw [← hy]; rfl⟩
 
 /- English proof (translation)
-Establish `hnd` using `pairingBNondegenerate_holds K ι n lam`. Rewrite using `[← sub_eq_zero]`. Conclude with `hnd.2 _ fun x => by rw [map_sub, h x, sub_self]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem per_pair_ext [CharZero K] (lam : ι → DomWeight n) (y y' : VV K lam) (h : ∀ x, pairBK lam x y = pairBK lam x y') : y = y' := by
   have hnd := pairingBNondegenerate_holds K ι n lam
@@ -315,7 +311,7 @@ variable {X : Fields} {Pr : Primes X} {R : Ranks} (W : Wts X Pr.Word R) {SG' : F
   (ΛM : LevFam X.E X.K (R.N R.m - 1) SG')
 
 /- English proof (translation)
-Rewrite using `[Λ.inv_chr, ← Units.val_mul, inv_mul_cancel, Units.val_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem per_chr_mul {n : ℕ} (Λ : LevFam X.E X.K n SG') (h : ↥Λ.grp) :
     ((Λ.inv.chr (⟨h.1, h.2⟩ : ↥Λ.inv.grp) : X.Kˣ) : X.K) * ((Λ.chr h : X.Kˣ) : X.K) = 1 := by
@@ -339,14 +335,14 @@ theorem per_jMCL_eq (z : Fin ((rowGSD W ΛM).hDim hM) → ℂ) :
     jMCL W ΛM σ₀ hσ hM z = (perDua W ΛM).jOf (ptEv W ΛM σ₀ hσ) ((rowGSD W ΛM).hB hM) z := rfl
 
 /- English proof (translation)
-The claim follows from `(perDua W ΛM).jOf_mem_Fi (ptEv W ΛM σ₀ hσ) (ptOk W ΛM hX) (ptEv_gram_unit W ΛM σ₀ hσ) ((rowGSD W ΛM).hB hM) z`.
+A detailed English derivation is pending.
 -/
 theorem per_jMC_mem_Fi (hX : X.Ok) (z : Fin ((rowGSD W ΛM).hDim hM) → ℂ) :
     jMCL W ΛM σ₀ hσ hM z ∈ (ptEv W ΛM σ₀ hσ).Fi :=
   (perDua W ΛM).jOf_mem_Fi (ptEv W ΛM σ₀ hσ) (ptOk W ΛM hX) (ptEv_gram_unit W ΛM σ₀ hσ) ((rowGSD W ΛM).hB hM) z
 
 /- English proof (translation)
-The claim follows from `(perDua W ΛM).jOf_onto (ptEv W ΛM σ₀ hσ) (ptOk W ΛM hX) (ptEv_gram_unit W ΛM σ₀ hσ) ((rowGSD W ΛM).hB hM) F hF`.
+A detailed English derivation is pending.
 -/
 theorem per_jMC_onto (hX : X.Ok) (F : (ptGSD W ΛM).Cl → (ptEv W ΛM σ₀ hσ).Y → ℂ) (hF : F ∈ (ptEv W ΛM σ₀ hσ).Fi) :
     ∃ z, jMCL W ΛM σ₀ hσ hM z = F :=

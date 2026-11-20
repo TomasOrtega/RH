@@ -9,15 +9,15 @@ noncomputable section
 namespace GlobalTheory.UPel.HT.LieType
 
 /- English proof (translation)
-Introduce `F _ _ g φ s τ hτ`. Set `ρ : 𝓞 F →+* Module.End ℂ (Fin g → ℂ)` to `(Matrix.toLinAlgEquiv' (R := ℂ) (n := Fin g)).toRingEquiv.toRingHom.comp φ`. Establish `hcomm : ∀ a b : 𝓞 F, Commute (ρ a) (ρ b)` using `fun a b => (Commute.all a b).map ρ`. Establish `h` using `Module.End.independent_iInf_maxGenEigenspace_of_forall_mapsTo (fun a : 𝓞 F => ρ a) (fun i j m => Module.End.mapsTo_maxGenEigenspace_of_comm (hcomm j i) m)`. Set `χ : (F →+* ℂ) → (𝓞 F → ℂ)` to `fun σ c => σ (c : F)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hχ : Function.Injective χ`. Introduce `σ₁ σ₂ he`. Apply `IsLocalization.ringHom_ext (nonZeroDivisors (𝓞 F))` to reduce the goal to its premises. Use extensionality with `c`. Conclude with `congrFun he c`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Establish `hle : ∀ σ : F →+* ℂ, eigSp φ σ ≤ ⨅ c : 𝓞 F, (ρ c).maxGenEigenspace (χ σ c)`. Introduce `σ u hu`. Rewrite using `[Submodule.mem_iInf]`. Introduce `c`. Apply `(Module.End.genEigenspace (ρ c) (χ σ c)).mono le_top` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Module.End.mem_eigenspace_iff]`. Use `hu c` as an intermediate fact. Simplify `this` using `[ρ, χ, Matrix.toLin'_apply]`. Establish `hnot : χ τ ∉ (χ '' (s : Set (F →+* ℂ)))`. Introduce and unpack `⟨σ, hσ, he⟩`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Conclude with `hτ (hχ he ▸ hσ)`. Establish `hd` using `h.disjoint_biSup hnot`. Use `(hd.mono_left (hle τ)).mono_right ?_` and prove the remaining obligations. Use `iSup₂_le fun σ hσ => (hle σ).trans ?_` and prove the remaining obligations. Conclude with `le_iSup₂_of_le (f := fun (x : 𝓞 F → ℂ) (_ : x ∈ χ '' (s : Set (F →+* ℂ))) => ⨅ c : 𝓞 F, (ρ c).maxGenEigenspace (x c)) (χ σ) ⟨σ, hσ, rfl⟩ le_rfl`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem eigSp_disjoint_biSup : ∀ (F : Type) [Field F] [NumberField F] (g : ℕ) (φ : 𝓞 F →+* Matrix (Fin g) (Fin g) ℂ) (s : Finset (F →+* ℂ)) (τ : F →+* ℂ), τ ∉ s → Disjoint (eigSp φ τ) (⨆ τ' ∈ s, eigSp φ τ') := by
   intro F _ _ g φ s τ hτ

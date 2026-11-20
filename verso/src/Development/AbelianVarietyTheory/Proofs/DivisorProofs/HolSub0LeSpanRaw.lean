@@ -34,9 +34,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : D
 abbrev idCover (nab : NabV Xo c) (n : ℕ) : DeltaDat Xo c n := noDelta Xo c nab (GlobalTheory.ObjLower.sabId Xo.univ.t) n
 
 /- English proof (translation)
-Use `(@GlobalTheory.FrameLift.frOver_iff E _ _ _ H Dw l Xo S _ c n (idCover nab n) i i y y).2 ⟨Category.comp_id _, fun _ _ => Category.comp_id _, GlobalTheory.ObjLower.idIso Xo.univ.t.PP.L, 𝟙 _, ⟨(isGen_iff _).2 (GlobalTheory.ObjLower.pgen_idIso Xo.univ.t.PP.isLB), ?_⟩, (Category.id_c …` and prove the remaining obligations. Conclude with `(maps_iff (GlobalTheory.ObjLower.idIso Xo.univ.t.PP.L) _ (fun _ => eSec Xo.univ.t.G) _ Xo.univ.t.PP.rig Xo.univ.t.PP.rig (GlobalTheory.ObjLower.cubeId Xo.univ.t.G).e _ (rigPull_le (GlobalTheory.ObjLower.cubeId Xo.univ.t.G).F (GlobalTheory.ObjLower.cubeId Xo.univ.t.G).e (GlobalThe …`. Introduce `Z r z i j hi hj`. Establish `e` using `GlobalTheory.ObjLower.gw_idIso Xo.univ.t.PP.L (r ≫ (snd (Over.mk y.x) Xo.univ.t.G).left) z i j hi hj`. Establish `e'` using `GlobalTheory.FrameLift.sv_trans (q := (snd (Over.mk y.x) Xo.univ.t.G).left) y.s r z hi hj`.
-
-Conclude with `(congrArg (fun t => GlobalTheory.FrameLift.sv (q := (snd (Over.mk y.x) Xo.univ.t.G).left) y.s t z i) (Category.comp_id r)).trans (e'.trans (congrArg (fun u : (Z.presheaf.stalk z)ˣ => u.val * _) e.symm))`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem frOver_self (nab : NabV Xo c) (n : ℕ) {S : Type} [CommRing S] [i : Algebra c.F S] (y : FrPt Xo c S) :
     @FrOver E _ _ _ H Dw l Xo c n (idCover nab n) S _ i i y y := by
@@ -56,15 +54,15 @@ theorem frOver_self (nab : NabV Xo c) (n : ℕ) {S : Type} [CommRing S] [i : Alg
       (Category.comp_id r)).trans (e'.trans (congrArg (fun u : (Z.presheaf.stalk z)ˣ => u.val * _) e.symm))
 
 /- English proof (translation)
-The claim follows from `evalAt_one _ _ y (GlobalTheory.Frames.allTest_of_secBaseChange GlobalTheory.firstFiveLaws.1.secBaseChange E H Dw l Xo c S y)`.
+A detailed English derivation is pending.
 -/
 theorem evR_one_field (S : Type) [Field S] [Algebra c.F S] (y : FrPt Xo c S) : evR Xo c 1 y = 1 :=
   evalAt_one _ _ y (GlobalTheory.Frames.allTest_of_secBaseChange GlobalTheory.firstFiveLaws.1.secBaseChange E H Dw l Xo c S y)
 
 /- English proof (translation)
-Use `⟨⟨dvd_rfl, le_rfl, dvd_rfl⟩, (Nat.mul_one _).symm, Nat.coprime_one_left _, (Ideal.mul_top _).symm, top_sup_eq _, ?_, ?_, GlobalTheory.LevelCover.one_mem_sec_zero Xo c, ?_⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.LevelCoverDatum.noDelta_etaOK]`. Conclude with `⟨fun a => Category.comp_id _, fun a => Category.comp_id _⟩`. Introduce `k _ _ i₁ i₂ hk y`. Establish `e : i₂ = i₁` using `Algebra.algebra_ext _ _ fun a => hk a`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[e]`. Conclude with `⟨y, @frOver_self E _ _ _ H Dw l Xo c nab n k _ i₁ y⟩`. Introduce `k _ _ i y₂`. Use `@evR_one_field E _ _ _ H Dw l Xo c k _ i y₂` as an intermediate fact. Conclude with `fun h => one_ne_zero (this.symm.trans h)`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem idCover_isLev (nab : NabV Xo c) (n : ℕ) : (idCover nab n).IsLev := by
   refine ⟨⟨dvd_rfl, le_rfl, dvd_rfl⟩, (Nat.mul_one _).symm, Nat.coprime_one_left _, (Ideal.mul_top _).symm,
@@ -80,13 +78,13 @@ theorem idCover_isLev (nab : NabV Xo c) (n : ℕ) : (idCover nab n).IsLev := by
     exact fun h => one_ne_zero (this.symm.trans h)
 
 /- English proof (translation)
-Introduce `A y` and use `(congrArg norm (@evR_one_field E _ _ _ H Dw l Xo c ℂ _ A y)).trans norm_one`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem idCover_unitC (nab : NabV Xo c) (n : ℕ) : GlobalTheory.Dict.UnitC (idCover nab n) := fun A y =>
   (congrArg norm (@evR_one_field E _ _ _ H Dw l Xo c ℂ _ A y)).trans norm_one
 
 /- English proof (translation)
-Introduce `k g ρ _ _ _ _ K _ _ i y y' _`. Establish `a` using `@evR_one_field E _ _ _ H Dw l Xo c K _ i y`. Establish `b` using `@evR_one_field E _ _ _ H Dw l Xo c K _ i y'`. Use `b.trans ?_` and prove the remaining obligations. Use `Eq.symm ((congrArg _ a).trans ?_)` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
 Simplify using the standard rewrite rules.
 -/
@@ -99,7 +97,7 @@ theorem idCover_psiTie (nab : NabV Xo c) (n : ℕ) : (idCover nab n).PsiTie 1 :=
   simp
 
 /- English proof (translation)
-Unfold `betaH`. Use `split_ifs with h`. Conclude with `h.choose_spec.1`. Conclude with `one_ne_zero`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem betaH_ne_zero {n : ℕ} (Λ : GenLat E n) : betaH (Dw := Dw) c Λ ≠ 0 := by
   unfold betaH
@@ -108,9 +106,9 @@ theorem betaH_ne_zero {n : ℕ} (Λ : GenLat E n) : betaH (Dw := Dw) c Λ ≠ 0 
   · exact one_ne_zero
 
 /- English proof (translation)
-Establish `h : phiHat c (indPhi c fun b => (Submodule.Quotient.mk (x0 b) : LevQc Dw l)) = x0Dat c fun b => qRep (Submodule.Quotient.mk (x0 b) : LevQc Dw l)`. Use function extensionality and compare the values at `q`. Unfold `phiHat x0Dat indPhi`. Rewrite using `[finsum_eq_single _ (fun b => (Submodule.Quotient.mk (x0 b) : LevQc Dw l)) (fun x hx => by simp [hx])]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[h, GlobalTheory.LevelPairing.levelFourierDatum_eq_iff]`. Introduce `b`. Conclude with `(Submodule.Quotient.eq _).1 (Classical.choose_spec (Submodule.Quotient.mk_surjective _ (Submodule.Quotient.mk (x0 b) : LevQc Dw l)))`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem phiHat_indPhi_mk {n : ℕ} (x0 : Fin n → Dw.La) :
     phiHat c (indPhi c fun b => (Submodule.Quotient.mk (x0 b) : LevQc Dw l)) = x0Dat c x0 := by
@@ -126,7 +124,7 @@ theorem phiHat_indPhi_mk {n : ℕ} (x0 : Fin n → Dw.La) :
     (Submodule.Quotient.mk (x0 b) : LevQc Dw l)))
 
 /- English proof (translation)
-Unfold `AdmX at h`. Rewrite `h` using `[sup_comm, ← Submodule.map_mkQ_eq_top, Submodule.map_span, Set.image_image]`. Rewrite using `[← h]`. Use `congr 1`. Use extensionality with `z`.
+Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
 Simplify using the standard rewrite rules.
 -/
@@ -140,15 +138,13 @@ theorem span_mk_eq_top {n : ℕ} (x0 : Fin n → Dw.La) (h : AdmX (l := l) true 
   simp
 
 /- English proof (translation)
-Establish `hL : Laws` using `GlobalTheory.firstFiveLaws.1`. Use `haveI : _root_.IsReduced p.R := (Ideal.isRadical_iff_quotient_reduced p.I).1 p.rad`. Take `⟨hval, hnat⟩` from `GlobalTheory.shortThetaValue_existsUnique_natural hL GlobalTheory.chartIndependence_unconditional E H Dw l Xo c nab hnab n Λ N hU hT hO a P hP.1 (x0Dat c x0) (betaH (Dw := Dw) c Λ)`. Take `⟨v, hv, -⟩` from `hval p.R y`. Establish `e : f p y = v`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `GlobalTheory.CoverDescent.eq_of_geometric_points _ _ fun k _ _ χ => ?_` and prove the remaining obligations. Use `letI i1 : Algebra c.F k := (χ.comp (algebraMap c.F p.R)).toAlgebra`. Set `χa : p.R →ₐ[c.F] k` to `{ χ with commutes' := fun _ => rfl }`. Take `⟨z, hz⟩` from `GlobalTheory.FramedBaseChange.exists_frMap hL E H Dw l Xo c p.R k χa y`. Take `⟨u, hu, eu⟩` from `@h k _ _ i1 i1 (fun _ => rfl) z z (frOver_self nab n z)`.
+Equip the data with the indicated structure. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hu' : ShortValAt Xo c nab (x0Dat c x0) Λ (betaH (Dw` using `Dw) c Λ) N P z u := by`. Establish `e1 : MvPolynomial.map ((idCover nab n).eF : c.F →+* (idCover nab n).c₂.F) P = P` using `MvPolynomial.map_id P`. Rewrite `hu` using `[e1, GlobalTheory.LevelCoverDatum.noDelta_w]`. Conclude with `hu`. Establish `e2` using `hnat p.R k χa y z hz v u hv hu'`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e3` using `GlobalTheory.CoverDescent.evR_of_test (GlobalTheory.Frames.algebraic_laws hL.secBaseChange E H Dw l Xo c).2.2.1 f hf.1 p χa y z hz`. Establish `e4 : evR Xo c f z = u` using `eu.trans ((congrArg (· * u) (evR_one_field k z)).trans (_root_.one_mul u))`. Conclude with `e3.symm.trans (e4.trans e2.symm)`. Establish `e5 : (betaH (Dw` using `Dw) c Λ • f) p y = algebraMap c.F p.R (betaH (Dw := Dw) c Λ) * v := by`. Rewrite using `[← e]`.
-
-Conclude with `Algebra.smul_def (betaH (Dw := Dw) c Λ) (f p y)`. Rewrite using `[e5]`. Conclude with `(GlobalTheory.Survey.BaseClassMove.shortValAt_beta Xo c nab _ Λ _ (betaH_ne_zero Λ) N P y v).1 hv`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem thLaValAt_of_isShortRule [StarRing (𝓞 E)] (nab : NabV Xo c) (hnab : IsNab Xo c nab) {n : ℕ} {Λ : GenLat E n} {N : ℕ}
     (hU : Λ.Unimod) (hT : Λ.TrivAt l.M) (hO : Λ.LevOK N l.M) {a : (E →+* ℂ) × ℕ → ℕ}
@@ -189,15 +185,15 @@ open ReciprocityTheory.ChartRestriction.G.Geo.Tor
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c σ r U hσ hU hr hA hG hP _ nab hnab bad n a hbad hdom hn hχ`. Establish `hC` using `GlobalTheory.chartIndependence_unconditional`. Establish `hrk : r = Dw.p + Dw.q` using `hU.1`. Establish `h1 : 1 ≤ Dw.p + Dw.q` using `hrk ▸ hr`. Establish `hL : Out.Laws` using `GlobalTheory.firstFiveLaws.1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hB : Out.SecBaseChangeSt` using `hL.secBaseChange`. Establish `hpin` using `GlobalTheory.DeltaPinTest.noDelta_phiPin (n := n) nab (GlobalTheory.ObjLower.sabId Xo.univ.t)`. Establish `hT` using `GlobalTheory.Frames.allTest_of_secBaseChange hB E H Dw l Xo c`. Establish `hW` using `(GlobalTheory.Frames.algebraic_laws hB E H Dw l Xo c).2.2.1`. Establish `htot : ShortValTot Xo c nab bad n a n (idCover nab n)` using `GlobalTheory.shortValTot_of_pinned hL hC E H Dw l Xo c n (idCover nab n) (GlobalTheory.levelMaps_closed hL E H Dw h1) hW hT hW hT (idCover_isLev nab n) rfl ⟨_, hnab⟩ (fun _ => ⟨_, 1, _, hpin, idCover_psiTie nab n⟩) nab bad n a`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key` using `GlobalTheory.Dict.holSub0_le_span_shortGen hC E H Dw l Xo c n (idCover nab n) σ r (Formalism.L2.PjFree.Unf.ofPj U) hσ hU hr hA hG hP (idCover_isLev nab n) ⟨_, hnab⟩ (idCover_unitC nab n) (by show ¬ 3 ∣ 1; decide) (fun _ => ⟨_, 1, _, hpin⟩) nab bad n a hbad hdom hn hχ htot`. Introduce `Q hQ`. Use `Submodule.span_le.2 ?_ (key hQ)` and prove the remaining obligations. Introduce and unpack `_ ⟨f, ⟨hf, Λ, N, x0, P, hΛ, hb, hM, hO, hX, hPm, hrule⟩, rfl⟩`. Establish `hβ` using `betaH_ne_zero (Dw := Dw) (c := c) Λ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `e : Formalism.L2.PjFree.rdU (Formalism.L2.PjFree.Unf.ofPj U) f = (σ (betaH (Dw` using `Dw) c Λ))⁻¹ • Formalism.L2.Pj.rdU U (betaH (Dw := Dw) c Λ • f) := by`. Rewrite using `[LinearMap.map_smulₛₗ, smul_smul, inv_mul_cancel₀ ((map_ne_zero σ).2 hβ), one_smul]`. Both sides reduce to the same expression. Rewrite using `[e]`. Use `Submodule.smul_mem _ _ (Submodule.subset_span ⟨_, ?_, rfl⟩)` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `hX` using `[decide_eq_true (rfl : n = n)]`. Use `Set.mem_iUnion₂.2 ⟨fun b => Submodule.Quotient.mk (x0 b), span_mk_eq_top x0 hX, Submodule.smul_mem _ _ hf, Λ, N, P, hΛ, hb, hM, hO, hPm, fun p y => ?_⟩` and prove the remaining obligations. Rewrite using `[phiHat_indPhi_mk]`. Conclude with `thLaValAt_of_isShortRule nab hnab hΛ hM hO hPm x0 hf hrule p y`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem holSub0_le_span_raw : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Geo.Tor.Level H) (Xo : Moduli Dw l) (c : Coeff l) (σ : c.F →+* ℂ) (r : ℕ) (U : Formalism.L2.Pj.Unf Xo c σ r), Formalism.L2.Pj.GoodEmb c σ → Formalism.L2.Pj.IsUnf U → 1 ≤ r → l.A = 1 → (∀ k k', (U.X k).Gm = (U.X k').Gm ∧ (U.X k).ξ0 = (U.X k').ξ0) → (∀ k, GlobalTheory.Dict.HasPrinc (U.X k) l.M) → ∀ [StarRing (𝓞 E)] (nab : NabV Xo c), IsNab Xo c nab → ∀ (bad n : ℕ) (a : (E →+* ℂ) × ℕ → ℕ), 0 < bad → Dom a n → 4 * (Module.finrank ℚ E * r) + 4 ≤ n → (∀ k, GlobalTheory.Dict.ChiOne (U.X k) (Formalism.L2.Pj.laU U a n k)) → Formalism.L2.Pj.holSub0 U.X (Formalism.L2.Pj.laU U a n) ≤ Submodule.span ℂ (Formalism.L2.Pj.rdU U '' ⋃ (x0 : Fin n → LevQc Dw l) (_ : Submodule.span (𝓞 E) (Set.range x0) = ⊤), {f : Formalism.L2.Pj.Rul Xo c | f ∈ sec Xo c a n ∧ ∃ (La : GenLat E n) (N : ℕ) (P : MvPolynomial (LtN Dw n) c.F), La.Unimod ∧ La.TrivAt bad ∧ La.TrivAt l.M ∧ La.LevOK N l.M ∧ P ∈ harmL c La a ∧ ∀ (p : TRing c.F) (y : FrPt Xo c p.R), thLaValAt Xo c nab (phiHat c (indPhi c x0)) La N P y (f p y)}) := by
   intro E _ _ _ H Dw l Xo c σ r U hσ hU hr hA hG hP _ nab hnab bad n a hbad hdom hn hχ

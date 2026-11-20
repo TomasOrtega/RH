@@ -17,13 +17,13 @@ def vec (a : Fin n) : Ext n := ExteriorAlgebra.ι ℂ (Pi.single a 1 : Fin n →
 def gen (x : Fin n × Fin n) : Big n := vec n x.1 ⊗ₜ vec n x.2
 
 /- English proof (translation)
-The claim follows from `eq_neg_of_add_eq_zero_left (ExteriorAlgebra.ι_add_mul_swap _ _)`.
+A detailed English derivation is pending.
 -/
 theorem vec_mul_vec_comm (a b : Fin n) : vec n a * vec n b = -(vec n b * vec n a) :=
   eq_neg_of_add_eq_zero_left (ExteriorAlgebra.ι_add_mul_swap _ _)
 
 /- English proof (translation)
-Introduce and unpack `_ ⟨x, rfl⟩ _ ⟨y, rfl⟩`. Simplify using `only [gen, Algebra.TensorProduct.tmul_mul_tmul, vec_mul_vec_comm n x.1, vec_mul_vec_comm n x.2, TensorProduct.neg_tmul, TensorProduct.tmul_neg, neg_neg]`.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 -/
 theorem gen_comm : ∀ u ∈ Set.range (gen n), ∀ v ∈ Set.range (gen n), u * v = v * u := by
   rintro _ ⟨x, rfl⟩ _ ⟨y, rfl⟩

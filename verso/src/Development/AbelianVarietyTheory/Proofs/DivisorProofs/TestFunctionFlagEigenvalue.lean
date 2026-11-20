@@ -15,11 +15,11 @@ open scoped Classical
 open GlobalTheory.FlagForm
 
 /- English proof (translation)
-Introduce `hP hD hA hR D Y hh h`. Establish `e1 : hh (testF Y) = ∑ τ, formDeg (bcForm τ * toForm (curveCl D.what₂.Tau Y.N Y.j))`. Simplify using `only [testF, map_sum]`. Conclude with `Finset.sum_congr rfl fun τ _ => GlobalTheory.T.hh_power_sum_eq_boundary_form hP hD hA hR _ _ hh h τ _`. Establish `e2 : ∀ τ, formDeg (bcForm τ * toForm (curveCl D.what₂.Tau Y.N Y.j)) = formDeg (blkForm Y.j τ * toForm (curveCl D.what₂.Tau Y.N Y.j)) - formDeg (toForm (pLow Y.j τ 1 * curveCl D.what₂.Tau Y.N Y.j) : FormPol D.what₂.Tau Y.N)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `τ`. Rewrite using `[GlobalTheory.T.boundary_form_eq_block_minus_low _ Y.N Y.j τ, sub_mul]`. Simplify using `only [formDeg, coeff_sub, sub_div, toForm, map_mul]`. Establish `e3 : testI Y = ∑ τ, formDeg (toForm (pLow Y.j τ 1 * curveCl D.what₂.Tau Y.N Y.j) : FormPol D.what₂.Tau Y.N)`. Rewrite using `[testI]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.sum_congr rfl fun τ _ => GlobalTheory.T.flag_degree_eq_form_degree _ _ _`. Rewrite using `[e1, Finset.sum_congr rfl fun τ _ => e2 τ, Finset.sum_sub_distrib, GlobalTheory.T.block_form_curve_class_degree_sum _ _ _ Y.j_pos Y.j_lt, e3]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.CovTest.hh_testF : GlobalTheory.CovTop.Hypotheses2 → GlobalTheory.Published.ArDegree → ArCalc → RegularAlteration → ∀ (D : D7) (Y : DV.ShimX D.what₂.Tau) (hh : Fn Y),
     GlobalTheory.FlagZ.IsHh D.what₂.Tau Y.N hh → hh (testF Y) = (1 / (Y.j : ℝ) - 1 / ((Y.N : ℝ) - Y.j) - 1) * testI Y := by

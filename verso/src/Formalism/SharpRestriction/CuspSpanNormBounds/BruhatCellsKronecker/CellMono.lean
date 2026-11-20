@@ -13,7 +13,7 @@ variable {K : Type} [Field K] {n : ℕ}
 def cmonoE (p q : Fin n) (y : K) : Matrix (Fin n) (Fin n) K := fun a b => if a = p ∧ b = q then y else 0
 
 /- English proof (translation)
-Introduce `a b hab`. Unfold `cmonoE`. Rewrite using `[if_neg]`. Introduce and unpack `⟨rfl, rfl⟩`. Conclude with `absurd h (not_lt.2 hab)`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem cmono_strict (p q : Fin n) (y : K) (h : p < q) : StrictUp (cmonoE p q y) := by
   intro a b hab
@@ -23,11 +23,11 @@ theorem cmono_strict (p q : Fin n) (y : K) (h : p < q) : StrictUp (cmonoE p q y)
   exact absurd h (not_lt.2 hab)
 
 /- English proof (translation)
-Unfold `supSum`. Rewrite using `[Finset.sum_eq_single p]`. Establish `hp : p.val + 1 < n` using `h ▸ q.isLt`. Rewrite using `[dif_pos hp]`. Unfold `cmonoE`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[if_pos ⟨rfl, Fin.ext h.symm⟩]`. Introduce `a _ hne split_ifs with h1`. Unfold `cmonoE`. Rewrite using `[if_neg (fun hh => hne hh.1)]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Introduce `hh`. Conclude with `absurd (Finset.mem_univ p) hh`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem cmono_supSum_succ (p q : Fin n) (y : K) (h : q.val = p.val + 1) : supSum (cmonoE p q y) = y := by
   unfold supSum
@@ -45,9 +45,9 @@ theorem cmono_supSum_succ (p q : Fin n) (y : K) (h : q.val = p.val + 1) : supSum
     exact absurd (Finset.mem_univ p) hh
 
 /- English proof (translation)
-Unfold `supSum`. Use `Finset.sum_eq_zero (fun a _ => ?_)` and prove the remaining obligations. Use `split_ifs with h1`. Unfold `cmonoE`. Rewrite using `[if_neg]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨rfl, h2⟩`. Conclude with `h (by rw [← h2])`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem cmono_supSum_ne (p q : Fin n) (y : K) (h : q.val ≠ p.val + 1) : supSum (cmonoE p q y) = 0 := by
   unfold supSum
@@ -60,11 +60,11 @@ theorem cmono_supSum_ne (p q : Fin n) (y : K) (h : q.val ≠ p.val + 1) : supSum
   · rfl
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single (σ j)]`. Simplify using `only [Matrix.conjTranspose_apply, cmonoE, mono, if_true]`. Distinguish the cases in `h1 : i = q ∧ j = b`. Take `⟨rfl, rfl⟩` from `h1`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Rewrite using `[if_neg h1, if_neg, star_zero, zero_mul]`. Introduce and unpack `⟨h2, h3⟩`. Conclude with `h1 ⟨h3, hσ h2⟩`. Introduce `k _ hk`. Simplify using `only [mono]`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg hk, mul_zero]`. Introduce `hh`. Conclude with `absurd (Finset.mem_univ _) hh`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem cmono_left [StarRing K] (σ : Fin n → Fin n) (t : Fin n → K) (hσ : Function.Injective σ) (b : Fin n) (q : Fin n)
     (y : K) (i j : Fin n) :
@@ -84,11 +84,11 @@ theorem cmono_left [StarRing K] (σ : Fin n → Fin n) (t : Fin n → K) (hσ : 
     exact absurd (Finset.mem_univ _) hh
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single c]`. Simplify using `only [cmonoE, mono, true_and]`. Distinguish the cases in `h1 : i = σ c`. Distinguish the cases in `h2 : j = b`. Simplify using `[h1, h2]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Simplify using `[h1, h2]`. Simplify using `[h1]`. Introduce `k _ hk`. Simplify using `only [cmonoE]`. Rewrite using `[if_neg (fun hh => hk hh.1), mul_zero]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Introduce `hh`. Conclude with `absurd (Finset.mem_univ _) hh`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem cmono_right (σ : Fin n → Fin n) (t : Fin n → K) (c b : Fin n) (x : K) (i j : Fin n) :
     (mono σ t * cmonoE c b x) i j = if i = σ c ∧ j = b then t c * x else 0 := by
@@ -108,17 +108,17 @@ theorem cmono_right (σ : Fin n → Fin n) (t : Fin n → K) (c b : Fin n) (x : 
 end
 
 /- English proof (translation)
-Introduce `K _ _ n σ t hσ ht hrel c b hcb hv`. Establish `htb : t b ≠ 0` using `ht b`. Establish `htc : t c ≠ 0` using `ht c`. Establish `hlt : σ b < σ c` using `Fin.lt_def.2 (by omega)`. Use `set y : K := star (-(t c / t b)) with hy`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsy : star y * t b + t c * 1 = 0`. Rewrite using `[hy, star_star]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish `hR : (cmonoE (σ b) (σ c) y)ᴴ * mono σ t + mono σ t * cmonoE c b 1 = 0`.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `i j`. Rewrite using `[Matrix.add_apply, cmono_left σ t hσ.1, cmono_right, Matrix.zero_apply]`. Distinguish the cases in `h : i = σ c ∧ j = b`. Rewrite using `[if_pos h, if_pos h, hsy]`. Rewrite using `[if_neg h, if_neg h, add_zero]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h` using `hrel _ _ (cmono_strict (σ b) (σ c) y hlt) (cmono_strict c b 1 hcb) hR`. Rewrite `h` using `[cmono_supSum_succ (σ b) (σ c) y hv]`. Establish `hy0 : y ≠ 0`. Rewrite using `[hy]`. Introduce `h0`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h1 : -(t c / t b) = 0` using `by simpa using h0`. Conclude with `(div_ne_zero htc htb) (neg_eq_zero.1 h1)`. Distinguish the cases in `hb : b.val = c.val + 1`. Use `⟨hb, ?_⟩` and prove the remaining obligations. Rewrite `h` using `[cmono_supSum_succ c b 1 hb, star_one]`.
+Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hsy` using `[h, star_one, one_mul, mul_one]`. Conclude with `eq_neg_of_add_eq_zero_left hsy`. Rewrite `h` using `[cmono_supSum_ne c b 1 hb, star_zero]`. Conclude with `absurd h hy0`.
+A detailed English derivation is pending.
 -/
 theorem cell_mono : RelevantMonomialConsecutive := by
   intro K _ _ n σ t hσ ht hrel c b hcb hv

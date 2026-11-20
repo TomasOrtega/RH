@@ -6,7 +6,7 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RigidBoundaryCharts
 namespace GlobalTheory.TorKSField
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.toroidalFanKodairaSpencer_of_rigidBoundaryCharts GlobalTheory.T.rigidBoundaryChartsForFan_unitaryDatum`.
+A detailed English derivation is pending.
 -/
 theorem toroidalForFanKS : GlobalTheory.Published.ToroidalForFanKS :=
   GlobalTheory.T.toroidalFanKodairaSpencer_of_rigidBoundaryCharts GlobalTheory.T.rigidBoundaryChartsForFan_unitaryDatum

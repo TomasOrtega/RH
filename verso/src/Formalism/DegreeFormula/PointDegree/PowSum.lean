@@ -7,14 +7,14 @@ namespace Formalism.DegreeFormula.PPowSum
 open Formalism.DegreeFormula
 
 /- English proof (translation)
-Simplify using `only [degFl, coeff_add, mul_add, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem degFl_add {ι : Type} [Fintype ι] [DecidableEq ι] {N : ℕ} (P Q : MvPolynomial (ι × Fin N) ℝ) :
     degFl ι N (P + Q) = degFl ι N P + degFl ι N Q := by
   simp only [degFl, coeff_add, mul_add, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Simplify using `only [degFl, coeff_C_mul, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun σ _ => by ring`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem degFl_C_mul {ι : Type} [Fintype ι] [DecidableEq ι] {N : ℕ} (c : ℝ) (P : MvPolynomial (ι × Fin N) ℝ) :
     degFl ι N (C c * P) = c * degFl ι N P := by
@@ -22,14 +22,14 @@ theorem degFl_C_mul {ι : Type} [Fintype ι] [DecidableEq ι] {N : ℕ} (c : ℝ
   exact Finset.sum_congr rfl fun σ _ => by ring
 
 /- English proof (translation)
-Simplify using `[degFl]`.
+Simplify using the standard rewrite rules.
 -/
 theorem degFl_zero {ι : Type} [Fintype ι] [DecidableEq ι] {N : ℕ} :
     degFl ι N (0 : MvPolynomial (ι × Fin N) ℝ) = 0 := by
   simp [degFl]
 
 /- English proof (translation)
-Use `Finset.induction_on s (by simp [degFl_zero]) ?_` and prove the remaining obligations. Introduce `a s ha ih`. Rewrite using `[Finset.sum_insert ha, Finset.sum_insert ha, degFl_add, ih]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem degFl_sum {ι : Type} [Fintype ι] [DecidableEq ι] {N : ℕ} {α : Type*} (s : Finset α)
     (f : α → MvPolynomial (ι × Fin N) ℝ) :
@@ -47,9 +47,9 @@ theorem permExp_apply {ι : Type} [Fintype ι] {N : ℕ} (σ : ι → Equiv.Perm
   rfl
 
 /- English proof (translation)
-Rewrite using `[Finsupp.degree_eq_sum]`. Simplify using `only [permExp_apply]`. Rewrite using `[Fintype.sum_prod_type]`. Establish `h : ∀ t : ι, ∑ i : Fin N, (N - 1 - ((σ t i : Fin N) : ℕ)) = N * (N - 1) / 2`. Introduce `t`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Equiv.sum_comp (σ t) (fun j : Fin N => N - 1 - (j : ℕ)), Fin.sum_univ_eq_sum_range (fun j => N - 1 - j) N, Finset.sum_range_reflect (fun j => j) N, Finset.sum_range_id]`. Simplify using `only [h, Finset.sum_const, Finset.card_univ, smul_eq_mul, dimFl]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem degree_permExp {ι : Type} [Fintype ι] {N : ℕ} (σ : ι → Equiv.Perm (Fin N)) :
     (permExp σ).degree = dimFl ι N := by
@@ -64,9 +64,9 @@ theorem degree_permExp {ι : Type} [Fintype ι] {N : ℕ} (σ : ι → Equiv.Per
   simp only [h, Finset.sum_const, Finset.card_univ, smul_eq_mul, dimFl]
 
 /- English proof (translation)
-Introduce `ι _ _ N d P hP hd`. Unfold `degFl`. Rewrite using `[Finset.sum_eq_zero, mul_zero]`. Introduce `σ _`. Rewrite using `[hP.coeff_eq_zero, mul_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[degree_permExp]`. Conclude with `Ne.symm hd`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem degFlHomog : DegFlHomog := by
   intro ι _ _ N d P hP hd
@@ -78,7 +78,7 @@ theorem degFlHomog : DegFlHomog := by
   exact Ne.symm hd
 
 /- English proof (translation)
-Rewrite using `[X_pow_eq_monomial, coeff_monomial_mul', one_mul]`. Distinguish the cases in `h : k ≤ m x`. Rewrite using `[if_pos (Finsupp.single_le_iff.mpr h), if_pos h]`. Rewrite using `[if_neg (fun h' => h (Finsupp.single_le_iff.mp h')), if_neg h]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem coeff_Xpow_mul {ι : Type} [Fintype ι] {N : ℕ} (x : ι × Fin N) (k : ℕ)
     (m : (ι × Fin N) →₀ ℕ) (P : MvPolynomial (ι × Fin N) ℝ) :
@@ -92,9 +92,9 @@ def sgnP {ι : Type} [Fintype ι] {N : ℕ} (σ : ι → Equiv.Perm (Fin N)) : �
   ∏ t, ((Equiv.Perm.sign (σ t) : ℤ) : ℝ)
 
 /- English proof (translation)
-Unfold `sgnP`. Rewrite using `[← Finset.mul_prod_erase _ _ (Finset.mem_univ τ), ← Finset.mul_prod_erase _ _ (Finset.mem_univ τ)]`. Establish `h1 : ∏ t ∈ Finset.univ.erase τ, ((Equiv.Perm.sign ((Pi.mulSingle τ (Equiv.swap a b) * σ : ι → Equiv.Perm (Fin N)) t) : ℤ) : ℝ) = ∏ t ∈ Finset.univ.erase τ, ((Equiv.Perm.sign (σ t) : ℤ) : ℝ)`. Use `Finset.prod_congr rfl fun t ht => ?_` and prove the remaining obligations. Rewrite using `[Pi.mul_apply, Pi.mulSingle_eq_of_ne (Finset.ne_of_mem_erase ht), one_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1, Pi.mul_apply, Pi.mulSingle_eq_same, Equiv.Perm.sign_mul, Equiv.Perm.sign_swap hab]`. Simplify using `only [Units.val_mul, Units.val_neg, Units.val_one, Int.cast_mul, Int.cast_neg, Int.cast_one]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem permSign_mulSingle_swap_mul {ι : Type} [Fintype ι] [DecidableEq ι] {N : ℕ} (τ : ι) (a b : Fin N)
     (hab : a ≠ b) (σ : ι → Equiv.Perm (Fin N)) :
@@ -111,7 +111,7 @@ theorem permSign_mulSingle_swap_mul {ι : Type} [Fintype ι] [DecidableEq ι] {N
   ring
 
 /- English proof (translation)
-Rewrite using `[Pi.mul_apply]`. Use `split_ifs with h`. Substitute `h` using the available equality. Rewrite using `[Pi.mulSingle_eq_same, Equiv.Perm.mul_apply]`. Rewrite using `[Pi.mulSingle_eq_of_ne h, one_mul]`.
+Rewrite the conclusion using the stated equalities. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mulSingle_mul_apply {ι : Type} [DecidableEq ι] {N : ℕ} (τ : ι) (s : Equiv.Perm (Fin N))
     (σ : ι → Equiv.Perm (Fin N)) (t : ι) (i : Fin N) :
@@ -123,11 +123,11 @@ theorem mulSingle_mul_apply {ι : Type} [DecidableEq ι] {N : ℕ} (τ : ι) (s 
   · rw [Pi.mulSingle_eq_of_ne h, one_mul]
 
 /- English proof (translation)
-Establish `hne' : (j : ℕ) ≠ j'` using `fun h => hne (Fin.ext h)`. Use extensionality with `⟨t, i⟩`. Simplify using `only [Finsupp.coe_tsub, Pi.sub_apply, permExp_apply, mulSingle_mul_apply, Finsupp.single_apply, Prod.mk.injEq, Equiv.symm_apply_eq, Equiv.swap_apply_def]`. Distinguish the cases in `ht : t = τ`. Substitute `ht` using the available equality.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Distinguish the cases in `h1 : σ t i = j`. Apply the tactic sequence `simp [h1, hne, Ne.symm hne] <;> omega`. Distinguish the cases in `h2 : σ t i = j'`. Apply the tactic sequence `simp [h2, hne, Ne.symm hne] <;> omega`. Simplify using `[h1, h2, Ne.symm h1, Ne.symm h2]`.
+Consider separately whether the proposition holds or fails. Apply the first step, then apply the next step to every resulting obligation. Consider separately whether the proposition holds or fails. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 
-Simplify using `[ht, Ne.symm ht]`.
+Simplify using the standard rewrite rules.
 -/
 theorem rem_eq {ι : Type} [Fintype ι] [DecidableEq ι] {N : ℕ} (σ : ι → Equiv.Perm (Fin N)) (τ : ι)
     (k : ℕ) (j j' : Fin N) (hj : (j' : ℕ) = j + k) (hne : j ≠ j') :
@@ -147,7 +147,7 @@ theorem rem_eq {ι : Type} [Fintype ι] [DecidableEq ι] {N : ℕ} (σ : ι → 
   · simp [ht, Ne.symm ht]
 
 /- English proof (translation)
-Establish `h1 : ∑ g, F (ρ * g) = ∑ g, F g` using `Fintype.sum_equiv (Equiv.mulLeft ρ) _ _ (fun _ => rfl)`. Simplify using `only [h, Finset.sum_neg_distrib] at h1`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem sum_eq_zero_of_anti {G : Type*} [Group G] [Fintype G] (ρ : G) (F : G → ℝ)
     (h : ∀ g, F (ρ * g) = -F g) : ∑ g, F g = 0 := by
@@ -156,13 +156,13 @@ theorem sum_eq_zero_of_anti {G : Type*} [Group G] [Fintype G] (ρ : G) (F : G �
   linarith
 
 /- English proof (translation)
-Establish `hjN` using `j.isLt`. Distinguish the cases in `hjk : (j : ℕ) + k < N`. Establish `hne : j ≠ (⟨(j : ℕ) + k, hjk⟩ : Fin N)`. Introduce `h`. Use `congrArg Fin.val h` as an intermediate fact.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `only at this`. Use linear arithmetic over natural numbers and integers. Use `sum_eq_zero_of_anti (Pi.mulSingle τ (Equiv.swap j ⟨(j : ℕ) + k, hjk⟩)) (fun σ => sgnP σ * (X (τ, (σ τ).symm j) ^ k * P).coeff (permExp σ)) ?_` and prove the remaining obligations. Introduce `σ`. Establish `hsymm : ((Pi.mulSingle τ (Equiv.swap j ⟨(j : ℕ) + k, hjk⟩) * σ : ι → Equiv.Perm (Fin N)) τ).symm j = (σ τ).symm ⟨(j : ℕ) + k, hjk⟩`.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[Equiv.symm_apply_eq, Pi.mul_apply, Pi.mulSingle_eq_same, Equiv.Perm.mul_apply, Equiv.apply_symm_apply, Equiv.swap_apply_right]`. Establish `hc : permExp (Pi.mulSingle τ (Equiv.swap j ⟨(j : ℕ) + k, hjk⟩) * σ) (τ, (σ τ).symm ⟨(j : ℕ) + k, hjk⟩) = permExp σ (τ, (σ τ).symm j)`. Simplify using `only [permExp_apply, mulSingle_mul_apply, if_true, Equiv.apply_symm_apply, Equiv.swap_apply_right]`. Rewrite using `[hsymm, permSign_mulSingle_swap_mul τ _ _ hne, coeff_Xpow_mul, coeff_Xpow_mul, hc, rem_eq σ τ k j _ rfl hne]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Use `Finset.sum_eq_zero fun σ _ => ?_` and prove the remaining obligations. Rewrite using `[coeff_Xpow_mul, if_neg, mul_zero]`. Simplify using `only [permExp_apply, Equiv.apply_symm_apply]`. Use linear arithmetic over natural numbers and integers.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem slice {ι : Type} [Fintype ι] [DecidableEq ι] {N : ℕ} (τ : ι) (k : ℕ) (hk : 1 ≤ k)
     (P : MvPolynomial (ι × Fin N) ℝ) (j : Fin N) :
@@ -194,9 +194,9 @@ theorem slice {ι : Type} [Fintype ι] [DecidableEq ι] {N : ℕ} (τ : ι) (k :
     omega
 
 /- English proof (translation)
-Introduce `ι _ _ N τ k P hk`. Unfold `degFl`. Rewrite using `[Finset.sum_mul]`. Establish `h : ∀ σ : ι → Equiv.Perm (Fin N), (∏ t, ((Equiv.Perm.sign (σ t) : ℤ) : ℝ)) * (∑ i, X (τ, i) ^ k * P).coeff (permExp σ) = ∑ j : Fin N, sgnP σ * (X (τ, (σ τ).symm j) ^ k * P).coeff (permExp σ)`. Introduce `σ`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[coeff_sum, Finset.mul_sum]`. Conclude with `(Equiv.sum_comp (σ τ).symm (fun i => sgnP σ * (X (τ, i) ^ k * P).coeff (permExp σ))).symm`. Rewrite using `[Finset.sum_congr rfl (fun σ _ => h σ), Finset.sum_comm, Finset.sum_eq_zero (fun j _ => slice τ k hk P j), mul_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem degFlPowerSum : DegFlPowerSum := by
   intro ι _ _ N τ k P hk
@@ -212,7 +212,7 @@ theorem degFlPowerSum : DegFlPowerSum := by
     Finset.sum_eq_zero (fun j _ => slice τ k hk P j), mul_zero]
 
 /- English proof (translation)
-Introduce `P`. Rewrite using `[mul_comm R Q, mul_assoc]`. Conclude with `hQ _`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Z_mul_left {ι : Type} [Fintype ι] [DecidableEq ι] {N : ℕ} {Q : MvPolynomial (ι × Fin N) ℝ}
     (hQ : ∀ P, degFl ι N (Q * P) = 0) (R : MvPolynomial (ι × Fin N) ℝ) :
@@ -222,7 +222,7 @@ theorem Z_mul_left {ι : Type} [Fintype ι] [DecidableEq ι] {N : ℕ} {Q : MvPo
   exact hQ _
 
 /- English proof (translation)
-Introduce `P`. Rewrite using `[Finset.sum_mul, degFl_sum]`. Conclude with `Finset.sum_eq_zero fun a ha => h a ha P`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Z_sum {ι : Type} [Fintype ι] [DecidableEq ι] {N : ℕ} {α : Type*} (s : Finset α)
     (g : α → MvPolynomial (ι × Fin N) ℝ) (h : ∀ a ∈ s, ∀ P, degFl ι N (g a * P) = 0) :
@@ -232,15 +232,15 @@ theorem Z_sum {ι : Type} [Fintype ι] [DecidableEq ι] {N : ℕ} {α : Type*} (
   exact Finset.sum_eq_zero fun a ha => h a ha P
 
 /- English proof (translation)
-Introduce `ι _ _ N τ k P hk`. Establish `hp : ∀ n, 1 ≤ n → ∀ P : MvPolynomial (ι × Fin N) ℝ, degFl ι N (rename (fun i : Fin N => (τ, i)) (psum (Fin N) ℝ n) * P) = 0`. Introduce `n hn P`. Simplify using `only [psum, map_sum, map_pow, rename_X]`. Conclude with `degFlPowerSum ι N τ n P hn`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hZ : ∀ P : MvPolynomial (ι × Fin N) ℝ, degFl ι N (rename (fun i : Fin N => (τ, i)) ((k : MvPolynomial (Fin N) ℝ) * esymm (Fin N) ℝ k) * P) = 0`. Rewrite using `[mul_esymm_eq_sum, map_mul]`. Apply `Z_mul_left` to reduce the goal to its premises. Rewrite using `[map_sum]`. Apply `Z_sum` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a ha`. Rewrite using `[map_mul]`. Apply `Z_mul_left` to reduce the goal to its premises. Apply `hp` to reduce the goal to its premises. Take `⟨ha1, ha2⟩` from `Finset.mem_filter.mp ha`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `ha1` using `[Finset.HasAntidiagonal.mem_antidiagonal]`. Use linear arithmetic over natural numbers and integers. Establish `hk0 : (k : ℝ) ≠ 0` using `by exact_mod_cast (by omega : k ≠ 0)`. Establish `hCC : C (k : ℝ) * C (k : ℝ)⁻¹ = (1 : MvPolynomial (ι × Fin N) ℝ)`. Rewrite using `[← map_mul, mul_inv_cancel₀ hk0, map_one]`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e1 : rename (fun i : Fin N => (τ, i)) (esymm (Fin N) ℝ k) * P = rename (fun i : Fin N => (τ, i)) ((k : MvPolynomial (Fin N) ℝ) * esymm (Fin N) ℝ k) * (C (k : ℝ)⁻¹ * P)`. Rewrite using `[map_mul, map_natCast, ← map_natCast (C : ℝ →+* MvPolynomial (ι × Fin N) ℝ) k]`. Take the linear combination `(-(rename (fun i : Fin N => (τ, i)) (esymm (Fin N) ℝ k) * P)) * hCC`. Rewrite using `[e1]`. Conclude with `hZ _`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem degFlEsymm : DegFlEsymm := by
   intro ι _ _ N τ k P hk
@@ -278,15 +278,15 @@ end Formalism.DegreeFormula.PPowSum
 namespace Formalism.DegreeFormula
 
 /- English proof (translation)
-The claim follows from `PPowSum.degFlPowerSum`.
+A detailed English derivation is pending.
 -/
 theorem degreePowerSumMulEqZero : DegFlPowerSum := PPowSum.degFlPowerSum
 /- English proof (translation)
-The claim follows from `PPowSum.degFlEsymm`.
+A detailed English derivation is pending.
 -/
 theorem degreeEsymmMulEqZero : DegFlEsymm := PPowSum.degFlEsymm
 /- English proof (translation)
-The claim follows from `PPowSum.degFlHomog`.
+A detailed English derivation is pending.
 -/
 theorem degreeHomogeneousEqZero : DegFlHomog := PPowSum.degFlHomog
 

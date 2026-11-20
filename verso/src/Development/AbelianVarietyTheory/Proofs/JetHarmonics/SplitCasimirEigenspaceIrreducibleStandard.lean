@@ -10,49 +10,45 @@ open Formalism.REAL Formalism.FourierDecayAlt.Q Formalism.FourierDecayAlt.Qr For
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `V _ _ _ n E Et Om β L l hyp hadj hEt hOm`. Take `⟨hgl, hadjt, -, hcomm⟩` from `tensorStd_rel_adjoint_splitCasimir V n E Et Om hyp.gl hadj hEt hOm`. Use `set S := Module.End.eigenspace Om (β + L l + 0) with hS`. Establish `hmemS : ∀ y, y ∈ S ↔ Om y = (β + L l + 0) • y` using `fun y => Module.End.mem_eigenspace_iff`. Establish `hstab : Stab Et S`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a b v hv`. Rewrite `hv`, the goal using `[hmemS]`. Establish `h` using `LinearMap.congr_fun (hcomm a b) v`. Simplify using `only [Module.End.mul_apply] at h`. Rewrite using `[h, hv, map_smul]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hcapV : ∀ v, v ∈ CapSp E (shf β L)` using `fun v => mem_CapSp.2 fun w => hyp.cap w v`. Establish `hsdec : SDec (shf β L)`. Introduce `a b hab`. Establish `h` using `hyp.anti hab`. Use `⟨(L a - L b - 1).toNat, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h2 : (((L a - L b - 1).toNat : ℕ) : ℤ) = L a - L b - 1` using `Int.toNat_of_nonneg (by omega)`. Establish `h3 : (((L a - L b - 1).toNat : ℕ) : ℂ) = (L a : ℂ) - L b - 1`. Conclude with `congrArg (Int.cast : ℤ → ℂ) h2` after adjusting the coercions. Rewrite using `[h3]`. Simplify using `only [shf]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hwtV : ∀ ν v, v ≠ 0 → IsHW E ν v → ∀ j, ν j = β + L j + ((j : ℕ) : ℂ)`. Introduce `ν v hv hw j`. Establish `hne : CapSp E (shf β L) ≠ ⊥` using `fun h => hv ((Submodule.mem_bot ℂ).1 (h ▸ hcapV v))`. Conclude with `(capelli_singular V (n + 1) E _ hyp.gl hne).2 hsdec ν v (hcapV v) hv hw j`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hkey : ∀ θ y, y ∈ S → y ≠ 0 → IsHW Et θ y → y l ≠ 0 ∧ IsHW E (fun j => β + L j + ((j : ℕ) : ℂ)) (y l) ∧ θ = fun j => β + L j + ((j : ℕ) : ℂ) + if j = l then 1 else 0`. Introduce `θ y hy hy0 hw`. Take `⟨c, hc0, hcw, hlam⟩` from `highestWeight_tensor_standard V n E Et Om θ _ y hEt hOm hy0 hw ((hmemS y).1 hy)`. Establish `hν` using `hwtV _ _ hc0 hcw`. Establish `hcl : c = l`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h1` using `hν c`. Simplify using `only [if_true] at h1`. Establish `h2 : (L c : ℂ) = L l` using `by linear_combination -h1 - hlam`. Conclude with `hyp.anti.injective (by exact_mod_cast h2)`. Substitute `hcl` using the available equality.
+Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use `⟨hc0, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← funext hν]`. Conclude with `hcw`. Use function extensionality and compare the values at `j`. Rewrite using `[← hν j]`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hsub : ∀ ν v, IsHW E ν v → IsHW (subA E) (fun j => ν j.castSucc) v`. Introduce `ν v hw`. Conclude with `⟨fun a => hw.1 _, fun a b hab => hw.2 _ _ (by simpa using hab)⟩`. Establish `hprop : ∀ θ y θ' y', y ∈ S → y ≠ 0 → IsHW Et θ y → y' ∈ S → y' ≠ 0 → IsHW Et θ' y' → ∃ t : ℂ, y' = t • y`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `θ y θ' y' hy hy0 hw hy' hy0' hw'`. Take `⟨h1, h2, h3⟩` from `hkey θ y hy hy0 hw`. Take `⟨-, h2', h3'⟩` from `hkey θ' y' hy' hy0' hw'`. Establish `hθ : θ' = θ` using `h3'.trans h3.symm`. Rewrite `hw'` using `[hθ]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨t, ht⟩` from `multiplicity_one V n E _ (y l) (y' l) hyp.gl hyp.irr (hsub _ _ h2) (hsub _ _ h2') h1`. Use `⟨t, ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hne`. Establish `hz0 : y' - t • y ≠ 0` using `sub_ne_zero.2 hne`. Establish `hzw : IsHW Et θ (y' - t • y)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result.
 
-Use `⟨fun a => ?_, fun a b hab => ?_⟩` and prove the remaining obligations. Rewrite using `[map_sub, map_smul, hw.1, hw'.1, smul_sub, smul_comm]`. Rewrite using `[map_sub, map_smul, hw.2 a b hab, hw'.2 a b hab]`. Simplify using the standard rewrite rules. Apply `(hkey θ _ (S.sub_mem hy' (S.smul_mem t hy)) hz0 hzw).1` to reduce the goal to its premises.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Simplify using `[ht]`. Establish `hirr : ∀ S' : Submodule ℂ (PiLp 2 (fun _ : Fin (n + 1) => V)), S' ≤ S → Stab Et S' → S' = ⊥ ∨ S' = S`. Introduce `S' hle hst`. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Take `⟨hb, hne⟩` from `hcon`. Establish `hst2 : Stab Et (S'ᗮ ⊓ S)`. Introduce `a b v hv`. Use `⟨?_, hstab a b v hv.2⟩` and prove the remaining obligations. Establish `hv1 : v ∈ S'ᗮ` using `hv.1`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Express the relevant statement in the definitionally equal form `Et a b v ∈ S'ᗮ`. Rewrite `hv1`, the goal using `[Submodule.mem_orthogonal]`. Introduce `u hu`. Rewrite using `[← hadjt]`. Conclude with `hv1 _ (hst b a u hu)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hb2 : S'ᗮ ⊓ S ≠ ⊥`. Introduce `h`. Establish `h2` using `Submodule.sup_orthogonal_inf_of_hasOrthogonalProjection hle`. Rewrite `h2` using `[h, sup_bot_eq]`. Conclude with `hne h2`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Take `⟨θ, y, hy, hy0, hw, -⟩` from `exists_singular_maximal_vector _ _ Et hgl S' hst hb`. Take `⟨θ', y', hy', hy0', hw', -⟩` from `exists_singular_maximal_vector _ _ Et hgl _ hst2 hb2`. Take `⟨t, ht⟩` from `hprop θ y θ' y' (hle hy) hy0 hw hy'.2 hy0' hw'`. Establish `hmem : y' ∈ S'` using `ht ▸ S'.smul_mem t hy`. Establish `hy1 : y' ∈ S'ᗮ` using `hy'.1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hy0' (inner_self_eq_zero.1 ((Submodule.mem_orthogonal _ _).1 hy1 y' hmem))`. Use `⟨hstab, hirr, ?_⟩` and prove the remaining obligations. Distinguish the cases in `hb : S = ⊥`. Rewrite using `[hb]`. Conclude with `bot_le`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Take `⟨θ, y, hy, hy0, hw, -⟩` from `exists_singular_maximal_vector _ _ Et hgl S hstab hb`. Take `⟨-, -, h3⟩` from `hkey θ y hy hy0 hw`. Establish `hyc : y ∈ CapSp Et (shf β (Function.update L l (L l + 1)))`. Rewrite using `[mem_CapSp]`. Introduce `w`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[qDetHW _ _ Et θ y hgl hw w, h3]`. Use `congr 1`. Unfold `cpol shf`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Distinguish the cases in `hk : k = l`.
-
-Substitute `hk` using the available equality. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Simplify using `[hk]`. Establish `hst3 : Stab Et (CapSp Et (shf β (Function.update L l (L l + 1))) ⊓ S)` using `fun a b v hv => ⟨(capelli_stabilizer _ _ Et _ hgl).1 a b v hv.1, hstab a b v hv.2⟩`.
-
-Break down `hirr _ inf_le_right hst3 with h | h` into its components or cases. Conclude with `absurd ((Submodule.mem_bot ℂ).1 (h ▸ (⟨hyc, hy⟩ : y ∈ _ ⊓ S))) hy0`. Conclude with `h ▸ inf_le_left`.
+Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem splitCasimir_eigenspace_irreducible_standard : ∀ (V : Type) [NormedAddCommGroup V] [InnerProductSpace ℂ V] [FiniteDimensional ℂ V] (n : ℕ) (E : Fin (n + 1) → Fin (n + 1) → Module.End ℂ V) (Et : Fin (n + 1) → Fin (n + 1) → Module.End ℂ (PiLp 2 (fun _ : Fin (n + 1) => V))) (Om : Module.End ℂ (PiLp 2 (fun _ : Fin (n + 1) => V))) (β : ℂ) (L : Fin (n + 1) → ℤ) (l : Fin (n + 1)), Hyp E β L → (∀ a b x y, inner ℂ (E a b x) y = inner ℂ x (E b a y)) → (∀ a b y c, Et a b y c = E a b (y c) + if c = a then y b else 0) → (∀ y b, Om y b = ∑ c, E c b (y c)) → Stab Et (Module.End.eigenspace Om (β + L l + 0)) ∧ (∀ S' : Submodule ℂ (PiLp 2 (fun _ : Fin (n + 1) => V)), S' ≤ Module.End.eigenspace Om (β + L l + 0) → Stab Et S' → S' = ⊥ ∨ S' = Module.End.eigenspace Om (β + L l + 0)) ∧ Module.End.eigenspace Om (β + L l + 0) ≤ CapSp Et (shf β (Function.update L l (L l + 1))) := by
   classical

@@ -104,21 +104,19 @@ def oZeta (H : Host E) (N c : ℕ) : oRing H N c := ⟨zeta N, Subring.subset_cl
 def oRt (H : Host E) (N c : ℕ) : oRing H N c := 2 * oW H N c - 1
 
 /- English proof (translation)
-Use `show (2 : ℂ) * ((1 + H.rt0) / 2) - 1 = H.rt0`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 example (N c : ℕ) : ((oRt H N c : oRing H N c) : ℂ) = H.rt0 := by
   show (2 : ℂ) * ((1 + H.rt0) / 2) - 1 = H.rt0
   ring
 
 /- English proof (translation)
-Simplify using `[zeta]`.
+Simplify using the standard rewrite rules.
 -/
 theorem zeta_one : zeta 1 = 1 := by simp [zeta]
 
 /- English proof (translation)
-Use `Subring.closure_le.2 ?_` and prove the remaining obligations. Establish `h1 : H.rt0 ∈ KA l` using `IntermediateField.subset_adjoin _ _ (by simp)`. Introduce and unpack `x (rfl | rfl | rfl)`. Conclude with `(show w0C H ∈ KA l from div_mem (add_mem (one_mem (KA l)) h1) (ofNat_mem (KA l) 2))`. Conclude with `h`.
-
-Conclude with `(show (c : ℂ)⁻¹ ∈ KA l from inv_mem (natCast_mem (KA l) c))`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem oRing_le_KA (l : Level H) {N : ℕ} (h : zeta N ∈ KA l) (c : ℕ) : oRing H N c ≤ (KA l).toSubring := by
   refine Subring.closure_le.2 ?_
@@ -132,21 +130,21 @@ def toKA (l : Level H) {N : ℕ} (h : zeta N ∈ KA l) (c : ℕ) : oRing H N c �
   (oRing H N c).subtype.codRestrict (KA l) (fun x => oRing_le_KA l h c x.2)
 
 /- English proof (translation)
-Substitute `h` using the available equality. Conclude with `IntermediateField.subset_adjoin _ _ (by simp)`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem zeta_mem_of_eq (l : Level H) {N : ℕ} (h : l.A = N) : zeta N ∈ KA l := by
   subst h
   exact IntermediateField.subset_adjoin _ _ (by simp)
 
 /- English proof (translation)
-Rewrite using `[zeta_one]`. Conclude with `one_mem _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem zeta_one_mem (l : Level H) : zeta 1 ∈ KA l := by rw [zeta_one]; exact one_mem _
 
 /- English proof (translation)
-Use `Subring.closure_le.2 ?_` and prove the remaining obligations. Introduce and unpack `x (rfl | rfl | rfl)`. Conclude with `Subring.subset_closure (by simp)`. Conclude with `Subring.subset_closure (by simp)`. Establish `h : (n : ℂ)⁻¹ = (e : ℂ) * ((n * e : ℕ) : ℂ)⁻¹`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Establish `: (e : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 he.ne'`. Use `push_cast`. Rewrite using `[mul_inv, mul_comm (n : ℂ)⁻¹, ← _root_.mul_assoc, mul_inv_cancel₀ this, _root_.one_mul]`. Rewrite using `[SetLike.mem_coe, h]`. Conclude with `mul_mem (natCast_mem _ e) (Subring.subset_closure (by simp))`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem oRing_le_mul (N n e : ℕ) (he : 0 < e) : oRing H N n ≤ oRing H N (n * e) := by
   refine Subring.closure_le.2 ?_
@@ -161,9 +159,7 @@ theorem oRing_le_mul (N n e : ℕ) (he : 0 < e) : oRing H N n ≤ oRing H N (n *
     exact mul_mem (natCast_mem _ e) (Subring.subset_closure (by simp))
 
 /- English proof (translation)
-Use `Subring.closure_le.2 ?_` and prove the remaining obligations. Introduce and unpack `x (rfl | rfl | rfl)`. Conclude with `Subring.subset_closure (by simp)`. Rewrite using `[zeta_one]`. Conclude with `one_mem _`.
-
-Conclude with `Subring.subset_closure (by simp)`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem oRing_one_le (N c : ℕ) : oRing H 1 c ≤ oRing H N c := by
   refine Subring.closure_le.2 ?_
@@ -173,7 +169,7 @@ theorem oRing_one_le (N c : ℕ) : oRing H 1 c ≤ oRing H N c := by
   · exact Subring.subset_closure (by simp)
 
 /- English proof (translation)
-Use `Subring.closure_le.2 ?_` and prove the remaining obligations. Introduce and unpack `x (rfl | rfl | rfl)`. Conclude with `Subring.subset_closure (Or.inl rfl)`. Conclude with `Subring.subset_closure (Or.inr (Or.inl rfl))`. Conclude with `Subring.subset_closure (Or.inr (Or.inr ⟨n, h, rfl⟩))`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem oRing_le_oLoc (p N n : ℕ) (h : n.Coprime p) : oRing H N n ≤ oLoc H p N := by
   refine Subring.closure_le.2 ?_
@@ -183,7 +179,7 @@ theorem oRing_le_oLoc (p N n : ℕ) (h : n.Coprime p) : oRing H N n ≤ oLoc H p
   · exact Subring.subset_closure (Or.inr (Or.inr ⟨n, h, rfl⟩))
 
 /- English proof (translation)
-The claim follows from `Subring.closure_mono Set.subset_union_right`.
+A detailed English derivation is pending.
 -/
 theorem ZP_le_oLoc (p N : ℕ) : ZP p N ≤ oLoc H p N := Subring.closure_mono Set.subset_union_right
 

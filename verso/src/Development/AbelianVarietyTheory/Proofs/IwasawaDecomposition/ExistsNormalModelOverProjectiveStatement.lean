@@ -8,7 +8,7 @@ open GlobalTheory.LineNorm MonObj
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ModelOver.exists_normal_model | exact GlobalTheory.ModelOver.exists_normal_model | (intros; apply GlobalTheory.ModelOver.exists_normal_model <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.exists_normal_model_over_projective : ∀ (F : Type) [Field F] [NumberField F] (Y : Var F) (O : Type) [CommRing O] (ε : 𝓞 F ≃+* O) (X : Scheme.{0}) (sX : X ⟶ Sp O) (ρ : Y.X ⟶ X), IsProjOver sX → ρ ≫ sX ≫ spMap ε.toRingHom = Y.str ≫ spMap (algebraMap (𝓞 F) F) → X.IsSeparated ∧ IsLocallyNoetherian X ∧ ∃ (M : GlobalTheory.TrueGeo.Model Y) (ρ' : M.X ⟶ X), IsNormalScheme M.X ∧ M.j ≫ ρ' = ρ := by
   first | exact @GlobalTheory.ModelOver.exists_normal_model | exact GlobalTheory.ModelOver.exists_normal_model | (intros; apply GlobalTheory.ModelOver.exists_normal_model <;> assumption)

@@ -8,7 +8,7 @@ import Formalism.LocalToGlobal.SiegelLatticeTheory.CasimirReductionTheory.GgExis
 namespace CompanionTheory.Lime.BM
 
 /- English proof (translation)
-Use `⟨Formalism.L2.SG.OwnFacts.factDecLow.out, Formalism.L2.SG.BesselDiscreteSeries.decInf, ?_, trivial⟩` and prove the remaining obligations. Use `first`. Consider the case `exact Formalism.L2.SG.Pf.k_finite_smooth`. Consider the case `exact Formalism.L2.SG.Pf.k_finite_smooth_bessel`.
+Reduce the conclusion to the remaining proof obligations. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem inputs : CompanionTheory.D.Upq.BesselFunctionalConstruction.Inputs := by
   refine ⟨Formalism.L2.SG.OwnFacts.factDecLow.out, Formalism.L2.SG.BesselDiscreteSeries.decInf, ?_, trivial⟩

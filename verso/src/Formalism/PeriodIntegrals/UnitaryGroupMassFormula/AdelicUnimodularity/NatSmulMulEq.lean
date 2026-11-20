@@ -12,13 +12,13 @@ namespace Cpt
 variable (I : AutInst)
 
 /- English proof (translation)
-Establish `hy : ∀ j', IntC (bs I) ((Pi.single j (D1 • (1 : I.E ⊗[I.F] Af I.F)) : Fin I.n → I.E ⊗[I.F] Af I.F) j')`. Introduce `j'`. Distinguish the cases in `h : j' = j`. Rewrite using `[h, Pi.single_eq_same]`. Conclude with `h1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Pi.single_eq_of_ne h]`. Introduce `k`. Simplify using `only [map_zero, Pi.zero_apply]`. Conclude with `(Formalism.UG.intAd I.F).zero_mem`. Establish `hL` using `(hg _).mp (hlow _ hy)`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hI` using `hup _ hL i`. Establish `hs : ((g : Matrix (Fin I.n) (Fin I.n) (I.E ⊗[I.F] Af I.F)) *ᵥ (Pi.single j (D1 • (1 : I.E ⊗[I.F] Af I.F)) : Fin I.n → I.E ⊗[I.F] Af I.F)) i = (g : Matrix (Fin I.n) (Fin I.n) (I.E ⊗[I.F] Af I.F)) i j * (D1 • (1 : I.E ⊗[I.F] Af I.F))`. Simplify using `[Matrix.mulVec, dotProduct, Pi.single_apply]`. Establish `key : D • ((g : Matrix (Fin I.n) (Fin I.n) (I.E ⊗[I.F] Af I.F)) *ᵥ (d • (Pi.single j (D1 • (1 : I.E ⊗[I.F] Af I.F)) : Fin I.n → I.E ⊗[I.F] Af I.F))) i = (D * (d * D1)) • (g : Matrix (Fin I.n) (Fin I.n) (I.E ⊗[I.F] Af I.F)) i j`. Rewrite using `[Matrix.mulVec_smul, Pi.smul_apply, hs]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `only [nsmul_eq_mul, Nat.cast_mul, mul_one]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `hI` using `[key]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 private theorem intC_smul_entry_of_preserves_Lf (d D D1 : ℕ)
     (hlow : ∀ y : Fin I.n → I.E ⊗[I.F] Af I.F, (∀ j, IntC (bs I) (y j)) → d • y ∈ I.Lf)
@@ -53,9 +53,9 @@ private theorem intC_smul_entry_of_preserves_Lf (d D D1 : ℕ)
   rwa [key] at hI
 
 /- English proof (translation)
-Simplify using `only [Bx, Set.mem_image]`. Use `⟨N • coord (bs I) z k, ?_, ?_⟩` and prove the remaining obligations. Use `hz k` as an intermediate fact. Rewrite `this` using `[map_nsmul, Pi.smul_apply]`. Then use the resulting hypothesis. Establish `hN' : (N : I.F) ≠ 0` using `Nat.cast_ne_zero.mpr hN.ne'`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Rewrite using `[nsmul_eq_mul, ← mul_assoc, ← map_natCast (algebraMap I.F (Af I.F)) N, ← map_mul, inv_mul_cancel₀ hN', map_one, one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem coord_mem_Bx_of_intC_nsmul (N : ℕ) (hN : 0 < N) (z : I.E ⊗[I.F] Af I.F)
     (hz : IntC (bs I) (N • z)) (k : ιb I) : coord (bs I) z k ∈ Bx I N := by
@@ -68,17 +68,15 @@ private theorem coord_mem_Bx_of_intC_nsmul (N : ℕ) (hN : 0 < N) (z : I.E ⊗[I
       inv_mul_cancel₀ hN', map_one, one_mul]
 
 /- English proof (translation)
-Establish `h0 : (x : GL (Fin I.n) (I.E ⊗[I.F] Af I.F)) ∈ Formalism.UG.stabGL I.Lf` using `hx`. Establish `h0i : ((x : GL (Fin I.n) (I.E ⊗[I.F] Af I.F))⁻¹) ∈ Formalism.UG.stabGL I.Lf` using `inv_mem h0`. Establish `hx' : ∀ v : Fin I.n → I.E ⊗[I.F] Af I.F, v ∈ I.Lf ↔ ((x : GL (Fin I.n) (I.E ⊗[I.F] Af I.F)) : Matrix (Fin I.n) (Fin I.n) (I.E ⊗[I.F] Af I.F)) *ᵥ v ∈ I.Lf` using `h0`. Establish `hxi' : ∀ v : Fin I.n → I.E ⊗[I.F] Af I.F, v ∈ I.Lf ↔ (((x : GL (Fin I.n) (I.E ⊗[I.F] Af I.F))⁻¹ : GL (Fin I.n) (I.E ⊗[I.F] Af I.F)) : Matrix (Fin I.n) (Fin I.n) (I.E ⊗[I.F] Af I.F)) *ᵥ v ∈ I.Lf` using `h0i`. Establish `hm1 : matOf I (fun i j => coord (bs I) (((x : GL (Fin I.n) (I.E ⊗[I.F] Af I.F)) : Matrix (Fin I.n) (Fin I.n) (I.E ⊗[I.F] Af I.F)) i j)) = ((x : GL (Fin I.n) (I.E ⊗[I.F] Af I.F)) : Matrix (Fin I.n) (Fin I.n) (I.E ⊗[I.F] Af I.F))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `i j`. Simplify using `only [matOf, emb_coord]`. Establish `hm2 : matOf I (fun i j => coord (bs I) ((((x : GL (Fin I.n) (I.E ⊗[I.F] Af I.F))⁻¹ : GL (Fin I.n) (I.E ⊗[I.F] Af I.F)) : Matrix (Fin I.n) (Fin I.n) (I.E ⊗[I.F] Af I.F)) i j)) = (((x : GL (Fin I.n) (I.E ⊗[I.F] Af I.F))⁻¹ : GL (Fin I.n) (I.E ⊗[I.F] Af I.F)) : Matrix (Fin I.n) (Fin …`. Use function extensionality and compare the values at `i j`. Simplify using `only [matOf, emb_coord]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use `⟨⟨(fun i j => coord (bs I) (((x : GL (Fin I.n) (I.E ⊗[I.F] Af I.F)) : Matrix (Fin I.n) (Fin I.n) (I.E ⊗[I.F] Af I.F)) i j), fun i j => coord (bs I) ((((x : GL (Fin I.n) (I.E ⊗[I.F] Af I.F))⁻¹ : GL (Fin I.n) (I.E ⊗[I.F] Af I.F)) : Matrix (Fin I.n) (Fin I.n) (I.E ⊗[I.F] Af I.F)) i …` and prove the remaining obligations. Simplify using `only [Cset, Set.mem_setOf_eq]`. Use `⟨?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `i j k`. Conclude with `⟨coord_mem_Bx_of_intC_nsmul I _ hN _ (intC_smul_entry_of_preserves_Lf I d D D1 hlow hup h1 _ hx' i j) k, coord_mem_Bx_of_intC_nsmul I _ hN _ (intC_smul_entry_of_preserves_Lf I d D D1 hlow hup h1 _ hxi' i j) k⟩`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Rewrite using `[hm1, hm2]`. Conclude with `Units.mul_inv _`. Rewrite using `[hm1, hm2]`. Conclude with `Units.inv_mul _`. Rewrite using `[hm1]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `x.2`. Introduce `l hl`. Rewrite using `[hm1]`. Conclude with `(hx' _).mp (Submodule.subset_span ⟨⟨l, hl⟩, rfl⟩)`. Introduce `l hl`.
-
-Rewrite using `[hm2]`. Conclude with `(hxi' _).mp (Submodule.subset_span ⟨⟨l, hl⟩, rfl⟩)`. Conclude with `Subtype.ext (Units.ext hm1)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_range_psi (d D D1 : ℕ) (hN : 0 < D * (d * D1))
     (hlow : ∀ y : Fin I.n → I.E ⊗[I.F] Af I.F, (∀ j, IntC (bs I) (y j)) → d • y ∈ I.Lf)
@@ -124,7 +122,7 @@ theorem mem_range_psi (d D D1 : ℕ) (hN : 0 < D * (d * D1))
   · exact Subtype.ext (Units.ext hm1)
 
 /- English proof (translation)
-Simplify using `only [nsmul_eq_mul, Nat.cast_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem nat_smul_mul_eq (g d D m : ℕ) (a y : I.E ⊗[I.F] Af I.F) :
     ((g * d * D * m) • a) * y = (g * d) • (m • (a * (D • y))) := by
@@ -132,27 +130,25 @@ theorem nat_smul_mul_eq (g d D m : ℕ) (a y : I.E ⊗[I.F] Af I.F) :
   ring
 
 /- English proof (translation)
-Use `continuous_iff_continuousAt.mpr fun p => ?_` and prove the remaining obligations. Introduce `U hU`. Establish `hV : (fun z => psi I N p * z) ⁻¹' U ∈ 𝓝 (1 : I.Gf)`. Use `(continuous_mul_left (psi I N p)).tendsto 1` as an intermediate fact. Rewrite `this` using `[mul_one]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this hU`. Take `⟨g, hg1, hsub⟩` from `I.topf_basis _ hV`. Establish `hN1' : ((g * d * D * m : ℕ) : I.F) ≠ 0`. Establish `: 0 < g * d * D * m` using `Nat.mul_pos (Nat.mul_pos (Nat.mul_pos hg1 hd) hD) hm`. Conclude with `this.ne'` after adjusting the coercions.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `c : I.F` to `((g * d * D * m : ℕ) : I.F)⁻¹`. Set `W : Set (Cset I N)` to `{p' | ∀ i j k, algebraMap I.F (Af I.F) c * (p'.1.1 i j k - p.1.1 i j k) ∈ Ohat I.F}`. Establish `hW : W ∈ 𝓝 p`. Establish `hWo : IsOpen W`. Establish `: W = ⋂ i, ⋂ j, ⋂ k, (fun p' : Cset I N => algebraMap I.F (Af I.F) c * (p'.1.1 i j k - p.1.1 i j k)) ⁻¹' Ohat I.F` using `by ext; simp [W]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[this]`. Use `isOpen_iInter_of_finite fun i => isOpen_iInter_of_finite fun j => isOpen_iInter_of_finite fun k => ?_` and prove the remaining obligations. Establish `h0 : Continuous (fun p' : Cset I N => p'.1.1 i j k)` using `by fun_prop`. Establish `hc : Continuous (fun p' : Cset I N => algebraMap I.F (Af I.F) c * (p'.1.1 i j k - p.1.1 i j k))` using `continuous_const.mul (h0.sub continuous_const)`. Conclude with `hc.isOpen_preimage _ isOpen_Ohat`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `hWo.mem_nhds (fun i j k => by simpa using ohat_zero)`. Rewrite using `[Filter.mem_map]`. Use `Filter.mem_of_superset hW fun p' hp' => ?_` and prove the remaining obligations. Establish `hQM : matOf I p.1.2 * matOf I p.1.1 = 1` using `p.2.2.2.1`. Set `x` to `(psi I N p)⁻¹ * psi I N p'`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hxK : x ∈ I.Kset` using `(Formalism.UG.stabGL I.Lf).mul_mem ((Formalism.UG.stabGL I.Lf).inv_mem (psi_mem I N p)) (psi_mem I N p')`. Establish `hfx : I.fmat x = matOf I p.1.2 * matOf I p'.1.1` using `rfl`. Establish `hcond : ∀ y ∈ I.Lf, ∃ z ∈ I.Lf, (I.fmat x - 1) *ᵥ y = (g : I.E ⊗[I.F] Af I.F) • z`. Introduce `y hy`. Set `u : Co I` to `fun i j k => algebraMap I.F (Af I.F) c * (p'.1.1 i j k - p.1.1 i j k)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `hu : ∀ i j k, u i j k ∈ Ohat I.F` using `hp'`. Establish `hδ : ∀ i j, matOf I p'.1.1 i j - matOf I p.1.1 i j = (g * d * D * m) • emb (bs I) (u i j)`. Introduce `i j`. Simplify using `only [matOf]`. Rewrite using `[← emb_sub, ← emb_nsmul]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use function extensionality and compare the values at `k`. Simplify using `only [u, Pi.smul_apply, Pi.sub_apply, nsmul_eq_mul, c]`. Rewrite using `[← mul_assoc, ← map_natCast (algebraMap I.F (Af I.F)), ← map_mul, mul_inv_cancel₀ hN1', map_one, one_mul]`. Set `w : Fin I.n → I.E ⊗[I.F] Af I.F` to `fun i => ∑ j, m • (emb (bs I) (u i j) * (D • y j))`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hw : ∀ i, IntC (bs I) (w i)` using `fun i => intC_sum _ fun j _ => hmul _ _ (fun k => by rw [coord_emb]; exact hu i j k) (hup y hy j)`. Establish `hdw` using `hlow w hw`. Establish `hmv : (matOf I p'.1.1 - matOf I p.1.1) *ᵥ y = (g * d) • w`. Use function extensionality and compare the values at `i`. Simplify using `only [Matrix.mulVec, dotProduct, Matrix.sub_apply, hδ, nat_smul_mul_eq I, Pi.smul_apply, Finset.smul_sum, w]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨matOf I p.1.2 *ᵥ (d • w), mulVec_mem_Lf I _ p.2.2.2.2.2.2 _ hdw, ?_⟩` and prove the remaining obligations. Rewrite using `[hfx, ← hQM, ← Matrix.mul_sub, ← Matrix.mulVec_mulVec, hmv, mul_smul, Matrix.mulVec_smul, Nat.cast_smul_eq_nsmul]`. Establish `hx` using `hsub ⟨hxK, hcond⟩`. Use `show psi I N p' ∈ U`. Establish `: psi I N p * x = psi I N p'` using `mul_inv_cancel_left _ _`.
-
-Rewrite using `[← this]`. Conclude with `hx`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_psi (N d D m : ℕ) (hd : 0 < d) (hD : 0 < D) (hm : 0 < m)
     (hlow : ∀ y : Fin I.n → I.E ⊗[I.F] Af I.F, (∀ j, IntC (bs I) (y j)) → d • y ∈ I.Lf)
@@ -219,13 +215,11 @@ theorem continuous_psi (N d D m : ℕ) (hd : 0 < d) (hD : 0 < D) (hm : 0 < m)
   rw [← this]; exact hx
 
 /- English proof (translation)
-Take `⟨d, hd, hlow⟩` from `exists_lower (bs I) I.L I.L_span`. Take `⟨D, hD, hup⟩` from `exists_upper (bs I) I.L I.L_fg`. Take `⟨m, hm, hmul⟩` from `exists_den_mul (bs I)`. Take `⟨D1, hD1, h1F⟩` from `exists_den_fin (fun k : ιb I => (bs I).repr 1 k)`. Establish `h1 : IntC (bs I) (D1 • (1 : I.E ⊗[I.F] Af I.F))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `k`. Rewrite using `[map_nsmul, ← map_one (Algebra.TensorProduct.includeLeftRingHom (R := I.F) (A := I.E) (B := Af I.F)), coord_incl, Pi.smul_apply, nsmul_eq_mul, ← map_natCast (algebraMap I.F (Af I.F)), ← map_mul]`. Conclude with `h1F k`. Establish `hN : 0 < D * (d * D1)` using `Nat.mul_pos hD (Nat.mul_pos hd hD1)`. Use `haveI : CompactSpace (Cset I (D * (d * D1))) := isCompact_iff_compactSpace.mp (isCompact_Cset I _ d hd hlow)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `: I.Kset = Set.range (psi I (D * (d * D1)))`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Conclude with `mem_range_psi I d D D1 hN hlow hup h1 hx`.
-
-Introduce and unpack `⟨p, rfl⟩`. Conclude with `psi_mem I _ p`. Rewrite using `[this]`. Conclude with `isCompact_range (continuous_psi I _ d D m hd hD hm hlow hup hmul)`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isCompact_Kset : IsCompact I.Kset := by
   obtain ⟨d, hd, hlow⟩ := exists_lower (bs I) I.L I.L_span

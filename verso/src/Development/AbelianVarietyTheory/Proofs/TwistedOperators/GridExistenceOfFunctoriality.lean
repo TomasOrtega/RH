@@ -38,25 +38,25 @@ open Formalism.L2.Col GlobalTheory.GridPlaces
 variable {D : D7}
 
 /- English proof (translation)
-Introduce `h`. Establish `: Fact p.Prime` using `⟨hp⟩`. Choose the witnesses or unpack the hypotheses as in `⟨h2, hd, hj⟩ : p ≠ 2 ∧ p ≠ D.host.d ∧ jacobiSym (-(D.host.d : ℤ)) p = 1 := by`. Take `⟨h1, -, h3, h4⟩` from `(primeClass_eq_splitK_iff D.host.toHostRaw).1 hcl`. Conclude with `⟨UpperTheory.Small.ne_two D.host h1, h3, h4⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨s, hs⟩` from `ZMod.isSquare_of_jacobiSym_eq_one hj`. Take `⟨s, rfl⟩` from `ZMod.intCast_surjective s`. Choose the witnesses or unpack the hypotheses as in `⟨m, hm⟩ : (p : ℤ) ∣ s * s + D.host.d := by`. Rewrite using `[← ZMod.intCast_zmod_eq_zero_iff_dvd]`. Move the coercions through the operations in `at hs ⊢`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[← hs]`. Expand and normalize the polynomial expressions, which then agree. Establish `hsq` using `D.host.sqrtMinusD_sq`. Establish `hint : IsIntegral ℤ D.host.sqrtMinusD`. Apply `IsIntegral.of_pow (n := 2) (by norm_num)` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[hsq]`. Use `(isIntegral_algebraMap (R := ℤ) (A := D.host.E) (x := (D.host.d : ℤ))).neg` as an intermediate fact. Simplify using `using this`. Set `b : 𝓞 D.host.K` to `⟨⟨D.host.sqrtMinusD, IntermediateField.mem_adjoin_simple_self ℚ _⟩, (isIntegral_algHom_iff (IsScalarTower.toAlgHom ℤ D.host.K D.host.E) Subtype.val_injective).1 hint⟩`. Take `⟨β, hβ⟩ : ∃ β, β = algebraMap (𝓞 D.host.K) (𝓞 D.host.E) b` from `⟨_, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Establish `hβ1 : (β : D.host.E) = D.host.sqrtMinusD` using `by rw [hβ]; rfl`. Establish `hβ2 : β * β = -(D.host.d : 𝓞 D.host.E)` using `RingOfIntegers.ext (by simpa [hβ1, sq] using hsq)`. Establish `hβ3 : cO D.host.E β = -β` using `RingOfIntegers.ext (by show star (β : D.host.E) = ((-β : 𝓞 D.host.E) : D.host.E)`. Rewrite using `[bridge_star_holds D.R D.host, hβ1, D.host.conj_sqrtMinusD, ← hβ1]`. Use the proof step `simp)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `key : ∀ t : ℤ, (t : 𝓞 D.host.E) + β ∈ P.asIdeal ↔ (t : 𝓞 D.host.E) - β ∈ P.asIdeal`. Introduce `t`. Establish `h1 : (t : 𝓞 D.host.K) + b ∈ ((conjPrime₂ P).under (𝓞 D.host.K)).asIdeal ↔ (t : 𝓞 D.host.K) + b ∈ (P.under (𝓞 D.host.K)).asIdeal` using `by rw [h]`. Establish `h3 : algebraMap (𝓞 D.host.K) (𝓞 D.host.E) ((t : 𝓞 D.host.K) + b) = t + β`. Rewrite using `[map_add, map_intCast, hβ]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h4 : algebraMap (𝓞 D.host.K) (𝓞 D.host.E) ((t : 𝓞 D.host.K) + b) ∈ (conjPrime₂ P).asIdeal ↔ algebraMap (𝓞 D.host.K) (𝓞 D.host.E) ((t : 𝓞 D.host.K) + b) ∈ P.asIdeal` using `h1`. Rewrite `h4` using `[h3, mem_conjP, map_add, map_intCast, hβ3, ← sub_eq_add_neg]`. Conclude with `h4.symm`. Establish `hprod : ((s : 𝓞 D.host.E) + β) * (s - β) ∈ P.asIdeal`. Establish `e : ((s : 𝓞 D.host.E) + β) * (s - β) = (p : 𝓞 D.host.E) * m`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Use `congrArg (Int.cast : ℤ → 𝓞 D.host.E) hm` as an intermediate fact. Move the coercions through the operations in `at this`. Take the linear combination `this - hβ2`. Rewrite using `[e]`. Conclude with `Ideal.mul_mem_right _ _ hP`.
+Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ha : (s : 𝓞 D.host.E) + β ∈ P.asIdeal` using `(P.isPrime.mem_or_mem hprod).elim id (key s).2`. Establish `hb` using `(key s).1 ha`. Establish `h5 : (2 : 𝓞 D.host.E) * β ∈ P.asIdeal`. Use `sub_mem ha hb` as an intermediate fact. Rewrite `this` using `[show (s : 𝓞 D.host.E) + β - (s - β) = 2 * β by ring]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Break down `P.isPrime.mem_or_mem h5 with h6 | h6` into its components or cases. Conclude with `h2 (prime_eq_of_mem P hp Nat.prime_two hP (by exact_mod_cast h6))`. Establish `h7` using `neg_mem (Ideal.mul_mem_left _ β h6)`. Rewrite `h7` using `[hβ2, neg_neg]`. Conclude with `hd (prime_eq_of_mem P hp D.host.hyp.2.1 hP h7)`.
+A detailed English derivation is pending.
 -/
 theorem under_conjugatePrime_ne_of_class {p : ℕ} (hp : p.Prime) (hcl : D.host.cls p = .splitK) (P : HeightOneSpectrum (𝓞 D.host.E))
     (hP : (p : 𝓞 D.host.E) ∈ P.asIdeal) : (conjPrime₂ P).under (𝓞 D.host.K) ≠ P.under (𝓞 D.host.K) := by
@@ -115,31 +115,25 @@ theorem under_conjugatePrime_ne_of_class {p : ℕ} (hp : p.Prime) (hcl : D.host.
     exact hd (prime_eq_of_mem P hp D.host.hyp.2.1 hP h7)
 
 /- English proof (translation)
-Use `choose 𝔭 h𝔭 using exists_primes L hL`. Take `⟨hq0, hq1, -⟩` from `leastSplitAuxiliaryPrimeThetaChain_spec D`. Establish `hq2 : q0 D % LevelStarExponents.condE D = 1`. Establish `h1 : 1 < LevelStarExponents.condE D`. Use `D.host.qd_big` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hA : 0 < D.host.QS` using `D.host.QS_pos`. Establish `hq' : 2 ≤ D.host.q` using `by omega`. Establish `hd' : 1 ≤ D.host.d` using `by omega`. Use `show 1 < D.host.QS * D.host.q * D.host.d`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Nat.mod_mod_of_dvd _ (dvd_mul_left _ (Formalism.MainNotions.rPrAv D)), hq1, Nat.mod_eq_of_lt h1]`. Establish `hq3 : D.host.cls (q0 D) = .splitK` using `GlobalTheory.Mem.cls_eq_splitK_of_cond D.host hq2`. Take `⟨v0, hv0⟩` from `exists_place D.host.F hq0`. Establish `hw : ∀ v : HeightOneSpectrum (𝓞 D.host.F), ∃ w : HeightOneSpectrum (𝓞 D.host.E), ∀ p : ℕ, p.Prime → (p : 𝓞 D.host.F) ∈ v.asIdeal → w.under (𝓞 D.host.F) = v ∧ w.under (𝓞 D.host.K) = 𝔭 p`. Introduce `v`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Distinguish the cases in `h : ∃ p : ℕ, p.Prime ∧ (p : 𝓞 D.host.F) ∈ v.asIdeal`. Take `⟨p, hp, hv⟩` from `h`. Take `⟨w, hw⟩` from `exists_over_both hp v hv (𝔭 p) (h𝔭 p hp).1`. Conclude with `⟨w, fun p' hp' hv' => prime_eq_of_mem v hp hp' hv hv' ▸ hw⟩`. Take `⟨w, -⟩` from `exists_place D.host.E hq0`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Conclude with `⟨w, fun p hp hv => absurd ⟨p, hp, hv⟩ h⟩`. Use `choose w hw using hw`. Establish `hS : ∀ v ∈ insert v0 (S1 D), ∃ p : ℕ, p.Prime ∧ D.host.cls p = .splitK ∧ (p : 𝓞 D.host.F) ∈ v.asIdeal`. Introduce `v hv`. Break down `Finset.mem_insert.1 hv with rfl | hv` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components.
 
-Conclude with `⟨_, hq0, hq3, hv0⟩`. Break down `(S1_mem_OmF D).1 hv with h | h | h | h` into its components or cases. Conclude with `⟨_, D.host.g_prime 0, hg 0, h⟩`. Conclude with `⟨_, D.host.g_prime 1, hg 1, h⟩`. Conclude with `⟨_, D.host.pde_prime, hde, h⟩`.
+Supply the required witnesses or components. Supply the required witnesses or components. Supply the required witnesses or components. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨_, D.host.pde'_prime, hde', h⟩`. Establish `hde2 : ∀ p : ℕ, p = D.host.pde ∨ p = D.host.pde' → p.Prime ∧ D.host.cls p = .splitK`. Introduce and unpack `p (rfl | rfl)`. Conclude with `⟨D.host.pde_prime, hde⟩`. Conclude with `⟨D.host.pde'_prime, hde'⟩`.
+Supply the required witnesses or components. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨⟨v0, hv0, w, fun v hv => ?_, fun v hv => ?_, fun v k hv => ?_, fun p hp => ⟨𝔭 p, fun v hv => ?_⟩, fun t P hP hS1 => ?_, fun t P hP h => ?_⟩, fun h => ?_⟩` and prove the remaining obligations. Take `⟨p, hp, -, h⟩` from `hS v (by convert hv)`. Conclude with `(hw v p hp h).1`. Take `⟨p, hp, hc, h⟩` from `hS v (by convert hv)`. Use `GlobalTheory.MovedIdem.exists_isIdemAt (w v) fun e => under_conjugatePrime_ne_of_class hp hc (w v) ((natCast_mem_under (M := D.host.F) (w v) p).1 (by rw [(hw v p hp h).1]; exact h)) ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[show conjPrime₂ (w v) = w v from HeightOneSpectrum.ext ((conjIdeal_asIdeal (w v)).symm.trans e)]`. Conclude with `(hL.Pg _).2 ⟨k, (hw v _ (D.host.g_prime k) hv).2.trans ((h𝔭 _ (D.host.g_prime k)).2.1 k rfl)⟩`. Conclude with `(hw v p (hde2 p hp).1 hv).2`. Take `⟨q, hq', hqP, hne⟩` from `exists_prime_mem (hL.Q_pl t) hP`. Establish `hqv` using `(natCast_mem_under (M := D.host.F) P q).2 hqP`.
+Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Prove the second alternative. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `h1 : q = D.host.pde ∨ q = D.host.pde'`. Break down `(S1_mem_OmF D).1 hS1 with h | h | h | h` into its components or cases. Conclude with `absurd (prime_eq_of_mem _ hq' (D.host.g_prime 0) hqv h) (hne 0)`. Conclude with `absurd (prime_eq_of_mem _ hq' (D.host.g_prime 1) hqv h) (hne 1)`. Conclude with `Or.inl (prime_eq_of_mem _ hq' D.host.pde_prime hqv h)`.
-
-Conclude with `Or.inr (prime_eq_of_mem _ hq' D.host.pde'_prime hqv h)`. Take `⟨h2, h3⟩` from `hw _ q hq' hqv`. Break down `eq_or_eq_conjP h2 with h | h` into its components or cases. Conclude with `h.symm`. It suffices to derive a contradiction.
-
-Apply `under_conjugatePrime_ne_of_class hq' (hde2 q h1).2 P hqP` to reduce the goal to its premises. Rewrite using `[← h, h3, (h𝔭 q hq').2.2 h1 t P hP hqP]`. Conclude with `hQ t P hP ((natCast_mem_under (M := D.host.F) P _).1 (h ▸ hv0))`. Break down `(S1_mem_OmF D).1 h with h | h | h | h` into its components or cases. Conclude with `hq 0 (prime_eq_of_mem _ hq0 (D.host.g_prime 0) hv0 h)`.
-
-Conclude with `hq 1 (prime_eq_of_mem _ hq0 (D.host.g_prime 1) hv0 h)`. Conclude with `(leastSplitAuxiliaryPrime_ne_typePrimes D).1 (prime_eq_of_mem _ hq0 D.host.pde_prime hv0 h)`. Conclude with `(leastSplitAuxiliaryPrime_ne_typePrimes D).2 (prime_eq_of_mem _ hq0 D.host.pde'_prime hv0 h)`.
+It suffices to derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem exists_places_of_cls (T : Type) (L : LevCh D T) (μ0 : T) (hL : L.Is μ0)
     (hg : ∀ k, D.host.cls (D.host.g k) = .splitK) (hde : D.host.cls D.host.pde = .splitK)
@@ -215,9 +209,9 @@ theorem exists_places_of_cls (T : Type) (L : LevCh D T) (μ0 : T) (hL : L.Is μ0
     · exact (leastSplitAuxiliaryPrime_ne_typePrimes D).2 (prime_eq_of_mem _ hq0 D.host.pde'_prime hv0 h)
 
 /- English proof (translation)
-Introduce `e`. Establish `h1 : Real.log (q0 D) ≤ large₂.sc.L` using `hs.2.2.2.2.2.2.2.2.1`. Establish `h2` using `(hs.2.1.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.1 k k).1`. Establish `hq : (0 : ℝ) < q0 D` using `by exact_mod_cast (leastSplitAuxiliaryPrimeThetaChain_spec D).1.pos`. Establish `h3 : (q0 D : ℝ) ≤ large₂.sc.b` using `(Real.log_le_iff_le_exp hq).1 h1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb : 1 ≤ large₂.sc.b` using `Real.one_le_exp (Real.rpow_nonneg (by linarith [large₂.sc.one_lt_alt]) _)`. Establish `hk : (2 : ℝ) ≤ D.R.k` using `by have := D.R.m_add_three_le_k; exact_mod_cast (by omega : 2 ≤ D.R.k)`. Establish `h4 : (D.R.k : ℝ) * large₂.sc.b ≤ ((D.R.k : ℝ) * large₂.sc.b) ^ 8` using `le_self_pow₀ (by nlinarith) (by norm_num)`. Rewrite `h2` using `[← e]`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem leastSplitAuxiliaryPrime_ne_typePrime_of_sizes {large₂ : SizeData₂ D} (hs : GlobalTheory.IndefiniteRowSideFullHecke.LevelPlusSubgroup.SizeRows large₂) (k : Fin 2) : q0 D ≠ D.host.g k := by
   intro e
@@ -238,9 +232,9 @@ namespace GlobalTheory.RowEx
 open GlobalTheory.RowEx.GridExPf
 
 /- English proof (translation)
-Use `⟨0, fun ε CF _ => ⟨0, fun D large₂ _ _ Γ _ _ Pl0 T A Ks _ _ _ R F hS hQ => ?_⟩⟩` and prove the remaining obligations. Take `⟨⟨Pm, -, -⟩, -⟩` from `hS.size`. Establish `hcls : ∀ p ∈ D.host.levelPrimes, D.host.cls p = .splitK` using `Pm.level_split`. Establish `hPl` using `exists_places_of_cls T R.toLevCh A.μ0 hS.core.lev (fun k => hcls _ (D.host.g_level k)) (hcls _ D.host.pde_level.1) (hcls _ D.host.pde_level.2) (leastSplitAuxiliaryPrime_ne_typePrime_of_sizes hS.size) hQ`. Take `⟨G⟩` from `(GlobalTheory.ChiGridModel.nonempty_gridData_iff R.toLevCh A.μ0 hS.core.lev ⟨1, CF, large₂.sc.b⟩).2 hPl`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨W, hW⟩` from `GlobalTheory.ChiGrid.WeilOver.exists_weil_over_of_clauses hP.weilRepresentationUnitaryPair R hS.core.lev hS.core.chain hS.core.models _ G`. Use `haveI := hS.fin`. Conclude with `⟨G, W, hW, GlobalTheory.FunObj.gridChoice_nonempty_of W hS.core.lev Set.finite_univ (GlobalTheory.RowClaim.Test.pde_ne_q hS) fun t _ P hP => GlobalTheory.RowClaim.Test.guard hS t P hP⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem gridEx_of_hypotheses (hP : GlobalTheory.FunPr.Hypotheses₂) : GridEx := by
   refine ⟨0, fun ε CF _ => ⟨0, fun D large₂ _ _ Γ _ _ Pl0 T A Ks _ _ _ R F hS hQ => ?_⟩⟩

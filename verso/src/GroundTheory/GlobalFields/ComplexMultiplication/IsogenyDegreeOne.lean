@@ -19,7 +19,7 @@ section Basis
 variable {F : Type u} [Field F] (W : WeierstrassCurve F)
 
 /- English proof (translation)
-Rewrite `h` using `[← algebraMap_smul_basis]`. Establish `h'` using `(IsFractionRing.injective W.toAffine.CoordinateRing W.toAffine.FunctionField) (h.trans (map_zero _).symm)`. Conclude with `smul_basis_eq_zero h'`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_algebraMap_add_mul_genY {P Q : F[X]}
     (h : algebraMap F[X] W.toAffine.FunctionField P +
@@ -30,15 +30,13 @@ theorem eq_zero_of_algebraMap_add_mul_genY {P Q : F[X]}
   exact smul_basis_eq_zero h'
 
 /- English proof (translation)
-Establish `eW` using `genY_sq_add W`. Establish `eW'` using `(equation_iff _ _).mp h`. Simplify using `only [WeierstrassCurve.baseChange, WeierstrassCurve.map_a₁, WeierstrassCurve.map_a₂, WeierstrassCurve.map_a₃, WeierstrassCurve.map_a₄, WeierstrassCurve.map_a₆] at eW'`. Use `set P : F[X] := -(C (W.a₂ - W'.a₂) * X ^ 2 + C (W.a₄ - W'.a₄) * X + C (W.a₆ - W'.a₆)) with hP`. Use `set Q : F[X] := C (W.a₁ - W'.a₁) * X + C (W.a₃ - W'.a₃) with hQ`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `key : algebraMap F[X] W.toAffine.FunctionField P + algebraMap F[X] W.toAffine.FunctionField Q * genY W = 0`. Simplify using `only [hP, hQ, map_add, map_mul, map_neg, map_pow, algebraMap_C_functionField, ← genX_eq, map_sub]`. Take the linear combination `eW - eW'`. Take `⟨hP0, hQ0⟩` from `eq_zero_of_algebraMap_add_mul_genY W key`. Establish `c2` using `congrArg (Polynomial.coeff · 2) hP0`.
+Take a linear combination of the given relations to obtain the conclusion. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `c1` using `congrArg (Polynomial.coeff · 1) hP0`. Establish `c0` using `congrArg (Polynomial.coeff · 0) hP0`. Establish `d1` using `congrArg (Polynomial.coeff · 1) hQ0`. Establish `d0` using `congrArg (Polynomial.coeff · 0) hQ0`. Simplify using `[hP, hQ, coeff_X, coeff_C, coeff_X_pow, -map_sub] at c2 c1 c0 d1 d0`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Take a linear combination of the given relations to obtain the conclusion.
 
-Use `ext`. Take the linear combination `-d1`. Take the linear combination `c2`. Take the linear combination `-d0`. Take the linear combination `c1`.
-
-Take the linear combination `c0`.
+Take a linear combination of the given relations to obtain the conclusion. Take a linear combination of the given relations to obtain the conclusion. Take a linear combination of the given relations to obtain the conclusion. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem eq_of_equation_genX_genY {W' : WeierstrassCurve F}
     (h : (W'.baseChange W.toAffine.FunctionField).toAffine.Equation (genX W) (genY W)) :
@@ -78,7 +76,7 @@ variable {F : Type u} [Field F] [IsAlgClosed F] [DecidableEq F] {W : Weierstrass
 omit [DecidableEq F] in
 
 /- English proof (translation)
-Consider the cases of `P with`. Consider the case `zero => exact absurd rfl hP`. Consider the case `some x y h => show (heightOneOfNonsingular h).valuation _ (algebraMap _ _ _) ≤ 1`. Conclude with `HeightOneSpectrum.valuation_le_one _ _`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem valuationPoint_genY_le_one {P : W.toAffine.Point} (hP : P ≠ 0) :
     valuationPoint W P (genY W) ≤ 1 := by
@@ -89,7 +87,7 @@ theorem valuationPoint_genY_le_one {P : W.toAffine.Point} (hP : P ≠ 0) :
     exact HeightOneSpectrum.valuation_le_one _ _
 
 /- English proof (translation)
-Take `⟨a, rfl⟩` from `HeightOneSpectrum.mem_integers_of_valuation_le_one W.toAffine.FunctionField f fun v => by rw [← valuationPoint_pointOfIdeal]; exact h _ (pointOfIdeal_ne_zero W v)`. Take `⟨p, q, rfl⟩` from `exists_smul_basis_eq a`. Conclude with `⟨p, q, rfl⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_algebraMap_eq_of_valuationPoint_le_one {f : W.toAffine.FunctionField}
     (h : ∀ P : W.toAffine.Point, P ≠ 0 → valuationPoint W P f ≤ 1) :
@@ -101,15 +99,15 @@ theorem exists_algebraMap_eq_of_valuationPoint_le_one {f : W.toAffine.FunctionFi
   exact ⟨p, q, rfl⟩
 
 /- English proof (translation)
-Take `⟨p, q, rfl⟩` from `exists_algebraMap_eq_of_valuationPoint_le_one h`. Establish `ha : p • (1 : W.toAffine.CoordinateRing) + q • AdjoinRoot.mk W.toAffine.polynomial X ≠ 0`. Introduce `h'`. Rewrite `h0` using `[h', map_zero, map_zero]`. Conclude with `exp_ne_zero h0.symm`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h0` using `[valuationInfty_algebraMap, valuationInftyCoord_apply W ha, exp_inj]`. Distinguish the cases in `hq : q = 0`. Substitute `hq` using the available equality. Rewrite `h0` using `[natDegree_norm_smul_basis_of_q_eq_zero]`. Establish `hp1 : p.natDegree = 1` using `by omega`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨c₁, c₀, rfl⟩ : ∃ c₁ c₀ : F, p = C c₁ * X + C c₀` from `⟨_, _, eq_X_add_C_of_natDegree_le_one hp1.le⟩`. Use `⟨c₁, c₀, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `rfl`. Simplify using `at hp1`. Rewrite using `[algebraMap_smul_basis, map_zero, zero_mul, add_zero]`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_add, map_mul, algebraMap_C_functionField, ← genX_eq]`. It suffices to derive a contradiction. Distinguish the cases in `hp : p = 0`. Substitute `hp` using the available equality. Rewrite `h0` using `[natDegree_norm_smul_basis_of_p_eq_zero hq]`.
+It suffices to derive a contradiction. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Rewrite `h0` using `[natDegree_norm_smul_basis_of_ne_zero hp hq]`. Use `le_max_right (2 * p.natDegree) (2 * q.natDegree + 3)` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem exists_eq_linear_of_valuation {f : W.toAffine.FunctionField}
     (h : ∀ P : W.toAffine.Point, P ≠ 0 → valuationPoint W P f ≤ 1)
@@ -143,17 +141,17 @@ theorem exists_eq_linear_of_valuation {f : W.toAffine.FunctionField}
       omega
 
 /- English proof (translation)
-Take `⟨p, q, rfl⟩` from `exists_algebraMap_eq_of_valuationPoint_le_one h`. Establish `ha : p • (1 : W.toAffine.CoordinateRing) + q • AdjoinRoot.mk W.toAffine.polynomial X ≠ 0`. Introduce `h'`. Rewrite `h0` using `[h', map_zero, map_zero]`. Conclude with `exp_ne_zero h0.symm`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h0` using `[valuationInfty_algebraMap, valuationInftyCoord_apply W ha, exp_inj]`. Distinguish the cases in `hq : q = 0`. Substitute `hq` using the available equality. Rewrite `h0` using `[natDegree_norm_smul_basis_of_q_eq_zero]`. Use linear arithmetic over natural numbers and integers.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Establish `hdeg : q.natDegree = 0 ∧ p.natDegree ≤ 1`. Distinguish the cases in `hp : p = 0`. Substitute `hp` using the available equality. Rewrite `h0` using `[natDegree_norm_smul_basis_of_p_eq_zero hq]`. Conclude with `⟨by omega, by simp⟩`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h0` using `[natDegree_norm_smul_basis_of_ne_zero hp hq]`. Establish `h1` using `le_max_left (2 * p.natDegree) (2 * q.natDegree + 3)`. Establish `h2` using `le_max_right (2 * p.natDegree) (2 * q.natDegree + 3)`. Use linear arithmetic over natural numbers and integers. Take `⟨c, rfl⟩ : ∃ c : F, q = C c` from `⟨_, eq_C_of_natDegree_eq_zero hdeg.1⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨c₁, c₀, rfl⟩ : ∃ c₁ c₀ : F, p = C c₁ * X + C c₀` from `⟨_, _, eq_X_add_C_of_natDegree_le_one hdeg.2⟩`. Use `⟨c, c₁, c₀, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `rfl`. Conclude with `hq (map_zero C)`. Rewrite using `[algebraMap_smul_basis]`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `only [map_add, map_mul, algebraMap_C_functionField, ← genX_eq]`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem exists_eq_genY_form_of_valuation {g : W.toAffine.FunctionField}
     (h : ∀ P : W.toAffine.Point, P ≠ 0 → valuationPoint W P g ≤ 1)
@@ -197,29 +195,27 @@ variable {F : Type u} [Field F] [IsAlgClosed F] [DecidableEq F] {A B : Weierstra
   [A.IsElliptic] [B.IsElliptic]
 
 /- English proof (translation)
-Establish `hmul` using `ψ.ramIdx_mul_card_ker`. Rewrite `hmul` using `[h]`. Establish `hram : ψ.ramIdx = 1` using `(mul_eq_one.mp hmul).1`. Establish `hbot : ψ.pointHom.ker = ⊥` using `AddSubgroup.card_eq_one.mp (mul_eq_one.mp hmul).2`. Establish `hne : ∀ R : A.toAffine.Point, R ≠ 0 → ψ.pointMap R ≠ 0`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `R hR h0`. Establish `hR' : R ∈ ψ.pointHom.ker`. Rewrite using `[AddMonoidHom.mem_ker, Isogeny.pointHom_apply]`. Conclude with `h0`. Rewrite `hR'` using `[hbot, AddSubgroup.mem_bot]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hR hR'`. Establish `hval : ∀ (R : A.toAffine.Point) (f : B.toAffine.FunctionField), valuationPoint A R (ψ.comap f) = valuationPoint B (ψ.pointMap R) f`. Introduce `R f`. Rewrite using `[ψ.valuationPoint_comap, hram, pow_one]`. Establish `h0 : ψ.pointMap 0 = 0` using `map_zero ψ.pointHom`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hinf : ∀ f : B.toAffine.FunctionField, valuationInfty A (ψ.comap f) = valuationInfty B f`. Introduce `f`. Rewrite using `[← valuationPoint_zero_eq, hval, h0, valuationPoint_zero_eq]`. Take `⟨α, β, hα, hf⟩` from `exists_eq_linear_of_valuation (W := A) (f := ψ.comap (genX B)) (fun R hR => by rw [hval]; exact valuationPoint_genX_le_one (hne R hR)) (by rw [hinf, valuationInfty_genX B])`. Take `⟨γ, δ, ε, hγ, hg⟩` from `exists_eq_genY_form_of_valuation (W := A) (g := ψ.comap (genY B)) (fun R hR => by rw [hval]; exact valuationPoint_genY_le_one (hne R hR)) (by rw [hinf, valuationInfty_genY B])`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set ι := algebraMap F A.toAffine.FunctionField with hι`. Establish `hx : ψ.x = ι α * genX A + ι β` using `by rw [← ψ.comap_genX]; exact hf`. Establish `hy : ψ.y = ι γ * genY A + ι δ * genX A + ι ε` using `by rw [← ψ.comap_genY]; exact hg`. Establish `hN` using `ψ.nonsingular`. Establish `eB` using `(equation_iff _ _).mp hN.1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite `eB` using `[hx, hy]`. Simplify using `only [WeierstrassCurve.baseChange, WeierstrassCurve.map_a₁, WeierstrassCurve.map_a₂, WeierstrassCurve.map_a₃, WeierstrassCurve.map_a₄, WeierstrassCurve.map_a₆] at eB`. Establish `eA` using `genY_sq_add A`. Establish `hc3 : γ ^ 2 = α ^ 3` using `by set P : F[X] := C (γ ^ 2 - α ^ 3) * X ^ 3 + C (γ ^ 2 * A.a₂ + δ ^ 2 + B.a₁ * α * δ - 3 * α ^ 2 * β - B.a₂ * α ^ 2) * X ^ 2 + C (γ ^ 2 * A.a₄ + 2 * δ * ε + B.a₁ * (α * ε + β * δ) + B.a₃ * δ - 3 * α * β ^ 2 - 2 * B.a₂ * α * β - B.a₄ * α) * X + C (γ ^ 2 * A.a₆ + ε ^ 2 + B.a₁ * β …`. Establish `key : algebraMap F[X] A.toAffine.FunctionField P + algebraMap F[X] A.toAffine.FunctionField Q * genY A = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Simplify using `only [hP, hQ, map_add, map_mul, map_pow, algebraMap_C_functionField, ← genX_eq, map_sub, map_ofNat]`. Take the linear combination `eB - ι γ ^ 2 * eA`. Establish `c3` using `congrArg (Polynomial.coeff · 3) (eq_zero_of_algebraMap_add_mul_genY A key).1`. Simplify using `[hP, coeff_X_pow, -map_sub] at c3`. Take the linear combination `c3`.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion.
 
-Establish `hu2 : (α / γ) ^ 2 * α = 1`. Clear the denominators using the available nonvanishing facts. Take the linear combination `-hc3`. Establish `hu3 : (α / γ) ^ 3 * γ = 1`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Take the linear combination `-hc3`. Establish `hδ : ι (δ / α) * ι α = ι δ` using `by rw [← map_mul, div_mul_cancel₀ δ hα]`. Establish `hu2' : ι (α / γ) ^ 2 * ι α = 1` using `by rw [← map_pow, ← map_mul, hu2, map_one]`. Establish `hu3' : ι (α / γ) ^ 3 * ι γ = 1` using `by rw [← map_pow, ← map_mul, hu3, map_one]`. Set `Cv : VariableChange F` to `⟨Units.mk0 (γ / α) (div_ne_zero hγ hα), β, δ / α, ε⟩`.
+Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨Cv, eq_of_equation_genX_genY A ?_⟩` and prove the remaining obligations. Establish `hV` using `(nonsingular_variableChange (Cv.map ι) (B.baseChange A.toAffine.FunctionField) hN).1`. Establish `hcurve : (Cv.map ι) • (B.baseChange A.toAffine.FunctionField) = (Cv • B).baseChange A.toAffine.FunctionField` using `map_variableChange B Cv ι`. Rewrite `hV` using `[hcurve]`. Establish `hX : (↑(Cv.map ι).u⁻¹ : A.toAffine.FunctionField) ^ 2 * (ψ.x - (Cv.map ι).r) = genX A` using `by show ι ((γ / α)⁻¹) ^ 2 * (ψ.x - ι β) = genX A`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Rewrite using `[hx, inv_div]`. Take the linear combination `genX A * hu2'`. Establish `hY : (↑(Cv.map ι).u⁻¹ : A.toAffine.FunctionField) ^ 3 * (ψ.y - (Cv.map ι).s * (ψ.x - (Cv.map ι).r) - (Cv.map ι).t) = genY A` using `by show ι ((γ / α)⁻¹) ^ 3 * (ψ.y - ι (δ / α) * (ψ.x - ι β) - ι ε) = genY A`. Rewrite using `[hx, hy, inv_div]`. Take the linear combination `genY A * hu3' - ι (α / γ) ^ 3 * genX A * hδ`.
-
-Rewrite `hV` using `[hX, hY]`. Conclude with `hV`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_variableChange_of_degree_eq_one_of_isAlgClosed (ψ : Isogeny A B)
     (h : ψ.degree = 1) : ∃ C : VariableChange F, C • B = A := by
@@ -309,7 +305,7 @@ section General
 variable {F : Type u} [Field F]
 
 /- English proof (translation)
-Substitute `h` using the available equality. Conclude with `variableChange_j _ _`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem j_eq_of_variableChange_eq {W W' : WeierstrassCurve F} [W.IsElliptic] [W'.IsElliptic]
     (C : VariableChange F) (h : C • W = W') : W'.j = W.j := by
@@ -317,9 +313,9 @@ theorem j_eq_of_variableChange_eq {W W' : WeierstrassCurve F} [W.IsElliptic] [W'
   exact variableChange_j _ _
 
 /- English proof (translation)
-Establish `hd : (isogBaseChange (F'` using `AlgebraicClosure F) ψ).degree = 1 := by`. Rewrite using `[degree_isogBaseChange, h]`. Take `⟨C, hC⟩` from `exists_variableChange_of_degree_eq_one_of_isAlgClosed _ hd`. Establish `hj : (A.baseChange (AlgebraicClosure F)).j = (B.baseChange (AlgebraicClosure F)).j` using `j_eq_of_variableChange_eq C hC`. Establish `eA : (A.baseChange (AlgebraicClosure F)).j = algebraMap F (AlgebraicClosure F) A.j` using `map_j _ _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `eB : (B.baseChange (AlgebraicClosure F)).j = algebraMap F (AlgebraicClosure F) B.j` using `map_j _ _`. Rewrite `hj` using `[eA, eB]`. Conclude with `((algebraMap F (AlgebraicClosure F)).injective hj).symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem j_eq_of_degree_eq_one {A B : WeierstrassCurve F} [A.IsElliptic] [B.IsElliptic]
     (ψ : Isogeny A B) (h : ψ.degree = 1) : B.j = A.j := by
@@ -337,7 +333,7 @@ theorem j_eq_of_degree_eq_one {A B : WeierstrassCurve F} [A.IsElliptic] [B.IsEll
   exact ((algebraMap F (AlgebraicClosure F)).injective hj).symm
 
 /- English proof (translation)
-Take `⟨ψ, -, h1, -⟩` from `exists_isomorphism_of_degree_eq p φ hφ hdeg`. Rewrite using `[j_eq_of_degree_eq_one ψ h1, j_frobeniusTwist]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem j_eq_pow_of_isogenyPullback_eq_zero {E E' : WeierstrassCurve F} [E.IsElliptic]
     [E'.IsElliptic] (p : ℕ) [Fact p.Prime] [CharP F p] [PerfectRing F p] (φ : Isogeny E E')

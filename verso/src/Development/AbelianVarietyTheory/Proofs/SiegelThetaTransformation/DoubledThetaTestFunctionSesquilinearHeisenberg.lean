@@ -24,15 +24,15 @@ variable {N : ℕ} (Z W : Matrix (Fin N) (Fin N) ℂ)
 noncomputable def hD (u u' q q' : Fin N → ℂ) : ℂ := star q ⬝ᵥ W *ᵥ u + u' ⬝ᵥ W *ᵥ star q'
 
 /- English proof (translation)
-Rewrite using `[imH, smul_smul, mul_inv_cancel₀ (mul_ne_zero two_ne_zero I_ne_zero), one_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem two_I_imH : (2 * I) • imH Z = Z - Zᴴ := by
   rw [imH, smul_smul, mul_inv_cancel₀ (mul_ne_zero two_ne_zero I_ne_zero), one_smul]
 
 /- English proof (translation)
-Establish `h2 : imH Z * W = 1` using `mul_eq_one_comm.1 h1`. Establish `e1 : star (star b + Z *ᵥ star d) = (b + d ᵥ* Z) - (2 * I) • (d ᵥ* imH Z)`. Rewrite using `[← vecMul_smul, two_I_imH, vecMul_sub, star_add, star_star, star_mulVec, star_star]`. Normalize the expressions using the abelian group laws. Establish `e2 : star (b + d ᵥ* Z) = (star b + Z *ᵥ star d) - (2 * I) • (imH Z *ᵥ star d)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact.
 
-Rewrite using `[← smul_mulVec, two_I_imH, sub_mulVec, star_add, star_vecMul]`. Normalize the expressions using the abelian group laws. Rewrite using `[hD, e1, e2, mulVec_sub, mulVec_smul, mulVec_mulVec, h1, one_mulVec, sub_dotProduct, smul_dotProduct, dotProduct_mulVec (d ᵥ* imH Z), vecMul_vecMul, h2, vecMul_one, dotProduct_sub, dotProduct_smul, smul_eq_mul, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the hypotheses and the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem hD_per (h1 : W * imH Z = 1) (u u' d b : Fin N → ℂ) :
     hD W u u' (star b + Z *ᵥ star d) (b + d ᵥ* Z) =
@@ -51,7 +51,7 @@ theorem hD_per (h1 : W * imH Z = 1) (u u' d b : Fin N → ℂ) :
   ring
 
 /- English proof (translation)
-Establish `h (a c : Fin N → ℂ) : conj (a ⬝ᵥ W *ᵥ c) = star c ⬝ᵥ W *ᵥ star a`. Use `star_dotProduct_star (W *ᵥ c) a` as an intermediate fact. Rewrite `this` using `[star_mulVec, hW.eq, ← dotProduct_mulVec]`. Conclude with `this.symm`. Rewrite using `[hD, map_add, h, h, star_star, star_star, hD]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conj_hD (hW : W.IsHermitian) (u u' q q' : Fin N → ℂ) :
     conj (hD W u u' q q') = hD W q q' u u' := by
@@ -62,7 +62,7 @@ theorem conj_hD (hW : W.IsHermitian) (u u' q q' : Fin N → ℂ) :
   rw [hD, map_add, h, h, star_star, star_star, hD]
 
 /- English proof (translation)
-Rewrite using `[conj_hD W hW, hD_per Z W h1, hD_per Z W h1]`. Simplify using `only [dotProduct_add _ (star _), add_dotProduct _ _ (star _), ← dotProduct_mulVec, dotProduct_add d, dotProduct_add d']`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem hD_sub_conj (hW : W.IsHermitian) (h1 : W * imH Z = 1) (d b d' b' : Fin N → ℂ) :
     hD W (star b' + Z *ᵥ star d') (b' + d' ᵥ* Z) (star b + Z *ᵥ star d) (b + d ᵥ* Z) -
@@ -74,9 +74,9 @@ theorem hD_sub_conj (hW : W.IsHermitian) (h1 : W * imH Z = 1) (d b d' b' : Fin N
   ring
 
 /- English proof (translation)
-Establish `e1 : d ⬝ᵥ (star b + Z *ᵥ star d) = d ⬝ᵥ star b + d ⬝ᵥ Z *ᵥ star d` using `dotProduct_add _ _ _`. Establish `e2 : (b + d ᵥ* Z) ⬝ᵥ star d = b ⬝ᵥ star d + d ⬝ᵥ Z *ᵥ star d`. Rewrite using `[add_dotProduct, dotProduct_mulVec]`. Rewrite using `[hD_per Z W h1]`. Generalize the expression as in `star b + Z *ᵥ star d = q at e1 ⊢`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable.
 
-Generalize the expression as in `b + d ᵥ* Z = q' at e2 ⊢`. Simplify using `only [mulVec_add, mulVec_smul, dotProduct_add, add_dotProduct, dotProduct_smul, smul_dotProduct, smul_eq_mul, e1, e2]`. Expand and normalize the polynomial expressions, which then agree.
+Replace the chosen expression with an arbitrary variable. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem gauss_per (h1 : W * imH Z = 1) (u u' d b : Fin N → ℂ) :
     (u' + (b + d ᵥ* Z)) ⬝ᵥ W *ᵥ (u + (star b + Z *ᵥ star d)) =
@@ -94,11 +94,11 @@ theorem gauss_per (h1 : W * imH Z = 1) (u u' d b : Fin N → ℂ) :
   ring
 
 /- English proof (translation)
-Establish `h3 : (c ᵥ* A) ᵥ* τ.map (fun z => (z.im : ℂ)) = 0`. Use function extensionality and compare the values at `j`. Establish `h` using `h2 j`. Rewrite `h` using `[← vecMul_vecMul]`. Generalize the expression as in `c ᵥ* A = e at h1 h`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the chosen expression with an arbitrary variable.
 
-Simplify using `only [vecMul, dotProduct, im_sum, mul_im, h1, zero_mul, add_zero] at h`. Apply `Complex.ext` to reduce the goal to its premises. Simplify `h` using `[vecMul, dotProduct, re_sum]`. Simplify using `[vecMul, dotProduct, im_sum, h1]`. Establish `h4` using `congrArg (· ᵥ* (W * A⁻¹)) h3`.
+Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify `h4` using `[← Matrix.mul_assoc, Matrix.mul_assoc A, mul_eq_one_comm.1 hW, mul_nonsing_inv _ hA]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem eq_zero_of_im (A τ : Matrix (Fin N) (Fin N) ℂ) (hA : IsUnit A.det)
     (hW : W * τ.map (fun z => (z.im : ℂ)) = 1) (c : Fin N → ℂ)
@@ -124,7 +124,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r g : ℕ} {X : Dat
   {bas : (Fin g ⊕ Fin g → ℤ) ≃ₗ[ℤ] X.Λ} (idx : Fin g ≃ X.Ψ × Fin r)
 
 /- English proof (translation)
-Use `eq_zero_of_im _ _ _ (isUnit_det_perMat idx hs hx) (imInv_mul_im idx hs hx) c (fun j => h _) fun j => ?_` and prove the remaining obligations. Rewrite using `[tauMat, ← Matrix.mul_assoc, mul_eq_one_comm.1 (hMat_mul_perMat idx hs hx), Matrix.one_mul]`. Conclude with `h _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_im_per (hs : IsSympl X bas) {x : Frame X.Ψ r} (hx : x ∈ X.dom)
     (c : Fin g → ℂ) (h : ∀ v, (c ⬝ᵥ (per X x v ∘ idx)).im = 0) : c = 0 := by
@@ -134,15 +134,15 @@ theorem eq_zero_of_im_per (hs : IsSympl X bas) {x : Frame X.Ψ r} (hx : x ∈ X.
   exact h _
 
 /- English proof (translation)
-Establish `key (f : (Fin g → ℂ) →ₗ[ℂ] ℂ) (u) : f u = (fun i => f (Pi.single i 1)) ⬝ᵥ u`. Rewrite using `[f.pi_apply_eq_sum_univ u]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[smul_eq_mul, mul_comm]`. Use `congr 2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use function extensionality and compare the values at `j`. Simplify using `[Pi.single_apply, eq_comm]`. Establish `e1` using `eq_zero_of_im_per idx hs h₁ (fun i => L.comp (LinearMap.inl ℂ _ _) (Pi.single i 1)) fun v => by`. Rewrite using `[← key]`. Use `h v 0` as an intermediate fact.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `this` using `[per_zero]`. Simplify using `using this`. Establish `e2` using `eq_zero_of_im_per idx hs h₂ (star fun i => L.comp (LinearMap.inr ℂ _ _) (Pi.single i 1)) fun v => by`. Rewrite using `[star_dotProduct, dotProduct_comm, ← key]`. Use `h 0 v` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `this` using `[per_zero]`. Simplify using `using this`. Use `LinearMap.prod_ext (LinearMap.ext fun u => ?_) (LinearMap.ext fun u => ?_)` and prove the remaining obligations. Rewrite using `[key, e1]`. Simplify using the standard rewrite rules.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[key, star_eq_zero.1 e2]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem lin_eq_zero (hs : IsSympl X bas) {x₁ x₂ : Frame X.Ψ r} (h₁ : x₁ ∈ X.dom) (h₂ : x₂ ∈ X.dom)
     (L : ((Fin g → ℂ) × (Fin g → ℂ)) →ₗ[ℂ] ℂ)
@@ -213,7 +213,7 @@ variable (X) in
 noncomputable def bv (a₁ a₂ : Fin r → E) : Fin r → E := (X.κ0 / 4) • ((a₁ + a₂) ᵥ* X.Gm)
 
 /- English proof (translation)
-Take `⟨e', e, -⟩` from `DblPer.dbl_per E r X g bas idx 2 hs even_two x₁ h₁ x₂ h₂ (Matrix.of fun _ => a₁) (Matrix.of fun _ => a₂)`. Rewrite `e`, `e'` using `[DblPer.cols, toCols₁_fromCols, toCols₂_fromCols]`. Use `⟨(congrFun (e τ) 0).trans ?_, congrFun (e' τ) 0⟩` and prove the remaining obligations. Use function extensionality and compare the values at `a`. Simplify using `only [Matrix.add_apply, Pi.add_apply, mul_apply, mulVec, dotProduct, mul_comm (dblZ _ _ _ _ _ _)]`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
 Both sides reduce to the same expression.
 -/
@@ -232,7 +232,7 @@ theorem cz_per (hs : IsSympl X bas) {x₁ x₂ : Frame X.Ψ r} (h₁ : x₁ ∈ 
   rfl
 
 /- English proof (translation)
-Rewrite using `[X.trace_eq_Psi]`. Simplify using `[dotProduct, Data.emb, DblPer.emb_cc, mul_comm]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem trace_pair (b d : Fin r → E) : ((Algebra.trace ℚ E (∑ a, b a * cc (d a)) : ℚ) : ℂ) =
     ∑ τ : X.Ψ, (Data.emb τ.1 b ⬝ᵥ star (Data.emb τ.1 d) +
@@ -241,7 +241,7 @@ theorem trace_pair (b d : Fin r → E) : ((Algebra.trace ℚ E (∑ a, b a * cc 
   simp [dotProduct, Data.emb, DblPer.emb_cc, mul_comm]
 
 /- English proof (translation)
-Rewrite using `[EF_def, ← smul_eq_mul, ← map_smul, herm, Finset.sum_comm, Finset.mul_sum, Finset.smul_sum]`. Use `congr 1`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Simplify using `only [bv, Pi.smul_apply, vecMul, dotProduct, smul_eq_mul, ← Finset.sum_mul, Rat.smul_def]`. Use `push_cast`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -255,15 +255,13 @@ theorem trace_bv (a₁ a₂ d : Fin r → E) :
   ring
 
 /- English proof (translation)
-Establish `hZ` using `(dblZ_mem_Hn E r X x₁ h₁ x₂ h₂).2.1`. Set `L : ((Fin g → ℂ) × (Fin g → ℂ)) →ₗ[ℂ] ℂ` to `{ toFun := fun p => ∑ τ, hD (imH (dblZ X x₁ x₂ τ))⁻¹ (cz X idx x₁ x₂ τ p) (cz' X idx x₁ x₂ τ p) (cz X idx x₁ x₂ τ (per X x₁ y₁ ∘ idx, star (per X x₂ y₂ ∘ idx))) (cz' X idx x₁ x₂ τ (per X x₁ y₁ ∘ idx, star (per X x₂ y₂ ∘ idx))) - (hermForm (Hm X bas idx x₁) p.1 (per X x₁ y₁ ∘ idx) …`. Simplify using `only [hD, hermForm, map_add, star_star, Prod.fst_add, Prod.snd_add, mulVec_add, dotProduct_add, add_dotProduct, Finset.sum_add_distrib]`. Expand and normalize the polynomial expressions, which then agree. Use the proof step `map_smul' := fun c p => by`.
+Establish an intermediate fact. Introduce a local definition for the expression. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
 
-Simplify using `only [hD, hermForm, map_smul, star_star, Prod.smul_fst, Prod.smul_snd, mulVec_smul, dotProduct_smul, smul_dotProduct, smul_eq_mul, RingHom.id_apply, ← mul_add, ← Finset.mul_sum, mul_sub] }`. Establish `hL` using `lin_eq_zero idx hs h₁ h₂ L fun a₁ a₂ => by`. Establish `e` using `Finset.sum_congr (s₁ := Finset.univ) rfl fun (τ : X.Ψ) _ => hD_sub_conj _ _ (hZ τ).inv.isHermitian (nonsing_inv_mul _ (hZ τ).det_pos.ne'.isUnit) (Data.emb τ.1 (y₁ - y₂)) (Data.emb τ.1 (bv X y₁ y₂)) (Data.emb τ.1 (a₁ - a₂)) (Data.emb τ.1 (bv X a₁ a₂))`. Rewrite `e` using `[Finset.sum_sub_distrib, ← map_sum, sub_conj, ← Finset.mul_sum, Finset.sum_sub_distrib, ← trace_pair, ← trace_pair, trace_bv, trace_bv]`. Establish `e2 : -(1 / 2) * EF X (y₁ + y₂) (a₁ - a₂) - -(1 / 2) * EF X (a₁ + a₂) (y₁ - y₂) = EF X a₁ y₁ + EF X y₂ a₂`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hn (v) : crd X bas (-v) = -crd X bas v`. Simplify using `using crd_smul hs (-1) v`. Simplify using `only [EF_crd hs, sub_eq_add_neg, crd_add hs, hn, Pi.add_apply, Pi.neg_apply, ← Finset.sum_neg_distrib, Finset.mul_sum, ← Finset.sum_add_distrib]`. Conclude with `Finset.sum_congr rfl fun _ _ => by ring`. Rewrite `e` using `[← Rat.cast_sub, e2]`.
+Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Replace the chosen expression with an arbitrary variable.
 
-Simplify using `only [L, LinearMap.coe_mk, AddHom.coe_mk, star_star, sub_im, add_im, im_hermForm_Hm idx hs h₁, im_hermForm_Hm idx hs h₂, (cz_per idx hs h₁ h₂ _ _ _).1, (cz_per idx hs h₁ h₂ _ _ _).2]`. Generalize the expression as in `(Finset.sum _ _ : ℂ).im = S at e ⊢`. Establish `e3` using `congrArg Complex.im e`. Simplify using `at e3`. Combine the linear equalities and inequalities to obtain the conclusion.
-
-Conclude with `sub_eq_zero.1 (LinearMap.congr_fun hL p)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem hD_eq (hs : IsSympl X bas) {x₁ x₂ : Frame X.Ψ r} (h₁ : x₁ ∈ X.dom) (h₂ : x₂ ∈ X.dom)
     (y₁ y₂ : Fin r → E) (p : (Fin g → ℂ) × (Fin g → ℂ)) :
@@ -319,11 +317,11 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r g n : ℕ} {X : D
   {bas : (Fin g ⊕ Fin g → ℤ) ≃ₗ[ℤ] X.Λ} (idx : Fin g ≃ X.Ψ × Fin r)
 
 /- English proof (translation)
-Establish `hZ` using `(dblZ_mem_Hn E r X x₁ h₁ x₂ h₂).2.1`. Establish `h` using `hD_eq idx hs h₁ h₂ y₁ y₂ ((z, w) + (1 / 2 : ℂ) • (per X x₁ y₁ ∘ idx, star (per X x₂ y₂ ∘ idx)))`. Establish `hc : conj (hermForm (Hm X bas idx x₂) (star w + (1 / 2 : ℂ) • (per X x₂ y₂ ∘ idx)) (per X x₂ y₂ ∘ idx)) = hermForm (Hm X bas idx x₂) (per X x₂ y₂ ∘ idx) (star (w + (1 / 2 : ℂ) • star (per X x₂ y₂ ∘ idx)))`. Use `star_dotProduct_star (Hm X bas idx x₂ *ᵥ star (per X x₂ y₂ ∘ idx)) (star w + (1 / 2 : ℂ) • (per X x₂ y₂ ∘ idx))` as an intermediate fact. Rewrite `this` using `[star_mulVec, (Hm_isHermitian idx hs h₂).eq, ← dotProduct_mulVec, star_star]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `this.symm.trans ?_` and prove the remaining obligations. Simplify using `[hermForm]`. Rewrite using `[hc, trace_pair (X := X), Finset.mul_sum, Finset.mul_sum]`. Use `erw [← h]`. Simplify using `only [← Finset.sum_add_distrib]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[← Prod.mk_add_mk]`. Simplify using `only [map_add, map_smul, (cz_per idx hs h₁ h₂ _ _ _).1, (cz_per idx hs h₁ h₂ _ _ _).2]`. Conclude with `gauss_per _ _ (nonsing_inv_mul _ (hZ τ).det_pos.ne'.isUnit) _ _ _ _`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem expo_row (hs : IsSympl X bas) {x₁ x₂ : Frame X.Ψ r} (h₁ : x₁ ∈ X.dom) (h₂ : x₂ ∈ X.dom)
     (y₁ y₂ : Fin r → E) (z w : Fin g → ℂ) :
@@ -358,9 +356,9 @@ theorem expo_row (hs : IsSympl X bas) {x₁ x₂ : Frame X.Ψ r} (h₁ : x₁ �
   exact gauss_per _ _ (nonsing_inv_mul _ (hZ τ).det_pos.ne'.isUnit) _ _ _ _
 
 /- English proof (translation)
-Establish `hτ : tauMat X bas idx x ∈ Siegel (Fin g)` using `⟨tauMat_isSymm idx hs hx, tauMat_im_posDef idx hs hx⟩`. Establish `h1` using `(SiegelSum.summable_norm_thetaTerm _ _ φ hφ _ hτ fun k => hMat X bas idx x *ᵥ z k).of_norm`. Establish `h2` using `(SiegelSum.summable_norm_thetaTerm _ _ ψ hψ _ hτ fun k => hMat X bas idx x *ᵥ z k).of_norm`. Unfold `thA thS`. Rewrite using `[← mul_add, ← h1.tsum_add h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Pi.add_apply, add_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem thA_add (hs : IsSympl X bas) {x : Frame X.Ψ r} (hx : x ∈ X.dom) {φ ψ : TF n g}
     (hφ : IsSB φ) (hψ : IsSB ψ) (z : Fin n → Fin g → ℂ) :
@@ -376,7 +374,7 @@ theorem thA_add (hs : IsSympl X bas) {x : Frame X.Ψ r} (hx : x ∈ X.dom) {φ �
   simp only [Pi.add_apply, add_mul]
 
 /- English proof (translation)
-Unfold `thA thS`. Simplify using `only [Pi.smul_apply, smul_eq_mul, mul_assoc c, tsum_mul_left]`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem thA_smul (x : Frame X.Ψ r) (c : ℂ) (φ : TF n g) (z : Fin n → Fin g → ℂ) :
     thA X bas idx (c • φ) x z = c * thA X bas idx φ x z := by
@@ -387,7 +385,7 @@ theorem thA_smul (x : Frame X.Ψ r) (c : ℂ) (φ : TF n g) (z : Fin n → Fin g
 omit [IsCMField E] in
 
 /- English proof (translation)
-Unfold `thH`. Simplify using `only [Pi.smul_apply, smul_eq_mul, mul_assoc c, tsum_mul_left]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem thH_smul {Ψ : Finset (E →+* ℂ)} {N : ℕ} (c : ℂ) (φ : Matrix (Fin n) (Fin N) E → ℂ)
     (Z : CM Ψ N N) (z z' : CM Ψ n N) : thH Ψ (c • φ) Z z z' = c * thH Ψ φ Z z z' := by
@@ -395,7 +393,7 @@ theorem thH_smul {Ψ : Finset (E →+* ℂ)} {N : ℕ} (c : ℂ) (φ : Matrix (F
   simp only [Pi.smul_apply, smul_eq_mul, mul_assoc c, tsum_mul_left]
 
 /- English proof (translation)
-Establish `h1` using `((GlobalTheory.T.hermitianTheta_summable_and_determines_testFn E Ψ hΨ n N φ hφ Z hZ).1 z z').of_norm`. Establish `h2` using `((GlobalTheory.T.hermitianTheta_summable_and_determines_testFn E Ψ hΨ n N ψ hψ Z hZ).1 z z').of_norm`. Unfold `thH`. Rewrite using `[← h1.tsum_add h2]`. Simplify using `only [Pi.add_apply, add_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem thH_add {Ψ : Finset (E →+* ℂ)} {N : ℕ} (hΨ : IsType Ψ)
     {φ ψ : Matrix (Fin n) (Fin N) E → ℂ} (hφ : IsSB φ) (hψ : IsSB ψ)
@@ -408,17 +406,17 @@ theorem thH_add {Ψ : Finset (E →+* ℂ)} {N : ℕ} (hΨ : IsType Ψ)
   simp only [Pi.add_apply, add_mul]
 
 /- English proof (translation)
-Introduce `x₁ h₁ x₂ h₂ z w`. Take `⟨hΨ, hZ, -⟩` from `dblZ_mem_Hn E r X x₁ h₁ x₂ h₂`. Establish `hG` using `(heisG_laws E r X g bas idx n hs hn).2.2.2`. Establish `h'` using `h x₁ h₁ x₂ h₂ (fun k => z k + per X x₁ (y₁ k) ∘ idx) (fun k => w k + star (per X x₂ (y₂ k) ∘ idx))`. Establish `a1 : dblz X idx x₁ x₂ (fun k => z k + per X x₁ (y₁ k) ∘ idx) (fun k => w k + star (per X x₂ (y₂ k) ∘ idx)) = fun τ => dblz X idx x₁ x₂ z w τ + (((X.κ0 / 4) • ((y₁ + y₂) * X.Gm)).map τ.1).map conj + ((y₁ - y₂).map τ.1).map conj * (dblZ X x₁ x₂ τ)ᵀ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `τ k`. Rewrite using `[dblz_row, ← Prod.mk_add_mk, map_add, (cz_per idx hs h₁ h₂ _ _ _).1, ← add_assoc]`. Use function extensionality and compare the values at `a`. Simplify using `only [Matrix.add_apply, Pi.add_apply, mul_apply, mulVec, dotProduct, mul_comm (dblZ _ _ _ _ _ _)]`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Establish `a2 : dblz' X idx x₁ x₂ (fun k => z k + per X x₁ (y₁ k) ∘ idx) (fun k => w k + star (per X x₂ (y₂ k) ∘ idx)) = fun τ => dblz' X idx x₁ x₂ z w τ + ((X.κ0 / 4) • ((y₁ + y₂) * X.Gm)).map τ.1 + (y₁ - y₂).map τ.1 * dblZ X x₁ x₂ τ`. Use function extensionality and compare the values at `τ k`. Rewrite using `[dblz'_row, ← Prod.mk_add_mk, map_add, (cz_per idx hs h₁ h₂ _ _ _).2, ← add_assoc]`. Both sides reduce to the same expression. Establish `a3 : (fun k i => conj ((w k + star (per X x₂ (y₂ k) ∘ idx)) i)) = fun k => (fun i => conj (w k i)) + per X x₂ (y₂ k) ∘ idx`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `k i`. Simplify using the standard rewrite rules. Rewrite `h'` using `[a1, a2, a3]`. Rewrite using `[(hG y₁ φ₁ hφ₁).2.2.2.2 x₁ h₁, (hG y₂ φ₂ hφ₂).2.2.2.2 x₂ h₂, (GlobalTheory.T.hermitianHeisenbergOperator_laws E X.Ψ hΨ n r hn _ _ ψ hψ).2.1 _ hZ, map_mul, mul_mul_mul_comm, h', ← mul_assoc, ← mul_assoc]`. Use `congr 1`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Simplify using `only [kZero, Finset.prod_mul_distrib, ← Complex.exp_sum, ← exp_conj]`. Rewrite using `[mul_left_comm, mul_assoc (Finset.prod _ _), ← Complex.exp_add, ← Complex.exp_add, ← Complex.exp_add]`. Use `congr 2`. Establish `e` using `Finset.sum_congr (s₁ := Finset.univ) rfl fun (k : Fin n) _ => expo_row idx hs h₁ h₂ (y₁ k) (y₂ k) (z k) (w k)`. Simplify using `only [Finset.sum_add_distrib (s := (Finset.univ : Finset (Fin n))), ← Finset.mul_sum, hermForm_Hm, ← map_sum, ← Rat.cast_sum] at e`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [← Finset.mul_sum, map_neg, map_mul, conj_ofReal, expo]`. Simplify using `only [Finset.sum_comm (s := (Finset.univ : Finset X.Ψ))]`. Conclude with `(by intro _ _ _ _ _ _ h; rw [h]; ring : ∀ a b c d e f : ℂ, f = a + b + c + 2 * I * d + I * e → -(π * a) + -(π * b) + π * f = π * c + (2 * π * I * d + π * I * e)) _ _ _ _ _ _ e`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isDbl_heis (hs : IsSympl X bas) (hn : Even n) {φ₁ φ₂ : TF n g} (hφ₁ : IsSB φ₁)
     (hφ₂ : IsSB φ₂) {ψ : Matrix (Fin n) (Fin r) E → ℂ} (hψ : IsSB ψ)
@@ -469,13 +467,13 @@ theorem isDbl_heis (hs : IsSympl X bas) (hn : Even n) {φ₁ φ₂ : TF n g} (h�
       -(π * a) + -(π * b) + π * f = π * c + (2 * π * I * d + π * I * e)) _ _ _ _ _ _ e
 
 /- English proof (translation)
-Introduce `E _ _ _ r X g bas idx n hs hn φ₁ φ₂ hφ₁ hφ₂`. Establish `ex` using `GlobalTheory.T.doubledHermitianTestFunction_spec E r X g bas idx n hs hn`. Take `⟨s, d, -⟩` from `ex φ₁ φ₂ hφ₁ hφ₂`. Use `⟨fun ψ hψ => ⟨?_, ?_⟩, fun a b => ?_, fun y₁ y₂ => ?_⟩` and prove the remaining obligations. Take `⟨s', d', -⟩` from `ex ψ φ₂ hψ hφ₂`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `((ex _ _ (GlobalTheory.T.rationalSchwartzBruhat_algebra_integral_linear _ _ _ _ _ hφ₁ hψ).1 hφ₂).2.2 _ (GlobalTheory.T.rationalSchwartzBruhat_algebra_integral_linear _ _ _ _ _ s s').1 fun x₁ h₁ x₂ h₂ z w => ?_).symm` and prove the remaining obligations. Take `⟨hΨ, hZ, -⟩` from `dblZ_mem_Hn E r X x₁ h₁ x₂ h₂`. Rewrite using `[thA_add idx hs h₁ hφ₁ hψ, thH_add hΨ s s' hZ, add_mul, mul_add, d x₁ h₁ x₂ h₂, d' x₁ h₁ x₂ h₂]`. Take `⟨s', d', -⟩` from `ex φ₁ ψ hφ₁ hψ`. Use `((ex _ _ hφ₁ (GlobalTheory.T.rationalSchwartzBruhat_algebra_integral_linear _ _ _ _ _ hφ₂ hψ).1).2.2 _ (GlobalTheory.T.rationalSchwartzBruhat_algebra_integral_linear _ _ _ _ _ s s').1 fun x₁ h₁ x₂ h₂ z w => ?_).symm` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨hΨ, hZ, -⟩` from `dblZ_mem_Hn E r X x₁ h₁ x₂ h₂`. Rewrite using `[thA_add idx hs h₂ hφ₂ hψ, thH_add hΨ s s' hZ, map_add, mul_add, mul_add, d x₁ h₁ x₂ h₂, d' x₁ h₁ x₂ h₂]`. Use `((ex _ _ ((GlobalTheory.T.rationalSchwartzBruhat_algebra_integral_linear _ _ _ _ _ hφ₁ hφ₁).2.1 a) ((GlobalTheory.T.rationalSchwartzBruhat_algebra_integral_linear _ _ _ _ _ hφ₂ hφ₂).2.1 b)).2.2 _ ((GlobalTheory.T.rationalSchwartzBruhat_algebra_integral_linear _ _ _ _ _ s s).2.1 _ …` and prove the remaining obligations. Rewrite using `[thA_smul, thA_smul, thH_smul, map_mul, mul_mul_mul_comm, d x₁ h₁ x₂ h₂, mul_left_comm]`. Establish `hG` using `(heisG_laws E r X g bas idx n hs hn).2.2.2`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[DblPer.cols, toCols₁_fromCols, toCols₂_fromCols]`. Conclude with `((ex _ _ (hG y₁ φ₁ hφ₁).1 (hG y₂ φ₂ hφ₂).1).2.2 _ (GlobalTheory.T.hermitianHeisenbergOperator_laws E X.Ψ X.cmType n r hn _ _ _ s).1 (isDbl_heis idx hs hn hφ₁ hφ₂ s d y₁ y₂)).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dbl_lin : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (X : Data E r) (g : ℕ) (bas : (Fin g ⊕ Fin g → ℤ) ≃ₗ[ℤ] X.Λ) (idx : Fin g ≃ X.Ψ × Fin r) (n : ℕ), IsSympl X bas → Even n → ∀ φ₁ φ₂ : TF n g, IsSB φ₁ → IsSB φ₂ → (∀ ψ, IsSB ψ → dbl X bas idx (φ₁ + ψ) φ₂ = dbl X bas idx φ₁ φ₂ + dbl X bas idx ψ φ₂ ∧ dbl X bas idx φ₁ (φ₂ + ψ) = dbl X bas idx φ₁ φ₂ + dbl X bas idx φ₁ ψ) ∧ (∀ a b : ℂ, dbl X bas idx (a • φ₁) (b • φ₂) = (a * conj b) • dbl X bas idx φ₁ φ₂) ∧ ∀ y₁ y₂ : Matrix (Fin n) (Fin r) E, dbl X bas idx (heisG X bas y₁ φ₁) (heisG X bas y₂ φ₂) = heisH (Matrix.fromCols y₁ y₂ * dblT X).toCols₁ (Matrix.fromCols y₁ y₂ * dblT X).toCols₂ (dbl X bas idx φ₁ φ₂) := by
   intro E _ _ _ r X g bas idx n hs hn φ₁ φ₂ hφ₁ hφ₂

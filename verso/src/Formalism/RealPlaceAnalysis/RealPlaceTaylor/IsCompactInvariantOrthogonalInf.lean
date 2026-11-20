@@ -8,7 +8,7 @@ noncomputable section
 namespace Formalism.REAL
 
 /- English proof (translation)
-Unfold `kSpan`. Rewrite using `[Submodule.mem_sInf]`. Introduce `S hS`. Conclude with `hS.1`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem mem_compactSpan_self {V : Type*} [AddCommGroup V] [Module ℂ V] {n : ℕ} (ε : Fin n → Bool)
     (F : Fin n → Fin n → Module.End ℂ V) (x : V) : x ∈ kSpan ε F x := by
@@ -18,7 +18,7 @@ theorem mem_compactSpan_self {V : Type*} [AddCommGroup V] [Module ℂ V] {n : �
   exact hS.1
 
 /- English proof (translation)
-The claim follows from `sInf_le ⟨hx, hS⟩`.
+A detailed English derivation is pending.
 -/
 theorem compactSpan_le_of_mem {V : Type*} [AddCommGroup V] [Module ℂ V] {n : ℕ} (ε : Fin n → Bool)
     (F : Fin n → Fin n → Module.End ℂ V) {x : V} {S : Submodule ℂ V} (hx : x ∈ S)
@@ -26,7 +26,7 @@ theorem compactSpan_le_of_mem {V : Type*} [AddCommGroup V] [Module ℂ V] {n : �
   sInf_le ⟨hx, hS⟩
 
 /- English proof (translation)
-Introduce `a b hab y hy`. Unfold `kSpan at *`. Rewrite `*` using `[Submodule.mem_sInf]`. Introduce `S hS`. Conclude with `hS.2 a b hab y (hy S hS)`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem compactSpan_isCompactInvariant {V : Type*} [AddCommGroup V] [Module ℂ V] {n : ℕ} (ε : Fin n → Bool)
     (F : Fin n → Fin n → Module.End ℂ V) (x : V) : KStable ε F (kSpan ε F x) := by
@@ -37,9 +37,9 @@ theorem compactSpan_isCompactInvariant {V : Type*} [AddCommGroup V] [Module ℂ 
   exact hS.2 a b hab y (hy S hS)
 
 /- English proof (translation)
-Unfold `CasK`. Simplify using `only [LinearMap.sum_apply, inner_sum]`. Use `push_cast`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Use `split_ifs with h`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Module.End.mul_apply, ← hu b a h.symm y (F b a y), inner_self_eq_norm_sq_to_K] push_cast`. Both sides reduce to the same expression. Simplify using the standard rewrite rules.
+Both sides reduce to the same expression. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem inner_compactCasimir_self {V : Type*} [NormedAddCommGroup V] [InnerProductSpace ℂ V] {n : ℕ}
     (ε : Fin n → Bool) (F : Fin n → Fin n → Module.End ℂ V) (hu : KUnit ε F) (y : V) :
@@ -54,13 +54,13 @@ theorem inner_compactCasimir_self {V : Type*} [NormedAddCommGroup V] [InnerProdu
   · simp
 
 /- English proof (translation)
-Introduce `V _ _ n ε F μ ν x y hr hu hx hy hy0 hν`. Establish `h1` using `hc V n ε F μ x hr hx y hy`. Establish `h2` using `inner_compactCasimir_self ε F hu y`. Rewrite `h2` using `[h1, inner_smul_right, inner_self_eq_norm_sq_to_K]`. Establish `h3 : ckv ε μ * ‖y‖ ^ 2 = ∑ a, ∑ b, (if ε a = ε b then ‖F b a y‖ ^ 2 else 0 : ℝ)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Apply `Complex.ofReal_injective` to reduce the goal to its premises. Move the coercions through the operations in `at h2 ⊢`. Conclude with `h2`. Establish `h4 : nsq ν * ‖y‖ ^ 2 ≤ ∑ a, ∑ b, (if ε a = ε b then ‖F b a y‖ ^ 2 else 0 : ℝ)`. Unfold `nsq dot`.
+Reduce the claim to the hypotheses of an applicable result. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_mul]`. Apply `Finset.sum_le_sum` to reduce the goal to its premises. Introduce `a _`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[if_pos rfl, hν a, norm_smul, Complex.norm_real, Real.norm_eq_abs, mul_pow, sq_abs]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Apply the tactic sequence `_ ≤ ∑ b, (if ε a = ε b then ‖F b a y‖ ^ 2 else 0 : ℝ) := Finset.single_le_sum (f := fun b => (if ε a = ε b then ‖F b a y‖ ^ 2 else 0 : ℝ)) (fun b _ => by split_ifs <;> positivity) (Finset.mem_univ a)`. Establish `hpos : 0 < ‖y‖ ^ 2` using `by positivity`. Conclude with `le_of_mul_le_mul_right (h4.trans h3.ge) hpos`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem kWtBound_of (hc : KCasSpan) : KWtBound := by
   intro V _ _ n ε F μ ν x y hr hu hx hy hy0 hν
@@ -86,9 +86,9 @@ theorem kWtBound_of (hc : KCasSpan) : KWtBound := by
   exact le_of_mul_le_mul_right (h4.trans h3.ge) hpos
 
 /- English proof (translation)
-Introduce `a b hab y hy`. Rewrite `hy`, the goal using `[Submodule.mem_inf]`. Use `⟨?_, hS a b hab y hy.2⟩` and prove the remaining obligations. Rewrite using `[Submodule.mem_orthogonal]`. Introduce `z hz`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← hu b a hab.symm z y]`. Conclude with `(Submodule.mem_orthogonal K y).1 hy.1 _ (hK b a hab.symm z hz)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isCompactInvariant_orthogonal_inf {V : Type*} [NormedAddCommGroup V] [InnerProductSpace ℂ V] {n : ℕ}
     (ε : Fin n → Bool) (F : Fin n → Fin n → Module.End ℂ V) (hu : KUnit ε F)
@@ -102,27 +102,23 @@ theorem isCompactInvariant_orthogonal_inf {V : Type*} [NormedAddCommGroup V] [In
   exact (Submodule.mem_orthogonal K y).1 hy.1 _ (hK b a hab.symm z hz)
 
 /- English proof (translation)
-Introduce `d`. Proceed by induction on `d using Nat.strong_induction_on with`. Consider the case `_ d ih`. Introduce `S hd hfin hS`. Distinguish the cases in `h0 : S = ⊥`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Use `⟨0, Fin.elim0, Fin.elim0, fun i => i.elim0, fun i => i.elim0, ?_⟩` and prove the remaining obligations. Rewrite using `[h0]`. Conclude with `iSup_of_empty _`. Take `⟨x, hxS, hx0, μ, hxμ⟩` from `he V n ε F S hfin hr hu hS h0`. Establish `hKS : kSpan ε F x ≤ S` using `compactSpan_le_of_mem ε F hxS hS`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: FiniteDimensional ℂ (kSpan ε F x)` using `Submodule.finiteDimensional_of_le hKS`. Establish `hS'S : (kSpan ε F x)ᗮ ⊓ S < S`. Use `lt_of_le_of_ne inf_le_right ?_` and prove the remaining obligations. Introduce `heq`. Establish `hx' : x ∈ (kSpan ε F x)ᗮ ⊓ S` using `by rw [heq]; exact hxS`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hx'` using `[Submodule.mem_inf]`. Establish `h1` using `(Submodule.mem_orthogonal (kSpan ε F x) x).1 hx'.1 x (mem_compactSpan_self ε F x)`. Conclude with `hx0 (inner_self_eq_zero.1 h1)`. Establish `: FiniteDimensional ℂ ↥((kSpan ε F x)ᗮ ⊓ S)` using `Submodule.finiteDimensional_of_le hS'S.le`. Establish `hlt : Module.finrank ℂ ↥((kSpan ε F x)ᗮ ⊓ S) < d` using `hd ▸ Submodule.finrank_lt_finrank_of_lt hS'S`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨m, xs, μs, h1, h2, h3⟩` from `ih _ hlt ((kSpan ε F x)ᗮ ⊓ S) rfl inferInstance (isCompactInvariant_orthogonal_inf ε F hu (compactSpan_isCompactInvariant ε F x) hS)`. Establish `hle : ∀ j, kSpan ε F (xs j) ≤ (kSpan ε F x)ᗮ ⊓ S` using `fun j => h3 ▸ le_iSup (fun i => kSpan ε F (xs i)) j`. Use `⟨m + 1, Fin.cons x xs, Fin.cons μ μs, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `i`. Break down `Fin.eq_zero_or_eq_succ i with rfl | ⟨j, rfl⟩` into its components or cases.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 
-Simplify using `only [Fin.cons_zero]`. Conclude with `⟨hxS, hx0, hxμ⟩`. Simplify using `only [Fin.cons_succ]`. Conclude with `⟨(h1 j).1.2, (h1 j).2⟩`. Introduce `i i' hii'`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Separate the alternatives or extract the components of the hypothesis.
 
-Apply the tactic sequence `rcases Fin.eq_zero_or_eq_succ i with rfl | ⟨j, rfl⟩ <;>`. Break down `Fin.eq_zero_or_eq_succ i' with rfl | ⟨j', rfl⟩` into its components or cases. Conclude with `absurd rfl hii'`. Simplify using `only [Fin.cons_zero, Fin.cons_succ]`. Introduce `y hy z hz`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Conclude with `Submodule.inner_right_of_mem_orthogonal hy (hle j' hz).1`. Simplify using `only [Fin.cons_zero, Fin.cons_succ]`. Introduce `y hy z hz`. Conclude with `Submodule.inner_left_of_mem_orthogonal hz (hle j hy).1`. Simplify using `only [Fin.cons_succ]`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules.
 
-Conclude with `h2 j j' (fun h => hii' (congrArg Fin.succ h))`. Apply `le_antisymm` to reduce the goal to its premises. Use `iSup_le fun i => ?_` and prove the remaining obligations. Break down `Fin.eq_zero_or_eq_succ i with rfl | ⟨j, rfl⟩` into its components or cases. Simplify using `using hKS`.
-
-Simplify using `only [Fin.cons_succ]`. Conclude with `(hle j).trans inf_le_right`. Combine the equalities or inequalities in the displayed calculation. Use `sup_le ?_ ?_` and prove the remaining obligations. Conclude with `le_iSup_of_le (0 : Fin (m + 1)) (by simp)`.
-
-Use `conv_lhs => rw [← h3]`. Conclude with `iSup_le fun j => le_iSup_of_le j.succ (by simp)`.
+Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem compactDecomposition_of_finrank (he : KHiExist) (V : Type) [NormedAddCommGroup V] [InnerProductSpace ℂ V]
     (n : ℕ) (ε : Fin n → Bool) (F : Fin n → Fin n → Module.End ℂ V) (hr : KRel ε F)
@@ -191,14 +187,14 @@ theorem compactDecomposition_of_finrank (he : KHiExist) (V : Type) [NormedAddCom
             exact iSup_le fun j => le_iSup_of_le j.succ (by simp)
 
 /- English proof (translation)
-Introduce `V _ _ n ε F S hfin hr hu hS`. Conclude with `compactDecomposition_of_finrank he V n ε F hr hu _ S rfl hfin hS`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem kDecomp_of (he : KHiExist) (ho : KOrth) : KDecomp := by
   intro V _ _ n ε F S hfin hr hu hS
   exact compactDecomposition_of_finrank he V n ε F hr hu _ S rfl hfin hS
 
 /- English proof (translation)
-Unfold `isoPart`. Conclude with `le_iSup₂_of_le (f := fun y (_ : y ∈ S ∧ ∃ μ ∈ T, KHighest ε F μ y) => kSpan ε F y) y ⟨hy, μ, hμ, hk⟩ le_rfl`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem compactSpan_le_isotypicPart {V : Type*} [AddCommGroup V] [Module ℂ V] {n : ℕ} (ε : Fin n → Bool)
     (F : Fin n → Fin n → Module.End ℂ V) (T : Set (Fin n → ℝ)) (S : Submodule ℂ V) {y : V}
@@ -209,7 +205,7 @@ theorem compactSpan_le_isotypicPart {V : Type*} [AddCommGroup V] [Module ℂ V] 
     y ⟨hy, μ, hμ, hk⟩ le_rfl
 
 /- English proof (translation)
-Unfold `isoPart`. Conclude with `iSup₂_le fun y hy => compactSpan_le_of_mem ε F hy.1 hS`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem isotypicPart_le {V : Type*} [AddCommGroup V] [Module ℂ V] {n : ℕ} (ε : Fin n → Bool)
     (F : Fin n → Fin n → Module.End ℂ V) (T : Set (Fin n → ℝ)) (S : Submodule ℂ V)
@@ -218,15 +214,13 @@ theorem isotypicPart_le {V : Type*} [AddCommGroup V] [Module ℂ V] {n : ℕ} (�
   exact iSup₂_le fun y hy => compactSpan_le_of_mem ε F hy.1 hS
 
 /- English proof (translation)
-Introduce `V _ _ n ε F S T hfin hr hu hS`. Prove the components needed by the constructor for the conclusion. Establish `h : isoPart ε F T S ⟂ isoPart ε F Tᶜ S`. Unfold `isoPart`. Rewrite using `[Submodule.isOrtho_iSup_left]`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Introduce `y`. Rewrite using `[Submodule.isOrtho_iSup_left]`. Introduce and unpack `⟨_, μ, hμT, hyμ⟩`. Rewrite using `[Submodule.isOrtho_iSup_right]`. Introduce `z`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Submodule.isOrtho_iSup_right]`. Introduce and unpack `⟨_, ν, hνT, hzν⟩`. Rewrite using `[Submodule.isOrtho_iff_inner_eq]`. Conclude with `ho V n ε F μ ν y z hr hu hyμ hzν (fun h => hνT (h ▸ hμT))`. Conclude with `Submodule.isOrtho_iff_inner_eq.1 h`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result.
 
-Take `⟨m, x, μ, h1, h2, h3⟩` from `hd V n ε F S hfin hr hu hS`. Apply `le_antisymm` to reduce the goal to its premises. Conclude with `sup_le (isotypicPart_le ε F T S hS) (isotypicPart_le ε F Tᶜ S hS)`. Use `conv_lhs => rw [← h3]`. Use `iSup_le fun i => ?_` and prove the remaining obligations.
-
-Distinguish the cases in `hi : μ i ∈ T`. Conclude with `le_sup_of_le_left (compactSpan_le_isotypicPart ε F T S (h1 i).1 hi (h1 i).2.2)`. Conclude with `le_sup_of_le_right (compactSpan_le_isotypicPart ε F Tᶜ S (h1 i).1 hi (h1 i).2.2)`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. A detailed English derivation is pending.
 -/
 theorem kIsoSplit_of (hd : KDecomp) (ho : KOrth) : KIsoSplit := by
   intro V _ _ n ε F S T hfin hr hu hS
@@ -250,9 +244,9 @@ theorem kIsoSplit_of (hd : KDecomp) (ho : KOrth) : KIsoSplit := by
       · exact le_sup_of_le_right (compactSpan_le_isotypicPart ε F Tᶜ S (h1 i).1 hi (h1 i).2.2)
 
 /- English proof (translation)
-Unfold `rhoC`. Establish `c1` using `Finset.card_filter_le (univ : Finset (Fin n)) (fun b => a < b ∧ ε b = ε a)`. Establish `c2` using `Finset.card_filter_le (univ : Finset (Fin n)) (fun b => b < a ∧ ε b = ε a)`. Simplify using `only [Finset.card_univ, Fintype.card_fin] at c1 c2`. Establish `d1 : ((univ.filter fun b => a < b ∧ ε b = ε a).card : ℝ) ≤ n` using `by exact_mod_cast c1`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `d2 : ((univ.filter fun b => b < a ∧ ε b = ε a).card : ℝ) ≤ n` using `by exact_mod_cast c2`. Establish `e1 : (0 : ℝ) ≤ ((univ.filter fun b => a < b ∧ ε b = ε a).card : ℝ)` using `Nat.cast_nonneg _`. Establish `e2 : (0 : ℝ) ≤ ((univ.filter fun b => b < a ∧ ε b = ε a).card : ℝ)` using `Nat.cast_nonneg _`. Rewrite using `[abs_le]`. Apply the tactic sequence `constructor <;> linarith`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem abs_compactHalfSum_le {n : ℕ} (ε : Fin n → Bool) (a : Fin n) : |rhoC ε a| ≤ n := by
   unfold rhoC
@@ -267,11 +261,11 @@ theorem abs_compactHalfSum_le {n : ℕ} (ε : Fin n → Bool) (a : Fin n) : |rho
   constructor <;> linarith
 
 /- English proof (translation)
-Unfold `ckv nsq dot`. Establish `h0 : 0 ≤ ∑ a, rhoC ε a * rhoC ε a` using `Finset.sum_nonneg fun a _ => mul_self_nonneg _`. Establish `h1 : ∑ a, (μ + rhoC ε) a * (μ + rhoC ε) a ≤ ∑ _a : Fin n, (R + n) ^ 2`. Apply `Finset.sum_le_sum` to reduce the goal to its premises. Introduce `a _`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [Pi.add_apply]`. Establish `h3 : |μ a + rhoC ε a| ≤ R + n` using `(abs_add_le (μ a) (rhoC ε a)).trans (add_le_add (hμ a) (abs_compactHalfSum_le ε a))`. Rewrite using `[← sq, ← sq_abs]`. Conclude with `pow_le_pow_left₀ (abs_nonneg _) h3 2`. Rewrite `h1` using `[Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 theorem compactCasimirValue_le {n : ℕ} (ε : Fin n → Bool) (μ : Fin n → ℝ) (R : ℝ)
     (hμ : ∀ a, |μ a| ≤ R) : ckv ε μ ≤ n * (R + n) ^ 2 := by
@@ -289,21 +283,19 @@ theorem compactCasimirValue_le {n : ℕ} (ε : Fin n → Bool) (μ : Fin n → �
   linarith
 
 /- English proof (translation)
-Introduce `V _ _ n ε F S R hfin hr hu hS hR hw y hy`. Take `⟨m, x, μ, h1, h2, h3⟩` from `hd V n ε F S hfin hr hu hS`. Establish `hy' : y ∈ ⨆ i ∈ (univ : Finset (Fin m)), kSpan ε F (x i)` using `by simpa [h3] using hy`. Take `⟨v, hv⟩` from `(Submodule.mem_iSup_finset_iff_exists_sum _ y).1 hy'`. Establish `hC : CasK ε F y = ∑ i, ((ckv ε (μ i) : ℝ) : ℂ) • (v i : V)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[← hv, map_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => hc V n ε F (μ i) (x i) hr (h1 i).2.2 _ (v i).2`. Establish `key : ∀ c : Fin m → ℂ, ⟪y, ∑ i, c i • (v i : V)⟫_ℂ = ∑ i, c i * ⟪(v i : V), (v i : V)⟫_ℂ`. Introduce `c`. Rewrite using `[← hv, sum_inner]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[inner_sum, Finset.sum_eq_single j]`. Rewrite using `[inner_smul_right]`. Introduce `i _ hij`. Rewrite using `[inner_smul_right, h2 j i (Ne.symm hij) _ (v j).2 _ (v i).2, mul_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Establish `hvv : ∀ i, ⟪(v i : V), (v i : V)⟫_ℂ = ((‖(v i : V)‖ ^ 2 : ℝ) : ℂ)` using `fun i => by`. Rewrite using `[inner_self_eq_norm_sq_to_K]`. Use `push_cast`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hn : ‖y‖ ^ 2 = ∑ i, ‖(v i : V)‖ ^ 2`. Establish `h` using `key (fun _ => 1)`. Simplify using `only [one_smul, one_mul, hv, inner_self_eq_norm_sq_to_K] at h`. Apply `Complex.ofReal_injective` to reduce the goal to its premises. Use `push_cast`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Move the embeddings inside the algebraic operations. Establish an intermediate fact.
 
-Conclude with `h`. Establish `key2` using `key (fun i => ((ckv ε (μ i) : ℝ) : ℂ))`. Rewrite using `[hC, key2]`. Simplify using `only [hvv]`. Establish `hre : (∑ i, ((ckv ε (μ i) : ℝ) : ℂ) * ((‖(v i : V)‖ ^ 2 : ℝ) : ℂ)).re = ∑ i, ckv ε (μ i) * ‖(v i : V)‖ ^ 2`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [← Complex.ofReal_mul, ← Complex.ofReal_sum, Complex.ofReal_re]`. Rewrite using `[hre, hn, Finset.mul_sum]`. Apply `Finset.sum_le_sum` to reduce the goal to its premises. Introduce `i _`. Apply `mul_le_mul_of_nonneg_right _ (sq_nonneg _)` to reduce the goal to its premises.
-
-Conclude with `compactCasimirValue_le ε (μ i) R (hw (μ i) (x i) (h1 i).1 (h1 i).2.1 (h1 i).2.2.1)`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem kCasBound_of (hd : KDecomp) (hc : KCasSpan) (ho : KOrth) : KCasBound := by
   intro V _ _ n ε F S R hfin hr hu hS hR hw y hy

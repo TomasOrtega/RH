@@ -3,49 +3,43 @@ import Mathlib
 namespace GlobalTheory.UnitBallBasis
 
 /- English proof (translation)
-Use `hfree` as an intermediate fact. Establish `: Module.Finite O S` using `Module.Finite.iff_fg.mpr hfg`. Set `b` to `Module.Free.chooseBasis O S`. Set `c` to `Module.Free.chooseBasis ℤ_[l] O`. Establish `hsm : ∀ (a : ℤ_[l]) (v : V), (algebraMap ℤ_[l] O a) • v = (a : ℚ_[l]) • v`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `a v`. Rewrite using `[← algebraMap_smul L (algebraMap ℤ_[l] O a) v, hc, algebraMap_smul]`. Set `J` to `Module.Free.ChooseBasisIndex ℤ_[l] O × Module.Free.ChooseBasisIndex O S`. Set `e : J → V` to `fun j => c j.1 • (b j.2 : V)`. Establish `he : ∀ j, e j ∈ S` using `fun j => S.smul_mem _ (b j.2).2`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hin : ∀ a : J → ℤ_[l], ∑ j, (a j : ℚ_[l]) • e j ∈ S`. Introduce `a`. Use `Submodule.sum_mem _ fun j _ => ?_` and prove the remaining obligations. Rewrite using `[← hsm]`. Conclude with `S.smul_mem _ (he j)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hrep : ∀ s : S, ∃ a : J → ℤ_[l], (s : V) = ∑ j, (a j : ℚ_[l]) • e j`. Introduce `s`. Use `⟨fun j => c.repr (b.repr s j.2) j.1, ?_⟩` and prove the remaining obligations. Rewrite using `[Fintype.sum_prod_type_right]`. Use `conv_lhs => rw [← b.sum_repr s]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Submodule.coe_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Submodule.coe_smul]`. Use `conv_lhs => rw [← c.sum_repr (b.repr s i)]`. Rewrite using `[Finset.sum_smul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Algebra.smul_def, mul_smul, hsm]`. Establish `hind : ∀ a : J → ℤ_[l], ∑ j, (a j : ℚ_[l]) • e j = 0 → a = 0`. Introduce `a ha`. Establish `h1 : ((∑ i, (∑ k, a (k, i) • c k) • b i : S) : V) = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← ha, Fintype.sum_prod_type_right, Submodule.coe_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Submodule.coe_smul, Finset.sum_smul]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Algebra.smul_def, mul_smul, hsm]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Establish `h3` using `Fintype.linearIndependent_iff.mp b.linearIndependent _ (Submodule.coe_eq_zero.mp h1)`. Use function extensionality and compare the values at `j`. Conclude with `Fintype.linearIndependent_iff.mp c.linearIndependent _ (h3 j.2) j.1`. Establish `hl1 : (1 : ℝ) < l` using `by exact_mod_cast (Fact.out : l.Prime).one_lt`. Establish `hli : LinearIndependent ℚ_[l] e`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `g hg`. Take `⟨N, hN⟩` from `pow_unbounded_of_one_lt (∑ j, ‖g j‖) hl1`. Establish `hsmall : ∀ j, ‖(l : ℚ_[l]) ^ N * g j‖ ≤ 1`. Introduce `j`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion repeatedly using the stated equalities.
 
-Rewrite using `[norm_mul, norm_pow, Padic.norm_p, inv_pow, inv_mul_le_iff₀ (by positivity), mul_one]`. Conclude with `(Finset.single_le_sum (fun j _ => norm_nonneg (g j)) (Finset.mem_univ j)).trans hN.le`. Establish `h0` using `hind (fun j => ⟨(l : ℚ_[l]) ^ N * g j, hsmall j⟩) (by`. Express the relevant statement in the definitionally equal form `∑ j, ((l : ℚ_[l]) ^ N * g j) • e j = 0`. Repeatedly rewrite using `[mul_smul]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[← Finset.smul_sum, hg, smul_zero])`. Introduce `j`. Establish `hj : (l : ℚ_[l]) ^ N * g j = 0` using `congrArg Subtype.val (congrFun h0 j)`. Conclude with `(mul_eq_zero.mp hj).resolve_left (pow_ne_zero _ (by exact_mod_cast (Fact.out : l.Prime).ne_zero))`. Set `P` to `Submodule.span ℚ_[l] (Set.range e)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hSP : ∀ s : S, (s : V) ∈ P`. Introduce `s`. Take `⟨a, ha⟩` from `hrep s`. Rewrite using `[ha]`. Conclude with `Submodule.sum_mem _ fun j _ => P.smul_mem _ (Submodule.subset_span ⟨j, rfl⟩)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hLS : ∀ (x : L) (s : V), s ∈ S → x • s ∈ P`. Introduce `x s hs`. Take `⟨y, hy, o, ho⟩` from `hd x`. Establish `hy' : (y : ℚ_[l]) ≠ 0` using `fun h => hy (Subtype.ext h)`. Establish `ho' : o • s = (y : ℚ_[l]) • (x • s)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Rewrite using `[← algebraMap_smul L o s, ho, mul_smul, algebraMap_smul]`. Establish `hx : x • s = ((y : ℚ_[l]))⁻¹ • (o • s)`. Rewrite using `[ho', inv_smul_smul₀ hy']`. Rewrite using `[hx]`. Conclude with `P.smul_mem _ (hSP ⟨_, S.smul_mem o hs⟩)`.
+Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Establish `hLP : ∀ (x : L) (v : V), v ∈ P → x • v ∈ P`. Introduce `x v hv`. Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem v hv`. Take `⟨j, rfl⟩` from `hv`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Proceed by induction. Treat this case separately.
 
-Conclude with `hLS x _ (he j)`. Consider the case `zero => rw [smul_zero]`. Conclude with `P.zero_mem`. Consider the case `add u w _ _ hu hw => rw [smul_add]`. Conclude with `P.add_mem hu hw`.
+Treat this case separately. Treat this case separately. Treat this case separately. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Consider the case `smul q u _ hu => rw [smul_comm]`. Conclude with `P.smul_mem q hu`. Establish `hsp : ⊤ ≤ P`. Introduce and unpack `v -`. Establish `hv : v ∈ Submodule.span L (S : Set V)` using `by rw [hspan]; exact Submodule.mem_top`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem v hv => exact hSP ⟨v, hv⟩`. Consider the case `zero => exact P.zero_mem`. Consider the case `add u w _ _ hu hw => exact P.add_mem hu hw`. Consider the case `smul x u _ hu => exact hLP x u hu`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `b0 : Module.Basis J ℚ_[l] V` to `Module.Basis.mk hli hsp`. Establish `hb0 : ∀ j, b0 j = e j` using `fun j => Module.Basis.mk_apply hli hsp j`. Use `⟨Fintype.card J, b0.reindex (Fintype.equivFin J), fun x => ?_⟩` and prove the remaining obligations. Simplify using `only [Module.Basis.repr_reindex_apply]`. Prove the components needed by the constructor for the conclusion.
-
-Introduce `hx i`. Take `⟨a, ha⟩` from `hrep ⟨x, hx⟩`. Establish `hx0 : x = ∑ j, (a j : ℚ_[l]) • b0 j` using `by simpa only [hb0] using ha`. Rewrite using `[hx0, congrFun (b0.repr_sum_self fun j => (a j : ℚ_[l]))]`. Conclude with `PadicInt.norm_le_one _`.
-
-Introduce `hx`. Establish `hx' : ∀ j, ‖b0.repr x j‖ ≤ 1` using `fun j => by simpa using hx (Fintype.equivFin J j)`. Establish `hxs` using `hin fun j => ⟨b0.repr x j, hx' j⟩`. Establish `hsum : ∑ j, ((⟨b0.repr x j, hx' j⟩ : ℤ_[l]) : ℚ_[l]) • e j = x`. Repeatedly rewrite using `[← hb0]`.
-
-Conclude with `b0.sum_repr x`. Rewrite `hxs` using `[hsum]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem exists_basis_mem_iff_norm_le_one {l : ℕ} [inst : Fact (Nat.Prime l)] {L O V : Type}
     [inst_1 : Field L] [inst_2 : Algebra ℚ_[l] L] [inst_3 : CommRing O] [inst_4 : Algebra O L]

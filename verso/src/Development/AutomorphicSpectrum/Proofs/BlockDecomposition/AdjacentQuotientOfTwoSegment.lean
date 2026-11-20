@@ -18,11 +18,9 @@ namespace GlobalTheory.CompanionTheory.AdjQuot
 section Linear
 
 /- English proof (translation)
-Use `choose v hv using fun a => exists_ne (0 : X a)`. Establish `hex : ∀ a, ∃ φ : Module.Dual ℂ (X a), φ (v a) ≠ 0` using `fun a => by`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Conclude with `hv a ((Module.forall_dual_apply_eq_zero_iff ℂ (v a)).1 hc)`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `choose φ hφ using hex`. Set `L` to `PiTensorProduct.lift ((MultilinearMap.mkPiAlgebra ℂ ι ℂ).compLinearMap φ)`. Establish `h : L (PiTensorProduct.tprod ℂ v) ≠ 0`. Simplify using `only [L, PiTensorProduct.lift.tprod, MultilinearMap.compLinearMap_apply, MultilinearMap.mkPiAlgebra_apply]`. Conclude with `Finset.prod_ne_zero_iff.2 fun a _ => hφ a`.
-
-Conclude with `⟨PiTensorProduct.tprod ℂ v, 0, fun h0 => h (by rw [h0, map_zero])⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem nontrivial_piTensorProduct {ι : Type} [Fintype ι] {X : ι → Type} [∀ a, AddCommGroup (X a)]
     [∀ a, Module ℂ (X a)] [∀ a, Nontrivial (X a)] : Nontrivial (PiTensorProduct ℂ X) := by
@@ -41,15 +39,15 @@ theorem nontrivial_piTensorProduct {ι : Type} [Fintype ι] {X : ι → Type} [�
   exact ⟨PiTensorProduct.tprod ℂ v, 0, fun h0 => h (by rw [h0, map_zero])⟩
 
 /- English proof (translation)
-The claim follows from `inferInstance`.
+A detailed English derivation is pending.
 -/
 theorem nontrivial_tensorProduct {V U : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup U] [Module ℂ U]
     [Nontrivial V] [Nontrivial U] : Nontrivial (V ⊗[ℂ] U) := inferInstance
 
 /- English proof (translation)
-Use `List.ext_getElem (by simp; omega) fun i h₁ h₂ => ?_` and prove the remaining obligations. Simplify using `only [List.length_ofFn] at h₁`. Rewrite using `[List.getElem_append]`. Use `split_ifs with hc`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [List.length_ofFn] at hc`. Simplify using `only [List.getElem_ofFn, List.length_ofFn]`. Conclude with `congrArg x (Fin.ext (by simp; omega))`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem ofFn_split {α : Type*} {h : ℕ} (x : Fin h → α) (j : ℕ) (hj : j ≤ h) :
     List.ofFn x = List.ofFn (fun i : Fin j => x ⟨i, by omega⟩) ++
@@ -74,9 +72,9 @@ variable {α n : Type} {m : α → Type} [Fintype α] [LinearOrder α] [∀ a, F
   [AddCommGroup W'] [Module ℂ W']
 
 /- English proof (translation)
-Take `⟨-, -, -, -, -, hcont, hP, -, hPK⟩` from `GlobalTheory.SmGL.LeviInt.levi_integral_facts k α n m e`. Take `⟨_, _⟩` from `SplitWeil.Model.secondCountable_and_t2_local_field (k := k)`. Set `σ₀ : Representation ℂ (parab k e) W` to `(twist ρ (deltaHalf k m)).comp (leviProj k e)`. Set `z : Representation.IntertwiningMap σ₀ σ₀` to `{ toLinearMap := 0, isIntertwining' := fun _ => by ext; simp }`. Use `(GlobalTheory.SmGL.IndCoinv.smInd_coinvariants (GL n k) (parab k e) (KO k n) hP SplitFlip.isCompact_KO hPK (GlobalTheory.SmGL.exists_open_normalised_subgroup_subset k n) _ _ _ _ (isSmooth_comp (isSmooth_twist hρ (isSmoothChar_deltaHalf k)) _ hcont) (compMap (twistMap f _) _) Unit …` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `x _`. Use `Submodule.subset_span ⟨(), -x, ?_⟩` and prove the remaining obligations. Use `show x = (0 : _) - -x`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem parIndMap_surjective (e : (Σ a, m a) ≃ n) {ρ : Representation ℂ (Levi k m) W}
     {ρ' : Representation ℂ (Levi k m) W'} (hρ : IsSmooth ρ) (f : ρ.IntertwiningMap ρ')
@@ -96,7 +94,7 @@ theorem parIndMap_surjective (e : (Σ a, m a) ≃ n) {ρ : Representation ℂ (L
   simp
 
 /- English proof (translation)
-Take `⟨u, hu⟩` from `exists_ne (0 : W)`. Take `⟨f, hf, -⟩` from `GlobalTheory.SmGL.ProdIrr.exists_indSp_apply_one e ρ hρ u`. Conclude with `⟨f, 0, fun h => hu (by rw [← hf, h]; rfl)⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem nontrivial_indSp (e : (Σ a, m a) ≃ n) {ρ : Representation ℂ (Levi k m) W} (hρ : IsSmooth ρ)
     [Nontrivial W] : Nontrivial (IndSp e ρ) := by
@@ -107,7 +105,7 @@ theorem nontrivial_indSp (e : (Σ a, m a) ≃ n) {ρ : Representation ℂ (Levi 
 end Induction
 
 /- English proof (translation)
-Use `haveI : ∀ a, Nontrivial (x a).2.rep.V := fun a => GlobalTheory.SmGL.Model.nontrivial_of_isIrreducible (x a).2.rep.irr`. Use `haveI := nontrivial_piTensorProduct (X := fun a => (x a).2.rep.V)`. Conclude with `nontrivial_indSp _ (isSmooth_piTensor fun a => (x a).2.rep.smooth)`.
+A detailed English derivation is pending.
 -/
 theorem nontrivial_prodIrr {h N : ℕ} (x : Fin h → IrrGL k) (hd : ∑ a, (x a).1 = N) :
     Nontrivial (IndSp (stdBlocks (fun a => (x a).1) hd) (piTensor fun a => (x a).rep)) := by
@@ -121,7 +119,7 @@ variable {V U W : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup U] [Module
   {r t N : ℕ}
 
 /- English proof (translation)
-The claim follows from `isSmooth_comp (isSmooth_extTensor hA hC) _ (show Continuous fun g : Levi k (Two (Fin r) (Fin t)) => (g false, g true) from (continuous_apply false).prodMk (continuous_apply true))`.
+A detailed English derivation is pending.
 -/
 theorem isSmooth_levi (A : Representation ℂ (GL (Fin r) k) V) (C : Representation ℂ (GL (Fin t) k) U)
     (hA : IsSmooth A) (hC : IsSmooth C) :
@@ -131,7 +129,7 @@ theorem isSmooth_levi (A : Representation ℂ (GL (Fin r) k) V) (C : Representat
       (continuous_apply false).prodMk (continuous_apply true))
 
 /- English proof (translation)
-Use `haveI : Nontrivial (V ⊗[ℂ] U) := nontrivial_tensorProduct`. Conclude with `nontrivial_indSp _ (isSmooth_levi A C hA hC)`.
+A detailed English derivation is pending.
 -/
 theorem nontrivial_ind₂ (e : r + t = N) (A : Representation ℂ (GL (Fin r) k) V)
     (C : Representation ℂ (GL (Fin t) k) U) (hA : IsSmooth A) (hC : IsSmooth C) [Nontrivial V] [Nontrivial U] :
@@ -145,9 +143,9 @@ def fam2 (A : GlobalTheory.ProdFlatten.BR k r) (C : GlobalTheory.ProdFlatten.BR 
   Fin.cases A fun _ => C
 
 /- English proof (translation)
-Take `⟨n, rfl⟩ : ∃ n, d = fun _ => n` from `⟨d 0, funext fun a => by rw [Subsingleton.elim a 0]⟩`. Take `⟨Y, rfl⟩ : ∃ Y, X = fun _ => Y` from `⟨X 0, funext fun a => by rw [Subsingleton.elim a 0]⟩`. Take `⟨i, rfl⟩ : ∃ i, iX = fun _ => i` from `⟨iX 0, funext fun a => by rw [Subsingleton.elim a 0]⟩`. Take `⟨j, rfl⟩ : ∃ j, mX = fun _ => j` from `⟨mX 0, funext fun a => by rw [Subsingleton.elim a 0]⟩`. Take `⟨ρ, rfl⟩ : ∃ ρ, π = fun _ => ρ` from `⟨π 0, funext fun a => by rw [Subsingleton.elim a 0]⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Set `f : (Σ _ : Fin 1, Fin n) ≃ Fin n` to `{ toFun := Sigma.snd invFun := fun i => ⟨0, i⟩ left_inv := fun ⟨a, i⟩ => by obtain rfl := Subsingleton.elim a 0; rfl right_inv := fun _ => rfl }`. Conclude with `eqv_trans (multiProd_placing e f _) (eqv_symm (nonempty_equiv_multiProd_one hs f fun _ _ => rfl))`.
+Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem nonempty_multiProd_fin_one {d : Fin 1 → ℕ} {X : Fin 1 → Type} [iX : ∀ a, AddCommGroup (X a)]
     [mX : ∀ a, Module ℂ (X a)] (π : ∀ a, Representation ℂ (GL (Fin (d a)) k) (X a)) (hs : IsSmooth (π 0))
@@ -165,7 +163,7 @@ theorem nonempty_multiProd_fin_one {d : Fin 1 → ℕ} {X : Fin 1 → Type} [iX 
   exact eqv_trans (multiProd_placing e f _) (eqv_symm (nonempty_equiv_multiProd_one hs f fun _ _ => rfl))
 
 /- English proof (translation)
-Set `f : (Σ a : Fin 1, Fin (d a.succ)) ≃ Fin (d 1)` to `{ toFun := fun p => Fin.cast (by rw [Subsingleton.elim p.1 0]; rfl) p.2 invFun := fun i => ⟨0, i⟩ left_inv := fun ⟨a, i⟩ => by obtain rfl := Subsingleton.elim a 0; rfl right_inv := fun _ => rfl }`. Establish `B` using `multiProd_head (k := k) (d := d) (X := X) π (stdBlocks _ hd) e f`. Establish `D` using `nonempty_multiProd_fin_one (d := fun a : Fin 1 => d a.succ) (X := fun a => X a.succ) (fun a => π a.succ) hs f`. Conclude with `eqv_trans B (ind₂_congr e (eqv_refl (π 0)) D)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem nonempty_multiProd_two {d : Fin 2 → ℕ} {X : Fin 2 → Type} [∀ a, AddCommGroup (X a)]
     [∀ a, Module ℂ (X a)] (π : ∀ a, Representation ℂ (GL (Fin (d a)) k) (X a)) (hs : IsSmooth (π 1))
@@ -182,7 +180,7 @@ theorem nonempty_multiProd_two {d : Fin 2 → ℕ} {X : Fin 2 → Type} [∀ a, 
   exact eqv_trans B (ind₂_congr e (eqv_refl (π 0)) D)
 
 /- English proof (translation)
-Establish `hd : ∑ a, d a = N` using `(Fin.sum_univ_two d).trans e`. Take `⟨φ⟩` from `nonempty_multiProd_two π (hs 1) hd e`. Conclude with `(isGeneric_congr φ).symm.trans ((hG 2 N d hd X π hs).trans Fin.forall_fin_two)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem isGeneric_fam_iff (hG : GlobalTheory.BZSeg.GenericProdIff k) {d : Fin 2 → ℕ} {X : Fin 2 → Type}
     [∀ a, AddCommGroup (X a)] [∀ a, Module ℂ (X a)] (π : ∀ a, Representation ℂ (GL (Fin (d a)) k) (X a))
@@ -193,7 +191,7 @@ theorem isGeneric_fam_iff (hG : GlobalTheory.BZSeg.GenericProdIff k) {d : Fin 2 
   exact (isGeneric_congr φ).symm.trans ((hG 2 N d hd X π hs).trans Fin.forall_fin_two)
 
 /- English proof (translation)
-The claim follows from `isGeneric_fam_iff hG (d := deg2 r t) (X := fun a => (fam2 ⟨V, A⟩ ⟨U, C⟩ a).V) (fun a => (fam2 ⟨V, A⟩ ⟨U, C⟩ a).ρ) (Fin.forall_fin_two.2 ⟨hA, hC⟩) e`.
+A detailed English derivation is pending.
 -/
 theorem isGeneric_ind₂_iff (hG : GlobalTheory.BZSeg.GenericProdIff k) (e : r + t = N)
     (A : Representation ℂ (GL (Fin r) k) V) (C : Representation ℂ (GL (Fin t) k) U) (hA : IsSmooth A)
@@ -206,7 +204,7 @@ def HasNGQuot (π : Representation ℂ (GL (Fin N) k) V) : Prop :=
     (f : π.IntertwiningMap τ), Function.Surjective f ∧ Nontrivial W ∧ ¬ IsGeneric τ
 
 /- English proof (translation)
-Take `⟨W, _, _, τ, f, hf, hW, hτ⟩` from `h`. Conclude with `⟨W, _, _, τ, f.comp φ.toIntertwiningMap, hf.comp φ.toLinearEquiv.surjective, hW, hτ⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem HasNGQuot.of_equiv {π : Representation ℂ (GL (Fin N) k) V} {σ : Representation ℂ (GL (Fin N) k) U}
     (h : HasNGQuot π) (φ : σ.Equiv π) : HasNGQuot σ := by
@@ -214,7 +212,7 @@ theorem HasNGQuot.of_equiv {π : Representation ℂ (GL (Fin N) k) V} {σ : Repr
   exact ⟨W, _, _, τ, f.comp φ.toIntertwiningMap, hf.comp φ.toLinearEquiv.surjective, hW, hτ⟩
 
 /- English proof (translation)
-Take `⟨W, _, _, τ, f, hf, hW, hτ⟩` from `h`. Establish `hτs : IsSmooth τ` using `(IsSubquotient.of_surjective f hf).isSmooth hπ`. Use `⟨_, _, _, ind₂ (stdSum e) (extTensor τ C), parIndMap (two (stdSum e)) (compMap (GlobalTheory.ParIndExact.extTensorMapLeft C f) _), parIndMap_surjective _ (isSmooth_levi π C hπ hC) _ (LinearMap.rTensor_surjective U hf), nontrivial_ind₂ e τ C hτs hC, fun hg => hτ ((isGeneric_ind₂_i …` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem HasNGQuot.ind₂_left (hG : GlobalTheory.BZSeg.GenericProdIff k) (e : r + t = N)
     {π : Representation ℂ (GL (Fin r) k) V} (C : Representation ℂ (GL (Fin t) k) U) (hπ : IsSmooth π)
@@ -227,7 +225,7 @@ theorem HasNGQuot.ind₂_left (hG : GlobalTheory.BZSeg.GenericProdIff k) (e : r 
     nontrivial_ind₂ e τ C hτs hC, fun hg => hτ ((isGeneric_ind₂_iff hG e τ C hτs hC).1 hg).1⟩
 
 /- English proof (translation)
-Take `⟨W, _, _, τ, f, hf, hW, hτ⟩` from `h`. Establish `hτs : IsSmooth τ` using `(IsSubquotient.of_surjective f hf).isSmooth hπ`. Use `⟨_, _, _, ind₂ (stdSum e) (extTensor A τ), parIndMap (two (stdSum e)) (compMap (GlobalTheory.ParIndExact.extTensorMapRight A f) _), parIndMap_surjective _ (isSmooth_levi A π hA hπ) _ (LinearMap.lTensor_surjective U hf), nontrivial_ind₂ e A τ hA hτs, fun hg => hτ ((isGeneric_ind₂_ …` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem HasNGQuot.ind₂_right (hG : GlobalTheory.BZSeg.GenericProdIff k) (e : r + t = N)
     {π : Representation ℂ (GL (Fin t) k) V} (A : Representation ℂ (GL (Fin r) k) U) (hπ : IsSmooth π)
@@ -240,7 +238,7 @@ theorem HasNGQuot.ind₂_right (hG : GlobalTheory.BZSeg.GenericProdIff k) (e : r
     nontrivial_ind₂ e A τ hA hτs, fun hg => hτ ((isGeneric_ind₂_iff hG e A τ hA hτs).1 hg).2⟩
 
 /- English proof (translation)
-The claim follows from `φ.elim fun φ => (h.ind₂_left hG e C hπ hC).of_equiv φ`.
+A detailed English derivation is pending.
 -/
 theorem HasNGQuot.of_ind₂_left {Y : Type} [AddCommGroup Y] [Module ℂ Y] (hG : GlobalTheory.BZSeg.GenericProdIff k)
     (e : r + t = N) {π : Representation ℂ (GL (Fin r) k) V} {C : Representation ℂ (GL (Fin t) k) U}
@@ -249,7 +247,7 @@ theorem HasNGQuot.of_ind₂_left {Y : Type} [AddCommGroup Y] [Module ℂ Y] (hG 
   φ.elim fun φ => (h.ind₂_left hG e C hπ hC).of_equiv φ
 
 /- English proof (translation)
-The claim follows from `φ.elim fun φ => (h.ind₂_right hG e A hπ hA).of_equiv φ`.
+A detailed English derivation is pending.
 -/
 theorem HasNGQuot.of_ind₂_right {Y : Type} [AddCommGroup Y] [Module ℂ Y] (hG : GlobalTheory.BZSeg.GenericProdIff k)
     (e : r + t = N) {π : Representation ℂ (GL (Fin t) k) V} {A : Representation ℂ (GL (Fin r) k) U}
@@ -262,7 +260,7 @@ end Two
 section Concat
 
 /- English proof (translation)
-Use `congrArg (fun l : List (IrrGL k) => (l.map Sigma.fst).sum) h` as an intermediate fact. Simplify using `only [List.map_append, List.sum_append, List.map_ofFn, List.sum_ofFn, Function.comp_def] at this`. Conclude with `this.symm`. Use `unseal GlobalTheory.ProdFlatten.one GlobalTheory.ProdFlatten.two GlobalTheory.ProdFlatten.mp GlobalTheory.ProdFlatten.pr GlobalTheory.ProdFlatten.Iso in`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem deg_sum_append {a b c : ℕ} {x : Fin a → IrrGL k} {y : Fin b → IrrGL k} {z : Fin c → IrrGL k}
     (h : List.ofFn z = List.ofFn x ++ List.ofFn y) : ∑ i, (x i).1 + ∑ i, (y i).1 = ∑ i, (z i).1 := by
@@ -273,7 +271,7 @@ theorem deg_sum_append {a b c : ℕ} {x : Fin a → IrrGL k} {y : Fin b → IrrG
 unseal GlobalTheory.ProdFlatten.one GlobalTheory.ProdFlatten.two GlobalTheory.ProdFlatten.mp GlobalTheory.ProdFlatten.pr GlobalTheory.ProdFlatten.Iso in
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.ProdFlatten.pr_append x y z h hab hx hy hz e unseal GlobalTheory.ProdFlatten.one GlobalTheory.ProdFlatten.mp GlobalTheory.ProdFlatten.pr GlobalTheory.ProdFlatten.Iso in`.
+A detailed English derivation is pending.
 -/
 theorem nonempty_prodIrr_append {a b c r t N : ℕ} (x : Fin a → IrrGL k) (y : Fin b → IrrGL k) (z : Fin c → IrrGL k)
     (h : List.ofFn z = List.ofFn x ++ List.ofFn y) (hab : a ≠ 0 ∨ b = 0) (hx : ∑ i, (x i).1 = r)
@@ -284,7 +282,7 @@ theorem nonempty_prodIrr_append {a b c r t N : ℕ} (x : Fin a → IrrGL k) (y :
 unseal GlobalTheory.ProdFlatten.one GlobalTheory.ProdFlatten.mp GlobalTheory.ProdFlatten.pr GlobalTheory.ProdFlatten.Iso in
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.ProdFlatten.pr_congr h hx hz`.
+A detailed English derivation is pending.
 -/
 theorem nonempty_prodIrr_congr {a b N : ℕ} {x : Fin a → IrrGL k} {z : Fin b → IrrGL k}
     (h : List.ofFn x = List.ofFn z) (hx : ∑ i, (x i).1 = N) (hz : ∑ i, (z i).1 = N) :
@@ -294,7 +292,7 @@ theorem nonempty_prodIrr_congr {a b N : ℕ} {x : Fin a → IrrGL k} {z : Fin b 
 end Concat
 
 /- English proof (translation)
-Establish `e : r + t = N` using `by rw [← hx, ← hy, ← hz]; exact deg_sum_append h`. Conclude with `H.of_ind₂_left hG e (isSmooth_prodIrr _ _) (isSmooth_prodIrr y hy) (nontrivial_prodIrr y hy) (nonempty_prodIrr_append x y z h (Or.inl ha) hx hy hz e)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem hasNGQuot_left (hG : GlobalTheory.BZSeg.GenericProdIff k) {a b c r t N : ℕ} (x : Fin a → IrrGL k)
     (y : Fin b → IrrGL k) (z : Fin c → IrrGL k) (h : List.ofFn z = List.ofFn x ++ List.ofFn y) (ha : a ≠ 0)
@@ -305,7 +303,7 @@ theorem hasNGQuot_left (hG : GlobalTheory.BZSeg.GenericProdIff k) {a b c r t N :
     (nonempty_prodIrr_append x y z h (Or.inl ha) hx hy hz e)
 
 /- English proof (translation)
-Establish `e : r + t = N` using `by rw [← hx, ← hy, ← hz]; exact deg_sum_append h`. Conclude with `H.of_ind₂_right hG e (isSmooth_prodIrr _ _) (isSmooth_prodIrr x hx) (nontrivial_prodIrr x hx) (nonempty_prodIrr_append x y z h (Or.inl ha) hx hy hz e)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem hasNGQuot_right (hG : GlobalTheory.BZSeg.GenericProdIff k) {a b c r t N : ℕ} (x : Fin a → IrrGL k)
     (y : Fin b → IrrGL k) (z : Fin c → IrrGL k) (h : List.ofFn z = List.ofFn x ++ List.ofFn y) (ha : a ≠ 0)
@@ -316,15 +314,13 @@ theorem hasNGQuot_right (hG : GlobalTheory.BZSeg.GenericProdIff k) {a b c r t N 
     (nonempty_prodIrr_append x y z h (Or.inl ha) hx hy hz e)
 
 /- English proof (translation)
-Establish `hS` using `ofFn_split x j (by omega)`. Generalize the expression as in `hxR : (fun i : Fin (h - j) => x ⟨j + i, by omega⟩) = xR at hS`. Establish `hLR : ∃ xB : Fin (h - j - 2) → IrrGL k, List.ofFn xR = List.ofFn P ++ List.ofFn xB`. Use `⟨fun i => xR ⟨2 + i, by omega⟩, ?_⟩` and prove the remaining obligations. Establish `h2` using `ofFn_split xR 2 (by omega)`.
+Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `key : ∀ i : Fin 2, x ⟨j + i, by omega⟩ = P i` using `Fin.forall_fin_two.2 ⟨hP0.symm, hP1.symm⟩`. Establish `h3 : (fun i : Fin 2 => xR ⟨i, by omega⟩) = P`. Use function extensionality and compare the values at `i`. Substitute `hxR` using the available equality. Conclude with `key i`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Substitute using the available equality. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[h3]`. Conclude with `h2`. Take `⟨xB, hLR⟩` from `hLR`. Establish `hR : ∀ {M : ℕ} (hM' : ∑ i, (xR i).1 = M), HasNGQuot (prodIrr xR hM')` using `fun hM' => hasNGQuot_left hG P xB xR hLR two_ne_zero rfl rfl hM' hM`. Break down `Nat.eq_zero_or_pos j with rfl | hj0` into its components or cases.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hS' : List.ofFn x = List.ofFn xR` using `by simpa using hS`. Establish `hN : ∑ i, (xR i).1 = N`. Use `congrArg (fun l : List (IrrGL k) => (l.map Sigma.fst).sum) hS'` as an intermediate fact. Simplify using `only [List.map_ofFn, List.sum_ofFn, Function.comp_def] at this`. Conclude with `this.symm.trans hd`.
-
-Take `⟨φ⟩` from `nonempty_prodIrr_congr hS' hd hN`. Conclude with `(hR hN).of_equiv φ`. Conclude with `hasNGQuot_right hG (fun i : Fin j => x ⟨i, by omega⟩) xR x hS hj0.ne' rfl rfl hd (hR rfl)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem hasNGQuot_of_pair (hG : GlobalTheory.BZSeg.GenericProdIff k) {h N : ℕ} (x : Fin h → IrrGL k)
     (hd : ∑ a, (x a).1 = N) (j : ℕ) (hj : j + 1 < h) (P : Fin 2 → IrrGL k) (hP0 : P 0 = x ⟨j, by omega⟩)
@@ -355,7 +351,7 @@ theorem hasNGQuot_of_pair (hG : GlobalTheory.BZSeg.GenericProdIff k) {h N : ℕ}
   · exact hasNGQuot_right hG (fun i : Fin j => x ⟨i, by omega⟩) xR x hS hj0.ne' rfl rfl hd (hR rfl)
 
 /- English proof (translation)
-Introduce `k _ _ _ _ hT hG h N Δ x hd j hj hL hP`. Establish `hM` using `hT (Δ ⟨j, by omega⟩) (Δ ⟨j + 1, hj⟩) (x ⟨j, by omega⟩) (x ⟨j + 1, hj⟩) _ rfl hP (hL _) (hL _)`. Conclude with `hasNGQuot_of_pair hG x hd j hj _ rfl rfl hM`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem adjQuot : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k],
     GlobalTheory.BZSeg.TwoSegNonGenQuot k → GlobalTheory.BZSeg.GenericProdIff k → GlobalTheory.BZSeg.AdjQuot k := by

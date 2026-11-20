@@ -21,7 +21,7 @@ def EtaleLocAug : Prop := ∀ (J : Type) [Preorder J] (D : J ⥤ Scheme.{0}) (X 
   ∀ (hc : Coc (D ⋙ yoneda) fun j => yoneda.map (c j)) (R : Type) [CommRing R], QuasiIso ((chains R).map (aug _ hc))
 
 /- English proof (translation)
-Introduce `J _ D X c ho hcov hdir hc R _ Y g`. Take `⟨D', c', ho', hcov', hdir', hc', ⟨e⟩⟩` from `hb J D X c ho hcov hdir hc Y g`. Establish `h` using `ha J D' Y c' ho' hcov' hdir' hc' R`. Conclude with `(quasiIso_iff_of_arrow_mk_iso _ _ ((chains R).mapArrow.mapIso e.symm)).1 h`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem LeafLocCut.goal_of (hb : EtaleLocBase) (ha : EtaleLocAug) : LeafLoc := by
   intro J _ D X c ho hcov hdir hc R _ Y g

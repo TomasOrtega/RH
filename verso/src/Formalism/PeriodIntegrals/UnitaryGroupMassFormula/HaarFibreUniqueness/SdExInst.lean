@@ -16,19 +16,19 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   (v : HeightOneSpectrum (𝓞 F))
 
 /- English proof (translation)
-Set `φ : (Fv F v ⊗[F] E) →ₐ[Fv F v] (Fv F v ⊗[F] E)` to `Algebra.TensorProduct.map (AlgHom.id (Fv F v) (Fv F v)) σ`. Establish `hφ : ∀ z, sigR (Fv F v) σ z = φ z`. Introduce `z`. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `tmul x y => simp [φ, sigR, Algebra.TensorProduct.map_tmul]`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy]`. Establish `hinv : ∀ z, φ (φ z) = z`. Introduce `z`. Proceed by induction on `z using TensorProduct.induction_on with`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `zero => simp`. Consider the case `tmul x y => simp [φ, Algebra.TensorProduct.map_tmul, hσ]`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy]`. Set `e` to `AlgEquiv.ofBijective φ (Function.Involutive.bijective hinv)`. Establish `htr : ∀ z, Algebra.trace (Fv F v) (Fv F v ⊗[F] E) (sigR (Fv F v) σ z) = Algebra.trace (Fv F v) (Fv F v ⊗[F] E) z`.
+Treat this case separately. Treat this case separately. Treat this case separately. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `z`. Rewrite using `[hφ]`. Conclude with `Algebra.trace_eq_of_algEquiv e z`. Establish `hss : ∀ z, sigR (Fv F v) σ (sigR (Fv F v) σ z) = z`. Introduce `z`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hφ, hφ]`. Conclude with `hinv z`. Establish `hsJ : ∀ i j, sigR (Fv F v) σ (JR (Fv F v) J i j) = JR (Fv F v) J j i`. Introduce `i j`. Simplify using `[JR, inclR, sigR, Algebra.TensorProduct.map_tmul, hJ]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hsym : ∀ x y : Fin n → Fv F v ⊗[F] E, hR (Fv F v) σ J x y = sigR (Fv F v) σ (hR (Fv F v) σ J y x)`. Introduce `x y`. Unfold `hR Formalism.UG.hform`. Simplify using `only [map_sum, map_mul, hss, hsJ]`. Rewrite using `[Finset.sum_comm]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 
-Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Unfold `BR`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[hsym, htr]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem BR_symm (σ : E →ₐ[F] E) (hσ : ∀ x, σ (σ x) = x) {n a : ℕ}
     (J : Matrix (Fin n) (Fin n) E) (hJ : ∀ i j, σ (J j i) = J i j)
@@ -74,13 +74,13 @@ theorem BR_symm (σ : E →ₐ[F] E) (hσ : ∀ x, σ (σ x) = x) {n a : ℕ}
   rw [hsym, htr]
 
 /- English proof (translation)
-Establish `htr : Continuous (Algebra.trace (Fv F v) (Fv F v ⊗[F] E))` using `by first`. Consider the case `exact IsModuleTopology.continuous_of_linearMap _`. Consider the case `exact LinearMap.continuous_of_finiteDimensional _`. Set `φ : (Fv F v ⊗[F] E) →ₐ[Fv F v] (Fv F v ⊗[F] E)` to `Algebra.TensorProduct.map (AlgHom.id (Fv F v) (Fv F v)) σ`. Establish `hφ : ∀ z, sigR (Fv F v) σ z = φ z`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `z`. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul x y => simp [φ, sigR, Algebra.TensorProduct.map_tmul]`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Establish `hsg : Continuous (sigR (Fv F v) σ)`. Establish `h1 : ⇑(sigR (Fv F v) σ) = ⇑(φ.toLinearMap)` using `funext hφ`. Rewrite using `[h1]`. Use `first`. Consider the case `exact IsModuleTopology.continuous_of_linearMap _`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately.
 
-Consider the case `exact LinearMap.continuous_of_finiteDimensional _`. Unfold `BR hR Formalism.UG.hform`. Use `fun_prop`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem BR_cont_joint (σ : E →ₐ[F] E) {n a : ℕ} (J : Matrix (Fin n) (Fin n) E) :
     Continuous (fun p : (Fin a → Fin n → Fv F v ⊗[F] E) × (Fin a → Fin n → Fv F v ⊗[F] E) =>
@@ -107,9 +107,9 @@ theorem BR_cont_joint (σ : E →ₐ[F] E) {n a : ℕ} (J : Matrix (Fin n) (Fin 
   fun_prop
 
 /- English proof (translation)
-Unfold `pairHerm`. Establish `h : ∑ i, ∑ j, (S : Matrix (Fin a) (Fin a) (Fv F v ⊗[F] E)) i j * (T : Matrix (Fin a) (Fin a) (Fv F v ⊗[F] E)) j i = ∑ i, ∑ j, (T : Matrix (Fin a) (Fin a) (Fv F v ⊗[F] E)) i j * (S : Matrix (Fin a) (Fin a) (Fv F v ⊗[F] E)) j i`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[mul_comm]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem pairHerm_symm (σ : E →ₐ[F] E) (a : ℕ) (S T : HermR (Fv F v) σ a) :
     pairHerm (Fv F v) σ a S T = pairHerm (Fv F v) σ a T S := by
@@ -122,9 +122,9 @@ theorem pairHerm_symm (σ : E →ₐ[F] E) (a : ℕ) (S T : HermR (Fv F v) σ a)
   rw [h]
 
 /- English proof (translation)
-Unfold `pairHerm`. Establish `h : ∑ i, ∑ j, ((c • S : HermR (Fv F v) σ a) : Matrix (Fin a) (Fin a) (Fv F v ⊗[F] E)) i j * (T : Matrix (Fin a) (Fin a) (Fv F v ⊗[F] E)) j i = c • ∑ i, ∑ j, (S : Matrix (Fin a) (Fin a) (Fv F v ⊗[F] E)) i j * (T : Matrix (Fin a) (Fin a) (Fv F v ⊗[F] E)) j i`. Rewrite using `[Finset.smul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.smul_sum]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Conclude with `smul_mul_assoc c _ _`. Rewrite using `[h, map_smul, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem pairHerm_smul (σ : E →ₐ[F] E) (a : ℕ) (c : Fv F v) (S T : HermR (Fv F v) σ a) :
     pairHerm (Fv F v) σ a (c • S) T = c * pairHerm (Fv F v) σ a S T := by
@@ -142,9 +142,9 @@ theorem pairHerm_smul (σ : E →ₐ[F] E) (a : ℕ) (c : Fv F v) (S T : HermR (
   ring
 
 /- English proof (translation)
-Establish `htr : Continuous (Algebra.trace (Fv F v) (Fv F v ⊗[F] E))` using `by first`. Consider the case `exact IsModuleTopology.continuous_of_linearMap _`. Consider the case `exact LinearMap.continuous_of_finiteDimensional _`. Unfold `pairHerm`. Use `continuous_const.mul (htr.comp (continuous_finset_sum _ fun i _ => continuous_finset_sum _ fun j _ => ?_))` and prove the remaining obligations.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `((continuous_subtype_val.comp continuous_fst).matrix_elem i j).mul ((continuous_subtype_val.comp continuous_snd).matrix_elem j i)`.
+A detailed English derivation is pending.
 -/
 theorem pairHerm_cont_joint (σ : E →ₐ[F] E) (a : ℕ) :
     Continuous (fun p : HermR (Fv F v) σ a × HermR (Fv F v) σ a =>
@@ -160,11 +160,11 @@ theorem pairHerm_cont_joint (σ : E →ₐ[F] E) (a : ℕ) :
     ((continuous_subtype_val.comp continuous_snd).matrix_elem j i)
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ n J ψ v a hS`. Take `⟨hCM, hJ, hψ, hstd⟩` from `hS`. Establish `hσ : ∀ x, σ (σ x) = x` using `sigma_invol σ hCM.2.2.2`. Establish `hc : Continuous (psiV F ψ v)` using `continuous_psiV ψ hψ.1 v`. Establish `hadd` using `psiV_add ψ v`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hn : ∀ r, ‖psiV F ψ v r‖ = 1` using `fun r => hψ.2.1 _`. Establish `hnt` using `hP ψ v hψ hstd hCM.1`. Prove the components needed by the constructor for the conclusion. Take `⟨μ, hμ⟩` from `exists_selfDual_measure v (BR (Fv F v) σ J (n := a)) (psiV F ψ v) hc hadd hn hnt (fun x x' y => BR_add (Fv F v) σ J x' x y) (fun c x y => BR_smul_left v σ J c x y) (BR_symm v σ hσ J hJ.1) (BR_cont_joint v σ J) (dualAt_alt v (Module.finBasis F E) σ J (nondeg_BR v σ hσ J hJ.2))`. Conclude with `⟨μ, hμ⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨μ, hμ⟩` from `exists_selfDual_measure v (pairHerm (Fv F v) σ a) (psiV F ψ v) hc hadd hn hnt (fun x x' y => pairHerm_add (Fv F v) σ a x' x y) (fun c x y => pairHerm_smul v σ a c x y) (pairHerm_symm v σ a) (pairHerm_cont_joint v σ a) (dualAt_H v (Module.finBasis F E) σ hσ a)`. Conclude with `⟨μ, hμ⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem sdEx_of_psiNT (hP : PsiNT) : SdEx := by
   intro F E _ _ _ _ _ σ n J ψ v a hS

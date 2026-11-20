@@ -22,11 +22,11 @@ open AlgebraicGeometry CategoryTheory NumberField Polynomial
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor Formalism.L2.Pj GlobalTheory.Frames
 
 /- English proof (translation)
-Establish `key : X ^ (Q.natDegree + d) * P = C ε * Q.reverse`. Use `Polynomial.eq_of_infinite_eval_eq _ _ (((Set.finite_singleton (0 : ℂ)).infinite_compl).mono fun c hc => ?_)` and prove the remaining obligations. Establish `hc : c ≠ 0` using `hc`. Use `letI := invertibleOfNonzero (inv_ne_zero hc)`. Establish `h1` using `Polynomial.eval₂_reverse_mul_pow (RingHom.id ℂ) c⁻¹ Q`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Rewrite `h1` using `[invOf_eq_inv, inv_inv]`. Establish `h2 : Q.reverse.eval c * c⁻¹ ^ Q.natDegree = Q.eval c⁻¹` using `h1`. Use `show eval c _ = eval c _`. Rewrite using `[eval_mul, eval_mul, eval_pow, eval_X, eval_C, pow_add, mul_assoc, h c hc, ← h2, inv_pow]`. Clear the denominators using the available nonvanishing facts.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hP`. Establish `h1` using `congrArg natDegree key`. Rewrite `h1` using `[natDegree_X_pow_mul _ hP]`. Establish `h2` using `(natDegree_C_mul_le ε Q.reverse).trans (reverse_natDegree_le Q)`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem poly_eq_zero (P Q : ℂ[X]) (d : ℕ) (hd : 0 < d) (ε : ℂ)
     (h : ∀ c : ℂ, c ≠ 0 → c ^ d * P.eval c = ε * Q.eval c⁻¹) : P = 0 := by
@@ -47,17 +47,15 @@ theorem poly_eq_zero (P Q : ℂ[X]) (d : ℕ) (hd : 0 < d) (ε : ℂ)
   omega
 
 /- English proof (translation)
-Establish `hne : i ≠ j` using `hij.ne`. Use `⟨Matrix.diagonal (fun k => if k = i then c else if k = j then -c⁻¹ else 1) + Matrix.single j i 1, fun k m hkm => ?_, fun k => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.add_apply, Matrix.diagonal_apply_ne _ hkm.ne, Matrix.single_apply_of_ne, add_zero]`. Introduce and unpack `⟨rfl, rfl⟩`. Conclude with `absurd hij (not_lt.2 hkm.le)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.add_apply, Matrix.diagonal_apply_eq, Matrix.single_apply_of_ne, add_zero]`. Introduce and unpack `⟨rfl, h⟩`. Conclude with `hne h`. Use extensionality with `k m`. Establish `hT : ∀ (s : ℂ) a b, Matrix.transvection i j s a b = (if a = b then 1 else 0) + if i = a ∧ j = b then s else 0` using `fun s a b => by simp [Matrix.transvection, Matrix.one_apply, Matrix.single_apply]`.
+Assume the hypotheses and unpack their components. By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Establish `hW : ∀ a b, (Matrix.transvection i j c⁻¹ * Matrix.swap ℂ i j) a b = Matrix.transvection i j c⁻¹ a (Equiv.swap i j b)` using `fun a b => by`. Distinguish the cases in `h1 : b = i`. Substitute `h1` using the available equality. Rewrite using `[Matrix.mul_swap_apply_left, Equiv.swap_apply_left]`. Distinguish the cases in `h2 : b = j`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Substitute `h2` using the available equality. Rewrite using `[Matrix.mul_swap_apply_right, Equiv.swap_apply_right]`. Rewrite using `[Matrix.mul_swap_of_ne h1 h2, Equiv.swap_apply_of_ne_of_ne h1 h2]`. Rewrite using `[Matrix.add_mul, Matrix.add_apply, Matrix.diagonal_mul]`. Establish `hS : (Matrix.single j i (1 : ℂ) * (Matrix.transvection i j c⁻¹ * Matrix.swap ℂ i j)) k m = if k = j then (Matrix.transvection i j c⁻¹ * Matrix.swap ℂ i j) i m else 0` using `by split_ifs with h`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Substitute `h` using the available equality. Rewrite using `[Matrix.single_mul_apply_same, one_mul]`. Conclude with `Matrix.single_mul_apply_of_ne _ _ _ _ _ h _`. Rewrite using `[hS, hW, hW, hT, hT, hT, Equiv.swap_apply_def]`. Apply the tactic sequence `by_cases h1 : k = i <;> by_cases h2 : k = j <;> by_cases h3 : m = i <;> by_cases h4 : m = j <;>`.
-
-Simplify using `[eq_comm]`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Simplify the hypotheses and the goal together. A detailed English derivation is pending.
 -/
 theorem transvection_eq {n : ℕ} {i j : Fin n} (hij : i < j) (c : ℂ) (hc : c ≠ 0) :
     ∃ B : Matrix (Fin n) (Fin n) ℂ, (∀ k m, k < m → B k m = 0) ∧
@@ -96,7 +94,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : D
   {Xo : Moduli Dw l} {c : Coeff l}
 
 /- English proof (translation)
-Establish `hS` using `GlobalTheory.abelianSchemeLaws_all.1.secBaseChange`. Establish `hall : AllTest Xo c` using `GlobalTheory.Frames.allTest_of_secBaseChange hS E H Dw l Xo c`. Conclude with `wtAll_of_borChart (borChartF_of_cover (GlobalTheory.Frames.chartCoverF_of_secBaseChange hS E H Dw l Xo c)) (ex Dw a n) hf.1 hf.2 S t y y' (hall S y) (hall S y') h`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem evR_weight {S : Type} [CommRing S] [Algebra c.F S] [IsReduced S] {a : (E →+* ℂ) × ℕ → ℕ} {n : ℕ}
     {f : Rul Xo c} (hf : f ∈ sec Xo c a n) {t : Ix Dw → Sˣ} {y y' : FrPt Xo c S} (h : FrBor t y y') :
@@ -107,9 +105,9 @@ theorem evR_weight {S : Type} [CommRing S] [Algebra c.F S] [IsReduced S] {a : (E
     (ex Dw a n) hf.1 hf.2 S t y y' (hall S y) (hall S y') h
 
 /- English proof (translation)
-Establish `hS` using `GlobalTheory.abelianSchemeLaws_all.1.secBaseChange`. Establish `hy` using `GlobalTheory.Frames.allTest_of_secBaseChange hS E H Dw l Xo c S y`. Establish `hW` using `evalWD_fr (frChartF_of (GlobalTheory.Frames.chartCoverF_of_secBaseChange hS E H Dw l Xo c))`. Establish `h1` using `frMap_trans _ _ _ _ φ _ _ _ hy.choose_spec.choose_spec.choose_spec h`. Establish `hz : FromTest (K` using `c.F) (fun S _ _ => FrPt Xo c S) (fun φ y z => FrMap φ y z) z := ⟨_, _, _, h1⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `evR evalAt`. Rewrite using `[dif_pos hz, dif_pos hy]`. Conclude with `hW f hf.1 T _ _ _ _ _ _ z hz.choose_spec.choose_spec.choose_spec h1`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem evR_map {S T : Type} [CommRing S] [Algebra c.F S] [IsReduced S] [CommRing T] [Algebra c.F T]
     {a : (E →+* ℂ) × ℕ → ℕ} {n : ℕ} {f : Rul Xo c} (hf : f ∈ sec Xo c a n) (φ : S →ₐ[c.F] T) {y : FrPt Xo c S}
@@ -128,13 +126,13 @@ variable {σ : c.F →+* ℂ}
 instance (σ : c.F →+* ℂ) : IsDomain (CAt σ) := inferInstanceAs (IsDomain ℂ)
 
 /- English proof (translation)
-Set `π : CAt σ →ₐ[c.F] (CAt σ)[X]` to `IsScalarTower.toAlgHom _ _ _`. Take `⟨y₁, h₁⟩` from `FramedBaseChange.exists_frMap GlobalTheory.abelianSchemeLaws_all.1.secBaseChange E H Dw l Xo c _ _ π y`. Take `⟨z, hz, -⟩` from `existsUnique_frChg E H Dw l Xo c _ y₁ G 1 hG`. Use `⟨evR Xo c f z, fun s y' hy' => ?_⟩` and prove the remaining obligations. Set `ev : (CAt σ)[X] →ₐ[c.F] CAt σ` to `(aeval s).restrictScalars c.F`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression.
 
-Establish `hev : ∀ p, ev p = p.eval s` using `fun p => coe_aeval_eq_eval s ▸ rfl`. Take `⟨y₂, h₂⟩` from `FramedBaseChange.exists_frMap GlobalTheory.abelianSchemeLaws_all.1.secBaseChange E H Dw l Xo c _ _ ev y₁`. Establish `h₃` using `frMap_trans _ _ _ π ev _ _ _ h₁ h₂`. Establish `e : ev.comp π = AlgHom.id _ _` using `AlgHom.ext fun x => by`. Rewrite using `[AlgHom.comp_apply, hev]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `eval_C`. Rewrite `h₃` using `[e]`. Take `rfl : y₂ = y` from `(frMap_unique_refl_iff E H Dw l Xo c _ _ _ y).1 _ _ h₃ (frMapUniq_refl y)`. Rewrite using `[← hev]`. Use `evR_map hf ev ((ChgBC.frChg_baseChange E H Dw l Xo c _ _ ev y₁ z y₂ y' G _ hz h₂).2 ?_)` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Units.val_one, map_one, show (ev : (CAt σ)[X] → CAt σ) = eval s from funext hev]`. Conclude with `hy'`.
+A detailed English derivation is pending.
 -/
 theorem exists_poly {a : (E →+* ℂ) × ℕ → ℕ} {n : ℕ} {f : Rul Xo c} (hf : f ∈ sec Xo c a n) (y : FrPt Xo c (CAt σ))
     (G : ∀ τ : E →+* ℂ, Matrix (Fin (Dw.mult τ)) (Fin (Dw.mult τ)) (CAt σ)[X]) (hG : ∀ τ, IsUnit (G τ).det) :

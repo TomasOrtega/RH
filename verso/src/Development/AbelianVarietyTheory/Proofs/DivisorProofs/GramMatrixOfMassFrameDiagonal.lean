@@ -11,19 +11,19 @@ open Matrix
 open scoped ComplexConjugate
 
 /- English proof (translation)
-Set `f : Fin r → ℕ` to `fun a => if P a then 0 else 1`. Set `σ` to `Tuple.sort f`. Establish `hm : Monotone (f ∘ σ)` using `Tuple.monotone_sort f`. Set `S : Finset (Fin r)` to `Finset.univ.filter fun a => f (σ a) = 0`. Use `⟨σ, S.card, fun a => ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hP : P (σ a) ↔ f (σ a) = 0`. Apply the tactic sequence `simp only [f]; split_ifs with h <;> simp [h]`. Rewrite using `[hP]`. Prove the components needed by the constructor for the conclusion. Introduce `h0`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hsub : Finset.Iic a ⊆ S`. Introduce `b hb`. Rewrite `hb` using `[Finset.mem_Iic]`. Use `hm hb` as an intermediate fact. Simplify using `only [Function.comp_apply] at this`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [S, Finset.mem_filter, Finset.mem_univ, true_and]`. Use linear arithmetic over natural numbers and integers. Use `Finset.card_le_card hsub` as an intermediate fact. Rewrite `this` using `[Fin.card_Iic]`. Use linear arithmetic over natural numbers and integers.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Introduce `hlt`. Assume the negation of the conclusion as `h0`. Establish `hsub : S ⊆ Finset.Iio a`. Introduce `b hb`. Simplify using `only [S, Finset.mem_filter, Finset.mem_univ, true_and] at hb`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.mem_Iio]`. Assume the negation of the conclusion as `hba`. Use `hm (not_lt.1 hba)` as an intermediate fact. Simplify using `only [Function.comp_apply] at this`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Use `Finset.card_le_card hsub` as an intermediate fact. Rewrite `this` using `[Fin.card_Iio]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem exists_perm_initial {r : ℕ} (P : Fin r → Prop) [DecidablePred P] :
     ∃ (σ : Equiv.Perm (Fin r)) (p : ℕ), ∀ a, P (σ a) ↔ (a : ℕ) < p := by
@@ -63,25 +63,25 @@ theorem exists_perm_initial {r : ℕ} (P : Fin r → Prop) [DecidablePred P] :
     omega
 
 /- English proof (translation)
-Use `set U : Matrix (Fin r) (Fin r) ℂ := (hN.eigenvectorUnitary : Matrix (Fin r) (Fin r) ℂ) with hUdef`. Use `set lam := hN.eigenvalues with hlam`. Establish `hU : Uᴴ * N * U = diagonal fun k => ((lam k : ℝ) : ℂ)`. Establish `h` using `hN.conjStarAlgAut_star_eigenvectorUnitary`. Rewrite `h` using `[Unitary.conjStarAlgAut_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [hUdef, Unitary.coe_star, Matrix.star_eq_conjTranspose, Matrix.conjTranspose_conjTranspose] at h ⊢`. Rewrite using `[h]`. Both sides reduce to the same expression. Establish `hne : ∀ k, lam k ≠ 0`. Introduce `k hk`.
+Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `hd` to reduce the goal to its premises. Rewrite using `[hN.det_eq_prod_eigenvalues]`. Conclude with `Finset.prod_eq_zero (Finset.mem_univ k) (by simp [← hlam, hk])`. Take `⟨σ, p, hσ⟩` from `exists_perm_initial fun k => 0 < lam k`. Set `s : Fin r → ℝ` to `fun a => (Real.sqrt |lam (σ a)|)⁻¹`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Set `Y : Matrix (Fin r) (Fin r) ℂ` to `Matrix.of fun k a => if k = σ a then ((s a : ℝ) : ℂ) else 0`. Use `⟨U * Y, p, ?_⟩` and prove the remaining obligations. Establish `e1 : (U * Y)ᴴ * N * (U * Y) = Yᴴ * (Uᴴ * N * U) * Y`. Rewrite using `[conjTranspose_mul]`. Simplify using `only [Matrix.mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e1, hU]`. Use extensionality with `a b`. Rewrite using `[Matrix.mul_apply]`. Simplify using `only [Matrix.mul_diagonal, conjTranspose_apply, Y, Matrix.of_apply, diagonal_apply]`. Rewrite using `[Finset.sum_eq_single (σ a)]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `hab : a = b`. Substitute `hab` using the available equality. Simplify using `only [if_true, Complex.star_def, Complex.conj_ofReal]`. Establish `hs : s a * lam (σ a) * s a = ReciprocityTheory.ChartRestriction.G.FD.sgn p a`. Establish `habs : 0 < |lam (σ a)|` using `abs_pos.2 (hne _)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hsq : s a * s a = |lam (σ a)|⁻¹`. Simplify using `only [s]`. Rewrite using `[← mul_inv, Real.mul_self_sqrt habs.le]`. Unfold `ReciprocityTheory.ChartRestriction.G.FD.sgn`. Distinguish the cases in `hpos : 0 < lam (σ a)`.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Rewrite using `[if_pos ((hσ a).1 hpos)]`. Combine the equalities or inequalities in the displayed calculation. Establish `hneg : lam (σ a) < 0` using `lt_of_le_of_ne (not_lt.1 hpos) (hne _)`. Rewrite using `[if_neg (fun h => hpos ((hσ a).2 h))]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[hsq, abs_of_neg hneg, inv_neg, neg_mul, inv_mul_cancel₀ hneg.ne]`. Rewrite using `[← hs]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `: σ a ≠ σ b` using `fun h => hab (σ.injective h)`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `[this, hab]`. Introduce `k _ hk`. Simplify using `[hk]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_sgn_frame {r : ℕ} (N : Matrix (Fin r) (Fin r) ℂ) (hN : N.IsHermitian) (hd : N.det ≠ 0) :
     ∃ (X : Matrix (Fin r) (Fin r) ℂ) (p : ℕ),
@@ -136,7 +136,7 @@ theorem exists_sgn_frame {r : ℕ} (N : Matrix (Fin r) (Fin r) ℂ) (hN : N.IsHe
   · simp
 
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using `only [ReciprocityTheory.ChartRestriction.G.FD.gram, ReciprocityTheory.ChartRestriction.G.FD.hermC, ReciprocityTheory.ChartRestriction.G.FD.col, Matrix.of_apply, Matrix.transpose_apply, Matrix.mul_apply, Matrix.conjTranspose_apply, Matrix.map_apply, Finset.sum_mul, Complex.star_de …`. Use `Finset.sum_congr rfl fun l _ => Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem gram_eq_transpose {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} (τ : E →+* ℂ)
     (G : Matrix (Fin r) (Fin r) E) (x : Matrix (Fin r) (Fin r) ℂ) :
@@ -155,11 +155,11 @@ namespace GlobalTheory.OrthFrames
 open Matrix
 
 /- English proof (translation)
-Introduce `h`. Take `⟨v, hv, hm⟩` from `Matrix.exists_mulVec_eq_zero_iff.2 h`. Apply `hv` to reduce the goal to its premises. Establish `h0 : V.frame.equivFun.symm v = 0`. Use `V.nondeg.2 _ fun x => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: V.hT.flip (V.frame.equivFun.symm v) = 0`. Use `V.frame.ext fun i => ?_` and prove the remaining obligations. Use `congrFun hm i` as an intermediate fact. Simplify using `only [Matrix.mulVec, dotProduct, HSpace.gram, Pi.zero_apply] at this`. Simplify using `only [LinearMap.flip_apply, Module.Basis.equivFun_symm_apply, map_sum, map_smul, smul_eq_mul, LinearMap.zero_apply, LinearMap.sum_apply, LinearMap.smul_apply]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use `Eq.trans (Finset.sum_congr rfl fun j _ => ?_) this` and prove the remaining obligations. Conclude with `mul_comm (v j) _`. Conclude with `congrArg (fun f => f x) this`. Conclude with `(LinearEquiv.map_eq_zero_iff _).1 h0`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem hspace_gram_det_ne {E : Type} [Field E] [NumberField E] [StarRing E] (V : HSpace E) :
     V.gram.det ≠ 0 := by
@@ -180,7 +180,7 @@ theorem hspace_gram_det_ne {E : Type} [Field E] [NumberField E] [StarRing E] (V 
   exact (LinearEquiv.map_eq_zero_iff _).1 h0
 
 /- English proof (translation)
-Use `haveI hcm : IsCMField D.host.E := D.host.isCMField_hostE`. Use `Matrix.IsHermitian.ext fun a b => ?_` and prove the remaining obligations. Simplify using `only [Matrix.transpose_apply, Matrix.map_apply, GlobalTheory.MassLink.gm, Matrix.submatrix_apply, HSpace.gram]`. Rewrite using `[← (Wc D i).herm.eq ((Wc D i).frame (Fin.cast (rank_Wc i).symm b))]`. Conclude with `(IsCMField.complexEmbedding_complexConj D.host.E τ _).symm`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gm_isHermitian (D : D7) (i : Fin D.R.m) (τ : D.host.E →+* ℂ) :
     (((GlobalTheory.MassLink.gm D i).map τ)ᵀ).IsHermitian := by
@@ -191,9 +191,9 @@ theorem gm_isHermitian (D : D7) (i : Fin D.R.m) (τ : D.host.E →+* ℂ) :
   exact (IsCMField.complexEmbedding_complexConj D.host.E τ _).symm
 
 /- English proof (translation)
-Rewrite using `[Matrix.det_transpose]`. Establish `e` using `RingHom.map_det τ (GlobalTheory.MassLink.gm D i)`. Rewrite `e` using `[RingHom.mapMatrix_apply]`. Rewrite using `[← e, map_ne_zero]`. Simplify using `only [GlobalTheory.MassLink.gm, Matrix.det_transpose]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `e2 : (HSpace.gram (Wc D i)).submatrix (Fin.cast (rank_Wc i).symm) (Fin.cast (rank_Wc i).symm) = (HSpace.gram (Wc D i)).submatrix (finCongr (rank_Wc i).symm) (finCongr (rank_Wc i).symm)` using `rfl`. Rewrite using `[e2, Matrix.det_submatrix_equiv_self]`. Conclude with `hspace_gram_det_ne _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gm_det_ne (D : D7) (i : Fin D.R.m) (τ : D.host.E →+* ℂ) :
     (((GlobalTheory.MassLink.gm D i).map τ)ᵀ).det ≠ 0 := by
@@ -208,9 +208,9 @@ theorem gm_det_ne (D : D7) (i : Fin D.R.m) (τ : D.host.E →+* ℂ) :
   exact hspace_gram_det_ne _
 
 /- English proof (translation)
-Introduce `D i`. Use `letI : IsCMField D.host.E := D.host.isCMField_hostE`. Establish `key : ∀ τ : GlobalTheory.MassLink.psi D, ∃ (X : Matrix (Fin D.R.r) (Fin D.R.r) ℂ) (p : ℕ), ReciprocityTheory.ChartRestriction.G.FD.gram τ.1 (GlobalTheory.MassLink.gm D i) X = Matrix.diagonal fun a : Fin D.R.r => ((ReciprocityTheory.ChartRestriction.G.FD.sgn p (a : ℕ) : ℝ) : ℂ)`. Introduce `τ`. Take `⟨X, p, hX⟩` from `exists_sgn_frame _ (gm_isHermitian D i τ.1) (gm_det_ne D i τ.1)`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `⟨X, p, ?_⟩` and prove the remaining obligations. Rewrite using `[gram_eq_transpose, hX, Matrix.diagonal_transpose]`. Use `choose X p hX using key`. Conclude with `⟨fun τ => X τ, p, fun τ => hX τ⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_orth_frames : ∀ (D : D7) (i : Fin D.R.m),
     letI : IsCMField D.host.E := D.host.isCMField_hostE;

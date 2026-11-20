@@ -26,20 +26,20 @@ def ratHom (M : ℕ) : (Fin 1 → Fin M → E) →+ (Fin 1 → Fin M → AF F �
     simp [ratTup]
 
 /- English proof (translation)
-Introduce `_ hX` and use `⟨hX.1, hX.2.trans h⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 lemma box_mono {d M n : ℕ} (b : Module.Basis (Fin d) F E) (N : ℕ) {r r' : ℝ} (h : r ≤ r') :
     (box b N r : Set (Fin n → Fin M → AF F ⊗[F] E)) ⊆ box b N r' :=
   fun _ hX => ⟨hX.1, hX.2.trans h⟩
 
 /- English proof (translation)
-The claim follows from `Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => norm_nonneg _`.
+A detailed English derivation is pending.
 -/
 lemma sizeInf_nonneg {d : ℕ} (b : Module.Basis (Fin d) F E) (y : Ainf F ⊗[F] E) : 0 ≤ sizeInf b y :=
   Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => norm_nonneg _
 
 /- English proof (translation)
-Establish `: projInf (ratTup (AF F) X) a i = (1 : Ainf F) ⊗ₜ[F] X a i`. Simplify using `[projInf, ratTup, inclR]`. Rewrite using `[this, Algebra.TensorProduct.basis_repr_tmul]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma repr_projInf_ratTup {d M n : ℕ} (b : Module.Basis (Fin d) F E) (X : Fin n → Fin M → E)
     (a : Fin n) (i : Fin M) (k : Fin d) :
@@ -51,11 +51,11 @@ lemma repr_projInf_ratTup {d M n : ℕ} (b : Module.Basis (Fin d) F E) (X : Fin 
   simp
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `Function.ne_iff.mp hX`. Take `⟨i, hi⟩` from `Function.ne_iff.mp ha`. Choose the witnesses or unpack the hypotheses as in `⟨k, hk⟩ : ∃ k, b.repr (X a i) k ≠ 0 := by`. Assume the negation of the conclusion as `h`. Use `push_neg at h`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Conclude with `hi (b.repr.map_eq_zero_iff.mp (Finsupp.ext h))`. Take `⟨v⟩ : Nonempty (InfinitePlace F)` from `inferInstance`. Use `set Y := projInf (ratTup (AF F) X : Fin n → Fin M → AF F ⊗[F] E) with hY`. Establish `h1 : 0 < ‖(Algebra.TensorProduct.basis (Ainf F) b).repr (Y a i) k v‖`. Rewrite using `[hY, repr_projInf_ratTup, norm_pos_iff]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `algebraMap F v.Completion (b.repr (X a i) k) ≠ 0`. Conclude with `(map_ne_zero _).mpr hk`. Establish `h2 : ‖(Algebra.TensorProduct.basis (Ainf F) b).repr (Y a i) k v‖ ≤ sizeInf b (Y a i)` using `(Finset.single_le_sum (f := fun v => ‖(Algebra.TensorProduct.basis (Ainf F) b).repr (Y a i) k v‖) (fun _ _ => norm_nonneg _) (Finset.mem_univ v)).trans (Finset.single_le_sum (f := fun k => ∑ v, ‖(Algebra.TensorProduct.basis (Ainf F) b).repr (Y a i) k v‖) (fun _ _ => Finset.sum_no …`. Establish `h3 : sizeInf b (Y a i) ≤ sizeTup b Y` using `(Finset.single_le_sum (f := fun i => sizeInf b (Y a i)) (fun _ _ => sizeInf_nonneg b _) (Finset.mem_univ i)).trans (Finset.single_le_sum (f := fun a => ∑ i, sizeInf b (Y a i)) (fun _ _ => Finset.sum_nonneg fun _ _ => sizeInf_nonneg b _) (Finset.mem_univ a))`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 lemma sizeTup_ratTup_pos {d M n : ℕ} (b : Module.Basis (Fin d) F E) (X : Fin n → Fin M → E)
     (hX : X ≠ 0) : 0 < sizeTup b (projInf (ratTup (AF F) X)) := by
@@ -88,34 +88,30 @@ lemma sizeTup_ratTup_pos {d M n : ℕ} (b : Module.Basis (Fin d) F E) (X : Fin n
 end SlopeTestRemainingChoices
 
 /- English proof (translation)
-The claim follows from `_root_.Bl.FirstLemmaK.goal1 hS f hf`.
+A detailed English derivation is pending.
 -/
 lemma exists_pos_lt {α : Type} {S : Set α} (hS : S.Finite) (f : α → ℝ) (hf : ∀ x ∈ S, 0 < f x) :
     ∃ r : ℝ, 0 < r ∧ r ≤ 1 ∧ ∀ x ∈ S, r < f x :=
   _root_.Bl.FirstLemmaK.goal1 hS f hf
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hCM τ hτ M Ω hΩ`. Establish `: Module.Finite F E` using `Module.finite_of_finrank_pos (by rw [hCM.2.2.1]; norm_num)`. Set `b` to `Module.finBasis F E`. Take `⟨hcpt, hexh, hflow⟩` from `GlobalTheory.T.adelic_boxes_compact_exhaust F E σ hCM _ b 1 M`. Take `⟨-, hfin, -⟩` from `GlobalTheory.T.rational_tuples_discrete_cocompact_adelic F E σ hCM 1 M`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨N, r, hN, hr, hsub⟩` from `hexh Ω hΩ`. Take `⟨r₀, h0, h1, hsmall⟩` from `exists_pos_lt (((hfin _ (hcpt N 1 hN)).subset (Set.inter_subset_left (t := {X : Fin 1 → Fin M → E | X ≠ 0})))) (fun X => sizeTup b (projInf (ratTup (AF F) X))) (fun X hX => sizeTup_ratTup_pos b X hX.2)`. Establish `hnone : ∀ X : Fin 1 → Fin M → E, X ≠ 0 → ratTup (AF F) X ∉ box b N r₀`. Introduce `X hX hmem`. Use `hsmall X ⟨box_mono b N h1 hmem, hX⟩` as an intermediate fact.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `absurd hmem.2 (not_le.mpr this)`. Establish `hscale : ∀ (x : ℝ) (Y : Fin 1 → Fin M → AF F ⊗[F] E), ((τ (Multiplicative.ofAdd (-x)) : (AF F ⊗[F] E)ˣ) : AF F ⊗[F] E) • Y ∈ Ω → Y ∈ box b N (Real.exp x * r)`. Introduce `x Y hY`. Use `(hflow τ hτ N (Real.exp x * r) (-x) Y).mp ?_` and prove the remaining obligations. Establish `: Real.exp (-x) * (Real.exp x * r) = r`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← mul_assoc, ← Real.exp_add]`. Simplify using the standard rewrite rules. Rewrite using `[this]`. Conclude with `hsub hY`. Use `⟨Real.log (r₀ / r), (5 * r / r₀) ^ (2 * Module.finrank ℚ F * M), fun x => ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `split_ifs with hx`. Establish `hlt : Real.exp x * r < r₀`. Use `(Real.lt_log_iff_exp_lt (div_pos h0 hr)).mp hx` as an intermediate fact. Conclude with `(lt_div_iff₀ hr).mp this`. Use `le_of_eq (ENNReal.tsum_eq_zero.mpr fun X => Set.indicator_of_notMem ?_ _)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `hmem`. Conclude with `hnone X.1 X.2 (box_mono b N hlt.le (hscale x _ hmem))`. Establish `hge : r₀ ≤ Real.exp x * r`. Use `(Real.log_le_iff_le_exp (div_pos h0 hr)).mp (not_lt.mp hx)` as an intermediate fact. Conclude with `(div_le_iff₀ hr).mp this`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations.
 
-Use `set e := ratHom (F := F) (E := E) M with he`. Establish `hone : ∑' l : Fin 1 → Fin M → E, (Set.indicator (box b N r₀) (fun _ => (1 : ℝ≥0∞))) (e l) ≤ 1`. Rewrite using `[tsum_eq_single 0]`. Conclude with `Set.indicator_apply_le' (fun _ => le_rfl) (fun _ => by simp)`. Introduce `X hX`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Set.indicator_of_notMem (hnone X hX) _`. Establish `hpack` using `GlobalTheory.T.adelic_box_lattice_count_ratio F E σ hCM _ b M (Fin 1 → Fin M → E) e N r₀ (Real.exp x * r) h0 hge`. Combine the equalities or inequalities in the displayed calculation. Use `ENNReal.tsum_le_tsum fun X => ?_` and prove the remaining obligations. Distinguish the cases in `hm : ((τ (Multiplicative.ofAdd (-x)) : (AF F ⊗[F] E)ˣ) : AF F ⊗[F] E) • ratTup (AF F) X.1 ∈ Ω`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hm' : e X.1 ∈ box b N (Real.exp x * r)` using `hscale x _ hm`. Rewrite using `[Set.indicator_of_mem hm, Set.indicator_of_mem hm']`. Rewrite using `[Set.indicator_of_notMem hm]`. Conclude with `bot_le`. Use `_ ≤ ∑' l : Fin 1 → Fin M → E, (Set.indicator (box b N (Real.exp x * r)) (fun _ => (1 : ℝ≥0∞))) (e l) := ENNReal.tsum_comp_le_tsum_of_injective Subtype.val_injective (fun l => (Set.indicator (box b N (Real.exp x * r)) (fun _ => (1 : ℝ≥0∞))) (e l))`.
-
-Use `_ ≤ ENNReal.ofReal ((5 * (Real.exp x * r) / r₀) ^ (2 * Module.finrank ℚ F * M)) * 1 := hpack.trans (mul_le_mul_right hone _)`. Use `_ = ENNReal.ofReal ((5 * r / r₀) ^ (2 * Module.finrank ℚ F * M) * Real.exp (2 * Module.finrank ℚ F * M * x)) := by`. Rewrite using `[mul_one]`. Use `congr 1`. Establish `: (2 * (Module.finrank ℚ F : ℝ) * M * x) = ((2 * Module.finrank ℚ F * M : ℕ) : ℝ) * x` using `by push_cast; ring`.
-
-Rewrite using `[this, Real.exp_nat_mul, ← mul_pow]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem count_le : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ τ : Multiplicative ℝ →* (AF F ⊗[F] E)ˣ, IsFlow τ → ∀ (M : ℕ) (Ω : Set (Fin 1 → Fin M → AF F ⊗[F] E)), IsCompact Ω → ∃ x₀ C : ℝ, ∀ x : ℝ, ∑' X : {X : Fin 1 → Fin M → E // X ≠ 0}, (Set.indicator Ω (fun _ => (1 : ℝ≥0∞))) (((τ (Multiplicative.ofAdd (-x)) : (AF F ⊗[F] E)ˣ) : AF F ⊗[F] E) • ratTup (AF F) X.1) ≤ if x < x₀ then 0 else ENNReal.ofReal (C * Real.exp (2 * Module.finrank ℚ F * M * x)) := by
   intro F E _ _ _ _ _ σ hCM τ hτ M Ω hΩ

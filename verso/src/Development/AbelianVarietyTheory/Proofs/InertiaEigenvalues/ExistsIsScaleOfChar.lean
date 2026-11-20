@@ -33,11 +33,11 @@ namespace Scale
 variable {D : D7} {n : ℕ}
 
 /- English proof (translation)
-Establish `e1 : actP lam (invTrK u) F = detTwK lam (invTrK u) • trAct (invTrK u) F` using `rfl`. Establish `e2 : (eval₂Hom (RingHom.id ℂ) (fun v : D.what₂.Tau × Fin n × Fin n => (x v.1).val v.2.1 v.2.2)).comp (trAct (invTrK u) : Formalism.L2.DIV.Pol ℂ D.what₂.Tau n →+* Formalism.L2.DIV.Pol ℂ D.what₂.Tau n) = eval₂Hom (RingHom.id ℂ) (fun v => ((u⁻¹ * x) v.1).val v.2.1 v.2.2)`. Use `MvPolynomial.ringHom_ext (fun a => by simp [trAct, Formalism.GradedWeylDivisibility.blockAct]) fun v => ?_` and prove the remaining obligations. Simplify using `only [RingHom.comp_apply, RingHom.coe_coe, trAct, Formalism.GradedWeylDivisibility.blockAct, aeval_X, map_sum, map_mul, eval₂Hom_C, eval₂Hom_X', Pi.mul_apply, Pi.inv_apply, Units.val_mul, Matrix.mul_apply]`. Conclude with `Finset.sum_congr rfl fun b _ => rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `e3 : (RingHom.id ℂ) (detTwK lam (invTrK u)) = ((detFam (fun τ => (lam τ).detShift) u⁻¹ : ℂˣ) : ℂ)`. Simplify using `only [detTwK, detPow, detFam, map_prod, MonoidHom.coe_mk, OneHom.coe_mk, Units.coe_prod, Units.val_zpow_eq_zpow_val, map_zpow₀, GeneralLinearGroup.val_det_apply]`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Use `congr 1`. Express the relevant statement in the definitionally equal form `(((u τ)⁻¹).valᵀ).det = _`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[det_transpose]`. Both sides reduce to the same expression. Rewrite using `[coefFn, coefFn, e1, smul_eq_C_mul, map_mul, eval₂Hom_C, e3, ← e2, map_mul, Units.val_mul]`. Simplify using `only [RingHom.comp_apply, RingHom.coe_coe]`. Expand and normalize the polynomial expressions, which then agree.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem coefFn_translate (lam : D.what₂.Tau → DomWeight n) (u : GLR D n) (F : Formalism.L2.DIV.Pol ℂ D.what₂.Tau n) (x : GLR D n) :
     coefFn (RingHom.id ℂ) lam (actP lam (invTrK u) F) x = coefFn (RingHom.id ℂ) lam F (u⁻¹ * x) := by
@@ -63,7 +63,7 @@ theorem coefFn_translate (lam : D.what₂.Tau → DomWeight n) (u : GLR D n) (F 
   ring
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Rewrite using `[coefFn, coefFn, eval₂Hom_map_hom, RingHom.id_comp]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 -/
 theorem coefFn_map {K : Type} [Field K] (σ : K →+* ℂ) (lam : D.what₂.Tau → DomWeight n) (F : Formalism.L2.DIV.Pol K D.what₂.Tau n) :
     coefFn (RingHom.id ℂ) lam (MvPolynomial.map σ F) = coefFn σ lam F := by
@@ -81,7 +81,7 @@ def coefLin (lam : D.what₂.Tau → DomWeight n) : VV ℂ lam →ₗ[ℂ] (GLR 
     ring
 
 /- English proof (translation)
-The claim follows from `(injective_iff_map_eq_zero _).2 fun F hF => Subtype.ext (GlobalTheory.T.coeffPolynomial_eq_zero_of_vanishing_on_GLFamily D n lam F (congrFun hF))`.
+A detailed English derivation is pending.
 -/
 theorem coefLin_injective (lam : D.what₂.Tau → DomWeight n) : Function.Injective (coefLin lam) :=
   (injective_iff_map_eq_zero _).2 fun F hF => Subtype.ext (GlobalTheory.T.coeffPolynomial_eq_zero_of_vanishing_on_GLFamily D n lam F (congrFun hF))
@@ -91,11 +91,11 @@ variable {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : FamIn D.what₂.L
   {B : Base (Vc D j) (Wc D j)}
 
 /- English proof (translation)
-Establish `hinf : IsInfFam R.θ` using `hθ ▸ hB.frame.vac.2.inf`. Establish `hf : IsThetaFunO R.ψ (Vc D j) (Wc D j) (R.vP j A.μ0)`. Use `hth.pt_theta j A.μ0 1` as an intermediate fact. Unfold `RealDat.ptP pureTensorO at this`. Rewrite `this` using `[GlobalTheory.AdTh.VecFock.pureTensorL_one]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `hon : ∀ τ, IsONBasis (gramAt D (Vc D j) τ) 1 (R.BV j τ) (Vc D j).rank` using `fun τ => hBS τ ▸ hB.frame.onbS τ`. Establish `hinj : Function.Injective (R.ptP j A.μ0)` using `GlobalTheory.FockIndep.pureTensorO_injective D R.ψ R.θ _ _ _ (R.MW j (sg0 D A)) (R.BV j) (R.vP j A.μ0) (hth.ωP j A.μ0).std hinf (fun τ => GlobalTheory.GalLift.Vec.isCartanInv_one (hon τ)) hon hf (GlobalTheory.AdTh.VecNe.thPVec_ne_zero (GlobalTheory.SDFrameLattice.isSelfDualC_of_i …`. Establish `hexp : ∀ τ, HasInfExp D (R.toLevCh.mu A.μ0 ((j : ℕ) + 1)) τ ((B.w.c τ : ℚ) - ((B.w.p τ : ℚ) - B.w.q τ) / 2 + 1 / 2)` using `fun τ => by`. Take `⟨k, hk, ho⟩` from `hlev.xi_fin A.μ0`. Establish `h1` using `hB.inf τ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `h1` using `[hmu]`. Establish `h2` using `GlobalTheory.Chain.StepVac.hasInfExp_mul h1 (GlobalTheory.Chain.StepVac.hasInfExp_of_order hinf (hlev.xi A.μ0) hk ho τ)`. Rewrite `h2` using `[add_zero]`. Then use the resulting hypothesis. Introduce `u hu w`. Conclude with `hinj (((hth.ioP j A.μ0).1 u hu x w).symm.trans (GlobalTheory.T.realisation_definite_realPoint_fockVector_action D G Pl0 T0 A Ks R j A.μ0 B hth hB hψ hθ hsT hBS hBT heta hexp u hu _))`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem io_act (hlev : R.toLevCh.Is A.μ0) (hth : R.IsThP) (hB : B.Good) (hψ : B.F.ψ = R.ψ) (hθ : B.F.θ = R.θ)
     (hsT : B.F.sT = cart (R.MW j (sg0 D A))) (hBS : ∀ τ, (B.F.BS τ).val = R.BV j τ) (hBT : B.F.BT = onb (R.MW j (sg0 D A)))
@@ -125,27 +125,25 @@ theorem io_act (hlev : R.toLevCh.Is A.μ0) (hth : R.IsThP) (hB : B.Good) (hψ : 
     (GlobalTheory.T.realisation_definite_realPoint_fockVector_action D G Pl0 T0 A Ks R j A.μ0 B hth hB hψ hθ hsT hBS hBT heta hexp u hu _))
 
 /- English proof (translation)
-Establish `hinf : IsInfFam R.θ` using `hθ ▸ hB.frame.vac.2.inf`. Establish `hT` using `io_act hlev hth hB hψ hθ hsT hBS hBT hmu heta x`. Establish `hlam : B.w.lam = FWT.lamV D j` using `GlobalTheory.T.good_baseData_weight_eq_lift_coeff_module_weight D T0 R.toLevCh A.μ0 j B hlev hB hmu hap ham`. Establish `hpq : ∀ τ, B.w.p τ + B.w.q τ ≤ (Wc D j).rank` using `fun τ => by`. Take `⟨e, -⟩` from `hB.sigOK (tauE D τ)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite `e` using `[← hB.sig τ]`. Use `Fintype.card_congr e` as an intermediate fact. Simplify using `only [Fintype.card_fin, Fintype.card_sum] at this`. Use linear arithmetic over natural numbers and integers. Establish `hΔ : B.w.delta (Wc D j).rank = RealDat.Delta j`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Unfold `Weight.delta RealDat.Delta`. Rewrite using `[show B.w.p = _ from funext fun τ => congrArg Prod.fst (hB.sig τ), show B.w.q = _ from funext fun τ => congrArg Prod.snd (hB.sig τ), show B.w.ap = _ from funext hap, show B.w.am = _ from funext ham]`. Establish `hirr : ∀ U : Submodule ℂ (R.cV j).W, (∀ h : GinfC (Vc D j), U.map ((R.cV j).ρ h) ≤ U) → U = ⊥ ∨ U = ⊤` using `fun U hU => hc.2.2.2.2 U fun h => by`. Take `⟨a, ha, k, hk, rfl⟩` from `(GlobalTheory.UnitarySplit.real_finite_split D _).1 h`. Rewrite using `[map_mul, hc.1 k hk, mul_one]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hU ⟨a, ha⟩`. Establish `hΔ0` using `GlobalTheory.AdTh.IoExtPf.Delta_ne (D := D) j`. Establish `hharm : ∀ w, R.ioP j x w ∈ harm (Wc D j).rank B.w B.F.BS`. Break down `hirr ((harm (Wc D j).rank B.w B.F.BS).comap (R.ioP j x)) (fun h => by` into its components or cases. Introduce and unpack `_ ⟨w, hw', rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Submodule.mem_comap, hT h h.2]`. Conclude with `fockGL_mem_harm _ _ _ hw') with h | h`. Establish `h0 : w₀ ∈ (harm (Wc D j).rank B.w B.F.BS).comap (R.ioP j x)`. Rewrite using `[Submodule.mem_comap, hw, ← hΔ]`. Conclude with `delta_mem_harm _ _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Rewrite `h0` using `[h, Submodule.mem_bot]`. Rewrite `hw` using `[h0, map_zero]`. Conclude with `absurd hw.symm hΔ0`. Conclude with `fun w => (h ▸ Submodule.mem_top : w ∈ (harm (Wc D j).rank B.w B.F.BS).comap (R.ioP j x))`. Take `⟨e, he0, he⟩` from `GlobalTheory.CoefReal.exists_real_model (Vc D j) R.θ (R.cV j) (FWT.lamV D j) c0 hinf hc ht`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `haveI := hc.2.2.2.1`. Take `⟨c, hcc⟩` from `GlobalTheory.T.schur_equivariant_maps_proportional (GinfC (Vc D j)) (R.cV j).W (GLR D (Vc D j).rank → ℂ) (fun h => (R.cV j).ρ h) (fun h => LinearMap.funLeft ℂ ℂ fun y => (realGL R.θ (Vc D j) h)⁻¹ * y) (harmFn (Wc D j).rank B.w B.F.BS ∘ₗ R.ioP j x) (coefLin (FWT.lamV D j) ∘ₗ e.sym …`. Introduce and unpack `_ ⟨w, rfl⟩`. Establish `h1 : harmFn (Wc D j).rank B.w B.F.BS (R.ioP j x w) ∈ (harm (Wc D j).rank B.w B.F.BS).map (harmFn (Wc D j).rank B.w B.F.BS)` using `Submodule.mem_map_of_mem (hharm w)`. Rewrite `h1` using `[GlobalTheory.T.fockHarmonicValueSpace_map_eq_dualWeylModuleFunctions D _ _ B.w B.F.BS hB.wt hpq, hlam]`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use `Submodule.span_le.2 ?_ h1` and prove the remaining obligations. Introduce and unpack `_ ⟨F, rfl⟩`. Conclude with `⟨e F, congrArg (coefLin _) (e.symm_apply_apply F)⟩)`. Use the proof step `(fun h w => funext fun y => by`. Express the relevant statement in the definitionally equal form `harmFn _ B.w B.F.BS (R.ioP j x ((R.cV j).ρ h w)) y = harmFn _ B.w B.F.BS (R.ioP j x w) _`.
+Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[hT h h.2, ← hθ]`. Conclude with `harmFn_fockGL _ _ _ _ _)`. Use the proof step `(fun h w => funext fun y => by`. Take `⟨v, rfl⟩` from `e.surjective w`. Express the relevant statement in the definitionally equal form `coefLin _ (e.symm ((R.cV j).ρ h (e v))) y = coefLin _ (e.symm (e v)) _`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[he h h.2, e.symm_apply_apply, e.symm_apply_apply]`. Conclude with `coefFn_translate _ _ _ _)`. Use `⟨c, fun h0 => hΔ0 ?_, fun F => ?_⟩` and prove the remaining obligations. Establish `h1` using `LinearMap.congr_fun hcc w₀`. Rewrite `h1` using `[h0, zero_smul, LinearMap.comp_apply, hw]`.
-
-Conclude with `GlobalTheory.T.harmonic_polynomial_eq_zero_of_function D _ _ B.w B.F.BS hB.wt hpq _ (hw ▸ hharm w₀) h1`. Use `(LinearMap.congr_fun hcc (c0 F)).trans ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `c • coefLin _ (e.symm (c0 F)) = _`. Rewrite using `[show e.symm (c0 F) = _ from e.symm_apply_eq.2 (he0 F).symm, ← coefFn_map]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem exists_scale (hlev : R.toLevCh.Is A.μ0) (hth : R.IsThP) (hc : (R.cV j).Is) (hB : B.Good) (hψ : B.F.ψ = R.ψ)
     (hθ : B.F.θ = R.θ) (hsT : B.F.sT = cart (R.MW j (sg0 D A))) (hBS : ∀ τ, (B.F.BS τ).val = R.BV j τ)
@@ -227,7 +225,7 @@ variable {D : D7} {Γ : Type} [Group Γ] [Fintype Γ] {Pl0 I0 T : Type}
   {A3 : FamIn3 D.what₂.LL Γ Pl0 I0 (List ℕ) T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL]
 
 /- English proof (translation)
-Take `⟨gramR, c0R, c0L, hft⟩` from `hfam`. Take `⟨u, w₀, hu, -, hw⟩` from `FWT.IsChosenExtremalVector.io _ hv hio`. Take `⟨c, hc0, hc⟩` from `Scale.exists_scale hlev hth (hcV j) (hρ.base i j b) (hpin.psi i j b) (hpin.inf i j b) (hpin.cartT i j b) (hpin.onbS i j b) (hpin.onbT i j b) (hpin.mu0 i j b) (hpin.eta i j b) (hpin.ap i j b) (hpin.am i j b) (c0L j) (hft.mapL j) _ w₀ hw`. Conclude with `⟨c, hc0, gramR, c0R, c0L, hft, u, hu, hc⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_isScale (Rl : RealDat3 D A3 Ks) (cG : G0 Rl.Pg D.R.r ≃* G0g D.nd)
     (v₀ : ∀ (j : Fin D.R.m) (σ : D.what₂.LL →+* ℂ), (Rl.MW j σ).Vec) {ρ : Setup D.ntw} (hρ : ρ.Good) (hpin : RealPin Rl cG ρ)
@@ -242,7 +240,7 @@ theorem exists_isScale (Rl : RealDat3 D A3 Ks) (cG : G0 Rl.Pg D.R.r ≃* G0g D.n
   exact ⟨c, hc0, gramR, c0R, c0L, hft, u, hu, hc⟩
 
 /- English proof (translation)
-The claim follows from `exists_isScale Rl cG v₀ hρ hpin hC.lev hC.fam.tie hC.models.cV hC.thP hio i j b hv`.
+A detailed English derivation is pending.
 -/
 theorem exists_isScale_of_char (Rl : RealDat3 D A3 Ks) (cG : G0 Rl.Pg D.R.r ≃* G0g D.nd)
     (v₀ : ∀ (j : Fin D.R.m) (σ : D.what₂.LL →+* ℂ), (Rl.MW j σ).Vec) {ρ : Setup D.ntw} (hρ : ρ.Good) (hpin : RealPin Rl cG ρ)

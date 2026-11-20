@@ -23,7 +23,7 @@ section Mat
 variable {ε : Fin n → Bool}
 
 /- English proof (translation)
-Unfold `Jm`. Rewrite using `[Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `a`. Apply the tactic sequence `split_ifs <;> norm_num`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem J_mul_J_eq_one (ε : Fin n → Bool) : Jm ε * Jm ε = 1 := by
   unfold Jm
@@ -33,7 +33,7 @@ theorem J_mul_J_eq_one (ε : Fin n → Bool) : Jm ε * Jm ε = 1 := by
   split_ifs <;> norm_num
 
 /- English proof (translation)
-Apply `Matrix.inv_eq_left_inv` to reduce the goal to its premises. Unfold `inUJ at hg`. Rewrite using `[Matrix.mul_assoc, Matrix.mul_assoc, ← Matrix.mul_assoc gᴴ, hg, J_mul_J_eq_one]`.
+Reduce the claim to the hypotheses of an applicable result. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem unitary_group_inv_eq_conj {g : Matrix (Fin n) (Fin n) ℂ} (hg : inUJ ε g) : g⁻¹ = Jm ε * gᴴ * Jm ε := by
   apply Matrix.inv_eq_left_inv
@@ -41,16 +41,16 @@ theorem unitary_group_inv_eq_conj {g : Matrix (Fin n) (Fin n) ℂ} (hg : inUJ ε
   rw [Matrix.mul_assoc, Matrix.mul_assoc, ← Matrix.mul_assoc gᴴ, hg, J_mul_J_eq_one]
 
 /- English proof (translation)
-Simplify using `[Jm, Matrix.diagonal_mul, Matrix.mul_diagonal]`.
+Simplify using the standard rewrite rules.
 -/
 theorem J_conj_entry (ε : Fin n → Bool) (A : Matrix (Fin n) (Fin n) ℂ) (d c : Fin n) :
     (Jm ε * A * Jm ε) d c = (if ε d then 1 else -1) * A d c * (if ε c then 1 else -1) := by
   simp [Jm, Matrix.diagonal_mul, Matrix.mul_diagonal]
 
 /- English proof (translation)
-Unfold `inG at hX`. Establish `h1 : Xᴴ * Jm ε = -(Jm ε * X)` using `eq_neg_of_add_eq_zero_left hX`. Establish `h2 : Jm ε * Xᴴ * Jm ε = -X`. Rewrite using `[Matrix.mul_assoc, h1, Matrix.mul_neg, ← Matrix.mul_assoc, J_mul_J_eq_one, Matrix.one_mul]`. Establish `h3 : Jm ε * (g * X)ᴴ * Jm ε = (Jm ε * Xᴴ * Jm ε) * (Jm ε * gᴴ * Jm ε)`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Matrix.conjTranspose_mul]`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc (Jm ε) (Jm ε), J_mul_J_eq_one, Matrix.one_mul]`. Rewrite using `[h3, h2, Matrix.neg_mul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem J_conj_neg_mul_inv {g X : Matrix (Fin n) (Fin n) ℂ} (hX : inG ε X) :
     Jm ε * (g * X)ᴴ * Jm ε = -(X * (Jm ε * gᴴ * Jm ε)) := by
@@ -65,7 +65,7 @@ theorem J_conj_neg_mul_inv {g X : Matrix (Fin n) (Fin n) ℂ} (hX : inG ε X) :
   rw [h3, h2, Matrix.neg_mul]
 
 /- English proof (translation)
-Establish `h` using `Formalism.REAL.hasDerivAt_mul_exp_smul_zero g X`. Conclude with `hasDerivAt_pi.1 (hasDerivAt_pi.1 h c) d`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem hasDerivAt_exp_curve_entry (g X : Matrix (Fin n) (Fin n) ℂ) (c d : Fin n) :
     HasDerivAt (fun t : ℝ => (g * NormedSpace.exp ((t : ℂ) • X)) c d) ((g * X) c d) 0 := by
@@ -73,9 +73,9 @@ theorem hasDerivAt_exp_curve_entry (g X : Matrix (Fin n) (Fin n) ℂ) (c d : Fin
   exact hasDerivAt_pi.1 (hasDerivAt_pi.1 h c) d
 
 /- English proof (translation)
-Establish `hcur : ∀ t : ℝ, inUJ ε (g * NormedSpace.exp ((t : ℂ) • X))` using `fun t => smd_inUJ_mul hg (exp_smul_mem_UJset hX t)`. Establish `hfun : (fun t : ℝ => (g * NormedSpace.exp ((t : ℂ) • X))⁻¹ d c) = fun t : ℝ => (if ε d then 1 else -1) * star ((g * NormedSpace.exp ((t : ℂ) • X)) c d) * (if ε c then 1 else -1)`. Use function extensionality and compare the values at `t`. Rewrite using `[unitary_group_inv_eq_conj (hcur t), J_conj_entry, Matrix.conjTranspose_apply]`. Establish `e : (-(X * g⁻¹)) d c = (if ε d then 1 else -1) * star ((g * X) c d) * (if ε c then 1 else -1)`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e1` using `J_conj_neg_mul_inv (g := g) hX`. Rewrite using `[unitary_group_inv_eq_conj hg, ← e1, J_conj_entry, Matrix.conjTranspose_apply]`. Rewrite using `[hfun]`. Apply the tactic sequence `exact ((((hasDerivAt_exp_curve_entry g X c d).star).const_mul _).mul_const _).congr_deriv e.symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasDerivAt_inv_exp_curve_entry {g X : Matrix (Fin n) (Fin n) ℂ} (hg : inUJ ε g) (hX : inG ε X) (d c : Fin n) :
     HasDerivAt (fun t : ℝ => (g * NormedSpace.exp ((t : ℂ) • X))⁻¹ d c) (-(X * g⁻¹) d c) 0 := by
@@ -99,9 +99,9 @@ variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] {ε : Fin 
   {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} {D : Submodule ℂ H} {E : Fin n → Fin n → Module.End ℂ D}
 
 /- English proof (translation)
-Use `set L : H →L[ℝ] ℂ := ((innerSL ℂ w).comp (σ g)).restrictScalars ℝ with hL`. Establish `h1 : (fun t : ℝ => inner ℂ w (σ (g * NormedSpace.exp ((t : ℂ) • X)) (v : H))) = fun t : ℝ => L (σ (NormedSpace.exp ((t : ℂ) • X)) (v : H))`. Use function extensionality and compare the values at `t`. Rewrite using `[hσ.1.2 _ hg _ (exp_smul_mem_UJset hX t)]`. Simplify using `[hL, innerSL_apply_apply]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1]`. Establish `h2` using `L.hasFDerivAt.comp_hasDerivAt (0 : ℝ) (hD.deriv X hX v)`. Conclude with `h2.congr_deriv (by simp [hL, innerSL_apply_apply])`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem hasDerivAt_inner_rep_exp (hσ : IsURepOn (UJset ε) σ) (hD : IsDerivedOn ε σ D E)
     {g X : Matrix (Fin n) (Fin n) ℂ} (hg : inUJ ε g) (hX : inG ε X) (w : H) (v : D) :
@@ -123,7 +123,7 @@ def oa1DPhi (dual : Bool) (g X : Matrix (Fin n) (Fin n) ℂ) (c d : Fin n) : ℂ
   cond dual ((-(X * g⁻¹)) d c) ((g * X) c d)
 
 /- English proof (translation)
-Consider the cases of `dual`. Apply the tactic sequence `exact hasDerivAt_exp_curve_entry g X c d`. Apply the tactic sequence `exact hasDerivAt_inv_exp_curve_entry hg hX d c`.
+Split into cases according to the possible forms of the given data. A detailed English derivation is pending.
 -/
 theorem hasDerivAt_tensor_phi {g X : Matrix (Fin n) (Fin n) ℂ} (hg : inUJ ε g) (hX : inG ε X) (dual : Bool)
     (c d : Fin n) :
@@ -133,7 +133,7 @@ theorem hasDerivAt_tensor_phi {g X : Matrix (Fin n) (Fin n) ℂ} (hg : inUJ ε g
   · exact hasDerivAt_inv_exp_curve_entry hg hX d c
 
 /- English proof (translation)
-Simplify using `[tensGrp, oa1Phi, inner_sum]`.
+Simplify using the standard rewrite rules.
 -/
 theorem tensor_coef_expand (dual : Bool) (σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)) (η f : Fin n → H)
     (g : Matrix (Fin n) (Fin n) ℂ) :
@@ -141,9 +141,9 @@ theorem tensor_coef_expand (dual : Bool) (σ : Matrix (Fin n) (Fin n) ℂ → (H
   simp [tensGrp, oa1Phi, inner_sum]
 
 /- English proof (translation)
-Establish `h` using `HasDerivAt.fun_sum (u := univ) (fun c _ => HasDerivAt.fun_sum (u := univ) (fun d _ => (hasDerivAt_tensor_phi hg hX dual c d).mul (hasDerivAt_inner_rep_exp hσ hD hg hX (η c) (f d))))`. Simplify using `only [Formalism.REAL.mul_exp_zero_smul_eq] at h`. Establish `e : (fun t : ℝ => ∑ c, inner ℂ (η c) (tensGrp dual σ (g * NormedSpace.exp ((t : ℂ) • X)) (fun d => (f d : H)) c)) = fun t : ℝ => ∑ c, ∑ d, oa1Phi dual (g * NormedSpace.exp ((t : ℂ) • X)) c d * inner ℂ (η c) (σ (g * NormedSpace.exp ((t : ℂ) • X)) (f d : H))`. Use function extensionality and compare the values at `t`. Conclude with `tensor_coef_expand dual σ η _ _`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `h`.
+A detailed English derivation is pending.
 -/
 theorem hasDerivAt_tensor_coef (hσ : IsURepOn (UJset ε) σ) (hD : IsDerivedOn ε σ D E)
     {g X : Matrix (Fin n) (Fin n) ℂ} (hg : inUJ ε g) (hX : inG ε X) (dual : Bool) (η : Fin n → H)
@@ -172,15 +172,15 @@ variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] {ε : Fin 
   {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} {D : Submodule ℂ H} {E : Fin n → Fin n → Module.End ℂ D}
 
 /- English proof (translation)
-Establish `hZ` using `(Formalism.REAL.complex_parts_mem_lie_algebra_holds _ ε (Matrix.single a b (1 : ℂ))).2.2.1`. Use `set X1 := Formalism.REAL.cpart1 ε (Matrix.single a b (1 : ℂ))`. Use `set X2 := Formalism.REAL.cpart2 ε (Matrix.single a b (1 : ℂ))`. Consider the cases of `dual`. Establish `h3 : g * X1 + Complex.I • (g * X2) = g * Matrix.single a b 1`.
+Establish an intermediate fact. Split into cases according to the possible forms of the given data. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hZ, Matrix.mul_add, Matrix.mul_smul]`. Establish `h4` using `congrFun (congrFun h3 c) d`. Simplify using `only [Matrix.add_apply, Matrix.smul_apply, smul_eq_mul] at h4`. Simplify using `only [oa1DPhi, cond_false]`. Rewrite using `[h4]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Distinguish the cases in `h : d = b`. Substitute `h` using the available equality. Simplify using `[Matrix.mul_apply, Matrix.single_apply]`. Simplify using `[Matrix.mul_apply, Matrix.single_apply, h, Ne.symm h]`. Establish `h3 : X1 * g⁻¹ + Complex.I • (X2 * g⁻¹) = Matrix.single a b 1 * g⁻¹`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hZ, Matrix.add_mul, Matrix.smul_mul]`. Establish `h4` using `congrFun (congrFun h3 d) c`. Simplify using `only [Matrix.add_apply, Matrix.smul_apply, smul_eq_mul] at h4`. Simplify using `only [oa1DPhi, cond_true, Matrix.neg_apply]`. Rewrite using `[show -(X1 * g⁻¹) d c + Complex.I * -(X2 * g⁻¹) d c = -((X1 * g⁻¹) d c + Complex.I * (X2 * g⁻¹) d c) by ring, h4]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Distinguish the cases in `h : d = a`. Substitute `h` using the available equality. Simplify using `[Matrix.mul_apply, Matrix.single_apply]`. Simplify using `[Matrix.mul_apply, h, Ne.symm h]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem tensor_dphi_complex_comb (dual : Bool) (g : Matrix (Fin n) (Fin n) ℂ) (a b c d : Fin n) :
     oa1DPhi dual g (Formalism.REAL.cpart1 ε (Matrix.single a b 1)) c d +
@@ -211,21 +211,21 @@ theorem tensor_dphi_complex_comb (dual : Bool) (g : Matrix (Fin n) (Fin n) ℂ) 
     · simp [Matrix.mul_apply, h, Ne.symm h]
 
 /- English proof (translation)
-Establish `hg' : inUJ ε g` using `hg`. Rewrite using `[Formalism.REAL.lie_derivative_def]`. Unfold `Formalism.REAL.Rd`. Rewrite using `[(hasDerivAt_tensor_coef hσ hD hg' (Formalism.REAL.real_part_single_mem ε a b) dual η f).deriv, (hasDerivAt_tensor_coef hσ hD hg' (Formalism.REAL.imaginary_part_single_mem ε a b) dual η f).deriv]`. Establish `hZ` using `(Formalism.REAL.complex_parts_mem_lie_algebra_holds _ ε (Matrix.single a b (1 : ℂ))).2.2.1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `key : E a b = actM E (Formalism.REAL.cpart1 ε (Matrix.single a b 1)) + Complex.I • actM E (Formalism.REAL.cpart2 ε (Matrix.single a b 1))`. Rewrite using `[← actM_single' E a b, ← actM_smul', ← actM_add', ← hZ]`. Establish `hterm : ∀ c d, (oa1DPhi dual g (Formalism.REAL.cpart1 ε (Matrix.single a b 1)) c d * inner ℂ (η c) (σ g (f d : H)) + oa1Phi dual g c d * inner ℂ (η c) (σ g ((actM E (Formalism.REAL.cpart1 ε (Matrix.single a b 1)) (f d) : D) : H))) + Complex.I * (oa1DPhi dual g (Formalism.REAL.cpa …`. Introduce `c d`. Rewrite using `[← tensor_dphi_complex_comb dual g a b c d, key]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [LinearMap.add_apply, LinearMap.smul_apply, Submodule.coe_add, Submodule.coe_smul, map_add, map_smul, inner_add_right, inner_smul_right]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Finset.mul_sum, ← Finset.sum_add_distrib]`. Simplify using `only [Finset.mul_sum, ← Finset.sum_add_distrib, hterm]`. Rewrite using `[tensor_coef_expand]`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Consider the cases of `dual`. Simplify using `only [cond_false, tensF, tensV_coord, oa1Phi, Submodule.coe_add, map_add, inner_add_right, mul_add, Finset.sum_add_distrib, ite_mul, zero_mul, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Rewrite using `[add_comm]`. Use `congr 1`.
+Reduce the conclusion to the remaining proof obligations. Split into cases according to the possible forms of the given data. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[Finset.sum_eq_single a (fun d _ hd => by simp [hd]) (by simp)]`. Simplify using the standard rewrite rules. Establish `hR : ∀ d, oa1Phi true g c d * inner ℂ (η c) (σ g ((tensF true E a b f d : D) : H)) = oa1Phi true g c d * inner ℂ (η c) (σ g ((E a b (f d) : D) : H)) - (if d = b then oa1Phi true g c b * inner ℂ (η c) (σ g (f a : H)) else 0)`. Introduce `d`. Simplify using `only [tensF, cond_true, tensVd_coord]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `h : d = b`. Substitute `h` using the available equality. Simplify using `[mul_sub, inner_sub_right]`. Simplify using `[h]`. Establish `hL : ∀ d, cond true (-(if d = a then (g⁻¹) b c else 0)) (if d = b then g c a else 0) * inner ℂ (η c) (σ g (f d : H)) = -(if d = a then (g⁻¹) b c * inner ℂ (η c) (σ g (f a : H)) else 0)`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `d`. Distinguish the cases in `h : d = a`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[h]`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [hL, hR]`. Simplify using `only [Finset.sum_add_distrib, Finset.sum_sub_distrib, Finset.sum_neg_distrib, Finset.sum_ite_eq', Finset.mem_univ, if_true, oa1Phi, cond_true]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem tensor_coef_Eab_action (dual : Bool) (hσ : IsURepOn (UJset ε) σ) (hD : IsDerivedOn ε σ D E) (η : Fin n → H)
     (f : Fin n → D) (a b : Fin n) {g : Matrix (Fin n) (Fin n) ℂ} (hg : Formalism.REAL.inUJ ε g) :

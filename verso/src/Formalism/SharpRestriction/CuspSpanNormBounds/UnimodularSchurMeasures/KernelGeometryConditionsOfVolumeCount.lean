@@ -17,9 +17,9 @@ def VolumeCountGeometryConditions (n₀ : ℕ) (A C cb cε Cv Cd Cq : ℝ) : Pro
   ∀ X : CData, X.HypC n₀ A C cb → X.FinVol ∧ AllCount X (2 * (X.I.n : ℝ) ^ 2) ∧ GeoS X cε Cv Cd Cq
 
 /- English proof (translation)
-Take `⟨Ch, -, hH⟩` from `Formalism.HermitianLatticeCounting.Final.S7.threshHead 363`. Use `⟨Ch, fun D n₀ A C cb cε Cv Cd Cq hn hC h2 hdec hloc htri hS X hX => ?_⟩` and prove the remaining obligations. Take `⟨hV, hcnt, hG⟩` from `hS X hX`. Take `⟨t1, t2⟩` from `gap_thresholds_of_height_bound hH X hn hC hX`. Establish `hd` using `RegData_of_HypB X hX.1`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hu` using `adelic_unimodular_of_finite_covolume X hd hV`. Conclude with `⟨regularRep_measurable_of_finite_volume X hd hV, kernel_diagonal_of_triangle_inequality D h2 hdec hloc X hX.1 (le_trans hn hX.1.1.1) t1 t2 hu htri hcnt, hV, hG⟩`.
+Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem kernel_geometry_conditions_of_volume_count : ∃ C₃ : ℝ, ∀ (D : Formalism.BasicNotions.D7) (n₀ : ℕ) (A C cb cε Cv Cd Cq : ℝ), 1 ≤ n₀ → C₃ ≤ C →
     adm2 D → DiscreteSeriesDecayBound D → LocalProjectorRealPlace D → DistTri → VolumeCountGeometryConditions n₀ A C cb cε Cv Cd Cq → StepsG'' n₀ A C cb cε Cv Cd Cq := by
@@ -33,9 +33,9 @@ theorem kernel_geometry_conditions_of_volume_count : ∃ C₃ : ℝ, ∀ (D : Fo
     kernel_diagonal_of_triangle_inequality D h2 hdec hloc X hX.1 (le_trans hn hX.1.1.1) t1 t2 hu htri hcnt, hV, hG⟩
 
 /- English proof (translation)
-Take `⟨c', cb, hc', hcb, h⟩` from `theorem_count_of_geometry`. Take `⟨C₃, h3⟩` from `kernel_geometry_conditions_of_volume_count`. Use `⟨c', cb, hc', hcb, fun Cd Cq Cv Cres A Cb cε hCd hCq hCC hCv hA hcε hcε2 => ?_⟩` and prove the remaining obligations. Take `⟨n₁, C₂, h⟩` from `h Cd Cq Cv Cres A Cb cε hCd hCq hCC hCv hA hcε hcε2`. Use `⟨max n₁ 1, max C₂ C₃, fun D n₀ C hn hC h2 h7 hdec hloc hb htri hS => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `h D n₀ C (le_trans (le_max_left _ _) hn) (le_trans (le_max_left _ _) hC) h2 h7 hdec hb (h3 D n₀ A C cb cε Cv Cd Cq (le_trans (le_max_right _ _) hn) (le_trans (le_max_right _ _) hC) h2 hdec hloc htri hS)`.
+A detailed English derivation is pending.
 -/
 theorem packet_bound_of_volume_count_geometry : ∃ c' cb : ℝ, 0 < c' ∧ 0 < cb ∧ ∀ Cd Cq Cv Cres A Cb cε : ℝ, 1 ≤ Cd → 0 ≤ Cq → 16 * Cq ≤ Cd → 1 ≤ Cv →
     1 ≤ A → 0 < cε → cε ≤ 1 / 90000 →

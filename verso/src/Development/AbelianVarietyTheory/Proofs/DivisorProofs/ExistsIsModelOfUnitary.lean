@@ -7,7 +7,7 @@ open GlobalTheory.UnitLemma Polynomial Matrix
 namespace GlobalTheory.InertUnitOrb
 
 /- English proof (translation)
-Establish `h1 : ∀ u v : Fin n → K.E, stdH K n u v = u ⬝ᵥ (fun k => K.c (v k))` using `fun u v => rfl`. Establish `h2 : (fun k => K.c ((γ *ᵥ z) k)) = (γ.map K.c) *ᵥ (fun k => K.c (z k))`. Use function extensionality and compare the values at `k`. Simplify using `[Matrix.mulVec, dotProduct, map_sum]`. Rewrite using `[h1, h1, h2, dotProduct_mulVec, ← mulVec_transpose, mulVec_mulVec, hγ, one_mulVec]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem stdH_mulVec_of_unitary (K : UQ) (n : ℕ) (γ : Matrix (Fin n) (Fin n) K.E)
     (hγ : (γ.map K.c)ᵀ * γ = 1) (y z : Fin n → K.E) :
@@ -19,13 +19,11 @@ theorem stdH_mulVec_of_unitary (K : UQ) (n : ℕ) (γ : Matrix (Fin n) (Fin n) K
   rw [h1, h1, h2, dotProduct_mulVec, ← mulVec_transpose, mulVec_mulVec, hγ, one_mulVec]
 
 /- English proof (translation)
-Introduce `K B n γ hγ hg hsep hchar`. Take `⟨x, e, h1, h2, h3⟩` from `PairClass.exists_herm_model K (Fin n → K.E) (stdH K n) (fun x y z => by simp [stdH, add_mul, Finset.sum_add_distrib]) (fun c x z => by simp [stdH, Finset.mul_sum, mul_assoc]) (fun x y => by`. Simplify using `only [stdH, map_sum, map_mul, K.c_c]`. Conclude with `Finset.sum_congr rfl fun k _ => mul_comm _ _)`. Use the proof step `(fun y hy => by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `k`. Use `hy (Pi.single k 1)` as an intermediate fact. Rewrite `this` using `[stdH, Finset.sum_eq_single k]`. Simplify using `using this`. Introduce `j _ hj`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[Pi.single_eq_of_ne hj]`. Use the proof step `simp)`. Use `B (Matrix.toLin' γ) hsep (by rw [Matrix.charpoly_toLin', hchar])`. Use the proof step `(Or.inl ⟨hg, fun y z => by`. Rewrite using `[Matrix.toLin'_apply, Matrix.toLin'_apply, stdH_mulVec_of_unitary K n γ hγ]⟩)`.
-
-Conclude with `⟨x, e, h1, fun y => by rw [h2, Matrix.toLin'_apply], h3⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_isModel_of_unitary : ∀ (K : GlobalTheory.UnitLemma.UQ) (B : GlobalTheory.UnitLemma.InvAlg K) (n : ℕ) (γ : Matrix (Fin n) (Fin n) K.E), (γ.map K.c)ᵀ * γ = 1 → B.g * B.σ B.g = 1 → B.P.Separable → γ.charpoly = B.P → ∃ (x : B.Aˣ) (ψ : B.A ≃ₗ[K.E] (Fin n → K.E)), GlobalTheory.InertUnitOrb.IsModel B γ x ψ := by
   intro K B n γ hγ hg hsep hchar

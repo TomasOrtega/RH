@@ -7,7 +7,7 @@ import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.FockRaisingLowering.Foc
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.FockRaisingLowering.RaisingLoweringSplit
 
 /- English proof (translation)
-The claim follows from `FockRL.gradedOscillatorProperty_of FockRL.blockDiagonalPreservesDegree (FockRL.pcStep_of FockRaiseLowGrade.raisingLoweringSplit) (FockRL.adjStep_of FockRaiseLowGrade.raisingLoweringSplit FockRaiseLowInner.fischerConjLinearLeft FockRaiseLowInner.fischerLinearRight FockRaiseLowInne …`.
+A detailed English derivation is pending.
 -/
 theorem gradedOscillatorProperty : FockH1Action.H1 :=
   FockRL.gradedOscillatorProperty_of FockRL.blockDiagonalPreservesDegree

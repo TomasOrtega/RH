@@ -148,7 +148,7 @@ def TorsionAndProducts (Y : Model Xo c β) : Prop :=
         ∃ P : PELUnif (IsLocalRing.maximalIdeal R) t, Conclusion P W ∧ Products P W
 
 /- English proof (translation)
-Introduce `R _ _ _ _ h1 h2 h3 ξ t m hne hs`. Take `⟨W, hW, P, hP, -⟩` from `h R h1 h2 h3 ξ t m hne hs`. Conclude with `⟨P, hW ▸ hP.1, hP.2.1⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 example (Y : Model Xo c β) (h : TorsionAndProducts Y) : Y.N3 := by
   intro R _ _ _ _ h1 h2 h3 ξ t m hne hs

@@ -15,7 +15,7 @@ universe u
 namespace SegreFlagIndep
 
 /- English proof (translation)
-Introduce `e`. Use extensionality with `d`. Take `⟨d', rfl⟩ : ∃ d', d = d'.mapDomain e` from `⟨d.mapDomain e.symm, by rw [← Finsupp.mapDomain_comp]; simp⟩`. Rewrite using `[coeff_rename_mapDomain _ e.injective, coeff_homogeneousComponent, coeff_homogeneousComponent, Finsupp.degree_mapDomain]`. Use `conv_rhs => rw [← hG e, coeff_rename_mapDomain _ e.injective]`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isSymmetric_homogeneousComponent {σ R : Type*} [CommSemiring R] {G : MvPolynomial σ R}
     (hG : G.IsSymmetric) (c : ℕ) : (homogeneousComponent c G).IsSymmetric := by
@@ -42,7 +42,7 @@ theorem polyNum_eq {r : ℕ} (deg : Fin r → K → ℤ) (Q : MvPolynomial (Fin 
     polyNum I V n deg Q = ∑ μ ∈ Q.support, Q.coeff μ * listNum I V n (monoList deg μ) := rfl
 
 /- English proof (translation)
-Rewrite using `[polyNum_eq]`. Conclude with `Finset.sum_subset hS fun μ _ hμ => by rw [notMem_support_iff.mp hμ, zero_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem polyNum_eq_of_subset {r : ℕ} (deg : Fin r → K → ℤ) (Q : MvPolynomial (Fin r) ℤ)
     (S : Finset (Fin r →₀ ℕ)) (hS : Q.support ⊆ S) :
@@ -68,7 +68,7 @@ theorem polyNumHom_apply {r : ℕ} (deg : Fin r → K → ℤ) (Q : MvPolynomial
     polyNumHom I V n deg Q = polyNum I V n deg Q := rfl
 
 /- English proof (translation)
-Rewrite using `[polyNum_eq_of_subset I V n deg _ {μ} support_monomial_subset]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem polyNum_monomial {r : ℕ} (deg : Fin r → K → ℤ) (μ : Fin r →₀ ℕ) (a : ℤ) :
     polyNum I V n deg (monomial μ a) = a * listNum I V n (monoList deg μ) := by
@@ -83,13 +83,13 @@ section Lists
 variable {K : Type}
 
 /- English proof (translation)
-Unfold `monoList`. Rewrite using `[← List.ofFn_id, List.ofFn_add, List.flatMap_append, List.ofFn_eq_map, List.ofFn_eq_map, List.flatMap_map, List.flatMap_map]`. Use `congr 1`. Use `congr 1`. Use function extensionality and compare the values at `s`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `h1 : (Fin.castLE (Nat.le_add_right N r) s) = Fin.castAdd r s` using `rfl`. Simplify using `only [id, h1, Finsupp.add_apply, Finsupp.mapDomain_apply (Fin.castAdd_injective N r), Fin.append_left]`. Rewrite using `[Finsupp.mapDomain_of_notMem_range, add_zero]`. Introduce and unpack `⟨j, hj⟩`. Use `congrArg Fin.val hj` as an intermediate fact.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Simplify using `at this`. Use linear arithmetic over natural numbers and integers. Use `congr 1`. Use function extensionality and compare the values at `s`. Simplify using `only [id, Finsupp.add_apply, Finsupp.mapDomain_apply (Fin.natAdd_injective r N), Fin.append_right]`.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finsupp.mapDomain_of_notMem_range, zero_add]`. Introduce and unpack `⟨j, hj⟩`. Use `congrArg Fin.val hj` as an intermediate fact. Simplify using `at this`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem monoList_append {N r : ℕ} (d : Fin N → K → ℤ) (Y : Fin r → K → ℤ) (α : Fin N →₀ ℕ)
     (ν : Fin r →₀ ℕ) :
@@ -120,7 +120,7 @@ theorem monoList_append {N r : ℕ} (d : Fin N → K → ℤ) (Y : Fin r → K �
     omega
 
 /- English proof (translation)
-Rewrite using `[Finsupp.degree_eq_sum]`. Simplify using `[monoList, List.length_flatMap, Fin.sum_univ_def]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem length_monoList {N : ℕ} (d : Fin N → K → ℤ) (α : Fin N →₀ ℕ) :
     (monoList d α).length = α.degree := by
@@ -128,9 +128,9 @@ theorem length_monoList {N : ℕ} (d : Fin N → K → ℤ) (α : Fin N →₀ �
   simp [monoList, List.length_flatMap, Fin.sum_univ_def]
 
 /- English proof (translation)
-Rewrite using `[List.ofFn_eq_map]`. Unfold `monoList`. Establish `: ∀ s : Fin n, (∑ j : Fin n, Finsupp.single j 1) s = 1`. Introduce `s`. Simplify using `[Finsupp.finsetSum_apply, Finsupp.single_apply]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [this, List.replicate_one]`. Proceed by induction on `List.finRange n with`. Consider the case `nil => rfl`. Consider the case `cons a l ih => simp [ih]`.
+Simplify using the standard rewrite rules. Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem monoList_ones {n : ℕ} (Y : Fin n → K → ℤ) :
     monoList Y (∑ j : Fin n, Finsupp.single j 1) = List.ofFn Y := by
@@ -153,7 +153,7 @@ variable {F : Type*} [Field F] {K : Type} [Fintype K] {ι : K → Type} [∀ k, 
   (I : IFamily F ι) (V : Ideal (MRingOver F ι)) (e : ℕ)
 
 /- English proof (translation)
-Use `conv_lhs => rw [as_sum A]`. Rewrite using `[map_sum, Finset.sum_mul, ← polyNumHom_apply, map_sum]`. Use `Finset.sum_congr rfl fun α _ => ?_` and prove the remaining obligations. Rewrite using `[rename_monomial, rename_monomial, monomial_mul, polyNumHom_apply, polyNum_monomial, monoList_append, mul_one]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem polyNum_mul_monomial {N r : ℕ} (d : Fin N → K → ℤ) (Y : Fin r → K → ℤ)
     (A : MvPolynomial (Fin N) ℤ) (ν : Fin r →₀ ℕ) :
@@ -166,9 +166,9 @@ theorem polyNum_mul_monomial {N r : ℕ} (d : Fin N → K → ℤ) (Y : Fin r �
     monoList_append, mul_one]
 
 /- English proof (translation)
-Use `conv_lhs => rw [as_sum R]`. Rewrite using `[map_sum, Finset.mul_sum, ← polyNumHom_apply, map_sum]`. Use `Finset.sum_congr rfl fun ν _ => ?_` and prove the remaining obligations. Establish `: monomial ν (R.coeff ν) = R.coeff ν • monomial ν (1 : ℤ)`. Rewrite using `[smul_monomial, smul_eq_mul, mul_one]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, map_zsmul, mul_smul_comm, map_zsmul, polyNumHom_apply, smul_eq_mul]`.
+A detailed English derivation is pending.
 -/
 theorem polyNum_mul_eq_sum {N r : ℕ} (d : Fin N → K → ℤ) (Y : Fin r → K → ℤ)
     (A : MvPolynomial (Fin N) ℤ) (R : MvPolynomial (Fin r) ℤ) :
@@ -183,7 +183,7 @@ theorem polyNum_mul_eq_sum {N r : ℕ} (d : Fin N → K → ℤ) (Y : Fin r → 
   rw [this, map_zsmul, mul_smul_comm, map_zsmul, polyNumHom_apply, smul_eq_mul]
 
 /- English proof (translation)
-Rewrite using `[monomial_sum_one, map_prod]`. Simplify using `[rename_X, ← X.eq_1]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem prod_X_natAdd (N n : ℕ) :
     (∏ j : Fin n, X (Fin.natAdd N j) : MvPolynomial (Fin (N + n)) ℤ) =
@@ -212,19 +212,17 @@ def SegreFlagIndep₂.Statement : Prop :=
 namespace SegreFlagIndep
 
 /- English proof (translation)
-Introduce `x e hV N E _ _ B fl₁ fl₂ I₀ hI G hG r Y R`. Establish `hsplit : ∀ d : Fin N → K → ℤ, polyNum I₀ (mcIdeal F x) e (Fin.append d Y) (rename (Fin.castAdd r) G * rename (Fin.natAdd N) R) = ∑ c ∈ Finset.range (G.totalDegree + 1), polyNum I₀ (mcIdeal F x) e (Fin.append d Y) (rename (Fin.castAdd r) (homogeneousComponent c G) * rename (Fin.na …`. Introduce `d`. Use `conv_lhs => rw [← sum_homogeneousComponent G]`. Rewrite using `[map_sum, Finset.sum_mul, ← polyNumHom_apply, map_sum]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Rewrite using `[hsplit, hsplit]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[polyNum_mul_eq_sum, polyNum_mul_eq_sum]`. Use `Finset.sum_congr rfl fun ν _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Use `set Gc := homogeneousComponent c G`. Establish `hGc : Gc.IsHomogeneous c` using `homogeneousComponent_isHomogeneous c G`. Use `set L := monoList Y ν`. Establish `hmono : ∀ d : Fin N → K → ℤ, polyNum I₀ (mcIdeal F x) e (Fin.append d Y) (rename (Fin.castAdd r) Gc * rename (Fin.natAdd N) (monomial ν 1)) = polyNum I₀ (mcIdeal F x) e (Fin.append d L.get) (rename (Fin.castAdd L.length) Gc * ∏ j : Fin L.length, X (Fin.natAdd N j))`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `d`. Rewrite using `[prod_X_natAdd, polyNum_mul_monomial, polyNum_mul_monomial, monoList_ones, List.ofFn_get]`. Rewrite using `[hmono, hmono]`. Distinguish the cases in `hce : c + L.length = e`. Conclude with `h x e hV N E B fl₁ fl₂ I₀ hI Gc (isSymmetric_homogeneousComponent hG c) c L.length L.get hGc hce`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hzero : ∀ d : Fin N → K → ℤ, polyNum I₀ (mcIdeal F x) e (Fin.append d L.get) (rename (Fin.castAdd L.length) Gc * ∏ j : Fin L.length, X (Fin.natAdd N j)) = 0`. Introduce `d`. Rewrite using `[prod_X_natAdd, polyNum_mul_monomial, monoList_ones, List.ofFn_get]`. Use `Finset.sum_eq_zero fun α hα => ?_` and prove the remaining obligations. Establish `hdeg : α.degree = c`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `hGc (mem_support_iff.mp hα)` as an intermediate fact. Rewrite using `[Finsupp.degree_eq_weight_one]` and apply the resulting hypothesis. Rewrite using `[listNum, dif_neg, mul_zero]`. Rewrite using `[List.length_append, length_monoList, hdeg]`. Conclude with `hce`.
-
-Rewrite using `[hzero, hzero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem segreFlagIndep_homogeneous_implies_general (h : IndefiniteRowSideFullHecke.NumbersDVR.Bundles.SegreFlagIndep.Statement.{u} F Ω ι) :
     SegreFlagIndep₂.Statement.{u} F Ω ι := by

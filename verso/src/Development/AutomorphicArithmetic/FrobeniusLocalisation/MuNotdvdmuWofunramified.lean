@@ -6,9 +6,9 @@ open NumberField IntermediateField Ideal Formalism.HC Formalism.FrobeniusOrbits
 open scoped Pointwise
 
 /- English proof (translation)
-Take `⟨u, hu⟩` from `IsCyclotomicExtension.Rat.associated_zeta_sub_one_pow_prime p hη`. Establish `hx : hη.toInteger - 1 ∈ Q`. Apply `hQ.mem_of_pow_mem (p - 1)` to reduce the goal to its premises. Establish `: (hη.toInteger - 1) ^ (p - 1) = (p : 𝓞 L) * ((u⁻¹ : (𝓞 L)ˣ) : 𝓞 L)`. Rewrite using `[← hu, mul_assoc, Units.mul_inv, mul_one]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Conclude with `Q.mul_mem_right _ hpQ`. Rewrite using `[← hu]`. Conclude with `(Q ^ (p - 1)).mul_mem_right _ (Ideal.pow_mem_pow hx (p - 1))`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem mem_pow_of_prim {L : Type} [Field L] [NumberField L] (p : ℕ) [Fact p.Prime]
     (Q : Ideal (𝓞 L)) (hQ : Q.IsPrime) (hpQ : (p : 𝓞 L) ∈ Q) (η : L) (hη : IsPrimitiveRoot η p) :
@@ -24,9 +24,9 @@ private theorem mem_pow_of_prim {L : Type} [Field L] [NumberField L] (p : ℕ) [
   exact (Q ^ (p - 1)).mul_mem_right _ (Ideal.pow_mem_pow hx (p - 1))
 
 /- English proof (translation)
-Introduce `φ H p hp hp2 P hP hpP hpP2 hdvd`. Establish `: Fact p.Prime` using `⟨hp⟩`. Take `⟨ζ, hζ⟩` from `(HostRaw.dvd_muW_iff _ hp.pos).1 hdvd`. Establish `h` using `mem_pow_of_prim p P hP hpP ζ hζ`. Establish `h2 : 2 ≤ p - 1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hp.two_le` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Conclude with `hpP2 (Ideal.pow_le_pow_right h2 h)`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem UpperTheory.HF.Formalism.HC.HostAx.not_dvd_muW_of_unramified :
     ∀ {φ : Frame} (H : HostAx φ) (p : ℕ), p.Prime → p ≠ 2 → ∀ (P : Ideal (𝓞 H.E)), P.IsPrime → (p : 𝓞 H.E) ∈ P → (p : 𝓞 H.E) ∉ P ^ 2 → ¬ p ∣ H.muW := by

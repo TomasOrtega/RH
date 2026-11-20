@@ -18,7 +18,7 @@ local infixl:70 " ⬝ " => HMul.hMul
 def ad {m n : ℕ} (A : Mx D m n) : Mx D n m := Formalism.UG.cT (cA D) A
 
 /- English proof (translation)
-Unfold `ad Formalism.UG.cT`. Rewrite using `[Matrix.map_mul, Matrix.transpose_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem ad_mul {l m n : ℕ} (A : Mx D l m) (B : Mx D m n) :
     ad (HMul.hMul A B : Mx D l n) = HMul.hMul (ad B) (ad A) := by
@@ -26,14 +26,14 @@ theorem ad_mul {l m n : ℕ} (A : Mx D l m) (B : Mx D m n) :
   rw [Matrix.map_mul, Matrix.transpose_mul]
 
 /- English proof (translation)
-Simplify using `only [cA, sigR, incA, inclR, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, Algebra.TensorProduct.includeRight_apply, Algebra.TensorProduct.map_tmul, AlgHom.id_apply, map_one]`.
+Simplify using the standard rewrite rules.
 -/
 theorem cA_incA_sig (e : D.host.E) : cA D (incA D e) = incA D (D.sp.cm.sig e) := by
   simp only [cA, sigR, incA, inclR, AlgHom.toRingHom_eq_coe, RingHom.coe_coe,
     Algebra.TensorProduct.includeRight_apply, Algebra.TensorProduct.map_tmul, AlgHom.id_apply, map_one]
 
 /- English proof (translation)
-Unfold `ad adj Formalism.UG.cT`. Use extensionality with `i j`. Simplify using `only [Matrix.transpose_apply, Matrix.map_apply, cA_incA_sig]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem ad_map {m n : ℕ} (A : Matrix (Fin m) (Fin n) D.host.E) :
     ad (A.map (incA D) : Mx D m n) = (adj D A).map (incA D) := by
@@ -43,7 +43,7 @@ theorem ad_map {m n : ℕ} (A : Matrix (Fin m) (Fin n) D.host.E) :
   rfl
 
 /- English proof (translation)
-Unfold `adj Formalism.UG.cT`. Rewrite using `[Matrix.map_mul, Matrix.transpose_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem adj_mul {l m n : ℕ} (A : Matrix (Fin l) (Fin m) D.host.E) (B : Matrix (Fin m) (Fin n) D.host.E) :
     adj D (A * B) = adj D B * adj D A := by
@@ -51,7 +51,7 @@ theorem adj_mul {l m n : ℕ} (A : Matrix (Fin l) (Fin m) D.host.E) (B : Matrix 
   rw [Matrix.map_mul, Matrix.transpose_mul]
 
 /- English proof (translation)
-Unfold `adj Formalism.UG.cT`. Use extensionality with `i j`. Simplify using `only [Matrix.transpose_apply, Matrix.map_apply]`. Conclude with `star_star (A i j)`.
+Replace the relevant objects with their definitions. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem adj_adj {m n : ℕ} (A : Matrix (Fin m) (Fin n) D.host.E) : adj D (adj D A) = A := by
   unfold adj Formalism.UG.cT
@@ -60,7 +60,7 @@ theorem adj_adj {m n : ℕ} (A : Matrix (Fin m) (Fin n) D.host.E) : adj D (adj D
   exact star_star (A i j)
 
 /- English proof (translation)
-Unfold `adj Formalism.UG.cT`. Use extensionality with `i j`. Simplify using `only [Matrix.transpose_apply, Matrix.map_apply]`. Conclude with `GlobalTheory.LatVac.gram_star V j i`.
+Replace the relevant objects with their definitions. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem adj_gram (V : HSp D) : adj D V.gram = V.gram := by
   unfold adj Formalism.UG.cT
@@ -69,9 +69,9 @@ theorem adj_gram (V : HSp D) : adj D V.gram = V.gram := by
   exact GlobalTheory.LatVac.gram_star V j i
 
 /- English proof (translation)
-Establish `hu` using `GlobalTheory.LatVac.gram_det_isUnit V`. Use `symm`. Apply `Matrix.inv_eq_left_inv` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.mul_nonsing_inv (h := hu)]`.
+Establish an intermediate fact. Use symmetry to reverse the relation. Reduce the claim to the hypotheses of an applicable result. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Unfold `adj Formalism.UG.cT`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem adj_gram_inv (V : HSp D) : adj D V.gram⁻¹ = V.gram⁻¹ := by
   have hu := GlobalTheory.LatVac.gram_det_isUnit V
@@ -85,7 +85,7 @@ theorem adj_gram_inv (V : HSp D) : adj D V.gram⁻¹ = V.gram⁻¹ := by
       simp
 
 /- English proof (translation)
-Unfold `hO`. Rewrite using `[Matrix.mul_assoc, Matrix.mul_assoc]`. Simplify using `only [Matrix.trace, Matrix.diag, Matrix.mul_apply, ad, Formalism.UG.cT, Matrix.transpose_apply, Matrix.map_apply, Finset.mul_sum, mul_assoc]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem hO_eq_trace (S T : HSp D) (x y : WO S T) :
     hO S T x y = Matrix.trace ((S.gram⁻¹.map (incA D) * ad y) * T.gram.map (incA D) * x) := by
@@ -95,21 +95,21 @@ theorem hO_eq_trace (S T : HSp D) (x y : WO S T) :
     Matrix.map_apply, Finset.mul_sum, mul_assoc]
 
 /- English proof (translation)
-Unfold `hO`. Simplify using `only [Matrix.add_apply, mul_add, Finset.sum_add_distrib]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem hO_add_left (S T : HSp D) (x x' y : WO S T) : hO S T (x + x') y = hO S T x y + hO S T x' y := by
   unfold hO
   simp only [Matrix.add_apply, mul_add, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Unfold `hO`. Simplify using `only [Matrix.add_apply, map_add, mul_add, add_mul, Finset.sum_add_distrib]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem hO_add_right (S T : HSp D) (x y y' : WO S T) : hO S T x (y + y') = hO S T x y + hO S T x y' := by
   unfold hO
   simp only [Matrix.add_apply, map_add, mul_add, add_mul, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Rewrite using `[hO_eq_trace, ad_mul, ad_map, Matrix.map_mul, Matrix.map_mul]`. Establish `key` using `Matrix.trace_mul_comm (V.gram⁻¹.map (incA D) * (adj D P₂).map (incA D)) (ad y₂ * W.gram.map (incA D) * y₁ * P₁.map (incA D))`. Simplify `key` using `only [Matrix.mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem hO_mul_mul (V W : HSp D) {m n : ℕ} (y₁ : Mx D W.rank m) (y₂ : Mx D W.rank n)
     (P₁ : Matrix (Fin m) (Fin V.rank) D.host.E) (P₂ : Matrix (Fin n) (Fin V.rank) D.host.E) :
@@ -121,14 +121,14 @@ theorem hO_mul_mul (V W : HSp D) {m n : ℕ} (y₁ : Mx D W.rank m) (y₂ : Mx D
   simpa only [Matrix.mul_assoc] using key
 
 /- English proof (translation)
-Unfold `adj Formalism.UG.cT`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem adj_zero {m n : ℕ} : adj D (0 : Matrix (Fin m) (Fin n) D.host.E) = 0 := by
   unfold adj Formalism.UG.cT
   simp
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_nonsing_inv_cancel_right (h := GlobalTheory.LatVac.gram_det_isUnit V), Matrix.mul_assoc]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem gram_sandwich (V : HSp D) {m n : ℕ} (A : Matrix (Fin m) (Fin V.rank) D.host.E)
     (B' : Matrix (Fin V.rank) (Fin n) D.host.E) : A * V.gram * V.gram⁻¹ * (V.gram * B') = A * V.gram * B' := by
@@ -140,7 +140,7 @@ variable {V V' W : HSp D} {r : ℕ} {C : Matrix (Fin V.rank) (Fin r) D.host.E}
   {B : Matrix (Fin V.rank) (Fin V'.rank) D.host.E}
 
 /- English proof (translation)
-Establish `hC : adj D C * V.gram * C = 0` using `hs.frame.2.2`. Rewrite using `[adj_mul, adj_adj, adj_gram, Matrix.mul_nonsing_inv_cancel_right (h := GlobalTheory.LatVac.gram_det_isUnit V), ← Matrix.mul_assoc]`. Conclude with `hC`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coef_iso_iso (hs : IsIsoSplit V V' C B) :
     adj D C * V.gram * V.gram⁻¹ * adj D (adj D C * V.gram) = 0 := by
@@ -150,7 +150,7 @@ theorem coef_iso_iso (hs : IsIsoSplit V V' C B) :
   exact hC
 
 /- English proof (translation)
-Rewrite using `[adj_mul, adj_mul, adj_adj, adj_gram, adj_gram_inv, Matrix.mul_nonsing_inv_cancel_right (h := GlobalTheory.LatVac.gram_det_isUnit V), ← Matrix.mul_assoc, ← Matrix.mul_assoc, hs.orth, Matrix.zero_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem coef_iso_mid (hs : IsIsoSplit V V' C B) :
     adj D C * V.gram * V.gram⁻¹ * adj D (V'.gram⁻¹ * adj D B * V.gram) = 0 := by
@@ -159,7 +159,7 @@ theorem coef_iso_mid (hs : IsIsoSplit V V' C B) :
     hs.orth, Matrix.zero_mul]
 
 /- English proof (translation)
-Establish `hBC : adj D B * (V.gram * C) = 0`. Establish `h` using `congrArg (adj D) hs.orth`. Rewrite `h` using `[adj_mul, adj_mul, adj_adj, adj_gram, adj_zero]`. Then use the resulting hypothesis. Rewrite using `[adj_mul, adj_adj, adj_gram, Matrix.mul_nonsing_inv_cancel_right (h := GlobalTheory.LatVac.gram_det_isUnit V), Matrix.mul_assoc, hBC, Matrix.mul_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities.
 -/
 theorem coef_mid_iso (hs : IsIsoSplit V V' C B) :
     V'.gram⁻¹ * adj D B * V.gram * V.gram⁻¹ * adj D (adj D C * V.gram) = 0 := by
@@ -170,7 +170,7 @@ theorem coef_mid_iso (hs : IsIsoSplit V V' C B) :
     Matrix.mul_assoc, hBC, Matrix.mul_zero]
 
 /- English proof (translation)
-Rewrite using `[adj_mul, adj_mul, adj_adj, adj_gram, adj_gram_inv, Matrix.mul_nonsing_inv_cancel_right (h := GlobalTheory.LatVac.gram_det_isUnit V)]`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc (adj D B), ← Matrix.mul_assoc (adj D B * V.gram), hs.isom, Matrix.mul_nonsing_inv (h := GlobalTheory.LatVac.gram_det_isUnit V'), Matrix.mul_one]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem coef_mid_mid (hs : IsIsoSplit V V' C B) :
     V'.gram⁻¹ * adj D B * V.gram * V.gram⁻¹ * adj D (V'.gram⁻¹ * adj D B * V.gram) = V'.gram⁻¹ := by
@@ -181,7 +181,7 @@ theorem coef_mid_mid (hs : IsIsoSplit V V' C B) :
     Matrix.mul_nonsing_inv (h := GlobalTheory.LatVac.gram_det_isUnit V'), Matrix.mul_one]
 
 /- English proof (translation)
-Establish `key` using `Matrix.trace_mul_comm Z (A * Y * X)`. Simplify `key` using `only [Matrix.mul_assoc]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem trace_swap {m n : ℕ} (Z : Mx D m m) (A : Mx D m n) (Y : Mx D n n) (X : Mx D n m) :
     Matrix.trace (Z ⬝ A ⬝ Y ⬝ X) = Matrix.trace (A ⬝ Y ⬝ X ⬝ Z) := by
@@ -189,7 +189,7 @@ theorem trace_swap {m n : ℕ} (Z : Mx D m m) (A : Mx D m n) (Y : Mx D n n) (X :
   simpa only [Matrix.mul_assoc] using key
 
 /- English proof (translation)
-Rewrite using `[hO_add_left, hO_add_right, hO_add_right]`. Unfold `isoPart midPart`. Rewrite using `[hO_mul_mul, hO_mul_mul, hO_mul_mul, hO_mul_mul, coef_iso_iso hs, coef_iso_mid hs, coef_mid_iso hs, coef_mid_mid hs]`. Simplify using `only [Matrix.map_zero, map_zero, Matrix.mul_zero, Matrix.trace_zero, zero_add]`. Rewrite using `[hO_eq_trace, trace_swap]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem hO_isoPart_add_midPart (hs : IsIsoSplit V V' C B) (y y' : Mx D W.rank r) (x x' : WO V' W) :
     hO V W (isoPart V W C y + midPart V V' W B x) (isoPart V W C y' + midPart V V' W B x') = hO V' W x x' := by
@@ -203,7 +203,7 @@ theorem hO_isoPart_add_midPart (hs : IsIsoSplit V V' C B) (y y' : Mx D W.rank r)
 end Split
 
 /- English proof (translation)
-Introduce `D V V' W r C B hs y y' x x'`. Unfold `symplOH symplO`. Rewrite using `[hO_isoPart_add_midPart hs]`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem symplOH_isoPart_add_midPart : ∀ (D : D7) (V V' W : HSp D) (r : ℕ) (C : Matrix (Fin V.rank) (Fin r) D.host.E)
     (B : Matrix (Fin V.rank) (Fin V'.rank) D.host.E), IsIsoSplit V V' C B → ∀ (y y' : Mx D W.rank r) (x x' : WO V' W),

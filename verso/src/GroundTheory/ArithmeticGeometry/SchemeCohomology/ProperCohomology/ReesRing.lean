@@ -20,7 +20,7 @@ abbrev polyInl (I : Ideal A) (V : X.Opens) : Γ(X, V) ⟶ polyRing I V :=
   (reesPr I X).app V ≫ (reesPolyMap I X).app _
 
 /- English proof (translation)
-Use extensionality with `a`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 lemma polyDesc_w : CommRingCat.ofHom (algV X V) ≫ CommRingCat.ofHom Polynomial.C =
     CommRingCat.ofHom (Polynomial.C (R := A)) ≫
@@ -33,7 +33,7 @@ def polyRingHom : polyRing I V →+* Polynomial Γ(X, V) :=
     (CommRingCat.ofHom (Polynomial.mapRingHom (algV X V))) polyDesc_w).hom
 
 /- English proof (translation)
-Use `congrArg (fun f : Γ(X, V) ⟶ CommRingCat.of (Polynomial Γ(X, V)) => f.hom c) (IsPushout.inl_desc (isPushout_reesPoly (I := I) hV) _ _ polyDesc_w)` as an intermediate fact. Conclude with `this`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 lemma polyRingHom_inl (c : Γ(X, V)) : polyRingHom hV (polyInl I V c) = Polynomial.C c := by
   have := congrArg (fun f : Γ(X, V) ⟶ CommRingCat.of (Polynomial Γ(X, V)) => f.hom c)
@@ -41,7 +41,7 @@ lemma polyRingHom_inl (c : Γ(X, V)) : polyRingHom hV (polyInl I V c) = Polynomi
   exact this
 
 /- English proof (translation)
-Use `congrArg (fun f : CommRingCat.of (Polynomial A) ⟶ CommRingCat.of (Polynomial Γ(X, V)) => f.hom p) (IsPushout.inr_desc (isPushout_reesPoly (I := I) hV) _ _ polyDesc_w)` as an intermediate fact. Conclude with `this`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 lemma polyRingHom_inr (p : Polynomial A) :
     polyRingHom hV (polyInr I V p) = p.map (algV X V) := by
@@ -55,9 +55,9 @@ def polyRingInv : Polynomial Γ(X, V) →+* polyRing I V :=
 
 include hV in
 /- English proof (translation)
-Establish `hw` using `(isPushout_reesPoly (I := I) hV).w`. Establish `h : (polyInr I V).hom = Polynomial.eval₂RingHom ((polyInl I V).hom.comp (algV X V)) (polyInr I V Polynomial.X)`. Apply `Polynomial.ringHom_ext` to reduce the goal to its premises. Introduce `a`. Use `congrArg (fun f => f.hom a) hw` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `using this.symm`. Simplify using the standard rewrite rules. Conclude with `congrArg (fun f => f p) h`.
+Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma polyInr_eq_eval₂ (p : Polynomial A) :
     polyInr I V p = p.eval₂ ((polyInl I V).hom.comp (algV X V)) (polyInr I V Polynomial.X) := by
@@ -98,7 +98,7 @@ def polyRingEquiv : polyRing I V ≃+* Polynomial Γ(X, V) :=
 include hV in
 
 /- English proof (translation)
-Establish `hw` using `(isPushout_app_of_isPullback (isPullback_reesPoly I X) (hV.preimage (reesPr I X))).w`. Rewrite using `[reesInr, polyInr, Category.assoc, hw, ← Category.assoc, ← Category.assoc, Scheme.ΓSpecIso_inv_naturality]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 lemma reesInr_comp :
     reesInr I V ≫ (reesPolyMap I X).app _ =
@@ -111,13 +111,13 @@ def reesRingHom : Γ(reesScheme I X, reesPr I X ⁻¹ᵁ V) →+* Polynomial Γ(
   (polyRingHom hV).comp ((reesPolyMap I X).app (reesPr I X ⁻¹ᵁ V)).hom
 
 /- English proof (translation)
-The claim follows from `polyRingHom_inl hV c`.
+A detailed English derivation is pending.
 -/
 lemma reesRingHom_inl (c : Γ(X, V)) : reesRingHom hV ((reesPr I X).app V c) = Polynomial.C c :=
   polyRingHom_inl hV c
 
 /- English proof (translation)
-Use `congrArg (fun f : CommRingCat.of (reesAlgebra I) ⟶ polyRing I V => f.hom r) (reesInr_comp (I := I) hV)` as an intermediate fact. Express the relevant statement in the definitionally equal form `polyRingHom hV (((reesInr I V ≫ (reesPolyMap I X).app _)).hom r) = _`. Rewrite using `[this]`. Conclude with `polyRingHom_inr hV _`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma reesRingHom_inr (r : reesAlgebra I) :
     reesRingHom hV (reesInr I V r) = (r : Polynomial A).map (algV X V) := by
@@ -156,9 +156,7 @@ def reesCoeffRing : Subring (Polynomial Γ(X, V)) where
     exact neg_mem (hp n)
 
 /- English proof (translation)
-Introduce `n`. Rewrite using `[Polynomial.coeff_C]`. Use `split_ifs with h`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
-
-Conclude with `zero_mem _`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma C_mem_reesCoeffRing (c : Γ(X, V)) : Polynomial.C c ∈ reesCoeffRing I X V := by
   intro n
@@ -169,7 +167,7 @@ lemma C_mem_reesCoeffRing (c : Γ(X, V)) : Polynomial.C c ∈ reesCoeffRing I X 
   · exact zero_mem _
 
 /- English proof (translation)
-Introduce `n`. Rewrite using `[Polynomial.coeff_map, ← Ideal.map_pow]`. Conclude with `Ideal.mem_map_of_mem _ ((mem_reesAlgebra_iff I _).1 r.2 n)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma map_mem_reesCoeffRing (r : reesAlgebra I) :
     (r : Polynomial A).map (algV X V) ∈ reesCoeffRing I X V := by
@@ -178,13 +176,13 @@ lemma map_mem_reesCoeffRing (r : reesAlgebra I) :
   exact Ideal.mem_map_of_mem _ ((mem_reesAlgebra_iff I _).1 r.2 n)
 
 /- English proof (translation)
-Set `l : Γ(X, V) ⟶ CommRingCat.of (reesCoeffRing I X V)` to `CommRingCat.ofHom ((Polynomial.C).codRestrict (reesCoeffRing I X V) C_mem_reesCoeffRing)`. Set `r : CommRingCat.of (reesAlgebra I) ⟶ CommRingCat.of (reesCoeffRing I X V)` to `CommRingCat.ofHom (((Polynomial.mapRingHom (algV X V)).comp (reesAlgebra I).val.toRingHom) |>.codRestrict (reesCoeffRing I X V) map_mem_reesCoeffRing)`. Establish `hw' : CommRingCat.ofHom (algV X V) ≫ l = CommRingCat.ofHom (algebraMap A (reesAlgebra I)) ≫ r`. Use `CommRingCat.hom_ext (RingHom.ext fun a => Subtype.ext ?_)` and prove the remaining obligations. Simplify using `[l, r]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Set `d` to `(isPushout_rees (I := I) hV).desc l r hw'`. Establish `h : (CommRingCat.ofHom (reesRingHom hV) : Γ(reesScheme I X, reesPr I X ⁻¹ᵁ V) ⟶ CommRingCat.of (Polynomial Γ(X, V))) = d ≫ CommRingCat.ofHom (reesCoeffRing I X V).subtype`. Apply `(isPushout_rees (I := I) hV).hom_ext` to reduce the goal to its premises. Use `CommRingCat.hom_ext (RingHom.ext fun c => ?_)` and prove the remaining obligations. Use `congrArg (fun f : Γ(X, V) ⟶ CommRingCat.of (reesCoeffRing I X V) => (f.hom c : Polynomial Γ(X, V))) (IsPushout.inl_desc (isPushout_rees (I := I) hV) l r hw')` as an intermediate fact.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `(reesRingHom_inl hV c).trans this.symm`. Use `CommRingCat.hom_ext (RingHom.ext fun x => ?_)` and prove the remaining obligations. Use `congrArg (fun f : CommRingCat.of (reesAlgebra I) ⟶ CommRingCat.of (reesCoeffRing I X V) => (f.hom x : Polynomial Γ(X, V))) (IsPushout.inr_desc (isPushout_rees (I := I) hV) l r hw')` as an intermediate fact. Conclude with `(reesRingHom_inr hV x).trans this.symm`. Use `congrArg (fun f : Γ(reesScheme I X, reesPr I X ⁻¹ᵁ V) ⟶ CommRingCat.of (Polynomial Γ(X, V)) => f.hom s) h` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `reesRingHom hV s ∈ _`. Rewrite using `[show reesRingHom hV s = ((d.hom s : reesCoeffRing I X V) : Polynomial Γ(X, V)) from this]`. Conclude with `(d.hom s).2`.
+A detailed English derivation is pending.
 -/
 theorem reesRingHom_mem (s : Γ(reesScheme I X, reesPr I X ⁻¹ᵁ V)) :
     reesRingHom hV s ∈ reesCoeffRing I X V := by

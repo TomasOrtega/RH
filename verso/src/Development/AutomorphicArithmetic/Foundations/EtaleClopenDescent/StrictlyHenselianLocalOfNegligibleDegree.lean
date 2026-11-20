@@ -9,27 +9,25 @@ open LateralTheory.E.E4 LateralTheory.E.StrictHenselianNeighbourhood
 namespace UpperTheory.Cb
 
 /- English proof (translation)
-Take `⟨-, he, hl, hcomp, -, hlc, hcof, heq⟩` from `hP`. Set `π : Sp E ⟶ Sp (D.obj j)` to `Spec.map (CommRingCat.ofHom (algebraMap (D.obj j) E))`. Use `haveI hπ : Etale π := HasRingHomProperty.Spec_iff.mpr (RingHom.etale_algebraMap.mpr ‹_›)`. Use `haveI : IsIso (e j) := he j`. Set `q : Sp E ⟶ (V j).left` to `π ≫ e j`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `W : B.Etale` to `Scheme.Etale.mk (q ≫ (V j).hom)`. Set `bj : W ⟶ V j` to `MorphismProperty.Over.homMk q rfl`. Establish `hpt : Spec.map (CommRingCat.ofHom ψ) ≫ q = l j ≫ e j`. Rewrite using `[← hψ]`. Simplify using `[q, π]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hs : Spec.map (CommRingCat.ofHom ψ) ≫ q ≫ (a j).left = s`. Rewrite using `[reassoc_of% hpt, hl]`. Take `⟨k, g, hg, hgl⟩` from `hcof W (bj ≫ a j) (Spec.map (CommRingCat.ofHom ψ)) hs`. Take `⟨g', hg', hgl'⟩ : ∃ g' : (V k).left ⟶ Sp E, g' ≫ q ≫ (a j).left = (a k).left ∧ l k ≫ e k ≫ g' = Spec.map (CommRingCat.ofHom ψ)` from `⟨g, hg, hgl⟩`. Use `clear hg hgl g hs`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `m` to `IsFiltered.max j k`. Set `u : j ⟶ m` to `IsFiltered.leftToMax j k`. Set `v : k ⟶ m` to `IsFiltered.rightToMax j k`. Use `haveI : IsIso (e m) := he m`. Set `g1 : (V m).left ⟶ (V j).left` to `inv (e m) ≫ Spec.map (CommRingCat.ofHom (D.map u).hom) ≫ e j`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Set `g2 : (V m).left ⟶ (V j).left` to `inv (e m) ≫ Spec.map (CommRingCat.ofHom (D.map v).hom) ≫ e k ≫ g' ≫ q`. Establish `h1 : g1 ≫ (a j).left = (a m).left`. Simplify using `only [g1, Category.assoc]`. Rewrite using `[hcomp j m u]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `h2 : g2 ≫ (a j).left = (a m).left`. Simplify using `only [g2, Category.assoc]`. Rewrite using `[hg', hcomp k m v]`. Simplify using the standard rewrite rules. Establish `h3 : l m ≫ e m ≫ g1 = l m ≫ e m ≫ g2`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Simplify using `only [g1, g2, IsIso.hom_inv_id_assoc]`. Rewrite using `[reassoc_of% (hlc j m u), reassoc_of% (hlc k m v), reassoc_of% hgl', hpt]`. Take `⟨n, w, hw⟩` from `heq (V j) (a j) m g1 g2 h1 h2 h3`. Simplify using `only [g1, g2, IsIso.hom_inv_id_assoc] at hw`. Set `h : Sp (D.obj n) ⟶ Sp E` to `Spec.map (CommRingCat.ofHom (D.map w).hom) ≫ Spec.map (CommRingCat.ofHom (D.map v).hom) ≫ e k ≫ g'`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hh : h ≫ π = Spec.map (CommRingCat.ofHom (D.map (u ≫ w)).hom)`. Rewrite using `[← cancel_mono (e j)]`. Establish `: Spec.map (CommRingCat.ofHom (D.map (u ≫ w)).hom) = Spec.map (CommRingCat.ofHom (D.map w).hom) ≫ Spec.map (CommRingCat.ofHom (D.map u).hom)`. Rewrite using `[← Spec.map_comp]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[this]`. Simplify using `only [Category.assoc]`. Rewrite using `[hw]`. Simplify using `[h, q]`. Use `⟨n, u ≫ w, (Spec.preimage h).hom, ?_, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `h4 : Spec.map (CommRingCat.ofHom (algebraMap (D.obj j) E) ≫ Spec.preimage h) = Spec.map (CommRingCat.ofHom (D.map (u ≫ w)).hom)`. Rewrite using `[Spec.map_comp, Spec.map_preimage]`. Conclude with `hh`. Conclude with `congrArg CommRingCat.Hom.hom (Spec.map_injective h4)`. Rewrite using `[CommRingCat.ofHom_hom, Spec.map_preimage]`.
-
-Simplify using `only [h]`. Rewrite using `[reassoc_of% (hlc m n w), reassoc_of% (hlc k m v), hgl']`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem factor_later {B : Scheme.{0}} (U : B.Etale) (x : U.left) (Ω : Type) [Field Ω]
     (s : Spec (CommRingCat.of Ω) ⟶ U.left) {J : Type} [SmallCategory J] [IsFiltered J]
@@ -98,17 +96,15 @@ private theorem factor_later {B : Scheme.{0}} (U : B.Etale) (x : U.left) (Ω : T
 end UpperTheory.Cb
 
 /- English proof (translation)
-Introduce `_ B U x Ω _ _ s J _ _ D c hc V a l e t hP _`. Set `ρ : ∀ j, D.obj j ⟶ CommRingCat.of Ω` to `fun j => Spec.preimage (l j)`. Establish `hρ : ∀ j, Spec.map (ρ j) = l j` using `fun j => Spec.map_preimage _`. Establish `hlc` using `hP.2.2.2.2.2.1`. Establish `hw : ∀ (j k : J) (f : j ⟶ k), D.map f ≫ ρ k = ρ j`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `j k f`. Apply `Spec.map_injective` to reduce the goal to its premises. Rewrite using `[Spec.map_comp, hρ, hρ, ← hlc j k f]`. Both sides reduce to the same expression. Set `cc : Cocone D` to `{ pt := CommRingCat.of Ω ι := { app := ρ, naturality := fun j k f => by simpa using hw j k f } }`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Introduce a local definition for the expression.
 
-Set `ω : c.pt →+* Ω` to `(hc.desc cc).hom`. Establish `hω : ∀ j, ω.comp (c.ι.app j).hom = (ρ j).hom` using `fun j => congrArg CommRingCat.Hom.hom (hc.fac cc j)`. Use `LateralTheory.E.LeafSHSysPf.SHofCof D c hc ⟨Ω, inferInstance, inferInstance, ω, ?_⟩` and prove the remaining obligations. Introduce `j E _ _ _ ψ hψ`. Take `⟨k, g, φ, h1, h2⟩` from `factor_later U x Ω s D c V a l e t hP j E ψ (by`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← Spec.map_comp, ← hρ j]`. Use `congr 1`. Apply `CommRingCat.hom_ext` to reduce the goal to its premises. Rewrite `hψ` using `[hω j]`. Conclude with `hψ)`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨k, g, φ, h1, ?_⟩` and prove the remaining obligations. Rewrite using `[← RingHom.comp_assoc, hω k]`. Establish `h3 : CommRingCat.ofHom φ ≫ ρ k = CommRingCat.ofHom ψ`. Apply `Spec.map_injective` to reduce the goal to its premises. Rewrite using `[Spec.map_comp, hρ]`.
-
-Conclude with `h2`. Conclude with `congrArg CommRingCat.Hom.hom h3`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Cb.strictlyHenselianLocal_of_negligibleDegree :
     LateralTheory.E.LeafDegCut.LeafNeg → LateralTheory.E.StrictHenselianNeighbourhood.LeafSHHens := by

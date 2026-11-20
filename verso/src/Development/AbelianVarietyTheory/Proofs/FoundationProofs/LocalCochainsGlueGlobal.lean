@@ -15,16 +15,16 @@ variable {l : ℕ} [Fact l.Prime]
 instance neZero_pow (n : ℕ) : NeZero (l ^ n) := ⟨pow_ne_zero _ (Fact.out : l.Prime).ne_zero⟩
 
 /- English proof (translation)
-Rewrite using `[IsScalarTower.algebraMap_apply ℤ_[l] ℚ_[l] (PadicAlgCl l), norm_algebraMap']`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem norm_algebraMap_padicInt (a : ℤ_[l]) : ‖algebraMap ℤ_[l] (Qbar l) a‖ = ‖a‖ := by
   rw [IsScalarTower.algebraMap_apply ℤ_[l] ℚ_[l] (PadicAlgCl l), norm_algebraMap']
   rfl
 
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.ScalarNormBound.norm_le_one`. Consider the case `exact _root_.GlobalTheory.ScalarNormBound.norm_le_one`. Consider the case `(apply _root_.GlobalTheory.ScalarNormBound.norm_le_one <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.ScalarNormBound.norm_le_one <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.ScalarNormBound.norm_le_one <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.ScalarNormBound.norm_le_one ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem norm_le_one (c : Coef l) (x : c.O) : ‖(x : Qbar l)‖ ≤ 1 := by
   first
@@ -48,7 +48,7 @@ def nbhd (c : Coef l) (n : ℕ) : AddSubgroup c.O where
     rw [norm_neg]; exact ha
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_nbhd {c : Coef l} {n : ℕ} {x : c.O} :
     x ∈ nbhd c n ↔ ‖(x : Qbar l)‖ ≤ ‖((l : ℕ) : Qbar l) ^ n‖ := Iff.rfl
@@ -62,19 +62,19 @@ instance (c : Coef l) (n : ℕ) : DiscreteTopology (Red c n) := ⟨rfl⟩
 def red (c : Coef l) (n : ℕ) : c.O →+ Red c n := QuotientAddGroup.mk' (nbhd c n)
 
 /- English proof (translation)
-The claim follows from `QuotientAddGroup.mk'_surjective _`.
+A detailed English derivation is pending.
 -/
 theorem red_surjective (c : Coef l) (n : ℕ) : Function.Surjective (red c n) :=
   QuotientAddGroup.mk'_surjective _
 
 /- English proof (translation)
-The claim follows from `QuotientAddGroup.eq_zero_iff x`.
+A detailed English derivation is pending.
 -/
 theorem red_eq_zero_iff {c : Coef l} {n : ℕ} (x : c.O) : red c n x = 0 ↔ x ∈ nbhd c n :=
   QuotientAddGroup.eq_zero_iff x
 
 /- English proof (translation)
-Rewrite using `[← sub_eq_zero, ← map_sub, red_eq_zero_iff]`. Conclude with `Iff.rfl`.
+Rewrite the conclusion using the stated equalities. Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem red_eq_iff (c : Coef l) (n : ℕ) (a b : c.O) :
     red c n a = red c n b ↔ Cg n (a : Qbar l) (b : Qbar l) := by
@@ -82,19 +82,19 @@ theorem red_eq_iff (c : Coef l) (n : ℕ) (a b : c.O) :
   exact Iff.rfl
 
 /- English proof (translation)
-Unfold `Cg at *`. Rewrite using `[norm_sub_rev]` and apply the resulting hypothesis.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 -/
 theorem cg_symm {n : ℕ} {a b : Qbar l} (h : Cg n a b) : Cg n b a := by
   unfold Cg at *; rwa [norm_sub_rev]
 
 /- English proof (translation)
-Unfold `Cg`. Rewrite using `[sub_self, norm_zero]`. Conclude with `norm_nonneg _`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cg_refl (n : ℕ) (a : Qbar l) : Cg n a a := by
   unfold Cg; rw [sub_self, norm_zero]; exact norm_nonneg _
 
 /- English proof (translation)
-Take `⟨w, rfl⟩` from `Ideal.mem_span_singleton'.1 ha`. Rewrite using `[mem_nbhd, Subalgebra.coe_smul, Algebra.smul_def, norm_mul, map_mul, norm_mul, map_pow, map_natCast]`. Establish `h1 : ‖algebraMap ℤ_[l] (Qbar l) w‖ ≤ 1` using `(norm_algebraMap_padicInt w).le.trans (PadicInt.norm_le_one w)`. Establish `h2` using `norm_le_one c y`. Combine the equalities or inequalities in the displayed calculation.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem smul_mem_nbhd (c : Coef l) (n : ℕ) {a : ℤ_[l]} (ha : a ∈ Ideal.span {(l : ℤ_[l]) ^ n})
     (y : c.O) : a • y ∈ nbhd c n := by
@@ -107,9 +107,9 @@ theorem smul_mem_nbhd (c : Coef l) (n : ℕ) {a : ℤ_[l]} (ha : a ∈ Ideal.spa
     _ = _ := by ring
 
 /- English proof (translation)
-Rewrite using `[← map_nsmul, ← sub_eq_zero, ← map_sub, red_eq_zero_iff]`. Establish `e : a • y - (PadicInt.toZModPow n a).val • y = (a - ((PadicInt.toZModPow n a).val : ℤ_[l])) • y`. Rewrite using `[sub_smul, Nat.cast_smul_eq_nsmul]`. Rewrite using `[e]`. Use `smul_mem_nbhd c n ?_ y` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← PadicInt.ker_toZModPow, RingHom.mem_ker, map_sub, map_natCast, ZMod.natCast_zmod_val, sub_self]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem red_smul (c : Coef l) (n : ℕ) (a : ℤ_[l]) (y : c.O) :
     red c n (a • y) = (PadicInt.toZModPow n a).val • red c n y := by
@@ -122,7 +122,7 @@ theorem red_smul (c : Coef l) (n : ℕ) (a : ℤ_[l]) (y : c.O) :
   rw [← PadicInt.ker_toZModPow, RingHom.mem_ker, map_sub, map_natCast, ZMod.natCast_zmod_val, sub_self]
 
 /- English proof (translation)
-Take `⟨x, rfl⟩` from `red_surjective c n y`. Rewrite using `[← map_nsmul, red_eq_zero_iff, ← Nat.cast_smul_eq_nsmul ℤ_[l], Nat.cast_pow]`. Conclude with `smul_mem_nbhd c n (Ideal.mem_span_singleton_self _) x`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kill (c : Coef l) (n : ℕ) (y : Red c n) : (l ^ n) • y = 0 := by
   obtain ⟨x, rfl⟩ := red_surjective c n y
@@ -144,11 +144,9 @@ instance (c : Coef l) (n : ℕ) : Finite (Red c n) := by
   exact Finset.sum_congr rfl fun i _ => (red_smul c n (a i) (s i)).symm
 
 /- English proof (translation)
-Use `continuous_discrete_rng.2 fun y => ?_` and prove the remaining obligations. Take `⟨z, rfl⟩` from `red_surjective c n y`. Establish `e : (fun x => red c n (f x)) ⁻¹' {red c n z} = (fun x => (f x : Qbar l)) ⁻¹' Metric.closedBall (z : Qbar l) ‖((l : ℕ) : Qbar l) ^ n‖`. Use extensionality with `x`. Simplify using `only [Set.mem_preimage, Set.mem_singleton_iff, Metric.mem_closedBall, dist_eq_norm]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Conclude with `red_eq_iff c n (f x) z`. Rewrite using `[e]`. Establish `hne : ‖((l : ℕ) : Qbar l) ^ n‖ ≠ 0`. Rewrite using `[norm_ne_zero_iff]`. Conclude with `pow_ne_zero _ (Nat.cast_ne_zero.2 (Fact.out : l.Prime).ne_zero)`.
-
-Conclude with `(IsUltrametricDist.isOpen_closedBall _ hne).preimage hf`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_red_comp {X : Type*} [TopologicalSpace X] (c : Coef l) (n : ℕ) (f : X → c.O)
     (hf : Continuous fun x => (f x : Qbar l)) : Continuous fun x => red c n (f x) := by
@@ -172,7 +170,7 @@ def rho (c : Coef l) (n : ℕ) {Γ : Type*} [Group Γ] (μ : Γ →* (ZMod (l ^ 
   map_mul' g h := by ext y; simp [mul_smul]; exact smul_comm _ _ _
 
 /- English proof (translation)
-Use `show ((μ g : (ZMod (l ^ n))ˣ) : ZMod (l ^ n)) • y = _`. Use `conv_lhs => rw [← ZMod.natCast_zmod_val ((μ g : (ZMod (l ^ n))ˣ) : ZMod (l ^ n))]`. Conclude with `Nat.cast_smul_eq_nsmul _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem rho_apply (c : Coef l) (n : ℕ) {Γ : Type*} [Group Γ] (μ : Γ →* (ZMod (l ^ n))ˣ) (g : Γ)
     (y : Red c n) : rho c n μ g y = ((μ g : (ZMod (l ^ n))ˣ) : ZMod (l ^ n)).val • y := by
@@ -181,7 +179,7 @@ theorem rho_apply (c : Coef l) (n : ℕ) {Γ : Type*} [Group Γ] (μ : Γ →* (
   exact Nat.cast_smul_eq_nsmul _ _ _
 
 /- English proof (translation)
-Establish `e : (fun p : Γ × Red c n => rho c n μ p.1 p.2) = (fun q : ZMod (l ^ n) × Red c n => q.1 • q.2) ∘ (fun p : Γ × Red c n => (((μ p.1 : (ZMod (l ^ n))ˣ) : ZMod (l ^ n)), p.2))` using `rfl`. Unfold `ReciprocityTheory.Gal.ContAction`. Rewrite using `[e]`. Conclude with `continuous_of_discreteTopology.comp (((Units.continuous_val.comp hμ).comp continuous_fst).prodMk continuous_snd)`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem contAction_rho (c : Coef l) (n : ℕ) {Γ : Type*} [Group Γ] [TopologicalSpace Γ]
     (μ : Γ →* (ZMod (l ^ n))ˣ) (hμ : Continuous μ) : ReciprocityTheory.Gal.ContAction (rho c n μ) := by
@@ -198,23 +196,19 @@ end GlobalTheory.Ord2.TwistTriv
 namespace GlobalTheory.Ord2.TwistTriv
 
 /- English proof (translation)
-Establish `h1 : f 1 = 0`. Use `hm 1 1` as an intermediate fact. Rewrite `this` using `[mul_one]`. Conclude with `(add_eq_left.1 this.symm)`. Establish `hinv : ∀ g, f g⁻¹ = - f g` using `fun g => by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hm g⁻¹ g` as an intermediate fact. Rewrite `this` using `[inv_mul_cancel, h1]`. Conclude with `eq_neg_of_add_eq_zero_left this.symm`. Establish `hconj : ∀ g x, f (g⁻¹ * x * g) = f x` using `fun g x => by`. Rewrite using `[hm, hm, hinv]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Introduce a local definition for the expression.
 
-Normalize the expressions using the abelian group laws. Set `V : Subgroup (G ℚ Ω)` to `{ carrier := {g | f g = 0} one_mem' := h1 mul_mem' := fun {a b} ha hb => by`. Simplify using `only [Set.mem_setOf_eq] at *`. Rewrite using `[hm, ha, hb, add_zero]`. Use the proof step `inv_mem' := fun {a} ha => by`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [Set.mem_setOf_eq] at *`. Rewrite using `[hinv, ha, neg_zero] }`. Establish `hV : IsOpen (V : Set (G ℚ Ω))` using `(isOpen_discrete ({0} : Set A)).preimage hc`. Establish `key` using `UpperTheory.V.CF.minkAbs Ω V hV ?_`. Establish `hs : s ∈ V` using `key ▸ Subgroup.mem_top s`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails.
 
-Conclude with `hs`. Introduce `B x hx`. Take `⟨h0, h2, -, -⟩` from `UpperTheory.V.Kum.placeDict ℚ Ω`. Distinguish the cases in `hB : B = ⊤`. Substitute `hB` using the available equality.
+Substitute using the available equality. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails.
 
-Rewrite `hx` using `[h0]`. Rewrite using `[Subgroup.mem_bot.1 hx]`. Conclude with `V.one_mem`. Take `⟨w, hw⟩` from `h2 B hB`. Distinguish the cases in `hwS : w ∈ S`.
+Extract witnesses or component facts from the available result. Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Take `⟨σ, hσ⟩` from `exists_smul_eq_of_isPlaceOver (hAv ⟨w, hwS⟩) hw`. Substitute `hσ` using the available equality. Establish `hc'` using `GlobalTheory.Cut.ShaBound.conj_mem_Ine' hx`. Use `show f x = 0`. Rewrite using `[← hconj σ x]`.
-
-Conclude with `hD _ _ (Ine_le_Dec _ hc')`. Use `show f x = 0`. Apply `hN` to reduce the goal to its premises. Apply `Subgroup.le_topologicalClosure` to reduce the goal to its premises. Apply `Subgroup.subset_normalClosure` to reduce the goal to its premises.
-
-Simplify using `only [Set.mem_iUnion]`. Conclude with `⟨w, by simpa using hwS, B, hw, hx⟩`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem hom_eq_zero {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (S : Finset Pl)
     (Av : S → ValuationSubring Ω) (hAv : ∀ v, IsPlaceOver (Av v) v.1)
@@ -272,59 +266,49 @@ namespace GlobalTheory.Ord2.TwistTriv
 open GlobalTheory.Published GlobalTheory.Published.PoitouTate
 
 /- English proof (translation)
-Introduce `hlit l _ Ω _ _ _ c n S ξ hl2 hS hξ hloc`. Break down `Nat.eq_zero_or_pos n with rfl | hn` into its components or cases. Use `⟨0, continuous_const, fun _ => c.O.zero_mem, fun s _ _ => cg_refl 0 _, fun s t => ?_⟩ show ‖ξ s t - (eps l s * 0 - 0 + 0)‖ ≤ ‖((l : ℕ) : Qbar l) ^ 0‖` and prove the remaining obligations. Rewrite using `[mul_zero, sub_zero, add_zero, sub_zero, pow_zero, norm_one]`. Conclude with `norm_le_one c ⟨ξ s t, hξ.int s t⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨ζ, hζ⟩` from `exists_primitiveRoot_pow ℚ Ω l n`. Take `⟨inv, -, hPT⟩` from `hlit.pt ℚ Ω l n (Or.inl hl2) hn ζ hζ`. Take `⟨μ, hμ⟩` from `exists_lift_cycMod (F := ℚ) (Ω := Ω) (r := n) hS`. Use `choose Bv hBv hCob using hloc`. Use `set Av : S → ValuationSubring Ω := fun v => Bv v.1 v.2 with hAvdef`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hAv : ∀ v : S, IsPlaceOver (Av v) v.1` using `fun v => hBv v.1 v.2`. Establish `hμc : Continuous μ`. Rewrite using `[(QuotientGroup.isQuotientMap_mk _).continuous_iff]`. Establish `e : (μ ∘ QuotientGroup.mk : G ℚ Ω → _) = cycMod ℚ Ω l n` using `by rw [← hμ]; rfl`. Rewrite using `[e]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `continuous_cycMod`. Establish `hρ` using `contAction_rho c n μ hμc`. Take `⟨-, ⟨⟨-, -, -, hcard⟩, -⟩, -⟩` from `hPT S hS Av hAv μ hμ (Red c n) (rho c n μ) hρ`. Establish `hsurj : Function.Surjective (toGS Ω (S : Set Pl))` using `QuotientGroup.mk'_surjective _`. Establish `heps : ∀ s (y : c.O), (((cycZ ℚ Ω l s : ℤ_[l]) • y : c.O) : Qbar l) = eps l s * y`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Introduce `s y`. Rewrite using `[Subalgebra.coe_smul, Algebra.smul_def, IsScalarTower.algebraMap_apply ℤ_[l] ℚ_[l] (PadicAlgCl l)]`. Both sides reduce to the same expression. Establish `hrho : ∀ s (y : c.O), rho c n μ (toGS Ω (S : Set Pl) s) (red c n y) = red c n ((cycZ ℚ Ω l s : ℤ_[l]) • y)`. Introduce `s y`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[rho_apply, red_smul]`. Establish `e` using `congrArg (fun u : (ZMod (l ^ n))ˣ => (u : ZMod (l ^ n))) (DFunLike.congr_fun hμ s)`. Simplify using `only [MonoidHom.coe_comp, Function.comp_apply] at e`. Rewrite using `[e]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Establish `htriv : ∀ g (φ : TDual (ZMod (l ^ n)) (Red c n)), twDual μ (rho c n μ) g φ = φ`. Introduce `g φ`. Use extensionality with `m`. Establish `hφ : ∀ (a : ZMod (l ^ n)) (m : Red c n), φ (a • m) = a * φ m` using `fun a m => LinearMap.map_smul (φ : Module.Dual (ZMod (l ^ n)) (Red c n)) a m`. Rewrite using `[twDual_apply]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `show ((μ g : (ZMod (l ^ n))ˣ) : ZMod (l ^ n)) * φ (((μ g⁻¹ : (ZMod (l ^ n))ˣ) : ZMod (l ^ n)) • m) = φ m`. Rewrite using `[hφ, ← mul_assoc, ← Units.val_mul, ← map_mul, mul_inv_cancel, map_one, Units.val_one, one_mul]`. Establish `hsha1 : ∀ x ∈ Sha1 (twDual μ (rho c n μ)) (locFam S Av) (continuous_locFam S Av), x = 0`. Introduce `x hx`. Take `⟨f, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[Submodule.Quotient.mk_eq_zero]`. Establish `hadd : ∀ g h, f.1 (g * h) = f.1 g + f.1 h` using `fun g h => by rw [f.2.2 g h, htriv]`. Establish `h1 : f.1 1 = 0`. Use `hadd 1 1` as an intermediate fact. Rewrite `this` using `[mul_one]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `add_eq_left.1 this.symm`. Establish `hD : ∀ v : S, ∀ g ∈ Dec (F` using `ℚ) (Av v), f.1 (toGS Ω (S : Set Pl) g) = 0 := by`. Introduce `v g hg`. Establish `hv` using `(Submodule.mem_iInf _).1 hx v`. Rewrite `hv` using `[LinearMap.mem_ker, resH1, Submodule.mapQ_apply, Submodule.Quotient.mk_eq_zero]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨m, hm⟩` from `(mem_coboundaries1 _ _).1 (Submodule.mem_comap.1 hv)`. Establish `e` using `hm ⟨g, hg⟩`. Simplify using `only [Submodule.coe_subtype, restrictCocycles1_apply, MonoidHom.coe_comp, Function.comp_apply, htriv, sub_self] at e`. Conclude with `e`. Establish `hzero` using `hom_eq_zero S Av hAv (fun s => f.1 (toGS Ω (S : Set Pl) s)) (f.2.1.comp (continuous_toGS Ω _)) (fun s t => by rw [map_mul, hadd]) (fun a ha => by`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : toGS Ω (S : Set Pl) a = 1` using `(QuotientGroup.eq_one_iff a).2 ha`. Use `show f.1 (toGS Ω (S : Set Pl) a) = 0`. Rewrite using `[e]`. Conclude with `h1) hD`. Establish `hf : f.1 = 0` using `funext fun y => by`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Take `⟨s, rfl⟩` from `hsurj y`. Conclude with `hzero s`. Use `show f.1 ∈ B1 _`. Rewrite using `[hf]`. Conclude with `(B1 _).zero_mem`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hone : Nat.card (Sha1 (twDual μ (rho c n μ)) (locFam S Av) (continuous_locFam S Av)) = 1` using `Nat.card_eq_one_iff_unique.2 ⟨⟨fun a b => Subtype.ext ((hsha1 a a.2).trans (hsha1 b b.2).symm)⟩, ⟨0⟩⟩`. Establish `hsub : Subsingleton (Sha2 (rho c n μ) (locFam S Av) (continuous_locFam S Av))` using `(Nat.card_eq_one_iff_unique.1 (hcard ▸ hone)).1`. Set `sec` to `Function.surjInv hsurj`. Establish `hsec : ∀ x, toGS Ω (S : Set Pl) (sec x) = x` using `Function.surjInv_eq hsurj`. Set `xi : G ℚ Ω → G ℚ Ω → c.O` to `fun s t => ⟨ξ s t, hξ.int s t⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `xb : GS Ω (S : Set Pl) × GS Ω (S : Set Pl) → Red c n` to `fun p => red c n (xi (sec p.1) (sec p.2))`. Establish `hxb : ∀ s t, xb (toGS Ω (S : Set Pl) s, toGS Ω (S : Set Pl) t) = red c n (xi s t)`. Introduce `s t`. Establish `ha : s⁻¹ * sec (toGS Ω (S : Set Pl) s) ∈ (toGS Ω (S : Set Pl)).ker`. Rewrite using `[MonoidHom.mem_ker, map_mul, map_inv, hsec, inv_mul_cancel]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hb : t⁻¹ * sec (toGS Ω (S : Set Pl) t) ∈ (toGS Ω (S : Set Pl)).ker`. Rewrite using `[MonoidHom.mem_ker, map_mul, map_inv, hsec, inv_mul_cancel]`. Establish `e` using `hξ.unr s t _ ha _ hb`. Rewrite `e` using `[mul_inv_cancel_left, mul_inv_cancel_left]`. Conclude with `(red_eq_iff c n (xi _ _) (xi s t)).2 e`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hcont : Continuous xb`. Establish `hq0 : IsOpenQuotientMap (toGS Ω (S : Set Pl))` using `QuotientGroup.isOpenQuotientMap_mk`. Establish `hq : Topology.IsQuotientMap (Prod.map (toGS Ω (S : Set Pl)) (toGS Ω (S : Set Pl)))` using `(hq0.prodMap hq0).isQuotientMap`. Rewrite using `[hq.continuous_iff]`. Establish `e : xb ∘ Prod.map (toGS Ω (S : Set Pl)) (toGS Ω (S : Set Pl)) = fun p : G ℚ Ω × G ℚ Ω => red c n (xi p.1 p.2)` using `funext fun p => hxb p.1 p.2`.
+Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[e]`. Conclude with `continuous_red_comp c n (fun p : G ℚ Ω × G ℚ Ω => xi p.1 p.2) hξ.cont`. Establish `hz : xb ∈ Z2 (rho c n μ)`. Use `⟨hcont, fun g h k => ?_⟩` and prove the remaining obligations. Take `⟨r, rfl⟩` from `hsurj g`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨s, rfl⟩` from `hsurj h`. Take `⟨t, rfl⟩` from `hsurj k`. Rewrite using `[← map_mul, ← map_mul, hxb, hxb, hxb, hxb, hrho]`. Establish `e : red c n ((cycZ ℚ Ω l r : ℤ_[l]) • xi s t) - red c n (xi (r * s) t) + red c n (xi r (s * t)) - red c n (xi r s) = red c n ((cycZ ℚ Ω l r : ℤ_[l]) • xi s t + xi r (s * t)) - red c n (xi (r * s) t + xi r s)`. Simplify using `only [map_add]`.
+Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Normalize the expressions using the abelian group laws. Rewrite using `[e, sub_eq_zero, red_eq_iff]`. Use `show Cg n ((((cycZ ℚ Ω l r : ℤ_[l]) • xi s t : c.O) : Qbar l) + ξ r (s * t)) (ξ (r * s) t + ξ r s)`. Rewrite using `[heps]`. Conclude with `hξ.coc r s t`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hsha2 : (Submodule.Quotient.mk ⟨xb, hz⟩ : H2 (rho c n μ)) ∈ Sha2 (rho c n μ) (locFam S Av) (continuous_locFam S Av)`. Use `(Submodule.mem_iInf _).2 fun v => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.mem_ker, resH2, Submodule.mapQ_apply, Submodule.Quotient.mk_eq_zero]`. Use `Submodule.mem_comap.2 ((separated_dvr_second_cohomology_mem _ _).2 ?_)` and prove the remaining obligations. Take `⟨u, hu, huO, hcg⟩` from `hCob v.1 v.2`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `⟨fun g => red c n ⟨u g, huO g⟩, continuous_red_comp c n (fun g : Dec (F := ℚ) (Av v) => (⟨u g, huO g⟩ : c.O)) (continuousOn_iff_continuous_restrict.1 hu), ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `p`. Take `⟨g, h⟩` from `p`. Use `show rho c n μ (toGS Ω (S : Set Pl) g) (red c n ⟨u h, huO h⟩) - red c n ⟨u (g * h), huO _⟩ + red c n ⟨u g, huO g⟩ = xb (toGS Ω (S : Set Pl) g, toGS Ω (S : Set Pl) h)`. Rewrite using `[hxb, hrho, ← map_sub, ← map_add, red_eq_iff]`.
-
-Use `show Cg n ((((cycZ ℚ Ω l g : ℤ_[l]) • (⟨u h, huO h⟩ : c.O) : c.O) : Qbar l) - u (g * h) + u g) (ξ g h)`. Rewrite using `[heps]`. Conclude with `cg_symm (hcg g g.2 h h.2)`. Establish `h0 : (Submodule.Quotient.mk ⟨xb, hz⟩ : H2 (rho c n μ)) = 0` using `congrArg Subtype.val (Subsingleton.elim (⟨_, hsha2⟩ : Sha2 (rho c n μ) (locFam S Av) (continuous_locFam S Av)) ⟨0, zero_mem _⟩)`. Rewrite `h0` using `[Submodule.Quotient.mk_eq_zero]`.
-
-Take `⟨cc, hcc, hd⟩` from `(separated_dvr_second_cohomology_mem _ _).1 (Submodule.mem_comap.1 h0)`. Establish `hrs` using `red_surjective c n`. Choose the witnesses or unpack the hypotheses as in `⟨U, hUc, hUa, hU⟩ : ∃ U : G ℚ Ω → c.O, Continuous (fun s => (U s : Qbar l)) ∧ (∀ s, ∀ a ∈ (toGS Ω (S : Set Pl)).ker, U (s * a) = U s) ∧ ∀ s, red c n (U s) = cc (toGS Ω (S : Set Pl) s) := by`. Use `⟨fun s => Function.surjInv hrs (cc (toGS Ω (S : Set Pl) s)), ?_, fun s a ha => ?_, fun s => Function.surjInv_eq hrs _⟩` and prove the remaining obligations. Conclude with `(continuous_of_discreteTopology (f := fun y : Red c n => ((Function.surjInv hrs y : c.O) : Qbar l))).comp (hcc.comp (continuous_toGS Ω _))`.
-
-Use `show Function.surjInv hrs (cc (toGS Ω (S : Set Pl) (s * a))) = _`. Rewrite using `[map_mul, (MonoidHom.mem_ker).1 ha, mul_one]`. Use `⟨fun s => (U s : Qbar l), hUc, fun s => (U s).2, fun s a ha => ?_, fun s t => ?_⟩` and prove the remaining obligations. Use `show Cg n ((U (s * a) : c.O) : Qbar l) (U s)`. Rewrite using `[hUa s a ha]`.
-
-Conclude with `cg_refl n _`. Establish `h1` using `congrFun hd (toGS Ω (S : Set Pl) s, toGS Ω (S : Set Pl) t)`. Simplify using `only [d1_apply, Submodule.coe_subtype] at h1`. Establish `key : red c n (xi s t) = red c n ((cycZ ℚ Ω l s : ℤ_[l]) • U t - U (s * t) + U s)`. Rewrite using `[map_add, map_sub, ← hrho, hU, hU, hU, map_mul, ← hxb]`.
-
-Conclude with `h1.symm`. Establish `e` using `(red_eq_iff c n _ _).1 key`. Use `show Cg n (ξ s t) (eps l s * (U t : Qbar l) - U (s * t) + U s)`. Rewrite using `[← heps]`. Conclude with `e`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coboundary_of_locTriv : GlobalTheory.Mem.LiteralAutomorphy.LitCoh → ∀ (l : ℕ) [Fact l.Prime] (Ω : Type) [Field Ω] [Algebra ℚ Ω]
     [IsAlgClosure ℚ Ω] (c : Coef l) (n : ℕ) (S : Finset Pl) (ξ : G ℚ Ω → G ℚ Ω → Qbar l), l ≠ 2 →

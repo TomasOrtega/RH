@@ -82,7 +82,7 @@ instance towFm (i : tw.Tw) (j : ℕ) (b : Bool) :
   IsScalarTower.of_algebraMap_smul fun _ _ => rfl
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `Module.Finite (KB S i b) (KB S i b ⊗[S.Ks] FmK S j)`. Use `infer_instance`.
+Express the relevant assertion in an equivalent form by its definition. A detailed English derivation is pending.
 -/
 theorem finiteDimensional_Fm (i : tw.Tw) (j : ℕ) (b : Bool) [FiniteDimensional S.Ks (FmK S j)] :
     FiniteDimensional (FractionRing (tw.O i)) (Fm S i j b) := by
@@ -108,14 +108,14 @@ def ChiInLL0 (j : ℕ) : Prop := ∀ g : S.G, (((S.A j).chi g : what₂.LLˣ) : 
 def chiL (j : ℕ) (hχ : ChiInLL0 S j) (g : S.G) : ↥LL0 := ⟨(((S.A j).chi g : what₂.LLˣ) : what₂.LL), hχ g⟩
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `[chiL]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 -/
 theorem chiL_one (j : ℕ) (hχ : ChiInLL0 S j) : chiL S j hχ 1 = 1 := by
   apply Subtype.ext
   simp [chiL]
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `[chiL]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 -/
 theorem chiL_mul (j : ℕ) (hχ : ChiInLL0 S j) (g h : S.G) : chiL S j hχ (g * h) = chiL S j hχ g * chiL S j hχ h := by
   apply Subtype.ext
@@ -178,7 +178,7 @@ def IsThOf (j : ℕ) (σ0 : what₂.LL →+* ℂ) (thC : S.W j σ0) (x : ↥LL0 
   (S.A j).j σ0 (inWL S j x) = thC
 
 /- English proof (translation)
-The claim follows from `hinj ((show (S.A j).j σ0 (inWL S j x) = thC from hx).trans (show (S.A j).j σ0 (inWL S j y) = thC from hy).symm)`.
+A detailed English derivation is pending.
 -/
 theorem IsThOf.unique {j : ℕ} {σ0 : what₂.LL →+* ℂ} {thC : S.W j σ0} {x y : ↥LL0 ⊗[S.Ks] FmK S j}
     (hinj : Function.Injective fun z : ↥LL0 ⊗[S.Ks] FmK S j => (S.A j).j σ0 (inWL S j z))
@@ -193,7 +193,7 @@ def thK {Dat : Type} (j : ℕ) (σ0 : what₂.LL →+* ℂ) (thC : Dat → S.W j
   (h d).choose
 
 /- English proof (translation)
-The claim follows from `(h d).choose_spec`.
+A detailed English derivation is pending.
 -/
 theorem thK_spec {Dat : Type} (j : ℕ) (σ0 : what₂.LL →+* ℂ) (thC : Dat → S.W j σ0) (h : ThExists S j σ0 thC)
     (d : Dat) : IsThOf S j σ0 (thC d) (thK S j σ0 thC h d) :=

@@ -32,7 +32,7 @@ section Idem
 variable {A : Type} [CommRing A] [Algebra O A] {e : (A →ₐ[O] IsLocalRing.ResidueField O) → A}
 
 /- English proof (translation)
-Use `split_ifs with h`. Conclude with `(he.2.2.2 c c').2 h`. Break down `IsIdempotentElem.iff_eq_zero_or_one.1 ((he.1 c).map c') with h0 | h1` into its components or cases. Conclude with `h0`. Conclude with `absurd ((he.2.2.2 c c').1 h1) h`.
+Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem IdemData.pt (he : IdemData A e) (c c' : A →ₐ[O] IsLocalRing.ResidueField O) :
     c' (e c) = if c = c' then 1 else 0 := by
@@ -43,11 +43,9 @@ theorem IdemData.pt (he : IdemData A e) (c c' : A →ₐ[O] IsLocalRing.ResidueF
     · exact absurd ((he.2.2.2 c c').1 h1) h
 
 /- English proof (translation)
-Establish `h` using `he.pt c ((Algebra.ofId O (IsLocalRing.ResidueField O)).comp x)`. Rewrite `h` using `[AlgHom.comp_apply]`. Break down `IsIdempotentElem.iff_eq_zero_or_one.1 ((he.1 c).map x) with h0 | h1` into its components or cases. Rewrite `h` using `[h0, map_zero]`. Rewrite using `[h0]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `split_ifs at h ⊢ with hc`. Conclude with `absurd h.symm one_ne_zero`. Both sides reduce to the same expression. Rewrite `h` using `[h1, map_one]`. Rewrite using `[h1]`.
-
-Use `split_ifs at h ⊢ with hc`. Both sides reduce to the same expression. Conclude with `absurd h one_ne_zero`.
+Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem IdemData.ptO [IsDomain O] (he : IdemData A e) (c : A →ₐ[O] IsLocalRing.ResidueField O)
     (x : A →ₐ[O] O) :
@@ -67,7 +65,7 @@ theorem IdemData.ptO [IsDomain O] (he : IdemData A e) (c : A →ₐ[O] IsLocalRi
     · exact absurd h one_ne_zero
 
 /- English proof (translation)
-Use `split_ifs with h`. Substitute `h` using the available equality. Conclude with `(he.1 c).eq`. Conclude with `he.2.1 c c' h`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem IdemData.mul_eq (he : IdemData A e) (c c' : A →ₐ[O] IsLocalRing.ResidueField O) :
     e c * e c' = if c = c' then e c else 0 := by
@@ -76,7 +74,7 @@ theorem IdemData.mul_eq (he : IdemData A e) (c c' : A →ₐ[O] IsLocalRing.Resi
   · exact he.2.1 c c' h
 
 /- English proof (translation)
-Rewrite using `[← finsum_eq_sum_of_fintype]`. Conclude with `he.2.2.1`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IdemData.sum_eq [Fintype (A →ₐ[O] IsLocalRing.ResidueField O)] (he : IdemData A e) :
     ∑ c, e c = 1 := by
@@ -85,9 +83,9 @@ theorem IdemData.sum_eq [Fintype (A →ₐ[O] IsLocalRing.ResidueField O)] (he :
 end Idem
 
 /- English proof (translation)
-Unfold `IsIdempotentElem`. Rewrite using `[Finset.sum_mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Repeatedly rewrite using `[ite_mul, mul_ite, mul_zero, zero_mul, hf]`. Use `split_ifs with hi`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_eq_single i (fun j _ hj => by simp [Ne.symm hj]) (by simp)]`. Simplify using `[hi]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isIdempotentElem_sum_ite {R ι : Type*} [CommRing R] [Fintype ι] [DecidableEq ι]
     (f : ι → R) (hf : ∀ i j, f i * f j = if i = j then f i else 0) (q : ι → Prop)
@@ -102,13 +100,11 @@ theorem isIdempotentElem_sum_ite {R ι : Type*} [CommRing R] [Fintype ι] [Decid
   · simp
 
 /- English proof (translation)
-Use `set I : Ideal A := Ideal.span {1 - g}`. Use `haveI : Module.Finite O (A ⧸ I) := Module.Finite.of_surjective (Ideal.Quotient.mkₐ O I).toLinearMap (Ideal.Quotient.mkₐ_surjective O I)`. Take `⟨-, e, -, -, hsum, -⟩` from `H (A ⧸ I)`. Establish `hE : IsEmpty ((A ⧸ I) →ₐ[O] IsLocalRing.ResidueField O)` using `⟨fun d => by`. Establish `h1 : d (Ideal.Quotient.mk I (1 - g)) = 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Ideal.Quotient.eq_zero_iff_mem.2 (Ideal.mem_span_singleton_self _), map_zero]`. Establish `h2` using `h (d.comp (Ideal.Quotient.mkₐ O I))`. Rewrite `h2` using `[AlgHom.comp_apply, Ideal.Quotient.mkₐ_eq_mk]`. Rewrite `h1` using `[map_sub, map_one, map_sub, map_one, h2, sub_zero]`. Conclude with `one_ne_zero h1⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hsum` using `[finsum_of_isEmpty]`. Establish `h1 : (1 : A) ∈ I`. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, map_one]`. Conclude with `hsum.symm`. Take `⟨b, hb⟩` from `Ideal.mem_span_singleton'.1 h1`.
-
-Combine the equalities or inequalities in the displayed calculation.
+Extract witnesses or component facts from the available result. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem idem_eq_zero (H : HasIdem O) {A : Type} [CommRing A] [Algebra O A] [Module.Finite O A]
     {g : A} (hg : IsIdempotentElem g)
@@ -133,9 +129,9 @@ theorem idem_eq_zero (H : HasIdem O) {A : Type} [CommRing A] [Algebra O A] [Modu
     _ = 0 := by rw [hg.eq, sub_self, mul_zero]
 
 /- English proof (translation)
-Establish `key : ∀ a b : A, IsIdempotentElem a → IsIdempotentElem b → (∀ c : A →ₐ[O] IsLocalRing.ResidueField O, c a = c b) → a * (1 - b) = 0`. Introduce `a b ha hb hab`. Use `idem_eq_zero H (ha.mul hb.one_sub) fun c => ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_sub, map_one, hab c, mul_sub, mul_one, (hb.map c).eq, sub_self]`. Establish `h1` using `key f g hf hg h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2` using `key g f hg hf fun c => (h c).symm`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem idem_eq (H : HasIdem O) {A : Type} [CommRing A] [Algebra O A] [Module.Finite O A]
     {f g : A} (hf : IsIdempotentElem f) (hg : IsIdempotentElem g)
@@ -180,7 +176,7 @@ theorem sumE_apply (he : IdemData A e) (f : (A →ₐ[O] IsLocalRing.ResidueFiel
 end Sum
 
 /- English proof (translation)
-Use `idem_eq H ((he.1 c).map φ) (isIdempotentElem_sum_ite e' he'.mul_eq _) fun d => ?_` and prove the remaining obligations. Rewrite using `[← AlgHom.comp_apply, he.pt, map_sum]`. Repeatedly rewrite using `[apply_ite d, map_zero, he'.pt]`. Rewrite using `[Finset.sum_eq_single d (fun b _ hb => by simp [hb]) (by simp)]`. Simplify using `[eq_comm]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem push_e (H : HasIdem O) {A A' : Type} [CommRing A] [Algebra O A] [CommRing A']
     [Algebra O A'] [Module.Finite O A'] [Fintype (A' →ₐ[O] IsLocalRing.ResidueField O)]
@@ -195,15 +191,15 @@ theorem push_e (H : HasIdem O) {A A' : Type} [CommRing A] [Algebra O A] [CommRin
   simp [eq_comm]
 
 /- English proof (translation)
-Establish `horth : ∀ x y : (A →ₐ[O] IsLocalRing.ResidueField O) × (A →ₐ[O] IsLocalRing.ResidueField O), (e x.1 ⊗ₜ[O] e x.2) * (e y.1 ⊗ₜ[O] e y.2) = if x = y then e x.1 ⊗ₜ[O] e x.2 else 0`. Introduce `x y`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, he.mul_eq, he.mul_eq]`. Apply the tactic sequence `by_cases h1 : x.1 = y.1 <;> by_cases h2 : x.2 = y.2 <;> simp [h1, h2, Prod.ext_iff]`. Establish `hc : comul (R` using `O) (e c) = comulAlgHom O A (e c) := rfl`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Rewrite using `[hc]`. Use `idem_eq H ((he.1 c).map _) (isIdempotentElem_sum_ite _ horth _) fun d => ?_` and prove the remaining obligations. Use `set d₁ : A →ₐ[O] IsLocalRing.ResidueField O := d.comp Algebra.TensorProduct.includeLeft`. Use `set d₂ : A →ₐ[O] IsLocalRing.ResidueField O := d.comp Algebra.TensorProduct.includeRight`. Establish `hd : Algebra.TensorProduct.lift d₁ d₂ (fun _ _ => .all _ _) = d` using `Algebra.TensorProduct.ext' fun a b => by`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Algebra.TensorProduct.lift_tmul]`. Simplify using `only [d₁, d₂, AlgHom.comp_apply, Algebra.TensorProduct.includeLeft_apply, Algebra.TensorProduct.includeRight_apply, ← map_mul, Algebra.TensorProduct.tmul_mul_tmul, mul_one, one_mul]`. Establish `hdt : ∀ a b : A, d (a ⊗ₜ[O] b) = d₁ a * d₂ b` using `fun a b => by`. Rewrite using `[← hd, Algebra.TensorProduct.lift_tmul]`. Establish `hl : d (comulAlgHom O A (e c)) = ofConv (toConv d₁ * toConv d₂) (e c)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[AlgHom.convMul_apply, hd]`. Both sides reduce to the same expression. Rewrite using `[hl, he.pt, map_sum]`. Repeatedly rewrite using `[apply_ite d, map_zero, hdt, he.pt]`. Rewrite using `[Finset.sum_eq_single (d₁, d₂) (fun b _ hb => by`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `by_cases h1 : b.1 = d₁ <;> by_cases h2 : b.2 = d₂ <;> simp_all [Prod.ext_iff]) (by simp)]`. Simplify using `[eq_comm]`.
+A detailed English derivation is pending.
 -/
 theorem comul_e (H : HasIdem O) {A : Type} [CommRing A] [Bialgebra O A] [Module.Finite O A]
     [Fintype (A →ₐ[O] IsLocalRing.ResidueField O)]
@@ -255,7 +251,7 @@ variable (hs : ∀ t, G.tatePush (Algebra.ofId O (IsLocalRing.ResidueField O)) (
 
 include hw in
 /- English proof (translation)
-The claim follows from `hw n _ _ (Classical.choose_spec (hpt n (t.pt n)))`.
+A detailed English derivation is pending.
 -/
 theorem sig_eq (n : ℕ) (t : G.TateOver (IsLocalRing.ResidueField O)) :
     sig G s hpt n (t.pt n) = (s t).pt n :=
@@ -263,7 +259,7 @@ theorem sig_eq (n : ℕ) (t : G.TateOver (IsLocalRing.ResidueField O)) :
 
 include hs hw in
 /- English proof (translation)
-Take `⟨t, rfl⟩` from `hpt n c`. Rewrite using `[sig_eq hw]`. Conclude with `congrArg (fun y => TateOver.pt y n) (hs t)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ofId_comp_sig (n : ℕ) (c : G.A n →ₐ[O] IsLocalRing.ResidueField O) :
     (Algebra.ofId O (IsLocalRing.ResidueField O)).comp (sig G s hpt n c) = c := by
@@ -273,7 +269,7 @@ theorem ofId_comp_sig (n : ℕ) (c : G.A n →ₐ[O] IsLocalRing.ResidueField O)
 
 include hw in
 /- English proof (translation)
-Take `⟨t₁, rfl⟩` from `hpt n c₁`. Take `⟨t₂, rfl⟩` from `hpt n c₂`. Establish `h : ofConv (toConv (t₁.pt n) * toConv (t₂.pt n)) = (t₁ + t₂).pt n` using `rfl`. Rewrite using `[h, sig_eq hw, sig_eq hw, sig_eq hw, map_add]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem sig_mul (n : ℕ) (c₁ c₂ : G.A n →ₐ[O] IsLocalRing.ResidueField O) :
     sig G s hpt n (ofConv (toConv c₁ * toConv c₂)) =
@@ -286,7 +282,7 @@ theorem sig_mul (n : ℕ) (c₁ c₂ : G.A n →ₐ[O] IsLocalRing.ResidueField 
 
 include hw in
 /- English proof (translation)
-Establish `h : ofConv (1 : WithConv (G.A n →ₐ[O] IsLocalRing.ResidueField O)) = (0 : G.TateOver (IsLocalRing.ResidueField O)).pt n` using `rfl`. Rewrite using `[h, sig_eq hw, map_zero]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem sig_one (n : ℕ) :
     sig G s hpt n (ofConv (1 : WithConv (G.A n →ₐ[O] IsLocalRing.ResidueField O))) =
@@ -299,7 +295,7 @@ theorem sig_one (n : ℕ) :
 omit [IsLocalRing O] [IsDomain O] in
 
 /- English proof (translation)
-Establish `h1 : ((p : ℤ_[p]) • x).conv (n + 1) = x.conv (n + 1) ^ p`. Rewrite using `[TateOver.smul_conv]`. Conclude with `GlobalTheory.PDiv.pow_digit_natCast (G.pts_pow_self (n + 1) _) p`. Conclude with `congrArg ofConv (h1.trans (x.conv_succ_pow n))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem smul_p_pt {B : Type} [CommRing B] [Algebra O B] (x : G.TateOver B) (n : ℕ) :
     ((p : ℤ_[p]) • x).pt (n + 1) = (x.pt n).comp (G.res n : G.A (n + 1) →ₐ[O] G.A n) := by
@@ -310,7 +306,7 @@ theorem smul_p_pt {B : Type} [CommRing B] [Algebra O B] (x : G.TateOver B) (n : 
 
 include hw in
 /- English proof (translation)
-Take `⟨t, rfl⟩` from `hpt n c`. Rewrite using `[← smul_p_pt, sig_eq hw, map_smul, smul_p_pt, sig_eq hw]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem sig_res (n : ℕ) (c : G.A n →ₐ[O] IsLocalRing.ResidueField O) :
     sig G s hpt (n + 1) (c.comp (G.res n : G.A (n + 1) →ₐ[O] G.A n)) =
@@ -345,7 +341,7 @@ theorem endo_apply (n : ℕ) (a : G.A n) :
 
 include hs hw in
 /- English proof (translation)
-Rewrite using `[sumE_apply, map_sum]`. Repeatedly rewrite using `[map_smul, (he n).ptO, ofId_comp_sig hs hw]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem sig_sumE (n : ℕ) (c : G.A n →ₐ[O] IsLocalRing.ResidueField O)
     (f : (G.A n →ₐ[O] IsLocalRing.ResidueField O) → O) :
@@ -356,7 +352,7 @@ theorem sig_sumE (n : ℕ) (c : G.A n →ₐ[O] IsLocalRing.ResidueField O)
 
 include hs hw in
 /- English proof (translation)
-Establish `h : AlgHom.pi (sig G s hpt n) (sumE (he n) f) = f`. Use function extensionality and compare the values at `fun c => sig_sumE hs hw he n c f`. Express the relevant statement in the definitionally equal form `sumE (he n) (AlgHom.pi (sig G s hpt n) (sumE (he n) f)) = _`. Rewrite using `[h]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem endo_sumE (n : ℕ) (f : (G.A n →ₐ[O] IsLocalRing.ResidueField O) → O) :
     endo s hpt he n (sumE (he n) f) = sumE (he n) f := by
@@ -367,16 +363,16 @@ theorem endo_sumE (n : ℕ) (f : (G.A n →ₐ[O] IsLocalRing.ResidueField O) �
 
 include hs hw in
 /- English proof (translation)
-The claim follows from `endo_sumE hs hw he n _`.
+A detailed English derivation is pending.
 -/
 theorem endo_endo (n : ℕ) (a : G.A n) : endo s hpt he n (endo s hpt he n a) = endo s hpt he n a :=
   endo_sumE hs hw he n _
 
 include hs hw in
 /- English proof (translation)
-Use extensionality with `a`. Rewrite using `[AlgHom.comp_apply, endo_apply, map_sum]`. Repeatedly rewrite using `[map_smul, (he n).ptO]`. Simplify using `only [smul_eq_mul, mul_ite, mul_one, mul_zero]`. Rewrite using `[Finset.sum_ite_eq']`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Finset.mem_univ, if_true]`. Establish `h` using `congrArg (fun x : G.A n →ₐ[O] O => x a) (sig_one (hpt := hpt) hw n)`. Conclude with `h`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem counit_endo (n : ℕ) :
     (counitAlgHom O (G.A n)).comp (endo s hpt he n) = counitAlgHom O (G.A n) := by
@@ -404,9 +400,9 @@ variable {p : ℕ} [Fact p.Prime] [IsDomain O] {G : PDivGroup p O}
   {e : ∀ n, (G.A n →ₐ[O] IsLocalRing.ResidueField O) → G.A n} (he : ∀ n, IdemData (G.A n) (e n))
 
 /- English proof (translation)
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a b`. Rewrite using `[Algebra.TensorProduct.map_tmul, endo_apply, endo_apply, TensorProduct.sum_tmul, Fintype.sum_prod_type]`. Use `Finset.sum_congr rfl fun c₁ _ => ?_` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[TensorProduct.tmul_sum]`. Use `Finset.sum_congr rfl fun c₂ _ => ?_` and prove the remaining obligations. Rewrite using `[Algebra.TensorProduct.lift_tmul, TensorProduct.smul_tmul_smul]`. Consider the case `add x y hx hy`. Simplify using `only [map_add, hx, hy, add_smul, Finset.sum_add_distrib]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately. Simplify using the standard rewrite rules.
 -/
 theorem map_endo_endo (n : ℕ) (z : G.A n ⊗[O] G.A n) :
     Algebra.TensorProduct.map (endo s hpt he n) (endo s hpt he n) z =
@@ -427,9 +423,9 @@ theorem map_endo_endo (n : ℕ) (z : G.A n ⊗[O] G.A n) :
 
 include hw in
 /- English proof (translation)
-Use `AlgHom.ext fun a => ?_` and prove the remaining obligations. Rewrite using `[AlgHom.comp_apply, AlgHom.comp_apply, map_endo_endo, endo_apply, map_sum]`. Repeatedly rewrite using `[map_smul, Bialgebra.comulAlgHom_apply, comul_e H (he n), Finset.smul_sum, smul_ite, smul_zero]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Finset.sum_ite_eq]`. Simplify using `only [Finset.mem_univ, if_true]`. Rewrite using `[sig_mul hw]`. Use `congr 1`. Conclude with `(AlgHom.convMul_apply _ _ a).symm`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem comul_endo (H : HasIdem O) (n : ℕ) :
     (Algebra.TensorProduct.map (endo s hpt he n) (endo s hpt he n)).comp
@@ -448,9 +444,9 @@ theorem comul_endo (H : HasIdem O) (n : ℕ) :
 
 include hw in
 /- English proof (translation)
-Establish `hp : ∀ c, G.res n (e (n + 1) c) = ∑ c', if c'.comp (G.res n : G.A (n + 1) →ₐ[O] G.A n) = c then e n c' else 0` using `fun c => by`. Conclude with `push_e H (he (n + 1)) (he n) (G.res n : G.A (n + 1) →ₐ[O] G.A n) c`. Rewrite using `[endo_apply, endo_apply, map_sum]`. Repeatedly rewrite using `[map_smul, hp, Finset.smul_sum, smul_ite, smul_zero]`. Rewrite using `[Finset.sum_comm]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun c' _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_ite_eq]`. Simplify using `only [Finset.mem_univ, if_true]`. Rewrite using `[sig_res hw]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem res_endo (H : HasIdem O) (n : ℕ) (a : G.A (n + 1)) :
     G.res n (endo s hpt he (n + 1) a) = endo s hpt he n (G.res n a) := by
@@ -475,7 +471,7 @@ def uEnd (H : HasIdem O) : G ⟶ G where
 
 include hs hw hpt in
 /- English proof (translation)
-Introduce `f g h` and use `funext fun c => by have h1 := congrArg (sig G s hpt n c) h rwa [sig_sumE hs hw he, sig_sumE hs hw he] at h1`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem sumE_injective (n : ℕ) : Function.Injective (sumE (he n)) := fun f g h =>
   funext fun c => by
@@ -484,7 +480,7 @@ theorem sumE_injective (n : ℕ) : Function.Injective (sumE (he n)) := fun f g h
 
 include hs hw in
 /- English proof (translation)
-Use `le_antisymm (AlgHom.range_comp_le_range _ _) ?_` and prove the remaining obligations. Introduce and unpack `x ⟨f, rfl⟩`. Conclude with `⟨sumE (he n) f, endo_sumE hs hw he n f⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem range_endo (n : ℕ) : (endo s hpt he n).range = (sumE (he n)).range := by
   refine le_antisymm (AlgHom.range_comp_le_range _ _) ?_
@@ -493,9 +489,9 @@ theorem range_endo (n : ℕ) : (endo s hpt he n).range = (sumE (he n)).range := 
 
 include hs hw hpt he in
 /- English proof (translation)
-Use `⟨uEnd s hpt hs hw he H, hom_ext fun n => BialgHom.ext fun a => endo_endo hs hw he n a, fun n c a => ?_, fun n => ⟨Fintype.card (G.A n →ₐ[O] IsLocalRing.ResidueField O), ⟨?_⟩⟩⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `c (endo s hpt he n a) = c a`. Rewrite using `[endo_apply, map_sum]`. Repeatedly rewrite using `[map_smul, (he n).pt, smul_ite, smul_zero]`. Rewrite using `[Finset.sum_ite_eq']`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Finset.mem_univ, if_true, Algebra.smul_def, mul_one]`. Conclude with `DFunLike.congr_fun (ofId_comp_sig (hpt := hpt) hs hw n c) a`. Establish `h : ((uEnd s hpt hs hw he H).app n : G.A n →ₐ[O] G.A n) = endo s hpt he n` using `rfl`. Rewrite using `[h]`. Conclude with `((Subalgebra.equivOfEq _ _ (range_endo hs hw he n)).trans (AlgEquiv.ofInjective _ (sumE_injective (hpt := hpt) hs hw he n)).symm).trans (AlgEquiv.piCongrLeft O (fun _ => O) (Fintype.equivFin _).symm).symm`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_endo (H : HasIdem O) : ∃ u : G ⟶ G, u ≫ u = u ∧
     (∀ (n : ℕ) (c : G.A n →ₐ[O] IsLocalRing.ResidueField O) (a : G.A n), c (u.app n a) = c a) ∧
@@ -517,9 +513,7 @@ theorem exists_endo (H : HasIdem O) : ∃ u : G ⟶ G, u ≫ u = u ∧
 end Endo2
 
 /- English proof (translation)
-Introduce `p _ C _ _ _ v O _ _ _ _ _ _ hv G`. Establish `H : HasIdem O` using `fun A _ _ _ => GlobalTheory.T.finiteAlgebra_residuePoint_idempotents_over_OC p C v O hv A`. Take `⟨hpt, s, hs, hw⟩` from `GlobalTheory.T.pDivGroup_residueField_tate_level_section p C v O hv G`. Establish `hH : ∀ n, Finite (G.A n →ₐ[O] IsLocalRing.ResidueField O) ∧ ∃ e, IdemData (G.A n) e` using `fun n => H (G.A n)`. Use `choose hfin e he using hH`.
-
-Use `haveI : ∀ n, Fintype (G.A n →ₐ[O] IsLocalRing.ResidueField O) := fun n => Fintype.ofFinite _`. Conclude with `exists_endo (hpt := hpt) hs hw he H`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_idempotent_constPart : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C] [CharZero C] (v : Valuation C NNReal) (O : Type) [CommRing O] [Algebra O C] [Fact ¬IsUnit (p : O)] [IsAdicComplete (Ideal.span {(p : O)}) O] [IsDomain O] [IsLocalRing O], v.Integers O → ∀ G : PDivGroup p O, ∃ u : G ⟶ G, u ≫ u = u ∧ (∀ (n : ℕ) (c : G.A n →ₐ[O] IsLocalRing.ResidueField O) (a : G.A n), c (u.app n a) = c a) ∧ ∀ n, ∃ N : ℕ, Nonempty ((u.app n : G.A n →ₐ[O] G.A n).range ≃ₐ[O] (Fin N → O)) := by
   intro p _ C _ _ _ v O _ _ _ _ _ _ hv G

@@ -28,19 +28,17 @@ section Form
 variable {k k' : Type} [CommRing k] [CommRing k'] {X Y : Scheme.{0}} {π : Y ⟶ X} {e : X ⟶ Y}
 
 /- English proof (translation)
-Substitute `ex ev` using the available equality. Establish `: QuasiCompact e`. Establish `: QuasiCompact (e ≫ π)` using `he ▸ inferInstance`. Use the proof step `.of_comp _ π`. Establish `key (y : (⊤ : (Sp k').Opens)) : ∃ T' : (Sp k').Opens, y.1 ∈ T' ∧ resG (Sp k') (le_top : T' ≤ ⊤) ((form w' we').app ⊤ (pullbackSections _ _ h' s) : Γ(Sp k', ⊤)) = resG (Sp k') (le_top : T' ≤ ⊤) ((spMap φ).appLE ⊤ ⊤ (le_preimage_top _ _) ((form w we).app ⊤ (pullbackSections x _ h s …`.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨U, W, hU, hle, c⟩` from `exists_isChart he (V := V) (x := x (spMap φ y.1)) (h trivial)`. Take `⟨T, hT, hyT, hTU⟩` from `QCoh.exists_affine_mem_le (U := x ⁻¹ᵁ U) (spMap φ y.1) hU`. Take `⟨f, hf⟩` from `c.d_surjective he (resM _ hle s)`. Establish `hTU' : spMap φ ⁻¹ᵁ T ≤ (spMap φ ≫ x) ⁻¹ᵁ U` using `(spMap φ).preimage_mono hTU`. Establish `hTW : T ≤ x ⁻¹ᵁ e ⁻¹ᵁ W` using `hTU.trans (x.preimage_mono c.le)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hTW' : spMap φ ⁻¹ᵁ T ≤ (spMap φ ≫ x) ⁻¹ᵁ e ⁻¹ᵁ W` using `(spMap φ).preimage_mono hTW`. Take `⟨⟨a, b⟩, E⟩` from `(bijective_add_mul_epsFn k T hT).2 (v.appLE W _ (preimage_le we hTW) f)`. Establish `e₁` using `form_d he w we c.le f hTU (preimage_le we hTW) a b E.symm`. Establish `kk : (specO k' (DualNumber k')).hom ⁻¹ᵁ spMap φ ⁻¹ᵁ T ≤ spMap (Formalism.L2.Pj.dualMap φ) ⁻¹ᵁ (specO k (DualNumber k)).hom ⁻¹ᵁ T` using `(le_preimage_of_comp (spMap_dualMap_comp φ)).2 le_rfl`. Establish `kk' : (specO k' (DualNumber k')).hom ⁻¹ᵁ spMap φ ⁻¹ᵁ T ≤ ((specO k' (DualNumber k')).hom ≫ spMap φ) ⁻¹ᵁ T` using `le_rfl`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `n (z : Γ(Sp k, T)) : (spMap (Formalism.L2.Pj.dualMap φ)).appLE _ _ kk ((specO k (DualNumber k)).hom.appLE T _ le_rfl z) = (specO k' (DualNumber k')).hom.appLE _ _ le_rfl ((spMap φ).appLE T _ le_rfl z)` using `(appLE_appLE (spMap_dualMap_comp φ) _ _ kk' z).trans (appLE_appLE rfl _ _ kk' z).symm`. Establish `n' : (spMap (Formalism.L2.Pj.dualMap φ)).appLE _ _ kk (resG _ le_top (epsFn k)) = resG _ le_top (epsFn k')` using `(appLE_resG _ _ _ _).trans ((resG_appLE _ le_top (le_preimage_top _ _) _).symm.trans (congrArg _ (spMap_dualMap_epsFn φ)))`. Establish `e₂` using `form_d he w' we' c.le f hTU' (preimage_le we' hTW') ((spMap φ).appLE T _ le_rfl a) ((spMap φ).appLE T _ le_rfl b) (by`. Use `(appLE_appLE rfl (preimage_le we hTW) kk _ f).symm.trans ?_` and prove the remaining obligations. Use `(congrArg ((spMap (Formalism.L2.Pj.dualMap φ)).appLE _ _ kk) E.symm).trans ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `(map_add _ _ _).trans ?_` and prove the remaining obligations. Conclude with `congrArg₂ (· + ·) (n a) ((map_mul _ _ _).trans (congrArg₂ (· * ·) (n b) n')))`. Rewrite `e₁`, `e₂` using `[hf, QCoh.pullbackSections_res]`. Use `⟨spMap φ ⁻¹ᵁ T, hyT, ?_⟩` and prove the remaining obligations. Use `(app_resM (form w' we') le_top _).symm.trans ?_` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[QCoh.res_pullbackSections, e₂, ← e₁]`. Use `.trans ?_ ((appLE_resG (spMap φ) (le_top : T ≤ ⊤) le_rfl _).trans (resG_appLE (spMap φ) le_top (le_preimage_top _ _) _).symm)` and prove the remaining obligations. Use `congrArg _ ?_` and prove the remaining obligations. Use `.trans ?_ (app_resM (form w we) le_top _)` and prove the remaining obligations. Rewrite using `[QCoh.res_pullbackSections]`.
-
-Use `choose T hT hs using key`. Conclude with `LB.fun_ext_of_cover T (fun _ => le_top) (fun y hy => Opens.mem_iSup.2 ⟨⟨y, hy⟩, hT _⟩) hs`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem form_baseChange (he : e ≫ π = 𝟙 X) [QuasiSeparated π] (φ : k →+* k') {x : Sp k ⟶ X}
     {v : (specO k (DualNumber k)).left ⟶ Y}
@@ -102,9 +100,9 @@ theorem form_baseChange (he : e ≫ π = 𝟙 X) [QuasiSeparated π] (φ : k →
 variable {A : Over X} [GrpObj A] {x : Sp k ⟶ X} {G : Over (Sp k)} [GrpObj G] {ψ : G.left ⟶ A.left}
 
 /- English proof (translation)
-Use `Eq.trans (congrArg (· ≫ (epsIso k).hom) ?_) (Category.assoc _ _ _)` and prove the remaining obligations. Use `pullback_hom_ext (sec_hom η[A]) fun W a => ?_` and prove the remaining obligations. Establish `k₁` using `le_of_sq (unitSec_comp hp) (le_refl (unitSec A ⁻¹ᵁ W)) le_rfl`. Establish `k₂` using `le_of_sq we (le_refl (unitSec A ⁻¹ᵁ W)) le_rfl`. Establish `k₃` using `(le_preimage_of_comp (rfl : y.left ≫ ψ = _)).2 (le_refl ((y.left ≫ ψ) ⁻¹ᵁ W))`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(baseMap_d (sec_hom η[A]) (sec_hom (epsZero k)) w we le_rfl le_rfl k₂ le_rfl a).trans (Eq.symm ?_)` and prove the remaining obligations. Use `(congrArg ((cotMap y hy).app _) (omegaBase_dUnit hp le_rfl le_rfl k₁ le_rfl a)).trans ?_` and prove the remaining obligations. Conclude with `(cotMap_d y hy k₁ k₂ k₃ _).trans (congrArg _ (appLE_appLE rfl _ _ _ a))`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem form_eq_fibre (hp : IsGrpPullback G A x ψ) {y : specO k (DualNumber k) ⟶ G} (hy : epsZero k ≫ y = η)
     (w : (y.left ≫ ψ) ≫ A.hom = (specO k (DualNumber k)).hom ≫ x)
@@ -121,7 +119,7 @@ theorem form_eq_fibre (hp : IsGrpPullback G A x ψ) {y : specO k (DualNumber k) 
   exact (cotMap_d y hy k₁ k₂ k₃ _).trans (congrArg _ (appLE_appLE rfl _ _ _ a))
 
 /- English proof (translation)
-The claim follows from `Over.OverMorphism.ext hy`.
+A detailed English derivation is pending.
 -/
 theorem epsZero_comp_of_isTangent {y : epsR k ⟶ G} (hy : IsTangent y) : epsZero k ≫ y = η :=
   Over.OverMorphism.ext hy
@@ -135,9 +133,9 @@ def tv (σ : Γ(omega G, ⊤)) (v : epsR k ⟶ G) (hv : IsTangent v) : k :=
   ev σ (cotMap (T' := specO k (DualNumber k)) v (epsZero_comp_of_isTangent hv))
 
 /- English proof (translation)
-Establish `e` using `cotMap_comp (T' := specO k (DualNumber k)) (epsZero_comp_of_isTangent hy) (epsZero_dualScale r) (χ := GrpTangent.epsScale r ≫ y) rfl (epsZero_comp_of_isTangent hz)`. Rewrite `e` using `[cotMap_dualScale]`. Use `(congrArg (ev σ) e).symm.trans ?_` and prove the remaining obligations. Use `(congrArg (Scheme.ΓSpecIso (.of k)).hom ((epsIso k).hom.app_smul (cst k r) ((cotMap (T' := specO k (DualNumber k)) y (epsZero_comp_of_isTangent hy)).app ⊤ σ))).trans ?_` and prove the remaining obligations. Use `(map_mul _ _ _).trans ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Iso.inv_hom_id_apply]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem tv_scale (σ : Γ(omega G, ⊤)) (r : k) {y : epsR k ⟶ G} (hy : IsTangent y)
     (hz : IsTangent (GrpTangent.epsScale r ≫ y)) : tv σ _ hz = r * tv σ y hy := by
@@ -152,7 +150,7 @@ theorem tv_scale (σ : Γ(omega G, ⊤)) (r : k) {y : epsR k ⟶ G} (hy : IsTang
   rfl
 
 /- English proof (translation)
-The claim follows from `(congrArg (ev σ) (cotMap_mul (T := specO k (DualNumber k)) (epsZero_comp_of_isTangent hy) (epsZero_comp_of_isTangent hz) (epsZero_comp_of_isTangent h))).trans (map_add _ _ _)`.
+A detailed English derivation is pending.
 -/
 theorem tv_mul [QuasiSeparated G.hom] (σ : Γ(omega G, ⊤)) {y z : epsR k ⟶ G} (hy : IsTangent y)
     (hz : IsTangent z) (h : IsTangent (y * z)) : tv σ _ h = tv σ y hy + tv σ z hz :=
@@ -160,7 +158,7 @@ theorem tv_mul [QuasiSeparated G.hom] (σ : Γ(omega G, ⊤)) {y z : epsR k ⟶ 
     (epsZero_comp_of_isTangent hz) (epsZero_comp_of_isTangent h))).trans (map_add _ _ _)
 
 /- English proof (translation)
-The claim follows from `(congrArg (ev σ) (cotMap_eq_zero (T' := specO k (DualNumber k)) (Hom.one_def).symm (epsZero_comp_of_isTangent h))).trans (map_zero _)`.
+A detailed English derivation is pending.
 -/
 theorem tv_one (σ : Γ(omega G, ⊤)) (h : IsTangent (1 : epsR k ⟶ G)) : tv σ _ h = 0 :=
   (congrArg (ev σ) (cotMap_eq_zero (T' := specO k (DualNumber k)) (Hom.one_def).symm
@@ -172,7 +170,7 @@ def Good (σ : Γ(omega G, ⊤)) (c : primDR G) (h : HdR G) : Prop :=
 variable {σ : Γ(omega G, ⊤)} {c : primDR G}
 
 /- English proof (translation)
-The claim follows from `fun v hv ↦ by obtain ⟨va, ea, -⟩ := H.1 a obtain ⟨vb, eb, -⟩ := H.1 b obtain rfl := (H.1 _).unique hv (ea.add eb) rw [tv_mul σ ea.1 eb.1, ← ha _ ea, ← hb _ eb, LinearMap.add_apply]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Good.add [QuasiSeparated G.hom] (H : LieExact G) {a b : HdR G} (ha : Good σ c a) (hb : Good σ c b) :
     Good σ c (a + b) := fun v hv ↦ by
@@ -182,14 +180,14 @@ theorem Good.add [QuasiSeparated G.hom] (H : LieExact G) {a b : HdR G} (ha : Goo
   rw [tv_mul σ ea.1 eb.1, ← ha _ ea, ← hb _ eb, LinearMap.add_apply]
 
 /- English proof (translation)
-The claim follows from `fun v hv ↦ by obtain rfl := (H.1 _).unique hv (isLieImage_one_iff.2 (zero_mem _)) rw [tv_one, LinearMap.zero_apply]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Good.zero (H : LieExact G) : Good σ c 0 := fun v hv ↦ by
   obtain rfl := (H.1 _).unique hv (isLieImage_one_iff.2 (zero_mem _))
   rw [tv_one, LinearMap.zero_apply]
 
 /- English proof (translation)
-The claim follows from `fun v hv ↦ by obtain ⟨va, ea, -⟩ := H.1 a obtain rfl := (H.1 _).unique hv (ea.smul r) rw [tv_scale σ r ea.1, ← ha _ ea, LinearMap.smul_apply, smul_eq_mul]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Good.smul (H : LieExact G) (r : k) {a : HdR G} (ha : Good σ c a) : Good σ c (r • a) := fun v hv ↦ by
   obtain ⟨va, ea, -⟩ := H.1 a
@@ -208,13 +206,13 @@ variable [Algebra R R'] {A : Over (Sp R)} [GrpObj A] {A' : Over (Sp R')} [GrpObj
 open GlobalTheory.Published.AbelianDeRham (bcMor)
 
 /- English proof (translation)
-Take `⟨n, p, q, -, -, hpq⟩` from `Module.Finite.exists_comp_eq_id_of_projective R (primDR A)`. Use `choose l hl using fun i : Fin n ↦ hm.exists (LinearMap.proj i ∘ₗ q)`. Establish `: h' = ∑ i, h' ((bcMor hφ).pull (p (Pi.single i 1))) • l i`. Use `LinearMap.ext fun c ↦ ?_` and prove the remaining obligations. Take `⟨z, rfl⟩` from `hm.2 c`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Proceed by induction.
 
-Proceed by induction on `z with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Consider the case `tmul x c`. Rewrite using `[liftSemi_tmul, map_smul, map_smul]`.
+Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Establish `hc : c = ∑ i, q c i • p (Pi.single i 1)` using `by conv_lhs => rw [← show p (q c) = c from LinearMap.congr_fun hpq c, pi_eq_sum_univ' (q c), map_sum]`. Simplify using `only [map_smul]`. Rewrite using `[LinearMap.sum_apply]`. Use `conv_lhs => rw [hc, map_sum, map_sum]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun i _ ↦ ?_` and prove the remaining obligations. Rewrite using `[LinearMap.map_smulₛₗ, map_smul, LinearMap.smul_apply, hl i c, smul_eq_mul, smul_eq_mul, mul_comm]`. Both sides reduce to the same expression. Rewrite using `[this]`. Conclude with `Finset.sum_induction _ N ha h0 fun i _ ↦ hs _ _ (hN _ _ (hl i))`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_of_corr [Module.Finite R (primDR A)] [Module.Projective R (primDR A)] (hm : (bcMor hφ).IsBC)
     (N : HdR A' → Prop) (h0 : N 0) (ha : ∀ a b, N a → N b → N (a + b)) (hs : ∀ (r : R') a, N a → N (r • a))
@@ -244,21 +242,19 @@ theorem mem_of_corr [Module.Finite R (primDR A)] [Module.Projective R (primDR A)
 end DeRham
 
 /- English proof (translation)
-Introduce `P T A _ g hA hg V V' hV hV' h φ hφ eφ s c hc`. Use `letI := resAlg h`. Establish `hA₁` using `VB.isAbelianScheme_onAff A hA hV`. Establish `hg₁` using `VB.smooth_onAff A hg hV`. Establish `hA₂` using `VB.isAbelianScheme_onAff A hA hV'`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hg₂` using `VB.smooth_onAff A hg hV'`. Establish `H` using `(P.p5.2.1 _ _ g hA₁ hg₁).1`. Establish `H'` using `(P.p5.2.1 _ _ g hA₂ hg₂).1`. Take `⟨hm, hF⟩` from `P.p5.2.2.1 _ _ g hA₁ hg₁ _ _ φ hφ`. Take `⟨_, _, -⟩` from `GlobalTheory.Published.AbelianDeRham.Free.prim P.p5.1 hA₁ hg₁`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `hA.proper` as an intermediate fact. Use `hA₂.proper` as an intermediate fact. Establish `hp : IsGrpPullback (onAff A hV) A hV.fromSpec _` using `isGrpPullback_pullback A hV.fromSpec`. Establish `hp' : IsGrpPullback (onAff A hV') A hV'.fromSpec _` using `isGrpPullback_pullback A hV'.fromSpec`. Set `σ` to `(omegaBase hp').app ⊤ (pullbackSections hV'.fromSpec (omega A) hV'.fromSpec_preimage_self.ge (resM _ h s))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hσ (v' : epsR Γ(T, V') ⟶ onAff A hV') (hv' : IsTangent v') (w : (v'.left ≫ pullback.fst A.hom hV'.fromSpec) ≫ A.hom = (specO Γ(T, V') (DualNumber Γ(T, V'))).hom ≫ hV'.fromSpec) (we : sec (epsZero Γ(T, V')) ≫ v'.left ≫ pullback.fst A.hom hV'.fromSpec = hV'.fromSpec ≫ GlobalTheory. …` using `congr((Scheme.ΓSpecIso (CommRingCat.of Γ(T, V'))).hom (($(form_eq_fibre hp' (epsZero_comp_of_isTangent hv') w we)).app ⊤ _))`. Establish `sq {W : T.Opens} (hW : IsAffineOpen W) (v : epsR Γ(T, W) ⟶ onAff A hW) (hv : IsTangent v) : (v.left ≫ pullback.fst A.hom hW.fromSpec) ≫ A.hom = (specO Γ(T, W) (DualNumber Γ(T, W))).hom ≫ hW.fromSpec ∧ sec (epsZero Γ(T, W)) ≫ v.left ≫ pullback.fst A.hom hW.fromSpec = hW.fromSpec ≫ …`. Prove the components needed by the constructor for the conclusion. Rewrite using `[Category.assoc, pullback.condition, ← Category.assoc]`. Conclude with `congrArg (· ≫ hW.fromSpec) (Over.w v)`.
+Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Category.assoc]`. Conclude with `(congrArg (· ≫ pullback.fst A.hom hW.fromSpec) hv).trans (unitSec_comp (isGrpPullback_pullback A hW.fromSpec))`. Introduce `v' h' hv' w we`. Rewrite using `[hσ v' hv'.1 w we]`. Use `mem_of_corr hφ hm (Good σ ((GlobalTheory.Published.AbelianDeRham.bcMor hφ).pull c)) (Good.zero H') (fun _ _ ↦ Good.add H') (fun r _ ↦ Good.smul H' r) ?_ h' v' hv'` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `k k' hk u' hu'`. Take `⟨u, hu, -⟩` from `H.1 k`. Take `⟨u'', e⟩` from `ArcQ.NormalForm.exists_baseChange hφ u`. Take `rfl` from `(H'.1 _).unique hu' (hu.baseChange (hφ := hφ) hF H' hk e)`. Establish `t` using `hu'.1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← hσ u' t (sq hV' u' t).1 (sq hV' u' t).2, hk, hc u k hu (sq hV u hu.1).1 (sq hV u hu.1).2]`. Establish `b` using `form_baseChange (GlobalTheory.IndefiniteRowSideFullHecke.ZeroSectionBase.zeroSec_comp A) (algebraMap Γ(T, V) Γ(T, V')) (sq hV u hu.1).1 (sq hV u hu.1).2 (sq hV' u' t).1 (sq hV' u' t).2 (VB.fromSpec_res hV hV' h) (by rw [← eφ, ← Category.assoc, ← Category.assoc]; exact congrArg (· …`. Use `Eq.symm ((congrArg (fun z => (Scheme.ΓSpecIso (CommRingCat.of Γ(T, V'))).hom ((form _ _).app ⊤ z)) (QCoh.pullbackSections_res hV'.fromSpec _ hV'.fromSpec_preimage_self.ge h s)).trans ?_)` and prove the remaining obligations. Use `(congrArg (Scheme.ΓSpecIso (CommRingCat.of Γ(T, V'))).hom b).trans ?_` and prove the remaining obligations. Use `(congrArg (Scheme.ΓSpecIso (CommRingCat.of Γ(T, V'))).hom (appLE_top (spMap _) _)).trans ?_` and prove the remaining obligations.
-
-Conclude with `congr($(Scheme.ΓSpecIso_naturality (CommRingCat.ofHom (algebraMap Γ(T, V) Γ(T, V')))) _)`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem corr_res : GlobalTheory.CovTop.Hypotheses2 → ∀ (T : Scheme.{0}) (A : Over T) [GrpObj A] (g : ℕ),
     IsAbelianScheme A → SmoothOfRelativeDimension g A.hom →

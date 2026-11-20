@@ -27,7 +27,7 @@ def bil (C : ι → ι → M) (a b : ι →₀ ℤ) : M := a.sum fun x m => b.su
 variable (C : ι → ι → M)
 
 /- English proof (translation)
-Unfold `bil`. Rewrite using `[← Finsupp.sum_add]`. Use `Finsupp.sum_congr fun x _ => ?_` and prove the remaining obligations. Conclude with `Finsupp.sum_add_index' (fun _ => by simp) (fun _ _ _ => by rw [mul_add, add_smul])`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem bil_add_right (a b c : ι →₀ ℤ) : bil C a (b + c) = bil C a b + bil C a c := by
   unfold bil
@@ -36,7 +36,7 @@ theorem bil_add_right (a b c : ι →₀ ℤ) : bil C a (b + c) = bil C a b + bi
   exact Finsupp.sum_add_index' (fun _ => by simp) (fun _ _ _ => by rw [mul_add, add_smul])
 
 /- English proof (translation)
-Unfold `bil`. Use `Finsupp.sum_add_index' (fun _ => by simp) (fun _ _ _ => ?_)` and prove the remaining obligations. Rewrite using `[← Finsupp.sum_add]`. Use `Finsupp.sum_congr fun y _ => ?_` and prove the remaining obligations. Rewrite using `[add_mul, add_smul]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem bil_add_left (a b c : ι →₀ ℤ) : bil C (a + b) c = bil C a c + bil C b c := by
   unfold bil
@@ -46,21 +46,21 @@ theorem bil_add_left (a b c : ι →₀ ℤ) : bil C (a + b) c = bil C a c + bil
   rw [add_mul, add_smul]
 
 /- English proof (translation)
-Simplify using `[bil]`.
+Simplify using the standard rewrite rules.
 -/
 theorem bil_zero_left (b : ι →₀ ℤ) : bil C 0 b = 0 := by
   simp [bil]
 
 /- English proof (translation)
-Simplify using `[bil]`.
+Simplify using the standard rewrite rules.
 -/
 theorem bil_zero_right (a : ι →₀ ℤ) : bil C a 0 = 0 := by
   simp [bil]
 
 /- English proof (translation)
-Unfold `bil`. Rewrite using `[Finsupp.sum_smul_index' (fun _ => by simp), Finsupp.smul_sum]`. Use `Finsupp.sum_congr fun x _ => ?_` and prove the remaining obligations. Rewrite using `[Finsupp.smul_sum]`. Use `Finsupp.sum_congr fun y _ => ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[smul_eq_mul, mul_assoc, mul_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem bil_smul_left (z : ℤ) (a b : ι →₀ ℤ) : bil C (z • a) b = z • bil C a b := by
   unfold bil
@@ -71,9 +71,9 @@ theorem bil_smul_left (z : ℤ) (a b : ι →₀ ℤ) : bil C (z • a) b = z �
   rw [smul_eq_mul, mul_assoc, mul_smul]
 
 /- English proof (translation)
-Unfold `bil`. Rewrite using `[Finsupp.smul_sum]`. Use `Finsupp.sum_congr fun x _ => ?_` and prove the remaining obligations. Rewrite using `[Finsupp.sum_smul_index' (fun _ => by simp), Finsupp.smul_sum]`. Use `Finsupp.sum_congr fun y _ => ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[smul_eq_mul, mul_left_comm, mul_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem bil_smul_right (z : ℤ) (a b : ι →₀ ℤ) : bil C a (z • b) = z • bil C a b := by
   unfold bil
@@ -84,13 +84,13 @@ theorem bil_smul_right (z : ℤ) (a b : ι →₀ ℤ) : bil C a (z • b) = z �
   rw [smul_eq_mul, mul_left_comm, mul_smul]
 
 /- English proof (translation)
-Simplify using `[bil, Finsupp.sum_single_index]`.
+Simplify using the standard rewrite rules.
 -/
 theorem bil_single (x y : ι) : bil C (Finsupp.single x 1) (Finsupp.single y 1) = C x y := by
   simp [bil, Finsupp.sum_single_index]
 
 /- English proof (translation)
-Unfold `bil`. Rewrite using `[Finsupp.sum_comm]`. Use `Finsupp.sum_congr fun y _ => Finsupp.sum_congr fun x _ => ?_` and prove the remaining obligations. Rewrite using `[mul_comm, hC]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem bil_comm (hC : ∀ x y, C x y = C y x) (a b : ι →₀ ℤ) : bil C a b = bil C b a := by
   unfold bil
@@ -99,7 +99,7 @@ theorem bil_comm (hC : ∀ x y, C x y = C y x) (a b : ι →₀ ℤ) : bil C a b
   rw [mul_comm, hC]
 
 /- English proof (translation)
-Rewrite using `[Finsupp.smul_single, smul_eq_mul, mul_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem single_eq_smul_single (x : ι) (m : ℤ) : (Finsupp.single x m : ι →₀ ℤ) = m • Finsupp.single x 1 := by
   rw [Finsupp.smul_single, smul_eq_mul, mul_one]
@@ -111,13 +111,13 @@ section BilAssoc
 variable {ι : Type*} (C : ι → ι → ι →₀ ℤ)
 
 /- English proof (translation)
-Proceed by induction on `a using Finsupp.induction_linear with`. Consider the case `zero => simp only [bil_zero_left]`. Consider the case `add a a' ha ha' => rw [bil_add_left, bil_add_left, bil_add_left, ha, ha']`. Consider the case `single x m`. Simplify using `only [single_eq_smul_single x m, bil_smul_left]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules.
 
-Use `congr 1`. Proceed by induction on `b using Finsupp.induction_linear with`. Consider the case `zero => simp only [bil_zero_left, bil_zero_right]`. Consider the case `add b b' hb hb' => rw [bil_add_right, bil_add_left, hb, hb', bil_add_left, bil_add_right]`. Consider the case `single y n`.
+Reduce the equality to equality of the corresponding arguments. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Simplify using `only [single_eq_smul_single y n, bil_smul_left, bil_smul_right]`. Use `congr 1`. Proceed by induction on `c using Finsupp.induction_linear with`. Consider the case `zero => simp only [bil_zero_right]`. Consider the case `add c c' hc hc' => rw [bil_add_right, bil_add_right, hc, hc', bil_add_right]`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `single z p`. Simplify using `only [single_eq_smul_single z p, bil_smul_right]`. Use `congr 1`. Conclude with `hA x y z`.
+Treat this case separately. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem bil_assoc (hA : ∀ x y z, bil C (bil C (Finsupp.single x 1) (Finsupp.single y 1)) (Finsupp.single z 1) =
       bil C (Finsupp.single x 1) (bil C (Finsupp.single y 1) (Finsupp.single z 1))) (a b c : ι →₀ ℤ) :
@@ -143,7 +143,7 @@ theorem bil_assoc (hA : ∀ x y z, bil C (bil C (Finsupp.single x 1) (Finsupp.si
         exact hA x y z
 
 /- English proof (translation)
-Proceed by induction on `a using Finsupp.induction_linear with`. Consider the case `zero => rw [bil_zero_right]`. Consider the case `add a a' ha ha' => rw [bil_add_right, ha, ha']`. Consider the case `single x m => rw [single_eq_smul_single, bil_smul_right, h]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem bil_one (u : ι →₀ ℤ) (h : ∀ x, bil C u (Finsupp.single x 1) = Finsupp.single x 1) (a : ι →₀ ℤ) :
     bil C u a = a := by
@@ -167,34 +167,34 @@ Both sides reduce to the same expression.
 theorem sg_eq (x : IrrGL k) : sg x = Finsupp.single x 1 := rfl
 
 /- English proof (translation)
-The claim follows from `bil_add_right _ a b c`.
+A detailed English derivation is pending.
 -/
 theorem mulR_add (a b c : GrothGL k) : mulR a (b + c) = mulR a b + mulR a c := bil_add_right _ a b c
 
 /- English proof (translation)
-The claim follows from `bil_add_left _ a b c`.
+A detailed English derivation is pending.
 -/
 theorem add_mulR (a b c : GrothGL k) : mulR (a + b) c = mulR a c + mulR b c := bil_add_left _ a b c
 
 /- English proof (translation)
-The claim follows from `bil_zero_left _ a`.
+A detailed English derivation is pending.
 -/
 theorem zero_mulR (a : GrothGL k) : mulR 0 a = 0 := bil_zero_left _ a
 
 /- English proof (translation)
-The claim follows from `bil_zero_right _ a`.
+A detailed English derivation is pending.
 -/
 theorem mulR_zero (a : GrothGL k) : mulR a 0 = 0 := bil_zero_right _ a
 
 /- English proof (translation)
-Rewrite using `[mulR_eq, mulR_eq]`. Conclude with `bil_comm _ (fun x y => (Fact.out : Comm k) x y) a b`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mulR_comm' [Fact (Comm k)] (a b : GrothGL k) : mulR a b = mulR b a := by
   rw [mulR_eq, mulR_eq]
   exact bil_comm _ (fun x y => (Fact.out : Comm k) x y) a b
 
 /- English proof (translation)
-Simplify using `only [mulR_eq]`. Use `bil_assoc _ (fun x y z => ?_) a b c` and prove the remaining obligations. Establish `h` using `(Fact.out : Assoc k) x y z`. Simplify using `only [mulR_eq, sg_eq] at h`. Conclude with `h`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mulR_assoc' [Fact (Assoc k)] (a b c : GrothGL k) : mulR (mulR a b) c = mulR a (mulR b c) := by
   simp only [mulR_eq]
@@ -204,7 +204,7 @@ theorem mulR_assoc' [Fact (Assoc k)] (a b c : GrothGL k) : mulR (mulR a b) c = m
   exact h
 
 /- English proof (translation)
-Rewrite using `[mulR_eq]`. Use `bil_one _ _ (fun x => ?_) a` and prove the remaining obligations. Establish `h` using `(Fact.out : One k) x`. Simplify using `only [mulR_eq, sg_eq] at h`. Conclude with `h`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem unit_mulR [Fact (One k)] (a : GrothGL k) : mulR (GrothGL.unit k) a = a := by
   rw [mulR_eq]
@@ -248,7 +248,7 @@ def phiOf (f : Segment k → IrrGL k) : MvPolynomial (Segment k) ℤ →+* R k :
   MvPolynomial.eval₂Hom (Int.castRingHom (R k)) fun Δ => toR (sg (f Δ))
 
 /- English proof (translation)
-The claim follows from `MvPolynomial.eval₂Hom_X' _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem phiOf_X (f : Segment k → IrrGL k) (Δ : Segment k) : phiOf f (MvPolynomial.X Δ) = toR (sg (f Δ)) :=
   MvPolynomial.eval₂Hom_X' _ _ _

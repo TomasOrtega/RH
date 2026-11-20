@@ -7,39 +7,37 @@ open scoped LaurentSeries PowerSeries
 namespace GlobalTheory.TopSteps
 
 /- English proof (translation)
-Introduce `k G _ _ l n _ _ _ R F A z b g hR hB`. Take `⟨E, a, p, e, ε, hE, ha, hp, hinj, hex, hpe, hρe, hε⟩` from `hR`. Unfold `GlobalTheory.Models.herrB at hB`. Take `⟨x, hx⟩` from `LinearMap.mem_range.mp hB`. Establish `hbx : ∀ i, b i = (F.D A).φ i (x (i - 1)) - x i` using `fun i => by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h` using `congrArg (fun q => q.1 i) hx`. Simplify using `at h`. Conclude with `h.symm`. Establish `hgx : ∀ i, g i = (F.D A).γ i (x i) - x i` using `fun i => by`. Establish `h` using `congrArg (fun q => q.2 i) hx`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `at h`. Conclude with `h.symm`. Establish `hA : F.Obj A` using `F.obj_sub A E a ha hinj hE`. Establish `h1 : F.Obj (GlobalTheory.Models.chr (1 : G →* kˣ))` using `F.obj_one`. Use `set η : ZMod n → Vc k E.m := fun i => ε i - F.map A E a i (x i) with hη`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hηφ : ∀ i, (F.D E).φ i (η (i - 1)) = η i`. Introduce `i`. Establish `h2` using `(hε i).2.1`. Rewrite `h2` using `[hbx i, map_sub, F.map_φ A E a hA hE ha]`. Simplify using `only [hη, map_sub]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[sub_eq_sub_iff_sub_eq_sub]`. Conclude with `h2.symm`. Establish `hηγ : ∀ i, (F.D E).γ i (η i) = η i`. Introduce `i`. Establish `h3` using `(hε i).2.2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `h3` using `[hgx i, map_sub, F.map_γ A E a hA hE ha]`. Simplify using `only [hη, map_sub]`. Rewrite using `[sub_eq_sub_iff_sub_eq_sub]`. Conclude with `h3.symm`. Take `⟨f, hf, hfη⟩` from `F.fix E hE η hηφ hηγ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hmap0 : ∀ i y, F.map A (GlobalTheory.Models.chr (1 : G →* kˣ)) 0 i y = 0`. Introduce `i y`. Establish `h` using `F.map_smul A (GlobalTheory.Models.chr (1 : G →* kˣ)) 0 0 hA h1 (fun _ _ => by simp) i y`. Simplify using `using h`. Establish `hpa : p ∘ₗ a = 0` using `LinearMap.ext fun y => hex.apply_apply_eq_zero y`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hpa_map : ∀ i y, F.map E (GlobalTheory.Models.chr (1 : G →* kˣ)) p i (F.map A E a i y) = 0`. Introduce `i y`. Establish `h` using `F.map_comp A E (GlobalTheory.Models.chr (1 : G →* kˣ)) a p hA hE h1 ha hp i`. Rewrite `h` using `[hpa]`. Establish `h'` using `LinearMap.congr_fun h y`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Simplify `h'.symm` using `[hmap0]`. Use `set one : Fin 1 → k := fun _ => 1 with hone`. Use `set c : k := p (f one) 0 with hc`. Establish `hqc : ∀ v : Fin 1 → k, p (f v) = c • v`. Introduce `v`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Establish `hv : v = v 0 • one` using `funext fun j => by`. Take `rfl : j = 0` from `Subsingleton.elim _ _`. Simplify using `[hone]`. Rewrite using `[hv, map_smul, map_smul]`. Use function extensionality and compare the values at `j`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `rfl : j = 0` from `Subsingleton.elim _ _`. Simplify using `[hc, hone, mul_comm]`. Establish `hq : p ∘ₗ f = c • LinearMap.id` using `LinearMap.ext fun v => by simp [hqc]`. Establish `hidH : GlobalTheory.Models.IsHom (GlobalTheory.Models.chr (1 : G →* kˣ)) (GlobalTheory.Models.chr (1 : G →* kˣ)) LinearMap.id` using `fun _ _ => rfl`. Establish `hcu : c • F.unit 0 = F.unit 0`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `hcomp` using `F.map_comp _ E _ f p h1 hE h1 hf hp 0`. Establish `hval` using `LinearMap.congr_fun hcomp (F.unit 0)`. Rewrite `hval` using `[LinearMap.comp_apply, hfη 0, hη, map_sub, (hε 0).1, hpa_map, sub_zero, hq, F.map_smul _ _ _ c h1 h1 hidH, F.map_id _ h1]`. Simplify using `using hval`. Establish `hc1 : c = 1`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hne`. Establish `hu : (c - 1) • F.unit 0 = 0` using `by rw [sub_smul, one_smul, hcu, sub_self]`. Apply `F.unit_ne 0` to reduce the goal to its premises. Establish `h` using `inv_smul_smul₀ (sub_ne_zero.mpr hne) (F.unit 0)`. Rewrite `h` using `[hu, smul_zero]`.
+Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `h.symm`. Establish `hpw : p (f one) = one` using `by rw [hqc, hc1, one_smul]`. Establish `hρ1 : ∀ σ (v : Fin 1 → k), (GlobalTheory.Models.chr (1 : G →* kˣ)).ρ σ v = v` using `fun σ v => by`. Express the relevant statement in the definitionally equal form `((1 : G →* kˣ) σ : k) • LinearMap.id v = v`. Simplify using the standard rewrite rules.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Establish `hw : ∀ σ, E.ρ σ (f one) = f one` using `fun σ => by`. Rewrite using `[← hf σ one, hρ1]`. Establish `hker : p (e - f one) = 0` using `by rw [map_sub, hpe, hpw, sub_self]`. Take `⟨y, hy⟩` from `(hex (e - f one)).1 hker`. Establish `hkey : ∀ σ, A.ρ σ y = y + z σ` using `fun σ => by`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Apply `hinj` to reduce the goal to its premises. Rewrite using `[ha σ y, hy, map_sub, hρe σ, hw σ, map_add, hy]`. Normalize the expressions using the abelian group laws. Unfold `GlobalTheory.Models.cob`. Use `LinearMap.mem_range.mpr ⟨y, funext fun σ => ?_⟩` and prove the remaining obligations.
-
-Simplify using `only [LinearMap.pi_apply, LinearMap.sub_apply, LinearMap.id_apply]`. Rewrite using `[hkey σ]`. Normalize the expressions using the abelian group laws.
+A detailed English derivation is pending.
 -/
 theorem mem_cob_of_repr_mem_herrB : ∀ {k G : Type} [Field k] [Group G] {l n : ℕ} [Fact l.Prime] [CharP k l]
     [NeZero n] {R : RingPG k l} (F : DFun R n G) (A : Ob k G) (z : G → Fin A.m → k)

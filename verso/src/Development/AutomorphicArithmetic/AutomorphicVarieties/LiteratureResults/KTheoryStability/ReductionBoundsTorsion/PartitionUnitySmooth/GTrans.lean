@@ -11,11 +11,11 @@ open scoped ComplexOrder
 namespace PositivityTheory.KB.SmoothPartitionUnityBasic
 
 /- English proof (translation)
-Establish `h1` using `trace_eq_sum_embeddings ℂ (K := ℚ) (L := L) (x := (a : L))`. Rewrite `h1` using `[← Algebra.coe_trace_int, ← Fintype.sum_equiv (RingHom.equivRatAlgHom L ℂ) (fun φ : L →+* ℂ => φ (a : L)) _ (fun φ => rfl)]`. Establish `h2` using `congrArg Complex.re h1`. Rewrite `h2` using `[Complex.re_sum, ← Finset.sum_fiberwise Finset.univ InfinitePlace.mk]`. Establish `h3 : (algebraMap ℚ ℂ ((Algebra.trace ℤ (𝓞 L) a : ℤ) : ℚ)).re = ((Algebra.trace ℤ (𝓞 L) a : ℤ) : ℝ)` using `by simp`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← h3, h2, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_congr rfl (g := fun _ => (embO w a).re), Finset.sum_const, InfinitePlace.card_filter_mk_eq, (hC.isComplex w).mult_eq_two]`. Simplify using the standard rewrite rules. Introduce `φ hφ`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `rfl` from `(Finset.mem_filter.1 hφ).2`. Express the relevant statement in the definitionally equal form `_ = ((InfinitePlace.mk φ).embedding (a : L)).re`. Apply the tactic sequence `rcases InfinitePlace.embedding_mk_eq φ with e | e <;> rw [e]`. Simplify using the standard rewrite rules.
+Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 private theorem tr_eq (L : Type) [Field L] [NumberField L] (hC : IsTotallyComplex L) (a : 𝓞 L) :
     ((Algebra.trace ℤ (𝓞 L) a : ℤ) : ℝ) = 2 * ∑ w : InfinitePlace L, (embO w a).re := by
@@ -38,7 +38,7 @@ private theorem tr_eq (L : Type) [Field L] [NumberField L] (hC : IsTotallyComple
     simp
 
 /- English proof (translation)
-Establish `hd : IsUnit A.det` using `(Matrix.isUnit_iff_isUnit_det A).1 hA.isUnit`. Rewrite using `[star_mulVec, star_star, hA.isHermitian.inv.eq, ← dotProduct_mulVec, mulVec_mulVec, nonsing_inv_mul _ hd, one_mulVec]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 private theorem pair {N : ℕ} {A : Matrix (Fin N) (Fin N) ℂ} (hA : A.PosDef) (g v : Fin N → ℂ) :
     star (A⁻¹ *ᵥ star g) ⬝ᵥ (A *ᵥ v) = g ⬝ᵥ v := by
@@ -46,16 +46,16 @@ private theorem pair {N : ℕ} {A : Matrix (Fin N) (Fin N) ℂ} (hA : A.PosDef) 
   rw [star_mulVec, star_star, hA.isHermitian.inv.eq, ← dotProduct_mulVec, mulVec_mulVec, nonsing_inv_mul _ hd, one_mulVec]
 
 /- English proof (translation)
-Rewrite using `[mulVec_transpose, dotProduct_comm, ← dotProduct_mulVec]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem dual_eq {N : ℕ} (A : Matrix (Fin N) (Fin N) ℂ) (g : Fin N → ℂ) :
     star g ⬝ᵥ ((A⁻¹)ᵀ *ᵥ g) = g ⬝ᵥ (A⁻¹ *ᵥ star g) := by
   rw [mulVec_transpose, dotProduct_comm, ← dotProduct_mulVec]
 
 /- English proof (translation)
-Establish `hd : IsUnit G.det` using `(Matrix.isUnit_iff_isUnit_det G).1 hG.isUnit`. Establish `h0` using `hG.posSemidef.dotProduct_mulVec_nonneg (t • x - G⁻¹ *ᵥ c)`. Establish `e1 : G *ᵥ (G⁻¹ *ᵥ c) = c` using `by rw [mulVec_mulVec, mul_nonsing_inv _ hd, one_mulVec]`. Establish `hT : Gᵀ = G` using `by simpa using hG.isHermitian.eq`. Establish `e2 : (G⁻¹ *ᵥ c) ⬝ᵥ (G *ᵥ x) = c ⬝ᵥ x`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[dotProduct_mulVec, ← mulVec_transpose, hT, e1]`. Rewrite `h0` using `[star_trivial, mulVec_sub, mulVec_smul, e1, sub_dotProduct, dotProduct_sub, dotProduct_sub, smul_dotProduct, smul_dotProduct, dotProduct_smul, dotProduct_smul, e2, dotProduct_comm x c, dotProduct_comm (G⁻¹ *ᵥ c) c]`. Simplify using `only [smul_eq_mul] at h0`. Use the polynomial consequences of the given equalities and inequalities.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Use the polynomial consequences of the given equalities and inequalities.
 -/
 private theorem real_cs {ι : Type} [Fintype ι] [DecidableEq ι] {G : Matrix ι ι ℝ} (hG : G.PosDef) (c x : ι → ℝ) (t : ℝ) :
     2 * t * (c ⬝ᵥ x) - t ^ 2 * (x ⬝ᵥ (G *ᵥ x)) ≤ c ⬝ᵥ (G⁻¹ *ᵥ c) := by
@@ -71,21 +71,19 @@ private theorem real_cs {ι : Type} [Fintype ι] [DecidableEq ι] {G : Matrix ι
   nlinarith
 
 /- English proof (translation)
-Use `set b := RingOfIntegers.basis L with hb`. Use `set M := Algebra.traceMatrix ℤ b with hM`. Establish `hD : discr L = M.det` using `Algebra.discr_def ℤ _`. Set `f : Lat L N` to `fun a => ∑ i, ((fun j => c (a, j)) ᵥ* M.adjugate) i • b i`. Establish `hf : ∀ a j, Algebra.trace ℤ (𝓞 L) (f a * b j) = discr L * c (a, j)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `a j`. Establish `e : (((fun j => c (a, j)) ᵥ* M.adjugate) ᵥ* M) j = discr L * c (a, j)`. Rewrite using `[vecMul_vecMul, adjugate_mul, vecMul_smul, vecMul_one, hD]`. Both sides reduce to the same expression. Rewrite using `[← e]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Simplify using `only [f, Finset.sum_mul, map_sum, smul_mul_assoc, map_zsmul, smul_eq_mul]`. Both sides reduce to the same expression. Use `⟨f, fun h0 => hc ?_, fun x => ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `⟨a, j⟩`. Use `hf a j` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `this` using `[h0, Pi.zero_apply, zero_mul, map_zero]`. Conclude with `(mul_eq_zero.1 this.symm).resolve_left (discr_ne_zero L)`. Establish `e : ∀ a j, (discr L : ℝ) * (c (a, j) : ℝ) = 2 * ∑ w : InfinitePlace L, (embO w (f a) * embO w (b j)).re`. Introduce `a j`. Use `tr_eq L hC (f a * b j)` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Rewrite `this` using `[hf]`. Simplify `this` using `only [Int.cast_mul, map_mul]`. Establish `e2 : ∀ w : InfinitePlace L, (toR f w ⬝ᵥ realVec x w).re = ∑ a, ∑ j, (embO w (f a) * embO w (b j)).re * x (a, j)`. Introduce `w`. Simplify using `only [dotProduct, toR, realVec, Finset.mul_sum, Complex.re_sum]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[← Complex.re_mul_ofReal]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [e2]`.
+Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [dotProduct, Fintype.sum_prod_type, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm (γ := InfinitePlace L)]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm (γ := InfinitePlace L)]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
-
-Rewrite using `[← mul_assoc, e, Finset.mul_sum, Finset.sum_mul]`. Conclude with `Finset.sum_congr rfl fun w _ => mul_assoc _ _ _`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem exists_f (L : Type) [Field L] [NumberField L] (hC : IsTotallyComplex L) (N : ℕ)
     (c : Fin N × BI L → ℤ) (hc : c ≠ 0) : ∃ f : Lat L N, f ≠ 0 ∧ ∀ x : Fin N × BI L → ℝ,
@@ -130,7 +128,7 @@ private theorem exists_f (L : Type) [Field L] [NumberField L] (hC : IsTotallyCom
     exact Finset.sum_congr rfl fun w _ => mul_assoc _ _ _
 
 /- English proof (translation)
-Establish `e : p = 2 * S / D` using `by field_simp; linarith`. Establish `e2 : 2 * (2 / D) * p - (2 / D) ^ 2 * S = 4 / D ^ 2 * S` using `by rw [e]; field_simp; ring`. Rewrite `h` using `[e2]`. Conclude with `(mul_le_mul_of_nonneg_left hl (by positivity)).trans h`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem num {D S g l p : ℝ} (hD : D ≠ 0) (hl : l ≤ S) (hp : D * p = 2 * S)
     (h : 2 * (2 / D) * p - (2 / D) ^ 2 * S ≤ g) : 4 / D ^ 2 * l ≤ g := by
@@ -140,21 +138,21 @@ private theorem num {D S g l p : ℝ} (hD : D ≠ 0) (hl : l ≤ S) (hp : D * p 
   exact (mul_le_mul_of_nonneg_left hl (by positivity)).trans h
 
 /- English proof (translation)
-Introduce `hB hZ L _ _ hC N hN`. Use `haveI := hC`. Take `⟨C, hC0, hT⟩` from `hZ (Fintype.card (Fin N × BI L))`. Establish `hD : (discr L : ℝ) ≠ 0` using `Int.cast_ne_zero.2 (discr_ne_zero L)`. Establish `hD2 : (0 : ℝ) < 4 / (discr L : ℝ) ^ 2` using `by positivity`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨C / (4 / (discr L : ℝ) ^ 2), div_pos hC0 hD2, fun h hh z => ?_⟩` and prove the remaining obligations. Take `⟨g1, g2, g3, g4⟩` from `gramq L N h`. Take `⟨hl, hlq, -, hdP, -⟩` from `(hB L N hN).1 h hh`. Take `⟨hl', hlq', -⟩` from `(hB L N hN).1 _ hdP`. Establish `hG : (gram h).PosDef`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : ((lam h)⁻¹ • gram h).PosDef`. Use `(grampd _ _ (g1.smul (IsSelfAdjoint.all _)) fun c hc => ?_).1` and prove the remaining obligations. Rewrite using `[smul_mulVec, dotProduct_smul, smul_eq_mul, g2, g3, ← div_eq_inv_mul, one_le_div hl]`. Use `hlq _ fun h0 => hc (g4.1 (h0.trans ?_))` and prove the remaining obligations. Use function extensionality and compare the values at `a`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using `[intVec]`. Establish `h2` using `h1.smul hl`. Rewrite `h2` using `[smul_smul, mul_inv_cancel₀ hl.ne', one_smul]`. Then use the resulting hypothesis. Take `⟨p, rfl⟩` from `realsurj L N z`. Take `⟨c, hc⟩` from `hT _ rfl (gram h) hG (4 / (discr L : ℝ) ^ 2 * lamD h) (mul_pos hD2 hl') (fun c hc => by`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨f, hf, e⟩` from `exists_f L hC N c hc`. Take `⟨x, hx⟩` from `realsurj L N fun w => (mat h w)⁻¹ *ᵥ star (toR f w)`. Establish `hS : q (dualH h) f = ∑ w, (toR f w ⬝ᵥ realVec x w).re`. Rewrite using `[hx]`. Conclude with `Finset.sum_congr rfl fun w _ => congrArg Complex.re (dual_eq (mat h w) (toR f w))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hS2 : x ⬝ᵥ (gram h *ᵥ x) = q (dualH h) f`. Rewrite using `[g2, hS, hx]`. Conclude with `Finset.sum_congr rfl fun w _ => congrArg Complex.re (pair (hh w) _ _)`. Establish `k` using `real_cs hG (fun i => (c i : ℝ)) x (2 / discr L)`. Rewrite `k` using `[hS2]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `num hD (hlq' f hf) ((e x).trans (by rw [hS])) k) p`. Use `⟨intVec c, ?_⟩` and prove the remaining obligations. Rewrite `hc` using `[g2]`. Establish `e : realVec (p - fun i => (c i : ℝ)) = realVec p - toR (intVec c)`. Rewrite using `[← g3]`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `w a`. Simplify using `[realVec, sub_mul, Finset.sum_sub_distrib]`. Rewrite `hc` using `[e]`. Rewrite using `[div_div]`. Conclude with `hc`.
+A detailed English derivation is pending.
 -/
 theorem pf_GTrans : GTrans := by
   classical

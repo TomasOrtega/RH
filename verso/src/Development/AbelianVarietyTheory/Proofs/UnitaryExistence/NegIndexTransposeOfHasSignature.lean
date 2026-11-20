@@ -29,15 +29,15 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open Matrix in
 
 /- English proof (translation)
-Take `⟨e, P, hP⟩` from `h`. Establish `hd : Formalism.UG.Jpq p q = diagonal (Sum.elim (fun _ => (1 : ℂ)) (fun _ => -1))`. Rewrite using `[← fromBlocks_diagonal, Formalism.UG.Jpq]`. Use `congr 1`. Rewrite using `[← diagonal_neg]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `hPd : (P : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ).det ≠ 0` using `P.det_ne_zero`. Prove the components needed by the constructor for the conclusion. Establish `ht` using `congrArg Matrix.transpose hP`. Rewrite `ht` using `[hd, diagonal_transpose, transpose_mul, transpose_mul, Formalism.UG.cT, transpose_transpose, ← Matrix.mul_assoc]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1` using `GlobalTheory.Inertia.negIndex_eq_card_of_congr_diagonal hPd ht`. Establish `h2 : (J.reindex e e)ᵀ = Jᵀ.submatrix e.symm e.symm` using `rfl`. Rewrite `h1` using `[h2, GlobalTheory.Inertia.negIndex_submatrix_equiv]`. Rewrite using `[h1, Finset.card_filter, Fintype.sum_sum_type]`. Simplify using `[not_lt.2 (zero_le_one' ℝ)]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `h0`. Establish `h1` using `congrArg Matrix.det hP`. Rewrite `h1` using `[det_mul, det_mul, det_reindex_self, h0, hd, det_diagonal]`. Simplify using `only [mul_zero, zero_mul] at h1`. Use `Finset.prod_ne_zero_iff.2 (fun k _ => ?_) h1.symm` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Apply the tactic sequence `rcases k with k | k <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem negIndex_transpose_of_hasSignature {n : Type} [Fintype n] [DecidableEq n] {J : Matrix n n ℂ} {p q : ℕ}
     (h : Formalism.UG.HasSignature J p q) : GlobalTheory.Inertia.negIndex Jᵀ = q ∧ J.det ≠ 0 := by
@@ -67,7 +67,7 @@ theorem negIndex_transpose_of_hasSignature {n : Type} [Fintype n] [DecidableEq n
 variable {D : D7}
 
 /- English proof (translation)
-Substitute `hr` using the available equality. Use `show IsCMField.complexConj D.host.E (-(V.hT (V.frame b) (V.frame a))) = -(V.hT (V.frame a) (V.frame b))`. Rewrite using `[map_neg]`. Conclude with `congrArg Neg.neg (LinearMap.isSymm_def.1 V.herm (V.frame b) (V.frame a))`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cc_gmW (V : HSp D) {r : ℕ} (hr : V.rank = r) (a b : Fin r) :
     cc (gmW V hr a b) = gmW V hr b a := by
@@ -77,9 +77,9 @@ theorem cc_gmW (V : HSp D) {r : ℕ} (hr : V.rank = r) (a b : Fin r) :
   exact congrArg Neg.neg (LinearMap.isSymm_def.1 V.herm (V.frame b) (V.frame a))
 
 /- English proof (translation)
-Substitute `hr` using the available equality. Rewrite using `[Formalism.L2.Pj.DatLin.sesq_repr V.hT V.frame y x, Finset.sum_comm, herm, ← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `show V.frame.repr x a * (-(V.hT (V.frame b) (V.frame a))) * star (V.frame.repr y b) = _`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem herm_gmW (V : HSp D) {r : ℕ} (hr : V.rank = r) (x y : V.V) :
     herm (gmW V hr) (V.frame.equivFun x ∘ Fin.cast hr.symm) (V.frame.equivFun y ∘ Fin.cast hr.symm) =
@@ -93,7 +93,7 @@ theorem herm_gmW (V : HSp D) {r : ℕ} (hr : V.rank = r) (x y : V.V) :
   ring
 
 /- English proof (translation)
-Rewrite using `[herm_gmW, ← trace_cc D (D.host.xi0 * V.hT x y), map_mul (IsCMField.complexConj D.host.E), conj_xi0_alt]`. Establish `h : IsCMField.complexConj D.host.E (V.hT x y) = V.hT y x` using `LinearMap.isSymm_def.1 V.herm x y`. Rewrite using `[h, mul_neg, neg_mul]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem trace_herm_gmW (V : HSp D) {r : ℕ} (hr : V.rank = r) (x y : V.V) :
     Algebra.trace ℚ D.host.E (D.host.xi0 *
@@ -104,11 +104,11 @@ theorem trace_herm_gmW (V : HSp D) {r : ℕ} (hr : V.rank = r) (x y : V.V) :
   rw [h, mul_neg, neg_mul]
 
 /- English proof (translation)
-Substitute `hr` using the available equality. Take `⟨h1, h2⟩` from `negIndex_transpose_of_hasSignature (hV τ)`. Establish `e : gmW V rfl = -V.gram.transpose` using `rfl`. Prove the components needed by the constructor for the conclusion. Rewrite using `[← h1, ← GlobalTheory.Inertia.posIndex_neg, e]`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use extensionality with `a b`. Simplify using the standard rewrite rules. Rewrite using `[e, Matrix.det_neg, Matrix.det_transpose]`. Use `mul_ne_zero (pow_ne_zero _ (by simp)) fun h0 => h2 ?_` and prove the remaining obligations.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← RingHom.mapMatrix_apply, ← RingHom.map_det, h0, map_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem posIndex_gmW (V : HSp D) (hV : V.SigOK) {r : ℕ} (hr : V.rank = r) (τ : D.host.E →+* ℂ) :
     GlobalTheory.Inertia.posIndex ((gmW V hr).map τ) = (V.sig τ).2 ∧ (gmW V hr).det ≠ 0 := by
@@ -125,15 +125,15 @@ theorem posIndex_gmW (V : HSp D) (hV : V.SigOK) {r : ℕ} (hr : V.rank = r) (τ 
     rw [← RingHom.mapMatrix_apply, ← RingHom.map_det, h0, map_zero]
 
 /- English proof (translation)
-Set `f : V.V ≃ₗ[𝓞 D.host.E] (Fin V.rank → D.host.E)` to `V.frame.equivFun.restrictScalars (𝓞 D.host.E)`. Set `L : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E)` to `V.L0.map f.toLinearMap`. Establish `hfg : L.FG` using `V.standardTuple_isLattice.fg.map _`. Establish `hsp : Submodule.span D.host.E (L : Set (Fin V.rank → D.host.E)) = ⊤`. Establish `: (L : Set (Fin V.rank → D.host.E)) = V.frame.equivFun.toLinearMap '' (V.L0 : Set V.V)` using `rfl`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[this, Submodule.span_image, V.standardTuple_isLattice.span_eq_top, Submodule.map_top, LinearEquiv.range]`. Establish `h` using `(GlobalTheory.AdLat.hat_rational_points_and_approx D.host.F D.host.E V.rank L hfg hsp).1 v`. Establish `e : latHat V = GlobalTheory.AdLat.hat D.host.F (L : Set (Fin V.rank → D.host.E))`. Unfold `latHat GlobalTheory.AdLat.hat`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments.
 
-Use extensionality with `z`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, ha, x, hx, rfl⟩`. Conclude with `⟨a, ha, f x, ⟨x, hx, rfl⟩, rfl⟩`. Introduce and unpack `⟨a, ha, _, ⟨x, hx, rfl⟩, rfl⟩`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨a, ha, x, hx, rfl⟩`. Rewrite using `[e]`. Use `h.trans ?_` and prove the remaining obligations. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, rfl⟩ show V.frame.equivFun.symm (V.frame.equivFun x) ∈ V.L0`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Rewrite using `[LinearEquiv.symm_apply_apply]` and apply the resulting hypothesis. Introduce `hv`. Conclude with `⟨_, hv, V.frame.equivFun.apply_symm_apply v⟩`.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem finVec_mem_latHat_iff (V : HSp D) (v : Fin V.rank → D.host.E) :
     finVec V v ∈ latHat V ↔ V.frame.equivFun.symm v ∈ V.L0 := by
@@ -163,13 +163,13 @@ theorem finVec_mem_latHat_iff (V : HSp D) (v : Fin V.rank → D.host.E) :
     exact ⟨_, hv, V.frame.equivFun.apply_symm_apply v⟩
 
 /- English proof (translation)
-Establish `hg : gLat V 1 = latHat V`. Rewrite using `[gLat, map_one]`. Use extensionality with `z`. Simplify using the standard rewrite rules. Rewrite using `[Submodule.map_span, latG, hg]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use extensionality with `w`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, ha, v, hv, rfl⟩`. Use `⟨a • V.frame.equivFun.symm v, ⟨a, ha, _, (finVec_mem_latHat_iff V v).1 hv, rfl⟩, ?_⟩` and prove the remaining obligations.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use `show V.frame.equivFun (a • V.frame.equivFun.symm v) = a • v`. Rewrite using `[map_smul, LinearEquiv.apply_symm_apply]`. Introduce and unpack `⟨_, ⟨a, ha, x, hx, rfl⟩, rfl⟩`. Use `⟨a, ha, V.frame.equivFun x, (finVec_mem_latHat_iff V _).2 ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[LinearEquiv.symm_apply_apply]` and apply the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities.
 
-Use `show V.frame.equivFun (a • x) = _`. Rewrite using `[map_smul]`.
+A detailed English derivation is pending.
 -/
 theorem latG_one (V : HSp D) :
     latG V 1 = (Submodule.span (𝓞 D.host.E)
@@ -194,9 +194,9 @@ theorem latG_one (V : HSp D) :
       rw [map_smul]
 
 /- English proof (translation)
-Rewrite using `[eq_top_iff]`. Introduce `y _`. Take `⟨s, hs, hsy⟩` from `exists_smul_mem_latW D j y`. Establish `hs0 : algebraMap (𝓞 D.host.E) D.host.E s ≠ 0` using `IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors hs`. Establish `e : y = (algebraMap (𝓞 D.host.E) D.host.E s)⁻¹ • (s • y)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← algebraMap_smul D.host.E s y, smul_smul, inv_mul_cancel₀ hs0, one_smul]`. Rewrite using `[e]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span hsy)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem span_latW (D : D7) (j : ℕ) :
     Submodule.span D.host.E (latW D j : Set (D.sp.W j).V) = ⊤ := by
@@ -211,27 +211,27 @@ theorem span_latW (D : D7) (j : ℕ) :
   exact Submodule.smul_mem _ _ (Submodule.subset_span hsy)
 
 /- English proof (translation)
-Introduce `D Q hQ j hj`. Take `⟨hp, hq, φ, ε, hinj, hrange, hEF⟩` from `hQ.2.2.2 j hj`. Establish `hr` using `D.sp.W_rank j hj.1 hj.2`. Set `f` to `((D.sp.W j).frame.equivFun.restrictScalars (𝓞 D.host.E)).toLinearMap`. Establish `hf : ∀ x, f x = (D.sp.W j).frame.equivFun x` using `fun _ => rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hio : Function.Injective (f ∘ₗ φ)` using `(D.sp.W j).frame.equivFun.injective.comp hinj`. Establish `hdet` using `(posIndex_gmW (D.sp.W j) (D.sp.W_sig j) hr D.host.φ₀).2`. Establish `hφ : Set.range φ = (latW D j : Set (D.sp.W j).V)`. Rewrite using `[← LinearMap.coe_range, hrange]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hspan : Submodule.span D.host.E (Set.range (f ∘ₗ φ)) = ⊤`. Establish `: Set.range (f ∘ₗ φ) = (D.sp.W j).frame.equivFun.toLinearMap '' Set.range φ`. Rewrite using `[← Set.range_comp]`. Both sides reduce to the same expression. Rewrite using `[this, Submodule.span_image, hφ, span_latW, Submodule.map_top, LinearEquiv.range]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Establish `hε : ε = 1`. Break down `Int.units_eq_one_or ε with h | h` into its components or cases. Conclude with `h`. It suffices to derive a contradiction. Substitute `h` using the available equality.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Substitute using the available equality. Introduce a local definition for the expression.
 
-Set `c : (Fin (D.sp.W j).rank → D.host.E) ≃ₗ[D.host.E] (Fin D.R.r → D.host.E)` to `LinearEquiv.funCongrLeft D.host.E D.host.E (finCongr hr.symm)`. Set `ψ : (Q.Dw j).La →ₗ[𝓞 D.host.E] (Fin D.R.r → D.host.E)` to `(c.restrictScalars (𝓞 D.host.E)).toLinearMap ∘ₗ f ∘ₗ φ`. Establish `hψ : ∀ x, ψ x = (D.sp.W j).frame.equivFun (φ x) ∘ Fin.cast hr.symm` using `fun _ => rfl`. Establish `hτ : D.host.φ₀ (Q.H.rt : D.host.E) = Q.H.rt0` using `by rw [hQ.1.2.1, hQ.1.2.2.1]`. Establish `hξ : cc (-D.host.xi0) = -(-D.host.xi0)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[cc, map_neg, conj_xi0_alt]`. Establish `hsp : Submodule.span D.host.E (Set.range ψ) = ⊤`. Establish `: Set.range ψ = c.toLinearMap '' Set.range (f ∘ₗ φ)`. Rewrite using `[← Set.range_comp]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, Submodule.span_image, hspan, Submodule.map_top, LinearEquiv.range]`. Establish `hform : ∀ x y, (((Q.Dw j).EF x y : ℤ) : ℚ) = Algebra.trace ℚ D.host.E (-D.host.xi0 * herm (gmW (D.sp.W j) hr) (ψ x) (ψ y))`. Introduce `x y`. Rewrite using `[hEF, hψ, hψ, neg_mul, map_neg, trace_herm_gmW]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Take `⟨P, hP, hPg⟩` from `(GlobalTheory.HermSign.signature_of_model D.host.E Q.H (Q.Dw j) D.R.r (-D.host.xi0) (gmW (D.sp.W j) hr) ψ hξ ⟨c.injective.comp hio, hsp, cc_gmW _ hr, hdet, hform⟩ D.host.φ₀ hτ).2 ((level_good_and_sign D Q hQ).2.2 _ hτ)`. Establish `hm` using `D.R.m_add_three_le_k`. Establish `h1` using `hj.1`. Establish `h2` using `hj.2`. Establish `hle : (Q.Dw j).p ≤ D.R.r`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hp]`. Simplify using `only [Ranks.sigW, Ranks.r]`. Use linear arithmetic over natural numbers and integers. Establish `h3` using `(GlobalTheory.Inertia.gram_eq_sgn_iff D.host.φ₀ (cc_gmW _ hr) hdet _).1 ⟨hle, P, hP, hPg⟩`. Rewrite `h3` using `[(posIndex_gmW (D.sp.W j) (D.sp.W_sig j) hr D.host.φ₀).1, D.sp.W_sigval j hj.1 hj.2, hp]`.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Ranks.sigW] at h3`. Use linear arithmetic over natural numbers and integers. Substitute `hε` using the available equality. Use `⟨f ∘ₗ φ, ⟨hio, ?_⟩, ⟨1, fun x y => ?_⟩, cc_gmW _ hr, hdet, hspan, fun x y => ?_⟩` and prove the remaining obligations. Rewrite using `[latG_one, LinearMap.range_comp, hrange]`.
+Use linear arithmetic over natural numbers and integers. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hEF, LinearMap.comp_apply, LinearMap.comp_apply, hf, hf, LinearEquiv.symm_apply_apply, LinearEquiv.symm_apply_apply]`. Rewrite using `[hEF, LinearMap.comp_apply, LinearMap.comp_apply, hf, hf, neg_neg, trace_herm_gmW]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_latEmb_sign_one : ∀ (D : D7) (Q : Par D), Q.Pins → ∀ j (hj : InR D j), ∃ io : (Q.Dw j).La →ₗ[𝓞 D.host.E] (Fin (D.sp.W j).rank → D.host.E), LatEmb (D.sp.W j) io ∧ LatIsom (D.sp.W j) (Q.Dw j).EF io ∧ (∀ a b, cc (gmW (D.sp.W j) (D.sp.W_rank j hj.1 hj.2) a b) = gmW (D.sp.W j) (D.sp.W_rank j hj.1 hj.2) b a) ∧ (gmW (D.sp.W j) (D.sp.W_rank j hj.1 hj.2)).det ≠ 0 ∧ Submodule.span D.host.E (Set.range io) = ⊤ ∧ ∀ x y, (((Q.Dw j).EF x y : ℤ) : ℚ) = Algebra.trace ℚ D.host.E (-(-D.host.xi0) * herm (gmW (D.sp.W j) (D.sp.W_rank j hj.1 hj.2)) (io x ∘ Fin.cast (D.sp.W_rank j hj.1 hj.2).symm) (io y ∘ Fin.cast (D.sp.W_rank j hj.1 hj.2).symm)) := by
   intro D Q hQ j hj

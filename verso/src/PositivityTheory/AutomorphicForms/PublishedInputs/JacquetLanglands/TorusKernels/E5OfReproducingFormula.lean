@@ -12,7 +12,7 @@ open UpperTheory.Esk
 variable {F I Gf : Type} [Field F] [Group Gf] (D : Dat F I Gf)
 
 /- English proof (translation)
-Establish `h1 : ((D.rep ω : Gf) : Gf ⧸ D.H) = ω` using `QuotientGroup.out_eq' _`. Use `⟨⟨u⁻¹ * D.rep ω, QuotientGroup.eq.1 (hu.trans h1.symm)⟩, ?_⟩` and prove the remaining obligations. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem rep_eq (ω : D.Om) (u : Gf) (hu : (u : Gf ⧸ D.H) = ω) : ∃ h : D.H, D.rep ω = u * h := by
   have h1 : ((D.rep ω : Gf) : Gf ⧸ D.H) = ω := QuotientGroup.out_eq' _
@@ -20,9 +20,9 @@ theorem rep_eq (ω : D.Om) (u : Gf) (hu : (u : Gf ⧸ D.H) = ω) : ∃ h : D.H, 
   simp
 
 /- English proof (translation)
-Unfold `Dat.ee`. Distinguish the cases in `hu : u ∈ D.H`. Establish `hu' : (h : Gf)⁻¹ * u ∈ D.H` using `D.H.mul_mem (D.H.inv_mem h.2) hu`. Rewrite using `[dif_pos hu', dif_pos hu, mul_comm, ← Units.val_mul, ← map_mul]`. Use `congr 2`.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Simplify using the standard rewrite rules. Establish `hu' : (h : Gf)⁻¹ * u ∉ D.H` using `fun hh => hu (by simpa using D.H.mul_mem h.2 hh)`. Rewrite using `[dif_neg hu', dif_neg hu, zero_mul]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem ee_mul (h : D.H) (u : Gf) : D.ee ((h : Gf)⁻¹ * u) * (D.χ h : ℂ) = D.ee u := by
   unfold Dat.ee
@@ -36,7 +36,7 @@ theorem ee_mul (h : D.H) (u : Gf) : D.ee ((h : Gf)⁻¹ * u) * (D.χ h : ℂ) = 
     rw [dif_neg hu', dif_neg hu, zero_mul]
 
 /- English proof (translation)
-Unfold `Dat.ee`. Rewrite using `[dif_pos D.H.one_mem]`. Conclude with `congrArg Units.val (map_one D.χ)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ee_one : D.ee 1 = 1 := by
   unfold Dat.ee
@@ -44,7 +44,7 @@ theorem ee_one : D.ee 1 = 1 := by
   exact congrArg Units.val (map_one D.χ)
 
 /- English proof (translation)
-Establish `h2 : ((D.rep ω : Gf) : Gf ⧸ D.H) = ω` using `QuotientGroup.out_eq' _`. Use `conv_lhs => rw [← QuotientGroup.out_eq' γ, ← h2]`. Conclude with `D.mk_smulO γ.out (D.rep ω)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem smul_fst (γ : PG F) (ω : D.Om) : γ • ω = (((D.j γ.out * D.rep ω : Gf)) : Gf ⧸ D.H) := by
   have h2 : ((D.rep ω : Gf) : Gf ⧸ D.H) = ω := QuotientGroup.out_eq' _
@@ -52,7 +52,7 @@ theorem smul_fst (γ : PG F) (ω : D.Om) : γ • ω = (((D.j γ.out * D.rep ω 
   exact D.mk_smulO γ.out (D.rep ω)
 
 /- English proof (translation)
-Use `conv_lhs => rw [← QuotientGroup.out_eq' γ]`. Conclude with `D.mk_smulX γ.out w`.
+A detailed English derivation is pending.
 -/
 theorem smul_snd (γ : PG F) (w : D.Xs) : γ • w = D.act γ.out w := by
   conv_lhs => rw [← QuotientGroup.out_eq' γ]
@@ -61,7 +61,7 @@ theorem smul_snd (γ : PG F) (w : D.Xs) : γ • w = D.act γ.out w := by
 variable [Fintype I]
 
 /- English proof (translation)
-Take `⟨h, hh⟩` from `rep_eq D (γ • y).1 (D.j γ.out * D.rep y.1) (by rw [Prod.smul_fst, smul_fst])`. Establish `hs2 : (γ • y).2 = D.act γ.out y.2` using `by rw [Prod.smul_snd, smul_snd]`. Establish `key : (D.j γ.out * D.rep y.1 * (h : Gf))⁻¹ * x = (h : Gf)⁻¹ * ((D.rep y.1)⁻¹ * (D.j γ.out)⁻¹ * x)` using `by group`. Rewrite using `[hh, hs2, hf.lev, show f (D.act γ.out y.2, D.j γ.out * D.rep y.1) = D.J k γ.out y.2 * f (y.2, D.rep y.1) from hf.aut _ _ _, key, ← ee_mul D h ((D.rep y.1)⁻¹ * (D.j γ.out)⁻¹ * x)]`. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem term (k : I → ℕ) (f : X I × Gf → ℂ) (hf : D.IsForm k f) (z : X I) (x : Gf) (γ : PG F) (y : D.Y) :
     D.ee ((D.rep (γ • y).1)⁻¹ * x) * (qq k z (γ • y).2 * f ((γ • y).2, D.rep (γ • y).1)) =
@@ -75,13 +75,11 @@ theorem term (k : I → ℕ) (f : X I × Gf → ℂ) (hf : D.IsForm k f) (z : X 
 
 open Classical in
 /- English proof (translation)
-Use `split_ifs with hy`. Take `⟨h, hh⟩` from `rep_eq D y.1 x hy.symm`. Establish `he` using `ee_mul D h 1`. Rewrite `he` using `[ee_one, mul_one]`. Establish `key : (x * (h : Gf))⁻¹ * x = (h : Gf)⁻¹` using `by group`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[hh, show f (y.2, x * (h : Gf)) = (D.χ h : ℂ) * f (y.2, x) from hf.lev _ _ _, key]`. Combine the equalities or inequalities in the displayed calculation. Establish `hn : (D.rep y.1)⁻¹ * x ∉ D.H`. Introduce `hm`. Apply `hy` to reduce the goal to its premises.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `h1 : ((D.rep y.1 : Gf) : Gf ⧸ D.H) = y.1` using `QuotientGroup.out_eq' _`. Conclude with `h1.symm.trans (QuotientGroup.eq.2 hm)`. Establish `h0 : D.ee ((D.rep y.1)⁻¹ * x) = 0`. Unfold `Dat.ee`. Rewrite using `[dif_neg hn]`.
-
-Rewrite using `[h0, zero_mul]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem supp (k : I → ℕ) (f : X I × Gf → ℂ) (hf : D.IsForm k f) (z : X I) (x : Gf) (y : D.Y) :
     D.ee ((D.rep y.1)⁻¹ * x) * (qq k z y.2 * f (y.2, D.rep y.1)) =
@@ -108,27 +106,27 @@ end UpperTheory.Esk.ReproducingKernelExpansion
 
 open UpperTheory.Esk UpperTheory.Esk.ReproducingKernelExpansion in
 /- English proof (translation)
-Introduce `hB1 hC3 hE0 _hE4 hB3 F I Gf _ _ _ D hAx k hk _hcomp b hb f hf p`. Take `⟨z, x⟩` from `p`. Take `⟨hcount, hsf, -, hpres, -, -, hborel, -⟩` from `hE0 F I Gf D hAx`. Use `hcount` as an intermediate fact. Use `hsf` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hborel` as an intermediate fact. Use `hAx.cO` as an intermediate fact. Set `ω₀ : D.Om` to `((x : Gf) : Gf ⧸ D.H)`. Set `a : D.Om → ℂ` to `({ω₀} : Set D.Om).indicator fun _ => (1 : ℂ)`. Set `h0 : D.Xs → ℂ` to `fun w => qq k z w * f (w, x)`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `G : D.Y → ℂ` to `fun y => D.ee ((D.rep y.1)⁻¹ * x) * (qq k z y.2 * f (y.2, D.rep y.1))`. Establish `hG : G = fun y => a y.1 * h0 y.2`. Use function extensionality and compare the values at `y`. Express the relevant statement in the definitionally equal form `D.ee ((D.rep y.1)⁻¹ * x) * (qq k z y.2 * f (y.2, D.rep y.1)) = a y.1 * h0 y.2`. Rewrite using `[supp D k f hf z x y]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hy : y.1 = ((x : Gf) : Gf ⧸ D.H)`. Rewrite using `[if_pos hy]`. Establish `ha : a y.1 = 1` using `by classical`. Simplify using `only [a]`. Rewrite using `[Set.indicator_apply, if_pos (show y.1 ∈ ({ω₀} : Set D.Om) from hy)]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ha, one_mul]`. Rewrite using `[if_neg hy]`. Establish `ha : a y.1 = 0` using `by classical`. Simplify using `only [a]`. Rewrite using `[Set.indicator_apply, if_neg (show y.1 ∉ ({ω₀} : Set D.Om) from hy)]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ha, zero_mul]`. Establish `hqc : Continuous fun w : X I => qq k z w`. Unfold `qq`. Conclude with `continuous_finsetProd _ fun v _ => (hB1.2.2.2.2.2.2.2.1 (k v)).comp (continuous_const.prodMk (continuous_apply v))`. Establish `hh0c : Continuous fun w : X I => qq k z w * f (w, x)` using `hqc.mul (hf.hol x).1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hh0m : Measurable h0` using `hh0c.measurable`. Take `⟨C, hC⟩` from `hf.bdd`. Establish `hB` using `hB3 I k hk (fun w => f (w, x)) (hf.hol x) ⟨C, fun w => hC w x⟩ z`. Establish `hh0i : Integrable h0` using `hB.1`. Establish `ham : Measurable a` using `measurable_const.indicator (MeasurableSet.of_discrete)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hai : Integrable a Measure.count` using `(integrable_indicator_iff (MeasurableSet.of_discrete)).2 ((integrableOn_singleton_iff (by simp)).2 (Or.inr (by simp)))`. Establish `ha1 : ∫ ω, a ω ∂Measure.count = 1`. Simplify using `only [a]`. Rewrite using `[integral_indicator (MeasurableSet.of_discrete)]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hGm : Measurable G`. Rewrite using `[hG]`. Conclude with `(ham.comp measurable_fst).mul (hh0m.comp measurable_snd)`. Establish `hGi : Integrable G D.μY`. Rewrite using `[hG]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Unfold `Dat.μY`. Conclude with `MeasureTheory.Integrable.mul_prod hai hh0i`. Establish `hKf : ∀ y : D.Y, D.Kern k y (z, x) * f (y.2, D.rep y.1) = ∑' γ : PG F, G (γ • y)`. Introduce `y`. Unfold `Dat.Kern`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[← tsum_mul_right]`. Use `tsum_congr fun γ => ?_` and prove the remaining obligations. Conclude with `(term D k f hf z x γ y).symm`. Establish `hCC` using `hC3 (PG F) D.Y D.μY hpres b hb G hGm hGi`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Esk.e5_of_reproducing_formula : UpperTheory.Esk.B1b → UpperTheory.Esk.C3 → UpperTheory.Esk.E0a → UpperTheory.Esk.faceMap_zero_comp_eq_one → UpperTheory.Esk.MultivariableReproducingFormula → UpperTheory.Esk.E5 := by
   intro hB1 hC3 hE0 _hE4 hB3 F I Gf _ _ _ D hAx k hk _hcomp b hb f hf p

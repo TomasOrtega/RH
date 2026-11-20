@@ -9,11 +9,11 @@ namespace Formalism.MainNotions.G.ColumnFamilies
 open Formalism.MainNotions.G Formalism.MainNotions.CovariantDegrees
 
 /- English proof (translation)
-Establish `hx : x ∈ ⨆ mu : Fin n → ℤ, weightSp E mu` using `by rw [htop]; trivial`. Use `Submodule.iSup_induction (fun nu => weightSp E nu) (motive := fun y => e y ∈ weightSp E mu) hx ?_ ?_ ?_` and prove the remaining obligations. Introduce `nu y hy`. Distinguish the cases in `h : nu = mu`. Substitute `h` using the available equality.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Rewrite using `[he.1 y hy]`. Conclude with `hy`. Rewrite using `[he.2 nu h y hy]`. Conclude with `zero_mem _`. Rewrite using `[map_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `zero_mem _`. Introduce `a b ha hb`. Rewrite using `[map_add]`. Conclude with `add_mem ha hb`.
+A detailed English derivation is pending.
 -/
 theorem weight_projector_mem_weight_space {n : ℕ} {K V : Type*} [Field K] [AddCommGroup V] [Module K V] (E : GLOps n K V)
     (htop : (⨆ mu : Fin n → ℤ, weightSp E mu) = ⊤) (mu : Fin n → ℤ) (e : Module.End K V) (he : IsWtProj E mu e)
@@ -34,11 +34,11 @@ theorem weight_projector_mem_weight_space {n : ℕ} {K V : Type*} [Field K] [Add
     exact add_mem ha hb
 
 /- English proof (translation)
-Introduce `p _ O _ _ _ _ _S n V _ _ _ _ E mu La hrep _hdom _hiso hlat hproj`. Establish `hstab : ∀ u ∈ UZmon E, ∀ x ∈ La, u x ∈ La`. Introduce `u hu`. Proceed by induction on `hu using Submonoid.closure_induction with`. Consider the case `mem u hu => exact hlat.1 u hu`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `one => exact fun x hx => hx`. Consider the case `mul u v _ _ hu hv => exact fun x hx => hu _ (hv x hx)`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Submodule.span_le]`. Introduce and unpack `x ⟨u, hu, y, hy, -, rfl⟩`.
+Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Conclude with `hstab u hu y hy`. Introduce `y hy u hu e he`. Conclude with `⟨hproj _ (hstab u hu y hy) mu e he, weight_projector_mem_weight_space E hrep.2.2 mu e he _⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem adm_eleven (D : Formalism.BasicNotions.D7) : GradedLatticeStable D := by
   intro p _ O _ _ _ _ _S n V _ _ _ _ E mu La hrep _hdom _hiso hlat hproj

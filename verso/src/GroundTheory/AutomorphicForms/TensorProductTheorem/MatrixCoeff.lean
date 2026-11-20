@@ -23,15 +23,15 @@ def orbitSpan (ρ : Representation ℂ G V) (v : V) : Subrepresentation ρ where
     | smul c x _ hx => simpa using Submodule.smul_mem _ c hx
 
 /- English proof (translation)
-The claim follows from `Submodule.subset_span ⟨1, by simp⟩`.
+A detailed English derivation is pending.
 -/
 theorem mem_orbitSpan_self (ρ : Representation ℂ G V) (v : V) : v ∈ (orbitSpan ρ v).toSubmodule :=
   Submodule.subset_span ⟨1, by simp⟩
 
 /- English proof (translation)
-Break down `IsSimpleOrder.eq_bot_or_eq_top (orbitSpan ρ v) with h | h` into its components or cases. It suffices to derive a contradiction. Apply `hv` to reduce the goal to its premises. Use `mem_orbitSpan_self ρ v` as an intermediate fact. Rewrite `this` using `[h]`.
+Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this`. Conclude with `h`.
+A detailed English derivation is pending.
 -/
 theorem orbitSpan_eq_top {ρ : Representation ℂ G V} [ρ.IsIrreducible] {v : V} (hv : v ≠ 0) :
     orbitSpan ρ v = ⊤ := by
@@ -44,7 +44,7 @@ theorem orbitSpan_eq_top {ρ : Representation ℂ G V} [ρ.IsIrreducible] {v : V
   · exact h
 
 /- English proof (translation)
-Use `orbitSpan_eq_top (ρ := ρ) hv` as an intermediate fact. Establish `hx : x ∈ (⊤ : Subrepresentation ρ).toSubmodule` using `trivial`. Rewrite `hx` using `[← this]`. Conclude with `hx`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_span_orbit {ρ : Representation ℂ G V} [ρ.IsIrreducible] {v : V} (hv : v ≠ 0) (x : V) :
     x ∈ Submodule.span ℂ (range fun g => ρ g v) := by
@@ -54,9 +54,9 @@ theorem mem_span_orbit {ρ : Representation ℂ G V} [ρ.IsIrreducible] {v : V} 
   exact hx
 
 /- English proof (translation)
-Use extensionality with `x`. Establish `hx` using `mem_span_orbit (ρ := ρ) hv x`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨g, rfl⟩` from `hx`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Conclude with `h g`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => simp [hx, hy]`. Consider the case `smul c x _ hx => simp [hx]`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_forall_apply {ρ : Representation ℂ G V} [ρ.IsIrreducible] {v : V} (hv : v ≠ 0)
     {l : Module.Dual ℂ V} (h : ∀ g, l (ρ g v) = 0) : l = 0 := by
@@ -71,7 +71,7 @@ theorem eq_zero_of_forall_apply {ρ : Representation ℂ G V} [ρ.IsIrreducible]
   | smul c x _ hx => simp [hx]
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hx`. Conclude with `hl (eq_zero_of_forall_apply (ρ := ρ) hx h)`.
+Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_forall_apply_act {ρ : Representation ℂ G V} [ρ.IsIrreducible]
     {l : Module.Dual ℂ V} (hl : l ≠ 0) {x : V} (h : ∀ g, l (ρ g x) = 0) : x = 0 := by
@@ -82,21 +82,21 @@ def orbitMap (ρ : Representation ℂ G V) (v : V) : (G →₀ ℂ) →ₗ[ℂ] 
   Finsupp.linearCombination ℂ fun g => ρ g v
 
 /- English proof (translation)
-Rewrite using `[orbitMap, Finsupp.linearCombination_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem orbitMap_apply (ρ : Representation ℂ G V) (v : V) (c : G →₀ ℂ) :
     orbitMap ρ v c = c.sum fun g a => a • ρ g v := by
   rw [orbitMap, Finsupp.linearCombination_apply]
 
 /- English proof (translation)
-Rewrite using `[orbitMap, Finsupp.linearCombination_single]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem orbitMap_single (ρ : Representation ℂ G V) (v : V) (g : G) (a : ℂ) :
     orbitMap ρ v (Finsupp.single g a) = a • ρ g v := by
   rw [orbitMap, Finsupp.linearCombination_single]
 
 /- English proof (translation)
-Proceed by induction on `c using Finsupp.induction_linear with`. Consider the case `zero => simp [orbitMap]`. Consider the case `add c d hc hd => rw [Finsupp.mapDomain_add, map_add, hc, hd, map_add, map_add]`. Consider the case `single g a => simp [Finsupp.mapDomain_single, orbitMap_single, map_mul]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem orbitMap_mapDomain (ρ : Representation ℂ G V) (v : V) (h : G) (c : G →₀ ℂ) :
     orbitMap ρ v (Finsupp.mapDomain (h * ·) c) = ρ h (orbitMap ρ v c) := by
@@ -106,14 +106,14 @@ theorem orbitMap_mapDomain (ρ : Representation ℂ G V) (v : V) (h : G) (c : G 
   | single g a => simp [Finsupp.mapDomain_single, orbitMap_single, map_mul]
 
 /- English proof (translation)
-Rewrite using `[orbitMap, Finsupp.range_linearCombination]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem range_orbitMap (ρ : Representation ℂ G V) (v : V) :
     LinearMap.range (orbitMap ρ v) = Submodule.span ℂ (range fun g => ρ g v) := by
   rw [orbitMap, Finsupp.range_linearCombination]
 
 /- English proof (translation)
-Rewrite using `[orbitMap_apply, map_finsuppSum, map_finsuppSum]`. Use `Finsupp.sum_congr fun g _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, map_smul, smul_eq_mul, map_mul, Module.End.mul_apply]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem linearForm_orbitMap (ρ : Representation ℂ G V) (v : V) (l : Module.Dual ℂ V) (h : G)
     (c : G →₀ ℂ) : l (ρ h (orbitMap ρ v c)) = c.sum fun g a => a * l (ρ (h * g) v) := by
@@ -122,23 +122,21 @@ theorem linearForm_orbitMap (ρ : Representation ℂ G V) (v : V) (l : Module.Du
   rw [map_smul, map_smul, smul_eq_mul, map_mul, Module.End.mul_apply]
 
 /- English proof (translation)
-Take `⟨g₀, hg₀⟩` from `hne`. Establish `hv : v ≠ 0` using `by rintro rfl; simp at hg₀`. Establish `hm : m ≠ 0` using `by rintro rfl; exact hg₀ (by rw [h]; rfl)`. Establish `hker : LinearMap.ker (orbitMap ρ v) ≤ LinearMap.ker (orbitMap σ w)`. Introduce `c hc`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hc`, the goal using `[LinearMap.mem_ker]`. Use `eq_zero_of_forall_apply_act (ρ := σ) hm fun k => ?_` and prove the remaining obligations. Rewrite using `[linearForm_orbitMap]`. Use `linearForm_orbitMap ρ v l k c` as an intermediate fact. Rewrite `this` using `[hc, map_zero, map_zero]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[this]`. Conclude with `Finsupp.sum_congr fun g _ => by rw [h]`. Establish `hsurj : Function.Surjective (orbitMap ρ v)`. Rewrite using `[← LinearMap.range_eq_top, range_orbitMap]`. Conclude with `eq_top_iff.2 fun x _ => mem_span_orbit hv x`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `e` to `LinearMap.quotKerEquivOfSurjective (orbitMap ρ v) hsurj`. Set `F : V →ₗ[ℂ] W` to `((LinearMap.ker (orbitMap ρ v)).liftQ (orbitMap σ w) hker).comp e.symm.toLinearMap`. Establish `hF : ∀ c, F (orbitMap ρ v c) = orbitMap σ w c`. Introduce `c`. Establish `: e.symm (orbitMap ρ v c) = Submodule.Quotient.mk c`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[LinearEquiv.symm_apply_eq]`. Both sides reduce to the same expression. Simplify using `only [F, LinearMap.comp_apply, LinearEquiv.coe_coe, this, Submodule.liftQ_apply]`. Establish `hFint : ∀ g x, F (ρ g x) = σ g (F x)`. Introduce `g x`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨c, rfl⟩` from `hsurj x`. Rewrite using `[← orbitMap_mapDomain, hF, hF, orbitMap_mapDomain]`. Set `Fi : Representation.IntertwiningMap ρ σ` to `⟨F, fun g => LinearMap.ext fun x => hFint g x⟩`. Establish `hFi0 : Fi ≠ 0`. Introduce `h0`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : F v = w`. Use `hF (Finsupp.single 1 1)` as an intermediate fact. Rewrite `this` using `[orbitMap_single, orbitMap_single, one_smul, one_smul, map_one, Module.End.one_apply, map_one, Module.End.one_apply]`. Then use the resulting hypothesis. Establish `h2 : F v = 0`. Establish `: Fi v = 0` using `by rw [h0]; rfl`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `this`. Apply `hg₀` to reduce the goal to its premises. Rewrite using `[h, ← h1, h2, map_zero, map_zero]`. Break down `Representation.IsIrreducible.bijective_or_eq_zero Fi with hb | h0` into its components or cases. Conclude with `⟨Representation.Equiv.mk (LinearEquiv.ofBijective F hb) fun g => LinearMap.ext fun x => hFint g x⟩`.
-
-Conclude with `absurd h0 hFi0`.
+Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem nonempty_equiv_of_matrixCoeff_eq {ρ : Representation ℂ G V} {σ : Representation ℂ G W}
     [ρ.IsIrreducible] [σ.IsIrreducible] {v : V} {l : Module.Dual ℂ V} {w : W}

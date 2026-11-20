@@ -10,7 +10,7 @@ namespace Formalism.L2.FormalSeriesBounds.RF
 open Formalism.IncomingBounds Formalism.L2.Pj MvPolynomial
 
 /- English proof (translation)
-Unfold `trueT`. Use `revert g t' s`. Evaluate the decidable proposition.
+Replace the relevant objects with their definitions. Evaluate the decidable proposition. A detailed English derivation is pending.
 -/
 theorem trueT_iff (g : Fin 2) (t' s : ZMod 2) : ((if g = 0 then t' else t' + 1) = s) ↔ t' = trueT g s := by
   unfold trueT
@@ -18,18 +18,18 @@ theorem trueT_iff (g : Fin 2) (t' s : ZMod 2) : ((if g = 0 then t' else t' + 1) 
   decide
 
 /- English proof (translation)
-Unfold `trueT`. Evaluate the decidable proposition.
+Replace the relevant objects with their definitions. Evaluate the decidable proposition.
 -/
 theorem trueT_one : ∀ t : ZMod 2, trueT 1 (t + 1) = t := by
   unfold trueT
   decide
 
 /- English proof (translation)
-Unfold `RowData.rkF`. Establish `e : (Finset.univ.filter fun c : IIs r tau o => ((X o).G g).ty (Sum.inl c) = s) = Finset.univ.map (Function.Embedding.sigmaMk (β` using `fun t => Fin (r (tau o t))) (trueT g s)) := by`. Use extensionality with `⟨t', c⟩`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_map, Function.Embedding.sigmaMk_apply, H.hty]`. Rewrite using `[trueT_iff]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `rfl`. Conclude with `⟨c, rfl⟩`. Introduce and unpack `⟨c', h⟩`. Conclude with `(congrArg Sigma.fst h).symm`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, Finset.card_map, Finset.card_univ, Fintype.card_fin]`.
+A detailed English derivation is pending.
 -/
 theorem SelfConjugatePlaceSetting.rkF_eq {C : Type} [Field C] {V : VF C} {T : Type} {r : T → ℕ} {cc : T → T} {a : T → ℕ → ℕ}
     {Orb : Type} [Fintype Orb] {tau : Orb → ZMod 2 → T} {gm : Orb → ZMod 2 → Matrix (Fin 2) (Fin 2) C}
@@ -54,31 +54,31 @@ theorem SelfConjugatePlaceSetting.rkF_eq {C : Type} [Field C] {V : VF C} {T : Ty
 
 open WeightHomogeneousMinors WeightHomogeneousLetters in
 /- English proof (translation)
-Introduce `C _ V T r cc a Orb _ tau gm J _ X F gaC N L pl H n plc m hm σ c0`. Rewrite using `[← weight_wLet]`. It suffices to establish `hWH : IsWeightedHomogeneous (wLet r n σ c0) (subG r tau gm plc (blkProd X F N L pl)) (a σ c0) from hWH (MvPolynomial.mem_support_iff.1 hm)`. Unfold `subG`. Use `isWH_aeval (w' := fun x => if (⟨tau x.2.1 x.2.2.2.1, x.2.2.2.2⟩ : Σ σ, Fin (r σ)) = ⟨σ, c0⟩ then 1 else 0) _ (fun x => ?_) ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the argument to an intermediate assertion. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Apply `IsWeightedHomogeneous.sum` to reduce the goal to its premises. Introduce `col _`. Establish `h` using `(isWeightedHomogeneous_C (wLet r n σ c0) (gm x.2.1 x.2.2.2.1 col x.2.2.1)).mul (isWeightedHomogeneous_X (R := C) (wLet r n σ c0) (⟨tau x.2.1 x.2.2.2.1, x.2.2.2.2, plc (x.1, col)⟩ : Letter T r n))`. Rewrite `h` using `[zero_add, wLet_mk]`. Conclude with `h`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hσ : ∃ o t, tau o t = σ`. Take `⟨o0, t0, rfl⟩` from `hσ`. Establish `keyEq : ∀ o t (c : Fin (r (tau o t))), ((⟨tau o t, c⟩ : Σ σ, Fin (r σ)) = ⟨tau o0 t0, c0⟩) ↔ (o = o0 ∧ t = t0 ∧ (c : ℕ) = c0)`. Introduce `o t c`. Prove the components needed by the constructor for the conclusion.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Establish `h1 : tau o t = tau o0 t0` using `congrArg Sigma.fst h`. Establish `h2` using `H.inj (a₁ := (o, t)) (a₂ := (o0, t0)) h1`. Simplify using `only [Prod.mk.injEq] at h2`. Take `⟨rfl, rfl⟩` from `h2`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨rfl, rfl, ?_⟩` and prove the remaining obligations. Rewrite using `[eq_of_heq (Sigma.mk.inj h).2]`. Introduce and unpack `⟨rfl, rfl, hc⟩`. Rewrite using `[Fin.ext hc]`. Establish `hT1 : trueT 1 (t0 + 1) = t0` using `trueT_one t0`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hR0 : (X o0).rkF 0 t0 = r (tau o0 t0)` using `H.rkF_eq o0 0 t0`. Establish `hR1 : (X o0).rkF 1 (t0 + 1) = r (tau o0 t0)` using `by rw [H.rkF_eq o0 1 (t0 + 1), hT1]`. Establish `hD : a (tau o0 t0) c0 = ∑ o, (if o = o0 then ∑ i : Fin (L o).length, ((∑ k ∈ Finset.Icc ((c0 : ℕ) + 1) ((X o).rkF 0 t0), (blkAt L o i).wt (X o) 0 t0 k) + ∑ k ∈ Finset.Icc ((c0 : ℕ) + 1) ((X o).rkF 1 (t0 + 1)), (blkAt L o i).wt (X o) 1 (t0 + 1) k) else 0)`. Rewrite using `[Finset.sum_ite_eq', if_pos (Finset.mem_univ _), hR0, hR1, H.tie.1 o0 t0 c0 c0.2]`. Simplify using `only [← Finset.sum_add_distrib]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[← H.wt o0 t0 k, ← Fin.sum_univ_fun_getElem]`. Both sides reduce to the same expression. Rewrite using `[hD]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Unfold `blkProd`. Use `IsWeightedHomogeneous.prod _ _ _ fun o _ => ?_` and prove the remaining obligations. Distinguish the cases in `ho : o = o0`. Substitute `ho` using the available equality. Rewrite using `[if_pos rfl]`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Unfold `toAll`. Apply `isWH_rename` to reduce the goal to its premises. Unfold `prodAll`. Use `IsWeightedHomogeneous.prod _ _ _ fun i _ => ?_` and prove the remaining obligations. Apply `isWH_rename` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Use `isWH_congr ?_ (isWH_add (blockPoly_isWeightedHomogeneous' (X o) (F o) (fun _ x => x.2.val) (H.std o) (blkAt L o i) 0 t0 (c0 : ℕ)) (blockPoly_isWeightedHomogeneous' (X o) (F o) (fun _ x => x.2.val) (H.std o) (blkAt L o i) 1 (t0 + 1) (c0 : ℕ)))` and prove the remaining obligations. Introduce and unpack `⟨ρ, gg, tt, cc'⟩`. Simplify using `only [Function.comp_apply, keyEq, wRowG, true_and, H.hty]`. Apply the tactic sequence `fin_cases gg <;> simp`. Rewrite using `[if_neg ho]`.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Unfold `toAll`. Apply `isWH_rename` to reduce the goal to its premises. Use `isWH_of_zero (fun x => ?_) _` and prove the remaining obligations. Take `⟨ρ, gg, tt, cc'⟩` from `x`. Simplify using `only [Function.comp_apply, keyEq]`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg]`. Conclude with `fun hh => ho hh.1`. Use `push Not at hσ`. Rewrite using `[H.tie.2 σ hσ c0 c0.2]`. Use `isWH_of_zero (fun x => ?_) _` and prove the remaining obligations.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨ρ, o, g, t, c⟩` from `x`. Use `show (if (⟨tau o t, c⟩ : Σ σ, Fin (r σ)) = ⟨σ, c0⟩ then 1 else 0) = 0`. Rewrite using `[if_neg]`. Conclude with `fun hh => hσ o t (congrArg Sigma.fst hh)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
 -/
 theorem isotropic_to_std_subst_degree : IsotropicToStdSubstLineDegree := by
   intro C _ V T r cc a Orb _ tau gm J _ X F gaC N L pl H n plc m hm σ c0

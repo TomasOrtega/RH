@@ -21,30 +21,30 @@ namespace GlobalTheory.ThetaUnit
 open GlobalTheory.FieldBaseChange GlobalTheory.ConstFam GlobalTheory.IndivisibleSection
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h => SecOver.ext _ _ h, fun h _ => by rw [h]; rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem secIsMul_iff {R : Type} [CommRing R] {Y : Scheme.{0}} (p : Y ⟶ Spec (CommRingCat.of R)) {L : LB Y} (a : R)
     (s t : SecOver p L) : SecIsMul p a s t ↔ s = a • t :=
   ⟨fun h => SecOver.ext _ _ h, fun h _ => by rw [h]; rfl⟩
 
 /- English proof (translation)
-Establish `hL` using `D.toPre.P.isLB`. Take `⟨e, he, a, ha, hψ⟩` from `LevelOneIdeal.exists_psi_val D.toPre χ (D.psi_pos χ hχ)`. Use `⟨a, ha, ?_⟩` and prove the remaining obligations. It suffices to establish `H : ∃ g g' : D.toPre.SecB 1 (0 + 1 • χ), SecIsMul D.toPre.P.A.hom a g g' ∧ GeneratorPullback.SecScal D.toPre.P.L (DegPre.famφ D.toPre (FractionRing R) (0 + 1 • χ)) (DegPre.famε 1) (E.s (0 + 1 • χ)) (D.toPre.famφB (0 + 1 • χ)) (DegPre.famε 1) g (DegPre.prB D.toPre (FractionRing R) …`. Rewrite `H` using `[zero_add, one_smul]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the argument to an intermediate assertion. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `c₁ : D.toPre.P.A.hom ≫ (D.toPre.c χ).left = (SectionScalarValuation.cQ D.toPre D.toPre.P.A χ).left` using `by simp [SectionScalarValuation.cQ]`. Establish `c₂ : D.toPre.P.A.hom ≫ eSec D.toPre.P.A = (1 : D.toPre.P.A ⟶ D.toPre.P.A).left`. Rewrite using `[Hom.one_def]`. Simplify using `[eSec]`. Establish `c₃ : SectionScalarValuation.cQ D.toPre D.toPre.P.A 0 = 1` using `cPoint_zero (D := D.toPre) _`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Take `⟨eB, heB, veB⟩` from `SectionScalarValuation.exists_eB D.toPre 1 0 χ (LB.mulGen D.toPre.P.L _ _ _ _ e D.toPre.rig) (mulGen_isGen _ _ _ _ _ _ _ he D.toPre.rig_gen) (fun U _ h => by`. Simplify using `only [Fintype.prod_sum_type, Sum.elim_inl, Sum.elim_inr, Fintype.prod_unique, c₁, c₂, c₃, _root_.one_mul]`. Use the proof step `simp)`. Establish `hformB : FormEq (Sum.elim (fun i => (𝟙 D.toPre.P.A * SectionScalarValuation.cQ D.toPre D.toPre.P.A χ).left ≫ D.toPre.famφB 0 i) (Sum.elim (D.toPre.famφB (0 + 1 • χ)) (fun i => (𝟙 D.toPre.P.A * SectionScalarValuation.cQ D.toPre D.toPre.P.A χ).left ≫ D.toPre.famφB 0 i))) (Sum.elim …` using `fun U _ h => by`. Rewrite using `[Fintype.prod_sum_type, Fintype.prod_sum_type]`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Sum.elim_inl, Sum.elim_inr, DegPre.deltaε, zpow_neg, Finset.prod_inv_distrib]`. Rewrite using `[mul_left_comm, mul_inv_cancel, _root_.mul_one]`. Take `⟨g', hg'⟩` from `exists_sec hL hformB (pullMulSec g₀ (𝟙 D.toPre.P.A * SectionScalarValuation.cQ D.toPre D.toPre.P.A χ).left eB heB)`. Take `⟨g, hgg⟩` from `IntegralExpansion.exists_secIsMul D.toPre.P.A.hom a g'`. Use `⟨g, g', hgg, SectionScalarValuation.secScal_of_sval hL fun y J hJ => Eq.symm ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨⟨u, hu, hc⟩, hv⟩` from `gen_fe (D := D.toPre) (F := FractionRing R) hG 1 χ 0`. Establish `vu` using `hv u hu hc _ (𝟙 _) y J hJ`. Establish `hrel` using `(secRel_iff hL _ _ _ _ _ _ _ _ _ u).1 (E.fe χ 0 u hu hc) _ (𝟙 _) y J hJ`. Establish `htr : (DegPre.trF D.toPre (FractionRing R) χ).left ≫ (DegPre.prB D.toPre (FractionRing R)).left = (DegPre.prB D.toPre (FractionRing R)).left ≫ (𝟙 D.toPre.P.A * SectionScalarValuation.cQ D.toPre D.toPre.P.A χ).left`. Rewrite using `[← Over.comp_left, ← Over.comp_left]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Rewrite using `[DegPre.trF, DegPre.prB, lift_snd, MonObj.comp_mul, Category.comp_id, SectionScalarValuation.comp_cQ]`. Both sides reduce to the same expression. Rewrite `hrel` using `[H1.sval_scal hg _ y hJ, Category.id_comp, htr]`. Rewrite using `[hrel, sval_of_secIsMul hgg _ y hJ, Category.id_comp, hg' _ _ y J hJ, sval_pullMulSec _ _ _ heB _ y hJ, mul_left_comm]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Establish `w₁ : (fst (TF (R` using `R) (FractionRing R)) D.toPre.P.A).left ≫ jFK (R := R) (FractionRing R) ≫ jK R = (DegPre.prB D.toPre (FractionRing R)).left ≫ D.toPre.P.A.hom := (Over.w (fst (TF (R := R) (FractionRing R)) D.toPre.P.A)).trans (Over.w (DegPre.prB D.toPre (FractionRing R))).symm`. Establish `v₁` using `veB _ (DegPre.prB D.toPre (FractionRing R)) y J hJ`. Establish `v₂` using `hψ _ ((fst (TF (R := R) (FractionRing R)) D.toPre.P.A).left ≫ jFK (R := R) (FractionRing R)) y J hJ`. Establish `v₃ : val D.toPre.rigK ((fst (TF (R` using `R) (FractionRing R)) D.toPre.P.A).left ≫ jFK (R := R) (FractionRing R)) y J = val D.toPre.rig ((DegPre.prB D.toPre (FractionRing R)).left ≫ D.toPre.P.A.hom) y J := by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← w₁, ← Category.assoc]`. Conclude with `val_pull hJ _ _ _`. Rewrite `v₂` using `[Category.assoc, w₁]`. Rewrite `vu` using `[Over.id_left, Category.id_comp, LevelOneIdeal.val_famMult_one D.tau_bimult _ hJ, v₃, uVal, Category.id_comp, Category.id_comp, comp_cP]`. Rewrite `v₁` using `[val_mul hJ]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[vu, v₁]`. Simplify using `only [Units.val_mul]`. Rewrite using `[v₂]`. Simplify using `only [SectionScalarValuation.cQ, cP, th]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem exists_integral_term (hG : GlobalFnsSt) {R : Type} [CommRing R] [IsDomain R] [IsLocalRing R] {I : Ideal R}
     (D : DegData R I) (E : Fam D.toPre (FractionRing R) 1) (g₀ : D.toPre.SecB 1 0)
@@ -118,11 +118,11 @@ variable {R : Type} [CommRing R] [IsDomain R] [IsLocalRing R] {I : Ideal R} {D :
   [IsCommMonObj G]
 
 /- English proof (translation)
-Take `⟨s, ⟨r, hr, σ₁, f₁, -, hf₁, hE₁⟩, -⟩` from `(U.expand k hk).2 Φ`. Establish `h₁ : ∀ α, SecIsMul D.toPre.P.A.hom r (f₁ α) (f α)` using `fun α => IntegralExpansion.secIsMul_of_secScal D.toPre.P.isLB _ (IntegralExpansion.prB_app_injective D.toPre) (hf α) (by rw [Over.w (DegPre.prB D.toPre (FractionRing R))]; exact hf₁ α)`. Use `U.smooth` as an intermediate fact. Establish `hJac : I ≤ Ideal.jacobson ⊥` using `by rwa [IsLocalRing.jacobson_eq_maximalIdeal ⊥ bot_ne_top]`. Take `⟨σ, hσ⟩` from `GermDiv.main R I hJac G _ (LB.isLB_linComb U.LG.isLB _ _) σ₁ r hr fun n y j hj => by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨jL, rfl⟩ : ∃ jL, j = fun _ => jL` from `⟨j 0, funext fun i => congrArg j (Subsingleton.elim i 0)⟩`. Take `⟨S, hS⟩` from `expandsAt_val U.toUnifPre n k σ₁ f₁ (hE₁ n)`. Take `⟨J, hJ⟩` from `exists_good' D.toPre.P.isLB y`. Establish `H` using `(hS _ (𝟙 _) y J hJ).2 jL (Set.mem_iInter.1 hj 0)`. Establish `hc : pGl U.toUnifPre n ≫ D.toPre.P.A.hom = fGl I G n ≫ G.hom` using `(Over.w (U.gt n).pG).trans (Over.w (fstG I n G)).symm`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Category.id_comp] at H`. Use `(Units.dvd_mul_left.1 (H ▸ Finset.dvd_sum fun α _ => ?_) : _ ∣ sv U.toUnifPre k σ₁ (fGl I G n) y jL)` and prove the remaining obligations. Rewrite using `[sval_of_secIsMul (h₁ α) _ y hJ, hc, _root_.mul_assoc]`. Conclude with `dvd_mul_right _ _`. Conclude with `⟨σ, expandsAt_cancel_of_ne_zero R I D A G U.toUnifPre k r hr σ σ₁ f f₁ hσ h₁ hE₁⟩`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_expandsAt_of_integral [IsNoetherianRing R] (hI : I ≤ maximalIdeal R) (U : Unif I D A G)
     [GeometricallyConnected G.hom] {k : ℕ} (hk : 1 ≤ k) (Φ : Fam D.toPre (FractionRing R) k)
@@ -152,9 +152,9 @@ theorem exists_expandsAt_of_integral [IsNoetherianRing R] (hI : I ≤ maximalIde
 omit [IsDomain R] in
 
 /- English proof (translation)
-Establish `hm : closedPoint R ∈ Set.range (PrimeSpectrum.comap (Ideal.Quotient.mk (J ^ (e + 1))))`. Rewrite using `[_root_.range_comap_of_surjective _ _ Ideal.Quotient.mk_surjective, Ideal.mk_ker, PrimeSpectrum.mem_zeroLocus]`. Conclude with `(Ideal.pow_le_self (Nat.succ_ne_zero e)).trans hJ`. Take `⟨z, hz⟩` from `hm`. Take `⟨y, hy, -⟩` from `Scheme.exists_preimage_of_isPullback (IsPullback.of_hasPullback X.hom (thick R J e)) x z (hx.trans hz.symm)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨y, hy⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_thick_pt {J : Ideal R} (hJ : J ≤ maximalIdeal R) (e : ℕ) (X : Over (Spec (CommRingCat.of R)))
     (x : X.left) (hx : X.hom x = closedPoint R) :
@@ -169,7 +169,7 @@ theorem exists_thick_pt {J : Ideal R} (hJ : J ≤ maximalIdeal R) (e : ℕ) (X :
   exact ⟨y, hy⟩
 
 /- English proof (translation)
-Take `⟨x', rfl⟩` from `exists_thick_pt hI e D.toPre.P.A x hx`. Take `⟨y, rfl⟩` from `(U.gt e).q_surj.surj x'`. Conclude with `⟨y, rfl⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_group_pt (hI : I ≤ maximalIdeal R) (U : UnifPre I D A G) (e : ℕ) (x : D.toPre.P.A.left)
     (hx : D.toPre.P.A.hom x = closedPoint R) : ∃ y : (thickObj R I e G).left, pGl U e y = x := by
@@ -178,14 +178,14 @@ theorem exists_group_pt (hI : I ≤ maximalIdeal R) (U : UnifPre I D A G) (e : �
   exact ⟨y, rfl⟩
 
 /- English proof (translation)
-Rewrite using `[gs_stalkMap r z U h, isUnit_map_iff]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem isUnit_gs_iff {X Z : Scheme.{0}} (r : Z ⟶ X) (z : Z) (U : X.Opens) (h : r z ∈ U) (f : Γ(X, U)) :
     IsUnit (gs r z U f) ↔ IsUnit (gs (𝟙 X) (r z) U f) := by
   rw [gs_stalkMap r z U h, isUnit_map_iff]
 
 /- English proof (translation)
-Take `⟨j, hj, hu⟩` from `(SectionBaseChange.mem_nonzeroLocus s _).1 h`. Rewrite using `[sval, sec_trans s r z (hJ.mem φ r) hj]`. Conclude with `(Units.isUnit _).mul ((isUnit_gs_iff r z _ hj _).2 hu)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUnit_sval {X Y Z : Scheme.{0}} {L : LB X} {K : Type} [Fintype K] {φ : K → (Y ⟶ X)} {ε : K → ℤ}
     (s : LB.Sec (LB.LinComb L φ ε)) (r : Z ⟶ Y) (z : Z) (h : r z ∈ nonzeroLocus s) {J} (hJ : Good L z J) :
@@ -197,13 +197,13 @@ theorem isUnit_sval {X Y Z : Scheme.{0}} {L : LB X} {K : Type} [Fintype K] {φ :
 omit [IsDomain R] in
 
 /- English proof (translation)
-Rewrite `h` using `[cst_comp]`. Establish `h₁ : cst (𝟙 _) (p y) (Ideal.Quotient.mk J a) = 0`. Use `stalkMap_injective_of_flat p y ?_` and prove the remaining obligations. Rewrite using `[H1.cst_stalkMap, Category.comp_id, h, map_zero]`. Rewrite `h₁` using `[cst, gs_eq _ _ ⊤ trivial]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨W, hW, i₁, i₂, e⟩` from `TopCat.Presheaf.germ_eq (Sp (R ⧸ J)).presheaf (U := ⊤) (V := ⊤) (p y) trivial trivial _ 0 (h₁.trans (map_zero _).symm)`. Establish `hWt : W = ⊤` using `top_le_iff.1 fun z _ => by`. Use `Specializes.mem_open ((PrimeSpectrum.le_iff_specializes z (p y)).1 fun t ht => ?_) W.isOpen hW` and prove the remaining obligations. Take `⟨t, rfl⟩` from `Ideal.Quotient.mk_surjective t`. Establish `h₂ : t ∈ (PrimeSpectrum.comap (Ideal.Quotient.mk J) (p y)).asIdeal`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[show PrimeSpectrum.comap (Ideal.Quotient.mk J) (p y) = closedPoint R from hy]`. Conclude with `le_maximalIdeal (PrimeSpectrum.comap (Ideal.Quotient.mk J) z).isPrime.ne_top ht`. Conclude with `h₂`. Substitute `hWt` using the available equality. Rewrite `e` using `[map_zero, Subsingleton.elim i₁ (𝟙 _)]`.
+Rewrite the conclusion using the stated equalities. Substitute using the available equality. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `Ideal.Quotient.eq_zero_iff_mem.1 ((ConcreteCategory.bijective_of_isIso (Scheme.ΓSpecIso (CommRingCat.of (R ⧸ J))).inv).1 ?_)` and prove the remaining obligations. Simplify using `only [op_id, CategoryTheory.Functor.map_id] at e`. Conclude with `e.trans (map_zero _).symm`.
+A detailed English derivation is pending.
 -/
 theorem mem_of_cst_eq_zero {J : Ideal R} {Y : Scheme.{0}} (p : Y ⟶ Sp (R ⧸ J)) [Flat p] (y : Y)
     (hy : (p ≫ spMap (Ideal.Quotient.mk J)) y = closedPoint R) {a : R}
@@ -230,9 +230,9 @@ theorem mem_of_cst_eq_zero {J : Ideal R} {Y : Scheme.{0}} (p : Y ⟶ Sp (R ⧸ J
   exact e.trans (map_zero _).symm
 
 /- English proof (translation)
-Take `⟨y, rfl⟩` from `exists_thick_pt le_rfl 0 G g hg`. Take `⟨j, hj, hu⟩` from `(SectionBaseChange.mem_nonzeroLocus s _).1 hs`. Use `⟨j, fun h => ?_⟩` and prove the remaining obligations. Establish `h₁` using `gs_pull (𝟙 _) (fGl (maximalIdeal R) G 0) y _ hj (s.f j)`. Rewrite `h₁` using `[Category.id_comp]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `((isUnit_gs_iff (fGl (maximalIdeal R) G 0) y _ hj _).2 hu).ne_zero (h₁.symm.trans ((congrArg _ h).trans (gs_zero _ y _ hj)))`.
+A detailed English derivation is pending.
 -/
 theorem nonzeroOnSpecial_of_mem (U : Unif I D A G) (s : H0 U.LG.L 1) (g : G.left) (hg : G.hom g = closedPoint R)
     (hs : g ∈ nonzeroLocus s) : NonzeroOnSpecial U s := by
@@ -245,7 +245,7 @@ theorem nonzeroOnSpecial_of_mem (U : Unif I D A G) (s : H0 U.LG.L 1) (g : G.left
     (h₁.symm.trans ((congrArg _ h).trans (gs_zero _ y _ hj)))
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hb`. Take `⟨j, hj⟩` from `hs`. Use `hj ?_` and prove the remaining obligations. Rewrite using `[h j, map_mul, ThickDiv.resTop_scal, ThickDiv.app_constFn_eq_zero (maximalIdeal R) 0 G _ (by rw [zero_add, pow_one]; exact hb), zero_mul]`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem isUnit_of_nonzeroOnSpecial (U : Unif I D A G) {s σ : H0 U.LG.L 1} {b : R} (h : SecIsMul G.hom b s σ)
     (hs : NonzeroOnSpecial U s) : IsUnit b := by
@@ -265,7 +265,7 @@ variable {R : Type} [CommRing R] [IsDomain R] [IsLocalRing R] {I : Ideal R} {D :
 
 omit [IsLocalRing R] in
 /- English proof (translation)
-Establish `h` using `secScal_iff_resF D (FractionRing R) (famComp D (FractionRing R) k α Φ) g 1`. Rewrite `h` using `[map_one, one_smul, scal, map_one, map_one]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem secScal_one_iff (D : DegPre R) {k : ℕ} (Φ : Fam D (FractionRing R) k) (α : D.X) (g : SecBMod D k α) :
     GeneratorPullback.SecScal D.P.L (DegPre.famφ D (FractionRing R) α) (DegPre.famε k) (Φ.s α) (D.famφB α) (DegPre.famε k) g
@@ -274,11 +274,11 @@ theorem secScal_one_iff (D : DegPre R) {k : ℕ} (Φ : Fam D (FractionRing R) k)
   rwa [map_one, one_smul, scal, map_one, map_one] at h
 
 /- English proof (translation)
-Take `⟨g, hg⟩ : ∃ g : SecBMod D 1 0, ∀ s, ∃! a : R, SecIsMul D.P.A.hom a s g` from `exists_generator D hS`. Take `⟨a, ha, -⟩` from `hg th`. Take `⟨b, hb, -⟩` from `hg s`. Take `⟨x, hx, hn⟩` from `hth`. Take `⟨J, hJ⟩` from `exists_good' D.P.isLB x`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hu` using `isUnit_sval th (𝟙 _) x hn hJ`. Rewrite `hu` using `[sval_of_secIsMul ha _ x hJ, Category.id_comp]`. Choose the witnesses or unpack the hypotheses as in `⟨u, rfl⟩ : IsUnit a := by`. Assume the negation of the conclusion as `h`. Conclude with `cst_not_isUnit D.P.A.hom x hx h (isUnit_of_mul_isUnit_left hu)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨b * u⁻¹.val, ?_⟩` and prove the remaining obligations. Rewrite using `[(secIsMul_iff _ _ _ _).1 ha, smul_smul, Units.inv_mul_cancel_right]`. Conclude with `(secIsMul_iff _ _ _ _).1 hb`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_eq_smul (hS : SecBaseChangeSt) [IsNoetherianRing R] (D : DegPre R) (th : SecBMod D 1 0)
     (hth : ∃ x, D.P.A.hom x = closedPoint R ∧ x ∈ nonzeroLocus th) (s : SecBMod D 1 0) : ∃ b : R, s = b • th := by
@@ -297,13 +297,13 @@ theorem exists_eq_smul (hS : SecBaseChangeSt) [IsNoetherianRing R] (D : DegPre R
   exact (secIsMul_iff _ _ _ _).1 hb
 
 /- English proof (translation)
-Take `⟨x, hx, hn⟩` from `h0`. Take `⟨y, rfl⟩` from `exists_group_pt hI U 0 x hx`. Establish `hc : pGl U 0 ≫ D.toPre.P.A.hom = fGl I G 0 ≫ G.hom` using `(Over.w (U.gt 0).pG).trans (Over.w (fstG I 0 G)).symm`. Establish `hc' : pGl U 0 ≫ D.toPre.P.A.hom = (thickObj R I 0 G).hom ≫ spMap (Ideal.Quotient.mk (I ^ (0 + 1)))` using `Over.w (U.gt 0).pG`. Use `⟨fGl I G 0 y, (congrArg (fun q => q y) hc).symm.trans hx, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨S, hS⟩` from `expandsAt_val U 0 1 σ f hE`. Take `⟨J, hJ⟩` from `exists_good' D.toPre.P.isLB y`. Take `⟨jL, hL⟩` from `exists_chart U.LG.isLB (fGl I G 0 y)`. Take `⟨H₁, H₂⟩` from `hS _ (𝟙 _) y J hJ`. Establish `H` using `H₂ jL hL`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Simplify using `only [Category.id_comp] at H H₁`. Establish `hu` using `isUnit_sval (f 0) (pGl U 0) y hn hJ`. Rewrite using `[Finset.sum_eq_single 0 (fun α _ hα => by`. Take `⟨a, ha, g, hg⟩` from `hf α hα`. Rewrite `H` using `[sval_of_secIsMul hg _ y hJ, hc', cst_comp, Ideal.Quotient.eq_zero_iff_mem.2 (by simpa using ha), GermDiv.cst_zero, zero_mul, zero_mul]) (fun h => absurd (H₁ 0 h) hu.ne_zero)]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hm : fGl I G 0 y ∈ LB.wchart U.LG.L (fun _ : Fin 1 => 𝟙 G.left) (fun _ => jL)` using `Set.mem_iInter.2 fun _ => hL`. Conclude with `(SectionBaseChange.mem_nonzeroLocus σ _).2 ⟨fun _ => jL, hm, (isUnit_gs_iff (fGl I G 0) y _ hm _).1 (isUnit_of_mul_isUnit_right (H ▸ hu.mul (Units.isUnit _)))⟩`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_mem_nonzeroLocus (hI : I ≤ maximalIdeal R) (U : UnifPre I D A G) {σ : H0 U.LG.L 1}
     {f : ∀ α, D.toPre.SecB 1 α} (hE : U.ExpandsAt 0 1 σ f)
@@ -332,13 +332,11 @@ theorem exists_mem_nonzeroLocus (hI : I ≤ maximalIdeal R) (U : UnifPre I D A G
     (isUnit_of_mul_isUnit_right (H ▸ hu.mul (Units.isUnit _)))⟩
 
 /- English proof (translation)
-Take `⟨x, hx, hn⟩` from `h0`. Use `U.smooth` as an intermediate fact. Establish `key : ∀ e, 1 - b ∈ I ^ (e + 1)` using `fun e => by`. Take `⟨y, rfl⟩` from `exists_group_pt hI U e x hx`. Establish `hc : pGl U e ≫ D.toPre.P.A.hom = (thickObj R I e G).hom ≫ spMap (Ideal.Quotient.mk (I ^ (e + 1)))` using `Over.w (U.gt e).pG`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨J, hJ⟩` from `exists_good' D.toPre.P.isLB y`. Establish `hE₀` using `expandsAt_add U (hE' e) (expandsAt_smul U (-b) (hE e))`. Establish `h₁` using `WeightDvd.dvd_on_group U e 1 0 _ σ _ ((secIsMul_iff _ _ _ _).2 (by rw [hb, ← add_smul, add_neg_cancel])) hE₀ 0 y J hJ`. Establish `h₂ : (f' + (-b) • f) 0 = (1 - b) • f 0`. Rewrite using `[Pi.add_apply, Pi.smul_apply, h, sub_smul, one_smul, neg_smul, sub_eq_add_neg]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h₁` using `[h₂, GermDiv.cst_zero, zero_dvd_iff, sval_of_secIsMul ((secIsMul_iff _ _ _ _).2 rfl) _ y hJ, (isUnit_sval (f 0) (pGl U e) y hn hJ).mul_left_eq_zero, hc]`. Establish `: Flat (thickObj R I e G).hom` using `inferInstanceAs (Flat (pullback.snd G.hom (thick R I e)))`. Conclude with `mem_of_cst_eq_zero _ y ((congrArg (fun q => q y) hc).symm.trans hx) h₁`. Establish `hbot` using `Ideal.iInf_pow_eq_bot_of_isLocalRing I (fun h => (maximalIdeal.isMaximal R).ne_top (top_le_iff.1 (h ▸ hI)))`. Establish `: 1 - b ∈ (⊥ : Ideal R)` using `hbot ▸ Ideal.mem_iInf.2 fun n => Ideal.pow_le_pow_right (Nat.le_succ n) (key n)`.
-
-Conclude with `(sub_eq_zero.1 this).symm`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem eq_one_of_weight_zero [IsNoetherianRing R] (hI : I ≤ maximalIdeal R) (U : UnifPre I D A G)
     {σ σ' : SecOver G.hom (LB.LinComb U.LG.L (K := Fin 1) (fun _ => 𝟙 G.left) (fun _ => ((1 : ℕ) : ℤ)))}
@@ -366,15 +364,15 @@ theorem eq_one_of_weight_zero [IsNoetherianRing R] (hI : I ≤ maximalIdeal R) (
   exact (sub_eq_zero.1 this).symm
 
 /- English proof (translation)
-Establish `hsm` using `U.smooth`. Establish `h` using `GlobalTheory.ExtUnique.spec_fractionRing R (FractionRing R)`. Establish `: IsSchemeTheoreticallyDominant (jK R)` using `h.2`. Establish `: QuasiCompact (jK R)` using `h.1`. Establish `: IsSchemeTheoreticallyDominant (pullback.fst G.hom (jK R))` using `.of_isPullback (IsPullback.of_hasPullback G.hom (jK R)).flip`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hp : pullback.fst G.hom (jK R) ≫ G.hom = pullback.snd G.hom (jK R) ≫ Spec.map (CommRingCat.ofHom (algebraMap R (FractionRing R)))` using `pullback.condition`. Establish `hφ : ∀ k : Fin 1, (fun _ : Fin 1 => pullback.fst G.hom (jK R)) k = pullback.fst G.hom (jK R) ≫ (fun _ : Fin 1 => 𝟙 G.left) k` using `fun _ => (Category.comp_id _).symm`. Establish `hρ` using `pullOver_injective_of_dominant U.LG.L (fun _ : Fin 1 => ((1 : ℕ) : ℤ)) hp hφ`. Use `set ρ := pullOver U.LG.L (fun _ : Fin 1 => ((1 : ℕ) : ℤ)) hp hφ with hρdef`. Establish `hS` using `fun s₁ s₂ c => secScal_iff hp hφ (ε := fun _ : Fin 1 => ((1 : ℕ) : ℤ)) U.LG.isLB s₁ s₂ (pullback.snd G.hom (jK R) ≫ jK R) (algebraMap R (FractionRing R)) rfl c`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `one₁ : scal (pullback.snd G.hom (jK R) ≫ jK R) (1 : R) = 1` using `by rw [scal, map_one, map_one]`. Establish `one₂ : scal (DegPre.BF D.toPre (FractionRing R)).hom (1 : R) = 1` using `by rw [scal, map_one, map_one]`. Take `⟨Ψ, hΨ, -⟩` from `(U.expand 1 le_rfl).1 (ρ s)`. Take `⟨g, -, hg⟩` from `IntegralExpansionLocal.main R I hI D A G U.toUnifPre 1 s (ρ s) (one₁ ▸ (hS _ _ 1).2 (by rw [map_one, one_smul])) Ψ hΨ`. Take `⟨b, hb⟩` from `hgen (g 0)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h₀ : Ψ = toF (R` using `R) (FractionRing R) b • Φ := by`. Use `fam_ext fun χ i => congrArg (fun q => LB.Sec.f q i) (?_ : Ψ.s χ = (_ : Fam _ _ _).s χ)` and prove the remaining obligations. Use `FamFree.eq_of_eq_add_nsmul hG _ _ (α := 0) ⟨χ, by rw [zero_add, one_smul]⟩ ?_` and prove the remaining obligations. Establish `e` using `(secScal_one_iff D.toPre Ψ 0 _).1 (hg 0)`. Rewrite `e` using `[hb, map_smulₛₗ, hf, ← map_smul]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `e.symm`. Establish `hX : U.toUnifPre.Expands 1 (ρ (b • σ)) Ψ` using `⟨1, one_ne_zero, (b • σ :), (b • f :), (hS _ _ _).2 (by rw [map_one, one_smul]), fun χ => one₂ ▸ (secScal_one_iff D.toPre Ψ χ _).2 (by`. Rewrite using `[h₀, Pi.smul_apply, map_smulₛₗ, hf, ← map_smul]),`. Use `fun e => expandsAt_smul U.toUnifPre b (hE e)⟩`. Conclude with `⟨b, hρ (((U.expand 1 le_rfl).2 Ψ).unique hΨ hX)⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_eq_smul_group (hG : GlobalFnsSt) [IsNoetherianRing R] (hI : I ≤ maximalIdeal R) (U : Unif I D A G)
     {σ : SecOver G.hom (LB.LinComb U.LG.L (K := Fin 1) (fun _ => 𝟙 G.left) (fun _ => ((1 : ℕ) : ℤ)))}
@@ -417,21 +415,19 @@ theorem exists_eq_smul_group (hG : GlobalFnsSt) [IsNoetherianRing R] (hI : I ≤
   exact ⟨b, hρ (((U.expand 1 le_rfl).2 Ψ).unique hΨ hX)⟩
 
 /- English proof (translation)
-Take `⟨Φ, hΦ, -⟩` from `FamFree.exists_fam_single (F := FractionRing R) hG D.tau_bimult le_rfl 0 (resF D.toPre (FractionRing R) 1 0 th)`. Establish `h₀` using `(secScal_one_iff D.toPre Φ 0 th).2 hΦ.symm`. Establish `ex : ∀ α, ∃ g : D.toPre.SecB 1 α, GeneratorPullback.SecScal D.toPre.P.L (DegPre.famφ D.toPre (FractionRing R) α) (DegPre.famε 1) (Φ.s α) (D.toPre.famφB α) (DegPre.famε 1) g (DegPre.prB D.toPre (FractionRing R)).left 1 ∧ (α ≠ 0 → ∃ a ∈ I, ∃ g' : D.toPre.SecB 1 α, SecIsMul D.toPre. …` using `fun α => by`. Distinguish the cases in `hα : α = 0`. Substitute `hα` using the available equality.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Conclude with `⟨th, h₀, fun h => absurd rfl h⟩`. Take `⟨a, ha, g, g', h₁, h₂⟩` from `exists_integral_term hG D Φ th h₀ α hα`. Conclude with `⟨g, h₂, fun _ => ⟨a, ha, g', h₁⟩⟩`. Use `choose fam hfam hmem using ex`. Establish `hres : ∀ α, resF D.toPre (FractionRing R) 1 α (fam α) = famComp D.toPre (FractionRing R) 1 α Φ` using `fun α => (secScal_one_iff D.toPre Φ α _).1 (hfam α)`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `rfl : fam 0 = th` from `resF_injective D.toPre (FractionRing R) 1 0 ((hres 0).trans hΦ)`. Take `⟨σ, hσ⟩` from `exists_expandsAt_of_integral hI U le_rfl Φ fam hfam`. Establish `hgen` using `exists_eq_smul_group hG hI U hσ hres (exists_eq_smul hS D.toPre _ hth)`. Take `⟨g, hg, hn⟩` from `exists_mem_nonzeroLocus hI U.toUnifPre (hσ 0) hth hmem`. Take `⟨J, hJ⟩` from `exists_good' U.LG.isLB g`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hu` using `isUnit_sval σ (𝟙 _) g hn hJ`. Use `U.smooth` as an intermediate fact. Use `⟨σ, fam, rfl, hσ, hmem, fun σ' fam' h hE => ?_, fun s => ?_, fun s b hb => ?_⟩` and prove the remaining obligations. Take `⟨b, hb⟩` from `hgen σ'`. Take `rfl` from `eq_one_of_weight_zero hI U.toUnifPre hσ hE h hth hb`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `hb.trans (one_smul R _)`. Take `⟨b, hb⟩` from `hgen s`. Establish `hb'` using `(secIsMul_iff _ _ _ _).2 hb`. Use `⟨b, hb', fun b' h => by_contra fun hne => hu.ne_zero (cst_regular G.hom g (sub_ne_zero.2 hne) ?_)⟩` and prove the remaining obligations. Establish `e` using `(sval_of_secIsMul h (𝟙 _) g hJ).symm.trans (sval_of_secIsMul hb' _ g hJ)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `e` using `[Category.id_comp]`. Use `show _ * _ = _ * _`. Rewrite using `[cst_sub, sub_mul, e, sub_self, mul_zero]`. Establish `h₁ : IsUnit b → ∃ g, G.hom g = closedPoint R ∧ g ∈ nonzeroLocus s` using `fun h => by`. Use `⟨g, hg, (SectionBaseChange.mem_nonzeroLocus s _).2 ⟨_, hJ.mem _ (𝟙 _), ?_⟩⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨u, rfl⟩` from `h`. Establish `e` using `sval_of_secIsMul hb (𝟙 _) g hJ`. Establish `hc : IsUnit (cst (𝟙 _ ≫ G.hom) g u.val)` using `IsUnit.of_mul_eq_one (cst (𝟙 _ ≫ G.hom) g u⁻¹.val) (by rw [← cst_mul', u.mul_inv, cst_one'])`. Conclude with `(e ▸ hc.mul hu : IsUnit (sval s _ g J))`. Establish `h₂ : (∃ g, G.hom g = closedPoint R ∧ g ∈ nonzeroLocus s) → NonzeroOnSpecial U s` using `fun ⟨g, h, h'⟩ => nonzeroOnSpecial_of_mem U s g h h'`.
-
-Conclude with `⟨⟨h₂ ∘ h₁, isUnit_of_nonzeroOnSpecial U hb⟩, h₁, isUnit_of_nonzeroOnSpecial U hb ∘ h₂⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_theta (hG : GlobalFnsSt) (hS : SecBaseChangeSt) [IsNoetherianRing R] (hI : I ≤ maximalIdeal R)
     (U : Unif I D A G) [GeometricallyConnected G.hom] (th : D.toPre.SecB 1 0)

@@ -22,9 +22,9 @@ open GlobalTheory.RowEx
 namespace GlobalTheory.RowEx
 
 /- English proof (translation)
-Use `GlobalTheory.RowTest.injK_of_separates hS ?_` and prove the remaining obligations. Take `⟨C0, hL⟩` from `hL`. Use `⟨C0, fun ε CF hCF => ?_⟩` and prove the remaining obligations. Take `⟨x0, hL⟩` from `hL ε CF hCF`. Use `⟨x0, fun D large₂ hε hx Γ _ _ Pl0 T A Ks _ _ _ R F hset ch hch hsc ρ ξ a u => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hL D large₂ hε hx Γ Pl0 T A Ks R F hset (ch.withReal ρ ξ) hsc (hch.toIsBase.withReal ρ ξ) a u`.
+A detailed English derivation is pending.
 -/
 theorem injK_of_separates_linB (hS : GlobalTheory.IndefiniteRowSideFullHecke.LevelPlusSubgroup.FunctionalsSeparate) (hL : LinB) : InjK := by
   refine GlobalTheory.RowTest.injK_of_separates hS ?_

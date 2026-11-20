@@ -6,7 +6,7 @@ open scoped TensorProduct
 namespace GlobalTheory.CompanionTheory.LeibPhi
 
 /- English proof (translation)
-Simplify using `only [Matrix.add_apply, Matrix.one_apply, GlobalTheory.BZMir.colMat, if_neg hc, if_neg hrc, add_zero]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem one_add_colMat_apply_eq_zero_of_ne_last (k : Type) [Field k] (n : ℕ) (v : Fin n → k)
     {r c : Fin (n + 1)} (hc : c ≠ Fin.last n) (hrc : r ≠ c) :
@@ -15,13 +15,13 @@ private theorem one_add_colMat_apply_eq_zero_of_ne_last (k : Type) [Field k] (n 
     add_zero]
 
 /- English proof (translation)
-Introduce `g hg`. Unfold `GlobalTheory.BZMir.MirUin at hg`. Rewrite `hg` using `[Subgroup.mem_subgroupOf]`. Take `⟨v, hv⟩` from `hg`. Rewrite using `[GlobalTheory.CompanionTheory.LeibPhi.mem_mirabolicParabolic_iff]`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Introduce `b a`. Establish `hmat : ((g : GL (Fin (m + j + 1)) k) : Matrix (Fin (m + j + 1)) (Fin (m + j + 1)) k) = 1 + GlobalTheory.BZMir.colMat k (m + j) (Multiplicative.toAdd v)`. Rewrite using `[← hv]`. Both sides reduce to the same expression. Rewrite using `[hmat]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Establish `ha` using `a.isLt`. Apply `one_add_colMat_apply_eq_zero_of_ne_last` to reduce the goal to its premises. Introduce `h`. Establish `h'` using `congrArg Fin.val h`. Rewrite `h'` using `[GlobalTheory.CompanionTheory.LeibPhi.blockIndex_false_val, Fin.val_last]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use linear arithmetic over natural numbers and integers. Introduce `h`. Establish `h'` using `congrArg Fin.val h`. Rewrite `h'` using `[GlobalTheory.CompanionTheory.LeibPhi.blockIndex_false_val, GlobalTheory.CompanionTheory.LeibPhi.blockIndex_true_val]`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem mirUin_le_HGP (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] (m j : ℕ) : MirUin k (m + j) ≤ MirabolicParabolic k m j := by

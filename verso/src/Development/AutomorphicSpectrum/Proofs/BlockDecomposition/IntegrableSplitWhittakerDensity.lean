@@ -16,15 +16,13 @@ namespace GlobalTheory.CompanionTheory.WS.DenInt
 variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F]
 
 /- English proof (translation)
-Take `⟨hl, hc⟩` from `h`. Establish `h1 : IsLocallyConstant (Ψ ∘ fun p : (F × F) × F => (p.1.1, p.1.2 + p.2))` using `hl.comp_continuous (by fun_prop)`. Establish `h2 : IsLocallyConstant (Ψ ∘ fun p : (F × F) × F => p.1)` using `hl.comp_continuous continuous_fst`. Establish `hopen` using `(h1.sub h2).isOpen_fiber 0`. Take `⟨U, V, -, hV, hKU, h0V, hUV⟩` from `generalized_tube_lemma hc.isCompact (isCompact_singleton (x := (0 : F))) hopen (by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Introduce and unpack `⟨p, t⟩ ⟨-, ht⟩`. Establish `ht0 : t = 0` using `ht`. Substitute `ht0` using the available equality. Use the proof step `simp)`. Take `⟨n, -, hn⟩` from `hasBasis_nhds_zero_valBall.mem_iff.mp (hV.mem_nhds (h0V (Set.mem_singleton (0 : F))))`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Substitute using the available equality. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `key : ∀ p ∈ tsupport Ψ, ∀ t ∈ valBall F n, Ψ (p.1, p.2 + t) = Ψ p`. Introduce `p hp t ht`. Use `hUV (Set.mk_mem_prod (hKU hp) (hn ht))` as an intermediate fact. Simplify `this` using `[sub_eq_zero]`. Use `⟨n, fun x y t ht => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `h1 : (x, y) ∈ tsupport Ψ`. Conclude with `key _ h1 t ht`. Distinguish the cases in `h2 : (x, y + t) ∈ tsupport Ψ`. Use `key _ h2 (-t) (neg_mem ht)` as an intermediate fact. Simplify using `using this.symm`.
-
-Rewrite using `[image_eq_zero_of_notMem_tsupport h1, image_eq_zero_of_notMem_tsupport h2]`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_periodic {Ψ : F × F → ℂ} (h : IsSB Ψ) :
     ∃ n : ℤ, ∀ (x y t : F), t ∈ valBall F n → Ψ (x, y + t) = Ψ (x, y) := by
@@ -55,9 +53,9 @@ theorem exists_periodic {Ψ : F × F → ℂ} (h : IsSB Ψ) :
   · rw [image_eq_zero_of_notMem_tsupport h1, image_eq_zero_of_notMem_tsupport h2]
 
 /- English proof (translation)
-Take `⟨-, hc⟩` from `h`. Take `⟨k, hk⟩` from `hc.isCompact.elim_directed_cover (fun k : ℤ => (valBall F (-k) : Set F) ×ˢ (valBall F (-k) : Set F)) (fun k => (isOpen_valBall _).prod (isOpen_valBall _)) (by`. Introduce and unpack `⟨x, y⟩ -`. Use `Set.mem_iUnion.mpr ⟨max (-ord x) (-ord y), ?_, ?_⟩` and prove the remaining obligations. Conclude with `valBall_antitone (by omega) (mem_valBall_ord (x := x))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components.
 
-Conclude with `valBall_antitone (by omega) (mem_valBall_ord (x := y)))`. Use the proof step `(fun a b => ⟨max a b, Set.prod_mono (valBall_antitone (by omega)) (valBall_antitone (by omega)), Set.prod_mono (valBall_antitone (by omega)) (valBall_antitone (by omega))⟩)`. Conclude with `⟨-k, fun x y hxy => hk (subset_tsupport _ hxy)⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_bdd {Ψ : F × F → ℂ} (h : IsSB Ψ) :
     ∃ m : ℤ, ∀ x y : F, Ψ (x, y) ≠ 0 → x ∈ valBall F m ∧ y ∈ valBall F m := by
@@ -78,9 +76,9 @@ theorem exists_bdd {Ψ : F × F → ℂ} (h : IsSB Ψ) :
 variable [MeasurableSpace F] [BorelSpace F]
 
 /- English proof (translation)
-Establish `h0 : ∀ y : F, Ψ ((u : F), (u : F) * y) = 0`. Introduce `y`. Assume the negation of the conclusion as `hne`. Use `(mem_valBall_iff_le_ord u.ne_zero).mp (hm _ _ hne)` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Simplify using `[inn, h0]`.
+Simplify using the standard rewrite rules.
 -/
 theorem inn_eq_zero_of_lt {χ : AddChar F Circle} {Ψ : F × F → ℂ} {m : ℤ}
     (hm : ∀ x y : F, Ψ (x, y) ≠ 0 → x ∈ valBall F m) (u : Fˣ) (hu : ord (u : F) < m) :
@@ -93,15 +91,13 @@ theorem inn_eq_zero_of_lt {χ : AddChar F Circle} {Ψ : F × F → ℂ} {m : ℤ
   simp [inn, h0]
 
 /- English proof (translation)
-Establish `hnot` using `not_isTrivialOn_addCharConductor_sub_one hχ.1 hχ.2.1`. Rewrite `hnot` using `[hχ.2.2]`. Choose the witnesses or unpack the hypotheses as in `⟨y₀, hy₀, hne⟩ : ∃ y₀ ∈ valBall F (-1), χ y₀ ≠ 1 := by`. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Conclude with `hnot fun x hx => hcon x (by simpa using hx)`. Use `set f : F → ℂ := fun y => Ψ ((u : F), (u : F) * y) * (χ (-y) : ℂ) with hf`. Establish `hu' : (u : F) * (-y₀) ∈ valBall F n` using `valBall_antitone (by omega : n ≤ ord (u : F) + -1) (mul_mem_valBall (mem_valBall_ord (x := (u : F))) (neg_mem hy₀))`. Establish `ht : ∀ y, f (y + -y₀) = (χ y₀ : ℂ) * f y`. Introduce `y`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Simplify using `only [hf]`. Rewrite using `[mul_add, hp _ _ _ hu', neg_add, neg_neg, AddChar.map_add_eq_mul]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hI : ∫ y, f y ∂selfDualMeasure χ = (χ y₀ : ℂ) * ∫ y, f y ∂selfDualMeasure χ`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← integral_const_mul]`. Use `conv_lhs => rw [← integral_add_right_eq_self f (-y₀)]`. Repeatedly rewrite using `[ht]`. Establish `hne' : (χ y₀ : ℂ) ≠ 1` using `fun h => hne (Circle.ext (by simpa using h))`. Establish `h1 : (1 - (χ y₀ : ℂ)) * ∫ y, f y ∂selfDualMeasure χ = 0` using `by linear_combination hI`.
-
-Conclude with `(mul_eq_zero.mp h1).resolve_left (sub_ne_zero.mpr hne'.symm)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem inn_eq_zero_of_gt {χ : AddChar F Circle} (hχ : IsStd χ) {Ψ : F × F → ℂ} {n : ℤ}
     (hp : ∀ (x y t : F), t ∈ valBall F n → Ψ (x, y + t) = Ψ (x, y)) (u : Fˣ)
@@ -131,19 +127,15 @@ theorem inn_eq_zero_of_gt {χ : AddChar F Circle} (hχ : IsStd χ) {Ψ : F × F 
   exact (mul_eq_zero.mp h1).resolve_left (sub_ne_zero.mpr hne'.symm)
 
 /- English proof (translation)
-Take `⟨m, hm⟩` from `exists_bdd h`. Establish `hΨ` using `h.1.continuous`. Take `⟨C, hC⟩` from `h.2.exists_bound_of_continuous hΨ`. Rewrite using `[continuous_iff_continuousAt]`. Introduce `u₀`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `set k := ord ((u₀⁻¹ : Fˣ) : F) with hk`. Establish `hnb : ∀ᶠ u : Fˣ in 𝓝 u₀, ((u⁻¹ : Fˣ) : F) ∈ valBall F k`. Establish `hcont : Continuous fun u : Fˣ => ((u⁻¹ : Fˣ) : F)` using `Units.continuous_val.comp continuous_inv`. Conclude with `hcont.continuousAt.eventually_mem ((isOpen_valBall k).mem_nhds (mem_valBall_ord (x := ((u₀⁻¹ : Fˣ) : F))))`. Establish `hint : Integrable ((valBall F (k + m) : Set F).indicator fun _ => C) (selfDualMeasure χ)` using `(integrableOn_const (isCompact_valBall (k + m)).measure_lt_top.ne).integrable_indicator (measurableSet_valBall (k + m))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hcy : ∀ y : F, Continuous fun u : Fˣ => Ψ ((u : F), (u : F) * y) * (χ (-y) : ℂ)`. Introduce `y`. Establish `: Continuous fun u : Fˣ => (((u : F), (u : F) * y) : F × F)` using `Units.continuous_val.prodMk (Units.continuous_val.mul continuous_const)`. Conclude with `(hΨ.comp this).mul continuous_const`. Use `continuousAt_of_dominated (bound := (valBall F (k + m) : Set F).indicator fun _ => C) (Eventually.of_forall fun u => ?_) ?_ hint (ae_of_all _ fun y => (hcy y).continuousAt)` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc : Continuous fun y : F => Ψ ((u : F), (u : F) * y) * (χ (-y) : ℂ)`. Establish `h1 : Continuous fun y : F => (((u : F), (u : F) * y) : F × F)` using `by fun_prop`. Establish `h2 : Continuous fun y : F => (χ (-y) : ℂ)` using `continuous_subtype_val.comp (hχ.comp continuous_neg)`. Conclude with `(hΨ.comp h1).mul h2`. Conclude with `hc.aestronglyMeasurable`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `filter_upwards [hnb] with u hu`. Use `ae_of_all _ fun y => ?_` and prove the remaining obligations. Distinguish the cases in `h0 : Ψ ((u : F), (u : F) * y) = 0`. Establish `hC0 : 0 ≤ C` using `(norm_nonneg _).trans (hC (0, 0))`. Simplify using `only [h0, zero_mul, norm_zero]`.
-
-Conclude with `Set.indicator_nonneg (fun _ _ => hC0) _`. Establish `hy : y ∈ valBall F (k + m)`. Use `mul_mem_valBall hu (hm _ _ h0).2` as an intermediate fact. Simplify using `using this`. Rewrite using `[Set.indicator_of_mem (by exact hy)]`.
-
-Rewrite using `[norm_mul, Circle.norm_coe, mul_one]`. Conclude with `hC _`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_inn {χ : AddChar F Circle} (hχ : Continuous χ) {Ψ : F × F → ℂ} (h : IsSB Ψ) :
     Continuous (inn χ Ψ) := by
@@ -187,9 +179,9 @@ theorem continuous_inn {χ : AddChar F Circle} (hχ : Continuous χ) {Ψ : F × 
       exact hC _
 
 /- English proof (translation)
-Establish `e1 : Continuous fun u => ((c₁ u : ℂˣ) : ℂ)` using `Units.continuous_val.comp h₁.1`. Establish `e2 : Continuous fun u => (((c₂ u)⁻¹ : ℂˣ) : ℂ)` using `Units.continuous_val.comp h₂.1.inv`. Establish `e3 : Continuous fun u : Fˣ => mp u 1`. Establish `: (fun u : Fˣ => mp u 1) = fun u : Fˣ => ((modulus (u : F) : ℝ) : ℂ)`. Use function extensionality and compare the values at `u`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `[mp]`. Rewrite using `[this]`. Conclude with `Complex.continuous_ofReal.comp (NNReal.continuous_coe.comp (continuous_modulus.comp Units.continuous_val))`. Conclude with `((e1.mul e2).mul e3).mul (continuous_inn hχ h)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_den {χ : AddChar F Circle} (hχ : Continuous χ) {c₁ c₂ : Fˣ →* ℂˣ}
     (h₁ : IsUnit1 c₁) (h₂ : IsUnit1 c₂) {Ψ : F × F → ℂ} (h : IsSB Ψ) :
@@ -206,11 +198,11 @@ theorem continuous_den {χ : AddChar F Circle} (hχ : Continuous χ) {c₁ c₂ 
   exact ((e1.mul e2).mul e3).mul (continuous_inn hχ h)
 
 /- English proof (translation)
-Establish `hA : IsCompact ((valBall F a : Set F) \ (valBall F (b + 1) : Set F))` using `(isCompact_valBall a).diff (isOpen_valBall (b + 1))`. Establish `hsub : (valBall F a : Set F) \ (valBall F (b + 1) : Set F) ⊆ Set.range (Units.val : Fˣ → F)`. Introduce and unpack `x ⟨-, hx⟩`. Establish `hx0 : x ≠ 0`. Introduce and unpack `rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Conclude with `hx (zero_mem _)`. Conclude with `⟨Units.mk0 x hx0, rfl⟩`. Establish `himg : Units.val '' {u : Fˣ | a ≤ ord (u : F) ∧ ord (u : F) ≤ b} = (valBall F a : Set F) \ (valBall F (b + 1) : Set F)`. Rewrite using `[← Set.image_preimage_eq_of_subset hsub]`. Use `congr 1`.
+Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Use extensionality with `u`. Simplify using `only [Set.mem_setOf_eq, Set.mem_preimage, Set.mem_sdiff, SetLike.mem_coe, mem_valBall_iff_le_ord u.ne_zero]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[isOpenEmbedding_units_val.isEmbedding.isCompact_iff, himg]`. Conclude with `hA`.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isCompact_ord_between (a b : ℤ) : IsCompact {u : Fˣ | a ≤ ord (u : F) ∧ ord (u : F) ≤ b} := by
   have hA : IsCompact ((valBall F a : Set F) \ (valBall F (b + 1) : Set F)) :=
@@ -233,9 +225,7 @@ theorem isCompact_ord_between (a b : ℤ) : IsCompact {u : Fˣ | a ≤ ord (u : 
   exact hA
 
 /- English proof (translation)
-Establish `hsub : {u : Fˣ | a ≤ ord (u : F) ∧ ord (u : F) ≤ b} ⊆ ⋃ k ∈ Finset.Icc a b, ordShell F k`. Introduce `u hu`. Conclude with `Set.mem_biUnion (Finset.mem_coe.mpr (Finset.mem_Icc.mpr hu)) rfl`. Use `ne_top_of_le_ne_top ?_ (measure_mono hsub)` and prove the remaining obligations. Conclude with `(measure_biUnion_lt_top (Finset.finite_toSet _) fun k _ => by`.
-
-Rewrite using `[multHaar_ordShell]`. Conclude with `ENNReal.one_lt_top).ne`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem multHaar_ord_between_ne_top (a b : ℤ) :
     multHaar F {u : Fˣ | a ≤ ord (u : F) ∧ ord (u : F) ≤ b} ≠ ⊤ := by
@@ -254,11 +244,11 @@ namespace GlobalTheory.CompanionTheory.WS
 open GlobalTheory.CompanionTheory.WS.DenInt in
 
 /- English proof (translation)
-Introduce `F _ _ _ _ _ _ χ hχ c₁ c₂ h₁ h₂ Ψ h`. Take `⟨m, hm⟩` from `exists_bdd h`. Take `⟨n, hn⟩` from `exists_periodic h`. Establish `hc` using `continuous_den hχ.1 h₁ h₂ h`. Establish `hsupp : Function.support (den χ c₁ c₂ Ψ) ⊆ {u : Fˣ | m ≤ ord (u : F) ∧ ord (u : F) ≤ n}`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `u hu`. Establish `hinn : inn χ Ψ u ≠ 0` using `fun h0 => hu (by simp [den, h0])`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hlt`. Conclude with `hinn (inn_eq_zero_of_lt (fun x y hxy => (hm x y hxy).1) u (not_le.mp hlt))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hgt`. Conclude with `hinn (inn_eq_zero_of_gt hχ hn u (by omega))`. Take `⟨M, hM⟩` from `(isCompact_ord_between (F := F) m n).exists_bound_of_continuousOn hc.continuousOn`. Use `(integrableOn_iff_integrable_of_support_subset hsupp).mp ?_` and prove the remaining obligations. Conclude with `Measure.integrableOn_of_bounded (multHaar_ord_between_ne_top m n) hc.aestronglyMeasurable ((ae_restrict_iff' (isCompact_ord_between m n).measurableSet).mpr (ae_of_all _ hM))`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem integrable_den : ∀ (F : Type) [Field F] [ValuativeRel F] [TopologicalSpace F]
     [IsNonarchimedeanLocalField F] [MeasurableSpace F] [BorelSpace F] (χ : AddChar F Circle),

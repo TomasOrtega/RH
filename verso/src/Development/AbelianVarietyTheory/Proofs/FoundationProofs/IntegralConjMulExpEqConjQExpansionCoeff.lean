@@ -7,7 +7,7 @@ open scoped Manifold
 namespace GlobalTheory.HeckeFamilyMatrices.Qc
 
 /- English proof (translation)
-Rewrite using `[Function.Periodic.qParam, ← Complex.exp_nat_mul, one_div, ← Complex.exp_neg, ← Complex.exp_conj, Complex.ofReal_exp, ← Complex.exp_add]`. Use `congr 1`. Simplify using `only [map_neg, map_mul, map_div₀, map_add, Complex.conj_ofReal, Complex.conj_I, map_natCast, map_ofNat]`. Use `push_cast`. Take the linear combination `(4 * (Real.pi : ℂ) * n * y / T) * Complex.I_sq`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion.
 -/
 lemma exp_eq_conj_qParam (T : ℝ) (n : ℕ) (x y : ℝ) :
     Complex.exp (2 * Real.pi * Complex.I * n * ((x : ℂ) + (y : ℂ) * Complex.I) / T) =
@@ -21,9 +21,9 @@ lemma exp_eq_conj_qParam (T : ℝ) (n : ℕ) (x y : ℝ) :
   linear_combination (4 * (Real.pi : ℂ) * n * y / T) * Complex.I_sq
 
 /- English proof (translation)
-Establish `hc : ∀ f : ℝ → ℂ, (starRingEnd ℂ) (∫ u in (0 : ℝ)..T, f u) = ∫ u in (0 : ℝ)..T, (starRingEnd ℂ) (f u)`. Introduce `f`. Rewrite using `[intervalIntegral.integral_of_le hT.le, intervalIntegral.integral_of_le hT.le, integral_conj]`. Rewrite using `[qExpansion_coeff_eq_intervalIntegral hT hper hhol hbdd n hy, map_mul, hc]`. Establish `hT' : (T : ℂ) ≠ 0` using `by exact_mod_cast hT.ne'`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[show (starRingEnd ℂ) (1 / (T : ℂ)) = 1 / (T : ℂ) by simp [Complex.conj_ofReal], ← mul_assoc, mul_one_div_cancel hT', one_mul, ← intervalIntegral.integral_mul_const]`. Use `intervalIntegral.integral_congr fun x _ => ?_` and prove the remaining obligations. Establish `him : 0 < ((x : ℂ) + (y : ℂ) * Complex.I).im` using `by simpa using hy`. Simplify using `only [ofComplex_apply_of_im_pos him]`. Rewrite using `[exp_eq_conj_qParam, map_mul, ← mul_assoc, mul_comm ((starRingEnd ℂ) (h _))]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/

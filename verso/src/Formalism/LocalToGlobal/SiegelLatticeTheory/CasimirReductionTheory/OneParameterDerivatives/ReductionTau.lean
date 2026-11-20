@@ -6,7 +6,7 @@ set_option autoImplicit false
 namespace Formalism.L2.SG.Pf
 
 /- English proof (translation)
-The claim follows from `Tau.reductionTau`.
+A detailed English derivation is pending.
 -/
 theorem reduction_theory : Formalism.L2.SG.LitS.ReductionTau :=
   Tau.reductionTau

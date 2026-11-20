@@ -10,17 +10,17 @@ open scoped Matrix NNReal
 namespace GlobalTheory.RecOne.CycRoots
 
 /- English proof (translation)
-Establish `hp : l.Prime` using `Fact.out`. Use `haveI : IsAlgClosed Ω := IsAlgClosure.isAlgClosed ℚ`. Proceed by induction on `hx using Algebra.adjoin_induction with`. Consider the case `mem x hx`. Take `⟨n, hn⟩` from `hx`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨y, hy⟩` from `IsAlgClosed.exists_pow_nat_eq (x : Ω) hp.pos`. Establish `hyA : y ∈ A` using `mem_of_pow_mem A hp.ne_zero (hy ▸ x.2)`. Establish `e : (⟨y, hyA⟩ : A) ^ l = x` using `Subtype.ext (by simpa using hy)`. Use `⟨⟨y, hyA⟩, mem_cycAlg_of_pow (n := n + 1) ?_, 0, by rw [e]; ring⟩` and prove the remaining obligations. Rewrite using `[pow_succ', pow_mul, e, hn]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `algebraMap a`. Take `⟨b, z, h⟩` from `GlobalTheory.T.fixed_element_lth_power_mod l Ω A hA a`. Conclude with `⟨algebraMap (fixA A) A b, Subalgebra.algebraMap_mem _ b, z, h⟩`. Consider the case `add a b _ _ iha ihb`. Take `⟨y, hy, z, rfl⟩` from `iha`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨y', hy', z', rfl⟩` from `ihb`. Take `⟨r, hr⟩` from `exists_add_pow_prime_eq hp y y'`. Use `⟨y + y', Subalgebra.add_mem _ hy hy', z + z' - y * y' * r, ?_⟩` and prove the remaining obligations. Rewrite using `[hr]`. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Treat this case separately.
 
-Consider the case `mul a b _ _ iha ihb`. Take `⟨y, hy, z, rfl⟩` from `iha`. Take `⟨y', hy', z', rfl⟩` from `ihb`. Use `⟨y * y', Subalgebra.mul_mem _ hy hy', z * y' ^ l + y ^ l * z' + (l : A) * z * z', ?_⟩` and prove the remaining obligations. Rewrite using `[mul_pow]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem frob_cycAlg (l : ℕ) [Fact l.Prime] (Ω : Type) [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω]
     (A : ValuationSubring Ω) (hA : OverL l A) (x : A) (hx : x ∈ cycAlg l A) :
@@ -51,33 +51,29 @@ theorem frob_cycAlg (l : ℕ) [Fact l.Prime] (Ω : Type) [Field Ω] [Algebra ℚ
     rw [mul_pow]; ring
 
 /- English proof (translation)
-Introduce `l _ hl2 Ω _ _ _ A hA v hv hl0 hl1`. Establish `hp : l.Prime` using `Fact.out`. Establish `hl3 : 3 ≤ l` using `by have := hp.two_le; omega`. Use `haveI : IsAlgClosed Ω := IsAlgClosure.isAlgClosed ℚ`. Use `haveI : CharZero Ω := algebraRat.charZero Ω`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hF : ∀ x : A, x ∈ cycAlg l A ↔ (x : Ω) ∈ Fix Ω (ineCyc l A)`. Introduce `x`. Rewrite using `[GlobalTheory.T.mem_inertiaInvariantsCyclotomicAlgebra_iff l Ω A hA x]`. Conclude with `⟨fun h g => h g g.2, fun h s hs => h ⟨s, hs⟩⟩`. Use `haveI : NeZero ((l ^ 2 : ℕ) : Ω) := ⟨by exact_mod_cast (pow_pos hp.pos 2).ne'⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨ζ, hζ⟩` from `HasEnoughRootsOfUnity.exists_primitiveRoot Ω (l ^ 2)`. Establish `hζA : ζ ∈ A` using `mem_of_pow_mem A (pow_pos hp.pos 2).ne' (by rw [hζ.pow_eq_one]; exact A.one_mem)`. Establish `hζF : ζ ∈ Fix Ω (ineCyc l A)` using `(hF ⟨ζ, hζA⟩).1 (mem_cycAlg_of_pow (n := 2) (Subtype.ext (by simpa using hζ.pow_eq_one)))`. Use `set c : Ω := ζ - 1 with hc`. Establish `hcF : c ∈ Fix Ω (ineCyc l A)` using `Subfield.sub_mem _ hζF (Subfield.one_mem _)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hequiv : v.IsEquiv A.valuation` using `Valuation.isEquiv_iff_val_le_one.2 fun {x} => by rw [hv, A.valuation_le_one_iff]`. Establish `hvc : v c ^ (l * (l - 1)) = v (l : Ω)`. Establish `h` using `GlobalTheory.valuation_zeta_sub_one_pow_totient l Ω A 2 ζ (by norm_num) hζ`. Rewrite `h` using `[Nat.totient_prime_pow hp (by norm_num), ← map_pow]`. Rewrite using `[← map_pow, hequiv.eq_iff]`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Simplify using `using h`. Establish `hN : l * (l - 1) ≠ 0` using `Nat.mul_ne_zero (by omega) (by omega)`. Establish `hc0 : 0 < v c`. Break down `(zero_le : 0 ≤ v c).eq_or_lt with h | h` into its components or cases. Rewrite `hvc` using `[← h, zero_pow hN]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `absurd hvc hl0.ne`. Conclude with `h`. Establish `hc1 : v c < 1`. Assume the negation of the conclusion as `h`. Conclude with `absurd (hvc ▸ one_le_pow₀ (not_lt.1 h)) (not_le.2 hl1)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Establish `hcne : c ≠ 0` using `fun h => by rw [h, map_zero] at hc0; exact lt_irrefl _ hc0`. Use `set r : ℝ≥0 := v c ^ l with hr`. Establish `hr0 : 0 < r` using `pow_pos hc0 l`. Establish `hr1 : r < 1` using `pow_lt_one₀ hc0.le hc1 hp.ne_zero`. Establish `hlr : v (l : Ω) ≤ r * r`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[← hvc, pow_mul, ← hr, ← sq]`. Conclude with `pow_le_pow_of_le_one hr0.le hr1.le (by omega)`. Use `⟨r, hr1, fun u hu => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hu0 : u = 0`. Use `⟨0, Subfield.zero_mem _, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hu0, zero_pow hp.ne_zero, sub_zero, map_zero]`. Conclude with `zero_le`. Establish `hvu : 0 < v u` using `(Valuation.pos_iff v).2 hu0`. Take `⟨k, hk1, hk2⟩` from `NNReal.exists_mem_Ioc_zpow hvu.ne' ((one_lt_inv₀ hr0).2 hr1)`. Use `set d : Ω := c ^ (k + 1) with hd`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Establish `hdF : d ∈ Fix Ω (ineCyc l A)` using `Subfield.zpow_mem _ hcF _`. Establish `hdne : d ≠ 0` using `zpow_ne_zero _ hcne`. Establish `hvd : v (d ^ l) = r ^ (k + 1)`. Rewrite using `[map_pow, hd, map_zpow₀, hr, ← zpow_natCast, ← zpow_natCast, ← zpow_mul, ← zpow_mul, mul_comm]`. Establish `hrk : 0 < r ^ (k + 1)` using `zpow_pos hr0 _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h1 : v (u * d ^ l) ≤ 1`. Rewrite using `[map_mul, hvd]`. Combine the equalities or inequalities in the displayed calculation. Establish `h2 : r ≤ v (u * d ^ l)`. Rewrite using `[map_mul, hvd]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[zpow_add_one₀ hr0.ne', ← mul_assoc, ← mul_zpow, inv_mul_cancel₀ hr0.ne', one_zpow, one_mul]`. Use `_ ≤ v u * r ^ (k + 1) := mul_le_mul_of_nonneg_right hk1.le zero_le`. Establish `hu'F : u * d ^ l ∈ Fix Ω (ineCyc l A)` using `Subfield.mul_mem _ hu (Subfield.pow_mem _ hdF _)`. Take `⟨y, hy, z, e⟩` from `frob_cycAlg l Ω A hA ⟨u * d ^ l, (hv _).1 h1⟩ ((hF _).2 hu'F)`.
-
-Establish `e' : u * d ^ l = (y : Ω) ^ l + (l : Ω) * (z : Ω)`. Simplify using `using congrArg (fun t : A => (t : Ω)) e`. Use `⟨(y : Ω) / d, Subfield.div_mem _ ((hF y).1 hy) hdF, ?_⟩` and prove the remaining obligations. Establish `e2 : (u - ((y : Ω) / d) ^ l) * d ^ l = (l : Ω) * (z : Ω)`. Rewrite using `[sub_mul, div_pow, div_mul_cancel₀ _ (pow_ne_zero _ hdne), e']`.
-
-Expand and normalize the polynomial expressions, which then agree. Establish `h3 : v (u - ((y : Ω) / d) ^ l) * r ^ (k + 1) ≤ r * v u * r ^ (k + 1)`. Rewrite using `[← hvd, mul_assoc, ← map_mul, ← map_mul, e2, map_mul v (l : Ω)]`. Combine the equalities or inequalities in the displayed calculation. Conclude with `le_of_mul_le_mul_right h3 hrk`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem approxRoot_fix_ineCyc : ∀ (l : ℕ) [Fact l.Prime], l ≠ 2 → ∀ (Ω : Type) [Field Ω] [Algebra ℚ Ω]
     [IsAlgClosure ℚ Ω] (A : ValuationSubring Ω), OverL l A → ∀ v : Valuation Ω ℝ≥0, (∀ x : Ω, v x ≤ 1 ↔ x ∈ A) →

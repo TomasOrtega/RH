@@ -5,9 +5,9 @@ open Complex DirichletCharacter ArithmeticFunction MeasureTheory
 namespace GlobalTheory
 
 /- English proof (translation)
-Break down `eq_or_ne s 0 with rfl | hs` into its components or cases. Simplify using `[Gammaℝ_def]`. Establish `hπ : (Real.pi : ℂ) ≠ 0` using `ofReal_ne_zero.mpr Real.pi_ne_zero`. Rewrite using `[Gammaℝ_add_two hs]`. Simplify using `only [div_eq_mul_inv, mul_inv, inv_inv]`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Generalize the expression as in `(Gammaℝ s)⁻¹ = g`. Clear the denominators using the available nonvanishing facts.
+Replace the chosen expression with an arbitrary variable. Clear the denominators using the available nonvanishing facts.
 -/
 theorem inv_Gammaℝ_eq_mul_inv_add_two (s : ℂ) :
     (Gammaℝ s)⁻¹ = s / (2 * Real.pi) * (Gammaℝ (s + 2))⁻¹ := by
@@ -20,9 +20,7 @@ theorem inv_Gammaℝ_eq_mul_inv_add_two (s : ℂ) :
     field_simp
 
 /- English proof (translation)
-Establish `hF : (fun s : ℂ => (Gammaℝ s)⁻¹) = fun s => s / (2 * Real.pi) * (Gammaℝ (s + 2))⁻¹`. Use function extensionality and compare the values at `inv_Gammaℝ_eq_mul_inv_add_two`. Establish `h1 : HasDerivAt (fun s : ℂ => s / (2 * (Real.pi : ℂ))) (1 / (2 * Real.pi)) x` using `(hasDerivAt_id' x).div_const _`. Establish `h2 : HasDerivAt (fun s : ℂ => (Gammaℝ (s + 2))⁻¹) (deriv (fun s : ℂ => (Gammaℝ s)⁻¹) (x + 2)) x` using `HasDerivAt.comp_add_const x 2 (differentiable_Gammaℝ_inv (x + 2)).hasDerivAt`. Use `conv_lhs => rw [hF]`.
-
-Conclude with `(h1.mul h2).deriv`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private lemma deriv_inv_Gammaℝ_eq_shift (x : ℂ) :
     deriv (fun s : ℂ => (Gammaℝ s)⁻¹) x =
@@ -39,11 +37,11 @@ private lemma deriv_inv_Gammaℝ_eq_shift (x : ℂ) :
   exact (h1.mul h2).deriv
 
 /- English proof (translation)
-Establish `hπ : (2 * (Real.pi : ℂ)) ≠ 0` using `mul_ne_zero two_ne_zero (ofReal_ne_zero.mpr Real.pi_ne_zero)`. Proceed by induction on `n with`. Consider the case `zero`. Rewrite using `[deriv_inv_Gammaℝ_eq_shift]`. Establish `h2 : Gammaℝ 2 ≠ 0` using `Gammaℝ_ne_zero_of_re_pos (by norm_num)`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `[h2, Real.pi_ne_zero]`. Consider the case `succ n ih`. Rewrite using `[deriv_inv_Gammaℝ_eq_shift]`. Establish `e : (-(2 * ((n + 1 : ℕ) : ℂ))) + 2 = -(2 * (n : ℂ))` using `by push_cast; ring`. Rewrite using `[e, inv_eq_zero.mpr (Gammaℝ_eq_zero_iff.mpr ⟨n, rfl⟩), mul_zero, zero_add]`.
+Simplify using the standard rewrite rules. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `mul_ne_zero (div_ne_zero ?_ hπ) ih` and prove the remaining obligations. Establish `: (n : ℂ) + 1 ≠ 0` using `by exact_mod_cast Nat.succ_ne_zero n`. Use `push_cast`. Conclude with `neg_ne_zero.mpr (mul_ne_zero two_ne_zero this)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Move the embeddings inside the algebraic operations. A detailed English derivation is pending.
 -/
 theorem deriv_inv_Gammaℝ_ne_zero (n : ℕ) :
     deriv (fun s : ℂ => (Gammaℝ s)⁻¹) (-(2 * n)) ≠ 0 := by
@@ -64,11 +62,11 @@ theorem deriv_inv_Gammaℝ_ne_zero (n : ℕ) :
     exact neg_ne_zero.mpr (mul_ne_zero two_ne_zero this)
 
 /- English proof (translation)
-Establish `hG : gaussSum χ ZMod.stdAddChar ≠ 0`. Introduce `h`. Establish `h1 : ZMod.dft (χ : ZMod q → ℂ) = 0`. Use function extensionality and compare the values at `k`. Rewrite using `[hχ.fourierTransform_eq_inv_mul_gaussSum k, h, mul_zero]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `h2` using `congr_fun (ZMod.dft_dft (χ : ZMod q → ℂ)) (-1)`. Rewrite `h2` using `[h1, _root_.map_zero]`. Simplify using `only [Pi.zero_apply, neg_neg, map_one, smul_eq_mul, mul_one] at h2`. Conclude with `NeZero.ne q (by exact_mod_cast h2.symm)`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions.
 
-Unfold `rootNumber`. Use `div_ne_zero (div_ne_zero hG (pow_ne_zero _ I_ne_zero)) ?_` and prove the remaining obligations. Rewrite using `[Ne, cpow_eq_zero_iff]`. Conclude with `fun h => NeZero.ne q (Nat.cast_eq_zero.mp h.1)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
 -/
 theorem rootNumber_ne_zero_of_isPrimitive {q : ℕ} [NeZero q] {χ : DirichletCharacter ℂ q}
     (hχ : χ.IsPrimitive) : rootNumber χ ≠ 0 := by
@@ -88,13 +86,13 @@ theorem rootNumber_ne_zero_of_isPrimitive {q : ℕ} [NeZero q] {χ : DirichletCh
   exact fun h => NeZero.ne q (Nat.cast_eq_zero.mp h.1)
 
 /- English proof (translation)
-Establish `hFE` using `hχ.completedLFunction_one_sub (1 - s)`. Rewrite `hFE` using `[sub_sub_cancel]`. Rewrite using `[hFE]`. Establish `hw : 1 ≤ (1 - s).re` using `by rw [sub_re, one_re]; linarith`. Use `mul_ne_zero (mul_ne_zero ?_ (rootNumber_ne_zero_of_isPrimitive hχ)) ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Ne, cpow_eq_zero_iff]`. Conclude with `fun h => NeZero.ne q (Nat.cast_eq_zero.mp h.1)`. Introduce `hC`. Establish `hne : χ⁻¹ ≠ 1 ∨ 1 - s ≠ 1`. Break down `h0 with h | h` into its components or cases.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `Or.inr (by intro h'; apply h; linear_combination -h')`. Conclude with `Or.inl (inv_ne_one.mpr h)`. Apply `LFunction_ne_zero_of_one_le_re χ⁻¹ hne hw` to reduce the goal to its premises. Establish `h1s : 1 - s ≠ 0`. Introduce `h'`.
+Prove the second alternative. Prove the first alternative. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hw` using `[h']`. Evaluate the numerical expressions using `at hw`. Rewrite using `[LFunction_eq_completed_div_gammaFactor χ⁻¹ (1 - s) (Or.inl h1s), hC, zero_div]`.
+Rewrite the indicated hypotheses using the stated equalities. Evaluate the numerical expressions. Rewrite the conclusion using the stated equalities.
 -/
 theorem completedLFunction_ne_zero_of_re_nonpos {q : ℕ} [NeZero q] {χ : DirichletCharacter ℂ q}
     (hχ : χ.IsPrimitive) {s : ℂ} (hs : s.re ≤ 0) (h0 : s ≠ 0 ∨ χ ≠ 1) :
@@ -117,27 +115,23 @@ theorem completedLFunction_ne_zero_of_re_nonpos {q : ℕ} [NeZero q] {χ : Diric
     rw [LFunction_eq_completed_div_gammaFactor χ⁻¹ (1 - s) (Or.inl h1s), hC, zero_div]
 
 /- English proof (translation)
-Introduce `q _ χ hχ s hs hL`. Establish `h0 : s ≠ 0 ∨ χ ≠ 1` using `by by_contra! h`. Take `⟨rfl, rfl⟩` from `h`. Establish `hq : q = 1` using `by rw [IsPrimitive, conductor_one] at hχ; exact hχ.symm`. Substitute `hq` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality.
 
-Rewrite `hL` using `[LFunction_modOne_eq, riemannZeta_zero]`. Evaluate the numerical expressions using `at hL`. Establish `h0' : s ≠ 0 ∨ q ≠ 1` using `h0.imp id (fun h hq => h (level_one' χ hq))`. Establish `hs1 : s ≠ 1` using `by intro h; rw [h] at hs; norm_num at hs`. Establish `hC : completedLFunction χ s ≠ 0` using `completedLFunction_ne_zero_of_re_nonpos hχ hs h0`.
+Rewrite the indicated hypotheses using the stated equalities. Evaluate the numerical expressions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hCd : DifferentiableAt ℂ (completedLFunction χ) s` using `differentiableAt_completedLFunction χ s h0' (Or.inl hs1)`. Choose the witnesses or unpack the hypotheses as in `⟨a, ha, hpar⟩ : ∃ a : ℕ, (∀ w, gammaFactor χ w = Gammaℝ (w + a)) ∧ (a = 0 ∧ χ.Even ∨ a = 1 ∧ χ.Odd) := by`. Break down `χ.even_or_odd with h | h` into its components or cases. Conclude with `⟨0, fun w => by simp [h.gammaFactor_def], Or.inl ⟨rfl, h⟩⟩`. Conclude with `⟨1, fun w => by simp [h.gammaFactor_def], Or.inr ⟨rfl, h⟩⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Establish `hev : LFunction χ =ᶠ[nhds s] fun w => completedLFunction χ w * (Gammaℝ (w + a))⁻¹`. Establish `: ∀ᶠ w in nhds s, w ≠ 0 ∨ q ≠ 1`. Break down `h0' with h | h` into its components or cases. Conclude with `(eventually_ne_nhds h).mono fun w hw => Or.inl hw`. Conclude with `Filter.Eventually.of_forall fun _ => Or.inr h`.
+Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `this.mono fun w hw => by`. Rewrite using `[LFunction_eq_completed_div_gammaFactor χ w hw, div_eq_mul_inv, ha]`. Establish `hG : Gammaℝ (s + a) = 0`. Use `hev.self_of_nhds` as an intermediate fact. Rewrite `this` using `[hL]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Break down `mul_eq_zero.mp this.symm with h | h` into its components or cases. Conclude with `absurd h hC`. Conclude with `inv_eq_zero.mp h`. Take `⟨n, hn⟩` from `Gammaℝ_eq_zero_iff.mp hG`. Establish `hh : HasDerivAt (fun w : ℂ => (Gammaℝ (w + a))⁻¹) (deriv (fun w : ℂ => (Gammaℝ w)⁻¹) (s + a)) s` using `HasDerivAt.comp_add_const s (a : ℂ) (differentiable_Gammaℝ_inv (s + a)).hasDerivAt`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hder : deriv (LFunction χ) s ≠ 0`. Rewrite using `[hev.deriv_eq, (hCd.hasDerivAt.fun_mul hh).deriv, inv_eq_zero.mpr hG, mul_zero, zero_add]`. Use `mul_ne_zero hC ?_` and prove the remaining obligations. Rewrite using `[hn]`. Conclude with `deriv_inv_Gammaℝ_ne_zero n`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hAn : AnalyticAt ℂ (LFunction χ) s` using `analyticAt_iff_eventually_differentiableAt.mpr ((eventually_ne_nhds hs1).mono fun w hw => differentiableAt_LFunction χ w (Or.inl hw))`. Establish `hord : analyticOrderAt (LFunction χ) s = 1` using `hAn.analyticOrderAt_eq_one_of_zero_deriv_ne_zero hL hder`. Establish `hs_eq : s = -((2 * n + a : ℕ) : ℂ)` using `by push_cast; linear_combination hn`. Use `⟨⟨2 * n + a, hs_eq⟩, by simp [analyticOrderNatAt, hord], fun h => ?_, fun h => ?_⟩` and prove the remaining obligations. Rewrite `hs_eq` using `[h]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Use linear arithmetic over natural numbers and integers. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hk : ((2 * n + a : ℕ) : ℂ) = 0` using `by linear_combination hs_eq`. Establish `hk' : 2 * n + a = 0` using `by exact_mod_cast hk`. Use `⟨?_, h0.resolve_left (not_not.mpr h)⟩` and prove the remaining obligations. Break down `hpar with ⟨_, he⟩ | ⟨ha1, _⟩` into its components or cases. Conclude with `he`.
-
-Use linear arithmetic over natural numbers and integers. Rewrite `hs_eq` using `[h]`. Establish `hk : ((2 * n + a : ℕ) : ℂ) = 1` using `by linear_combination hs_eq`. Establish `hk' : 2 * n + a = 1` using `by exact_mod_cast hk`. Break down `hpar with ⟨ha0, _⟩ | ⟨_, ho⟩` into its components or cases.
-
-Use linear arithmetic over natural numbers and integers. Conclude with `ho`.
+Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem LFunction_zero_of_re_nonpos : ∀ (q : ℕ) [NeZero q] (χ : DirichletCharacter ℂ q), χ.IsPrimitive → ∀ s : ℂ, s.re ≤ 0 → LFunction χ s = 0 → (∃ n : ℕ, s = -n) ∧ analyticOrderNatAt (LFunction χ) s = 1 ∧ (s = 0 → χ.Even ∧ χ ≠ 1) ∧ (s = -1 → χ.Odd) := by
   intro q _ χ hχ s hs hL

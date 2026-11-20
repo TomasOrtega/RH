@@ -12,14 +12,14 @@ variable {k G : Type} [CommRing k] [Group G] [TopologicalSpace G] [IsTopological
   (A : Rep.{0} k G) [IsDiscreteRep A]
 
 /- English proof (translation)
-The claim follows from `cocycleι_injective (cochainOf_injective h)`.
+A detailed English derivation is pending.
 -/
 theorem coc_inj (n : ℕ) {x y : cocycles A n}
     (h : cochainOf A (cocycleι A n x) = cochainOf A (cocycleι A n y)) : x = y :=
   cocycleι_injective (cochainOf_injective h)
 
 /- English proof (translation)
-Use `⟨(cochainsComplex A).cyclesMk (mkCochain A c hc) (n + 1) (by simp) ?_, ?_⟩` and prove the remaining obligations. Apply `cochainOf_injective (A := A)` to reduce the goal to its premises. Conclude with `(cochainOf_d (A := A) _).trans hd`. Conclude with `congrArg (cochainOf A) ((cochainsComplex A).i_cyclesMk _ _ _ _)`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem exists_coc (n : ℕ) (c : (Fin n → G) → A) (hc : IsLocallyConstant c)
     (hd : (inhomogeneousCochains.d A n).hom c = 0) :
@@ -30,11 +30,9 @@ theorem exists_coc (n : ℕ) (c : (Fin n → G) → A) (hc : IsLocallyConstant c
   · exact congrArg (cochainOf A) ((cochainsComplex A).i_cyclesMk _ _ _ _)
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `((cochainsComplex A).homologyπ (n + 1)).hom x = 0 ↔ _`. Rewrite using `[homologyπ_eq_zero_iff, CochainComplex.prev_nat_succ]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨w, hw⟩`. Use `⟨cochainOf A w, isLocallyConstant_cochainOf w, ?_⟩` and prove the remaining obligations.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← cochainOf_d]`. Conclude with `congrArg (cochainOf A) hw`. Introduce and unpack `⟨w, hw, h⟩`. Use `⟨mkCochain A w hw, ?_⟩` and prove the remaining obligations. Apply `cochainOf_injective (A := A)` to reduce the goal to its premises.
-
-Conclude with `(cochainOf_d (A := A) _).trans h`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem pi_succ_eq_zero_iff (n : ℕ) (x : cocycles A (n + 1)) :
     cohomologyπ A (n + 1) x = 0 ↔ ∃ w : (Fin n → G) → A, IsLocallyConstant w ∧
@@ -52,11 +50,9 @@ theorem pi_succ_eq_zero_iff (n : ℕ) (x : cocycles A (n + 1)) :
     exact (cochainOf_d (A := A) _).trans h
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `((cochainsComplex A).homologyπ 0).hom x = 0 ↔ _`. Rewrite using `[homologyπ_eq_zero_iff, CochainComplex.prev_nat_zero]`. Establish `h0 : (cochainsComplex A).d 0 0 = 0` using `(cochainsComplex A).shape 0 0 (by simp)`. Rewrite using `[h0]`. Prove the components needed by the constructor for the conclusion.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨w, hw⟩`. Conclude with `(congrArg (cochainOf A) hw).symm`. Introduce `h`. Use `⟨0, ?_⟩` and prove the remaining obligations. Apply `cochainOf_injective (A := A)` to reduce the goal to its premises.
-
-Conclude with `h.symm`.
+Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem pi_zero_eq_zero_iff (x : cocycles A 0) :
     cohomologyπ A 0 x = 0 ↔ cochainOf A (cocycleι A 0 x) = 0 := by
@@ -73,11 +69,11 @@ theorem pi_zero_eq_zero_iff (x : cocycles A 0) :
     exact h.symm
 
 /- English proof (translation)
-Use `choose ψ hψ using hex`. Establish `hadd : ∀ z z', ψ (z + z') = ψ z + ψ z'` using `fun z z' => coc_inj A n (by`. Rewrite using `[map_add, cochainOf_add, hψ, hψ, hψ, map_add])`. Set `f : Z →+ cohomology A n` to `AddMonoidHom.mk' (fun z => cohomologyπ A n (ψ z)) (fun z z' => by rw [hadd, map_add])`. Establish `hf : ∀ z x, cochainOf A (cocycleι A n x) = φ z → f z = cohomologyπ A n x` using `fun z x h => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: ψ z = x` using `coc_inj A n ((hψ z).trans h.symm)`. Express the relevant statement in the definitionally equal form `cohomologyπ A n (ψ z) = _`. Rewrite using `[this]`. Use `⟨f, fun y => ?_, hf⟩` and prove the remaining obligations. Take `⟨x, rfl⟩` from `cohomologyπ_surjective A n y`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨z, hz⟩` from `hsurj x`. Conclude with `⟨z, hf z x hz⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem core_hom {Z : Type} [AddCommGroup Z] (n : ℕ) (φ : Z →+ ((Fin n → G) → A))
     (hex : ∀ z, ∃ x : cocycles A n, cochainOf A (cocycleι A n x) = φ z)
@@ -99,11 +95,11 @@ theorem core_hom {Z : Type} [AddCommGroup Z] (n : ℕ) (φ : Z →+ ((Fin n → 
   exact ⟨z, hf z x hz⟩
 
 /- English proof (translation)
-Take `⟨f, hs, hf⟩` from `core_hom A n φ hex hsurj`. Establish `hk : ∀ z, f z = 0 ↔ z ∈ B` using `fun z => by`. Take `⟨x, hx⟩` from `hex z`. Rewrite using `[hf z x hx, hB z x hx]`. Set `g : (Z ⧸ B) →+ cohomology A n` to `QuotientAddGroup.lift B.toAddSubgroup f (fun z hz => (hk z).2 hz)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Establish `hg : ∀ z, g (Submodule.Quotient.mk z) = f z` using `fun z => rfl`. Use `⟨AddEquiv.ofBijective g ⟨?_, ?_⟩, fun z x h => (hg z).trans (hf z x h)⟩` and prove the remaining obligations. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `q hq`. Take `⟨z, rfl⟩` from `Submodule.Quotient.mk_surjective B q`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite `hq` using `[hg, hk]`. Conclude with `(Submodule.Quotient.mk_eq_zero B).2 hq`. Introduce `y`. Take `⟨z, rfl⟩` from `hs y`. Conclude with `⟨_, hg z⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem core_quot {R Z : Type} [CommRing R] [AddCommGroup Z] [Module R Z] (B : Submodule R Z)
     (n : ℕ) (φ : Z →+ ((Fin n → G) → A))
@@ -133,7 +129,7 @@ theorem core_quot {R Z : Type} [CommRing R] [AddCommGroup Z] [Module R Z] (B : S
 end Core
 
 /- English proof (translation)
-Rewrite using `[← Int.cast_smul_eq_zsmul S]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem neg_one_pow_smul' {S V : Type} [Ring S] [AddCommGroup V] [Module S V] (j : ℕ) (v : V) :
     (-1 : S) ^ j • v = (-1 : ℤ) ^ j • v := by
@@ -156,7 +152,7 @@ theorem dn_app (n : ℕ) (f : (Fin n → G) → M) (g : Fin (n + 1) → G) :
 
 include he in
 /- English proof (translation)
-Use function extensionality and compare the values at `s`. Rewrite using `[inhomogeneousCochains.d_hom_apply, dn_app, map_add, map_sum, he]`. Use `congr 1`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[neg_one_pow_smul' (S := k), neg_one_pow_smul' (S := R), map_zsmul]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem d_comp (n : ℕ) (f : (Fin n → G) → M) :
     (inhomogeneousCochains.d A n).hom (fun s => e (f s)) = fun s => e (dn rho n f s) := by
@@ -167,7 +163,7 @@ theorem d_comp (n : ℕ) (f : (Fin n → G) → M) :
   rw [neg_one_pow_smul' (S := k), neg_one_pow_smul' (S := R), map_zsmul]
 
 /- English proof (translation)
-Establish `h : ∀ t, f t = f default` using `fun t => congrArg f (Subsingleton.elim _ _)`. Rewrite using `[dn_app]`. Simplify using `[h, sub_eq_add_neg]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem dn_zero (f : (Fin 0 → G) → M) (s : Fin 1 → G) :
     dn rho 0 f s = rho (s 0) (f default) - f default := by
@@ -176,7 +172,7 @@ theorem dn_zero (f : (Fin 0 → G) → M) (s : Fin 1 → G) :
   simp [h, sub_eq_add_neg]
 
 /- English proof (translation)
-Rewrite using `[dn_app]`. Simplify using `[Fin.sum_univ_succ, Fin.contractNth, sub_eq_add_neg, add_assoc]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem dn_one (f : G → M) (s : Fin 2 → G) :
     dn rho 1 (fun t => f (t 0)) s = rho (s 0) (f (s 1)) - f (s 0 * s 1) + f (s 0) := by
@@ -184,7 +180,7 @@ theorem dn_one (f : G → M) (s : Fin 2 → G) :
   simp [Fin.sum_univ_succ, Fin.contractNth, sub_eq_add_neg, add_assoc]
 
 /- English proof (translation)
-Rewrite using `[dn_app]`. Establish `h3 : (-1 : R) ^ 3 = -1` using `by norm_num`. Simplify using `[h3, Fin.sum_univ_succ, Fin.contractNth, sub_eq_add_neg, add_assoc]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem dn_two (f : G × G → M) (s : Fin 3 → G) :
     dn rho 2 (fun t => f (t 0, t 1)) s =

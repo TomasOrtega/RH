@@ -15,15 +15,13 @@ def tensGrp {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] (dual :
   fun c => ∑ d, (cond dual ((g⁻¹) d c) (g c d)) • σ g (f d)
 
 /- English proof (translation)
-Establish `hVf : FiniteDimensional ℂ V` using `hV.1`. Establish `hVk : IsKStableSub ε E V` using `hV.2.1`. Establish `hV'f : FiniteDimensional ℂ V'` using `hV'.1`. Establish `hV'k : IsKStableSub ε E V'` using `hV'.2.1`. Establish `hT : ∀ (g : Matrix (Fin n) (Fin n) ℂ) (u : Fin n → H), tensGrp dual σ g u = coefTG dual σ g u`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `g u`. Use function extensionality and compare the values at `c`. Apply the tactic sequence `cases dual <;> rfl`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `f hf x' hx'`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨z, hz, hzy⟩` from `coefB_toSum_exists dual hσ hD hVf hVk hgap' hV' hc' hι f hf`. Use `⟨z, hz, fun g hg => ?_⟩` and prove the remaining obligations. Establish `hq` using `coefE_all dual hσ hD hVf hVk hc hV'f hV'k hc' hι.1 hι.2.2.1 f z hzy g hg x' hx'`. Rewrite using `[hT]`. Conclude with `hq`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `z hz x' hx'`. Take `⟨f, hf, hfy⟩` from `coefB_ofSum_exists dual hσ hD hgap' hV' hc' hι z hz`. Use `⟨f, hf, fun g hg => ?_⟩` and prove the remaining obligations. Establish `hq` using `coefE_all dual hσ hD hVf hVk hc hV'f hV'k hc' hι.1 hι.2.2.1 f z hfy g hg x' hx'`. Rewrite using `[hT]`.
-
-Conclude with `hq.symm`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coef_of_emb (dual : Bool) {lam lam' : Fin n → ℝ} {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] {ε : Fin n → Bool}
     {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} {D : Submodule ℂ H} {E : Fin n → Fin n → Module.End ℂ D}

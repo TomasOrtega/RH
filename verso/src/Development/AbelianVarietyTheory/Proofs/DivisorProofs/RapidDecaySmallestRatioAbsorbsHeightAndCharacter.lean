@@ -7,9 +7,9 @@ open NumberField GlobalTheory.CuspRep GlobalTheory.CuspQuot GlobalTheory.AutGrow
 namespace GlobalTheory.RapidDecayReal
 
 /- English proof (translation)
-Establish `h0 : 0 ≤ 1 + ∑ i, r i + ∑ i, (r i)⁻¹`. Use `Finset.sum_nonneg (fun i (_ : i ∈ Finset.univ) => (hr i).le)` as an intermediate fact. Use `Finset.sum_nonneg (fun i (_ : i ∈ Finset.univ) => (inv_pos.2 (hr i)).le)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Apply `pow_le_pow_left₀ h0` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `h1 : ∑ i, r i ≤ ∑ _i : Fin a, K` using `Finset.sum_le_sum (fun i _ => (hb i).1)`. Establish `h2 : ∑ i, (r i)⁻¹ ≤ ∑ _i : Fin a, K` using `Finset.sum_le_sum (fun i _ => (hb i).2)`. Simplify using `only [Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul] at h1 h2`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem height_le (a : ℕ) (N : ℕ) (r : Fin a → ℝ) (hr : ∀ i, 0 < r i) (K : ℝ)
     (hb : ∀ i, r i ≤ K ∧ (r i)⁻¹ ≤ K) :
@@ -25,15 +25,13 @@ theorem height_le (a : ℕ) (N : ℕ) (r : Fin a → ℝ) (hr : ∀ i, 0 < r i) 
   linarith
 
 /- English proof (translation)
-Establish `hK0 : 0 < K` using `by linarith`. Establish `hi : ∀ i, K ^ (-|lam i|) ≤ r i ^ lam i`. Introduce `i`. Break down `le_or_gt 0 (lam i) with h | h` into its components or cases. Rewrite using `[abs_of_nonneg h, Real.rpow_neg hK0.le, ← Real.inv_rpow hK0.le]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Apply `Real.rpow_le_rpow (inv_nonneg.2 hK0.le) _ h` to reduce the goal to its premises. Rewrite using `[inv_le_comm₀ hK0 (hr i)]`. Conclude with `(hb i).2`. Rewrite using `[abs_of_neg h, neg_neg]`. Establish `e1 : K ^ lam i = (K⁻¹) ^ (-lam i)`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Real.inv_rpow hK0.le, Real.rpow_neg hK0.le, inv_inv]`. Establish `e2 : r i ^ lam i = ((r i)⁻¹) ^ (-lam i)`. Rewrite using `[Real.inv_rpow (hr i).le, Real.rpow_neg (hr i).le, inv_inv]`. Rewrite using `[e1, e2]`. Apply `Real.rpow_le_rpow (inv_nonneg.2 hK0.le) _ (by linarith)` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Chain the equalities or inequalities of the calculation.
 
-Conclude with `inv_anti₀ (hr i) (hb i).1`. Combine the equalities or inequalities in the displayed calculation. Apply `Real.rpow_le_rpow_of_exponent_le hK` to reduce the goal to its premises. Rewrite using `[Finset.sum_neg_distrib]`. Combine the linear equalities and inequalities to obtain the conclusion.
-
-Use `_ = ∏ i, K ^ (-|lam i|) := Real.rpow_sum_of_pos hK0 _ _`. Use `_ ≤ ∏ i, r i ^ lam i := Finset.prod_le_prod (fun i _ => Real.rpow_nonneg hK0.le _) (fun i _ => hi i)`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem char_ge (a : ℕ) (lam : Fin a → ℝ) (L : ℕ) (hL : ∑ i, |lam i| ≤ L) (r : Fin a → ℝ)
     (hr : ∀ i, 0 < r i) (K : ℝ) (hK : 1 ≤ K) (hb : ∀ i, r i ≤ K ∧ (r i)⁻¹ ≤ K) :
@@ -62,13 +60,13 @@ theorem char_ge (a : ℕ) (lam : Fin a → ℝ) (L : ℕ) (hL : ∑ i, |lam i| �
         Finset.prod_le_prod (fun i _ => Real.rpow_nonneg hK0.le _) (fun i _ => hi i)
 
 /- English proof (translation)
-Use `set P := ρ ^ a with hPdef`. Establish `hP : 1 ≤ P` using `one_le_pow₀ hρ`. Establish `hC00 : 0 < C0` using `by linarith`. Establish `hP0 : 0 < P` using `by linarith`. Establish `hK : 1 ≤ C0 * P` using `by nlinarith`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `height_le a N r hr (C0 * P) hb`. Establish `h2` using `char_ge a lam L hL r hr (C0 * P) hK hb`. Establish `h3 : (1 + 2 * (a : ℝ) * (C0 * P)) ^ N ≤ ((1 + 2 * a * C0) * P) ^ N`. Apply `pow_le_pow_left₀ (by positivity)` to reduce the goal to its premises. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Establish `hm : ρ ^ (a * N + a * L) = P ^ N * P ^ L`. Rewrite using `[hPdef, ← pow_mul, ← pow_mul, ← pow_add]`. Rewrite using `[hm]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_pow, mul_pow]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Clear the denominators using the available nonvanishing facts. Use `_ ≤ ((1 + 2 * a * C0) ^ N * C0 ^ L) * ∏ i, r i ^ lam i := mul_le_mul_of_nonneg_left h2 (by positivity)`.
+A detailed English derivation is pending.
 -/
 theorem key (a : ℕ) (lam : Fin a → ℝ) (L N : ℕ) (hL : ∑ i, |lam i| ≤ L) (C0 : ℝ) (hC0 : 1 ≤ C0)
     (r : Fin a → ℝ) (hr : ∀ i, 0 < r i) (ρ : ℝ) (hρ : 1 ≤ ρ)
@@ -102,17 +100,17 @@ end GlobalTheory.RapidDecayReal
 open GlobalTheory.RapidDecayReal in
 
 /- English proof (translation)
-Introduce `a t ht lam N`. Take `⟨C0, hC0, hC⟩` from `GlobalTheory.T.coneCoordinate_le_pow_of_prod_eq_one a t ht`. Use `set L := ⌈∑ i, |lam i|⌉₊ with hLdef`. Establish `hL : ∑ i, |lam i| ≤ L` using `Nat.le_ceil _`. Use `⟨a * N + a * L, (1 + 2 * a * C0) ^ N * C0 ^ L, by positivity, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `r hr hcone hprod`. Distinguish the cases in `hall : ∀ i j : Fin a, (j : ℕ) = i + 1 → r i ≤ r j`. Use `left`. Establish `hb` using `hC r 1 hr hcone hprod le_rfl (fun i j hij => by rw [one_mul]; exact hall i j hij)`. Use `key a lam L N hL C0 hC0 r hr 1 le_rfl hb` as an intermediate fact.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result.
 
-Simplify using `using this`. Use `right push_neg at hall`. Take `⟨i, j, hij, hlt⟩` from `hall`. Use `set S := (Finset.univ : Finset (Fin a × Fin a)).filter (fun p => (p.2 : ℕ) = p.1 + 1) with hS`. Establish `hne : S.Nonempty` using `⟨(i, j), by simp [hS, hij]⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨p, hp, hmax⟩` from `Finset.exists_max_image S (fun p => r p.1 / r p.2) hne`. Establish `hpadj : (p.2 : ℕ) = p.1 + 1` using `by simpa [hS] using hp`. Establish `hij' : r i / r j ≤ r p.1 / r p.2` using `hmax (i, j) (by simp [hS, hij])`. Establish `hρ : 1 ≤ r p.1 / r p.2`. Establish `: 1 < r i / r j` using `by rw [one_lt_div (hr j)]; exact hlt`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hadj : ∀ i' j' : Fin a, (j' : ℕ) = i' + 1 → r i' ≤ (r p.1 / r p.2) * r j'`. Introduce `i' j' h'`. Use `hmax (i', j') (by simp [hS, h'])` as an intermediate fact. Rewrite `this` using `[div_le_iff₀ (hr j')]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hb` using `hC r _ hr hcone hprod hρ hadj`. Use `⟨p.1, p.2, hpadj, ?_⟩` and prove the remaining obligations. Use `key a lam L N hL C0 hC0 r hr _ hρ hb` as an intermediate fact. Rewrite using `[← inv_div (r p.1) (r p.2), inv_pow]`. Conclude with `this`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.rapidDecay_real : ∀ (a : ℕ) (t : ℝ), 0 < t → ∀ (lam : Fin a → ℝ) (N : ℕ), ∃ (m : ℕ) (C : ℝ), 0 ≤ C ∧ ∀ r : Fin a → ℝ, (∀ i, 0 < r i) → (∀ i j : Fin a, (j : ℕ) = i + 1 → t * r j ≤ r i) → ∏ i, r i = 1 → (1 + ∑ i, r i + ∑ i, (r i)⁻¹) ^ N ≤ C * ∏ i, r i ^ lam i ∨ ∃ i j : Fin a, (j : ℕ) = i + 1 ∧ (r j / r i) ^ m * (1 + ∑ i, r i + ∑ i, (r i)⁻¹) ^ N ≤ C * ∏ i, r i ^ lam i := by
   intro a t ht lam N

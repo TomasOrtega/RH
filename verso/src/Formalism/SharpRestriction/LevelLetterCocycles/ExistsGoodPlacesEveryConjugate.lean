@@ -18,9 +18,9 @@ section Conj
 variable {D : Formalism.BasicNotions.D7} {N : NData D.R D.host D.what₂} {X : NTw D.R D.host D.what₂ D.LL0 N}
 
 /- English proof (translation)
-Apply the tactic sequence `cases b <;> cases b'`. Conclude with `⟨a, rfl, rfl⟩`. Use `⟨-a, Int.natAbs_neg a, ?_⟩` and prove the remaining obligations. Simplify using `[Formalism.MainNotions.BlochKatoReduction.Gen.psiAt, zpow_neg]`. Use `⟨-a, Int.natAbs_neg a, ?_⟩` and prove the remaining obligations.
+Apply the first step, then apply the next step to every resulting obligation. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[Formalism.MainNotions.BlochKatoReduction.Gen.psiAt, zpow_neg]`. Conclude with `⟨a, rfl, rfl⟩`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 theorem psiAt_side_zpow {Γ A : Type} [Group Γ] [CommGroup A] (b b' : Bool) (ψ : Γ →* A) (a : ℤ) :
     ∃ a' : ℤ, a'.natAbs = a.natAbs ∧ Formalism.MainNotions.BlochKatoReduction.Gen.psiAt b' (ψ ^ a) = Formalism.MainNotions.BlochKatoReduction.Gen.psiAt b (ψ ^ a') := by
@@ -45,7 +45,7 @@ def TwGoodAll (D : D7) (I : TwIn D) (i : D.ntw.Tw) (b : Bool) (Q : Finset (PlE D
   ∀ a : ℤ, Nat.Coprime a.natAbs (D.ntw.l i) → TwGoodOne D I i b Q k' (ψ ^ a)
 
 /- English proof (translation)
-Use `h 1 (by simp)` as an intermediate fact. Rewrite `this` using `[zpow_one]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem TwGoodAll.one {D : D7} {I : TwIn D} {i : D.ntw.Tw} {b : Bool} {Q : Finset (PlE D.host)} {k' : ℕ}
     {ψ : D.ntw.RCG i Q →* (D.ntw.Ok i k')ˣ} (h : TwGoodAll D I i b Q k' ψ) : TwGoodOne D I i b Q k' ψ := by
@@ -53,7 +53,7 @@ theorem TwGoodAll.one {D : D7} {I : TwIn D} {i : D.ntw.Tw} {b : Bool} {Q : Finse
   rwa [zpow_one] at this
 
 /- English proof (translation)
-Introduce `a ha`. Take `⟨a', h1, h2⟩` from `psiAt_side_zpow b b' ψ a`. Unfold `TwGoodOne`. Rewrite using `[h2]`. Conclude with `h a' (by rw [h1]; exact ha)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem TwGoodAll.side {D : D7} {I : TwIn D} {i : D.ntw.Tw} {b : Bool} {Q : Finset (PlE D.host)} {k' : ℕ}
     {ψ : D.ntw.RCG i Q →* (D.ntw.Ok i k')ˣ} (h : TwGoodAll D I i b Q k' ψ) (b' : Bool) :
@@ -210,7 +210,7 @@ namespace Formalism.MainNotions.N.TwAll
 open Formalism.MainNotions.BlochKatoReduction.Gen (nval)
 
 /- English proof (translation)
-Unfold `nval`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem nval_zero {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (l : ℕ) : nval O l 0 = 0 := by
   unfold nval

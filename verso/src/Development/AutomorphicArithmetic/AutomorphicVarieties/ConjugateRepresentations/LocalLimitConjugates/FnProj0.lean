@@ -13,17 +13,15 @@ open scoped TensorProduct GlobalTheory.CuspRep.CuspidalL2GL
 open UpperTheory.V.Cj UpperTheory.V.Cj.H
 
 /- English proof (translation)
-Introduce `E _ _ _ a ha μ _ _ n e he c`. Take `⟨P, Q, S, hP, hQ, hS, hres, hker, hlim⟩` from `casimir_resolvent_projection E a ha μ n e he c`. Take `⟨P', hP'⟩` from `opLift E a ha μ P hP`. Use `choose Q' hQ' using fun k => opLift E a ha μ (Q k) (hQ k)`. Use `choose S' hS' using fun k => opLift E a ha μ (S k) (hS k)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hG` using `gardFacts E a ha μ`. Take `⟨c1, c2, -, -⟩` from `clFacts E a μ`. Take `⟨-, -, hA⟩` from `casOp E a n e he 0 c`. Take `⟨hA1, hA2⟩` from `hA (gard μ) fun X φ h => (hG φ h).2.2.2.1 X`. Establish `hinj : ∀ φ ∈ gard μ, cl μ φ = 0 → φ = 0` using `fun φ h h0 => c2 φ (hG φ h).1 (hG φ h).2.1 h0`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hsub : ∀ φ ∈ gard μ, ∀ ψ ∈ gard μ, cl μ (φ - ψ) = cl μ φ - cl μ ψ`. Introduce `φ hφ ψ hψ`. Establish `h` using `(c1 φ ψ 1 (-1) (hG φ hφ).2.1 (hG ψ hψ).2.1).2`. Simplify `h` using `only [one_smul, neg_smul, sub_eq_add_neg]`. Establish `oS` using `fun k => opComm E a ha μ (S k) (hS k) (S' k) (hS' k)`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨P', Q', S', opComm E a ha μ P hP P' hP', fun k => opComm E a ha μ (Q k) (hQ k) (Q' k) (hQ' k), oS, fun k φ hφ => ?_, fun φ hφ => ?_, opLim E a ha μ Q P hQ hP hlim Q' P' hQ' hP'⟩` and prove the remaining obligations. Rewrite using `[hA2 (S' k) (oS k) φ hφ]`. Establish `h1` using `hQ' k φ hφ`. Establish `h2` using `hS' k _ (hA1 φ hφ)`. Establish `h3` using `(gard μ).sub_mem hφ h1.1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `sub_eq_zero.1 (hinj _ ((gard μ).sub_mem h3 h2.1) ?_)` and prove the remaining obligations. Rewrite using `[hsub _ h3 _ h2.1, hsub _ hφ _ h1.1, h1.2, h2.2, hres k φ hφ, sub_self]`. Establish `h1` using `hP' φ hφ`. Establish `h2` using `hA1 _ h1.1`. Use `hinj _ h2 (inner_self_eq_zero (𝕜 := ℂ).1 ?_)` and prove the remaining obligations.
-
-Rewrite using `[casSym E a ha μ n e c _ h1.1 _ h2, h1.2]`. Conclude with `hker _ _ h2`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Cj.H.fnProj0 :
     UpperTheory.V.Cj.H.FnProj0 := by

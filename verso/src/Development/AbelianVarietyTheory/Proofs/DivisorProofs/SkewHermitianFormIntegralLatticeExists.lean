@@ -23,27 +23,27 @@ section Form
 variable {E : Type} [Field E] (σ : E →+* E) {d : ℕ} (H : Matrix (Fin d) (Fin d) E)
 
 /- English proof (translation)
-Simplify using `only [Formalism.UG.hform, dotProduct, Matrix.mulVec, Finset.mul_sum, mul_assoc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hform_eq (y x : Fin d → E) : Formalism.UG.hform σ H y x = (fun i => σ (y i)) ⬝ᵥ H *ᵥ x := by
   simp only [Formalism.UG.hform, dotProduct, Matrix.mulVec, Finset.mul_sum, mul_assoc]
 
 /- English proof (translation)
-Rewrite using `[hform_eq, hform_eq, hform_eq, Matrix.mulVec_add, dotProduct_add]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem hform_add (y x x' : Fin d → E) :
     Formalism.UG.hform σ H y (x + x') = Formalism.UG.hform σ H y x + Formalism.UG.hform σ H y x' := by
   rw [hform_eq, hform_eq, hform_eq, Matrix.mulVec_add, dotProduct_add]
 
 /- English proof (translation)
-Rewrite using `[hform_eq, hform_eq, Matrix.mulVec_smul, dotProduct_smul, smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem hform_smul (y : Fin d → E) (a : E) (x : Fin d → E) :
     Formalism.UG.hform σ H y (a • x) = a * Formalism.UG.hform σ H y x := by
   rw [hform_eq, hform_eq, Matrix.mulVec_smul, dotProduct_smul, smul_eq_mul]
 
 /- English proof (translation)
-Simplify using `only [Formalism.UG.hform, map_sum, map_mul, hσ, hH]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem hform_symm (hσ : ∀ x, σ (σ x) = x) (hH : ∀ i j, σ (H j i) = H i j) (x y : Fin d → E) :
     Formalism.UG.hform σ H y x = σ (Formalism.UG.hform σ H x y) := by
@@ -56,13 +56,11 @@ end Form
 variable {E : Type} [Field E] [NumberField E]
 
 /- English proof (translation)
-Establish `h10 : (1 : FractionalIdeal (𝓞 E)⁰ E) ≠ 0`. Introduce `h`. Establish `h1 : (1 : E) ∈ (1 : FractionalIdeal (𝓞 E)⁰ E)` using `FractionalIdeal.one_mem_one _`. Rewrite `h1` using `[h, FractionalIdeal.mem_zero_iff]`. Conclude with `one_ne_zero h1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[FractionalIdeal.mem_dual h10]`. Prove the components needed by the constructor for the conclusion. Introduce `h o`. Establish `h1` using `h (o : E) ((FractionalIdeal.mem_one_iff _).2 ⟨o, rfl⟩)`. Rewrite `h1` using `[Algebra.traceForm_apply, mul_comm]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨q, hq⟩` from `h1`. Rewrite using `[← hq]`. Conclude with `isIntegral_algebraMap`. Introduce `h a ha`. Take `⟨o, rfl⟩` from `(FractionalIdeal.mem_one_iff _).1 ha`.
-
-Rewrite using `[Algebra.traceForm_apply, mul_comm]`. Conclude with `IsIntegrallyClosed.isIntegral_iff.1 (h o)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_dual_one_iff (w : E) : w ∈ FractionalIdeal.dual ℤ ℚ (1 : FractionalIdeal (𝓞 E)⁰ E) ↔
     ∀ o : 𝓞 E, IsIntegral ℤ (Algebra.trace ℚ E (o * w)) := by
@@ -85,16 +83,16 @@ theorem mem_dual_one_iff (w : E) : w ∈ FractionalIdeal.dual ℤ ℚ (1 : Fract
     exact IsIntegrallyClosed.isIntegral_iff.1 (h o)
 
 /- English proof (translation)
-The claim follows from `Algebra.trace_eq_of_algEquiv (AlgEquiv.ofBijective σ.toRatAlgHom (Function.Involutive.bijective (f := σ) hσ)) z`.
+A detailed English derivation is pending.
 -/
 theorem trace_conj {σ : E →+* E} (hσ : ∀ x, σ (σ x) = x) (z : E) : Algebra.trace ℚ E (σ z) = Algebra.trace ℚ E z :=
   Algebra.trace_eq_of_algEquiv
     (AlgEquiv.ofBijective σ.toRatAlgHom (Function.Involutive.bijective (f := σ) hσ)) z
 
 /- English proof (translation)
-Assume the negation of the conclusion as `h`. Take `⟨i, hi⟩` from `Function.ne_iff.1 h`. Establish `htop : L.map (LinearMap.proj i : (Fin d → E) →ₗ[𝓞 E] E) = ⊤`. Use `eq_top_iff.2 fun e _ => ⟨_, hv (e / v i), ?_⟩` and prove the remaining obligations. Simplify using `using div_mul_cancel₀ e hi`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 
-Use `haveI : Module.Finite (𝓞 E) E := ⟨htop ▸ hL.map _⟩`. Conclude with `RingOfIntegers.not_isField E ((Algebra.IsIntegral.isField_iff_isField (IsFractionRing.injective (𝓞 E) E)).2 (Field.toIsField E))`.
+A detailed English derivation is pending.
 -/
 theorem eq_zero_of_line {d : ℕ} {L : Submodule (𝓞 E) (Fin d → E)} (hL : L.FG) {v : Fin d → E}
     (hv : ∀ e : E, e • v ∈ L) : v = 0 := by
@@ -108,9 +106,7 @@ theorem eq_zero_of_line {d : ℕ} {L : Submodule (𝓞 E) (Fin d → E)} (hL : L
     ((Algebra.IsIntegral.isField_iff_isField (IsFractionRing.injective (𝓞 E) E)).2 (Field.toIsField E))
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`. Establish `h1 : RingOfIntegers.mapAlgHom σ = AlgHom.id (𝓞 F) (𝓞 E)` using `Algebra.FormallyUnramified.ext_of_iInf p (Ideal.iInf_pow_eq_bot_of_isDomain p hp.ne_top) fun x => Ideal.Quotient.eq.2 (hcon x)`. Establish `h2 : ∀ o : 𝓞 E, σ (algebraMap (𝓞 E) E o) = algebraMap (𝓞 E) E o` using `fun o => congrArg (algebraMap (𝓞 E) E) (AlgHom.congr_fun h1 o)`. Take `⟨a, b, -, rfl⟩` from `IsFractionRing.div_surjective (A := 𝓞 E) c`.
-
-Conclude with `hc (by rw [map_div₀, h2, h2])`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exists_conj_sub_notMem {F : Type} [Field F] [NumberField F] [Algebra F E] (σ : E →ₐ[F] E)
     (hun : Algebra.Unramified (𝓞 F) (𝓞 E)) {c : E} (hc : σ c ≠ c) (p : Ideal (𝓞 E)) (hp : p.IsMaximal) :
@@ -126,29 +122,29 @@ theorem exists_conj_sub_notMem {F : Type} [Field F] [NumberField F] [Algebra F E
   exact hc (by rw [map_div₀, h2, h2])
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B d r s W hB hW hd c hc0 hc`. Establish `hσ : ∀ x, (σ : E →+* E) ((σ : E →+* E) x) = x`. Introduce `x`. Take `⟨τ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Apply `τ.injective` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `(hB.cm.2.2.2 τ _).trans ((congrArg star (hB.cm.2.2.2 τ x)).trans (star_star _))`. Establish `hσ' : ∀ x, σ (σ x) = x` using `hσ`. Establish `hH : ∀ i j, σ ((c • W.J.map σ) j i) = (c • W.J.map σ) i j`. Introduce `i j`. Simplify using `only [Matrix.smul_apply, Matrix.map_apply, smul_eq_mul, map_mul, hc, hσ', hW.skew j i]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hform : ∀ y x, Formalism.UG.hform (σ : E →+* E) (c • W.J.map σ) y x = c * -form σ W.J x y`. Introduce `y x`. Simplify using `only [Formalism.UG.hform, form, dotProduct, Matrix.mulVec, Matrix.smul_apply, Matrix.map_apply, smul_eq_mul, RingHom.coe_coe, Finset.mul_sum, mul_neg, ← Finset.sum_neg_distrib]`. Rewrite using `[Finset.sum_comm]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[hW.skew i j]`. Expand and normalize the polynomial expressions, which then agree. Set `D` to `FractionalIdeal.dual ℤ ℚ (1 : FractionalIdeal (𝓞 E)⁰ E)`. Set `A` to `FractionalIdeal.spanSingleton (𝓞 E)⁰ c * D`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hneg : ∀ z ∈ D, -z ∈ D` using `fun z hz => D.coeToSubmodule.neg_mem hz`. Establish `hA : ∀ z, c * -z ∈ A ↔ z ∈ D`. Introduce `z`. Rewrite using `[FractionalIdeal.mem_singleton_mul]`. Use `⟨fun ⟨y, hy, e⟩ => ?_, fun hz => ⟨_, hneg z hz, rfl⟩⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `hneg y hy` as an intermediate fact. Rewrite `this` using `[← mul_left_cancel₀ hc0 e, neg_neg]`. Then use the resulting hypothesis. Establish `hDσ : ∀ z ∈ D, σ z ∈ D`. Introduce `z hz`. Rewrite `hz`, the goal using `[mem_dual_one_iff]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `o`. Rewrite using `[← trace_conj hσ, map_mul]`. Establish `e : (σ : E →+* E) (σ z) = z` using `hσ' z`. Rewrite using `[e]`. Conclude with `hz (conjO (σ : E →+* E) o)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hAσ : ∀ z ∈ A, (σ : E →+* E) z ∈ A`. Introduce `z hz`. Take `⟨y, hy, rfl⟩` from `FractionalIdeal.mem_singleton_mul.1 hz`. Establish `e : (σ : E →+* E) (c * y) = c * -σ y`. Rewrite using `[RingHom.coe_coe, map_mul, hc]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, hA]`. Conclude with `hDσ y hy`. Establish `hA0 : A ≠ 0` using `mul_ne_zero (FractionalIdeal.spanSingleton_ne_zero_iff.2 hc0) (FractionalIdeal.dual_ne_zero ℤ ℚ one_ne_zero)`. Establish `hdual : ∀ x, x ∈ W.L ↔ ∀ y ∈ W.L, Formalism.UG.hform (σ : E →+* E) (c • W.J.map σ) y x ∈ A`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `x`. Rewrite using `[hW.dual]`. Use `forall₂_congr fun y _ => ?_` and prove the remaining obligations. Rewrite using `[hform, hA, mem_dual_one_iff]`. Use `⟨⟨hH, fun hdet => ?_⟩, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨v, hv0, hv⟩` from `Matrix.exists_mulVec_eq_zero_iff.2 hdet`. Use `hv0 (eq_zero_of_line hW.lat.fg fun e => (hdual _).2 fun y _ => ?_)` and prove the remaining obligations. Rewrite using `[hform_smul, hform_eq, hv, dotProduct_zero, mul_zero]`. Conclude with `FractionalIdeal.zero_mem _`. Take `⟨L, h1, h2, h3⟩` from `HasModular.one hσ (hform_add _ _) (hform_smul _ _) (hform_symm _ _ hσ hH) hd (exists_conj_sub_notMem σ hB.unram (c := c) fun e => hc0 (by linear_combination (e.symm.trans hc) / 2)) hA0 hAσ ⟨W.L, hW.lat.fg, hW.lat.span_eq_top, hdual⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨L, h1, h2, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[h3]`. Use `forall₂_congr fun y _ => ?_` and prove the remaining obligations. Rewrite using `[FractionalIdeal.mem_one_iff]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_selfDual_smul_skew : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (d r s : ℕ) (W : Spc F E d), B.IsGood σ → W.IsSkew σ B r s → Even d → ∀ c : E, c ≠ 0 → σ c = -c → Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.IsHermND σ (c • W.J.map σ) ∧ ∃ L : Submodule (𝓞 E) (Fin d → E), L.FG ∧ Submodule.span E (L : Set (Fin d → E)) = ⊤ ∧ ∀ x : Fin d → E, x ∈ L ↔ ∀ y ∈ L, Formalism.UG.hform (σ : E →+* E) (c • W.J.map σ) y x ∈ (algebraMap (𝓞 E) E).range := by
   intro F E _ _ _ _ _ σ B d r s W hB hW hd c hc0 hc

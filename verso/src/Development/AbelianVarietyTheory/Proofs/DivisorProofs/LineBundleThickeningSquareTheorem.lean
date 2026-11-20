@@ -16,7 +16,7 @@ namespace GlobalTheory.TowerStep
 variable (R : Type) [CommRing R] [IsLocalRing R] (B : Over (Sp R)) [GrpObj B] [IsCommMonObj B] (e : ℕ)
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.WtTower.isGrpPullback_thickMap (maximalIdeal R) B e`.
+A detailed English derivation is pending.
 -/
 theorem isGrpPullback_thickMap_factor : IsGrpPullback (thickObj R (maximalIdeal R) e B) (thickObj R (maximalIdeal R) (e + 1) B)
     (spMap (Ideal.Quotient.factor (Ideal.pow_le_pow_right (Nat.le_succ (e + 1))) :
@@ -24,20 +24,20 @@ theorem isGrpPullback_thickMap_factor : IsGrpPullback (thickObj R (maximalIdeal 
   GlobalTheory.WtTower.isGrpPullback_thickMap (maximalIdeal R) B e
 
 /- English proof (translation)
-The claim follows from `(pullback.lift_fst _ _ _).trans (Category.comp_id _)`.
+A detailed English derivation is pending.
 -/
 theorem thickMap_fst : thickMap R (maximalIdeal R) e B ≫ pullback.fst B.hom (thick R (maximalIdeal R) (e + 1)) =
     pullback.fst B.hom (thick R (maximalIdeal R) e) :=
   (pullback.lift_fst _ _ _).trans (Category.comp_id _)
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.PolPull.isAbelianScheme_of_isGrpPullback hB (isGrpPullback_pullback B (thick R (maximalIdeal R) (e + 1)))`.
+A detailed English derivation is pending.
 -/
 theorem isAbelianScheme_thickObj (hB : IsAbelianScheme B) : IsAbelianScheme (thickObj R (maximalIdeal R) (e + 1) B) :=
   GlobalTheory.PolPull.isAbelianScheme_of_isGrpPullback hB (isGrpPullback_pullback B (thick R (maximalIdeal R) (e + 1)))
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.ZM.SiegPull.exists_isSquare (G := thickObj R (maximalIdeal R) (e + 1) B) (G' := thickObj R (maximalIdeal R) e B) (f := thickTrans R (maximalIdeal R) e) (pullback.lift_snd _ _ _)`.
+A detailed English derivation is pending.
 -/
 theorem exists_isSquare_thickMap : ∃ i₂ : (G2 (thickObj R (maximalIdeal R) e B)).left ⟶ (G2 (thickObj R (maximalIdeal R) (e + 1) B)).left,
     IsSquare (thickMap R (maximalIdeal R) e B) i₂ :=
@@ -45,9 +45,9 @@ theorem exists_isSquare_thickMap : ∃ i₂ : (G2 (thickObj R (maximalIdeal R) e
     (f := thickTrans R (maximalIdeal R) e) (pullback.lift_snd _ _ _)
 
 /- English proof (translation)
-Establish `hle : RingHom.ker (Ideal.Quotient.factor (Ideal.pow_le_pow_right (Nat.le_succ (e + 1)) : I ^ (e + 1 + 1) ≤ I ^ (e + 1))) ≤ (I ^ (e + 1)).map (Ideal.Quotient.mk _)`. Introduce `x hx`. Take `⟨x, rfl⟩` from `Ideal.Quotient.mk_surjective x`. Rewrite `hx` using `[RingHom.mem_ker, Ideal.Quotient.factor_mk, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `Ideal.mem_map_of_mem _ hx`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `le_bot_iff.1 ((Ideal.pow_right_mono hle _).trans ?_)` and prove the remaining obligations. Rewrite using `[← Ideal.map_pow, ← pow_mul, le_bot_iff, Ideal.map_eq_bot_iff_le_ker, Ideal.mk_ker]`. Conclude with `Ideal.pow_le_pow_right (by omega)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ker_factor_sq {R : Type} [CommRing R] (I : Ideal R) (e : ℕ) :
     RingHom.ker (Ideal.Quotient.factor
@@ -64,7 +64,7 @@ theorem ker_factor_sq {R : Type} [CommRing R] (I : Ideal R) (e : ℕ) :
   exact Ideal.pow_le_pow_right (by omega)
 
 /- English proof (translation)
-Establish `h` using `GlobalTheory.ZM.SiegPull.isSquare_comp si sb`. Rewrite `h` using `[thickMap_fst]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem isSquare_fst_comp {i₂ : (G2 (thickObj R (maximalIdeal R) e B)).left ⟶ (G2 (thickObj R (maximalIdeal R) (e + 1) B)).left}
     {b₂' : (G2 (thickObj R (maximalIdeal R) (e + 1) B)).left ⟶ (G2 B).left}
@@ -79,13 +79,13 @@ end GlobalTheory.TowerStep
 open GlobalTheory.TowerStep in
 
 /- English proof (translation)
-Introduce `R _ _ B _ _ hB P hP h₁ h₂ e L hL hyp`. Use `haveI := GlobalTheory.WtTower.isLocalRing_quotient_pow R e`. Use `haveI := GlobalTheory.WtTower.isLocalRing_quotient_pow R (e + 1)`. Establish `hπ` using `Ideal.Quotient.factor_surjective (Ideal.pow_le_pow_right (Nat.le_succ (e + 1)) : maximalIdeal R ^ (e + 1 + 1) ≤ maximalIdeal R ^ (e + 1))`. Establish `gp₁` using `isGrpPullback_pullback B (thick R (maximalIdeal R) (e + 1))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hab₁` using `isAbelianScheme_thickObj R B e hB`. Establish `hgp` using `isGrpPullback_thickMap_factor R B e`. Take `⟨b₂', sb⟩` from `GlobalTheory.ZM.SiegPull.exists_isSquare gp₁.1.w`. Take `⟨i₂, si⟩` from `exists_isSquare_thickMap R B e`. Establish `s₀` using `isSquare_fst_comp R B e si sb`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hP' : (P.pull b₂').IsLB` using `pull_isLB hP _`. Establish `hLam : (abelian₂ (thickObj R (maximalIdeal R) e B) L).IsLB` using `DVR.linComb_isLB _ hL _ _`. Establish `k : LBIso (abelian₂ (thickObj R (maximalIdeal R) e B) L) ((P.pull b₂').pull i₂)` using `LBIso.trans hLam (pull_isLB hP _) (pull_isLB hP' _) (hyp _ s₀) (GlobalTheory.ZM.SiegPull.lbIso_pull_comp (GtBaseChange.lbIso_refl hP') i₂).symm`. Take `⟨L', hL', hLL⟩` from `GlobalTheory.T.exists_lineBundle_lift_squareZero_of_mumfordBundle _ _ _ hπ (ker_factor_sq (maximalIdeal R) e) (thickObj R (maximalIdeal R) (e + 1) B) (thickObj R (maximalIdeal R) e B) (thickMap R (maximalIdeal R) e B) i₂ hab₁ hgp si (P.pull b₂') L hP' hL k`. Take `⟨a₁, a₂⟩` from `GlobalTheory.T.axisTrivial_lineBundle_groupPullback _ _ B P hP h₁ h₂ (thick R (maximalIdeal R) (e + 1)) (thickObj R (maximalIdeal R) (e + 1) B) _ b₂' gp₁ sb`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `rig` using `GlobalTheory.T.lineBundleIso_mumfordLambda_of_local_quotient _ _ _ hπ (thickObj R (maximalIdeal R) (e + 1) B) (thickObj R (maximalIdeal R) e B) (thickMap R (maximalIdeal R) e B) i₂ hab₁ hgp si (P.pull b₂') hP' a₁ a₂ L' L hL' hL hLL k`. Use `⟨L', hL', fun b₂ hb => ?_, hLL⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.ZM.SiegPull.isSquare_unique hb sb rfl]`. Conclude with `rig`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.TowerStep.step : ∀ (R : Type) [CommRing R] [IsLocalRing R] (B : Over (Sp R)) [GrpObj B] [IsCommMonObj B], IsAbelianScheme B → ∀ (P : LB (G2 B).left), P.IsLB → (∃ u : (P.pull (lift (1 : B ⟶ B) (𝟙 B)).left).Gen, u.IsGen) → (∃ u : (P.pull (lift (𝟙 B) (1 : B ⟶ B)).left).Gen, u.IsGen) → ∀ (e : ℕ) (L : LB (thickObj R (maximalIdeal R) e B).left), L.IsLB → (∀ b₂ : (G2 (thickObj R (maximalIdeal R) e B)).left ⟶ (G2 B).left, IsSquare (pullback.fst B.hom (thick R (maximalIdeal R) e)) b₂ → LBIso (abelian₂ (thickObj R (maximalIdeal R) e B) L) (P.pull b₂)) → ∃ L' : LB (thickObj R (maximalIdeal R) (e + 1) B).left, L'.IsLB ∧ (∀ b₂ : (G2 (thickObj R (maximalIdeal R) (e + 1) B)).left ⟶ (G2 B).left, IsSquare (pullback.fst B.hom (thick R (maximalIdeal R) (e + 1))) b₂ → LBIso (abelian₂ (thickObj R (maximalIdeal R) (e + 1) B) L') (P.pull b₂)) ∧ LBIso (L'.pull (thickMap R (maximalIdeal R) e B)) L := by
   intro R _ _ B _ _ hB P hP h₁ h₂ e L hL hyp

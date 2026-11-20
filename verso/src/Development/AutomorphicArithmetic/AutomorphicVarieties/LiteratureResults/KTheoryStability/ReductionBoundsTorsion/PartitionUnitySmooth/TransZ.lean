@@ -7,9 +7,9 @@ open Matrix
 namespace PositivityTheory.KB.SmoothPartitionUnityBasic
 
 /- English proof (translation)
-Establish `h1` using `UpperTheory.V.KT.gramlow (Fin n) (l⁻¹ • G) (hG.smul (inv_pos.2 hl)) (fun c hc => by`. Establish `hc'` using `h c hc`. Rewrite using `[Matrix.smul_mulVec, dotProduct_smul, smul_eq_mul, le_inv_mul_iff₀ hl, mul_one]`. Conclude with `hc')`. Rewrite `h1` using `[Matrix.det_smul, Fintype.card_fin, inv_pow]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hln : 0 < l ^ n` using `pow_pos hl n`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 private theorem isHermitian_real_smul_add_real_smul {n : ℕ} (G : Matrix (Fin n) (Fin n) ℝ) (hG : G.PosDef) (l : ℝ) (hl : 0 < l)
     (h : ∀ c : Fin n → ℤ, c ≠ 0 → l ≤ TZ.cz c ⬝ᵥ G *ᵥ TZ.cz c) :
@@ -25,13 +25,13 @@ private theorem isHermitian_real_smul_add_real_smul {n : ℕ} (G : Matrix (Fin n
     _ = (4 * (n : ℝ)) ^ n * G.det := by field_simp
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Use `push_neg at hne`. Establish `hdet` using `hG.det_pos`. Establish `ha : 0 < 4 * ((n : ℝ) + 1)` using `by positivity`. Establish `h1` using `isHermitian_real_smul_add_real_smul G hG (2 * (4 * ((n : ℝ) + 1)) ^ 2 / δ) (by positivity) (fun c hc => (hne c hc).le)`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `isHermitian_real_smul_add_real_smul G⁻¹ hG.inv δ hδ hD`. Rewrite `h2` using `[Matrix.det_nonsing_inv, Ring.inverse_eq_inv']`. Move the coercions through the operations in `at h1 h2`. Establish `key` using `mul_le_mul h1 h2 (by positivity) (by positivity)`. Rewrite `key` using `[← mul_pow, div_mul_cancel₀ _ hδ.ne']`.
+Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `e : (4 * ((n : ℝ) + 1)) ^ (n + 1) * G.det * ((4 * ((n : ℝ) + 1)) ^ (n + 1) * (G.det)⁻¹) = ((4 * ((n : ℝ) + 1)) ^ 2) ^ (n + 1)`. Combine the equalities or inequalities in the displayed calculation. Rewrite `key` using `[e, mul_pow]`. Establish `hX : 0 < ((4 * ((n : ℝ) + 1)) ^ 2) ^ (n + 1)` using `by positivity`. Establish `h2p : (2 : ℝ) ≤ 2 ^ (n + 1)`.
+Chain the equalities or inequalities of the calculation. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Use the polynomial consequences of the given equalities and inequalities.
+Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 private theorem v_sub_one_add_le_v_pow_l_sub_one (n : ℕ) (G : Matrix (Fin (n + 1)) (Fin (n + 1)) ℝ) (hG : G.PosDef)
     (δ : ℝ) (hδ : 0 < δ) (hD : TZ.Dual G δ) :
@@ -60,7 +60,7 @@ private theorem v_sub_one_add_le_v_pow_l_sub_one (n : ℕ) (G : Matrix (Fin (n +
   nlinarith
 
 /- English proof (translation)
-Introduce `d`. Take `⟨C, hC, h⟩` from `TZ.core (fun n => 2 * (4 * ((n : ℝ) + 1)) ^ 2) (fun n => by positivity) (fun n G hG δ hδ hD => v_sub_one_add_le_v_pow_l_sub_one n G hG δ hδ hD) d`. Conclude with `⟨C, hC, fun ι _ _ hι G hG δ hδ hD => TZ.reidx h ι hι G hG δ hδ hD⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem pf_TransZ : TransZ := by
   intro d

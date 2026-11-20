@@ -11,33 +11,29 @@ noncomputable section
 namespace CentredIntegralEquation
 
 /- English proof (translation)
-Establish `: Nontrivial R` using `ε.domain_nontrivial`. Take `⟨χ, hχm, hχ⟩` from `(Algebra.IsIntegral.isIntegral (R := R) x)`. Establish `hne : χ.map ε ≠ 0` using `(hχm.map ε).ne_zero`. Take `⟨u, hfac, hndvd⟩` from `exists_eq_pow_rootMultiplicity_mul_and_not_dvd (χ.map ε) hne 0`. Use `set a := (χ.map ε).rootMultiplicity 0`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hu0 : u.coeff 0 ≠ 0`. Introduce `h`. Apply `hndvd` to reduce the goal to its premises. Rewrite using `[dvd_iff_isRoot, IsRoot, ← coeff_zero_eq_eval_zero, h]`. Establish `hεκ' : ε.comp κ = RingHom.id K` using `RingHom.ext hεκ`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set e := χ - X ^ a * u.map κ with he`. Establish `hemap : e.map ε = 0`. Rewrite using `[he, Polynomial.map_sub, Polynomial.map_mul, Polynomial.map_pow, Polynomial.map_X, Polynomial.map_map, hεκ', Polynomial.map_id, hfac]`. Simplify using the standard rewrite rules. Use `set J : Ideal B := (RingHom.ker ε).map (algebraMap R B)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `heJ : aeval x e ∈ J`. Rewrite using `[aeval_eq_sum_range]`. Use `Ideal.sum_mem _ fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Algebra.smul_def]`. Use `J.mul_mem_right _ (Ideal.mem_map_of_mem _ ?_)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[RingHom.mem_ker, ← coeff_map, hemap, coeff_zero]`. Take `⟨r, hr⟩` from `X_dvd_sub_C (p := u.map κ)`. Establish `ht : IsUnit (aeval x (u.map κ))`. Establish `h1 : u.map κ = C (κ (u.coeff 0)) + X * r`. Rewrite using `[← hr, coeff_map]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h1, map_add, aeval_C, map_mul, aeval_X]`. Conclude with `hx _ hu0 _`. Establish `hxa : x ^ a ∈ J`. Take `⟨v, hv⟩` from `ht`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2 : x ^ a * aeval x (u.map κ) = -aeval x e`. Use `hχ` as an intermediate fact. Rewrite `this` using `[← aeval_def]`. Rewrite `this` using `[show χ = X ^ a * u.map κ + e by rw [he]; ring, map_add, map_mul, map_pow, aeval_X]`. Take the linear combination `this`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h3 : x ^ a = -aeval x e * ↑v⁻¹`. Rewrite using `[← h2, ← hv, mul_assoc, Units.mul_inv, mul_one]`. Rewrite using `[h3]`. Conclude with `J.mul_mem_right _ (J.neg_mem heJ)`. Use `set y := x ^ (a + 1)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hy : y ∈ J` using `by show x ^ (a + 1) ∈ J`. Rewrite using `[pow_succ]`. Conclude with `J.mul_mem_right _ hxa`. Establish `hrange : LinearMap.range (LinearMap.mulLeft R y) ≤ RingHom.ker ε • ⊤`. Introduce and unpack `_ ⟨b, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Rewrite using `[Ideal.smul_top_eq_map]`. Conclude with `J.mul_mem_right b hy`. Take `⟨q, hqm, -, hqc, hq0⟩` from `LinearMap.exists_monic_and_natDegree_eq_and_coeff_mem_pow_and_aeval_eq_zero R (LinearMap.mulLeft R y) _ hrange`. Establish `hqy : aeval y q = 0`. Use `congrArg (fun f : Module.End R B => f 1) hq0` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[show (LinearMap.mulLeft R y) = Algebra.lmul R B y from rfl, aeval_algHom_apply]`. Simplify using `using this`. Establish `hqmap : q.map ε = X ^ q.natDegree` using `by conv_lhs => rw [hqm.as_sum]`. Rewrite using `[Polynomial.map_add, Polynomial.map_pow, Polynomial.map_X, Polynomial.map_sum, add_eq_left]`. Use `Finset.sum_eq_zero fun k hk => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hk' : q.natDegree - k ≠ 0` using `by have := Finset.mem_range.1 hk; omega`. Establish `: q.coeff k ∈ RingHom.ker ε` using `Ideal.pow_le_self hk' (hqc k)`. Rewrite `this` using `[RingHom.mem_ker]`. Simplify using `[this]`. Establish `hQm : (q.comp (X ^ (a + 1))).Monic` using `hqm.comp (monic_X_pow _) (by rw [natDegree_X_pow]; omega)`.
-
-Establish `hQ : (q.comp (X ^ (a + 1))).map ε = X ^ (q.natDegree * (a + 1))`. Rewrite using `[Polynomial.map_comp, hqmap, Polynomial.map_pow, Polynomial.map_X, X_pow_comp, ← pow_mul, mul_comm]`. Use `⟨q.comp (X ^ (a + 1)), hQm, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[aeval_comp, map_pow, aeval_X]`. Conclude with `hqy`.
-
-Rewrite using `[← hQm.natDegree_map ε, hQ, natDegree_X_pow]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_monic_map_eq_X_pow {R B K : Type*} [CommRing R] [CommRing B] [Field K] [Algebra R B]
     [Module.Finite R B] (ε : R →+* K) (κ : K →+* R) (hεκ : ∀ c, ε (κ c) = c) (x : B)
@@ -137,7 +133,7 @@ Both sides reduce to the same expression.
 theorem germEval_constGerm (w : σ → ℂ) (c : ℂ) : germEval w (constGerm w c) = c := rfl
 
 /- English proof (translation)
-Use `conv_rhs => rw [← toGerm_rep r]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem germEval_pull {d : ℕ} (A : (σ → ℂ) →L[ℂ] (Fin d → ℂ)) (w : σ → ℂ) (r : holGerms (A w)) :
     germEval w (pull A w r) = germEval (A w) r := by
@@ -145,9 +141,9 @@ theorem germEval_pull {d : ℕ} (A : (σ → ℂ) →L[ℂ] (Fin d → ℂ)) (w 
   rfl
 
 /- English proof (translation)
-Take `⟨u, rfl⟩` from `toGerm_surjective w s`. Rewrite `hs` using `[germEval_toGerm]`. Establish `hu : AnalyticAt ℂ u.1 w` using `u.2`. Use `IsUnit.of_mul_eq_one (toGerm w ⟨fun z => (u.1 z)⁻¹, hu.inv hs⟩) ?_` and prove the remaining obligations. Rewrite using `[← map_mul, ← map_one (toGerm w)]`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Use `Germ.coe_eq.2 ((hu.continuousAt.eventually_ne hs).mono fun z hz => ?_)` and prove the remaining obligations. Conclude with `mul_inv_cancel₀ hz`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isUnit_of_germEval_ne_zero {w : σ → ℂ} (s : holGerms w) (hs : germEval w s ≠ 0) : IsUnit s := by
   obtain ⟨u, rfl⟩ := toGerm_surjective w s
@@ -160,7 +156,7 @@ theorem isUnit_of_germEval_ne_zero {w : σ → ℂ} (s : holGerms w) (hs : germE
   exact mul_inv_cancel₀ hz
 
 /- English proof (translation)
-Simplify using `[map_add, map_sum, map_mul, map_pow, pull_toGerm]`.
+Simplify using the standard rewrite rules.
 -/
 theorem toGerm_monic_expr {d : ℕ} (A : (σ → ℂ) →L[ℂ] (Fin d → ℂ)) (w : σ → ℂ) (x : anFun w) (n : ℕ)
     (c : Fin n → anFun (A w)) :
@@ -169,7 +165,7 @@ theorem toGerm_monic_expr {d : ℕ} (A : (σ → ℂ) →L[ℂ] (Fin d → ℂ))
   simp [map_add, map_sum, map_mul, map_pow, pull_toGerm]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `z`. Simplify using `[compA, Finset.sum_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem coe_monic_expr {d : ℕ} (A : (σ → ℂ) →L[ℂ] (Fin d → ℂ)) (w : σ → ℂ) (x : anFun w) (n : ℕ)
     (c : Fin n → anFun (A w)) :
@@ -182,45 +178,37 @@ set_option maxHeartbeats 1000000 in
 set_option synthInstance.maxHeartbeats 400000 in
 
 /- English proof (translation)
-Introduce `σ _ w k p d A hp hcoord hpoly g hg`. Use `set I := holGermIdeal w p`. Set `_ : Algebra (holGerms (A w)) (holGerms w ⧸ I)` to `((Ideal.Quotient.mk I).comp (pull A w)).toAlgebra`. Establish `halg : ∀ r, algebraMap (holGerms (A w)) (holGerms w ⧸ I) r = Ideal.Quotient.mk I (pull A w r)` using `fun _ => rfl`. Establish `hcl : ∀ (u : anFun w) (f : (σ → ℂ) → ℂ), u.1 = f → (Ideal.Quotient.mk I (toGerm w u) = 0 ↔ IsGermCombination w p f)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `u f rfl`. Rewrite using `[Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `toGerm_mem_iff hp u`. Establish `hev : ∀ (x : anFun w) (n : ℕ) (c : Fin n → anFun (A w)), aeval (Ideal.Quotient.mk I (toGerm w x)) (X ^ n + ∑ j : Fin n, C (toGerm (A w) (c j)) * X ^ (j : ℕ)) = Ideal.Quotient.mk I (toGerm w (x ^ n + ∑ j, compA A w (c j) * x ^ (j : ℕ)))`. Introduce `x n c`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[toGerm_monic_expr]`. Simplify using `only [map_add, map_sum, map_mul, map_pow, aeval_X, aeval_C, halg]`. Use `set zc : σ → anFun w := fun i => mkA (fun z => z i) ((ContinuousLinearMap.proj (R := ℂ) (φ := fun _ : σ => ℂ) i).analyticAt w)`. Use `set cz : σ → holGerms w ⧸ I := fun i => Ideal.Quotient.mk I (toGerm w (zc i))`. Establish `hint : ∀ i, IsIntegral (holGerms (A w)) (cz i)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `i`. Take `⟨n, b, hb, hcomb⟩` from `hcoord i`. Use `set c : Fin n → anFun (A w) := fun j => mkA (b j) (hb j)`. Use `⟨X ^ n + ∑ j : Fin n, C (toGerm (A w) (c j)) * X ^ (j : ℕ), ?_, ?_⟩` and prove the remaining obligations. Use `monic_X_pow_add (degree_sum_le _ _ |>.trans_lt ?_)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Use `(Finset.sup_lt_iff (WithBot.bot_lt_coe n)).2 fun j _ => ?_` and prove the remaining obligations. Conclude with `(degree_C_mul_X_pow_le _ _).trans_lt (WithBot.coe_lt_coe.2 j.2)`. Rewrite using `[← aeval_def, hev]`. Conclude with `(hcl _ _ (coe_monic_expr A w (zc i) n c)).2 hcomb`. Establish `hadj : Algebra.adjoin (holGerms (A w)) (Set.range cz) = ⊤`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[eq_top_iff]`. Introduce and unpack `y -`. Take `⟨s, rfl⟩` from `Ideal.Quotient.mk_surjective y`. Take `⟨u, rfl⟩` from `toGerm_surjective w s`. Take `⟨t, a, ha, hcomb⟩` from `hpoly u.1 u.2`.
+Consider separately whether the proposition holds or fails. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `set a' : (σ → ℕ) → (Fin d → ℂ) → ℂ := fun m => if m ∈ t then a m else 0`. Establish `ha' : ∀ m, AnalyticAt ℂ (a' m) (A w)`. Introduce `m`. Distinguish the cases in `hm : m ∈ t`. Simplify `ha m hm` using `[a', hm]`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [a', hm, if_false]`. Conclude with `analyticAt_const`. Use `set v : anFun w := ∑ m ∈ t, compA A w (mkA (a' m) (ha' m)) * ∏ i, zc i ^ m i`. Establish `hv : (u - v).1 = fun z => u.1 z - ∑ m ∈ t, a m (A z) * ∏ i, z i ^ m i`. Use function extensionality and compare the values at `z`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [v, AddSubgroupClass.coe_sub, AddSubmonoidClass.coe_finsetSum, MulMemClass.coe_mul, SubmonoidClass.coe_finsetProd, SubmonoidClass.coe_pow, Pi.sub_apply, Finset.sum_apply, Pi.mul_apply, Finset.prod_apply, Pi.pow_apply]`. Use `congr 1`. Use `Finset.sum_congr rfl fun m hm => ?_` and prove the remaining obligations. Simplify using `[compA, mkA, a', zc, hm]`. Establish `h1 : Ideal.Quotient.mk I (toGerm w u) = Ideal.Quotient.mk I (toGerm w v)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← sub_eq_zero, ← map_sub, ← map_sub]`. Conclude with `(hcl _ _ hv).2 hcomb`. Rewrite using `[h1]`. Simplify using `only [v, map_sum, map_mul, map_prod, map_pow, ← pull_toGerm]`. Use `Subalgebra.sum_mem _ fun m _ => Subalgebra.mul_mem _ ?_ (Subalgebra.prod_mem _ fun i _ => Subalgebra.pow_mem _ (Algebra.subset_adjoin (Set.mem_range_self i)) _)` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← halg]`. Conclude with `Subalgebra.algebraMap_mem _ _`. Establish `: Module.Finite (holGerms (A w)) (holGerms w ⧸ I)`. Use `⟨?_⟩` and prove the remaining obligations. Rewrite using `[← Algebra.top_toSubmodule, ← hadj]`.
+Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `fg_adjoin_of_finite (Set.finite_range _) (by rintro _ ⟨i, rfl⟩; exact hint i)`. Use `set gA : anFun w := mkA g hg`. Use `set gcl : holGerms w ⧸ I := Ideal.Quotient.mk I (toGerm w gA)`. Use `set xB := gcl - algebraMap (holGerms (A w)) (holGerms w ⧸ I) (constGerm (A w) (g w))`. Establish `hx : ∀ c : ℂ, c ≠ 0 → ∀ y : holGerms w ⧸ I, IsUnit (algebraMap (holGerms (A w)) (holGerms w ⧸ I) (constGerm (A w) c) + xB * y)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `c hc y`. Take `⟨t, rfl⟩` from `Ideal.Quotient.mk_surjective y`. Establish `e : algebraMap (holGerms (A w)) (holGerms w ⧸ I) (constGerm (A w) c) + xB * Ideal.Quotient.mk I t = Ideal.Quotient.mk I (pull A w (constGerm (A w) c) + (toGerm w gA - pull A w (constGerm (A w) (g w))) * t)`. Simplify using `only [xB, gcl, halg, map_add, map_mul, map_sub]`. Rewrite using `[e]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `(isUnit_of_germEval_ne_zero _ ?_).map _` and prove the remaining obligations. Simplify using `only [map_add, map_mul, map_sub, germEval_pull, germEval_constGerm, germEval_toGerm]`. Simplify `hc` using `[gA, mkA]`. Take `⟨Q, hQm, hQ0, hQmap⟩` from `exists_monic_map_eq_X_pow (germEval (A w)) (constGerm (A w)) (germEval_constGerm _) xB hx`. Establish `: Nontrivial (holGerms (A w))` using `(germEval (A w)).domain_nontrivial`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Use `set F := Q.comp (X - C (constGerm (A w) (g w)))`. Establish `hFm : F.Monic` using `hQm.comp (monic_X_sub_C _) (by rw [natDegree_X_sub_C]; omega)`. Establish `hF0 : aeval gcl F = 0`. Rewrite using `[aeval_comp, map_sub, aeval_X, aeval_C]`. Conclude with `hQ0`.
+Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hFmap : F.map (germEval (A w)) = (X - C (g w)) ^ Q.natDegree`. Rewrite using `[Polynomial.map_comp, hQmap, Polynomial.map_sub, Polynomial.map_X, Polynomial.map_C, germEval_constGerm, X_pow_comp]`. Establish `hdeg : F.natDegree = Q.natDegree`. Rewrite using `[← hFm.natDegree_map (germEval (A w)), hFmap, sub_eq_add_neg, ← C_neg, natDegree_pow_X_add_C]`. Use `set n := F.natDegree`.
-
-Establish `hrepv : ∀ c : holGerms (A w), (rep c).1 (A w) = germEval (A w) c` using `fun c => by`. Rewrite using `[← germEval_toGerm, toGerm_rep]`. Use `⟨n, fun j => (rep (F.coeff j)).1, fun j => (rep (F.coeff j)).2, ?_, fun T => ?_⟩` and prove the remaining obligations. Use `(hcl _ _ (coe_monic_expr A w gA n fun j => rep (F.coeff j))).1 ?_` and prove the remaining obligations. Rewrite using `[toGerm_monic_expr]`.
-
-Simplify using `only [toGerm_rep]`. Rewrite using `[Fin.sum_univ_eq_sum_range (fun i => pull A w (F.coeff i) * toGerm w gA ^ i) n, ← hF0]`. Use `conv_rhs => rw [hFm.as_sum]`. Simplify using `only [map_add, map_sum, map_mul, map_pow, aeval_X, aeval_C, halg, gcl]`. Both sides reduce to the same expression.
-
-Simplify using `only [hrepv]`. Rewrite using `[Fin.sum_univ_eq_sum_range (fun i => germEval (A w) (F.coeff i) * T ^ i) n]`. Establish `h` using `congrArg (eval T) hFmap`. Use `conv_lhs at h => rw [hFm.as_sum]`. Establish `hd : F.natDegree = Q.natDegree` using `hdeg`.
-
-Simplify `h` using `[Polynomial.map_sum, eval_finsetSum, hd, hdeg]`.
+A detailed English derivation is pending.
 -/
 theorem proof : CentredIntegralEquation.Statement := by
   classical

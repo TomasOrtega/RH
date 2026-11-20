@@ -7,13 +7,11 @@ open scoped TensorProduct GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorMode
 namespace GlobalTheory.RealLift
 
 /- English proof (translation)
-Take `⟨t, rfl⟩` from `hy`. Proceed by induction on `t using PiTensorProduct.induction_on with`. Consider the case `smul_tprod r x`. Establish `hx : ∀ j, (Function.update (fun i => (LinearMap.id : V i →ₗ[ℂ] V i)) w (L w) j) (x j : V j) ∈ N j`. Introduce `j`.
+Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `h : j = w`. Substitute `h` using the available equality. Simplify using `only [Function.update_self]`. Conclude with `hN j _ (x j).2`. Simplify using `only [Function.update_of_ne h, LinearMap.id_apply]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(x j).2`. Use `⟨r • PiTensorProduct.tprod ℂ (fun j => (⟨_, hx j⟩ : N j)), ?_⟩` and prove the remaining obligations. Simplify using `[atPl, PiTensorProduct.map_tprod]`. Consider the case `add a b ha hb`. Rewrite using `[map_add, map_add]`.
-
-Conclude with `Submodule.add_mem _ ha hb`.
+Simplify using the standard rewrite rules. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem atPl_mem_range_map {ι : Type} [Fintype ι] [DecidableEq ι] {V : ι → Type} [∀ i, AddCommGroup (V i)]
     [∀ i, Module ℂ (V i)] (L : ∀ i, Module.End ℂ (V i)) (N : ∀ i, Submodule ℂ (V i)) (hN : ∀ i, ∀ y ∈ N i, L i y ∈ N i)
@@ -37,13 +35,11 @@ theorem atPl_mem_range_map {ι : Type} [Fintype ι] [DecidableEq ι] {V : ι →
     exact Submodule.add_mem _ ha hb
 
 /- English proof (translation)
-Introduce `ι _ _ V _ _ L hL v`. Proceed by induction on `v using PiTensorProduct.induction_on with`. Consider the case `smul_tprod r f => choose N hNf hfN hN using fun i => hL i (f i)`. Use `⟨LinearMap.range (PiTensorProduct.map fun i => (N i).subtype), inferInstance, ?_, ?_⟩` and prove the remaining obligations. Conclude with `⟨r • PiTensorProduct.tprod ℂ (fun i => (⟨f i, hfN i⟩ : N i)), by simp [PiTensorProduct.map_tprod]⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components.
 
-Introduce `y hy`. Rewrite using `[sumPl, LinearMap.sum_apply]`. Conclude with `Submodule.sum_mem _ fun w _ => atPl_mem_range_map L N hN w y hy`. Consider the case `add a b ha hb`. Take `⟨N₁, h₁, ha₁, hs₁⟩` from `ha`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨N₂, h₂, hb₂, hs₂⟩` from `hb`. Use `⟨N₁ ⊔ N₂, inferInstance, Submodule.add_mem_sup ha₁ hb₂, ?_⟩` and prove the remaining obligations. Introduce `y hy`. Take `⟨y₁, hy₁, y₂, hy₂, rfl⟩` from `Submodule.mem_sup.1 hy`. Rewrite using `[map_add]`.
-
-Conclude with `Submodule.add_mem_sup (hs₁ y₁ hy₁) (hs₂ y₂ hy₂)`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem locFin_sumPl : ∀ (ι : Type) [Fintype ι] [DecidableEq ι] (V : ι → Type) [∀ i, AddCommGroup (V i)]
     [∀ i, Module ℂ (V i)] (L : ∀ i, Module.End ℂ (V i)), (∀ i, GlobalTheory.RealLift.LocFin (L i)) →
@@ -67,7 +63,7 @@ theorem locFin_sumPl : ∀ (ι : Type) [Fintype ι] [DecidableEq ι] (V : ι →
     exact Submodule.add_mem_sup (hs₁ y₁ hy₁) (hs₂ y₂ hy₂)
 
 /- English proof (translation)
-The claim follows from `locFin_sumPl`.
+A detailed English derivation is pending.
 -/
 example : ∀ (ι : Type) [Fintype ι] [DecidableEq ι] (V : ι → Type) [∀ i, AddCommGroup (V i)] [∀ i, Module ℂ (V i)] (L : ∀ i, Module.End ℂ (V i)), (∀ i, GlobalTheory.RealLift.LocFin (L i)) → GlobalTheory.RealLift.LocFin (GlobalTheory.RealLift.sumPl L) := locFin_sumPl
 

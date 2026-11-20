@@ -14,7 +14,7 @@ noncomputable section
 namespace FunctorialResolution.EmbeddedResolution
 
 /- English proof (translation)
-The claim follows from `MorphismProperty.IsStableUnderBaseChange.of_isPullback (IsPullback.of_hasPullback p (specMapAlgebraMap k K)) (inferInstanceAs (AlgebraicGeometry.LocallyOfFiniteType p))`.
+A detailed English derivation is pending.
 -/
 theorem locallyOfFiniteType_baseChangeToSpec {X : Scheme.{u}} {k : Type u} [Field k]
     (p : X ⟶ Spec (CommRingCat.of k)) [AlgebraicGeometry.LocallyOfFiniteType p]
@@ -25,7 +25,7 @@ theorem locallyOfFiniteType_baseChangeToSpec {X : Scheme.{u}} {k : Type u} [Fiel
     (inferInstanceAs (AlgebraicGeometry.LocallyOfFiniteType p))
 
 /- English proof (translation)
-The claim follows from `MorphismProperty.IsStableUnderBaseChange.of_isPullback (IsPullback.of_hasPullback p (specMapAlgebraMap k K)) (inferInstanceAs (AlgebraicGeometry.QuasiCompact p))`.
+A detailed English derivation is pending.
 -/
 theorem quasiCompact_baseChangeToSpec {X : Scheme.{u}} {k : Type u} [Field k]
     (p : X ⟶ Spec (CommRingCat.of k)) [AlgebraicGeometry.QuasiCompact p]
@@ -36,7 +36,7 @@ theorem quasiCompact_baseChangeToSpec {X : Scheme.{u}} {k : Type u} [Field k]
     (inferInstanceAs (AlgebraicGeometry.QuasiCompact p))
 
 /- English proof (translation)
-The claim follows from `MorphismProperty.IsStableUnderBaseChange.of_isPullback (IsPullback.of_hasPullback p (specMapAlgebraMap k K)) (inferInstanceAs (AlgebraicGeometry.Smooth p))`.
+A detailed English derivation is pending.
 -/
 theorem smooth_baseChangeToSpec {X : Scheme.{u}} {k : Type u} [Field k]
     (p : X ⟶ Spec (CommRingCat.of k)) [AlgebraicGeometry.Smooth p]
@@ -109,7 +109,7 @@ variable {k : Type u} [Field k] [CharZero k] {Y : Scheme.{u}}
   {p : Y ⟶ Spec (CommRingCat.of k)}
 
 /- English proof (translation)
-Rewrite using `[Category.assoc, D.comp_eq]`. Conclude with `pullback.condition`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem pullbackCondition_baseChangeEmb (D : EmbeddingDatum k Y p) (K : Type u) [Field K]
     [Algebra k K] :
@@ -125,7 +125,7 @@ def baseChangeEmb (D : EmbeddingDatum k Y p) (K : Type u) [Field K] [Algebra k K
 
 @[simp]
 /- English proof (translation)
-The claim follows from `pullback.lift_fst _ _ _ @[simp]`.
+A detailed English derivation is pending.
 -/
 theorem baseChangeEmb_comp_baseChangeProjection (D : EmbeddingDatum k Y p) (K : Type u) [Field K]
     [Algebra k K] :
@@ -134,7 +134,7 @@ theorem baseChangeEmb_comp_baseChangeProjection (D : EmbeddingDatum k Y p) (K : 
 
 @[simp]
 /- English proof (translation)
-The claim follows from `pullback.lift_snd _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem baseChangeEmb_comp_baseChangeToSpec (D : EmbeddingDatum k Y p) (K : Type u)
     [Field K] [Algebra k K] :
@@ -142,7 +142,7 @@ theorem baseChangeEmb_comp_baseChangeToSpec (D : EmbeddingDatum k Y p) (K : Type
   pullback.lift_snd _ _ _
 
 /- English proof (translation)
-Establish `hbig : IsPullback (D.baseChangeEmb K ≫ baseChangeToSpec D.ambientStruct K) (baseChangeProjection p K) (specMapAlgebraMap k K) (D.emb ≫ D.ambientStruct)`. Rewrite using `[baseChangeEmb_comp_baseChangeToSpec D K, D.comp_eq]`. Conclude with `(IsPullback.of_hasPullback p (specMapAlgebraMap k K)).flip`. Conclude with `IsPullback.of_right hbig (baseChangeEmb_comp_baseChangeProjection D K) (IsPullback.of_hasPullback D.ambientStruct (specMapAlgebraMap k K)).flip`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isPullback_baseChangeEmb (D : EmbeddingDatum k Y p) (K : Type u) [Field K]
     [Algebra k K] :
@@ -156,7 +156,7 @@ theorem isPullback_baseChangeEmb (D : EmbeddingDatum k Y p) (K : Type u) [Field 
     (IsPullback.of_hasPullback D.ambientStruct (specMapAlgebraMap k K)).flip
 
 /- English proof (translation)
-The claim follows from `MorphismProperty.IsStableUnderBaseChange.of_isPullback (isPullback_baseChangeEmb D K).flip D.isClosedImmersion_emb`.
+A detailed English derivation is pending.
 -/
 theorem isClosedImmersion_baseChangeEmb (D : EmbeddingDatum k Y p) (K : Type u) [Field K]
     [Algebra k K] : AlgebraicGeometry.IsClosedImmersion (D.baseChangeEmb K) :=
@@ -168,14 +168,14 @@ instance instIsClosedImmersionBaseChangeEmb (D : EmbeddingDatum k Y p) (K : Type
   isClosedImmersion_baseChangeEmb D K
 
 /- English proof (translation)
-The claim follows from `isAffine_baseChange D.ambientStruct K`.
+A detailed English derivation is pending.
 -/
 theorem isAffine_baseChange_ambientToSpec (D : EmbeddingDatum k Y p) (K : Type u) [Field K]
     [Algebra k K] : AlgebraicGeometry.IsAffine (baseChange D.ambientStruct K) :=
   isAffine_baseChange D.ambientStruct K
 
 /- English proof (translation)
-The claim follows from `smooth_baseChangeToSpec D.ambientStruct K`.
+A detailed English derivation is pending.
 -/
 theorem smooth_baseChangeToSpec_ambientToSpec (D : EmbeddingDatum k Y p) (K : Type u) [Field K]
     [Algebra k K] :
@@ -183,7 +183,7 @@ theorem smooth_baseChangeToSpec_ambientToSpec (D : EmbeddingDatum k Y p) (K : Ty
   smooth_baseChangeToSpec D.ambientStruct K
 
 /- English proof (translation)
-The claim follows from `locallyOfFiniteType_baseChangeToSpec D.ambientStruct K`.
+A detailed English derivation is pending.
 -/
 theorem locallyOfFiniteType_baseChangeToSpec_ambientToSpec (D : EmbeddingDatum k Y p) (K : Type u)
     [Field K] [Algebra k K] :
@@ -191,7 +191,7 @@ theorem locallyOfFiniteType_baseChangeToSpec_ambientToSpec (D : EmbeddingDatum k
   locallyOfFiniteType_baseChangeToSpec D.ambientStruct K
 
 /- English proof (translation)
-The claim follows from `quasiCompact_baseChangeToSpec D.ambientStruct K`.
+A detailed English derivation is pending.
 -/
 theorem quasiCompact_baseChangeToSpec_ambientToSpec (D : EmbeddingDatum k Y p) (K : Type u)
     [Field K] [Algebra k K] :

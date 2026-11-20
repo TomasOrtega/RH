@@ -11,7 +11,7 @@ open NumberField IsDedekindDomain Neutral.B1 Formalism.L2.Host Formalism.Conjuga
 open GlobalTheory.CuspRep (finId locGL finGL)
 
 /- English proof (translation)
-Establish `h` using `GlobalTheory.CuspRep.finId_det_locGL w (GeneralLinearGroup.scalar (Fin 1) x)`. Rewrite `h`, the goal using `[locGL, GlobalTheory.CuspRep.cornerGL_scalar]`. Rewrite using `[finGL, GlobalTheory.CuspRep.cornerGL_scalar]`. Use `congr 1`. Conclude with `(congrArg (finId F) (GlobalTheory.CuspRep.CG.det_oneByOne _)).symm.trans (h.trans (congrArg (localIdele F w) (GlobalTheory.CuspRep.CG.det_oneByOne _)))`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 private theorem fin_scalar {F : Type} [Field F] [NumberField F] (w : HeightOneSpectrum (𝓞 F)) (x : (w.adicCompletion F)ˣ) :
     finGL F 2 (locGL F 2 w (GeneralLinearGroup.scalar (Fin 2) x)) = GeneralLinearGroup.scalar (Fin 2) (localIdele F w x) := by
@@ -23,23 +23,21 @@ private theorem fin_scalar {F : Type} [Field F] [NumberField F] (w : HeightOneSp
     (h.trans (congrArg (localIdele F w) (GlobalTheory.CuspRep.CG.det_oneByOne _)))
 
 /- English proof (translation)
-Take `⟨hp, hspan, hN, hlev⟩` from `UpperTheory.V.Af.Nf.places w`. Establish `hl : lev N w = 0` using `hlev N hN1 hM`. Establish `hchi : chiI ω (lev N) w.asIdeal = ((ω.val w : ℂˣ) : ℂ)`. Unfold `chiI`. Rewrite using `[finprod_eq_single _ w]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_pos hl]`. Establish `: ordI w w.asIdeal = 1`. Unfold `ordI`. Conclude with `Associates.count_self w.associates_irreducible`. Rewrite using `[this, pow_one]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `v hv`. Establish `: ordI v w.asIdeal = 0`. Unfold `ordI`. Use `Associates.count_eq_zero_of_ne v.associates_irreducible w.associates_irreducible ?_` and prove the remaining obligations. Introduce `h`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hv (HeightOneSpectrum.ext (associated_iff_eq.mp (Associates.mk_eq_mk_iff_associated.mp h)))`. Rewrite using `[this, pow_zero]`. Establish `hdiv : coefDiv (icoef f) w.asIdeal 𝔪 = if normV w ∣ Ideal.absNorm 𝔪 then coef f (Ideal.absNorm 𝔪 / normV w) else 0`. Unfold `coefDiv`. Use `split_ifs with h1 h2 h2`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions.
 
-Establish `h3` using `congrArg Ideal.absNorm h1.choose_spec`. Rewrite `h3` using `[map_mul, hN]`. Unfold `icoef`. Use `congr 1`. Conclude with `(Nat.div_eq_of_eq_mul_right hp.pos h3).symm`.
+Reduce the equality to equality of the corresponding arguments. It suffices to derive a contradiction. Extract witnesses or component facts from the available result. It suffices to derive a contradiction. Extract witnesses or component facts from the available result.
 
-It suffices to derive a contradiction. Take `⟨𝔫, h⟩` from `h1`. Conclude with `h2 ⟨Ideal.absNorm 𝔫, by rw [h, map_mul, hN]⟩`. It suffices to derive a contradiction. Take `⟨P, hP, hu, hd⟩` from `Ideal.exists_isMaximal_dvd_of_dvd_absNorm' hp 𝔪 h2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hmem : ((normV w : ℕ) : 𝓞 ℚ) ∈ P`. Establish `: ((normV w : ℕ) : ℤ) ∈ P.under ℤ`. Rewrite using `[hu]`. Conclude with `Ideal.mem_span_singleton_self _`. Simplify using `using (Ideal.mem_comap.mp this)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Both sides reduce to the same expression. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `hle : w.asIdeal ≤ P`. Rewrite using `[hspan, Ideal.span_le, Set.singleton_subset_iff]`. Conclude with `hmem`. Establish `heq : w.asIdeal = P` using `w.isMaximal.eq_of_le hP.ne_top hle`. Conclude with `h1 (heq ▸ hd)`.
-
-Both sides reduce to the same expression. Unfold `Sd.hkCoef`. Rewrite using `[hchi, hdiv]`. Unfold `icoef`. Rewrite using `[map_mul, hN]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem hk_read (k N : ℕ) (hN1 : 1 ≤ N) (f : UpperHalfPlane → ℂ) (ω : HChar ℚ) (w : Pl ℚ) (hM : ¬ normV w ∣ N)
     (𝔪 : Ideal (𝓞 ℚ)) :
@@ -91,28 +89,26 @@ private theorem hk_read (k N : ℕ) (hN1 : 1 ≤ N) (f : UpperHalfPlane → ℂ)
   rw [map_mul, hN]
 
 /- English proof (translation)
-Rewrite using `[Ideal.absNorm_span_natCast, RingOfIntegers.rank]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem norm_span (n : ℕ) : Ideal.absNorm (Ideal.span {(n : 𝓞 ℚ)}) = n := by
   rw [Ideal.absNorm_span_natCast, RingOfIntegers.rank]
   simp
 
 /- English proof (translation)
-Introduce `k N hk1 hN χ ω hd f φ hL hφ w α β hM hS`. Take `⟨hU, hZ⟩` from `UpperTheory.V.Br.uOfSat ℚ w _ _ φ α β hS`. Take `⟨hfin, hval⟩` from `UpperTheory.V.Af.Nf.charVal N hN χ ω hd`. Establish `hω` using `hval w hM`. Establish `hl : lev N w = 0` using `(UpperTheory.V.Af.Nf.places w).2.2.2 N hN hM`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hq : (0 : ℝ) < normV w` using `Nat.cast_pos.2 (zero_lt_one.trans (NumberField.HeightOneSpectrum.one_lt_absNorm w))`. Prove the components needed by the constructor for the conclusion. Use `set lam : ℂ := (((normV w : ℝ) ^ (((k : ℝ) - 1) / 2) : ℝ) : ℂ) * ((α : ℂ) + β) with hlam`. Establish `hH : hk k w (lev N w) φ = lam • φ`. Rewrite using `[hl]`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `(((normV w : ℝ) ^ ((k : ℝ) / 2 - 1) : ℝ) : ℂ) • Uop w (locSm ℚ w) 0 φ = _`. Rewrite using `[hU, smul_smul, ← mul_assoc, ← Complex.ofReal_mul, ← Real.rpow_add hq, hlam]`. Use `congr 4`. Expand and normalize the polynomial expressions, which then agree. Establish `hE` using `UpperTheory.V.Af.Nf.liftExp k N hN f φ.1 hL`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨c₀', hE'⟩` from `(UpperTheory.V.Sd.holHk ℚ k hk1 (lev N) ω hfin φ hφ w).2.2 _ _ hE`. Take `⟨-, h0, -, hlin, -⟩` from `UpperTheory.V.Sd.holLin ℚ k (lev N) ω`. Establish `hE2` using `hlin 0 φ.1 lam _ _ _ _ h0 hE`. Rewrite `hE'` using `[hH]`. Rewrite `hE2` using `[zero_add]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `n hn`. Establish `hne : Ideal.span {(n : 𝓞 ℚ)} ≠ ⊥`. Introduce `h`. Use `norm_span n` as an intermediate fact. Rewrite `this` using `[h, Ideal.absNorm_bot]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Use `(UpperTheory.V.Sd.expUnique ℚ _ k _ _ _ _ hE' hE2).2 _ hne` as an intermediate fact. Rewrite `this` using `[hk_read k N hN f ω w hM, hω]`. Simplify `this` using `only [Pi.add_apply, Pi.zero_apply, zero_add, Pi.smul_apply, smul_eq_mul, icoef, norm_span]`. Rewrite using `[← hω]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : locSm ℚ w (GeneralLinearGroup.scalar (Fin 2) (atFin w (unif w))) φ = ((ω.val w : ℂˣ) : ℂ) • φ`. Use `Subtype.ext (funext fun g => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `φ.1 (g * finGL ℚ 2 (locGL ℚ 2 w _)) = _`. Rewrite using `[fin_scalar, ← GlobalTheory.CuspRep.scalar_comm, hφ.cent]`. Both sides reduce to the same expression.
-
-Conclude with `smul_left_injective ℂ hS.1 (hZ.symm.trans h2)`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Br.eigOf :
     UpperTheory.V.Br.EigOf := by

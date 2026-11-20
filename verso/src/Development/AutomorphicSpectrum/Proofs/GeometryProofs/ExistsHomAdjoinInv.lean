@@ -5,35 +5,33 @@ open MvPolynomial
 namespace GlobalTheory.CompanionTheory.Ar.ChartHom
 
 /- English proof (translation)
-Distinguish the cases in `hf : (aeval u F : Ω) = 0`. Establish `h0 : θ F = 0` using `hker F hf`. Establish `hR : Subsingleton R`. Establish `: IsUnit (0 : R)` using `h0 ▸ hF`. Conclude with `subsingleton_of_zero_eq_one (isUnit_zero_iff.mp this)`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨{ toFun := fun _ => 0, map_one' := Subsingleton.elim _ _, map_mul' := fun _ _ => Subsingleton.elim _ _, map_zero' := rfl, map_add' := fun _ _ => Subsingleton.elim _ _ }, fun _ _ _ => Subsingleton.elim _ _⟩` and prove the remaining obligations. Set `B` to `Localization.Away F`. Establish `hunit : ∀ y : Submonoid.powers F, IsUnit (aeval u (y : MvPolynomial σ ℚ) : Ω)`. Introduce and unpack `⟨_, n, rfl⟩`. Simplify using `using (IsUnit.mk0 _ hf).pow n`.
+Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression.
 
-Set `Φ : B →ₐ[ℚ] Ω` to `IsLocalization.liftAlgHom (M := Submonoid.powers F) (f := aeval u) hunit`. Establish `hΦ : ∀ a : MvPolynomial σ ℚ, Φ (algebraMap _ B a) = aeval u a` using `fun a => by simp [Φ, IsLocalization.liftAlgHom_apply]`. Set `Θ : B →+* R` to `IsLocalization.Away.lift F hF`. Establish `hΘ : ∀ a : MvPolynomial σ ℚ, Θ (algebraMap _ B a) = θ a` using `fun a => IsLocalization.Away.lift_eq F hF a`. Establish `hnum : ∀ z : B, ∃ (n : ℕ) (a : MvPolynomial σ ℚ), z * algebraMap _ B (F ^ n) = algebraMap _ B a`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `z`. Take `⟨n, a, h⟩` from `IsLocalization.Away.surj F z`. Conclude with `⟨n, a, by simpa using h⟩`. Establish `hmem : ∀ a : MvPolynomial σ ℚ, (aeval u a : Ω) ∈ S`. Introduce `a`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `: (aeval u a : Ω) ∈ Algebra.adjoin ℚ (Set.range u)`. Rewrite using `[Algebra.adjoin_range_eq_range_aeval]`. Conclude with `⟨a, rfl⟩`. Rewrite using `[hS]`. Conclude with `Algebra.adjoin_mono (Set.subset_insert _ _) this`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hinv : (aeval u F : Ω)⁻¹ ∈ S`. Rewrite using `[hS]`. Conclude with `Algebra.subset_adjoin (Set.mem_insert _ _)`. Establish `hΦS : ∀ z : B, Φ z ∈ S`. Introduce `z`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨n, a, h⟩` from `hnum z`. Establish `h2` using `congrArg Φ h`. Rewrite `h2` using `[map_mul, hΦ, hΦ, map_pow]`. Establish `: Φ z = aeval u a * ((aeval u F : Ω)⁻¹) ^ n`. Rewrite using `[← h2, inv_pow, _root_.mul_assoc, mul_inv_cancel₀ (pow_ne_zero n hf), _root_.mul_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[this]`. Conclude with `S.mul_mem (hmem a) (S.pow_mem hinv n)`. Set `Φ' : B →+* S` to `(Φ : B →+* Ω).codRestrict S.toSubsemiring hΦS`. Establish `hΦ' : ∀ z, ((Φ' z : S) : Ω) = Φ z` using `fun _ => rfl`. Establish `hsurj : Function.Surjective Φ'`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Establish `hle : S ≤ Φ.range`. Rewrite using `[hS]`. Use `Algebra.adjoin_le ?_` and prove the remaining obligations. Introduce and unpack `_ (rfl | ⟨p, rfl⟩)`. Establish `hu : IsUnit (algebraMap _ B F)` using `IsLocalization.Away.algebraMap_isUnit F`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨v, hv⟩` from `hu`. Use `⟨(↑v⁻¹ : B), ?_⟩` and prove the remaining obligations. Establish `h1 : Φ (↑v⁻¹ : B) * aeval u F = 1`. Rewrite using `[← hΦ, ← hv, ← map_mul]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `eq_inv_of_mul_eq_one_left h1`. Conclude with `⟨algebraMap (MvPolynomial σ ℚ) B (X p), (hΦ (X p)).trans (aeval_X u p)⟩`. Introduce `s`. Take `⟨z, hz⟩` from `hle s.2`. Conclude with `⟨z, Subtype.ext hz⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hkerΘ : RingHom.ker Φ' ≤ RingHom.ker Θ`. Introduce `z hz`. Rewrite `hz`, the goal using `[RingHom.mem_ker]`. Establish `hz0 : Φ z = 0`. Use `congrArg (Subtype.val) hz` as an intermediate fact.
+Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Simplify `this` using `[hΦ']`. Take `⟨n, a, h⟩` from `hnum z`. Establish `h2` using `congrArg Φ h`. Rewrite `h2` using `[map_mul, hz0, zero_mul, hΦ]`. Establish `ha : θ a = 0` using `hker a h2.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h3` using `congrArg Θ h`. Rewrite `h3` using `[map_mul, hΘ, hΘ, ha, map_pow]`. Conclude with `(hF.pow n).mul_left_eq_zero.mp h3`. Use `⟨RingHom.liftOfSurjective Φ' hsurj ⟨Θ, hkerΘ⟩, fun G s hs => ?_⟩` and prove the remaining obligations. Establish `hsG : s = Φ' (algebraMap _ B G)` using `Subtype.ext (by rw [hΦ', hΦ, hs])`.
-
-Rewrite using `[hsG, RingHom.liftOfRightInverse_comp_apply]`. Conclude with `hΘ G`.
+A detailed English derivation is pending.
 -/
 theorem exists_hom_adjoin_inv {σ Ω R : Type*} [Field Ω] [CharZero Ω] [CommRing R]
     (u : σ → Ω) (θ : MvPolynomial σ ℚ →+* R)

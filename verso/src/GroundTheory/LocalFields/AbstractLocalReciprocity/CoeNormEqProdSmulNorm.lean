@@ -9,41 +9,37 @@ open ProfiniteInteger
 variable {G : Type*} [Group G] {A : Type*} [CommGroup A] [MulDistribMulAction G A]
 
 /- English proof (translation)
-Use `set Q := K ⊓ d.ker with hQ`. Establish `hQK : Q ≤ K` using `inf_le_left`. Set `incl : Q ⧸ J.subgroupOf Q → K ⧸ S.subgroupOf K` to `Quotient.map' (fun q : Q => (⟨q, hQK q.2⟩ : K)) fun q q' h => by`. Rewrite `h`, the goal using `[QuotientGroup.leftRel_apply, Subgroup.mem_subgroupOf]`. Establish `hq : ((q⁻¹ * q' : Q) : G) ∈ Q` using `(q⁻¹ * q').2`.
+Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using (hJ _ hq).2 h`. Set `φK : K` to `⟨φ, hφK⟩`. Set `F : Fin n × (Q ⧸ J.subgroupOf Q) → K ⧸ S.subgroupOf K` to `fun p => (φK ^ (p.1 : ℕ)) • incl p.2`. Establish `hFmk : ∀ (ν : Fin n) (q : Q), F (ν, (q : Q ⧸ J.subgroupOf Q)) = ((φK ^ (ν : ℕ) * ⟨q, hQK q.2⟩ : K) : K ⧸ S.subgroupOf K)` using `fun _ _ => rfl`. Establish `hdeg : ∀ (m : ℤ) (q : G), q ∈ Q → Multiplicative.toAdd (d (φ ^ m * q)) = ((m * f : ℤ) : ℤ̂)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `m q hq`. Rewrite using `[map_mul, map_zpow, hdφ, (MonoidHom.mem_ker).1 hq.2, mul_one, ← ofAdd_zsmul, toAdd_ofAdd, zsmul_eq_mul]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hF : Function.Bijective F`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨ν, x⟩ ⟨μ, y⟩ hxy`. Proceed by induction on `x using QuotientGroup.induction_on with`. Consider the case `H q`. Proceed by induction on `y using QuotientGroup.induction_on with`.
+Assume the hypotheses and unpack their components. Proceed by induction. Treat this case separately. Proceed by induction. Treat this case separately.
 
-Consider the case `H q'`. Rewrite `hxy` using `[hFmk, hFmk, QuotientGroup.eq, Subgroup.mem_subgroupOf]`. Simplify using `only [Subgroup.coe_mul, Subgroup.coe_inv, SubmonoidClass.coe_pow] at hxy`. Establish `hx : ((φ ^ (ν : ℕ) * (q : G))⁻¹ * (φ ^ (μ : ℕ) * q') : G) = (q : G)⁻¹ * (φ ^ ((μ : ℤ) - ν) * q')`. Rewrite using `[zpow_sub, zpow_natCast, zpow_natCast]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `group`. Establish `hdq : Multiplicative.toAdd (d ((q : G)⁻¹ * (φ ^ ((μ : ℤ) - ν) * q'))) = ((((μ : ℤ) - ν) * f : ℤ) : ℤ̂)`. Rewrite using `[map_mul, map_inv, (MonoidHom.mem_ker).1 q.2.2, inv_one, one_mul]`. Conclude with `hdeg _ _ q'.2`. Establish `hmem` using `hdS _ hxy`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Rewrite `hmem` using `[hx, hdq]`. Establish `hdvd` using `(intCast_mem_multiples_iff (Nat.mul_pos hn hf)).1 hmem`. Move the coercions through the operations in `at hdvd`. Establish `hdvd' : (n : ℤ) ∣ (μ : ℤ) - ν` using `(mul_dvd_mul_iff_right (by exact_mod_cast hf.ne')).1 hdvd`. Establish `hνμ : ν = μ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hμ` using `μ.2`. Establish `hν` using `ν.2`. Establish `h0 : ((μ : ℤ) - ν) = 0` using `Int.eq_zero_of_abs_lt_dvd hdvd' (abs_sub_lt_iff.2 ⟨by omega, by omega⟩)`. Conclude with `Fin.ext (by omega)`. Substitute `hνμ` using the available equality.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hqq : (q : G)⁻¹ * q' ∈ S` using `by simpa [mul_assoc] using hxy`. Establish `hqQ : (q : G)⁻¹ * q' ∈ Q` using `Q.mul_mem (Q.inv_mem q.2) q'.2`. Use `Prod.ext rfl ?_` and prove the remaining obligations. Rewrite using `[QuotientGroup.eq, Subgroup.mem_subgroupOf]`. Simplify using `using (hJ _ hqQ).1 hqq`.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Introduce `y`. Proceed by induction on `y using QuotientGroup.induction_on with`. Consider the case `H k`. Take `⟨w, hw⟩` from `mem_multiples.1 (hdK k k.2)`. Use `set N : ℕ+ := ⟨n, hn⟩ with hNdef`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Use `set ν : ℕ := (proj N w).val with hνdef`. Establish `hνn : ν < n` using `ZMod.val_lt _`. Establish `hw' : w - (ν : ℤ̂) ∈ multiples n`. Use `(proj_eq_zero_iff (n := N) (x := w - (ν : ℤ̂))).1 (by` as an intermediate fact. Rewrite using `[map_sub, map_natCast, hνdef, ZMod.natCast_zmod_val, sub_self])`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify `this` using `[hNdef]`. Take `⟨z, hz⟩` from `mem_multiples.1 hw'`. Establish `hdk : Multiplicative.toAdd (d (φ ^ (-(ν : ℤ)) * k)) ∈ multiples (n * f)`. Rewrite using `[map_mul, map_zpow, hdφ, ← ofAdd_zsmul, toAdd_mul, toAdd_ofAdd, hw]`. Use `mem_multiples.2 ⟨z, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result.
 
-Establish `: w = (ν : ℤ̂) + n • z` using `by rw [← hz]; ring`. Rewrite using `[this]`. Simplify using `only [nsmul_eq_mul, zsmul_eq_mul]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨s, hs, hds⟩` from `hsurj _ (K.mul_mem (K.zpow_mem hφK _) k.2) hdk`. Use `set q : G := φ ^ (-(ν : ℤ)) * k * s⁻¹ with hqdef`. Establish `hqQ : q ∈ Q`. Use `⟨K.mul_mem (K.mul_mem (K.zpow_mem hφK _) k.2) (K.inv_mem (hSK hs)), ?_⟩` and prove the remaining obligations. Use `show d q = 1`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hqdef, map_mul, map_inv, ← hds, mul_inv_cancel]`. Use `⟨(⟨ν, hνn⟩, ((⟨q, hqQ⟩ : Q) : Q ⧸ J.subgroupOf Q)), ?_⟩` and prove the remaining obligations. Rewrite using `[hFmk, QuotientGroup.eq, Subgroup.mem_subgroupOf]`. Simplify using `only [Subgroup.coe_mul, Subgroup.coe_inv, SubmonoidClass.coe_pow, hqdef]`. Establish `: ((φ ^ ν * (φ ^ (-(ν : ℤ)) * (k : G) * s⁻¹))⁻¹ * k : G) = s`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[zpow_neg, zpow_natCast]`. Use `group`. Rewrite using `[this]`. Conclude with `hs`. Rewrite using `[coe_norm, ← finprod_comp_equiv (Equiv.ofBijective F hF)]`.
-
-Set `_` to `Fintype.ofFinite (Q ⧸ J.subgroupOf Q)`. Rewrite using `[finprod_eq_prod_of_fintype, Fintype.prod_prod_type]`. Use `Finset.prod_congr rfl fun ν _ => ?_` and prove the remaining obligations. Rewrite using `[coe_norm, finprod_eq_prod_of_fintype, Finset.smul_prod']`. Use `Finset.prod_congr rfl fun x _ => ?_` and prove the remaining obligations.
-
-Proceed by induction on `x using QuotientGroup.induction_on with`. Consider the case `H q`. Rewrite using `[Equiv.ofBijective_apply, hFmk, cosetSMul_mk, cosetSMul_mk, smul_smul]`. Both sides reduce to the same expression.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem coe_norm_eq_prod_smul_norm (d : G →* Multiplicative ℤ̂) {K S J : Subgroup G} {f n : ℕ}
     (hn : 0 < n) (hf : 0 < f) (hSK : S ≤ K)
@@ -178,7 +174,7 @@ instance finiteIndex_inf_ker (d : G →* Multiplicative ℤ̂) (K L : OpenSubgro
 omit [TotallyDisconnectedSpace G] in
 
 /- English proof (translation)
-Take `⟨y, hy⟩` from `(D.mem_map_deg_iff K).1 ⟨k, hk, rfl⟩`. Use `mem_multiples.2 ⟨Multiplicative.toAdd y, ?_⟩` and prove the remaining obligations. Rewrite using `[← hy, toAdd_pow]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem toAdd_deg_mem_multiples (K : OpenSubgroup G) {k : G} (hk : k ∈ (K : Subgroup G)) :
     Multiplicative.toAdd (D.deg k) ∈ multiples (inertiaDegree D.deg K) := by
@@ -189,13 +185,13 @@ theorem toAdd_deg_mem_multiples (K : OpenSubgroup G) {k : G} (hk : k ∈ (K : Su
 variable (hLK : L ≤ K) [((L : Subgroup G).subgroupOf K).Normal] (s : D.FrobeniusLift K)
 
 /- English proof (translation)
-Establish `hmap` using `map_frobeniusClosure D.continuous_deg (FrobeniusLift.mem_normalizer hLK s.mem) s.deg_eq (L := (L : Subgroup G))`. Use `coe_norm_eq_prod_smul_norm D.deg s.deg_pos (Nat.pos_of_ne_zero (D.inertiaDegree_ne_zero K)) (fun x hx => s.field_le hLK hx) ?_ ?_ (fun k hk => toAdd_deg_mem_multiples K hk) ?_ hφK hdφ a _` and prove the remaining obligations. Introduce `x hx`. Establish `: D.deg x ∈ (frobeniusClosure D.deg L s.elt).map D.deg` using `⟨x, hx, rfl⟩`. Rewrite `this` using `[hmap]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this`. Introduce `k _ hk`. Establish `: D.deg k ∈ AddSubgroup.toSubgroup (multiples (s.deg * inertiaDegree D.deg K))` using `hk`. Rewrite `this` using `[← hmap]`. Take `⟨x, hx, hxk⟩` from `this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨x, hx, hxk⟩`. Introduce `q hq`. Prove the components needed by the constructor for the conclusion. Introduce `hqS`. Establish `: q ∈ ((s.field L hLK : OpenSubgroup G) : Subgroup G) ⊓ D.deg.ker` using `⟨hqS, hq.2⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[s.field_inf_ker hLK]`. Conclude with `this`. Introduce `hqJ`. Conclude with `le_frobeniusClosure hqJ`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem coe_norm_field_eq {φ : G} (hφK : φ ∈ (K : Subgroup G))
     (hdφ : D.deg φ = Multiplicative.ofAdd (inertiaDegree D.deg K : ℤ̂))

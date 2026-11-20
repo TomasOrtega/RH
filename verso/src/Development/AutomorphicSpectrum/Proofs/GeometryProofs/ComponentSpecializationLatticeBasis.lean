@@ -29,9 +29,9 @@ variable {X : Scheme.{0}} {G : Over X} [GrpObj G] {Ω : Type} [Field Ω] {ξ : S
   [Module Ω V] {K : Type} [Field K]
 
 /- English proof (translation)
-Take `⟨hs, v, hv, rfl⟩` from `(M.valAt_iff z e w).1 h`. Use `(M.valAt_iff z _ _).2 ⟨hs, v ≫ f, ?_, by rw [Category.assoc]⟩` and prove the remaining obligations. Rewrite `hv`, the goal using `[LieModel.extends_iff]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `h1` using `(isTanAt_iff v).1 hv.1`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `(isTanAt_iff _).2 ?_` and prove the remaining obligations. Rewrite using `[← Category.assoc, h1, one_comp]`. Rewrite using `[hf e, hv.2, Category.assoc]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem valAt_of_isDiffOf {M : LieModel G ξ V} {z : Sp K ⟶ X} (f : G ⟶ G) [IsMonHom f] (A : V →ₗ[Ω] V)
     (hf : M.IsDiffOf f A) {e : V} {w : epsAt z ⟶ G} (h : M.ValAt z e w) : M.ValAt z (A e) (w ≫ f) := by
@@ -45,29 +45,27 @@ theorem valAt_of_isDiffOf {M : LieModel G ξ V} {z : Sp K ⟶ X} (f : G ⟶ G) [
   · rw [hf e, hv.2, Category.assoc]
 
 /- English proof (translation)
-Take `⟨F, _, _, ⟨MF⟩⟩` from `lieModel_exists X G K z`. Take `⟨ev, hev, hsm, hsp⟩` from `GlobalTheory.T.lie_lattice_eval_at_local_ring X G Ω ξ V M K z h F MF hξ inferInstance`. Establish `hmem : ∀ i, ℓ i ∈ M.lat ⟨_, h⟩` using `fun i => by`. Rewrite using `[hℓ.2]`. Conclude with `Submodule.subset_span ⟨i, rfl⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Set `u : Fin g → F` to `fun i => ev ⟨ℓ i, hmem i⟩`. Establish `hcomb : ∀ x : Fin g → regAt ξ ⟨_, h⟩, comb ℓ x ∈ M.lat ⟨_, h⟩` using `fun x => Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ (x i) (hmem i)`. Establish `hevc : ∀ x : Fin g → regAt ξ ⟨_, h⟩, ev ⟨comb ℓ x, hcomb x⟩ = ∑ i, ψ (x i) • u i`. Introduce `x`. Establish `e1 : (⟨comb ℓ x, hcomb x⟩ : M.lat ⟨_, h⟩) = ∑ i, x i • (⟨ℓ i, hmem i⟩ : M.lat ⟨_, h⟩)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `[comb]`. Both sides reduce to the same expression. Rewrite using `[e1, map_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => hsm (x i) (ψ (x i)) _ (hψ (x i))`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hle : ⊤ ≤ Submodule.span K (Set.range u)`. Establish `hr : Set.range ev ⊆ (Submodule.span K (Set.range u) : Set F)`. Introduce and unpack `_ ⟨⟨e, he⟩, rfl⟩`. Establish `he'` using `he`. Rewrite `he'` using `[hℓ.2, Submodule.mem_span_range_iff_exists_fun]`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨x, rfl⟩` from `he'`. Establish `e2 : (∑ i, x i • ℓ i) = comb ℓ x` using `rfl`. Simplify using `only [e2]`. Rewrite using `[hevc x]`. Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← hsp]`. Conclude with `Submodule.span_le.2 hr`. Establish `hcard : Fintype.card (Fin g) = Module.finrank K F`. Take `⟨_, hU, b', hb'sp, hb'⟩` from `(lieLat_isVB_of_smooth X Ω ξ G V M hξ inferInstance).1 ⟨_, h⟩ trivial`. Establish `hfr` using `hb' ⟨_, h⟩ trivial hU`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `htop : Submodule.span Ω (Set.range ℓ) = ⊤`. Rewrite using `[eq_top_iff, ← hb'sp, Submodule.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Establish `h3 : b' i ∈ M.lat ⟨_, h⟩`. Rewrite using `[hfr.2]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Submodule.subset_span ⟨i, rfl⟩`. Rewrite `h3` using `[hℓ.2, Submodule.mem_span_range_iff_exists_fun]`. Take `⟨x, hx⟩` from `h3`. Rewrite using `[← hx]`. Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_of_tower_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hg : Module.finrank Ω V = g`. Rewrite using `[← finrank_top, ← htop, finrank_span_eq_card hℓ.1, Fintype.card_fin]`. Take `⟨R', _, x, hx, F', _, _, MR, n, b, hp⟩` from `exists_chart G (centre z)`. Establish `hgen : genPt ξ ∈ x.opensRange` using `h.mem_open x.opensRange.isOpen hp`. Take `⟨φ, hφ⟩` from `exists_lift x ξ hgen`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Take `⟨a, ha⟩` from `exists_lift x z hp`. Take `⟨β, B, -, -⟩` from `basis_tr a x z ha MR MF b`. Take `⟨c, hli, hsp', -⟩` from `frame_of_basis x MR b ξ M φ hφ`. Establish `hn : n = Module.finrank Ω V`. Rewrite using `[Module.finrank_eq_card_basis (Module.Basis.mk hli hsp'.ge), Fintype.card_fin]`.
+Use linear arithmetic over natural numbers and integers. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Module.finrank_eq_card_basis B, Fintype.card_fin, Fintype.card_fin]`. Use linear arithmetic over natural numbers and integers. Set `bb : Module.Basis (Fin g) K F` to `basisOfTopLeSpanOfCardEqFinrank u hle hcard`. Use `⟨lieModelOfEquiv MF bb.equivFun.symm, fun x => ?_⟩` and prove the remaining obligations. Establish `e3 : bb.equivFun.symm (fun i => ψ (x i)) = ev ⟨comb ℓ x, hcomb x⟩`.
-
-Rewrite using `[hevc, Module.Basis.equivFun_symm_apply]`. Conclude with `Finset.sum_congr rfl fun i _ => by simp [bb]`. Express the relevant statement in the definitionally equal form `M.ValAt z (comb ℓ x) (MF.pt (bb.equivFun.symm fun i => ψ (x i)))`. Rewrite using `[e3]`. Conclude with `(hev _ _).2 ⟨hcomb x, rfl⟩`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_model_of_frame [IsCommMonObj G] [Smooth G.hom] (hξ : IsCptGen ξ) (M : LieModel G ξ V) (z : Sp K ⟶ X)
     (h : genPt ξ ⤳ centre z) (ψ : regAt ξ ⟨_, h⟩ →+* K) (hψ : ∀ a : regAt ξ ⟨_, h⟩, ValAt ξ z (a : Ω) (ψ a)) {g : ℕ}
@@ -137,17 +135,15 @@ theorem exists_model_of_frame [IsCommMonObj G] [Smooth G.hom] (hξ : IsCptGen ξ
   exact (hev _ _).2 ⟨hcomb x, rfl⟩
 
 /- English proof (translation)
-Take `⟨ρ', hρ', -⟩` from `lieModel_exists_unique_act _ G K z _ MY (𝓞 E) act.act act.hom act.one act.mul act.add`. It suffices to establish `hq : ρ' = ρK from hq ▸ hρ'`. Use `RingHom.ext fun a => (Pi.basisFun K (Fin g)).ext fun i => ?_` and prove the remaining obligations. Set `x : Fin g → regAt ξ ⟨_, h⟩` to `Pi.single i 1`. Establish `hx : (fun j => ψ (x j)) = Pi.basisFun K (Fin g) i`.
+Extract witnesses or component facts from the available result. Reduce the argument to an intermediate assertion. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `j`. Distinguish the cases in `hj : j = i`. Substitute `hj` using the available equality. Simplify using `[x]`. Simplify using `[x, hj]`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Establish `hmem : ρ a (comb ℓ x) ∈ M.lat ⟨_, h⟩`. Use `GlobalTheory.T.lie_lattice_stable_under_action X Ω ξ G V M (𝓞 E) act ρ hact ⟨_, h⟩ a _ ?_` and prove the remaining obligations. Rewrite using `[hℓ.2]`. Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`. Rewrite `hmem` using `[hℓ.2, Submodule.mem_span_range_iff_exists_fun]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨x', hx'⟩` from `hmem`. Establish `hc : comb ℓ x' = ρ a (comb ℓ x)` using `hx'`. Use `act.hom a` as an intermediate fact. Establish `h1 : M.ValAt z (ρ a (comb ℓ x)) (MY.pt (fun j => ψ (x j)) ≫ act.act a)` using `valAt_of_isDiffOf (act.act a) (ρ a) (hact a) (hY x)`. Establish `h2` using `hY x'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[hc]`. Establish `h3` using `h2.unique hξ h1`. Rewrite `h3` using `[← hρ' a]`. Establish `h4` using `MY.inj h3`. Rewrite using `[← hx, ← h4]`.
-
-Conclude with `(hT a x x' hc.symm).symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isActOf_of_frame {E : Type} [Field E] [NumberField E] (hξ : IsCptGen ξ) {M : LieModel G ξ V} {z : Sp K ⟶ X}
     {h : genPt ξ ⤳ centre z} {ψ : regAt ξ ⟨_, h⟩ →+* K} {g : ℕ} {ℓ : Fin g → V}
@@ -187,13 +183,13 @@ theorem isActOf_of_frame {E : Type} [Field E] [NumberField E] (hξ : IsCptGen ξ
 end Frame
 
 /- English proof (translation)
-Introduce `E _ _ _ H D l Xo c O _ _ _ β Y U Z K _ y h₁ ψ g ℓ ρK hψ hℓ hT`. Establish `: Smooth Y.t.G.hom` using `Y.t.semi.smooth`. Take `⟨MY, hMY⟩` from `exists_model_of_frame Z.gen Z.M (y ≫ Y.j) h₁ ψ hψ ℓ hℓ`. Establish `hY : MY.IsActOf Y.t.act.act ρK` using `isActOf_of_frame Z.gen hℓ Y.t.act Z.act hT hMY`. Establish `hp : IsGrpPullback Y.oF.t.G Xo.univ.t.G (pullback.fst _ _) Y.m0.toSABMap.φ` using `Y.m0.cart`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hq : IsGrpPullback Y.oF.t.G Y.t.G Y.j Y.m.φ` using `Y.m.cart`. Take `⟨Mo, hMo⟩` from `(LiePull.lieModel_pullback _ _ Y.t.G Y.oF.t.G Y.j Y.m.φ hq K y (Fin g → K)).1 MY`. Take `⟨MU, hMU⟩` from `(LiePull.lieModel_pullback _ _ Xo.univ.t.G Y.oF.t.G (pullback.fst _ _) Y.m0.toSABMap.φ hp K y (Fin g → K)).2 Mo`. Establish `hMoAct : ∀ (a : 𝓞 E) (e : Fin g → K), Mo.pt (ρK a e) = Mo.pt e ≫ Y.oF.t.act.act a`. Introduce `a e`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Apply `hq.1.hom_ext` to reduce the goal to its premises. Rewrite using `[hMo, hY a e, Over.comp_left, Over.comp_left, Category.assoc, Y.m.act, ← Category.assoc, hMo]`. Rewrite using `[Over.w, Over.comp_left, Category.assoc, Over.w, Over.w]`. Use `⟨MU, MY, fun e => ⟨(Mo.pt e).left, Over.w (Mo.pt e), hMU e, hMo e⟩, hMY, fun a e => ?_, hY⟩` and prove the remaining obligations.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Rewrite using `[← hMU, hMoAct a e, Over.comp_left, Over.comp_left, Category.assoc, Y.m0.act, ← Category.assoc, hMU]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem tangent_coords : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (β : O →+* c.F) (Y : Model Xo c β) (U : Set (Xo.XF c)) (Z : CptOver Y U) (K : Type) [Field K] (y : Sp K ⟶ Xo.XF c) (h₁ : genPt (Z.ξ₀ ≫ Y.j) ⤳ centre (y ≫ Y.j))
     (ψ : regAt (Z.ξ₀ ≫ Y.j) ⟨_, h₁⟩ →+* K) (g : ℕ) (ℓ : Fin g → Z.V) (ρK : 𝓞 E →+* Module.End K (Fin g → K)),

@@ -6,13 +6,13 @@ open scoped ENNReal NNReal
 namespace GlobalTheory.CompanionTheory.SW
 
 /- English proof (translation)
-Introduce `hlt`. Take `⟨c1, h1, h12⟩` from `exists_between hlt`. Take `⟨c2, hc, h2⟩` from `exists_between h12`. Establish `hDa : ContinuousAt D b` using `hD.continuousAt (hB.mem_nhds hb)`. Establish `hD'a : ContinuousAt D' b` using `hD'.continuousAt (hB.mem_nhds hb)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hN : {x | D x < c1} ∩ {x | c2 < D' x} ∩ B ∈ 𝓝 b` using `Filter.inter_mem (Filter.inter_mem (hDa.eventually (gt_mem_nhds h1)) (hD'a.eventually (lt_mem_nhds h2))) (hB.mem_nhds hb)`. Take `⟨S, hSn, hSN, hS⟩` from `local_compact_nhds hN`. Establish `hSm : MeasurableSet S` using `hS.isClosed.measurableSet`. Establish `hpos : ν S ≠ 0` using `(Measure.measure_pos_of_mem_nhds ν hSn).ne'`. Establish `htop : ν S ≠ ∞` using `hS.measure_lt_top.ne`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hle1 : ∫⁻ x in S, D x ∂ν ≤ c1 * ν S`. Rewrite using `[← setLIntegral_const]`. Conclude with `lintegral_mono_ae ((ae_restrict_iff' hSm).2 (Filter.Eventually.of_forall fun x hx => (hSN hx).1.1.le))`. Establish `hle2 : c2 * ν S ≤ ∫⁻ x in S, D' x ∂ν`. Rewrite using `[← setLIntegral_const]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `lintegral_mono_ae ((ae_restrict_iff' hSm).2 (Filter.Eventually.of_forall fun x hx => (hSN hx).1.2.le))`. Establish `hmid : c1 * ν S < c2 * ν S` using `(ENNReal.mul_lt_mul_iff_left hpos htop).2 hc`. Conclude with `(hle1.trans_lt (hmid.trans_le hle2)).ne (h S hS fun x hx => (hSN hx).2)`.
+A detailed English derivation is pending.
 -/
 theorem not_lt_of_setLIntegral_compact_eq {X : Type} [TopologicalSpace X] [LocallyCompactSpace X]
     [T2Space X] [MeasurableSpace X] [BorelSpace X] (ν : Measure X) [IsLocallyFiniteMeasure ν]
@@ -45,7 +45,7 @@ theorem not_lt_of_setLIntegral_compact_eq {X : Type} [TopologicalSpace X] [Local
   exact (hle1.trans_lt (hmid.trans_le hle2)).ne (h S hS fun x hx => (hSN hx).2)
 
 /- English proof (translation)
-Introduce `X _ _ _ _ _ _ ν _ _ B hB D D' hD hD' h b hb`. Conclude with `le_antisymm (not_lt.1 (not_lt_of_setLIntegral_compact_eq ν hB hD' hD (fun S hS hSB => (h S hS hSB).symm) hb)) (not_lt.1 (not_lt_of_setLIntegral_compact_eq ν hB hD hD' h hb))`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem eq_of_setLIntegral_compact_eq :
     ∀ (X : Type) [TopologicalSpace X] [LocallyCompactSpace X] [SecondCountableTopology X]

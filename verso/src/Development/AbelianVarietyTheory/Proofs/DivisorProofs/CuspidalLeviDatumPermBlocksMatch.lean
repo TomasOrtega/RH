@@ -9,19 +9,17 @@ namespace GlobalTheory.FinGL.BlockMatch
 variable {F : Type} [Field F] {r : ℕ} {V W : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W]
 
 /- English proof (translation)
-Set `c : Fin r → ℕ` to `fun k => if k ∈ S then 0 else 1`. Set `U : Subgroup (blockTri (κ` to `F) b) := (levi F b ⊓ GlobalTheory.FiniteGL.unipRadical F c).subgroupOf (blockTri b)`. Establish `hU : ∀ u : blockTri (κ` using `F) b, u ∈ U ↔ ∀ i j, ((u : GL (Fin r) F) : Matrix (Fin r) (Fin r) F) i j ≠ (1 : Matrix (Fin r) (Fin r) F) i j → b i = b j ∧ i ∈ S ∧ j ∉ S := by`. Introduce `u`. Simplify using `only [U, Subgroup.mem_subgroupOf, Subgroup.mem_inf, mem_levi, GlobalTheory.FiniteGL.mem_unipRadical, Matrix.sub_apply, sub_eq_zero]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩ i j hne`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `h`. Conclude with `hne (by rw [h1 i j h, Matrix.one_apply_ne (fun e => h (congrArg b e))])`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `h`. Use `hne (h2 i j ?_)` and prove the remaining obligations. Apply the tactic sequence `by_cases hi : i ∈ S <;> by_cases hj : j ∈ S <;> simp_all [c]`. Introduce `h`. Use `⟨fun i j hij => ?_, fun i j hij => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `h0`. Conclude with `hij (h i j (by rwa [Matrix.one_apply_ne (fun e => hij (congrArg b e))])).1`. Assume the negation of the conclusion as `h0`. Take `⟨-, hi, hj⟩` from `h i j h0`. Simplify using `[c, hi, hj] at hij`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Use `letI := Fintype.ofFinite U`. Establish `hc : (Fintype.card U : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 Fintype.card_ne_zero`. Use extensionality with `v`. Establish `h0 : ∑ u : U, σ u v = 0`. Use `hσ.cusp S hS _ fun n hn => ?_` and prove the remaining obligations.
+By extensionality, compare the relevant components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[map_sum]`. Conclude with `Fintype.sum_equiv (Equiv.mulLeft (⟨n, (hU n).2 hn⟩ : U)) _ _ fun u => by simp`. Establish `h1` using `congrArg T h0`. Establish `h2 : ∀ u : U, T (σ u v) = T v` using `fun u => LinearMap.congr_fun (hT u ((hU u).1 u.2)) v`. Rewrite `h1` using `[map_sum, map_zero, Finset.sum_congr rfl fun u _ => h2 u, Finset.sum_const, Finset.card_univ, ← Nat.cast_smul_eq_nsmul ℂ]`.
-
-Conclude with `(smul_eq_zero.1 h1).resolve_left hc`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_invariant [Finite F] {b : Fin r → ℕ} {σ : Representation ℂ (blockTri (κ := F) b) V}
     (hσ : IsCuspDatum b σ) (S : Finset (Fin r)) (hS : ∃ i j, b i = b j ∧ i ∈ S ∧ j ∉ S) (T : V →ₗ[ℂ] W)
@@ -65,7 +63,7 @@ theorem eq_zero_of_invariant [Finite F] {b : Fin r → ℕ} {σ : Representation
   exact (smul_eq_zero.1 h1).resolve_left hc
 
 /- English proof (translation)
-Use `mem_blockTri.2 fun i j hij => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `h0`. Use `h i j (by rwa [Matrix.one_apply_ne (fun e => by rw [e] at hij; exact lt_irrefl _ hij)])` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem mem_blockTri_of_ne {b : Fin r → ℕ} {g : GL (Fin r) F}
     (h : ∀ i j, (g : Matrix (Fin r) (Fin r) F) i j ≠ (1 : Matrix (Fin r) (Fin r) F) i j → b i < b j) :
@@ -76,25 +74,25 @@ theorem mem_blockTri_of_ne {b : Fin r → ℕ} {g : GL (Fin r) F}
   omega
 
 /- English proof (translation)
-Introduce `F _ _ r b b' V V' _ _ _ _ σ σ' hσ hσ' w T hT hint`. Establish `hone : ∀ k l : Fin r, (1 : Matrix (Fin r) (Fin r) F) (w k) (w l) = (1 : Matrix (Fin r) (Fin r) F) k l`. Introduce `k l`. Simplify using `[Matrix.one_apply]`. Establish `A : ∀ i j, b i = b j → ¬ b' (w i) < b' (w j)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `i j hij hlt`. Use `hT (eq_zero_of_invariant hσ (Finset.univ.filter fun k => b' (w k) ≤ b' (w i)) ⟨i, j, hij, by simp, by simpa using hlt⟩ T fun u hu => ?_)` and prove the remaining obligations. Establish `key : ∀ k l, ((permGL F w * u * (permGL F w)⁻¹ : GL (Fin r) F) : Matrix (Fin r) (Fin r) F) k l ≠ (1 : Matrix (Fin r) (Fin r) F) k l → b' k < b' l`. Introduce `k l`. Take `⟨k, rfl⟩` from `w.surjective k`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨l, rfl⟩` from `w.surjective l`. Rewrite using `[conj_permGL_apply, hone]`. Introduce `h`. Take `⟨-, h1, h2⟩` from `hu k l h`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at h1 h2`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Use linear arithmetic over natural numbers and integers. Establish `h1` using `hint u ⟨_, mem_blockTri_of_ne key⟩ (by simp)`. Rewrite using `[hσ'.infl ⟨_, mem_blockTri_of_ne key⟩ fun k l hkl => by`. Assume the negation of the conclusion as `h0`. Use `key k l h0` as an intermediate fact.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Use the proof step `omega] at h1`. Conclude with `h1.symm`. Establish `B : ∀ i j, b' (w i) = b' (w j) → ¬ b i < b j`. Introduce `i j hij hlt`. Apply `hT` to reduce the goal to its premises.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations.
 
-Use extensionality with `v`. Use `hσ'.cusp (Finset.univ.filter fun k => b (w.symm k) ≤ b i) ⟨w i, w j, hij, by simp, by simpa using hlt⟩ (T v) fun u hu => ?_` and prove the remaining obligations. Establish `key : ∀ k l, (((permGL F w)⁻¹ * u * permGL F w : GL (Fin r) F) : Matrix (Fin r) (Fin r) F) k l ≠ (1 : Matrix (Fin r) (Fin r) F) k l → b k < b l`. Introduce `k l`. Rewrite using `[← conj_permGL_apply w, ← hone]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `h`. Take `⟨-, h1, h2⟩` from `hu (w k) (w l) (by simpa [mul_assoc] using h)`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, Equiv.symm_apply_apply] at h1 h2`. Use linear arithmetic over natural numbers and integers. Establish `h1` using `hint ⟨_, mem_blockTri_of_ne key⟩ u (by simp [mul_assoc])`.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction.
 
-Rewrite using `[hσ.infl ⟨_, mem_blockTri_of_ne key⟩ fun k l hkl => by`. Assume the negation of the conclusion as `h0`. Use `key k l h0` as an intermediate fact. Use the proof step `omega] at h1`. Conclude with `LinearMap.congr_fun h1 v`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `i j`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `A i j h` as an intermediate fact. Use `A j i h.symm` as an intermediate fact.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Introduce `h`. Use `B i j h` as an intermediate fact. Use `B j i h.symm` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem blocks_match : ∀ (F : Type) [Field F] [Finite F] (r : ℕ) (b b' : Fin r → ℕ) (V V' : Type) [AddCommGroup V] [Module ℂ V] [AddCommGroup V'] [Module ℂ V'] (σ : Representation ℂ (blockTri (κ := F) b) V) (σ' : Representation ℂ (blockTri (κ := F) b') V'), IsCuspDatum b σ → IsCuspDatum b' σ' → ∀ (w : Equiv.Perm (Fin r)) (T : V →ₗ[ℂ] V'), T ≠ 0 → (∀ (p : blockTri (κ := F) b) (p' : blockTri (κ := F) b'), (p' : GL (Fin r) F) * permGL F w = permGL F w * (p : GL (Fin r) F) → σ' p' ∘ₗ T = T ∘ₗ σ p) → ∀ i j : Fin r, b i = b j ↔ b' (w i) = b' (w j) := by
   intro F _ _ r b b' V V' _ _ _ _ σ σ' hσ hσ' w T hT hint

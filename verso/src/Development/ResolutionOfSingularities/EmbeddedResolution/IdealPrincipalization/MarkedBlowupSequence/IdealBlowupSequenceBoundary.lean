@@ -17,15 +17,15 @@ noncomputable section
 namespace FunctorialResolution.EmbeddedResolution
 
 /- English proof (translation)
-Take `⟨U, hxU, m, c, a, h1, h2, h3⟩` from `h.exists_etaleChart`. Establish `hiso : IsIso (e.hom.resLE U (e.hom ⁻¹ᵁ U) le_rfl)`. Rewrite using `[Scheme.Hom.resLE_eq_morphismRestrict]`. Use `infer_instance`. Establish `hcet : AlgebraicGeometry.Etale c.map` using `c.isEtale`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hAet : AlgebraicGeometry.Etale (e.hom.resLE U (e.hom ⁻¹ᵁ U) le_rfl)` using `inferInstance`. Establish `hmem : x₀ ∈ e.hom ⁻¹ᵁ U` using `hxU`. Use `inStrictNormalCrossingPositionAt_of_exists_etaleChart ⟨e.hom ⁻¹ᵁ U, hmem, m, ⟨e.hom.resLE U (e.hom ⁻¹ᵁ U) le_rfl ≫ c.map, ?_, inferInstance⟩, a, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, c.comp_struct, ← Category.assoc, Scheme.Hom.resLE_comp_ι, Category.assoc]`. Introduce `i hi j hj t hit hjt`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `h1 i (by simpa using hi) j (by simpa using hj) t hit hjt`. Introduce `i hi hnone`. Establish `hi' : i < E.length` using `by simpa using hi`. Establish `hget : (E.map (fun D => D.comap e.hom))[i]'hi = (E[i]'hi').comap e.hom` using `by simp`. Rewrite using `[hget, restrictIdeal_comap_eq_comap_resLE_restrictIdeal e.hom (E[i]'hi') U (e.hom ⁻¹ᵁ U) le_rfl, h2 i hi' hnone]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using the standard rewrite rules. Introduce `i hi t hit`. Establish `hi' : i < E.length` using `by simpa using hi`. Establish `key : restrictIdeal ((E[i]'hi').comap e.hom) (e.hom ⁻¹ᵁ U) = (coordSubspaceIdeal k m {t}).comap (e.hom.resLE U (e.hom ⁻¹ᵁ U) le_rfl ≫ c.map)`. Rewrite using `[restrictIdeal_comap_eq_comap_resLE_restrictIdeal e.hom (E[i]'hi') U (e.hom ⁻¹ᵁ U) le_rfl, h3 i hi' t hit, EtaleChart.coordIdeal_eq_comap_coordSubspaceIdeal, ← Scheme.IdealSheafData.comap_comp]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hget : (E.map (fun D => D.comap e.hom))[i]'hi = (E[i]'hi').comap e.hom` using `by simp`. Rewrite using `[hget]`. Conclude with `key`.
+A detailed English derivation is pending.
 -/
 theorem inStrictNormalCrossingPositionAt_comap_iso {X X₀ : Scheme.{u}} {k : Type u} [Field k]
     (p : X ⟶ Spec (CommRingCat.of k)) (e : X₀ ≅ X) (E : List X.IdealSheafData) (x₀ : X₀)
@@ -62,11 +62,11 @@ theorem inStrictNormalCrossingPositionAt_comap_iso {X X₀ : Scheme.{u}} {k : Ty
     exact key
 
 /- English proof (translation)
-Take `⟨-, hpt⟩` from `(inStrictNormalCrossingPosition_iff p E).mp h`. Use `(inStrictNormalCrossingPosition_iff _ _).mpr ⟨?_, fun x₀ => inStrictNormalCrossingPositionAt_comap_iso p e E x₀ (hpt (e.hom.base x₀))⟩` and prove the remaining obligations. Introduce `D hD`. Take `⟨i, hi, rfl⟩` from `List.mem_iff_getElem.mp hD`. Use `isSmoothDivisor_of_locally_coordIdeal _ ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `x`. Take `⟨U₀, hxU₀, n, c₀, a, k1, k2, k3⟩` from `(inStrictNormalCrossingPositionAt_comap_iso p e E x (hpt (e.hom.base x))).exists_etaleChart`. Use `⟨U₀, hxU₀, n, c₀, ?_⟩` and prove the remaining obligations. Break down `hai : a i with _ | t` into its components or cases. Conclude with `Or.inl (k2 i hi hai)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative.
 
-Conclude with `Or.inr ⟨t, k3 i hi t hai⟩`.
+Prove the second alternative.
 -/
 theorem inStrictNormalCrossingPosition_comp_iso_hom {X X₀ : Scheme.{u}} {k : Type u} [Field k]
     (p : X ⟶ Spec (CommRingCat.of k)) (e : X₀ ≅ X) (E : List X.IdealSheafData)
@@ -92,14 +92,14 @@ variable {k : Type u} [Field k] {X : Scheme.{u}} {p : X ⟶ Spec (CommRingCat.of
   {I : X.IdealSheafData} {E : List X.IdealSheafData}
 
 /- English proof (translation)
-Rewrite using `[structureMorphism_def, SequenceOfBlowups.projectionToBase_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem structureMorphism_zero (s : IdealBlowupSequence p I E) :
     s.structureMorphism 0 = s.toSequenceOfBlowups.isoZero.hom ≫ p := by
   rw [structureMorphism_def, SequenceOfBlowups.projectionToBase_zero]
 
 /- English proof (translation)
-Rewrite using `[structureMorphism_def, structureMorphism_def, SequenceOfBlowups.blowupMorphism_eq_transitionMap, ← Category.assoc, SequenceOfBlowups.transitionMap_comp_projectionToBase]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem structureMorphism_succ (s : IdealBlowupSequence p I E) (i : ℕ) :
     s.structureMorphism (i + 1) = s.toSequenceOfBlowups.transitionMapSucc i ≫ s.structureMorphism i := by
@@ -107,11 +107,9 @@ theorem structureMorphism_succ (s : IdealBlowupSequence p I E) (i : ℕ) :
     SequenceOfBlowups.transitionMap_comp_projectionToBase]
 
 /- English proof (translation)
-Use `revert hi`. Proceed by induction on `i with`. Consider the case `zero`. Introduce `_`. Rewrite using `[structureMorphism_zero]`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Use `infer_instance`. Consider the case `succ n ih`. Introduce `hi`. Establish `hn : n < s.toSequenceOfBlowups.length` using `hi`. Use `ih (le_of_lt hn)` as an intermediate fact.
-
-Rewrite using `[structureMorphism_succ]`. Conclude with `smooth_comp_of_isBlowupAlongIdealSheaf (s.hasStrictNormalCrossingsWith_center n hn) (s.toSequenceOfBlowups.isBlowupAlongIdealSheaf_blowupMorphism n hn)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem smooth_structureMorphism [AlgebraicGeometry.Smooth p] (s : IdealBlowupSequence p I E) (i : ℕ)
     (hi : i ≤ s.toSequenceOfBlowups.length) :
@@ -131,11 +129,11 @@ theorem smooth_structureMorphism [AlgebraicGeometry.Smooth p] (s : IdealBlowupSe
       (s.toSequenceOfBlowups.isBlowupAlongIdealSheaf_blowupMorphism n hn)
 
 /- English proof (translation)
-Introduce `i`. Proceed by induction on `i with`. Consider the case `zero`. Introduce `_`. Establish `hb : s.boundary 0 = E.map (fun D => D.comap s.toSequenceOfBlowups.isoZero.hom)`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[s.boundary_zero, SequenceOfBlowups.projectionToBase_zero]`. Rewrite using `[hb, structureMorphism_zero]`. Conclude with `inStrictNormalCrossingPosition_comp_iso_hom p s.toSequenceOfBlowups.isoZero E hE`. Consider the case `succ n ih`. Introduce `hi`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hn : n < s.toSequenceOfBlowups.length` using `hi`. Establish `: NoetherianSpace ↥(s.toSequenceOfBlowups.schemeAt (n + 1))` using `hN (n + 1) hi`. Establish `key` using `inStrictNormalCrossingPosition_strictTransform_append (s.structureMorphism n) (s.toSequenceOfBlowups.transitionMapSucc n) (s.toSequenceOfBlowups.center n) (s.boundary n) (s.toSequenceOfBlowups.isBlowupAlongIdealSheaf_blowupMorphism n hn) (ih (le_of_lt hn)) (s.hasStrictNormalCross …`. Rewrite using `[structureMorphism_succ, s.boundary_succ_eq_map_strictTransform_append n hn]`. Conclude with `key`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inStrictNormalCrossingPosition_boundary [AlgebraicGeometry.Smooth p] (s : IdealBlowupSequence p I E)
     (hE : InStrictNormalCrossingPosition p E)
@@ -161,7 +159,7 @@ theorem inStrictNormalCrossingPosition_boundary [AlgebraicGeometry.Smooth p] (s 
     exact key
 
 /- English proof (translation)
-The claim follows from `EmbeddedResolution.isNoetherian_schemeAt s.toSequenceOfBlowups i hi`.
+A detailed English derivation is pending.
 -/
 theorem isNoetherian_schemeAt [AlgebraicGeometry.IsNoetherian X] (s : IdealBlowupSequence p I E) (i : ℕ)
     (hi : i ≤ s.toSequenceOfBlowups.length) :
@@ -169,7 +167,7 @@ theorem isNoetherian_schemeAt [AlgebraicGeometry.IsNoetherian X] (s : IdealBlowu
   EmbeddedResolution.isNoetherian_schemeAt s.toSequenceOfBlowups i hi
 
 /- English proof (translation)
-Use `inStrictNormalCrossingPosition_boundary s hE ?_` and prove the remaining obligations. Introduce `i hi`. Use `s.isNoetherian_schemeAt i hi` as an intermediate fact. Use `infer_instance`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem inStrictNormalCrossingPosition_boundary_of_isNoetherian [AlgebraicGeometry.Smooth p]
     [AlgebraicGeometry.IsNoetherian X] (s : IdealBlowupSequence p I E) (hE : InStrictNormalCrossingPosition p E) :

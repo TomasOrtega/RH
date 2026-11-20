@@ -38,9 +38,9 @@ variable {M : Type} [TopologicalSpace M] [SecondCountableTopology M] [Measurable
   (A : HolAtlas M n)
 
 /- English proof (translation)
-Rewrite using `[part_apply A hα ε i hS h]`. Break down `h0 with h0 | h0` into its components or cases. Conclude with `setLIntegral_measure_zero _ _ h0`. Use `setLIntegral_eq_zero (ChartGlue.measurableSet_image _ hS h) ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨y, hy, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `e` using `A.loc_crd α ⟨(i, y), h hy⟩`. Rewrite `e` using `[h0 ⟨(i, y), h hy⟩ hy]`. Simplify using `only [(A.e i).left_inv (h hy), rd, Pi.zero_apply]`. Use `erw [e]`. Simplify using `[dens]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem part_eq_zero {α : A.Fld} (hα : A.IsForm α) (ε : ℤˣ) (i : A.ι) {S : Set M} (hS : MeasurableSet S)
     (h : S ⊆ (A.e i).source) (h0 : volume (A.e i '' S) = 0 ∨ ∀ x : A.Pt, x.pt ∈ S → α x = 0) : A.part α ε S = 0 := by
@@ -56,21 +56,19 @@ theorem part_eq_zero {α : A.Fld} (hα : A.IsForm α) (ε : ℤˣ) (i : A.ι) {S
     simp [dens]
 
 /- English proof (translation)
-Establish `hs` using `(A.e i).open_source.measurableSet`. Establish `ht` using `(A.e i).open_target.measurableSet`. Establish `hz : ∀ v ∉ (A.e i).target, rd A α i v = 0` using `fun v hv => by simp [rd, HolAtlas.loc, hv, dens]`. Establish `hp : ∀ ε : ℤˣ, A.part α ε univ = ∫⁻ v, ENNReal.ofReal (((ε : ℤ) : ℝ) * rd A α i v)`. Introduce `ε`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← measure_add_measure_compl hs, h0, add_zero, part_apply A hα ε i hs subset_rfl, (A.e i).image_source_eq_target, ← lintegral_indicator ht]`. Use `lintegral_congr fun v => ?_` and prove the remaining obligations. Distinguish the cases in `hv : v ∈ (A.e i).target`. Rewrite using `[indicator_of_mem hv, (A.e i).right_inv hv]`. Rewrite using `[indicator_of_notMem hv, hz v hv, mul_zero, ENNReal.ofReal_zero]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hcon : ContinuousOn (rd A α i) (A.e i).target` using `Complex.continuous_re.comp_continuousOn ((hα.smooth i Finset.univ).continuousOn.div_const _)`. Establish `hm : AEStronglyMeasurable (rd A α i) volume`. Establish `e : rd A α i = (A.e i).target.indicator (rd A α i)`. Use function extensionality and compare the values at `v`. Distinguish the cases in `hv : v ∈ (A.e i).target`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[indicator_of_mem hv]`. Rewrite using `[indicator_of_notMem hv, hz v hv]`. Rewrite using `[e]`. Conclude with `(aestronglyMeasurable_indicator_iff ht).2 (hcon.aestronglyMeasurable ht)`. Establish `e1` using `hp 1`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2` using `hp (-1)`. Simplify using `only [Units.val_one, Int.cast_one, one_mul, Units.val_neg, Int.cast_neg, neg_one_mul] at e1 e2`. Establish `f1` using `isFiniteMeasure_part A hα 1`. Establish `f2` using `isFiniteMeasure_part A hα (-1)`. Establish `hi : Integrable (rd A α i)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨hm, ?_⟩` and prove the remaining obligations. Rewrite using `[hasFiniteIntegral_iff_norm]`. Combine the equalities or inequalities in the displayed calculation. Break down `le_total 0 (rd A α i v) with h | h` into its components or cases. Rewrite using `[Real.norm_of_nonneg h]`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `le_self_add`. Rewrite using `[Real.norm_of_nonpos h]`. Conclude with `le_add_self`. Use `_ = A.part α 1 univ + A.part α (-1) univ := by`. Rewrite using `[lintegral_add_left' hm.aemeasurable.ennreal_ofReal, e1, e2]`.
-
-Use `_ < ⊤ := ENNReal.add_lt_top.2 ⟨measure_lt_top _ _, measure_lt_top _ _⟩`. Use `⟨hi, ?_⟩` and prove the remaining obligations. Simplify using `only [HolAtlas.integral, Measure.real, e1, e2]`. Conclude with `(integral_eq_lintegral_pos_part_sub_lintegral_neg_part hi).symm`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem integral_eq_chart [CompactSpace M] {α : A.Fld} (hα : A.IsForm α) (i : A.ι)
     (h0 : ∀ ε : ℤˣ, A.part α ε (A.e i).sourceᶜ = 0) :
@@ -117,9 +115,9 @@ theorem integral_eq_chart [CompactSpace M] {α : A.Fld} (hα : A.IsForm α) (i :
   exact (integral_eq_lintegral_pos_part_sub_lintegral_neg_part hi).symm
 
 /- English proof (translation)
-Use `measure_null_of_locally_null S fun y hy => ?_` and prove the remaining obligations. Distinguish the cases in `hk : y ∈ K`. Take `⟨j, T, hT, h₁, h₂, h₃⟩` from `hS y hy hk`. Conclude with `⟨T, h₁, part_eq_zero A hα ε j hT h₂ (.inl h₃)⟩`. Take `⟨j, hj⟩` from `A.cover y`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Establish `ho : IsOpen ((A.e j).source ∩ Kᶜ)` using `(A.e j).open_source.inter hK.isOpen_compl`. Conclude with `⟨_, mem_nhdsWithin_of_mem_nhds (ho.mem_nhds ⟨hj, hk⟩), part_eq_zero A hα ε j ho.measurableSet inter_subset_left (.inr fun x hx => h0 x hx.2)⟩`.
+Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem part_compl_eq_zero {α : A.Fld} (hα : A.IsForm α) (ε : ℤˣ) {K S : Set M} (hK : IsClosed K)
     (h0 : ∀ x : A.Pt, x.pt ∉ K → α x = 0)
@@ -135,9 +133,9 @@ theorem part_compl_eq_zero {α : A.Fld} (hα : A.IsForm α) (ε : ℤˣ) {K S : 
       part_eq_zero A hα ε j ho.measurableSet inter_subset_left (.inr fun x hx => h0 x hx.2)⟩
 
 /- English proof (translation)
-Set `L : V (n + 1) →L[ℂ] ℂ` to `EuclideanSpace.proj (Fin.last n)`. Use `Measure.addHaar_submodule volume (LinearMap.ker (L.toLinearMap.restrictScalars ℝ)) fun h => ?_` and prove the remaining obligations. Establish `: EuclideanSpace.single (Fin.last n) (1 : ℂ) ∈ LinearMap.ker (L.toLinearMap.restrictScalars ℝ)`. Rewrite using `[h]`. Discharge the goal by the elementary cases of `trivial`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition.
 
-Simplify using `[L] at this`.
+Simplify using the standard rewrite rules.
 -/
 theorem volume_last_eq_zero (n : ℕ) : volume {v : V (n + 1) | v (Fin.last n) = 0} = 0 := by
   let L : V (n + 1) →L[ℂ] ℂ := EuclideanSpace.proj (Fin.last n)
@@ -147,9 +145,9 @@ theorem volume_last_eq_zero (n : ℕ) : volume {v : V (n + 1) | v (Fin.last n) =
   simp [L] at this
 
 /- English proof (translation)
-Take `⟨hi, e⟩` from `integral_eq_chart A' hα j h0`. Establish `hF : rd A' α j = fun v => (fun z s => rd A' α j (prodPt z s)) (headL n v) (v (Fin.last n))`. Use function extensionality and compare the values at `fun v => congrArg _ (prodPt_basePt v).symm`. Rewrite `hi` using `[hF]`. Rewrite using `[e, (integral_eq_chart A hβ i h1).2, hF]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(integral_headL_last (fun z s => rd A' α j (prodPt z s)) hi).2.trans (congrArg _ (funext h))`.
+A detailed English derivation is pending.
 -/
 theorem integral_eq_of_fibre [CompactSpace M] {N : Type} [TopologicalSpace N] [SecondCountableTopology N] [MeasurableSpace N]
     [BorelSpace N] [CompactSpace N] (A' : HolAtlas N (n + 1)) {α : A'.Fld} (hα : A'.IsForm α) (j : A'.ι)
@@ -170,9 +168,9 @@ section Fibre
 open GlobalTheory.FibLine MvPolynomial
 
 /- English proof (translation)
-Establish `hder : ∀ x ∈ (univ : Set ℂ), HasFDerivWithinAt (fun x : ℂ => a * x + b) (a • (1 : ℂ →L[ℝ] ℂ)) univ x`. Introduce `x _`. Establish `h1 : HasDerivAt (fun x : ℂ => a * x + b) a x` using `by simpa using ((hasDerivAt_id x).const_mul a).add_const b`. Conclude with `h1.complexToReal_fderiv.hasFDerivWithinAt`. Establish `hinj : InjOn (fun x : ℂ => a * x + b) univ` using `fun x _ y _ h => mul_left_cancel₀ ha (add_right_cancel h)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key` using `integral_image_eq_integral_abs_det_fderiv_smul volume MeasurableSet.univ hder hinj g`. Establish `him : (fun x : ℂ => a * x + b) '' univ = univ` using `eq_univ_of_forall fun y => ⟨(y - b) / a, trivial, by simp only; field_simp; ring⟩`. Rewrite `key` using `[him, Measure.restrict_univ]`. Rewrite using `[key]`. Simplify using `only [UnitaryInv.det_smul_one, Complex.normSq_eq_norm_sq, abs_pow, abs_norm]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem integral_affine (g : ℂ → ℂ) {a : ℂ} (ha : a ≠ 0) (b : ℂ) :
     ∫ s : ℂ, (‖a‖ ^ 2 : ℝ) • g (a * s + b) = ∫ s, g s := by
@@ -194,13 +192,13 @@ def densL (n : ℕ) : Alt n →ₗ[ℂ] ℂ where
   map_smul' _ _ := by simp [dens, mul_div_assoc]
 
 /- English proof (translation)
-Establish `e (s : ℂ) : (fsDens s : ℂ) * dens (((qMat H s ^ m : Ev n) : Alt n) * Z) = ∑ f : Fin m → Fin 2 × Fin 2, ((∏ i, qCoef s (f i)) * (fsDens s : ℂ)) * densL n (((∏ i, FibLine.entries H (f i) : Ev n) : Alt n) * Z)`. Establish `e₁ : qMat H s ^ m = ∑ f : Fin m → Fin 2 × Fin 2, (∏ i, qCoef s (f i)) • ∏ i, FibLine.entries H (f i)`. Rewrite using `[qMat, ← Fin.prod_const, Fintype.prod_sum]`. Conclude with `Finset.sum_congr rfl fun f _ => Finset.prod_smul _ _ _`. Express the relevant statement in the definitionally equal form `_ * densL n _ = _`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e₁, AddSubmonoidClass.coe_finsetSum, Finset.sum_mul, map_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun f _ => ?_` and prove the remaining obligations. Rewrite using `[Subalgebra.coe_smul, smul_mul_assoc, map_smul, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `hi (f : Fin m → Fin 2 × Fin 2)` using `(Intg.integrable_prod_qCoef_mul_fsDens m f).mul_const (densL n (((∏ i, FibLine.entries H (f i) : Ev n) : Alt n) * Z))`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [e]`. Use `⟨integrable_finset_sum _ fun f _ => hi f, ?_⟩` and prove the remaining obligations. Rewrite using `[integral_finset_sum _ fun f _ => hi f]`. Express the relevant statement in the definitionally equal form `_ = densL n _`. Rewrite using `[fibPow, map_sum, AddSubmonoidClass.coe_finsetSum, Finset.sum_mul, map_sum]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun f _ => ?_` and prove the remaining obligations. Rewrite using `[integral_mul_const, map_mul (aeval _), aeval_C, map_prod, ← Algebra.smul_def, Subalgebra.coe_smul, smul_mul_assoc, map_smul, smul_eq_mul]`. Simplify using `only [aeval_X]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem integral_fsDens_qMat {n : ℕ} (H : Matrix (Fin 2) (Fin 2) (Ev n)) (m : ℕ) (Z : Alt n) :
     Integrable (fun s : ℂ => (fsDens s : ℂ) * dens (((qMat H s ^ m : Ev n) : Alt n) * Z)) ∧
@@ -230,9 +228,9 @@ theorem integral_fsDens_qMat {n : ℕ} (H : Matrix (Fin 2) (Fin 2) (Ev n)) (m : 
   simp only [aeval_X]
 
 /- English proof (translation)
-Take `⟨hi, e⟩` from `integral_fsDens_qMat H m Z`. Establish `e₁` using `integral_affine (fun s => (((fsDens s : ℂ) * dens (((qMat H s ^ m : Ev n) : Alt n) * Z)).re : ℂ)) ha b`. Rewrite using `[← e, ← RCLike.re_to_complex, ← integral_re hi]`. Apply `Complex.ofReal_injective` to reduce the goal to its premises. Rewrite using `[← integral_complex_ofReal, ← integral_complex_ofReal]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Use `Eq.trans (congrArg _ (funext fun s => ?_)) e₁` and prove the remaining obligations. Simplify using `only [Complex.re_ofReal_mul, Complex.real_smul]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem integral_fsDens_qMat_affine {n : ℕ} (H : Matrix (Fin 2) (Fin 2) (Ev n)) (m : ℕ) (Z : Alt n) {a : ℂ} (ha : a ≠ 0)
     (b : ℂ) : ∫ s : ℂ, (((fsDens (a * s + b) * ‖a‖ ^ 2 : ℝ) : ℂ) * dens (((qMat H (a * s + b) ^ m : Ev n) : Alt n) * Z)).re =
@@ -248,9 +246,9 @@ theorem integral_fsDens_qMat_affine {n : ℕ} (H : Matrix (Fin 2) (Fin 2) (Ev n)
   ring
 
 /- English proof (translation)
-Rewrite using `[eθ, eZ, mul_assoc, ← map_pow, ← map_mul, TopDens.dens_mul_pull_headL _ _ hω, eω, SubmonoidClass.coe_pow]`. Use `congr 1`. Express the relevant statement in the definitionally equal form `densL 1 _ = _`. Rewrite using `[map_smul]`. Express the relevant statement in the definitionally equal form `_ * dens _ = _`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[dens_vol, mul_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem dens_mul_pow_pull {n : ℕ} {ω θ ζ : Alt (n + 1)} (hω : IsType 1 1 ω) {ρ : ℂ}
     (eω : pull (fibL n) ω = ρ • (vol 1 : Alt 1)) {β : Ev n} (eθ : θ = pull (headL n) β) {Z : Alt n}
@@ -263,7 +261,7 @@ theorem dens_mul_pow_pull {n : ℕ} {ω θ ζ : Alt (n + 1)} (hω : IsType 1 1 �
   rw [dens_vol, mul_one]
 
 /- English proof (translation)
-Rewrite using `[eθ, ← map_pow, ← map_mul]`. Simplify using `only [dens, PullTop.repr_pull_univ, map_zero, Finsupp.zero_apply]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem dens_pow_pull {n : ℕ} (L : V (n + 1) →L[ℂ] V n) {θ : Alt (n + 1)} {β : Alt n} (eθ : θ = pull L β) (Z : Alt n)
     (j : ℕ) : dens (θ ^ j * pull L Z) = dens (0 : Alt (n + 1)) := by
@@ -271,7 +269,7 @@ theorem dens_pow_pull {n : ℕ} (L : V (n + 1) →L[ℂ] V n) {θ : Alt (n + 1)}
   simp only [dens, PullTop.repr_pull_univ, map_zero, Finsupp.zero_apply]
 
 /- English proof (translation)
-Proceed by induction on `m using Nat.twoStepInduction with`. Consider the case `zero => simp [hs, hPoly_zero]`. Consider the case `one => simp [hs, hPoly_one, Finset.sum_range_succ]`. Consider the case `more k h0 h1 => rw [hs_add_two, hPoly_add_two, map_sub, map_mul, map_mul, map_X, map_X, h0, h1]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem map_hs (m : ℕ) : (hs m).map (algebraMap ℝ ℂ) = hPoly m := by
   induction m using Nat.twoStepInduction with
@@ -291,15 +289,13 @@ open GlobalTheory.FibLine (fsDens qMat fibPow hPoly)
 variable {k : Type} [CommRing k] {B Y : Scheme.{0}} {q : B ⟶ Sp k} {p : Y ⟶ Sp k} {d : ℕ}
 
 /- English proof (translation)
-Use `h.isIntegral` as an intermediate fact. Rewrite using `[← c1F_tens k B q d h σ, c1F_eq_of_isometric k B q d h σ _ _ (VMetric.isometric_grLB_tens_grLB_det k B q E m H fl)]`. Use function extensionality and compare the values at `x`. Set `b : Chart E 2` to `pick ((VMetric.det H).φ σ).isLB x.pt`. Establish `hb : x.pt ∈ ptsIn q σ b.U` using `mem_pick ((VMetric.det H).φ σ).isLB x.pt`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `e₁ : c1EF h σ m fl x = (h.atlas σ).chern ((m.met σ).G b) 1 x`. Establish `hS` using `lineSC_shortExact fl`. Establish `ha` using `mem_frameAt fl x.pt`. Use `Eq.trans ?_ (SecondChernPull.chern_G_eq h (H σ) b ((frameAt fl x.pt).mid hS) x hb ha 1)` and prove the remaining obligations. Use `SecondChernPull.chernAt_reindex (r := Fin 2) (finSumFinEquiv (m := 1) (n := 1)) ?_ 1` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `filter_upwards [(ChartGlue.isOpen_over x.ch (isOpen_ptsIn _)).mem_nhds (ChartGlue.mem_over x.ch x.2 ha)] with v hv`. Conclude with `Met.gram_frame (S := lineSC fl) (r := 1) (s := 1) (m.met σ) hS _ hv.2`. Rewrite using `[e₁, HolAtlas.chern, SecForm.chernAt_one_eq_ofValues]`. Express the relevant statement in the definitionally equal form `_ = ofValues (ddc (fun v => -Real.log ((m.met σ).G b (x.ch.symm v)).det.re) x.crd)`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `ξ η`. Establish `hG : MContDiffAt 2 (fun v => (m.met σ).G b (x.ch.symm v)) x.crd` using `((H σ b _ hb).mContDiffAt x.1.1 x.2).of_le (by norm_cast)`. Establish `hp : ∀ᶠ v in 𝓝 x.crd, ((m.met σ).G b (x.ch.symm v)).PosDef` using `by filter_upwards [(ChartGlue.isOpen_over x.ch (isOpen_ptsIn _)).mem_nhds (ChartGlue.mem_over x.ch x.2 hb)] with v hv`. Conclude with `(m.met σ).posDef b _ hv.2`. Rewrite using `[chernOne_eq_neg_ddc_log_det hG (hp.mono fun v hv => hv.isHermitian) ((Matrix.isUnit_iff_isUnit_det _).1 hp.self_of_nhds.isUnit), ddc, ddc, leviForm_neg]`.
-
-Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem firstChern_flag_eq_sum_graded (h : IsRegVar q d) (σ : k →+* ℂ) {E : B.Modules} {m : VMetric q E 2} (H : m.IsCInf) (fl : Vert.Flag E 2) :
     c1EF h σ m fl = c1F h σ (VMetric.grLB fl 0 H) + c1F h σ (VMetric.grLB fl 1 H) := by
@@ -332,11 +328,11 @@ variable (hB : IsRegVar q d) (hY : IsRegVar p (d + 1)) (π : Y ⟶ B) (w : π �
   (H : m.IsCInf) (flB : Vert.Flag E 2) (fl : Vert.Flag ((Scheme.Modules.pullback π).obj E) 2) (σ : k →+* ℂ)
 
 /- English proof (translation)
-Take `⟨e₁, e₂⟩` from `trace_det_curvH hB σ H flB c hP x hc`. Rewrite using `[FibLine.aeval_fibPow, e₁, e₂, firstChern_flag_eq_sum_graded hB σ H flB, Subalgebra.coe_smul, ← map_hs]`. Use `congr 1`. Use `push_cast`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression.
 
-Express the relevant statement in the definitionally equal form `((aeval _ _ : Ev d) : Alt d) = _`. Use `congr 1`. Generalize the expression as in `hs j = Q`. Proceed by induction on `Q using MvPolynomial.induction_on with`. Consider the case `C a => simp`.
+Express the relevant assertion in an equivalent form by its definition. Reduce the equality to equality of the corresponding arguments. Replace the chosen expression with an arbitrary variable. Proceed by induction. Treat this case separately.
 
-Consider the case `add P Q hP hQ => simp only [map_add, hP, hQ]`. Consider the case `mul_X P i hP`. Simplify using `only [map_mul, hP, aeval_X, map_X]`. Use `congr 1`. Apply the tactic sequence `fin_cases i <;> simp [fam4]`.
+Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem evalF_hs (A : HermLB q) (j : ℕ) (c : Chart E 2) {P : Matrix (Fin 2) (Fin 2) ℂ} (hP : IsUnit P.det)
     (x : (hB.atlas σ).Pt) (hc : x.pt ∈ ptsIn q σ c.U) :
@@ -358,33 +354,29 @@ theorem evalF_hs (A : HermLB q) (j : ℕ) (c : Chart E 2) {P : Matrix (Fin 2) (F
       fin_cases i <;> simp [fam4]
 
 /- English proof (translation)
-Use `hB.isIntegral` as an intermediate fact. Use `hY.isIntegral` as an intermediate fact. Take `⟨⟨c, b₀⟩, hb⟩` from `x'`. Take `rfl : c = c₁` from `hx'`. Express the relevant statement in the definitionally equal form `b₀ ∈ c.e.source at hb`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition.
 
-Use `set f : CxPts p σ → CxPts q σ := PtsOver.map π w (spMap σ) with hf`. Set `Φ : ℂ → CxPts p σ` to `fun s => c'.e.symm (prodPt (c.e b₀) s)`. Establish `h₁ (s : ℂ) : prodPt (c.e b₀) s ∈ c'.e.target`. Rewrite using `[ht, mem_preimage, basePt_prodPt]`. Conclude with `c.e.map_source hb`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h₂ (s : ℂ) : Φ s ∈ c'.e.source` using `c'.e.map_target (h₁ s)`. Establish `h₃ (s : ℂ) : c'.e (Φ s) = prodPt (c.e b₀) s` using `c'.e.right_inv (h₁ s)`. Establish `h₄ (s : ℂ) : f (Φ s) = b₀`. Use `congrArg basePt ((he _ (h₂ s)).symm.trans (h₃ s))` as an intermediate fact. Rewrite `this` using `[basePt_prodPt, basePt_prodPt]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `c.e.injOn (hs (h₂ s)).1 hb this`. Establish `h₅ (s : ℂ) : ∃ t : ℂ, lineCrd fl (cE.pull m.isVB π) (Φ s) = t • (gsLow ((m.met σ).G cE b₀)).mulVec (FibLine.lineVec (a * s + b))`. Establish `e` using `congrArg (fun v : V (d + 1) => v (Fin.last d)) ((he _ (h₂ s)).symm.trans (h₃ s))`. Simplify using `only [prodPt_last] at e`. Take `⟨t, ht⟩` from `hab s`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `h0 : FibTriv.lineVec π m.isVB cE fl (Φ s) 0 ≠ 0` using `(hs (h₂ s)).2.2`. Use `⟨FibTriv.lineVec π m.isVB cE fl (Φ s) 0 * t, ?_⟩` and prove the remaining obligations. Use `erw [mul_smul, ← ht]`. Express the relevant statement in the definitionally equal form `FibTriv.lineVec π m.isVB cE fl (Φ s) = _`. Use function extensionality and compare the values at `i`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Use `fin_cases i`. Simplify using `[FibLine.lineVec]`. Establish `e'` using `mul_div_cancel₀ (FibTriv.lineVec π m.isVB cE fl (Φ s) 1) h0`. Rewrite `e'` using `[show _ / _ = s from e]`. Simplify `e'.symm` using `[FibLine.lineVec]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hG` using `(m.met σ).posDef cE b₀ (hU hb)`. Set `x : (hY.atlas σ).Pt` to `⟨(c', Φ s), h₂ s⟩`. Establish `hloc (α : (hY.atlas σ).Fld) : (hY.atlas σ).loc α c' (prodPt (c.e b₀) s) = α x`. Rewrite using `[← (hY.atlas σ).loc_crd α x]`. Conclude with `congrArg _ (h₃ s).symm`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hD : fderiv ℂ (c.e ∘ f ∘ c'.e.symm) (c'.e (Φ s)) = headL d`. Rewrite using `[← (headL d).fderiv (x := c'.e (Φ s))]`. Use `Filter.EventuallyEq.fderiv_eq ?_` and prove the remaining obligations. Use `filter_upwards [c'.e.open_target.mem_nhds (c'.e.map_source (h₂ s))] with v hv`. Use `congrArg basePt ((he _ (c'.e.map_target hv)).symm.trans (c'.e.right_inv hv))` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Rewrite `this` using `[basePt_prodPt]`. Conclude with `this`. Establish `eθ` using `thetaF_eq_pull_qMat hB hY π w H fl σ cE x ⟨(c, b₀), hb⟩ (h₄ s).symm (hU hb) (chg_gsLow hG) (h₅ s)`. Establish `eZ : pullF hB hY σ π w Z x = pull (headL d) (Z ⟨(c, b₀), hb⟩)`. Establish `hb' : f x.pt ∈ c.e.source` using `(h₄ s).symm ▸ hb`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(pullback_eq_chart _ _ _ _ _ _ f Z (isHolo_ptsOver_map k B q d hB σ Y p _ hY π w) hZ x c hb').trans ?_` and prove the remaining obligations. Use `congr 1`. Conclude with `congrArg pull hD`. Conclude with `congrArg Z (Subtype.ext (Prod.ext rfl (h₄ s)))`. Establish `hprod (t : ℂ) : prodPt (c.e b₀) t = prodPt (c.e b₀) 0 + fibL d (EuclideanSpace.single 0 t)`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Use extensionality with `i`. Apply the tactic sequence `induction i using Fin.lastCases <;> simp [fibL_apply, EuclideanSpace.single_apply, Fin.castSucc_ne_last]`. Establish `hdiff : Differentiable ℂ (prodPt (c.e b₀))` using `differentiable_prodPt.comp ((differentiable_const _).prodMk differentiable_id)`. Establish `eω` using `pull_omF_affine hY π w H fl σ cE (hU hb) (chg_gsLow hG) x (Φ := Φ) a b (z := EuclideanSpace.single 0 s) (by simp [x]) ((c'.e.continuousAt_symm (h₁ _)).comp hdiff.continuous.continuousAt) ((hdiff.analyticAt _).congr (.of_forall fun t => (h₃ t).symm)) (.of_forall h₄) (.of_forall h₅ …`. Establish `hF : fderiv ℂ (fun v : V 1 => x.ch (Φ (v 0))) (EuclideanSpace.single 0 s) = fibL d`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: (fun v : V 1 => x.ch (Φ (v 0))) = fun v => prodPt (c.e b₀) 0 + fibL d v`. Use function extensionality and compare the values at `v`. Use `(h₃ _).trans ((hprod _).trans ?_)` and prove the remaining obligations. Use `congr 2`. Use extensionality with `i`.
-
-Simplify using `[Subsingleton.elim i 0]`. Rewrite using `[this, fderiv_const_add, ContinuousLinearMap.fderiv]`. Establish `eω'` using `(congrArg (fun L => pull L (omF hY σ (m.pull π w) fl x : Alt (d + 1))) hF).symm.trans eω`. Establish `eθ'` using `eθ.trans (congrArg (fun L => pull L _) hD)`. Use `(congrArg dens (hloc _)).trans ((dens_mul_pow_pull ((isRealForm_omF k Y p _ hY σ _ _ (H.pull π w) fl).2 x).1 eω' eθ' eZ j).trans ?_)` and prove the remaining obligations.
-
-Simplify using `only [PiLp.single_eq_same]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem dens_prodChart (cE : Chart E 2) (c₁ : AlgChart q σ d) (c' : AlgChart p σ (d + 1))
     (hU : c₁.e.source ⊆ ptsIn q σ cE.U)
@@ -469,7 +461,7 @@ theorem dens_prodChart (cE : Chart E 2) (c₁ : AlgChart q σ d) (c' : AlgChart 
   simp only [PiLp.single_eq_same]
 
 /- English proof (translation)
-Use `h.isIntegral` as an intermediate fact. Use `CxPts.secondCountableTopology_of_isProjOver σ h.isProjOver` as an intermediate fact. Conclude with `isForm_add _ (FirstChern.c1F_isRealForm_closed k Y p D h σ (VMetric.grLB fl 0 H)).1.1 (isRealForm_omF k Y p D h σ E m H fl).1`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isForm_thetaF {D : ℕ} (h : IsRegVar p D) {E : Y.Modules} {m : VMetric p E 2} (H : m.IsCInf) (fl : Vert.Flag E 2) :
     (h.atlas σ).IsForm (fld _ (thetaF h σ H fl)) := by
@@ -479,9 +471,9 @@ theorem isForm_thetaF {D : ℕ} (h : IsRegVar p D) {E : Y.Modules} {m : VMetric 
     (isRealForm_omF k Y p D h σ E m H fl).1
 
 /- English proof (translation)
-Use `hB.isIntegral` as an intermediate fact. Use `hY.isIntegral` as an intermediate fact. Establish `hp : (hY.atlas σ).IsForm (fld _ (thetaF hY σ (H.pull π w) fl) ^ j)`. Proceed by induction on `j with`. Consider the case `zero => rw [pow_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Proceed by induction. Treat this case separately.
 
-Conclude with `(formCalculus _ _ _).1`. Consider the case `succ j ih => rw [pow_succ]`. Conclude with `FormMul.isForm_mul _ _ _ ih (isForm_thetaF σ hY _ fl)`. Conclude with `FormMul.isForm_mul _ _ _ (FormMul.isForm_mul _ _ _ (isRealForm_omF k Y p _ hY σ _ _ (H.pull π w) fl).1 hp) (PullbackForm.isForm_pullback _ _ _ _ _ _ _ Z (isHolo_ptsOver_map k B q d hB σ Y p _ hY π w) hZ)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem isForm_up {Z : (hB.atlas σ).Fld} (hZ : (hB.atlas σ).IsForm Z) (j : ℕ) :
     (hY.atlas σ).IsForm (fld _ (omF hY σ (m.pull π w) fl) * fld _ (thetaF hY σ (H.pull π w) fl) ^ j *
@@ -496,7 +488,7 @@ theorem isForm_up {Z : (hB.atlas σ).Fld} (hZ : (hB.atlas σ).IsForm Z) (j : ℕ
     (PullbackForm.isForm_pullback _ _ _ _ _ _ _ Z (isHolo_ptsOver_map k B q d hB σ Y p _ hY π w) hZ)
 
 /- English proof (translation)
-Use `hB.isIntegral` as an intermediate fact. Use `FormMul.isForm_mul _ _ _ ((formCalculus _ _ _).2.2.2.1 _ _ Q fun i => ?_).1 hZ` and prove the remaining obligations. Use `fin_cases i`. Use `exacts [(FirstChern.c1F_isRealForm_closed k B q d hB σ _).1.1, (FirstChern.c1F_isRealForm_closed k B q d hB σ _).1.1, (FirstChern.c1F_isRealForm_closed k B q d hB σ _).1.1, (ChernReal.c2F_isRealForm_closed k B q d hB σ E m H flB).1.1]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isForm_down (A : HermLB q) (Q : MvPolynomial (Fin 4) ℝ) {Z : (hB.atlas σ).Fld} (hZ : (hB.atlas σ).IsForm Z) :
     (hB.atlas σ).IsForm (evalF (hB.atlas σ) (fam4 hB σ H flB A) Q * Z) := by
@@ -507,25 +499,23 @@ theorem isForm_down (A : HermLB q) (Q : MvPolynomial (Fin 4) ℝ) {Z : (hB.atlas
     (FirstChern.c1F_isRealForm_closed k B q d hB σ _).1.1, (ChernReal.c2F_isRealForm_closed k B q d hB σ E m H flB).1.1]
 
 /- English proof (translation)
-Use `hB.toIsArithVar.compactSpace σ` as an intermediate fact. Use `CxPts.secondCountableTopology_of_isProjOver σ hB.isProjOver` as an intermediate fact. Use `CxPts.t2Space_cxPts_of_isProjOver σ hB.isProjOver` as an intermediate fact. Use `hY.toIsArithVar.compactSpace σ` as an intermediate fact. Use `CxPts.secondCountableTopology_of_isProjOver σ hY.isProjOver` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `cE : Chart E 2` to `m.isVB.pick b`. Take `⟨c, hc⟩` from `(hB.atlas σ).cover b`. Take `⟨c₁, c', -, hb, hle, e₁, hsrc, ht, he, -, -⟩` from `exists_trivChart π w m.isVB fl hfl c hc (m.isVB.mem_pick b)`. Establish `hU : c₁.e.source ⊆ ptsIn q σ cE.U` using `fun y hy => by`. Rewrite `hy` using `[e₁, OpenPartialHomeomorph.restrOpen_source]`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `mem_ptsIn.2 (hle (mem_ptsIn.1 hy.2))`. Use `⟨c₁.e.source, c₁.e.open_source, hb, fun Z hZ K hK hKU hZK => ?_⟩` and prove the remaining obligations. Establish `hβ` using `isForm_down hB H flB σ A (aeval ![X 1 + X 2, X 3] (hs j)) hZ`. Establish `hβ'` using `((formCalculus _ _ _).2.1 ((1 / (j + 1 : ℝ) : ℝ) : ℂ) _ _ hβ hβ).2.2.1`. Establish `hα` using `isForm_up hB hY π w H fl σ hZ j`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcont : Continuous (PtsOver.map π w (spMap σ))` using `CxPts.continuous_of_comp (f := π) (fun z => rfl)`. Rewrite using `[← wInt_one (hB.atlas σ), ← (wInt_props _ _ _).2.2.1 _ _ _ hβ, wInt_one]`. Use `integral_eq_of_fibre (hB.atlas σ) (hY.atlas σ) hα c' (fun ε => ?_) hβ' c₁ (fun ε => ?_) fun z => ?_` and prove the remaining obligations. Use `part_compl_eq_zero _ hα ε (hK.preimage hcont) (fun x hx => ?_) fun y hy hyK => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ * pull _ (Z _) = 0 erw [hZK ⟨(_, _), ((hB.atlas σ).cover (PtsOver.map π w (spMap σ) x.pt)).choose_spec⟩ hx, map_zero, mul_zero]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact.
 
-Establish `key (y' : CxPts p σ) (h₁ : y' ∉ c'.e.source) (h₂ : PtsOver.map π w (spMap σ) y' ∈ c₁.e.source) : y' ∈ infPart π w m.isVB cE fl σ`. Rewrite using `[infPart_eq]`. Conclude with `⟨hU h₂, fun h => h₁ (hsrc ▸ ⟨h₂, h⟩)⟩`. Take `⟨c'', h₁, h₂⟩` from `exists_chart_infPart π w m.isVB fl hfl c₁ (hKU hyK) (key y hy (hKU hyK))`. Establish `ho : IsOpen (c''.e.source ∩ PtsOver.map π w (spMap σ) ⁻¹' c₁.e.source)` using `c''.e.open_source.inter (c₁.e.open_source.preimage hcont)`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨c'', c'.e.sourceᶜ ∩ (c''.e.source ∩ PtsOver.map π w (spMap σ) ⁻¹' c₁.e.source), c'.e.open_source.measurableSet.compl.inter ho.measurableSet, inter_mem_nhdsWithin _ (ho.mem_nhds ⟨h₁, hKU hyK⟩), fun z hz => hz.2.1, measure_mono_null ?_ (volume_last_eq_zero d)⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨z, hz, rfl⟩`. Conclude with `(h₂ z hz.2.1).1 (key z hz.1 hz.2.2)`. Use `part_compl_eq_zero _ hβ' ε hK (fun x hx => ?_) fun y hy hyK => absurd (hKU hyK) hy` and prove the remaining obligations. Rewrite using `[Pi.smul_apply, Pi.mul_apply, hZK _ hx, mul_zero, smul_zero]`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Introduce a local definition for the expression.
 
-Distinguish the cases in `hz : z ∈ c₁.e.target`. Set `x' : (hB.atlas σ).Pt` to `⟨(c₁, c₁.e.symm z), c₁.e.map_target hz⟩`. Establish `hx : x'.crd = z` using `c₁.e.right_inv hz`. Establish `hG` using `(m.met σ).posDef cE _ (hU x'.2)`. Establish `ha : (m.met σ).G cE x'.pt 1 1 / (√((m.met σ).G cE x'.pt).det.re : ℝ) ≠ 0` using `div_ne_zero (hG.diag_pos (i := 1)).ne' (sqrt_re_sq hG.det_pos).1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← hx]`. Simplify using `only [rd]`. Use `(congrArg _ (funext fun s => congrArg Complex.re (dens_prodChart hB hY π w H fl σ cE c₁ c' hU hsrc.subset ht he hZ j x' rfl (lineVec_eq_gsLow hG) s))).trans ((integral_fsDens_qMat_affine _ _ _ ha _).trans ?_)` and prove the remaining obligations. Rewrite using `[← evalF_hs hB H flB σ A j cE (isUnit_det_of_chg_eq_one (chg_gsLow hG)) x' (hU x'.2), smul_mul_assoc]`. Use `erw [(hB.atlas σ).loc_crd _ x']`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[Pi.smul_apply, Pi.mul_apply]`. Establish `h₁ (s : ℂ) : prodPt z s ∉ ((hY.atlas σ).e c').target` using `fun h => by`. Express the relevant statement in the definitionally equal form `_ ∈ c'.e.target at h`. Rewrite `h` using `[ht, mem_preimage, basePt_prodPt]`. Conclude with `hz h`.
-
-Establish `h₂ : z ∉ ((hB.atlas σ).e c₁).target` using `hz`. Simplify using `[rd, HolAtlas.loc, h₁, h₂, dens]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem integral_local (hfl : IsFlagBundle π (fun _ : Unit => E) (fun _ => 2) fun _ => fl) (A : HermLB q) (j : ℕ)
     (b : CxPts q σ) : ∃ U : Set (CxPts q σ), IsOpen U ∧ b ∈ U ∧ ∀ Z : (hB.atlas σ).Fld, (hB.atlas σ).IsForm Z →
@@ -596,17 +586,15 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open GlobalTheory GlobalTheory.ArInt GlobalTheory.CxPts GlobalTheory.VB GlobalTheory.Cartier GlobalTheory.CovTest GlobalTheory.CovTest.SwapLine
 
 /- English proof (translation)
-Introduce `k _ B Y _ _ q p d hB hY π w E h H flB fl hfl A σ φ hφ m`. Use `hY.toIsArithVar.compactSpace σ` as an intermediate fact. Use `CxPts.secondCountableTopology_of_isProjOver σ hY.isProjOver` as an intermediate fact. Use `CxPts.t2Space_cxPts_of_isProjOver σ hY.isProjOver` as an intermediate fact. Establish `eθ : fld (hY.atlas σ) (c1F hY σ (fam5 π w H flB fl A 0)) + fld (hY.atlas σ) (omF hY σ (h.pull π w) fl) = fld (hY.atlas σ) (thetaF hY σ (H.pull π w) fl)` using `rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[eθ]`. Prove the components needed by the constructor for the conclusion. Rewrite using `[← wInt_one, (wInt_props _ _ _).2.2.2 _ _ 0 fun x => ?_]`. Simplify using `[wInt, part_zero]`. Take `⟨β, hβ⟩` from `FibTheta.thetaF_horizontal hB hY π w H fl σ x`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Conclude with `dens_pow_pull _ hβ _ m`. Use `choose U hU hb hloc using integral_local hB hY π w H flB fl σ hfl A m`. Take `⟨N, a, c, χ, hχ, -, h1, hK⟩` from `exists_partition_regVar hB σ U hU fun y => ⟨y, hb y⟩`. Establish `hZ (i : Fin N)` using `isForm_fn_mul _ (hχ i) hφ`. Establish `e` using `sum_fn_mul (hB.atlas σ) Finset.univ h1 φ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `e' : pullF hB hY σ π w φ = ∑ i, pullF hB hY σ π w ((hB.atlas σ).fn (χ i) * φ)` using `by conv_lhs => rw [← e]`. Use function extensionality and compare the values at `x`. Rewrite using `[Finset.sum_apply, pullF, HolAtlas.pullback]`. Use `erw [Finset.sum_apply, map_sum]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[e', Finset.mul_sum, integral_sum_regVar hY σ _ fun i _ => isForm_up hB hY π w H fl σ (hZ i) m]`. Use `conv_rhs => rw [← e]`. Rewrite using `[Finset.mul_sum, integral_sum_regVar hB σ _ fun i _ => isForm_down hB H flB σ A _ (hZ i), Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => hloc (a i) _ (hZ i) (tsupport (χ i)) (isClosed_tsupport _) (hK i).2.1 fun x hx => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `algebraMap ℂ _ (χ i x.pt : ℂ) * φ x = 0`.
-
-Rewrite using `[image_eq_zero_of_notMem_tsupport hx]`. Simplify using the standard rewrite rules.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem integral_fibre : ∀ (k : Type) [CommRing k] (B Y : Scheme.{0}) [IsIntegral B] [IsIntegral Y] (q : B ⟶ Sp k) (p : Y ⟶ Sp k) (d : ℕ)
     (hB : IsRegVar q d) (hY : IsRegVar p (d + 1)) (π : Y ⟶ B) (w : π ≫ q = p) (E : B.Modules) (h : VMetric q E 2) (H : h.IsCInf)

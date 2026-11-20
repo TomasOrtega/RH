@@ -5,35 +5,29 @@ open NumberField IsDedekindDomain Formalism.L2.Host Formalism.ConjugateSelfDual 
 open UpperTheory.Gal.UnramifiedFromSplittingCriterion
 
 /- English proof (translation)
-Introduce `F Ω _ _ _ _ A x a hx`. Use `haveI : CharZero Ω := charZero_of_injective_algebraMap (algebraMap F Ω).injective`. Establish `hsq : ∀ g : G F Ω, g x = x ∨ g x = -x`. Introduce `g`. Establish `hgx : (g x) ^ 2 = x ^ 2` using `by rw [← map_pow, hx, map_intCast]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0 : (g x - x) * (g x + x) = 0` using `by linear_combination hgx`. Break down `mul_eq_zero.1 h0 with h | h` into its components or cases. Conclude with `Or.inl (sub_eq_zero.1 h)`. Conclude with `Or.inr (eq_neg_of_add_eq_zero_left h)`. Establish `hint : ∀ k : ℤ, A.valuation (k : Ω) ≤ 1` using `fun k => by`.
+Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Prove the second alternative. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `A.valuation_le_one (k : A)` after adjusting the coercions. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `t _ hvt hdiv g hg`. Break down `hsq g with h | h` into its components or cases. Conclude with `h`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-It suffices to derive a contradiction. Take `⟨k, hk⟩` from `hdiv`. Establish `hk' : (a : Ω) - 1 = 8 * (t : Ω) * (k : Ω)`. Establish `hc` using `congrArg (fun z : ℤ => (z : Ω)) hk`. Move the coercions through the operations in `at hc`.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take the linear combination `hc`. Use `set y : Ω := (x - 1) / 2 with hy`. Use `set y' : Ω := (-x - 1) / 2 with hy'`. Establish `hgy : g y = y'`. Rewrite using `[hy, hy', map_div₀, map_sub, map_one, map_ofNat, h]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hsum : y + y' = -1`. Rewrite using `[hy, hy']`. Expand and normalize the polynomial expressions, which then agree. Establish `hprod : y * y' = ((-2 * k : ℤ) : Ω) * (t : Ω)`. Rewrite using `[hy, hy']`.
+Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `push_cast`. Take the linear combination `(-1 / 4 : Ω) * hx - (1 / 4 : Ω) * hk'`. Establish `hvp : A.valuation (y * y') < 1`. Rewrite using `[hprod, map_mul]`. Conclude with `lt_of_le_of_lt (mul_le_of_le_one_left' (hint _)) hvt`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Establish `hvs : A.valuation (y + y') = 1`. Rewrite using `[hsum, Valuation.map_neg, Valuation.map_one]`. Establish `hiff` using `valuation_apply_lt_one_iff hg y`. Rewrite `hiff` using `[hgy]`. Distinguish the cases in `hyl : A.valuation y < 1`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hs` using `Valuation.map_add_lt A.valuation hyl (hiff.2 hyl)`. Rewrite `hs` using `[hvs]`. Conclude with `lt_irrefl _ hs`. Establish `hyl' : ¬ A.valuation y' < 1` using `fun h' => hyl (hiff.1 h') push_neg at hyl hyl'`. Establish `hge : 1 ≤ A.valuation (y * y')`.
+Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[map_mul]`. Conclude with `one_le_mul hyl hyl'`. Conclude with `absurd hvp (not_lt.2 hge)`. Introduce `h2a τ hτ`. Take `⟨-, hI⟩ : τ ∈ ValuationSubring.decompositionSubgroup F A ∧ ∀ (y : Ω), A.valuation y ≤ 1 → A.valuation (τ y - y) < 1` from `hτ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Establish an intermediate fact.
 
-Break down `hsq τ with h | h` into its components or cases. Conclude with `h`. It suffices to derive a contradiction. Establish `hv2 : A.valuation (2 : Ω) ≤ 1` using `by simpa using hint 2`. Establish `hva : A.valuation (a : Ω) ≤ 1` using `hint a`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Establish `e2a : A.valuation (2 : Ω) * A.valuation (a : Ω) = 1`. Rewrite using `[← map_mul]`. Move the coercions through the operations in `at h2a`. Conclude with `h2a`. Establish `hv2' : A.valuation (2 : Ω) = 1` using `le_antisymm hv2 (e2a ▸ mul_le_of_le_one_right' hva)`.
-
-Establish `hva' : A.valuation (a : Ω) = 1` using `le_antisymm hva (e2a ▸ mul_le_of_le_one_left' hv2)`. Establish `hvx2 : A.valuation x ^ 2 = 1`. Rewrite using `[← Valuation.map_pow, hx, hva']`. Establish `hvx : A.valuation x = 1`. Break down `lt_trichotomy (A.valuation x) 1 with hl | he | hg` into its components or cases.
-
-Conclude with `absurd hvx2 (ne_of_lt (pow_lt_one' hl two_ne_zero))`. Conclude with `he`. Conclude with `absurd hvx2 (ne_of_gt (one_lt_pow' hg two_ne_zero))`. Establish `key` using `hI x hvx.le`. Rewrite `key` using `[h, show -x - x = -(2 * x) by ring, Valuation.map_neg, map_mul, hv2', hvx, one_mul]`.
-
-Conclude with `lt_irrefl _ key`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.UnramifiedFromSplittingCriterion.sqrtFix :
     SqrtFix := by

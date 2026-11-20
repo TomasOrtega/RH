@@ -7,21 +7,19 @@ open CategoryTheory Limits AlgebraicGeometry Opposite LateralTheory.E.E4 Lateral
 namespace LateralTheory.E.LeafLimFPPf
 
 /- English proof (translation)
-Introduce `k _ Ω _ _ R hR C1 D1 c1 q1 v1 hs _`. Use `⟨IsLimit.ofExistsUnique fun s => ?_⟩` and prove the remaining obligations. Set `o : GlobalTheory.FGAbove R` to `⟨R, hR, le_rfl⟩`. Set `a : ∀ S : GlobalTheory.FGAbove R, s.pt ⟶ pullback q1 (incl S.2.2)` to `fun S => s.π.app (op S)`. Establish `ha : ∀ (S T : GlobalTheory.FGAbove R) (h : S.1 ≤ T.1), a T ≫ dgMap q1 S.2.2 T.2.2 h = a S` using `fun S T h => s.w (homOfLE (show S ≤ T from h)).op`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hsnd : ∀ (S T : GlobalTheory.FGAbove R) (h : S.1 ≤ T.1), (a T ≫ pullback.snd _ _) ≫ incl h = a S ≫ pullback.snd _ _` using `fun S T h => by`. Rewrite using `[← ha S T h, Category.assoc, Category.assoc, dgMap_snd]`. Take `⟨ψ, hψ⟩` from `GlobalTheory.FGAbove.exists_ringHom hR (fun S => ((Scheme.ΓSpecIso (.of S.1)).inv ≫ (a S ≫ pullback.snd _ _).appTop).hom) (by`. Introduce `S T h x`. Rewrite using `[← hsnd S T h]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(GlobalTheory.appTop_comp_spMap (Subalgebra.inclusion h).toRingHom _ x).symm)`. Choose the witnesses or unpack the hypotheses as in `⟨b, hb⟩ : ∃ b : s.pt ⟶ Sp Ω, (Scheme.ΓSpecIso (.of Ω)).inv ≫ b.appTop = CommRingCat.ofHom ψ := by`. Use `⟨s.pt.toSpecΓ ≫ Spec.map (CommRingCat.ofHom ψ), ?_⟩` and prove the remaining obligations. Rewrite using `[Scheme.Hom.comp_appTop, ← Category.assoc, ← Scheme.ΓSpecIso_inv_naturality, Category.assoc, Scheme.toSpecΓ_appTop]`. Simplify using the standard rewrite rules.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hb' : ∀ S : GlobalTheory.FGAbove R, b ≫ toR S.1 = a S ≫ pullback.snd _ _` using `fun S => GlobalTheory.hom_spec_ext (CommRingCat.hom_ext (RingHom.ext fun x => by`. Use `(GlobalTheory.appTop_comp_spMap (algebraMap S.1 Ω) b x).trans ?_` and prove the remaining obligations. Rewrite using `[hb]`. Conclude with `hψ S x))`. Establish `hf : ∀ S : GlobalTheory.FGAbove R, a S ≫ pullback.fst _ _ = a o ≫ pullback.fst _ _` using `fun S => by`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← ha o S S.2.2, Category.assoc, dgMap_fst]`. Establish `hw : (a o ≫ pullback.fst _ _) ≫ q1 = b ≫ toR R` using `by conv_rhs => rw [← toR_incl o.2.2]`. Rewrite using `[← Category.assoc, hb' o, Category.assoc, Category.assoc, pullback.condition]`. Use `⟨hs.lift (a o ≫ pullback.fst _ _) b hw, fun S => ?_, fun m hm => ?_⟩` and prove the remaining obligations. Use `show _ ≫ pullback.lift v1 (c1 ≫ toR S.unop.1) _ = a S.unop`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, pullback.lift_fst, hs.lift_fst, hf S.unop]`. Rewrite using `[Category.assoc, pullback.lift_snd, hs.lift_snd_assoc, hb']`. Express the relevant statement in the definitionally equal form `s.pt ⟶ C1 at m`. Establish `hm' : ∀ S : GlobalTheory.FGAbove R, m ≫ pullback.lift v1 (c1 ≫ toR S.1) (by rw [Category.assoc, toR_incl, hs.w]) = a S` using `fun S => hm (op S)`.
+Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Apply `hs.hom_ext` to reduce the goal to its premises. Rewrite using `[hs.lift_fst, ← hm' o, Category.assoc, pullback.lift_fst]`. Rewrite using `[hs.lift_snd]`. Use `GlobalTheory.hom_spec_ext (CommRingCat.hom_ext (RingHom.ext fun x => ?_))` and prove the remaining obligations. Take `⟨S, hx⟩` from `GlobalTheory.FGAbove.exists_mem hR x`.
-
-Establish `e : (m ≫ c1) ≫ toR S.1 = b ≫ toR S.1`. Rewrite using `[hb', ← hm' S, Category.assoc, Category.assoc, pullback.lift_snd]`. Conclude with `(GlobalTheory.appTop_comp_spMap (algebraMap S.1 Ω) _ ⟨x, hx⟩).symm.trans (e ▸ GlobalTheory.appTop_comp_spMap (algebraMap S.1 Ω) b ⟨x, hx⟩)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isLimit_pullback_finitelyGenerated : LeafLimFP := by
   intro k _ Ω _ _ R hR C1 D1 c1 q1 v1 hs _

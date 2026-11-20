@@ -32,27 +32,23 @@ theorem BfE_apply (σ : E →ₐ[F] E) (J : Matrix (Fin m) (Fin m) E) (x z : Mat
     BfE σ J x z = Algebra.trace F E (xᵀ * J * z.map σ).trace := rfl
 
 /- English proof (translation)
-Establish `hdet : IsUnit J.det` using `isUnit_iff_ne_zero.mpr hJ`. Establish `hdetT : IsUnit Jᵀ.det`. Rewrite using `[Matrix.det_transpose]`. Conclude with `hdet`. Establish `htr1 : Algebra.trace F E 1 ≠ 0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← map_one (algebraMap F E), Algebra.trace_algebraMap]`. Simplify using `only [nsmul_eq_mul, mul_one, ne_eq, Nat.cast_eq_zero]`. Conclude with `Module.finrank_pos.ne'`. Use `⟨fun x hx => ?_, fun z hz => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hne`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hy : Jᵀ * x ≠ 0`. Introduce `h0`. Apply `hne` to reduce the goal to its premises. Establish `h2` using `congrArg (fun M => (Jᵀ)⁻¹ * M) h0`. Simplify `h2` using `[← Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hdetT]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction.
 
-Choose the witnesses or unpack the hypotheses as in `⟨b0, j0, hb⟩ : ∃ b j, (Jᵀ * x) b j ≠ 0 := by`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Conclude with `hy (Matrix.ext h)`. Establish `h1` using `hx ((Matrix.single b0 j0 ((Jᵀ * x) b0 j0)⁻¹).map σ)`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hσσ : ((Matrix.single b0 j0 ((Jᵀ * x) b0 j0)⁻¹).map σ).map σ = Matrix.single b0 j0 ((Jᵀ * x) b0 j0)⁻¹`. Use extensionality with `a b`. Simplify using `only [Matrix.map_apply]`. Conclude with `hσ _`. Establish `hswap : (xᵀ * J) j0 b0 = (Jᵀ * x) b0 j0`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Assume the negation of the conclusion and derive a contradiction.
 
-Simplify using `only [Matrix.mul_apply, Matrix.transpose_apply]`. Conclude with `Finset.sum_congr rfl fun _ _ => mul_comm _ _`. Establish `hv : (xᵀ * J * Matrix.single b0 j0 ((Jᵀ * x) b0 j0)⁻¹).trace = 1`. Rewrite using `[Matrix.trace_mul_single, hswap, op_smul_eq_mul, mul_inv_cancel₀ hb]`. Rewrite `h1` using `[BfE_apply, hσσ, hv]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `htr1 h1`. Assume the negation of the conclusion as `hne`. Establish `hw : J * z.map σ ≠ 0`. Introduce `h0`. Apply `hne` to reduce the goal to its premises.
+Simplify to obtain the desired conclusion from the available facts. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hz0 : z.map σ = 0`. Establish `h2` using `congrArg (fun M => J⁻¹ * M) h0`. Simplify `h2` using `[← Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hdet]`. Use extensionality with `a b`. Use `congrFun (congrFun hz0 a) b` as an intermediate fact.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Matrix.map_apply, Matrix.zero_apply] at this`. Rewrite using `[Matrix.zero_apply, ← hσ (z a b), this, map_zero]`. Choose the witnesses or unpack the hypotheses as in `⟨a0, b0, hb⟩ : ∃ a b, (J * z.map σ) a b ≠ 0 := by`. Assume the negation of the conclusion as `h`. Use `push_neg at h`.
-
-Conclude with `hw (Matrix.ext h)`. Establish `h1` using `hz (Matrix.single a0 b0 ((J * z.map σ) a0 b0)⁻¹)`. Establish `hv : ((Matrix.single a0 b0 ((J * z.map σ) a0 b0)⁻¹)ᵀ * J * z.map σ).trace = 1`. Rewrite using `[Matrix.mul_assoc, Matrix.transpose_single, Matrix.trace_single_mul]`. Simplify using `[inv_mul_cancel₀ hb, mul_inv_cancel₀ hb]`.
-
-Rewrite `h1` using `[BfE_apply, hv]`. Conclude with `htr1 h1`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem BfE_nondeg [FiniteDimensional F E] (σ : E →ₐ[F] E) (hσ : ∀ a, σ (σ a) = a) (J : Matrix (Fin m) (Fin m) E)
     (hJ : J.det ≠ 0) : (BfE (n := n) σ J).Nondegenerate := by

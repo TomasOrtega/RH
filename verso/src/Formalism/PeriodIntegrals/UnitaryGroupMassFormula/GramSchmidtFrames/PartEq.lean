@@ -13,11 +13,11 @@ section iso2
 variable {k r : ℕ}
 
 /- English proof (translation)
-Rewrite `e` using `[mulVec_add, fix_X hX hx, ← mulVec_mulVec]`. Establish `hmw` using `N_wb hm hw`. Establish `e2 : m *ᵥ w = w + (m *ᵥ w - w)` using `by abel`. Rewrite `e` using `[e2, mulVec_add, uw_X hz hh hmw]`. Establish `hd : h *ᵥ w - w' = x' - x - (m *ᵥ w - w)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hX0 : h *ᵥ w - w' ∈ Xsp k r`. Rewrite using `[hd]`. Conclude with `Submodule.sub_mem _ (Submodule.sub_mem _ hx' hx) hmw`. Establish `hW0 : inWb k r (h *ᵥ w - w')`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i hi`. Simplify using `[uw_inWb hz hh hw i hi, hw' i hi]`. Conclude with `sub_eq_zero.1 (X_wb_zero hX0 hW0)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma part_eq {z : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z) {h m : B.Mat k r} (hh : h ∈ UWset k r z)
     (hm : m ∈ Nset k r) (hX : ∀ a : Fin r, (h * m) *ᵥ bvec (eI k r a) = bvec (eI k r a))
@@ -38,7 +38,7 @@ lemma part_eq {z : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z) {h m : B.Mat k
   exact sub_eq_zero.1 (X_wb_zero hX0 hW0)
 
 /- English proof (translation)
-Introduce `a`. Use `hs ⟨a.val, by omega⟩` as an intermediate fact. Rewrite `this` using `[fvec_lt]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 lemma fixes_e {s : B.Mat k r} {z : Fin (2 * r + k + 1) → ℂ} (hs : ∀ a, s *ᵥ fvec k r z a = fvec k r z a) :
     ∀ a : Fin r, s *ᵥ bvec (eI k r a) = bvec (eI k r a) := by
@@ -47,109 +47,91 @@ lemma fixes_e {s : B.Mat k r} {z : Fin (2 * r + k + 1) → ℂ} (hs : ∀ a, s *
   rwa [fvec_lt] at this
 
 /- English proof (translation)
-Introduce `k r z z' hk hr hz hz' D0 y hy α hα β hβ hν hν' hαβ`. Establish `Wz` using `Formalism.FourierDecayAlt.P.weyl_subgroup_closed k r z`. Establish `Wz'` using `Formalism.FourierDecayAlt.P.weyl_subgroup_closed k r z'`. Establish `Gz` using `PI.UnitaryGroupMassFormula.DLm.unipotent_integral_closed k r z hz`. Establish `Gz'` using `PI.UnitaryGroupMassFormula.DLm.unipotent_integral_closed k r z' hz'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hyG` using `hy.1`. Establish `hG` using `hy.2.1`. Establish `hyu : IsUnit y.det` using `Formalism.QuantumDeterminants.WeylGroupFacts.isUnit_of_uh hyG`. Establish `hαu` using `Wz.unit α hα`. Establish `hβu` using `Wz'.unit β hβ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hβν : β *ᵥ D0.nu' = D0.nu'` using `by conv_lhs => rw [← hν']`. Rewrite using `[mulVec_mulVec, Matrix.mul_nonsing_inv _ hβu, one_mulVec]`. Establish `hU0W : ∀ u ∈ D0.U0, inWb k r u` using `fun u hu => ((D0.isotropic_subspace_eq u).1 hu).1.1`. Establish `hU0z : ∀ u ∈ D0.U0, herm (Hpk k r) u z = 0` using `fun u hu => ((D0.isotropic_subspace_eq u).1 hu).1.2`. Establish `hU0z' : ∀ u ∈ D0.U0, herm (Hpk k r) u z' = 0` using `fun u hu => ((D0.isotropic_subspace_eq_primed u).1 hu).1.2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hβU : ∀ u ∈ D0.U0, β *ᵥ u ∈ D0.U0`. Introduce `u hu`. Take `⟨⟨huW, huz'⟩, huν'⟩` from `(D0.isotropic_subspace_eq_primed u).1 hu`. Use `(D0.isotropic_subspace_eq_primed _).2 ⟨⟨uw_inWb hz'.1 hβ huW, ?_⟩, ?_⟩` and prove the remaining obligations. Use `conv_lhs => rw [← hβ.2.2]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Formalism.FourierDecayAlt.P.TwoByOneBlock.herm_UH hβ.1]`. Conclude with `huz'`. Use `conv_lhs => rw [← hβν]`. Rewrite using `[Formalism.FourierDecayAlt.P.TwoByOneBlock.herm_UH hβ.1]`. Conclude with `huν'`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hαU : ∀ u ∈ D0.U0, α *ᵥ u ∈ D0.U0`. Introduce `u hu`. Take `⟨⟨huW, huz⟩, huν⟩` from `(D0.isotropic_subspace_eq u).1 hu`. Use `(D0.isotropic_subspace_eq _).2 ⟨⟨uw_inWb hz.1 hα huW, ?_⟩, ?_⟩` and prove the remaining obligations. Use `conv_lhs => rw [← hα.2.2]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[Formalism.FourierDecayAlt.P.TwoByOneBlock.herm_UH hα.1]`. Conclude with `huz`. Use `conv_lhs => rw [← hν]`. Rewrite using `[Formalism.FourierDecayAlt.P.TwoByOneBlock.herm_UH hα.1]`. Conclude with `huν`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Set `S : Submodule ℂ (Fin (2 * r + k + 1) → ℂ)` to `{ carrier := D0.U0 add_mem' := by`. Introduce `a b (ha : a ∈ D0.U0) (hb : b ∈ D0.U0)`. Use `show a + b ∈ D0.U0`. Rewrite `ha`, `hb`, the goal using `[D0.isotropic_subspace_eq]`. Use `⟨⟨fun i hi => by simp [ha.1.1 i hi, hb.1.1 i hi], ?_⟩, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hm_add_l, ha.1.2, hb.1.2, add_zero]`. Rewrite using `[hm_add_l, ha.2, hb.2, add_zero]`. Use the proof step `zero_mem' := by show (0 : Fin (2 * r + k + 1) → ℂ) ∈ D0.U0`. Rewrite using `[D0.isotropic_subspace_eq]`. Conclude with `⟨⟨fun i _ => rfl, by simp [herm]⟩, by simp [herm]⟩`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use the proof step `smul_mem' := by`. Introduce `c a (ha : a ∈ D0.U0)`. Use `show c • a ∈ D0.U0`. Rewrite `ha`, the goal using `[D0.isotropic_subspace_eq]`. Use `⟨⟨fun i hi => by simp [ha.1.1 i hi], ?_⟩, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[hm_smul_l, ha.1.2, mul_zero]`. Rewrite using `[hm_smul_l, ha.2, mul_zero] }`. Establish `hSmem : ∀ u, u ∈ S ↔ u ∈ D0.U0` using `fun u => Iff.rfl`. Set `b` to `Module.finBasis ℂ S`. Set `bv : Fin (Module.finrank ℂ S) → Fin (2 * r + k + 1) → ℂ` to `fun i => (b i : Fin (2 * r + k + 1) → ℂ)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Establish `hbU : ∀ i, bv i ∈ D0.U0` using `fun i => (b i).2`. Establish `hbspan : ∀ u (hu : u ∈ D0.U0), u = ∑ i, (b.repr ⟨u, (hSmem u).2 hu⟩ i) • bv i`. Introduce `u hu`. Use `congrArg Subtype.val (b.sum_repr ⟨u, (hSmem u).2 hu⟩)` as an intermediate fact. Simplify using `only [Submodule.coe_sum, Submodule.coe_smul] at this`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `this.symm`. Use `choose! Vf hVf V'f hV'f hq using hy.2.2.2.2`. Set `q : (Fin (2 * r + k + 1) → ℂ) → Fin (2 * r + k + 1) → ℂ` to `fun u => u + Vf u`. Establish `hqy : ∀ u ∈ D0.U0, y *ᵥ (u + V'f u) = q u` using `hq`. Establish `hesI : ∀ a : Fin r, r + k < (esI k r a).val` using `fun a => by simp [esI]; omega`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hq_f : ∀ u ∈ D0.U0, ∀ a, herm (Hpk k r) (q u) (fvec k r z a) = 0`. Introduce `u hu a`. Use `show herm (Hpk k r) (u + Vf u) _ = 0`. Rewrite using `[hm_add_l]`. Unfold `fvec`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `split_ifs with ha`. Rewrite using `[herm_bvec_eI, herm_bvec_eI, hU0W u hu _ (Or.inr (hesI _)), X_hi (hVf u hu) _ (hesI _), add_zero]`. Rewrite using `[hU0z u hu, herm_X_wb (hVf u hu) hz.1, add_zero]`. Establish `hq_yf : ∀ u ∈ D0.U0, ∀ c, herm (Hpk k r) (q u) (y *ᵥ fvec k r z' c) = 0`. Introduce `u hu c`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[← hqy u hu, Formalism.FourierDecayAlt.P.TwoByOneBlock.herm_UH hyG, hm_add_l]`. Unfold `fvec`. Use `split_ifs with hc`. Rewrite using `[herm_bvec_eI, herm_bvec_eI, hU0W u hu _ (Or.inr (hesI _)), X_hi (hV'f u hu) _ (hesI _), add_zero]`. Rewrite using `[hU0z' u hu, herm_X_wb (hV'f u hu) hz'.1, add_zero]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hq_gv : ∀ u ∈ D0.U0, ∀ i, herm (Hpk k r) (q u) (gramVec k r z z' y i) = 0`. Introduce `u hu i`. Consider the cases of `i with`. Consider the case `inl a => exact hq_f u hu a`. Consider the case `inr c => exact hq_yf u hu c`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `hgv_q : ∀ u ∈ D0.U0, ∀ i, herm (Hpk k r) (gramVec k r z z' y i) (q u) = 0`. Introduce `u hu i`. Rewrite using `[hm_symm _ (Formalism.QuantumDeterminants.hpkFacts k r).1, hq_gv u hu i, star_zero]`. Establish `hq_q : ∀ u ∈ D0.U0, ∀ u' ∈ D0.U0, herm (Hpk k r) (q u) (q u') = herm (Hpk k r) u u'`. Introduce `u hu u' hu'`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `show herm (Hpk k r) (u + Vf u) (u' + Vf u') = _`. Rewrite using `[hm_add_l, hm_add_r, hm_add_r, herm_X_gen (hVf u hu) (wb_hi (hU0W u' hu')), herm_X_gen (hVf u hu) (X_hi (hVf u' hu')), herm_wb_X (hVf u' hu') (wb_hi (hU0W u hu))]`. Expand and normalize the polynomial expressions, which then agree. Establish `key0 : ∀ c : Fin (Module.finrank ℂ S) → Fin (2 * r + k + 1) → ℂ, (∀ i, c i ∈ D0.U0) → LinearIndependent ℂ c → ∀ g : Fin (Module.finrank ℂ S) → ℂ, (∀ u ∈ D0.U0, herm (Hpk k r) (∑ i, g i • q (c i)) (q u) = 0) → g = 0`. Introduce `c hc hli g hg`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `set u₀ := ∑ i, g i • c i with hu₀d`. Establish `hu₀ : u₀ ∈ D0.U0` using `(hSmem u₀).1 (S.sum_mem fun i _ => S.smul_mem (g i) ((hSmem _).2 (hc i)))`. Establish `h0 : herm (Hpk k r) u₀ u₀ = 0`. Use `hg u₀ hu₀` as an intermediate fact. Rewrite `this` using `[hm_sum_l]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[hu₀d, hm_sum_l, ← this]`. Conclude with `Finset.sum_congr rfl fun i _ => by rw [hq_q _ (hc i) _ hu₀]`. Establish `hz0 : u₀ = 0`. Assume the negation of the conclusion as `hne`. Use `posV hz (hU0W u₀ hu₀) (hU0z u₀ hu₀) hne` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[h0]`. Simplify using `at this`. Use function extensionality and compare the values at `i`. Conclude with `(Fintype.linearIndependent_iff.1 hli) g hz0 i`. Establish `hlib : LinearIndependent ℂ bv` using `b.linearIndependent.map' S.subtype (Submodule.ker_subtype S)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hlibβ : LinearIndependent ℂ (fun i => β *ᵥ bv i)`. Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `g hg`. Establish `: ∑ i, g i • bv i = 0`. Establish `h2` using `congrArg (fun v => β⁻¹ *ᵥ v) hg`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [mv_sum, mulVec_smul, mulVec_mulVec, Matrix.nonsing_inv_mul _ hβu, one_mulVec, mulVec_zero] at h2`. Conclude with `h2`. Conclude with `(Fintype.linearIndependent_iff.1 hlib) g this`. Establish `liq : ∀ c : Fin (Module.finrank ℂ S) → Fin (2 * r + k + 1) → ℂ, (∀ i, c i ∈ D0.U0) → LinearIndependent ℂ c → LinearIndependent ℂ (fun i => q (c i))`. Introduce `c hc hli`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Treat this case separately.
 
-Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `g hg`. Use `key0 c hc hli g (fun u _ => by rw [hg]; simp [herm])` as an intermediate fact. Introduce `i`. Rewrite using `[this]`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Both sides reduce to the same expression. Establish `hgvli` using `(Formalism.FourierDecayAlt.P.gram_independent_signature' k r z z' y ⟨hk, hz, hz'⟩ ⟨hyG, hG⟩).1`. Establish `famli : ∀ c : Fin (Module.finrank ℂ S) → Fin (2 * r + k + 1) → ℂ, (∀ i, c i ∈ D0.U0) → LinearIndependent ℂ c → LinearIndependent ℂ (Sum.elim (gramVec k r z z' y) (fun i => q (c i)))`. Introduce `c hc hli`. Use `hgvli.sum_type (liq c hc hli) ?_` and prove the remaining obligations.
+Split into cases according to the possible forms of the given data. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Simplify using the standard rewrite rules.
 
-Rewrite using `[Submodule.disjoint_def]`. Introduce `v hv1 hv2`. Take `⟨g, rfl⟩` from `(Submodule.mem_span_range_iff_exists_fun ℂ).1 hv2`. Take `⟨g1, hg1⟩` from `(Submodule.mem_span_range_iff_exists_fun ℂ).1 hv1`. Use `key0 c hc hli g (fun u hu => by` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← hg1, hm_sum_l]`. Conclude with `Finset.sum_eq_zero fun j _ => by rw [hgv_q u hu j, mul_zero])`. Rewrite using `[this]`. Simplify using the standard rewrite rules. Establish `hβbU : ∀ i, β *ᵥ bv i ∈ D0.U0` using `fun i => hβU _ (hbU i)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨s, hsG, hs⟩` from `PI.UnitaryGroupMassFormula.DLm.Lifts.wittHpk k r (Sum.elim (gramVec k r z z' y) (fun i => q (β *ᵥ bv i))) (Sum.elim (gramVec k r z z' y) (fun i => q (bv i))) (famli _ hβbU hlibβ) (famli _ hbU hlib) (by`. Introduce `i j`. Consider the cases of `i with`. Consider the case `inl a`. Consider the cases of `j with`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Consider the case `inl c => rfl`. Consider the case `inr c => simp only [Sum.elim_inl, Sum.elim_inr]`. Rewrite using `[hgv_q _ (hβbU c), hgv_q _ (hbU c)]`. Consider the case `inr a`. Consider the cases of `j with`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Consider the case `inl c => simp only [Sum.elim_inl, Sum.elim_inr]`. Rewrite using `[hq_gv _ (hβbU a), hq_gv _ (hbU a)]`. Consider the case `inr c`. Simplify using `only [Sum.elim_inr]`. Rewrite using `[hq_q _ (hβbU a) _ (hβbU c), hq_q _ (hbU a) _ (hbU c), Formalism.FourierDecayAlt.P.TwoByOneBlock.herm_UH hβ.1])`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hsf : ∀ a, s *ᵥ fvec k r z a = fvec k r z a` using `fun a => hs (Sum.inl (Sum.inl a))`. Establish `hsyf : ∀ c, s *ᵥ (y *ᵥ fvec k r z' c) = y *ᵥ fvec k r z' c` using `fun c => hs (Sum.inl (Sum.inr c))`. Establish `hsq : ∀ i, s *ᵥ q (β *ᵥ bv i) = q (bv i)` using `fun i => hs (Sum.inr i)`. Establish `hsu : IsUnit s.det` using `Formalism.QuantumDeterminants.WeylGroupFacts.isUnit_of_uh hsG`. Establish `hsS : s ∈ C2.CurvatureSupportSet k r z`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[← Formalism.FourierDecayAlt.P.fixed_frame_property k r z hz]`. Conclude with `⟨hsG, hsf⟩`. Take `⟨h, hh, m, hm, hsd⟩` from `parabolic_levi_unipotent_decomp hz hsS`. Use `set s' := y⁻¹ * s⁻¹ * y with hs'd`. Establish `hsinv : ∀ v, s *ᵥ v = v → s⁻¹ *ᵥ v = v`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Introduce `v hv`. Use `conv_lhs => rw [← hv]`. Rewrite using `[mulVec_mulVec, Matrix.nonsing_inv_mul _ hsu, one_mulVec]`. Establish `hs'f : ∀ c, s' *ᵥ fvec k r z' c = fvec k r z' c`. Introduce `c`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[hs'd, ← mulVec_mulVec, ← mulVec_mulVec, hsinv _ (hsyf c), mulVec_mulVec, Matrix.nonsing_inv_mul _ hyu, one_mulVec]`. Establish `hs'G : s' ∈ B.GV k r` using `Formalism.QuantumDeterminants.WeylGroupFacts.uh_mul (Formalism.QuantumDeterminants.WeylGroupFacts.uh_mul (Formalism.QuantumDeterminants.WeylGroupFacts.uh_inv hyG) (Formalism.QuantumDeterminants.WeylGroupFacts.uh_inv hsG)) hyG`. Establish `hs'S : s' ∈ C2.CurvatureSupportSet k r z'`. Rewrite using `[← Formalism.FourierDecayAlt.P.fixed_frame_property k r z' hz']`. Conclude with `⟨hs'G, hs'f⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Take `⟨h', hh', m', hm', hs'd2⟩` from `parabolic_levi_unipotent_decomp hz' hs'S`. Establish `hhβ : ∀ i, h *ᵥ (β *ᵥ bv i) = bv i`. Introduce `i`. Establish `e` using `hsq i`. Rewrite `e` using `[hsd]`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `part_eq hz.1 hh hm.1 (by rw [← hsd]; exact fixes_e hsf) (hU0W _ (hβbU i)) (hU0W _ (hbU i)) (hVf _ (hβbU i)) (hVf _ (hbU i)) e`. Establish `hhβ' : ∀ u ∈ D0.U0, h *ᵥ (β *ᵥ u) = u`. Introduce `u hu`. Rewrite using `[hbspan u hu, mv_sum, mv_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => by rw [mulVec_smul, mulVec_smul, hhβ i]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hβα : ∀ u ∈ D0.U0, β *ᵥ (α *ᵥ u) = u`. Introduce `u hu`. Establish `e` using `hαβ (α *ᵥ u) (hαU u hu)`. Establish `inj : ∀ v v' : Fin (2 * r + k + 1) → ℂ, α *ᵥ v = α *ᵥ v' → v = v'`. Introduce `v v' hvv`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `congrArg (fun t => α⁻¹ *ᵥ t) hvv` as an intermediate fact. Simplify `this` using `[mulVec_mulVec, Matrix.nonsing_inv_mul _ hαu]`. Conclude with `inj _ _ e`. Establish `hxs : s *ᵥ xcof k r z z' y = xcof k r z z' y`. Unfold `xcof`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mv_sum]`. Conclude with `Finset.sum_congr rfl fun c _ => by rw [mulVec_smul, hsyf c]`. Establish `hhom : h *ᵥ omW k r z z' y = omW k r z z' y`. Unfold `omW`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[prW_N hm.1 (xcof_esI z z' y)]`. Use `_ = prW k r z (h *ᵥ (m *ᵥ xcof k r z z' y)) := by rw [prW_UW hz hh]`. Use `_ = prW k r z (s *ᵥ xcof k r z z' y) := by rw [hsd, mulVec_mulVec]`. Use `_ = prW k r z (xcof k r z z' y) := by rw [hxs]`. Establish `hα_eq : h = α`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `uw_eq hz D0.nu_mem D0.nu_unit D0.isotropic_subspace_eq hh hα (fun u hu => ?_) ?_` and prove the remaining obligations. Use `conv_lhs => rw [← hβα u hu]`. Rewrite using `[hhβ' _ (hαU u hu)]`. Rewrite using `[hν]`. Take `⟨t, ht, hom⟩` from `hy.2.2.1`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hhom` using `[hom, mulVec_smul]`. Conclude with `smul_right_injective _ (Complex.ofReal_ne_zero.2 ht.ne') hhom`. Establish `hs'X : ∀ a : Fin r, (h' * m') *ᵥ bvec (eI k r a) = bvec (eI k r a)`. Rewrite using `[← hs'd2]`. Conclude with `fixes_e hs'f`.
-
-Establish `hh'b : ∀ i, h' *ᵥ bv i = β *ᵥ bv i`. Introduce `i`. Establish `e : s' *ᵥ (bv i + V'f (bv i)) = β *ᵥ bv i + V'f (β *ᵥ bv i)`. Rewrite using `[hs'd, ← mulVec_mulVec, ← mulVec_mulVec, hqy _ (hbU i)]`. Establish `: s⁻¹ *ᵥ q (bv i) = q (β *ᵥ bv i)`.
-
-Rewrite using `[← hsq i, mulVec_mulVec, Matrix.nonsing_inv_mul _ hsu, one_mulVec]`. Rewrite using `[this, ← hqy _ (hβbU i), mulVec_mulVec, Matrix.nonsing_inv_mul _ hyu, one_mulVec]`. Rewrite `e` using `[hs'd2]`. Conclude with `part_eq hz'.1 hh' hm'.1 hs'X (hU0W _ (hbU i)) (hU0W _ (hβbU i)) (hV'f _ (hbU i)) (hV'f _ (hβbU i)) e`. Establish `hh'U : ∀ u ∈ D0.U0, h' *ᵥ u = β *ᵥ u`.
-
-Introduce `u hu`. Rewrite using `[hbspan u hu, mv_sum, mv_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => by rw [mulVec_smul, mulVec_smul, hh'b i]`. Establish `hxs' : s' *ᵥ (y⁻¹ *ᵥ xcofL k r z z' y) = y⁻¹ *ᵥ xcofL k r z z' y`. Establish `hfix : s⁻¹ *ᵥ xcofL k r z z' y = xcofL k r z z' y`.
-
-Apply `hsinv` to reduce the goal to its premises. Unfold `xcofL`. Rewrite using `[mv_sum]`. Conclude with `Finset.sum_congr rfl fun a _ => by rw [mulVec_smul, hsf a]`. Rewrite using `[hs'd, ← mulVec_mulVec, ← mulVec_mulVec, show y *ᵥ (y⁻¹ *ᵥ xcofL k r z z' y) = xcofL k r z z' y by`.
-
-Rewrite using `[mulVec_mulVec, Matrix.mul_nonsing_inv _ hyu, one_mulVec], hfix]`. Establish `hhom' : h' *ᵥ omW' k r z z' y = omW' k r z z' y`. Unfold `omW'`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[prW_N hm'.1 (ginv_xcofL_esI z z' hyG)]`.
-
-Use `_ = prW k r z' (h' *ᵥ (m' *ᵥ (y⁻¹ *ᵥ xcofL k r z z' y))) := by rw [prW_UW hz' hh']`. Use `_ = prW k r z' (s' *ᵥ (y⁻¹ *ᵥ xcofL k r z z' y)) := by rw [hs'd2, mulVec_mulVec]`. Use `_ = prW k r z' (y⁻¹ *ᵥ xcofL k r z z' y) := by rw [hxs']`. Establish `hβ_eq : h' = β`. Use `uw_eq hz' D0.nu'_mem D0.nu'_unit D0.isotropic_subspace_eq_primed hh' hβ hh'U ?_` and prove the remaining obligations.
-
-Rewrite using `[hβν]`. Take `⟨t, ht, hom⟩` from `hy.2.2.2.1`. Rewrite `hhom'` using `[hom, mulVec_smul]`. Conclude with `smul_right_injective _ (Complex.ofReal_ne_zero.2 ht.ne') hhom'`. Establish `hmu` using `Gz.unit m hm`.
-
-Establish `hsys : s * y * s' = y`. Rewrite using `[hs'd, ← Matrix.mul_assoc, ← Matrix.mul_assoc, Matrix.mul_assoc s y, Matrix.mul_nonsing_inv _ hyu, Matrix.mul_one, Matrix.mul_nonsing_inv _ hsu, Matrix.one_mul]`. Rewrite `hsys` using `[hsd, hs'd2, hα_eq, hβ_eq]`. Use `⟨m⁻¹, Gz.inv_mem m hm, β * m' * β⁻¹, unipotent_normal_unitary hz' hβ hm', ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.nonsing_inv_nonsing_inv m hmu]`.
-
-Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hβu, Matrix.mul_one]`. Use `_ = y := hsys`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isoCore : IsoCore := by
   intro k r z z' hk hr hz hz' D0 y hy α hα β hβ hν hν' hαβ
@@ -421,7 +403,7 @@ theorem isoCore : IsoCore := by
     _ = y := hsys
 
 /- English proof (translation)
-The claim follows from `gfStab_of_iso isoCore`.
+A detailed English derivation is pending.
 -/
 theorem gfStab : GfStab := gfStab_of_iso isoCore
 

@@ -16,9 +16,9 @@ section Lemmas
 variable {R : Type} [CommRing R] {X : Scheme.{0}} {s : X ⟶ Sp R}
 
 /- English proof (translation)
-Establish `e : ((πe T').symm : T'.obj.B₀ →+* T'.obj.B).comp φ.hom.φ₀ = (φ.hom.φ : T.obj.B →+* T'.obj.B).comp ((πe T).symm : T.obj.B₀ →+* T.obj.B)`. Use extensionality with `b`. Take `⟨b, rfl⟩` from `T.obj.surj b`. Express the relevant statement in the definitionally equal form `(πe T').symm (φ.hom.φ₀ (T.obj.π b)) = φ.hom.φ ((πe T).symm (πe T b))`. Rewrite using `[φ.hom.comm, RingEquiv.symm_apply_apply]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(πe T').symm_apply_apply (φ.hom.φ b)`. Rewrite using `[pt, pt, ← φ.hom.pt, ← Category.assoc, ← spMap_comp, e, spMap_comp, Category.assoc]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pt_comp {T T' : TT s} (φ : T ⟶ T') :
     pt T' = spMap (φ.hom.φ : T.obj.B →+* T'.obj.B) ≫ pt T := by
@@ -32,7 +32,7 @@ theorem pt_comp {T T' : TT s} (φ : T ⟶ T') :
   rw [pt, pt, ← φ.hom.pt, ← Category.assoc, ← spMap_comp, e, spMap_comp, Category.assoc]
 
 /- English proof (translation)
-Establish `e : a ≫ c = d` using `ObjectProperty.hom_ext _ (Thick.hom_ext h)`. Rewrite using `[← e]`. Conclude with `f.2 a c`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fv_of_comp (f : Z1 ((IsTriv s).ι ⋙ O (dp0 R) s)) {T₁ T₂ T₃ : TT s} (a : T₁ ⟶ T₂)
     (c : T₂ ⟶ T₃) (d : T₁ ⟶ T₃) (h : ∀ x, c.hom.φ (a.hom.φ x) = d.hom.φ x) :
@@ -42,7 +42,7 @@ theorem fv_of_comp (f : Z1 ((IsTriv s).ι ⋙ O (dp0 R) s)) {T₁ T₂ T₃ : TT
   exact f.2 a c
 
 /- English proof (translation)
-The claim follows from `congrArg CommRingCat.Hom.hom (Spec.map_injective h)`.
+A detailed English derivation is pending.
 -/
 theorem ringHom_eq_of_spMap_eq {A B : Type} [CommRing A] [CommRing B] {f g : A →+* B}
     (h : spMap f = spMap g) : f = g :=
@@ -54,7 +54,7 @@ instance mono_affPt (s : X ⟶ Sp R) (U : X.affineOpens) : Mono (affPt s U) := b
   exact IsOpenImmersion.mono _
 
 /- English proof (translation)
-The claim follows from `(affPt_eq R B V).symm`.
+A detailed English derivation is pending.
 -/
 theorem spMap_toSec (B : Type) [CommRing B] [Algebra R B] (V : (Sp B).affineOpens) :
     spMap (toSec R B V : B →+* Sec (algStr R B) V.1) = affPt (algStr R B) V :=
@@ -63,19 +63,19 @@ theorem spMap_toSec (B : Type) [CommRing B] [Algebra R B] (V : (Sp B).affineOpen
 end Lemmas
 
 /- English proof (translation)
-Introduce `R _ X s f g _ T T' φ G G' hG hG'`. Use `GlobalTheory.T.spec_functions_eq_of_restrictions_on_pairs T.obj.B T'.obj.B (pt T) (spMap (φ.hom.φ : T.obj.B →+* T'.obj.B)) _ _ ?_` and prove the remaining obligations. Introduce `V' p hV'`. Establish `hp' : V'.1 ≤ pt T' ⁻¹ᵁ p.1.2.1`. Rewrite using `[pt_comp φ]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `fun y hy ↦ p.2 (hV' hy)`. Set `p' : Pair (pt T')` to `⟨(V', p.1.2), hp'⟩`. Set `q : Pair (spMap (φ.hom.φ : T.obj.B →+* T'.obj.B))` to `⟨(V', p.1.1), hV'⟩`. Set `χ` to `secPull (algStr R T.obj.B) (algStr R T'.obj.B) q`. Establish `hw : spMap (φ.hom.φ : T.obj.B →+* T'.obj.B) ≫ algStr R T.obj.B = algStr R T'.obj.B ≫ spMap (RingHom.id R)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[spMap_id, Category.comp_id, ← spMap_comp]`. Conclude with `congrArg spMap (φ.hom.φ.comp_algebraMap)`. Set `χA : Sec (algStr R T.obj.B) p.1.1.1 →ₐ[R] Sec (algStr R T'.obj.B) V'.1` to `{ χ with commutes' := (semiHom_secPull (σ := RingHom.id R) hw q).map_algebraMap }`. Set `c : thk T p ⟶ thk T' p'` to `⟨Thick.trivHom (T := (thk T' p').obj) χA (by`. Express the relevant statement in the definitionally equal form `spMap χ ≫ _ = _`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Category.assoc, secPull_affPt, Category.assoc, ← pt_comp φ])⟩`. Establish `h1 : ∀ u, χ (secPullA T p u) = secPullA T' p' u`. Establish `e : χ.comp (secPull s (algStr R T.obj.B) p) = secPull s (algStr R T'.obj.B) p'`. Use `ringHom_eq_of_spMap_eq ?_` and prove the remaining obligations. Rewrite using `[← cancel_mono (affPt s p.1.2), spMap_comp, Category.assoc, secPull_affPt, ← Category.assoc, secPull_affPt, Category.assoc, ← pt_comp φ]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Conclude with `(secPull_affPt s (algStr R T'.obj.B) p').symm`. Conclude with `fun u ↦ RingHom.congr_fun e u`. Establish `h2 : ∀ b, χ (toSec R T.obj.B p.1.1 b) = toSec R T'.obj.B V' (φ.hom.φ b)`. Establish `e : χ.comp (toSec R T.obj.B p.1.1 : T.obj.B →+* Sec (algStr R T.obj.B) p.1.1.1) = (toSec R T'.obj.B V' : T'.obj.B →+* Sec (algStr R T'.obj.B) V'.1).comp (φ.hom.φ : T.obj.B →+* T'.obj.B)`. Use `ringHom_eq_of_spMap_eq ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Rewrite using `[spMap_comp, spMap_comp, spMap_toSec, spMap_toSec]`. Conclude with `secPull_affPt (algStr R T.obj.B) (algStr R T'.obj.B) q`. Conclude with `fun b ↦ RingHom.congr_fun e b`. Establish `e1 : fv f (aM T' p') = χ (fv f (aM T p)) + fv f c` using `fv_of_comp f (aM T p) c (aM T' p') h1`. Establish `e2 : χ (fv f (bM T p)) + fv f c = toSec R T'.obj.B V' (fv f φ) + fv f (bM T' p')` using `(fv_of_comp f (bM T p) c (φ ≫ bM T' p') h2).symm.trans (f.2 φ (bM T' p'))`.
+Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Express the relevant statement in the definitionally equal form `toSec R T'.obj.B V' (fv f φ) = toSec R T'.obj.B V' (G' - φ.hom.φ G)`. Rewrite using `[map_sub, ← h2, hG p, hG' p']`. Simplify using `only [hSec, map_sub, map_add, h1]`. Express the relevant statement in the definitionally equal form `_ = _ - (_ + χ (fv f (aM T p)) - χ (fv f (bM T p)))`. Take the linear combination `-e1 - e2`.
+Express the relevant assertion in an equivalent form by its definition. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem fv_eq_sub_of_glued : ∀ {R : Type} [CommRing R] {X : Scheme.{0}} {s : X ⟶ Sp R}
     (f : Z1 ((IsTriv s).ι ⋙ O (dp0 R) s)) (g : C0 (OAff s)),

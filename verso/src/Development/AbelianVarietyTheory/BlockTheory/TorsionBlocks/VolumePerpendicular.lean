@@ -47,9 +47,9 @@ def VolumeRatio (D : D7) : Prop :=
     (1 ≤ P → Concl D W M P Q 1 (P - 1) Q) ∧ (1 ≤ Q → Concl D W M P Q (-1) P (Q - 1))
 
 /- English proof (translation)
-Introduce `W P Q V V' h h'`. Take `⟨hV, ⟨μ, hμ⟩, hall⟩` from `h`. Take `⟨hV', -, hall'⟩` from `h'`. Take `⟨⟨𝓕, h𝓕⟩, h1⟩` from `hall μ hμ`. Establish `h2` using `(hall' μ hμ).2 𝓕 h𝓕`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `(ENNReal.ofReal_eq_ofReal_iff hV.le hV'.le).1 ((h1 𝓕 h𝓕).symm.trans h2)`.
+A detailed English derivation is pending.
 -/
 theorem IsVol.unique (D : D7) : letI := D.host.cmStar;
     ∀ (W : HSpace D.host.E) (P Q : ℕ) (V V' : ℝ), IsVol D W P Q V → IsVol D W P Q V' → V = V' := by
@@ -61,13 +61,13 @@ theorem IsVol.unique (D : D7) : letI := D.host.cmStar;
   exact (ENNReal.ofReal_eq_ofReal_iff hV.le hV'.le).1 ((h1 𝓕 h𝓕).symm.trans h2)
 
 /- English proof (translation)
-Set `_` to `D.host.cmStar`. Establish `key : ∀ (W : HSpace D.host.E) (P Q : ℕ) (β : D.host.E) (P' Q' : ℕ), W.SigOK → (∀ τ, W.sig τ = (P, Q)) → Concl D W W.rank P Q β P' Q' → ∃ x : W.V, W.hT x x = β ∧ ∃ (W' : HSpace D.host.E) (ι : W'.V →ₗ[D.host.E] W.V), HSpace.IsIsomEmb W' W ι ∧ LinearMap.range ι = LinearMap.ker (W.hT …`. Introduce `W P Q β P' Q' hs hsig hc`. Take `⟨⟨x, hx⟩, hall⟩` from `hc`. Take `⟨⟨W', ι, hp, hk⟩, hall'⟩` from `hall x hx`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨-, V, V', hV, hV', hr⟩` from `hall' W' ι hp hk.2.1`. Establish `e1 : V = D.vol W` using `IsVol.unique D W P Q _ _ hV ⟨D.vol_pos W, ht W P Q hs hsig⟩`. Establish `e2 : V' = D.vol W'` using `IsVol.unique D W' P' Q' _ _ hV' ⟨D.vol_pos W', ht W' P' Q' hk.2.1 hk.2.2⟩`. Use `⟨x, hx, W', ι, fun a b => hp.2.1 b a, ?_, hk.2.1, hk.2.2, by rw [← e1, ← e2, hr]⟩` and prove the remaining obligations. Use extensionality with `y`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Conclude with `hp.2.2 y`. Introduce `W P Q hs hsig h3 s hPQ`. Establish `hW` using `h W W.rank P Q ⟨rfl, hs, hsig⟩ h3`. Consider the cases of `s with`. Consider the case `true => simpa using key W P Q 1 (P - 1) Q hs hsig (hW.1 (by simpa using hPQ))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 
-Consider the case `false => simpa using key W P Q (-1) P (Q - 1) hs hsig (hW.2 (by simpa using hPQ))`.
+A detailed English derivation is pending.
 -/
 theorem volumeComparison_of_ratio (D : D7) (h : VolumeRatio D) (ht : VolTie D) : Conclusion2 D := by
   let _ := D.host.cmStar

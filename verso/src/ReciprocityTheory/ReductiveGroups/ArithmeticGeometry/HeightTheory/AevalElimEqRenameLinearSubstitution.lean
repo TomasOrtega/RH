@@ -27,9 +27,9 @@ variable {R S : Type*} [CommSemiring R] [CommSemiring S] [Algebra R S] {P I : Ty
   [Fintype I]
 
 /- English proof (translation)
-Use `conv_lhs => rw [Q.as_sum]`. Use `conv_rhs => rw [Q.as_sum]`. Simplify using `only [map_sum, MvPolynomial.aeval_monomial, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun s hs => ?_` and prove the remaining obligations. Rewrite using `[Finsupp.prod_fintype _ _ (by simp), Finsupp.prod_fintype _ _ (by simp), Fintype.prod_sum_type, Fintype.prod_sum_type]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `only [Sum.elim_inl, Sum.elim_inr, mul_pow, Finset.prod_mul_distrib, Finset.prod_pow_eq_pow_sum, hQ s hs]`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem aeval_elim_mul_of_xhom (f : P → S) (g : I → S) (t : S) (n : ℕ) (Q : MvPolynomial (P ⊕ I) R)
     (hQ : ∀ s ∈ Q.support, ∑ i, s (Sum.inr i) = n) :
@@ -72,7 +72,7 @@ noncomputable def scaledSubstitution (c : ι) :
         ∑ j, MvPolynomial.X (some (i, j)) * MvPolynomial.C (d.affineCoord c j)
 
 /- English proof (translation)
-Unfold `scaledSubstitution`. Use `congr 1`. Use function extensionality and compare the values at `v`. Apply the tactic sequence `cases v <;> rfl`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem scaledSubstitution_eq (c : ι) : d.scaledSubstitution c = MvPolynomial.aeval (Sum.elim (fun p => MvPolynomial.X (some p))
     (fun i => MvPolynomial.X none *
@@ -83,7 +83,7 @@ theorem scaledSubstitution_eq (c : ι) : d.scaledSubstitution c = MvPolynomial.a
   cases v <;> rfl
 
 /- English proof (translation)
-Proceed by induction on `Q using MvPolynomial.induction_on with`. Consider the case `C a => simp [linearSubstitution, MvPolynomial.algebraMap_eq]`. Consider the case `add p q hp hq => simp only [map_add, hp, hq]`. Consider the case `mul_X p v hp`. Apply the tactic sequence `cases v <;> simp [linearSubstitution, map_mul, hp, map_sum]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem aeval_elim_eq_rename_linearSubstitution (c : ι)
     (Q : MvPolynomial ((Fin (d.D + 2) × Fin (d.N + 1)) ⊕ Fin (d.D + 2)) K) :
@@ -98,7 +98,7 @@ theorem aeval_elim_eq_rename_linearSubstitution (c : ι)
     cases v <;> simp [linearSubstitution, map_mul, hp, map_sum]
 
 /- English proof (translation)
-Rewrite using `[scaledSubstitution_eq, aeval_elim_mul_of_xhom _ _ _ n Q hQ, aeval_elim_eq_rename_linearSubstitution]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem scaledSubstitution_of_homogeneous (c : ι) (n : ℕ)
     (Q : MvPolynomial ((Fin (d.D + 2) × Fin (d.N + 1)) ⊕ Fin (d.D + 2)) K)
@@ -107,15 +107,15 @@ theorem scaledSubstitution_of_homogeneous (c : ι) (n : ℕ)
   rw [scaledSubstitution_eq, aeval_elim_mul_of_xhom _ _ _ n Q hQ, aeval_elim_eq_rename_linearSubstitution]
 
 /- English proof (translation)
-Establish `hvars : (↑Q.vars : Set ((Fin (d.D + 2) × Fin (d.N + 1)) ⊕ Fin (d.D + 2))) ⊆ Set.range Sum.inl`. Introduce `x hx`. Rewrite `hx` using `[Finset.mem_coe, MvPolynomial.mem_vars]`. Take `⟨s, hs, hxs⟩` from `hx`. Consider the cases of `x with`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Split into cases according to the possible forms of the given data.
 
-Consider the case `inl p => exact ⟨p, rfl⟩`. Consider the case `inr i`. It suffices to derive a contradiction. Establish `h0` using `(Finset.sum_eq_zero_iff.mp (hQ s hs)) i (Finset.mem_univ _)`. Conclude with `(Finsupp.mem_support_iff.mp hxs) h0`.
+Treat this case separately. Treat this case separately. It suffices to derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨Q0, rfl⟩` from `MvPolynomial.exists_rename_eq_of_vars_subset_range Q Sum.inl Sum.inl_injective hvars`. Establish `hmap : ∀ q : MvPolynomial (Fin (d.D + 2) × Fin (d.N + 1)) K, MvPolynomial.aeval (fun p => (MvPolynomial.X p : MvPolynomial (Fin (d.D + 2) × Fin (d.N + 1)) (Ω c))) q = MvPolynomial.map (algebraMap K (Ω c)) q`. Introduce `q`. Proceed by induction on `q using MvPolynomial.induction_on with`. Consider the case `C a => simp [MvPolynomial.algebraMap_eq]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `add p q hp hq => simp only [map_add, hp, hq]`. Consider the case `mul_X p v hp => simp [map_mul, hp]`. Establish `e : d.linearSubstitution c (MvPolynomial.rename Sum.inl Q0) = MvPolynomial.map (algebraMap K (Ω c)) Q0`. Rewrite using `[← hmap, linearSubstitution, MvPolynomial.aeval_rename]`. Both sides reduce to the same expression.
+Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[e]`. Establish `hQ0 : Q0 = 0` using `MvPolynomial.map_injective _ (algebraMap K (Ω c)).injective (by rw [h, map_zero])`. Rewrite using `[hQ0, map_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_xhom_zero (c : ι)
     (Q : MvPolynomial ((Fin (d.D + 2) × Fin (d.N + 1)) ⊕ Fin (d.D + 2)) K)

@@ -11,7 +11,7 @@ variable {R : Type*} [CommRing R] {n : ℕ}
 def conjT (σ : R →+* R) (g : Matrix (Fin n) (Fin n) R) : Matrix (Fin n) (Fin n) R := (g.map σ).transpose
 
 /- English proof (translation)
-Unfold `conjT`. Rewrite using `[Matrix.map_mul, Matrix.transpose_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem conjT_mul (σ : R →+* R) (g h : Matrix (Fin n) (Fin n) R) :
     conjT σ (g * h) = conjT σ h * conjT σ g := by
@@ -19,14 +19,14 @@ theorem conjT_mul (σ : R →+* R) (g h : Matrix (Fin n) (Fin n) R) :
   rw [Matrix.map_mul, Matrix.transpose_mul]
 
 /- English proof (translation)
-Unfold `conjT`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem conjT_one (σ : R →+* R) : conjT σ (1 : Matrix (Fin n) (Fin n) R) = 1 := by
   unfold conjT
   simp
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[conjT, hσ]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem conjT_conjT (σ : R →+* R) (hσ : ∀ x, σ (σ x) = x) (g : Matrix (Fin n) (Fin n) R) :
     conjT σ (conjT σ g) = g := by
@@ -64,9 +64,9 @@ noncomputable def conjAL : AL L →+* AL L :=
   (Algebra.TensorProduct.map (IsCMField.complexConj L).toAlgHom (AlgHom.id L⁺ (AFplus L))).toRingHom
 
 /- English proof (translation)
-Establish `hc : ∀ y : L, IsCMField.complexConj L (IsCMField.complexConj L y) = y`. Introduce `y`. Establish `h` using `pow_orderOf_eq_one (IsCMField.complexConj L)`. Rewrite `h` using `[IsCMField.orderOf_complexConj, pow_two]`. Simplify `DFunLike.congr_fun h y` using `[AlgEquiv.mul_apply]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a b => simp [conjAL, hc]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem conjAL_conjAL (x : AL L) : conjAL L (conjAL L x) = x := by
   have hc : ∀ y : L, IsCMField.complexConj L (IsCMField.complexConj L y) = y := by
@@ -80,9 +80,9 @@ theorem conjAL_conjAL (x : AL L) : conjAL L (conjAL L x) = x := by
   | add x y hx hy => simp only [map_add, hx, hy]
 
 /- English proof (translation)
-Establish `hc : ∀ y : L, IsCMField.complexConj L (IsCMField.complexConj L y) = y`. Introduce `y`. Establish `h` using `pow_orderOf_eq_one (IsCMField.complexConj L)`. Rewrite `h` using `[IsCMField.orderOf_complexConj, pow_two]`. Simplify `DFunLike.congr_fun h y` using `[AlgEquiv.mul_apply]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using hc x`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem complexConj_invol (x : L) :
     (IsCMField.complexConj L : L →+* L) ((IsCMField.complexConj L : L →+* L) x) = x := by
@@ -123,9 +123,9 @@ noncomputable def GQ (n : ℕ) : Subgroup (GA L n) :=
     (Algebra.TensorProduct.includeLeftRingHom : L →+* AL L))).subgroupOf (GA L n)
 
 /- English proof (translation)
-Establish `key : ALint L ≤ (ALint L).comap (conjAL L)`. Use `Subring.closure_le.mpr ?_` and prove the remaining obligations. Introduce and unpack `x (⟨y, rfl⟩ | ⟨a, ha, rfl⟩)`. Use `Subring.subset_closure (Or.inl ⟨RingOfIntegers.mapRingEquiv (IsCMField.complexConj L).toRingEquiv y, ?_⟩)` and prove the remaining obligations. Apply the tactic sequence `simp [conjAL] <;> rfl`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 
-Use `Subring.subset_closure (Or.inr ⟨a, ha, ?_⟩)` and prove the remaining obligations. Simplify using `[conjAL]`. Conclude with `key hx`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem conjAL_mem_ALint {x : AL L} (hx : x ∈ ALint L) : conjAL L x ∈ ALint L := by
   have key : ALint L ≤ (ALint L).comap (conjAL L) := by

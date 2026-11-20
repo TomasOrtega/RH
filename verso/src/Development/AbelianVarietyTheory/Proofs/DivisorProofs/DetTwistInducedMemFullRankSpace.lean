@@ -10,21 +10,21 @@ open GlobalTheory.SplitFlip GlobalTheory.FullRankCoinv GlobalTheory.FullRankCoin
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Simplify using `[pairPlace]`.
+Simplify using the standard rewrite rules.
 -/
 theorem pairPlace_val_zero {N : ℕ} (b : Fin 2 → ℕ) (h : b 0 + b 1 = N) (j : Fin (b 0)) :
     ((pairPlace b h ⟨0, j⟩ : Fin N) : ℕ) = j := by
   simp [pairPlace]
 
 /- English proof (translation)
-Simplify using `[pairPlace]`.
+Simplify using the standard rewrite rules.
 -/
 theorem pairPlace_val_one {N : ℕ} (b : Fin 2 → ℕ) (h : b 0 + b 1 = N) (j : Fin (b 1)) :
     ((pairPlace b h ⟨1, j⟩ : Fin N) : ℕ) = b 0 + j := by
   simp [pairPlace]
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single (⟨d - n + i, by omega⟩ : Fin d)]`. Simplify using `[FullRankCoinv.Y0]`. Introduce `l _ hl`. Establish `: ¬ ((l : ℕ) = d - n + i)` using `fun h => hl (Fin.ext h)`. Simplify using `[FullRankCoinv.Y0, this]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
 Simplify using the standard rewrite rules.
 -/
@@ -38,7 +38,7 @@ theorem lastRows_mul_apply {n d : ℕ} (hnd : n ≤ d) (M : Matrix (Fin d) (Fin 
   · simp
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_apply]`. Use `Finset.sum_eq_zero fun l _ => ?_` and prove the remaining obligations. Establish `: ¬ ((j : ℕ) = d - n + l)` using `by omega`. Simplify using `[FullRankCoinv.Y0, this]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem mul_lastCols_apply_zero {n d : ℕ} (D : Matrix (Fin n) (Fin n) k) (i : Fin n) (j : Fin d) (hj : (j : ℕ) < d - n) :
     (D * FullRankCoinv.Y0 k n d) i j = 0 := by
@@ -48,7 +48,7 @@ theorem mul_lastCols_apply_zero {n d : ℕ} (D : Matrix (Fin n) (Fin n) k) (i : 
   simp [FullRankCoinv.Y0, this]
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single l]`. Simplify using `[FullRankCoinv.Y0]`. Introduce `l' _ hl`. Establish `: ¬ (d - n + (l : ℕ) = d - n + l')` using `fun h => hl (Fin.ext (by omega))`. Simplify using `only [FullRankCoinv.Y0, Matrix.of_apply, if_neg this, mul_zero]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
 Simplify using the standard rewrite rules.
 -/
@@ -62,11 +62,9 @@ theorem mul_lastCols_apply_last {n d : ℕ} (hnd : n ≤ d) (D : Matrix (Fin n) 
   · simp
 
 /- English proof (translation)
-Rewrite using `[mem_parab_iff]`. Introduce `a c i j hca`. Apply the tactic sequence `fin_cases a <;> fin_cases c`. Conclude with `absurd hca (by decide)`. Conclude with `absurd hca (by decide)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hj : ((pairPlace (b2 n d) (block_size_pair_sum hnd) ⟨0, j⟩ : Fin d) : ℕ) < d - n`. Rewrite using `[pairPlace_val_zero]`. Conclude with `j.2`. Establish `h` using `congrFun (congrFun hD (show Fin n from i)) (pairPlace (b2 n d) (block_size_pair_sum hnd) ⟨0, j⟩)`. Rewrite `h` using `[lastRows_mul_apply hnd, mul_lastCols_apply_zero _ _ _ hj]`.
-
-Rewrite using `[← h]`. Conclude with `congrArg (fun l => b.1 l _) (Fin.ext (pairPlace_val_one (b2 n d) (block_size_pair_sum hnd) i))`. Conclude with `absurd hca (by decide)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_parabolic_of_lastRows_intertwine {n d : ℕ} (hnd : n ≤ d) {b : GL (Fin d) k} {D : GL (Fin n) k}
     (hD : FullRankCoinv.Y0 k n d * b.1 = D.1 * FullRankCoinv.Y0 k n d) :
@@ -85,9 +83,9 @@ theorem mem_parabolic_of_lastRows_intertwine {n d : ℕ} (hnd : n ≤ d) {b : GL
   · exact absurd hca (by decide)
 
 /- English proof (translation)
-Use extensionality with `i j`. Establish `h` using `congrFun (congrFun hD i) ⟨d - n + j, by omega⟩`. Rewrite `h` using `[lastRows_mul_apply hnd, mul_lastCols_apply_last hnd]`. Rewrite using `[← h]`. Use `(leviProj_apply k _ b 1 i j).trans ?_` and prove the remaining obligations.
+By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `congrArg₂ (b : GL (Fin d) k).1 (Fin.ext (pairPlace_val_one (b2 n d) (block_size_pair_sum hnd) i)) (Fin.ext (pairPlace_val_one (b2 n d) (block_size_pair_sum hnd) j))`.
+A detailed English derivation is pending.
 -/
 theorem leviProj_eq_of_lastRows_intertwine {n d : ℕ} (hnd : n ≤ d) (b : parab k (pairPlace (b2 n d) (block_size_pair_sum hnd)))
     {D : GL (Fin n) k} (hD : FullRankCoinv.Y0 k n d * (b : GL (Fin d) k).1 = D.1 * FullRankCoinv.Y0 k n d) :
@@ -101,21 +99,19 @@ theorem leviProj_eq_of_lastRows_intertwine {n d : ℕ} (hnd : n ≤ d) (b : para
     (Fin.ext (pairPlace_val_one (b2 n d) (block_size_pair_sum hnd) j))
 
 /- English proof (translation)
-Introduce `k _ _ _ _ n d hnd ν F`. Establish `hK : IsSmoothChar (detChar (Fin d) (absPow k (-((n : ℂ) / 2))))` using `(isSmoothChar_of_isUnram (isUnram_absPow k _)).detChar`. Establish `hK1 : ((detChar (Fin d) (absPow k (-((n : ℂ) / 2)))).ker : Set (GL (Fin d) k)) ∈ nhds 1` using `hK.mem_nhds (by simp)`. Establish `hU` using `IsOpen.mem_nhds (x := (1 : GL (Fin d) k)) F.2 (by simp)`. Use `⟨⟨_, Filter.inter_mem hU hK1, fun h u hu => ?_⟩, fun b h D hD => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hg2 : apow (gdet u) (-((n : ℂ) / 2)) = 1`. Use `congrArg Units.val (MonoidHom.mem_ker.1 hu.2)` as an intermediate fact. Conclude with `this`. Establish `hFu : F.1.1 (h * u) = F.1.1 h`. Establish `hg'` using `hu.1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `congrFun (congrArg Subtype.val hg') h`. Simplify using `only [detTw_apply, gdet_mul, apow_mul, hg2, mul_one, hFu]`. Set `p : parab k (pairPlace (b2 n d) (block_size_pair_sum hnd))` to `⟨b, mem_parabolic_of_lastRows_intertwine hnd hD⟩`. Establish `hp : Matrix.GeneralLinearGroup.det (leviProj k _ p 1) = gdet D` using `congrArg gdet (leviProj_eq_of_lastRows_intertwine hnd p hD)`. Establish `hlaw` using `parInd_law _ _ F p h`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdet : gdet b = Matrix.GeneralLinearGroup.det (leviProj k _ p 0) * gdet D`. Use `det_parab k _ p` as an intermediate fact. Rewrite `this` using `[Fin.prod_univ_two, hp]`. Conclude with `this`. Rewrite `hlaw` using `[GlobalTheory.PairIndProd.deltaHalf_pair, ofChar_apply, GlobalTheory.PairIndProd.pairChar_apply', hp]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Generalize the expression as in `Matrix.GeneralLinearGroup.det (leviProj k _ p 0) = A at hlaw hdet`. Establish `hlaw' : F.1.1 (b * h) = apow A ((n : ℂ) / 2) * apow (gdet D) (-((d - n : ℕ) : ℂ) / 2) * ((((ν (gdet D))⁻¹ : ℂˣ) : ℂ) * F.1.1 h)`. Use `hlaw.trans ?_` and prove the remaining obligations. Establish `e0 : chi2 k ν 0 A = 1` using `rfl`. Establish `e1 : chi2 k ν 1 (gdet D) = (ν (gdet D))⁻¹` using `rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite using `[e0, e1, one_mul]`. Both sides reduce to the same expression. Establish `e2 : apow A (-((n : ℂ) / 2)) * apow A ((n : ℂ) / 2) = 1`. Rewrite using `[← apow_add]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `e3 : apow (gdet D) (-(d : ℂ) / 2) = apow (gdet D) (-((n : ℂ) / 2)) * apow (gdet D) (-((d - n : ℕ) : ℂ) / 2)`. Rewrite using `[← apow_add, Nat.cast_sub hnd]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [detTw_apply, gdet_mul, apow_mul, hlaw', hdet, e3]`.
-
-Take the linear combination `(apow (gdet D) (-((n : ℂ) / 2)) * apow (gdet h) (-((n : ℂ) / 2)) * apow (gdet D) (-((d - n : ℕ) : ℂ) / 2) * (((ν (gdet D))⁻¹ : ℂˣ) : ℂ) * F.1.1 h) * e2`.
+Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem bwd : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (n d : ℕ) (hnd : n ≤ d) (ν : kˣ →* ℂˣ)

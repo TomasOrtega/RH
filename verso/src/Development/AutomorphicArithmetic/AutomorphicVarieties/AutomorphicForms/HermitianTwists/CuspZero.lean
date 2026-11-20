@@ -6,9 +6,9 @@ open NumberField IsDedekindDomain Neutral.B1 Formalism.L2.Host Formalism.Conjuga
   UpperTheory.V.Br CongruenceSubgroup
 
 /- English proof (translation)
-Take `⟨c, hc⟩` from `ModularForm.eq_const_of_weight_zero (𝒢 := (Gamma1 N : Subgroup (GL (Fin 2) ℝ))) { toFun := f, holo' := f.holo', slash_action_eq' := f.slash_action_eq', bdd_at_cusps' := fun hc g hg => (f.zero_at_cusps' hc g hg).isBoundedAtImInfty }`. Establish `hc' : (f : UpperHalfPlane → ℂ) = Function.const UpperHalfPlane c` using `hc`. Establish `hz : UpperHalfPlane.IsZeroAtImInfty (f : UpperHalfPlane → ℂ)` using `CuspFormClass.zero_at_infty f`. Rewrite `hz` using `[hc']`. Establish `h0 : c = 0` using `tendsto_nhds_unique tendsto_const_nhds hz`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use extensionality with `z`. Rewrite using `[hc', h0]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem cusp_zero (N : ℕ) [NeZero N] (f : CuspForm (Gamma1 N) ((0 : ℕ) : ℤ)) : f = 0 := by
   obtain ⟨c, hc⟩ := ModularForm.eq_const_of_weight_zero (𝒢 := (Gamma1 N : Subgroup (GL (Fin 2) ℝ)))
@@ -23,11 +23,11 @@ private theorem cusp_zero (N : ℕ) [NeZero N] (f : CuspForm (Gamma1 N) ((0 : �
   rfl
 
 /- English proof (translation)
-Introduce `hC π hπ`. Take `⟨N, ψ, ν, hN, hν, φ, hφ, h0, hlow, hfix⟩` from `levelVec 0 π hπ`. Use `haveI : NeZero N := ⟨by omega⟩`. Take `⟨ω, hω, -⟩` from `hC ℚ (π.twist ν)`. Establish `hc` using `fun z g => hω z φ hφ g`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨χ, hχ⟩` from `charOf N hN ω φ h0 hlow.one hfix hc`. Establish `hcusp` using `(π.twist ν).cusp φ hφ`. Take `⟨f, -, hL⟩` from `deadel 0 N hN χ ω hχ φ hcusp hlow hfix hc`. Take `rfl` from `cusp_zero N f`. Use `h0 (Subtype.ext (funext fun g => ?_))` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨γ, h, u, hu, rfl⟩` from `decomp N hN g`. Rewrite using `[hL γ h u hu]`. Simplify using `[nsl]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Af.Rn.noLow :
     UpperTheory.V.Sd.Wc.CentChar → UpperTheory.V.Af.Rn.NoLow := by

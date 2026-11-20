@@ -8,7 +8,7 @@ attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory GlobalTheory.Ex GlobalTheory.Relabel
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.RosMove.rosV_move` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDegenerationProofs%2FNormalisedRosatiGeneratorValuesMoveAlongIso.lean&line=130#L130)
 -/

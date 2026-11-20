@@ -13,7 +13,7 @@ section Helpers
 variable {R R' : Type} [CommRing R] [CommRing R'] {C C' : Type} [Category.{0} C] [Category.{0} C']
 
 /- English proof (translation)
-Unfold `wsum`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun k _ ↦ ?_` and prove the remaining obligations. Rewrite using `[pOm_wedge, ← (u k).2 w, ← (v k).2 w]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem pOm_wsum (F : C ⥤ CommAlgCat.{0} R) {n : ℕ} (u v : Fin n → Glob1 F) {T T' : C} (w : T ⟶ T') :
     pOm F 2 w (wsum F u v T) = wsum F u v T' := by
@@ -23,7 +23,7 @@ theorem pOm_wsum (F : C ⥤ CommAlgCat.{0} R) {n : ℕ} (u v : Fin n → Glob1 F
   rw [pOm_wedge, ← (u k).2 w, ← (v k).2 w]
 
 /- English proof (translation)
-Unfold `wsum`. Rewrite using `[map_sum]`. Conclude with `Finset.sum_congr rfl fun k _ ↦ qOm_wedge m _ _`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem qOm_wsum {σ : R →+* R'} {F : C ⥤ CommAlgCat.{0} R} {F' : C' ⥤ CommAlgCat.{0} R'} (m : CoefMap σ F F')
     {n : ℕ} (u v : Fin n → Glob1 F) (T : C') :
@@ -40,31 +40,27 @@ end GlobalTheory.AbCoh
 namespace GlobalTheory.AbCoh
 
 /- English proof (translation)
-Introduce `R R' _ _ X X' s s' σ φ h x n u v hx`. Take `⟨f, ω, hfx, hconn, hcurv⟩` from `hx`. Take `⟨f', hf'⟩` from `H1.mk_surjective (OAff s') (pullHO1 h x)`. Establish `e1` using `isPullO_pullHO1 h x`. Rewrite `e1` using `[IsPullO, ← hf', ← hfx, CoefMap.pullCohomologyOne_class, CoefMap.pullCohomologyOne_class, H1.mk_eq_mk]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨b, hb⟩` from `e1`. Establish `hb' : ∀ (t t' : (Pair φ)ᵒᵖ) (a : t ⟶ t'), ((pairRes φ s').pullbackOneCocycle f').1 t t' a = ((pairPull h).pullbackOneCocycle f).1 t t' a - (b t' - mp (OPair φ s') a (b t))`. Introduce `t t' a`. Establish `e` using `congrFun (congrFun (congrFun hb t) t') a`. Simplify using `only [Pi.sub_apply, amitsur_d0_apply] at e`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Take the linear combination `e`. Set `ω'' : ∀ t : (Pair φ)ᵒᵖ, Ω[(OAff s').obj ((pairFst φ).obj t)⁄R']` to `fun t ↦ q1 (pairPull h) t (ω _) - D R' _ (b t)`. Set `κ : A1 (OAff s')` to `fun T T' ψ ↦ D R' _ (f'.1 T T' ψ)`. Establish `hκ : ∀ ⦃T T' T'' : AffOp X'⦄ (a : T ⟶ T') (c : T' ⟶ T''), κ T T'' (a ≫ c) = p1 (OAff s') c (κ T T' a) + κ T' T'' c`. Introduce `T T' T'' a c`.
+Take a linear combination of the given relations to obtain the conclusion. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [κ]`. Rewrite using `[Z1.comp f', map_add, p1_D]`. Establish `hθ' : ∀ ⦃t t' : (Pair φ)ᵒᵖ⦄ (a : t ⟶ t'), κ _ _ ((pairFst φ).map a) = ω'' t' - p1 (OAff s') ((pairFst φ).map a) (ω'' t)`. Introduce `t t' a`. Establish `e0` using `hconn ((pairSnd φ).map a)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `e : q1 (pairPull h) t' (ω _) = p1 (OPair φ s') a (q1 (pairPull h) t (ω _)) + D R' _ ((pairPull h).α t' (f.1 _ _ ((pairSnd φ).map a)))`. Rewrite using `[← cechDeRhamCoefMapOneForms_naturality, ← cechDeRhamCoefMapOneForms_D, ← map_add]`. Conclude with `congrArg _ e0`. Establish `k1 : κ _ _ ((pairFst φ).map a) = D R' _ (((pairPull h).pullbackOneCocycle f).1 t t' a) - (D R' _ (b t') - D R' _ (mp (OPair φ s') a (b t)))`. Simplify using `only [κ]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `rw [show f'.1 _ _ ((pairFst φ).map a) = ((pairRes φ s').pullbackOneCocycle f').1 t t' a from rfl, hb' t t' a, map_sub, map_sub] <;> rfl`. Establish `k3 : p1 (OPair φ s') a (D R' _ (b t)) = D R' _ (mp (OPair φ s') a (b t))` using `p1_D _ _ _`. Establish `key : ∀ {M : Type} [AddCommGroup M] (df da db dm q' q pq pd : M), df = da - (db - dm) → q' = pq + da → pd = dm → df = (q' - db) - (pq - pd)` using `by intros; subst_vars; abel`. Apply the tactic sequence `rw [show ω'' t' - p1 (OAff s') ((pairFst φ).map a) (ω'' t) = (q1 (pairPull h) t' (ω _) - D R' _ (b t')) - (p1 (OPair φ s') a (q1 (pairPull h) t (ω _)) - p1 (OPair φ s') a (D R' _ (b t))) from by simp only [ω'', map_sub] <;> rfl]`. Conclude with `key _ _ _ _ _ (0 : Ω[(OAff s').obj ((pairFst φ).obj t')⁄R']) _ _ k1 e k3`.
+Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcov` using `_root_.GlobalTheory.CechDR.pair_cover_affine φ s'`. Establish `hdir` using `_root_.GlobalTheory.CechDR.exists_pair_below_two φ s'`. Establish `hs1` using `_root_.GlobalTheory.CechDR.form_eq_zero_of_basis_cover s' (pairFst φ) hcov`. Establish `hg1` using `_root_.GlobalTheory.CechDR.FormExt.glue_one_forms s' (pairFst φ) hcov hdir`. Establish `hs2` using `_root_.GlobalTheory.CechDR.twoForm_sep_of_basis s' (pairFst φ) hcov`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨θ, hθ⟩` from `_root_.GlobalTheory.cocycle_one_forms_coboundary_of_restrict (OAff s') (pairFst φ) hs1 hg1 κ hκ ω'' hθ'`. Establish `key2 : ∀ {M : Type} [AddCommGroup M] (k A PA C PC PAC : M), k = A - PA → k = C - PC → PAC = PA - PC → A - C = PAC`. Introduce `M _ k A PA C PC PAC h1 h2 h3`. Substitute `h3` using the available equality. Conclude with `sub_eq_sub_iff_sub_eq_sub.1 (h1.symm.trans h2)`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Set `δ : Glob1 (OPair φ s')` to `⟨fun t ↦ θ ((pairFst φ).obj t) - ω'' t, fun t t' a ↦ key2 _ _ _ _ _ _ (hθ ((pairFst φ).map a)) (hθ' a) (map_sub _ _ _)⟩`. Take `⟨β, hβ⟩` from `(pairRes_bijective φ s').2.1.2 δ`. Establish `hβt : ∀ t, β.1 ((pairFst φ).obj t) = θ ((pairFst φ).obj t) - ω'' t` using `fun t ↦ (cechDeRhamCoefMapOneForms_restrictAlongFunctor (OAff s') (pairFst φ) t _).symm.trans (congrArg (fun z : Glob1 (OPair φ s') ↦ z.1 t) hβ)`. Use `⟨f', fun T ↦ θ T - β.1 T, hf', fun T T' ψ ↦ ?_, fun T ↦ ?_⟩` and prove the remaining obligations. Establish `key3 : ∀ {M : Type} [AddCommGroup M] (k A PA B PB : M), k = A - PA → B = PB → A - B = (PA - PB) + k` using `by intros; subst_vars; abel`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[map_sub]`. Conclude with `key3 _ _ _ _ _ (hθ ψ) (β.2 ψ)`. Use `sub_eq_zero.1 (hs2 T _ fun t w ↦ ?_)` and prove the remaining obligations. Establish `key4 : ∀ {M : Type} [AddCommGroup M] (k A PA B PB O : M), k = A - PA → B = PB → B = A - O → PA - PB = O - k` using `by intros; subst_vars; abel`. Establish `key5 : ∀ (B : Type) [CommRing B] [Algebra R' B] (y : Ω[B⁄R']) (c : B), dOne R' B (y - D R' B c) = dOne R' B y` using `fun B _ _ y c ↦ by rw [map_sub, dOne_D, sub_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `c1 : p1 (OAff s') w (θ T - β.1 T) = ω'' t - D R' _ (f'.1 _ _ w)`. Rewrite using `[map_sub]`. Conclude with `key4 _ _ _ _ _ _ (hθ w) (β.2 w) (hβt t)`. Establish `e1 : ∀ (z : Fin n → GlobForm s) k, pullGlob1 (pairPull h) (z k) = pullGlob1 (pairRes φ s') (GlobalTheory.CechDR.pullForm h (z k))` using `fun z k ↦ isPullForm_pullForm h (z k)`. Establish `c2 : dOne R' ((OAff s').obj ((pairFst φ).obj t)) (ω'' t) = wsum (OAff s') (fun k ↦ GlobalTheory.CechDR.pullForm h (u k)) (fun k ↦ GlobalTheory.CechDR.pullForm h (v k)) ((pairFst φ).obj t)`.
-
-Combine the equalities or inequalities in the displayed calculation. Simplify using `only [e1 u, e1 v]`. Use `_ = qOm (pairRes φ s') 2 t (wsum (OAff s') (fun k ↦ GlobalTheory.CechDR.pullForm h (u k)) (fun k ↦ GlobalTheory.CechDR.pullForm h (v k)) ((pairFst φ).obj t)) := (qOm_wsum _ _ _ _).symm`. Use `_ = _ := qOm_restrict _ _ _ _`. Establish `c3` using `pOm_wsum (OAff s') (fun k ↦ GlobalTheory.CechDR.pullForm h (u k)) (fun k ↦ GlobalTheory.CechDR.pullForm h (v k)) w`.
-
-Rewrite using `[map_sub, pOm_dOne, c1, c3, key5, c2, sub_self]`.
+Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem obRel_pullHO1 : ∀ (R R' : Type) [CommRing R] [CommRing R'] (X X' : Scheme.{0}) (s : X ⟶ Sp R) (s' : X' ⟶ Sp R') (σ : R →+* R') (φ : X' ⟶ X) (h : φ ≫ s = s' ≫ spMap σ) (x : HO1 s) (n : ℕ) (u v : Fin n → GlobForm s), ObRel (OAff s) x u v → ObRel (OAff s') (pullHO1 h x) (fun k ↦ GlobalTheory.CechDR.pullForm h (u k)) (fun k ↦ GlobalTheory.CechDR.pullForm h (v k)) := by
   intro R R' _ _ X X' s s' σ φ h x n u v hx

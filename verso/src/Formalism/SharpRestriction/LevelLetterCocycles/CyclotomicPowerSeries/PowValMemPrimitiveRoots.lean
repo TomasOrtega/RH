@@ -9,7 +9,7 @@ namespace LevelStatements.Link
 open PowerSeries
 
 /- English proof (translation)
-Take `⟨u, rfl⟩` from `hw`. Rewrite `hξ`, the goal using `[mem_primitiveRoots hN]`. Conclude with `hξ.pow_of_coprime _ (ZMod.val_coe_unit_coprime u)`.
+Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pow_val_mem_primitiveRoots {LL : Type} [Field LL] (N : ℕ) (hN : 0 < N) (w : ZMod N)
     (hw : IsUnit w) {ξ : LL} (hξ : ξ ∈ primitiveRoots N LL) : ξ ^ w.val ∈ primitiveRoots N LL := by
@@ -18,17 +18,15 @@ theorem pow_val_mem_primitiveRoots {LL : Type} [Field LL] (N : ℕ) (hN : 0 < N)
   exact hξ.pow_of_coprime _ (ZMod.val_coe_unit_coprime u)
 
 /- English proof (translation)
-Establish `hp : l.Prime` using `Fact.out`. Establish `h2` using `hp.two_le`. Use `set x := b - a with hx`. Establish `hba : b = a + x` using `by rw [hx]; ring`. Take `⟨k, hk⟩` from `Polynomial.binomExpansion (Polynomial.X ^ (l - 1) : Polynomial (ZMod (l ^ (s + 1)))) a x`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Simplify using `only [Polynomial.eval_pow, Polynomial.eval_X, Polynomial.derivative_X_pow, Polynomial.eval_mul, Polynomial.eval_C] at hk`. Rewrite `hk` using `[← hba, ha, hb]`. Establish `hlpow : (l : ZMod (l ^ (s + 1))) ^ (s + 1) = 0`. Rewrite using `[← Nat.cast_pow, ZMod.natCast_self]`. Establish `hxpow : x ^ (s + 1) = 0`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨t, ht⟩` from `hab`. Rewrite using `[ht, mul_pow, hlpow, zero_mul]`. Establish `hkx : IsNilpotent (k * x)` using `⟨s + 1, by rw [mul_pow, hxpow, mul_zero]⟩`. Establish `hl1 : IsUnit ((l - 1 : ℕ) : ZMod (l ^ (s + 1)))`. Rewrite using `[ZMod.isUnit_iff_coprime]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Nat.Coprime.pow_right` to reduce the goal to its premises. Rewrite using `[Nat.coprime_comm, Nat.Prime.coprime_iff_not_dvd hp]`. Conclude with `Nat.not_dvd_of_pos_of_lt (by omega) (by omega)`. Establish `hinv : a * a ^ (l - 1 - 1) = 1`. Rewrite using `[← pow_succ', show l - 1 - 1 + 1 = l - 1 by omega, ha]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ha' : IsUnit a` using `⟨⟨a, a ^ (l - 1 - 1), hinv, by rw [mul_comm]; exact hinv⟩, rfl⟩`. Establish `hU : IsUnit (((l - 1 : ℕ) : ZMod (l ^ (s + 1))) * a ^ (l - 1 - 1) + k * x)` using `hkx.isUnit_add_left_of_commute (hl1.mul (ha'.pow _)) (Commute.all _ _)`. Establish `hx0 : x * (((l - 1 : ℕ) : ZMod (l ^ (s + 1))) * a ^ (l - 1 - 1) + k * x) = 0`. Take the linear combination `(-1 : ZMod (l ^ (s + 1))) * hk`. Establish `hx' : x = 0` using `hU.mul_left_eq_zero.mp hx0`.
-
-Conclude with `sub_eq_zero.mp hx'`.
+Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem eq_of_pow_pred_eq_one {l : ℕ} [Fact l.Prime] (s : ℕ) (a b : ZMod (l ^ (s + 1)))
     (ha : a ^ (l - 1) = 1) (hb : b ^ (l - 1) = 1) (hab : (l : ZMod (l ^ (s + 1))) ∣ b - a) :
@@ -64,17 +62,15 @@ theorem eq_of_pow_pred_eq_one {l : ℕ} [Fact l.Prime] (s : ℕ) (a b : ZMod (l 
   exact sub_eq_zero.mp hx'
 
 /- English proof (translation)
-Establish `hp : l.Prime` using `Fact.out`. Establish `h2` using `hp.two_le`. Use `haveI : NeZero (l ^ (s + 1)) := ⟨pow_ne_zero _ hp.ne_zero⟩`. Establish `hdvd : l ∣ l ^ (s + 1)` using `dvd_pow_self l (Nat.succ_ne_zero s)`. Use `set π := ZMod.castHom hdvd (ZMod l) with hπ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hψ : π.comp (PadicInt.toZModPow (s + 1)) = (PadicInt.toZMod : ℤ_[l] →+* ZMod l)`. Apply `ZMod.ringHom_eq_of_ker_eq` to reduce the goal to its premises. Establish `m1` using `RingHom.ker_isMaximal_of_surjective _ (ZMod.ringHom_surjective (π.comp (PadicInt.toZModPow (s + 1))))`. Establish `m2` using `RingHom.ker_isMaximal_of_surjective _ (ZMod.ringHom_surjective (PadicInt.toZMod : ℤ_[l] →+* ZMod l))`. Rewrite using `[IsLocalRing.eq_maximalIdeal m1, IsLocalRing.eq_maximalIdeal m2]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `key : ∀ y : ZMod (l ^ (s + 1)), π y = 0 → (l : ZMod (l ^ (s + 1))) ∣ y`. Introduce `y hy`. Rewrite `hy` using `[← ZMod.natCast_zmod_val y, map_natCast]`. Take `⟨t, ht⟩` from `(CharP.cast_eq_zero_iff (ZMod l) l y.val).mp hy`. Use `⟨(t : ZMod (l ^ (s + 1))), ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← ZMod.natCast_zmod_val y, ht, Nat.cast_mul]`. Establish `ha0 : π a ≠ 0`. Introduce `h0`. Establish `hpa : π a ^ (l - 1) = 1` using `by rw [← map_pow, ha, map_one]`. Rewrite `hpa` using `[h0, zero_pow (by omega)]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `zero_ne_one hpa`. Take `⟨j, hj⟩` from `hom' (π a) ha0`. Use `⟨j, eq_of_pow_pred_eq_one s a _ ha ?_ ?_⟩` and prove the remaining obligations. Rewrite using `[← map_pow, hom j, map_one]`. Establish `hc : π (PadicInt.toZModPow (s + 1) (om j)) = PadicInt.toZMod (om j)` using `RingHom.congr_fun hψ (om j)`.
-
-Establish `hk : π (PadicInt.toZModPow (s + 1) (om j) - a) = 0`. Rewrite using `[map_sub, hc, hj, sub_self]`. Conclude with `key _ hk`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_toZModPow_eq_of_pow_pred_eq_one {l : ℕ} [Fact l.Prime] {Δ : Type*} (om : Δ → ℤ_[l])
     (hom : ∀ j, om j ^ (l - 1) = 1)
@@ -114,9 +110,9 @@ theorem exists_toZModPow_eq_of_pow_pred_eq_one {l : ℕ} [Fact l.Prime] {Δ : Ty
     exact key _ hk
 
 /- English proof (translation)
-Establish `key : ∀ p : Polynomial O, ρ (p : PowerSeries O) = Polynomial.aeval (ρ X) p`. Introduce `p`. Establish `h` using `Polynomial.algHom_ext (f := ρ.comp (Polynomial.coeToPowerSeries.algHom O)) (g := Polynomial.aeval (ρ X)) (by simp)`. Establish `hp` using `AlgHom.congr_fun h p`. Simplify using `using hp`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[key, Polynomial.aeval_comp]`. Establish `h1 : Polynomial.aeval (ρ X) (Polynomial.X + 1 : Polynomial O) = C ζ * exp LL`. Rewrite using `[map_add, Polynomial.aeval_X, map_one, add_comm, hρ]`. Rewrite using `[h1, ← Polynomial.map_cyclotomic m (algebraMap O LL), Polynomial.aeval_map_algebraMap]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem map_cyclotomic_comp {O LL : Type} [CommRing O] [Field LL] [CharZero LL] [Algebra O LL]
     (ρ : PowerSeries O →ₐ[O] PowerSeries LL) (ζ : LL) (hρ : 1 + ρ X = C ζ * exp LL) (m : ℕ) :

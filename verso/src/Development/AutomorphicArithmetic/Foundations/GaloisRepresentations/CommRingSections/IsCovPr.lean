@@ -82,7 +82,7 @@ def cupC {U : ι → X.left.Opens} {a b n : ℕ} (h : a + b = n) (σ : Co U a) (
 def cupH {U : ι → X.left.Opens} {a b n : ℕ} (h : a + b = n) (x : HC U a) (y : HC U b) : HC U n := cls (cupC h (rep x) (rep y))
 
 /- English proof (translation)
-Introduce `x hx` and use `(GroundTheory.Arith.SchemeCoh.mem_inter_iff (X := X.left.toTopCat) (U := U) (t ∘ j) _).2 fun a => ht (j a) ((GroundTheory.Arith.SchemeCoh.mem_inter_iff (X := Y.left.toTopCat) (U := V) j x).1 hx a)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem cap_le (f : Y ⟶ X) {U : ι → X.left.Opens} {V : κ → Y.left.Opens} (t : κ → ι) (ht : ∀ j, V j ≤ f.left ⁻¹ᵁ U (t j))
     {n : ℕ} (j : Fin n → κ) : cap V j ≤ f.left ⁻¹ᵁ cap U (t ∘ j) := fun x hx =>
@@ -117,7 +117,7 @@ def up {U : ι → X.left.Opens} (hU : IsCov U) {n : ℕ} (y : HC U n) : H X n :
 def Pr (f : Y ⟶ X) : Type := {p : Y.left.affineOpens × X.left.affineOpens // p.1.1 ≤ f.left ⁻¹ᵁ p.2.1}
 
 /- English proof (translation)
-The claim follows from `p.1.1.2 cov := by refine eq_top_iff.2 fun y _ => ?_ obtain ⟨_, ⟨U, hU, rfl⟩, hy, -⟩ := X.left.isBasis_affineOpens.exists_subset_of_mem_open (Set.mem_univ (f.left y)) isOpen_univ obtain ⟨_, ⟨V, hV, rfl⟩, hy', hVU⟩ := Y.left.isBasis_affineOpens.exists_subset_of_mem_open (show y ∈ ( …`.
+A detailed English derivation is pending.
 -/
 theorem isCov_pr (f : Y ⟶ X) : IsCov fun p : Pr f => p.1.1.1 where
   aff p := p.1.1.2

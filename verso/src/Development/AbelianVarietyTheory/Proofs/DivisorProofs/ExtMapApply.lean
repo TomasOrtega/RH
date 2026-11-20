@@ -30,14 +30,14 @@ def fibMat (n : ℕ) {g : ℕ} (a : Matrix (Fin g) (Fin g) ℂ) :
   Matrix.reindex finSumFinEquiv finSumFinEquiv (Matrix.fromBlocks 1 0 0 a)
 
 /- English proof (translation)
-Simplify using `[fibMat, Matrix.fromBlocks_multiply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem fibMat_mul (n : ℕ) {g : ℕ} (a a' : Matrix (Fin g) (Fin g) ℂ) :
     fibMat n a * fibMat n a' = fibMat n (a * a') := by
   simp [fibMat, Matrix.fromBlocks_multiply]
 
 /- English proof (translation)
-Simplify using `[fibMat, Matrix.fromBlocks_one]`.
+Simplify using the standard rewrite rules.
 -/
 theorem fibMat_one (n g : ℕ) : fibMat n (1 : Matrix (Fin g) (Fin g) ℂ) = 1 := by
   simp [fibMat, Matrix.fromBlocks_one]

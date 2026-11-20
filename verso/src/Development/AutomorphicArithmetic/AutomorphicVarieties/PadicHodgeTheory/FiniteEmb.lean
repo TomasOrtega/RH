@@ -6,7 +6,7 @@ import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.De
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.BasicNotions Formalism.BasicNotions.Loc GlobalTheory.WeilDeligne GlobalTheory.GalOfCusp GlobalTheory.HeckeGal GlobalTheory.LocLanglands GlobalTheory.Published UpperTheory.V.W
 
 /- English proof (translation)
-Use `Finite.of_injective (fun j : Emb l w => (j.1.comp (algebraMap F (w.adicCompletion F)) : F →+* Qbar l)) fun j j' hjj => ?_` and prove the remaining obligations. Use `Subtype.ext (DFunLike.coe_injective ?_)` and prove the remaining obligations. Use `(HeightOneSpectrum.denseRange_algebraMap (K := F) (v := w)).equalizer j.2 j'.2 ?_` and prove the remaining obligations. Use function extensionality and compare the values at `x`. Conclude with `DFunLike.congr_fun hjj x`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 private theorem finite_emb {F : Type} [Field F] [NumberField F] (l : ℕ) [Fact l.Prime] (w : Plc F) :
     Finite (Emb l w) := by
@@ -18,7 +18,7 @@ private theorem finite_emb {F : Type} [Field F] [NumberField F] (l : ℕ) [Fact 
   exact DFunLike.congr_fun hjj x
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨ho, fun a _ σ => by rw [H]; simp⟩`.
+Supply the required witnesses or components.
 -/
 private theorem wt_one {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] {l : ℕ}
     [Fact l.Prime] {A : ValuationSubring Ω} {w : Plc F} (h : IsPlaceOver A w)
@@ -29,11 +29,11 @@ private theorem wt_one {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Algeb
   ⟨ho, fun a _ σ => by rw [H]; simp⟩
 
 /- English proof (translation)
-Use `haveI := finite_emb l w`. Use `haveI := Fintype.ofFinite (Emb l w)`. Use `⟨?_, fun a ha σ => ?_⟩` and prove the remaining obligations. Use `Subgroup.isOpen_mono (H₁ := ph.ker ⊓ ph'.ker) (fun x hx => ?_) (H.1.inter H'.1)` and prove the remaining obligations. Establish `h1 : ph x = 1` using `hx.1`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h2 : ph' x = 1` using `hx.2`. Simplify using `[MonoidHom.mem_ker, h1, h2]`. Establish `h1` using `H.2 a ha σ`. Establish `h2` using `H'.2 a ha σ`. Rewrite `h1`, `h2`, the goal using `[finprod_eq_prod_of_fintype]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[MonoidHom.mul_apply, MonoidHom.mul_apply, mul_mul_mul_comm, Units.val_mul, h1, h2, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[Pi.add_apply, neg_add, zpow_add₀ ((map_ne_zero τ.1).2 (Units.ne_zero _))]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem wt_mul {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] {l : ℕ}
     [Fact l.Prime] {A : ValuationSubring Ω} {w : Plc F} {h : IsPlaceOver A w}
@@ -54,11 +54,9 @@ private theorem wt_mul {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Algeb
     rw [Pi.add_apply, neg_add, zpow_add₀ ((map_ne_zero τ.1).2 (Units.ne_zero _))]
 
 /- English proof (translation)
-Use `haveI := finite_emb l w`. Use `haveI := Fintype.ofFinite (Emb l w)`. Use `⟨?_, fun a ha σ => ?_⟩` and prove the remaining obligations. Use `Subgroup.isOpen_mono (H₁ := ph.ker) (fun x hx => ?_) H.1` and prove the remaining obligations. Establish `h1 : ph x = 1` using `hx`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[MonoidHom.mem_ker, MonoidHom.zpow_apply, h1, one_zpow]`. Establish `h1` using `H.2 a ha σ`. Rewrite `h1`, the goal using `[finprod_eq_prod_of_fintype]`. Rewrite using `[MonoidHom.zpow_apply, MonoidHom.zpow_apply, ← mul_zpow, Units.val_zpow_eq_zpow_val, h1, ← Finset.prod_zpow]`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations.
-
-Rewrite using `[← zpow_mul, Pi.smul_apply, smul_eq_mul, neg_mul, mul_comm]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem wt_zpow {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] {l : ℕ}
     [Fact l.Prime] {A : ValuationSubring Ω} {w : Plc F} {h : IsPlaceOver A w}
@@ -77,7 +75,7 @@ private theorem wt_zpow {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Alge
     rw [← zpow_mul, Pi.smul_apply, smul_eq_mul, neg_mul, mul_comm]
 
 /- English proof (translation)
-Introduce `F Ω _ _ _ _ _ l _ A w h`. Use `⟨fun κ κ' wt wt' ph ph' H H' => ⟨wt_mul H H', ?_⟩, fun κ wt ph m H => wt_zpow H m, wt_one h⟩` and prove the remaining obligations. Simplify `wt_zpow H (-1)` using `only [zpow_neg_one, neg_smul, one_smul]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem UpperTheory.V.Loc.laMul :
     ∀ {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] {l : ℕ} [Fact l.Prime] {A : ValuationSubring Ω} {w : Plc F} (h : IsPlaceOver A w), (∀ (κ κ' : ↥(Dec (F := F) A) →* (Qbar l)ˣ) (wt wt' : Emb l w → ℤ) (ph ph' : ↥(Ine (F := F) A) →* (Qbar l)ˣ), IsWtPart h κ wt ph → IsWtPart h κ' wt' ph' → IsWtPart h (κ * κ') (wt + wt') (ph * ph') ∧ IsWtPart h κ⁻¹ (-wt) ph⁻¹) ∧ (∀ (κ : ↥(Dec (F := F) A) →* (Qbar l)ˣ) (wt : Emb l w → ℤ) (ph : ↥(Ine (F := F) A) →* (Qbar l)ˣ) (m : ℤ), IsWtPart h κ wt ph → IsWtPart h (κ ^ m) (m • wt) (ph ^ m)) ∧ ∀ (κ : ↥(Dec (F := F) A) →* (Qbar l)ˣ) (ph : ↥(Ine (F := F) A) →* (Qbar l)ˣ), IsOpen (ph.ker : Set ↥(Ine (F := F) A)) → (∀ σ : ↥(Ine (F := F) A), κ (Subgroup.inclusion (Weil_le_Dec h) (ineIncl h σ)) * ph σ = 1) → IsWtPart h κ 0 ph := by

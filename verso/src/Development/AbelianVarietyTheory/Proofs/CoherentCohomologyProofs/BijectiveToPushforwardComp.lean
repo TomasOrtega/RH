@@ -19,7 +19,7 @@ section Modules
 variable {F G : X.Modules}
 
 /- English proof (translation)
-Rewrite using `[← ConcreteCategory.comp_apply, ← Functor.map_comp]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem modRes_modRes {U V W : X.Opens} (h₁ : V ≤ U) (h₂ : W ≤ V) (s : Γ(F, U)) :
     F.presheaf.map (homOfLE h₂).op (F.presheaf.map (homOfLE h₁).op s) =
@@ -28,7 +28,7 @@ theorem modRes_modRes {U V W : X.Opens} (h₁ : V ≤ U) (h₂ : W ≤ V) (s : �
   rfl
 
 /- English proof (translation)
-Establish `: (homOfLE h).op = 𝟙 (op U)` using `rfl`. Rewrite using `[this, F.presheaf.map_id]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem modRes_self {U : X.Opens} (h : U ≤ U) (s : Γ(F, U)) :
     F.presheaf.map (homOfLE h).op s = s := by
@@ -36,21 +36,21 @@ theorem modRes_self {U : X.Opens} (h : U ≤ U) (s : Γ(F, U)) :
   rw [this, F.presheaf.map_id]; rfl
 
 /- English proof (translation)
-The claim follows from `Scheme.Modules.map_smul F _ a s`.
+A detailed English derivation is pending.
 -/
 theorem modRes_smul {U V : X.Opens} (h : V ≤ U) (a : Γ(X, U)) (s : Γ(F, U)) :
     F.presheaf.map (homOfLE h).op (a • s) = resG X h a • F.presheaf.map (homOfLE h).op s :=
   Scheme.Modules.map_smul F _ a s
 
 /- English proof (translation)
-The claim follows from `ConcreteCategory.congr_hom ((Scheme.Modules.Hom.mapPresheaf φ).naturality (homOfLE h).op) s`.
+A detailed English derivation is pending.
 -/
 theorem app_modRes (φ : F ⟶ G) {U V : X.Opens} (h : V ≤ U) (s : Γ(F, U)) :
     φ.app V (F.presheaf.map (homOfLE h).op s) = G.presheaf.map (homOfLE h).op (φ.app U s) :=
   ConcreteCategory.congr_hom ((Scheme.Modules.Hom.mapPresheaf φ).naturality (homOfLE h).op) s
 
 /- English proof (translation)
-The claim follows from `TopCat.Sheaf.eq_of_locally_eq' ⟨F.presheaf, F.isSheaf⟩ W V (fun k => homOfLE (hW k)) hc a b h`.
+A detailed English derivation is pending.
 -/
 theorem modSec_ext_of_cover {ι : Type} {V : X.Opens} (W : ι → X.Opens) (hW : ∀ k, W k ≤ V)
     (hc : V ≤ iSup W) {a b : Γ(F, V)}
@@ -59,7 +59,7 @@ theorem modSec_ext_of_cover {ι : Type} {V : X.Opens} (W : ι → X.Opens) (hW :
   TopCat.Sheaf.eq_of_locally_eq' ⟨F.presheaf, F.isSheaf⟩ W V (fun k => homOfLE (hW k)) hc a b h
 
 /- English proof (translation)
-Take `⟨b, hb, -⟩` from `TopCat.Sheaf.existsUnique_gluing' ⟨F.presheaf, F.isSheaf⟩ W V (fun k => homOfLE (hW k)) hc a fun k l => h k l`. Conclude with `⟨b, hb⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_modSec_of_cover {ι : Type} {V : X.Opens} (W : ι → X.Opens) (hW : ∀ k, W k ≤ V)
     (hc : V ≤ iSup W) (a : ∀ k, Γ(F, W k))
@@ -80,7 +80,7 @@ def IsFrameFamily (L : LB X) {F : X.Modules} (σ : ∀ i, Γ(F, L.U i)) : Prop :
       F.presheaf.map (homOfLE (inf_le_left : L.U j ⊓ L.U i ≤ L.U j)).op (σ j)
 
 /- English proof (translation)
-Use `congrArg (F.presheaf.map (homOfLE h).op) (hσ i j)` as an intermediate fact. Rewrite `this` using `[modRes_smul, modRes_modRes, modRes_modRes]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem IsFrameFamily.rel {F : X.Modules} {σ : ∀ i, Γ(F, L.U i)} (hσ : IsFrameFamily L σ)
     (i j : L.ι) {W : X.Opens} (hi : W ≤ L.U i) (hj : W ≤ L.U j) (h : W ≤ L.U j ⊓ L.U i) :
@@ -90,7 +90,7 @@ theorem IsFrameFamily.rel {F : X.Modules} {σ : ∀ i, Γ(F, L.U i)} (hσ : IsFr
   rwa [modRes_smul, modRes_modRes, modRes_modRes] at this
 
 /- English proof (translation)
-Introduce `i j` and use `sec_ext fun k => by simp only [coord_map, coord_smul, coord_chartSec, resG_resG] rw [mul_comm] exact (resG_cocycle hL k j i _ _ _).symm`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isFrameFamily_chartSec (hL : L.IsLB) : IsFrameFamily L (chartSec hL) := fun i j =>
   sec_ext fun k => by
@@ -99,14 +99,14 @@ theorem isFrameFamily_chartSec (hL : L.IsLB) : IsFrameFamily L (chartSec hL) := 
     exact (resG_cocycle hL k j i _ _ _).symm
 
 /- English proof (translation)
-Introduce `i j` and use `by rw [← app_modRes, ← app_modRes, hσ i j, Scheme.Modules.Hom.app_smul]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem IsFrameFamily.map {F G : X.Modules} {σ : ∀ i, Γ(F, L.U i)} (hσ : IsFrameFamily L σ)
     (φ : F ⟶ G) : IsFrameFamily L fun i => φ.app (L.U i) (σ i) := fun i j => by
   rw [← app_modRes, ← app_modRes, hσ i j, Scheme.Modules.Hom.app_smul]
 
 /- English proof (translation)
-Rewrite using `[← app_modRes, ← Scheme.Modules.Hom.app_smul, ← chartEquiv_symm_apply, LinearEquiv.symm_apply_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem app_eq_smul (hL : L.IsLB) {F : X.Modules} (φ : toMod L ⟶ F) (i : L.ι) {V : X.Opens}
     (h : V ≤ L.U i) (s : Γ(toMod L, V)) :
@@ -116,7 +116,7 @@ theorem app_eq_smul (hL : L.IsLB) {F : X.Modules} (φ : toMod L ⟶ F) (i : L.ι
     LinearEquiv.symm_apply_apply]
 
 /- English proof (translation)
-Use extensionality with `V s`. Use `modSec_ext_of_cover (fun i => V ⊓ L.U i) (fun _ => inf_le_left) (le_iSup_inf hL.cover V) fun i => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `F.presheaf.map _ (φ.app V s) = F.presheaf.map _ (ψ.app V s)`. Rewrite using `[← app_modRes, ← app_modRes, app_eq_smul hL φ i inf_le_right, app_eq_smul hL ψ i inf_le_right, h]`.
+By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem hom_ext_chartSec (hL : L.IsLB) {F : X.Modules} {φ ψ : toMod L ⟶ F}
     (h : ∀ i, φ.app (L.U i) (chartSec hL i) = ψ.app (L.U i) (chartSec hL i)) : φ = ψ := by
@@ -128,7 +128,7 @@ theorem hom_ext_chartSec (hL : L.IsLB) {F : X.Modules} {φ ψ : toMod L ⟶ F}
     app_eq_smul hL ψ i inf_le_right, h]
 
 /- English proof (translation)
-Use `exists_modSec_of_cover (fun i => V ⊓ L.U i) (fun _ => inf_le_left) (le_iSup_inf hL.cover V) _ fun i j => ?_` and prove the remaining obligations. Establish `l : V ⊓ L.U i ⊓ (V ⊓ L.U j) ≤ L.U i ⊓ L.U j` using `inf_le_inf inf_le_right inf_le_right`. Rewrite using `[modRes_smul, modRes_smul, modRes_modRes, modRes_modRes, coord_rel s i j _ inf_le_right l, hσ.rel j i _ (l.trans inf_le_left) l, mul_comm, mul_smul]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_frame_glue (hL : L.IsLB) {F : X.Modules} {σ : ∀ i, Γ(F, L.U i)}
     (hσ : IsFrameFamily L σ) {V : X.Opens} (s : Γ(toMod L, V)) :
@@ -145,7 +145,7 @@ def frameFun (hL : L.IsLB) {F : X.Modules} {σ : ∀ i, Γ(F, L.U i)}
   (exists_frame_glue hL hσ s).choose
 
 /- English proof (translation)
-Use `congrArg (F.presheaf.map (homOfLE (le_inf hV hi)).op) ((exists_frame_glue hL hσ s).choose_spec i)` as an intermediate fact. Rewrite `this` using `[modRes_smul, modRes_modRes, modRes_modRes]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem modRes_frameFun (hL : L.IsLB) {F : X.Modules} {σ : ∀ i, Γ(F, L.U i)}
     (hσ : IsFrameFamily L σ) {V : X.Opens} (s : Γ(toMod L, V)) (i : L.ι) {W : X.Opens}
@@ -178,7 +178,7 @@ def homOfFrames (hL : L.IsLB) {F : X.Modules} {σ : ∀ i, Γ(F, L.U i)}
           modRes_frameFun hL hσ _ i _ inf_le_right, coord_map, resG_resG]
 
 /- English proof (translation)
-Use `modRes_frameFun hL hσ (chartSec hL i) i le_rfl le_rfl` as an intermediate fact. Rewrite `this` using `[modRes_self, modRes_self, coord_chartSec, resG_resG, resG_g_self hL, one_smul]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem homOfFrames_app_chartSec (hL : L.IsLB) {F : X.Modules} {σ : ∀ i, Γ(F, L.U i)}
     (hσ : IsFrameFamily L σ) (i : L.ι) :
@@ -196,19 +196,17 @@ def homEquivFrames (hL : L.IsLB) (F : X.Modules) :
   right_inv σ := Subtype.ext (funext fun i => homOfFrames_app_chartSec hL σ.2 i)
 
 /- English proof (translation)
-Establish `hL'` using `Semi.LB.isLB_pull hL f`. Establish `key (ψ : toMod (L.pull f) ⟶ G) (j : (L.pull f).ι) : ((toPushforward L f ≫ (Scheme.Modules.pushforward f).map ψ).app (L.U (j PUnit.unit)) (chartSec hL (j PUnit.unit)) : Γ(G, f ⁻¹ᵁ L.U (j PUnit.unit))) = G.presheaf.map (homOfLE (pull_U f j).ge).op (ψ.app _ (chartSec hL' j))`. Rewrite using `[← app_modRes, ← pullSec_chartSec f hL j]`. Both sides reduce to the same expression. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Prove the components needed by the constructor for the conclusion.
 
-Introduce `ψ ψ' h`. Use `hom_ext_chartSec hL' fun j => ?_` and prove the remaining obligations. Establish `e` using `key ψ j`. Rewrite `e` using `[show toPushforward L f ≫ (Scheme.Modules.pushforward f).map ψ = _ from h, key ψ' j]`. Use `congrArg (G.presheaf.map (homOfLE (pull_U_le f j)).op) e` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `this` using `[modRes_modRes, modRes_modRes, modRes_self, modRes_self]`. Conclude with `this.symm`. Introduce `φ`. Set `τ : ∀ i, Γ(G, f ⁻¹ᵁ L.U i)` to `fun i => φ.app (L.U i) (chartSec hL i)`. Establish `hτ (i j : L.ι) : G.presheaf.map (homOfLE (f.preimage_mono (inf_le_right : L.U j ⊓ L.U i ≤ L.U i))).op (τ i) = (f.app _).hom (L.g j i : Γ(X, L.U j ⊓ L.U i)) • G.presheaf.map (homOfLE (f.preimage_mono (inf_le_left : L.U j ⊓ L.U i ≤ L.U j))).op (τ j)` using `(isFrameFamily_chartSec hL).map φ i j`.
+Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `σ : ∀ j, Γ(G, (L.pull f).U j)` to `fun j => G.presheaf.map (homOfLE (pull_U_le f j)).op (τ (j PUnit.unit))`. Establish `hσ : IsFrameFamily (L.pull f) σ` using `fun i j => by`. Establish `l : (L.pull f).U j ⊓ (L.pull f).U i ≤ f ⁻¹ᵁ (L.U (j PUnit.unit) ⊓ L.U (i PUnit.unit))` using `inf_le_inf (pull_U_le f j) (pull_U_le f i)`. Use `congrArg (G.presheaf.map (homOfLE l).op) (hτ (i PUnit.unit) (j PUnit.unit))` as an intermediate fact. Rewrite `this` using `[modRes_smul, modRes_modRes, modRes_modRes, resG_app]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `e` using `resG_pull_g f j i le_rfl`. Rewrite `e` using `[resG_self]`. Simplify using `only [σ]`. Rewrite using `[modRes_modRes, modRes_modRes, e]`. Conclude with `this`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨homOfFrames hL' hσ, hom_ext_chartSec hL fun i => ?_⟩` and prove the remaining obligations. Establish `H (j : (L.pull f).ι) : G.presheaf.map (homOfLE (pull_U f j).ge).op ((homOfFrames hL' hσ).app _ (chartSec hL' j)) = τ (j PUnit.unit)`. Rewrite using `[homOfFrames_app_chartSec]`. Simplify using `only [σ]`. Rewrite using `[modRes_modRes, modRes_self]`.
-
-Conclude with `(key _ (fun _ => i)).trans (H fun _ => i)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bijective_toPushforward_comp (hL : L.IsLB) (f : Y ⟶ X) (G : Y.Modules) :
     Function.Bijective fun ψ : toMod (L.pull f) ⟶ G =>
@@ -257,7 +255,7 @@ theorem bijective_toPushforward_comp (hL : L.IsLB) (f : Y ⟶ X) (G : Y.Modules)
     exact (key _ (fun _ => i)).trans (H fun _ => i)
 
 /- English proof (translation)
-Use `isIso_of_coyoneda_map_bijective _ fun G => ?_` and prove the remaining obligations. Establish `e : (fun ψ : toMod (L.pull f) ⟶ G => pullbackHom L f ≫ ψ) = ((Scheme.Modules.pullbackPushforwardAdjunction f).homEquiv _ _).symm ∘ fun ψ : toMod (L.pull f) ⟶ G => toPushforward L f ≫ (Scheme.Modules.pushforward f).map ψ`. Use function extensionality and compare the values at `ψ`. Conclude with `((Scheme.Modules.pullbackPushforwardAdjunction f).homEquiv_naturality_right_symm _ _).symm`. Conclude with `e ▸ (Equiv.bijective _).comp (bijective_toPushforward_comp hL f G)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem isIso_pullbackHom {X Y : Scheme.{0}} {L : LB X} (hL : L.IsLB) (f : Y ⟶ X) :
     IsIso (GlobalTheory.LB.pullbackHom L f) := by
@@ -283,7 +281,7 @@ Both sides reduce to the same expression.
     (pullbackIso hL f).hom = pullbackHom L f := rfl
 
 /- English proof (translation)
-The claim follows from `((Scheme.Modules.pullbackPushforwardAdjunction f).homEquiv_unit _ _ _).symm.trans (Equiv.apply_symm_apply _ _)`.
+A detailed English derivation is pending.
 -/
 theorem unit_comp_pullbackHom (L : LB X) (f : Y ⟶ X) :
     (Scheme.Modules.pullbackPushforwardAdjunction f).unit.app (toMod L) ≫

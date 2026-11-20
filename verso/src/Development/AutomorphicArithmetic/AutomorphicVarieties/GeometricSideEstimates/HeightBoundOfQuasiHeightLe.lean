@@ -7,9 +7,9 @@ open NumberField Matrix GlobalTheory.CuspRep GlobalTheory.GKCoh UpperTheory.V.Af
 open GroundTheory.Automorphic GroundTheory.Automorphic.AutomorphicForm GroundTheory.Automorphic.CuspidalSpectrum
 
 /- English proof (translation)
-Rewrite `h1` using `[Fin.prod_univ_succAbove _ j]`. Establish `h2 : ∏ k, f (j.succAbove k) ≤ u ^ m`. Combine the equalities or inequalities in the displayed calculation. Establish `hu0 : 0 < u` using `(hf i).trans_le (hu i)`. Establish `h3 : 1 ≤ c * (f j * u ^ m)` using `h1.trans (mul_le_mul_of_nonneg_left (mul_le_mul_of_nonneg_left h2 (hf j).le) hc)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[div_le_iff₀ (hf j)]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 private theorem ratio_bound {m : ℕ} {f : Fin (m + 1) → ℝ} {c u : ℝ} (hf : ∀ i, 0 < f i) (hc : 0 ≤ c)
     (hu : ∀ i, f i ≤ u) (h1 : 1 ≤ c * ∏ i, f i) (i j : Fin (m + 1)) : f i / f j ≤ c * u ^ (m + 1) := by
@@ -26,9 +26,9 @@ private theorem ratio_bound {m : ℕ} {f : Fin (m + 1) → ℝ} {c u : ℝ} (hf 
     _ = c * u ^ (m + 1) * f j := by ring
 
 /- English proof (translation)
-Establish `h1` using `Reduction.pow_mul_le_of_chain (r := fun j => (r j.rev)⁻¹) hs0 hs1 hst (fun j => inv_pos.2 (hr _)) (fun p q hpq => by`. Establish `h2` using `h q.rev p.rev (by have := q.2; simp only [Fin.val_rev]; omega)`. Rewrite using `[← div_eq_mul_inv, div_le_iff₀ (hr _), ← div_eq_inv_mul, le_div_iff₀ (hr _)]`. Conclude with `h2) i.rev`. Simplify using `only [Fin.rev_last, Fin.rev_rev] at h1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[← div_eq_mul_inv, div_le_iff₀ (hr _), ← div_eq_inv_mul, le_div_iff₀ (hr _)]`. Conclude with `h1`.
+A detailed English derivation is pending.
 -/
 private theorem chain_first {m : ℕ} {r : Fin (m + 1) → ℝ} {t s : ℝ} (hs0 : 0 ≤ s) (hs1 : s ≤ 1)
     (hst : s ≤ t) (hr : ∀ i, 0 < r i) (h : ∀ i j : Fin (m + 1), (j : ℕ) = i + 1 → t * r j ≤ r i)
@@ -43,7 +43,7 @@ private theorem chain_first {m : ℕ} {r : Fin (m + 1) → ℝ} {t s : ℝ} (hs0
   exact h1
 
 /- English proof (translation)
-Break down `le_or_gt x 1 with h1 | h1` into its components or cases. Conclude with `h1.trans hc`. Conclude with `(le_self_pow₀ h1.le hd).trans h`.
+Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 private theorem le_of_pow_le {x c : ℝ} {d : ℕ} (hd : d ≠ 0) (hc : 1 ≤ c) (h : x ^ d ≤ c) : x ≤ c := by
   rcases le_or_gt x 1 with h1 | h1
@@ -53,7 +53,7 @@ private theorem le_of_pow_le {x c : ℝ} {d : ℕ} (hd : d ≠ 0) (hc : 1 ≤ c)
 variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a : ℕ}
 
 /- English proof (translation)
-Establish `h1` using `ciInf_le (f := fun γ : GL (Fin a) E => height (K := E) (ratGL E a γ * (retractOne g.1 : KernelIndexFullLattice.G1 E a).1)) ⟨0, by rintro _ ⟨γ, rfl⟩; exact (height_pos _).le⟩ γ`. Rewrite `h1` using `[retractOne_coe]`. Unfold `qht`. Rewrite using `[retractOne_coe]`. Conclude with `h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem qht_le_height (g : KernelIndexFullLattice.G1 E a) (γ : GL (Fin a) E) :
     qht (E := E) (a := a) g.1 ≤ height (AdelicGLn.diagonal E a γ * g.1) := by
@@ -67,13 +67,13 @@ private theorem qht_le_height (g : KernelIndexFullLattice.G1 E a) (γ : GL (Fin 
 
 omit [IsTotallyComplex E] in
 /- English proof (translation)
-Establish `hdc : Continuous fun g : AdelicGLn.AdelicGL E a => (Reduction.detModule E a g : ℝ)` using `continuous_subtype_val.comp Reduction.continuous_detModule`. Take `⟨M₁, hM₁⟩` from `hω.bddAbove_image hdc.continuousOn`. Take `⟨M₂, hM₂⟩` from `hω.bddAbove_image (hdc.inv₀ fun g => (Reduction.detModule E a g).2.ne').continuousOn`. Use `⟨max 1 (max M₁ M₂), le_max_left _ _, fun b hb ρ hρ kk hkk hx => ?_⟩` and prove the remaining obligations. Establish `hd : Module.finrank ℚ E ≠ 0` using `Module.finrank_pos.ne'`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h1` using `Reduction.mem_normOneGL_iff_detModule.1 hx`. Rewrite `h1` using `[map_mul, map_mul, Reduction.mem_normOneGL_iff_detModule.1 (Reduction.maxCompact_le_normOneGL hkk), mul_one]`. Establish `h2` using `congrArg Subtype.val h1`. Rewrite `h2` using `[Positive.val_mul, detModule_diagUnits_posIdele, Positive.val_one]`. Establish `h3` using `eq_inv_of_mul_eq_one_right h2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Prove the components needed by the constructor for the conclusion. Use `le_of_pow_le hd (le_max_left _ _) ?_` and prove the remaining obligations. Rewrite using `[h3]`. Conclude with `(hM₂ ⟨b, hb, rfl⟩).trans ((le_max_right _ _).trans (le_max_right _ _))`. Use `le_of_pow_le hd (le_max_left _ _) ?_` and prove the remaining obligations.
+Prove the components needed by the constructor for the conclusion. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[inv_pow, h3, inv_inv]`. Conclude with `(hM₁ ⟨b, hb, rfl⟩).trans ((le_max_left _ _).trans (le_max_right _ _))`.
+A detailed English derivation is pending.
 -/
 private theorem prod_bound {ω : Set (AdelicGLn.AdelicGL E a)} (hω : IsCompact ω) :
     ∃ c : ℝ, 1 ≤ c ∧ ∀ b ∈ ω, ∀ (ρ : Fin a → ℝ) (hρ : ∀ i, 0 < ρ i),
@@ -104,23 +104,23 @@ end
 
 open NumberField GroundTheory.Automorphic GroundTheory.Automorphic.CuspidalSpectrum in
 /- English proof (translation)
-Introduce `E _ _ _ a`. Take `⟨ω, hω, hωB, t, ht, hsieg⟩` from `Reduction.exists_siegelSet (K := E) a`. Break down `a with _ | m` into its components or cases. Use `⟨ω, 0, 0, hω, hωB, fun g => ?_⟩` and prove the remaining obligations. Take `⟨γ, b, hb, _, ⟨ρ, hρ, hs, rfl⟩, kk, hkk, hxe⟩` from `hsieg g.1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨γ, b, kk, ρ, hρ, hb, hkk, hxe, fun i => i.elim0⟩`. Take `⟨Ch, hCh0, hCh⟩` from `exists_height_le_normOne (K := E) (n := m + 1) hω`. Take `⟨c, hc, hcb⟩` from `prod_bound hω`. Establish `hc0 : 0 < c` using `one_pos.trans_le hc`. Establish `hs0 : 0 < min t 1` using `lt_min ht one_pos`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨σ, hσ⟩ : ∃ σ, σ = (min t 1) ^ m` from `⟨_, rfl⟩`. Establish `hσ0 : 0 < σ` using `hσ ▸ pow_pos hs0 m`. Take `⟨e, he⟩ : ∃ e, e = Fintype.card (InfinitePlace E)` from `⟨_, rfl⟩`. Rewrite `hCh` using `[← he]`. Use `⟨ω, Ch * c ^ (2 * e) * σ⁻¹ ^ (2 * ((m + 1) * e)), (m + 1) * e, hω, hωB, fun g => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨γ, b, hb, _, ⟨ρ, hρ, hs, rfl⟩, kk, hkk, hxe⟩` from `hsieg g.1`. Establish `hγx : AdelicGLn.diagonal E (m + 1) γ * g.1 ∈ Reduction.normOneGL E (m + 1)` using `mul_mem (Reduction.rationalGL_le_normOneGL ⟨γ, rfl⟩) g.2`. Take `⟨hP1, hP2⟩` from `hcb b hb ρ hρ kk hkk (hxe ▸ hγx)`. Establish `hP : 0 < ∏ i, ρ i` using `Finset.prod_pos fun i _ => hρ i`. Establish `key : ∀ v : ℝ, (∀ i j, ρ i / ρ j ≤ c * (σ⁻¹ * v) ^ (m + 1)) → qht (E` using `E) (a := m + 1) g.1 ≤ Ch * c ^ (2 * e) * σ⁻¹ ^ (2 * ((m + 1) * e)) * v ^ (2 * ((m + 1) * e)) := by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `v hv`. Establish `h1 : 1 ≤ c * (σ⁻¹ * v) ^ (m + 1)`. Use `hv 0 0` as an intermediate fact. Rewrite `this` using `[div_self (hρ 0).ne']`. Then use the resulting hypothesis. Use `(qht_le_height g γ).trans ((hCh b hb ρ hρ kk hkk _ hγx hxe _ h1 hv).trans_eq ?_)` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [mul_pow, ← pow_mul]`. Rewrite using `[show (m + 1) * (2 * e) = 2 * ((m + 1) * e) by ring]`. Expand and normalize the polynomial expressions, which then agree. Use `⟨γ, b, kk, ρ, hρ, hb, hkk, hxe, fun i => ⟨fun hi => ?_, fun hi => ?_⟩⟩` and prove the remaining obligations. Take `rfl : i = Fin.last m` from `Fin.ext (by simpa using hi)`.
+Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `h` using `key (ρ (Fin.last m))⁻¹ fun p q => by`. Establish `h1` using `ratio_bound (f := fun j => (ρ j)⁻¹) (u := σ⁻¹ * (ρ (Fin.last m))⁻¹) (fun j => inv_pos.2 (hρ j)) hc0.le (fun j => by`. Rewrite using `[← mul_inv]`. Use `inv_anti₀ (mul_pos hσ0 (hρ _)) ?_` and prove the remaining obligations. Rewrite using `[hσ]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Reduction.pow_mul_le_of_chain hs0.le (min_le_right _ _) (min_le_left _ _) hρ hs j)`. Use the proof step `(by rw [Finset.prod_inv_distrib, ← div_eq_mul_inv, one_le_div hP]; exact hP1) q p`. Rewrite `h1` using `[inv_div_inv]`. Then use the resulting hypothesis. Rewrite `h` using `[inv_pow (ρ _), ← div_eq_mul_inv, le_div_iff₀ (pow_pos (hρ _) _)]`. Then use the resulting hypothesis. Take `rfl : i = 0` from `Fin.ext hi`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `key (ρ 0) fun p q => ratio_bound hρ hc0.le (fun j => ?_) ?_ p q` and prove the remaining obligations. Rewrite using `[le_inv_mul_iff₀ hσ0, hσ]`. Conclude with `chain_first hs0.le (min_le_right _ _) (min_le_left _ _) hρ hs j`. Rewrite `hP2` using `[inv_le_iff_one_le_mul₀ hP]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem UpperTheory.height_bound_of_quasiHeight_le :
     SiegelHt := by

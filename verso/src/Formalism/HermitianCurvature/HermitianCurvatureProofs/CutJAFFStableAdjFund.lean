@@ -17,7 +17,7 @@ attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 noncomputable section
 
 /- English proof (translation)
-Unfold `B.hsInner`. Simplify using `only [← Formalism.FourierDecayAlt.P.B5.hsL_apply, map_sub, inner_sub_right]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem fundG_hs_sub_left {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
     [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wq] (A A' C : Wq →L[ℂ] Wp) :
@@ -26,45 +26,37 @@ theorem fundG_hs_sub_left {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSp
   simp only [← Formalism.FourierDecayAlt.P.B5.hsL_apply, map_sub, inner_sub_right]
 
 /- English proof (translation)
-Introduce `k r Wp Wq _ _ _ _ _ _ D A A' hA hA' hI g₀ hg₀`. Establish `hμ` using `D.haarG`. Establish `: IsFiniteMeasureOnCompacts D.μG` using `⟨hμ.finite_compact⟩`. Establish `hg₀G : g₀ ∈ B.GV k r` using `hg₀.1`. Establish `hG0 : 0 < Gf k r D.z D.z' g₀` using `hg₀.2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hne`. Use `set C : Wq →L[ℂ] Wp := A g₀ - A' g₀ with hC`. Establish `hC0 : C ≠ 0` using `sub_ne_zero.2 hne`. Establish `hvC : B.hsVec C ≠ 0` using `fun h0 => hC0 (Formalism.FourierDecayAlt.P.JFxI.hsVec_injective (h0.trans (by`. Rewrite using `[← Formalism.FourierDecayAlt.P.B5.hsL_apply, map_zero])))`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `set u : B.Mat k r → ℝ := fun x => (B.hsInner (A x) C - B.hsInner (A' x) C).re with hu`. Establish `hu0 : u g₀ = ‖B.hsVec C‖ ^ 2` using `by show (B.hsInner (A g₀) C - B.hsInner (A' g₀) C).re = _`. Rewrite using `[← fundG_hs_sub_left]`. Unfold `B.hsInner`. Rewrite using `[inner_self_eq_norm_sq_to_K]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Put the expressions in a common number system so they can be compared. Establish an intermediate fact.
 
-Use `norm_cast`. Establish `hpos0 : 0 < u g₀` using `by rw [hu0]; positivity`. Establish `huc : ContinuousOn u (B.GV k r)`. Establish `hhs` using `Formalism.FourierDecayAlt.P.B5.hs_continuous (Wp := Wp) (Wq := Wq)`. Establish `h1 : ContinuousOn (fun x => B.hsInner (A x) C) (B.GV k r)` using `hhs.comp_continuousOn (f := fun x => (A x, C)) (hA.prodMk continuousOn_const)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : ContinuousOn (fun x => B.hsInner (A' x) C) (B.GV k r)` using `hhs.comp_continuousOn (f := fun x => (A' x, C)) (hA'.prodMk continuousOn_const)`. Conclude with `Complex.continuous_re.comp_continuousOn (h1.sub h2)`. Establish `hgf` using `Formalism.FourierDecayAlt.P.DifferentialOperatorClasses.gf_cont k r D.z D.z'`. Take `⟨ε1, hε1, h1⟩` from `Metric.continuousOn_iff.1 huc g₀ hg₀G (u g₀ / 2) (by positivity)`. Take `⟨ε2, hε2, h2⟩` from `Metric.continuous_iff.1 hgf g₀ (Gf k r D.z D.z' g₀ / 2) (by positivity)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `set ε := min ε1 ε2 with hε`. Establish `hεpos : 0 < ε` using `lt_min hε1 hε2`. Establish `hgood : ∀ x ∈ B.GV k r, dist x g₀ < ε → 0 < u x ∧ x ∈ B.GPos D`. Introduce `x hx hd`. Establish `hd1` using `h1 x hx (lt_of_lt_of_le hd (min_le_left _ _))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `hd2` using `h2 x (lt_of_lt_of_le hd (min_le_right _ _))`. Rewrite `hd1`, `hd2` using `[Real.dist_eq]`. Use `⟨by linarith [(abs_lt.1 hd1).1], hx, ?_⟩` and prove the remaining obligations. Use `show 0 < Gf k r D.z D.z' x`. Combine the linear relations using `[(abs_lt.1 hd2).1]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Take `⟨β, hβin, hβout⟩ : ∃ β : ContDiffBump g₀, β.rIn = ε / 4 ∧ β.rOut = ε / 2` from `⟨⟨ε / 4, ε / 2, by positivity, by linarith⟩, rfl, rfl⟩`. Establish `hβd : ∀ x : B.Mat k r, β x ≠ 0 → dist x g₀ < ε / 2`. Introduce `x hx`. Assume the negation of the conclusion as `hc`. Use `push Not at hc`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Conclude with `hx (β.zero_of_le_dist (by rw [hβout]; exact hc))`. Use `set φ : B.Mat k r → (Wq →L[ℂ] Wp) := fun g => ((β g : ℝ) : ℂ) • C with hφ`. Establish `hφs : ContDiff ℝ ∞ φ` using `(Complex.ofRealCLM.contDiff.comp β.contDiff).smul contDiff_const`. Establish `hφc : HasCompactSupport φ` using `(β.hasCompactSupport.comp_left Complex.ofReal_zero).smul_right`. Establish `hφsupp : B.SuppIn (B.GPos D) φ`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `x hx`. Establish `hsub : {g | g ∈ B.GV k r ∧ φ g ≠ 0} ⊆ Metric.closedBall g₀ (ε / 2) ∩ B.GV k r`. Introduce and unpack `g ⟨hgG, hg⟩`. Use `⟨?_, hgG⟩` and prove the remaining obligations. Establish `hβ0 : β g ≠ 0` using `fun h0 => hg (by simp [hφ, h0])`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Metric.mem_closedBall.2 (le_of_lt (hβd g hβ0))`. Establish `hGc : IsClosed (B.GV k r)` using `Formalism.FourierDecayAlt.P.B7.isClosed_GV`. Establish `hcl : IsClosed (Metric.closedBall g₀ (ε / 2) ∩ B.GV k r)` using `Metric.isClosed_closedBall.inter hGc`. Establish `hx'` using `closure_minimal hsub hcl hx`. Conclude with `(hgood x hx'.2 (lt_of_le_of_lt (Metric.mem_closedBall.1 hx'.1) (by linarith))).2`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hEq` using `hI φ (Formalism.FourierDecayAlt.P.CutMP.ER.ckOn_of_contDiff hφs ⊤ _) hφc hφsupp`. Establish `hGc' : IsClosed {x : Mt k r | Matrix.of x ∈ B.GV k r}` using `Formalism.FourierDecayAlt.P.B7.isClosed_GV`. Establish `hK : IsCompact ({x : Mt k r | Matrix.of x ∈ B.GV k r} ∩ tsupport φ)` using `hφc.isCompact.inter_left hGc'`. Establish `hint : ∀ A₁ : B.Mat k r → (Wq →L[ℂ] Wp), ContinuousOn A₁ (B.GV k r) → Integrable (fun x : Mt k r => B.hsInner (A₁ (Matrix.of x)) (φ (Matrix.of x))) D.μG`. Introduce `A₁ hA₁`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hof : Continuous (fun x : Mt k r => (Matrix.of x : B.Mat k r))` using `continuous_id`. Establish `hc : ContinuousOn (fun x : Mt k r => B.hsInner (A₁ (Matrix.of x)) (φ (Matrix.of x))) ({x : Mt k r | Matrix.of x ∈ B.GV k r} ∩ tsupport φ)` using `(Formalism.FourierDecayAlt.P.B5.hs_continuous (Wp := Wp) (Wq := Wq)).comp_continuousOn (f := fun x : Mt k r => (A₁ (Matrix.of x), φ (Matrix.of x))) ((hA₁.comp hof.continuousOn (fun x hx => hx.1)).prodMk (hφs.continuous.comp hof).continuousOn)`. Use `(hc.integrableOn_compact hK).integrable_of_ae_notMem_eq_zero ?_` and prove the remaining obligations. Use `filter_upwards [Formalism.FourierDecayAlt.P.HaarUniquenessConjugation.ae_mem hμ] with x hxG hxK`. Establish `hx : x ∉ tsupport φ` using `fun h => hxK ⟨hxG, h⟩`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `show B.hsInner (A₁ (Matrix.of x)) (φ (Matrix.of x)) = 0`. Establish `hz : φ (Matrix.of x) = 0` using `image_eq_zero_of_notMem_tsupport hx`. Rewrite using `[hz]`. Conclude with `Formalism.FourierDecayAlt.P.B5.hs_zero_right _`. Establish `i1` using `hint A hA`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Establish `i2` using `hint A' hA'`. Use `set h : Mt k r → ℝ := fun x => β (Matrix.of x) * u (Matrix.of x) with hh`. Establish `hpt : ∀ x : Mt k r, (B.hsInner (A (Matrix.of x)) (φ (Matrix.of x)) - B.hsInner (A' (Matrix.of x)) (φ (Matrix.of x))).re = h x`. Introduce `x`. Simplify using `only [hh, hu, hφ, Formalism.FourierDecayAlt.P.B5.hs_smul_right, Complex.conj_ofReal, ← mul_sub, Complex.re_ofReal_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hintR : Integrable h D.μG` using `(i1.sub i2).re.congr (Eventually.of_forall fun x => by rw [← hpt x]; rfl)`. Establish `hzero : ∫ x, h x ∂D.μG = 0`. Establish `e` using `integral_re (i1.sub i2)`. Simplify using `only [Pi.sub_apply] at e`. Rewrite `e` using `[integral_sub i1 i2, hEq, sub_self, map_zero]`.
-
-Rewrite using `[← e]`. Conclude with `integral_congr_ae (Eventually.of_forall fun x => by rw [← hpt x]; rfl)`. Establish `hnn : 0 ≤ᵐ[D.μG] h` using `by filter_upwards [Formalism.FourierDecayAlt.P.HaarUniquenessConjugation.ae_mem hμ] with x hxG show 0 ≤ β (Matrix.of x) * u (Matrix.of x)`. Distinguish the cases in `hb : β (Matrix.of x) = 0`. Rewrite using `[hb, zero_mul]`.
-
-Conclude with `mul_nonneg β.nonneg (hgood _ hxG (by linarith [hβd _ hb])).1.le`. Establish `hae : h =ᵐ[D.μG] 0` using `(integral_eq_zero_iff_of_nonneg_ae hnn hintR).1 hzero`. Establish `hO : IsOpen {x : Mt k r | 0 < β (Matrix.of x)}` using `isOpen_lt continuous_const β.continuous`. Establish `hg₀O : (g₀ : Mt k r) ∈ {x : Mt k r | 0 < β (Matrix.of x)}` using `by show 0 < β g₀`. Rewrite using `[β.one_of_mem_closedBall (Metric.mem_closedBall_self β.rIn_pos.le)]`.
-
-Conclude with `one_pos`. Apply `Formalism.FourierDecayAlt.P.CutMP.ER.haar_open_pos hμ hO (g₀ := g₀) hg₀G hg₀O` to reduce the goal to its premises. Rewrite using `[measure_eq_zero_iff_ae_notMem]`. Use `filter_upwards [hae, Formalism.FourierDecayAlt.P.HaarUniquenessConjugation.ae_mem hμ] with x hx0 hxG hxO`. Establish `hb : 0 < β (Matrix.of x)` using `hxO`.
-
-Establish `hpos : 0 < h x` using `mul_pos hb (hgood _ hxG (by linarith [hβd _ hb.ne'])).1`. Rewrite `hpos` using `[hx0]`. Conclude with `lt_irrefl _ hpos`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fundamental_domain_group : FundG := by
   intro k r Wp Wq _ _ _ _ _ _ D A A' hA hA' hI g₀ hg₀

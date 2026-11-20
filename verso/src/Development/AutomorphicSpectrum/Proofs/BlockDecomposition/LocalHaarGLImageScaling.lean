@@ -14,17 +14,17 @@ namespace GlobalTheory.CompanionTheory.MM.NuFin
 variable {R : Type} [CommRing R] {n : ℕ}
 
 /- English proof (translation)
-Establish `hgA : (A * Dm * Ai) * A = A * Dm` using `by rw [mul_assoc, hAiA, mul_one]`. Establish `hid : ∀ u u', (A * Dm * Ai) *ᵥ (A *ᵥ (-(K3 *ᵥ u + K4 *ᵥ u'))) = A *ᵥ u + B *ᵥ (A' *ᵥ u')`. Introduce `u u'`. Establish `e3 : (A * Dm) * K3 = -A` using `by rw [mul_assoc, hD3, mul_neg, mul_one]`. Establish `e4 : (A * Dm) * K4 = -(B * A')` using `by rw [mul_assoc, hD4, mul_neg, hC]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Matrix.mulVec_mulVec, hgA, Matrix.mulVec_neg, Matrix.mulVec_add, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, e3, e4, Matrix.mulVec_mulVec, Matrix.neg_mulVec, Matrix.neg_mulVec]`. Simplify using `only [neg_add, neg_neg]`. Establish `hK : ∀ u ∈ O, ∀ u' ∈ O, -(K3 *ᵥ u + K4 *ᵥ u') ∈ O`. Introduce `u hu u' hu'`. Establish `h1 : K3 *ᵥ u + K4 *ᵥ u' ∈ (O : Set (Fin n → R))`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[← hset]`. Conclude with `⟨u, hu, u', hu', rfl⟩`. Conclude with `neg_mem h1`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨y, hy, y', hy', rfl⟩`. Take `⟨u, hu, rfl⟩` from `AddSubgroup.mem_map.1 hy`. Take `⟨u', hu', rfl⟩` from `AddSubgroup.mem_map.1 hy'`. Conclude with `⟨A *ᵥ (-(K3 *ᵥ u + K4 *ᵥ u')), AddSubgroup.mem_map.2 ⟨_, hK u hu u' hu', rfl⟩, hid u u'⟩`. Introduce and unpack `⟨y, hy, rfl⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Take `⟨w, hw, rfl⟩` from `AddSubgroup.mem_map.1 hy`. Establish `h1 : -w ∈ (O : Set (Fin n → R))` using `neg_mem hw`. Rewrite `h1` using `[← hset]`. Take `⟨u, hu, u', hu', e⟩` from `h1`. Establish `hw' : w = -(K3 *ᵥ u + K4 *ᵥ u')` using `by rw [← e, neg_neg]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨A *ᵥ u, AddSubgroup.mem_map.2 ⟨u, hu, rfl⟩, A' *ᵥ u', AddSubgroup.mem_map.2 ⟨u', hu', rfl⟩, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(A * Dm * Ai) *ᵥ (A *ᵥ w) = _`. Rewrite using `[hw']`. Conclude with `hid u u'`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem image_eq (A Ai A' B Dm K3 K4 C : Matrix (Fin n) (Fin n) R) (O : AddSubgroup (Fin n → R))
     (hAiA : Ai * A = 1) (hC : A * C = B * A') (hD3 : Dm * K3 = -1) (hD4 : Dm * K4 = -C)
@@ -64,7 +64,7 @@ theorem image_eq (A Ai A' B Dm K3 K4 C : Matrix (Fin n) (Fin n) R) (O : AddSubgr
     exact hid u u'
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem map_neg_matrix {S T : Type} [Ring S] [Ring T] (f : S →+* T) (M : Matrix (Fin n) (Fin n) S) :
     (-M).map f = -(M.map f) := by
@@ -74,19 +74,19 @@ theorem map_neg_matrix {S T : Type} [Ring S] [Ring T] (f : S →+* T) (M : Matri
 set_option maxHeartbeats 1600000 in
 
 /- English proof (translation)
-Introduce `D n a d b k₃ k₄ v lam hlam hscale hCO hk3 hk4 hset`. Establish `matV_neg : ∀ M : Matrix (Fin n) (Fin n) (AE D), PositivityTheory.SiegelWeilFormula.Gen.matV v (-M) = -PositivityTheory.SiegelWeilFormula.Gen.matV v M` using `fun M => map_neg_matrix (Algebra.TensorProduct.map ((HeckeCharacterZeroLocus.SiegelWeilU.evalV D.host.F v).comp (HeckeCharacterZeroLocus.SiegelWeilU.sndA D.host.F)) (AlgHom.id D.host.F D.host.E)).toRingHom M`. Set `gv : GL (Fin n) (HeckeCharacterZeroLocus.SiegelWeilU.Fv D.host.F v ⊗[D.host.F] D.host.E)` to `Matrix.GeneralLinearGroup.map (compFin D.host.F D.host.E v) (a * d * a⁻¹)`. Establish `hgv : gv.1 = PositivityTheory.SiegelWeilFormula.Gen.matV v a.1 * PositivityTheory.SiegelWeilFormula.Gen.matV v d.1 * PositivityTheory.SiegelWeilFormula.Gen.matV v (a⁻¹).1`. Establish `key : ∀ x y z : Matrix (Fin n) (Fin n) (AE D), PositivityTheory.SiegelWeilFormula.Gen.matV v (x * y * z) = PositivityTheory.SiegelWeilFormula.Gen.matV v x * PositivityTheory.SiegelWeilFormula.Gen.matV v y * PositivityTheory.SiegelWeilFormula.Gen.matV v z`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `x y z`. Rewrite using `[LatCO.matV_mul, LatCO.matV_mul]`. Conclude with `key a.1 d.1 (a⁻¹).1`. Establish `hinv : a.1 * (a⁻¹).1 = 1` using `by simp`. Establish `hinv' : (a⁻¹).1 * a.1 = 1` using `by simp`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hAiA : PositivityTheory.SiegelWeilFormula.Gen.matV v (a⁻¹).1 * PositivityTheory.SiegelWeilFormula.Gen.matV v a.1 = 1`. Rewrite using `[← LatCO.matV_mul, hinv', LatCO.matV_one]`. Establish `hC : PositivityTheory.SiegelWeilFormula.Gen.matV v a.1 * PositivityTheory.SiegelWeilFormula.Gen.matV v (pull a b).1 = PositivityTheory.SiegelWeilFormula.Gen.matV v b.1 * PositivityTheory.SiegelWeilFormula.Gen.matV v (adj (a⁻¹).1)`. Establish `e : a.1 * (pull a b).1 = b.1 * adj (a⁻¹).1`. Express the relevant statement in the definitionally equal form `a.1 * ((a⁻¹).1 * b.1 * adj (a⁻¹).1) = _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← mul_assoc, ← mul_assoc, hinv, one_mul]`. Rewrite using `[← LatCO.matV_mul, ← LatCO.matV_mul, e]`. Establish `hD3 : PositivityTheory.SiegelWeilFormula.Gen.matV v d.1 * PositivityTheory.SiegelWeilFormula.Gen.matV v k₃ = -1`. Rewrite using `[← LatCO.matV_mul, hk3, matV_neg, LatCO.matV_one]`. Establish `hD4 : PositivityTheory.SiegelWeilFormula.Gen.matV v d.1 * PositivityTheory.SiegelWeilFormula.Gen.matV v k₄ = -PositivityTheory.SiegelWeilFormula.Gen.matV v (pull a b).1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← LatCO.matV_mul, hk4, matV_neg]`. Establish `hS` using `image_eq (PositivityTheory.SiegelWeilFormula.Gen.matV v a.1) (PositivityTheory.SiegelWeilFormula.Gen.matV v (a⁻¹).1) (PositivityTheory.SiegelWeilFormula.Gen.matV v (adj (a⁻¹).1)) (PositivityTheory.SiegelWeilFormula.Gen.matV v b.1) (PositivityTheory.SiegelWeilFormula.Gen.matV v d. …`. Rewrite `hS` using `[← hgv]`. Establish `hdet : Matrix.GeneralLinearGroup.det gv = unitFin D.host.F D.host.E v (Matrix.GeneralLinearGroup.det d)`. Establish `h1 : Matrix.GeneralLinearGroup.det (a * d * a⁻¹) = Matrix.GeneralLinearGroup.det d`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul, map_mul, map_inv, mul_comm (Matrix.GeneralLinearGroup.det a), mul_inv_cancel_right]`. Rewrite using `[← h1]`. Conclude with `Matrix.GeneralLinearGroup.map_det _ _`. Establish `hm0 : lam (latAt a.1 v : Set (Fin n → HeckeCharacterZeroLocus.SiegelWeilU.Fv D.host.F v ⊗[D.host.F] D.host.E)) ≠ 0` using `(hCO.1.measure_pos lam ⟨0, zero_mem _⟩).ne'`. Establish `hmT : lam (latAt a.1 v : Set (Fin n → HeckeCharacterZeroLocus.SiegelWeilU.Fv D.host.F v ⊗[D.host.F] D.host.E)) ≠ ⊤` using `hCO.2.measure_lt_top.ne`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hval : lam {x | ∃ y ∈ latAt a.1 v, ∃ y' ∈ latAt (adj (a⁻¹).1) v, x = y + (PositivityTheory.SiegelWeilFormula.Gen.matV v b.1).mulVec y'} = (absEv D.host.F D.host.E v (Matrix.GeneralLinearGroup.det gv) : ℝ≥0∞) * lam (latAt a.1 v : Set _)`. Rewrite using `[← hscale gv]`. Conclude with `congrArg lam hS`. Unfold `PositivityTheory.SiegelWeilFormula.Gen.nu2`. Rewrite using `[hval, hdet, div_eq_mul_inv, mul_assoc, ENNReal.mul_inv_cancel hm0 hmT, mul_one, ENNReal.coe_toReal]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem local_haar_GL_image_eq_absValue_det : ∀ (D : D7) (n : ℕ) (a d : GL (Fin n) (AE D)) (b : hermA D n) (k₃ k₄ : Mx D n n) (v : IsDedekindDomain.HeightOneSpectrum (NumberField.RingOfIntegers D.host.F)) (lam : Measure (Fin n → HeckeCharacterZeroLocus.SiegelWeilU.Fv D.host.F v ⊗[D.host.F] D.host.E)), lam.IsAddHaarMeasure → (∀ (g : GL (Fin n) (HeckeCharacterZeroLocus.SiegelWeilU.Fv D.host.F v ⊗[D.host.F] D.host.E)) (S : Set (Fin n → HeckeCharacterZeroLocus.SiegelWeilU.Fv D.host.F v ⊗[D.host.F] D.host.E)), lam ((fun x => g.1.mulVec x) '' S) = (absEv D.host.F D.host.E v (Matrix.GeneralLinearGroup.det g) : ℝ≥0∞) * lam S) → PositivityTheory.SiegelWeilFormula.Gen.IsCO (latAt a.1 v) → d.1 * k₃ = -1 → d.1 * k₄ = -(pull a b).1 → {x | ∃ y ∈ (latLoc D.host.F (stdLattice D.host.E n) v), ∃ y' ∈ (latLoc D.host.F (stdLattice D.host.E n) v), x = (PositivityTheory.SiegelWeilFormula.Gen.matV v k₃).mulVec y + (PositivityTheory.SiegelWeilFormula.Gen.matV v k₄).mulVec y'} = ((latLoc D.host.F (stdLattice D.host.E n) v) : Set (Fin n → HeckeCharacterZeroLocus.SiegelWeilU.Fv D.host.F v ⊗[D.host.F] D.host.E)) → PositivityTheory.SiegelWeilFormula.Gen.nu2 lam (latAt a.1 v) (latAt (adj (a⁻¹).1) v) (PositivityTheory.SiegelWeilFormula.Gen.matV v b.1) = (absEv D.host.F D.host.E v (unitFin D.host.F D.host.E v (Matrix.GeneralLinearGroup.det d)) : ℝ) := by
   intro D n a d b k₃ k₄ v lam hlam hscale hCO hk3 hk4 hset

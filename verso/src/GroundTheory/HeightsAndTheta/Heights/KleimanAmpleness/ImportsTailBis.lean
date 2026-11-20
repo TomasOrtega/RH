@@ -15,13 +15,13 @@ def SegreLiftPrime.Statement : Prop :=
       IsMultiProjPrime (segreLift ι F W)
 
 /- English proof (translation)
-The claim follows from `NumbersDVR.isMultiProjPrime_bot`.
+A detailed English derivation is pending.
 -/
 theorem SegreLiftPrime.hyps : IsMultiProjPrime (⊥ : Ideal (MRing (fun _ : Unit => Fin 2) ℚ)) :=
   NumbersDVR.isMultiProjPrime_bot
 
 /- English proof (translation)
-The claim follows from `h ℚ Unit (fun _ => Fin 2) ⊥ SegreLiftPrime.hyps`.
+A detailed English derivation is pending.
 -/
 example (h : SegreLiftPrime.Statement) := h ℚ Unit (fun _ => Fin 2) ⊥ SegreLiftPrime.hyps
 

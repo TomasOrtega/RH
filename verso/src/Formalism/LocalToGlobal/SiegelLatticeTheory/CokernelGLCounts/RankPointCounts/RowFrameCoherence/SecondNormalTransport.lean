@@ -19,24 +19,24 @@ section Basic
 variable {r : ℕ} {T : E}
 
 /- English proof (translation)
-The claim follows from `PI.ScalarPairDr.W.hT_swap (S := S) x y`.
+A detailed English derivation is pending.
 -/
 theorem hswap (x y : S.V) : S.hT y x = star (S.hT x y) := PI.ScalarPairDr.W.hT_swap (S := S) x y
 
 /- English proof (translation)
-The claim follows from `((PI.ScalarPairDr.W.mem_orth_Xplus (S := S) F).1 (PI.ScalarPairDr.W.X_le_orth_Xplus (S := S) F hx)).1 a`.
+A detailed English derivation is pending.
 -/
 theorem e_X (F : FlagG S r T) (a : Fin r) {x : S.V} (hx : x ∈ F.X) : S.hT (F.e a) x = 0 :=
   ((PI.ScalarPairDr.W.mem_orth_Xplus (S := S) F).1 (PI.ScalarPairDr.W.X_le_orth_Xplus (S := S) F hx)).1 a
 
 /- English proof (translation)
-The claim follows from `((PI.ScalarPairDr.W.mem_orth_Xplus (S := S) F).1 (PI.ScalarPairDr.W.X_le_orth_Xplus (S := S) F hx)).2`.
+A detailed English derivation is pending.
 -/
 theorem z_X (F : FlagG S r T) {x : S.V} (hx : x ∈ F.X) : S.hT F.z x = 0 :=
   ((PI.ScalarPairDr.W.mem_orth_Xplus (S := S) F).1 (PI.ScalarPairDr.W.X_le_orth_Xplus (S := S) F hx)).2
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `v ∈ F.X ⊔ Submodule.span E {F.z} at hv`. Take `⟨x, hx, w, hw, rfl⟩` from `Submodule.mem_sup.mp hv`. Take `⟨a, rfl⟩` from `Submodule.mem_span_singleton.mp hw`. Conclude with `⟨a, x, hx, by abel⟩`.
+Express the relevant assertion in an equivalent form by its definition. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem xplus_dec (F : FlagG S r T) {v : S.V} (hv : v ∈ F.Xplus) : ∃ a : E, ∃ x ∈ F.X, v = a • F.z + x := by
   change v ∈ F.X ⊔ Submodule.span E {F.z} at hv
@@ -45,27 +45,27 @@ theorem xplus_dec (F : FlagG S r T) {v : S.V} (hv : v ∈ F.Xplus) : ∃ a : E, 
   exact ⟨a, x, hx, by abel⟩
 
 /- English proof (translation)
-The claim follows from `Submodule.add_mem _ (Submodule.smul_mem _ _ (Submodule.mem_sup_right (Submodule.mem_span_singleton_self _))) (Submodule.mem_sup_left hx)`.
+A detailed English derivation is pending.
 -/
 theorem xplus_mem (F : FlagG S r T) (a : E) {x : S.V} (hx : x ∈ F.X) : a • F.z + x ∈ F.Xplus :=
   Submodule.add_mem _ (Submodule.smul_mem _ _ (Submodule.mem_sup_right (Submodule.mem_span_singleton_self _)))
     (Submodule.mem_sup_left hx)
 
 /- English proof (translation)
-Rewrite using `[F.z_norm]`. Conclude with `neg_ne_zero.mpr hT`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem zz_ne (F : FlagG S r T) (hT : T ≠ 0) : S.hT F.z F.z ≠ 0 := by
   rw [F.z_norm]; exact neg_ne_zero.mpr hT
 
 /- English proof (translation)
-The claim follows from `PI.UnitaryGroupMassFormula.BetaLUniq.GN.coeffs_zero F F' C C' 0 h.symm (fun _ => by simp) (fun _ => by simp) hG`.
+A detailed English derivation is pending.
 -/
 theorem indep {T' : E} (F : FlagG S r T) (F' : FlagG S r T') (hG : Gflag F F' ≠ 0) (C C' : Fin (r + 1) → E)
     (h : ∑ a, C a • F.fvec a + ∑ b, C' b • F'.fvec b = 0) : C = 0 ∧ C' = 0 :=
   PI.UnitaryGroupMassFormula.BetaLUniq.GN.coeffs_zero F F' C C' 0 h.symm (fun _ => by simp) (fun _ => by simp) hG
 
 /- English proof (translation)
-Rewrite using `[Fin.sum_univ_castSucc]`. Simplify using `only [FlagG.fvec, Fin.snoc_castSucc, Fin.snoc_last]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 theorem sum_fvec (F : FlagG S r T) (c : Fin r → E) (a : E) :
     ∑ i, (Fin.snoc (α := fun _ => E) c a : Fin (r + 1) → E) i • F.fvec i = a • F.z + ∑ i, c i • F.e i := by
@@ -74,19 +74,19 @@ theorem sum_fvec (F : FlagG S r T) (c : Fin r → E) (a : E) :
   abel
 
 /- English proof (translation)
-The claim follows from `(Submodule.mem_span_range_iff_exists_fun E).1 hx`.
+A detailed English derivation is pending.
 -/
 theorem x_sum (F : FlagG S r T) {x : S.V} (hx : x ∈ F.X) : ∃ c : Fin r → E, ∑ i, c i • F.e i = x :=
   (Submodule.mem_span_range_iff_exists_fun E).1 hx
 
 /- English proof (translation)
-Take `⟨c, hc⟩` from `x_sum F hv`. Take `⟨a', x', hx', e'⟩` from `xplus_dec F' hv'`. Take `⟨c', hc'⟩` from `x_sum F' hx'`. Establish `h` using `indep F F' hG (Fin.snoc (α := fun _ => E) c 0) (Fin.snoc (α := fun _ => E) (-c') (-a')) (by`. Rewrite using `[sum_fvec, sum_fvec]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [zero_smul, zero_add, Pi.neg_apply, neg_smul, Finset.sum_neg_distrib]`. Rewrite using `[hc, hc', e']`. Use the proof step `abel)`. Establish `ha : a' = 0`. Use `congrFun h.2 (Fin.last r)` as an intermediate fact.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using this`. Establish `hc0 : c' = 0`. Use function extensionality and compare the values at `i`. Use `congrFun h.2 (Fin.castSucc i)` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e', ← hc', ha, hc0]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem disj {T' : E} (F : FlagG S r T) (F' : FlagG S r T') (hG : Gflag F F' ≠ 0) {v : S.V} (hv : v ∈ F.X)
     (hv' : v ∈ F'.Xplus) : v = 0 := by
@@ -108,7 +108,7 @@ theorem disj {T' : E} (F : FlagG S r T) (F' : FlagG S r T') (hG : Gflag F F' ≠
   simp
 
 /- English proof (translation)
-The claim follows from `(indep F F' hG 0 C' (by simp [h])).2`.
+A detailed English derivation is pending.
 -/
 theorem indep' {T' : E} (F : FlagG S r T) (F' : FlagG S r T') (hG : Gflag F F' ≠ 0) (C' : Fin (r + 1) → E)
     (h : ∑ b, C' b • F'.fvec b = 0) : C' = 0 :=
@@ -122,9 +122,9 @@ variable {Λ : Submodule (𝓞 E) S.V} {r : ℕ} {T T' : E} {F : LFlag S r T} {F
   {β : S.V ≃ₗ[E] S.V}
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Apply `Submodule.subset_span show F.zt ∈ UU Λ F F'` to reduce the goal to its premises. Unfold `UU`. Conclude with `Submodule.mem_sup_left (Submodule.mem_sup_left (Submodule.mem_sup_right (Submodule.mem_span_singleton_self _)))`. Apply `Submodule.subset_span show F'.zt ∈ UU Λ F F'` to reduce the goal to its premises.
+Prove the components needed by the constructor for the conclusion. Reduce the claim to the hypotheses of an applicable result. Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Replace the relevant objects with their definitions.
 
-Unfold `UU`. Conclude with `Submodule.mem_sup_right (Submodule.mem_span_singleton_self _)`.
+A detailed English derivation is pending.
 -/
 theorem zt_mem (F : LFlag S r T) (F' : LFlag S r T') : F.zt ∈ UUE Λ F F' ∧ F'.zt ∈ UUE Λ F F' := by
   constructor
@@ -138,7 +138,7 @@ theorem zt_mem (F : LFlag S r T) (F' : LFlag S r T') : F.zt ∈ UUE Λ F F' ∧ 
     exact Submodule.mem_sup_right (Submodule.mem_span_singleton_self _)
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `F.fl.X ⊔ Submodule.span E {F.fl.z} ≤ _`. Use `sup_le (PI.UnitaryGroupMassFormula.BetaLUniq.Xsp_le_UUE S Λ hΛ F F') ?_` and prove the remaining obligations. Rewrite using `[Submodule.span_le, Set.singleton_subset_iff, ← hz]`. Conclude with `(zt_mem (Λ := Λ) F F').1`.
+Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem xplus_le (hΛ : Submodule.IsLattice E Λ) (F : LFlag S r T) (F' : LFlag S r T') (hz : F.zt = F.fl.z) :
     Xplus F ≤ UUE Λ F F' := by
@@ -148,7 +148,7 @@ theorem xplus_le (hΛ : Submodule.IsLattice E Λ) (F : LFlag S r T) (F' : LFlag 
   exact (zt_mem (Λ := Λ) F F').1
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `F'.fl.X ⊔ Submodule.span E {F'.fl.z} ≤ _`. Use `sup_le (PI.UnitaryGroupMassFormula.BetaLUniq.Xsp_le_UUE' S Λ hΛ F F') ?_` and prove the remaining obligations. Rewrite using `[Submodule.span_le, Set.singleton_subset_iff, ← hz']`. Conclude with `(zt_mem (Λ := Λ) F F').2`.
+Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem xplus_le' (hΛ : Submodule.IsLattice E Λ) (F : LFlag S r T) (F' : LFlag S r T') (hz' : F'.zt = F'.fl.z) :
     Xplus F' ≤ UUE Λ F F' := by
@@ -158,18 +158,18 @@ theorem xplus_le' (hΛ : Submodule.IsLattice E Λ) (F : LFlag S r T) (F' : LFlag
   exact (zt_mem (Λ := Λ) F F').2
 
 /- English proof (translation)
-The claim follows from `PI.ScalarPairDr.W.mem_orth_Xplus (S := S) G.fl`.
+A detailed English derivation is pending.
 -/
 theorem orth_xplus_iff {T₀ : E} (G : LFlag S r T₀) {v : S.V} :
     v ∈ orth S (Xplus G) ↔ (∀ a, S.hT (G.fl.e a) v = 0) ∧ S.hT G.fl.z v = 0 :=
   PI.ScalarPairDr.W.mem_orth_Xplus (S := S) G.fl
 
 /- English proof (translation)
-Rewrite using `[← PI.UnitaryGroupMassFormula.ScalEquivGen.orthOrthQ (UUE Λ F F'), PI.UnitaryGroupMassFormula.ScalEquivGen.memOrthQ]`. Introduce `h hh`. Express the relevant statement in the definitionally equal form `h ∈ Hp Λ F F' at hh`. Rewrite `hh` using `[← hTh]`. Take `⟨p, hp, rfl⟩` from `Submodule.mem_map.mp hh`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `hp` using `[PI.UnitaryGroupMassFormula.ScalEquivGen.memThPairsQ]`. Establish `hp2 : p.2 ∈ orth S (UUE Λ F F'')` using `hp.1.1.2`. Establish `hy1 : y ∈ UUE Λ F F''` using `hy.1`. Establish `hy2 : y ∈ orth S (Xplus F)` using `hy.2`. Establish `e1 : S.hT p.2 y = 0` using `PI.UnitaryGroupMassFormula.ScalEquivGen.hTCommQ.mp ((PI.UnitaryGroupMassFormula.ScalEquivGen.memOrthQ.mp hp2) y hy1)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2 : S.hT (p.1 - p.2) y = 0` using `PI.UnitaryGroupMassFormula.ScalEquivGen.memOrthQ.mp (PI.UnitaryGroupMassFormula.ScalEquivGen.orthAntiQ (PI.UnitaryGroupMassFormula.ScalEquivGen.XspLeXplusQ F) hy2) _ hp.1.2`. Use `show S.hT p.1 y = 0`. Establish `e : p.1 = (p.1 - p.2) + p.2` using `by abel`. Rewrite using `[e, map_add, LinearMap.add_apply, e1, e2, add_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ylift_rev (hTh : Th Λ F F' F'' β = Hp Λ F F') {y : S.V} (hy : y ∈ Ylift Λ F F'') : y ∈ UUE Λ F F' := by
   rw [← PI.UnitaryGroupMassFormula.ScalEquivGen.orthOrthQ (UUE Λ F F'), PI.UnitaryGroupMassFormula.ScalEquivGen.memOrthQ]
@@ -193,19 +193,17 @@ variable (hΛ : Submodule.IsLattice E Λ) (hz : F.zt = F.fl.z) (hz' : F'.zt = F'
 include hΛ hz hz' hz''
 
 /- English proof (translation)
-Establish `hzz` using `zz_ne F.fl hT`. Use `set c : E := (S.hT F.fl.z F.fl.z)⁻¹ with hc`. Use `set y : S.V := ν - c • F.fl.z with hy`. Establish `hyU : y ∈ UUE Λ F F'` using `Submodule.sub_mem _ (xplus_le' hΛ F F' hz' hν) (Submodule.smul_mem _ _ (hz ▸ (zt_mem (Λ := Λ) F F').1))`. Establish `hyO : y ∈ orth S (Xplus F)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[orth_xplus_iff]`. Use `⟨fun a => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hy, map_sub, map_smul, he a, F.fl.z_orth a, smul_zero, sub_zero]`. Rewrite using `[hy, map_sub, map_smul, hzν, smul_eq_mul, hc, inv_mul_cancel₀ hzz, sub_self]`. Establish `hy' : y ∈ Ylift Λ F F'` using `⟨hyU, hyO⟩`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hy'' : y ∈ Ylift Λ F F''` using `⟨PI.UnitaryGroupMassFormula.ScalEquivGen.yliftMemQ hTh hy', hyO⟩`. Take `⟨α', x', hx', hνe⟩` from `xplus_dec F'.fl hν`. Establish `hsg : SgRel F F' y 0 (-c) α'`. Use `⟨0, Submodule.zero_mem _, x', hx', ?_⟩` and prove the remaining obligations. Rewrite using `[hz, hz', hy, hνe, neg_smul]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact.
 
-Normalize the expressions using the abelian group laws. Establish `h0 : y - y ∈ Xsp F` using `by rw [sub_self]; exact Submodule.zero_mem _`. Establish `h0' : (0 : S.V) - β 0 ∈ Xsp F''` using `by simp`. Take `⟨x₂, hx₂, x'', hx'', h3⟩` from `(hSc y hy' y hy'' 0 (Submodule.zero_mem _) 0 (Submodule.zero_mem _) h0 h0' (-c) α').1 hsg`. Rewrite `h3` using `[hz, hz'']`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨α' • F''.fl.z + x'', xplus_mem F''.fl α' hx'', ?_⟩` and prove the remaining obligations. Establish `hd : ν - (α' • F''.fl.z + x'') = x₂`. Establish `h4 : ν = (-c) • F.fl.z + x₂ + (α' • F''.fl.z + x'') + c • F.fl.z`. Rewrite using `[← h3, hy]`. Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Rewrite using `[h4, neg_smul]`. Normalize the expressions using the abelian group laws. Establish `hν₂ : α' • F''.fl.z + x'' = ν - x₂` using `by rw [← hd]; abel`. Use `⟨fun a => ?_, ?_, hd ▸ hx₂⟩` and prove the remaining obligations. Rewrite using `[hν₂, map_sub, he a, e_X F.fl a hx₂, sub_zero]`.
-
-Rewrite using `[hν₂, map_sub, hzν, z_X F.fl hx₂, sub_zero]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem firstNormal_transport (hT : T ≠ 0) (hTh : Th'' Λ F F' F'' β = Hp Λ F F'') (hSc : IsScalar Λ F F' F'' β)
     {ν : S.V} (hν : ν ∈ Xplus F') (he : ∀ a, S.hT (F.fl.e a) ν = 0) (hzν : S.hT F.fl.z ν = 1) :
@@ -244,15 +242,13 @@ theorem firstNormal_transport (hT : T ≠ 0) (hTh : Th'' Λ F F' F'' β = Hp Λ 
   · rw [hν₂, map_sub, hzν, z_X F.fl hx₂, sub_zero]
 
 /- English proof (translation)
-Establish `hy' : d ∈ Ylift Λ F F'` using `⟨xplus_le' hΛ F F' hz' hd, hdO⟩`. Establish `hy'' : d ∈ Ylift Λ F F''` using `⟨PI.UnitaryGroupMassFormula.ScalEquivGen.yliftMemQ hTh hy', hdO⟩`. Take `⟨α', x', hx', hde⟩` from `xplus_dec F'.fl hd`. Establish `hsg : SgRel F F' d 0 0 α'`. Use `⟨0, Submodule.zero_mem _, x', hx', ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hz', hde, zero_smul]`. Normalize the expressions using the abelian group laws. Establish `h0 : d - d ∈ Xsp F` using `by rw [sub_self]; exact Submodule.zero_mem _`. Establish `h0' : (0 : S.V) - β 0 ∈ Xsp F''` using `by simp`. Take `⟨x₂, hx₂, x'', hx'', h3⟩` from `(hSc d hy' d hy'' 0 (Submodule.zero_mem _) 0 (Submodule.zero_mem _) h0 h0' 0 α').1 hsg`.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite `h3` using `[hz'']`. Establish `hd2 : α' • F''.fl.z + x'' = d - x₂`. Rewrite `h3` using `[sub_zero]`. Rewrite using `[h3, zero_smul]`. Normalize the expressions using the abelian group laws.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Use `⟨α' • F''.fl.z + x'', xplus_mem F''.fl α' hx'', ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hd2]`. Conclude with `Submodule.sub_mem _ hdO (PI.ScalarPairDr.W.X_le_orth_Xplus (S := S) F.fl hx₂)`. Introduce `h`. Rewrite `h` using `[hd2, sub_eq_zero]`.
-
-Conclude with `hd0 (disj F.fl F'.fl hG' (h ▸ hx₂) hd)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ker_transport (hG' : Gflag F.fl F'.fl ≠ 0) (hTh : Th'' Λ F F' F'' β = Hp Λ F F'')
     (hSc : IsScalar Λ F F' F'' β) {d : S.V} (hd : d ∈ Xplus F') (hdO : d ∈ orth S (Xplus F)) (hd0 : d ≠ 0) :
@@ -279,15 +275,13 @@ theorem ker_transport (hG' : Gflag F.fl F'.fl ≠ 0) (hTh : Th'' Λ F F' F'' β 
     exact hd0 (disj F.fl F'.fl hG' (h ▸ hx₂) hd)
 
 /- English proof (translation)
-Establish `hy'' : d ∈ Ylift Λ F F''` using `⟨xplus_le' hΛ F F'' hz'' hd, hdO⟩`. Establish `hy' : d ∈ Ylift Λ F F'` using `⟨ylift_rev hTh hy'', hdO⟩`. Take `⟨α', x', hx', hde⟩` from `xplus_dec F''.fl hd`. Establish `hsg : SgRel F F'' d 0 0 α'`. Use `⟨0, Submodule.zero_mem _, x', hx', ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hz'', hde, zero_smul]`. Normalize the expressions using the abelian group laws. Establish `h0 : d - d ∈ Xsp F` using `by rw [sub_self]; exact Submodule.zero_mem _`. Establish `h0' : (0 : S.V) - β 0 ∈ Xsp F''` using `by simp`. Take `⟨x₂, hx₂, x'', hx'', h3⟩` from `(hSc d hy' d hy'' 0 (Submodule.zero_mem _) 0 (Submodule.zero_mem _) h0 h0' 0 α').2 hsg`.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite `h3` using `[hz']`. Establish `hd2 : α' • F'.fl.z + x'' = d - x₂`. Rewrite `h3` using `[sub_zero]`. Rewrite using `[h3, zero_smul]`. Normalize the expressions using the abelian group laws.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Use `⟨α' • F'.fl.z + x'', xplus_mem F'.fl α' hx'', ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hd2]`. Conclude with `Submodule.sub_mem _ hdO (PI.ScalarPairDr.W.X_le_orth_Xplus (S := S) F.fl hx₂)`. Introduce `h`. Rewrite `h` using `[hd2, sub_eq_zero]`.
-
-Conclude with `hd0 (disj F.fl F''.fl hG'' (h ▸ hx₂) hd)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ker_transport_rev (hG'' : Gflag F.fl F''.fl ≠ 0) (hTh : Th Λ F F' F'' β = Hp Λ F F')
     (hSc : IsScalar Λ F F' F'' β) {d : S.V} (hd : d ∈ Xplus F'') (hdO : d ∈ orth S (Xplus F)) (hd0 : d ≠ 0) :
@@ -315,7 +309,7 @@ theorem ker_transport_rev (hG'' : Gflag F.fl F''.fl ≠ 0) (hTh : Th Λ F F' F''
 
 omit hz hz' hz'' hΛ in
 /- English proof (translation)
-Use `show (Submodule.span E (F'.fl.e '' {i | i.1 < j})).map (β : S.V →ₗ[E] S.V) = Submodule.span E (F''.fl.e '' {i | i.1 < j})`. Rewrite using `[Submodule.map_span, Set.image_image]`. Use `congr 1`. Conclude with `Set.image_congr fun b _ => by simp [hβe]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem xflag_map (hβe : ∀ b, β (F'.fl.e b) = F''.fl.e b) (j : ℕ) :
     (Xflag F' j).map (β : S.V →ₗ[E] S.V) = Xflag F'' j := by
@@ -327,7 +321,7 @@ theorem xflag_map (hβe : ∀ b, β (F'.fl.e b) = F''.fl.e b) (j : ℕ) :
 
 omit hz hz' hz'' hΛ in
 /- English proof (translation)
-Establish `h` using `xflag_map hβe r`. Rewrite `h` using `[PI.UnitaryGroupMassFormula.ScalEquivGen.XflagTopQ, PI.UnitaryGroupMassFormula.ScalEquivGen.XflagTopQ]`. Rewrite `hx` using `[← h]`. Take `⟨x', hx', rfl⟩` from `Submodule.mem_map.mp hx`. Simplify using `using hx'`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem symm_X (hβe : ∀ b, β (F'.fl.e b) = F''.fl.e b) {x : S.V} (hx : x ∈ Xsp F'') : β.symm x ∈ Xsp F' := by
   have h := xflag_map hβe r
@@ -337,25 +331,23 @@ theorem symm_X (hβe : ∀ b, β (F'.fl.e b) = F''.fl.e b) {x : S.V} (hx : x ∈
   simpa using hx'
 
 /- English proof (translation)
-Establish `hzz` using `zz_ne F'.fl hT'`. Use `set c : E := (S.hT F'.fl.z F'.fl.z)⁻¹ with hc`. Use `set y : S.V := x₁ - c • F'.fl.z with hy`. Establish `hyU : y ∈ UUE Λ F F'` using `Submodule.sub_mem _ (xplus_le hΛ F F' hz hx) (Submodule.smul_mem _ _ (hz' ▸ (zt_mem (Λ := Λ) F F').2))`. Establish `hyO : y ∈ orth S (Xplus F')`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[orth_xplus_iff]`. Use `⟨fun b => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hy, map_sub, map_smul, hswap, he b, F'.fl.z_orth b, star_zero, smul_zero, sub_zero]`. Rewrite using `[hy, map_sub, map_smul, hswap, hzx, star_one, smul_eq_mul, hc, inv_mul_cancel₀ hzz, sub_self]`. Establish `hy' : y ∈ Ylift' Λ F F'` using `⟨hyU, hyO⟩`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hby : β y ∈ UUE Λ F F''` using `PI.UnitaryGroupMassFormula.ScalEquivGen.ylift'MemQ hi (xflag_map hβe) hTh hy'`. Establish `hyO'` using `(orth_xplus_iff F').1 hyO`. Establish `hbyO : β y ∈ orth S (Xplus F'')`. Rewrite using `[orth_xplus_iff]`. Use `⟨fun b => ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hβe b, hi]`. Conclude with `hyO'.1 b`. Rewrite using `[← hβz, hi]`. Conclude with `hyO'.2`. Establish `hby' : β y ∈ Ylift' Λ F F''` using `⟨hby, hbyO⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨a, ξ, hξ, hxe⟩` from `xplus_dec F.fl hx`. Establish `hsg : SgRel F F' 0 y (-a) c`. Use `⟨-ξ, Submodule.neg_mem _ hξ, 0, Submodule.zero_mem _, ?_⟩` and prove the remaining obligations. Rewrite using `[hz, hz', hy, hxe, neg_smul]`. Normalize the expressions using the abelian group laws.
+Normalize the expressions using the abelian group laws. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h0 : (0 : S.V) - 0 ∈ Xsp F` using `by simp`. Establish `h0' : β y - β y ∈ Xsp F''` using `by rw [sub_self]; exact Submodule.zero_mem _`. Take `⟨x₃, hx₃, x'', hx'', h3⟩` from `(hSc 0 (Submodule.zero_mem _) 0 (Submodule.zero_mem _) y hy' (β y) hby' h0 h0' (-a) c).1 hsg`. Rewrite `h3` using `[hz, hz'']`. Establish `hx2 : a • F.fl.z + -x₃ = β y + c • F''.fl.z + x''`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h4 : β y = -((-a) • F.fl.z + x₃ + (c • F''.fl.z + x''))` using `by rw [← h3]; abel`. Rewrite using `[h4, neg_smul]`. Normalize the expressions using the abelian group laws. Use `⟨a • F.fl.z + -x₃, xplus_mem F.fl a (Submodule.neg_mem _ hx₃), ?_⟩` and prove the remaining obligations. Establish `hzz'' : S.hT F''.fl.z F''.fl.z = S.hT F'.fl.z F'.fl.z` using `by rw [← hβz, hi]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `k1 : ∀ b, S.hT (F''.fl.e b) (a • F.fl.z + -x₃) = 0`. Introduce `b`. Rewrite using `[hx2, map_add, map_add, map_smul, (orth_xplus_iff F'').1 hbyO |>.1 b, F''.fl.z_orth b, e_X F''.fl b hx'', smul_zero, zero_add, add_zero]`. Establish `k2 : S.hT F''.fl.z (a • F.fl.z + -x₃) = 1`. Rewrite using `[hx2, map_add, map_add, map_smul, (orth_xplus_iff F'').1 hbyO |>.2, z_X F''.fl hx'', hzz'', smul_eq_mul, hc, inv_mul_cancel₀ hzz, zero_add, add_zero]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `⟨fun b => ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hswap, k1 b, star_zero]`. Rewrite using `[hswap, k2, star_one]`. Establish `hs : β.symm F''.fl.z = F'.fl.z` using `by rw [← hβz]; simp`. Rewrite using `[hx2, map_add, map_add, map_smul, LinearEquiv.symm_apply_apply, hs, hy]`.
-
-Establish `: x₁ - c • F'.fl.z + c • F'.fl.z + β.symm x'' - x₁ = β.symm x''` using `by abel`. Rewrite using `[this]`. Conclude with `symm_X hβe hx''`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem secondNormal_transport (hT' : T' ≠ 0) (hi : β ∈ Formalism.HermitianLatticesTheory.isom S.hT) (hβe : ∀ b, β (F'.fl.e b) = F''.fl.e b)
     (hβz : β F'.fl.z = F''.fl.z) (hTh : Th'' Λ F F' F'' β = Hp Λ F F'') (hSc : IsScalar Λ F F' F'' β)
@@ -415,7 +407,7 @@ theorem secondNormal_transport (hT' : T' ≠ 0) (hi : β ∈ Formalism.Hermitian
 omit hz hz' hz'' hΛ in
 
 /- English proof (translation)
-Rewrite `hy` using `[← hTh]`. Take `⟨p, hp, rfl⟩` from `Submodule.mem_map.mp hy`. Rewrite `hp` using `[PI.UnitaryGroupMassFormula.ScalEquivGen.memThPairsQ]`. Conclude with `⟨p.1, hp.1.1.1, hp.1.2, hp.2⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 -/
 theorem orthogonal_transport (hTh : Th'' Λ F F' F'' β = Hp Λ F F'') {y₂ : S.V} (hy : y₂ ∈ Hp Λ F F'') :
     ∃ y₁ ∈ Hp Λ F F', y₁ - y₂ ∈ Xsp F ∧ β y₁ - y₂ ∈ Xsp F'' := by

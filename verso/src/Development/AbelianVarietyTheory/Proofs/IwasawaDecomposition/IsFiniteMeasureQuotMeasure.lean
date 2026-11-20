@@ -20,7 +20,7 @@ noncomputable section
 namespace GlobalTheory.CovolGL
 
 /- English proof (translation)
-Use `haveI : LocallyCompactSpace (Matrix (Fin n) (Fin n) R) := inferInstanceAs (LocallyCompactSpace (Fin n → Fin n → R))`. Use `haveI : LocallyCompactSpace (Matrix (Fin n) (Fin n) R)ᵐᵒᵖ := MulOpposite.opHomeomorph.symm.isClosedEmbedding.locallyCompactSpace`. Use `haveI : SecondCountableTopology (Matrix (Fin n) (Fin n) R) := inferInstanceAs (SecondCountableTopology (Fin n → Fin n → R))`. Use `haveI : SecondCountableTopology (Matrix (Fin n) (Fin n) R)ᵐᵒᵖ := MulOpposite.opHomeomorph.symm.isEmbedding.secondCountableTopology`. Conclude with `⟨Units.isClosedEmbedding_embedProduct.locallyCompactSpace, Units.isEmbedding_embedProduct.secondCountableTopology⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem lcsc_GL (R : Type) [CommRing R] [TopologicalSpace R] [IsTopologicalRing R] [T2Space R]
     [LocallyCompactSpace R] [SecondCountableTopology R] (n : ℕ) :
@@ -37,7 +37,7 @@ theorem lcsc_GL (R : Type) [CommRing R] [TopologicalSpace R] [IsTopologicalRing 
 variable {E : Type} [Field E] [NumberField E] {a : ℕ}
 
 /- English proof (translation)
-Use extensionality with `i j`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Both sides reduce to the same expression.
 -/
 theorem pFin_ratGL (γ : GL (Fin a) E) :
     GeneralLinearGroup.map (pFin E) (ratGL E a γ) = PIW.ClassFinD.glIncl E a γ := by
@@ -47,7 +47,7 @@ theorem pFin_ratGL (γ : GL (Fin a) E) :
 variable [IsTotallyComplex E]
 
 /- English proof (translation)
-The claim follows from `pFin_infGL _`.
+A detailed English derivation is pending.
 -/
 theorem pFin_splitCentre (t : ℝ) : GeneralLinearGroup.map (pFin E) (splitCentre E a t) = 1 :=
   pFin_infGL _
@@ -55,17 +55,13 @@ theorem pFin_splitCentre (t : ℝ) : GeneralLinearGroup.map (pFin E) (splitCentr
 variable (E a) in
 
 /- English proof (translation)
-Use `haveI := GlobalTheory.AdelicUnitaryTop.locallyCompact_finiteAdele E`. Use `haveI := GlobalTheory.AdelicUnitaryTop.secondCountable_finiteAdele E`. Use `haveI := GlobalTheory.AdelicUnitaryTop.t2Space_finiteAdeleRing_of_numberField E`. Use `letI : MeasurableSpace (GL (Fin a) (Cinf E)) := borel _`. Use `haveI : BorelSpace (GL (Fin a) (Cinf E)) := ⟨rfl⟩`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `letI : MeasurableSpace (GL (Fin a) (Af E)) := borel _`. Use `haveI : BorelSpace (GL (Fin a) (Af E)) := ⟨rfl⟩`. Take `⟨_, _⟩` from `lcsc_GL (Cinf E) a`. Take `⟨_, _⟩` from `lcsc_GL (Af E) a`. Take `⟨e, he⟩` from `GlobalTheory.T.exists_adelicGL_homeomorph_infinite_finite E a`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨S, hS⟩` from `PIW.ClassFinD.borelKGL_of GlobalTheory.T.iwasawaDecomposition_finiteAdeles_GL GlobalTheory.T.strongApproximation_upperUnitriangular_finiteAdeles PIW.ClassFinD.idele_class_finite E a`. Use `choose Λ hΛ hΛK using fun s => GlobalTheory.T.exists_lattice_stabilizer_conj_finiteAdeleGL_integral E a s`. Use `choose Ω hΩ hcov using fun s => GlobalTheory.T.exists_finite_measure_reduction_domain_infinity E a (Λ s) (hΛ s) (Measure.haar : Measure (GL (Fin a) (Cinf E)))`. Use `⟨?_⟩` and prove the remaining obligations. Rewrite using `[quotMeasure_univ (isFundamentalDomain_stdDom (latticeGL E a) μ)]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `GlobalTheory.Mem.VolFin.measure_lt_top_of_cover e (latticeGL E a) μ S (PIW.ClassFinD.KGL E a) (GlobalTheory.T.isCompact_integralGL_finiteAdeles E a) Ω hΩ (fun g => ?_) _ (isFundamentalDomain_stdDom _ μ)` and prove the remaining obligations. Take `⟨γ, s, hs, k, hk, hx⟩` from `hS (GeneralLinearGroup.map (pFin E) g)`. Take `⟨η, hη, n, hn⟩` from `hcov s (GeneralLinearGroup.map (pInf E) (ratGL E a γ⁻¹ * g))`. Establish `hmem : ratGL E a η * splitCentre E a 1 ^ n * ratGL E a γ⁻¹ ∈ latticeGL E a` using `mul_mem (mul_mem (ratGL_mem_latticeGL η) (zpow_mem_latticeGL n)) (ratGL_mem_latticeGL _)`. Establish `hg : ratGL E a η * splitCentre E a 1 ^ n * ratGL E a γ⁻¹ * g = (ratGL E a η * splitCentre E a 1 ^ n) * (ratGL E a γ⁻¹ * g)` using `by simp only [mul_assoc]`.
-
-Use `⟨⟨_, hmem⟩, s, hs, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Subgroup.smul_def, smul_eq_mul, he, hg, map_mul]`. Conclude with `hn`. Rewrite using `[Subgroup.smul_def, smul_eq_mul, he]`. Simplify using `only [map_mul, map_zpow, pFin_ratGL, pFin_splitCentre, _root_.one_zpow, mul_one, hx, map_inv]`.
-
-Use `⟨s⁻¹ * PIW.ClassFinD.glIncl E a η * s * k, (PIW.ClassFinD.KGL E a).mul_mem (hΛK s η hη) hk, ?_⟩` and prove the remaining obligations. Simplify using `only [smul_eq_mul]`. Use `group`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isFiniteMeasure_quotMeasure (μ : Measure (GA E a)) [μ.IsHaarMeasure] :
     IsFiniteMeasure (GlobalTheory.AutomorphicL2Unitary.quotMeasure (latticeGL E a) μ) := by
@@ -105,9 +101,7 @@ theorem isFiniteMeasure_quotMeasure (μ : Measure (GA E a)) [μ.IsHaarMeasure] :
 variable (E a) in
 
 /- English proof (translation)
-Establish `hd` using `isFundamentalDomain_stdDom (latticeGL E a) μ`. Establish `hfin` using `isFiniteMeasure_quotMeasure E a μ`. Establish `h1 : μ (stdDom (latticeGL E a)) ≠ ⊤`. Rewrite using `[← quotMeasure_univ hd]`. Conclude with `measure_ne_top _ _`.
-
-Conclude with `GlobalTheory.UnitU.isMulRightInvariant_of_fundamentalDomain _ μ hd (hd.measure_ne_zero (NeZero.ne μ)) h1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isMulRightInvariant (μ : Measure (GA E a)) [μ.IsHaarMeasure] : μ.IsMulRightInvariant := by
   have hd := isFundamentalDomain_stdDom (latticeGL E a) μ
@@ -117,7 +111,7 @@ theorem isMulRightInvariant (μ : Measure (GA E a)) [μ.IsHaarMeasure] : μ.IsMu
   exact GlobalTheory.UnitU.isMulRightInvariant_of_fundamentalDomain _ μ hd (hd.measure_ne_zero (NeZero.ne μ)) h1
 
 /- English proof (translation)
-Introduce `E _ _ _ a μ _` and use `⟨isFiniteMeasure_quotMeasure E a μ, isMulRightInvariant E a μ⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem finvol : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ) (μ : Measure (GA E a))
     [μ.IsHaarMeasure], IsFiniteMeasure (GlobalTheory.AutomorphicL2Unitary.quotMeasure (latticeGL E a) μ) ∧ μ.IsMulRightInvariant :=

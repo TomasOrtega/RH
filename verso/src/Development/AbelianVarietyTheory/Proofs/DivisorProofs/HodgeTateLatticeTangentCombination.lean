@@ -22,9 +22,9 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   {t : SAB H X} {O : Type} [CommRing O] {x : Sp O ⟶ X}
 
 /- English proof (translation)
-Establish `h : ∀ k : ℕ, (g ≫ φ) ^ k = (g ^ k) ≫ φ`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => rw [pow_zero, pow_zero, MonObj.one_comp]`. Consider the case `succ k ih => rw [pow_succ, pow_succ, ih, MonObj.mul_comp]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Rewrite using `[h, hg, MonObj.one_comp]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem comp_pow_eq_one {T : Over X} (φ : t.G ⟶ t.G) [IsMonHom φ] {q : ℕ} {g : T ⟶ t.G} (hg : g ^ q = 1) :
     (g ≫ φ) ^ q = 1 := by
@@ -47,13 +47,11 @@ def actChar {q : ℕ} (c : TorsChar t x q) (a : 𝓞 E) : TorsChar t x q where
     rw [Over.comp_left, Over.comp_left, e, Category.assoc]
 
 /- English proof (translation)
-Introduce `k χ g hg`. Establish `hq : ((p ^ k : ℕ) : O ⧸ Ideal.span {(p : O) ^ k}) = 0`. Rewrite using `[← map_natCast (Ideal.Quotient.mk (Ideal.span {(p : O) ^ k})), Ideal.Quotient.eq_zero_iff_mem, Nat.cast_pow]`. Conclude with `Ideal.mem_span_singleton_self _`. Establish `h3 : g = red _ (∑ j, c j • actR t.act (a j) v)` using `Over.OverMorphism.ext (by rw [hg]; rfl)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h3]`. Use `show dlog _ hq χ _ ∈ _`. Rewrite using `[map_sum]`. Use `Ideal.sum_mem _ fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, Algebra.smul_def]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `Ideal.mul_mem_left _ _ ?_` and prove the remaining obligations. Establish `h` using `hv k (actChar χ (a j)) (red _ v) rfl`. Establish `e : red (O ⧸ Ideal.span {(p : O) ^ k}) (actR t.act (a j) v) = red _ v ≫ t.act.act (a j)` using `(Category.assoc _ _ _).symm`. Use `show (χ.χ (DualNumber (O ⧸ Ideal.span {(p : O) ^ k})) (red (O ⧸ Ideal.span {(p : O) ^ k}) (actR t.act (a j) v)) : DualNumber (O ⧸ Ideal.span {(p : O) ^ k})).snd ∈ _`. Rewrite using `[e]`.
-
-Conclude with `h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dlogDvd_sum {p m : ℕ} (v : TanM x t.G) (hv : DlogDvd t x p m (tv v).left) {n : ℕ} (a : Fin n → 𝓞 E)
     (c : Fin n → O) : DlogDvd t x p m (tv (∑ j, c j • actR t.act (a j) v)).left := by
@@ -76,11 +74,11 @@ theorem dlogDvd_sum {p m : ℕ} (v : TanM x t.G) (hv : DlogDvd t x p m (tv v).le
   exact h
 
 /- English proof (translation)
-Introduce `E _ _ _ H X t C _ _ p x w hw hl n a c hc W hW`. Take `⟨xO, hx, m, vO, hvO, hbc, hd⟩` from `hl`. Set `cO : Fin n → ↥(intO C)` to `fun j => ⟨c j, hc j⟩`. Set `V : TanM xO t.G` to `∑ j, cO j • actR t.act (a j) (tanOf hvO)`. Use `⟨xO, hx, m, (tv V).left, isTan_tv V, ?_, dlogDvd_sum (tanOf hvO) hd a cO⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hu` using `(isComb_iff (fun j => actR t.act (a j) (tanOf hw)) c (∑ j, c j • actR t.act (a j) (tanOf hw))).2 rfl`. Establish `hWe : (tv (∑ j, c j • actR t.act (a j) (tanOf hw))).left = W` using `((isCombAtG_iff t x (fun j => tv (actR t.act (a j) (tanOf hw))) c _).1 hu).symm.trans ((isCombAtG_iff t x (fun j => tv (actR t.act (a j) (tanOf hw))) c _).1 hW)`. Establish `h1 : bcTan (intO C).subtype hx (tanOf hvO) = ((p : C) ^ m) • tanOf hw` using `tan_ext hbc`. Establish `h2 : ∀ j, bcTan (intO C).subtype hx (actR t.act (a j) (tanOf hvO)) = actR t.act (a j) (bcTan (intO C).subtype hx (tanOf hvO))` using `fun j => tan_ext (Category.assoc _ _ _).symm`. Establish `h3 : bcTan (intO C).subtype hx V = ((p : C) ^ m) • ∑ j, c j • actR t.act (a j) (tanOf hw)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [V, map_sum, map_smulₛₗ, h2, h1, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Conclude with `smul_comm (c j) ((p : C) ^ m) _`. Rewrite using `[← hWe]`. Conclude with `congrArg (fun z => (tv z).left) h3`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem latHT_comb_act : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (X : Scheme.{0}) (t : SAB H X) (C : Type) [NontriviallyNormedField C] [IsUltrametricDist C] (p : ℕ) (x : Sp C ⟶ X) (w : Sp (DualNumber C) ⟶ t.G.left), IsTanAtG t x w → w ∈ latHT t p x → ∀ (n : ℕ) (a : Fin n → 𝓞 E) (c : Fin n → C), (∀ j, ‖c j‖ ≤ 1) → ∀ W : Sp (DualNumber C) ⟶ t.G.left, IsCombAtG t x (fun j => w ≫ (t.act.act (a j)).left) c W → W ∈ latHT t p x := by
   intro E _ _ _ H X t C _ _ p x w hw hl n a c hc W hW

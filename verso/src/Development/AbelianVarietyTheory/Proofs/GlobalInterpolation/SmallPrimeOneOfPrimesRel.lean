@@ -16,33 +16,33 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.Inhab Fo
 namespace GlobalTheory.EX
 
 /- English proof (translation)
-Introduce `h`. Take `⟨C₀, Cr, cr, c, h0, h1, h2, h3, H⟩` from `GlobalTheory.Lin.primesAPInterval_of_primesRel h`. Take `⟨s, hsC, hs21, hsr⟩ : ∃ s : ℝ, C₀ ≤ s ∧ 21 ≤ s ∧ 200 * Cr / cr ≤ s` from `⟨max C₀ (max 21 (200 * Cr / cr)), le_max_left _ _, le_trans (le_max_left _ _) (le_max_right _ _), le_trans (le_max_right _ _) (le_max_right _ _)⟩`. Establish `hss : s ≤ s ^ 2` using `by nlinarith`. Establish `hexp : Cr * Real.exp (-cr * s) ≤ 1 / 200`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : 200 * Cr ≤ cr * s`. Rewrite `hsr` using `[div_le_iff₀ h2]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `e2` using `Real.add_one_le_exp (cr * s)`. Establish `e3 : 0 < Real.exp (cr * s)` using `Real.exp_pos _`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[neg_mul, Real.exp_neg, ← div_eq_mul_inv, div_le_div_iff₀ e3 (by norm_num)]`. Combine the linear equalities and inequalities to obtain the conclusion. Use `⟨3 * s ^ 2 + 1, by nlinarith, ?_⟩` and prove the remaining obligations. Introduce `M hM`. Break down `Nat.eq_or_lt_of_le hM with rfl | hM3` into its components or cases.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Use `⟨3, Nat.prime_three, by norm_num, ?_⟩` and prove the remaining obligations. Establish `e1 : ((2 : ℕ) : ℝ) ^ (2 : ℝ) ≤ ((2 : ℕ) : ℝ) ^ (3 * s ^ 2 + 1)` using `Real.rpow_le_rpow_of_exponent_le (by norm_num) (by nlinarith)`. Use `le_trans ?_ e1` and prove the remaining obligations. Evaluate the numerical expressions. Establish `hm3 : (3 : ℝ) ≤ M` using `by exact_mod_cast hM3`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Evaluate the numerical expressions. Establish an intermediate fact.
 
-Establish `hB0 : (0 : ℝ) < 4 * (M : ℝ)` using `by linarith`. Establish `hB1 : (1 : ℝ) ≤ 4 * (M : ℝ)` using `by linarith`. Establish `hlB : 1 ≤ Real.log (4 * (M : ℝ))`. Rewrite using `[Real.le_log_iff_exp_le hB0]`. Use `Real.exp_one_lt_d9` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Use `set Y : ℝ := (4 * (M : ℝ)) ^ (s ^ 2) with hY`. Establish `hY0 : 0 < Y` using `Real.rpow_pos_of_pos hB0 _`. Establish `hlY : Real.log Y = s ^ 2 * Real.log (4 * (M : ℝ))` using `Real.log_rpow hB0 _`. Establish `hlY2 : s ^ 2 ≤ Real.log Y` using `by rw [hlY]; nlinarith [sq_nonneg s]`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlY0 : 0 < Real.log Y` using `by linarith`. Establish `hrho : Formalism.HermitianLattices.GL2PrimeSums.rhoErr Cr cr (4 * M) Y ≤ 1 / 100`. Unfold `Formalism.HermitianLattices.GL2PrimeSums.rhoErr`. Establish `a1 : Real.exp (-cr * Real.log Y / Real.log (4 * (M : ℝ))) ≤ Real.exp (-cr * s)`. Apply `Real.exp_le_exp.2` to reduce the goal to its premises.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hlY, ← mul_assoc, mul_div_assoc, div_self (by linarith), mul_one]`. Use the polynomial consequences of the given equalities and inequalities. Establish `a2 : Real.exp (-cr * Real.sqrt (Real.log Y)) ≤ Real.exp (-cr * s)`. Apply `Real.exp_le_exp.2` to reduce the goal to its premises. Establish `: s ≤ Real.sqrt (Real.log Y)` using `Real.le_sqrt_of_sq_le hlY2`.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Use the polynomial consequences of the given equalities and inequalities. Establish `b1` using `mul_le_mul_of_nonneg_left a1 h1.le`. Establish `b2` using `mul_le_mul_of_nonneg_left a2 h1.le`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h7 : (4 * (M : ℝ)) ^ (7 : ℝ) ≤ 1 * Y ^ ((1 : ℝ) / 3)`.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[one_mul, hY, ← Real.rpow_mul hB0.le]`. Conclude with `Real.rpow_le_rpow_of_exponent_le hB1 (by linarith)`. Establish `hc` using `H M 1 hM3 (Nat.coprime_one_left M) Y 1 (Real.rpow_le_rpow_of_exponent_le hB1 (by linarith)) le_rfl hrho h7`. Establish `hpos : 0 < c * 1 * (4 * (M : ℝ)) ^ (-6 : ℝ) * Y / Real.log Y`. Use `Real.rpow_pos_of_pos hB0 (-6 : ℝ)` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Check the signs of the components of the expression. Establish an intermediate fact.
 
-Check the signs of the components of the expression. Establish `hcard` using `lt_of_lt_of_le hpos hc`. Rewrite `hcard` using `[Nat.cast_pos, Finset.card_pos]`. Take `⟨p, hp⟩` from `hcard`. Rewrite `hp` using `[Finset.mem_filter, Finset.mem_Ioc]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨⟨-, hp2⟩, hpp, hpm⟩` from `hp`. Use `⟨p, hpp, ?_, ?_⟩` and prove the remaining obligations. Establish `: p % M = 1 % M` using `hpm`. Rewrite using `[this]; exact Nat.mod_eq_of_lt (by omega)`. Establish `e1 : (p : ℝ) ≤ Y * (1 + 1)` using `le_trans (Nat.cast_le.2 hp2) (Nat.floor_le (by positivity))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hM0 : (0 : ℝ) < M` using `by linarith`. Establish `e2 : Y ≤ (M : ℝ) ^ (3 * s ^ 2)`. Rewrite using `[Real.rpow_mul hM0.le]`. Apply `Real.rpow_le_rpow hB0.le _ (by positivity)` to reduce the goal to its premises. Establish `: (M : ℝ) ^ (3 : ℝ) = (M : ℝ) ^ (3 : ℕ)` using `by exact_mod_cast Real.rpow_natCast (M : ℝ) 3`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[this]`. Establish `: (4 : ℝ) ≤ (M : ℝ) ^ 2` using `by nlinarith`. Use the polynomial consequences of the given equalities and inequalities. Rewrite using `[Real.rpow_add hM0, Real.rpow_one]`. Use the polynomial consequences of the given equalities and inequalities.
+Use the polynomial consequences of the given equalities and inequalities. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem smallPrimeOne_of_primesRel : GlobalTheory.Lin.PrimesRel → SmallPrimeOne := by
   intro h

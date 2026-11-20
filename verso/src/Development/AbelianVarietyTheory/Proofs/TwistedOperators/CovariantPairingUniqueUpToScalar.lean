@@ -16,17 +16,15 @@ namespace GlobalTheory.PairingLine
 open GlobalTheory.PairingTensor
 
 /- English proof (translation)
-Set `m : B → B →ₗ[ℂ] ℂ` to `fun y => (innerₛₗ ℂ (i₂ y)) ∘ₗ i₂`. Establish `hm : ∀ y b, m y b = inner ℂ (i₂ y) (i₂ b)` using `fun _ _ => rfl`. Establish `sepm : ∀ b, (∀ y, m y b = 0) → b = 0` using `fun b h => by`. Apply `h₂` to reduce the goal to its premises. Rewrite using `[map_zero]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `inner_self_eq_zero.mp (h b)`. Establish `sepR : ∀ z w : A ⊗[ℂ] B, (∀ y, contrR (m y) z = contrR (m y) w) → z = w`. Introduce `z w h`. Rewrite using `[← sub_eq_zero]`. Conclude with `eq_zero_of_contrR m sepm _ (fun y => by rw [map_sub, h, sub_self])`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `choose ψ hψ using hadj`. Establish `ex : ∀ P, ∃ z : A ⊗[ℂ] B, ∀ y, contrR (m y) z = φ y P`. Introduce `P`. Take `⟨E, hfin, hmem⟩` from `hE P`. Set `e` to `stdOrthonormalBasis ℂ (E.map i₁)`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `ha : ∀ j, ∃ a : A, i₁ a = (e j : H₁)` using `fun j => by`. Take `⟨a, -, ha⟩` from `(e j).2`. Conclude with `⟨a, ha⟩`. Use `choose a ha using ha`. Use `⟨∑ j, a j ⊗ₜ[ℂ] ψ P (a j), fun y => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Apply `h₁` to reduce the goal to its premises. Use `congrArg (fun v : E.map i₁ => (v : H₁)) (e.sum_repr' ⟨i₁ (φ y P), Submodule.mem_map_of_mem (hmem y)⟩)` as an intermediate fact. Simplify using `only [Submodule.coe_sum, Submodule.coe_smul, Submodule.coe_inner] at this`. Rewrite using `[← this, map_sum, map_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
-
-Rewrite using `[contrR_tmul, map_smul, hm, ← hψ, ha]`. Use `choose g hg using ex`. Conclude with `⟨{ toFun := g map_add' := fun P Q => sepR _ _ fun y => by rw [map_add, hg, hg, hg, map_add] map_smul' := fun s P => sepR _ _ fun y => by`. Rewrite using `[map_smul, hg, hg, map_smul, RingHom.id_apply] }, hg, sepR⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_tensor {V A B H₁ H₂ : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup A] [Module ℂ A]
     [AddCommGroup B] [Module ℂ B] [NormedAddCommGroup H₁] [InnerProductSpace ℂ H₁] [NormedAddCommGroup H₂]
@@ -71,7 +69,7 @@ theorem exists_tensor {V A B H₁ H₂ : Type} [AddCommGroup V] [Module ℂ V] [
              rw [map_smul, hg, hg, map_smul, RingHom.id_apply] }, hg, sepR⟩
 
 /- English proof (translation)
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a b => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem contrR_map_right {A B : Type} [AddCommGroup A] [Module ℂ A] [AddCommGroup B] [Module ℂ B]
     (m : B →ₗ[ℂ] ℂ) (b : Module.End ℂ B) (z : A ⊗[ℂ] B) :
@@ -82,7 +80,7 @@ theorem contrR_map_right {A B : Type} [AddCommGroup A] [Module ℂ A] [AddCommGr
   | add x y hx hy => simp only [map_add, hx, hy]
 
 /- English proof (translation)
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a b => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy, neg_add]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem contrR_neg {A B : Type} [AddCommGroup A] [Module ℂ A] [AddCommGroup B] [Module ℂ B]
     (m : B →ₗ[ℂ] ℂ) (z : A ⊗[ℂ] B) : contrR (-m) z = -contrR m z := by
@@ -92,9 +90,9 @@ theorem contrR_neg {A B : Type} [AddCommGroup A] [Module ℂ A] [AddCommGroup B]
   | add x y hx hy => simp only [map_add, hx, hy, neg_add]
 
 /- English proof (translation)
-Establish `e1` using `h _ (GlobalTheory.AdjDescent.re_mem_upq Z)`. Establish `e2` using `h _ (GlobalTheory.AdjDescent.im_mem_upq Z)`. Establish `hd` using `GlobalTheory.AdjDescent.decomp Z`. Generalize the expression as in `Z + conjR Z = X at e1 hd`. Generalize the expression as in `Complex.I • (Z - conjR Z) = Y at e2 hd`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable.
 
-Substitute `hd` using the available equality. Simplify using `only [map_add, map_smul, e1, e2]`.
+Substitute using the available equality. Simplify using the standard rewrite rules.
 -/
 theorem linear_eq_of_upq {p q : ℕ} {N : Type} [AddCommGroup N] [Module ℂ N] (F G : Mat p q →ₗ[ℂ] N)
     (h : ∀ Z ∈ upq p q, F Z = G Z) (Z : Mat p q) : F Z = G Z := by
@@ -107,7 +105,7 @@ theorem linear_eq_of_upq {p q : ℕ} {N : Type} [AddCommGroup N] [Module ℂ N] 
   simp only [map_add, map_smul, e1, e2]
 
 /- English proof (translation)
-Establish `h1` using `(R.der Y hY x).inner ℂ (R.der Y hY y)`. Simplify using `only [GlobalTheory.RealPar.DerivedAdjoint.inner_map, zero_smul, T.expt_zero, map_one, ContinuousLinearMap.one_apply] at h1`. Establish `h2` using `h1.unique (hasDerivAt_const (0 : ℝ) (inner ℂ (R.ι x) (R.ι y)))`. Take the linear combination `h2`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem skew {p q : ℕ} {T : GrpData p q} (R : DSRep T) {Y : Mat p q} (hY : Y ∈ upq p q) (x y : R.HK.V) :
     ⟪R.ι (R.HK.act Y x), R.ι y⟫_ℂ = -⟪R.ι x, R.ι (R.HK.act Y y)⟫_ℂ := by
@@ -118,13 +116,13 @@ theorem skew {p q : ℕ} {T : GrpData p q} (R : DSRep T) {Y : Mat p q} (hY : Y �
   linear_combination h2
 
 /- English proof (translation)
-Establish `hsrc : ∀ Z P y, B (fockAct1 p q r s Z P) y = R₁.HK.act Z (B P y)` using `fun Z P y => linear_eq_of_upq (B.flip y ∘ₗ (fockAct1 p q r s).flip P) (R₁.HK.act.flip (B P y)) (fun Z hZ => hB.src Z hZ P y) Z`. Establish `hlie` using `(GlobalTheory.T.fockOperators_lie_representation_commute p q r s).2.1`. Take `⟨f, hf, sep⟩` from `exists_tensor R₁.ι R₂.ι R₁.ι_inj R₂.ι_inj (fun y => B.flip y) hB.adj (fun P => by`. Take `⟨W, hW, hP, hst⟩` from `((GlobalTheory.T.fock_polynomials_locallyFinite_rationalWeights p q r s).1 P).1`. Take `⟨E, hE, hE'⟩` from `GlobalTheory.T.exists_finiteDimensional_forall_map_mem' p q R₁.HK hA _ (fockAct1 p q r s) (fun Y Z _ _ => hlie Y Z) W hW hst (fun v _ => ((GlobalTheory.T.fock_polynomials_locallyFinite_rationalWeights p q r s).1 v).2)`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨E, hE, fun y => hE' (B.flip y) (fun Z _ v => hsrc Z v y) P hP⟩)`. Simplify using `only [LinearMap.flip_apply] at hf`. Use `⟨f, fun Z => ?_, fun Z => ?_, hf⟩` and prove the remaining obligations. Use `LinearMap.ext fun P => sep _ _ fun y => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.comp_apply, LinearMap.comp_apply, contrR_map, hf, hf, hsrc]`.
+Supply the required witnesses or components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `LinearMap.ext fun P => ?_` and prove the remaining obligations. Use `linear_eq_of_upq (f ∘ₗ (fockAct2 p q r s).flip P) (((LinearMap.lTensorHom R₁.HK.V).comp R₂.HK.act).flip (f P)) (fun Z hZ => ?_) Z` and prove the remaining obligations. Use `sep _ _ fun y => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `contrR _ (f (fockAct2 p q r s Z P)) = contrR _ (TensorProduct.map LinearMap.id (R₂.HK.act Z) (f P))`. Establish `e : (innerₛₗ ℂ (R₂.ι y) ∘ₗ R₂.ι) ∘ₗ R₂.HK.act Z = -(innerₛₗ ℂ (R₂.ι (R₂.HK.act Z y)) ∘ₗ R₂.ι)`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact.
 
-Use `LinearMap.ext fun b => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `⟪R₂.ι y, R₂.ι (R₂.HK.act Z b)⟫_ℂ = -⟪R₂.ι (R₂.HK.act Z y), R₂.ι b⟫_ℂ`. Rewrite using `[skew R₂ hZ, neg_neg]`. Rewrite using `[contrR_map_right, e, contrR_neg, hf, hf]`. Conclude with `eq_neg_of_add_eq_zero_left (hB.tgt Z hZ P y)`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_intw {p q r s : ℕ} {T₁ : GrpData p q} {T₂ : GrpData r s} (R₁ : DSRep T₁) (R₂ : DSRep T₂)
     (hA : Formalism.MainNotions.SchurIrreducible.AdmGK R₁.HK) (B : Pol p q r s →ₗ[ℂ] R₂.HK.V →ₛₗ[starRingEnd ℂ] R₁.HK.V)
@@ -159,9 +157,9 @@ theorem exists_intw {p q r s : ℕ} {T₁ : GrpData p q} {T₂ : GrpData r s} (R
     exact eq_neg_of_add_eq_zero_left (hB.tgt Z hZ P y)
 
 /- English proof (translation)
-Introduce `X p q r s lam lam' hA hL`. Take `⟨f₀, -, -, hf₀⟩` from `hL`. Use `⟨fun P y => contrR (innerₛₗ ℂ ((X.ds r s lam').ι y) ∘ₗ (X.ds r s lam').ι) (f₀ P), fun B hB => ?_⟩` and prove the remaining obligations. Take `⟨f, h1, h2, hf⟩` from `exists_intw _ _ hA B hB`. Take `⟨c, hc⟩` from `hf₀ f ⟨h1, h2⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨c, fun P y => ?_⟩` and prove the remaining obligations. Rewrite using `[← hf, hc, LinearMap.smul_apply, map_smul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem pairing_line : ∀ (X : ProvA) (p q r s : ℕ) (lam : Ix p q → ℚ) (lam' : Ix r s → ℚ), Formalism.MainNotions.SchurIrreducible.AdmGK (X.ds p q lam).HK → Formalism.MainNotions.SchurIrreducible.ARiiiLine X lam lam' → ∃ B₀ : Pol p q r s → (X.ds r s lam').HK.V → (X.ds p q lam).HK.V, ∀ B : Pol p q r s →ₗ[ℂ] (X.ds r s lam').HK.V →ₛₗ[starRingEnd ℂ] (X.ds p q lam).HK.V, CoverW (X.ds p q lam) (X.ds r s lam') B → ∃ c : ℂ, ∀ P y, B P y = c • B₀ P y := by
   intro X p q r s lam lam' hA hL

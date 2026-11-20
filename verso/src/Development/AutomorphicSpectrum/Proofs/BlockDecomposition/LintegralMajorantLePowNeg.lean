@@ -8,16 +8,16 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.MajGm
 
 /- English proof (translation)
-Unfold `kern`. Use `Measurable.mul (by fun_prop) (Measurable.min (by fun_prop) (by fun_prop))` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem measurable_kern (s T : ℝ) : Measurable (kern s T) := by
   unfold kern
   refine Measurable.mul (by fun_prop) (Measurable.min (by fun_prop) (by fun_prop))
 
 /- English proof (translation)
-Unfold `gm`. Establish `hk` using `measurable_kern ε β`. Use `Measurable.ite ?_ ?_ (by fun_prop)` and prove the remaining obligations. Establish `h1 : MeasurableSet {h : M22 | ‖h 1 0‖ ≤ ‖h 0 0‖}` using `measurableSet_le (by fun_prop) (by fun_prop)`. Establish `h2 : MeasurableSet {h : M22 | h 0 0 ≠ 0}` using `(measurableSet_eq_fun (by fun_prop) (by fun_prop)).compl`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `h1.inter h2`. Use `Measurable.mul (by fun_prop) (hk.comp (by fun_prop))` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem measurable_gm (ε β : ℝ) (m : ℕ) : Measurable (gm ε β m) := by
   unfold gm
@@ -31,7 +31,7 @@ theorem measurable_gm (ε β : ℝ) (m : ℕ) : Measurable (gm ε β m) := by
   · refine Measurable.mul (by fun_prop) (hk.comp (by fun_prop))
 
 /- English proof (translation)
-Unfold `kern`. Establish `h1 : 0 ≤ ‖z‖ / T` using `by positivity`. Establish `h2 : 0 ≤ T / ‖z‖` using `by positivity`. Conclude with `mul_nonneg (by positivity) (le_min (Real.rpow_nonneg h1 _) (Real.rpow_nonneg h2 _))`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem kern_nonneg (s T : ℝ) (hT : 0 < T) (z : ℂ) : 0 ≤ kern s T z := by
   unfold kern
@@ -41,15 +41,15 @@ theorem kern_nonneg (s T : ℝ) (hT : 0 < T) (z : ℂ) : 0 ≤ kern s T z := by
     (le_min (Real.rpow_nonneg h1 _) (Real.rpow_nonneg h2 _))
 
 /- English proof (translation)
-Establish `e1 : r ^ (-4 + ε) * r ^ 2 = (r ^ 2)⁻¹ * r ^ ε`. Rewrite using `[Real.rpow_add hr, show (-4 : ℝ) = -((4 : ℕ) : ℝ) by norm_num, Real.rpow_neg hr.le, Real.rpow_natCast]`. Clear the denominators using the available nonvanishing facts. Establish `hw0 : 0 < ((1 + r) ^ m)⁻¹` using `by positivity`. Establish `hw1 : ((1 + r) ^ m)⁻¹ ≤ 1` using `inv_le_one_of_one_le₀ (one_le_pow₀ (by linarith))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hrε : 0 < r ^ ε` using `Real.rpow_pos_of_pos hr _`. Establish `key : r ^ ε * ((1 + r) ^ m)⁻¹ ≤ min ((r / 1) ^ ε) ((1 / r) ^ ε)`. Use `le_min ?_ ?_` and prove the remaining obligations. Rewrite using `[div_one]`. Conclude with `mul_le_of_le_one_right hrε.le hw1`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `le_total r 1 with h | h` into its components or cases. Establish `: r ≤ 1 / r`. Rewrite using `[le_div_iff₀ hr]`. Use the polynomial consequences of the given equalities and inequalities. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `h2 : r ^ (2 * ε) ≤ (1 + r) ^ m`. Combine the equalities or inequalities in the displayed calculation. Establish `h3 : (1 / r) ^ ε = (r ^ ε)⁻¹`. Rewrite using `[one_div, Real.inv_rpow hr.le]`. Establish `h4 : r ^ (2 * ε) = r ^ ε * r ^ ε`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[two_mul, Real.rpow_add hr]`. Rewrite `h2` using `[h4]`. Rewrite using `[h3, ← div_eq_mul_inv, div_le_iff₀ (by positivity), inv_mul_eq_div, le_div_iff₀ hrε]`. Conclude with `h2`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem real_bound (ε r : ℝ) (m : ℕ) (hε : 0 < ε) (hm : 2 * ε ≤ m) (hr : 0 < r) :
     r ^ (-4 + ε) * ((1 + r) ^ m)⁻¹ * r ^ 2 ≤ (r ^ 2)⁻¹ * min ((r / 1) ^ ε) ((1 / r) ^ ε) := by
@@ -88,9 +88,9 @@ theorem real_bound (ε r : ℝ) (m : ℕ) (hε : 0 < ε) (hm : 2 * ε ≤ m) (hr
     _ ≤ _ := mul_le_mul_of_nonneg_left key (by positivity)
 
 /- English proof (translation)
-Establish `h : Integrable (fun x : ℂ => (1 + ‖x‖) ^ (-(m : ℝ))) volume`. Apply `integrable_one_add_norm` to reduce the goal to its premises. Establish `: (3 : ℝ) ≤ m` using `by exact_mod_cast hm`. Simplify using `only [Complex.finrank_real_complex]`. Use `push_cast`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `h2` using `h.lintegral_lt_top`. Use `lt_of_le_of_lt (le_of_eq ?_) h2` and prove the remaining obligations. Use `lintegral_congr fun x => ?_` and prove the remaining obligations. Rewrite using `[Real.rpow_neg (by positivity), Real.rpow_natCast]`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem finite_Q (m : ℕ) (hm : 3 ≤ m) :
     ∫⁻ x : ℂ, ENNReal.ofReal (((1 + ‖x‖) ^ m)⁻¹) < ⊤ := by
@@ -106,11 +106,11 @@ theorem finite_Q (m : ℕ) (hm : 3 ≤ m) :
   rw [Real.rpow_neg (by positivity), Real.rpow_natCast]
 
 /- English proof (translation)
-Establish `e2` using `volume_preserving_piFinTwo (fun _ : Fin 2 => ℂ)`. Establish `e1` using `volume_preserving_piFinTwo (fun _ : Fin 2 => Fin 2 → ℂ)`. Establish `P` using `(e1.symm _).comp ((e2.symm _).prod (e2.symm _))`. Establish `hΦ : (⇑(MeasurableEquiv.piFinTwo fun _ : Fin 2 => Fin 2 → ℂ).symm ∘ Prod.map (MeasurableEquiv.piFinTwo fun _ : Fin 2 => ℂ).symm (MeasurableEquiv.piFinTwo fun _ : Fin 2 => ℂ).symm) = fun p : (ℂ × ℂ) × (ℂ × ℂ) => (![![p.1.1, p.1.2], ![p.2.1, p.2.2]] : M22)`. Use function extensionality and compare the values at `p`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [MeasurableEquiv.piFinTwo]`. Rewrite `P` using `[hΦ]`. Establish `hG : Measurable fun p : (ℂ × ℂ) × (ℂ × ℂ) => F (![![p.1.1, p.1.2], ![p.2.1, p.2.2]] : M22)` using `hF.comp P.measurable`. Rewrite using `[← P.lintegral_comp hF, lintegral_prod _ hG.aemeasurable]`.
+Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `lintegral_congr fun a => ?_` and prove the remaining obligations. Establish `hG2 : Measurable fun b : ℂ × ℂ => F (![![a.1, a.2], ![b.1, b.2]] : M22)` using `hG.comp (measurable_prodMk_left (x := a))`. Rewrite using `[Measure.volume_eq_prod, lintegral_prod _ hG2.aemeasurable]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem lint_rows (F : M22 → ENNReal) (hF : Measurable F) :
     ∫⁻ h, F h = ∫⁻ a : ℂ × ℂ, ∫⁻ v : ℂ, ∫⁻ y : ℂ, F ![![a.1, a.2], ![v, y]] := by
@@ -134,23 +134,21 @@ theorem lint_rows (F : M22 → ENNReal) (hF : Measurable F) :
   rw [Measure.volume_eq_prod, lintegral_prod _ hG2.aemeasurable]
 
 /- English proof (translation)
-Distinguish the cases in `hu : u = 0`. Substitute `hu` using the available equality. Simplify using `[gm]`. Establish `hr : 0 < ‖u‖` using `norm_pos_iff.mpr hu`. Establish `hβε : 0 < β ^ (-ε)` using `Real.rpow_pos_of_pos hβ _`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hP : 0 < ‖u‖ ^ (-4 + ε)` using `Real.rpow_pos_of_pos hr _`. Establish `hb : 0 < ((1 + ‖x‖) ^ m)⁻¹` using `by positivity`. Establish `hw : 0 < ((1 + ‖u‖) ^ m)⁻¹` using `by positivity`. Use `set A : ℝ := β ^ (-ε) * ‖u‖ ^ (-4 + ε) * ((1 + ‖u‖) ^ m)⁻¹ * ((1 + ‖x‖) ^ m)⁻¹ with hAdef`. Establish `hA : 0 ≤ A` using `by positivity`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : ∀ v : ℂ, ∫⁻ y : ℂ, ENNReal.ofReal (gm ε β m ![![u, x], ![v, y]]) ≤ (Metric.closedBall (0 : ℂ) ‖u‖).indicator (fun _ => ENNReal.ofReal A * ENNReal.ofReal K) v`. Introduce `v`. Distinguish the cases in `hv : ‖v‖ ≤ ‖u‖`. Rewrite using `[Set.indicator_of_mem (by simpa using hv)]`. Establish `e : ∀ y : ℂ, gm ε β m ![![u, x], ![v, y]] = A * kern ε β (y - v / u * x)`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `y`. Simplify using `[gm, hv, hu, hAdef]`. Repeatedly rewrite using `[e, ENNReal.ofReal_mul hA]`. Rewrite using `[lintegral_const_mul' _ _ ENNReal.ofReal_ne_top]`. Use `gcongr`.
+Simplify using the standard rewrite rules. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[lintegral_sub_right_eq_self (fun z => ENNReal.ofReal (kern ε β z)) (v / u * x)]`. Conclude with `hker`. Establish `e : ∀ y : ℂ, gm ε β m ![![u, x], ![v, y]] = 0`. Introduce `y`. Simplify using `[gm, hv]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[e]`. Establish `hvol : volume (Metric.closedBall (0 : ℂ) ‖u‖) = ENNReal.ofReal (‖u‖ ^ 2 * Real.pi)`. Rewrite using `[Complex.volume_closedBall, ENNReal.ofReal_mul (by positivity), ENNReal.ofReal_pow hr.le]`. Use `congr 1`. Rewrite using `[← ENNReal.ofReal_coe_nnreal]`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Establish `hreal` using `real_bound ε ‖u‖ m hε hm hr`. Establish `hkn` using `kern_nonneg ε 1 one_pos u`. Establish `hfin : A * K * (‖u‖ ^ 2 * Real.pi) ≤ β ^ (-ε) * Real.pi * K * kern ε 1 u * ((1 + ‖x‖) ^ m)⁻¹`. Establish `hc : 0 ≤ β ^ (-ε) * Real.pi * K * ((1 + ‖x‖) ^ m)⁻¹` using `by positivity`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation.
 
-Use `mul_le_mul_of_nonneg_left hreal hc` as an intermediate fact. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hvol, ← ENNReal.ofReal_mul hA, ← ENNReal.ofReal_mul (mul_nonneg hA hK)]`. Use `_ ≤ ENNReal.ofReal (β ^ (-ε) * Real.pi * K * kern ε 1 u * ((1 + ‖x‖) ^ m)⁻¹) := ENNReal.ofReal_le_ofReal hfin`.
-
-Use `_ = _ := by`. Rewrite using `[ENNReal.ofReal_mul (by positivity), ENNReal.ofReal_mul (by positivity)]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inner_le (ε K β : ℝ) (m : ℕ) (hε : 0 < ε) (hK : 0 ≤ K) (hβ : 0 < β)
     (hker : ∫⁻ z : ℂ, ENNReal.ofReal (kern ε β z) ≤ ENNReal.ofReal K) (hm : 2 * ε ≤ m)
@@ -216,15 +214,13 @@ theorem inner_le (ε K β : ℝ) (m : ℕ) (hε : 0 < ε) (hK : 0 ≤ K) (hβ : 
         rw [ENNReal.ofReal_mul (by positivity), ENNReal.ofReal_mul (by positivity)]
 
 /- English proof (translation)
-Introduce `ε K m hε hK hker hm3 hm`. Establish `hQ` using `finite_Q m hm3`. Use `set Q : ENNReal := ∫⁻ x : ℂ, ENNReal.ofReal (((1 + ‖x‖) ^ m)⁻¹) with hQdef`. Use `⟨Real.pi * K * K * Q.toReal, by positivity, fun β hβ => ?_⟩` and prove the remaining obligations. Establish `hβε : 0 < β ^ (-ε)` using `Real.rpow_pos_of_pos hβ _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmeas : Measurable fun h : M22 => ENNReal.ofReal (gm ε β m h)` using `(measurable_gm ε β m).ennreal_ofReal`. Establish `hf : Measurable fun u : ℂ => ENNReal.ofReal (β ^ (-ε) * Real.pi * K) * ENNReal.ofReal (kern ε 1 u)` using `((measurable_kern ε 1).ennreal_ofReal).const_mul _`. Establish `hg : Measurable fun x : ℂ => ENNReal.ofReal (((1 + ‖x‖) ^ m)⁻¹)`. Use `Measurable.ennreal_ofReal ?_` and prove the remaining obligations. Use `fun_prop`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[lint_rows _ hmeas]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Measure.volume_eq_prod]`. Conclude with `lintegral_prod_mul hf.aemeasurable hg.aemeasurable`. Use `_ ≤ (ENNReal.ofReal (β ^ (-ε) * Real.pi * K) * ENNReal.ofReal K) * Q := by`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[lintegral_const_mul _ (measurable_kern ε 1).ennreal_ofReal]`. Use `gcongr`. Conclude with `hker 1 one_pos`. Use `_ = ENNReal.ofReal (Real.pi * K * K * Q.toReal * β ^ (-ε)) := by`. Establish `hQt : Q = ENNReal.ofReal Q.toReal` using `(ENNReal.ofReal_toReal hQ.ne).symm`.
-
-Use `conv_lhs => rw [hQt]`. Rewrite using `[← ENNReal.ofReal_mul (by positivity), ← ENNReal.ofReal_mul (by positivity)]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem gm_integral_le : ∀ (ε K : ℝ) (m : ℕ), 0 < ε → 0 ≤ K →
     (∀ T₀ : ℝ, 0 < T₀ → ∫⁻ z : ℂ, ENNReal.ofReal (kern ε T₀ z) ≤ ENNReal.ofReal K) →

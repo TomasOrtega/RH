@@ -12,13 +12,11 @@ noncomputable section
 namespace GlobalTheory.CtCont
 
 /- English proof (translation)
-Take `⟨K, hK, hs⟩` from `hc`. Use `continuous_iff_continuousAt.2 fun x => ?_` and prove the remaining obligations. Take `⟨C, hC⟩` from `(hK.image (f := fun k : N => ‖f (k.1 * x)‖) (by fun_prop)).bddAbove`. Establish `hev : ∀ᶠ y in 𝓝 x, ∀ k ∈ K, ‖f (k.1 * y)‖ < C + 1`. Use `hK.eventually_forall_of_forall_eventually fun k hk => ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hcont : Continuous fun p : G × N => ‖f (p.2.1 * p.1)‖` using `by fun_prop`. Establish `h1 : ‖f (k.1 * x)‖ < C + 1` using `(hC ⟨k, hk, rfl⟩).trans_lt (lt_add_one C)`. Conclude with `hcont.continuousAt.eventually (gt_mem_nhds h1)`. Use `continuousAt_of_dominated (bound := fun _ => C + 1) ?_ ?_ ?_ ?_` and prove the remaining obligations. Conclude with `.of_forall fun y => (hf.comp (continuous_subtype_val.mul continuous_const)).aestronglyMeasurable`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `filter_upwards [hev] with y hy`. Use `.of_forall fun u => ?_` and prove the remaining obligations. Take `⟨γ, hγ, hk⟩` from `hs u`. Establish `e : f ((γ * u).1 * y) = f (u.1 * y)` using `by show f ((γ.1 * u.1) * y) = f (u.1 * y)`. Rewrite using `[mul_assoc]`.
-
-Conclude with `hinv _ (Subgroup.mem_subgroupOf.1 hγ) _`. Rewrite using `[← e]`. Conclude with `(hy _ hk).le`. Conclude with `integrableOn_const h𝓕`. Conclude with `.of_forall fun u => (hf.comp (continuous_const.mul continuous_id)).continuousAt`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_setIntegral_of_cocompact {G : Type} [Group G] [TopologicalSpace G] [ContinuousMul G]
     [FirstCountableTopology G] (Γ N : Subgroup G) [MeasurableSpace N] [OpensMeasurableSpace N]
@@ -46,9 +44,7 @@ theorem continuous_setIntegral_of_cocompact {G : Type} [Group G] [TopologicalSpa
   · exact .of_forall fun u => (hf.comp (continuous_const.mul continuous_id)).continuousAt
 
 /- English proof (translation)
-Use `haveI : Module.Finite F E := Module.Finite.of_restrictScalars_finite ℚ F E`. Use `haveI : IsTopologicalRing (AE F E) := IsModuleTopology.isTopologicalRing (AF F) _`. Use `haveI := GlobalTheory.AdelicUnitaryTop.secondCountable_adele F`. Take `⟨e⟩` from `GlobalTheory.AdelicUnitaryTop.nonempty_homeomorph (F := F) (E := E) (AF F)`. Use `haveI : SecondCountableTopology (AE F E) := e.secondCountableTopology`.
-
-Use `haveI : SecondCountableTopology (Matrix (Fin n) (Fin n) (AE F E)) := inferInstanceAs (SecondCountableTopology (Fin n → Fin n → AE F E))`. Use `haveI : SecondCountableTopology (Matrix (Fin n) (Fin n) (AE F E))ᵐᵒᵖ := MulOpposite.opHomeomorph.symm.isEmbedding.secondCountableTopology`. Use `haveI : SecondCountableTopology (GL (Fin n) (AE F E)) := Units.isEmbedding_embedProduct.secondCountableTopology`. Conclude with `⟨inferInstance, inferInstance⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem topGroup_secondCountable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) :
@@ -67,9 +63,7 @@ theorem topGroup_secondCountable {F E : Type} [Field F] [NumberField F] [Field E
   exact ⟨inferInstance, inferInstance⟩
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B a a' G X om om' hT d₁ W₁ H' i₀ i₁ hA f hf hinv μ 𝓕 _ _ h1`. Take `⟨i1, i2⟩` from `topGroup_secondCountable σ G.W.J`. Use `haveI : BorelSpace (UA σ G.W.J) := ⟨rfl⟩`. Use `haveI : FirstCountableTopology (UA σ G.W.J) := @TopologicalSpace.SecondCountableTopology.to_firstCountableTopology _ _ i2`. Use `haveI : ContinuousMul (UA σ G.W.J) := i1.toContinuousMul`.
-
-Conclude with `continuous_setIntegral_of_cocompact (ratU σ G.W.J) (unip σ G.W H') (GlobalTheory.T.unipotent_cocompact_in_arithmetic F E σ B a a' G X om om' hT d₁ W₁ H' i₀ i₁ hA) f hf hinv μ 𝓕 (by rw [h1]; exact ENNReal.one_ne_top)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem continuous_ctf : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (a a' : ℕ) (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W), IsTriple B G X om om' → ∀ (d₁ : ℕ) (W₁ : Spc F E d₁) (H' : Plane E (a + a') d₁) (i₀ i₁ : ℕ), H'.IsAdapted σ B G.W W₁ i₀ i₁ → ∀ f : UA σ G.W.J → ℂ, Continuous f → (∀ γ ∈ ratU σ G.W.J, ∀ h, f (γ * h) = f h) → ∀ (μ : Measure (unip σ G.W H')) (𝓕 : Set (unip σ G.W H')), μ.IsHaarMeasure → IsFundamentalDomain ((ratU σ G.W.J).subgroupOf (unip σ G.W H')) 𝓕 μ → μ 𝓕 = 1 → Continuous (GlobalTheory.CtTyp.ctf H' μ 𝓕 f) := by
   intro F E _ _ _ _ _ σ B a a' G X om om' hT d₁ W₁ H' i₀ i₁ hA f hf hinv μ 𝓕 _ _ h1

@@ -9,16 +9,16 @@ namespace GlobalTheory.K5
 variable (p : ℕ) [Fact p.Prime]
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.ValCompletion.evalₐ_eq_zero_iff rfl, pow_one, map_natCast]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem natCast_dvd_iff_evalₐ_one (x : O0 p) :
     (p : O0 p) ∣ x ↔ AdicCompletion.evalₐ (pI p) 1 x = 0 := by
   rw [GlobalTheory.ValCompletion.evalₐ_eq_zero_iff rfl, pow_one, map_natCast]
 
 /- English proof (translation)
-Use `haveI : (pI p ^ 1).IsPrime := by`. Rewrite using `[pow_one]`. Conclude with `(Ideal.span_singleton_prime (Basic.prime_lau p).ne_zero).2 (Basic.prime_lau p)`. Use `⟨?_, Basic.not_isUnit_p p, ?_⟩` and prove the remaining obligations. Conclude with `(Nat.Prime.ne_zero Fact.out : p ≠ 0)` after adjusting the coercions.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `a b h`. Rewrite `h` using `[natCast_dvd_iff_evalₐ_one, map_mul]`. Rewrite using `[natCast_dvd_iff_evalₐ_one, natCast_dvd_iff_evalₐ_one]`. Conclude with `mul_eq_zero.1 h`.
+A detailed English derivation is pending.
 -/
 theorem prime_natCast_completedLaurentRing : Prime (p : O0 p) := by
   haveI : (pI p ^ 1).IsPrime := by
@@ -31,7 +31,7 @@ theorem prime_natCast_completedLaurentRing : Prime (p : O0 p) := by
     exact mul_eq_zero.1 h
 
 /- English proof (translation)
-Introduce `p _` and use `prime_natCast_completedLaurentRing p`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem prime_natCast_completedLaurentRing_of_prime : ∀ (p : ℕ) [Fact p.Prime], Prime (p : O0 p) := fun p _ => prime_natCast_completedLaurentRing p
 

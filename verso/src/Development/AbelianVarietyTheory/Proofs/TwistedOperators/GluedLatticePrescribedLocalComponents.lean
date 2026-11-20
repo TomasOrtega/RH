@@ -18,9 +18,9 @@ section Algebra
 variable {A : Type} [CommRing A] {n k : ℕ} (m : Matrix (Fin n) (Fin k) A) (z : Fin n → A) {e t T : A}
 
 /- English proof (translation)
-Establish `h1 : a * (e * t) * e = e * (a * t)` using `by linear_combination (a * t) * he`. Establish `h2 : a * (e * t) * T = e * a` using `by linear_combination (a * e) * ht`. Rewrite using `[h1, smul_smul (a * (e * t)) T f, h2]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Simplify using `only [Matrix.mulVec_add, Matrix.mulVec_smul, smul_add, smul_smul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [smul_add, smul_smul, ← mul_assoc, he]`.
+Simplify using the standard rewrite rules.
 -/
 theorem unit_fwd (he : e * e = e) (ht : t * T = 1) (x f : Fin k → A) (a : A) :
     e • (m *ᵥ (x + a • f) + (a * t) • z) = m *ᵥ (e • x + (a * (e * t)) • T • f) + (a * (e * t) * e) • z ∧
@@ -33,7 +33,7 @@ theorem unit_fwd (he : e * e = e) (ht : t * T = 1) (x f : Fin k → A) (a : A) :
   · simp only [smul_add, smul_smul, ← mul_assoc, he]
 
 /- English proof (translation)
-Establish `h1 : a * e * T * t = a * e` using `by linear_combination (a * e) * ht`. Establish `h2 : e * (a * e) = a * e` using `by linear_combination a * he`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[h1, smul_smul (a * e) T f, sub_add_cancel]`. Rewrite using `[smul_add, ← Matrix.mulVec_smul, hx, smul_smul, h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem unit_bwd (he : e * e = e) (ht : t * T = 1) (x f : Fin k → A) (hx : e • x = x) (a : A) :
     m *ᵥ x + (a * e) • z = m *ᵥ ((x - (a * e) • T • f) + (a * e * T) • f) + (a * e * T * t) • z ∧
@@ -45,7 +45,7 @@ theorem unit_bwd (he : e * e = e) (ht : t * T = 1) (x f : Fin k → A) (hx : e �
   · rw [smul_add, ← Matrix.mulVec_smul, hx, smul_smul, h2]
 
 /- English proof (translation)
-Establish `hs : e • (g - e • f) = g - e • f` using `by rw [smul_sub, hg, smul_smul, he]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Simplify using `only [Matrix.mulVec_add, Matrix.mulVec_sub, Matrix.mulVec_smul, smul_add, smul_sub, smul_smul] module`. Rewrite using `[smul_sub e (e • x) (a • (g - e • f)), smul_smul e e x, he, smul_comm e a (g - e • f), hs]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem glue_fwd (he : e * e = e) (x f g : Fin k → A) (hg : e • g = g) (a : A) :
     e • (m *ᵥ (x + a • f) + (a * t) • z) = m *ᵥ (e • x - a • (g - e • f)) + a • ((t * e) • z + m *ᵥ g) ∧
@@ -57,7 +57,7 @@ theorem glue_fwd (he : e * e = e) (x f g : Fin k → A) (hg : e • g = g) (a : 
   · rw [smul_sub e (e • x) (a • (g - e • f)), smul_smul e e x, he, smul_comm e a (g - e • f), hs]
 
 /- English proof (translation)
-Establish `h2 : e * (t * e) = t * e` using `by linear_combination t * he`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Simplify using `only [Matrix.mulVec_add, Matrix.mulVec_sub, Matrix.mulVec_smul, smul_add, smul_sub, smul_smul] module`. Rewrite using `[smul_add e (m *ᵥ x), ← Matrix.mulVec_smul m e x, hx, smul_comm e a, smul_add e ((t * e) • z), smul_smul e (t * e) z, h2, ← Matrix.mulVec_smul m e g, hg]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem glue_bwd (he : e * e = e) (x f g : Fin k → A) (hx : e • x = x) (hg : e • g = g) (a : A) :
     m *ᵥ x + a • ((t * e) • z + m *ᵥ g) = m *ᵥ ((x + a • (g - e • f)) + (a * e) • f) + (a * e * t) • z ∧
@@ -70,7 +70,7 @@ theorem glue_bwd (he : e * e = e) (x f g : Fin k → A) (hx : e • x = x) (hg :
       smul_smul e (t * e) z, h2, ← Matrix.mulVec_smul m e g, hg]
 
 /- English proof (translation)
-Rewrite using `[smul_smul, he]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem idem_smul_smul (he : e * e = e) (y : Fin n → A) : e • e • y = e • y := by
   rw [smul_smul, he]
@@ -80,7 +80,7 @@ end Algebra
 variable {D : D7} {Y X : HSp D} {ι : X.V →ₗ[D.host.E] Y.V} {z : Y.V} {u : D.what₂.Word} {L₀ : Lat X} {x₀ : X.V}
 
 /- English proof (translation)
-Unfold `glueLat`. Use `Submodule.FG.sup ?_ (Submodule.fg_span_singleton _)` and prove the remaining obligations. Use `Submodule.FG.map _ ?_` and prove the remaining obligations. Rewrite using `[show (Formalism.L2.Herm.crd X).toLinearMap.restrictScalars (𝓞 D.host.E) = (((Formalism.L2.Herm.crd X).restrictScalars (𝓞 D.host.E) : X.V ≃ₗ[𝓞 D.host.E] _) : X.V →ₗ[𝓞 D.host.E] _) from rfl, Submodule.comap_equiv_eq_map_symm]`. Conclude with `h.map _`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fg_glueLat (h : L₀.FG) : (glueLat Y X ι z u L₀ x₀).FG := by
   unfold glueLat
@@ -92,13 +92,13 @@ theorem fg_glueLat (h : L₀.FG) : (glueLat Y X ι z u L₀ x₀).FG := by
   exact h.map _
 
 /- English proof (translation)
-Establish `he` using `idem_mul_self w`. Establish `ht` using `inc_inv_mul u`. Establish `het : idem w * inc D (Tu D u)⁻¹ ∈ OA D` using `(idem_mul_inv_mem_iff u w).2 hw`. Establish `hew` using `idem_mem w`. Unfold `InCmp`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hy, hey⟩`. Take `⟨x, hx, a, ha, rfl⟩` from `(mem_hat_glueLat y).1 hy`. Take `⟨h1, h2⟩` from `unit_fwd (mA Y X ι) (vA Y z) he ht x (vA X x₀) a`. Use `⟨idem w • x + (a * (idem w * inc D (Tu D u)⁻¹)) • inc D (Tu D u) • vA X x₀, ⟨add_mem_hat (smul_mem_hat hew hx) (smul_mem_hat (mul_mem ha het) hg.mul_mem), h2⟩, a * (idem w * inc D (Tu D u)⁻¹), mul_mem ha het, ?_⟩` and prove the remaining obligations.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← hey, h1]`. Introduce and unpack `⟨x, ⟨hx, hex⟩, a, ha, rfl⟩`. Take `⟨h1, h2⟩` from `unit_bwd (mA Y X ι) (vA Y z) he ht x (vA X x₀) hex a`. Use `⟨?_, h2⟩` and prove the remaining obligations. Rewrite using `[h1]`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(mem_hat_glueLat _).2 ⟨_, sub_mem_hat hx (smul_mem_hat (mul_mem ha hew) hg.mul_mem), _, mul_mem (mul_mem ha hew) (inc_Tu_mem u), rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem cmp_unit (hg : IsGlueVec X u L₀ (vA X x₀)) {w : Pl D.host.E}
     (hw : (((D.mem u).A.T : ℕ) : 𝓞 D.host.E) ∉ w.asIdeal) (y : Fin Y.rank → EAf D) :
@@ -125,11 +125,11 @@ theorem cmp_unit (hg : IsGlueVec X u L₀ (vA X x₀)) {w : Pl D.host.E}
       mul_mem (mul_mem ha hew) (inc_Tu_mem u), rfl⟩
 
 /- English proof (translation)
-Establish `he` using `idem_mul_self w`. Establish `hew` using `idem_mem w`. Unfold `InCmp`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hy, hey⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Take `⟨x, hx, a, ha, rfl⟩` from `(mem_hat_glueLat y).1 hy`. Take `⟨k1, k2⟩` from `glue_fwd (mA Y X ι) (vA Y z) (t := inc D (Tu D u)⁻¹) he x (vA X x₀) g h1 a`. Use `⟨idem w • x - a • (g - idem w • vA X x₀), ⟨sub_mem_hat (smul_mem_hat hew hx) (smul_mem_hat ha h2), k2⟩, a, ha, ?_⟩` and prove the remaining obligations. Rewrite using `[← hey, k1]`. Introduce and unpack `⟨x, ⟨hx, hex⟩, a, ha, rfl⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Take `⟨k1, k2⟩` from `glue_bwd (mA Y X ι) (vA Y z) (t := inc D (Tu D u)⁻¹) he x (vA X x₀) g hex h1 a`. Use `⟨?_, k2⟩` and prove the remaining obligations. Rewrite using `[k1]`. Conclude with `(mem_hat_glueLat _).2 ⟨_, add_mem_hat hx (smul_mem_hat ha h2), _, mul_mem ha hew, rfl⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cmp_glue {w : Pl D.host.E} {g : Fin X.rank → EAf D} (h1 : idem w • g = g)
     (h2 : g - idem w • vA X x₀ ∈ hat L₀) (y : Fin Y.rank → EAf D) :
@@ -153,11 +153,11 @@ theorem cmp_glue {w : Pl D.host.E} {g : Fin X.rank → EAf D} (h1 : idem w • g
     exact (mem_hat_glueLat _).2 ⟨_, add_mem_hat hx (smul_mem_hat ha h2), _, mul_mem ha hew, rfl⟩
 
 /- English proof (translation)
-Establish `hew` using `idem_mem w`. Unfold `InCmp`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hy, hcy⟩`. Take `⟨x, hx, a, ha, rfl⟩` from `(mem_hat_glueLat y).1 hy`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Use `⟨hcy, ⟨x + a • vA X x₀, a * inc D (Tu D u)⁻¹, rfl⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `y' ⟨hy', -⟩`. Conclude with `(mem_hat_glueLat_iff_dual h hg _ _).1 hy y' hy'`. Introduce and unpack `⟨hcy, ⟨x, a, rfl⟩, hdual⟩`. Use `⟨(mem_hat_glueLat_iff_dual h hg x a).2 ?_, hcy⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `y'' hy''`. Establish `key : hA Y y'' (mA Y X ι *ᵥ x + a • vA Y z) = hA Y (idem w • y'') (mA Y X ι *ᵥ x + a • vA Y z)` using `by conv_lhs => rw [← hcy]`. Rewrite using `[hA_smul_right, hA_smul_left, cjA_cjA]`. Rewrite using `[key]`. Conclude with `hdual _ ⟨smul_mem_hat hew hy'', idem_smul_smul (idem_mul_self w) y''⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cmp_conj (h : IsLine Y X ι z u) (hg : IsGlueVec X u L₀ (vA X x₀)) (w : Pl D.host.E) (y : Fin Y.rank → EAf D) :
     InCmp (cjA D (idem w)) (Formalism.L2.Herm.crdLat Y (glueLat Y X ι z u L₀ x₀)) y ↔
@@ -182,9 +182,9 @@ theorem cmp_conj (h : IsLine Y X ι z u) (hg : IsGlueVec X u L₀ (vA X x₀)) (
     exact hdual _ ⟨smul_mem_hat hew hy'', idem_smul_smul (idem_mul_self w) y''⟩
 
 /- English proof (translation)
-Introduce `D u π Y X ι z h L₀ x₀ f₀ hL hg hf`. Unfold `IsGlued`. Use `⟨fg_glueLat hL.fg, ?_, ?_⟩` and prove the remaining obligations. Introduce `w e he hw y`. Take `rfl` from `eq_idem he`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `cmp_unit hg hw y`. Introduce `w e he hπ`. Take `rfl` from `eq_idem he`. Conclude with `⟨fun y => cmp_glue (hf w hπ).1 (hf w hπ).2 y, cmp_conj h hg w⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isGlued_glueLat : ∀ (D : D7) (u : D.what₂.Word) (π : 𝓞 D.host.E) (Y X : HSp D) (ι : X.V →ₗ[D.host.E] Y.V)
     (z : Y.V), IsLine Y X ι z u → ∀ (L₀ : Lat X) (x₀ : X.V) (f₀ : Pl D.host.E → Fin X.rank → EAf D),

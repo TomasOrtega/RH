@@ -12,7 +12,7 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.WeilSiegel.HypWitt
 
 /- English proof (translation)
-Use `Fintype.linearIndependent_iff.mpr fun g hg i => ?_` and prove the remaining obligations. Rewrite using `[Subsingleton.elim i 0]`. Establish `h` using `congrFun hg 0`. Simplify `h` using `[e0]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem e0_linearIndependent (K : Type) [CommRing K] (M : ℕ) : LinearIndependent K (e0 K M) := by
   refine Fintype.linearIndependent_iff.mpr fun g hg i => ?_
@@ -21,7 +21,7 @@ theorem e0_linearIndependent (K : Type) [CommRing K] (M : ℕ) : LinearIndepende
   simpa [e0] using h
 
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using `[gramR, hR, hform, JR, e0, Fin.sum_univ_succ, hypOne_zero_zero]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem gramR_e0 {F E : Type} [Field F] [Field E] [Algebra F E] (R : Type) [CommRing R] [Algebra F R]
     (σ : E →ₐ[F] E) {M : ℕ} (J : Matrix (Fin M) (Fin M) E) :
@@ -30,7 +30,7 @@ theorem gramR_e0 {F E : Type} [Field F] [Field E] [Algebra F E] (R : Type) [Comm
   simp [gramR, hR, hform, JR, e0, Fin.sum_univ_succ, hypOne_zero_zero]
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hσ M J hJ R _ _ _ _ _ hL x hx gx`. Conclude with `FreeTrans.transitive_free_isotropic F E σ hσ (M + 2) (hypOne J) (isHermND_hypOne σ hJ) R hL (e0 _ M) x (e0_linearIndependent _ M) hx (gramR_e0 R σ J) gx`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem witt_e0 : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (M : ℕ) (J : Matrix (Fin M) (Fin M) E), IsHermND σ J → ∀ (R : Type) [CommRing R] [Algebra F R] [TopologicalSpace R] [MeasurableSpace R] [BorelSpace R], IsLocR R → ∀ x : Fin 1 → Fin (M + 2) → R ⊗[F] E, LinearIndependent (R ⊗[F] E) x → gramR R σ (hypOne J) x = 0 → ∃ g : HA R σ (hypOne J), actW R σ (hypOne J) g (e0 _ M) = x := by
   intro F E _ _ _ _ _ σ hσ M J hJ R _ _ _ _ _ hL x hx gx

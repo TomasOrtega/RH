@@ -22,9 +22,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.KSAbLocus
 
 /- English proof (translation)
-Use `GlobalTheory.LocM.FrameBase.tanBasis_baseChange t φ (𝟙 (Sp R)) n _ (fun i => GlobalTheory.LieMet.isTan_tv (b i)) ?_` and prove the remaining obligations. Introduce `w hw`. Use `⟨b.repr (GlobalTheory.LieMet.tanOf hw), ?_, fun a ha => ?_⟩` and prove the remaining obligations. Use `show IsCombAtG t _ _ _ (tv (GlobalTheory.LieMet.tanOf hw)).left`. Rewrite using `[GlobalTheory.LieMet.isComb_iff]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(b.sum_repr _).symm`. Establish `h` using `(GlobalTheory.LieMet.isComb_iff b a (GlobalTheory.LieMet.tanOf hw)).1 ha`. Rewrite using `[h]`. Use extensionality with `i`. Simplify using `[Finsupp.single_apply]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem tanBasis_of_basis {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {R : Type} [CommRing R]
     (t : SAB H (Sp R)) {n : ℕ} (b : Module.Basis (Fin n) R (TanM (𝟙 (Sp R)) t.G)) {T : Type} [CommRing T]
@@ -44,15 +44,13 @@ theorem tanBasis_of_basis {E : Type} [Field E] [NumberField E] [IsCMField E] {H 
     simp [Finsupp.single_apply]
 
 /- English proof (translation)
-Introduce `E _ _ _ H R _ _ _ _ _ _ t P m tt gam _ htt hab n v' D DV`. Set `U : (Sp R).affineOpens` to `(Sp R).affineBasicOpen (U := (⟨⊤, isAffineOpen_top _⟩ : (Sp R).affineOpens)) ((Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom (∏ i, tt i))`. Set `ρ : R →+* Γ(Sp R, U.1)` to `((Sp R).presheaf.map (homOfLE ((Sp R).basicOpen_le (U := ⊤) ((Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom (∏ i, tt i)))).op).hom.comp (Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom`. Establish `hc : spMap ρ ≫ 𝟙 (Sp R) = chart U`. Rewrite using `[Category.comp_id]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `show Spec.map _ = U.2.fromSpec`. Rewrite using `[← (isAffineOpen_top (Sp R)).map_fromSpec U.2 (homOfLE ((Sp R).basicOpen_le (U := ⊤) ((Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom (∏ i, tt i)))).op, IsAffineOpen.fromSpec_top, Scheme.isoSpec_Spec]`. Rewrite using `[show CommRingCat.ofHom ρ = (Scheme.ΓSpecIso (CommRingCat.of R)).inv ≫ (Sp R).presheaf.map (homOfLE ((Sp R).basicOpen_le (U := ⊤) ((Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom (∏ i, tt i)))).op from rfl]`. Use `erw [Spec.map_comp]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨hv, hb⟩` from `GlobalTheory.KSAbLocus.tanBasis_of_basis t v' ρ`. Rewrite `hv`, `hb` using `[hc]`. Take `⟨PP', cub, sym, adj, prim, mm, -⟩` from `sabPull proved_CubePullSt (chart U) t`. Establish `h2 : (U.1 : (Sp R).Opens) = PrimeSpectrum.basicOpen (∏ i, tt i)` using `basicOpen_eq_of_affine (R := CommRingCat.of R) (∏ i, tt i)`. Establish `h4 : ∀ q : Sp R, q ∈ ((U.1 : (Sp R).Opens) : Set (Sp R)) → ∏ i, tt i ∉ q.asIdeal`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `q hq`. Rewrite `hq` using `[h2]`. Conclude with `hq`. Establish `hx : ∀ s, ∏ i, tt i ∉ ((chart U) s).asIdeal` using `fun s => h4 _ (by rw [← U.2.range_fromSpec]; exact ⟨s, rfl⟩)`. Take `⟨hP, hA, hK⟩` from `GlobalTheory.T.uniformisedTriple_abelianLocus_proper_relAmple E H R t P m tt htt hab _ (chart U) _ hx ⟨mm⟩`.
-
-Conclude with `GlobalTheory.T.exists_kodairaSpencer_affine_open_abelian_pullback E H (Sp R) t _ U le_rfl _ ⟨mm⟩ hP hA hK n _ hv hb DV`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exists_isKS_abLocus : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] [IsNoetherianRing R] [IsAdicComplete (maximalIdeal R) R] [Algebra ℚ R] (t : SAB H (Sp R)) (P : PELUnif (maximalIdeal R) t) (m : ℕ) (tt : Fin m → R) (gam : Fin m → LinearMap.BilinForm ℤ P.D.toPre.X), IsMonomial P.D.toPre tt gam → (∀ i, tt i ≠ 0) → (∀ p : Sp R, p ∈ abLocus t.G ↔ ∏ i, tt i ∉ p.asIdeal) → ∀ (n : ℕ) (v' : Module.Basis (Fin n) R (TanM (𝟙 (Sp R)) t.G)) (D : Derivation ℤ R R), ∀ (DV : Derivation ℤ Γ(Sp R, ((Sp R).affineBasicOpen (U := (⟨⊤, isAffineOpen_top _⟩ : (Sp R).affineOpens)) ((Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom (∏ i, tt i))).1) Γ(Sp R, ((Sp R).affineBasicOpen (U := (⟨⊤, isAffineOpen_top _⟩ : (Sp R).affineOpens)) ((Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom (∏ i, tt i))).1)), ∃ Θ₁, IsKS t ((Sp R).basicOpen ((Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom (∏ i, tt i))) ((Sp R).affineBasicOpen (U := (⟨⊤, isAffineOpen_top _⟩ : (Sp R).affineOpens)) ((Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom (∏ i, tt i))) (fun a => spMap (dualMap (((Sp R).presheaf.map (homOfLE ((Sp R).basicOpen_le (U := ⊤) ((Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom (∏ i, tt i)))).op).hom.comp (Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom)) ≫ (tv (v' a)).left) ⇑DV Θ₁ := by
   intro E _ _ _ H R _ _ _ _ _ _ t P m tt gam _ htt hab n v' D DV

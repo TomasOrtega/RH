@@ -5,7 +5,7 @@ import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCou
 namespace GlobalTheory
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨Formalism.L2.SG.NGPin.stepPinExists, Formalism.L2.SG.Pf.formNGC_holds⟩`.
+Supply the required witnesses or components.
 -/
 theorem stepPinExists_and_formNGC :
     Formalism.L2.SG.NGAnalytic.StepPinExists ∧ Formalism.L2.SG.NGVanish.FormNGC :=

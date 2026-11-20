@@ -6,9 +6,9 @@ open UpperTheory.Comparison₂ Deduction.CH Formalism Formalism.HC Formalism.D5 
   Formalism.LFunctionChainParameters.LChain Formalism.LFunctionChainParameters.LHost
 
 /- English proof (translation)
-Introduce `Λ la hla θ hθ0 hθ1 hW`. Take `⟨F, hG, hZ⟩` from `UpperTheory.Comparison₂.level_family Λ`. Rewrite using `[← hZ]`. Use `Deduction.zeroFree_of_rpow_window F (δ := la - 1) (C := 1) hθ0 hθ1 (by linarith) fun Y₀ => ?_` and prove the remaining obligations. Take `⟨Y, hY, hx⟩` from `hW Y₀`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨Y, hY, fun y hy => ?_⟩` and prove the remaining obligations. Establish `h1 : (1 : ℝ) + (la - 1) = la` using `by ring`. Rewrite `hy` using `[h1]`. Rewrite using `[hG, one_mul]`. Conclude with `hx y hy.1 hy.2`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Comparison₂.formB :
     ∀ Λ : Level, Λ.FormB := by

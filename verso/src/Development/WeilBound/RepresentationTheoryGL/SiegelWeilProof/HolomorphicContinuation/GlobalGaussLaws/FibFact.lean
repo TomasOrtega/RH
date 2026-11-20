@@ -11,19 +11,17 @@ variable {m n : ℕ} {X : Type*} [AddCommGroup X] [TopologicalSpace X] [IsTopolo
   [BorelSpace X]
 
 /- English proof (translation)
-Use `set ν : Measure (Fin m → Fin n → ℂ) := (μ.withDensity g).map π with hν`. Establish `hπm : Measurable π` using `hπ.measurable`. Establish `hint : ∀ a : (Fin m → Fin n → ℂ) → ℝ≥0∞, Measurable a → ∫⁻ u, a u ∂ν = ∫⁻ z, a (π z) * g z ∂μ`. Introduce `a ha`. Rewrite using `[hν, lintegral_map ha hπm]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e` using `lintegral_withDensity_eq_lintegral_mul μ hg (ha.comp hπm)`. Simplify using `only [Function.comp_def] at e`. Rewrite using `[e]`. Use `congr 1`. Use extensionality with `z`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `[mul_comm]`. Establish `hinv : ν.IsAddLeftInvariant`. Use `⟨fun u => ?_⟩` and prove the remaining obligations. Use extensionality with `A hA`. Rewrite using `[Measure.map_apply (measurable_const_add u) hA, ← lintegral_indicator_one (measurable_const_add u hA), ← lintegral_indicator_one hA, hint _ (measurable_one.indicator (measurable_const_add u hA)), hint _ (measurable_one.indicator hA)]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `key : ∀ z, ((fun x => u + x) ⁻¹' A).indicator 1 (π z) * g z = (fun z => A.indicator 1 (π z) * g z) (z + s u)`. Introduce `z`. Simplify using `only [map_add, hπs, hgs]`. Use `congr 1`. Distinguish the cases in `h : u + π z ∈ A`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Simplify using `[Set.indicator, h, add_comm]`. Simplify using `[Set.indicator, h, add_comm]`. Repeatedly rewrite using `[key]`. Conclude with `lintegral_add_right_eq_self (fun z => A.indicator 1 (π z) * g z) (s u)`. Establish `hfc : IsFiniteMeasureOnCompacts ν`.
+Simplify using the standard rewrite rules. Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨fun K hK => ?_⟩` and prove the remaining obligations. Rewrite using `[← lintegral_indicator_one hK.measurableSet, hint _ (measurable_one.indicator hK.measurableSet)]`. Conclude with `(hloc K hK).lt_top`. Establish `: (volume : Measure (Fin n → ℂ)).IsAddHaarMeasure` using `Measure.pi.isAddHaarMeasure _`. Establish `: (volume : Measure (Fin m → Fin n → ℂ)).IsAddHaarMeasure` using `Measure.pi.isAddHaarMeasure _`.
-
-Conclude with `⟨Measure.addHaarScalarFactor ν volume, Measure.isAddLeftInvariant_eq_smul ν volume⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem fib_meas (μ : Measure X) [μ.IsAddRightInvariant] (π : X →+ (Fin m → Fin n → ℂ)) (hπ : Continuous π)
     (s : (Fin m → Fin n → ℂ) →+ X) (hπs : ∀ u, π (s u) = u) (g : X → ℝ≥0∞) (hg : Measurable g)

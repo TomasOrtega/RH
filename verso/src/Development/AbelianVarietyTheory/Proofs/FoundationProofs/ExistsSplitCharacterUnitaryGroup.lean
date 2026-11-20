@@ -15,11 +15,9 @@ namespace GlobalTheory.SplitCharacter
 open GlobalTheory.NormSum.VacMove
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hx`. Establish `h1 : addOrderOf (QuotientAddGroup.mk x : G ⧸ T) ≠ 1`. Introduce `h1`. Rewrite `h1` using `[AddMonoid.addOrderOf_eq_one_iff, QuotientAddGroup.eq_zero_iff]`. Conclude with `hx h1`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨q, hq, hd⟩` from `Nat.exists_prime_and_dvd h1`. Take `⟨m, hm, hT⟩` from `h q hq`. Establish `: addOrderOf (QuotientAddGroup.mk x : G ⧸ T) ∣ m`. Rewrite using `[addOrderOf_dvd_iff_nsmul_eq_zero, ← QuotientAddGroup.mk_nsmul, QuotientAddGroup.eq_zero_iff]`. Conclude with `hT`.
-
-Conclude with `(Nat.Prime.coprime_iff_not_dvd hq).1 hm.symm (hd.trans this)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_of_local {G : Type} [AddCommGroup G] (T : AddSubgroup G) (x : G)
     (h : ∀ q : ℕ, q.Prime → ∃ m : ℕ, Nat.Coprime m q ∧ m • x ∈ T) : x ∈ T := by
@@ -53,11 +51,11 @@ def vanish (D : D7) (q : ℕ) (hq : q.Prime) : Ideal (AE D) where
     rwa [mul_comm] at this
 
 /- English proof (translation)
-Use `(GlobalTheory.IntAdeleComplete.integral_separated_complete D).1 x fun n hn => ?_` and prove the remaining obligations. Establish `: x ∈ (OhE D).toAddSubgroup.map (AddMonoidHom.mulLeft (n : AE D))`. Use `mem_of_local _ x fun q hq => ?_` and prove the remaining obligations. Take `⟨a, n', hn', rfl⟩` from `Nat.exists_eq_pow_mul_and_not_dvd hn.ne' q hq.ne_one`. Take `⟨m, -, hc, s, hs, h⟩` from `h q hq a`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨m * n', Nat.Coprime.mul_left hc ((Nat.Prime.coprime_iff_not_dvd hq).2 hn').symm, s, hs, ?_⟩` and prove the remaining obligations. Simplify using `only [AddMonoidHom.coe_mulLeft, nsmul_eq_mul]`. Use `push_cast`. Take the linear combination `-(n' : AE D) * h`. Take `⟨w, hw, h⟩` from `this`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨w, hw, h.symm⟩`.
+Supply the required witnesses or components.
 -/
 theorem eq_zero_of_zeroAt (x : AE D) (h : ∀ q : ℕ, q.Prime → ZeroAt D q x) : x = 0 := by
   refine (GlobalTheory.IntAdeleComplete.integral_separated_complete D).1 x fun n hn => ?_
@@ -73,9 +71,7 @@ theorem eq_zero_of_zeroAt (x : AE D) (h : ∀ q : ℕ, q.Prime → ZeroAt D q x)
   exact ⟨w, hw, h.symm⟩
 
 /- English proof (translation)
-Establish `h1 : (Ideal.Quotient.mk (vanish D q hq)).mapMatrix (g : Matrix (Fin N) (Fin N) (AE D)) = (Ideal.Quotient.mk (vanish D q hq)).mapMatrix 1`. Use extensionality with `i j`. Conclude with `Ideal.Quotient.eq.2 (h i j)`. Establish `h2` using `congrArg Matrix.det h1`. Rewrite `h2` using `[← RingHom.map_det, ← RingHom.map_det, Matrix.det_one]`.
-
-Conclude with `Ideal.Quotient.eq.1 h2`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem zeroAt_det {N q : ℕ} (hq : q.Prime) {g : GL (Fin N) (AE D)} (h : TrivAt D q g) :
     ZeroAt D q (((Matrix.GeneralLinearGroup.det g : (AE D)ˣ) : AE D) - 1) := by
@@ -93,21 +89,19 @@ def cutHom {R : Type} [CommRing R] (ε : R) (h : ε * ε = ε) : R →* R where
   map_mul' u v := by linear_combination (-(1 - u - v + u * v)) * h
 
 /- English proof (translation)
-Introduce `D N₀ χ N`. Take `⟨ε, -, h1, h2, h3⟩` from `exists_half_idem D`. Establish `h1' : sgA D ε * sgA D ε = sgA D ε` using `by rw [← map_mul, h1]`. Use `⟨χ.f.comp ((Units.map (cutHom ε h1)).comp ((Matrix.GeneralLinearGroup.det (n := Fin N) (R := AE D)).comp (GA D N).subtype)), fun k hk => ?_, fun g x hx hg => ?_⟩` and prove the remaining obligations. Establish `h0 : ε * (((Matrix.GeneralLinearGroup.det (k : GL (Fin N) (AE D)) : (AE D)ˣ) : AE D) - 1) = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `eq_zero_of_zeroAt _ fun q hq => ?_` and prove the remaining obligations. Distinguish the cases in `hi : InertQ D q`. Use `zeroAt_mul D hq ((h3 q hq).1 hi) (ε * (((Matrix.GeneralLinearGroup.det (k : GL (Fin N) (AE D)) : (AE D)ˣ) : AE D) - 1))` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Take the linear combination `(-(((Matrix.GeneralLinearGroup.det (k : GL (Fin N) (AE D)) : (AE D)ˣ) : AE D) - 1)) * (h1 + h2)`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Take a linear combination of the given relations to obtain the conclusion.
 
-Rewrite using `[mul_comm]`. Conclude with `zeroAt_mul D hq (zeroAt_det hq (hk q hq hi)) ε`. Establish `h4 : Units.map (cutHom ε h1) (Matrix.GeneralLinearGroup.det (k : GL (Fin N) (AE D))) = 1`. Use `ext`. Express the relevant statement in the definitionally equal form `(1 - ε) + ε * ((Matrix.GeneralLinearGroup.det (k : GL (Fin N) (AE D)) : (AE D)ˣ) : AE D) = 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `h0`. Express the relevant statement in the definitionally equal form `χ.f (Units.map (cutHom ε h1) (Matrix.GeneralLinearGroup.det (k : GL (Fin N) (AE D)))) = 1`. Rewrite using `[h4, map_one]`. Establish `h0 : (1 - (ε + sgA D ε)) * ((x : AE D) - 1) = 0`. Use `eq_zero_of_zeroAt _ fun q hq => ?_` and prove the remaining obligations.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hi : InertQ D q`. Rewrite using `[mul_comm]`. Conclude with `zeroAt_mul D hq (hx q hq hi) _`. Conclude with `zeroAt_mul D hq ((h3 q hq).2 hi) _`. Establish `hs : sgU D (Units.map (cutHom (sgA D ε) h1') x) = Units.map (cutHom ε h1) (sgU D x)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use `ext`. Express the relevant statement in the definitionally equal form `sgA D ((1 - sgA D ε) + sgA D ε * x) = (1 - ε) + ε * sgA D x`. Rewrite using `[map_add, map_mul, map_sub, map_one, sgA_sgA]`. Establish `h5 : Units.map (cutHom ε h1) x * Units.map (cutHom (sgA D ε) h1') x = x`. Use `ext`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `((1 - ε) + ε * x) * ((1 - sgA D ε) + sgA D ε * x) = (x : AE D)`. Take the linear combination `(1 - (x : AE D)) ^ 2 * h2 - h0`. Establish `h6 : Units.map (cutHom ε h1) (Matrix.GeneralLinearGroup.det (g : GL (Fin N) (AE D))) * (Units.map (cutHom (sgA D ε) h1') x * sgU D (Units.map (cutHom (sgA D ε) h1') x)) = x`. Rewrite using `[hs, mul_comm (Units.map (cutHom (sgA D ε) h1') x), ← mul_assoc, ← map_mul, ← hg, h5]`. Express the relevant statement in the definitionally equal form `χ.f (Units.map (cutHom ε h1) (Matrix.GeneralLinearGroup.det (g : GL (Fin N) (AE D)))) = χ.f x`.
-
-Use `conv_rhs => rw [← h6]`. Rewrite using `[map_mul, χ.norm, mul_one]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_split_character : ∀ (D : D7) (N₀ : ℕ) (χ : HeckeU D N₀) (N : ℕ), ∃ c : GA D N →* ℂˣ, (∀ k : GA D N, SuppInert D (k : GL (Fin N) (AE D)) → c k = 1) ∧ ∀ (g : GA D N) (x : (AE D)ˣ), (∀ q : ℕ, q.Prime → InertQ D q → ZeroAt D q ((x : AE D) - 1)) → x = Matrix.GeneralLinearGroup.det (g : GL (Fin N) (AE D)) * sgU D x → c g = χ.f x := by
   intro D N₀ χ N

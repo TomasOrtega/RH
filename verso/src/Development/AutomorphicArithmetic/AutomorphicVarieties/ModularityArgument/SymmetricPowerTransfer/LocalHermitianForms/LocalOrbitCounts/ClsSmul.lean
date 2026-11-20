@@ -11,9 +11,9 @@ variable {O K : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Fie
 
 omit [IsDomain O] [IsDiscreteValuationRing O] in
 /- English proof (translation)
-Use `⟨?_, eq_top_iff.2 fun b _ => ?_⟩` and prove the remaining obligations. Take `⟨s, rfl⟩` from `h.fg`. Use `⟨s.image ((z : Etau K τ) * ·), ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.coe_image]`. Conclude with `(congrArg SetLike.coe (Submodule.span_image (LinearMap.mulLeft O (z : Etau K τ)))).symm`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `Submodule.span_image (s := Λ) (LinearMap.mulLeft K (z : Etau K τ))` as an intermediate fact. Rewrite `this` using `[h.span]`. Conclude with `this.ge ⟨((z⁻¹ : (Etau K τ)ˣ) : Etau K τ) * b, trivial, by simp⟩`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem lat_mul {Λ : Set (Etau K τ)} (h : IsLat O τ Λ) (z : (Etau K τ)ˣ) : IsLat O τ (((z : Etau K τ) * ·) '' Λ) := by
   classical
@@ -27,9 +27,9 @@ private theorem lat_mul {Λ : Set (Etau K τ)} (h : IsLat O τ Λ) (z : (Etau K 
     exact this.ge ⟨((z⁻¹ : (Etau K τ)ˣ) : Etau K τ) * b, trivial, by simp⟩
 
 /- English proof (translation)
-Use extensionality with `S`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨s, rfl⟩`. Conclude with `⟨s * k, by simp [← Set.image_comp, Function.comp_def, smul_smul]⟩`. Introduce and unpack `⟨s, rfl⟩`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨s * k⁻¹, by simp [← Set.image_comp, Function.comp_def, smul_smul]⟩`.
+Supply the required witnesses or components.
 -/
 private theorem cls_smul (k : Kˣ) (Λ : Set (Etau K τ)) : cls τ (((k : K) • ·) '' Λ) = cls τ Λ := by
   ext S
@@ -40,15 +40,15 @@ private theorem cls_smul (k : Kˣ) (Λ : Set (Etau K τ)) : cls τ (((k : K) •
     exact ⟨s * k⁻¹, by simp [← Set.image_comp, Function.comp_def, smul_smul]⟩
 
 /- English proof (translation)
-The claim follows from `(h ▸ (⟨1, by simp⟩ : Λ ∈ cls τ Λ) : Λ ∈ cls τ Λ')`.
+A detailed English derivation is pending.
 -/
 private theorem of_cls {Λ Λ' : Set (Etau K τ)} (h : cls τ Λ = cls τ Λ') : ∃ k : Kˣ, Λ = ((k : K) • ·) '' Λ' :=
   (h ▸ (⟨1, by simp⟩ : Λ ∈ cls τ Λ) : Λ ∈ cls τ Λ')
 
 /- English proof (translation)
-Use extensionality with `S`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨_, ⟨s, rfl⟩, rfl⟩`. Conclude with `⟨s, by simp [← Set.image_comp, Function.comp_def]⟩`. Introduce and unpack `⟨s, rfl⟩`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨_, ⟨s, rfl⟩, by simp [← Set.image_comp, Function.comp_def]⟩`.
+Supply the required witnesses or components.
 -/
 private theorem cls_mul (z : (Etau K τ)ˣ) (Λ : Set (Etau K τ)) :
     (fun S => ((z : Etau K τ) * ·) '' S) '' cls τ Λ = cls τ (((z : Etau K τ) * ·) '' Λ) := by
@@ -60,9 +60,9 @@ private theorem cls_mul (z : (Etau K τ)ˣ) (Λ : Set (Etau K τ)) :
     exact ⟨_, ⟨s, rfl⟩, by simp [← Set.image_comp, Function.comp_def]⟩
 
 /- English proof (translation)
-Take `⟨y₁, y₂, hg, h⟩` from `lat_basis L hD hΛ`. Take `⟨a, b, e1⟩` from `(h _).1 (hx _ ((h y₁).2 ⟨1, 0, by simp⟩))`. Take `⟨c, d, e2⟩` from `(h _).1 (hx _ ((h y₂).2 ⟨0, 1, by simp⟩))`. Use `⟨a * d - b * c, mul_right_cancel₀ hg ?_⟩` and prove the remaining obligations. Establish `e3 : (x * y₂ * star (x * y₁)).im = QuadraticAlgebra.norm x * (y₂ * star y₁).im` using `by simp [QuadraticAlgebra.norm_def]; ring`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[← e3, e1, e2]`. Simplify using `[-algebraMap_smul]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem norm_int (L : IsLoc O Δ) (hD : τ ^ 2 - 4 ≠ 0) {Λ : Set (Etau K τ)} (hΛ : IsLat O τ Λ) {x : Etau K τ} (hx : ∀ y ∈ Λ, x * y ∈ Λ) :
     QuadraticAlgebra.norm x ∈ (algebraMap O K).range := by
@@ -75,29 +75,29 @@ private theorem norm_int (L : IsLoc O Δ) (hD : τ ^ 2 - 4 ≠ 0) {Λ : Set (Eta
   simp [-algebraMap_smul]; ring
 
 /- English proof (translation)
-Use `haveI := L.frac`. Establish `r1 : algebraMap O K r ≠ 0` using `(h1.map _).ne_zero`. Establish `n0 : 2 + τ ≠ 0` using `hr ▸ pow_ne_zero 2 r1`. Establish `hi : ((z⁻¹ : (Etau K τ)ˣ) : Etau K τ) = (2 + τ)⁻¹ • (1 + star ω)`. Use `Units.inv_eq_of_mul_eq_one_right ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hz]`. Apply the tactic sequence `ext <;> simp [QuadraticAlgebra.re_one, QuadraticAlgebra.im_one] <;> field_simp <;> ring`. Establish `hq : quo z = ω`. Rewrite using `[quo, hi, hz]`. Apply the tactic sequence `ext <;> simp [QuadraticAlgebra.re_one, QuadraticAlgebra.im_one] <;> field_simp <;> ring`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Establish `e` using `unimodular_image_mul_unit (s := s) (β := β) z Λ`. Rewrite `e` using `[hq]`. Express the relevant statement in the definitionally equal form `_ = Mu ω '' _ at e`. Take `⟨u, hu'⟩` from `hΛ.fg`. Take `⟨i, hi1⟩` from `h1.exists_right_inv`.
+Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hi2 : algebraMap O K r * algebraMap O K i = 1` using `by rw [← map_mul, hi1, map_one]`. Establish `hi3 : (2 + τ)⁻¹ = algebraMap O K (i ^ 2)` using `inv_eq_of_mul_eq_one_right (by rw [← hr, map_pow, ← mul_pow, hi2, one_pow])`. Rewrite using `[← e]`. Prove the components needed by the constructor for the conclusion. Introduce `H`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨k, hk⟩` from `lattice_homothety_of_eq_unimodular L hD hs hu hΛ (lat_mul hΛ z) H.symm`. Establish `h2` using `norm_int L hD hΛ (x := (k : K) • ((z⁻¹ : (Etau K τ)ˣ) : Etau K τ)) fun y hy => by`. Take `⟨x, hx, e'⟩ : (k : K) • y ∈ ((z : Etau K τ) * ·) '' Λ` from `hk ▸ ⟨y, hy, rfl⟩`. Rewrite using `[smul_mul_assoc, ← mul_smul_comm, ← e']`. Simplify using `using hx`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result.
 
-Take `⟨n, hn⟩` from `h2`. Establish `h3 : (k : K) ^ 2 = algebraMap O K (n * r ^ 2)`. Rewrite using `[map_mul, map_pow, hr, hn, hi]`. Simplify using `[QuadraticAlgebra.norm_def, QuadraticAlgebra.re_one, QuadraticAlgebra.im_one]`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Take `⟨k₀, hk₀⟩` from `IsIntegrallyClosed.algebraMap_eq_of_integral (R := O) (IsIntegral.of_pow (x := (k : K)) (n := 2) (by norm_num) (h3 ▸ isIntegral_algebraMap))`. Introduce `y hy`. Take `⟨x, hx, e'⟩ : (z : Etau K τ) * y ∈ ((k : K) • ·) '' Λ` from `hk ▸ ⟨y, hy, rfl⟩`. Establish `: ω * y = k₀ • x - y`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← algebraMap_smul K, hk₀]`. Simplify using `only at e'`. Rewrite using `[e', hz]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `*` using `[this, hu']`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `sub_mem (Submodule.smul_mem _ _ hx) hy`. Introduce `H`. Use `congr 1`. Rewrite `H`, the goal using `[hu']`. Use extensionality with `y`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the hypotheses and the conclusion using the stated equalities. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, rfl⟩`. Simplify using `only [hz, add_mul, one_mul]`. Conclude with `add_mem hx (H x hx)`. Introduce `hy`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨((z⁻¹ : (Etau K τ)ˣ) : Etau K τ) * y, ?_, by simp⟩` and prove the remaining obligations. Establish `: ((z⁻¹ : (Etau K τ)ˣ) : Etau K τ) * y = (i ^ 2) • ((r ^ 2 - 1) • y - ω * y)`. Rewrite using `[hi, hi3, ← algebraMap_smul K (i ^ 2), ← algebraMap_smul K (r ^ 2 - 1), map_sub, map_pow _ r, hr, map_one, smul_mul_assoc]`. Use `congr 1`. Apply the tactic sequence `rw [show (star ω : Etau K τ) = algebraMap K _ τ - ω by ext <;> simp, Algebra.smul_def]`.
+Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [map_sub, map_add, map_one, map_ofNat]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ _ (sub_mem (Submodule.smul_mem _ _ hy) (H y hy))`.
+A detailed English derivation is pending.
 -/
 private theorem stab_iff (L : IsLoc O Δ) (hD : τ ^ 2 - 4 ≠ 0) {s : K} {β : Etau K τ} (hs : s ≠ 0) (hu : IsUnit β) {r : O} (h1 : IsUnit r)
     (hr : algebraMap O K r ^ 2 = 2 + τ) {z : (Etau K τ)ˣ} (hz : (z : Etau K τ) = 1 + ω) {Λ : Set (Etau K τ)} (hΛ : IsLat O τ Λ) :
@@ -165,47 +165,45 @@ private theorem stab_iff (L : IsLoc O Δ) (hD : τ ^ 2 - 4 ≠ 0) {s : K} {β : 
 end
 
 /- English proof (translation)
-Introduce `O K _ _ _ _ _ Δ τ L hD r hr2 hr c hc j χ hj hχ a ha z hz t`. Use `haveI := L.frac`. Establish `h2 : (2 : K) ≠ 0`. Use `(L.two.map (algebraMap O K)).ne_zero` as an intermediate fact. Rewrite `this` using `[map_ofNat]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `h1 : IsUnit r`. Assume the negation of the conclusion as `h'`. Establish `: r - (r - 2) ∈ IsLocalRing.maximalIdeal O` using `sub_mem h' hr2`. Rewrite `this` using `[sub_sub_cancel]`. Conclude with `this L.two`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `h1' : IsUnit (2 + r)`. Assume the negation of the conclusion as `h'`. Establish `: (2 + r) - (r - 2) ∈ IsLocalRing.maximalIdeal O` using `sub_mem h' hr2`. Rewrite `this` using `[show (2 + r) - (r - 2) = 2 * 2 by ring]`. Conclude with `this (L.two.mul L.two)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `r1 : algebraMap O K r ≠ 0` using `(h1.map _).ne_zero`. Establish `n0 : 2 + τ ≠ 0` using `hr ▸ pow_ne_zero 2 r1`. Establish `m0 : 2 - τ ≠ 0` using `fun h => hD (by linear_combination (-(2 + τ)) * h)`. Take `⟨ε₁, s₁, hs₁, e₁⟩` from `L.even`. Establish `hσ : Δ * s₁⁻¹ ^ 2 = algebraMap O K ε₁` using `by rw [e₁]; field_simp`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hσ0 : s₁⁻¹ ≠ 0` using `inv_ne_zero hs₁`. Establish `hd : dLam (algebraMap K (Lsq K Δ) (algebraMap O K r)) z = ofE Δ ((algebraMap O K r)⁻¹ • (1 + ω))`. Establish `hi : ((z⁻¹ : (Etau K τ)ˣ) : Etau K τ) = (2 + τ)⁻¹ • (1 + star ω)`. Use `Units.inv_eq_of_mul_eq_one_right ?_` and prove the remaining obligations. Rewrite using `[hz]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable.
 
-Apply the tactic sequence `ext <;> simp [QuadraticAlgebra.re_one, QuadraticAlgebra.im_one] <;> field_simp <;> ring`. Rewrite using `[dLam, hi, ← hr]`. Generalize the expression as in `algebraMap O K r = R at r1`. Apply the tactic sequence `ext <;> simp [ofE, QuadraticAlgebra.re_one, QuadraticAlgebra.im_one] <;> field_simp <;> ring`. Take `⟨ε₀, s₀, hs₀, e₀⟩` from `hc`.
+Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `hε₀ : algebraMap O K ε₀ ≠ 0` using `(ε₀.isUnit.map _).ne_zero`. Establish `hc0 : c ≠ 0` using `fun h => mul_ne_zero hε₀ (pow_ne_zero 2 hs₀) (by rw [← e₀, h, zero_mul])`. Apply the tactic sequence `have hq : ∀ x : K, hs (τ ^ 2 - 4) x * hs (τ ^ 2 - 4) x = 1 := fun x => by unfold hs; split_ifs <;> norm_num`. Establish `hm` using `hsMul O K Δ L _ (-2 * c) t hD (mul_ne_zero (neg_ne_zero.2 h2) hc0) t.ne_zero`. Rewrite using `[hd]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction.
 
-Use `split_ifs with H`. Rewrite `hm` using `[H, hq]`. Choose the witnesses or unpack the hypotheses as in `⟨p, q, hpq⟩ : ∃ p q : K, p ^ 2 - (τ ^ 2 - 4) * q ^ 2 = -2 * c * t := by`. Assume the negation of the conclusion as `hn`. Rewrite `hm` using `[hs, if_neg hn]`.
+Rewrite the indicated hypotheses using the stated equalities. Evaluate the numerical expressions. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Evaluate the numerical expressions using `at hm`. Set `ε : Oˣ` to `-ε₀`. Set `s : K` to `s₀ / (algebraMap O K r * (2 - τ))`. Establish `hs' : s ≠ 0` using `div_ne_zero hs₀ (mul_ne_zero r1 m0)`. Establish `hc' : c = (τ ^ 2 - 4) * algebraMap O K ε * s ^ 2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Establish `h5 : s ^ 2 * ((2 + τ) * (2 - τ) ^ 2) = s₀ ^ 2`. Rewrite using `[← hr, ← mul_pow, ← mul_pow, div_mul_cancel₀ _ (mul_ne_zero r1 m0)]`. Use `mul_right_cancel₀ (mul_ne_zero n0 (pow_ne_zero 2 m0)) ?_` and prove the remaining obligations. Simplify using `only [ε, Units.val_neg, map_neg]`. Take the linear combination `(2 + τ) * (2 - τ) * e₀ + (τ ^ 2 - 4) * algebraMap O K ε₀ * h5`.
+Take a linear combination of the given relations to obtain the conclusion. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts.
 
-Set `β : Etau K τ` to `c⁻¹ • ((ω - star ω) * ⟨p - τ * q, 2 * q⟩)`. Establish `hN : QuadraticAlgebra.norm β * c = 2 * t * (τ ^ 2 - 4)`. Simplify using `[β, QuadraticAlgebra.norm_def]`. Clear the denominators using the available nonvanishing facts. Take the linear combination `(-(τ ^ 2 - 4)) * hpq`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hβ : QuadraticAlgebra.norm β * algebraMap O K ε * s ^ 2 = 2 * t` using `mul_right_cancel₀ hD (by rw [← hN]; nth_rewrite 1 [hc']; ring)`. Establish `hu : IsUnit β` using `QuadraticAlgebra.isUnit_iff_norm_isUnit.2 (IsUnit.mk0 _ fun h => mul_ne_zero h2 t.ne_zero (by rw [← hβ, h]; ring))`. Establish `ga : gOrb O j χ a = vcount O τ ω`. Rewrite using `[gLat O K Δ τ L hD j χ hj hχ a 1 1 (by simp [ha, QuadraticAlgebra.norm_def]), ha]; simp`. Rewrite using `[ga]`.
+Rewrite the conclusion using the stated equalities. Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `letI := torAct (K := K) Δ τ`. Use `letI := mulAct τ`. Establish `kX : ∀ Λ, IsLat O τ Λ → ((∃ S, IsLat O τ S ∧ (∀ y ∈ S, ω * y ∈ S) ∧ cls τ Λ = cls τ S) ↔ ∀ y ∈ Λ, ω * y ∈ Λ)` using `fun Λ hΛ => by`. Use `⟨?_, fun h => ⟨Λ, hΛ, h, rfl⟩⟩` and prove the remaining obligations. Introduce and unpack `⟨S, -, hS, e⟩`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact.
 
-Take `⟨k, rfl⟩` from `of_cls e`. Introduce and unpack `_ ⟨y, hy, rfl⟩`. Conclude with `⟨_, hS y hy, (mul_smul_comm _ _ _).symm⟩`. Establish `kT : ∀ Λ, IsLat O τ Λ → (IsFix O c (ofE Δ ((algebraMap O K r)⁻¹ • (1 + ω))) ((t : K) • (1 : EL Δ τ)) (up Δ s₁⁻¹ (S0 s β Λ)) ↔ ∀ y ∈ Λ, ω * y ∈ Λ)` using `fun Λ hΛ => by`. Rewrite using `[← stab_iff L hD hs' hu h1 hr hz hΛ]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Use `⟨fun h => ?_, fix_up L hσ h1 h1' hr (isUnimodular_cliffordLatticeStabilizer L hD hs' hu hc' hβ hΛ)⟩` and prove the remaining obligations. Take `⟨S, -, h3, h4⟩` from `fix_down L hσ h1 h1' hr h`. Rewrite using `[up_inj hσ0 h4]` and apply the resulting hypothesis. Establish `inv : ∀ (w : (Etau K τ)ˣ) (X : Set (Set (Etau K τ))), (∃ S, IsLat O τ S ∧ (∀ y ∈ S, ω * y ∈ S) ∧ X = cls τ S) → ∃ S, IsLat O τ S ∧ (∀ y ∈ S, ω * y ∈ S) ∧ w • X = cls τ S`. Introduce and unpack `w _ ⟨S, a1, a2, rfl⟩`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨_, lat_mul a1 w, ?_, cls_mul w S⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨y, hy, rfl⟩`. Conclude with `⟨_, a2 y hy, mul_left_comm _ _ _⟩`. Use `wTrans _ _ _ _ _ _ (fun T X => ∃ Λ, IsLat O τ Λ ∧ T = up Δ s₁⁻¹ (S0 s β Λ) ∧ X = cls τ Λ) (fun w S => if_congr (isFix_tor _ _ _ _ _) rfl rfl) (fun w X => if_congr ⟨fun h => ?_, inv w X⟩ rfl rfl) ?_ ?_ (fun T hT => ?_) fun X hX => ?_` and prove the remaining obligations. Simplify using `using inv w⁻¹ _ h`.
+Simplify to obtain the desired conclusion from the available facts. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Introduce and unpack `w _ _ ⟨Λ, hΛ, rfl, rfl⟩`. Conclude with `⟨_, lat_mul hΛ w, (tor_up _ w _).trans (by rw [unimodular_image_mul_unit]; rfl), cls_mul w Λ⟩`. Introduce and unpack `_ _ ⟨Λ, hΛ, rfl, rfl⟩`. Conclude with `if_congr ((kT Λ hΛ).trans (kX Λ hΛ).symm) rfl rfl`. Take `⟨S, a1, -, rfl⟩` from `fix_down L hσ h1 h1' hr (by by_contra h; exact hT (if_neg h))`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨Λ, hΛ, rfl⟩` from `exists_lat L hc' hβ a1`. Use `⟨_, ⟨Λ, hΛ, rfl, rfl⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨Λ', hΛ', e, rfl⟩`. Take `⟨k, rfl⟩` from `lattice_homothety_of_eq_unimodular L hD hs' hu hΛ hΛ' (up_inj hσ0 e)`. Conclude with `cls_smul k Λ`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨Λ, hΛ, -, rfl⟩ : ∃ S, IsLat O τ S ∧ (∀ y ∈ S, ω * y ∈ S) ∧ X = cls τ S` from `by by_contra h; exact hX (if_neg h)`. Use `⟨_, ⟨Λ, hΛ, rfl, rfl⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨Λ', hΛ', rfl, e⟩`. Take `⟨k, rfl⟩` from `of_cls e`. Rewrite using `[unimodular_image_smul_eq]`.
+Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Use `finsum_eq_zero_of_forall_eq_zero fun o => mul_eq_zero_of_right _ (if_neg fun h => H ?_)` and prove the remaining obligations. Take `⟨S, a1, -, -⟩` from `fix_down L hσ h1 h1' hr h`. Break down `a1.iso L t.ne_zero with h3 | h3` into its components or cases. Rewrite using `[(hsLaw O K Δ L).2.2.2 _ _ hD h3, (hsLaw O K Δ L).2.2.2 _ _ hD h3]`. Rewrite `hm` using `[hs, if_pos h3]`.
-
-Take the linear combination `(-hs (τ ^ 2 - 4) (-2 * c)) * hm - hs (τ ^ 2 - 4) (t : K) * hq (-2 * c)`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Sym.Loc.caseP :
     UpperTheory.V.Z.Sym.Loc.CaseP := by

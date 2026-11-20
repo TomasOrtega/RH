@@ -14,7 +14,7 @@ variable {R : Type} [CommRing R] {p : ℕ} {G : Over (Spec (CommRingCat.of R))} 
   {N : Type} [AddCommGroup N] {pt : N → (sp (R₀ := R) R ⟶ G)}
 
 /- English proof (translation)
-Establish `h` using `hpt.add 0 0`. Rewrite `h` using `[add_zero]`. Conclude with `(mul_eq_left.1 h.symm)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pt_zero (hpt : IsTorsPts G p pt) : pt 0 = 1 := by
   have h := hpt.add 0 0
@@ -22,7 +22,7 @@ theorem pt_zero (hpt : IsTorsPts G p pt) : pt 0 = 1 := by
   exact (mul_eq_left.1 h.symm)
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => rw [zero_nsmul, pow_zero, pt_zero hpt]`. Consider the case `succ n ih => rw [succ_nsmul, hpt.add, ih, pow_succ]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem pt_nsmul (hpt : IsTorsPts G p pt) (n : ℕ) (x : N) : pt (n • x) = pt x ^ n := by
   induction n with
@@ -30,7 +30,7 @@ theorem pt_nsmul (hpt : IsTorsPts G p pt) (n : ℕ) (x : N) : pt (n • x) = pt 
   | succ n ih => rw [succ_nsmul, hpt.add, ih, pow_succ]
 
 /- English proof (translation)
-Use `choose φ hφ using fun x => (T.univ R (pt x) ((hpt.range _).2 ⟨x, rfl⟩)).exists`. Conclude with `⟨φ, hφ⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_pts (T : TorsRep G p) (hpt : IsTorsPts G p pt) :
     ∃ φ : N → (T.A →ₐ[R] R), ∀ x, spMap (φ x) ≫ T.y = pt x := by
@@ -39,9 +39,9 @@ theorem exists_pts (T : TorsRep G p) (hpt : IsTorsPts G p pt) :
 
 omit [AddCommGroup N] in
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, ha⟩`. Conclude with `⟨a, funext fun x => ha x _ (hφ x)⟩`. Introduce and unpack `⟨a, rfl⟩`. Use `⟨a, fun x ψ h => ?_⟩` and prove the remaining obligations.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[tors_ext T (h.trans (hφ x).symm)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mem_torsFun {C : Type} [Field C] [Algebra R C] (T : TorsRep G p)
     {φ : N → (T.A →ₐ[R] R)} (hφ : ∀ x, spMap (φ x) ≫ T.y = pt x) (g : N → C) :
@@ -55,7 +55,7 @@ theorem mem_torsFun {C : Type} [Field C] [Algebra R C] (T : TorsRep G p)
 
 omit [AddCommGroup N] in
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Conclude with `fun h k hk => h k hk _ (hφ k)`. Introduce `h k hk ψ e`. Rewrite using `[tors_ext T (e.trans (hφ k).symm)]`. Conclude with `h k hk`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_vanIdeal (T : TorsRep G p) {φ : N → (T.A →ₐ[R] R)}
     (hφ : ∀ x, spMap (φ x) ≫ T.y = pt x) (K : Set N) (a : T.A) :
@@ -69,17 +69,15 @@ theorem mem_vanIdeal (T : TorsRep G p) {φ : N → (T.A →ₐ[R] R)}
 end
 
 /- English proof (translation)
-Introduce `p _ C _ _ _ v R _ _ hv hp G _ _ T N _ _ _ pt hpt`. Take `⟨Δ, ε, s, hΔ, -, -, h1, h2, h3, h4, h5⟩` from `tors_alg R p G T`. Take `⟨φ, hφ⟩` from `exists_pts T hpt`. Establish `hsurj : ∀ ψ : T.A →ₐ[R] R, ∃ x, spMap ψ ≫ T.y = pt x` using `fun ψ => ((hpt.range _).1 (tors_pow T ψ)).imp fun _ h => h.symm`. Establish `hbij : Function.Bijective φ` using `⟨fun x y h => hpt.inj (by rw [← hφ, ← hφ, h]), fun ψ => (hsurj ψ).imp fun x h => tors_ext T ((hφ x).trans h.symm)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `: Bialgebra R T.A` to `Bialgebra.ofAlgHom Δ ε h1 h2 h3`. Set `: HopfAlgebra R T.A` to `HopfAlgebra.ofAlgHom s h4 (by`. Express the relevant statement in the definitionally equal form `AlgHom.comp _ Δ = AlgHom.comp _ ε`. Rewrite using `[← h4]`. Use `conv_lhs => rw [← h5, ← AlgHom.comp_assoc]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Apply the tactic sequence `ext <;> simp)`. Establish `: Coalgebra.IsCocomm R T.A` using `⟨congr(($h5).toLinearMap)⟩`. Use `T.fin` as an intermediate fact. Use `T.free` as an intermediate fact.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨hsep, -, AA, hAA⟩` from `hopfalg p C v R hv hp T.A N φ hbij (fun x y a => by`. Establish `: φ (x + y) = (Algebra.TensorProduct.lift (φ x) (φ y) (fun _ _ => Commute.all _ _)).comp Δ`. Apply `tors_ext T` to reduce the goal to its premises. Rewrite using `[lift_comul T Δ hΔ, Algebra.TensorProduct.lift_comp_includeLeft, show (Algebra.TensorProduct.lift (φ x) (φ y) (fun _ _ => Commute.all _ _)).comp Algebra.TensorProduct.includeRight = φ y by ext; simp, hφ, hφ, hφ, hpt.add]`. Rewrite using `[this]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use the proof step `rfl)`. Use `⟨⟨AA, ?_⟩, fun a ha => hsep a fun x => ha _, fun x => ?_, hsurj, fun x => hpt.inj ?_⟩` and prove the remaining obligations. Use extensionality with `g`. Rewrite using `[hAA, mem_torsFun T hφ]`. Conclude with `T.univ R (pt x) ((hpt.range _).2 ⟨x, rfl⟩)`.
-
-Rewrite using `[pt_nsmul hpt, pt_zero hpt]`. Conclude with `(hpt.range _).2 ⟨x, rfl⟩`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tors_hopf : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C] [CharZero C] (v : Valuation C NNReal) (R : Type) [CommRing R] [Algebra R C], v.Integers R → v (p : C) < 1 → ∀ (G : Over (Spec (CommRingCat.of R))) [GrpObj G] [IsCommMonObj G], ∀ (T : TorsRep G p) (N : Type) [AddCommGroup N] [Fintype N] [DecidableEq N] (pt : N → (sp (R₀ := R) R ⟶ G)), IsTorsPts G p pt → (∃ AA : HopfOrder (C := C) R N, AA.carrier = torsFun C T pt) ∧ (∀ a : T.A, (∀ φ : T.A →ₐ[R] R, φ a = 0) → a = 0) ∧ (∀ x, ∃! φ : T.A →ₐ[R] R, spMap φ ≫ T.y = pt x) ∧ (∀ φ : T.A →ₐ[R] R, ∃ x, spMap φ ≫ T.y = pt x) ∧ ∀ x : N, p • x = 0 := by
   intro p _ C _ _ _ v R _ _ hv hp G _ _ T N _ _ _ pt hpt

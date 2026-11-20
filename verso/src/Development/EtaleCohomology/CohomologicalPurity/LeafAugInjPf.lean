@@ -18,7 +18,7 @@ def EtaleAugInjAt : Prop := ∀ (J : Type) [Preorder J] (D : J ⥤ Scheme.{0}) (
       Bdy _ n (op (V : Scheme.{0})) (((((chainsP R).obj (hoc (D ⋙ yoneda))).X n).map V.ι.op).hom x)
 
 /- English proof (translation)
-Take `⟨y, rfl⟩` from `h`. Use `⟨((K.X (n + 1)).map g.op).hom y, ?_⟩` and prove the remaining obligations. Use `(K.d (n + 1) n).naturality g.op` as an intermediate fact. Conclude with `(ConcreteCategory.congr_hom this y).symm.trans rfl |>.symm ▸ rfl`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem bdy_res {R : Type} [CommRing R] (K : PCx R) (n : ℕ) {U V : Scheme.{0}} (g : V ⟶ U) (x : (K.X n).obj (op U))
     (h : Bdy K n (op U) x) : Bdy K n (op V) (((K.X n).map g.op).hom x) := by
@@ -35,7 +35,7 @@ def bdySieve {R : Type} [CommRing R] (K : PCx R) (n : ℕ) (T : Scheme.{0}) (x :
     rw [e]; exact bdy_res K n g _ hf
 
 /- English proof (translation)
-Introduce `J _ D X c ho hcov hdir hc R _ n T x hx hb`. Use `⟨bdySieve _ n T.unop x, hc0 _ _ fun t => ?_, fun U f hf => hf⟩` and prove the remaining obligations. Take `⟨V, hV, h⟩` from `ha J D X c ho hcov hdir hc R n T x hx hb t`. Conclude with `⟨V, hV, h⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem EtaleAugInj_of_openCovSieve (hc0 : EtaleOpenCovSieve) (ha : EtaleAugInjAt) : LeafAugInj := by
   intro J _ D X c ho hcov hdir hc R _ n T x hx hb
@@ -44,9 +44,9 @@ theorem EtaleAugInj_of_openCovSieve (hc0 : EtaleOpenCovSieve) (ha : EtaleAugInjA
   exact ⟨V, hV, h⟩
 
 /- English proof (translation)
-Introduce `T S h`. Use `choose V hV hS using h`. Apply `Scheme.zariskiTopology_le_etaleTopology` to reduce the goal to its premises. Rewrite using `[Scheme.zariskiTopology, Scheme.mem_grothendieckTopology_iff]`. Use `⟨Scheme.Cover.mkOfCovers T (fun t => (V t : Scheme.{0})) (fun t => (V t).ι) (fun x => ⟨x, ⟨x, hV x⟩, by simp⟩), ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `Y g ⟨i⟩`. Conclude with `hS i`.
+A detailed English derivation is pending.
 -/
 theorem etaleOpenCovSieve : EtaleOpenCovSieve := by
   intro T S h
@@ -59,7 +59,7 @@ theorem etaleOpenCovSieve : EtaleOpenCovSieve := by
   exact hS i
 
 /- English proof (translation)
-The claim follows from `EtaleAugInj_of_openCovSieve etaleOpenCovSieve ha`.
+A detailed English derivation is pending.
 -/
 theorem EtaleAugInj_of_augInjAt (ha : EtaleAugInjAt) : LeafAugInj := EtaleAugInj_of_openCovSieve etaleOpenCovSieve ha
 

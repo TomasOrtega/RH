@@ -31,7 +31,7 @@ def transl {A : Over (Sp K)} [GrpObj A] {B : Type} [CommRing B] (φ : K →+* B)
   if h : ∃ w, IsTransl φ x v w then h.choose else spMap (algebraMap B (DualNumber B)) ≫ x
 
 /- English proof (translation)
-Establish `h : ∃ w, IsTransl φ x v w` using `exists_isTransl φ x hx v`. Rewrite using `[transl, dif_pos h]`. Conclude with `h.choose_spec`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isTransl_transl {A : Over (Sp K)} [GrpObj A] {B : Type} [CommRing B] (φ : K →+* B) (x : Sp B ⟶ A.left)
     (hx : x ≫ A.hom = spMap φ) (v : epsR K ⟶ A) : IsTransl φ x v (transl φ x v) := by
@@ -64,7 +64,7 @@ def chartPt {A : Over (Sp K)} [GrpObj A] (A' : Over (Sp (DualNumber K))) (i : A.
   if h : ∃ l, IsChartPt A' m m' Ω δ u θ Wo g x l then h.choose else x ≫ i
 
 /- English proof (translation)
-Rewrite using `[chartPt, dif_pos h]`. Conclude with `h.choose_spec`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isChartPt_chartPt {A : Over (Sp K)} [GrpObj A] (A' : Over (Sp (DualNumber K))) (i : A.left ⟶ A'.left)
     {Z : Scheme.{0}} (m : A.left ⟶ Z) (m' : A'.left ⟶ Z) (Ω : Z.Opens) (δ : Γ(Z, Ω) → Γ(Z, Ω)) {n : ℕ}
@@ -76,7 +76,7 @@ theorem isChartPt_chartPt {A : Over (Sp K)} [GrpObj A] (A' : Over (Sp (DualNumbe
   exact h.choose_spec
 
 /- English proof (translation)
-Rewrite using `[valR, dif_pos h]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem valR_eq_ev {Z : Scheme.{0}} {S : Type} [CommRing S] (z : Sp S ⟶ Z) (U : Z.Opens) (h : ⊤ ≤ z ⁻¹ᵁ U)
     (f : Γ(Z, U)) : valR z U f = ev z U h f := by
@@ -84,9 +84,9 @@ theorem valR_eq_ev {Z : Scheme.{0}} {S : Type} [CommRing S] (z : Sp S ⟶ Z) (U 
   rfl
 
 /- English proof (translation)
-Take `⟨h1, h2, h3⟩` from `hl`. Take `⟨h1', h2', h3'⟩` from `hl'`. Establish `e : ev (l ≫ m') Ω.1 h2 = ev (l' ≫ m') Ω.1 h2'`. Use extensionality with `f`. Rewrite using `[← valR_eq_ev, ← valR_eq_ev, h3 f, h3' f]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Establish `e2 : l ≫ m' = l' ≫ m'`. Rewrite using `[← GlobalTheory.FlagMod.spMap_ev (l ≫ m') Ω.2 h2, ← GlobalTheory.FlagMod.spMap_ev (l' ≫ m') Ω.2 h2', e]`. Conclude with `hm'.hom_ext e2 (h1.trans h1'.symm)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsChartPt.unique {K : Type} [Field K] {A : Over (Sp K)} [GrpObj A] {A' : Over (Sp (DualNumber K))}
     {X Z : Scheme.{0}} {h : Z ⟶ X} {y1 : Sp (DualNumber K) ⟶ X} {m : A.left ⟶ Z} {m' : A'.left ⟶ Z}

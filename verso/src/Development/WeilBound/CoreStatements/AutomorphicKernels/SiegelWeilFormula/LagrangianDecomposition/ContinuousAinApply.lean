@@ -21,31 +21,29 @@ Both sides reduce to the same expression.
 theorem inr_two_apply (v : κ'' → W) : (inr2 v : κ' ⊕ κ'' → W) = Sum.elim (0 : κ' → W) v := rfl
 
 /- English proof (translation)
-Apply the tactic sequence `funext j; rcases j with j | j <;> simp [Ain_apply, sc, inr_two_apply]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem Ain_eq (s : ℝ) (x : κ' ⊕ κ'' → W) : Ain s x = Ain 0 x + s • inr2 (x ∘ Sum.inr) := by
   funext j; rcases j with j | j <;> simp [Ain_apply, sc, inr_two_apply]
 
 /- English proof (translation)
-Apply the tactic sequence `funext j; rcases j with j | j <;> simp [Ain_apply, sc]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem Ain_one (x : κ' ⊕ κ'' → W) : Ain 1 x = x := by
   funext j; rcases j with j | j <;> simp [Ain_apply, sc]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `j`. Simplify using `[Ain_apply, sc]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem Ain_zero_inr (x : κ' ⊕ κ'' → W) : Ain 0 x ∘ Sum.inr = (0 : κ'' → W) := by
   funext j; simp [Ain_apply, sc]
 
 /- English proof (translation)
-Establish `hd : ∀ s : ℝ, HasDerivAt (fun s => f (Ain s x)) (fderiv ℝ f (Ain s x) (inr2 (x ∘ Sum.inr))) s`. Introduce `s`. Establish `hγ : HasDerivAt (fun s : ℝ => Ain 0 x + s • inr2 (x ∘ Sum.inr)) (inr2 (x ∘ Sum.inr)) s`. Simplify using `using ((hasDerivAt_id s).smul_const (inr2 (x ∘ Sum.inr) : κ' ⊕ κ'' → W)).const_add (Ain 0 x)`. Establish `hγ' : HasDerivAt (fun s : ℝ => Ain s x) (inr2 (x ∘ Sum.inr)) s`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Rewrite using `[show (fun s : ℝ => Ain s x) = fun s : ℝ => Ain 0 x + s • inr2 (x ∘ Sum.inr) from funext fun s => Ain_eq s x]`. Conclude with `hγ`. Conclude with `(f.differentiableAt (x := Ain s x)).hasFDerivAt.comp_hasDerivAt_of_eq s hγ' rfl`. Establish `hc : Continuous fun s : ℝ => fderiv ℝ f (Ain s x) (inr2 (x ∘ Sum.inr))`. Establish `h1 : Continuous fun s : ℝ => Ain s x`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[show (fun s : ℝ => Ain s x) = fun s : ℝ => Ain 0 x + s • inr2 (x ∘ Sum.inr) from funext fun s => Ain_eq s x]`. Conclude with `continuous_const.add (continuous_id.smul continuous_const)`. Conclude with `((f.smooth ⊤).continuous_fderiv (by simp)).comp h1 |>.clm_apply continuous_const`. Establish `h` using `intervalIntegral.integral_eq_sub_of_hasDerivAt (a := (0 : ℝ)) (b := 1) (fun s _ => hd s) (hc.intervalIntegrable _ _)`. Rewrite `h` using `[Ain_one, hf _ (Ain_zero_inr x), sub_zero, intervalIntegral.integral_of_le zero_le_one]`.
-
-Conclude with `h.symm`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_integral (f : SchwartzMap (κ' ⊕ κ'' → W) ℂ) (hf : ∀ x : κ' ⊕ κ'' → W, x ∘ Sum.inr = 0 → f x = 0)
     (x : κ' ⊕ κ'' → W) : f x = ∫ s in Ioc (0 : ℝ) 1, fderiv ℝ f (Ain s x) (inr2 (x ∘ Sum.inr)) := by
@@ -68,38 +66,36 @@ theorem eq_integral (f : SchwartzMap (κ' ⊕ κ'' → W) ℂ) (hf : ∀ x : κ'
   exact h.symm
 
 /- English proof (translation)
-Rewrite using `[show (fun s : ℝ => Ain s x) = fun s : ℝ => Ain 0 x + s • inr2 (x ∘ Sum.inr) from funext fun s => Ain_eq s x]`. Conclude with `continuous_const.add (continuous_id.smul continuous_const)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_Ain_apply (x : κ' ⊕ κ'' → W) : Continuous fun s : ℝ => Ain s x := by
   rw [show (fun s : ℝ => Ain s x) = fun s : ℝ => Ain 0 x + s • inr2 (x ∘ Sum.inr) from funext fun s => Ain_eq s x]
   exact continuous_const.add (continuous_id.smul continuous_const)
 
 /- English proof (translation)
-Set `b` to `Module.finBasis ℝ (κ'' → W)`. Set `L : Fin (Module.finrank ℝ (κ'' → W)) → (κ'' → W) →L[ℝ] ℝ` to `fun i => LinearMap.toContinuousLinearMap (b.coord i)`. Establish `hL : ∀ i v, L i v = b.repr v i` using `fun i v => by simp [L, Module.Basis.coord_apply]`. Set `q : (κ'' → W) → ℝ` to `fun v => ∑ i, L i v ^ 2`. Establish `hq : q.HasTemperateGrowth`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Simplify using `only [q]`. Conclude with `Function.HasTemperateGrowth.sum fun i _ => ((L i).hasTemperateGrowth).pow 2`. Set `β : (κ'' → W) → ℝ` to `fun v => 1 - q v * GlobalTheory.SchwartzDiv.invCut (q v)`. Establish `hβs : ContDiff ℝ ∞ β` using `contDiff_const.sub (hq.1.mul (GlobalTheory.SchwartzDiv.contDiff_invCut.comp hq.1))`. Establish `hβ0 : ∀ v, 1 ≤ q v → β v = 0`.
+Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `v hv`. Simplify using `only [β]`. Rewrite using `[GlobalTheory.SchwartzDiv.invCut_of_one_le hv, mul_inv_cancel₀ (by linarith), sub_self]`. Establish `hnorm : ∀ v, q v < 1 → ‖v‖ ≤ ∑ i, ‖b i‖`. Introduce `v hv`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hLi : ∀ i, |L i v| ≤ 1`. Introduce `i`. Establish `: L i v ^ 2 ≤ q v` using `Finset.single_le_sum (f := fun j => L j v ^ 2) (fun j _ => sq_nonneg _) (Finset.mem_univ i)`. Conclude with `(sq_le_one_iff_abs_le_one _).1 (by linarith)`. Combine the equalities or inequalities in the displayed calculation.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[norm_smul, Real.norm_eq_abs]`. Conclude with `mul_le_of_le_one_left (norm_nonneg _) (hLi i)`. Establish `hβc : HasCompactSupport β`. Use `HasCompactSupport.intro (isCompact_closedBall (0 : κ'' → W) (∑ i, ‖b i‖)) fun v hv => ?_` and prove the remaining obligations. Rewrite `hv` using `[Metric.mem_closedBall, dist_zero_right, not_le]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Introduce a local definition for the expression.
 
-Establish `: 1 ≤ q v`. Assume the negation of the conclusion as `h`. Conclude with `absurd (hnorm v (not_le.1 h)) (not_le.2 hv)`. Conclude with `hβ0 v this`. Set `d : Fin (Module.finrank ℝ (κ'' → W)) → SchwartzMap (κ' ⊕ κ'' → W) ℂ` to `fun i => ∂_{(inr2 (κ' := κ') (b i) : κ' ⊕ κ'' → W)} f`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hdi : ∀ i y, d i y = fderiv ℝ f y (inr2 (b i))` using `fun i y => SchwartzMap.lineDerivOp_apply_eq_fderiv _ _ _`. Establish `key : ∀ x, f x = ∑ i, (L i (x ∘ Sum.inr) : ℂ) * ∫ s in Ioc (0 : ℝ) 1, d i (Ain s x)`. Introduce `x`. Rewrite using `[eq_integral f hf x]`. Establish `e1 : ∀ s : ℝ, fderiv ℝ f (Ain s x) (inr2 (x ∘ Sum.inr)) = ∑ i, (L i (x ∘ Sum.inr) : ℂ) * d i (Ain s x)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities.
 
-Introduce `s`. Rewrite using `[show (inr2 (x ∘ Sum.inr) : κ' ⊕ κ'' → W) = inr2 (∑ i, b.repr (x ∘ Sum.inr) i • b i) by rw [b.sum_repr], map_sum, map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, map_smul, Complex.real_smul, hdi, hL]`. Repeatedly rewrite using `[e1]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[integral_finset_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => integral_const_mul _ _`. Introduce `i _`. Conclude with `(continuous_const.mul ((d i).continuous.comp (continuous_Ain_apply x))).integrableOn_Ioc`. Use `choose N hN using fun i => near_schwartz (d i) β hβs hβc`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Set `a : Fin (Module.finrank ℝ (κ'' → W)) → (κ' ⊕ κ'' → W) → ℂ` to `fun i x => ((L i (x ∘ Sum.inr) * GlobalTheory.SchwartzDiv.invCut (q (x ∘ Sum.inr)) : ℝ) : ℂ)`. Establish `hr : (fun x : κ' ⊕ κ'' → W => x ∘ Sum.inr).HasTemperateGrowth` using `(GlobalTheory.SchwartzBox.restr W (Sum.inr : κ'' → κ' ⊕ κ'')).hasTemperateGrowth`. Establish `ha : ∀ i, (a i).HasTemperateGrowth` using `fun i => Function.Complex.hasTemperateGrowth_ofReal.comp (((L i).hasTemperateGrowth.mul (GlobalTheory.SchwartzDiv.hasTemperateGrowth_invCut.comp hq)).comp hr)`. Establish `hLc : ∀ i, (fun x : κ' ⊕ κ'' → W => (L i (x ∘ Sum.inr) : ℂ)).HasTemperateGrowth` using `fun i => Function.Complex.hasTemperateGrowth_ofReal.comp ((L i).hasTemperateGrowth.comp hr)`. Set `hh : Fin (Module.finrank ℝ (κ'' → W)) → SchwartzMap (κ' ⊕ κ'' → W) ℂ` to `fun i => N i + SchwartzMap.smulLeftCLM ℂ (a i) f`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `hhh : ∀ i x, hh i x = (β (x ∘ Sum.inr) : ℂ) * (∫ s in Ioc (0 : ℝ) 1, d i (Ain s x)) + a i x * f x`. Introduce `i x`. Simplify using `only [hh, SchwartzMap.add_apply, hN, SchwartzMap.smulLeftCLM_apply_apply (ha i), smul_eq_mul]`. Use `⟨Module.finrank ℝ (κ'' → W), L, hh, fun i => SchwartzMap.smulLeftCLM ℂ (fun x : κ' ⊕ κ'' → W => (L i (x ∘ Sum.inr) : ℂ)) (hh i), fun i x => by rw [SchwartzMap.smulLeftCLM_apply_apply (hLc i), smul_eq_mul], fun x => ?_⟩` and prove the remaining obligations. Simplify using `only [SchwartzMap.smulLeftCLM_apply_apply (hLc _), smul_eq_mul, hhh]`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
-Establish `e1 : ∀ i, (L i (x ∘ Sum.inr) : ℂ) * ((β (x ∘ Sum.inr) : ℂ) * (∫ s in Ioc (0 : ℝ) 1, d i (Ain s x)) + a i x * f x) = (β (x ∘ Sum.inr) : ℂ) * ((L i (x ∘ Sum.inr) : ℂ) * ∫ s in Ioc (0 : ℝ) 1, d i (Ain s x)) + ((L i (x ∘ Sum.inr) ^ 2 * GlobalTheory.SchwartzDiv.invCut (q (x ∘ Sum.inr) …`. Introduce `i`. Simplify using `only [a]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
-
-Rewrite using `[Finset.sum_congr rfl fun i _ => e1 i, Finset.sum_add_distrib, ← Finset.mul_sum, ← key x, ← Finset.sum_mul, ← Complex.ofReal_sum, ← Finset.sum_mul]`. Simplify using `only [β, q]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem param_hadamard (f : SchwartzMap (κ' ⊕ κ'' → W) ℂ) (hf : ∀ x : κ' ⊕ κ'' → W, x ∘ Sum.inr = 0 → f x = 0) :
     ∃ (n : ℕ) (L : Fin n → (κ'' → W) →L[ℝ] ℝ) (hh gg : Fin n → SchwartzMap (κ' ⊕ κ'' → W) ℂ),

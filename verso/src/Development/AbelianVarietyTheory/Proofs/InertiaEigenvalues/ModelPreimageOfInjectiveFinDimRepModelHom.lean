@@ -10,13 +10,13 @@ namespace GlobalTheory.Models.SubModel
 variable {k G : Type} [Field k] [Group G]
 
 /- English proof (translation)
-Establish `hst : ∀ s : G, LinearMap.ker g ≤ (LinearMap.ker g).comap (A.ρ s)`. Introduce `s x hx`. Simplify using `only [Submodule.mem_comap, LinearMap.mem_ker] at hx ⊢`. Rewrite using `[hg, hx, map_zero]`. Take `⟨K, e, he⟩` from `exists_ob (A.ρ.subrepresentation (LinearMap.ker g) hst)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `⟨K, (LinearMap.ker g).subtype ∘ₗ e.symm.toLinearMap, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `s x`. Take `⟨y, rfl⟩` from `e.surjective x`. Rewrite using `[← he]`. Simplify using `[Representation.subrepresentation]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `(LinearMap.ker g).injective_subtype.comp e.symm.injective`. Introduce `y`. Prove the components needed by the constructor for the conclusion. Introduce `hy`. Conclude with `⟨e ⟨y, hy⟩, by simp⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨x, rfl⟩`. Conclude with `(e.symm x).2`.
+A detailed English derivation is pending.
 -/
 theorem exists_ker (A B : Ob k G) (g : (Fin A.m → k) →ₗ[k] (Fin B.m → k)) (hg : IsHom A B g) :
     ∃ (K : Ob k G) (i : (Fin K.m → k) →ₗ[k] (Fin A.m → k)),
@@ -40,11 +40,11 @@ theorem exists_ker (A B : Ob k G) (g : (Fin A.m → k) →ₗ[k] (Fin B.m → k)
       exact (e.symm x).2
 
 /- English proof (translation)
-Establish `hst : ∀ s : G, LinearMap.range f ≤ (LinearMap.range f).comap (B.ρ s)`. Introduce and unpack `s _ ⟨x, rfl⟩`. Conclude with `⟨A.ρ s x, hf s x⟩`. Take `⟨Q, e, he⟩` from `exists_ob (B.ρ.quotient (LinearMap.range f) hst)`. Use `⟨Q, e.toLinearMap ∘ₗ (LinearMap.range f).mkQ, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `s x`. Simplify using `only [LinearMap.comp_apply, LinearEquiv.coe_coe]`. Rewrite using `[← he]`. Simplify using `[Representation.quotient]`. Conclude with `e.surjective.comp (LinearMap.range f).mkQ_surjective`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `y`. Simplify using `[Submodule.Quotient.mk_eq_zero]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_coker (A B : Ob k G) (f : (Fin A.m → k) →ₗ[k] (Fin B.m → k)) (hf : IsHom A B f) :
     ∃ (Q : Ob k G) (q : (Fin B.m → k) →ₗ[k] (Fin Q.m → k)),
@@ -63,7 +63,7 @@ theorem exists_coker (A B : Ob k G) (f : (Fin A.m → k) →ₗ[k] (Fin B.m → 
     simp [Submodule.Quotient.mk_eq_zero]
 
 /- English proof (translation)
-Introduce `s x`. Simplify using `only [LinearMap.comp_apply]`. Rewrite using `[hf, hg]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem IsHom.comp' {A B C : Ob k G} {f : (Fin A.m → k) →ₗ[k] (Fin B.m → k)}
     {g : (Fin B.m → k) →ₗ[k] (Fin C.m → k)} (hf : IsHom A B f) (hg : IsHom B C g) : IsHom A C (g ∘ₗ f) := by
@@ -72,27 +72,25 @@ theorem IsHom.comp' {A B C : Ob k G} {f : (Fin A.m → k) →ₗ[k] (Fin B.m →
   rw [hf, hg]
 
 /- English proof (translation)
-Introduce `k G _ _ l n _ _ _ R F r Dt M A B f N hf hfi hN`. Take `⟨C, Nb, A₁, j, p, hb, hj, hji, hp, hps, rfl⟩` from `hN`. Take `⟨Q, q, hq, hqs, hfq⟩` from `exists_coker A B f hf`. Establish `hqp : IsHom A₁ Q (q ∘ₗ p)` using `IsHom.comp' hp hq`. Take `⟨K, i, hi, hii, hex⟩` from `exists_ker A₁ Q (q ∘ₗ p) hqp`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hr : ∀ x, (p ∘ₗ i) x ∈ LinearMap.range f` using `fun x => (hfq _).1 ((hex _).2 ⟨x, rfl⟩)`. Set `p' : (Fin K.m → k) →ₗ[k] (Fin A.m → k)` to `(LinearEquiv.ofInjective f hfi).symm.toLinearMap ∘ₗ LinearMap.codRestrict _ (p ∘ₗ i) hr`. Establish `hfp : ∀ x, f (p' x) = p (i x)`. Introduce `x`. Use `congrArg Subtype.val ((LinearEquiv.ofInjective f hfi).apply_symm_apply (LinearMap.codRestrict _ (p ∘ₗ i) hr x))` as an intermediate fact.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `this`. Establish `hp' : IsHom K A p'`. Introduce `s x`. Apply `hfi` to reduce the goal to its premises. Rewrite using `[hfp, hf, hfp, hi, hp]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hp's : Function.Surjective p'`. Introduce `a`. Take `⟨y, hy⟩` from `hps (f a)`. Establish `: (q ∘ₗ p) y = 0`. Rewrite using `[LinearMap.comp_apply, hy]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `(hfq _).2 ⟨a, rfl⟩`. Take `⟨x, rfl⟩` from `(hex _).1 this`. Conclude with `⟨x, hfi (by rw [hfp, hy])⟩`. Establish `oC : F.Obj C` using `M.base_obj _ _ hb`. Establish `o1 : F.Obj A₁` using `F.obj_sub _ _ _ hj hji oC`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `oB : F.Obj B` using `F.obj_quot _ _ _ hp hps o1`. Establish `oA : F.Obj A` using `F.obj_sub _ _ _ hf hfi oB`. Establish `oK : F.Obj K` using `F.obj_sub _ _ _ hi hii o1`. Establish `oQ : F.Obj Q` using `F.obj_quot _ _ _ hq hqs oB`. Establish `hcomm : f ∘ₗ p' = p ∘ₗ i` using `LinearMap.ext hfp`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hsq : ∀ a x, F.map A B f a (F.map K A p' a x) = F.map A₁ B p a (F.map K A₁ i a x)`. Introduce `a x`. Establish `h1` using `F.map_comp K A B p' f oK oA oB hp' hf a`. Establish `h2` using `F.map_comp K A₁ B i p oK o1 oB hi hp a`. Rewrite `h1` using `[hcomm, h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(LinearMap.congr_fun h1 x).symm`. Establish `e1` using `GlobalTheory.T.exact_map_of_exact F A B Q f q oB hf hq hfi hqs hfq`. Establish `e2` using `GlobalTheory.T.exact_map_of_exact F K A₁ Q i (q ∘ₗ p) o1 hi hqp hii (hqs.comp hps) hex`. Use `⟨C, Nb, K, j ∘ₗ i, p', hb, IsHom.comp' hi hj, hji.comp hii, hp', hp's, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `a`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Use extensionality with `x`. Simplify using `only [DFun.pre, DFun.push, Submodule.mem_comap, Submodule.mem_map, LinearMap.restrictScalars_apply, F.map_comp K A₁ C i j oK o1 oC hi hj a, LinearMap.comp_apply]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, hyx⟩`. Establish `: F.map A₁ Q (q ∘ₗ p) a y = 0`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Rewrite using `[F.map_comp A₁ B Q p q o1 oB oQ hp hq a, LinearMap.comp_apply, hyx]`. Conclude with `(e1 a _).2 ⟨x, rfl⟩`. Take `⟨z, rfl⟩` from `(e2 a _).1 this`. Conclude with `⟨z, hy, F.map_inj A B f oA oB hf hfi a (by rw [hsq, hyx])⟩`. Introduce and unpack `⟨z, hz, rfl⟩`.
-
-Conclude with `⟨_, hz, (hsq a z).symm⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem model_pre : ∀ {k G : Type} [Field k] [Group G] {l n : ℕ} [Fact l.Prime] [CharP k l] [NeZero n] {R : RingPG k l} (F : DFun R n G) {r : ℕ} {Dt : TopData n r} (M : ModTh F Dt) (A B : Ob k G) (f : (Fin A.m → k) →ₗ[k] (Fin B.m → k)) (N : Lats k n B.m), IsHom A B f → Function.Injective f → M.Model B N → M.Model A (F.pre A B f N) := by
   intro k G _ _ l n _ _ _ R F r Dt M A B f N hf hfi hN

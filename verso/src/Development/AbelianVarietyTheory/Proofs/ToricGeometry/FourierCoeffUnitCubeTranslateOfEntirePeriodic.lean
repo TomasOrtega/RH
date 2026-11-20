@@ -9,9 +9,9 @@ open scoped BigOperators Real
 namespace GlobalTheory
 
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.IntegerShiftSingle.main`. Consider the case `exact _root_.GlobalTheory.IntegerShiftSingle.main`. Consider the case `(apply _root_.GlobalTheory.IntegerShiftSingle.main <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.IntegerShiftSingle.main <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.IntegerShiftSingle.main <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.IntegerShiftSingle.main ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem apply_add_intCast_vec_of_unit_periods {ι R E : Type*} [Fintype ι] [DecidableEq ι]
     [Ring R] {F : (ι → R) → E} (hF : ∀ (i : ι) x, F (x + Pi.single i 1) = F x)
@@ -25,19 +25,19 @@ theorem apply_add_intCast_vec_of_unit_periods {ι R E : Type*} [Fintype ι] [Dec
   | (intros; exact _root_.GlobalTheory.IntegerShiftSingle.main ..)
 
 /- English proof (translation)
-Use `letI : MeasureSpace UnitAddCircle := ⟨AddCircle.haarAddCircle⟩`. Use `haveI : Measure.IsAddHaarMeasure (volume : Measure UnitAddCircle) := inferInstanceAs (Measure.IsAddHaarMeasure AddCircle.haarAddCircle)`. Use `haveI : IsProbabilityMeasure (volume : Measure UnitAddCircle) := inferInstanceAs (IsProbabilityMeasure AddCircle.haarAddCircle)`. Set `G : UnitAddTorus ι → E` to `fun y => F fun i => (AddCircle.equivIoc 1 0 (y i) : ℝ)`. Establish `hG : ∀ x : ι → ℝ, G (fun i => (x i : UnitAddCircle)) = F x`.
+Equip the data with the indicated structure. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `x`. Establish `h : ∀ i, ∃ n : ℤ, (AddCircle.equivIoc 1 0 (x i : UnitAddCircle) : ℝ) = x i + n`. Introduce `i`. Establish `h1 : ((AddCircle.equivIoc 1 0 (x i : UnitAddCircle) : ℝ) : UnitAddCircle) = x i` using `(AddCircle.equivIoc 1 0).symm_apply_apply _`. Rewrite `h1` using `[QuotientAddGroup.eq_iff_sub_mem, AddSubgroup.mem_zmultiples_iff]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨k, hk⟩` from `h1`. Use `⟨k, ?_⟩` and prove the remaining obligations. Rewrite `hk` using `[zsmul_eq_mul, mul_one]`. Combine the linear equalities and inequalities to obtain the conclusion. Use `choose n hn using h`.
+Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `apply_add_intCast_vec_of_unit_periods hF n x` as an intermediate fact. Rewrite using `[← this]`. Simplify using `only [G, hn]`. Both sides reduce to the same expression. Establish `hae : Set.Icc (0 : ι → ℝ) 1 =ᵐ[volume] {x : ι → ℝ | ∀ i, x i ∈ Set.Ioc ((0 : ι → ℝ) i) ((0 : ι → ℝ) i + 1)}`.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `h` using `Measure.univ_pi_Ioc_ae_eq_Icc (μ := fun _ : ι => (volume : Measure ℝ)) (f := (0 : ι → ℝ)) (g := 1)`. Establish `e : {x : ι → ℝ | ∀ i, x i ∈ Set.Ioc ((0 : ι → ℝ) i) ((0 : ι → ℝ) i + 1)} = Set.univ.pi fun i => Set.Ioc ((0 : ι → ℝ) i) ((1 : ι → ℝ) i)`. Use extensionality with `x`. Simplify using `[Set.mem_pi]`. Rewrite using `[e]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `h.symm`. Rewrite using `[setIntegral_congr_set hae, setIntegral_congr_set hae]`. Establish `h1` using `UnitAddTorus.integral_preimage G 0`. Establish `h2` using `UnitAddTorus.integral_preimage (fun y => G (y + fun i => (t i : UnitAddCircle))) 0`. Establish `h3 : ∫ y : UnitAddTorus ι, G (y + fun i => (t i : UnitAddCircle)) = ∫ y, G y` using `integral_add_right_eq_self G _`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `h4 : ∀ x : ι → ℝ, G ((fun i => (x i : UnitAddCircle)) + fun i => (t i : UnitAddCircle)) = F (x + t)` using `fun x => hG (x + t)`. Simplify using `only [hG] at h1`. Simplify using `only [h4] at h2`. Rewrite using `[← h1, ← h2]`. Conclude with `h3`.
+A detailed English derivation is pending.
 -/
 theorem setIntegral_unitCube_add_right_of_periodic {ι E : Type*} [Fintype ι] [DecidableEq ι]
     [NormedAddCommGroup E] [NormedSpace ℝ E] {F : (ι → ℝ) → E}
@@ -88,17 +88,15 @@ theorem setIntegral_unitCube_add_right_of_periodic {ι E : Type*} [Fintype ι] [
   exact h3
 
 /- English proof (translation)
-Establish `hd : DifferentiableOn ℂ (fun w => ∫ x in Set.Icc (0 : Fin g → ℝ) 1, f ((fun i => (x i : ℂ)) + w)) Set.univ`. Use `(differentiableOn_setIntegral_of_holomorphic_of_continuousOn (F := fun (x : Fin g → ℝ) w => f ((fun i => (x i : ℂ)) + w)) isOpen_univ isCompact_Icc subset_rfl measurableSet_Icc isCompact_Icc.measure_lt_top.ne ?_ ?_).1` and prove the remaining obligations. Use `hf.continuous` as an intermediate fact. Use `Continuous.continuousOn ?_` and prove the remaining obligations. Unfold `Function.uncurry`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Use `fun_prop`. Introduce `x _`. Conclude with `(hf.comp ((differentiable_const _).add differentiable_id)).differentiableOn`. Establish `h` using `SCV.eq_of_invariant_real isOpen_univ isPreconnected_univ hd (fun z _ t _ => by`. Use `setIntegral_unitCube_add_right_of_periodic (F := fun x : Fin g → ℝ => f ((fun i => (x i : ℂ)) + z)) (fun i x => by` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[← hper i ((fun i => (x i : ℂ)) + z)]`. Use `congr 1`. Use function extensionality and compare the values at `j`. Distinguish the cases in `hij : j = i`. Substitute `hij` using the available equality.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Simplify using `[hij]) t`. Rewrite using `[← this]`. Use `congr 1`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Reduce the equality to equality of the corresponding arguments.
 
-Use function extensionality and compare the values at `x`. Use `congr 1`. Use function extensionality and compare the values at `j`. Simplify using the standard rewrite rules. Use the proof step `ring) (Set.mem_univ w) (Set.mem_univ 0)`.
-
-Simplify using `using h`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem setIntegral_unitCube_add_of_entire_periodic {g : ℕ} {f : (Fin g → ℂ) → ℂ}
     (hf : Differentiable ℂ f) (hper : ∀ (i : Fin g) z, f (z + Pi.single i 1) = f z)
@@ -136,13 +134,13 @@ theorem setIntegral_unitCube_add_of_entire_periodic {g : ℕ} {f : (Fin g → �
   simpa using h
 
 /- English proof (translation)
-Establish `h` using `setIntegral_unitCube_add_of_entire_periodic (f := fun z => f z * cexp (-(2 * Real.pi * I) * ∑ i, (m i : ℂ) * z i)) (by fun_prop) (fun i z => by`. Rewrite using `[hper]`. Use `congr 1`. Establish `e : ∑ j, (m j : ℂ) * (z + (Pi.single i 1 : Fin g → ℂ)) j = ∑ j, (m j : ℂ) * z j + m i`. Simplify using `[mul_add, Finset.sum_add_distrib, Pi.single_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[e, mul_add, Complex.exp_add]`. Establish `: cexp (-(2 * Real.pi * I) * (m i : ℂ)) = 1`. Use `Complex.exp_int_mul_two_pi_mul_I (-m i)` as an intermediate fact. Rewrite using `[← this]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this, mul_one]) w`. Rewrite using `[← h, ← integral_const_mul]`. Use `congr 1`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use function extensionality and compare the values at `x`. Rewrite using `[mul_left_comm, ← Complex.exp_add]`. Use `congr 2`. Simplify using `only [Pi.add_apply, mul_add, Finset.sum_add_distrib]`. Expand and normalize the polynomial expressions, which then agree.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem fourierCoeff_unitCube_translate_of_entire_periodic (g : ℕ) (f : (Fin g → ℂ) → ℂ)
     (hf : Differentiable ℂ f) (hper : ∀ (i : Fin g) z, f (z + Pi.single i 1) = f z)

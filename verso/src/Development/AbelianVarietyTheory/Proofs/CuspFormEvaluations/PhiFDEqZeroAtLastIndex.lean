@@ -19,21 +19,21 @@ open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions F
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `D T h j hj hjm DF q R0 hrun σ hσ k x hx`. Establish `hu` using `h.unf j hj σ hσ`. Establish `hq0 : (T.Q.Dw j).q = 0`. Rewrite using `[(h.pins.2.2.2 j hj).2.1, hjm]`. Conclude with `Nat.sub_self _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hp0 : ((T.U j σ).X k).p0 = 0` using `((hu.2.1 k).1).trans hq0`. Take `⟨W⟩` from `ReciprocityTheory.ChartRestriction.G.PullbackSections.nonempty_unfAt hu k ⟨x, hx⟩`. Establish `hint : ∀ u ∈ ((T.U j σ).X k).Λ, ∀ v ∈ ((T.U j σ).X k).Λ, ∃ z : ℤ, Algebra.trace ℚ D.host.E (((T.U j σ).X k).ξ0 * FD.herm ((T.U j σ).X k).Gm u v) = z`. Introduce `u hu' v hv'`. Establish `hEF` using `W.isom k ((W.φ k).symm ⟨u, hu'⟩) ((W.φ k).symm ⟨v, hv'⟩)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [LinearEquiv.apply_symm_apply] at hEF`. Use `⟨-((W.F.Di (W.ik k)).EF ((W.φ k).symm ⟨u, hu'⟩) ((W.φ k).symm ⟨v, hv'⟩)), ?_⟩` and prove the remaining obligations. Rewrite using `[Int.cast_neg, hEF, neg_mul, map_neg, neg_neg]`. Take `⟨A, -⟩` from `GlobalTheory.T.exists_torusWithSign_uniformisationFrame _ _ _ _ _ _ _ _ (T.U j σ) k ⟨x, hx⟩ W`. Take `⟨τ0⟩ : Nonempty (D.host.E →+* ℂ)` from `inferInstance`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Choose the witnesses or unpack the hypotheses as in `⟨τ, hτ⟩ : ∃ τ, τ ∈ ((T.U j σ).X k).Ψ := by`. Distinguish the cases in `h1 : τ0 ∈ ((T.U j σ).X k).Ψ`. Conclude with `⟨τ0, h1⟩`. Use `⟨NumberField.ComplexEmbedding.conjugate τ0, ?_⟩` and prove the remaining obligations. Rewrite using `[((T.U j σ).X k).cmType]`.
+Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using h1`. Establish `hpos` using `A.dim_pos ⟨τ, hτ⟩`. Establish `hneg` using `A.dim_neg ⟨τ, hτ⟩`. Establish `hsum` using `A.T.dim_conj τ`. Establish `hr : A.T.r = D.R.r`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only at hpos hneg`. Use linear arithmetic over natural numbers and integers. Take `⟨P, hPq, hPR, -⟩` from `hrun A.T hr ⟨τ, by simp only at hpos; omega⟩`. Establish `hr0 : 0 < D.R.r`. Establish `h2m` using `D.R.two_le_m`.
+Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Use `show 0 < D.R.k + D.R.m - 1`. Use linear arithmetic over natural numbers and integers. Use `(GlobalTheory.T.la1sq_ge_two_f_div_rd_of_p0_eq_zero D.host.E D.R.r ((T.U j σ).X k) hr0 hp0 hint x hx).2 q R0 ?_ ?_ ?_` and prove the remaining obligations. Establish `h16` using `P.hrd`. Combine the linear equalities and inequalities to obtain the conclusion.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Establish `h1q` using `P.hq`. Use linear arithmetic over natural numbers and integers. Establish `hb` using `P.C2`. Rewrite `hb` using `[hPq, hPR]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem phiFD_eq_zero_at_last_index : ∀ (D : D7) (T : Top D) (_h : LawsP T) (j : ℕ) (_hj : InR D j), j = D.R.m → ∀ (DF q : ℕ) (R0 : ℝ), RunOK D.host.E D.R.r DF q R0 D.R.m → ∀ σ, GoodEmb T.Q.c σ → ∀ (k : (T.U j σ).Comp), ∀ x ∈ ((T.U j σ).X k).dom, I2.phiFD ((T.U j σ).X k) (I2.th (E := D.host.E) q R0) x = 0 := by
   intro D T h j hj hjm DF q R0 hrun σ hσ k x hx

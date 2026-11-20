@@ -13,9 +13,9 @@ namespace KernelLengthBounds
 variable {O : Type*} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
 
 /- English proof (translation)
-Establish `hA : DistribSMul.toLinearMap O (d → KO O) a = matQ O (Matrix.diagonal fun _ : d => a)`. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `v`. Use function extensionality and compare the values at `i`. Use `show a • v i = ∑ j, Matrix.diagonal (fun _ : d => a) i j • v j`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_eq_single i (fun j _ hj => by rw [Matrix.diagonal_apply_ne _ (Ne.symm hj), zero_smul]) (fun h => (h (Finset.mem_univ i)).elim), Matrix.diagonal_apply_eq]`. Rewrite using `[hA, (lenKer : StatLenKer) O d, Matrix.det_diagonal, Finset.prod_const, Finset.card_univ, IsDiscreteValuationRing.addVal_pow, nsmul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma length_ker_smul_pi (d : Type) [Fintype d] (a : O) :
     Module.length O (LinearMap.ker (DistribSMul.toLinearMap O (d → KO O) a)) =
@@ -33,11 +33,11 @@ lemma length_ker_smul_pi (d : Type) [Fintype d] (a : O) :
     IsDiscreteValuationRing.addVal_pow, nsmul_eq_mul]
 
 /- English proof (translation)
-Establish `h` using `length_ker_smul_pi (O := O) Unit a`. Establish `e : ↥(LinearMap.ker (DistribSMul.toLinearMap O (Unit → KO O) a)) ≃ₗ[O] ↥(LinearMap.ker (DistribSMul.toLinearMap O (KO O) a))` using `LinearEquiv.ofSubmodules (LinearEquiv.funUnique Unit O (KO O)) _ _ (by`. Use extensionality with `x`. Simplify using `only [Submodule.mem_map_equiv, LinearMap.mem_ker, DistribSMul.toLinearMap_apply]`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Introduce `hx`. Simplify using `using congrFun hx ()`. Introduce `hx`. Use function extensionality and compare the values at `i`. Simplify using `using hx)`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[← e.length_eq, h]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma length_ker_smul_le (a : O) :
     Module.length O (LinearMap.ker (DistribSMul.toLinearMap O (KO O) a)) ≤
@@ -58,29 +58,27 @@ lemma length_ker_smul_le (a : O) :
   simp
 
 /- English proof (translation)
-Distinguish the cases in `ha : a = 0`. Substitute `ha` using the available equality. Establish `htop : Module.length O O = ⊤`. Assume the negation of the conclusion as `h`. Establish `hfl : IsFiniteLength O O` using `Module.length_ne_top_iff.1 h`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `hart : IsArtinianRing O` using `(isFiniteLength_iff_isNoetherian_isArtinian.1 hfl).2`. Apply `IsDiscreteValuationRing.not_isField O` to reduce the goal to its premises. Use `first`. Consider the case `exact IsArtinianRing.isField_of_isDomain O`. Consider the case `exact IsArtinianRing.isField_of_domain O`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact IsArtinianRing.isField_of_isDomain`. Establish `e : (O ⧸ Ideal.span ({0} : Set O)) ≃ₗ[O] O` using `Submodule.quotEquivOfEqBot _ (Ideal.span_singleton_eq_bot.mpr rfl)`. Rewrite using `[e.length_eq, htop]`. Conclude with `le_top`. Establish `hK : algebraMap O (FractionRing O) a ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective O (FractionRing O))).mpr ha`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `g : O →ₗ[O] KO O` to `(Submodule.mkQ (1 : Submodule O (FractionRing O))).comp (LinearMap.toSpanSingleton O (FractionRing O) (algebraMap O (FractionRing O) a)⁻¹)`. Establish `hg : ∀ x, g x = Submodule.Quotient.mk (algebraMap O (FractionRing O) x * (algebraMap O (FractionRing O) a)⁻¹)`. Introduce `x`. Use `show Submodule.Quotient.mk (x • (algebraMap O (FractionRing O) a)⁻¹) = _`. Rewrite using `[Algebra.smul_def]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hspan : Ideal.span {a} ≤ LinearMap.ker g`. Rewrite using `[Ideal.span_le, Set.singleton_subset_iff, SetLike.mem_coe, LinearMap.mem_ker, hg, Submodule.Quotient.mk_eq_zero, mul_inv_cancel₀ hK]`. Conclude with `Submodule.mem_one.mpr ⟨1, map_one _⟩`. Establish `hmem : ∀ x, g x ∈ LinearMap.ker (DistribSMul.toLinearMap O (KO O) a)`. Introduce `x`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[LinearMap.mem_ker, DistribSMul.toLinearMap_apply, hg, ← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero, Algebra.smul_def]`. Use `Submodule.mem_one.mpr ⟨x, ?_⟩` and prove the remaining obligations. Rewrite using `[mul_left_comm, mul_inv_cancel₀ hK, mul_one]`. Establish `hsurj : ∀ z ∈ LinearMap.ker (DistribSMul.toLinearMap O (KO O) a), ∃ x, g x = z`. Introduce `z hz`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Proceed by induction on `z using Submodule.Quotient.induction_on with`. Consider the case `H k`. Rewrite `hz` using `[LinearMap.mem_ker, DistribSMul.toLinearMap_apply, ← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero, Submodule.mem_one]`. Take `⟨y, hy⟩` from `hz`. Use `⟨y, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hg, hy, Algebra.smul_def, mul_comm (algebraMap O (FractionRing O) a) k, mul_assoc, mul_inv_cancel₀ hK, mul_one]`. Establish `hle : Module.length O (LinearMap.ker (DistribSMul.toLinearMap O (KO O) a)) ≤ Module.length O (O ⧸ Ideal.span {a})`. Use `Module.length_le_of_surjective (LinearMap.codRestrict (LinearMap.ker (DistribSMul.toLinearMap O (KO O) a)) ((Ideal.span {a}).liftQ g hspan) ?_) ?_` and prove the remaining obligations. Introduce `x`. Proceed by induction on `x using Submodule.Quotient.induction_on with`.
+Proceed by induction. Treat this case separately. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Consider the case `H x => exact hmem x`. Introduce and unpack `⟨z, hz⟩`. Take `⟨x, hx⟩` from `hsurj z hz`. Conclude with `⟨Submodule.Quotient.mk x, Subtype.ext hx⟩`. Establish `h` using `length_ker_smul_pi (O := O) Unit a`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Establish `e : ↥(LinearMap.ker (DistribSMul.toLinearMap O (Unit → KO O) a)) ≃ₗ[O] ↥(LinearMap.ker (DistribSMul.toLinearMap O (KO O) a))` using `LinearEquiv.ofSubmodules (LinearEquiv.funUnique Unit O (KO O)) _ _ (by`. Use extensionality with `x`. Simplify using `only [Submodule.mem_map_equiv, LinearMap.mem_ker, DistribSMul.toLinearMap_apply]`. Prove the components needed by the constructor for the conclusion. Introduce `hx`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using congrFun hx ()`. Introduce `hx`. Use function extensionality and compare the values at `i`. Simplify using `using hx)`. Rewrite `h` using `[e.length_eq]`.
-
-Simplify using `only [Fintype.card_unit, Nat.cast_one, one_mul] at h`. Rewrite using `[← h]`. Conclude with `hle`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma addVal_le_length_quot_span (a : O) :
     IsDiscreteValuationRing.addVal O a ≤ Module.length O (O ⧸ Ideal.span {a}) := by
@@ -158,11 +156,9 @@ private lemma addVal_le_length_quot_span (a : O) :
     exact hle
 
 /- English proof (translation)
-Establish `hc : Module.length O (LinearMap.ker (DistribSMul.toLinearMap O (KO O) ((ℓ : O) ^ e' * δ))) ≤ Module.length O (O ⧸ Ideal.span {(ℓ : O)}) * (e' : ℕ∞) + IsDiscreteValuationRing.addVal O δ`. Use `(length_ker_smul_le _).trans ?_` and prove the remaining obligations. Rewrite using `[IsDiscreteValuationRing.addVal_mul, IsDiscreteValuationRing.addVal_pow, nsmul_eq_mul, mul_comm (e' : ℕ∞)]`. Use `addVal_le_length_quot_span (O := O) (ℓ : O)` as an intermediate fact. Use `gcongr`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hd` using `length_ker_smul_pi (O := O) d δ`. Use `show Module.length O ((Fin j → LinearMap.ker (DistribSMul.toLinearMap O (KO O) ((ℓ : O) ^ e' * δ))) × Xw × LinearMap.ker (DistribSMul.toLinearMap O (d → KO O) δ)) ≤ _`. Rewrite using `[Module.length_prod, Module.length_prod, Module.length_pi_of_fintype, hd]`. Simplify using `only [Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul]`. Rewrite using `[← add_assoc]`.
-
-Use `gcongr`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma length_colData_le (ℓ : ℕ) (δ : O) (e' j : ℕ) (Xw : Type*) [AddCommGroup Xw]
     [Module O Xw] (d : Type) [Fintype d] (h0 : ℕ∞) (hX : Module.length O Xw ≤ h0) :
@@ -189,19 +185,17 @@ lemma length_colData_le (ℓ : ℕ) (δ : O) (e' j : ℕ) (Xw : Type*) [AddCommG
 end KernelLengthBounds
 
 /- English proof (translation)
-Introduce `O _ _ _ G _ d _ ρM H _ _ Ψ δ hcob ι _ what₂ cols D F lenRow Q s ℓ e' j h0 eO vδ N hrows hcols hQ hsel hker`. Set `A : ∀ w, Submodule O (H1z (resRep ρM (D w)))` to `fun w => if hw : w ∈ what₂ then Classical.choose (hrows w hw) else F w`. Establish `hA : ∀ w (hw : w ∈ what₂), A w = Classical.choose (hrows w hw)` using `fun w hw => dif_pos hw`. Establish `hA' : ∀ w, w ∉ what₂ → A w = F w` using `fun w hw => dif_neg hw`. Establish `hFA : ∀ w, F w ≤ A w`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `w`. Distinguish the cases in `hw : w ∈ what₂`. Rewrite using `[hA w hw]`. Conclude with `(Classical.choose_spec (hrows w hw)).1`. Rewrite using `[hA' w hw]`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Set `S : Submodule O (H1z ρM)` to `Q ⊓ ⨅ w ∈ what₂ ∪ cols, (A w).comap (resH1 ρM (D w))`. Establish `hS : LinearMap.range ((Submodule.mkQ ((coB1 ρM).comap (coZ1s ρM).subtype)) ∘ₗ Ψ) ≤ S`. Introduce and unpack `_ ⟨h, rfl⟩`. Use `(IdempotentNormalFormsRhoFacts.mem_sel (what₂ ∪ cols) (fun w => resH1 ρM (D w)) A Q _).mpr ⟨hQ h, fun w hw => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hwr : w ∈ what₂`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hA w hwr]`. Conclude with `(Classical.choose_spec (hrows w hwr)).2.2 h`. Rewrite using `[hA' w hwr]`. Conclude with `hcols w ((Finset.mem_union.mp hw).resolve_left hwr) h`. Establish `hchain` using `lenChain O H (coZ1s ρM) (H1z ρM) Ψ _ S hS`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmid` using `IdempotentNormalFormsRhoFacts.mid_bound ρM Ψ δ hcob`. Establish `hSel : Module.length O S ≤ s + ∑ w ∈ what₂, lenRow w`. Establish `h2` using `selRelax O (H1z ρM) ι (what₂ ∪ cols) (fun w => H1z (resRep ρM (D w))) (fun w => resH1 ρM (D w)) F A Q hFA`. Establish `hterm : ∀ w ∈ what₂ ∪ cols, Module.length O (A w ⧸ (F w).comap (A w).subtype) ≤ if w ∈ what₂ then lenRow w else 0`. Introduce `w _`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hwr : w ∈ what₂`. Rewrite using `[if_pos hwr, hA w hwr]`. Conclude with `(Classical.choose_spec (hrows w hwr)).2.1`. Rewrite using `[if_neg hwr, hA' w hwr, Submodule.comap_subtype_self, Module.length_eq_zero]`. Combine the equalities or inequalities in the displayed calculation.
-
-Rewrite using `[Finset.sum_ite_mem, Finset.union_inter_cancel_left]`. Conclude with `le_trans hchain (IdempotentNormalFormsRhoFacts.final_arith _ _ _ _ _ _ _ _ _ hker hmid hSel)`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem blockRhoAbs : StatBlockRhoAbs := by
   intro O _ _ _ G _ d _ ρM H _ _ Ψ δ hcob ι _ what₂ cols D F lenRow Q s ℓ e' j h0
@@ -245,7 +239,7 @@ theorem blockRhoAbs : StatBlockRhoAbs := by
   exact le_trans hchain (IdempotentNormalFormsRhoFacts.final_arith _ _ _ _ _ _ _ _ _ hker hmid hSel)
 
 /- English proof (translation)
-Introduce `O _ _ _ Hk _ _ ι cols ℓ δ e' j d _ Xw _ _ h0 hX f hf`. Use `(Module.length_le_of_injective f hf).trans ?_` and prove the remaining obligations. Rewrite using `[Module.length_pi_of_fintype, Finset.sum_coe_sort cols (fun w => Module.length O (ColData O ℓ δ (e' w) (j w) (Xw w) d))]`. Use `(Finset.sum_le_sum fun w _ => KernelLengthBounds.length_colData_le ℓ δ (e' w) (j w) (Xw w) d (h0 w) (hX w)).trans (le_of_eq ?_)` and prove the remaining obligations. Simplify using `only [Finset.sum_add_distrib, Finset.sum_const, nsmul_eq_mul, mul_assoc]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem kerCount : StatKerCount := by
   intro O _ _ _ Hk _ _ ι cols ℓ δ e' j d _ Xw _ _ h0 hX f hf
@@ -258,7 +252,7 @@ theorem kerCount : StatKerCount := by
   simp only [Finset.sum_add_distrib, Finset.sum_const, nsmul_eq_mul, mul_assoc]
 
 /- English proof (translation)
-Introduce `O _ _ _ G _ d _ ρM H _ _ Ψ δ hδ ι _ what₂ cols D F lenRow Q s ℓ e' j h0`. Introduce `eO vδ N hrow hcol hQ hs Xw _ _ hX f hf`. Conclude with `blockRhoAbs O G d ρM H Ψ δ hδ ι what₂ cols D F lenRow Q s ℓ e' j h0 hrow hcol hQ hs (kerCount O (LinearMap.ker Ψ) ι cols ℓ δ e' j d Xw h0 hX f hf)`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem blockRhoCount : StatBlockRhoCount := by
   intro O _ _ _ G _ d _ ρM H _ _ Ψ δ hδ ι _ what₂ cols D F lenRow Q s ℓ e' j h0

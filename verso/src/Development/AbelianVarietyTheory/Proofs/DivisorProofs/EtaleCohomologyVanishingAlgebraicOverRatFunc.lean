@@ -13,11 +13,11 @@ namespace GlobalTheory.EtC.CdOne
 open GroundTheory.ProfCoh
 
 /- English proof (translation)
-Set `A : Rep.{0} (ULift.{0} ℤ) G` to `Rep.trivial (ULift.{0} ℤ) G (ULift.{0} (ZMod q))`. Establish `hq0 : q ≠ 0` using `NeZero.ne q`. Establish `hA : ∀ a : A, q • a = 0` using `fun a => by`. Express the relevant statement in the definitionally equal form `(q • a : ULift.{0} (ZMod q)) = 0`. Use `ext`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. By extensionality, compare the relevant components.
 
-Simplify using the standard rewrite rules. Establish `htors : IsAddTorsion A` using `fun a => isOfFinAddOrder_iff_nsmul_eq_zero.2 ⟨q, Nat.pos_of_ne_zero hq0, hA a⟩`. Establish `hsub : Subsingleton (cohomology A n)`. It suffices to establish `h' : ∀ x : cohomology A n, x = 0 from ⟨fun x y => (h' x).trans (h' y).symm⟩`. Introduce `x`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Reduce the argument to an intermediate assertion. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `eq_zero_of_primaryComponent_eq_bot q hq0 (fun ℓ hℓ hℓq => ?_) x (nsmul_cohomology_eq_zero A hA n x)` and prove the remaining obligations. Use `primaryComponent_cohomology_eq_bot_of_cdp_lt (p := ℓ) A htors ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Set `e : A ≃+ (Rep.trivial (ZMod q) G (ZMod q) : Rep (ZMod q) G)` to `AddEquiv.ulift`. Conclude with `(cohomologyAddEquivOfEquiv (A := A) (A' := Rep.trivial (ZMod q) G (ZMod q)) e (fun _ _ => rfl) n).symm.injective.subsingleton`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem subsingleton_cohomology_trivial_zmod (G : Type) [Group G] [TopologicalSpace G]
     [IsTopologicalGroup G] (q : ℕ) [NeZero q]
@@ -48,15 +48,13 @@ end GlobalTheory.EtC.CdOne
 namespace GlobalTheory.EtC
 
 /- English proof (translation)
-Introduce `q _ k K _ _ _ _ _ hq n i hn`. Set `f : k →+* K` to `(algebraMap (RatFunc k) K).comp (algebraMap k (RatFunc k))`. Establish `hq0 : 0 < q` using `Nat.pos_of_ne_zero (NeZero.ne q)`. Establish `hqk : (q : k) ≠ 0`. Introduce `h0`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `: (q : K) = 0` using `by rw [← map_natCast f q, h0, map_zero]`. Conclude with `hq.ne_zero this`. Use `haveI : NeZero (q : k) := ⟨hqk⟩`. Take `⟨ζ, hζ⟩` from `IsAlgClosed.exists_root (Polynomial.cyclotomic q k) (Polynomial.degree_cyclotomic_pos q k hq0).ne'`. Establish `hζk : IsPrimitiveRoot ζ q` using `(Polynomial.isRoot_cyclotomic_iff).1 hζ`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hζK : IsPrimitiveRoot (f ζ) q` using `hζk.map_of_injective f.injective`. Establish `hroot : ∃ z : K, Polynomial.aeval z (Polynomial.cyclotomic q ℤ) = 0`. Use `⟨f ζ, ?_⟩` and prove the remaining obligations. Rewrite using `[Polynomial.aeval_def, Polynomial.eval₂_eq_eval_map, Polynomial.map_cyclotomic]`. Conclude with `hζK.isRoot_cyclotomic hq0`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨u⟩` from `GlobalTheory.T.tateTwistCohomology_spec_twist_independent q K hq hroot n i 0`. Take `⟨m, rfl⟩` from `Int.eq_ofNat_of_zero_le (show (0 : ℤ) ≤ n by omega)`. Establish `hm : 2 ≤ m` using `by omega`. Set `Ω` to `SeparableClosure K`. Establish `hζΩ : IsPrimitiveRoot (algebraMap K Ω (f ζ)) q` using `hζK.map_of_injective (algebraMap K Ω).injective`.
-
-Take `⟨e⟩` from `GlobalTheory.T.etaleCohomology_field_eq_galoisCohomology q K Ω hq 0 (Rep.trivial (ZMod q) (Ω ≃ₐ[K] Ω) (ZMod q)) _ hζΩ (Module.Basis.singleton Unit (ZMod q)) (fun σ a _ => by simp) m`. Establish `hsub` using `GlobalTheory.EtC.CdOne.subsingleton_cohomology_trivial_zmod (Ω ≃ₐ[K] Ω) q (fun ℓ hℓ _ => GlobalTheory.T.cdp_galois_le_one_of_isAlgebraic_ratFunc k K Ω ℓ hℓ) m hm`. Conclude with `(u.trans e).injective.subsingleton`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem gaugeSplitting_holds : C1 := by
   intro q _ k K _ _ _ _ _ hq n i hn

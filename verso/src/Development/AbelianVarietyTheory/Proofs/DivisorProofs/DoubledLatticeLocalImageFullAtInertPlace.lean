@@ -14,7 +14,7 @@ open scoped TensorProduct Matrix
 namespace GlobalTheory.DblFill
 
 /- English proof (translation)
-Unfold `symp hTens`. Rewrite using `[← map_sub, ← mul_sub]`. Use `congr 2`. Simplify using `only [Fintype.sum_sum_type, dbl, Matrix.fromBlocks_apply₁₁, Matrix.fromBlocks_apply₁₂, Matrix.fromBlocks_apply₂₁, Matrix.fromBlocks_apply₂₂, Matrix.toCols₁_apply, Matrix.toCols₂_apply, Matrix.zero_apply, mul_zero, zero_mul, Finset.sum_const_zero, add_zero, zero_add, Matrix.neg_ap …`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem symp_dbl {R E : Type} [CommRing R] [CommRing E] [Algebra R E] (c : E →ₐ[R] E) {α β : Type} [Fintype α]
     [DecidableEq α] [Fintype β] [DecidableEq β] (ξ : E) (JA : Matrix α α E) (JB : Matrix β β E)
@@ -30,7 +30,7 @@ theorem symp_dbl {R E : Type} [CommRing R] [CommRing E] [Algebra R E] (c : E →
   ring
 
 /- English proof (translation)
-Simplify using `[symp, hTens]`.
+Simplify using the standard rewrite rules.
 -/
 theorem symp_zero_right {R E : Type} [CommRing R] [CommRing E] [Algebra R E] (c : E →ₐ[R] E) {α β : Type} [Fintype α]
     [DecidableEq α] [Fintype β] [DecidableEq β] (ξ : E) (JA : Matrix α α E) (JB : Matrix β β E) (x : Matrix α β E) :
@@ -42,7 +42,7 @@ end GlobalTheory.DblFill
 namespace GlobalTheory.DblFill
 
 /- English proof (translation)
-Introduce `u hu`. Use `hz u hu` as an intermediate fact. Use extensionality with `i j`. Simplify using `using congrFun (congrFun this i) (Sum.inl j)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem at_toCols₁ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {n d : ℕ}
     {v : Pl F} {z : Matrix (Fin n) (Fin d ⊕ Fin d) (AE F E)} (hz : At (evFin F v) z) : At (evFin F v) z.toCols₁ := by
@@ -52,7 +52,7 @@ theorem at_toCols₁ {F E : Type} [Field F] [NumberField F] [Field E] [NumberFie
   simpa using congrFun (congrFun this i) (Sum.inl j)
 
 /- English proof (translation)
-Introduce `u hu`. Use `hz u hu` as an intermediate fact. Use extensionality with `i j`. Simplify using `using congrFun (congrFun this i) (Sum.inr j)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem at_toCols₂ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {n d : ℕ}
     {v : Pl F} {z : Matrix (Fin n) (Fin d ⊕ Fin d) (AE F E)} (hz : At (evFin F v) z) : At (evFin F v) z.toCols₂ := by
@@ -62,19 +62,17 @@ theorem at_toCols₂ {F E : Type} [Field F] [NumberField F] [Field E] [NumberFie
   simpa using congrFun (congrFun this i) (Sum.inr j)
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B a a' G X om om' hT v w hvw dd hdd η hη`. Establish `hunr : PsiUnr B.ψ v` using `(hT.base.inert v w hvw).2.2`. Establish `hsd` using `GlobalTheory.InertSelfDual.latAtV_selfDual F E σ B a a' G X om om' hT v w hvw`. Establish `hglob : ∀ z : Matrix (Fin a) (Fin (a + a') ⊕ Fin (a + a')) (AE F E), At (evFin F v) z → (z ∈ latDbl G.V G.W v ↔ ∀ γ ∈ latDbl G.V G.W v, B.ψ (symp (cA σ) (-1 : AE F E) (incM F G.V.J) (dbl (incM F G.W.J)) z γ) = 1)`. Introduce `z hz`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1` using `hsd _ (at_toCols₁ hz)`. Establish `h2` using `hsd _ (at_toCols₂ hz)`. Prove the components needed by the constructor for the conclusion. Introduce `hzm γ hγ`. Rewrite using `[symp_dbl, AddChar.map_sub_eq_div, (h1.1 hzm.1) _ hγ.1, (h2.1 hzm.2) _ hγ.2, div_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `hψ`. Use `⟨h1.2 fun γ₁ hγ₁ => ?_, h2.2 fun γ₂ hγ₂ => ?_⟩` and prove the remaining obligations. Use `hψ (Matrix.fromCols γ₁ 0) (fromCols_mem_latDbl _ _ _ hγ₁ (zero_mem _))` as an intermediate fact. Rewrite `this` using `[symp_dbl, Matrix.toCols₁_fromCols, Matrix.toCols₂_fromCols, symp_zero_right, sub_zero]`. Then use the resulting hypothesis. Use `hψ (Matrix.fromCols 0 γ₂) (fromCols_mem_latDbl _ _ _ (zero_mem _) hγ₂)` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Rewrite `this` using `[symp_dbl, Matrix.toCols₁_fromCols, Matrix.toCols₂_fromCols, symp_zero_right, zero_sub, AddChar.map_neg_eq_inv]`. Conclude with `inv_eq_one.1 this`. Establish `hloc` using `GlobalTheory.LatVac.DualLoc.map_selfDual v dd B.ψ (latDbl G.V G.W v) (fun γ hγ => at_of_mem_latDbl _ _ _ hγ) hglob`. Take `⟨c, hc0, hc⟩` from `GlobalTheory.LatBound.locCo_latAtV_bounded G.V G.W v G.M.co hT.geo.hV.lat hT.geo.hW.lat`. Establish `hbd : ∀ l ∈ (latDbl G.V G.W v).map (GlobalTheory.LatVac.locCo dd v), ∀ i, c * l.1 i ∈ v.adicCompletionIntegers F ∧ c * l.2 i ∈ v.adicCompletionIntegers F`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `l ⟨z, hz, rfl⟩ i`. Establish `hzc : z = Matrix.fromCols z.toCols₁ z.toCols₂` using `(Matrix.fromCols_toCols z).symm`. Establish `he` using `hdd z.toCols₁ z.toCols₂`. Rewrite `he` using `[← hzc]`. Establish `k1` using `hc _ hz.1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `k2` using `hc _ hz.2`. Break down `i with k | k` into its components or cases. Simplify using `only [GlobalTheory.LatVac.locCo, AddMonoidHom.coe_mk, ZeroHom.coe_mk, he, Sum.elim_inl]`. Conclude with `k1 k`. Simplify using `only [GlobalTheory.LatVac.locCo, AddMonoidHom.coe_mk, ZeroHom.coe_mk, he, Sum.elim_inr, Pi.neg_apply, map_neg, mul_neg]`.
-
-Conclude with `⟨(k2 k).1, neg_mem (k2 k).2⟩`. Conclude with `GlobalTheory.SelfDualFirstProj.exists_pair_of_annihilator v (GlobalTheory.LatVac.psiAt B.ψ v) _ c hc0 hunr hloc hbd η hη`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem latDbl_fill : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (a a' : ℕ) (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W), IsTriple B G X om om' →

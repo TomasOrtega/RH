@@ -15,7 +15,7 @@ section Alg
 variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
 
 /- English proof (translation)
-Use `MvPolynomial.comp_aeval_apply (R := ℤ) a ψ.toIntAlgHom s` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem map_aeval_int {σ R R' : Type} [CommRing R] [CommRing R'] (ψ : R →+* R') (a : σ → R)
     (s : MvPolynomial σ ℤ) : ψ (aeval a s) = aeval (fun p => ψ (a p)) s := by
@@ -23,7 +23,7 @@ theorem map_aeval_int {σ R R' : Type} [CommRing R] [CommRing R'] (ψ : R →+* 
   simpa using this
 
 /- English proof (translation)
-Rewrite using `[aeval_def]`. Use `congr 1`. Conclude with `Subsingleton.elim _ _`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem aeval_eq_eval₂ {σ R : Type} [CommRing R] [Algebra ℤ R] (a : σ → R) (s : MvPolynomial σ ℤ) :
     aeval a s = eval₂ (Int.castRingHom R) a s := by
@@ -32,7 +32,7 @@ theorem aeval_eq_eval₂ {σ R : Type} [CommRing R] [Algebra ℤ R] (a : σ → 
   exact Subsingleton.elim _ _
 
 /- English proof (translation)
-Rewrite using `[← Finset.prod_mul_distrib, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[← zpow_natCast, ← zpow_natCast, ← zpow_add₀ (hx k), ← zpow_add₀ (hx k)]`. Use `congr 1`. Combine the linear relations using `[hd k]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem prod_cross {F : Type} [Field F] (x : K → F) (hx : ∀ k, x k ≠ 0) {a b : K → ℤ} {α γ : K → ℕ}
     (hd : ∀ k, (α k : ℤ) - γ k = a k - b k) :
@@ -46,7 +46,7 @@ theorem prod_cross {F : Type} [Field F] (x : K → F) (hx : ∀ k, x k ≠ 0) {a
 variable {Ω : Type} [Field Ω]
 
 /- English proof (translation)
-Establish `h` using `aeval_blockScale hs (fun k => (MvPolynomial.X k : MvPolynomial K R)) fun p => MvPolynomial.C (b p)`. Rewrite using `[map_aeval_int MvPolynomial.C b s]`. Simplify using `only [aeval_eq_eval₂] at h ⊢`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cone_of_form {R : Type} [CommRing R] (b : (Σ k, ι k) → R) {s : MRing ι} {d : K → ℕ}
     (hs : IsMultiHomog s d) :
@@ -58,9 +58,9 @@ theorem cone_of_form {R : Type} [CommRing R] (b : (Σ k, ι k) → R) {s : MRing
   exact h
 
 /- English proof (translation)
-Introduce `h0`. Use `h ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `mConeMap y s = 0`. Establish `e : mConeMap y s = aeval (fun p => (MvPolynomial.X p.1 : MvPolynomial K Ω) * MvPolynomial.C (y p)) s`. Simplify using `only [mConeMap, mul_comm]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[e, cone_of_form y hs, h0, map_zero, mul_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem aeval_ne_zero_of_form {y : (Σ k, ι k) → Ω} {s : MRing ι} {d : K → ℕ} (hs : IsMultiHomog s d)
     (h : s ∉ mCoordIdeal y) : aeval y s ≠ 0 := by
@@ -82,11 +82,11 @@ def evS : MvPolynomial K S →+* ℂ := eval₂Hom φ fun k => w ⟨k, c k⟩
 variable {S φ y c w r}
 
 /- English proof (translation)
-Establish `hJ : Function.Injective (MvPolynomial.map (σ` using `K) S.subtype) := MvPolynomial.map_injective _ Subtype.val_injective`. Use `hJ ?_` and prove the remaining obligations. Rewrite using `[map_zero]`. Set `Res : MvPolynomial K Ω →+* MvPolynomial K Ω` to `eval₂Hom MvPolynomial.C fun k => MvPolynomial.C (y ⟨k, c k⟩)⁻¹ * MvPolynomial.X k`. Establish `e : (MvPolynomial.map (σ` using `K) S.subtype).comp (coneS S r).toRingHom = Res.comp (mConeMap y).toRingHom := by`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `MvPolynomial.ringHom_ext (fun n => by simp) fun p => ?_` and prove the remaining obligations. Establish `h1 : ((r p : S) : Ω) = y p * (y ⟨p.1, c p.1⟩)⁻¹`. Rewrite using `[← hr p, mul_inv_cancel_right₀ (hy p.1)]`. Simplify using `[coneS, mConeMap, Res, h1]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `h0 : mConeMap y s = 0` using `hs`. Use `RingHom.congr_fun e s` as an intermediate fact. Simplify `this` using `[h0]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem coneS_eq_zero (hy : ∀ k, y ⟨k, c k⟩ ≠ 0) (hr : ∀ p, (r p : Ω) * y ⟨p.1, c p.1⟩ = y p) {s : MRing ι}
     (hs : s ∈ mCoordIdeal y) : coneS S r s = 0 := by
@@ -107,7 +107,7 @@ theorem coneS_eq_zero (hy : ∀ k, y ⟨k, c k⟩ ≠ 0) (hr : ∀ p, (r p : Ω)
   simpa [h0] using this
 
 /- English proof (translation)
-Establish `e : (evS S φ c w).comp (coneS S r).toRingHom = (MvPolynomial.eval w).comp (MvPolynomial.map (Int.castRingHom ℂ))`. Use `MvPolynomial.ringHom_ext (fun n => by simp) fun p => ?_` and prove the remaining obligations. Simplify using `[coneS, evS, hw p]`. Conclude with `RingHom.congr_fun e s`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem evS_coneS (hw : ∀ p, w ⟨p.1, c p.1⟩ * φ (r p) = w p) (s : MRing ι) :
     evS S φ c w (coneS S r s) = evC w s := by
@@ -118,11 +118,11 @@ theorem evS_coneS (hw : ∀ p, w ⟨p.1, c p.1⟩ * φ (r p) = w p) (s : MRing �
   exact RingHom.congr_fun e s
 
 /- English proof (translation)
-Establish `h0` using `coneS_eq_zero hy hr huv`. Rewrite `h0` using `[map_sub, map_mul, map_mul, sub_eq_zero]`. Establish `hcf : coneS S r f = (∏ k, MvPolynomial.X k ^ α k) * MvPolynomial.C (aeval r f)` using `cone_of_form r hf`. Establish `hcg : coneS S r g = (∏ k, MvPolynomial.X k ^ γ k) * MvPolynomial.C (aeval r g)` using `cone_of_form r hg`. Establish `hCG : (MvPolynomial.C (aeval r g) : MvPolynomial K S) ≠ 0`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(map_ne_zero_iff (MvPolynomial.C : S →+* MvPolynomial K S) (MvPolynomial.C_injective K S)).2 hG`. Establish `hcs : (MvPolynomial.C s₂ : MvPolynomial K S) * MvPolynomial.C (aeval r f) = MvPolynomial.C s₁ * MvPolynomial.C (aeval r g)`. Rewrite using `[← map_mul, ← map_mul, hs]`. Establish `key : coneS S r u * MvPolynomial.C s₁ * (∏ k, MvPolynomial.X k ^ α k) = coneS S r v * MvPolynomial.C s₂ * ∏ k, MvPolynomial.X k ^ γ k`. Use `mul_left_cancel₀ hCG ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h0` using `[hcf, hcg]`. Take the linear combination `(MvPolynomial.C s₂) * h0 - (coneS S r u * ∏ k, MvPolynomial.X k ^ α k) * hcs`. Use `congrArg (evS S φ c w) key` as an intermediate fact. Rewrite `this` using `[map_mul, map_mul, map_mul, map_mul, evS_coneS hw, evS_coneS hw]`. Simplify `this` using `[evS, map_prod]`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem core (hy : ∀ k, y ⟨k, c k⟩ ≠ 0) (hr : ∀ p, (r p : Ω) * y ⟨p.1, c p.1⟩ = y p)
     (hw : ∀ p, w ⟨p.1, c p.1⟩ * φ (r p) = w p) {f g u v : MRing ι} {α γ : K → ℕ} (hf : IsMultiHomog f α)
@@ -150,27 +150,27 @@ theorem core (hy : ∀ k, y ⟨k, c k⟩ ≠ 0) (hr : ∀ p, (r p : Ω) * y ⟨p
 end Alg
 
 /- English proof (translation)
-Introduce `X Ω _ ξ K _ ι _ y A B e₀ ρ t f g u v z w ν hξ hw he hiso hρ hA hB hν huv _`. Take `⟨⟨α, γ, hf, hg, hd⟩, hfP, hgP, -⟩` from `hiso`. Take `⟨c, hc⟩` from `hA.exists_chart`. Establish `hz` using `hA.specializes`. Take `⟨φ, hφ, -⟩` from `ValHom.exists_valAt_hom X Ω ξ ℂ z hz hξ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨a₁, ha₁, e₁⟩` from `hA.2.2 c hc`. Take `⟨a₂, ha₂, e₂⟩` from `hB.2.2 c hc`. Establish `hy : ∀ k, y ⟨k, c k⟩ ≠ 0` using `fun k => (hw.2 k (c k) (IsUnit.mk0 _ (hc k))).1`. Use `choose q hq hq' using fun p : Σ k, ι k => (hw.2 p.1 (c p.1) (IsUnit.mk0 _ (hc p.1))).2 p.2`. Use `choose m hm using fun p => (hφ _ _).1 (hq p)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨m₁, hm₁⟩` from `(hφ _ _).1 ha₁`. Take `⟨m₂, hm₂⟩` from `(hφ _ _).1 ha₂`. Use `set r : (Σ k, ι k) → regAt ξ ⟨centre z, hz⟩ := fun p => ⟨_, m p⟩ with hrdef`. Establish `hr : ∀ p, (r p : Ω) * y ⟨p.1, c p.1⟩ = y p` using `fun p => div_mul_cancel₀ _ (hy p.1)`. Establish `hwr : ∀ p, w ⟨p.1, c p.1⟩ * φ (r p) = w p` using `fun p => by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hm p, mul_comm]`. Conclude with `(hq' p).symm`. Establish `hyf : aeval y f ≠ 0` using `aeval_ne_zero_of_form hf hfP`. Establish `hyg : aeval y g ≠ 0` using `aeval_ne_zero_of_form hg hgP`. Establish `hρ0 : ρ ≠ 0` using `fun h => hyf (by rw [hρ, h, zero_mul])`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hscale : ∀ {s : MRing ι} {d : K → ℕ}, IsMultiHomog s d → aeval y s = (∏ k, y ⟨k, c k⟩ ^ d k) * (aeval r s : regAt ξ ⟨centre z, hz⟩)`. Introduce `s d hs`. Establish `h1` using `aeval_blockScale hs (fun k => y ⟨k, c k⟩) fun p => (r p : Ω)`. Establish `e : (fun p : Σ k, ι k => y ⟨p.1, c p.1⟩ * (r p : Ω)) = y`. Use function extensionality and compare the values at `fun p => (mul_comm _ _).trans (hr p)`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Rewrite `h1` using `[e]`. Rewrite using `[h1]`. Use `congr 1`. Conclude with `(map_aeval_int (regAt ξ ⟨centre z, hz⟩).subtype r s).symm`. Establish `hF` using `hscale hf`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hG` using `hscale hg`. Establish `hQα : (∏ k, y ⟨k, c k⟩ ^ α k) ≠ 0` using `Finset.prod_ne_zero_iff.2 fun k _ => pow_ne_zero _ (hy k)`. Establish `hQγ : (∏ k, y ⟨k, c k⟩ ^ γ k) ≠ 0` using `Finset.prod_ne_zero_iff.2 fun k _ => pow_ne_zero _ (hy k)`. Establish `hPA : (∏ k, y ⟨k, c k⟩ ^ A.a k) ≠ 0` using `Finset.prod_ne_zero_iff.2 fun k _ => zpow_ne_zero _ (hy k)`. Establish `hPB : (∏ k, y ⟨k, c k⟩ ^ B.a k) ≠ 0` using `Finset.prod_ne_zero_iff.2 fun k _ => zpow_ne_zero _ (hy k)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `hP` using `prod_cross (fun k => y ⟨k, c k⟩) hy hd`. Establish `hGne : aeval r g ≠ 0` using `fun h => hyg (by rw [hG, h]; simp)`. Establish `hs : (⟨_, m₂⟩ : regAt ξ ⟨centre z, hz⟩) * aeval r f = ⟨_, m₁⟩ * aeval r g`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[Subring.coe_mul, Subring.coe_mul]`.
+Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `t / ((∏ k, y ⟨k, c k⟩ ^ B.a k) * (ρ * e₀)) * _ = t / ((∏ k, y ⟨k, c k⟩ ^ A.a k) * e₀) * _`. Establish `hFG` using `hρ`. Rewrite `hFG` using `[hF, hG]`. Rewrite using `[div_mul_eq_mul_div, div_mul_eq_mul_div, div_eq_div_iff (mul_ne_zero hPB (mul_ne_zero hρ0 he)) (mul_ne_zero hPA he)]`. Establish `key : ((aeval r f : regAt ξ ⟨centre z, hz⟩) : Ω) * (∏ k, y ⟨k, c k⟩ ^ A.a k) = ((aeval r g : regAt ξ ⟨centre z, hz⟩) : Ω) * (∏ k, y ⟨k, c k⟩ ^ B.a k) * ρ` using `mul_right_cancel₀ hQγ (by`.
+Take a linear combination of the given relations to obtain the conclusion. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Take the linear combination `((aeval r f : regAt ξ ⟨centre z, hz⟩) : Ω) * hP + (∏ k, y ⟨k, c k⟩ ^ B.a k) * hFG)`. Take the linear combination `(t * e₀) * key`. Establish `hcore` using `core (φ := φ) hy hr hwr hf hg hGne huv hs`. Rewrite `hcore` using `[hm₁, hm₂]`. Establish `hn` using `congrArg norm hcore`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Take a linear combination of the given relations to obtain the conclusion.
 
-Simplify using `only [norm_mul, norm_prod, norm_pow] at hn`. Establish `hNγ : (∏ k, ‖w ⟨k, c k⟩‖ ^ γ k) ≠ 0` using `Finset.prod_ne_zero_iff.2 fun k _ => pow_ne_zero _ (norm_ne_zero_iff.2 (hc k))`. Establish `hN` using `prod_cross (fun k => ‖w ⟨k, c k⟩‖) (fun k => norm_ne_zero_iff.2 (hc k)) hd`. Use `mul_right_cancel₀ hNγ (mul_left_cancel₀ hν.ne' ?_)` and prove the remaining obligations. Take the linear combination `(‖evC w v‖ * ∏ k, ‖w ⟨k, c k⟩‖ ^ γ k) * e₂ - (‖evC w u‖ * ∏ k, ‖w ⟨k, c k⟩‖ ^ γ k) * e₁ - (∏ k, ‖w ⟨k, c k⟩‖ ^ B.a k) * hn - (‖evC w u‖ * ‖a₁‖) * hN`.
+A detailed English derivation is pending.
 -/
 theorem norm_mul_h_eq : ∀ (X : Scheme.{0}) (Ω : Type) [Field Ω] (ξ : Spec (CommRingCat.of Ω) ⟶ X) (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] (y : (Σ k, ι k) → Ω) (A B : HermLine ι) (e₀ ρ t : Ω) (f g u v : MRing ι) (z : Spec (CommRingCat.of ℂ) ⟶ X) (w : (Σ k, ι k) → ℂ) (ν : ℝ), IsCptGen ξ → CoordsAt ξ y z w → e₀ ≠ 0 → IsLineIso (mCoordIdeal y) A.a B.a f g → aeval y f = ρ * aeval y g → SecNorm ξ y A e₀ z w t ν → SecNorm ξ y B (ρ * e₀) z w t ν → 0 < ν → u * f - v * g ∈ mCoordIdeal y → evC w u ≠ 0 → ‖evC w v‖ * B.h w = ‖evC w u‖ * A.h w := by
   intro X Ω _ ξ K _ ι _ y A B e₀ ρ t f g u v z w ν hξ hw he hiso hρ hA hB hν huv _

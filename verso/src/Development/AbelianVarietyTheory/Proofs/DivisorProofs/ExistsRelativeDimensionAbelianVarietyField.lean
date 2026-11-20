@@ -11,7 +11,7 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.AbVarRelDim
 
 /- English proof (translation)
-Introduce `K _ A _ hA`. Conclude with `GlobalTheory.AbelianDim.exists_relDim K A hA`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem exists_relDim : ∀ (K : Type) [Field K] (A : Over (Sp K)) [GrpObj A], IsAbelianScheme A → ∃ g : ℕ, SmoothOfRelativeDimension g A.hom := by
   intro K _ A _ hA

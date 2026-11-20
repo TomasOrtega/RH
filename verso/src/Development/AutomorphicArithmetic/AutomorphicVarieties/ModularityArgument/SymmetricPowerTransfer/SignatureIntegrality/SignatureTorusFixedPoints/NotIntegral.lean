@@ -8,22 +8,22 @@ noncomputable section
 open ValuativeRel Matrix Polynomial GlobalTheory.SmGL GlobalTheory.SplitWeil UpperTheory.V.Hi UpperTheory.V.AlgebraTools UpperTheory.V.Z.Sym UpperTheory.V.Z.Sym.Sig UpperTheory.V.Z.Sym.Loc UpperTheory.V.Z.Sym.Glob
 
 /- English proof (translation)
-The claim follows from `Subgroup.relIndex_comap_ne_zero e h`.
+A detailed English derivation is pending.
 -/
 private theorem index_comap {G G' : Type} [Group G] [Group G'] (e : G →* G') (he : Function.Surjective e)
     {A B : Subgroup G'} (h : A.relIndex B ≠ 0) : (A.comap e).relIndex (B.comap e) ≠ 0 := Subgroup.relIndex_comap_ne_zero e h
 
 /- English proof (translation)
-Introduce `h0` and use `GlAx.Kc_index (k := k) (n := n) (V.c + 1) le_rfl (Subgroup.relIndex_eq_zero_of_le_left (kc_le V) h0)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem J_index {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (V : Lev k) (n : ℕ) : (V.J n).relIndex (KO k (Fin n)) ≠ 0 :=
   fun h0 => GlAx.Kc_index (k := k) (n := n) (V.c + 1) le_rfl (Subgroup.relIndex_eq_zero_of_le_left (kc_le V) h0)
 
 /- English proof (translation)
-Introduce `hint`. Establish `hv : Valuation.Integers (valuation k) O` using `{ hom_inj := hO.inj map_le_one := fun x => (hO.range _).1 ⟨x, rfl⟩ exists_of_le_one := fun r hr => (hO.range r).2 hr }`. Establish `h1 : valuation k ((a : k) + ((a⁻¹ : kˣ) : k)) ≤ 1` using `hv.isIntegral_iff_v_le_one.mp hint`. Establish `hprod : valuation k ((a⁻¹ : kˣ) : k) * valuation k (a : k) = 1`. Rewrite using `[← map_mul, Units.inv_mul, map_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hsub : ((a⁻¹ : kˣ) : k) = ((a : k) + ((a⁻¹ : kˣ) : k)) - a` using `by ring`. Establish `h2 : valuation k ((a⁻¹ : kˣ) : k) ≤ 1`. Rewrite using `[hsub]`. Conclude with `(Valuation.map_sub _ _ _).trans (max_le h1 ha.le)`. Conclude with `(mul_lt_of_le_one_of_lt h2 ha).ne hprod`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem not_integral {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     {O : Type} [CommRing O] [Algebra O k] (hO : IsInts k O) {a : kˣ} (ha : valuation k (a : k) < 1) :
@@ -43,19 +43,17 @@ private theorem not_integral {k : Type} [Field k] [ValuativeRel k] [TopologicalS
   exact (mul_lt_of_le_one_of_lt h2 ha).ne hprod
 
 /- English proof (translation)
-Introduce `k _ _ _ _ O _ _ hO h2 Δ s hs hs0 V Ry _ χ _`. Take `⟨hU, -, hKU, -⟩` from `eU_facts k O hO h2 Δ s hs hs0`. Take `⟨hD, hKD, -⟩` from `eD_facts k O hO h2 Δ s hs hs0`. Take `⟨f1, f2, f3, -, -, f6⟩` from `finFacts k V`. Establish `hpos : V.H.relIndex V.H2 ≠ 0` using `fun h0 => f1 (by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[← Subgroup.relIndex_mul_relIndex _ _ _ f3 f2, h0, zero_mul])`. Use `⟨?_, ?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← hKU]`. Conclude with `Subgroup.comap_mono (f6 3).2.2.2`. Rewrite using `[← hKU]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `index_comap _ hU.2 (J_index V 3)`. Rewrite using `[← hKD]`. Conclude with `Subgroup.comap_mono (f6 2).2.2.2`. Rewrite using `[← hKD]`. Conclude with `index_comap _ hD.2 (J_index V 2)`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Establish an intermediate fact. Check the signs of the components of the expression.
 
-Express the relevant statement in the definitionally equal form `0 < (V.H.relIndex (Uo k) : ℝ) * (V.H.relIndex V.H2 : ℝ)`. Establish `a1 : 0 < V.H.relIndex (Uo k)` using `Nat.pos_of_ne_zero f1`. Establish `a2 : 0 < V.H.relIndex V.H2` using `Nat.pos_of_ne_zero hpos`. Check the signs of the components of the expression. Express the relevant statement in the definitionally equal form `0 < (V.H.relIndex (Uo k) : ℝ)`.
+Express the relevant assertion in an equivalent form by its definition. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Nat.pos_of_ne_zero f1` after adjusting the coercions. Introduce and unpack `t ht τ ⟨h, hh, rfl⟩`. Establish `ht' : valuation k (t : k) < valuation k (unif k : k) ^ 2` using `ht`. Establish `hu : valuation k (unif k : k) < 1` using `by rw [GlAx.unif_spec]; exact uniformizer_lt_one`. Establish `ha : valuation k ((t * h : kˣ) : k) < 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion.
 
-Establish `e : valuation k (h : k) = 1` using `V.H_le hh`. Rewrite using `[Units.val_mul, map_mul, e, mul_one]`. Conclude with `ht'.trans (pow_lt_one₀ zero_le' hu two_ne_zero)`. Use `⟨⟨((t * h : kˣ) : k) - ((t * h)⁻¹ : kˣ), ?_⟩, not_integral hO ha⟩` and prove the remaining obligations. Establish `e : ((t * h : kˣ) : k) * ((t * h)⁻¹ : kˣ) = 1` using `Units.mul_inv _`.
-
-Take the linear combination `(4 : k) * e`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Sym.Sig.okLev :
     UpperTheory.V.Z.Sym.Sig.OkLev := by

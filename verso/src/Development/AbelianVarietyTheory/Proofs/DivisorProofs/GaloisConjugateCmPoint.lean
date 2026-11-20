@@ -22,7 +22,7 @@ noncomputable section
 namespace GlobalTheory.ConjWeil
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Use `Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom g)` as an intermediate fact. Conclude with `(congrArg (fun q => q.hom (c : ℂ)) this).symm`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem unitOn_spMap (g : ℂ →+* ℂ) (c : ℂˣ) :
     Units.map (spMap g).appTop.hom.toMonoidHom (unitOn c) = unitOn (Units.map g.toMonoidHom c) := by
@@ -31,11 +31,11 @@ theorem unitOn_spMap (g : ℂ →+* ℂ) (c : ℂˣ) :
   exact (congrArg (fun q => q.hom (c : ℂ)) this).symm
 
 /- English proof (translation)
-Take `⟨φ₂, hsq, hiso⟩` from `hX.pol`. Establish `e : (lift (𝟙 X'.A) (𝟙 X'.A)).left ≫ φ₂ = p ≫ (lift (𝟙 X.A) (𝟙 X.A)).left`. Apply `pullback.hom_ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `_ ≫ (fst X.A X.A).left = _ ≫ (fst X.A X.A).left`. Rewrite using `[Category.assoc, hsq.1, ← Category.assoc, ← Over.comp_left, lift_fst, Category.assoc, ← Over.comp_left, lift_fst]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Express the relevant statement in the definitionally equal form `_ ≫ (snd X.A X.A).left = _ ≫ (snd X.A X.A).left`. Rewrite using `[Category.assoc, hsq.2, ← Category.assoc, ← Over.comp_left, lift_snd, Category.assoc, ← Over.comp_left, lift_snd]`. Simplify using the standard rewrite rules. Establish `hI : LBIso (X'.diag c) ((X.P c).pull (p ≫ (lift (𝟙 X.A) (𝟙 X.A)).left))` using `GlobalTheory.GenSpread.lbIso_pull_of_lbIso (hiso c) _ e.symm`.
+Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `LBIso.trans (pull_isLB (X'.isLB c) _) (pull_isLB (X.isLB c) _) (pull_isLB (pull_isLB (X.isLB c) _) _) hI (GlobalTheory.GenSpread.lbIso_pull_pull (X.isLB c) p rfl)`.
+A detailed English derivation is pending.
 -/
 theorem diag_lbIso {F : Type} [Field F] [NumberField F] {𝔠 : FracId F} {S S' : Scheme.{0}} {X : Obj F 𝔠 S}
     {X' : Obj F 𝔠 S'} {b : S' ⟶ S} {p : X'.A.left ⟶ X.A.left} (hX : X'.IsPullBy X b p) (c : 𝔠.elt) :
@@ -57,21 +57,19 @@ theorem diag_lbIso {F : Type} [Field F] [NumberField F] {𝔠 : FracId F} {S S' 
     (GlobalTheory.GenSpread.lbIso_pull_pull (X.isLB c) p rfl)
 
 /- English proof (translation)
-Introduce `_ _ _ K _ _ t E _ _ _ _ I _ φ g c y _ 𝔠 T X' p hp u' hlat hex u₀ Hm χ hex₀ hAH k w w' z z' hk hw hw' hz hz' hwz hwz'`. Establish `hk0 : (k : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 hk.ne'`. Establish `hL : (T.X.diag T.U.c).IsLB` using `pull_isLB (T.X.isLB T.U.c) _`. Establish `hL' : (X'.diag T.U.c).IsLB` using `pull_isLB (X'.isLB T.U.c) _`. Take `⟨χX, hχX⟩` from `T.U.ah`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `mem : ∀ v, v ∈ lattice c y → (fun j ↦ φ (T.U.e j) v) ∈ T.U.u.Λ` using `fun v hv ↦ (T.U.lat _).2 ⟨v, hv, funext fun j ↦ by simp [GlobalTheory.IndefiniteRowSideFullHecke.DefiningCoordinates.defCoord]⟩`. Establish `divk : ∀ v : E, (fun j ↦ φ (T.U.e j) (v / k)) = (k : ℂ)⁻¹ • fun j ↦ φ (T.U.e j) v`. Introduce `v`. Use function extensionality and compare the values at `j`. Simplify using `[map_div₀, div_eq_inv_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use `set c₁ : ℂˣ := Units.mk0 _ (Complex.exp_ne_zero (-(2 * Real.pi * Complex.I) * ((((fun j ↦ φ (T.U.e j) w) ⬝ᵥ (Matrix.diagonal fun j ↦ (T.U.h (T.U.e j) : ℂ)).mulVec (star fun j ↦ φ (T.U.e j) w')).im : ℝ) : ℂ) / k)) with hc₁`. Establish `H1` using `GlobalTheory.T.weil_pairing_torsion_points T.X.A T.X.ab _ hL _ T.U.u _ χX hχX k _ _ c₁ hk (mem w hw) (mem w' hw') rfl`. Rewrite `H1` using `[← divk, ← divk]`. Set `T₁ : Over (Sp ℂ)` to `Over.mk (𝟙 (Sp ℂ) ≫ spMap (g : ℂ →+* ℂ))`. Set `h : T₁ ⟶ 𝟙_ (Over (Sp ℂ))` to `Over.homMk (spMap (g : ℂ →+* ℂ)) (by simp [T₁])`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `H2` using `GlobalTheory.CommPairing.weilIs_pull globalFns_holds T.X.ab hL h H1`. Rewrite `H2` using `[show h.left = spMap (g : ℂ →+* ℂ) from rfl, unitOn_spMap]`. Establish `H3` using `(GlobalTheory.weilIs_baseChange_of_comm (Sp ℂ) (Sp ℂ) T.X.A X'.A (spMap (g : ℂ →+* ℂ)) p hp.grp _ _ hL hL' (diag_lbIso hp T.U.c) ℂ (𝟙 (Sp ℂ)) k (u'.ex (fun j ↦ g (φ (T.U.e j) (z / k)))) (u'.ex (fun j ↦ g (φ (T.U.e j) (z' / k)))) _ _ _ (hex _ _ hwz).symm (hex _ _ hwz').symm).2 H2`. Establish `memg : ∀ v, v ∈ lattice c (y * (upIdele K E t)⁻¹) → (fun j ↦ g (φ (T.U.e j) v)) ∈ u₀.Λ`. Introduce `v hv`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← u₀.ker, hex₀, u'.ker]`. Conclude with `(hlat _).2 ⟨v, hv, funext fun j ↦ by simp [GlobalTheory.IndefiniteRowSideFullHecke.DefiningCoordinates.defCoord]⟩`. Establish `divg : ∀ v : E, (fun j ↦ g (φ (T.U.e j) (v / k))) = (k : ℂ)⁻¹ • fun j ↦ g (φ (T.U.e j) v)`. Introduce `v`. Use function extensionality and compare the values at `j`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[map_div₀, div_eq_inv_mul]`. Use `set c₂ : ℂˣ := Units.mk0 _ (Complex.exp_ne_zero (-(2 * Real.pi * Complex.I) * ((((fun j ↦ g (φ (T.U.e j) z)) ⬝ᵥ Hm.mulVec (star fun j ↦ g (φ (T.U.e j) z'))).im : ℝ) : ℂ) / k)) with hc₂`. Establish `H4` using `GlobalTheory.T.weil_pairing_torsion_points X'.A X'.ab _ hL' _ u₀ Hm χ hAH k _ _ c₂ hk (memg z hz) (memg z' hz') rfl`. Rewrite `H4` using `[hex₀, ← divg, ← divg]`. Establish `e` using `congrArg Units.val (GlobalTheory.weilIs_unique_fieldPoint (Sp ℂ) X'.A _ hL' ℂ (𝟙 (Sp ℂ)) k _ _ _ _ H4 H3)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [hc₁, hc₂, Units.val_mk0, Units.coe_map, MonoidHom.coe_coe] at e`. Establish `hs : ((fun j ↦ φ (T.U.e j) w) ⬝ᵥ (Matrix.diagonal fun j ↦ (T.U.h (T.U.e j) : ℂ)).mulVec (star fun j ↦ φ (T.U.e j) w')).im = ∑ i, T.U.h i * (φ i w * starRingEnd ℂ (φ i w')).im`. Simplify using `only [dotProduct, Matrix.mulVec_diagonal, Pi.star_apply, RCLike.star_def, Complex.im_sum]`. Rewrite using `[← Equiv.sum_comp T.U.e]`. Use `Finset.sum_congr rfl fun j _ ↦ ?_` and prove the remaining obligations.
-
-Rewrite using `[mul_left_comm, Complex.im_ofReal_mul]`. Rewrite `e` using `[hs]`. Conclude with `e.symm`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem weil_transport : GlobalTheory.Published.PeriodComparison → GlobalTheory.Published.AbelianDeRham → GlobalTheory.Published.AbelianDualCrystal → ∀ (K : Type) [Field K] [NumberField K] (t : (Af K)ˣ)
     (E : Type) [Field E] [NumberField E] [IsCMField E] [Algebra K E] (I : Type) [Fintype I] (φ : I → E →+* ℂ)

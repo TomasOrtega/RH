@@ -14,17 +14,15 @@ namespace GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets
 open IsLocalRing
 
 /- English proof (translation)
-Introduce `k _ n M hM P _`. Set `B` to `MvPolynomial (Fin n) k`. Set `Bh` to `AdicCompletion M B`. Set `L` to `Localization.AtPrime P`. Take `⟨h, f, D, s, hfp, hs, hsp, hdet⟩` from `hJ k n (P.comap (algebraMap B Bh)) (Ideal.comap_isPrime _ _)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Use `choose D' hD' using fun j => hE B M (D j)`. Establish `: IsRegularLocalRing Bh` using `hC B inferInstance M inferInstance`. Establish `: IsRegularLocalRing L` using `GroundTheory.Arith.SchemeCoh.IsRegularLocalRing.localization_atPrime P`. Establish `hdet' : (Matrix.of fun i j => D' j (algebraMap B Bh (f i))).det ∉ P`. Establish `hm : (Matrix.of fun i j => D' j (algebraMap B Bh (f i))) = (algebraMap B Bh).mapMatrix (Matrix.of fun i j => D j (f i))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Simplify using `only [Matrix.of_apply, RingHom.mapMatrix_apply, Matrix.map_apply]`. Conclude with `hD' j (f i)`. Rewrite using `[hm, ← RingHom.map_det]`. Conclude with `hdet`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmem : ∀ i, algebraMap Bh L (algebraMap B Bh (f i)) ∈ maximalIdeal L` using `fun i => (IsLocalization.AtPrime.to_map_mem_maximal_iff L P _).mpr (hfp i)`. Establish `hreg` using `hQ L h _ hmem (hI Bh P h D' (fun i => algebraMap B Bh (f i)) hfp hdet')`. Establish `heq : Ideal.span (Set.range fun i => algebraMap Bh L (algebraMap B Bh (f i))) = Ideal.map (algebraMap Bh L) (Ideal.map (algebraMap B Bh) (P.comap (algebraMap B Bh)))`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Ideal.span_le]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce and unpack `_ ⟨i, rfl⟩`. Conclude with `Ideal.mem_map_of_mem _ (Ideal.mem_map_of_mem _ (hfp i))`. Rewrite using `[Ideal.map_map, Ideal.map_le_iff_le_comap]`. Introduce `x hx`. Establish `hu : IsUnit (algebraMap Bh L (algebraMap B Bh s))` using `(IsLocalization.AtPrime.isUnit_to_map_iff L P _).mpr hs`.
-
-Establish `hsx` using `Ideal.mem_map_of_mem ((algebraMap Bh L).comp (algebraMap B Bh)) (hsp x hx)`. Rewrite `hsx` using `[Ideal.map_span, ← Set.range_comp, map_mul]`. Conclude with `(Ideal.unit_mul_mem_iff_mem _ hu).mp hsx`. Conclude with `IsRegularLocalRing.of_ringEquiv (Ideal.quotEquivOfEq heq)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem FormalFibresRegularPolynomial.proof (hJ : JacobianPrimeDerivations.Statement)
     (hE : DerivationAdicCompletion.Statement) (hC : AdicCompletionRegular.Statement)

@@ -29,7 +29,7 @@ Both sides reduce to the same expression.
 omit [NumberField E] [IsTotallyComplex E] in
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (by ext i j simp [barK, Matrix.star_apply])`.
+A detailed English derivation is pending.
 -/
 theorem barK_barK (k : Kinf E a) : barK (barK k) = k := Subtype.ext (by
   ext i j
@@ -38,7 +38,7 @@ theorem barK_barK (k : Kinf E a) : barK (barK k) = k := Subtype.ext (by
 omit [NumberField E] [IsTotallyComplex E] in
 
 /- English proof (translation)
-Introduce `k` and use `⟨barK k, barK_barK k⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem barKHom_surjective : Function.Surjective (barKHom E a) := fun k => ⟨barK k, barK_barK k⟩
 

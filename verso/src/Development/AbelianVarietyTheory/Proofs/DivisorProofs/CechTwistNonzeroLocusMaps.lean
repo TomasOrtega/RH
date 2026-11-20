@@ -19,7 +19,7 @@ open Twist
 variable {X : Scheme.{0}} (F : X.Modules) {L : LB X}
 
 /- English proof (translation)
-Use extensionality with `V s : 3`. Conclude with `mulSecOfEq_zpowSec_app σ rfl h₁ h₂ h₃ s`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem mulSecOfEq_zpowSec_comp (σ : LB.Sec (lbZPow L 1)) {n d e : ℤ} (a b : ℕ)
     (h₁ : n + a * 1 = d) (h₂ : d + b * 1 = e) (h₃ : n + ((a + b : ℕ) : ℤ) * 1 = e) :
@@ -32,7 +32,7 @@ def powMap (hL : L.IsLB) (σ : LB.Sec (lbZPow L 1)) (c : ℕ) : F ⟶ twistZ F L
   (twistZZeroIso F hL).hom ≫ mulSecOfEq F (zpowSec σ c) (by omega)
 
 /- English proof (translation)
-Substitute `h` using the available equality. Rewrite using `[powMap, powMap, Category.assoc, mulSecOfEq_zpowSec_comp F σ c j _ _ (by push_cast; ring)]`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 -/
 theorem powMap_comp (hL : L.IsLB) (σ : LB.Sec (lbZPow L 1)) (j c d : ℕ) (h : c + j = d)
     (h' : (c : ℤ) + (j : ℤ) * 1 = d) :
@@ -41,7 +41,7 @@ theorem powMap_comp (hL : L.IsLB) (σ : LB.Sec (lbZPow L 1)) (j c d : ℕ) (h : 
   rw [powMap, powMap, Category.assoc, mulSecOfEq_zpowSec_comp F σ c j _ _ (by push_cast; ring)]
 
 /- English proof (translation)
-Rewrite using `[powMap, Scheme.Modules.Hom.comp_app, ConcreteCategory.coe_comp]`. Conclude with `(bijective_mulSecOfEq_app hL _ (by omega) (hW.trans (nonzeroLocus_le_zpowSec hL σ c))).comp (ConcreteCategory.bijective_of_isIso ((twistZZeroIso F hL).hom.app W))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bijective_powMap_app (hL : L.IsLB) (σ : LB.Sec (lbZPow L 1)) (c : ℕ) {W : X.Opens}
     (hW : W ≤ nonzeroLocus σ) : Function.Bijective ((powMap F hL σ c).app W) := by
@@ -52,7 +52,7 @@ theorem bijective_powMap_app (hL : L.IsLB) (σ : LB.Sec (lbZPow L 1)) (c : ℕ) 
 variable {ι : Type} (U : ι → X.Opens)
 
 /- English proof (translation)
-Use `@NatIso.isIso_of_isIso_app _ _ _ _ _ _ _ fun s => ?_` and prove the remaining obligations. Rewrite using `[ConcreteCategory.isIso_iff_bijective]`. Conclude with `bijective_powMap_app F hL σ c ((cechOpen_le V U s).trans hV)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isIso_cechCubeMap_powMap (hL : L.IsLB) (σ : LB.Sec (lbZPow L 1)) (c : ℕ) {V : X.Opens}
     (hV : V ≤ nonzeroLocus σ) : IsIso (cechCubeMap ℤ V U (powMap F hL σ c)) := by
@@ -61,7 +61,7 @@ theorem isIso_cechCubeMap_powMap (hL : L.IsLB) (σ : LB.Sec (lbZPow L 1)) (c : �
   exact bijective_powMap_app F hL σ c ((cechOpen_le V U s).trans hV)
 
 /- English proof (translation)
-The claim follows from `presheafCubeRes_naturality (sectionsPresheafMap ℤ φ) _`.
+A detailed English derivation is pending.
 -/
 theorem cechCubeRes_naturality {G : X.Modules} (φ : F ⟶ G) {V : X.Opens} :
     cechCubeMap ℤ ⊤ U φ ≫ cechCubeRes ℤ G (cechOpen_mono (le_top (a := V)) fun _ => le_rfl) =
@@ -75,7 +75,7 @@ def cubeDiv (hL : L.IsLB) (σ : LB.Sec (lbZPow L 1)) (c : ℕ) {V : X.Opens}
     inv (cechCubeMap ℤ V U (powMap F hL σ c))
 
 /- English proof (translation)
-Use `haveI := isIso_cechCubeMap_powMap F U hL σ c hV`. Simplify using `[cubeDiv]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cubeDiv_comp (hL : L.IsLB) (σ : LB.Sec (lbZPow L 1)) (c : ℕ) {V : X.Opens}
     (hV : V ≤ nonzeroLocus σ) : cubeDiv F U hL σ c hV ≫ cechCubeMap ℤ V U (powMap F hL σ c) =
@@ -84,7 +84,7 @@ theorem cubeDiv_comp (hL : L.IsLB) (σ : LB.Sec (lbZPow L 1)) (c : ℕ) {V : X.O
   simp [cubeDiv]
 
 /- English proof (translation)
-Rewrite using `[← ConcreteCategory.comp_apply, ← NatTrans.comp_app, cubeDiv_comp]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem cubeDiv_app (hL : L.IsLB) (σ : LB.Sec (lbZPow L 1)) (c : ℕ) {V : X.Opens}
     (hV : V ≤ nonzeroLocus σ) (s : Finset ι) (a : (cechCube ℤ (twistZ F L c) ⊤ U).obj s) :
@@ -93,9 +93,7 @@ theorem cubeDiv_app (hL : L.IsLB) (σ : LB.Sec (lbZPow L 1)) (c : ℕ) {V : X.Op
   rw [← ConcreteCategory.comp_apply, ← NatTrans.comp_app, cubeDiv_comp]
 
 /- English proof (translation)
-Use `haveI := isIso_cechCubeMap_powMap F U hL σ c hV`. Use `haveI := isIso_cechCubeMap_powMap F U hL σ d hV`. Unfold `cubeDiv`. Rewrite using `[← Category.assoc, cechCubeRes_naturality, Category.assoc]`. Use `congr 1`.
-
-Rewrite using `[IsIso.comp_inv_eq, IsIso.eq_inv_comp]`. Conclude with `congrArg (cechCubeMap ℤ V U) (powMap_comp F hL σ j c d h h')`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cechCubeMap_mul_comp_cubeDiv (hL : L.IsLB) (σ : LB.Sec (lbZPow L 1)) (j c d : ℕ)
     (h : c + j = d) (h' : (c : ℤ) + (j : ℤ) * 1 = d) {V : X.Opens} (hV : V ≤ nonzeroLocus σ) :
@@ -114,17 +112,15 @@ end TwistCube
 end GlobalTheory
 
 /- English proof (translation)
-Introduce `X F _ L hL σ₀ ι _ _ U hU`. Establish `hVσ : nonzeroLocus σ₀ ≤ nonzeroLocus (Twist.zofSec σ₀)` using `(Twist.nonzeroLocus_zofSec hL σ₀).ge`. Use `⟨fun j c d h => cechCubeMap ℤ ⊤ U (Twist.mulSecOfEq F (Twist.zpowSec (Twist.zofSec σ₀) j) (by omega)), fun c => TwistCube.cubeDiv F U hL (Twist.zofSec σ₀) c hVσ, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `j c d h`. Conclude with `TwistCube.cechCubeMap_mul_comp_cubeDiv F U hL _ j c d h _ hVσ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `j j' c d e h h' h''`. Conclude with `congrArg (cechCubeMap ℤ ⊤ U) (TwistCube.mulSecOfEq_zpowSec_comp F _ j j' (by omega) _ _)`. Introduce `s hs b`. Establish `hA : IsAffineOpen (cechOpen ⊤ U s)` using `by rw [cechOpen_top]; exact hU s hs`. Establish `hle : cechOpen (nonzeroLocus σ₀) U s ≤ cechOpen ⊤ U s` using `cechOpen_mono le_top (fun _ => le_rfl) s`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hV : cechOpen (nonzeroLocus σ₀) U s = cechOpen ⊤ U s ⊓ nonzeroLocus (Twist.zofSec σ₀)`. Rewrite using `[cechOpen, cechOpen, top_inf_eq, Twist.nonzeroLocus_zofSec hL, inf_comm]`. Take `⟨k, hk⟩` from `(Twist.eventually_exists_resM_eq_mulSecOfEq_zpowSec hL (Twist.zofSec σ₀) hA.isCompact hA.isQuasiSeparated hle hV ((Twist.twistZZeroIso F hL).hom.app _ b)).exists`. Take `⟨a, ha⟩` from `hk k (by omega)`. Conclude with `⟨k, a, (TwistCube.bijective_powMap_app F hL _ k ((cechOpen_le _ U s).trans hVσ)).1 ((TwistCube.cubeDiv_app F U hL (Twist.zofSec σ₀) k hVσ s a).trans ha)⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `s hs c a ha`. Establish `hA : IsAffineOpen (cechOpen ⊤ U s)` using `by rw [cechOpen_top]; exact hU s hs`. Establish `hle : cechOpen (nonzeroLocus σ₀) U s ≤ cechOpen ⊤ U s` using `cechOpen_mono le_top (fun _ => le_rfl) s`. Establish `hV : cechOpen (nonzeroLocus σ₀) U s = cechOpen ⊤ U s ⊓ nonzeroLocus (Twist.zofSec σ₀)`. Rewrite using `[cechOpen, cechOpen, top_inf_eq, Twist.nonzeroLocus_zofSec hL, inf_comm]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0 : Twist.resM _ hle a = 0`. Establish `e` using `TwistCube.cubeDiv_app F U hL (Twist.zofSec σ₀) c hVσ s a`. Rewrite `e` using `[ha, map_zero]`. Conclude with `e.symm`. Take `⟨k, hk⟩` from `(Twist.eventually_mulSecOfEq_zpowSec_eq_zero hL (Twist.zofSec σ₀) hA.isCompact hle hV.ge a h0).exists`.
-
-Conclude with `⟨k, hk _ (by push_cast; ring)⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.cechCube_nonzeroLocus_colimit : ∀ (X : Scheme.{0}) (F : X.Modules) [F.IsQuasicoherent] (L : LB X), L.IsLB → ∀ (σ : L.Sec) {ι : Type} [LinearOrder ι] [Fintype ι] (U : ι → X.Opens), (∀ s : Finset ι, s.Nonempty → IsAffineOpen (⨅ i ∈ s, U i)) → ∃ (μ : ∀ (j c d : ℕ), c + j = d → (cechCube ℤ (twistZ F L c) ⊤ U ⟶ cechCube ℤ (twistZ F L d) ⊤ U)) (ρ : ∀ c : ℕ, cechCube ℤ (twistZ F L c) ⊤ U ⟶ cechCube ℤ F (nonzeroLocus σ) U), (∀ j c d h, μ j c d h ≫ ρ d = ρ c) ∧ (∀ (j j' c d e : ℕ) (h : c + j = d) (h' : d + j' = e) (h'' : c + (j + j') = e), μ j c d h ≫ μ j' d e h' = μ (j + j') c e h'') ∧ (∀ s : Finset ι, s.Nonempty → ∀ b : (cechCube ℤ F (nonzeroLocus σ) U).obj s, ∃ c : ℕ, ∃ a : (cechCube ℤ (twistZ F L c) ⊤ U).obj s, (ρ c).app s a = b) ∧ (∀ s : Finset ι, s.Nonempty → ∀ (c : ℕ) (a : (cechCube ℤ (twistZ F L c) ⊤ U).obj s), (ρ c).app s a = 0 → ∃ j, (μ j c (c + j) rfl).app s a = 0) := by
   intro X F _ L hL σ₀ ι _ _ U hU

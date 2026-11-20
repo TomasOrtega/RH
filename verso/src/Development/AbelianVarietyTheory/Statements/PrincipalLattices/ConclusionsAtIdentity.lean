@@ -59,7 +59,7 @@ namespace NumInh
 variable {K : Type} [Field K] [NumberField K] {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E}
 
 /- English proof (translation)
-Establish `hD'` using `hD E H χ hχ K (-ρ) (X.A false) X.split (by rw [neg_sq]; exact X.ρ_sq) (Test.hasType_neg X.ρ_sq X.typeM) F h hh τ hτ`. Establish `hre` using `congrArg Complex.re hD'`. Rewrite `hre` using `[Complex.ofReal_re]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem deg_conjugate_type (hD : DegSt) [NeZero H.d] {χ : DirichletCharacter ℂ H.d} (hχ : IsKroneckerChar χ) {ρ : 𝓞 K}
     {σ₁ : K →+* ℂ} {p q : ℕ} (X : CMObj H K ρ σ₁ p q) (F : GenFib (X.A false).pol) {h : HermFam K (Fin F.P₀.g → K)}

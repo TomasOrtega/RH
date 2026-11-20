@@ -28,7 +28,7 @@ def blk (β : Bool) (v : Matrix (Rw ε β) (Rw ε β) ℂ) : Matrix (Fin m) (Fin
 variable {ε}
 
 /- English proof (translation)
-Rewrite using `[← Fintype.sum_subtype_add_sum_subtype (fun b : Fin m => ε b = β)]`. Establish `h2 : ∑ b : {b : Fin m // ¬ ε b = β}, (if h : ε b.1 = β then F ⟨b.1, h⟩ else 0) = 0` using `Finset.sum_eq_zero (fun b _ => dif_neg b.2)`. Rewrite using `[h2, add_zero]`. Conclude with `Finset.sum_congr rfl (fun b _ => by rw [dif_pos b.2])`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_rw {R : Type*} [AddCommMonoid R] (β : Bool) (F : Rw ε β → R) :
     ∑ b : Fin m, (if h : ε b = β then F ⟨b, h⟩ else 0) = ∑ b : Rw ε β, F b := by
@@ -39,7 +39,7 @@ theorem sum_rw {R : Type*} [AddCommMonoid R] (β : Bool) (F : Rw ε β → R) :
   exact Finset.sum_congr rfl (fun b _ => by rw [dif_pos b.2])
 
 /- English proof (translation)
-Unfold `blk`. Distinguish the cases in `ha : ε a = β`. Rewrite using `[dif_pos ha, dif_neg (fun hb => h (ha.trans hb.symm))]`. Rewrite using `[dif_neg ha, if_neg (fun e : a = b => h (congrArg ε e))]`.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem blk_block (β : Bool) (v : Matrix (Rw ε β) (Rw ε β) ℂ) (a b : Fin m) (h : ε a ≠ ε b) : blk ε β v a b = 0 := by
   unfold blk
@@ -48,37 +48,37 @@ theorem blk_block (β : Bool) (v : Matrix (Rw ε β) (Rw ε β) ℂ) (a b : Fin 
   · rw [dif_neg ha, if_neg (fun e : a = b => h (congrArg ε e))]
 
 /- English proof (translation)
-Unfold `blk`. Rewrite using `[dif_pos ha]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem blk_of (β : Bool) (v : Matrix (Rw ε β) (Rw ε β) ℂ) {a : Fin m} (ha : ε a = β) (b : Fin m) :
     blk ε β v a b = if hb : ε b = β then v ⟨a, ha⟩ ⟨b, hb⟩ else 0 := by
   unfold blk; rw [dif_pos ha]
 
 /- English proof (translation)
-Unfold `blk`. Rewrite using `[dif_neg ha]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem blk_of_not (β : Bool) (v : Matrix (Rw ε β) (Rw ε β) ℂ) {a : Fin m} (ha : ¬ ε a = β) (b : Fin m) :
     blk ε β v a b = if a = b then 1 else 0 := by
   unfold blk; rw [dif_neg ha]
 
 /- English proof (translation)
-Rewrite `hv`, the goal using `[Matrix.mem_unitaryGroup_iff]`. Use extensionality with `a c`. Rewrite using `[Matrix.mul_apply, Matrix.one_apply]`. Simplify using `only [Matrix.star_apply]`. Distinguish the cases in `ha : ε a = β`.
+Rewrite the hypotheses and the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hc : ε c = β`. Establish `key` using `congrFun (congrFun hv ⟨a, ha⟩) ⟨c, hc⟩`. Rewrite `key` using `[Matrix.mul_apply, Matrix.one_apply]`. Simplify using `only [Matrix.star_apply] at key`. Establish `e1 : ∀ b, blk ε β v a b * star (blk ε β v c b) = if h : ε b = β then v ⟨a, ha⟩ ⟨b, h⟩ * star (v ⟨c, hc⟩ ⟨b, h⟩) else 0`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `b`. Rewrite using `[blk_of β v ha, blk_of β v hc]`. Distinguish the cases in `hb : ε b = β`. Rewrite using `[dif_pos hb, dif_pos hb, dif_pos hb]`. Rewrite using `[dif_neg hb, dif_neg hb, dif_neg hb, zero_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_congr rfl (fun b _ => e1 b), sum_rw β (fun j => v ⟨a, ha⟩ j * star (v ⟨c, hc⟩ j)), key]`. Distinguish the cases in `hac : a = c`. Substitute `hac` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[if_neg (fun h => hac (congrArg Subtype.val h)), if_neg hac]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `e1 : ∀ b, blk ε β v a b * star (blk ε β v c b) = if c = b then blk ε β v a b else 0`. Introduce `b`. Rewrite using `[blk_of_not β v hc b]`. Distinguish the cases in `hcb : c = b`. Rewrite using `[if_pos hcb, if_pos hcb, star_one, mul_one]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg hcb, if_neg hcb, star_zero, mul_zero]`. Rewrite using `[Finset.sum_congr rfl (fun b _ => e1 b), Finset.sum_ite_eq]`. Simplify using `only [Finset.mem_univ, if_true]`. Rewrite using `[blk_block β v a c (by rw [ha]; exact fun h => hc h.symm), if_neg (by rintro rfl; exact hc ha)]`. Establish `e1 : ∀ b, blk ε β v a b * star (blk ε β v c b) = if a = b then star (blk ε β v c b) else 0`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `b`. Rewrite using `[blk_of_not β v ha b]`. Distinguish the cases in `hab : a = b`. Rewrite using `[if_pos hab, if_pos hab, one_mul]`. Rewrite using `[if_neg hab, if_neg hab, zero_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_congr rfl (fun b _ => e1 b), Finset.sum_ite_eq]`. Simplify using `only [Finset.mem_univ, if_true]`. Distinguish the cases in `hc : ε c = β`. Rewrite using `[blk_block β v c a (by rw [hc]; exact fun h => ha h.symm), star_zero, if_neg (by rintro rfl; exact ha hc)]`. Rewrite using `[blk_of_not β v hc a]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hca : c = a`. Substitute `hca` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[if_neg hca, star_zero, if_neg (fun h => hca h.symm)]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem blk_unitary (β : Bool) (v : Matrix (Rw ε β) (Rw ε β) ℂ) (hv : v ∈ Matrix.unitaryGroup (Rw ε β) ℂ) :
     blk ε β v ∈ Matrix.unitaryGroup (Fin m) ℂ := by

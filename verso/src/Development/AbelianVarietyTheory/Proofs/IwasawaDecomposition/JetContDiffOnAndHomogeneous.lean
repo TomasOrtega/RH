@@ -11,9 +11,9 @@ variable {E X F : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] [NormedSpace
   [NormedAddCommGroup F] [NormedSpace ℂ F] [NormedSpace ℝ F] [IsScalarTower ℝ ℂ F]
 
 /- English proof (translation)
-Simplify using `only [del_apply]`. Establish `hD : ContDiffOn ℝ ∞ (fun y => fderiv ℝ f y) S` using `hf.fderiv_of_isOpen hS (by simp)`. Establish `hDp` using `hD.comp hp hpW`. Establish `h1` using `hDp.clm_apply hg`. Establish `h2` using `hDp.clm_apply (hg.const_smul Complex.I)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(h1.sub (h2.const_smul Complex.I)).const_smul _`.
+A detailed English derivation is pending.
 -/
 theorem contDiffOn_del_apply {f : X → F} {S : Set X} (hS : IsOpen S) (hf : ContDiffOn ℝ ∞ f S)
     {W : Set E} {p g : E → X} (hp : ContDiffOn ℝ ∞ p W) (hg : ContDiffOn ℝ ∞ g W)
@@ -33,7 +33,7 @@ namespace GlobalTheory.ChernReg.JetSmooth
 variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] {d : ℕ}
 
 /- English proof (translation)
-Simplify using `only [Matrix.det_apply']`. Use `ContDiffOn.sum fun σ _ => ?_` and prove the remaining obligations. Conclude with `contDiffOn_const.mul (contDiffOn_prod fun i _ => hA _ _)`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem contDiffOn_det {A : E → Matrix (Fin d) (Fin d) ℂ} {S : Set E}
     (hA : ∀ k l, ContDiffOn ℝ ∞ (fun z => A z k l) S) :
@@ -43,9 +43,9 @@ theorem contDiffOn_det {A : E → Matrix (Fin d) (Fin d) ℂ} {S : Set E}
   exact contDiffOn_const.mul (contDiffOn_prod fun i _ => hA _ _)
 
 /- English proof (translation)
-Establish `hadj : ContDiffOn ℝ ∞ (fun z => (A z).adjugate k l) S`. Simplify using `only [Matrix.adjugate_apply]`. Use `contDiffOn_det fun i j => ?_` and prove the remaining obligations. Simplify using `only [Matrix.updateRow_apply]`. Use `split_ifs`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `contDiffOn_const`. Conclude with `hA _ _`. Establish `hinv : ContDiffOn ℝ ∞ (fun z => ((A z).det)⁻¹) S` using `(contDiffOn_det hA).inv fun z hz => (hdet z hz).ne_zero`. Use `(hinv.mul hadj).congr fun z hz => ?_` and prove the remaining obligations. Simplify using `[Matrix.inv_def, Ring.inverse_eq_inv']`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem contDiffOn_inv_apply {A : E → Matrix (Fin d) (Fin d) ℂ} {S : Set E}
     (hA : ∀ k l, ContDiffOn ℝ ∞ (fun z => A z k l) S) (hdet : ∀ z ∈ S, IsUnit (A z).det) (k l : Fin d) :
@@ -69,7 +69,7 @@ namespace GlobalTheory.ChernReg.JetSmooth
 variable {d : ℕ}
 
 /- English proof (translation)
-Establish `: ContDiff ℝ ∞ (fun ξ : ReciprocityTheory.L2DbarEstimates.V d => ξ j)` using `(EuclideanSpace.proj (𝕜 := ℂ) j).restrictScalars ℝ |>.contDiff`. Conclude with `this.comp contDiff_snd`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem contDiffOn_coord (j : Fin d) :
     ContDiff ℝ ∞ (fun q : ReciprocityTheory.L2DbarEstimates.V d × ReciprocityTheory.L2DbarEstimates.V d => q.2 j) := by
@@ -78,9 +78,9 @@ theorem contDiffOn_coord (j : Fin d) :
   exact this.comp contDiff_snd
 
 /- English proof (translation)
-Use `contDiffOn_piLp' 2 fun i => ?_` and prove the remaining obligations. Simplify using `only [christoffel, Matrix.vecMul, dotProduct]`. Use `ContDiffOn.sum fun k _ => ?_` and prove the remaining obligations. Use `(ContDiffOn.sum fun j _ => ((contDiffOn_coord j).contDiffOn).mul ?_).mul ?_` and prove the remaining obligations. Simplify using `only [Matrix.of_apply]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Conclude with `contDiffOn_del_apply hU (hb j k) contDiffOn_fst contDiffOn_snd (fun q hq => hq.1)`. Conclude with `(contDiffOn_inv_apply hb hdet k i).comp contDiffOn_fst (fun q hq => hq.1)`.
+A detailed English derivation is pending.
 -/
 theorem contDiffOn_chris {U : Set (ReciprocityTheory.L2DbarEstimates.V d)} {b : ReciprocityTheory.L2DbarEstimates.V d → Matrix (Fin d) (Fin d) ℂ}
     (hU : IsOpen U) (hb : ∀ k l, ContDiffOn ℝ ∞ (fun v => b v k l) U) (hdet : ∀ v ∈ U, IsUnit (b v).det) :
@@ -100,9 +100,9 @@ namespace GlobalTheory.ChernReg.JetSmooth
 variable {d : ℕ}
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => rw [jet_zero]`. Conclude with `contDiffOn_fst`. Consider the case `succ n ih`. Establish `h : jet b (n + 1) = fun q => del (jet b n) (id q) (q.2, -christoffel b q.1 q.2)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `q`. Conclude with `jet_succ b n q`. Rewrite using `[h]`. Conclude with `contDiffOn_del_apply (hU.prod isOpen_univ) ih contDiffOn_id (contDiffOn_snd.prodMk (contDiffOn_chris hU hb hdet).neg) (fun q hq => hq)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem contDiffOn_jet {U : Set (ReciprocityTheory.L2DbarEstimates.V d)} {b : ReciprocityTheory.L2DbarEstimates.V d → Matrix (Fin d) (Fin d) ℂ}
     (hU : IsOpen U) (hb : ∀ k l, ContDiffOn ℝ ∞ (fun v => b v k l) U) (hdet : ∀ v ∈ U, IsUnit (b v).det)
@@ -117,7 +117,7 @@ theorem contDiffOn_jet {U : Set (ReciprocityTheory.L2DbarEstimates.V d)} {b : Re
       (contDiffOn_snd.prodMk (contDiffOn_chris hU hb hdet).neg) (fun q hq => hq)
 
 /- English proof (translation)
-Simplify using `only [christoffel]`. Establish `hM : (Matrix.of fun k l => del (fun v => b v k l) z (t • ξ)) = t • Matrix.of fun k l => del (fun v => b v k l) z ξ`. Use extensionality with `k l`. Simplify using the standard rewrite rules. Simplify using `only [hM, WithLp.ofLp_smul, Matrix.vecMul_smul, Matrix.smul_vecMul, smul_smul, WithLp.toLp_smul, pow_two]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem chris_smul (b : ReciprocityTheory.L2DbarEstimates.V d → Matrix (Fin d) (Fin d) ℂ) (z ξ : ReciprocityTheory.L2DbarEstimates.V d) (t : ℂ) :
     christoffel b z (t • ξ) = t ^ 2 • christoffel b z ξ := by
@@ -134,15 +134,15 @@ namespace GlobalTheory.ChernReg.JetSmooth
 variable {d : ℕ}
 
 /- English proof (translation)
-Set `L : (ReciprocityTheory.L2DbarEstimates.V d × ReciprocityTheory.L2DbarEstimates.V d) →L[ℂ] (ReciprocityTheory.L2DbarEstimates.V d × ReciprocityTheory.L2DbarEstimates.V d)` to `(ContinuousLinearMap.fst ℂ (ReciprocityTheory.L2DbarEstimates.V d) (ReciprocityTheory.L2DbarEstimates.V d)).prod (t • ContinuousLinearMap.snd ℂ (ReciprocityTheory.L2DbarEstimates.V d) (ReciprocityTheory.L2DbarEstimates.V d))`. Set `Lr : (ReciprocityTheory.L2DbarEstimates.V d × ReciprocityTheory.L2DbarEstimates.V d) →L[ℝ] (ReciprocityTheory.L2DbarEstimates.V d × ReciprocityTheory.L2DbarEstimates.V d)` to `L.restrictScalars ℝ`. Establish `hL : ∀ q, Lr q = (q.1, t • q.2)` using `fun q => rfl`. Establish `hW : IsOpen (U ×ˢ (Set.univ : Set (ReciprocityTheory.L2DbarEstimates.V d)))` using `hU.prod isOpen_univ`. Establish `hdiff : ∀ q ∈ U ×ˢ (Set.univ : Set (ReciprocityTheory.L2DbarEstimates.V d)), DifferentiableAt ℝ f q` using `fun q hq => (hf.differentiableOn (by simp)).differentiableAt (hW.mem_nhds hq)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hq0 : ((z, ξ) : ReciprocityTheory.L2DbarEstimates.V d × ReciprocityTheory.L2DbarEstimates.V d) ∈ U ×ˢ Set.univ` using `⟨hz, trivial⟩`. Establish `hLq0 : Lr (z, ξ) ∈ U ×ˢ (Set.univ : Set (ReciprocityTheory.L2DbarEstimates.V d))` using `⟨hz, trivial⟩`. Establish `heq : (f ∘ Lr) =ᶠ[𝓝 (z, ξ)] fun q => t ^ n • f q` using `by filter_upwards [hW.mem_nhds hq0] with q hq`. Simplify `hom q.1 hq.1 q.2` using `[hL]`. Establish `hD : ∀ w, fderiv ℝ f (Lr (z, ξ)) (Lr w) = t ^ n • fderiv ℝ f (z, ξ) w`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Introduce `w`. Establish `h1 : fderiv ℝ (f ∘ Lr) (z, ξ) = (fderiv ℝ f (Lr (z, ξ))).comp Lr`. Rewrite using `[fderiv_comp (z, ξ) (hdiff _ hLq0) Lr.differentiableAt, Lr.fderiv]`. Establish `h2` using `heq.fderiv_eq (𝕜 := ℝ)`. Establish `hs : HasFDerivAt (fun q => t ^ n • f q) (t ^ n • fderiv ℝ f (z, ξ)) (z, ξ)` using `(hdiff _ hq0).hasFDerivAt.const_smul (t ^ n)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h2` using `[hs.fderiv]`. Establish `h3` using `congrArg (fun T => T w) (h1.symm.trans h2)`. Simplify using `using h3`. Establish `e0 : ((z, t • ξ) : ReciprocityTheory.L2DbarEstimates.V d × ReciprocityTheory.L2DbarEstimates.V d) = Lr (z, ξ)` using `rfl`. Establish `e1 : ((a, t • v) : ReciprocityTheory.L2DbarEstimates.V d × ReciprocityTheory.L2DbarEstimates.V d) = Lr (a, v)` using `rfl`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2 : Complex.I • Lr (a, v) = Lr (Complex.I • (a, v))` using `(L.map_smul _ _).symm`. Rewrite using `[del_apply, del_apply, e0, e1, e2, hD, hD, smul_comm Complex.I (t ^ n), ← smul_sub, smul_comm _ (t ^ n)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem del_scale {U : Set (ReciprocityTheory.L2DbarEstimates.V d)} {f : ReciprocityTheory.L2DbarEstimates.V d × ReciprocityTheory.L2DbarEstimates.V d → ReciprocityTheory.L2DbarEstimates.V d}
     (hU : IsOpen U) (hf : ContDiffOn ℝ ∞ f (U ×ˢ Set.univ)) (t : ℂ) (n : ℕ)
@@ -186,11 +186,11 @@ namespace GlobalTheory.ChernReg.JetSmooth
 variable {d : ℕ}
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => intro z _ t ξ`. Simplify using `[jet_zero]`. Consider the case `succ n ih`. Introduce `z hz t ξ`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[jet_succ, jet_succ]`. Simplify using `only`. Rewrite using `[chris_smul]`. Establish `e1 : ((t • ξ, -(t ^ 2 • christoffel b z ξ)) : ReciprocityTheory.L2DbarEstimates.V d × ReciprocityTheory.L2DbarEstimates.V d) = (t • ξ, t • -(t • christoffel b z ξ))`. Rewrite using `[pow_two, ← smul_smul, smul_neg]`.
+Rewrite the conclusion using the stated equalities. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e1, del_scale hU (contDiffOn_jet hU hb hdet n) t n (fun z hz ξ => ih z hz t ξ) hz]`. Establish `e2 : ((t • ξ, -(t • christoffel b z ξ)) : ReciprocityTheory.L2DbarEstimates.V d × ReciprocityTheory.L2DbarEstimates.V d) = t • (ξ, -christoffel b z ξ)`. Rewrite using `[Prod.smul_mk, smul_neg]`. Rewrite using `[e2, map_smul, smul_smul, pow_succ]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem jet_smul {U : Set (ReciprocityTheory.L2DbarEstimates.V d)} {b : ReciprocityTheory.L2DbarEstimates.V d → Matrix (Fin d) (Fin d) ℂ}
     (hU : IsOpen U) (hb : ∀ k l, ContDiffOn ℝ ∞ (fun v => b v k l) U) (hdet : ∀ v ∈ U, IsUnit (b v).det)
@@ -214,7 +214,7 @@ theorem jet_smul {U : Set (ReciprocityTheory.L2DbarEstimates.V d)} {b : Reciproc
 end GlobalTheory.ChernReg.JetSmooth
 
 /- English proof (translation)
-Introduce `d U b hU hb hdet n`. Conclude with `⟨JetSmooth.contDiffOn_jet hU hb hdet n, JetSmooth.jet_smul hU hb hdet n⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem GlobalTheory.ChernReg.jet_contDiffOn_and_homogeneous : ∀ (d : ℕ) (U : Set (ReciprocityTheory.L2DbarEstimates.V d)) (b : ReciprocityTheory.L2DbarEstimates.V d → Matrix (Fin d) (Fin d) ℂ), IsOpen U → (∀ k l, ContDiffOn ℝ ∞ (fun v => b v k l) U) → (∀ v ∈ U, IsUnit (b v).det) → ∀ n, ContDiffOn ℝ ∞ (jet b n) (U ×ˢ Set.univ) ∧ ∀ z ∈ U, ∀ (t : ℂ) ξ, jet b n (z, t • ξ) = t ^ n • jet b n (z, ξ) := by
   intro d U b hU hb hdet n

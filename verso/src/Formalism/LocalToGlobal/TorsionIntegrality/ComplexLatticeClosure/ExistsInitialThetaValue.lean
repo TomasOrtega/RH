@@ -4,23 +4,23 @@ import Formalism.LocalToGlobal.TorsionIntegrality.ComplexLatticeClosure.LatticeA
 namespace Formalism.L2.Th1.F2
 
 /- English proof (translation)
-The claim follows from `theta_zero_witness_holds`.
+A detailed English derivation is pending.
 -/
 theorem th0Witness : ThetaZeroWitness := theta_zero_witness_holds
 /- English proof (translation)
-The claim follows from `theta_zero_exists_holds`.
+A detailed English derivation is pending.
 -/
 theorem th0Ex : ThetaZeroExistence := theta_zero_exists_holds
 /- English proof (translation)
-The claim follows from `theta_zero_unique_holds`.
+A detailed English derivation is pending.
 -/
 theorem th0Uniq : ThetaZeroUniqueness := theta_zero_unique_holds
 /- English proof (translation)
-The claim follows from `norm_pos_holds`.
+A detailed English derivation is pending.
 -/
 theorem normPos : NormPos := norm_pos_holds
 /- English proof (translation)
-The claim follows from `cm_example_holds`.
+A detailed English derivation is pending.
 -/
 theorem cmExample : CmExample := cm_example_holds
 

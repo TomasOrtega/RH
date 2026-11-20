@@ -18,7 +18,7 @@ section Tri
 variable {R : Type} [CommRing R] {r s N : ℕ} {h : r + s = N}
 
 /- English proof (translation)
-Establish `e : A * -(A' * X * D') + X * D' = 0`. Rewrite using `[Matrix.mul_neg, ← Matrix.mul_assoc, ← Matrix.mul_assoc, h1, Matrix.one_mul]`. Simplify using the standard rewrite rules. Rewrite using `[Matrix.fromBlocks_multiply, e, h1, h2]`. Simplify using `[Matrix.fromBlocks_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem blocks_inv (A A' : Matrix (Fin r) (Fin r) R) (D D' : Matrix (Fin s) (Fin s) R) (X : Matrix (Fin r) (Fin s) R)
     (h1 : A * A' = 1) (h2 : D * D' = 1) :
@@ -30,9 +30,9 @@ private theorem blocks_inv (A A' : Matrix (Fin r) (Fin r) R) (D D' : Matrix (Fin
   simp [Matrix.fromBlocks_one]
 
 /- English proof (translation)
-Take `⟨X, a⟩` from `a`. Use `⟨-((m.1⁻¹).val * X * (m.2⁻¹).val), ?_⟩` and prove the remaining obligations. Establish `e1 : (g⁻¹).val.submatrix (GlobalTheory.ResW.blkE h) (GlobalTheory.ResW.blkE h) * g.val.submatrix (GlobalTheory.ResW.blkE h) (GlobalTheory.ResW.blkE h) = 1`. Rewrite using `[Matrix.submatrix_mul_equiv, ← Units.val_mul]`. Simplify using the standard rewrite rules.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `e2` using `blocks_inv m.1.val (m.1⁻¹).val m.2.val (m.2⁻¹).val X (Units.mul_inv m.1) (Units.mul_inv m.2)`. Rewrite `e1` using `[a]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 private theorem tri_inv {g : GL (Fin N) R} {m : GL (Fin r) R × GL (Fin s) R} (a : Tri h g m) : Tri h g⁻¹ m⁻¹ := by
   obtain ⟨X, a⟩ := a
@@ -56,7 +56,7 @@ private def nU (h : r + s = N) (X : Matrix (Fin r) (Fin s) R) : GL (Fin N) R whe
     simp [Matrix.fromBlocks_one]
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(Matrix.reindex (GlobalTheory.ResW.blkE h) (GlobalTheory.ResW.blkE h) (Matrix.fromBlocks 1 X 0 1)).submatrix _ _ = _`. Simplify using the standard rewrite rules.
+Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 -/
 private theorem nU_sub (X : Matrix (Fin r) (Fin s) R) :
     (nU h X).val.submatrix (GlobalTheory.ResW.blkE h) (GlobalTheory.ResW.blkE h) = Matrix.fromBlocks 1 X 0 1 := by
@@ -64,7 +64,7 @@ private theorem nU_sub (X : Matrix (Fin r) (Fin s) R) :
   simp
 
 /- English proof (translation)
-Use `Units.ext ?_` and prove the remaining obligations. Use extensionality with `a b`. Take `⟨a, rfl⟩` from `(GlobalTheory.ResW.blkE h).surjective a`. Take `⟨b, rfl⟩` from `(GlobalTheory.ResW.blkE h).surjective b`. Conclude with `congrFun (congrFun e a) b`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 private theorem gl_ext {g g' : GL (Fin N) R}
     (e : g.val.submatrix (GlobalTheory.ResW.blkE h) (GlobalTheory.ResW.blkE h) = g'.val.submatrix (GlobalTheory.ResW.blkE h) (GlobalTheory.ResW.blkE h)) : g = g' := by
@@ -75,7 +75,7 @@ private theorem gl_ext {g g' : GL (Fin N) R}
   exact congrFun (congrFun e a) b
 
 /- English proof (translation)
-Use `gl_ext (h := h) ?_` and prove the remaining obligations. Rewrite using `[Units.val_mul, ← Matrix.submatrix_mul_equiv _ _ _ (GlobalTheory.ResW.blkE h), nU_sub, nU_sub, nU_sub, Matrix.fromBlocks_multiply]`. Simplify using `[add_comm]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem nU_add (X Y : Matrix (Fin r) (Fin s) R) : nU h (X + Y) = nU h X * nU h Y := by
   refine gl_ext (h := h) ?_
@@ -83,7 +83,7 @@ private theorem nU_add (X Y : Matrix (Fin r) (Fin s) R) : nU h (X + Y) = nU h X 
   simp [add_comm]
 
 /- English proof (translation)
-Rewrite using `[inv_eq_iff_mul_eq_one, ← nU_add]`. Use `gl_ext (h := h) ?_` and prove the remaining obligations. Rewrite using `[nU_sub]`. Simplify using `[Matrix.fromBlocks_one]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem nU_neg (X : Matrix (Fin r) (Fin s) R) : (nU h X)⁻¹ = nU h (-X) := by
   rw [inv_eq_iff_mul_eq_one, ← nU_add]
@@ -92,9 +92,9 @@ private theorem nU_neg (X : Matrix (Fin r) (Fin s) R) : (nU h X)⁻¹ = nU h (-X
   simp [Matrix.fromBlocks_one]
 
 /- English proof (translation)
-Use `gl_ext (h := h) ?_` and prove the remaining obligations. Establish `e : m.1.val * ((m.1⁻¹).val * Y) = Y`. Rewrite using `[← Matrix.mul_assoc, ← Units.val_mul]`. Simplify using the standard rewrite rules. Rewrite using `[Units.val_mul, ← Matrix.submatrix_mul_equiv _ _ _ (GlobalTheory.ResW.blkE h), a, nU_sub, GlobalTheory.ResW.HeckeCT.blk_sub, Matrix.fromBlocks_multiply]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[e]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem tri_of_eq {g : GL (Fin N) R} {m : GL (Fin r) R × GL (Fin s) R} {Y : Matrix (Fin r) (Fin s) R}
     (a : g.val.submatrix (GlobalTheory.ResW.blkE h) (GlobalTheory.ResW.blkE h) = Matrix.fromBlocks m.1.val Y 0 m.2.val) :
@@ -106,7 +106,7 @@ private theorem tri_of_eq {g : GL (Fin N) R} {m : GL (Fin r) R × GL (Fin s) R} 
   simp [e]
 
 /- English proof (translation)
-Use `⟨m.1.val * X, ?_⟩` and prove the remaining obligations. Rewrite using `[Units.val_mul, ← Matrix.submatrix_mul_equiv _ _ _ (GlobalTheory.ResW.blkE h), nU_sub, GlobalTheory.ResW.HeckeCT.blk_sub, Matrix.fromBlocks_multiply]`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem tri_blk_nU (m : GL (Fin r) R × GL (Fin s) R) (X : Matrix (Fin r) (Fin s) R) :
     Tri h (GlobalTheory.ResW.blk h m * nU h X) m := by
@@ -121,13 +121,11 @@ section Int
 variable {L : Type} [Field L] {O : Subring L} {r s N : ℕ} {h : r + s = N}
 
 /- English proof (translation)
-Establish `key : ∀ {k : GL (Fin N) L} {m : GL (Fin r) L × GL (Fin s) L}, Tri h k m → k ∈ GLint (Fin N) O → (∀ a b, m.1.val a b ∈ O) ∧ ∀ a b, m.2.val a b ∈ O`. Introduce and unpack `k m ⟨X, a⟩ hk`. Prove the components needed by the constructor for the conclusion. Introduce `i j`. Use `congrFun (congrFun a (.inl i)) (.inl j)` as an intermediate fact.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `only [Matrix.submatrix_apply, Matrix.fromBlocks_apply₁₁] at this`. Rewrite using `[← this]`. Apply the tactic sequence `exact satake_glint_entry O hk _ _`. Introduce `i j`. Use `congrFun (congrFun a (.inr i)) (.inr j)` as an intermediate fact.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.submatrix_apply, Matrix.fromBlocks_apply₂₂] at this`. Rewrite using `[← this]`. Apply the tactic sequence `exact satake_glint_entry O hk _ _`. Take `⟨a1, a2⟩` from `key a hk`. Take `⟨b1, b2⟩` from `key (tri_inv a) (inv_mem hk)`.
-
-Conclude with `⟨satake_mem_glint O _ a1 b1, satake_mem_glint O _ a2 b2⟩`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem tri_int {k : GL (Fin N) L} {m : GL (Fin r) L × GL (Fin s) L} (a : Tri h k m) (hk : k ∈ GLint (Fin N) O) :
     m.1 ∈ GLint (Fin r) O ∧ m.2 ∈ GLint (Fin s) O := by
@@ -150,11 +148,11 @@ private theorem tri_int {k : GL (Fin N) L} {m : GL (Fin r) L × GL (Fin s) L} (a
   exact ⟨satake_mem_glint O _ a1 b1, satake_mem_glint O _ a2 b2⟩
 
 /- English proof (translation)
-Establish `key : ∀ {X : Matrix (Fin r) (Fin s) L}, (∀ i j, X i j ∈ O) → ∀ a b, (nU h X).val a b ∈ O`. Introduce `X hX a b`. Take `⟨a, rfl⟩` from `(GlobalTheory.ResW.blkE h).surjective a`. Take `⟨b, rfl⟩` from `(GlobalTheory.ResW.blkE h).surjective b`. Use `congrFun (congrFun (nU_sub (h := h) X) a) b` as an intermediate fact.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `this` using `[Matrix.submatrix_apply]`. Rewrite using `[this]`. Apply the tactic sequence `rcases a with a | a <;> rcases b with b | b`. Apply the tactic sequence `simp only [Matrix.fromBlocks_apply₁₁, Matrix.one_apply]; split_ifs <;> simp [O.one_mem, O.zero_mem]`. Conclude with `hX a b`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 
-Conclude with `O.zero_mem`. Apply the tactic sequence `simp only [Matrix.fromBlocks_apply₂₂, Matrix.one_apply]; split_ifs <;> simp [O.one_mem, O.zero_mem]`. Use `satake_mem_glint O _ (key hX) ?_` and prove the remaining obligations. Rewrite using `[nU_neg]`. Conclude with `key fun i j => by simpa using O.neg_mem (hX i j)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem nU_mem {X : Matrix (Fin r) (Fin s) L} (hX : ∀ i j, X i j ∈ O) : nU h X ∈ GLint (Fin N) O := by
   have key : ∀ {X : Matrix (Fin r) (Fin s) L}, (∀ i j, X i j ∈ O) → ∀ a b, (nU h X).val a b ∈ O := by
@@ -174,7 +172,7 @@ private theorem nU_mem {X : Matrix (Fin r) (Fin s) L} (hX : ∀ i j, X i j ∈ O
   exact key fun i j => by simpa using O.neg_mem (hX i j)
 
 /- English proof (translation)
-Use `congrFun (congrFun (nU_sub (h := h) X) (.inl i)) (.inr j)` as an intermediate fact. Simplify using `only [Matrix.submatrix_apply, Matrix.fromBlocks_apply₁₂] at this`. Rewrite using `[← this]`. Apply the tactic sequence `exact satake_glint_entry O hX _ _`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem nU_int {X : Matrix (Fin r) (Fin s) L} (hX : nU h X ∈ GLint (Fin N) O) (i : Fin r) (j : Fin s) : X i j ∈ O := by
   have := congrFun (congrFun (nU_sub (h := h) X) (.inl i)) (.inr j)
@@ -189,11 +187,11 @@ section Local
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {n a b : ℕ} {w : Pl E}
 
 /- English proof (translation)
-Establish `t : (GlobalTheory.ResW.blk h m * nU h X).val.submatrix (GlobalTheory.ResW.blkE h) (GlobalTheory.ResW.blkE h) = Matrix.fromBlocks m.1.val (m.1.val * X) 0 m.2.val`. Rewrite using `[Units.val_mul, ← Matrix.submatrix_mul_equiv _ _ _ (GlobalTheory.ResW.blkE h), nU_sub, GlobalTheory.ResW.HeckeCT.blk_sub, Matrix.fromBlocks_multiply]`. Simplify using the standard rewrite rules. Establish `e : Matrix.reindex (finSumFinEquiv.trans (finCongr h)) (finSumFinEquiv.trans (finCongr h)) (Matrix.fromBlocks m.1.val (m.1.val * X) 0 m.2.val) = (GlobalTheory.ResW.blk h m * nU h X).val`. Express the relevant statement in the definitionally equal form `Matrix.reindex (GlobalTheory.ResW.blkE h) (GlobalTheory.ResW.blkE h) _ = _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[← t]`. Simplify using `[Matrix.reindex_apply]`. Establish `hu : IsUnit (Matrix.reindex (finSumFinEquiv.trans (finCongr h)) (finSumFinEquiv.trans (finCongr h)) (Matrix.fromBlocks m.1.val (m.1.val * X) 0 m.2.val))` using `e ▸ Units.isUnit _`. Apply `Units.ext` to reduce the goal to its premises. Unfold `GlobalTheory.BCT.blk`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Replace the relevant objects with their definitions.
 
-Simplify using `only`. Rewrite using `[dif_pos hu, IsUnit.unit_spec, e]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 private theorem bblk_eq (h : a + b = n) (m : GLw a w × GLw b w) (X : Matrix (Fin a) (Fin b) (w.adicCompletion E)) :
     GlobalTheory.BCT.blk h w m X = GlobalTheory.ResW.blk h m * nU h X := by
@@ -215,9 +213,9 @@ private theorem bblk_eq (h : a + b = n) (m : GLw a w × GLw b w) (X : Matrix (Fi
   rw [dif_pos hu, IsUnit.unit_spec, e]
 
 /- English proof (translation)
-Establish `hO : ∀ x : w.adicCompletion E, x ∈ Ov E w ↔ Valued.v x ≤ 1` using `fun x => Iff.rfl`. Prove the components needed by the constructor for the conclusion. Introduce `hX`. Proceed by induction on `hX using Subgroup.closure_induction with`. Consider the case `mem x hx => exact fun i j => (hO _).2 (hx i j)`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `one => exact fun i j => (Ov E w).zero_mem`. Consider the case `mul x y _ _ hx hy => exact fun i j => (Ov E w).add_mem (hx i j) (hy i j)`. Consider the case `inv x _ hx => exact fun i j => (Ov E w).neg_mem (hx i j)`. Conclude with `fun hX => Subgroup.subset_closure fun i j => (hO _).1 (hX i j)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem mem_intMat {X : Multiplicative (Matrix (Fin a) (Fin b) (w.adicCompletion E))} :
     X ∈ intMat a b w ↔ ∀ i j, (Multiplicative.toAdd X) i j ∈ Ov E w := by
@@ -235,9 +233,9 @@ private def FF (h : a + b = n) (m : GLw a w × GLw b w) (g : GLw n w) : ℂ :=
   if ∃ k ∈ GlobalTheory.LFun.KGL w n, Tri h (g * k) m then 1 else 0
 
 /- English proof (translation)
-Establish `: (∃ k' ∈ GlobalTheory.LFun.KGL w n, Tri h (g * k * k') m) ↔ ∃ k' ∈ GlobalTheory.LFun.KGL w n, Tri h (g * k') m`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨k', hk', t⟩`. Conclude with `⟨k * k', mul_mem hk hk', by rwa [← mul_assoc]⟩`. Introduce and unpack `⟨k', hk', t⟩`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨k⁻¹ * k', mul_mem (inv_mem hk) hk', by simpa [mul_assoc] using t⟩`. Simplify using `only [FF, this]`.
+Supply the required witnesses or components. Simplify using the standard rewrite rules.
 -/
 private theorem FF_right (h : a + b = n) (m : GLw a w × GLw b w) (g : GLw n w) (k : GLw n w) (hk : k ∈ GlobalTheory.LFun.KGL w n) :
     FF h m (g * k) = FF h m g := by
@@ -250,7 +248,7 @@ private theorem FF_right (h : a + b = n) (m : GLw a w × GLw b w) (g : GLw n w) 
   simp only [FF, this]
 
 /- English proof (translation)
-Introduce and unpack `⟨k, hk, u⟩`. Use `⟨k, hk, ?_⟩` and prove the remaining obligations. Use `(t'.mul (tri_inv t)).mul u` as an intermediate fact. Simplify `this` using `[mul_assoc]`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem triangular_decomposition_right_translate {h : a + b = n} {m m' : GLw a w × GLw b w} {g g' : GLw n w} (t : Tri h g m') (t' : Tri h g' m') :
     (∃ k ∈ GlobalTheory.LFun.KGL w n, Tri h (g * k) m) → ∃ k ∈ GlobalTheory.LFun.KGL w n, Tri h (g' * k) m := by
@@ -260,7 +258,7 @@ private theorem triangular_decomposition_right_translate {h : a + b = n} {m m' :
   simpa [mul_assoc] using this
 
 /- English proof (translation)
-Establish `t'` using `GlobalTheory.ResW.HeckeCT.tri_blk h m'`. Simplify using `only [FF, show (∃ k ∈ GlobalTheory.LFun.KGL w n, Tri h (g * k) m) ↔ _ from ⟨triangular_decomposition_right_translate t t', triangular_decomposition_right_translate t' t⟩]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 private theorem FF_tri (h : a + b = n) (m : GLw a w × GLw b w) (g : GLw n w) (m' : GLw a w × GLw b w) (t : Tri h g m') :
     FF h m g = FF h m (GlobalTheory.ResW.blk h m') := by
@@ -268,30 +266,28 @@ private theorem FF_tri (h : a + b = n) (m : GLw a w × GLw b w) (g : GLw n w) (m
   simp only [FF, show (∃ k ∈ GlobalTheory.LFun.KGL w n, Tri h (g * k) m) ↔ _ from ⟨triangular_decomposition_right_translate t t', triangular_decomposition_right_translate t' t⟩]
 
 /- English proof (translation)
-Rewrite using `[FF, if_pos]`. Conclude with `⟨1, one_mem _, by rw [mul_one, bblk_eq]; exact tri_blk_nU m X⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 private theorem FF_bblk (h : a + b = n) (m : GLw a w × GLw b w) (X) : FF h m (GlobalTheory.BCT.blk h w m X) = 1 := by
   rw [FF, if_pos]
   exact ⟨1, one_mem _, by rw [mul_one, bblk_eq]; exact tri_blk_nU m X⟩
 
 /- English proof (translation)
-Set `φ : Multiplicative (Matrix (Fin a) (Fin b) (w.adicCompletion E)) ⧸ intMat a b w → GLw n w ⧸ GlobalTheory.LFun.KGL w n` to `fun q => ((GlobalTheory.BCT.blk h w m (Multiplicative.toAdd q.out) : GLw n w) : GLw n w ⧸ GlobalTheory.LFun.KGL w n)`. Set `u : GLw n w ⧸ GlobalTheory.LFun.KGL w n → ℂ` to `fun c => f c.out * FF h m c.out`. Establish `hinj : Function.Injective φ`. Introduce `q q' e`. Establish `e'` using `QuotientGroup.eq.1 e`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `e'` using `[bblk_eq, bblk_eq]`. Establish `: (GlobalTheory.ResW.blk h m * nU h (Multiplicative.toAdd q.out))⁻¹ * (GlobalTheory.ResW.blk h m * nU h (Multiplicative.toAdd q'.out)) = nU h (-(Multiplicative.toAdd q.out) + Multiplicative.toAdd q'.out)`. Rewrite using `[nU_add, ← nU_neg]`. Use `group`. Rewrite `e'` using `[this]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← QuotientGroup.out_eq' q, ← QuotientGroup.out_eq' q']`. Conclude with `QuotientGroup.eq.2 (mem_intMat.2 (nU_int e'))`. Establish `hsup : Function.support u ⊆ Set.range φ`. Introduce `c hc`. Establish `h1 : FF h m c.out ≠ 0` using `right_ne_zero_of_mul hc`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `h2 : ∃ k ∈ GlobalTheory.LFun.KGL w n, Tri h (c.out * k) m`. Assume the negation of the conclusion as `h3`. Conclude with `h1 (by rw [FF, if_neg h3])`. Take `⟨k, hk, Y, hY⟩` from `h2`. Establish `e` using `tri_of_eq hY`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Set `X` to `(m.1⁻¹).val * Y`. Set `q : Multiplicative (Matrix (Fin a) (Fin b) (w.adicCompletion E)) ⧸ intMat a b w` to `((Multiplicative.ofAdd X : Multiplicative _) : _ ⧸ intMat a b w)`. Take `⟨t, ht⟩` from `QuotientGroup.mk_out_eq_mul (intMat a b w) (Multiplicative.ofAdd X)`. Use `⟨q, ?_⟩` and prove the remaining obligations. Establish `e2 : GlobalTheory.BCT.blk h w m (Multiplicative.toAdd q.out) = c.out * k * nU h (Multiplicative.toAdd t.1)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Both sides reduce to the same expression. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[bblk_eq, e, show q.out = Multiplicative.ofAdd X * t.1 from ht, mul_assoc, ← nU_add]`. Both sides reduce to the same expression. Express the relevant statement in the definitionally equal form `((GlobalTheory.BCT.blk h w m (Multiplicative.toAdd q.out) : GLw n w) : GLw n w ⧸ GlobalTheory.LFun.KGL w n) = c`. Rewrite using `[e2]`. Use `conv_rhs => rw [← QuotientGroup.out_eq' c]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `QuotientGroup.eq.2 ?_` and prove the remaining obligations. Establish `: (c.out * k * nU h (Multiplicative.toAdd t.1))⁻¹ * c.out = (k * nU h (Multiplicative.toAdd t.1))⁻¹` using `by group`. Rewrite using `[this]`. Conclude with `inv_mem (mul_mem hk (nU_mem (mem_intMat.1 t.2)))`. Establish `hval : ∀ q, u (φ q) = f (GlobalTheory.BCT.blk h w m (Multiplicative.toAdd q.out))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `q`. Take `⟨κ, hκ⟩` from `QuotientGroup.mk_out_eq_mul (GlobalTheory.LFun.KGL w n) (GlobalTheory.BCT.blk h w m (Multiplicative.toAdd q.out))`. Express the relevant statement in the definitionally equal form `f (Quotient.out (φ q)) * FF h m (Quotient.out (φ q)) = _`. Establish `: Quotient.out (φ q) = GlobalTheory.BCT.blk h w m (Multiplicative.toAdd q.out) * κ.1` using `hκ`. Rewrite using `[this, hf _ _ κ.2, FF_right h m _ _ κ.2, FF_bblk, mul_one]`.
-
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[finsum_mem_def, Set.indicator_eq_self.2 hsup]`. Use `_ = ∑ᶠ q, u (φ q) := finsum_mem_range hinj`. Use `_ = _ := finsum_congr hval`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem sum_left (h : a + b = n) (m : GLw a w × GLw b w) (f : GLw n w → ℂ)
     (hf : ∀ g, ∀ k ∈ GlobalTheory.LFun.KGL w n, f (g * k) = f g) :
@@ -346,11 +342,11 @@ private theorem sum_left (h : a + b = n) (m : GLw a w × GLw b w) (f : GLw n w �
     _ = _ := finsum_congr hval
 
 /- English proof (translation)
-Establish `: (∃ k ∈ GlobalTheory.LFun.KGL w n, Tri h (GlobalTheory.ResW.blk h (x, y) * k) m) ↔ (x : GLw a w ⧸ GlobalTheory.LFun.KGL w a) = (m.1 : GLw a w) ∧ (y : GLw b w ⧸ GlobalTheory.LFun.KGL w b) = (m.2 : GLw b w)`. Rewrite using `[QuotientGroup.eq, QuotientGroup.eq]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨k, hk, t⟩`. Establish `t2` using `(GlobalTheory.ResW.HeckeCT.tri_blk h ((x, y)⁻¹)).mul t`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Rewrite `t2` using `[← mul_assoc, ← map_mul, inv_mul_cancel, map_one, one_mul]`. Conclude with `tri_int (O := Ov E w) t2 hk`. Introduce and unpack `⟨h1, h2⟩`. Use `⟨GlobalTheory.ResW.blk h (x⁻¹ * m.1, y⁻¹ * m.2), GlobalTheory.ResW.HeckeCT.blk_mem h h1 h2, ?_⟩` and prove the remaining obligations. Rewrite using `[← map_mul]`.
+Rewrite the indicated hypotheses using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `have : (x, y) * (x⁻¹ * m.1, y⁻¹ * m.2) = m := by ext1 <;> simp`. Rewrite using `[this]`. Conclude with `GlobalTheory.ResW.HeckeCT.tri_blk h m`. Simplify using `only [FF, this]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem FF_blk (h : a + b = n) (m : GLw a w × GLw b w) (x : GLw a w) (y : GLw b w) :
     FF h m (GlobalTheory.ResW.blk h (x, y)) =
@@ -372,7 +368,7 @@ private theorem FF_blk (h : a + b = n) (m : GLw a w × GLw b w) (x : GLw a w) (y
   simp only [FF, this]
 
 /- English proof (translation)
-Take `⟨κ, hκ⟩` from `QuotientGroup.mk_out_eq_mul (GlobalTheory.LFun.KGL w k) x`. Establish `: Quotient.out ((x : GLw k w ⧸ GlobalTheory.LFun.KGL w k)) = x * κ.1` using `hκ`. Rewrite using `[this, hA _ _ κ.2]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 private theorem out_inv {k : ℕ} (A : GLw k w → ℂ) (hA : ∀ g, ∀ c ∈ GlobalTheory.LFun.KGL w k, A (g * c) = A g) (x : GLw k w) :
     A (Quotient.out ((x : GLw k w ⧸ GlobalTheory.LFun.KGL w k))) = A x := by
@@ -381,11 +377,9 @@ private theorem out_inv {k : ℕ} (A : GLw k w → ℂ) (hA : ∀ g, ∀ c ∈ G
   rw [this, hA _ _ κ.2]
 
 /- English proof (translation)
-Rewrite using `[finsum_eq_single _ ((m.1 : GLw a w) : GLw a w ⧸ GlobalTheory.LFun.KGL w a), finsum_eq_single _ ((m.2 : GLw b w) : GLw b w ⧸ GlobalTheory.LFun.KGL w b)]`. Rewrite using `[FF_blk, if_pos ⟨QuotientGroup.out_eq' _, QuotientGroup.out_eq' _⟩, mul_one, out_inv A hA, out_inv B hB]`. Introduce `c hc`. Rewrite using `[FF_blk, if_neg, mul_zero]`. Introduce and unpack `⟨-, e⟩`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Conclude with `hc ((QuotientGroup.out_eq' c).symm.trans e)`. Introduce `c hc`. Use `finsum_eq_zero_of_forall_eq_zero fun c₂ => ?_` and prove the remaining obligations. Rewrite using `[FF_blk, if_neg, mul_zero]`. Introduce and unpack `⟨e, -⟩`.
-
-Conclude with `hc ((QuotientGroup.out_eq' c).symm.trans e)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 private theorem sum_right (h : a + b = n) (m : GLw a w × GLw b w) (A : GLw a w → ℂ) (B : GLw b w → ℂ)
     (hA : ∀ g, ∀ k ∈ GlobalTheory.LFun.KGL w a, A (g * k) = A g) (hB : ∀ g, ∀ k ∈ GlobalTheory.LFun.KGL w b, B (g * k) = B g) :
@@ -411,7 +405,7 @@ section Main
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {w : Pl E}
 
 /- English proof (translation)
-Establish `: ∃ x, IsUnifV E w x`. Use `⟨((w.valuation_exists_uniformizer E).choose : w.adicCompletion E), ?_⟩` and prove the remaining obligations. Rewrite using `[IsUnifV, w.valuedAdicCompletion_eq_valuation', (w.valuation_exists_uniformizer E).choose_spec]`. Both sides reduce to the same expression. Conclude with `Classical.epsilon_spec this`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 private theorem unif_spec (w : Pl E) : IsUnifV E w (unif w) := by
   have : ∃ x, IsUnifV E w x := by
@@ -421,7 +415,7 @@ private theorem unif_spec (w : Pl E) : IsUnifV E w (unif w) := by
   exact Classical.epsilon_spec this
 
 /- English proof (translation)
-Establish `: g * c ∈ satakeTset w ϖ i ↔ g ∈ satakeTset w ϖ i` using `⟨fun t => by simpa using satake_Tset_right w t (inv_mem (show c ∈ GLint (Fin k) (Ov E w) from hc)), fun t => satake_Tset_right w t hc⟩`. Distinguish the cases in `hg : g ∈ satakeTset w ϖ i`. Rewrite using `[satake_Tj_eq, satake_Tj_eq, Set.indicator_of_mem (this.2 hg), Set.indicator_of_mem hg]`. Both sides reduce to the same expression. Rewrite using `[satake_Tj_eq, satake_Tj_eq, Set.indicator_of_notMem (fun t => hg (this.1 t)), Set.indicator_of_notMem hg]`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 -/
 private theorem tj_right (k i : ℕ) (ϖ : w.adicCompletion E) (g : GLw k w) (c : GLw k w) (hc : c ∈ KGL w k) :
     Tj ℂ k (Ov E w) ϖ i (g * c) = Tj ℂ k (Ov E w) ϖ i g := by
@@ -433,7 +427,7 @@ private theorem tj_right (k i : ℕ) (ϖ : w.adicCompletion E) (g : GLw k w) (c 
   · rw [satake_Tj_eq, satake_Tj_eq, Set.indicator_of_notMem (fun t => hg (this.1 t)), Set.indicator_of_notMem hg]
 
 /- English proof (translation)
-Establish `: c * g ∈ satakeTset w ϖ i ↔ g ∈ satakeTset w ϖ i` using `⟨fun t => by simpa using satake_Tset_left w t (inv_mem (show c ∈ GLint (Fin k) (Ov E w) from hc)), fun t => satake_Tset_left w t hc⟩`. Distinguish the cases in `hg : g ∈ satakeTset w ϖ i`. Rewrite using `[satake_Tj_eq, satake_Tj_eq, Set.indicator_of_mem (this.2 hg), Set.indicator_of_mem hg]`. Both sides reduce to the same expression. Rewrite using `[satake_Tj_eq, satake_Tj_eq, Set.indicator_of_notMem (fun t => hg (this.1 t)), Set.indicator_of_notMem hg]`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 -/
 private theorem tj_left (k i : ℕ) (ϖ : w.adicCompletion E) (g : GLw k w) (c : GLw k w) (hc : c ∈ KGL w k) :
     Tj ℂ k (Ov E w) ϖ i (c * g) = Tj ℂ k (Ov E w) ϖ i g := by
@@ -445,13 +439,13 @@ private theorem tj_left (k i : ℕ) (ϖ : w.adicCompletion E) (g : GLw k w) (c :
   · rw [satake_Tj_eq, satake_Tj_eq, Set.indicator_of_notMem (fun t => hg (this.1 t)), Set.indicator_of_notMem hg]
 
 /- English proof (translation)
-Establish `hc` using `(GlobalTheory.LFun.SatCompare.isOpen_isCompact_KGL (E := E) w k).2`. Use `⟨?_, fun c hc x => ⟨tj_left k i ϖ x c hc, tj_right k i ϖ x c hc⟩⟩` and prove the remaining obligations. Break down `(satakeTset w ϖ i : Set (GLw k w)).eq_empty_or_nonempty with h0 | ⟨d, a', ha', b', hb', hd⟩` into its components or cases. Use `HasCompactSupport.of_support_subset_isCompact isCompact_empty fun y hy => ?_` and prove the remaining obligations. Use `(satake_Tj_ne_zero_iff w ℂ ϖ i y).1 hy` as an intermediate fact.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `this` using `[h0]`. Conclude with `this`. Use `HasCompactSupport.of_support_subset_isCompact (IsCompact.mul (IsCompact.mul hc (isCompact_singleton (x := d))) hc) fun y hy => ?_` and prove the remaining obligations. Take `⟨a, ha, b, hb, hy'⟩` from `(satake_Tj_ne_zero_iff w ℂ ϖ i y).1 hy`. Use `Set.mem_mul.2 ⟨a * a'⁻¹ * d, Set.mem_mul.2 ⟨a * a'⁻¹, mul_mem ha (inv_mem ha'), d, rfl, rfl⟩, b'⁻¹ * b, mul_mem (inv_mem hb') hb, ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Units.ext` to reduce the goal to its premises. Establish `h1 : (a'⁻¹).val * a'.val = 1` using `Units.inv_mul a'`. Establish `h2 : b'.val * (b'⁻¹).val = 1` using `Units.mul_inv b'`. Simplify using `only [Units.val_mul]`. Rewrite using `[hy', hd]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 private theorem isHecke_Tj (k i : ℕ) (ϖ : w.adicCompletion E) : IsHecke (KGL w k) (Tj ℂ k (Ov E w) ϖ i) := by
   have hc := (GlobalTheory.LFun.SatCompare.isOpen_isCompact_KGL (E := E) w k).2
@@ -476,7 +470,7 @@ private theorem isHecke_Tj (k i : ℕ) (ϖ : w.adicCompletion E) : IsHecke (KGL 
       _ = _ := by rw [h1, h2]; simp
 
 /- English proof (translation)
-Take `⟨A, ha, B, hb, e⟩` from `(satake_Tj_ne_zero_iff w ℂ ϖ p g).1 hg`. Establish `hA : Valued.v A.val.det = 1` using `GlobalTheory.SphGal.isUnitAt_det_of_mem ha`. Establish `hB : Valued.v B.val.det = 1` using `GlobalTheory.SphGal.isUnitAt_det_of_mem hb`. Rewrite using `[e, Matrix.det_mul, Matrix.det_mul, GlobalTheory.SphGal.det_diagJ ϖ hp, map_mul, map_mul, hA, hB, one_mul, mul_one, map_pow, hϖ, ← WithZero.coe_pow, ← ofAdd_nsmul]`. Simplify using the standard rewrite rules.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem ord_det {ϖ : w.adicCompletion E} (hϖ : IsUnifV E w ϖ) {k p : ℕ} (hp : p ≤ k) {g : GLw k w}
     (hg : Tj ℂ k (Ov E w) ϖ p g ≠ 0) :
@@ -489,16 +483,16 @@ private theorem ord_det {ϖ : w.adicCompletion E} (hϖ : IsUnifV E w ϖ) {k p : 
   simp
 
 /- English proof (translation)
-Use `Nat.pos_of_ne_zero fun h0 => w.ne_bot ?_` and prove the remaining obligations. Conclude with `Ideal.absNorm_eq_zero_iff.1 h0`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem qV_pos (w : Pl E) : 0 < qV E w := by
   refine Nat.pos_of_ne_zero fun h0 => w.ne_bot ?_
   exact Ideal.absNorm_eq_zero_iff.1 h0
 
 /- English proof (translation)
-Establish `hq : (0 : ℝ) < qV E w` using `by exact_mod_cast qV_pos w`. Establish `e : Real.sqrt ((qV E w : ℝ) ^ (-ordL x)) = (qV E w : ℝ) ^ ((-(t : ℝ) / 2 : ℝ))`. Rewrite using `[hx, Real.sqrt_eq_rpow, ← Real.rpow_intCast, ← Real.rpow_mul hq.le]`. Use `congr 1`. Use `push_cast`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[absHalf, e, Complex.ofReal_cpow hq.le]`. Use `push_cast`. Both sides reduce to the same expression.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression.
 -/
 private theorem absHalf_eq (x : w.adicCompletion E) (t : ℤ) (hx : ordL x = t) :
     absHalf w x = (qV E w : ℂ) ^ (-(t : ℂ) / 2) := by
@@ -513,13 +507,13 @@ private theorem absHalf_eq (x : w.adicCompletion E) (t : ℤ) (hx : ordL x = t) 
   rfl
 
 /- English proof (translation)
-Establish `s1` using `ord_det (unif_spec w) h1 hT₁`. Establish `s2` using `ord_det (unif_spec w) h2 hT₂`. Establish `n1 : m.1.val.det ≠ 0` using `fun h0 => by simp [h0] at s1`. Establish `n2 : m.2.val.det ≠ 0` using `fun h0 => by simp [h0] at s2`. Establish `ho : ordL (m.1.val.det ^ b / m.2.val.det ^ a) = (b : ℤ) * p₁ - a * p₂`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `GlobalTheory.GramParity.ordL_eq_of (div_ne_zero (pow_ne_zero _ n1) (pow_ne_zero _ n2)) ?_` and prove the remaining obligations. Rewrite using `[map_div₀, map_pow, map_pow, s1, s2, ← WithZero.coe_pow, ← WithZero.coe_pow, ← WithZero.coe_div, ← ofAdd_nsmul, ← ofAdd_nsmul, ← ofAdd_sub]`. Use `congr 2`. Simplify using `only [nsmul_eq_mul]`. Use `push_cast`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hq : (qV E w : ℂ) ≠ 0` using `by exact_mod_cast (qV_pos w).ne'`. Rewrite using `[absHalf_eq _ _ ho, ← Complex.cpow_natCast, ← Complex.cpow_add _ _ hq]`. Use `congr 1`. Rewrite using `[Nat.cast_mul, Nat.cast_sub h2]`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem term_eq {a b p₁ p₂ : ℕ} (h1 : p₁ ≤ a) (h2 : p₂ ≤ b) (m : GLw a w × GLw b w)
     (hT₁ : Tj ℂ a (Ov E w) (unif w) p₁ m.1 ≠ 0) (hT₂ : Tj ℂ b (Ov E w) (unif w) p₂ m.2 ≠ 0) :
@@ -545,7 +539,7 @@ private theorem term_eq {a b p₁ p₂ : ℕ} (h1 : p₁ ≤ a) (h2 : p₂ ≤ b
   ring
 
 /- English proof (translation)
-Rewrite using `[Finset.sum_filter, Finset.sum_product, Fintype.sum_prod_type, Finset.sum_range]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_range]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 private theorem sum_conv (a b j : ℕ) (g : ℕ × ℕ → ℂ) :
     ∑ i ∈ (Finset.range (a + 1) ×ˢ Finset.range (b + 1)).filter (fun i : ℕ × ℕ => i.1 + i.2 = j), g i =
@@ -557,11 +551,11 @@ private theorem sum_conv (a b j : ℕ) (g : ℕ × ℕ → ℂ) :
 end Main
 
 /- English proof (translation)
-Introduce `E _ _ _ w n a b h j m`. Establish `hH : IsHecke (KGL w n) (Tj ℂ n (Ov E w) (unif w) j)` using `isHecke_Tj _ _ _`. Rewrite using `[(ctSph E w n a b h _ hH m).1, ← sum_left h m _ (fun g k hk => tj_right _ _ _ g k hk), GlobalTheory.ResW.HeckeCT.finsum_Tj_levi (unif_spec w) h (Nat.lt_succ_iff.1 j.2) (FF h m) (fun g k hk => FF_right h m g k hk) (fun g m' t => FF_tri h m g m' t)]`. Establish `e` using `fun i : ℕ × ℕ => sum_right h m (Tj ℂ a (Ov E w) (unif w) i.1) (Tj ℂ b (Ov E w) (unif w) i.2) (fun g k hk => tj_right _ _ _ g k hk) (fun g k hk => tj_right _ _ _ g k hk)`. Simplify using `only [e]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[sum_conv, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations. Distinguish the cases in `hp : (p.1 : ℕ) + p.2 = j`. Rewrite using `[if_pos hp, cf, if_pos hp]`. Distinguish the cases in `h1 : Tj ℂ a (Ov E w) (unif w) p.1 m.1 = 0`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Simplify using `[h1]`. Distinguish the cases in `h2 : Tj ℂ b (Ov E w) (unif w) p.2 m.2 = 0`. Simplify using `[h2]`. Rewrite using `[← mul_assoc, term_eq (Nat.lt_succ_iff.1 p.1.2) (Nat.lt_succ_iff.1 p.2.2) m h1 h2]`. Rewrite using `[if_neg hp, cf, if_neg hp]`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/

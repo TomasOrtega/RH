@@ -6,7 +6,7 @@ open UpperTheory.Gal.CertificateRingHomMap (GUf Gam0 AfQ Plc sim mat comp rat le
 open scoped TensorProduct Classical
 
 /- English proof (translation)
-Use `haveI : CompactSpace K := isCompact_iff_compactSpace.1 hK`. Establish `ho : IsOpen ((O.subgroupOf K : Subgroup K) : Set K)` using `hO.preimage continuous_subtype_val`. Use `haveI := Subgroup.quotient_finite_of_isOpen _ ho`. Conclude with `Nat.card_pos.ne'`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem relIndex_ne_zero_of_isOpen {X : Type*} [Group X] [TopologicalSpace X] [IsTopologicalGroup X]
     {K O : Subgroup X} (hK : IsCompact (K : Set X)) (hO : IsOpen (O : Set X)) : O.relIndex K ≠ 0 := by
@@ -16,9 +16,9 @@ private theorem relIndex_ne_zero_of_isOpen {X : Type*} [Group X] [TopologicalSpa
   exact Nat.card_pos.ne'
 
 /- English proof (translation)
-Establish `e : ((K.map (MulAut.conj g).toMonoidHom : Subgroup X) : Set X) = (fun x => g⁻¹ * x * g) ⁻¹' (K : Set X)`. Use extensionality with `x`. Simplify using `only [Subgroup.coe_map, Set.mem_image, SetLike.mem_coe, Set.mem_preimage, MulEquiv.coe_toMonoidHom, MulAut.conj_apply]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Simplify `hy` using `[mul_assoc]`. Introduce `h`. Conclude with `⟨_, h, by simp [mul_assoc]⟩`. Rewrite using `[e]`. Conclude with `hK.preimage (by fun_prop)`.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem isOpen_map_conj {X : Type*} [Group X] [TopologicalSpace X] [IsTopologicalGroup X]
     {K : Subgroup X} (hK : IsOpen (K : Set X)) (g : X) :
@@ -37,11 +37,11 @@ private theorem isOpen_map_conj {X : Type*} [Group X] [TopologicalSpace X] [IsTo
   exact hK.preimage (by fun_prop)
 
 /- English proof (translation)
-Introduce `hop E _ _ _ A n p _ S T N hN`. Take `⟨Lv, hLv⟩` from `GlobalTheory.LKGeo.KNLevel.exists_level_eq_KN p _ _ S.L N hN`. Establish `hKo : IsOpen (S.L.KN N : Set S.G.GAf)` using `hLv ▸ Lv.K.isOpen`. Establish `hKc : IsCompact (S.L.KN N : Set S.G.GAf)` using `hLv ▸ Lv.compact`. Use `⟨fun g => relIndex_ne_zero_of_isOpen hKc (isOpen_map_conj hKo g), fun K hKc' _ h0 => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hO` using `relIndex_ne_zero_of_isOpen hKc' (hop E A n p S T N hN)`. Establish `e : S.L.KN N = ((S.L.KN N).comap T.j).comap T.sec`. Use extensionality with `h`. Simplify using `[Subgroup.mem_comap, T.j_sec]`. Rewrite `h0` using `[e, Tr.lv, Subgroup.relIndex_comap]`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hO (Subgroup.relIndex_eq_zero_of_le_right (Subgroup.map_comap_le _ _) h0)`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.W2.Seed.pKNIdx :
     KNOpen → KNIdx := by

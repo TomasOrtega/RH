@@ -13,11 +13,11 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.AnPer.Charts
 
 /- English proof (translation)
-Introduce `I _ g Λ _ F B _ X s σ K hK r f per hc`. Establish `hc' : GlobalTheory.CatCoh.H1.mk K.Oc (r.coef.pullbackOneCocycle f.1) = GlobalTheory.CatCoh.H1.mk K.Oc (K.perZ per)` using `hc`. Take `⟨q, hq⟩` from `GlobalTheory.CatCoh.H1.mk_eq_mk.1 hc'`. Establish `key : ∀ (l : Λ) (k k' : K.K) (h : K.le l k' k), Charts.sh h (q (K.triv k)) = q (K.triv k') + K.cst k' (per l)`. Introduce `l k k' h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e` using `congrFun (congrFun (congrFun hq (K.triv k)) (K.triv k')) (Charts.ptHom (K.triv k') h)`. Establish `h0 : (r.coef.pullbackOneCocycle f.1).1 _ _ (Charts.ptHom (K.triv k') h) = 0` using `f.2 (r.functor.map (Charts.ptHom (K.triv k') h)) rfl rfl`. Rewrite `e` using `[GlobalTheory.CatCoh.amitsur_d0_apply, Pi.sub_apply, Pi.sub_apply, Pi.sub_apply, h0, zero_sub]`. Express the relevant statement in the definitionally equal form `q (K.triv k') - Charts.sh h (q (K.triv k)) = -K.cst k' (per l) at e`. Take the linear combination `-e`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Take a linear combination of the given relations to obtain the conclusion.
 
-Take `⟨G, hGa, hG, hsh, -⟩` from `Charts.glue K hK (fun k ↦ q (K.triv k)) (fun k k' h ↦ by rw [key 0 k k' h, map_zero, map_zero, add_zero])`. Conclude with `⟨q, G, hq, hGa, hG, fun l p hp ↦ hsh l (per l) (fun k k' h ↦ key l k k' h) p hp⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_bound_glue : ∀ {I : Type} [Fintype I] {g : ℕ} {Λ : Type} [AddCommGroup Λ] {F : Fam I g Λ} {B : Type} [CommRing B] {X : Scheme.{0}} {s : X ⟶ Sp B} {σ : B →+* Hol F.V} (K : Charts F), K.Rich → ∀ (r : Real K s σ) (f : Form s) (per : Λ →+ Hol F.V), r.coef.pull1 (Form.cl s f) = K.perCl per → ∃ (q : GlobalTheory.CatCoh.C0 K.Oc) (G : Tot I g → ℂ), GlobalTheory.CatCoh.d0 K.Oc q = (r.coef.pullbackOneCocycle f.1).1 - (K.perZ per).1 ∧ AnalyticOnNhd ℂ G {p | p.1 ∈ F.V} ∧ (∀ k, ∀ p ∈ K.W k, Hol.fn (W := K.W k) (q (K.triv k)) p = G p) ∧ ∀ (l : Λ) (p : Tot I g), p.1 ∈ F.V → G (F.shift l p) = G p + (per l).fn p.1 := by
   intro I _ g Λ _ F B _ X s σ K hK r f per hc

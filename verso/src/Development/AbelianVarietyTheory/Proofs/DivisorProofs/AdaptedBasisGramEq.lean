@@ -7,7 +7,7 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.IndefiniteRowSideFullH
 namespace GlobalTheory.QhtUnip
 
 /- English proof (translation)
-Simplify using `only [form, dotProduct, Matrix.mulVec, map_sum, map_mul, hσ, hJ, Finset.mul_sum, ← Finset.sum_neg_distrib]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem form_swap_of_skew {F E : Type} [Field F] [Field E] [Algebra F E] (σ : E →ₐ[F] E)
     (hσ : ∀ e, σ (σ e) = e) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (hJ : ∀ i j, σ (J j i) = -J i j)
@@ -19,7 +19,7 @@ theorem form_swap_of_skew {F E : Type} [Field F] [Field E] [Algebra F E] (σ : E
   ring
 
 /- English proof (translation)
-Simplify using `only [form, dotProduct, Matrix.mulVec, Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply, Finset.mul_sum, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem form_cols {F E : Type} [Field F] [Field E] [Algebra F E] (σ : E →ₐ[F] E) {n k : ℕ}
     (J : Matrix (Fin n) (Fin n) E) (ι : Matrix (Fin n) (Fin k) E) (a b : Fin k) :
@@ -31,15 +31,15 @@ theorem form_cols {F E : Type} [Field F] [Field E] [Algebra F E] (σ : E →ₐ[
   ring
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hσ B m W r s hW W₁ H i₀ i₁ hA i j`. Establish `sw` using `form_swap_of_skew σ hσ W.J hW.skew`. Establish `hcol : ∀ k, (fun r => H.ι r k) = H.ι *ᵥ Pi.single k 1`. Introduce `k`. Use extensionality with `r`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Simplify using `[Matrix.mulVec, dotProduct, Pi.single_apply]`. Establish `ιx : ∀ k, form σ W.J (fun r => H.ι r k) H.x = 0` using `fun k => by rw [hcol]; exact (hA.orth _).1`. Establish `ιy : ∀ k, form σ W.J (fun r => H.ι r k) H.y = 0` using `fun k => by rw [hcol]; exact (hA.orth _).2`. Establish `xι : ∀ k, form σ W.J H.x (fun r => H.ι r k) = 0` using `fun k => by`. Use `sw (fun r => H.ι r k) H.x` as an intermediate fact.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[ιx, map_zero]`. Conclude with `neg_eq_zero.mp this.symm`. Establish `yι : ∀ k, form σ W.J H.y (fun r => H.ι r k) = 0` using `fun k => by`. Use `sw (fun r => H.ι r k) H.y` as an intermediate fact. Rewrite `this` using `[ιy, map_zero]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `neg_eq_zero.mp this.symm`. Establish `yx : form σ W.J H.y H.x = -1`. Use `sw H.x H.y; rw [hA.xy, map_one] at this; exact (neg_eq_iff_eq_neg.mp this.symm).symm ▸ by ring` as an intermediate fact. Establish `ιι : ∀ a b, form σ W.J (fun r => H.ι r a) (fun r => H.ι r b) = W₁.J a b` using `fun a b => by`. Rewrite using `[form_cols, hA.gram]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `rcases i with ((i | i) | i) <;> rcases j with ((j | j) | j) <;>`. Simplify using `[basP, gI, Matrix.fromBlocks, hA.xx, hA.yy, hA.xy, yx, ιx, ιy, xι, yι, ιι]`.
+A detailed English derivation is pending.
 -/
 theorem form_adaptedBasis_eq_gram : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), (∀ e, σ (σ e) = e) → ∀ (B : Base F E) {m : ℕ} (W : Spc F E (m + 2)) (r s : ℕ), W.IsSkew σ B r s →
     ∀ (W₁ : Spc F E m) (H : Plane E (m + 2) m) (i₀ i₁ : ℕ), H.IsAdapted σ B W W₁ i₀ i₁ → ∀ i j : Ix m, form σ W.J (fun r => basP H r i) (fun r => basP H r j) = gI W₁.J i j := by

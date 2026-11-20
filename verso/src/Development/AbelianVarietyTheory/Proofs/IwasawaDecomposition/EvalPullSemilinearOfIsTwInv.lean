@@ -10,15 +10,13 @@ namespace GlobalTheory.PolFan
 namespace OrbMark
 
 /- English proof (translation)
-Introduce `E _ _ _ H φ htw X Y _ _ _ _ _ _ τ hτ f hf hsm B`. Take `⟨n, r, hr⟩` from `Module.Finite.exists_fin' (𝓞 E) X`. Set `r₁ : (Fin n → 𝓞 E) →ₗ[𝓞 E] Y` to `{ toFun := fun a => f (r (twv τ.symm a)) map_add' := fun a b => by`. Establish `e : twv τ.symm (a + b) = twv τ.symm a + twv τ.symm b` using `funext fun _ => map_add τ.symm _ _`. Rewrite using `[e, map_add, map_add]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `map_smul' := fun c a => by`. Rewrite using `[twv_smul, map_smul, hsm, RingEquiv.apply_symm_apply]`. Use `rfl }`. Establish `hr₁ : ∀ a, r₁ (twv τ a) = f (r a)` using `fun a => by show f (r (twv τ.symm (twv τ a))) = f (r a)`. Rewrite using `[twv_symm_twv]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hs₁ : Function.Surjective r₁` using `fun y => by`. Take `⟨x, rfl⟩` from `hf y`. Take `⟨a, rfl⟩` from `hr x`. Conclude with `⟨twv τ a, hr₁ a⟩`. Rewrite using `[φ.eval_eq hr, φ.eval_eq hs₁]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h` using `htw τ hτ n fun a b => B (r₁ a) (r₁ b)`. Establish `e : (fun a b : Fin n → 𝓞 E => B (f (r a)) (f (r b))) = fun a b => B (r₁ (fun i => τ (a i))) (r₁ (fun i => τ (b i)))`. Use function extensionality and compare the values at `a b`. Conclude with `congrArg₂ B (hr₁ a).symm (hr₁ b).symm`. Rewrite using `[e]`.
-
-Conclude with `h`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eval_pull_semilinear_of_isTwInv : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (φ : InvFun (𝓞 E)),
     IsTwInv H φ →

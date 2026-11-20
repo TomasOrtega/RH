@@ -52,7 +52,7 @@ variable {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
   [MeasurableSpace G] [BorelSpace G] (H : Subgroup G) in
 omit [MeasurableSpace G] [BorelSpace G] in
 /- English proof (translation)
-Use `continuous_quot_lift _ ?_` and prove the remaining obligations. Conclude with `continuous_quot_mk.comp continuous_inv`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.IndefiniteRowSideFullHecke.InvariantRadonFibre.continuous_invCoset : Continuous (_root_.GlobalTheory.IndefiniteRowSideFullHecke.InvariantRadonFibre.invCoset H) := by
   refine continuous_quot_lift _ ?_
@@ -69,7 +69,7 @@ variable {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
 omit [MeasurableSpace G] [BorelSpace G] in
 
 /- English proof (translation)
-Use `haveI := h.finiteOnCompacts`. Use `infer_instance`.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.IndefiniteRowSideFullHecke.InvariantRadonFibre.IsInvariantRadon.regular [LocallyCompactSpace G]
     [SecondCountableTopology G] [IsClosed (H : Set G)] [MeasurableSpace (G ⧸ H)]
@@ -163,7 +163,7 @@ example {G : Type} [Group G] (H : Subgroup G) (a g : G) :
     a • (g : G ⧸ H) = ((a * g : G) : G ⧸ H) := rfl
 
 /- English proof (translation)
-Introduce `μ hμ`. Use `⟨fun g => ?_⟩` and prove the remaining obligations. Use `map_mul_left_eq_self μ g` as an intermediate fact. Simplify `this` using `[mul_comm]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 example (G : Type) [CommGroup G] [TopologicalSpace G] [MeasurableSpace G] : IsUnimodular G := by
   intro μ hμ
@@ -172,7 +172,7 @@ example (G : Type) [CommGroup G] [TopologicalSpace G] [MeasurableSpace G] : IsUn
   simpa [mul_comm] using this
 
 /- English proof (translation)
-The claim follows from `Measure.count_ne_zero'' finiteOnCompacts := inferInstance invariant := ⟨fun c s _ => by have h1 := Measure.count_injective_image (f := (MulAction.toPerm c).symm) (MulAction.toPerm c : (G ⧸ H) ≃ (G ⧸ H)).symm.injective s rw [← h1] congr 1 exact (Equiv.image_symm_eq_preimage (MulAc …`.
+A detailed English derivation is pending.
 -/
 example (G : Type) [Group G] [Finite G] [TopologicalSpace G] (H : Subgroup G)
     [MeasurableSpace (G ⧸ H)] [DiscreteMeasurableSpace (G ⧸ H)] :

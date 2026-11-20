@@ -17,7 +17,7 @@ section Arrays
 variable {V : Type} [AddCommGroup V] [Module ℂ V] {n : ℕ}
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `@insert a s ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, ← ih]`. Both sides reduce to the same expression.
+Proceed by induction. Treat this case separately. Treat this case separately. Both sides reduce to the same expression.
 -/
 theorem jm_arr_sum_apply {j : ℕ} {ι : Type*} (s : Finset ι) (f : ι → Arr V n j) (α : Fin j → Fin n × Fin n) :
     (∑ i ∈ s, f i) α = ∑ i ∈ s, f i α := by
@@ -27,7 +27,7 @@ theorem jm_arr_sum_apply {j : ℕ} {ι : Type*} (s : Finset ι) (f : ι → Arr 
   | @insert a s ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, ← ih]; rfl
 
 /- English proof (translation)
-Apply the tactic sequence `by_cases h1 : (α i).1 = c <;> by_cases h2 : (α i).2 = d <;> simp [factorAction, arrTo, arrOf, h1, h2]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem jm_positionE_apply {j : ℕ} (i : Fin j) (c d : Fin n) (F : Arr V n j) (α : Fin j → Fin n × Fin n) :
     factorAction i c d F α = (if (α i).1 = c then F (Function.update α i (d, (α i).2)) else 0) -
@@ -35,14 +35,14 @@ theorem jm_positionE_apply {j : ℕ} (i : Fin j) (c d : Fin n) (F : Arr V n j) (
   by_cases h1 : (α i).1 = c <;> by_cases h2 : (α i).2 = d <;> simp [factorAction, arrTo, arrOf, h1, h2]
 
 /- English proof (translation)
-Simplify using `[ptE, arrTo, arrOf]`.
+Simplify using the standard rewrite rules.
 -/
 theorem jm_ptE_apply {j : ℕ} (E : Fin n → Fin n → Module.End ℂ V) (c d : Fin n) (F : Arr V n j)
     (α : Fin j → Fin n × Fin n) : ptE E c d F α = E c d (F α) := by
   simp [ptE, arrTo, arrOf]
 
 /- English proof (translation)
-Simplify using `only [arrE]`. Rewrite using `[LinearMap.add_apply, WithLp.ofLp_add, Pi.add_apply, LinearMap.sum_apply, jm_arr_sum_apply, jm_ptE_apply]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem jm_arrE_apply {j : ℕ} (E : Fin n → Fin n → Module.End ℂ V) (c d : Fin n) (F : Arr V n j)
     (α : Fin j → Fin n × Fin n) : arrE E j c d F α = ∑ i, factorAction i c d F α + E c d (F α) := by
@@ -54,7 +54,7 @@ def jmW (E : Fin n → Fin n → Module.End ℂ V) {j : ℕ} (α : Fin j → Fin
   ew E (List.ofFn α).reverse
 
 /- English proof (translation)
-Proceed by induction on `l1 with`. Consider the case `nil => simp [ew]`. Consider the case `cons p l ih => simp [ew, ih, mul_assoc]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem jm_ew_append (E : Fin n → Fin n → Module.End ℂ V) (l1 l2 : List (Fin n × Fin n)) :
     ew E (l1 ++ l2) = ew E l1 * ew E l2 := by
@@ -63,13 +63,13 @@ theorem jm_ew_append (E : Fin n → Fin n → Module.End ℂ V) (l1 l2 : List (F
   | cons p l ih => simp [ew, ih, mul_assoc]
 
 /- English proof (translation)
-Simplify using `[jmW, ew]`.
+Simplify using the standard rewrite rules.
 -/
 theorem jmW_zero (E : Fin n → Fin n → Module.End ℂ V) (α : Fin 0 → Fin n × Fin n) : jmW E α = 1 := by
   simp [jmW, ew]
 
 /- English proof (translation)
-Simplify using `only [jmW, List.ofFn_succ', List.concat_eq_append, List.reverse_append, List.reverse_singleton, List.singleton_append, ew, Fin.init]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem jmW_succ (E : Fin n → Fin n → Module.End ℂ V) {j : ℕ} (α : Fin (j + 1) → Fin n × Fin n) :
     jmW E α = E (α (Fin.last j)).1 (α (Fin.last j)).2 * jmW E (Fin.init α) := by
@@ -78,7 +78,7 @@ theorem jmW_succ (E : Fin n → Fin n → Module.End ℂ V) {j : ℕ} (α : Fin 
   rfl
 
 /- English proof (translation)
-The claim follows from `Function.update_of_ne (Fin.castSucc_lt_last k).ne' x α`.
+A detailed English derivation is pending.
 -/
 private lemma update_castSucc_apply_last {X : Type*} {j : ℕ} (α : Fin (j + 1) → X) (k : Fin j) (x : X) :
     Function.update α k.castSucc x (Fin.last j) = α (Fin.last j) :=
@@ -91,13 +91,11 @@ private lemma fin_castSucc_apply_eq_init {X : Type*} {j : ℕ} (α : Fin (j + 1)
     α k.castSucc = Fin.init α k := rfl
 
 /- English proof (translation)
-Introduce `j`. Proceed by induction on `j with`. Consider the case `zero => intro α`. Simplify using `[jmW_zero]`. Consider the case `succ j ih`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 
-Introduce `α`. Rewrite using `[Fin.sum_univ_castSucc]`. Simplify using `only [jmW_succ E, Fin.init_update_last, Fin.init_update_castSucc, update_castSucc_apply_last, Function.update_self]`. Establish `hrel` using `hE c d (α (Fin.last j)).1 (α (Fin.last j)).2`. Establish `key : ∀ A B : Module.End ℂ V, E c d * (A * B) - A * B * E c d = (E c d * A - A * E c d) * B + A * (E c d * B - B * E c d)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `A B`. Use `noncomm_ring`. Rewrite using `[key, hrel, ih (Fin.init α)]`. Simplify using `only [Finset.mul_sum, mul_sub, sub_mul, mul_ite, ite_mul, mul_zero, zero_mul, fin_castSucc_apply_eq_init]`. Use `clear ih hrel key hE`.
-
-Normalize the expressions using the abelian group laws.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem jm_deriv (E : Fin n → Fin n → Module.End ℂ V) (hE : GlRel E) (c d : Fin n) :
     ∀ (j : ℕ) (α : Fin j → Fin n × Fin n), E c d * jmW E α - jmW E α * E c d =
@@ -120,14 +118,14 @@ theorem jm_deriv (E : Fin n → Fin n → Module.End ℂ V) (hE : GlRel E) (c d 
     abel
 
 /- English proof (translation)
-Simplify using `[thetaA, jmW, arrOf]`.
+Simplify using the standard rewrite rules.
 -/
 theorem jm_thetaA_apply (E : Fin n → Fin n → Module.End ℂ V) {j : ℕ} (F : Arr V n j) :
     thetaA E j F = ∑ α, jmW E α (F α) := by
   simp [thetaA, jmW, arrOf]
 
 /- English proof (translation)
-Establish `hinv : Function.Involutive (fun β : Fin j → X => Function.update β i (σ (β i)))`. Introduce `β`. Simplify using `[hσ (β i)]`. Conclude with `(Equiv.sum_comp (Function.Involutive.toPerm _ hinv) g).symm`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private lemma sum_eq_sum_update_involutive {X M : Type*} [Fintype X] [DecidableEq X] [AddCommMonoid M] {j : ℕ}
     (i : Fin j) (σ : X → X) (hσ : Function.Involutive σ) (g : (Fin j → X) → M) :
@@ -138,13 +136,13 @@ private lemma sum_eq_sum_update_involutive {X M : Type*} [Fintype X] [DecidableE
   exact (Equiv.sum_comp (Function.Involutive.toPerm _ hinv) g).symm
 
 /- English proof (translation)
-Simplify using `only [jm_positionE_apply, map_sub, LinearMap.sub_apply, Finset.sum_sub_distrib]`. Use `congr 1`. Rewrite using `[sum_eq_sum_update_involutive i (fun x : Fin n × Fin n => (Equiv.swap c d x.1, x.2)) (by intro x; simp)]`. Use `Finset.sum_congr rfl (fun β _ => ?_)` and prove the remaining obligations. Break down `hb : β i with ⟨a, b⟩` into its components or cases.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `hβ : Function.update β i (a, b) = β` using `by rw [← hb]; exact Function.update_eq_self i β`. Distinguish the cases in `h : a = d`. Substitute `h` using the available equality. Simplify using `[hb, hβ]`. Establish `h' : d ≠ a` using `Ne.symm h`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[hb, h, h', Equiv.swap_apply_eq_iff]`. Rewrite using `[sum_eq_sum_update_involutive i (fun x : Fin n × Fin n => (x.1, Equiv.swap c d x.2)) (by intro x; simp)]`. Use `Finset.sum_congr rfl (fun β _ => ?_)` and prove the remaining obligations. Break down `hb : β i with ⟨a, b⟩` into its components or cases. Establish `hβ : Function.update β i (a, b) = β` using `by rw [← hb]; exact Function.update_eq_self i β`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Distinguish the cases in `h : b = c`. Substitute `h` using the available equality. Simplify using `[hb, hβ]`. Simplify using `[hb, h, Equiv.swap_apply_eq_iff]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 private lemma sum_jmW_slotE_eq_sum_sub (E : Fin n → Fin n → Module.End ℂ V) {j : ℕ} (c d : Fin n) (F : Arr V n j)
     (i : Fin j) :
@@ -172,11 +170,11 @@ private lemma sum_jmW_slotE_eq_sum_sub (E : Fin n → Fin n → Module.End ℂ V
     · simp [hb, h, Equiv.swap_apply_eq_iff]
 
 /- English proof (translation)
-Rewrite using `[jm_thetaA_apply, jm_thetaA_apply]`. Simplify using `only [jm_arrE_apply, map_add, map_sum, Finset.sum_add_distrib]`. Rewrite using `[Finset.sum_comm]`. Simplify using `only [sum_jmW_slotE_eq_sum_sub]`. Rewrite using `[Finset.sum_comm, ← Finset.sum_add_distrib]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl (fun α _ => ?_)` and prove the remaining obligations. Establish `h2` using `congrArg (fun T : Module.End ℂ V => T (F α)) (jm_deriv E hE c d j α)`. Simplify using `only [LinearMap.sub_apply, Module.End.mul_apply, LinearMap.sum_apply] at h2`. Rewrite `h2` using `[sub_eq_iff_eq_add]`. Rewrite using `[h2]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [LinearMap.sub_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem jm_theta_equiv (E : Fin n → Fin n → Module.End ℂ V) (hE : GlRel E) {j : ℕ} (c d : Fin n)
     (F : Arr V n j) : thetaA E j (arrE E j c d F) = E c d (thetaA E j F) := by
@@ -202,7 +200,7 @@ def mapArr (ι : V →ₗ[ℂ] V') (n j : ℕ) : Arr V n j →ₗ[ℂ] Arr V' n 
     ι ∘ₗ LinearMap.proj (R := ℂ) (φ := fun _ : Fin j → Fin n × Fin n => V) α) ∘ₗ arrOf V n j
 
 /- English proof (translation)
-Simplify using `[mapArr, arrTo, arrOf]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mapArr_apply (ι : V →ₗ[ℂ] V') {j : ℕ} (F : Arr V n j) (α : Fin j → Fin n × Fin n) :
     mapArr ι n j F α = ι (F α) := by
@@ -212,11 +210,11 @@ variable (ε : Fin n → Bool) (E : Fin n → Fin n → Module.End ℂ V) (E' : 
   (ι : V →ₗ[ℂ] V') (u : V)
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Apply `compactSpan_le_of_mem ε E' (Submodule.mem_map_of_mem (mem_compactSpan_self ε E u))` to reduce the goal to its premises. Introduce `c d hcd y hy`. Take `⟨x, hx, rfl⟩` from `hy`. Rewrite using `[← hι c d hcd x hx]`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.mem_map_of_mem (compactSpan_isCompactInvariant ε E u c d hcd x hx)`. Rewrite using `[Submodule.map_le_iff_le_comap]`. Establish `hS : KStable ε E (kSpan ε E u ⊓ (kSpan ε E' (ι u)).comap ι)`. Introduce `c d hcd x hx`. Rewrite `hx`, the goal using `[Submodule.mem_inf, Submodule.mem_comap]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨compactSpan_isCompactInvariant ε E u c d hcd x hx.1, ?_⟩` and prove the remaining obligations. Rewrite using `[hι c d hcd x hx.1]`. Conclude with `compactSpan_isCompactInvariant ε E' (ι u) c d hcd _ hx.2`. Establish `hu : u ∈ kSpan ε E u ⊓ (kSpan ε E' (ι u)).comap ι` using `Submodule.mem_inf.mpr ⟨mem_compactSpan_self ε E u, mem_compactSpan_self ε E' (ι u)⟩`. Conclude with `(compactSpan_le_of_mem ε E hu hS).trans inf_le_right`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem kSpan_map (hι : ∀ c d, ε c = ε d → ∀ x ∈ kSpan ε E u, ι (E c d x) = E' c d (ι x)) :
     kSpan ε E' (ι u) = (kSpan ε E u).map ι := by
@@ -238,7 +236,7 @@ theorem kSpan_map (hι : ∀ c d, ε c = ε d → ∀ x ∈ kSpan ε E u, ι (E 
     exact (compactSpan_le_of_mem ε E hu hS).trans inf_le_right
 
 /- English proof (translation)
-Simplify using `only [arrV0, Submodule.mem_iInf, Submodule.mem_comap, LinearMap.comp_apply, LinearMap.proj_apply]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 private lemma mem_arrV0_iff_forall_mem_kSpan {W : Type} [AddCommGroup W] [Module ℂ W] {j : ℕ} (e : Fin n → Bool)
     (D : Fin n → Fin n → Module.End ℂ W) (w : W) (F : Arr W n j) :
@@ -247,9 +245,9 @@ private lemma mem_arrV0_iff_forall_mem_kSpan {W : Type} [AddCommGroup W] [Module
   rfl
 
 /- English proof (translation)
-Establish `h` using `(mem_arrV0_iff_forall_mem_kSpan ε E u F).mp hF α`. Distinguish the cases in `hc : ∀ i, ε (α i).1 ≠ ε (α i).2`. Rewrite `h` using `[if_pos hc]`. Then use the resulting hypothesis. Rewrite `h` using `[if_neg hc, Submodule.mem_bot]`. Rewrite using `[h]`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.zero_mem _`.
+A detailed English derivation is pending.
 -/
 theorem val_mem {j : ℕ} (F : Arr V n j) (hF : F ∈ arrV0 ε E u j) (α : Fin j → Fin n × Fin n) :
     F α ∈ kSpan ε E u := by
@@ -261,9 +259,9 @@ theorem val_mem {j : ℕ} (F : Arr V n j) (hF : F ∈ arrV0 ε E u j) (α : Fin 
     exact Submodule.zero_mem _
 
 /- English proof (translation)
-Rewrite `hF`, the goal using `[mem_arrV0_iff_forall_mem_kSpan]`. Introduce `α`. Rewrite using `[mapArr_apply]`. Establish `h` using `hF α`. Distinguish the cases in `hc : ∀ i, ε (α i).1 ≠ ε (α i).2`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Rewrite `h`, the goal using `[if_pos hc]`. Rewrite using `[kSpan_map ε E E' ι u hι]`. Conclude with `Submodule.mem_map_of_mem h`. Rewrite `h`, the goal using `[if_neg hc, Submodule.mem_bot]`. Rewrite using `[h, map_zero]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mapArr_mem (hι : ∀ c d, ε c = ε d → ∀ x ∈ kSpan ε E u, ι (E c d x) = E' c d (ι x))
     {j : ℕ} (F : Arr V n j) (hF : F ∈ arrV0 ε E u j) : mapArr ι n j F ∈ arrV0 ε E' (ι u) j := by
@@ -279,9 +277,9 @@ theorem mapArr_mem (hι : ∀ c d, ε c = ε d → ∀ x ∈ kSpan ε E u, ι (E
     rw [h, map_zero]
 
 /- English proof (translation)
-Use `PiLp.ext (fun α => ?_)` and prove the remaining obligations. Simplify using `only [mapArr_apply, jm_arrE_apply, map_add, map_sum]`. Rewrite using `[hι c d hcd _ (val_mem ε E u F hF α)]`. Use `congr 1`. Use `Finset.sum_congr rfl (fun i _ => ?_)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[jm_positionE_apply, jm_positionE_apply, map_sub]`. Apply the tactic sequence `split_ifs <;> simp [mapArr_apply]`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem mapArr_arrE (hι : ∀ c d, ε c = ε d → ∀ x ∈ kSpan ε E u, ι (E c d x) = E' c d (ι x))
     {j : ℕ} (F : Arr V n j) (hF : F ∈ arrV0 ε E u j) (c d : Fin n) (hcd : ε c = ε d) :
@@ -295,7 +293,7 @@ theorem mapArr_arrE (hι : ∀ c d, ε c = ε d → ∀ x ∈ kSpan ε E u, ι (
   split_ifs <;> simp [mapArr_apply]
 
 /- English proof (translation)
-Use `PiLp.ext (fun α => ?_)` and prove the remaining obligations. Simplify using `[mapArr_apply, permArr, arrTo, arrOf]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem mapArr_perm {j : ℕ} (F : Arr V n j) (s : Equiv.Perm (Fin j)) :
     mapArr ι n j (permArr V n s F) = permArr V' n s (mapArr ι n j F) := by
@@ -303,16 +301,16 @@ theorem mapArr_perm {j : ℕ} (F : Arr V n j) (s : Equiv.Perm (Fin j)) :
   simp [mapArr_apply, permArr, arrTo, arrOf]
 
 /- English proof (translation)
-Simplify using `[at1, sliceLin, arrTo, arrOf]`.
+Simplify using the standard rewrite rules.
 -/
 theorem at1_sliceLin {j : ℕ} (F : Arr V n (j + 1)) (α' : Fin j → Fin n × Fin n) (a b : Fin n) :
     at1 (sliceLin V n α' F) a b = F (Fin.cons (a, b) α') := by
   simp [at1, sliceLin, arrTo, arrOf]
 
 /- English proof (translation)
-Rewrite using `[jm_thetaA_apply]`. Simplify using `only [mapArr_apply]`. Rewrite using `[← (Fin.consEquiv fun _ => Fin n × Fin n).sum_comp, Fintype.sum_prod_type, Finset.sum_comm]`. Use `Finset.sum_congr rfl (fun α' _ => ?_)` and prove the remaining obligations. Rewrite using `[map_sum, Fintype.sum_prod_type]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl (fun a _ => ?_)` and prove the remaining obligations. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl (fun b _ => ?_)` and prove the remaining obligations. Rewrite using `[at1_sliceLin]`. Simplify using `[jmW, List.ofFn_succ, jm_ew_append, ew, Fin.consEquiv]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem theta_slices {j : ℕ} (F : Arr V n (j + 1)) :
     thetaA E' (j + 1) (mapArr ι n (j + 1) F) =
@@ -330,9 +328,9 @@ theorem theta_slices {j : ℕ} (F : Arr V n (j + 1)) :
   simp [jmW, List.ofFn_succ, jm_ew_append, ew, Fin.consEquiv]
 
 /- English proof (translation)
-Establish `hp` using `pfilFacts V n ε E u hE`. Proceed by induction on `w with`. Consider the case `nil`. Simplify using `only [ew, List.length_nil, Module.End.one_apply]`. Rewrite using `[hp.1]`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hx`. Consider the case `cons p w ih`. Simplify using `only [ew, List.length_cons, Module.End.mul_apply]`. Conclude with `hp.2.2.2.1 _ p.1 p.2 _ ih`.
+Treat this case separately. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem ew_mem_pfil (hE : GlRel E) (x : V) (hx : x ∈ kSpan ε E u) (w : List (Fin n × Fin n)) :
     ew E w x ∈ pfil ε E u w.length := by
@@ -349,31 +347,29 @@ theorem ew_mem_pfil (hE : GlRel E) (x : V) (hx : x ∈ kSpan ε E u) (w : List (
 end Transfer
 
 /- English proof (translation)
-Introduce `V _ _ n ε E lam g u hE hU hK hfd hgap hg V' _ _ E' ι ev hE' hι hev hevE hVm hevι`. Establish `hPf : ∀ k : ℕ, (∀ m ≤ k, ∀ F ∈ arrV0 ε E u m, ev (thetaA E' m (mapArr ι n m F)) = 0) → ∀ y ∈ pfil ε E' (ι u) k, ev y = 0`. Introduce `k hD`. Introduce `y hy`. Establish `hle : pfil ε E' (ι u) k ≤ LinearMap.ker ev`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Unfold `pfil`. Use `Submodule.span_le.mpr ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨w, hw, hnc, y, hy, rfl⟩`. Rewrite `hy` using `[kSpan_map ε E E' ι u hι, Submodule.mem_map]`. Take `⟨z, hz, rfl⟩` from `hy`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Set `α0 : Fin w.reverse.length → Fin n × Fin n` to `w.reverse.get`. Establish `hw0 : ew E' w = jmW E' α0` using `by show ew E' w = ew E' (List.ofFn w.reverse.get).reverse`. Rewrite using `[List.ofFn_get, List.reverse_reverse]`. Establish `hc0 : ∀ i, ε (α0 i).1 ≠ ε (α0 i).2` using `fun i => hnc _ (List.mem_reverse.mp (List.get_mem _ _))`. Set `F : Arr V n w.reverse.length` to `WithLp.toLp 2 (fun α => if α = α0 then z else 0)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hF : F ∈ arrV0 ε E u w.reverse.length`. Rewrite using `[mem_arrV0_iff_forall_mem_kSpan]`. Introduce `α`. Distinguish the cases in `h : α = α0`. Rewrite using `[h, if_pos hc0]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Simplify `hz` using `[F]`. Simplify using `[F, h]`. Establish `hθ : thetaA E' _ (mapArr ι n _ F) = jmW E' α0 (ι z)`. Rewrite using `[jm_thetaA_apply, Finset.sum_eq_single α0]`. Simplify using `[mapArr_apply, F]`.
+Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `b _ hb`. Simplify using `[mapArr_apply, F, hb]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`. Establish `h0` using `hD _ (by simpa using hw) F hF`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h0` using `[hθ, ← hw0]`. Conclude with `h0`. Conclude with `hle hy`. Establish `hD : ∀ m, ∀ F ∈ arrV0 ε E u m, ev (thetaA E' m (mapArr ι n m F)) = 0`. Introduce `m`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Split into cases according to the possible forms of the given data.
 
-Proceed by induction on `m using Nat.strong_induction_on with`. Consider the case `_ m ih`. Consider the cases of `m with`. Consider the case `zero`. Introduce `F hF`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[jm_thetaA_apply, Fintype.sum_unique, jmW_zero, Module.End.one_apply, mapArr_apply]`. Conclude with `hevι _ (val_mem ε E u F hF _)`. Consider the case `succ j`. Introduce `F hF`. Establish `hC : ∀ y ∈ pfil ε E' (ι u) j, ev y = 0` using `hPf j (fun m hm => ih m (Nat.lt_succ_of_le hm))`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Use `GlobalTheory.T.symmetric_kMap_eq_zero_of_vminus_slices V n ε E lam g u j hE hU hK hfd hgap hg (ev ∘ₗ thetaA E' (j + 1) ∘ₗ mapArr ι n (j + 1)) ?_ ?_ ?_ ?_ F hF` and prove the remaining obligations. Introduce `G _`. Conclude with `hev _`. Introduce `c d hcd G hG`. Simplify using `only [LinearMap.comp_apply]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[mapArr_arrE ε E E' ι u hι G hG c d hcd, jm_theta_equiv E' hE', hevE c d hcd]`. Introduce `G hG s`. Simplify using `only [LinearMap.comp_apply]`. Rewrite using `[mapArr_perm ι G s, ← sub_eq_zero, ← map_sub]`. Conclude with `hC _ ((thetaFil V' n ε E' (ι u) hE').2.2 j _ (mapArr_mem ε E E' ι u hι G hG) s)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `G _ hsl`. Simplify using `only [LinearMap.comp_apply]`. Rewrite using `[theta_slices E' ι G]`. Simplify using `[hVm _ (hsl _)]`. Introduce `w x hx`.
-
-Establish `hx' : ι x ∈ kSpan ε E' (ι u)`. Rewrite using `[kSpan_map ε E E' ι u hι]`. Conclude with `Submodule.mem_map_of_mem hx`. Conclude with `hPf w.length (fun m _ => hD m) _ (ew_mem_pfil ε E' (ι u) hE' (ι x) hx' w)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem uniqAlg : ∀ (V : Type) [NormedAddCommGroup V] [InnerProductSpace ℂ V] (n : ℕ) (ε : Fin n → Bool) (E : Fin n → Fin n → Module.End ℂ V) (lam : Fin n → ℝ) (g : ℝ) (u : V), GlRel E → IsUnitary ε E → KHighest ε E (LamOf ε lam) u → FiniteDimensional ℂ (kSpan ε E u) → (∀ a b : Fin n, a < b → ε a ≠ ε b → g ≤ lam a - lam b) → 2 * (n : ℝ) < g → ∀ (V' : Type) [AddCommGroup V'] [Module ℂ V'] (E' : Fin n → Fin n → Module.End ℂ V') (ι : V →ₗ[ℂ] V') (ev : V' →ₗ[ℂ] V), GlRel E' → (∀ c d, ε c = ε d → ∀ x ∈ kSpan ε E u, ι (E c d x) = E' c d (ι x)) → (∀ y, ev y ∈ kSpan ε E u) → (∀ c d, ε c = ε d → ∀ y, ev (E' c d y) = E c d (ev y)) → (∀ G ∈ Vminus ε E (LamOf ε lam) u, ∑ a, ∑ b, E' a b (ι (at1 G a b)) = 0) → (∀ x ∈ kSpan ε E u, ev (ι x) = 0) → ∀ (w : List (Fin n × Fin n)), ∀ x ∈ kSpan ε E u, ev (ew E' w (ι x)) = 0 := by
   intro V _ _ n ε E lam g u hE hU hK hfd hgap hg V' _ _ E' ι ev hE' hι hev hevE hVm hevι

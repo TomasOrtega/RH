@@ -16,22 +16,22 @@ variable {E : Type} [Field E] [NumberField E] {n : ℕ}
 
 omit [NumberField E] in
 /- English proof (translation)
-The claim follows from `Submodule.map_mul I J (Algebra.ofId (𝓞 E) E)`.
+A detailed English derivation is pending.
 -/
 theorem idlE_mul' (I J : Ideal (𝓞 E)) : idlE (I * J) = idlE I * idlE J :=
   Submodule.map_mul I J (Algebra.ofId (𝓞 E) E)
 
 /- English proof (translation)
-The claim follows from `Submodule.map_injective_of_injective (f := Algebra.linearMap (𝓞 E) E) (FaithfulSMul.algebraMap_injective (𝓞 E) E)`.
+A detailed English derivation is pending.
 -/
 theorem idlE_inj : Function.Injective (idlE : Ideal (𝓞 E) → Submodule (𝓞 E) E) :=
   Submodule.map_injective_of_injective (f := Algebra.linearMap (𝓞 E) E) (FaithfulSMul.algebraMap_injective (𝓞 E) E)
 
 omit [NumberField E] in
 /- English proof (translation)
-Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨v, hv, rfl⟩`. Use `choose b hb using fun i => (mem_std _).1 (hv i)`. Use `Submodule.mem_one.2 ⟨(Matrix.of fun i j => b j i).det, ?_⟩` and prove the remaining obligations. Rewrite using `[RingHom.map_det]`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Use extensionality with `i j`. Conclude with `hb j i`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem detSpan_std_le : detSpan (stdLat E n) ≤ 1 := by
   refine Submodule.span_le.2 ?_
@@ -45,7 +45,7 @@ theorem detSpan_std_le : detSpan (stdLat E n) ≤ 1 := by
 
 omit [NumberField E] in
 /- English proof (translation)
-The claim follows from `Submodule.smul_mem _ _ ((mem_std _).2 fun j => by rw [Pi.single_apply] split_ifs exacts [⟨1, map_one _⟩, ⟨0, map_zero _⟩])`.
+A detailed English derivation is pending.
 -/
 theorem smul_single_mem (m : 𝓞 E) (i : Fin n) : m • (Pi.single i 1 : Fin n → E) ∈ stdLat E n :=
   Submodule.smul_mem _ _ ((mem_std _).2 fun j => by
@@ -55,9 +55,9 @@ theorem smul_single_mem (m : 𝓞 E) (i : Fin n) : m • (Pi.single i 1 : Fin n 
 
 omit [NumberField E] in
 /- English proof (translation)
-Use `det_mem (M := M) ((m : E) • (1 : Matrix (Fin n) (Fin n) E)) (fun i => by` as an intermediate fact. Use `h i using 1` and compare the differences between its conclusion and the goal. Use extensionality with `j`. Simplify using `[Matrix.one_apply, Pi.single_apply, eq_comm, Algebra.smul_def])`. Rewrite `this` using `[Matrix.det_smul, Matrix.det_one, mul_one, Fintype.card_fin]`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `using this`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem pow_mem_detSpan {M : Submodule (𝓞 E) (Fin n → E)} (m : 𝓞 E)
     (h : ∀ i, m • (Pi.single i 1 : Fin n → E) ∈ M) : ((m ^ n : 𝓞 E) : E) ∈ detSpan M := by
@@ -70,7 +70,7 @@ theorem pow_mem_detSpan {M : Submodule (𝓞 E) (Fin n → E)} (m : 𝓞 E)
 
 omit [NumberField E] in
 /- English proof (translation)
-Use `le_antisymm detSpan_std_le ?_` and prove the remaining obligations. Rewrite using `[Submodule.one_le]`. Simplify using `using pow_mem_detSpan (M := stdLat E n) 1 (smul_single_mem 1)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem detSpan_std : detSpan (stdLat E n) = 1 := by
   refine le_antisymm detSpan_std_le ?_
@@ -79,7 +79,7 @@ theorem detSpan_std : detSpan (stdLat E n) = 1 := by
 
 omit [NumberField E] in
 /- English proof (translation)
-Use `⟨M.comap (Algebra.linearMap (𝓞 E) E), (Submodule.map_comap_eq_of_le ?_).symm⟩` and prove the remaining obligations. Introduce `x hx`. Conclude with `Submodule.mem_one.1 (h hx)`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem exists_idlE {M : Submodule (𝓞 E) E} (h : M ≤ 1) : ∃ 𝔟 : Ideal (𝓞 E), M = idlE 𝔟 := by
   refine ⟨M.comap (Algebra.linearMap (𝓞 E) E), (Submodule.map_comap_eq_of_le ?_).symm⟩
@@ -89,14 +89,14 @@ theorem exists_idlE {M : Submodule (𝓞 E) E} (h : M ≤ 1) : ∃ 𝔟 : Ideal 
 variable [IsCMField E]
 
 /- English proof (translation)
-Rewrite using `[Ideal.absNorm_apply, Ideal.absNorm_apply, Submodule.cardQuot_apply, Submodule.cardQuot_apply]`. Conclude with `(Nat.card_congr (Ideal.quotientEquiv I (conjId H I) H.bar rfl).toEquiv).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem absNorm_conjId (H : Host E) (I : Ideal (𝓞 E)) : Ideal.absNorm (conjId H I) = Ideal.absNorm I := by
   rw [Ideal.absNorm_apply, Ideal.absNorm_apply, Submodule.cardQuot_apply, Submodule.cardQuot_apply]
   exact (Nat.card_congr (Ideal.quotientEquiv I (conjId H I) H.bar rfl).toEquiv).symm
 
 /- English proof (translation)
-Take `⟨K, rfl⟩` from `Ideal.dvd_iff_le.2 h`. Establish `h1 : Ideal.absNorm J ≠ 0` using `by rwa [Ne, Ideal.absNorm_eq_zero_iff]`. Rewrite `e` using `[map_mul, mul_eq_left₀ h1, Ideal.absNorm_eq_one_iff]`. Rewrite using `[e, Ideal.mul_top]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem eq_of_le_of_absNorm {I J : Ideal (𝓞 E)} (h : I ≤ J) (h0 : J ≠ ⊥) (e : Ideal.absNorm I = Ideal.absNorm J) :
     I = J := by
@@ -106,29 +106,27 @@ theorem eq_of_le_of_absNorm {I J : Ideal (𝓞 E)} (h : I ≤ J) (h0 : J ≠ ⊥
   rw [e, Ideal.mul_top]
 
 /- English proof (translation)
-Establish `hb : Bdd (stdLat E n ⊔ L)`. Take `⟨k, hk, h⟩` from `bdd_of_unimod ⟨L⟩ hL`. Use `⟨k, hk, fun v hv => ?_⟩` and prove the remaining obligations. Take `⟨x, hx, y, hy, rfl⟩` from `Submodule.mem_sup.1 hv`. Rewrite using `[smul_add]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `add_mem (Submodule.smul_mem _ _ hx) (h y hy)`. Take `⟨𝔞, a0, e1, e2, e3⟩` from `GlobalTheory.T.exists_common_indexIdeal_inf_sup_lattices E n L (stdLat E n) hb fun m _ => exists_smul_std m`. Take `⟨𝔟, e4⟩` from `exists_idlE ((detSpan_mono (inf_le_right : L ⊓ stdLat E n ≤ _)).trans detSpan_std_le)`. Rewrite `e2` using `[detSpan_std, smul_eq_idlE_mul]`. Rewrite `e1` using `[e4, smul_eq_idlE_mul]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `c0` using `absNorm_ne_zero h1`. Establish `c1 : cc ≠ ⊥` using `by rwa [Ne, Ideal.absNorm_eq_zero_iff] at c0`. Establish `c2 : conjId H cc ≠ ⊥` using `by rwa [Ne, ← Ideal.absNorm_eq_zero_iff, absNorm_conjId]`. Establish `e5 : 𝔟 * conjId H cc = 𝔞 * cc` using `idlE_inj (by rw [idlE_mul', idlE_mul', e1, mul_assoc, h2])`. Establish `e6 : Ideal.absNorm 𝔟 = Ideal.absNorm 𝔞`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `congrArg Ideal.absNorm e5` as an intermediate fact. Rewrite `this` using `[map_mul, map_mul, absNorm_conjId]`. Conclude with `mul_right_cancel₀ c0 this`. Establish `pair : ∀ v ∈ L ⊓ stdLat E n, ∀ w ∈ stdLat E n ⊔ L, ∑ j, IsCMField.complexConj E (v j) * w j ∈ (algebraMap (𝓞 E) E).range`. Introduce `v hv w hw`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Take `⟨x, hx, y, hy, rfl⟩` from `Submodule.mem_sup.1 hw`. Simplify using `only [Pi.add_apply, mul_add, Finset.sum_add_distrib]`. Use `add_mem (Subring.sum_mem _ fun j _ => ?_) ((hL v).1 hv.1 y hy)` and prove the remaining obligations. Take `⟨a, ha⟩` from `(mem_std _).1 hv.2 j`. Take `⟨b, hb⟩` from `(mem_std _).1 hx j`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `mul_mem ⟨H.bar a, by rw [← ha]; exact H.bar_eq a⟩ ⟨b, hb⟩`. Establish `e7 : idlE (conjId H 𝔟) * detSpan (stdLat E n ⊔ L) ≤ 1`. Use `Submodule.mul_le.2 fun x hx y hy => ?_` and prove the remaining obligations. Rewrite `hx` using `[← conjMod_idlE, mem_conjMod, ← e4]`. Use `GlobalTheory.T.detSpan_conj_mul_integral_of_integral_pairing E n _ _ pair _ hx y hy` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `this` using `[IsCMField.complexConj_apply_apply]`. Conclude with `Submodule.mem_one.2 this`. Establish `e8 : conjId H 𝔟 = 𝔞`. Use `eq_of_le_of_absNorm ?_ a0 (by rw [absNorm_conjId, e6])` and prove the remaining obligations. Establish `: idlE (conjId H 𝔟) ≤ idlE 𝔞`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Conclude with `(Submodule.map_le_map_iff_of_injective (FaithfulSMul.algebraMap_injective (𝓞 E) E) _ _).1 this`. Take `⟨𝔡, rfl⟩ : cc ∣ 𝔟` from `(Ideal.isCoprime_iff_sup_eq.2 h1).dvd_of_dvd_mul_right ⟨𝔞, by rw [e5, mul_comm]⟩`. Establish `e9 : conjId H 𝔡 = 𝔡`. Establish `: conjId H (cc * 𝔡) = conjId H cc * conjId H 𝔡` using `Ideal.map_mul _ _ _`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Rewrite `e5` using `[← e8, this]`. Apply `mul_left_cancel₀ (mul_ne_zero c1 c2)` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation. Establish `d0 : Ideal.absNorm 𝔡 ≠ 0`. Introduce and unpack `h`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e6` using `[map_mul, h, mul_zero, eq_comm, Ideal.absNorm_eq_zero_iff]`. Conclude with `a0 e6`. Take `⟨m, -, -, m2, m3⟩` from `hS`. Establish `hm : m ^ n ∈ 𝔡`. Use `pow_mem_detSpan (M := L ⊓ stdLat E n) m fun i => ⟨m2 (Submodule.smul_mem_smul (Ideal.mem_span_singleton_self m) (by simpa using smul_single_mem (E := E) 1 i)), smul_single_mem m i⟩` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `this` using `[e4]`. Take `⟨y, hy, e⟩` from `this`. Establish `: y = m ^ n` using `RingOfIntegers.ext e`. Rewrite using `[← this]`. Conclude with `Ideal.le_of_dvd (Dvd.intro_left cc rfl) hy`.
-
-Take `⟨k, hk⟩` from `GlobalTheory.T.isSquare_absNorm_conjInvariant_movedPrimes_ideal E H 𝔡 (by rwa [Ne, Ideal.absNorm_eq_zero_iff] at d0) e9 fun P hP hle => m3 P hP (hP.mem_of_pow_mem (r := m) n (hle hm))`. Use `⟨k, by rintro rfl; exact d0 hk, ?_⟩` and prove the remaining obligations. Rewrite using `[← e3, ← e6, map_mul, hk, sq]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem index_eq (H : Host E) (L : Submodule (𝓞 E) (Fin n → E)) (cc : Ideal (𝓞 E))
     (hL : (⟨L⟩ : GenLat E n).Unimod) (hS : GenLat.SplitSupp H (⟨L⟩ : GenLat E n))
@@ -202,9 +200,9 @@ theorem index_eq (H : Host E) (L : Submodule (𝓞 E) (Fin n → E)) (cc : Ideal
   rw [← e3, ← e6, map_mul, hk, sq]
 
 /- English proof (translation)
-Introduce `E _ _ _ H n r ⟨s, hs⟩ L cc hL hS h1 h2`. Take `⟨k, k0, e⟩` from `index_eq H L cc hL hS h1 h2`. Establish `e' : ((L ⊓ Formalism.L2.Pj.stdLat E n).toAddSubgroup.addSubgroupOf L.toAddSubgroup).index = Ideal.absNorm cc * k ^ 2` using `e`. Establish `c0 : Ideal.absNorm cc ≠ 0` using `absNorm_ne_zero (H := H) h1`. Rewrite using `[e', hs]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Generalize the expression as in `Ideal.absNorm cc = N at c0`. Establish `: (0 : ℚ) < N` using `by positivity`. Establish `: (0 : ℚ) < k` using `by positivity`. Use `⟨((N : ℚ) ^ s * (k : ℚ) ^ (2 * s + 1))⁻¹, by positivity, ?_⟩` and prove the remaining obligations. Use `push_cast`.
+Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations.
 
 Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 -/

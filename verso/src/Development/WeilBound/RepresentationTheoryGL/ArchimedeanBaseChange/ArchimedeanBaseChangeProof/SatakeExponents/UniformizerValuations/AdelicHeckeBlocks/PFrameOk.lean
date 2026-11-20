@@ -29,9 +29,9 @@ variable {n : ℕ} {hR : Rd.ReadLimit} {π : Submodule ℂ (UA E n → ℂ)} {S 
   (F : RunFrame F₀ T)
 
 /- English proof (translation)
-Introduce `w hw`. Establish `hw' : w ∈ F.d.T ∪ F.d.S₀` using `hw`. Establish `hT` using `F.T_in`. Establish `hs` using `F.same`. Unfold `RF_T_in at hT`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `RF_same at hs`. Break down `Finset.mem_union.1 hw' with h | h` into its components or cases. Conclude with `(hT w h).1`. Conclude with `(F₀.S₀ w (hs.1 ▸ h)).1`.
+Replace the relevant objects with their definitions. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem wirtinger_sub : (↑F.d.P : Set (Pl E)) ⊆ F₀.Sec := by
   intro w hw
@@ -45,14 +45,14 @@ theorem wirtinger_sub : (↑F.d.P : Set (Pl E)) ⊆ F₀.Sec := by
   · exact (F₀.S₀ w (hs.1 ▸ h)).1
 
 /- English proof (translation)
-The claim follows from `Or.inl rfl`.
+Prove the first alternative.
 -/
 theorem isGen_eL (i : F₀.C.ι) : F.d.IsGen (F₀.C.a i) (F₀.C.le i) (F.d.eL _) := Or.inl rfl
 
 /- English proof (translation)
-Break down `x with u | x | x` into its components or cases. Conclude with `Or.inr ⟨F.d.eL _, fun _ => [], fun _ => [], isGen_eL F i, rfl⟩`. Distinguish the cases in `h : i = x.1`. Use `Or.inr ⟨F.d.eL _, fun v' => if v' = x.2.1 ∧ x.2.2.2.2 = false then [(x.2.2.1, x.2.2.2.1)] else [], fun v' => if v' = x.2.1 ∧ x.2.2.2.2 = true then [(x.2.2.1, x.2.2.2.1)] else [], isGen_eL F i, ?_⟩` and prove the remaining obligations. Simplify using `only [RunFrame.g, if_pos h]`.
+Separate the alternatives or extract the components of the hypothesis. Prove the second alternative. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Both sides reduce to the same expression. Conclude with `Or.inl ⟨F.dval x, by simp only [RunFrame.g, if_neg h]⟩`. Conclude with `Or.inr ⟨_, fun _ => [], fun _ => [], Or.inr ⟨x.1.1, x.2.1, x.2.2, x.1.2.2, rfl⟩, rfl⟩`.
+Both sides reduce to the same expression. Prove the first alternative. Prove the second alternative.
 -/
 theorem gen_cases (x : F.Γ) (i : F₀.C.ι) : (∃ c, F.g x i = Sum.inl c) ∨
     ∃ L wa wb, F.d.IsGen (F₀.C.a i) (F₀.C.le i) L ∧
@@ -68,21 +68,17 @@ theorem gen_cases (x : F.Γ) (i : F₀.C.ι) : (∃ c, F.g x i = Sum.inl c) ∨
   · exact Or.inr ⟨_, fun _ => [], fun _ => [], Or.inr ⟨x.1.1, x.2.1, x.2.2, x.1.2.2, rfl⟩, rfl⟩
 
 /- English proof (translation)
-Establish `hS` using `F₀.hSec`. Establish `hP` using `wirtinger_sub F`. Establish `hd` using `F.ok`. Establish `okPT : ∀ i (L : LM F.d.kap (F₀.C.a i) (n - F₀.C.a i)) wa wb, F.d.IsGen _ (F₀.C.le i) L → ((F₀.A i).pt wa wb (F.ψ i L) (PositivityTheory.Rg.BcB.F.sizeOf (F.ψ i L))).Ok` using `fun i L wa wb hL => (oks (A := F₀.A i) hd hS hP (F₀.C.le i) wa wb).1 L hL`. Establish `stE : ∀ i (t : PT (F.B i)), star t.op = ContinuousLinearMap.adjoint t.op` using `fun _ _ => ContinuousLinearMap.star_eq_adjoint _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `opS : ∀ i (c : ℂ), BGen.op (Sum.inl c : BGen (F.B i)) = c • (1 : (F.B i).Hb →L[ℂ] (F.B i).Hb)` using `fun _ _ => rfl`. Use `⟨fun x i => ?_, fun i => (oks (A := F₀.A i) hd hS hP (F₀.C.le i) _ _).2.1, fun i => ⟨(oks (A := F₀.A i) hd hS hP (F₀.C.le i) _ _).2.2.1, (oks (A := F₀.A i) hd hS hP (F₀.C.le i) _ _).2.2.2 _ _⟩, fun x y i => ?_, fun x y i => ?_, fun i x => ?_⟩` and prove the remaining obligations. Break down `gen_cases F x i with ⟨c, hc⟩ | ⟨L, wa, wb, hL, hx⟩` into its components or cases. Rewrite using `[hc]`. Conclude with `trivial`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hx]`. Conclude with `okPT i L wa wb hL`. Break down `gen_cases F x i with ⟨c, hc⟩ | ⟨L, wa, wb, hL, hx⟩` into its components or cases. Rewrite using `[hc, opS]`. Conclude with `(Commute.one_left _).smul_left c`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Break down `gen_cases F y i with ⟨c', hc'⟩ | ⟨L', wa', wb', hL', hy⟩` into its components or cases. Rewrite using `[hc', opS]`. Conclude with `(Commute.one_right _).smul_right c'`. Rewrite using `[hx, hy]`. Conclude with `(comm_gen (A := F₀.A i) hd hS hP (F₀.C.le i) hL hL' wa wb wa' wb').1`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Break down `gen_cases F x i with ⟨c, hc⟩ | ⟨L, wa, wb, hL, hx⟩` into its components or cases. Rewrite using `[hc, opS]`. Conclude with `(Commute.one_left _).smul_left c`. Break down `gen_cases F y i with ⟨c', hc'⟩ | ⟨L', wa', wb', hL', hy⟩` into its components or cases. Rewrite using `[hc', opS, star_smul, star_one]`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(Commute.one_right _).smul_right _`. Rewrite using `[hx, hy]`. Use `show Commute (PT.op (B := F.B i) _) (star (PT.op (B := F.B i) _))`. Rewrite using `[stE]`. Conclude with `(comm_gen (A := F₀.A i) hd hS hP (F₀.C.le i) hL hL' wa wb wa' wb').2`.
-
-Break down `gen_cases F x i with ⟨c, hc⟩ | ⟨L, wa, wb, hL, hx⟩` into its components or cases. Rewrite using `[hc, opS, star_smul, star_one]`. Conclude with `⟨(Commute.one_right _).smul_right c, (Commute.one_right _).smul_right _⟩`. Rewrite using `[hx]`. Establish `h` using `comm_beta (A := F₀.A i) hd hS hP (F₀.C.le i) hL (fun _ => []) (fun _ => []) wa wb`.
-
-Use `⟨h.1, ?_⟩` and prove the remaining obligations. Use `show Commute (PT.op (B := F.B i) _) (star (PT.op (B := F.B i) _))`. Rewrite using `[stE]`. Conclude with `h.2`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem struct : F.Struct := by
   have hS := F₀.hSec
@@ -129,7 +125,7 @@ end Run
 end FrameOk
 
 /- English proof (translation)
-Introduce `hR E _ _ _ _ n _ π S T F₀ F`. Conclude with `FrameOk.struct F`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem frameOk₀ : FrameOk := by
   intro hR E _ _ _ _ n _ π S T F₀ F

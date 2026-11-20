@@ -20,7 +20,7 @@ def labLL (τ : D.what₂.Tau) : D.host.E →+* D.what₂.LL :=
 def labE (σ : D.what₂.LL →+* ℂ) (τ : D.what₂.Tau) : D.host.E →+* ℂ := σ.comp (labLL D τ)
 
 /- English proof (translation)
-Use extensionality with `x`. Establish `h` using `RingHom.congr_fun D.embE_φ₀ ((D.host.sigmaOf (D.eTau τ).1 : D.host.E →+* D.host.E) x)`. Simplify `h` using `[labE, labLL, tauE, Host.emb]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem labE_base (τ : D.what₂.Tau) : labE D.what₂.embLL τ = tauE D τ := by
   ext x
@@ -51,7 +51,7 @@ variable (D) in
 def baseLab : ArchLab D := ⟨Equiv.refl _, true⟩
 
 /- English proof (translation)
-Introduce `τ`. Rewrite using `[labE_base]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem isLabOf_base : IsLabOf D.what₂.embLL (baseLab D) := by
   intro τ
@@ -59,7 +59,7 @@ theorem isLabOf_base : IsLabOf D.what₂.embLL (baseLab D) := by
   rfl
 
 /- English proof (translation)
-Break down `A with ⟨p, s⟩` into its components or cases. Apply the tactic sequence `cases s <;> ext x <;> simp [ArchLab.emb, ArchLab.flip]`.
+Separate the alternatives or extract the components of the hypothesis. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem ArchLab.emb_flip (A : ArchLab D) (τ : D.what₂.Tau) :
     A.flip.emb τ = (starRingEnd ℂ).comp (A.emb τ) := by
@@ -67,7 +67,7 @@ theorem ArchLab.emb_flip (A : ArchLab D) (τ : D.what₂.Tau) :
   cases s <;> ext x <;> simp [ArchLab.emb, ArchLab.flip]
 
 /- English proof (translation)
-Introduce `τ`. Rewrite using `[labE_conj, h τ, ArchLab.emb_flip]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem isLabOf_conj {σ : D.what₂.LL →+* ℂ} {A : ArchLab D} (h : IsLabOf σ A) :
     IsLabOf ((starRingEnd ℂ).comp σ) A.flip := by
@@ -89,7 +89,7 @@ def labOf (σ : D.what₂.LL →+* ℂ) : ArchLab D :=
   if h : ∃ A : ArchLab D, IsLabOf σ A then h.choose else baseLab D
 
 /- English proof (translation)
-Unfold `labOf`. Rewrite using `[dif_pos h]`. Conclude with `h.choose_spec`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem labOf_spec {σ : D.what₂.LL →+* ℂ} (h : ∃ A : ArchLab D, IsLabOf σ A) : IsLabOf σ (labOf σ) := by
   unfold labOf
@@ -97,7 +97,7 @@ theorem labOf_spec {σ : D.what₂.LL →+* ℂ} (h : ∃ A : ArchLab D, IsLabOf
   exact h.choose_spec
 
 /- English proof (translation)
-The claim follows from `hU _ _ _ (labOf_spec ⟨_, isLabOf_base⟩) isLabOf_base`.
+A detailed English derivation is pending.
 -/
 theorem labOf_base (hU : LabUnique D) : labOf (D := D) D.what₂.embLL = baseLab D :=
   hU _ _ _ (labOf_spec ⟨_, isLabOf_base⟩) isLabOf_base
@@ -152,7 +152,7 @@ def IsConjChar (σ : D.what₂.LL →+* ℂ) (χL : (AE D)ˣ →* D.what₂.LLˣ
     ((χσ x : Circle) : ℂ) * D.what₂.embLL (χL x : D.what₂.LL) = ((χ x : Circle) : ℂ) * σ (χL x : D.what₂.LL)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h, fun _ _ => rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem isConjChar_base {χL : (AE D)ˣ →* D.what₂.LLˣ} {χ : (AE D)ˣ →* Circle} (h : IsHeckeChar D χ) :
     IsConjChar D.what₂.embLL χL χ χ :=
@@ -182,7 +182,7 @@ def IsChainKernelSig (ψ : AddChar (AF D.host.F) ℂ) (σ : D.what₂.LL →+* �
       Lift.IsChainKernel ψ μσ ησ m Y th
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨μ, η, fun k => isConjChar_base (hμ k), isConjChar_base hη, h⟩`.
+Supply the required witnesses or components.
 -/
 theorem isThPKernelSig_base (ψ : AddChar (AF D.host.F) ℂ)
     (μL : ℕ → (AE D)ˣ →* D.what₂.LLˣ) (ηL : (AE D)ˣ →* D.what₂.LLˣ) (μ : ℕ → (AE D)ˣ →* Circle)

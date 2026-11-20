@@ -4,9 +4,9 @@ import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.Trans
 open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComplex.HomComplex GlobalTheory.EtC UpperTheory.Gal.TranscendenceTraces
 
 /- English proof (translation)
-Introduce `hFL hB hOp Q Z S p _ F G t τ τ' hτ hτ' n`. Use extensionality with `x`. Take `⟨a, ha⟩` from `(hB (ZMod Q) (res (ZMod Q) F) Z n).1 x`. Establish `hd` using `(hB (ZMod Q) (res (ZMod Q) F) Z n).2.1 x a ha`. Establish `h1` using `hOp _ _ τ n x a ha`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `hOp _ _ τ' n x a ha`. Take `⟨y, hy⟩` from `(hFL Q p F G t).2 τ τ' hτ hτ' (Sq.self p) (n - 1) n (n + 1) (sub_add_cancel n 1) rfl a hd`. Conclude with `((hB (ZMod Q) (res (ZMod Q) G) S n).2.2.1 _ _ _ _ h1 h2).1.mpr ⟨y, hy⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.TranscendenceTraces.opEq_of :
     FL → RpBasic → RpOp → OpEq := by

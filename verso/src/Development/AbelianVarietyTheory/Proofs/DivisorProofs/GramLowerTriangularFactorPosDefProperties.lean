@@ -12,7 +12,7 @@ namespace GlobalTheory.ChernCalc
 variable {s : ℕ} {G : Matrix (Fin s) (Fin s) ℂ}
 
 /- English proof (translation)
-Establish `h1 : 0 < leadMinor G j` using `(h.submatrix Subtype.val_injective).det_pos`. Rewrite `h1` using `[Complex.lt_def]`. Conclude with `⟨by simpa using h1.1, by simpa using h1.2.symm⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 -/
 theorem leadMinor_pos_of_posDef (h : G.PosDef) (j : ℕ) : 0 < (leadMinor G j).re ∧ (leadMinor G j).im = 0 := by
   have h1 : 0 < leadMinor G j := (h.submatrix Subtype.val_injective).det_pos
@@ -20,11 +20,11 @@ theorem leadMinor_pos_of_posDef (h : G.PosDef) (j : ℕ) : 0 < (leadMinor G j).r
   exact ⟨by simpa using h1.1, by simpa using h1.2.symm⟩
 
 /- English proof (translation)
-Take `⟨a1, a2⟩` from `leadMinor_pos_of_posDef h ((i : ℕ) + 1)`. Take `⟨b1, b2⟩` from `leadMinor_pos_of_posDef h (i : ℕ)`. Use `⟨div_pos a1 b1, ?_⟩` and prove the remaining obligations. Establish `e : (fun a : {a : Fin s // (a : ℕ) < (i : ℕ) + 1} => if a.1 = i then i else a.1) = Subtype.val`. Use function extensionality and compare the values at `a`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `split_ifs with ha`. Conclude with `ha.symm`. Both sides reduce to the same expression. Establish `ea : leadMinor G ((i : ℕ) + 1) = ((leadMinor G ((i : ℕ) + 1)).re : ℂ)` using `Complex.ext (by simp) (by simpa using a2)`. Establish `eb : leadMinor G (i : ℕ) = ((leadMinor G (i : ℕ)).re : ℂ)` using `Complex.ext (by simp) (by simpa using b2)`.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [ldPart, Matrix.of_apply, grD]`. Rewrite using `[e, Complex.ofReal_div, ← ea, ← eb]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem ldPart_diag_of_posDef (h : G.PosDef) (i : Fin s) : 0 < grD G i ∧ ldPart G i i = grD G i := by
   obtain ⟨a1, a2⟩ := leadMinor_pos_of_posDef h ((i : ℕ) + 1)
@@ -44,9 +44,9 @@ theorem ldPart_diag_of_posDef (h : G.PosDef) (i : Fin s) : 0 < grD G i ∧ ldPar
   rfl
 
 /- English proof (translation)
-Establish `hij' : (i : ℕ) < j` using `hij`. Simplify using `only [ldPart, Matrix.of_apply]`. Rewrite using `[Matrix.det_zero_of_row_eq (i := ⟨i, by omega⟩) (j := ⟨j, by omega⟩), zero_div]`. Introduce `h`. Conclude with `hij.ne (congrArg Subtype.val h)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `b`. Simplify using `[Matrix.submatrix_apply]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem ldPart_eq_zero_of_lt (G : Matrix (Fin s) (Fin s) ℂ) {i j : Fin s} (hij : i < j) : ldPart G i j = 0 := by
   have hij' : (i : ℕ) < j := hij
@@ -58,9 +58,9 @@ theorem ldPart_eq_zero_of_lt (G : Matrix (Fin s) (Fin s) ℂ) {i j : Fin s} (hij
     simp [Matrix.submatrix_apply]
 
 /- English proof (translation)
-Introduce `s G h`. Use `⟨leadMinor_pos_of_posDef h, ldPart_diag_of_posDef h, fun i j hij => ldPart_eq_zero_of_lt G hij, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.det_of_lowerTriangular (ldPart G) (fun i j hij => ldPart_eq_zero_of_lt G (by simpa using hij)), isUnit_iff_ne_zero, Finset.prod_ne_zero_iff]`. Introduce `i _`. Take `⟨h1, h2⟩` from `ldPart_diag_of_posDef h i`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite using `[h2]`. Conclude with `h1.ne'` after adjusting the coercions.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ldPart_posDef_spec : ∀ (s : ℕ) (G : Matrix (Fin s) (Fin s) ℂ), G.PosDef → (∀ j, 0 < (leadMinor G j).re ∧ (leadMinor G j).im = 0) ∧ (∀ i, 0 < grD G i ∧ ldPart G i i = grD G i) ∧ (∀ i j, i < j → ldPart G i j = 0) ∧ IsUnit (ldPart G).det := by
   intro s G h

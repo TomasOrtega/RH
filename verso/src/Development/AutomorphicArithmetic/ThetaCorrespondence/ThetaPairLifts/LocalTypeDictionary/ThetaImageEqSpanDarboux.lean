@@ -26,15 +26,15 @@ end Generic
 end GlobalTheory.DarbImage
 namespace GlobalTheory.DarbImage
 /- English proof (translation)
-Introduce `hHD hPr D ψ θ hψ hθ W W₁ X A A₁ B α β hTr ωA ωB hWA hWB e Bs Γ Xc om om' h hTA hTB R Rf hM`. Establish `hG : Γ.M.IsGood Bs.ψ` using `hM.triple.geo.hM`. Establish `hG' : Γ.M'.IsGood Bs.ψ` using `hM.triple.geo.hM'`. Establish `hs` using `GlobalTheory.T.darbouxModelAlgebraicVectors_le_adelicSchwartz D.sp.cm.sig Γ.V Γ.W Γ.M Bs.ψ Bs.emb hG`. Establish `hs'` using `GlobalTheory.T.darbouxModelAlgebraicVectors_le_adelicSchwartz D.sp.cm.sig Γ.V' Γ.W Γ.M' Bs.ψ Bs.emb hG'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨fun T hT => ?_, fun T hT => ?_⟩` and prove the remaining obligations. Use `map_eq Γ.M Bs.ψ Bs.emb _ T _ hs hT (_root_.GlobalTheory.T.gaussian_theta_lift_algebraic hHD hPr D ψ θ hψ hθ W W₁ X A A₁ B α β hTr ωA ωB hWA hWB e Bs Γ Xc om om' h hTA hTB R Rf hM) (fun f φ u f₁ hf hu hA h1 h2 hin => ?_) ?_` and prove the remaining obligations. Take `⟨L, hLc, hLf, hL⟩` from `_root_.GlobalTheory.T.theta_pure_tensor_hasDerivAt_first hHD hPr D ψ θ hψ hθ W W₁ X A A₁ B α β hTr ωA ωB hWA hWB e Bs Γ Xc om om' h hTA hTB R Rf hM f φ u f₁ hf hu hA h1 h2`. Rewrite using `[hL]`. Conclude with `GlobalTheory.T.fockAlgebraicThetaVectors_stable_lineDerivative D ψ θ hψ hθ true W X A B _ hin L hLc hLf`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[algF, Submodule.span_le]`. Introduce and unpack `q ⟨g, P, hg, rfl⟩`. Take `⟨Φ, hΦ, hΦe⟩` from `_root_.GlobalTheory.T.theta_lift_onto_fockSpace hHD hPr D ψ θ hψ hθ W W₁ X A A₁ B α β hTr ωA ωB hWA hWB e Bs Γ Xc om om' h hTA hTB R Rf hM g P hg`. Conclude with `⟨Φ, hΦ, by rw [hT Φ (hs hΦ), hΦe]⟩`. Use `map_eq Γ.M' Bs.ψ Bs.emb _ T _ hs' hT (_root_.GlobalTheory.T.pure_gaussian_theta_lift_algebraic hHD hPr D ψ θ hψ hθ W W₁ X A A₁ B α β hTr ωA ωB hWA hWB e Bs Γ Xc om om' h hTA hTB R Rf hM) (fun f φ u f₁ hf hu hA h1 h2 hin => ?_) ?_` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨L, hLc, hLf, hL⟩` from `_root_.GlobalTheory.T.theta_pure_tensor_hasDerivAt_second hHD hPr D ψ θ hψ hθ W W₁ X A A₁ B α β hTr ωA ωB hWA hWB e Bs Γ Xc om om' h hTA hTB R Rf hM f φ u f₁ hf hu hA h1 h2`. Rewrite using `[hL]`. Conclude with `GlobalTheory.T.fockAlgebraicThetaVectors_stable_lineDerivative D ψ θ hψ hθ false W₁ X A₁ B _ hin L hLc hLf`. Rewrite using `[algF, Submodule.span_le]`. Introduce and unpack `q ⟨g, P, hg, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨Φ, hΦ, hΦe⟩` from `_root_.GlobalTheory.T.fockSpace_contained_darbouxAlgebra_theta_image hHD hPr D ψ θ hψ hθ W W₁ X A A₁ B α β hTr ωA ωB hWA hWB e Bs Γ Xc om om' h hTA hTB R Rf hM g P hg`. Conclude with `⟨Φ, hΦ, by rw [hT Φ (hs' hΦ), hΦe]⟩`.
+A detailed English derivation is pending.
 -/
 theorem theta_image_darboux_basis : GlobalTheory.Published.HoweDualityReal → _root_.GlobalTheory.FunPr.ThetaLocalInputs →
     ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D), IsStdChar D ψ (-1) → IsInfFam θ →
@@ -100,7 +100,7 @@ open GlobalTheory.SquareComm
 open scoped GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.DarbImage.theta_image_darboux_basis | exact _root_.GlobalTheory.DarbImage.theta_image_darboux_basis | (intros; apply _root_.GlobalTheory.DarbImage.theta_image_darboux_basis <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.theta_image_eq_span_darboux : GlobalTheory.Published.HoweDualityReal → _root_.GlobalTheory.FunPr.ThetaLocalInputs →
     ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D), IsStdChar D ψ (-1) → IsInfFam θ →

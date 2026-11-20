@@ -5,17 +5,15 @@ open GlobalTheory.CuspRep GlobalTheory.HeckeGal GlobalTheory.GalOfCusp UpperTheo
 open scoped Matrix
 
 /- English proof (translation)
-Introduce `F _ _ y w`. Take `⟨p, hpw, hp0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot w.ne_bot`. Establish `hp : algebraMap (𝓞 F) F p ≠ 0` using `by simpa using hp0`. Establish `hval : ∀ (v : Pl F) (f : F), Valued.v (pLoc F v (algebraMap F (Af F) f)) = v.valuation F f` using `fun v f => HeightOneSpectrum.valuedAdicCompletion_eq_valuation' v f`. Use `set z : Af F := algebraMap F (Af F) (algebraMap (𝓞 F) F p)⁻¹ * ((y⁻¹ : (Af F)ˣ) : Af F) with hz`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc : Continuous fun a : Af F => z * (a - (y : Af F))` using `continuous_const.mul (continuous_id.sub continuous_const)`. Take `⟨β, hβ⟩` from `(GroundTheory.Automorphic.AdelicGLn.denseRange_algebraMap_finiteAdeleRing F).exists_mem_open ((GroundTheory.Global.isOpen_integralFiniteAdeles (R := 𝓞 F) (K := F)).preimage hc) ⟨(y : Af F), by simp⟩`. Establish `hβ' : ∀ v : Pl F, Valued.v (pLoc F v (z * (algebraMap F (Af F) β - (y : Af F)))) ≤ 1` using `fun v => GroundTheory.Global.mem_integralFiniteAdeles.1 hβ v`. Establish `e : algebraMap F (Af F) β - (y : Af F) = (y : Af F) * algebraMap F (Af F) (algebraMap (𝓞 F) F p) * (z * (algebraMap F (Af F) β - (y : Af F)))`. Establish `h1 : algebraMap F (Af F) (algebraMap (𝓞 F) F p) * algebraMap F (Af F) (algebraMap (𝓞 F) F p)⁻¹ = 1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← map_mul, mul_inv_cancel₀ hp, map_one]`. Establish `h2 : (y : Af F) * ((y⁻¹ : (Af F)ˣ) : Af F) = 1` using `y.mul_inv`. Establish `h3 : (y : Af F) * algebraMap F (Af F) (algebraMap (𝓞 F) F p) * z = 1`. Rewrite using `[hz]`. Take the linear combination `((y : Af F) * ((y⁻¹ : (Af F)ˣ) : Af F)) * h1 + h2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← mul_assoc, h3, one_mul]`. Establish `key : ∀ v : Pl F, Valued.v (pLoc F v (algebraMap F (Af F) β) - pLoc F v (y : Af F)) ≤ Valued.v (pLoc F v (y : Af F)) * v.valuation F (algebraMap (𝓞 F) F p)` using `fun v => by`. Rewrite using `[← map_sub, e, map_mul, map_mul, map_mul, map_mul, hval]`. Conclude with `mul_le_of_le_one_right' (hβ' v)`. Use `⟨β, ?_, fun v => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← hval]`. Use `Valuation.map_eq_of_sub_lt _ ((key w).trans_lt ?_)` and prove the remaining obligations. Establish `h0 : 0 < Valued.v (pLoc F w (y : Af F))` using `zero_lt_iff.2 ((Valuation.ne_zero_iff _).2 (y.isUnit.map (pLoc F w)).ne_zero)`. Conclude with `(mul_lt_mul_of_pos_left ((w.valuation_lt_one_iff_mem p).2 hpw) h0).trans_eq (mul_one _)`. Rewrite using `[← hval, ← sub_add_cancel (pLoc F v (algebraMap F (Af F) β)) (pLoc F v (y : Af F))]`.
-
-Conclude with `(Valuation.map_add _ _ _).trans (max_le ((key v).trans (mul_le_of_le_one_right' (v.valuation_le_one p))) le_rfl)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.exists_global_element_valuation_eq_idele_at_place :
     ∀ (F : Type) [Field F] [NumberField F] (y : (Af F)ˣ) (w : Pl F), ∃ β : F, w.valuation F β = Valued.v (pLoc F w (y : Af F)) ∧ ∀ v : Pl F, v.valuation F β ≤ Valued.v (pLoc F v (y : Af F)) := by

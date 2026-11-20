@@ -22,7 +22,7 @@ open GlobalTheory.SeeSaw (idV FI dI)
 open scoped Pointwise
 
 /- English proof (translation)
-Unfold `Places.modulBar`. Introduce `h`. Apply `P.modul_ne_bot sc` to reduce the goal to its premises. Use `congrArg (fun J : Ideal (𝓞 D.host.E) => D.host.conj⁻¹ • J) h` as an intermediate fact. Simplify `this` using `[smul_smul]`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem modulBar_ne_bot {D : D7} {T : Type} {L : LevCh D T} (P : Places L) (sc : Consts) : P.modulBar sc ≠ ⊥ := by
   unfold Places.modulBar
@@ -37,29 +37,27 @@ open GlobalTheory.SeeSaw (idV FI dI) in
 open GlobalTheory.AscFin.PrimStd in
 
 /- English proof (translation)
-Introduce `D _ T L μ0 _ sc G W M _ F hF ρ h v hv`. Establish `hψ` using `W.ψ_std`. Take `⟨-, f2, f3, -, f5, -, -⟩` from `GlobalTheory.T.fractionalIdealCompletion_properties_at_place D W.ψ hψ v`. Take `⟨h2, he, -⟩` from `hF.hB ρ h`. Establish `hlat` using `G.sp.colLat (2 * ρ + 2) (by omega) h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hm : ((G.pl.modul sc : Ideal (𝓞 D.host.E)) : FI D) ≠ 0` using `FractionalIdeal.coeIdeal_ne_zero.2 (G.pl.modul_ne_bot sc)`. Establish `hmB : ((G.pl.modulBar sc : Ideal (𝓞 D.host.E)) : FI D) ≠ 0` using `FractionalIdeal.coeIdeal_ne_zero.2 (modulBar_ne_bot G.pl sc)`. Establish `hA : G.pl.stA sc ≠ 0` using `mul_ne_zero (GlobalTheory.CuspCharLattice.host_AA_ne_zero _) (inv_ne_zero hmB)`. Establish `hAb : G.pl.stAbar sc ≠ 0` using `mul_ne_zero (GlobalTheory.Member.LatSelfDual.AAbar_ne_zero D) (inv_ne_zero hm)`. Establish `hst : ∀ p, stairId (G.pl.stA sc) (G.pl.stAbar sc) (2 * ρ + 2 - 1) p ≠ 0` using `fun p => mul_ne_zero (pow_ne_zero _ hA) (inv_ne_zero (pow_ne_zero _ hAb))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hx : ∀ n : ℕ, (-D.host.xi0) ^ n ≠ 0` using `fun n => pow_ne_zero _ (neg_ne_zero.2 cmHost_imaginaryGenerator_ne_zero)`. Set `𝔟 : Fin ρ → FI D` to `fun p => FractionalIdeal.spanSingleton _ ((-D.host.xi0) ^ (p.1 + 1))⁻¹ * stairId (G.pl.stA sc) (G.pl.stAbar sc) (2 * ρ + 2 - 1) (Fin.castLE (by omega) p)`. Establish `hb0 : ∀ p, 𝔟 p ≠ 0` using `fun p => mul_ne_zero (by rw [Ne, FractionalIdeal.spanSingleton_eq_zero_iff]; exact inv_ne_zero (hx _)) (hst _)`. Establish `key : ∀ (p : Fin ρ), ∀ a ∈ idAt D (· = v), GlobalTheory.FinPl.colMul (F.dB ρ h).jX p a ∈ latV _ (G.Λ (.grid (2 * ρ + 2) 0)) (· = v) ↔ a ∈ idV (𝔟 p) v`. Introduce `p a ha`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e1 : GlobalTheory.FinPl.colMul (F.dB ρ h).jX p a = fun k => (a * incA D ((-D.host.xi0) ^ (p.1 + 1))) * incA D ((G.colDec (2 * ρ + 2) (by omega) h).a k (Fin.castLE (by omega) p))`. Use function extensionality and compare the values at `k`. Use `show a * incA D ((F.dB ρ h).e k p) = _`. Rewrite using `[he]`. Simplify using `only [colsOf, map_mul, mul_assoc]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hL1` using `GlobalTheory.T.column_mem_lattice_iff_ideal (G.colDec (2 * ρ + 2) (by omega) h) (by norm_num) (G.sp.P (2 * ρ + 2)).lat (stairId (G.pl.stA sc) (G.pl.stAbar sc) (2 * ρ + 2 - 1)) v (Fin.castLE (by omega) p) (a * incA D ((-D.host.xi0) ^ (p.1 + 1)))`. Rewrite using `[e1]`. Use `(show _ ↔ _ from hlat ▸ hL1).trans ?_` and prove the remaining obligations. Establish `h3` using `f3 (stairId (G.pl.stA sc) (G.pl.stAbar sc) (2 * ρ + 2 - 1) (Fin.castLE (by omega) p)) _ (inv_ne_zero (hx (p.1 + 1))) a`. Rewrite `h3` using `[inv_inv]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `⟨fun h1 => h3.2 ⟨by rwa [mul_comm (incA D _) a], ha⟩, fun h1 => by rw [mul_comm a]; exact (h3.1 h1).1⟩`. Introduce `i j hij s hs`. Establish `key2 : (∀ a : AE D, GlobalTheory.FinPl.colMul (F.dB ρ h).jX j a ∈ latV _ (G.Λ (.grid (2 * ρ + 2) 0)) (· = v) → GlobalTheory.FinPl.colMul (F.dB ρ h).jX i (s * a) ∈ latV _ (G.Λ (.grid (2 * ρ + 2) 0)) (· = v)) ↔ ∀ a ∈ idV (𝔟 j) v, s * a ∈ idV (𝔟 i) v`. Prove the components needed by the constructor for the conclusion. Introduce `h1 a ha`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `haA` using `GlobalTheory.SeeSaw.LiftModel.idV_le_idAt _ _ a ha`. Conclude with `(key i (s * a) (Ideal.mul_mem_left _ _ haA)).1 (h1 a ((key j a haA).2 ha))`. Introduce `h1 a hc`. Establish `haA` using `GlobalTheory.SeeSaw.PrimSplit.idAt_of_colMul (F.dB ρ h) hc`. Conclude with `(key i (s * a) (Ideal.mul_mem_left _ _ haA)).2 (h1 a ((key j a haA).1 hc))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[key2, f2 _ _ (hb0 j) (hb0 i) s hs]`. Establish `hsucc` using `stairId_succ (𝔞 := G.pl.stA sc) hAb (Fin.castLE (by omega) i : Fin (2 * ρ + 2 - 1)) (Fin.castLE (by omega) j) (by simp [Fin.coe_castLE, hij])`. Establish `hrat : 𝔟 i * (𝔟 j)⁻¹ = FractionalIdeal.spanSingleton _ (-D.host.xi0) * (G.pl.stA sc * G.pl.stAbar sc)`. Rewrite using `[mul_inv_eq_iff_eq_mul₀ (hb0 j)]`. Establish `e2 : ((-D.host.xi0) ^ (i.1 + 1))⁻¹ = -D.host.xi0 * ((-D.host.xi0) ^ (j.1 + 1))⁻¹`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Establish `hξ : -D.host.xi0 ≠ 0` using `neg_ne_zero.2 cmHost_imaginaryGenerator_ne_zero`. Rewrite using `[hij]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Use `show FractionalIdeal.spanSingleton _ _ * stairId _ _ _ _ = _ * (FractionalIdeal.spanSingleton _ _ * stairId _ _ _ _)`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hsucc, e2, ← FractionalIdeal.spanSingleton_mul_spanSingleton]`. Expand and normalize the polynomial expressions, which then agree. Establish `hneg : FractionalIdeal.spanSingleton (𝓞 D.host.E)⁰ (-D.host.xi0) = FractionalIdeal.spanSingleton _ D.host.xi0` using `FractionalIdeal.spanSingleton_eq_spanSingleton.2 ⟨-1, by simp⟩`. Establish `hsplit : FractionalIdeal.spanSingleton (𝓞 D.host.E)⁰ (-D.host.xi0) * (G.pl.stA sc * G.pl.stAbar sc) * ((G.pl.modul sc : Ideal (𝓞 D.host.E)) : FI D) * ((G.pl.modulBar sc : Ideal (𝓞 D.host.E)) : FI D) = dI D`. Rewrite using `[hneg]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `Places.stA Places.stAbar dI`. Clear the denominators using the available nonvanishing facts. Establish `hL` using `GlobalTheory.T.fractionalIdealCompletion_mul_modulus_offExceptional G.pl sc v hv`. Establish `e3 : idV (FractionalIdeal.spanSingleton (𝓞 D.host.E)⁰ (-D.host.xi0) * (G.pl.stA sc * G.pl.stAbar sc)) v = idV (dI D) v`. Rewrite using `[← hsplit, (hL _).2, (hL _).1]`.
-
-Rewrite using `[hrat, e3]`. Conclude with `f5 s hs`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.AscFin.primAt_std_bessel : OnStd fun {D} _ _ {sc} {G} W F => ∀ ρ (h : 2 * ρ + 2 ≤ D.R.m), ∀ v ∉ G.pl.S0,
     PrimAt W.ψ (F.dB ρ h) (G.Λ (.grid (2 * ρ + 2) 0)) v := by

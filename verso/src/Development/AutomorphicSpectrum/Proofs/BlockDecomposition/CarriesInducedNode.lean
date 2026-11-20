@@ -14,7 +14,7 @@ namespace GlobalTheory.CompanionTheory.LimV.NodeCarry
 variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {N r s : ℕ}
 
 /- English proof (translation)
-Introduce `g`. Use `((he g).mul (hφ g)).congr fun x hx => ?_` and prove the remaining obligations. Establish `hx' : IsUnit (Matrix.of x)` using `hx`. Simplify using `[chart, hx']`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem mul_mem_Sm {e φ : GA E N → ℂ} (he : e ∈ Sm E N) (hφ : φ ∈ Sm E N) :
     (fun x => e x * φ x) ∈ Sm E N := by
@@ -24,11 +24,11 @@ theorem mul_mem_Sm {e φ : GA E N → ℂ} (he : e ∈ Sm E N) (hφ : φ ∈ Sm 
   simp [chart, hx']
 
 /- English proof (translation)
-Proceed by induction on `h using Submodule.span_induction with`. Consider the case `mem x hx => exact hx`. Consider the case `zero => exact ⟨fun _ _ => rfl, fun _ _ => zero_mem _⟩`. Consider the case `add x y _ _ hx hy`. Use `⟨fun u g => ?_, fun k g => add_mem (hx.2 k g) (hy.2 k g)⟩` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations.
 
-Express the relevant statement in the definitionally equal form `x.1 _ + y.1 _ = x.1 g + y.1 g`. Rewrite using `[hx.1, hy.1]`. Consider the case `smul c x _ hx`. Use `⟨fun u g => ?_, fun k g => Submodule.smul_mem _ c (hx.2 k g)⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `c • x.1 _ = c • x.1 g`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[hx.1]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem memInd2_of_mem {U₁ : Submodule ℂ (Sm E r)} {U₂ : Submodule ℂ (Sm E s)} {φ : Sm E (r + s)}
     (h : φ ∈ indSpan U₁ U₂) : MemInd2 U₁ U₂ φ := by
@@ -45,7 +45,7 @@ theorem memInd2_of_mem {U₁ : Submodule ℂ (Sm E r)} {U₂ : Submodule ℂ (Sm
     rw [hx.1]
 
 /- English proof (translation)
-Take `⟨b, hb, hbe⟩` from `hc _ (hU P⁻¹ a ha)`. Use `⟨act (.fin P) b, hU' P b hb, fun m => ?_⟩` and prove the remaining obligations. Establish `e1 : (act (.fin P) b).1 m = b.1 (m * finGL E N P)` using `rfl`. Establish `e2 : (act (.fin P⁻¹) a).1 (m * finGL E N P) = a.1 (m * finGL E N P * finGL E N P⁻¹)` using `rfl`. Rewrite using `[e1, hbe, e2, mul_assoc, ← map_mul, mul_inv_cancel, map_one, mul_one]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem carries_translate {e : GA E N → ℂ} {U U' : Submodule ℂ (Sm E N)} (hU : FinStable U) (hU' : FinStable U')
     (hc : Carries e U U') (P : GL (Fin N) (Af E)) {a : Sm E N} (ha : a ∈ U) :
@@ -57,9 +57,9 @@ theorem carries_translate {e : GA E N → ℂ} {U U' : Submodule ℂ (Sm E N)} (
   rw [e1, hbe, e2, mul_assoc, ← map_mul, mul_inv_cancel, map_one, mul_one]
 
 /- English proof (translation)
-Use `ga_ext ?_ ?_` and prove the remaining obligations. Rewrite using `[pInf_finGL, IwaAd.map_unip]`. Establish `: (fun p => pInf E (sFin E (x p))) = 0` using `funext fun p => map_zero (infEq E).symm`. Rewrite using `[this]`. Conclude with `unip_zero.symm`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[pFin_finGL, IwaAd.map_unip]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem finGL_unip (x : BlockIx (r + s) r → Af E) : finGL E (r + s) (unip x) = unip fun p => sFin E (x p) := by
   refine ga_ext ?_ ?_
@@ -71,7 +71,7 @@ theorem finGL_unip (x : BlockIx (r + s) r → Af E) : finGL E (r + s) (unip x) =
     rfl
 
 /- English proof (translation)
-Use `ga_ext ?_ ?_` and prove the remaining obligations. Rewrite using `[pInf_finGL, IwaAd.map_lev, pInf_finGL, pInf_finGL]`. Conclude with `(map_one (lev (Cinf E) r s)).symm`. Rewrite using `[pFin_finGL, IwaAd.map_lev, pFin_finGL, pFin_finGL]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finGL_lev (p : GL (Fin r) (Af E) × GL (Fin s) (Af E)) :
     finGL E (r + s) (lev (Af E) r s p) = lev (Ad E) r s (finGL E r p.1, finGL E s p.2) := by
@@ -81,9 +81,9 @@ theorem finGL_lev (p : GL (Fin r) (Af E) × GL (Fin s) (Af E)) :
   · rw [pFin_finGL, IwaAd.map_lev, pFin_finGL, pFin_finGL]
 
 /- English proof (translation)
-Take `⟨xf, p, c, hc, hg⟩` from `IwaFin.exists_unip_lev_integral E r s g`. Use `⟨p, fun m => ?_⟩` and prove the remaining obligations. Take `⟨v, hv⟩` from `lev_mul_unip m fun q => sFin E (xf q)`. Establish `e1 : cf (r + s) k g = unip (fun q => sFin E (xf q)) * lev (Ad E) r s (finGL E r p.1, finGL E s p.2) * cf (r + s) k c`. Rewrite using `[hg, cf, cf, map_mul _ (unip xf * _) c, ← mul_assoc, infGL_comm, mul_assoc (finGL _ _ _), map_mul, finGL_unip, finGL_lev]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[e1, ← mul_assoc, ← mul_assoc, hv, mul_assoc (unip v), ← map_mul]`. Conclude with `GlobalTheory.T.node_function_levi_decomposition e₁ e₂ h₁ h₂ v _ k c hc`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nodeFn_slice {e₁ : GA E r → ℂ} {e₂ : GA E s → ℂ} (h₁ : FlatFn e₁) (h₂ : FlatFn e₂) (k : Kinf E (r + s))
     (g : GL (Fin (r + s)) (Af E)) : ∃ p : GL (Fin r) (Af E) × GL (Fin s) (Af E), ∀ m : GA E r × GA E s,
@@ -99,13 +99,13 @@ theorem nodeFn_slice {e₁ : GA E r → ℂ} {e₂ : GA E s → ℂ} (h₁ : Fla
   exact GlobalTheory.T.node_function_levi_decomposition e₁ e₂ h₁ h₂ v _ k c hc
 
 /- English proof (translation)
-Introduce `E _ _ _ r s e₁ e₂ U₁ U₁' U₂ U₂' h₁ h₂ s₁ s₁' s₂ s₂' c₁ c₂ φ hφ`. Establish `hF` using `GlobalTheory.T.flat_node_function e₁ e₂ h₁ h₂`. Establish `hI` using `memInd2_of_mem hφ`. Use `⟨⟨fun x => nodeFn e₁ e₂ x * φ.1 x, mul_mem_Sm hF.sm φ.2⟩, Submodule.subset_span ⟨fun u g => ?_, fun k g => ?_⟩, fun _ => rfl⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `nodeFn e₁ e₂ (unip u * g) * φ.1 (unip u * g) = nodeFn e₁ e₂ g * φ.1 g`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[hI.1]`. Take `⟨v, m, k, c, hc, rfl⟩` from `exists_iw g`. Rewrite using `[← mul_assoc, ← mul_assoc, ← D.unip_add', GlobalTheory.T.node_function_levi_decomposition e₁ e₂ h₁ h₂ _ _ _ _ hc, GlobalTheory.T.node_function_levi_decomposition e₁ e₂ h₁ h₂ _ _ _ _ hc]`. Take `⟨p, hp⟩` from `nodeFn_slice h₁ h₂ k g`. Take `⟨n, ψ₁, ψ₂, u₁, u₂, hs⟩` from `tensor_pair_finite_sum (hI.2 k g)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `choose a ha hae using fun i => carries_translate s₁ s₁' c₁ p.1 (u₁ i)`. Use `choose b hb hbe using fun i => carries_translate s₂ s₂' c₂ p.2 (u₂ i)`. Use `A.sum_mem ha hb using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `m`. Establish `hm : φ.1 (lev (Ad E) r s m * cf (r + s) k g) = ∑ i, (ψ₁ i).1 m.1 * (ψ₂ i).1 m.2` using `congrFun hs m`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `nodeFn e₁ e₂ (lev (Ad E) r s m * cf (r + s) k g) * φ.1 (lev (Ad E) r s m * cf (r + s) k g) = _`. Rewrite using `[hm, hp, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[hae, hbe]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem carries_nodeFn : ∀ {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {r s : ℕ} (e₁ : GA E r → ℂ) (e₂ : GA E s → ℂ) (U₁ U₁' : Submodule ℂ (Sm E r)) (U₂ U₂' : Submodule ℂ (Sm E s)), FlatFn e₁ → FlatFn e₂ → FinStable U₁ → FinStable U₁' → FinStable U₂ → FinStable U₂' → Carries e₁ U₁ U₁' → Carries e₂ U₂ U₂' → Carries (nodeFn e₁ e₂) (indSpan U₁ U₂) (indSpan U₁' U₂') := by
   intro E _ _ _ r s e₁ e₂ U₁ U₁' U₂ U₂' h₁ h₂ s₁ s₁' s₂ s₂' c₁ c₂ φ hφ

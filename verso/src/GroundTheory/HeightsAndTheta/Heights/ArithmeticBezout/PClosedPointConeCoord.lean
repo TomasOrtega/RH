@@ -9,9 +9,9 @@ namespace ObjectsChow
 open MvPolynomial
 
 /- English proof (translation)
-Use `conv_lhs => rw [p.as_sum]`. Use `conv_rhs => rw [p.as_sum]`. Rewrite using `[map_sum, map_sum, map_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun m hm => ?_` and prove the remaining obligations. Establish `hdeg : ∑ j ∈ m.support, m j = d`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `hp (mem_support_iff.mp hm)` as an intermediate fact. Simplify `this` using `[Finsupp.weight_apply, Finsupp.sum]`. Rewrite using `[aeval_monomial, aeval_monomial, Finsupp.prod, Finsupp.prod]`. Simplify using `only [mul_pow, Finset.prod_mul_distrib, Finset.prod_pow_eq_pow_sum, hdeg, ← map_pow, ← map_prod, Polynomial.algebraMap_apply, map_mul, mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem aeval_cone_of_isHomogeneous {F Ω : Type*} [Field F] [Field Ω] [Algebra F Ω] {n d : ℕ}
     (y : Fin n → Ω) {p : MvPolynomial (Fin n) F} (hp : p.IsHomogeneous d) :
@@ -30,27 +30,23 @@ theorem aeval_cone_of_isHomogeneous {F Ω : Type*} [Field F] [Field Ω] [Algebra
     ← map_prod, Polynomial.algebraMap_apply, map_mul, mul_assoc]
 
 /- English proof (translation)
-Introduce `F _ n I i hI hdim hXi Ω _ _ y hy hyI`. Set `φ : MvPolynomial (Fin n) F →ₐ[F] Polynomial Ω` to `aeval fun j => Polynomial.C (y j) * Polynomial.X`. Set `P : Ideal (MvPolynomial (Fin n) F)` to `RingHom.ker φ`. Establish `hPprime : P.IsPrime` using `RingHom.ker_isPrime _`. Establish `hIP : I ≤ P`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `g hg`. Use `show φ g = 0`. Rewrite using `[← sum_homogeneousComponent g, map_sum]`. Use `Finset.sum_eq_zero fun d _ => ?_` and prove the remaining obligations. Rewrite using `[show φ (homogeneousComponent d g) = _ from aeval_cone_of_isHomogeneous y (homogeneousComponent_isHomogeneous d g), hyI _ (hI.isHomog g hg d), map_zero, zero_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Set `m : Ideal (MvPolynomial (Fin n) F)` to `RingHom.ker (constantCoeff : MvPolynomial (Fin n) F →+* F)`. Establish `hmprime : m.IsPrime` using `RingHom.ker_isPrime _`. Establish `key : (Polynomial.evalRingHom (0 : Ω)).comp (φ : MvPolynomial (Fin n) F →+* Polynomial Ω) = (algebraMap F Ω).comp constantCoeff`. Apply the tactic sequence `apply MvPolynomial.ringHom_ext <;> intro <;> simp [φ]`. Establish `hPm : P ≤ m`.
+Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `g hg`. Establish `hg' : φ g = 0` using `hg`. Establish `h0` using `RingHom.congr_fun key g`. Simplify using `only [RingHom.comp_apply, RingHom.coe_coe, hg', map_zero] at h0`. Use `show constantCoeff g = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction.
 
-Conclude with `(algebraMap F Ω).injective (by rw [← h0, map_zero])`. Choose the witnesses or unpack the hypotheses as in `⟨j, hj⟩ : ∃ j, y j ≠ 0 := by`. Assume the negation of the conclusion as `h`. Use `push Not at h`. Conclude with `hy (funext h)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hXjP : X j ∉ P`. Introduce `h`. Establish `h' : φ (X j) = 0` using `h`. Simplify using `only [φ, aeval_X] at h'`. Conclude with `mul_ne_zero (Polynomial.C_ne_zero.mpr hj) Polynomial.X_ne_zero h'`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `hXjm : X j ∈ m` using `by show constantCoeff (X j : MvPolynomial (Fin n) F) = 0`. Simplify using the standard rewrite rules. Establish `hPlt : P < m` using `lt_of_le_of_ne hPm fun h => hXjP (h ▸ hXjm)`. Establish `hIeq : I = P`. Assume the negation of the conclusion as `hne`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hIlt : I < P` using `lt_of_le_of_ne hIP hne`. Establish `h2 : ((2 : ℕ) : WithBot ℕ∞) ≤ ringKrullDim (MvPolynomial (Fin n) F ⧸ I)`. Rewrite using `[ringKrullDim_quotient, Order.le_krullDim_iff]`. Set `a : PrimeSpectrum.zeroLocus (R` to `MvPolynomial (Fin n) F) I := ⟨⟨I, hI.isPrime⟩, fun _ h => h⟩`. Set `b : PrimeSpectrum.zeroLocus (R` to `MvPolynomial (Fin n) F) I := ⟨⟨P, hPprime⟩, fun _ h => hIP h⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components. Rewrite the indicated hypotheses using the stated equalities. Evaluate the numerical expressions.
 
-Set `c : PrimeSpectrum.zeroLocus (R` to `MvPolynomial (Fin n) F) I := ⟨⟨m, hmprime⟩, fun _ h => hPm (hIP h)⟩`. Establish `hab : a < b` using `hIlt`. Establish `hbc : b < c` using `hPlt`. Conclude with `⟨LTSeries.mk 2 ![a, b, c] (Fin.strictMono_iff_lt_succ.mpr fun k => by fin_cases k; exacts [hab, hbc]), rfl⟩`. Rewrite `h2` using `[hdim]`.
-
-Evaluate the numerical expressions using `at h2`. Introduce `hyi`. Apply `hXi` to reduce the goal to its premises. Rewrite using `[hIeq]`. Use `show φ (X i) = 0`.
-
-Simplify using `[φ, hyi]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem ClosedPointConeCoord.proof : ClosedPointConeCoord.Statement := by
   intro F _ n I i hI hdim hXi Ω _ _ y hy hyI

@@ -2,11 +2,9 @@ import Mathlib
 import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.GlR
 
 /- English proof (translation)
-Introduce `K _ _ _ R hR n`. Establish `hM : IsOpen {M : Matrix (Fin n) (Fin n) K | ∀ i j, M i j ∈ R}`. Establish `e : {M : Matrix (Fin n) (Fin n) K | ∀ i j, M i j ∈ R} = ⋂ i, ⋂ j, (fun M : Matrix (Fin n) (Fin n) K => M i j) ⁻¹' (R : Set K)`. Use extensionality with `M`. Simplify using `only [Set.mem_setOf_eq, Set.mem_iInter, Set.mem_preimage, SetLike.mem_coe]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[e]`. Use `isOpen_iInter_of_finite fun i => isOpen_iInter_of_finite fun j => ?_` and prove the remaining obligations. Conclude with `hR.preimage (continuous_id.matrix_elem i j)`. Establish `h1 : Continuous fun g : GL (Fin n) K => (g : Matrix (Fin n) (Fin n) K)` using `Units.continuous_val`. Establish `h2 : Continuous fun g : GL (Fin n) K => ((g⁻¹ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K)` using `Units.continuous_coe_inv`.
-
-Conclude with `(hM.preimage h1).inter (hM.preimage h2)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.GLRealOpen.glR_open :
     ∀ {K : Type} [inst : CommRing K] [inst_1 : TopologicalSpace K] [IsTopologicalRing K] (R : Subring K),

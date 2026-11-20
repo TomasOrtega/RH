@@ -8,21 +8,19 @@ open UpperTheory.ConvolutionTheory UpperTheory.ConvolutionTheory.GM
 open scoped ComplexConjugate
 
 /- English proof (translation)
-Introduce `K _ _ n lev S hS hS'`. Establish `hmem : ∀ h : AdelicGLn.FiniteAdelicGL K n, h ∈ levF lev ↔ ∀ v, AdelicGLn.finiteRestrictedEquiv K n h v ∈ lev v` using `fun h => Iff.rfl`. Establish `hint : levF lev ≤ AdelicGLn.integralFiniteGL K n`. Introduce `h hh`. Rewrite using `[AdelicGLn.mem_integralFiniteGL_iff_forall]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `v`. Establish `hv` using `(hmem h).1 hh v`. Distinguish the cases in `hvS : v ∈ S`. Conclude with `(hS v hvS).2 hv`. Rewrite `hv` using `[hS' v hvS]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `hev : ∀ v : Pl K, Continuous fun h : AdelicGLn.FiniteAdelicGL K n => (AdelicGLn.finiteRestrictedEquiv K n h v : GL (Fin n) (v.adicCompletion K))` using `fun v => (_root_.RestrictedProduct.continuous_eval v).comp (AdelicGLn.finiteRestrictedEquiv K n).continuous`. Establish `hVo : IsOpen ((AdelicGLn.integralFiniteGL K n : Set (AdelicGLn.FiniteAdelicGL K n)) ∩ ⋂ v ∈ S, (fun h : AdelicGLn.FiniteAdelicGL K n => (AdelicGLn.finiteRestrictedEquiv K n h v : GL (Fin n) (v.adicCompletion K))) ⁻¹' (lev v : Set (GL (Fin n) (v.adicCompletion K))))` using `(AdelicGLn.isOpen_integralFiniteGL K n).inter (isOpen_biInter_finset fun v hv => (hS v hv).1.preimage (hev v))`. Establish `hopen : IsOpen (levF lev : Set (AdelicGLn.FiniteAdelicGL K n))`. Use `Subgroup.isOpen_of_mem_nhds (levF lev) (g := 1) ?_` and prove the remaining obligations. Use `Filter.mem_of_superset (hVo.mem_nhds ?_) ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨one_mem _, ?_⟩` and prove the remaining obligations. Simplify using `only [Set.mem_iInter]`. Introduce `v _`. Conclude with `(levF lev).one_mem v`. Introduce and unpack `h ⟨h1, h2⟩`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Set.mem_iInter] at h2`. Use `(hmem h).2 fun v => ?_` and prove the remaining obligations. Distinguish the cases in `hvS : v ∈ S`. Conclude with `h2 v hvS`. Rewrite using `[hS' v hvS]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Conclude with `(AdelicGLn.mem_integralFiniteGL_iff_forall K n).1 h1 v`. Use `⟨hopen, ?_, hint, ?_⟩` and prove the remaining obligations. Conclude with `(AdelicGLn.isCompact_integralFiniteGL K n).of_isClosed_subset (Subgroup.isClosed_of_isOpen _ hopen) hint`. Introduce and unpack `w J hJ _ ⟨x, hx, rfl⟩`. Take `⟨-, h1, h2, -, -⟩` from `UpperTheory.ConvolutionTheory.Tf.locEmb K n w`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `v`. Distinguish the cases in `hv : v = w`. Substitute `hv` using the available equality. Rewrite using `[h1]`. Conclude with `hJ hx`.
-
-Rewrite using `[h2 v hv]`. Conclude with `one_mem _`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.levF_isOpen_isCompact_le_integral :
     ∀ (K : Type) [Field K] [NumberField K] (n : ℕ) (lev : ∀ v : Pl K, Subgroup (GL (Fin n) (v.adicCompletion K))) (S : Finset (Pl K)),

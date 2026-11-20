@@ -28,9 +28,9 @@ theorem hv_eq_adelicNorm_resVec [Algebra.IsQuadraticExtension F E] (ξ : Fin n �
     hv (F := F) (E := E) ξ = adelicNorm (resVec (Module.finBasis F E) (AF F) ξ) := rfl
 
 /- English proof (translation)
-Introduce `h0`. Apply `hu` to reduce the goal to its premises. Establish `h1 : (fun i => inclR (F` using `F) F (u i)) = fun _ : Fin n => (0 : F ⊗[F] E) := by`. Apply `resVec_injective (Module.finBasis F E) F` to reduce the goal to its premises. Rewrite using `[show resVec (Module.finBasis F E) F (fun i => inclR (F := F) F (u i)) = 0 from h0]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `p`. Simplify using `[resVec, coordsVec]`. Use function extensionality and compare the values at `i`. Establish `h2` using `congrFun h1 i`. Conclude with `Algebra.TensorProduct.includeRight_injective (algebraMap F F).injective (h2.trans (map_zero _).symm)`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem ratCoords_ne_zero [Algebra.IsQuadraticExtension F E] {u : Fin n → E} (hu : u ≠ 0) :
     ratCoords (F := F) u ≠ 0 := by
@@ -47,9 +47,9 @@ theorem ratCoords_ne_zero [Algebra.IsQuadraticExtension F E] {u : Fin n → E} (
     (h2.trans (map_zero _).symm)
 
 /- English proof (translation)
-Establish `h` using `resVec_baseMap (Module.finBasis F E) (Algebra.ofId F (AF F)) (fun i => inclR (F := F) F (u i))`. Establish `e : (fun i => baseMap (Algebra.ofId F (AF F)) (inclR (F` using `F) F (u i))) = ratV F u := by`. Use function extensionality and compare the values at `i`. Simplify using `[ratV, inclR, baseMap]`. Rewrite `h` using `[e]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[h]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem resVec_ratV [Algebra.IsQuadraticExtension F E] (u : Fin n → E) :
     resVec (Module.finBasis F E) (AF F) (ratV F u) = ratVec (ratCoords (F := F) u) := by
@@ -65,9 +65,9 @@ theorem resVec_ratV [Algebra.IsQuadraticExtension F E] (u : Fin n → E) :
 variable (σ : E →ₐ[F] E) (J : Matrix (Fin n) (Fin n) E)
 
 /- English proof (translation)
-Use `set T := trHom (Module.finBasis F E) (AF F) (matHom _ σ J g) with hT`. Take `⟨P, hP, h⟩` from `exists_adelicNorm_vecMul_le_mul (K := F) (C := {T⁻¹}) isCompact_singleton`. Use `⟨1 / P, one_div_pos.2 hP, fun u hu => ?_⟩` and prove the remaining obligations. Establish `hx` using `ratCoords_ne_zero (F := F) hu`. Establish `e2 : hgt σ J g u = adelicNorm (ratVec (ratCoords (F` using `F) u) ᵥ* (T : Matrix (Fin (Fintype.card (Fin n × Fin (Module.finrank F E)))) (Fin (Fintype.card (Fin n × Fin (Module.finrank F E)))) (AF F))) := by`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hT, ← resVec_ratV, resVec_vecMul_trHom, ← hv_eq_adelicNorm_resVec, hgt, map_inv]`. Establish `h3` using `h T⁻¹ rfl _ ((hasFiniteContent_ratVec hx).vecMul T)`. Rewrite `h3` using `[← e2, Matrix.vecMul_vecMul, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.vecMul_one]`. Rewrite using `[div_le_iff₀ hP, mul_comm]`. Conclude with `(one_le_adelicNorm_ratVec hx).trans h3`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_pos_le_hgt [Algebra.IsQuadraticExtension F E] (g : GAd σ J) :
     ∃ c : ℝ, 0 < c ∧ ∀ u : Fin n → E, u ≠ 0 → c ≤ hgt σ J g u := by
@@ -87,9 +87,9 @@ theorem exists_pos_le_hgt [Algebra.IsQuadraticExtension F E] (g : GAd σ J) :
 end NearMin
 
 /- English proof (translation)
-Use `⟨Xᵀ 0, fun h0 => ?_, ?_⟩` and prove the remaining obligations. Establish `h1` using `congrFun (congrFun h.xy 0) 0`. Establish `hc : ∀ i, X i 0 = 0` using `fun i => congrFun h0 i`. Simplify using `[cT, Matrix.mul_apply, hc] at h1`. Establish `h1` using `congrFun (congrFun h.xx 0) 0`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [cT, Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply, Finset.sum_mul, Matrix.zero_apply] at h1`. Rewrite `h1` using `[Finset.sum_comm]`. Simplify `h1` using `[hE, Formalism.UG.hform]`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem exists_isotropic_of_isWittFrame {F E : Type} [Field F] [Field E] [Algebra F E]
     {σ : E →ₐ[F] E} {n : ℕ} {J : Matrix (Fin n) (Fin n) E} {r : ℕ}
@@ -105,11 +105,11 @@ theorem exists_isotropic_of_isWittFrame {F E : Type} [Field F] [Field E] [Algebr
     simpa [hE, Formalism.UG.hform] using h1
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hCM n J _ r X Y hW g`. Use `haveI : Algebra.IsQuadraticExtension F E := ⟨hCM.2.2.1⟩`. Take `⟨c, hc, hlow⟩` from `exists_pos_le_hgt σ J g`. Take `⟨v₀, hv₀, hi₀⟩` from `exists_isotropic_of_isWittFrame hW`. Set `S : Set ℝ` to `{t | ∃ u : Fin n → E, u ≠ 0 ∧ hE σ J u u = 0 ∧ t = hgt σ J g u}`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hne : S.Nonempty` using `⟨_, v₀, hv₀, hi₀, rfl⟩`. Establish `hbdd : BddBelow S` using `⟨c, by rintro _ ⟨u, hu, -, rfl⟩; exact hlow u hu⟩`. Establish `hm : c ≤ sInf S` using `le_csInf hne (by rintro _ ⟨u, hu, -, rfl⟩; exact hlow u hu)`. Establish `hm0 : 0 < sInf S` using `hc.trans_le hm`. Take `⟨_, ⟨v, hv, hi, rfl⟩, hlt⟩` from `exists_lt_of_csInf_lt hne (show sInf S < 2 * sInf S by linarith)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨v, hv, hi, fun u hu hiu => ?_⟩` and prove the remaining obligations. Establish `: sInf S ≤ hgt σ J g u` using `csInf_le hbdd ⟨u, hu, hiu, rfl⟩`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem exists_nearMin : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (n : ℕ) (J : Matrix (Fin n) (Fin n) E), IsHermND σ J → ∀ (r : ℕ) (X Y : Matrix (Fin n) (Fin (r + 1)) E), IsWittFrame σ J X Y → ∀ g : GAd σ J, ∃ v, NearMin σ J g v := by
   intro F E _ _ _ _ _ σ hCM n J _ r X Y hW g

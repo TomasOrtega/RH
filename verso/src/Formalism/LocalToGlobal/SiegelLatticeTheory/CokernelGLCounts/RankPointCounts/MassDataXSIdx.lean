@@ -22,7 +22,7 @@ namespace Formalism.L2.SG.Pf.MassDataX
 variable {D : D7} (X : HidaSetting D) (hb : AdBridgeIso X.B.I) (u : D.what₂.Word) (p : TypX X)
 
 /- English proof (translation)
-Unfold `MassDataIdxSteps.KppX compSet K2u`. Rewrite using `[Set.image_image, Set.image_image]`. Use `Set.image_congr fun y _ => ?_` and prove the remaining obligations. Simplify using `only [map_mul, map_inv]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem comp_set_conjugated_level_eq : compSet X.B.I.cm.sig X.B.I.J (K2u X hb u) p.1 =
     (fun z => PIW.MassDataColumns.xuP X hb u p * z * (PIW.MassDataColumns.xuP X hb u p)⁻¹) '' MassDataIdxSteps.KppX X hb p := by
@@ -32,9 +32,9 @@ theorem comp_set_conjugated_level_eq : compSet X.B.I.cm.sig X.B.I.J (K2u X hb u)
   simp only [map_mul, map_inv]
 
 /- English proof (translation)
-Rewrite using `[PIW.MassDataColumns.mem_K2Hp_iff X hb (Formalism.L2.SG.Closed.level_subgroup_is_group X) (Formalism.L2.SG.Closed.level_subgroup_properties X) u p x, comp_set_conjugated_level_eq]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z, hz, hzx⟩`. Rewrite using `[← hzx]`. Simplify `hz` using `[mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce `h`. Conclude with `⟨_, h, by group⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem mem_compSet_iff (x : PIW.MassDataColumns.KvH X u p.1) :
     ((x : Hsub (Fv X.B.I.F p.1) X.B.I.cm.sig X.B.I.J (frameOf X u)) : HA (Fv X.B.I.F p.1) X.B.I.cm.sig X.B.I.J) ∈
@@ -50,15 +50,15 @@ theorem mem_compSet_iff (x : PIW.MassDataColumns.KvH X u p.1) :
     exact ⟨_, h, by group⟩
 
 /- English proof (translation)
-Establish `hKv : ∀ y : Hsub (Fv X.B.I.F p.1) X.B.I.cm.sig X.B.I.J (frameOf X u), (y : HA (Fv X.B.I.F p.1) X.B.I.cm.sig X.B.I.J) ∈ Kv X.B.I.cm.sig X.B.I.J (X.B.I.L : Set (Fin X.B.I.n → X.B.I.E)) p.1 ↔ y ∈ PIW.MassDataColumns.KvH X u p.1` using `fun y => Iff.rfl`. Establish `hC2 : Subgroup.closure (Subtype.val ⁻¹' Kv X.B.I.cm.sig X.B.I.J (X.B.I.L : Set (Fin X.B.I.n → X.B.I.E)) p.1 : Set (Hsub (Fv X.B.I.F p.1) X.B.I.cm.sig X.B.I.J (frameOf X u))) = PIW.MassDataColumns.KvH X u p.1`. Establish `e : (Subtype.val ⁻¹' Kv X.B.I.cm.sig X.B.I.J (X.B.I.L : Set (Fin X.B.I.n → X.B.I.E)) p.1 : Set (Hsub (Fv X.B.I.F p.1) X.B.I.cm.sig X.B.I.J (frameOf X u))) = (PIW.MassDataColumns.KvH X u p.1 : Set (Hsub (Fv X.B.I.F p.1) X.B.I.cm.sig X.B.I.J (frameOf X u)))` using `Set.ext hKv`. Rewrite using `[e, Subgroup.closure_eq]`. Establish `hS : ∀ y : Hsub (Fv X.B.I.F p.1) X.B.I.cm.sig X.B.I.J (frameOf X u), (y : HA (Fv X.B.I.F p.1) X.B.I.cm.sig X.B.I.J) ∈ compSet X.B.I.cm.sig X.B.I.J (K2u X hb u) p.1 → y ∈ PIW.MassDataColumns.KvH X u p.1 ∧ y ∈ PIW.MassDataColumns.unitaryLevelLocalComponent X hb u p.1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `y hy`. Establish `hyK : y ∈ PIW.MassDataColumns.KvH X u p.1` using `(hKv y).1 ((level_compression_chain (X := X) (hb := hb) (p := p) u).2 hy)`. Use `⟨hyK, ?_⟩` and prove the remaining obligations. Conclude with `Subgroup.mem_subgroupOf.1 ((mem_compSet_iff X hb u p ⟨y, hyK⟩).1 hy)`. Establish `hinf : Subgroup.closure (Subtype.val ⁻¹' compSet X.B.I.cm.sig X.B.I.J (K2u X hb u) p.1 : Set (Hsub (Fv X.B.I.F p.1) X.B.I.cm.sig X.B.I.J (frameOf X u))) ⊓ PIW.MassDataColumns.KvH X u p.1 = PIW.MassDataColumns.unitaryLevelLocalComponent X hb u p.1 ⊓ PIW.MassDataColumns.KvH X u p.1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hle : Subgroup.closure (Subtype.val ⁻¹' compSet X.B.I.cm.sig X.B.I.J (K2u X hb u) p.1 : Set (Hsub (Fv X.B.I.F p.1) X.B.I.cm.sig X.B.I.J (frameOf X u))) ≤ PIW.MassDataColumns.unitaryLevelLocalComponent X hb u p.1` using `(Subgroup.closure_le _).2 fun y hy => (hS y hy).2`. Use `le_antisymm (inf_le_inf_right _ hle) ?_` and prove the remaining obligations. Introduce and unpack `y ⟨hy2, hyK⟩`. Use `⟨Subgroup.subset_closure ?_, hyK⟩` and prove the remaining obligations. Conclude with `(mem_compSet_iff X hb u p ⟨y, hyK⟩).2 (Subgroup.mem_subgroupOf.2 hy2)`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `hsub : (Subgroup.closure (Subtype.val ⁻¹' compSet X.B.I.cm.sig X.B.I.J (K2u X hb u) p.1 : Set (Hsub (Fv X.B.I.F p.1) X.B.I.cm.sig X.B.I.J (frameOf X u)))).subgroupOf (PIW.MassDataColumns.KvH X u p.1) = (PIW.MassDataColumns.unitaryLevelLocalComponent X hb u p.1).subgroupOf (PIW.Ma …`. Use extensionality with `x`. Simplify using `only [Subgroup.mem_subgroupOf]`. Establish `h1` using `SetLike.ext_iff.1 hinf (x : Hsub (Fv X.B.I.F p.1) X.B.I.cm.sig X.B.I.J (frameOf X u))`. Simplify using `only [Subgroup.mem_inf] at h1`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Supply the required witnesses or components. Replace the relevant objects with their definitions.
 
-Conclude with `⟨fun h => (h1.1 ⟨h, x.2⟩).1, fun h => (h1.2 ⟨h, x.2⟩).1⟩`. Unfold `MassDataLevelSSteps.idxHp PIW.MassDataColumns.lIdxH`. Rewrite using `[hC2]`. Conclude with `congrArg Subgroup.index hsub`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem idxHp_eq : MassDataLevelSSteps.idxHp X hb u p = PIW.MassDataColumns.lIdxH X hb u p := by
   have hKv : ∀ y : Hsub (Fv X.B.I.F p.1) X.B.I.cm.sig X.B.I.J (frameOf X u), (y : HA (Fv X.B.I.F p.1) X.B.I.cm.sig X.B.I.J) ∈ Kv X.B.I.cm.sig X.B.I.J (X.B.I.L : Set (Fin X.B.I.n → X.B.I.E)) p.1 ↔ y ∈ PIW.MassDataColumns.KvH X u p.1 :=
@@ -95,9 +95,9 @@ theorem idxHp_eq : MassDataLevelSSteps.idxHp X hb u p = PIW.MassDataColumns.lIdx
   exact congrArg Subgroup.index hsub
 
 /- English proof (translation)
-Introduce `D X hb u p hT _`. Establish `hK` using `Formalism.L2.SG.Closed.level_subgroup_is_group X`. Establish `hL` using `Formalism.L2.SG.Closed.level_subgroup_properties X`. Establish `h1` using `MassDataLevelSSteps.haarIdxLoc_holds X hb hK hT hL u p`. Rewrite `h1` using `[MassDataLevelSSteps.locLevi_holds X hb hK hT hL u p, idxHp_eq X hb u p]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨ρ, hs, hk, hc⟩` from `(PIW.MassDataColumns.locRedH_of_rest (PIW.MassDataColumns.locRedRest_of_models (PIW.MassDataColumns.hModelAll_of (PIW.MassDataColumns.hAdaptAll_of PIW.MassDataColumns.adapted_basis_every_place) PIW.MassDataColumns.level_clause_adapted_basis))) X hb hK u hT hL p`. Rewrite `h1` using `[PIW.MassDataColumns.lIdxH_eq_of_red X hb u p ρ hs hk hc]`. Conclude with `h1`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sTypIdx_holds : STypIdx := by
   intro D X hb u p hT _
@@ -112,7 +112,7 @@ theorem sTypIdx_holds : STypIdx := by
   exact h1
 
 /- English proof (translation)
-The claim follows from `typedAll_of_idx sTypIdx_holds`.
+A detailed English derivation is pending.
 -/
 theorem typedAll_holds : Formalism.L2.SG.PoincareAmplitudeLowerBounds.TypedAll := typedAll_of_idx sTypIdx_holds
 

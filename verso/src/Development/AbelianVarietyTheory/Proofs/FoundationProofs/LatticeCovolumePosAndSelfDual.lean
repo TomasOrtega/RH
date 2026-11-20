@@ -9,13 +9,11 @@ open scoped BigOperators
 namespace GlobalTheory.PlaneLattice
 
 /- English proof (translation)
-Introduce `h0`. Establish `hind` using `LinearIndependent.pair_iff.mp L.indep`. Simplify using `only [Complex.mul_im, Complex.conj_re, Complex.conj_im] at h0`. Establish `hy` using `hind L.ω₂.im (-L.ω₁.im) (by`. Apply the tactic sequence `refine Complex.ext ?_ ?_ <;>`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Simplify using `only [Complex.add_re, Complex.add_im, Complex.smul_re, Complex.smul_im, smul_eq_mul, Complex.zero_re, Complex.zero_im]`. Take the linear combination `h0`. Use the proof step `ring)`. Establish `hy₁ : L.ω₁.im = 0` using `neg_eq_zero.mp hy.2`. Establish `hx` using `hind L.ω₂.re (-L.ω₁.re) (by`.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `refine Complex.ext ?_ ?_ <;>`. Simplify using `only [Complex.add_re, Complex.add_im, Complex.smul_re, Complex.smul_im, smul_eq_mul, Complex.zero_re, Complex.zero_im]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hy₁, hy.1]`. Use the proof step `ring)`.
-
-Establish `hω : L.ω₁ = 0` using `Complex.ext (by simpa using neg_eq_zero.mp hx.2) (by simpa using hy₁)`. Conclude with `one_ne_zero (hind 1 0 (by simp [hω])).1`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem signedArea_ne_zero (L : PeriodPair) : ((starRingEnd ℂ) L.ω₁ * L.ω₂).im ≠ 0 := by
   intro h0
@@ -38,7 +36,7 @@ theorem signedArea_ne_zero (L : PeriodPair) : ((starRingEnd ℂ) L.ω₁ * L.ω�
   exact one_ne_zero (hind 1 0 (by simp [hω])).1
 
 /- English proof (translation)
-Take `⟨a, b, rfl⟩` from `PeriodPair.mem_lattice.mp h₁`. Take `⟨c, d, rfl⟩` from `PeriodPair.mem_lattice.mp h₂`. Use `⟨a * d - b * c, ?_⟩` and prove the remaining obligations. Simplify using `only [map_add, map_mul, map_intCast, Complex.mul_im, Complex.mul_re, Complex.add_im, Complex.add_re, Complex.intCast_re, Complex.intCast_im, Complex.conj_re, Complex.conj_im]`. Use `push_cast`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -53,11 +51,11 @@ theorem exists_int_mul (L : PeriodPair) {w₁ w₂ : ℂ} (h₁ : w₁ ∈ L.lat
   ring
 
 /- English proof (translation)
-Establish `hA` using `signedArea_ne_zero L`. Unfold `Formalism.MainNotions.TaylorLogMetric.area`. Use `IsLeast.csInf_eq ⟨⟨abs_pos.mpr hA, L.ω₁, (h _).mpr L.ω₁_mem_lattice, L.ω₂, (h _).mpr L.ω₂_mem_lattice, rfl⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `a ⟨ha, w₁, hw₁, w₂, hw₂, rfl⟩`. Take `⟨k, hk⟩` from `exists_int_mul L ((h _).mp hw₁) ((h _).mp hw₂)`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Rewrite `ha`, the goal using `[hk, abs_mul]`. Establish `hk0 : k ≠ 0`. Introduce and unpack `rfl`. Simplify using `at ha`. Establish `hk1 : (1 : ℝ) ≤ |(k : ℝ)|` using `by exact_mod_cast Int.one_le_abs hk0`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `le_mul_of_one_le_left (abs_nonneg _) hk1`.
+A detailed English derivation is pending.
 -/
 theorem area_eq (L : PeriodPair) (Λ : AddSubgroup ℂ) (h : ∀ z : ℂ, z ∈ Λ ↔ z ∈ L.lattice) :
     area Λ = |((starRingEnd ℂ) L.ω₁ * L.ω₂).im| := by
@@ -75,7 +73,7 @@ theorem area_eq (L : PeriodPair) (Λ : AddSubgroup ℂ) (h : ∀ z : ℂ, z ∈ 
   exact le_mul_of_one_le_left (abs_nonneg _) hk1
 
 /- English proof (translation)
-Apply the tactic sequence `refine Complex.ext ?_ ?_ <;>`. Apply the tactic sequence `simp only [Complex.mul_re, Complex.mul_im, Complex.add_re, Complex.add_im, Complex.conj_re, Complex.conj_im, Complex.ofReal_re, Complex.ofReal_im] <;> ring`.
+Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem mul_signedArea_eq_periodPair_combination (L : PeriodPair) (z : ℂ) :
     z * (((starRingEnd ℂ) L.ω₁ * L.ω₂).im : ℂ) =
@@ -85,17 +83,17 @@ private theorem mul_signedArea_eq_periodPair_combination (L : PeriodPair) (z : �
       Complex.conj_im, Complex.ofReal_re, Complex.ofReal_im] <;> ring
 
 /- English proof (translation)
-Introduce `L Λ h`. Establish `hA` using `signedArea_ne_zero L`. Rewrite using `[area_eq L Λ h]`. Use `⟨abs_pos.mpr hA, fun z => ⟨fun hz w hw => ?_, fun hz => ?_⟩⟩` and prove the remaining obligations. Take `⟨k, hk⟩` from `exists_int_mul L ((h _).mp hw) ((h _).mp hz)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Rewrite using `[mul_comm, hk]`. Break down `abs_cases ((starRingEnd ℂ) L.ω₁ * L.ω₂).im with ⟨hab, _⟩ | ⟨hab, _⟩` into its components or cases. Conclude with `⟨k, by rw [hab, mul_div_cancel_right₀ _ hA]⟩`. Conclude with `⟨-k, by rw [hab, Int.cast_neg, div_neg, mul_div_cancel_right₀ _ hA]⟩`. Take `⟨m, hm⟩` from `hz L.ω₂ ((h _).mpr L.ω₂_mem_lattice)`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `⟨n, hn⟩` from `hz L.ω₁ ((h _).mpr L.ω₁_mem_lattice)`. Establish `habs : |((starRingEnd ℂ) L.ω₁ * L.ω₂).im| ≠ 0` using `abs_ne_zero.mpr hA`. Rewrite `hm`, `hn` using `[div_eq_iff habs]`. Establish `key` using `mul_signedArea_eq_periodPair_combination L z`. Establish `e1 : ((starRingEnd ℂ) z * L.ω₂).im = -(z * (starRingEnd ℂ) L.ω₂).im`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Complex.mul_im, Complex.conj_re, Complex.conj_im]`. Expand and normalize the polynomial expressions, which then agree. Establish `e2 : ((starRingEnd ℂ) L.ω₁ * z).im = (z * (starRingEnd ℂ) L.ω₁).im`. Rewrite using `[mul_comm]`. Rewrite `key` using `[e1, e2, hm, hn]`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hA' : ((((starRingEnd ℂ) L.ω₁ * L.ω₂).im : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast hA`. Rewrite using `[h, PeriodPair.mem_lattice]`. Break down `abs_cases ((starRingEnd ℂ) L.ω₁ * L.ω₂).im with ⟨hab, _⟩ | ⟨hab, _⟩` into its components or cases. Use `⟨-m, n, mul_right_cancel₀ hA' ?_⟩` and prove the remaining obligations. Rewrite using `[key, hab]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Use `⟨m, -n, mul_right_cancel₀ hA' ?_⟩` and prove the remaining obligations. Rewrite using `[key, hab]`. Use `push_cast`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/

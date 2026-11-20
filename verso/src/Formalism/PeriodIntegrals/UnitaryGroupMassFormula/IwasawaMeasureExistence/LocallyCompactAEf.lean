@@ -20,7 +20,7 @@ variable (I : AutInst)
 attribute [local instance] AfT.tAf Nrm.topRing Nrm.t2 Nrm.mAf Nrm.borel_mAf
 
 /- English proof (translation)
-The claim follows from `IsCompact.locallyCompactSpace_of_mem_nhds_of_addGroup (isCompact_IntAf I) ((isOpen_IntAf I).mem_nhds (zero_mem _))`.
+A detailed English derivation is pending.
 -/
 theorem locallyCompact_AEf : LocallyCompactSpace (AEf I) :=
   IsCompact.locallyCompactSpace_of_mem_nhds_of_addGroup (isCompact_IntAf I)
@@ -43,17 +43,15 @@ Both sides reduce to the same expression.
 theorem mulU_apply (u : (AEf I)ˣ) (x : AEf I) : mulU I u x = (u : AEf I) * x := rfl
 
 /- English proof (translation)
-Use `set φ := mulU I u`. Use `set O := oH I`. Use `set V : AddSubgroup (AEf I) := O.comap φ.toAddEquiv.toAddMonoidHom with hV`. Establish `hOV : O ≤ V` using `fun x hx => (IntAf I.F I.E).mul_mem hu hx`. Establish `hOo : IsOpen (O : Set (AEf I))` using `isOpen_IntAf I`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `hOc : IsCompact (O : Set (AEf I))` using `isCompact_IntAf I`. Establish `hcomap : (uH I (u : AEf I)).comap φ.toAddEquiv.toAddMonoidHom = O`. Use extensionality with `x`. Use `show (u : AEf I) * x ∈ uH I (u : AEf I) ↔ x ∈ IntAf I.F I.E`. Rewrite using `[mem_uH_iff, ← mul_assoc, Units.inv_mul, one_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `hmap : V.map φ.toAddEquiv.toAddMonoidHom = O` using `AddSubgroup.map_comap_eq_self_of_surjective φ.surjective O`. Establish `hidx : O.relIndex V = (uH I (u : AEf I)).relIndex O`. Combine the equalities or inequalities in the displayed calculation. Establish `hR` using `relIndex_uH I u hu`. Establish `hpos : 0 < nrmF I u` using `nrmF_pos I u`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hW : O ⊓ V = O` using `inf_eq_left.2 hOV`. Establish `hne : O.relIndex V ≠ 0`. Introduce `h0`. Rewrite `h0` using `[hidx]`. Rewrite `hR` using `[h0, Nat.cast_zero]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(inv_ne_zero hpos.ne') hR.symm`. Establish `h1 : (O ⊓ V).relIndex O ≠ 0` using `by rw [hW, AddSubgroup.relIndex_self]; exact one_ne_zero`. Establish `h2 : (O ⊓ V).relIndex V ≠ 0` using `by rw [hW]; exact hne`. Establish `hs` using `PI.IwaMeasEx.MF.addHaar_map_eq_addRelIndex φ O hOo hOc h1 h2`. Rewrite using `[hs, hW, AddSubgroup.relIndex_self, hidx, hR]`.
-
-Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem addHaar_map_mulU (u : (AEf I)ˣ) (hu : (u : AEf I) ∈ IntAf I.F I.E) :
     (addHaar : Measure (AEf I)).map (mulU I u) = ENNReal.ofReal (nrmF I u)⁻¹ • addHaar := by
@@ -89,15 +87,13 @@ theorem addHaar_map_mulU (u : (AEf I)ˣ) (hu : (u : AEf I) ∈ IntAf I.F I.E) :
   simp
 
 /- English proof (translation)
-Establish `hc` using `addEquivAddHaarChar_smul_map (addHaar : Measure (AEf I)) (mulU I u)`. Rewrite `hc` using `[addHaar_map_mulU I u hu, ENNReal.smul_def, smul_smul]`. Take `⟨K, hK, hK0⟩` from `exists_compact_mem_nhds (0 : AEf I)`. Establish `h1 : (addHaar : Measure (AEf I)) K ≠ 0` using `((addHaar : Measure (AEf I)).measure_pos_of_mem_nhds hK0).ne'`. Establish `h2 : (addHaar : Measure (AEf I)) K ≠ ⊤` using `hK.measure_lt_top.ne`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `congrArg (fun ν : Measure (AEf I) => ν K) hc`. Simplify using `only [Measure.smul_apply, smul_eq_mul] at h3`. Establish `h5` using `congrArg ENNReal.toReal h3`. Rewrite `h5` using `[ENNReal.toReal_mul, ENNReal.toReal_mul, ENNReal.coe_toReal, ENNReal.toReal_ofReal']`. Establish `hm : 0 < ((addHaar : Measure (AEf I)) K).toReal` using `ENNReal.toReal_pos h1 h2`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h6 : (addEquivAddHaarChar (mulU I u) : ℝ) * max (nrmF I u)⁻¹ 0 = 1` using `mul_right_cancel₀ hm.ne' (h5.trans (one_mul _).symm)`. Break down `le_or_gt (nrmF I u)⁻¹ 0 with h | h` into its components or cases. Rewrite `h6` using `[max_eq_right h, mul_zero]`. Conclude with `absurd h6 zero_ne_one`. Rewrite `h6` using `[max_eq_left h.le]`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hn : nrmF I u ≠ 0`. Introduce `h0`. Rewrite `h` using `[h0, inv_zero]`. Conclude with `lt_irrefl _ h`. Clear denominators, using `at h6` for the nonvanishing conditions.
-
-Combine the linear equalities and inequalities to obtain the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Clear the denominators using the available nonvanishing facts. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem char_mulU_of_int (u : (AEf I)ˣ) (hu : (u : AEf I) ∈ IntAf I.F I.E) :
     (addEquivAddHaarChar (mulU I u) : ℝ) = nrmF I u := by
@@ -126,11 +122,9 @@ theorem char_mulU_of_int (u : (AEf I)ˣ) (hu : (u : AEf I) ∈ IntAf I.F I.E) :
     linarith
 
 /- English proof (translation)
-Take `⟨N, hN, hNu, -⟩` from `exists_nat_two I u`. Use `set n : (AEf I)ˣ := (AfT.isUnit_natCast I N hN).unit with hn0`. Establish `hn : (n : AEf I) = N` using `IsUnit.unit_spec _`. Establish `hnI : (n : AEf I) ∈ IntAf I.F I.E` using `by rw [hn]; exact natCast_mem _ _`. Establish `hnuI : ((n * u : (AEf I)ˣ) : AEf I) ∈ IntAf I.F I.E` using `by rw [Units.val_mul, hn]; exact hNu`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `htr : mulU I (n * u) = (mulU I u).trans (mulU I n)`. Use `ContinuousAddEquiv.ext fun x => ?_` and prove the remaining obligations. Use `show ((n * u : (AEf I)ˣ) : AEf I) * x = (n : AEf I) * ((u : AEf I) * x)`. Rewrite using `[Units.val_mul, mul_assoc]`. Establish `e1` using `char_mulU_of_int I (n * u) hnuI`.
-
-Rewrite `e1` using `[htr, addEquivAddHaarChar_trans, NNReal.coe_mul, char_mulU_of_int I n hnI, nrmF_mul]`. Conclude with `mul_left_cancel₀ (nrmF_pos I n).ne' ((mul_comm _ _).trans e1)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem char_mulU (u : (AEf I)ˣ) : (addEquivAddHaarChar (mulU I u) : ℝ) = nrmF I u := by
   obtain ⟨N, hN, hNu, -⟩ := exists_nat_two I u
@@ -147,9 +141,9 @@ theorem char_mulU (u : (AEf I)ˣ) : (addEquivAddHaarChar (mulU I u) : ℝ) = nrm
   exact mul_left_cancel₀ (nrmF_pos I n).ne' ((mul_comm _ _).trans e1)
 
 /- English proof (translation)
-Establish `hc` using `addEquivAddHaarChar_smul_map (addHaar : Measure (AEf I)) (mulU I u)`. Establish `hpos` using `addEquivAddHaarChar_pos (mulU I u)`. Establish `hn` using `char_mulU I u`. Establish `hm : (addHaar : Measure (AEf I)).map (mulU I u) = (addEquivAddHaarChar (mulU I u))⁻¹ • addHaar` using `by conv_rhs => rw [← hc]`. Rewrite using `[smul_smul, inv_mul_cancel₀ hpos.ne', one_smul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hm, ← hn, ← NNReal.coe_inv, ENNReal.ofReal_coe_nnreal]`. Use `first`. Consider the case `rfl`. Consider the case `rw [ENNReal.smul_def]`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem addHaar_map_mulU' (u : (AEf I)ˣ) :
     (addHaar : Measure (AEf I)).map (mulU I u) = ENNReal.ofReal (nrmF I u)⁻¹ • addHaar := by

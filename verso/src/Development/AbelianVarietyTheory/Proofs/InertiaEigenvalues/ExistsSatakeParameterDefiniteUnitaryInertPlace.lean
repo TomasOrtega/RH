@@ -24,13 +24,13 @@ variable [TopologicalSpace H] {π : Submodule ℂ (G → ℂ)} {hst : ∀ x, ∀
   {j : H →* G} {p : G →* H} {Z : Subgroup G}
 
 /- English proof (translation)
-Establish `hi` using `Submodule.map_injective_of_injective π.injective_subtype`. Establish `hst' : ∀ (x : G) (v : π), v ∈ nullPart (pull π hst j) K → sub (rightReg ℂ G ℂ) π hst x v ∈ nullPart (pull π hst j) K`. Introduce `x v hv`. Establish `h1` using `nullPart_act (pull π hst j) K (p x) (nullPart_comm (pull π hst j) K (sub (rightReg ℂ G ℂ) π hst ((j (p x))⁻¹ * x)) (fun g y => by`. Express the relevant statement in the definitionally equal form `sub (rightReg ℂ G ℂ) π hst _ (sub (rightReg ℂ G ℂ) π hst (j g) y) = sub (rightReg ℂ G ℂ) π hst (j g) (sub (rightReg ℂ G ℂ) π hst _ y)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[← Module.End.mul_apply, ← Module.End.mul_apply, ← map_mul, ← map_mul, hZ _ (hdec x)]) hv)`. Establish `h2 : pull π hst j (p x) (sub (rightReg ℂ G ℂ) π hst ((j (p x))⁻¹ * x) v) = sub (rightReg ℂ G ℂ) π hst x v`. Express the relevant statement in the definitionally equal form `sub (rightReg ℂ G ℂ) π hst (j (p x)) (sub (rightReg ℂ G ℂ) π hst _ v) = _`. Rewrite using `[← Module.End.mul_apply, ← map_mul, mul_inv_cancel_left]`. Rewrite `h1` using `[h2]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Break down `hirr ((nullPart (pull π hst j) K).map π.subtype) (Submodule.map_subtype_le _ _) (by` into its components or cases. Introduce and unpack `x _ ⟨v, hv, rfl⟩`. Conclude with `⟨_, hst' x v hv, rfl⟩) with h1 | h1`. Establish `h2 : nullPart (pull π hst j) K = ⊥` using `hi (h1.trans (Submodule.map_bot _).symm)`. Conclude with `le_bot_iff.1 (h2 ▸ le_nullPart hsm hK W hW h)`.
+Separate the alternatives or extract the components of the hypothesis. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : nullPart (pull π hst j) K = ⊤` using `hi (h1.trans (Submodule.map_subtype_top _).symm)`. Conclude with `absurd (eq_zero_of_mem_nullPart hsm hK hφ (h2 ▸ Submodule.mem_top)) h0`.
+A detailed English derivation is pending.
 -/
 theorem pull_eq_bot [IsTopologicalGroup H]
     (hirr : ∀ W ≤ π, (∀ x, ∀ φ ∈ W, rightReg ℂ G ℂ x φ ∈ W) → W = ⊥ ∨ W = π)
@@ -60,13 +60,11 @@ theorem pull_eq_bot [IsTopologicalGroup H]
     exact absurd (eq_zero_of_mem_nullPart hsm hK hφ (h2 ▸ Submodule.mem_top)) h0
 
 /- English proof (translation)
-Establish `h2` using `pull_eq_bot (hst := hst) hirr hdec hZ hsm hK h0 hφ`. Take `⟨σ, ⟨f, hf0, hf⟩, ha⟩` from `exists_irred hsm hKo h2 U hU ((Submodule.ne_bot_iff _).2 ⟨φ, hφU, h0⟩) hfin`. Use `⟨σ, ha, ?_, f, hf0, hf⟩` and prove the remaining obligations. Establish `hker : LinearMap.ker f = ⊥`. Break down `((CuspRep.isIrreducible_iff _).1 σ.irred).2 (LinearMap.ker f) (fun g v hv => by` into its components or cases.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite using `[LinearMap.mem_ker, hf, LinearMap.mem_ker.1 hv, map_zero]) with h | h`. Conclude with `h`. Conclude with `absurd (LinearMap.ker_eq_top.1 h) hf0`. Establish `hr : LinearMap.range f ≠ ⊥` using `by rwa [Ne, LinearMap.range_eq_bot]`. Establish `hW : LinearMap.range f ⊓ fixed (pull π hst j) K ≠ ⊥` using `fun e => hr (h2 _ (by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `g _ ⟨v, rfl⟩`. Conclude with `⟨_, hf g v⟩) e)`. Take `⟨x, ⟨⟨u, rfl⟩, hx⟩, hx0⟩` from `(Submodule.ne_bot_iff _).1 hW`. Use `(Submodule.ne_bot_iff _).2 ⟨u, mem_fix.2 fun k hk => LinearMap.ker_eq_bot.1 hker ?_, fun e => hx0 (by rw [e, map_zero])⟩` and prove the remaining obligations. Rewrite using `[hf]`.
-
-Conclude with `mem_fix.1 hx k hk`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_spherical [IsTopologicalGroup H]
     (hirr : ∀ W ≤ π, (∀ x, ∀ φ ∈ W, rightReg ℂ G ℂ x φ ∈ W) → W = ⊥ ∨ W = π)
@@ -101,9 +99,9 @@ section Chart
 variable {L : Type} [Field L] {n : ℕ} {s : L →+* L}
 
 /- English proof (translation)
-Establish `h1 : cT s (b⁻¹).1 * cT s b.1 = 1` using `by rw [← cT_mul, Units.mul_inv, cT_one]`. Establish `h2 : b.1 * (b⁻¹).1 = 1` using `Units.mul_inv b`. Simplify using `only [Units.val_mul, cT_mul, ← hb]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules.
 
-Use `_ = _ := by rw [h1, h2]; simp only [Matrix.mul_one, Matrix.mul_assoc]`.
+A detailed English derivation is pending.
 -/
 theorem conj_form (b : GL (Fin n) L) (hb : cT s b.1 * b.1 = antiJ L n) (x : GL (Fin n) L) :
     cT s (b⁻¹ * x * b).1 * antiJ L n * (b⁻¹ * x * b).1 = cT s b.1 * (cT s x.1 * x.1) * b.1 := by
@@ -141,7 +139,7 @@ section ChartTop
 variable {L : Type} [Field L] [TopologicalSpace L] [IsTopologicalRing L] {n : ℕ} {s : L →+* L}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨((continuous_const.mul (continuous_subtype_val.comp continuous_id)).mul continuous_const).subtype_mk _, ((continuous_const.mul continuous_subtype_val).mul continuous_const).subtype_mk _⟩`.
+Supply the required witnesses or components.
 -/
 theorem continuous_toAnti (b : GL (Fin n) L) (hb : cT s b.1 * b.1 = antiJ L n) :
     Continuous (toAnti b hb) ∧ Continuous (toAnti b hb).symm :=
@@ -155,16 +153,16 @@ section Concrete
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ}
 
 /- English proof (translation)
-The claim follows from `(Continuous.units_map _ (continuous_id.matrix_map ((RestrictedProduct.continuous_eval w).comp (continuous_snd : Continuous (pFin E))))).comp continuous_subtype_val`.
+A detailed English derivation is pending.
 -/
 theorem continuous_cLoc (w : HeightOneSpectrum (𝓞 E)) : Continuous (cLoc (E := E) (n := n) w) :=
   (Continuous.units_map _ (continuous_id.matrix_map
     ((RestrictedProduct.continuous_eval w).comp (continuous_snd : Continuous (pFin E))))).comp continuous_subtype_val
 
 /- English proof (translation)
-Establish `h : (y.1.1.val).map (pFin E) = 1` using `congrArg Units.val y.2`. Use `Units.ext (Matrix.ext fun i k => ?_)` and prove the remaining obligations. Establish `h2` using `congrFun (congrFun h i) k`. Express the relevant statement in the definitionally equal form `pLoc E w (pFin E (y.1.1.val i k)) = (1 : Matrix (Fin n) (Fin n) (w.adicCompletion E)) i k`. Rewrite using `[show pFin E (y.1.1.val i k) = (1 : Matrix (Fin n) (Fin n) (Af E)) i k from h2, Matrix.one_apply, Matrix.one_apply]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `split_ifs <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem cLoc_infU (w : HeightOneSpectrum (𝓞 E)) (y : infU E n) : cLoc w (y : UA E n) = 1 := by
   have h : (y.1.1.val).map (pFin E) = 1 := congrArg Units.val y.2
@@ -179,7 +177,7 @@ def coefMap (φ : UA E n → ℂ) :
   LinearMap.pi fun y => Module.Dual.eval ℂ _ ⟨RU E n y φ, Submodule.subset_span ⟨y, rfl⟩⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(LinearMap.proj g).comp (Submodule.subtype _), rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem coef_mem (φ : UA E n → ℂ) (g : UA E n) :
     (fun y : infU E n => φ (g * (y : UA E n))) ∈ LinearMap.range (coefMap φ) :=
@@ -198,9 +196,9 @@ def typeU (π : Submodule ℂ (UA E n → ℂ)) (w : HeightOneSpectrum (𝓞 E))
 variable {π : Submodule ℂ (UA E n → ℂ)} {w : HeightOneSpectrum (𝓞 E)} {H : Type} [Group H]
 
 /- English proof (translation)
-Use `⟨fun k h1 h2 => ?_, fun g => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `RU E n k (RU E n (j h) v.1) = RU E n (j h) v.1`. Rewrite using `[← Module.End.mul_apply, ← map_mul, hZ _ h2, map_mul, Module.End.mul_apply, hv.1 k h1 h2]`. Establish `e : (fun y : infU E n => (pull π hst j h v).1 (g * (y : UA E n))) = fun y : infU E n => v.1 (g * j h * (y : UA E n))` using `funext fun y => by`. Express the relevant statement in the definitionally equal form `v.1 (g * y * j h) = _`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[mul_assoc, mul_assoc, hZ _ (cLoc_infU w y)]`. Rewrite using `[e]`. Conclude with `hv.2 _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem typeU_act {hst : ∀ x, ∀ φ ∈ π, rightReg ℂ (UA E n) ℂ x φ ∈ π} {L : Subgroup (finU E n)}
     {C : Submodule ℂ (infU E n → ℂ)} {j : H →* UA E n} (hZ : ∀ x, cLoc w x = 1 → ∀ h, x * j h = j h * x) (h : H)
@@ -216,11 +214,11 @@ theorem typeU_act {hst : ∀ x, ∀ φ ∈ π, rightReg ℂ (UA E n) ℂ x φ �
     exact hv.2 _
 
 /- English proof (translation)
-Set `jp : finU E n →* finU E n` to `((j.comp p).comp (finU E n).subtype).codRestrict (finU E n) fun k => hjf _`. Establish `hjp : Continuous jp` using `(hjc.comp (hpc.comp continuous_subtype_val)).subtype_mk _`. Set `L' : Subgroup (finU E n)` to `L ⊓ K'.comap (p.comp (finU E n).subtype) ⊓ L.comap jp`. Establish `ho : IsOpen (L' : Set (finU E n))` using `(hL.inter (hK'.preimage (hpc.comp continuous_subtype_val))).inter (hL.preimage hjp)`. Use `hfin L' ho` as an intermediate fact.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `FiniteDimensional.of_injective ((π.subtype ∘ₗ (typeU π w L C ⊓ fixed (pull π hπ.stable j) K').subtype).codRestrict (Submodule.span ℂ {ψ : UA E n → ℂ | (∀ γ ∈ ratU E n, ∀ g, ψ (γ * g) = ψ g) ∧ (∀ k ∈ L', ∀ g, ψ (g * (k : UA E n)) = ψ g) ∧ ∀ g, (fun y : infU E n => ψ (g * (y : UA E …` and prove the remaining obligations. Establish `h1 : RU E n ((j (p k))⁻¹ * k) v.1.1 = v.1.1` using `v.2.1.1 ((jp k)⁻¹ * k) (L.mul_mem (L.inv_mem hk.2) hk.1.1) (hdec k)`. Establish `h2` using `mem_fix.1 v.2.2 _ hk.1.2`. Establish `h3 : RU E n k v.1.1 = v.1.1`. Rewrite using `[show (k : UA E n) = j (p k) * ((j (p k))⁻¹ * k) from (mul_inv_cancel_left _ _).symm, map_mul, Module.End.mul_apply, h1]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Conclude with `congrArg Subtype.val h2`. Conclude with `congrFun h3 g`.
+A detailed English derivation is pending.
 -/
 theorem finiteDimensional_typeU [TopologicalSpace H] (hπ : IsAutRepU π) {j : H →* UA E n} {p : UA E n →* H}
     (hjf : ∀ h, j h ∈ finU E n) (hjc : Continuous j) (hpc : Continuous p)
@@ -254,25 +252,23 @@ theorem finiteDimensional_typeU [TopologicalSpace H] (hπ : IsAutRepU π) {j : H
 end Concrete
 
 /- English proof (translation)
-Introduce `E _ _ _ n w s ϖ q hs hU hfin ⟨ι, hιc, hιl, hι1, hι2⟩ π hπ ⟨φ, hφ, h0, hφK⟩`. Choose the witnesses or unpack the hypotheses as in `⟨b, hb, e⟩ : ∃ b ∈ GlobalTheory.LFun.KGL w n, cT s b.1 * b.1 = antiJ _ n := by`. Take `⟨k, hk, e⟩` from `GlobalTheory.LFun.InertChart.exists_congr_antiJ (B := 1) hU (one_mem _) (cT_one s)`. Conclude with `⟨k, hk, by simpa using e⟩`. Set `cU : UA E n →* UJ s (1 : Matrix (Fin n) (Fin n) (w.adicCompletion E))` to `(cLoc w).codRestrict _ fun x => by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression.
 
-Express the relevant statement in the definitionally equal form `cT s _ * 1 * _ = 1`. Rewrite using `[Matrix.mul_one]`. Conclude with `cT_cLoc w s hs hU.2.1 x`. Set `a` to `toAnti b e`. Set `p : UA E n →* GU s n` to `a.toMonoidHom.comp cU`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `j : GU s n →* UA E n` to `ι.comp a.symm.toMonoidHom`. Establish `hcj : ∀ g, cLoc w (j g) = (a.symm g).1` using `fun g => (hιl _).2`. Establish `hjl : ∀ g, j g ∈ locU n w` using `fun g => (hιl _).1`. Establish `hdec : ∀ x, cLoc w ((j (p x))⁻¹ * x) = 1` using `fun x => by`. Rewrite using `[map_mul, map_inv, hcj]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `((a.symm (a (cU x))).1)⁻¹ * cLoc w x = 1`. Rewrite using `[a.symm_apply_apply]`. Conclude with `inv_mul_cancel _`. Establish `hZ : ∀ x, cLoc w x = 1 → ∀ h, x * j h = j h * x` using `fun x hx h => hι2 x _ hx`. Establish `hpj : ∀ x ∈ locU n w, j (p x) = x` using `fun x hx => (inv_mul_eq_one.1 (hι1 _ (mul_mem (inv_mem (hjl _)) hx) (hdec x)))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hjc : Continuous j` using `hιc.comp (continuous_toAnti b e).2`. Establish `hpc : Continuous p` using `(continuous_toAnti b e).1.comp ((continuous_cLoc w).subtype_mk _)`. Establish `hjf : ∀ h, j h ∈ finU E n` using `fun h => (hjl h).1`. Establish `hsm : IsSmooth (pull π hπ.stable j)` using `fun v => by`. Establish `h1` using `(hπ.aut _ v.2).level.preimage (hjc.subtype_mk hjf)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : {g : GU s n | pull π hπ.stable j g v = v} = (fun g => (⟨j g, hjf g⟩ : finU E n)) ⁻¹' {k : finU E n | RU E n k v.1 = v.1}` using `Set.ext fun g => Subtype.ext_iff`. Rewrite using `[h2]`. Conclude with `h1`. Take `⟨hKo, hKc⟩` from `GlobalTheory.T.isOpen_isCompact_unitaryIntegralPoints _ ϖ s q n hU`. Establish `hKb : ∀ k ∈ KU s n, k.1 ∈ GlobalTheory.LFun.KGL w n` using `fun k hk => (Subgroup.mem_subgroupOf.1 hk).2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hφ' : (⟨φ, hφ⟩ : π) ∈ fixed (pull π hπ.stable j) (KU s n)` using `mem_fix.2 fun k hk => Subtype.ext (hφK _ (hjl k) (by`. Rewrite using `[hcj]`. Conclude with `mul_mem (mul_mem hb (hKb k hk)) (inv_mem hb)))`. Establish `h0' : (⟨φ, hφ⟩ : π) ≠ 0` using `fun e => h0 (congrArg Subtype.val e)`. Establish `hC : FiniteDimensional ℂ (LinearMap.range (coefMap φ))`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `: FiniteDimensional ℂ (Submodule.span ℂ (Set.range fun k : infU E n => RU E n k φ))` using `(hπ.aut φ hφ).kfin`. Use `infer_instance`. Set `L₀ : Subgroup (finU E n)` to `stab ((RU E n).comp (finU E n).subtype) φ`. Establish `hL₀ : IsOpen (L₀ : Set (finU E n))` using `(hπ.aut φ hφ).level`. Take `⟨σ, ha, hsph, f, hf0, hf⟩` from `exists_spherical (p := p) (Z := (cLoc w).ker) hπ.irred hdec (fun x hx => hZ x hx) hsm hKo hKc h0' hφ' (typeU π w L₀ (LinearMap.range (coefMap φ))) (fun g v hv => typeU_act hZ g v hv) ⟨fun k hk _ => hk, fun g => coef_mem φ g⟩ (finiteDimensional_typeU hπ hjf hjc hpc hdec hL₀ fun L …`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Take `⟨α, hα⟩` from `GlobalTheory.LFun.ExSatU.exists_hasSatU E w ϖ s q n hU σ.V σ.ρ σ.irred ha hsph`. Use `⟨α, b, hb, e, p.comp (locU n w).subtype, fun x => rfl, σ, ⟨σ.irred, π.subtype ∘ₗ f, fun h => hf0 (LinearMap.ext fun v => Subtype.ext (LinearMap.congr_fun h v)), fun v => (f v).2, fun x v => ?_⟩, hα⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(f (σ.ρ (p x) v)).1 = _`. Rewrite using `[hf]`. Express the relevant statement in the definitionally equal form `RU E n (j (p x)) (f v).1 = _`.
-
-Rewrite using `[hpj _ x.2]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_hasSatAt : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (n : ℕ) (w : HeightOneSpectrum (𝓞 E))
     (s : w.adicCompletion E →+* w.adicCompletion E) (ϖ : w.adicCompletion E) (q : ℕ),

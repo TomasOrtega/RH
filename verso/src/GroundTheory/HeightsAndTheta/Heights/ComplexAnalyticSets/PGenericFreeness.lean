@@ -13,11 +13,11 @@ universe u v w
 namespace GenericFreeness
 
 /- English proof (translation)
-Use `IsNoetherianRing.induction_on_isQuotientEquivQuotientPrime R (M := M) inferInstance (motive := fun N _ _ _ ↦ ∀ (_ : Module A N) (_ : IsScalarTower A R N), IsGenericallyFree A N) ?_ ?_ ?_ ‹Module A M› ‹IsScalarTower A R M›` and prove the remaining obligations. Introduce `N _ _ _ _ _ _`. Conclude with `⟨1, one_ne_zero, inferInstance⟩`. Introduce `N _ _ _ p e _ _`. Conclude with `(hq p).of_linearEquiv (e.restrictScalars A).symm`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `N₁ _ _ _ N₂ _ _ _ N₃ _ _ _ f g hf hg hfg h₁ h₃ _ _`. Use `letI : Module A N₁ := Module.compHom N₁ (algebraMap A R)`. Use `letI : Module A N₃ := Module.compHom N₃ (algebraMap A R)`. Establish `t₁ : IsScalarTower A R N₁` using `⟨fun a r n ↦ by show (a • r) • n = algebraMap A R a • r • n`. Rewrite using `[Algebra.smul_def, mul_smul]⟩`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `t₃ : IsScalarTower A R N₃` using `⟨fun a r n ↦ by show (a • r) • n = algebraMap A R a • r • n`. Rewrite using `[Algebra.smul_def, mul_smul]⟩`. Conclude with `IsGenericallyFree.of_exact (f.restrictScalars A) (g.restrictScalars A) hf hg hfg (h₁ inferInstance t₁) (h₃ inferInstance t₃)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isGenericallyFree_of_primes {A : Type u} [CommRing A] [IsDomain A] {R : Type u} [CommRing R]
     [IsNoetherianRing R] [Algebra A R] (hq : ∀ p : PrimeSpectrum R, IsGenericallyFree A (R ⧸ p.asIdeal))
@@ -43,9 +43,9 @@ theorem isGenericallyFree_of_primes {A : Type u} [CommRing A] [IsDomain A] {R : 
       (h₁ inferInstance t₁) (h₃ inferInstance t₃)
 
 /- English proof (translation)
-Take `⟨a, ha, ha0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot h`. Use `isGenericallyFree_of_smul_eq_zero a ha0 fun d ↦ ?_` and prove the remaining obligations. Take `⟨x, rfl⟩` from `Ideal.Quotient.mk_surjective d`. Establish `e : a • Ideal.Quotient.mk q x = Ideal.Quotient.mk q (a • x)` using `(map_smul (Ideal.Quotient.mkₐ A q) a x).symm`. Rewrite using `[e, Ideal.Quotient.eq_zero_iff_mem, smul_eq_C_mul]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `q.mul_mem_right x ha`.
+A detailed English derivation is pending.
 -/
 theorem isGenericallyFree_of_comap_ne_bot {A : Type u} [CommRing A] {σ : Type*} (q : Ideal (MvPolynomial σ A))
     (h : q.comap (C : A →+* MvPolynomial σ A) ≠ ⊥) : IsGenericallyFree A (MvPolynomial σ A ⧸ q) := by
@@ -58,7 +58,7 @@ theorem isGenericallyFree_of_comap_ne_bot {A : Type u} [CommRing A] {σ : Type*}
   exact q.mul_mem_right x ha
 
 /- English proof (translation)
-The claim follows from `(isGenericallyFree_of_free (M := MvPolynomial σ A)).of_linearEquiv (AlgEquiv.quotientBot A (MvPolynomial σ A)).toLinearEquiv.symm`.
+A detailed English derivation is pending.
 -/
 theorem isGenericallyFree_quotient_bot {A : Type u} [CommRing A] [IsDomain A] (σ : Type*) :
     IsGenericallyFree A (MvPolynomial σ A ⧸ (⊥ : Ideal (MvPolynomial σ A))) :=
@@ -66,19 +66,17 @@ theorem isGenericallyFree_quotient_bot {A : Type u} [CommRing A] [IsDomain A] (�
     (AlgEquiv.quotientBot A (MvPolynomial σ A)).toLinearEquiv.symm
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero`. Introduce `A _ _ _ q _`. Distinguish the cases in `hc : q.comap (C : A →+* MvPolynomial (Fin 0) A) = ⊥`. Establish `hq : q = ⊥`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Rewrite using `[eq_bot_iff]`. Introduce `x hx`. Establish `hx' : C (coeff 0 x) ∈ q` using `by rwa [← eq_C_of_isEmpty x]`. Establish `: coeff 0 x ∈ q.comap (C : A →+* MvPolynomial (Fin 0) A)` using `hx'`. Rewrite `this` using `[hc, Ideal.mem_bot]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[Ideal.mem_bot, eq_C_of_isEmpty x, this, map_zero]`. Substitute `hq` using the available equality. Conclude with `isGenericallyFree_quotient_bot _`. Conclude with `isGenericallyFree_of_comap_ne_bot q hc`. Consider the case `succ n ih`.
+Rewrite the conclusion using the stated equalities. Substitute using the available equality. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Introduce `A _ _ _ q hqp`. Distinguish the cases in `hc : q.comap (C : A →+* MvPolynomial (Fin (n + 1)) A) = ⊥`. Distinguish the cases in `hq : q = ⊥`. Substitute `hq` using the available equality. Conclude with `isGenericallyFree_quotient_bot _`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Take `⟨a, ha, z, s, hspan⟩` from `hNN A n q hqp hq hc`. Set `D` to `MvPolynomial (Fin (n + 1)) A ⧸ q`. Set `Rn` to `MvPolynomial (Fin n) A`. Use `letI : Algebra Rn D := (aeval z : Rn →ₐ[A] D).toRingHom.toAlgebra`. Establish `: IsScalarTower A Rn D` using `IsScalarTower.of_algebraMap_eq fun x ↦ ((aeval z).commutes x).symm`.
+Equip the data with the indicated structure. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Set `N : Submodule Rn D` to `Submodule.span Rn (s : Set D)`. Establish `hN : IsGenericallyFree A N` using `isGenericallyFree_of_primes (R := Rn) (fun p ↦ ih A p.asIdeal p.isPrime) N`. Use `hN.of_injective (N.subtype.restrictScalars A) Subtype.val_injective a ha fun d ↦ ?_` and prove the remaining obligations. Take `⟨k, c, hk⟩` from `hspan d`. Use `⟨k, ⟨⟨a ^ k • d, ?_⟩, rfl⟩⟩` and prove the remaining obligations.
-
-Rewrite using `[hk]`. Conclude with `Submodule.sum_mem _ fun t ht ↦ Submodule.smul_mem _ (c t) (Submodule.subset_span ht)`. Conclude with `isGenericallyFree_of_comap_ne_bot q hc`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isGenericallyFree_quotient (hNN : GenericNoetherNormalisation.Statement.{u}) (n : ℕ) :
     ∀ (A : Type u) [CommRing A] [IsDomain A] [IsNoetherianRing A] (q : Ideal (MvPolynomial (Fin n) A)),
@@ -121,11 +119,11 @@ theorem isGenericallyFree_quotient (hNN : GenericNoetherNormalisation.Statement.
 end GenericFreeness
 
 /- English proof (translation)
-Introduce `A _ _ _ B _ _ _ M _ _ _ _ _`. Take `⟨n, g, hg⟩` from `Algebra.FiniteType.iff_quotient_mvPolynomial''.mp ‹Algebra.FiniteType A B›`. Use `letI : Algebra (MvPolynomial (Fin n) A) B := g.toRingHom.toAlgebra`. Use `letI : Module (MvPolynomial (Fin n) A) M := Module.compHom M (algebraMap (MvPolynomial (Fin n) A) B)`. Establish `: IsScalarTower (MvPolynomial (Fin n) A) B M` using `⟨fun x b m ↦ by show (g x * b) • m = g x • b • m`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Rewrite using `[mul_smul]⟩`. Establish `: IsScalarTower A (MvPolynomial (Fin n) A) M` using `⟨fun a x m ↦ by show g (a • x) • m = a • g x • m`. Rewrite using `[map_smul, smul_assoc]⟩`. Establish `: Module.Finite (MvPolynomial (Fin n) A) B` using `RingHom.Finite.of_surjective g.toRingHom hg`. Establish `: Module.Finite (MvPolynomial (Fin n) A) M` using `Module.Finite.trans B M`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `GenericFreeness.isGenericallyFree_of_primes (R := MvPolynomial (Fin n) A) (fun p ↦ GenericFreeness.isGenericallyFree_quotient hNN n A p.asIdeal p.isPrime) M`.
+A detailed English derivation is pending.
 -/
 theorem GenericFreeness.proof (hNN : GenericNoetherNormalisation.Statement.{u}) :
     GenericFreeness.Statement.{u, v, w} := by

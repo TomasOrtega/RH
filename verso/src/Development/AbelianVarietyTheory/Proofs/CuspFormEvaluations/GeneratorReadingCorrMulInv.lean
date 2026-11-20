@@ -14,9 +14,7 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 attribute [local instance] Over.cartesianMonoidalCategory
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h k p _`. Establish `hp` using `h (Set.mem_univ p)`. Conclude with `Set.mem_iInter.1 hp k`. Introduce `h p _`.
-
-Conclude with `Set.mem_iInter.2 fun k => h k (Set.mem_univ p)`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem chart_iff {X Z : Scheme.{0}} (L : LB X) {K : Type} [Fintype K] (φ : K → (Z ⟶ X)) (j : K → L.ι)
     (x : Sp ℂ ⟶ Z) : ⊤ ≤ x ⁻¹ᵁ LB.wchart L φ j ↔ ∀ k, ⊤ ≤ (x ≫ φ k) ⁻¹ᵁ L.U (j k) := by
@@ -28,7 +26,7 @@ theorem chart_iff {X Z : Scheme.{0}} (L : LB X) {K : Type} [Fintype K] (φ : K �
     exact Set.mem_iInter.2 fun k => h k (Set.mem_univ p)
 
 /- English proof (translation)
-Establish `h : x cpt ∈ (⨆ i, L.U i : X.Opens)`. Rewrite using `[hL.cover]`. Discharge the goal by the elementary cases of `trivial`. Take `⟨i, hi⟩` from `TopologicalSpace.Opens.mem_iSup.1 h`. Conclude with `⟨i, ReciprocityTheory.ChartRestriction.G.PullbackSections.top_le_of_mem hi⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_chart {X : Scheme.{0}} (L : LB X) (hL : L.IsLB) (x : Sp ℂ ⟶ X) : ∃ i, ⊤ ≤ x ⁻¹ᵁ L.U i := by
   have h : x cpt ∈ (⨆ i, L.U i : X.Opens) := by
@@ -37,9 +35,9 @@ theorem exists_chart {X : Scheme.{0}} (L : LB X) (hL : L.IsLB) (x : Sp ℂ ⟶ X
   exact ⟨i, ReciprocityTheory.ChartRestriction.G.PullbackSections.top_le_of_mem hi⟩
 
 /- English proof (translation)
-Establish `h1` using `(chart_iff L φ (fun k => J (φ k)) p).2 fun k => hJ _`. Establish `h2` using `(chart_iff L φ' (fun k => J (φ' k)) p).2 fun k => hJ _`. Establish `h : ⊤ ≤ p ⁻¹ᵁ (LB.wchart L φ (fun k => J (φ k)) ⊓ LB.wchart L φ' fun k => J (φ' k))` using `fun z hz => ⟨h1 hz, h2 hz⟩`. Establish `e0` using `hc (fun k => J (φ k)) (fun k => J (φ' k)) (fun _ _ e => congrArg J e) (fun _ _ e => congrArg J e) (fun _ _ e => congrArg J e)`. Establish `e` using `congrArg (fun u : Γ(Y, LB.wchart L φ (fun k => J (φ k)) ⊓ LB.wchart L φ' fun k => J (φ' k))ˣ => valAt' p _ u.val) e0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(vtf_val_res p _ h _).symm.trans (e.trans (vtf_val_res p _ h _))`.
+A detailed English derivation is pending.
 -/
 theorem corr_val {X Y : Scheme.{0}} (L : LB X) {K K' : Type} [Fintype K] [Fintype K']
     (φ : K → (Y ⟶ X)) (ε : K → ℤ) (φ' : K' → (Y ⟶ X)) (ε' : K' → ℤ)
@@ -58,7 +56,7 @@ theorem corr_val {X Y : Scheme.{0}} (L : LB X) {K K' : Type} [Fintype K] [Fintyp
   exact (vtf_val_res p _ h _).symm.trans (e.trans (vtf_val_res p _ h _))
 
 /- English proof (translation)
-Establish `e` using `vtf_valU p h u (-1)`. Rewrite `e` using `[zpow_neg_one, zpow_neg_one]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem val_inv {Z : Scheme.{0}} (p : Sp ℂ ⟶ Z) {V : Z.Opens} (h : ⊤ ≤ p ⁻¹ᵁ V) (u : Γ(Z, V)ˣ) :
     valAt' p V (u⁻¹).val = (valAt' p V u.val)⁻¹ := by
@@ -67,13 +65,11 @@ theorem val_inv {Z : Scheme.{0}} (p : Sp ℂ ⟶ Z) {V : Z.Opens} (h : ⊤ ≤ p
 
 open scoped Classical in
 /- English proof (translation)
-Establish `key : ∀ ψ ∈ s, f ψ ^ (∑ k, if φ k = ψ then ε k else 0) = ∏ k, if φ k = ψ then f (φ k) ^ ε k else 1`. Introduce `ψ hψ`. Establish `h : ∀ u : Finset K, f ψ ^ (∑ k ∈ u, if φ k = ψ then ε k else 0) = ∏ k ∈ u, if φ k = ψ then f (φ k) ^ ε k else 1`. Introduce `u`. Proceed by induction on `u using Finset.induction_on with`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `empty => simp`. Consider the case `insert a u ha ih`. Rewrite using `[Finset.sum_insert ha, Finset.prod_insert ha, zpow_add₀ (hf ψ hψ), ih]`. Use `congr 1`. Use `split_ifs with h`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h]`. Simplify using the standard rewrite rules. Conclude with `h _`. Rewrite using `[Finset.prod_congr rfl key, Finset.prod_comm]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations.
-
-Rewrite using `[Finset.prod_ite_eq, if_pos (hs k)]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem prod_fibre {T K : Type} [Fintype K] (φ : K → T) (ε : K → ℤ) (f : T → ℂ) (s : Finset T)
     (hs : ∀ k, φ k ∈ s) (hf : ∀ ψ ∈ s, f ψ ≠ 0) :
@@ -98,29 +94,25 @@ theorem prod_fibre {T K : Type} [Fintype K] (φ : K → T) (ε : K → ℤ) (f :
   rw [Finset.prod_ite_eq, if_pos (hs k)]
 
 /- English proof (translation)
-Introduce `S A _ _ L x0 g Φ Z K K' _ _ φ ε φ' ε' t t' q p p' v v' h h'`. Establish `hA : LB.Gen.Corr L.L φ ε φ' ε' t t' → ∃ J : (Z ⟶ A.left) → L.L.ι, (∀ ψ, ⊤ ≤ (q ≫ ψ) ⁻¹ᵁ L.L.U (J ψ)) ∧ v * ∏ k, Φ.fr (J (φ k)) (p k) ^ ε k = v' * ∏ k, Φ.fr (J (φ' k)) (p' k) ^ ε' k`. Introduce `hc`. Use `choose J hJ using fun ψ : Z ⟶ A.left => exists_chart L.L L.isLB (q ≫ ψ)`. Use `⟨J, hJ, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e` using `corr_val L.L φ ε φ' ε' t t' hc J q hJ`. Establish `e1` using `h.2 (fun k => J (φ k)) ((chart_iff L.L φ _ q).2 fun k => hJ _)`. Establish `e2` using `h'.2 (fun k => J (φ' k)) ((chart_iff L.L φ' _ q).2 fun k => hJ _)`. Conclude with `e1.symm.trans (e.trans e2)`. Use `⟨hA, ?_, ⟨?_, ?_⟩, ⟨h.1, ?_⟩⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Introduce and unpack `hc hs ⟨π, hπ, hπ'⟩`. Take `⟨J, hJ, e⟩` from `hA hc`. Establish `n1 : ∀ k, Φ.fr (J (φ k)) (π (φ k)) ≠ 0` using `fun k => by`. Rewrite using `[← hπ k]`. Apply `Φ.fr_ne` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← h.1 k]`. Conclude with `hJ _`. Establish `n2 : ∀ k, Φ.fr (J (φ' k)) (π (φ' k)) ≠ 0` using `fun k => by`. Rewrite using `[← hπ' k]`. Apply `Φ.fr_ne` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[← h'.1 k]`. Conclude with `hJ _`. Set `s : Finset (Z ⟶ A.left)` to `Finset.univ.image φ ∪ Finset.univ.image φ'`. Establish `hf : ∀ ψ ∈ s, Φ.fr (J ψ) (π ψ) ≠ 0`. Introduce `ψ hψ`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Break down `Finset.mem_union.1 hψ with hψ | hψ` into its components or cases. Take `⟨k, -, rfl⟩` from `Finset.mem_image.1 hψ`. Conclude with `n1 k`. Take `⟨k, -, rfl⟩` from `Finset.mem_image.1 hψ`. Conclude with `n2 k`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments.
 
-Establish `p1` using `prod_fibre φ ε (fun ψ => Φ.fr (J ψ) (π ψ)) s (fun k => Finset.mem_union_left _ (Finset.mem_image_of_mem _ (Finset.mem_univ k))) hf`. Establish `p2` using `prod_fibre φ' ε' (fun ψ => Φ.fr (J ψ) (π ψ)) s (fun k => Finset.mem_union_right _ (Finset.mem_image_of_mem _ (Finset.mem_univ k))) hf`. Establish `p3 : ∏ k, Φ.fr (J (φ k)) (π (φ k)) ^ ε k = ∏ k, Φ.fr (J (φ' k)) (π (φ' k)) ^ ε' k`. Use `p1.trans (Eq.trans ?_ p2.symm)` and prove the remaining obligations. Use `Finset.prod_congr rfl fun ψ _ => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `congr 1`. Conclude with `hs ψ`. Simplify using `only [hπ, hπ'] at e`. Rewrite `e` using `[p3]`. Conclude with `mul_right_cancel₀ (Finset.prod_ne_zero_iff.2 fun k _ => zpow_ne_zero _ (n2 k)) e`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `(k | k)`. Conclude with `h.1 k`. Conclude with `h'.1 k`. Introduce `j hj`. Establish `hj0` using `(chart_iff L.L _ j q).1 hj`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1` using `h.2 (j ∘ Sum.inl) ((chart_iff L.L φ _ q).2 fun k => hj0 (Sum.inl k))`. Establish `e2` using `h'.2 (j ∘ Sum.inr) ((chart_iff L.L φ' _ q).2 fun k => hj0 (Sum.inr k))`. Use `(ReciprocityTheory.ChartRestriction.G.TB.ValAt.valAt'_mul q _ _ _).trans ?_` and prove the remaining obligations. Use `(congrArg₂ (· * ·) ((vtf_val_res q _ hj _).trans e1) ((vtf_val_res q _ hj _).trans e2)).trans ?_` and prove the remaining obligations. Rewrite using `[Fintype.prod_sum_type]`.
-
-Simplify using `only [Sum.elim_inl, Sum.elim_inr, Function.comp_apply]`. Expand and normalize the polynomial expressions, which then agree. Introduce `j hj`. Establish `e1` using `h.2 j hj`. Establish `e2` using `val_inv q hj (t.s j)`.
-
-Use `e2.trans ?_` and prove the remaining obligations. Use `(congrArg (·⁻¹) e1).trans ?_` and prove the remaining obligations. Simplify using `only [mul_inv, zpow_neg, Finset.prod_inv_distrib]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem genRd_corr_mul_inv : ∀ (S : Scheme.{0}) (A : Over S) [GrpObj A] [IsCommMonObj A] (L : RigLB A) (x0 : Sp ℂ ⟶ S) (g : ℕ) (Φ : AnFr A L x0 g), ∀ (Z : Scheme.{0}) (K K' : Type) [Fintype K] [Fintype K'] (φ : K → (Z ⟶ A.left)) (ε : K → ℤ) (φ' : K' → (Z ⟶ A.left)) (ε' : K' → ℤ) (t : LB.Gen (LB.LinComb L.L φ ε)) (t' : LB.Gen (LB.LinComb L.L φ' ε')) (q : Sp ℂ ⟶ Z) (p : K → Fin g → ℂ) (p' : K' → Fin g → ℂ) (v v' : ℂ), Φ.GenRd φ ε t q p v → Φ.GenRd φ' ε' t' q p' v' → (LB.Gen.Corr L.L φ ε φ' ε' t t' → ∃ J : (Z ⟶ A.left) → L.L.ι, (∀ ψ, ⊤ ≤ (q ≫ ψ) ⁻¹ᵁ L.L.U (J ψ)) ∧ v * ∏ k, Φ.fr (J (φ k)) (p k) ^ ε k = v' * ∏ k, Φ.fr (J (φ' k)) (p' k) ^ ε' k) ∧ (LB.Gen.Corr L.L φ ε φ' ε' t t' → LB.SameSum φ ε φ' ε' → (∃ π : (Z ⟶ A.left) → Fin g → ℂ, (∀ k, p k = π (φ k)) ∧ ∀ k, p' k = π (φ' k)) → v = v') ∧ Φ.GenRd (Sum.elim φ φ') (Sum.elim ε ε') (LB.mulGen L.L φ ε φ' ε' t t') q (Sum.elim p p') (v * v') ∧ Φ.GenRd φ (fun k => -ε k) (LB.invGen L.L φ ε t) q p v⁻¹ := by
   classical

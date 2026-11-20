@@ -11,11 +11,11 @@ open scoped Topology
 namespace GlobalTheory.HtMinPf
 
 /- English proof (translation)
-Establish `hg : (uMat g)ᴴ * Formalism.REAL.Jm ε * uMat g = Formalism.REAL.Jm ε` using `g.2`. Establish `h1 : uMat g * uMat g⁻¹ = 1` using `by show ((g : (Matrix (Fin n) (Fin n) ℂ)ˣ) : Matrix (Fin n) (Fin n) ℂ) * (((g⁻¹ : Formalism.REAL.UJ ε) : (Matrix (Fin n) (Fin n) ℂ)ˣ) : Matrix (Fin n) (Fin n) ℂ) = 1`. Rewrite using `[Subgroup.coe_inv, Units.mul_inv]`. Establish `hJ` using `Formalism.REAL.Jm_mul_self ε`. Establish `hmi : uMat g⁻¹ = Formalism.REAL.Jm ε * (uMat g)ᴴ * Formalism.REAL.Jm ε`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hg, hJ, Matrix.one_mul]`. Use `_ = Formalism.REAL.Jm ε * (uMat g)ᴴ * Formalism.REAL.Jm ε * (uMat g * uMat g⁻¹) := by`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = _ := by rw [h1, Matrix.mul_one]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[hmi]`. Unfold `Formalism.REAL.Jm`. Rewrite using `[Matrix.mul_diagonal, Matrix.diagonal_mul, Matrix.conjTranspose_apply]`. Apply the tactic sequence `by_cases ha : ε j <;> by_cases hb : ε i <;> simp [ha, hb]`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 lemma uj_entry {n : ℕ} {ε : Fin n → Bool} (g : Formalism.REAL.UJ ε) (i j : Fin n) :
     ‖uMat g i j‖ = ‖uMat g⁻¹ j i‖ := by
@@ -38,9 +38,9 @@ lemma uj_entry {n : ℕ} {ε : Fin n → Bool} (g : Formalism.REAL.UJ ε) (i j :
 variable (I : AutInst)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `v`. Establish `h : (fun k => I.φ v (∑ i, z i • e i k)) = ∑ i, ((z i : ℝ)) • fun k => I.φ v (e i k)`. Use function extensionality and compare the values at `k`. Simplify using `[Finset.sum_apply, map_sum, Complex.real_smul]`. Simplify using `only [CuspGeo.vec, Finset.sum_apply, Pi.smul_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[h, Matrix.mulVec_sum, Matrix.mulVec_sum]`. Simplify using `[Matrix.mulVec_smul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma vec_sum (y : I.Ginf) {N : ℕ} (z : Fin N → ℤ) (e : Fin N → Fin I.n → I.E) :
     vec I y (∑ i, z i • e i) = ∑ i, ((z i : ℝ)) • vec I y (e i) := by
@@ -53,7 +53,7 @@ lemma vec_sum (y : I.Ginf) {N : ℕ} (z : Fin N → ℤ) (e : Fin N → Fin I.n 
   simp [Matrix.mulVec_smul]
 
 /- English proof (translation)
-Establish `h1 : uMat ((1 : I.Ginf) v)⁻¹ = 1` using `by simp [uMat]`. Simplify using `only [CuspGeo.vec]`. Rewrite using `[h1, Matrix.one_mulVec]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 lemma vec_one (y : I.Ginf) (u : Fin I.n → I.E) (v : InfinitePlace I.F) :
     vec I y u v = uMat (y v)⁻¹ *ᵥ vec I 1 u v := by
@@ -62,11 +62,11 @@ lemma vec_one (y : I.Ginf) (u : Fin I.n → I.E) (v : InfinitePlace I.F) :
   rw [h1, Matrix.one_mulVec]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `v`. Establish `hP : I.P v * (I.P v)⁻¹ = 1` using `Matrix.mul_nonsing_inv _ ((Matrix.isUnit_iff_isUnit_det _).mp (I.P_unit v))`. Establish `hinv : uMat (x₁ v)⁻¹ * uMat (x₁ v) = 1` using `by show (((x₁ v)⁻¹ : Formalism.REAL.UJ (I.ε v)) : (Matrix (Fin I.n) (Fin I.n) ℂ)ˣ).val * ((x₁ v : Formalism.REAL.UJ (I.ε v)) : (Matrix (Fin I.n) (Fin I.n) ℂ)ˣ).val = 1`. Rewrite using `[Subgroup.coe_inv, Units.inv_mul]`. Establish `hφ : (fun i => I.φ v (((γ : Matrix (Fin I.n) (Fin I.n) I.E) *ᵥ u) i)) = (γ : Matrix (Fin I.n) (Fin I.n) I.E).map (I.φ v) *ᵥ fun i => I.φ v (u i)`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `i`. Conclude with `RingHom.map_mulVec _ _ _ _`. Establish `hmul : uMat ((x₁ * y) v)⁻¹ = uMat (y v)⁻¹ * uMat (x₁ v)⁻¹`. Simplify using `[uMat, Pi.mul_apply, _root_.mul_inv_rev]`. Simplify using `only [CuspGeo.vec]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hmul, hφ, ← Matrix.mulVec_mulVec]`. Use `congr 1`. Establish `: (I.P v)⁻¹ *ᵥ ((γ : Matrix (Fin I.n) (Fin I.n) I.E).map (I.φ v) *ᵥ fun i => I.φ v (u i)) = uMat (x₁ v) *ᵥ ((I.P v)⁻¹ *ᵥ fun i => I.φ v (u i))`. Rewrite using `[hx v, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, Matrix.mul_assoc _ (I.P v), hP, Matrix.mul_one]`. Rewrite using `[this, Matrix.mulVec_mulVec, hinv, Matrix.one_mulVec]`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma vec_trans (x₁ y : I.Ginf) (γ : GL (Fin I.n) I.E)
     (hx : ∀ v, uMat (x₁ v) = (I.P v)⁻¹ * (γ : Matrix (Fin I.n) (Fin I.n) I.E).map (I.φ v) * I.P v)
@@ -92,15 +92,13 @@ lemma vec_trans (x₁ y : I.Ginf) (γ : GL (Fin I.n) I.E)
   rw [this, Matrix.mulVec_mulVec, hinv, Matrix.one_mulVec]
 
 /- English proof (translation)
-Take `⟨N', e', ρ, d, hd, he', -, hdet⟩` from `GlobalTheory.T.cusp_integralBasis_covolume_constant I`. Use `set G := gm I ρ 1 e' with hGdef`. Establish `hG : G.det ≠ 0`. Introduce `h`. Use `hdet 1` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[← hGdef, h]`. Simplify using `at this`. Combine the linear equalities and inequalities to obtain the conclusion. Use `set a := G⁻¹ *ᵥ ρ w with ha`. Establish `hGa : G *ᵥ a = ρ w`.
+Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[ha, Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv _ (isUnit_iff_ne_zero.mpr hG), Matrix.one_mulVec]`. Establish `hw : w = ∑ j, a j • vec I 1 (e' j)`. Apply `ρ.injective` to reduce the goal to its premises. Rewrite using `[← hGa, map_sum]`. Use function extensionality and compare the values at `i`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[hGdef, gm, Matrix.mulVec, dotProduct, Finset.sum_apply, mul_comm]`. Establish `hz : ∀ j, ∃ z : Fin N → ℤ, e' j = ∑ i, z i • e₀ i` using `fun j => (he₀.2 (e' j)).mp ((he'.2 (e' j)).mpr ⟨Pi.single j 1, by simp [Pi.single_apply]⟩)`. Use `choose z hz using hz`. Use `⟨fun i => ∑ j, a j * (z j i : ℝ), ?_⟩` and prove the remaining obligations. Rewrite using `[hw]`.
-
-Repeatedly rewrite using `[hz, vec_sum, Finset.smul_sum, smul_smul, Finset.sum_smul]`. Rewrite using `[Finset.sum_comm]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma span_of_zbasis {N : ℕ} (e₀ : Fin N → Fin I.n → I.E) (he₀ : IsZBasis I e₀)
     (w : InfinitePlace I.F → Fin I.n → ℂ) : ∃ c : Fin N → ℝ, w = ∑ l, c l • vec I 1 (e₀ l) := by
@@ -130,9 +128,9 @@ lemma span_of_zbasis {N : ℕ} (e₀ : Fin N → Fin I.n → I.E) (he₀ : IsZBa
 
 open Classical in
 /- English proof (translation)
-Establish `h : uMat (z v)⁻¹ j i = (∑ l, c l • vec I z (e₀ l)) v j`. Combine the equalities or inequalities in the displayed calculation. Simplify using `[Matrix.mulVec_single_one]`. Use `_ = (uMat (z v)⁻¹ *ᵥ (∑ l, c l • vec I 1 (e₀ l)) v) j := by rw [hc]`. Use `_ = (∑ l, c l • vec I z (e₀ l)) v j := by`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Finset.sum_apply, Pi.smul_apply, Matrix.mulVec_sum, Matrix.mulVec_smul, vec_one I z]`. Rewrite using `[h, Finset.sum_apply, Finset.sum_apply]`. Use `(norm_sum_le _ _).trans (Finset.sum_le_sum fun l _ => ?_)` and prove the remaining obligations. Rewrite using `[Pi.smul_apply, Pi.smul_apply, norm_smul, Real.norm_eq_abs]`. Conclude with `mul_le_mul_of_nonneg_left ((norm_le_pi_norm (vec I z (e₀ l) v) j).trans (norm_le_pi_norm (vec I z (e₀ l)) v)) (abs_nonneg _)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma entry_bound (z : I.Ginf) {N : ℕ} (e₀ : Fin N → Fin I.n → I.E) (c : Fin N → ℝ)
     (v : InfinitePlace I.F) (i : Fin I.n)
@@ -156,19 +154,17 @@ end GlobalTheory.HtMinPf
 open GlobalTheory.HtMinPf in
 
 /- English proof (translation)
-Introduce `I`. Take `⟨N, R, C, hred⟩` from `GlobalTheory.T.existsReducedBasisBoundedType_of_instance I`. Take `⟨S, hSfin, hS0, hS⟩` from `GlobalTheory.T.integralVectorBases_bounded_finite_unitaryClasses I N R`. Take `⟨K, hK, hK'⟩` from `GlobalTheory.T.exists_compact_integral_unitary_finitePart I`. Establish `hbd : ∀ e₀ : Fin N → Fin I.n → I.E, ∃ M : ℝ, e₀ ∈ S → ∀ v i, ∃ c : Fin N → ℝ, (Pi.single v (Pi.single i (1 : ℂ)) : InfinitePlace I.F → Fin I.n → ℂ) = ∑ l, c l • vec I 1 (e₀ l) ∧ ∑ l, |c l| ≤ M`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `e₀`. Distinguish the cases in `h : e₀ ∈ S`. Use `fun v i => span_of_zbasis I e₀ (hS0 e₀ h) (Pi.single v (Pi.single i (1 : ℂ))) choose c hc using this` as an intermediate fact. Use `⟨∑ v, ∑ i, ∑ l, |c v i l|, fun _ v i => ⟨c v i, hc v i, ?_⟩⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 
-Conclude with `⟨0, fun h' => absurd h' h⟩`. Use `choose M hM using hbd`. Take `⟨Mt, hMt⟩` from `(hSfin.image M).bddAbove`. Use `⟨N, Mt * max C 0, K, hK, ?_⟩` and prove the remaining obligations. Introduce `y t ht0 ht1 hns`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨e, heZ, heB, hesz⟩` from `hred y`. Take `⟨e₀, he₀S, γ, hγU, hγi, hγi', hγe⟩` from `hS e heZ heB`. Take `⟨x, hxG, hxK, hx⟩` from `hK' γ hγU hγi hγi'`. Use `⟨x, hxG, hxK, fun v i j => ?_⟩` and prove the remaining obligations. Establish `hMle : M e₀ ≤ Mt` using `hMt (Set.mem_image_of_mem M he₀S)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨c, hc, hcM⟩` from `hM e₀ he₀S v i`. Establish `hvec : ∀ l, vec I (x.1 * y) (e₀ l) = vec I y (e l)` using `fun l => by`. Rewrite using `[← hγe l]`. Conclude with `vec_trans I x.1 y γ hx (e l)`. Establish `hb` using `entry_bound I (x.1 * y) e₀ c v i hc j`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses repeatedly using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hb` using `[hvec]`. Establish `ht : 0 ≤ t ^ N` using `pow_nonneg ht0.le _`. Rewrite using `[uj_entry]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.sum_mul]`.
-
-Repeatedly rewrite using `[mul_assoc]`. Use `_ ≤ ∑ l, |c l| * max C 0 := Finset.sum_le_sum fun l _ => mul_le_mul_of_nonneg_left ((hesz t ht0 ht1 hns l).trans (le_max_left _ _)) (abs_nonneg _)`. Use `_ = (∑ l, |c l|) * max C 0 := by rw [Finset.sum_mul]`. Use `_ ≤ Mt * max C 0 := mul_le_mul_of_nonneg_right (hcM.trans hMle) (le_max_right _ _)`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.htMin_of_reduced : ∀ I : AutInst, HtMin I := by
   intro I

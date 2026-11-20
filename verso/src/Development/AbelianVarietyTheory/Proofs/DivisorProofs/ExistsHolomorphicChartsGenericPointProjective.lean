@@ -13,19 +13,17 @@ open ReciprocityTheory.ChartRestriction.G.DVR.FlatBC (algX)
 namespace GlobalTheory.GenericCharts
 
 /- English proof (translation)
-Take `⟨N, i, hi, hcomp⟩` from `hp`. Use `haveI : IsProper (PSpace.str F N) := isProper_str F N`. Use `haveI : LocallyOfFiniteType p := by rw [← hcomp]; infer_instance`. Take `⟨_, ⟨U, hU, rfl⟩, hxU, -⟩` from `X.isBasis_affineOpens.exists_subset_of_mem_open (Set.mem_univ (genericPoint X)) isOpen_univ`. Establish `hU : IsAffineOpen U` using `hU`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `haveI : Nonempty U := ⟨⟨_, hxU⟩⟩`. Set `ψ` to `Spec.preimage (hU.fromSpec ≫ p)`. Establish `hψ : Spec.map ψ = hU.fromSpec ≫ p` using `Spec.map_preimage _`. Use `letI : Algebra F Γ(X, U) := ψ.hom.toAlgebra`. Use `haveI hft : Algebra.FiniteType F Γ(X, U) := (HasRingHomProperty.Spec_iff (P := @LocallyOfFiniteType) (φ := ψ)).mp (hψ ▸ inferInstance)`.
+Equip the data with the indicated structure. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hA : Algebra.trdeg F Γ(X, U) = D` using `GlobalTheory.GenFinite.trdeg_affineOpen_eq F p hU ⟨_, hxU⟩ D hd`. Use `haveI : FaithfulSMul F Γ(X, U) := (faithfulSMul_iff_algebraMap_injective _ _).mpr (algebraMap F Γ(X, U)).injective`. Take `⟨f, hf, hs⟩` from `GlobalTheory.GenericEtale.exists_away F Γ(X, U) hA`. Set `B` to `Localization.Away f`. Establish `: IsDomain B` using `IsLocalization.isDomain_of_le_nonZeroDivisors (M := Submonoid.powers f) _ (powers_le_nonZeroDivisors_of_noZeroDivisors hf)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `: IsOpenImmersion (spMap (algebraMap Γ(X, U) B))` using `IsOpenImmersion.of_isLocalization f`. Set `i' : Sp Γ(X, U) ⟶ X` to `hU.fromSpec`. Use `haveI : IsOpenImmersion i' := inferInstanceAs (IsOpenImmersion hU.fromSpec)`. Establish `hi' : i' ≫ p = spMap (algebraMap F Γ(X, U))` using `hψ.symm`. Set `j : Sp B ⟶ X` to `spMap (algebraMap Γ(X, U) B) ≫ i'`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hj : j ≫ p = spMap (algebraMap F B)`. Rewrite using `[Category.assoc, hi', IsScalarTower.algebraMap_eq F Γ(X, U) B, ← Spec.map_comp]`. Both sides reduce to the same expression. Establish `h₁ : SmoothOfRelativeDimension D (j ≫ p)`. Rewrite using `[hj]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations.
 
-Use `(HasRingHomProperty.Spec_iff (P := @SmoothOfRelativeDimension D)).mpr ?_` and prove the remaining obligations. Conclude with `RingHom.locally_of RingHom.isStandardSmoothOfRelativeDimension_respectsIso _ ((RingHom.isStandardSmoothOfRelativeDimension_algebraMap D).mpr hs)`. Establish `h₂ : SmoothOfRelativeDimension D (j.opensRange.ι ≫ p)`. Rewrite using `[← j.isoOpensRange_inv_comp, Category.assoc]`. Establish `: SmoothOfRelativeDimension (0 + D) (j.isoOpensRange.inv ≫ j ≫ p)` using `inferInstance`.
-
-Rewrite `this` using `[zero_add]`. Then use the resulting hypothesis. Use `ModelCharts.exists_etale_coords_of_opens p D j.opensRange ?_` and prove the remaining obligations. Conclude with `⟨genericPoint _, genericPoint_eq_of_isOpenImmersion j⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_etale_coords (F : Type) [Field F] [CharZero F] (X : Scheme.{0}) [IsIntegral X]
     (p : X ⟶ Sp F) (D : ℕ) (hp : IsProjOver p) (hd : topologicalKrullDim X = (D : ℕ)) :
@@ -72,7 +70,7 @@ theorem exists_etale_coords (F : Type) [Field F] [CharZero F] (X : Scheme.{0}) [
   exact ⟨genericPoint _, genericPoint_eq_of_isOpenImmersion j⟩
 
 /- English proof (translation)
-Introduce `F _ X _ _ p σ D hp hd`. Use `haveI : CharZero F := σ.charZero`. Take `⟨U, x, hU, hη, hx⟩` from `exists_etale_coords F X p D hp hd`. Conclude with `⟨U, hη, fun y hy => (AlgChart.exists_of_etale hU x hx hy).imp fun c h => h.1⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_generic_charts : ∀ (F : Type) [Field F] (X : Scheme.{0}) [IsIntegral X] [IsLocallyNoetherian X] (p : X ⟶ Sp F) (σ : F →+* ℂ) (D : ℕ), IsProjOver p → topologicalKrullDim X = (D : ℕ) → ∃ U : X.Opens, genericPoint X ∈ U ∧ ∀ y ∈ ptsIn p σ U, ∃ c : AlgChart p σ D, y ∈ c.e.source := by
   intro F _ X _ _ p σ D hp hd

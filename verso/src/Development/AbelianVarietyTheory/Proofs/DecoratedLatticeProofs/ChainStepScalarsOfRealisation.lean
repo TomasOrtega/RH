@@ -31,11 +31,11 @@ namespace StepScal
 open GlobalTheory.ChainOnto
 
 /- English proof (translation)
-Establish `h1 : ∀ (v : ∀ i, s i) y, f (PiTensorProduct.tprod ℂ v) y = g (PiTensorProduct.tprod ℂ v) y`. Introduce `v y`. Proceed by induction on `y using PiTensorProduct.induction_on with`. Consider the case `smul_tprod r v' => rw [LinearMap.map_smulₛₗ, LinearMap.map_smulₛₗ, h]`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Establish `h2 : ∀ x y, f x y = g x y`. Introduce `x`. Proceed by induction on `x using PiTensorProduct.induction_on with`. Consider the case `smul_tprod r v => intro y`. Rewrite using `[map_smul, map_smul, LinearMap.smul_apply, LinearMap.smul_apply, h1]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Consider the case `add x x' hx hx' => intro y`. Rewrite using `[map_add, map_add, LinearMap.add_apply, LinearMap.add_apply, hx, hx']`. Conclude with `LinearMap.ext fun x => LinearMap.ext fun y => h2 x y`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sesq_eq_of_tprod {ι : Type} {s : ι → Type} [∀ i, AddCommGroup (s i)] [∀ i, Module ℂ (s i)]
     (f g : (⨂[ℂ] i, s i) →ₗ[ℂ] (⨂[ℂ] i, s i) →ₗ⋆[ℂ] ℂ)
@@ -54,9 +54,9 @@ theorem sesq_eq_of_tprod {ι : Type} {s : ι → Type} [∀ i, AddCommGroup (s i
   exact LinearMap.ext fun x => LinearMap.ext fun y => h2 x y
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Establish `hd : w₀ - w₁ ∈ s'.KF` using `sub_mem h₀.1 h₁.1`. Establish `e : ipD' (w₀ - w₁) (w₀ - w₁) = 0`. Rewrite using `[map_sub (ipD' (w₀ - w₁)), h₀.2 _ hd, h₁.2 _ hd, sub_self]`. Use `hm.posD _ (sub_ne_zero.2 hne)` as an intermediate fact.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `this` using `[e]`. Simplify using `at this`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem adjVec_unique {c : Com D} {s s' : PiLocalization₂ D} {p : Step c s s'}
     {ipD : SmT s.M →ₗ[ℂ] SmT s.M →ₗ⋆[ℂ] ℂ} {ipD' : SmT s'.M →ₗ[ℂ] SmT s'.M →ₗ⋆[ℂ] ℂ}
@@ -72,7 +72,7 @@ theorem adjVec_unique {c : Com D} {s s' : PiLocalization₂ D} {p : Step c s s'}
   simp at this
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hx`. Use `hm.pos x hx` as an intermediate fact. Rewrite `this` using `[h x]`. Simplify using `at this`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem eq_zero_of_ip {c : Com D} {s : PiLocalization₂ D} {ipD : SmT s.M →ₗ[ℂ] SmT s.M →ₗ⋆[ℂ] ℂ}
     {ip : s.CC c →ₗ[ℂ] s.CC c →ₗ⋆[ℂ] ℂ} (hm : IsMet c s ipD ip) {x : s.CC c} (h : ∀ y, ip y x = 0) : x = 0 := by
@@ -82,9 +82,9 @@ theorem eq_zero_of_ip {c : Com D} {s : PiLocalization₂ D} {ipD : SmT s.M →�
   simp at this
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨-, hy⟩ y`. Take `⟨a, h1, h2⟩` from `hy y`. Rewrite using `[← (hIP t (k + 1) hk ipD' ip' hm' X y a).1 h1, ← (hIP t k (by omega) ipD ip hm U ((stepY R t k).io y) a).1 h2]`. Introduce `hy`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hX : PiTensorProduct.lift (PiTensorProduct.lift.symm X.1) ∈ (stY R t (k + 1)).CC (comR R t)`. Rewrite using `[LinearEquiv.apply_symm_apply]`. Conclude with `X.2`. Use `⟨hX, fun y => ⟨ip' y X, (hIP t (k + 1) hk ipD' ip' hm' X y _).2 rfl, ?_⟩⟩` and prove the remaining obligations. Conclude with `(hIP t k (by omega) ipD ip hm U ((stepY R t k).io y) _).2 (hy y)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isUp_iff (R : RealDat D A Ks) (hIP : IPDict R) {t : T} {k : ℕ} (hk : k + 1 < D.R.m)
     {ipD ip ipD' ip'} (hm : IsMet (comR R t) (stY R t k) ipD ip) (hm' : IsMet (comR R t) (stY R t (k + 1)) ipD' ip')
@@ -102,7 +102,7 @@ theorem isUp_iff (R : RealDat D A Ks) (hIP : IPDict R) {t : T} {k : ℕ} (hk : k
     exact (hIP t k (by omega) ipD ip hm U ((stepY R t k).io y) _).2 (hy y)
 
 /- English proof (translation)
-The claim follows from `forall_congr' fun y => hIP t (D.R.m - 1) (by omega) ipD ip hm U ((stepX R h t).io (toCC R h t y)) _`.
+A detailed English derivation is pending.
 -/
 theorem isUpTop_iff (R : RealDat D A Ks) (hIP : IPDict R) (h : RangeX R) (hm2 : 2 ≤ D.R.m) {t : T} {ipD ip}
     (hm : IsMet (comR R t) (stY R t (D.R.m - 1)) ipD ip) (U : (stY R t (D.R.m - 1)).CC (comR R t)) (x : (R.HX t).H) :
@@ -121,29 +121,27 @@ def GoodAt (R : RealDat D A Ks) (t : T) (B : GlobalTheory.LFun.Fam D.host.E) (k 
       IsQ (twR R t) k (⟨_, hu⟩ : (stY R t k).CC (comR R t)))
 
 /- English proof (translation)
-Establish `hw` using `(hRC t).1`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero`. Introduce `hm0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨fun u hu => ?_, fun hne => ?_⟩` and prove the remaining obligations. Take `⟨hu', hpar⟩` from `(hRP t c).2 u hu`. Use `⟨hu', ?_⟩` and prove the remaining obligations. Distinguish the cases in `h0 : u = 0`. Conclude with `Or.inl h0`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Prove the first alternative.
 
-Conclude with `Or.inr ⟨hpar h0 B hB, (hQ _ _ hw 0 (Nat.zero_le _) _ ((hRC t).2.1 0 hm0)).2 rfl _⟩`. Take `⟨u, hu, h0⟩` from `(Submodule.ne_bot_iff _).1 hne`. Conclude with `⟨u, hu, h0⟩`. Consider the case `succ k ih`. Introduce `hk1`.
+Prove the second alternative. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hk : k < D.R.m` using `by omega`. Establish `hs` using `(hRC t).2.1 k hk`. Establish `hs'` using `(hRC t).2.1 (k + 1) hk1`. Establish `hp` using `(hRC t).2.2.2.1 k hk1`. Take `⟨-, ⟨ipD, ip, hm⟩, -⟩` from `hSoft _ _ hw k hk.le _ hs`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨hfin', ⟨ipD', ip', hm'⟩, -⟩` from `hSoft _ _ hw (k + 1) hk1.le _ hs'`. Take `⟨K, φ, v, hK, hU⟩` from `hRU.1 k hk1`. Take `⟨mm, X, mR, H₀, hcov, hlev, hconv, hH, hkap⟩` from `hU t`. Establish `hSLt` using `hSL hN _ _ hw k hk _ _ hs hs' _ hp ipD ip ipD' ip' hm hm' mm X hcov mR hlev φ v hconv H₀ hH (by rw [hkap]; exact hK) B hb`. Use `⟨fun x hx => ?_, fun hne => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨u, hu, hup⟩` from `hx`. Take `⟨hu', hgood⟩` from `(ih hk).1 u hu`. Establish `hx' : PiTensorProduct.lift x ∈ (stY R t (k + 1)).CC (comR R t)` using `hup.1`. Establish `hup' : IsUp R t k (PiTensorProduct.lift.symm (⟨_, hu'⟩ : (stY R t k).CC (comR R t)).1) (PiTensorProduct.lift.symm (⟨_, hx'⟩ : (stY R t (k + 1)).CC (comR R t)).1)`. Simplify using `using hup`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hadj` using `(isUp_iff R hIP hk1 hm hm' _ _).1 hup'`. Use `⟨hx', ?_⟩` and prove the remaining obligations. Break down `hgood with h0 | ⟨hpar, hq⟩` into its components or cases. Use `left`. Establish `hU0 : (⟨_, hu'⟩ : (stY R t k).CC (comR R t)) = 0`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Substitute using the available equality.
 
-Substitute `h0` using the available equality. Conclude with `Subtype.ext (map_zero _)`. Establish `hX0` using `eq_zero_of_ip hm' fun y => by rw [hadj y, hU0, map_zero]`. Establish `h1 : PiTensorProduct.lift x = 0` using `congrArg Subtype.val hX0`. Conclude with `(LinearEquiv.map_eq_zero_iff _).1 h1`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Prove the second alternative.
 
-Take `⟨w₀, -, -, hx1⟩` from `hSLt _ hpar hq`. Take `⟨hpx, hqx, -⟩` from `hx1 _ hadj`. Conclude with `Or.inr ⟨hpx, hqx⟩`. Take `⟨u, hu, h0⟩` from `(ih hk).2 hne`. Take `⟨hu', hgood⟩` from `(ih hk).1 u hu`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Break down `hgood with h0' | ⟨hpar, hq⟩` into its components or cases. Conclude with `absurd h0' h0`. Take `⟨Xa, hXa, -⟩` from `GlobalTheory.hermitian_adjoint_exists_unique _ _ ip ip' hm'.herm hm'.pos (stepY R t k).io ⟨_, hu'⟩`. Take `⟨w₀, -, -, hx1⟩` from `hSLt _ hpar hq`. Take `⟨hpx, -, -⟩` from `hx1 _ hXa`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨PiTensorProduct.lift.symm Xa.1, ⟨u, hu, ?_⟩, ?_⟩` and prove the remaining obligations. Use `(isUp_iff R hIP hk1 hm hm' ⟨_, hu'⟩ Xa).2 hXa` as an intermediate fact. Simplify using `using this`. Introduce `hz`. Apply `hpx.1` to reduce the goal to its premises.
-
-Apply `Subtype.ext` to reduce the goal to its premises. Use `show Xa.1 = 0`. Conclude with `(LinearEquiv.map_eq_zero_iff _).1 hz`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem reached_good (R : RealDat D A Ks) (hN : GlobalTheory.IndefiniteRowSideFullHecke.ThetaSourceAction.NodeGap D) (hSoft : SoftQ D) (hQ : QOfVal D)
     (hSL : StepLam D) (h : RangeX R) (hRC : RChain R h) (hRU : RUnif R h) (hRP : RowPar R) (hIP : IPDict R)
@@ -220,7 +218,7 @@ namespace StepScal
 open GlobalTheory.ChainOnto
 
 /- English proof (translation)
-Establish `h2` using `congrArg conj hf`. Simplify using `only [map_mul, Complex.conj_conj, Complex.conj_ofReal, hd] at h2`. Clear the denominators using the available nonvanishing facts. Take the linear combination `h2`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem conj_step {P Q K d : ℂ} {l : ℝ} (hd : conj d = d) (hd0 : d ≠ 0) (hf : P * d = conj (K * l) * Q) :
     conj P = K / d * l * conj Q := by
@@ -230,11 +228,11 @@ theorem conj_step {P Q K d : ℂ} {l : ℝ} (hd : conj d = d) (hd0 : d ≠ 0) (h
   linear_combination h2
 
 /- English proof (translation)
-Establish `h2` using `congrArg conj hf`. Simplify using `only [map_mul, Complex.conj_conj, Complex.conj_ofReal, ha, hd, hb] at h2`. Establish `ha' : (a.re : ℂ) = a` using `Complex.conj_eq_iff_re.1 ha`. Establish `hb' : (b.re : ℂ) = b` using `Complex.conj_eq_iff_re.1 hb`. Establish `hd' : (d.re : ℂ) = d` using `Complex.conj_eq_iff_re.1 hd`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨a.re / (l * b.re), by positivity, ?_⟩` and prove the remaining obligations. Rewrite `h2` using `[← ha', ← hb', ← hd']`. Rewrite using `[← hd']`. Establish `h3 : (d.re : ℂ) ≠ 0` using `by exact_mod_cast hd0.ne'`. Establish `h4 : (l : ℂ) ≠ 0` using `by exact_mod_cast hl.ne'`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h5 : (b.re : ℂ) ≠ 0` using `by exact_mod_cast hb0.ne'`. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Take the linear combination `h2`.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem pos_ratio {a b d K : ℂ} {l : ℝ} (ha : conj a = a) (ha0 : 0 < a.re) (hb : conj b = b) (hb0 : 0 < b.re)
     (hd : conj d = d) (hd0 : 0 < d.re) (hl : 0 < l) (hf : a * d = conj (K * l) * b) :
@@ -263,41 +261,39 @@ open GlobalTheory.ChainOnto
 set_option maxHeartbeats 1600000 in
 
 /- English proof (translation)
-Establish `hk : k < D.R.m` using `by omega`. Take `⟨K, φ, v, hK, hU⟩` from `hRU.1 k hk1`. Establish `key : ∀ (ipD₀ : SmT (R.MY k) →ₗ[ℂ] SmT (R.MY k) →ₗ⋆[ℂ] ℂ) (ipD₀' : SmT (R.MY (k + 1)) →ₗ[ℂ] SmT (R.MY (k + 1)) →ₗ⋆[ℂ] ℂ), (∀ v v' : (R.MY k).Vec, ipD₀ (PiTensorProduct.tprod ℂ v) (PiTensorProduct.tprod ℂ v') = ∏ τ, ⟪(v' τ : (R.MY k).H τ), (v τ : (R.MY k).H τ)⟫_ℂ) → (∀ v v' : (R.M …`. Introduce `ipD₀ ipD₀' hp₀ hp₀' t c hc B hB`. Establish `hw` using `(hRC t).1`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hs0` using `(hRC t).2.1 0 (by omega)`. Establish `hs` using `(hRC t).2.1 k hk`. Establish `hs'` using `(hRC t).2.1 (k + 1) hk1`. Establish `hp` using `(hRC t).2.2.2.1 k hk1`. Take `⟨-, ⟨ipD, ip, hm⟩, -⟩` from `hSoft _ _ hw k hk.le _ hs`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨hfin', ⟨ipD', ip', hm'⟩, -⟩` from `hSoft _ _ hw (k + 1) hk1.le _ hs'`. Use `haveI := hfin'`. Take `rfl : ipD = ipD₀` from `sesq_eq_of_tprod _ _ fun v v' => (hm.pure v v').trans (hp₀ v v').symm`. Take `rfl : ipD' = ipD₀'` from `sesq_eq_of_tprod _ _ fun v v' => (hm'.pure v v').trans (hp₀' v v').symm`. Take `⟨u₀, hu₀, hu₀0⟩` from `(Submodule.ne_bot_iff _).1 hc`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨hu₀', hpar₀⟩` from `(hRP t c).2 u₀ hu₀`. Take `⟨hb, hL⟩` from `hLP _ _ hw 0 (Nat.zero_le _) _ hs0 rfl _ B (hpar₀ hu₀0 B hB)`. Take `⟨l, hl0, hleq⟩` from `hL k hk`. Take `⟨H, -, -, hconv, -, -⟩` from `hLF _ hw.com B hb k hk`. Establish `hLV : IsLValue R t B (k + 1) l` using `⟨hconv, hl0, hleq⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hgood` using `reached_good R hN hSoft hQ hSL h hRC hRU hRP hIP t c B hB hb`. Take `⟨mm, X, mR, H₀, hcov, hlev, hconv', hH, hkap⟩` from `hU t`. Establish `hSLt` using `hSL hN _ _ hw k hk _ _ hs hs' _ hp ipD ip ipD' ip' hm hm' mm X hcov mR hlev φ v hconv' H₀ hH (by rw [hkap]; exact hK) B hb`. Take `⟨u₁, hu₁, hu₁0⟩` from `(hgood k hk).2 hc`. Take `⟨hu₁', hg₁⟩` from `(hgood k hk).1 u₁ hu₁`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨hpar₁, hq₁⟩` from `hg₁.resolve_left hu₁0`. Take `⟨w₁, hw₁0, hadj₁, hx₁⟩` from `hSLt _ hpar₁ hq₁`. Use `⟨⟨w₁, hw₁0, hadj₁⟩, fun w₀ hadj₀ => ?_⟩` and prove the remaining obligations. Establish `e` using `adjVec_unique hm' hadj₁ hadj₀`. Substitute `e` using the available equality.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨l, hLV, ?_, fun z hz => ⟨fun u hu => ?_, fun u₁ hu₁ u₂ hu₂ x₁ x₂ hup₁ hup₂ => ?_⟩⟩` and prove the remaining obligations. Take `⟨Xa, hXa, -⟩` from `GlobalTheory.hermitian_adjoint_exists_unique _ _ ip ip' hm'.herm hm'.pos (stepY R t k).io ⟨_, hu₁'⟩`. Take `⟨hpx, -, hf⟩` from `hx₁ _ hXa`. Establish `hf'` using `hf _ _ hXa`. Rewrite `hf'` using `[hkap, hleq]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `pos_ratio (hm'.herm _ _).symm (hm'.pos _ hpx.1) (hm.herm _ _).symm (hm.pos _ hpar₁.1) (hm'.hermD _ _).symm (hm'.posD _ hw₁0) hl0 hf'`. Take `⟨hu', -⟩` from `(hgood k hk).1 u hu`. Take `⟨Xa, hXa, -⟩` from `GlobalTheory.hermitian_adjoint_exists_unique _ _ ip ip' hm'.herm hm'.pos (stepY R t k).io ⟨_, hu'⟩`. Use `⟨PiTensorProduct.lift.symm Xa.1, ?_⟩` and prove the remaining obligations. Use `(isUp_iff R hIP hk1 hm hm' ⟨_, hu'⟩ Xa).2 hXa` as an intermediate fact.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result.
 
-Simplify using `using this`. Take `⟨hu₁', hg₁⟩` from `(hgood k hk).1 u₁ hu₁`. Take `⟨hu₂', -⟩` from `(hgood k hk).1 u₂ hu₂`. Establish `hx₁' : PiTensorProduct.lift x₁ ∈ (stY R t (k + 1)).CC (comR R t)` using `hup₁.1`. Establish `hx₂' : PiTensorProduct.lift x₂ ∈ (stY R t (k + 1)).CC (comR R t)` using `hup₂.1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hup₁' : IsUp R t k (PiTensorProduct.lift.symm (⟨_, hu₁'⟩ : (stY R t k).CC (comR R t)).1) (PiTensorProduct.lift.symm (⟨_, hx₁'⟩ : (stY R t (k + 1)).CC (comR R t)).1)` using `by simpa using hup₁`. Establish `hup₂' : IsUp R t k (PiTensorProduct.lift.symm (⟨_, hu₂'⟩ : (stY R t k).CC (comR R t)).1) (PiTensorProduct.lift.symm (⟨_, hx₂'⟩ : (stY R t (k + 1)).CC (comR R t)).1)` using `by simpa using hup₂`. Establish `hA₁` using `(isUp_iff R hIP hk1 hm hm' _ _).1 hup₁'`. Establish `hA₂` using `(isUp_iff R hIP hk1 hm hm' _ _).1 hup₂'`. Use `⟨ip ⟨_, hu₂'⟩ ⟨_, hu₁'⟩, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `(hIP t k hk ipD ip hm ⟨_, hu₁'⟩ ⟨_, hu₂'⟩ _).2 rfl` as an intermediate fact. Simplify using `only [Subtype.coe_mk, LinearEquiv.symm_apply_apply] at this`. Conclude with `this`. Establish `hmain : ip' ⟨_, hx₂'⟩ ⟨_, hx₁'⟩ = ((z * l : ℝ) : ℂ) * ip ⟨_, hu₂'⟩ ⟨_, hu₁'⟩`. Break down `hg₁ with h0 | ⟨hpar, hq⟩` into its components or cases.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact.
 
-Establish `hU0 : (⟨_, hu₁'⟩ : (stY R t k).CC (comR R t)) = 0`. Substitute `h0` using the available equality. Conclude with `Subtype.ext (map_zero _)`. Establish `hX0` using `eq_zero_of_ip hm' fun y => by rw [hA₁ y, hU0, map_zero]`. Rewrite using `[hU0, hX0, map_zero, map_zero, mul_zero]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality. Extract witnesses or component facts from the available result.
 
-Take `⟨w₂, -, hadj₂', hx⟩` from `hSLt ⟨_, hu₁'⟩ hpar hq`. Establish `e2` using `adjVec_unique hm' hadj₂' hadj₀`. Substitute `e2` using the available equality. Take `⟨-, -, hf⟩` from `hx _ hA₁`. Establish `hf'` using `hf _ _ hA₂`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hf'` using `[hkap, hleq]`. Establish `h1` using `conj_step (hm'.hermD _ _).symm (fun h0 => by`. Use `hm'.posD _ hw₁0` as an intermediate fact. Rewrite `this` using `[h0]`. Simplify using `at this) hf'`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Rewrite `h1` using `[← hm'.herm, ← hm.herm]`. Establish `hz' : (z : ℂ) = K / ipD' w₂ w₂` using `hz`. Rewrite using `[h1]`. Use `push_cast`. Rewrite using `[hz']`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Use `(hIP t (k + 1) hk1 ipD' ip' hm' ⟨_, hx₁'⟩ ⟨_, hx₂'⟩ _).2 hmain.symm` as an intermediate fact. Simplify using `only [Subtype.coe_mk, LinearEquiv.symm_apply_apply] at this`. Conclude with `this`. Distinguish the cases in `hex : ∃ (t : T) (c : EigSys D), rowPart R (badPl R t) c ≠ ⊥ ∧ ∃ B, GlobalTheory.LFun.IsSysParamD D (badPl R t) D.R.r c B`. Take `⟨t₀, c₀, hc₀, B₀, hB₀⟩` from `hex`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hw` using `(hRC t₀).1`. Take `⟨-, ⟨ipD, ip, hm⟩, -⟩` from `hSoft _ _ hw k hk.le _ ((hRC t₀).2.1 k hk)`. Take `⟨-, ⟨ipD', ip', hm'⟩, -⟩` from `hSoft _ _ hw (k + 1) hk1.le _ ((hRC t₀).2.1 (k + 1) hk1)`. Take `⟨⟨w₀, -, hadj₀⟩, hrest⟩` from `key ipD ipD' hm.pure hm'.pure t₀ c₀ hc₀ B₀ hB₀`. Take `⟨-, -, ⟨q, hq0, hq⟩, -⟩` from `hrest w₀ hadj₀`.
-
-Use `⟨q, hq0, fun t c hc B hB => ?_⟩` and prove the remaining obligations. Take `⟨l, hl, -, hS⟩` from `(key ipD ipD' hm.pure hm'.pure t c hc B hB).2 w₀ hadj₀`. Conclude with `⟨l, hl, hS q hq⟩`. Conclude with `⟨1, one_pos, fun t c hc B hB => absurd ⟨t, c, hc, B, hB⟩ hex⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem mid_scalar (R : RealDat D A Ks) (hN : GlobalTheory.IndefiniteRowSideFullHecke.ThetaSourceAction.NodeGap D) (hSoft : SoftQ D) (hQ : QOfVal D)
     (hLP : LPos D) (hLF : LFull D) (hSL : StepLam D) (h : RangeX R) (hRC : RChain R h) (hRU : RUnif R h)
@@ -417,43 +413,41 @@ open GlobalTheory.ChainOnto
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Establish `hm2 : 2 ≤ D.R.m` using `D.R.two_le_m`. Establish `hk : D.R.m - 1 < D.R.m` using `by omega`. Establish `e : D.R.m - 1 + 1 = D.R.m` using `by omega`. Take `⟨hK, hU⟩` from `hKU`. Introduce `ipD₀ ipD₀' hp₀ hp₀' t c hc B hB`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hw` using `(hRC t).1`. Establish `hs0` using `(hRC t).2.1 0 (by omega)`. Establish `hs` using `(hRC t).2.1 (D.R.m - 1) hk`. Establish `hsX` using `(hRC t).2.2.1`. Establish `hsX' : IsStage (comR R t) (twR R t) (D.R.m - 1 + 1) (stX R t)` using `by rw [e]; exact hsX`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hp : IsStep (twR R t) (D.R.m - 1 + 1) (stepX R h t)` using `by rw [e]; exact (hRC t).2.2.2.2`. Take `⟨-, ⟨ipD, ip, hm⟩, -⟩` from `hSoft _ _ hw (D.R.m - 1) hk.le _ hs`. Take `⟨hfin', ⟨ipD', ip', hm'⟩, -⟩` from `hSoft _ _ hw D.R.m le_rfl _ hsX`. Use `haveI := hfin'`. Take `⟨hbij, hnorm⟩` from `hNXt t`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hnorm'` using `hnorm ipD' ip' hm'`. Take `rfl : ipD = ipD₀` from `sesq_eq_of_tprod _ _ fun v v' => (hm.pure v v').trans (hp₀ v v').symm`. Take `rfl : ipD' = ipD₀'` from `sesq_eq_of_tprod _ _ fun v v' => (hm'.pure v v').trans (hp₀' v v').symm`. Take `⟨u₀, hu₀, hu₀0⟩` from `(Submodule.ne_bot_iff _).1 hc`. Take `⟨hu₀', hpar₀⟩` from `(hRP t c).2 u₀ hu₀`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨hb, hL⟩` from `hLP _ _ hw 0 (Nat.zero_le _) _ hs0 rfl _ B (hpar₀ hu₀0 B hB)`. Take `⟨l, hl0, hleq⟩` from `hL (D.R.m - 1) hk`. Take `⟨H, -, -, hconv, -, -⟩` from `hLF _ hw.com B hb (D.R.m - 1) hk`. Establish `hLV : IsLValue R t B D.R.m l`. Establish `h1` using `hleq`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hconv`, `h1` using `[e]`. Conclude with `⟨hconv, hl0, h1⟩`. Establish `hgood` using `reached_good R hN hSoft hQ hSL h hRC hRU hRP hIP t c B hB hb`. Take `⟨mm, X, mR, H₀, hcov, hlev, hconv', hH, hkap⟩` from `hU t`. Establish `hSLt` using `hSL hN _ _ hw (D.R.m - 1) hk _ _ hs hsX' _ hp ipD ip ipD' ip' hm hm' mm X hcov mR hlev φ v hconv' H₀ hH (by rw [hkap]; exact hK) B hb`.
+Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨u₁, hu₁, hu₁0⟩` from `(hgood _ hk).2 hc`. Take `⟨hu₁', hg₁⟩` from `(hgood _ hk).1 u₁ hu₁`. Take `⟨hpar₁, hq₁⟩` from `hg₁.resolve_left hu₁0`. Take `⟨w₁, hw₁0, hadj₁, hx₁⟩` from `hSLt _ hpar₁ hq₁`. Use `⟨⟨w₁, hw₁0, hadj₁⟩, fun w₀ hadj₀ => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e1` using `adjVec_unique hm' hadj₁ hadj₀`. Substitute `e1` using the available equality. Establish `hδc : (δ : ℂ) ≠ 0` using `by exact_mod_cast hδ.ne'`. Establish `hread : ∀ (U : (stY R t (D.R.m - 1)).CC (comR R t)) (x : (R.HX t).H), (∀ y, ⟪x, y⟫_ℂ = ip ((stepX R h t).io (toCC R h t y)) U) → ∀ Y, ip' Y ((δ : ℂ) • toCC R h t x) = ip ((stepX R h t).io Y) U`. Introduce `U x hx Y`.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨y, rfl⟩` from `hbij.2 Y`. Rewrite using `[LinearMap.map_smulₛₗ, Complex.conj_ofReal, smul_eq_mul, ← hnorm', hx]`. Use `⟨l, hLV, ?_, fun z hz => ⟨fun u hu => ?_, fun u₁ hu₁ u₂ hu₂ x₁ x₂ hup₁ hup₂ => ?_⟩⟩` and prove the remaining obligations. Take `⟨Xa, hXa, -⟩` from `GlobalTheory.hermitian_adjoint_exists_unique _ _ ip ip' hm'.herm hm'.pos (stepX R h t).io ⟨_, hu₁'⟩`. Take `⟨hpx, -, hf⟩` from `hx₁ _ hXa`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hf'` using `hf _ _ hXa`. Rewrite `hf'` using `[hkap, hleq]`. Conclude with `pos_ratio (hm'.herm _ _).symm (hm'.pos _ hpx.1) (hm.herm _ _).symm (hm.pos _ hpar₁.1) (hm'.hermD _ _).symm (hm'.posD _ hw₁0) hl0 hf'`. Take `⟨hu', -⟩` from `(hgood _ hk).1 u hu`. Take `⟨Xa, hXa, -⟩` from `GlobalTheory.hermitian_adjoint_exists_unique _ _ ip ip' hm'.herm hm'.pos (stepX R h t).io ⟨_, hu'⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨x, hx⟩` from `hbij.2 ((δ : ℂ)⁻¹ • Xa)`. Use `⟨x, ?_⟩` and prove the remaining obligations. Use `(isUpTop_iff R hIP h hm2 hm ⟨_, hu'⟩ x).2 fun y => by` as an intermediate fact. Rewrite using `[hnorm', hx, LinearMap.map_smulₛₗ, hXa, map_inv₀, Complex.conj_ofReal, smul_eq_mul, ← mul_assoc, mul_inv_cancel₀ hδc, one_mul]`. Simplify using `only [Subtype.coe_mk, LinearEquiv.symm_apply_apply] at this`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `this`. Take `⟨hu₁', hg₁⟩` from `(hgood _ hk).1 u₁ hu₁`. Take `⟨hu₂', -⟩` from `(hgood _ hk).1 u₂ hu₂`. Establish `hup₁' : IsUpTop R t (PiTensorProduct.lift.symm (⟨_, hu₁'⟩ : (stY R t (D.R.m - 1)).CC (comR R t)).1) x₁`. Simplify using `only [Subtype.coe_mk, LinearEquiv.symm_apply_apply]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `hup₁`. Establish `hup₂' : IsUpTop R t (PiTensorProduct.lift.symm (⟨_, hu₂'⟩ : (stY R t (D.R.m - 1)).CC (comR R t)).1) x₂`. Simplify using `only [Subtype.coe_mk, LinearEquiv.symm_apply_apply]`. Conclude with `hup₂`. Establish `hA₁` using `(isUpTop_iff R hIP h hm2 hm _ _).1 hup₁'`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `hA₂` using `(isUpTop_iff R hIP h hm2 hm _ _).1 hup₂'`. Use `⟨ip ⟨_, hu₂'⟩ ⟨_, hu₁'⟩, ?_, ?_⟩` and prove the remaining obligations. Use `(hIP t (D.R.m - 1) hk ipD ip hm ⟨_, hu₁'⟩ ⟨_, hu₂'⟩ _).2 rfl` as an intermediate fact. Simplify using `only [Subtype.coe_mk, LinearEquiv.symm_apply_apply] at this`. Conclude with `this`.
+Establish an intermediate fact. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Break down `hg₁ with h0 | ⟨hpar, hq⟩` into its components or cases. Establish `hU0 : (⟨_, hu₁'⟩ : (stY R t (D.R.m - 1)).CC (comR R t)) = 0`. Substitute `h0` using the available equality. Conclude with `Subtype.ext (map_zero _)`. Rewrite using `[hA₁ x₂, hU0, map_zero, map_zero, mul_zero]`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Take `⟨w₂, -, hadj₂', hx⟩` from `hSLt ⟨_, hu₁'⟩ hpar hq`. Establish `e2` using `adjVec_unique hm' hadj₂' hadj₀`. Substitute `e2` using the available equality. Take `⟨-, -, hf⟩` from `hx _ (hread _ _ hA₁)`. Establish `hf'` using `hf _ _ (hread _ _ hA₂)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hf'` using `[hkap, hleq]`. Establish `h1` using `conj_step (hm'.hermD _ _).symm (fun h0 => by`. Use `hm'.posD _ hw₁0` as an intermediate fact. Rewrite `this` using `[h0]`. Simplify using `at this) hf'`.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion.
 
-Rewrite `h1` using `[← hm'.herm, ← hm.herm]`. Rewrite `h1` using `[LinearMap.map_smulₛₗ, LinearMap.map_smul, Complex.conj_ofReal, smul_eq_mul, LinearMap.smul_apply, smul_eq_mul, ← hnorm']`. Establish `hz' : (z : ℂ) = K / ipD' w₂ w₂` using `hz`. Use `push_cast`. Rewrite using `[div_eq_mul_inv (z : ℂ), hz']`.
-
-Clear the denominators using the available nonvanishing facts. Take the linear combination `h1`.
+A detailed English derivation is pending.
 -/
 theorem top_key (R : RealDat D A Ks) (hN : GlobalTheory.IndefiniteRowSideFullHecke.ThetaSourceAction.NodeGap D) (hSoft : SoftQ D) (hQ : QOfVal D)
     (hLP : LPos D) (hLF : LFull D) (hSL : StepLam D) (h : RangeX R) (hRC : RChain R h)
@@ -574,11 +568,11 @@ theorem top_key (R : RealDat D A Ks) (hN : GlobalTheory.IndefiniteRowSideFullHec
 set_option maxHeartbeats 1600000 in
 
 /- English proof (translation)
-Establish `hk : D.R.m - 1 < D.R.m` using `by have := D.R.two_le_m; omega`. Take `⟨δ, hδ, hNXt⟩` from `hNX`. Take `⟨K, φ, v, hKU⟩` from `hRU.2`. Establish `key` using `top_key R hN hSoft hQ hLP hLF hSL h hRC hRU hRP hIP δ hδ hNXt K φ v hKU`. Distinguish the cases in `hex : ∃ (t : T) (c : EigSys D), rowPart R (badPl R t) c ≠ ⊥ ∧ ∃ B, GlobalTheory.LFun.IsSysParamD D (badPl R t) D.R.r c B`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Take `⟨t₀, c₀, hc₀, B₀, hB₀⟩` from `hex`. Establish `hw` using `(hRC t₀).1`. Take `⟨-, ⟨ipD, ip, hm⟩, -⟩` from `hSoft _ _ hw (D.R.m - 1) hk.le _ ((hRC t₀).2.1 (D.R.m - 1) hk)`. Take `⟨-, ⟨ipD', ip', hm'⟩, -⟩` from `hSoft _ _ hw D.R.m le_rfl _ (hRC t₀).2.2.1`. Take `⟨⟨w₀, -, hadj₀⟩, hrest⟩` from `key ipD ipD' hm.pure hm'.pure t₀ c₀ hc₀ B₀ hB₀`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨-, -, ⟨q, hq0, hq⟩, -⟩` from `hrest w₀ hadj₀`. Use `⟨q / δ, div_pos hq0 hδ, fun t c hc B hB => ?_⟩` and prove the remaining obligations. Take `⟨l, hl, -, hS⟩` from `(key ipD ipD' hm.pure hm'.pure t c hc B hB).2 w₀ hadj₀`. Conclude with `⟨l, hl, hS q hq⟩`. Conclude with `⟨1, one_pos, fun t c hc B hB => absurd ⟨t, c, hc, B, hB⟩ hex⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components.
 -/
 theorem top_scalar (R : RealDat D A Ks) (hN : GlobalTheory.IndefiniteRowSideFullHecke.ThetaSourceAction.NodeGap D) (hSoft : SoftQ D) (hQ : QOfVal D)
     (hLP : LPos D) (hLF : LFull D) (hSL : StepLam D) (h : RangeX R) (hRC : RChain R h) (hNX : NormX R h)
@@ -607,13 +601,11 @@ end StepScal
 open StepScal in
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 T A Ks _ _ _ R F _ hN hSoft hQ hLP hLF hSL h hRC hNX hRU hRP hIP`. Take `⟨rT, hrT, hT⟩` from `top_scalar R hN hSoft hQ hLP hLF hSL h hRC hNX hRU hRP hIP`. Establish `hmid` using `fun k (hk1 : k + 1 < D.R.m) => mid_scalar R hN hSoft hQ hLP hLF hSL h hRC hRU hRP hIP k hk1`. Use `choose! rM hrM hM using hmid`. Use `⟨fun j => if j = D.R.m then rT else rM (j - 1), fun j hj1 hjm => ?_, fun t c hc => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hj : j = D.R.m`. Simplify using `only [if_pos hj]`. Conclude with `hrT`. Simplify using `only [if_neg hj]; exact hrM (j - 1) (by omega)`. Use `⟨(hRP t c).1 hc, fun B hB => ⟨fun k hk => ?_, ?_⟩⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨l, hl, hS⟩` from `hM k hk t c hc B hB`. Use `⟨l, hl, ?_⟩` and prove the remaining obligations. Simplify using `only [if_neg (show k + 1 ≠ D.R.m by omega), Nat.add_sub_cancel]`. Conclude with `hS`. Take `⟨l, hl, hS⟩` from `hT t c hc B hB`.
-
-Use `⟨l, hl, ?_⟩` and prove the remaining obligations. Simplify using `only [if_pos rfl]`. Conclude with `hS`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem scalars_of_realisation : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.what₂.LL G Pl0 T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A), Given R F → GlobalTheory.IndefiniteRowSideFullHecke.ThetaSourceAction.NodeGap D → SoftQ D → QOfVal D → LPos D → LFull D → StepLam D → ∀ h : RangeX R, RChain R h → NormX R h → RUnif R h → RowPar R → IPDict R → GlobalTheory.IndefiniteRowSideFullHecke.LabelSettingScalars.Scalars R := by
   intro D G _ _ Pl0 T A Ks _ _ _ R F _ hN hSoft hQ hLP hLF hSL h hRC hNX hRU hRP hIP

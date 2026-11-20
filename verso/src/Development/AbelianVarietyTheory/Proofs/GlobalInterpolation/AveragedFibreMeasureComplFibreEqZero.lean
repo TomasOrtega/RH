@@ -5,17 +5,15 @@ open MeasureTheory Topology
 namespace GlobalTheory.QuadFibre
 
 /- English proof (translation)
-Introduce `K V _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ μ _ ν _ q hq hh U s hs t`. Take `⟨hUo, hUc, h1, hmul, hinv, hn, hsc, hsq⟩` from `hs`. Distinguish the cases in `ht : t = 0`. Substitute `ht` using the available equality. Rewrite using `[fibOf_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `hm : Measurable (fun x : V => s (t / q x) • x)`. Establish `h1 : Measurable (fun x : V => s (t / q x))` using `hsc.measurable.comp (measurable_const.div hq.measurable)`. Conclude with `h1.smul measurable_id`. Establish `hA : MeasurableSet (q ⁻¹' {t})ᶜ` using `((isClosed_singleton.preimage hq).measurableSet).compl`.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[fibOf_ne _ _ _ _ _ ht, Measure.smul_apply, Measure.map_apply hm hA, Measure.restrict_apply (hm hA)]`. Use `smul_zero _` and compare the differences between its conclusion and the goal. Use `measure_empty (μ := μ)` and compare the differences between its conclusion and the goal. Rewrite using `[Set.eq_empty_iff_forall_notMem]`. Introduce and unpack `x ⟨hx1, u, hu, hx2⟩`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hx1` to reduce the goal to its premises. Establish `hu0 : u ≠ 0`. Introduce `h`. Use `hn u hu` as an intermediate fact. Rewrite `this` using `[h]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `at this`. Establish `hx2' : q x = t * u` using `by simpa using hx2.symm`. Establish `h3 : t / q x = u⁻¹` using `by rw [hx2']; field_simp`. Use `show q (s (t / q x) • x) = t`. Rewrite using `[hh, h3, hsq _ (hinv u hu), hx2']`.
-
-Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem fibOf_compl_fibre : ∀ (K V : Type) [NontriviallyNormedField K] [IsUltrametricDist K] [ProperSpace K] [MeasurableSpace K] [BorelSpace K] [AddCommGroup V] [Module K V] [TopologicalSpace V] [IsTopologicalAddGroup V] [ContinuousSMul K V] [LocallyCompactSpace V] [SecondCountableTopology V] [T2Space V] [MeasurableSpace V] [BorelSpace V] (μ : Measure V) [μ.IsAddHaarMeasure] (ν : Measure K) [ν.IsAddHaarMeasure] (q : V → K), Continuous q → (∀ (c : K) (x : V), q (c • x) = c ^ 2 * q x) → ∀ (U : Set K) (s : K → K), GlobalTheory.QuadFibre.IsSqrtOn U s → ∀ t : K, GlobalTheory.QuadFibre.fibOf μ ν q U s t (q ⁻¹' {t})ᶜ = 0 := by
   intro K V _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ μ _ ν _ q hq hh U s hs t

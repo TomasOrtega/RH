@@ -9,15 +9,13 @@ noncomputable section
 namespace PI.UnitaryGroupMassFormula.CapelliEig
 
 /- English proof (translation)
-Introduce `k r a ha`. Establish `hH : Hpk k r * Hpk k r = 1` using `Formalism.QuantumDeterminants.GBasic.Hpk_sq k r`. Establish `ha' : aᴴ * Hpk k r * a = Hpk k r` using `ha`. Establish `hdet : IsUnit a.det`. Establish `h1` using `congrArg Matrix.det ha'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1` using `[Matrix.det_mul, Matrix.det_mul]`. Establish `hHd : (Hpk k r).det * (Hpk k r).det = 1` using `by rw [← Matrix.det_mul, hH, Matrix.det_one]`. Use `isUnit_iff_ne_zero.mpr (fun h0 => ?_)` and prove the remaining obligations. Rewrite `h1` using `[h0, mul_zero]`. Rewrite `hHd` using `[← h1, zero_mul]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `zero_ne_one hHd`. Use `⟨(Matrix.isUnit_iff_isUnit_det a).mpr hdet, ?_, ?_⟩` and prove the remaining obligations. Use `show (a⁻¹)ᴴ * Hpk k r * a⁻¹ = Hpk k r`. Establish `hai : a * a⁻¹ = 1` using `Matrix.mul_nonsing_inv a hdet`. Combine the equalities or inequalities in the displayed calculation.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [Matrix.conjTranspose_mul, Matrix.mul_assoc]`. Use `_ = Hpk k r := by rw [hai, Matrix.conjTranspose_one, Matrix.one_mul, Matrix.mul_one]`. Introduce `b hb`. Establish `hb' : bᴴ * Hpk k r * b = Hpk k r` using `hb`. Use `show (a * b)ᴴ * Hpk k r * (a * b) = Hpk k r`.
-
-Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.conjTranspose_mul, Matrix.mul_assoc]`. Use `_ = Hpk k r := by rw [ha', hb']`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem unitary_Hecke_group : UHGrp := by
   intro k r a ha
@@ -46,13 +44,13 @@ theorem unitary_Hecke_group : UHGrp := by
       _ = Hpk k r := by rw [ha', hb']
 
 /- English proof (translation)
-Introduce `k r ε lam Hs _ _ σ hσ x hx y hy`. Take `⟨P₀, ⟨⟨hunit, hcay⟩, _⟩, hds⟩` from `hσ`. Establish `hdet : IsUnit P₀.det` using `(Matrix.isUnit_iff_isUnit_det _).mp hunit`. Establish `hPQ : P₀ * P₀⁻¹ = 1` using `Matrix.mul_nonsing_inv _ hdet`. Establish `hQP : P₀⁻¹ * P₀ = 1` using `Matrix.nonsing_inv_mul _ hdet`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hH : Formalism.QuantumDeterminants.Hpk k r = P₀ᴴ * Formalism.REAL.Jm ε * P₀` using `hcay.symm`. Establish `hx' : Formalism.REAL.inUJ ε (P₀ * x * P₀⁻¹)` using `Formalism.QuantumDeterminants.ioh_inUJ ε _ P₀ P₀⁻¹ x hPQ hH hx`. Establish `hy' : Formalism.REAL.inUJ ε (P₀ * y * P₀⁻¹)` using `Formalism.QuantumDeterminants.ioh_inUJ ε _ P₀ P₀⁻¹ y hPQ hH hy`. Establish `hm` using `hds.2.2.1.1.2 (P₀ * x * P₀⁻¹) hx' (P₀ * y * P₀⁻¹) hy'`. Establish `e1 : P₀⁻¹ * (P₀ * x * P₀⁻¹ * (P₀ * y * P₀⁻¹)) * P₀ = x * y`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `e2 : ∀ z, P₀⁻¹ * (P₀ * z * P₀⁻¹) * P₀ = z`. Introduce `z`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [e1, e2] at hm`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules.
 
-Conclude with `hm`.
+A detailed English derivation is pending.
 -/
 theorem Hecke_multiplication : MulH := by
   intro k r ε lam Hs _ _ σ hσ x hx y hy

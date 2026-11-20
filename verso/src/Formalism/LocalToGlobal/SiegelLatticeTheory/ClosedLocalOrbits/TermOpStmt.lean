@@ -81,11 +81,11 @@ def IdCellOff : Prop :=
     aTerm cs cs' FdN FdN' t.1) 0
 
 /- English proof (translation)
-Introduce `t t' hio hne`. Simplify using `only [tOf, rowOf] at hio hne`. Establish `hpair : ((⟨t.lam, t.mem⟩, ⟨t.lam', t.mem'⟩) : {Λ // Λ ∈ what₂} × {Λ' // Λ' ∈ rows'}) ≠ (⟨t'.lam, t'.mem⟩, ⟨t'.lam', t'.mem'⟩)`. Introduce `h`. Apply `hne` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `only [Prod.mk.injEq] at h ⊢`. Conclude with `⟨h.1, h.2, hio⟩`. Rewrite using `[PiLp.inner_apply]`. Use `Finset.sum_eq_zero fun q _ => ?_` and prove the remaining obligations. Simplify using `only [tOf, vec]`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `split_ifs with h1 h2`. Conclude with `absurd (h1.symm.trans h2) hpair`. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem rowOrth : (tOf F0 F0' TR cs cs' FdN FdN').RowOrth := by
   intro t t' hio hne
@@ -106,15 +106,15 @@ theorem rowOrth : (tOf F0 F0' TR cs cs' FdN FdN').RowOrth := by
   · simp
 
 /- English proof (translation)
-Establish `hg : ∀ v, Formalism.L2.SG.GGMirabolic.gam (TR.psi0 v) (1 : GL (Fin D.R.k) (TR.Fq v)) = (((Nat.card (GL (Fin D.R.k) (TR.Fq v)) : ℝ) / (Formalism.L2.SG.GGMirabolic.cardU (TR.Fq v) D.R.k : ℝ) : ℝ) : ℂ)`. Introduce `v`. Establish `h1 : Formalism.L2.SG.GGMirabolic.psiNat (TR.psi0 v) (1 : GL (Fin D.R.k) (TR.Fq v)) = 1`. Unfold `Formalism.L2.SG.GGMirabolic.psiNat Formalism.L2.SG.GGMirabolic.psiU`. Rewrite using `[if_pos]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `hs : Formalism.L2.SG.GGMirabolic.superdiag D.R.k (1 : Matrix (Fin D.R.k) (Fin D.R.k) (TR.Fq v)) = 0` using `Finset.sum_eq_zero fun i _ => Finset.sum_eq_zero fun j _ => by split_ifs with h`. Conclude with `Matrix.one_apply_ne (fun e => by rw [e] at h; omega)`. Both sides reduce to the same expression. Rewrite using `[Units.val_one, hs, AddChar.map_zero_eq_one]`. Conclude with `⟨fun i => by simp, fun i j hij => by simp [Matrix.one_apply_ne (ne_of_gt hij)]⟩`.
+Establish an intermediate fact. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Replace the relevant objects with their definitions.
 
-Unfold `Formalism.L2.SG.GGMirabolic.gam`. Simplify using `only [mul_one, mul_inv_cancel, h1, Finset.sum_const, Finset.card_univ, nsmul_eq_mul]`. Rewrite using `[Nat.card_eq_fintype_card]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `hp : Formalism.L2.SG.GGMirabolic.gamProd TR.psi0 (1 : Iof TR) = ((∏ v, ((Nat.card (GL (Fin D.R.k) (TR.Fq v)) : ℝ) / (Formalism.L2.SG.GGMirabolic.cardU (TR.Fq v) D.R.k : ℝ)) : ℝ) : ℂ)`. Unfold `Formalism.L2.SG.GGMirabolic.gamProd`. Simplify using `only [Pi.one_apply, hg]`. Use `push_cast`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Use `show conj (Formalism.L2.SG.GGMirabolic.gamProd TR.psi0 (i⁻¹ * i)) = (((Formalism.L2.SG.GGMirabolic.gamProd TR.psi0 (1 : Iof TR)).re : ℝ) : ℂ)`. Rewrite using `[inv_mul_cancel, hp, Complex.conj_ofReal, Complex.ofReal_re]`.
+A detailed English derivation is pending.
 -/
 theorem GG_diag (i : Iof TR) :
     (tOf F0 F0' TR cs cs' FdN FdN').GG i i =
@@ -151,9 +151,9 @@ theorem GG_diag (i : Iof TR) :
   rw [inv_mul_cancel, hp, Complex.conj_ofReal, Complex.ofReal_re]
 
 /- English proof (translation)
-Use `h TR.Pl TR.Fq D.R.k TR.psi0 hψ hq (Iof TR) (fun x j hx => ?_) (fun i j => j⁻¹ * i) (fun i j _ => ?_) _ _ _ _ (tOf F0 F0' TR cs cs' FdN FdN') (fun i j => ?_) rfl` and prove the remaining obligations. Rewrite `hx` using `[MulOpposite.smul_eq_mul_unop]`. Conclude with `MulOpposite.unop_injective (mul_left_cancel (hx.trans (mul_one j).symm))`. Rewrite using `[MulOpposite.smul_eq_mul_unop, MulOpposite.unop_op, mul_inv_cancel_left]`. Rewrite using `[if_pos ⟨MulOpposite.op (j⁻¹ * i), by`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[MulOpposite.smul_eq_mul_unop, MulOpposite.unop_op, mul_inv_cancel_left]⟩]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem ggBound (h : Formalism.L2.SG.GGMirabolic.TermsGGBound) (hψ : ∀ v, TR.psi0 v ≠ 1)
     (hq : ∀ v, 3 ≤ Fintype.card (TR.Fq v)) :

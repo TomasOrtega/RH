@@ -25,9 +25,9 @@ def ClauseB (S : IndefData Df) (O : FunData K Df) (C b : ℝ) : Prop :=
 def scaleTest (O : FunData K Df) (t : InfinitePlace K → ℝ) : FunData K Df := { O with X' := scaleFrame t O.X' }
 
 /- English proof (translation)
-Use `⟨fun _ => _, fun v p _ => ?_, (GlobalTheory.Proof.DualMatrixMetricMeans.meanInf_const _).ge⟩` and prove the remaining obligations. Establish `h1` using `Real.log_nonneg hb`. Establish `h2 : ∑ _j : Bs.J, -(3 * C * O.f * (O.N : ℝ) ^ 2 * Real.log b) ≤ ∑ j, Real.log (S.lam j Bs.μ0 p v)` using `Finset.sum_le_sum fun j _ => (hN j).trans (by rw [hl.2.2]; exact h6 j p v)`. Rewrite `h2` using `[Finset.sum_const, Finset.card_univ, nsmul_eq_mul]`. Establish `h3 : (Fintype.card Bs.J : ℝ) ≤ O.m` using `by exact_mod_cast hm`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h4 : 0 ≤ 3 * C * O.f * (O.N : ℝ) ^ 2 * Real.log b` using `by positivity`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_right h3 h4]`.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem clauseB_of_lifts [IsTotallyComplex K] {Df' : DefSide Bs} (S : IndefData Df) (S' : IndefData Df') (N : IndefNum Bs)
     (O : FunData K Df) {C b : ℝ} (hC : 0 ≤ C) (hb : 1 ≤ b) (hl : LevelLink S S') (h6 : S'.L6 N)

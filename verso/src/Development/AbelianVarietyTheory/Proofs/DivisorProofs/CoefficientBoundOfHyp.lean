@@ -14,7 +14,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.Local
 namespace GlobalTheory.ArchTens.VolSize
 
 /- English proof (translation)
-The claim follows from `|(((q : ℚ) ^ z : ℚ) : ℝ)| ≤ Real.exp (A * Real.log q) := by have h0 : (0 : ℝ) < q := by exact_mod_cast Nat.pos_of_ne_zero hq have e : (((q : ℚ) ^ z : ℚ) : ℝ) = Real.exp ((z : ℝ) * Real.log q) := by rw [← Real.log_zpow, Real.exp_log (zpow_pos h0 z)] push_cast rfl rw [e, abs_of_pos …`.
+A detailed English derivation is pending.
 -/
 theorem abs_zpow_le {q : ℕ} (hq : q ≠ 0) {z : ℤ} {A : ℝ} (h : |(z : ℝ)| ≤ A) :
     |(((q : ℚ) ^ z : ℚ) : ℝ)| ≤ Real.exp (A * Real.log q) := by
@@ -27,7 +27,7 @@ theorem abs_zpow_le {q : ℕ} (hq : q ≠ 0) {z : ℤ} {A : ℝ} (h : |(z : ℝ)
   exact Real.exp_le_exp.2 (mul_le_mul_of_nonneg_right ((le_abs_self _).trans h) (Real.log_natCast_nonneg _))
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert a s ha ih => rw [Finset.prod_insert ha, Finset.sum_insert ha, ih, zpow_add₀ hq]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem prod_zpow_sum {q : ℚ} (hq : q ≠ 0) {ι : Type} (s : Finset ι) (z : ι → ℤ) : ∏ i ∈ s, q ^ z i = q ^ ∑ i ∈ s, z i := by
   classical
@@ -38,7 +38,7 @@ theorem prod_zpow_sum {q : ℚ} (hq : q ≠ 0) {ι : Type} (s : Finset ι) (z : 
 variable {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} {W : G.Weil} {U : Set T}
 
 /- English proof (translation)
-The claim follows from `|((S.term t Φ β ⟨P, hl⟩).coef : ℝ)| ≤ Real.exp ((D.R.m : ℝ) ^ 3 * bigN D * cosExp G P * Real.log (resCard (Kw P) : ℕ)) := by classical have hs : 1 ≤ (locGrid G t P).s := one_le_sLen have hkeep : keepAt G P = false := by simp [keepAt, hP] have hdep : depthAt G P = cosExp G P := by …`.
+A detailed English derivation is pending.
 -/
 theorem coef_le_of_chosen {μ₀ : T} (hL : L.Is μ₀) (S : GridChoice W U) (t : T) (Φ : G.Datum)
     (hde : Nat.Coprime D.host.pde (D.host.QS * D.host.q) ∧ Nat.Coprime D.host.pde' (D.host.QS * D.host.q))
@@ -95,9 +95,9 @@ theorem coef_le_of_chosen {μ₀ : T} (hL : L.Is μ₀) (S : GridChoice W U) (t 
   exact_mod_cast key
 
 /- English proof (translation)
-Establish `h1` using `log_absNorm_le P`. Establish `hS` using `placeSz_nonneg G P`. Establish `hmN : (D.R.m : ℝ) ≤ bigN D` using `by exact_mod_cast m_le_bigN`. Rewrite using `[ResidueCardinalityNilpotence.GlobalTheory.CompanionTheory.ResCardPlace.resCard_Kw]`. Establish `h2 : (cosExp G P : ℝ) * Real.log (Ideal.absNorm P.asIdeal : ℕ) ≤ C * placeSz G P`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `h3 : (D.R.m : ℝ) ^ 3 * bigN D ≤ (D.R.m : ℝ) ^ 2 * (bigN D : ℝ) ^ 2`. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation.
 -/
 theorem exponent_le (P : Pl D.host.E) {C : ℝ} (hC : 2 ≤ C) :
     (D.R.m : ℝ) ^ 3 * bigN D * cosExp G P * Real.log (resCard (Kw P) : ℕ) ≤
@@ -122,9 +122,9 @@ theorem exponent_le (P : Pl D.host.E) {C : ℝ} (hC : 2 ≤ C) :
     _ = _ := by ring
 
 /- English proof (translation)
-Introduce `_`. Use `⟨0, fun CF _ => ⟨2, fun ε C hC => ⟨0, fun D large₂ _ _ Γ _ _ Pl0 T A Ks _ _ _ R F s ch _ _ _ => ?_⟩⟩⟩` and prove the remaining obligations. Establish `hL` using `s.core.lev`. Establish `hde` using `Test.pde_ne_q s`. Introduce and unpack `Φ β hβ ⟨P, hl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `hP : P ∈ ch.G.pl.W0` using `by classical`. Break down `Finset.mem_union.1 hl with h | h` into its components or cases. Conclude with `h`. Conclude with `absurd h (fun hP => (hL.Q_ram A.μ0 P).2 (Or.inl hP) (by rw [hL.xi_base]; exact fun _ _ => rfl))`. Conclude with `(coef_le_of_chosen hL ch.S.toGridChoice A.μ0 Φ hde (GlobalTheory.RowTest.guard_of_qGuard s.guard A.μ0) hP hl hβ).trans (Real.exp_le_exp.2 (exponent_le P hC))`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem coefK : GlobalTheory.FunPr.Hypotheses₂ → BigC fun _ ch C _ => CoefAt ch C := by
   intro _

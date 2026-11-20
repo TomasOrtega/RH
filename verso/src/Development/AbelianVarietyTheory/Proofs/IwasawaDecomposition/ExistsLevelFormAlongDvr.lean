@@ -22,13 +22,11 @@ variable {V : Type} [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] {ϖ : 
 include hϖ in
 
 /- English proof (translation)
-Establish `hL` using `D.P.isLB`. Use `ιD.onB.hom a` as an intermediate fact. Use `ιD.onB.hom (star a)` as an intermediate fact. Take `⟨u, hu, hnorm⟩` from `exists_ros GlobalTheory.globalFns_holds D.P.isAb D.P.isLB _ _ (ιD.onB.rosati a)`. Establish `hc` using `ιD.tau_bal a u hu hnorm χ χ'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨_, _, hsA, hA⟩` from `GlobalTheory.PreValForm.tau_val' hϖ D hQ (a • χ) χ'`. Take `⟨_, _, hsB, hB⟩` from `GlobalTheory.PreValForm.tau_val' hϖ D hQ χ (star a • χ')`. Establish `hu0` using `genHasVal_pullGen_of (ϖ := ϖ) D.P.L _ _ u hu (lift (D.c χ) (D.c χ')).left (D.pt2 χ χ') (by simp [DegPre.pt2, ← CartesianMonoidalCategory.comp_lift])`. Establish `h1` using `genHasVal_mulGen hϖ D.P.L hL _ _ _ _ _ _ _ _ _ _ hA hu0`. Use `genHasVal_unique hϖ D.P.L hL _ _ _ _ _ (genHasVal_corr hϖ D.P.L hL D.P.A.hom _ _ _ _ _ _ _ _ (QForm.sumElim_sec hsA (fun k => by` as an intermediate fact.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨q, hq⟩` from `QForm.rosatiφ_over D.P.A (ιD.onB.act a) (ιD.onB.act (star a)) k`. Use `show (_ ≫ rosatiφ D.P.A (ιD.onB.act a) (ιD.onB.act (star a)) k) ≫ _ = _`. Rewrite using `[hq]`. Conclude with `QForm.over_sec _ _)) hsB _ _`. Use the proof step `(genHasVal_isGen D.P.L _ _ _ _ _ hB) hc h1) hB`.
-
-Combine the linear equalities and inequalities to obtain the conclusion.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem bOf_balance {Q : D.X → ℤ} {O : Type} [Ring O] [StarRing O] [Module O D.X] (ιD : D.OAct O)
     (hQ : QForm.IsQ D ϖ Q) (a : O) (χ χ' : D.X) :
@@ -55,23 +53,19 @@ theorem bOf_balance {Q : D.X → ℤ} {O : Type} [Ring O] [StarRing O] [Module O
 end Balance
 
 /- English proof (translation)
-Introduce `E _ _ _ H R _ _ _ t P hR V _ _ _ hV ϖ hϖ f gam hgam`. Take `⟨_, hIC, _, hch⟩` from `hR`. Take `⟨hdvr, _, _⟩` from `hV`. Use `haveI := hch`. Use `haveI := hdvr`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hf : Function.Injective f`. Introduce `a b h`. Apply `IsFractionRing.injective R (FractionRing R)` to reduce the goal to its premises. Apply `gam.injective` to reduce the goal to its premises. Rewrite using `[hgam, hgam, h]`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Equip the data with the indicated structure. Extract witnesses or component facts from the available result.
 
-Use `letI := H.starRing`. Take `⟨W₀, hW₀, hψ⟩` from `GlobalTheory.PsiSpread.exists_psiOn P.D.toPre P.D.tau_bimult`. Establish `hη : (specOf f).base (genericPoint (Spec (CommRingCat.of V))) ∈ W₀`. Establish `: (specOf f).base (genericPoint (Spec (CommRingCat.of V))) = genericPoint (Spec (CommRingCat.of R))`. Rewrite using `[genericPoint_eq_bot_of_affine, genericPoint_eq_bot_of_affine]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `PrimeSpectrum.ext (Ideal.comap_bot_of_injective f hf)`. Rewrite using `[this]`. Conclude with `hW₀`. Take `⟨D', hD, -, -⟩` from `GlobalTheory.StrictPull.exists_isPullDeg_strict GlobalTheory.allSixLaws.1 R V f P.D.toPre W₀ hψ hη`. Establish `hB : D'.TauBimult` using `GlobalTheory.TauPull.tauBimult_pull GlobalTheory.globalFns_holds hD P.D.tau_bimult`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hE : D'.PsiEven` using `GlobalTheory.PsiEvenPull.psiEven_pull GlobalTheory.globalFns_holds R V f P.D.toPre D' hD P.D.psi_even`. Take `⟨inst, ιD', hlin, -⟩` from `GlobalTheory.exists_oAct_of_isPullDeg GlobalTheory.globalFns_holds R V f P.D.toPre D' hD (𝓞 E) P.oD`. Use `choose Q hQ using GlobalTheory.PreValForm.qVal_exists hϖ D'`. Establish `hQ' : QForm.IsQ D' ϖ Q` using `hQ`. Set `B : D'.X →+ D'.X →+ ℤ` to `AddMonoidHom.mk' (fun a => AddMonoidHom.mk' (fun b => QForm.bOf D' Q a b) (fun b b' => by`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[GlobalTheory.PreValForm.bOf_comm' D' (Q := Q) a (b + b'), GlobalTheory.PreValForm.bOf_add_left' hϖ D' hB hQ', GlobalTheory.PreValForm.bOf_comm' D' (Q := Q) b a, GlobalTheory.PreValForm.bOf_comm' D' (Q := Q) b' a]))`. Use the proof step `(fun a a' => by ext b; simp [GlobalTheory.PreValForm.bOf_add_left' hϖ D' hB hQ'])`. Set `be : LinearMap.BilinForm ℤ P.D.toPre.X` to `LinearMap.mk₂ ℤ (fun y z => B (hD.xe.symm y) (hD.xe.symm z)) (fun y y' z => by simp only [map_add, AddMonoidHom.add_apply]) (fun c y z => by simp only [map_zsmul, AddMonoidHom.smul_apply, smul_eq_mul]) (fun y z z' => by simp only [map_add]) (fun c y z => by simp only [map_zsmul, …`. Establish `hbe : ∀ y z, be y z = QForm.bOf D' Q (hD.xe.symm y) (hD.xe.symm z)` using `fun _ _ => rfl`. Establish `hsm : ∀ (a : 𝓞 E) (y : P.D.toPre.X), hD.xe.symm (a • y) = a • hD.xe.symm y` using `fun a y => hD.xe.symm_apply_eq.2 (by rw [hlin, AddEquiv.apply_symm_apply])`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `⟨be, (mem_levelForms).2 ⟨fun y z => by rw [hbe, hbe, GlobalTheory.PreValForm.bOf_comm'], fun a y z => ?_, fun y z => by simp⟩, fun y => ?_⟩` and prove the remaining obligations. Rewrite using `[hbe, hbe, hsm, hsm]`. Conclude with `GlobalTheory.ChartForm.bOf_balance hϖ D' ιD' hQ' a _ _`. Take `⟨r, hr, -⟩` from `(GlobalTheory.PsiCoordLocal.main R P.D hIC y).1`. Establish `hr' : Formalism.L2.Pj.PsiCoord P.D.toPre (hD.xe (hD.xe.symm y)) r`.
-
-Rewrite using `[AddEquiv.apply_symm_apply]`. Conclude with `hr`. Take `⟨u, hu⟩` from `GlobalTheory.PelCoordPull.psiCoord_pull hD (hD.xe.symm y) r hr'`. Take `⟨h0, hassoc⟩` from `GlobalTheory.PreValForm.assoc_of_hasVal hϖ (GlobalTheory.ValForm.hasVal_coord (hQ (hD.xe.symm y)) hu)`. Use `⟨r, (Q (hD.xe.symm y)).toNat, hr, ?_, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[hbe, ← GlobalTheory.PreValForm.two_Q_eq' hϖ D' hB hE hQ', Int.toNat_of_nonneg h0]`. Conclude with `(associated_unit_mul_left (f r) (u : V) u.isUnit).symm.trans hassoc`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_balanced_formAt : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (R : Type) [CommRing R]
     [IsDomain R] [IsLocalRing R] (t : SAB H (Sp R)) (P : PELUnif (maximalIdeal R) t), IsCN R →

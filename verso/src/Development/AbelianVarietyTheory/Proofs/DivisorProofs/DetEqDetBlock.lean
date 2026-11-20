@@ -12,11 +12,9 @@ open GlobalTheory.MBLow.Cl Matrix
 namespace GlobalTheory.MBLow.Cl
 
 /- English proof (translation)
-Introduce `g' r g σ Mx MB h1 h2`. Establish `key : Mx.submatrix σ.symm σ.symm = Matrix.fromBlocks MB (Matrix.of fun i l => Mx (σ.symm (Sum.inl i)) (σ.symm (Sum.inr l))) 0 1`. Use extensionality with `(i | i) (j | j)`. Conclude with `congrFun (h1 i) j`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Conclude with `congrFun (h2 i).1 j`. Use `congrFun (h2 i).2 j` as an intermediate fact. Simplify using `only [Matrix.submatrix_apply, Matrix.fromBlocks_apply₂₂, Matrix.one_apply]`. Rewrite `this` using `[Pi.single_apply]`. Simplify using `only [eq_comm (a := i)]`.
-
-Conclude with `this`. Rewrite using `[← Matrix.det_submatrix_equiv_self σ.symm Mx, key, Matrix.det_fromBlocks_zero₂₁, Matrix.det_one, _root_.mul_one]`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem det_eq_det_block : ∀ (g' r g : ℕ) (σ : Fin g ≃ Fin g' ⊕ Fin r) (Mx : Matrix (Fin g) (Fin g) ℂ) (MB : Matrix (Fin g') (Fin g') ℂ), (∀ i, zP σ (Mx (σ.symm (Sum.inl i))) = MB i) → (∀ l, zP σ (Mx (σ.symm (Sum.inr l))) = 0 ∧ tP σ (Mx (σ.symm (Sum.inr l))) = Pi.single l 1) → Mx.det = MB.det := by
   intro g' r g σ Mx MB h1 h2

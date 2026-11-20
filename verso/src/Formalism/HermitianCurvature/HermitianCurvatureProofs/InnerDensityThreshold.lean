@@ -6,31 +6,31 @@ namespace Formalism.FourierDecayAlt.P
 
 set_option maxHeartbeats 2000000 in
 /- English proof (translation)
-Introduce `C₁ c₃ C₂ hC₁ hc₃`. Use `set K : ℝ := 24 * C₁ + 192 * c₃ + 5 * (C₂ : ℝ) + 80 with hK`. Use `⟨⌈K⌉₊, ?_⟩` and prove the remaining obligations. Introduce `CV hCV r n s A hr hn hs hA`. Establish `hKV : K ≤ (CV : ℝ)` using `le_trans (Nat.le_ceil K) (by exact_mod_cast hCV)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hx : (1:ℝ) ≤ r` using `by exact_mod_cast hr`. Establish `hxy : 2 * (r:ℝ) + 2 ≤ n` using `by exact_mod_cast hn`. Establish `hsx : (s:ℝ) ≤ r` using `by exact_mod_cast hs`. Establish `hy : (1:ℝ) ≤ n` using `by linarith`. Establish `hK0 : 0 ≤ K` using `by positivity`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hA' : K * ((r:ℝ) ^ 4 * n + (r:ℝ) ^ 5) ≤ A`. Unfold `C6.AV at hA`. Establish `e : (r:ℝ) * ((CV:ℝ) * ((r:ℝ) ^ 3 * n + (n:ℝ) ^ 2 + (r:ℝ) ^ 4)) = (CV:ℝ) * ((r:ℝ) ^ 4 * n + (r:ℝ) ^ 5) + (CV:ℝ) * ((r:ℝ) * n ^ 2)` using `by ring`. Rewrite `hA` using `[e]`. Establish `: 0 ≤ (CV:ℝ) * ((r:ℝ) * n ^ 2)` using `by positivity`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: K * ((r:ℝ) ^ 4 * n + (r:ℝ) ^ 5) ≤ (CV:ℝ) * ((r:ℝ) ^ 4 * n + (r:ℝ) ^ 5)` using `mul_le_mul_of_nonneg_right hKV (by positivity)`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hs2 : (s:ℝ) ^ 2 ≤ (r:ℝ) ^ 2` using `pow_le_pow_left₀ (by positivity) hsx 2`. Establish `h8 : 8 * (2 * (r:ℝ) + 1) ≤ 24 * r` using `by linarith`. Establish `x35 : (r:ℝ) ^ 3 ≤ (r:ℝ) ^ 5` using `pow_le_pow_right₀ hx (by norm_num)`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `x15 : (r:ℝ) ≤ (r:ℝ) ^ 5`. Combine the equalities or inequalities in the displayed calculation. Establish `x24 : (r:ℝ) ^ 2 * n ≤ (r:ℝ) ^ 4 * n` using `mul_le_mul_of_nonneg_right (pow_le_pow_right₀ hx (by norm_num)) (by positivity)`. Establish `hpos : (0:ℝ) < 8 * (2 * (r:ℝ) + 1)` using `by positivity`. Establish `hb : 5 * (r:ℝ) * (((C₂ * s ^ 2 : ℕ) : ℝ) + 1) + 2 * (r:ℝ) * ((1 : ℕ) : ℝ) ≤ (5 * (C₂:ℝ) + 7) * (r:ℝ) ^ 5`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Establish `: (C₂:ℝ) * (s:ℝ) ^ 2 ≤ (C₂:ℝ) * (r:ℝ) ^ 2` using `mul_le_mul_of_nonneg_left hs2 (by positivity)`. Establish `e : 5 * (r:ℝ) * ((C₂:ℝ) * (r:ℝ) ^ 2 + 1) + 2 * (r:ℝ) = 5 * (C₂:ℝ) * (r:ℝ) ^ 3 + 7 * r` using `by ring`. Establish `h3 : 5 * (r:ℝ) * ((C₂:ℝ) * (s:ℝ) ^ 2 + 1) ≤ 5 * (r:ℝ) * ((C₂:ℝ) * (r:ℝ) ^ 2 + 1)` using `mul_le_mul_of_nonneg_left (by linarith) (by positivity)`. Use `mul_le_mul_of_nonneg_left x35 (by positivity : (0:ℝ) ≤ 5 * (C₂:ℝ))` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Use the polynomial consequences of the given equalities and inequalities. Establish `key : ∀ X : ℝ, X * (8 * (2 * (r:ℝ) + 1)) + (5 * C₂ + 7) * (r:ℝ) ^ 5 ≤ A → X ≤ U.a1 r A (C₂ * s ^ 2) 1`. Introduce `X hX`. Unfold `U.a1`. Rewrite using `[le_div_iff₀ hpos]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hx5 : 0 ≤ (r:ℝ) ^ 5` using `by positivity`. Establish `hx4y : 0 ≤ (r:ℝ) ^ 4 * n` using `by positivity`. Use `⟨key _ ?_, key _ ?_, key _ ?_⟩` and prove the remaining obligations. Establish `a : C₁ * (s:ℝ) ^ 2 * (8 * (2 * (r:ℝ) + 1)) ≤ C₁ * (r:ℝ) ^ 2 * (24 * r)` using `mul_le_mul (mul_le_mul_of_nonneg_left hs2 hC₁) h8 (by positivity) (by positivity)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : C₁ * (r:ℝ) ^ 2 * (24 * r) = 24 * C₁ * (r:ℝ) ^ 3` using `by ring`. Use `mul_le_mul_of_nonneg_left x35 (by positivity : (0:ℝ) ≤ 24 * C₁)` as an intermediate fact. Establish `: K * ((r:ℝ) ^ 4 * n + (r:ℝ) ^ 5) = K * ((r:ℝ) ^ 4 * n) + K * (r:ℝ) ^ 5` using `by ring`. Establish `: 0 ≤ K * ((r:ℝ) ^ 4 * n)` using `by positivity`. Establish `: 0 ≤ 192 * c₃ * (r:ℝ) ^ 5` using `by positivity`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: K * (r:ℝ) ^ 5 = (24 * C₁ + 5 * C₂ + 7) * (r:ℝ) ^ 5 + 192 * c₃ * (r:ℝ) ^ 5 + 73 * (r:ℝ) ^ 5`. Rewrite using `[hK]`. Expand and normalize the polynomial expressions, which then agree. Use the polynomial consequences of the given equalities and inequalities. Establish `q1 : ((r:ℝ) + 1) ^ 2 ≤ 4 * (r:ℝ) ^ 2` using `by nlinarith`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `q2 : (r:ℝ) * n + 1 ≤ 2 * ((r:ℝ) * n)` using `by nlinarith`. Establish `q : ((r:ℝ) + 1) ^ 2 * ((r:ℝ) * n + 1) * (8 * (2 * (r:ℝ) + 1)) ≤ 4 * (r:ℝ) ^ 2 * (2 * ((r:ℝ) * n)) * (24 * r)` using `mul_le_mul (mul_le_mul q1 q2 (by positivity) (by positivity)) h8 (by positivity) (by positivity)`. Establish `e : 4 * (r:ℝ) ^ 2 * (2 * ((r:ℝ) * n)) * (24 * r) = 192 * ((r:ℝ) ^ 4 * n)` using `by ring`. Use `mul_le_mul_of_nonneg_left q hc₃` as an intermediate fact. Establish `: c₃ * ((r:ℝ) + 1) ^ 2 * ((r:ℝ) * n + 1) * (8 * (2 * (r:ℝ) + 1)) = c₃ * (((r:ℝ) + 1) ^ 2 * ((r:ℝ) * n + 1) * (8 * (2 * (r:ℝ) + 1)))` using `by ring`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: K * ((r:ℝ) ^ 4 * n + (r:ℝ) ^ 5) = (192 * c₃) * ((r:ℝ) ^ 4 * n) + (5 * C₂ + 7) * (r:ℝ) ^ 5 + ((24 * C₁ + 5 * C₂ + 80) * ((r:ℝ) ^ 4 * n) + (24 * C₁ + 192 * c₃ + 73) * (r:ℝ) ^ 5)` using `by rw [hK]; ring`. Establish `: 0 ≤ (24 * C₁ + 5 * C₂ + 80) * ((r:ℝ) ^ 4 * n) + (24 * C₁ + 192 * c₃ + 73) * (r:ℝ) ^ 5` using `by positivity`. Use the polynomial consequences of the given equalities and inequalities. Establish `q : (2 * (r:ℝ) * n + 1) * (8 * (2 * (r:ℝ) + 1)) ≤ (3 * ((r:ℝ) * n)) * (24 * r)` using `mul_le_mul (by nlinarith) h8 (by positivity) (by positivity)`. Establish `e : (3 * ((r:ℝ) * n)) * (24 * r) = 72 * ((r:ℝ) ^ 2 * n)` using `by ring`.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: K * ((r:ℝ) ^ 4 * n + (r:ℝ) ^ 5) = 72 * ((r:ℝ) ^ 4 * n) + (5 * C₂ + 7) * (r:ℝ) ^ 5 + ((24 * C₁ + 192 * c₃ + 5 * C₂ + 8) * ((r:ℝ) ^ 4 * n) + (24 * C₁ + 192 * c₃ + 73) * (r:ℝ) ^ 5)` using `by rw [hK]; ring`. Establish `: 0 ≤ (24 * C₁ + 192 * c₃ + 5 * C₂ + 8) * ((r:ℝ) ^ 4 * n) + (24 * C₁ + 192 * c₃ + 73) * (r:ℝ) ^ 5` using `by positivity`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem inner_density_threshold : C6.DensThreshJ := by
   intro C₁ c₃ C₂ hC₁ hc₃
@@ -112,29 +112,29 @@ theorem inner_density_threshold : C6.DensThreshJ := by
 
 set_option maxHeartbeats 2000000 in
 /- English proof (translation)
-Introduce `C₁ C C₂ hC₁ hC`. Use `set K : ℝ := 40 * C₁ + 80 + 12 * C + 4 * C * C₂ + 2 * (C₂ : ℝ) + 1 with hK`. Use `⟨⌈K⌉₊, ?_⟩` and prove the remaining obligations. Introduce `CV hCV r n s al A hr hn hs hal hA`. Establish `hKV : K ≤ (CV : ℝ)` using `le_trans (Nat.le_ceil K) (by exact_mod_cast hCV)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hx : (1:ℝ) ≤ r` using `by exact_mod_cast hr`. Establish `hxy : 2 * (r:ℝ) + 2 ≤ n` using `by exact_mod_cast hn`. Establish `hsx : (s:ℝ) ≤ r + 1` using `by exact_mod_cast hs`. Establish `hal' : (al:ℝ) ≤ C₂ * (s:ℝ) ^ 2` using `by exact_mod_cast hal`. Establish `hy : (1:ℝ) ≤ n` using `by linarith`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hK0 : 0 ≤ K` using `by positivity`. Prove the components needed by the constructor for the conclusion. Establish `hA' : K * ((r:ℝ) * n ^ 2 + (r:ℝ) ^ 5) ≤ A`. Unfold `C6.AV at hA`. Establish `e : (r:ℝ) * ((CV:ℝ) * ((r:ℝ) ^ 3 * n + (n:ℝ) ^ 2 + (r:ℝ) ^ 4)) = (CV:ℝ) * ((r:ℝ) * n ^ 2 + (r:ℝ) ^ 5) + (CV:ℝ) * ((r:ℝ) ^ 4 * n)` using `by ring`.
+Prove the components needed by the constructor for the conclusion. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hA` using `[e]`. Establish `: 0 ≤ (CV:ℝ) * ((r:ℝ) ^ 4 * n)` using `by positivity`. Establish `: K * ((r:ℝ) * n ^ 2 + (r:ℝ) ^ 5) ≤ (CV:ℝ) * ((r:ℝ) * n ^ 2 + (r:ℝ) ^ 5)` using `mul_le_mul_of_nonneg_right hKV (by positivity)`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hs2 : (s:ℝ) ^ 2 ≤ 4 * (r:ℝ) ^ 2`.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: (s:ℝ) ^ 2 ≤ ((r:ℝ) + 1) ^ 2` using `pow_le_pow_left₀ (by positivity) hsx 2`. Use the polynomial consequences of the given equalities and inequalities. Establish `hR2 : ((r:ℝ) + 1) ^ 2 ≤ 4 * (r:ℝ) ^ 2` using `by nlinarith`. Establish `x35 : (r:ℝ) ^ 3 ≤ (r:ℝ) ^ 5` using `pow_le_pow_right₀ hx (by norm_num)`. Establish `hpos : (0:ℝ) < 5 * ((r:ℝ) + 1)` using `by positivity`.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[le_sub_iff_add_le, le_div_iff₀ hpos, le_sub_iff_add_le]`. Establish `b1 : (C₁ * (s:ℝ) ^ 2 + 2 * ((r:ℝ) + 1) ^ 2 + C * (r:ℝ) ^ 2) ≤ (4 * C₁ + 8 + C) * (r:ℝ) ^ 2`. Use `mul_le_mul_of_nonneg_left hs2 hC₁` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish `b2 : (C₁ * (s:ℝ) ^ 2 + 2 * ((r:ℝ) + 1) ^ 2 + C * (r:ℝ) ^ 2) * (5 * ((r:ℝ) + 1)) ≤ (4 * C₁ + 8 + C) * (r:ℝ) ^ 2 * (10 * r)` using `mul_le_mul b1 (by linarith) (by positivity) (by positivity)`.
+Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `b3 : (r:ℝ) * al ≤ 4 * C₂ * (r:ℝ) ^ 3`. Establish `: (al:ℝ) ≤ C₂ * (4 * (r:ℝ) ^ 2)` using `le_trans hal' (mul_le_mul_of_nonneg_left hs2 (by positivity))`. Use `mul_le_mul_of_nonneg_left this (by positivity : (0:ℝ) ≤ r)` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish `b4 : (n:ℝ) ^ 2 ≤ (r:ℝ) * n ^ 2` using `by nlinarith [sq_nonneg (n:ℝ)]`.
+Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `b5 : C * ((n:ℝ) ^ 2 + (r:ℝ) ^ 3 + r * al) ≤ C * ((r:ℝ) * n ^ 2) + (C + 4 * C * C₂) * (r:ℝ) ^ 5`. Establish `: (n:ℝ) ^ 2 + (r:ℝ) ^ 3 + r * al ≤ (r:ℝ) * n ^ 2 + (1 + 4 * C₂) * (r:ℝ) ^ 5` using `by nlinarith`. Use `mul_le_mul_of_nonneg_left this hC` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish `e : (4 * C₁ + 8 + C) * (r:ℝ) ^ 2 * (10 * r) = (40 * C₁ + 80 + 10 * C) * (r:ℝ) ^ 3` using `by ring`.
+Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `b6` using `mul_le_mul_of_nonneg_left x35 (by positivity : (0:ℝ) ≤ 40 * C₁ + 80 + 10 * C)`. Establish `: K * ((r:ℝ) * n ^ 2 + (r:ℝ) ^ 5) = C * ((r:ℝ) * n ^ 2) + (C + 4 * C * C₂) * (r:ℝ) ^ 5 + (40 * C₁ + 80 + 10 * C) * (r:ℝ) ^ 5 + ((40 * C₁ + 80 + 11 * C + 4 * C * C₂ + 2 * C₂ + 1) * ((r:ℝ) * n ^ 2) + (C + 2 * C₂ + 1) * (r:ℝ) ^ 5)`. Rewrite using `[hK]`. Expand and normalize the polynomial expressions, which then agree. Establish `: 0 ≤ (40 * C₁ + 80 + 11 * C + 4 * C * C₂ + 2 * C₂ + 1) * ((r:ℝ) * n ^ 2) + (C + 2 * C₂ + 1) * (r:ℝ) ^ 5`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Check the signs of the components of the expression.
 
-Check the signs of the components of the expression. Use the polynomial consequences of the given equalities and inequalities. Establish `hK2 : (2 * C₂ + 1 : ℝ) ≤ K`. Rewrite using `[hK]; have := mul_nonneg (mul_nonneg (by norm_num : (0:ℝ) ≤ 4) hC) (Nat.cast_nonneg (α := ℝ) C₂); linarith`. Establish `h2 : (2 * C₂ + 1 : ℝ) ≤ CV` using `le_trans hK2 hKV`.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `C6.mmV`. Establish `hR : ((C₂ * s ^ 2 + 1 : ℕ) : ℝ) ≤ ((CV * (r ^ 2 + 1) : ℕ) : ℝ)`. Use `push_cast`. Establish `q1 : (s:ℝ) ^ 2 ≤ ((r:ℝ) + 1) ^ 2` using `pow_le_pow_left₀ (by positivity) hsx 2`. Establish `q2 : ((r:ℝ) + 1) ^ 2 ≤ 2 * ((r:ℝ) ^ 2 + 1)` using `by nlinarith [sq_nonneg ((r:ℝ) - 1)]`.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `q3 : (C₂:ℝ) * (s:ℝ) ^ 2 ≤ (C₂:ℝ) * (2 * ((r:ℝ) ^ 2 + 1))` using `mul_le_mul_of_nonneg_left (le_trans q1 q2) (by positivity)`. Establish `q4 : (2 * (C₂:ℝ) + 1) * ((r:ℝ) ^ 2 + 1) ≤ (CV:ℝ) * ((r:ℝ) ^ 2 + 1)` using `mul_le_mul_of_nonneg_right h2 (by positivity)`. Establish `q5 : (1:ℝ) ≤ (r:ℝ) ^ 2 + 1` using `by nlinarith`. Use the polynomial consequences of the given equalities and inequalities. Conclude with `hR` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem top_density_threshold : C6.DensThreshTop := by
   intro C₁ C C₂ hC₁ hC

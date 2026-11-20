@@ -6,11 +6,11 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.CommutativeAlgebra
 open IsLocalRing Filter Formalism.MainNotions.V.Pf.V2.Calc UpperTheory.V.Alg UpperTheory.V.Alg.M
 
 /- English proof (translation)
-Take `⟨f, hf, hξ⟩` from `h`. Assume the negation of the conclusion as `hne`. Use `push_neg at hne`. Establish `hf' : f ∈ Submodule.span (𝒜 0) (s : Set A)`. Rewrite using `[hs]`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `(mem_oz 𝒜).2 hf`. Apply `hξ` to reduce the goal to its premises. Use `clear hξ hf`. Proceed by induction on `hf' using Submodule.span_induction with`. Consider the case `mem y hy => exact hne y hy`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `zero => exact map_zero ξ`. Consider the case `add y z _ _ hy hz => rw [map_add, hy, hz, add_zero]`. Consider the case `smul a y _ hy => rw [Algebra.smul_def, map_mul, hy, mul_zero]`.
+A detailed English derivation is pending.
 -/
 private theorem UpperTheory.V.Alg.M.fin_gen {O A K : Type} [CommRing O] [CommRing A] [Algebra O A]
     (𝒜 : ℤ → Submodule O A) [GradedAlgebra 𝒜] [Field K] [Algebra O K] (ξ : A →ₐ[O] K) (j : ℤ) (s : Finset A)
@@ -30,14 +30,14 @@ private theorem UpperTheory.V.Alg.M.fin_gen {O A K : Type} [CommRing O] [CommRin
   | smul a y _ hy => rw [Algebra.smul_def, map_mul, hy, mul_zero]
 
 /- English proof (translation)
-The claim follows from `act_of_mem 𝒜 _ ξ ha`.
+A detailed English derivation is pending.
 -/
 private theorem UpperTheory.V.Alg.M.fin_act {O A K : Type} [CommRing O] [CommRing A] [Algebra O A]
     (𝒜 : ℤ → Submodule O A) [GradedAlgebra 𝒜] [Field K] [Algebra O K] (t : Kˣ) (ξ : A →ₐ[O] K) {j : ℤ} {a : A}
     (ha : a ∈ 𝒜 j) : act 𝒜 (tz t) ξ a = ((t ^ j : Kˣ) : K) * ξ a := act_of_mem 𝒜 _ ξ ha
 
 /- English proof (translation)
-Use extensionality with `a`. Rewrite using `[← DirectSum.sum_support_decompose 𝒜 a, map_sum, map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `hm` using `SetLike.coe_mem (DirectSum.decompose 𝒜 a i)`. Rewrite using `[fin_act 𝒜 t⁻¹ _ hm, fin_act 𝒜 t ξ hm, ← mul_assoc, ← Units.val_mul, ← mul_zpow, inv_mul_cancel, one_zpow, Units.val_one, one_mul]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 private theorem UpperTheory.V.Alg.M.fin_inv {O A K : Type} [CommRing O] [CommRing A] [Algebra O A]
     (𝒜 : ℤ → Submodule O A) [GradedAlgebra 𝒜] [Field K] [Algebra O K] (t : Kˣ) (ξ : A →ₐ[O] K) :
@@ -51,7 +51,7 @@ private theorem UpperTheory.V.Alg.M.fin_inv {O A K : Type} [CommRing O] [CommRin
     one_zpow, Units.val_one, one_mul]
 
 /- English proof (translation)
-Introduce `f hf`. Rewrite using `[← DirectSum.sum_support_decompose 𝒜 f, map_sum]`. Use `Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations. Rewrite using `[fin_act 𝒜 _ _ (DirectSum.decompose 𝒜 f j).2, h _ (hI j hf), mul_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 private theorem UpperTheory.V.Alg.M.fin_onS {O A K : Type} [CommRing O] [CommRing A] [Algebra O A]
     (𝒜 : ℤ → Submodule O A) [GradedAlgebra 𝒜] [Field K] [Algebra O K] (t : Kˣ) (ξ : A →ₐ[O] K) (I : Ideal A)
@@ -63,21 +63,21 @@ private theorem UpperTheory.V.Alg.M.fin_onS {O A K : Type} [CommRing O] [CommRin
   rw [fin_act 𝒜 _ _ (DirectSum.decompose 𝒜 f j).2, h _ (hI j hf), mul_zero]
 
 /- English proof (translation)
-Introduce `O _ _ _ _ _ K _ _ _ _ A _ _ 𝒜 _ _ x hx I hI h2 h4`. Take `⟨s, hs⟩` from `fg_holds O A 𝒜 x hx (-2)`. Take `⟨s', hs'⟩` from `fg_holds O A 𝒜 x hx 2`. Establish `hsm : ∀ f ∈ s, f ∈ 𝒜 (-2)`. Introduce `f hf`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← mem_oz 𝒜, ← hs]`. Conclude with `Submodule.subset_span hf`. Establish `hsm' : ∀ g ∈ s', g ∈ 𝒜 2`. Introduce `g hg`. Rewrite using `[← mem_oz 𝒜, ← hs']`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Conclude with `Submodule.subset_span hg`. Set `S : Set (A →ₐ[O] K)` to `⋃ f ∈ (s : Set A), ⋃ g ∈ (s' : Set A), {ξ | OnS I ξ ∧ ξ f = 1 ∧ ξ g ≠ 0 ∧ TwoSigned 𝒜 ξ}`. Establish `hS : S.Finite`. Use `s.finite_toSet.biUnion fun f hf => s'.finite_toSet.biUnion fun g hg => ?_` and prove the remaining obligations. Conclude with `(slice_holds O K A 𝒜 x hx I hI h2 h4 f (hsm f hf) g (hsm' g hg)).1.subset fun ξ hξ => ⟨hξ.1, hξ.2.1, hξ.2.2.1⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `⟨hS.toFinset, fun ξ hξ => ?_, fun ξ hon htw => ?_⟩` and prove the remaining obligations. Rewrite `hξ` using `[Set.Finite.mem_toFinset]`. Simplify using `only [S, Set.mem_iUnion, Set.mem_setOf_eq] at hξ`. Take `⟨f, -, g, -, h1, -, -, h3⟩` from `hξ`. Conclude with `⟨h1, h3⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨f0, hf0, hξf0⟩` from `(sign_holds O A 𝒜 x hx K ξ).1.1 htw.1`. Take `⟨g0, hg0, hξg0⟩` from `(sign_holds O A 𝒜 x hx K ξ).2.1 htw.2`. Take `⟨f, hf, hξf⟩` from `fin_gen 𝒜 ξ (-2) s hs ⟨f0, hf0, hξf0⟩`. Take `⟨g, hg, hξg⟩` from `fin_gen 𝒜 ξ 2 s' hs' ⟨g0, hg0, hξg0⟩`. Take `⟨r, hr⟩` from `IsAlgClosed.exists_pow_nat_eq (ξ f) (by norm_num : 0 < 2)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hr0 : r ≠ 0`. Introduce and unpack `rfl`. Apply `hξf` to reduce the goal to its premises. Rewrite using `[← hr]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e1 : act 𝒜 (tz (Units.mk0 r hr0)) ξ f = 1`. Rewrite using `[fin_act 𝒜 _ ξ (hsm f hf), ← hr, Units.val_zpow_eq_zpow_val, Units.val_mk0, zpow_neg, zpow_ofNat, inv_mul_cancel₀ (pow_ne_zero _ hr0)]`. Establish `e2 : act 𝒜 (tz (Units.mk0 r hr0)) ξ g ≠ 0`. Rewrite using `[fin_act 𝒜 _ ξ (hsm' g hg)]`. Conclude with `mul_ne_zero (Units.ne_zero _) hξg`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `e3 : TwoSigned 𝒜 (act 𝒜 (tz (Units.mk0 r hr0)) ξ)` using `⟨(sign_holds O A 𝒜 x hx K _).1.2 ⟨f, hsm f hf, by rw [e1]; exact one_ne_zero⟩, (sign_holds O A 𝒜 x hx K _).2.2 ⟨g, hsm' g hg, e2⟩⟩`. Use `⟨act 𝒜 (tz (Units.mk0 r hr0)) ξ, ?_, (Units.mk0 r hr0)⁻¹, fin_inv 𝒜 _ ξ⟩` and prove the remaining obligations. Rewrite using `[Set.Finite.mem_toFinset]`. Simplify using `only [S, Set.mem_iUnion, Set.mem_setOf_eq]`. Conclude with `⟨f, hf, g, hg, fin_onS 𝒜 _ ξ I hI hon, e1, e2, e3⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Alg.M.fin_holds :
     ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [IsAdicComplete (maximalIdeal O) O] [CharZero O]

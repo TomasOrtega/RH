@@ -9,9 +9,9 @@ open scoped TensorProduct NNReal ENNReal
 namespace GlobalTheory.SWQ
 
 /- English proof (translation)
-Introduce `F _ _ hF ψ hψ N a ha`. Take `⟨lam, hlam⟩` from `GlobalTheory.T.exists_archimedean_exponents_adeleCharacter F hF ψ hψ`. Take `⟨ν, hν⟩` from `GlobalTheory.T.exists_measure_isCov1 F`. Use `⟨lam, ν, ?_⟩` and prove the remaining obligations. Unfold `Ctx`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Conclude with `⟨hF, hψ, hlam, hν, ha⟩`.
+Supply the required witnesses or components.
 -/
 theorem ctx_exists : ∀ (F : Type) [Field F] [NumberField F], IsTotallyReal F → ∀ ψ : AddChar (AF F) ℂ, IsCharAF F ψ → ∀ (N : ℕ) (a : Fin N → F), (∀ l, a l ≠ 0) → ∃ lam ν, Ctx ψ lam ν a := by
   intro F _ _ hF ψ hψ N a ha

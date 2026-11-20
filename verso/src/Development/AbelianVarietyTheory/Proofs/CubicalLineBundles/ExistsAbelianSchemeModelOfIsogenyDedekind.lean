@@ -15,13 +15,11 @@ namespace GlobalTheory
 namespace TorsionKernelModel
 
 /- English proof (translation)
-Establish `hk : IsPullback (pullback.fst f η[H]) (toUnit _) f η[H]`. Use `IsPullback.of_hasPullback f η[H]` as an intermediate fact. Rewrite `this` using `[toUnit_unique (pullback.snd f η[H]) (toUnit _)]`. Then use the resulting hypothesis. Generalize the expression as in `pullback.fst f η[H] = i at hk`. Generalize the expression as in `pullback f η[H] = Z at i hk`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable.
 
-Establish `h₁ : IsClosedImmersion (η[H].left ≫ H.hom)`. Rewrite using `[Over.w]`. Conclude with `inferInstanceAs (IsClosedImmersion (𝟙 S))`. Establish `h₂ : IsClosedImmersion η[H].left` using `IsClosedImmersion.of_comp _ H.hom`. Establish `h₃ : IsClosedImmersion i.left` using `MorphismProperty.of_isPullback (P := @IsClosedImmersion) (hk.map (Over.forget S)).flip h₂`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm : Mono i` using `(Over.forget S).mono_of_mono_map (inferInstanceAs (Mono i.left))`. Establish `hi : i ≫ f = 1` using `hk.w`. Take `⟨_, hG⟩` from `exists_grpObj_of_mono i (hk.lift η[G] (toUnit _) (by simp)) (hk.lift ((fst Z Z ≫ i) * (snd Z Z ≫ i)) (toUnit _) (by`. Rewrite using `[MonObj.mul_comp, Category.assoc, Category.assoc, hi, MonObj.comp_one, MonObj.comp_one, _root_.mul_one, Hom.one_def]))`. Use the proof step `(hk.lift i⁻¹ (toUnit _) (by rw [GrpObj.inv_comp, hi, inv_one, Hom.one_def]))`.
-
-Use the proof step `(hk.lift_fst _ _ _) ((hk.lift_fst _ _ _).trans (by rw [Hom.mul_def, lift_fst_comp_snd_comp]))`. Use the proof step `((hk.lift_fst _ _ _).trans (Hom.inv_def _))`. Conclude with `⟨Z, _, i, hG, h₃, hk⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_kernel {S : Scheme.{0}} {G H : Over S} [GrpObj G] [GrpObj H] [IsSeparated H.hom] (f : G ⟶ H)
     [IsMonHom f] :
@@ -50,7 +48,7 @@ theorem exists_kernel {S : Scheme.{0}} {G H : Over S} [GrpObj G] [GrpObj H] [IsS
   exact ⟨Z, _, i, hG, h₃, hk⟩
 
 /- English proof (translation)
-Use `(h.map (Over.pullback j)).of_iso (Iso.refl _) (Iso.refl _) (Functor.Monoidal.εIso (Over.pullback j)).symm (Iso.refl _) (by simp) (toUnit_unique _ _) (by simp) ?_` and prove the remaining obligations. Simplify using `[Functor.obj.η_def]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem isPullback_kernel_baseChange {S S' : Scheme.{0}} (j : S' ⟶ S) {Z G H : Over S} [GrpObj H]
     {i : Z ⟶ G} {f : G ⟶ H} (h : IsPullback i (toUnit Z) f η[H]) :
@@ -60,13 +58,11 @@ theorem isPullback_kernel_baseChange {S S' : Scheme.{0}} (j : S' ⟶ S) {Z G H :
   simp [Functor.obj.η_def]
 
 /- English proof (translation)
-Establish `h₁ : IsClosedImmersion (η[G].left ≫ G.hom)`. Rewrite using `[Over.w]`. Conclude with `inferInstanceAs (IsClosedImmersion (𝟙 S))`. Establish `h₂ : IsClosedImmersion η[G].left` using `IsClosedImmersion.of_comp _ G.hom`. Establish `e₁ : i ≫ (𝟙 G ^ n) = toUnit Z ≫ η[G]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[MonObj.comp_pow, Category.comp_id, h, Hom.one_def]`. Establish `e₂ : i.left ≫ (𝟙 G ^ n).left = Z.hom ≫ η[G].left`. Rewrite using `[← Over.comp_left, e₁]`. Simplify using the standard rewrite rules. Set `l : Z.left ⟶ pullback (𝟙 G ^ n).left η[G].left` to `pullback.lift i.left Z.hom e₂`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `h₃ : IsClosedImmersion (l ≫ pullback.fst _ _)`. Rewrite using `[pullback.lift_fst]`. Use `infer_instance`. Establish `h₄ : IsClosedImmersion l` using `IsClosedImmersion.of_comp l (pullback.fst _ _)`. Establish `e₃ : l ≫ pullback.snd _ _ = Z.hom` using `pullback.lift_snd _ _ _`.
-
-Rewrite using `[← e₃]`. Use `infer_instance`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isFinite_of_pow_eq_one {S : Scheme.{0}} {Z G : Over S} [GrpObj G] [IsSeparated G.hom] (i : Z ⟶ G)
     [IsClosedImmersion i.left] (n : ℕ) [hn : IsFinite (𝟙 G ^ n).left] (h : i ^ n = 1) : IsFinite Z.hom := by
@@ -90,17 +86,17 @@ end TorsionKernelModel
 open TorsionKernelModel in
 
 /- English proof (translation)
-Introduce `hL R K _ _ _ _ _ P A₀ B₀ _ _ φ ψ n hφ hB _ _ _ _ hn hker`. Take `⟨_, _⟩` from `ExtUnique.spec_fractionRing R K`. Use `P.isAb.proper` as an intermediate fact. Use `hB.proper` as an intermediate fact. Take `⟨a, ha, ha'⟩` from `grpPullback_iso (isGrpPullback_pullback P.A _) hφ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `: IsIso a.hom.left` using `inferInstanceAs (IsIso ((Over.forget _).map a.hom))`. Take `⟨Z, _, i, _, hi, hZ⟩` from `exists_kernel (a.hom ≫ ψ)`. Take `⟨Ga, io, e, _, _, he⟩` from `IsogenyModel.exists_flat_closure R K P.A Z i hi`. Take `⟨_, _, -⟩` from `exists_grpObj_of_flat_closed _ P.A Ga io Z i e he`. Establish `hkill : (Over.pullback (spMap (algebraMap R K))).map io ≫ a.hom ≫ ψ = toUnit _ ≫ η[B₀]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[← he, Category.assoc, hZ.w, comp_toUnit_assoc]`. Establish `hpow : io ^ n = 1`. Apply `ExtUnique.pullback_map_injective (spMap (algebraMap R K))` to reduce the goal to its premises. Establish `h₁` using `hker _ ((Over.pullback (spMap (algebraMap R K))).map io ≫ a.hom) (by`. Rewrite using `[Category.assoc, hkill, Hom.one_def])`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h₁` using `[← MonObj.pow_comp, ← MonObj.one_comp a.hom, cancel_mono]`. Conclude with `(map_pow (Over.pullback (spMap (algebraMap R K))).homMonoidHom io n).trans (h₁.trans (map_one (Over.pullback (spMap (algebraMap R K))).homMonoidHom).symm)`. Use `(hL.mulN _ P n hn).1` as an intermediate fact. Establish `hfin : IsFinite Ga.hom` using `isFinite_of_pow_eq_one io n hpow`. Establish `hm : Mono io` using `(Over.forget _).mono_of_mono_map (inferInstanceAs (Mono io.left))`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨B, _, hab, q, _, hq₁, hq₂, hq₃, hq⟩` from `hL.quotient R P Ga io ‹_› hm hfin ‹_›`. Establish `hq'` using `isPullback_kernel_baseChange (spMap (algebraMap R K)) hq`. Establish `hqc : QuasiCompact q.left` using `inferInstance`. Take `⟨β, _, hβ⟩` from `flatQuotient_iso_of_same_kernel _ _ _ _ _ _ ((Over.pullback (spMap (algebraMap R K))).map q) ((Over.pullback (spMap (algebraMap R K))).map io) (a.hom ≫ ψ) i inferInstance inferInstance (MorphismProperty.overPullbackMap (P := @Flat) _ q hq₂) (MorphismProperty.overPullbackMap (P := …`. Use `⟨B, _, β.hom.left ≫ pullback.fst B.hom (spMap (algebraMap R K)), q, hab, ((isGrpPullback_of_iso β).comp (isGrpPullback_pullback B _)).congr (Category.id_comp _) rfl, ‹_›, hq₁, hq₂, hq₃, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← cancel_epi a.hom.left, ← Category.assoc a.hom.left φ, ha', ← ExtUnique.pullback_map_left_fst, ← hβ]`. Simplify using `only [Over.comp_left, Category.assoc]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_abelianScheme_model_of_isogeny_dedekind :
     Out.Laws → ∀ (R K : Type) [CommRing R] [IsDedekindDomain R] [Field K] [Algebra R K] [IsFractionRing R K] (P : Out.PolAV (Sp R)) (A₀ B₀ : Over (Sp K)) [GrpObj A₀] [GrpObj B₀] (φ : A₀.left ⟶ P.A.left) (ψ : A₀ ⟶ B₀) (n : ℕ), IsGrpPullback A₀ P.A (spMap (algebraMap R K)) φ → IsAbelianScheme B₀ → IsMonHom ψ → IsFinite ψ.left → Flat ψ.left → Surjective ψ.left → 1 ≤ n → (∀ (T : Over (Sp K)) (x : T ⟶ A₀), x ≫ ψ = 1 → x ^ n = 1) →

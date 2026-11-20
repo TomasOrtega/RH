@@ -17,7 +17,7 @@ namespace GlobalTheory.FinEtSubgroup
 variable {K : Type} [Field K]
 
 /- English proof (translation)
-Establish `: IsLocallyArtinian (Sp K)` using `inferInstanceAs (IsLocallyArtinian (Spec (CommRingCat.of K)))`. Establish `: IsLocallyArtinian X.left` using `IsLocallyArtinian.of_locallyQuasiFinite X.hom`. Use `infer_instance`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem discreteTopology_of_isFinite (X : Over (Sp K)) [IsFinite X.hom] : DiscreteTopology X.left := by
   have : IsLocallyArtinian (Sp K) := inferInstanceAs (IsLocallyArtinian (Spec (CommRingCat.of K)))
@@ -25,9 +25,9 @@ theorem discreteTopology_of_isFinite (X : Over (Sp K)) [IsFinite X.hom] : Discre
   infer_instance
 
 /- English proof (translation)
-Set `Ω` to `AlgebraicClosure K`. Set `t : Sp Ω ⟶ Sp K` to `spMap (algebraMap K Ω)`. Take `⟨z, hz, -⟩` from `Scheme.Pullback.exists_preimage_pullback (f := X.hom) (g := t) x (IsLocalRing.closedPoint Ω) (Subsingleton.elim (α := PrimeSpectrum K) _ _)`. Take `⟨s, hs, -, hx⟩` from `(FinEt.isSplitOfRank_iff _ _).mp (FinEt.isSplitOfRank_of_isSepClosed (pullback.snd X.hom t) (pullback.snd X.hom t z))`. Take `⟨i, w, hw⟩` from `(hx z).exists`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨Over.homMk (s i ≫ pullback.fst X.hom t) ?_, w, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(s i ≫ pullback.fst X.hom t) ≫ X.hom = t`. Rewrite using `[Category.assoc, pullback.condition, ← Category.assoc, hs, Category.id_comp]`. Express the relevant statement in the definitionally equal form `(s i ≫ pullback.fst X.hom t) w = x`. Rewrite using `[Scheme.Hom.comp_apply, hw, hz]`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_pt_of_finiteEtale (X : Over (Sp K)) [IsFinite X.hom] [Etale X.hom] (x : X.left) :
     ∃ y : ptOver K (AlgebraicClosure K) ⟶ X, x ∈ Set.range y.left := by
@@ -45,19 +45,17 @@ theorem exists_pt_of_finiteEtale (X : Over (Sp K)) [IsFinite X.hom] [Etale X.hom
     rw [Scheme.Hom.comp_apply, hw, hz]
 
 /- English proof (translation)
-Set `Ω` to `AlgebraicClosure K`. Take `⟨⟨q, φ⟩, ha⟩` from `(Scheme.SpecToEquivOfField Ω X.left).symm.surjective a.left`. Take `⟨⟨q', ψ⟩, hb⟩` from `(Scheme.SpecToEquivOfField Ω X.left).symm.surjective b.left`. Simplify using `only [Scheme.SpecToEquivOfField_symm_apply] at ha hb`. Establish `hq : q = q'`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h1 : (Spec.map φ ≫ X.left.fromSpecResidueField q) p = (Spec.map ψ ≫ X.left.fromSpecResidueField q') p` using `by rw [ha, hb]; exact h`. Simplify `h1` using `only [Scheme.Hom.comp_apply, Scheme.fromSpecResidueField_apply]`. Substitute `hq` using the available equality. Set `c : CommRingCat.of K ⟶ X.left.residueField q` to `Spec.preimage (X.left.fromSpecResidueField q ≫ X.hom)`. Establish `hc : Spec.map c = X.left.fromSpecResidueField q ≫ X.hom` using `Spec.map_preimage _`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Substitute using the available equality. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `key : ∀ (χ : X.left.residueField q ⟶ CommRingCat.of Ω) (u : ptOver K Ω ⟶ X), Spec.map χ ≫ X.left.fromSpecResidueField q = u.left → c ≫ χ = CommRingCat.ofHom (algebraMap K Ω)`. Introduce `χ u hu`. Apply `Spec.map_injective` to reduce the goal to its premises. Rewrite using `[Spec.map_comp, hc, ← Category.assoc, hu]`. Conclude with `Over.w u`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hφ` using `key φ a ha`. Establish `hψ` using `key ψ b hb`. Use `letI : Algebra K (X.left.residueField q) := c.hom.toAlgebra`. Use `letI : Algebra (X.left.residueField q) Ω := ψ.hom.toAlgebra`. Use `haveI : IsScalarTower K (X.left.residueField q) Ω := IsScalarTower.of_algebraMap_eq fun x => (congrArg (fun f => f.hom x) hψ).symm`.
+Establish an intermediate fact. Equip the data with the indicated structure. Equip the data with the indicated structure. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `φ' : X.left.residueField q →ₐ[K] Ω` to `{ φ.hom with commutes' := fun x => congrArg (fun f => f.hom x) hφ }`. Set `σ₀ : Ω →ₐ[K] Ω` to `φ'.liftNormal Ω`. Establish `hσ₀ : ∀ x, σ₀ (ψ.hom x) = φ.hom x` using `fun x => φ'.liftNormal_commutes Ω x`. Set `σ : Ω ≃ₐ[K] Ω` to `AlgEquiv.ofBijective σ₀ (Algebra.IsAlgebraic.algHom_bijective σ₀)`. Use `⟨σ, Over.OverMorphism.ext ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `a.left = spMap (σ : Ω →+* Ω) ≫ b.left`. Rewrite using `[← ha, ← hb, ← Category.assoc]`. Use `congr 1`. Rewrite using `[spMap, ← Spec.map_comp]`. Use `congr 1`.
-
-Use extensionality with `x`. Conclude with `(hσ₀ x).symm`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem exists_gal_of_apply_eq (X : Over (Sp K)) (a b : ptOver K (AlgebraicClosure K) ⟶ X)
     (p : Sp (AlgebraicClosure K)) (h : a.left p = b.left p) :
@@ -101,45 +99,37 @@ theorem exists_gal_of_apply_eq (X : Over (Sp K)) (a b : ptOver K (AlgebraicClosu
   exact (hσ₀ x).symm
 
 /- English proof (translation)
-Introduce `K _ A G _ hn hgal`. Set `Ω` to `AlgebraicClosure K`. Set `n` to `Nat.card G`. Establish `hu : IsUnit (n : Γ(Sp K, ⊤))`. Simplify using `using (isUnit_iff_ne_zero.2 hn).map (Scheme.ΓSpecIso (CommRingCat.of K)).inv.hom`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Take `⟨-, hTf, hTe⟩` from `GrpTangent.finiteEtale_mulN_torsion A.X (hG := A.ab) hu`. Set `T` to `torsion A.X n`. Set `ι₀ : T ⟶ A.X` to `torsion.ι A.X n`. Establish `hι₀ : ι₀ ^ n = 1`. Rewrite using `[← GrpTangent.comp_mulN]`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `pullback.condition.trans ?_` and prove the remaining obligations. Rewrite using `[Hom.one_def]`. Use `congr 1`. Conclude with `toUnit_unique _ _`. Use `haveI : IsSplitMono η[A.X] := IsSplitMono.mk' ⟨toUnit _, toUnit_unique _ _⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Use `haveI : Mono ι₀ := inferInstanceAs (Mono (pullback.fst _ _))`. Establish `hpow : ∀ x ∈ G, x ^ n = 1` using `fun x hx => congrArg Subtype.val (pow_card_eq_one' (G := G) (x := ⟨x, hx⟩))`. Set `lt : ∀ {S : Over (Sp K)} (x : S ⟶ A.X), x ^ n = 1 → (S ⟶ T)` to `fun x hx => pullback.lift x (toUnit _) (by rw [GrpTangent.comp_mulN, hx, Hom.one_def])`. Establish `hlt : ∀ {S : Over (Sp K)} (x : S ⟶ A.X) (hx : x ^ n = 1), lt x hx ≫ ι₀ = x` using `fun x hx => pullback.lift_fst _ _ _`. Set `U : Set T.left` to `{t | ∃ (x : A.Pt) (hx : x ∈ G) (p : Sp Ω), (lt x (hpow x hx)).left p = t}`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Use `haveI := discreteTopology_of_isFinite T`. Set `V : T.left.Opens` to `⟨U, isOpen_discrete U⟩`. Set `H : Over (Sp K)` to `Over.mk (V.ι ≫ T.hom)`. Set `j : H ⟶ T` to `Over.homMk V.ι rfl`. Take `⟨ν, hνj⟩ : ∃ ν : H ⟶ A.X, ν = j ≫ ι₀` from `⟨_, rfl⟩`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `haveI : IsClosedImmersion V.ι := .of_isPreimmersion _ (by`. Rewrite using `[Scheme.Opens.range_ι]`. Conclude with `isClosed_discrete _)`. Use `haveI hHf : IsFinite H.hom := by change IsFinite (V.ι ≫ T.hom); infer_instance`. Use `haveI hHe : Etale H.hom := by change Etale (V.ι ≫ T.hom); infer_instance`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use `haveI : Mono j := (Over.forget _).mono_of_mono_map (by change Mono V.ι; infer_instance)`. Use `haveI : Mono ν := hνj ▸ mono_comp _ _`. Establish `hν : ν ^ n = 1`. Rewrite using `[hνj, ← MonObj.comp_pow, hι₀, MonObj.comp_one]`. Establish `lift : ∀ {S : Over (Sp K)} (f : S ⟶ A.X) (hf : f ^ n = 1), (∀ s : S.left, ∃ y : ptOver K Ω ⟶ S, s ∈ Set.range y.left) → (∀ y : ptOver K Ω ⟶ S, y ≫ f ∈ G) → ∃ g : S ⟶ H, g ≫ ν = f`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Introduce `S f hf hS hG`. Establish `hr : Set.range (lt f hf).left ⊆ Set.range V.ι`. Introduce and unpack `_ ⟨s, rfl⟩`. Take `⟨y, p, rfl⟩` from `hS s`. Rewrite using `[Scheme.Opens.range_ι]`.
+Introduce a local definition for the expression. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Supply the required witnesses or components.
 
-Establish `e : y ≫ lt f hf = lt (y ≫ f) (hpow _ (hG y))`. Rewrite using `[← cancel_mono ι₀, hlt (y ≫ f) (hpow _ (hG y)), Category.assoc, hlt f hf]`. Use `⟨y ≫ f, hG y, p, ?_⟩` and prove the remaining obligations. Rewrite using `[← e]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `g : S ⟶ H` to `Over.homMk (IsOpenImmersion.lift V.ι (lt f hf).left hr) (by`. Express the relevant statement in the definitionally equal form `IsOpenImmersion.lift V.ι (lt f hf).left hr ≫ V.ι ≫ T.hom = S.hom`. Rewrite using `[← Category.assoc, IsOpenImmersion.lift_fac]`. Conclude with `Over.w _)`. Establish `hg : g ≫ j = lt f hf` using `Over.OverMorphism.ext (IsOpenImmersion.lift_fac _ _ _)`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `⟨g, by rw [hνj, ← Category.assoc, hg, hlt f hf]⟩`. Establish `hP : ∀ y : ptOver K Ω ⟶ H, y ≫ ν ∈ G`. Introduce `y`. Take `⟨p⟩ : Nonempty (Sp Ω)` from `inferInstance`. Establish `hmem : (y ≫ j).left p ∈ U`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `h1 : V.ι (y.left p) ∈ Set.range V.ι` using `⟨_, rfl⟩`. Rewrite `h1` using `[Scheme.Opens.range_ι]`. Conclude with `h1`. Take `⟨x, hx, p', hp'⟩` from `hmem`. Rewrite `hp'` using `[Subsingleton.elim p' p]`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨σ, hσ⟩` from `exists_gal_of_apply_eq T (y ≫ j) (lt x (hpow x hx)) p hp'.symm`. Establish `e : y ≫ ν = galPts A.X σ x` using `by show y ≫ ν = specAut σ ≫ x`. Rewrite using `[hνj, ← Category.assoc, hσ, Category.assoc, hlt x (hpow x hx)]`. Rewrite using `[e]`. Conclude with `hgal σ x hx`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Establish `hone : η[A.X] = 1`. Rewrite using `[Hom.one_def, toUnit_unique (toUnit _) (𝟙 _), Category.id_comp]`. Take `⟨e, he⟩` from `lift η[A.X] (by rw [hone, one_pow]) (fun s => ⟨toUnit _, by`. Take `⟨p⟩ : Nonempty (Sp Ω)` from `inferInstance`. Conclude with `⟨p, Subsingleton.elim (α := PrimeSpectrum K) _ _⟩⟩)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use the proof step `(fun y => by`. Establish `: y ≫ η[A.X] = 1` using `by rw [Hom.one_def, toUnit_unique (toUnit _) y]`. Rewrite using `[this]`. Conclude with `one_mem G)`. Establish `hmul : (ν ⊗ₘ ν) ≫ μ[A.X] = (fst H H ≫ ν) * (snd H H ≫ ν)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Rewrite using `[Hom.mul_def, ← lift_map, lift_fst_snd, Category.id_comp]`. Use `haveI : IsFinite (H ⊗ H).hom := by rw [Over.tensorObj_hom]; infer_instance`. Use `haveI : Etale (H ⊗ H).hom := by rw [Over.tensorObj_hom]; infer_instance`. Establish `hν' : ∀ {S : Over (Sp K)} (g : S ⟶ H), (g ≫ ν) ^ n = 1` using `fun g => by`. Rewrite using `[← MonObj.comp_pow ν n g, hν, MonObj.comp_one]`.
-
-Take `⟨m, hm⟩` from `lift ((ν ⊗ₘ ν) ≫ μ[A.X]) (by rw [hmul, mul_pow, hν' (fst H H), hν' (snd H H), _root_.one_mul]) (exists_pt_of_finiteEtale _) (fun y => by`. Rewrite using `[hmul, MonObj.comp_mul, ← Category.assoc, ← Category.assoc]`. Conclude with `mul_mem (hP (y ≫ fst H H)) (hP (y ≫ snd H H)))`. Take `⟨i, hi⟩` from `lift (ν ≫ ι[A.X]) (by rw [← Hom.inv_def, inv_pow, hν, inv_one]) (exists_pt_of_finiteEtale _) (fun y => by`. Rewrite using `[← Hom.inv_def, GrpObj.comp_inv]`.
-
-Conclude with `inv_mem (hP y))`. Take `⟨gH, hνH⟩` from `ReducedSubgroup.exists_grpObj_of_mono ν e m i he hm hi`. Use `⟨H, gH, ν, hνH, inferInstance, hHf, hHe, fun x => ⟨fun hx => ?_, ?_⟩⟩` and prove the remaining obligations. Take `⟨g, hg⟩` from `lift x (hpow x hx) (fun s => ⟨𝟙 _, s, rfl⟩) (fun y => by`. Take `⟨p⟩ : Nonempty (Sp Ω)` from `inferInstance`.
-
-Take `⟨σ, hσ⟩` from `exists_gal_of_apply_eq (ptOver K Ω) y (𝟙 _) p (Subsingleton.elim (α := PrimeSpectrum Ω) _ _)`. Rewrite using `[hσ, Category.comp_id]`. Conclude with `hgal σ x hx)`. Conclude with `⟨g, hg⟩`. Introduce and unpack `⟨y, rfl⟩`.
-
-Conclude with `hP y`.
+A detailed English derivation is pending.
 -/
 theorem exists_finiteEtale_subgroup_of_points : ∀ (K : Type) [Field K] (A : AbVar K) (G : Subgroup A.Pt), Finite G → ((Nat.card G : ℕ) : K) ≠ 0 → (∀ (σ : Gal K) (x : A.Pt), x ∈ G → galPts A.X σ x ∈ G) → ∃ (H : Over (Sp K)) (_ : GrpObj H) (i : H ⟶ A.X), IsMonHom i ∧ Mono i ∧ IsFinite H.hom ∧ Etale H.hom ∧ ∀ x : A.Pt, x ∈ G ↔ ∃ y, y ≫ i = x := by
   intro K _ A G _ hn hgal

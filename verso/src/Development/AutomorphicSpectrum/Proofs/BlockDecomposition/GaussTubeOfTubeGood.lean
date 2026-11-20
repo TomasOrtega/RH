@@ -34,7 +34,7 @@ def ExpDecay {T : Type} [TopologicalSpace T] (φ : ℝ × ℝ → T → X) : Pro
     ∀ g' ∈ U, ∀ t : ℝ × ℝ, ‖φ t g'‖ ≤ M * Real.exp (-rdot x t) * Real.exp (-ε * (|t.1| + |t.2|))
 
 /- English proof (translation)
-Rewrite using `[Complex.norm_exp, ← Real.exp_add]`. Use `congr 1`. Simplify using `[sq]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem norm_exp_sq (l : ℂ × ℂ) : ‖Complex.exp (l.1 ^ 2 + l.2 ^ 2)‖ =
     Real.exp (l.1.re ^ 2 + l.2.re ^ 2) * Real.exp (-(l.1.im ^ 2 + l.2.im ^ 2)) := by
@@ -44,9 +44,9 @@ theorem norm_exp_sq (l : ℂ × ℂ) : ‖Complex.exp (l.1 ^ 2 + l.2 ^ 2)‖ =
   ring
 
 /- English proof (translation)
-Take `⟨U, hU, M, hM⟩` from `h.bdd C hC hc g`. Take `⟨B, hB⟩` from `(hc.image (f := fun x : ℝ × ℝ => x.1 ^ 2 + x.2 ^ 2) (by fun_prop)).bddAbove`. Use `⟨U, hU, Real.exp B * |M|, fun g' hg' l hl => ?_⟩` and prove the remaining obligations. Establish `h1 : l.1.re ^ 2 + l.2.re ^ 2 ≤ B` using `hB ⟨(l.1.re, l.2.re), hl, rfl⟩`. Establish `h2 : ‖F l g'‖ ≤ |M|` using `(hM l hl g' hg').trans (le_abs_self M)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [gauss]`. Rewrite using `[norm_smul, norm_exp_sq]`. Establish `h3 : Real.exp (l.1.re ^ 2 + l.2.re ^ 2) ≤ Real.exp B` using `Real.exp_le_exp.2 h1`. Establish `h4` using `Real.exp_pos (-(l.1.im ^ 2 + l.2.im ^ 2))`. Combine the equalities or inequalities in the displayed calculation.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem gauss_bound {T : Type} [TopologicalSpace T] {F : ℂ × ℂ → T → X} {Ω C : Set (ℝ × ℝ)} (h : TubeGood F Ω)
     (hC : C ⊆ Ω) (hc : IsCompact C) (g : T) : ∃ U ∈ 𝓝 g, ∃ M : ℝ, ∀ g' ∈ U, ∀ l ∈ tube C,
@@ -64,9 +64,9 @@ theorem gauss_bound {T : Type} [TopologicalSpace T] {F : ℂ × ℂ → T → X}
     _ ≤ Real.exp B * |M| * Real.exp (-(l.1.im ^ 2 + l.2.im ^ 2)) := by gcongr
 
 /- English proof (translation)
-Establish `h1 : Differentiable ℂ fun τ : ℂ => Complex.exp ((p + τ • v).1 ^ 2 + (p + τ • v).2 ^ 2)`. Simplify using `only [Prod.fst_add, Prod.snd_add, Prod.smul_fst, Prod.smul_snd, smul_eq_mul]`. Use `fun_prop`. Conclude with `h1.differentiableOn.smul (h.hol g p v)`. Use `cont := by`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `h1 : ContinuousOn (fun l : ℂ × ℂ => F l g) (tube Ω)` using `h.cont.comp (f := fun l : ℂ × ℂ => (l, g)) (by fun_prop) fun l hl => ⟨hl, trivial⟩`. Conclude with `ContinuousOn.smul (by fun_prop) h1`. Use `decay C hC hc := by`. Take `⟨U, hU, M, hM⟩` from `gauss_bound h hC hc g`. Conclude with `⟨M, fun l hl => hM g (mem_of_mem_nhds hU) l hl⟩`.
+A detailed English derivation is pending.
 -/
 theorem gaussTube_of_tubeGood {T : Type} [TopologicalSpace T] {F : ℂ × ℂ → T → X} {Ω : Set (ℝ × ℝ)}
     (h : TubeGood F Ω) (g : T) : GaussTube (gauss (F · g)) Ω where

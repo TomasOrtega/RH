@@ -11,11 +11,11 @@ open GlobalTheory.Doubling (absE)
 namespace GlobalTheory.ConeBump
 
 /- English proof (translation)
-Rewrite using `[IsLocallyConstant.iff_eventually_eq]`. Introduce `p₀`. Establish `hh : IsLocallyConstant (fun x : P × Q => (Function.uncurry f x, f p₀ x.2))` using `hlc.prodMk (hlc.comp_continuous (continuous_const.prodMk continuous_snd))`. Establish `hn : IsOpen {x : P × Q | f x.1 x.2 = f p₀ x.2}` using `hh {z : Z × Z | z.1 = z.2}`. Take `⟨u, v, hu, hv, hpu, hCv, huv⟩` from `generalized_tube_lemma isCompact_singleton hC hn (by`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Introduce and unpack `⟨p, q⟩ ⟨hp, -⟩`. Rewrite `hp` using `[Set.mem_singleton_iff]`. Substitute `hp` using the available equality. Use the proof step `rfl)`. Use `filter_upwards [hu.mem_nhds (hpu rfl)] with p hp`.
+Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails.
 
-Use function extensionality and compare the values at `q`. Distinguish the cases in `hq : q ∈ C`. Conclude with `huv (Set.mk_mem_prod hp (hCv hq))`. Rewrite using `[hsupp p q hq, hsupp p₀ q hq]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isLocallyConstant_curry_of_compact_supp {P Q Z : Type} [TopologicalSpace P]
     [TopologicalSpace Q] [Zero Z] (f : P → Q → Z) (C : Set Q) (hC : IsCompact C)
@@ -40,37 +40,33 @@ theorem isLocallyConstant_curry_of_compact_supp {P Q Z : Type} [TopologicalSpace
   · rw [hsupp p q hq, hsupp p₀ q hq]
 
 /- English proof (translation)
-Introduce `P Q Y _ _ _ _ _ _ _ _ _ μP _ μQ _ f g C hC hlc hSB hsupp hg L hadd hsmul`. Establish `hfin : (Set.range (Function.uncurry f) \ {0}).Finite`. Establish `hK : IsCompact (Set.univ ×ˢ C : Set (P × Q))` using `isCompact_univ.prod hC`. Use `haveI := isCompact_iff_compactSpace.mp hK`. Establish `h1` using `(hlc.comp_continuous (continuous_subtype_val : Continuous (Subtype.val : (Set.univ ×ˢ C : Set (P × Q)) → P × Q))).range_finite`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `h1.subset ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨⟨⟨p, q⟩, rfl⟩, hne⟩`. Establish `hq : q ∈ C`. Assume the negation of the conclusion as `hq`. Conclude with `hne (hsupp p q hq)`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Supply the required witnesses or components. Establish an intermediate fact.
 
-Conclude with `⟨⟨(p, q), ⟨Set.mem_univ _, hq⟩⟩, rfl⟩`. Use `set S := hfin.toFinset with hSdef`. Establish `hmemS : ∀ p q, f p q ≠ 0 → f p q ∈ S`. Introduce `p q h`. Rewrite using `[Set.Finite.mem_toFinset]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `⟨⟨(p, q), rfl⟩, h⟩`. Establish `hS0 : ∀ s ∈ S, s ≠ 0` using `fun s hs => ((Set.Finite.mem_toFinset _).1 hs).2`. Establish `hSSB : ∀ s ∈ S, s ∈ SB Y`. Introduce `s hs`. Take `⟨⟨⟨p, q⟩, rfl⟩, -⟩` from `(Set.Finite.mem_toFinset _).1 hs`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hSB p q`. Set `χ : (Y → ℂ) → P → Q → ℂ` to `fun s p q => if f p q = s then 1 else 0`. Establish `hdec : ∀ φ : (Y → ℂ) → ℂ, φ 0 = 0 → ∀ p q, φ (f p q) = ∑ s ∈ S, χ s p q * φ s`. Introduce `φ h0 p q`. Simplify using `only [χ, ite_mul, one_mul, zero_mul, Finset.sum_ite_eq]`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `h : f p q = 0`. Rewrite using `[h, h0]`. Simplify using the standard rewrite rules. Rewrite using `[if_pos (hmemS p q h)]`. Establish `hlcP` using `isLocallyConstant_curry_of_compact_supp f C hC hlc hsupp`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `hχlc : ∀ s, IsLocallyConstant (Function.uncurry (χ s))` using `fun s => hlc.comp (fun v => if v = s then (1 : ℂ) else 0)`. Establish `hsuppχ : ∀ s ∈ S, ∀ p q, q ∉ C → χ s p q = 0`. Introduce `s hs p q hq`. Simplify using `[χ, hsupp p q hq, (hS0 s hs).symm]`. Establish `hint_in : ∀ s ∈ S, ∀ p, Integrable (fun q => χ s p q * g q) μQ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `s hs p`. Apply `Continuous.integrable_of_hasCompactSupport` to reduce the goal to its premises. Conclude with `((hχlc s).comp_continuous (continuous_const.prodMk continuous_id)).continuous.mul hg`. Conclude with `HasCompactSupport.intro hC (fun q hq => by simp [hsuppχ s hs p q hq])`. Set `G : (Y → ℂ) → P → ℂ` to `fun s p => ∫ q, χ s p q * g q ∂μQ`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hGlc : ∀ s, IsLocallyConstant (G s)` using `fun s => hlcP.comp (fun h : Q → Y → ℂ => ∫ q, (if h q = s then (1 : ℂ) else 0) * g q ∂μQ)`. Establish `hint_out : ∀ s, Integrable (G s) μP` using `fun s => (hGlc s).continuous.integrable_of_hasCompactSupport (isCompact_univ.of_isClosed_subset (isClosed_tsupport _) (Set.subset_univ _))`. Set `a : (Y → ℂ) → ℂ` to `fun s => ∫ p, G s p ∂μP`. Establish `hkey : ∀ φ : (Y → ℂ) → ℂ, φ 0 = 0 → ∫ p, ∫ q, φ (f p q) * g q ∂μQ ∂μP = ∑ s ∈ S, a s * φ s`. Introduce `φ h0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `e1 : ∀ p, ∫ q, φ (f p q) * g q ∂μQ = ∑ s ∈ S, G s p * φ s`. Introduce `p`. Establish `: (fun q => φ (f p q) * g q) = fun q => ∑ s ∈ S, χ s p q * g q * φ s`. Use function extensionality and compare the values at `q`. Rewrite using `[hdec φ h0 p q, Finset.sum_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Conclude with `Finset.sum_congr rfl fun s _ => by ring`. Rewrite using `[this, integral_finset_sum _ (fun s hs => (hint_in s hs p).mul_const _)]`. Conclude with `Finset.sum_congr rfl fun s _ => integral_mul_const _ _`. Rewrite using `[integral_congr_ae (ae_of_all _ e1), integral_finset_sum _ (fun s _ => (hint_out s).mul_const _)]`. Conclude with `Finset.sum_congr rfl fun s _ => integral_mul_const _ _`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hL0 : L 0 = 0`. Use `hsmul 0 0 (Submodule.zero_mem _)` as an intermediate fact. Simplify using `using this`. Establish `hfun : (fun y => ∫ p, ∫ q, f p q y * g q ∂μQ ∂μP) = ∑ s ∈ S, a s • s`. Use function extensionality and compare the values at `y`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify to obtain the desired conclusion from the available facts. Treat this case separately.
 
-Use `hkey (fun h => h y) rfl` as an intermediate fact. Rewrite using `[this, Finset.sum_apply]`. Both sides reduce to the same expression. Establish `hLsum : ∀ T ⊆ S, L (∑ s ∈ T, a s • s) = ∑ s ∈ T, a s * L s`. Introduce `T`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Proceed by induction on `T using Finset.induction_on with`. Consider the case `empty => intro _`. Simplify using `using hL0`. Consider the case `insert x T hx ih`. Introduce `hT`.
-
-Establish `hxS : x ∈ S` using `hT (Finset.mem_insert_self _ _)`. Establish `hTS : T ⊆ S` using `fun t ht => hT (Finset.mem_insert_of_mem ht)`. Rewrite using `[Finset.sum_insert hx, Finset.sum_insert hx, hadd _ (Submodule.smul_mem _ _ (hSSB x hxS)) _ (Submodule.sum_mem _ fun t ht => Submodule.smul_mem _ _ (hSSB t (hTS ht))), hsmul _ _ (hSSB x hxS), ih hTS]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hfun]`.
-
-Conclude with `Submodule.sum_mem _ fun s hs => Submodule.smul_mem _ _ (hSSB s hs)`. Rewrite using `[hfun, hLsum S subset_rfl, hkey L hL0]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integ_mem_SB_and_map : ∀ {P Q Y : Type} [TopologicalSpace P] [CompactSpace P] [MeasurableSpace P] [OpensMeasurableSpace P]
     [TopologicalSpace Q] [T2Space Q] [MeasurableSpace Q] [OpensMeasurableSpace Q] [TopologicalSpace Y]

@@ -12,27 +12,23 @@ open GlobalTheory.HTW Formalism.BasicNotions Formalism.FrobeniusOrbits
 namespace GlobalTheory.HTW
 
 /- English proof (translation)
-Introduce `D L C j ε τ φ hR`. Establish `hb` using `(GlobalTheory.T.roundedSizeBound_window L C hR).1`. Establish `hw` using `(GlobalTheory.T.maxNonThickSizeShifted_value_and_bounds L C hR).2.2`. Establish `hnt` using `fun g => GlobalTheory.T.floor_size_bounds_not_thick_embedding L C g j hR`. Establish `hth` using `fun g => GlobalTheory.T.floor_size_bounds_at_thick_embedding L g j`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨hC, h100, hroom, hwb, -, hCb⟩` from `hR`. Establish `hη` using `L.etaSz_pos`. Establish `hS` using `L.Sc_pos`. Establish `ht` using `L.t_win.1`. Establish `ht' : 1 ≤ D.R.t` using `by exact_mod_cast ht`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hLw : (0 : ℝ) ≤ D.host.Lw` using `Nat.cast_nonneg _`. Establish `hb' : 0 ≤ L.sc.b'` using `by linarith`. Establish `hbb : 100 * L.sc.b' ≤ L.sc.b`. Establish `h1 : (100 : ℝ) ≤ C * ((D.host.Lw : ℝ) + 1)` using `by nlinarith`. Use `mul_le_mul_of_nonneg_right h1 hb'` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hw0 : (0 : ℝ) ≤ wHat D` using `Nat.cast_nonneg _`. Establish `hs0 : (0 : ℝ) ≤ sHat L` using `Nat.cast_nonneg _`. Establish `he0 : (0 : ℝ) ≤ etaHat L` using `Nat.cast_nonneg _`. Establish `hE : (etaHat L : ℝ) ≤ L.etaSz + D.R.t + 2`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `etaHat`. Use `push_cast`. Use `Nat.floor_le hη.le` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Use `⟨?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Reduce the conclusion to the remaining proof obligations.
 
-Use `show 1 ≤ bHat L`. Establish `: (1 : ℝ) ≤ bHat L` using `by linarith`. Conclude with `this` after adjusting the coercions. Use `show 1 ≤ wHat D`. Unfold `wHat`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Use `show 20 * wHat D ≤ bHat L`. Establish `: (20 : ℝ) * wHat D ≤ bHat L` using `by linarith`. Conclude with `this` after adjusting the coercions. Use `show 20 * etaHat L ≤ bHat L`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Establish `: (20 : ℝ) * etaHat L ≤ bHat L` using `by linarith`. Conclude with `this` after adjusting the coercions. Use `show 20 * sHat L ≤ bHat L`. Establish `: (20 : ℝ) * sHat L ≤ bHat L` using `by linarith`. Conclude with `this` after adjusting the coercions.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Introduce `i show ((etaHat L : ℕ) : ℤ) < szT (hcAt D (letter τ φ i)) j (pos ε (letter τ φ i))`. Generalize the expression as in `letter τ φ i = g`. Establish `hsz : L.sc.w'' D.R.n ≤ (⌊(hcAt D g).e j⌋ : ℝ)`. Distinguish the cases in `hT : Thick D.host g`. Use `(hth g hT).1` as an intermediate fact.
-
-Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `(hnt g hT).1`. Establish `key : ((etaHat L : ℕ) : ℤ) + D.R.t + 1 < ⌊(hcAt D g).e j⌋`. Establish `: ((etaHat L : ℕ) : ℝ) + D.R.t + 1 < (⌊(hcAt D g).e j⌋ : ℝ)` using `by linarith`. Conclude with `this` after adjusting the coercions.
-
-Unfold `szT`. Apply the tactic sequence `split_ifs <;> omega`.
+Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem pageWord_box : ∀ {D : D7} (L : SizeData₂ D) (C : ℝ) (j : Fin D.R.m) (ε : ℤˣ) (τ φ : D.R.GG),
     Roomy L C → (pageWord L j ε τ φ).Box := by

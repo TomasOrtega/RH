@@ -16,13 +16,13 @@ noncomputable section
 namespace GlobalTheory.InterpCurv
 
 /- English proof (translation)
-Introduce `Cμ C₀ C₂ C₃ CP κ χ hκ hχ`. Take `⟨K, hK⟩` from `GlobalTheory.T.log_metric_gradient_form_bound Cμ CP κ χ hκ hχ`. Use `⟨2 * (|C₀| + |C₃| + 2 * C₂ ^ 2 + 4 * |K| + 3 * K ^ 2), ?_⟩` and prove the remaining obligations. Introduce `ι n _ _ _ U H₀ H r G hD`. Establish `hr1 : ∀ z ∈ U, 1 < r z` using `fun z hz => (Real.one_lt_exp_iff.2 one_pos).trans_le (hD.exp_le z hz)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hW : ∀ s, IsWeight χ κ r s → ContDiffOn ℝ ∞ s U ∧ (∀ z ∈ U, s z ∈ Icc (0 : ℝ) 1) ∧ (0 ≤ Cμ → WeightBound K Cμ U r s G)`. Introduce and unpack `s (⟨c, hc, rfl⟩ | ⟨t, ht, R, hR, rfl⟩)`. Conclude with `⟨contDiffOn_const, fun _ _ => hc, fun _ => weightBound_const K Cμ U r G hc⟩`. Take `⟨h1, h2⟩` from `GlobalTheory.cutWeight_contDiffOn_mem_Icc hχ κ hR hD.smooth_r hD.exp_le`. Use `⟨contDiffOn_const.mul h1, fun z hz => ⟨mul_nonneg ht.1 (h2 z hz).1, ?_⟩, fun hC => hK ι U r G hC hD.pos₀.1 hD.smooth_r hD.exp_le hD.posSemidef_G hD.grad_le hD.ddc_log_le t ht R hR⟩` and prove the remaining obligations.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `mul_le_one₀ ht.2 (h2 z hz).1 (h2 z hz).2`. Use `⟨fun s hs => ?_, fun t ht R hR => ?_, ?_⟩` and prove the remaining obligations. Take `⟨h1, h2, h3⟩` from `hW s hs`. Take `⟨b1, b2, b3⟩` from `GlobalTheory.T.interpolated_metric_positive hD.pos₀ hD.pos hD.exp_le h1 h2 hD.comparable`. Conclude with `⟨b1, GlobalTheory.T.interpolated_metric_curvature_bound hD.pos₀ hD.pos hr1 h1 hD.posSemidef_G hD.comparable hD.conn_le hD.curv_le hD.curv₀_le h3, b2, b3⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `⟨h1, h2, -⟩` from `hW _ (Or.inr ⟨t, ht, R, hR, rfl⟩)`. Conclude with `GlobalTheory.T.cutoff_interpolation_agrees_far hχ hR hD.exp_le (GlobalTheory.T.interpolated_metric_positive hD.pos₀ hD.pos hD.exp_le h1 h2 hD.comparable).1`. Conclude with `GlobalTheory.T.cutoff_interpolation_uniform_limit hχ hκ hD.pos₀ hD.pos hD.smooth_r hD.exp_le hD.comparable`.
+A detailed English derivation is pending.
 -/
 theorem interpCurvBound : InterpCurvBound := by
   intro Cμ C₀ C₂ C₃ CP κ χ hκ hχ

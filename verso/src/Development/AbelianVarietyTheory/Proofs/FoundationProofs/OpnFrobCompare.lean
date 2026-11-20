@@ -12,7 +12,7 @@ namespace GlobalTheory.SOrb.CCBridge
 open Formalism.REAL Formalism.QuantumDeterminants Formalism.MainNotions.S Formalism.FourierDecayAlt.B Formalism.FourierDecayAlt.P.BetaSesquilinearity
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨‖LinearMap.toContinuousLinearMap u‖, norm_nonneg _, (LinearMap.toContinuousLinearMap u).le_opNorm⟩`.
+Supply the required witnesses or components.
 -/
 lemma lin_bound {𝕜 L M : Type*} [RCLike 𝕜] [NormedAddCommGroup L] [NormedSpace 𝕜 L] [FiniteDimensional 𝕜 L]
     [NormedAddCommGroup M] [NormedSpace 𝕜 M] (u : L →ₗ[𝕜] M) : ∃ C : ℝ, 0 ≤ C ∧ ∀ x, ‖u x‖ ≤ C * ‖x‖ :=
@@ -33,9 +33,9 @@ attribute [local instance] Matrix.frobeniusSeminormedAddCommGroup Matrix.frobeni
   Matrix.frobeniusNormedSpace
 
 /- English proof (translation)
-Take `⟨a, ha, h3⟩` from `lin_bound (opEquiv n).toLinearMap`. Take `⟨b, hb, h4⟩` from `lin_bound (opEquiv n).symm.toLinearMap`. Use `⟨1 + a + b, by positivity, fun g => ?_⟩` and prove the remaining obligations. Establish `h3 : ‖opEquiv n g‖ ≤ a * ‖g‖` using `h3 g`. Establish `h4 : ‖(opEquiv n).symm (opEquiv n g)‖ ≤ b * ‖opEquiv n g‖` using `h4 (opEquiv n g)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h4` using `[LinearEquiv.symm_apply_apply]`. Rewrite using `[opn_eq]`. Use `norm_nonneg g` as an intermediate fact. Use `norm_nonneg (opEquiv n g)` as an intermediate fact. Apply the tactic sequence `constructor <;> nlinarith`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma opn_frob_compare (n : ℕ) :
     ∃ K : ℝ, 0 < K ∧ ∀ g : Matrix (Fin n) (Fin n) ℂ, opn g ≤ K * ‖g‖ ∧ ‖g‖ ≤ K * opn g := by
@@ -51,7 +51,7 @@ lemma opn_frob_compare (n : ℕ) :
   constructor <;> nlinarith
 
 /- English proof (translation)
-Take `⟨K, hK, h⟩` from `opn_frob_compare (2 * r + k + 1)`. Conclude with `⟨K, hK, fun g => by rw [gN_eq_frob]; exact h g⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 lemma opn_gN_compare (k r : ℕ) : ∃ K : ℝ, 0 < K ∧ ∀ g : Mat k r, opn g ≤ K * gN g ∧ gN g ≤ K * opn g := by
   obtain ⟨K, hK, h⟩ := opn_frob_compare (2 * r + k + 1)
@@ -60,9 +60,9 @@ lemma opn_gN_compare (k r : ℕ) : ∃ K : ℝ, 0 < K ∧ ∀ g : Mat k r, opn g
 end Frob
 
 /- English proof (translation)
-Break down `le_total 0 A with hA | hA` into its components or cases. Rewrite using `[abs_of_nonneg hA, ← Real.mul_rpow hK.le hy.le]`. Conclude with `Real.rpow_le_rpow hx.le h1 hA`. Establish `h3 : y / K ≤ x` using `by rw [div_le_iff₀ hK]; linarith`. Use `Real.rpow_le_rpow_of_nonpos (by positivity) h3 hA` as an intermediate fact.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[Real.div_rpow hy.le hK.le]`. Rewrite using `[abs_of_nonpos hA, Real.rpow_neg hK.le]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 lemma rpow_compare {K : ℝ} (hK : 0 < K) (A : ℝ) {x y : ℝ} (hx : 0 < x) (hy : 0 < y) (h1 : x ≤ K * y)
     (h2 : y ≤ K * x) : x ^ A ≤ K ^ |A| * y ^ A := by
@@ -81,9 +81,9 @@ attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 variable {k r : ℕ} {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E]
 
 /- English proof (translation)
-Introduce `g hg`. Take `⟨U, f', hU, hgU, hc, hff⟩` from `hf g hg`. Establish `hd : DifferentiableAt ℝ f' g` using `(hc.differentiableOn (by simp)).differentiableAt (hU.mem_nhds hgU)`. Rewrite using `[Dx_eq, Dx_eq, Dx_eq, (Dx_hasDerivAt (x := (b, X + Y)) hXY hU hgU hg hd hff).deriv, (Dx_hasDerivAt (x := (b, X)) hX hU hgU hg hd hff).deriv, (Dx_hasDerivAt (x := (b, Y)) hY hU hgU hg hd hff).deriv, ← map_add]`. Use `congr 1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Apply the tactic sequence `cases b <;> simp [dirv, Matrix.mul_add, Matrix.add_mul, add_comm]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma Dx_letter_add (b : Bool) {X Y : Mat k r} (hX : inLie k r X) (hY : inLie k r Y)
     (hXY : inLie k r (X + Y)) {f : Mat k r → E} (hf : CkOn 1 (GV k r) f) :

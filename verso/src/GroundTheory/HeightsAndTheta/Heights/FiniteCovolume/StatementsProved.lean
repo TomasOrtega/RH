@@ -32,14 +32,14 @@ variable {F E : Type*} [Field F] [Field E] [NumberField F] [NumberField E] [Alge
   [Algebra.IsQuadraticExtension F E] [IsTotallyReal F] [IsTotallyComplex E]
 
 /- English proof (translation)
-The claim follows from `TorusEmbedding.proof h v (HermAtPlace.full h v) (GramAtData.full h v)`.
+A detailed English derivation is pending.
 -/
 theorem TorusEmbedding.full {W : Type*} [AddCommGroup W] [Module E W] {ι : Type*} [Fintype ι]
     [DecidableEq ι] (h : HermitianForm F E W) (v : Basis ι E W) : TorusEmbedding.Statement h v :=
   TorusEmbedding.proof h v (HermAtPlace.full h v) (GramAtData.full h v)
 
 /- English proof (translation)
-The claim follows from `TorusModulus.proof h v (HermAtPlace.full h v) (GramAtData.full h v) (ComplementForm.full h) (StabilizerLevi.proof h v) (UnipotentModulus.proof h v) (RadicalTorusModulus.proof h v) (fun _ _ _ _ _ => SemidirectHaar.proof _ _)`.
+A detailed English derivation is pending.
 -/
 theorem TorusModulus.full {W : Type*} [AddCommGroup W] [Module E W] {ι : Type*} [Fintype ι]
     [DecidableEq ι] (h : HermitianForm F E W) (v : Basis ι E W) : TorusModulus.Statement h v :=
@@ -48,7 +48,7 @@ theorem TorusModulus.full {W : Type*} [AddCommGroup W] [Module E W] {ι : Type*}
     (fun _ _ _ _ _ => SemidirectHaar.proof _ _)
 
 /- English proof (translation)
-The claim follows from `UnipotentHorizontal.proof h v (RationalUnipotent.proof h) (UnipRadicalOfRational.proof h v) (ComplementArchCocompact.proof h v)`.
+A detailed English derivation is pending.
 -/
 theorem UnipotentHorizontal.full {W : Type*} [AddCommGroup W] [Module E W] {ι : Type*} [Fintype ι]
     [DecidableEq ι] (h : HermitianForm F E W) (v : Basis ι E W) :
@@ -57,7 +57,7 @@ theorem UnipotentHorizontal.full {W : Type*} [AddCommGroup W] [Module E W] {ι :
     (ComplementArchCocompact.proof h v)
 
 /- English proof (translation)
-The claim follows from `UnipotentCentral.proof h v (RationalUnipotent.proof h) (UnipRadicalOfRational.proof h v) ImaginaryLatticeCocompact.proof`.
+A detailed English derivation is pending.
 -/
 theorem UnipotentCentral.full {W : Type*} [AddCommGroup W] [Module E W] {ι : Type*} [Fintype ι]
     [DecidableEq ι] (h : HermitianForm F E W) (v : Basis ι E W) :
@@ -68,7 +68,7 @@ theorem UnipotentCentral.full {W : Type*} [AddCommGroup W] [Module E W] {ι : Ty
 variable {W : Type u} [AddCommGroup W] [Module E W] {ι : Type*} [Fintype ι] [DecidableEq ι]
 
 /- English proof (translation)
-The claim follows from `UnfoldingIntegral.of_remaining.{u} (fun _ _ _ _ h _ v => TorusEmbedding.full h v) (fun _ _ _ _ h _ v => LineEigenvalue.closed h v) (fun _ _ _ _ h _ v => TorusModulus.full h v) (fun _ _ _ _ _ _ _ => SemidirectHaar.proof _ _) (UnitsInvHaar.proof _) (fun _ _ _ _ h _ v => UnipotentCo …`.
+A detailed English derivation is pending.
 -/
 theorem UnfoldingIntegral.full (h : HermitianForm F E W) (v : Basis ι E W) :
     UnfoldingIntegral.Statement h v :=
@@ -83,7 +83,7 @@ theorem UnfoldingIntegral.full (h : HermitianForm F E W) (v : Basis ι E W) :
     (UnipotentCentral.full h v)
 
 /- English proof (translation)
-The claim follows from `ScalingLaw.of_remaining.{u} (fun _ _ _ _ h _ v => TorusEmbedding.full h v) (fun _ _ _ _ h _ v => LineEigenvalue.closed h v) (fun _ _ _ _ h _ v => TorusModulus.full h v) (fun _ _ _ _ _ _ _ => SemidirectHaar.proof _ _) (UnitsInvHaar.proof _) (fun _ _ _ _ h _ v => UnipotentCoordProp …`.
+A detailed English derivation is pending.
 -/
 theorem ScalingLaw.full (h : HermitianForm F E W) (v : Basis ι E W) : ScalingLaw.Statement h v :=
   ScalingLaw.of_remaining.{u}
@@ -97,7 +97,7 @@ theorem ScalingLaw.full (h : HermitianForm F E W) (v : Basis ι E W) : ScalingLa
     (UnipotentCentral.full h v)
 
 /- English proof (translation)
-The claim follows from `ArithmeticCovolumeFinite.of_remaining.{u} (fun _ _ _ _ h _ v => TorusEmbedding.full h v) (fun _ _ _ _ h _ v => LineEigenvalue.closed h v) (fun _ _ _ _ h _ v => TorusModulus.full h v) (fun _ _ _ _ _ _ _ => SemidirectHaar.proof _ _) (UnitsInvHaar.proof _) (fun _ _ _ _ h _ v => Unip …`.
+A detailed English derivation is pending.
 -/
 theorem ArithmeticCovolumeFinite.full (h : HermitianForm F E W) (v : Basis ι E W) :
     ArithmeticCovolumeFinite.Statement h v :=
@@ -112,7 +112,7 @@ theorem ArithmeticCovolumeFinite.full (h : HermitianForm F E W) (v : Basis ι E 
     (UnipotentCentral.full h v)
 
 /- English proof (translation)
-The claim follows from `AdelicCovolumeFinite.of_remaining.{u} (fun _ _ _ _ h _ v => TorusEmbedding.full h v) (fun _ _ _ _ h _ v => LineEigenvalue.closed h v) (fun _ _ _ _ h _ v => TorusModulus.full h v) (fun _ _ _ _ _ _ _ => SemidirectHaar.proof _ _) (UnitsInvHaar.proof _) (fun _ _ _ _ h _ v => Unipoten …`.
+A detailed English derivation is pending.
 -/
 theorem AdelicCovolumeFinite.full (h : HermitianForm F E W) (v : Basis ι E W) :
     AdelicCovolumeFinite.Statement h v :=

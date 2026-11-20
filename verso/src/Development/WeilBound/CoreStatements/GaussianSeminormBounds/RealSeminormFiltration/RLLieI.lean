@@ -11,9 +11,9 @@ namespace PositivityTheory.RL.Up
 variable {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ]
 
 /- English proof (translation)
-Use `GlobalTheory.AdelicUnitaryTop.t2Space_finiteAdeleRing_of_numberField F` as an intermediate fact. Use `⟨(hg.1.comp_continuous (f := fun x : κ ⊕ κ → Af F => x ∘ Sum.inl) (by fun_prop)).mul (hg'.1.comp_continuous (f := fun x : κ ⊕ κ → Af F => x ∘ Sum.inr) (by fun_prop)), ?_⟩` and prove the remaining obligations. Use `HasCompactSupport.intro ((hg.2.prod hg'.2).image (Homeomorph.sumArrowHomeomorphProdArrow (ι := κ) (ι' := κ) (X := Af F)).symm.continuous) fun x hx => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `h`. Take `⟨h1, h2⟩` from `mul_ne_zero_iff.1 h`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Conclude with `hx ⟨(x ∘ Sum.inl, x ∘ Sum.inr), ⟨subset_tsupport _ h1, subset_tsupport _ h2⟩, Sum.elim_comp_inl_inr x⟩`.
+A detailed English derivation is pending.
 -/
 theorem box_SB {g g' : (κ → Af F) → ℂ} (hg : g ∈ SB (κ → Af F)) (hg' : g' ∈ SB (κ → Af F)) :
     boxFun g g' ∈ SB (κ ⊕ κ → Af F) := by
@@ -28,9 +28,9 @@ theorem box_SB {g g' : (κ → Af F) → ℂ} (hg : g ∈ SB (κ → Af F)) (hg'
 
 variable (F κ) in
 /- English proof (translation)
-Set `b : ContDiffBump (0 : κ → mixedEmbedding.mixedSpace F)` to `⟨1, 2, by norm_num, by norm_num⟩`. Establish `h1 : HasCompactSupport fun x => ((b x : ℝ) : ℂ)` using `b.hasCompactSupport.comp_left (g := fun r : ℝ => (r : ℂ)) rfl`. Establish `h2 : ContDiff ℝ (⊤ : ℕ∞) fun x => ((b x : ℝ) : ℂ)` using `ofRealCLM.contDiff.comp b.contDiff`. Establish `h3 : HasCompactSupport fun x : κ ⊕ κ → mixedEmbedding.mixedSpace F => ((b (x ∘ Sum.inl) : ℝ) : ℂ) * ((b (x ∘ Sum.inr) : ℝ) : ℂ)`. Use `HasCompactSupport.intro ((h1.prod h1).image (Homeomorph.sumArrowHomeomorphProdArrow (ι := κ) (ι' := κ) (X := mixedEmbedding.mixedSpace F)).symm.continuous) fun x hx => ?_` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Assume the negation of the conclusion as `h`. Take `⟨h1, h2⟩` from `mul_ne_zero_iff.1 h`. Conclude with `hx ⟨(x ∘ Sum.inl, x ∘ Sum.inr), ⟨subset_tsupport _ h1, subset_tsupport _ h2⟩, Sum.elim_comp_inl_inr x⟩`. Conclude with `⟨h1.toSchwartzMap h2, h3.toSchwartzMap ((h2.comp (contDiff_pi.2 fun i => contDiff_apply ℝ _ (Sum.inl i))).mul (h2.comp (contDiff_pi.2 fun i => contDiff_apply ℝ _ (Sum.inr i)))), b, fun _ => rfl, fun _ => rfl, b.continuous, b.hasCompactSupport, b.one_of_mem_closedBall (Metric.mem_ …`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_box : ∃ (f : SInf F κ) (B : SInf F (κ ⊕ κ)) (r : (κ → mixedEmbedding.mixedSpace F) → ℝ),
     (∀ x, B x = f (x ∘ Sum.inl) * f (x ∘ Sum.inr)) ∧ (∀ x, f x = r x) ∧ Continuous r ∧ HasCompactSupport r ∧ r 0 = 1 := by
@@ -51,33 +51,27 @@ theorem exists_box : ∃ (f : SInf F κ) (B : SInf F (κ ⊕ κ)) (r : (κ → m
 
 variable (F κ) in
 /- English proof (translation)
-Use `haveI := GlobalTheory.AdelicUnitaryTop.t2Space_finiteAdeleRing_of_numberField F`. Use `haveI := GlobalTheory.AdelicUnitaryTop.locallyCompact_finiteAdele F`. Use `haveI := GlobalTheory.AdelicUnitaryTop.secondCountable_finiteAdele F`. Use `borelize (κ → Af F)`. Set `X` to `κ → mixedEmbedding.mixedSpace F`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Use `borelize X`. Set `μ : Measure X` to `Measure.addHaar`. Set `ν : Measure (κ → Af F)` to `Measure.addHaar`. Use `haveI : MeasurableAdd X := ContinuousAdd.measurableAdd`. Use `haveI : MeasurableAdd (κ → Af F) := ContinuousAdd.measurableAdd`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `haveI : (μ.prod ν).IsAddHaarMeasure := Measure.prod.instIsAddHaarMeasure μ ν`. Set `k : ((κ ⊕ κ → AF F) → ℂ) →ₗ[ℂ] (X × (κ → Af F) → ℂ)` to `LinearMap.funLeft ℂ ℂ fun p => Sum.elim (SeminormBoundRestriction.pt p.1 p.2) (SeminormBoundRestriction.pt p.1 p.2)`. Set `N : Submodule ℂ ((κ ⊕ κ → AF F) → ℂ)` to `{ carrier := {φ | Integrable (k φ) (μ.prod ν)} zero_mem' := integrable_zero _ _ _ add_mem' := fun ha hb => ha.add hb smul_mem' := fun c _ h => h.smul c }`. Set `l0 : N →ₗ[ℂ] ℂ` to `{ toFun := fun φ => ∫ p, k φ p ∂(μ.prod ν) map_add' := fun a b => integral_add a.2 b.2 map_smul' := fun c a => integral_smul c _ }`. Take `⟨l, hl⟩` from `l0.exists_extend`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hl' : ∀ φ ∈ N, l φ = ∫ p, k φ p ∂(μ.prod ν)` using `fun φ h => LinearMap.congr_fun hl ⟨φ, h⟩`. Set `dg : X →L[ℝ] (κ ⊕ κ → mixedEmbedding.mixedSpace F)` to `ContinuousLinearMap.pi fun i => ContinuousLinearMap.proj (Sum.elim id id i)`. Establish `hdg : AntilipschitzWith 1 dg` using `AddMonoidHomClass.antilipschitz_of_bound dg fun x => by`. Rewrite using `[NNReal.coe_one, one_mul]`. Conclude with `(pi_norm_le_iff_of_nonneg (norm_nonneg _)).2 fun i => norm_le_pi_norm (dg x) (Sum.inl i)`.
+Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `Rs : SInf F (κ ⊕ κ) →L[ℂ] 𝓢(X, ℂ)` to `SchwartzMap.compCLMOfAntilipschitz ℂ dg.hasTemperateGrowth hdg`. Establish `hk : ∀ (B : SInf F (κ ⊕ κ)) (G : (κ ⊕ κ → Af F) → ℂ), k (pureA F B G) = fun p => Rs B p.1 * G (Sum.elim p.2 p.2)` using `fun B G => by`. Use function extensionality and compare the values at `p`. Use `congrArg₂ (· * ·) (congrArg B (funext fun i => ?_)) (congrArg G (funext fun i => ?_))` and prove the remaining obligations. Apply the tactic sequence `rcases i with i | i <;> exact RingEquiv.apply_symm_apply _ _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `rcases i with i | i <;> rfl`. Apply the tactic sequence `have hc : Continuous fun b : κ → Af F => (Sum.elim b b : κ ⊕ κ → Af F) := continuous_pi fun i => by rcases i with i | i <;> exact continuous_apply i`. Establish `hG : ∀ G ∈ SB (κ ⊕ κ → Af F), Integrable (fun b : κ → Af F => G (Sum.elim b b)) ν` using `fun G hG => (hG.1.continuous.comp hc).integrable_of_hasCompactSupport (hG.2.comp_isClosedEmbedding (Function.LeftInverse.isClosedEmbedding (f := fun x : κ ⊕ κ → Af F => x ∘ Sum.inl) (fun _ => rfl) (by fun_prop) hc))`. Establish `hp : ∀ (B : SInf F (κ ⊕ κ)), ∀ G ∈ SB (κ ⊕ κ → Af F), pureA F B G ∈ N` using `fun B G h => by show Integrable (k _) _`. Rewrite using `[hk]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `(Rs B).integrable.mul_prod (hG G h)`. Establish `hv : ∀ (B : SInf F (κ ⊕ κ)), ∀ G ∈ SB (κ ⊕ κ → Af F), l (pureA F B G) = (∫ a, Rs B a ∂μ) * ∫ b, G (Sum.elim b b) ∂ν` using `fun B G h => by`. Rewrite using `[hl' _ (hp B G h), hk]`. Conclude with `integral_prod_mul (Rs B) fun b => G (Sum.elim b b)`. Use `⟨l, fun G h => ⟨(∫ b, G (Sum.elim b b) ∂ν) • (SchwartzMap.integralCLM ℂ μ ∘L Rs), fun B => ?_⟩, fun x y φ hφ => ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[hv B G h, mul_comm]`. Both sides reduce to the same expression. Establish `hN : φ ∈ N` using `(Submodule.span_le.2 (by rintro _ ⟨B, G, h, rfl⟩; exact hp B G h) : schA F (κ ⊕ κ) ≤ N) hφ`. Set `c : X × (κ → Af F)` to `(fun i => evI F (x i), fun i => (x i).2)`. Establish `e : k (schr ψ (Sum.elim x x, Sum.elim y (-y)) φ) = fun p => k φ (c + p)`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use function extensionality and compare the values at `p`. Establish `e1 : SeminormBoundRestriction.pt (c + p).1 (c + p).2 = SeminormBoundRestriction.pt p.1 p.2 + x` using `funext fun i => Prod.ext (((InfiniteAdeleRing.ringEquiv_mixedSpace F).symm.map_add _ _).trans ((add_comm _ _).trans (congrArg (_ + ·) (RingEquiv.symm_apply_apply _ _)))) (add_comm _ _)`. Use `show schr _ _ _ (Sum.elim (SeminormBoundRestriction.pt p.1 p.2) (SeminormBoundRestriction.pt p.1 p.2)) = φ (Sum.elim (SeminormBoundRestriction.pt (c + p).1 (c + p).2) (SeminormBoundRestriction.pt (c + p).1 (c + p).2))`. Rewrite using `[e1, schr, sumElim_dotProduct_sumElim, sumElim_dotProduct_sumElim]`. Simplify using `only [dotProduct_neg, add_neg_cancel, mul_zero, add_zero, AddChar.map_zero_eq_one, one_mul]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `congr 1`. Use function extensionality and compare the values at `i`. Apply the tactic sequence `rcases i with i | i <;> rfl`. Rewrite using `[hl' _ hN, hl' _ (by show Integrable (k _) _`. Rewrite using `[e]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `(show Integrable (k φ) (μ.prod ν) from hN).comp_add_left c), e]`. Conclude with `integral_add_left_eq_self (k φ) c`. Take `⟨f, B, r, hB, hf, hr, hr', hr0⟩` from `exists_box F κ`. Take `⟨g, hg, y, hy⟩` from `SeminormBoundRestriction.exists_SB (F := F) (κ := κ)`. Establish `hg' : (fun x => ((‖g x‖ : ℝ) : ℂ)) ∈ SB (κ → Af F)` using `⟨hg.1.comp fun z => ((‖z‖ : ℝ) : ℂ), hg.2.comp_left (g := fun z => ((‖z‖ : ℝ) : ℂ)) (by simp)⟩`.
-
-Use `⟨B, _, box_SB hg' hg', ?_⟩` and prove the remaining obligations. Rewrite using `[hv _ _ (box_SB hg' hg')]`. Use `mul_ne_zero ?_ ?_` and prove the remaining obligations. Establish `: ∀ a, Rs B a = ((r a * r a : ℝ) : ℂ)` using `fun a => by`. Rewrite using `[ofReal_mul, ← hf]`.
-
-Conclude with `hB _`. Simplify using `only [this]`. Rewrite using `[integral_complex_ofReal, ofReal_ne_zero]`. Conclude with `((hr.mul hr).integral_pos_of_hasCompactSupport_nonneg_nonzero hr'.mul_left (fun _ => mul_self_nonneg _) (x := 0) (by simp [hr0])).ne'`. Establish `: ∀ b, boxFun (fun x => ((‖g x‖ : ℝ) : ℂ)) (fun x => ((‖g x‖ : ℝ) : ℂ)) (Sum.elim b b) = ((‖g b‖ * ‖g b‖ : ℝ) : ℂ)` using `fun b => (ofReal_mul _ _).symm`.
-
-Simplify using `only [this]`. Rewrite using `[integral_complex_ofReal, ofReal_ne_zero]`. Conclude with `((hg.1.continuous.norm.mul hg.1.continuous.norm).integral_pos_of_hasCompactSupport_nonneg_nonzero hg.2.norm.mul_left (fun _ => mul_self_nonneg _) (x := y) (by simp [hy])).ne'`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_form (ψ : AddChar (AF F) ℂ) : ∃ l ∈ (adeleClass F).adm (κ ⊕ κ),
     (∀ x y : κ → AF F, ∀ φ ∈ schA F (κ ⊕ κ), l (schr ψ (Sum.elim x x, Sum.elim y (-y)) φ) = l φ) ∧

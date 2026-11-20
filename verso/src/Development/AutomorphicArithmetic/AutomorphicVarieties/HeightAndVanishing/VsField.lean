@@ -8,9 +8,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.CMFieldExponential
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC ReciprocityTheory.Gal Formalism.GaloisCohomology UpperTheory.V UpperTheory.V.Base UpperTheory.Top UpperTheory.V.HV
 
 /- English proof (translation)
-Establish `hpos` using `MulChar.orderOf_pos ψ`. Use `haveI : NeZero (orderOf ψ) := ⟨hpos.ne'⟩`. Rewrite using `[Subgroup.index_ker]`. Combine the equalities or inequalities in the displayed calculation. Apply `Subgroup.card_le_of_le` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ ⟨u, rfl⟩`. Rewrite using `[mem_rootsOfUnity]`. Use `ext`. Rewrite using `[Units.val_pow_eq_pow_val, MulChar.coe_toUnitHom, ← MulChar.pow_apply' ψ hpos.ne', pow_orderOf_eq_one, MulChar.one_apply_coe, Units.val_one]`. Use `_ ≤ orderOf ψ := card_rootsOfUnity O _`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem idx_le (O : Type) [CommRing O] [IsDomain O] (N : ℕ) [NeZero N] (ψ : DirichletCharacter O N) :
     ψ.toUnitHom.ker.index ≤ orderOf ψ := by
@@ -27,43 +27,33 @@ private theorem idx_le (O : Type) [CommRing O] [IsDomain O] (N : ℕ) [NeZero N]
     _ ≤ orderOf ψ := card_rootsOfUnity O _
 
 /- English proof (translation)
-Introduce `Ω _ _ _ l hl hl2 O _ _ N _ ψ`. Establish `hlp : l.Prime` using `hl.out`. Use `haveI : NeZero l := ⟨hlp.ne_zero⟩`. Use `haveI hMz : NeZero (l * N) := ⟨mul_ne_zero hlp.ne_zero (NeZero.ne N)⟩`. Set `φN : (ZMod (l * N))ˣ →* (ZMod N)ˣ` to `ZMod.unitsMap (dvd_mul_left N l)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `φl : (ZMod (l * N))ˣ →* (ZMod l)ˣ` to `ZMod.unitsMap (dvd_mul_right l N)`. Set `H : Subgroup (ZMod (l * N))ˣ` to `(ψ.toUnitHom.comp φN).ker ⊓ φl.ker`. Set `A : AbF` to `⟨l * N, Nat.pos_of_ne_zero (NeZero.ne (l * N)), H⟩`. Take `⟨L, fL, nfL, hab, -⟩` from `exists_numberField_isAbField_finrank_eq_deg A`. Establish `hlev : Chr.HasLevel L (l * N) H` using `Chr.abLevel.1 A L hab`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Take `⟨hgal, hfin, hΩ⟩` from `Chr.levGal L (l * N) H hlev`. Use `haveI : IsAlgClosed Ω := IsAlgClosure.isAlgClosed ℚ`. Use `haveI : Algebra.IsAlgebraic ℚ Ω := IsAlgClosure.isAlgebraic`. Set `f : L →ₐ[ℚ] Ω` to `IsAlgClosed.lift`. Use `letI : Algebra L Ω := f.toRingHom.toAlgebra`.
+Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Use `haveI : IsScalarTower ℚ L Ω := inferInstance`. Use `haveI : Algebra.IsAlgebraic L Ω := Algebra.IsAlgebraic.tower_top (K := ℚ) L`. Use `haveI hcl : IsAlgClosure L Ω := ⟨IsAlgClosure.isAlgClosed ℚ, inferInstance⟩`. Use `⟨L, fL, nfL, inferInstance, hcl, hgal, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `hmu : A.HasMu l`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `AbF.HasMu`. Use `⟨dvd_mul_right l N, ?_⟩` and prove the remaining obligations. Introduce `a ha`. Unfold `AbF.ker at ha`. Take `⟨u, hu, hua⟩` from `ha`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions.
 
-Establish `h1 : φl u = 1` using `MonoidHom.mem_ker.mp hu.2`. Establish `h2 : ((φl u : (ZMod l)ˣ) : ZMod l) = (a : ZMod l)`. Simplify using `only [φl, ZMod.unitsMap_def, Units.coe_map, MonoidHom.coe_coe, ZMod.castHom_apply]`. Rewrite using `[hua, ZMod.cast_natCast (dvd_mul_right l N)]`. Rewrite `h2` using `[h1, Units.val_one]`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(ZMod.natCast_eq_natCast_iff a 1 l).mp (by rw [← h2, Nat.cast_one])`. Take `⟨z, hz⟩` from `(abelianField_hasMu_iff_exists_primitiveRoot A l hlp hl2 L hab).mp hmu`. Unfold `HasMuQ`. Rewrite using `[if_neg hl2]`. Conclude with `⟨z, hz⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[hfin]`. Use `(Subgroup.index_inf_le).trans (Nat.mul_le_mul ?_ ?_)` and prove the remaining obligations. Rewrite using `[← MonoidHom.comap_ker, Subgroup.index_comap_of_surjective _ (ZMod.unitsMap_surjective _)]`. Conclude with `idx_le O N ψ`. Rewrite using `[Subgroup.index_ker]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(Subgroup.card_le_card_group _).trans ?_` and prove the remaining obligations. Rewrite using `[Nat.card_eq_fintype_card, ZMod.card_units_eq_totient]`. Conclude with `Nat.totient_le l`. Establish `hab'` using `hab`. Unfold `IsAbField at hab'`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Take `⟨N', hN', j, ζ, hmN, hζ, h3⟩` from `hab'`. Use `haveI : NeZero N' := hN'`. Use `haveI : NeZero ((N' : ℕ) : ℚ) := ⟨Nat.cast_ne_zero.mpr (NeZero.ne N')⟩`. Use `haveI : IsCyclotomicExtension {N'} ℚ (CyclotomicField N' ℚ) := CyclotomicField.isCyclotomicExtension N' ℚ`. Use `haveI : IsGalois ℚ (CyclotomicField N' ℚ) := IsCyclotomicExtension.isGalois {N'} ℚ _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Use `haveI : FiniteDimensional ℚ (CyclotomicField N' ℚ) := IsCyclotomicExtension.finiteDimensional {N'} ℚ _`. Use `haveI : NeZero ((l * N : ℕ) : ℚ) := ⟨Nat.cast_ne_zero.mpr (NeZero.ne (l * N))⟩`. Use `haveI : IsCyclotomicExtension {l * N} ℚ (CyclotomicField (l * N) ℚ) := CyclotomicField.isCyclotomicExtension (l * N) ℚ`. Establish `hmN' : l * N ∣ N'` using `hmN`. Establish `hdpos : N' / (l * N) ≠ 0` using `(Nat.div_pos (Nat.le_of_dvd (Nat.pos_of_ne_zero (NeZero.ne N')) hmN') (Nat.pos_of_ne_zero (NeZero.ne (l * N)))).ne'`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hη : IsPrimitiveRoot (ζ ^ (N' / (l * N))) (l * N)`. Use `hζ.pow_of_dvd hdpos (Nat.div_dvd_of_dvd hmN')` as an intermediate fact. Rewrite `this` using `[Nat.div_div_self hmN' (NeZero.ne N')]`. Then use the resulting hypothesis. Set `F : IntermediateField ℚ (CyclotomicField N' ℚ)` to `IntermediateField.adjoin ℚ {ζ ^ (N' / (l * N))}`. Use `haveI : IsCyclotomicExtension {l * N} ℚ F := hη.intermediateField_adjoin_isCyclotomicExtension ℚ`.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Replace the relevant objects with their definitions. Supply the required witnesses or components.
 
-Establish `hmem : ∀ x, j x ∈ F`. Introduce `x`. Rewrite using `[← IsGalois.fixedField_fixingSubgroup F, IntermediateField.mem_fixedField_iff]`. Introduce `τ hτ`. Establish `hτη : τ (ζ ^ (N' / (l * N))) = ζ ^ (N' / (l * N))` using `(IntermediateField.mem_fixingSubgroup_iff F τ).mp hτ _ (IntermediateField.mem_adjoin_simple_self ℚ _)`.
+Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hτζ : τ ζ = ζ ^ ((hζ.autToPow ℚ τ : ZMod N')).val` using `(hζ.autToPow_spec ℚ τ).symm`. Establish `hpow : (ζ ^ (N' / (l * N))) ^ ((hζ.autToPow ℚ τ : ZMod N')).val = ζ ^ (N' / (l * N))`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← pow_mul, ← pow_mul, mul_comm]`. Use `_ = (τ ζ) ^ (N' / (l * N)) := by rw [hτζ]`.
-
-Use `_ = τ (ζ ^ (N' / (l * N))) := (map_pow τ ζ _).symm`. Use `_ = ζ ^ (N' / (l * N)) := hτη`. Establish `hne : ζ ^ (N' / (l * N)) ≠ 0` using `hη.ne_zero (NeZero.ne (l * N))`. Establish `hz : (ζ ^ (N' / (l * N))) ^ ((((hζ.autToPow ℚ τ : ZMod N')).val : ℤ) - 1) = 1`. Rewrite using `[zpow_sub₀ hne, zpow_natCast, zpow_one, hpow, div_self hne]`.
-
-Establish `hd` using `(hη.zpow_eq_one_iff_dvd _).mp hz`. Establish `hc : ((((((hζ.autToPow ℚ τ : ZMod N')).val : ℤ) - 1 : ℤ)) : ZMod (l * N)) = 0` using `(ZMod.intCast_zmod_eq_zero_iff_dvd _ (l * N)).mpr hd`. Move the coercions through the operations in `at hc`. Establish `hker : A.ker ((hζ.autToPow ℚ τ : ZMod N')).val`. Unfold `AbF.ker`.
-
-Conclude with `⟨1, Subgroup.one_mem _, by rw [Units.val_one]; exact (sub_eq_zero.mp hc).symm⟩`. Conclude with `((h3 τ _ hτζ).mpr hker) x`. Conclude with `⟨(IsCyclotomicExtension.algEquiv {l * N} ℚ F (CyclotomicField (l * N) ℚ)).toAlgHom.comp (j.codRestrict F.toSubalgebra hmem)⟩`. Introduce `σ hσ`. Rewrite `hσ` using `[(hΩ Ω).1]`.
-
-Unfold `Chr.levH at hσ`. Rewrite `hσ` using `[Subgroup.mem_comap]`. Rewrite using `[MonoidHom.mem_ker]`. Unfold `Chr.dirG`. Rewrite using `[← (Chr.clsFacts ℚ Ω (l * N)).2.1 N (dvd_mul_left N l)]`.
-
-Conclude with `MonoidHom.mem_ker.mp hσ.1`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.HV.vsField :
     ∀ (Ω : Type) [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] (l : ℕ) [Fact l.Prime], l ≠ 2 → ∀ (O : Type) [CommRing O] [IsDomain O] (N : ℕ) [NeZero N] (ψ : DirichletCharacter O N),

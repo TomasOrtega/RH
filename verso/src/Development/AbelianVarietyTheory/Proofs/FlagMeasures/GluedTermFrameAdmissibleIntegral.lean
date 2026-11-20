@@ -13,20 +13,20 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.Unfold.AdmGlued
 
 /- English proof (translation)
-The claim follows from `Nat.mul_pos (D.host.g_prime 0).pos (D.host.g_prime 1).pos`.
+A detailed English derivation is pending.
 -/
 theorem gS_pos (D : D7) : 0 < gS D :=
   Nat.mul_pos (D.host.g_prime 0).pos (D.host.g_prime 1).pos
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨1, P.asIdeal.primeCompl.one_mem, by simpa using hx⟩`.
+Supply the required witnesses or components.
 -/
 theorem mem_localization_of_mem' {D : D7} (P : IsDedekindDomain.HeightOneSpectrum (𝓞 D.host.E)) {L : LV D} {x : (VS D).V}
     (hx : x ∈ L) : x ∈ (haveI := P.isPrime; Formalism.HermitianLatticesTheory.localization₂ P.asIdeal L) :=
   ⟨1, P.asIdeal.primeCompl.one_mem, by simpa using hx⟩
 
 /- English proof (translation)
-Introduce and unpack `x ⟨s, hs, hx⟩`. Conclude with `⟨s, hs, h hx⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem localization_mono {D : D7} (P : IsDedekindDomain.HeightOneSpectrum (𝓞 D.host.E)) {L M : LV D} (h : L ≤ M) :
     (haveI := P.isPrime; Formalism.HermitianLatticesTheory.localization₂ P.asIdeal L) ≤ (haveI := P.isPrime; Formalism.HermitianLatticesTheory.localization₂ P.asIdeal M) := by
@@ -34,11 +34,11 @@ theorem localization_mono {D : D7} (P : IsDedekindDomain.HeightOneSpectrum (𝓞
   exact ⟨s, hs, h hx⟩
 
 /- English proof (translation)
-Take `⟨-, ⟨-, -, hlift, hconv⟩, -⟩` from `h`. Use `Fin.lastCases ?_ (fun i => ?_) a` and prove the remaining obligations. Establish `hz : (lf D F0).fl.z ∈ Λ` using `hlift.1`. Establish `e : frame (lf D F0) (Fin.last D.R.rS) = (lf D F0).fl.z` using `by simp [frame, FlagG.fvec]`. Rewrite using `[e]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mem_localization_of_mem' P hz`. Take `⟨c, -, hc1, heq⟩` from `hconv.1 P`. Establish `e : frame (lf D F0) i.castSucc = (lf D F0).fl.e i` using `by simp [frame, FlagG.fvec]`. Rewrite using `[e]`. Establish `hmem : (lf D F0).fl.e i ∈ Submodule.span (𝓞 D.host.E) (Set.range fun a => c a • (lf D F0).fl.e a)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Submodule.subset_span (R := 𝓞 D.host.E) ⟨i, rfl⟩ (s := Set.range fun a => c a • (lf D F0).fl.e a)` as an intermediate fact. Simplify `this` using `[hc1 hP i]`. Establish `h1` using `mem_localization_of_mem' P hmem`. Rewrite `h1` using `[← heq]`. Conclude with `localization_mono P inf_le_left h1`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem frame_mem_locP {D : D7} {T : D.host.E} (F0 : FlagG (VS D) D.R.rS T) (Λ : LV D) (h : IsRowLat D F0 Λ)
     (P : IsDedekindDomain.HeightOneSpectrum (𝓞 D.host.E)) (hP : ((gS D : ℕ) : 𝓞 D.host.E) ∈ P.asIdeal)
@@ -60,15 +60,13 @@ theorem frame_mem_locP {D : D7} {T : D.host.E} (F0 : FlagG (VS D) D.R.rS T) (Λ 
     exact localization_mono P inf_le_left h1
 
 /- English proof (translation)
-Introduce `D X Y u u' F F' w hw hG Z FP hB hR Λ y hL g g' hA hA' hr hr'`. Establish `hg : g ∈ Formalism.HermitianLatticesTheory.isom (VS D).hT` using `hA.1`. Establish `hg' : g' ∈ Formalism.HermitianLatticesTheory.isom (VS D).hT` using `hA'.1`. Establish `hβ : g⁻¹ * g' ∈ Formalism.HermitianLatticesTheory.isom (VS D).hT` using `mul_mem (inv_mem hg) hg'`. Establish `hmap : Formalism.HermitianLatticesTheory.gmap (g⁻¹ * g') (Formalism.HermitianLatticesTheory.gmap g'⁻¹ Λ) = Formalism.HermitianLatticesTheory.gmap g⁻¹ Λ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `Formalism.HermitianLatticesTheory.gmap`. Rewrite using `[← Submodule.map_comp]`. Use `congr 1`. Use extensionality with `x`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Establish `hmapL : mapLF (g⁻¹ * g') (lf D (X.Fu u')) = Formalism.L2.SG.Saturated.mapL (g⁻¹ * g') hβ (lf D (X.Fu u'))`. Unfold `mapLF`. Rewrite using `[dif_pos hβ]`. Both sides reduce to the same expression. Take `⟨-, ⟨-, -, hlift', hconv'⟩, hX'⟩` from `id hr'`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result.
 
-Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Establish `h1` using `(Formalism.L2.SG.Pf.IsLift_mapL (g⁻¹ * g') hβ _ _).2 hlift'`. Rewrite `h1` using `[hmap, ← hmapL]`. Conclude with `h1`. Conclude with `GlobalTheory.T.glue_frame_congruences_unitriangular_integral (VS D) D.R.rS _ (gS D) (gS_pos D) _ _ (fun P hP a => frame_mem_locP _ _ hr P hP a) (fun P hP => GlobalTheory.T.gluedFrame_congruent_unitriangular_at_primes D X Y u u' F F' w hw hG Z FP hB hR Λ y hL g g' hA hA' hr hr' P …`.
-
-Conclude with `GlobalTheory.FrameIsom.frameOK_mapLF D (g⁻¹ * g') hβ _ _ hmap _ _ ⟨hconv', hX'⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem glued_frame_PD : ∀ (D : D7) (X : HidaSetting D) (Y : Full X) (u u' : D.what₂.Word), ∀ (F : LFlag (VS D) D.R.rS ((Tu D u : ℕ) : D.host.E)) (F' : LFlag (VS D) D.R.rS ((Tu D u' : ℕ) : D.host.E)) (w : Point D.host.E (D.R.rS + 1)), ZhatOM (ZhatL F F') = ptMat w → Gval F F' ≠ 0 → ∀ (Z : LocDat D) (FP : ∀ p : PlF D, LocNG.FPair (locH Z p) D.R.rS), Based Z FP (Tu D u) (Tu D u') F F' → (∀ p, (FP p).RelG (LocNG.theta (Z.M p))) → ∀ (Λ : LV D) (y : Dat Z FP), LocOver Λ y → ∀ g g', Adapt g (lf D (X.Fu u)) F → Adapt g' (lf D (X.Fu u')) F' → IsRowLat D (X.Fu u) (Formalism.HermitianLatticesTheory.gmap g⁻¹ Λ) → IsRowLat D (X.Fu u') (Formalism.HermitianLatticesTheory.gmap g'⁻¹ Λ) → Formalism.L2.SG.TermDef.PD D (Formalism.HermitianLatticesTheory.gmap g⁻¹ Λ) (lf D (X.Fu u)) u' (mapLF (g⁻¹ * g') (lf D (X.Fu u'))) := by
   intro D X Y u u' F F' w hw hG Z FP hB hR Λ y hL g g' hA hA' hr hr'

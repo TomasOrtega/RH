@@ -10,11 +10,11 @@ noncomputable section
 namespace GlobalTheory.HCFct
 
 /- English proof (translation)
-Take `⟨s, hs⟩` from `GlobalTheory.finiteDim_functions_detected_by_finset K W hW`. Set `ev : W →ₗ[ℂ] (s → ℂ)` to `LinearMap.pi fun i => (LinearMap.proj (R := ℂ) (φ := fun _ : K => ℂ) i.1).comp W.subtype`. Establish `hev : LinearMap.ker ev = ⊥`. Rewrite using `[LinearMap.ker_eq_bot']`. Introduce `w hw`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Subtype.ext (hs w.1 w.2 fun k hk => congrFun hw ⟨k, hk⟩)`. Take `⟨ψ, hψ⟩` from `LinearMap.exists_leftInverse_of_injective ev hev`. Use `⟨s, fun i => ψ (fun j => if i = j then 1 else 0), fun w hw k => ?_⟩` and prove the remaining obligations. Establish `e1 : (⟨w, hw⟩ : W) = ψ (ev ⟨w, hw⟩)` using `(LinearMap.congr_fun hψ _).symm`. Rewrite `e1` using `[LinearMap.pi_apply_eq_sum_univ ψ (ev ⟨w, hw⟩)]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `e2` using `congrArg (fun u : W => u.1 k) e1`. Simplify `e2` using `only [Submodule.coe_sum, Finset.sum_apply, Submodule.coe_smul, Pi.smul_apply, smul_eq_mul, ev, LinearMap.pi_apply, LinearMap.coe_comp, Function.comp_apply, LinearMap.proj_apply, Submodule.subtype_apply]`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem exists_interp {K : Type} (W : Submodule ℂ (K → ℂ)) (hW : FiniteDimensional ℂ W) :
     ∃ (s : Finset K) (b : s → W), ∀ w ∈ W, ∀ k, w k = ∑ i : s, w i.1 * (b i).1 k := by
@@ -35,15 +35,15 @@ theorem exists_interp {K : Type} (W : Submodule ℂ (K → ℂ)) (hW : FiniteDim
     LinearMap.pi_apply, LinearMap.coe_comp, Function.comp_apply, LinearMap.proj_apply, Submodule.subtype_apply] using e2
 
 /- English proof (translation)
-Introduce `E _ _ _ a L W hW X N r _ _ μ 𝓕 hμ h𝓕 _ φ hφ g`. Establish `hP : Continuous φ.1 ∧ (∀ γ h, φ.1 (ratGL E a γ * h) = φ.1 h) ∧ ∀ h, (fun k : Kinf E a => φ.1 (h * infGL E a (Unitary.toUnits k))) ∈ W`. Proceed by induction on `hφ using Submodule.span_induction with`. Consider the case `mem x hx => exact ⟨ContAut.continuous_of_isOpen_stab E a x hx.1.level, hx.1.left, fun h => hx.2.2.1 h⟩`. Consider the case `zero => exact ⟨continuous_const, fun _ _ => rfl, fun _ => W.zero_mem⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `add x y _ _ hx hy`. Conclude with `⟨hx.1.add hy.1, fun γ h => congrArg₂ (· + ·) (hx.2.1 γ h) (hy.2.1 γ h), fun h => W.add_mem (hx.2.2 h) (hy.2.2 h)⟩`. Consider the case `smul c x _ hx`. Conclude with `⟨hx.1.const_smul c, fun γ h => congrArg (c * ·) (hx.2.1 γ h), fun h => W.smul_mem c (hx.2.2 h)⟩`. Take `⟨hc, hl, hK⟩` from `hP`.
+Treat this case separately. Supply the required witnesses or components. Treat this case separately. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `⟨s, b, hb⟩` from `exists_interp W hW`. Use `haveI := hμ`. Establish `hint : ∀ h, IntegrableOn (fun x => φ.1 (unip x * h)) 𝓕 μ` using `fun h => CuspidalL2GL.integrableOn_unip hc hl μ h𝓕 h`. Establish `hpt : ∀ k (x : BlockIx a r → Ad E), φ.1 (unip x * (g * infGL E a (Unitary.toUnits k))) = ∑ i : s, φ.1 (unip x * (g * infGL E a (Unitary.toUnits i.1))) * (b i).1 k` using `fun k x => by`. Use `hb _ (hK (unip x * g)) k` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `this` using `only [mul_assoc]`. Establish `e : (fun k : Kinf E a => ∫ x in 𝓕, φ.1 (unip x * (g * infGL E a (Unitary.toUnits k))) ∂μ) = ∑ i : s, (∫ x in 𝓕, φ.1 (unip x * (g * infGL E a (Unitary.toUnits i.1))) ∂μ) • (b i).1`. Use function extensionality and compare the values at `k`. Simplify using `only [hpt k]`. Rewrite using `[integral_finsetSum _ fun i _ => (hint _).mul_const _]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [integral_mul_const, Finset.sum_apply, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[e]`. Conclude with `W.sum_mem fun i _ => W.smul_mem _ (b i).2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem constTerm_cptTranslate_mem : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ) (L : Subgroup (GL (Fin a) (Af E))) (W : Submodule ℂ (Kinf E a → ℂ)), FiniteDimensional ℂ W → ∀ (X : Set (Module.End ℂ (Sm E a) → ℂ)) (N r : ℕ) [MeasurableSpace (BlockIx a r → Ad E)] [BorelSpace (BlockIx a r → Ad E)] (μ : Measure (BlockIx a r → Ad E)) (𝓕 : Set (BlockIx a r → Ad E)), μ.IsAddHaarMeasure → IsAddFundamentalDomain (ratN E a r) 𝓕 μ → μ 𝓕 = 1 → ∀ φ ∈ Submodule.span ℂ (GlobalTheory.HCF.formsGL E a L W X N), ∀ g : GA E a, (fun k : Kinf E a => ∫ x in 𝓕, φ.1 (unip x * (g * infGL E a (Unitary.toUnits k))) ∂μ) ∈ W := by
   intro E _ _ _ a L W hW X N r _ _ μ 𝓕 hμ h𝓕 _ φ hφ g

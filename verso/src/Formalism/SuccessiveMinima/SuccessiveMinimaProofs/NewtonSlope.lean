@@ -6,23 +6,21 @@ open Filter Topology
 variable {K : Type*} [NormedField K]
 
 /- English proof (translation)
-The claim follows from `h.bddAbove_range`.
+A detailed English derivation is pending.
 -/
 lemma gNorm_bdd_of_conv (a : ℕ → K) (r : ℝ) (h : ConvOn a r) :
     BddAbove (Set.range fun k : ℕ => ‖a k‖ * r ^ k) := h.bddAbove_range
 
 /- English proof (translation)
-Use `set f : ℕ → ℝ := fun k => ‖a k‖ * r ^ k with hf`. Choose the witnesses or unpack the hypotheses as in `⟨k0, hk0⟩ : ∃ k0, a k0 ≠ 0 := by`. Assume the negation of the conclusion as `hc`. Use `push Not at hc`. Conclude with `ha (funext hc)`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `fpos : 0 < f k0` using `by simp only [hf]; positivity`. Establish `ev : ∀ᶠ k in atTop, f k < f k0` using `(h : Tendsto f atTop (𝓝 0)).eventually (gt_mem_nhds fpos)`. Take `⟨M0, hM0⟩` from `eventually_atTop.1 ev`. Use `set M := max M0 (k0 + 1)`. Establish `hM : ∀ k ≥ M, f k < f k0` using `fun k hk => hM0 k (le_trans (le_max_left _ _) hk)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Take `⟨k1, hk1m, hk1⟩` from `Finset.exists_max_image (Finset.range M) f ⟨k0, by simp [M]⟩`. Establish `hall : ∀ k, f k ≤ f k1`. Introduce `k`. Distinguish the cases in `hk : k < M`. Conclude with `hk1 k (by simpa using hk)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction.
 
-Conclude with `(hM k (by omega)).le.trans (hk1 k0 (by simp [M]))`. Establish `hg : gNorm a r = f k1` using `le_antisymm (ciSup_le hall) (le_ciSup (gNorm_bdd_of_conv a r h) k1)`. Establish `hS : {k : ℕ | ‖a k‖ * r ^ k = gNorm a r}.Nonempty` using `⟨k1, by simp [hg, f]⟩`. Establish `hB : BddAbove {k : ℕ | ‖a k‖ * r ^ k = gNorm a r}`. Use `⟨M, fun k hk => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Assume the negation of the conclusion as `hc`. Use `push Not at hc`. Use `hM k hc.le` as an intermediate fact. Establish `e : f k = f k1` using `by simpa [hg, f] using hk`. Combine the linear relations using `[hall k0]`.
-
-Use `⟨Nat.sSup_mem hS hB, ?_⟩` and prove the remaining obligations. Rewrite using `[hg]`. Conclude with `fpos.trans_le (hall k0)`.
+A detailed English derivation is pending.
 -/
 lemma wdeg_spec (a : ℕ → K) (r : ℝ) (hr : 0 < r) (h : ConvOn a r) (ha : a ≠ 0) :
     ‖a (wdeg a r)‖ * r ^ (wdeg a r) = gNorm a r ∧ 0 < gNorm a r := by

@@ -15,13 +15,13 @@ namespace PositivityTheory.SiegelWeilFormula.KWhit
 open PositivityTheory.SiegelWeilFormula
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 /- English proof (translation)
-Establish `e1 : (incM F d.b.1).map (cA σ) = incM F (d.b.1.map σ)`. Use extensionality with `i j`. Simplify using `[incM, cA, inclR, Algebra.TensorProduct.map_tmul]`. Establish `e2 : dbl (incM F d.Y.J) = incM F (dbl d.Y.J)`. Simplify using `[dbl, incM, Matrix.fromBlocks_map, Matrix.map_neg]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `key : incM F (d.b.1ᵀ * dbl d.Y.J * d.b.1.map σ) = (incM F d.b.1)ᵀ * incM F (dbl d.Y.J) * incM F (d.b.1.map σ)`. Simplify using `only [incM, Matrix.map_mul, Matrix.transpose_map]`. Establish `hF : (incM F d.b.1)ᵀ * dbl (incM F d.Y.J) * (incM F d.b.1).map (cA σ) = Matrix.fromBlocks 0 1 (((ε : ℤ) : AE F E) • 1) 0`. Rewrite using `[e1, e2, ← key, hε]`. Simplify using `only [incM, Matrix.fromBlocks_map, Matrix.map_zero _ (map_zero _), Matrix.map_one _ (map_zero _) (map_one _)]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `congr 1`. Use extensionality with `i j`. Simplify using `only [Matrix.map_apply, Matrix.smul_apply, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`. Establish `hM : (mat2 y)ᵀ * dbl (incM F d.Y.J) * (mat2 y).map (cA σ) = dbl (incM F d.Y.J)` using `y.2`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Use `form_conj_in (cA σ).toRingHom (_root_.PositivityTheory.SiegelWeilFormula.KWhit.incM_mul_inv_k d) hM` as an intermediate fact. Rewrite using `[← hF]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rel_frame_k (d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ) (ε : ℤˣ)
     (hε : d.b.1ᵀ * dbl d.Y.J * d.b.1.map σ = Matrix.fromBlocks 0 1 (((ε : ℤ) : E) • 1) 0) (y : d.G) :
@@ -48,13 +48,13 @@ theorem rel_frame_k (d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ) (ε 
   rw [← hF]
   exact this
 /- English proof (translation)
-Take `⟨β, hβ⟩` from `β`. Use `show βᵀ + ((ε : ℤ) : AE F E) • β.map (cA σ) = 0`. Proceed by induction on `hβ using AddSubgroup.closure_induction with`. Consider the case `mem x hx`. Take `⟨y, hy⟩` from `hx`.
+Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h` using `_root_.PositivityTheory.SiegelWeilFormula.KWhit.rel_frame_k d ε hε y`. Rewrite `h` using `[hy]`. Simplify using `only [Matrix.fromBlocks_transpose, Matrix.fromBlocks_map, Matrix.fromBlocks_multiply, Matrix.transpose_zero, Matrix.transpose_one, Matrix.map_zero _ (map_zero (cA σ)), Matrix.map_one _ (map_zero (cA σ)) (map_one (cA σ)), Matrix.zero_mul, Matrix.mul_zero, add_zero, zero_add, Matri …`. Rewrite using `[add_comm]`. Establish `h4` using `h.2.2.2`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h4` using `[Matrix.smul_mul, Matrix.one_mul]`. Conclude with `h4`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy`. Rewrite using `[Matrix.transpose_add, Matrix.map_add _ (map_add (cA σ)), smul_add]`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Treat this case separately.
 
-Combine the equalities or inequalities in the displayed calculation. Consider the case `neg x _ hx`. Rewrite using `[Matrix.transpose_neg, Matrix.map_neg _ (map_neg (cA σ)), smul_neg, ← neg_add, hx, neg_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rel_nA_cond_k (d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ) (ε : ℤˣ)
     (hε : d.b.1ᵀ * dbl d.Y.J * d.b.1.map σ = Matrix.fromBlocks 0 1 (((ε : ℤ) : E) • 1) 0) (β : nA σ d.Y d.b) :
@@ -82,13 +82,13 @@ theorem rel_nA_cond_k (d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ) (�
   | neg x _ hx =>
     rw [Matrix.transpose_neg, Matrix.map_neg _ (map_neg (cA σ)), smul_neg, ← neg_add, hx, neg_zero]
 /- English proof (translation)
-Establish `hD : (dbl d.Y.J).map σ = c • (dbl d.Y.J)ᵀ`. Simplify using `only [dbl, Matrix.fromBlocks_map, Matrix.fromBlocks_transpose, Matrix.fromBlocks_smul, hc, Matrix.map_neg _ (map_neg σ), Matrix.map_zero _ (map_zero σ), Matrix.transpose_zero, Matrix.transpose_neg, smul_zero, smul_neg]`. Establish `hbb : (d.b.1.map σ).map σ = d.b.1`. Use extensionality with `i j`. Simplify using `[hσ]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Establish `h1` using `congrArg σ.mapMatrix hε`. Simplify using `only [map_mul, AlgHom.mapMatrix_apply, hD, hbb] at h1`. Establish `h2` using `congrArg Matrix.transpose h1`. Simplify using `only [Matrix.transpose_mul, Matrix.transpose_smul, Matrix.transpose_transpose, Matrix.mul_smul, Matrix.smul_mul, Matrix.transpose_map] at h2`. Rewrite `h2` using `[← Matrix.mul_assoc, hε]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `congrFun (congrFun h2 (Sum.inr i)) (Sum.inl i)` as an intermediate fact. Simplify using `[Matrix.fromBlocks_map] at this`. Establish `hε2 : ((ε : ℤ) : E) * ((ε : ℤ) : E) = 1`. Rewrite using `[← Int.cast_mul, ← Units.val_mul, Int.units_mul_self]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem frameSign_eq_involution_scalar (d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ) (hσ : ∀ x, σ (σ x) = x) (ε : ℤˣ)
     (hε : d.b.1ᵀ * dbl d.Y.J * d.b.1.map σ = Matrix.fromBlocks 0 1 (((ε : ℤ) : E) • 1) 0) (c : E)
@@ -115,9 +115,9 @@ theorem frameSign_eq_involution_scalar (d : _root_.PositivityTheory.SiegelWeilFo
     _ = c * (((ε : ℤ) : E) * ((ε : ℤ) : E)) := by ring
     _ = c := by rw [hε2, mul_one]
 /- English proof (translation)
-Establish `hσ` using `rel_sigma_sigma d.ok.good.cm`. Establish `i : Fin d.n` using `⟨0, d.ok.hn⟩`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `_root_.PositivityTheory.SiegelWeilFormula.KWhit.frameSign_eq_involution_scalar d hσ ε hε (-1) (by ext a b; simp [h b a]) i` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `Units.ext (Int.cast_injective (α := E) (by simpa using this))`. Introduce `h`. Use `_root_.PositivityTheory.SiegelWeilFormula.KWhit.frameSign_eq_involution_scalar d hσ ε hε 1 (by ext a b; simp [h b a]) i` as an intermediate fact. Conclude with `Units.ext (Int.cast_injective (α := E) (by simpa using this))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem rel_sign_k (d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ) (ε : ℤˣ)
     (hε : d.b.1ᵀ * dbl d.Y.J * d.b.1.map σ = Matrix.fromBlocks 0 1 (((ε : ℤ) : E) • 1) 0) :
@@ -132,9 +132,9 @@ theorem rel_sign_k (d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ) (ε :
     have := _root_.PositivityTheory.SiegelWeilFormula.KWhit.frameSign_eq_involution_scalar d hσ ε hε 1 (by ext a b; simp [h b a]) i
     exact Units.ext (Int.cast_injective (α := E) (by simpa using this))
 /- English proof (translation)
-Break down `d.ok.sign with ⟨hA, hY⟩ | ⟨hA, hY⟩` into its components or cases. Establish `he` using `(_root_.PositivityTheory.SiegelWeilFormula.KWhit.rel_sign_k d ε hε).1 hY`. Substitute `he` using the available equality. Use `⟨1, one_ne_zero, by simp, fun i j => by simp [hA.herm i j]⟩` and prove the remaining obligations. Establish `he` using `(_root_.PositivityTheory.SiegelWeilFormula.KWhit.rel_sign_k d ε hε).2 hY`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Substitute `he` using the available equality. Take `⟨η, hη, hση⟩` from `rel_anti d.ok.good.cm`. Use `⟨η, hη, by simp [hση], fun i j => ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, hση, hA.skew i j, neg_mul_neg]`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem rel_eta_k (d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ) (ε : ℤˣ)
     (hε : d.b.1ᵀ * dbl d.Y.J * d.b.1.map σ = Matrix.fromBlocks 0 1 (((ε : ℤ) : E) • 1) 0) :

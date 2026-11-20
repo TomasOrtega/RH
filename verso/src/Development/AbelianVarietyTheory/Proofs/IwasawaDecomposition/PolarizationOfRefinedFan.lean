@@ -20,7 +20,7 @@ noncomputable section
 namespace GlobalTheory.ChartExtend
 
 /- English proof (translation)
-Use `show Spec.map _ ≫ Spec.map _ = Spec.map _ ≫ Spec.map _`. Rewrite using `[← Spec.map_comp, ← Spec.map_comp]`. Use `congr 1`. Conclude with `CommRingCat.hom_ext (RingHom.ext h)`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem spMap_jK_sq {R R' : Type} [CommRing R] [IsDomain R] [CommRing R'] [IsDomain R'] {g : R →+* R'}
     {gam : FractionRing R →+* FractionRing R'} (h : ∀ r, gam (algebraMap R _ r) = algebraMap R' _ (g r)) :
@@ -31,31 +31,31 @@ theorem spMap_jK_sq {R R' : Type} [CommRing R] [IsDomain R] [CommRing R'] [IsDom
   exact CommRingCat.hom_ext (RingHom.ext h)
 
 /- English proof (translation)
-Introduce `E _ _ _ H D l Xo c X Y g φs 𝒩 φ d k DX hgq hφs hRef hpol R _ _ _ ξ t mξ P m γ hCN hEt hFU hTor hCone hIn y hy`. Establish `⟨hN, hIC, _, hC0⟩` using `hCN`. Use `isProper_toroidalModel_structureMap X` as an intermediate fact. Establish `: CompactSpace X.X` using `hpol.2.compactSpace`. Establish `: QuasiSeparatedSpace X.X` using `quasiSeparatedSpace_of_quasiSeparated X.s`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨u₀, ⟨n₀⟩⟩` from `exists_sabPull y X.oF.t`. Take `⟨aC, -⟩` from `GlobalTheory.LevelCover.sab_comp n₀ X.m (e := y ≫ X.j) rfl`. Take `⟨n₁, -⟩` from `GlobalTheory.LevelCover.sab_comp n₀ X.m0.toSABMap rfl`. Take `⟨n₂, -⟩` from `GlobalTheory.LevelCover.sab_cancel Y.m0.toSABMap n₁ y rfl`. Take `⟨n₃, -⟩` from `GlobalTheory.LevelCover.sab_comp n₂ Y.m (e := y ≫ Y.j) rfl`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨aT, -⟩` from `GlobalTheory.LevelCover.sab_cancel mξ n₃ (jK R) hy.symm`. Establish `hu₀ : IsProper u₀.G.hom` using `MorphismProperty.of_isPullback (P := @IsProper) n₀.cart.1 X.oF.proper`. Take `⟨e₁, he₁, hx₁⟩` from `GlobalTheory.TraitGen.exists_detOm_gen_extAt hu₀ aT aC`. Take `⟨e₂, he₂, hx₂⟩` from `GlobalTheory.TraitGen.extAt_lbPow _ _ _ _ e₁ k he₁ hx₁`. Establish `hZs : y ≫ X.j ≫ X.s = jK R ≫ ξ ≫ Y.s ≫ spMap (algebraMap (𝓞 c.F) c.F)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hY : y ≫ Y.j ≫ Y.s = jK R ≫ ξ ≫ Y.s` using `by rw [← Category.assoc, hy, Category.assoc]`. Rewrite `hY`, the goal using `[Model.j_s]`. Establish `hY' : y ≫ pullback.snd _ _ = jK R ≫ ξ ≫ Y.s`. Rewrite using `[← hY]`. Simplify using `[spMap]`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← Category.assoc, hY']`. Simplify using `only [Category.assoc]`. Establish `ext : ∀ (V : Type) [CommRing V] [IsDomain V] [IsLocalRing V], CDvr V → ∀ (ψ : R →+* V) (gam : FractionRing R →+* FractionRing V), (∀ r, gam (algebraMap R _ r) = algebraMap V _ (ψ r)) → ∃ χ : Sp V ⟶ X.X, spMap gam ≫ y ≫ X.j = jK V ≫ χ` using `fun V _ _ _ hV ψ gam hg => by`. Use `hV.1` as an intermediate fact. Take `⟨χ, hχ, -⟩` from `val_exists X.s (spMap gam ≫ y ≫ X.j) (spMap ψ ≫ ξ ≫ Y.s ≫ spMap (algebraMap (𝓞 c.F) c.F)) (by`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[Category.assoc, Category.assoc, hZs, ← Category.assoc (spMap gam), spMap_jK_sq hg, Category.assoc])`. Conclude with `⟨χ, hχ.symm⟩`. Establish `hA : ∀ (V : Type) [CommRing V] [IsDomain V] [IsLocalRing V], CDvr V → ∀ ϖ : V, Irreducible ϖ → ∀ (ψ : R →+* V) (gam : FractionRing R →+* FractionRing V), (∀ r, gam (algebraMap R _ r) = algebraMap V _ (ψ r)) → ∀ χ : Sp V ⟶ X.X, spMap gam ≫ y ≫ X.j = jK V ≫ χ → ∃ be ∈ levelForms H …` using `fun V _ _ _ hV ϖ hϖ ψ gam hg χ hχ => by`. Take `⟨be, hbe, hF⟩` from `GlobalTheory.T.exists_level_form_along_dvr E H R t P hCN V hV ϖ hϖ ψ gam hg`. Conclude with `⟨be, hbe, hF, GlobalTheory.T.polarization_refined_fan E H D l Xo c X Y g φs 𝒩 φ d k DX hgq hφs hRef hpol R ξ t mξ P m γ hCN hEt hFU hTor hCone hIn y hy V hV ϖ hϖ ψ gam hg χ hχ be hbe hF⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `hC : Module.Projective (𝓞 E) P.D.toPre.X ∧ Module.finrank (𝓞 E) P.D.toPre.X ≤ min D.p D.q` using `GlobalTheory.T.formally_unramified_uniformization E H D l Xo c Y R ξ t mξ P hCN hEt hFU hTor y hy`. Establish `hB : ∃ q : FractionRing R, q ≠ 0 ∧ ∀ (V : Type) [CommRing V] [IsDomain V] [IsLocalRing V], CDvr V → ∀ ϖ : V, Irreducible ϖ → ∀ (ψ : R →+* V) (gam : FractionRing R →+* FractionRing V), (∀ r, gam (algebraMap R _ r) = algebraMap V _ (ψ r)) → ∀ be ∈ levelForms H 1 P.D.toPre.X, FormAt …` using `GlobalTheory.T.polarized_fan_torsion_rank E H (min D.p D.q) g d φs 𝒩 φ R t P m γ hgq hφs hRef hC.1 hC.2 hCN hCone hIn`. Take `⟨q, hq0, hq⟩` from `hB`. Establish `hval : ∀ (V : Type) [CommRing V] [IsDomain V] [IsLocalRing V], CDvr V → ∀ ϖ : V, Irreducible ϖ → ∀ (ψ : R →+* V) (gam : FractionRing R →+* FractionRing V), (∀ r, gam (algebraMap R _ r) = algebraMap V _ (ψ r)) → ∀ χ : Sp V ⟶ X.X, spMap gam ≫ y ≫ X.j = jK V ≫ χ → ∃ (n : ℕ) (w : Vˣ) …`. Introduce `V _ _ _ hV ϖ hϖ ψ gam hg χ hχ`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨be, hbe, hF, nA, hnA, hid⟩` from `hA V hV ϖ hϖ ψ gam hg χ hχ`. Take `⟨n, w, hn, hw⟩` from `hq V hV ϖ hϖ ψ gam hg be hbe hF`. Establish `e : n = nA`. Establish `: (n : ℝ) = (nA : ℝ)` using `hn.trans hnA.symm`. Conclude with `this` after adjusting the coercions.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨nA, w, ?_, hid⟩` and prove the remaining obligations. Rewrite using `[hw, e, zpow_natCast, map_mul, map_pow]`. Take `⟨u, hu⟩` from `GlobalTheory.ExtLB.exists_eq_of_traits (R := R) q fun V _ _ _ hV ψ gam hg => by`. Use `hV.1` as an intermediate fact. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible V`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨χ, hχ⟩` from `ext V hV ψ gam hg`. Take `⟨n, w, hw, -⟩` from `hval V hV ϖ hϖ ψ gam hg χ hχ`. Conclude with `⟨_, hw⟩`. Establish `hu0 : u ≠ 0`. Introduce and unpack `rfl`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Conclude with `hq0 (by rw [← hu, map_zero])`. Establish `hD : ∀ (V : Type) [CommRing V] [IsDomain V] [IsLocalRing V], CDvr V → ∀ (ψ : R →+* V) (gam : FractionRing R →+* FractionRing V), (∀ r, gam (algebraMap R _ r) = algebraMap V _ (ψ r)) → ∀ χ : Sp V ⟶ X.X, spMap gam ≫ (y ≫ X.j) = jK V ≫ χ → idlAlong DX.idealSheaf χ = Ideal.span {ψ u …`. Introduce `V _ _ _ hV ψ gam hg χ hχ`. Use `hV.1` as an intermediate fact. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible V`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨n, w, hw, hid⟩` from `hval V hV ϖ hϖ ψ gam hg χ hχ`. Establish `e : ψ u = w * ϖ ^ n`. Apply `IsFractionRing.injective V (FractionRing V)` to reduce the goal to its premises. Rewrite using `[← hw, ← hg, hu]`. Rewrite using `[hid, pow_one, e, Ideal.span_singleton_mul_left_unit w.isUnit]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨e₃, he₃, hx₃⟩` from `GlobalTheory.TraitGen.exists_dual_gen_extAt X.X DX R u hu0 (y ≫ X.j) 1 hD`. Take `⟨e, he, hx⟩` from `GlobalTheory.TraitGen.exists_tens_extAt _ _ _ _ _ e₂ e₃ he₂ he₃ hx₂ hx₃`. Use `GlobalTheory.ExtLB.exists_extension X.X (polOf X k DX) hpol.2.isLB (fun z => GlobalTheory.PolFin.exists_H0_of_isAmpleLB hpol.2 z) R (y ≫ X.j) e he fun V _ _ _ hV ψ gam hg => ?_` and prove the remaining obligations. Take `⟨χ, hχ⟩` from `ext V hV ψ gam hg`. Conclude with `⟨χ, hχ, hx V hV ψ gam hg χ hχ⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem extend : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l)
     (c : Coeff l) (X : GMod Xo c) (Y : Model Xo c (RingHom.id c.F)) (g : ℕ) (φs : InvFun ℤ) (𝒩 : Finset ℕ)

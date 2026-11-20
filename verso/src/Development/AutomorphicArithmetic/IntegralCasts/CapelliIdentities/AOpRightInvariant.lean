@@ -5,15 +5,15 @@ noncomputable def UpperTheory.Reformulated.B.Qf37.aOp :
     fun {G : Type} [Group G] (R : Finset G) (t : G) (φ : G → ℂ) (g : G) ↦ ∑ r ∈ R, φ (g * r * t)
 
 /- English proof (translation)
-Introduce `G inst I t R hR hU φ hφ g i hi`. Establish `hex : ∀ r ∈ R, ∃ s, s ∈ R ∧ t⁻¹ * (s⁻¹ * (i * r)) * t ∈ I` using `fun r hr => (hU (i * r) (I.mul_mem hi (hR r hr))).exists`. Use `choose σ hσR hσ using hex`. Establish `hinj : ∀ a (ha : a ∈ R) b (hb : b ∈ R), σ a ha = σ b hb → a = b`. Introduce `a ha b hb hab`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h1` using `hσ a ha`. Establish `h2` using `hσ b hb`. Rewrite `h2` using `[← hab]`. Establish `h3` using `I.mul_mem (I.inv_mem h1) h2`. Establish `h4 : t⁻¹ * (a⁻¹ * b) * t ∈ I`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use `h3 using 1` and compare the differences between its conclusion and the goal. Use `group`. Establish `h5 : t⁻¹ * (b⁻¹ * b) * t ∈ I`. Simplify using the standard rewrite rules. Conclude with `(hU b (hR b hb)).unique ⟨ha, h4⟩ ⟨hb, h5⟩`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Unfold `UpperTheory.Reformulated.B.Qf37.aOp`. Use `Finset.sum_bij σ hσR hinj ?_ ?_` and prove the remaining obligations. Introduce `b hb`. Take `⟨a, ha, hab⟩` from `Finset.surj_on_of_inj_on_of_card_le σ hσR (fun a b ha hb h => hinj a ha b hb h) le_rfl b hb`. Conclude with `⟨a, ha, hab.symm⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Introduce `a ha`. Rewrite using `[← hφ (g * σ a ha * t) _ (hσ a ha)]`. Use `congr 1`. Use `group`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.Qf37.aOp_rightInvariant :
     ∀ {G : Type} [inst : Group G] {I : Subgroup G} {t : G} {R : Finset G},

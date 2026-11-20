@@ -36,7 +36,7 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formal
   IsDedekindDomain GlobalTheory.CuspRep GlobalTheory.UnitaryBC GlobalTheory.FormDict GlobalTheory.DefiniteBC
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 /- English proof (translation)
-Introduce `hNT hGU hSC hL D T A hCG hAU`. Take `⟨hP, hS, hSat⟩` from `_root_.GlobalTheory.T.recProd_recSpeh_recSatake hGU hSC hL D.nd D.naut T`. Conclude with `_root_.UpperTheory.One.M.Ud.baseChangeDefinite_of_cmDatum_recLaws D (_root_.GlobalTheory.FormDict.recT_alt T hL) hNT (discCsd_of hA D.host.E) hP hS hSat (_root_.GlobalTheory.T.cuspReadG_recT_of_cgTrue hL D T hCG) (_root_.GlobalTheory.T.unitary_of_local_langlands' hL D T A hAU)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem aux_of_cgTrue_of_auTrue (hA : AscComp) : DefiniteN → GlobalTheory.Published.GenericUnitaryDualGL → GlobalTheory.Published.StandardCosocleGL →
     ∀ (hL : _root_.UpperTheory.Zero.LLC.RecTExists) (D : D7) (T : GlobalTheory.RowTie.WDTie D.nd D.naut) (A : _root_.GlobalTheory.HeightCounting.AUSideAlt D),

@@ -21,9 +21,7 @@ noncomputable section
 namespace GlobalTheory.KodairaNefBig
 
 /- English proof (translation)
-Take `⟨_, ⟨U, hU, rfl⟩, hmem, -⟩` from `X.isBasis_affineOpens.exists_subset_of_mem_open (Set.mem_univ (genericPoint X)) isOpen_univ`. Establish `hU' : U = ⊤` using `eq_top_iff.2 fun x _ => by`. Rewrite using `[GlobalTheory.FlagQ.eq_genericPoint_of_krullDim_zero h x]`. Conclude with `hmem`. Substitute `hU'` using the available equality.
-
-Use `haveI : IsAffine (⊤ : X.Opens) := hU`. Conclude with `IsAffine.of_isIso X.topIso.inv`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem isAffine_of_dim_zero {X : Scheme.{0}} [IsIntegral X] (h : topologicalKrullDim X = 0) :
     IsAffine X := by
@@ -36,7 +34,7 @@ theorem isAffine_of_dim_zero {X : Scheme.{0}} [IsIntegral X] (h : topologicalKru
   exact IsAffine.of_isIso X.topIso.inv
 
 /- English proof (translation)
-Rewrite using `[Fin.prod_univ_succ]`. Establish `hp : ∏ i : Fin d, n i.succ (a i.succ) ≤ ∏ _i : Fin d, q` using `Finset.prod_le_prod (fun i _ => (hs i _).1) fun i _ => (hs i _).2`. Rewrite `hp` using `[Finset.prod_const, Finset.card_univ, Fintype.card_fin]`. Conclude with `mul_le_mul (h0 _).2 hp (Finset.prod_nonneg fun i _ => (hs i _).1) (by norm_num)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem prod_le {d : ℕ} (q : ℤ) (hq : 1 ≤ q) (n : Fin (d + 1) → Fin 2 → ℤ)
     (h0 : ∀ j, 0 ≤ n 0 j ∧ n 0 j ≤ 2) (hs : ∀ (i : Fin d) j, 0 ≤ n i.succ j ∧ n i.succ j ≤ q)
@@ -52,37 +50,37 @@ end GlobalTheory.KodairaNefBig
 open GlobalTheory.KodairaNefBig in
 
 /- English proof (translation)
-Introduce `hNN X _ _ p hp N hN hnef hbig`. Use `letI := algebraΓOfHom p`. Establish `hp' : IsProjOver (strHom ℂ X)` using `by rwa [strHom_eq (f := p) fun _ => rfl]`. Take `⟨A, hA⟩` from `exists_isAmpleLB_of_isProjOver hp`. Take `⟨D, hD, -⟩` from `hbig.growth`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Consider the cases of `D with`. Consider the case `zero`. Use `isAffine_of_dim_zero (X := X) (by simpa using hD)` as an intermediate fact. Use `⟨1, N, hN, 0, one_pos, isAmpleLB_of_isAffine hN, CartierDiv.eff_zero, ?_⟩` and prove the remaining obligations. Rewrite using `[one_smul, ← toPic_apply, map_zero, add_zero]`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Consider the case `succ d`. Use `isNoetherian_of_isProjOver hp` as an intermediate fact. Establish `hV` using `diffVanish_chiPic_of_isProjOver (algebraMap_eq_strHom ℂ X) (GlobalTheory.structureModule X) hp' (d := d + 1) (by rw [QCoh.suppDim_structureModule]; exact hD.le)`. Set `P : Fin 2 → LB X` to `![N, A]`. Establish `hPn : ∀ j, IsNef ℂ (P j)` using `fun j => by fin_cases j exacts [hnef, hA.isNef]`.
+Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hP : ∀ j, (P j).IsLB` using `fun j => (hPn j).isLB`. Establish `hI : ∀ a : Fin (d + 1) → Fin 2, 0 ≤ interNum ℂ (GlobalTheory.structureModule X) (P ∘ a)` using `fun a => hNN.1.interNum_nonneg hp' hD fun i => hPn (a i)`. Use `set S : ℤ := ∑ a : Fin (d + 1) → Fin 2, interNum ℂ (GlobalTheory.structureModule X) (P ∘ a) with hSdef`. Establish `hS0 : 0 ≤ S` using `Finset.sum_nonneg fun a _ => hI a`. Establish `hT : 0 < topSelfIntersection ℂ N (d + 1)` using `(hNN.2.2.isBig_iff hp' hD hnef).1 hbig`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set q : ℕ := 2 * (d + 1) * S.toNat + 1 with hqdef`. Establish `hqS : (q : ℤ) = 2 * (d + 1) * S + 1`. Rewrite using `[hqdef]`. Move the coercions through the operations in `[Int.toNat_of_nonneg hS0]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hq1 : (1 : ℤ) ≤ q` using `by rw [hqS]; nlinarith`. Set `L : LB X` to `tens A (lbPow N q)`. Establish `hL : IsAmpleLB L` using `IsAmpleLB.tens_of_isNef hNN ℂ X p hp A _ hA (hnef.pow hA q)`. Set `B : LB X` to `lbPow A 2`. Establish `hB : IsAmpleLB B` using `(isAmpleLB_pow_iff hA.isLB (by norm_num)).2 hA`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `M : LB X` to `tens (lbPow N q) (dual A)`. Establish `hM : M.IsLB` using `isLB_tens (isLB_lbPow hN q) (isLB_dual hA.isLB)`. Establish `hclsL : cls L hL.isLB = (q : ℤ) • cls N hN + cls A hA.isLB`. Rewrite using `[cls_tens hA.isLB (isLB_lbPow hN q), cls_lbPow hN, natCast_zsmul, add_comm]`. Establish `hclsB : cls B hB.isLB = (2 : ℤ) • cls A hA.isLB`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Put the expressions in a common number system so they can be compared.
 
-Rewrite using `[cls_lbPow hA.isLB]`. Use `norm_cast`. Establish `hclsM : cls M hM = (q : ℤ) • cls N hN - cls A hA.isLB`. Rewrite using `[cls_tens (isLB_lbPow hN q) (isLB_dual hA.isLB), cls_lbPow hN, cls_dual hA.isLB, natCast_zsmul, sub_eq_add_neg]`. Establish `e : cls L hL.isLB = cls M hM + cls B hB.isLB`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Rewrite using `[hclsL, hclsM, hclsB]`. Normalize the expressions using the abelian group laws. Establish `e₁` using `hV.interNum_of_cls_eq_sum hP (Q := fun _ => L) (fun _ => hL.isLB) (fun _ => ![(q : ℤ), 1]) (fun _ => by`. Rewrite using `[Fin.sum_univ_two, hclsL]`. Simplify using `[P])`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hlow : (q : ℤ) ^ (d + 1) * topSelfIntersection ℂ N (d + 1) ≤ topSelfIntersection ℂ L (d + 1)`. Rewrite using `[topSelf_def ℂ L, e₁]`. Establish `hnn : ∀ a : Fin (d + 1) → Fin 2, 0 ≤ (∏ i, (![(q : ℤ), 1] : Fin 2 → ℤ) (a i)) * interNum ℂ (GlobalTheory.structureModule X) (P ∘ a)` using `fun a => mul_nonneg (Finset.prod_nonneg fun i _ => by`. Apply the tactic sequence `rcases Fin.exists_fin_two.1 ⟨a i, rfl⟩ with h | h <;> rw [h] <;> simp <;> omega) (hI a)`. Use `le_trans (le_of_eq ?_) (Finset.single_le_sum (fun a _ => hnn a) (Finset.mem_univ (fun _ => (0 : Fin 2))))` and prove the remaining obligations.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Simplify using `only [Matrix.cons_val_zero, Finset.prod_const, Finset.card_univ, Fintype.card_fin]`. Both sides reduce to the same expression. Set `n : Fin (d + 1) → Fin 2 → ℤ` to `Fin.cons ![0, 2] (fun _ => ![(q : ℤ), 1])`. Establish `e₂` using `hV.interNum_of_cls_eq_sum hP (Q := Fin.cons B (fun _ : Fin d => L)) (Fin.cases hB.isLB fun _ => hL.isLB) n (fun i => by`. Use `Fin.cases ?_ (fun j => ?_) i` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Fin.sum_univ_two]`. Simplify using `only [Fin.cons_zero, n]`. Rewrite using `[hclsB]`. Simplify using `[P]`. Rewrite using `[Fin.sum_univ_two]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Fin.cons_succ, n]`. Rewrite using `[hclsL]`. Simplify using `[P])`. Establish `hup : interNum ℂ (GlobalTheory.structureModule X) (Fin.cons B (fun _ : Fin d => L) : Fin (d + 1) → LB X) ≤ 2 * (q : ℤ) ^ d * S`. Rewrite using `[e₂, hSdef, Finset.mul_sum]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_le_sum fun a _ => mul_le_mul_of_nonneg_right ?_ (hI a)` and prove the remaining obligations. Use `prod_le (q : ℤ) hq1 n (fun j => ?_) (fun i j => ?_) a` and prove the remaining obligations. Apply the tactic sequence `rcases Fin.exists_fin_two.1 ⟨j, rfl⟩ with h | h <;> subst h <;> simp [n]`. Apply the tactic sequence `rcases Fin.exists_fin_two.1 ⟨j, rfl⟩ with h | h <;> subst h <;> simp [n] <;> omega`. Establish `hineq : ((d : ℤ) + 1) * interNum ℂ (GlobalTheory.structureModule X) (Fin.cons B (fun _ : Fin d => L) : Fin (d + 1) → LB X) < topSelfIntersection ℂ L (d + 1)`.
+Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hqd : (0 : ℤ) < (q : ℤ) ^ d` using `pow_pos (by omega) d`. Establish `hd1 : (0 : ℤ) ≤ (d : ℤ) + 1` using `by positivity`. Combine the equalities or inequalities in the displayed calculation. Take `⟨r, hr, hs⟩` from `exists_hasNonzeroSec_pow_of_ample_sub_ample ℂ X hp' d hD.le L B M hL hB hM e hineq`. Take `⟨s, hs⟩` from `hasNonzeroSec_iff.1 hs`.
+Chain the equalities or inequalities of the calculation. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨q * r, lbPow A r, isLB_lbPow hA.isLB r, divOfSec (isLB_lbPow hM r) s hs, Nat.mul_pos (Nat.succ_pos _) hr, (isAmpleLB_pow_iff hA.isLB hr).2 hA, eff_divOfSec_of_sec _ s hs, ?_⟩` and prove the remaining obligations. Rewrite using `[← toPic_apply, (presents_divOfRatSec _ (isRatSec_ratOfSec s hs)).toPic_eq, cls_lbPow hA.isLB, cls_lbPow hM, hclsM]`. Use `first`. Consider the case `module`. Consider the case `(simp only [← natCast_zsmul, smul_sub, smul_smul, Nat.cast_mul]; rw [mul_comm (r : ℤ)]; abel)`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.exists_ample_add_eff_of_isNef_isBig : GlobalTheory.Published.NefNumerics → ∀ (X : Scheme.{0}) [IsIntegral X] [IsLocallyNoetherian X] (p : X ⟶ Sp ℂ), IsProjOver p → letI := algebraΓOfHom p; ∀ (N : LB X) (hN : N.IsLB), IsNef ℂ N → IsBig ℂ N → ∃ (a : ℕ) (A : LB X) (hA : A.IsLB) (E₀ : CartierDiv X), 0 < a ∧ IsAmpleLB A ∧ E₀.Eff ∧ a • cls N hN = cls A hA + cls (toLB E₀) (isLB_toLB E₀) := by
   intro hNN X _ _ p hp N hN hnef hbig

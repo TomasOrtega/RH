@@ -14,9 +14,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.UMin.ChartDiv
 
 /- English proof (translation)
-Introduce `k Ω _ _ _ M n c h a z hc hz`. Establish `hx : ⊤ ≤ (M.pt ≫ h) ⁻¹ᵁ chart k n a` using `M.top_le_preimage_pt (U := h ⁻¹ᵁ chart k n a) ⟨z, hz⟩`. Take `⟨ha, hb⟩` from `GlobalTheory.UMin.CrdChart.pCrd_chart k Ω n (M.pt ≫ h) c a hc hx`. Use `⟨ha, fun z' hz' b => ?_⟩` and prove the remaining obligations. Rewrite using `[← hb b, Points.valR_comp, ← Points.valF_eq_valR]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `RatModel.valF_mem_O hz' _`.
+A detailed English derivation is pending.
 -/
 theorem chart_ratio_mem_O : ∀ (k Ω : Type) [CommRing k] [Field Ω] [Algebra k Ω] (M : RatModel k Ω) (n : ℕ) (c : Fin (n + 1) → Ω) (h : M.Z ⟶ PSpace k n) (a : Fin (n + 1)) (z : M.Z), PCrd (M.pt ≫ h) c → z ∈ h ⁻¹ᵁ chart k n a → c a ≠ 0 ∧ ∀ z' ∈ h ⁻¹ᵁ chart k n a, ∀ b, c b / c a ∈ M.O z' := by
   intro k Ω _ _ _ M n c h a z hc hz

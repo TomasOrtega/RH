@@ -14,15 +14,13 @@ namespace PositivityTheory.Rg.BcB.F.Ex0
 
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Introduce `hR E _ _ _ hE n hn π hπ S hS1`. Use `choose lam hlam using fun v : InfinitePlace E => hW E n π hπ v.embedding`. Take `⟨μ, e, hμ, hin, hae, hop⟩` from `hMu E hE`. Take `⟨Sec, d, h⟩` from `local_existence_of_unramified hSec hU hLev hS hB hE π hπ (hun E n π hπ) S hS1 μ hin hae hop`. Use `choose u hu using hT E`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨C⟩` from `hC E hE n hn μ e hμ lam`. Establish `A` using `fun i : C.ι => (hA E hE (C.a i) (n - C.a i) (C.l₁ i) (C.l₂ i) _ _ _ _ (C.hG (C.a i)) (C.hG (n - C.a i)) (C.hC (C.a i)) (C.hC (n - C.a i))).some`. Take `⟨K, k1, k2, k3, k4, k5⟩` from `hK E n Sec h.hSec (d.S₀ ∪ d.Bad) (fun w hw => (Finset.mem_union.1 hw).elim (fun a => (h.S₀ w a).1) fun a => (h.bad w a).1) (fun w => μ.loc w) hop d.L h.ok₀.L`. Take `⟨W, w1, w2⟩` from `hWx hR E n μ e lam C A`. Establish `hk : ∀ w : Pl E, ∃ k : ℕ, w ∈ d.Bad → ¬ IsSplitAt w → 1 ≤ k ∧ (∀ γ : UL n w, γ ∈ d.KB w ↔ γ.1 ∈ MB.congK n w k) ∧ ∀ a ≤ n, d.fix a w = fun y => (((d.KB w).relIndex (KL n w) : ℕ) : ℂ) * MB.pairIndicatorMatch n a (n - a) w k y` using `fun w => by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Distinguish the cases in `hw : w ∈ d.Bad ∧ ¬ IsSplitAt w`. Take `⟨k, a1, -, a2, a3⟩` from `h.mok₀.badI w hw.1 hw.2`. Conclude with `⟨k, fun _ _ => ⟨a1, a2, a3⟩⟩`. Conclude with `⟨0, fun a b => absurd ⟨a, b⟩ hw⟩`. Use `choose kB hkB using hk`.
+Supply the required witnesses or components. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Use `⟨{ lam := lam, hlam := hlam, μ := μ, e := e, hμ := hμ, Sec := Sec, hSec := h.hSec, d₀ := d, ok₀ := h.ok₀, T₀ := h.T₀ μloc := h.μloc, unif := h.unif, S₀ := h.S₀, S_le := h.S_le, bad := h.bad, good := h.good, kB := kB kB_pos := fun w a b => (hkB w a b).1, KBs := d.KB, KBs_lev := fu …` and prove the remaining obligations. Use `split_ifs with a b`. Both sides reduce to the same expression. Establish `: {γ : UL n w | γ.1 ∈ MB.congK n w (kB w)} = (d.KB w : Set (UL n w))` using `Set.ext fun γ => ((hkB w a b).2.1 γ).symm`. Rewrite using `[this, Subgroup.closure_eq]`.
-
-Conclude with `(h.off w a).1`. Use `split_ifs with b c`. Conclude with `(h.mok₀.badS w b c).2 a ha`. Conclude with `(hkB w b c).2.2 a ha`. Conclude with `(h.off w b).2 a`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem frameEx0_of (hW : WeightEx) (hun : Rig.UnrAE) (hMu : MuEx) (hSec : SecEx) (hU : UnifEx) (hLev : LevelEx) (hS : SplitEx)
     (hB : BadEx2) (hK : KEx) (hT : TranslEx) (hC : ChainEx) (hA : ArchEx) (hWx : F0.WEx) : FrameEx0 := by

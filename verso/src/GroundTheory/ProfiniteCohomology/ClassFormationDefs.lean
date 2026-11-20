@@ -16,7 +16,7 @@ section ResLE
 omit [IsTopologicalGroup G] in
 
 /- English proof (translation)
-The claim follows from `continuous_induced_rng.2 continuous_subtype_val`.
+A detailed English derivation is pending.
 -/
 theorem continuous_subgroup_inclusion {U V : Subgroup G} (h : V ≤ U) :
     Continuous (Subgroup.inclusion h) :=

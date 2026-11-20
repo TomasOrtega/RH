@@ -17,11 +17,11 @@ private abbrev MM {Tau : Type} {n : ℕ} (H : Tau → Type) (na : ∀ τ, Normed
     (X → ℂ)
 
 /- English proof (translation)
-Substitute `hT hn hX hG` using the available equality. Consider the cases of `hlie`. Consider the cases of `hC`. Consider the cases of `hnc`. Consider the cases of `hic`.
+Substitute using the available equality. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data.
 
-Consider the cases of `hH`. Consider the cases of `hna`. Consider the cases of `hip`. Consider the cases of `hσ`. Consider the cases of `hfr`.
+Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data.
 
-Consider the cases of `hHW`. Conclude with `⟨K, th, g, HEq.rfl, HEq.rfl, HEq.rfl⟩`.
+Split into cases according to the possible forms of the given data. Supply the required witnesses or components.
 -/
 private theorem core {Tau Tau' : Type} {n n' : ℕ} {H : Tau → Type} {na : ∀ τ, NormedAddCommGroup (H τ)} {ip : ∀ τ, InnerProductSpace ℂ (H τ)}
     {σ : ∀ τ, Matrix (Fin n) (Fin n) ℂ → (H τ →L[ℂ] H τ)} {fr : Tau → Matrix (Fin n) (Fin n) ℂ}
@@ -42,7 +42,7 @@ private theorem core {Tau Tau' : Type} {n n' : ℕ} {H : Tau → Type} {na : ∀
   exact ⟨K, th, g, HEq.rfl, HEq.rfl, HEq.rfl⟩
 
 /- English proof (translation)
-Substitute `e e'` using the available equality. Conclude with `core (lie := lieAt W) (lie' := lieAt W') (X := GA D W) (X' := GA D' W') (HW := HW t) (HW' := HW' t') hT hn hlie hX hG hC hnc hic hH hna hip hσ hfr hHW K th g`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 private theorem mid {D D' : D7} {V W : HSp D} {V' W' : HSp D'} {L L' : Type} {S : L → D.what₂.Tau → SPar} {S' : L' → D'.what₂.Tau → SPar}
     (c : CoefA V) (c' : CoefA V') (M : ∀ s, Formalism.IndefR.Mult.DSModel W (S s)) (M' : ∀ s, Formalism.IndefR.Mult.DSModel W' (S' s))
@@ -61,11 +61,11 @@ private theorem mid {D D' : D7} {V W : HSp D} {V' W' : HSp D'} {L L' : Type} {S 
     hT hn hlie hX hG hC hnc hic hH hna hip hσ hfr hHW K th g
 
 /- English proof (translation)
-Take `⟨B, C, W, V, S, N, G⟩` from `X`. Take `⟨B', C', W', V', S', N', G'⟩` from `X'`. Consider the cases of `B`. Consider the cases of `B'`. Simplify using `only at h`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Simplify by unfolding definitions.
 
-Substitute `h` using the available equality. Take `⟨i, hlt⟩` from `i`. Take `⟨i', hlt'⟩` from `i'`. Simplify using `only at hi`. Substitute `hi` using the available equality.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify by unfolding definitions. Substitute using the available equality.
 
-Use `⟨?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Both sides reduce to the same expression. Both sides reduce to the same expression. Both sides reduce to the same expression. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Both sides reduce to the same expression. Both sides reduce to the same expression. Both sides reduce to the same expression. Both sides reduce to the same expression.
 
 Both sides reduce to the same expression. Both sides reduce to the same expression. Both sides reduce to the same expression. Both sides reduce to the same expression. Both sides reduce to the same expression.
 -/
@@ -103,9 +103,9 @@ end GlobalTheory.Mem.R3.Rw.WeilExt.RefType
 open GlobalTheory.Mem.R3.Rw.WeilExt.RefType in
 set_option maxHeartbeats 4000000 in
 /- English proof (translation)
-Introduce `B B' f f' T T' w w' Z Z' hX hX' Wt Ks _ _ _ Xg tr z Wt' R' hE hR i i' hi`. Establish `hR'` using `hR.2.2.2.2.2.2.2.2.2.2.2.2.1 i i' hi`. Take `⟨hC, -, hnc, hic, -, -, -, hH, hna, hip, hσ, -, -, hfr, -, hHW, -⟩` from `hR'`. Take `⟨t1, t2, t3, t4, t5, t6, t7, t8, t9⟩` from `types (w.st Z) (w'.st Z') hE.1 i i' hi`. Establish `key` using `mid (z.R.cV i) (R'.cV i') (z.R.MW i) (R'.MW i') (z.R.HW i) (R'.HW i') (sgAt_mk _ z.R.hv0) (sgAt_mk _ R'.hv0) t1 t2 t3 t4 t5 hC hnc hic hH hna hip hσ hfr hHW (z.R.HV i (mu0F (X := B.fields) (tuOf w.I (usedOf w.I T Wt)))) (z.R.thF i _) (z.R.thG i _)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨K, th, g, h1, h2, h3⟩` from `key`. Conclude with `⟨cast t6 (z.R.ωP i _), cast t7 (z.R.vP i _), K, th, g, cast t8 (z.R.νV i _), cast t9 (z.R.fdV i _), cast_heq _ _, cast_heq _ _, h1, h2, h3, cast_heq _ _, cast_heq _ _⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem _root_.GlobalTheory.T.exists_copies_reference_objects_over_enlarged_base : ∀ {B B' : Base} {f : Fr B.toPre} {f' : Fr B'.toPre} {T : TwDat B} {T' : TwDat B'} {w : ColW B f T} {w' : ColW B' f' T'}
   {Z : w.Lt} {Z' : w'.Lt} {hX : B.fields.Ok} {hX' : B'.fields.Ok} {Wt : Set B.places.Pl}

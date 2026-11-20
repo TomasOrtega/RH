@@ -17,7 +17,7 @@ section Local
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Break down `a with _ | a` into its components or cases. Conclude with `absurd (LinearMap.ext fun x => by rw [Subsingleton.elim x 0, map_zero, map_zero]) Q.fn_ne`. Conclude with `⟨Fin.last a, rfl⟩`.
+Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_last_of_pair {a : ℕ} (Q : Pair k (Fin a)) : ∃ r : Fin a, r.1 + 1 = a := by
   rcases a with _ | a
@@ -25,7 +25,7 @@ theorem exists_last_of_pair {a : ℕ} (Q : Pair k (Fin a)) : ∃ r : Fin a, r.1 
   · exact ⟨Fin.last a, rfl⟩
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using Pair.mem_ker.1 (zero_mem Q.ker)`. Consider the case `insert i s hi ih`. Rewrite using `[Finset.sum_insert hi, Finset.sum_insert hi]`. Conclude with `(h i).add ih`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasVal_finset_sum {n ι : Type} (Q : Pair k n) (s : Finset ι) (x : ι → n → k) (v : ι → 𝓀[k])
     (h : ∀ i, Q.HasVal (x i) (v i)) : Q.HasVal (∑ i ∈ s, x i) (∑ i ∈ s, v i) := by
@@ -37,13 +37,11 @@ theorem hasVal_finset_sum {n ι : Type} (Q : Pair k n) (s : Finset ι) (x : ι �
     exact (h i).add ih
 
 /- English proof (translation)
-Rewrite using `[maps_iff_hasVal]`. Use `⟨fun h r => h _ _ (hv r), fun h y c hy => ?_⟩` and prove the remaining obligations. Set `w : n → 𝒪[k]` to `fun r => ⟨_, hQ y hy.mem r⟩`. Establish `e : y = ∑ r, w r • (A' *ᵥ Pi.single r 1)`. Establish `e1 : A *ᵥ y = ∑ r, w r • (Pi.single r 1 : n → k)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use extensionality with `i`. Simplify using `[w, Pi.single_apply, Finset.sum_apply, Subring.smul_def]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[e1, mulVec_sum]`. Conclude with `Finset.sum_congr rfl fun r _ => mulVec_smul _ _ _`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1` using `hasVal_finset_sum Q Finset.univ _ _ fun r => (hv r).smul (w r)`. Establish `h2` using `hasVal_finset_sum Q' Finset.univ _ _ fun r => (h r).smul (w r)`. Rewrite `h1` using `[← e]`. Rewrite using `[hy.unique h1]`. Use `h2 using 1` and compare the differences between its conclusion and the goal.
-
-Use `conv_lhs => rw [e, mulVec_sum]`. Conclude with `Finset.sum_congr rfl fun r _ => mulVec_smul _ _ _`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. A detailed English derivation is pending.
 -/
 theorem maps_iff_basis {n n' : Type} [Fintype n] [DecidableEq n] (Q : Pair k n) (Q' : Pair k n') (A A' : Matrix n n k)
     (hA : A' * A = 1) (hQ : ∀ x ∈ Q.lat, ∀ r, (A *ᵥ x) r ∈ 𝒪[k]) (v : n → 𝓀[k])
@@ -71,21 +69,19 @@ theorem maps_iff_basis {n n' : Type} [Fintype n] [DecidableEq n] (Q : Pair k n) 
 variable {E : Type} [Field E] [NumberField E] (P : HeightOneSpectrum (𝓞 E)) (φ : E →+* k) (ψ : 𝓞 E →+* 𝒪[k])
 
 /- English proof (translation)
-Establish `key : ∀ (s : 𝓞 E) (c : Fin b → 𝓞 E), (∀ q, algebraMap (𝓞 E) E (c q) = algebraMap (𝓞 E) E s * u q) → (B' *ᵥ fun r' => φ (algebraMap (𝓞 E) E (c r'))) = ψ s • (B' *ᵥ fun q => φ (u q))`. Introduce `s c hc`. Rewrite using `[← mulVec_smul]`. Use `congr 1`. Use extensionality with `q`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Rewrite using `[hc, map_mul, ← hψ]`. Both sides reduce to the same expression. Establish `key2 : ∀ s c : 𝓞 E, t * (c - s * ε) ∈ P.asIdeal ↔ residue 𝒪[k] (ψ (t * c)) = residue 𝒪[k] (ψ s) * residue 𝒪[k] (ψ (t * ε))`. Introduce `s c`. Rewrite using `[← hres, ← map_mul, ← map_mul, show t * (c - s * ε) = t * c - s * (t * ε) by ring, map_sub, map_sub, sub_eq_zero]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `h1` using `hQ _ h.mem`. Rewrite `h1` using `[mulVec_mulVec, hB, one_mulVec]`. Use `choose s hs c hc using fun q => hint _ (h1 q)`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hc' : ∀ q, algebraMap (𝓞 E) E (c q * ∏ q' ∈ Finset.univ.erase q, s q') = algebraMap (𝓞 E) E (∏ q', s q') * u q`. Introduce `q`. Rewrite using `[← Finset.mul_prod_erase Finset.univ s (Finset.mem_univ q), map_mul, map_mul, hc]`. Expand and normalize the polynomial expressions, which then agree. Use `⟨∏ q, s q, ?_, fun q => c q * ∏ q' ∈ Finset.univ.erase q, s q', hc', fun q hq => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `haveI := P.isPrime`. Rewrite using `[Ideal.IsPrime.prod_mem_iff]`. Introduce and unpack `⟨q, -, hq⟩`. Conclude with `hs q hq`. Rewrite using `[key2]`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Assume the hypotheses and unpack their components.
 
-Establish `h2` using `hv (fun q => c q * ∏ q' ∈ Finset.univ.erase q, s q') q hq`. Rewrite `h2` using `[key _ _ hc']`. Conclude with `h2.unique (h.smul _)`. Introduce and unpack `⟨s, hs, c, hc, hP⟩`. Take `⟨q, hq⟩` from `exists_last_of_pair Q`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `h2` using `hv c q hq`. Rewrite `h2` using `[key _ _ hc, (key2 _ _).1 (hP q hq)]`. Choose the witnesses or unpack the hypotheses as in `⟨v, hv'⟩ : IsUnit (ψ s) := by`. Assume the negation of the conclusion as `hn`. Conclude with `hs ((hres s).1 ((residue_eq_zero_iff _).2 hn))`.
-
-Establish `h3` using `h2.smul (↑v⁻¹ : 𝒪[k])`. Rewrite `h3` using `[← hv', smul_smul, Units.inv_mul, one_smul, ← mul_assoc, ← map_mul, Units.inv_mul, map_one, one_mul]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem hasVal_col_iff (hψ : ∀ c, (ψ c : k) = φ (algebraMap (𝓞 E) E c))
     (hres : ∀ c, residue 𝒪[k] (ψ c) = 0 ↔ c ∈ P.asIdeal)
@@ -142,21 +138,21 @@ theorem hasVal_col_iff (hψ : ∀ c, (ψ c : k) = φ (algebraMap (𝓞 E) E c))
 end Local
 
 /- English proof (translation)
-Introduce `D k _ _ _ _ p P hP S T a b hS hT α β Q Q' LS LT t hLS hLT hα hβ vS vT z`. Substitute `hS hT` using the available equality. Set `φ : D.host.E →+* k` to `p.pr.comp (incA D)`. Establish `hres` using `GlobalTheory.T.split_component_integer_residue_zero_iff_mem_prime p P hP`. Set `ψ : 𝓞 D.host.E →+* 𝒪[k]` to `(φ.comp (algebraMap (𝓞 D.host.E) D.host.E)).codRestrict _ fun c => (hres c).1`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hψ : ∀ c, (ψ c : k) = φ (algebraMap (𝓞 D.host.E) D.host.E c)` using `fun c => rfl`. Establish `hres' : ∀ c, residue 𝒪[k] (ψ c) = 0 ↔ c ∈ P.asIdeal` using `fun c => (hres c).2`. Establish `hS : ∀ w : Fin S.rank → 𝓞 D.host.E, ∀ r : Fin S.rank, r.1 + 1 = S.rank → Q.HasVal (α.b' *ᵥ fun r' => φ (algebraMap (𝓞 D.host.E) D.host.E (w r'))) (residue 𝒪[k] (ψ (t * w r)))`. Introduce `w r hr`. Take `⟨s, hs, h⟩` from `vS (fun r' => algebraMap (𝓞 D.host.E) D.host.E (w r')) ((hLS _).2 fun i => (w i).isIntegral_coe) r hr`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `: s = ψ (t * w r)` using `Subtype.ext (by rw [hs, hψ, map_mul (algebraMap (𝓞 D.host.E) D.host.E)]; rfl)`. Conclude with `this ▸ h`. Establish `hT : ∀ w : Fin T.rank → 𝓞 D.host.E, ∀ r : Fin T.rank, r.1 + 1 = T.rank → Q'.HasVal (β.b' *ᵥ fun r' => φ (algebraMap (𝓞 D.host.E) D.host.E (w r'))) (residue 𝒪[k] (ψ (t * w r)))`. Introduce `w r hr`. Take `⟨s, hs, h⟩` from `vT (fun r' => algebraMap (𝓞 D.host.E) D.host.E (w r')) ((hLT _).2 fun i => (w i).isIntegral_coe) r hr`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `: s = ψ (t * w r)` using `Subtype.ext (by rw [hs, hψ, map_mul (algebraMap (𝓞 D.host.E) D.host.E)]; rfl)`. Conclude with `this ▸ h`. Take `⟨l, hl⟩` from `exists_last_of_pair Q`. Establish `hy : ∀ r : Fin S.rank, Q.HasVal (α.b' *ᵥ Pi.single r 1) (residue 𝒪[k] (ψ (t * if r.1 + 1 = S.rank then 1 else 0)))`. Introduce `r`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `hS (Pi.single r 1) l hl`. Establish `e1 : (fun r' => φ (algebraMap (𝓞 D.host.E) D.host.E ((Pi.single r 1 : Fin S.rank → 𝓞 D.host.E) r'))) = Pi.single r 1`. Use extensionality with `r'`. Apply the tactic sequence `by_cases h' : r' = r <;> simp [Pi.single_apply, h']`. Establish `e2 : (Pi.single r 1 : Fin S.rank → 𝓞 D.host.E) l = if r.1 + 1 = S.rank then 1 else 0`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite using `[Pi.single_apply]`. Conclude with `if_congr ⟨fun h => h ▸ hl, fun h => Fin.ext (by omega)⟩ rfl rfl`. Rewrite `h` using `[e1, e2]`. Then use the resulting hypothesis. Rewrite using `[maps_iff_basis Q Q' α.b α.b' α.b'b (fun x hx => (GlobalTheory.T.split_place_lattice_component_integral_frame_coords α LS Q.lat hα hLS x).1 hx) _ hy]`. Use `forall_congr' fun r => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `e : GlobalTheory.FinPl.rd α β (z.map (incA D)) *ᵥ (α.b' *ᵥ Pi.single r 1) = β.b' *ᵥ fun q => φ (z q r)`. Rewrite using `[GlobalTheory.FinPl.rd, mulVec_mulVec, Matrix.mul_assoc, α.bb', Matrix.mul_one, ← mulVec_mulVec, mulVec_single_one]`. Both sides reduce to the same expression. Rewrite using `[e, hasVal_col_iff P φ ψ hψ hres' (GlobalTheory.PhiOneVal.exists_denom_notMem_of_pr_int p P hP) Q' β.b β.b' β.bb' (fun x hx => (GlobalTheory.T.split_place_lattice_component_integral_frame_coords β LT Q'.lat hβ hLT x).1 hx) t hT]`. Establish `e3 : ∀ q, toHom S T rfl rfl z (Pi.single r 1) q = z q r`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Introduce `q`. Simplify using `[toHom]`. Simplify using `only [e3, mul_ite, mul_one, mul_zero]`.
+A detailed English derivation is pending.
 -/
 theorem maps_rd_iff_colCond : ∀ {D : D7} {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (p : SplitPt D k) (P : HeightOneSpectrum (𝓞 D.host.E)), Formalism.L2.NTheta.IsIdemAt p.e P →

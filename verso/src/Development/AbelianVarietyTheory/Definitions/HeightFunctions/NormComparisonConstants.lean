@@ -26,7 +26,7 @@ structure FieldOK0 (D : D7) (p : ℕ) : Prop where
   split : D.host.cls p = PrimeClass.splitK
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h => ⟨⟨h.own, h.full, h.zetaM, h.zetaP, h.curve, h.kpsi, h.bad, h.split⟩, h.vol⟩, fun ⟨h, v⟩ => ⟨h.own, h.full, h.zetaM, h.zetaP, h.curve, h.kpsi, v, h.bad, h.split⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem fieldOK_iff (D : D7) (p : ℕ) : FieldOK D p ↔ FieldOK0 D p ∧ Formalism.L2.Theta.VolTieG D :=
   ⟨fun h => ⟨⟨h.own, h.full, h.zetaM, h.zetaP, h.curve, h.kpsi, h.bad, h.split⟩, h.vol⟩,

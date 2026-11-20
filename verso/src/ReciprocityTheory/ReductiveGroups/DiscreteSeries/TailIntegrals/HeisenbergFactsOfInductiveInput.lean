@@ -13,7 +13,7 @@ namespace ReciprocityTheory.ChartRestriction.DS.Xi.StepA
 open Formalism.QuantumDeterminants Formalism.FourierDecayAlt.B Formalism.FourierDecayAlt.B2
 
 /- English proof (translation)
-Take `⟨h1, h2, h3, h4, h5, h6, h7, h8, h9, h10, h11, h12, h13, h14, h15, h16, h17, h18, h19, h20, h21, h22, h23, h24, h25, h26, h27⟩` from `h`. Conclude with `⟨h1, h2, h6, h8, h10, h12, h26, h27, h16, h11, h7⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem heisenbergFacts_of_inductiveInput (h : InductiveHeisenbergInputs) : OneStepInt ∧ OneStepCoord ∧ HeisConjLev ∧ HeisInv ∧ HeisMem ∧ HeisHaar ∧
     HaarGExists ∧ HeisAct ∧ GNLower ∧ HeisClosed ∧ HeisConjLevMeas := by
@@ -25,9 +25,9 @@ section cont
 variable (k r' : ℕ)
 
 /- English proof (translation)
-Use `continuous_pi fun p => ?_` and prove the remaining obligations. Unfold `liftVec`. Distinguish the cases in `hp : 1 ≤ p.val ∧ p.val < 2 * r' + k + 1 + 1`. Simplify using `only [dif_pos hp]`. Conclude with `continuous_apply _`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [dif_neg hp]`. Conclude with `continuous_const`.
+A detailed English derivation is pending.
 -/
 theorem lift_cont : Continuous (liftVec k 1 r') := by
   refine continuous_pi fun p => ?_
@@ -37,7 +37,7 @@ theorem lift_cont : Continuous (liftVec k 1 r') := by
   · simp only [dif_neg hp]; exact continuous_const
 
 /- English proof (translation)
-Establish `h1 : Continuous fun x : HPar k r' => liftVec k 1 r' x.1` using `(lift_cont k r').comp continuous_fst`. Unfold `heis0 heisG hb herm`. Use `fun_prop`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem heisenberg_map_continuous : Continuous (heis0 k r') := by
   have h1 : Continuous fun x : HPar k r' => liftVec k 1 r' x.1 := (lift_cont k r').comp continuous_fst
@@ -45,9 +45,9 @@ theorem heisenberg_map_continuous : Continuous (heis0 k r') := by
   fun_prop
 
 /- English proof (translation)
-Use `continuous_matrix fun p q => ?_` and prove the remaining obligations. Unfold `ιLev`. Distinguish the cases in `hp : 1 ≤ p.val ∧ p.val < 2 * r' + k + 1 + 1`. Distinguish the cases in `hq : 1 ≤ q.val ∧ q.val < 2 * r' + k + 1 + 1`. Simplify using `only [dif_pos hp, dif_pos hq]`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Conclude with `continuous_id.matrix_elem _ _`. Simplify using `only [dif_pos hp, dif_neg hq]`. Conclude with `continuous_const`. Simplify using `only [dif_neg hp]`. Conclude with `continuous_const`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem lev_cont : Continuous (fun g : Mat k r' => ιLev k 1 r' g) := by
   refine continuous_matrix fun p q => ?_
@@ -59,14 +59,14 @@ theorem lev_cont : Continuous (fun g : Mat k r' => ιLev k 1 r' g) := by
   · simp only [dif_neg hp]; exact continuous_const
 
 /- English proof (translation)
-Unfold `Dl herm`. Use `fun_prop`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem Dl_cont (r : ℕ) (l : Fin (r + 1)) : Continuous (fun g : Mt k r => Dl k r l (Matrix.of g)) := by
   unfold Dl herm
   fun_prop
 
 /- English proof (translation)
-Unfold `FsE`. Conclude with `Finset.measurable_prod _ fun l _ => ((Dl_cont k r l).measurable.nnnorm.coe_nnreal_ennreal).pow_const _`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem FsE_meas (r : ℕ) (s : Fin (r + 1) → ℝ) : Measurable (fun g : Mt k r => FsE k r s (Matrix.of g)) := by
   unfold FsE
@@ -74,9 +74,9 @@ theorem FsE_meas (r : ℕ) (s : Fin (r + 1) → ℝ) : Measurable (fun g : Mt k 
     ((Dl_cont k r l).measurable.nnnorm.coe_nnreal_ennreal).pow_const _
 
 /- English proof (translation)
-Unfold `EInt`. Establish `h1` using `heisenberg_map_continuous k r'`. Establish `h2` using `lev_cont k r'`. Establish `h3` using `gN_cont k (1 + r')`. Use `Measurable.lintegral_prod_right' (f := fun p : Mt k r' × HPar k r' => ENNReal.ofReal (gN (w0 k r' c * ιLev k 1 r' (Matrix.of p.1) * heis0 k r' p.2) ^ (-A))) ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `((by fun_prop : Continuous fun p : Mt k r' × HPar k r' => gN (w0 k r' c * ιLev k 1 r' (Matrix.of p.1) * heis0 k r' p.2)).measurable.pow_const _).ennreal_ofReal`.
+A detailed English derivation is pending.
 -/
 theorem EInt_meas (A : ℝ) (c : ℂ) : Measurable (fun g : Mt k r' => EInt k r' A c (Matrix.of g)) := by
   unfold EInt
@@ -90,9 +90,9 @@ theorem EInt_meas (A : ℝ) (c : ℂ) : Measurable (fun g : Mt k r' => EInt k r'
     gN (w0 k r' c * ιLev k 1 r' (Matrix.of p.1) * heis0 k r' p.2)).measurable.pow_const _).ennreal_ofReal
 
 /- English proof (translation)
-Establish `hc : @Continuous (HPar k r') (Mt k (1 + r')) _ _ (fun x => heis0 k r' x)` using `heisenberg_map_continuous k r'`. Establish `hm : @Measurable (HPar k r') (Mt k (1 + r')) _ _ (fun x => heis0 k r' x)` using `hc.measurable`. Establish `hl : Measurable (lmulM (heis0 k r' z) : Mt k (1 + r') → Mt k (1 + r'))` using `(by unfold lmulM; fun_prop : Continuous (lmulM (heis0 k r' z) : Mt k (1 + r') → Mt k (1 + r'))).measurable`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[μHeis]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(lintegral_map (hF.comp hl) hm).symm`. Use `_ = ∫⁻ n, F n ∂((μHeis k r').map (lmulM (heis0 k r' z))) := (lintegral_map hF hl).symm`. Use `_ = ∫⁻ n, F n ∂(μHeis k r') := by rw [(hHH k r').left _ ⟨z, rfl⟩]`. Use `_ = ∫⁻ x, F (heis0 k r' x) := by rw [μHeis]; exact lintegral_map hF hm`.
+A detailed English derivation is pending.
 -/
 theorem heis_left (hHH : HeisHaar) (F : Mt k (1 + r') → ℝ≥0∞) (hF : Measurable F) (z : HPar k r') :
     ∫⁻ x, F (heis0 k r' z * heis0 k r' x) = ∫⁻ x, F (heis0 k r' x) := by
@@ -107,9 +107,9 @@ theorem heis_left (hHH : HeisHaar) (F : Mt k (1 + r') → ℝ≥0∞) (hF : Meas
     _ = ∫⁻ x, F (heis0 k r' x) := by rw [μHeis]; exact lintegral_map hF hm
 
 /- English proof (translation)
-Unfold `EInt`. Use `lintegral_congr fun x => ?_` and prove the remaining obligations. Establish `e : w0 k r' c * ιLev k 1 r' (κ * g) * heis0 k r' x = ιLev k 1 r' κ * (w0 k r' c * ιLev k 1 r' g * heis0 k r' x)`. Rewrite using `[lev_mul, ← Matrix.mul_assoc (w0 k r' c), rankOne_levi_comm]`. Simplify using `only [Matrix.mul_assoc]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[e, gN_unitary k (1 + r') (lev_K k r' hκ).2]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem EInt_K (A : ℝ) (c : ℂ) {κ : Mat k r'} (hκ : κ ∈ Kset k r') (g : Mat k r') :
     EInt k r' A c (κ * g) = EInt k r' A c g := by
@@ -134,25 +134,21 @@ def Qf (A : ℝ) (s1 : Fin (r' + 1) → ℝ) (μ₁ : Measure (Mt k r')) (c : �
   ∫⁻ g, EInt k r' A c (Matrix.of g) * FsE k r' s1 (Matrix.of g) ∂μ₁
 
 /- English proof (translation)
-Take `⟨-, -, hHCL, -, -, hHH, -, -, -, -, -⟩` from `heisenbergFacts_of_inductiveInput hB2`. Take `⟨κ, hκ, m, hm, z, hdec, hga⟩` from `heisenberg_rankOne_decomposition hB2 hIW k r' hk x c hc`. Establish `hG0` using `(yx_ga hB2 hIW k r' hk x).1`. Establish `hdec' : (heis0 k r' x)⁻¹ * w0 k r' c = κ * w0 k r' (c * (Dx k r' x : ℂ)) * ιLev k 1 r' m * heis0 k r' z` using `hdec`. Establish `hpt : ∀ g : Mt k r', Matrix.of g ∈ GV k r' → ∫⁻ x', ENNReal.ofReal (gN (oneStep k r' x c (Matrix.of g) x') ^ (-A)) = EInt k r' A (c * (Dx k r' x : ℂ)) (m * Matrix.of g)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `g hg`. Take `⟨z2, hz2⟩ : ∃ z2 : HPar k r', z2 = ((Matrix.of g)⁻¹ *ᵥ z.1, z.2)` from `⟨_, rfl⟩`. Establish `hcomm : heis0 k r' z * ιLev k 1 r' (Matrix.of g) = ιLev k 1 r' (Matrix.of g) * heis0 k r' z2`. Establish `h1` using `hHCL k r' (Matrix.of g) hg z2`. Establish `h2 : ((Matrix.of g *ᵥ z2.1, z2.2) : HPar k r') = z`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hz2]`. Simplify using `only`. Rewrite using `[mulVec_mulVec, UH_mul_inv k r' hg, one_mulVec]`. Rewrite `h1` using `[h2]`. Rewrite using `[← h1, Matrix.mul_assoc, UH_inv_mul k (1 + r') (lev_mem k r' hg), Matrix.mul_one]`.
+Rewrite the conclusion using the stated equalities. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hmat : ∀ x', oneStep k r' x c (Matrix.of g) x' = κ * (w0 k r' (c * (Dx k r' x : ℂ)) * ιLev k 1 r' (m * Matrix.of g) * (heis0 k r' z2 * heis0 k r' x'))`. Introduce `x'`. Unfold `oneStep`. Rewrite using `[hdec', Matrix.mul_assoc (κ * w0 k r' (c * (Dx k r' x : ℂ)) * ιLev k 1 r' m) (heis0 k r' z) (ιLev k 1 r' (Matrix.of g)), hcomm, lev_mul]`. Simplify using `only [Matrix.mul_assoc]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [hmat, gN_unitary k (1 + r') hκ.2]`. Establish `h3` using `gN_cont k (1 + r')`. Establish `hF : Measurable fun n : Mt k (1 + r') => ENNReal.ofReal (gN (w0 k r' (c * (Dx k r' x : ℂ)) * ιLev k 1 r' (m * Matrix.of g) * Matrix.of n) ^ (-A))` using `((by fun_prop : Continuous fun n : Mt k (1 + r') => gN (w0 k r' (c * (Dx k r' x : ℂ)) * ιLev k 1 r' (m * Matrix.of g) * Matrix.of n)).measurable.pow_const _).ennreal_ofReal`. Conclude with `heis_left k r' hHH _ hF z2`. Establish `hconc : ∀ᵐ g ∂μ₁, Matrix.of g ∈ GV k r'`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ae_iff]`. Conclude with `hμ₁.conc`. Establish `hl : Measurable (lmulM m : Mt k r' → Mt k r')` using `(by unfold lmulM; fun_prop : Continuous (lmulM m : Mt k r' → Mt k r')).measurable`. Establish `hli : Measurable (lmulM m⁻¹ : Mt k r' → Mt k r')` using `(by unfold lmulM; fun_prop : Continuous (lmulM m⁻¹ : Mt k r' → Mt k r')).measurable`. Establish `hG : Measurable (fun g : Mt k r' => EInt k r' A (c * (Dx k r' x : ℂ)) (Matrix.of g) * FsE k r' (fun l => s (sc r' l)) (m⁻¹ * Matrix.of g))` using `(EInt_meas k r' A _).mul ((FsE_meas k r' (fun l => s (sc r' l))).comp hli)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e : ∀ g : Mt k r', m⁻¹ * (m * Matrix.of g) = Matrix.of g` using `fun g => by`. Rewrite using `[← Matrix.mul_assoc, UH_inv_mul k r' hm, Matrix.one_mul]`. Combine the equalities or inequalities in the displayed calculation. Use `lintegral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [hconc] with g hg`.
+Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[hpt g hg]`. Use `show _ = EInt k r' A (c * (Dx k r' x : ℂ)) (m * Matrix.of g) * FsE k r' (fun l => s (sc r' l)) (m⁻¹ * (m * Matrix.of g))`. Rewrite using `[e]`. Use `_ = ∫⁻ g, EInt k r' A (c * (Dx k r' x : ℂ)) (Matrix.of g) * FsE k r' (fun l => s (sc r' l)) (m⁻¹ * Matrix.of g) ∂(μ₁.map (lmulM m)) := (lintegral_map hG hl).symm`. Use `_ = ∫⁻ g, EInt k r' A (c * (Dx k r' x : ℂ)) (Matrix.of g) * FsE k r' (fun l => s (sc r' l)) (m⁻¹ * Matrix.of g) ∂μ₁ := by rw [hμ₁.left m hm]`.
-
-Use `_ = ENNReal.ofReal (fsR k r' (fun l => s (sc r' l)) m) * Qf k r' A (fun l => s (sc r' l)) μ₁ (c * (Dx k r' x : ℂ)) := hT k r' (fun l => s (sc r' l)) μ₁ (fun g => EInt k r' A (c * (Dx k r' x : ℂ)) (Matrix.of g)) hk hμ₁ (EInt_meas k r' A _) (fun κ' hκ' g => EInt_K k r' A _ hκ' (Mat …`. Use `_ = ENNReal.ofReal (Psi k r' s x) * Qf k r' A (fun l => s (sc r' l)) μ₁ (c * (Dx k r' x : ℂ)) := by`. Use `congr 1`. Use `congr 1`. Unfold `fsR Psi`.
-
-Use `Finset.prod_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[eq_div_of_mul_eq hG0.ne' (hga l)]`.
+Reduce the equality to equality of the corresponding arguments. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inner_eq (hB2 : InductiveHeisenbergInputs) (hIW : IW) (hT : TLeft) (hk : 1 ≤ k) (A : ℝ) (s : Fin (1 + r' + 1) → ℝ)
     (μ₁ : Measure (Mt k r')) (hμ₁ : IsHaarOn (GV k r') μ₁) (x : HPar k r') (c : ℂ) (hc : c ≠ 0) :

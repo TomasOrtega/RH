@@ -22,7 +22,7 @@ def shiftEmb {m k : ℕ} (σ : Fin m ↪o Fin k) : Fin m ↪o Fin (k + 1) :=
   OrderEmbedding.ofStrictMono (fun a => (σ a).succ) (fun a b h => by simpa using h)
 
 /- English proof (translation)
-Use `first`. Consider the case `rfl`. Consider the case `exact Fin.cons_zero (α := fun _ => Fin (k + 1)) _ _`. Consider the case `(show Fin.cons (α := fun _ => Fin (k + 1)) 0 (fun a => (σ a).succ) 0 = 0; simp)`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 @[simp] theorem consEmb_zero {m k : ℕ} (σ : Fin m ↪o Fin k) : consEmb σ 0 = 0 := by
   first
@@ -31,7 +31,7 @@ Use `first`. Consider the case `rfl`. Consider the case `exact Fin.cons_zero (α
     | (show Fin.cons (α := fun _ => Fin (k + 1)) 0 (fun a => (σ a).succ) 0 = 0; simp)
 
 /- English proof (translation)
-Use `first`. Consider the case `rfl`. Consider the case `exact Fin.cons_succ (α := fun _ => Fin (k + 1)) _ _ _`. Consider the case `(show Fin.cons (α := fun _ => Fin (k + 1)) 0 (fun a => (σ a).succ) a.succ = (σ a).succ; simp)`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 @[simp] theorem consEmb_succ {m k : ℕ} (σ : Fin m ↪o Fin k) (a : Fin m) :
     consEmb σ a.succ = (σ a).succ := by
@@ -47,17 +47,17 @@ Both sides reduce to the same expression.
     shiftEmb σ a = (σ a).succ := rfl
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨0, consEmb_zero σ⟩`.
+Supply the required witnesses or components.
 -/
 theorem zero_mem_range_consEmb {m k : ℕ} (σ : Fin m ↪o Fin k) :
     (0 : Fin (k + 1)) ∈ Set.range (consEmb σ) := ⟨0, consEmb_zero σ⟩
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, ha⟩`. Consider the cases of `a using Fin.cases with`. Consider the case `zero`. Rewrite `ha` using `[GlobalTheory.CompanionTheory.WordProd.Intl.consEmb_zero]`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Split into cases according to the possible forms of the given data. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `absurd ha.symm (Fin.succ_ne_zero j)`. Consider the case `succ a`. Rewrite `ha` using `[GlobalTheory.CompanionTheory.WordProd.Intl.consEmb_succ]`. Conclude with `⟨a, Fin.succ_injective _ ha⟩`. Introduce and unpack `⟨a, rfl⟩`.
+Treat this case separately. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Conclude with `⟨a.succ, GlobalTheory.CompanionTheory.WordProd.Intl.consEmb_succ σ a⟩`.
+A detailed English derivation is pending.
 -/
 theorem succ_mem_range_consEmb {m k : ℕ} (σ : Fin m ↪o Fin k) (j : Fin k) :
     j.succ ∈ Set.range (consEmb σ) ↔ j ∈ Set.range σ := by
@@ -74,9 +74,9 @@ theorem succ_mem_range_consEmb {m k : ℕ} (σ : Fin m ↪o Fin k) (j : Fin k) :
     exact ⟨a.succ, GlobalTheory.CompanionTheory.WordProd.Intl.consEmb_succ σ a⟩
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, ha⟩`. Rewrite `ha` using `[GlobalTheory.CompanionTheory.WordProd.Intl.shiftEmb_apply]`. Conclude with `⟨a, Fin.succ_injective _ ha⟩`. Introduce and unpack `⟨a, rfl⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨a, GlobalTheory.CompanionTheory.WordProd.Intl.shiftEmb_apply σ a⟩`.
+Supply the required witnesses or components.
 -/
 theorem succ_mem_range_shiftEmb {m k : ℕ} (σ : Fin m ↪o Fin k) (j : Fin k) :
     j.succ ∈ Set.range (shiftEmb σ) ↔ j ∈ Set.range σ := by
@@ -88,33 +88,29 @@ theorem succ_mem_range_shiftEmb {m k : ℕ} (σ : Fin m ↪o Fin k) (j : Fin k) 
     exact ⟨a, GlobalTheory.CompanionTheory.WordProd.Intl.shiftEmb_apply σ a⟩
 
 /- English proof (translation)
-Introduce `T u v w h`. Proceed by induction on `h with`. Consider the case `nil`. Apply the tactic sequence `refine ⟨fun j => Fin.elim0 j, (OrderIso.refl _).toOrderEmbedding, (OrderIso.refl _).toOrderEmbedding, ?_, ?_, ?_, ?_⟩ <;> intro j <;> exact Fin.elim0 j`. Consider the case `@left a u v w _ ih`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Apply the first step, then apply the next step to every resulting obligation. Treat this case separately.
 
-Take `⟨r, σ₀, σ₁, h0, h1, hu, hv⟩` from `ih`. Use `⟨(Fin.cons (0 : Fin 2) r : Fin (w.length + 1) → Fin 2), GlobalTheory.CompanionTheory.WordProd.Intl.consEmb σ₀, GlobalTheory.CompanionTheory.WordProd.Intl.shiftEmb σ₁, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `j`. Take `rfl | ⟨j, rfl⟩` from `Fin.eq_zero_or_eq_succ (n := w.length) j`. Simplify using `only [Fin.cons_zero, true_iff]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Conclude with `GlobalTheory.CompanionTheory.WordProd.Intl.zero_mem_range_consEmb σ₀`. Rewrite using `[Fin.cons_succ, GlobalTheory.CompanionTheory.WordProd.Intl.succ_mem_range_consEmb]`. Conclude with `h0 j`. Introduce `j`. Take `rfl | ⟨j, rfl⟩` from `Fin.eq_zero_or_eq_succ (n := w.length) j`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Simplify using `only [Fin.cons_zero]`. Prove the components needed by the constructor for the conclusion. Introduce `hc`. Conclude with `absurd hc (by decide)`. Introduce and unpack `⟨x, hx⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hx` using `[GlobalTheory.CompanionTheory.WordProd.Intl.shiftEmb_apply]`. Conclude with `absurd hx (Fin.succ_ne_zero _)`. Rewrite using `[Fin.cons_succ, GlobalTheory.CompanionTheory.WordProd.Intl.succ_mem_range_shiftEmb]`. Conclude with `h1 j`. Introduce `x`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Take `rfl | ⟨x, rfl⟩` from `Fin.eq_zero_or_eq_succ (n := u.length) x`. Rewrite using `[GlobalTheory.CompanionTheory.WordProd.Intl.consEmb_zero]`. Simplify using the standard rewrite rules. Rewrite using `[GlobalTheory.CompanionTheory.WordProd.Intl.consEmb_succ] first`. Consider the case `exact hu x`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately.
 
-Consider the case `simpa using hu x`. Introduce `x`. Rewrite using `[GlobalTheory.CompanionTheory.WordProd.Intl.shiftEmb_apply]`. Use `first`. Consider the case `exact hv x`.
+Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Consider the case `simpa using hv x`. Consider the case `@right a u v w _ ih`. Take `⟨r, σ₀, σ₁, h0, h1, hu, hv⟩` from `ih`. Use `⟨(Fin.cons (1 : Fin 2) r : Fin (w.length + 1) → Fin 2), GlobalTheory.CompanionTheory.WordProd.Intl.shiftEmb σ₀, GlobalTheory.CompanionTheory.WordProd.Intl.consEmb σ₁, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `j`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `rfl | ⟨j, rfl⟩` from `Fin.eq_zero_or_eq_succ (n := w.length) j`. Simplify using `only [Fin.cons_zero]`. Prove the components needed by the constructor for the conclusion. Introduce `hc`. Conclude with `absurd hc (by decide)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `⟨x, hx⟩`. Rewrite `hx` using `[GlobalTheory.CompanionTheory.WordProd.Intl.shiftEmb_apply]`. Conclude with `absurd hx (Fin.succ_ne_zero _)`. Rewrite using `[Fin.cons_succ, GlobalTheory.CompanionTheory.WordProd.Intl.succ_mem_range_shiftEmb]`. Conclude with `h0 j`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `j`. Take `rfl | ⟨j, rfl⟩` from `Fin.eq_zero_or_eq_succ (n := w.length) j`. Simplify using `only [Fin.cons_zero, true_iff]`. Conclude with `GlobalTheory.CompanionTheory.WordProd.Intl.zero_mem_range_consEmb σ₁`. Rewrite using `[Fin.cons_succ, GlobalTheory.CompanionTheory.WordProd.Intl.succ_mem_range_consEmb]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Conclude with `h1 j`. Introduce `x`. Rewrite using `[GlobalTheory.CompanionTheory.WordProd.Intl.shiftEmb_apply]`. Use `first`. Consider the case `exact hu x`.
-
-Consider the case `simpa using hu x`. Introduce `x`. Take `rfl | ⟨x, rfl⟩` from `Fin.eq_zero_or_eq_succ (n := v.length) x`. Rewrite using `[GlobalTheory.CompanionTheory.WordProd.Intl.consEmb_zero]`. Simplify using the standard rewrite rules.
-
-Rewrite using `[GlobalTheory.CompanionTheory.WordProd.Intl.consEmb_succ] first`. Consider the case `exact hv x`. Consider the case `simpa using hv x`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem interleave_embeddings : ∀ {T : Type 1} {u v w : List T}, Zc.Comb.Interleave u v w →
     ∃ (r : Fin w.length → Fin 2) (σ₀ : Fin u.length ↪o Fin w.length)

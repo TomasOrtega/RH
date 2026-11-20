@@ -5,14 +5,14 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.IdeleGenerators.Ho
 open Formalism.ConjugateSelfDual Formalism.BasicNotions Formalism.MainNotions.N Polynomial GlobalTheory.GalOfCusp UpperTheory.V.Af UpperTheory.V.Sd
 
 /- English proof (translation)
-Conclude with `⟨hi.1, fun _ _ _ => Submodule.mem_top, fun W hW hI => hi.2.2 W hW fun g v hv => hI ⟨g, h g.2⟩ v hv⟩`.
+Supply the required witnesses or components.
 -/
 private theorem irr_of_le {Γ k : Type} [Group Γ] [Field k] {n : ℕ} (ρ : Γ →* GL (Fin n) k) {H H' : Subgroup Γ}
     (h : H ≤ H') (hi : IsIrr (ρ.comp H.subtype)) : IsIrr (ρ.comp H'.subtype) := by
   exact ⟨hi.1, fun _ _ _ => Submodule.mem_top, fun W hW hI => hi.2.2 W hW fun g v hv => hI ⟨g, h g.2⟩ v hv⟩
 
 /- English proof (translation)
-Take `⟨n, hn, h⟩` from `isOfFinOrder_iff_pow_eq_one.1 ha`. Establish `h1 : ‖(a : Qbar l)‖ ^ n = 1`. Rewrite using `[← norm_pow, ← Units.val_pow_eq_pow_val, h, Units.val_one, norm_one]`. Conclude with `(pow_eq_one_iff_of_nonneg (norm_nonneg _) hn.ne').1 h1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem norm_one_of_fin {l : ℕ} [Fact l.Prime] (a : (Qbar l)ˣ) (ha : IsOfFinOrder a) : ‖(a : Qbar l)‖ = 1 := by
   obtain ⟨n, hn, h⟩ := isOfFinOrder_iff_pow_eq_one.1 ha
@@ -21,7 +21,7 @@ private theorem norm_one_of_fin {l : ℕ} [Fact l.Prime] (a : (Qbar l)ˣ) (ha : 
   exact (pow_eq_one_iff_of_nonneg (norm_nonneg _) hn.ne').1 h1
 
 /- English proof (translation)
-Establish `h : (cycBar F Ω l s : Qbar l) = algebraMap ℚ_[l] (Qbar l) ((ReciprocityTheory.Gal.cycZ F Ω l s : ℤ_[l]) : ℚ_[l])` using `rfl`. Rewrite using `[h, norm_algebraMap', PadicInt.padic_norm_e_of_padicInt]`. Conclude with `PadicInt.norm_units _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem norm_cyc (l : ℕ) [Fact l.Prime] (F Ω : Type) [Field F] [Field Ω] [Algebra F Ω] (s : G F Ω) :
     ‖(cycBar F Ω l s : Qbar l)‖ = 1 := by
@@ -30,17 +30,15 @@ private theorem norm_cyc (l : ℕ) [Fact l.Prime] (F Ω : Type) [Field F] [Field
   exact PadicInt.norm_units _
 
 /- English proof (translation)
-Introduce `l _ hl Ω _ _ _ ι φ θ k hk hφ ρ hρ`. Establish `hn : ∀ s, ‖(((cycBar ℚ Ω l ^ (k - 1) * φ) s : (Qbar l)ˣ) : Qbar l)‖ = 1`. Introduce `s`. Establish `h1 : IsOfFinOrder (φ s)`. Take `⟨n, hn, h⟩` from `isOfFinOrder_iff_pow_eq_one.1 hφ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `isOfFinOrder_iff_pow_eq_one.2 ⟨n, hn, by rw [← MonoidHom.pow_apply, h, MonoidHom.one_apply]⟩`. Rewrite using `[MonoidHom.mul_apply, MonoidHom.pow_apply, Units.val_mul, Units.val_pow_eq_pow_val, norm_mul, norm_pow, norm_cyc, norm_one_of_fin _ h1, one_pow, one_mul]`. Establish `key : ∀ H : Subgroup (G ℚ Ω), IsOpen (H : Set (G ℚ Ω)) → H.Normal → ¬ IsIrr (ρ.comp H.subtype) → (∀ s ∈ H, Cong ((cycBar ℚ Ω l ^ (k - 1) * φ) s) 1) ∧ ∀ s, Cong ((cycBar ℚ Ω l ^ (k - 1) * φ) s ^ 2) 1`. Introduce `H hH hN hI`. Use `sIabs l hl _ ρ _ hn hρ.irr hρ.res H hN ?_ hI` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨s, hs, a, ha, hc⟩` from `eisReg l Ω ι φ θ k hk ρ hρ H hH`. Use `⟨s, hs, ?_⟩` and prove the remaining obligations. Establish `ha1 : (a : Qbar l) ≠ 1`. Introduce `h`. Establish `: a = 1` using `Units.ext h`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `ha (this ▸ IsOfFinOrder.one)`. Rewrite using `[hc]`. Conclude with `separable_X_sub_C.mul separable_X_sub_C (isCoprime_X_sub_C_of_isUnit_sub (sub_ne_zero.2 ha1).isUnit)`. Use `⟨fun H hH hN ⟨s, hs, hc⟩ => ?_, fun ⟨s, hc⟩ H hH => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hI`.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction.
 
-Conclude with `hc ((key H hH hN hI).1 s hs)`. Use `haveI : IsGalois ℚ Ω := ⟨⟩ haveI : Finite (G ℚ Ω ⧸ H) := H.quotient_finite_of_isOpen hH haveI : H.FiniteIndex := Subgroup.finiteIndex_of_finite_quotient`. Establish `hO : IsOpen (H.normalCore : Set (G ℚ Ω))` using `Subgroup.isOpen_of_isClosed_of_finiteIndex _ (H.normalCore_isClosed (H.isClosed_of_isOpen hH))`. Use `irr_of_le ρ H.normalCore_le ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hI`.
-
-Conclude with `hc ((key _ hO inferInstance hI).2 s)`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Sd.sI :
     UpperTheory.V.Sd.SI := by

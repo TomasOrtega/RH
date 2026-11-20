@@ -16,7 +16,7 @@ section General
 variable {K : Type} [Field K] [NumberField K]
 
 /- English proof (translation)
-Unfold `vAdd at h`. Establish `h0 : w.valuation K x ≠ 0` using `by simpa using hx`. Rewrite using `[← WithZero.exp_log h0, neg_eq_zero.mp h, WithZero.exp_zero]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem valuation_eq_one_of_vAdd (w : HeightOneSpectrum (𝓞 K)) {x : K} (hx : x ≠ 0) (h : vAdd w x = 0) :
     w.valuation K x = 1 := by
@@ -25,7 +25,7 @@ theorem valuation_eq_one_of_vAdd (w : HeightOneSpectrum (𝓞 K)) {x : K} (hx : 
   rw [← WithZero.exp_log h0, neg_eq_zero.mp h, WithZero.exp_zero]
 
 /- English proof (translation)
-Use extensionality with `I I''`. Simplify using `only [kron, Matrix.mul_apply, Matrix.of_apply]`. Rewrite using `[Finset.prod_univ_sum, Fintype.piFinset_univ]`. Use `Finset.sum_congr rfl fun I' _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.prod_mul_distrib]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem kron_mul {T : Type} [Fintype T] [DecidableEq T] {J : T → Type} [∀ t, Fintype (J t)] {R : Type} [CommRing R]
     (M M' : ∀ t, Matrix (J t) (J t) R) : kron M * kron M' = kron fun t => M t * M' t := by
@@ -36,9 +36,9 @@ theorem kron_mul {T : Type} [Fintype T] [DecidableEq T] {J : T → Type} [∀ t,
   rw [Finset.prod_mul_distrib]
 
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.KroneckerIdentity.kron_identity`. Consider the case `exact _root_.GlobalTheory.KroneckerIdentity.kron_identity`. Consider the case `(apply _root_.GlobalTheory.KroneckerIdentity.kron_identity <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.KroneckerIdentity.kron_identity <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.KroneckerIdentity.kron_identity <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.KroneckerIdentity.kron_identity ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem kron_one {T : Type} [Fintype T] [DecidableEq T] {J : T → Type} [∀ t, Fintype (J t)] [∀ t, DecidableEq (J t)]
     {R : Type} [CommRing R] : (kron fun t => (1 : Matrix (J t) (J t) R)) = 1 := by
@@ -51,22 +51,22 @@ theorem kron_one {T : Type} [Fintype T] [DecidableEq T] {J : T → Type} [∀ t,
   | (intros; exact _root_.GlobalTheory.KroneckerIdentity.kron_identity ..)
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.DefPt.rhoMat, GlobalTheory.DefPt.rhoMat, GlobalTheory.DefPt.rhoMat, Matrix.transpose_mul, map_mul, LinearMap.toMatrix_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem rhoMat_mul {n : ℕ} (la : Fin n → ℕ) (g h : Matrix (Fin n) (Fin n) K) :
     rhoMat la g * rhoMat la h = rhoMat la (h * g) := by
   rw [GlobalTheory.DefPt.rhoMat, GlobalTheory.DefPt.rhoMat, GlobalTheory.DefPt.rhoMat, Matrix.transpose_mul, map_mul, LinearMap.toMatrix_mul]
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.DefPt.rhoMat, Matrix.transpose_one, map_one, LinearMap.toMatrix_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem rhoMat_one {n : ℕ} (la : Fin n → ℕ) : rhoMat la (1 : Matrix (Fin n) (Fin n) K) = 1 := by
   rw [GlobalTheory.DefPt.rhoMat, Matrix.transpose_one, map_one, LinearMap.toMatrix_one]
 
 /- English proof (translation)
-Establish `h1 : ∀ p : ι × κ, ∃ r : 𝓞 K, ∃ d ∈ w.asIdeal.primeCompl, M p.1 p.2 * algebraMap (𝓞 K) K d = algebraMap (𝓞 K) K r` using `fun p => by`. Take `⟨r, d, h⟩` from `w.exists_primeCompl_mul_eq_of_integer (M p.1 p.2) (hM p.1 p.2)`. Conclude with `⟨r, d, d.2, h⟩`. Use `choose r d hd h using h1`. Use `⟨∏ p, d p, Submonoid.prod_mem _ fun p _ => hd p, Matrix.of fun i j => (∏ p ∈ Finset.univ.erase (i, j), d p) * r (i, j), ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Use extensionality with `i j`. Simplify using `only [Matrix.map_apply, Matrix.of_apply, Matrix.smul_apply, smul_eq_mul, map_mul, ← h]`. Rewrite using `[← Finset.prod_erase_mul _ _ (Finset.mem_univ (i, j)), map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem exists_int_scale (w : HeightOneSpectrum (𝓞 K)) {ι κ : Type} [Fintype ι] [DecidableEq ι] [Fintype κ]
     [DecidableEq κ] {M : Matrix ι κ K} (hM : IntAt w M) :
@@ -85,9 +85,9 @@ theorem exists_int_scale (w : HeightOneSpectrum (𝓞 K)) {ι κ : Type} [Fintyp
   ring
 
 /- English proof (translation)
-Take `⟨s, hs, hf⟩` from `hf`. Rewrite `hf` using `[stdLat_eq_span, Submodule.mem_span_range_iff_exists_fun]`. Take `⟨c, hc⟩` from `hf`. Establish `hc' : ∑ i, (algebraMap (𝓞 K) K (c i)) • basis la K i = (algebraMap (𝓞 K) K s) • f` using `hc`. Establish `h1` using `congrArg (fun x => (basis la K).repr x i) hc'`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Module.Basis.repr_sum_self, map_smul, Finsupp.smul_apply, smul_eq_mul] at h1`. Establish `h2 : w.valuation K (algebraMap (𝓞 K) K s) = 1` using `(w.valuation_eq_one_iff_notMem).2 hs`. Establish `h3 : w.valuation K (algebraMap (𝓞 K) K (c i)) ≤ 1` using `w.valuation_le_one (c i)`. Rewrite `h3` using `[h1, map_mul, h2, one_mul]`. Conclude with `h3`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem valuation_repr_le_one (w : HeightOneSpectrum (𝓞 K)) {n : ℕ} {la : Fin n → ℕ} {f : nabla la K}
     (hf : f ∈ localization₂ w.asIdeal (stdLat la K)) (i : Idx la) : w.valuation K ((basis la K).repr f i) ≤ 1 := by
@@ -103,9 +103,9 @@ theorem valuation_repr_le_one (w : HeightOneSpectrum (𝓞 K)) {n : ℕ} {la : F
   exact h3
 
 /- English proof (translation)
-Take `⟨t, ht, A, hA⟩` from `exists_int_scale w (M := gᵀ) (fun i j => hg j i)`. Introduce `i j`. Establish `hj : basis la K j ∈ localization₂ w.asIdeal (stdLat la K)` using `⟨1, Submonoid.one_mem _, by rw [one_smul, stdLat_eq_span]; exact Submodule.subset_span ⟨j, rfl⟩⟩`. Establish `h` using `rho_mem_locP w ht hA hj`. Rewrite using `[GlobalTheory.DefPt.rhoMat, LinearMap.toMatrix_apply]`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `valuation_repr_le_one w h i`.
+A detailed English derivation is pending.
 -/
 theorem intAt_rhoMat (w : HeightOneSpectrum (𝓞 K)) {n : ℕ} (la : Fin n → ℕ) {g : Matrix (Fin n) (Fin n) K}
     (hg : IntAt w g) : IntAt w (rhoMat la g) := by
@@ -118,7 +118,7 @@ theorem intAt_rhoMat (w : HeightOneSpectrum (𝓞 K)) {n : ℕ} (la : Fin n → 
   exact valuation_repr_le_one w h i
 
 /- English proof (translation)
-Introduce `i j` and use `by rw [Matrix.smul_apply, smul_eq_mul, map_mul] exact mul_le_one' hc (hM i j)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem intAt_smul (w : HeightOneSpectrum (𝓞 K)) {ι κ : Type} [Fintype ι] [DecidableEq ι] {c : K}
     (hc : w.valuation K c ≤ 1) {M : Matrix ι κ K} (hM : IntAt w M) : IntAt w (c • M) := fun i j => by
@@ -126,7 +126,7 @@ theorem intAt_smul (w : HeightOneSpectrum (𝓞 K)) {ι κ : Type} [Fintype ι] 
   exact mul_le_one' hc (hM i j)
 
 /- English proof (translation)
-Introduce `I I'` and use `by rw [kron, Matrix.of_apply, map_prod] exact Finset.prod_le_one' fun t _ => hM t (I t) (I' t)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem intAt_kron (w : HeightOneSpectrum (𝓞 K)) {T : Type} [Fintype T] [DecidableEq T] {J : T → Type}
     [∀ t, Fintype (J t)] [∀ t, DecidableEq (J t)] {M : ∀ t, Matrix (J t) (J t) K} (hM : ∀ t, IntAt w (M t)) :
@@ -137,15 +137,13 @@ theorem intAt_kron (w : HeightOneSpectrum (𝓞 K)) {T : Type} [Fintype T] [Deci
 end General
 
 /- English proof (translation)
-Introduce `K _ _ T _ _ N la a B ha hfin hB`. Establish `hinv : ∀ w, (a w)⁻¹ • kron (fun t => rhoMat (la t) (B w t)⁻¹) * fibA la (a w) (B w) = 1`. Introduce `w`. Establish `e : ∀ t, rhoMat (la t) (B w t)⁻¹ * rhoMat (la t) (B w t) = 1` using `fun t => by`. Rewrite using `[rhoMat_mul, Matrix.mul_nonsing_inv _ (isUnit_iff_ne_zero.mpr ((hB t).1 w)), rhoMat_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[fibA, Matrix.smul_mul, Matrix.mul_smul, kron_mul, smul_smul, inv_mul_cancel₀ (ha w), one_smul]`. Simplify using `only [e]`. Conclude with `kron_one`. Establish `hinv' : ∀ w, (fibA la (a w) (B w))⁻¹ = (a w)⁻¹ • kron (fun t => rhoMat (la t) (B w t)⁻¹)` using `fun w => Matrix.inv_eq_left_inv (hinv w)`. Use `⟨fun w h => ?_, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h1` using `congrArg Matrix.det (hinv w)`. Rewrite `h1` using `[Matrix.det_mul, h, mul_zero, Matrix.det_one]`. Conclude with `zero_ne_one h1`. Use `(hfin.union (Set.finite_iUnion fun t => (hB t).2)).subset fun w hw => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hw'`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Simplify using `only [Set.mem_union, Set.mem_iUnion, Set.mem_setOf_eq, Function.mem_support, not_or, not_exists, not_not] at hw'`. Take `⟨h0, h1⟩` from `hw'`. Establish `hv : w.valuation K (a w) = 1` using `valuation_eq_one_of_vAdd w (ha w) h0`. Use `hw ⟨intAt_smul w hv.le (intAt_kron w fun t => intAt_rhoMat w _ (h1 t).1), ?_⟩` and prove the remaining obligations. Rewrite using `[hinv' w]`.
-
-Conclude with `intAt_smul w (by rw [map_inv₀, hv, inv_one]) (intAt_kron w fun t => intAt_rhoMat w _ (h1 t).2)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fibA_isAdelic : ∀ (K : Type) [Field K] [NumberField K] (T : Type) [Fintype T] [DecidableEq T] (N : T → ℕ)
     (la : ∀ t, Fin (N t) → ℕ) (a : HeightOneSpectrum (𝓞 K) → K)

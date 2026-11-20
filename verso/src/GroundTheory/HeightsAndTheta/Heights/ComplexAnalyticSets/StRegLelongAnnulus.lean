@@ -11,7 +11,7 @@ open scoped ContDiff
 noncomputable section
 
 /- English proof (translation)
-Introduce and unpack `rfl`. Conclude with `hz.2 (mem_euclBall_self z hr)`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem ne_of_mem_euclBall_diff {n : ℕ} {x z : Fin n → ℂ} {r s : ℝ} (hr : 0 < r)
     (hz : z ∈ euclBall x s \ euclBall x r) : z ≠ x := by

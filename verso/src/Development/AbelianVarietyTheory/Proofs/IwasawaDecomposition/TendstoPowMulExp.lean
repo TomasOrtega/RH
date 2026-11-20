@@ -31,11 +31,11 @@ namespace GlobalTheory.ShFam.BdArc
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
 /- English proof (translation)
-Establish `h1 : Tendsto (fun t : ℝ => t ^ B * Real.exp (-(c * c') * t)) atTop (𝓝 0)`. Use `tendsto_rpow_mul_exp_neg_mul_atTop_nhds_zero (B : ℝ) (c * c') (mul_pos hc hc')` as an intermediate fact. Simplify `this` using `only [Real.rpow_natCast]`. Establish `h2` using `(h1.const_mul (C * C' * Real.exp (c * c' * T))).comp (tendsto_comap (f := Complex.im))`. Rewrite `h2` using `[mul_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `h2.congr fun w => ?_` and prove the remaining obligations. Establish `: Real.exp (-c * (c' * (w.im - T))) = Real.exp (c * c' * T) * Real.exp (-(c * c') * w.im)`. Rewrite using `[← Real.exp_add]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `only [Function.comp, this]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem tendsto_pow_mul_exp (C C' c c' T : ℝ) (B : ℕ) (hc : 0 < c) (hc' : 0 < c') :
     Tendsto (fun w : ℂ => C * Real.exp (-c * (c' * (w.im - T))) * (C' * w.im ^ B)) imTop (𝓝 0) := by
@@ -51,11 +51,11 @@ theorem tendsto_pow_mul_exp (C C' c c' T : ℝ) (B : ℕ) (hc : 0 < c) (hc' : 0 
   ring
 
 /- English proof (translation)
-Take `⟨C, c, hc, hC⟩` from `GlobalTheory.T.pnorm_le_exp_neg_of_mem_SS_of_isIso E N X la P ξ hP hξ`. Use `squeeze_zero_norm' ?_ (tendsto_pow_mul_exp C C' c c' T B hc hc')` and prove the remaining obligations. Establish `he : ∀ᶠ w in imTop, T + 1 + 1 / c' < w.im` using `(tendsto_comap (f := Complex.im)).eventually (eventually_gt_atTop _)`. Use `filter_upwards [hn, he] with w h1 h2`. Establish `h0 : 0 < 1 / c'` using `by positivity`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : 1 ≤ c' * (w.im - T)`. Establish `: 1 / c' ≤ w.im - T` using `by linarith`. Rewrite `this` using `[div_le_iff₀' hc']`. Then use the resulting hypothesis. Establish `h4` using `hC (x w) (hd w (by linarith)) _ h3 (ht w (by linarith))`. Establish `h5 : ‖P (x w)‖ = X.pnorm la P (x w) * (X.nfac la (x w))⁻¹` using `by show _ = ‖P (x w)‖ * X.nfac la (x w) * _`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_assoc, mul_inv_cancel₀ h1.1.ne', mul_one]`. Establish `h6 : 0 ≤ X.pnorm la P (x w)` using `mul_nonneg (norm_nonneg _) h1.1.le`. Rewrite using `[h5]`. Conclude with `mul_le_mul h4 h1.2 (inv_nonneg.2 h1.1.le) (h6.trans h4)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tendsto_cusp {N : ℕ} {X : Data E N} {T : ℝ} {x : ℂ → Frame X.Ψ N} {la : Wt X.Ψ N} {P : Frame X.Ψ N → ℂ}
     (hP : P ∈ X.SS la) (hd : ∀ w : ℂ, T < w.im → x w ∈ X.dom) {ξ : Fin N → E} {c' : ℝ} (hξ : X.IsIso ξ) (hc' : 0 < c')
@@ -83,9 +83,7 @@ variable {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H
   [CommRing O] {β : O →+* c.F}
 
 /- English proof (translation)
-Establish `hE : ∀ s : Finset (Σ τ : E →+* ℂ, Fin (Dw.mult τ)), (∑ k ∈ s, ex (some k) • C.gr k.1 k.2).IsEqn y (∏ k ∈ s, t k.1 k.2 ^ ex (some k))` using `fun s => by classical`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using CartierDiv.isEqn_zero y`. Consider the case `insert k s hk ih => rw [Finset.sum_insert hk, Finset.prod_insert hk]`. Conclude with `((ht _ _).zsmul _).add ih`.
-
-Conclude with `(hE Finset.univ).neg`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem isEqn_LEx {Z : Model Xo c β} {F : Type} [Field F] {e : F ≃+* c.F} (C : FlagCpt Z e) (ex : Ix Dw → ℤ) {y : C.Y.X}
     {t : ∀ τ : E →+* ℂ, Fin (Dw.mult τ) → C.Y.Fnˣ} (ht : ∀ τ i, (C.gr τ i).IsEqn y (t τ i)) :

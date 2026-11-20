@@ -5,7 +5,7 @@ open TensorProduct Module
 open UpperTheory.Gal.crystallineComparison
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul v b => simp [h]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 private theorem algebraTensorModule_map_map_id_left_comm_of_comm {F L V B B' : Type} [Field F] [Field L] [Algebra F L]
     [AddCommGroup V] [Module L V] [Module F V] [IsScalarTower F L V]
@@ -21,25 +21,25 @@ private theorem algebraTensorModule_map_map_id_left_comm_of_comm {F L V B B' : T
 
 set_option maxHeartbeats 800000 in
 /- English proof (translation)
-Introduce `F G B B' _ _ _ _ _ _ σ ψ σ' ψ' c hc hσ hψ L _ _ e hB V _ _ _ _ _ ρ hA`. Unfold `Bound at hB`. Unfold `admitted at hA ⊢`. Establish `hpow : ∀ k b, c ((ψ ^ k) b) = (ψ' ^ k) (c b)`. Introduce `k`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `k with`. Consider the case `zero => intro b`. Simplify using the standard rewrite rules. Consider the case `succ k ih`. Introduce `b`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[pow_succ, pow_succ, Module.End.mul_apply, Module.End.mul_apply, ih, hψ]`. Set `m : V ⊗[F] B →ₗ[L] V ⊗[F] B'` to `AlgebraTensorModule.map LinearMap.id c`. Establish `hm_inj : Function.Injective m`. Establish `h1 : ⇑m = ⇑(LinearMap.lTensor V c)`. Use function extensionality and compare the values at `x`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul v b => simp [m]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Rewrite using `[h1]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Module.Flat.lTensor_preserves_injective_linearMap c hc`. Establish `hmaps : ∀ x ∈ Dinv σ ρ, m x ∈ Dinv σ' ρ`. Introduce `x hx`. Simplify using `only [Dinv, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.id_apply, sub_eq_zero] at hx ⊢`. Introduce `g`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression.
 
-Conclude with `(algebraTensorModule_map_map_id_left_comm_of_comm c (ρ g) (σ g) (σ' g) (hσ g) x).trans (congrArg m (hx g))`. Set `φ : Dinv σ ρ →ₗ[L] Dinv σ' ρ` to `m.restrict hmaps`. Establish `hφ : Function.Injective φ`. Introduce `a b hab`. Apply `Subtype.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result.
 
-Apply `hm_inj` to reduce the goal to its premises. Conclude with `congrArg Subtype.val hab`. Take `⟨hfin', hle⟩` from `hB V ρ`. Use `haveI : Module.Finite L (Dinv σ ρ) := Module.Finite.of_injective φ hφ`. Establish `hge : finrank L (Dinv σ ρ) ≤ finrank L (Dinv σ' ρ)` using `LinearMap.finrank_le_finrank_of_injective hφ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `heq : finrank L (Dinv σ ρ) = finrank L (Dinv σ' ρ)` using `by omega`. Establish `hsurj : Function.Surjective φ` using `(LinearMap.injective_iff_surjective_of_finrank_eq_finrank heq).mp hφ`. Use `⟨by omega, ?_⟩` and prove the remaining obligations. Introduce `q n T hT`. Unfold `AnnD at hT ⊢`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `x hx`. Take `⟨y, hy⟩` from `hsurj ⟨x, hx⟩`. Establish `hxy : x = m y.1` using `(congrArg Subtype.val hy).symm`. Establish `key : ∀ j, (AlgebraTensorModule.map (T j) (ψ' ^ (n - j))) (m y.1) = m ((AlgebraTensorModule.map (T j) (ψ ^ (n - j))) y.1)` using `fun j => algebraTensorModule_map_map_id_left_comm_of_comm c (T j) (ψ ^ (n - j)) (ψ' ^ (n - j)) (hpow (n - j)) y.1`. Establish `h0` using `congrArg m (hT y.1 y.2)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h0` using `[map_zero, map_sum]`. Rewrite using `[hxy, ← h0]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[key j]`. Conclude with `(LinearMap.map_smul_of_tower m _ _).symm`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.crystallineComparison.annPer_of :
     AnnPer := by

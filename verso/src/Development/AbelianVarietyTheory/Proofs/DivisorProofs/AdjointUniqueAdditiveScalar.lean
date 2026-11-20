@@ -17,14 +17,14 @@ namespace GlobalTheory.AV.AbVar.AdjCalc
 variable {K : Type} [Field K]
 
 /- English proof (translation)
-The claim follows from `map_zpow (MonoidHom.mk' (fun g : Y ⟶ G => f ≫ g) (MonObj.comp_mul f)) g m`.
+A detailed English derivation is pending.
 -/
 theorem comp_zpow' {X Y G : Over (Sp K)} [GrpObj G] (f : X ⟶ Y) (g : Y ⟶ G) (m : ℤ) :
     f ≫ g ^ m = (f ≫ g) ^ m :=
   map_zpow (MonoidHom.mk' (fun g : Y ⟶ G => f ≫ g) (MonObj.comp_mul f)) g m
 
 /- English proof (translation)
-Establish `H'` using `congrArg (CechPic.pull (lift x y).left) H`. Rewrite `H'` using `[map_zsmul, (GlobalTheory.T.abelianVarietyMumfordClass_symm_natural_additive K A A c c c (𝟙 A) _ Y (lift x y) _ _).2.1, (GlobalTheory.T.abelianVarietyMumfordClass_symm_natural_additive K B B d d d (𝟙 B) _ Y (lift x y) _ _).2.1]`. Simplify `H'` using `only [lift_fst_assoc, lift_snd_assoc, lift_fst, lift_snd]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem isAdj_pt {A B : AbVar K} {c : Pic A.X.left} {d : Pic B.X.left} {f : A ⟶ B} {n : ℤ} {h : B ⟶ A}
     (H : IsAdj c d f n h) {Y : Over (Sp K)} (x : Y ⟶ A.X) (y : Y ⟶ B.X) :

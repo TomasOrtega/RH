@@ -11,7 +11,7 @@ noncomputable def schurPoly (N ℓ m : ℕ) : ℤ[X] :=
   ∏ y ∈ range m, (X - C ((N : ℤ) - (ℓ : ℤ) * ((y + 1 : ℕ) : ℤ)))
 
 /- English proof (translation)
-Unfold `schurPoly`. Rewrite using `[eval_prod]`. Simplify using `only [eval_sub, eval_X, eval_C, sub_sub_cancel]`. Rewrite using `[Finset.prod_mul_distrib, Finset.prod_const, Finset.card_range, ← Nat.cast_prod, Finset.prod_range_add_one_eq_factorial]`. Use `push_cast`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -26,7 +26,7 @@ theorem schurPoly_eval_top (N ℓ m : ℕ) :
   ring
 
 /- English proof (translation)
-Unfold `schurPoly`. Rewrite using `[eval_prod]`. Apply `Finset.prod_eq_zero (i := y - 1) (Finset.mem_range.2 (by omega))` to reduce the goal to its premises. Establish `: y - 1 + 1 = y` using `by omega`. Simplify using `[this]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem schurPoly_eval_zero (N ℓ m y : ℕ) (h1 : y ≠ 0) (h2 : y ≤ m) :
     (schurPoly N ℓ m).eval ((N : ℤ) - (ℓ : ℤ) * (y : ℤ)) = 0 := by
@@ -37,9 +37,9 @@ theorem schurPoly_eval_zero (N ℓ m y : ℕ) (h1 : y ≠ 0) (h2 : y ≤ m) :
   simp [this]
 
 /- English proof (translation)
-Repeatedly rewrite using `[eval_eq_sum_range]`. Rewrite using `[Finset.sum_comm]`. Apply `Finset.dvd_sum` to reduce the goal to its premises. Introduce `k _`. Rewrite using `[← Finset.mul_sum]`.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Dvd.dvd.mul_left (hb N P k) _`.
+A detailed English derivation is pending.
 -/
 theorem dvd_sum_eval (hb : PowerSumStep) (N : ℕ)
     (P : Subgroup (Matrix.GeneralLinearGroup (Fin N) ℤ)) [Fintype P] (f : ℤ[X]) :
@@ -53,15 +53,15 @@ theorem dvd_sum_eval (hb : PowerSumStep) (N : ℕ)
   exact Dvd.dvd.mul_left (hb N P k) _
 
 /- English proof (translation)
-Introduce `N ℓ hℓ P hfin hP`. Establish `: Fintype P` using `Fintype.ofFinite P`. Use `set m := N / (ℓ - 1) with hm`. Establish `hdvd` using `dvd_sum_eval hb N P (schurPoly N ℓ m)`. Rewrite `hdvd` using `[Finset.sum_eq_single (1 : P)]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : Matrix.trace (((1 : P) : Matrix.GeneralLinearGroup (Fin N) ℤ) : Matrix (Fin N) (Fin N) ℤ) = (N : ℤ)`. Simplify using the standard rewrite rules. Rewrite `hdvd` using `[h1, schurPoly_eval_top, Int.natCast_dvd_natCast, ← Nat.card_eq_fintype_card]`. Conclude with `hdvd`. Introduce `g _ hg`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨a, hga⟩` from `hP g`. Establish `hmat : ((g : Matrix.GeneralLinearGroup (Fin N) ℤ) : Matrix (Fin N) (Fin N) ℤ) ^ (ℓ ^ a) = 1`. Use `congrArg (fun x : P => ((x : Matrix.GeneralLinearGroup (Fin N) ℤ) : Matrix (Fin N) (Fin N) ℤ)) hga` as an intermediate fact. Simplify using `using this`. Take `⟨y, hy, htr, hy0⟩` from `ha N ℓ a hℓ _ hmat`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[htr]`. Apply `schurPoly_eval_zero _ _ _ _ _ hy` to reduce the goal to its premises. Introduce `h0`. Apply `hg` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts.
 
-Apply `Units.ext` to reduce the goal to its premises. Simplify using `using hy0 h0`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem pGroupStep_of (ha : TraceStep) (hb : PowerSumStep) : PGroupStep := by
   intro N ℓ hℓ P hfin hP
@@ -93,7 +93,7 @@ theorem pGroupStep_of (ha : TraceStep) (hb : PowerSumStep) : PGroupStep := by
     exact absurd (Finset.mem_univ _) h
 
 /- English proof (translation)
-The claim follows from `minkowskiBound_of (pGroupStep_of ha hb)`.
+A detailed English derivation is pending.
 -/
 theorem minkowskiBound_of_steps (ha : TraceStep) (hb : PowerSumStep) : PI.MinkowskiBound :=
   minkowskiBound_of (pGroupStep_of ha hb)

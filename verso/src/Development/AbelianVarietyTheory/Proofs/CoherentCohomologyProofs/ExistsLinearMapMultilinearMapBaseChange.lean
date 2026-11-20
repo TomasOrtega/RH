@@ -23,9 +23,9 @@ variable {R : Type*} (K : Type*) {G N : Type*} [CommRing R] [CommRing K] [Algebr
   [AddCommGroup G] [Module R G] [AddCommGroup N] [Module R N] [Module K N] [IsScalarTower R K N]
 
 /- English proof (translation)
-Use `MultilinearMap.ext_of_span_eq_top (g := fun _ (x : G) ↦ (1 : K) ⊗ₜ[R] x) (fun _ ↦ ?_) h` and prove the remaining obligations. Rewrite using `[eq_top_iff]`. Introduce and unpack `z -`. Proceed by induction on `z with`. Consider the case `zero => exact zero_mem _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Proceed by induction. Treat this case separately.
 
-Consider the case `tmul a x`. Rewrite using `[← mul_one a, ← smul_eq_mul, ← smul_tmul']`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨x, rfl⟩)`. Consider the case `add a b ha hb => exact add_mem ha hb`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem multilinearMap_ext_one_tmul {ι : Type*} [Finite ι]
     {Φ Ψ : MultilinearMap K (fun _ : ι ↦ K ⊗[R] G) N}
@@ -41,11 +41,11 @@ theorem multilinearMap_ext_one_tmul {ι : Type*} [Finite ι]
   | add a b ha hb => exact add_mem ha hb
 
 /- English proof (translation)
-Establish `(n : ℕ) : IsScalarTower R K (MultilinearMap K (fun _ : Fin n ↦ K ⊗[R] G) N)` using `⟨fun r a φ ↦ MultilinearMap.ext fun x ↦ smul_assoc r a (φ x)⟩`. Proceed by induction on `d with`. Consider the case `zero`. Use `⟨(MultilinearMap.constLinearEquivOfIsEmpty K K _ N).toLinearMap.restrictScalars R ∘ₗ (MultilinearMap.constLinearEquivOfIsEmpty R R _ N).symm.toLinearMap, fun φ x ↦ ?_⟩` and prove the remaining obligations. Conclude with `congrArg φ (Subsingleton.elim _ _)`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Treat this case separately.
 
-Consider the case `succ d ih`. Take `⟨E, hE⟩` from `ih`. Use `⟨(multilinearCurryLeftEquiv K (fun _ : Fin (d + 1) ↦ K ⊗[R] G) N).symm.toLinearMap.restrictScalars R ∘ₗ (LinearMap.liftBaseChangeEquiv K).toLinearMap.restrictScalars R ∘ₗ LinearMap.compRight R E ∘ₗ (multilinearCurryLeftEquiv R (fun _ : Fin (d + 1) ↦ G) N).toLinearMap, fun φ x ↦ ? …` and prove the remaining obligations. Establish `h` using `hE (φ.curryLeft (x 0)) (Fin.tail x)`. Rewrite `h` using `[MultilinearMap.curryLeft_apply, Fin.cons_self_tail]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← h]`. Simplify using `[multilinearCurryLeftEquiv]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_linearMap_multilinearMap_baseChange (d : ℕ) :
     ∃ E : MultilinearMap R (fun _ : Fin d ↦ G) N →ₗ[R]
@@ -72,7 +72,7 @@ theorem exists_linearMap_multilinearMap_baseChange (d : ℕ) :
     rfl
 
 /- English proof (translation)
-The claim follows from `have ⟨E, hE⟩ := exists_linearMap_multilinearMap_baseChange (R := R) K (G := G) (N := N) d ⟨E φ, hE φ, fun _ h ↦ multilinearMap_ext_one_tmul K fun x ↦ (h x).trans (hE φ x).symm⟩`.
+A detailed English derivation is pending.
 -/
 theorem existsUnique_multilinearMap_baseChange {d : ℕ}
     (φ : MultilinearMap R (fun _ : Fin d ↦ G) N) :
@@ -88,7 +88,7 @@ variable {G M : Type*} [AddCommGroup G] [AddCommGroup M] {φ : G → M} {d : ℕ
   [Fintype ι]
 
 /- English proof (translation)
-Rewrite using `[← multiDiff_comp_equiv (Fintype.equivFin ι).symm]`. Conclude with `(h.mono (Nat.succ_le_succ hd)).multiDiff_eq _ x y`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem DiffVanish.multiDiff_eq_of_le_card (h : DiffVanish (d + 1) φ) (hd : d ≤ Fintype.card ι)
     (g : ι → G) (x y : G) : multiDiff g φ x = multiDiff g φ y := by
@@ -96,7 +96,7 @@ theorem DiffVanish.multiDiff_eq_of_le_card (h : DiffVanish (d + 1) φ) (hd : d �
   exact (h.mono (Nat.succ_le_succ hd)).multiDiff_eq _ x y
 
 /- English proof (translation)
-Simplify using `only [← multiDiff_comp_equiv (Fintype.equivFin ι).symm (Function.update g i _), Function.update_comp_equiv]`. Conclude with `(h.mono (Nat.succ_le_succ hd)).multiDiff_update_add _ _ a b`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem DiffVanish.multiDiff_update_add_of_le_card [DecidableEq ι] (h : DiffVanish (d + 1) φ)
     (hd : d ≤ Fintype.card ι) (g : ι → G) (i : ι) (a b : G) :
@@ -113,7 +113,7 @@ section Vanish
 variable {X : Scheme.{0}} {k : Type v} [Field k] [Algebra k Γ(X, ⊤)] {F : X.Modules}
 
 /- English proof (translation)
-Use function extensionality and compare the values at `c`. Establish `e` using `congrFun (chiPic_shortExact (shortExact_cutComplex F hL s) (h.twist (isLB_lbZPow hL (-1))) (h.cut hL s)) c`. Express the relevant statement in the definitionally equal form `chiPic k F c = chiPic k (twist F (lbZPow L (-1))) c + chiPic k (cut F hL s) c at e`. Rewrite `e` using `[chiPic_twist k F (isLB_lbZPow hL (-1)), cls_lbZPow hL, neg_one_zsmul, neg_add_eq_sub]`. Rewrite using `[bwdDiff_apply, e, add_sub_cancel_left]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem bwdDiff_chiPic_eq_chiPic_cut {L : LB X} (hL : L.IsLB) (s : L.Sec) [Mono (cutHom F hL s)]
     (h : FiniteCohTwists k F) : bwdDiff (cls L hL) (chiPic k F) = chiPic k (cut F hL s) := by
@@ -125,13 +125,13 @@ theorem bwdDiff_chiPic_eq_chiPic_cut {L : LB X} (hL : L.IsLB) (s : L.Sec) [Mono 
   rw [bwdDiff_apply, e, add_sub_cancel_left]
 
 /- English proof (translation)
-Proceed by induction on `n generalizing F with`. Consider the case `zero`. Rewrite using `[diffVanish_zero_iff]`. Use function extensionality and compare the values at `c`. Take `⟨M, hM, rfl⟩` from `cls_surj c`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result.
 
-Conclude with `chi_eq_zero_of_isZero k ((isZero_twist_iff hM).2 (suppDim_lt_zero_iff.1 hn))`. Consider the case `succ n ih`. Use `diffVanish_of_generators (S := {c | ∃ (L : LB X) (hL : L.IsLB) (s : L.Sec), Mono (cutHom F hL s) ∧ c = cls L hL}) (eq_top_iff.2 fun c _ ↦ ?_) fun g hg ↦ ?_` and prove the remaining obligations. Take `⟨P, Q, hP, hQ, s, t, hs, ht, rfl⟩` from `hA.exists_sub_of_mono_cutHom F c`. Conclude with `sub_mem (AddSubgroup.subset_closure ⟨P, hP, s, hs, rfl⟩) (AddSubgroup.subset_closure ⟨Q, hQ, t, ht, rfl⟩)`.
+Treat this case separately. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨L, hL, s, hs, e⟩` from `hg 0`. Rewrite using `[← Fin.cons_self_tail g, multiDiff_cons', e, bwdDiff_chiPic_eq_chiPic_cut hL s h]`. Use `ih (h.cut hL s) ?_ _` and prove the remaining obligations. Use `(suppDim_cut_add_one_le F hL s).trans_lt hn` as an intermediate fact. Assume the negation of the conclusion as `hc`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `hc` using `[not_lt]`. Use `this.not_ge ?_` and prove the remaining obligations. Use `push_cast`. Conclude with `add_le_add_left hc 1`.
+Move the embeddings inside the algebraic operations. A detailed English derivation is pending.
 -/
 theorem IsAmpleLB.diffVanish_chiPic_of_suppDim_lt [IsLocallyNoetherian X] {A : LB X}
     (hA : IsAmpleLB A) [IsFiniteQC F] (h : FiniteCohTwists k F) {n : ℕ} (hn : suppDim F < n) :
@@ -160,7 +160,7 @@ theorem IsAmpleLB.diffVanish_chiPic_of_suppDim_lt [IsLocallyNoetherian X] {A : L
       exact add_le_add_left hc 1
 
 /- English proof (translation)
-The claim follows from `hA.diffVanish_chiPic_of_suppDim_lt h (hd.trans_lt (by exact_mod_cast d.lt_succ_self))`.
+A detailed English derivation is pending.
 -/
 theorem IsAmpleLB.diffVanish_chiPic [IsLocallyNoetherian X] {A : LB X}
     (hA : IsAmpleLB A) [IsFiniteQC F] (h : FiniteCohTwists k F) {d : ℕ} (hd : suppDim F ≤ d) :
@@ -177,7 +177,7 @@ variable {k : Type} [Field k] {X : Scheme.{0}} [Algebra k Γ(X, ⊤)] {f : X ⟶
 include hf
 
 /- English proof (translation)
-The claim follows from `fun _ hM ↦ have := isFiniteQC_twist (F := F) hM hA.finiteCoh hf _`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem IsAmpleLB.finiteCohTwists [IsProper f] {A : LB X} (hA : IsAmpleLB A) :
     FiniteCohTwists k F := fun _ hM ↦
@@ -185,7 +185,7 @@ theorem IsAmpleLB.finiteCohTwists [IsProper f] {A : LB X} (hA : IsAmpleLB A) :
   hA.finiteCoh hf _
 
 /- English proof (translation)
-The claim follows from `have : IsLocallyNoetherian X := LocallyOfFiniteType.isLocallyNoetherian f hA.diffVanish_chiPic (hA.finiteCohTwists hf F) hd`.
+A detailed English derivation is pending.
 -/
 theorem IsAmpleLB.diffVanish_chiPic_of_isProper [IsProper f] {A : LB X} (hA : IsAmpleLB A) {d : ℕ}
     (hd : suppDim F ≤ d) : DiffVanish (d + 1) (chiPic k F) :=
@@ -193,7 +193,7 @@ theorem IsAmpleLB.diffVanish_chiPic_of_isProper [IsProper f] {A : LB X} (hA : Is
   hA.diffVanish_chiPic (hA.finiteCohTwists hf F) hd
 
 /- English proof (translation)
-The claim follows from `have := isNoetherian_of_isProjOver h have ⟨_, _, hA⟩ := isProper_and_exists_isAmpleLB_of_isProjOver h hA.diffVanish_chiPic_of_suppDim_lt (finiteCohTwists_of_isProjOver hf F h) hn`.
+A detailed English derivation is pending.
 -/
 theorem diffVanish_chiPic_of_isProjOver_of_lt (h : IsProjOver f) {n : ℕ} (hn : suppDim F < n) :
     DiffVanish n (chiPic k F) :=
@@ -202,14 +202,14 @@ theorem diffVanish_chiPic_of_isProjOver_of_lt (h : IsProjOver f) {n : ℕ} (hn :
   hA.diffVanish_chiPic_of_suppDim_lt (finiteCohTwists_of_isProjOver hf F h) hn
 
 /- English proof (translation)
-The claim follows from `diffVanish_chiPic_of_isProjOver_of_lt hf F h (hd.trans_lt (by exact_mod_cast d.lt_succ_self))`.
+A detailed English derivation is pending.
 -/
 theorem diffVanish_chiPic_of_isProjOver (h : IsProjOver f) {d : ℕ} (hd : suppDim F ≤ d) :
     DiffVanish (d + 1) (chiPic k F) :=
   diffVanish_chiPic_of_isProjOver_of_lt hf F h (hd.trans_lt (by exact_mod_cast d.lt_succ_self))
 
 /- English proof (translation)
-Rewrite using `[interNum_eq_multiDiff k F hL, (diffVanish_chiPic_of_isProjOver_of_lt hf F h hn).multiDiff_eq_zero le_rfl, Pi.zero_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem interNum_eq_zero_of_isProjOver (h : IsProjOver f) {ι : Type} [Fintype ι]
     (hn : suppDim F < Fintype.card ι) {L : ι → LB X} (hL : ∀ i, (L i).IsLB) :
@@ -225,7 +225,7 @@ variable {X : Scheme.{0}} {k : Type v} [Field k] [Algebra k Γ(X, ⊤)] {F : X.M
   {ι : Type} [Fintype ι] {L : ι → LB X} {M A B : LB X}
 
 /- English proof (translation)
-The claim follows from `fun j ↦ by by_cases h : j = i · subst h; rwa [Function.update_self] · rw [Function.update_of_ne h]; exact hL j`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isLB_update [DecidableEq ι] (hL : ∀ i, (L i).IsLB) (i : ι) (hM : M.IsLB) :
     ∀ j, (Function.update L i M j).IsLB := fun j ↦ by
@@ -234,7 +234,7 @@ theorem isLB_update [DecidableEq ι] (hL : ∀ i, (L i).IsLB) (i : ι) (hM : M.I
   · rw [Function.update_of_ne h]; exact hL j
 
 /- English proof (translation)
-Use function extensionality and compare the values at `j`. Distinguish the cases in `h : j = i`. Substitute `h` using the available equality. Simplify using `only [Function.update_self]`. Simplify using `only [Function.update_of_ne h]`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem cls_update [DecidableEq ι] (hL : ∀ i, (L i).IsLB) (i : ι) (hM : M.IsLB) :
     (fun j ↦ cls _ (isLB_update hL i hM j)) =
@@ -247,7 +247,7 @@ theorem cls_update [DecidableEq ι] (hL : ∀ i, (L i).IsLB) (i : ι) (hM : M.Is
 namespace DiffVanish
 
 /- English proof (translation)
-Rewrite using `[interNum_eq_multiDiff k F hL, h.multiDiff_eq_zero hn, Pi.zero_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem interNum_eq_zero {n : ℕ} (h : DiffVanish n (chiPic k F)) (hn : n ≤ Fintype.card ι)
     (hL : ∀ i, (L i).IsLB) : interNum k F L = 0 := by
@@ -257,14 +257,14 @@ variable (h : DiffVanish (d + 1) (chiPic k F))
 include h
 
 /- English proof (translation)
-Rewrite using `[funext (GlobalTheory.chiPic_twist k F hM)]`. Conclude with `h.translate _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chiPic_twist (hM : M.IsLB) : DiffVanish (d + 1) (chiPic k (twist F M)) := by
   rw [funext (GlobalTheory.chiPic_twist k F hM)]
   exact h.translate _
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.chiPic_pushforward_of_isAffineHom hf]`. Conclude with `h.comap _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chiPic_pushforward_of_isAffineHom {Y : Scheme.{0}} [Algebra k Γ(Y, ⊤)] {f : X ⟶ Y}
     (hf : ∀ r : k, f.appTop (algebraMap k Γ(Y, ⊤) r) = algebraMap k Γ(X, ⊤) r) [IsAffineHom f]
@@ -274,21 +274,21 @@ theorem chiPic_pushforward_of_isAffineHom {Y : Scheme.{0}} [Algebra k Γ(Y, ⊤)
   exact h.comap _
 
 /- English proof (translation)
-Rewrite using `[interNum_eq_multiDiff k F hP, h.form_apply _ 0]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem form_cls {P : Fin d → LB X} (hP : ∀ i, (P i).IsLB) :
     h.form (fun i ↦ cls (P i) (hP i)) = interNum k F P := by
   rw [interNum_eq_multiDiff k F hP, h.form_apply _ 0]
 
 /- English proof (translation)
-Rewrite using `[interNum_eq_multiDiff k F hL, h.multiDiff_eq_of_le_card hd _ c 0]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem multiDiff_chiPic (hd : d ≤ Fintype.card ι) (hL : ∀ i, (L i).IsLB) (c : Pic X) :
     multiDiff (fun i ↦ cls (L i) (hL i)) (chiPic k F) c = interNum k F L := by
   rw [interNum_eq_multiDiff k F hL, h.multiDiff_eq_of_le_card hd _ c 0]
 
 /- English proof (translation)
-Rewrite using `[interNum_twist_eq_multiDiff k F hL hM, h.multiDiff_chiPic hd hL]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem interNum_twist (hd : d ≤ Fintype.card ι) (hL : ∀ i, (L i).IsLB) (hM : M.IsLB) :
     interNum k (twist F M) L = interNum k F L := by
@@ -300,7 +300,7 @@ variable [DecidableEq ι] (hd : d ≤ Fintype.card ι) (hL : ∀ i, (L i).IsLB) 
 include hd hL
 
 /- English proof (translation)
-Rewrite using `[interNum_eq_multiDiff k F (isLB_update hL i hM), interNum_eq_multiDiff k F (isLB_update hL i hA), interNum_eq_multiDiff k F (isLB_update hL i hB), cls_update hL i hM, cls_update hL i hA, cls_update hL i hB, e, h.multiDiff_update_add_of_le_card hd, Pi.add_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem interNum_update_of_cls_eq_add (hM : M.IsLB) (hA : A.IsLB) (hB : B.IsLB)
     (e : cls M hM = cls A hA + cls B hB) :
@@ -313,7 +313,7 @@ theorem interNum_update_of_cls_eq_add (hM : M.IsLB) (hA : A.IsLB) (hB : B.IsLB)
     h.multiDiff_update_add_of_le_card hd, Pi.add_apply]
 
 /- English proof (translation)
-The claim follows from `h.interNum_update_of_cls_eq_add hd hL i (isLB_tens hA hB) hA hB (cls_tens hA hB _)`.
+A detailed English derivation is pending.
 -/
 theorem interNum_update_tens (hA : A.IsLB) (hB : B.IsLB) :
     interNum k F (Function.update L i (tens A B)) =
@@ -321,7 +321,7 @@ theorem interNum_update_tens (hA : A.IsLB) (hB : B.IsLB) :
   h.interNum_update_of_cls_eq_add hd hL i (isLB_tens hA hB) hA hB (cls_tens hA hB _)
 
 /- English proof (translation)
-Set `ψ : Pic X →+ ℤ` to `AddMonoidHom.mk' (fun c ↦ multiDiff (Function.update (fun j ↦ cls (L j) (hL j)) i c) (chiPic k F) 0) fun a b ↦ congrFun (h.multiDiff_update_add_of_le_card hd _ i a b) 0`. Establish `hψ : ∀ (N : LB X) (hN : N.IsLB), interNum k F (Function.update L i N) = ψ (cls N hN)` using `fun N hN ↦ by rw [interNum_eq_multiDiff k F (isLB_update hL i hN), cls_update hL i hN]; rfl`. Rewrite using `[hψ M hM, e, map_sum]`. Conclude with `Finset.sum_congr rfl fun j _ ↦ by rw [map_zsmul, hψ _ (hP j), smul_eq_mul]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem interNum_update_of_cls_eq_sum {κ : Type*} (s : Finset κ) {P : κ → LB X}
     (hP : ∀ j, (P j).IsLB) (n : κ → ℤ) (hM : M.IsLB)
@@ -337,7 +337,7 @@ theorem interNum_update_of_cls_eq_sum {κ : Type*} (s : Finset κ) {P : κ → L
   exact Finset.sum_congr rfl fun j _ ↦ by rw [map_zsmul, hψ _ (hP j), smul_eq_mul]
 
 /- English proof (translation)
-Simplify `e)` using `using h.interNum_update_of_cls_eq_sum hd hL i (Finset.univ : Finset Unit) (P := fun _ ↦ A) (fun _ ↦ hA) (fun _ ↦ n) hM (by simpa`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem interNum_update_of_cls_eq_zsmul (hM : M.IsLB) (hA : A.IsLB) (n : ℤ)
     (e : cls M hM = n • cls A hA) :
@@ -348,7 +348,7 @@ theorem interNum_update_of_cls_eq_zsmul (hM : M.IsLB) (hA : A.IsLB) (n : ℤ)
 end Update
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.interNum_cons_of_cls_eq_add k F hM hA hB hP hc, h.interNum_eq_zero (by simpa using he) (isLB_cons hA (isLB_cons hB hP)), sub_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem interNum_cons_of_cls_eq_add {e : ℕ} (he : d ≤ e + 1) {P : Fin e → LB X}
     (hP : ∀ i, (P i).IsLB) (hM : M.IsLB) (hA : A.IsLB) (hB : B.IsLB)
@@ -360,7 +360,7 @@ theorem interNum_cons_of_cls_eq_add {e : ℕ} (he : d ≤ e + 1) {P : Fin e → 
     h.interNum_eq_zero (by simpa using he) (isLB_cons hA (isLB_cons hB hP)), sub_zero]
 
 /- English proof (translation)
-Rewrite using `[← h.form_cls hQ, ← h.form_cls hP, funext e, MultilinearMap.map_smul_univ, smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem interNum_of_cls_eq_zsmul {P Q : Fin d → LB X} (hP : ∀ i, (P i).IsLB) (hQ : ∀ i, (Q i).IsLB)
     (n : Fin d → ℤ) (e : ∀ i, cls (Q i) (hQ i) = n i • cls (P i) (hP i)) :
@@ -368,7 +368,7 @@ theorem interNum_of_cls_eq_zsmul {P Q : Fin d → LB X} (hP : ∀ i, (P i).IsLB)
   rw [← h.form_cls hQ, ← h.form_cls hP, funext e, MultilinearMap.map_smul_univ, smul_eq_mul]
 
 /- English proof (translation)
-Rewrite using `[← h.form_cls hQ, funext e, MultilinearMap.map_sum]`. Use `Finset.sum_congr rfl fun a _ ↦ ?_` and prove the remaining obligations. Rewrite using `[MultilinearMap.map_smul_univ, smul_eq_mul, ← h.form_cls (P := L ∘ a) fun i ↦ hL (a i)]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem interNum_of_cls_eq_sum [DecidableEq ι] (hL : ∀ j, (L j).IsLB) {Q : Fin d → LB X}
     (hQ : ∀ i, (Q i).IsLB) (n : Fin d → ι → ℤ)
@@ -386,7 +386,7 @@ section Poly
 variable [Field K] [CharZero K]
 
 /- English proof (translation)
-Take `⟨p, h1, h2, h3⟩` from `h.exists_polynomial_int K (cls B hB) (cls A hA)`. Conclude with `⟨p, h1, fun n N hN e ↦ by rw [h2, ← e, chiPic_cls], by rw [h3, h.multiDiff_chiPic (by simp) fun _ ↦ hB]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_polynomial_chi (hA : A.IsLB) (hB : B.IsLB) :
     ∃ p : Polynomial K, p.natDegree ≤ d ∧
@@ -398,7 +398,7 @@ theorem exists_polynomial_chi (hA : A.IsLB) (hB : B.IsLB) :
     by rw [h3, h.multiDiff_chiPic (by simp) fun _ ↦ hB]⟩
 
 /- English proof (translation)
-Take `⟨p, h1, h2, h3⟩` from `h.exists_polynomial_chi K (LB.isLB_triv X) hM`. Conclude with `⟨p, h1, fun n ↦ h2 n _ (isLB_lbZPow hM n) (by rw [cls_lbZPow hM, cls_triv, zero_add]), h3⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_polynomial_chi_twistZ (hM : M.IsLB) :
     ∃ p : Polynomial K, p.natDegree ≤ d ∧ (∀ n : ℤ, p.eval (n : K) = chi k (twistZ F M n)) ∧
@@ -413,9 +413,9 @@ section Ext
 variable [CommRing K]
 
 /- English proof (translation)
-Use `(existsUnique_congr fun Φ ↦ ⟨fun H P hP ↦ ?_, fun H x ↦ ?_⟩).1 (existsUnique_multilinearMap_baseChange K ((Algebra.linearMap ℤ K).compMultilinearMap h.form))` and prove the remaining obligations. Rewrite using `[H, ← h.form_cls hP]`. Both sides reduce to the same expression. Use `choose P hP e using fun i ↦ cls_surj (x i)`. Take `rfl : x = fun i ↦ cls (P i) (hP i)` from `funext fun i ↦ (e i).symm`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[H, ← h.form_cls hP]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem existsUnique_interForm :
     ∃! Φ : MultilinearMap K (fun _ : Fin d ↦ K ⊗[ℤ] Pic X) K,

@@ -23,11 +23,11 @@ def Mx (j : ZMod J) (x : ℤ) : ℤ :=
   else 0
 
 /- English proof (translation)
-Establish `hinj : ∀ a b, a < Dt.nL j + r → b < Dt.nL j + r → pU p O Fr Dt j a = pU p O Fr Dt j b → a = b`. Introduce `a b ha hb hab`. Unfold `pU at hab`. Rewrite `ha`, `hb`, `hab` using `[hnL j]`. Break down `lt_trichotomy a b with h1 | h1 | h1` into its components or cases.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `absurd hab (ne_of_lt ((posU_lt_iff hV (segZ j) a b ha hb).mpr h1))`. Conclude with `h1`. Conclude with `absurd hab (ne_of_gt ((posU_lt_iff hV (segZ j) b a hb ha).mpr h1))`. Establish `hex : ∃ u', u' < Dt.nL j + r ∧ pU p O Fr Dt j u' = pU p O Fr Dt j u` using `⟨u, hu, rfl⟩`. Establish `hc` using `Classical.choose_spec hex`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `heq : Classical.choose hex = u` using `hinj _ _ hc.1 hu hc.2`. Unfold `Mx`. Rewrite using `[dif_pos hex, if_pos he, heq]`.
+A detailed English derivation is pending.
 -/
 theorem Mx_even {L₁ N₁' : ℕ} (hV : Fr.Valid L₁ N₁') (hnL : ∀ j, Dt.nL j = (Fr.LLset (segZ j)).card) (j : ZMod J) (u : ℕ)
     (hu : u < Dt.nL j + r) (he : Even (pU p O Fr Dt j u)) :
@@ -47,11 +47,11 @@ theorem Mx_even {L₁ N₁' : ℕ} (hV : Fr.Valid L₁ N₁') (hnL : ∀ j, Dt.n
   rw [dif_pos hex, if_pos he, heq]
 
 /- English proof (translation)
-Establish `hinj : ∀ a b, a < Dt.nL j + r → b < Dt.nL j + r → pU p O Fr Dt j a = pU p O Fr Dt j b → a = b`. Introduce `a b ha hb hab`. Unfold `pU at hab`. Rewrite `ha`, `hb`, `hab` using `[hnL j]`. Break down `lt_trichotomy a b with h1 | h1 | h1` into its components or cases.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `absurd hab (ne_of_lt ((posU_lt_iff hV (segZ j) a b ha hb).mpr h1))`. Conclude with `h1`. Conclude with `absurd hab (ne_of_gt ((posU_lt_iff hV (segZ j) b a hb ha).mpr h1))`. Establish `hex : ∃ u', u' < Dt.nL j + r ∧ pU p O Fr Dt j u' = pU p O Fr Dt j u` using `⟨u, hu, rfl⟩`. Establish `hc` using `Classical.choose_spec hex`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `heq : Classical.choose hex = u` using `hinj _ _ hc.1 hu hc.2`. Unfold `Mx`. Rewrite using `[dif_pos hex, if_neg he, heq]`.
+A detailed English derivation is pending.
 -/
 theorem Mx_odd {L₁ N₁' : ℕ} (hV : Fr.Valid L₁ N₁') (hnL : ∀ j, Dt.nL j = (Fr.LLset (segZ j)).card) (j : ZMod J) (u : ℕ)
     (hu : u < Dt.nL j + r) (he : ¬ Even (pU p O Fr Dt j u)) :
@@ -71,17 +71,15 @@ theorem Mx_odd {L₁ N₁' : ℕ} (hV : Fr.Valid L₁ N₁') (hnL : ∀ j, Dt.nL
   rw [dif_pos hex, if_neg he, heq]
 
 /- English proof (translation)
-Establish `hV` using `hM.frames.2.1`. Establish `hr1 : 1 ≤ r` using `by have := hM.two_le_r; omega`. Establish `hc0 : (0 : ℝ) ≤ (cP : ℝ)` using `Nat.cast_nonneg _`. Establish `hs : 128 * (cP : ℝ) ≤ slU Fr p deg Y (r + K) Dt.nL j u` using `hM.margin (segZ j) _ hx hW`. Use `⟨fun he => ?_, fun he => ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Mx_even p O Fr cP Dt ka hV hnL j u hu he]`. Use `⟨(hNo.2.2 u hu).2, int_le_val ?_ (hPl.2.2.1 u hu)⟩` and prove the remaining obligations. Establish `h1` using `threshold_ge_even_position Fr p deg Y (r + K) (mStar p Fr (r + K) N₁ (p ^ G') cP) Dt.nL K ka j u he`. Establish `h2` using `ar1 _ _ _ _ _ h1 hs`. Unfold `tauU`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Use `push_cast`. Conclude with `h2`. Rewrite using `[Mx_odd p O Fr cP Dt ka hV hnL j u hu he]`. Establish `huN : u < Dt.nL j`. Assume the negation of the conclusion as `hcon`.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `he (posU_even hV (segZ j) (Dt.nL j) u (by omega) hu)`. Use `⟨(hNo.2.2 u hu).1, int_le_val ?_ (hPl.2.2.2 u huN)⟩` and prove the remaining obligations. Take `⟨l1, l2⟩` from `posU_letter hV hr1 (segZ j) (Dt.nL j) (hnL j) (u + 1) (by omega)`. Establish `hs' : 128 * (cP : ℝ) ≤ slU Fr p deg Y (r + K) Dt.nL j (u + 1)` using `hM.margin (segZ j) _ l1 l2`. Establish `h1` using `threshold_ge_odd_position Fr p deg Y (r + K) (mStar p Fr (r + K) N₁ (p ^ G') cP) Dt.nL K ka j u he`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `h2` using `ar1 _ _ _ _ _ h1 hs'`. Unfold `tauU`. Use `push_cast`. Conclude with `h2`. Use `geR_of_ceil ?_ (hPl.2.2.1 u hu)` and prove the remaining obligations.
-
-Establish `h1` using `th_ge_B Fr p deg Y (r + K) (mStar p Fr (r + K) N₁ (p ^ G') cP) Dt.nL K ka j u`. Conclude with `ar3 _ _ _ _ h1 hs hc0`.
+Move the embeddings inside the algebraic operations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem cond_at {TT : Finset (Fin n')} {L₁ L₂ : ℕ} {d : Fin n' → ℕ}
     (hM : MFH p Fr TT L₁ L₂ N₁ G' deg d Y (r + K) cP) (hnL : ∀ j, Dt.nL j = (Fr.LLset (segZ j)).card)
@@ -133,19 +131,17 @@ end XXb
 open XXb in
 
 /- English proof (translation)
-Introduce `p _ n' r K _ _ _ O _ _ _ S Fr TT L₁ L₂ N₁ G' deg d Y cP hM J _ Dt dPl dNo ka hT δ j A B hPl hNo`. Establish `hV` using `hM.frames.2.1`. Establish `hr1 : 1 ≤ r` using `by have := hM.two_le_r; omega`. Establish `hnL` using `hT.1.2.1`. Establish `hdeg : ∀ mm ∈ (plEmb O r K A * nmEmb O r K B).support, ∀ x, ∑ c : Fin (r + K), mm (x, c) = δ (j, x) + dNoOf p O Fr Dt dNo (j, x) ∧ ordDeg mm x ≤ δ (j, x) + dNoOf p O Fr Dt dNo (j, x)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `mm hmm x`. Take `⟨ua, hua, ub, hub, h⟩` from `deg_mul A B mm hmm`. Establish `e1 : ∑ c : Fin r, mm (x, Fin.castAdd K c) = δ (j, x)`. Rewrite using `[← hPl.2.1 ua hua x]`. Conclude with `Finset.sum_congr rfl fun c _ => (h x).1 c`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e2 : ∑ c : Fin K, mm (x, Fin.natAdd r c) = dNoOf p O Fr Dt dNo (j, x)`. Rewrite using `[← hNo.2.1 ub hub x]`. Conclude with `Finset.sum_congr rfl fun c _ => (h x).2 c`. Use `⟨by rw [Fin.sum_univ_add, e1, e2], ?_⟩` and prove the remaining obligations. Unfold `ordDeg`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Use `split_ifs`. Rewrite using `[e2]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[e1]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Unfold `XX'`. Use `Submodule.mem_inf.2 ⟨Submodule.subset_span ⟨A, B, Mx p O Fr cP Dt ka j, hPl.1, hNo.1, ?_, rfl⟩, ?_⟩` and prove the remaining obligations. Introduce `x hx hW`. Take `⟨u, hu, rfl⟩` from `exists_posU hV hr1 (segZ j) (Dt.nL j) (hnL j) x hx hW`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `cond_at p O Fr deg Y N₁ G' cP Dt dNo ka hM hnL δ j A B hPl hNo u hu hx hW`. Rewrite using `[mem_restrictSupport_iff]`. Introduce `mm hmm x _ _`. Use `show (ordDeg mm x : ℝ) ≤ ((δ (j, x) + dNoOf p O Fr Dt dNo (j, x) : ℕ) : ℝ)`. Conclude with `Nat.cast_le.2 (hdeg mm hmm x).2`.
-
-Rewrite using `[mem_restrictSupport_iff]`. Introduce `mm hmm x _`. Conclude with `(hdeg mm hmm x).1`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem restXXG_b : RestXXG := by
   intro p _ n' r K _ _ _ O _ _ _ S Fr TT L₁ L₂ N₁ G' deg d Y cP hM J _ Dt dPl dNo ka hT δ j A B hPl hNo

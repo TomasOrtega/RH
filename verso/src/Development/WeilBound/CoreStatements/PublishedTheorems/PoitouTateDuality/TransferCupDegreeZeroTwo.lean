@@ -11,13 +11,13 @@ namespace PositivityTheory.Lit1.PTN
 attribute [local instance 2000] Rep.hV2
 
 /- English proof (translation)
-Take `⟨e2, he2a, -⟩` from `PositivityTheory.LocalTateOrthogonality.Gcoh.gc2 Hv R M' (rho'.comp ev.toMonoidHom) B eB heB`. Take `⟨x2, hx2⟩` from `he2a (restrictCocycles2 rho' ev.toMonoidHom hevc z)`. Establish `hm : ∀ σ, (rho.comp ev.toMonoidHom) σ m.1 = m.1` using `fun σ => (mem_riemannRochSpace_iff_regularAt_everywhere rho m.1).1 m.2 (ev σ)`. Take `⟨x0, hx0⟩` from `PositivityTheory.LocalTateOrthogonality.Gcoh.exists_coc A 0 (fun _ => eA m.1) (IsLocallyConstant.const _) (by`. Use `(PositivityTheory.LocalTateOrthogonality.Gcoh.d_comp (rho.comp ev.toMonoidHom) A eA heA 0 fun _ => m.1).trans ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use function extensionality and compare the values at `s`. Rewrite using `[PositivityTheory.LocalTateOrthogonality.Gcoh.dn_zero, hm (s 0), sub_self]`. Conclude with `map_zero eA)`. Establish `hEm : E m = cohomologyπ A 0 x0` using `hE m x0 (fun s => congrFun hx0 s)`. Establish `hEz : E' (Submodule.Quotient.mk z) = cohomologyπ B 2 x2` using `hE' z x2 (fun s => hx2 s)`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hEm, hEz, cupPairing_cohomologyπ]`. Use `hJ (cupCocycleH0Z2 rho rho' rhoP b hb hbe m z) _ (fun s => ?_)` and prove the remaining obligations. Rewrite using `[cochainOf_cocycleι_cyclesMap_cupCocycles]`. Establish `h0 : Fin.partialProd s ⟨0, by omega⟩ = 1` using `Fin.partialProd_zero s`. Rewrite using `[h0, map_one]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[show (cochainOf _ (cocycleι _ 0 x0) fun i : Fin 0 => s ⟨i, by omega⟩) = eA m.1 from congrFun hx0 _]`. Rewrite using `[show (cochainOf _ (cocycleι _ 2 x2) fun j : Fin 2 => s ⟨0 + j, by omega⟩) = eB (z.1 (ev (s 0), ev (s 1))) from by rw [hx2]; rfl]`. Conclude with `hbμ _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem transfer_cup_degree_zero_two {Lv Hv : Type} [Group Lv] [TopologicalSpace Lv] [IsTopologicalGroup Lv]
     [Group Hv] [TopologicalSpace Hv] [IsTopologicalGroup Hv] (ev : Hv ≃* Lv)
@@ -71,7 +71,7 @@ theorem transfer_cup_degree_zero_two {Lv Hv : Type} [Group Lv] [TopologicalSpace
   exact hbμ _ _
 
 /- English proof (translation)
-Introduce `σ m`. Rewrite using `[MonoidHom.comp_apply, hM, hev]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem hloc2 {G D L H : Type} [Group G] [Group D] [Group L] [Group H] {R M : Type} [CommRing R]
     [AddCommGroup M] [Module R M] (ρ : Representation R G M) (φ : D →* G) (ev : L ≃* D) (e : G → H)

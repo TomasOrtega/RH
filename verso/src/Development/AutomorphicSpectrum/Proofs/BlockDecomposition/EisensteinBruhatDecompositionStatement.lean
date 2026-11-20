@@ -8,7 +8,7 @@ open GlobalTheory.IndefiniteRowSideFullHecke.ModerateGrowthSchwartz (schwartzA)
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.BruhatCell.bruhat | exact GlobalTheory.CompanionTheory.BruhatCell.bruhat | (intros; apply GlobalTheory.CompanionTheory.BruhatCell.bruhat <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.eisenstein_bruhat_decomposition : PositivityTheory.GramSchwartzFunctions.EC.Bruhat := by
   first | exact @GlobalTheory.CompanionTheory.BruhatCell.bruhat | exact GlobalTheory.CompanionTheory.BruhatCell.bruhat | (intros; apply GlobalTheory.CompanionTheory.BruhatCell.bruhat <;> assumption)

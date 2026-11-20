@@ -16,17 +16,17 @@ section Abstract
 variable {D A : Type*} [CommRing D] [IsDomain D] [CommRing A] [IsDomain A]
 
 /- English proof (translation)
-Substitute `h₁ h₂` using the available equality. Set `M` to `FractionRing (Polynomial D)`. Establish `hM : Function.Injective (algebraMap (Polynomial D) M)` using `IsFractionRing.injective _ M`. Set `g₁ : A →+* M` to `(algebraMap (Polynomial D) M).comp θ`. Set `g₂ : D →+* M` to `(algebraMap (Polynomial D) M).comp Polynomial.C`.
+Substitute using the available equality. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hg₁ : Function.Injective g₁` using `hM.comp hθ`. Establish `hg₂ : Function.Injective g₂` using `hM.comp Polynomial.C_injective`. Set `ι₁ : FractionRing A →+* M` to `IsFractionRing.lift hg₁`. Set `ι₂ : FractionRing D →+* M` to `IsFractionRing.lift hg₂`. Establish `hgen : ∀ i, ι₁ (algebraMap A (FractionRing A) (f i) / algebraMap A (FractionRing A) (g i)) = ι₂ (algebraMap D (FractionRing D) (a i) / algebraMap D (FractionRing D) (c i))`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `i`. Rewrite using `[map_div₀, map_div₀, IsFractionRing.lift_algebraMap, IsFractionRing.lift_algebraMap, IsFractionRing.lift_algebraMap, IsFractionRing.lift_algebraMap]`. Establish `hX : algebraMap (Polynomial D) M (Polynomial.X ^ n i) ≠ 0` using `fun h => pow_ne_zero _ Polynomial.X_ne_zero (hM (h.trans (map_zero _).symm))`. Simplify using `only [g₁, g₂, RingHom.comp_apply, hf, hg, map_mul]`. Conclude with `mul_div_mul_right _ _ hX`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `himg : (Subring.closure (Set.range fun i => algebraMap A (FractionRing A) (f i) / algebraMap A (FractionRing A) (g i))).map ι₁ = (Subring.closure (Set.range fun i => algebraMap D (FractionRing D) (a i) / algebraMap D (FractionRing D) (c i))).map ι₂`. Rewrite using `[RingHom.map_closure, RingHom.map_closure]`. Use `congr 1`. Use extensionality with `z`. Prove the components needed by the constructor for the conclusion.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨_, ⟨i, rfl⟩, rfl⟩`. Conclude with `⟨_, ⟨i, rfl⟩, (hgen i).symm⟩`. Introduce and unpack `⟨_, ⟨i, rfl⟩, rfl⟩`. Conclude with `⟨_, ⟨i, rfl⟩, hgen i⟩`. Use `⟨(Subring.equivMapOfInjective _ ι₁ ι₁.injective).trans ((RingEquiv.subringCongr himg).trans (Subring.equivMapOfInjective _ ι₂ ι₂.injective).symm), fun i hi => ?_⟩` and prove the remaining obligations.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `ι₂.injective` to reduce the goal to its premises. Rewrite using `[← hgen i, ← Subring.coe_equivMapOfInjective_apply _ ι₂ ι₂.injective, RingEquiv.trans_apply, RingEquiv.trans_apply, RingEquiv.apply_symm_apply]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_ringEquiv_closure_div_of_eq_C_mul_X_pow (θ : A →+* Polynomial D)
     (hθ : Function.Injective θ) {I : Type*} (f g : I → A) (a c : I → D) (n : I → ℕ)
@@ -82,15 +82,13 @@ end Abstract
 variable {K : Type*} [DecidableEq K] {ι : K → Type} {J : Type} {R : Type*} [CommRing R]
 
 /- English proof (translation)
-Use `set w := blockWeight (extIdx ι J)`. Use `set ωT : (Σ o, extIdx ι J o) → ℕ := fun v => Pi.evalAddMonoidHom (fun _ => ℕ) none (w v)`. Establish `hT : ∀ d, Finsupp.weight ωT d = Finsupp.weight w d none` using `fun d => weight_comp_addMonoidHom_apply w (Pi.evalAddMonoidHom (fun _ => ℕ) none) d`. Establish `hsubst : blowUpSubst P u = fun v => Polynomial.C (Ideal.Quotient.mkₐ R P (blowUpAtOne u v)) * Polynomial.X ^ ωT v`. Use function extensionality and compare the values at `v`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation.
 
-Take `⟨o, i⟩` from `v`. Apply the tactic sequence `cases o <;> simp [blowUpSubst, blowUpAtOne, ωT, w, blockWeight]`. Establish `hFT : IsWeightedHomogeneous ωT F (b none)`. Introduce `d hd`. Rewrite using `[hT]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `congrFun (hF hd) none`. Use `set c := aeval (fun v => Ideal.Quotient.mkₐ R P (blowUpAtOne u v)) F`. Establish `key : aeval (blowUpSubst P u) F = Polynomial.C c * Polynomial.X ^ (b none)`. Use `Polynomial.ext fun n => ?_` and prove the remaining obligations. Rewrite using `[hsubst, coeff_aeval_C_mul_X_pow, Polynomial.coeff_C_mul_X_pow]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `split_ifs with hn`. Rewrite using `[hn, hFT.weightedHomogeneousComponent_same]`. Rewrite using `[hFT.weightedHomogeneousComponent_ne n hn, map_zero]`. Establish `hσ : blowUpEval P u F = c` using `by show Polynomial.eval 1 (aeval (blowUpSubst P u) F) = c`. Rewrite using `[key]`.
-
-Simplify using the standard rewrite rules. Rewrite using `[hσ]`. Conclude with `key`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem aeval_blowUpSubst_of_isMultiHomog (P : Ideal (MRing ι R)) (u : J → MRing ι R)
     {F : MRing (extIdx ι J) R} {b : Option K → ℕ} (hF : IsMultiHomog F b) :
@@ -124,21 +122,19 @@ theorem aeval_blowUpSubst_of_isMultiHomog (P : Ideal (MRing ι R)) (u : J → MR
   exact key
 
 /- English proof (translation)
-Introduce `R _ K _ ι J P _ u Q _`. Establish `hB : (blowUpOf P u).IsPrime` using `RingHom.ker_isPrime _`. Set `θ : MRing (extIdx ι J) R ⧸ blowUpOf P u →+* Polynomial (MRing ι R ⧸ P)` to `Ideal.Quotient.lift (blowUpOf P u) (aeval (blowUpSubst P u)).toRingHom (fun a ha => RingHom.mem_ker.mp ha)`. Establish `hθ : Function.Injective θ`. Rewrite using `[injective_iff_map_eq_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `a ha`. Take `⟨a, rfl⟩` from `Ideal.Quotient.mk_surjective a`. Rewrite `ha` using `[Ideal.Quotient.lift_mk]`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.mpr (RingHom.mem_ker.mpr ha)`. Set `I` to `{t : (Option K → ℕ) × MRing (extIdx ι J) R × MRing (extIdx ι J) R // IsMultiHomog t.2.1 t.1 ∧ IsMultiHomog t.2.2 t.1 ∧ t.2.2 ∉ Q}`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hf : ∀ i : I, θ (Ideal.Quotient.mk (blowUpOf P u) i.1.2.1) = Polynomial.C (blowUpEval P u i.1.2.1) * Polynomial.X ^ (i.1.1 none)` using `fun i => by`. Rewrite using `[Ideal.Quotient.lift_mk]`. Conclude with `aeval_blowUpSubst_of_isMultiHomog P u i.2.1`. Establish `hg : ∀ i : I, θ (Ideal.Quotient.mk (blowUpOf P u) i.1.2.2) = Polynomial.C (blowUpEval P u i.1.2.2) * Polynomial.X ^ (i.1.1 none)` using `fun i => by`. Rewrite using `[Ideal.Quotient.lift_mk]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `aeval_blowUpSubst_of_isMultiHomog P u i.2.2.1`. Establish `h₁ : homLocRing (blowUpOf P u) Q = Subring.closure (Set.range fun i : I => algebraMap _ (FractionRing (MRing (extIdx ι J) R ⧸ blowUpOf P u)) (Ideal.Quotient.mk (blowUpOf P u) i.1.2.1) / algebraMap _ (FractionRing (MRing (extIdx ι J) R ⧸ blowUpOf P u)) (Ideal.Quotient.mk (blowUpOf …`. Rewrite using `[homLocRing]`. Use `congr 1`. Use extensionality with `z`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨b, F, G, hF, hG, hGQ, rfl⟩`. Conclude with `⟨⟨(b, F, G), hF, hG, hGQ⟩, rfl⟩`. Introduce and unpack `⟨⟨⟨b, F, G⟩, hF, hG, hGQ⟩, rfl⟩`. Conclude with `⟨b, F, G, hF, hG, hGQ, rfl⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `h₂ : blowUpLocRing P u Q = Subring.closure (Set.range fun i : I => algebraMap _ (FractionRing (MRing ι R ⧸ P)) (blowUpEval P u i.1.2.1) / algebraMap _ (FractionRing (MRing ι R ⧸ P)) (blowUpEval P u i.1.2.2))`. Rewrite using `[blowUpLocRing]`. Use `congr 1`. Use extensionality with `z`. Prove the components needed by the constructor for the conclusion.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨b, F, G, hF, hG, hGQ, rfl⟩`. Conclude with `⟨⟨(b, F, G), hF, hG, hGQ⟩, rfl⟩`. Introduce and unpack `⟨⟨⟨b, F, G⟩, hF, hG, hGQ⟩, rfl⟩`. Conclude with `⟨b, F, G, hF, hG, hGQ, rfl⟩`. Take `⟨φ, hφ⟩` from `exists_ringEquiv_closure_div_of_eq_C_mul_X_pow θ hθ (fun i : I => Ideal.Quotient.mk (blowUpOf P u) i.1.2.1) (fun i : I => Ideal.Quotient.mk (blowUpOf P u) i.1.2.2) (fun i : I => blowUpEval P u i.1.2.1) (fun i : I => blowUpEval P u i.1.2.2) (fun i : I => i.1.1 none) hf hg _ _ h₁ h …`.
-
-Use `⟨φ, ?_⟩` and prove the remaining obligations. Introduce `b F G hF hG hGQ`. Conclude with `hφ ⟨(b, F, G), hF, hG, hGQ⟩ _`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem BlowUpLocRingIso.proof : BlowUpLocRingIso.Statement.{u} := by
   intro R _ K _ ι J P _ u Q _

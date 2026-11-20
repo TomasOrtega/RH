@@ -18,7 +18,7 @@ noncomputable def liftConstHomK {R : Type} [CommRing R] {X : Scheme.{0}} (p : X 
   (p.appLE ⊤ U (fun _ _ => trivial)).hom.comp (Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom
 
 /- English proof (translation)
-Establish `h1 : (p.appLE ⊤ U (fun _ _ => trivial)).hom.Smooth` using `HasRingHomProperty.appLE @Smooth p hp ⟨⊤, isAffineOpen_top _⟩ ⟨U, hU⟩ (fun _ _ => trivial)`. Conclude with `RingHom.Smooth.comp (RingHom.Smooth.of_bijective (ConcreteCategory.bijective_of_isIso (Scheme.ΓSpecIso (CommRingCat.of R)).inv)) h1`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem liftConstHomK_smooth {R : Type} [CommRing R] {X : Scheme.{0}} (p : X ⟶ Sp R) (U : X.Opens)
     (hp : Smooth p) (hU : IsAffineOpen U) : (liftConstHomK p U).Smooth := by
@@ -28,9 +28,9 @@ theorem liftConstHomK_smooth {R : Type} [CommRing R] {X : Scheme.{0}} (p : X ⟶
     (RingHom.Smooth.of_bijective (ConcreteCategory.bijective_of_isIso (Scheme.ΓSpecIso (CommRingCat.of R)).inv)) h1
 
 /- English proof (translation)
-Establish `key : (Scheme.ΓSpecIso (CommRingCat.of R)).inv ≫ p.appLE ⊤ W (fun _ _ => trivial) ≫ m.app W = CommRingCat.ofHom x₀ ≫ (Scheme.ΓSpecIso (CommRingCat.of S)).inv ≫ q.appLE ⊤ (m ⁻¹ᵁ W) (fun _ _ => trivial)`. Rewrite using `[← Category.assoc (CommRingCat.ofHom x₀), Scheme.ΓSpecIso_inv_naturality, Category.assoc]`. Use `congr 1`. Establish `e1 : p.appLE ⊤ W (fun _ _ => trivial) ≫ m.app W = (m ≫ p).appLE ⊤ (m ⁻¹ᵁ W) (fun _ _ => trivial)`. Rewrite using `[Scheme.Hom.app_eq_appLE]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Scheme.Hom.appLE_comp_appLE _ _ _ _ _ _ _`. Establish `e2 : (q ≫ spMap x₀).appLE ⊤ (m ⁻¹ᵁ W) (fun _ _ => trivial) = (Spec.map (CommRingCat.ofHom x₀)).appTop ≫ q.appLE ⊤ (m ⁻¹ᵁ W) (fun _ _ => trivial)` using `Scheme.Hom.comp_appLE _ _ _ _ _`. Rewrite using `[e1, ← e2]`. Simplify using `only [h]`. Conclude with `congrArg (fun φ => φ.hom a) key`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem app_constFn_of_commK {R S : Type} [CommRing R] [CommRing S] (x₀ : R →+* S) {Y X : Scheme.{0}}
     (q : Y ⟶ Sp S) (p : X ⟶ Sp R) (m : Y ⟶ X) (h : m ≫ p = q ≫ spMap x₀) (W : X.Opens) (a : R) :
@@ -50,9 +50,9 @@ theorem app_constFn_of_commK {R S : Type} [CommRing R] [CommRing S] (x₀ : R �
   exact congrArg (fun φ => φ.hom a) key
 
 /- English proof (translation)
-Introduce `K _ R _ x₀ Y X q p m D W₀ hp hm hD hW`. Use `letI : Algebra R Γ(X, W₀) := (liftConstHomK p W₀).toAlgebra`. Use `haveI : Algebra.Smooth R Γ(X, W₀) := liftConstHomK_smooth p W₀ hp hW`. Establish `hc : ∀ a, (m.app W₀).hom (algebraMap R Γ(X, W₀) a) = liftConstHomK q (m ⁻¹ᵁ W₀) (x₀ a)` using `fun a => app_constFn_of_commK x₀ q p m hm W₀ a`. Take `⟨d₀, h1, h2, h3⟩` from `GlobalTheory.T.exists_derivation_extend' R Γ(X, W₀) Γ(Y, m ⁻¹ᵁ W₀) (m.app W₀).hom (fun r => liftConstHomK q (m ⁻¹ᵁ W₀) (D r)) (fun a b => by rw [hD.1, map_add]) (fun a b => by rw [hD.2, hc, hc, map_add, map_mul, map_mul])`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨d, hd, -⟩` from `(GlobalTheory.T.existsUnique_localDerivationAlongFibreField_of_affine K R Y X q p m D W₀ hW).1 d₀ h1 h2 h3`. Conclude with `⟨d, hd⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_locDerK_of_smooth : ∀ (K : Type) [Field K] (R : Type) [CommRing R] (x₀ : R →+* K) (Y X : Scheme.{0}) (q : Y ⟶ Sp K) (p : X ⟶ Sp R) (m : Y ⟶ X) (D : R → K) (W₀ : X.Opens), Smooth p → m ≫ p = q ≫ spMap x₀ → IsDerK x₀ D → IsAffineOpen W₀ → ∃ d, LocDerK q p m D W₀ d := by
   intro K _ R _ x₀ Y X q p m D W₀ hp hm hD hW

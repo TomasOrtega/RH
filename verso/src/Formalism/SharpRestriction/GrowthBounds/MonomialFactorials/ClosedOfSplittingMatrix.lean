@@ -6,7 +6,7 @@ noncomputable section
 namespace Formalism.MainNotions.G.SymmetricFormBlocks
 
 /- English proof (translation)
-The claim follows from `closed_of_orthogonal_splitting D hS (goodLeSmall_of hM) h`.
+A detailed English derivation is pending.
 -/
 theorem closed_of_splitting_matrix (D : Formalism.BasicNotions.D7) (hS : OrthSplit) (hM : GoodLeSmallMat) (h : RestWinE D) :
     Formalism.MainNotions.flipOneThree.IntegralityFromMetricForLargeConstants D :=

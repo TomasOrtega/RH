@@ -36,14 +36,14 @@ def eYS {u : D.what₂.Word} {Ch : ℕ → Type} {chOf : ∀ i, (D.mem u).C.cls 
   if h : i = 0 ∨ i = D.R.m then (F.val i hi h).eY else F.eYC i (by omega) (by omega)
 
 /- English proof (translation)
-Rewrite using `[eYS, dif_pos h]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem eYS_end {u : D.what₂.Word} {Ch : ℕ → Type} {chOf : ∀ i, (D.mem u).C.cls i → Ch i} (F : FormsTiedSym D u Ch chOf) (i : ℕ)
     (hi : i ≤ D.R.m) (h : i = 0 ∨ i = D.R.m) : eYS F i hi = (F.val i hi h).eY := by
   rw [eYS, dif_pos h]
 
 /- English proof (translation)
-Establish `hn : ¬(i = 0 ∨ i = D.R.m)` using `by omega`. Rewrite using `[eYS, dif_neg hn]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem eYS_mid {u : D.what₂.Word} {Ch : ℕ → Type} {chOf : ∀ i, (D.mem u).C.cls i → Ch i} (F : FormsTiedSym D u Ch chOf) (i : ℕ)
     (h1 : 1 ≤ i) (h2 : i + 1 ≤ D.R.m) : eYS F i (le_of_succ_m h2) = F.eYC i h1 h2 := by
@@ -51,9 +51,9 @@ theorem eYS_mid {u : D.what₂.Word} {Ch : ℕ → Type} {chOf : ∀ i, (D.mem u
   rw [eYS, dif_neg hn]
 
 /- English proof (translation)
-Distinguish the cases in `h : i = 0 ∨ i = D.R.m`. Rewrite using `[eYS_end F i hi h]`. Conclude with `(F.val i hi h).de`. Establish `h1 : 1 ≤ i` using `by omega`. Establish `h2 : i + 1 ≤ D.R.m` using `by omega`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : eYS F i hi = F.eYC i h1 h2` using `eYS_mid F i h1 h2`. Rewrite using `[e]`. Conclude with `F.deC i h1 h2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eYS_de {u : D.what₂.Word} {Ch : ℕ → Type} {chOf : ∀ i, (D.mem u).C.cls i → Ch i} (F : FormsTiedSym D u Ch chOf) (i : ℕ)
     (hi : i ≤ D.R.m) :
@@ -78,9 +78,7 @@ def twYS (T : Formalism.L2.Herm.TwChTied D inQ) {Ch : D.what₂.Word → ℕ →
   (T.eY u μ i hi).symm.trans (eYS (F u) i hi)
 
 /- English proof (translation)
-Take `⟨C, hC1, hC2, hC3⟩` from `eYS_de (F u) i hi`. Use `⟨C, hC1, hC2, fun τ z => ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Equiv.apply_symm_apply]`. Use `_ = (D.mem u).C.de i ((T.eY u μ i hi).symm z) τ := T.de_eq u μ i hi _ τ`.
-
-Use `_ = embT D τ C.1.det * ((twYS T F u μ i hi z).1 τ).det := hC3 τ _`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem twYS_de (T : Formalism.L2.Herm.TwChTied D inQ) {Ch : D.what₂.Word → ℕ → Type} {chOf : ∀ u i, (D.mem u).C.cls i → Ch u i}
     (F : ∀ u, FormsTiedSym D u (Ch u) (chOf u)) (u : D.what₂.Word) (μ : D.what₂.Tup) (i : ℕ) (hi : i ≤ D.R.m) :
@@ -167,7 +165,7 @@ structure TwLvSameS {Tw : TwForms D} {T : Formalism.L2.Herm.TwChTied D inQ} {H :
   mu0 : ∀ u i (hi : i ≤ D.R.m), LvSame (W.atT u D.what₂.mu0) i (Formalism.L2.Herm.clsCast D u i) (Formalism.L2.Herm.yCast D u i) (Tw.eMu0 u i hi)
 
 /- English proof (translation)
-Rewrite using `[(Tw.fm u μ).Fi_zero, (D.fm u).Fi_zero, (W.atT u μ).Mu0]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem TwFormsTiedS.Fi_zero {Tw : TwForms D} {T : Formalism.L2.Herm.TwChTied D inQ} {H : Formalism.L2.Herm.HermColsCh D}
     {J : Formalism.L2.Herm.TwChJointS T H} {F : ∀ u, FormsTiedSym D u (H.Ch u) (H.chOf u)} (W : TwFormsTiedS D Tw T J F)

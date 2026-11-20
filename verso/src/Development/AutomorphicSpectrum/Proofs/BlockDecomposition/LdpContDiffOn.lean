@@ -35,7 +35,7 @@ theorem Hw_cons (p : Bool × Fin n × Fin n) (w : List (Bool × Fin n × Fin n))
     Hw (p :: w) K = Ldp (bs p) (Hw w K) := rfl
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.CompanionTheory.RCalc.isOpen_GLs.prod GlobalTheory.CompanionTheory.RCalc.isOpen_GLs`.
+A detailed English derivation is pending.
 -/
 theorem isOpen_Dm : IsOpen (Dm n) := GlobalTheory.CompanionTheory.RCalc.isOpen_GLs.prod GlobalTheory.CompanionTheory.RCalc.isOpen_GLs
 
@@ -48,14 +48,14 @@ Both sides reduce to the same expression.
 theorem fld_apply (X : Mat n) (p : Mat n × Mat n) : fld X p = (0, X * p.2) := rfl
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.CompanionTheory.RCalc.contDiffOn_fderiv_field isOpen_Dm hK (fld X)`.
+A detailed English derivation is pending.
 -/
 theorem Ldp_contDiffOn (X : Mat n) {K : Mat n × Mat n → V} (hK : ContDiffOn ℝ ∞ K (Dm n)) :
     ContDiffOn ℝ ∞ (Ldp X K) (Dm n) :=
   GlobalTheory.CompanionTheory.RCalc.contDiffOn_fderiv_field isOpen_Dm hK (fld X)
 
 /- English proof (translation)
-Proceed by induction on `w with`. Consider the case `nil => simpa using hK`. Consider the case `cons p w ih => rw [Hw_cons]`. Conclude with `Ldp_contDiffOn _ ih`.
+Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem Hw_contDiffOn (w : List (Bool × Fin n × Fin n)) {K : Mat n × Mat n → V} (hK : ContDiffOn ℝ ∞ K (Dm n)) :
     ContDiffOn ℝ ∞ (Hw w K) (Dm n) := by
@@ -64,9 +64,9 @@ theorem Hw_contDiffOn (w : List (Bool × Fin n × Fin n)) {K : Mat n × Mat n �
   | cons p w ih => rw [Hw_cons]; exact Ldp_contDiffOn _ ih
 
 /- English proof (translation)
-Establish `: (fun y : G n => f y.val) = fun y => h y.val` using `funext fun y => e (GlobalTheory.CompanionTheory.KerUniq.val_mem y)`. Distinguish the cases in `hm : MemLp (fun y : G n => f y.val) 2 μ`. Conclude with `(isRep_toL (isRep_congr e (toL_coe hm))).symm`. Establish `hm' : ¬ MemLp (fun y : G n => h y.val) 2 μ` using `this ▸ hm`. Unfold `toL`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[dif_neg hm, dif_neg hm']`.
+A detailed English derivation is pending.
 -/
 theorem toL_congr {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V] [MeasurableSpace (G n)]
     (μ : Measure (G n)) {f h : Mat n → V} (e : Set.EqOn f h (GLs n)) : toL μ f = toL μ h := by
@@ -78,15 +78,13 @@ theorem toL_congr {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V] [M
     rw [dif_neg hm, dif_neg hm']
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `hu n μ`. Set `u : G n` to `Matrix.GeneralLinearGroup.mkOfDetNeZero x hx`. Establish `hu' : u.val = x` using `rfl`. Set `F : G n → V` to `fun z => φ (x * (z⁻¹ : G n).val) • f z.val`. Establish `e1 : cvl μ φ (toL μ f) x = ∫ z, F z ∂μ`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `integral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [toL_coe hf] with z hz`. Simplify using `only [F]`. Rewrite using `[hz]`. Establish `e2 : ∫ z, F z ∂μ = ∫ z, F (z⁻¹ * u) ∂μ`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[integral_inv_eq_self (fun z => F (z * u)) μ, integral_mul_right_eq_self F u]`. Rewrite using `[e1, e2]`. Use `integral_congr_ae (Eventually.of_forall fun z => ?_)` and prove the remaining obligations. Establish `e3 : x * ((z⁻¹ * u)⁻¹ : G n).val = z.val`. Establish `e4 : (z⁻¹ * u)⁻¹ = u⁻¹ * z` using `by group`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e4, Units.val_mul, ← mul_assoc]`. Establish `e5 : x * (u⁻¹ : G n).val = 1` using `by rw [← hu']; exact Units.mul_inv u`. Rewrite using `[e5, one_mul]`. Use `show φ (x * ((z⁻¹ * u)⁻¹ : G n).val) • f (z⁻¹ * u).val = φ z.val • f (z.val⁻¹ * x)`. Rewrite using `[e3]`.
-
-Simplify using `[hu', Matrix.coe_units_inv]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cvl_eq (hu : Unimod) {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V]
     [MeasurableSpace (G n)] [BorelSpace (G n)] (μ : Measure (G n)) [μ.IsHaarMeasure] (φ : Mat n → ℂ) {f : Mat n → V}

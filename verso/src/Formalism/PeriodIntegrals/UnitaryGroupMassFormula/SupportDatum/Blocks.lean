@@ -16,15 +16,15 @@ def blkDet {K : Type} [CommRing K] : List (K × ℕ) → K
   | (t, s) :: bs => (-1) ^ (s * (s - 1) / 2) * t ^ s * blkDet bs
 
 /- English proof (translation)
-Proceed by induction on `s with`. Consider the case `zero => simp`. Consider the case `succ s ih`. Rewrite using `[Matrix.det_succ_row_zero, Finset.sum_eq_single (Fin.last s)]`. Establish `hm : ((Matrix.of fun a b : Fin (s + 1) => if a.val + b.val + 1 = s + 1 then t else 0).submatrix Fin.succ (Fin.last s).succAbove) = Matrix.of fun a b : Fin s => if a.val + b.val + 1 = s then t else 0`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use extensionality with `a b`. Simplify using `only [Matrix.submatrix_apply, Matrix.of_apply, Fin.succAbove_last, Fin.val_succ, Fin.coe_castSucc]`. Apply the tactic sequence `split_ifs <;> first | rfl | omega`. Rewrite using `[hm, ih]`. Simplify using `only [Matrix.of_apply, Fin.val_zero, Fin.val_last, zero_add, eq_self_iff_true, if_true]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hexp : (s + 1) * (s + 1 - 1) / 2 = s + s * (s - 1) / 2`. Break down `s with _ | k` into its components or cases. Both sides reduce to the same expression. Establish `hk : (k + 1 + 1) * (k + 1 + 1 - 1) = (k + 1) * (k + 1 - 1) + 2 * (k + 1)`. Simplify using `only [Nat.add_sub_cancel]`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Both sides reduce to the same expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hk, Nat.add_mul_div_left _ _ (by norm_num : 0 < 2)]`. Conclude with `Nat.add_comm _ _`. Rewrite using `[hexp]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `j _ hj`. Establish `hj' : (j : ℕ) ≠ s` using `fun h => hj (Fin.ext (by rw [Fin.val_last]; exact h))`. Simplify using `[hj']`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem antidiag_det {K : Type} [CommRing K] (t : K) (s : ℕ) :
     (Matrix.of fun a b : Fin s => if a.val + b.val + 1 = s then t else 0).det =
@@ -59,13 +59,13 @@ theorem antidiag_det {K : Type} [CommRing K] (t : K) (s : ℕ) :
       exact absurd (Finset.mem_univ _) h
 
 /- English proof (translation)
-Proceed by induction on `bs generalizing n with`. Consider the case `nil`. Simplify using `at h`. Substitute `h` using the available equality. Simplify using `[blkDet]`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Consider the case `cons x bs ih`. Take `⟨t, s⟩` from `x`. Simplify using `only [List.map_cons, List.sum_cons] at h`. Substitute `h` using the available equality. Rewrite using `[← Matrix.det_submatrix_equiv_self finSumFinEquiv]`.
+Treat this case separately. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `have hb : (Matrix.of fun a b : Fin (s + (bs.map Prod.snd).sum) => ptEntry ((t, s) :: bs) a.val b.val).submatrix finSumFinEquiv finSumFinEquiv = Matrix.fromBlocks (Matrix.of fun a b : Fin s => if a.val + b.val + 1 = s then t else 0) 0 0 (Matrix.of fun a b : Fin (bs.map Prod.snd).s …`. Use extensionality with `(a | a) (b | b)`. Use `all_goals`. Establish `ha` using `a.2`. Establish `hb'` using `b.2`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.submatrix_apply, finSumFinEquiv_apply_left, finSumFinEquiv_apply_right, Matrix.fromBlocks_apply₁₁, Matrix.fromBlocks_apply₁₂, Matrix.fromBlocks_apply₂₁, Matrix.fromBlocks_apply₂₂, Matrix.of_apply, Fin.coe_castAdd, Fin.coe_natAdd, Matrix.zero_apply, ptEntry]`. Apply the tactic sequence `split_ifs <;> first | rfl | omega | simp`. Rewrite using `[hb, Matrix.det_fromBlocks_zero₂₁, antidiag_det, ih _ rfl]`. Simplify using `[blkDet]`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem ptEntry_det {K : Type} [CommRing K] (bs : List (K × ℕ)) (n : ℕ)
     (h : (bs.map Prod.snd).sum = n) :
@@ -97,7 +97,7 @@ theorem ptEntry_det {K : Type} [CommRing K] (bs : List (K × ℕ)) (n : ℕ)
     simp [blkDet]
 
 /- English proof (translation)
-Proceed by induction on `l generalizing a b with`. Consider the case `nil => simp [Loc.ptEntryL, ptEntry]`. Consider the case `cons x l ih`. Take `⟨t, s⟩` from `x`. Simplify using `only [Loc.ptEntryL, List.map_cons, ptEntry, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 -/
 theorem ptEntryL_eq {E : Type} [CommRing E] (l : List (Eˣ × ℕ+)) (a b : ℕ) :
     Loc.ptEntryL l a b = ptEntry (l.map fun x => ((x.1 : E), (x.2 : ℕ))) a b := by
@@ -108,9 +108,9 @@ theorem ptEntryL_eq {E : Type} [CommRing E] (l : List (Eˣ × ℕ+)) (a b : ℕ)
     simp only [Loc.ptEntryL, List.map_cons, ptEntry, ih]
 
 /- English proof (translation)
-Proceed by induction on `head generalizing a b with`. Consider the case `nil => simp at ha`. Consider the case `cons x hd ih`. Take `⟨t, s⟩` from `x`. Simplify using `only [List.map_cons, List.sum_cons] at ha hb`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Simplify using `only [List.cons_append, ptEntry]`. Apply the tactic sequence `split_ifs <;> first | rfl | exact ih _ _ (by omega) (by omega)`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem ptEntry_append_lt {K : Type} [Zero K] (head tail : List (K × ℕ)) (a b : ℕ)
     (ha : a < (head.map Prod.snd).sum) (hb : b < (head.map Prod.snd).sum) :
@@ -124,11 +124,11 @@ theorem ptEntry_append_lt {K : Type} [Zero K] (head tail : List (K × ℕ)) (a b
     split_ifs <;> first | rfl | exact ih _ _ (by omega) (by omega)
 
 /- English proof (translation)
-Proceed by induction on `head generalizing a b with`. Consider the case `nil => simp`. Consider the case `cons x hd ih`. Take `⟨t, s⟩` from `x`. Simplify using `only [List.map_cons, List.sum_cons] at ha ⊢`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Simplify using `only [List.cons_append, ptEntry]`. Establish `hna : ¬ (a < s ∧ b < s)` using `by omega`. Rewrite using `[if_neg hna]`. Distinguish the cases in `hb : s ≤ b`. Rewrite using `[if_pos ⟨by omega, hb⟩, ih (a - s) (b - s) (by omega)]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hc : (hd.map Prod.snd).sum ≤ b - s`. Rewrite using `[if_pos hc, if_pos (by omega), Nat.sub_sub, Nat.sub_sub]`. Rewrite using `[if_neg hc, if_neg (by omega)]`. Rewrite using `[if_neg (by omega), if_neg (by omega)]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem ptEntry_append_ge {K : Type} [Zero K] (head tail : List (K × ℕ)) (a b : ℕ)
     (ha : (head.map Prod.snd).sum ≤ a) :
@@ -151,9 +151,9 @@ theorem ptEntry_append_ge {K : Type} [Zero K] (head tail : List (K × ℕ)) (a b
     · rw [if_neg (by omega), if_neg (by omega)]
 
 /- English proof (translation)
-Proceed by induction on `bs with`. Consider the case `nil => simp [blkDet]`. Consider the case `cons b bs ih`. Take `⟨t, s⟩` from `b`. Establish `ht : t ≠ 0` using `h (t, s) (by simp)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hbs : blkDet bs ≠ 0` using `ih (fun b hb => h b (by simp [hb]))`. Simplify using `only [blkDet]`. Conclude with `mul_ne_zero (mul_ne_zero (pow_ne_zero _ (neg_ne_zero.mpr one_ne_zero)) (pow_ne_zero _ ht)) hbs`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem blkDet_ne_zero {K : Type} [CommRing K] [IsDomain K] (bs : List (K × ℕ))
     (h : ∀ b ∈ bs, b.1 ≠ 0) : blkDet bs ≠ 0 := by
@@ -167,7 +167,7 @@ theorem blkDet_ne_zero {K : Type} [CommRing K] [IsDomain K] (bs : List (K × ℕ
     exact mul_ne_zero (mul_ne_zero (pow_ne_zero _ (neg_ne_zero.mpr one_ne_zero)) (pow_ne_zero _ ht)) hbs
 
 /- English proof (translation)
-Establish `hw` using `w.2`. Unfold `Dmin ptMat`. Rewrite using `[dif_pos le_rfl, ← ptEntry_det w.1 n hw.2]`. Use `congr 1`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 -/
 theorem dmin_top (D : Formalism.BasicNotions.D7) {n : ℕ} (w : Point D.host.E n) : Dmin w n = blkDet w.1 := by
   have hw := w.2
@@ -176,16 +176,16 @@ theorem dmin_top (D : Formalism.BasicNotions.D7) {n : ℕ} (w : Point D.host.E n
   congr 1
 
 /- English proof (translation)
-Rewrite using `[dmin_top]`. Conclude with `blkDet_ne_zero _ (fun b hb => (w.2.1 b hb).1)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem topNe (D : Formalism.BasicNotions.D7) (w : Point D.host.E (D.R.rS + 1)) : Dmin w (D.R.rS + 1) ≠ 0 := by
   rw [dmin_top]
   exact blkDet_ne_zero _ (fun b hb => (w.2.1 b hb).1)
 
 /- English proof (translation)
-Establish `h2` using `w.2.2`. Rewrite `h2` using `[h]`. Simplify using `at h2`. Establish `hsum : (head.map Prod.snd).sum = D.R.rS` using `by omega`. Unfold `Dmin ptMat`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[dif_pos (Nat.le_succ _), ← ptEntry_det head D.R.rS hsum]`. Use `congr 1`. Use extensionality with `a b`. Apply the tactic sequence `change ptEntry w.1 a.val b.val = ptEntry head a.val b.val`. Rewrite using `[h, ptEntry_append_lt head _ _ _ (by rw [hsum]; exact a.2) (by rw [hsum]; exact b.2)]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem dmin_last_one (D : Formalism.BasicNotions.D7) (w : Point D.host.E (D.R.rS + 1))
     (head : List (D.host.E × ℕ)) (t : D.host.E) (h : w.1 = head ++ [(t, 1)]) :
@@ -202,11 +202,11 @@ theorem dmin_last_one (D : Formalism.BasicNotions.D7) (w : Point D.host.E (D.R.r
   rw [h, ptEntry_append_lt head _ _ _ (by rw [hsum]; exact a.2) (by rw [hsum]; exact b.2)]
 
 /- English proof (translation)
-Establish `h2` using `w.2.2`. Rewrite `h2` using `[h]`. Simplify using `at h2`. Unfold `Dmin ptMat`. Rewrite using `[dif_pos (Nat.le_succ _)]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Apply `Matrix.det_eq_zero_of_row_eq_zero ⟨(head.map Prod.snd).sum, by omega⟩` to reduce the goal to its premises. Introduce `b`. Establish `hb2` using `b.2`. Apply the tactic sequence `change ptEntry w.1 (head.map Prod.snd).sum b.val = 0`. Rewrite using `[h, ptEntry_append_ge head _ _ _ le_rfl]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use `split_ifs with hb`. Apply the tactic sequence `simp only [ptEntry] split_ifs <;> first | rfl | omega`. Both sides reduce to the same expression.
+Apply the first step, then apply the next step to every resulting obligation. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem dmin_last_big (D : Formalism.BasicNotions.D7) (w : Point D.host.E (D.R.rS + 1))
     (head : List (D.host.E × ℕ)) (t : D.host.E) (s : ℕ)

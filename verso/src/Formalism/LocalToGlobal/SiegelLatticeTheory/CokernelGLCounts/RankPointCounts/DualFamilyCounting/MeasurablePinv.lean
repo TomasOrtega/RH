@@ -20,25 +20,21 @@ variable {V : Type} [AddCommGroup V] [MeasurableSpace V] [MeasurableAdd₂ V] (�
   [μ.IsAddRightInvariant]
 
 /- English proof (translation)
-Use `haveI : μ.IsAddLeftInvariant := ⟨fun g => by`. Establish `h : (fun x : V => g + x) = fun x => x + g` using `funext fun x => add_comm g x`. Rewrite using `[h]`. Conclude with `Measure.IsAddRightInvariant.map_add_right_eq_self g⟩`. Use `haveI : MeasurableAdd (V × V) := ⟨fun c => by first`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact ((measurable_const_add c.1).comp measurable_fst).prodMk ((measurable_const_add c.2).comp measurable_snd)`. Consider the case `exact ((measurable_const_add c.1).comp measurable_fst).prod_mk ((measurable_const_add c.2).comp measurable_snd),`. Use `fun c => by first`. Consider the case `exact ((measurable_add_const c.1).comp measurable_fst).prodMk ((measurable_add_const c.2).comp measurable_snd)`. Consider the case `exact ((measurable_add_const c.1).comp measurable_fst).prod_mk ((measurable_add_const c.2).comp measurable_snd)⟩`.
+Treat this case separately. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `haveI : MeasurableConstVAdd Γ (V × V) := ⟨fun c => measurable_const_add (c : V × V)⟩`. Use `haveI : VAddInvariantMeasure Γ (V × V) (μ.prod μ) := ⟨fun c s _ => measure_preimage_add (μ.prod μ) (c : V × V) s⟩`. Establish `hK' : ∀ g : V × V, ∃! γ : Γ, (γ : V × V) + g ∈ F₁ ×ˢ F₂`. Introduce and unpack `⟨x, y⟩`. Take `⟨a₁, ha₁, hu₁⟩` from `hd₁ x`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Take `⟨s, hs⟩` from `(hA₁ (a₁ : V)).1 a₁.2`. Take `⟨a₂, ha₂, hu₂⟩` from `hd₂ (s + y)`. Establish `hmem : ((a₁ : V), s + (a₂ : V)) ∈ Γ`. Establish `h2 : ((0 : V), (a₂ : V)) ∈ Γ` using `(hA₂ _).1 a₂.2`. Establish `h3` using `Γ.add_mem hs h2`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Simplify using `using h3`. Use `⟨⟨_, hmem⟩, ?_, ?_⟩` and prove the remaining obligations. Use `show (a₁ : V) + x ∈ F₁ ∧ s + (a₂ : V) + y ∈ F₂`. Use `⟨ha₁, ?_⟩` and prove the remaining obligations. Establish `e : s + (a₂ : V) + y = (a₂ : V) + (s + y)` using `by abel`.
+Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[e]`. Conclude with `ha₂`. Introduce and unpack `⟨⟨g₁, g₂⟩, hg⟩ hgK`. Express the relevant statement in the definitionally equal form `g₁ + x ∈ F₁ ∧ g₂ + y ∈ F₂ at hgK`. Establish `hg₁ : g₁ ∈ A₁` using `(hA₁ g₁).2 ⟨g₂, hg⟩`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e₁ : g₁ = (a₁ : V)` using `congrArg Subtype.val (hu₁ ⟨g₁, hg₁⟩ hgK.1)`. Establish `hd : ((0 : V), g₂ - s) ∈ Γ`. Establish `h3` using `Γ.sub_mem hg hs`. Simplify `h3` using `[e₁]`. Establish `hg₂ : g₂ - s ∈ A₂` using `(hA₂ _).2 hd`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Normalize the expressions using the abelian group laws.
 
-Establish `e₂ : g₂ - s = (a₂ : V)`. Use `congrArg Subtype.val (hu₂ ⟨g₂ - s, hg₂⟩ ?_)` and prove the remaining obligations. Establish `e : g₂ - s + (s + y) = g₂ + y` using `by abel`. Use `show g₂ - s + (s + y) ∈ F₂`. Rewrite using `[e]`.
-
-Conclude with `hgK.2`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show (g₁, g₂) = ((a₁ : V), s + (a₂ : V))`. Rewrite using `[e₁, ← e₂]`. Use `congr 1`.
-
-Normalize the expressions using the abelian group laws. Establish `hFK : IsAddFundamentalDomain Γ K (μ.prod μ)` using `IsAddFundamentalDomain.mk' hK.nullMeasurableSet hKd`. Establish `hFK' : IsAddFundamentalDomain Γ (F₁ ×ˢ F₂) (μ.prod μ)` using `IsAddFundamentalDomain.mk' (hF₁.prod hF₂).nullMeasurableSet hK'`. Rewrite using `[hFK.measure_eq hFK', Measure.prod_prod]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fib2 (Γ : AddSubgroup (V × V)) [Countable Γ] (A₁ A₂ : AddSubgroup V)
     (hA₁ : ∀ x, x ∈ A₁ ↔ ∃ y, (x, y) ∈ Γ) (hA₂ : ∀ y, y ∈ A₂ ↔ ((0 : V), y) ∈ Γ)
@@ -108,15 +104,15 @@ end Fib
 variable {D : D7} (X : HidaSetting D)
 
 /- English proof (translation)
-The claim follows from `D.host.toHostAx.conjE_apply (embS D τ) x`.
+A detailed English derivation is pending.
 -/
 theorem embS_conj (τ : D.what₂.Tau) (x : D.host.E) : embS D τ (D.host.conj x) = starRingEnd ℂ (embS D τ x) :=
   D.host.toHostAx.conjE_apply (embS D τ) x
 
 /- English proof (translation)
-Rewrite using `[NumberField.mem_maximalRealSubfield_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Apply `D.host.φ₀.injective` to reduce the goal to its premises. Rewrite using `[D.host.toHostAx.conjE_apply]`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h _`. Introduce `h φ`. Establish `e` using `D.host.toHostAx.conjE_apply φ x`. Rewrite `e` using `[h]`. Conclude with `e.symm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_F_iff (x : D.host.E) : x ∈ D.host.F ↔ D.host.conj x = x := by
   rw [NumberField.mem_maximalRealSubfield_iff]
@@ -155,7 +151,7 @@ Both sides reduce to the same expression.
 theorem fIso_coe (a : X.B.I.F) : ((fIso X a : D.host.F) : D.host.E) = X.ιE (algebraMap X.B.I.F X.B.I.E a) := rfl
 
 /- English proof (translation)
-Establish `hy : (y : D.host.E) = X.ιE (algebraMap X.B.I.F X.B.I.E ((fIso X).symm y))`. Rewrite using `[← fIso_coe, RingEquiv.apply_symm_apply]`. Rewrite using `[hy, ← X.φ_eq, X.B.I.φ_over]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem emb_symm (v : InfinitePlace X.B.I.F) (y : D.host.F) :
     v.embedding ((fIso X).symm y) = embS D (X.pl v) (y : D.host.E) := by
@@ -164,7 +160,7 @@ theorem emb_symm (v : InfinitePlace X.B.I.F) (y : D.host.F) :
   rw [hy, ← X.φ_eq, X.B.I.φ_over]
 
 /- English proof (translation)
-Establish `hr : (psiP X v).IsReal` using `IsTotallyReal.isReal _`. Use `show (v.comap ((fIso X).symm : D.host.F →+* X.B.I.F)).embedding y = _`. Rewrite using `[InfinitePlace.comap_embedding_of_isReal _ hr, RingHom.comp_apply]`. Conclude with `emb_symm X v y`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem psiP_embedding (v : InfinitePlace X.B.I.F) (y : D.host.F) :
     (psiP X v).embedding y = embS D (X.pl v) (y : D.host.E) := by
@@ -179,7 +175,7 @@ def reVHom : D.host.F →+ (InfinitePlace X.B.I.F → ℝ) where
   map_add' a b := by funext v; simp
 
 /- English proof (translation)
-Rewrite using `[mixedEmbedding_apply_isReal]`. Use `show _ = (embS D (X.pl v) (y : D.host.E)).re`. Rewrite using `[← psiP_embedding X v y, ← InfinitePlace.embedding_of_isReal_apply, Complex.ofReal_re]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mixed_re (y : D.host.F) (v : InfinitePlace X.B.I.F) :
     (mixedEmbedding D.host.F y).1 ⟨psiP X v, IsTotallyReal.isReal _⟩ = reVHom X y v := by
@@ -193,14 +189,14 @@ def Pinv (z : InfinitePlace X.B.I.F → ℝ) : mixedSpace D.host.F :=
   (fun w => z ((psiP X).symm w.1), fun w => isEmptyElim w)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `v`. Simplify using `[Pmap, Pinv]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem Pmap_Pinv (z : InfinitePlace X.B.I.F → ℝ) : Pmap X (Pinv X z) = z := by
   funext v
   simp [Pmap, Pinv]
 
 /- English proof (translation)
-Use `Prod.ext ?_ ?_` and prove the remaining obligations. Use function extensionality and compare the values at `w`. Simplify using `[Pmap, Pinv]`. Use function extensionality and compare the values at `w`. Conclude with `isEmptyElim w`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem Pinv_Pmap (x : mixedSpace D.host.F) : Pinv X (Pmap X x) = x := by
   refine Prod.ext ?_ ?_
@@ -215,9 +211,9 @@ Both sides reduce to the same expression.
 theorem Pmap_add (x y : mixedSpace D.host.F) : Pmap X (x + y) = Pmap X x + Pmap X y := rfl
 
 /- English proof (translation)
-Set `e : {w : InfinitePlace D.host.F // w.IsReal} ≃ InfinitePlace X.B.I.F` to `{ toFun := fun w => (psiP X).symm w.1 invFun := fun v => ⟨psiP X v, IsTotallyReal.isReal _⟩ left_inv := fun w => Subtype.ext ((psiP X).apply_symm_apply w.1) right_inv := fun v => (psiP X).symm_apply_apply v }`. Use `haveI : IsProbabilityMeasure (volume : Measure ({w : InfinitePlace D.host.F // w.IsComplex} → ℂ)) := by`. Rewrite using `[volume_pi, Measure.pi_of_empty]`. Use `infer_instance`. Establish `h1 : MeasurePreserving (Prod.fst : mixedSpace D.host.F → ({w : InfinitePlace D.host.F // w.IsReal} → ℝ)) volume volume` using `measurePreserving_fst`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Establish `h2` using `volume_preserving_arrowCongr' e (MeasurableEquiv.refl ℝ) (MeasurePreserving.id volume)`. Use `h2.comp h1 using 1` and compare the differences between its conclusion and the goal. Apply the tactic sequence `all_goals first`. Consider the case `rfl`. Consider the case `(funext x; rfl)`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem Pmap_mp : MeasurePreserving (Pmap X) volume volume := by
   let e : {w : InfinitePlace D.host.F // w.IsReal} ≃ InfinitePlace X.B.I.F :=
@@ -237,7 +233,7 @@ theorem Pmap_mp : MeasurePreserving (Pmap X) volume volume := by
     | (funext x; rfl)
 
 /- English proof (translation)
-Unfold `Pinv`. Use `fun_prop`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem measurable_Pinv : Measurable (Pinv X) := by
   unfold Pinv
@@ -247,40 +243,36 @@ def reLat (𝔞 : FractionalIdeal (nonZeroDivisors (𝓞 D.host.F)) D.host.F) : 
   ((𝔞 : Submodule (𝓞 D.host.F) D.host.F).toAddSubgroup).map (reVHom X)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `v`. Conclude with `mixed_re X y v`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem Pmap_emb (y : D.host.F) : Pmap X (mixedEmbedding D.host.F y) = reVHom X y := by
   funext v
   exact mixed_re X y v
 
 /- English proof (translation)
-Set `b` to `fractionalIdealLatticeBasis D.host.F 𝔞`. Establish `hmem : ∀ z : mixedSpace D.host.F, z ∈ Submodule.span ℤ (Set.range b) ↔ Pmap X z ∈ reLat X 𝔞`. Introduce `z`. Rewrite using `[mem_span_fractionalIdealLatticeBasis]`. Prove the components needed by the constructor for the conclusion.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨y, hy, rfl⟩`. Rewrite using `[Pmap_emb]`. Conclude with `AddSubgroup.mem_map_of_mem _ hy`. Introduce and unpack `⟨y, hy, hyz⟩`. Use `⟨y, hy, ?_⟩` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e : Pmap X (mixedEmbedding D.host.F y) = Pmap X z`. Rewrite using `[Pmap_emb]`. Conclude with `hyz`. Establish `e2` using `congrArg (Pinv X) e`. Rewrite `e2` using `[Pinv_Pmap, Pinv_Pmap]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hPinv_add : ∀ u w, Pinv X (u + w) = Pinv X u + Pinv X w`. Introduce `u w`. Establish `e : u + w = Pmap X (Pinv X u + Pinv X w)`. Rewrite using `[Pmap_add, Pmap_Pinv, Pmap_Pinv]`. Rewrite using `[e, Pinv_Pmap]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `htr : ∀ S : Set (InfinitePlace X.B.I.F → ℝ), (∀ v, ∃! a : reLat X 𝔞, (a : InfinitePlace X.B.I.F → ℝ) + v ∈ S) → ∀ z, ∃! l : Submodule.span ℤ (Set.range b), l +ᵥ z ∈ Pmap X ⁻¹' S`. Introduce `S hS z`. Take `⟨a, ha, hu⟩` from `hS (Pmap X z)`. Establish `hl : Pinv X a ∈ Submodule.span ℤ (Set.range b)`. Rewrite using `[hmem, Pmap_Pinv]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `a.2`. Use `⟨⟨Pinv X a, hl⟩, ?_, ?_⟩` and prove the remaining obligations. Use `show Pmap X (Pinv X a + z) ∈ S`. Rewrite using `[Pmap_add, Pmap_Pinv]`. Conclude with `ha`.
+Assume the hypotheses and unpack their components. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce and unpack `⟨l, hl'⟩ hlS`. Express the relevant statement in the definitionally equal form `Pmap X (l + z) ∈ S at hlS`. Rewrite `hlS` using `[Pmap_add]`. Establish `e` using `hu ⟨Pmap X l, (hmem l).1 hl'⟩ hlS`. Apply `Subtype.ext` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `show l = Pinv X a`. Rewrite using `[← e]`. Conclude with `(Pinv_Pmap X l).symm`. Establish `hrev : ∀ T : Set (mixedSpace D.host.F), (∀ z, ∃! l : Submodule.span ℤ (Set.range b), l +ᵥ z ∈ T) → ∀ v, ∃! a : reLat X 𝔞, (a : InfinitePlace X.B.I.F → ℝ) + v ∈ Pinv X ⁻¹' T`. Introduce `T hT v`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨l, hl, hu⟩` from `hT (Pinv X v)`. Establish `ha : Pmap X l ∈ reLat X 𝔞` using `(hmem l).1 l.2`. Use `⟨⟨Pmap X l, ha⟩, ?_, ?_⟩` and prove the remaining obligations. Use `show Pinv X (Pmap X l + v) ∈ T`. Rewrite using `[hPinv_add, Pinv_Pmap]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hl`. Introduce and unpack `⟨a, ha'⟩ haT`. Express the relevant statement in the definitionally equal form `Pinv X (a + v) ∈ T at haT`. Rewrite `haT` using `[hPinv_add]`. Establish `hl2 : Pinv X a ∈ Submodule.span ℤ (Set.range b)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Treat this case separately.
 
-Rewrite using `[hmem, Pmap_Pinv]`. Conclude with `ha'`. Establish `e` using `hu ⟨Pinv X a, hl2⟩ haT`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show a = Pmap X l`.
+Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[← e]`. Conclude with `(Pmap_Pinv X a).symm`. Use `haveI : VAddInvariantMeasure (Submodule.span ℤ (Set.range b)) (mixedSpace D.host.F) volume := ⟨fun c s _ => measure_preimage_add volume (c : mixedSpace D.host.F) s⟩`. Establish `hFD : IsAddFundamentalDomain (Submodule.span ℤ (Set.range b)) (ZSpan.fundamentalDomain b) volume` using `ZSpan.isAddFundamentalDomain b volume`. Establish `hvol : volume (ZSpan.fundamentalDomain b) = ENNReal.ofReal ((FractionalIdeal.absNorm (𝔞 : FractionalIdeal (nonZeroDivisors (𝓞 D.host.F)) D.host.F) : ℝ) * √|(discr D.host.F : ℝ)|)`.
-
-Rewrite using `[volume_fundamentalDomain_fractionalIdealLatticeBasis, volume_fundamentalDomain_latticeBasis, IsTotallyReal.nrComplexPlaces_eq_zero, pow_zero, one_mul, ENNReal.ofReal_mul (by exact_mod_cast FractionalIdeal.absNorm_nonneg _), ← ENNReal.ofReal_coe_nnreal]`. Use `congr 2`. Use `first`. Consider the case `simp [Int.norm_eq_abs]`. Consider the case `simp [Real.coe_sqrt, Int.norm_eq_abs]`.
-
-Consider the case `(rw [NNReal.coe_sqrt]; simp [Int.norm_eq_abs])`. Use `⟨⟨Pinv X ⁻¹' ZSpan.fundamentalDomain b, measurable_Pinv X (ZSpan.fundamentalDomain_measurableSet b), hrev _ (fun z => ZSpan.exist_unique_vadd_mem_fundamentalDomain b z)⟩, ?_⟩` and prove the remaining obligations. Introduce `F hF hd`. Establish `hF' : IsAddFundamentalDomain (Submodule.span ℤ (Set.range b)) (Pmap X ⁻¹' F) volume` using `IsAddFundamentalDomain.mk' ((Pmap_mp X).measurable hF).nullMeasurableSet (htr F hd)`. Rewrite using `[← (Pmap_mp X).measure_preimage hF.nullMeasurableSet, hF'.measure_eq hFD, hvol]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem realIdealBlock (𝔞 : (FractionalIdeal (nonZeroDivisors (𝓞 D.host.F)) D.host.F)ˣ) :
     (∃ F : Set (InfinitePlace X.B.I.F → ℝ), MeasurableSet F ∧ ∀ v, ∃! a : reLat X 𝔞, (a : InfinitePlace X.B.I.F → ℝ) + v ∈ F) ∧

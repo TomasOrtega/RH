@@ -4,9 +4,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument
 open UpperTheory.V.Z.Sym UpperTheory.V.Z.Sym.Loc UpperTheory.V.Z.Sym.Glob Matrix
 
 /- English proof (translation)
-Establish `him : -z.im = z.im` using `by simpa using congrArg QuadraticAlgebra.im h`. Establish `h0 : z.im = 0`. Establish `h2 : (2 : K) * z.im = 0` using `by linear_combination -him`. Simplify using `using h2`. Use `ext`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. By extensionality, compare the relevant components.
 
-Simplify using the standard rewrite rules. Simplify using `[h0]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 private theorem star_fixed_eq {K : Type} [Field K] [CharZero K] (Δ : K) (z : Lsq K Δ) (h : star z = z) :
     algebraMap K (Lsq K Δ) z.re = z := by
@@ -19,14 +19,14 @@ private theorem star_fixed_eq {K : Type} [Field K] [CharZero K] (Δ : K) (z : Ls
   · simp [h0]
 
 /- English proof (translation)
-Apply the tactic sequence `ext <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem star_algebraMap {K : Type} [Field K] (Δ : K) (x : K) :
     star (algebraMap K (Lsq K Δ) x) = algebraMap K (Lsq K Δ) x := by
   ext <;> simp
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Conclude with `RingHom.map_mulVec (starRingEnd R) A y i`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 private theorem map_star_mulVec {R : Type} [CommRing R] [StarRing R] (A : Matrix (Fin 3) (Fin 3) R) (y : Fin 3 → R) :
     star (A *ᵥ y) = A.map star *ᵥ star y := by
@@ -34,11 +34,11 @@ private theorem map_star_mulVec {R : Type} [CommRing R] [StarRing R] (A : Matrix
   exact RingHom.map_mulVec (starRingEnd R) A y i
 
 /- English proof (translation)
-Establish `hRQ : Q⁻¹ * Q = 1` using `Matrix.nonsing_inv_mul _ hQu`. Establish `hmul : ∀ X Y : Matrix (Fin 3) (Fin 3) R, (X * Y).map star = X.map star * Y.map star` using `fun X Y => Matrix.map_mul (f := starRingEnd R)`. Establish `hone : (1 : Matrix (Fin 3) (Fin 3) R).map star = 1` using `Matrix.map_one (starRingEnd R) (map_zero _) (map_one _)`. Establish `hBs : B.map star * B = 1` using `mul_eq_one_comm.1 hB`. Establish `hRsQs : (Q⁻¹).map star * Q.map star = 1` using `by rw [← hmul, hRQ, hone]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hQsRs : Q.map star * (Q⁻¹).map star = 1` using `mul_eq_one_comm.1 hRsQs`. Establish `hRB : Q⁻¹ * B = (Q⁻¹).map star`. Combine the equalities or inequalities in the displayed calculation. Establish `hNs : N.map star = B.map star * N * B`. Rewrite using `[Matrix.mul_assoc, hNB, ← Matrix.mul_assoc, hBs, one_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hmul, hmul, hNs]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 private theorem conj_fixed {R : Type} [CommRing R] [StarRing R] (B N Q : Matrix (Fin 3) (Fin 3) R)
     (hB : B * B.map star = 1) (hNB : N * B = B * N.map star) (hQu : IsUnit Q.det) (hQ : B * Q.map star = Q) :
@@ -65,9 +65,9 @@ private theorem conj_fixed {R : Type} [CommRing R] [StarRing R] (B N Q : Matrix 
     _ = Q⁻¹ * N * Q := by rw [hB, Matrix.mul_one]
 
 /- English proof (translation)
-Establish `hfac : Matrix.of ![Q *ᵥ (A ∘ a), Q *ᵥ (A ∘ b), Q *ᵥ (A ∘ c)] = (Matrix.of ![a, b, c]).map A * Qᵀ`. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> simp [Matrix.mul_apply, Matrix.mulVec, dotProduct, mul_comm]`. Rewrite using `[hfac, Matrix.det_mul, Matrix.det_transpose]`. Use `IsUnit.mul ?_ hQu` and prove the remaining obligations.
+Establish an intermediate fact. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: ((Matrix.of ![a, b, c]).map A).det = A (Matrix.of ![a, b, c]).det` using `(RingHom.map_det A _).symm`. Rewrite using `[this]`. Conclude with `(isUnit_iff_ne_zero.2 hdet).map A`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem det_unit {K R : Type} [Field K] [CommRing R] (A : K →+* R) (Q : Matrix (Fin 3) (Fin 3) R)
     (hQu : IsUnit Q.det) (a b c : Fin 3 → K) (hdet : (Matrix.of ![a, b, c]).det ≠ 0) :
@@ -84,7 +84,7 @@ private theorem det_unit {K R : Type} [Field K] [CommRing R] (A : K →+* R) (Q 
   exact (isUnit_iff_ne_zero.2 hdet).map A
 
 /- English proof (translation)
-Use `Matrix.charpoly_units_conj' (⟨Q, Q⁻¹, hQR, hRQ⟩ : (Matrix n n R)ˣ) N` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem charpoly_conj' {n R : Type} [Fintype n] [DecidableEq n] [CommRing R] (Q N : Matrix n n R)
     (hRQ : Q⁻¹ * Q = 1) (hQR : Q * Q⁻¹ = 1) : (Q⁻¹ * N * Q).charpoly = N.charpoly := by
@@ -92,21 +92,21 @@ private theorem charpoly_conj' {n R : Type} [Fintype n] [DecidableEq n] [CommRin
   simpa using this
 
 /- English proof (translation)
-Establish `hRQ : Q⁻¹ * Q = 1` using `Matrix.nonsing_inv_mul _ hQu`. Establish `hQR : Q * Q⁻¹ = 1` using `Matrix.mul_nonsing_inv _ hQu`. Establish `hfx` using `conj_fixed B N Q hB hNB hQu hQ`. Establish `hex : ∀ i j, ∃ x, A x = (Q⁻¹ * N * Q) i j` using `fun i j => hfix _ (congrFun (congrFun hfx i) j)`. Use `choose m hm using hex`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Choose the witnesses or unpack the hypotheses as in `⟨M, hM⟩ : ∃ M : Matrix (Fin 3) (Fin 3) K, M.map A = Q⁻¹ * N * Q := by`. Use `⟨Matrix.of m, ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Conclude with `hm i j`. Establish `hcp : (Q⁻¹ * N * Q).charpoly = N.charpoly` using `charpoly_conj' Q N hRQ hQR`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hMc : M.charpoly = (Polynomial.X - 1) * (Polynomial.X ^ 2 - Polynomial.C τ * Polynomial.X + 1)`. Apply `Polynomial.map_injective A hAinj` to reduce the goal to its premises. Rewrite using `[← Matrix.charpoly_map, hM, hcp, hchar]`. Simplify using the standard rewrite rules. Take `⟨e₀, v₀, he, hv, hdet⟩` from `hI M hMc`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hL : ∀ x : Fin 3 → K, (Q⁻¹ * N * Q) *ᵥ (A ∘ x) = A ∘ (M *ᵥ x)`. Introduce `x`. Use function extensionality and compare the values at `i`. Rewrite using `[← hM]`. Conclude with `(RingHom.map_mulVec A M x i).symm`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hN : ∀ x : Fin 3 → K, N *ᵥ (Q *ᵥ (A ∘ x)) = Q *ᵥ (A ∘ (M *ᵥ x))`. Introduce `x`. Rewrite using `[← hL, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec]`. Use `congr 1`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, hQR, one_mul]`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hS : ∀ x : Fin 3 → K, B *ᵥ star (Q *ᵥ (A ∘ x)) = Q *ᵥ (A ∘ x)`. Introduce `x`. Establish `: star (A ∘ x) = A ∘ x`. Use function extensionality and compare the values at `i`. Conclude with `hst (x i)`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_star_mulVec, this, Matrix.mulVec_mulVec, hQ]`. Use `⟨Q *ᵥ (A ∘ e₀), Q *ᵥ (A ∘ v₀), hS _, hS _, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hN, he]`. Rewrite using `[hN, hN, hv]`. Establish `: A ∘ (τ • (M *ᵥ v₀) - v₀) = A τ • (A ∘ (M *ᵥ v₀)) - A ∘ v₀`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules. Rewrite using `[this, Matrix.mulVec_sub, Matrix.mulVec_smul]`. Rewrite using `[hN]`. Conclude with `det_unit A Q hQu _ _ _ hdet`.
+A detailed English derivation is pending.
 -/
 private theorem core {K R : Type} [Field K] [CommRing R] [StarRing R] (A : K →+* R)
     (hAinj : Function.Injective A) (hfix : ∀ z : R, star z = z → ∃ x, A x = z)
@@ -162,7 +162,7 @@ private theorem core {K R : Type} [Field K] [CommRing R] [StarRing R] (A : K →
     exact det_unit A Q hQu _ _ _ hdet
 
 /- English proof (translation)
-Introduce `K _ _ Δ τ hΔ hτ B N hB hNB hchar`. Take `⟨Q, hQu, hQ⟩` from `UpperTheory.exists_isUnit_det_mul_map_star_eq_of_unitary K Δ hΔ B hB`. Use `core (algebraMap K (Lsq K Δ)) ?_ (fun z hz => ⟨z.re, star_fixed_eq Δ z hz⟩) (star_algebraMap Δ) τ (UpperTheory.exists_fixed_rotation_basis_of_charpoly K τ hτ) B N Q hB hNB hchar hQu hQ` and prove the remaining obligations. Introduce `x y h`. Simplify using `using congrArg QuadraticAlgebra.re h`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem UpperTheory.exists_star_fixed_rotation_basis_of_charpoly :
     ∀ (K : Type) [Field K] [CharZero K] (Δ τ : K), Δ ≠ 0 → τ ^ 2 - 4 ≠ 0 → ∀ B N : Matrix (Fin 3) (Fin 3) (Lsq K Δ),

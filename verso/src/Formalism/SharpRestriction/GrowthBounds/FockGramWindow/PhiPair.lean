@@ -16,15 +16,15 @@ def mX (J l : ℕ) (u v : MvPolynomial σ ℚ_[p]) : ℚ_[p] :=
   M.fockK (((tieE w e) ^ l) (((tieF w e) ^ l) u)) v / (((l.factorial : ℚ_[p]) ^ 2) * (J.choose l : ℚ_[p]))
 
 /- English proof (translation)
-Establish `hz` using `Formalism.InvariantFactorPaths.KP.LL.tieF_pow_apply_eq_zero_of_min_lt w e hw he hwe hv`. Unfold `tiePhi`. Rewrite using `[LinearMap.sum_apply, ProjS.fockK_sum_left, Finset.mul_sum]`. Establish `hsub : range (min o n + 1) ⊆ range (o + 1)`. Introduce `l hl`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [mem_range] at hl ⊢`. Use linear arithmetic over natural numbers and integers. Rewrite using `[← Finset.sum_subset hsub]`. Use `Finset.sum_congr rfl fun l hl => ?_` and prove the remaining obligations. Establish `hl' : l ≤ min o n` using `by simp only [mem_range] at hl; omega`.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hJM : min o n ≤ o + n + r + z - 1` using `by omega`. Establish `hch` using `Nat.choose_mul (n := o + n + r + z - 1) hl'`. Establish `hch' : ((o + n + r + z - 1).choose (min o n) : ℚ_[p]) * ((min o n).choose l : ℚ_[p]) = ((o + n + r + z - 1).choose l : ℚ_[p]) * ((o + n + r + z - 1 - l).choose (min o n - l) : ℚ_[p])`. Conclude with `hch` after adjusting the coercions. Establish `h1 : ((min o n).choose l : ℚ_[p]) ≠ 0` using `by exact_mod_cast (Nat.choose_pos hl').ne'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : ((o + n + r + z - 1).choose l : ℚ_[p]) ≠ 0` using `by exact_mod_cast (Nat.choose_pos (hl'.trans hJM)).ne'`. Establish `h3 : (l.factorial : ℚ_[p]) ≠ 0` using `by exact_mod_cast l.factorial_ne_zero`. Rewrite using `[LinearMap.smul_apply, ProjS.fockK_smul_left, LinearMap.comp_apply]`. Unfold `mX`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `(M.fockK (((tieE w e) ^ l) (((tieF w e) ^ l) u)) v) * hch'`. Introduce `l _ hl`. Establish `hl' : min o n < l` using `by simp only [mem_range] at hl; omega`. Rewrite using `[LinearMap.smul_apply, ProjS.fockK_smul_left, LinearMap.comp_apply, ProjS.fockK_tieE_pow, hz l hl', ProjS.fockK_zero_right, mul_zero, mul_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem phi_pair (hw : Function.Injective w) (he : Function.Injective e) (hwe : ∀ c d, w c ≠ e d) (hr : 1 ≤ r)
     (o n z : ℕ) (u v : MvPolynomial σ ℚ_[p]) (hv : BiHom w e o n v) :
@@ -62,15 +62,15 @@ def cW {K : Type} [Field K] (q J : ℕ) (mm : ℕ → K) (i : ℕ) : K :=
   ∑ l ∈ range (J + 1), if i + l ≤ J then (-1 : K) ^ l * ((q - l).choose (J - l - i) : K) * mm l else 0
 
 /- English proof (translation)
-Unfold `cW`. Repeatedly rewrite using `[Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun l hl => ?_` and prove the remaining obligations. Establish `hl' : l ≤ J` using `by simp only [mem_range] at hl; omega`.
+Replace the relevant objects with their definitions. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hv : (q + z - l).choose (J - l) = ∑ i ∈ range (J - l + 1), z.choose i * (q - l).choose (J - l - i)`. Rewrite using `[show q + z - l = z + (q - l) by omega, Nat.add_choose_eq, Finset.Nat.sum_antidiagonal_eq_sum_range_succ_mk]`. Rewrite using `[hv]`. Use `push_cast`. Rewrite using `[Finset.mul_sum, Finset.sum_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
-Establish `hsub : range (J - l + 1) ⊆ range (J + 1)`. Introduce `i hi`. Simplify using `only [mem_range] at hi ⊢`. Use linear arithmetic over natural numbers and integers. Rewrite using `[← Finset.sum_subset hsub]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun i hi => ?_` and prove the remaining obligations. Establish `: i + l ≤ J` using `by simp only [mem_range] at hi; omega`. Rewrite using `[if_pos this]`. Expand and normalize the polynomial expressions, which then agree. Introduce `i _ hi`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `: ¬ (i + l ≤ J)` using `by simp only [mem_range] at hi; omega`. Rewrite using `[if_neg this, zero_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem cW_sum {K : Type} [Field K] (q J z : ℕ) (hq : J ≤ q) (mm : ℕ → K) :
     ∑ i ∈ range (J + 1), cW q J mm i * (z.choose i : K) =
@@ -96,9 +96,9 @@ theorem cW_sum {K : Type} [Field K] (q J z : ℕ) (hq : J ≤ q) (mm : ℕ → K
     rw [if_neg this, zero_mul]
 
 /- English proof (translation)
-Unfold `cW`. Rewrite using `[Finset.sum_eq_single 0]`. Simplify using the standard rewrite rules. Introduce `l _ hl`. Rewrite using `[if_neg (by omega)]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `h`. Simplify using `at h`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem cW_top {K : Type} [Field K] (q J : ℕ) (mm : ℕ → K) : cW q J mm J = mm 0 := by
   unfold cW
@@ -109,9 +109,9 @@ theorem cW_top {K : Type} [Field K] (q J : ℕ) (mm : ℕ → K) : cW q J mm J =
   · intro h; simp at h
 
 /- English proof (translation)
-Unfold `cW`. Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg zero_le_one fun l hl => ?_` and prove the remaining obligations. Establish `hl' : l ≤ J` using `by simp only [mem_range] at hl; omega`. Use `split_ifs`. Rewrite using `[norm_mul, norm_mul, norm_pow, norm_neg, norm_one, one_pow, one_mul]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : ‖(((q - l).choose (J - l - i) : ℕ) : ℚ_[p])‖ ≤ 1`. Rewrite using `[← PadicInt.coe_natCast, ← PadicInt.norm_def]`. Conclude with `PadicInt.norm_le_one _`. Combine the equalities or inequalities in the displayed calculation. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cW_norm {p : ℕ} [Fact p.Prime] (q J : ℕ) (mm : ℕ → ℚ_[p]) (h : ∀ l ≤ J, ‖mm l‖ ≤ 1) (i : ℕ) :
     ‖cW q J mm i‖ ≤ 1 := by

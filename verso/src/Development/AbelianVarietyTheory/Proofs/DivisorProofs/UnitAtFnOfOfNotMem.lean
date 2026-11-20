@@ -18,7 +18,7 @@ variable {X : Scheme.{0}} [IsIntegral X] {U : X.Opens} (hU : IsAffineOpen U) {y 
 include hU in
 
 /- English proof (translation)
-Use `letI := X.presheaf.algebra_section_stalk (⟨y, hy⟩ : U)`. Use `haveI := hU.isLocalization_stalk ⟨y, hy⟩`. Conclude with `⟨_, IsLocalization.map_units (X.presheaf.stalk y) (⟨s, hs⟩ : (hU.primeIdealOf ⟨y, hy⟩).asIdeal.primeCompl), algebraMap_germ hy s⟩`.
+Equip the data with the indicated structure. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem unitAt_fnOf_of_not_mem {s : Γ(X, U)} (hs : s ∉ (hU.primeIdealOf ⟨y, hy⟩).asIdeal) :
     UnitAt y (fnOf U (gen_mem hy) s) := by
@@ -30,9 +30,9 @@ theorem unitAt_fnOf_of_not_mem {s : Γ(X, U)} (hs : s ∉ (hU.primeIdealOf ⟨y,
 include hU in
 
 /- English proof (translation)
-Use `letI := X.presheaf.algebra_section_stalk (⟨y, hy⟩ : U)`. Use `haveI := hU.isLocalization_stalk ⟨y, hy⟩`. Take `⟨a, rfl⟩` from `hf`. Take `⟨⟨c, s⟩, e⟩` from `IsLocalization.surj (hU.primeIdealOf ⟨y, hy⟩).asIdeal.primeCompl a`. Use `⟨c, s, s.2, ?_⟩` and prove the remaining obligations.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e'` using `congrArg (algebraMap _ X.functionField) e`. Rewrite `e'` using `[map_mul]`. Rewrite using `[← algebraMap_germ hy, ← algebraMap_germ hy]`. Conclude with `e'`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem regAt_exists_fraction {f : X.functionField} (hf : RegAt y f) :
     ∃ c s : Γ(X, U), s ∉ (hU.primeIdealOf ⟨y, hy⟩).asIdeal ∧
@@ -50,9 +50,9 @@ theorem regAt_exists_fraction {f : X.functionField} (hf : RegAt y f) :
 end SlopeTestRemainingChoices
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨v, rfl⟩`. Establish `h : ((v : R) : K) * ((v⁻¹ : Rˣ) : R) = 1`. Rewrite using `[← R.coe_mul, Units.mul_inv]`. Both sides reduce to the same expression.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Conclude with `⟨left_ne_zero_of_mul_eq_one h, (inv_eq_of_mul_eq_one_right h) ▸ (v⁻¹ : Rˣ).1.2⟩`. Introduce and unpack `⟨h0, hi⟩`. Conclude with `isUnit_iff_exists_inv.2 ⟨⟨_, hi⟩, Subtype.ext (mul_inv_cancel₀ h0)⟩`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem isUnit_iff_inv_mem {K : Type} [Field K] {R : ValuationSubring K} (u : R) :
     IsUnit u ↔ (u : K) ≠ 0 ∧ (u : K)⁻¹ ∈ R := by
@@ -65,31 +65,29 @@ theorem isUnit_iff_inv_mem {K : Type} [Field K] {R : ValuationSubring K} (u : R)
     exact isUnit_iff_exists_inv.2 ⟨⟨_, hi⟩, Subtype.ext (mul_inv_cancel₀ h0)⟩
 
 /- English proof (translation)
-Take `⟨U, hU, hx, -⟩` from `exists_isAffineOpen_mem_and_subset (x := x) (U := ⊤) trivial`. Establish `ord0 : ∀ {b : X.functionField}, b ≠ 0 → b ∈ E.ring → b⁻¹ ∈ E.ring → (placeEquiv p E).ord b = 0` using `fun {b} h0 h1 h2 => by`. Establish `a1` using `((placeEquiv p E).ord_nonneg_iff h0).2 h1`. Establish `a2` using `((placeEquiv p E).ord_nonneg_iff (inv_ne_zero h0)).2 h2`. Rewrite `a2` using `[Place.ord_inv]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use linear arithmetic over natural numbers and integers. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hC, hP⟩`. Establish `hT : E.Through x` using `(contains_placeEquiv E x).1 hC`. Set `φ : Γ(X, U) →+* E.ring` to `(fnOf U (gen_mem hx)).codRestrict E.ring fun a => hT _ (regAt_fnOf hx _ a)`.
+Use linear arithmetic over natural numbers and integers. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `P : PrimeSpectrum Γ(X, U)` to `⟨(IsLocalRing.maximalIdeal E.ring).comap φ, inferInstance⟩`. Establish `memP (s : Γ(X, U)) : s ∉ P.asIdeal ↔ (fnOf U (gen_mem hx) s ≠ 0 ∧ (fnOf U (gen_mem hx) s)⁻¹ ∈ E.ring)`. Express the relevant statement in the definitionally equal form `φ s ∉ IsLocalRing.maximalIdeal E.ring ↔ _`. Rewrite using `[IsLocalRing.mem_maximalIdeal, mem_nonunits_iff, not_not]`. Conclude with `isUnit_iff_inv_mem (φ s)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hPQ : P ≤ hU.primeIdealOf ⟨x, hx⟩` using `fun s hs => by_contra fun hs' =>`. Establish `h` using `unitAt_fnOf_of_not_mem hU hx hs'`. Use the proof step `(memP s).2 ⟨h.ne_zero, hT _ h.inv.regAt⟩ hs`. Establish `hz : hU.fromSpec P ∈ U`. Establish `: hU.fromSpec P ∈ Set.range hU.fromSpec` using `⟨P, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Introduce a local definition for the expression.
 
-Rewrite `this` using `[hU.range_fromSpec]`. Then use the resulting hypothesis. Set `z : U` to `⟨hU.fromSpec P, hz⟩`. Establish `hP' : hU.primeIdealOf z = P` using `hU.fromSpec.isOpenEmbedding.injective (hU.fromSpec_primeIdealOf z)`. Establish `hzx : (z : X) ⤳ x`. Establish `h` using `((PrimeSpectrum.le_iff_specializes P (hU.primeIdealOf ⟨x, hx⟩)).mp hPQ).map hU.fromSpec.continuous`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `h` using `[hU.fromSpec_primeIdealOf ⟨x, hx⟩]`. Then use the resulting hypothesis. Use `clear_value z`. Use `⟨z, hzx, fun f => ⟨fun hf => ?_, fun hf => ?_⟩⟩` and prove the remaining obligations. Take `⟨a, ha, b, hb, hb0, hord, e⟩` from `hP f hf`. Take `⟨b', t, ht, e2⟩` from `regAt_exists_fraction hU hx (mem_locRing.1 hb)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hut` using `unitAt_fnOf_of_not_mem hU hx ht`. Establish `htP : t ∉ P.asIdeal` using `(memP t).2 ⟨hut.ne_zero, hT _ hut.inv.regAt⟩`. Establish `hb'0 : fnOf U (gen_mem hx) b' ≠ 0` using `e2 ▸ mul_ne_zero hb0 hut.ne_zero`. Establish `ht0 : (placeEquiv p E).ord (fnOf U (gen_mem hx) t) = 0` using `ord0 hut.ne_zero (hT _ hut.regAt) (hT _ hut.inv.regAt)`. Establish `hob' : (placeEquiv p E).ord (fnOf U (gen_mem hx) b') = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← e2, (placeEquiv p E).ord_mul hb0 hut.ne_zero, hord, ht0, add_zero]`. Establish `hb'i : (fnOf U (gen_mem hx) b')⁻¹ ∈ E.ring` using `((placeEquiv p E).ord_nonneg_iff (inv_ne_zero hb'0)).1 (by rw [Place.ord_inv, hob', neg_zero])`. Establish `hb'P : b' ∉ P.asIdeal` using `(memP b').2 ⟨hb'0, hb'i⟩`. Establish `hub'` using `unitAt_fnOf_of_not_mem hU z.2 (s := b') (by rw [hP']; exact hb'P)`. Establish `hut'` using `unitAt_fnOf_of_not_mem hU z.2 (s := t) (by rw [hP']; exact htP)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hbz : UnitAt (z : X) b`. Establish `eb : b = fnOf U (gen_mem hx) b' * (fnOf U (gen_mem hx) t)⁻¹`. Rewrite using `[← e2, mul_inv_cancel_right₀ hut.ne_zero]`. Rewrite using `[eb]`. Conclude with `hub'.mul hut'.inv`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `haz : RegAt (z : X) a` using `regAt_of_specializes hzx (mem_locRing.1 ha)`. Establish `ef : f = a * b⁻¹` using `by rw [← e, mul_inv_cancel_right₀ hb0]`. Rewrite using `[ef]`. Conclude with `haz.mul hbz.inv.regAt`. Take `⟨c, s, hs, e⟩` from `regAt_exists_fraction hU z.2 hf`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hs' : s ∉ P.asIdeal` using `by rw [← hP']; exact hs`. Take `⟨hs0, hsi⟩` from `(memP s).1 hs'`. Establish `ef : f = fnOf U (gen_mem hx) c * (fnOf U (gen_mem hx) s)⁻¹`. Rewrite using `[← e, mul_inv_cancel_right₀ hs0]`. Rewrite using `[ef]`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `mul_mem (hT _ (regAt_fnOf hx _ c)) hsi`. Introduce and unpack `⟨z, hzx, hz⟩`. Use `⟨(contains_placeEquiv E x).2 (hz.through hzx), fun f hf => ?_⟩` and prove the remaining obligations. Establish `hzU : z ∈ U` using `hzx.mem_open U.isOpen hx`. Take `⟨c, s, hs, e⟩` from `regAt_exists_fraction hU hzU ((hz f).1 hf)`.
-
-Establish `hu` using `unitAt_fnOf_of_not_mem hU hzU hs`. Conclude with `⟨_, mem_locRing.2 (regAt_fnOf hx _ c), _, mem_locRing.2 (regAt_fnOf hx _ s), hu.ne_zero, ord0 hu.ne_zero ((hz _).2 hu.regAt) ((hz _).2 hu.inv.regAt), e⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isPrimeOf_placeEquiv {k : Type} [Field k] {X : Scheme.{0}} [IsIntegral X] {p : X ⟶ Sp k}
     (E : DivOver p) (x : X) :

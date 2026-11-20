@@ -16,15 +16,11 @@ section Gen
 variable {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
 
 /- English proof (translation)
-Use `haveI : CompactSpace K := isCompact_iff_compactSpace.mp hKc`. Use `set U := K₀.subgroupOf K with hU`. Establish `hUo : IsOpen (U : Set K)` using `hK₀.preimage continuous_subtype_val`. Use `haveI : Finite (K ⧸ U) := Subgroup.quotient_finite_of_isOpen _ hUo`. Use `haveI : U.FiniteIndex := Subgroup.finiteIndex_of_finite_quotient`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `hUc : IsClosed (U : Set K)` using `U.isClosed_of_isOpen hUo`. Establish `hcl : IsClosed (U.normalCore : Set K)`. Establish `e : (U.normalCore : Set K) = ⋂ b : K, (fun a => b * a * b⁻¹) ⁻¹' (U : Set K)`. Use extensionality with `a`. Simplify using `only [Set.mem_iInter, Set.mem_preimage, SetLike.mem_coe]`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Both sides reduce to the same expression. Rewrite using `[e]`. Conclude with `isClosed_iInter fun b => hUc.preimage (by fun_prop)`. Establish `hco : IsOpen (U.normalCore : Set K)` using `Subgroup.isOpen_of_isClosed_of_finiteIndex _ hcl`. Use `⟨U.normalCore.map K.subtype, ?_, ?_, Subgroup.map_subtype_le _, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[Subgroup.coe_map]`. Conclude with `hKo.isOpenMap_subtype_val _ hco`. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Conclude with `Subgroup.mem_subgroupOf.1 (Subgroup.normalCore_le U hx)`. Establish `e : (U.normalCore.map K.subtype).subgroupOf K = U.normalCore` using `Subgroup.comap_map_eq_self_of_injective K.subtype_injective _`.
-
-Rewrite using `[e]`. Conclude with `Subgroup.normalCore_normal U`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem exists_normal (K K₀ : Subgroup G) (hKo : IsOpen (K : Set G)) (hKc : IsCompact (K : Set G))
     (hK₀ : IsOpen (K₀ : Set G)) :
@@ -54,11 +50,11 @@ private theorem exists_normal (K K₀ : Subgroup G) (hKo : IsOpen (K : Set G)) (
     exact Subgroup.normalCore_normal U
 
 /- English proof (translation)
-Unfold `UpperTheory.V.Z.Tf.GlobalTraceComparison.trc`. Use `(GlobalTheory.TraceLevel.twTr_level ρ K _ N F hNo hKc ?_ ?_ ⟨hF.1, ?_⟩ hfd).symm` and prove the remaining obligations. Introduce `k hk`. Use `⟨⟨hNK hk, fun x => (hF.2 k hk x).2⟩, fun x => ?_⟩` and prove the remaining obligations. Use `show F (x * k)⁻¹ = F x⁻¹`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[_root_.mul_inv_rev, (hF.2 _ (N.inv_mem hk) _).1]`. Conclude with `inf_le_left.trans inf_le_left`. Introduce `k hk x`. Use `⟨?_, hk.1.2 x⟩` and prove the remaining obligations. Establish `h` using `hk.2 (x⁻¹ * k⁻¹)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `only [_root_.mul_inv_rev, inv_inv, inv_mul_cancel_right] at h`. Simplify using `using h.symm`.
+A detailed English derivation is pending.
 -/
 private theorem trc_eq {V : Type} [AddCommGroup V] [Module ℂ V] (ρ : Representation ℂ G V) (K N : Subgroup G)
     (hKc : IsCompact (K : Set G)) (hNo : IsOpen (N : Set G)) (hNK : N ≤ K)
@@ -80,9 +76,9 @@ private theorem trc_eq {V : Type} [AddCommGroup V] [Module ℂ V] (ρ : Represen
 end Gen
 
 /- English proof (translation)
-Unfold `hint`. Establish `h1 : (rStab u ⊓ K).relIndex K = 1` using `Subgroup.relIndex_eq_one.2 fun x _ => by`. Rewrite using `[Subsingleton.elim x 1]`. Conclude with `one_mem _`. Use `haveI : Unique (H ⧸ (rStab u ⊓ K)) := { default := QuotientGroup.mk 1 uniq := fun q => by`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately.
 
-Proceed by induction on `q using QuotientGroup.induction_on with`. Consider the case `H x => rw [Subsingleton.elim x 1] }`. Establish `hu : ∀ x : H, u x = u 1` using `fun x => by rw [Subsingleton.elim x 1]`. Rewrite using `[h1, finsum_unique, hu]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem hint_sub {H : Type} [Group H] [Subsingleton H] (K : Subgroup H) (u : H → ℂ) : hint K u = u 1 := by
   unfold hint
@@ -102,11 +98,11 @@ private theorem hint_sub {H : Type} [Group H] [Subsingleton H] (K : Subgroup H) 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
 /- English proof (translation)
-Establish `e : ∀ i : Fin n, (finSumFinEquiv.trans (finCongr (Nat.add_zero n))).symm i = Sum.inl i`. Introduce `i`. Rewrite using `[Equiv.symm_apply_eq]`. Use `ext`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Both sides reduce to the same expression. Establish `hM : Matrix.reindex (finSumFinEquiv.trans (finCongr (Nat.add_zero n))) (finSumFinEquiv.trans (finCongr (Nat.add_zero n))) (Matrix.fromBlocks g.val (g.val * X) 0 m.val) = g.val`. Use extensionality with `i j`. Simplify using `only [Matrix.reindex_apply, Matrix.submatrix_apply, e, Matrix.fromBlocks_apply₁₁]`. Establish `key : ∀ (M : Matrix (Fin n) (Fin n) (w.adicCompletion E)), M = g.val → (if hM : IsUnit M then hM.unit else (1 : GLw n w)) = g`.
+Both sides reduce to the same expression. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce and unpack `_ rfl`. Rewrite using `[dif_pos g.isUnit]`. Conclude with `Units.ext rfl`. Conclude with `key _ hM`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem blk_zero {n : ℕ} (w : Pl E) (g : GLw n w) (m : GLw 0 w) (X : Matrix (Fin n) (Fin 0) (w.adicCompletion E)) :
     blk (Nat.add_zero n) w (g, m) X = g := by
@@ -128,13 +124,11 @@ private theorem blk_zero {n : ℕ} (w : Pl E) (g : GLw n w) (m : GLw 0 w) (X : M
   exact key _ hM
 
 /- English proof (translation)
-Use `haveI : Subsingleton (Multiplicative (Matrix (Fin n) (Fin 0) (w.adicCompletion E))) := ⟨fun a b => Multiplicative.toAdd.injective (by ext i j; exact j.elim0)⟩`. Establish `hU : ∀ y : GLw n w, y ∈ UL n w` using `fun y => by`. Unfold `UL`. Rewrite using `[if_pos hw]`. Discharge the goal by the elementary cases of `trivial`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. Establish an intermediate fact.
 
-Establish `hs : ∀ y : GLw n w, (toSub (UL n w) y : GLw n w) = y` using `fun y => by`. Unfold `toSub`. Rewrite using `[dif_pos (hU y)]`. Unfold `ct0 ctMu ct`. Rewrite using `[hint_sub]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [blk_zero, hs]`. Establish `h0 : absHalf w ((g, (1 : GLw 0 w)).1.val.det ^ 0 / (g, (1 : GLw 0 w)).2.val.det ^ n) = 1`. Simplify using `[absHalf, ordL]`. Conclude with `zpow_zero _`. Rewrite using `[h0]`.
-
-Simplify using the standard rewrite rules.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem constant_term_parabolic_average {n : ℕ} (w : Pl E) (hw : IsSplitAt w) (μ : HChar E) (f : ∀ w : Pl E, GLw n w → ℂ) (g : GLw n w) :
     ct0 μ (Nat.add_zero n) f w (g, 1) = avg fun k : KGL w n => f w ((k : GLw n w)⁻¹ * g * k) := by
@@ -157,9 +151,9 @@ private theorem constant_term_parabolic_average {n : ℕ} (w : Pl E) (hw : IsSpl
   simp
 
 /- English proof (translation)
-Introduce `E _ _ _ n w hw μ τ f hf`. Take `⟨K₀, hK₀o, -, hH⟩` from `hf`. Take `⟨hKo, hKc⟩` from `GlobalTheory.LFun.SatCompare.isOpen_isCompact_KGL (E := E) w n`. Take `⟨N, hNo, hNK₀, hNK, hNn⟩` from `exists_normal _ K₀ hKo hKc hK₀o`. Establish `hfd` using `finiteDimensional_fixed_openSubgroup_GLw E n w τ N hNo`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hfN : IsHecke N (f w)` using `⟨hH.1, fun k hk x => hH.2 k (hNK₀ hk) x⟩`. Take `⟨hFN, -, -, htr⟩` from `GlobalTheory.ConjAvg.conjAvg E n w τ.V τ.ρ N hNo hNK hNn (f w) hfN`. Establish `hct : (fun g => ct0 μ (Nat.add_zero n) f w (g, 1)) = fun g => avg fun k : KGL w n => f w ((k : GLw n w)⁻¹ * g * k)`. Use function extensionality and compare the values at `fun g => constant_term_parabolic_average w hw μ f g`. Rewrite using `[hct, trc_eq τ.ρ _ N hKc hNo hNK hfd _ hFN, trc_eq τ.ρ _ N hKc hNo hNK hfd _ hfN, htr]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 -/
 theorem trAvg : TrAvg := by
   intro E _ _ _ n w hw μ τ f hf

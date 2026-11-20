@@ -31,15 +31,15 @@ open AddMonoidAlgebra (single)
 open GlobalTheory.TorusUnit GlobalTheory.BiextTriv
 
 /- English proof (translation)
-Establish `key : ∀ z, z ≠ χ → u.coeff z = 0`. Introduce `z hz`. Establish `hn : u.coeff z ∈ nilradical A`. Rewrite using `[nilradical_eq_sInf]`. Use `Ideal.mem_sInf.2 fun {p} hp => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: p.IsPrime` using `hp`. Take `⟨a, c, -, e⟩` from `Semi.Rosenlicht.isUnit_eq_single (hu.map (AddMonoidAlgebra.mapRingHom X (Ideal.Quotient.mk p)))`. Establish `ec : ∀ w, Ideal.Quotient.mk p (u.coeff w) = (single a c : AddMonoidAlgebra (A ⧸ p) X).coeff w`. Introduce `w`. Rewrite using `[← e, AddMonoidAlgebra.coeff_mapRingHom]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `ha : a = χ`. Assume the negation of the conclusion as `hne`. Establish `h1` using `ec χ`. Simplify using `only [AddMonoidAlgebra.coeff_single, Finsupp.single_apply, if_neg hne] at h1`. Conclude with `(hχ.map (Ideal.Quotient.mk p)).ne_zero h1`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h2` using `ec z`. Simplify using `only [AddMonoidAlgebra.coeff_single, Finsupp.single_apply, if_neg (ha.trans_ne hz.symm)] at h2`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.1 h2`. Rewrite `hn` using `[nilradical_eq_zero]`. Conclude with `hn`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Use extensionality with `z`. Distinguish the cases in `h : z = χ`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[AddMonoidAlgebra.coeff_single, Finsupp.single_apply, key z h, Ne.symm h]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem eq_single_of_isUnit_coeff {A X : Type} [CommRing A] [IsReduced A] [AddCommGroup X]
     [TwoUniqueSums X] {u : AddMonoidAlgebra A X} (hu : IsUnit u) {χ : X}
@@ -78,9 +78,9 @@ def IsMonoNear (ρ : Γ((splitTorus S X ⊗ Y).left, ⊤)) (χ : X) (p : Y.left)
     p ∈ Set.range y ∧ ∃ c : R, IsUnit c ∧ (expand y).hom ρ = single χ c
 
 /- English proof (translation)
-Take `⟨R, y, hy, hp, c, hc, he⟩` from `h`. Establish `H : Set.range (Y.left.fromSpecResidueField p) ⊆ Set.range y`. Rewrite using `[Scheme.range_fromSpecResidueField]`. Simplify using `using hp`. Take `⟨f, hf⟩ : ∃ f, Spec.map f ≫ y = Y.left.fromSpecResidueField p` from `⟨Spec.preimage (IsOpenImmersion.lift y _ H), by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result.
 
-Rewrite using `[Spec.map_preimage, IsOpenImmersion.lift_fac]⟩`. Use `⟨f.hom c, (hc.map _).ne_zero, ?_⟩` and prove the remaining obligations. Rewrite using `[← hf, expand_map, he]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem IsMonoNear.residueField {ρ : Γ((splitTorus S X ⊗ Y).left, ⊤)} {χ : X} {p : Y.left}
     (h : IsMonoNear ρ χ p) : ∃ c : Y.left.residueField p, c ≠ 0 ∧
@@ -96,9 +96,9 @@ theorem IsMonoNear.residueField {ρ : Γ((splitTorus S X ⊗ Y).left, ⊤)} {χ 
   simp
 
 /- English proof (translation)
-Take `⟨c, hc, e⟩` from `h.residueField`. Take `⟨c', -, e'⟩` from `h'.residueField`. Assume the negation of the conclusion as `hne`. Use `congrArg (fun f => AddMonoidAlgebra.coeff f χ) (e.symm.trans e')` as an intermediate fact. Simplify using `[AddMonoidAlgebra.coeff_single, Finsupp.single_apply, Ne.symm hne] at this`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `hc this`.
+A detailed English derivation is pending.
 -/
 theorem IsMonoNear.unique {ρ : Γ((splitTorus S X ⊗ Y).left, ⊤)} {χ χ' : X} {p : Y.left}
     (h : IsMonoNear ρ χ p) (h' : IsMonoNear ρ χ' p) : χ = χ' := by
@@ -111,15 +111,13 @@ theorem IsMonoNear.unique {ρ : Γ((splitTorus S X ⊗ Y).left, ⊤)} {χ χ' : 
   exact hc this
 
 /- English proof (translation)
-Establish `: TwoUniqueSums X` using `twoUniqueSums_of_free X`. Take `⟨R, y, hy, q, hq⟩ : ∃ (R : CommRingCat.{0}) (y : Spec R ⟶ Y.left), IsOpenImmersion y ∧ p ∈ Set.range y` from `⟨_, Y.left.affineOpenCover.f (Y.left.affineOpenCover.idx p), inferInstance, Y.left.affineOpenCover.covers p⟩`. Take `⟨χ, hχ⟩` from `exists_coeff_notMem (ρ.isUnit.map (expand y).hom) q.asIdeal q.2.ne_top`. Use `set a := ((expand y).hom ρ.val).coeff χ with ha`. Set `g : R ⟶ CommRingCat.of (Localization.Away a)` to `CommRingCat.ofHom (algebraMap R (Localization.Away a))`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hopen : IsOpenImmersion (Spec.map g ≫ y)` using `inferInstance`. Establish `hred : IsReduced (Spec (CommRingCat.of (Localization.Away a)))` using `isReduced_of_isOpenImmersion (Spec.map g ≫ y)`. Establish `hred' : _root_.IsReduced (Localization.Away a)` using `(affine_isReduced_iff (CommRingCat.of (Localization.Away a))).1 hred`. Establish `hcoeff : ((expand (Spec.map g ≫ y)).hom ρ.val).coeff χ = algebraMap R (Localization.Away a) a`. Rewrite using `[expand_map, AddMonoidAlgebra.coeff_mapRingHom]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Establish `hunit : IsUnit (((expand (Spec.map g ≫ y)).hom ρ.val).coeff χ)`. Rewrite using `[hcoeff]`. Conclude with `IsLocalization.Away.algebraMap_isUnit a`. Use `⟨χ, _, Spec.map g ≫ y, hopen, ?_, _, hunit, eq_single_of_isUnit_coeff (ρ.isUnit.map (expand _).hom) hunit⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `PrimeSpectrum.localization_away_comap_range (Localization.Away a) a` as an intermediate fact. Choose the witnesses or unpack the hypotheses as in `⟨r, hr⟩ : q ∈ Set.range (PrimeSpectrum.comap (algebraMap R (Localization.Away a))) := by`. Rewrite using `[this]`. Conclude with `hχ`. Use `⟨r, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[← hq, ← hr]`. Conclude with `Scheme.Hom.comp_apply _ _ _`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_isMonoNear [Module.Free ℤ X] [IsReduced Y.left]
     (ρ : Γ((splitTorus S X ⊗ Y).left, ⊤)ˣ) (p : Y.left) : ∃ χ, IsMonoNear ρ.val χ p := by
@@ -153,7 +151,7 @@ theorem exists_isMonoNear [Module.Free ℤ X] [IsReduced Y.left]
   exact Scheme.Hom.comp_apply _ _ _
 
 /- English proof (translation)
-Rewrite using `[expand, value, ← Scheme.Hom.comp_appTop_assoc, prodPoint_snd, Scheme.Hom.comp_appTop, Category.assoc, Scheme.ΓSpecIso_naturality]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem snd_expand {R : CommRingCat.{0}} (y : Spec R ⟶ Y.left) :
     (snd (splitTorus S X) Y).left.appTop ≫ expand y =
@@ -162,13 +160,13 @@ theorem snd_expand {R : CommRingCat.{0}} (y : Spec R ⟶ Y.left) :
     Category.assoc, Scheme.ΓSpecIso_naturality]
 
 /- English proof (translation)
-Use `choose c hc using exists_isMonoNear (X := X) (Y := Y) ρ`. Establish `hlc : IsLocallyConstant c`. Rewrite using `[IsLocallyConstant.iff_exists_open]`. Introduce `p`. Take `⟨R, y, hy, hp, he⟩` from `hc p`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨Set.range y, y.isOpenEmbedding.isOpen_range, hp, fun p' hp' => (hc p').unique ⟨R, y, hy, hp', he⟩⟩`. Take `⟨p₀⟩ : Nonempty Y.left` from `inferInstance`. Use `⟨c p₀, ext_of_expand fun p => ?_⟩` and prove the remaining obligations. Take `⟨R, y, hy, hp, d, -, he⟩` from `hc p`. Use `⟨R, y, hy, hp, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e1` using `congrArg (fun f => f.hom ρ.val) (expand_aug (X := X) y)`. Simplify using `only [CommRingCat.hom_comp, RingHom.comp_apply] at e1`. Rewrite `e1` using `[he, aug_single]`. Establish `e2` using `congrArg (fun f => f.hom ((unitSec X Y).appTop.hom ρ.val)) (snd_expand (X := X) y)`. Simplify using `only [CommRingCat.hom_comp, RingHom.comp_apply] at e2`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul, e2, ← e1, expand_char, he, hlc.apply_eq_of_preconnectedSpace p p₀]`. Simplify using `[const, AddMonoidAlgebra.single_mul_single]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem eq_char_mul [Module.Free ℤ X] [ConnectedSpace Y.left] [IsReduced Y.left]
     (ρ : Γ((splitTorus S X ⊗ Y).left, ⊤)ˣ) :
@@ -198,13 +196,13 @@ end GlobalTheory.CompanionTheory.TorusMono
 open GlobalTheory.CompanionTheory.TorusMono GlobalTheory.BiextTriv in
 
 /- English proof (translation)
-Introduce `S X _ _ Y _ _ ρ`. Take `⟨χ, hχ⟩` from `eq_char_mul ρ`. Use `⟨χ, fun Z t y => ?_⟩` and prove the remaining obligations. Establish `c1 : ∀ v, (lift t y).left.appTop.hom ((fst (splitTorus S X) Y).left.appTop.hom v) = t.left.appTop.hom v` using `fun v => by`. Establish `e : (lift t y).left ≫ (fst (splitTorus S X) Y).left = t.left`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← Over.comp_left, lift_fst]`. Rewrite using `[← e, Scheme.Hom.comp_appTop]`. Both sides reduce to the same expression. Establish `c2 : ∀ v, (lift t y).left.appTop.hom ((snd (splitTorus S X) Y).left.appTop.hom v) = y.left.appTop.hom v` using `fun v => by`. Establish `e : (lift t y).left ≫ (snd (splitTorus S X) Y).left = y.left`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← Over.comp_left, lift_snd]`. Rewrite using `[← e, Scheme.Hom.comp_appTop]`. Both sides reduce to the same expression. Establish `c3 : y.left.appTop.hom ((unitSec X Y).appTop.hom ρ.val) = (lift (1 : Z ⟶ splitTorus S X) y).left.appTop.hom ρ.val`. Rewrite using `[← comp_unitSec, Scheme.Hom.comp_appTop]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Use `conv_lhs => rw [hχ]`. Rewrite using `[map_mul, c1, c2, c3, chV_val]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.CompanionTheory.TorusMono.torus_unit_eq_char_mul : ∀ (S : Scheme.{0}) (X : Type) [AddCommGroup X] [Module.Free ℤ X] (Y : Over S) [ConnectedSpace Y.left] [IsReduced Y.left] (ρ : Γ((splitTorus S X ⊗ Y).left, ⊤)ˣ), ∃ χ : X, ∀ (Z : Over S) (t : Z ⟶ splitTorus S X) (y : Z ⟶ Y), (lift t y).left.appTop.hom ρ.val = (chV t χ).val * (lift (1 : Z ⟶ splitTorus S X) y).left.appTop.hom ρ.val := by
   intro S X _ _ Y _ _ ρ

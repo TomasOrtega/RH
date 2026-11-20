@@ -7,13 +7,13 @@ open ReciprocityTheory.ChartRestriction.G.FD NumberField Complex Metric
 noncomputable section
 
 /- English proof (translation)
-Establish `hm0pos : 0 < m0` using `by nlinarith`. Establish `h1ρ : 0 < 1 - ρ` using `by linarith`. Establish `h1ρ' : 0 < 1 + ρ` using `by linarith`. Establish `hmpos : 0 < m` using `lt_of_lt_of_le (by positivity) hlo`. Establish `hcm : 1 / (c * m) = m0 / m`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[div_eq_div_iff (by positivity) (by positivity)]`. Take the linear combination `(-m) * hm0`. Rewrite using `[hcm]`. Prove the components needed by the constructor for the conclusion. Rewrite using `[div_le_div_iff₀ h1ρ' hmpos]`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities.
 
-Establish `h` using `hhi`. Rewrite `h` using `[div_mul_eq_mul_div, le_div_iff₀ h1ρ]`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[div_le_div_iff₀ hmpos h1ρ]`. Establish `h` using `hlo`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h` using `[div_mul_eq_mul_div, div_le_iff₀ h1ρ']`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem inv_mul_between_ratio {c m m0 ρ : ℝ} (hρ0 : 0 < ρ) (hρ1 : ρ < 1) (hc : 0 < c) (hm0 : c * m0 = 1)
     (hlo : (1 - ρ) / (1 + ρ) * m0 ≤ m) (hhi : m ≤ (1 + ρ) / (1 - ρ) * m0) :
@@ -37,7 +37,7 @@ theorem inv_mul_between_ratio {c m m0 ρ : ℝ} (hρ0 : 0 < ρ) (hρ1 : ρ < 1) 
     linarith
 
 /- English proof (translation)
-Establish `h1 : a / b = Real.exp (Real.log a - Real.log b)`. Rewrite using `[Real.exp_sub, Real.exp_log ha, Real.exp_log hb]`. Rewrite using `[h1]`. Apply `Real.exp_le_exp.mpr` to reduce the goal to its premises. Establish `h2` using `neg_le_abs (Real.log b - Real.log a)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
 Combine the linear equalities and inequalities to obtain the conclusion.
 -/
@@ -51,7 +51,7 @@ theorem div_le_exp_of_abs_log_sub_le {a b K : ℝ} (ha : 0 < a) (hb : 0 < b) (h 
   linarith
 
 /- English proof (translation)
-Establish `h1 : w * r ≤ w * w` using `mul_le_mul_of_nonneg_left hrw hw`. Establish `h2 : z ^ 2 ≤ rh ^ 2` using `pow_le_pow_left₀ hz0 hz 2`. Establish `h3 : (w * rh) ^ 2 ≤ (1 / 36) ^ 2` using `pow_le_pow_left₀ (mul_nonneg hw hrh) hwrh 2`. Establish `h4 : w * r * z ^ 2 ≤ w * w * rh ^ 2` using `mul_le_mul h1 h2 (sq_nonneg z) (mul_nonneg hw hw)`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem small_power_bound {w r rh z : ℝ} (hr0 : 0 ≤ r) (hrw : r ≤ w) (hw : 0 ≤ w) (hrh : 0 ≤ rh)
     (hwrh : w * rh ≤ 1 / 36) (hz0 : 0 ≤ z) (hz : z ≤ rh) : 4 * w * r * z ^ 2 ≤ 1 / 4 := by
@@ -63,9 +63,9 @@ theorem small_power_bound {w r rh z : ℝ} (hr0 : 0 ≤ r) (hrw : r ≤ w) (hw :
   nlinarith
 
 /- English proof (translation)
-Unfold `ReciprocityTheory.ChartRestriction.G.FD.d6rh`. Establish `hpi` using `Real.pi_gt_three`. Establish `hw0 : 0 < w` using `by linarith`. Establish `hpos : 0 < 12 * Real.pi * (c1 + w)` using `by positivity`. Establish `hp3 : (0 : ℝ) < Real.pi - 3` using `by linarith`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨by positivity, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[div_lt_div_iff₀ hpos (by norm_num)]`. Use polynomial arithmetic with `[mul_pos hc1 hp3, mul_pos hw0 hp3]`. Rewrite using `[mul_one_div, div_le_div_iff₀ hpos (by norm_num)]`. Use polynomial arithmetic with `[mul_pos hc1 hp3, mul_pos hw0 hp3]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem rh_facts {c1 w : ℝ} (hc1 : 0 < c1) (hw1 : 1 ≤ w) :
     0 < d6rh c1 w ∧ d6rh c1 w < 1 / 10 ∧ w * d6rh c1 w ≤ 1 / 36 := by
@@ -81,61 +81,55 @@ theorem rh_facts {c1 w : ℝ} (hc1 : 0 < c1) (hw1 : 1 ≤ w) :
     nlinarith [mul_pos hc1 hp3, mul_pos hw0 hp3]
 
 /- English proof (translation)
-Introduce `r X la P ξ ν c1 w z0 hD hrw`. Simplify using `only`. Introduce `n' hn'`. Take `⟨-, hPSS, hIso, hc1, -, -, hw1, hspr, -, hz0D1, hsup⟩` from `id hD`. Establish `hBdd : X.IsBddSec la P` using `hPSS.1`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify by unfolding definitions. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hSec : X.IsSec la P` using `hBdd.1`. Establish `hFdiff : DifferentiableOn ℂ (X.fj la ξ ν P) X.dom` using `hFd r X.toData la P ξ ν hBdd hIso`. Establish `hFb' : ∀ x ∈ X.dom, ∀ b ∈ Bor X.Ψ r, X.fj la ξ ν P (rmul x b) = bchar la b * X.fj la ξ ν P x` using `hFb r X.toData la P ξ ν hSec hIso`. Take `⟨C, hC⟩` from `hFc r X.toData la P ξ ν hBdd hIso`. Take `⟨hP0a, hP0b, hP0c⟩` from `h0 r X.toData`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hpn_inv` using `hP0b la (X.fj la ξ ν P) hFb'`. Take `⟨hz0dom, hz0c⟩` from `hz0D1`. Establish `hself : ∀ x, X.SameFlag x x` using `fun x τ => rfl`. Establish `htrans : ∀ x y z, X.SameFlag x y → X.SameFlag y z → X.SameFlag x z` using `fun x y z h1 h2 τ => (h1 τ).trans (h2 τ)`. Use `set F := X.fj la ξ ν P with hF`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpn_le_hat : ∀ y ∈ X.dom, X.pnorm la F y ≤ X.hatN la F y`. Introduce `y hy`. Use `le_csSup ⟨C, ?_⟩ ⟨y, hy, hself y, rfl⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨x', hx', -, rfl⟩`. Conclude with `hC x' hx'`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hhat_le : ∀ y ∈ X.dom, X.hatN la F y ≤ C`. Introduce `y hy`. Use `csSup_le ⟨_, y, hy, hself y, rfl⟩ ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨x', hx', -, rfl⟩`. Conclude with `hC x' hx'`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set S := sSup {t | ∃ y ∈ X.FramesOverBasis ξ, t = X.hatN la F y} with hS`. Establish `hSbdd : BddAbove {t | ∃ y ∈ X.FramesOverBasis ξ, t = X.hatN la F y}` using `⟨C, by rintro _ ⟨y, hy, rfl⟩; exact hhat_le y hy.1⟩`. Establish `hz0S : X.hatN la F z0 ≤ S` using `le_csSup hSbdd ⟨z0, ⟨hz0dom, hz0c⟩, rfl⟩`. Establish `hlt : S / 2 < sSup {t | ∃ x' ∈ X.dom, X.SameFlag z0 x' ∧ t = X.pnorm la F x'}`. Establish `h` using `hsup`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition. Combine the linear equalities and inequalities to obtain the conclusion. Extract witnesses or component facts from the available result.
 
-Express the relevant statement in the definitionally equal form `S < 2 * X.hatN la F z0 at h`. Express the relevant statement in the definitionally equal form `S / 2 < X.hatN la F z0`. Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨_, ⟨x', hx'dom, hzx', rfl⟩, hx'lt⟩` from `exists_lt_of_lt_csSup (⟨_, z0, hz0dom, hself z0, rfl⟩ : {t | ∃ x' ∈ X.dom, X.SameFlag z0 x' ∧ t = X.pnorm la F x'}.Nonempty) hlt`. Establish `hx'le : X.pnorm la F x' ≤ S`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Use `le_trans ?_ hz0S` and prove the remaining obligations. Use `le_csSup ⟨C, ?_⟩ ⟨x', hx'dom, hzx', rfl⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨y, hy, -, rfl⟩`. Conclude with `hC y hy`. Establish `hS0 : 0 ≤ S`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `le_trans ?_ hx'le` and prove the remaining obligations. Conclude with `mul_nonneg (norm_nonneg _) (hNp r X.toData la x' hx'dom).le`. Take `⟨b, hb, hortho⟩` from `hP0a x' hx'dom`. Establish `hx0dom : rmul x' b ∈ X.dom` using `hOD r X.toData _ hortho`. Establish `hx'x0 : X.SameFlag x' (rmul x' b)` using `hBF r X.toData x' b hb hx0dom`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hz0x0 : X.SameFlag z0 (rmul x' b)` using `htrans _ _ _ hzx' hx'x0`. Establish `hpx0 : X.pnorm la F (rmul x' b) = X.pnorm la F x'` using `hpn_inv x' hx'dom b hb`. Establish `hmaj : X.maj z0 = X.maj (rmul x' b)` using `(hP0c z0 hz0dom _ hx0dom hz0x0).2`. Use `set x0 := rmul x' b with hx0`. Take `⟨hrh0, hrh1, hwrh⟩` from `rh_facts (c1 := c1) (w := w) hc1 hw1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨hP1b, -⟩` from `h1 r X.toData x0 hx0dom hortho (d6rh c1 w) hrh0 hrh1.le`. Take `⟨-, hP1d⟩` from `h1 r X.toData x0 hx0dom hortho (1 / 10) (by norm_num) le_rfl`. Take `⟨lam, h1m, Z1, hU1, hline, hUz, hsplit1, hflag1, hZ1⟩` from `h4 r X la P ξ ν c1 w z0 hD x0 hx0dom hortho hz0x0`. Take `⟨n, Z, hUn, -, hn'p, hsplit, hflag, hZ⟩` from `h7 r X la P ξ ν c1 w z0 hD x0 hx0dom hortho hz0x0 lam h1m Z1 hU1 hline hUz hsplit1 hflag1 hZ1 n' hn'`. Use `set rh := d6rh c1 w with hrh`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `hZn0 : 0 ≤ X.zN Z` using `hZn r X.toData Z`. Establish `hZle : X.zN Z ≤ rh` using `by linarith`. Take `⟨hxdom, -, -⟩` from `hP1b Z hZle`. Establish `hx''dom : X.lmulC n (X.lmulC h1m z0) ∈ X.dom` using `hUD r X.toData n _ hUn (hUD r X.toData h1m z0 hU1 hz0dom)`. Take `⟨hJ, -, hA⟩` from `(hP0c _ hx''dom _ hxdom hflag).1 ξ`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hucomp : ∀ u, X.ucomp (X.lmulC n (X.lmulC h1m z0)) ξ u = X.ucomp (X.xZ x0 Z) ξ u` using `fun u => by simp only [Data.ucomp, hA]`. Use `⟨X.xZ x0 Z, hxdom, lam, ?_⟩` and prove the remaining obligations. Take `⟨s1, s2, s3, s4, s5, s6⟩` from `hsplit`. Use `⟨s1, s2, s3, fun j hj => ?_, fun j hj => ?_, s6, fun μ hμ => ?_, ?_⟩` and prove the remaining obligations. Take `⟨a1, a2⟩` from `s4 j hj`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Use `⟨a1, ?_⟩` and prove the remaining obligations. Rewrite using `[← hJ, ← hucomp]`. Conclude with `a2`. Take `⟨a1, a2⟩` from `s5 j hj`. Use `⟨a1, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hJ, ← hucomp]`. Conclude with `a2`. Take `⟨e, he, he2⟩` from `hn'p μ hμ`. Conclude with `⟨e, he, by rw [← hA]; exact he2⟩`. Use `set s := X.zN Z with hs`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `hmaxpos : 0 < max s (rh / 22)` using `lt_max_of_lt_right (by positivity)`. Use `set ρ := rh / max s (rh / 22) with hρ`. Establish `hρpos : 0 < ρ` using `div_pos hrh0 hmaxpos`. Establish `hρs : ρ * s ≤ rh`. Rewrite using `[hρ, div_mul_eq_mul_div, div_le_iff₀ hmaxpos]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Conclude with `mul_le_mul_of_nonneg_left (le_max_left _ _) hrh0.le`. Establish `h21 : 21 < ρ`. Rewrite using `[hρ, lt_div_iff₀ hmaxpos]`. Break down `le_total s (rh / 22) with h | h` into its components or cases. Rewrite using `[max_eq_right h]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[max_eq_left h]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hzt : ∀ t : ℂ, ‖t‖ ≤ ρ → X.zN (t • Z) ≤ rh`. Introduce `t ht`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Rewrite using `[hZs r X.toData t Z]`. Combine the equalities or inequalities in the displayed calculation. Establish `hx0nf : 0 < X.nfac la x0` using `hNp r X.toData la x0 hx0dom`. Set `γ : ℂ → ℂ` to `fun t => F (X.xZ x0 (t • Z)) * (X.nfac la x0 : ℂ)`. Establish `hγd : DifferentiableOn ℂ γ (closedBall 0 ρ)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hG` using `hP1d F hFdiff`. Establish `hlin : Differentiable ℂ (fun t : ℂ => t • Z)` using `differentiable_id.smul_const Z`. Use `(hG.comp hlin.differentiableOn ?_).mul_const _` and prove the remaining obligations. Introduce `t ht`. Simplify using `only [Set.mem_setOf_eq]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h` using `hzt t (mem_closedBall_zero_iff.mp ht)`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hγb : ∀ t ∈ closedBall (0 : ℂ) ρ, ‖γ t‖ ≤ Real.exp (9 / 4) * S`. Introduce `t ht`. Establish `htb` using `hzt t (mem_closedBall_zero_iff.mp ht)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨hydom, hylog, hymaj⟩` from `hP1b (t • Z) htb`. Establish `hynf : 0 < X.nfac la (X.xZ x0 (t • Z))` using `hNp r X.toData la _ hydom`. Establish `hlog` using `hylog la w hspr`. Establish `hsm : 4 * w * r * X.zN (t • Z) ^ 2 ≤ 1 / 4` using `small_power_bound (by positivity) hrw (by linarith) hrh0.le hwrh (hZn r X.toData _) htb`. Establish `hratio : X.nfac la x0 / X.nfac la (X.xZ x0 (t • Z)) ≤ Real.exp (1 / 4)` using `div_le_exp_of_abs_log_sub_le hx0nf hynf (by linarith)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities.
 
-Establish `htt : ∀ τ, (1 - rh) / (1 + rh) ≤ X.tt ξ (X.xZ x0 (t • Z)) τ ∧ X.tt ξ (X.xZ x0 (t • Z)) τ ≤ (1 + rh) / (1 - rh)`. Introduce `τ`. Establish `hcpos : 0 < X.c τ` using `mul_pos two_pos (norm_pos_iff.mpr ((map_ne_zero _).mpr X.ξ0_ne))`. Establish `hm0 : X.c τ * X.maj x0 τ (Data.emb τ.1 ξ) = 1`. Rewrite using `[← hmaj]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `hz0c τ`. Take `⟨hlo, hhi⟩` from `hymaj τ (Data.emb τ.1 ξ)`. Conclude with `inv_mul_between_ratio hrh0 (by linarith) hcpos hm0 hlo hhi`. Establish `hyhat : X.hatN la F (X.xZ x0 (t • Z)) ≤ Real.exp 2 * S` using `h2 r X la P ξ ν c1 w z0 hD _ hydom htt`. Establish `hpy : X.pnorm la F (X.xZ x0 (t • Z)) = ‖F (X.xZ x0 (t • Z))‖ * X.nfac la (X.xZ x0 (t • Z))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Rewrite using `[Data.pnorm, Data.nfac]`. Establish `hnorm : ‖γ t‖ = X.pnorm la F (X.xZ x0 (t • Z)) * (X.nfac la x0 / X.nfac la (X.xZ x0 (t • Z)))`. Simplify using `only [γ, norm_mul, Complex.norm_real, Real.norm_eq_abs, abs_of_pos hx0nf, hpy]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[hnorm]`.
-
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_right_comm, ← Real.exp_add]`. Evaluate the numerical expressions. Establish `hγ0 : ‖γ 0‖ = X.pnorm la F x0`. Simplify using `only [γ, zero_smul, hX0 r X.toData x0, norm_mul, Complex.norm_real, Real.norm_eq_abs, abs_of_pos hx0nf]`.
-
-Rewrite using `[Data.pnorm, Data.nfac]`. Establish `hP3` using `h3 ℂ γ ρ S hρpos hγd hγb (by rw [hγ0, hpx0]; linarith) (by rw [hγ0, hpx0]; exact hx'le) 1 (by rw [mem_ball_zero_iff, norm_one, lt_div_iff₀ (by norm_num)]; linarith)`. Introduce `hF0`. Apply `hP3` to reduce the goal to its premises. Simplify using `only [γ, one_smul]`.
-
-Rewrite using `[hF0, zero_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fundamentalDomain_of_parts {E : Type} [Field E] [NumberField E] [IsCMField E]
     (hFd : FjDiff E) (hFb : FjBEq E) (hFc : FjBdd E) (hOD : OrthoDom E) (hUD : UnitDom E)

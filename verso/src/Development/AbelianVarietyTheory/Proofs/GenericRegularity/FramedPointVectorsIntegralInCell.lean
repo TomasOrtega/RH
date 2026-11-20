@@ -18,9 +18,9 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 namespace GlobalTheory.Reg.IntLie
 
 /- English proof (translation)
-Establish `h1` using `((GlobalTheory.cell_columns_saturated_and_triangular V L n r ix u hu).1 r x).1 (by`. Rewrite using `[h]`. Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, i.2, rfl⟩))`. Take `⟨a, -, ha⟩` from `(GlobalTheory.mem_span_first_columns_iff u r x).1 h1`. Use `⟨a, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ha]`. Use extensionality with `j`. Simplify using `[Matrix.mulVec, dotProduct, Finset.sum_apply, _root_.mul_comm]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem int_comb {V L : Type} [CommRing V] [IsDomain V] [Field L] [Algebra V L] [IsFractionRing V L] {n r : ℕ}
     (ix : Fin r ↪ Fin n) (u : Matrix (Fin n) (Fin r) V) (hu : InCell ix u) (x : Fin n → V) (cf : Fin r → L)
@@ -36,7 +36,7 @@ theorem int_comb {V L : Type} [CommRing V] [IsDomain V] [Field L] [Algebra V L] 
   simp [Matrix.mulVec, dotProduct, Finset.sum_apply, _root_.mul_comm]
 
 /- English proof (translation)
-Establish `: ReciprocityTheory.ChartRestriction.G.Chart.dualMapR (g.comp f) = (ReciprocityTheory.ChartRestriction.G.Chart.dualMapR g).comp (ReciprocityTheory.ChartRestriction.G.Chart.dualMapR f)`. Use `RingHom.ext fun x => ?_` and prove the remaining obligations. Apply the tactic sequence `ext <;> simp [ReciprocityTheory.ChartRestriction.G.Chart.dualMapR]`. Rewrite using `[this, ← Spec.map_comp, ← CommRingCat.ofHom_comp]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 -/
 theorem dualMapR_comp {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (g : B →+* C) :
     spMap (ReciprocityTheory.ChartRestriction.G.Chart.dualMapR (g.comp f)) =
@@ -60,47 +60,43 @@ open scoped CategoryTheory.Obj
 set_option maxHeartbeats 800000 in
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c O _ β Y M T io f₀ ix u₀ hcell`. Set `_` to `io.toAlgebra`. Introduce `z Λ tie G m m2 hφ`. Use `G.semi.smooth` as an intermediate fact. Establish `: ∀ a, IsMonHom (G.act.act a)` using `G.act.hom`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨v, hv0, hvb, -⟩` from `M.lie T.V f₀ G m`. Take `⟨xc, hxc, hxv⟩` from `chart_of_basis hvb`. Take `⟨x', hx', hcomp⟩` from `tanBC_alg (R := T.V) (R' := T.Fr) G.G M.n xc hxc`. Establish `hpt : ∀ cc : Fin M.n → T.V, pushR G.G (tvec (x` using `x') (algebraMap T.V T.Fr ∘ cc)) = ReciprocityTheory.ChartRestriction.G.Chart.spMap (dualMapA T.V T.Fr) ≫ tvec (x := xc) cc := fun cc => Over.OverMorphism.ext (by rw [pushR_left, hcomp cc]; rfl)`. Establish `hM0 : ∀ (a : 𝓞 E) (cc : Fin M.n → T.V), tmap hx' ((Over.pullback (fB T.V T.Fr)).map (G.act.act a)) (algebraMap T.V T.Fr ∘ cc) = algebraMap T.V T.Fr ∘ tmap hxc (G.act.act a) cc`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `a cc`. Apply `tvec_inj hx'` to reduce the goal to its premises. Apply `pushR_inj G.G` to reduce the goal to its premises. Rewrite using `[tvec_tmap hx', pushR_map, hpt, hpt, tvec_tmap hxc, Category.assoc]`. Establish `hM : ∀ (a : 𝓞 E) (cc : Fin M.n → T.V), tmap hx' ((Over.pullback (fB T.V T.Fr)).map (G.act.act a)) (fun j => algebraMap T.V T.Fr (cc j)) = fun j => algebraMap T.V T.Fr (tmap hxc (G.act.act a) cc j)` using `hM0`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1` using `Λ.m1.cart`. Establish `h2 : IsGrpPullback Λ.t'.G G.G (fB T.V T.Fr) m2.φ` using `m2.cart`. Use `choose vA hvA using fun e : Fin M.n → T.Fr => relA_exists_v z.x h1 h2 (tvec (x := x') e)`. Establish `tanA : ∀ e, IsTanAt z.x (vA e).left` using `fun e => ⟨Over.w (vA e), (relA_tan z.x h1 h2 (hvA e)).2 (isTan_tvec hx' e)⟩`. Establish `eigA : ∀ (τ : E →+* ℂ) e, IsEigAt c τ (vA e).left ↔ ∀ a, tmap hx' ((Over.pullback (fB T.V T.Fr)).map (G.act.act a)) e = io (embK c τ a) • e`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `τ e`. Unfold `IsEigAt`. Use `forall_congr' fun a => ?_` and prove the remaining obligations. Rewrite using `[← tvec_eig_iff hx']`. Conclude with `relA_eig z.x h1 h2 (hvA e) (Λ.t'.act.act a) (Xo.univ.t.act.act a) (G.act.act a) (Λ.m1.act a) (m2.act a) _`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `combA : ∀ {m : ℕ} (d : Fin m → Fin M.n → T.Fr) (cf : Fin m → T.Fr) (e : Fin M.n → T.Fr), IsCombAt z.x (fun i => (vA (d i)).left) cf (vA e).left ↔ e = ∑ i, cf i • d i`. Introduce `m d cf e`. Establish `hr : ∀ i, RelA z.x Λ.m1.φ m2.φ (sclA z.x (cf i) ≫ vA (d i)) (ReciprocityTheory.ChartRestriction.G.Chart.spMap (scaleD (cf i)) ≫ tvec (x` using `x') (d i)) := fun i => relA_scl z.x (hvA (d i)) (cf i)`. Establish `hp` using `relA_prod z.x h1 h2 _ _ hr`. Rewrite `hp` using `[prod_tvec hx']`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u, hu, hw⟩`. Establish `hu' : u = fun i => sclA z.x (cf i) ≫ vA (d i)` using `funext fun i => Over.OverMorphism.ext (hu i)`. Substitute `hu'` using the available equality. Conclude with `tvec_inj hx' ((relA_uniq z.x h1 h2 (hvA e) hp).1 (Over.OverMorphism.ext hw.symm))`.
+Establish an intermediate fact. Substitute using the available equality. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact.
 
-Introduce and unpack `rfl`. Conclude with `⟨fun i => sclA z.x (cf i) ≫ vA (d i), fun i => rfl, congrArg (fun q => q.left) ((relA_uniq z.x h1 h2 hp (hvA _)).2 rfl)⟩`. Use `choose χ hχ using fun τ a => int_val c T io τ a`. Establish `combV : ∀ cc : Fin M.n → T.V, IsLieComb cc v (tvec (x` using `xc) cc) := by`. Introduce `cc`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun i => ReciprocityTheory.ChartRestriction.G.Chart.spMap (scaleD (cc i)) ≫ tvec (x := xc) (Pi.single i 1), fun i => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hxv i]`. Both sides reduce to the same expression. Use `Eq.trans ?_ (prod_tvec hxc cc fun i => Pi.single i 1).symm` and prove the remaining obligations. Use `congr 1`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use extensionality with `j`. Simplify using `[Finset.sum_apply, Pi.single_apply]`. Establish `gen : ∀ τ i, ∃ u' : epsR T.Fr ⟶ Λ.t'.G, u'.left ≫ Λ.m1.φ = z.u τ i ∧ u'.left ≫ m2.φ = spMap (dualMapR (algebraMap T.V T.Fr)) ≫ (tvec (x` using `xc) fun j => u₀ τ j i).left := by`. Introduce `τ i`. Take `⟨v', u', hv', hc, hu'⟩` from `tie τ i`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨u', hu', ?_⟩` and prove the remaining obligations. Use `(GlobalTheory.lieComb_baseChange T.V T.Fr (algebraMap T.V T.Fr) G.G Λ.t'.G m2.φ m2.cart M.n v _ _ v' u' (fun j => ?_) (combV fun j => u₀ τ j i)).2 hc` and prove the remaining obligations. Apply `m.cart.1.hom_ext` to reduce the goal to its premises. Use `(Category.assoc _ _ _).trans (((congrArg ((v' j).left ≫ ·) hφ).trans (hv' j)).trans ?_)` and prove the remaining obligations. Rewrite using `[dualMapR_comp]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `(Category.assoc _ _ _).trans ((congrArg (spMap (dualMapR (algebraMap T.V T.Fr)) ≫ ·) (hv0 j).symm).trans (Category.assoc _ _ _).symm)`. Rewrite using `[Category.assoc, m2.cart.1.w, ← Category.assoc, Over.w, Category.assoc, Over.w]`. Conclude with `(GlobalTheory.LieCombBaseChange.dualMap_over _).symm`. Establish `hz : ∀ τ, z.u τ = fun i => (vA fun j => algebraMap T.V T.Fr (u₀ τ j i)).left`. Introduce `τ`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Use function extensionality and compare the values at `i`. Take `⟨u', hu1, hu2⟩` from `gen τ i`. Take `⟨w, hw, hwl⟩` from `hvA (fun j => algebraMap T.V T.Fr (u₀ τ j i))`. Establish `hw' : w.left ≫ m2.φ = (tvec (x` using `x') (fun j => algebraMap T.V T.Fr (u₀ τ j i))).left ≫ pullback.fst G.G.hom (fB T.V T.Fr) := hw`. Establish `e : u'.left = w.left`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Apply `m2.cart.1.hom_ext` to reduce the goal to its premises. Conclude with `hu2.trans (hw'.trans (hcomp fun j => u₀ τ j i)).symm`. Conclude with `(Over.w u').trans ((Over.w w).trans (Category.comp_id _)).symm`. Rewrite using `[hwl, ← hu1, e]`. Establish `inj : Function.Injective (algebraMap T.V T.Fr)` using `IsFractionRing.injective T.V T.Fr`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `eigV : ∀ τ (cc : Fin M.n → T.V), IsEigAt c τ (vA fun j => algebraMap T.V T.Fr (cc j)).left ↔ ∀ a, tmap hxc (G.act.act a) cc = χ τ a • cc`. Introduce `τ cc`. Rewrite using `[eigA]`. Use `forall_congr' fun a => ?_` and prove the remaining obligations. Rewrite using `[hM, ← hχ, funext_iff, funext_iff]`.
+Assume the hypotheses and unpack their components. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `forall_congr' fun j => ?_` and prove the remaining obligations. Rewrite using `[Pi.smul_apply, Pi.smul_apply, smul_eq_mul, smul_eq_mul, ← map_mul]`. Conclude with `inj.eq_iff`. Establish `mapc : ∀ τ (r : Fin (Dw.mult τ) → T.V) (cc : Fin M.n → T.V), (cc = ∑ i, r i • fun j => u₀ τ j i) → (fun j => algebraMap T.V T.Fr (cc j)) = ∑ i, algebraMap T.V T.Fr (r i) • fun j => algebraMap T.V T.Fr (u₀ τ j i)`. Introduce and unpack `τ r cc rfl`.
+Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use extensionality with `j`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, map_sum, map_mul]`. Use `⟨fun τ i => cvV (tvec (x := xc) fun j => u₀ τ j i), fun τ i => isTan_cvV (isTan_tvec hxc _), fun τ i a s hs => ?_, fun τ w hw he => ?_, fun τ i => ?_⟩` and prove the remaining obligations. Establish `hs' : s = χ τ a` using `inj (hs.trans (hχ τ a).symm)`. Substitute `hs'` using the available equality.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `(eigV_iff hxc (G.act.act a) _ _).2 ((eigV τ _).1 ?_ a)` and prove the remaining obligations. Use `z.eig τ i` as an intermediate fact. Rewrite `this` using `[hz τ]`. Conclude with `this`. Take `⟨cc, rfl⟩` from `tan_eq_cvV hxc hw`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result.
 
-Establish `hcc : ∀ a, tmap hxc (G.act.act a) cc = χ τ a • cc` using `fun a => (eigV_iff hxc (G.act.act a) cc _).1 (he a (χ τ a) (hχ τ a))`. Take `⟨cf, hcf, hu⟩` from `z.basis τ _ (tanA _) ((eigV τ cc).2 hcc)`. Rewrite `hcf`, `hu` using `[hz τ]`. Take `⟨r, hr⟩` from `int_comb (ix τ) (u₀ τ) (hcell τ) cc cf ((combA _ cf _).1 hcf)`. Use `⟨r, (comb_iff hxc (fun i j => u₀ τ j i) r cc).2 hr, fun r' h' => ?_⟩` and prove the remaining obligations.
-
-Establish `h''` using `(comb_iff hxc (fun i j => u₀ τ j i) r' cc).1 h'`. Establish `e1` using `hu _ ((combA _ _ _).2 (mapc τ r cc hr))`. Establish `e2` using `hu _ ((combA _ _ _).2 (mapc τ r' cc h''))`. Use function extensionality and compare the values at `i`. Conclude with `inj (congrFun (e2.trans e1.symm) i)`.
-
-Take `⟨u', hu1, hu2⟩` from `gen τ i`. Use `⟨u'.left, hu1, ?_⟩` and prove the remaining obligations. Rewrite using `[cvV_left]`. Conclude with `hu2`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tie_vectors_integral : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l), ∀ (O : Type) [CommRing O] (β : O →+* c.F) (Y : Model Xo c β) (M : MChart Y), ∀ (T : CDVR) (io : c.F →+* T.Fr) (f₀ : Γ(Y.X, M.U) →+* T.V) (ix : ∀ τ : E →+* ℂ, Fin (Dw.mult τ) ↪ Fin M.n) (u₀ : ∀ τ : E →+* ℂ, Matrix (Fin M.n) (Fin (Dw.mult τ)) T.V), (∀ τ, InCell (ix τ) (u₀ τ)) → letI := io.toAlgebra; ∀ (z : FrPt Xo c T.Fr) (Λ : M.Lift ((algebraMap T.V T.Fr).comp f₀) z.x), Λ.LieTie (fun τ => (u₀ τ).map (algebraMap T.V T.Fr)) z.u → ∀ (G : SAB H (Sp T.V)) (m : SABMap G Y.t (spMap f₀ ≫ M.hU.fromSpec)) (m2 : SABMap Λ.t' G (spMap (algebraMap T.V T.Fr))), m2.φ ≫ m.φ = Λ.m2.φ → ∃ ub : ∀ τ : E →+* ℂ, Fin (Dw.mult τ) → (epsOver T.V T.V ⟶ G.G), (∀ τ i, IsTan (ub τ i)) ∧ (∀ τ i, IsEigV c io G τ (ub τ i)) ∧ (∀ τ (w : epsOver T.V T.V ⟶ G.G), IsTan w → IsEigV c io G τ w → ∃! a : Fin (Dw.mult τ) → T.V, IsComb (ub τ) a w) ∧ ∀ τ i, ∃ u' : Sp (DualNumber T.Fr) ⟶ Λ.t'.G.left, u' ≫ Λ.m1.φ = z.u τ i ∧ u' ≫ m2.φ = spMap (dualMap (algebraMap T.V T.Fr)) ≫ (ub τ i).left := by
   intro E _ _ _ H Dw l Xo c O _ β Y M T io f₀ ix u₀ hcell

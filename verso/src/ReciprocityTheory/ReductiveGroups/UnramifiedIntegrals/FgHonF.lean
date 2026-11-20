@@ -12,15 +12,13 @@ variable {K : Type} [NormedField K] [IsUltrametricDist K] [CharZero K] {l : ℕ}
 variable {lam : PowerSeries K} {Φ : MvPowerSeries (Fin 2) K} {A : PowerSeries K} {a : K}
 
 /- English proof (translation)
-Establish `hτa : (σ.comp σ) a = a` using `h.a_sq`. Establish `e` using `congrArg (PowerSeries.map (σ.comp σ)) h.Alog`. Rewrite `e` using `[map_mul, PowerSeries.map_C, hτa]`. Establish `e2` using `congrArg (MvPowerSeries.map (σ.comp σ)) h.log`. Use `⟨⟨?_, ?_, ?_, ?_, ?_⟩, ?_, ?_, ?_, h.a_ne, h.a_sq⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← PowerSeries.coeff_zero_eq_constantCoeff_apply, PowerSeries.coeff_map, PowerSeries.coeff_zero_eq_constantCoeff_apply, h.lam0, map_zero]`. Rewrite using `[PowerSeries.coeff_map, h.lam1, map_one]`. Rewrite using `[← MvPowerSeries.coeff_zero_eq_constantCoeff_apply, MvPowerSeries.coeff_map, MvPowerSeries.coeff_zero_eq_constantCoeff_apply, h.Φ0, map_zero]`. Use `(integralMv_iff_divBy_one _).mpr fun d => ?_` and prove the remaining obligations. Rewrite using `[MvPowerSeries.coeff_map, RingHom.comp_apply, hF.isom, hF.isom]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(integralMv_iff_divBy_one Φ).mp h.Φint d`. Establish `hX : ∀ i : Fin 2, PowerSeries.HasSubst (MvPowerSeries.X i : MvPowerSeries (Fin 2) K)` using `fun i => PowerSeries.HasSubst.of_constantCoeff_zero (by simp)`. Unfold `atX atY at e2 ⊢`. Rewrite `e2` using `[PowerSeries.map_subst (PowerSeries.HasSubst.of_constantCoeff_zero h.Φ0), map_add, PowerSeries.map_subst (hX 0), PowerSeries.map_subst (hX 1), MvPowerSeries.map_X, MvPowerSeries.map_X]`. Conclude with `e2`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[← PowerSeries.coeff_zero_eq_constantCoeff_apply, PowerSeries.coeff_map, PowerSeries.coeff_zero_eq_constantCoeff_apply, h.A0, map_zero]`. Unfold `IntegralPS`. Introduce `n`. Rewrite using `[PowerSeries.coeff_map, RingHom.comp_apply, hF.isom, hF.isom]`. Conclude with `h.Aint n`.
-
-Establish `e' : MvPowerSeries.map (σ.comp σ) (lam.subst A) = C a * PowerSeries.map (σ.comp σ) lam` using `e`. Rewrite `e'` using `[PowerSeries.map_subst (PowerSeries.HasSubst.of_constantCoeff_zero' h.A0)]`. Conclude with `e'`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem HD.map_frobenius_sq (hF : FrobField K l σ) (h : HD σ lam Φ A a) :
     HD σ (PowerSeries.map (σ.comp σ) lam) (MvPowerSeries.map (σ.comp σ) Φ)
@@ -56,9 +54,9 @@ theorem HD.map_frobenius_sq (hF : FrobField K l σ) (h : HD σ lam Φ A a) :
     exact e'
 
 /- English proof (translation)
-Proceed by induction on `i with`. Consider the case `zero`. Simplify using `only [pow_zero, RingHom.one_def, MvPowerSeries.map_id, PowerSeries.map_id, RingHom.id_apply]`. Conclude with `h`. Consider the case `succ i ih`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Establish an intermediate fact.
 
-Establish `h1` using `HD.map_frobenius_sq hF ih`. Simplify using `only [pow_succ', RingHom.mul_def, MvPowerSeries.map_comp, PowerSeries.map_comp, RingHom.comp_apply]`. Conclude with `h1`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem HD.map_sq (hF : FrobField K l σ) (h : HD σ lam Φ A a) (i : ℕ) :
     HD σ (PowerSeries.map ((σ.comp σ) ^ i) lam) (MvPowerSeries.map ((σ.comp σ) ^ i) Φ)
@@ -74,9 +72,9 @@ theorem HD.map_sq (hF : FrobField K l σ) (h : HD σ lam Φ A a) (i : ℕ) :
     exact h1
 
 /- English proof (translation)
-Rewrite using `[PowerSeries.subst, PowerSeries.subst]`. Use `first`. Consider the case `exact MvPowerSeries.subst_comp_subst_apply (MvPowerSeries.HasSubst.of_constantCoeff_zero (fun _ => hu)) hb φ`. Consider the case `exact MvPowerSeries.subst_comp_subst_apply (MvPowerSeries.hasSubst_of_constantCoeff_zero (fun _ => hu)) hb φ`. Consider the case `exact MvPowerSeries.subst_comp_subst_apply ((PowerSeries.HasSubst.of_constantCoeff_zero hu).hasSubst) hb φ`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact MvPowerSeries.subst_comp_subst_apply ⟨fun _ => by rw [hu]; exact IsNilpotent.zero, by simp⟩ hb φ`.
+A detailed English derivation is pending.
 -/
 theorem honF_subst_subst {ι κ : Type} (φ : PowerSeries K) {u : MvPowerSeries ι K}
     (hu : MvPowerSeries.constantCoeff u = 0) {b : ι → MvPowerSeries κ K}
@@ -93,32 +91,28 @@ theorem honF_subst_subst {ι κ : Type} (φ : PowerSeries K) {u : MvPowerSeries 
       ⟨fun _ => by rw [hu]; exact IsNilpotent.zero, by simp⟩ hb φ
 
 /- English proof (translation)
-The claim follows from `(integralPS_iff_mv _).mpr (integralMv_subst hf hg0 ((integralPS_iff_mv g).mp hg))`.
+A detailed English derivation is pending.
 -/
 theorem honF_integral_subst {f g : PowerSeries K} (hf : IntegralPS f) (hg0 : constantCoeff g = 0)
     (hg : IntegralPS g) : IntegralPS (f.subst g) :=
   (integralPS_iff_mv _).mpr (integralMv_subst hf hg0 ((integralPS_iff_mv g).mp hg))
 
 /- English proof (translation)
-Establish `hl` using `hF.prime`. Establish `hl1` using `hF.norm_l`. Establish `hlam' : IntegralPS (derivative K lam)` using `h.toLawD.deriv_integral`. Establish `h'` using `h.map_frobenius_sq hF`. Establish `Hh : PowerSeries.HasSubst hh` using `PowerSeries.HasSubst.of_constantCoeff_zero' hh1.g0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `HΦ' : PowerSeries.HasSubst (MvPowerSeries.map (σ.comp σ) Φ)` using `PowerSeries.HasSubst.of_constantCoeff_zero h'.Φ0`. Establish `HA' : PowerSeries.HasSubst (PowerSeries.map (σ.comp σ) A)` using `PowerSeries.HasSubst.of_constantCoeff_zero' h'.A0`. Establish `HA : PowerSeries.HasSubst A` using `PowerSeries.HasSubst.of_constantCoeff_zero' h.A0`. Establish `hq : l ^ 2 ≠ 0` using `pow_ne_zero _ hl.ne_zero`. Establish `hXq0 : constantCoeff ((X : PowerSeries K) ^ (l ^ 2)) = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[map_pow, constantCoeff_X, zero_pow hq]`. Establish `HXq : PowerSeries.HasSubst ((X : PowerSeries K) ^ (l ^ 2))` using `PowerSeries.HasSubst.of_constantCoeff_zero' hXq0`. Establish `hX0 : ∀ i : Fin 2, MvPowerSeries.constantCoeff (MvPowerSeries.X i : MvPowerSeries (Fin 2) K) = 0` using `fun i => MvPowerSeries.constantCoeff_X i`. Establish `HX : ∀ i : Fin 2, PowerSeries.HasSubst (MvPowerSeries.X i : MvPowerSeries (Fin 2) K)` using `fun i => PowerSeries.HasSubst.of_constantCoeff_zero (hX0 i)`. Establish `hp0 : ∀ i : Fin 2, MvPowerSeries.constantCoeff (![atX hh, atY hh] i) = 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `i`. Use `fin_cases i`. Conclude with `PowerSeries.constantCoeff_subst_eq_zero (hX0 0) hh hh1.g0`. Conclude with `PowerSeries.constantCoeff_subst_eq_zero (hX0 1) hh hh1.g0`. Establish `hpI : ∀ i : Fin 2, IntegralMv (![atX hh, atY hh] i)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `i`. Use `fin_cases i`. Conclude with `integralMv_subst hh1.gInt (hX0 0) (integralMv_X 0)`. Conclude with `integralMv_subst hh1.gInt (hX0 1) (integralMv_X 1)`. Establish `Hp : MvPowerSeries.HasSubst ![atX hh, atY hh]` using `MvPowerSeries.hasSubst_of_constantCoeff_zero hp0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨⟨PowerSeries.constantCoeff_subst_eq_zero hh1.g0 lam h.lam0, ?_, ?_, ?_⟩, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[derivative_subst Hh]`. Conclude with `integralPS_mul (honF_integral_subst hlam' hh1.g0 hh1.gInt) (integralPS_derivative hh1.gInt)`. Establish `key` using `qls hl hl1 lam h.lam0 hlam' (hh.subst (MvPowerSeries.map (σ.comp σ) Φ)) (Φ.subst ![atX hh, atY hh]) (PowerSeries.constantCoeff_subst_eq_zero h'.Φ0 hh hh1.g0) (MvPowerSeries.constantCoeff_subst_eq_zero Hp hp0 h.Φ0) (integralMv_subst hh1.gInt h'.Φ0 h'.Φint) (integralMv_subst2 h.Φin …`. Establish `ex : atX (lam.subst hh) = lam.subst (atX hh)` using `PowerSeries.subst_comp_subst_apply Hh (HX 0) lam`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `ey : atY (lam.subst hh) = lam.subst (atY hh)` using `PowerSeries.subst_comp_subst_apply Hh (HX 1) lam`. Establish `ax : (atX lam).subst ![atX hh, atY hh] = lam.subst (atX hh)` using `(honF_subst_subst lam (hX0 0) Hp).trans (by rw [MvPowerSeries.subst_X Hp]; rfl)`. Establish `ay : (atY lam).subst ![atX hh, atY hh] = lam.subst (atY hh)` using `(honF_subst_subst lam (hX0 1) Hp).trans (by rw [MvPowerSeries.subst_X Hp]; rfl)`. Establish `e1 : lam.subst (Φ.subst ![atX hh, atY hh]) = atX (lam.subst hh) + atY (lam.subst hh)`. Rewrite using `[ex, ey, ← honF_subst_subst lam h.Φ0 Hp, h.log, MvPowerSeries.subst_add Hp, ax, ay]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `key` using `[e1]`. Rewrite using `[PowerSeries.subst_comp_subst_apply Hh HΦ', sub_sub]`. Conclude with `key`. Establish `key` using `qls1 hl hl1 lam h.lam0 hlam' (hh.subst (PowerSeries.map (σ.comp σ) A)) (A.subst hh) (PowerSeries.constantCoeff_subst_eq_zero h'.A0 hh hh1.g0) (PowerSeries.constantCoeff_subst_eq_zero hh1.g0 A h.A0) (honF_integral_subst hh1.gInt h'.A0 h'.Aint) (honF_integral_subst h.Aint hh1.g0 hh …`. Rewrite `key` using `[← PowerSeries.subst_comp_subst_apply HA Hh, h.Alog, PowerSeries.subst_mul Hh, PowerSeries.subst_C]`.
-
-Rewrite using `[PowerSeries.subst_comp_subst_apply Hh HA']`. Conclude with `key`. Establish `key` using `qls1 hl hl1 lam h.lam0 hlam' e (hh.subst ((X : PowerSeries K) ^ (l ^ 2))) he0 (PowerSeries.constantCoeff_subst_eq_zero hXq0 hh hh1.g0) he (honF_integral_subst hh1.gInt hXq0 (integralPS_pow integralPS_X _)) hh2`. Rewrite `key` using `[hlog]`. Rewrite using `[PowerSeries.subst_comp_subst_apply Hh HXq]`.
-
-Conclude with `key`. Rewrite using `[Formalism.LT.PadicP.coeff_one_subst lam hh h.lam0 hh1.g0, h.lam1, one_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hon_mu (hF : FrobField K l σ) (h : HD σ lam Φ A a) {e hh : PowerSeries K}
     (he0 : constantCoeff e = 0) (he : IntegralPS e) (hlog : lam.subst e = C (l : K) * lam)
@@ -196,7 +190,7 @@ theorem hon_mu (hF : FrobField K l σ) (h : HD σ lam Φ A a) {e hh : PowerSerie
   · rw [Formalism.LT.PadicP.coeff_one_subst lam hh h.lam0 hh1.g0, h.lam1, one_mul]
 
 /- English proof (translation)
-Take `⟨Dp, hDp, hdiv⟩` from `lemmaQ hF (HD.map_sq hF h i) hD`. Use `⟨Dp, ?_, hdiv⟩` and prove the remaining obligations. Simplify using `only [pow_succ', RingHom.mul_def, MvPowerSeries.map_comp, PowerSeries.map_comp, RingHom.comp_apply]`. Conclude with `hDp`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem lemmaQ_tw (hF : FrobField K l σ) (h : HD σ lam Φ A a) (i : ℕ) {D : PowerSeries K}
     (hD : QCls l (MvPowerSeries.map ((σ.comp σ) ^ i) Φ) (PowerSeries.map ((σ.comp σ) ^ i) A) a D) :
@@ -212,17 +206,17 @@ theorem lemmaQ_tw (hF : FrobField K l σ) (h : HD σ lam Φ A a) (i : ℕ) {D : 
   exact hDp
 
 /- English proof (translation)
-Take `⟨hh, hhom, hdiv, hc1⟩` from `hon_shape hF h he0 he hlog`. Take `⟨hQ, hmod, hcoef⟩` from `hon_mu hF h he0 he hlog hhom hdiv`. Establish `hl0 : l ≠ 0` using `hF.prime.ne_zero`. Establish `hQ' : QCls l (MvPowerSeries.map ((σ.comp σ) ^ (0 + 1)) Φ) (PowerSeries.map ((σ.comp σ) ^ (0 + 1)) A) a (lam.subst hh)`. Simplify using `using hQ`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Set `seq : (i : ℕ) → {D : PowerSeries K // QCls l (MvPowerSeries.map ((σ.comp σ) ^ (i + 1)) Φ) (PowerSeries.map ((σ.comp σ) ^ (i + 1)) A) a D}` to `fun i => Nat.rec (motive := fun i => {D : PowerSeries K // QCls l (MvPowerSeries.map ((σ.comp σ) ^ (i + 1)) Φ) (PowerSeries.map ((σ.comp σ) ^ (i + 1)) A) a D}) ⟨lam.subst hh, hQ'⟩ (fun i D => ⟨Classical.choose (lemmaQ_tw hF h (i + 1) D.2), (Classical.choose_spec (lemmaQ_tw hF h ( …`. Establish `hstep : ∀ i, DivBy (l : K) ((seq i).1 - C (coeff 1 (seq i).1) * PowerSeries.map ((σ.comp σ) ^ (i + 1)) lam - (seq (i + 1)).1.subst ((X : PowerSeries K) ^ (l ^ 2)))` using `fun i => (Classical.choose_spec (lemmaQ_tw hF h (i + 1) (seq i).2)).2`. Establish `hsub : ∀ m : ℕ, m ≠ 0 → PowerSeries.HasSubst ((X : PowerSeries K) ^ m)` using `fun m hm => PowerSeries.HasSubst.of_constantCoeff_zero' (by simp [hm])`. Establish `hcomp : ∀ (f : PowerSeries K) (m q : ℕ), m ≠ 0 → q ≠ 0 → PowerSeries.subst ((X : PowerSeries K) ^ m) (f.subst ((X : PowerSeries K) ^ q) : PowerSeries K) = f.subst ((X : PowerSeries K) ^ (m * q))`. Introduce `f m q hm hq`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[PowerSeries.subst_comp_subst_apply (hsub q hq) (hsub m hm)]`. Use `congr 1`. Rewrite using `[← PowerSeries.coe_substAlgHom (hsub m hm), map_pow, PowerSeries.coe_substAlgHom, PowerSeries.subst_X (hsub m hm), ← pow_mul]`. Use `⟨fun i => coeff 1 (seq i).1, ?_, fun i => (seq i).2.norm_coeff_one, fun N => ⟨(seq N).1, (seq N).2.D0, ?_⟩⟩` and prove the remaining obligations. Use `show ‖coeff 1 (lam.subst hh)‖ = 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hcoef, hc1]`. Conclude with `hon_level hF h he0 he hlog hlev`. Proceed by induction on `N with`. Consider the case `zero`. Simplify using `only [Finset.range_zero, Finset.sum_empty, sub_zero, zero_add, pow_one]`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Establish an intermediate fact.
 
-Conclude with `hmod`. Consider the case `succ N ih`. Establish `hm : (l ^ 2) ^ (N + 1) ≠ 0` using `pow_ne_zero _ (pow_ne_zero _ hl0)`. Establish `h1` using `(divBy_expand_iff (l : K) ((l ^ 2) ^ (N + 1)) hm _).2 (hstep N)`. Rewrite `h1` using `[← PowerSeries.coe_substAlgHom (hsub _ hm), map_sub, map_sub, ← PowerSeries.smul_eq_C_mul, map_smul, PowerSeries.smul_eq_C_mul, PowerSeries.coe_substAlgHom, hcomp _ _ _ hm (pow_ne_zero _ hl0), ← pow_succ]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules.
 
-Use `divBy_add ih h1` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Simplify using `only [Finset.sum_range_succ]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem hon_series (hF : FrobField K l σ) (h : HD σ lam Φ A a) {e : PowerSeries K}
     (he0 : constantCoeff e = 0) (he : IntegralPS e) (hlog : lam.subst e = C (l : K) * lam)

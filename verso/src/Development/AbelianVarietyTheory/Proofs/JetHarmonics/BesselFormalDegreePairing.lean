@@ -12,7 +12,7 @@ open scoped InnerProductSpace ENNReal
 namespace GlobalTheory
 
 /- English proof (translation)
-Use `⟨∑ i, ((ContinuousLinearMap.compL ℂ (Wq →L[ℂ] Wq) Wp ℂ (innerSL ℂ (X' (stdOrthonormalBasis ℂ Wq i)))).comp ((ContinuousLinearMap.compL ℂ (Wq →L[ℂ] Wq) Wp Wp).flip (X.comp (ContinuousLinearMap.apply ℂ Wq (stdOrthonormalBasis ℂ Wq i))))), fun P Q => ?_⟩` and prove the remaining obligations. Simplify using `[B.hsInner, B.hsVec, PiLp.inner_apply]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem besPhInt_bilin {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [FiniteDimensional ℂ Wp]
     [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wq] (X X' : Wq →L[ℂ] Wp) :
@@ -23,9 +23,9 @@ theorem besPhInt_bilin {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace
   simp [B.hsInner, B.hsVec, PiLp.inner_apply]
 
 /- English proof (translation)
-Establish `hb : X' b' = ∑ i, ⟪stdOrthonormalBasis ℂ Wq i, b'⟫_ℂ • X' (stdOrthonormalBasis ℂ Wq i)` using `by conv_lhs => rw [← (stdOrthonormalBasis ℂ Wq).sum_repr' b']`. Simplify using `[map_sum]`. Establish `h2 : star ⟪a', X' b'⟫_ℂ = ⟪X' b', a'⟫_ℂ` using `inner_conj_symm _ _`. Rewrite using `[h2, hb, sum_inner, Finset.mul_sum]`. Simplify using `only [B.hsInner, B.hsVec, PiLp.inner_apply]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [ContinuousLinearMap.comp_apply, ContinuousLinearMap.smulRight_apply, innerSL_apply_apply, map_smul, inner_smul_right, inner_smul_left, inner_conj_symm]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem besPhInt_rank {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [FiniteDimensional ℂ Wp]
     [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wq] (X X' : Wq →L[ℂ] Wp)
@@ -44,7 +44,7 @@ theorem besPhInt_rank {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace 
   ring
 
 /- English proof (translation)
-Unfold `B.xiTau Formalism.QuantumDeterminants.psi B.lam`. Rewrite using `[show ∀ x : ℂ, star x = (starRingEnd ℂ) x from fun _ => rfl, ← Complex.exp_conj, ← Complex.exp_add]`. Use `congr 1`. Simplify using `only [map_mul, Complex.conj_I, Complex.conj_ofReal]`. Use `push_cast`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -60,11 +60,11 @@ theorem besPhInt_xi {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerPro
   ring
 
 /- English proof (translation)
-Establish `h : ∀ z, Continuous (fun m : Formalism.QuantumDeterminants.Mt k r => Formalism.QuantumDeterminants.ell k r z (Matrix.of m))`. Introduce `z`. Unfold `Formalism.QuantumDeterminants.ell`. Use `continuous_finset_sum _ fun a _ => ?_` and prove the remaining obligations. Use `split_ifs`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.of_apply] fun_prop`. Simplify using `only [Matrix.mulVec, dotProduct, Matrix.of_apply] fun_prop`. Establish `h1` using `(h D.z).comp (continuous_snd.comp (continuous_fst (X := Formalism.QuantumDeterminants.Mt k r × Formalism.QuantumDeterminants.Mt k r) (Y := Formalism.QuantumDeterminants.Mt k r × Formalism.QuantumDeterminants.Mt k r)))`. Establish `h2` using `(h D.z').comp (continuous_snd.comp (continuous_snd (X := Formalism.QuantumDeterminants.Mt k r × Formalism.QuantumDeterminants.Mt k r) (Y := Formalism.QuantumDeterminants.Mt k r × Formalism.QuantumDeterminants.Mt k r)))`. Unfold `B.xiTau B.lam`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Use `Complex.continuous_exp.comp (continuous_const.mul (Complex.continuous_ofReal.comp ?_))` and prove the remaining obligations. Conclude with `(continuous_const.mul (Complex.continuous_re.comp (continuous_const.mul h1))).sub (continuous_const.mul (Complex.continuous_re.comp (continuous_const.mul h2)))`.
+A detailed English derivation is pending.
 -/
 theorem besPhInt_xi_cont {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp]
     [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] (D : B.RealPlaceData k r Wp Wq) :
@@ -86,37 +86,35 @@ theorem besPhInt_xi_cont {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [Inn
     (continuous_const.mul (Complex.continuous_re.comp (continuous_const.mul h2)))
 
 /- English proof (translation)
-Introduce `hH k r ε mu h R Wp _ _ _ _ Wq _ _ _ _ D l l' dd hDS _ _ hl hl' hdd x hx y hy x' hx' y' hy' X X'`. Take `⟨hmul, hone, hinn, -, hTK, -⟩` from `GlobalTheory.rep_basic_of_isDS hH.1.2.2.1 k r ε mu R hDS`. Establish `hsf : ∀ {U : Set (B.Mat k r)} {μ : Measure (Formalism.QuantumDeterminants.Mt k r)}, B.IsHaarOn U μ → SigmaFinite μ`. Introduce `U μ h`. Establish `: IsFiniteMeasureOnCompacts μ` using `⟨fun K hK => h.finite_compact K hK⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `infer_instance`. Use `haveI := hsf D.haarW`. Use `haveI := hsf D.haarN`. Use `haveI := hsf D.haarW'`. Establish `hN` using `(GlobalTheory.T.isHaarOn_iff_groups_unitary_unipotent k r D.μN).2.1.2 D.haarN`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hW` using `((GlobalTheory.T.isHaarOn_iff_groups_unitary_unipotent k r D.μW).2.2 D.z D.z_mem D.T_pos D.k_pos).2 D.haarW`. Establish `hW'` using `((GlobalTheory.T.isHaarOn_iff_groups_unitary_unipotent k r D.μW').2.2 D.z' D.z'_mem D.T'_pos D.k_pos).2 D.haarW'`. Take `⟨-, -, -, -, mA, aeA⟩` from `GlobalTheory.T.besselSubgroup_parameter_measurePreserving k r D.z D.μW D.μN D.k_pos D.z_mem D.T_pos hW hN`. Take `⟨-, -, -, mB, -, aeB⟩` from `GlobalTheory.T.besselSubgroup_parameter_measurePreserving k r D.z' D.μW' D.μN D.k_pos D.z'_mem D.T'_pos hW' hN`. Take `⟨psn, -, psinv, -, -, -⟩` from `GlobalTheory.T.besselCharacter_unipotentRadical_properties k r D.z Formalism.QuantumDeterminants.cStd D.z_mem`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨psn', -, -, pscj, -, -⟩` from `GlobalTheory.T.besselCharacter_unipotentRadical_properties k r D.z' Formalism.QuantumDeterminants.cStd D.z'_mem`. Take `⟨iA, eA⟩` from `hl.2 x' (hTK x' hx') x hx`. Take `⟨iB, eB⟩` from `hl'.2 y (hTK y hy) y' hy'`. Establish `iA'` using `mA.integrable_comp_of_integrable iA`. Establish `iB'` using `mB.integrable_comp_of_integrable iB`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `eA'` using `integral_map mA.measurable.aemeasurable (mA.map_eq.symm ▸ iA.aestronglyMeasurable)`. Establish `eB'` using `integral_map mB.measurable.aemeasurable (mB.map_eq.symm ▸ iB.aestronglyMeasurable)`. Rewrite `eA'` using `[mA.map_eq]`. Rewrite `eB'` using `[mB.map_eq]`. Unfold `be at eA eB`.
+Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `eA'` using `[eA]`. Rewrite `eB'` using `[eB]`. Take `⟨T, hT⟩` from `besPhInt_bilin X X'`. Establish `hI` using `integral_prod_bilin T iA' iB'`. Establish `hInt` using `iA'.op_fst_snd (op := fun P Q => T P Q) (by fun_prop) ⟨‖T‖, T.le_opNorm₂⟩ iB'`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Supply the required witnesses or components.
 
-Simplify using `only [Function.comp_apply] at hI hInt`. Rewrite `hI` using `[← eA', ← eB', hT, besPhInt_rank]`. Establish `hae : ∀ᵐ p ∂D.μSS, D.inSS p` using `by filter_upwards [(Measure.quasiMeasurePreserving_fst (μ := D.μW.prod D.μN) (ν := D.μW'.prod D.μN)).ae aeA, (Measure.quasiMeasurePreserving_snd (μ := D.μW.prod D.μN) (ν := D.μW'.prod D.μN)).ae aeB] with p h1 h2`. Conclude with `⟨h1.1, h1.2, h2.1, h2.2⟩`. Establish `key : ∀ p : B.SS k r, D.inSS p → B.xiTau D (1, 1) p * B.Ph D (fun g => ⟪x, R.σ g y⟫_ℂ • X) (fun g => ⟪x', R.σ g y'⟫_ℂ • X') p = T (beInt D.z Formalism.QuantumDeterminants.cStd D.π R.σ x' x (((fun i j => ((Matrix.of p.1.1)⁻¹ : Mx k r) i j), (fun i j => ((Matrix.of p.1.2)⁻¹ : Mx k …`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `p hp`. Rewrite using `[(GlobalTheory.T.bessel_formal_degree_identity hH k r ε mu R Wp Wq D dd hDS hdd x y x' y' X X' p hp).2, besPhInt_xi, ← hT]`. Take `⟨h1, h2, h3, h4⟩` from `hp`. Establish `hof : ∀ M : Mx k r, Matrix.of (fun i j => M i j) = M` using `fun M => rfl`. Unfold `beInt JF.sL JF.sR`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable.
 
-Simplify using `only [hof]`. Generalize the expression as in `Matrix.of p.1.1 = a at *`. Generalize the expression as in `Matrix.of p.1.2 = n at *`. Generalize the expression as in `Matrix.of p.2.1 = a' at *`. Generalize the expression as in `Matrix.of p.2.2 = n' at *`.
+Replace the chosen expression with an arbitrary variable. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨ai, aa, aa'⟩` from `Formalism.FourierDecayAlt.P.MatrixMultiplicationContinuity.uh_inv h1.1`. Take `⟨ni, nn, nn'⟩` from `Formalism.FourierDecayAlt.P.MatrixMultiplicationContinuity.uh_inv h2.1`. Take `⟨bi, bb, bb'⟩` from `Formalism.FourierDecayAlt.P.MatrixMultiplicationContinuity.uh_inv h3.1`. Establish `e1 : a⁻¹⁻¹ = a` using `Matrix.inv_eq_right_inv aa'`. Establish `e2 : a' * (a'⁻¹ * n' * a') = n' * a'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, bb, Matrix.one_mul]`. Establish `e3 : ⟪x, R.σ (a⁻¹ * n⁻¹) x'⟫_ℂ = ⟪R.σ (n * a) x, x'⟫_ℂ`. Establish `hna` using `Formalism.FourierDecayAlt.P.TranslationBesselVanishing.uh_mul h2.1 h1.1`. Establish `hna'` using `Formalism.FourierDecayAlt.P.TranslationBesselVanishing.uh_mul ai ni`. Rewrite using `[← hinn _ hna, ← hmul _ hna _ hna']`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `: n * a * (a⁻¹ * n⁻¹) = 1`. Rewrite using `[Matrix.mul_assoc, ← Matrix.mul_assoc a, aa, Matrix.one_mul, nn]`. Rewrite using `[this, hone]`. Rewrite using `[e1, e2, e3, (psinv n h2).2, (pscj a' h3 n' h4).2.2.2, star_star]`. Simplify using `only [map_smul, ContinuousLinearMap.smul_apply, smul_eq_mul]`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hae'` using `hae.mono key`. Establish `hInt' : Integrable (fun p => B.xiTau D (1, 1) p * B.Ph D (fun g => ⟪x, R.σ g y⟫_ℂ • X) (fun g => ⟪x', R.σ g y'⟫_ℂ • X') p) D.μSS` using `(hInt.div_const (dd : ℂ)).congr (hae'.mono fun p hp => hp.symm)`. Establish `hn : ∀ p, ‖B.xiTau D (1, 1) p‖ = 1`. Introduce `p`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[besPhInt_xi, norm_mul, norm_star, psn, psn', one_mul]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `hInt'.bdd_mul (c := 1) (f := fun p => star (B.xiTau D (1, 1) p)) (besPhInt_xi_cont D).star.aestronglyMeasurable (Filter.Eventually.of_forall fun p => by rw [norm_star, hn])` as an intermediate fact. Use `this.congr (Filter.Eventually.of_forall fun p => ?_)` and prove the remaining obligations. Establish `h1 : star (B.xiTau D (1, 1) p) * B.xiTau D (1, 1) p = 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Complex.star_def, Complex.conj_mul', hn]`. Simplify using the standard rewrite rules. Simplify using `only`. Rewrite using `[← mul_assoc, h1, one_mul]`. Rewrite using `[integral_congr_ae hae', integral_div]`.
-
-Conclude with `congrArg (· / (dd : ℂ)) hI`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integral_xi_mul_Ph : Hyps → ∀ (k r : ℕ) (ε : Fin (2 * r + k + 1) → Bool) (mu : Fin (2 * r + k + 1) → ℝ) (h : ℝ) (R : Rep k r) (Wp : Type) [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [CompleteSpace Wp] [FiniteDimensional ℂ Wp] (Wq : Type) [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [CompleteSpace Wq] [FiniteDimensional ℂ Wq] (D : B.RealPlaceData k r Wp Wq) (l : R.H → Wp) (l' : R.H → Wq) (dd : ℝ), R.IsDS ε mu → Formalism.QuantumDeterminants.GapAtLeast ε mu h → GapOK k r h → IsBeL R D.z D.π D.μW D.μN l → IsBeL R D.z' D.π' D.μW' D.μN l' → (∀ w, w ≠ 0 → PI.BesselPeriodGGP.fdegH D.μG R.σ w = dd) → ∀ x ∈ R.TK, ∀ y ∈ R.TK, ∀ x' ∈ R.TK, ∀ y' ∈ R.TK, ∀ X X' : Wq →L[ℂ] Wp, Integrable (B.Ph D (fun g => ⟪x, R.σ g y⟫_ℂ • X) (fun g => ⟪x', R.σ g y'⟫_ℂ • X')) D.μSS ∧ ∫ p, B.xiTau D (1, 1) p * B.Ph D (fun g => ⟪x, R.σ g y⟫_ℂ • X) (fun g => ⟪x', R.σ g y'⟫_ℂ • X') p ∂D.μSS = ⟪l x, X (l' y)⟫_ℂ * star ⟪l x', X' (l' y')⟫_ℂ / (dd : ℂ) := by
   intro hH k r ε mu h R Wp _ _ _ _ Wq _ _ _ _ D l l' dd hDS _ _ hl hl' hdd x hx y hy x' hx' y' hy' X X'

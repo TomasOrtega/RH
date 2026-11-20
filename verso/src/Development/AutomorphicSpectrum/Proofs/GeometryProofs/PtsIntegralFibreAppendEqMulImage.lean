@@ -25,15 +25,13 @@ open SheetDecomposition.PF
 
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Introduce `II hII K _ ρ _ K' _ ρ' _ κ v P' d r G Jf L L' N hv hP' hP hJ hL hLL' hN`. Establish `hA : IsArithVar P' (d + r + 1)` using `by rwa [Nat.add_right_comm] at hP'`. Establish `hs : ∀ j, IsSmoothHerm (Fin.append L' N j)` using `fun j => by`. Use `Fin.addCases (fun j => ?_) (fun j => ?_) j` and prove the remaining obligations. Rewrite using `[Fin.append_left]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `GroundTheory.Heights₂.Heights.Inter.IsPullHerm.isSmoothHerm hv (hLL' j) (hL j)`. Rewrite using `[Fin.append_right]`. Conclude with `hN j`. Establish `h` using `GlobalTheory.T.projection_formula_of_arith_system ⟨II, hII⟩ II hII.1 K ρ K' ρ' κ v P' (d + 1) r G Jf (Fin.snoc (α := fun _ => HermLine ρ) L (cst ρ)) (Fin.snoc (α := fun _ => HermLine ρ') L' (cst ρ')) N hv hP' hP hJ (LevelTowerAlt.snoc_cst_smooth L hL) (fun j => by`. Use `Fin.lastCases ?_ (fun j => ?_) j` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Fin.snoc_last, Fin.snoc_last]`. Use `⟨?_, fun z => rfl⟩` and prove the remaining obligations. Use `show (0 : K' → ℤ) = pullDeg κ 0`. Use function extensionality and compare the values at `k`. Distinguish the cases in `hk : ∃ a, κ a = k`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨a, rfl⟩` from `hk`. Conclude with `(hv.1.extend_apply (0 : K → ℤ) (0 : K' → ℤ) a).symm`. Conclude with `(Function.extend_apply' (0 : K → ℤ) (0 : K' → ℤ) _ hk).symm`. Simplify using `using hLL' j)`. Use `hN`.
-
-Rewrite `h` using `[LevelTowerAlt.ii_cst_int hII.1 hP L hL, ← position_eq, ii_cast hII.1 _ hA _ (LevelTowerAlt.snoc_cst_smooth _ hs), LevelTowerAlt.ii_cst_int hII.1 hA _ hs, mul_neg, neg_inj]`. Conclude with `h`.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.CompanionTheory.Relay.ptsIntegral_fibre_append_eq_mul_image : ∀ (II : IntersectionSystem), IsFullIntersectionSystem II → ∀ (K : Type) [Fintype K] (ρ : K → Type) [∀ k, Fintype (ρ k)] (K' : Type) [Fintype K'] (ρ' : K' → Type) [∀ k, Fintype (ρ' k)] (κ : K → K') (v : (Σ k, ρ k) → (Σ k', ρ' k')) (P' : Ideal (MRing ρ')) (d r : ℕ) (G : GenFibre v P') (Jf : IFamily G.Φ (fibreIdx ρ' κ)) (L : Fin d → HermLine ρ) (L' : Fin d → HermLine ρ') (N : Fin r → HermLine ρ'), IsBlockMap κ v → IsArithVar P' (d + 1 + r) → IsArithVar (imageZ v P') (d + 1) → IsFieldIntersection Jf → (∀ j, IsSmoothHerm (L j)) → (∀ j, IsPullHerm κ v (L j) (L' j)) → (∀ j, IsSmoothHerm (N j)) → ptsIntegral (e := d + r) P' (fun i z => Real.log ((Fin.append L' N i).h z)) (fun _ => 1) = (Jf (fibreIdeal κ G) r (fun j => fibreDeg κ (N j).a) : ℝ) * ptsIntegral (e := d) (imageZ v P') (fun i z => Real.log ((L i).h z)) (fun _ => 1) := by
   intro II hII K _ ρ _ K' _ ρ' _ κ v P' d r G Jf L L' N hv hP' hP hJ hL hLL' hN

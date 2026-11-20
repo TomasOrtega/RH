@@ -7,11 +7,11 @@ namespace GroundTheory.Heights₂.Heights.NumbersDVR
 universe u
 
 /- English proof (translation)
-Introduce `A _ J Q _ N hJQ hJ hQ`. Assume the negation of the conclusion as `hmin`. Take `⟨W, hW, hWQ⟩` from `Ideal.exists_minimalPrimes_le hJQ`. Establish `hWne : W ≠ Q` using `fun h => hmin (h ▸ hW)`. Establish `hWlt : W < Q` using `lt_of_le_of_ne hWQ hWne`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: W.IsPrime` using `hW.1.1`. Establish `hJW : J ≤ W` using `hW.1.2`. Establish `h2 : ringKrullDim (A ⧸ Q) + 1 ≤ ringKrullDim (A ⧸ W)` using `h1 A W Q hWlt`. Establish `h3 : ringKrullDim (A ⧸ W) ≤ ringKrullDim (A ⧸ J)` using `ringKrullDim_le_of_surjective (Ideal.Quotient.factor hJW) (Ideal.Quotient.factor_surjective hJW)`. Establish `h4 : ((N : ℕ) : WithBot ℕ∞) + 1 ≤ ringKrullDim (A ⧸ Q) + 1` using `add_le_add (not_lt.mp hQ) le_rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h5 : ((N + 1 : ℕ) : WithBot ℕ∞) = ((N : ℕ) : WithBot ℕ∞) + 1` using `Nat.cast_succ N`. Conclude with `lt_irrefl _ (lt_of_le_of_lt (h5 ▸ h4.trans (h2.trans h3)) hJ)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem TopDimMinimal.proof (h1 : DimStrictDrop.Statement.{u}) : TopDimMinimal.Statement.{u} := by
   intro A _ J Q _ N hJQ hJ hQ

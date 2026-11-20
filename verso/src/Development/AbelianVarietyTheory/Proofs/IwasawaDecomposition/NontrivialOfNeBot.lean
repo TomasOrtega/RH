@@ -23,7 +23,7 @@ variable {H S F P P' : Type} [Group H] [AddCommGroup S] [Module ℂ S] [AddCommG
 def img (j : P →ₗ[ℂ] S →ₗ[ℂ] F) : Submodule ℂ F := Submodule.span ℂ {φ | ∃ p v, j p v = φ}
 
 /- English proof (translation)
-The claim follows from `Submodule.subset_span ⟨p, v, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem apply_mem_img (j : P →ₗ[ℂ] S →ₗ[ℂ] F) (p : P) (v : S) : j p v ∈ img j :=
   Submodule.subset_span ⟨p, v, rfl⟩
@@ -34,14 +34,14 @@ def total (b : ι → S) (j : P →ₗ[ℂ] S →ₗ[ℂ] F) : (ι → P) →ₗ
   ∑ a, (LinearMap.applyₗ (b a)) ∘ₗ j ∘ₗ LinearMap.proj a
 
 /- English proof (translation)
-Simplify using `[total, LinearMap.sum_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem total_apply (b : ι → S) (j : P →ₗ[ℂ] S →ₗ[ℂ] F) (c : ι → P) :
     total b j c = ∑ a, j (c a) (b a) := by
   simp [total, LinearMap.sum_apply]
 
 /- English proof (translation)
-Rewrite using `[total_apply]`. Use `conv_rhs => rw [← b.sum_repr v, map_sum]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem total_repr (b : Module.Basis ι ℂ S) (j : P →ₗ[ℂ] S →ₗ[ℂ] F) (p : P) (v : S) :
     total b j (fun a => b.repr v a • p) = j p v := by
@@ -50,9 +50,9 @@ theorem total_repr (b : Module.Basis ι ℂ S) (j : P →ₗ[ℂ] S →ₗ[ℂ] 
   simp
 
 /- English proof (translation)
-Use `le_antisymm ?_ (Submodule.span_le.2 ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨c, rfl⟩`. Rewrite using `[total_apply]`. Conclude with `Submodule.sum_mem _ fun a _ => apply_mem_img j _ _`. Introduce and unpack `_ ⟨p, v, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Conclude with `⟨_, total_repr b j p v⟩`.
+A detailed English derivation is pending.
 -/
 theorem range_total (b : Module.Basis ι ℂ S) (j : P →ₗ[ℂ] S →ₗ[ℂ] F) :
     LinearMap.range (total b j) = img j := by
@@ -64,13 +64,11 @@ theorem range_total (b : Module.Basis ι ℂ S) (j : P →ₗ[ℂ] S →ₗ[ℂ]
     exact ⟨_, total_repr b j p v⟩
 
 /- English proof (translation)
-Establish `key : ∀ T : Module.End ℂ S, ∑ a, j (c a) (T (b a)) ∈ U` using `fun T => by`. Establish `hT : T ∈ Submodule.span ℂ (Set.range ρ)` using `hsp ▸ Submodule.mem_top`. Proceed by induction on `hT using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨g, rfl⟩` from `hx`.
+Establish an intermediate fact. Establish an intermediate fact. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Establish `e : ∑ a, j (c a) (ρ g (b a)) = R g (total b j c)`. Rewrite using `[total_apply, map_sum]`. Conclude with `Finset.sum_congr rfl fun a _ => hj _ _ _`. Rewrite using `[e]`. Conclude with `hU _ _ h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately.
 
-Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => simpa [Finset.sum_add_distrib] using add_mem hx hy`. Consider the case `smul r x _ hx => simpa [Finset.smul_sum] using U.smul_mem r hx`. Establish `h1` using `key ((b.coord a).smulRight w)`. Rewrite `h1` using `[Finset.sum_eq_single a (fun a' _ h' => by simp [Module.Basis.coord_apply, Finsupp.single_apply, h']) (fun h' => absurd (Finset.mem_univ a) h')]`.
-
-Simplify `h1` using `[Module.Basis.coord_apply]`.
+Treat this case separately. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem coeff_mem {ρ : Representation ℂ H S} (hsp : Submodule.span ℂ (Set.range ρ) = ⊤) {R : H → Module.End ℂ F}
     {j : P →ₗ[ℂ] S →ₗ[ℂ] F} (hj : ∀ p x v, j p (ρ x v) = R x (j p v)) {U : Submodule ℂ F}
@@ -96,13 +94,13 @@ theorem coeff_mem {ρ : Representation ℂ H S} (hsp : Submodule.span ℂ (Set.r
   simpa [Module.Basis.coord_apply] using h1
 
 /- English proof (translation)
-Set `N : Submodule ℂ P` to `⨅ v : S, U.comap ((LinearMap.applyₗ v) ∘ₗ j)`. Establish `hN : ∀ p, p ∈ N ↔ ∀ v, j p v ∈ U` using `fun p => by simp [N, Submodule.mem_iInf]`. Break down `hP N fun k p hp => (hN _).2 fun v => by` into its components or cases. Rewrite using `[hQ]`. Conclude with `hT _ _ ((hN p).1 hp v) with h | h`.
+Introduce a local definition for the expression. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `left`. Use `(Submodule.eq_bot_iff _).2 fun φ hφ => ?_` and prove the remaining obligations. Set `b` to `Module.finBasis ℂ S`. Choose the witnesses or unpack the hypotheses as in `⟨c, rfl⟩ : φ ∈ LinearMap.range (total b j) := by`. Rewrite using `[range_total]`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hle hφ`. Establish `hc : ∀ a, c a = 0` using `fun a => by`. Establish `: c a ∈ N` using `(hN _).2 fun w => coeff_mem hsp hj hU b hφ a w`. Rewrite `this` using `[h, Submodule.mem_bot]`. Then use the resulting hypothesis. Rewrite using `[total_apply]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Simplify using `[hc]`. Use `right`. Use `le_antisymm hle (Submodule.span_le.2 ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨p, v, rfl⟩`. Conclude with `(hN p).1 (h ▸ Submodule.mem_top) v`.
+A detailed English derivation is pending.
 -/
 theorem eq_bot_or_eq_img [FiniteDimensional ℂ S] {K : Type} {ρ : Representation ℂ H S}
     (hsp : Submodule.span ℂ (Set.range ρ) = ⊤) {R : H → Module.End ℂ F} {j : P →ₗ[ℂ] S →ₗ[ℂ] F}
@@ -135,7 +133,7 @@ def part (Alg : Submodule ℂ (S →ₗ[ℂ] F)) (A : Submodule ℂ F) : Submodu
   ⨅ v : S, A.comap ((LinearMap.applyₗ v).comp Alg.subtype)
 
 /- English proof (translation)
-The claim follows from `Submodule.mem_iInf _`.
+A detailed English derivation is pending.
 -/
 theorem mem_part {Alg : Submodule ℂ (S →ₗ[ℂ] F)} {A : Submodule ℂ F} {f : Alg} : f ∈ part Alg A ↔ ∀ v, f.1 v ∈ A :=
   Submodule.mem_iInf _
@@ -158,13 +156,11 @@ section Concrete
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ}
 
 /- English proof (translation)
-Set `y : GL (Fin n) (Cinf E)` to `cInf x`. Establish `hx : cT (conjAd E) x.1.val * 1 * x.1.val = 1` using `x.2`. Establish `h1 : x.1.val.map (pInf E) = y.val` using `rfl`. Establish `h3 : (cT (conjAd E) x.1.val).map (pInf E) = y.valᴴ` using `by ext1 i j`. Rewrite using `[Matrix.conjTranspose_apply, ← h1]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(infEq E).symm_apply_apply _`. Establish `hy : y.valᴴ * y.val = 1`. Rewrite `hx` using `[mul_one]`. Rewrite using `[← h3, ← h1, ← Matrix.map_mul, hx]`. Conclude with `Matrix.map_one _ (map_zero _) (map_one _)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Set `a : UA E n` to `⟨infGL E n y, infGL_mem_UA y hy⟩`. Use `⟨a, pFin_infGL y, a⁻¹ * x, ?_, (mul_inv_cancel_left a x).symm⟩` and prove the remaining obligations. Establish `h4 : cInf a = y` using `pInf_infGL y`. Use `MonoidHom.mem_ker.2 ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_inv, h4]`.
-
-Conclude with `inv_mul_cancel y`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_inf_mul_fin (x : UA E n) : ∃ a ∈ infU E n, ∃ k ∈ finU E n, x = a * k := by
   let y : GL (Fin n) (Cinf E) := cInf x
@@ -186,7 +182,7 @@ theorem exists_inf_mul_fin (x : UA E n) : ∃ a ∈ infU E n, ∃ k ∈ finU E n
   exact inv_mul_cancel y
 
 /- English proof (translation)
-Take `⟨a, ha, k, hk, rfl⟩` from `exists_inf_mul_fin x`. Rewrite using `[← RU_RU]`. Conclude with `h1 ⟨a, ha⟩ _ (h2 ⟨k, hk⟩ _ hφ)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem stable_of {U : Submodule ℂ (UA E n → ℂ)} (h1 : ∀ x : infU E n, ∀ φ ∈ U, RU E n x.1 φ ∈ U)
     (h2 : ∀ k : finU E n, ∀ φ ∈ U, RU E n k.1 φ ∈ U) (x : UA E n) (φ : UA E n → ℂ) (hφ : φ ∈ U) : RU E n x φ ∈ U := by
@@ -195,15 +191,15 @@ theorem stable_of {U : Submodule ℂ (UA E n → ℂ)} (h1 : ∀ x : infU E n, �
   exact h1 ⟨a, ha⟩ _ (h2 ⟨k, hk⟩ _ hφ)
 
 /- English proof (translation)
-Set `J : Subgroup (InfinitePlace E → GL (Fin n) ℂ)` to `(cAll.comp (infU E n).subtype).range`. Set `Hs : InfinitePlace E → Subgroup (GL (Fin n) ℂ)` to `fun _ => (GlobalTheory.Branching.unitaryIncl n).range`. Establish `hle : Subgroup.pi Set.univ Hs ≤ J`. Rewrite using `[Subgroup.pi_le_iff]`. Introduce `v`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce and unpack `_ ⟨_, ⟨u, rfl⟩, rfl⟩`. Take `⟨e, he⟩` from `GlobalTheory.T.archimedeanUnitaryPoints_equiv_unitaryGroup E n v.embedding`. Set `x` to `e.symm u`. Establish `hx` using `Subgroup.mem_inf.1 x.2`. Use `⟨⟨x.1, hx.1⟩, ?_⟩` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use function extensionality and compare the values at `v'`. Distinguish the cases in `h : v' = v`. Substitute `h` using the available equality. Express the relevant statement in the definitionally equal form `cEmb v'.embedding x.1 = _`. Rewrite using `[← he, e.apply_symm_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Establish `h5 : x.1 ∈ (cEmb (E` using `E) (n := n) v'.embedding).ker := Subgroup.mem_iInf.1 (Subgroup.mem_iInf.1 hx.2 v'.embedding) (by simpa using h)`. Express the relevant statement in the definitionally equal form `cEmb v'.embedding x.1 = _`. Rewrite using `[MonoidHom.mem_ker.1 h5]`. Simplify using `[h]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Take `⟨y, hy⟩ : g ∈ J` from `hle fun v _ => ⟨⟨(g v).val, hg v⟩, Units.ext rfl⟩`. Conclude with `⟨y, hy⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_cAll (g : InfinitePlace E → GL (Fin n) ℂ)
     (hg : ∀ v, (g v : Matrix (Fin n) (Fin n) ℂ) ∈ Matrix.unitaryGroup (Fin n) ℂ) :
@@ -234,7 +230,7 @@ theorem exists_cAll (g : InfinitePlace E → GL (Fin n) ℂ)
   exact ⟨y, hy⟩
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.ClassFin.span_range_eq_top_of_isIrreducible _ _ W.rep ((CuspRep.isIrreducible_iff _).2 ⟨inferInstance, fun U hU => GlobalTheory.CoefIrred.vv_irreducible_unitary (InfinitePlace E) n W U fun g hg x hx => by obtain ⟨y, rfl⟩ := exists_cAll g hg exact hU y x hx⟩)`.
+A detailed English derivation is pending.
 -/
 theorem span_rep (W : Wt E n) [Nontrivial W.Sp] : Submodule.span ℂ (Set.range W.rep) = ⊤ :=
   GlobalTheory.ClassFin.span_range_eq_top_of_isIrreducible _ _ W.rep ((CuspRep.isIrreducible_iff _).2 ⟨inferInstance, fun U hU =>
@@ -246,21 +242,21 @@ def jOf (W : Wt E n) (M : Submodule ℂ (algForms W)) : M →ₗ[ℂ] W.Sp →�
   (algForms W).subtype ∘ₗ M.subtype
 
 /- English proof (translation)
-The claim follows from `Subtype.val_injective.comp Subtype.val_injective`.
+A detailed English derivation is pending.
 -/
 theorem jOf_injective (W : Wt E n) (M : Submodule ℂ (algForms W)) : Function.Injective (jOf W M) :=
   Subtype.val_injective.comp Subtype.val_injective
 
 /- English proof (translation)
-The claim follows from `p.1.2.2 x v`.
+A detailed English derivation is pending.
 -/
 theorem jOf_rep (W : Wt E n) (M : Submodule ℂ (algForms W)) (p : M) (x : infU E n) (v : W.Sp) :
     jOf W M p (W.rep x v) = RU E n x.1 (jOf W M p v) := p.1.2.2 x v
 
 /- English proof (translation)
-Take `⟨p, hp, h0⟩` from `(Submodule.ne_bot_iff _).1 h`. Establish `h1 : jOf W M ⟨p, hp⟩ ≠ 0` using `fun e => h0 (congrArg Subtype.val (jOf_injective W M (e.trans (map_zero _).symm)))`. Take `⟨v, hv⟩` from `DFunLike.ne_iff.1 h1`. Use `⟨⟨v, 0, fun e => hv (by rw [e, map_zero]; rfl)⟩, fun e => hv ?_⟩` and prove the remaining obligations. Use `apply_mem_img (jOf W M) ⟨p, hp⟩ v` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `this` using `[e, Submodule.mem_bot]`. Conclude with `this`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nontrivial_of_ne_bot {W : Wt E n} {M : Submodule ℂ (algForms W)} (h : M ≠ ⊥) :
     Nontrivial W.Sp ∧ img (jOf W M) ≠ ⊥ := by
@@ -273,11 +269,9 @@ theorem nontrivial_of_ne_bot {W : Wt E n} {M : Submodule ℂ (algForms W)} (h : 
   exact this
 
 /- English proof (translation)
-Use `stable_of (fun a => ?_) (fun k => ?_) x φ hφ` and prove the remaining obligations. Establish `h1 : img (jOf W M) ≤ (img (jOf W M)).comap (RU E n a.1)` using `Submodule.span_le.2 (by`. Introduce and unpack `_ ⟨p, v, rfl⟩`. Express the relevant statement in the definitionally equal form `RU E n a.1 _ ∈ img (jOf W M)`. Rewrite using `[← jOf_rep]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the hypotheses and unpack their components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Conclude with `apply_mem_img _ _ _)`. Conclude with `fun φ hφ => h1 hφ`. Establish `h1 : img (jOf W M) ≤ (img (jOf W M)).comap (RU E n k.1)` using `Submodule.span_le.2 (by`. Introduce and unpack `_ ⟨p, v, rfl⟩`. Conclude with `apply_mem_img (jOf W M) ⟨algRep W k p.1, hM k _ p.2⟩ v)`.
-
-Conclude with `fun φ hφ => h1 hφ`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. Assume the hypotheses and unpack their components. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
 -/
 theorem img_stable {W : Wt E n} {M : Submodule ℂ (algForms W)} (hM : ∀ k, ∀ f ∈ M, algRep W k f ∈ M) (x : UA E n)
     (φ : UA E n → ℂ) (hφ : φ ∈ img (jOf W M)) : RU E n x φ ∈ img (jOf W M) := by
@@ -294,7 +288,7 @@ theorem img_stable {W : Wt E n} {M : Submodule ℂ (algForms W)} (hM : ∀ k, �
     exact fun φ hφ => h1 hφ
 
 /- English proof (translation)
-Establish `h1 : img (jOf W M) ≤ π.V` using `Submodule.span_le.2 (by`. Introduce and unpack `_ ⟨p, v, rfl⟩`. Conclude with `AutSub.mem_finPart.1 (hle p.2) v)`. Conclude with `((π.isAut.irred _ h1 (img_stable hM)).resolve_left (nontrivial_of_ne_bot h0).2).symm`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem V_eq_img (π : AutSub E n) {W : Wt E n} {M : Submodule ℂ (algForms W)} (hM : ∀ k, ∀ f ∈ M, algRep W k f ∈ M)
     (h0 : M ≠ ⊥) (hle : M ≤ π.finPart W) : π.V = img (jOf W M) := by
@@ -304,7 +298,7 @@ theorem V_eq_img (π : AutSub E n) {W : Wt E n} {M : Submodule ℂ (algForms W)}
   exact ((π.isAut.irred _ h1 (img_stable hM)).resolve_left (nontrivial_of_ne_bot h0).2).symm
 
 /- English proof (translation)
-Introduce `k _ h` and use `AutSub.mem_finPart.2 fun v => π.isAut.stable k _ (AutSub.mem_finPart.1 h v)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem finPart_stable (π : AutSub E n) (W : Wt E n) : ∀ k, ∀ f ∈ π.finPart W, algRep W k f ∈ π.finPart W :=
   fun k _ h => AutSub.mem_finPart.2 fun v => π.isAut.stable k _ (AutSub.mem_finPart.1 h v)

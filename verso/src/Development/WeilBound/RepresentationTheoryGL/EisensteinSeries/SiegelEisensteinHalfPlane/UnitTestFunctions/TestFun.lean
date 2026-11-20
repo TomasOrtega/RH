@@ -16,7 +16,7 @@ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ToIdeleMulSelf
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.StandardSectionGood
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.CompanionTheory.RgEisAsm.asm GlobalTheory.CompanionTheory.EisCol.colLaw GlobalTheory.CompanionTheory.RgEis.InMTopPf.inMTop (GlobalTheory.CompanionTheory.RgEisSupp.supp GlobalTheory.CompanionTheory.EisCol.colLaw GlobalTheory.CompanionTheory.RgEis.InMTopPf.inMTop) (Glo …`.
+A detailed English derivation is pending.
 -/
 theorem PositivityTheory.RgEis.TF.testFun : PositivityTheory.RgEis.TestFun :=
   GlobalTheory.CompanionTheory.RgEisAsm.asm GlobalTheory.CompanionTheory.EisCol.colLaw GlobalTheory.CompanionTheory.RgEis.InMTopPf.inMTop (GlobalTheory.CompanionTheory.RgEisSupp.supp GlobalTheory.CompanionTheory.EisCol.colLaw GlobalTheory.CompanionTheory.RgEis.InMTopPf.inMTop) (GlobalTheory.CompanionTheory.EisTF.archFun_of_bumps GlobalTheory.CompanionTheory.TestFun.realBump GlobalTheory.CompanionTheory.TestBump.cplxBump GlobalTheory.CompanionTheory.RgEisSign.signChar)

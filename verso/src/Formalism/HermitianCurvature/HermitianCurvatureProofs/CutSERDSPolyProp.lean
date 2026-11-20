@@ -15,9 +15,9 @@ variable {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace �
   [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wq]
 
 /- English proof (translation)
-Introduce `g hg hgO`. Unfold `B.opApply`. Apply `List.sum_eq_zero` to reduce the goal to its premises. Introduce `x hx`. Take `⟨T, hT, rfl⟩` from `List.mem_map.1 hx`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite using `[Formalism.FourierDecayAlt.P.BetaSesquilinearity.Rw_vanish hO T.word_lie hz g hg hgO, map_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem rdsp_opApply_vanish (Θ : B.DiffOp k r Wp Wq) {O : Set (B.Mat k r)} (hO : IsOpen O)
     {F : B.Mat k r → (Wq →L[ℂ] Wp)} (hz : ∀ g ∈ B.GV k r, g ∈ O → F g = 0) :
@@ -30,7 +30,7 @@ theorem rdsp_opApply_vanish (Θ : B.DiffOp k r Wp Wq) {O : Set (B.Mat k r)} (hO 
   rw [Formalism.FourierDecayAlt.P.BetaSesquilinearity.Rw_vanish hO T.word_lie hz g hg hgO, map_zero]
 
 /- English proof (translation)
-Introduce `g hg hgO`. Simplify using `only [Formalism.FourierDecayAlt.P.BetaSesquilinearity.ap]`. Rewrite using `[hz g hg hgO, map_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem rdsp_adjFn_vanish (T : B.DTerm k r Wp Wq) {O : Set (B.Mat k r)}
     {F : B.Mat k r → (Wq →L[ℂ] Wp)} (hz : ∀ g ∈ B.GV k r, g ∈ O → F g = 0) :
@@ -40,7 +40,7 @@ theorem rdsp_adjFn_vanish (T : B.DTerm k r Wp Wq) {O : Set (B.Mat k r)}
   rw [hz g hg hgO, map_zero]
 
 /- English proof (translation)
-Introduce `X hX`. Conclude with `T.word_lie X (List.mem_reverse.mp hX)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem rdsp_lie_rev (T : B.DTerm k r Wp Wq) : ∀ X ∈ T.word.reverse, inLie k r X := by
   intro X hX
@@ -53,9 +53,9 @@ theorem rdsp_opAdj_eq (Θ : B.DiffOp k r Wp Wq) (F : B.Mat k r → (Wq →L[ℂ]
     B.opAdj Θ F = fun g => (Θ.map fun T => ((-1 : ℂ) ^ T.word.length) • B.Rw T.word.reverse (ap T.coefAdj F) g).sum := rfl
 
 /- English proof (translation)
-Introduce `g hg hgO`. Rewrite using `[rdsp_opAdj_eq]`. Apply `List.sum_eq_zero` to reduce the goal to its premises. Introduce `x hx`. Take `⟨T, hT, rfl⟩` from `List.mem_map.1 hx`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite using `[Formalism.FourierDecayAlt.P.BetaSesquilinearity.Rw_vanish hO (rdsp_lie_rev T) (rdsp_adjFn_vanish T hz) g hg hgO, smul_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem rdsp_opAdj_vanish (Θ : B.DiffOp k r Wp Wq) {O : Set (B.Mat k r)} (hO : IsOpen O)
     {F : B.Mat k r → (Wq →L[ℂ] Wp)} (hz : ∀ g ∈ B.GV k r, g ∈ O → F g = 0) :
@@ -68,17 +68,17 @@ theorem rdsp_opAdj_vanish (Θ : B.DiffOp k r Wp Wq) {O : Set (B.Mat k r)} (hO : 
   rw [Formalism.FourierDecayAlt.P.BetaSesquilinearity.Rw_vanish hO (rdsp_lie_rev T) (rdsp_adjFn_vanish T hz) g hg hgO, smul_zero]
 
 /- English proof (translation)
-Establish `hO : IsOpen (∅ : Set (B.Mat k r))` using `isOpen_empty`. Establish `hcov : ∀ g ∈ B.GV k r, g ∈ (∅ : Set (B.Mat k r)) ∨ g ∈ B.GV k r` using `fun g hg => Or.inr hg`. Establish `hz0 : ∀ g ∈ B.GV k r, g ∈ (∅ : Set (B.Mat k r)) → F g = 0` using `fun g _ hg => by simp at hg`. Establish `hapck : ∀ T ∈ Θ, B.CkOn ⊤ (B.GV k r) (ap T.coefAdj F)` using `fun T hT => Pr.ck hO hcov ⟨(hG T hT).2.1, hF, hz0⟩`. Establish `hRck : ∀ T ∈ Θ, B.CkOn ⊤ (B.GV k r) (B.Rw T.word.reverse (ap T.coefAdj F))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `T hT`. Rewrite using `[← Dw_wR]`. Apply `CkOn_Dw (fun x hx => lie_LR (u := []) (by simp) (rdsp_lie_rev T) x (by simpa [wL] using hx))` to reduce the goal to its premises. Simplify using `using hapck T hT`. Establish `hapcc : ∀ T ∈ Θ, ∀ m : ℕ, B.InCC A m (ap T.coefAdj F)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Introduce `T hT m`. Take `⟨hc1, hc2, hcb⟩` from `hG T hT`. Take `⟨C, hC⟩` from `hcb m`. Take `⟨c, hc⟩` from `hFA m`. Conclude with `⟨_, prodBound hO hcov (sCkOn_mono le_top hc2) (fun u v hu hv hl g hg _ => (hC u v hu hv hl g hg).2) hc hz0⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Rewrite using `[rdsp_opAdj_eq]`. Use `⟨?_, fun m => ?_⟩` and prove the remaining obligations. Use `clear hapcc`. Proceed by induction on `Θ with`. Consider the case `nil => simpa using (CkOn_zero : B.CkOn ⊤ (B.GV k r) (fun _ => (0 : Wq →L[ℂ] Wp)))`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `cons T Θ ih`. Establish `h1 : B.CkOn ⊤ (B.GV k r) (fun g => ((-1 : ℂ) ^ T.word.length) • B.Rw T.word.reverse (ap T.coefAdj F) g)` using `CkOn_smul _ (hRck T (by simp))`. Establish `h2` using `ih (fun S hS => hG S (by simp [hS])) (fun S hS => hapck S (by simp [hS])) (fun S hS => hRck S (by simp [hS]))`. Simplify using `using CkOn_add h1 h2`. Use `InCC_opsum Θ (fun T g => ((-1 : ℂ) ^ T.word.length) • B.Rw T.word.reverse (ap T.coefAdj F) g) ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `T hT`. Take `⟨c, hc⟩ : B.InCC A m (B.Rw T.word.reverse (ap T.coefAdj F))` from `InCC_Rw (rdsp_lie_rev T) (hapcc T hT _)`. Conclude with `⟨_, CCle_smul _ hc⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem rdsp_opAdj_cc (Θ : B.DiffOp k r Wp Wq) (d : ℝ) (hG : CutMP.GlobCoef Θ d) (F : B.Mat k r → (Wq →L[ℂ] Wp))
     (hF : B.CkOn ⊤ (B.GV k r) F) (A : ℝ) (hFA : ∀ m : ℕ, B.InCC (A + d) m F) :
@@ -120,17 +120,15 @@ theorem rdsp_opAdj_cc (Θ : B.DiffOp k r Wp Wq) (d : ℝ) (hG : CutMP.GlobCoef �
 end
 
 /- English proof (translation)
-Introduce `k r Wp Wq _ _ _ _ _ _ D o κ Θ hΘ hC`. Take `⟨hS, hGl, -⟩` from `CutMP.polynomial_decay_admissible k r Wp Wq o κ Θ hΘ`. Establish `hG : CutMP.GlobCoef Θ (κ : ℝ)` using `hGl κ le_rfl`. Establish `hκ : (0 : ℝ) ≤ κ` using `Nat.cast_nonneg κ`. Use `⟨hS _, hC, fun ε _ => ⟨κ, hκ, fun T hT => ?_⟩, fun F hF => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨-, -, hb⟩` from `hG T hT`. Take `⟨Cb, hCb⟩` from `hb (B.opOrder Θ + 5)`. Conclude with `⟨Cb, fun u v hu hv hl g hg _ => hCb u v hu hv hl g hg⟩`. Take `⟨ε, hε, hFck, hFcc, hFs⟩` from `hF`. Establish `hO : IsOpen {g : B.Mat k r | Gf k r D.z D.z' g < ε}` using `isOpen_lt (Gf_cont _ _) continuous_const`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hz : ∀ g ∈ B.GV k r, g ∈ {g : B.Mat k r | Gf k r D.z D.z' g < ε} → F g = 0`. Introduce `g hg hgO`. Assume the negation of the conclusion as `hne`. Use `hFs g hg hne` as an intermediate fact. Conclude with `absurd hgO (not_lt.2 this)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨⟨ε, hε, ?_, ?_, ?_⟩, ⟨ε, hε, ?_, ?_, ?_⟩⟩` and prove the remaining obligations. Conclude with `(CutMP.class_lower_decay_holds k r Wp Wq Θ κ 0 hκ hG F hFck (fun m => hFcc _ m)).1`. Introduce `A' m'`. Establish `h` using `(CutMP.class_lower_decay_holds k r Wp Wq Θ κ (A' + κ) hκ hG F hFck (fun m => hFcc _ m)).2 m'`. Rewrite `h` using `[add_sub_cancel_right]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Introduce `g hg hne`. Assume the negation of the conclusion as `hlt`. Conclude with `hne (rdsp_opApply_vanish Θ hO hz g hg (not_le.1 hlt))`. Conclude with `(rdsp_opAdj_cc Θ κ hG F hFck 0 (fun m => hFcc _ m)).1`. Introduce `A' m'`.
-
-Conclude with `(rdsp_opAdj_cc Θ κ hG F hFck A' (fun m => hFcc _ m)).2 m'`. Introduce `g hg hne`. Assume the negation of the conclusion as `hlt`. Conclude with `hne (rdsp_opAdj_vanish Θ hO hz g hg (not_le.1 hlt))`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem spectral_polynomial_property : RDSPolyProp := by
   intro k r Wp Wq _ _ _ _ _ _ D o κ Θ hΘ hC

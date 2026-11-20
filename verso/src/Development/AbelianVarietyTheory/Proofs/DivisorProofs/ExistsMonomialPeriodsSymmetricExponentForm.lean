@@ -17,17 +17,15 @@ noncomputable section
 namespace GlobalTheory.MonPeriods
 
 /- English proof (translation)
-Introduce `W _ _ _ hW ϖ hϖ D`. Take `⟨hdvr, hcomp, hchar⟩` from `hW`. Use `haveI := hdvr`. Use `haveI := hcomp`. Use `haveI := hchar`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `choose Q hQ using QForm.exists_QVal hϖ D`. Establish `hQ' : QForm.IsQ D.toPre ϖ Q` using `hQ`. Establish `hex : ∀ χ, ∃ r, PsiCoord D.toPre χ r` using `fun χ => ((GlobalTheory.PsiCoordLocal.main W D inferInstance χ).1).imp fun _ h => h.1`. Establish `hv : ∀ χ, HasVal ϖ (algebraMap W (FractionRing W) (hex χ).choose) (Q χ)` using `fun χ => GlobalTheory.ValForm.hasVal_coord (hQ χ) (hex χ).choose_spec`. Establish `h0 : ∀ a, 0 ≤ Q a` using `fun a => by`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Distinguish the cases in `ha : a = 0`. Rewrite using `[ha, QForm.Q_zero hϖ D hQ']`. Conclude with `zero_le_one.trans (QForm.Q_pos hϖ D hQ' ha)`. Set `be : LinearMap.BilinForm ℤ D.toPre.X` to `LinearMap.mk₂ ℤ (fun a b => QForm.bHom hϖ D hQ' a b) (fun a a' b => by simp only [map_add, AddMonoidHom.add_apply]) (fun c a b => by simp only [map_zsmul, AddMonoidHom.smul_apply, smul_eq_mul]) (fun a b b' => by simp only [map_add]) (fun c a b => by simp only [map_zsmul, smul_eq_ …`. Establish `hbe : ∀ a b, be a b = QForm.bOf D.toPre Q a b` using `fun _ _ => rfl`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨be, fun y z => ?_, fun y => ?_⟩` and prove the remaining obligations. Rewrite using `[hbe, hbe, QForm.bOf_comm]`. Take `⟨u, hu⟩` from `hv y set r := (hex y).choose with hr`. Establish `hn : (((Q y).toNat : ℕ) : ℤ) = Q y` using `Int.toNat_of_nonneg (h0 y)`. Establish `e : r = ↑u * ϖ ^ (Q y).toNat`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Apply `IsFractionRing.injective W (FractionRing W)` to reduce the goal to its premises. Rewrite using `[hu, map_mul, map_pow, _root_.mul_comm, ← zpow_natCast, hn]`. Use `⟨u, fun _ => (Q y).toNat, fun i => ?_, ?_⟩` and prove the remaining obligations. Use `fin_cases i`. Simplify using `only [Fin.zero_eta, Fin.isValue, Matrix.cons_val_zero]`.
-
-Rewrite using `[hbe, ← QForm.two_Q_eq hϖ D hQ', hn]`. Establish `hc : PsiCoord D.toPre y r` using `(hex y).choose_spec`. Rewrite `hc` using `[e]`. Simplify using `using hc`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem exists_isMonomial_symm : ∀ (W : Type) [CommRing W] [IsDomain W] [IsLocalRing W], GlobalTheory.LN.CDvr W → ∀ ϖ : W, Irreducible ϖ →
     ∀ D : DegData W (maximalIdeal W), ∃ β : LinearMap.BilinForm ℤ D.toPre.X, (∀ a b, β a b = β b a) ∧

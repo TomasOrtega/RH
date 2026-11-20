@@ -6,9 +6,7 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AlgebraTools.CaCpl
 open IsLocalRing UpperTheory.V.AlgebraTools
 
 /- English proof (translation)
-Introduce `R _ _ p B _ _ _ h`. Use `haveI := h.isPrime`. Use `haveI : Module.Flat (Localization.AtPrime p) (CplAt R p) := AdicCompletion.flat_of_isNoetherian _`. Use `haveI : Module.Flat R (CplAt R p) := Module.Flat.trans R (Localization.AtPrime p) (CplAt R p)`. Take `⟨e⟩` from `IsCplAt.nonempty_algEquiv R p B (CplAt R p) h (isCplAt_cplAt R p)`.
-
-Conclude with `Module.Flat.of_linearEquiv e.toLinearEquiv`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.AlgebraTools.IsCplAt.flat :
     ∀ (R : Type) [CommRing R] [IsNoetherianRing R] (p : Ideal R) (B : Type) [CommRing B] [IsLocalRing B] [Algebra R B], IsCplAt R p B → Module.Flat R B := by

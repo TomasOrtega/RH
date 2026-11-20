@@ -18,13 +18,11 @@ open MeasureTheory
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Establish `hσ` using `GlobalTheory.SiegelSet.sigma_sigma h`. Assume the negation of the conclusion as `hne`. Use `push_neg at hne`. Establish `hid : ∀ x, σ x = x`. Introduce `x`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hx`. Use `hne (x - σ x) (sub_ne_zero.2 (Ne.symm hx)) ?_` and prove the remaining obligations. Rewrite using `[map_sub, hσ]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨w⟩ : Nonempty (InfinitePlace E)` from `inferInstance`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hr : ComplexEmbedding.IsReal w.embedding`. Rewrite using `[ComplexEmbedding.isReal_iff]`. Use extensionality with `x`. Rewrite using `[ComplexEmbedding.conjugate_coe_eq]`. Simplify `(h.2.2.2 w.embedding x).symm` using `[hid x, Complex.star_def]`.
-
-Conclude with `(InfinitePlace.not_isReal_iff_isComplex.2 (h.2.1.isComplex w)) (InfinitePlace.isReal_iff.2 hr)`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem exists_anti {σ : E →ₐ[F] E} (h : IsCMExt F E σ) : ∃ ξ : E, ξ ≠ 0 ∧ σ ξ = -ξ := by
   have hσ := GlobalTheory.SiegelSet.sigma_sigma h
@@ -47,17 +45,13 @@ set_option maxHeartbeats 400000 in
 set_option synthInstance.maxHeartbeats 100000 in
 
 /- English proof (translation)
-Take `⟨ξ, hξ0, hξ⟩` from `exists_anti hcm`. Establish `hσ` using `GlobalTheory.SiegelSet.sigma_sigma hcm`. Establish `hJ` using `GlobalTheory.ThK.SqIntHerm.isHermND_smul_map F E σ B d W r s hW ξ hξ0 hξ`. Establish `hfin : μ 𝓕 < ⊤` using `GlobalTheory.ThKContSmall.measure_fundamental_domain_lt_top hS hcm hJ _ (GlobalTheory.SiegelSet.ug_eq_hr hσ hξ0) μ hμ 𝓕 h𝓕`. Take `⟨htg, hlc, hsc, ht2⟩` from `GlobalTheory.UnipCT.topFacts σ W.J`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `haveI : BorelSpace (UA σ W.J) := ⟨rfl⟩`. Use `haveI := GlobalTheory.UnitaryVol.countable_ratU σ W.J`. Use `haveI : MeasurableMul (UA σ W.J) := inferInstance`. Use `haveI : SigmaCompactSpace (UA σ W.J) := sigmaCompactSpace_of_locallyCompact_secondCountable`. Use `haveI : SigmaFinite μ := Measure.IsHaarMeasure.sigmaFinite μ`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Use `haveI : SFinite μ := inferInstance`. Use `haveI : MeasurableConstSMul (ratU σ W.J) (UA σ W.J) := ⟨fun γ => (measurable_const_mul (γ.1 : UA σ W.J))⟩`. Use `haveI : SMulInvariantMeasure (ratU σ W.J) (UA σ W.J) μ := ⟨fun γ A _ => measure_preimage_mul μ γ.1 A⟩`. Use `haveI : (μ.map (· * h)).IsHaarMeasure := Measure.isHaarMeasure_map_mul_right μ h`. Establish `hc` using `Measure.isMulLeftInvariant_eq_smul (μ.map (· * h)) μ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Use `set c := Measure.haarScalarFactor (μ.map (· * h)) μ`. Establish `h𝓕' : IsFundamentalDomain (ratU σ W.J) ((· * h) ⁻¹' 𝓕) μ`. Use `h𝓕.preimage_of_equiv (quasiMeasurePreserving_mul_right μ h) (e := id) Function.bijective_id ?_` and prove the remaining obligations. Introduce `g x`. Simplify using `only [id, Subgroup.smul_def, smul_eq_mul, mul_assoc]`.
-
-Establish `hm : μ ((· * h) ⁻¹' 𝓕) = μ 𝓕` using `h𝓕'.measure_eq h𝓕`. Establish `h0 : μ 𝓕 ≠ 0` using `h𝓕.measure_ne_zero (NeZero.ne μ)`. Establish `hmap : (μ.map (· * h)) 𝓕 = μ ((· * h) ⁻¹' 𝓕)` using `MeasurableEquiv.map_apply (MeasurableEquiv.mulRight h) 𝓕`. Establish `h1 : (c : ENNReal) * μ 𝓕 = 1 * μ 𝓕`. Combine the equalities or inequalities in the displayed calculation.
-
-Establish `hc1 : c = 1`. Use `(ENNReal.mul_left_inj h0 hfin.ne).1 h1` as an intermediate fact. Conclude with `this` after adjusting the coercions. Rewrite using `[hc, hc1, one_smul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_mul_right_eq (hS : GlobalTheory.Published.SiegelSetUnitary) {σ : E →ₐ[F] E} (hcm : IsCMExt F E σ) (B : Base F E) {d r s : ℕ}
     {W : Spc F E d} (hW : W.IsSkew σ B r s) (μ : Measure (UA σ W.J)) [hμ : μ.IsHaarMeasure] (𝓕 : Set (UA σ W.J))
@@ -105,15 +99,13 @@ set_option maxHeartbeats 400000 in
 set_option synthInstance.maxHeartbeats 100000 in
 
 /- English proof (translation)
-Introduce `hKP F E _ _ _ _ _ σ B a a' G X om om' R Rf hM μ 𝓕 hμ h𝓕 Φ hΦ Ψ hΨ h`. Establish `hT` using `hM.triple`. Establish `hTB : ThetaBasic` using `GlobalTheory.T.theta_basic_properties hKP.base`. Establish `hP` using `GlobalTheory.ThKContSmall.isPair_small hT`. Establish `inv : ∀ Θ ∈ PolData B G.M' ⊓ G.M'.So B.ψ B.τ₁, ∀ γ ∈ ratU σ G.W.J, ∀ x, G.M'.I om' Θ (γ * x) = G.M'.I om' Θ x` using `fun Θ hΘ γ hγ x => GlobalTheory.ThKRatInv.I_rat_inv hTB B G.M' hP Θ (Submodule.mem_inf.1 hΘ).1 γ hγ x`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI := hμ`. Establish `hR : μ.map (· * h) = μ` using `map_mul_right_eq hKP.siegelSetUnitary hT.base.cm B hT.geo.hW μ 𝓕 h𝓕 h`. Take `⟨htg, hlc, hsc, ht2⟩` from `GlobalTheory.UnipCT.topFacts σ G.W.J`. Use `haveI : BorelSpace (UA σ G.W.J) := ⟨rfl⟩`. Use `haveI := GlobalTheory.UnitaryVol.countable_ratU σ G.W.J`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : MeasurableMul (UA σ G.W.J) := inferInstance`. Use `haveI : MeasurableConstSMul (ratU σ G.W.J) (UA σ G.W.J) := ⟨fun γ => (measurable_const_mul (γ.1 : UA σ G.W.J))⟩`. Use `haveI : SMulInvariantMeasure (ratU σ G.W.J) (UA σ G.W.J) μ := ⟨fun γ A _ => measure_preimage_mul μ γ.1 A⟩`. Use `set f : UA σ G.W.J → ℂ := fun x => G.M'.I om' Φ x * starRingEnd ℂ (G.M'.I om' Ψ x) with hf`. Establish `hmp : MeasurePreserving (· * h) μ μ` using `⟨measurable_mul_const h, hR⟩`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hemb : MeasurableEmbedding (· * h : UA σ G.W.J → UA σ G.W.J)` using `(MeasurableEquiv.mulRight h).measurableEmbedding`. Establish `h𝓕' : IsFundamentalDomain (ratU σ G.W.J) ((· * h) ⁻¹' 𝓕) μ`. Use `h𝓕.preimage_of_equiv hmp.quasiMeasurePreserving (e := id) Function.bijective_id ?_` and prove the remaining obligations. Introduce `g x`. Simplify using `only [id, Subgroup.smul_def, smul_eq_mul, mul_assoc]`.
-
-Establish `hinv : ∀ (γ : ratU σ G.W.J) (x : UA σ G.W.J), f (γ • x * h) = f (x * h)`. Introduce `γ x`. Simplify using `only [hf, Subgroup.smul_def, smul_eq_mul, mul_assoc]`. Rewrite using `[inv Φ hΦ γ.1 γ.2, inv Ψ hΨ γ.1 γ.2]`. Combine the equalities or inequalities in the displayed calculation.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem setIntegral_mul_right : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Base F E) (a a' : ℕ) (G : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Geo σ a a') (X : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Chars F E) (om : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Rep σ G.V G.W) (om' : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Rep σ G.V' G.W) (R : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.RealMaps F a a') (Rf : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.FinMaps F a a'), GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.IsMatched B G X om om' R Rf → ∀ (μ : MeasureTheory.Measure (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.UA σ G.W.J)) (𝓕 : Set (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.UA σ G.W.J)), μ.IsHaarMeasure → MeasureTheory.IsFundamentalDomain (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.ratU σ G.W.J) 𝓕 μ → ∀ Φ ∈ (GlobalTheory.ThK.PolData B G.M' ⊓ G.M'.So B.ψ B.τ₁), ∀ Ψ ∈ (GlobalTheory.ThK.PolData B G.M' ⊓ G.M'.So B.ψ B.τ₁), ∀ h : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.UA σ G.W.J, ∫ x in 𝓕, G.M'.I om' Φ (x * h) * starRingEnd ℂ (G.M'.I om' Ψ (x * h)) ∂μ = ∫ x in 𝓕, G.M'.I om' Φ x * starRingEnd ℂ (G.M'.I om' Ψ x) ∂μ := by
   intro hKP F E _ _ _ _ _ σ B a a' G X om om' R Rf hM μ 𝓕 hμ h𝓕 Φ hΦ Ψ hΨ h

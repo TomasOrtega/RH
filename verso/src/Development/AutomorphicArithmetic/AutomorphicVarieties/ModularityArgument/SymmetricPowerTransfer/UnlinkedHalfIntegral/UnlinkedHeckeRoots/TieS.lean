@@ -7,9 +7,9 @@ open GlobalTheory.CuspRep GlobalTheory.GalOfCusp GlobalTheory.WeilDeligne Global
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 /- English proof (translation)
-Introduce `PH F Ω _ _ _ _ _ _ l _ ι ξ s c m a π r H w hl B hB`. Establish `P` using `PH.toClassicalTheorems`. Take `⟨χ, hχ⟩` from `H.pol`. Take `⟨-, wt, HT, -, -, hall⟩` from `UpperTheory.GalN.V.exRN (exR PH) F Ω l ι 2 one_le_two π χ H.reg hχ`. Establish `hG` using `hall r H.cont H.att`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨⟨σ, hσ⟩, hiso⟩` from `locCompR P F 2 π w`. Establish `hS` using `((satLoc P F 2 w σ).2 _ π.finPart (hiso σ hσ) B).1 hB`. Introduce `A h`. Conclude with `satFrob P F Ω l ι 2 r H.cont w hl σ B hS (fun A h rc hrc => UpperTheory.GalN.V.isWDOf_satR hG hl hrc hσ hS) A h`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Sym.Unl.tieS :
     UpperTheory.V.Af.HypothesesH → UpperTheory.V.Z.Sym.Unl.TieS := by

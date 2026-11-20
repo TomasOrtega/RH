@@ -8,7 +8,7 @@ open ConjAct Pointwise
 namespace GlobalTheory.Hk
 
 /- English proof (translation)
-Simplify using `only [Matrix.SpecialLinearGroup.coe_mul, Matrix.SpecialLinearGroup.coe_inv, Matrix.adjugate_fin_two, Matrix.mul_apply, Fin.sum_univ_two, Matrix.of_apply, Matrix.cons_val', Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.empty_val', Matrix.cons_val_fin_one, Matrix.head_cons]`. Use `⟨by ring, by ring, by ring⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem conj_entries (σ y : SL(2, ℤ)) :
    ((σ * y * σ⁻¹ : SL(2, ℤ)) 0 0 = (σ 0 0 * y 0 0 + σ 0 1 * y 1 0) * σ 1 1 - (σ 0 0 * y 0 1 + σ 0 1 * y 1 1) * σ 1 0) ∧
@@ -20,15 +20,15 @@ theorem conj_entries (σ y : SL(2, ℤ)) :
   refine ⟨by ring, by ring, by ring⟩
 
 /- English proof (translation)
-Take `⟨hy1, hy0⟩` from `Subgroup.mem_inf.1 hy`. Take `⟨hc, -⟩` from `hσ`. Rewrite `hy1` using `[Gamma1_mem]`. Rewrite `hy0` using `[Gamma0_mem]`. Take `⟨hp, hs, hr⟩` from `hy1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨e00, e10, e11⟩` from `conj_entries σ y`. Establish `hdvd : ((N * l : ℕ) : ℤ) ∣ (σ 1 0 : ℤ)` using `(ZMod.intCast_zmod_eq_zero_iff_dvd _ _).1 hc`. Establish `hcN : ((σ 1 0 : ℤ) : ZMod N) = 0` using `(ZMod.intCast_zmod_eq_zero_iff_dvd _ _).2 (dvd_trans (by push_cast; exact dvd_mul_right _ _) hdvd)`. Establish `hcl : ((σ 1 0 : ℤ) : ZMod l) = 0` using `(ZMod.intCast_zmod_eq_zero_iff_dvd _ _).2 (dvd_trans (by push_cast; exact dvd_mul_left _ _) hdvd)`. Establish `hdet : (σ 0 0 : ℤ) * σ 1 1 - σ 0 1 * σ 1 0 = 1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `σ.2` as an intermediate fact. Rewrite `this` using `[Matrix.det_fin_two]`. Conclude with `this`. Establish `hdetN : ((σ 0 0 : ℤ) : ZMod N) * (σ 1 1 : ℤ) - ((σ 0 1 : ℤ) : ZMod N) * (σ 1 0 : ℤ) = 1`. Conclude with `congrArg (Int.cast : ℤ → ZMod N) hdet` after adjusting the coercions.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Subgroup.mem_inf.2 ⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Gamma1_mem, e00, e10, e11]`. Use `push_cast`. Rewrite using `[hp, hs, hr, hcN]`. Rewrite `hdetN` using `[hcN]`.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `refine ⟨?_, ?_, ?_⟩ <;> first | ring1 | linear_combination hdetN`. Rewrite using `[Gamma0_mem, e10]`. Use `push_cast`. Rewrite using `[hy0, hcl]`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem dia_conj_mem {N l : ℕ} {d : ℤ} {σ : SL(2, ℤ)} (hσ : IsDia N l d σ) {y : SL(2, ℤ)}
     (hy : y ∈ lev N l) : σ * y * σ⁻¹ ∈ lev N l := by
@@ -59,7 +59,7 @@ theorem dia_conj_mem {N l : ℕ} {d : ℤ} {σ : SL(2, ℤ)} (hσ : IsDia N l d 
     ring
 
 /- English proof (translation)
-Introduce `x hx`. Take `⟨y, hy, rfl⟩` from `Subgroup.mem_map.1 hx`. Rewrite using `[Subgroup.mem_pointwise_smul_iff_inv_smul_mem, map_inv, inv_inv, ConjAct.toConjAct_smul]`. Conclude with `Subgroup.mem_map.2 ⟨σ * y * σ⁻¹, dia_conj_mem hσ hy, by simp [map_mul, map_inv]⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lev_le_conj {N l : ℕ} {d : ℤ} {σ : SL(2, ℤ)} (hσ : IsDia N l d σ) :
     (lev N l : Subgroup (GL (Fin 2) ℝ)) ≤
@@ -70,9 +70,9 @@ theorem lev_le_conj {N l : ℕ} {d : ℤ} {σ : SL(2, ℤ)} (hσ : IsDia N l d �
   exact Subgroup.mem_map.2 ⟨σ * y * σ⁻¹, dia_conj_mem hσ hy, by simp [map_mul, map_inv]⟩
 
 /- English proof (translation)
-Introduce `N l k d σ _ hσ f`. Set `F` to `ModularForm.translate f (Matrix.SpecialLinearGroup.mapGL ℝ σ)`. Establish `hle` using `lev_le_conj hσ`. Use `⟨{ toFun := ⇑F slash_action_eq' := fun γ hγ => F.slash_action_eq' γ (hle hγ) holo' := F.holo' bdd_at_cusps' := fun hc => F.bdd_at_cusps' (hc.mono hle) }, ?_⟩` and prove the remaining obligations. Use `show ⇑F = _`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ModularForm.coe_translate, dia, ModularForm.SL_slash]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem dia_modularForm : ∀ (N l : ℕ) (k d : ℤ) (σ : SL(2, ℤ)), 0 < N → IsDia N l d σ →
     ∀ f : ModularForm (lev N l) k, ∃ g : ModularForm (lev N l) k, ⇑g = dia k σ ⇑f := by

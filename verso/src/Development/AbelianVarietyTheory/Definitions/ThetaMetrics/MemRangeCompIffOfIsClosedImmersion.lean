@@ -17,7 +17,7 @@ def valMap (x : Sp C ⟶ X) (U : X.Opens) (h : ⊤ ≤ x ⁻¹ᵁ U) : Γ(X, U) 
   x.appLE U ⊤ h ≫ (Scheme.ΓSpecIso (CommRingCat.of C)).hom
 
 /- English proof (translation)
-The claim follows from `dif_pos h`.
+A detailed English derivation is pending.
 -/
 theorem valR_eq (x : Sp C ⟶ X) (U : X.Opens) (h : ⊤ ≤ x ⁻¹ᵁ U) (f : Γ(X, U)) :
     valR x U f = (valMap x U h).hom f := dif_pos h
@@ -34,40 +34,40 @@ Both sides reduce to the same expression.
 theorem valAt'_eq_valR (x : Sp ℂ ⟶ X) (U : X.Opens) (f : Γ(X, U)) : valAt' x U f = valR x U f := rfl
 
 /- English proof (translation)
-The claim follows from `(valR_eq x U h f).symm`.
+A detailed English derivation is pending.
 -/
 theorem valAt_eq_valR (x : Sp ℂ ⟶ X) (U : X.Opens) (h : ⊤ ≤ x ⁻¹ᵁ U) (f : Γ(X, U)) :
     valAt x U h f = valR x U f := (valR_eq x U h f).symm
 
 /- English proof (translation)
-Introduce `_ hz` and use `e (h hz)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem le_preimage_mono (x : Sp C ⟶ X) {U V : X.Opens} (e : V ≤ U) (h : ⊤ ≤ x ⁻¹ᵁ V) : ⊤ ≤ x ⁻¹ᵁ U :=
   fun _ hz => e (h hz)
 
 /- English proof (translation)
-Introduce `_ hz` and use `e (h hz)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem le_preimage_comp (x : Sp C ⟶ X) (g : X ⟶ Y) {U : Y.Opens} {V : X.Opens} (e : V ≤ g ⁻¹ᵁ U)
     (h : ⊤ ≤ x ⁻¹ᵁ V) : ⊤ ≤ (x ≫ g) ⁻¹ᵁ U :=
   fun _ hz => e (h hz)
 
 /- English proof (translation)
-Rewrite using `[valMap, valMap, ← Category.assoc, Scheme.Hom.appLE_comp_appLE]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem appLE_valMap (x : Sp C ⟶ X) (g : X ⟶ Y) {U : Y.Opens} {V : X.Opens} (e : V ≤ g ⁻¹ᵁ U)
     (h : ⊤ ≤ x ⁻¹ᵁ V) (h' : ⊤ ≤ (x ≫ g) ⁻¹ᵁ U) : g.appLE U V e ≫ valMap x V h = valMap (x ≫ g) U h' := by
   rw [valMap, valMap, ← Category.assoc, Scheme.Hom.appLE_comp_appLE]
 
 /- English proof (translation)
-Rewrite using `[valMap, valMap, ← Category.assoc, Scheme.Hom.map_appLE]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem res_valMap (x : Sp C ⟶ X) {U V : X.Opens} (e : V ≤ U) (h : ⊤ ≤ x ⁻¹ᵁ V) (h' : ⊤ ≤ x ⁻¹ᵁ U) :
     X.presheaf.map (homOfLE e).op ≫ valMap x V h = valMap x U h' := by
   rw [valMap, valMap, ← Category.assoc, Scheme.Hom.map_appLE]
 
 /- English proof (translation)
-Rewrite using `[valR_eq x V h, valR_eq _ U (le_preimage_comp x g e h), ← appLE_valMap x g e h]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem valR_appLE (x : Sp C ⟶ X) (g : X ⟶ Y) {U : Y.Opens} {V : X.Opens} (e : V ≤ g ⁻¹ᵁ U)
     (h : ⊤ ≤ x ⁻¹ᵁ V) (f : Γ(Y, U)) : valR x V ((g.appLE U V e).hom f) = valR (x ≫ g) U f := by
@@ -75,7 +75,7 @@ theorem valR_appLE (x : Sp C ⟶ X) (g : X ⟶ Y) {U : Y.Opens} {V : X.Opens} (e
   rfl
 
 /- English proof (translation)
-Distinguish the cases in `h : ⊤ ≤ x ⁻¹ᵁ (g ⁻¹ᵁ U)`. Rewrite using `[← valR_appLE x g le_rfl h, Scheme.Hom.appLE_eq_app]`. Establish `h' : ¬ ⊤ ≤ (x ≫ g) ⁻¹ᵁ U` using `h`. Rewrite using `[valR, valR, dif_neg h, dif_neg h']`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem valR_comp (x : Sp C ⟶ X) (g : X ⟶ Y) (U : Y.Opens) (f : Γ(Y, U)) :
     valR (x ≫ g) U f = valR x (g ⁻¹ᵁ U) ((g.app U).hom f) := by
@@ -85,7 +85,7 @@ theorem valR_comp (x : Sp C ⟶ X) (g : X ⟶ Y) (U : Y.Opens) (f : Γ(Y, U)) :
     rw [valR, valR, dif_neg h, dif_neg h']
 
 /- English proof (translation)
-Rewrite using `[valR_eq x V h, valR_eq _ U (le_preimage_mono x e h), ← res_valMap x e h]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem valR_res (x : Sp C ⟶ X) {U V : X.Opens} (e : V ≤ U) (h : ⊤ ≤ x ⁻¹ᵁ V) (f : Γ(X, U)) :
     valR x V ((X.presheaf.map (homOfLE e).op).hom f) = valR x U f := by
@@ -93,52 +93,52 @@ theorem valR_res (x : Sp C ⟶ X) {U V : X.Opens} (e : V ≤ U) (h : ⊤ ≤ x �
   rfl
 
 /- English proof (translation)
-Simplify using `only [valR_eq x U h, map_add]`.
+Simplify using the standard rewrite rules.
 -/
 theorem valR_add (x : Sp C ⟶ X) (U : X.Opens) (h : ⊤ ≤ x ⁻¹ᵁ U) (f g : Γ(X, U)) :
     valR x U (f + g) = valR x U f + valR x U g := by
   simp only [valR_eq x U h, map_add]
 
 /- English proof (translation)
-Simplify using `only [valR_eq x U h, map_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem valR_mul (x : Sp C ⟶ X) (U : X.Opens) (h : ⊤ ≤ x ⁻¹ᵁ U) (f g : Γ(X, U)) :
     valR x U (f * g) = valR x U f * valR x U g := by
   simp only [valR_eq x U h, map_mul]
 
 /- English proof (translation)
-Simplify using `only [valR_eq x U h, map_neg]`.
+Simplify using the standard rewrite rules.
 -/
 theorem valR_neg (x : Sp C ⟶ X) (U : X.Opens) (h : ⊤ ≤ x ⁻¹ᵁ U) (f : Γ(X, U)) :
     valR x U (-f) = -valR x U f := by
   simp only [valR_eq x U h, map_neg]
 
 /- English proof (translation)
-Simplify using `only [valR_eq x U h, map_pow]`.
+Simplify using the standard rewrite rules.
 -/
 theorem valR_pow (x : Sp C ⟶ X) (U : X.Opens) (h : ⊤ ≤ x ⁻¹ᵁ U) (f : Γ(X, U)) (n : ℕ) :
     valR x U (f ^ n) = valR x U f ^ n := by
   simp only [valR_eq x U h, map_pow]
 
 /- English proof (translation)
-Simplify using `only [valR_eq x U h, map_one]`.
+Simplify using the standard rewrite rules.
 -/
 theorem valR_one (x : Sp C ⟶ X) (U : X.Opens) (h : ⊤ ≤ x ⁻¹ᵁ U) : valR x U 1 = 1 := by
   simp only [valR_eq x U h, map_one]
 
 /- English proof (translation)
-Simplify using `only [valR_eq x U h, map_zero]`.
+Simplify using the standard rewrite rules.
 -/
 theorem valR_zero (x : Sp C ⟶ X) (U : X.Opens) (h : ⊤ ≤ x ⁻¹ᵁ U) : valR x U 0 = 0 := by
   simp only [valR_eq x U h, map_zero]
 
 /- English proof (translation)
-Introduce `_ _` and use `trivial`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem le_preimage_top (x : Sp C ⟶ X) : ⊤ ≤ x ⁻¹ᵁ ⊤ := fun _ _ => trivial
 
 /- English proof (translation)
-Rewrite using `[valMap, ← Scheme.ΓSpecIso_naturality]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 -/
 theorem valMap_specMap {A : CommRingCat.{0}} (φ : A ⟶ CommRingCat.of C) (h : ⊤ ≤ Spec.map φ ⁻¹ᵁ ⊤) :
     valMap (Spec.map φ) ⊤ h = (Scheme.ΓSpecIso A).hom ≫ φ := by
@@ -146,14 +146,14 @@ theorem valMap_specMap {A : CommRingCat.{0}} (φ : A ⟶ CommRingCat.of C) (h : 
   congr 1
 
 /- English proof (translation)
-Rewrite using `[valR_eq _ ⊤ (le_preimage_top _), valMap_specMap, ← CommRingCat.comp_apply, Iso.inv_hom_id_assoc]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem valR_specMap {A : CommRingCat.{0}} (φ : A ⟶ CommRingCat.of C) (a : A) :
     valR (Spec.map φ) ⊤ ((Scheme.ΓSpecIso A).inv.hom a) = φ.hom a := by
   rw [valR_eq _ ⊤ (le_preimage_top _), valMap_specMap, ← CommRingCat.comp_apply, Iso.inv_hom_id_assoc]
 
 /- English proof (translation)
-Use `conv_rhs => rw [← Spec.map_preimage x]`. Conclude with `(valR_specMap _ a).symm`.
+A detailed English derivation is pending.
 -/
 theorem preimage_apply {A : CommRingCat.{0}} (x : Sp C ⟶ Spec A) (a : A) :
     (Spec.preimage x).hom a = valR x ⊤ ((Scheme.ΓSpecIso A).inv.hom a) := by
@@ -161,7 +161,7 @@ theorem preimage_apply {A : CommRingCat.{0}} (x : Sp C ⟶ Spec A) (a : A) :
   exact (valR_specMap _ a).symm
 
 /- English proof (translation)
-Establish `H` using `IsAffineOpen.SpecMap_appLE_fromSpec x hU (isAffineOpen_top (Sp C)) h`. Rewrite `H` using `[IsAffineOpen.fromSpec_top, Scheme.isoSpec_Spec_inv]`. Rewrite using `[valMap, Spec.map_comp, Category.assoc, H, ← Category.assoc, ← Spec.map_comp, Iso.inv_hom_id, Spec.map_id, Category.id_comp]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem specMap_valMap_fromSpec {U : X.Opens} (hU : IsAffineOpen U) (x : Sp C ⟶ X) (h : ⊤ ≤ x ⁻¹ᵁ U) :
     Spec.map (valMap x U h) ≫ hU.fromSpec = x := by
@@ -171,14 +171,14 @@ theorem specMap_valMap_fromSpec {U : X.Opens} (hU : IsAffineOpen U) (x : Sp C �
     Spec.map_id, Category.id_comp]
 
 /- English proof (translation)
-The claim follows from `le_preimage_comp (V := ⊤) _ _ hU.fromSpec_preimage_self.ge le_top`.
+A detailed English derivation is pending.
 -/
 theorem le_preimage_specMap_fromSpec {U : X.Opens} (hU : IsAffineOpen U) (φ : Γ(X, U) ⟶ CommRingCat.of C) :
     ⊤ ≤ (Spec.map φ ≫ hU.fromSpec) ⁻¹ᵁ U :=
   le_preimage_comp (V := ⊤) _ _ hU.fromSpec_preimage_self.ge le_top
 
 /- English proof (translation)
-Apply `Spec.map_injective` to reduce the goal to its premises. Rewrite using `[← cancel_mono hU.fromSpec, specMap_valMap_fromSpec]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem valMap_specMap_fromSpec {U : X.Opens} (hU : IsAffineOpen U) (φ : Γ(X, U) ⟶ CommRingCat.of C)
     (h : ⊤ ≤ (Spec.map φ ≫ hU.fromSpec) ⁻¹ᵁ U) : valMap (Spec.map φ ≫ hU.fromSpec) U h = φ := by
@@ -186,7 +186,7 @@ theorem valMap_specMap_fromSpec {U : X.Opens} (hU : IsAffineOpen U) (φ : Γ(X, 
   rw [← cancel_mono hU.fromSpec, specMap_valMap_fromSpec]
 
 /- English proof (translation)
-Establish `: valMap x U hx = valMap y U hy`. Use extensionality with `f`. Rewrite using `[← valR_eq, ← valR_eq, H]`. Rewrite using `[← specMap_valMap_fromSpec hU x hx, this, specMap_valMap_fromSpec]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem ext_of_valR {U : X.Opens} (hU : IsAffineOpen U) {x y : Sp C ⟶ X} (hx : ⊤ ≤ x ⁻¹ᵁ U)
     (hy : ⊤ ≤ y ⁻¹ᵁ U) (H : ∀ f, valR x U f = valR y U f) : x = y := by
@@ -196,11 +196,11 @@ theorem ext_of_valR {U : X.Opens} (hU : IsAffineOpen U) {x y : Sp C ⟶ X} (hx :
   rw [← specMap_valMap_fromSpec hU x hx, this, specMap_valMap_fromSpec]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hf`. Rewrite using `[← valR_res x (X.basicOpen_le f) hf, valR_eq x _ hf]`. Conclude with `(RingedSpace.isUnit_res_basicOpen X.toLocallyRingedSpace.toRingedSpace f).map _`. Introduce `hf`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hf` using `[valR_eq x U h]`. Establish `h1 : IsUnit ((x.appLE U ⊤ h).hom f)`. Establish `h2` using `hf.map (Scheme.ΓSpecIso (CommRingCat.of C)).inv.hom`. Rewrite `h2` using `[← CommRingCat.comp_apply, valMap, Category.assoc, Iso.hom_inv_id, Category.comp_id]`. Then use the resulting hypothesis. Establish `h3` using `Scheme.basicOpen_appLE x ⊤ U h f`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h3` using `[Scheme.basicOpen_of_isUnit _ h1]`. Conclude with `h3.le.trans inf_le_right`.
+A detailed English derivation is pending.
 -/
 theorem le_preimage_basicOpen_iff (x : Sp C ⟶ X) {U : X.Opens} (h : ⊤ ≤ x ⁻¹ᵁ U) (f : Γ(X, U)) :
     ⊤ ≤ x ⁻¹ᵁ X.basicOpen f ↔ IsUnit (valR x U f) := by
@@ -218,7 +218,7 @@ theorem le_preimage_basicOpen_iff (x : Sp C ⟶ X) {U : X.Opens} (h : ⊤ ≤ x 
     exact h3.le.trans inf_le_right
 
 /- English proof (translation)
-Rewrite using `[← valR_appLE (spMap σ) x h (le_preimage_top _), valR_eq _ ⊤ (le_preimage_top _), valMap_specMap, valR_eq x U h]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem valR_spMap_comp {C' : Type} [CommRing C'] (σ : C →+* C') (x : Sp C ⟶ X) (U : X.Opens)
     (h : ⊤ ≤ x ⁻¹ᵁ U) (f : Γ(X, U)) : valR (spMap σ ≫ x) U f = σ (valR x U f) := by
@@ -226,7 +226,7 @@ theorem valR_spMap_comp {C' : Type} [CommRing C'] (σ : C →+* C') (x : Sp C �
   rfl
 
 /- English proof (translation)
-Rewrite using `[preimage_apply]`. Conclude with `valR_appLE x p _ h _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem valR_constFn {R : Type} [CommRing R] (p : X ⟶ Sp R) (x : Sp C ⟶ X) (U : X.Opens)
     (h : ⊤ ≤ x ⁻¹ᵁ U) (a : R) : valR x U (constFn p U a) = (Spec.preimage (x ≫ p)).hom a := by
@@ -234,7 +234,7 @@ theorem valR_constFn {R : Type} [CommRing R] (p : X ⟶ Sp R) (x : Sp C ⟶ X) (
   exact valR_appLE x p _ h _
 
 /- English proof (translation)
-Rewrite using `[valR_constFn p x U h, hx, Spec.preimage_map]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem valR_constFn_of_over {R : Type} [CommRing R] (p : X ⟶ Sp R) (σ : R →+* C) (x : Sp C ⟶ X)
     (hx : x ≫ p = spMap σ) (U : X.Opens) (h : ⊤ ≤ x ⁻¹ᵁ U) (a : R) : valR x U (constFn p U a) = σ a := by
@@ -242,7 +242,7 @@ theorem valR_constFn_of_over {R : Type} [CommRing R] (p : X ⟶ Sp R) (σ : R �
   rfl
 
 /- English proof (translation)
-The claim follows from `valR_constFn_of_over p (RingHom.id C) x (hx.trans (Spec.map_id _).symm) U h a`.
+A detailed English derivation is pending.
 -/
 theorem valR_constFn_of_section (p : X ⟶ Sp C) (x : Sp C ⟶ X) (hx : x ≫ p = 𝟙 _) (U : X.Opens)
     (h : ⊤ ≤ x ⁻¹ᵁ U) (a : C) : valR x U (constFn p U a) = a :=
@@ -251,7 +251,7 @@ theorem valR_constFn_of_section (p : X ⟶ Sp C) (x : Sp C ⟶ X) (hx : x ≫ p 
 variable [IsLocalRing C]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h => h (x := IsLocalRing.closedPoint C) trivial, fun h => (Scheme.preimage_eq_top_of_closedPoint_mem (R := CommRingCat.of C) x h).ge⟩`.
+Supply the required witnesses or components.
 -/
 theorem le_preimage_iff (x : Sp C ⟶ X) (U : X.Opens) :
     ⊤ ≤ x ⁻¹ᵁ U ↔ x (IsLocalRing.closedPoint C) ∈ U :=
@@ -259,7 +259,7 @@ theorem le_preimage_iff (x : Sp C ⟶ X) (U : X.Opens) :
     fun h => (Scheme.preimage_eq_top_of_closedPoint_mem (R := CommRingCat.of C) x h).ge⟩
 
 /- English proof (translation)
-Take `⟨U, hU, hx, hle⟩` from `exists_isAffineOpen_mem_and_subset ((le_preimage_iff x V).1 h)`. Conclude with `⟨U, hU, (le_preimage_iff x U).2 hx, hle⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_isAffineOpen_le (x : Sp C ⟶ X) {V : X.Opens} (h : ⊤ ≤ x ⁻¹ᵁ V) :
     ∃ U : X.Opens, IsAffineOpen U ∧ ⊤ ≤ x ⁻¹ᵁ U ∧ U ≤ V := by
@@ -267,7 +267,7 @@ theorem exists_isAffineOpen_le (x : Sp C ⟶ X) {V : X.Opens} (h : ⊤ ≤ x ⁻
   exact ⟨U, hU, (le_preimage_iff x U).2 hx, hle⟩
 
 /- English proof (translation)
-Establish `h : x (IsLocalRing.closedPoint C) ∈ iSup U` using `by rw [hU]; trivial`. Take `⟨i, hi⟩` from `Opens.mem_iSup.1 h`. Conclude with `⟨i, (le_preimage_iff x _).2 hi⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_le_preimage_of_iSup_eq_top (x : Sp C ⟶ X) {ι : Sort*} {U : ι → X.Opens} (hU : iSup U = ⊤) :
     ∃ i, ⊤ ≤ x ⁻¹ᵁ U i := by
@@ -299,13 +299,13 @@ Both sides reduce to the same expression.
     (s : Sp C ⟶ S) (x : PtsOver p s) : (PtsOver.map g hg s x).1 = x.1 ≫ g := rfl
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (Category.comp_id _)`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem PtsOver.map_id {S : Scheme.{0}} (p : X ⟶ S) (s : Sp C ⟶ S) (x : PtsOver p s) :
     PtsOver.map (𝟙 X) (Category.id_comp p) s x = x := Subtype.ext (Category.comp_id _)
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (Category.assoc _ _ _)`.
+A detailed English derivation is pending.
 -/
 theorem PtsOver.map_map {S : Scheme.{0}} {p : X ⟶ S} {q : Y ⟶ S} {r : Z ⟶ S} (g : X ⟶ Y) (hg : g ≫ q = p)
     (k : Y ⟶ Z) (hk : k ≫ r = q) (s : Sp C ⟶ S) (x : PtsOver p s) :
@@ -319,7 +319,7 @@ instance topology (C : Type) [CommRing C] [TopologicalSpace C] (X : Scheme.{0}) 
   generateFrom {S | ∃ (U : X.Opens) (f : Γ(X, U)) (O : Set C), IsOpen O ∧ S = basicSet U f O}
 
 /- English proof (translation)
-Establish `: ∀ (U : X.Opens) (f : Γ(X, U)) (O : Set ℂ), basicSet U f O = {x : Sp ℂ ⟶ X | ∃ h : ⊤ ≤ x ⁻¹ᵁ U, valAt x U h f ∈ O}`. Introduce `U f O`. Use extensionality with `x`. Simplify using `only [basicSet, Set.mem_setOf_eq, valAt_eq_valR, exists_prop]`. Simplify using `only [topology, this]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem topology_complex (X : Scheme.{0}) : topology ℂ X =
     generateFrom {S | ∃ (U : X.Opens) (f : Γ(X, U)) (O : Set ℂ), IsOpen O ∧
@@ -332,14 +332,14 @@ theorem topology_complex (X : Scheme.{0}) : topology ℂ X =
   simp only [topology, this]
 
 /- English proof (translation)
-The claim follows from `isOpen_generateFrom_of_mem ⟨U, f, O, hO, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem isOpen_basicSet (U : X.Opens) (f : Γ(X, U)) {O : Set C} (hO : IsOpen O) :
     IsOpen (basicSet U f O) :=
   isOpen_generateFrom_of_mem ⟨U, f, O, hO, rfl⟩
 
 /- English proof (translation)
-Use `isOpen_basicSet (C := C) U 0 isOpen_univ using 1` and compare the differences between its conclusion and the goal. Use extensionality with `x`. Simplify using `[basicSet]`.
+Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem isOpen_setOf_le_preimage (U : X.Opens) : IsOpen {x : Sp C ⟶ X | ⊤ ≤ x ⁻¹ᵁ U} := by
   convert isOpen_basicSet (C := C) U 0 isOpen_univ using 1
@@ -347,9 +347,9 @@ theorem isOpen_setOf_le_preimage (U : X.Opens) : IsOpen {x : Sp C ⟶ X | ⊤ �
   simp [basicSet]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `H U hU`. Use `⟨H.eventually ((isOpen_setOf_le_preimage U).mem_nhds hU), fun f => ?_⟩` and prove the remaining obligations. Rewrite using `[tendsto_nhds]`. Introduce `O hO hx`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `filter_upwards [H.eventually ((isOpen_basicSet U f hO).mem_nhds ⟨hU, hx⟩)] with b hb using hb.2`. Introduce `H`. Use `tendsto_nhds_generateFrom_iff.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨U, f, O, hO, rfl⟩ ⟨hU, hx⟩`. Use `filter_upwards [(H U hU).1, ((H U hU).2 f).eventually (hO.mem_nhds hx)] with b h1 h2 using ⟨h1, h2⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem tendsto_iff {B : Type*} {e : B → (Sp C ⟶ X)} {l : Filter B} {x : Sp C ⟶ X} :
     Tendsto e l (𝓝 x) ↔ ∀ U : X.Opens, ⊤ ≤ x ⁻¹ᵁ U → (∀ᶠ b in l, ⊤ ≤ e b ⁻¹ᵁ U) ∧
@@ -366,29 +366,29 @@ theorem tendsto_iff {B : Type*} {e : B → (Sp C ⟶ X)} {l : Filter B} {x : Sp 
     filter_upwards [(H U hU).1, ((H U hU).2 f).eventually (hO.mem_nhds hx)] with b h1 h2 using ⟨h1, h2⟩
 
 /- English proof (translation)
-The claim follows from `((tendsto_iff (e := id)).1 tendsto_id U hx).2 f`.
+A detailed English derivation is pending.
 -/
 theorem continuousAt_valR {U : X.Opens} (f : Γ(X, U)) {x : Sp C ⟶ X} (hx : ⊤ ≤ x ⁻¹ᵁ U) :
     ContinuousAt (fun y : Sp C ⟶ X => valR y U f) x :=
   ((tendsto_iff (e := id)).1 tendsto_id U hx).2 f
 
 /- English proof (translation)
-Introduce `_ hx` and use `(continuousAt_valR f hx).continuousWithinAt`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem continuousOn_valR {U : X.Opens} (f : Γ(X, U)) :
     ContinuousOn (fun y : Sp C ⟶ X => valR y U f) {y | ⊤ ≤ y ⁻¹ᵁ U} :=
   fun _ hx => (continuousAt_valR f hx).continuousWithinAt
 
 /- English proof (translation)
-The claim follows from `continuous_iff_continuousAt.2 fun _ => continuousAt_valR f le_top`.
+A detailed English derivation is pending.
 -/
 theorem continuous_valR_top (f : Γ(X, ⊤)) : Continuous fun y : Sp C ⟶ X => valR y ⊤ f :=
   continuous_iff_continuousAt.2 fun _ => continuousAt_valR f le_top
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `H U`. Conclude with `⟨(isOpen_setOf_le_preimage U).preimage H, fun f => (continuousOn_valR f).comp H.continuousOn fun _ hb => hb⟩`. Introduce `H`. Use `continuous_iff_continuousAt.2 fun b => tendsto_iff.2 fun U hU => ?_` and prove the remaining obligations.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h` using `(H U).1.mem_nhds hU`. Conclude with `⟨h, fun f => ((H U).2 f).continuousAt h⟩`.
+Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem continuous_iff {B : Type*} [TopologicalSpace B] {e : B → (Sp C ⟶ X)} :
     Continuous e ↔ ∀ U : X.Opens, IsOpen {b | ⊤ ≤ e b ⁻¹ᵁ U} ∧
@@ -403,7 +403,7 @@ theorem continuous_iff {B : Type*} [TopologicalSpace B] {e : B → (Sp C ⟶ X)}
     exact ⟨h, fun f => ((H U).2 f).continuousAt h⟩
 
 /- English proof (translation)
-Use `continuous_iff.2 fun U => ⟨isOpen_setOf_le_preimage (g ⁻¹ᵁ U), fun f => ?_⟩` and prove the remaining obligations. Simplify using `only [valR_comp]`. Conclude with `continuousOn_valR _`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 @[fun_prop] theorem continuous_comp (g : X ⟶ Y) : Continuous fun x : Sp C ⟶ X => x ≫ g := by
   refine continuous_iff.2 fun U => ⟨isOpen_setOf_le_preimage (g ⁻¹ᵁ U), fun f => ?_⟩
@@ -411,7 +411,7 @@ Use `continuous_iff.2 fun U => ⟨isOpen_setOf_le_preimage (g ⁻¹ᵁ U), fun f
   exact continuousOn_valR _
 
 /- English proof (translation)
-The claim follows from `((continuous_comp g).comp continuous_subtype_val).subtype_mk _`.
+A detailed English derivation is pending.
 -/
 theorem PtsOver.continuous_map {S : Scheme.{0}} {p : X ⟶ S} {q : Y ⟶ S} (g : X ⟶ Y) (hg : g ≫ q = p)
     (s : Sp C ⟶ S) : Continuous (PtsOver.map g hg s) :=
@@ -431,7 +431,7 @@ Both sides reduce to the same expression.
 @[simp] theorem isoHomeomorph_apply (g : X ≅ Y) (x : Sp C ⟶ X) : isoHomeomorph g x = x ≫ g.hom := rfl
 
 /- English proof (translation)
-The claim follows from `isInducing_iff_nhds.2 fun x => le_antisymm hf.continuousAt.le_comap (tendsto_id'.1 (H x _ tendsto_comap))`.
+A detailed English derivation is pending.
 -/
 theorem isInducing_of_tendsto {α β : Type*} [TopologicalSpace α] [TopologicalSpace β] {f : α → β}
     (hf : Continuous f) (H : ∀ (x : α) (l : Filter α), Tendsto f l (𝓝 (f x)) → Tendsto id l (𝓝 x)) :
@@ -440,7 +440,7 @@ theorem isInducing_of_tendsto {α β : Type*} [TopologicalSpace α] [Topological
     le_antisymm hf.continuousAt.le_comap (tendsto_id'.1 (H x _ tendsto_comap))
 
 /- English proof (translation)
-The claim follows from `IsEmbedding.of_comp (PtsOver.continuous_map g hg s) continuous_subtype_val (H.comp IsEmbedding.subtypeVal)`.
+A detailed English derivation is pending.
 -/
 theorem PtsOver.isEmbedding_map {S : Scheme.{0}} {p : X ⟶ S} {q : Y ⟶ S} (g : X ⟶ Y) (hg : g ≫ q = p)
     (s : Sp C ⟶ S) (H : IsEmbedding fun x : Sp C ⟶ X => x ≫ g) : IsEmbedding (PtsOver.map g hg s) :=
@@ -450,9 +450,9 @@ theorem PtsOver.isEmbedding_map {S : Scheme.{0}} {p : X ⟶ S} {q : Y ⟶ S} (g 
 omit [TopologicalSpace C] in
 
 /- English proof (translation)
-Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, rfl⟩`. Conclude with `⟨x.1, rfl⟩`. Introduce and unpack `⟨x, hx⟩`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Establish `hx' : x ≫ g = y.1` using `hx`. Conclude with `⟨⟨x, by rw [← hg, ← Category.assoc, hx', y.2]⟩, Subtype.ext hx'⟩`.
+Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem PtsOver.range_map {S : Scheme.{0}} {p : X ⟶ S} {q : Y ⟶ S} (g : X ⟶ Y) (hg : g ≫ q = p)
     (s : Sp C ⟶ S) : Set.range (PtsOver.map g hg s) =
@@ -468,9 +468,9 @@ theorem PtsOver.range_map {S : Scheme.{0}} {p : X ⟶ S} {q : Y ⟶ S} (g : X �
 omit [TopologicalSpace C] in
 
 /- English proof (translation)
-Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, rfl⟩ z _`. Conclude with `⟨x z, rfl⟩`. Introduce `hy`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `⟨IsOpenImmersion.lift j y (by rintro _ ⟨z, rfl⟩; exact hy (x := z) trivial), IsOpenImmersion.lift_fac _ _ _⟩`.
+Supply the required witnesses or components.
 -/
 theorem range_comp_of_isOpenImmersion (j : X ⟶ Y) [IsOpenImmersion j] :
     Set.range (fun x : Sp C ⟶ X => x ≫ j) = {y | ⊤ ≤ y ⁻¹ᵁ j.opensRange} := by
@@ -483,11 +483,11 @@ theorem range_comp_of_isOpenImmersion (j : X ⟶ Y) [IsOpenImmersion j] :
       IsOpenImmersion.lift_fac _ _ _⟩
 
 /- English proof (translation)
-Use `⟨⟨isInducing_of_tendsto (continuous_comp j) fun x l H => tendsto_iff.2 fun U hU => ?_, fun x y h => (cancel_mono j).1 h⟩, ?_⟩` and prove the remaining obligations. Establish `hle : U ≤ j ⁻¹ᵁ j ''ᵁ U` using `(j.preimage_image_eq U).ge`. Take `⟨h1, h2⟩` from `tendsto_iff.1 H (j ''ᵁ U) (le_preimage_comp x j hle hU)`. Establish `h3 : ∀ᶠ y in l, ⊤ ≤ y ⁻¹ᵁ U` using `by filter_upwards [h1] with y hy using le_preimage_mono y (j.preimage_image_eq U).le hy`. Use `⟨h3, fun f => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `key : ∀ y : Sp C ⟶ X, ⊤ ≤ y ⁻¹ᵁ U → valR (y ≫ j) (j ''ᵁ U) ((j.appIso U).inv.hom f) = valR y U f`. Introduce `y hy`. Rewrite using `[← valR_appLE y j hle hy, ← CommRingCat.comp_apply, Scheme.Hom.appIso_inv_appLE]`. Conclude with `valR_res y le_rfl hy f`. Establish `h4` using `h2 ((j.appIso U).inv.hom f)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h4` using `[key x hU]`. Use `h4.congr' ?_` and prove the remaining obligations. Use `filter_upwards [h3] with y hy using key y hy`. Rewrite using `[range_comp_of_isOpenImmersion]`. Conclude with `isOpen_setOf_le_preimage _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isOpenEmbedding_comp (j : X ⟶ Y) [IsOpenImmersion j] :
     IsOpenEmbedding fun x : Sp C ⟶ X => x ≫ j := by
@@ -511,7 +511,7 @@ theorem isOpenEmbedding_comp (j : X ⟶ Y) [IsOpenImmersion j] :
     exact isOpen_setOf_le_preimage _
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨PtsOver.isEmbedding_map j hj s (isOpenEmbedding_comp j).isEmbedding, by rw [PtsOver.range_map] exact (isOpenEmbedding_comp j).isOpen_range.preimage continuous_subtype_val⟩`.
+Supply the required witnesses or components.
 -/
 theorem PtsOver.isOpenEmbedding_map {S : Scheme.{0}} {p : X ⟶ S} {q : Y ⟶ S} (j : X ⟶ Y)
     [IsOpenImmersion j] (hj : j ≫ q = p) (s : Sp C ⟶ S) : IsOpenEmbedding (PtsOver.map j hj s) :=
@@ -528,9 +528,9 @@ open CommRingCat.HomTopology
 variable {C : Type} [CommRing C] [TopologicalSpace C] {X Y : Scheme.{0}}
 
 /- English proof (translation)
-Take `⟨u, rfl⟩` from `hu`. Rewrite using `[← (IsOpenUnits.isOpenEmbedding_unitsVal (M := C)).continuousAt_iff]`. Establish `: Ring.inverse ∘ (Units.val : Cˣ → C) = fun v : Cˣ => ((v⁻¹ : Cˣ) : C)`. Use function extensionality and compare the values at `fun v => Ring.inverse_unit v`. Rewrite using `[this]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Units.continuous_coe_inv.continuousAt`.
+A detailed English derivation is pending.
 -/
 theorem continuousAt_inverse_of_isUnit [IsOpenUnits C] {u : C} (hu : IsUnit u) :
     ContinuousAt Ring.inverse u := by
@@ -544,13 +544,11 @@ theorem continuousAt_inverse_of_isUnit [IsOpenUnits C] {u : C} (hu : IsUnit u) :
 variable [IsTopologicalRing C]
 
 /- English proof (translation)
-Proceed by induction on `hf using Subring.closure_induction with`. Consider the case `mem f hf => exact H f hf`. Consider the case `zero`. Rewrite using `[valR_zero x U hx]`. Conclude with `tendsto_const_nhds.congr' (hl.mono fun b hb => (valR_zero _ U hb).symm)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `one`. Rewrite using `[valR_one x U hx]`. Conclude with `tendsto_const_nhds.congr' (hl.mono fun b hb => (valR_one _ U hb).symm)`. Consider the case `add f g _ _ hf hg`. Rewrite using `[valR_add x U hx]`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(hf.add hg).congr' (hl.mono fun b hb => (valR_add _ U hb f g).symm)`. Consider the case `neg f _ hf`. Rewrite using `[valR_neg x U hx]`. Conclude with `hf.neg.congr' (hl.mono fun b hb => (valR_neg _ U hb f).symm)`. Consider the case `mul f g _ _ hf hg`.
-
-Rewrite using `[valR_mul x U hx]`. Conclude with `(hf.mul hg).congr' (hl.mono fun b hb => (valR_mul _ U hb f g).symm)`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tendsto_valR_of_closure {B : Type*} {e : B → (Sp C ⟶ X)} {l : Filter B} {x : Sp C ⟶ X}
     {U : X.Opens} (hx : ⊤ ≤ x ⁻¹ᵁ U) (hl : ∀ᶠ b in l, ⊤ ≤ e b ⁻¹ᵁ U) {s : Set Γ(X, U)}
@@ -577,15 +575,15 @@ theorem tendsto_valR_of_closure {B : Type*} {e : B → (Sp C ⟶ X)} {l : Filter
 variable [IsLocalRing C] [IsOpenUnits C]
 
 /- English proof (translation)
-Use `tendsto_iff.2 fun V hV => ?_` and prove the remaining obligations. Take `⟨g, hgV, hxg⟩` from `hU.exists_basicOpen_le (V := V) ⟨_, (le_preimage_iff x V).1 hV⟩ ((le_preimage_iff x U).1 hx)`. Establish `hxg' : ⊤ ≤ x ⁻¹ᵁ X.basicOpen g` using `(le_preimage_iff x _).2 hxg`. Establish `hu : IsUnit (valR x U g)` using `(le_preimage_basicOpen_iff x hx g).1 hxg'`. Establish `hopen : IsOpen {c : C | IsUnit c}` using `(IsOpenUnits.isOpenEmbedding_unitsVal (M := C)).isOpen_range`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hl' : ∀ᶠ b in l, ⊤ ≤ e b ⁻¹ᵁ X.basicOpen g` using `by filter_upwards [hl, (H g).eventually (hopen.mem_nhds hu)] with b h1 h2 using (le_preimage_basicOpen_iff _ h1 g).2 h2`. Use `⟨hl'.mono fun b hb => le_preimage_mono _ hgV hb, fun f => ?_⟩` and prove the remaining obligations. Use `hU.isLocalization_basicOpen g` as an intermediate fact. Take `⟨n, a, ha⟩` from `IsLocalization.Away.surj g ((X.presheaf.map (homOfLE hgV).op).hom f)`. Establish `key : ∀ y : Sp C ⟶ X, ⊤ ≤ y ⁻¹ᵁ X.basicOpen g → valR y V f = valR y U a * Ring.inverse (valR y U g) ^ n`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `y hy`. Establish `hyU` using `le_preimage_mono y (X.basicOpen_le g) hy`. Establish `hyu : IsUnit (valR y U g)` using `(le_preimage_basicOpen_iff y hyU g).1 hy`. Establish `h1` using `congrArg (valR y (X.basicOpen g)) ha`. Rewrite `h1` using `[valR_mul y _ hy, valR_pow y _ hy, valR_res y hgV hy]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2 : ∀ t : Γ(X, U), valR y (X.basicOpen g) (algebraMap Γ(X, U) Γ(X, X.basicOpen g) t) = valR y U t` using `fun t => valR_res y (X.basicOpen_le g) hy t`. Rewrite `h1` using `[h2, h2]`. Rewrite using `[← h1, mul_assoc, ← mul_pow, Ring.mul_inverse_cancel _ hyu, one_pow, mul_one]`. Rewrite using `[key x hxg']`. Use `((H a).mul (((continuousAt_inverse_of_isUnit hu).tendsto.comp (H g)).pow n)).congr' ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `filter_upwards [hl'] with b hb using (key _ hb).symm`.
+A detailed English derivation is pending.
 -/
 theorem tendsto_of_isAffineOpen {B : Type*} {e : B → (Sp C ⟶ X)} {l : Filter B} {x : Sp C ⟶ X}
     {U : X.Opens} (hU : IsAffineOpen U) (hx : ⊤ ≤ x ⁻¹ᵁ U) (hl : ∀ᶠ b in l, ⊤ ≤ e b ⁻¹ᵁ U)
@@ -618,7 +616,7 @@ theorem tendsto_of_isAffineOpen {B : Type*} {e : B → (Sp C ⟶ X)} {l : Filter
   filter_upwards [hl'] with b hb using (key _ hb).symm
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun H => ⟨(tendsto_iff.1 H U hx).1, fun f _ => (tendsto_iff.1 H U hx).2 f⟩, fun H => tendsto_of_isAffineOpen hU hx H.1 fun f => tendsto_valR_of_closure hx H.1 H.2 (hs ▸ Subring.mem_top f)⟩`.
+Supply the required witnesses or components.
 -/
 theorem tendsto_iff_of_generators {B : Type*} {e : B → (Sp C ⟶ X)} {l : Filter B} {x : Sp C ⟶ X}
     {U : X.Opens} (hU : IsAffineOpen U) (hx : ⊤ ≤ x ⁻¹ᵁ U) {s : Set Γ(X, U)} (hs : Subring.closure s = ⊤) :
@@ -629,9 +627,9 @@ theorem tendsto_iff_of_generators {B : Type*} {e : B → (Sp C ⟶ X)} {l : Filt
       tendsto_valR_of_closure hx H.1 H.2 (hs ▸ Subring.mem_top f)⟩
 
 /- English proof (translation)
-Rewrite using `[tendsto_subtype_rng, Points.tendsto_iff_of_generators hU hx hs]`. Use `and_congr_right fun hl => ⟨fun H f hf => H f (Or.inr hf), fun H f hf => ?_⟩` and prove the remaining obligations. Break down `hf with ⟨a, rfl⟩ | hf` into its components or cases. Rewrite using `[valR_constFn p x.1 U hx, x.2]`. Use `tendsto_const_nhds.congr' (hl.mono fun b hb => ?_)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `((valR_constFn p (e b).1 U hb a).trans (by rw [(e b).2])).symm`. Conclude with `H f hf`.
+A detailed English derivation is pending.
 -/
 theorem PtsOver.tendsto_iff_of_generators {R : Type} [CommRing R] {p : X ⟶ Sp R} {t : Sp C ⟶ Sp R}
     {B : Type*} {e : B → PtsOver p t} {l : Filter B} {x : PtsOver p t} {U : X.Opens}
@@ -648,7 +646,7 @@ theorem PtsOver.tendsto_iff_of_generators {R : Type} [CommRing R] {p : X ⟶ Sp 
   · exact H f hf
 
 /- English proof (translation)
-Use `⟨fun H i => ⟨(continuous_iff.1 H _).1, fun f _ => (continuous_iff.1 H _).2 f⟩, fun H => ?_⟩` and prove the remaining obligations. Use `continuous_iff_continuousAt.2 fun b => ?_` and prove the remaining obligations. Take `⟨i, hi⟩` from `exists_le_preimage_of_iSup_eq_top (e b) hcov`. Establish `h` using `(H i).1.mem_nhds hi`. Conclude with `(tendsto_iff_of_generators (hU i) hi (hs i)).2 ⟨h, fun f hf => ((H i).2 f hf).continuousAt h⟩`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem continuous_iff_of_generators {B : Type*} [TopologicalSpace B] {e : B → (Sp C ⟶ X)} {ι : Sort*}
     {U : ι → X.Opens} (hU : ∀ i, IsAffineOpen (U i)) (hcov : iSup U = ⊤) {s : ∀ i, Set Γ(X, U i)}
@@ -662,9 +660,9 @@ theorem continuous_iff_of_generators {B : Type*} [TopologicalSpace B] {e : B →
   exact (tendsto_iff_of_generators (hU i) hi (hs i)).2 ⟨h, fun f hf => ((H i).2 f hf).continuousAt h⟩
 
 /- English proof (translation)
-Use `⟨fun H i => ?_, fun H => ?_⟩` and prove the remaining obligations. Establish `H'` using `continuous_iff.1 (continuous_subtype_val.comp H) (U i)`. Conclude with `⟨H'.1, fun f _ => H'.2 f⟩`. Use `continuous_iff_continuousAt.2 fun b => ?_` and prove the remaining obligations. Take `⟨i, hi⟩` from `exists_le_preimage_of_iSup_eq_top (e b).1 hcov`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `h` using `(H i).1.mem_nhds hi`. Conclude with `(PtsOver.tendsto_iff_of_generators (hU i) hi (hs i)).2 ⟨h, fun f hf => ((H i).2 f hf).continuousAt h⟩`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem PtsOver.continuous_iff_of_generators {R : Type} [CommRing R] {p : X ⟶ Sp R} {t : Sp C ⟶ Sp R}
     {B : Type*} [TopologicalSpace B] {e : B → PtsOver p t} {ι : Sort*}
@@ -682,7 +680,7 @@ theorem PtsOver.continuous_iff_of_generators {R : Type} [CommRing R] {p : X ⟶ 
     ⟨h, fun f hf => ((H i).2 f hf).continuousAt h⟩
 
 /- English proof (translation)
-Use `continuous_iff_continuousAt.2 fun φ => tendsto_of_isAffineOpen (isAffineOpen_top _) (le_preimage_top _) (Eventually.of_forall fun _ => le_preimage_top _) fun f => ?_` and prove the remaining obligations. Take `⟨a, rfl⟩ : ∃ a, (Scheme.ΓSpecIso A).inv.hom a = f` from `⟨(Scheme.ΓSpecIso A).hom.hom f, by rw [← CommRingCat.comp_apply, Iso.hom_inv_id]; rfl⟩`. Simplify using `only [valR_specMap]`. Conclude with `(CommRingCat.HomTopology.continuous_apply a).continuousAt`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem continuous_specMap (A : CommRingCat.{0}) :
     Continuous fun φ : A ⟶ CommRingCat.of C => (Spec.map φ : Sp C ⟶ Spec A) := by
@@ -741,9 +739,9 @@ Both sides reduce to the same expression.
     (φ : Γ(X, U) ⟶ CommRingCat.of C) : ((affineHomeomorph hU).symm φ).1 = Spec.map φ ≫ hU.fromSpec := rfl
 
 /- English proof (translation)
-Use `continuous_iff_continuousAt.2 fun x => ?_` and prove the remaining obligations. Take `⟨U, hU, hx, -⟩` from `exists_isAffineOpen_le x (le_preimage_top x)`. Establish `hl : ∀ᶠ y : Sp C₀ ⟶ X in 𝓝 x, ⊤ ≤ y ⁻¹ᵁ U` using `(isOpen_setOf_le_preimage U).mem_nhds hx`. Use `tendsto_of_isAffineOpen hU (le_preimage_comp _ x hx (le_preimage_top _)) (hl.mono fun y hy => le_preimage_comp _ y hy (le_preimage_top _)) fun f => ?_` and prove the remaining obligations. Rewrite using `[valR_spMap_comp σ x U hx]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(hσ.continuousAt.tendsto.comp (continuousAt_valR f hx)).congr' (hl.mono fun y hy => (valR_spMap_comp σ y U hy f).symm)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_spMap_comp {C₀ : Type} [CommRing C₀] [TopologicalSpace C₀] [IsLocalRing C₀]
     (σ : C₀ →+* C) (hσ : Continuous σ) : Continuous fun x : Sp C₀ ⟶ X => spMap σ ≫ x := by
@@ -757,9 +755,9 @@ theorem continuous_spMap_comp {C₀ : Type} [CommRing C₀] [TopologicalSpace C�
     (hl.mono fun y hy => (valR_spMap_comp σ y U hy f).symm)
 
 /- English proof (translation)
-Use `⟨isInducing_of_tendsto (continuous_comp i) fun x l H => ?_, fun x y h => (cancel_mono i).1 h⟩` and prove the remaining obligations. Take `⟨V, hV, hx, -⟩` from `exists_isAffineOpen_le (x ≫ i) (le_preimage_top _)`. Take `⟨h1, h2⟩` from `tendsto_iff.1 H V hx`. Use `tendsto_of_isAffineOpen (hV.preimage i) hx h1 fun f => ?_` and prove the remaining obligations. Take `⟨g, rfl⟩` from `i.app_surjective V hV f`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `h3` using `h2 g`. Simplify using `only [valR_comp] at h3`. Conclude with `h3`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isEmbedding_comp_of_isClosedImmersion (i : X ⟶ Y) [IsClosedImmersion i] :
     IsEmbedding fun x : Sp C ⟶ X => x ≫ i := by
@@ -775,13 +773,11 @@ theorem isEmbedding_comp_of_isClosedImmersion (i : X ⟶ Y) [IsClosedImmersion i
 omit [TopologicalSpace C] [IsTopologicalRing C] [IsLocalRing C] [IsOpenUnits C] in
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, rfl⟩ f hf`. Rewrite using `[valR_comp, hf]`. Conclude with `valR_zero x _ hy`. Introduce `H`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hk : RingHom.ker (i.app V).hom ≤ RingHom.ker (valMap y V hy).hom` using `fun f hf => by`. Rewrite using `[RingHom.mem_ker, ← valR_eq]`. Conclude with `H f hf`. Set `ψ : Γ(X, i ⁻¹ᵁ V) →+* C` to `(i.app V).hom.liftOfSurjective (i.app_surjective V hV) ⟨(valMap y V hy).hom, hk⟩`. Establish `hψ : i.appLE V (i ⁻¹ᵁ V) le_rfl ≫ CommRingCat.ofHom ψ = valMap y V hy`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Rewrite using `[Scheme.Hom.appLE_eq_app]`. Use extensionality with `f`. Conclude with `RingHom.liftOfSurjective_comp_apply (i.app V).hom (i.app_surjective V hV) ⟨(valMap y V hy).hom, hk⟩ f`. Use `⟨Spec.map (CommRingCat.ofHom ψ) ≫ (hV.preimage i).fromSpec, ?_⟩` and prove the remaining obligations. Use `show (Spec.map (CommRingCat.ofHom ψ) ≫ (hV.preimage i).fromSpec) ≫ i = y`.
-
-Rewrite using `[Category.assoc, ← hV.SpecMap_appLE_fromSpec i (hV.preimage i) le_rfl, ← Category.assoc, ← Spec.map_comp, hψ, specMap_valMap_fromSpec]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_range_comp_iff_of_isClosedImmersion (i : X ⟶ Y) [IsClosedImmersion i] {V : Y.Opens}
     (hV : IsAffineOpen V) (y : Sp C ⟶ Y) (hy : ⊤ ≤ y ⁻¹ᵁ V) :
@@ -807,9 +803,9 @@ theorem mem_range_comp_iff_of_isClosedImmersion (i : X ⟶ Y) [IsClosedImmersion
       ← Spec.map_comp, hψ, specMap_valMap_fromSpec]
 
 /- English proof (translation)
-Use `⟨isEmbedding_comp_of_isClosedImmersion i, ?_⟩` and prove the remaining obligations. Rewrite using `[← isOpen_compl_iff, isOpen_iff_mem_nhds]`. Introduce `y hy`. Take `⟨V, hV, hyV, -⟩` from `exists_isAffineOpen_le y (le_preimage_top _)`. Establish `hy'` using `mt (mem_range_comp_iff_of_isClosedImmersion i hV y hyV).2 hy`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `push Not at hy'`. Take `⟨f, hf, hne⟩` from `hy'`. Use `filter_upwards [(isOpen_basicSet V f (isOpen_compl_singleton (x := (0 : C)))).mem_nhds ⟨hyV, hne⟩] with z hz hz' using hz.2 ((mem_range_comp_iff_of_isClosedImmersion i hV z hz.1).1 hz' f hf)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem isClosedEmbedding_comp [T1Space C] (i : X ⟶ Y) [IsClosedImmersion i] :
     IsClosedEmbedding fun x : Sp C ⟶ X => x ≫ i := by
@@ -824,7 +820,7 @@ theorem isClosedEmbedding_comp [T1Space C] (i : X ⟶ Y) [IsClosedImmersion i] :
     with z hz hz' using hz.2 ((mem_range_comp_iff_of_isClosedImmersion i hV z hz.1).1 hz' f hf)
 
 /- English proof (translation)
-Establish `h` using `(isOpenEmbedding_comp (C := C) i.coborderRange.ι).isEmbedding.comp (isEmbedding_comp_of_isClosedImmersion i.liftCoborder)`. Use `h using 1` and compare the differences between its conclusion and the goal. Use `ext1 x`. Simplify using `only [Function.comp_apply, Category.assoc, Scheme.Hom.liftCoborder_ι]`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isEmbedding_comp (i : X ⟶ Y) [IsImmersion i] : IsEmbedding fun x : Sp C ⟶ X => x ≫ i := by
   have h := (isOpenEmbedding_comp (C := C) i.coborderRange.ι).isEmbedding.comp
@@ -834,7 +830,7 @@ theorem isEmbedding_comp (i : X ⟶ Y) [IsImmersion i] : IsEmbedding fun x : Sp 
   simp only [Function.comp_apply, Category.assoc, Scheme.Hom.liftCoborder_ι]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨PtsOver.isEmbedding_map i hi s (isClosedEmbedding_comp i).isEmbedding, by rw [PtsOver.range_map] exact (isClosedEmbedding_comp i).isClosed_range.preimage continuous_subtype_val⟩`.
+Supply the required witnesses or components.
 -/
 theorem PtsOver.isClosedEmbedding_map [T1Space C] {S : Scheme.{0}} {p : X ⟶ S} {q : Y ⟶ S} (i : X ⟶ Y)
     [IsClosedImmersion i] (hi : i ≫ q = p) (s : Sp C ⟶ S) : IsClosedEmbedding (PtsOver.map i hi s) :=
@@ -843,34 +839,32 @@ theorem PtsOver.isClosedEmbedding_map [T1Space C] {S : Scheme.{0}} {p : X ⟶ S}
     exact (isClosedEmbedding_comp i).isClosed_range.preimage continuous_subtype_val⟩
 
 /- English proof (translation)
-The claim follows from `PtsOver.isEmbedding_map i hi s (isEmbedding_comp i)`.
+A detailed English derivation is pending.
 -/
 theorem PtsOver.isEmbedding_map_of_isImmersion {S : Scheme.{0}} {p : X ⟶ S} {q : Y ⟶ S} (i : X ⟶ Y)
     [IsImmersion i] (hi : i ≫ q = p) (s : Sp C ⟶ S) : IsEmbedding (PtsOver.map i hi s) :=
   PtsOver.isEmbedding_map i hi s (isEmbedding_comp i)
 
 /- English proof (translation)
-Use `⟨isInducing_of_tendsto ((continuous_comp fst).prodMk (continuous_comp snd)) fun z l H => ?_, fun x y h => hP.hom_ext (congrArg Prod.fst h) (congrArg Prod.snd h)⟩` and prove the remaining obligations. Establish `H1 : Tendsto (fun y : Sp C ⟶ P => y ≫ fst) l (𝓝 (z ≫ fst))` using `H.fst_nhds`. Establish `H2 : Tendsto (fun y : Sp C ⟶ P => y ≫ snd) l (𝓝 (z ≫ snd))` using `H.snd_nhds`. Establish `w : ∀ y : Sp C ⟶ P, (y ≫ fst) ≫ f = (y ≫ snd) ≫ g` using `fun y => by`. Rewrite using `[Category.assoc, Category.assoc, hP.w]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨W, hW, hzW, -⟩` from `exists_isAffineOpen_le ((z ≫ fst) ≫ f) (le_preimage_top _)`. Take `⟨U, hU, hzU, hUW⟩` from `exists_isAffineOpen_le (z ≫ fst) (V := f ⁻¹ᵁ W) hzW`. Take `⟨V, hV, hzV, hVW⟩` from `exists_isAffineOpen_le (z ≫ snd) (V := g ⁻¹ᵁ W) (by`. Rewrite `hzW` using `[w]`. Conclude with `hzW)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression.
 
-Set `a` to `f.appLE W U hUW`. Set `b` to `g.appLE W V hVW`. Set `t : Spec (pushout a b) ⟶ P` to `hP.lift (Spec.map (pushout.inl a b) ≫ hU.fromSpec) (Spec.map (pushout.inr a b) ≫ hV.fromSpec) (by`. Rewrite using `[Category.assoc, Category.assoc, ← hW.SpecMap_appLE_fromSpec f hU hUW, ← hW.SpecMap_appLE_fromSpec g hV hVW, ← Category.assoc, ← Category.assoc, ← Spec.map_comp, ← Spec.map_comp, pushout.condition])`. Establish `hcond : ∀ (y : Sp C ⟶ P) (h1 : ⊤ ≤ (y ≫ fst) ⁻¹ᵁ U) (h2 : ⊤ ≤ (y ≫ snd) ⁻¹ᵁ V), a ≫ valMap _ U h1 = b ≫ valMap _ V h2`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `y h1 h2`. Rewrite using `[appLE_valMap _ f hUW h1 (le_preimage_comp _ _ hUW h1), appLE_valMap _ g hVW h2 (le_preimage_comp _ _ hVW h2)]`. Use `congr 1`. Conclude with `w y`. Establish `hdesc : ∀ (y : Sp C ⟶ P) (h1 : ⊤ ≤ (y ≫ fst) ⁻¹ᵁ U) (h2 : ⊤ ≤ (y ≫ snd) ⁻¹ᵁ V), Spec.map (pushout.desc _ _ (hcond y h1 h2)) ≫ t = y`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `y h1 h2`. Use `hP.hom_ext ?_ ?_` and prove the remaining obligations. Rewrite using `[Category.assoc, hP.lift_fst, ← Category.assoc, ← Spec.map_comp, pushout.inl_desc, specMap_valMap_fromSpec]`. Rewrite using `[Category.assoc, hP.lift_snd, ← Category.assoc, ← Spec.map_comp, pushout.inr_desc, specMap_valMap_fromSpec]`. Take `⟨e1, v1⟩` from `tendsto_iff.1 H1 U hzU`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Take `⟨e2, v2⟩` from `tendsto_iff.1 H2 V hzV`. Set `ψ : (Sp C ⟶ P) → (pushout a b ⟶ CommRingCat.of C)` to `fun y => if h : ⊤ ≤ (y ≫ fst) ⁻¹ᵁ U ∧ ⊤ ≤ (y ≫ snd) ⁻¹ᵁ V then pushout.desc _ _ (hcond y h.1 h.2) else pushout.desc _ _ (hcond z hzU hzV)`. Establish `hψ : ∀ (y : Sp C ⟶ P) (h1 : ⊤ ≤ (y ≫ fst) ⁻¹ᵁ U) (h2 : ⊤ ≤ (y ≫ snd) ⁻¹ᵁ V), ψ y = pushout.desc _ _ (hcond y h1 h2)` using `fun y h1 h2 => dif_pos ⟨h1, h2⟩`. Establish `hlim : Tendsto ψ l (𝓝 (ψ z))`. Rewrite using `[(isEmbedding_pushout (R := CommRingCat.of C) a b).tendsto_nhds_iff]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Tendsto.prodMk_nhds ?_ ?_` and prove the remaining obligations. Rewrite using `[(isEmbedding_hom _ _).tendsto_nhds_iff, tendsto_pi_nhds]`. Introduce `u`. Rewrite using `[hψ z hzU hzV, pushout.inl_desc, ← valR_eq]`. Use `(v1 u).congr' ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `filter_upwards [e1, e2] with y h1 h2`. Simplify using `only [Function.comp_apply]`. Rewrite using `[hψ y h1 h2, pushout.inl_desc, ← valR_eq]`. Rewrite using `[(isEmbedding_hom _ _).tendsto_nhds_iff, tendsto_pi_nhds]`. Introduce `u`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[hψ z hzU hzV, pushout.inr_desc, ← valR_eq]`. Use `(v2 u).congr' ?_` and prove the remaining obligations. Use `filter_upwards [e1, e2] with y h1 h2`. Simplify using `only [Function.comp_apply]`. Rewrite using `[hψ y h1 h2, pushout.inr_desc, ← valR_eq]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hfin` using `(((continuous_comp t).comp (continuous_specMap (C := C) _)).tendsto (ψ z)).comp hlim`. Simplify using `only [Function.comp_apply] at hfin`. Rewrite `hfin` using `[hψ z hzU hzV, hdesc]`. Use `hfin.congr' ?_` and prove the remaining obligations. Use `filter_upwards [e1, e2] with y h1 h2`.
-
-Simplify using `only [Function.comp_apply, id]`. Rewrite using `[hψ y h1 h2, hdesc]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isEmbedding_of_isPullback {P S : Scheme.{0}} {fst : P ⟶ X} {snd : P ⟶ Y} {f : X ⟶ S} {g : Y ⟶ S}
     (hP : IsPullback fst snd f g) : IsEmbedding fun z : Sp C ⟶ P => (z ≫ fst, z ≫ snd) := by
@@ -1010,7 +1004,7 @@ def ptsOverEquivAlgHom {t : Sp C ⟶ Sp R} (ht : t = spMap (algebraMap R C)) :
     rfl
 
 /- English proof (translation)
-The claim follows from `preimage_apply (A := CommRingCat.of A) x.1 a`.
+A detailed English derivation is pending.
 -/
 theorem ptsOverEquivAlgHom_apply {t : Sp C ⟶ Sp R} (ht : t = spMap (algebraMap R C))
     (x : PtsOver (spMap (algebraMap R A)) t) (a : A) :
@@ -1024,7 +1018,7 @@ Both sides reduce to the same expression.
     (φ : A →ₐ[R] C) : ((ptsOverEquivAlgHom A ht).symm φ).1 = spMap φ.toRingHom := rfl
 
 /- English proof (translation)
-The claim follows from `(Spec.map_id _).symm`.
+A detailed English derivation is pending.
 -/
 theorem id_eq_spMap_algebraMap (C : Type) [CommRing C] : 𝟙 (Sp C) = spMap (algebraMap C C) :=
   (Spec.map_id _).symm
@@ -1036,9 +1030,9 @@ abbrev ptsEquivAlgHom {C : Type} [CommRing C] (A : Type) [CommRing A] [Algebra C
 variable {A} in
 
 /- English proof (translation)
-Use extensionality with `z`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, rfl⟩ q hq`. Rewrite using `[← MvPolynomial.comp_aeval, AlgHom.comp_apply, hq, map_zero]`. Introduce `hz`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨(ptsOverEquivAlgHom A ht).symm (AlgHom.liftOfSurjective _ ha (MvPolynomial.aeval z) fun q hq => hz q hq), funext fun i => ?_⟩` and prove the remaining obligations. Establish `h` using `AlgHom.liftOfSurjective_apply _ ha (MvPolynomial.aeval z) (fun q hq => hz q hq) (MvPolynomial.X i)`. Simplify using `using h`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem range_coord {t : Sp C ⟶ Sp R} (ht : t = spMap (algebraMap R C)) {σ : Type*} (a : σ → A)
     (ha : Function.Surjective (MvPolynomial.aeval (R := R) a)) :
@@ -1060,7 +1054,7 @@ variable [TopologicalSpace C] [IsTopologicalRing C] [IsLocalRing C] [IsOpenUnits
 open CommRingCat.HomTopology in
 
 /- English proof (translation)
-The claim follows from `((CommRingCat.HomTopology.isEmbedding_hom (CommRingCat.of C) (CommRingCat.of A)).comp (specHomeomorph C (CommRingCat.of A)).isEmbedding).comp IsEmbedding.subtypeVal`.
+A detailed English derivation is pending.
 -/
 theorem isEmbedding_ptsOverEquivAlgHom {t : Sp C ⟶ Sp R} (ht : t = spMap (algebraMap R C)) :
     IsEmbedding fun x : PtsOver (spMap (algebraMap R A)) t => (ptsOverEquivAlgHom A ht x : A → C) :=
@@ -1070,9 +1064,9 @@ theorem isEmbedding_ptsOverEquivAlgHom {t : Sp C ⟶ Sp R} (ht : t = spMap (alge
 variable {A} in
 
 /- English proof (translation)
-Establish `h` using `isEmbedding_ptsOverEquivAlgHom A ht`. Use `choose q hq using ha`. Use `IsEmbedding.of_comp (g := fun (z : σ → C) (u : A) => MvPolynomial.aeval z (q u)) (continuous_pi fun i => (continuous_apply (a i)).comp h.continuous) (continuous_pi fun u => ?_) ?_` and prove the remaining obligations. Simplify using `only [MvPolynomial.aeval_def, MvPolynomial.eval₂_eq] fun_prop`. Use `h using 1` and compare the differences between its conclusion and the goal.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components.
 
-Use extensionality with `x u`. Simplify using `only [Function.comp_apply]`. Rewrite using `[← MvPolynomial.comp_aeval, AlgHom.comp_apply, hq]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isEmbedding_coord {t : Sp C ⟶ Sp R} (ht : t = spMap (algebraMap R C)) {σ : Type*} (a : σ → A)
     (ha : Function.Surjective (MvPolynomial.aeval (R := R) a)) :
@@ -1091,9 +1085,9 @@ theorem isEmbedding_coord {t : Sp C ⟶ Sp R} (ht : t = spMap (algebraMap R C)) 
 variable {A} in
 
 /- English proof (translation)
-Use `⟨isEmbedding_coord ht a ha, ?_⟩` and prove the remaining obligations. Rewrite using `[range_coord ht a ha, Set.setOf_forall]`. Use `isClosed_iInter fun q => ?_` and prove the remaining obligations. Rewrite using `[Set.setOf_forall]`. Use `isClosed_iInter fun _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: Continuous fun z : σ → C => MvPolynomial.aeval z q`. Simplify using `only [MvPolynomial.aeval_def, MvPolynomial.eval₂_eq]`. Use `fun_prop`. Conclude with `isClosed_singleton.preimage this`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isClosedEmbedding_coord [T1Space C] {t : Sp C ⟶ Sp R} (ht : t = spMap (algebraMap R C)) {σ : Type*}
     (a : σ → A) (ha : Function.Surjective (MvPolynomial.aeval (R := R) a)) :
@@ -1112,7 +1106,7 @@ theorem isClosedEmbedding_coord [T1Space C] {t : Sp C ⟶ Sp R} (ht : t = spMap 
 omit [TopologicalSpace C] [IsTopologicalRing C] [IsLocalRing C] [IsOpenUnits C] in
 
 /- English proof (translation)
-Establish `: MvPolynomial.aeval (fun i => Ideal.Quotient.mk I (MvPolynomial.X i)) = Ideal.Quotient.mkₐ R I`. Use extensionality with `i`. Simplify using the standard rewrite rules. Rewrite using `[this]`. Both sides reduce to the same expression.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem aeval_mk_X {σ : Type} (I : Ideal (MvPolynomial σ R)) (q : MvPolynomial σ R) :
     MvPolynomial.aeval (fun i => Ideal.Quotient.mk I (MvPolynomial.X i)) q = Ideal.Quotient.mk I q := by
@@ -1183,7 +1177,7 @@ instance overTopology (A : Over (Sp C)) : TopologicalSpace (𝟙_ (Over (Sp C)) 
   induced overPt (topology C A.left)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨⟨rfl⟩, fun _ _ h => Over.OverMorphism.ext h⟩`.
+Supply the required witnesses or components.
 -/
 theorem isEmbedding_left (A : Over (Sp C)) :
     IsEmbedding (overPt (A := A)) :=
@@ -1204,7 +1198,7 @@ Both sides reduce to the same expression.
     (overHomeomorph A x).1 = x.left := rfl
 
 /- English proof (translation)
-The claim follows from `(isEmbedding_left B).continuous_iff.2 ((continuous_comp g.left).comp (isEmbedding_left A).continuous)`.
+A detailed English derivation is pending.
 -/
 @[fun_prop] theorem continuous_over_comp {A B : Over (Sp C)} (g : A ⟶ B) :
     Continuous fun x : 𝟙_ (Over (Sp C)) ⟶ A => x ≫ g :=
@@ -1246,7 +1240,7 @@ open ReciprocityTheory.AnForm.R
 variable {X : Scheme.{0}}
 
 /- English proof (translation)
-The claim follows from `continuous_iff`.
+A detailed English derivation is pending.
 -/
 theorem continuous_iff_valAt' {B : Type*} [TopologicalSpace B] {e : B → (Sp ℂ ⟶ X)} :
     Continuous e ↔ ∀ U : X.Opens, IsOpen {b | ⊤ ≤ e b ⁻¹ᵁ U} ∧
@@ -1254,7 +1248,7 @@ theorem continuous_iff_valAt' {B : Type*} [TopologicalSpace B] {e : B → (Sp �
   continuous_iff
 
 /- English proof (translation)
-The claim follows from `continuous_iff_valAt'.2 fun U => ⟨(H U 0).1, fun f => (H U f).2.continuousOn⟩`.
+A detailed English derivation is pending.
 -/
 theorem continuous_of_differentiableOn {B : Type*} [NormedAddCommGroup B] [NormedSpace ℂ B]
     {e : B → (Sp ℂ ⟶ X)} (H : ∀ (U : X.Opens) (f : Γ(X, U)), IsOpen {b | ⊤ ≤ e b ⁻¹ᵁ U} ∧
@@ -1279,7 +1273,7 @@ Both sides reduce to the same expression.
 @[simp] theorem conjHomeomorph_apply (x : Sp ℂ ⟶ X) : conjHomeomorph X x = spMap (starRingEnd ℂ) ≫ x := rfl
 
 /- English proof (translation)
-The claim follows from `valR_spMap_comp _ x U h f`.
+A detailed English derivation is pending.
 -/
 theorem valR_conjHomeomorph (x : Sp ℂ ⟶ X) (U : X.Opens) (h : ⊤ ≤ x ⁻¹ᵁ U) (f : Γ(X, U)) :
     valR (conjHomeomorph X x) U f = starRingEnd ℂ (valR x U f) := valR_spMap_comp _ x U h f
@@ -1300,13 +1294,13 @@ theorem ptsEquivCPt_val (p : X ⟶ Sp ℂ) [LocallyOfFiniteType p] (x : Pts p) :
     (ptsEquivCPt p x).1 = x.1 (IsLocalRing.closedPoint ℂ) := rfl
 
 /- English proof (translation)
-The claim follows from `(le_preimage_iff x.1 U).symm`.
+A detailed English derivation is pending.
 -/
 theorem ptsEquivCPt_mem_iff (p : X ⟶ Sp ℂ) [LocallyOfFiniteType p] (x : Pts p) (U : X.Opens) :
     (ptsEquivCPt p x).1 ∈ U ↔ ⊤ ≤ x.1 ⁻¹ᵁ U := (le_preimage_iff x.1 U).symm
 
 /- English proof (translation)
-Rewrite using `[Scheme.germ_stalkClosedPointTo (R := CommRingCat.of C)]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem germ_stalkClosedPointTo_eq_valMap {C : Type} [CommRing C] [IsLocalRing C] (x : Sp C ⟶ X)
     (U : X.Opens) (h : ⊤ ≤ x ⁻¹ᵁ U) :
@@ -1316,11 +1310,11 @@ theorem germ_stalkClosedPointTo_eq_valMap {C : Type} [CommRing C] [IsLocalRing C
   rfl
 
 /- English proof (translation)
-Set `ψ : X.residueField (x.1 (IsLocalRing.closedPoint ℂ)) ⟶ CommRingCat.of ℂ` to `Scheme.descResidueField (Scheme.stalkClosedPointTo (R := CommRingCat.of ℂ) x.1)`. Establish `hψ : ∀ (V : X.Opens) (hV : x.1 (IsLocalRing.closedPoint ℂ) ∈ V) (g : Γ(X, V)), ψ.hom ((X.evaluation V _ hV).hom g) = valR x.1 V g`. Introduce `V hV g`. Establish `hV'` using `(le_preimage_iff x.1 V).2 hV`. Rewrite using `[valR_eq x.1 V hV', ← germ_stalkClosedPointTo_eq_valMap, ← CommRingCat.comp_apply, ← Scheme.germ_residue, Category.assoc, Scheme.residue_descResidueField]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hc : IsClosed ({x.1 (IsLocalRing.closedPoint ℂ)} : Set X)` using `(ptsEquivCPt p x).2`. Establish `h1` using `valHom_unique p _ hc ψ.hom (RingHom.ext fun c => (hψ ⊤ trivial _).trans (valR_constFn_of_section p x.1 x.2 ⊤ (le_preimage_top _) c))`. Establish `h2` using `valHom_eq p _ hc`. Rewrite `h2` using `[← h1]`. Rewrite using `[← hψ U h f]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(congrFun h2 _).symm`.
+A detailed English derivation is pending.
 -/
 theorem valR_eq_val (p : X ⟶ Sp ℂ) [LocallyOfFiniteType p] (x : Pts p) (U : X.Opens)
     (h : (ptsEquivCPt p x).1 ∈ U) (f : Γ(X, U)) : valR x.1 U f = val p f (ptsEquivCPt p x).1 h := by
@@ -1341,7 +1335,7 @@ theorem valR_eq_val (p : X ⟶ Sp ℂ) [LocallyOfFiniteType p] (x : Pts p) (U : 
   exact (congrFun h2 _).symm
 
 /- English proof (translation)
-The claim follows from `(valAt_eq_valR x.1 U h f).trans (valR_eq_val p x U _ f)`.
+A detailed English derivation is pending.
 -/
 theorem valAt_eq_val (p : X ⟶ Sp ℂ) [LocallyOfFiniteType p] (x : Pts p) (U : X.Opens)
     (h : ⊤ ≤ x.1 ⁻¹ᵁ U) (f : Γ(X, U)) :
@@ -1396,20 +1390,20 @@ theorem resolutionHomeomorph_val {K : Type} [Fintype K] [Nonempty K] {ι : K →
 end Complex
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨affineSpaceHomeomorph (id_eq_spMap_algebraMap ℂ) (Fin 2)⟩`.
+Supply the required witnesses or components.
 -/
 example : Nonempty (Pts (spMap (algebraMap ℂ (MvPolynomial (Fin 2) ℂ))) ≃ₜ (Fin 2 → ℂ)) :=
   ⟨affineSpaceHomeomorph (id_eq_spMap_algebraMap ℂ) (Fin 2)⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨affineSpaceHomeomorph rfl Unit⟩`.
+Supply the required witnesses or components.
 -/
 example : Nonempty (PtsOver (spMap (algebraMap ℤ (MvPolynomial Unit ℤ))) (spMap (algebraMap ℤ ℚ_[2])) ≃ₜ
     (Unit → ℚ_[2])) :=
   ⟨affineSpaceHomeomorph rfl Unit⟩
 
 /- English proof (translation)
-Set `h` to `affineSpaceHomeomorph (id_eq_spMap_algebraMap ℂ) Unit`. Conclude with `⟨h.symm.surjective.connectedSpace h.symm.continuous, h.isEmbedding.t2Space, h.toEquiv.nontrivial⟩`.
+Introduce a local definition for the expression. Supply the required witnesses or components.
 -/
 example : let X := Pts (spMap (algebraMap ℂ (MvPolynomial Unit ℂ)))
     ConnectedSpace X ∧ T2Space X ∧ Nontrivial X := by
@@ -1418,7 +1412,7 @@ example : let X := Pts (spMap (algebraMap ℂ (MvPolynomial Unit ℂ)))
     h.toEquiv.nontrivial⟩
 
 /- English proof (translation)
-Rewrite using `[valAt'_eq_valR, valR_specMap (A := CommRingCat.of (MvPolynomial Unit ℂ))]`. Simplify using `only [CommRingCat.hom_ofHom, map_add, map_pow, MvPolynomial.eval_X, map_one]`. Take the linear combination `Complex.I_mul_I`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 example : valAt' (spMap (MvPolynomial.eval fun _ : Unit => 2 + Complex.I)) ⊤
     ((Scheme.ΓSpecIso (CommRingCat.of (MvPolynomial Unit ℂ))).inv.hom (MvPolynomial.X () ^ 2 + 1)) =
@@ -1428,11 +1422,11 @@ example : valAt' (spMap (MvPolynomial.eval fun _ : Unit => 2 + Complex.I)) ⊤
   linear_combination Complex.I_mul_I
 
 /- English proof (translation)
-Use `set I := Ideal.span {(MvPolynomial.X 0 ^ 2 + MvPolynomial.X 1 ^ 2 - 1 : MvPolynomial (Fin 2) ℝ)}`. Establish `hc : IsCompact {z : Fin 2 → ℝ | ∀ q ∈ I, MvPolynomial.aeval z q = 0}`. Use `(isCompact_closedBall (0 : Fin 2 → ℝ) 1).of_isClosed_subset ?_ fun z hz => ?_` and prove the remaining obligations. Simplify using `only [Set.setOf_forall]`. Conclude with `isClosed_iInter fun q => isClosed_iInter fun _ => isClosed_eq (MvPolynomial.continuous_eval q) continuous_const`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h` using `hz _ (Ideal.subset_span rfl)`. Simplify using `only [map_sub, map_add, map_pow, MvPolynomial.aeval_X, map_one] at h`. Rewrite using `[mem_closedBall_zero_iff, pi_norm_le_iff_of_nonneg zero_le_one]`. Introduce `i`. Rewrite using `[Real.norm_eq_abs, abs_le]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Apply the tactic sequence `fin_cases i <;> constructor <;> simp only [Fin.zero_eta, Fin.mk_one] <;> nlinarith`. Use `isCompact_iff_compactSpace.1 hc` as an intermediate fact. Conclude with `(zeroSetHomeomorph (id_eq_spMap_algebraMap ℝ) I).symm.compactSpace`.
+A detailed English derivation is pending.
 -/
 example : CompactSpace (Pts (spMap (algebraMap ℝ (MvPolynomial (Fin 2) ℝ ⧸
     Ideal.span {(MvPolynomial.X 0 ^ 2 + MvPolynomial.X 1 ^ 2 - 1 : MvPolynomial (Fin 2) ℝ)})))) := by

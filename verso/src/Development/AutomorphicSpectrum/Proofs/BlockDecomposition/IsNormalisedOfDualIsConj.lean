@@ -28,17 +28,17 @@ abbrev sConj (x : HeightOneSpectrum (𝓞 E)) :
   GeneralLinearGroup.map (n := Fin n) (conjLoc (IsCMField.complexConj E).toRingEquiv x)
 
 /- English proof (translation)
-Take `⟨B, -, hB, hfinB, -, -⟩` from `hd`. Take `⟨f, f0, hf⟩` from `hτ`. Establish `hs : Continuous (sConj (n` using `n) x) := Continuous.units_map _ (continuous_id.matrix_map (conjLoc_spec _ x).1)`. Set `τ' : SmIrr (GL (Fin n) ((GlobalTheory.ThetaSatake.cw x).adicCompletion E))` to `{ V := τ.V, ρ := MonoidHom.comp τ.ρ (sConj x), smooth := fun v => (τ.smooth v).preimage hs irred := GlobalTheory.ConjPairLoc.irred_comp _ _ (GlobalTheory.ConjPairLoc.map_conjLoc_surjective x) τ.irred }`. Establish `hσ'` using `((cuspSub_iff π).2.1 _ σ).2 hσ`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `β : π.V →ₗ[ℂ] τ.V →ₗ[ℂ] ℂ` to `B.compl₂ f`. Establish `hβ : β ≠ 0` using `fun h => f0 (LinearMap.ext fun v => hB (f v) fun φ => LinearMap.congr_fun (LinearMap.congr_fun h φ) v)`. Take `⟨F, hF⟩` from `GlobalTheory.LocDual.exists_comp_ne_zero π.V π.stable π.irred _ σ hσ' β hβ`. Set `P : σ.V →ₗ[ℂ] τ.V →ₗ[ℂ] ℂ` to `β ∘ₗ F.1.codRestrict π.V F.2.1`. Establish `hP : ∀ g u v, P (σ.ρ g u) (τ'.ρ g v) = P u v` using `fun g u v => by`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `e1 : F.1.codRestrict π.V F.2.1 (σ.ρ g u) = π.op (.fin (locGL E n _ g)) (F.1.codRestrict π.V F.2.1 u)` using `Subtype.ext (F.2.2 g u)`. Establish `e2 : f (τ'.ρ g v) = π.op (GlobalTheory.ContraPair.conjOp (.fin (locGL E n _ g))) (f v)`. Express the relevant statement in the definitionally equal form `f (τ.ρ (sConj x g) v) = π.op (.fin (GeneralLinearGroup.map _ (locGL E n _ g))) (f v)`. Rewrite using `[GlobalTheory.ConjPairLoc.conjFin_locGL, hf, CuspSub.locRep_eq]`. Express the relevant statement in the definitionally equal form `B (F.1.codRestrict π.V F.2.1 (σ.ρ g u)) (f (τ'.ρ g v)) = B (F.1.codRestrict π.V F.2.1 u) (f v)`.
+Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[e1, e2, hfinB]`. Establish `hirr : (GlobalTheory.SmGL.contra σ.ρ).IsIrreducible` using `GlobalTheory.ContraRefl.contra_isIrreducible (GlobalTheory.SqIntUnit.compactOpen_basis _ n) ha σ.irred`. Set `e₁` to `(GlobalTheory.InvPairing.pairMap σ.ρ τ'.smooth P hP).ofBijective (GlobalTheory.InvPairing.pairMap_bijective σ.ρ τ'.smooth P hP hF τ'.irred hirr)`. Take `⟨e₂⟩` from `GlobalTheory.GelfandKazhdan.equiv_contra _ n σ.V σ.ρ ha σ.irred`. Set `e : σ.V ≃ₗ[ℂ] τ.V` to `(e₂.trans e₁.symm).toLinearEquiv`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `he : ∀ g v, e (σ.ρ g v) = τ.ρ (sConj x (invT n _ g)) (e v)` using `fun g v => by`. Establish `h` using `GlobalTheory.ConjPairLoc.equiv_apply (e₂.trans e₁.symm) (invT n _ g) v`. Establish `h1 : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorLiftConclusion.invTranspose n _ (invT n _ g) = g` using `Units.ext (Matrix.transpose_transpose _)`. Rewrite `h` using `[MonoidHom.comp_apply, h1]`. Conclude with `h`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨e, fun g v => ?_⟩` and prove the remaining obligations. Rewrite using `[he]`. Use `congr 2`. Conclude with `Units.ext (Matrix.ext fun i j => GlobalTheory.LFun.ConjPlace.invT_val _ g i j)`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem exists_equiv_of_dualIsConj {π : CuspSub E n} (hd : GlobalTheory.ContraPair.DualIsConj π) (x : HeightOneSpectrum (𝓞 E))
     (σ : SmIrr (GL (Fin n) ((GlobalTheory.ThetaSatake.cw x).adicCompletion E)))
@@ -83,9 +83,7 @@ theorem exists_equiv_of_dualIsConj {π : CuspSub E n} (hd : GlobalTheory.ContraP
   exact Units.ext (Matrix.ext fun i j => GlobalTheory.LFun.ConjPlace.invT_val _ g i j)
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `h`. Break down `(GlobalTheory.Mem.Chr.under_eq_iff_conjPl (IsCMField.complexConj E) (Algebra.IsQuadraticExtension.finrank_eq_two _ _) (IsCMField.complexConj_ne_one E) u w).1 h1.symm with e | e` into its components or cases. Substitute `e` using the available equality. Break down `h2 with h2 | h2` into its components or cases. Conclude with `absurd rfl h2`.
-
-Conclude with `(GlobalTheory.BCT.LocMem.conjSrc_eq_of_not_split _ h2).symm`. Conclude with `eq_conjSrc e`.
+Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem eq_cw_of_conjPl {w u : HeightOneSpectrum (𝓞 E)} (h : ConjPl w u) : u = GlobalTheory.ThetaSatake.cw w := by
   obtain ⟨h1, h2⟩ := h

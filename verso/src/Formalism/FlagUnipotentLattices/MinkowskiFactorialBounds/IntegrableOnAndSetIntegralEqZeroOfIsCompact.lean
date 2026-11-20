@@ -15,21 +15,21 @@ Both sides reduce to the same expression.
 example (f : Fin 2 → ℝ) (g : ℝ) : (∑ i, f i + g) = (∑ i, f i) + g := rfl
 
 /- English proof (translation)
-Introduce `n q h hn hq0 hq`. Establish `hnR : (2 : ℝ) ≤ n` using `by exact_mod_cast hn`. Use `set s := Real.sqrt q with hs`. Use `set σ := Real.sqrt (n : ℝ) with hσ`. Establish `s0 : 0 ≤ s` using `Real.sqrt_nonneg _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `σ0 : 0 ≤ σ` using `Real.sqrt_nonneg _`. Establish `s2 : s ^ 2 = q` using `Real.sq_sqrt hq0`. Establish `σ2 : σ ^ 2 = n` using `Real.sq_sqrt (by linarith)`. Establish `σ1 : 1 ≤ σ`. Rewrite using `[hσ]; exact Real.one_le_sqrt.2 (by linarith)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `σn : σ ≤ n` using `by nlinarith`. Establish `hsσ : s ≤ 5 / 7 * σ`. Assume the negation of the conclusion as `hc`. Use `push Not at hc`. Use `pow_lt_pow_left₀ hc (by positivity) (two_ne_zero)` as an intermediate fact.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Use the polynomial consequences of the given equalities and inequalities. Establish `hdiv : (((n ^ 2 / 2 + 1 : ℕ) : ℝ)) ≤ (n : ℝ) ^ 2 / 2 + 1`. Use `push_cast`. Use `Nat.cast_div_le (α := ℝ) (m := n ^ 2) (n := 2)` as an intermediate fact. Move the coercions through the operations in `at this`.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `n2 : 0 ≤ (n : ℝ) ^ 2` using `by positivity`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_right hdiv s0]`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left σn n2]`.
+Use the polynomial consequences of the given equalities and inequalities. Use the polynomial consequences of the given equalities and inequalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `hh`. Establish `A : (n : ℝ) ^ 2 * s ≤ 5 / 7 * ((n : ℝ) ^ 2 * σ)` using `by nlinarith [mul_le_mul_of_nonneg_left hsσ n2]`. Establish `B : 0 ≤ (n : ℝ) ^ 2 * σ` using `by positivity`. Establish `C : (n : ℝ) ^ 2 ≤ (n : ℝ) ^ 2 * σ` using `by nlinarith`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Establish `: (n : ℝ) * (q * s) ≤ (n : ℝ) ^ 2 / 2 * s`. Establish `: (n : ℝ) * q ≤ (n : ℝ) ^ 2 / 2` using `by nlinarith`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_right this s0]`. Use the polynomial consequences of the given equalities and inequalities. Establish `h2 : (2 : ℝ) * s ≤ (n : ℝ) ^ 2 / 2 * s` using `by nlinarith [mul_le_mul_of_nonneg_right (show (2 : ℝ) ≤ (n : ℝ) ^ 2 / 2 by nlinarith) s0]`.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Use the polynomial consequences of the given equalities and inequalities.
 
-Establish `h3 : ((n : ℝ) - 1) * q ≤ (n : ℝ) ^ 2 / 2` using `by nlinarith`. Use the polynomial consequences of the given equalities and inequalities. Use the polynomial consequences of the given equalities and inequalities.
+A detailed English derivation is pending.
 -/
 theorem explicit_constant_bound : ExplicitC := by
   intro n q h hn hq0 hq

@@ -17,9 +17,9 @@ namespace GlobalTheory.AscFin.DepLat
 variable {D : D7}
 
 /- English proof (translation)
-Take `⟨U, h1, h2, h3⟩` from `h.opn`. Establish `inv : (K : AE D) * incA D (K : D.host.E)⁻¹ = 1`. Rewrite using `[← map_natCast (incA D), ← map_mul, mul_inv_cancel₀ (Nat.cast_ne_zero.2 hK.ne'), map_one]`. Establish `hc : Continuous fun a : Mx D m n => incA D (K : D.host.E)⁻¹ • a` using `continuous_id.const_smul (incA D (K : D.host.E)⁻¹)`. Use `GlobalTheory.AscFinWit.finLat_of (fun a ha => h.fin a (hle ha)) ⟨_, h1.preimage hc, by rwa [Set.mem_preimage, smul_zero], fun a ha hb => ?_⟩ h.cpt fun a ha => hle ha` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `hA _ (h3 _ ha fun i j => Ideal.mul_mem_left _ _ (hb i j))` as an intermediate fact. Rewrite `this` using `[← Nat.cast_smul_eq_nsmul (AE D), smul_smul, inv, one_smul]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem finLat_of_nsmul {m n : ℕ} {Λ A : AddSubgroup (Mx D m n)} (h : FinLat Λ) (hle : A ≤ Λ)
     {K : ℕ} (hK : 0 < K) (hA : ∀ u ∈ Λ, K • u ∈ A) : FinLat A := by
@@ -33,7 +33,7 @@ theorem finLat_of_nsmul {m n : ℕ} {Λ A : AddSubgroup (Mx D m n)} (h : FinLat 
   rwa [← Nat.cast_smul_eq_nsmul (AE D), smul_smul, inv, one_smul] at this
 
 /- English proof (translation)
-Introduce `D T L sc G p hS hT`. Take `⟨K, hK, h⟩` from `GlobalTheory.GridWeil.exists_nsmul_latO (T := G.pT p) (ΛT := G.latT p) hS (G.pl.modul_ne_bot sc)`. Use `finLat_of_nsmul (GlobalTheory.AscFinWit.finLat_latO hS.1 hT.1) (fun u hu => hu.1) hK fun u hu => ⟨nsmul_mem hu K, fun e he => ?_⟩` and prove the remaining obligations. Rewrite using `[smul_comm]`. Conclude with `h _ (GlobalTheory.LatticeStable.smul_mem_latO D _ _ _ _ _ e (GlobalTheory.AdIdem.idempotent_mem_intAE D _ (by rw [← RingHom.map_mul, GlobalTheory.PlaceVec.idemSum_mul_self he])) _ hu)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finLat_depLat : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} (G : GridData L sc) (p : Pair T), IsSelfDualC (G.pS p) (G.latS p) → IsSelfDualC (G.pT p) (G.latT p) → FinLat (depLat G p) := by
   intro D T L sc G p hS hT

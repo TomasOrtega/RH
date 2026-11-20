@@ -16,17 +16,15 @@ private noncomputable def frPt {κ Λ Λ' : Type} [Field κ] [CommRing Λ] [Comm
     rw [← Spec.map_comp, ← CommRingCat.ofHom_comp, hσ])
 
 /- English proof (translation)
-Set `ε'' : Λ' →ₐ[κ] κ` to `{ ε' with commutes' := h1 }`. Establish `hfl : (frPt σ hσ).left = spMap σ` using `rfl`. Establish `hone : ∀ {X Y A : Over (Sp κ)} [GrpObj A] (f : X ⟶ Y), f ≫ (1 : Y ⟶ A) = 1`. Introduce `X Y A _ f`. Simplify using `[Hom.one_def]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `hcomp : spMap ε''.toRingHom ≫ spMap σ = spMap ε.toRingHom`. Rewrite using `[spMap, spMap, spMap, ← Spec.map_comp, ← CommRingCat.ofHom_comp, ← h2]`. Establish `hgψ : (frPt σ hσ ≫ g) ≫ ψ = 1`. Rewrite using `[← hone (frPt σ hσ)]`. Use `ext1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Over.comp_left] at hker ⊢`. Rewrite using `[hfl, Category.assoc]`. Conclude with `hker`. Take `⟨e, he⟩` from `hK`. Establish `hP : UKer r o ψ (algPt κ Λ') (frPt σ hσ ≫ g)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨hgψ, e, ?_⟩` and prove the remaining obligations. Introduce `a ha`. Rewrite using `[Category.assoc, he a ha, hone]`. Establish `hinf' : Inf ε'' (frPt σ hσ ≫ g)`. Unfold `Inf at hinf ⊢`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Over.comp_left, hfl, ← Category.assoc, hcomp]`. Conclude with `hinf`. Establish `h0` using `hI κ o.A (UKer r o ψ) d hrep hcard Λ' ε'' (frPt σ hσ ≫ g) hP hinf'`. Establish `h0'` using `congrArg Over.Hom.left (h0.trans (hone (frPt σ hσ)).symm)`. Simplify using `only [Over.comp_left] at h0'`.
-
-Conclude with `h0'`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem frob_mid (hI : InfE) {p : ℕ} [Fact p.Prime] {D : Datum p} {R : Type} [CommRing R] {b : Base D R} {N : ℕ}
     {r : ℤ} {κ : Type} [Field κ] {s : Sp κ ⟶ Sp R} {o o' : Obj b N s} {ψ : o.A ⟶ o'.A} {d : ℕ}
@@ -67,25 +65,23 @@ private theorem frob_mid (hI : InfE) {p : ℕ} [Fact p.Prime] {D : Datum p} {R :
   exact h0'
 
 /- English proof (translation)
-Introduce `hI p _ D R _ b N r f κ _ _ _ s o o' ψ hψ d hrep hcard`. Use `haveI := hψ`. Establish `hp : Nat.Prime p` using `Fact.out`. Establish `hone' : ∀ {X A B : Over (Sp κ)} [GrpObj A] [GrpObj B] (h : A ⟶ B) [IsMonHom h], (1 : X ⟶ A) ≫ h = 1`. Introduce `X A B _ _ h _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `[Hom.one_def]`. Set `φ : κ ≃+* κ` to `iterateFrobeniusEquiv κ p f`. Establish `hφ : ∀ c : κ, φ c = c ^ p ^ f` using `fun c => rfl`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `g hg`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h0` using `GlobalTheory.SS.FrobField.cast_zero_sp κ (CharP.cast_eq_zero κ p)`. Establish `e` using `GlobalTheory.SS.FrobField.absFrob_spec κ p f hp h0 φ.toRingHom hφ`. Establish `hk : spMap φ.toRingHom ≫ g.left = spMap φ.toRingHom ≫ (1 : 𝟙_ (Over (Sp κ)) ⟶ o'.A).left`. Rewrite using `[← e]`. Conclude with `hg h0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hinv : spMap φ.symm.toRingHom ≫ spMap φ.toRingHom = 𝟙 _`. Rewrite using `[spMap, spMap, ← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Simplify using the standard rewrite rules. Use `ext1`. Combine the equalities or inequalities in the displayed calculation.
+Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[Category.assoc, hk, ← Category.assoc]`. Use `_ = _ := by rw [hinv, Category.id_comp]`. Introduce `Λ _ _ _ ε g hK hinf`. Establish `hΛ : (p : Λ) = 0`. Rewrite using `[← map_natCast (algebraMap κ Λ), CharP.cast_eq_zero, map_zero]`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `τ` to `GlobalTheory.SS.FrobField.powHom Λ p f hp hΛ`. Establish `hτ : ∀ c : Λ, τ c = c ^ p ^ f` using `fun c => rfl`. Set `ε' : Λ →+* κ` to `φ.symm.toRingHom.comp ε.toRingHom`. Establish `h2 : ε'.comp τ = ε.toRingHom`. Use extensionality with `x`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `show φ.symm (ε (x ^ p ^ f)) = ε x`. Rewrite using `[map_pow, ← hφ, RingEquiv.symm_apply_apply]`. Prove the components needed by the constructor for the conclusion. Introduce `hk h`. Establish `e` using `GlobalTheory.SS.FrobField.absFrob_spec Λ p f hp h τ hτ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hker : spMap τ ≫ (g ≫ ψ).left = spMap τ ≫ (1 : algPt κ Λ ⟶ o'.A).left`. Rewrite using `[← e]`. Conclude with `hk h`. Establish `h1 : ∀ c : κ, ε' (@algebraMap κ Λ _ _ (τ.comp (algebraMap κ Λ)).toAlgebra c) = c`. Introduce `c`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `show (ε'.comp τ) (algebraMap κ Λ c) = c`. Rewrite using `[h2]`. Conclude with `ε.commutes c`. Use `frob_mid hI hrep hcard (Λ' := Λ) (algΛ' := (τ.comp (algebraMap κ Λ)).toAlgebra) τ rfl ε ε' h1 h2 g ⟨hK.choose, hK.choose_spec⟩ hinf hker` as an intermediate fact. Rewrite `this` using `[← e]`.
-
-Conclude with `this`. Introduce `hk h`. Establish `h'` using `hk h`. Rewrite using `[Over.comp_left, ← Category.assoc, h', Category.assoc, ← Over.comp_left, hone']`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.crystallineComparison.Mod.frobPass_of :
     InfE → FrobPass := by

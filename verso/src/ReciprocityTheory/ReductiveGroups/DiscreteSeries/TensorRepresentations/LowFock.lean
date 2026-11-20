@@ -12,15 +12,13 @@ namespace ReciprocityTheory.ChartRestriction.DS
 variable {n : ℕ} {N : Type*} [AddCommGroup N] [Module ℂ N]
 
 /- English proof (translation)
-Establish `hK : Formalism.REAL.KRel ε E` using `fun a b c d _ _ => hE a b c d`. Use `set S0 := lowerWedgeAlt ε`. Establish `hw : ∀ a, (lfMat ε a a).mulVec (Pi.single S0 (1 : ℂ)) = (((rhoHol ε - rhoN ε) a : ℝ) : ℂ) • Pi.single S0 1` using `fun a => lfMat_mulVec_single ε a a S0 _ (lowerWedge_weight ε a)`. Establish `hl : ∀ a b, b < a → ε a = ε b → (lfMat ε a b).mulVec (Pi.single S0 (1 : ℂ)) = 0`. Introduce `a b hba he`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h0 : sgE ε cpFock cmFock a b (fockBasis n S0.1) = (0 : ℂ) • fockBasis n S0.1`. Rewrite using `[zero_smul]`. Conclude with `lowerWedge_killed_by_lowering ε hba he`. Simplify using `using lfMat_mulVec_single ε a b S0 0 h0`. Establish `hne : (Pi.single S0 (1 : ℂ) : LfIdx ε → ℂ) ≠ 0`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `h`. Use `congrFun h S0` as an intermediate fact. Simplify using `at this`. Take `⟨x, hxV, hx0, hxw, hxh⟩` from `HW.parthasarathy_tensor_matrix ε hK hV (lfMat_kRel ε) (fun a b h => lfMat_conjTranspose ε h) hne hw hl (lf_dom hlam hK hV)`. Establish `hwt : lowK ε lam + (rhoHol ε - rhoN ε) = lam - rhoC ε + rhoHol ε`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `a`. Simplify using `only [lowK, Pi.add_apply, Pi.sub_apply]`. Expand and normalize the polynomial expressions, which then agree. Use `⟨lfLift ε x, lfLift_mem_tensFock ε hxV, lfLift_mem_physSub ε x, lfLift_ne_zero ε hx0, ?_⟩` and prove the remaining obligations. Rewrite using `[← hwt]`.
-
-Conclude with `lfLift_isKHWVec ε hxw hxh`.
+Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lowFock_exists (ε : Fin n → Bool) {E : Fin n → Fin n → Module.End ℂ N} (hE : IsGlRep E)
     {lam : Fin n → ℝ} (hlam : StrictAnti lam) {V : Submodule ℂ N} (hV : IsKIrrHW ε E (lowK ε lam) V) :

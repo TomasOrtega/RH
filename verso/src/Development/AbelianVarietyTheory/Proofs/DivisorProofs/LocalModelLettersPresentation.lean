@@ -22,7 +22,7 @@ open GlobalTheory.VB
 variable {X : Scheme.{0}} {F G : X.Modules} {r : ℕ} {V V' : X.Opens}
 
 /- English proof (translation)
-Establish `: he'.basis h = (he.basis h).reindex σ.symm` using `DFunLike.ext _ _ fun k => by simp`. Rewrite using `[this]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem repr_perm {e : Fin r → Γ(F, V)} (he : IsFrame e) (σ : Equiv.Perm (Fin r)) (he' : IsFrame fun i => e (σ i))
     (h : V' ≤ V) (v : Γ(F, V')) (i : Fin r) : (he'.basis h).repr v i = (he.basis h).repr v (σ i) := by
@@ -31,18 +31,18 @@ theorem repr_perm {e : Fin r → Γ(F, V)} (he : IsFrame e) (σ : Equiv.Perm (Fi
   simp
 
 /- English proof (translation)
-The claim follows from `he.dual_basis_repr inf_le_left _ l`.
+A detailed English derivation is pending.
 -/
 theorem coef_dual {e : Fin r → Γ(F, V)} {s : Fin r → Γ(F, V')} (he : IsFrame e) (hs : IsFrame s) (l i : Fin r) :
     coef false he.dual hs.dual l i = coef true he hs l i :=
   he.dual_basis_repr inf_le_left _ l
 
 /- English proof (translation)
-Use `haveI := hF.isIso_toBidual_of_local_frames`. Establish `he'` using `he.dual.map_iso (inv (cartierDualToBidual F))`. Use `⟨_, he', funext fun i => he'.dual_ext le_rfl fun j => ?_⟩` and prove the remaining obligations. Rewrite using `[he'.dualApp_coord_frame, ← dualSheafSectionApply_toBidual]`. Establish `: (cartierDualToBidual F).app V ((inv (cartierDualToBidual F)).app V (he.coord j)) = he.coord j`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `(inv (cartierDualToBidual F) ≫ cartierDualToBidual F).app V (he.coord j) = _`. Rewrite using `[IsIso.inv_hom_id]`. Both sides reduce to the same expression. Rewrite using `[this]`. Use `he.dualApp_coord_frame j i le_rfl` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[resM_self]`. Rewrite using `[this]`. Simplify using `only [eq_comm]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_predual (hF : IsVB F r) {e : Fin r → Γ(VB.dual F, V)} (he : IsFrame e) :
     ∃ (e' : Fin r → Γ(F, V)) (he' : IsFrame e'), e = he'.coord := by
@@ -60,7 +60,7 @@ theorem exists_predual (hF : IsVB F r) {e : Fin r → Γ(VB.dual F, V)} (he : Is
   simp only [eq_comm]
 
 /- English proof (translation)
-The claim follows from `hs.dual_ext le_rfl fun j => by rw [dualApp_dualMap, app_resM, hs'.dualApp_coord_frame, hs.dualApp_coord_frame]`.
+A detailed English derivation is pending.
 -/
 theorem dualMap_coord (φ : F ⟶ G) {s : Fin r → Γ(F, V)} (hs : IsFrame s) (hs' : IsFrame fun i => φ.app V (s i))
     (i : Fin r) : (VB.dualMap φ).app V (hs'.coord i) = hs.coord i :=
@@ -68,7 +68,7 @@ theorem dualMap_coord (φ : F ⟶ G) {s : Fin r → Γ(F, V)} (hs : IsFrame s) (
     rw [dualApp_dualMap, app_resM, hs'.dualApp_coord_frame, hs.dualApp_coord_frame]
 
 /- English proof (translation)
-The claim follows from `hs.dual_ext le_rfl fun j => by rw [dualApp_dualMap, app_resM, hc, resM_smul, map_smul, dualApp_smul, LinearMap.smul_apply, hs.dualApp_coord_frame] split_ifs with h · rw [h] · simp`.
+A detailed English derivation is pending.
 -/
 theorem dualMap_coord_eig (φ : F ⟶ F) {s : Fin r → Γ(F, V)} (hs : IsFrame s) (c : Fin r → Γ(X, V))
     (hc : ∀ i, φ.app V (s i) = c i • s i) (i : Fin r) : (VB.dualMap φ).app V (hs.coord i) = c i • hs.coord i :=
@@ -80,9 +80,7 @@ theorem dualMap_coord_eig (φ : F ⟶ F) {s : Fin r → Γ(F, V)} (hs : IsFrame 
     · simp
 
 /- English proof (translation)
-Use `haveI := DualPull.isIso_theta f hF`. Use `haveI := DualPull.isIso_theta f hG`. Use `haveI : IsIso (VB.dualMap ((Scheme.Modules.pullback f).map φ)) := (dualIso (asIso ((Scheme.Modules.pullback f).map φ))).isIso_hom`. Use `haveI : IsIso ((Scheme.Modules.pullback f).map (VB.dualMap φ) ≫ DualPull.theta f F) := by`. Rewrite using `[DualPull.theta_naturality]`.
-
-Use `infer_instance`. Conclude with `IsIso.of_isIso_comp_right _ (DualPull.theta f F)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isIso_pullback_dualMap {Y : Scheme.{0}} (f : Y ⟶ X) (φ : F ⟶ G) (hF : IsVB F r) (hG : IsVB G r)
     [IsIso ((Scheme.Modules.pullback f).map φ)] : IsIso ((Scheme.Modules.pullback f).map (VB.dualMap φ)) := by
@@ -116,7 +114,7 @@ def dualHomA {M N : AM B Λ} (φ : M ⟶ N) : dualA τ N ⟶ dualA τ M where
     rw [← VB.dualMap_comp, ← VB.dualMap_comp, e]
 
 /- English proof (translation)
-Introduce `a b` and use `by change VB.dualMap (M.ρ (τ (a + b)) : M.V ⟶ M.V) = VB.dualMap (M.ρ (τ a) : M.V ⟶ M.V) + VB.dualMap (M.ρ (τ b) : M.V ⟶ M.V) rw [map_add, h, VB.dualMap_add]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isAdd_dualA {M : AM B Λ} (h : IsAdd M) : IsAdd (dualA τ M) := fun a b => by
   change VB.dualMap (M.ρ (τ (a + b)) : M.V ⟶ M.V) = VB.dualMap (M.ρ (τ a) : M.V ⟶ M.V) + VB.dualMap (M.ρ (τ b) : M.V ⟶ M.V)
@@ -141,7 +139,7 @@ attribute [local instance] Over.cartesianMonoidalCategory Over.braidedCategory i
 open MonObj in
 
 /- English proof (translation)
-Take `⟨u, hu, hp⟩` from `h`. Use `⟨fun j => u (p j), fun j => hu (p j), ?_⟩` and prove the remaining obligations. Rewrite using `[← hp]`. Use `letI : CommMonoid (tEpsG x0 ⟶ t.G) := Hom.commMonoid`. Conclude with `congrArg Over.Hom.left ((List.prod_ofFn (f := fun j => u (p j))).trans ((Equiv.prod_comp p u).trans (List.prod_ofFn (f := u)).symm))`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem comb_perm {X0 : Scheme.{0}} (t : SAB H X0) {S : Type} [CommRing S] (x0 : Sp S ⟶ X0) {m : ℕ}
     (p : Equiv.Perm (Fin m)) (v : Fin m → (Sp (DualNumber S) ⟶ t.G.left)) (cf : Fin m → S)
@@ -155,7 +153,7 @@ theorem comb_perm {X0 : Scheme.{0}} (t : SAB H X0) {S : Type} [CommRing S] (x0 :
     ((Equiv.prod_comp p u).trans (List.prod_ofFn (f := u)).symm))
 
 /- English proof (translation)
-Simplify `comb_perm t x0 p.symm _ _ _ h` using `only [Equiv.apply_symm_apply]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem comb_perm' {X0 : Scheme.{0}} (t : SAB H X0) {S : Type} [CommRing S] (x0 : Sp S ⟶ X0) {m : ℕ}
     (p : Equiv.Perm (Fin m)) (v : Fin m → (Sp (DualNumber S) ⟶ t.G.left)) (cf : Fin m → S)
@@ -164,7 +162,7 @@ theorem comb_perm' {X0 : Scheme.{0}} (t : SAB H X0) {S : Type} [CommRing S] (x0 
   simpa only [Equiv.apply_symm_apply] using comb_perm t x0 p.symm _ _ _ h
 
 /- English proof (translation)
-Apply `RingOfIntegers.ext` to reduce the goal to its premises. Use `show ((H.bar (H.bar a) : 𝓞 E) : E) = (a : E)`. Rewrite using `[H.bar_eq, H.bar_eq, IsCMField.complexConj_apply_apply]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bar_bar (a : 𝓞 E) : H.bar (H.bar a) = a := by
   apply RingOfIntegers.ext
@@ -175,7 +173,7 @@ variable {Dw : Datum H} {Xo : ∀ l : Level H, Moduli Dw l} {p : ℕ} {W : Valua
   {i₀ : Idx H p} {Z : LocM.Mdl Y i₀} {X : Scheme.{0}} {h : X ⟶ Z.X} {r : ℕ} {b : Bool} {F : X.Modules}
 
 /- English proof (translation)
-The claim follows from `(k.frame a).comp_equiv σ glue K _ w a a' φ φ' hφ hφ' j := by have := comb_perm _ _ σ _ _ _ (k.glue K w a a' φ φ' hφ hφ' (σ j)) convert this using 3 exact repr_perm (k.frame a') σ _ _ _ _ norm y w hw a φ hφ V e he hV cf v hv := by have h1 := comb_perm' _ _ σ (fun i => (Z.fr a).bc …`.
+A detailed English derivation is pending.
 -/
 theorem isLat_perm {x : Fin r → Letter Dw} {s : ∀ a : Fin Z.m, Fin r → Γ(F, h ⁻¹ᵁ (Z.U a).1)}
     (k : IsLat Z h x true b F s) (σ : Equiv.Perm (Fin r)) :
@@ -195,7 +193,7 @@ theorem isLat_perm {x : Fin r → Letter Dw} {s : ∀ a : Fin Z.m, Fin r → Γ(
     exact congrArg (fun z => cf i * valF _ _ z) (repr_perm (k.frame a) σ _ _ _ _).symm
 
 /- English proof (translation)
-The claim follows from `(k.frame a).dual glue K _ w a a' φ φ' hφ hφ' j := by simp only [coef_dual] exact k.glue K w a a' φ φ' hφ hφ' j norm y w hw a φ hφ V e he hV cf v hv := by obtain ⟨e', he', rfl⟩ := exists_predual hF he simp only [coef_dual] exact k.norm y w hw a φ hφ V e' he' hV cf v hv`.
+A detailed English derivation is pending.
 -/
 theorem isLat_dual {x : Fin r → Letter Dw} {s : ∀ a : Fin Z.m, Fin r → Γ(F, h ⁻¹ᵁ (Z.U a).1)}
     (k : IsLat Z h x true b F s) (hF : VB.IsVB F r) :
@@ -210,17 +208,15 @@ theorem isLat_dual {x : Fin r → Letter Dw} {s : ∀ a : Fin Z.m, Fin r → Γ(
     exact k.norm y w hw a φ hφ V e' he' hV cf v hv
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw Xo p W Y i₀ Z O _ _ _ B h r x oo π u hu ⟨hr, s, k1, k2, k3⟩`. Substitute `hr` using the available equality. Establish `hx : (fun i => x (Fin.rev (Fin.revPerm i))) = x` using `funext fun i => by simp`. Establish `l1` using `isLat_perm k1 Fin.revPerm`. Establish `l2` using `isLat_perm k2 Fin.revPerm`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `l1`, `l2` using `[hx]`. Use `⟨dualP H.bar oo, dualHomA H.bar u, ?_, rfl, fun a => (l2.frame a).coord, isLat_dual l2 oo.vb, ?_, ?_⟩` and prove the remaining obligations. Apply `Action.Hom.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `VB.dualMap (u ≫ oo.ψ).hom = smulHom (VB.dual oo.E.V) π`. Rewrite using `[hu]`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Conclude with `VB.dualMap_smulHom π`. Establish `e : (fun a i => (VB.dualMap oo.ψ.hom).app _ ((l2.frame a).coord i)) = fun a => (l1.frame a).coord`. Use function extensionality and compare the values at `fun a => funext fun i => dualMap_coord oo.ψ.hom (l1.frame a) (l2.frame a) i`. Use `isLat_dual l1 oo.vb'` as an intermediate fact. Rewrite `this` using `[← e]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `this`. Introduce `a i c`. Use `dualMap_coord_eig (oo.E.ρ (H.bar c) : oo.E.V ⟶ oo.E.V) (l2.frame a) (fun i => (h.app (Z.U a).1).hom (Z.alg a (embK Z.i.c (x i).1 c))) (fun j => ?_) i` and prove the remaining obligations. Establish `e1` using `k3 a j.rev (H.bar c)`. Simplify using `only [if_true, bar_bar, Fin.rev_rev] at e1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `e2 : (oo.E'.ρ (H.bar c) : oo.E'.V ⟶ oo.E'.V) ≫ oo.ψ.hom = oo.ψ.hom ≫ (oo.E.ρ (H.bar c) : oo.E.V ⟶ oo.E.V)` using `oo.ψ.comm _`. Express the relevant statement in the definitionally equal form `(oo.ψ.hom ≫ (oo.E.ρ (H.bar c) : oo.E.V ⟶ oo.E.V)).app _ (s a j.rev) = _`. Rewrite using `[← e2]`. Express the relevant statement in the definitionally equal form `oo.ψ.hom.app _ ((oo.E'.ρ (H.bar c) : oo.E'.V ⟶ oo.E'.V).app _ (s a j.rev)) = _`. Rewrite using `[e1]`.
-
-Conclude with `Scheme.Modules.Hom.app_smul _ _ _`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_dual_pres : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H}
   {Xo : ∀ l : Level H, Moduli Dw l} {p : ℕ} {W : ValuationSubring ℂ} {Y : LocalSystem Xo p W} {i₀ : Idx H p}

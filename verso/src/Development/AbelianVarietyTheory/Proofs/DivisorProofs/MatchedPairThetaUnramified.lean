@@ -15,7 +15,7 @@ open scoped ComplexConjugate InnerProductSpace
 variable {X : Type*} [MeasurableSpace X] {ν : Measure X}
 
 /- English proof (translation)
-Rewrite using `[MeasureTheory.L2.inner_def]`. Use `integral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [hf.coeFn_toLp, hg.coeFn_toLp] with x h1 h2`. Rewrite using `[h1, h2, RCLike.inner_apply]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inner_toLp {f g : X → ℂ} (hf : MemLp f 2 ν) (hg : MemLp g 2 ν) :
     ⟪hg.toLp g, hf.toLp f⟫_ℂ = ∫ x, f x * conj (g x) ∂ν := by
@@ -25,11 +25,11 @@ theorem inner_toLp {f g : X → ℂ} (hf : MemLp f 2 ν) (hg : MemLp g 2 ν) :
   rw [h1, h2, RCLike.inner_apply]
 
 /- English proof (translation)
-Rewrite using `[tendsto_iff_norm_sub_tendsto_zero]`. Establish `e : ∀ t : ℝ, ‖(t : ℂ)⁻¹ • ((hf t).toLp (f t) - hf₀.toLp f₀) - hf₁.toLp f₁‖ = (eLpNorm (fun x => (t : ℂ)⁻¹ * (f t x - f₀ x) - f₁ x) 2 ν).toReal`. Introduce `t`. Rewrite using `[Lp.norm_def]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `eLpNorm_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [Lp.coeFn_sub ((t : ℂ)⁻¹ • ((hf t).toLp (f t) - hf₀.toLp f₀)) (hf₁.toLp f₁), Lp.coeFn_smul (t : ℂ)⁻¹ ((hf t).toLp (f t) - hf₀.toLp f₀), Lp.coeFn_sub ((hf t).toLp (f t)) (hf₀.toLp f₀), (hf t).coeFn_toLp, hf₀.coeFn_toLp, hf₁.coeFn_toLp] with x h1 h2 h3 h4 h5 h6`. Rewrite using `[h1, Pi.sub_apply, h2, Pi.smul_apply, h3, Pi.sub_apply, h4, h5, h6, smul_eq_mul]`. Repeatedly rewrite using `[e]`. Establish `h0 : (0 : ℝ) = (0 : ENNReal).toReal` using `rfl`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h0]`. Conclude with `(ENNReal.tendsto_toReal ENNReal.zero_ne_top).comp df`.
+A detailed English derivation is pending.
 -/
 theorem tendsto_quot {f : ℝ → X → ℂ} {f₀ f₁ : X → ℂ} (hf : ∀ t, MemLp (f t) 2 ν) (hf₀ : MemLp f₀ 2 ν)
     (hf₁ : MemLp f₁ 2 ν)
@@ -53,21 +53,17 @@ theorem tendsto_quot {f : ℝ → X → ℂ} {f₀ f₁ : X → ℂ} (hf : ∀ t
   exact (ENNReal.tendsto_toReal ENNReal.zero_ne_top).comp df
 
 /- English proof (translation)
-Use `set Ft := fun t => (hf t).toLp (f t)`. Use `set Gt := fun t => (hg t).toLp (g t)`. Use `set F₀ := hf₀.toLp f₀`. Use `set G₀ := hg₀.toLp g₀`. Use `set F₁ := hf₁.toLp f₁`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `set G₁ := hg₁.toLp g₁`. Establish `qf` using `tendsto_quot hf hf₀ hf₁ df`. Establish `qg` using `tendsto_quot hg hg₀ hg₁ dg`. Establish `hG : Tendsto Gt (𝓝[≠] 0) (𝓝 G₀)`. Establish `h1 : Tendsto (fun t : ℝ => (t : ℂ) • ((t : ℂ)⁻¹ • (Gt t - G₀))) (𝓝[≠] 0) (𝓝 ((0 : ℂ) • G₁))`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `Tendsto.smul ?_ qg` and prove the remaining obligations. Establish `: Tendsto (fun t : ℝ => (t : ℂ)) (𝓝 0) (𝓝 ((0 : ℝ) : ℂ))` using `(Complex.continuous_ofReal.tendsto 0)`. Simplify using `using this.mono_left nhdsWithin_le_nhds`. Rewrite `h1` using `[zero_smul]`. Establish `h2 : Tendsto (fun t : ℝ => Gt t - G₀) (𝓝[≠] 0) (𝓝 0)`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `h1.congr' ?_` and prove the remaining obligations. Use `filter_upwards [self_mem_nhdsWithin] with t ht`. Rewrite using `[smul_smul, mul_inv_cancel₀ (by exact_mod_cast ht), one_smul]`. Simplify using `using h2.add_const G₀`. Establish `hid : ∀ t : ℝ, t ≠ 0 → ⟪Gt t, (t : ℂ)⁻¹ • (Ft t - F₀)⟫_ℂ + ⟪(t : ℂ)⁻¹ • (Gt t - G₀), F₀⟫_ℂ = 0`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Introduce `t _`. Establish `e1 : ⟪Gt t, Ft t⟫_ℂ = ⟪G₀, F₀⟫_ℂ`. Simplify using `only [Gt, Ft, G₀, F₀, inner_toLp]`. Conclude with `hc t`. Rewrite using `[inner_smul_right, inner_smul_left, inner_sub_right, inner_sub_left, e1]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `: (starRingEnd ℂ) ((t : ℂ)⁻¹) = (t : ℂ)⁻¹` using `by simp`. Rewrite using `[this]`. Expand and normalize the polynomial expressions, which then agree. Establish `hlim : Tendsto (fun t : ℝ => ⟪Gt t, (t : ℂ)⁻¹ • (Ft t - F₀)⟫_ℂ + ⟪(t : ℂ)⁻¹ • (Gt t - G₀), F₀⟫_ℂ) (𝓝[≠] 0) (𝓝 (⟪G₀, F₁⟫_ℂ + ⟪G₁, F₀⟫_ℂ))` using `(hG.inner qf).add (qg.inner tendsto_const_nhds)`. Establish `hz : Tendsto (fun t : ℝ => ⟪Gt t, (t : ℂ)⁻¹ • (Ft t - F₀)⟫_ℂ + ⟪(t : ℂ)⁻¹ • (Gt t - G₀), F₀⟫_ℂ) (𝓝[≠] 0) (𝓝 0)`.
-
-Use `tendsto_const_nhds.congr' ?_` and prove the remaining obligations. Use `filter_upwards [self_mem_nhdsWithin] with t ht`. Conclude with `(hid t ht).symm`. Use `tendsto_nhds_unique hlim hz` as an intermediate fact. Rewrite `this` using `[inner_toLp hf₁ hg₀, inner_toLp hf₀ hg₁]`.
-
-Conclude with `this`.
+A detailed English derivation is pending.
 -/
 theorem sum_eq_zero_of_const {f g : ℝ → X → ℂ} {f₀ g₀ f₁ g₁ : X → ℂ}
     (hf : ∀ t, MemLp (f t) 2 ν) (hg : ∀ t, MemLp (g t) 2 ν) (hf₀ : MemLp f₀ 2 ν) (hg₀ : MemLp g₀ 2 ν)
@@ -125,11 +121,9 @@ open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.Genus
 open MeasureTheory Filter Topology
 
 /- English proof (translation)
-Introduce `hKP F E _ _ _ _ _ σ B a a' G X om om' R Rf hM μ 𝓕 hμ h𝓕 γ hγ Φ hΦ Ψ hΨ Ψ₁ hΨ₁ hdΨ`. Take `⟨Φ₁, hΦ₁, hdΦ⟩` from `GlobalTheory.T.matched_triple_finite_maps_forall_places hKP F E σ B a a' G X om om' R Rf hM γ hγ Φ hΦ`. Use `⟨Φ₁, hΦ₁, hdΦ, ?_⟩` and prove the remaining obligations. Establish `mem` using `GlobalTheory.T.theta_lift_matched_vanishing hKP F E σ B a a' G X om om' R Rf hM μ 𝓕 hμ h𝓕`. Establish `der` using `GlobalTheory.T.theta_l2_derivative_matched hKP F E σ B a a' G X om om' R Rf hM μ 𝓕 hμ h𝓕 γ hγ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `mem0 : ∀ Θ ∈ (PolData B G.M' ⊓ G.M'.So B.ψ B.τ₁), MemLp (G.M'.I om' Θ) 2 (μ.restrict 𝓕)`. Introduce `Θ hΘ`. Establish `h1` using `mem Θ hΘ 1`. Simplify using `only [mul_one] at h1`. Conclude with `h1`.
-
-Conclude with `sum_eq_zero_of_const (f := fun t x => G.M'.I om' Φ (x * γ (Multiplicative.ofAdd t))) (g := fun t x => G.M'.I om' Ψ (x * γ (Multiplicative.ofAdd t))) (fun t => mem Φ hΦ _) (fun t => mem Ψ hΨ _) (mem0 Φ hΦ) (mem0 Ψ hΨ) (mem0 Φ₁ hΦ₁) (mem0 Ψ₁ hΨ₁) (der Φ hΦ Φ₁ hΦ₁ hdΦ) (der Ψ hΨ Ψ₁ …`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem skew : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Base F E) (a a' : ℕ) (G : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Geo σ a a') (X : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Chars F E) (om : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Rep σ G.V G.W) (om' : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Rep σ G.V' G.W) (R : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.RealMaps F a a') (Rf : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.FinMaps F a a'), GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.IsMatched B G X om om' R Rf → ∀ (μ : MeasureTheory.Measure (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.UA σ G.W.J)) (𝓕 : Set (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.UA σ G.W.J)), μ.IsHaarMeasure → MeasureTheory.IsFundamentalDomain (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.ratU σ G.W.J) 𝓕 μ → ∀ γ ∈ GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Lines σ G.W, ∀ Φ ∈ (GlobalTheory.ThK.PolData B G.M' ⊓ G.M'.So B.ψ B.τ₁), ∀ Ψ ∈ (GlobalTheory.ThK.PolData B G.M' ⊓ G.M'.So B.ψ B.τ₁), ∀ Ψ₁ ∈ (GlobalTheory.ThK.PolData B G.M' ⊓ G.M'.So B.ψ B.τ₁), (∀ x, HasDerivAt (fun t : ℝ => om' (1, γ (Multiplicative.ofAdd t)) Ψ x) (Ψ₁ x) 0) → ∃ Φ₁ ∈ (GlobalTheory.ThK.PolData B G.M' ⊓ G.M'.So B.ψ B.τ₁), (∀ x, HasDerivAt (fun t : ℝ => om' (1, γ (Multiplicative.ofAdd t)) Φ x) (Φ₁ x) 0) ∧ (∫ x in 𝓕, G.M'.I om' Φ₁ x * starRingEnd ℂ (G.M'.I om' Ψ x) ∂μ) + ∫ x in 𝓕, G.M'.I om' Φ x * starRingEnd ℂ (G.M'.I om' Ψ₁ x) ∂μ = 0 := by
   intro hKP F E _ _ _ _ _ σ B a a' G X om om' R Rf hM μ 𝓕 hμ h𝓕 γ hγ Φ hΦ Ψ hΨ Ψ₁ hΨ₁ hdΨ

@@ -17,7 +17,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.Local
 variable {D : D7} {T : Type}
 
 /- English proof (translation)
-Unfold `defTot`. Use `Finsupp.sum_congr fun P _ => ?_` and prove the remaining obligations. Rewrite using `[Finsupp.sum_single_index (by simp), Finsupp.mul_sum]`. Use `Finsupp.sum_congr fun d _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem defTot_eq_sum {L : LevCh D T} {sc : Consts} {G : GridData L sc} {W : G.Weil} {U : Set T} (S : GridChoice W U) (t : T)
     (M : Vol G) (σ : PolCol G × PolRow G →₀ ℂ) (τ : PureDat G t →₀ ℂ) (φ : Fn G (.top 0)) (F : Fn G (.grid 0 D.R.m)) :
@@ -38,9 +38,9 @@ def JetsOne (ch : Choice R) : Prop :=
         κ * ch.S.classSum (ch.Phi a) β τ (psiC (ch.Psi a)) (ch.S.formC t y)
 
 /- English proof (translation)
-Use `⟨fun t Φ β => StepsModel.exists_isTermVol ch.S.toGridChoice hL t Φ β, fun σ => ?_⟩` and prove the remaining obligations. Use `choose κ hκ using h`. Use `⟨σ.sum fun P c => c * κ P, fun t a β hβ M τ hM hτ y => ?_⟩` and prove the remaining obligations. Rewrite using `[defTot_eq_sum, Finsupp.sum_mul]`. Use `Finsupp.sum_congr fun P _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hκ P t a β hβ M τ hM hτ y]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem jetsAt_of_one (ch : Choice R) (hL : R.toLevCh.Is A.μ0) (h : JetsOne ch) : JetsAt ch := by
   refine ⟨fun t Φ β => StepsModel.exists_isTermVol ch.S.toGridChoice hL t Φ β, fun σ => ?_⟩
@@ -52,12 +52,12 @@ theorem jetsAt_of_one (ch : Choice R) (hL : R.toLevCh.Is A.μ0) (h : JetsOne ch)
   ring
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.term_volume_class_sum`.
+A detailed English derivation is pending.
 -/
 theorem jetsOne_all : GlobalTheory.FunPr.Hypotheses₂ → SumOKK → Big fun ch => JetsOne ch := GlobalTheory.T.term_volume_class_sum
 
 /- English proof (translation)
-Introduce `hP hS`. Take `⟨C0, H⟩` from `jetsOne_all hP hS`. Use `⟨C0, fun ε CF hC => ?_⟩` and prove the remaining obligations. Take `⟨x₀, H⟩` from `H ε CF hC`. Conclude with `⟨x₀, fun D large₂ e hx Γ _ _ Pl0 T A Ks _ _ _ R F s ch i j => jetsAt_of_one ch s.core.lev (H D large₂ e hx Γ Pl0 T A Ks R F s ch i j)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem stepJets : GlobalTheory.FunPr.Hypotheses₂ → SumOKK → StepJets := by
   intro hP hS

@@ -17,21 +17,19 @@ namespace GlobalTheory.MatHaarDensity
 open GlobalTheory.ExpBallSandwich
 
 /- English proof (translation)
-Establish `hψ : MeasurableEmbedding ((Metric.ball (0:V) δ).restrict φ)` using `hc.continuousOn.measurableEmbedding Metric.isOpen_ball.measurableSet hi`. Set `ν : Measure V` to `(μ.comap ((Metric.ball (0:V) δ).restrict φ)).map Subtype.val`. Establish `hν : ∀ A : Set V, MeasurableSet A → ν A = μ (φ '' (A ∩ Metric.ball 0 δ))`. Introduce `A hA`. Simplify using `only [ν]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Rewrite using `[Measure.map_apply measurable_subtype_coe hA, hψ.comap_apply]`. Use `congr 1`. Rewrite using `[Set.inter_comm, ← Subtype.image_preimage_coe, Set.image_image]`. Both sides reduce to the same expression. Establish `hνb : ∀ (x : V) (r : ℝ), ‖x‖ + r ≤ δ → ν (Metric.ball x r) = μ (φ '' Metric.ball x r)`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Introduce `x r h`. Rewrite using `[hν _ Metric.isOpen_ball.measurableSet, Set.inter_eq_left.2]`. Conclude with `Metric.ball_subset_ball' (by simpa [add_comm] using h)`. Use `haveI : IsFiniteMeasure ν := ⟨by`. Rewrite using `[hν _ MeasurableSet.univ, Set.univ_inter]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hfin⟩`. Take `⟨c, h0, ht, hlim⟩` from `GlobalTheory.exists_density_origin_of_almost_homogeneous V l ν (by`. Introduce `r hr`. Rewrite using `[hν _ Metric.isOpen_ball.measurableSet]`. Introduce `h`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `hpos (min r δ) (lt_min hr hδ) (measure_mono_null (Set.image_mono ?_) h)` and prove the remaining obligations. Conclude with `Set.subset_inter (Metric.ball_subset_ball (min_le_left _ _)) (Metric.ball_subset_ball (min_le_right _ _))) (by`. Introduce `ε h0 h1`. Take `⟨η, hη, H⟩` from `hs ε h0 h1`. Use `⟨min η (δ / 2), lt_min hη (by linarith), fun x hx => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hx1 : ‖x‖ < η` using `hx.trans_le (min_le_left _ _)`. Establish `hx2 : ‖x‖ < δ / 2` using `hx.trans_le (min_le_right _ _)`. Take `⟨τ, hτ, hτμ, H'⟩` from `H x hx1`. Use `filter_upwards [H', Ioo_mem_nhdsGT (show (0:ℝ) < δ / 4 by linarith)] with r hr hr'`. Take `⟨hr0, hr1⟩` from `hr'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e1 : ε * r < r` using `by nlinarith`. Establish `e2 : 0 < ε * r` using `by positivity`. Establish `hm : MeasurableSet (φ '' Metric.ball 0 r)` using `Metric.isOpen_ball.measurableSet.image_of_continuousOn_injOn hc.continuousOn (hi.mono (Metric.ball_subset_ball (by linarith)))`. Establish `hinv : μ (φ '' Metric.ball 0 r) = μ (τ ⁻¹' (φ '' Metric.ball 0 r))`. Rewrite using `[← Measure.map_apply hτ hm, hτμ]`.
-
-Rewrite using `[hνb x _ (by nlinarith), hνb x _ (by nlinarith), hνb 0 r (by simp; linarith), hinv]`. Conclude with `⟨measure_mono hr.1, measure_mono hr.2⟩)`. Use `⟨c, h0, ht, hlim.congr' ?_⟩` and prove the remaining obligations. Use `filter_upwards [Ioo_mem_nhdsGT hδ] with r hr`. Rewrite using `[hνb 0 r (by simpa using hr.2.le)]`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem density_of_chart (V : Type) [NormedAddCommGroup V] [NormedSpace ℝ V]
     [FiniteDimensional ℝ V] [MeasurableSpace V] [BorelSpace V]
@@ -93,7 +91,7 @@ theorem density_of_chart (V : Type) [NormedAddCommGroup V] [NormedSpace ℝ V]
 variable {m : ℕ}
 
 /- English proof (translation)
-Use extensionality with `i j`. Apply the tactic sequence `apply Complex.ext <;> simp [unrealify]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem unrealify_sub (x y : EuclideanSpace ℝ (Fin m × Fin m × Bool)) :
     unrealify (x - y) = unrealify x - unrealify y := by
@@ -101,16 +99,16 @@ theorem unrealify_sub (x y : EuclideanSpace ℝ (Fin m × Fin m × Bool)) :
   apply Complex.ext <;> simp [unrealify]
 
 /- English proof (translation)
-Use extensionality with `i j`. Apply the tactic sequence `apply Complex.ext <;> simp [unrealify]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem unrealify_zero : unrealify (0 : EuclideanSpace ℝ (Fin m × Fin m × Bool)) = 0 := by
   ext i j
   apply Complex.ext <;> simp [unrealify]
 
 /- English proof (translation)
-Use `continuous_pi fun i => continuous_pi fun j => ?_` and prove the remaining obligations. Establish `: (fun x : EuclideanSpace ℝ (Fin m × Fin m × Bool) => unrealify x i j) = fun x => ((x (i, j, false) : ℝ) : ℂ) + ((x (i, j, true) : ℝ) : ℂ) * Complex.I`. Use function extensionality and compare the values at `x`. Apply the tactic sequence `apply Complex.ext <;> simp [unrealify]`. Rewrite using `[this]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Use `fun_prop`.
+A detailed English derivation is pending.
 -/
 theorem continuous_unrealify :
     Continuous (unrealify : EuclideanSpace ℝ (Fin m × Fin m × Bool) → Matrix (Fin m) (Fin m) ℂ) := by
@@ -123,7 +121,7 @@ theorem continuous_unrealify :
   fun_prop
 
 /- English proof (translation)
-Combine the equalities or inequalities in the calculation `calc ‖A i j‖ ≤ ∑ j, ‖A i j‖ := Finset.single_le_sum (f := fun j => ‖A i j‖) (fun _ _ => norm_nonneg _) (Finset.mem_univ j) _ ≤ ∑ i, ∑ j, ‖A i j‖ := Finset.single_le_sum (f := fun i => ∑ j, ‖A i j‖) (fun _ _ => Finset.sum_nonneg fun _ _ => norm_nonneg _) (Finset.mem_univ i)`.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem entry_le_sumAbs (A : Matrix (Fin m) (Fin m) ℂ) (i j : Fin m) : ‖A i j‖ ≤ sumAbs A :=
   calc ‖A i j‖ ≤ ∑ j, ‖A i j‖ :=
@@ -133,17 +131,15 @@ theorem entry_le_sumAbs (A : Matrix (Fin m) (Fin m) ℂ) (i j : Fin m) : ‖A i 
           (fun _ _ => Finset.sum_nonneg fun _ _ => norm_nonneg _) (Finset.mem_univ i)
 
 /- English proof (translation)
-Use `⟨2 * m * m + 1, by have : (0:ℝ) ≤ 2 * m * m := by positivity linarith, fun x => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Establish `hs` using `sumAbs_nonneg (unrealify x)`. Establish `h1 : ∀ p, ‖x p‖ ≤ sumAbs (unrealify x)`. Introduce and unpack `⟨i, j, b⟩`. Use `le_trans ?_ (entry_le_sumAbs _ i j)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Consider the cases of `b`. Conclude with `Complex.abs_re_le_norm (unrealify x i j)`. Conclude with `Complex.abs_im_le_norm (unrealify x i j)`. Establish `h2 : ‖x‖ ^ 2 ≤ (2 * m * m) * sumAbs (unrealify x) ^ 2`. Rewrite using `[EuclideanSpace.norm_sq_eq]`.
+Split into cases according to the possible forms of the given data. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations.
 
-Combine the equalities or inequalities in the displayed calculation. Use `(pow_le_pow_iff_left₀ (norm_nonneg _) (by positivity) two_ne_zero).1 ?_` and prove the remaining obligations. Use `h2.trans ?_` and prove the remaining obligations. Rewrite using `[mul_pow]`. Establish `: (0:ℝ) ≤ 2 * m * m` using `by positivity`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Use `gcongr`. Use the polynomial consequences of the given equalities and inequalities. Establish `h1 : ∀ i j, ‖unrealify x i j‖ ≤ 2 * ‖x‖`. Introduce `i j`. Use `(Complex.norm_le_abs_re_add_abs_im _).trans ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `a` using `PiLp.norm_apply_le x (i, j, false)`. Establish `b` using `PiLp.norm_apply_le x (i, j, true)`. Rewrite `a`, `b` using `[Real.norm_eq_abs]`. Simplify using `only [unrealify]`. Combine the linear equalities and inequalities to obtain the conclusion.
-
-Combine the equalities or inequalities in the displayed calculation.
+Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem exists_norm_compare (m : ℕ) : ∃ K : ℝ, 1 ≤ K ∧ ∀ x : EuclideanSpace ℝ (Fin m × Fin m × Bool),
     ‖x‖ ≤ K * sumAbs (unrealify x) ∧ sumAbs (unrealify x) ≤ K * ‖x‖ := by
@@ -181,13 +177,11 @@ theorem exists_norm_compare (m : ℕ) : ∃ K : ℝ, 1 ≤ K ∧ ∀ x : Euclide
       _ ≤ _ := by nlinarith [norm_nonneg x]
 
 /- English proof (translation)
-Take `⟨K, hK, hN⟩` from `exists_norm_compare m`. Establish `hK0 : 0 < K` using `by linarith`. Take `⟨ρ, hρ, h⟩` from `defect_le (n := Fin m) (η / K ^ 2) (by positivity) (by rw [div_le_one (by positivity)]; nlinarith)`. Establish `small : ∀ W : EuclideanSpace ℝ (Fin m × Fin m × Bool), ‖W‖ < ρ / K → sumAbs (unrealify W) < ρ`. Introduce `W hW`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hW` using `[lt_div_iff₀ hK0]`. Combine the linear relations using `[(hN W).2]`. Use `⟨ρ / K, by positivity, fun X Y Z hX hY hZ he => ?_⟩` and prove the remaining obligations. Establish `h1` using `h _ _ _ (small X hX) (small Y hY) (small Z hZ) he`. Rewrite `h1` using `[← unrealify_sub, ← unrealify_sub]`.
+Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Use `mul_le_mul_of_nonneg_left (h1.trans ?_) hK0.le` and prove the remaining obligations. Use `gcongr`. Conclude with `(hN _).2`. Conclude with `(hN _).2`.
-
-Use `_ = _ := by field_simp`.
+Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem defect_euclid (m : ℕ) (η : ℝ) (hη : 0 < η) (hη1 : η ≤ 1) : ∃ ρ : ℝ, 0 < ρ ∧
     ∀ X Y Z : EuclideanSpace ℝ (Fin m × Fin m × Bool), ‖X‖ < ρ → ‖Y‖ < ρ → ‖Z‖ < ρ →
@@ -216,19 +210,19 @@ def expL (S : Set (Matrix (Fin m) (Fin m) ℂ)) (X : lieE S) : Matrix (Fin m) (F
   NormedSpace.exp (unrealify (X : EuclideanSpace ℝ _))
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.UpqExpChart.continuous_matExp.comp (continuous_unrealify.comp continuous_subtype_val)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_expL (S : Set (Matrix (Fin m) (Fin m) ℂ)) : Continuous (expL S) :=
   GlobalTheory.UpqExpChart.continuous_matExp.comp (continuous_unrealify.comp continuous_subtype_val)
 
 /- English proof (translation)
-Simplify using `[expL, unrealify_zero]`.
+Simplify using the standard rewrite rules.
 -/
 theorem expL_zero (S : Set (Matrix (Fin m) (Fin m) ℂ)) : expL S 0 = 1 := by
   simp [expL, unrealify_zero]
 
 /- English proof (translation)
-Simplify using `only [Set.setOf_forall]`. Use `isOpen_iInter_of_finite fun i => isOpen_iInter_of_finite fun j => ?_` and prove the remaining obligations. Conclude with `isOpen_lt (by fun_prop) continuous_const`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isOpen_near_one (δ : ℝ) : IsOpen {g : Matrix (Fin m) (Fin m) ℂ | ∀ i j, ‖(g - 1) i j‖ < δ} := by
   simp only [Set.setOf_forall]
@@ -236,31 +230,29 @@ theorem isOpen_near_one (δ : ℝ) : IsOpen {g : Matrix (Fin m) (Fin m) ℂ | �
   exact isOpen_lt (by fun_prop) continuous_const
 
 /- English proof (translation)
-Take `⟨ρ, hρ, hd⟩` from `defect_euclid m (ε / 8) (by positivity) (by linarith)`. Take `⟨δ, hδ, hO⟩` from `hsurj ρ hρ`. Use `set O := {g : Matrix (Fin m) (Fin m) ℂ | ∀ i j, ‖(g - 1) i j‖ < δ} with hOdef`. Establish `hOo : IsOpen O` using `isOpen_near_one δ`. Establish `h1O : (1 : Matrix (Fin m) (Fin m) ℂ) ∈ O` using `by intro i j; simpa using hδ`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc` using `continuous_expL S`. Establish `n0 : Metric.ball (0 : lieE S) ρ ∩ expL S ⁻¹' O ∈ 𝓝 (0 : lieE S)` using `inter_mem (Metric.ball_mem_nhds _ hρ) ((hOo.preimage hc).mem_nhds (by simpa [expL_zero] using h1O))`. Take `⟨η, hη, k0⟩` from `Metric.mem_nhds_iff.1 n0`. Use `⟨η, hη, fun X hX => ?_⟩` and prove the remaining obligations. Take `⟨hXρ, hXO⟩` from `k0 (mem_ball_zero_iff.2 hX)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨hiS, hi1⟩` from `hS.2.2.2 _ (hmem X)`. Establish `hi2 : (expL S X)⁻¹ * expL S X = 1` using `mul_eq_one_comm.1 hi1`. Establish `n1 : Metric.ball (0 : lieE S) ρ ∩ (fun Y => (expL S X)⁻¹ * expL S Y) ⁻¹' O ∈ 𝓝 X`. Use `inter_mem (Metric.isOpen_ball.mem_nhds hXρ) ?_` and prove the remaining obligations. Use `(hOo.preimage (continuous_const.matrix_mul hc)).mem_nhds ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `h1O` using `[hi2]`. Establish `n2 : Metric.ball (0 : lieE S) ρ ∩ (fun Z => expL S X * expL S Z) ⁻¹' O ∈ 𝓝 (0 : lieE S)`. Use `inter_mem (Metric.ball_mem_nhds _ hρ) ?_` and prove the remaining obligations. Use `(hOo.preimage (continuous_const.matrix_mul hc)).mem_nhds ?_` and prove the remaining obligations. Simplify `hXO` using `[expL_zero]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result.
 
-Take `⟨s1, hs1, k1⟩` from `Metric.mem_nhds_iff.1 n1`. Take `⟨s2, hs2, k2⟩` from `Metric.mem_nhds_iff.1 n2`. Rewrite `hXρ` using `[mem_ball_zero_iff]`. Use `filter_upwards [Ioo_mem_nhdsGT (lt_min hs1 hs2)] with r hr`. Take `⟨hr0, hr⟩` from `hr`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Rewrite `hr` using `[lt_min_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `Y hY`. Take `⟨hYb, hYO⟩` from `k1 (mem_ball_iff_norm.2 (show ‖Y - X‖ < s1 by nlinarith [hr.1]))`. Rewrite `hYb` using `[mem_ball_zero_iff]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨Z, hZ, hZe⟩` from `hO _ (hS.2.2.1 _ hiS _ (hmem Y)) hYO`. Establish `he : expL S Y = expL S X * expL S Z`. Rewrite using `[hZe, ← Matrix.mul_assoc, hi1, Matrix.one_mul]`. Use `⟨Z, ?_, he⟩` and prove the remaining obligations. Establish `b1 : ‖Y - X - Z‖ ≤ ε / 8 * ‖Y - X‖ + 3 * (ε / 8) * ‖Z‖` using `hd X Y Z hXρ hYb hZ he`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `b2` using `norm_sub_le (Y - X) (Y - X - Z)`. Rewrite `b2` using `[sub_sub_cancel]`. Generalize the expression as in `‖Y - X - Z‖ = a at *`. Generalize the expression as in `‖Y - X‖ = d at *`. Generalize the expression as in `‖Z‖ = z at *`.
+Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `c1 : (1 - 3 * (ε / 8)) * z ≤ (1 + ε / 8) * d` using `by linarith`. Establish `c2 : (1 + ε / 8) * d < (1 + ε / 8) * ((1 - ε) * r)` using `by gcongr`. Establish `c3 : (1 + ε / 8) * ((1 - ε) * r) ≤ (1 - 3 * (ε / 8)) * r`. Rewrite using `[← mul_assoc]`. Use `gcongr`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use the polynomial consequences of the given equalities and inequalities. Conclude with `lt_of_mul_lt_mul_left (c1.trans_lt (c2.trans_le c3)) (by linarith)`. Introduce `Z hZ`. Take `⟨hZb, hZO⟩` from `k2 (mem_ball_zero_iff.2 (hZ.trans hr.2))`. Rewrite `hZb` using `[mem_ball_zero_iff]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨Y, hYb, he⟩` from `hO _ (hS.2.2.1 _ (hmem X) _ (hmem Z)) hZO`. Use `⟨Y, ?_, he⟩` and prove the remaining obligations. Establish `b1 : ‖Y - X - Z‖ ≤ ε / 8 * ‖Y - X‖ + 3 * (ε / 8) * ‖Z‖` using `hd X Y Z hXρ hYb hZb he`. Establish `b2` using `norm_add_le (Y - X - Z) Z`. Rewrite `b2` using `[sub_add_cancel]`.
+Rewrite the indicated hypotheses using the stated equalities. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact.
 
-Generalize the expression as in `‖Y - X - Z‖ = a at *`. Generalize the expression as in `‖Y - X‖ = d at *`. Generalize the expression as in `‖Z‖ = z at *`. Establish `c1 : (1 - ε / 8) * d ≤ (1 + 3 * (ε / 8)) * z` using `by linarith`. Establish `c2 : (1 + 3 * (ε / 8)) * z < (1 + 3 * (ε / 8)) * r` using `by gcongr`.
-
-Establish `c3 : (1 + 3 * (ε / 8)) * r ≤ (1 - ε / 8) * ((1 + ε) * r)`. Rewrite using `[← mul_assoc]`. Use `gcongr`. Use the polynomial consequences of the given equalities and inequalities. Conclude with `lt_of_mul_lt_mul_left (c1.trans_lt (c2.trans_le c3)) (by linarith)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem sandwich (S : Set (Matrix (Fin m) (Fin m) ℂ)) (hS : PI.IsMatGroup S) (hmem : ∀ X, expL S X ∈ S)
     (hsurj : ∀ ρ : ℝ, 0 < ρ → ∃ δ : ℝ, 0 < δ ∧ ∀ g ∈ S, (∀ i j, ‖(g - 1) i j‖ < δ) →
@@ -332,9 +324,9 @@ theorem sandwich (S : Set (Matrix (Fin m) (Fin m) ℂ)) (hS : PI.IsMatGroup S) (
     exact lt_of_mul_lt_mul_left (c1.trans_lt (c2.trans_le c3)) (by linarith)
 
 /- English proof (translation)
-Take `⟨ρ, hρ, hd⟩` from `defect_euclid m (1 / 2) (by norm_num) (by norm_num)`. Use `⟨ρ, hρ, fun X hX Y hY h => ?_⟩` and prove the remaining obligations. Rewrite `hX`, `hY` using `[mem_ball_zero_iff]`. Establish `b1 : ‖Y - X - 0‖ ≤ 1 / 2 * ‖Y - X‖ + 3 * (1 / 2) * ‖(0 : lieE S)‖` using `hd X Y (0 : lieE S) hX hY (by simpa using hρ) (show expL S Y = expL S X * expL S 0 by rw [expL_zero, Matrix.mul_one, h])`. Rewrite `b1` using `[sub_zero, norm_zero]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `: ‖Y - X‖ = 0` using `le_antisymm (by linarith) (norm_nonneg _)`. Conclude with `(sub_eq_zero.1 (norm_eq_zero.1 this)).symm`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_injOn (S : Set (Matrix (Fin m) (Fin m) ℂ)) :
     ∃ δ : ℝ, 0 < δ ∧ Set.InjOn (expL S) (Metric.ball 0 δ) := by
@@ -349,27 +341,25 @@ theorem exists_injOn (S : Set (Matrix (Fin m) (Fin m) ℂ)) :
   exact (sub_eq_zero.1 (norm_eq_zero.1 this)).symm
 
 /- English proof (translation)
-Introduce `m S μ hS hμ`. Take `⟨hlie, hsurj⟩` from `GlobalTheory.T.closed_matrix_subgroup_theorem m S hS`. Take `⟨-, hcpt, hop⟩` from `GlobalTheory.MatHaar.haar_unique_locFinite_openPos m S μ hS hμ`. Establish `hmem : ∀ X, expL S X ∈ S` using `fun X => by simpa [expL] using hlie X 1`. Establish `hsurj' : ∀ ρ : ℝ, 0 < ρ → ∃ δ : ℝ, 0 < δ ∧ ∀ g ∈ S, (∀ i j, ‖(g - 1) i j‖ < δ) → ∃ X : lieE S, ‖X‖ < ρ ∧ expL S X = g`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `ρ hρ`. Take `⟨δ, hδ, h⟩` from `hsurj ρ hρ`. Use `⟨δ, hδ, fun g hg hg' => ?_⟩` and prove the remaining obligations. Take `⟨X, hX, e⟩` from `h g hg hg'`. Conclude with `⟨X, mem_ball_zero_iff.1 hX, e⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨δ, hδ, hi⟩` from `exists_injOn S`. Set `φ : lieE S → PI.MtM m` to `fun X => Matrix.of.symm (expL S X)`. Establish `hc : Continuous φ` using `continuous_expL S`. Take `⟨c, h0, ht, hlim⟩` from `density_of_chart (lieE S) (PI.MtM m) volume μ δ φ hδ hc hi (by`. Use `lt_of_le_of_lt (measure_mono (Set.image_mono Metric.ball_subset_closedBall)) (hcpt _ ((isCompact_closedBall (0 : lieE S) δ).image hc) ?_)` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `_ ⟨X, -, rfl⟩`. Conclude with `hmem X)`. Use the proof step `(by`. Introduce `r hr h`. Take `⟨η, hη, H⟩` from `hsurj r hr`.
+Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hp` using `hop {g | ∀ i j, ‖(Matrix.of g - 1) i j‖ < η} (isOpen_near_one η) ⟨Matrix.of.symm 1, by intro i j; simpa using hη, hS.2.1⟩`. Use `hp.ne' (measure_mono_null (fun g hg => ?_) (measure_union_null h hμ.2.2.1))` and prove the remaining obligations. Distinguish the cases in `hgS : Matrix.of g ∈ S`. Conclude with `Or.inl (H _ hgS hg)`. Conclude with `Or.inr hgS)`.
+Consider separately whether the proposition holds or fails. Prove the first alternative. Prove the second alternative. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use the proof step `(by`. Introduce `ε e0 e1`. Take `⟨η, hη, H⟩` from `sandwich S hS hmem hsurj' ε e0 e1`. Use `⟨η, hη, fun X hX => ?_⟩` and prove the remaining obligations. Take `⟨hiS, hi1⟩` from `hS.2.2.2 _ (hmem X)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hi2 : (expL S X)⁻¹ * expL S X = 1` using `mul_eq_one_comm.1 hi1`. Establish `hτ : Continuous (PI.lmulQ (expL S X)⁻¹)` using `(continuous_const.matrix_mul continuous_id : Continuous fun g : Matrix (Fin m) (Fin m) ℂ => (expL S X)⁻¹ * g)`. Use `⟨PI.lmulQ (expL S X)⁻¹, hτ.measurable, hμ.2.2.2 _ hiS, ?_⟩` and prove the remaining obligations. Use `filter_upwards [H X hX] with r hr`. Prove the components needed by the constructor for the conclusion.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Introduce and unpack `_ ⟨Y, hY, rfl⟩`. Take `⟨Z, hZ, e⟩` from `hr.1 Y (mem_ball_iff_norm.1 hY)`. Use `⟨Z, mem_ball_zero_iff.2 hZ, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `expL S Z = (expL S X)⁻¹ * expL S Y`. Rewrite using `[e, ← Matrix.mul_assoc, hi2, Matrix.one_mul]`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Introduce and unpack `g ⟨Z, hZ, e⟩`. Take `⟨Y, hY, e'⟩` from `hr.2 Z (mem_ball_zero_iff.1 hZ)`. Use `⟨Y, mem_ball_iff_norm.2 hY, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `expL S Z = (expL S X)⁻¹ * Matrix.of g at e`. Express the relevant statement in the definitionally equal form `expL S Y = Matrix.of g`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e', e, ← Matrix.mul_assoc, hi1, Matrix.one_mul])`. Use `⟨c.toReal, ENNReal.toReal_pos h0 ht, ?_, fun c' hc' => ?_⟩` and prove the remaining obligations. Rewrite using `[ENNReal.ofReal_toReal ht]`. Conclude with `hlim`. Rewrite using `[ENNReal.ofReal_toReal ht]`.
-
-Conclude with `tendsto_nhds_unique hc' hlim`.
+A detailed English derivation is pending.
 -/
 theorem exists_hasDens : ∀ (m : ℕ) (S : Set (Matrix (Fin m) (Fin m) ℂ)) (μ : Measure (PI.MtM m)),
     PI.IsMatGroup S → PI.IsHaarOnM S μ →

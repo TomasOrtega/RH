@@ -10,7 +10,7 @@ namespace DiscreteGroups.sglob.DzRed
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 /- English proof (translation)
-Simplify using `only [map_mul, Module.End.mul_apply]`. Use `congr 2`. Rewrite using `[← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply]`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 -/
 theorem rep_conj {G V : Type*} [Group G] [AddCommGroup V] [Module ℂ V] (π : Representation ℂ G V) (t u : G) (v : V) :
     π (t * u * t⁻¹) (π t v) = π t (π u v) := by
@@ -19,9 +19,9 @@ theorem rep_conj {G V : Type*} [Group G] [AddCommGroup V] [Module ℂ V] (π : R
   rw [← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply]
 
 /- English proof (translation)
-Establish `h` using `GlobalTheory.FiniteGL.mem_unipRadical.1 hu`. Rewrite using `[mem_unipB]`. Use `⟨fun p q hqp => ?_, fun p => ?_⟩` and prove the remaining obligations. Use `h p q (by` as an intermediate fact. Establish `: q.val < p.val` using `hqp`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply the tactic sequence `simp only [GlobalTheory.FiniteGL.twoBlocks]; split_ifs <;> omega)`. Rewrite `this` using `[Matrix.sub_apply, Matrix.one_apply_ne (ne_of_gt hqp), sub_zero]`. Then use the resulting hypothesis. Use `h p p le_rfl` as an intermediate fact. Rewrite `this` using `[Matrix.sub_apply, Matrix.one_apply_eq, sub_eq_zero]`. Then use the resulting hypothesis.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem unipRadical_le_unipB {F : Type} [Field F] {n a : ℕ} {u : GL (Fin n) F}
     (hu : u ∈ GlobalTheory.FiniteGL.unipRadical F (GlobalTheory.FiniteGL.twoBlocks n a)) : u ∈ unipB F (Fin n) := by
@@ -36,7 +36,7 @@ theorem unipRadical_le_unipB {F : Type} [Field F] {n a : ℕ} {u : GL (Fin n) F}
     rwa [Matrix.sub_apply, Matrix.one_apply_eq, sub_eq_zero] at this
 
 /- English proof (translation)
-Establish `hlt` using `GLnLocal.valuation_uniformizer_lt_one K`. Rewrite using `[map_mul, map_pow]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem val_uniformizer_pow_lt {K : Type} [Field K] [ValuativeRel K] [TopologicalSpace K] [IsNonarchimedeanLocalField K]
     (k : ℕ) {y : K} (hy : valuation K y ≤ 1) :
@@ -50,7 +50,7 @@ theorem val_uniformizer_pow_lt {K : Type} [Field K] [ValuativeRel K] [Topologica
     _ < 1 := hlt
 
 /- English proof (translation)
-Establish `hϖ : (GLnLocal.uniformizer K : K) ≠ 0` using `fun h => (GLnLocal.irreducible_uniformizer K).ne_zero (Subtype.ext h)`. Rewrite using `[hk, zpow_add, Units.val_mul, Units.val_zpow_eq_zpow_val, Units.val_zpow_eq_zpow_val, zpow_natCast, Iwasawa.coe_uniformizerUnit]`. Establish `h1 : (GLnLocal.uniformizer K : K) ^ d a ≠ 0` using `zpow_ne_zero _ hϖ`. Establish `h2 : (GLnLocal.uniformizer K : K) ^ (k + 1) ≠ 0` using `pow_ne_zero _ hϖ`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts.
 -/
 theorem torus_entry {K : Type} [Field K] [ValuativeRel K] [TopologicalSpace K] [IsNonarchimedeanLocalField K]
     {n : ℕ} (d : Fin n → ℤ) (a b : Fin n) (k : ℕ) (hk : d b = d a + ((k + 1 : ℕ) : ℤ)) (y : K) :
@@ -65,7 +65,7 @@ theorem torus_entry {K : Type} [Field K] [ValuativeRel K] [TopologicalSpace K] [
   field_simp
 
 /- English proof (translation)
-Establish `hϖ : (GLnLocal.uniformizer K : K) ≠ 0` using `fun h => (GLnLocal.irreducible_uniformizer K).ne_zero (Subtype.ext h)`. Rewrite using `[hk, zpow_add, Units.val_mul, Units.val_zpow_eq_zpow_val, Units.val_zpow_eq_zpow_val, zpow_natCast, Iwasawa.coe_uniformizerUnit]`. Establish `h1 : (GLnLocal.uniformizer K : K) ^ d b ≠ 0` using `zpow_ne_zero _ hϖ`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts.
 -/
 theorem torus_entry' {K : Type} [Field K] [ValuativeRel K] [TopologicalSpace K] [IsNonarchimedeanLocalField K]
     {n : ℕ} (d : Fin n → ℤ) (a b : Fin n) (k : ℕ) (hk : d a = d b + ((k + 1 : ℕ) : ℤ)) (y : K) :
@@ -84,9 +84,9 @@ variable {E : Type} [Field E] [NumberField E] {w : HeightOneSpectrum (𝓞 E)} {
 
 include hi in
 /- English proof (translation)
-Establish `h1 : ‖i.symm y‖ < 1` using `(DzIso.valuation_lt_iff i hi (i.symm y)).1 (by rwa [RingEquiv.apply_symm_apply])`. Set `x : ℤ_[g]` to `⟨i.symm y, h1.le⟩`. Establish `hx : i (x : ℚ_[g]) = y` using `RingEquiv.apply_symm_apply i y`. Rewrite using `[← hx, hψ]`. Establish `h2 : PadicInt.toZMod x = 0`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← RingHom.mem_ker, PadicInt.ker_toZMod, IsLocalRing.mem_maximalIdeal, PadicInt.mem_nonunits]`. Conclude with `h1`. Rewrite using `[h2, AddChar.map_zero_eq_one]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem psi_eq_one (hψ : ∀ x : ℤ_[g], ψ (i (x : ℚ_[g])) = ψ₀ (PadicInt.toZMod x)) {y : w.adicCompletion E}
     (hy : valuation (w.adicCompletion E) y < 1) : ψ y = 1 := by
@@ -101,9 +101,7 @@ theorem psi_eq_one (hψ : ∀ x : ℤ_[g], ψ (i (x : ℚ_[g])) = ψ₀ (PadicIn
   rw [h2, AddChar.map_zero_eq_one]
 
 /- English proof (translation)
-Choose the witnesses or unpack the hypotheses as in `⟨z, hz⟩ : ∃ z, ψ₀ z ≠ 1 := by`. Assume the negation of the conclusion as `h`. Use `push Not at h`. Conclude with `h0 (AddChar.ext ψ₀ 1 fun z => (h z).trans (AddChar.one_apply z).symm)`. Use `⟨(z.val : ℤ_[g]), ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[hψ, map_natCast, ZMod.natCast_zmod_val]`. Conclude with `hz`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_psi_ne_one (hψ : ∀ x : ℤ_[g], ψ (i (x : ℚ_[g])) = ψ₀ (PadicInt.toZMod x)) (h0 : ψ₀ ≠ 1) :
     ∃ x : ℤ_[g], ψ (i (x : ℚ_[g])) ≠ 1 := by
@@ -117,7 +115,7 @@ theorem exists_psi_ne_one (hψ : ∀ x : ℤ_[g], ψ (i (x : ℚ_[g])) = ψ₀ (
 
 include hi in
 /- English proof (translation)
-Take `⟨κ, h1, rfl⟩` from `DzIso.exists_of_mem_KOne i hi hk`. Rewrite using `[← hφ, h1, map_one]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem fix_of_mem_KOne {n : ℕ} (τ : FDRep ℂ (Gn g n)) {V : Type} [AddCommGroup V] [Module ℂ V]
     (π : Representation ℂ (GL (Fin n) (w.adicCompletion E)) V) (φ : τ →ₗ[ℂ] V)

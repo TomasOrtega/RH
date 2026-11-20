@@ -11,15 +11,13 @@ open scoped MonomialOrder
 variable {σ R : Type*} [CommRing R]
 
 /- English proof (translation)
-Take `⟨f, rfl⟩` from `Finsupp.mem_span_range_iff_exists_finsupp.mp hg`. Establish `hne : f.support.Nonempty`. Rewrite using `[Finset.nonempty_iff_ne_empty]`. Introduce `h`. Apply `hg0` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[Finsupp.support_eq_empty.mp h, Finsupp.sum_zero_index]`. Take `⟨i, hi, hmax⟩` from `Finset.exists_max_image f.support (fun j => O.toSyn (O.degree (c j))) hne`. Use `⟨i, ?_⟩` and prove the remaining obligations. Establish `hlt : ∀ j ∈ f.support, j ≠ i → O.toSyn (O.degree (c j)) < O.toSyn (O.degree (c i))`. Introduce `j hj hji`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `lt_of_le_of_ne (hmax j hj) ?_` and prove the remaining obligations. Introduce `heq`. Conclude with `hji (hinj (O.toSyn.injective heq))`. Rewrite using `[Finsupp.sum, MvPolynomial.coeff_sum, Finset.sum_eq_single i]`. Rewrite using `[MvPolynomial.coeff_smul, smul_eq_mul]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : (c i).coeff (O.degree (c i)) = 1` using `hlc i`. Rewrite using `[h1, mul_one]`. Conclude with `Finsupp.mem_support_iff.mp hi`. Introduce `j hj hji`. Rewrite using `[MvPolynomial.coeff_smul, MonomialOrder.coeff_eq_zero_of_lt (hlt j hj hji), smul_zero]`.
-
-Introduce `h`. Conclude with `absurd hi h`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem exists_coeff_ne_zero_of_mem_span (O : MonomialOrder σ) {ι : Type*}
     (c : ι → MvPolynomial σ R) (hinj : Function.Injective fun i => O.degree (c i))
@@ -51,17 +49,15 @@ theorem exists_coeff_ne_zero_of_mem_span (O : MonomialOrder σ) {ι : Type*}
     exact absurd hi h
 
 /- English proof (translation)
-Use `haveI := O.wf`. Establish `key : ∀ s : O.syn, ∀ e : σ →₀ ℕ, O.toSyn e = s → ∀ a : R, monomial e a ∈ Submodule.span R (Set.range c) ⊔ restrictSupport R (Set.range fun i => O.degree (c i))ᶜ`. Introduce `s`. Proceed by induction on `s using WellFoundedLT.induction with`. Consider the case `_ s ih`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `e he a`. Distinguish the cases in `hmem : e ∈ Set.range fun i => O.degree (c i)`. Take `⟨i, rfl⟩` from `hmem`. Establish `hdecomp : monomial (O.degree (c i)) a = a • c i - a • (c i - monomial (O.degree (c i)) 1)`. Rewrite using `[smul_sub, sub_sub_cancel, MvPolynomial.smul_monomial, smul_eq_mul, mul_one]`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hdecomp]`. Use `Submodule.sub_mem _ (Submodule.mem_sup_left (Submodule.smul_mem _ a (Submodule.subset_span ⟨i, rfl⟩))) (Submodule.smul_mem _ a ?_)` and prove the remaining obligations. Establish `hlc1 : (c i).coeff (O.degree (c i)) = 1` using `hlc i`. Use `set q := c i - monomial (O.degree (c i)) 1 with hq`. Rewrite using `[MvPolynomial.as_sum q]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Submodule.sum_mem _ fun d hd => ih (O.toSyn d) ?_ d rfl _` and prove the remaining obligations. Rewrite using `[← he]`. Establish `hd' : q.coeff d ≠ 0` using `MvPolynomial.mem_support_iff.mp hd`. Establish `hne : d ≠ O.degree (c i)`. Introduce `hdeq`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `hd'` to reduce the goal to its premises. Rewrite using `[hdeq, hq, MvPolynomial.coeff_sub, MvPolynomial.coeff_monomial, if_pos rfl, hlc1, sub_self]`. Establish `hci : (c i).coeff d ≠ 0`. Rewrite `hd'` using `[hq, MvPolynomial.coeff_sub, MvPolynomial.coeff_monomial, if_neg (Ne.symm hne), sub_zero]`. Conclude with `hd'`.
-
-Establish `hle` using `MonomialOrder.le_degree (m := O) (MvPolynomial.mem_support_iff.mpr hci)`. Conclude with `lt_of_le_of_ne hle (fun h => hne (O.toSyn.injective h))`. Conclude with `Submodule.mem_sup_right ((MvPolynomial.monomial_mem_restrictSupport R).mpr (Or.inl hmem))`. Conclude with `key _ e rfl a`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem monomial_mem_sup (O : MonomialOrder σ) {ι : Type*} (c : ι → MvPolynomial σ R)
     (hlc : ∀ i, O.leadingCoeff (c i) = 1) (e : σ →₀ ℕ) (a : R) :
@@ -105,19 +101,17 @@ theorem monomial_mem_sup (O : MonomialOrder σ) {ι : Type*} (c : ι → MvPolyn
   exact key _ e rfl a
 
 /- English proof (translation)
-Establish `hmapinj : Function.Injective (Finsupp.mapDomain φ : (σ →₀ ℕ) → (τ →₀ ℕ))` using `Finsupp.mapDomain_injective hφ`. Prove the components needed by the constructor for the conclusion. Rewrite using `[Submodule.disjoint_def]`. Introduce `g hg1 hg2`. Take `⟨h, hh, rfl⟩` from `Submodule.mem_map.mp hg1`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Assume the negation of the conclusion as `hne`. Establish `hh0 : h ≠ 0` using `fun h0 => hne (by rw [h0]; simp)`. Take `⟨i, hi⟩` from `exists_coeff_ne_zero_of_mem_span O c hinj hlc hh hh0`. Establish `hsupp` using `(MvPolynomial.mem_restrictSupport_iff R).mp hg2`. Establish `hmem : Finsupp.mapDomain φ (O.degree (c i)) ∈ ((rename φ).toLinearMap h).support`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[MvPolynomial.mem_support_iff]`. Use `show MvPolynomial.coeff (Finsupp.mapDomain φ (O.degree (c i))) (rename φ h) ≠ 0`. Rewrite using `[MvPolynomial.coeff_rename_mapDomain φ hφ]`. Conclude with `hi`. Conclude with `hsupp (Finset.mem_coe.mpr hmem) ⟨O.degree (c i), ⟨i, rfl⟩, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[codisjoint_iff, eq_top_iff]`. Introduce `g _`. Rewrite using `[MvPolynomial.as_sum g]`. Use `Submodule.sum_mem _ fun d _ => ?_` and prove the remaining obligations. Distinguish the cases in `hd : d ∈ Finsupp.mapDomain φ '' Set.range fun i => O.degree (c i)`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨e, _, rfl⟩` from `hd`. Establish `h1` using `monomial_mem_sup O c hlc e (g.coeff (Finsupp.mapDomain φ e))`. Rewrite using `[← MvPolynomial.rename_monomial]`. Take `⟨y, hy, z, hz, hyz⟩` from `Submodule.mem_sup.mp h1`. Rewrite using `[← hyz, map_add]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `Submodule.add_mem_sup (Submodule.mem_map_of_mem hy) ?_` and prove the remaining obligations. Rewrite `hz`, the goal using `[MvPolynomial.mem_restrictSupport_iff]`. Introduce `d' hd'`. Establish `hd2 : d' ∈ (rename φ z).support` using `hd'`. Rewrite `hd2` using `[MvPolynomial.support_rename_of_injective hφ]`.
-
-Take `⟨d'', hd'', rfl⟩` from `Finset.mem_image.mp hd2`. Introduce and unpack `⟨e', he', heq⟩`. Conclude with `hz (Finset.mem_coe.mpr hd'') (hmapinj heq ▸ he')`. Conclude with `Submodule.mem_sup_right ((MvPolynomial.monomial_mem_restrictSupport R).mpr (Or.inl hd))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem isCompl_map_rename (O : MonomialOrder σ) {τ : Type*} {φ : σ → τ}
     (hφ : Function.Injective φ) {ι : Type*} (c : ι → MvPolynomial σ R)

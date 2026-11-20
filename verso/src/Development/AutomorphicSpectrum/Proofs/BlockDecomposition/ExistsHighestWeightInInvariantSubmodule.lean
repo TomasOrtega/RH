@@ -14,13 +14,13 @@ namespace GlobalTheory.CompanionTheory.RealCountG.HwStable
 variable {n : ℕ}
 
 /- English proof (translation)
-Establish `e : K c c (K a b v) = K a b (K c c v) + ((if c = a then K c b else 0) - (if b = c then K a c else 0)) v`. Rewrite using `[← hg c c a b]`. Simplify using `[Module.End.mul_apply]`. Rewrite using `[e, hv c, map_smul]`. Distinguish the cases in `h1 : c = a`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Substitute `h1` using the available equality. Establish `h2 : ¬ b = c` using `fun h => hab h.symm`. Establish `h3 : ¬ c = b` using `hab`. Simplify using `only [↓reduceIte, h2, h3, LinearMap.sub_apply, LinearMap.zero_apply]`. Use `push_cast`.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
-Use `module`. Distinguish the cases in `h2 : c = b`. Substitute `h2` using the available equality. Simplify using `only [↓reduceIte, h1, LinearMap.sub_apply, LinearMap.zero_apply]`. Use `push_cast`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Establish an intermediate fact.
 
-Use `module`. Establish `h3 : ¬ b = c` using `fun h => h2 h.symm`. Simplify using `only [↓reduceIte, h1, h2, h3, sub_zero, LinearMap.zero_apply, add_zero]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem weight_shift_real {V : Type} [AddCommGroup V] [Module ℂ V] {K : Fin n → Fin n → Module.End ℂ V}
     (hg : Formalism.REAL.GlRel K) (μ : Fin n → ℝ) {v : V}
@@ -57,7 +57,7 @@ def diagOn (G : Fin n → Fin n → Module.End ℂ H) (N : Submodule ℂ H)
   (G c c).restrict (hst c c)
 
 /- English proof (translation)
-Introduce `x y`. Conclude with `hs c c x.1 y.1`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem diagOn_symm (hs : ∀ a b (x y : H), ⟪G a b x, y⟫_ℂ = ⟪x, G b a y⟫_ℂ)
     (hst : ∀ a b, ∀ w ∈ N, G a b w ∈ N) (c : Fin n) : (diagOn G N hst c).IsSymmetric := by
@@ -65,9 +65,9 @@ theorem diagOn_symm (hs : ∀ a b (x y : H), ⟪G a b x, y⟫_ℂ = ⟪x, G b a 
   exact hs c c x.1 y.1
 
 /- English proof (translation)
-Establish `h` using `hg i i j j`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Conclude with `Commute.refl _`. Establish `h' : ¬ j = i` using `fun h => hij h.symm`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[if_neg hij, if_neg h', sub_zero]`. Conclude with `sub_eq_zero.1 h`.
+A detailed English derivation is pending.
 -/
 theorem diag_commute (hg : Formalism.REAL.GlRel G) (i j : Fin n) : Commute (G i i) (G j j) := by
   have h := hg i i j j
@@ -79,7 +79,7 @@ theorem diag_commute (hg : Formalism.REAL.GlRel G) (i j : Fin n) : Commute (G i 
     exact sub_eq_zero.1 h
 
 /- English proof (translation)
-Establish `h : G i i * G j j = G j j * G i i` using `diag_commute hg i j`. Use `show diagOn G N hst i * diagOn G N hst j = diagOn G N hst j * diagOn G N hst i`. Use extensionality with `x`. Use `congrArg (fun f : Module.End ℂ H => f x.1) h` as an intermediate fact. Simplify `this` using `[diagOn, Module.End.mul_apply]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem diagOn_commute (hg : Formalism.REAL.GlRel G) (hst : ∀ a b, ∀ w ∈ N, G a b w ∈ N) (i j : Fin n) :
     Commute (diagOn G N hst i) (diagOn G N hst j) := by
@@ -93,11 +93,11 @@ def wts (G : Fin n → Fin n → Module.End ℂ H) (N : Submodule ℂ H) : Set (
   {μ | ∃ v ∈ N, v ≠ 0 ∧ ∀ c, G c c v = ((μ c : ℝ) : ℂ) • v}
 
 /- English proof (translation)
-Establish `htop` using `LinearMap.IsSymmetric.iSup_iInf_eq_top_of_commute (fun c => diagOn_symm hs hst c) (fun i j _ => diagOn_commute hg hst i j)`. Use `haveI : Nontrivial N := Submodule.nontrivial_iff_ne_bot.2 hN`. Choose the witnesses or unpack the hypotheses as in `⟨χ, hχ⟩ : ∃ χ : Fin n → ℂ, (⨅ c, Module.End.eigenspace (diagOn G N hst c) (χ c)) ≠ ⊥ := by`. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `htop` using `[iSup_congr hcon, iSup_bot]`. Conclude with `bot_ne_top htop`. Take `⟨x, hx, hx0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hχ`. Establish `hev : ∀ c, diagOn G N hst c x = χ c • x` using `fun c => Module.End.mem_eigenspace_iff.1 ((Submodule.mem_iInf _).1 hx c)`. Establish `hre : ∀ c, (((χ c).re : ℝ) : ℂ) = χ c` using `fun c => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hE : Module.End.HasEigenvalue (diagOn G N hst c) (χ c)` using `Module.End.hasEigenvalue_of_hasEigenvector ⟨Module.End.mem_eigenspace_iff.2 (hev c), hx0⟩`. Conclude with `Complex.conj_eq_iff_re.1 ((diagOn_symm hs hst c).conj_eigenvalue_eq_self hE)`. Use `⟨fun c => (χ c).re, x.1, x.2, fun h => hx0 (Subtype.ext h), fun c => ?_⟩` and prove the remaining obligations. Rewrite using `[hre c]`. Conclude with `congrArg Subtype.val (hev c)`.
+A detailed English derivation is pending.
 -/
 theorem wts_nonempty (hg : Formalism.REAL.GlRel G) (hs : ∀ a b (x y : H), ⟪G a b x, y⟫_ℂ = ⟪x, G b a y⟫_ℂ)
     (hN : N ≠ ⊥) (hst : ∀ a b, ∀ w ∈ N, G a b w ∈ N) : (wts G N).Nonempty := by
@@ -121,7 +121,7 @@ theorem wts_nonempty (hg : Formalism.REAL.GlRel G) (hs : ∀ a b (x y : H), ⟪G
   exact congrArg Subtype.val (hev c)
 
 /- English proof (translation)
-Establish `hfa : ∀ a, Set.Finite {r : ℝ | Module.End.HasEigenvalue (diagOn G N hst a) ((r : ℝ) : ℂ)}` using `fun a => (Module.End.finite_hasEigenvalue _).preimage (Function.Injective.injOn Complex.ofReal_injective)`. Use `(Set.Finite.pi' hfa).subset ?_` and prove the remaining obligations. Introduce and unpack `μ ⟨v, hv, h0, hw⟩ a`. Conclude with `Module.End.hasEigenvalue_of_hasEigenvector (x := (⟨v, hv⟩ : N)) ⟨Module.End.mem_eigenspace_iff.2 (Subtype.ext (hw a)), fun h => h0 (congrArg Subtype.val h)⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem wts_finite (hst : ∀ a b, ∀ w ∈ N, G a b w ∈ N) : (wts G N).Finite := by
   have hfa : ∀ a, Set.Finite {r : ℝ | Module.End.HasEigenvalue (diagOn G N hst a) ((r : ℝ) : ℂ)} := fun a =>
@@ -134,13 +134,11 @@ theorem wts_finite (hst : ∀ a b, ∀ w ∈ N, G a b w ∈ N) : (wts G N).Finit
 end Main
 
 /- English proof (translation)
-Introduce `n H _ _ _ G hg hs N hN hst`. Establish `hfin` using `wts_finite hst`. Take `⟨μ, hμ, hmax⟩` from `hfin.toFinset.exists_max_image (fun ν => toLex ν) (by simpa using wts_nonempty hg hs hN hst)`. Take `⟨v, hvN, hv0, hw⟩` from `hfin.mem_toFinset.1 hμ`. Use `⟨μ, v, hvN, hv0, hw, fun a b hab _ => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Assume the negation of the conclusion as `hne`. Set `μ' : Fin n → ℝ` to `fun c => μ c + (if c = a then 1 else 0) - (if c = b then 1 else 0)`. Establish `hlt : toLex μ < toLex μ'`. Use `⟨a, fun j hj => ?_, ?_⟩` and prove the remaining obligations. Establish `h1 : j ≠ a` using `ne_of_lt hj`.
+Assume the negation of the conclusion and derive a contradiction. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h2 : j ≠ b` using `ne_of_lt (lt_trans hj hab)`. Use `show μ j = μ j + (if j = a then 1 else 0) - (if j = b then 1 else 0)`. Simplify using `[h1, h2]`. Use `show μ a < μ a + (if a = a then 1 else 0) - (if a = b then 1 else 0)`. Simplify using `[ne_of_lt hab]`.
-
-Establish `hin : μ' ∈ wts G N` using `⟨G a b v, hst a b v hvN, hne, fun c => weight_shift_real hg μ hw (ne_of_lt hab) c⟩`. Conclude with `not_le.2 hlt (hmax μ' (hfin.mem_toFinset.2 hin))`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_highest_of_stable : ∀ {n : ℕ} (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     [FiniteDimensional ℂ H] (G : Fin n → Fin n → Module.End ℂ H), Formalism.REAL.GlRel G →

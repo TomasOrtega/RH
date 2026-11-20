@@ -8,13 +8,13 @@ variable {F E : Type} [NontriviallyNormedField F] [NontriviallyNormedField E] [N
   [Unram F E]
 
 /- English proof (translation)
-Establish `h2 : Module.finrank F E = 2` using `Unram.finrank_eq`. Use `haveI : FiniteDimensional F E := Module.finite_of_finrank_pos (by omega)`. Set `σ : E ≃ₐ[F] E` to `AlgEquiv.ofRingEquiv (f := starRingAut) (fun x => by rw [starRingAut_apply]; exact Unram.star_fix (E := E) x)`. Establish `hσz : ∀ y, σ y = star y` using `fun y => rfl`. Establish `hσ : (1 : E ≃ₐ[F] E) ≠ σ`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨y, hy⟩` from `Unram.star_ne (F := F) (E := E)`. Introduce `h`. Apply `hy` to reduce the goal to its premises. Rewrite using `[← hσz, ← h]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hle` using `AlgEquiv.card_le (F := F) (K := E)`. Establish `hge : ({1, σ} : Finset (E ≃ₐ[F] E)).card ≤ Fintype.card (E ≃ₐ[F] E)` using `Finset.card_le_univ _`. Rewrite `hge` using `[Finset.card_pair hσ]`. Establish `hcard : Fintype.card (E ≃ₐ[F] E) = 2` using `by omega`. Use `haveI : IsGalois F E := IsGalois.of_card_aut_eq_finrank F E (by rw [Nat.card_eq_fintype_card, hcard, h2])`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `huniv : ({1, σ} : Finset (E ≃ₐ[F] E)) = Finset.univ` using `Finset.eq_univ_of_card _ (by rw [Finset.card_pair hσ, hcard])`. Rewrite using `[Algebra.norm_eq_prod_automorphisms, ← huniv, Finset.prod_pair hσ, hσz]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem algebraMap_norm_eq_mul_star (z : E) : algebraMap F E (Algebra.norm F z) = z * star z := by
   have h2 : Module.finrank F E = 2 := Unram.finrank_eq
@@ -49,13 +49,13 @@ def piCoord {ι : Type} [Fintype ι] (b : Module.Basis ι F E) (r : ℕ) :
   right_inv c := by classical ext k i; simp [Finsupp.single_apply]
 
 /- English proof (translation)
-Establish `h2 : Module.finrank F E = 2` using `Unram.finrank_eq`. Use `haveI : FiniteDimensional F E := Module.finite_of_finrank_pos (by omega)`. Set `b` to `Module.finBasis F E`. Set `B` to `Module.Basis.ofEquivFun (piCoord b r)`. Establish `hB : ∀ k, B k = fun _ => b k`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `k`. Rewrite using `[Module.Basis.coe_ofEquivFun]`. Use function extensionality and compare the values at `i`. Simplify using `[piCoord, Pi.single_apply, ite_apply, ite_smul]`. Establish `hBr : ∀ z k, B.repr z k = fun i => b.repr (z i) k` using `fun z k => by`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Module.Basis.ofEquivFun_repr_apply]`. Both sides reduce to the same expression. Rewrite using `[Algebra.norm_eq_matrix_det B, Algebra.norm_eq_matrix_det b]`. Rewrite using `[show (det (Algebra.leftMulMatrix B y)) i = Pi.evalRingHom (fun _ => F) i (det _) from rfl, RingHom.map_det]`. Use `congr 1`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Use extensionality with `k l`. Simplify using `[RingHom.mapMatrix_apply, Algebra.leftMulMatrix_eq_repr_mul, hB, hBr]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem norm_pi_apply (r : ℕ) (y : Fin r → E) (i : Fin r) :
     Algebra.norm (Fin r → F) y i = Algebra.norm F (y i) := by
@@ -75,7 +75,7 @@ theorem norm_pi_apply (r : ℕ) (y : Fin r → E) (i : Fin r) :
   simp [RingHom.mapMatrix_apply, Algebra.leftMulMatrix_eq_repr_mul, hB, hBr]
 
 /- English proof (translation)
-Rewrite using `[Algebra.trace_eq_matrix_trace (Pi.basisFun E (Fin r))]`. Simplify using `[Matrix.trace, Algebra.leftMulMatrix_eq_repr_mul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem trace_pi_apply (r : ℕ) (z : Fin r → E) : Algebra.trace E (Fin r → E) z = ∑ i, z i := by
   classical
@@ -90,7 +90,7 @@ variable (F E : Type) [NontriviallyNormedField F] [NontriviallyNormedField E] [N
   [Unram F E]
 
 /- English proof (translation)
-Use `⟨?_⟩` and prove the remaining obligations. Establish `h` using `IsBaseChange.finitePow (Fin r) (IsBaseChange.linearMap F E)`. Establish `e : (IsScalarTower.toAlgHom F (Fin r → F) (Fin r → E)).toLinearMap = (Algebra.linearMap F E).compLeft (Fin r)` using `LinearMap.ext fun _ => rfl`. Rewrite using `[e]`. Conclude with `h`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem push_pi (r : ℕ) : Algebra.IsPushout F E (Fin r → F) (Fin r → E) := by
   refine ⟨?_⟩
@@ -117,9 +117,9 @@ abbrev splitEt (r : ℕ) : Et F E :=
 end GlobalTheory.JR.SplitEt
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ r`. Use `⟨SplitEt.splitEt F E r, AlgEquiv.refl, LinearEquiv.refl E _, ?_, ?_⟩` and prove the remaining obligations. Introduce `y y' show star y ⬝ᵥ y' = Algebra.trace E (Fin r → E) (algebraMap (Fin r → F) (Fin r → E) 1 * star y * y')`. Rewrite using `[map_one, one_mul, SplitEt.trace_pi_apply]`. Simplify using `[dotProduct]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `y i show algebraMap F E (Algebra.norm (Fin r → F) y i) = y i * star (y i)`. Rewrite using `[SplitEt.norm_pi_apply, SplitEt.algebraMap_norm_eq_mul_star]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem GlobalTheory.JR.exists_split_et : ∀ (F E : Type) [NontriviallyNormedField F] [NontriviallyNormedField E] [NormedAlgebra F E] [StarRing E] [Unram F E] (r : ℕ), ∃ (A : Et F E) (e : A.K ≃ₐ[F] (Fin r → F)) (j : A.L ≃ₗ[E] (Fin r → E)), A.IsIsom 1 j ∧ ∀ y i, algebraMap F E (e (A.NL y) i) = j y i * star (j y i) := by
   intro F E _ _ _ _ _ r

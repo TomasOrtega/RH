@@ -27,9 +27,9 @@ section Local
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Establish `h1 : LinearMap.range Y.mulVecLin = ⊤`. Apply `Submodule.eq_top_of_finrank_eq` to reduce the goal to its premises. Rewrite using `[Module.finrank_fintype_fun_eq_card]`. Conclude with `hY`. Take `⟨g, hg⟩` from `LinearMap.exists_rightInverse_of_surjective _ h1`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨LinearMap.toMatrix' g, ?_⟩` and prove the remaining obligations. Use `congrArg LinearMap.toMatrix' hg` as an intermediate fact. Rewrite `this` using `[LinearMap.toMatrix'_comp, LinearMap.toMatrix'_id]`. Establish `h2 : LinearMap.toMatrix' Y.mulVecLin = Y` using `LinearMap.toMatrix'_toLin' Y`. Rewrite `this` using `[h2]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem exists_mul_eq_one_of_rank {m D : Type} [Fintype m] [DecidableEq m] [Fintype D] [DecidableEq D]
     (Y : Matrix m D k) (hY : Y.rank = Fintype.card m) : ∃ Z : Matrix D m k, Y * Z = 1 := by
@@ -45,9 +45,9 @@ theorem exists_mul_eq_one_of_rank {m D : Type} [Fintype m] [DecidableEq m] [Fint
   rwa [h2] at this
 
 /- English proof (translation)
-Take `⟨hlc, hcs⟩` from `hΨ`. Establish `hc : Continuous fun X : Matrix m m k => Xᵀ * Y` using `Continuous.matrix_mul continuous_id.matrix_transpose continuous_const`. Establish `hf : Continuous fun M : Matrix m D k => (M * Z)ᵀ` using `(Continuous.matrix_mul continuous_id continuous_const).matrix_transpose`. Use `⟨hlc.comp_continuous hc, ?_⟩` and prove the remaining obligations. Use `IsCompact.of_isClosed_subset (hcs.image hf) (isClosed_tsupport _) ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hcl : IsClosed ((fun X : Matrix m m k => Xᵀ * Y) ⁻¹' tsupport Ψ)` using `(isClosed_tsupport _).preimage hc`. Establish `hsub : Function.support (fun X : Matrix m m k => Ψ (Xᵀ * Y)) ⊆ (fun X => Xᵀ * Y) ⁻¹' tsupport Ψ` using `fun X hX => subset_tsupport Ψ hX`. Use `(closure_minimal hsub hcl).trans ?_` and prove the remaining obligations. Introduce `X hX`. Conclude with `⟨Xᵀ * Y, hX, by simp [Matrix.mul_assoc, hZ]⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem comp_transpose_mul_mem_SB {m D : Type} [Fintype m] [DecidableEq m] [Fintype D] [DecidableEq D]
     {Y : Matrix m D k} {Z : Matrix D m k} (hZ : Y * Z = 1) {Ψ : Matrix m D k → ℂ}
@@ -70,7 +70,7 @@ theorem comp_transpose_mul_mem_SB {m D : Type} [Fintype m] [DecidableEq m] [Fint
 variable [MeasurableSpace k] [BorelSpace k]
 
 /- English proof (translation)
-Establish `h` using `GlobalTheory.GJIntegrable.integrable_gjIntegrand k n ν ((Fintype.card D : ℂ) / 2) hν (by simpa using hd) _ (comp_transpose_mul_mem_SB hZ hΨ)`. Rewrite using `[Measure.isMulLeftInvariant_eq_smul μ (haarVol (GlobalTheory.SplitWeil.KO k (Fin n)))]`. Use `h.smul_measure_nnreal.congr (Eventually.of_forall fun g => ?_)` and prove the remaining obligations. Simplify using `only [omB, gdet, map_one, Units.val_one, apow_one, Matrix.mul_one]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem integrable_omB {n : ℕ} {D : Type} [Fintype D] [DecidableEq D]
     (ν α : kˣ →* ℂˣ) (hν : GlobalTheory.KSplit.IsSmU ν) (hd : (n : ℝ) - 1 < (Fintype.card D : ℝ) / 2)
@@ -85,7 +85,7 @@ theorem integrable_omB {n : ℕ} {D : Type} [Fintype D] [DecidableEq D]
   ring
 
 /- English proof (translation)
-Simplify using `only [omB, Pi.sub_apply]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem omB_sub_apply {n : ℕ} {D : Type} [Fintype D] [DecidableEq D] (ν α : kˣ →* ℂˣ) (h : GL (Fin n) k)
     (Ψ Ψ' : Matrix (Fin n) D k → ℂ) (Y : Matrix (Fin n) D k) :
@@ -93,9 +93,9 @@ theorem omB_sub_apply {n : ℕ} {D : Type} [Fintype D] [DecidableEq D] (ν α : 
   simp only [omB, Pi.sub_apply]; ring
 
 /- English proof (translation)
-Establish `e : ∀ h : GL (Fin n) k, omB ν α h 1 (omB ν α g₀ 1 Ψ - Ψ) Y = omB ν α (h * g₀) 1 Ψ Y - omB ν α h 1 Ψ Y` using `fun h => by`. Rewrite using `[omB_sub_apply]`. Use `omB_mul ν α h g₀ (1 : GL D k) 1 Ψ` as an intermediate fact. Rewrite `this` using `[one_mul]`. Rewrite using `[this]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Repeatedly rewrite using `[e]`. Establish `hi` using `integrable_omB ν α hν hd hZ hΨ μ`. Rewrite using `[integral_sub (hi.comp_mul_right g₀) hi, integral_mul_right_eq_self (fun h => omB ν α h 1 Ψ Y) g₀, sub_self]`.
+Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem integral_omB_translate_sub {n : ℕ} {D : Type} [Fintype D] [DecidableEq D]
     (ν α : kˣ →* ℂˣ) (hν : GlobalTheory.KSplit.IsSmU ν) (hd : (n : ℝ) - 1 < (Fintype.card D : ℝ) / 2)
@@ -118,21 +118,19 @@ end Local
 open GlobalTheory.SplitFlip in
 
 /- English proof (translation)
-Introduce `hK F E _ _ _ _ _ σ B a a' G X om om' hT ι hι mG hBG μ _ x hx Y hY`. Use `letI : MeasurableSpace (Fv F B.v₁) := borel _`. Use `haveI : BorelSpace (Fv F B.v₁) := ⟨rfl⟩`. Establish `e : mG = Units.instMeasurableSpace` using `hBG.measurable_eq.trans (borel_GL (k := Fv F B.v₁) (n := Fin a')).measurable_eq.symm`. Substitute `e` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact.
 
-Establish `hP` using `GlobalTheory.ThK.Inhab.pairV' hT`. Establish `hν : GlobalTheory.KSplit.IsSmU (chrW (X.α / X.β) B.τ₁)` using `(GlobalTheory.ChrWLocal.chrW_local F E _ hP.hW B.v₁ B.τ₁).1`. Establish `hd : (a' : ℝ) - 1 < (Fintype.card (Fin (a + a')) : ℝ) / 2`. Establish `h1 : (a' : ℝ) + 1 ≤ a` using `by exact_mod_cast hT.geo.lt`. Simplify using `only [Fintype.card_fin, Nat.cast_add]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨Z, hZ⟩` from `exists_mul_eq_one_of_rank Y (by simpa using hY)`. Establish `hW1 : (1 : UA σ G.W.J) ∈ UAt σ G.W (evFin F B.v₁)` using `fun u _ => by simp [mat]`. Establish `key : x ∈ SB (Fin a' × Fin (a + a') → Fv F B.v₁) ∧ ∫ g, omB (chrW (X.α / X.β) B.τ₁) (chrW X.α B.τ₁) g 1 (ι x) Y ∂μ = 0`. Proceed by induction on `hx using Submodule.span_induction with`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Proceed by induction. Treat this case separately.
 
-Consider the case `mem z hz`. Take `⟨g, hg, φ, hφ, φ₁, hφ₁, hA, rfl⟩` from `hz`. Use `⟨sub_mem hφ₁ hφ, ?_⟩` and prove the remaining obligations. Establish `h1` using `GlobalTheory.T.linear_bar_model_unitary_action hK.base F E σ B a' (a + a') G.V' G.W G.M' X.α (X.α / X.β) om' _ _ _ _ hP B.v₁ B.τ₁ 1 1 ι hι g hg 1 hW1 φ hφ φ₁ hφ₁ hA`. Rewrite `h1` using `[map_one]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_sub, h1]`. Conclude with `integral_omB_translate_sub _ _ hν hd hZ (hι.bij.mapsTo hφ) μ _`. Consider the case `zero`. Use `⟨zero_mem _, ?_⟩` and prove the remaining obligations. Simplify using `[omB]`.
+Treat this case separately. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Treat this case separately. Reduce the conclusion to the remaining proof obligations.
 
-Consider the case `add y z _ _ hy hz`. Use `⟨add_mem hy.1 hz.1, ?_⟩` and prove the remaining obligations. Establish `e2 : ∀ g : GL (Fin a') (Fv F B.v₁), omB (chrW (X.α / X.β) B.τ₁) (chrW X.α B.τ₁) g 1 (ι (y + z)) Y = omB (chrW (X.α / X.β) B.τ₁) (chrW X.α B.τ₁) g 1 (ι y) Y + omB (chrW (X.α / X.β) B.τ₁) (chrW X.α B.τ₁) g 1 (ι z) Y` using `fun g => by simp only [map_add, omB, Pi.add_apply]; ring`. Repeatedly rewrite using `[e2]`. Rewrite using `[integral_add (integrable_omB _ _ hν hd hZ (hι.bij.mapsTo hy.1) μ) (integrable_omB _ _ hν hd hZ (hι.bij.mapsTo hz.1) μ), hy.2, hz.2, add_zero]`.
+Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately. Reduce the conclusion to the remaining proof obligations.
 
-Consider the case `smul c y _ hy`. Use `⟨Submodule.smul_mem _ c hy.1, ?_⟩` and prove the remaining obligations. Establish `e2 : ∀ g : GL (Fin a') (Fv F B.v₁), omB (chrW (X.α / X.β) B.τ₁) (chrW X.α B.τ₁) g 1 (ι (c • y)) Y = c * omB (chrW (X.α / X.β) B.τ₁) (chrW X.α B.τ₁) g 1 (ι y) Y` using `fun g => by simp only [map_smul, omB, Pi.smul_apply, smul_eq_mul]; ring`. Repeatedly rewrite using `[e2]`. Rewrite using `[integral_const_mul, hy.2, mul_zero]`.
-
-Conclude with `key.2`.
+Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integral_omB_augAt_eq_zero : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (a a' : ℕ) (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W), IsTriple B G X om om' →

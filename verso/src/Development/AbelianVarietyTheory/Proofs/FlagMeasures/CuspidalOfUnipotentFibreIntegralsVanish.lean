@@ -19,15 +19,15 @@ open scoped InnerProductSpace ComplexOrder ContDiff
 namespace GlobalTheory.CuspCore
 
 /- English proof (translation)
-Establish `hme : MeasurableEmbedding ι` using `hι.measurableEmbedding`. Rewrite using `[Subgroup.coe_map]`. Unfold `GlobalTheory.Dec.IsHaarSub at hν ⊢`. Take `⟨h0, hfin, hcon, hinv⟩` from `hν`. Use `⟨hι.isClosedMap _ hN, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `h`. Apply `h0` to reduce the goal to its premises. Establish `h2` using `hme.map_apply ν Set.univ`. Rewrite `h2` using `[h, Set.preimage_univ]`. Rewrite using `[← Measure.measure_univ_eq_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `using h2.symm`. Use `hfin` as an intermediate fact. Use `⟨fun K hK => ?_⟩` and prove the remaining obligations. Rewrite using `[hme.map_apply]`. Conclude with `(hι.isCompact_preimage hK).measure_lt_top`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hme.map_apply, Set.preimage_compl, hι.injective.preimage_image]`. Conclude with `hcon`. Introduce and unpack `_ ⟨n, hn, rfl⟩`. Rewrite using `[Measure.map_map (measurable_const_mul (ι n)) hme.measurable]`. Establish `hcomp : (fun y => ι n * y) ∘ ι = ι ∘ (fun y => n * y)`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `y`. Simplify using `only [Function.comp_apply, map_mul]`. Rewrite using `[hcomp, ← Measure.map_map hme.measurable (measurable_const_mul n), hinv n hn]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isHaarSub_map_emb {H G : Type} [Group H] [TopologicalSpace H] [IsTopologicalGroup H]
     [MeasurableSpace H] [BorelSpace H] [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [T2Space G]
@@ -59,19 +59,15 @@ theorem isHaarSub_map_emb {H G : Type} [Group H] [TopologicalSpace H] [IsTopolog
     rw [hcomp, ← Measure.map_map hme.measurable (measurable_const_mul n), hinv n hn]
 
 /- English proof (translation)
-Establish `hKm : AEStronglyMeasurable (fun p : G × G => φ p.2 * f (p.1 * x * p.2)) (ν.prod μ)`. Establish `h1 : Continuous fun p : G × G => f (p.1 * x * p.2)` using `hf.comp ((continuous_fst.mul continuous_const).mul continuous_snd)`. Conclude with `((hφ.comp measurable_snd).mul h1.measurable).aestronglyMeasurable`. Establish `hKi : Integrable (fun p : G × G => φ p.2 * f (p.1 * x * p.2)) (ν.prod μ)`. Rewrite using `[integrable_prod_iff hKm]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Use `filter_upwards [hb] with m hm`. Establish `hc : Continuous fun g : G => f (m * x * g)` using `hf.comp (continuous_const_mul (m * x))`. Conclude with `Integrable.mono' hΦ (hφ.mul hc.measurable).aestronglyMeasurable (ae_of_all _ hm)`. Use `Integrable.mono' (integrable_const (∫ g, Φ g ∂μ)) hKm.norm.integral_prod_right' ?_ filter_upwards [hb] with m hm` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Real.norm_of_nonneg (integral_nonneg fun _ => norm_nonneg _)]`. Conclude with `integral_mono_of_nonneg (ae_of_all _ fun _ => norm_nonneg _) hΦ (ae_of_all _ hm)`. Establish `hswap` using `integral_integral_swap (f := fun m g => φ g * f (m * x * g)) hKi`. Establish `hF : ∀ g, ∫ m, φ g * f (m * x * g) ∂ν = (∫ m, f (m * (x * g)) ∂ν) * φ (x⁻¹ * (x * g))`. Introduce `g`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[inv_mul_cancel_left, integral_const_mul, mul_comm (φ g)]`. Simplify using `only [mul_assoc]`. Establish `hI1 : Integrable (fun g => (∫ m, f (m * (x * g)) ∂ν) * φ (x⁻¹ * (x * g))) μ` using `hKi.integral_prod_right.congr (ae_of_all _ fun g => hF g)`. Establish `hI : Integrable (fun y => (∫ m, f (m * y) ∂ν) * φ (x⁻¹ * y)) μ`. Establish `h2` using `hI1.comp_mul_left x⁻¹`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Reduce the equality to equality of the corresponding arguments.
 
-Simplify `h2` using `only [mul_inv_cancel_left]`. Use `⟨hI, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Use `congr 1`. Use function extensionality and compare the values at `m`.
-
-Conclude with `hr (m * x)`. Use `_ = ∫ g, ∫ m, φ g * f (m * x * g) ∂ν ∂μ := hswap`. Use `_ = ∫ g, (∫ m, f (m * (x * g)) ∂ν) * φ (x⁻¹ * (x * g)) ∂μ := by`. Use `congr 1`. Use function extensionality and compare the values at `g`.
-
-Conclude with `hF g`. Use `_ = ∫ y, (∫ m, f (m * y) ∂ν) * φ (x⁻¹ * y) ∂μ := integral_mul_left_eq_self (fun y => (∫ m, f (m * y) ∂ν) * φ (x⁻¹ * y)) x`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem constTerm_repro {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
     [SecondCountableTopology G] [MeasurableSpace G] [BorelSpace G] (μ ν : Measure G) [SFinite μ]
@@ -119,11 +115,11 @@ theorem constTerm_repro {G : Type} [Group G] [TopologicalSpace G] [IsTopological
         integral_mul_left_eq_self (fun y => (∫ m, f (m * y) ∂ν) * φ (x⁻¹ * y)) x
 
 /- English proof (translation)
-Establish `hcoef : ∀ v, Continuous (fun g : B.I.Ginf => ⟪B.w v, B.σ v (uMat (g v)) (B.w v)⟫_ℂ)`. Introduce `v`. Take `⟨-, ⟨-, -, ⟨-, -, hcont⟩, -⟩, -⟩` from `hd v`. Establish `hu : Continuous (fun g : UJ (B.I.ε v) => uMat g)` using `Units.continuous_val.comp continuous_subtype_val`. Establish `hin : ∀ g : UJ (B.I.ε v), uMat g ∈ UJset (B.I.ε v)` using `fun g => g.2`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : Continuous (fun g : UJ (B.I.ε v) => B.σ v (uMat g) (B.w v))` using `(hcont (B.w v)).comp_continuous hu hin`. Conclude with `continuous_const.inner (h1.comp (continuous_apply v))`. Take `⟨hlc, -⟩` from `B.e_adm`. Establish `hph : Continuous (ph B d)`. Unfold `GlobalTheory.Count.ph`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions.
 
-Conclude with `continuous_const.mul ((continuous_finsetProd _ fun v _ => hcoef v).star)`. Unfold `GlobalTheory.Count.phe`. Conclude with `(hph.comp continuous_fst).mul (hlc.continuous.comp continuous_snd)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_phe (B : RowsAut) (d : InfinitePlace B.I.F → ℝ) (hd : IsDSData B d) : Continuous (phe B d) := by
   have hcoef : ∀ v, Continuous (fun g : B.I.Ginf => ⟪B.w v, B.σ v (uMat (g v)) (B.w v)⟫_ℂ) := by
@@ -143,9 +139,9 @@ theorem continuous_phe (B : RowsAut) (d : InfinitePlace B.I.F → ℝ) (hd : IsD
   exact (hph.comp continuous_fst).mul (hlc.continuous.comp continuous_snd)
 
 /- English proof (translation)
-Take `⟨hne, -⟩` from `hW`. Assume the negation of the conclusion as `hlt`. Apply `hne` to reduce the goal to its premises. Rewrite using `[Submodule.eq_bot_iff]`. Introduce `x _`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use function extensionality and compare the values at `i`. Conclude with `absurd i.isLt (by omega)`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem one_le_of_isIsot (I : AutInst) (W : Submodule I.E (Fin I.n → I.E)) (hW : I.IsIsot W) : 1 ≤ I.n := by
   obtain ⟨hne, -⟩ := hW
@@ -162,15 +158,15 @@ noncomputable def incl (I : AutInst) (v : InfinitePlace I.F) : UJ (I.ε v) →* 
   (MonoidHom.inl I.Ginf I.Gf).comp (MonoidHom.mulSingle (fun v => UJ (I.ε v)) v)
 
 /- English proof (translation)
-Take `⟨hT2, -⟩` from `GlobalTheory.CongTop.adelic_topology I`. Use `hT2` as an intermediate fact. Establish `hform : ∀ m : UJ (I.ε v), incl I v m = (Pi.mulSingle v m, 1)` using `fun m => rfl`. Establish `hc : Continuous (incl I v)`. Establish `h1 : (incl I v : UJ (I.ε v) → I.GA) = fun m : UJ (I.ε v) => ((Pi.mulSingle v m, 1) : I.GA)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `m`. Conclude with `hform m`. Rewrite using `[h1]`. Establish `hm1 : Continuous fun m : UJ (I.ε v) => (Pi.mulSingle v m : I.Ginf)`. Apply `continuous_pi` to reduce the goal to its premises.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `j`. Distinguish the cases in `hj : j = v`. Substitute `hj` using the available equality. Simplify using `only [Pi.mulSingle_eq_same]`. Conclude with `continuous_id`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [Pi.mulSingle_eq_of_ne hj]`. Conclude with `continuous_const`. Establish `hm2 : Continuous fun _ : UJ (I.ε v) => (1 : I.Gf)` using `continuous_const`. Conclude with `hm1.prodMk hm2`. Establish `hfst : Continuous (Prod.fst : I.GA → I.Ginf)` using `continuous_fst`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `hf : Continuous (fun x : I.GA => x.1 v)` using `(continuous_apply v).comp hfst`. Use `Function.LeftInverse.isClosedEmbedding ?_ hf hc` and prove the remaining obligations. Introduce `m`. Simplify using `only [hform, Pi.mulSingle_eq_same]`.
+A detailed English derivation is pending.
 -/
 theorem isClosedEmbedding_incl (I : AutInst) (v : InfinitePlace I.F) : Topology.IsClosedEmbedding (incl I v) := by
   classical
@@ -200,47 +196,43 @@ theorem isClosedEmbedding_incl (I : AutInst) (v : InfinitePlace I.F) : Topology.
   simp only [hform, Pi.mulSingle_eq_same]
 
 /- English proof (translation)
-Introduce `B d h hd hfib hloc hbig hfd T hT y`. Take `⟨hT2, hLC, hSC, -⟩` from `GlobalTheory.CongTop.adelic_topology B.I`. Use `hT2` as an intermediate fact. Use `hLC` as an intermediate fact. Use `hSC` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hSF : SFinite (B.I.muA B.μf)`. Unfold `AutInst.muA`. Use `infer_instance`. Establish `hLI : (B.I.muA B.μf).IsMulLeftInvariant` using `⟨(GlobalTheory.T.adelicUnitaryHaar_bi_invariant B.I B.μf).1⟩`. Establish `hOP : (B.I.muA B.μf).IsOpenPosMeasure` using `⟨fun U hU hne => ((GlobalTheory.T.adelicUnitaryHaar_bi_invariant B.I B.μf).2.2.2.2 U hU hne).ne'⟩`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hFC : IsFiniteMeasureOnCompacts (B.I.muA B.μf)`. Unfold `AutInst.muA`. Use `infer_instance`. Establish `hHaar : (B.I.muA B.μf).IsHaarMeasure` using `{ toIsFiniteMeasureOnCompacts := hFC, toIsMulLeftInvariant := hLI, toIsOpenPosMeasure := hOP }`. Establish `part1 : ∀ f : B.I.GA → ℂ, IsContRep B (T y) f → ∀ W, B.I.IsIsot W → ∀ ν : Measure B.I.GA, B.I.IsNQuotMeas W ν → ∀ x, ∫ m, f (m * x) ∂ν = 0`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `f hf W hW ν hν x`. Establish `hn : 1 ≤ B.I.n` using `one_le_of_isIsot B.I W hW`. Take `⟨-, ⟨Φ, hΦ, hbd⟩, hrep⟩` from `GlobalTheory.T.reproducing_formula_discreteSeries_test_growth B d h hd hn hloc hbig hfd T hT y f hf`. Take `⟨c, hc, hcle⟩` from `GlobalTheory.T.truncatedLeastLatticeSize_bounded_below_unipotentRadical B.I W x hW`. Take `⟨hνfin, -, hνc, hνinv⟩` from `hν`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `hνfin` as an intermediate fact. Take `⟨hfc, hfinv, -⟩` from `hf`. Establish `hae : ∀ᵐ m ∂ν, m ∈ B.I.NA W` using `mem_ae_iff.2 hνc`. Establish `hbound : ∀ᵐ m ∂ν, ∀ g, ‖phe B d g * f (m * x * g)‖ ≤ c⁻¹ ^ (2 * B.I.n ^ 2 * B.I.f) * |Φ g|` using `by filter_upwards [hae] with m hm g`. Establish `ht : c ≤ tau1 B.I (m * x)` using `hcle m hm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `htpos : 0 < tau1 B.I (m * x)` using `lt_of_lt_of_le hc ht`. Establish `hA : 0 ≤ (tau1 B.I (m * x))⁻¹ ^ (2 * B.I.n ^ 2 * B.I.f)` using `pow_nonneg (inv_nonneg.2 htpos.le) _`. Establish `hpow : (tau1 B.I (m * x))⁻¹ ^ (2 * B.I.n ^ 2 * B.I.f) ≤ c⁻¹ ^ (2 * B.I.n ^ 2 * B.I.f)` using `pow_le_pow_left₀ (inv_nonneg.2 htpos.le) (inv_anti₀ hc ht) _`. Combine the equalities or inequalities in the displayed calculation. Take `⟨hint, heq⟩` from `constTerm_repro (B.I.muA B.μf) ν f (phe B d) hfc (continuous_phe B d hd).measurable x _ (hΦ.abs.const_mul _) hbound hrep`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨v⟩ : Nonempty (InfinitePlace B.I.F)` from `inferInstance`. Take `⟨Wv, hWv, hWvNA⟩` from `GlobalTheory.T.realUnipotentRadical_embeds_adelicRadical B.I W v hW`. Take `⟨νv, hνv⟩` from `GlobalTheory.Dec.exists_isHaarSub_NW (B.I.ε v) Wv`. Establish `hincl : ∀ n : UJ (B.I.ε v), incl B.I v n = (Pi.mulSingle v n, 1)` using `fun n => rfl`. Establish `hN0 : IsClosed ((GlobalTheory.Dec.nwSub (B.I.ε v) Wv : Subgroup (UJ (B.I.ε v))) : Set (UJ (B.I.ε v)))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[GlobalTheory.Dec.coe_nwSub]`. Conclude with `GlobalTheory.Dec.isClosed_NW _ _`. Establish `hν0 : IsHaarSub ((GlobalTheory.Dec.nwSub (B.I.ε v) Wv : Subgroup (UJ (B.I.ε v))) : Set (UJ (B.I.ε v))) νv`. Rewrite using `[GlobalTheory.Dec.coe_nwSub]`. Conclude with `hνv`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨hcl, hhaar⟩` from `isHaarSub_map_emb (incl B.I v) (isClosedEmbedding_incl B.I v) _ hN0 νv hν0`. Establish `hFm : Measurable (fun z : B.I.GA => ∫ m, f (m * z) ∂ν)` using `((hfc.comp (continuous_snd.mul continuous_fst)).stronglyMeasurable.integral_prod_right').measurable`. Establish `hφm : Measurable (fun z : B.I.GA => phe B d (x⁻¹ * z))` using `((continuous_phe B d hd).comp (continuous_const_mul x⁻¹)).measurable`. Establish `hinvF : ∀ m ∈ (GlobalTheory.Dec.nwSub (B.I.ε v) Wv).map (incl B.I v), ∀ z, (fun z : B.I.GA => ∫ m', f (m' * z) ∂ν) (m * z) = (fun z : B.I.GA => ∫ m', f (m' * z) ∂ν) z`. Introduce `m hm z`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Take `⟨n0, hn0, rfl⟩` from `Subgroup.mem_map.mp hm`. Establish `hnw : n0 ∈ NW (B.I.ε v) Wv`. Establish `h' : n0 ∈ ((GlobalTheory.Dec.nwSub (B.I.ε v) Wv : Subgroup _) : Set (UJ (B.I.ε v)))` using `hn0`. Rewrite `h'` using `[GlobalTheory.Dec.coe_nwSub]`. Then use the resulting hypothesis. Establish `hNA : incl B.I v n0 ∈ B.I.NA W`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Rewrite using `[hincl]`. Conclude with `hWvNA n0 hnw`. Establish `h3` using `hνinv (fun m' => f (m' * z)) (fun γ hγ w => by simp only [mul_assoc]; exact hfinv γ hγ.1 (w * z)) (incl B.I v n0) hNA`. Simplify `h3` using `only [mul_assoc]`. Establish `hfibv : ∀ z, ∫ m, (fun z : B.I.GA => phe B d (x⁻¹ * z)) (m * z) ∂(νv.map (incl B.I v)) = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `z`. Rewrite using `[(isClosedEmbedding_incl B.I v).measurableEmbedding.integral_map]`. Establish `h4` using `hfib v Wv hWv νv hνv x⁻¹ z`. Simplify using `only [hincl, mul_assoc] at h4 ⊢`. Conclude with `h4`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0` using `GlobalTheory.T.weil_integral_vanishing_of_fibre_integrals B.I.GA (B.I.muA B.μf) _ _ hcl hhaar _ _ hFm hφm hinvF hint hfibv`. Rewrite using `[heq]`. Conclude with `h0`. Use `⟨part1, ?_⟩` and prove the remaining obligations. Introduce `W hW ν hν`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hn : 1 ≤ B.I.n` using `one_le_of_isIsot B.I W hW`. Establish `hbig32 : HBig B 32 h`. Introduce `v`. Establish `h1 : (0:ℝ) ≤ (B.I.n : ℝ) ^ 2 * Real.sqrt (rkR (B.I.ε v))` using `by positivity`. Use polynomial arithmetic with `[hbig v, h1]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨yv, Fc, -, hspan, hFc, -⟩` from `GlobalTheory.T.kernelB' B d h hd hn hloc hbig32 hfd T hT`. Establish `key : ∀ z ∈ Submodule.span ℂ (Set.range yv), ∃ g : B.I.GA → ℂ, IsContRep B z g`. Introduce `z hz`. Proceed by induction on `hz using Submodule.span_induction with`. Consider the case `mem z hz`.
+Treat this case separately. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Supply the required witnesses or components. Treat this case separately.
 
-Take `⟨i, rfl⟩` from `hz`. Conclude with `⟨Fc i, hFc i⟩`. Consider the case `zero`. Use `⟨0, ?_⟩` and prove the remaining obligations. Unfold `GlobalTheory.Dec.IsContRep`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `⟨continuous_zero, fun _ _ _ => rfl, Lp.coeFn_zero ..⟩`. Consider the case `add a b _ _ iha ihb`. Take `⟨ga, hca, hia, hea⟩` from `iha`. Take `⟨gb, hcb, hib, heb⟩` from `ihb`. Use `⟨ga + gb, ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Unfold `GlobalTheory.Dec.IsContRep`. Use `⟨hca.add hcb, fun γ hγ w => ?_, (Lp.coeFn_add a b).trans (hea.add heb)⟩` and prove the remaining obligations. Simplify using `only [Pi.add_apply, hia γ hγ w, hib γ hγ w]`. Consider the case `smul r a _ iha`. Take `⟨ga, hca, hia, hea⟩` from `iha`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `⟨r • ga, ?_⟩` and prove the remaining obligations. Unfold `GlobalTheory.Dec.IsContRep`. Use `⟨hca.const_smul r, fun γ hγ w => ?_, (Lp.coeFn_smul r a).trans (hea.const_smul r)⟩` and prove the remaining obligations. Simplify using `only [Pi.smul_apply, hia γ hγ w]`. Establish `hz : T y ∈ Submodule.span ℂ (Set.range yv)`.
-
-Rewrite using `[hspan]`. Conclude with `LinearMap.mem_range_self _ y`. Take `⟨f, hf⟩` from `key (T y) hz`. Take `⟨-, -, -, hae⟩` from `GlobalTheory.ExtContRep.ext_ae_eq_contRep B (T y) f hf`. Take `⟨hνfin, -⟩` from `id hν`.
-
-Use `filter_upwards [hae ν hνfin] with x hx`. Rewrite using `[integral_congr_ae hx]`. Conclude with `part1 f hf W hW ν hν x`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cusp_of_fibre_vanish : ∀ (B : RowsAut) (d : InfinitePlace B.I.F → ℝ) (h : ℝ), IsDSData B d → (∀ (v : InfinitePlace B.I.F) (Wv : Submodule ℂ (Fin B.I.n → ℂ)), IsIsoC (B.I.ε v) Wv → ∀ ν : Measure (UJ (B.I.ε v)), IsHaarSub (NW (B.I.ε v) Wv) ν → ∀ x y : B.I.GA, ∫ m, phe B d (x * (open Classical in ((Pi.mulSingle v m, 1) : B.I.GA)) * y) ∂ν = 0) → LocDec B h → HBig B 40 h → FiniteDimensional ℂ (B.I.eHom B.σs B.μf B.fund B.R B.Re) → ∀ T, B.I.IsRConv B.μf B.fund B.R (phe B d) T → ∀ y : B.I.L2 B.μf B.fund, (∀ f : B.I.GA → ℂ, IsContRep B (T y) f → ∀ W, B.I.IsIsot W → ∀ ν : Measure B.I.GA, B.I.IsNQuotMeas W ν → ∀ x, ∫ m, f (m * x) ∂ν = 0) ∧ B.I.IsCuspFn (B.I.muA B.μf) (B.I.ext (T y)) := by
   classical

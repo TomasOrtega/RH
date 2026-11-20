@@ -5,19 +5,19 @@ namespace GroundTheory.Variant₂.N1
 open IsLocalRing
 
 /- English proof (translation)
-Establish `hM : maximalIdeal (AdicCompletion (maximalIdeal R) R) = Ideal.span {algebraMap R (AdicCompletion (maximalIdeal R) R) ϖ}`. Establish `e` using `congrArg (Ideal.map (algebraMap R (AdicCompletion (maximalIdeal R) R))) hϖ.maximalIdeal_eq`. Rewrite using `[AdicCompletion.maximalIdeal_eq_map, e, Ideal.map_span, Set.image_singleton]`. Establish `hMpow : ∀ k : ℕ, maximalIdeal (AdicCompletion (maximalIdeal R) R) ^ k = Ideal.span {algebraMap R (AdicCompletion (maximalIdeal R) R) ϖ ^ k}` using `fun k => by`. Rewrite using `[hM, Ideal.span_singleton_pow]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hex : ∃ k : ℕ, x ∉ maximalIdeal (AdicCompletion (maximalIdeal R) R) ^ k`. Assume the negation of the conclusion as `h`. Use `push Not at h`. Apply `hx` to reduce the goal to its premises. Apply `IsHausdorff.haus (IsAdicComplete.toIsHausdorff (I := maximalIdeal (AdicCompletion (maximalIdeal R) R)) (M := AdicCompletion (maximalIdeal R) R)) x` to reduce the goal to its premises.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `k`. Simplify `h k` using `only [← Ideal.one_eq_top, smul_eq_mul, mul_one, SModEq.zero]`. Establish `hk : x ∉ maximalIdeal (AdicCompletion (maximalIdeal R) R) ^ Nat.find hex` using `Nat.find_spec hex`. Establish `hk0 : Nat.find hex ≠ 0`. Introduce `h0`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hk` to reduce the goal to its premises. Rewrite using `[h0, pow_zero, Ideal.one_eq_top]`. Conclude with `Submodule.mem_top`. Take `⟨n, hn⟩` from `Nat.exists_eq_succ_of_ne_zero hk0`. Establish `hxn : x ∈ maximalIdeal (AdicCompletion (maximalIdeal R) R) ^ n`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `Nat.find_min hex (show n < Nat.find hex by omega)` as an intermediate fact. Simplify using `using this`. Rewrite `hxn` using `[hMpow, Ideal.mem_span_singleton']`. Take `⟨y, hy⟩` from `hxn`. Establish `hyu : IsUnit y`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← notMem_maximalIdeal]`. Introduce `hyM`. Apply `hk` to reduce the goal to its premises. Rewrite using `[hn, hMpow, Ideal.mem_span_singleton']`. Rewrite `hyM` using `[hM, Ideal.mem_span_singleton']`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨z, hz⟩` from `hyM`. Conclude with `⟨z, by rw [← hy, ← hz, pow_succ]; ring⟩`. Conclude with `⟨n, hyu.unit, by rw [IsUnit.unit_spec, hy]⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_eq_unit_mul_pow_adicCompletion {R : Type*} [CommRing R] [IsDomain R]
     [IsDiscreteValuationRing R] {ϖ : R} (hϖ : Irreducible ϖ)

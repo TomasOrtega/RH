@@ -11,7 +11,7 @@ open Formalism.GradedWeylDivisibility Formalism.CohomologicalDescent.Symmetrizat
 def idx (p q : ℕ) : Fin p ⊕ Fin q → Fin (p + q) := Sum.elim (Fin.castAdd q) (Fin.natAdd p)
 
 /- English proof (translation)
-The claim follows from `finSumFinEquiv.injective`.
+A detailed English derivation is pending.
 -/
 theorem idx_inj (p q : ℕ) : Function.Injective (idx p q) := finSumFinEquiv.injective
 
@@ -30,9 +30,9 @@ theorem EV_coe (p q w : ℕ) (lam2 : Fin q → ℕ) (a b : Fin p ⊕ Fin q) (x :
       der (p + q) (p + q) (idx p q a) (idx p q b) x := rfl
 
 /- English proof (translation)
-Use `LinearMap.ext fun x => Subtype.ext ?_` and prove the remaining obligations. Establish `h` using `der_comm (idx p q a) (idx p q b) (idx p q c) (idx p q d) (x : MvPolynomial (Fin (p + q) × Fin (p + q)) ℚ)`. Simplify using `only [(idx_inj p q).eq_iff] at h`. Simplify using `only [LinearMap.sub_apply, Module.End.mul_apply, Submodule.coe_sub, EV_coe]`. Rewrite using `[h]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `split_ifs <;> simp [EV_coe]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem EV_comm (p q w : ℕ) (lam2 : Fin q → ℕ) (a b c d : Fin p ⊕ Fin q) :
     EV p q w lam2 a b * EV p q w lam2 c d - EV p q w lam2 c d * EV p q w lam2 a b =
@@ -51,7 +51,7 @@ def W0 (p q w : ℕ) (lam2 : Fin q → ℕ) : Submodule ℚ (VQ p q w lam2) :=
       if α = β then (w : ℚ) • (1 : Module.End ℚ (VQ p q w lam2)) else 0)
 
 /- English proof (translation)
-Simplify using `only [W0, Submodule.mem_inf, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, sub_eq_zero]`. Use `and_congr Iff.rfl (forall_congr' fun α => forall_congr' fun β => ?_)` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> simp`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem mem_orthogonal_frame_iff (p q w : ℕ) (lam2 : Fin q → ℕ) (u : VQ p q w lam2) :
     u ∈ W0 p q w lam2 ↔ (∀ (α : Fin p) (a : Fin q), EV p q w lam2 (Sum.inl α) (Sum.inr a) u = 0) ∧
@@ -61,9 +61,9 @@ theorem mem_orthogonal_frame_iff (p q w : ℕ) (lam2 : Fin q → ℕ) (u : VQ p 
   split_ifs <;> simp
 
 /- English proof (translation)
-Rewrite `hu`, the goal using `[mem_orthogonal_frame_iff]`. Use `⟨fun α a => ?_, fun α β => ?_⟩` and prove the remaining obligations. Establish `h` using `congrArg (fun T => T u) (EV_comm p q w lam2 (Sum.inl α) (Sum.inr a) (Sum.inr b) (Sum.inr b'))`. Simplify using `only [LinearMap.sub_apply, Module.End.mul_apply, hu.1, map_zero, sub_zero, reduceCtorEq, if_false] at h`. Rewrite using `[h]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `split_ifs <;> simp [hu.1]`. Establish `h` using `congrArg (fun T => T u) (EV_comm p q w lam2 (Sum.inl α) (Sum.inl β) (Sum.inr b) (Sum.inr b'))`. Simplify using `only [LinearMap.sub_apply, Module.End.mul_apply, reduceCtorEq, if_false, sub_zero, LinearMap.zero_apply, sub_eq_zero] at h`. Rewrite using `[h, hu.2]`. Apply the tactic sequence `split_ifs <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem w_zero_stable_right_block (p q w : ℕ) (lam2 : Fin q → ℕ) (b b' : Fin q) (u : VQ p q w lam2) (hu : u ∈ W0 p q w lam2) :
     EV p q w lam2 (Sum.inr b) (Sum.inr b') u ∈ W0 p q w lam2 := by

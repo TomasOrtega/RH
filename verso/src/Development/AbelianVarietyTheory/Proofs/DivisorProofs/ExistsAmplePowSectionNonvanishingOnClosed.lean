@@ -12,11 +12,11 @@ open GlobalTheory GlobalTheory.ArInt GlobalTheory.CxPts GlobalTheory.Cartier Glo
 namespace GlobalTheory.HSAmp
 
 /- English proof (translation)
-Introduce `k _ X _ p D hX P hA T hT hfin`. Set `Z : Closeds X` to `⟨T, hT⟩`. Take `⟨hAff, hFin⟩` from `GlobalTheory.T.closedSubset_finiteFibres_isAffine_finite_int k X p D hX Z hfin`. Use `haveI := hAff`. Use `haveI := ReducedSubgroup.isReduced_subscheme_vanishingIdeal Z`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Set `i` to `(Scheme.IdealSheafData.vanishingIdeal Z).subschemeι`. Take `⟨n, s, hn, hs⟩` from `GlobalTheory.T.exists_nowhereZero_section_lineBundle_pow_finite_int _ hFin (P.L.B.pull i) (LB.isLB_pull hA.isLB i)`. Take `⟨N, u, hN, hu⟩` from `GlobalTheory.T.exists_ample_power_lift_of_nonvanishing_on_closed k X p D hX P.L.B hA _ i n s hn hs`. Take `⟨f, hf, hfu⟩` from `(GlobalTheory.T.lineBundlePow_sections_rationalFunctions_loci k X p P N).1 u`. Use `⟨N, hN, f, hf, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hfu]`. Introduce `x hx`. Apply `hu` to reduce the goal to its premises. Rewrite using `[Scheme.IdealSheafData.range_subschemeι, Scheme.IdealSheafData.coe_support_vanishingIdeal]`. Conclude with `hx`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_pow_section_nonvanishing_on_closed : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp k) (D : ℕ), IsArithVar p D → ∀ (P : Pair p), IsAmpleLB P.L.B → ∀ T : Set X, IsClosed T → (∀ ℓ : ℕ, (T ∩ fib X ℓ).Finite) → ∃ e : ℕ, 0 < e ∧ ∃ f ∈ P.H e 0, T ⊆ NV P e 0 f := by
   intro k _ X _ p D hX P hA T hT hfin

@@ -20,15 +20,15 @@ open scoped Classical
 namespace UpperTheory.Gal.InertialTypesAlt.G
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ _ _ _ σ hσ hp n hn P hP v w hv`. Set `μE : Measure (normOneGL E n)` to `Measure.haar`. Set `μF : Measure (normOneGL F n)` to `Measure.haar`. Take `⟨hw, s, hs, hloc⟩` from `locGalEx F E σ hp n v w hv`. Use `⟨s, hs, fun τ' hτ' => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨χ', ⟨z, hz'⟩, V, hV⟩` from `Dp.exTwist E n μE P hn`. Take `⟨hex, htw⟩` from `T.powTwist F E`. Take `⟨χ, hz⟩` from `(hex z).1`. Take `⟨-, -, h1⟩` from `htw z χ χ' hz hz'`. Take `⟨-, -, -, hconj, -⟩` from `h1 n hn`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨-, -, -, -, -, θ, hθ, hst⟩` from `T.carryLift F E σ hσ hp n hn μE μF`. Establish `hstab` using `(hst _ V hV).1 fun g => hconj P _ (hP g)`. Take `⟨⟨τ₁, hτ₁⟩, hall⟩` from `locTw E n hn P χ' w.1 τ' hτ'`. Take `⟨e, he⟩` from `hall τ₁ hτ₁`. Establish `hocc : Occurs μE V w.1 τ₁` using `(occursIff E n μE V hV.summand w.1 τ₁).2 ((Dp.locIff E n μE _ V hV w.1 τ₁).1 hτ₁)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨I₁, hI₁⟩` from `(hloc μE θ hθ).2 V τ₁ hV.summand hstab hocc`. Establish `hχ : ∀ g, chiAt n χ' w.1 (s g) = chiAt n χ' w.1 g` using `(matchPow F E σ hσ hp n hn z χ χ' hz hz' v w hw).1 (s : Gw n w.1 →* Gw n w.1) hs`. Establish `hne : ∀ g, chiAt n χ' w.1 g ≠ 0` using `fun g => Units.ne_zero _`. Use `⟨e.trans (I₁.trans e.symm), fun g x => ?_⟩` and prove the remaining obligations. Establish `h2 : e (τ'.ρ g x) = (chiAt n χ' w.1 g)⁻¹ • τ₁.ρ g (e x)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[← he g x, map_smul, smul_smul, inv_mul_cancel₀ (hne g), one_smul]`. Establish `h3 : τ₁.ρ (s g) (I₁ (e x)) = chiAt n χ' w.1 (s g) • e (τ'.ρ (s g) (e.symm (I₁ (e x))))`. Rewrite using `[← map_smul, he (s g) (e.symm (I₁ (e x))), e.apply_symm_apply]`. Simplify using `only [LinearEquiv.trans_apply]`. Rewrite using `[h2, map_smul, hI₁, h3, smul_smul, hχ g, inv_mul_cancel₀ (hne g), one_smul, e.symm_apply_apply]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem varEx : VarEx := by
   intro F E _ _ _ _ _ _ _ _ σ hσ hp n hn P hP v w hv

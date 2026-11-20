@@ -55,24 +55,24 @@ def IsEntryG (A : Amb X) (a₀ : ℕ) (b₀ c₀ : ℤ) (ha : 0 < a₀) (hd : 0 
   ∃ (n : ℕ) (T : Fin n → Term X p a b), y = ∑ k, (T k).val A ι ∧ ∀ k, (T k).Ok A a₀ b₀ c₀ ha hd lam hlam ι ϖ pE D e
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨0, Fin.elim0, by simp, fun k => k.elim0⟩`.
+Supply the required witnesses or components.
 -/
 theorem isEntryG_zero (A : Amb X) (a₀ : ℕ) (b₀ c₀ : ℤ) (ha : 0 < a₀) (hd : 0 < A.d) (lam : ℂ) (hlam : lam ≠ 0) (ι : ℂ ≃+* ℂ_[p])
     (ϖ : ℂ) (pE : 𝓞 X.E) (D : ℕ) (e : ℝ) (a b : ℕ) : IsEntryG A a₀ b₀ c₀ ha hd lam hlam ι ϖ pE D e a b 0 :=
   ⟨0, Fin.elim0, by simp, fun k => k.elim0⟩
 
 /- English proof (translation)
-The claim follows from `norm_pos_iff.mpr (by exact_mod_cast (Fact.out : p.Prime).ne_zero)`.
+A detailed English derivation is pending.
 -/
 theorem norm_p_pos : 0 < ‖(p : ℂ_[p])‖ :=
   norm_pos_iff.mpr (by exact_mod_cast (Fact.out : p.Prime).ne_zero)
 
 /- English proof (translation)
-Take `⟨hc, hs, hx, hK, hN, hN', hLa, hS, hc0, hcp, hxd, hm⟩` from `hT`. Establish `hj` using `hJ X A a b T.S T.N T.N' a₀ b₀ c₀ ha hd lam hlam p ι hp2 hpd hK hN hN' hLa ϖ pE hϖ hϖϖ hS T.c' T.x hc0 hcp hxd T.m`. Rewrite `hj` using `[hm]`. Establish `hp0` using `norm_p_pos (p := p)`. Establish `hval : ‖T.val A ι‖ ≤ ‖(p : ℂ_[p])‖ ^ e * ‖ι (A.σ₀ (A.jetK T.S T.N T.N' (p * T.c') T.x T.m))‖`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `Term.val`. Rewrite using `[norm_mul, norm_mul, norm_mul]`. Establish `h1 : ‖T.coef‖ * ‖ι (A.σ₀ T.scal)‖ ≤ 1` using `(mul_le_mul hc hs (norm_nonneg _) zero_le_one).trans (le_of_eq (one_mul 1))`. Combine the equalities or inequalities in the displayed calculation. Establish `hsplit : ‖(p : ℂ_[p])‖ ^ e * ‖(p : ℂ_[p])‖ ^ (((Fintype.card X.Tau * b * a : ℕ) : ℝ) - e) = ‖(p : ℂ_[p])‖ ^ (Fintype.card X.Tau * b * a)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Rewrite using `[← Real.rpow_add hp0, add_sub_cancel, Real.rpow_natCast]`. Establish `hR0 : 0 ≤ ‖(p : ℂ_[p])‖ ^ (((Fintype.card X.Tau * b * a : ℕ) : ℝ) - e)` using `Real.rpow_nonneg hp0.le _`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem term_bound (hJ : JetAtSplit) (A : Amb X) (a₀ : ℕ) (b₀ c₀ : ℤ) (ha : 0 < a₀) (hd : 0 < A.d) (lam : ℂ) (hlam : lam ≠ 0)
     (ι : ℂ ≃+* ℂ_[p]) (ϖ : ℂ) (pE : 𝓞 X.E) (hp2 : p ≠ 2) (hpd : ¬ p ∣ A.d) (hϖ : IsQInt A.d ϖ) (hϖϖ : ϖ * conj ϖ = (p : ℂ))
@@ -105,13 +105,13 @@ theorem term_bound (hJ : JetAtSplit) (A : Amb X) (a₀ : ℕ) (b₀ c₀ : ℤ) 
     _ ≤ 1 := hj
 
 /- English proof (translation)
-Take `⟨n, T, rfl, hT⟩` from `hy`. Establish `hp0` using `norm_p_pos (p := p)`. Establish `hϖ0 : conj ϖ ≠ 0`. Introduce `h0`. Establish `h1 : (p : ℂ) = 0` using `by rw [← hϖϖ, h0, mul_zero]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `(Fact.out : p.Prime).ne_zero (by exact_mod_cast h1)`. Establish `hι0 : 0 < ‖ι (conj ϖ)‖` using `norm_pos_iff.mpr (by simpa using hϖ0)`. Establish `hc0 : 0 < ‖ι (conj ϖ)‖ ^ D * ‖(p : ℂ_[p])‖ ^ (((Fintype.card X.Tau * b * a : ℕ) : ℝ) - e)` using `mul_pos (pow_pos hι0 _) (Real.rpow_pos_of_pos hp0 _)`. Establish `hterm : ∀ k, ‖(T k).val A ι‖ ≤ (‖ι (conj ϖ)‖ ^ D * ‖(p : ℂ_[p])‖ ^ (((Fintype.card X.Tau * b * a : ℕ) : ℝ) - e))⁻¹`. Introduce `k`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h` using `term_bound hJ A a₀ b₀ c₀ ha hd lam hlam ι ϖ pE hp2 hpd hϖ hϖϖ (hT k)`. Rewrite `h` using `[mul_assoc]`. Establish `h2` using `(le_div_iff₀ hc0).mpr h`. Rewrite `h2` using `[one_div]`. Then use the resulting hypothesis. Establish `hsum` using `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg (inv_nonneg.mpr hc0.le) (fun k (_ : k ∈ Finset.univ) => hterm k)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_assoc]`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem entry_bound (hJ : JetAtSplit) (A : Amb X) (a₀ : ℕ) (b₀ c₀ : ℤ) (ha : 0 < a₀) (hd : 0 < A.d) (lam : ℂ) (hlam : lam ≠ 0)
     (ι : ℂ ≃+* ℂ_[p]) (ϖ : ℂ) (pE : 𝓞 X.E) (hp2 : p ≠ 2) (hpd : ¬ p ∣ A.d) (hϖ : IsQInt A.d ϖ) (hϖϖ : ϖ * conj ϖ = (p : ℂ))
@@ -157,9 +157,9 @@ def EntryG (A : Amb X) (a₀ : ℕ) (b₀ c₀ : ℤ) (ha : 0 < a₀) (hd : 0 < 
     ∀ π j, IsEntryG A a₀ b₀ c₀ ha hd lam hlam ι ϖ pE (Dg j) (e j) (ab j).1 (ab j).2 (Y.e π j)
 
 /- English proof (translation)
-Take `⟨ι, Y, D, j1, hι, hY, hc, hr, hl, hu, hD, hgD, he⟩` from `h`. Use `⟨(ι : ℂ →+* ℂ_[g]).comp A.σ₀, Y, D, j1, hι, hY, hc, hr, hl, hu, hD, hgD, fun π j => ?_⟩` and prove the remaining obligations. Establish `hb` using `entry_bound hJ A a₀ b₀ c₀ ha hd lam hlam ι ϖ pE hg2 hgd hϖ hϖϖ (he π j)`. Establish `hpi : ((ι : ℂ →+* ℂ_[g]).comp A.σ₀) pb = ι (conj ϖ)`. Rewrite using `[RingHom.comp_apply, hpb]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[hpi]`. Conclude with `hb`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gAt_of_entryG (hJ : JetAtSplit) (A : Amb X) (a₀ : ℕ) (b₀ c₀ : ℤ) (ha : 0 < a₀) (hd : 0 < A.d) (lam : ℂ) (hlam : lam ≠ 0)
     (ϖ : ℂ) (pE : 𝓞 X.E) {Bs : DefBase X.K} {Df : DefSide Bs} (Dc : DefCols Df) (u : Dc.Mem) (t : Bs.Tup)
@@ -178,11 +178,11 @@ theorem gAt_of_entryG (hJ : JetAtSplit) (A : Amb X) (a₀ : ℕ) (b₀ c₀ : �
   exact hb
 
 /- English proof (translation)
-Establish `hpb0 : pb ≠ 0`. Introduce `h0`. Establish `h1 : conj ϖ = 0` using `by rw [← hpb, h0, map_zero]`. Establish `h2 : (g : ℂ) = 0` using `by rw [← hϖϖ, h1, mul_zero]`. Conclude with `(Fact.out : g.Prime).ne_zero (by exact_mod_cast h2)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hG` using `gAt_of_entryG hJ A a₀ b₀ c₀ ha hd lam hlam ϖ pE Dc u t Nu w g Dg ab e hg2 hgd hϖ hϖϖ pb hpb h`. Establish `hB` using `(Formalism.L2.AlgTh.column_bound_of_paths X.K Bs Df Dc u t Nu w g pb Dg (fun j => ((Fintype.card X.Tau * (ab j).2 * (ab j).1 : ℕ) : ℝ) - e j) hw hpb0 hG).2`. Use `hB Jx sx (fun l => pb ^ Dx l) cg E0 ?_` and prove the remaining obligations. Establish `hle` using `Formalism.L2.AlgTh.column_right_side_le X.K w g hw Bs.J pb cg Dg (fun j => ((Fintype.card X.Tau * (ab j).2 * (ab j).1 : ℕ) : ℝ) - e j) E0 hpb0 hcg hR`. Use `le_trans (le_of_eq ?_) hle` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Unfold `colRhs`. Simplify using `only [Formalism.AtG.PlacesLyingOver.vw_pow' w pb hpb0]`. Use `push_cast`. Simplify using `only [← Finset.sum_mul]`. Rewrite using `[hD]`.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem perBd_of_entryG (hJ : JetAtSplit) (A : Amb X) (a₀ : ℕ) (b₀ c₀ : ℤ) (ha : 0 < a₀) (hd : 0 < A.d) (lam : ℂ) (hlam : lam ≠ 0)
     (ϖ : ℂ) (pE : 𝓞 X.E) {Bs : DefBase X.K} {Df : DefSide Bs} (Dc : DefCols Df) (u : Dc.Mem) (t : Bs.Tup)
@@ -235,7 +235,7 @@ def EntryGRec (hX : X.Ok) {Bs : DefBase X.K} (Df : DefSide Bs) {P : LevFam X.E X
     Dg ab e
 
 /- English proof (translation)
-Introduce `i w hw`. Establish `: Fact (N.g i).Prime` using `⟨hg i⟩`. Conclude with `perBd_of_entryG hJ Am a₀ b₀ c₀ ha hd lam hlam (ϖ i) (pE i) (colFace hX Df1 Xg mu cst L hL hP Mem wd b hY (kerRec mu cst L wd b hY Am hK) hF ev) u (Pk.cols.μ w) Nu w (N.g i) Dg ab (e i) (hg2 i) (hgd i) (hϖ i) (hϖϖ i) _ (hpb i) hw (hE i w hw) N.lifts Dx (cg i) _ (hcg i) hD (hR i)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem val2AtG_concrete (hJ : JetAtSplit) (hX : X.Ok) {Bs : DefBase X.K} {Df0 Df1 : DefSide Bs} {P : LevFam X.E X.K Rk.r Pr.vGs}
     (Xg : Finset (G0 X.E Pr.vGs Rk.r → X.K)) {m2 : ℕ} {Gc : ChGlob X Rk.m} (mu : Bs.Tup → Tup X.F X.E X.K Sg)
@@ -271,7 +271,7 @@ theorem val2AtG_concrete (hJ : JetAtSplit) (hX : X.Ok) {Bs : DefBase X.K} {Df0 D
     (hg2 i) (hgd i) (hϖ i) (hϖϖ i) _ (hpb i) hw (hE i w hw) N.lifts Dx (cg i) _ (hcg i) hD (hR i)
 
 /- English proof (translation)
-The claim follows from `Formalism.L2.DIV.NumDatum.sum_lifts N (fun l => (Dx l : ℝ)) eJ`.
+A detailed English derivation is pending.
 -/
 theorem sumDeg_of_eJ (N : Formalism.L2.DIV.NumDatum) (Dx : ℕ → ℕ) {J : Type} [Fintype J] (eJ : J ≃ Fin N.R.m) :
     ∑ j, ((Dx ((eJ j).1 + 1) : ℕ) : ℝ) = ∑ l ∈ N.lifts, (Dx l : ℝ) :=

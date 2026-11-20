@@ -15,13 +15,13 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.NeronCurve
 
 /- English proof (translation)
-Introduce `k _ C _ hC K _ x hx G _ hG X _ _ _ i₀ _`. Take `⟨hs, -, hc⟩` from `hC`. Establish `: IsIntegral C` using `GlobalTheory.LieSemineg.isIntegral_curve hs hc`. Establish `: Smooth (strHom k C)` using `SmoothOfRelativeDimension.smooth 1 _`. Establish `: IsLocallyNoetherian C` using `LocallyOfFiniteType.isLocallyNoetherian (strHom k C)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hN : Geo.Tor.IsNormalScheme C` using `GlobalTheory.SmoothNormal.isNormalScheme_of_smoothOfRelativeDimension (Sp k) C (strHom k C) 1 (GlobalTheory.Published.SemiAbelianHomExtension.isNormalScheme_spec k)`. Take `⟨hxd, hxp⟩` from `hx`. Establish `hj : IsGenericPointHom x` using `IsGenericPointHom.of_isPreimmersion x`. Establish `hT` using `GlobalTheory.Diag.isSemiAbelian C X`. Take `⟨_, _⟩` from `GlobalTheory.ExtUnique.flat_and_isSeparated_of_isSemiAbelian (splitTorus C X) hT`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨-, _⟩` from `GlobalTheory.ExtUnique.flat_and_isSeparated_of_isSemiAbelian G hG`. Use `hT.quasiCompact` as an intermediate fact. Use `hG.smooth` as an intermediate fact. Establish `hφ` using `GlobalTheory.Diag.isGrpPullback X x`. Take `⟨V, hV, -, g, hg, w, h₁, h₂⟩` from `spread_hom_generic_of_isGrpPullback hj hφ (isGrpPullback_pullback G x) i₀`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `: IsDominant V.ι` using `⟨by rw [DenseRange, Scheme.Opens.range_ι]; exact V.isOpen.dense ⟨_, hV⟩⟩`. Take `⟨F, ⟨hF, hF'⟩, -⟩` from `GlobalTheory.homExtNormal C V V.ι hN inferInstance inferInstance (splitTorus C X) G hT hG g hg`. Use `⟨F, _, hF, hφ, ?_⟩` and prove the remaining obligations. Rewrite using `[← h₂, ← hF', GlobalTheory.ExtUnique.pullback_map_left_fst, ← h₁]`. Conclude with `Category.assoc _ _ _`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_torus_hom_extension : ∀ (k : Type) [Field k] (C : Scheme.{0}) [Algebra k Γ(C, ⊤)], IsCurve k C → ∀ (K : Type) [Field K] (x : Sp K ⟶ C), IsGen x →
     ∀ (G : Over C) [GrpObj G], IsSemiAbelian G → ∀ (X : Type) [AddCommGroup X] [Module.Free ℤ X] [Module.Finite ℤ X]

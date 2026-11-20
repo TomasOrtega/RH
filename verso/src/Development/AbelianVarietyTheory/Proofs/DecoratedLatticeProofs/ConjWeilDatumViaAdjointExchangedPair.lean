@@ -20,20 +20,20 @@ open GlobalTheory.IndefiniteRowSideFullHecke.ConjugateAdjointDagger GlobalTheory
 variable {D : D7}
 
 /- English proof (translation)
-Simplify using `only [dagger, adjO, giA, gA, adj, Matrix.mul_assoc]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem dagger_eq (S T : HSp D) (x : WO S T) : dagger S T x = adjO T S x := by
   simp only [dagger, adjO, giA, gA, adj, Matrix.mul_assoc]
   rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `y`. Simplify using `only [GlobalTheory.IndefiniteRowSideFullHecke.ConjugateAdjointDagger.cj, dag, dagger_eq]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem cj_dagger (S T : HSp D) (f : WO S T → ℂ) : cj (dagger T S) f = dag S T f := by
   funext y; simp only [GlobalTheory.IndefiniteRowSideFullHecke.ConjugateAdjointDagger.cj, dag, dagger_eq]
 
 /- English proof (translation)
-Use `show cj (dagger T S) (om (h, g) (cj (dagger S T) f)) = _`. Rewrite using `[cj_dagger, cj_dagger]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conjAdjoint_apply {S T : HSp D} (om : Rep S T) (g : GA D T) (h : GA D S) (f : WO T S → ℂ) :
     conjAdjoint om (g, h) f = dag S T (om (h, g) (dag T S f)) := by
@@ -41,9 +41,9 @@ theorem conjAdjoint_apply {S T : HSp D} (om : Rep S T) (g : GA D T) (h : GA D S)
   rw [cj_dagger, cj_dagger]
 
 /- English proof (translation)
-Take `⟨⟨η, hη⟩, hall⟩` from `hR`. Establish `hprod : y * Units.map (cA D).toMonoidHom y = idF D (Units.map (Algebra.norm (AF D.host.F) : AE D →* AF D.host.F) y)`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[GlobalTheory.Mem.EtaTilde.idF_norm]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `h1 : χ y * χ (Units.map (cA D).toMonoidHom y) = 1`. Rewrite using `[← map_mul, hprod, hall η hη, hη.2.2.1, one_pow]`. Conclude with `eq_inv_of_mul_eq_one_right h1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chi_conj {χ : (AE D)ˣ →* Circle} {n : ℕ} (hR : ResEta D χ n) (y : (AE D)ˣ) :
     χ (Units.map (cA D).toMonoidHom y) = (χ y)⁻¹ := by
@@ -58,14 +58,14 @@ theorem chi_conj {χ : (AE D)ˣ →* Circle} {n : ℕ} (hR : ResEta D χ n) (y :
   exact eq_inv_of_mul_eq_one_right h1
 
 /- English proof (translation)
-Take `⟨h1, h2, v, ε, hε, h3⟩` from `h`. Conclude with `⟨by rw [← map_mul, h1], by rw [cA_cA, mul_comm, h2], v, ε, hε, by rw [cA_cA, add_comm, h3]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem isSplitIdem_conj {e : AE D} (h : IsSplitIdem D e) : IsSplitIdem D (cA D e) := by
   obtain ⟨h1, h2, v, ε, hε, h3⟩ := h
   exact ⟨by rw [← map_mul, h1], by rw [cA_cA, mul_comm, h2], v, ε, hε, by rw [cA_cA, add_comm, h3]⟩
 
 /- English proof (translation)
-Introduce `i j`. Rewrite using `[cA_cA, add_comm]`. Conclude with `h i j`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem suppAt_conj {e : AE D} {V : HSp D} {g : GA D V} (h : SuppAt e V g) : SuppAt (cA D e) V g := by
   intro i j
@@ -73,7 +73,7 @@ theorem suppAt_conj {e : AE D} {V : HSp D} {g : GA D V} (h : SuppAt e V g) : Sup
   exact h i j
 
 /- English proof (translation)
-Establish `h1 : (giA V).det * (gA V).det = 1` using `by rw [← Matrix.det_mul, giA_mul_gA, Matrix.det_one]`. Rewrite using `[mt_inv, Matrix.det_mul, Matrix.det_mul, adj, Matrix.det_transpose, RingHom.map_det, RingHom.mapMatrix_apply]`. Take the linear combination `((mt V g).map (cA D)).det * h1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem det_inv_eq (V : HSp D) (g : GA D V) : (mt V g⁻¹).det = cA D (mt V g).det := by
   have h1 : (giA V).det * (gA V).det = 1 := by rw [← Matrix.det_mul, giA_mul_gA, Matrix.det_one]
@@ -81,9 +81,9 @@ theorem det_inv_eq (V : HSp D) (g : GA D V) : (mt V g⁻¹).det = cA D (mt V g).
   linear_combination ((mt V g).map (cA D)).det * h1
 
 /- English proof (translation)
-Establish `hd : (mt V g⁻¹).det * (mt V g).det = 1` using `by rw [← Matrix.det_mul, mt_inv_mul, Matrix.det_one]`. Establish `hz : ((x⁻¹ : (AE D)ˣ) : AE D) = e * (mt V g⁻¹).det + (1 - e)`. Apply `Units.inv_eq_of_mul_eq_one_left` to reduce the goal to its premises. Rewrite using `[hx]`. Take the linear combination `e * hd + ((mt V g⁻¹).det * (mt V g).det - (mt V g⁻¹).det - (mt V g).det + 1) * he`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Use `show cA D ((x⁻¹ : (AE D)ˣ) : AE D) = cA D e * (mt V g).det + (1 - cA D e)`. Rewrite using `[hz, map_add, map_mul, map_sub, map_one, det_inv_eq, cA_cA]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isDetAt_conj {e : AE D} (he : e * e = e) {V : HSp D} {g : GA D V} {x : (AE D)ˣ} (hx : IsDetAt e V g x) :
     IsDetAt (cA D e) V g (Units.map (cA D).toMonoidHom x⁻¹) := by
@@ -102,49 +102,43 @@ namespace GlobalTheory.ConjAdjWeil
 open GlobalTheory.IndefiniteRowSideFullHecke.ConjugateAdjointDagger GlobalTheory.PairLift
 
 /- English proof (translation)
-Introduce `D ψ S T χS χT om hw`. Establish `hS : AdjLaw ψ S T` using `GlobalTheory.AdjLawPf.adjLaw D ψ hw.std S T`. Establish `hT : AdjLaw ψ T S` using `GlobalTheory.AdjLawPf.adjLaw D ψ hw.std T S`. Establish `thB : ∀ f : WO T S → ℂ, IsThetaFunO ψ T S f → IsThetaFunO ψ S T (dag T S f)` using `hT.theta`. Establish `thA : ∀ f : WO S T → ℂ, IsThetaFunO ψ S T f → IsThetaFunO ψ T S (dag S T f)` using `hS.theta`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key : ∀ (g : GA D T) (h : GA D S) (f : WO T S → ℂ), conjAdjoint om (g, h) f = dag S T (om (h, g) (dag T S f))` using `fun g h f => conjAdjoint_apply om g h f`. Establish `dd : ∀ f : WO T S → ℂ, dag S T (dag T S f) = f` using `fun f => by`. Use function extensionality and compare the values at `y`. Simplify using `only [dag, hT.invol, Complex.conj_conj]`. Establish `d0 : adjO S T 0 = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `hS.add 0 0` as an intermediate fact. Rewrite `this` using `[add_zero]`. Conclude with `(add_eq_left.1 this.symm)`. Establish `d0' : adjO T S 0 = 0`. Use `hT.add 0 0` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[add_zero]`. Conclude with `(add_eq_left.1 this.symm)`. Use `⟨hw.std, hw.hecT, hw.hecS, hw.resT, hw.resS, ?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨g, h⟩ f hf`. Rewrite using `[key]`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `thA _ (hw.om_pres _ _ (thB f hf))`. Introduce `g h w₀ f hf`. Establish `e1 : dag T S (heisO ψ T S w₀ f) = heisO ψ S T (adjO S T w₀) (dag T S f)`. Rewrite using `[hT.Heisenberg₂, hT.invol]`. Rewrite using `[key, key, e1, hw.om_heis _ _ _ _ (thB f hf), ← hS.act, ← hS.Heisenberg₂]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `γ hγ γ' hγ' f hf`. Rewrite using `[key]`. Use `hw.om_aut γ' hγ' γ hγ (dag T S f) (thB f hf)` as an intermediate fact. Simplify using `only [dag] at this ⊢`. Rewrite using `[d0, this, d0', Complex.conj_conj]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Introduce `f hf w`. Establish `e : (fun p : GA D T × GA D S => conjAdjoint om p f w) = fun p => starRingEnd ℂ (om (Prod.swap p) (dag T S f) (adjO S T w))`. Use function extensionality and compare the values at `p`. Take `⟨g, h⟩` from `p`. Rewrite using `[key]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Both sides reduce to the same expression. Rewrite using `[e]`. Conclude with `Complex.continuous_conj.comp ((hw.om_cont _ (thB f hf) _).comp continuous_swap)`. Introduce `μ 𝓕 hμ h𝓕 p f hf`. Take `⟨g, h⟩` from `p`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : BorelSpace (WO S T) := ⟨rfl⟩`. Use `haveI : BorelSpace (WO T S) := ⟨rfl⟩`. Set `dE : WO T S ≃+ WO S T` to `{ toFun := adjO S T, invFun := adjO T S, left_inv := hT.invol, right_inv := hS.invol, map_add' := hS.add }`. Set `hE : WO S T ≃ₜ WO T S` to `{ toFun := adjO T S, invFun := adjO S T, left_inv := hS.invol, right_inv := hT.invol, continuous_toFun := hT.cont, continuous_invFun := hS.cont }`. Use `set ν : Measure (WO S T) := μ.map dE with hν`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hνH : ν.IsAddHaarMeasure` using `dE.isAddHaarMeasure_map μ hS.cont hT.cont`. Establish `hfm : Measurable (adjO T S)` using `hT.cont.measurable`. Establish `hdm : Measurable (adjO S T)` using `hS.cont.measurable`. Establish `hmp : MeasurePreserving (adjO T S) ν μ`. Use `⟨hfm, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hν, Measure.map_map hfm (show Measurable dE from hdm)]`. Establish `: adjO T S ∘ dE = id` using `funext fun w => hT.invol w`. Rewrite using `[this, Measure.map_id]`. Establish `hemb : MeasurableEmbedding (adjO T S)` using `hE.measurableEmbedding`. Establish `hfd : IsAddFundamentalDomain (ratL T S) (adjO T S ⁻¹' 𝓕) ν`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `h𝓕.preimage_of_equiv hmp.quasiMeasurePreserving (e := fun γ : ratL S T => (⟨adjO S T γ, (hS.rat γ).2 γ.2⟩ : ratL T S)) ⟨?_, ?_⟩ ?_` and prove the remaining obligations. Introduce `a b hab`. Use `congrArg (fun z : ratL T S => adjO T S (z : WO S T)) hab` as an intermediate fact. Simplify using `only [hT.invol] at this`. Conclude with `Subtype.ext this`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Introduce `b`. Use `⟨⟨adjO T S b, (hT.rat b).2 b.2⟩, Subtype.ext ?_⟩` and prove the remaining obligations. Conclude with `hS.invol b`. Introduce `γ x show adjO T S (adjO S T (γ : WO T S) + x) = (γ : WO T S) + adjO T S x`. Rewrite using `[hT.add, hT.invol]`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Combine the equalities or inequalities in the displayed calculation. Use `congr 1`. Use function extensionality and compare the values at `w`. Rewrite using `[key]`. Simplify using `[dag]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use `_ = ∫⁻ z in adjO T S ⁻¹' 𝓕, (fun z => ‖om (h, g) (dag T S f) z‖ₑ ^ 2) (adjO S T (adjO T S z)) ∂ν := (hmp.setLIntegral_comp_preimage_emb hemb (fun w => (fun z => ‖om (h, g) (dag T S f) z‖ₑ ^ 2) (adjO S T w)) 𝓕).symm`. Use `_ = ∫⁻ z in adjO T S ⁻¹' 𝓕, ‖om (h, g) (dag T S f) z‖ₑ ^ 2 ∂ν := by simp only [hS.invol]`. Use `_ = ∫⁻ z in adjO T S ⁻¹' 𝓕, ‖dag T S f z‖ₑ ^ 2 ∂ν := hw.om_unit ν _ hνH hfd (h, g) _ (thB f hf)`. Use `_ = ∫⁻ z in adjO T S ⁻¹' 𝓕, (fun w => ‖f w‖ₑ ^ 2) (adjO T S z) ∂ν := by`. Use `congr 1`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `z`. Simplify using `[dag]`. Use `_ = ∫⁻ w in 𝓕, ‖f w‖ₑ ^ 2 ∂μ := hmp.setLIntegral_comp_preimage_emb hemb (fun w => ‖f w‖ₑ ^ 2) 𝓕`. Introduce `e he g h hsg hsh x y hx hy`. Take `⟨r, hr, hℓ⟩` from `hw.om_split (cA D e) (isSplitIdem_conj he) h g (suppAt_conj hsh) (suppAt_conj hsg) _ _ (isDetAt_conj he.1 hy) (isDetAt_conj he.1 hx)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨r, hr, fun ℓ hinv f hf => ?_⟩` and prove the remaining obligations. Establish `dadd : ∀ a b : WO S T → ℂ, dag S T (a + b) = dag S T a + dag S T b` using `fun a b => by`. Use function extensionality and compare the values at `z`. Simplify using `[dag]`. Establish `dsmul : ∀ (c : ℂ) (a : WO S T → ℂ), dag S T (c • a) = starRingEnd ℂ c • dag S T a` using `fun c a => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `z`. Simplify using `[dag]`. Set `ℓ' : (WO S T → ℂ) →ₗ[ℂ] ℂ` to `{ toFun := fun F => starRingEnd ℂ (ℓ (dag S T F)) map_add' := fun a b => by simp only [dadd, map_add] map_smul' := fun c a => by`. Simplify using `only [dsmul, map_smul, smul_eq_mul, map_mul, RingHom.id_apply, Complex.conj_conj] }`. Establish `hinv' : ∀ u : WO S T, (∀ i j, cA D (cA D e) * u i j = u i j) → ∀ F, IsThetaFunO ψ S T F → ℓ' (heisO ψ S T u F) = ℓ' F`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `u hu F hF`. Establish `hu' : IsHalf e u` using `fun i j => by have := hu i j; rwa [cA_cA] at this`. Establish `e2 : dag S T (heisO ψ S T u F) = heisO ψ T S (adjO T S u) (dag S T F)` using `by rw [hS.Heisenberg₂, hS.invol]`. Use `show starRingEnd ℂ (ℓ (dag S T (heisO ψ S T u F))) = starRingEnd ℂ (ℓ (dag S T F))`. Rewrite using `[e2, hinv _ (hT.half e u hu') _ (thA F hF)]`.
-
-Establish `main` using `hℓ ℓ' hinv' (dag T S f) (thB f hf)`. Establish `m2 : starRingEnd ℂ (ℓ (dag S T (om (h, g) (dag T S f)))) = (r : ℂ) * (splitFacO χS χT (Units.map (cA D).toMonoidHom y⁻¹) (Units.map (cA D).toMonoidHom x⁻¹) : ℂ) * starRingEnd ℂ (ℓ f)`. Use `main` as an intermediate fact. Simplify using `only [ℓ', LinearMap.coe_mk, AddHom.coe_mk, dd] at this`. Conclude with `this`.
-
-Establish `hconj` using `congrArg (starRingEnd ℂ) m2`. Rewrite `hconj` using `[Complex.conj_conj]`. Establish `hfac : (splitFacO χS χT (Units.map (cA D).toMonoidHom y⁻¹) (Units.map (cA D).toMonoidHom x⁻¹))⁻¹ = splitFacO χT χS x y`. Unfold `splitFacO`. Rewrite using `[chi_conj hw.resT, chi_conj hw.resS, map_inv, map_inv, inv_inv, inv_inv, _root_.mul_inv_rev, inv_inv]`.
-
-Rewrite using `[key, hconj, map_mul, map_mul, Complex.conj_conj, Complex.conj_ofReal, ← Circle.coe_inv_eq_conj, hfac]`.
+A detailed English derivation is pending.
 -/
 theorem isWeilDatumO_conjAdjoint : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (χS χT : (AE D)ˣ →* Circle)
     (om : Om S T), IsWeilDatumO ψ S T χS χT om → IsWeilDatumO ψ T S χT χS (GlobalTheory.IndefiniteRowSideFullHecke.ConjugateAdjointDagger.conjAdjoint om) := by

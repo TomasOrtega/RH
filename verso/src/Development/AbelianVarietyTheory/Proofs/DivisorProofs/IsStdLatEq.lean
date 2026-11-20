@@ -22,20 +22,20 @@ abbrev botBeta {L : LevCh D T} {sc : Consts} (G : GridData L sc) (i j : Fin D.R.
   G.ch.chi (D.R.m - i) * L.eta ^ (rankV D i j % 2)
 
 /- English proof (translation)
-Use extensionality with `y`. Rewrite using `[h.2.1, h'.2.1]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 -/
 theorem isStd_lat_eq {V : HSp D} {r r' : GlobalTheory.IndefiniteRowSideFullHecke.UnitCharTriangle.Rig V} (h : r.IsStd) (h' : r'.IsStd) : r.Λ = r'.Λ := by
   ext y
   rw [h.2.1, h'.2.1]
 
 /- English proof (translation)
-The claim follows from `funext fun τ => (h.2.2 τ).1.trans (h'.2.2 τ).1.symm`.
+A detailed English derivation is pending.
 -/
 theorem isStd_s_eq {V : HSp D} {r r' : GlobalTheory.IndefiniteRowSideFullHecke.UnitCharTriangle.Rig V} (h : r.IsStd) (h' : r'.IsStd) : r.s = r'.s :=
   funext fun τ => (h.2.2 τ).1.trans (h'.2.2 τ).1.symm
 
 /- English proof (translation)
-The claim follows from `funext fun τ => (h.2.2 τ).2.trans (h'.2.2 τ).2.symm`.
+A detailed English derivation is pending.
 -/
 theorem isStd_B_eq {V : HSp D} {r r' : GlobalTheory.IndefiniteRowSideFullHecke.UnitCharTriangle.Rig V} (h : r.IsStd) (h' : r'.IsStd) : r.B = r'.B :=
   funext fun τ => (h.2.2 τ).2.trans (h'.2.2 τ).2.symm

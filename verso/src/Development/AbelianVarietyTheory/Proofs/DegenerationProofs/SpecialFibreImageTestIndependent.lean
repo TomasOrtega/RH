@@ -27,7 +27,7 @@ variable {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω] {S : ThetaSys o Ω
   {U₀ : M.Z.Opens} {EE : M.Lat S.J} {Q : Clos ρ M U₀ EE} {p : ℕ} [Fact p.Prime]
 
 /- English proof (translation)
-Establish `h` using `S.unit.map (Spec.preimage (rPt p ≫ y ≫ M.s)).hom`. Rewrite `h` using `[map_natCast]`. Conclude with `h.ne_zero`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem level_ne_zero (S : ThetaSys o Ω) (y : Sp (OO p) ⟶ M.Z) : ((S.r * S.N : ℕ) : kb p) ≠ 0 := by
   have h := S.unit.map (Spec.preimage (rPt p ≫ y ≫ M.s)).hom
@@ -40,7 +40,7 @@ abbrev mb (tm : Q.TMap t c) : Matrix S.J S.J (kb p) :=
   tm.m.map fun a => IsLocalRing.residue (OO p) (t.u.j a)
 
 /- English proof (translation)
-Establish `h` using `tm.unit.map ((IsLocalRing.residue (OO p)).comp t.u.j)`. Rewrite `h` using `[RingHom.map_det]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUnit_det_mb (tm : Q.TMap t c) : IsUnit (mb tm).det := by
   have h := tm.unit.map ((IsLocalRing.residue (OO p)).comp t.u.j)
@@ -48,7 +48,7 @@ theorem isUnit_det_mb (tm : Q.TMap t c) : IsUnit (mb tm).det := by
   exact h
 
 /- English proof (translation)
-Establish `h1 : (x₀ ≫ t.mod.r) ≫ t.u.G.hom = rPt p ≫ spMap t.u.j`. Rewrite using `[Category.assoc, t.mod.cart.1.w, ← Category.assoc, hx]`. Conclude with `Category.id_comp _`. Use `⟨h1, tm.crd (kb p) ((IsLocalRing.residue (OO p)).comp t.u.j) _ v (h1.trans ?_) (t.mod.red (Over.homMk x₀ hx) v hv)⟩` and prove the remaining obligations. Conclude with `(Spec.map_comp _ _).symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem crd_image (tm : Q.TMap t c) (x₀ : Sp (kb p) ⟶ t.mod.Φ.G.left) (hx : x₀ ≫ t.mod.Φ.G.hom = 𝟙 _)
     (v : S.J → kb p) (hv : Crd (t.mod.Φ.H 1) t.mod.F x₀ v) :
@@ -62,20 +62,20 @@ theorem crd_image (tm : Q.TMap t c) (x₀ : Sp (kb p) ⟶ t.mod.Φ.G.left) (hx :
   exact (Spec.map_comp _ _).symm
 
 /- English proof (translation)
-Rewrite using `[Category.assoc, tm.f_over, ← Category.assoc, h, Category.assoc, c.fac]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem image_over (tm : Q.TMap t c) (c' : Sp (kb p) ⟶ t.u.G.left) (h : c' ≫ t.u.G.hom = rPt p ≫ spMap t.u.j) :
     (c' ≫ tm.f) ≫ (Q.P.hom ⁻¹ᵁ Q.W tm.l).ι ≫ Q.P.hom = rPt p ≫ y := by
   rw [Category.assoc, tm.f_over, ← Category.assoc, h, Category.assoc, c.fac]
 
 /- English proof (translation)
-Use `haveI : IsAlgClosed (kb p) := (GlobalTheory.ZJ.kb_isAlgClosed_and_conj p).1`. Establish `hsm : SmoothOfRelativeDimension S.g t.mod.Φ.G.hom` using `(smoothOfRelativeDimension_isStableUnderBaseChange _).of_isPullback t.mod.cart.1 t.mod.smooth`. Establish `hbig : Big S.g S.N (S.r * S.N)` using `⟨(GlobalTheory.T.uniformisedTest_dimensions_and_split_fibre hL o Ω S ρ p y₀ t.u).2.2.2.1, hS.1, hS.2.1⟩`. Establish `key` using `GlobalTheory.T.mem_torusExtensionCone_iff_smallDegreeForms hL.1 hL.2.1 (kb p) t.mod.Φ S.g S.N (S.r * S.N) _ S.J _ t.mod.F t.mod.pol hbig t.mod.good t.mod.dim (level_ne_zero S y) hsm (fun d hd => (Mod.hilb_special_le_generic p _ _ _ _ _ 0 _ _ _ _ _ _ t.mod d).trans (GlobalTheory.T …`. Take `⟨T₁, T₂⟩` from `GlobalTheory.T.torsionPoints_specialFibre_supportCoordinates hL o Ω S ρ M U₀ EE hB Q p y y₀ t c tm hS`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hinv : ∀ w, (mb tm)⁻¹.mulVec ((mb tm).mulVec w) = w` using `fun w => by`. Rewrite using `[Matrix.mulVec_mulVec, Matrix.nonsing_inv_mul _ (isUnit_det_mb tm), Matrix.one_mulVec]`. Use `key.trans (and_congr (exists_congr fun i => and_congr (map_eq_zero_iff _ t.mod.xe.symm.injective) Iff.rfl) ⟨fun H d Pf hd hPf hT => ?_, fun H d Pf hd hPf hT => ?_⟩)` and prove the remaining obligations. Take `⟨F, hF, hev⟩` from `InFibChart.exists_subst (mb tm) hPf`. Rewrite using `[← hev]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `H d F hd hF fun x hx => ?_` and prove the remaining obligations. Take `⟨w, hw, hw'⟩` from `T₁ x hx`. Conclude with `⟨w, hw, (hev w).trans (hT _ hw')⟩`. Take `⟨F, hF, hev⟩` from `InFibChart.exists_subst (mb tm)⁻¹ hPf`. Rewrite using `[← hinv v, ← hev]`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `H d F hd hF fun w hw => ?_` and prove the remaining obligations. Take `⟨x, w₀, hx, hw₀, rfl⟩` from `T₂ w hw`. Take `⟨w₁, hw₁, h0⟩` from `hT x hx`. Take `⟨u, hu⟩` from `CrdCalc.crd_unique hw₁ hw₀`. Rewrite using `[hev, hinv, show w₀ = fun j => (u : kb p) * w₁ j from funext hu, InFibChart.eval_scale _ _ hPf, h0, mul_zero]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_cone_iff [ArithBase o Ω] (hL : GlobalTheory.UT.LL) (hB : BaseFacts S M U₀ EE) (tm : Q.TMap t c) (hS : S.Big)
     (v : S.J → kb p) :
@@ -110,21 +110,19 @@ theorem mem_cone_iff [ArithBase o Ω] (hL : GlobalTheory.UT.LL) (hB : BaseFacts 
     rw [hev, hinv, show w₀ = fun j => (u : kb p) * w₁ j from funext hu, InFibChart.eval_scale _ _ hPf, h0, mul_zero]
 
 /- English proof (translation)
-Introduce `hL o Ω _ _ _ _ S ρ M U₀ EE hB Q p _ y y₀ t c tm hS x hx`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨c', hc', rfl⟩`. Set `x₀ : Sp (kb p) ⟶ t.mod.Φ.G.left` to `t.mod.cart.1.lift c' (𝟙 _) (hc'.trans (Category.id_comp _).symm)`. Establish `h₁ : x₀ ≫ t.mod.r = c'` using `t.mod.cart.1.lift_fst _ _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `h₂ : x₀ ≫ t.mod.Φ.G.hom = 𝟙 _` using `t.mod.cart.1.lift_snd _ _ _`. Take `⟨v, hv⟩` from `CrdCalc.crd_exists (t.mod.Φ.H_isLB 1) t.mod.F x₀`. Establish `hcr` using `(crd_image tm x₀ h₂ v hv).2`. Rewrite `hcr` using `[h₁]`. Establish `hov` using `image_over tm c' hc'`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Take `⟨k₁, k₂⟩` from `(mem_cone_iff hL hB tm hS v).1 ⟨x₀, h₂, hv⟩`. Rewrite using `[← Category.assoc]`. Use `⟨(GlobalTheory.T.le_preimage_openPart_iff_testCoordinates o Ω S ρ M U₀ EE hB Q p y y₀ t c tm hS _ v hov hcr).2 k₁, InFibChart.inFib_of_chart o Ω S ρ M U₀ EE hB Q _ tm.l _ _ hcr ?_⟩` and prove the remaining obligations. Rewrite using `[hov]`. Conclude with `k₂`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨hG, hF⟩`. Choose the witnesses or unpack the hypotheses as in `⟨x', rfl⟩ : ∃ x' : Sp (kb p) ⟶ (Q.P.hom ⁻¹ᵁ Q.W tm.l).toScheme, x' ≫ (Q.P.hom ⁻¹ᵁ Q.W tm.l).ι = x := by`. Use `⟨IsOpenImmersion.lift _ x ?_, IsOpenImmersion.lift_fac _ _ _⟩` and prove the remaining obligations. Rewrite using `[Scheme.Opens.range_ι]`. Introduce and unpack `_ ⟨w, rfl⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `e : Q.P.hom (x w) = y (rPt p w)` using `(Scheme.Hom.comp_apply _ _ _).symm.trans ((congrArg (fun f : Sp (kb p) ⟶ M.Z => f w) hx).trans (Scheme.Hom.comp_apply _ _ _))`. Use `show Q.P.hom (x w) ∈ Q.W tm.l`. Rewrite using `[e]`. Conclude with `((IsLocalRing.specializes_closedPoint (rPt p w)).map y.continuous).mem_open (Q.W tm.l).isOpen tm.mem`. Establish `hLB : (Q.O1.pull (Q.P.hom ⁻¹ᵁ Q.W tm.l).ι).IsLB` using `LB.isLB_pull Q.isLB _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨w, hw⟩` from `CrdCalc.crd_exists hLB (Q.σ tm.l) x'`. Take `⟨v, rfl⟩ : ∃ v, (mb tm).mulVec v = w` from `⟨(mb tm)⁻¹.mulVec w, by`. Rewrite using `[Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv _ (isUnit_det_mb tm), Matrix.one_mulVec]⟩`. Establish `hx' : x' ≫ (Q.P.hom ⁻¹ᵁ Q.W tm.l).ι ≫ Q.P.hom = rPt p ≫ y` using `(Category.assoc _ _ _).symm.trans hx`. Establish `k₂` using `hF tm.l x' _ rfl hw`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite `k₂` using `[hx]`. Take `⟨x₀, h₂, hv⟩` from `(mem_cone_iff hL hB tm hS v).2 ⟨(GlobalTheory.T.le_preimage_openPart_iff_testCoordinates o Ω S ρ M U₀ EE hB Q p y y₀ t c tm hS x' v hx' hw).1 hG, k₂⟩`. Take `⟨h₁, hcr⟩` from `crd_image tm x₀ h₂ v hv`. Use `⟨x₀ ≫ t.mod.r, h₁, ?_⟩` and prove the remaining obligations. Establish `e : ((x₀ ≫ t.mod.r) ≫ tm.f) ≫ (Q.P.hom ∣_ Q.W tm.l) = x' ≫ (Q.P.hom ∣_ Q.W tm.l)`.
-
-Rewrite using `[← cancel_mono (Q.W tm.l).ι, Category.assoc, Category.assoc x', morphismRestrict_ι, hx']`. Conclude with `image_over tm _ h₁`. Rewrite using `[← Category.assoc, ImmSep.eq_of_crd_eq _ _ _ _ _ _ _ hLB (Q.imm tm.l) (kb p) _ x' _ (by rw [← Category.assoc, e, Category.assoc]) hcr hw]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem image_special_fibre_iff : GlobalTheory.UT.LL → ∀ (o Ω : Type) [CommRing o] [Field Ω] [Algebra o Ω] [ArithBase o Ω] (S : ThetaSys o Ω) (ρ : S.Real) (M : RatModel o Ω) (U₀ : M.Z.Opens) (EE : M.Lat S.J), BaseFacts S M U₀ EE → ∀ (Q : Clos ρ M U₀ EE) (p : ℕ) [Fact p.Prime] (y : Sp (OO p) ⟶ M.Z) (y₀ : S.R →+* PadicAlgCl p) (t : ρ.GeoTest p y₀) (c : Q.Fac y t.u) (tm : Q.TMap t c), S.Big → ∀ x : Sp (kb p) ⟶ Q.P.left, x ≫ Q.P.hom = rPt p ≫ y → ((∃ c' : Sp (kb p) ⟶ t.u.G.left, c' ≫ t.u.G.hom = rPt p ≫ spMap t.u.j ∧ c' ≫ tm.f ≫ (Q.P.hom ⁻¹ᵁ Q.W tm.l).ι = x) ↔ (⊤ ≤ x ⁻¹ᵁ Q.G ∧ Q.InFib x)) := by
   intro hL o Ω _ _ _ _ S ρ M U₀ EE hB Q p _ y y₀ t c tm hS x hx

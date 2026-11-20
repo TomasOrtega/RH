@@ -17,9 +17,9 @@ open GlobalTheory.BCT
 variable {G H : Type} [Group G] [TopologicalSpace G] [Group H] [TopologicalSpace H]
 
 /- English proof (translation)
-Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce `hy`. Use `⟨e.symm y, (h _).2 (by simpa using hy), by simp⟩` and prove the remaining obligations. Introduce and unpack `⟨g, hg, rfl⟩`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Conclude with `(h g).1 hg`.
+A detailed English derivation is pending.
 -/
 theorem map_eq_of_mem (e : G ≃ₜ* H) (A : Subgroup G) (A' : Subgroup H) (h : ∀ g, g ∈ A ↔ e g ∈ A') :
     A' = A.map (e : G →* H) := by
@@ -31,13 +31,13 @@ theorem map_eq_of_mem (e : G ≃ₜ* H) (A : Subgroup G) (A' : Subgroup H) (h : 
     exact (h g).1 hg
 
 /- English proof (translation)
-Unfold `cptPart`. Rewrite using `[MonoidHom.map_closure]`. Use `congr 1`. Establish `hz : ∀ t, (Subgroup.zpowers ((e : G →* H) t) : Set H) = e.toHomeomorph '' (Subgroup.zpowers t : Set G)`. Introduce `t`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← MonoidHom.map_zpowers, Subgroup.coe_map]`. Both sides reduce to the same expression. Establish `hk : ∀ t, IsCompact (closure (Subgroup.zpowers ((e : G →* H) t) : Set H)) ↔ IsCompact (closure (Subgroup.zpowers t : Set G))`. Introduce `t`. Rewrite using `[hz, ← Homeomorph.image_closure, Homeomorph.isCompact_image]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨t, ht, rfl⟩, hc⟩`. Conclude with `⟨t, ⟨ht, (hk t).1 hc⟩, rfl⟩`. Introduce and unpack `⟨t, ⟨ht, hc⟩, rfl⟩`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨⟨t, ht, rfl⟩, (hk t).2 hc⟩`.
+Supply the required witnesses or components.
 -/
 theorem cptPart_map_equiv (e : G ≃ₜ* H) (T : Subgroup G) :
     cptPart (T.map (e : G →* H)) = (cptPart T).map (e : G →* H) := by
@@ -68,7 +68,7 @@ open GlobalTheory.BCT GlobalTheory.TwOrbConj
 variable {G H : Type} [Group G] [TopologicalSpace G] [Group H] [TopologicalSpace H]
 
 /- English proof (translation)
-Rewrite using `[mem_twCent, mem_twCent, ← he, ← map_mul, ← map_mul]`. Conclude with `e.injective.eq_iff.symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem twCent_mem (e : G ≃ₜ* H) (θ : G →* G) (θ' : H →* H) (he : ∀ g, e (θ g) = θ' (e g)) (δ g : G) :
     g ∈ twCent θ δ ↔ e g ∈ twCent θ' (e δ) := by
@@ -76,13 +76,13 @@ theorem twCent_mem (e : G ≃ₜ* H) (θ : G →* G) (θ' : H →* H) (he : ∀ 
   exact e.injective.eq_iff.symm
 
 /- English proof (translation)
-Establish `hT : twCent θ' (e δ) = (twCent θ δ).map (e : G →* H)` using `map_eq_of_mem e _ _ (twCent_mem e θ θ' he δ)`. Establish `hK' : K' = K.map (e : G →* H)` using `map_eq_of_mem e _ _ hK`. Substitute `hK'` using the available equality. Unfold `summand`. Use `congr 1`.
+Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments.
 
-Establish `h1 : (K.map (e : G →* H)).map (MulAut.conj (e y)).toMonoidHom = (K.map (MulAut.conj y).toMonoidHom).map (e : G →* H)`. Rewrite using `[Subgroup.map_map, Subgroup.map_map]`. Use `congr 1`. Use extensionality with `x`. Simplify using `[MulAut.conj_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[h1, hT, ← Subgroup.map_inf_eq _ _ _ e.injective, cptPart_map_equiv, Subgroup.relIndex_map_map_of_injective _ _ e.injective]`. Set `ψ : K ≃* (K.map (e : G →* H))` to `e.toMulEquiv.subgroupMap K`. Rewrite using `[← GlobalTheory.BCT.OrbProd.avg_comp_equiv ψ]`. Use `congr 1`. Use function extensionality and compare the values at `k`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [Function.comp_apply]`. Rewrite using `[← hf]`. Use `congr 1`. Use `show (e y * e k.1)⁻¹ * e δ * θ' (e y * e k.1) = _`. Rewrite using `[← map_mul, ← he, ← map_inv, ← map_mul, ← map_mul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem summand_map (e : G ≃ₜ* H) (θ : G →* G) (θ' : H →* H) (K : Subgroup G) (K' : Subgroup H) (δ : G)
     (f : G → ℂ) (f' : H → ℂ) (he : ∀ g, e (θ g) = θ' (e g)) (hK : ∀ g, g ∈ K ↔ e g ∈ K')
@@ -125,13 +125,13 @@ def dcMap (e : G ≃ₜ* H) (T K : Subgroup G) (T' K' : Subgroup H) :
   fun q => DoubleCoset.mk T' K' (e (Quotient.out q))
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `q1 q2 h`. Take `⟨a, ha, b, hb, hab⟩` from `(DoubleCoset.eq _ _ _ _).1 h`. Rewrite using `[← DoubleCoset.out_eq' T K q1, ← DoubleCoset.out_eq' T K q2, DoubleCoset.eq]`. Use `⟨e.symm a, (hT _).2 (by simpa using ha), e.symm b, (hK _).2 (by simpa using hb), ?_⟩` and prove the remaining obligations.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Apply `e.injective` to reduce the goal to its premises. Simplify using `only [map_mul, ContinuousMulEquiv.apply_symm_apply]`. Conclude with `hab`. Introduce `q'`. Use `⟨DoubleCoset.mk T K (e.symm (Quotient.out q')), ?_⟩` and prove the remaining obligations.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨a, b, ha, hb, hab⟩` from `DoubleCoset.mk_out_eq_mul T K (e.symm (Quotient.out q'))`. Unfold `dcMap`. Rewrite using `[hab]`. Use `conv_rhs => rw [← DoubleCoset.out_eq' T' K' q']`. Rewrite using `[DoubleCoset.eq]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `⟨(e a)⁻¹, T'.inv_mem ((hT a).1 ha), (e b)⁻¹, K'.inv_mem ((hK b).1 hb), ?_⟩` and prove the remaining obligations. Simplify using `only [map_mul, ContinuousMulEquiv.apply_symm_apply]`. Use `group`.
+A detailed English derivation is pending.
 -/
 theorem dcMap_bij (e : G ≃ₜ* H) (T K : Subgroup G) (T' K' : Subgroup H) (hT : ∀ g, g ∈ T ↔ e g ∈ T')
     (hK : ∀ g, g ∈ K ↔ e g ∈ K') : Function.Bijective (dcMap e T K T' K') := by
@@ -161,9 +161,9 @@ namespace GlobalTheory.EulerTw.Transport
 open GlobalTheory.BCT GlobalTheory.TwOrbConj
 
 /- English proof (translation)
-Introduce `G H _ _ _ _ _ _ e θ θ' K K' δ f f' he hK hf`. Establish `hT` using `twCent_mem e θ θ' he δ`. Rewrite using `[twOrb_eq, twOrb_eq, ← finsum_comp_equiv (Equiv.ofBijective _ (dcMap_bij e (twCent θ δ) K (twCent θ' (e δ)) K' hT hK))]`. Use `finsum_congr fun q => ?_` and prove the remaining obligations. Take `⟨a, b, ha, hb, hab⟩` from `DoubleCoset.mk_out_eq_mul (twCent θ' (e δ)) K' (e (Quotient.out q))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `e2 : Quotient.out (Equiv.ofBijective _ (dcMap_bij e (twCent θ δ) K (twCent θ' (e δ)) K' hT hK) q) = a * e (Quotient.out q) * b` using `hab`. Rewrite using `[e2, summand_rep θ' K' (e δ) f' _ ha hb, summand_map e θ θ' K K' δ f f' he hK hf]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem twOrb_transport : ∀ (G H : Type) [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [Group H] [TopologicalSpace H] [IsTopologicalGroup H] (e : G ≃ₜ* H) (θ : G →* G) (θ' : H →* H) (K : Subgroup G) (K' : Subgroup H) (δ : G) (f : G → ℂ) (f' : H → ℂ), (∀ g, e (θ g) = θ' (e g)) → (∀ g, g ∈ K ↔ e g ∈ K') → (∀ g, f' (e g) = f g) → twOrb θ K δ f = twOrb θ' K' (e δ) f' := by
   intro G H _ _ _ _ _ _ e θ θ' K K' δ f f' he hK hf
@@ -183,13 +183,13 @@ namespace GlobalTheory.EulerTw.Inert
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ}
 
 /- English proof (translation)
-The claim follows from `(GlobalTheory.ConjAtPlace.conjSrc_eq_iff u).2 hu`.
+A detailed English derivation is pending.
 -/
 theorem cPl_eq {u : Pl E} (hu : ¬ IsSplitAt u) : cPl E u = u :=
   (GlobalTheory.ConjAtPlace.conjSrc_eq_iff u).2 hu
 
 /- English proof (translation)
-Simplify using `[orb, cPl_eq hu]`.
+Simplify using the standard rewrite rules.
 -/
 theorem orb_eq {u : Pl E} (hu : ¬ IsSplitAt u) : orb E u = {u} := by
   simp [orb, cPl_eq hu]
@@ -200,7 +200,7 @@ Both sides reduce to the same expression.
 theorem pLoc_idem (T : Finset (Pl E)) (w : Pl E) : pLoc E w (idem E T) = if w ∈ T then 1 else 0 := rfl
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[prjG, prjM, pLoc_idem, hw, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp [map_sub, pLoc_idem, hw]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem pLoc_prjG_of_mem (T : Finset (Pl E)) (w : Pl E) (hw : w ∈ T) (x : GL (Fin n) (Af E)) :
     GeneralLinearGroup.map (pLoc E w) (prjG E n T x) = GeneralLinearGroup.map (pLoc E w) x := by
@@ -209,7 +209,7 @@ theorem pLoc_prjG_of_mem (T : Finset (Pl E)) (w : Pl E) (hw : w ∈ T) (x : GL (
   split_ifs <;> simp [map_sub, pLoc_idem, hw]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[prjG, prjM, pLoc_idem, hw, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp [map_sub, pLoc_idem, hw]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem pLoc_prjG_of_not_mem (T : Finset (Pl E)) (w : Pl E) (hw : w ∉ T) (x : GL (Fin n) (Af E)) :
     GeneralLinearGroup.map (pLoc E w) (prjG E n T x) = 1 := by
@@ -224,7 +224,7 @@ namespace GlobalTheory.EulerTw.Inert
 open GlobalTheory.EulerTw
 
 /- English proof (translation)
-Take `⟨x, hx⟩` from `g.2`. Rewrite using `[← hx]`. Conclude with `pLoc_prjG_of_not_mem _ _ hw x`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gam_one {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ} (u w : Pl E) (hw : w ∉ orb E u)
     (g : Gam E n u) : GeneralLinearGroup.map (pLoc E w) g.1 = 1 := by
@@ -233,23 +233,21 @@ theorem gam_one {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ} (u 
   exact pLoc_prjG_of_not_mem _ _ hw x
 
 /- English proof (translation)
-Introduce `E _ _ _ hU n S hS K' hK' φ hφ δ hδ u huS hu`. Take `⟨e, he⟩` from `GlobalTheory.T.nonsplit_unitary_group_iso_gl E n u hu`. Establish `hcj` using `((GlobalTheory.ConjAtPlace.main E hU u).2.2.2.1 hu).2.2.1`. Establish `hmem : u ∈ orb E u` using `by simp [orb]`. Rewrite using `[GlobalTheory.EulerTw.Transport.twOrb_transport (Gam E n u) (GLw n u) e (thU E n u) (thL n u) (KU E n u) (GlobalTheory.LFun.KGL u n) _ (FU E n S φ u) (φ u) ?_ ?_ ?_]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Rewrite using `[he]`. Use `show GeneralLinearGroup.map (pLoc E u) (prjG E n (orb E u) (ratF E n δ)) = locEl n u δ`. Rewrite using `[pLoc_prjG_of_mem _ _ hmem]`. Simplify using `only [locEl, if_neg hu, ratF]`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. By extensionality, compare the relevant components.
 
-Use extensionality with `i j`. Both sides reduce to the same expression. Introduce `g`. Rewrite using `[he, he]`. Use `show GeneralLinearGroup.map (pLoc E u) (prjG E n (orb E u) (thF E n g.1)) = _`.
+Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[pLoc_prjG_of_mem _ _ hmem, thL, if_neg hu, thF]`. Conclude with `GlobalTheory.ThetaPull.map_thetaGL (pLoc E u) _ (cj u) hcj g.1`. Introduce `g`. Rewrite using `[he, KU, Subgroup.mem_subgroupOf, Kglob, Subgroup.mem_iInf]`. Prove the components needed by the constructor for the conclusion.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `h`. Conclude with `h u`. Introduce `h w`. Rewrite using `[Subgroup.mem_comap]`. Distinguish the cases in `hw : w = u`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Substitute `hw` using the available equality. Conclude with `h`. Rewrite using `[gam_one u w (by rw [orb_eq hu]; simpa using hw) g]`. Conclude with `one_mem _`. Introduce `g`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Establish `h1 : S ∩ ↑(orb E u) = {u}`. Rewrite using `[orb_eq hu]`. Use extensionality with `w`. Simplify using `only [Set.mem_inter_iff, Finset.coe_singleton, Set.mem_singleton_iff]`. Prove the components needed by the constructor for the conclusion.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Conclude with `fun h => h.2`. Introduce and unpack `rfl`. Conclude with `⟨huS, rfl⟩`. Establish `h2 : Sᶜ ∩ ↑(orb E u) = ∅`. Rewrite using `[orb_eq hu]`.
-
-Use extensionality with `w`. Simplify using `only [Set.mem_inter_iff, Set.mem_compl_iff, Finset.coe_singleton, Set.mem_singleton_iff, Set.mem_empty_iff_false, iff_false, not_and]`. Introduce and unpack `hw rfl`. Conclude with `hw huS`. Rewrite using `[FU, h1, h2, finprod_mem_singleton, finprod_mem_empty, mul_one, he]`.
+Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem main : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E], Unr E → ∀ (n : ℕ) (S : Set (Pl E)), IsSection S → ∀ K' : ∀ w : Pl E, Subgroup (GLw n w), IsLevelFam (thL n) (fun w : Pl E => GlobalTheory.LFun.KGL w n) K' → ∀ φ : ∀ w : Pl E, GLw n w → ℂ, IsTest (fun w : Pl E => GlobalTheory.LFun.KGL w n) K' φ → ∀ δ : GL (Fin n) E, (δ * thE E n δ).val.charpoly.Separable → ∀ u ∈ S, ¬ IsSplitAt u → twOrb (GlobalTheory.EulerTw.thU E n u) (GlobalTheory.EulerTw.KU E n u) (GlobalTheory.EulerTw.pfU E n u (ratF E n δ)) (GlobalTheory.EulerTw.FU E n S φ u) = twOrb (thL n u) (GlobalTheory.LFun.KGL u n) (locEl n u δ) (φ u) := by
   intro E _ _ _ hU n S hS K' hK' φ hφ δ hδ u huS hu

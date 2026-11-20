@@ -14,11 +14,11 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.G
 open GroundTheory.Heights₂.Heights.LowerBoundFree (valAt IsValueAt)
 
 /- English proof (translation)
-Take `⟨d, g, h, hg, hh, hQ, hgh⟩` from `hs`. Establish `hwh : (MvPolynomial.eval w) ((MvPolynomial.map (Int.castRingHom ℂ)) h) ≠ 0`. Introduce `h0`. Apply `hQ` to reduce the goal to its premises. Apply `GroundTheory.Heights₂.Heights.LowerBoundFree.mem_mCoordIdeal_of_aeval_eq_zero w hh` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite `h0` using `[MvPolynomial.eval_map]`. Simplify `h0` using `[MvPolynomial.aeval_def]`. Establish `hxh : (MvPolynomial.aeval x) h ≠ 0`. Introduce `h0`. Conclude with `hwh (hw.2 h (GroundTheory.Heights₂.Heights.LowerBoundFree.mem_mCoordIdeal_of_aeval_eq_zero x hh h0))`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hex : ∃ v, IsValueAt x s w v` using `⟨_, d, g, h, hg, hh, hxh, hgh, hwh, rfl⟩`. Unfold `GroundTheory.Heights₂.Heights.LowerBoundFree.valAt`. Rewrite using `[dif_pos hex]`. Conclude with `hex.choose_spec`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isValueAt_valAt_of_regAt {K : Type} [Fintype K] {J : K → Type} [∀ k, Fintype (J k)] {Ω : Type} [Field Ω]
     {x : (Σ k, J k) → Ω} {w : (Σ k, J k) → ℂ} (hw : w ∈ mcPts (mCoordIdeal x)) {s : Ω}
@@ -39,9 +39,9 @@ theorem isValueAt_valAt_of_regAt {K : Type} [Fintype K] {J : K → Type} [∀ k,
   exact hex.choose_spec
 
 /- English proof (translation)
-Introduce `E _ _ _ H D l Xo c Y S K _ ι _ Φ _ y M 𝔐 𝔐' pr j z w hO hw`. Take `⟨hd, hf, -, -, -⟩` from `hO`. Take `⟨-, -, hval⟩` from `GlobalTheory.T.dominating_regular_push 𝔐'.X 𝔐.X Φ M.Ω 𝔐'.ξ 𝔐.ξ pr (algebraMap M.Ω Φ) hd 𝔐'.tie.gen`. Establish `hval' : ∀ (a : M.Ω) (r : ℂ), ValAt 𝔐.ξ (z ≫ pr) a r → ValAt 𝔐'.ξ z (algebraMap M.Ω Φ a) r` using `fun a r => hval z a r (𝔐'.all _)`. Establish `hco : CoordsAt 𝔐.ξ M.x (z ≫ pr) (basePart M.blk w)` using `GlobalTheory.T.dominating_coords_reindexed 𝔐'.X 𝔐.X Φ M.Ω 𝔐'.ξ 𝔐.ξ pr (algebraMap M.Ω Φ) (NonPluckerBlocks M.blk) K (baseIdx ι M.blk) ι M.x y Subtype.val (fun _ => Equiv.refl _) hd 𝔐.tie 𝔐'.all (fun k a => M.y_base ⟨k, a⟩) (fun z' a r h' => hval z' a r (𝔐'.all _) h') z w hw`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨hco, GlobalTheory.CompanionTheory.Ar.Chg.mem_abLocus_iff 𝔐 𝔐' pr hf (centre z), hval', fun s hs => hval' _ _ ?_⟩` and prove the remaining obligations. Establish `hm : basePart M.blk w ∈ mcPts (mCoordIdeal M.x)` using `(GlobalTheory.T.complex_points_iff_centres 𝔐.X M.Ω 𝔐.ξ (NonPluckerBlocks M.blk) (baseIdx ι M.blk) M.x 𝔐.tie _).2 ⟨z ≫ pr, 𝔐.all _, hco⟩`. Conclude with `(GlobalTheory.T.valAt_iff_value_at 𝔐.X M.Ω 𝔐.ξ (NonPluckerBlocks M.blk) (baseIdx ι M.blk) M.x 𝔐.tie (z ≫ pr) _ (𝔐.all _) hco s _).2 (isValueAt_valAt_of_regAt hm hs)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem c0 : C0 := by
   intro E _ _ _ H D l Xo c Y S K _ ι _ Φ _ y M 𝔐 𝔐' pr j z w hO hw

@@ -23,11 +23,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.ChF
 
 /- English proof (translation)
-Establish `hb : w.bar * w.bar = w.bar`. Unfold `Place.bar`. Rewrite using `[← map_mul, w.idem]`. Break down `w.prim (w.e * w.bar) (by rw [_root_.mul_mul_mul_comm, w.idem, hb]) (by rw [mul_right_comm, w.idem]) with h | h` into its components or cases. Conclude with `h`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction.
 
-It suffices to derive a contradiction. Apply `w.split` to reduce the goal to its premises. Establish `h2` using `congrArg (sig p OE) h`. Unfold `Place.bar at h h2`. Rewrite `h2` using `[map_mul, hinv, mul_comm, h]`.
-
-Conclude with `h2.symm`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem place_mul_bar {p : ℕ} [Fact p.Prime] {OE : Type} [CommRing OE] [StarRing OE] (w : Place p OE)
     (hinv : ∀ x, sig p OE (sig p OE x) = x) : w.e * w.bar = 0 := by
@@ -45,29 +43,25 @@ private theorem place_mul_bar {p : ℕ} [Fact p.Prime] {OE : Type} [CommRing OE]
     exact h2.symm
 
 /- English proof (translation)
-Introduce `p _ C _ _ _ v O _ _ hv _ _ _ OE _ _ _ _ _ _ cp hS g H hP hPL w t rm hrm`. Take `⟨-, -, hstar⟩` from `GlobalTheory.ChF.embeddings_idempotents_conjugation p C v O hv OE`. Establish `hsig : ∀ x, sig p OE x = sigE p OE x` using `fun x => by`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Proceed by induction. Treat this case separately.
 
-Consider the case `tmul a b => rfl`. Consider the case `add a b ha hb => rw [map_add, map_add, ha, hb]`. Establish `hinv : ∀ x, sig p OE (sig p OE x) = x` using `fun x => by rw [hsig, hsig, hS.invol]`. Establish `h0 : w.e * w.bar = 0` using `place_mul_bar w hinv`. Establish `he` using `w.idem`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hbar : sigE p OE w.e = w.bar` using `(hsig _).symm`. Establish `hbar' : sigE p OE w.bar = w.e` using `by rw [← hbar, hS.invol]`. Establish `hb : w.bar * w.bar = w.bar` using `by rw [← hbar, ← map_mul, w.idem]`. Set `c : OE →+* OE` to `((starRingAut : RingAut OE) : OE ≃+* OE).toRingHom`. Establish `hcc : ∀ τ : OE →+* O, (τ.comp c).comp c = τ` using `fun τ => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use extensionality with `a`. Simplify using `[c]`. Set `s : Emb (O` to `O) w.e ≃ Emb (O := O) w.bar := { toFun := fun τ => ⟨τ.1.comp c, by`. Use `τ.2` as an intermediate fact. Simplify using `only [Emb, Set.mem_setOf_eq] at this ⊢`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[(hstar τ.1 w.bar).1, hbar', this]⟩`. Use `invFun := fun τ => ⟨τ.1.comp c, by`. Use `τ.2` as an intermediate fact. Simplify using `only [Emb, Set.mem_setOf_eq] at this ⊢`. Rewrite using `[(hstar τ.1 w.e).1, hbar, this]⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `left_inv := fun τ => Subtype.ext (hcc τ.1)`. Use `right_inv := fun τ => Subtype.ext (hcc τ.1) }`. Establish `hd` using `GlobalTheory.T.range_idempotent_rank_sum_eigenspaceDim p C v O hv OE g H.ρL w.bar hb w.n (t.trans s)`. Take `⟨cw, hcw⟩ : ∃ x, HasLen v O (htCoker H w.e w.bar) x` from `lenEx C v O hv g H.Ht (H.ρL w.e) ((H.ρ w.bar).map (algebraMap ℤ_[p] O))`. Use `⟨cw, hcw, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `hav` using `lengthDegree_abelianVariety p g C v O _ _ cp hS H 3 ![w.e, w.bar, 1 - w.e - w.bar] (Equiv.swap 0 1) (by`. Introduce `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp <;> first`. Consider the case `exact he`. Consider the case `exact hb`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `linear_combination h0`. Consider the case `linear_combination -he - h0`. Consider the case `linear_combination -hb - h0`. Consider the case `linear_combination he + hb + 2 * h0)`. Use the proof step `(by`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Introduce `i`. Use `fin_cases i`. Simplify using `using hbar`. Simplify using `using hbar'`. Establish `: (Equiv.swap (0 : Fin 3) 1) 2 = 2` using `by decide`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Fin.reduceFinMk, this, Matrix.cons_val, map_sub, map_one, hbar, hbar']`. Use the proof step `ring)`. Use the proof step `(by simp [Fin.sum_univ_three, hP]) (by simp [hP])`. Use the proof step `(by simp [Fin.sum_univ_three, hPL]) (by simp [hPL])`. Use `0 (by decide) _ hd cw hcw`.
-
-Use `le_trans ?_ hav` and prove the remaining obligations. Establish `hp1 : (1 : ℝ) < p` using `by exact_mod_cast (Fact.out : p.Prime).one_lt`. Use `Real.rpow_le_rpow_of_exponent_ge ?_ ?_ ?_` and prove the remaining obligations. Conclude with `pos_iff_ne_zero.2 hS.p_ne` after adjusting the coercions. Conclude with `hS.p_lt.le` after adjusting the coercions.
-
-Use `div_le_div_of_nonneg_right ?_ (by linarith)` and prove the remaining obligations. Use `Finset.sum_le_card_nsmul Finset.univ _ rm (fun j _ => hrm _ ((t.trans s) j).2)` as an intermediate fact. Simplify using `only [Finset.card_univ, Fintype.card_fin, smul_eq_mul] at this`. Conclude with `this` after adjusting the coercions.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem abelian_coker_bound : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C] [CharZero C] (v : Valuation C NNReal) (O : Type) [CommRing O] [Algebra O C], v.Integers O → ∀ [Fact ¬IsUnit (p : O)] [IsAdicComplete (Ideal.span {(p : O)}) O] [Algebra ℤ_[p] O] (OE : Type) [CommRing OE] [IsDedekindDomain OE] [CharZero OE] [Module.Free ℤ OE] [Module.Finite ℤ OE] [StarRing OE] (cp : O), HodgeTateSetting p v O (ℤ_[p] ⊗[ℤ] OE) (sigE p OE) cp → ∀ (g : ℕ) (H : HodgeTateDatum p g v O (ℤ_[p] ⊗[ℤ] OE) (sigE p OE) cp), H.P = 0 → H.PL = 0 → ∀ (w : Place p OE) (t : Fin w.n ≃ Emb (O := O) w.e) (rm : ℕ), (∀ τ ∈ Emb (O := O) w.bar, eigDim C (fun a : OE => H.ρL (1 ⊗ₜ[ℤ] a)) ((algebraMap O C).comp τ) ≤ rm) → ∃ cw : NNReal, HasLen v O (htCoker H w.e w.bar) cw ∧ (v (algebraMap O C (p : O)) : ℝ) ^ (((w.n : ℝ) * rm) / ((p : ℝ) - 1)) ≤ cw := by
   intro p _ C _ _ _ v O _ _ hv _ _ _ OE _ _ _ _ _ _ cp hS g H hP hPL w t rm hrm

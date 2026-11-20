@@ -9,19 +9,17 @@ namespace PI.TermsAtPtFiniteW
 open NumberField
 
 /- English proof (translation)
-Introduce `E _ _ V _ _ _ _ Λ hΛ c hc`. Establish `hZ : (Λ.restrictScalars ℤ).FG` using `by first`. Consider the case `exact Submodule.FG.restrictScalars hΛ`. Consider the case `(obtain ⟨t, ht⟩ := hΛ`. Take `⟨s0, hs0⟩` from `(Module.Finite.fg_top : (⊤ : Submodule ℤ (𝓞 E)).FG)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← ht, ← Submodule.span_smul_of_span_eq_top hs0]`. Conclude with `Submodule.fg_def.2 ⟨_, s0.finite_toSet.smul t.finite_toSet, rfl⟩)`. Take `⟨n, g, hg⟩` from `Submodule.fg_iff_exists_fin_generating_family.1 hZ`. Establish `hmem : ∀ x ∈ Λ, ∃ a : Fin n → ℤ, ∑ i, a i • g i = x`. Introduce `x hx`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hx' : x ∈ Submodule.span ℤ (Set.range g)` using `by rw [hg]; exact hx`. Rewrite `hx'` using `[Submodule.mem_span_range_iff_exists_fun]`. Conclude with `hx'`. Use `haveI : NeZero c := ⟨by omega⟩`. Use `⟨Fin n → ZMod c, inferInstance, fun x => if hx : x ∈ Λ then fun i => (((hmem x hx).choose i : ℤ) : ZMod c) else 0, ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Introduce `x hx y hy hxy`. Use `beta_reduce at hxy`. Rewrite `hxy` using `[dif_pos hx, dif_pos hy]`. Establish `hax` using `(hmem x hx).choose_spec`. Establish `hby` using `(hmem y hy).choose_spec`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hdiv : ∀ i, (c : ℤ) ∣ (hmem y hy).choose i - (hmem x hx).choose i` using `fun i => by`. Establish `hi` using `congrFun hxy i`. Rewrite `hi` using `[ZMod.intCast_eq_intCast_iff_dvd_sub]`. Conclude with `hi`. Use `choose k hk using hdiv`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨∑ i, k i • g i, ?_, ?_⟩` and prove the remaining obligations. Establish `hs : ∑ i, k i • g i ∈ Submodule.span ℤ (Set.range g)` using `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`. Rewrite `hs` using `[hg]`. Conclude with `hs`. Rewrite using `[← hax, ← hby, ← Finset.sum_sub_distrib, Finset.smul_sum]`.
-
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← sub_smul, hk i, mul_smul, Nat.cast_smul_eq_nsmul E, natCast_zsmul]`.
+A detailed English derivation is pending.
 -/
 theorem resFin_holds : ResFin := by
   intro E _ _ V _ _ _ _ Λ hΛ c hc

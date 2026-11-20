@@ -32,7 +32,7 @@ variable {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [Local
 noncomputable def prodMul (μM μN : Measure G) : Measure G := (μM.prod μN).map (fun z => z.1 * z.2)
 
 /- English proof (translation)
-Rewrite using `[prodMul, lintegral_map hf measurable_mul]`. Conclude with `lintegral_prod (fun z : G × G => f (z.1 * z.2)) (hf.comp measurable_mul).aemeasurable`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lintegral_prodMul (μM μN : Measure G) [SFinite μN] (f : G → ENNReal) (hf : Measurable f) :
     ∫⁻ x, f x ∂prodMul μM μN = ∫⁻ m, ∫⁻ u, f (m * u) ∂μN ∂μM := by
@@ -40,14 +40,14 @@ theorem lintegral_prodMul (μM μN : Measure G) [SFinite μN] (f : G → ENNReal
   exact lintegral_prod (fun z : G × G => f (z.1 * z.2)) (hf.comp measurable_mul).aemeasurable
 
 /- English proof (translation)
-The claim follows from `Measurable.lintegral_prod_right' (f := fun z : G × G => f (z.1 * z.2)) (hf.comp measurable_mul)`.
+A detailed English derivation is pending.
 -/
 theorem measurable_inner (μN : Measure G) [SFinite μN] (f : G → ENNReal) (hf : Measurable f) :
     Measurable fun m => ∫⁻ u, f (m * u) ∂μN :=
   Measurable.lintegral_prod_right' (f := fun z : G × G => f (z.1 * z.2)) (hf.comp measurable_mul)
 
 /- English proof (translation)
-Use `Measure.ext_of_lintegral _ fun f hf => ?_` and prove the remaining obligations. Rewrite using `[lintegral_map hf (measurable_const_mul s), lintegral_prodMul _ _ (fun x => f (s * x)) (hf.comp (measurable_const_mul s)), lintegral_prodMul _ _ _ hf]`. Use `GlobalTheory.IwasawaShape.lintegral_mul_left_of_map (iM s hs) _ (measurable_inner μN f hf)` as an intermediate fact. Simplify `this` using `only [mul_assoc]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem prodMul_left_fst (M : Subgroup G) (μM μN : Measure G) [SFinite μN]
     (iM : ∀ s ∈ M, μM.map (fun g => s * g) = μM) (s : G) (hs : s ∈ M) :
@@ -59,9 +59,9 @@ theorem prodMul_left_fst (M : Subgroup G) (μM μN : Measure G) [SFinite μN]
   simpa only [mul_assoc] using this
 
 /- English proof (translation)
-Use `Measure.ext_of_lintegral _ fun f hf => ?_` and prove the remaining obligations. Rewrite using `[lintegral_map hf (measurable_const_mul s), lintegral_prodMul _ _ (fun x => f (s * x)) (hf.comp (measurable_const_mul s)), lintegral_prodMul _ _ _ hf]`. Establish `aM : ∀ᵐ m ∂μM, m ∈ M` using `mem_ae_iff.2 h1`. Use `lintegral_congr_ae (aM.mono fun m hm => ?_)` and prove the remaining obligations. Use `GlobalTheory.IwasawaShape.lintegral_mul_left_of_map (iN _ (hnorm m hm s hs)) (fun u => f (m * u)) (hf.comp (measurable_const_mul m))` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `show ∫⁻ u, f (s * (m * u)) ∂μN = ∫⁻ u, f (m * u) ∂μN`. Rewrite using `[← this]`. Use `lintegral_congr fun u => ?_` and prove the remaining obligations. Rewrite using `[show m * (m⁻¹ * s * m * u) = s * (m * u) by group]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem prodMul_left_snd (M N : Subgroup G) (hnorm : ∀ m ∈ M, ∀ u ∈ N, m⁻¹ * u * m ∈ N)
     (μM μN : Measure G) [SFinite μN] (h1 : μM (M : Set G)ᶜ = 0)
@@ -80,31 +80,27 @@ theorem prodMul_left_snd (M N : Subgroup G) (hnorm : ∀ m ∈ M, ∀ u ∈ N, m
   rw [show m * (m⁻¹ * s * m * u) = s * (m * u) by group]
 
 /- English proof (translation)
-Use `set ρ₀ := prodMul μM μN with hρ₀`. Establish `aM : ∀ᵐ m ∂μM, m ∈ M` using `mem_ae_iff.2 h1`. Establish `aN : ∀ᵐ u ∂μN, u ∈ N` using `mem_ae_iff.2 h2`. Establish `hP0 : ρ₀ (P : Set G)ᶜ = 0`. Rewrite using `[← lintegral_indicator_one hPm.compl, hρ₀, lintegral_prodMul _ _ _ (measurable_one.indicator hPm.compl)]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `lintegral_eq_zero_of_ae_eq_zero ?_` and prove the remaining obligations. Use `filter_upwards [aM] with m hm`. Use `lintegral_eq_zero_of_ae_eq_zero ?_` and prove the remaining obligations. Use `filter_upwards [aN] with u hu`. Rewrite using `[Set.indicator_of_notMem (show m * u ∉ (P : Set G)ᶜ from fun h => h (hMP m hm u hu))]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Use `set Q : ℕ → Set G := fun i => (compactCovering G i ∩ M) * (compactCovering G i ∩ N) with hQ`. Establish `hQc : ∀ i, IsCompact (Q i)` using `fun i => ((isCompact_compactCovering G i).inter_right hM).mul ((isCompact_compactCovering G i).inter_right hN)`. Establish `uniq : ∀ i, ∀ m ∈ M, ∀ u ∈ N, m * u ∈ Q i → m ∈ compactCovering G i ∧ u ∈ compactCovering G i`. Introduce and unpack `i m hm u hu ⟨m', ⟨hm'C, hm'M⟩, u', ⟨hu'C, hu'N⟩, e⟩`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `e : m' * u' = m * u` using `e`. Establish `e' : m'⁻¹ * m = u' * u⁻¹`. Combine the equalities or inequalities in the displayed calculation. Establish `h` using `hMN _ (M.mul_mem (M.inv_mem hm'M) hm) (by rw [e']; exact N.mul_mem hu'N (N.inv_mem hu))`. Establish `hm' : m = m'` using `(inv_mul_eq_one.1 h).symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Supply the required witnesses or components. Establish an intermediate fact.
 
-Rewrite `e'` using `[h]`. Establish `hu' : u = u'` using `(mul_inv_eq_one.1 e'.symm).symm`. Conclude with `⟨hm' ▸ hm'C, hu' ▸ hu'C⟩`. Establish `hQ1 : ∀ i, ρ₀ (Q i) < ⊤`. Introduce `i`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hC` using `isCompact_compactCovering G i`. Rewrite using `[← lintegral_indicator_one (hQc i).measurableSet, hρ₀, lintegral_prodMul _ _ _ (measurable_one.indicator (hQc i).measurableSet)]`. Combine the equalities or inequalities in the displayed calculation. Use `lintegral_mono_ae ?_` and prove the remaining obligations. Use `filter_upwards [aM] with m hm`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `hmC : m ∈ compactCovering G i`. Rewrite using `[Set.indicator_of_mem hmC, ← lintegral_indicator_one hC.measurableSet]`. Use `lintegral_mono_ae ?_` and prove the remaining obligations. Use `filter_upwards [aN] with u hu`. Distinguish the cases in `hq : m * u ∈ Q i`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[Set.indicator_of_mem hq, Set.indicator_of_mem (uniq i m hm u hu hq).2]`. Simplify using `[Set.indicator_of_notMem hq]`. Rewrite using `[Set.indicator_of_notMem hmC]`. Use `(lintegral_eq_zero_of_ae_eq_zero ?_).le` and prove the remaining obligations. Use `filter_upwards [aN] with u hu`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Rewrite using `[Set.indicator_of_notMem (fun h => hmC (uniq i m hm u hu h).1)]`. Simplify using the standard rewrite rules. Use `_ < ⊤ := by`. Rewrite using `[lintegral_indicator_const hC.measurableSet]`. Conclude with `ENNReal.mul_lt_top hC.measure_lt_top hC.measure_lt_top`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `hS : ⋃ i, (Q i ∪ (P : Set G)ᶜ) = Set.univ`. Use `Set.eq_univ_of_forall fun g => Set.mem_iUnion.2 ?_` and prove the remaining obligations. Distinguish the cases in `hg : g ∈ P`. Take `⟨m, hm, u, hu, rfl⟩` from `hdec g hg`. Take `⟨i, hi⟩` from `exists_mem_compactCovering m`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction.
 
-Take `⟨k, hk⟩` from `exists_mem_compactCovering u`. Conclude with `⟨max i k, Or.inl (Set.mul_mem_mul ⟨compactCovering_subset G (le_max_left _ _) hi, hm⟩ ⟨compactCovering_subset G (le_max_right _ _) hk, hu⟩)⟩`. Conclude with `⟨0, Or.inr hg⟩`. Establish `hS1 : ∀ i, ρ₀ (Q i ∪ (P : Set G)ᶜ) < ⊤` using `fun i => lt_of_le_of_lt (measure_union_le _ _) (by rw [hP0, add_zero]; exact hQ1 i)`. Establish `sf : SigmaFinite ρ₀` using `⟨⟨⟨fun i => Q i ∪ (P : Set G)ᶜ, fun _ => trivial, hS1, hS⟩⟩⟩`.
-
-Establish `huniv : ρ₀ Set.univ ≠ 0`. Rewrite using `[hρ₀, prodMul, Measure.map_apply measurable_mul MeasurableSet.univ, Set.preimage_univ, ← Set.univ_prod_univ, Measure.prod_prod]`. Conclude with `mul_ne_zero (fun h => hM0 (Measure.measure_univ_eq_zero.1 h)) (fun h => hN0 (Measure.measure_univ_eq_zero.1 h))`. Choose the witnesses or unpack the hypotheses as in `⟨i, hi⟩ : ∃ i, ρ₀ (Q i ∪ (P : Set G)ᶜ) ≠ 0 := by`. Assume the negation of the conclusion as `h`.
-
-Use `push_neg at h`. Conclude with `huniv (by rw [← hS]; exact measure_iUnion_null h)`. Use `⟨hP0, sf, Q i, (hQc i).measurableSet, fun h => hi ?_, (hQ1 i).ne⟩` and prove the remaining obligations. Conclude with `measure_union_null h hP0`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem prodMul_facts (M N P : Subgroup G) (hM : IsClosed (M : Set G)) (hN : IsClosed (N : Set G))
     (hPm : MeasurableSet (P : Set G)) (hMN : ∀ m ∈ M, m ∈ N → m = 1)
@@ -187,15 +183,13 @@ theorem prodMul_facts (M N P : Subgroup G) (hM : IsClosed (M : Set G)) (hN : IsC
   exact measure_union_null h hP0
 
 /- English proof (translation)
-Establish `hemb : MeasurableEmbedding (Subtype.val : P → G)` using `MeasurableEmbedding.subtype_coe hPm`. Use `haveI : MeasurableMul₂ P := ⟨Measurable.subtype_mk ((hemb.measurable.comp measurable_fst).mul (hemb.measurable.comp measurable_snd))⟩`. Use `haveI : MeasurableInv P := ⟨Measurable.subtype_mk hemb.measurable.inv⟩`. Establish `hmap : ∀ τ : Measure G, τ (P : Set G)ᶜ = 0 → (τ.comap Subtype.val).map (Subtype.val : P → G) = τ`. Introduce `τ h`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hemb.map_comap, Subtype.range_coe]`. Conclude with `Measure.restrict_eq_self_of_ae_mem h`. Establish `hinv : ∀ τ : Measure G, τ (P : Set G)ᶜ = 0 → (∀ s ∈ P, τ.map (fun g => s * g) = τ) → (τ.comap (Subtype.val : P → G)).IsMulLeftInvariant`. Introduce `τ h hτ`. Use `⟨fun s => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hemb.comap_map ((τ.comap Subtype.val).map (fun g => s * g)), Measure.map_map hemb.measurable (measurable_const_mul s)]`. Establish `: (Subtype.val : P → G) ∘ (fun g => s * g) = (fun g => (s : G) * g) ∘ Subtype.val` using `rfl`. Rewrite using `[this, ← Measure.map_map (measurable_const_mul _) hemb.measurable, hmap τ h, hτ s s.2]`. Use `haveI := hinv ρ h0 hi`. Use `haveI := hinv ρ₀ h0' hi'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `haveI : SigmaFinite (ρ.comap (Subtype.val : P → G)) := SigmaFinite.of_map _ hemb.measurable.aemeasurable (by rw [hmap ρ h0]; infer_instance)`. Use `haveI : SigmaFinite (ρ₀.comap (Subtype.val : P → G)) := SigmaFinite.of_map _ hemb.measurable.aemeasurable (by rw [hmap ρ₀ h0']; infer_instance)`. Establish `hT' : ρ₀.comap (Subtype.val : P → G) (Subtype.val ⁻¹' T) = ρ₀ T`. Rewrite using `[← hmap ρ₀ h0', Measure.map_apply hemb.measurable hT, hmap ρ₀ h0']`. Use `set c : ENNReal := ρ.comap (Subtype.val : P → G) (Subtype.val ⁻¹' T) / ρ₀.comap (Subtype.val : P → G) (Subtype.val ⁻¹' T) with hc`.
-
-Establish `key : ρ.comap (Subtype.val : P → G) = c • ρ₀.comap (Subtype.val : P → G)` using `measure_eq_div_smul (ρ.comap (Subtype.val : P → G)) (ρ₀.comap (Subtype.val : P → G)) (s := Subtype.val ⁻¹' T) (by rw [hT']; exact hT0) (by rw [hT']; exact hT1)`. Use `⟨c, ?_⟩` and prove the remaining obligations. Use `conv_lhs => rw [← hmap ρ h0, key]`. Rewrite using `[Measure.map_smul, hmap ρ₀ h0']`.
+A detailed English derivation is pending.
 -/
 theorem eq_smul_of_left_inv (P : Subgroup G) (hPm : MeasurableSet (P : Set G)) (ρ ρ₀ : Measure G)
     [SigmaFinite ρ] [SigmaFinite ρ₀] (h0 : ρ (P : Set G)ᶜ = 0) (h0' : ρ₀ (P : Set G)ᶜ = 0)

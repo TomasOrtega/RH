@@ -8,11 +8,11 @@ open scoped Pointwise
 open Polynomial
 
 /- English proof (translation)
-Introduce `H`. Establish `hsum : ∑ i ∈ Finset.range p.natDegree, p.coeff i * h ^ i ∈ P`. Use `Ideal.sum_mem _ fun i hi => Ideal.mul_mem_right _ _ ?_` and prove the remaining obligations. Establish `hi' : p.natDegree - i ≠ 0`. Use `Finset.mem_range.mp hi` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Conclude with `Ideal.pow_le_self hi' (hc i)`. Rewrite `H` using `[Polynomial.eval_eq_sum_range, Finset.sum_range_succ, hm.coeff_natDegree, one_mul]`. Establish `: h ^ p.natDegree ∈ P`. Use `P.sub_mem H hsum` as an intermediate fact.
+Use linear arithmetic over natural numbers and integers. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using this`. Conclude with `hh (hP.mem_of_pow_mem _ this)`.
+A detailed English derivation is pending.
 -/
 theorem eval_notMem {B : Type} [CommRing B] {P : Ideal B} (hP : P.IsPrime) (p : B[X]) (hm : p.Monic)
     (hc : ∀ k, p.coeff k ∈ P ^ (p.natDegree - k)) {h : B} (hh : h ∉ P) : p.eval h ∉ P := by
@@ -30,19 +30,19 @@ theorem eval_notMem {B : Type} [CommRing B] {P : Ideal B} (hP : P.IsPrime) (p : 
   exact hh (hP.mem_of_pow_mem _ this)
 
 /- English proof (translation)
-Introduce `B M _ _ _ P hP N N' hfg h hh hle`. Establish `: Module.Finite B N'` using `Module.Finite.iff_fg.mpr hfg`. Set `Q` to `N' ⧸ N.comap N'.subtype`. Set `f : Module.End B Q` to `algebraMap B (Module.End B Q) h`. Establish `hr : LinearMap.range f ≤ P • ⊤`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce and unpack `_ ⟨q, rfl⟩`. Take `⟨⟨n, hn⟩, rfl⟩` from `Submodule.mkQ_surjective _ q`. Establish `hhn : h • n ∈ N ⊔ P • N'` using `hle (Submodule.smul_mem_pointwise_smul n h N' hn)`. Take `⟨a, ha, b, hb, hab⟩` from `Submodule.mem_sup.mp hhn`. Establish `hb' : b ∈ (P • (⊤ : Submodule B N')).map N'.subtype`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[Submodule.map_smul'', Submodule.map_subtype_top]`. Conclude with `hb`. Take `⟨b', hb'1, hb'2⟩` from `hb'`. Establish `heq : f ((N.comap N'.subtype).mkQ ⟨n, hn⟩) = (N.comap N'.subtype).mkQ b'`. Simplify using `only [f, Module.algebraMap_end_apply, Submodule.mkQ_apply]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `show (Submodule.Quotient.mk (h • (⟨n, hn⟩ : N')) : N' ⧸ N.comap N'.subtype) = Submodule.Quotient.mk b'`. Rewrite using `[Submodule.Quotient.eq, Submodule.mem_comap]`. Simplify using `only [Submodule.subtype_apply, SetLike.val_smul, Submodule.coe_sub, hb'2]`. Use `ha using 1` and compare the differences between its conclusion and the goal. Rewrite using `[← hab]`.
+Simplify using the standard rewrite rules. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hb3 : (b' : M) = b` using `hb'2`. Rewrite using `[hb3]`. Normalize the expressions using the abelian group laws. Rewrite using `[heq]`. Establish `: (P • (⊤ : Submodule B N')).map (N.comap N'.subtype).mkQ ≤ P • ⊤`.
+Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[Submodule.map_smul'']`. Conclude with `Submodule.smul_mono le_rfl le_top`. Conclude with `this ⟨b', hb'1, rfl⟩`. Take `⟨p, hm, -, hc, hp⟩` from `LinearMap.exists_monic_and_natDegree_eq_and_coeff_mem_pow_and_aeval_eq_zero B f P hr`. Use `⟨p.eval h, eval_notMem hP p hm hc hh, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce and unpack `_ ⟨x, hx, rfl⟩`. Use `LinearMap.congr_fun hp (Submodule.Quotient.mk ⟨x, hx⟩)` as an intermediate fact. Rewrite `this` using `[Polynomial.aeval_algebraMap_apply_eq_algebraMap_eval, Module.algebraMap_end_apply, LinearMap.zero_apply, ← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero]`. Simplify using `using this`.
+A detailed English derivation is pending.
 -/
 theorem nakH : LeafNakH := by
   intro B M _ _ _ P hP N N' hfg h hh hle
@@ -83,7 +83,7 @@ theorem nakH : LeafNakH := by
   simpa using this
 
 /- English proof (translation)
-The claim follows from `LeafCoords_of hPt nakH`.
+A detailed English derivation is pending.
 -/
 theorem LeafCoords_of_point (hPt : LeafCoordsPoint) : LateralTheory.E.LeafChartRingPf.LeafCoords :=
   LeafCoords_of hPt nakH

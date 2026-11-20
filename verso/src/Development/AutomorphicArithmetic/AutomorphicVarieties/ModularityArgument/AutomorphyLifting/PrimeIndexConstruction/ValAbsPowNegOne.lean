@@ -18,9 +18,9 @@ section Count
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Use `v.isMaximal` as an intermediate fact. Establish `: Fintype (v.asIdeal.primesOver (𝓞 E))` using `(IsDedekindDomain.primesOver_finite v.asIdeal (𝓞 E)).fintype`. Rewrite using `[← h2, Algebra.IsAlgebraic.finrank_of_isFractionRing (𝓞 F) F (𝓞 E) E, ← Ideal.sum_ramification_inertia_eq_finrank v.asIdeal (𝓞 E)]`. Use `(Finset.sum_le_sum_of_subset T.subset_univ).trans (Finset.sum_le_sum fun q _ => ?_)` and prove the remaining obligations. Use `q.2.1` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `Nat.le_mul_of_pos_left _ (Ideal.ramificationIdx_pos _ _)`.
+A detailed English derivation is pending.
 -/
 private theorem degs_le (h2 : Module.finrank F E = 2) (v : HeightOneSpectrum (𝓞 F))
     (T : Finset (v.asIdeal.primesOver (𝓞 E))) : ∑ q ∈ T, q.1.inertiaDeg (𝓞 F) ≤ 2 := by
@@ -37,17 +37,17 @@ private def pt (w w' : HeightOneSpectrum (𝓞 E)) (h : w'.under (𝓞 F) = w.un
   ⟨w'.asIdeal, w'.isPrime, ⟨(congrArg HeightOneSpectrum.asIdeal h).symm⟩⟩
 
 /- English proof (translation)
-Introduce `e` and use `h (HeightOneSpectrum.ext (congrArg Subtype.val e))`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem pt_ne {w a b : HeightOneSpectrum (𝓞 E)} {ha : a.under (𝓞 F) = w.under (𝓞 F)} {hb : b.under (𝓞 F) = w.under (𝓞 F)}
     (h : a ≠ b) : pt w a ha ≠ pt w b hb := fun e => h (HeightOneSpectrum.ext (congrArg Subtype.val e))
 
 /- English proof (translation)
-Use `w.isPrime` as an intermediate fact. Use `w'.isPrime` as an intermediate fact. Use `w''.isPrime` as an intermediate fact. Establish `h3` using `w.asIdeal.inertiaDeg_pos (𝓞 F)`. Establish `h4` using `w'.asIdeal.inertiaDeg_pos (𝓞 F)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h5` using `w''.asIdeal.inertiaDeg_pos (𝓞 F)`. Establish `hs` using `degs_le h2 (w.under (𝓞 F)) {pt w w rfl, pt w w' hu}`. Rewrite `hs` using `[Finset.sum_pair (pt_ne hne.symm)]`. Simplify using `only [pt] at hs`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[GlobalTheory.AboveL.SatBC.normV_under_pow F E w, show w.asIdeal.inertiaDeg (𝓞 F) = 1 by omega, pow_one]`. Assume the negation of the conclusion as `hc push Not at hc`. Establish `hs'` using `degs_le h2 (w.under (𝓞 F)) {pt w w rfl, pt w w' hu, pt w w'' hu'}`. Rewrite `hs'` using `[Finset.sum_insert (by simpa using ⟨pt_ne hne.symm, pt_ne hc.1.symm⟩), Finset.sum_pair (pt_ne hc.2.symm)]`. Simplify using `only [pt] at hs'`.
+Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
 Use linear arithmetic over natural numbers and integers.
 -/
@@ -94,11 +94,9 @@ private def indSat (u : HeightOneSpectrum (𝓞 F)) (B : Multiset ℂˣ) : Prop 
 variable {sat}
 
 /- English proof (translation)
-Break down `h with ⟨w₁, w₂, hne, rfl, e₂, B₁, B₂, s₁, s₂, rfl⟩ | ⟨hn, rfl⟩` into its components or cases. Break down `h' with ⟨w₃, w₄, hne', e₃, e₄, B₃, B₄, s₃, s₄, rfl⟩ | ⟨hn, -⟩` into its components or cases. Apply the tactic sequence `rcases (over_two h2 hne.symm e₂ e₃).2 with rfl | rfl <;> rcases (over_two h2 hne.symm e₂ e₄).2 with rfl | rfl`. Conclude with `absurd rfl hne'`. Rewrite using `[hu _ _ _ s₁ s₃, hu _ _ _ s₂ s₄]`.
+Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hu _ _ _ s₁ s₄, hu _ _ _ s₂ s₃, add_comm]`. Conclude with `absurd rfl hne'`. Conclude with `absurd ⟨w₁, w₂, hne, rfl, e₂⟩ hn`. Break down `h' with ⟨w₁, w₂, hne, e₁, e₂, -⟩ | ⟨-, rfl⟩` into its components or cases. Conclude with `absurd ⟨w₁, w₂, hne, e₁, e₂⟩ hn`.
-
-Both sides reduce to the same expression.
+Separate the alternatives or extract the components of the hypothesis. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 private theorem indSat_unique (h2 : Module.finrank F E = 2) (hu : ∀ w B B', sat w B → sat w B' → B = B')
     (u : HeightOneSpectrum (𝓞 F)) (B B' : Multiset ℂˣ) (h : indSat sat u B) (h' : indSat sat u B') : B = B' := by
@@ -115,7 +113,7 @@ private theorem indSat_unique (h2 : Module.finrank F E = 2) (hu : ∀ w B B', sa
     · rfl
 
 /- English proof (translation)
-Use `Multiset.map_surjective_of_surjective fun z => ?_` and prove the remaining obligations. Take `⟨x, hx⟩` from `IsAlgClosed.exists_pow_nat_eq (z : ℂ) (n := 2) two_pos`. Establish `h0 : x ≠ 0` using `fun h => z.ne_zero (by rw [← hx, h]; simp)`. Conclude with `⟨Units.mk0 x h0, Units.ext (by simpa using hx)⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 private theorem sq_surj : Function.Surjective (Multiset.map (· ^ 2) : Multiset ℂˣ → Multiset ℂˣ) := by
   refine Multiset.map_surjective_of_surjective fun z => ?_
@@ -124,15 +122,15 @@ private theorem sq_surj : Function.Surjective (Multiset.map (· ^ 2) : Multiset 
   exact ⟨Units.mk0 x h0, Units.ext (by simpa using hx)⟩
 
 /- English proof (translation)
-Establish `hev : ∀ᶠ v : HeightOneSpectrum (𝓞 F) in Filter.cofinite, ∀ w : HeightOneSpectrum (𝓞 E), w.under (𝓞 F) = v → ∃ B, sat w B`. Rewrite `hex`, the goal using `[Filter.eventually_cofinite]`. Use `(hex.image fun w => w.under (𝓞 F)).subset fun v hv => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `h0`. Conclude with `hv fun w hw => not_not.1 fun hP => h0 ⟨w, hP, hw⟩`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations.
 
-Use `((GlobalTheory.AboveL.SatBC.tendsto_under F E).eventually hev).mono fun w hw => ⟨fun w' hne hu => ?_, fun hq => ?_⟩` and prove the remaining obligations. Take `⟨B, hB⟩` from `hw w rfl`. Take `⟨B', hB'⟩` from `hw w' hu`. Conclude with `⟨B, B', hB, hB', Or.inl ⟨w, w', hne.symm, rfl, hu, B, B', hB, hB', rfl⟩⟩`. Establish `hq1 : 1 < normV (w.under (𝓞 F))` using `NumberField.HeightOneSpectrum.one_lt_absNorm _`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hnp : ¬ HasPair (E` using `E) F (w.under (𝓞 F)) := by`. Introduce and unpack `⟨a, b, hab, ha, hb⟩`. Establish `e : normV w = normV (w.under (𝓞 F))`. Break down `(over_two h2 hab.symm (hb.trans ha.symm) (ha ▸ rfl : w.under (𝓞 F) = a.under (𝓞 F))).2 with rfl | rfl` into its components or cases. Conclude with `(over_two h2 hab.symm (hb.trans ha.symm) rfl).1`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 
-Conclude with `(over_two h2 hab (ha.trans hb.symm) rfl).1`. Rewrite `hq` using `[e]`. Use the polynomial consequences of the given equalities and inequalities. Take `⟨B₀, h₀⟩` from `hw w rfl`. Take `⟨Bs, rfl⟩` from `sq_surj B₀`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction.
 
-Take `⟨w', B', hu, hs, he⟩` from `Classical.epsilon_spec (p := IsRoots sat (w.under (𝓞 F))) ⟨_, w, Bs, rfl, h₀, rfl⟩`. Choose the witnesses or unpack the hypotheses as in `rfl : w' = w := by`. Assume the negation of the conclusion as `hc`. Conclude with `hnp ⟨w', w, hc, hu, rfl⟩`. Conclude with `⟨_, B', hs, he, Or.inr ⟨hnp, rfl⟩⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem indSys_indSat (h2 : Module.finrank F E = 2) (hex : ∀ᶠ w in Filter.cofinite, ∃ B, sat w B) :
     IndSys (F := F) sat (indSat sat) := by
@@ -165,14 +163,14 @@ private theorem indSys_indSat (h2 : Module.finrank F E = 2) (hex : ∀ᶠ w in F
 end Count
 
 /- English proof (translation)
-Simplify using `[algSat, Multiset.bind_singleton, Multiset.map_map]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem algSat_val (n q : ℕ) (B : Multiset ℂˣ) :
     algSat n q B = B.map fun α : ℂˣ => (((q : ℝ) ^ (((n : ℝ) - 1) / 2) : ℝ) : ℂ) * (α : ℂ) := by
   simp [algSat, Multiset.bind_singleton, Multiset.map_map]
 
 /- English proof (translation)
-Take `⟨A, hA⟩` from `exists_isPlaceOver Ω w`. Take `⟨σ, hσ⟩` from `exists_isFrob hA`. Establish `e` using `congrArg Polynomial.roots (((h A hA).2 σ hσ).symm.trans ((h' A hA).2 σ hσ))`. Rewrite `e` using `[roots_multiset_prod_X_sub_C, roots_multiset_prod_X_sub_C]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 private theorem eig_unique {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] {l : ℕ} [Fact l.Prime]
     {n : ℕ} {ι : Qbar l ≃+* ℂ} {r : G F Ω →* GL (Fin n) (Qbar l)} {w : HeightOneSpectrum (𝓞 F)} {B B' : Multiset ℂ}
@@ -187,7 +185,7 @@ section Tw
 variable {K : Type} [Field K] [NumberField K] [IsTotallyComplex K] {a : ℕ}
 
 /- English proof (translation)
-Rewrite using `[(GlobalTheory.HeckeGal.Model.absPow_isAbsPow K (-1)).2.1 u]`. Simplify using `[normV, Ideal.absNorm_apply, Submodule.cardQuot_apply]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem val_absPow_neg_one (u : HeightOneSpectrum (𝓞 K)) :
     (((GlobalTheory.HeckeGal.Model.absPow K (-1)).val u : ℂˣ) : ℂ) = (normV u : ℂ) := by
@@ -195,7 +193,7 @@ private theorem val_absPow_neg_one (u : HeightOneSpectrum (𝓞 K)) :
   simp [normV, Ideal.absNorm_apply, Submodule.cardQuot_apply]
 
 /- English proof (translation)
-Rewrite using `[(GlobalTheory.HeckeGal.Model.absPow_isAbsPow K 1).2.1 u]`. Simplify using `[normV, Ideal.absNorm_apply, Submodule.cardQuot_apply, Complex.cpow_neg]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem val_absPow_one (u : HeightOneSpectrum (𝓞 K)) :
     (((GlobalTheory.HeckeGal.Model.absPow K 1).val u : ℂˣ) : ℂ) = (normV u : ℂ)⁻¹ := by
@@ -203,7 +201,7 @@ private theorem val_absPow_one (u : HeightOneSpectrum (𝓞 K)) :
   simp [normV, Ideal.absNorm_apply, Submodule.cardQuot_apply, Complex.cpow_neg]
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.SphGal.hasSatGL_twist K a π _ w B ((GlobalTheory.HeckeGal.Model.absPow_isAbsPow K s).1 w) h`.
+A detailed English derivation is pending.
 -/
 private theorem sat_tw {π : CuspSub K a} {w : HeightOneSpectrum (𝓞 K)} {B : Multiset ℂˣ} (h : (CG.mk π).HasSat w B) (s : ℝ) :
     (CG.mk (π.twist (GlobalTheory.HeckeGal.Model.absPow K s))).HasSat w (B.map (· * (GlobalTheory.HeckeGal.Model.absPow K s).val w)) :=
@@ -212,19 +210,17 @@ private theorem sat_tw {π : CuspSub K a} {w : HeightOneSpectrum (𝓞 K)} {B : 
 end Tw
 
 /- English proof (translation)
-Use `haveI : IsAlgClosure K Ω := ⟨IsAlgClosure.isAlgClosed M, Algebra.IsAlgebraic.trans K M Ω⟩`. Establish `hu : ∀ w B B', (CG.mk π).HasSat w B → (CG.mk π).HasSat w B' → B = B'` using `fun _ _ _ h h' => h.unique h'`. Establish `hsys` using `indSys_indSat (F := K) h2 (hatt.2.mono fun w ⟨B, h, _⟩ => ⟨B, h⟩)`. Establish `hA` using `attInd K M Ω h2 l ι r R _ _ hu (indSat_unique h2 hu) hatt hsys hP.1 H`. Establish `hl : ∀ᶠ u : HeightOneSpectrum (𝓞 K) in Filter.cofinite, ((l : ℕ) : 𝓞 K) ∉ u.asIdeal`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0 : Ideal.span {((l : ℕ) : 𝓞 K)} ≠ 0`. Rewrite using `[Ne, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot]`. Conclude with `Nat.cast_ne_zero.2 (Fact.out : l.Prime).ne_zero`. Conclude with `(Ideal.finite_factors h0).subset fun v hv => Ideal.dvd_span_singleton.mpr (not_not.1 hv)`. Establish `key : ∀ᶠ u : HeightOneSpectrum (𝓞 K) in Filter.cofinite, ∀ B, indSat (F` using `K) (CG.mk π).HasSat u B → (CG.mk (P.twist (GlobalTheory.HeckeGal.Model.absPow K (-1)))).HasSat u B := by filter_upwards [hA.2, hP.2, hl] with u ⟨B, hB, hF⟩ ⟨Bp, hBp, hFp⟩ hlu B₂ hB₂`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `rfl` from `indSat_unique h2 hu _ _ _ hB₂ hB`. Establish `hc : CharEig ι (cycBar K Ω l)⁻¹ u (normV u : ℂ)`. Use `UpperTheory.V.Af.Es.charEig_cyc (Ω := Ω) ι hlu 1` as an intermediate fact. Simplify using `using this`. Establish `e` using `eig_unique (UpperTheory.frobenius_eigenvalues_twist K Ω l ι 4 R _ u _ _ hFp hc) hF`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hq : (((normV u : ℝ) ^ ((((4 : ℕ) : ℝ) - 1) / 2) : ℝ) : ℂ) ≠ 0` using `Complex.ofReal_ne_zero.2 (Real.rpow_pos_of_pos (Nat.cast_pos.2 (zero_lt_one.trans (NumberField.HeightOneSpectrum.one_lt_absNorm u))) _).ne'`. Establish `e2 : B₂ = Bp.map (· * (GlobalTheory.HeckeGal.Model.absPow K (-1)).val u)`. Rewrite `e` using `[algSat_val, algSat_val, Multiset.map_map]`. Use `Multiset.map_injective (fun a b h => Units.ext (mul_left_cancel₀ hq h)) (e.symm.trans ?_)` and prove the remaining obligations. Rewrite using `[Multiset.map_map]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Use `Multiset.map_congr rfl fun b _ => ?_` and prove the remaining obligations. Simplify using `only [Function.comp_apply, Units.val_mul, val_absPow_neg_one]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e2]`. Conclude with `sat_tw hBp (-1)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Use `filter_upwards [hsys, (GlobalTheory.AboveL.SatBC.tendsto_under K M).eventually key] with w hw hk`. Use `⟨fun w' hne hw' => ?_, fun hq => ?_⟩` and prove the remaining obligations. Take `⟨B, B', h1, h2', h3⟩` from `hw.1 w' hne hw'`. Conclude with `⟨B, B', h1, h2', hk _ h3⟩`. Take `⟨B, B', h1, h2', h3⟩` from `hw.2 hq`.
-
-Conclude with `⟨B, B', h1, h2', hk _ h3⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem indSys_of_att {K M Ω : Type} [Field K] [NumberField K] [IsTotallyComplex K] [Field M] [NumberField M] [IsTotallyComplex M] [Field Ω]
     [Algebra K M] [Algebra K Ω] [Algebra M Ω] [IsScalarTower K M Ω] [IsAlgClosure M Ω] (h2 : Module.finrank K M = 2)
@@ -268,11 +264,11 @@ private theorem indSys_of_att {K M Ω : Type} [Field K] [NumberField K] [IsTotal
     exact ⟨B, B', h1, h2', hk _ h3⟩
 
 /- English proof (translation)
-Introduce `K M Ω _ _ _ _ _ _ _ _ _ _ _ _ h2 l _ ι π r hatt ⟨t, ht⟩ hb R H P _ hP`. Establish `hs` using `indSys_of_att h2 hatt H hP`. Establish `hQ : ∀ v, ImaginaryQuadraticEtaCharacter.WinAt (P.twist (GlobalTheory.HeckeGal.Model.absPow K (-1))) t v` using `fun v => ImaginaryQuadraticEtaCharacter.winInd K M h2 _ π hs t v fun w => ⟨ht w.1, thruBad K M h2 π hb v w⟩`. Take `⟨a, ha⟩` from `ImaginaryQuadraticEtaCharacter.winTw K (GlobalTheory.HeckeGal.Model.absPow K 1)`. Use `⟨t + a, fun v => ImaginaryQuadraticEtaCharacter.suppSmo K 4 (by norm_num) _ _ ?_ (t + a) v (ha 4 (by norm_num) _ t v (hQ v))⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `hP.2.mono fun u ⟨B, hB, _⟩ => ⟨B, ?_, hB⟩` and prove the remaining obligations. Establish `h1` using `sat_tw (sat_tw hB (-1)) 1`. Establish `hq : (normV u : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 (zero_lt_one.trans (NumberField.HeightOneSpectrum.one_lt_absNorm u)).ne'`. Establish `e : (B.map (· * (GlobalTheory.HeckeGal.Model.absPow K (-1)).val u)).map (· * (GlobalTheory.HeckeGal.Model.absPow K 1).val u) = B`. Rewrite using `[Multiset.map_map]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `(Multiset.map_congr rfl fun b _ => ?_).trans (Multiset.map_id B)` and prove the remaining obligations. Use `Units.ext ?_` and prove the remaining obligations. Simplify using `only [Function.comp_apply, Units.val_mul, val_absPow_neg_one, val_absPow_one, id]`. Clear the denominators using the available nonvanishing facts. Rewrite `h1` using `[e]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem awInd : AwInd := by
   intro K M Ω _ _ _ _ _ _ _ _ _ _ _ _ h2 l _ ι π r hatt ⟨t, ht⟩ hb R H P _ hP

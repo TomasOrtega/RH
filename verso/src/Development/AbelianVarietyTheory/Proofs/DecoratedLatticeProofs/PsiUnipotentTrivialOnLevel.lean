@@ -17,15 +17,15 @@ variable {D : D7}
 open Formalism.IndefR.Fin.LevelGroupLemmas in
 
 /- English proof (translation)
-Establish `h1 : ∀ A : Finset (Pl D), ψ (idemS A * t) = 1`. Introduce `A`. Proceed by induction on `A using Finset.induction_on with`. Consider the case `empty => rw [idemS_empty, zero_mul, AddChar.map_zero_eq_one]`. Consider the case `insert v A hv ih`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Establish `e : idemS (insert v A) = idemS A + pairA D.host.F 0 (ePl D (· = v))`. Unfold `idemS`. Rewrite using `[← pairA_add]`. Use `congr 1`. Use `RestrictedProduct.ext _ _ fun w => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Express the relevant statement in the definitionally equal form `evalV D.host.F w (sglS (insert v A)) = evalV D.host.F w (sglS A + ePl D (· = v))`. Rewrite using `[map_add, evalV_sglS, evalV_sglS, evalV_ePl]`. Distinguish the cases in `hw : w = v`. Substitute `hw` using the available equality. Simplify using `[hv]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[hw]`. Rewrite using `[e, add_mul, AddChar.map_add_eq_mul, ih, h, one_mul]`. Establish `h2` using `(hψ.tendsto 0).comp (tendsto_AF t ht)`. Rewrite `h2` using `[AddChar.map_zero_eq_one]`. Use `tendsto_nhds_unique tendsto_const_nhds (h2.congr fun A => ?_)` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e : t = idemS A * t + (1 - idemS A) * t` using `by ring`. Express the relevant statement in the definitionally equal form `ψ ((1 - idemS A) * t) = ψ t`. Use `conv_rhs => rw [e, AddChar.map_add_eq_mul, h1, one_mul]`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. A detailed English derivation is pending.
 -/
 theorem char_eq_one_of_local (ψ : AddChar (AF D.host.F) ℂ) (hψ : Continuous ψ) (t : AF D.host.F)
     (ht : fstA D.host.F t = 0) (h : ∀ v : Pl D, ψ (pairA D.host.F 0 (ePl D (· = v)) * t) = 1) : ψ t = 1 := by
@@ -54,7 +54,7 @@ theorem char_eq_one_of_local (ψ : AddChar (AF D.host.F) ℂ) (hψ : Continuous 
   conv_rhs => rw [e, AddChar.map_add_eq_mul, h1, one_mul]
 
 /- English proof (translation)
-Rewrite using `[← smul_eq_mul (pairA D.host.F 0 (ePl D Q)), ← map_smul, Algebra.smul_def]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem trace_idem (Q : Pl D → Prop) (s : AE D) : Algebra.trace (AF D.host.F) (AE D) (idem D Q * s) =
     pairA D.host.F 0 (ePl D Q) * Algebra.trace (AF D.host.F) (AE D) s := by
@@ -62,11 +62,9 @@ theorem trace_idem (Q : Pl D → Prop) (s : AE D) : Algebra.trace (AF D.host.F) 
   rfl
 
 /- English proof (translation)
-Use `char_eq_one_of_local ψ hψ _ ?_ fun v => ?_` and prove the remaining obligations. Rewrite using `[← (mem_idAt_iff P s).1 hs, trace_idem, map_mul]`. Conclude with `zero_mul _`. Rewrite using `[← trace_idem]`. Distinguish the cases in `hv : P v`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Conclude with `h v hv`. Establish `h0 : idem D (· = v) * s = 0`. Use `(mem_idOff_iff _ s).1 ((Submodule.mem_iInf _).2 fun w => RingHom.mem_ker.2 ?_)` and prove the remaining obligations. Conclude with `compAt_of_idAt hs (by rw [w.2]; exact hv)`. Rewrite using `[h0]`.
-
-Conclude with `psiE_zero ψ`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem psiE_eq_one_of_local (ψ : AddChar (AF D.host.F) ℂ) (hψ : Continuous ψ) {P : Pl D → Prop} {s : AE D}
     (hs : s ∈ idAt D P) (h : ∀ v, P v → psiE ψ (idem D (· = v) * s) = 1) : psiE ψ s = 1 := by
@@ -83,7 +81,7 @@ theorem psiE_eq_one_of_local (ψ : AddChar (AF D.host.F) ℂ) (hψ : Continuous 
       exact psiE_zero ψ
 
 /- English proof (translation)
-Use `AddSubgroup.closure_mono ?_` and prove the remaining obligations. Introduce and unpack `y ⟨α, h1, h2, h3⟩`. Conclude with `⟨α, h1, fun w hw => h2 w fun e => hw (e ▸ hv), h3⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem latV_mono {S : HSp D} {L : Lat S} {P : Pl D → Prop} {v : Pl D} (hv : P v) : latV S L (· = v) ≤ latV S L P := by
   refine AddSubgroup.closure_mono ?_
@@ -91,7 +89,7 @@ theorem latV_mono {S : HSp D} {L : Lat S} {P : Pl D → Prop} {v : Pl D} (hv : P
   exact ⟨α, h1, fun w hw => h2 w fun e => hw (e ▸ hv), h3⟩
 
 /- English proof (translation)
-Use function extensionality and compare the values at `k`. Simplify using `only [Matrix.mulVec, dotProduct, colMul, Matrix.mul_apply, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun _ _ => by ring`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mulVec_colMul {l m n : ℕ} (A : Mx D l m) (x : Mx D m n) (i : Fin n) (a : AE D) :
     A *ᵥ colMul x i a = colMul (A ⬝ x) i a := by
@@ -100,9 +98,9 @@ theorem mulVec_colMul {l m n : ℕ} (A : Mx D l m) (x : Mx D m n) (i : Fin n) (a
   exact Finset.sum_congr rfl fun _ _ => by ring
 
 /- English proof (translation)
-Establish `h1` using `latV_mono hv ha`. Establish `h2` using `smul_latV v (idem_mem_intAt (· = v)) ((ht.2 _ (latV_idAt h1)).1 h1)`. Establish `h3` using `((hm _).1 h2).1 i`. Rewrite `h3` using `[Matrix.mulVec_smul, mulVec_colMul, mulVec_colMul, dV.levi_jX, ← Matrix.mul_assoc, dV.pX_jX, Matrix.one_mul]`. Use `h3 using 2` and compare the differences between its conclusion and the goal.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Rewrite using `[Pi.smul_apply, smul_eq_mul, colMul]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem entry_line {V V₀ : HSp D} {ρ : ℕ} (dV : HypDec V V₀ ρ) {LV : Lat V} {LV₀ : Lat V₀} {P : Pl D → Prop} {v : Pl D}
     (hv : P v) (hm : MonoAt dV LV LV₀ v) {t : GL (Fin ρ) (AE D)} (ht : InK V LV P (dV.levi t)) (i j : Fin ρ) (a : AE D)
@@ -116,11 +114,11 @@ theorem entry_line {V V₀ : HSp D} {ρ : ℕ} (dV : HypDec V V₀ ρ) {LV : Lat
   ring
 
 /- English proof (translation)
-Introduce `D ψ V V₀ ρ dV LV LV₀ P hψ _ hP u hu hK`. Establish `key : ∀ i j : Fin ρ, j.1 = i.1 + 1 → psiE ψ (u.1.1 i j) = 1` using `fun i j hij => by`. Establish `hne : i ≠ j` using `fun e => by rw [e] at hij; omega`. Establish `hs : u.1.1 i j ∈ idAt D P`. Use `hu i j` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[Matrix.sub_apply, Matrix.one_apply_ne hne, sub_zero]`. Then use the resulting hypothesis. Use `psiE_eq_one_of_local ψ hψ.1.1 hs fun v hv => ?_` and prove the remaining obligations. Establish `h` using `((hP v hv).2 i j hij _ (Ideal.mul_mem_right _ _ (idem_mem_idAt _))).1 (entry_line dV hv (hP v hv).1 hK i j) _ (idem_mem_intAt _)`. Rewrite `h` using `[mul_right_comm, idem_mul_self]`. Then use the resulting hypothesis. Unfold `psiUni upSum`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Replace the relevant objects with their definitions.
 
-Use `Finset.sum_induction _ (fun x => psiE ψ x = 1) (fun a b ha hb => by rw [psiE_add, ha, hb, one_mul]) (psiE_zero ψ) fun i _ => ?_` and prove the remaining obligations. Use `Finset.sum_induction _ (fun x => psiE ψ x = 1) (fun a b ha hb => by rw [psiE_add, ha, hb, one_mul]) (psiE_zero ψ) fun j _ => ?_` and prove the remaining obligations. Use `split_ifs with h`. Conclude with `key i j h`. Conclude with `psiE_zero ψ`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem psiUni_eq_one : ∀ {D : D7} (ψ : AddChar (AF D.host.F) ℂ) {V V₀ : HSp D} {ρ : ℕ} (dV : HypDec V V₀ ρ) (LV : Lat V)
     (LV₀ : Lat V₀) (P : Pl D → Prop), IsStdChar D ψ (-1) → IsSelfDualC V LV →

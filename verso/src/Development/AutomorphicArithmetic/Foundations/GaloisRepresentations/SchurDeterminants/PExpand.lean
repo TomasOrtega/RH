@@ -4,11 +4,11 @@ import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.Schur
 open Finset MvPolynomial UpperTheory.Gal.Schur
 
 /- English proof (translation)
-Establish `key : ∀ a : ℕ, x ^ a * ((-1) ^ a * aeval g (esymm (Fin n) K a)) = ∑ t ∈ powersetCard a (univ : Finset (Fin n)), ∏ j ∈ t, (-(x * g j))`. Introduce `a`. Simplify using `only [esymm, map_sum, map_prod, aeval_X, mul_sum]`. Use `sum_congr rfl fun t ht => ?_` and prove the remaining obligations. Rewrite using `[prod_neg, prod_mul_distrib, prod_const, (mem_powersetCard.1 ht).2]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Fin.sum_univ_eq_sum_range (fun a => x ^ a * ((-1) ^ a * aeval g (esymm (Fin n) K a))) (n + 1)]`. Simplify using `only [key]`. Establish `hc : n + 1 = #(univ : Finset (Fin n)) + 1` using `by simp`. Rewrite using `[hc, ← sum_powerset, ← prod_one_add]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Unfold `detOne`. Simplify using `only [sub_eq_add_neg]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 private lemma one_factor {K R : Type} [CommRing K] [CommRing R] [Algebra K R] (n : ℕ) (x : R)
     (g : Fin n → R) :
@@ -28,7 +28,7 @@ private lemma one_factor {K R : Type} [CommRing K] [CommRing R] [Algebra K R] (n
   simp only [sub_eq_add_neg]
 
 /- English proof (translation)
-Introduce `K R π _ _ _ _ _ n x g`. Simplify using `only [one_factor (K := K)]`. Rewrite using `[Fintype.prod_sum]`. Use `sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[prod_mul_distrib]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem UpperTheory.Gal.Schur.expand :
     Expand := by

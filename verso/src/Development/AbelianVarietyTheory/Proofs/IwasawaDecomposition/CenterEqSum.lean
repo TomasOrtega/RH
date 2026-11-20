@@ -22,13 +22,13 @@ def avgC {G : Type} [Group G] [Fintype G] (g : G) : MonoidAlgebra ℂ G :=
   ((Fintype.card G : ℂ)⁻¹) • ∑ h : G, MonoidAlgebra.of ℂ G (h * g * h⁻¹)
 
 /- English proof (translation)
-Rewrite `hz` using `[Subalgebra.mem_center_iff]`. Establish `h1 : ∀ h : G, MonoidAlgebra.of ℂ G h * z * MonoidAlgebra.of ℂ G h⁻¹ = z`. Introduce `h`. Rewrite using `[hz, mul_assoc, ← map_mul, mul_inv_cancel, map_one, mul_one]`. Establish `h2 : z = ∑ g : G, z.coeff g • MonoidAlgebra.of ℂ G g` using `by conv_lhs => rw [← MonoidAlgebra.sum_coeff_single z]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Finsupp.sum_fintype _ _ (by simp)]`. Use `Finset.sum_congr rfl fun g _ => ?_` and prove the remaining obligations. Simplify using `[MonoidAlgebra.of_apply, MonoidAlgebra.smul_single']`. Establish `hc : (Fintype.card G : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 Fintype.card_ne_zero`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Simplify using `only [h1, Finset.sum_const, Finset.card_univ]`. Rewrite using `[← Nat.cast_smul_eq_nsmul ℂ, smul_smul, inv_mul_cancel₀ hc, one_smul]`. Use `_ = ∑ g : G, z.coeff g • avgC g := by conv_lhs => rw [h2]`. Simplify using `only [Finset.mul_sum, Finset.sum_mul, mul_smul_comm, smul_mul_assoc, avgC, Finset.smul_sum]`. Rewrite using `[Finset.sum_comm]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun g _ => Finset.sum_congr rfl fun h _ => ?_` and prove the remaining obligations. Rewrite using `[← map_mul, ← map_mul, smul_comm]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem center_eq_sum {G : Type} [Group G] [Fintype G] (z : MonoidAlgebra ℂ G)
     (hz : z ∈ Subalgebra.center ℂ (MonoidAlgebra ℂ G)) : z = ∑ g : G, z.coeff g • avgC g := by
@@ -53,9 +53,9 @@ theorem center_eq_sum {G : Type} [Group G] [Fintype G] (z : MonoidAlgebra ℂ G)
         rw [← map_mul, ← map_mul, smul_comm]
 
 /- English proof (translation)
-Rewrite using `[Subalgebra.mem_center_iff]`. Introduce `b`. Proceed by induction on `b using MonoidAlgebra.induction_on with`. Consider the case `of x`. Simplify using `only [avgC, mul_smul_comm, smul_mul_assoc, Finset.mul_sum, Finset.sum_mul, ← map_mul]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules.
 
-Use `congr 1`. Conclude with `Fintype.sum_equiv (Equiv.mulLeft x) _ _ fun h => by simp [mul_assoc]`. Consider the case `add x y hx hy => rw [add_mul, mul_add, hx, hy]`. Consider the case `smul r x hx => rw [smul_mul_assoc, mul_smul_comm, hx]`.
+Reduce the equality to equality of the corresponding arguments. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem avgC_mem {G : Type} [Group G] [Fintype G] (g : G) : avgC g ∈ Subalgebra.center ℂ (MonoidAlgebra ℂ G) := by
   rw [Subalgebra.mem_center_iff]
@@ -72,9 +72,9 @@ def avgK (K : Type) [Field K] {G : Type} [Group G] [Fintype G] (g : G) : MonoidA
   ((Fintype.card G : K)⁻¹) • ∑ h : G, MonoidAlgebra.of K G (h * g * h⁻¹)
 
 /- English proof (translation)
-Simplify using `only [avgK, avgC, MonoidAlgebra.of_apply]`. Simplify using `only [MonoidAlgebra.coeff_smul, MonoidAlgebra.coeff_sum, MonoidAlgebra.coeff_single, Finsupp.smul_apply, Finsupp.coe_finset_sum, Finset.sum_apply, Finsupp.single_apply, smul_eq_mul, map_mul, map_inv₀, map_natCast, map_sum, apply_ite, map_one, map_zero]`. Rewrite using `[Fintype.card_congr e.toEquiv]`. Use `congr 1`. Use `Fintype.sum_equiv e.toEquiv _ _ fun h => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [MulEquiv.toEquiv_eq_coe, MulEquiv.coe_toEquiv, ← map_mul, ← map_inv]`. Rewrite using `[Finsupp.single_apply, Finsupp.single_apply]`. Distinguish the cases in `hy : h * g * h⁻¹ = y`. Rewrite using `[if_pos hy, if_pos (congrArg e hy), map_one]`. Rewrite using `[if_neg hy, if_neg (fun h' => hy (e.injective h')), map_zero]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem avgK_coeff {K : Type} [Field K] {G H : Type} [Group G] [Fintype G] [Group H] [Fintype H] (σ : K →+* ℂ) (e : G ≃* H)
     (g y : G) : σ ((avgK K g).coeff y) = (avgC (e g)).coeff (e y) := by
@@ -93,11 +93,11 @@ theorem avgK_coeff {K : Type} [Field K] {G H : Type} [Group G] [Fintype G] [Grou
   · rw [if_neg hy, if_neg (fun h' => hy (e.injective h')), map_zero]
 
 /- English proof (translation)
-Establish `hz : z = ∑ g₁, (z : MonoidAlgebra ℂ G).coeff g₁ • (⟨avgC g₁, avgC_mem g₁⟩ : ↥(Subalgebra.center ℂ (MonoidAlgebra ℂ G)))`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[AddSubmonoidClass.coe_finset_sum]`. Simplify using `only [SetLike.val_smul]`. Conclude with `center_eq_sum _ z.2`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `conv_lhs => rw [hz]`. Rewrite using `[map_sum]`. Simplify using `only [map_smul, h, Finset.smul_sum, smul_smul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun g₀ _ => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[← Finset.sum_smul]`. Use `congr 1`. Use `conv_rhs => rw [center_eq_sum _ z.2]`. Simplify using `[MonoidAlgebra.coeff_sum, MonoidAlgebra.coeff_smul, Finsupp.coe_finset_sum, Finset.sum_apply]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem lin_center {G W : Type} [Group G] [Fintype G] [AddCommGroup W] [Module ℂ W]
     (Φ : ↥(Subalgebra.center ℂ (MonoidAlgebra ℂ G)) →ₗ[ℂ] W) (v : G → W)
@@ -121,9 +121,9 @@ theorem lin_center {G W : Type} [Group G] [Fintype G] [AddCommGroup W] [Module �
   simp [MonoidAlgebra.coeff_sum, MonoidAlgebra.coeff_smul, Finsupp.coe_finset_sum, Finset.sum_apply]
 
 /- English proof (translation)
-Proceed by induction on `b using MonoidAlgebra.induction_on with`. Consider the case `of x`. Simplify using `only [avgK, mul_smul_comm, smul_mul_assoc, Finset.mul_sum, Finset.sum_mul, ← map_mul]`. Use `congr 1`. Conclude with `Fintype.sum_equiv (Equiv.mulLeft x) _ _ fun h => by simp [mul_assoc]`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Treat this case separately.
 
-Consider the case `add x y hx hy => rw [add_mul, mul_add, hx, hy]`. Consider the case `smul r x hx => rw [smul_mul_assoc, mul_smul_comm, hx]`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem avgK_comm (K : Type) [Field K] {G : Type} [Group G] [Fintype G] (g : G) (b : MonoidAlgebra K G) :
     b * avgK K g = avgK K g * b := by
@@ -136,9 +136,9 @@ theorem avgK_comm (K : Type) [Field K] {G : Type} [Group G] [Fintype G] (g : G) 
   | smul r x hx => rw [smul_mul_assoc, mul_smul_comm, hx]
 
 /- English proof (translation)
-Simplify using `only [avgK, MonoidAlgebra.of_apply]`. Simplify using `only [MonoidAlgebra.coeff_smul, MonoidAlgebra.coeff_sum, MonoidAlgebra.coeff_single, Finsupp.smul_apply, Finsupp.coe_finset_sum, Finset.sum_apply, smul_eq_mul]`. Use `congr 1`. Use `(Fintype.sum_equiv (Equiv.mulLeft c) _ _ fun h => ?_).symm` and prove the remaining obligations. Rewrite using `[Finsupp.single_apply, Finsupp.single_apply]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `if_congr ⟨fun e => ?_, fun e => ?_⟩ rfl rfl` and prove the remaining obligations. Rewrite using `[← e]`. Simplify using `[mul_assoc]`. Establish `e' : c * (h * g * h⁻¹) * c⁻¹ = c * y * c⁻¹` using `by rw [← e]; simp [mul_assoc]`. Conclude with `mul_left_cancel (mul_right_cancel e')`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem avgK_conj (K : Type) [Field K] {G : Type} [Group G] [Fintype G] (g c y : G) :
     (avgK K g).coeff (c * y * c⁻¹) = (avgK K g).coeff y := by
@@ -155,7 +155,7 @@ theorem avgK_conj (K : Type) [Field K] {G : Type} [Group G] [Fintype G] (g c y :
     exact mul_left_cancel (mul_right_cancel e')
 
 /- English proof (translation)
-Unfold `GlobalTheory.PendOf.actSum`. Rewrite using `[Finsupp.sum_fintype _ _ (by intros; simp)]`. Simplify using `only [Finset.sum_apply, Pi.smul_apply]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem actSum_apply (D : D7) {n : ℕ} {W : Type} [AddCommGroup W] [Module ℂ W] (L : G0g D.nd → Formalism.AUTREP.GAf D.host.E n)
     (z : MonoidAlgebra ℂ (G0g D.nd)) (f : Formalism.AUTREP.GAf D.host.E n → W) (g : Formalism.AUTREP.GAf D.host.E n) :
@@ -209,21 +209,19 @@ def FrameAt (k : Fin D.R.m) (P : principalLevelFrame.RowPsi (Vc D k) D.R.nV) (s 
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `i`. It suffices to establish `H : ∀ μ, Used0 D μ → ∀ (j : ℕ) (hj1 : 1 ≤ j) (hj2 : j ≤ D.R.m), (∀ (s : T) (k : Fin D.R.m), Y.tup s = μ → FrameAt Y cG k (ad.PV k) s) → ∃ L : G0g D.nd → Formalism.AUTREP.GAf D.host.E D.R.nV, GlobalTheory.PendOf.IsTypeGroupBlockLift D D.R.nV L ∧ ∀ (z : ↥(Subalgebra.center ℂ (Monoi …`. Introduce `μ hμ j hj1 hj2 h3`. Take `⟨k, rfl⟩ : ∃ k : Fin D.R.m, j = (k : ℕ) + 1` from `⟨⟨j - 1, by omega⟩, by simp; omega⟩`. Take `⟨s, rfl⟩ : ∃ s, Y.tup s = μ` from `⟨_, Y.tupTie μ hμ⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the argument to an intermediate assertion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨L, hL, hc⟩` from `h3 s k rfl`. Use `⟨L, hL, fun z x => funext fun g => ?_⟩` and prove the remaining obligations. Rewrite using `[actSum_apply]`. Break down `subsingleton_or_nontrivial (D.what₂.Mt (Y.tup s) ((k : ℕ) + 1)) with h0 | h0` into its components or cases. Rewrite using `[Subsingleton.elim x 0]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Take `⟨c, hc⟩` from `hc h0`. Establish `key : ∀ g₁ : G0g D.nd, adForm Y (Y.tup s) hμ k (D.ntypes.cenMt (Y.tup s) ((k : ℕ) + 1) ⟨avgC g₁, avgC_mem g₁⟩ x) ((ad.PV k).ψ g) = ∑ g₀ : G0g D.nd, (avgC g₁).coeff g₀ • adForm Y (Y.tup s) hμ k x ((ad.PV k).ψ (g * L g₀))`. Introduce `g₁`. Establish `tie : ∀ y, D.what₂.embLL ((avgK D.what₂.LL ((R.eG.trans cG).symm g₁)).coeff y) = (avgC g₁).coeff ((R.eG.trans cG) y)` using `fun y => by rw [avgK_coeff D.what₂.embLL (R.eG.trans cG), MulEquiv.apply_symm_apply]`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Set `F1 : D.what₂.Mt (Y.tup s) ((k : ℕ) + 1) →ₗ[ℂ] (R.cV k).W` to `(LinearMap.proj ((ad.PV k).ψ g)).comp ((adForm Y (Y.tup s) hμ k).comp (D.ntypes.cenMt (Y.tup s) ((k : ℕ) + 1) ⟨avgC g₁, avgC_mem g₁⟩))`. Set `F2 : D.what₂.Mt (Y.tup s) ((k : ℕ) + 1) →ₗ[ℂ] (R.cV k).W` to `{ toFun := fun y => ∑ g₀ : G0g D.nd, (avgC g₁).coeff g₀ • adForm Y (Y.tup s) hμ k y ((ad.PV k).ψ (g * L g₀)) map_add' := fun y y' => by simp only [map_add, Pi.add_apply, smul_add, Finset.sum_add_distrib] map_smul' := fun c y => by`. Simplify using `only [map_smul, Pi.smul_apply, RingHom.id_apply, Finset.smul_sum]`. Conclude with `Finset.sum_congr rfl fun _ _ => smul_comm _ _ _ }`. Establish `hb` using `(D.what₂.jMt_basis (Y.tup s) ((k : ℕ) + 1) (Module.Free.chooseBasis D.what₂.LL (D.what₂.MtL (Y.tup s) ((k : ℕ) + 1)))).2`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hF : F1 = F2`. Use `LinearMap.ext_on_range hb (fun b => ?_)` and prove the remaining obligations. Take `⟨x', hx'⟩` from `(Y.eMt k s).surjective (Module.Free.chooseBasis D.what₂.LL (D.what₂.MtL (Y.tup s) ((k : ℕ) + 1)) b)`. Rewrite using `[← hx']`. Use `show adForm Y (Y.tup s) hμ k (D.ntypes.cenMt (Y.tup s) ((k : ℕ) + 1) ⟨avgC g₁, avgC_mem g₁⟩ (ratForm Y k s x')) ((ad.PV k).ψ g) = ∑ g₀ : G0g D.nd, (avgC g₁).coeff g₀ • adForm Y (Y.tup s) hμ k (ratForm Y k s x') ((ad.PV k).ψ (g * L g₀))`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[h1 s k ⟨avgC g₁, avgC_mem g₁⟩ _ tie x', h2 s hμ k _ (avgK_comm _ _) _ (fun y => (hc y).1) x']`. Use `Fintype.sum_equiv ((MulAut.conj c).toEquiv.trans (R.eG.trans cG).toEquiv) _ _ fun y => ?_` and prove the remaining obligations. Rewrite using `[(hc y).2, inv_one, mul_one, ← avgK_conj _ _ c y, tie, ← map_mul]`. Both sides reduce to the same expression. Conclude with `LinearMap.congr_fun hF x`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Apply `(ad.eW _ hμ k).injective` to reduce the goal to its premises. Rewrite using `[ad.read, map_sum]`. Set `Φ : ↥(Subalgebra.center ℂ (MonoidAlgebra ℂ (G0g D.nd))) →ₗ[ℂ] (R.cV k).W` to `{ toFun := fun z' => adForm Y (Y.tup s) hμ k (D.ntypes.cenMt (Y.tup s) ((k : ℕ) + 1) z' x) ((ad.PV k).ψ g) map_add' := fun y y' => by simp only [map_add, LinearMap.add_apply, Pi.add_apply] map_smul' := fun c y => by simp only [map_smul, LinearMap.smul_apply, Pi.smul_apply, RingHo …`. Use `(lin_center Φ (fun g₀ => adForm Y (Y.tup s) hμ k x ((ad.PV k).ψ (g * L g₀))) key z).trans ?_` and prove the remaining obligations. Use `Finset.sum_congr rfl fun g₀ _ => ?_` and prove the remaining obligations.
-
-Rewrite using `[map_smul, ad.read]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem cenLoc_of (M : MtFam D) (ad : MtAd Y M) (h1 : CenRat Y cG) (h2 : ActRead Y)
     (h3 : ∀ (i : D.nd.Loc) (s : T) (k : Fin D.R.m), Y.tup s = D.nd.mu i → FrameAt Y cG k (ad.PV k) s) : CenLoc D M := by

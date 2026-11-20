@@ -6,15 +6,13 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.TheoremsMuLinked.C
 open IsLocalRing Matrix Filter NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal UpperTheory.V.Alg UpperTheory.V.W UpperTheory.V.Pa UpperTheory.V.HV UpperTheory.V.Th GlobalTheory.GalOfCusp
 
 /- English proof (translation)
-Introduce `H hH`. Set `H' : Subgroup Γ` to `H.map K.subtype`. Establish `hH' : IsOpen (H' : Set Γ)`. Rewrite using `[Subgroup.coe_map]`. Conclude with `hK.isOpenMap_subtype_val _ hH`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Use `haveI := h H' hH'`. Set `e : H ≃* H'` to `H.equivMapOfInjective K.subtype K.subtype_injective`. Establish `hEq : ∀ x : H', (((e.symm x : K) : Γ)) = (x : Γ)` using `fun x => by conv_rhs => rw [← e.apply_symm_apply x]`. Both sides reduce to the same expression. Establish `hc : Continuous (fun x : H' => e.symm x)`.
+Establish an intermediate fact. Both sides reduce to the same expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `Topology.IsInducing.subtypeVal.continuous_iff.mpr ?_` and prove the remaining obligations. Use `Topology.IsInducing.subtypeVal.continuous_iff.mpr ?_` and prove the remaining obligations. Conclude with `continuous_subtype_val.congr (fun x => (hEq x).symm)`. Use `Finite.of_injective (fun φ : {φ : H →* Multiplicative (ZMod l) // IsOpen (φ.ker : Set H)} => (⟨φ.1.comp e.symm.toMonoidHom, by` and prove the remaining obligations. Rewrite using `[← MonoidHom.comap_ker, Subgroup.coe_comap]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components.
 
-Conclude with `φ.2.preimage hc⟩ :`. Use the proof step `{ψ : H' →* Multiplicative (ZMod l) // IsOpen (ψ.ker : Set H')})) ?_`. Introduce `φ ψ hφψ`. Apply `Subtype.ext` to reduce the goal to its premises. Use extensionality with `y`.
-
-Use `DFunLike.congr_fun (congrArg Subtype.val hφψ) (e y)` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 private theorem phiCond_of_isOpen_subgroup {Γ : Type} [Group Γ] [TopologicalSpace Γ] (l : ℕ) (K : Subgroup Γ)
     (hK : IsOpen (K : Set Γ)) (h : PhiCond Γ l) : PhiCond K l := by
@@ -45,15 +43,13 @@ private theorem phiCond_of_isOpen_subgroup {Γ : Type} [Group Γ] [TopologicalSp
   simpa using this
 
 /- English proof (translation)
-Introduce `l _ L G0 O _ _ _ _ _ n y m hphi`. Take `⟨-, hom⟩` from `omFacts l O`. Take `⟨hfin, -, hkill, -, -⟩` from `hom m`. Take `⟨-, ⟨rep, hrep⟩, hlc⟩` from `adExP l L G0 G0 (Glob.Hom.refl G0) O n y m`. Establish `hLC` using `hlc rep (Or.inr hrep)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hKo : IsOpen (G0.η.ker : Set G0.Γ)` using `G0.η_open`. Establish `hKc : IsClosed (G0.η.ker : Set G0.Γ)` using `Subgroup.isClosed_of_isOpen _ hKo`. Use `haveI : CompactSpace G0.G₀ := isCompact_iff_compactSpace.mp hKc.isCompact`. Set `rep0 : Representation O G0.G₀ (Mm O n m)` to `rep.comp G0.η.ker.subtype`. Establish `hLC0 : LC rep0` using `fun Z => (hLC Z).comp_continuous continuous_subtype_val`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hphi0 : PhiCond G0.G₀ l` using `phiCond_of_isOpen_subgroup l G0.η.ker hKo hphi`. Use `haveI : Finite (Om O m) := hfin`. Establish `hZ` using `finZK l m O G0.G₀ (Mm O n m) rep0 hphi0 hLC0 (fun Z => by`. Use extensionality with `i j`. Simplify using `using hkill (Z i j))`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Use `Set.Finite.subset (Set.finite_coe_iff.mp hZ) ?_` and prove the remaining obligations. Introduce and unpack `z ⟨hz1, hz2, -⟩`. Use `⟨hz1, fun g h => ?_⟩` and prove the remaining obligations. Rewrite using `[hz2 g h]`. Use `congr 1`.
-
-Conclude with `(hrep.1 g (z h)).symm`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Th.finTwO :
     ∀ (l : ℕ) [Fact l.Prime] (L : Loc) (G0 : Glob l L) (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [IsCoef l O] [Algebra ℤ_[l] O] (n : ℕ) (y : Pt G0.frame O n) (m : ℕ), PhiCond G0.Γ l → (Tw y m).Finite := by

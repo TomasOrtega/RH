@@ -19,7 +19,7 @@ def LocOpG (T : (B.Mat k r → E) → (B.Mat k r → E)) : Prop :=
     ∀ x ∈ O, x ∈ B.GV k r → T f₁ x = T f₂ x
 
 /- English proof (translation)
-Introduce `O hO f₁ f₂ h x hx hxG`. Conclude with `PBG.top_congr' O hO u a b h x hx hxG`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem locOpG_top (u : ℂ) (a b : Fin (2 * r + k + 1)) :
     LocOpG (k := k) (r := r) (E := E) (Formalism.QuantumDeterminants.Top (EabH (Hpk k r)) u a b) := by
@@ -27,7 +27,7 @@ theorem locOpG_top (u : ℂ) (a b : Fin (2 * r + k + 1)) :
   exact PBG.top_congr' O hO u a b h x hx hxG
 
 /- English proof (translation)
-The claim follows from `| [], _ => fun _ _ _ _ h => h | T :: L, hL => by intro O hO f₁ f₂ h x hx hxG simp only [List.foldr_cons] exact hL T List.mem_cons_self O hO _ _ (locOpG_foldr L (fun T' hT' => hL T' (List.mem_cons_of_mem _ hT')) O hO f₁ f₂ h) x hx hxG`.
+A detailed English derivation is pending.
 -/
 theorem locOpG_foldr : ∀ (L : List ((B.Mat k r → E) → (B.Mat k r → E))), (∀ T ∈ L, LocOpG T) →
     LocOpG (fun f => L.foldr (fun T h => T h) f)
@@ -39,9 +39,9 @@ theorem locOpG_foldr : ∀ (L : List ((B.Mat k r → E) → (B.Mat k r → E))),
       (locOpG_foldr L (fun T' hT' => hL T' (List.mem_cons_of_mem _ hT')) O hO f₁ f₂ h) x hx hxG
 
 /- English proof (translation)
-Introduce `O hO f₁ f₂ h x hx hxG`. Simplify using `only [qminorOp, Finset.sum_apply, Pi.smul_apply]`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Use `congr 1`. Use `locOpG_foldr _ (fun T hT => ?_) O hO f₁ f₂ h x hx hxG` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨i, rfl⟩` from `List.mem_ofFn.1 hT`. Conclude with `locOpG_top _ _ _`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem locOpG_qminorOp {t : ℕ} (a b : Fin t → Fin (2 * r + k + 1)) (u : ℂ) :
     LocOpG (k := k) (r := r) (E := E) (qminorOp (EabH (Hpk k r)) a b u) := by
@@ -54,9 +54,9 @@ theorem locOpG_qminorOp {t : ℕ} (a b : Fin t → Fin (2 * r + k + 1)) (u : ℂ
   exact locOpG_top _ _ _
 
 /- English proof (translation)
-Introduce `O hO f₁ f₂ h x hx hxG`. Simplify using `only [C3.AAop]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Use `split_ifs`. Rewrite using `[locOpG_qminorOp _ _ _ O hO f₁ f₂ h x hx hxG]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem locOpG_AAop (m : ℕ) (hm : m ≤ r) (u : ℂ) : LocOpG (k := k) (r := r) (E := E) (C3.AAop k r m hm u) := by
   intro O hO f₁ f₂ h x hx hxG
@@ -67,9 +67,9 @@ theorem locOpG_AAop (m : ℕ) (hm : m ≤ r) (u : ℂ) : LocOpG (k := k) (r := r
   · rfl
 
 /- English proof (translation)
-Introduce `O hO f₁ f₂ h x hx hxG`. Simplify using `only [C3.AAvop]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Use `split_ifs`. Rewrite using `[locOpG_qminorOp _ _ _ O hO f₁ f₂ h x hx hxG]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem locOpG_AAvop (m : ℕ) (hm : m ≤ r) (ell : ℂ) :
     LocOpG (k := k) (r := r) (E := E) (C3.AAvop k r m hm ell) := by
@@ -81,9 +81,9 @@ theorem locOpG_AAvop (m : ℕ) (hm : m ≤ r) (ell : ℂ) :
   · rfl
 
 /- English proof (translation)
-Introduce `O hO f₁ f₂ h x hx hxG`. Simplify using `only [D.vLet]`. Use `split_ifs`. Both sides reduce to the same expression. Rewrite using `[locOpG_AAop _ _ _ O hO f₁ f₂ h x hx hxG]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[locOpG_AAvop _ _ _ O hO f₁ f₂ h x hx hxG]`.
+A detailed English derivation is pending.
 -/
 theorem locOpG_vLet (z z' : Fin (2 * r + k + 1) → ℂ) (j : ℕ) (hj : j ≤ r) (l : C.Letter) (e : Fin 2) :
     LocOpG (k := k) (r := r) (E := E) (D.vLet k r z z' j hj l e) := by
@@ -95,7 +95,7 @@ theorem locOpG_vLet (z z' : Fin (2 * r + k + 1) → ℂ) (j : ℕ) (hj : j ≤ r
   · rw [locOpG_AAvop _ _ _ O hO f₁ f₂ h x hx hxG]
 
 /- English proof (translation)
-The claim follows from `| [], _ => h | l :: w, e => by intro x hx hxG simp only [D.uwG] exact locOpG_vLet z z' j hj l _ O hO _ _ (uwG_congrG z z' j hj hO h w _) x hx hxG`.
+A detailed English derivation is pending.
 -/
 theorem uwG_congrG (z z' : Fin (2 * r + k + 1) → ℂ) (j : ℕ) (hj : j ≤ r) {O : Set (B.Mat k r)} (hO : IsOpen O)
     {f₁ f₂ : B.Mat k r → E} (h : ∀ x ∈ O, x ∈ B.GV k r → f₁ x = f₂ x) :
@@ -108,7 +108,7 @@ theorem uwG_congrG (z z' : Fin (2 * r + k + 1) → ℂ) (j : ℕ) (hj : j ≤ r)
     exact locOpG_vLet z z' j hj l _ O hO _ _ (uwG_congrG z z' j hj hO h w _) x hx hxG
 
 /- English proof (translation)
-Use function extensionality and compare the values at `g`. Simplify using `only [Formalism.QuantumDeterminants.Top, smul_zero, ite_self, zero_add]`. Conclude with `PBG.eabH_zero a b g`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem top_zero (u : ℂ) (a b : Fin (2 * r + k + 1)) :
     Formalism.QuantumDeterminants.Top (EabH (Hpk k r)) u a b (fun _ : B.Mat k r => (0 : E)) = fun _ => 0 := by
@@ -117,7 +117,7 @@ theorem top_zero (u : ℂ) (a b : Fin (2 * r + k + 1)) :
   exact PBG.eabH_zero a b g
 
 /- English proof (translation)
-The claim follows from `| [], _ => rfl | T :: L, hL => by simp only [List.foldr_cons] rw [foldr_zero L (fun T' hT' => hL T' (List.mem_cons_of_mem _ hT'))] exact hL T List.mem_cons_self`.
+A detailed English derivation is pending.
 -/
 theorem foldr_zero : ∀ (L : List ((B.Mat k r → E) → (B.Mat k r → E))),
     (∀ T ∈ L, T (fun _ => 0) = fun _ => 0) → L.foldr (fun T h => T h) (fun _ => (0 : E)) = fun _ => 0
@@ -128,7 +128,7 @@ theorem foldr_zero : ∀ (L : List ((B.Mat k r → E) → (B.Mat k r → E))),
     exact hL T List.mem_cons_self
 
 /- English proof (translation)
-Unfold `qminorOp`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `σ _`. Rewrite using `[foldr_zero _ (fun T hT => by obtain ⟨i, rfl⟩ := List.mem_ofFn.1 hT; exact top_zero _ _ _)]`. Use function extensionality and compare the values at `g`.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
 Simplify using the standard rewrite rules.
 -/
@@ -142,9 +142,9 @@ theorem qminorOp_zero {t : ℕ} (a b : Fin t → Fin (2 * r + k + 1)) (u : ℂ) 
   simp
 
 /- English proof (translation)
-Use function extensionality and compare the values at `g`. Simplify using `only [C3.AAop]`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `c _`. Use `split_ifs`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[qminorOp_zero]`. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem AAop_zero (m : ℕ) (hm : m ≤ r) (u : ℂ) : C3.AAop k r m hm u (fun _ : B.Mat k r => (0 : E)) = fun _ => 0 := by
   funext g
@@ -156,9 +156,9 @@ theorem AAop_zero (m : ℕ) (hm : m ≤ r) (u : ℂ) : C3.AAop k r m hm u (fun _
   · rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `g`. Simplify using `only [C3.AAvop]`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `c _`. Use `split_ifs`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[qminorOp_zero]`. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem AAvop_zero (m : ℕ) (hm : m ≤ r) (ell : ℂ) :
     C3.AAvop k r m hm ell (fun _ : B.Mat k r => (0 : E)) = fun _ => 0 := by
@@ -171,9 +171,9 @@ theorem AAvop_zero (m : ℕ) (hm : m ≤ r) (ell : ℂ) :
   · rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `g`. Simplify using `only [D.vLet]`. Use `split_ifs`. Both sides reduce to the same expression. Rewrite using `[AAop_zero]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Rewrite using `[AAvop_zero]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem vLet_zero (z z' : Fin (2 * r + k + 1) → ℂ) (j : ℕ) (hj : j ≤ r) (l : C.Letter) (e : Fin 2) :
     D.vLet k r z z' j hj l e (fun _ : B.Mat k r => (0 : E)) = fun _ => 0 := by
@@ -185,7 +185,7 @@ theorem vLet_zero (z z' : Fin (2 * r + k + 1) → ℂ) (j : ℕ) (hj : j ≤ r) 
   · rw [AAvop_zero]; simp
 
 /- English proof (translation)
-The claim follows from `| [], _ => rfl | l :: w, e => by simp only [D.uwG] rw [uwG_zero z z' j hj w _] exact vLet_zero z z' j hj l _`.
+A detailed English derivation is pending.
 -/
 theorem uwG_zero (z z' : Fin (2 * r + k + 1) → ℂ) (j : ℕ) (hj : j ≤ r) :
     ∀ (w : List C.Letter) (e : Wd.Ix (Fin w.length)),
@@ -199,26 +199,24 @@ theorem uwG_zero (z z' : Fin (2 * r + k + 1) → ℂ) (j : ℕ) (hj : j ≤ r) :
 end gloc
 
 /- English proof (translation)
-Unfold `B.gN`. Use `fun_prop`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem continuous_gN {k r : ℕ} : Continuous (fun g : B.Mat k r => B.gN g) := by
   unfold B.gN
   fun_prop
 
 /- English proof (translation)
-Take `⟨⟨hsm, ⟨R, hR⟩, ⟨ε, hε, hεG⟩⟩, ⟨K, hK, h0K, hDK⟩⟩` from `hF`. Set `S : Set (B.Mat k r)` to `{x | x ∈ B.GV k r ∧ F x ≠ 0}`. Establish `hDc : Continuous (fun x : B.Mat k r => Dmin k r Bs.z Bs.z' x ⟨r, by omega⟩)` using `(Formalism.FourierDecayAlt.P.JCx1.contDiff_Dmin Bs.z Bs.z' _).continuous`. Establish `hvan : ∀ x ∈ (closure S)ᶜ, x ∈ B.GV k r → D.uwG k r Bs.z Bs.z' F r le_rfl w e x = 0`. Introduce `x hx hxG`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hz : ∀ y ∈ (closure S)ᶜ, y ∈ B.GV k r → F y = (fun _ => (0 : Wq →L[ℂ] Wp)) y`. Introduce `y hy hyG`. Assume the negation of the conclusion as `hne`. Conclude with `hy (subset_closure ⟨hyG, hne⟩)`. Rewrite using `[uwG_congrG Bs.z Bs.z' r le_rfl isClosed_closure.isOpen_compl hz w e x hx hxG, uwG_zero]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hcl : ∀ x, x ∈ B.GV k r → D.uwG k r Bs.z Bs.z' F r le_rfl w e x ≠ 0 → x ∈ closure S`. Introduce `x hxG hne`. Assume the negation of the conclusion as `hx`. Conclude with `hne (hvan x hx hxG)`. Establish `hDcl : ∀ x ∈ closure S, Dmin k r Bs.z Bs.z' x ⟨r, by omega⟩ ∈ K`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Establish `hsub : S ⊆ (fun x => Dmin k r Bs.z Bs.z' x ⟨r, by omega⟩) ⁻¹' K` using `fun x hx => hDK x hx.1 hx.2`. Conclude with `fun x hx => closure_minimal hsub (hK.isClosed.preimage hDc) hx`. Use `⟨⟨?_, ⟨R, ?_⟩, ⟨ε, hε, ?_⟩⟩, ⟨K, hK, h0K, ?_⟩⟩` and prove the remaining obligations. Introduce `g₀ hg₀`. Distinguish the cases in `hD : Dmin k r Bs.z Bs.z' g₀ ⟨r, by omega⟩ = 0`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Supply the required witnesses or components.
 
-Establish `hg₀S : g₀ ∈ (closure S)ᶜ` using `fun h => h0K (hD ▸ hDcl g₀ h)`. Conclude with `⟨(closure S)ᶜ, fun _ => 0, isClosed_closure.isOpen_compl, hg₀S, contDiffOn_const, fun x hx hxG => hvan x hx hxG⟩`. Conclude with `PBG.uwG_mem Bs.z Bs.z' r le_rfl hsm w e g₀ hD hg₀`. Introduce `g hg hne`. Establish `hsub : S ⊆ {x | B.gN x ≤ R}` using `fun x hx => hR x hx.1 hx.2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `closure_minimal hsub (isClosed_le continuous_gN continuous_const) (hcl g hg hne)`. Introduce `g hg hne`. Establish `hsub : S ⊆ {x | ε ≤ Gf k r Bs.z Bs.z' x}` using `fun x hx => hεG x hx.1 hx.2`. Conclude with `closure_minimal hsub (isClosed_le continuous_const (Formalism.FourierDecayAlt.P.Ux8.cont_Gf _ _ _ _)) (hcl g hg hne)`. Introduce `g hg hne`.
-
-Conclude with `hDcl g (hcl g hg hne)`.
+A detailed English derivation is pending.
 -/
 theorem topCls_uwG {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
     [InnerProductSpace ℂ Wq] (Bs : B.RealPlaceData k r Wp Wq) (F : B.Mat k r → (Wq →L[ℂ] Wp))
@@ -263,7 +261,7 @@ end Formalism.FourierDecayAlt.P.CutEXUw
 namespace Formalism.FourierDecayAlt.P
 
 /- English proof (translation)
-Introduce `Wp Wq _ _ _ _ _ _ P p F hF w e`. Conclude with `CutEXUw.topCls_uwG p.T.base F hF w e`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem unipotent_weight_top : CutEX.UwTop := by
   intro Wp Wq _ _ _ _ _ _ P p F hF w e

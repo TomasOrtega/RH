@@ -11,9 +11,9 @@ open DoubleCoset (doubleCoset)
 namespace GlobalTheory.CompanionTheory.CellSizes
 
 /- English proof (translation)
-Establish `h : (Finset.univ.filter fun x : Fin N => blk e x = i) = (Finset.univ : Finset (m i)).map ⟨fun y => e ⟨i, y⟩, fun a b hab => by simpa using e.injective hab⟩`. Use extensionality with `x`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_map, Function.Embedding.coeFn_mk]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `rfl`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨(e.symm x).2, e.apply_symm_apply x⟩`. Introduce and unpack `⟨y, rfl⟩`. Conclude with `blk_apply e i y`. Rewrite using `[h, Finset.card_map, Finset.card_univ]`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_blk_fiber {α : Type} {N : ℕ} {m : α → Type} [DecidableEq α] [∀ i, Fintype (m i)]
     (e : (Σ i, m i) ≃ Fin N) (i : α) :
@@ -32,11 +32,11 @@ theorem card_blk_fiber {α : Type} {N : ℕ} {m : α → Type} [DecidableEq α] 
   rw [h, Finset.card_map, Finset.card_univ]
 
 /- English proof (translation)
-Introduce `α _ _ N m _ _ β' _ _ m' _ _ e e' w`. Prove the components needed by the constructor for the conclusion. Introduce `i`. Establish `h` using `Finset.card_eq_sum_card_fiberwise (s := Finset.univ.filter fun x : Fin N => blk e x = i) (t := (Finset.univ : Finset β')) (f := fun x => blk e' (w.symm x)) (fun _ _ => Finset.mem_coe.2 (Finset.mem_univ _))`. Simplify using `only [Finset.filter_filter] at h`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[← h]`. Conclude with `card_blk_fiber e i`. Introduce `j`. Establish `h` using `Finset.card_eq_sum_card_fiberwise (s := Finset.univ.filter fun x : Fin N => blk e' (w.symm x) = j) (t := (Finset.univ : Finset α)) (f := fun x => blk e x) (fun _ _ => Finset.mem_coe.2 (Finset.mem_univ _))`. Simplify using `only [Finset.filter_filter] at h`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h2 : (Finset.univ.filter fun x : Fin N => blk e' (w.symm x) = j).card = (Finset.univ.filter fun y : Fin N => blk e' y = j).card` using `Finset.card_equiv w.symm (by simp)`. Simplify using `only [and_comm (a := blk e _ = _)]`. Rewrite using `[← h, h2]`. Conclude with `card_blk_fiber e' j`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sizes_sum : ∀ {α : Type} [Fintype α] [LinearOrder α] {N : ℕ} {m : α → Type} [∀ i, Fintype (m i)] [∀ i, DecidableEq (m i)] {β' : Type} [Fintype β'] [LinearOrder β'] {m' : β' → Type} [∀ j, Fintype (m' j)] [∀ j, DecidableEq (m' j)] (e : (Σ i, m i) ≃ Fin N) (e' : (Σ j, m' j) ≃ Fin N) (w : Equiv.Perm (Fin N)), (∀ i, ∑ j, ((Finset.univ.filter fun x : Fin N => blk e x = i ∧ blk e' (w.symm x) = j).card) = Fintype.card (m i)) ∧ ∀ j, ∑ i, ((Finset.univ.filter fun x : Fin N => blk e x = i ∧ blk e' (w.symm x) = j).card) = Fintype.card (m' j) := by
   intro α _ _ N m _ _ β' _ _ m' _ _ e e' w

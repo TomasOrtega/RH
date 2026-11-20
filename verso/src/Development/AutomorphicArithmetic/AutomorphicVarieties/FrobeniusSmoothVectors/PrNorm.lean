@@ -12,21 +12,21 @@ section SlopeTestRemainingChoices
 variable {l : ℕ} [Fact l.Prime] {k : Type} [Field k] {F : Frame l k} {n : ℕ} {C C' : Type} [CommRing C] [CommRing C']
 
 /- English proof (translation)
-Simplify using `[conjBy, GG.ofGL, MulAut.conj_apply, SemidirectProduct.mul_left, SemidirectProduct.mul_right, mul_assoc]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem conj_left {G : Type} [Group G] (h : GL (Fin n) C) (r : G →* GG n C) (s : G) :
     (conjBy h r s).left = h * (r s).left * sgnAct n C (r s).right h⁻¹ := by
   simp [conjBy, GG.ofGL, MulAut.conj_apply, SemidirectProduct.mul_left, SemidirectProduct.mul_right, mul_assoc]
 
 /- English proof (translation)
-Simplify using `[conjBy, GG.ofGL, MulAut.conj_apply, SemidirectProduct.mul_right]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem conj_right {G : Type} [Group G] (h : GL (Fin n) C) (r : G →* GG n C) (s : G) :
     (conjBy h r s).right = (r s).right := by
   simp [conjBy, GG.ofGL, MulAut.conj_apply, SemidirectProduct.mul_right]
 
 /- English proof (translation)
-Unfold `GG.mat`. Rewrite using `[conj_left, hs, sgnAct_one, Units.val_mul, Units.val_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 private theorem conj_mat {G : Type} [Group G] (h : GL (Fin n) C) (r : G →* GG n C) (s : G) (hs : (r s).right = 1) :
     (conjBy h r s).mat = (h : Matrix (Fin n) (Fin n) C) * (r s).mat *
@@ -35,7 +35,7 @@ private theorem conj_mat {G : Type} [Group G] (h : GL (Fin n) C) (r : G →* GG 
   rw [conj_left, hs, sgnAct_one, Units.val_mul, Units.val_mul]
 
 /- English proof (translation)
-Apply `MonoidHom.ext` to reduce the goal to its premises. Introduce `s`. Simplify using `[conjBy, MulAut.conj_apply, _root_.mul_inv_rev, mul_assoc]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 private theorem conj_mul {G : Type} [Group G] (h h' : GL (Fin n) C) (r : G →* GG n C) :
     conjBy (h * h') r = conjBy h (conjBy h' r) := by
@@ -44,7 +44,7 @@ private theorem conj_mul {G : Type} [Group G] (h h' : GL (Fin n) C) (r : G →* 
   simp [conjBy, MulAut.conj_apply, _root_.mul_inv_rev, mul_assoc]
 
 /- English proof (translation)
-Conclude with `(B.nu s).trans (MonoidHom.mem_ker.mp s.2)`.
+A detailed English derivation is pending.
 -/
 private theorem frame_right_eq_one_of_G0 (B : Box F n C) (s : F.G0) : (B.r s).right = 1 := by
   exact (B.nu s).trans (MonoidHom.mem_ker.mp s.2)
@@ -67,9 +67,9 @@ private noncomputable def cj (h : GL (Fin n) C) (B : Box F n C) : Box F n C wher
     simpa only [Units.val_mul] using this
 
 /- English proof (translation)
-Establish `hh' : Matrix.GeneralLinearGroup.map f h = 1` using `Units.ext (by simpa using hh)`. Establish `hg : GG.map f (GG.ofGL h) = 1`. Simplify using `[GG.map, GG.ofGL, hh']`. Apply `Box.ext` to reduce the goal to its premises. Apply `MonoidHom.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `s`. Use `show GG.map f (conjBy h B.r s) = GG.map f (B.r s)`. Simplify using `[conjBy, MulAut.conj_apply, map_mul, map_inv, hg]`. Use function extensionality and compare the values at `v show Matrix.GeneralLinearGroup.map f (B.g v * h⁻¹) = Matrix.GeneralLinearGroup.map f (B.g v)`. Simplify using `[map_mul, map_inv, hh']`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem cj_map (f : C →+* C') (h : GL (Fin n) C) (B : Box F n C)
     (hh : (h : Matrix (Fin n) (Fin n) C).map f = 1) : (cj h B).map f = B.map f := by
@@ -86,13 +86,11 @@ private theorem cj_map (f : C →+* C') (h : GL (Fin n) C) (B : Box F n C)
     simp [map_mul, map_inv, hh']
 
 /- English proof (translation)
-Introduce `i j N`. Rewrite using `[IsLocallyConstant.iff_eventually_eq]`. Introduce `x`. Establish `hdel : ∀ᶠ y in nhds x, F.del y = F.del x`. Establish `hopen : IsOpen ((fun y => x⁻¹ * y) ⁻¹' (F.del.ker : Set F.Γ))` using `hd.preimage (continuous_const.mul continuous_id)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `filter_upwards [hopen.mem_nhds (by simp)] with y hy`. Establish `e : F.del (x⁻¹ * y) = 1` using `hy`. Rewrite `e` using `[map_mul, map_inv, inv_mul_eq_one]`. Conclude with `e.symm`. Establish `hM : ∀ᶠ y in nhds x, ∀ a b : Fin n, Ideal.Quotient.mk (I ^ N) ((B.r y).mat a b) = Ideal.Quotient.mk (I ^ N) ((B.r x).mat a b)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Filter.eventually_all]`. Introduce `a`. Rewrite using `[Filter.eventually_all]`. Introduce `b`. Conclude with `(hB a b N).eventually_eq x`.
-
-Use `filter_upwards [hdel, hM] with y hy hMy`. Use `show Ideal.Quotient.mk (I ^ N) ((conjBy h B.r y).mat i j) = Ideal.Quotient.mk (I ^ N) ((conjBy h B.r x).mat i j)`. Simplify using `only [GG.mat] at hMy ⊢`. Simplify using `only [conj_left, B.nu, hy, Units.val_mul, Matrix.mul_apply, map_sum, map_mul, hMy]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem cj_cont (hd : IsOpen (F.del.ker : Set F.Γ)) (I : Ideal C) (h : GL (Fin n) C) (B : Box F n C)
     (hB : B.Cont I) : (cj h B).Cont I := by
@@ -119,7 +117,7 @@ private theorem cj_cont (hd : IsOpen (F.del.ker : Set F.Γ)) (I : Ideal C) (h : 
   simp only [conj_left, B.nu, hy, Units.val_mul, Matrix.mul_apply, map_sum, map_mul, hMy]
 
 /- English proof (translation)
-Establish `e : ρ.r = ρ'.r` using `MonoidHom.ext fun s => (h.res s).symm.trans (h'.res s)`. Apply `NRep.ext e` to reduce the goal to its premises. Use function extensionality and compare the values at `v i`. Use `MonoidHom.ext fun s => Units.ext ?_` and prove the remaining obligations. Rewrite using `[← h.psi, ← h'.psi, e]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 private theorem of_unique {B : Box F n C} {ρ ρ' : NRep F n C} (h : B.Of ρ) (h' : B.Of ρ') : ρ = ρ' := by
   have e : ρ.r = ρ'.r := MonoidHom.ext fun s => (h.res s).symm.trans (h'.res s)
@@ -129,9 +127,9 @@ private theorem of_unique {B : Box F n C} {ρ ρ' : NRep F n C} (h : B.Of ρ) (h
   rw [← h.psi, ← h'.psi, e]
 
 /- English proof (translation)
-Establish `t1 : theta (1 : GL (Fin n) C) = 1`. Simplify `map_one (sgnAct n C (-1))` using `[sgnAct_neg_one]`. Establish `hX : B.r F.c = ⟨1, -1⟩` using `SemidirectProduct.ext (Units.ext (by simpa [GG.mat] using h1)) ((B.nu _).trans hc)`. Establish `hY : B.r (g : F.Γ) = ⟨(B.r g).left, 1⟩` using `SemidirectProduct.ext rfl (frame_right_eq_one_of_G0 B g)`. Rewrite using `[show ((F.star g : F.G0) : F.Γ) = F.c * (g : F.Γ)⁻¹ * F.c⁻¹ from rfl, map_mul, map_mul, map_inv, map_inv, hX, hY]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Simplify using `[GG.mat, SemidirectProduct.mul_left, SemidirectProduct.inv_left, map_inv, sgnAct_neg_one, sgnAct_one, theta_inv_val]`. Rewrite using `[t1, t1, Units.val_one, mul_one, ← Matrix.coe_units_inv, theta_inv_val]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 private theorem star_mat (hc : F.del F.c = -1) (B : Box F n C) (h1 : (B.r F.c).mat = 1) (g : F.G0) :
     (B.r (F.star g)).mat = Jmat C n * (B.r g).matᵀ * Jmat C n := by
@@ -148,31 +146,27 @@ end SlopeTestRemainingChoices
 end UpperTheory.V.Fr
 
 /- English proof (translation)
-Introduce `l _ k _ _ F C₀ n hF O _ _ C' _ _ _ C _ _ _ p ρ B' hmk hgood hof hcont`. Establish `hkp : RingHom.ker p ≤ maximalIdeal C'`. Introduce `x hx`. Rewrite `hx` using `[RingHom.mem_ker]`. Rewrite using `[← res_eq_zero_iff O C', ← res_map p x, hx, map_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hmat : ∀ (B : Box F n C') (s : F.Γ), ((B.map (p : C' →+* C)).r s).mat = (B.r s).mat.map p` using `fun B s => rfl`. Establish `hx1 : (B'.r F.c).mat.map p = 1`. Rewrite using `[← hmat]`. Conclude with `hof.atc`. Take `⟨h1, hh1, hc1⟩` from `pr_norm1 O C' C p n (B'.r F.c) hmk hkp hgood.two (by rw [← map_mul, hF.c_sq, map_one]) ((B'.nu _).trans hF.del_c) hx1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `set B1 := cj h1 B' with hB1`. Establish `hB1c : (B1.r F.c).mat = 1` using `hc1`. Establish `hB1map : B1.map (p : C' →+* C) = B'.map (p : C' →+* C)` using `cj_map _ h1 B' hh1`. Establish `hB1cont : B1.Cont (maximalIdeal C')` using `cj_cont hF.del_open _ h1 B' hcont`. Establish `hstar : ∀ g : F.G0, (B1.r (F.star g)).mat = Jmat C' n * (B1.r g).matᵀ * Jmat C' n` using `star_mat hF.del_c B1 hB1c`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `set Z := (B1.r F.g0).mat - (B1.r (F.star F.g0)).mat with hZ`. Establish `hJ : ∀ X : Matrix (Fin n) (Fin n) C', Jmat C' n * (Jmat C' n * X) = X`. Introduce `X`. Rewrite using `[← Matrix.mul_assoc, Jmat_mul_Jmat, Matrix.one_mul]`. Establish `hθ : thetaLie Z = Z`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 
-Rewrite using `[hZ, hstar]`. Simplify using `only [thetaLie, Matrix.transpose_sub, Matrix.transpose_mul, Jmat_transpose, Matrix.transpose_transpose, Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_assoc, hJ, Jmat_mul_Jmat, Matrix.mul_one]`. Normalize the expressions using the abelian group laws. Establish `hZp : Z.map p = ρ.r F.g0 - ρ.r (F.star F.g0)`. Rewrite using `[hZ, Matrix.map_sub _ (fun a b => map_sub p a b), ← hmat, ← hmat, hB1map, hof.res, hof.res]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hoff : ∀ i j : Fin n, i ≠ j → p (Z i j) = 0`. Introduce `i j hij`. Establish `e` using `congrFun (congrFun hZp i) j`. Rewrite `e` using `[Matrix.map_apply]`. Rewrite using `[e]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `ρ.diag i j hij`. Establish `hdist : ∀ i j : Fin n, i ≠ j → res O C' (Z i i) ≠ res O C' (Z j j)`. Introduce `i j hij`. Establish `e : ∀ a, p (Z a a) = (ρ.r F.g0 - ρ.r (F.star F.g0)) a a` using `fun a => by`. Rewrite using `[← hZp, Matrix.map_apply]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[← res_map p, ← res_map p, e i, e j]`. Apply the tactic sequence `convert hgood.zd i j hij using 1 <;> simp [NRep.bar, NRep.map]`. Take `⟨h2', hh2, hθ2, hdiag2⟩` from `pr_norm2 O C' C p n Z hmk hkp hθ hoff hdist`. Use `set B2 := cj h2' B1 with hB2`. Establish `hB2c : (B2.r F.c).mat = 1` using `by show (conjBy h2' B1.r F.c).mat = 1`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hl : (B1.r F.c).left = 1` using `Units.ext hB1c`. Unfold `GG.mat`. Rewrite using `[conj_left, B1.nu, hF.del_c, hl, mul_one, map_inv, sgnAct_neg_one, hθ2, mul_inv_cancel, Units.val_one]`. Establish `hB2diag : ∀ i j : Fin n, i ≠ j → ((B2.r F.g0).mat - (B2.r (F.star F.g0)).mat) i j = 0`. Introduce `i j hij`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `e1` using `conj_mat h2' B1.r (F.g0 : F.Γ) (frame_right_eq_one_of_G0 B1 F.g0)`. Establish `e2` using `conj_mat h2' B1.r ((F.star F.g0 : F.G0) : F.Γ) (frame_right_eq_one_of_G0 B1 (F.star F.g0))`. Use `show ((conjBy h2' B1.r F.g0).mat - (conjBy h2' B1.r (F.star F.g0)).mat) i j = 0`. Rewrite using `[e1, e2, ← Matrix.sub_mul, ← Matrix.mul_sub]`. Conclude with `hdiag2 i j hij`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hB2cont : B2.Cont (maximalIdeal C')` using `cj_cont hF.del_open _ h2' B1 hB1cont`. Take `⟨ρ', hof', hcont'⟩` from `pr_ofbox hF C' (maximalIdeal C') B2 hB2c hB2diag hB2cont`. Use `⟨h2' * h1, ρ', ?_, ?_, hcont', ?_, ?_⟩` and prove the remaining obligations. Use `show ((h2' : Matrix (Fin n) (Fin n) C') * h1).map (p : C' →+* C) = 1`. Rewrite using `[Matrix.map_mul]`.
-
-Conclude with `(congrArg₂ (· * ·) hh2 hh1).trans (Matrix.one_mul 1)`. Establish `e` using `hof'.map (p : C' →+* C)`. Rewrite `e` using `[show B2.map (p : C' →+* C) = B'.map (p : C' →+* C) from (cj_map _ h2' B1 hh2).trans hB1map]`. Conclude with `of_unique e hof`. Rewrite using `[conj_mul]`.
-
-Conclude with `hB2c`. Introduce `s`. Rewrite using `[conj_mul]`. Conclude with `hof'.res s`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Fr.pr_norm :
     ∀ {l : ℕ} [Fact l.Prime] {k : Type} [Field k] [CharP k l] {F : Frame l k} {C₀ n : ℕ}, F.Ok C₀ → ∀ (O : Type) [CommRing O] [IsLocalRing O], ∀ (C' : Type) [CommRing C'] [Algebra O C'] [IsCO O C'] (C : Type) [CommRing C] [Algebra O C] [IsCO O C] (p : C' →ₐ[O] C) (ρ : NRep F n C) (B' : Box F n C'), maximalIdeal C' * RingHom.ker p = ⊥ → (ρ.bar O).Good → (B'.map (p : C' →+* C)).Of ρ → B'.Cont (maximalIdeal C') → ∃ (h : GL (Fin n) C') (ρ' : NRep F n C'), (h : Matrix (Fin n) (Fin n) C').map p = 1 ∧ ρ'.map (p : C' →+* C) = ρ ∧ ρ'.Cont (maximalIdeal C') ∧ (conjBy h B'.r F.c).mat = 1 ∧ ∀ s : F.G0, (conjBy h B'.r s).mat = ρ'.r s := by

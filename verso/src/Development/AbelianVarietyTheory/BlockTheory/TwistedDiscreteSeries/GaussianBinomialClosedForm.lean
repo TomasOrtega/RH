@@ -65,7 +65,7 @@ def UnramDoublingInert : Prop :=
       (n ≤ 1 → Integrable (fun g => Φ (io1 σ n g) * w g) μ ∧ ∫ g, Φ (io1 σ n g) * w g ∂μ = 1)
 
 /- English proof (translation)
-Establish `h : (q : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 hq`. Simplify using `only [secVal, map_mul, Units.val_mul, P.fIwasawa_ordL_mul _ _ a.ne_zero b.ne_zero, Int.cast_add]`. Rewrite using `[show -(2 * ((ordL (a : L) : ℂ) + (ordL (b : L) : ℂ)) * t) = -(2 * (ordL (a : L) : ℂ) * t) + -(2 * (ordL (b : L) : ℂ) * t) by ring, Complex.cpow_add _ _ h]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem secVal_mul {q : ℕ} (hq : q ≠ 0) (χ : Lˣ →* ℂˣ) (t : ℂ) (a b : Lˣ) :
     secVal q χ t (a * b) = secVal q χ t a * secVal q χ t b := by
@@ -76,7 +76,7 @@ theorem secVal_mul {q : ℕ} (hq : q ≠ 0) (χ : Lˣ →* ℂˣ) (t : ℂ) (a b
   ring
 
 /- English proof (translation)
-Establish `: ordL (a : L) = 0`. Establish `h0 : Valued.v (a : L) ≠ 0` using `by rw [ha]; exact one_ne_zero`. Establish `h1 : WithZero.unzero h0 = 1` using `WithZero.coe_injective (by rw [WithZero.coe_unzero, ha]; rfl)`. Simplify using `[ordL, h0, h1]`. Simplify using `[secVal, hχ a ha, this]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem secVal_unit (q : ℕ) {χ : Lˣ →* ℂˣ} (hχ : IsUnr χ) (t : ℂ) {a : Lˣ} (ha : Valued.v (a : L) = 1) :
     secVal q χ t a = 1 := by
@@ -87,9 +87,9 @@ theorem secVal_unit (q : ℕ) {χ : Lˣ →* ℂˣ} (hχ : IsUnr χ) (t : ℂ) {
   simp [secVal, hχ a ha, this]
 
 /- English proof (translation)
-Take `⟨-, x, hx⟩` from `hp`. Establish `e : ((GD σ n).subtype p).1 = x.1.map (intL L).subtype`. Rewrite using `[show (GD σ n).subtype p = _ from hx.symm]`. Both sides reduce to the same expression. Rewrite using `[val_aOf, e, leviMat_map]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(congrArg Valued.v ((intL L).subtype.map_det _).symm).le.trans (leviMat finSumFinEquiv x.1).det.2`.
+A detailed English derivation is pending.
 -/
 theorem v_aD_le {σ : L →+* L} {n : ℕ} (p : PD σ n) (hp : (p : GD σ n) ∈ KD σ n) : Valued.v (aD σ n p : L) ≤ 1 := by
   obtain ⟨-, x, hx⟩ := hp
@@ -99,7 +99,7 @@ theorem v_aD_le {σ : L →+* L} {n : ℕ} (p : PD σ n) (hp : (p : GD σ n) ∈
   exact (congrArg Valued.v ((intL L).subtype.map_det _).symm).le.trans (leviMat finSumFinEquiv x.1).det.2
 
 /- English proof (translation)
-Establish `h` using `v_aD_le p⁻¹ (inv_mem hp)`. Rewrite `h` using `[map_inv, Units.val_inv_eq_inv_val, map_inv₀, inv_le_one₀ (zero_lt_iff.2 ((Valuation.ne_zero_iff _).2 (Units.ne_zero _)))]`. Conclude with `le_antisymm (v_aD_le p hp) h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem v_aD_eq {σ : L →+* L} {n : ℕ} (p : PD σ n) (hp : (p : GD σ n) ∈ KD σ n) : Valued.v (aD σ n p : L) = 1 := by
   have h := v_aD_le p⁻¹ (inv_mem hp)
@@ -108,11 +108,9 @@ theorem v_aD_eq {σ : L →+* L} {n : ℕ} (p : PD σ n) (hp : (p : GD σ n) ∈
   exact le_antisymm (v_aD_le p hp) h
 
 /- English proof (translation)
-Use `⟨fun g => if h : ∃ p : PD σ n, ∃ k ∈ KD σ n, g = p * k then secVal q χ (s + (n : ℂ) / 2) (aD σ n h.choose) else 0, fun p k hk => ?_⟩` and prove the remaining obligations. Establish `h : ∃ p' : PD σ n, ∃ k' ∈ KD σ n, (p : GD σ n) * k = p' * k'` using `⟨p, k, hk, rfl⟩`. Take `⟨k', hk', e⟩` from `h.choose_spec`. Establish `hm : ((p⁻¹ * h.choose : PD σ n) : GD σ n) ∈ KD σ n`. Establish `: ((p⁻¹ * h.choose : PD σ n) : GD σ n) = k * k'⁻¹`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Subgroup.coe_mul, Subgroup.coe_inv, inv_mul_eq_iff_eq_mul, ← mul_assoc, eq_mul_inv_iff_mul_eq]`. Conclude with `e.symm`. Rewrite using `[this]`. Conclude with `mul_mem hk (inv_mem hk')`. Simplify using `only [dif_pos h]`.
-
-Rewrite using `[← mul_inv_cancel_left p h.choose, map_mul, secVal_mul hq, secVal_unit q hχ _ (v_aD_eq _ hm), mul_one]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_isSphSec (σ : L →+* L) {q : ℕ} (hq : q ≠ 0) (n : ℕ) {χ : Lˣ →* ℂˣ} (hχ : IsUnr χ) (s : ℂ) :
     ∃ Φ, IsSphSec σ q n χ s Φ := by
@@ -131,9 +129,9 @@ theorem exists_isSphSec (σ : L →+* L) {q : ℕ} (hq : q ≠ 0) (n : ℕ) {χ 
   rw [← mul_inv_cancel_left p h.choose, map_mul, secVal_mul hq, secVal_unit q hχ _ (v_aD_eq _ hm), mul_one]
 
 /- English proof (translation)
-Use `⟨fun a b g => ?_, by simpa using h1, fun h hh => ?_⟩` and prove the remaining obligations. Simplify using `only [map_mul, Module.End.mul_apply, hl _ a.2, GlobalTheory.LGrp.mem_fixed.1 hx.2.1 _ b.2]`. Establish `e` using `congrArg l (hx.2.2 h hh)`. Rewrite `e` using `[map_smul, h1, smul_eq_mul, mul_one]`. Rewrite using `[← e]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `Eq.trans (finsum_congr fun c => ?_) (l.toAddMonoidHom.map_finsum (GlobalTheory.LFun.finite_heckeVec (P.isCommensurated_integral_unitary_of_unramified hU n) hh ρ x)).symm` and prove the remaining obligations. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem isZonal_of_isSatVecU {ϖ : L} {σ : L →+* L} {q n : ℕ} (hU : IsUnramInv ϖ σ q) {V : Type} [AddCommGroup V]
     [Module ℂ V] {ρ : Representation ℂ (GU σ n) V} {x : V} {α : Fin (n / 2) → ℂˣ}
@@ -149,9 +147,9 @@ theorem isZonal_of_isSatVecU {ϖ : L} {σ : L →+* L} {q n : ℕ} (hU : IsUnram
     simp
 
 /- English proof (translation)
-Establish `hq : (q : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 (by have := hU.2.2.2.2.2.1; omega)`. Use `⟨fun i => Units.mk0 _ (zpow_ne_zero ((n : ℤ) - 1 - 2 * (i.val : ℤ)) hq), fun _ => rfl, fun _ _ _ => rfl, rfl, fun h hh => ?_⟩` and prove the remaining obligations. Use `(congrFun (Final.SatakeInert L ϖ σ q n (n / 2) hU (by omega) (by omega) (fun i => (q : ℂ) ^ ((n : ℤ) - 1 - 2 * (i.val : ℤ))) (fun i => zpow_ne_zero _ hq) h hh (fun _ => 1) fun b g k _ _ => ?_) 1).trans (by simp)` and prove the remaining obligations. Rewrite using `[mul_one, chiDeltaU]`. Use `(Finset.prod_eq_one fun i _ => ?_).symm` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `split_ifs`. Rewrite using `[← zpow_mul, ← zpow_add₀ hq]`. Use `zpow_zero (q : ℂ) using 2` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Expand and normalize the polynomial expressions, which then agree. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem isZonal_one [CompleteSpace L] {ϖ : L} {σ : L →+* L} {q : ℕ} (hU : IsUnramInv ϖ σ q) (n : ℕ) :
     ∃ α : Fin (n / 2) → ℂˣ, (∀ i, (α i : ℂ) = (q : ℂ) ^ ((n : ℤ) - 1 - 2 * (i.val : ℤ))) ∧
@@ -171,7 +169,7 @@ theorem isZonal_one [CompleteSpace L] {ϖ : L} {σ : L →+* L} {q : ℕ} (hU : 
   · rfl
 
 /- English proof (translation)
-Establish `: varX q 1 ε s = varY q ε s` using `by simp [varX, varY]`. Simplify using `[closedForm, this, sub_ne_zero.2 h.symm]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 example (q : ℕ) (ε s : ℂ) (α : Fin (1 / 2) → ℂˣ) (h : varY q ε s ≠ 1) :
     closedForm q 1 (varX q 1 ε s) (varY q ε s) α = 1 := by

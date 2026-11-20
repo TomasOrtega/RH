@@ -11,7 +11,7 @@ open ReciprocityTheory.AnForm.M (FinHolAtlas)
 noncomputable section
 
 /- English proof (translation)
-Break down `isEmpty_or_nonempty (Fin n) with h | h` into its components or cases. Conclude with `⟨1, one_pos, fun j => (IsEmpty.false j).elim⟩`. Take `⟨j₀, hj₀⟩` from `Finite.exists_min f`. Conclude with `⟨f j₀, hf j₀, hj₀⟩`.
+Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem PolyMaxLowerBound.exists_pos_le {n : ℕ} (f : Fin n → ℝ) (hf : ∀ j, 0 < f j) :
     ∃ δ, 0 < δ ∧ ∀ j, δ ≤ f j := by
@@ -21,11 +21,11 @@ theorem PolyMaxLowerBound.exists_pos_le {n : ℕ} (f : Fin n → ℝ) (hf : ∀ 
     exact ⟨f j₀, hf j₀, hj₀⟩
 
 /- English proof (translation)
-Establish `hK : IsCompact ((R.chart j) '' closure (R.mid j))` using `isClosed_closure.isCompact.image_of_continuousOn ((R.chart j).continuousOn.mono (R.closure_mid j))`. Establish `hKT : (R.chart j) '' closure (R.mid j) ⊆ (R.chart j).target`. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Conclude with `(R.chart j).map_source (R.closure_mid j hx)`. Take `⟨δ, hδ, hsub⟩` from `hK.exists_cthickening_subset_open (R.chart j).open_target hKT`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨Q, hQ⟩` from `(hK.cthickening (r := δ)).exists_bound_of_continuousOn ((R.q_smooth j).continuousOn.mono hsub)`. Use `⟨δ, max Q 0, hδ, le_max_right _ _, fun x hx y hy => ?_⟩` and prove the remaining obligations. Establish `hy' : y ∈ cthickening δ ((R.chart j) '' closure (R.mid j))` using `closedBall_subset_cthickening (mem_image_of_mem _ (subset_closure hx)) δ hy`. Use `⟨hsub hy', ?_⟩` and prove the remaining obligations. Use `hQ y hy'` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[Real.norm_eq_abs]`. Conclude with `this.trans (le_max_left _ _)`.
+A detailed English derivation is pending.
 -/
 theorem PolyMaxLowerBound.chart_margin {X : Type} [TopologicalSpace X] [CompactSpace X] {D : ℕ}
     {A : FinHolAtlas D X} (R : RegChartData A) (j : Fin R.N) :
@@ -49,11 +49,11 @@ theorem PolyMaxLowerBound.chart_margin {X : Type} [TopologicalSpace X] [CompactS
   exact this.trans (le_max_left _ _)
 
 /- English proof (translation)
-Use `⟨fun i => if t / 2 ≤ ‖z i‖ then z i else z i + (t : ℂ), ?_, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[mem_closedBall, dist_pi_le_iff ht.le]`. Introduce `i`. Distinguish the cases in `h : t / 2 ≤ ‖z i‖`. Simplify using `only [if_pos h, dist_self]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Conclude with `ht.le`. Simplify using `only [if_neg h, dist_eq_norm, add_sub_cancel_left, Complex.norm_real, Real.norm_eq_abs, abs_of_pos ht, le_refl]`. Distinguish the cases in `h : t / 2 ≤ ‖z i‖`. Simplify using `only [if_pos h]`. Conclude with `h`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [if_neg h] replace h := not_le.mp h`. Establish `h1 : ‖((t : ℝ) : ℂ)‖ ≤ ‖z i + (t : ℂ)‖ + ‖z i‖`. Combine the equalities or inequalities in the displayed calculation. Rewrite `h1` using `[Complex.norm_real, Real.norm_eq_abs, abs_of_pos ht]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Chain the equalities or inequalities of the calculation. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem PolyMaxLowerBound.exists_far_point {D : ℕ} (z : Fin D → ℂ) {t : ℝ} (ht : 0 < t) :
     ∃ y ∈ closedBall z t, ∀ i, t / 2 ≤ ‖y i‖ := by
@@ -76,7 +76,7 @@ theorem PolyMaxLowerBound.exists_far_point {D : ℕ} (z : Fin D → ℂ) {t : �
       linarith
 
 /- English proof (translation)
-Establish `h : ((t / 2) ^ 2)⁻¹ = (2 * t⁻¹) ^ 2` using `by field_simp`. Rewrite using `[h, Real.log_pow, Real.log_mul (by norm_num) (inv_ne_zero ht.ne')]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem PolyMaxLowerBound.log_inv_half_sq {t : ℝ} (ht : 0 < t) :
     Real.log ((t / 2) ^ 2)⁻¹ = 2 * Real.log 2 + 2 * Real.log t⁻¹ := by
@@ -85,43 +85,39 @@ theorem PolyMaxLowerBound.log_inv_half_sq {t : ℝ} (ht : 0 < t) :
   push_cast; ring
 
 /- English proof (translation)
-Introduce `X _ _ _ D A R`. Take `⟨B, hB⟩` from `R.f_bdd`. Use `choose δf Qf hδf hQf hball using PolyMaxLowerBound.chart_margin R`. Take `⟨δ, hδ0, hδle⟩` from `PolyMaxLowerBound.exists_pos_le δf hδf`. Use `set Q : ℝ := ∑ j, Qf j with hQdef`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hQ0 : 0 ≤ Q` using `Finset.sum_nonneg fun j _ => hQf j`. Establish `hQj : ∀ j, Qf j ≤ Q` using `fun j => Finset.single_le_sum (f := Qf) (fun k _ => hQf k) (Finset.mem_univ j)`. Establish `hlog2 : 0 ≤ Real.log 2` using `Real.log_nonneg (by norm_num)`. Use `set Λ : ℝ := Real.exp 1 + |B| + 2 * D * Real.log 2 + 2 * D with hΛdef`. Establish `hD0 : (0 : ℝ) ≤ D` using `Nat.cast_nonneg D`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `he1 : 1 ≤ Real.exp 1` using `Real.one_le_exp zero_le_one`. Establish `hΛ1 : 1 ≤ Λ`. Establish `: 0 ≤ 2 * (D : ℝ) * Real.log 2` using `by positivity`. Establish `: 0 ≤ |B|` using `abs_nonneg B`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hlogΛ : 0 ≤ Real.log Λ` using `Real.log_nonneg hΛ1`. Use `set C : ℝ := Q + |R.Clog| * (Real.log Λ + 1) with hCdef`. Establish `hC0 : 0 ≤ C` using `by positivity`. Use `⟨C, min δ (Real.exp (-Real.exp 1)), lt_min hδ0 (Real.exp_pos _), ?_⟩` and prove the remaining obligations. Introduce `t ht htt K j x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `htδ : t ≤ δ` using `(htt.trans_le (min_le_left _ _)).le`. Establish `hte : t < Real.exp (-Real.exp 1)` using `htt.trans_le (min_le_right _ _)`. Use `set ℓ : ℝ := Real.log t⁻¹ with hℓdef`. Establish `hℓe : Real.exp 1 < ℓ`. Rewrite using `[hℓdef, Real.lt_log_iff_exp_lt (inv_pos.2 ht)]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `hte` using `[Real.exp_neg]`. Conclude with `(lt_inv_comm₀ ht (Real.exp_pos _)).1 hte`. Establish `hℓ1 : 1 ≤ ℓ` using `he1.trans hℓe.le`. Establish `hlogℓ : 1 ≤ Real.log ℓ`. Rewrite using `[← Real.log_exp 1]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `Real.log_le_log (Real.exp_pos 1) hℓe.le`. Take `⟨y, hy, hyn⟩` from `PolyMaxLowerBound.exists_far_point (R.chart j x) ht`. Take `⟨hyT, hqy⟩` from `hball j x hx y (closedBall_subset_closedBall (htδ.trans (hδle j)) hy)`. Establish `hyD : y ∉ coordDiv (R.S j)`. Introduce and unpack `⟨i, -, hi⟩`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hyn i` as an intermediate fact. Rewrite `this` using `[hi, norm_zero]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hsrc` using `(R.chart j).map_target hyT`. Establish `hYo : (R.chart j).symm y ∈ R.Yo` using `(R.mem_Yo j _ hsrc).2 (by rwa [(R.chart j).right_inv hyT])`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hr1` using `R.one_le_r _ hYo`. Establish `hsum : ∑ i ∈ R.S j, Real.log (‖y i‖ ^ 2)⁻¹ ≤ D * (2 * Real.log 2 + 2 * ℓ)`. Establish `hterm : ∀ i ∈ R.S j, Real.log (‖y i‖ ^ 2)⁻¹ ≤ 2 * Real.log 2 + 2 * ℓ`. Introduce `i _`. Rewrite using `[← PolyMaxLowerBound.log_inv_half_sq ht]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `h2 : 0 < t / 2` using `by linarith`. Establish `hyi : 0 < ‖y i‖` using `h2.trans_le (hyn i)`. Apply `Real.log_le_log (by positivity)` to reduce the goal to its premises. Conclude with `inv_anti₀ (by positivity) (pow_le_pow_left₀ h2.le (hyn i) 2)`. Establish `hM : 0 ≤ 2 * Real.log 2 + 2 * ℓ` using `by linarith`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Apply `mul_le_mul_of_nonneg_right _ hM` to reduce the goal to its premises. Use `Finset.card_le_univ (R.S j)` as an intermediate fact. Rewrite `this` using `[Fintype.card_fin]`. Conclude with `this` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hrle : R.r ((R.chart j).symm y) ≤ Λ * ℓ`. Rewrite using `[R.r_chart j y ⟨hyT, hyD⟩]`. Establish `hf : R.f j y ≤ |B|` using `(le_abs_self _).trans ((hB j y hyT).trans (le_abs_self B))`. Establish `hA : 0 ≤ Real.exp 1 + |B| + 2 * D * Real.log 2`. Establish `: 0 ≤ 2 * (D : ℝ) * Real.log 2` using `by positivity`.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: 0 ≤ |B|` using `abs_nonneg B`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `: Real.exp 1 + |B| + 2 * D * Real.log 2 ≤ (Real.exp 1 + |B| + 2 * D * Real.log 2) * ℓ` using `le_mul_of_one_le_right hA hℓ1`. Rewrite using `[hΛdef]`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlogr : Real.log (R.r ((R.chart j).symm y)) ≤ Real.log Λ + Real.log ℓ`. Rewrite using `[← Real.log_mul (by linarith) (by linarith)]`. Conclude with `Real.log_le_log (by linarith) hrle`. Establish `hlogr0 : 0 ≤ Real.log (R.r ((R.chart j).symm y))` using `Real.log_nonneg hr1`. Establish `hph` using `R.ph_ge _ hYo`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `hq : -Q ≤ R.q j y`. Use `(abs_le.1 (hqy.trans (hQj j))).1` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h1 : -(|R.Clog| * Real.log (R.r ((R.chart j).symm y))) ≤ -R.Clog * Real.log (R.r ((R.chart j).symm y))`. Use `mul_le_mul_of_nonneg_right (le_abs_self R.Clog) hlogr0` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `h2 : |R.Clog| * Real.log (R.r ((R.chart j).symm y)) ≤ |R.Clog| * (Real.log Λ + 1) * Real.log ℓ`. Establish `h3 : Real.log Λ + Real.log ℓ ≤ (Real.log Λ + 1) * Real.log ℓ` using `by nlinarith`. Combine the equalities or inequalities in the displayed calculation. Establish `hQℓ : Q ≤ Q * Real.log ℓ` using `le_mul_of_one_le_right hQ0 hlogℓ`.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hu : -C * Real.log ℓ ≤ R.u j y` using `by show -C * Real.log ℓ ≤ R.q j y + R.ph ((R.chart j).symm y)`. Rewrite using `[hCdef]`. Use the polynomial consequences of the given equalities and inequalities. Establish `htr : R.trunc K j y = max (R.u j y) (-K)`. Simplify using `only [RegChartData.trunc, limsupExt, if_neg hyD]`.
-
-Unfold `polyMax`. Distinguish the cases in `hb : BddAbove (R.trunc K j '' closedBall (R.chart j x) t)`. Use `le_trans ?_ (le_csSup hb (mem_image_of_mem _ hy))` and prove the remaining obligations. Rewrite using `[htr]`. Conclude with `hu.trans (le_max_left _ _)`.
-
-Rewrite using `[Real.sSup_of_not_bddAbove hb]`. Establish `: 0 ≤ C * Real.log ℓ` using `mul_nonneg hC0 (by linarith)`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem PolyMaxLowerBound.proof : PolyMaxLowerBound.Statement := by
   intro X _ _ _ D A R

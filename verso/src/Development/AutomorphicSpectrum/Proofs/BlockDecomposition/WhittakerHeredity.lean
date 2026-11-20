@@ -11,15 +11,13 @@ open scoped TensorProduct
 namespace GlobalTheory.CompanionTheory.Rodier
 
 /- English proof (translation)
-Introduce `k _ _ _ _ ψ hψ hψ1 h N d hd X _ _ π hπ`. Take `⟨J, hJs, hJ⟩` from `GlobalTheory.T.open_cell_jacquet_map_surjective_whittaker k ψ hψ h N d hd (piTensor π) (isSmooth_piTensor hπ)`. Take `⟨E⟩` from `GlobalTheory.T.twisted_jacquet_tensor_product_equiv π (fun a => unipB k (Fin (d a))) (fun a => whitChar ψ (d a))`. Use `set T := twKer (multiProd (stdBlocks d hd) π) (unipB k (Fin N)) (whitChar ψ N) with hT`. Use `set S := twKer (piTensor π) (unipM k d) (whitM d ψ) with hS`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `a : openFns d hd (piTensor π) →ₗ[ℂ] (IndSp (stdBlocks d hd) (piTensor π)) ⧸ T` to `T.mkQ ∘ₗ (openFns d hd (piTensor π)).subtype`. Set `b : openFns d hd (piTensor π) →ₗ[ℂ] (⨂[ℂ] a, X a) ⧸ S` to `S.mkQ ∘ₗ J`. Establish `ha : Function.Surjective a`. Introduce `y`. Take `⟨f, rfl⟩` from `Submodule.Quotient.mk_surjective _ y`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨f₀, h0, h1⟩` from `GlobalTheory.T.induced_function_open_cell_modulo_whittaker k ψ hψ hψ1 h N d hd (piTensor π) f`. Use `⟨⟨f₀, h0⟩, ?_⟩` and prove the remaining obligations. Conclude with `((Submodule.Quotient.eq T).2 (by simpa [neg_sub] using T.neg_mem h1))`. Establish `hb : Function.Surjective b`. Introduce `y`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨w, rfl⟩` from `Submodule.Quotient.mk_surjective _ y`. Take `⟨f, rfl⟩` from `hJs w`. Conclude with `⟨f, rfl⟩`. Establish `hker : LinearMap.ker a = LinearMap.ker b`. Use extensionality with `f`.
-
-Simplify using `only [a, b, LinearMap.mem_ker, LinearMap.comp_apply, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero, Submodule.subtype_apply]`. Conclude with `(hJ f).symm`. Conclude with `⟨(a.quotKerEquivOfSurjective ha).symm.trans ((Submodule.quotEquivOfEq _ _ hker).trans ((b.quotKerEquivOfSurjective hb).trans E))⟩`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem whitHeredity : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k],
     WhitHeredity k := by

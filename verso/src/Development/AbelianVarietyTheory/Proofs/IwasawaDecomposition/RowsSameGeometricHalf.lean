@@ -14,7 +14,7 @@ set_option maxHeartbeats 4000000
 namespace GlobalTheory.LayerMove.SerUp
 
 /- English proof (translation)
-Consider the cases of `p`. Consider the cases of `q`. Consider the cases of `h`. Both sides reduce to the same expression.
+Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Both sides reduce to the same expression.
 -/
 theorem rowPsi_ext {D : D7} {V : HSp D} {n : ℕ} {p q : principalLevelFrame.RowPsi V n} (h : p.ψ = q.ψ) : p = q := by
   cases p; cases q; cases h; rfl
@@ -41,12 +41,12 @@ def ys : @NExpRealS (Late.D bb) G _ _ Pl0 I0 T (famInThreeCoefficientChange bb A
 def rho (ρ : Setup o.L.D.ntw) : Setup (Late.D bb).ntw := (by with_unfolding_all exact ((seT (o2 o V' S') ρ) :))
 
 /- English proof (translation)
-The claim follows from `(by with_unfolding_all exact ((seGood (o2 o V' S') h) :))`.
+A detailed English derivation is pending.
 -/
 theorem good {ρ : Setup o.L.D.ntw} (h : ρ.Good) : (rho V' S' ρ).Good := (by with_unfolding_all exact ((seGood (o2 o V' S') h) :))
 
 /- English proof (translation)
-The claim follows from `@RealPin.mk (Late.D bb) G _ _ Pl0 I0 T (famInThreeCoefficientChange bb A3) Ks _ _ (alg bb iK) (real3 bb R) ((by with_unfolding_all exact (cG :))) (rho V' S' ρ) ((by with_unfolding_all exact (p.psi :))) ((by with_unfolding_all exact (p.inf :))) ((by with_unfolding_all exact (p.car …`.
+A detailed English derivation is pending.
 -/
 theorem pin {ρ : Setup o.L.D.ntw} (p : RealPin R cG ρ) :
     @RealPin (Late.D bb) G _ _ Pl0 I0 T (famInThreeCoefficientChange bb A3) Ks _ _ (alg bb iK) (real3 bb R) ((cG)) (rho V' S' ρ) :=
@@ -57,7 +57,7 @@ theorem pin {ρ : Setup o.L.D.ntw} (p : RealPin R cG ρ) :
 
 variable (R v₀) in
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h0, c, ⟨g, c0R, c0L, hF, u, hu, hh⟩, hn⟩`. Conclude with `⟨h0, c, ⟨(by with_unfolding_all exact (g :)), (by with_unfolding_all exact (c0R :)), (by with_unfolding_all exact (c0L :)), kc% (famTie_imp (a := bb) o.L _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ hF), (by with_unfolding_all exact (u :)), (by with_unfolding_all exact (hu :)), (by …`. Introduce and unpack `⟨h0, c, ⟨g, c0R, c0L, hF, u, hu, hh⟩, hn⟩`. Conclude with `⟨h0, c, ⟨(by with_unfolding_all exact (g :)), (by with_unfolding_all exact (c0R :)), (by with_unfolding_all exact (c0L :)), kc% (famTie_imp (a := o.L) bb _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ hF), (by with_unfolding_all exact (u :)), (by with_unfolding_all exact (hu :)), (by …`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem norm_iff (ρ : Setup o.L.D.ntw) (i : o.L.D.ntw.Tw) (j : Fin o.L.D.R.m) (b : Bool) (ν : ℂ) :
     @IsNorm (Late.D bb) G _ _ Pl0 I0 T (famInThreeCoefficientChange bb A3) Ks _ _ (alg bb iK) (real3 bb R) ((v₀)) ((j))
@@ -72,7 +72,7 @@ theorem norm_iff (ρ : Setup o.L.D.ntw) (i : o.L.D.ntw.Tw) (j : Fin o.L.D.R.m) (
 
 variable (YS v₀) in
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h => @ratT' B C W o (o2 o V' S') _ _ ρ i j b _ (realRd YS v₀ hρ i j b ν) hρ ((by with_unfolding_all exact (h :))), fun h => (by with_unfolding_all exact ((@ratT B C W o (o2 o V' S') _ _ ρ i j b _ (realRd YS v₀ hρ i j b ν) hρ h) :))⟩`.
+Supply the required witnesses or components.
 -/
 theorem rat_iff {ρ : Setup o.L.D.ntw} (hρ : ρ.Good) (i : o.L.D.ntw.Tw) (j : Fin o.L.D.R.m) (b : Bool) (ν : ℂ) :
     SeriesTie.Rat (good V' S' hρ) (@realRd (Late.D bb) G _ _ Pl0 I0 T (famInThreeCoefficientChange bb A3) Ks _ _ (alg bb iK) (real3 bb R) ((cG)) ((S))
@@ -81,7 +81,7 @@ theorem rat_iff {ρ : Setup o.L.D.ntw} (hρ : ρ.Good) (i : o.L.D.ntw.Tw) (j : F
     fun h => (by with_unfolding_all exact ((@ratT B C W o (o2 o V' S') _ _ ρ i j b _ (realRd YS v₀ hρ i j b ν) hρ h) :))⟩
 
 /- English proof (translation)
-The claim follows from `@IsScalar.mk (Late.D bb) G _ _ Pl0 I0 T (famInThreeCoefficientChange bb A3) Ks _ _ (alg bb iK) (real3 bb R) ((by with_unfolding_all exact (cG :))) ((by with_unfolding_all exact (S :))) (ys V' S' YS) ((by with_unfolding_all exact (v₀ :))) _ (good V' S' hρ) ((by with_unfolding_all …`.
+A detailed English derivation is pending.
 -/
 theorem scalar {ρ : Setup o.L.D.ntw} {hρ : ρ.Good} {i : o.L.D.ntw.Tw} {j : Fin o.L.D.R.m} {b : Bool} {ν : ℂ}
     (h : IsScalar YS v₀ hρ i j b ν) :
@@ -117,21 +117,19 @@ open GlobalTheory.HeightCounting GlobalTheory.Mem.R3.Tr
 open GlobalTheory.LayerMove
 set_option maxHeartbeats 1000000
 /- English proof (translation)
-Introduce `K B f T w Z Wt S' N h nch p0 t p0' t' hs hg`. Consider the cases of `t' with | mk hX' r' exAt' inGeo' grpAt' grp' mu' exact' untw' emt0' emt' etaF' rowInt' idx' => ?_`. Consider the cases of `r' with | mk z' holds' Y' ZZ' tupix' => ?_`. Consider the cases of `z' with | mk Xg' tr' core' alg_eq' R' cG' geo' pins' lev' idG' good' muz' le' ks' => ?_`. Name the introduced variables `alg'`.
+Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Establish an intermediate fact.
 
-Establish `e1 : Xg' = t.r.z.Xg` using `hs.Xg`. Establish `e2 : tr' = t.r.z.tr` using `hs.tr`. Substitute `e1 e2` using the available equality. Establish `e3 : core' = R3.Tr.coreJ (a` using `⟨Z.W, Z.V, Z.S, Z.N, Z.G⟩) (upL Z S' N h) t.r.z.core := eq_of_heq hs.core`. Substitute `e3` using the available equality.
+Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact.
 
-Establish `e4 : alg' = t.r.z.alg`. Apply `Algebra.algebra_ext` to reduce the goal to its premises. Introduce `y`. Apply `(w.D Z).what₂.embLL.injective` to reduce the goal to its premises. Conclude with `(alg_eq' y).trans (t.r.z.alg_eq y).symm`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Substitute using the available equality. Establish an intermediate fact.
 
-Substitute `e4` using the available equality. Establish `e5 : R' = R3.Tr.real3 (a` using `⟨Z.W, Z.V, Z.S, Z.N, Z.G⟩) (upL Z S' N h) (iK := t.r.z.alg) t.r.z.R := eq_of_heq hs.R`. Substitute `e5` using the available equality. Establish `e6 : cG' = t.r.z.cG` using `eq_of_heq hs.cG`. Substitute `e6` using the available equality.
+Substitute using the available equality. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Substitute using the available equality.
 
-Establish `e7 : geo' = (by with_unfolding_all exact ((R3.Tr.geoHalf (a` using `⟨Z.W, Z.V, Z.S, Z.N, Z.G⟩) (upL Z S' N h) (iK := t.r.z.alg) t.r.z.geo) :)) := eq_of_heq ((by with_unfolding_all exact (hg :)))`. Substitute `e7` using the available equality. Introduce `kKs hk YS kKs' hk' YS' hkk hfi heF a X' hX PV PV' hPV Pq Pq' hPq s`. Establish `e8 : kKs' = (by with_unfolding_all exact (kKs :))` using `eq_of_heq ((by with_unfolding_all exact (hkk :)))`. Substitute `e8` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Substitute using the available equality. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨fi', geq', rho', chi', eF', bsup', act'⟩` from `YS'`. Establish `e9 : fi' = (by with_unfolding_all exact (YS.fi :))` using `eq_of_heq ((by with_unfolding_all exact (hfi :)))`. Establish `e10 : eF' = (by with_unfolding_all exact (YS.eF :))` using `eq_of_heq ((by with_unfolding_all exact (heF :)))`. Substitute `e9 e10` using the available equality. Establish `e11 : X' = (by with_unfolding_all exact (((mvOf w Z S' N h).all a).exp :))` using `eq_of_heq ((by with_unfolding_all exact (hX :)))`.
+Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality.
 
-Establish `e12 : Pq' = (by with_unfolding_all exact (Pq :))` using `eq_of_heq ((by with_unfolding_all exact (hPq :)))`. Substitute `e11 e12` using the available equality. Establish `e13 : (fun i => (PV' i).ψ) = (by with_unfolding_all exact ((fun i => (PV i).ψ) :))` using `eq_of_heq ((by with_unfolding_all exact (hPV :)))`. Establish `e14 : PV' = fun j => @Formalism.IndefR.principalLevelFrame.RowPsi.mk _ _ _ ((by with_unfolding_all exact ((PV ((j))).ψ : _))) ((by with_unfolding_all exact ((PV ((j))).inj : _))) ((by with_unfolding_all exact ((PV ((j))).into : _))) ((by with_unfolding_all exact ((PV ((j))).onto …` using `funext fun j => SerUp.rowPsi_ext ((by with_unfolding_all exact ((congrFun e13 j) :)))`. Substitute `e14` using the available equality.
-
-Conclude with `⟨@SerAt.mk (_) (_) (_) (_) (_) (_) (_) (_) (_) (_) (_) (_) (_) (_) (_) (_) (_) (_) (_) (_) (_) (ex := (by with_unfolding_all exact ((@SerUp.ex B w.C Z.W ⟨Z.V, Z.S, Z.N, Z.G⟩ (upL Z S' N h).V S' _ _ _ _ _ _ _ _ _ _ t.r.z.alg t.r.z.R t.r.z.cG _ YS t.r.z.geo.v₀ s.ex) :))) (bad := (b …`.
+Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.T.rows_same_geometric_half : ∀ (K : Ctx) (B : Base) (f : Fr B.toPre) (T : TwDat B) (w : ColW B f T) (Z : w.Lt) (Wt : Set B.places.Pl) (S' : SStage B w.C Z.W) (N : ∀ u, Submodule (𝓞 B.LL) (Z.V.div.Nu u).V) (h : B.Word → ℝ) (nch : NChoice (w.D Z)) (p0 : BaseLevelRowSide (w.D Z)) (t : RowsT K w Z Wt p0) (p0' : BaseLevelRowSide (w.D (upL Z S' N h))) (t' : RowsT K w (upL Z S' N h) Wt p0'), RowsSame t t' → HEq t'.r.z.geo (R3.Tr.geoHalf (a := ⟨Z.W, Z.V, Z.S, Z.N, Z.G⟩) (upL Z S' N h) (iK := t.r.z.alg) t.r.z.geo) → ∀ (kKs : ↥t.r.z.core.Q.c.F →+* ↥(w.st Z).toD7.LL0) (hk : ∀ x, ((kKs x : ↥(w.st Z).toD7.LL0) : (w.st Z).toD7.what₂.LL) = algebraMap _ (w.st Z).toD7.what₂.LL x) (YS : Formalism.IndefR.NX.NExpRealS t.r.z.R t.r.z.cG (Formalism.IndefR.NX.ratDatR t.r.z.R t.r.z.cG kKs hk)) (kKs' : ↥t'.r.z.core.Q.c.F →+* ↥(w.st (upL Z S' N h)).toD7.LL0) (hk' : ∀ x, ((kKs' x : ↥(w.st (upL Z S' N h)).toD7.LL0) : (w.st (upL Z S' N h)).toD7.what₂.LL) = algebraMap _ (w.st (upL Z S' N h)).toD7.what₂.LL x) (YS' : Formalism.IndefR.NX.NExpRealS t'.r.z.R t'.r.z.cG (Formalism.IndefR.NX.ratDatR t'.r.z.R t'.r.z.cG kKs' hk')), HEq kKs' kKs → HEq YS'.fi YS.fi → HEq YS'.eF YS.eF → ∀ (a : NAllC (w.D Z) nch) (X' : Formalism.L2.NExpTied (w.st (upL Z S' N h)).toD7), HEq X' ((mvOf w Z S' N h).all a).exp → ∀ (PV : ∀ i : Fin (w.st Z).toD7.R.m, Formalism.IndefR.principalLevelFrame.RowPsi (Formalism.IndefR.Links.Vc (w.st Z).toD7 i) (w.st Z).toD7.R.nV) (PV' : ∀ i : Fin (w.st (upL Z S' N h)).toD7.R.m, Formalism.IndefR.principalLevelFrame.RowPsi (Formalism.IndefR.Links.Vc (w.st (upL Z S' N h)).toD7 i) (w.st (upL Z S' N h)).toD7.R.nV), HEq (fun i => (PV' i).ψ) (fun i => (PV i).ψ) → ∀ Pq Pq', HEq Pq' Pq → SerAt (D := (w.st Z).toD7) YS t.r.z.geo.v₀ a.exp PV (TC.cf w.I w.l Z) Pq → Nonempty (SerAt (D := (w.st (upL Z S' N h)).toD7) YS' t'.r.z.geo.v₀ X' PV' (TC.cf w.I w.l (upL Z S' N h)) Pq') := by
   intro K B f T w Z Wt S' N h nch p0 t p0' t' hs hg

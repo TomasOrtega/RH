@@ -24,7 +24,7 @@ def lin (g : HA R σ J) : (Fin n → R ⊗[F] E) →ₗ[R ⊗[F] E] (Fin n → R
   Matrix.mulVecLin ((HA.mat R σ J g : GL (Fin n) (R ⊗[F] E)) : Matrix (Fin n) (Fin n) (R ⊗[F] E))
 
 /- English proof (translation)
-Simplify using `only [lin, Matrix.mulVecLin_apply]`. Use `show ((HA.mat R σ J g * HA.mat R σ J h : GL (Fin n) (R ⊗[F] E)) : Matrix (Fin n) (Fin n) (R ⊗[F] E)).mulVec x = _`. Rewrite using `[Units.val_mul, ← Matrix.mulVec_mulVec]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lin_mul (g h : HA R σ J) (x : Fin n → R ⊗[F] E) :
     lin R σ J (g * h) x = lin R σ J g (lin R σ J h x) := by
@@ -34,7 +34,7 @@ theorem lin_mul (g h : HA R σ J) (x : Fin n → R ⊗[F] E) :
   rw [Units.val_mul, ← Matrix.mulVec_mulVec]
 
 /- English proof (translation)
-Simplify using `only [lin, Matrix.mulVecLin_apply]`. Use `show ((1 : GL (Fin n) (R ⊗[F] E)) : Matrix (Fin n) (Fin n) (R ⊗[F] E)).mulVec x = x`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem lin_one (x : Fin n → R ⊗[F] E) : lin R σ J 1 x = x := by
   simp only [lin, Matrix.mulVecLin_apply]
@@ -42,13 +42,13 @@ theorem lin_one (x : Fin n → R ⊗[F] E) : lin R σ J 1 x = x := by
   simp
 
 /- English proof (translation)
-Rewrite using `[← lin_mul, inv_mul_cancel, lin_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem lin_inv_lin (g : HA R σ J) (x : Fin n → R ⊗[F] E) : lin R σ J g⁻¹ (lin R σ J g x) = x := by
   rw [← lin_mul, inv_mul_cancel, lin_one]
 
 /- English proof (translation)
-Rewrite using `[← lin_mul, mul_inv_cancel, lin_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem lin_lin_inv (g : HA R σ J) (x : Fin n → R ⊗[F] E) : lin R σ J g (lin R σ J g⁻¹ x) = x := by
   rw [← lin_mul, mul_inv_cancel, lin_one]
@@ -57,9 +57,9 @@ def stabT {a : ℕ} (X : Fin a → Fin n → E) : Subgroup (HA R σ J) :=
   MulAction.stabilizer (HA R σ J) (ratTup (F := F) R X)
 
 /- English proof (translation)
-Rewrite using `[stabT, MulAction.mem_stabilizer_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `h b`. Conclude with `congrFun h b`. Introduce `h`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `b`. Conclude with `h b`.
+A detailed English derivation is pending.
 -/
 theorem mem_stabT {a : ℕ} (X : Fin a → Fin n → E) (g : HA R σ J) :
     g ∈ stabT R σ J X ↔ ∀ b, lin R σ J g (ratV (F := F) R (X b)) = ratV (F := F) R (X b) := by
@@ -80,9 +80,9 @@ variable {R σ J}
 variable {m : ℕ} {Y : Fin m → Fin n → E} {g : HA R σ J}
 
 /- English proof (translation)
-Unfold `spanR`. Rewrite using `[Submodule.map_span, Submodule.span_le]`. Introduce and unpack `_ ⟨_, ⟨b, hb, rfl⟩, rfl⟩`. Establish `h1 : Submodule.span (R ⊗[F] E) ((fun a => ratV (F` using `F) R (Y a)) '' {a | a < b}) ≤ Submodule.span (R ⊗[F] E) ((fun a => ratV (F := F) R (Y a)) '' s) := Submodule.span_mono (Set.image_mono fun a ha => hs b hb a ha)`. Establish `h2 : ratV (F` using `F) R (Y b) ∈ Submodule.span (R ⊗[F] E) ((fun a => ratV (F := F) R (Y a)) '' s) := Submodule.subset_span ⟨b, hb, rfl⟩`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Submodule.add_mem _ (h1 (hg b)) h2` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem uni_map_le (hg : UniC R σ J Y g) (s : Set (Fin m))
     (hs : ∀ b ∈ s, ∀ a, a < b → a ∈ s) :
@@ -100,9 +100,9 @@ theorem uni_map_le (hg : UniC R σ J Y g) (s : Set (Fin m))
   simpa using this
 
 /- English proof (translation)
-Establish `key : spanR (F` using `F) R Y s ≤ (spanR (F := F) R Y t).comap (lin R σ J g - LinearMap.id) := by`. Unfold `spanR`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨b, hb, rfl⟩`. Simplify using `only [SetLike.mem_coe, Submodule.mem_comap, LinearMap.sub_apply, LinearMap.id_apply]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 
-Conclude with `Submodule.span_mono (Set.image_mono fun a ha => hs b hb a ha) (hg b)`. Simplify using `using key hw`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem uni_sub_mem (hg : UniC R σ J Y g) (s : Set (Fin m)) (t : Set (Fin m))
     (hs : ∀ b ∈ s, ∀ a, a < b → a ∈ t) (w : Fin n → R ⊗[F] E) (hw : w ∈ spanR (F := F) R Y s) :
@@ -117,11 +117,11 @@ theorem uni_sub_mem (hg : UniC R σ J Y g) (s : Set (Fin m)) (t : Set (Fin m))
   simpa using key hw
 
 /- English proof (translation)
-Unfold `spanR`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨b, hb, rfl⟩`. Proceed by induction on `b using WellFoundedLT.induction with`. Consider the case `_ b ih`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Proceed by induction. Treat this case separately.
 
-Establish `hmem : ratV (F` using `F) R (Y b) ∈ Submodule.span (R ⊗[F] E) ((fun a => ratV (F := F) R (Y a)) '' s) := Submodule.subset_span ⟨b, hb, rfl⟩`. Establish `h1` using `Submodule.mem_map_of_mem (f := lin R σ J g) hmem`. Establish `h2 : Submodule.span (R ⊗[F] E) ((fun a => ratV (F` using `F) R (Y a)) '' {a | a < b}) ≤ (Submodule.span (R ⊗[F] E) ((fun a => ratV (F := F) R (Y a)) '' s)).map (lin R σ J g) := by`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨a, ha, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Conclude with `ih a ha (hs b hb a ha)`. Use `Submodule.sub_mem _ h1 (h2 (hg b))` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem uni_le_map (hg : UniC R σ J Y g) (s : Set (Fin m))
     (hs : ∀ b ∈ s, ∀ a, a < b → a ∈ s) :
@@ -215,27 +215,27 @@ def InXperp {r : ℕ} (P : Frame E n r) (v : Fin n → R ⊗[F] E) : Prop :=
 variable {R σ J}
 
 /- English proof (translation)
-Simplify using `only [hR, Formalism.UG.hform, Pi.add_apply, map_add, add_mul, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hR_add_left (x x' y : Fin n → R ⊗[F] E) :
     hR R σ J (x + x') y = hR R σ J x y + hR R σ J x' y := by
   simp only [hR, Formalism.UG.hform, Pi.add_apply, map_add, add_mul, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Simplify using `only [hR, Formalism.UG.hform, Pi.smul_apply, smul_eq_mul, map_mul, Finset.mul_sum, mul_assoc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hR_smul_left (c : R ⊗[F] E) (x y : Fin n → R ⊗[F] E) :
     hR R σ J (c • x) y = sigR R σ c * hR R σ J x y := by
   simp only [hR, Formalism.UG.hform, Pi.smul_apply, smul_eq_mul, map_mul, Finset.mul_sum, mul_assoc]
 
 /- English proof (translation)
-Simplify using `[hR, Formalism.UG.hform]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hR_zero_left (y : Fin n → R ⊗[F] E) : hR R σ J 0 y = 0 := by
   simp [hR, Formalism.UG.hform]
 
 /- English proof (translation)
-Simplify using `[Formalism.UG.hform, dotProduct, Matrix.mulVec, Finset.mul_sum, mul_assoc]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem hform_eq_dotProduct_mulVec {A : Type} [CommRing A] {k : ℕ} (τ : A →+* A)
     (K : Matrix (Fin k) (Fin k) A) (x y : Fin k → A) :
@@ -243,9 +243,9 @@ private theorem hform_eq_dotProduct_mulVec {A : Type} [CommRing A] {k : ℕ} (τ
   simp [Formalism.UG.hform, dotProduct, Matrix.mulVec, Finset.mul_sum, mul_assoc]
 
 /- English proof (translation)
-Use `set M := ((HA.mat R σ J g : GL (Fin n) (R ⊗[F] E)) : Matrix (Fin n) (Fin n) (R ⊗[F] E)) with hM`. Establish `hg : Matrix.transpose (M.map (sigR R σ)) * JR R J * M = JR R J` using `g.2`. Simplify using `only [hR, lin, Matrix.mulVecLin_apply, hform_eq_dotProduct_mulVec, ← hM]`. Establish `hσ : (fun i => sigR R σ ((M.mulVec x) i)) = (M.map (sigR R σ)).mulVec (fun i => sigR R σ (x i))`. Use function extensionality and compare the values at `i`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using `[Matrix.mulVec, dotProduct, map_sum]`. Rewrite using `[hσ, ← Matrix.vecMul_transpose, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, hg]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hR_lin (g : HA R σ J) (x y : Fin n → R ⊗[F] E) :
     hR R σ J (lin R σ J g x) (lin R σ J g y) = hR R σ J x y := by
@@ -261,9 +261,9 @@ theorem hR_lin (g : HA R σ J) (x y : Fin n → R ⊗[F] E) :
     Matrix.mulVec_mulVec, hg]
 
 /- English proof (translation)
-Unfold `spanR at hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨a, -, rfl⟩` from `hx`. Conclude with `hv a`.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately.
 
-Consider the case `zero => exact hR_zero_left v`. Consider the case `add x y _ _ hx hy => rw [hR_add_left, hx, hy, add_zero]`. Consider the case `smul c x _ hx => rw [hR_smul_left, hx, mul_zero]`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem hR_span_perp {r : ℕ} (P : Frame E n r) (v : Fin n → R ⊗[F] E) (hv : InXperp R σ J P v)
     (x : Fin n → R ⊗[F] E) (hx : x ∈ spanR (F := F) R P.e Set.univ) : hR R σ J x v = 0 := by

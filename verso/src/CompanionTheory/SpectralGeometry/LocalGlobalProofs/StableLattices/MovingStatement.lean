@@ -8,7 +8,7 @@ namespace GlobalTheory.CompanionTheory.CartanMove
 variable {G G' : Type} [Group G] [Group G']
 
 /- English proof (translation)
-Rewrite using `[MonoidHom.map_mclosure, ← Set.range_comp]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem closure_symm_eq (e : G ≃* G') {l : ℕ} (t' : Fin l → G') :
     Submonoid.closure (Set.range fun j => e.symm (t' j)) =
@@ -17,7 +17,7 @@ theorem closure_symm_eq (e : G ≃* G') {l : ℕ} (t' : Fin l → G') :
   rfl
 
 /- English proof (translation)
-Rewrite `hs` using `[closure_symm_eq]`. Take `⟨x, hx, rfl⟩` from `hs`. Simplify using `using hx`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem apply_mem_closure (e : G ≃* G') {l : ℕ} (t' : Fin l → G') {s : G}
     (hs : s ∈ Submonoid.closure (Set.range fun j => e.symm (t' j))) :
@@ -27,7 +27,7 @@ theorem apply_mem_closure (e : G ≃* G') {l : ℕ} (t' : Fin l → G') {s : G}
   simpa using hx
 
 /- English proof (translation)
-Rewrite using `[closure_symm_eq]`. Conclude with `⟨s, hs, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem symm_mem_closure (e : G ≃* G') {l : ℕ} (t' : Fin l → G') {s : G'}
     (hs : s ∈ Submonoid.closure (Set.range t')) :
@@ -36,13 +36,13 @@ theorem symm_mem_closure (e : G ≃* G') {l : ℕ} (t' : Fin l → G') {s : G'}
   exact ⟨s, hs, rfl⟩
 
 /- English proof (translation)
-Take `⟨c', t', h1, h2, h3, h4⟩` from `h`. Establish `hmem : ∀ {x : G'}, x ∈ K' → e.symm x ∈ K'.comap e.toMonoidHom` using `fun {x} hx => by`. Simplify `hx` using `[Subgroup.mem_comap]`. Use `⟨fun i => e.symm (c' i), fun j => e.symm (t' j), ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `i k`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify `h1 i (e k)` using `[Subgroup.mem_comap]`. Introduce `i j`. Conclude with `(h2 i j).map e.symm`. Introduce `g`. Take `⟨i, j, s, hs, k, hk, k', hk', hg⟩` from `h3 (e g)`.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨i, j, e.symm s, symm_mem_closure e t' hs, e.symm k, hmem hk, e.symm k', hmem hk', ?_⟩` and prove the remaining obligations. Apply `e.injective` to reduce the goal to its premises. Simplify `hg` using `[map_mul]`. Introduce `s hs s' hs' k hk`. Take `⟨a, ha, b, hb, hab⟩` from `h4 (e s) (apply_mem_closure e t' hs) (e s') (apply_mem_closure e t' hs') (e k) hk`.
+Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨e.symm a, hmem ha, e.symm b, hmem hb, ?_⟩` and prove the remaining obligations. Apply `e.injective` to reduce the goal to its premises. Simplify `hab` using `[map_mul]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem isCartan_comap (e : G ≃* G') {K' : Subgroup G'} {d l : ℕ} (h : IsCartan K' d l) :
     IsCartan (K'.comap e.toMonoidHom) d l := by
@@ -67,11 +67,9 @@ theorem isCartan_comap (e : G ≃* G') {K' : Subgroup G'} {d l : ℕ} (h : IsCar
     simpa [map_mul] using hab
 
 /- English proof (translation)
-Introduce `G G' _ _ _ _ e h U hU`. Establish `hopen : IsOpen ((U.map e.toMulEquiv.toMonoidHom : Subgroup G') : Set G')`. Establish `: ((U.map e.toMulEquiv.toMonoidHom : Subgroup G') : Set G') = e.toHomeomorph '' (U : Set G)` using `rfl`. Rewrite using `[this]`. Conclude with `e.toHomeomorph.isOpenMap _ hU`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨K', hK'U, hoK', hcK', d, l, hC⟩` from `h _ hopen`. Use `⟨K'.comap e.toMulEquiv.toMonoidHom, ?_, ?_, ?_, d, l, isCartan_comap _ hC⟩` and prove the remaining obligations. Introduce `x hx`. Take `⟨u, hu, hux⟩` from `hK'U hx`. Establish `: u = x` using `e.toMulEquiv.injective hux`.
-
-Conclude with `this ▸ hu`. Conclude with `hoK'.preimage e.toHomeomorph.continuous`. Conclude with `e.toHomeomorph.isCompact_preimage.2 hcK'`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem stMove : StMove := by
   intro G G' _ _ _ _ e h U hU

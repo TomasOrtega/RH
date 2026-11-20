@@ -10,7 +10,7 @@ namespace GlobalTheory.GoodTop
 open MeasureTheory Filter Topology in
 open scoped ContDiff Matrix in
 /- English proof (translation)
-Establish `h : ContDiffAt ℝ 1 (fun y => (ρ y : ℂ)) v` using `Complex.ofRealCLM.contDiff.contDiffAt.comp v hρ`. Establish `hf : ContinuousAt (fderiv ℝ (fun y => (ρ y : ℂ))) v` using `(h.fderiv_right (m := 0) (by norm_num)).continuousAt`. Simplify using `only [_root_.GlobalTheory.dbar_apply]`. Use `fun_prop`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private lemma continuousAt_dbar_ofReal_of_contDiffAt_one {n : ℕ} {ρ : _root_.ReciprocityTheory.L2DbarEstimates.V n → ℝ} {v : _root_.ReciprocityTheory.L2DbarEstimates.V n}
     (hρ : ContDiffAt ℝ 1 ρ v) (w : _root_.ReciprocityTheory.L2DbarEstimates.V n) :
@@ -24,7 +24,7 @@ private lemma continuousAt_dbar_ofReal_of_contDiffAt_one {n : ℕ} {ρ : _root_.
 open MeasureTheory Filter Topology in
 open scoped ContDiff Matrix in
 /- English proof (translation)
-The claim follows from `Finset.single_le_sum (fun j _ => hf j) (Finset.mem_univ i)`.
+A detailed English derivation is pending.
 -/
 private lemma le_fintype_sum_of_nonneg {ι : Type*} [Fintype ι] (f : ι → ℝ) (hf : ∀ i, 0 ≤ f i)
     (i : ι) : f i ≤ ∑ j, f j :=
@@ -34,19 +34,19 @@ open MeasureTheory Filter Topology in
 open scoped ContDiff Matrix in
 
 /- English proof (translation)
-Introduce `n r _ _ U K G₀ ρ hU hK hKU hG₀ hρ`. Set `F : _root_.ReciprocityTheory.L2DbarEstimates.V n → ℝ` to `fun v => |ρ v| + ∑ b, ‖_root_.GlobalTheory.dbar (fun x => (ρ x : ℂ)) v (_root_.GlobalTheory.GoodMetric.coordVec b)‖ + ∑ a, ∑ i, ∑ j, ‖_root_.GlobalTheory.HermFrame.conn G₀ v (_root_.GlobalTheory.GoodMetric.coordVec a) i j‖ + ∑ a, ∑ b, ∑ i, ∑ j, ‖_root_.GlobalTheory.HermFrame.curv …`. Establish `hFc : ContinuousOn F K`. Introduce `v hv`. Establish `hvU : v ∈ U` using `hKU hv`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hρv : ContDiffAt ℝ ∞ ρ v` using `hρ.contDiffAt (hU.mem_nhds hvU)`. Establish `h1 : ContinuousAt ρ v` using `hρv.continuousAt`. Establish `h2 : ∀ b, ContinuousAt (fun x => _root_.GlobalTheory.dbar (fun y => (ρ y : ℂ)) x (_root_.GlobalTheory.GoodMetric.coordVec b)) v` using `fun b => continuousAt_dbar_ofReal_of_contDiffAt_one (hρv.of_le (by simp)) _`. Establish `h3 : ∀ a i j, ContinuousAt (fun x => _root_.GlobalTheory.HermFrame.conn G₀ x (_root_.GlobalTheory.GoodMetric.coordVec a) i j) v` using `fun a i j => ((hG₀ v hvU).1.conn (j := 0) (hG₀ v hvU).2 (by simp) (_root_.GlobalTheory.GoodMetric.coordVec a) i j).continuousAt`. Establish `h4 : ∀ a b i j, ContinuousAt (fun x => _root_.GlobalTheory.HermFrame.curv G₀ x (_root_.GlobalTheory.GoodMetric.coordVec a) (_root_.GlobalTheory.GoodMetric.coordVec b) i j) v` using `fun a b i j => ((hG₀ v hvU).1.curv (j := 0) (hG₀ v hvU).2 (by rw [zero_add]; exact WithTop.coe_le_coe.2 le_top) (_root_.GlobalTheory.GoodMetric.coordVec a) (_root_.GlobalTheory.GoodMetric.coordVec b) i j).continuousAt`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `ContinuousAt.continuousWithinAt` to reduce the goal to its premises. Simplify using `only [F]`. Use `fun_prop`. Take `⟨C, hC⟩` from `hK.exists_bound_of_continuousOn hFc`. Use `⟨max C 0, le_max_right _ _, fun v hv => ?_⟩` and prove the remaining obligations.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hFv : F v ≤ max C 0` using `((le_abs_self _).trans (hC v hv)).trans (le_max_left _ _)`. Establish `hA : 0 ≤ |ρ v|` using `abs_nonneg _`. Establish `hB : 0 ≤ ∑ b, ‖_root_.GlobalTheory.dbar (fun x => (ρ x : ℂ)) v (_root_.GlobalTheory.GoodMetric.coordVec b)‖` using `Finset.sum_nonneg fun _ _ => norm_nonneg _`. Establish `hC3 : 0 ≤ ∑ a, ∑ i, ∑ j, ‖_root_.GlobalTheory.HermFrame.conn G₀ v (_root_.GlobalTheory.GoodMetric.coordVec a) i j‖` using `Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => norm_nonneg _`. Establish `hD : 0 ≤ ∑ a, ∑ b, ∑ i, ∑ j, ‖_root_.GlobalTheory.HermFrame.curv G₀ v (_root_.GlobalTheory.GoodMetric.coordVec a) (_root_.GlobalTheory.GoodMetric.coordVec b) i j‖` using `Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => norm_nonneg _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [F] at hFv`. Use `⟨by linarith, fun b => ?_, fun a i j => ?_, fun a b i j => ?_⟩` and prove the remaining obligations. Use `le_fintype_sum_of_nonneg (fun b => ‖_root_.GlobalTheory.dbar (fun x => (ρ x : ℂ)) v (_root_.GlobalTheory.GoodMetric.coordVec b)‖) (fun _ => norm_nonneg _) b` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `e1` using `le_fintype_sum_of_nonneg (fun j => ‖_root_.GlobalTheory.HermFrame.conn G₀ v (_root_.GlobalTheory.GoodMetric.coordVec a) i j‖) (fun _ => norm_nonneg _) j`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2` using `le_fintype_sum_of_nonneg (fun i => ∑ j, ‖_root_.GlobalTheory.HermFrame.conn G₀ v (_root_.GlobalTheory.GoodMetric.coordVec a) i j‖) (fun _ => Finset.sum_nonneg fun _ _ => norm_nonneg _) i`. Establish `e3` using `le_fintype_sum_of_nonneg (fun a => ∑ i, ∑ j, ‖_root_.GlobalTheory.HermFrame.conn G₀ v (_root_.GlobalTheory.GoodMetric.coordVec a) i j‖) (fun _ => Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => norm_nonneg _) a`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `e1` using `le_fintype_sum_of_nonneg (fun j => ‖_root_.GlobalTheory.HermFrame.curv G₀ v (_root_.GlobalTheory.GoodMetric.coordVec a) (_root_.GlobalTheory.GoodMetric.coordVec b) i j‖) (fun _ => norm_nonneg _) j`. Establish `e2` using `le_fintype_sum_of_nonneg (fun i => ∑ j, ‖_root_.GlobalTheory.HermFrame.curv G₀ v (_root_.GlobalTheory.GoodMetric.coordVec a) (_root_.GlobalTheory.GoodMetric.coordVec b) i j‖) (fun _ => Finset.sum_nonneg fun _ _ => norm_nonneg _) i`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e3` using `le_fintype_sum_of_nonneg (fun b => ∑ i, ∑ j, ‖_root_.GlobalTheory.HermFrame.curv G₀ v (_root_.GlobalTheory.GoodMetric.coordVec a) (_root_.GlobalTheory.GoodMetric.coordVec b) i j‖) (fun _ => Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => norm_nonneg _) b`. Establish `e4` using `le_fintype_sum_of_nonneg (fun a => ∑ b, ∑ i, ∑ j, ‖_root_.GlobalTheory.HermFrame.curv G₀ v (_root_.GlobalTheory.GoodMetric.coordVec a) (_root_.GlobalTheory.GoodMetric.coordVec b) i j‖) (fun _ => Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ = …`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.GoodTop.exists_bound_smooth_data : ∀ {n : ℕ} {r : Type} [Fintype r]
     [DecidableEq r] (U K : Set (_root_.ReciprocityTheory.L2DbarEstimates.V n)) (G₀ : _root_.ReciprocityTheory.L2DbarEstimates.V n → Matrix r r ℂ) (ρ : _root_.ReciprocityTheory.L2DbarEstimates.V n → ℝ),

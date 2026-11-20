@@ -14,13 +14,13 @@ abbrev UnitsModPow : Type _ := Kˣ ⧸ unitsPow K n
 
 variable {K n} in
 /- English proof (translation)
-Simplify using `[unitsPow]`.
+Simplify using the standard rewrite rules.
 -/
 lemma mem_unitsPow {a : Kˣ} : a ∈ unitsPow K n ↔ ∃ b : Kˣ, b ^ n = a := by
   simp [unitsPow]
 
 /- English proof (translation)
-Proceed by induction on `x using QuotientGroup.induction_on with`. Consider the case `H a`. Rewrite using `[← QuotientGroup.mk_pow, QuotientGroup.eq_one_iff]`. Conclude with `mem_unitsPow.mpr ⟨a, rfl⟩`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma UnitsModPow.pow_eq_one (x : UnitsModPow K n) : x ^ n = 1 := by
   induction x using QuotientGroup.induction_on with
@@ -34,11 +34,11 @@ def unitsPowIn : Subgroup Kˣ := (unitsPow L n).comap (Units.map (algebraMap K L
 
 variable {K n L} in
 /- English proof (translation)
-Simplify using `only [unitsPowIn, Subgroup.mem_comap, mem_unitsPow]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨b, hb⟩`. Conclude with `⟨b, by simpa [Units.ext_iff] using congrArg Units.val hb⟩`. Introduce and unpack `⟨α, hα⟩`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Distinguish the cases in `h0 : α = 0`. Establish `hn : n = 0`. Assume the negation of the conclusion as `hn`. Rewrite `hα` using `[h0, zero_pow hn]`. Conclude with `(map_ne_zero (algebraMap K L)).mpr a.ne_zero hα.symm`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality.
 
-Substitute `hn` using the available equality. Use `⟨1, ?_⟩` and prove the remaining obligations. Use `ext`. Simplify using `using hα`. Conclude with `⟨Units.mk0 α h0, by ext; simpa using hα⟩`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify to obtain the desired conclusion from the available facts. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 lemma mem_unitsPowIn {a : Kˣ} : a ∈ unitsPowIn K n L ↔ ∃ α : L, α ^ n = algebraMap K L a := by
   simp only [unitsPowIn, Subgroup.mem_comap, mem_unitsPow]
@@ -58,7 +58,7 @@ lemma mem_unitsPowIn {a : Kˣ} : a ∈ unitsPowIn K n L ↔ ∃ α : L, α ^ n =
     · exact ⟨Units.mk0 α h0, by ext; simpa using hα⟩
 
 /- English proof (translation)
-Introduce `a ha`. Take `⟨b, rfl⟩` from `mem_unitsPow.mp ha`. Conclude with `mem_unitsPowIn.mpr ⟨algebraMap K L b, by simp⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 lemma unitsPow_le_unitsPowIn : unitsPow K n ≤ unitsPowIn K n L := by
   intro a ha
@@ -70,9 +70,9 @@ def kummerGroup : Subgroup (UnitsModPow K n) :=
 
 variable {K n L} in
 /- English proof (translation)
-Rewrite using `[← mem_unitsPowIn]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨b, hb, hba⟩`. Take `⟨c, hc⟩` from `mem_unitsPow.mp (QuotientGroup.eq.mp hba)`. Establish `: a = b * c ^ n` using `by rw [hc]; group`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[this]`. Conclude with `mul_mem hb (unitsPow_le_unitsPowIn K n L (mem_unitsPow.mpr ⟨c, rfl⟩))`. Introduce `ha`. Conclude with `⟨a, ha, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 lemma mk_mem_kummerGroup {a : Kˣ} :
     (a : UnitsModPow K n) ∈ kummerGroup K n L ↔ ∃ α : L, α ^ n = algebraMap K L a := by
@@ -91,16 +91,16 @@ noncomputable def toKummerGroup : unitsPowIn K n L →* kummerGroup K n L :=
     (fun a => Subgroup.mem_map_of_mem _ a.2)
 
 /- English proof (translation)
-Introduce and unpack `⟨x, a, ha, rfl⟩`. Conclude with `⟨⟨a, ha⟩, rfl⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 lemma toKummerGroup_surjective : Function.Surjective (toKummerGroup K n L) := by
   rintro ⟨x, a, ha, rfl⟩
   exact ⟨⟨a, ha⟩, rfl⟩
 
 /- English proof (translation)
-Use extensionality with `a`. Rewrite using `[MonoidHom.mem_ker, Subgroup.mem_subgroupOf, ← QuotientGroup.eq_one_iff (N := unitsPow K n)]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `congrArg Subtype.val h`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Conclude with `Subtype.ext h`.
+A detailed English derivation is pending.
 -/
 lemma ker_toKummerGroup :
     (toKummerGroup K n L).ker = (unitsPow K n).subgroupOf (unitsPowIn K n L) := by
@@ -125,7 +125,7 @@ variable {K : Type*} [Field K] {n : ℕ} [NeZero n] [HasEnoughRootsOfUnity K n]
 variable {L : Type*} [Field L] [Algebra K L]
 
 /- English proof (translation)
-Take `⟨ζ, hζ⟩` from `HasEnoughRootsOfUnity.exists_primitiveRoot K n`. Take `⟨i, -, hi⟩` from `(hζ.map_of_injective (algebraMap K L).injective).eq_pow_of_pow_eq_one hx`. Use `⟨⟨(hζ.isUnit (NeZero.ne n)).unit ^ i, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[mem_rootsOfUnity', Units.val_pow_eq_pow_val, IsUnit.unit_spec, ← pow_mul, mul_comm, pow_mul, hζ.pow_eq_one, one_pow]`. Simplify using `using hi`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 lemma exists_algebraMap_eq_of_pow_eq_one {x : L} (hx : x ^ n = 1) :
     ∃ ζ : rootsOfUnity n K, algebraMap K L ((ζ : Kˣ) : K) = x := by
@@ -137,7 +137,7 @@ lemma exists_algebraMap_eq_of_pow_eq_one {x : L} (hx : x ^ n = 1) :
   · simpa using hi
 
 /- English proof (translation)
-Take `⟨ζ, rfl⟩` from `exists_algebraMap_eq_of_pow_eq_one (K := K) hx`. Conclude with `σ.commutes _`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 lemma algHom_apply_eq_self_of_pow_eq_one {x : L} (hx : x ^ n = 1) (σ : L →ₐ[K] L) :
     σ x = x := by
@@ -146,7 +146,7 @@ lemma algHom_apply_eq_self_of_pow_eq_one {x : L} (hx : x ^ n = 1) (σ : L →ₐ
 
 omit [HasEnoughRootsOfUnity K n] in
 /- English proof (translation)
-Introduce and unpack `rfl`. Rewrite `hα` using `[zero_pow (NeZero.ne n)]`. Conclude with `(map_ne_zero (algebraMap K L)).mpr a.ne_zero hα.symm`.
+Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 lemma ne_zero_of_pow_eq_algebraMap {a : Kˣ} {α : L} (hα : α ^ n = algebraMap K L a) : α ≠ 0 := by
   rintro rfl
@@ -161,17 +161,17 @@ variable (K : Type*) [Field K] (n : ℕ) [NeZero n] [HasEnoughRootsOfUnity K n]
 variable (L : Type*) [Field L] [Algebra K L]
 
 /- English proof (translation)
-Take `⟨x, a₀, ha₀, rfl⟩` from `x`. Take `⟨α₀, hα₀⟩` from `mem_unitsPowIn.mp ha₀`. Establish `hα₀0 : α₀ ≠ 0` using `ne_zero_of_pow_eq_algebraMap hα₀`. Establish `hσ : (σ α₀ / α₀) ^ n = 1`. Rewrite using `[div_pow, ← map_pow, hα₀, AlgEquiv.commutes, div_self]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(map_ne_zero (algebraMap K L)).mpr a₀.ne_zero`. Take `⟨ζ, hζ⟩` from `exists_algebraMap_eq_of_pow_eq_one (K := K) hσ`. Use `⟨ζ, fun a ha α hα => ?_⟩` and prove the remaining obligations. Take `⟨c, hc⟩` from `mem_unitsPow.mp (QuotientGroup.eq.mp ha)`. Use `set γ := algebraMap K L (c : K) with hγ`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hγ0 : γ ≠ 0` using `(map_ne_zero (algebraMap K L)).mpr c.ne_zero`. Establish `ha0 : algebraMap K L (a : K) ≠ 0` using `(map_ne_zero (algebraMap K L)).mpr a.ne_zero`. Establish `ha' : algebraMap K L (a₀ : K) = algebraMap K L (a : K) * γ ^ n`. Establish `h1 : (c : K) ^ n = (a : K)⁻¹ * (a₀ : K)`. Simplify `congrArg Units.val hc` using `only [Units.val_pow_eq_pow_val, Units.val_mul, Units.val_inv_eq_inv_val]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : (a₀ : K) = (a : K) * (c : K) ^ n`. Rewrite using `[h1, ← mul_assoc, mul_inv_cancel₀ a.ne_zero, one_mul]`. Rewrite using `[h2, map_mul, map_pow]`. Establish `hη : (α * γ / α₀) ^ n = 1`. Rewrite using `[div_pow, mul_pow, hα, hα₀, ha']`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `div_self (mul_ne_zero ha0 (pow_ne_zero _ hγ0))`. Establish `hfix : σ (α * γ / α₀) = α * γ / α₀` using `algHom_apply_eq_self_of_pow_eq_one (K := K) hη (σ : L →ₐ[K] L)`. Establish `hσγ : σ γ = γ` using `σ.commutes _`. Establish `hσα₀ : σ α₀ = algebraMap K L ((ζ : Kˣ) : K) * α₀`. Rewrite using `[hζ, div_mul_cancel₀ _ hα₀0]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hσα₀0 : σ α₀ ≠ 0` using `(map_ne_zero σ).mpr hα₀0`. Establish `key : σ α * γ / σ α₀ = α * γ / α₀`. Rewrite using `[← hfix, map_div₀, map_mul, hσγ]`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 lemma exists_kummer_value (σ : Gal(L/K)) (x : kummerGroup K n L) :
     ∃ ζ : rootsOfUnity n K, ∀ a : Kˣ, (a : UnitsModPow K n) = x →
@@ -217,7 +217,7 @@ noncomputable def kummerPairing (σ : Gal(L/K)) (x : kummerGroup K n L) : rootsO
 variable {K n L}
 
 /- English proof (translation)
-The claim follows from `(exists_kummer_value K n L σ x).choose_spec a ha α hα`.
+A detailed English derivation is pending.
 -/
 lemma kummerPairing_spec (σ : Gal(L/K)) (x : kummerGroup K n L) {a : Kˣ}
     (ha : (a : UnitsModPow K n) = x) {α : L} (hα : α ^ n = algebraMap K L a) :
@@ -225,7 +225,7 @@ lemma kummerPairing_spec (σ : Gal(L/K)) (x : kummerGroup K n L) {a : Kˣ}
   (exists_kummer_value K n L σ x).choose_spec a ha α hα
 
 /- English proof (translation)
-Establish `h'` using `kummerPairing_spec σ x ha hα`. Rewrite `h'` using `[h]`. Use `mul_right_cancel₀ (ne_zero_of_pow_eq_algebraMap hα) h'` as an intermediate fact. Use `ext`. Conclude with `((algebraMap K L).injective this).symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 lemma kummerPairing_eq_of_apply (σ : Gal(L/K)) (x : kummerGroup K n L) {a : Kˣ}
     (ha : (a : UnitsModPow K n) = x) {α : L} (hα : α ^ n = algebraMap K L a)
@@ -238,9 +238,9 @@ lemma kummerPairing_eq_of_apply (σ : Gal(L/K)) (x : kummerGroup K n L) {a : Kˣ
   exact ((algebraMap K L).injective this).symm
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Rewrite using `[kummerPairing_spec σ x ha hα, h]`. Simplify using the standard rewrite rules. Introduce `h`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `kummerPairing_eq_of_apply σ x ha hα 1 (by rw [h]; simp)`.
+A detailed English derivation is pending.
 -/
 lemma kummerPairing_eq_one_iff (σ : Gal(L/K)) (x : kummerGroup K n L) {a : Kˣ}
     (ha : (a : UnitsModPow K n) = x) {α : L} (hα : α ^ n = algebraMap K L a) :
@@ -254,7 +254,7 @@ lemma kummerPairing_eq_one_iff (σ : Gal(L/K)) (x : kummerGroup K n L) {a : Kˣ}
 
 omit [NeZero n] [HasEnoughRootsOfUnity K n] in
 /- English proof (translation)
-Take `⟨x, a, ha, rfl⟩` from `x`. Conclude with `⟨a, rfl, mem_unitsPowIn.mp ha⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 lemma exists_rep (x : kummerGroup K n L) :
     ∃ a : Kˣ, (a : UnitsModPow K n) = x ∧ ∃ α : L, α ^ n = algebraMap K L a := by
@@ -262,7 +262,7 @@ lemma exists_rep (x : kummerGroup K n L) :
   exact ⟨a, rfl, mem_unitsPowIn.mp ha⟩
 
 /- English proof (translation)
-Take `⟨a, ha, α, hα⟩` from `exists_rep x`. Apply `kummerPairing_eq_of_apply (σ * τ) x ha hα` to reduce the goal to its premises. Rewrite using `[AlgEquiv.mul_apply, kummerPairing_spec τ x ha hα, map_mul, AlgEquiv.commutes, kummerPairing_spec σ x ha hα]`. Simplify using `only [Subgroup.coe_mul, Units.val_mul, map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 lemma kummerPairing_mul_left (σ τ : Gal(L/K)) (x : kummerGroup K n L) :
     kummerPairing K n L (σ * τ) x = kummerPairing K n L σ x * kummerPairing K n L τ x := by
@@ -274,9 +274,9 @@ lemma kummerPairing_mul_left (σ τ : Gal(L/K)) (x : kummerGroup K n L) :
   ring
 
 /- English proof (translation)
-Take `⟨a, ha, α, hα⟩` from `exists_rep x`. Take `⟨b, hb, β, hβ⟩` from `exists_rep y`. Establish `hab : ((a * b : Kˣ) : UnitsModPow K n) = ((x * y : kummerGroup K n L) : UnitsModPow K n)`. Rewrite using `[QuotientGroup.mk_mul, ha, hb]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hαβ : (α * β) ^ n = algebraMap K L ((a * b : Kˣ) : K)`. Rewrite using `[mul_pow, hα, hβ, Units.val_mul, map_mul]`. Apply `kummerPairing_eq_of_apply σ (x * y) hab hαβ` to reduce the goal to its premises. Rewrite using `[map_mul, kummerPairing_spec σ x ha hα, kummerPairing_spec σ y hb hβ]`. Simplify using `only [Subgroup.coe_mul, Units.val_mul, map_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -296,14 +296,14 @@ lemma kummerPairing_mul_right (σ : Gal(L/K)) (x y : kummerGroup K n L) :
   ring
 
 /- English proof (translation)
-Take `⟨a, ha, α, hα⟩` from `exists_rep x`. Conclude with `(kummerPairing_eq_one_iff 1 x ha hα).mpr rfl`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 lemma kummerPairing_one_left (x : kummerGroup K n L) : kummerPairing K n L 1 x = 1 := by
   obtain ⟨a, ha, α, hα⟩ := exists_rep x
   exact (kummerPairing_eq_one_iff 1 x ha hα).mpr rfl
 
 /- English proof (translation)
-Establish `h` using `kummerPairing_mul_right σ (1 : kummerGroup K n L) 1`. Rewrite `h` using `[mul_one]`. Conclude with `(mul_eq_left.mp h.symm)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 lemma kummerPairing_one_right (σ : Gal(L/K)) : kummerPairing K n L σ 1 = 1 := by
   have h := kummerPairing_mul_right σ (1 : kummerGroup K n L) 1

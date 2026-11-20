@@ -7,13 +7,13 @@ open UpperTheory.Gal.LocD UpperTheory.Gal.InertialTypesAlt.G UpperTheory.Gal.Joi
 open scoped Classical
 
 /- English proof (translation)
-Introduce `k _ _ _ _ n V _ _ π hs y`. Take `⟨v, rfl⟩` from `Submodule.mkQ_surjective _ y`. Set `U : Subgroup (GL (Fin n) k)` to `{ carrier := {g | π g v = v} mul_mem' := by`. Introduce `a b ha hb`. Simplify using `only [Set.mem_setOf_eq] at ha hb ⊢`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Rewrite using `[map_mul, Module.End.mul_apply, hb, ha]`. Use the proof step `one_mem' := by simp`. Use the proof step `inv_mem' := by`. Introduce `a ha`. Simplify using `only [Set.mem_setOf_eq] at ha ⊢`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `conv_lhs => rw [← ha]`. Rewrite using `[← Module.End.mul_apply, ← map_mul]`. Simplify using `}`. Use `⟨U, hs v, fun K hK => ?_⟩` and prove the remaining obligations. Use `Submodule.mem_map_of_mem (p := fixed π K) ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce `h`. Establish `hv : π (h : GL (Fin n) k) v = v` using `hK h.2`. Simplify using `using hv`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.Join.expLev :
     UpperTheory.Gal.Join.ExpLev := by

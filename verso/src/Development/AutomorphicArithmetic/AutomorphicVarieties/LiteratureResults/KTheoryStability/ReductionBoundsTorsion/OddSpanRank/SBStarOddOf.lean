@@ -11,27 +11,25 @@ namespace PositivityTheory.KB
 
 open PrimeModuloFree LargePrimeDiscriminant in
 /- English proof (translation)
-Introduce `hC hSep hBr hStab hSurj hWt L _ _ hTC k hk hkr l hl n hn`. Use `haveI : IsTotallyComplex L := hTC`. Take `⟨θ, hθs, hθ0, hθn⟩` from `hBr k`. Take `⟨τ, hτW, hτ⟩` from `hWt L k hk`. Establish `hcard : Fintype.card (InfinitePlace L) = nrComplexPlaces L`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[card_eq_nrRealPlaces_add_nrComplexPlaces, IsTotallyComplex.nrRealPlaces_eq_zero, zero_add]`. Establish `hM : 2 * (k + 1) + 4 ≤ lev l n k` using `le_trans hn (PrimeModuloFree.le_lev hl n k)`. Set `C : Submodule ℝ (bd (GL (Fin (lev l n k)) (𝓞 L)) k).ker` to `Submodule.span ℝ {y | ∃ z0 : Chn (GL (Fin n) (𝓞 L)) (k + 1), IsCyc z0 ∧ (y : Chn (GL (Fin (lev l n k)) (𝓞 L)) (k + 1)) = PrimeModuloFree.zc (𝓞 L) hl z0 k}`. Combine the equalities or inequalities in the displayed calculation. Introduce `z hT`.
+Establish an intermediate fact. Introduce a local definition for the expression. Chain the equalities or inequalities of the calculation. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hTw : ∀ w, τ w (lev l n k) (z : (bd (GL (Fin (lev l n k)) (𝓞 L)) k).ker).1 = 0` using `fun w => congrFun hT w`. Use `show (θ _) (z : (bd (GL (Fin (lev l n k)) (𝓞 L)) k).ker) = 0`. Use `(hθ0 _ _).2 ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hnb`. Establish `hcyc : IsCyc (z : (bd (GL (Fin (lev l n k)) (𝓞 L)) k).ker).1` using `LinearMap.mem_ker.mp (z : (bd (GL (Fin (lev l n k)) (𝓞 L)) k).ker).2`.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨N, hMN, hN⟩` from `hSurj L hTC k hkr (lev l n k)`. Establish `hz'c` using `LargePrimeDiscriminant.isCyc_cmap hC (stab (𝓞 L) (lev l n k) N hMN) hcyc`. Establish `hz'nb : ¬ IsBd (cmap (stab (𝓞 L) (lev l n k) N hMN) (k + 1) (z : (bd (GL (Fin (lev l n k)) (𝓞 L)) k).ker).1)` using `fun h => hnb ((hStab (𝓞 L) k (lev l n k) N hMN hM).1 _ hcyc h)`. Take `⟨c, hcI, hcd, hcne⟩` from `hSep _ k _ hz'c hz'nb`. Take `⟨ω, hωI, hω⟩` from `hN c hcI hcd`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨cc, a, ha, hdec⟩` from `hτ N ω hωI`. Establish `hazero : ∀ j ∈ Finset.Icc 2 (k + 1), ∀ y ∈ C, a j (lev l n k) (y : Chn (GL (Fin (lev l n k)) (𝓞 L)) (k + 1)) = 0`. Introduce `j hj y hy`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨z0, hz0, hx⟩` from `hx`. Rewrite using `[hx, PrimeModuloFree.wsys_zc (R := 𝓞 L) hC (ha j hj) hl hz0 k]`. Apply `mul_eq_zero_of_left` to reduce the goal to its premises. Rewrite `hj` using `[Finset.mem_Icc]`. Apply `Finset.prod_eq_zero (i := j - 2)` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Rewrite using `[Finset.mem_range]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[Nat.sub_add_cancel hj.1, sub_self]`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => simp [hx, hy]`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately. Reduce the claim to the hypotheses of an applicable result.
 
-Consider the case `smul r x _ hx => simp [hx]`. Apply `hcne` to reduce the goal to its premises. Rewrite using `[hω _ hz'c, hdec _ hz'c]`. Establish `h1 : ∀ w, τ w N (cmap (stab (𝓞 L) (lev l n k) N hMN) (k + 1) (z : (bd (GL (Fin (lev l n k)) (𝓞 L)) k).ker).1) = 0`. Introduce `w`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[(hτW w).2.1 _ _ hMN _ hcyc]`. Conclude with `hTw w`. Establish `h2 : ∀ j ∈ Finset.Icc 2 (k + 1), a j N (cmap (stab (𝓞 L) (lev l n k) N hMN) (k + 1) (z : (bd (GL (Fin (lev l n k)) (𝓞 L)) k).ker).1) = 0`. Introduce `j hj`. Rewrite using `[(ha j hj).2.1 _ _ hMN _ hcyc]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Conclude with `hazero j hj _ z.2`. Rewrite using `[Finset.sum_eq_zero (fun w _ => by rw [h1 w, mul_zero]), Finset.sum_eq_zero h2, add_zero]`. Introduce and unpack `_ ⟨x, rfl⟩`. Take `⟨z0, hz0⟩` from `hθs (GL (Fin n) (𝓞 L)) (1 ⊗ₜ x)`. Use `⟨⟨⟨PrimeModuloFree.zc (𝓞 L) hl z0.1 k, PrimeModuloFree.isCyc_zc hC (𝓞 L) hl (LinearMap.mem_ker.mp z0.2) k⟩, Submodule.subset_span ⟨z0.1, LinearMap.mem_ker.mp z0.2, rfl⟩⟩, ?_⟩` and prove the remaining obligations.
-
-Conclude with `PrimeModuloFree.th_zc θ hθn hC (𝓞 L) hl z0.1 (LinearMap.mem_ker.mp z0.2) x hz0 k`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem sBStarOdd_of : SBStarOdd := by
   intro hC hSep hBr hStab hSurj hWt L _ _ hTC k hk hkr l hl n hn

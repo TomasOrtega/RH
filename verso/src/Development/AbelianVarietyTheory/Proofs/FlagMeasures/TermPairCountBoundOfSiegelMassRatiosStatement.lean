@@ -5,7 +5,7 @@ import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.PerRowC
 import Development.AbelianVarietyTheory.PublishedTheorems.DiscreteSeriesUnitary₂.MaxMass
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.TypeAsm.pair_count_bound_of_siegel_mass | exact GlobalTheory.TypeAsm.pair_count_bound_of_siegel_mass | (intros; apply GlobalTheory.TypeAsm.pair_count_bound_of_siegel_mass <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.termPairCountBound_of_siegelMassRatios : GlobalTheory.Mass.MaxMass → Formalism.HermitianLatticesTheory.SiegelMassRatio → GlobalTheory.TypeAsm.PairsP := by
   first | exact @GlobalTheory.TypeAsm.pair_count_bound_of_siegel_mass | exact GlobalTheory.TypeAsm.pair_count_bound_of_siegel_mass | (intros; apply GlobalTheory.TypeAsm.pair_count_bound_of_siegel_mass <;> assumption)

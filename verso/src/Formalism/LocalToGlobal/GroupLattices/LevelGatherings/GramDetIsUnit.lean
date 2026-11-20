@@ -9,13 +9,13 @@ namespace Formalism.L2.G
 variable {R : Ranks} {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [StarRing E] [Algebra F E]
 
 /- English proof (translation)
-Rewrite using `[isUnit_iff_ne_zero]`. Introduce `hdet`. Rewrite `hdet` using `[Spaces.gram0, Matrix.det_reindex_self]`. Take `⟨v, hv0, hv⟩` from `Matrix.exists_mulVec_eq_zero_iff.mpr hdet`. Establish `hi : ∀ i, (sp.X 0).hT ((sp.X 0).frame i) (∑ j, v j • (sp.X 0).frame j) = 0`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `i`. Establish `h` using `congrFun hv i`. Simplify using `only [Matrix.mulVec, dotProduct, HSpace.gram, Pi.zero_apply] at h`. Simplify using `only [map_sum, map_smul, smul_eq_mul]`. Rewrite using `[← h]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.sum_congr rfl fun j _ => mul_comm _ _`. Establish `hy : ∀ x, (sp.X 0).hT x (∑ j, v j • (sp.X 0).frame j) = 0`. Introduce `x`. Rewrite using `[← (sp.X 0).frame.sum_repr x, map_sum (sp.X 0).hT, LinearMap.sum_apply]`. Use `Finset.sum_eq_zero fun i _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[LinearMap.map_smulₛₗ, LinearMap.smul_apply, hi, smul_zero]`. Establish `h0` using `(sp.X 0).nondeg.2 _ hy`. Establish `hv'` using `Fintype.linearIndependent_iff.mp (sp.X 0).frame.linearIndependent v h0`. Conclude with `hv0 (funext hv')`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isUnit_det_gram0 (sp : Spaces R F E) : IsUnit sp.gram0.det := by
   rw [isUnit_iff_ne_zero]

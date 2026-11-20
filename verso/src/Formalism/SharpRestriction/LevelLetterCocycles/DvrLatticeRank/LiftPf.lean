@@ -7,11 +7,11 @@ namespace Formalism.MainNotions.N.Ln34
 open Formalism.WeaklyAdmissibleFiltrations Formalism.BasicNotions Formalism.BasicNotions.Loc Module Formalism.MainNotions.ElementDenominator Formalism.MainNotions.ElementDenominator.CongruenceModules Formalism.MainNotions.N.Ln34.CyclotomicLifting
 
 /- English proof (translation)
-Distinguish the cases in `hp1 : p = 1`. Substitute `hp1 first` using the available equality. Consider the case `simp`. Consider the case `simp [padicValNat]`. Consider the case `(unfold padicValNat; simp)`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Rewrite using `[padicValNat_def' hp1 hb]`. Establish `hd : p ^ padicValNat p a ∣ b` using `pow_padicValNat_dvd.trans hab`. Establish `hf : FiniteMultiplicity p b` using `Nat.finiteMultiplicity_iff.2 ⟨hp1, Nat.pos_of_ne_zero hb⟩`. Use `first`. Consider the case `exact hf.le_multiplicity_of_pow_dvd hd`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Treat this case separately. Treat this case separately.
 
-Consider the case `exact (hf.pow_dvd_iff_le_multiplicity).mp hd`.
+A detailed English derivation is pending.
 -/
 theorem padicValNat_le_of_dvd' (p : ℕ) {a b : ℕ} (hab : a ∣ b) (hb : b ≠ 0) :
     padicValNat p a ≤ padicValNat p b := by
@@ -29,7 +29,7 @@ theorem padicValNat_le_of_dvd' (p : ℕ) {a b : ℕ} (hab : a ∣ b) (hb : b ≠
       | exact (hf.pow_dvd_iff_le_multiplicity).mp hd
 
 /- English proof (translation)
-Unfold `Formalism.MainNotions.LiftingTheory.ePB expLift LiftingTheory.eWB LIFT.eU`. Establish `h1 : padicValNat l (2 * H).factorial ≤ padicValNat l (2 * (2 * h)).factorial` using `padicValNat_le_of_dvd' l (Nat.factorial_dvd_factorial (by omega)) (Nat.factorial_ne_zero _)`. Establish `h2 : padicValNat l M.factorial ≤ padicValNat l h.factorial` using `padicValNat_le_of_dvd' l (Nat.factorial_dvd_factorial hM) (Nat.factorial_ne_zero _)`. Use linear arithmetic over natural numbers and integers.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem ePB_le_expLift_pf (l M H h : ℕ) (jumps : Finset ℤ) (hM : M ≤ h) (hH : H ≤ 2 * h) :
     Formalism.MainNotions.LiftingTheory.ePB l 1 M H jumps ≤ expLift l h (Formalism.MainNotions.LiftingTheory.JSet jumps M) := by
@@ -41,13 +41,11 @@ theorem ePB_le_expLift_pf (l M H h : ℕ) (jumps : Finset ℤ) (hM : M ≤ h) (h
   omega
 
 /- English proof (translation)
-Unfold `Formalism.MainNotions.LiftingTheory.JSet`. Prove the components needed by the constructor for the conclusion. Introduce `x hx`. Break down `Finset.mem_union.mp hx with hx | hx` into its components or cases. Take `⟨hx, -⟩` from `Finset.mem_filter.mp hx`.
+Replace the relevant objects with their definitions. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result.
 
-Take `⟨p, hp, rfl⟩` from `Finset.mem_image.mp hx`. Take `⟨ha, hb⟩` from `Finset.mem_product.mp hp`. Take `⟨hb1, hb2⟩` from `Finset.mem_Icc.mp hb`. Take `⟨ha1, ha2⟩` from `hj _ ha`. Conclude with `Finset.mem_Icc.mpr ⟨by omega, by omega⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨h1, h2⟩` from `Finset.mem_Icc.mp hx`. Conclude with `Finset.mem_Icc.mpr ⟨by omega, by omega⟩`. Introduce `h0`. Break down `Finset.mem_union.mp h0 with h0 | h0` into its components or cases. Conclude with `(Finset.mem_filter.mp h0).2 rfl`.
-
-Establish `h1` using `(Finset.mem_Icc.mp h0).1`. Use linear arithmetic over natural numbers and integers.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem JSet_sub_pf (jumps : Finset ℤ) (M h : ℕ) (hj : ∀ a ∈ jumps, -(h : ℤ) ≤ a ∧ a ≤ h)
     (hM : M ≤ h) :
@@ -72,7 +70,7 @@ theorem JSet_sub_pf (jumps : Finset ℤ) (M h : ℕ) (hj : ∀ a ∈ jumps, -(h 
       omega
 
 /- English proof (translation)
-Take `⟨d, rfl⟩` from `Nat.exists_eq_add_of_le he`. Rewrite using `[pow_add, mul_comm, mul_smul]`. Conclude with `S.smul_mem _ hc`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pow_smul_mem_of_le {O M : Type*} [CommRing O] [AddCommGroup M] [Module O M]
     (S : Submodule O M) (p : O) {e e' : ℕ} (he : e ≤ e') {c : M} (hc : p ^ e • c ∈ S) :
@@ -82,9 +80,9 @@ theorem pow_smul_mem_of_le {O M : Type*} [CommRing O] [AddCommGroup M] [Module O
   exact S.smul_mem _ hc
 
 /- English proof (translation)
-Unfold `Formalism.MainNotions.LiftingTheory.jumpSet`. Introduce `a ha`. Establish `ha' : a ∈ Finset.Icc (-(M : ℤ)) M` using `by first`. Consider the case `exact Finset.mem_of_mem_filter a ha`. Consider the case `(simp only [Finset.mem_filter] at ha; exact ha.1)`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Treat this case separately. Treat this case separately.
 
-Take `⟨h1, h2⟩` from `Finset.mem_Icc.mp ha'`. Apply the tactic sequence `constructor <;> omega`.
+Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem jumpSet_bound {l : ℕ} [Fact l.Prime] (P : LocPrime l) (K LL : FinExt l) {n : ℕ}
     (W : LocWach (P.PD K) ↥LL.1 ↥(OL LL) (P.v LL) n) (T : LocLat ↥(GK K) ℚ_[l] ↥LL.1 ↥(OL LL))
@@ -100,11 +98,9 @@ theorem jumpSet_bound {l : ℕ} [Fact l.Prime] (P : LocPrime l) (K LL : FinExt l
   constructor <;> omega
 
 /- English proof (translation)
-Establish `hMm : Formalism.MainNotions.LiftingTheory.Mmax n (fun _ => h) ≤ h`. Unfold `Formalism.MainNotions.LiftingTheory.Mmax`. Conclude with `Finset.sup_le fun _ _ => le_rfl`. Establish `hHm : Formalism.MainNotions.LiftingTheory.Hmax n (fun _ => h) (fun _ => h) ≤ 2 * h`. Unfold `Formalism.MainNotions.LiftingTheory.Hmax`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result.
 
-Conclude with `Finset.sup_le fun _ _ => by dsimp only; omega`. Take `⟨hJ1, hJ2⟩` from `JSet_sub_pf Js _ h hJb hMm`. Use `⟨_, hJ1, hJ2, ?_⟩` and prove the remaining obligations. Establish `he` using `ePB_le_expLift_pf l _ _ h Js hMm hHm`. Unfold `Formalism.WeaklyAdmissibleFiltrations.LatHom.LiftF at hL ⊢`.
-
-Introduce `c hc`. Conclude with `pow_smul_mem_of_le _ _ he (hL c hc)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem lift_jumps_bounded {l : ℕ} [Fact l.Prime] (P : LocPrime l) (K LL : FinExt l)
     {T₁ T₂ : LocLat ↥(GK K) ℚ_[l] ↥LL.1 ↥(OL LL)} (Fm : LatHom T₁.L T₂.L) (h n : ℕ)
@@ -127,19 +123,19 @@ theorem lift_jumps_bounded {l : ℕ} [Fact l.Prime] (P : LocPrime l) (K LL : Fin
   exact pow_smul_mem_of_le _ _ he (hL c hc)
 
 /- English proof (translation)
-Take `⟨-, -, -, -, -, -, hA4, -, -, -, hA8, -, hA12⟩` from `hA`. Take `⟨-, -, -, -, hDesc⟩` from `hA4`. Introduce `l _ hl K LL hg T₁ T₂ Fm r S η m h up b hH`. Establish `hKK : K.1 ≤ (cycL K).1` using `hg.2.2.1`. Establish `hle : GK (cycL K) ≤ GK K` using `GK_le hKK`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hg1 : Good (cycL K) 1 LL`. Use `⟨le_rfl, fun h2 => absurd h2 hl, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Ks_cycL K]`. Conclude with `le_rfl`. Rewrite using `[Ks_cycL K]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hg.2.2.2`. Establish `hD` using `hDesc l (cycL K) K hKK hle (GKin_normal K hKK) 1 LL hg1`. Establish `hs : ((HW l).W (cycL K) 1 LL hg1).s = 1` using `(HW l).W_s _ _ _ _`. Establish `hCB : Formalism.MainNotions.LiftingTheory.CaseB ((HW l).W (cycL K) 1 LL hg1)`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[eq_top_iff]`. Introduce `g _`. Rewrite using `[((HW l).W (cycL K) 1 LL hg1).GKs_def, hs, Nat.cast_one, (D.loc l).PD_χ, ← map_one (algebraMap ℚ_[l] ↥LL.1), ← map_sub]`. Conclude with `v_ge_one _ LL _ (chi_cong (D.loc l) K g g.2)`. Rewrite using `[(D.loc l).PD_p, hs, finrank_cycL]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Establish `hv0` using `hD.2 hCB rfl (by rw [max_unramified_cyclotomic_eq K]; exact inf_le_left)`. Establish `hrange : (Subgroup.inclusion hle).range.Normal`. Rewrite using `[range_inclusion_eq K hKK hle]`. Conclude with `GKin_normal K hKK`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hres` using `hA12 l (cycL K) K hKK hle LL T₁ hH.1`. Establish `hres2` using `hA12 l (cycL K) K hKK hle LL T₂ hH.2.1`. Establish `hL` using `(hD.1 hrange T₁ T₂ Fm (fun _ => h) (fun _ => h) ⟨hres.1, hres2.1, hH.2.2.1⟩ (by`. Introduce `i τ _ a ha`. Establish `hm` using `multV_ne_zero (D.loc l) (cycL K) LL _ τ a ((hA8 l (cycL K) LL _).2 τ).1 ha`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hm` using `[hres.2 τ a]`. Use `hH.2.2.2.2.2.2.2.1 (τ.comp (IntermediateField.inclusion hKK)) a (isJump_of_multV (D.loc l) K LL T₁ _ a hm)` as an intermediate fact. Simplify using `using this)).2 hCB`. Rewrite `hL` using `[(D.loc l).PD_p, hv0, add_zero, hs]`. Conclude with `lift_jumps_bounded (D.loc l) K LL Fm h _ _ (jumpSet_bound (D.loc l) (cycL K) LL _ _ _ h (Finset.sup_le fun _ _ => le_rfl)) hL`.
+A detailed English derivation is pending.
 -/
 theorem lift_bound_of_hypotheses (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW)
     (Cm : CmpOf D.loc D.locA HW F) (CA CB CK : ℝ) (hA : Adm1 D HW F Cm CA CB CK) : liftR D := by

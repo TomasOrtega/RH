@@ -27,13 +27,13 @@ def opL (j : ℕ) : MonoidAlgebra ↥D.LL0 (G0g D.nd) →+* Module.End D.what₂
     (MonoidAlgebra.mapRangeRingHom (G0g D.nd) (algebraMap ↥D.LL0 D.what₂.LL))
 
 /- English proof (translation)
-Simplify using `[opL, MonoidAlgebra.of_apply, MonoidAlgebra.mapRangeRingHom, actLHom]`.
+Simplify using the standard rewrite rules.
 -/
 theorem opL_of (j : ℕ) (g : G0g D.nd) : opL D S j (MonoidAlgebra.of _ _ g) = actL D S j g := by
   simp [opL, MonoidAlgebra.of_apply, MonoidAlgebra.mapRangeRingHom, actLHom]
 
 /- English proof (translation)
-Rewrite using `[finsum_eq_sum_of_fintype]`. Simplify using `[opL, eL, MonoidAlgebra.lift_apply, MonoidAlgebra.mapRangeRingHom, actLHom, Finsupp.sum_fintype]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem opL_eL (j : ℕ) : opL D S j (eL D) = ∑ᶠ g : G0g D.nd, ((D.nexp.eLL0 g : ↥D.LL0) : D.what₂.LL) • actL D S j g := by
   rw [finsum_eq_sum_of_fintype]
@@ -42,20 +42,20 @@ theorem opL_eL (j : ℕ) : opL D S j (eL D) = ∑ᶠ g : G0g D.nd, ((D.nexp.eLL0
 variable {D S}
 
 /- English proof (translation)
-The claim follows from `(actLHom D S j).map_mul g h`.
+A detailed English derivation is pending.
 -/
 theorem actL_mul (j : ℕ) (g h : G0g D.nd) : actL D S j (g * h) = actL D S j g * actL D S j h :=
   (actLHom D S j).map_mul g h
 
 /- English proof (translation)
-Rewrite using `[← Module.End.mul_apply, ← map_mul, he.1]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem eLop_idem (he : EIdem D) (j : ℕ) (x : S.WL j) :
     opL D S j (eL D) (opL D S j (eL D) x) = opL D S j (eL D) x := by
   rw [← Module.End.mul_apply, ← map_mul, he.1]
 
 /- English proof (translation)
-Rewrite using `[← opL_of D S j g, ← Module.End.mul_apply, ← map_mul, he.2 g, map_mul, Module.End.mul_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem eLop_comm (he : EIdem D) (j : ℕ) (g : G0g D.nd) (x : S.WL j) :
     opL D S j (eL D) (actL D S j g x) = actL D S j g (opL D S j (eL D) x) := by
@@ -71,7 +71,7 @@ def cU (θ : ∀ kk : Fin 2, Multiplicative (ZMod (D.host.g kk)) →* (↥D.LL0)
   (Fintype.card ↥(Formalism.IndefR.NX.U D.nd) : ↥D.LL0)⁻¹ * ((psiUOf D.nd (NX.xiRed D) θ u⁻¹ : (↥D.LL0)ˣ) : ↥D.LL0)
 
 /- English proof (translation)
-Unfold `cU`. Rewrite using `[mul_inv_rev, map_mul, Units.val_mul, map_inv (psiUOf D.nd (NX.xiRed D) θ) u', Units.val_inv_eq_inv_val]`. Establish `h0 : ((psiUOf D.nd (NX.xiRed D) θ u' : (↥D.LL0)ˣ) : ↥D.LL0) ≠ 0` using `Units.ne_zero _`. Clear the denominators using the available nonvanishing facts.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts.
 -/
 theorem cU_mul (θ : ∀ kk : Fin 2, Multiplicative (ZMod (D.host.g kk)) →* (↥D.LL0)ˣ) (u' u : ↥(Formalism.IndefR.NX.U D.nd)) :
     ((psiUOf D.nd (NX.xiRed D) θ u' : (↥D.LL0)ˣ) : ↥D.LL0) * cU D θ (u' * u) = cU D θ u := by
@@ -84,9 +84,9 @@ def projL (θ : ∀ kk : Fin 2, Multiplicative (ZMod (D.host.g kk)) →* (↥D.L
   ∑ u : ↥(Formalism.IndefR.NX.U D.nd), ((cU D θ u : ↥D.LL0) : D.what₂.LL) • actL D S j u
 
 /- English proof (translation)
-Simplify using `only [projL, LinearMap.sum_apply, LinearMap.smul_apply, map_sum, map_smul, Finset.smul_sum, smul_smul]`. Use `Fintype.sum_equiv (Equiv.mulLeft u') _ _ fun u => ?_` and prove the remaining obligations. Simplify using `only [Equiv.coe_mulLeft, Subgroup.coe_mul, actL_mul, Module.End.mul_apply]`. Use `congr 1`. Rewrite using `[← cU_mul θ u' u]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem projL_isot (θ : ∀ kk : Fin 2, Multiplicative (ZMod (D.host.g kk)) →* (↥D.LL0)ˣ) (j : ℕ)
     (u' : ↥(Formalism.IndefR.NX.U D.nd)) (w : S.WL j) :
@@ -101,7 +101,7 @@ theorem projL_isot (θ : ∀ kk : Fin 2, Multiplicative (ZMod (D.host.g kk)) →
   ring
 
 /- English proof (translation)
-Unfold `goodL`. Rewrite using `[← opL_eL, Submodule.mem_inf, Submodule.mem_iInf]`. Use `⟨?_, fun u => ?_⟩` and prove the remaining obligations. Rewrite using `[Module.End.mem_eigenspace_iff, one_smul, eLop_idem he]`. Rewrite using `[Module.End.mem_eigenspace_iff, ← eLop_comm he, projL_isot, map_smul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem goodL_of (he : EIdem D) (θ : ∀ kk : Fin 2, Multiplicative (ZMod (D.host.g kk)) →* (↥D.LL0)ˣ) (j : ℕ) (w : S.WL j) :
     opL D S j (eL D) (projL (S := S) θ j w) ∈ goodL D S θ j := by
@@ -119,7 +119,7 @@ def projT (In : RatIn D S) (i : T.Tw) (j : ℕ) (b : Bool) : Module.End (Fractio
   ∑ u : ↥(Formalism.IndefR.NX.U D.nd), readT D T i b (cU D In.θ u) • (actGT D T S In.rho In.chi i j b u).toLinearMap
 
 /- English proof (translation)
-Use `(map_ne_zero (readT D T i b)).mpr fun h => ?_` and prove the remaining obligations. Establish `h'` using `congrArg (fun x : ↥D.LL0 => (x : D.what₂.LL)) h`. Conclude with `Fintype.card_ne_zero (by exact_mod_cast h')`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem card_ne (i : T.Tw) (b : Bool) :
     readT D T i b (Fintype.card ↥(Formalism.IndefR.NX.U D.nd) : ↥D.LL0) ≠ 0 := by
@@ -128,13 +128,13 @@ theorem card_ne (i : T.Tw) (b : Bool) :
   exact Fintype.card_ne_zero (by exact_mod_cast h')
 
 /- English proof (translation)
-Establish `hu : ∀ u : ↥(Formalism.IndefR.NX.U D.nd), actGT D T S In.rho In.chi i j b u z = readT D T i b ((psiUOf D.nd (NX.xiRed D) In.θ u : (↥D.LL0)ˣ) : ↥D.LL0) • z`. Introduce `u`. Establish `h` using `(Submodule.mem_iInf _).mp hz u`. Rewrite `h` using `[LinearMap.mem_ker, LinearMap.sub_apply, sub_eq_zero]`. Conclude with `h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [projT, LinearMap.sum_apply, LinearMap.smul_apply, LinearEquiv.coe_coe, hu, smul_smul, ← map_mul]`. Establish `hc : ∀ u : ↥(Formalism.IndefR.NX.U D.nd), cU D In.θ u * ((psiUOf D.nd (NX.xiRed D) In.θ u : (↥D.LL0)ˣ) : ↥D.LL0) = (Fintype.card ↥(Formalism.IndefR.NX.U D.nd) : ↥D.LL0)⁻¹`. Introduce `u`. Unfold `cU`. Rewrite using `[map_inv, Units.val_inv_eq_inv_val]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h0 : ((psiUOf D.nd (NX.xiRed D) In.θ u : (↥D.LL0)ˣ) : ↥D.LL0) ≠ 0` using `Units.ne_zero _`. Clear the denominators using the available nonvanishing facts. Simplify using `only [hc, Finset.sum_const, Finset.card_univ, ← Nat.cast_smul_eq_nsmul (FractionRing (T.O i)), smul_smul]`. Establish `h1 : ((Fintype.card ↥(Formalism.IndefR.NX.U D.nd) : ℕ) : FractionRing (T.O i)) * readT D T i b (Fintype.card ↥(Formalism.IndefR.NX.U D.nd) : ↥D.LL0)⁻¹ = 1`. Rewrite using `[map_inv₀, ← map_natCast (readT D T i b)]`.
+Clear the denominators using the available nonvanishing facts. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_inv_cancel₀ (card_ne T i b)`. Rewrite using `[h1, one_smul]`.
+A detailed English derivation is pending.
 -/
 theorem projT_fix (In : RatIn D S) (i : T.Tw) (j : ℕ) (b : Bool) (z : FmT D T S i j b)
     (hz : z ∈ Fm0T D T S In.rho In.chi In.θ i j b) : projT T In i j b z = z := by
@@ -162,7 +162,7 @@ theorem projT_fix (In : RatIn D S) (i : T.Tw) (j : ℕ) (b : Bool) (z : FmT D T 
 end KSide
 
 /- English proof (translation)
-Simplify using `only [projT, projL, LinearMap.sum_apply, LinearMap.smul_apply, LinearEquiv.coe_coe, map_sum, hsl, hact]`.
+Simplify using the standard rewrite rules.
 -/
 theorem projT_phi (T : TwR D.LL0 D.nd) (In : RatIn D S) (i : T.Tw) (j : ℕ) (b : Bool) (Φ : S.WL j →+ FmT D T S i j b)
     (hsl : ∀ (c : ↥D.LL0) (x : S.WL j), Φ ((c : D.what₂.LL) • x) = readT D T i b c • Φ x)
@@ -171,9 +171,9 @@ theorem projT_phi (T : TwR D.LL0 D.nd) (In : RatIn D S) (i : T.Tw) (j : ℕ) (b 
   simp only [projT, projL, LinearMap.sum_apply, LinearMap.smul_apply, LinearEquiv.coe_coe, map_sum, hsl, hact]
 
 /- English proof (translation)
-Use `Submodule.eq_top_iff'.mpr fun z => ?_` and prove the remaining obligations. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => exact Submodule.zero_mem _`. Consider the case `tmul a m`. Establish `h : a ⊗ₜ[R] m = a • ((1 : A) ⊗ₜ[R] m)` using `by rw [TensorProduct.smul_tmul', smul_eq_mul, mul_one]`.
+Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Rewrite using `[h]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨m, rfl⟩)`. Consider the case `add x y hx hy => exact Submodule.add_mem _ hx hy`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem span_one_tmul {R A M : Type} [CommSemiring R] [CommSemiring A] [Algebra R A] [AddCommMonoid M] [Module R M] :
     Submodule.span A (Set.range fun m : M => (1 : A) ⊗ₜ[R] m) = ⊤ := by
@@ -192,7 +192,7 @@ def oneT (T : TwR D.LL0 D.nd) (i : T.Tw) (j : ℕ) (b : Bool) (w : ↥(WKr D S j
   (1 : KT D T i b) ⊗ₜ[S.Ks] w
 
 /- English proof (translation)
-The claim follows from `span_one_tmul (R := S.Ks) (A := KT D T i b) (M := ↥(WKr D S j))`.
+A detailed English derivation is pending.
 -/
 theorem FmT_span (T : TwR D.LL0 D.nd) (i : T.Tw) (j : ℕ) (b : Bool) :
     Submodule.span (FractionRing (T.O i)) (Set.range (oneT S T i j b)) = ⊤ :=
@@ -203,9 +203,9 @@ end GlobalTheory.HeightCounting.FormsSpan
 open GlobalTheory.HeightCounting.FormsSpan in
 
 /- English proof (translation)
-Introduce `D S In T i j b _ _ he Φ hsl hact hE h1 y hy`. Take `⟨z, hz, rfl⟩` from `Submodule.mem_map.mp hy`. Rewrite using `[← projT_fix T In i j b z hz]`. Establish `key : Submodule.span (FractionRing (T.O i)) (Set.range (oneT S T i j b)) ≤ (Submodule.span (FractionRing (T.O i)) (Φ '' (goodL D S In.θ j : Set (S.WL j)))).comap (eGT D T S In.rho In.chi i j b ∘ₗ projT T In i j b)`. Use `Submodule.span_le.mpr ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `_ ⟨w, rfl⟩`. Express the relevant statement in the definitionally equal form `eGT D T S In.rho In.chi i j b (projT T In i j b (oneT S T i j b w)) ∈ Submodule.span (FractionRing (T.O i)) (Φ '' (goodL D S In.θ j : Set (S.WL j)))`. Rewrite using `[show oneT S T i j b w = Φ (w : S.WL j) from (h1 w).symm, projT_phi T In i j b Φ hsl hact, ← hE, ← opL_eL]`. Conclude with `Submodule.subset_span ⟨_, goodL_of he In.θ j (w : S.WL j), rfl⟩`. Conclude with `key (Submodule.eq_top_iff'.mp (FmT_span (S := S) T i j b) z)`.
+Assume the hypotheses and unpack their components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.HeightCounting.FormsStep.goodTwistSideForms_le_span_goodLiftForms : ∀ (D : D7) (S : RatDat D.ntw) (In : RatIn D S) (T : TwR D.LL0 D.nd) (i : T.Tw) (j : ℕ) (b : Bool),
     1 ≤ j → j ≤ D.R.m → EIdem D → ∀ (Φ : S.WL j →+ FmT D T S i j b),

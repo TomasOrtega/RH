@@ -16,7 +16,7 @@ open scoped TensorProduct
 namespace GlobalTheory.FormTies
 
 /- English proof (translation)
-Use `Algebra.algebra_ext _ _ fun x => ?_` and prove the remaining obligations. Apply `NumberField.RingOfIntegers.ext` to reduce the goal to its premises. Rewrite using `[h x]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem ringOfIntegersAlgebra_eq {F K : Type} [Field F] [Field K] [Algebra F K] (A : Algebra (𝓞 F) (𝓞 K))
     (h : ∀ x : 𝓞 F, ((@algebraMap (𝓞 F) (𝓞 K) _ _ A x : 𝓞 K) : K) = algebraMap F K (x : F)) :
@@ -31,7 +31,7 @@ noncomputable def coordMap {F : Type} [Field F] {K : Type} [Field K] [Algebra F 
   ((z.symm : K ⊗[F] C →ₗ[K] (Fin n → K)).restrictScalars F).comp (TensorProduct.mk F K C 1)
 
 /- English proof (translation)
-The claim follows from `(Module.Flat.linearIndependent_one_tmul (S := K) hb).map' (z.symm : K ⊗[F] C →ₗ[K] (Fin n → K)) z.symm.ker`.
+A detailed English derivation is pending.
 -/
 theorem coordMap_linearIndependent {F : Type} [Field F] {K : Type} [Field K] [Algebra F K] {C : Type} [AddCommGroup C]
     [Module F C] {n : ℕ} (z : (Fin n → K) ≃ₗ[K] K ⊗[F] C) (m : ℕ) (b : Fin m → C) (hb : LinearIndependent F b) :
@@ -39,11 +39,11 @@ theorem coordMap_linearIndependent {F : Type} [Field F] {K : Type} [Field K] [Al
   (Module.Flat.linearIndependent_one_tmul (S := K) hb).map' (z.symm : K ⊗[F] C →ₗ[K] (Fin n → K)) z.symm.ker
 
 /- English proof (translation)
-Rewrite using `[eq_top_iff]`. Introduce `x _`. Take `⟨y, rfl⟩` from `z.symm.surjective x`. Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately.
 
-Consider the case `tmul a f`. Establish `e : a ⊗ₜ[F] f = a • ((1 : K) ⊗ₜ[F] f)`. Rewrite using `[TensorProduct.smul_tmul', smul_eq_mul, mul_one]`. Rewrite using `[e, map_smul]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨f, rfl⟩)`.
+Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `add x y hx hy`. Rewrite using `[map_add]`. Conclude with `Submodule.add_mem _ (hx trivial) (hy trivial)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coordMap_span {F : Type} [Field F] {K : Type} [Field K] [Algebra F K] {C : Type} [AddCommGroup C]
     [Module F C] {n : ℕ} (z : (Fin n → K) ≃ₗ[K] K ⊗[F] C) : Submodule.span K (Set.range (coordMap z)) = ⊤ := by
@@ -62,11 +62,11 @@ theorem coordMap_span {F : Type} [Field F] {K : Type} [Field K] [Algebra F K] {C
     exact Submodule.add_mem _ (hx trivial) (hy trivial)
 
 /- English proof (translation)
-Introduce `D B P6 j X hinj EX p ka wL wF T nus β _ _ _ _ hM _ _ hC K _ _ _ _ A hint hA`. Take `rfl` from `ringOfIntegersAlgebra_eq A hA`. Set `Q : Formalism.MainNotions.Gaps.LocalGlobalPassage.Run D B P6` to `⟨j, X, scalOfP B hinj EX p ka wL wF T, ka, wL, wF, T, nus, β⟩`. Take `⟨r, h0, h1, h2, h3⟩` from `Formalism.MainNotions.Gaps.LocalGlobalPassage.l2 Q (fun la => Formalism.MainNotions.Gaps.LocalGlobalPassage.l1 la) (fun la => Formalism.MainNotions.Gaps.LocalGlobalPassage.l1b la) (fun la => Formalism.MainNotions.Gaps.LocalGlobalPassage.l1c la) hM hC`. Use `⟨fun v => (v.asIdeal.ramificationIdx (𝓞 B.KO) : ℝ) * r (v.under (𝓞 B.KO)), fun v => mul_nonneg (Nat.cast_nonneg _) (h0 _), fun S' => (Formalism.MainNotions.Gaps.LocalGlobalPassage.l4 r h0 h1 S').trans h2, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `Bs Df S P _ _ oc O v i z act ht e he W`. Establish `hpl : placeBelow (K` using `B.KO) v = v.under (𝓞 B.KO) := rfl`. Establish `hram : ramOver (K` using `B.KO) v = v.asIdeal.ramificationIdx (𝓞 B.KO) := Formalism.MainNotions.Gaps.LocalGlobalPassage.ram_eq v`. Take `⟨h4, h5⟩` from `h3 (v.under (𝓞 B.KO))`. Establish `hMs : O.Ms i = Formalism.MainNotions.Gaps.LocalGlobalPassage.up (coordMap z) Q.M0` using `ht.Ms_eq`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hTh : Formalism.MainNotions.Gaps.LocalGlobalPassage.up (coordMap z) (Q.M0 ⊓ Q.Th0) ≤ O.Th v i`. Rewrite using `[ht.Th_eq]`. Conclude with `Submodule.span_mono (Set.image_mono fun f hf => hf.2)`. Rewrite using `[hMs]`. Conclude with `Formalism.MainNotions.Gaps.LocalGlobalPassage.l5 (coordMap z) (coordMap_linearIndependent z) (coordMap_span z) Q.M0 (Q.M0 ⊓ Q.Th0) hM.fg hM.span_eq_top h4 inf_le_left v e (r (v.under (𝓞 B.KO))) (ramOver (K := B.KO) v * e) (by rw [hram]; push_cast; rfl) (h5 e (by rw [Int.cast_natC …`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem index_bound_at_larger_field : ∀ (D : D7) (B : WeightFamilies.Prov D) (P6 : ModuliIntegralCharts.Prov D) (j : ℕ) (X : WeightAlgebra.PJ D B P6 j) (hinj : Function.Injective D.what₂.OtoLL) (EX : ErrX D) (p : ℕ) (ka wL wF : WeightFamilies.Wt D j) (T : ℕ) (nus : HeightOneSpectrum (𝓞 B.KO) → ℝ) (β : ℝ), 0 < p → WeightAlgebra.IsF' ka wL wF T wF.n → ka.n = wF.n + T * wL.n → WeightFamilies.dimY D j ≤ T → Submodule.IsLattice B.KO (B.Mlat j ka) → ReciprocityTheory.ChartRestriction.G.PullbackSections.SpanAt X ka → WeightAlgebra.H2 X (scalOfP B hinj EX p ka wL wF T) ka wL wF → WeightAlgebra.Concl X (scalOfP B hinj EX p ka wL wF T) ka wL wF T nus β → ∀ (K : Type) [Field K] [NumberField K] [StarRing K] [Algebra B.KO K] [Algebra (𝓞 B.KO) (𝓞 K)] [Algebra.IsIntegral (𝓞 B.KO) (𝓞 K)], (∀ x : 𝓞 B.KO, ((algebraMap (𝓞 B.KO) (𝓞 K) x : 𝓞 K) : K) = algebraMap B.KO K (x : B.KO)) → ∃ r : HeightOneSpectrum (𝓞 K) → ℝ, (∀ v, 0 ≤ r v) ∧ (∀ S' : Finset (HeightOneSpectrum (𝓞 K)), ∑ v ∈ S', Formalism.DivisionValues.lw v * r v ≤ β) ∧ ∀ (Bs : DefBase K) (Df : DefSide Bs) (S : IndefData Df) (P : Type) [Group P] [Finite P] (oc : OnConst) (O : OnObj S P oc) (v : HeightOneSpectrum (𝓞 K)) (i : Bs.J) (z : (Fin (O.nZ i) → K) ≃ₗ[K] K ⊗[B.KO] B.Cusp j ka) (act : P → B.Cusp j ka → B.Cusp j ka), FormTie X hinj EX p ka wL wF T O v i z act → ∀ e : ℕ, (T : ℝ) * nus (placeBelow (K := B.KO) v) ≤ e → ∀ W : Submodule K (Fin (O.nZ i) → K), (lix v (cut W (O.Ms i)) (cut W (O.Th v i)) : ℝ) ≤ ((ramOver (K := B.KO) v * e : ℕ) : ℝ) * (Module.finrank K W : ℝ) + r v := by
   intro D B P6 j X hinj EX p ka wL wF T nus β _ _ _ _ hM _ _ hC K _ _ _ _ A hint hA

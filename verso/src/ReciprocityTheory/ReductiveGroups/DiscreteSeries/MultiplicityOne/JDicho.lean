@@ -11,39 +11,33 @@ namespace ReciprocityTheory.ChartRestriction.DS.Mult1
 open ConjugateHilbertSpace
 
 /- English proof (translation)
-Introduce `G _ _ _ _ _ μ _ _ _ H _ _ _ _ θ ρ hθc hθm hθθ hmap hρ1 hρm hiso hcont hsq hirr`. Establish `hθ1 : θ 1 = 1`. Establish `h` using `hθm 1 1`. Rewrite `h` using `[one_mul]`. Conclude with `mul_left_cancel (a := θ 1) (by rw [mul_one]; exact h.symm)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hθinv : ∀ a, θ a⁻¹ = (θ a)⁻¹`. Introduce `a`. Apply `eq_inv_of_mul_eq_one_left` to reduce the goal to its premises. Rewrite using `[← hθm, mul_inv_cancel, hθ1]`. Establish `hθmp : MeasurePreserving θ μ μ` using `⟨hθc.measurable, hmap⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hR : Formalism.MainNotions.BridgeCSchur.SqRep μ ρ` using `⟨hρ1, hρm, hiso, hcont, hsq⟩`. Take `⟨τ, hτ⟩ : ∃ τ : G → (Cj H →L[ℂ] Cj H), ∀ g v, τ g v = toCj (ρ (θ g)⁻¹ (ofCj v))` from `⟨fun g => opCj (ρ (θ g)⁻¹), fun g v => opCj_apply _ _⟩`. Establish `hcoef : ∀ g (v w : Cj H), ⟪w, τ g v⟫_ℂ = ⟪ofCj v, ρ (θ g) (ofCj w)⟫_ℂ`. Introduce `g v w`. Rewrite using `[inner_def, hτ]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h` using `hR.inner_left (θ g)⁻¹ (ofCj v) (ofCj w)`. Rewrite `h` using `[inv_inv]`. Conclude with `h`. Establish `hT : Formalism.MainNotions.BridgeCSchur.SqRep μ τ`. Use `⟨?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use extensionality with `v`. Simplify using `only [hτ, hθ1, inv_one, hρ1]`. Both sides reduce to the same expression. Introduce `a b`. Use extensionality with `v`.
+Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [ContinuousLinearMap.comp_apply, hτ]`. Rewrite using `[hθm, mul_inv_rev, hρm]`. Both sides reduce to the same expression. Introduce `g v`. Rewrite using `[hτ]`.
+Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `hiso _ _`. Introduce `v`. Establish `e : (fun g => τ g v) = fun g => toCj (ρ (θ g)⁻¹ (ofCj v))` using `funext fun g => hτ g v`. Rewrite using `[e]`. Conclude with `(hcont (ofCj v)).comp hθc.inv`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Introduce `v w`. Establish `e : (fun g => ⟪w, τ g v⟫_ℂ) = fun g => ⟪ofCj v, ρ (θ g) (ofCj w)⟫_ℂ`. Use function extensionality and compare the values at `fun g => hcoef g v w`. Rewrite using `[e]`. Conclude with `(hsq (ofCj w) (ofCj v)).comp_measurePreserving hθmp`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hirrT : ∀ S : Submodule ℂ (Cj H), IsClosed (S : Set (Cj H)) → (∀ g, ∀ v ∈ S, τ g v ∈ S) → S = ⊥ ∨ S = ⊤`. Introduce `S hS hSi`. Set `S' : Submodule ℂ H` to `{ carrier := {x | toCj x ∈ S} add_mem' := fun ha hb => S.add_mem ha hb zero_mem' := S.zero_mem smul_mem' := fun c x hx => by`. Establish `h2` using `S.smul_mem (conj c) (show toCj x ∈ S from hx)`. Rewrite `h2` using `[smul_def, Complex.conj_conj]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `show toCj (c • x) ∈ S`. Conclude with `h2 }`. Establish `hS'c : IsClosed (S' : Set H)` using `hS.preimage (eCj (H := H)).symm.continuous`. Establish `hS'i : ∀ h, ∀ x ∈ S', ρ h x ∈ S'`. Introduce `h x hx`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2` using `hSi (θ h⁻¹) (toCj x) hx`. Rewrite `h2` using `[hτ, hθθ, inv_inv]`. Conclude with `h2`. Break down `hirr S' hS'c hS'i with h | h` into its components or cases. Use `left`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Rewrite using `[eq_bot_iff]`. Introduce `v hv`. Establish `h3 : ofCj v ∈ S'` using `hv`. Rewrite `h3` using `[h, Submodule.mem_bot]`. Conclude with `h3`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `right`. Rewrite using `[eq_top_iff]`. Introduce `v _`. Establish `h3 : ofCj v ∈ S'` using `by rw [h]; trivial`. Conclude with `h3`.
+Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Distinguish the cases in `hne : ∃ U : Cj H ≃ₗᵢ[ℂ] H, ∀ g v, U (τ g v) = ρ g (U v)`. Use `right`. Take `⟨U, hU⟩` from `hne`. Use `⟨((eCj (H := H)).symm.trans U : H ≃ₗᵢ⋆[ℂ] H), ?_, ?_⟩` and prove the remaining obligations. Introduce `g x y`.
-
-Combine the equalities or inequalities in the displayed calculation. Introduce `h v`. Establish `h2` using `hU (θ h)⁻¹ (toCj v)`. Rewrite `h2` using `[hτ, hθinv, hθθ, inv_inv]`. Conclude with `h2`.
-
-Use `left`. Introduce `x y x' y'`. Establish `h0` using `Formalism.MainNotions.BridgeCSchur.schur_orth_ineq hT hR hirrT hirr hne (toCj y) (toCj x) x' y'`. Establish `e : (fun g => ⟪y, ρ (θ g) x⟫_ℂ * star ⟪y', ρ g x'⟫_ℂ) = fun g => ⟪toCj x, τ g (toCj y)⟫_ℂ * star ⟪y', ρ g x'⟫_ℂ`. Use function extensionality and compare the values at `fun g => congrArg (· * star ⟪y', ρ g x'⟫_ℂ) (hcoef g (toCj y) (toCj x)).symm`.
-
-Conclude with `(congrArg (fun f => ∫ g, f g ∂μ) e).trans h0`.
+A detailed English derivation is pending.
 -/
 theorem schurDichotomy : SchurDichotomy := by
   intro G _ _ _ _ _ μ _ _ _ H _ _ _ _ θ ρ hθc hθm hθθ hmap hρ1 hρm hiso hcont hsq hirr

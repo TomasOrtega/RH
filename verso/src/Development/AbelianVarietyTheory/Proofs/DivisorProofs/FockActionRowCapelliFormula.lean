@@ -6,7 +6,7 @@ open MvPolynomial Formalism.BasicNotions.TH
 namespace GlobalTheory.LowIrr
 
 /- English proof (translation)
-The claim follows from `pderiv_eq_zero_of_notMem_vars fun h => by simp [hf l h] at hl`.
+A detailed English derivation is pending.
 -/
 theorem pderiv_neg_eq_zero {P Q R S : ℕ} (f : Pol P Q R S)
     (hf : ∀ l ∈ f.vars, linePos l = true) (l : Ln P Q R S) (hl : linePos l = false) :
@@ -14,11 +14,11 @@ theorem pderiv_neg_eq_zero {P Q R S : ℕ} (f : Pol P Q R S)
   pderiv_eq_zero_of_notMem_vars fun h => by simp [hf l h] at hl
 
 /- English proof (translation)
-Establish `h0` using `pderiv_neg_eq_zero f hf`. Prove the components needed by the constructor for the conclusion. Introduce `c d`. Rewrite using `[fockAct2_Eab, LinearMap.sum_apply, Fintype.sum_sum_type, GlobalTheory.Capelli.rowOp_apply, ← Equiv.sum_comp finSumFinEquiv, Fintype.sum_sum_type]`. Simplify using `only [zR, Equiv.symm_apply_apply, GlobalTheory.CompactHarm.omE_pp (Sum.inl _, Sum.inl _) (Sum.inl _, Sum.inl _) rfl rfl, GlobalTheory.CompactHarm.omE_nn (Sum.inr _, Sum.inl _) (Sum.inr _, Sum.inl _) rfl rfl, h0 (Sum.inr _, Sum.inl _) rfl, mul_zero, neg_zero, zero_sub, add_zero, F …`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `split_ifs`. Use `module`. Simplify using the standard rewrite rules. Introduce `c d`. Rewrite using `[fockAct2_Eab, LinearMap.sum_apply, Fintype.sum_sum_type, GlobalTheory.Capelli.rowOp_apply, ← Equiv.sum_comp finSumFinEquiv, Fintype.sum_sum_type]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [yS, Equiv.symm_apply_apply, GlobalTheory.CompactHarm.omE_pp (Sum.inr _, Sum.inr _) (Sum.inr _, Sum.inr _) rfl rfl, GlobalTheory.CompactHarm.omE_nn (Sum.inl _, Sum.inr _) (Sum.inl _, Sum.inr _) rfl rfl, h0 (Sum.inl _, Sum.inr _) rfl, mul_zero, neg_zero, zero_sub, zero_add, F …`. Use `split_ifs`. Use `module`. Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem fockAct2_posOnly (P Q R S : ℕ) (f : Pol P Q R S) (hf : ∀ l ∈ f.vars, linePos l = true) :
     (∀ c d : Fin R, fockAct2 P Q R S (Eab (.inl c) (.inl d)) f =

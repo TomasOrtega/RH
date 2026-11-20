@@ -10,7 +10,7 @@ namespace Formalism.L2.KerInert.SecondKernelSharpWeights
 open Formalism.BasicNotions Formalism.MainNotions Formalism.L2.Ker Formalism.L2.KerInert.K2 Formalism.L2.KerInert.SecondKernelInstances
 
 /- English proof (translation)
-Introduce `hSP D L hT Gi Gl Kc0 Dx cX ex t u μ j hj hV x`. Establish `h : ∀ c : (D.chTw u μ).cls j, ∃ Q ∈ WtPol ℂ (nuT D u j), (D.chTw u μ).sharp j ((ex.tw.fm u μ).emb j x c) = frPoly (t.O u μ) j Q` using `fun c => forms_sharp_description hSP D u (D.chTw u μ) (t.O u μ) j hj (nuT D u j) _ (hV x c)`. Use `choose Q hQ hE using h`. Conclude with `⟨Q, hQ, hE⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem sharp_forms_at_inert : FormsSharpAtOf := by
   intro hSP D L hT Gi Gl Kc0 Dx cX ex t u μ j hj hV x
@@ -21,21 +21,19 @@ theorem sharp_forms_at_inert : FormsSharpAtOf := by
   exact ⟨Q, hQ, hE⟩
 
 /- English proof (translation)
-Introduce `D Tw u μ j hj τ r`. Establish `h1` using `(nu_t_identity D u j hj τ r).1`. Establish `h2` using `(D.chTw u μ).sSharp_eq j hj τ`. Establish `h3` using `(Tw.fm u μ).lam_eq j hj.le τ r`. Establish `h2' : (((D.chTw u μ).sSharp j τ : ℤ) : ℝ) = (((D.hcW u τ).e ⟨j, hj⟩ : ℚ) : ℝ) - ((D.R.k : ℝ) + ((j : ℝ) + 1) * ((D.R.t : ℝ) + 1)) / 2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `congrArg (fun q : ℚ => (q : ℝ)) h2` as an intermediate fact. Simplify using `only [sExp', Ranks.N] at this`. Move the coercions through the operations in `at this`. Conclude with `this`. Establish `he : ∀ (k : ℕ) (hk : k < D.R.m), k = j → (D.hc τ).e ⟨k, hk⟩ = (D.hcW u τ).e ⟨j, hj⟩`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `k hk rfl`. Rewrite using `[D.hcW_e]`. Apply `Rat.cast_injective (α := ℝ)` to reduce the goal to its premises. Establish `hw : ((((Tw.fm u μ).lam j τ).w r : ℤ) : ℝ) = (((((Tw.fm u μ).lam j τ).w r : ℤ) : ℚ) : ℝ)` using `by push_cast; rfl`. Use `push_cast`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1, h2', hw, h3]`. Unfold `DV.nuRow DV.srcPar DV.wSz`. Rewrite using `[dif_pos (show 1 ≤ j + 1 ∧ j + 1 ≤ D.R.m by omega), he _ _ (by omega)]`. Simplify using `only [Ranks.N]`. Distinguish the cases in `hr : r.1 < D.R.k`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[dif_pos hr, dif_pos hr]`. Simplify using `only [hcToWeightQ, rhoVec]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hb : (r.1 - D.R.k) / (D.R.t + 1) < D.R.m`.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `D.R.blk_lt hj.le r hr` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite using `[dif_neg hr, dif_neg hr, dif_pos hb]`. Establish `hdm` using `Nat.div_add_mod (r.1 - D.R.k) (D.R.t + 1)`. Establish `hrk : (r.1 : ℝ) = D.R.k + (D.R.t + 1) * (((r.1 - D.R.k) / (D.R.t + 1) : ℕ) : ℝ) + (((r.1 - D.R.k) % (D.R.t + 1) : ℕ) : ℝ)`.
+Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: r.1 = D.R.k + (D.R.t + 1) * ((r.1 - D.R.k) / (D.R.t + 1)) + (r.1 - D.R.k) % (D.R.t + 1)` using `by omega`. Conclude with `this` after adjusting the coercions. Simplify using `only [wG]`. Use `push_cast`. Rewrite using `[hrk]`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem sharp_weight_formula : SharpWtIs := by
   intro D Tw u μ j hj τ r
@@ -76,7 +74,7 @@ theorem sharp_weight_formula : SharpWtIs := by
     ring
 
 /- English proof (translation)
-Introduce `hSP D L hT Gi Gl Kc0 Dx cX ex t u μ j hj hTW`. Use `sharp_forms_at_inert hSP D L hT Gi Gl Kc0 Dx cX ex t u μ j hj.le ?_` and prove the remaining obligations. Introduce `x c`. Conclude with `hTW (fun τ r => (nuT D u j τ r : ℤ) - (D.chTw u μ).sSharp j τ) (fun τ r => sharp_weight_formula D ex.tw u μ j hj τ r) x c`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem sharp_forms_of_true_hyp : FormsSharpAtOfTrue := by
   intro hSP D L hT Gi Gl Kc0 Dx cX ex t u μ j hj hTW

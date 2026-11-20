@@ -10,11 +10,11 @@ open MvPolynomial Finset
 noncomputable section
 
 /- English proof (translation)
-Introduce `σ A R m k hA0 hA hAR`. Establish `hzero : ∀ j, j ≠ k → homogeneousComponent j R = 0`. Introduce `j hj`. Establish `h1` using `HomogeneousComponentMul.proof σ ℚ A R m (m + j) hA`. Rewrite `h1` using `[if_pos (Nat.le_add_right m j), Nat.add_sub_cancel_left]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2 : homogeneousComponent (m + j) (A * R) = 0`. Rewrite using `[homogeneousComponent_of_mem ((mem_homogeneousSubmodule _ _).mpr hAR), if_neg (by omega)]`. Rewrite `h1` using `[h2]`. Conclude with `(mul_eq_zero.mp h1.symm).resolve_left hA0`. Establish `hR : R = homogeneousComponent k R` using `by conv_lhs => rw [← sum_homogeneousComponent R]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_eq_single k (fun j _ hj => hzero j hj) (fun hk => ?_)` and prove the remaining obligations. Rewrite `hk` using `[Finset.mem_range, not_lt]`. Conclude with `homogeneousComponent_eq_zero k R (by omega)`. Rewrite using `[hR]`. Conclude with `homogeneousComponent_isHomogeneous k R`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem FlagQuotientHomogeneous.proof : FlagQuotientHomogeneous.Statement := by
   intro σ A R m k hA0 hA hAR

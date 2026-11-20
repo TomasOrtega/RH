@@ -21,9 +21,9 @@ def pushAt (h : IsGrpPullback G' G f φ) {T : Over S'} (v : T ⟶ G') : Over.mk 
     rw [Category.assoc, h.1.w, ← Category.assoc, Over.w v])
 
 /- English proof (translation)
-Establish `e : pushAt h (1 : T ⟶ G') * pushAt h (1 : T ⟶ G') = pushAt h (1 : T ⟶ G')`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Use `h.2 T 1 1 (pushAt h 1) (pushAt h 1) rfl rfl` as an intermediate fact. Rewrite using `[this, _root_.mul_one]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Conclude with `mul_eq_left.mp e`.
+A detailed English derivation is pending.
 -/
 theorem pushAt_one (h : IsGrpPullback G' G f φ) (T : Over S') : pushAt h (1 : T ⟶ G') = 1 := by
   have e : pushAt h (1 : T ⟶ G') * pushAt h (1 : T ⟶ G') = pushAt h (1 : T ⟶ G') := by
@@ -53,7 +53,7 @@ def rebase₂ (y : Sp R ⟶ S') (f : S' ⟶ S) : epsAt (y ≫ f) ⟶ Over.mk ((e
     rw [Category.id_comp, Category.assoc])
 
 /- English proof (translation)
-Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `v.left ≫ φ = 𝟙 _ ≫ v.left ≫ φ`. Rewrite using `[Category.id_comp]`.
+Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem tanMap_eq (h : IsGrpPullback G' G f φ) (y : Sp R ⟶ S') (v : epsAt y ⟶ G') :
     tanMap h y v = rebase₂ y f ≫ pushAt h v := by
@@ -62,7 +62,7 @@ theorem tanMap_eq (h : IsGrpPullback G' G f φ) (y : Sp R ⟶ S') (v : epsAt y �
   rw [Category.id_comp]
 
 /- English proof (translation)
-Rewrite using `[tanMap_eq, tanMap_eq, tanMap_eq, ← MonObj.comp_mul]`. Use `congr 1`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Conclude with `(h.2 _ a b (pushAt h a) (pushAt h b) rfl rfl).symm`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem tanMap_mul (h : IsGrpPullback G' G f φ) (y : Sp R ⟶ S') (a b : epsAt y ⟶ G') :
     tanMap h y (a * b) = tanMap h y a * tanMap h y b := by
@@ -72,7 +72,7 @@ theorem tanMap_mul (h : IsGrpPullback G' G f φ) (y : Sp R ⟶ S') (a b : epsAt 
   exact (h.2 _ a b (pushAt h a) (pushAt h b) rfl rfl).symm
 
 /- English proof (translation)
-Rewrite using `[tanMap_eq, pushAt_one, Hom.one_def, Hom.one_def, ← Category.assoc, toUnit_unique (rebase₂ y f ≫ toUnit _) (toUnit _)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem tanMap_one (h : IsGrpPullback G' G f φ) (y : Sp R ⟶ S') :
     tanMap h y (1 : epsAt y ⟶ G') = 1 := by
@@ -80,14 +80,14 @@ theorem tanMap_one (h : IsGrpPullback G' G f φ) (y : Sp R ⟶ S') :
     toUnit_unique (rebase₂ y f ≫ toUnit _) (toUnit _)]
 
 /- English proof (translation)
-The claim follows from `h.1.hom_ext h₁ h₂`.
+A detailed English derivation is pending.
 -/
 theorem left_eq_of_comp (h : IsGrpPullback G' G f φ) {Z : Scheme.{0}} {a b : Z ⟶ G'.left}
     (h₁ : a ≫ φ = b ≫ φ) (h₂ : a ≫ G'.hom = b ≫ G'.hom) : a = b :=
   h.1.hom_ext h₁ h₂
 
 /- English proof (translation)
-Introduce `a b e`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Use `left_eq_of_comp h (congrArg (fun z => z.left) e) ?_` and prove the remaining obligations. Rewrite using `[Over.w a, Over.w b]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem tanMap_injective (h : IsGrpPullback G' G f φ) (y : Sp R ⟶ S') : Function.Injective (tanMap h y) := by
   intro a b e
@@ -96,9 +96,9 @@ theorem tanMap_injective (h : IsGrpPullback G' G f φ) (y : Sp R ⟶ S') : Funct
   rw [Over.w a, Over.w b]
 
 /- English proof (translation)
-Introduce `w`. Establish `hw : w.left ≫ G.hom = (spMap (algebraMap R (DualNumber R)) ≫ y) ≫ f`. Rewrite using `[Category.assoc]`. Conclude with `Over.w w`. Use `⟨Over.homMk (h.1.lift _ _ hw) (h.1.lift_snd _ _ hw), ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Conclude with `h.1.lift_fst _ _ hw`.
+A detailed English derivation is pending.
 -/
 theorem tanMap_surjective (h : IsGrpPullback G' G f φ) (y : Sp R ⟶ S') : Function.Surjective (tanMap h y) := by
   intro w
@@ -119,14 +119,14 @@ Both sides reduce to the same expression.
     tanEquiv h y v = tanMap h y v := rfl
 
 /- English proof (translation)
-The claim follows from `congrArg (fun z => z.left) (pushAt_one h (Over.mk y))`.
+A detailed English derivation is pending.
 -/
 theorem one_left_comp (h : IsGrpPullback G' G f φ) (y : Sp R ⟶ S') :
     (1 : Over.mk y ⟶ G').left ≫ φ = (1 : Over.mk (y ≫ f) ⟶ G).left :=
   congrArg (fun z => z.left) (pushAt_one h (Over.mk y))
 
 /- English proof (translation)
-Rewrite using `[← Category.assoc, ← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Establish `: (TrivSqZeroExt.fstHom R R R).toRingHom.comp (algebraMap R (DualNumber R)) = RingHom.id R`. Use extensionality with `a`. Both sides reduce to the same expression. Rewrite using `[this]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/
@@ -139,11 +139,11 @@ theorem comp_fst_hom (y : Sp R ⟶ S') :
   simp
 
 /- English proof (translation)
-Unfold `IsTanAt`. Rewrite using `[← one_left_comp h y, tanMap_left]`. Prove the components needed by the constructor for the conclusion. Introduce `e`. Use `left_eq_of_comp h ?_ ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Category.assoc]`. Conclude with `e`. Establish `h1 : v.left ≫ G'.hom = spMap (algebraMap R (DualNumber R)) ≫ y` using `Over.w v`. Establish `h2 : (1 : Over.mk y ⟶ G').left ≫ G'.hom = y` using `Over.w _`. Rewrite using `[Category.assoc, h1, h2]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `comp_fst_hom y`. Introduce `e`. Rewrite using `[← Category.assoc, e]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isTanAt_iff (h : IsGrpPullback G' G f φ) (y : Sp R ⟶ S') (v : epsAt y ⟶ G') :
     IsTanAt G (y ≫ f) (tanMap h y v) ↔ IsTanAt G' y v := by
@@ -161,17 +161,17 @@ theorem isTanAt_iff (h : IsGrpPullback G' G f φ) (y : Sp R ⟶ S') (v : epsAt y
     rw [← Category.assoc, e]
 
 /- English proof (translation)
-Apply the tactic sequence `ext a <;> simp [epsMul]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem epsMul_comp_algebraMap (c : R) : (epsMul c).comp (algebraMap R (DualNumber R)) = algebraMap R (DualNumber R) := by
   ext a <;> simp [epsMul]
 
 /- English proof (translation)
-Rewrite using `[tanMap_left, tanMap_left]`. Prove the components needed by the constructor for the conclusion. Introduce `e`. Use `left_eq_of_comp h ?_ ?_` and prove the remaining obligations. Rewrite using `[Category.assoc]`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `e`. Establish `h1 : u.left ≫ G'.hom = spMap (algebraMap R (DualNumber R)) ≫ y` using `Over.w u`. Establish `h2 : v.left ≫ G'.hom = spMap (algebraMap R (DualNumber R)) ≫ y` using `Over.w v`. Rewrite using `[Category.assoc, h1, h2, ← Category.assoc, ← Spec.map_comp, ← CommRingCat.ofHom_comp, epsMul_comp_algebraMap]`. Introduce `e`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, Category.assoc]`.
+A detailed English derivation is pending.
 -/
 theorem eps_left_iff (h : IsGrpPullback G' G f φ) (y : Sp R ⟶ S') (c : R) (u v : epsAt y ⟶ G') :
     (tanMap h y u).left = spMap (epsMul c) ≫ (tanMap h y v).left ↔ u.left = spMap (epsMul c) ≫ v.left := by
@@ -188,11 +188,11 @@ theorem eps_left_iff (h : IsGrpPullback G' G f φ) (y : Sp R ⟶ S') (c : R) (u 
     rw [e, Category.assoc]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u, hu, hw⟩`. Take `⟨u', rfl⟩ : ∃ u' : Fin n → (epsAt y ⟶ G'), u = fun i => tanMap h y (u' i)` from `⟨fun i => (tanMap_surjective h y (u i)).choose,`. Use function extensionality and compare the values at `fun i => ((tanMap_surjective h y (u i)).choose_spec).symm⟩`. Use `⟨u', fun i => (eps_left_iff h y _ _ _).1 (hu i), (tanEquiv h y).injective ?_⟩` and prove the remaining obligations.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations.
 
-Use `map_list_prod (tanEquiv h y) (List.ofFn u')` as an intermediate fact. Rewrite `this` using `[List.map_ofFn]`. Rewrite using `[this]`. Conclude with `hw`. Introduce and unpack `⟨u, hu, rfl⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun i => tanMap h y (u i), fun i => (eps_left_iff h y _ _ _).2 (hu i), ?_⟩` and prove the remaining obligations. Use `map_list_prod (tanEquiv h y) (List.ofFn u)` as an intermediate fact. Rewrite `this` using `[List.map_ofFn]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isComb_iff (h : IsGrpPullback G' G f φ) (y : Sp R ⟶ S') {n : ℕ} (c : Fin n → R)
     (v : Fin n → (epsAt y ⟶ G')) (w : epsAt y ⟶ G') :
@@ -216,9 +216,9 @@ theorem isComb_iff (h : IsGrpPullback G' G f φ) (y : Sp R ⟶ S') {n : ℕ} (c 
 variable {O : Type} [CommRing O]
 
 /- English proof (translation)
-Establish `key : ∀ a, tanMap h y v ≫ act.act a = tanMap h y (v ≫ act'.act a)` using `fun a => by`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `(v.left ≫ φ) ≫ (act.act a).left = (v.left ≫ (act'.act a).left) ≫ φ`. Rewrite using `[Category.assoc, Category.assoc, hact]`. Unfold `IsEigVec`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[isTanAt_iff]`. Use `and_congr_right fun _ => forall_congr' fun a => ?_` and prove the remaining obligations. Rewrite using `[key]`. Conclude with `eps_left_iff h y (τ a) _ _`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isEigVec_iff (h : IsGrpPullback G' G f φ) (act' : OAct O G') (act : OAct O G)
     (hact : ∀ a, (act'.act a).left ≫ φ = φ ≫ (act.act a).left) (y : Sp R ⟶ S') (τ : O →+* R) (v : epsAt y ⟶ G') :
@@ -234,9 +234,9 @@ theorem isEigVec_iff (h : IsGrpPullback G' G f φ) (act' : OAct O G') (act : OAc
   exact eps_left_iff h y (τ a) _ _
 
 /- English proof (translation)
-Unfold `IsEigFrame`. Use `and_congr (forall_congr' fun i => isEigVec_iff h act' act hact y τ (v i)) ?_` and prove the remaining obligations. Prove the components needed by the constructor for the conclusion. Introduce `H w hw`. Take `⟨c, hc, hu⟩` from `H (tanMap h y w) ((isEigVec_iff h act' act hact y τ w).2 hw)`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨c, (isComb_iff h y c v w).1 hc, fun c' hc' => hu c' ((isComb_iff h y c' v w).2 hc')⟩`. Introduce `H w hw`. Take `⟨w', rfl⟩` from `tanMap_surjective h y w`. Take `⟨c, hc, hu⟩` from `H w' ((isEigVec_iff h act' act hact y τ w').1 hw)`. Conclude with `⟨c, (isComb_iff h y c v w').2 hc, fun c' hc' => hu c' ((isComb_iff h y c' v w').1 hc')⟩`.
+Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem isEigFrame_iff (h : IsGrpPullback G' G f φ) (act' : OAct O G') (act : OAct O G)
     (hact : ∀ a, (act'.act a).left ≫ φ = φ ≫ (act.act a).left) (y : Sp R ⟶ S') (τ : O →+* R) {n : ℕ}
@@ -260,7 +260,7 @@ namespace GlobalTheory.CompanionTheory.Ar.LocFn
 open Transfer
 
 /- English proof (translation)
-Apply `RingHom.ext` to reduce the goal to its premises. Introduce `a`. Both sides reduce to the same expression.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression.
 -/
 theorem dualMap_eq_pj {A T : Type} [CommRing A] [CommRing T] (θ : A →+* T) :
     Formalism.L2.Pj.dualMap θ = GlobalTheory.CompanionTheory.Ar.dualMap θ := by
@@ -269,15 +269,15 @@ theorem dualMap_eq_pj {A T : Type} [CommRing A] [CommRing T] (θ : A →+* T) :
   rfl
 
 /- English proof (translation)
-Introduce `E _ _ _ H D l Xo c O _ β Y T _ y A _ x₀ κ θ σ r e hx hst`. Establish `hq : IsGrpPullback Y.oF.t.G Y.t.G Y.j Y.m.φ` using `Y.m.cart`. Establish `hp : IsGrpPullback Y.oF.t.G Xo.univ.t.G (pullback.fst _ _) Y.m0.toSABMap.φ` using `Y.m0.cart`. Establish `hover : ∀ i, (spMap (GlobalTheory.CompanionTheory.Ar.dualMap θ) ≫ (e i).left) ≫ Y.t.G.hom = spMap (algebraMap T (DualNumber T)) ≫ y ≫ Y.j` using `fun i => by`. Establish `h1 : (e i).left ≫ Y.t.G.hom = spMap (algebraMap A (DualNumber A)) ≫ x₀` using `Over.w (e i)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Category.assoc, h1, ← hx, ← Category.assoc, ← Category.assoc, ← Spec.map_comp, ← Spec.map_comp, ← CommRingCat.ofHom_comp, ← CommRingCat.ofHom_comp]`. Establish `: (GlobalTheory.CompanionTheory.Ar.dualMap θ).comp (algebraMap A (DualNumber A)) = (algebraMap T (DualNumber T)).comp θ`. Establish `hA : ∀ a : A, algebraMap A (DualNumber A) a = TrivSqZeroExt.inl a` using `fun _ => rfl`. Establish `hT : ∀ a : T, algebraMap T (DualNumber T) a = TrivSqZeroExt.inl a` using `fun _ => rfl`. Apply the tactic sequence `ext a <;> simp [GlobalTheory.CompanionTheory.Ar.dualMap, hA, hT]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[this]`. Set `v : Fin r → (epsAt (y ≫ Y.j) ⟶ Y.t.G)` to `fun i => Over.homMk (spMap (GlobalTheory.CompanionTheory.Ar.dualMap θ) ≫ (e i).left) (hover i)`. Establish `hv : IsEigFrame Y.t.act (y ≫ Y.j) ((θ.comp κ).comp (tauIn c σ)) v` using `hst T θ (y ≫ Y.j) hx v (fun i => rfl)`. Set `w : Fin r → (epsAt y ⟶ Y.oF.t.G)` to `fun i => (tanMap_surjective hq y (v i)).choose`. Establish `hw : ∀ i, tanMap hq y (w i) = v i` using `fun i => (tanMap_surjective hq y (v i)).choose_spec`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hfr : IsEigFrame Y.oF.t.act y ((θ.comp κ).comp (tauIn c σ)) w`. Use `(isEigFrame_iff hq Y.oF.t.act Y.t.act Y.m.act y _ w).1 ?_` and prove the remaining obligations. Simplify `hv` using `only [hw]`. Use `⟨fun i => tanMap hp y (w i), fun i => ⟨(w i).left, Over.w (w i), rfl, ?_⟩, (isEigFrame_iff hp Y.oF.t.act Xo.univ.t.act Y.m0.act y _ w).2 hfr⟩` and prove the remaining obligations. Use `congrArg (fun z => z.left) (hw i)` as an intermediate fact.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[dualMap_eq_pj]`. Conclude with `this`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_eigFrame_univ : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Y : Model Xo c β) (T : Type) [CommRing T] (y : Sp T ⟶ Xo.XF c) (A : Type) [CommRing A] (x₀ : Sp A ⟶ Y.X) (κ : c.F →+* A) (θ : A →+* T) (σ : E →+* ℂ) (r : ℕ) (e : Fin r → (epsAt x₀ ⟶ Y.t.G)), spMap θ ≫ x₀ = y ≫ Y.j → StableEig Y.t x₀ κ σ e → ∃ V : Fin r → (epsAt (under y) ⟶ Xo.univ.t.G), (∀ i, Tied Y y (V i).left (spMap (Formalism.L2.Pj.dualMap θ) ≫ (e i).left)) ∧ IsEigFrame Xo.univ.t.act (under y) ((θ.comp κ).comp (tauIn c σ)) V := by
   intro E _ _ _ H D l Xo c O _ β Y T _ y A _ x₀ κ θ σ r e hx hst

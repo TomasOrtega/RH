@@ -10,27 +10,25 @@ open scoped Formalism.Per NNReal
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `k _ _ z hz hroot J J' hsum`. Establish `hlt : ∀ a b : ℤ, a < b → z ^ a ≠ z ^ b`. Introduce `a b hab heq`. Establish `h1 : z ^ (b - a) = 1`. Rewrite using `[zpow_sub₀ hz, heq, div_self (zpow_ne_zero _ hz)]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : ((b - a).toNat : ℤ) = b - a` using `Int.toNat_of_nonneg (by omega)`. Rewrite `h1` using `[← h2, zpow_natCast]`. Conclude with `hroot _ (by omega) h1`. Establish `hinj : Function.Injective (fun h : ℤ => z ^ h)`. Introduce `a b hab`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only at hab`. Assume the negation of the conclusion as `hne`. Break down `lt_or_gt_of_ne hne with h | h` into its components or cases. Conclude with `hlt a b h hab`. Conclude with `hlt b a h hab.symm`.
+Assume the negation of the conclusion and derive a contradiction. Separate the alternatives or extract the components of the hypothesis. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `χ : ℤ → (Multiplicative ℕ →* k)` to `fun h => powersHom k (z ^ h)`. Establish `hχ : Function.Injective χ` using `(powersHom k).injective.comp hinj`. Establish `hli` using `(linearIndependent_monoidHom (Multiplicative ℕ) k).comp χ hχ`. Rewrite `hli` using `[linearIndependent_iff']`. Establish `key : ∀ (M : Multiset ℤ) (s : Finset ℤ), M.toFinset ⊆ s → ∀ f : ℤ → k, (M.map f).sum = ∑ h ∈ s, (M.count h : k) * f h`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities.
 
-Introduce `M s hs f`. Rewrite using `[Finset.sum_multiset_map_count]`. Repeatedly rewrite using `[nsmul_eq_mul]`. Apply `Finset.sum_subset hs` to reduce the goal to its premises. Introduce `x _ hx`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite `hx` using `[Multiset.mem_toFinset]`. Simplify using `[Multiset.count_eq_zero.mpr hx]`. Use `set s : Finset ℤ := (J + J').toFinset with hs`. Establish `hJ : J.toFinset ⊆ s`. Introduce `x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hx` using `[Multiset.mem_toFinset]`. Rewrite using `[hs, Multiset.mem_toFinset]`. Conclude with `Multiset.mem_add.mpr (Or.inl hx)`. Establish `hJ' : J'.toFinset ⊆ s`. Introduce `x hx`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Rewrite `hx` using `[Multiset.mem_toFinset]`. Rewrite using `[hs, Multiset.mem_toFinset]`. Conclude with `Multiset.mem_add.mpr (Or.inr hx)`. Establish `hzero` using `hli s (fun h => (J.count h : k) - (J'.count h : k)) (by`. Use function extensionality and compare the values at `m`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e` using `hsum (Multiplicative.toAdd m)`. Rewrite `e` using `[key J s hJ, key J' s hJ']`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, Function.comp_apply, smul_eq_mul, Pi.zero_apply]`. Simplify using `only [χ, powersHom_apply, sub_mul, Finset.sum_sub_distrib]`. Rewrite using `[sub_eq_zero]`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `e)`. Use `Multiset.ext.mpr (fun a => ?_)` and prove the remaining obligations. Distinguish the cases in `ha : a ∈ s`. Use `hzero a ha` as an intermediate fact. Rewrite `this` using `[sub_eq_zero]`.
-
-Conclude with `this` after adjusting the coercions. Rewrite `ha` using `[hs, Multiset.mem_toFinset, Multiset.mem_add, not_or]`. Rewrite using `[Multiset.count_eq_zero.mpr ha.1, Multiset.count_eq_zero.mpr ha.2]`.
+A detailed English derivation is pending.
 -/
 theorem multiset_eq_of_powerSums_zpow_eq : ∀ (k : Type) [Field k] [CharZero k] (z : k), z ≠ 0 →
     (∀ i : ℕ, 1 ≤ i → z ^ i ≠ 1) → ∀ J J' : Multiset ℤ,

@@ -16,12 +16,12 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 namespace SD
 variable (d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ)
 /- English proof (translation)
-Rewrite using `[← incM_mul', ← Units.val_mul, mul_inv_cancel, Units.val_one, incM_one']`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem _root_.PositivityTheory.SiegelWeilFormula.SD_k.bb1 : incM F d.b.1 * incM F (d.b⁻¹).1 = 1 := by
   rw [← incM_mul', ← Units.val_mul, mul_inv_cancel, Units.val_one, incM_one']
 /- English proof (translation)
-Rewrite using `[← incM_mul', ← Units.val_mul, inv_mul_cancel, Units.val_one, incM_one']`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem _root_.PositivityTheory.SiegelWeilFormula.SD_k.bb2 : incM F (d.b⁻¹).1 * incM F d.b.1 = 1 := by
   rw [← incM_mul', ← Units.val_mul, inv_mul_cancel, Units.val_one, incM_one']
@@ -34,7 +34,7 @@ Both sides reduce to the same expression.
 -/
 theorem _root_.PositivityTheory.SiegelWeilFormula.SD_k.matrixRep_one : mat2 (1 : d.G) = 1 := rfl
 /- English proof (translation)
-Simplify using `only [inFrame, _root_.PositivityTheory.SiegelWeilFormula.SD_k.matrixRep_mul]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[d.bb1]`. Simplify using `only [Matrix.mul_one, Matrix.mul_assoc]`. Use `_ = _ := by simp only [Matrix.mul_assoc]`.
+Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem _root_.PositivityTheory.SiegelWeilFormula.SD_k.inFrame_mul (x y : d.G) : inFrame d.b (x * y) = inFrame d.b x * inFrame d.b y := by
   simp only [inFrame, _root_.PositivityTheory.SiegelWeilFormula.SD_k.matrixRep_mul]
@@ -43,14 +43,14 @@ theorem _root_.PositivityTheory.SiegelWeilFormula.SD_k.inFrame_mul (x y : d.G) :
         rw [d.bb1]; simp only [Matrix.mul_one, Matrix.mul_assoc]
     _ = _ := by simp only [Matrix.mul_assoc]
 /- English proof (translation)
-Simplify using `only [inFrame, _root_.PositivityTheory.SiegelWeilFormula.SD_k.matrixRep_one, Matrix.mul_one, d.bb2]`.
+Simplify using the standard rewrite rules.
 -/
 theorem _root_.PositivityTheory.SiegelWeilFormula.SD_k.inFrame_one : inFrame d.b (1 : d.G) = 1 := by
   simp only [inFrame, _root_.PositivityTheory.SiegelWeilFormula.SD_k.matrixRep_one, Matrix.mul_one, d.bb2]
 /- English proof (translation)
-Establish `hx : mat2 x = incM F d.b.1 * inFrame d.b x * incM F (d.b⁻¹).1`. Simplify using `only [inFrame, ← Matrix.mul_assoc, d.bb1, Matrix.one_mul]`. Rewrite using `[Matrix.mul_assoc, d.bb1, Matrix.mul_one]`. Establish `hy : mat2 y = incM F d.b.1 * inFrame d.b y * incM F (d.b⁻¹).1`. Simplify using `only [inFrame, ← Matrix.mul_assoc, d.bb1, Matrix.one_mul]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[Matrix.mul_assoc, d.bb1, Matrix.mul_one]`. Establish `: mat2 x = mat2 y` using `by rw [hx, hy, h]`. Conclude with `Subtype.ext (Units.ext this)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem _root_.PositivityTheory.SiegelWeilFormula.SD_k.inFrame_inj {x y : d.G} (h : inFrame d.b x = inFrame d.b y) : x = y := by
   have hx : mat2 x = incM F d.b.1 * inFrame d.b x * incM F (d.b⁻¹).1 := by

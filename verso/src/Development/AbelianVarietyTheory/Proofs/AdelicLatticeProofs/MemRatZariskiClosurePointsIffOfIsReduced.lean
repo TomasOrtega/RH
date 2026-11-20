@@ -7,11 +7,11 @@ open scoped Kronecker ComplexOrder TensorProduct
 namespace GlobalTheory.ClassFin
 
 /- English proof (translation)
-Introduce `ι _ _ S' R _ _ y`. Use `⟨fun hy f hf => hy f (fun g hg => hg f hf), fun hR hy f hf => ?_⟩` and prove the remaining obligations. Establish `hrad : f ∈ (Ideal.span S').radical`. Rewrite using `[← MvPolynomial.vanishingIdeal_zeroLocus_eq_radical (K := ℂ), MvPolynomial.mem_vanishingIdeal_iff]`. Introduce `x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hx'` using `MvPolynomial.mem_zeroLocus_iff.1 hx`. Conclude with `hf (Matrix.of fun i j => x (i, j)) (fun p hp => hx' p (Ideal.subset_span hp))`. Take `⟨n, hn⟩` from `hrad`. Establish `hle : Ideal.span S' ≤ RingHom.ker (MvPolynomial.aeval (R` using `ℚ) (fun ij : ι × ι => y ij.1 ij.2)) := Ideal.span_le.2 fun p hp => hy p hp`. Establish `h0` using `hle hn`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h0` using `[RingHom.mem_ker, map_pow]`. Conclude with `IsReduced.eq_zero _ ⟨n, h0⟩`.
+A detailed English derivation is pending.
 -/
 theorem mem_pts_zeroSet_of_isReduced :
     ∀ (ι : Type) [Fintype ι] [DecidableEq ι] (S' : Set (MvPolynomial (ι × ι) ℚ)) (R : Type) [CommRing R]

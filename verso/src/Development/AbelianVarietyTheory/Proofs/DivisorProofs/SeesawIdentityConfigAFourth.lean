@@ -18,23 +18,19 @@ noncomputable section
 namespace GlobalTheory.ThK
 
 /- English proof (translation)
-Introduce `hKP F E _ _ _ _ _ σ B b a' G G₁ H H' X om om' om₁ om₁' hC hT hT₁ e he ei ev hei hev hpure K hK μK μ hμK hμ`. Take `⟨_, _, _, _, _⟩` from `idelesAt_facts E (evI F)`. Use `haveI : IsFiniteMeasure μK := ⟨by rw [hμK.2]; exact ENNReal.one_lt_top⟩`. Use `haveI := hμ`. Use `set z := (b + 2 - a') / 2 with hz`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Establish `hz1 : 1 ≤ z`. Use `hT.geo.eBig` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hk : ∀ k ∈ KAt K (evI F), ∀ f : SInf F (Fin (b + 2) × Fin (b + 2 + a')), ∃ f₁ : SInf F (Fin (b + 2) × Fin (b + 2 + a')), Acts (evI F) (om (k, 1)) f f₁` using `fun k hk' f => GlobalTheory.ThK.ArchActs.acts_inf hKP F E σ B (b + 2) a' G X om om' hT k (mem_KAt.1 hk').2 f`. Take `⟨N, hN⟩` from `GlobalTheory.ArchIdeleDecay.integrable_absE_pow_div F E σ B hT.base μ hμ z hz1`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `GlobalTheory.ParamSchwartz.iteratedIntegral_clm μK μ (fun f k l => coneInfInt B G.M om ei (shiftA H H') X.ν z f k.1 l.1) ?_ ?_ ?_` and prove the remaining obligations. Introduce `a b' f f' k l`. Conclude with `coneInfInt_lin hT.base.std (hk k.1 k.2) a b' f f' l.1`. Introduce `f n y`. Conclude with `GlobalTheory.T.stronglyMeasurable_iteratedFDeriv_coneInfInt_shiftA F E σ hKP.base B b a' G G₁ H H' X om om' hC hT hT₁.geo.hM e he ei ev hei hev hpure K hK z f n y`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Introduce `a n`. Take `⟨s, C₄, h4⟩` from `GlobalTheory.T.config_a_triples_compatibility hKP F E σ B b a' G G₁ H H' X om om' om₁ om₁' hC hT hT₁ e he ei ev hei hev hpure a n N`. Take `⟨s', C₃, h3⟩` from `GlobalTheory.ArchKX.locOpInf_unif_bound hKP F E σ B (b + 2) a' G X om om' hT K hK s`. Use `⟨s', max C₄ 0 * max C₃ 0, _, hN, fun f k l => ?_⟩` and prove the remaining obligations. Use `set q := s.sup (schwartzSeminormFamily ℂ (Fin (b + 2) × Fin (b + 2 + a') → mixedEmbedding.mixedSpace F) ℂ)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `set q' := s'.sup (schwartzSeminormFamily ℂ (Fin (b + 2) × Fin (b + 2 + a') → mixedEmbedding.mixedSpace F) ℂ)`. Use `set P : ℝ := (1 + ∑ w, ‖piInf (B.emb w) (l.1 : AE F E)‖) ^ N with hP`. Establish `hP0 : 0 < P` using `pow_pos (by positivity) _`. Establish `hA : 0 ≤ (GlobalTheory.Doubling.absE F E l.1 : ℝ) ^ z` using `by positivity`. Establish `e1 : coneInfInt B G.M om ei (shiftA H H') X.ν z f k.1 l.1 = ((X.ν l.1 : ℂ) * ((GlobalTheory.Doubling.absE F E l.1 : ℝ) : ℂ) ^ z) • ei (locOpInf (G.M.co.rho B.ψ (partInf F (shiftA H H' l.1))) (locOpInf (om (k.1, 1)) f))` using `rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hn : ‖(X.ν l.1 : ℂ) * ((GlobalTheory.Doubling.absE F E l.1 : ℝ) : ℂ) ^ z‖ = (GlobalTheory.Doubling.absE F E l.1 : ℝ) ^ z`. Rewrite using `[norm_mul, Circle.norm_coe, one_mul, norm_pow, Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg (by positivity)]`. Establish `h4'` using `h4 (locOpInf (om (k.1, 1)) f) l.1 l.2`. Establish `h3'` using `h3 k.1 k.2 f`. Establish `hq0 : 0 ≤ q (locOpInf (om (k.1, 1)) f)` using `apply_nonneg _ _`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Establish `hq0' : 0 ≤ q' f` using `apply_nonneg _ _`. Use `set Y := SchwartzMap.seminorm ℂ a n (ei (locOpInf (G.M.co.rho B.ψ (partInf F (shiftA H H' l.1))) (locOpInf (om (k.1, 1)) f)))`. Establish `hY0 : 0 ≤ Y` using `apply_nonneg _ _`. Establish `hY : Y ≤ max C₄ 0 * (max C₃ 0 * q' f) / P`. Rewrite using `[le_div_iff₀ hP0, mul_comm]`.
-
-Combine the equalities or inequalities in the displayed calculation. Use `mul_le_mul_of_nonneg_left (h3'.trans ?_) (le_max_right _ _)` and prove the remaining obligations. Conclude with `mul_le_mul_of_nonneg_right (le_max_left _ _) hq0'`. Rewrite using `[e1, map_smul_eq_mul, hn]`. Combine the equalities or inequalities in the displayed calculation.
-
-Clear the denominators using the available nonvanishing facts.
+Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem exists_clm_coneInfFun : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (b a' : ℕ) (G : Geo σ (b + 2) a') (G₁ : Geo σ b a') (H : Plane E (b + 2) b) (H' : Plane E (b + 2 + a') (b + a'))

@@ -6,7 +6,7 @@ open CategoryTheory Limits AlgebraicGeometry Opposite GlobalTheory.EtC
 namespace LateralTheory.E.D2
 
 /- English proof (translation)
-Substitute `hn hi` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem pull_cast_nat {q : ℕ} {E E' : Spc} (f : E ⟶ E') {n i n' i' : ℤ} (hn : n = n') (hi : i = i') (x : Ht q E' n i) :
     pull _ f _ _ (x.cast hn hi) = Ht.cast hn hi (pull _ f _ _ x : Ht q E n i) := by
@@ -16,25 +16,25 @@ abbrev PB.over {E E' : Spc} (f : E ⟶ E') {N : ℕ} (V : E' ⟶ ofCat (glCat N)
   pullback.map (f ≫ V) (PGL.pr N) V (PGL.pr N) f (𝟙 _) (𝟙 _) (by simp) (by simp)
 
 /- English proof (translation)
-Simplify using `only [PB.over, PB.pr, pullback.map, pullback.lift_fst]`.
+Simplify using the standard rewrite rules.
 -/
 theorem PB.over_pr {E E' : Spc} (f : E ⟶ E') {N : ℕ} (V : E' ⟶ ofCat (glCat N)) :
     PB.over f V ≫ PB.pr V = PB.pr (f ≫ V) ≫ f := by
   simp only [PB.over, PB.pr, pullback.map, pullback.lift_fst]
 
 /- English proof (translation)
-Simplify using `only [PB.over, PB.line, pullback.map, pullback.lift_snd_assoc, Category.comp_id]`.
+Simplify using the standard rewrite rules.
 -/
 theorem PB.over_line {E E' : Spc} (f : E ⟶ E') {N : ℕ} (V : E' ⟶ ofCat (glCat N)) :
     PB.over f V ≫ PB.line V = PB.line (f ≫ V) := by
   simp only [PB.over, PB.line, pullback.map, pullback.lift_snd_assoc, Category.comp_id]
 
 /- English proof (translation)
-Introduce `q _ P E E' f h h' N V c hc`. Take `⟨h0, hz, hs⟩` from `hc`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← P.map_ι f h h', h0, map_one]`. Introduce `j hj`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[hz j hj]`. Establish `hg` using `congrArg (P.map (PB.over f V) (inv_of (PB.pr (f ≫ V)) h) (inv_of (PB.pr V) h')) hs`. Rewrite `hg` using `[map_zero, map_sum]`. Rewrite using `[← hg]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [map_mul, map_pow, P.map_ι, Collected.deg1, pull_cast_nat, ← pull_comp, PB.over_pr]`. Rewrite using `[(hA q).2.2.1 _ _ (inv_of (PB.pr V) h'), PB.over_line]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem LeafNat_of (hA : LeafA6nat) : LeafNat := by
   intro q _ P E E' f h h' N V c hc

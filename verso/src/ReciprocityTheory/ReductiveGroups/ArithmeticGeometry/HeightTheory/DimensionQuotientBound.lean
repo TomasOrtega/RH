@@ -5,9 +5,9 @@ namespace ReciprocityTheory.ChartRestriction.G.T0.DimensionQuotientBound
 open IsLocalRing
 
 /- English proof (translation)
-Rewrite using `[ringKrullDim_quotient]`. Set `a : PrimeSpectrum.zeroLocus (p : Set R)` to `⟨⟨p, hp⟩, fun x hx => hx⟩`. Set `b : PrimeSpectrum.zeroLocus (p : Set R)` to `⟨⟨P, hP⟩, fun x hx => h1.le hx⟩`. Set `c : PrimeSpectrum.zeroLocus (p : Set R)` to `⟨⟨m, hm⟩, fun x hx => (h1.trans h2).le hx⟩`. Establish `hab : a < b` using `h1`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hbc : b < c` using `h2`. Apply the tactic sequence `have hs : ((2 : ℕ) : WithBot ℕ∞) ≤ Order.krullDim (PrimeSpectrum.zeroLocus (p : Set R)) := Order.LTSeries.length_le_krullDim (((RelSeries.singleton _ a).snoc b (by first | exact hab | exact ⟨_, _, rfl, hab⟩ | simpa using hab)).snoc c (by first | exact hbc | exact ⟨_, _, rfl, hbc⟩ …`. Conclude with `hs` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 lemma le_dim_quot {R : Type*} [CommRing R] (p P m : Ideal R) [hp : p.IsPrime] [hP : P.IsPrime]
     [hm : m.IsPrime] (h1 : p < P) (h2 : P < m) : (2 : WithBot ℕ∞) ≤ ringKrullDim (R ⧸ p) := by
@@ -24,7 +24,7 @@ lemma le_dim_quot {R : Type*} [CommRing R] (p P m : Ideal R) [hp : p.IsPrime] [h
   exact_mod_cast hs
 
 /- English proof (translation)
-Set `a : PrimeSpectrum R` to `⟨p, inferInstance⟩`. Set `b : PrimeSpectrum R` to `⟨m, inferInstance⟩`. Establish `hab : a < b` using `h`. Establish `hs : ((1 : ℕ) : WithBot ℕ∞) ≤ Order.krullDim (PrimeSpectrum R)` using `Order.LTSeries.length_le_krullDim ((RelSeries.singleton _ a).snoc b hab)`. Conclude with `hs` after adjusting the coercions.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 lemma one_le_dim {R : Type*} [CommRing R] (p m : Ideal R) [p.IsPrime] [m.IsPrime] (h : p < m) :
     (1 : WithBot ℕ∞) ≤ ringKrullDim R := by
@@ -36,27 +36,23 @@ lemma one_le_dim {R : Type*} [CommRing R] (p m : Ideal R) [p.IsPrime] [m.IsPrime
   exact_mod_cast hs
 
 /- English proof (translation)
-Set `R` to `Localization.AtPrime M`. Use `haveI : IsDomain R := IsLocalization.isDomain_localization (Ideal.primeCompl_le_nonZeroDivisors M)`. Establish `hinj : Function.Injective (algebraMap B R)` using `IsLocalization.injective R (Ideal.primeCompl_le_nonZeroDivisors M)`. Establish `hcm : (IsLocalRing.maximalIdeal R).comap (algebraMap B R) = M` using `Localization.AtPrime.comap_maximalIdeal (I := M)`. Establish `hh : algebraMap B R (e * w) ≠ 0`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Conclude with `mul_ne_zero he hw0 (hinj (by rw [h, map_zero]))`. Establish `hmax : (⊥ : Ideal R) < IsLocalRing.maximalIdeal R`. Rewrite using `[bot_lt_iff_ne_bot]`. Introduce `h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hw' : algebraMap B R w ∈ IsLocalRing.maximalIdeal R`. Rewrite using `[← Ideal.mem_comap, hcm]`. Conclude with `hw`. Rewrite `hw'` using `[h, Ideal.mem_bot]`. Conclude with `hw0 (hinj (by rw [hw', map_zero]))`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hdim : 1 ≤ ringKrullDim R` using `one_le_dim ⊥ (IsLocalRing.maximalIdeal R) hmax`. Take `⟨p, hp, hpd, hpn⟩` from `ReciprocityTheory.ChartRestriction.G.T0.av_prime_dim_one hdim _ hh`. Use `haveI := hp`. Use `⟨p.comap (algebraMap B R), Ideal.comap_isPrime _ _, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `x hx`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← hcm]`. Conclude with `IsLocalRing.le_maximalIdeal hp.ne_top hx`. Introduce `he'`. Apply `hpn` to reduce the goal to its premises. Rewrite using `[map_mul]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Conclude with `p.mul_mem_right _ he'`. Introduce `hw'`. Apply `hpn` to reduce the goal to its premises. Rewrite using `[map_mul]`. Conclude with `p.mul_mem_left _ hw'`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `P hP hqP hPM hwP`. Assume the negation of the conclusion as `hne`. Establish `hdisj : Disjoint (M.primeCompl : Set B) P`. Rewrite using `[Set.disjoint_left]`. Introduce `x hx hxP`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hx (hPM hxP)`. Use `haveI hP' : (P.map (algebraMap B R)).IsPrime := IsLocalization.isPrime_of_isPrime_disjoint M.primeCompl R P hP hdisj`. Establish `hcomap : (P.map (algebraMap B R)).comap (algebraMap B R) = P` using `IsLocalization.comap_map_of_isPrime_disjoint M.primeCompl R hP hdisj`. Establish `h1 : p < P.map (algebraMap B R)`. Use `lt_of_le_of_ne ?_ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `hpe : (p.comap (algebraMap B R)).map (algebraMap B R) = p` using `IsLocalization.map_comap M.primeCompl R p`. Rewrite using `[← hpe]`. Conclude with `Ideal.map_mono hqP`. Introduce `heq`. Apply `hpn` to reduce the goal to its premises.
-
-Rewrite using `[heq, map_mul]`. Conclude with `Ideal.mul_mem_left _ _ (Ideal.mem_map_of_mem _ hwP)`. Establish `h2 : P.map (algebraMap B R) < IsLocalRing.maximalIdeal R`. Use `lt_of_le_of_ne (IsLocalRing.le_maximalIdeal hP'.ne_top) ?_` and prove the remaining obligations. Introduce `heq`.
-
-Apply `hne` to reduce the goal to its premises. Rewrite using `[← hcomap, heq, hcm]`. Establish `h3` using `le_dim_quot p (P.map (algebraMap B R)) (IsLocalRing.maximalIdeal R) h1 h2`. Rewrite `h3` using `[hpd]`. Conclude with `absurd h3 (by decide)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem local_step {B : Type*} [CommRing B] [IsDomain B] [IsNoetherianRing B] (M : Ideal B) [hM : M.IsMaximal]
     (w e : B) (hw : w ∈ M) (hw0 : w ≠ 0) (he : e ≠ 0) :

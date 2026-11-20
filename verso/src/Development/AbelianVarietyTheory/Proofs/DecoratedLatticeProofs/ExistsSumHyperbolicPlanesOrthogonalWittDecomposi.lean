@@ -22,9 +22,9 @@ namespace GlobalTheory.HypSumWitt
 open scoped ComplexOrder
 
 /- English proof (translation)
-Unfold `gramAt`. Rewrite using `[GlobalTheory.Doubling.gram_hdbl]`. Use extensionality with `i j`. Simplify using `[GlobalTheory.Doubling.dblGram, GlobalTheory.Doubling.blkMat, GlobalTheory.OrthSumSp.posSp_gram]`. Generalize the expression as in `finSumFinEquiv.symm i = a`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Replace the chosen expression with an arbitrary variable.
 
-Generalize the expression as in `finSumFinEquiv.symm j = b`. Apply the tactic sequence `rcases a with a | a <;> rcases b with b | b <;> simp [Matrix.one_apply, apply_ite]`.
+Replace the chosen expression with an arbitrary variable. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem gramAt_hypSp (D : D7) (t : ℕ) (τ : D.what₂.Tau) :
     gramAt D (GlobalTheory.OrthSumSp.hypSp D t) τ =
@@ -38,7 +38,7 @@ theorem gramAt_hypSp (D : D7) (t : ℕ) (τ : D.what₂.Tau) :
   rcases a with a | a <;> rcases b with b | b <;> simp [Matrix.one_apply, apply_ite]
 
 /- English proof (translation)
-Rewrite using `[gramAt_hypSp, Matrix.submatrix_mul_equiv, Matrix.fromBlocks_multiply]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem gsq (D : D7) (t : ℕ) (τ : D.what₂.Tau) :
     gramAt D (GlobalTheory.OrthSumSp.hypSp D t) τ * gramAt D (GlobalTheory.OrthSumSp.hypSp D t) τ = 1 := by
@@ -46,7 +46,7 @@ theorem gsq (D : D7) (t : ℕ) (τ : D.what₂.Tau) :
   simp
 
 /- English proof (translation)
-Rewrite using `[gramAt_hypSp, Matrix.conjTranspose_submatrix, Matrix.fromBlocks_conjTranspose]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem gct (D : D7) (t : ℕ) (τ : D.what₂.Tau) :
     (gramAt D (GlobalTheory.OrthSumSp.hypSp D t) τ)ᴴ = gramAt D (GlobalTheory.OrthSumSp.hypSp D t) τ := by
@@ -54,9 +54,9 @@ theorem gct (D : D7) (t : ℕ) (τ : D.what₂.Tau) :
   simp
 
 /- English proof (translation)
-Introduce `D W t hW`. Use `⟨GlobalTheory.OrthSumSp.hypSp D t, _, GlobalTheory.OrthSumSp.orthSumDec D W _, GlobalTheory.OrthSumSp.hypSumDec D W t, GlobalTheory.OrthSumSp.hypSp_sigOK D t, GlobalTheory.Doubling.sigOK_hsum hW (GlobalTheory.OrthSumSp.hypSp_sigOK D t), ?_, GlobalTheory.OrthSumSp.hypSp_sig D t, f …` and prove the remaining obligations. Use `show t + t = 2 * t`. Use linear arithmetic over natural numbers and integers. Rewrite using `[gct, Matrix.mul_assoc, gsq, Matrix.mul_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[gsq]`. Conclude with `Matrix.PosDef.one`.
+A detailed English derivation is pending.
 -/
 theorem exists_hypSum_orthDec_hypDec : ∀ (D : D7) (W : HSp D) (t : ℕ), HSpace.SigOK W → ∃ (H B : HSp D) (_ : OrthDec B W H) (_ : HypDec B W t), HSpace.SigOK H ∧ HSpace.SigOK B ∧ H.rank = 2 * t ∧ (∀ τ, H.sig τ = (t, t)) ∧ ∃ sH : RealMat H, ∀ τ, IsCartanInv (gramAt D H τ) (sH τ) := by
   intro D W t hW

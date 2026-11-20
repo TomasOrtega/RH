@@ -12,7 +12,7 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.Ar.SncRes
 
 /- English proof (translation)
-Use `haveI : IsAffine (Sp ℚ) := inferInstanceAs (IsAffine (Spec (CommRingCat.of ℚ)))`. Apply `ext_of_isAffine` to reduce the goal to its premises. Apply `(cancel_epi (Scheme.ΓSpecIso (CommRingCat.of ℚ)).inv).mp` to reduce the goal to its premises. Apply `CommRingCat.hom_ext` to reduce the goal to its premises. Conclude with `RingHom.ext_rat _ _`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem hom_to_spQ_ext {X : Scheme.{0}} (a b : X ⟶ Sp ℚ) : a = b := by
   haveI : IsAffine (Sp ℚ) := inferInstanceAs (IsAffine (Spec (CommRingCat.of ℚ)))
@@ -22,7 +22,7 @@ theorem hom_to_spQ_ext {X : Scheme.{0}} (a b : X ⟶ Sp ℚ) : a = b := by
   exact RingHom.ext_rat _ _
 
 /- English proof (translation)
-Use `show SmoothOfRelativeDimension e (Spec.map (CommRingCat.ofHom (algebraMap ℚ B)))`. Rewrite using `[HasRingHomProperty.Spec_iff (P := @SmoothOfRelativeDimension e)]`. Conclude with `RingHom.locally_of RingHom.isStandardSmoothOfRelativeDimension_respectsIso _ ((RingHom.isStandardSmoothOfRelativeDimension_algebraMap e).mpr inferInstance)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem smoothOfRelativeDimension_spMap (B : Type) [CommRing B] [Algebra ℚ B] (e : ℕ)
     [Algebra.IsStandardSmoothOfRelativeDimension e ℚ B] :
@@ -45,13 +45,11 @@ def valEquiv {Ω : Type} [Field Ω] [CharZero Ω] {Z : Scheme.{0}} (ζ : Sp Ω �
       exact ⟨x, Subtype.ext hx⟩⟩
 
 /- English proof (translation)
-Introduce `Ω _ _ Z ζ _ _ g e W hW h A hA σ g₀ hg _`. Use `haveI := hW.isLocalization_basicOpen σ`. Establish `hE : valEquiv ζ W h A hA σ = g₀`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[hg]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `show (valMap ζ W h).hom σ = valR ζ W σ`. Simplify using `only [valR, valMap, dif_pos h]`. Both sides reduce to the same expression. Set `ψ : Γ(Z, Z.basicOpen σ) ≃+* Localization.Away g₀` to `IsLocalization.ringEquivOfRingEquiv (M := Submonoid.powers σ) (T := Submonoid.powers g₀) _ _ (valEquiv ζ W h A hA) (by rw [Submonoid.map_powers]; exact congrArg Submonoid.powers hE)`. Establish `hiso : IsIso (CommRingCat.ofHom (ψ.symm : Localization.Away g₀ →+* Γ(Z, Z.basicOpen σ)))` using `⟨⟨CommRingCat.ofHom (ψ : Γ(Z, Z.basicOpen σ) →+* Localization.Away g₀), by ext x; simp, by ext x; simp⟩⟩`.
+Both sides reduce to the same expression. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `f2 : Spec Γ(Z, Z.basicOpen σ) ⟶ Sp (Localization.Away g₀)` to `Spec.map (CommRingCat.ofHom (ψ.symm : Localization.Away g₀ →+* Γ(Z, Z.basicOpen σ)))`. Use `haveI : IsIso f2 := by dsimp only [f2]; infer_instance`. Establish `key : (Z.basicOpen σ).ι ≫ g = ((hW.basicOpen σ).isoSpec.hom ≫ f2) ≫ spMap (algebraMap ℚ (Localization.Away g₀))` using `hom_to_spQ_ext _ _`. Rewrite using `[key]`. Use `haveI := smoothOfRelativeDimension_spMap (Localization.Away g₀) e`.
-
-Use `smoothOfRelativeDimension_comp 0 e ((hW.basicOpen σ).isoSpec.hom ≫ f2) (spMap (algebraMap ℚ (Localization.Away g₀)))` as an intermediate fact. Rewrite `this` using `[zero_add]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem smoothOfRelativeDimension_basicOpen_of_away : ∀ (Ω : Type) [Field Ω] [CharZero Ω] (Z : Scheme.{0}) (ζ : Sp Ω ⟶ Z) [IsDominant ζ] [IsReduced Z] (g : Z ⟶ Sp ℚ) (e : ℕ) (W : Z.Opens) (hW : IsAffineOpen W) (h : ⊤ ≤ ζ ⁻¹ᵁ W) (A : Subalgebra ℚ Ω) (hA : Set.range (valMap ζ W h).hom = A) (σ : Γ(Z, W)) (g₀ : A) (hg : (g₀ : Ω) = valR ζ W σ) [Algebra.IsStandardSmoothOfRelativeDimension e ℚ (Localization.Away g₀)], SmoothOfRelativeDimension e ((Z.basicOpen σ).ι ≫ g) := by
   intro Ω _ _ Z ζ _ _ g e W hW h A hA σ g₀ hg _

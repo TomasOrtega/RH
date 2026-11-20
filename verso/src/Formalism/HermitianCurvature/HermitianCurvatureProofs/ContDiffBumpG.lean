@@ -23,9 +23,9 @@ variable {k ρ : ℕ}
 def sqN (y : B.Mat k ρ) : ℝ := ∑ i, ∑ j, ‖y i j‖ ^ 2
 
 /- English proof (translation)
-Establish `h0 : 0 ≤ ∑ i, ∑ j, Complex.normSq (y i j)` using `Finset.sum_nonneg fun i _ => Finset.sum_nonneg fun j _ => Complex.normSq_nonneg _`. Establish `h1` using `Real.sq_sqrt h0`. Establish `h2 : B.gN y = Real.sqrt (∑ i, ∑ j, Complex.normSq (y i j))` using `rfl`. Rewrite using `[h2, h1]`. Unfold `sqN`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Simplify using `only [Complex.normSq_eq_norm_sq]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sqN_eq (y : B.Mat k ρ) : sqN y = B.gN y ^ 2 := by
   have h0 : 0 ≤ ∑ i, ∑ j, Complex.normSq (y i j) :=
@@ -37,7 +37,7 @@ theorem sqN_eq (y : B.Mat k ρ) : sqN y = B.gN y ^ 2 := by
   simp only [Complex.normSq_eq_norm_sq]
 
 /- English proof (translation)
-Unfold `sqN`. Use `ContDiff.sum fun i _ => ContDiff.sum fun j _ => ?_` and prove the remaining obligations. Establish `hl : ContDiff ℝ ∞ (fun y : B.Mat k ρ => y i j)` using `contDiff_apply_apply ℝ ℂ i j`. Conclude with `(contDiff_norm_sq ℝ).comp hl`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem contDiff_sqN : ContDiff ℝ ∞ (sqN (k := k) (ρ := ρ)) := by
   unfold sqN
@@ -48,23 +48,23 @@ theorem contDiff_sqN : ContDiff ℝ ∞ (sqN (k := k) (ρ := ρ)) := by
 def bumpG (R : ℝ) (y : B.Mat k ρ) : ℝ := Real.smoothTransition (R ^ 2 + 1 - sqN y)
 
 /- English proof (translation)
-The claim follows from `Real.smoothTransition.contDiff.comp (contDiff_const.sub contDiff_sqN)`.
+A detailed English derivation is pending.
 -/
 theorem contDiff_bumpG (R : ℝ) : ContDiff ℝ ∞ (bumpG (k := k) (ρ := ρ) R) :=
   Real.smoothTransition.contDiff.comp (contDiff_const.sub contDiff_sqN)
 
 /- English proof (translation)
-The claim follows from `Real.smoothTransition.nonneg _`.
+A detailed English derivation is pending.
 -/
 theorem bumpG_nonneg (R : ℝ) (y : B.Mat k ρ) : 0 ≤ bumpG R y := Real.smoothTransition.nonneg _
 
 /- English proof (translation)
-The claim follows from `Real.smoothTransition.le_one _`.
+A detailed English derivation is pending.
 -/
 theorem bumpG_le_one (R : ℝ) (y : B.Mat k ρ) : bumpG R y ≤ 1 := Real.smoothTransition.le_one _
 
 /- English proof (translation)
-Unfold `bumpG`. Apply `Real.smoothTransition.one_of_one_le` to reduce the goal to its premises. Establish `h0 : 0 ≤ B.gN y` using `Real.sqrt_nonneg _`. Establish `: B.gN y ^ 2 ≤ R ^ 2` using `pow_le_pow_left₀ h0 hy 2`. Rewrite using `[sqN_eq]`.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
 Combine the linear equalities and inequalities to obtain the conclusion.
 -/
@@ -76,9 +76,9 @@ theorem bumpG_eq_one {R : ℝ} {y : B.Mat k ρ} (hy : B.gN y ≤ R) : bumpG R y 
   rw [sqN_eq]; linarith
 
 /- English proof (translation)
-Unfold `bumpG at hy`. Establish `h : 0 < R ^ 2 + 1 - sqN y`. Assume the negation of the conclusion as `hc`. Conclude with `hy (Real.smoothTransition.zero_of_nonpos (not_lt.mp hc))`. Rewrite `h` using `[sqN_eq]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[show B.gN y = Real.sqrt (B.gN y ^ 2) from (Real.sqrt_sq (Real.sqrt_nonneg _)).symm]`. Conclude with `Real.sqrt_le_sqrt (by linarith)`.
+A detailed English derivation is pending.
 -/
 theorem bumpG_supp (R : ℝ) {y : B.Mat k ρ} (hy : bumpG R y ≠ 0) : B.gN y ≤ Real.sqrt (R ^ 2 + 1) := by
   unfold bumpG at hy
@@ -130,7 +130,7 @@ def trivSet (Bj : B.RealPlaceData k ρ Wp Wq) : B.RealPlaceData k ρ ℂ ℂ whe
   χ_int := Bj.χ_int
 
 /- English proof (translation)
-Unfold `psi`. Rewrite using `[mul_comm]`. Conclude with `Complex.norm_exp_ofReal_mul_I _`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_psi (z : Fin (2 * ρ + k + 1) → ℂ) (c : ℂ) (g : B.Mat k ρ) : ‖psi k ρ z c g‖ = 1 := by
   unfold psi
@@ -138,24 +138,22 @@ theorem norm_psi (z : Fin (2 * ρ + k + 1) → ℂ) (c : ℂ) (g : B.Mat k ρ) :
   exact Complex.norm_exp_ofReal_mul_I _
 
 /- English proof (translation)
-Unfold `JF.xiP`. Rewrite using `[norm_mul, norm_star, norm_psi, norm_psi, one_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem norm_xiP (Bs : B.RealPlaceData k ρ Wp Wq) (P : B.SS k ρ) : ‖JF.xiP Bs P‖ = 1 := by
   unfold JF.xiP
   rw [norm_mul, norm_star, norm_psi, norm_psi, one_mul]
 
 /- English proof (translation)
-Use `set F : B.Mat k ρ → (ℂ →L[ℂ] ℂ) := fun y => ((bumpG R y : ℝ) : ℂ) • (1 : ℂ →L[ℂ] ℂ) with hFdef`. Establish `hFc : ContDiff ℝ ∞ F` using `(Complex.ofRealCLM.contDiff.comp (contDiff_bumpG R)).smul contDiff_const`. Establish `hCk : B.CkOn ⊤ (B.GV k ρ) F` using `fun g₀ _ => ⟨Set.univ, F, isOpen_univ, Set.mem_univ _, hFc.contDiffOn, fun _ _ _ => rfl⟩`. Use `set n : ℝ := ((2 * ρ + k + 1 : ℕ) : ℝ) with hn`. Use `set A : ℝ := 9 * ((ρ : ℝ) + 1) * (n ^ 2 + 1) with hA`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Establish `hthr : JF.TransportedAlt k ρ A 0`. Unfold `JF.TransportedAlt`. Establish `hpos : (0 : ℝ) < 9 * ((ρ : ℝ) + 1)` using `by positivity`. Establish `e : (A - 6 * (ρ : ℝ) * ((0 : ℕ) : ℝ)) / (9 * ((ρ : ℝ) + 1)) = n ^ 2 + 1`. Rewrite using `[hA]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 
-Use `push_cast`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[← hn, e]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hcc : B.InCC A 0 F` using `Formalism.FourierDecayAlt.P.JFxG.cptInCC_G hCk (Formalism.FourierDecayAlt.P.PBE.isCompact_gN_le k ρ (Real.sqrt (R ^ 2 + 1))) (fun y _ hyC => by`. Assume the negation of the conclusion as `h0`. Apply `hyC` to reduce the goal to its premises. Use `bumpG_supp R (fun hb => h0 ?_)` and prove the remaining obligations. Simplify using `[hFdef, hb]) A 0`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hInt` using `(Formalism.FourierDecayAlt.P.bessel_integral_converges k ρ ℂ ℂ (trivSet Bj) A F hthr hcc).1 g hg`. Use `hInt.norm.congr (ae_of_all _ fun P => ?_)` and prove the remaining obligations. Use `show ‖JF.xiP (trivSet Bj) P • B.rho (trivSet Bj) P F g‖ = bumpG R (B.sgs P g)`. Rewrite using `[norm_smul, norm_xiP, one_mul]`. Simplify using `only [B.rho, trivSet, hFdef]`.
-
-Rewrite using `[ContinuousLinearMap.one_def, ContinuousLinearMap.id_comp, ContinuousLinearMap.comp_id, norm_smul, Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg (bumpG_nonneg R _)]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem bump_int (Bj : B.RealPlaceData k ρ Wp Wq) {g : B.Mat k ρ} (hg : g ∈ JF.Om k ρ Bj.z Bj.z') (R : ℝ) :
     Integrable (fun P : B.SS k ρ => bumpG R (B.sgs P g)) Bj.μSS := by
@@ -194,9 +192,9 @@ section fmoc
 variable {k p ρ : ℕ}
 
 /- English proof (translation)
-Establish `h1 : IsFiniteMeasureOnCompacts (volume : Measure (Fin (2 * ρ + k + 1) → Fin p → ℂ))` using `inferInstance`. Establish `h2 : IsFiniteMeasureOnCompacts (volume : Measure ((G.UT p → ℂ) × (Fin p → ℝ)))` using `inferInstance`. Establish `h3 : SigmaFinite (volume : Measure ((G.UT p → ℂ) × (Fin p → ℝ)))` using `inferInstance`. Unfold `U.muRC`. Rewrite using `[Measure.volume_eq_prod]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Measure.prod.instIsFiniteMeasureOnCompacts _ _`.
+A detailed English derivation is pending.
 -/
 theorem fmoc_RC : MeasureTheory.IsFiniteMeasureOnCompacts (U.muRC k p ρ) := by
   have h1 : IsFiniteMeasureOnCompacts (volume : Measure (Fin (2 * ρ + k + 1) → Fin p → ℂ)) := inferInstance
@@ -207,17 +205,15 @@ theorem fmoc_RC : MeasureTheory.IsFiniteMeasureOnCompacts (U.muRC k p ρ) := by
   exact Measure.prod.instIsFiniteMeasureOnCompacts _ _
 
 /- English proof (translation)
-Establish `h1 : IsFiniteMeasureOnCompacts (U.muRC k p ρ)` using `fmoc_RC`. Establish `h1' : SigmaFinite (U.muRC k p ρ)` using `Formalism.FourierDecayAlt.P.Dx2.SplitF.sf_RC p ρ`. Establish `h2 : IsFiniteMeasureOnCompacts ((U.muRC k p ρ).prod (U.muRC k p ρ))` using `Measure.prod.instIsFiniteMeasureOnCompacts _ _`. Establish `a1 : IsFiniteMeasureOnCompacts (volume : Measure (Fin 0 → Fin p → ℂ))` using `inferInstance`. Establish `a2 : IsFiniteMeasureOnCompacts (volume : Measure (Fin p → Fin 0 → ℂ))` using `inferInstance`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a2' : SigmaFinite (volume : Measure (Fin p → Fin 0 → ℂ))` using `inferInstance`. Establish `a3 : IsFiniteMeasureOnCompacts (volume : Measure (U.LW σ → ℂ))` using `inferInstance`. Establish `a4 : IsFiniteMeasureOnCompacts (volume : Measure (G.UT p → ℂ))` using `inferInstance`. Establish `a4' : SigmaFinite (volume : Measure (G.UT p → ℂ))` using `inferInstance`. Establish `b1 : IsFiniteMeasureOnCompacts (volume : Measure ((Fin 0 → Fin p → ℂ) × (Fin p → Fin 0 → ℂ)))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Measure.volume_eq_prod]`. Conclude with `Measure.prod.instIsFiniteMeasureOnCompacts _ _`. Establish `b2 : IsFiniteMeasureOnCompacts (volume : Measure ((U.LW σ → ℂ) × (G.UT p → ℂ)))`. Rewrite using `[Measure.volume_eq_prod]`. Conclude with `Measure.prod.instIsFiniteMeasureOnCompacts _ _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `b2' : SigmaFinite (volume : Measure ((U.LW σ → ℂ) × (G.UT p → ℂ)))`. Rewrite using `[Measure.volume_eq_prod]`. Use `infer_instance`. Establish `b3 : IsFiniteMeasureOnCompacts (U.muXiH p 0 σ)`. Unfold `U.muXiH`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[Measure.volume_eq_prod]`. Conclude with `Measure.prod.instIsFiniteMeasureOnCompacts _ _`. Establish `b3' : SigmaFinite (U.muXiH p 0 σ)`. Unfold `U.muXiH`. Rewrite using `[Measure.volume_eq_prod]`.
-
-Use `infer_instance`. Unfold `U.muXi`. Conclude with `Measure.prod.instIsFiniteMeasureOnCompacts _ _`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem fmoc_Xi (σ : Equiv.Perm (Fin p)) : MeasureTheory.IsFiniteMeasureOnCompacts (U.muXi k p 0 ρ σ) := by
   have h1 : IsFiniteMeasureOnCompacts (U.muRC k p ρ) := fmoc_RC
@@ -250,44 +246,38 @@ section bound
 variable {k p ρ : ℕ} {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E]
 
 /- English proof (translation)
-Unfold `G.detM`. Conclude with `Matrix.det_isEmpty`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem detM_zero (Z : G.Mat 0) : G.detM Z = 1 := by
   unfold G.detM
   exact Matrix.det_isEmpty
 
 /- English proof (translation)
-Take `⟨C1, hC1⟩` from `Formalism.FourierDecayAlt.P.block3_apply_embedding k (p + 0) ρ hp`. Take `⟨C2, hC2⟩` from `Formalism.FourierDecayAlt.P.aux_statement_17 p 0 σ d hd`. Use `set δ0 : ℂ := (U.hMat σ d).det with hδ0`. Establish `hδ0ne : δ0 ≠ 0` using `Formalism.FourierDecayAlt.P.Ux10.det_hMat_ne σ d hd`. Use `set m0 : ℝ := min 1 ‖δ0‖ with hm0`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm0pos : 0 < m0` using `lt_min one_pos (norm_pos_iff.mpr hδ0ne)`. Use `set K : Set (B.Mat k (p + 0 + ρ)) := B.GV k (p + 0 + ρ) ∩ {x | B.gN x ≤ R} ∩ {x | U.DjU k (p + 0) ρ x = δ0} with hKdef`. Establish `hK : IsCompact K`. Use `((Formalism.FourierDecayAlt.P.PBE.isCompact_gN_le k (p + 0 + ρ) R).inter_left (Formalism.FourierDecayAlt.P.unitary_group_closed k (p + 0 + ρ)).closed).inter_right ?_` and prove the remaining obligations. Conclude with `isClosed_eq (Formalism.FourierDecayAlt.P.JCTx6.Pos.cont_DjU k (p + 0) ρ) continuous_const`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Establish `hKsub : K ⊆ {x | x ∈ B.GV k (p + 0 + ρ) ∧ U.DjU k (p + 0) ρ x ≠ 0}`. Introduce and unpack `x ⟨⟨hx1, -⟩, hx3⟩`. Conclude with `⟨hx1, by rw [Set.mem_setOf_eq.mp hx3]; exact hδ0ne⟩`. Take `⟨M, hM⟩` from `hK.exists_bound_of_continuousOn (hHc.mono hKsub)`. Use `set c1 : ℝ := max C1 0 with hc1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `set c2 : ℝ := max C2 0 with hc2`. Establish `hc1n : 0 ≤ c1` using `le_max_right _ _`. Establish `hc2n : 0 ≤ c2` using `le_max_right _ _`. Use `set R0 : ℝ := max R 0 with hR0`. Establish `hR0n : 0 ≤ R0` using `le_max_right _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set B1 : ℝ := c1 * R0 ^ (p + 0) / m0 with hB1`. Use `set B2 : ℝ := c2 * (c1 * R0) ^ p with hB2`. Use `⟨max M 0, max B1 B2, c1 * R0 ^ (2 * (p + 0) + 1) / m0 ^ 2, le_max_right _ _, ?_, fun ξ Z γ hγ => ?_⟩` and prove the remaining obligations. Establish `: MeasureTheory.IsFiniteMeasureOnCompacts (U.muXi k p 0 ρ σ)` using `fmoc_Xi σ`. Establish `: BorelSpace ((Fin 0 → Fin p → ℂ) × (Fin p → Fin 0 → ℂ))` using `Prod.borelSpace`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: BorelSpace ((U.LW σ → ℂ) × (G.UT p → ℂ))` using `Prod.borelSpace`. Establish `: BorelSpace (U.XiH p 0 σ)` using `Prod.borelSpace`. Establish `: BorelSpace (U.RC k p ρ × U.RC k p ρ)` using `Prod.borelSpace`. Establish `: BorelSpace (U.Xi k p 0 ρ σ)` using `Prod.borelSpace`. Use `Integrable.const_mul ?_ _` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(integrableOn_const (measure_closedBall_lt_top).ne).integrable_indicator measurableSet_closedBall`. Establish `hZ1 : G.detM Z = 1` using `detM_zero Z`. Distinguish the cases in `h0 : H (U.gaXi k ρ σ d ξ Z γ) = 0`. Rewrite using `[h0, norm_zero]`. Conclude with `mul_nonneg (mul_nonneg (le_max_right _ _) (Set.indicator_nonneg (fun _ _ => zero_le_one) _)) (bumpG_nonneg _ _)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hG` using `Formalism.FourierDecayAlt.P.Ux10.gaXi_mem Formalism.FourierDecayAlt.P.slice_membership Formalism.FourierDecayAlt.P.radical_parametrisation σ d hd ξ Z (by rw [hZ1]; exact one_ne_zero) hγ`. Establish `hgR` using `hR _ hG h0`. Establish `hgN0 : 0 ≤ B.gN (U.gaXi k ρ σ d ξ Z γ)` using `Real.sqrt_nonneg _`. Establish `hgR0 : B.gN (U.gaXi k ρ σ d ξ Z γ) ≤ R0` using `hgR.trans (le_max_left _ _)`. Establish `hD : U.DjU k (p + 0) ρ (U.gaXi k ρ σ d ξ Z γ) = δ0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Formalism.FourierDecayAlt.P.Ux10.DjU_gaXi Formalism.FourierDecayAlt.P.hat_z_on_slice, hZ1, mul_one]`. Establish `hMb : ‖H (U.gaXi k ρ σ d ξ Z γ)‖ ≤ max M 0` using `(hM _ ⟨⟨hG, hgR⟩, hD⟩).trans (le_max_left _ _)`. Establish `hdetZ : (U.ZjH σ d ξ.2 Z).det ≠ 0`. Rewrite using `[Formalism.FourierDecayAlt.P.level_determinant_z, hZ1, mul_one]`. Conclude with `hδ0ne`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hdetZ' : ‖(U.ZjH σ d ξ.2 Z).det‖ = ‖δ0‖`. Rewrite using `[Formalism.FourierDecayAlt.P.level_determinant_z, hZ1, mul_one]`. Take `⟨b1, b2, b3, -, b5⟩` from `hC1 ξ.1.1 ξ.1.2 (U.ZjH σ d ξ.2 Z) γ hdetZ hγ`. Establish `hgaXi : U.gaXi k ρ σ d ξ Z γ = (U.Rn k (p + 0) ρ ξ.1.1)⁻¹ * U.mMap k (p + 0) ρ (U.ZjH σ d ξ.2 Z) γ * U.Rn k (p + 0) ρ ξ.1.2` using `rfl`. Rewrite `b1`, `b2`, `b5` using `[← hgaXi, hdetZ', ← hm0]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `b3` using `[← hgaXi]`. Establish `hpow : ∀ n : ℕ, B.gN (U.gaXi k ρ σ d ξ Z γ) ^ n ≤ R0 ^ n` using `fun n => pow_le_pow_left₀ hgN0 hgR0 n`. Establish `bx1 : ‖ξ.1.1‖ ≤ B1`. Use `(Formalism.FourierDecayAlt.P.Ux6.norm_le_gN_Rn ξ.1.1).trans (b1.trans ?_)` and prove the remaining obligations. Rewrite using `[hB1]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `div_le_div_of_nonneg_right (mul_le_mul (le_max_left _ _) (hpow _) (pow_nonneg hgN0 _) hc1n) hm0pos.le`. Establish `bx2 : ‖ξ.1.2‖ ≤ B1`. Use `(Formalism.FourierDecayAlt.P.Ux6.norm_le_gN_Rn ξ.1.2).trans (b2.trans ?_)` and prove the remaining obligations. Rewrite using `[hB1]`. Conclude with `div_le_div_of_nonneg_right (mul_le_mul (le_max_left _ _) (hpow _) (pow_nonneg hgN0 _) hc1n) hm0pos.le`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hmx : U.mx (U.ZjH σ d ξ.2 Z) ≤ c1 * R0` using `b3.trans (mul_le_mul (le_max_left _ _) hgR0 hgN0 hc1n)`. Establish `hmx0 : 0 ≤ U.mx (U.ZjH σ d ξ.2 Z)` using `norm_nonneg _`. Take `⟨e1, e2, e3, e4, -⟩` from `hC2 ξ.2 Z`. Establish `hη : ∀ t : ℝ, t ≤ C2 * U.mx (U.ZjH σ d ξ.2 Z) ^ p → t ≤ B2` using `fun t ht => ht.trans (mul_le_mul (le_max_left _ _) (pow_le_pow_left₀ hmx0 hmx p) (pow_nonneg hmx0 _) hc2n)`. Establish `hξ : ‖ξ‖ ≤ max B1 B2`.
-
-Rewrite using `[norm_prod_le_iff]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[norm_prod_le_iff]`. Conclude with `⟨bx1.trans (le_max_left _ _), bx2.trans (le_max_left _ _)⟩`. Rewrite using `[norm_prod_le_iff, norm_prod_le_iff, norm_prod_le_iff]`.
-
-Conclude with `⟨⟨(hη _ e1).trans (le_max_right _ _), (hη _ e2).trans (le_max_right _ _)⟩, ⟨(hη _ e3).trans (le_max_right _ _), (hη _ e4).trans (le_max_right _ _)⟩⟩`. Establish `hind : (Metric.closedBall (0 : U.Xi k p 0 ρ σ) (max B1 B2)).indicator (fun _ => (1 : ℝ)) ξ = 1`. Rewrite using `[Set.indicator_of_mem (by rw [Metric.mem_closedBall, dist_zero_right]; exact hξ)]`. Establish `hbump : bumpG (c1 * R0 ^ (2 * (p + 0) + 1) / m0 ^ 2) γ = 1`. Apply `bumpG_eq_one` to reduce the goal to its premises.
-
-Use `b5.trans ?_` and prove the remaining obligations. Conclude with `div_le_div_of_nonneg_right (mul_le_mul (le_max_left _ _) (hpow _) (pow_nonneg hgN0 _) hc1n) (pow_nonneg hm0pos.le _)`. Rewrite using `[hind, hbump, mul_one, mul_one]`. Conclude with `hMb`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem slice_bound (hp : 1 ≤ p) (σ : Equiv.Perm (Fin p)) (d : Fin p → ℂ) (hd : ∀ i, d i ≠ 0)
     (H : B.Mat k (p + 0 + ρ) → E)

@@ -14,9 +14,7 @@ namespace SequenceOfBlowups
 variable {X : Scheme.{u}}
 
 /- English proof (translation)
-Establish `he : (homOfLE h : i ⟶ i).op = 𝟙 (Opposite.op i)` using `rfl`. Establish `hid : s.transitionMap h = 𝟙 (s.schemeAt i)`. Rewrite using `[SequenceOfBlowups.transitionMap_def, he]`. Conclude with `s.tower.map_id (Opposite.op i)`. Rewrite using `[hid]`.
-
-Use `infer_instance`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem isIso_transitionMap_refl (s : SequenceOfBlowups X) {i : ℕ} (h : i ≤ i) :
     IsIso (s.transitionMap h) := by
@@ -28,13 +26,13 @@ private theorem isIso_transitionMap_refl (s : SequenceOfBlowups X) {i : ℕ} (h 
   infer_instance
 
 /- English proof (translation)
-Use `revert hb h`. Proceed by induction on `b, hab using Nat.le_induction with`. Consider the case `base`. Introduce `_ _`. Conclude with `isIso_transitionMap_refl s _`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Consider the case `succ b hab ih`. Introduce `hb h`. Establish `hbl : b ≤ s.length` using `le_trans (Nat.le_succ b) hb`. Establish `hlt : b < s.length` using `lt_of_lt_of_le (Nat.lt_succ_self b) hb`. Establish `hcen : s.center b = ⊤` using `h b hab (Nat.lt_succ_self b)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsIso (s.transitionMap hab)` using `ih hbl fun i hi hib => h i hi (Nat.lt_succ_of_lt hib)`. Establish `hB : Blowup.IsBlowupAlongIdealSheaf (s.transitionMapSucc b) (s.center b)` using `s.isBlowupAlongIdealSheaf_blowupMorphism b hlt`. Rewrite `hB` using `[hcen]`. Establish `: IsIso (s.transitionMap (Nat.le_succ b))`. Establish `h4` using `hB.isIso_of_top`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h4` using `[s.blowupMorphism_eq_transitionMap b]`. Conclude with `h4`. Establish `h3 : IsIso (s.transitionMap (Nat.le_succ b) ≫ s.transitionMap hab)` using `inferInstance`. Rewrite `h3` using `[s.transitionMap_trans hab (Nat.le_succ b)]`. Conclude with `h3`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isIso_transitionMap_of_center_eq_top (s : SequenceOfBlowups X) {a b : ℕ} (hab : a ≤ b)
     (hb : b ≤ s.length) (h : ∀ i, a ≤ i → i < b → s.center i = ⊤) :
@@ -62,7 +60,7 @@ theorem isIso_transitionMap_of_center_eq_top (s : SequenceOfBlowups X) {a b : �
     exact h3
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨max a s.length, le_max_left _ _, Or.inr (le_max_right _ _)⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_le_center_ne_top_or_length_le (s : SequenceOfBlowups X) (a : ℕ) :
     ∃ i, a ≤ i ∧ (s.center i ≠ ⊤ ∨ s.length ≤ i) :=
@@ -72,41 +70,41 @@ noncomputable def nextNontrivialIndex (s : SequenceOfBlowups X) (a : ℕ) : ℕ 
   @Nat.find _ (fun _ => Classical.propDecidable _) (s.exists_le_center_ne_top_or_length_le a)
 
 /- English proof (translation)
-The claim follows from `@Nat.find_spec _ (fun _ => Classical.propDecidable _) (s.exists_le_center_ne_top_or_length_le a)`.
+A detailed English derivation is pending.
 -/
 theorem nextNontrivialIndex_spec (s : SequenceOfBlowups X) (a : ℕ) :
     a ≤ s.nextNontrivialIndex a ∧ (s.center (s.nextNontrivialIndex a) ≠ ⊤ ∨ s.length ≤ s.nextNontrivialIndex a) :=
   @Nat.find_spec _ (fun _ => Classical.propDecidable _) (s.exists_le_center_ne_top_or_length_le a)
 
 /- English proof (translation)
-The claim follows from `(s.nextNontrivialIndex_spec a).1`.
+A detailed English derivation is pending.
 -/
 theorem le_nextNontrivialIndex (s : SequenceOfBlowups X) (a : ℕ) : a ≤ s.nextNontrivialIndex a :=
   (s.nextNontrivialIndex_spec a).1
 
 /- English proof (translation)
-The claim follows from `(s.nextNontrivialIndex_spec a).2`.
+A detailed English derivation is pending.
 -/
 theorem center_nextNontrivialIndex_ne_top_or_length_le (s : SequenceOfBlowups X) (a : ℕ) :
     s.center (s.nextNontrivialIndex a) ≠ ⊤ ∨ s.length ≤ s.nextNontrivialIndex a :=
   (s.nextNontrivialIndex_spec a).2
 
 /- English proof (translation)
-The claim follows from `@Nat.find_min' _ (fun _ => Classical.propDecidable _) (s.exists_le_center_ne_top_or_length_le a) i ⟨hi, h⟩`.
+A detailed English derivation is pending.
 -/
 theorem nextNontrivialIndex_le (s : SequenceOfBlowups X) {a i : ℕ} (hi : a ≤ i)
     (h : s.center i ≠ ⊤ ∨ s.length ≤ i) : s.nextNontrivialIndex a ≤ i :=
   @Nat.find_min' _ (fun _ => Classical.propDecidable _) (s.exists_le_center_ne_top_or_length_le a) i ⟨hi, h⟩
 
 /- English proof (translation)
-The claim follows from `s.nextNontrivialIndex_le h (Or.inr le_rfl)`.
+A detailed English derivation is pending.
 -/
 theorem nextNontrivialIndex_le_length (s : SequenceOfBlowups X) {a : ℕ} (h : a ≤ s.length) :
     s.nextNontrivialIndex a ≤ s.length :=
   s.nextNontrivialIndex_le h (Or.inr le_rfl)
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hc`. Conclude with `absurd (s.nextNontrivialIndex_le hai (Or.inl hc)) (not_le.mpr h)`.
+Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem center_eq_top_of_lt_nextNontrivialIndex (s : SequenceOfBlowups X) {a i : ℕ} (hai : a ≤ i)
     (h : i < s.nextNontrivialIndex a) : s.center i = ⊤ := by
@@ -128,7 +126,7 @@ Both sides reduce to the same expression.
     s.nontrivialIndex (j + 1) = s.nextNontrivialIndex (s.nontrivialIndex j + 1) := rfl
 
 /- English proof (translation)
-Establish `h` using `s.le_nextNontrivialIndex (s.nontrivialIndex j + 1)`. Rewrite using `[nontrivialIndex_succ]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nontrivialIndex_lt_succ (s : SequenceOfBlowups X) (j : ℕ) : s.nontrivialIndex j < s.nontrivialIndex (j + 1) := by
   have h := s.le_nextNontrivialIndex (s.nontrivialIndex j + 1)
@@ -136,32 +134,32 @@ theorem nontrivialIndex_lt_succ (s : SequenceOfBlowups X) (j : ℕ) : s.nontrivi
   exact h
 
 /- English proof (translation)
-The claim follows from `s.nontrivialIndex_lt_succ j`.
+A detailed English derivation is pending.
 -/
 theorem succ_le_nontrivialIndex_succ (s : SequenceOfBlowups X) (j : ℕ) :
     s.nontrivialIndex j + 1 ≤ s.nontrivialIndex (j + 1) :=
   s.nontrivialIndex_lt_succ j
 
 /- English proof (translation)
-The claim follows from `strictMono_nat_of_lt_succ s.nontrivialIndex_lt_succ`.
+A detailed English derivation is pending.
 -/
 theorem nontrivialIndex_strictMono (s : SequenceOfBlowups X) : StrictMono s.nontrivialIndex :=
   strictMono_nat_of_lt_succ s.nontrivialIndex_lt_succ
 
 /- English proof (translation)
-The claim follows from `s.nontrivialIndex_strictMono.monotone`.
+A detailed English derivation is pending.
 -/
 theorem nontrivialIndex_monotone (s : SequenceOfBlowups X) : Monotone s.nontrivialIndex :=
   s.nontrivialIndex_strictMono.monotone
 
 /- English proof (translation)
-The claim follows from `s.nontrivialIndex_strictMono.le_apply`.
+A detailed English derivation is pending.
 -/
 theorem le_nontrivialIndex (s : SequenceOfBlowups X) (j : ℕ) : j ≤ s.nontrivialIndex j :=
   s.nontrivialIndex_strictMono.le_apply
 
 /- English proof (translation)
-Consider the cases of `j with`. Consider the case `zero => exact s.center_nextNontrivialIndex_ne_top_or_length_le 0`. Consider the case `succ j => exact s.center_nextNontrivialIndex_ne_top_or_length_le (s.nontrivialIndex j + 1)`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 -/
 theorem center_nontrivialIndex_ne_top_or_length_le (s : SequenceOfBlowups X) (j : ℕ) :
     s.center (s.nontrivialIndex j) ≠ ⊤ ∨ s.length ≤ s.nontrivialIndex j := by
@@ -170,21 +168,21 @@ theorem center_nontrivialIndex_ne_top_or_length_le (s : SequenceOfBlowups X) (j 
   | succ j => exact s.center_nextNontrivialIndex_ne_top_or_length_le (s.nontrivialIndex j + 1)
 
 /- English proof (translation)
-The claim follows from `s.center_eq_top_of_lt_nextNontrivialIndex (Nat.zero_le i) h`.
+A detailed English derivation is pending.
 -/
 theorem center_eq_top_of_lt_nontrivialIndex_zero (s : SequenceOfBlowups X) {i : ℕ} (h : i < s.nontrivialIndex 0) :
     s.center i = ⊤ :=
   s.center_eq_top_of_lt_nextNontrivialIndex (Nat.zero_le i) h
 
 /- English proof (translation)
-The claim follows from `s.center_eq_top_of_lt_nextNontrivialIndex h1 h2`.
+A detailed English derivation is pending.
 -/
 theorem center_eq_top_of_nontrivialIndex_lt (s : SequenceOfBlowups X) {i j : ℕ} (h1 : s.nontrivialIndex j < i)
     (h2 : i < s.nontrivialIndex (j + 1)) : s.center i = ⊤ :=
   s.center_eq_top_of_lt_nextNontrivialIndex h1 h2
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨s.length, s.le_nontrivialIndex s.length⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_length_le_nontrivialIndex (s : SequenceOfBlowups X) : ∃ j, s.length ≤ s.nontrivialIndex j :=
   ⟨s.length, s.le_nontrivialIndex s.length⟩
@@ -193,16 +191,14 @@ noncomputable def lengthWithoutIsoBlowups (s : SequenceOfBlowups X) : ℕ :=
   @Nat.find _ (fun _ => Classical.propDecidable _) s.exists_length_le_nontrivialIndex
 
 /- English proof (translation)
-The claim follows from `@Nat.find_spec _ (fun _ => Classical.propDecidable _) s.exists_length_le_nontrivialIndex`.
+A detailed English derivation is pending.
 -/
 theorem length_le_nontrivialIndex_lengthWithoutIsoBlowups (s : SequenceOfBlowups X) :
     s.length ≤ s.nontrivialIndex s.lengthWithoutIsoBlowups :=
   @Nat.find_spec _ (fun _ => Classical.propDecidable _) s.exists_length_le_nontrivialIndex
 
 /- English proof (translation)
-Consider the cases of `j with`. Consider the case `zero => show s.nextNontrivialIndex 0 ≤ s.length`. Conclude with `s.nextNontrivialIndex_le_length (Nat.zero_le _)`. Consider the case `succ j`. Establish `hj : s.nontrivialIndex j < s.length` using `h j (Nat.lt_succ_self j)`.
-
-Use `show s.nextNontrivialIndex (s.nontrivialIndex j + 1) ≤ s.length`. Conclude with `s.nextNontrivialIndex_le_length hj`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem nontrivialIndex_le_length_of_forall_lt (s : SequenceOfBlowups X) (j : ℕ)
     (h : ∀ i, i < j → s.nontrivialIndex i < s.length) : s.nontrivialIndex j ≤ s.length := by
@@ -216,7 +212,7 @@ private theorem nontrivialIndex_le_length_of_forall_lt (s : SequenceOfBlowups X)
       exact s.nextNontrivialIndex_le_length hj
 
 /- English proof (translation)
-Use `le_antisymm (nontrivialIndex_le_length_of_forall_lt s s.lengthWithoutIsoBlowups ?_) s.length_le_nontrivialIndex_lengthWithoutIsoBlowups` and prove the remaining obligations. Introduce `i hi`. Establish `hmin` using `@Nat.find_min _ (fun _ => Classical.propDecidable _) s.exists_length_le_nontrivialIndex i hi`. Conclude with `not_le.mp hmin`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem nontrivialIndex_lengthWithoutIsoBlowups (s : SequenceOfBlowups X) : s.nontrivialIndex s.lengthWithoutIsoBlowups = s.length := by
   refine le_antisymm (nontrivialIndex_le_length_of_forall_lt s s.lengthWithoutIsoBlowups ?_)
@@ -227,7 +223,7 @@ theorem nontrivialIndex_lengthWithoutIsoBlowups (s : SequenceOfBlowups X) : s.no
   exact not_le.mp hmin
 
 /- English proof (translation)
-Establish `h' : ¬ (s.length ≤ s.nontrivialIndex j)` using `@Nat.find_min _ (fun _ => Classical.propDecidable _) s.exists_length_le_nontrivialIndex j h`. Conclude with `not_le.mp h'`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem nontrivialIndex_lt_length (s : SequenceOfBlowups X) {j : ℕ} (h : j < s.lengthWithoutIsoBlowups) :
     s.nontrivialIndex j < s.length := by
@@ -236,9 +232,9 @@ theorem nontrivialIndex_lt_length (s : SequenceOfBlowups X) {j : ℕ} (h : j < s
   exact not_le.mp h'
 
 /- English proof (translation)
-Consider the cases of `j with`. Consider the case `zero => exact s.nextNontrivialIndex_le_length (Nat.zero_le _)`. Consider the case `succ i`. Establish `hi : i < s.lengthWithoutIsoBlowups` using `lt_of_lt_of_le (Nat.lt_succ_self i) h`. Establish `hlt : s.nontrivialIndex i + 1 ≤ s.length` using `s.nontrivialIndex_lt_length hi`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `s.nextNontrivialIndex_le_length hlt`.
+A detailed English derivation is pending.
 -/
 theorem nontrivialIndex_le_length (s : SequenceOfBlowups X) {j : ℕ} (h : j ≤ s.lengthWithoutIsoBlowups) :
     s.nontrivialIndex j ≤ s.length := by
@@ -250,7 +246,7 @@ theorem nontrivialIndex_le_length (s : SequenceOfBlowups X) {j : ℕ} (h : j ≤
     exact s.nextNontrivialIndex_le_length hlt
 
 /- English proof (translation)
-Break down `s.center_nontrivialIndex_ne_top_or_length_le j with hc | hc` into its components or cases. Conclude with `hc`. Conclude with `absurd hc (not_le.mpr (s.nontrivialIndex_lt_length h))`.
+Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem center_nontrivialIndex_ne_top (s : SequenceOfBlowups X) {j : ℕ} (h : j < s.lengthWithoutIsoBlowups) :
     s.center (s.nontrivialIndex j) ≠ ⊤ := by
@@ -259,7 +255,7 @@ theorem center_nontrivialIndex_ne_top (s : SequenceOfBlowups X) {j : ℕ} (h : j
   · exact absurd hc (not_le.mpr (s.nontrivialIndex_lt_length h))
 
 /- English proof (translation)
-Use `s.isIso_transitionMap_of_center_eq_top (Nat.zero_le (s.nontrivialIndex 0)) ?_ ?_` and prove the remaining obligations. Conclude with `s.nextNontrivialIndex_le_length (Nat.zero_le _)`. Introduce `i _ hi`. Conclude with `s.center_eq_top_of_lt_nontrivialIndex_zero hi`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem isIso_transitionMap_nontrivialIndex_zero (s : SequenceOfBlowups X) :
     IsIso (s.transitionMap (Nat.zero_le (s.nontrivialIndex 0))) := by
@@ -269,7 +265,7 @@ theorem isIso_transitionMap_nontrivialIndex_zero (s : SequenceOfBlowups X) :
     exact s.center_eq_top_of_lt_nontrivialIndex_zero hi
 
 /- English proof (translation)
-Use `s.isIso_transitionMap_of_center_eq_top (s.succ_le_nontrivialIndex_succ j) (s.nontrivialIndex_le_length (Nat.succ_le_of_lt h)) ?_` and prove the remaining obligations. Introduce `i hi hib`. Conclude with `s.center_eq_top_of_nontrivialIndex_lt (Nat.lt_of_succ_le hi) hib`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem isIso_transitionMap_nontrivialIndex_succ (s : SequenceOfBlowups X) {j : ℕ} (h : j < s.lengthWithoutIsoBlowups) :
     IsIso (s.transitionMap (s.succ_le_nontrivialIndex_succ j)) := by
@@ -283,7 +279,7 @@ noncomputable def objNontrivialIndexZeroIso (s : SequenceOfBlowups X) : s.scheme
   (asIso (s.transitionMap (Nat.zero_le (s.nontrivialIndex 0)))).trans s.isoZero
 
 /- English proof (translation)
-Rewrite using `[projectionToBase_def]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem objNontrivialIndexZeroIso_hom (s : SequenceOfBlowups X) :
     s.objNontrivialIndexZeroIso.hom = s.projectionToBase (s.nontrivialIndex 0) := by
@@ -294,9 +290,9 @@ noncomputable def towerWithoutIsoBlowups (s : SequenceOfBlowups X) : ℕᵒᵖ �
   (Monotone.functor s.nontrivialIndex_monotone).op ⋙ s.tower
 
 /- English proof (translation)
-Establish `: IsIso (s.transitionMap (s.succ_le_nontrivialIndex_succ i))` using `s.isIso_transitionMap_nontrivialIndex_succ hi`. Establish `hB : Blowup.IsBlowupAlongIdealSheaf (s.transitionMapSucc (s.nontrivialIndex i)) (s.center (s.nontrivialIndex i))` using `s.isBlowupAlongIdealSheaf_blowupMorphism (s.nontrivialIndex i) (s.nontrivialIndex_lt_length hi)`. Establish `hcomp` using `hB.iso_hom_comp (asIso (s.transitionMap (s.succ_le_nontrivialIndex_succ i)))`. Establish `heq : (asIso (s.transitionMap (s.succ_le_nontrivialIndex_succ i))).hom ≫ s.transitionMapSucc (s.nontrivialIndex i) = s.transitionMap (s.nontrivialIndex_monotone (Nat.le_succ i))`. Rewrite using `[SequenceOfBlowups.blowupMorphism_eq_transitionMap]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `s.transitionMap_trans (Nat.le_succ (s.nontrivialIndex i)) (s.succ_le_nontrivialIndex_succ i)`. Rewrite `hcomp` using `[heq]`. Use `show Blowup.IsBlowupAlongIdealSheaf (s.transitionMap (s.nontrivialIndex_monotone (Nat.le_succ i))) (s.center (s.nontrivialIndex i))`. Conclude with `hcomp`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem isBlowupAlongIdealSheaf_towerWithoutIsoBlowups_map (s : SequenceOfBlowups X) (i : ℕ) (hi : i < s.lengthWithoutIsoBlowups) :
     Blowup.IsBlowupAlongIdealSheaf (s.towerWithoutIsoBlowups.map (homOfLE (Nat.le_succ i)).op) (s.center (s.nontrivialIndex i)) := by
@@ -342,7 +338,7 @@ Both sides reduce to the same expression.
 theorem withoutIsoBlowups_isoObjZero (s : SequenceOfBlowups X) : s.withoutIsoBlowups.isoZero = s.objNontrivialIndexZeroIso := rfl
 
 /- English proof (translation)
-Rewrite using `[SequenceOfBlowups.transitionMap_def, SequenceOfBlowups.transitionMap_def]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem withoutIsoBlowups_transitionMap (s : SequenceOfBlowups X) {j j' : ℕ} (h : j ≤ j') :
     s.withoutIsoBlowups.transitionMap h = s.transitionMap (s.nontrivialIndex_monotone h) := by
@@ -350,27 +346,27 @@ theorem withoutIsoBlowups_transitionMap (s : SequenceOfBlowups X) {j j' : ℕ} (
   rfl
 
 /- English proof (translation)
-Rewrite using `[SequenceOfBlowups.blowupMorphism_eq_transitionMap, withoutIsoBlowups_transitionMap]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem withoutIsoBlowups_blowupMorphism (s : SequenceOfBlowups X) (j : ℕ) :
     s.withoutIsoBlowups.transitionMapSucc j = s.transitionMap (s.nontrivialIndex_monotone (Nat.le_succ j)) := by
   rw [SequenceOfBlowups.blowupMorphism_eq_transitionMap, withoutIsoBlowups_transitionMap]
 
 /- English proof (translation)
-Conclude with `s.center_nontrivialIndex_ne_top h`.
+A detailed English derivation is pending.
 -/
 theorem withoutIsoBlowups_center_ne_top (s : SequenceOfBlowups X) {j : ℕ} (h : j < s.withoutIsoBlowups.length) :
     s.withoutIsoBlowups.center j ≠ ⊤ := by
   exact s.center_nontrivialIndex_ne_top h
 
 /- English proof (translation)
-The claim follows from `congrArg s.schemeAt s.nontrivialIndex_lengthWithoutIsoBlowups`.
+A detailed English derivation is pending.
 -/
 theorem withoutIsoBlowups_lastObj (s : SequenceOfBlowups X) : s.withoutIsoBlowups.lastObj = s.lastObj :=
   congrArg s.schemeAt s.nontrivialIndex_lengthWithoutIsoBlowups
 
 /- English proof (translation)
-Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+Substitute using the available equality. Simplify using the standard rewrite rules.
 -/
 private theorem projectionToBase_eq_eqToHom_comp (s : SequenceOfBlowups X) {a b : ℕ} (h : a = b) :
     s.projectionToBase a = eqToHom (congrArg s.schemeAt h) ≫ s.projectionToBase b := by
@@ -378,7 +374,7 @@ private theorem projectionToBase_eq_eqToHom_comp (s : SequenceOfBlowups X) {a b 
   simp
 
 /- English proof (translation)
-Establish `h0 : s.withoutIsoBlowups.isoZero.hom = s.projectionToBase (s.nontrivialIndex 0)` using `s.objNontrivialIndexZeroIso_hom`. Rewrite using `[projectionToBase_def, withoutIsoBlowups_transitionMap, h0]`. Conclude with `s.transitionMap_comp_projectionToBase _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem withoutIsoBlowups_projectionToBase_eq_nontrivialIndex (s : SequenceOfBlowups X) (j : ℕ) :
     s.withoutIsoBlowups.projectionToBase j = s.projectionToBase (s.nontrivialIndex j) := by
@@ -387,9 +383,7 @@ theorem withoutIsoBlowups_projectionToBase_eq_nontrivialIndex (s : SequenceOfBlo
   exact s.transitionMap_comp_projectionToBase _
 
 /- English proof (translation)
-Establish `h0 : s.withoutIsoBlowups.isoZero.hom = s.projectionToBase (s.nontrivialIndex 0)` using `s.objNontrivialIndexZeroIso_hom`. Establish `h1 : s.withoutIsoBlowups.lastStructMap = s.projectionToBase (s.nontrivialIndex s.withoutIsoBlowups.length)`. Rewrite using `[lastStructMap_eq_projectionToBase, projectionToBase_def, withoutIsoBlowups_transitionMap, h0]`. Conclude with `s.transitionMap_comp_projectionToBase _`. Rewrite using `[h1, lastStructMap_eq_projectionToBase]`.
-
-Conclude with `projectionToBase_eq_eqToHom_comp s s.nontrivialIndex_lengthWithoutIsoBlowups`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem withoutIsoBlowups_lastStructMap (s : SequenceOfBlowups X) :
     s.withoutIsoBlowups.lastStructMap = eqToHom s.withoutIsoBlowups_lastObj ≫ s.lastStructMap := by
@@ -401,7 +395,7 @@ theorem withoutIsoBlowups_lastStructMap (s : SequenceOfBlowups X) :
   exact projectionToBase_eq_eqToHom_comp s s.nontrivialIndex_lengthWithoutIsoBlowups
 
 /- English proof (translation)
-Introduce `j hj x hx`. Establish `hx' : x ∈ (s.center (s.nontrivialIndex j)).support` using `hx`. Establish `h2` using `h (s.nontrivialIndex j) (s.nontrivialIndex_lt_length hj) x hx'`. Rewrite using `[withoutIsoBlowups_projectionToBase_eq_nontrivialIndex]`. Conclude with `h2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem withoutIsoBlowups_centersLieOver (s : SequenceOfBlowups X) {S : Set X} (h : s.CentersLieOver S) :
     s.withoutIsoBlowups.CentersLieOver S := by

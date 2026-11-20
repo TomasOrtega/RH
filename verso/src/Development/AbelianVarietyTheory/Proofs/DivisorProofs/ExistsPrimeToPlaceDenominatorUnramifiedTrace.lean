@@ -14,21 +14,17 @@ open scoped TensorProduct Matrix GlobalTheory.VacAny
 namespace GlobalTheory.UnramTraceDenom
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ hU v e h`. Use `haveI : Algebra.Unramified (𝓞 F) (𝓞 E) := hU`. Use `haveI := v.isPrime`. Set `b` to `NumberField.RingOfIntegers.basis E`. Establish `hloc : ∀ i, ∃ s : 𝓞 F, s ∉ v.asIdeal ∧ ∃ r : 𝓞 F, algebraMap (𝓞 F) F s * Algebra.trace F E ((b i : E) * e) = algebraMap (𝓞 F) F r`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `i`. Apply `GlobalTheory.InvDiffLocal.exists_not_mem_mul_mem` to reduce the goal to its premises. Establish `hi` using `h (b i)`. Rewrite `hi` using `[IsDedekindDomain.HeightOneSpectrum.mem_adicCompletionIntegers]`. Establish `e1` using `IsDedekindDomain.HeightOneSpectrum.valuedAdicCompletion_eq_valuation' v (Algebra.trace F E ((b i : E) * e))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `e1 ▸ hi`. Use `choose s hs r hr using hloc`. Use `⟨∏ i, s i, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Ideal.IsPrime.prod_mem_iff]`. Introduce and unpack `⟨i, -, hi⟩`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `hs i hi`. Establish `key : ∀ i, algebraMap (𝓞 F) F (∏ j, s j) * Algebra.trace F E ((b i : E) * e) ∈ (algebraMap (𝓞 F) F).range`. Introduce `i`. Rewrite using `[← Finset.mul_prod_erase _ _ (Finset.mem_univ i), map_mul, mul_comm (algebraMap (𝓞 F) F (s i)), mul_assoc, hr i, ← map_mul]`. Conclude with `⟨_, rfl⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `htr : ∀ a : 𝓞 E, Algebra.trace F E (algebraMap F E ((∏ i, s i : 𝓞 F) : F) * e * a) ∈ (algebraMap (𝓞 F) F).range`. Introduce `a`. Establish `ha : (a : E) = ∑ i, ((b.repr a i : ℤ) : E) * (b i : E)`. Use `congrArg (algebraMap (𝓞 E) E) (b.sum_repr a)` as an intermediate fact. Simplify `this.symm` using `[map_sum, zsmul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ha, Finset.mul_sum, map_sum]`. Use `Subring.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Establish `e2 : algebraMap F E ((∏ i, s i : 𝓞 F) : F) * e * (((b.repr a i : ℤ) : E) * (b i : E)) = algebraMap F E (((b.repr a i : ℤ) : F) * algebraMap (𝓞 F) F (∏ j, s j)) * ((b i : E) * e)`. Establish `hc : ((∏ i, s i : 𝓞 F) : F) = algebraMap (𝓞 F) F (∏ j, s j)` using `rfl`. Rewrite using `[hc, map_mul, map_intCast]`.
-
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e2, ← Algebra.smul_def, LinearMap.map_smul, smul_eq_mul, mul_assoc]`. Conclude with `Subring.mul_mem _ (intCast_mem _ _) (key i)`. Take `⟨y, hy⟩` from `GlobalTheory.InertSelfDual.mem_of_trace (F := F) (E := E) (algebraMap F E ((∏ i, s i : 𝓞 F) : F) * e) htr`. Rewrite using `[← hy]`.
-
-Conclude with `RingOfIntegers.isIntegral_coe y`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_not_mem_mul_isIntegral : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E],
     Algebra.Unramified (𝓞 F) (𝓞 E) → ∀ (v : Pl F) (e : E),

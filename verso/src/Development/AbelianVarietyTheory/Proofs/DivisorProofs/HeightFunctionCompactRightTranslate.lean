@@ -16,13 +16,13 @@ namespace GlobalTheory.EisRes
 open scoped Pointwise
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ n J r X Y L a h hS C hC`. Establish `hcont : Continuous h` using `GlobalTheory.T.eisenstein_setting_height_continuous F E σ n J r X Y L a h hS`. Take `⟨hCM, -, -, -, -, hAd, hI⟩` from `hS`. Use `haveI := hAd.lat`. Establish `hK : IsCompact ((levelAll σ J L a : Set (GAd σ J)) * C)` using `(GlobalTheory.Doubling.isCompact_levelAll hCM J L a).mul hC`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨K0, hK0⟩` from `hK.exists_bound_of_continuousOn hcont.continuousOn`. Use `⟨max K0 0, le_max_right _ _, fun γ g hg => ?_⟩` and prove the remaining obligations. Take `⟨p, l, hp, k, hk, rfl⟩` from `hI.1 γ`. Take `⟨p', l', hp', k', hk', hkg⟩` from `hI.1 (k * g)`. Establish `e1 : p * k * g = (p * p') * k'` using `by rw [mul_assoc, hkg, mul_assoc]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpp : (matHom _ σ J (p * p')).1 * adMat F (col0 X) = (l * l').1 • adMat F (col0 X)`. Rewrite using `[map_mul, Units.val_mul, Matrix.mul_assoc, hp', Matrix.mul_smul, hp, smul_smul, Units.val_mul, mul_comm (l' : AF F ⊗[F] E)]`. Establish `h1 : h (p * k * g) = absE F E (l * l')` using `by rw [e1]; exact hI.2 _ _ hpp _ hk'`. Establish `h2 : h (p * k) = absE F E l` using `hI.2 _ _ hp _ hk`. Establish `h3 : h (k * g) = absE F E l'` using `by rw [hkg]; exact hI.2 _ _ hp' _ hk'`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb : h (k * g) ≤ max K0 0` using `((le_abs_self _).trans (by simpa [Real.norm_eq_abs] using hK0 _ (Set.mul_mem_mul hk hg))).trans (le_max_left _ _)`. Rewrite using `[h1, h2, map_mul, NNReal.coe_mul, mul_comm (absE F E l : ℝ)]`. Conclude with `mul_le_mul_of_nonneg_right (h3 ▸ hb) (NNReal.coe_nonneg _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem iwaHt_mul_le_of_isCompact : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (n : ℕ)
     (J : Matrix (Fin n) (Fin n) E) (r : ℕ) (X Y : Matrix (Fin n) (Fin (r + 1)) E) (L : Submodule (𝓞 E) (Fin n → E))

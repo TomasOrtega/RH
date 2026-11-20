@@ -14,7 +14,7 @@ variable {n : ℕ}
 local notation "θ" => thetaR (starRingEnd ℂ)
 
 /- English proof (translation)
-Establish `h : PositivityTheory.RgTw.th x = θ n x`. Apply `Units.ext` to reduce the goal to its premises. Both sides reduce to the same expression. Simplify using `only [PositivityTheory.RgTw.tw, twConj, h]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Both sides reduce to the same expression. Simplify using the standard rewrite rules.
 -/
 theorem tw_eq (x d : GL (Fin n) ℂ) : PositivityTheory.RgTw.tw x d = twConj (θ n) x d := by
   have h : PositivityTheory.RgTw.th x = θ n x := by
@@ -23,7 +23,7 @@ theorem tw_eq (x d : GL (Fin n) ℂ) : PositivityTheory.RgTw.tw x d = twConj (θ
   simp only [PositivityTheory.RgTw.tw, twConj, h]
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Use `show (((g.val.map (starRingEnd ℂ))ᵀ).map (starRingEnd ℂ))ᵀ = g.val`. Use extensionality with `i j`. Simplify using the standard rewrite rules.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem theta_theta (g : GL (Fin n) ℂ) : θ n (θ n g) = g := by
   apply Units.ext
@@ -32,7 +32,7 @@ theorem theta_theta (g : GL (Fin n) ℂ) : θ n (θ n g) = g := by
   simp
 
 /- English proof (translation)
-Simplify using `only [twConj, map_mul]`. Use `group`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem twConj_twConj (g x d : GL (Fin n) ℂ) :
     twConj (θ n) x (twConj (θ n) g d) = twConj (θ n) (g * x) d := by
@@ -40,11 +40,11 @@ theorem twConj_twConj (g x d : GL (Fin n) ℂ) :
   group
 
 /- English proof (translation)
-Establish `hz0 : ∀ i, z i ≠ 0` using `fun i h => by simpa [h] using hz i`. Establish `hinv : (d⁻¹).val = diagonal fun i => (z i)⁻¹`. Apply `Units.inv_eq_of_mul_eq_one_right` to reduce the goal to its premises. Rewrite using `[hd, diagonal_mul_diagonal, ← diagonal_one]`. Use `congr 1`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use function extensionality and compare the values at `i`. Conclude with `mul_inv_cancel₀ (hz0 i)`. Rewrite using `[thetaR_val, hinv]`. Use extensionality with `i j`. Distinguish the cases in `h : i = j`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Substitute `h` using the available equality. Simplify using `only [transpose_apply, map_apply, diagonal_apply_eq]`. Rewrite using `[Complex.inv_eq_conj (hz i), Complex.conj_conj]`. Simplify using `[diagonal_apply_ne _ h, diagonal_apply_ne _ (Ne.symm h)]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem theta_diag (d : GL (Fin n) ℂ) (z : Fin n → ℂ) (hd : d.val = diagonal z) (hz : ∀ i, ‖z i‖ = 1) :
     (θ n d).val = diagonal z := by
@@ -64,9 +64,9 @@ theorem theta_diag (d : GL (Fin n) ℂ) (z : Fin n → ℂ) (hd : d.val = diagon
   · simp [diagonal_apply_ne _ h, diagonal_apply_ne _ (Ne.symm h)]
 
 /- English proof (translation)
-Establish `h : twConj (θ n) g d * θ n (twConj (θ n) g d) = g⁻¹ * (d * θ n d) * g`. Simplify using `only [twConj, map_mul, map_inv, theta_theta]`. Use `group`. Establish `h2 : (d * θ n d).val = diagonal fun i => z i ^ 2`. Rewrite using `[Units.val_mul, theta_diag d z hd hz, hd, diagonal_mul_diagonal]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Use function extensionality and compare the values at `i`. Conclude with `(pow_two _).symm`. Rewrite using `[h, Units.val_mul, Units.val_mul, Matrix.coe_units_inv, Matrix.charpoly_units_conj', h2]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem charpoly_norm (g d : GL (Fin n) ℂ) (z : Fin n → ℂ) (hd : d.val = diagonal z) (hz : ∀ i, ‖z i‖ = 1) :
     (twConj (θ n) g d * θ n (twConj (θ n) g d)).val.charpoly = (diagonal fun i => z i ^ 2).charpoly := by
@@ -81,7 +81,7 @@ theorem charpoly_norm (g d : GL (Fin n) ℂ) (z : Fin n → ℂ) (hd : d.val = d
   rw [h, Units.val_mul, Units.val_mul, Matrix.coe_units_inv, Matrix.charpoly_units_conj', h2]
 
 /- English proof (translation)
-Establish `: LocallyCompactSpace (Matrix (Fin n) (Fin n) ℂ)` using `inferInstanceAs (LocallyCompactSpace (Fin n → Fin n → ℂ))`. Conclude with `Units.isClosedEmbedding_embedProduct.locallyCompactSpace`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem locallyCompact_GL (n : ℕ) : LocallyCompactSpace (GL (Fin n) ℂ) := by
   have : LocallyCompactSpace (Matrix (Fin n) (Fin n) ℂ) :=
@@ -89,7 +89,7 @@ theorem locallyCompact_GL (n : ℕ) : LocallyCompactSpace (GL (Fin n) ℂ) := by
   exact Units.isClosedEmbedding_embedProduct.locallyCompactSpace
 
 /- English proof (translation)
-Establish `: SecondCountableTopology (Matrix (Fin n) (Fin n) ℂ)` using `inferInstanceAs (SecondCountableTopology (Fin n → Fin n → ℂ))`. Establish `: SecondCountableTopology (Matrix (Fin n) (Fin n) ℂ)ᵐᵒᵖ` using `MulOpposite.opHomeomorph.symm.isEmbedding.secondCountableTopology`. Conclude with `Units.isEmbedding_embedProduct.secondCountableTopology`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem secondCountable_GL (n : ℕ) : SecondCountableTopology (GL (Fin n) ℂ) := by
   have : SecondCountableTopology (Matrix (Fin n) (Fin n) ℂ) :=
@@ -99,7 +99,7 @@ theorem secondCountable_GL (n : ℕ) : SecondCountableTopology (GL (Fin n) ℂ) 
   exact Units.isEmbedding_embedProduct.secondCountableTopology
 
 /- English proof (translation)
-Use `locallyCompact_GL n` as an intermediate fact. Use `secondCountable_GL n` as an intermediate fact. Establish `: SigmaCompactSpace (GL (Fin n) ℂ)` using `sigmaCompactSpace_of_locallyCompact_secondCountable`. Conclude with `Measure.IsHaarMeasure.sigmaFinite ν`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem sigmaFinite_haar [MeasurableSpace (GL (Fin n) ℂ)] [BorelSpace (GL (Fin n) ℂ)]
     (ν : Measure (GL (Fin n) ℂ)) [ν.IsHaarMeasure] : SigmaFinite ν := by
@@ -109,9 +109,9 @@ theorem sigmaFinite_haar [MeasurableSpace (GL (Fin n) ℂ)] [BorelSpace (GL (Fin
   exact Measure.IsHaarMeasure.sigmaFinite ν
 
 /- English proof (translation)
-Take `⟨g, d', z, hd', hz, hinj, rfl⟩` from `hD n d hd`. Establish `hz0 : ∀ i, z i ^ 2 ≠ 0` using `fun i h0 => by`. Establish `: z i = 0` using `by simpa using h0`. Simplify `hz i` using `[this]`. Repeatedly rewrite using `[twConj_twConj]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion repeatedly using the stated equalities.
 
-Rewrite using `[integral_mul_left_eq_self (fun y => f (twConj (θ n) y d')) g, charpoly_norm g d' z hd' hz, hW n l (fun i => z i ^ 2) hz0 hinj]`. Use `h.2.2 d' z hd' hz hinj` as an intermediate fact. Rewrite `this` using `[tw_eq]`. Conclude with `this`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses repeatedly using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lefOne_eval (hD : EllDiag) (hW : WeylAt) [MeasurableSpace (GL (Fin n) ℂ)] [BorelSpace (GL (Fin n) ℂ)]
     (ν : Measure (GL (Fin n) ℂ)) [ν.IsHaarMeasure] (l : DomWeight n) (v : ℂ) (f : GL (Fin n) ℂ → ℂ)
@@ -133,9 +133,9 @@ end GlobalTheory.CompanionTheory.LefPair
 open GlobalTheory.CompanionTheory.LefPair in
 
 /- English proof (translation)
-Introduce `hD hW _ a b _ _ _ _ ν₁ _ ν₂ _ l₁ l₂ v₁ v₂ f₁ f₂ h₁ h₂`. Use `sigmaFinite_haar ν₁` as an intermediate fact. Use `sigmaFinite_haar ν₂` as an intermediate fact. Use `⟨(h₁.1.comp continuous_fst).mul (h₂.1.comp continuous_snd), ?_, fun d₁ d₂ e₁ e₂ => ?_⟩` and prove the remaining obligations. Use `HasCompactSupport.intro (h₁.2.1.prod h₂.2.1) fun x hx => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `hx` using `[Set.mem_prod, not_and_or]`. Break down `hx with hx | hx` into its components or cases. Simplify using `[image_eq_zero_of_notMem_tsupport hx]`. Simplify using `[image_eq_zero_of_notMem_tsupport hx]`. Rewrite using `[integral_prod_mul (fun x => f₁ (twConj (thetaR (starRingEnd ℂ) a) x d₁)) (fun x => f₂ (twConj (thetaR (starRingEnd ℂ) b) x d₂)), lefOne_eval hD hW ν₁ l₁ v₁ f₁ h₁ d₁ e₁, lefOne_eval hD hW ν₂ l₂ v₂ f₂ h₂ d₂ e₂]`.
+Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/

@@ -9,14 +9,14 @@ open NumberField IsDedekindDomain GlobalTheory.CuspRep GlobalTheory.JSW Filter T
 namespace GlobalTheory.RSStrict
 
 /- English proof (translation)
-Rewrite using `[Complex.ofReal_cpow (Nat.cast_nonneg q)]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem qpow (q : ℕ) (x : ℝ) : (q : ℂ) ^ (-(x : ℂ)) = (((q : ℝ) ^ (-x) : ℝ) : ℂ) := by
   rw [Complex.ofReal_cpow (Nat.cast_nonneg q)]
   simp
 
 /- English proof (translation)
-Rewrite using `[qpow]`. Simplify using `[Complex.mul_conj, Complex.normSq_eq_norm_sq]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem pair_val (q : ℕ) (γ : ℂˣ) (x : ℝ) :
     (γ : ℂ) * ((Units.map (starRingEnd ℂ).toMonoidHom γ : ℂˣ) : ℂ) * (q : ℂ) ^ (-(x : ℂ)) =
@@ -31,11 +31,11 @@ theorem norm_conjU (γ : ℂˣ) : ‖((Units.map (starRingEnd ℂ).toMonoidHom �
   simp
 
 /- English proof (translation)
-Establish `h1' : HasProd ({v | v ∉ T}.mulIndicator f) A` using `(hasProd_subtype_iff_mulIndicator (s := {v | v ∉ T})).mp h1`. Establish `h2' : HasProd ({v | v ∉ insert w T}.mulIndicator f) B` using `(hasProd_subtype_iff_mulIndicator (s := {v | v ∉ insert w T})).mp h2`. Establish `h3 : HasProd (({w} : Set ι).mulIndicator f) (f w)`. Use `hasProd_single (f := ({w} : Set ι).mulIndicator f) w (fun b hb => by simp [Set.mulIndicator_apply, hb])` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h4` using `h3.mul h2'`. Establish `heq : (fun v => ({w} : Set ι).mulIndicator f v * {v | v ∉ insert w T}.mulIndicator f v) = {v | v ∉ T}.mulIndicator f`. Use function extensionality and compare the values at `v`. Distinguish the cases in `hv : v = w`. Substitute `hv` using the available equality.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using `[Set.mulIndicator_apply, hw]`. Apply the tactic sequence `by_cases hvT : v ∈ T <;> simp [Set.mulIndicator_apply, hv, hvT]`. Rewrite `h4` using `[heq]`. Conclude with `h1'.unique h4`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasProd_split {ι : Type*} [DecidableEq ι] (f : ι → ℂ) (T : Finset ι) (w : ι) (hw : w ∉ T) {A B : ℂ}
     (h1 : HasProd (fun v : {v : ι // v ∉ T} => f v.1) A)
@@ -58,9 +58,9 @@ theorem hasProd_split {ι : Type*} [DecidableEq ι] (f : ι → ℂ) (T : Finset
   exact h1'.unique h4
 
 /- English proof (translation)
-Proceed by induction on `m using Multiset.induction_on with`. Consider the case `empty => simp`. Consider the case `cons a s ih`. Simplify using `only [Multiset.map_cons, Multiset.prod_cons, norm_mul, Multiset.card_cons, pow_succ]`. Establish `ha` using `h a (Multiset.mem_cons_self a s)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hs` using `ih (fun p hp => h p (Multiset.mem_cons_of_mem hp))`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem half_pow_le_norm_prod {α : Type*} (g : α → ℂ) (m : Multiset α) (h : ∀ p ∈ m, (1/2 : ℝ) ≤ ‖g p‖) :
     (1/2 : ℝ) ^ Multiset.card m ≤ ‖(m.map g).prod‖ := by
@@ -74,9 +74,9 @@ theorem half_pow_le_norm_prod {α : Type*} (g : α → ℂ) (m : Multiset α) (h
       _ ≤ _ := mul_le_mul ha hs (by positivity) (norm_nonneg _)
 
 /- English proof (translation)
-Establish `hpos : 0 < ‖1 - z‖`. Use `norm_sub_norm_le (1 : ℂ) z` as an intermediate fact. Simplify using `at this`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hle : ‖1 - z‖ ≤ 2`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Use `norm_sub_le (1 : ℂ) z` as an intermediate fact. Simplify using `at this`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[norm_inv, one_div]`. Conclude with `inv_anti₀ hpos hle`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem half_le_norm_inv_one_sub {z : ℂ} (hz : ‖z‖ < 1) : (1/2 : ℝ) ≤ ‖(1 - z)⁻¹‖ := by
   have hpos : 0 < ‖1 - z‖ := by
@@ -96,47 +96,45 @@ Both sides reduce to the same expression.
 theorem locL_eq (q : ℕ) (B B' : Multiset ℂˣ) (x : ℝ) : locL q B B' (x : ℂ) = ((B ×ˢ B').map (gfac q x)).prod := rfl
 
 /- English proof (translation)
-Introduce `E _ _ _ a σ ha hσ T hT w hw α hα`. Take `⟨L1, hL1, -, c1, hc1, hlim1⟩` from `GlobalTheory.T.rankinSelberg_partialL_pole_at_one_conj E a σ ha hσ T hT`. Establish `hT' : UnrOutside (insert w T) σ` using `fun v hv => hT v (fun h => hv (Finset.mem_insert_of_mem h))`. Take `⟨L2, hL2, -, c2, hc2, hlim2⟩` from `GlobalTheory.T.rankinSelberg_partialL_pole_at_one_conj E a σ ha hσ (insert w T) hT'`. Establish `hsplit : ∀ x : ℝ, 1 < x → (L1 x : ℂ) = ((sat σ w ×ˢ (sat σ w).map (Units.map (starRingEnd ℂ).toMonoidHom)).map (gfac (Ideal.absNorm w.asIdeal) x)).prod * (L2 x : ℂ)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `x hx`. Rewrite using `[← locL_eq]`. Establish `e` using `hasProd_split (ι := HeightOneSpectrum (𝓞 E)) (fun v : HeightOneSpectrum (𝓞 E) => locL (Ideal.absNorm v.asIdeal) (sat σ v) ((sat σ v).map (Units.map (starRingEnd ℂ).toMonoidHom)) (x : ℂ)) T w hw (hL1 x hx).1 (hL2 x hx).1`. Conclude with `e`. Generalize the expression as in `hB' : (sat σ w).map (Units.map (starRingEnd ℂ).toMonoidHom) = B' at hsplit`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact.
 
-Establish `hmem : ∀ γ ∈ sat σ w, (γ, Units.map (starRingEnd ℂ).toMonoidHom γ) ∈ (sat σ w) ×ˢ B'` using `fun γ hγ => Multiset.mem_product.mpr ⟨hγ, hB' ▸ Multiset.mem_map_of_mem _ hγ⟩`. Generalize the expression as in `hqd : Ideal.absNorm w.asIdeal = q at hsplit ⊢`. Establish `hq1 : (1 : ℝ) < q` using `by rw [← hqd]; exact_mod_cast NumberField.HeightOneSpectrum.one_lt_absNorm w`. Establish `hq0 : (0 : ℝ) < q` using `by linarith`. Establish `hle : ∀ γ ∈ sat σ w, ‖(γ : ℂ)‖ ^ 2 ≤ (q : ℝ)`.
+Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `γ hγ`. Assume the negation of the conclusion as `hlt`. Use `push_neg at hlt`. Establish `hγ0 : (0 : ℝ) < ‖(γ : ℂ)‖ ^ 2`. Establish `: (γ : ℂ) ≠ 0` using `γ.ne_zero`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Check the signs of the components of the expression. Establish an intermediate fact.
 
-Check the signs of the components of the expression. Establish `hlogq : 0 < Real.log q` using `Real.log_pos hq1`. Use `set x0 := Real.log (‖(γ : ℂ)‖ ^ 2) / Real.log q with hx0def`. Establish `hx0 : 1 < x0`. Rewrite using `[hx0def, lt_div_iff₀ hlogq, one_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Conclude with `Real.log_lt_log hq0 hlt`. Establish `hpow : (q : ℝ) ^ (-x0) = (‖(γ : ℂ)‖ ^ 2)⁻¹`. Rewrite using `[Real.rpow_neg hq0.le, Real.rpow_def_of_pos hq0]`. Use `congr 1`. Establish `: Real.log q * x0 = Real.log (‖(γ : ℂ)‖ ^ 2)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hx0def]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[this, Real.exp_log hγ0]`. Establish `hF0 : ((sat σ w ×ˢ B').map (gfac q x0)).prod = 0`. Apply `Multiset.prod_eq_zero` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `Multiset.mem_map.mpr ⟨(γ, Units.map (starRingEnd ℂ).toMonoidHom γ), hmem γ hγ, ?_⟩` and prove the remaining obligations. Simplify using `only [gfac]`. Rewrite using `[pair_val, hpow, mul_inv_cancel₀ hγ0.ne']`. Simplify using the standard rewrite rules. Establish `h` using `hsplit x0 hx0`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Rewrite `h` using `[hF0, zero_mul]`. Establish `h1` using `(hL1 x0 hx0).2`. Establish `: L1 x0 = 0` using `by exact_mod_cast h`. Combine the linear equalities and inequalities to obtain the conclusion. Assume the negation of the conclusion as `hnot`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `push_neg at hnot`. Establish `heq : ‖(α : ℂ)‖ ^ 2 = q` using `le_antisymm (hle α hα) hnot`. Use `set t : ℝ → ℝ := fun x => (q : ℝ) * (q : ℝ) ^ (-x) with ht`. Establish `ht1 : ∀ x, 1 < x → t x < 1`. Introduce `x hx`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `: (q : ℝ) ^ (1 + -x) < 1` using `Real.rpow_lt_one_of_one_lt_of_neg hq1 (by linarith)`. Rewrite `this` using `[Real.rpow_add hq0, Real.rpow_one]`. Then use the resulting hypothesis. Take `⟨rest, hrest⟩` from `Multiset.exists_cons_of_mem (hmem α hα)`. Establish `hlow : ∀ x, 1 < x → (1/2 : ℝ) ^ Multiset.card rest ≤ (1 - t x) * ‖((sat σ w ×ˢ B').map (gfac q x)).prod‖`. Introduce `x hx`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hspec : gfac q x (α, Units.map (starRingEnd ℂ).toMonoidHom α) = (((1 - t x : ℝ) : ℂ))⁻¹`. Simplify using `only [gfac]`. Rewrite using `[pair_val, heq]`. Simplify using `only [ht]`. Use `push_cast`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hrestb : ∀ p ∈ rest, (1/2 : ℝ) ≤ ‖gfac q x p‖`. Introduce `p hp`. Establish `hp' : p ∈ (sat σ w) ×ˢ B'`. Rewrite using `[hrest]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Multiset.mem_cons_of_mem hp`. Take `⟨hp1, hp2⟩` from `Multiset.mem_product.mp hp'`. Rewrite `hp2` using `[← hB']`. Take `⟨β, hβ, hβe⟩` from `Multiset.mem_map.mp hp2`. Establish `hb1` using `hle p.1 hp1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `hb2` using `hle β hβ`. Establish `hn2 : ‖(p.2 : ℂ)‖ = ‖(β : ℂ)‖` using `by rw [← hβe]; exact norm_conjU β`. Establish `hprod : ‖(p.1 : ℂ)‖ * ‖(p.2 : ℂ)‖ ≤ q`. Rewrite using `[hn2]`. Use polynomial arithmetic with `[sq_nonneg (‖(p.1 : ℂ)‖ - ‖(β : ℂ)‖), norm_nonneg (p.1 : ℂ), norm_nonneg (β : ℂ)]`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `half_le_norm_inv_one_sub` to reduce the goal to its premises. Rewrite using `[qpow, norm_mul, norm_mul, Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg (Real.rpow_nonneg hq0.le _)]`. Combine the equalities or inequalities in the displayed calculation. Establish `hpos : 0 < 1 - t x` using `by linarith [ht1 x hx]`. Rewrite using `[hrest, Multiset.map_cons, Multiset.prod_cons, norm_mul, hspec, norm_inv, Complex.norm_real, Real.norm_eq_abs, abs_of_pos hpos, ← mul_assoc, mul_inv_cancel₀ hpos.ne', one_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Conclude with `half_pow_le_norm_prod (gfac q x) rest hrestb`. Establish `hnorm : ∀ x, 1 < x → ‖((sat σ w ×ˢ B').map (gfac q x)).prod‖ = ((x - 1) * L1 x) / ((x - 1) * L2 x)`. Introduce `x hx`. Establish `h` using `hsplit x hx`. Establish `hL2pos : 0 < L2 x` using `by linarith [(hL2 x hx).2]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hL1pos : 0 < L1 x` using `by linarith [(hL1 x hx).2]`. Establish `hFx : ((sat σ w ×ˢ B').map (gfac q x)).prod = ((L1 x / L2 x : ℝ) : ℂ)`. Use `push_cast`. Rewrite using `[h, mul_div_assoc, div_self (by exact_mod_cast hL2pos.ne'), mul_one]`. Rewrite using `[hFx, Complex.norm_real, Real.norm_eq_abs, abs_of_pos (div_pos hL1pos hL2pos), mul_div_mul_left _ _ (by linarith : (x - 1) ≠ 0)]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `htlim : Tendsto t (𝓝[>] 1) (𝓝 1)`. Establish `hc : Continuous t` using `continuous_const.mul (continuous_const.rpow continuous_neg (fun _ => Or.inl hq0.ne'))`. Use `hc.tendsto 1` as an intermediate fact. Simplify using `only [ht, Real.rpow_neg_one, mul_inv_cancel₀ hq0.ne'] at this`. Conclude with `tendsto_nhdsWithin_of_tendsto_nhds this`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `hlim : Tendsto (fun x => (1 - t x) * (((x - 1) * L1 x) / ((x - 1) * L2 x))) (𝓝[>] 1) (𝓝 0)`. Use `((tendsto_const_nhds (x := (1 : ℝ))).sub htlim).mul (hlim1.div hlim2 hc2.ne')` as an intermediate fact. Simplify using `using this`. Establish `hev1 : ∀ᶠ x in 𝓝[>] (1 : ℝ), (1 - t x) * (((x - 1) * L1 x) / ((x - 1) * L2 x)) < (1/2 : ℝ) ^ Multiset.card rest` using `hlim (gt_mem_nhds (by positivity))`. Establish `hev2 : ∀ᶠ x in 𝓝[>] (1 : ℝ), 1 < x` using `self_mem_nhdsWithin`.
-
-Take `⟨x, hx1, hx2⟩` from `(hev1.and hev2).exists`. Use `hlow x hx2` as an intermediate fact. Rewrite `this` using `[hnorm x hx2]`. Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 theorem norm_sq_lt_absNorm : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ) (σ : CG E a), 1 ≤ a →
     σ.IsUnitary → ∀ T : Finset (HeightOneSpectrum (𝓞 E)), UnrOutside T σ → ∀ w ∉ T, ∀ α ∈ sat σ w,

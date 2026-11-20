@@ -14,13 +14,11 @@ open scoped TensorProduct ENNReal NNReal Matrix
 namespace GlobalTheory.CompanionTheory.SW.MassTest
 
 /- English proof (translation)
-Take `⟨K, hK, hxK, hKU⟩` from `exists_compact_subset hU hx`. Take `⟨f, hf1, hf0, hfc, hfr⟩` from `exists_continuous_one_zero_of_isCompact (isCompact_singleton (x := x)) (isOpen_interior (s := K)).isClosed_compl (by simpa using hxK)`. Establish `hsupp : Function.support f ⊆ K`. Introduce `y hy`. Assume the negation of the conclusion as `hyK`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Conclude with `hy (hf0 (fun h => hyK (interior_subset h)))`. Establish `hg : Continuous fun X => ENNReal.ofReal (f X)` using `ENNReal.continuous_ofReal.comp f.continuous`. Use `⟨f, f.continuous, hfc, fun X => (hfr X).1, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `(closure_minimal hsupp hK.isClosed).trans hKU`. Introduce `h0`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hpos : 0 < ν {X | ENNReal.ofReal (f X) ≠ 0}`. Use `IsOpen.measure_pos ν (isOpen_ne_fun hg continuous_const) ⟨x, ?_⟩` and prove the remaining obligations. Establish `: f x = 1` using `hf1 (Set.mem_singleton x)`. Simplify using `[this]`. Conclude with `hpos.ne' (ae_iff.1 ((lintegral_eq_zero_iff hg.measurable).1 h0))`.
-
-Conclude with `(f.continuous.integrable_of_hasCompactSupport hfc).lintegral_lt_top.ne`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_bump {W : Type} [TopologicalSpace W] [T2Space W] [LocallyCompactSpace W] [MeasurableSpace W]
     [BorelSpace W] (ν : Measure W) [ν.IsOpenPosMeasure] [IsFiniteMeasureOnCompacts ν] {U : Set W}
@@ -46,7 +44,7 @@ theorem exists_bump {W : Type} [TopologicalSpace W] [T2Space W] [LocallyCompactS
   · exact (f.continuous.integrable_of_hasCompactSupport hfc).lintegral_lt_top.ne
 
 /- English proof (translation)
-Take `⟨K, hK, hxK, hKU⟩` from `exists_compact_subset hU hx`. Take `⟨C, hC, hxC, hCK⟩` from `(loc_compact_Haus_tot_disc_of_zero_dim (H := W)).exists_subset_of_mem_open hxK isOpen_interior`. Establish `hCc : IsCompact C` using `hK.of_isClosed_subset hC.1 (hCK.trans interior_subset)`. Conclude with `⟨C, hCc, hC.2, (hCK.trans interior_subset).trans hKU, (hC.2.measure_pos ν ⟨x, hxC⟩).ne', hCc.measure_lt_top.ne⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem exists_compactOpen {W : Type} [TopologicalSpace W] [T2Space W] [LocallyCompactSpace W]
     [TotallyDisconnectedSpace W] [MeasurableSpace W] (ν : Measure W) [ν.IsOpenPosMeasure]
@@ -64,7 +62,7 @@ section Alg
 variable {F E : Type} [Field F] [Field E] [Algebra F E] {σ : E →ₐ[F] E}
 
 /- English proof (translation)
-Simplify using `[gramR, gramE, hR, hE, hform, ratTup, JR, sigR, inclR, map_sum, map_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem gramR_ratTup_apply (R : Type) [CommRing R] [Algebra F R] {M n : ℕ} (J : Matrix (Fin M) (Fin M) E)
     (Y : Fin n → Fin M → E) (a c : Fin n) :
@@ -72,7 +70,7 @@ theorem gramR_ratTup_apply (R : Type) [CommRing R] [Algebra F R] {M n : ℕ} (J 
   simp [gramR, gramE, hR, hE, hform, ratTup, JR, sigR, inclR, map_sum, map_mul]
 
 /- English proof (translation)
-Establish `hx : hE σ J (fun _ => 1) (fun _ => 1) ≠ 0` using `fun h => one_ne_zero (congrFun (hA _ h) 0)`. Use `⟨ratTup R fun _ _ => 1, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.det_fin_one, gramR_ratTup_apply]`. Conclude with `(IsUnit.mk0 _ hx).map (inclR R)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_unit_vector (R : Type) [CommRing R] [Algebra F R] {J : Matrix (Fin 2) (Fin 2) E}
     (hA : Aniso σ J) : ∃ X : Fin 1 → Fin 2 → R ⊗[F] E, IsUnit (gramR R σ J X).det := by
@@ -88,9 +86,7 @@ section Loc
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
 /- English proof (translation)
-Take `⟨hTR, hLC, hSC, hT2, -, -, hu, -⟩` from `id hloc`. Use `haveI := hTR`. Use `haveI := hLC`. Use `haveI := hSC`. Use `haveI := hT2`.
-
-Use `haveI : Module.Finite F E := Module.Finite.of_restrictScalars_finite ℚ F E`. Take `⟨-, -, -, -, -, -, -, -, -, t10⟩` from `GlobalTheory.CompanionTheory.SW.TopK.topTens_props F E σ hcm R`. Establish `hO : IsOpen {r : R | IsUnit r}` using `hu.isOpen_range`. Conclude with `(PI.VolStabS.isOpen_isUnit_det R hO 1).preimage (t10 1 2 J)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isOpen_unit (hcm : IsCMExt F E σ) (R : Type) [CommRing R] [Algebra F R] [TopologicalSpace R]
     (hloc : IsLocR R) (J : Matrix (Fin 2) (Fin 2) E) :
@@ -106,11 +102,7 @@ theorem isOpen_unit (hcm : IsCMExt F E σ) (R : Type) [CommRing R] [Algebra F R]
   exact (PI.VolStabS.isOpen_isUnit_det R hO 1).preimage (t10 1 2 J)
 
 /- English proof (translation)
-Take `⟨hTR, hLC, hSC, hT2, -⟩` from `id hloc`. Use `haveI := hTR`. Use `haveI := hLC`. Use `haveI := hSC`. Use `haveI := hT2`.
-
-Take `⟨t1, t2, t3, t4, -, -, -, t8, -, -⟩` from `GlobalTheory.CompanionTheory.SW.TopK.topTens_props F E σ hcm R`. Use `haveI := t1`. Use `haveI := t2`. Use `haveI := t3`. Use `haveI := t4`.
-
-Use `haveI := t8 1 2`. Use `haveI := (coord_measures_haar F E σ hcm R d b lam hl).2.1 1 2`. Take `⟨X, hX⟩` from `exists_unit_vector R hA`. Conclude with `exists_bump _ (isOpen_unit hcm R hloc J) hX`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exists_test_fun (hcm : IsCMExt F E σ) {J : Matrix (Fin 2) (Fin 2) E} (hA : Aniso σ J)
     (R : Type) [CommRing R] [Algebra F R] [TopologicalSpace R] [MeasurableSpace R] [BorelSpace R]
@@ -135,11 +127,7 @@ theorem exists_test_fun (hcm : IsCMExt F E σ) {J : Matrix (Fin 2) (Fin 2) E} (h
   exact exists_bump _ (isOpen_unit hcm R hloc J) hX
 
 /- English proof (translation)
-Take `⟨hTR, hLC, hSC, hT2, -⟩` from `id hloc`. Use `haveI := hTR`. Use `haveI := hLC`. Use `haveI := hSC`. Use `haveI := hT2`.
-
-Take `⟨t1, t2, t3, t4, -, -, -, t8, -, -⟩` from `GlobalTheory.CompanionTheory.SW.TopK.topTens_props F E σ hcm R`. Use `haveI := t1`. Use `haveI := t2`. Use `haveI := t3`. Use `haveI := t4`.
-
-Use `haveI := t8 1 2`. Use `haveI := (coord_measures_haar F E σ hcm R d b lam hl).2.1 1 2`. Use `haveI : TotallyDisconnectedSpace (R ⊗[F] E) := (GlobalTheory.CompanionTheory.SW.TopK.coordHomeo R b).symm.totallyDisconnectedSpace`. Take `⟨X, hX⟩` from `exists_unit_vector R hA`. Conclude with `exists_compactOpen _ (isOpen_unit hcm R hloc J) hX`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exists_test_set (hcm : IsCMExt F E σ) {J : Matrix (Fin 2) (Fin 2) E} (hA : Aniso σ J)
     (R : Type) [CommRing R] [Algebra F R] [TopologicalSpace R] [MeasurableSpace R] [BorelSpace R]
@@ -166,15 +154,13 @@ theorem exists_test_set (hcm : IsCMExt F E σ) {J : Matrix (Fin 2) (Fin 2) E} (h
 end Loc
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ J d b li lam μ 𝓕 mi m hcm hJ hA hli hlam _ _ _ _ S`. Establish `hLi : IsLocR (Ainf F)` using `GlobalTheory.CompanionTheory.SW.isLocR_Ainf F hcm.1`. Use `haveI : BorelSpace (Ainf F) := ⟨rfl⟩`. Take `⟨φ, h1, h2, h3, h4, h5, h6⟩` from `exists_test_fun hcm hA (Ainf F) hLi b li hli.1`. Establish `hA' : ∀ v : HeightOneSpectrum (𝓞 F), ∃ A : Set (Fin 1 → Fin 2 → Fv F v ⊗[F] E), IsCompact A ∧ IsOpen A ∧ A ⊆ {X | IsUnit (gramR (Fv F v) σ J X).det} ∧ coordW (Fv F v) b (lam v) 1 2 A ≠ 0 ∧ coordW (Fv F v) b (lam v) 1 2 A ≠ ⊤` using `fun v => by haveI : BorelSpace (Fv F v) := ⟨rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `exists_test_set hcm hA (Fv F v) (GlobalTheory.CompanionTheory.SW.LocFv.isLocR_Fv F v) b (lam v) (hlam v).1`. Use `choose A0 hc ho hs hn ht using hA'`. Establish `hv : vol b li lam S φ (fun v => if v ∈ S then A0 v else latV b v) = (∫⁻ X, ENNReal.ofReal (φ X) ∂(coordW (Ainf F) b li 1 2)) * ∏ v ∈ S, coordW (Fv F v) b (lam v) 1 2 (A0 v)`. Unfold `vol`. Use `congr 1`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Conclude with `Finset.prod_congr rfl fun v hvS => by simp [hvS]`. Use `⟨φ, fun v => if v ∈ S then A0 v else latV b v, ⟨h1, h2, h3, h4, ?_, ?_⟩, ?_, ?_⟩` and prove the remaining obligations. Introduce `v hvS`. Simplify using `only [hvS, if_true]`. Conclude with `⟨hc v, ho v, hs v⟩`.
+Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `v hvS`. Simplify using `[hvS]`. Rewrite using `[hv]`. Conclude with `mul_ne_zero h5 (Finset.prod_ne_zero_iff.2 fun v _ => hn v)`. Rewrite using `[hv]`.
-
-Conclude with `ENNReal.mul_ne_top h6 (ENNReal.prod_ne_top fun v _ => ht v)`.
+A detailed English derivation is pending.
 -/
 theorem testEx : TestEx := by
   intro F E _ _ _ _ _ σ J d b li lam μ 𝓕 mi m hcm hJ hA hli hlam _ _ _ _ S

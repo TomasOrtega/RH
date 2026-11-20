@@ -23,11 +23,11 @@ open ReciprocityTheory.ChartRestriction.G.DVR ReciprocityTheory.ChartRestriction
 variable {R : Type} [CommRing R] [IsDomain R]
 
 /- English proof (translation)
-Set `θ : Γ(Spec (CommRingCat.of R), V) →+* T.presheaf.stalk z` to `(T.presheaf.germ ((g ≫ thick R I 0) ⁻¹ᵁ V) z hz).hom.comp ((g ≫ thick R I 0).app V).hom`. Establish `hθ : ∀ b, gs (g ≫ thick R I 0) z V b = θ b` using `fun b => gs_eq _ _ _ hz b`. Rewrite using `[hθ]`. It suffices to establish `h : I.map (DegPre.toOpen V) ≤ RingHom.ker θ from h ha`. Rewrite using `[Ideal.map_le_iff_le_comap]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the argument to an intermediate assertion. Rewrite the conclusion using the stated equalities.
 
-Introduce `r hr`. Rewrite using `[Ideal.mem_comap, RingHom.mem_ker, ← hθ]`. Establish `e1 : DegPre.toOpen V r = ((Spec (CommRingCat.of R)).presheaf.map (homOfLE le_top).op).hom ((Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom r)` using `rfl`. Rewrite using `[e1, gs_res _ _ le_top hz, ← gs_pull g (thick R I 0) z ⊤ trivial]`. Establish `h0 : Ideal.Quotient.mk (I ^ (0 + 1)) r = 0` using `Ideal.Quotient.eq_zero_iff_mem.2 (by simpa using hr)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `nat` using `congrArg (fun q => q.hom r) (Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom (Ideal.Quotient.mk (I ^ (0 + 1)))))`. Simplify using `only [CommRingCat.hom_comp, RingHom.comp_apply, CommRingCat.hom_ofHom, h0, map_zero] at nat`. Establish `e2 : ((thick R I 0).app ⊤).hom ((Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom r) = 0` using `nat.symm`. Rewrite using `[e2, gs_eq g z (thick R I 0 ⁻¹ᵁ ⊤) (show g z ∈ thick R I 0 ⁻¹ᵁ ⊤ from trivial), map_zero, map_zero]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem gs_thick_eq_zero (I : Ideal R) {T : Scheme.{0}} (g : T ⟶ Spec (CommRingCat.of (R ⧸ I ^ (0 + 1)))) (z : T)
     (V : (Spec (CommRingCat.of R)).Opens) (hz : (g ≫ thick R I 0) z ∈ V) {a : Γ(Spec (CommRingCat.of R), V)}
@@ -59,15 +59,15 @@ open ReciprocityTheory.ChartRestriction.G.DVR ReciprocityTheory.ChartRestriction
 variable {R : Type} [CommRing R] [IsDomain R]
 
 /- English proof (translation)
-Establish `hP` using `D.psi_pos χ hχ`. Take `⟨Ψ, hΨ⟩` from `exists_psi_of_psiIn hP`. Use `⟨Ψ, fun T σ z J hJ => hΨ _ _ z J hJ, fun T g z J hJ => ?_⟩` and prove the remaining obligations. Use `set p := J ((g ≫ thick R I 0) ≫ (D.toPre.c χ).left) with hp`. Establish `hm : (g ≫ thick R I 0) z ∈ (D.toPre.c χ).left ⁻¹ᵁ D.toPre.P.L.U p` using `hJ _`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨_, ⟨V, hV, rfl⟩, hvV, hVp⟩` from `(Spec (CommRingCat.of R)).isBasis_affineOpens.exists_subset_of_mem_open (show (g ≫ thick R I 0) z ∈ ((D.toPre.c χ).left ⁻¹ᵁ D.toPre.P.L.U p : (Spec (CommRingCat.of R)).Opens) from hm) ((D.toPre.c χ).left ⁻¹ᵁ D.toPre.P.L.U p).isOpen`. Establish `h' : jK R ⁻¹ᵁ V ≤ (LB.LinComb D.toPre.P.L (K` using `PUnit) (fun _ => D.toPre.xK χ) (fun _ => -1)).U (fun _ => p) := fun y hy => PsiInPull.mem_wchart _ _ _ _ (hVp hy)`. Take `⟨a, ha, hae⟩` from `hP (fun _ => p) V hV hVp h'`. Establish `hVW : V ≤ LB.wchart D.toPre.P.L (fun _ : PUnit => (D.toPre.c χ).left) (fun _ => p)` using `fun y hy => PsiInPull.mem_wchart _ _ _ _ (hVp hy)`. Establish `hgen : jK R (genPt R) ∈ V` using `PsiInPull.jK_mem _ V fun h0 => (h0.le hvV : (g ≫ thick R I 0) z ∈ (⊥ : (Spec (CommRingCat.of R)).Opens))`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `eqa : ((Spec (CommRingCat.of R)).presheaf.map (homOfLE hVW).op).hom (Ψ.f (fun _ => p)) = a`. Use `PsiInPull.gs_injective (jK R) (genPt R) (PsiInPull.jK_mem _) V hgen ((gs_res _ _ hVW hgen _).trans ?_)` and prove the remaining obligations. Take `⟨J', hJ', eJ'⟩` from `exists_good D.toPre.P.L D.toPre.P.isLB (genPt R) (fun _ : PUnit => jK R ≫ (D.toPre.c χ).left) (fun _ => p) (fun _ _ _ => rfl) (fun _ => hVp hgen)`. Establish `e1` using `hΨ _ (𝟙 _) (genPt R) J' hJ'`. Rewrite `e1` using `[Category.id_comp, sval_of Ψ (jK R) (genPt R) J' (fun _ => p) (fun _ => eJ' PUnit.unit), val_of (D.toPre.psi χ) (𝟙 (TK R).left) (genPt R) J' (fun _ => p) (fun _ => (congrArg J' (Category.id_comp _)).trans (eJ' PUnit.unit))]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e1]`. Establish `e` using `gs_pull (𝟙 _) (jK R) (genPt R) V hgen a`. Rewrite `e` using `[Category.id_comp]`. Rewrite using `[← e, hae]`. Conclude with `((gs_res (𝟙 _) (genPt R) h' hgen _).trans (gs_unit _ _ _ (h' hgen) _)).symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[sval_of Ψ (g ≫ thick R I 0) z J (fun _ => p) (fun _ => rfl)]`. Use `(gs_res _ z hVW hvV _).symm.trans ?_` and prove the remaining obligations. Rewrite using `[eqa]`. Conclude with `gs_thick_eq_zero I g z V hvV ha`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_psi_van {I : Ideal R} (D : DegData R I) (χ : D.toPre.X) (hχ : χ ≠ 0) :
     ∃ Ψ : LB.Sec (LB.LinComb D.toPre.P.L (Y := Spec (CommRingCat.of R)) (K := PUnit) (fun _ => (D.toPre.c χ).left)
@@ -110,15 +110,13 @@ theorem exists_psi_van {I : Ideal R} (D : DegData R I) (χ : D.toPre.X) (hχ : �
   exact gs_thick_eq_zero I g z V hvV ha
 
 /- English proof (translation)
-Establish `c0 : D.toPre.c 0 = 1`. Establish `m : D.toPre.c (0 + 0) = D.toPre.c 0 * D.toPre.c 0` using `D.toPre.c_add 0 0`. Rewrite `m` using `[add_zero]`. Conclude with `mul_eq_left.1 m.symm`. Establish `c1 : (D.toPre.c 0).left = eSec D.toPre.P.A`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[c0, Hom.one_def, toUnit_unit, Category.id_comp]`. Both sides reduce to the same expression. Take `⟨Φ, hΦ⟩` from `exists_sec D.toPre.P.isLB (Y := Spec (CommRingCat.of R)) (K' := PUnit) (φ' := fun _ => (D.toPre.c 0).left) (ε' := fun _ => - -1) (fun U _ h => by simp only [c1, neg_neg]) (Geo.Tor.genSec D.toPre.rig D.toPre.rig_gen)`. Use `⟨Φ, fun T σ z J hJ => (hΦ _ _ z J hJ).trans ((sval_genSec _ _ _ z hJ).trans (congrArg Units.val ?_))⟩` and prove the remaining obligations. Establish `C : IsCub (th D.toPre z J)` using `isCub_cubV D.toPre.cub hJ`.
+Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `t` using `tau_mul σ hJ D.tau_bimult 0 0 0`. Establish `q` using `UUA.psi_add σ hJ (0 : D.toPre.X) 0`. Establish `c2 : cP D.toPre T 0 = 1` using `by simpa using cPoint_nsmul D.toPre T 0 0`. Establish `hpt : ∀ a b c : D.toPre.X, a = b → val (D.toPre.tau a c) (σ.left ≫ jFK (R` using `R) (FractionRing R)) z J = val (D.toPre.tau b c) (σ.left ≫ jFK (R := R) (FractionRing R)) z J := by rintro a b c rfl; rfl`. Establish `hpp : ∀ a b : D.toPre.X, a = b → val (D.toPre.psi a) (σ.left ≫ jFK (R` using `R) (FractionRing R)) z J = val (D.toPre.psi b) (σ.left ≫ jFK (R := R) (FractionRing R)) z J := by rintro a b rfl; rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `t` using `[hpt _ _ _ (add_zero 0), c2, C.face]`. Rewrite `q` using `[hpp _ _ (add_zero 0), ← mul_left_cancel t, _root_.one_mul, _root_.mul_assoc]`. Establish `q'` using `(mul_eq_left.1 q.symm)`. Establish `e : val D.toPre.rigK (σ.left ≫ jFK (R` using `R) (FractionRing R)) z J = val D.toPre.rig ((σ.left ≫ jFK (R := R) (FractionRing R)) ≫ jK R) z J := val_pull hJ _ _ _`. Rewrite `q'` using `[e]`.
-
-Conclude with `eq_inv_of_mul_eq_one_right q'`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_inv_zero {I : Ideal R} (D : DegData R I) :
     ∃ Φ : LB.Sec (LB.LinComb D.toPre.P.L (Y := Spec (CommRingCat.of R)) (K := PUnit) (fun _ => (D.toPre.c 0).left)
@@ -153,9 +151,9 @@ theorem exists_inv_zero {I : Ideal R} (D : DegData R I) :
   exact eq_inv_of_mul_eq_one_right q'
 
 /- English proof (translation)
-Use `fn_ext fun y hy => ?_` and prove the remaining obligations. Use `choose I hI using fun χ : Y₀ ⟶ X => exists_chart hL (χ y)`. Establish `e` using `gs_pull (𝟙 Y₀) ρ y (LB.wchart L φ j) hy (s.f j)`. Rewrite `e` using `[Category.id_comp]`. Rewrite using `[e]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `(sec_trans s ρ y hy (Good.mem hI φ ρ)).trans ?_` and prove the remaining obligations. Conclude with `(congrArg (fun t => (trF φ ε ρ y j fun k => I (ρ ≫ φ k)).val * t) (h y I hI)).trans (by rw [mul_zero, gs_eq _ _ _ hy, map_zero, map_zero])`.
+A detailed English derivation is pending.
 -/
 theorem app_eq_zero_of_sval {X Y Y₀ : Scheme.{0}} {L : LB X} (hL : L.IsLB) {K : Type} [Fintype K]
     {φ : K → (Y ⟶ X)} {ε : K → ℤ} (s : LB.Sec (LB.LinComb L φ ε)) (ρ : Y₀ ⟶ Y)
@@ -181,13 +179,13 @@ variable {R : Type} [CommRing R] [IsDomain R]
 open SectionScalarValuation in
 
 /- English proof (translation)
-Use `choose Ψ hΨ using exists_psi D`. Take `⟨Ψ₁, hΨ₁, hv⟩` from `exists_psi_van D (mu + 0) (by simpa using hmu)`. Take `⟨Φ, hΦ⟩` from `exists_inv_zero D`. Use `⟨_, inferInstance, _, _, SectionArithmetic.mulSec (SectionArithmetic.mulSec Ψ₁ Φ) (SectionArithmetic.mulSec (SectionArithmetic.powSec fun _ : Fin k => Ψ mu) (SectionArithmetic.powSec (L := D.toPre.P.L) (Y := Spec (CommRingCat.of R)) (K := PUnit) (φ := fun _ => eSec D.toPre.P.A) ( …` and prove the remaining obligations. Establish `hc : ∀ χ, D.toPre.P.A.hom ≫ (D.toPre.c χ).left = (cQ D.toPre D.toPre.P.A χ).left` using `fun χ => by simp [cQ]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `he : D.toPre.P.A.hom ≫ eSec D.toPre.P.A = (1 : D.toPre.P.A ⟶ D.toPre.P.A).left`. Rewrite using `[Hom.one_def]`. Simplify using `[eSec]`. Simplify using `only [Fintype.prod_sum_type, Fintype.prod_prod_type, Sum.elim_inl, Sum.elim_inr, Fintype.prod_unique, hc, he, cQ_add, Finset.prod_const, Finset.card_univ, Fintype.card_fin, Fintype.card_punit, Fintype.card_prod, _root_.mul_one]`. Rewrite using `[mul_comm (cQ D.toPre D.toPre.P.A mu)]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv, ofMul_zpow, ofMul_pow]`. Use `module`. Establish `e : val D.toPre.rigK (σ.left ≫ jFK (R` using `R) (FractionRing R)) z J = val D.toPre.rig ((σ.left ≫ jFK (R := R) (FractionRing R)) ≫ jK R) z J := val_pull hJ _ _ _`. Use `((SectionArithmetic.sval_mulSec _ _ _ z hJ).trans (congrArg₂ (· * ·) ((SectionArithmetic.sval_mulSec _ _ _ z hJ).trans (congrArg₂ (· * ·) (hΨ₁ T σ z J hJ) (hΦ T σ z J hJ))) ((SectionArithmetic.sval_mulSec _ _ _ z hJ).trans (congrArg₂ (· * ·) ((SectionArithmetic.sval_powSec _ _ z …` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[val_famMult σ hJ, UUA.val_powGen', UUA.val_powGen', UUA.psi_add σ hJ, Finset.prod_const, Finset.prod_const, Finset.card_univ, Fintype.card_fin]`. Simplify using `only [Units.val_mul, Units.val_pow_eq_pow_val]`. Take the linear combination `((val (D.toPre.tau mu 0) (σ.left ≫ jFK (R := R) (FractionRing R)) z J).val * (val (D.toPre.psi mu) (σ.left ≫ jFK (R := R) (FractionRing R)) z J).val ^ (k + 1) * (val D.toPre.rigK (σ.left ≫ jFK (R := R) (FractionRing R)) z J).val ^ (k + 1)) * (val (D.toPre.psi 0) (σ.left ≫ jFK (R …`. Rewrite using `[SectionArithmetic.sval_mulSec _ _ _ z hJ, SectionArithmetic.sval_mulSec _ _ _ z hJ, hv T g z J hJ, zero_mul, zero_mul]`.
+Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_const0 {I : Ideal R} (D : DegData R I) (k : ℕ) (mu : D.toPre.X) (hmu : mu ≠ 0) :
     ∃ (Ix : Type) (_ : Fintype Ix) (φV : Ix → (Spec (CommRingCat.of R) ⟶ D.toPre.P.A.left)) (εV : Ix → ℤ)
@@ -245,27 +243,25 @@ open ReciprocityTheory.ChartRestriction.G.DVR ReciprocityTheory.ChartRestriction
 open SectionScalarValuation in
 
 /- English proof (translation)
-Introduce `R _ _ _ _ D k hk σ₀`. Establish `hG : GlobalFnsSt` using `GlobalTheory.globalFns_holds`. Establish `hL` using `D.toPre.P.isLB`. Establish `hscal : scal (DegPre.BF D.toPre (FractionRing R)).hom (1 : R) = 1` using `by simp [scal]`. Rewrite using `[hscal]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨k, rfl⟩ : ∃ k', k = k' + 1` from `⟨k - 1, by omega⟩`. Take `⟨σ, hσ⟩` from `exists_sec hL (φ' := DegPre.famφ D.toPre (FractionRing R) 0) (ε' := DegPre.famε (k + 1)) (fun U _ g => Finset.prod_congr rfl fun i _ => by rw [GC.famφ_eq]) (SectionArithmetic.pullSec σ₀ (DegPre.prB D.toPre (FractionRing R)).left)`. Take `⟨Φ, hΦ, hΦ0⟩` from `UUA.exists_fam_rep (F := FractionRing R) hG D.tau_bimult (k + 1) 0 (fun a b h => by`. Establish `h' : ((k + 1 : ℕ) : ℤ) • a = ((k + 1 : ℕ) : ℤ) • b`. Rewrite using `[natCast_zsmul, natCast_zsmul]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `add_left_cancel h`. Conclude with `smul_right_injective D.toPre.X (by omega : ((k + 1 : ℕ) : ℤ) ≠ 0) h') σ`. Establish `hw0 : (D.toPre.prBe (maximalIdeal R) 0).left ≫ D.toPre.P.A.hom = (thickObj R (maximalIdeal R) 0 D.toPre.P.A).hom ≫ thick R (maximalIdeal R) 0` using `Over.w _`. Establish `key : ∀ α : D.toPre.X, ∃ f : D.toPre.SecB (k + 1) α, GeneratorPullback.SecScal D.toPre.P.L (DegPre.famφ D.toPre (FractionRing R) α) (DegPre.famε (k + 1)) (Φ.s α) (D.toPre.famφB α) (DegPre.famε (k + 1)) f (DegPre.prB D.toPre (FractionRing R)).left 1 ∧ (∀ h : (0 : D.toPre.X) = α, f …`. Introduce `α`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Distinguish the cases in `hα : (0 : D.toPre.X) = α`. Substitute `hα` using the available equality. Use `⟨σ₀, secScal_of_sval hL fun y J hJ => ?_, fun _ => rfl, fun h => absurd rfl h⟩` and prove the remaining obligations. Rewrite using `[hΦ]`. Conclude with `((hσ _ _ y J hJ).trans (SectionArithmetic.sval_pullSec _ _ _ y hJ)).symm`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Distinguish the cases in `hc : ∃ mu, (0 : D.toPre.X) + (k + 1) • mu = α`. Take `⟨mu, rfl⟩` from `hc`. Establish `hmu : mu ≠ 0` using `fun h0 => hα (by rw [h0]; simp)`. Take `⟨Ix, _, φV, εV, w, hC, hw, hwv⟩` from `exists_const0 D k mu hmu`. Take `⟨f, hf⟩` from `exists_move D.toPre (k + 1) 0 mu w hC σ₀`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨f, secScal_of_sval hL fun y J hJ => ?_, fun h => absurd h hα, fun _ j => ?_⟩` and prove the remaining obligations. Take `⟨⟨u, hu, hc⟩, hv⟩` from `gen_fe (D := D.toPre) (F := FractionRing R) hG (k + 1) mu 0`. Establish `e₁` using `(secRel_iff hL _ _ _ _ _ _ _ _ _ u).1 (Φ.fe mu 0 u hu hc) _ (𝟙 _) y J hJ`. Establish `e₂` using `hv u hu hc _ (𝟙 _) y J hJ`. Rewrite `e₂` using `[uVal_id, Over.id_left, Category.id_comp, comp_cP]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e₃` using `hf _ (DegPre.prB D.toPre (FractionRing R)) y J hJ`. Establish `e₄` using `hw _ (fst (TF (R := R) (FractionRing R)) D.toPre.P.A) y J hJ`. Establish `a₁ : (DegPre.prB D.toPre (FractionRing R)).left ≫ D.toPre.P.A.hom = ((fst (TF (R` using `R) (FractionRing R)) D.toPre.P.A).left ≫ jFK (R := R) (FractionRing R)) ≫ jK R := by`. Rewrite using `[Over.w, Category.assoc]`. Conclude with `(Over.w (fst (TF (R := R) (FractionRing R)) D.toPre.P.A)).symm`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `a₂ : (DegPre.trF D.toPre (FractionRing R) mu).left ≫ (DegPre.prB D.toPre (FractionRing R)).left = (DegPre.prB D.toPre (FractionRing R) * cQ D.toPre _ mu).left`. Rewrite using `[← Over.comp_left, DegPre.trF, DegPre.prB, lift_snd]`. Both sides reduce to the same expression. Establish `e₅ : sval σ (DegPre.trF D.toPre (FractionRing R) mu).left y J = sval σ₀ (DegPre.prB D.toPre (FractionRing R) * cQ D.toPre _ mu).left y J`. Use `(hσ _ _ y J hJ).trans ((SectionArithmetic.sval_pullSec _ _ _ y hJ).trans ?_)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[a₂]`. Rewrite `e₃` using `[a₁, e₄]`. Rewrite `e₁` using `[Category.id_comp, hΦ, e₅, e₂, Units.val_mul]`. Rewrite using `[Category.id_comp, e₃, e₁]`. Rewrite using `[_root_.mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Both sides reduce to the same expression. Use `app_eq_zero_of_sval hL f _ (fun y J hJ => ?_) j` and prove the remaining obligations. Rewrite using `[hf _ (D.toPre.prBe (maximalIdeal R) 0) y J hJ, hw0, hwv _ _ y J hJ, mul_zero]`. Use `⟨SecOps.secZero, secScal_of_sval hL fun y J hJ => ?_, fun h => absurd h hα, fun _ j => ?_⟩` and prove the remaining obligations. Rewrite using `[UUA.sval_zero_of (s := SecOps.secZero) (fun _ => rfl) _ y J (hJ.mem _ _), UUA.sval_zero_of (hΦ0 α fun mu e => hc ⟨mu, e⟩) _ y J (hJ.mem _ _)]`.
-
-Conclude with `map_zero _`. Use `choose f h1 h2 h3 using key`. Conclude with `⟨Φ, f, h1, h2 0 rfl, h3⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_family : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], AdmBase R (maximalIdeal R) →
     ∀ (D : DegData R (maximalIdeal R)) (k : ℕ), 1 ≤ k → ∀ σ₀ : D.toPre.SecB k 0,

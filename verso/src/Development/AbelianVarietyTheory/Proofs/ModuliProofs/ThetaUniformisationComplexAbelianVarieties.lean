@@ -16,7 +16,7 @@ open CategoryTheory CategoryTheory.Limits MonoidalCategory CartesianMonoidalCate
 open scoped CategoryTheory.Obj in
 
 /- English proof (translation)
-Establish `hLaws` using `_root_.GlobalTheory.allSixLaws.1`. Conclude with `_root_.GlobalTheory.thetaUnifAV_of_laws hLaws.cube hLaws.mulN hLaws.weil hLaws.weilNondeg hLaws.globalSectionsRank`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.thetaUnifAV_closed : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.ThetaUnifAV := by
   have hLaws := _root_.GlobalTheory.allSixLaws.1

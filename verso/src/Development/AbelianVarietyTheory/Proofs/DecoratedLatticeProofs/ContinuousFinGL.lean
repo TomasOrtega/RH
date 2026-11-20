@@ -17,13 +17,11 @@ variable {D : D7}
 set_option synthInstance.maxHeartbeats 400000 in
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Use `letI : Algebra (Af D.host.F) (D.host.E ⊗[D.host.F] Af D.host.F) := Algebra.TensorProduct.rightAlgebra`. Use `letI : TopologicalSpace (D.host.E ⊗[D.host.F] Af D.host.F) := moduleTopology (Af D.host.F) _`. Use `haveI : IsModuleTopology (Af D.host.F) (D.host.E ⊗[D.host.F] Af D.host.F) := ⟨rfl⟩`. Use `haveI : IsModuleTopology (Af D.host.F) (Af D.host.F ⊗[D.host.F] D.host.E) := ⟨rfl⟩`. Set `φ : (Af D.host.F ⊗[D.host.F] D.host.E) →ₗ[Af D.host.F] (D.host.E ⊗[D.host.F] Af D.host.F)` to `{ toFun := Algebra.TensorProduct.comm D.host.F (Af D.host.F) D.host.E map_add' := (Algebra.TensorProduct.comm D.host.F (Af D.host.F) D.host.E).map_add map_smul' := fun r x => by`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Introduce a local definition for the expression. Proceed by induction. Treat this case separately.
 
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a e`. Rewrite using `[TensorProduct.smul_tmul', Algebra.TensorProduct.comm_tmul, Algebra.TensorProduct.comm_tmul, Algebra.smul_def]`. Use `show e ⊗ₜ[D.host.F] (r • a) = ((1 : D.host.E) ⊗ₜ[D.host.F] r) * (e ⊗ₜ[D.host.F] a)`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, one_mul, smul_eq_mul]`. Consider the case `add x y hx hy`. Rewrite using `[smul_add, map_add (Algebra.TensorProduct.comm D.host.F (Af D.host.F) D.host.E), map_add (Algebra.TensorProduct.comm D.host.F (Af D.host.F) D.host.E), hx, hy, smul_add] }`. Use `haveI : ContinuousAdd (D.host.E ⊗[D.host.F] Af D.host.F) := IsModuleTopology.toContinuousAdd (Af D.host.F) _`. Use `haveI : ContinuousSMul (Af D.host.F) (D.host.E ⊗[D.host.F] Af D.host.F) := IsModuleTopology.toContinuousSMul (Af D.host.F) _`.
-
-Conclude with `IsModuleTopology.continuous_of_linearMap φ`.
+A detailed English derivation is pending.
 -/
 theorem continuous_comm : letI := tensTopL (F := D.host.F) (E := D.host.E) (Af D.host.F)
     Continuous (Algebra.TensorProduct.comm D.host.F (Af D.host.F) D.host.E) := by
@@ -52,15 +50,15 @@ theorem continuous_comm : letI := tensTopL (F := D.host.F) (E := D.host.E) (Af D
 def finGL (V : HSp D) (h : GA D V) : GL (Fin V.rank) (EAf D) := bc (toEAf D) (matHom V h)
 
 /- English proof (translation)
-Rewrite using `[finM_rfl]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem finGL_val (V : HSp D) (h : GA D V) : (finGL V h).val = finM V rfl h := by
   rw [finM_rfl]; rfl
 
 /- English proof (translation)
-Use `letI := tensTopL (F := D.host.F) (E := D.host.E) (Af D.host.F)`. Use `Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.topGroupHA D.sp.cm.sig V.gram` as an intermediate fact. Establish `hv : Continuous fun h : GA D V => (finGL V h).val` using `(GlobalTheory.Mem.VolExists.continuous_finMat (σ := D.sp.cm.sig) V.gram).matrix_map continuous_comm`. Use `Units.continuous_iff.2 ⟨hv, ?_⟩` and prove the remaining obligations. Establish `e : (fun h : GA D V => ((finGL V h)⁻¹ : GL (Fin V.rank) (EAf D)).val) = fun h => (finGL V h⁻¹).val`.
+Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `h`. Simplify using `only [finGL, map_inv]`. Rewrite using `[e]`. Conclude with `hv.comp continuous_inv`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_finGL (V : HSp D) : letI := tensTopL (F := D.host.F) (E := D.host.E) (Af D.host.F)
     Continuous (finGL V) := by
@@ -81,13 +79,13 @@ noncomputable section
 namespace GlobalTheory.AdForm.RdLaw
 variable {D : D7}
 /- English proof (translation)
-Establish `key` using `GlobalTheory.AdForm.rdS_val D θ hθ V V.rank rfl V.gram (by simp) T f bad S cl yc hb Ψ hΨ`. Introduce `γ hγ g`. Take `⟨γ0, h0, e⟩` from `rat_mt V γ hγ`. Take `⟨⟨x, hx⟩, hu, hv⟩` from `key y g`. Take `⟨⟨x', hx'⟩, hu', hv'⟩` from `key y (γ * g)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Set `z : Frames (gramC V.gram (embT D))` to `⟨fun τ => infM θ V rfl g τ * y.1 τ, fun τ => by rw [det_mul]; exact (hu τ).mul (y.2 τ)⟩`. Set `z' : Frames (gramC V.gram (embT D))` to `⟨fun τ => infM θ V rfl (γ * g) τ * y.1 τ, fun τ => by rw [det_mul]; exact (hu' τ).mul (y.2 τ)⟩`. Establish `e1` using `hv' x' z' hx' (fun τ => rfl)`. Establish `e2` using `hv x z hx (fun τ => rfl)`. Establish `hxx : x'.1 = bc (inclE (F` using `D.host.F) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)) γ0 * x.1 * (1 : S.U).1 := by`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `Units.ext` to reduce the goal to its premises. Simplify using `only [Units.val_mul, OneMemClass.coe_one, Units.val_one, Matrix.mul_one]`. Rewrite using `[hx', finM_mul, rat_finM V γ0 γ e, hx]`. Establish `hzz : IsTr (atInf (embT D) γ0.val) z z'` using `fun τ => by show infM θ V rfl (γ * g) τ * y.1 τ = atInf (embT D) γ0.val τ * (infM θ V rfl g τ * y.1 τ)`. Rewrite using `[infM_mul, rat_infM θ hθ V γ0 γ e, Matrix.mul_assoc]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e3` using `hΨ γ0 h0 x x' 1 hxx z' z hzz`. Rewrite `e3` using `[map_one, Units.val_one, one_mul]`. Conclude with `e1.trans (e3.trans e2.symm)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem law_left (θ : InfFam D) (hθ : IsInfFam θ) (V : HSp D) (T f : ℕ) (bad : Set (HeightOneSpectrum (𝓞 D.host.F)))
     (S : StepLevel D.host.F D.host.E (sigD D) V.gram T f bad) (cl : Type)
@@ -118,13 +116,13 @@ theorem law_left (θ : InfFam D) (hθ : IsInfFam θ) (V : HSp D) (T f : ℕ) (ba
   exact e1.trans (e3.trans e2.symm)
 
 /- English proof (translation)
-Establish `key` using `GlobalTheory.AdForm.rdS_val D θ hθ V V.rank rfl V.gram (by simp) T f bad S cl yc hb Ψ hΨ`. Introduce `k hk κ hκ g`. Take `⟨⟨x, hx⟩, hu, hv⟩` from `key y g`. Take `⟨⟨x', hx'⟩, hu', hv'⟩` from `key y (g * k)`. Set `z : Frames (gramC V.gram (embT D))` to `⟨fun τ => infM θ V rfl g τ * y.1 τ, fun τ => by rw [det_mul]; exact (hu τ).mul (y.2 τ)⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `hz : IsTr (infM θ V rfl (g * k)) y z` using `fun τ => by show infM θ V rfl g τ * y.1 τ = infM θ V rfl (g * k) τ * y.1 τ`. Rewrite using `[infM_mul, infM_fin θ V k hk, Matrix.mul_one]`. Establish `e1` using `hv' x' z hx' hz`. Establish `e2` using `hv x z hx (fun τ => rfl)`. Establish `hxx : x'.1 = bc (inclE (F` using `D.host.F) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)) 1 * x.1 * κ.1 := by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `Units.ext` to reduce the goal to its premises. Simplify using `only [Units.val_mul, map_one, Units.val_one, Matrix.one_mul]`. Rewrite using `[hx', finM_mul, hx, hκ]`. Establish `h1 : IsTr (atInf (embT D) (1 : GL (Fin V.rank) D.host.E).val) z z` using `fun τ => by show z.1 τ = atInf (embT D) (1 : GL (Fin V.rank) D.host.E).val τ * z.1 τ`. Simplify using `[atInf]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `e3` using `hΨ 1 (Subgroup.one_mem _) x x' κ hxx z z h1`. Conclude with `e1.trans (e3.trans (congrArg _ e2.symm))`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem law_level (θ : InfFam D) (hθ : IsInfFam θ) (V : HSp D) (T f : ℕ) (bad : Set (HeightOneSpectrum (𝓞 D.host.F)))
     (S : StepLevel D.host.F D.host.E (sigD D) V.gram T f bad) (cl : Type)
@@ -155,9 +153,9 @@ theorem law_level (θ : InfFam D) (hθ : IsInfFam θ) (V : HSp D) (T f : ℕ) (b
   exact e1.trans (e3.trans (congrArg _ e2.symm))
 
 /- English proof (translation)
-Establish `key` using `GlobalTheory.AdForm.rdS_val D θ hθ V V.rank rfl V.gram (by simp) T f bad S cl yc hb Ψ hΨ`. Introduce `k hk y' hy' g`. Take `⟨⟨x, hx⟩, hu, hv⟩` from `key y' g`. Take `⟨-, -, hv'⟩` from `key y (g * k)`. Set `z : Frames (gramC V.gram (embT D))` to `⟨fun τ => infM θ V rfl g τ * y'.1 τ, fun τ => by rw [det_mul]; exact (hu τ).mul (y'.2 τ)⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `hz : IsTr (infM θ V rfl (g * k)) y z` using `fun τ => by show infM θ V rfl g τ * y'.1 τ = infM θ V rfl (g * k) τ * y.1 τ`. Rewrite using `[infM_mul, Matrix.mul_assoc, ← hy' τ]`. Establish `hx2 : x.1.1 = finM V rfl (g * k)` using `by rw [finM_mul, finM_inf V k hk, Matrix.mul_one, hx]`. Conclude with `(hv' x z hx2 hz).trans (hv x z hx (fun τ => rfl)).symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem law_real (θ : InfFam D) (hθ : IsInfFam θ) (V : HSp D) (T f : ℕ) (bad : Set (HeightOneSpectrum (𝓞 D.host.F)))
     (S : StepLevel D.host.F D.host.E (sigD D) V.gram T f bad) (cl : Type)
@@ -185,7 +183,7 @@ namespace GlobalTheory.AdForm.RdLaw
 variable {D : D7}
 
 /- English proof (translation)
-Repeatedly rewrite using `[infM_rfl]`. Conclude with `GlobalTheory.Mem.VolExists.continuous_infMat (σ := D.sp.cm.sig) V.gram (hθ τ)`.
+Rewrite the conclusion repeatedly using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_infM (θ : InfFam D) (hθ : IsInfFam θ) (V : HSp D) (τ : D.what₂.Tau) :
     Continuous fun g : GA D V => infM θ V rfl g τ := by
@@ -193,29 +191,25 @@ theorem continuous_infM (θ : InfFam D) (hθ : IsInfFam θ) (V : HSp D) (τ : D.
   exact GlobalTheory.Mem.VolExists.continuous_infMat (σ := D.sp.cm.sig) V.gram (hθ τ)
 
 /- English proof (translation)
-Take `⟨W, hWo, hW⟩` from `hW`. Establish `key` using `GlobalTheory.AdForm.rdS_val D θ hθ V V.rank rfl V.gram (by simp) T f bad S cl yc hb Ψ hΨ`. Use `Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.topGroupHA D.sp.cm.sig V.gram` as an intermediate fact. Use `letI := tensTopL (F := D.host.F) (E := D.host.E) (Af D.host.F)`. Establish `hmem : ∀ h : GA D V, finGL V h ∈ UPts (sigD D) V.gram (FiniteAdeleRing (𝓞 D.host.F) D.host.F)` using `fun h => by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Take `⟨⟨x, hx⟩, -⟩` from `key y h`. Establish `e : finGL V h = x.1` using `Units.ext (by rw [finGL_val, hx])`. Rewrite using `[e]`. Conclude with `x.2`. Set `fin2 : GA D V → UPts (sigD D) V.gram (FiniteAdeleRing (𝓞 D.host.F) D.host.F)` to `fun h => ⟨finGL V h, hmem h⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hc2 : Continuous fin2` using `(continuous_finGL V).subtype_mk _`. Establish `hO` using `S.U_open`. Rewrite using `[continuous_iff_continuousAt]`. Introduce `g0`. Take `⟨⟨x0, hx0⟩, -, -⟩` from `key y g0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨P, -, hP⟩` from `Submodule.mem_map.1 (hval x0)`. Set `F : GA D V → ℂ` to `fun g => (∏ τ, ((1 : D.what₂.Tau → Matrix (Fin V.rank) (Fin V.rank) ℂ) τ * (infM θ V rfl g τ * y.1 τ)).det ^ shiftOf lam τ) * MvPolynomial.eval (fun q : D.what₂.Tau × Fin V.rank × Fin V.rank => ((1 : D.what₂.Tau → Matrix (Fin V.rank) (Fin V.rank) ℂ) q.1 * (infM θ V rfl g q.1 * y. …`. Establish `hM : ∀ τ, Continuous fun g : GA D V => (1 : D.what₂.Tau → Matrix (Fin V.rank) (Fin V.rank) ℂ) τ * (infM θ V rfl g τ * y.1 τ)` using `fun τ => continuous_const.matrix_mul ((continuous_infM θ hθ V τ).matrix_mul continuous_const)`. Establish `hFc : Continuous F`. Use `Continuous.mul (continuous_finset_prod _ fun τ _ => ((hM τ).matrix_det).zpow₀ _ fun g => Or.inl ?_) ?_` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨-, hu, -⟩` from `key y g`. Rewrite using `[Pi.one_apply, one_mul, det_mul]`. Conclude with `((hu τ).mul (y.2 τ)).ne_zero`. Conclude with `(MvPolynomial.continuous_eval P).comp (continuous_pi fun q => (hM q.1).matrix_elem q.2.1 q.2.2)`. Use `hFc.continuousAt.congr ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hN : IsOpen {g : GA D V | ((fin2 (g0⁻¹ * g) : GL (Fin V.rank) (EAf D)) ∈ S.U) ∧ pf V (g0⁻¹ * g) ∈ W}` using `(hO.preimage (hc2.comp (continuous_const.mul continuous_id))).inter (hWo.preimage ((continuous_pf V).comp (continuous_const.mul continuous_id)))`. Establish `hg0 : g0 ∈ {g : GA D V | ((fin2 (g0⁻¹ * g) : GL (Fin V.rank) (EAf D)) ∈ S.U) ∧ pf V (g0⁻¹ * g) ∈ W}`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `e : (fin2 (g0⁻¹ * g0) : GL (Fin V.rank) (EAf D)) = 1` using `by show finGL V (g0⁻¹ * g0) = 1`. Rewrite using `[inv_mul_cancel]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `map_one _`. Use `show (fin2 (g0⁻¹ * g0) : GL (Fin V.rank) (EAf D)) ∈ S.U`. Rewrite using `[e]`. Conclude with `S.U.one_mem`. Use `show pf V (g0⁻¹ * g0) ∈ W`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Rewrite using `[inv_mul_cancel, pf_one]`. Conclude with `W.one_mem`. Use `filter_upwards [hN.mem_nhds hg0] with g hg`. Take `⟨hU, hWg⟩` from `hg`. Set `κ : S.U` to `⟨(fin2 (g0⁻¹ * g) : GL (Fin V.rank) (EAf D)), hU⟩`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hκ1 : S.chi κ = 1` using `hW (pf V (g0⁻¹ * g)) hWg (pf_fin V _) κ (by show (finGL V (g0⁻¹ * g)).val = _`. Rewrite using `[finGL_val, finM_pf])`. Take `⟨⟨x, hx⟩, hu, hv⟩` from `key y g`. Set `z : Frames (gramC V.gram (embT D))` to `⟨fun τ => infM θ V rfl g τ * y.1 τ, fun τ => by rw [det_mul]; exact (hu τ).mul (y.2 τ)⟩`. Establish `hxx : x.1 = bc (inclE (F` using `D.host.F) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)) 1 * x0.1 * κ.1 := by`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Apply `Units.ext` to reduce the goal to its premises. Simplify using `only [Units.val_mul, map_one, Units.val_one, Matrix.one_mul]`. Establish `e : g = g0 * (g0⁻¹ * g)` using `by rw [mul_inv_cancel_left]`. Rewrite using `[hx, e, finM_mul, ← hx0]`. Conclude with `congrArg _ (finGL_val V _).symm`.
-
-Establish `h1 : IsTr (atInf (embT D) (1 : GL (Fin V.rank) D.host.E).val) z z` using `fun τ => by show z.1 τ = atInf (embT D) (1 : GL (Fin V.rank) D.host.E).val τ * z.1 τ`. Simplify using `[atInf]`. Establish `e3` using `hΨ 1 (Subgroup.one_mem _) x0 x κ hxx z z h1`. Rewrite `e3` using `[hκ1, Units.val_one, one_mul]`. Rewrite using `[hv x z hx (fun τ => rfl), e3, ← hP]`.
-
-Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem law_cont (θ : InfFam D) (hθ : IsInfFam θ) (V : HSp D) (T f : ℕ) (bad : Set (HeightOneSpectrum (𝓞 D.host.F)))
     (S : StepLevel D.host.F D.host.E (sigD D) V.gram T f bad) (cl : Type)
@@ -295,9 +289,9 @@ noncomputable section
 namespace GlobalTheory.AdForm.RdLaw
 
 /- English proof (translation)
-Introduce `D θ hθ V n hn J hJ T f bad S cl yc hb lam φ hφ y`. Substitute `hn` using the available equality. Simplify using `only [finCongr_refl, reindex_refl_refl] at hJ`. Substitute `hJ` using the available equality. Take `⟨Ψ, hΨ, rfl⟩` from `Submodule.mem_map.1 hφ`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Simplify using the standard rewrite rules. Substitute using the available equality. Extract witnesses or component facts from the available result.
 
-Establish `hA : Ψ ∈ AdFun S (embT D)` using `(Submodule.mem_inf.1 hΨ).1`. Establish `hval : ∀ x, Ψ x ∈ ValC (gramC V.gram (embT D)) lam` using `fun x => (Submodule.mem_pi.1 (Submodule.mem_inf.1 hΨ).2) x (Set.mem_univ _)`. Conclude with `⟨law_left θ hθ V T f bad S cl yc hb Ψ hA y, law_level θ hθ V T f bad S cl yc hb Ψ hA y, law_real θ hθ V T f bad S cl yc hb Ψ hA y, law_cont θ hθ V T f bad S cl yc hb Ψ hA lam hval y⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem rdS_laws : ∀ (D : D7) (θ : InfFam D), IsInfFam θ → ∀ (V : HSp D) (n : ℕ) (hn : V.rank = n) (J : Matrix (Fin n) (Fin n) D.host.E), J = V.gram.reindex (finCongr hn) (finCongr hn) → ∀ (T f : ℕ) (bad : Set (HeightOneSpectrum (𝓞 D.host.F))) (S : StepLevel D.host.F D.host.E (sigD D) J T f bad) (cl : Type) (yc : cl → UPts (sigD D) J (FiniteAdeleRing (𝓞 D.host.F) D.host.F)), Function.Bijective (fun c => (Quotient.mk'' (yc c) : Cls S)) → ∀ lam, ∀ φ ∈ FiC S (embT D) lam yc, ∀ y : Frames (gramC J (embT D)), (∀ γ ∈ GQ V, ∀ g, rdS θ V hn S yc φ y (γ * g) = rdS θ V hn S yc φ y g) ∧ (∀ k ∈ GfC V, ∀ κ : S.U, κ.1.1 = finM V hn k → ∀ g, rdS θ V hn S yc φ y (g * k) = (S.chi κ : ℂ) * rdS θ V hn S yc φ y g) ∧ (∀ k ∈ GinfC V, ∀ y', IsTr (infM θ V hn k) y y' → ∀ g, rdS θ V hn S yc φ y (g * k) = rdS θ V hn S yc φ y' g) ∧ ((∃ W : Subgroup (GA D V), IsOpen (W : Set (GA D V)) ∧ ∀ k ∈ W, k ∈ GfC V → ∀ κ : S.U, κ.1.1 = finM V hn k → S.chi κ = 1) → Continuous (rdS θ V hn S yc φ y)) := by
   intro D θ hθ V n hn J hJ T f bad S cl yc hb lam φ hφ y

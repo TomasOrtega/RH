@@ -16,19 +16,19 @@ variable {G : Type} [Group G] {Qp K₀ K : Type} [Field Qp] [Field K₀] [Field 
     (PD : PeriodData G Qp K₀ K B BdR) {n : ℕ}
 
 /- English proof (translation)
-Use `GlobalTheory.Survey.CrystallineCyclotomic.nontrivial_B PD` as an intermediate fact. Establish `hact : ∀ g (y : Fin n → B), coordAct PD A g (W.mulVec y) = W.mulVec fun i => PD.actB g (y i)`. Introduce `g y`. Establish `h1 : (fun i => PD.actB g (W.mulVec y i)) = (W.map (PD.actB g)).mulVec fun i => PD.actB g (y i)`. Use function extensionality and compare the values at `i`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `[Matrix.mulVec, dotProduct, map_sum]`. Express the relevant statement in the definitionally equal form `((A g).map (algebraMap Qp B)).mulVec _ = _`. Rewrite using `[h1, Matrix.mulVec_mulVec, hW]`. Establish `hinj : Function.Injective W.mulVec` using `Matrix.mulVec_injective_of_isUnit ((Matrix.isUnit_iff_isUnit_det W).2 hu)`. Set `f : (Fin n → K₀) →ₗ[K₀] (Fin n → B)` to `(W.mulVecLin.restrictScalars K₀).comp ((Algebra.linearMap K₀ B).compLeft (Fin n))`.
+Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hf : ∀ c, f c = W.mulVec fun i => algebraMap K₀ B (c i)` using `fun c => rfl`. Establish `hfi : Function.Injective f`. Introduce `c d h`. Rewrite `h` using `[hf, hf]`. Use function extensionality and compare the values at `i`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `(algebraMap K₀ B).injective (congrFun (hinj h) i)`. Establish `hr : LinearMap.range f = coordInv PD A`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨c, rfl⟩ g`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hf, hact]`. Simplify using `only [AlgEquiv.commutes]`. Introduce `hx`. Establish `hxy : W.mulVec (W⁻¹.mulVec x) = x`. Rewrite using `[Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv _ hu, Matrix.one_mulVec]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hc : ∀ i, ∃ c : K₀, algebraMap K₀ B c = W⁻¹.mulVec x i` using `fun i => PD.invB _ fun g => by`. Establish `h2` using `hact g (W⁻¹.mulVec x)`. Rewrite `h2` using `[hxy, hx g]`. Conclude with `congrFun (hinj (h2.symm.trans hxy.symm)) i`. Use `choose c hc using hc`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `⟨c, ?_⟩` and prove the remaining obligations. Rewrite using `[hf, funext hc, hxy]`. Rewrite using `[← hr, LinearMap.finrank_range_of_inj hfi, Module.finrank_fin_fun]`.
+A detailed English derivation is pending.
 -/
 theorem finrank_coordInv_of_split (A : G → Matrix (Fin n) (Fin n) Qp) (W : Matrix (Fin n) (Fin n) B)
     (hu : IsUnit W.det) (hW : ∀ g, (A g).map (algebraMap Qp B) * W.map (PD.actB g) = W) :
@@ -73,9 +73,9 @@ theorem finrank_coordInv_of_split (A : G → Matrix (Fin n) (Fin n) Qp) (W : Mat
   rw [← hr, LinearMap.finrank_range_of_inj hfi, Module.finrank_fin_fun]
 
 /- English proof (translation)
-Set `A : G → Matrix (Fin n) (Fin n) Qp` to `fun g => Matrix.of fun i j => e.repr (ρ g (e j)) i`. Establish `h1` using `finrank_coordInv PD ρ e A fun g i j => rfl`. Establish `h2` using `finrank_coordInv_of_split PD A W hu hW`. Establish `hL : 0 < finrank Qp LL` using `Module.finrank_pos`. Establish `hV : finrank Qp LL * finrank LL V = n`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Module.finrank_mul_finrank Qp LL V, finrank_eq_card_basis e, Fintype.card_fin]`. Rewrite `h1` using `[h2, ← hV, mul_left_comm]`. Conclude with `Nat.eq_of_mul_eq_mul_left hL h1`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isCrys_of_split {LL : Type} [Field LL] [Algebra Qp LL] {V : Type} [AddCommGroup V] [Module LL V]
     [Module Qp V] [IsScalarTower Qp LL V] (ρ : Representation LL G V) {n : ℕ} (e : Basis (Fin n) Qp V)

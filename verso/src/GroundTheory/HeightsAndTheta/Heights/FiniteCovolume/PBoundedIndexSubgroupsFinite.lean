@@ -4,19 +4,17 @@ import GroundTheory.HeightsAndTheta.Heights.FiniteCovolume.StatementsVectorOrbit
 namespace GroundTheory.Heights₂.Heights.FiniteCovolume
 
 /- English proof (translation)
-Introduce `A B hB hAB C`. Establish `: Module.Finite ℤ B` using `Module.Finite.iff_addGroup_fg.mpr ((AddGroup.fg_iff_addSubgroup_fg B).mpr hB)`. Establish `: Module.Finite ℤ A` using `Module.Finite.of_injective (AddSubgroup.inclusion hAB).toIntLinearMap (AddSubgroup.inclusion_injective hAB)`. Use `set n := C.factorial with hn`. Set `K : AddSubgroup A` to `(nsmulAddMonoidHom n : A →+ A).range`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `: Module.Finite ℤ (A ⧸ K)` using `Module.Finite.of_surjective (QuotientAddGroup.mk' K).toIntLinearMap (QuotientAddGroup.mk'_surjective K)`. Establish `htors : Module.IsTorsion ℤ (A ⧸ K)`. Introduce `x`. Use `⟨⟨(n : ℤ), mem_nonZeroDivisors_of_ne_zero (by exact_mod_cast (Nat.factorial_pos C).ne')⟩, ?_⟩` and prove the remaining obligations. Proceed by induction on `x using QuotientAddGroup.induction_on with`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately.
 
-Consider the case `H a => show (n : ℤ) • (QuotientAddGroup.mk a : A ⧸ K) = 0`. Rewrite using `[← QuotientAddGroup.mk_zsmul, QuotientAddGroup.eq_zero_iff, natCast_zsmul]`. Conclude with `⟨a, rfl⟩`. Establish `: Finite (A ⧸ K)` using `Module.finite_of_fg_torsion _ htors`. Establish `hK : ∀ H ∈ {H : AddSubgroup G | H ≤ A ∧ H.relIndex A ≠ 0 ∧ H.relIndex A ≤ C}, K ≤ H.addSubgroupOf A`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `H ⟨-, h0, hC⟩ _ ⟨a, rfl⟩`. Take `⟨k, hk⟩` from `Nat.dvd_factorial (Nat.pos_of_ne_zero h0) hC`. Rewrite using `[AddSubgroup.mem_addSubgroupOf]`. Use `show n • (a : G) ∈ H`. Rewrite using `[hn, hk, mul_nsmul]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `H.nsmul_mem (H.nsmul_relIndex_mem a.2) k`. Use `Set.Finite.of_finite_image (f := fun H : AddSubgroup G => (QuotientAddGroup.mk '' ((H.addSubgroupOf A : AddSubgroup A) : Set A) : Set (A ⧸ K))) (Set.toFinite _) ?_` and prove the remaining obligations. Establish `key : ∀ H₁ ∈ {H : AddSubgroup G | H ≤ A ∧ H.relIndex A ≠ 0 ∧ H.relIndex A ≤ C}, ∀ H₂ ∈ {H : AddSubgroup G | H ≤ A ∧ H.relIndex A ≠ 0 ∧ H.relIndex A ≤ C}, (QuotientAddGroup.mk '' ((H₁.addSubgroupOf A : AddSubgroup A) : Set A) : Set (A ⧸ K)) = QuotientAddGroup.mk '' ((H₂.addSubgrou …`. Introduce `H₁ h₁ H₂ h₂ he x hx`. Establish `hxA : x ∈ A` using `h₁.1 hx`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hmem : (QuotientAddGroup.mk (⟨x, hxA⟩ : A) : A ⧸ K) ∈ QuotientAddGroup.mk '' ((H₁.addSubgroupOf A : AddSubgroup A) : Set A)` using `⟨⟨x, hxA⟩, AddSubgroup.mem_addSubgroupOf.mpr hx, rfl⟩`. Rewrite `hmem` using `[he]`. Take `⟨y, hy, hyx⟩` from `hmem`. Establish `hd : -y + ⟨x, hxA⟩ ∈ H₂.addSubgroupOf A` using `hK H₂ h₂ (QuotientAddGroup.eq.mp hyx)`. Establish `: (⟨x, hxA⟩ : A) ∈ H₂.addSubgroupOf A`.
-
-Simplify using `using (H₂.addSubgroupOf A).add_mem hy hd`. Conclude with `AddSubgroup.mem_addSubgroupOf.mp this`. Conclude with `fun H₁ h₁ H₂ h₂ he => le_antisymm (key H₁ h₁ H₂ h₂ he) (key H₂ h₂ H₁ h₁ he.symm)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
 -/
 theorem BoundedIndexSubgroupsFinite.proof (G : Type*) [AddCommGroup G] :
     BoundedIndexSubgroupsFinite.Statement G := by

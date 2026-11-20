@@ -15,7 +15,7 @@ open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.HermitianLatt
 open GlobalTheory.LvT.Built (kAt)
 
 /- English proof (translation)
-Rewrite using `[← Fintype.sum_sigma]`. Use `congr 1`. Use `congr 1`. Conclude with `Subsingleton.elim _ _`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem sum_cl {E K M : Type} [Field E] [NumberField E] [Field K] [AddCommMonoid M] {n : ℕ} (S : GStep E K n) {i : Fintype S.Cl}
     [∀ b, Fintype (MulAction.orbitRel.Quotient (S.G b) (S.D b))] (g : S.Cl → M) : ∑ c, g c = ∑ b, ∑ q, g ⟨b, q⟩ := by
@@ -25,7 +25,7 @@ theorem sum_cl {E K M : Type} [Field E] [NumberField E] [Field K] [AddCommMonoid
   exact Subsingleton.elim _ _
 
 /- English proof (translation)
-Unfold `GSD.csOf`. Simplify using `only [GSD.wt_eq]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem csOf_eq {K M : Type} [Field K] [NumberField K] [StarRing K] [AddCommGroup M] [Module K M] (S : GSD K) (h : S.Ok) (s : S.Sec)
     (f : S.D → M) : S.csOf h s f = letI := h.fintypeCl
@@ -34,9 +34,9 @@ theorem csOf_eq {K M : Type} [Field K] [NumberField K] [StarRing K] [AddCommGrou
   simp only [GSD.wt_eq]
 
 /- English proof (translation)
-Use `letI : ∀ b, Fintype (MulAction.orbitRel.Quotient (S.G b) (S.D b)) := fun b => @Fintype.ofFinite _ (Finite.of_injective (@Sigma.mk _ (fun b => MulAction.orbitRel.Quotient (S.G b) (S.D b)) b) sigma_mk_injective)`. Rewrite using `[sum_cl]`. Use `(Fintype.sum_equiv e _ _ fun a => ?_).symm` and prove the remaining obligations. Rewrite using `[csOf_eq]`. Use `letI := (hT a).fintypeCl`.
+Equip the data with the indicated structure. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Equip the data with the indicated structure.
 
-Use `(sum_cover (π a) (hs a) (h1 a) (h2 a) (h3 a) (S.rp _) (S.rp_spec _) _ (T a).outSec.spec (f a) (hf a)).symm.trans ?_` and prove the remaining obligations. Conclude with `Finset.sum_congr rfl fun q _ => congrArg _ (hF a q).symm`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem sum_step {E K M β : Type} [Field E] [NumberField E] [Field K] [NumberField K] [StarRing K] [AddCommGroup M] [Module K M]
     {n : ℕ} (S : GStep E K n) {i : Fintype S.Cl} [Fintype β] (e : β ≃ S.β) (T : β → GSD K) (hT : ∀ a, (T a).Ok)
@@ -58,14 +58,14 @@ theorem sum_step {E K M β : Type} [Field E] [NumberField E] [Field K] [NumberFi
   exact Finset.sum_congr rfl fun q _ => congrArg _ (hF a q).symm
 
 /- English proof (translation)
-Rewrite using `[Submodule.coe_sum, Finset.sum_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem eqFun_sum {K β : Type} [Field K] [NumberField K] [StarRing K] (S : GSD K) [Fintype β] (f : β → S.EqFun) (d : S.D) :
     (∑ a, f a).1 d = ∑ a, (f a).1 d := by
   rw [Submodule.coe_sum, Finset.sum_apply]
 
 /- English proof (translation)
-Simplify using `only [GSD.csOf, LinearMap.sum_apply, LinearMap.smul_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem csOf_apply₂ {K M M' : Type} [Field K] [NumberField K] [StarRing K] (S : GSD K) (h : S.Ok) (s : S.Sec) [AddCommGroup M]
     [Module K M] [AddCommGroup M'] [Module K M'] (B : S.D → (M →ₗ[K] M' →ₗ[K] K)) (x : M) (y : M') :
@@ -73,7 +73,7 @@ theorem csOf_apply₂ {K M M' : Type} [Field K] [NumberField K] [StarRing K] (S 
   simp only [GSD.csOf, LinearMap.sum_apply, LinearMap.smul_apply]
 
 /- English proof (translation)
-Unfold `ClsKer.appOf`. Simplify using `only [cpl_comp_k, LinearMap.sum_apply, LinearMap.smul_apply, LinearMap.comp_apply, map_sum, map_smul, Finset.smul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun q _ => Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[smul_comm]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem comp_appOf {K : Type} [Field K] [NumberField K] [StarRing K] {S₀ S S₁ : GSD K} {Y : Cpl S}
     (A : CplKer S₀ S S₁ Y) (h₀ : S₀.Ok) (h : S.Ok) (φ : S₀.D → S₀.V) (d₁ : S₁.D) :
@@ -98,7 +98,7 @@ def idxEquiv {j : ℕ} (h : j < R.m) : L.β j ≃ Idx sel mu L j where
   right_inv b := Idx.of_get b h h
 
 /- English proof (translation)
-Rewrite using `[matK_eq_xiAt W Ch sel mu cst L _ hi]`. Unfold `kAt KerT.ker`. Rewrite using `[← stepC_eq_stepT W Ch sel mu cst (muqTie_of_ok Ch sel mu cst L hL) A u i (by omega)]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem kAt_mat (hL : L.Ok Ch sel mu cst G m2) {i : ℕ} (hi : i + 2 < R.m) (al : L.β i) (be : L.β (i + 1))
     (p : PtAt R sel mu cst u i) (p' : PtAt R sel mu cst u (i + 1)) :
@@ -110,7 +110,7 @@ theorem kAt_mat (hL : L.Ok Ch sel mu cst G m2) {i : ℕ} (hi : i + 2 < R.m) (al 
   rfl
 
 /- English proof (translation)
-Establish `hm` using `hL.hm`. Rewrite using `[firstCoupledKernel_eq_columnChainDatum W Ch sel mu cst L _ hm.symm al b']`. Unfold `kAt KerT.ker`. Rewrite using `[← stepC_eq_stepT W Ch sel mu cst (muqTie_of_ok Ch sel mu cst L hL) A u m2 (by omega)]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem kernelAtPoint_penultimateStep_firstCoupledKernel (hL : L.Ok Ch sel mu cst G m2) (al : L.β m2) (b' : Idx sel mu L (m2 + 1))
     (p : PtAt R sel mu cst u m2) (p' : PtAt R sel mu cst u (m2 + 1)) :
@@ -123,7 +123,7 @@ theorem kernelAtPoint_penultimateStep_firstCoupledKernel (hL : L.Ok Ch sel mu cs
   rfl
 
 /- English proof (translation)
-Establish `hm` using `hL.hm`. Rewrite using `[k2top_eq_xiOver W Ch sel mu cst _ hm.symm]`. Unfold `KerT.ker`. Rewrite using `[← stepC_eq_stepT W Ch sel mu cst (muqTie_of_ok Ch sel mu cst L hL) A u (m2 + 1) (by omega)]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem ker_top (hL : L.Ok Ch sel mu cst G m2) (p : PtAt R sel mu cst u (m2 + 1)) (q : ChPt (R := R) sel mu u R.m) :
     KerT.ker W Ch sel mu cst A u (m2 + 1) R.m p.1.1.deco.1.N (frsF sel mu p.1.1) q.deco.1.N (frsF sel mu q)
@@ -137,13 +137,11 @@ theorem ker_top (hL : L.Ok Ch sel mu cst G m2) (p : PtAt R sel mu cst u (m2 + 1)
 variable {W Ch u} in
 
 /- English proof (translation)
-Establish `hQ : ∀ P : QE sel (mu : Chr X.F X.E X.K), Pr.piT u ∉ P.1.asIdeal` using `fun P => H.2.1 (TopStep.inQ Pr sel mu P)`. Establish `e0` using `forgetFr_tilF sel mu hPr u hQ d`. Unfold `topDegreeKTwo cp2K`. Use `split_ifs with hY`. Establish `hκ : ∀ P : rowSG Pr sel mu, ∃ κ : GLint X.E (R.N R.m) P.1, redGL _ P.1 κ = 1 ∧ frsF sel mu (tilF sel mu u d) P = frsT sel mu u (toRow sel mu d) P * κ.1` using `fun P => by`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `exists_of_isLiftFr ?_ (liftFr_spec (tilQ sel mu u (toRow sel mu d)).2 P)` and prove the remaining obligations. Rewrite using `[← e0]`. Unfold `frsF`. Use `split_ifs with hP`. Establish `h` using `liftFr_spec (tilF sel mu u d).deco.2 ⟨P.1, hP⟩`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨h.1, fun x hx => ?_⟩` and prove the remaining obligations. Conclude with `(congrFun (forgetDeco_be_of_mem _ P hP) _).trans (h.2 x hx)`. Conclude with `isLiftFr_forgetFr _ P hP`. Use `choose κ hκ e using hκ`. Rewrite using `[XiTop_tilF Ch sel mu cst hX hPr hsel hc H hm p hY, funext e, tilF_N sel mu hPr u hQ]`.
-
-Unfold `kerOf`. Use `congrArg (latSum _ _) (funext fun x => congrArg _ ?_)` and prove the remaining obligations. Conclude with `hT _ _ _ _ _ _ κ ⟨p.deco.2.lat, p.deco.2.uni⟩ ⟨(tilQ sel mu u _).2.lat, (tilQ sel mu u _).2.uni⟩ hκ`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem k2top_tilF (hX : X.Ok) (hPr : Pr.Ok) (hsel : IsSel X sel) (hm : R.m = m2 + 2) (hc : cst.Ok) (H : TilOk Pr sel mu u)
     {T : ChTh W sel mu u m2} (hT : TameFr T.top) (p : ChPt (R := R) sel mu u (m2 + 1)) (Y : Set (Sp X.E (R.N (m2 + 1))))
@@ -185,7 +183,7 @@ variable {u Tp} (r : Reps sel mu cst L u Tp)
   { stepAt sel mu cst L Tp u j with rp := r.rp j, rp_spec := r.spec j }
 
 /- English proof (translation)
-Establish `hy` using `ysAt_ys_of_ne (R := R) sel mu cst hj.ne`. Conclude with `sum_step (r.step j) (idxEquiv (Nat.lt_of_succ_lt hj)) (chF W sel mu L u j).mem hF (fun _ p => p.1.1) (fun _ q => exists_ptAt sel mu cst q) (fun _ g _ => ⟨g, rfl⟩) (fun _ g d e h => ⟨g, StepZero.pt_ext hy h⟩) (fun al d => congrArg (fun H : Subgroup (FrmG (L.levG j al) (L.levQ j al …`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem sum_low {M : Type} [AddCommGroup M] [Module X.K M] {j : ℕ} (hj : j + 1 < R.m) (hF : (chF W sel mu L u j).Ok)
     {i : Fintype (GStep.Cl (r.step j))} (F : GStep.Cl (r.step j) → M)
@@ -202,9 +200,9 @@ theorem sum_low {M : Type} [AddCommGroup M] [Module X.K M] {j : ℕ} (hj : j + 1
       (Subgroup.ext fun g => ⟨fun h => congrArg (fun p : PtAt R sel mu cst u j => p.1.1) h, fun h => StepZero.pt_ext hy h⟩)) F f e hf
 
 /- English proof (translation)
-Establish `hm` using `hL.hm`. Establish `hj : m2 + 1 < R.m` using `by omega`. Set `ε : Unit ≃ Idx sel mu L (m2 + 1)` to `⟨fun _ => Idx.of b hj, fun _ => (), fun _ => rfl, fun b' => by`. Take `⟨b₀, h₀⟩` from `hL.last_uniq`. Use `show Idx.of b hj = b'`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Idx.of_get b' hj hj, h₀ (b'.get hj), h₀ b]⟩`. Use `(sum_step (r.step (m2 + 1)) ε (fun _ => cplGSD (midGSD W sel mu L u m2 b) (ybCpl W sel mu cst L u m2 b hY)) (fun _ => hC) (fun _ p => ⟨p.1, PtAt.mem_ybSet p hm.symm⟩) (fun _ q => ⟨⟨q.1, by rw [ysAt_ys_of_eq sel mu cst hm.symm]; exact q.2⟩, rfl⟩) (fun _ g _ => ⟨g, rfl⟩) (fun _ g d …` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem sum_mid {M : Type} [AddCommGroup M] [Module X.K M] (hL : L.Ok Ch sel mu cst G m2) (b : L.β (m2 + 1))
     (hY : YbHyp (R := R) sel mu cst L u m2 b) (hC : (cplGSD (midGSD W sel mu L u m2 b) (ybCpl W sel mu cst L u m2 b hY)).Ok)
@@ -232,9 +230,9 @@ theorem sum_mid {M : Type} [AddCommGroup M] [Module X.K M] (hL : L.Ok Ch sel mu 
     F (fun _ => f) (fun _ q => e _ _) fun _ => hf).trans (Fintype.sum_unique _)
 
 /- English proof (translation)
-Establish `hy : ∀ N, (Ys.triv X (R.N R.m - 1)).ys N = {∅}` using `fun _ => rfl`. Use `(sum_step (stepX Ch sel mu P) (Equiv.refl Unit) (fun _ => mtildeGSD W Ch sel mu P) (fun _ => hM) (fun _ p => toRow sel mu p.1.1) (fun _ q => ?_) (fun _ g d => ⟨toRowG Ch sel mu P g, toRow_smul Ch sel mu P g d.1.1⟩) (fun _ g d e h => ?_) (fun _ d => ?_) _ (fun _ => f) (fun _ _ => …` and prove the remaining obligations. Take `⟨p, rfl⟩` from `toRow_surjective sel mu q`. Conclude with `⟨trivPt X _ _ _ _ p, rfl⟩`. Take `⟨g, -, h⟩` from `exists_toRowG_smul Ch sel mu P hd g d.1.1 e.1.1 h`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨g, StepZero.pt_ext hy h⟩`. Use `Eq.trans ?_ (card_stabilizer_toRow Ch sel mu P hd d.1.1)` and prove the remaining obligations. Conclude with `congrArg (fun H : Subgroup (FrmG (rowTyG Ch P) (levQX R sel mu)) => Nat.card H) (Subgroup.ext fun g => ⟨fun h => congrArg (fun p : (stepX Ch sel mu P).D () => p.1.1) h, fun h => StepZero.pt_ext hy h⟩)`.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem sum_row {M : Type} [AddCommGroup M] [Module X.K M] (P : LevFam X.E X.K R.r Pr.vGs)
     (hd : Disjoint Pr.vGs (QE sel (mu : Chr X.F X.E X.K))) (hM : (mtildeGSD W Ch sel mu P).Ok)
@@ -282,11 +280,11 @@ variable {b : L.β (m2 + 1)} {hY : YbHyp (R := R) sel mu cst L u m2 b} {P : LevF
   (φ : MfV W Ch u)
 
 /- English proof (translation)
-Establish `hm` using `hL.hm`. Proceed by induction on `j with`. Consider the case `zero => rfl`. Consider the case `succ j ih`. Establish `hj' : j < m2` using `hj`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Rewrite using `[colAt_succ]`. Use `(sum_low (M := VV X.K (W.lamTrue u (j + 1))) W r (by omega) (hF j) (fun c => kAt W Ch sel mu cst L A u j c.1 _ (GStep.rep _ c) p (colAt W Ch A r rho rho' jet DG hI φ j c.1 (GStep.rep _ c))) (fun a d => ((chKerC W Ch sel mu cst L A u m2 b hY P hK).kk j a al).k d p.1.1 (((chKerC W …` and prove the remaining obligations. Rewrite using `[← ih hj'.le]`. Use `LinearMap.congr_fun ((kAt_mat W Ch A u hL (by omega) a al _ p).trans ?_) _` and prove the remaining obligations. Establish `e : (chKerC W Ch sel mu cst L A u m2 b hY P hK).kk j a al = ⟨_, hK.1 j hj' a al⟩` using `dif_pos hj'`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[e]`. Use `show _ = ((∑ a, (((chKerC W Ch sel mu cst L A u m2 b hY P hK).kk j a al).opOf (hF j a) _) ∘ₗ (LinearMap.proj a)) ((chKerC W Ch sel mu cst L A u m2 b hY P hK).kk.colTo hF j (startC hL u φ))).1 p.1.1`. Rewrite using `[LinearMap.sum_apply, Submodule.coe_sum, Finset.sum_apply]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem colAt_low {j : ℕ} (hj : j ≤ m2) (al : L.β j) (p : PtAt R sel mu cst u j) :
     colAt W Ch A r rho rho' jet DG hI φ j (Idx.of al (by have := hL.hm; omega)) p =
@@ -317,9 +315,9 @@ def midForm : (cplGSD (midGSD W sel mu L u m2 b) (ybCpl W sel mu cst L u m2 b hY
     ((chKerC W Ch sel mu cst L A u m2 b hY P hK).kk.colTo hF m2 (startC hL u φ) al)
 
 /- English proof (translation)
-Establish `hm` using `hL.hm`. Rewrite using `[colAt_succ]`. Use `(sum_low (M := VV X.K (W.lamTrue u (m2 + 1))) W r (by omega) (hF m2) (fun c => kAt W Ch sel mu cst L A u m2 c.1 b' (GStep.rep _ c) p (colAt W Ch A r rho rho' jet DG hI φ m2 c.1 (GStep.rep _ c))) (fun a d => (cplKer1 ((chKerC W Ch sel mu cst L A u m2 b hY P hK).cp a)).k d ⟨p.1, h⟩ …` and prove the remaining obligations. Rewrite using `[← colAt_low W Ch A r rho rho' jet DG hI hK hF hL φ le_rfl]`. Conclude with `LinearMap.congr_fun (kernelAtPoint_penultimateStep_firstCoupledKernel W Ch A u hL a b' _ p) _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Eq.trans ?_ (eqFun_sum (cplGSD (midGSD W sel mu L u m2 b) (ybCpl W sel mu cst L u m2 b hY)) _ _).symm` and prove the remaining obligations. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem colAt_mid (b' : Idx sel mu L (m2 + 1)) (p : PtAt R sel mu cst u (m2 + 1)) (h) :
     colAt W Ch A r rho rho' jet DG hI φ (m2 + 1) b' p = (midForm W Ch A hK hF hL φ).1 ⟨p.1, h⟩ := by
@@ -337,7 +335,7 @@ theorem colAt_mid (b' : Idx sel mu L (m2 + 1)) (p : PtAt R sel mu cst u (m2 + 1)
     rfl
 
 /- English proof (translation)
-Substitute `e` using the available equality. Rewrite using `[colAt_succ]`. Use `Finset.sum_congr rfl fun c _ => congrArg _ ?_` and prove the remaining obligations. Rewrite using `[← xiAt_last Ch sel mu cst L (b := c.1) (b' := b') h]`. Both sides reduce to the same expression.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem colAt_last {j : ℕ} (e : j = m2 + 1 + 1) (h : j = R.m) (b' : Idx sel mu L j) (p' : PtAt R sel mu cst u j) :
     colAt W Ch A r rho rho' jet DG hI φ j b' p' =
@@ -353,9 +351,9 @@ theorem colAt_last {j : ℕ} (e : j = m2 + 1 + 1) (h : j = R.m) (b' : Idx sel mu
   rfl
 
 /- English proof (translation)
-Establish `hm` using `hL.hm`. Establish `hC` using `cplGSD_ok (ybCpl W sel mu cst L u m2 b hY) (hF (m2 + 1) b)`. Set `k2 : ClsKer (cplGSD (midGSD W sel mu L u m2 b) (ybCpl W sel mu cst L u m2 b hY)) (evGSD W Ch sel mu P u)` to `⟨fun q d => cp2K W Ch sel mu cst (chTh W Ch sel mu cst A u m2) q.1.1 q.1.2 d, fun g g₁ q d => hK.2.2 g g₁ q.1.1 q.1.2 d⟩`. Rewrite using `[colAt_last W Ch A r rho rho' jet DG hI φ hm rfl]`. Use `(sum_mid (M := VV X.K (W.lamTrue u R.m)) W Ch r hL b hY hC _ (fun q => k2.k q (toRow sel mu d) ((midForm W Ch A hK hF hL φ).1 q)) (fun c h => ?_) fun g q => ClsKer.term_smul _ _ g q _).trans ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[colAt_mid W Ch A r rho rho' jet DG hI hK hF hL φ _ _ h]`. Conclude with `LinearMap.congr_fun ((ker_top W Ch A u hL _ _).trans (k2top_tilF hX hPr hsel hm hL.cst_ok H (tameFr_chTh W Ch sel mu cst A u m2) _ _ d)) _`. Use `show (k2.op hC (midForm W Ch A hK hF hL φ)).1 (toRow sel mu d) = ((∑ a, ((((chKerC W Ch sel mu cst L A u m2 b hY P hK).cp a).comp (hF (m2 + 1) b) _).opOf (hF m2 a) _) ∘ₗ (LinearMap.proj a)) ((chKerC W Ch sel mu cst L A u m2 b hY P hK).kk.colTo hF m2 (startC hL u φ))).1 (toRow sel …`. Rewrite using `[midForm, map_sum, LinearMap.sum_apply, Submodule.coe_sum, Submodule.coe_sum, Finset.sum_apply, Finset.sum_apply]`. Conclude with `Finset.sum_congr rfl fun a _ => (comp_appOf ((chKerC W Ch sel mu cst L A u m2 b hY P hK).cp a) (hF m2 a) (hF (m2 + 1) b) ((chKerC W Ch sel mu cst L A u m2 b hY P hK).kk.colTo hF m2 (startC hL u φ) a).1 (toRow sel mu d)).symm`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem colAt_top (hX : X.Ok) (hPr : Pr.Ok) (hsel : IsSel X sel) (H : TilOk Pr sel mu u) (b' : Idx sel mu L R.m)
     (d : XPt Pr R sel mu) :
@@ -381,7 +379,7 @@ theorem colAt_top (hX : X.Ok) (hPr : Pr.Ok) (hsel : IsSel X sel) (H : TilOk Pr s
 omit hF hL in
 
 /- English proof (translation)
-Establish `h1 : brC W u (ψ.1 (g • d)) = ((((rowTy Ch sel mu P).inv.chr g.2)⁻¹ : X.Kˣ) : X.K) • rhoVr X.emb W.sgTrue (ufGL X.E _ g.1) (brC W u (ψ.1 d))` using `(congrArg (brC W u) (ψ.2 g d)).trans (((brC W u).map_smul _ _).trans (congrArg _ (TilClass.brC_rho W hW g.1 _)))`. Establish `h2 : z.1 (g • d) = (((rowTy Ch sel mu P).inv.chr g.2 : X.Kˣ) : X.K) • rhoV X.emb W.sgTrue (ufGL X.E _ g.1) (z.1 d)` using `z.2 g d`. Rewrite using `[h1, h2, map_smul, map_smul, LinearMap.smul_apply, smul_smul, Units.mul_inv, one_smul]`. Conclude with `pairingBInvariant_holds X.E X.K X.Tau _ X.emb W.sgTrue (ufGL _ _ g.1) _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pair_smul (hW : W.Ok) (ψ : (evGSD W Ch sel mu P u).EqFun) (z : (mtildeGSD W Ch sel mu P).EqFun)
     (g : (mtildeGSD W Ch sel mu P).G) (d : (mtildeGSD W Ch sel mu P).D) :
@@ -394,9 +392,9 @@ theorem pair_smul (hW : W.Ok) (ψ : (evGSD W Ch sel mu P u).EqFun) (z : (mtildeG
   exact pairingBInvariant_holds X.E X.K X.Tau _ X.emb W.sgTrue (ufGL _ _ g.1) _ _
 
 /- English proof (translation)
-Use `(ptilCol_ev _ hQ h h' (fun _ p => φ.1 p.1.1.deco) _ (fun c => z.1 (toRow sel mu (GStep.rep (stepX Ch sel mu P) c).1.1)) fun _ => rfl).trans (congrArg σ ?_)` and prove the remaining obligations. Use `Eq.trans ?_ ((sum_row W Ch P H.2.2 hM (i := PerIn.clFin _ hQ) (fun d => pairBK W.sgTrue (brC W u ((colMu W Ch sel mu cst L A u m2 b hY P hK hF hL φ).1 d)) (z.1 d)) (pair_smul W Ch hW _ z)).trans ?_)` and prove the remaining obligations. Use `Finset.sum_congr rfl fun c _ => congrArg _ ?_` and prove the remaining obligations. Rewrite using `[← colAt_top W Ch A r rho rho' jet DG hI hK hF hL φ hX hPr hsel H b0]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `Eq.trans ?_ (csOf_apply₂ (mtildeGSD W Ch sel mu P) hM _ _ _ _).symm` and prove the remaining obligations. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Both sides reduce to the same expression.
 -/
 theorem ptilCol_eq (hX : X.Ok) (hPr : Pr.Ok) (hW : W.Ok) (hsel : IsSel X sel) (H : TilOk Pr sel mu u) (σ : X.K →+* ℂ)
     (h : ∀ i, i < R.m → ReadsAt X.emb σ hI (kPt W Ch A r rho rho' jet DG) i)

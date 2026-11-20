@@ -4,9 +4,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisCochains.Gen
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Module UpperTheory.V UpperTheory.V.Fr UpperTheory.V.GC
 
 /- English proof (translation)
-Establish `h1` using `congrArg Units.val h`. Simplify using `only [cycMod, MonoidHom.comp_apply, Units.coe_map, Units.val_one] at h1`. Establish `hk : ((cycZ F Ω l g : ℤ_[l]ˣ) : ℤ_[l]) - 1 ∈ RingHom.ker (PadicInt.toZModPow 1 : ℤ_[l] →+* ZMod (l ^ 1))`. Rewrite using `[RingHom.mem_ker, map_sub, map_one, sub_eq_zero]`. Conclude with `h1`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hk` using `[PadicInt.ker_toZModPow, pow_one, ← PadicInt.maximalIdeal_eq_span_p, ← PadicInt.ker_toZMod, RingHom.mem_ker, map_sub, map_one, sub_eq_zero]`. Conclude with `hk`.
+A detailed English derivation is pending.
 -/
 private theorem toZMod_cycZ_eq_one_of_cycMod_eq_one (F Ω : Type) [Field F] [Field Ω] [Algebra F Ω] (l : ℕ) [Fact l.Prime]
     (g : G F Ω) (h : cycMod F Ω l 1 g = 1) :
@@ -22,23 +22,21 @@ private theorem toZMod_cycZ_eq_one_of_cycMod_eq_one (F Ω : Type) [Field F] [Fie
   exact hk
 
 /- English proof (translation)
-Introduce `hP F Ω _ _ _ _ _ l _ k _ _ Φ S K π ι A pl e c hL hom v`. Establish `hdv : Φ.dv v = locDeg (pl v)` using `hL.dv v`. Establish `hmemv : ((l : ℕ) : 𝓞 F) ∈ (pl v).asIdeal` using `(hL.loc.mem (pl v)).1 ⟨v, rfl⟩`. Establish `hcyc : ∃ g ∈ Dec (A v), cycMod F Ω l 1 g ≠ 1`. Take `⟨s, hs⟩` from `hom v`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨ι v s, ?_, fun h1 => hs ?_⟩` and prove the remaining obligations. Rewrite using `[← hL.loc.range v]`. Conclude with `⟨s, rfl⟩`. Establish `h2` using `toZMod_cycZ_eq_one_of_cycMod_eq_one F Ω l _ h1`. Apply `Units.ext` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `[Fr.Frame.om, hL.loc_eq, hL.eps, h2]`. Take `⟨u', a₀', hu1, hu2, hu3⟩` from `genDec hP.lf hP.lt hP.le F Ω l hL.g.odd (pl v) (A v) (hL.loc.isOver v) hmemv hcyc K hL.g.normal hL.g.isOpen hL.g.idx`. Set `eq : Φ.Gv v ≃* Dec (A v)` to `(MonoidHom.ofInjective (hL.loc.ι_inj v)).trans (MulEquiv.subgroupCongr (hL.loc.range v))`. Establish `heq : ∀ x, ((eq x : Dec (A v)) : G F Ω) = ι v x` using `fun x => rfl`. Establish `hcont : Continuous eq`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `continuous_induced_rng.2` to reduce the goal to its premises. Conclude with `hL.loc.cont v`. Set `h'` to `hcont.homeoOfEquivCompactToT2 (f := eq.toEquiv)`. Use `⟨fun a => eq.symm (u' (Fin.cast hdv a)), Fin.cast hdv.symm a₀', fun a => ⟨?_, ?_⟩, fun a ha => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hL.ine v, Subgroup.mem_comap, ← heq, MulEquiv.apply_symm_apply]`.
+Reduce the claim to the hypotheses of an applicable result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(hu1 _).1`. Rewrite using `[hL.loc_eq, ← heq, MulEquiv.apply_symm_apply]`. Conclude with `hL.K_Ψ _ (hu1 _).2`. Use `Subgroup.mem_inf.2 ⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hL.ine v, Subgroup.mem_comap, ← heq, MulEquiv.apply_symm_apply]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(hu1 _).1`. Rewrite using `[MonoidHom.mem_ker, MonoidHom.comp_apply, hL.loc_eq, hL.eps, ← heq, MulEquiv.apply_symm_apply]`. Use `hu2 _ fun h => ha ?_` and prove the remaining obligations. Rewrite using `[← h]`. Use `ext`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Introduce `B _ _ hB χ hχ hu g hg`. Set `χ' : Dec (A v) →* B` to `χ.comp eq.symm.toMonoidHom`. Establish `hopen : IsOpen (SetLike.coe χ'.ker)`. Establish `hs : SetLike.coe χ'.ker = h'.symm ⁻¹' (SetLike.coe χ.ker)` using `rfl`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hs]`. Conclude with `hχ.preimage h'.symm.continuous`. Establish `hg' : ((eq g : Dec (A v)) : G F Ω) ∈ Ine (A v)`. Rewrite using `[heq]`. Rewrite `hg` using `[hL.ine v]`.
-
-Conclude with `hg`. Use `hu3 B hB χ' hopen (fun a => by simpa [χ'] using hu (Fin.cast hdv.symm a)) (eq g) hg'` as an intermediate fact. Simplify `this` using `[χ']`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.GC.gen :
     Hypotheses₂ → ∀ (F Ω : Type) [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] (l : ℕ) [Fact l.Prime] (k : Type) [Field k] [CharP k l] (Φ : Fr.Frame l k) (S : Finset (HeightOneSpectrum (𝓞 F))) (K : Subgroup (G F Ω)) (π : G F Ω →* Φ.Γ) (ι : ∀ v, Φ.Gv v →* G F Ω) (A : Φ.V → ValuationSubring Ω) (pl : Φ.V → HeightOneSpectrum (𝓞 F)) (e : Φ.Inf ≃ InfinitePlace F) (c : Φ.Inf → G F Ω), FLink l Φ S K π ι A pl e c → (∀ v, ∃ s, Φ.om k (Φ.loc v s) ≠ 1) → ∀ v, ∃ (u : Fin (Φ.dv v) → Φ.Gv v) (a₀ : Fin (Φ.dv v)), (∀ a, u a ∈ Φ.Iv v ∧ Φ.Ψ (Φ.loc v (u a)) = 1) ∧ (∀ a, a ≠ a₀ → u a ∈ Φ.Nv v) ∧

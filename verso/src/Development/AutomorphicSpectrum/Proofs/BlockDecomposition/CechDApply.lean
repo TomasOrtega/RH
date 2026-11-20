@@ -16,15 +16,15 @@ namespace GlobalTheory.CompanionTheory.CechOne
 variable {R : Type} [CommRing R]
 
 /- English proof (translation)
-The claim follows from `(Submodule.Quotient.mk_eq_zero ((K.B n).submoduleOf (K.Z n))).1 h`.
+A detailed English derivation is pending.
 -/
 theorem mem_B_of_cls {K : Cx.{w} R} {n : ℕ} {x : K.X n} (hx : K.d n x = 0) (h : K.cls x hx = 0) : x ∈ K.B n :=
   (Submodule.Quotient.mk_eq_zero ((K.B n).submoduleOf (K.Z n))).1 h
 
 /- English proof (translation)
-Consider the cases of `n with`. Consider the case `zero`. Establish `h0 : x = 0` using `h`. Rewrite using `[h0, map_zero]`. Consider the case `succ n`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Take `⟨g, rfl⟩` from `h`. Conclude with `K.dd n g`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem d_of_mem_B (K : Cx.{w} R) (n : ℕ) (x : K.X n) (h : x ∈ K.B n) : K.d n x = 0 := by
   cases n with
@@ -45,19 +45,19 @@ def LowB (q : ℕ) : Prop :=
   (∀ b : K.X 0 q, b ∈ (K.col 0).B q → K.dh 0 q b = 0 → ∃ z ∈ E.B q, e.ε q z = b)
 
 /- English proof (translation)
-Introduce `q`. Proceed by induction on `q with`. Consider the case `zero`. Introduce `_`. Prove the components needed by the constructor for the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion.
 
-Introduce `p b hb _`. Establish `h0 : b = 0` using `hb`. Conclude with `⟨0, Submodule.zero_mem _, by rw [h0, map_zero]⟩`. Introduce `b hb _`. Establish `h0 : b = 0` using `hb`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `⟨0, Submodule.zero_mem _, by rw [h0, map_zero]⟩`. Consider the case `succ q ih`. Introduce `hq`. Take `⟨i1, -⟩` from `ih (by omega)`. Establish `L1 : ∀ p (x : K.X (p + 1) q), K.dv (p + 1) q x = 0 → K.dh (p + 1) q x = 0 → ∃ y, K.dh p q y = x ∧ K.dv p q y = 0`.
+Supply the required witnesses or components. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `p x hv hh`. Take `⟨b', hb', e'⟩` from `i1 p x (hc _ _ (by omega) x hv) hh`. Conclude with `⟨b', e', d_of_mem_B (K.col p) q b' hb'⟩`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `p b ⟨c, rfl⟩ hb`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Express the relevant statement in the definitionally equal form `K.dh (p + 1) (q + 1) (K.dv (p + 1) q c) = 0 at hb`. Rewrite `hb` using `[K.hv]`. Take `⟨y, hy, hyv⟩` from `L1 (p + 1) (K.dh (p + 1) q c) hb (K.hh _ _ _)`. Take `⟨v, hv⟩` from `hr p q (c - y) (by rw [map_sub, hy, sub_self])`. Use `⟨K.dv p q v, ⟨v, rfl⟩, ?_⟩` and prove the remaining obligations.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Express the relevant statement in the definitionally equal form `K.dh p (q + 1) (K.dv p q v) = K.dv (p + 1) q c`. Rewrite using `[K.hv, hv, map_sub, hyv, sub_zero]`. Introduce and unpack `b ⟨c, rfl⟩ hb`. Express the relevant statement in the definitionally equal form `K.dh 0 (q + 1) (K.dv 0 q c) = 0 at hb`. Rewrite `hb` using `[K.hv]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨y, hy, hyv⟩` from `L1 0 (K.dh 0 q c) hb (K.hh _ _ _)`. Take `⟨z, hz⟩` from `hr0 q (c - y) (by rw [map_sub, hy, sub_self])`. Use `⟨E.d q z, ⟨z, rfl⟩, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `e.ε (q + 1) (E.d q z) = K.dv 0 q c`. Rewrite using `[← e.comm, hz, map_sub, hyv, sub_zero]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem lowB (hr0 : ∀ q x, K.dh 0 q x = 0 → ∃ y, e.ε q y = x)
     (hr : ∀ p q x, K.dh (p + 1) q x = 0 → ∃ y, K.dh p q y = x)
@@ -100,7 +100,7 @@ theorem lowB (hr0 : ∀ q x, K.dh 0 q x = 0 → ∃ y, e.ε q y = x)
       rw [← e.comm, hz, map_sub, hyv, sub_zero]
 
 /- English proof (translation)
-Take `⟨z', hz', h'⟩` from `(h q hq).2 _ hz (e.hε q z)`. Rewrite using `[← hinj q h']` and apply the resulting hypothesis.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 -/
 theorem mem_B_of_eps (hinj : ∀ q, Function.Injective (e.ε q)) (h : ∀ q, q ≤ a → LowB e q) {q : ℕ} (hq : q ≤ a)
     (z : E.X q) (hz : e.ε q z ∈ (K.col 0).B q) : z ∈ E.B q := by
@@ -108,7 +108,7 @@ theorem mem_B_of_eps (hinj : ∀ q, Function.Injective (e.ε q)) (h : ∀ q, q �
   rwa [← hinj q h']
 
 /- English proof (translation)
-Take `⟨b, hb, eb⟩` from `(h a le_rfl).1 0 _ hd (K.hh _ _ _)`. Take `⟨z, hz⟩` from `hr0 a (u - b) (by rw [map_sub, eb, sub_self])`. Use `⟨z, b, hinj (a + 1) ?_, hb, by rw [hz, sub_add_cancel]⟩` and prove the remaining obligations. Rewrite using `[← e.comm, hz, map_zero, map_sub, hu, d_of_mem_B (K.col 0) a b hb, sub_zero]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_lift (hinj : ∀ q, Function.Injective (e.ε q)) (hr0 : ∀ q x, K.dh 0 q x = 0 → ∃ y, e.ε q y = x)
     (h : ∀ q, q ≤ a → LowB e q) (u : K.X 0 a) (hu : K.dv 0 a u = 0) (hd : K.dh 0 a u ∈ (K.col 1).B a) :
@@ -123,7 +123,7 @@ end Tic
 variable {ι : Type} [DecidableEq ι]
 
 /- English proof (translation)
-Rewrite using `[Cos.d_apply, Finset.sum_apply]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem cech_d_apply (P : PM.{w} R ι) (p : ℕ) (x : P.cech.X p) (t : Fin (p + 2) → ι) :
     P.cech.d p x t = ∑ k : Fin (p + 2), (-1 : ℤ) ^ (k : ℕ) • P.res (ent_comp t k.succAbove) (x (t ∘ k.succAbove)) := by
@@ -131,7 +131,7 @@ theorem cech_d_apply (P : PM.{w} R ι) (p : ℕ) (x : P.cech.X p) (t : Fin (p + 
   rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `t`. Rewrite using `[cech_d_apply, Fin.sum_univ_two]`. Express the relevant statement in the definitionally equal form `(-1 : ℤ) ^ 0 • P.res _ (P.res _ x) + (-1 : ℤ) ^ 1 • P.res _ (P.res _ x) = 0`. Rewrite using `[P.res_comp, P.res_comp]`. Simplify using the standard rewrite rules.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem d_aug (P : PM.{w} R ι) (x : P.M ∅) : P.cech.d 0 (P.aug x) = 0 := by
   funext t
@@ -141,7 +141,7 @@ theorem d_aug (P : PM.{w} R ι) (x : P.M ∅) : P.cech.d 0 (P.aug x) = 0 := by
   simp
 
 /- English proof (translation)
-The claim follows from `Finset.univ_nonempty.image i`.
+A detailed English derivation is pending.
 -/
 theorem ent_nonempty {n : ℕ} (i : Fin (n + 1) → ι) : (ent i).Nonempty :=
   Finset.univ_nonempty.image i
@@ -173,9 +173,9 @@ def aug : DCx.AugRow (A.K ∅) (dcx A) where
     exact (A.res _).comm q x
 
 /- English proof (translation)
-Consider the cases of `q with`. Consider the case `zero`. Establish `h0 : x = 0` using `funext h`. Conclude with `h0`. Consider the case `succ q => choose c hc using h`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Establish an intermediate fact. Treat this case separately. Supply the required witnesses or components.
 
-Conclude with `⟨c, funext hc⟩`.
+A detailed English derivation is pending.
 -/
 theorem mem_col_B {p q : ℕ} (x : (dcx A).X p q) (h : ∀ i, x i ∈ (A.K (ent i)).B q) : x ∈ ((dcx A).col p).B q := by
   cases q with
@@ -187,9 +187,9 @@ theorem mem_col_B {p q : ℕ} (x : (dcx A).X p q) (h : ∀ i, x i ∈ (A.K (ent 
     exact ⟨c, funext hc⟩
 
 /- English proof (translation)
-Consider the cases of `q with`. Consider the case `zero`. Establish `h0 : x = 0` using `h`. Rewrite using `[h0]`. Conclude with `Submodule.zero_mem _`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `succ q`. Take `⟨c, rfl⟩` from `h`. Conclude with `⟨c i, rfl⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem col_B_mem {p q : ℕ} (x : (dcx A).X p q) (h : x ∈ ((dcx A).col p).B q) (i) : x i ∈ (A.K (ent i)).B q := by
   cases q with
@@ -202,33 +202,31 @@ theorem col_B_mem {p q : ℕ} (x : (dcx A).X p q) (h : x ∈ ((dcx A).col p).B q
     exact ⟨c i, rfl⟩
 
 /- English proof (translation)
-Introduce `R _ ι _ A a hD hO`. Establish `hinj : ∀ q, Function.Injective ((aug A).ε q)` using `fun q => (injective_iff_map_eq_zero _).2 fun x hx => by simpa using (hD q).2.1 x hx`. Establish `hr0 : ∀ q x, (dcx A).dh 0 q x = 0 → ∃ y, (aug A).ε q y = x` using `fun q x hx => by`. Take `⟨y, hy⟩` from `(hD q).2.2.1 x hx`. Conclude with `⟨y, hy.trans (one_smul _ _)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `hr : ∀ p q x, (dcx A).dh (p + 1) q x = 0 → ∃ y, (dcx A).dh p q y = x` using `fun p q x hx => by`. Take `⟨y, hy⟩` from `(hD q).2.2.2 p x hx`. Conclude with `⟨y, hy.trans (one_smul _ _)⟩`. Establish `hc : ∀ p q, q ≠ a → ∀ x, (dcx A).dv p q x = 0 → x ∈ ((dcx A).col p).B q`. Introduce `p q hq x hx`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `mem_col_B A x fun i => ?_` and prove the remaining obligations. Establish `hi : (A.K (ent i)).d q (x i) = 0` using `congrFun hx i`. Use `hO (ent i) (ent_nonempty i) q hq` as an intermediate fact. Conclude with `mem_B_of_cls hi (Subsingleton.elim _ _)`. Establish `hL` using `lowB (aug A) hr0 hr hc`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun j hj => ?_, ?_, ?_⟩` and prove the remaining obligations. Use `subsingleton_of_forall_eq 0 fun x => ?_` and prove the remaining obligations. Take `⟨z, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Use `(Submodule.Quotient.mk_eq_zero _).2 ?_` and prove the remaining obligations. Use `mem_B_of_eps (aug A) hinj hL hj.le z.1 (hc 0 j hj.ne _ ?_)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[(aug A).comm, show (A.K ∅).d j z.1 = 0 from z.2, map_zero]`. Use `(injective_iff_map_eq_zero _).2 fun x hx => ?_` and prove the remaining obligations. Take `⟨z, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Use `(Submodule.Quotient.mk_eq_zero _).2 ?_` and prove the remaining obligations. Use `mem_B_of_eps (aug A) hinj hL le_rfl z.1 (mem_col_B A _ fun i => ?_)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hz : (A.K (ent i)).d a ((A.res (Finset.empty_subset _)).f a z.1) = 0`. Rewrite using `[(A.res _).comm, show (A.K ∅).d a z.1 = 0 from z.2, map_zero]`. Conclude with `mem_B_of_cls hz (congrFun hx i)`. Introduce `y`. Prove the components needed by the constructor for the conclusion.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `hy`. Establish `hs : ∀ i, ∃ u : (A.K (ent i)).Z a, Submodule.Quotient.mk u = y i` using `fun i => Submodule.Quotient.mk_surjective _ (y i)`. Use `choose u hu using hs`. Set `u' : (dcx A).X 0 a` to `fun i => (u i).1`. Establish `hv : (dcx A).dv 0 a u' = 0` using `funext fun i => (u i).2`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hd : (dcx A).dh 0 a u' ∈ ((dcx A).col 1).B a`. Use `mem_col_B A _ fun t => ?_` and prove the remaining obligations. Establish `h` using `congrFun hy t`. Rewrite `h` using `[cech_d_apply, Fin.sum_univ_two, ← hu, ← hu]`. Establish `hz : (A.K (ent t)).d a ((dcx A).dh 0 a u' t) = 0` using `congrFun ((dcx A).hv 0 a u' ▸ (by rw [hv, map_zero] : (dcx A).dh 0 (a + 1) ((dcx A).dv 0 a u') = 0)) t`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `mem_B_of_cls hz ?_` and prove the remaining obligations. Simplify using `only [Fin.val_zero, Fin.val_one, pow_zero, pow_one, one_smul, neg_smul] at h`. Establish `e : (⟨(dcx A).dh 0 a u' t, hz⟩ : (A.K (ent t)).Z a) = (A.res (ent_comp t (Fin.succAbove 0))).mapZ a (u (t ∘ Fin.succAbove 0)) - (A.res (ent_comp t (Fin.succAbove 1))).mapZ a (u (t ∘ Fin.succAbove 1))`. Use `Subtype.ext ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(A.term a).cech.d 0 u' t = _`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[cech_d_apply, Fin.sum_univ_two]`. Simplify using `only [Fin.val_zero, Fin.val_one, pow_zero, pow_one, one_smul, neg_smul]`. Conclude with `(sub_eq_add_neg _ _).symm`. Express the relevant statement in the definitionally equal form `Submodule.Quotient.mk (⟨(dcx A).dh 0 a u' t, hz⟩ : (A.K (ent t)).Z a) = 0`. Rewrite using `[e, Submodule.Quotient.mk_sub, sub_eq_add_neg]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h`. Take `⟨z, b, hz, hb, e⟩` from `exists_lift (aug A) hinj hr0 hL u' hv hd`. Use `⟨Submodule.Quotient.mk ⟨z, hz⟩, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Rewrite using `[← hu]`.
+Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `Submodule.Quotient.mk ((A.res (Finset.empty_subset _)).mapZ a ⟨z, hz⟩) = Submodule.Quotient.mk (u i)`. Use `(Submodule.Quotient.eq _).2 ?_` and prove the remaining obligations. Establish `hbi` using `col_B_mem A b hb i`. Establish `e' : (A.term a).aug z i + b i = (u i).1` using `congrFun e i`. Establish `e2 : (A.term a).aug z i - (u i).1 = -(b i)`.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Rewrite using `[← e']`. Normalize the expressions using the abelian group laws. Express the relevant statement in the definitionally equal form `(A.term a).aug z i - (u i).1 ∈ (A.K (ent i)).B a`. Rewrite using `[e2]`. Conclude with `neg_mem hbi`.
-
-Introduce and unpack `⟨x, rfl⟩`. Conclude with `d_aug _ x`.
+A detailed English derivation is pending.
 -/
 theorem oneLow : OneLow := by
   intro R _ ι _ A a hD hO

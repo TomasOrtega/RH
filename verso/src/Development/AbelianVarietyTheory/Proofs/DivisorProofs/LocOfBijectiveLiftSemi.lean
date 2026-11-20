@@ -30,14 +30,14 @@ def bcProj {V V' : T.Opens} (hV : IsAffineOpen V) (hV' : IsAffineOpen V') (h : V
     (by rw [pullback.condition, Category.assoc, hV.map_fromSpec hV' (homOfLE h).op])
 
 /- English proof (translation)
-The claim follows from `pullback.lift_fst _ _ _`.
+A detailed English derivation is pending.
 -/
 @[reassoc (attr := simp)] theorem bcProj_fst {V V' : T.Opens} (hV : IsAffineOpen V) (hV' : IsAffineOpen V')
     (h : V' ≤ V) : bcProj A hV hV' h ≫ pullback.fst A.hom hV.fromSpec = pullback.fst A.hom hV'.fromSpec :=
   pullback.lift_fst _ _ _
 
 /- English proof (translation)
-The claim follows from `pullback.lift_snd _ _ _`.
+A detailed English derivation is pending.
 -/
 @[reassoc (attr := simp)] theorem bcProj_snd {V V' : T.Opens} (hV : IsAffineOpen V) (hV' : IsAffineOpen V')
     (h : V' ≤ V) : bcProj A hV hV' h ≫ pullback.snd A.hom hV.fromSpec =
@@ -45,9 +45,9 @@ The claim follows from `pullback.lift_snd _ _ _`.
   pullback.lift_snd _ _ _
 
 /- English proof (translation)
-Use `letI := resAlg h`. Use `letI : GrpObj ((Over.pullback hV.fromSpec).obj A) := inferInstanceAs (GrpObj (onAff A hV))`. Use `letI : GrpObj ((Over.pullback hV'.fromSpec).obj A) := inferInstanceAs (GrpObj (onAff A hV'))`. Establish `n` using `isGrpPullback_pullback A hV'.fromSpec`. Use `(isGrpPullback_pullback A hV.fromSpec).cancel ?_ ?_` and prove the remaining obligations.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `IsGrpPullback.congr n ?_ ?_` and prove the remaining obligations. Conclude with `(hV.map_fromSpec hV' (homOfLE h).op).symm`. Conclude with `(bcProj_fst A hV hV' h).symm`. Conclude with `bcProj_snd A hV hV' h`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isGrpPullback_bcProj {V V' : T.Opens} (hV : IsAffineOpen V) (hV' : IsAffineOpen V')
     (h : V' ≤ V) : letI := resAlg h
@@ -63,7 +63,7 @@ theorem isGrpPullback_bcProj {V V' : T.Opens} (hV : IsAffineOpen V) (hV' : IsAff
   · exact bcProj_snd A hV hV' h
 
 /- English proof (translation)
-Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[hf, bcProj_fst]`. Conclude with `hφ.trans (bcProj_snd A hV hV' h).symm`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_bcProj {V V' : T.Opens} (hV : IsAffineOpen V) (hV' : IsAffineOpen V') (h : V' ≤ V)
     (φ : (onAff A hV').left ⟶ (onAff A hV).left)
@@ -75,7 +75,7 @@ theorem eq_bcProj {V V' : T.Opens} (hV : IsAffineOpen V) (hV' : IsAffineOpen V')
   · exact hφ.trans (bcProj_snd A hV hV' h).symm
 
 /- English proof (translation)
-Use `symm`. Apply `eq_bcProj` to reduce the goal to its premises. Rewrite using `[Category.id_comp, show (homOfLE h).op = 𝟙 (Opposite.op V) from rfl, T.presheaf.map_id, Spec.map_id]`. Conclude with `(Category.comp_id _).symm`. Conclude with `Category.id_comp _`.
+Use symmetry to reverse the relation. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bcProj_self {V : T.Opens} (hV : IsAffineOpen V) (h : V ≤ V) : bcProj A hV hV h = 𝟙 _ := by
   symm
@@ -86,7 +86,7 @@ theorem bcProj_self {V : T.Opens} (hV : IsAffineOpen V) (h : V ≤ V) : bcProj A
   · exact Category.id_comp _
 
 /- English proof (translation)
-Apply `eq_bcProj` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `(bcProj A hV' hV'' h' ≫ bcProj A hV hV' h) ≫ pullback.snd A.hom hV.fromSpec = _`. Rewrite using `[Category.assoc, bcProj_snd, bcProj_snd_assoc, ← Spec.map_comp, ← T.presheaf.map_comp]`. Both sides reduce to the same expression. Rewrite using `[Category.assoc, bcProj_fst, bcProj_fst]`.
+Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 -/
 theorem bcProj_comp {V V' V'' : T.Opens} (hV : IsAffineOpen V) (hV' : IsAffineOpen V')
     (hV'' : IsAffineOpen V'') (h : V' ≤ V) (h' : V'' ≤ V') :
@@ -98,7 +98,7 @@ theorem bcProj_comp {V V' V'' : T.Opens} (hV : IsAffineOpen V) (hV' : IsAffineOp
   · rw [Category.assoc, bcProj_fst, bcProj_fst]
 
 /- English proof (translation)
-Substitute `hσ hφ` using the available equality. Conclude with `Subtype.ext (IsMor.pullCohomologyOne_id m.isMor c.1)`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem pull_eq_self {R : Type} [CommRing R] {A : Over (Sp R)} [GrpObj A] {σ : R →+* R}
     {b : Sp R ⟶ Sp R} {φ : A.left ⟶ A.left}
@@ -108,7 +108,7 @@ theorem pull_eq_self {R : Type} [CommRing R] {A : Over (Sp R)} [GrpObj A] {σ : 
   exact Subtype.ext (IsMor.pullCohomologyOne_id m.isMor c.1)
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.semilinear_lift_bijective_localization f ρ hρ`.
+A detailed English derivation is pending.
 -/
 theorem loc_of_bijective_liftSemi {R R' : Type} [CommRing R] [CommRing R'] [Algebra R R'] (f : R)
     [IsLocalization.Away f R'] {M M' : Type 1} [AddCommGroup M] [Module R M] [AddCommGroup M']
@@ -124,14 +124,14 @@ variable {A} (H : GlobalTheory.Published.AbelianDeRham) {g : ℕ} (hA : IsAbelia
 
 include hA in
 /- English proof (translation)
-The claim follows from `isAbelianScheme_pullback_obj hV.fromSpec A hA`.
+A detailed English derivation is pending.
 -/
 theorem isAbelianScheme_onAff {V : T.Opens} (hV : IsAffineOpen V) : IsAbelianScheme (onAff A hV) :=
   isAbelianScheme_pullback_obj hV.fromSpec A hA
 
 include hg in
 /- English proof (translation)
-The claim follows from `haveI := smoothOfRelativeDimension_isStableUnderBaseChange g MorphismProperty.of_isPullback (IsPullback.of_hasPullback A.hom hV.fromSpec) hg`.
+A detailed English derivation is pending.
 -/
 theorem smooth_onAff {V : T.Opens} (hV : IsAffineOpen V) :
     SmoothOfRelativeDimension g (onAff A hV).hom :=
@@ -140,7 +140,7 @@ theorem smooth_onAff {V : T.Opens} (hV : IsAffineOpen V) :
 
 include H hA hg in
 /- English proof (translation)
-Take `⟨hf, -, -⟩` from `H.1.prim (isAbelianScheme_onAff hA hV) (smooth_onAff hg hV)`. Take `⟨n, f, hf⟩` from `Module.Finite.exists_fin' Γ(T, V) (primDR (onAff A hV))`. Conclude with `small_of_surjective hf`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem small_primDR {V : T.Opens} (hV : IsAffineOpen V) : Small.{0} (primDR (onAff A hV)) := by
   obtain ⟨hf, -, -⟩ := H.1.prim (isAbelianScheme_onAff hA hV) (smooth_onAff hg hV)
@@ -173,7 +173,7 @@ def rho {V V' : T.Opens} (hV : IsAffineOpen V) (hV' : IsAffineOpen V') (h : V' �
     map_add' := fun x y => by simp }
 
 /- English proof (translation)
-The claim follows from `LinearEquiv.apply_symm_apply _ _`.
+A detailed English derivation is pending.
 -/
 theorem shEquiv_rho {V V' : T.Opens} (hV : IsAffineOpen V) (hV' : IsAffineOpen V') (h : V' ≤ V)
     (x : modV H hA hg hV) : letI := resAlg h
@@ -241,7 +241,7 @@ namespace GlobalTheory.AffGlue
 variable {T : Scheme.{0}}
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.affine_glue_separated D hV W hW hWV hc x hx`.
+A detailed English derivation is pending.
 -/
 theorem sep (D : Data T) {V : T.Opens} (hV : IsAffineOpen V) {ι : Type} (W : ι → T.Opens)
     (hW : ∀ i, IsAffineOpen (W i)) (hWV : ∀ i, W i ≤ V) (hc : V ≤ ⨆ i, W i) (x : D.M V hV)
@@ -249,7 +249,7 @@ theorem sep (D : Data T) {V : T.Opens} (hV : IsAffineOpen V) {ι : Type} (W : ι
   GlobalTheory.T.affine_glue_separated D hV W hW hWV hc x hx
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.affine_cover_sections_glue D hV W hW hWV hc m hm`.
+A detailed English derivation is pending.
 -/
 theorem glue (D : Data T) {V : T.Opens} (hV : IsAffineOpen V) {ι : Type} (W : ι → T.Opens)
     (hW : ∀ i, IsAffineOpen (W i)) (hWV : ∀ i, W i ≤ V) (hc : V ≤ ⨆ i, W i)
@@ -260,23 +260,19 @@ theorem glue (D : Data T) {V : T.Opens} (hV : IsAffineOpen V) {ι : Type} (W : �
   GlobalTheory.T.affine_cover_sections_glue D hV W hW hWV hc m hm
 
 /- English proof (translation)
-Rewrite using `[TopCat.Presheaf.isSheaf_iff_isSheafUniqueGluing]`. Introduce `κ U sf hsf`. Set `s : ∀ k, fam D (U k)` to `sf`. Establish `key : ∀ (k l : κ) (O : T.Opens) (hO : IsAffineOpen O) (hk : O ≤ U k) (hl : O ≤ U l), (s k).1 ⟨O, hO, hk⟩ = (s l).1 ⟨O, hO, hl⟩` using `fun k l O hO hk hl => congrFun (congrArg Subtype.val (hsf k l)) ⟨O, hO, le_inf hk hl⟩`. Establish `cov : ∀ W : T.Opens, W ≤ iSup U → W ≤ ⨆ p : Σ k, AffIn (W ⊓ U k), p.2.1`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `W hW x hx`. Take `⟨k, hk⟩` from `TopologicalSpace.Opens.mem_iSup.1 (hW hx)`. Take `⟨O, hO, hxO, hOW⟩` from `(TopologicalSpace.Opens.isBasis_iff_nbhd.1 T.isBasis_affineOpens) (show x ∈ W ⊓ U k from ⟨hx, hk⟩)`. Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨⟨k, O, hO, hOW⟩, hxO⟩`. Establish `hle : ∀ (W : T.Opens) (p : Σ k, AffIn (W ⊓ U k)), p.2.1 ≤ W` using `fun W p => p.2.2.2.trans inf_le_left`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hleU : ∀ (W : T.Opens) (p : Σ k, AffIn (W ⊓ U k)), p.2.1 ≤ U p.1` using `fun W p => p.2.2.2.trans inf_le_right`. Set `val : ∀ (W : T.Opens) (p : Σ k, AffIn (W ⊓ U k)), D.M p.2.1 p.2.2.1` to `fun W p => (s p.1).1 ⟨p.2.1, p.2.2.1, hleU W p⟩`. Establish `compat : ∀ (W : T.Opens) (p q : Σ k, AffIn (W ⊓ U k)) (O : T.Opens) (hO : IsAffineOpen O) (hp : O ≤ p.2.1) (hq : O ≤ q.2.1), D.ρ p.2.2.1 hO hp (val W p) = D.ρ q.2.2.1 hO hq (val W q)`. Introduce `W p q O hO hp hq`. Rewrite using `[fam_rel D (s p.1) ⟨p.2.1, p.2.2.1, hleU W p⟩ ⟨O, hO, hp.trans (hleU W p)⟩ hp, fam_rel D (s q.1) ⟨q.2.1, q.2.2.1, hleU W q⟩ ⟨O, hO, hq.trans (hleU W q)⟩ hq]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `key p.1 q.1 O hO (hp.trans (hleU W p)) (hq.trans (hleU W q))`. Establish `ex : ∀ (W : T.Opens) (hW : IsAffineOpen W) (_ : W ≤ iSup U), ∃ x : D.M W hW, ∀ p : Σ k, AffIn (W ⊓ U k), D.ρ hW p.2.2.1 (hle W p) x = val W p`. Introduce `W hW hWU`. Conclude with `glue D hW (fun p : Σ k, AffIn (W ⊓ U k) => p.2.1) (fun p => p.2.2.1) (hle W) (cov W hWU) (val W) (compat W)`. Use `choose x hx using ex`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Establish `uniq : ∀ (W : T.Opens) (hW : IsAffineOpen W) (_ : W ≤ iSup U) (y z : D.M W hW), (∀ p : Σ k, AffIn (W ⊓ U k), D.ρ hW p.2.2.1 (hle W p) y = D.ρ hW p.2.2.1 (hle W p) z) → y = z`. Introduce `W hW hWU y z h`. Rewrite using `[← sub_eq_zero]`. Conclude with `sep D hW (fun p : Σ k, AffIn (W ⊓ U k) => p.2.1) (fun p => p.2.2.1) (hle W) (cov W hWU) _ (fun p => by rw [map_sub, h, sub_self])`. Set `t : fam D (iSup U)` to `⟨fun W => x W.1 W.2.1 W.2.2, fun W W' h => by`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `uniq W'.1 W'.2.1 W'.2.2` to reduce the goal to its premises. Introduce `p`. Rewrite using `[D.ρ_ρ, hx]`. Conclude with `hx W.1 W.2.1 W.2.2 ⟨p.1, p.2.1, p.2.2.1, p.2.2.2.trans (inf_le_inf_right _ h)⟩⟩`. Use `⟨t, fun k => ?_, fun y hy => ?_⟩` and prove the remaining obligations.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `O`. Use `hx O.1 O.2.1 (O.2.2.trans (le_iSup U k)) ⟨k, O.1, O.2.1, le_inf le_rfl O.2.2⟩` as an intermediate fact. Rewrite `this` using `[D.ρ_self]`. Conclude with `this`.
-
-Establish `hy' : ∀ k (O : AffIn (U k)), (show fam D (iSup U) from y).1 ⟨O.1, O.2.1, O.2.2.trans (le_iSup U k)⟩ = (s k).1 O` using `fun k O => congrFun (congrArg Subtype.val (hy k)) O`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `W`. Apply `uniq W.1 W.2.1 W.2.2` to reduce the goal to its premises. Introduce `p`.
-
-Rewrite using `[fam_rel D (show fam D (iSup U) from y) W ⟨p.2.1, p.2.2.1, (hle W.1 p).trans W.2.2⟩ (hle W.1 p), hx]`. Conclude with `hy' p.1 ⟨p.2.1, p.2.2.1, hleU W.1 p⟩`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isSheaf_famPresheaf (D : Data T) : (famPresheaf D).IsSheaf := by
   rw [TopCat.Presheaf.isSheaf_iff_isSheafUniqueGluing]
@@ -342,9 +338,9 @@ end GlobalTheory.AffGlue
 namespace GlobalTheory.DeRhamSheaf
 
 /- English proof (translation)
-Introduce `H T A _ g hA hg`. Establish `hS` using `isSheaf_famPresheaf (data H hA hg)`. Use `⟨toModules (data H hA hg) hS, fun V hV => (secEquiv hS hV).trans (shEquiv H hA hg hV), ?_⟩` and prove the remaining obligations. Introduce `V V' hV hV' h φ hφ hf s`. Establish `e` using `eq_bcProj A hV hV' h φ (by exact hφ.1.w) hf`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Substitute `e` using the available equality. Express the relevant statement in the definitionally equal form `shEquiv H hA hg hV' (secEquiv hS hV' (GlobalTheory.Twist.resM _ h s)) = _`. Rewrite using `[secEquiv_resM]`. Conclude with `shEquiv_rho H hA hg hV hV' h _`.
+Substitute using the available equality. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_isDeRhamSheaf : GlobalTheory.Published.AbelianDeRham → ∀ (T : Scheme.{0}) (A : Over T) [GrpObj A] (g : ℕ),
     IsAbelianScheme A → SmoothOfRelativeDimension g A.hom → ∃ H : T.Modules, IsDeRhamSheaf A H := by

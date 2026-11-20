@@ -15,11 +15,11 @@ section Pure
 variable {K : Type} [Field K] {n : ℕ}
 
 /- English proof (translation)
-Use extensionality with `a b`. Establish `hB : ∑ c, B.1 a c * (B⁻¹).1 c b = (1 : Matrix (Fin n) (Fin n) K) a b`. Rewrite using `[← Matrix.mul_apply, ← Units.val_mul, mul_inv_cancel, Units.val_one]`. Establish `hd : ∀ c, Function.update (1 : Fin n → K) k ϖ c = 1 + if k = c then ϖ - 1 else 0`. Introduce `c`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `h : k = c`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[h, Function.update_of_ne (Ne.symm h)]`. Rewrite using `[Units.val_mul, Units.val_mul, hD, Matrix.mul_apply]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Repeatedly rewrite using `[Matrix.mul_diagonal, hd]`. Simplify using `only [mul_add, add_mul, Finset.sum_add_distrib, mul_one, mul_ite, ite_mul, mul_zero, zero_mul, Finset.sum_ite_eq, Finset.mem_univ, if_true, Matrix.add_apply, Matrix.smul_apply, vecMulVec_apply, smul_eq_mul]`. Rewrite using `[hB]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion repeatedly using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem conj_diag_update (B D : GL (Fin n) K) (k : Fin n) (ϖ : K)
     (hD : D.1 = diagonal (Function.update 1 k ϖ)) :
@@ -38,7 +38,7 @@ theorem conj_diag_update (B D : GL (Fin n) K) (k : Fin n) (ϖ : K)
   rw [hB]; ring
 
 /- English proof (translation)
-Use extensionality with `a`. Simplify using `only [Matrix.mulVec, dotProduct, Matrix.add_apply, Matrix.smul_apply, vecMulVec_apply, smul_eq_mul, add_mul, Finset.sum_add_distrib, Pi.add_apply, Pi.smul_apply, Matrix.one_apply, ite_mul, one_mul, zero_mul, Finset.sum_ite_eq, Finset.mem_univ, if_true, Finset.sum_mul]`. Use `congr 1`. Rewrite using `[Finset.mul_sum, Finset.sum_mul]`. Conclude with `Finset.sum_congr rfl fun c _ => by ring`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rank_one_mulVec (s : K) (b l w : Fin n → K) :
     (1 + s • vecMulVec b l) *ᵥ w = w + (s * (l ⬝ᵥ w)) • b := by
@@ -51,7 +51,7 @@ theorem rank_one_mulVec (s : K) (b l w : Fin n → K) :
   exact Finset.sum_congr rfl fun c _ => by ring
 
 /- English proof (translation)
-Use extensionality with `a`. Simplify using `only [Matrix.vecMul, dotProduct, Matrix.add_apply, Matrix.smul_apply, vecMulVec_apply, smul_eq_mul, mul_add, Finset.sum_add_distrib, Pi.add_apply, Pi.smul_apply, Matrix.one_apply, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true, Finset.sum_mul]`. Use `congr 1`. Rewrite using `[Finset.mul_sum, Finset.sum_mul]`. Conclude with `Finset.sum_congr rfl fun c _ => by ring`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rank_one_vecMul (s : K) (b l w : Fin n → K) :
     w ᵥ* (1 + s • vecMulVec b l) = w + (s * (w ⬝ᵥ b)) • l := by
@@ -64,9 +64,9 @@ theorem rank_one_vecMul (s : K) (b l w : Fin n → K) :
   exact Finset.sum_congr rfl fun c _ => by ring
 
 /- English proof (translation)
-Establish `key : ∀ w w' : Fin n → K, w ᵥ* (G.1 * x.1) = w' ᵥ* (G.1 * x.1) → w = w'`. Introduce `w w' h`. Use `congrArg (fun y => y ᵥ* ((G * x)⁻¹).1) h` as an intermediate fact. Simplify `this` using `only [Matrix.vecMul_vecMul, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.vecMul_one]`. Use `key _ _ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← Matrix.vecMul_transpose, Matrix.vecMul_vecMul, ← Matrix.mul_assoc, hU, Matrix.smul_vecMul, ← Matrix.vecMul_vecMul, hl, smul_smul, inv_mul_cancel₀ ha, one_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mulVec_of_unitary (G x : GL (Fin n) K) (M' : Matrix (Fin n) (Fin n) K)
     (hU : M'ᵀ * G.1 * x.1 = G.1) (u : Fin n → K) (a : K) (ha : a ≠ 0)
@@ -88,7 +88,7 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 def pair (σ : E →ₐ[F] E) (J : Matrix (Fin n) (Fin n) E) (p q : Fin n → E) : E := ∑ a, ∑ c, σ (p a) * J a c * q c
 
 /- English proof (translation)
-Simplify using `only [pair, map_sum, map_mul, cm_conj_conj hcm]`. Use `conv_rhs => rw [Finset.sum_comm]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[hJ.1]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem pair_swap (hcm : IsCMExt F E σ) (hJ : IsHermND σ J) (p q : Fin n → E) :
     pair σ J p q = σ (pair σ J q p) := by
@@ -98,7 +98,7 @@ theorem pair_swap (hcm : IsCMExt F E σ) (hJ : IsHermND σ J) (p q : Fin n → E
   rw [hJ.1]; ring
 
 /- English proof (translation)
-Simplify using `only [pair, Formalism.UG.cT, Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply, Finset.sum_mul, AlgHom.coe_toRingHom, RingHom.coe_coe]`. Conclude with `Finset.sum_comm`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cT_mul_mul_apply (P Q : Matrix (Fin n) (Fin r) E) (j i : Fin r) :
     (Formalism.UG.cT (σ : E →+* E) P * J * Q) j i = pair σ J (fun a => P a j) (fun c => Q c i) := by
@@ -107,7 +107,7 @@ theorem cT_mul_mul_apply (P Q : Matrix (Fin n) (Fin r) E) (j i : Fin r) :
   exact Finset.sum_comm
 
 /- English proof (translation)
-Simplify using `only [pair, Formalism.UG.cT, Matrix.mulVec, dotProduct, Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply, Finset.sum_mul, AlgHom.coe_toRingHom, RingHom.coe_coe]`. Conclude with `Finset.sum_comm`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cT_mul_mulVec_apply (P : Matrix (Fin n) (Fin r) E) (z : Fin n → E) (j : Fin r) :
     ((Formalism.UG.cT (σ : E →+* E) P * J) *ᵥ z) j = pair σ J (fun a => P a j) z := by
@@ -116,7 +116,7 @@ theorem cT_mul_mulVec_apply (P : Matrix (Fin n) (Fin r) E) (z : Fin n → E) (j 
   exact Finset.sum_comm
 
 /- English proof (translation)
-Simplify using `only [pair, Formalism.UG.cT, dotProduct, Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply, map_sum, map_mul, Finset.sum_mul, AlgHom.coe_toRingHom, RingHom.coe_coe]`. Conclude with `Finset.sum_comm`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem dot_row (t : E →ₐ[F] Fv F v) (Y : Matrix (Fin n) (Fin r) E) (i : Fin r) (q : Fin n → E) :
     (fun c => t ((Formalism.UG.cT (σ : E →+* E) Y * J) i c)) ⬝ᵥ (fun a => t (q a)) = t (pair σ J (fun a => Y a i) q) := by
@@ -125,7 +125,7 @@ theorem dot_row (t : E →ₐ[F] Fv F v) (Y : Matrix (Fin n) (Fin r) E) (i : Fin
   exact Finset.sum_comm
 
 /- English proof (translation)
-Simplify using `only [pair, Matrix.vecMul, dotProduct, Matrix.map_apply, map_sum, map_mul, Finset.sum_mul, AlgHom.comp_apply]`. Conclude with `Finset.sum_comm`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem dot_conj (t : E →ₐ[F] Fv F v) (p q : Fin n → E) :
     ((fun a => (t.comp σ) (p a)) ᵥ* J.map t) ⬝ᵥ (fun c => t (q c)) = t (pair σ J p q) := by
@@ -134,7 +134,7 @@ theorem dot_conj (t : E →ₐ[F] Fv F v) (p q : Fin n → E) :
   exact Finset.sum_comm
 
 /- English proof (translation)
-Use function extensionality and compare the values at `c`. Simplify using `only [Formalism.UG.cT, Matrix.vecMul, dotProduct, Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply, map_sum, map_mul, AlgHom.comp_apply, AlgHom.coe_toRingHom, RingHom.coe_coe]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem vecMul_conj (t : E →ₐ[F] Fv F v) (Y : Matrix (Fin n) (Fin r) E) (i : Fin r) :
     (fun a => (t.comp σ) (Y a i)) ᵥ* J.map t = fun c => t ((Formalism.UG.cT (σ : E →+* E) Y * J) i c) := by
@@ -143,11 +143,11 @@ theorem vecMul_conj (t : E →ₐ[F] Fv F v) (Y : Matrix (Fin n) (Fin r) E) (i :
     map_mul, AlgHom.comp_apply, AlgHom.coe_toRingHom, RingHom.coe_coe]
 
 /- English proof (translation)
-Use extensionality with `a j`. Use `split_ext hcm t ?_ ?_` and prove the remaining obligations. Use `congrFun (h1 j) a` as an intermediate fact. Simplify using `only [Matrix.mulVec, dotProduct, Matrix.map_apply, Pi.smul_apply, smul_eq_mul] at this`. Rewrite using `[Matrix.mul_diagonal]`.
+By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Matrix.mul_apply, Matrix.map_apply, map_sum, map_mul, splitProj_inclR]`. Rewrite using `[this]`. Expand and normalize the polynomial expressions, which then agree. Use `congrFun (h2 j) a` as an intermediate fact. Simplify using `only [Matrix.mulVec, dotProduct, Matrix.map_apply, Pi.smul_apply, smul_eq_mul] at this`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[Matrix.mul_diagonal]`. Simplify using `only [Matrix.mul_apply, Matrix.map_apply, map_sum, map_mul, splitProj_inclR]`. Rewrite using `[this]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem col_ext (hcm : IsCMExt F E σ) (t : E →ₐ[F] Fv F v) (M : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E))
     (X : Matrix (Fin n) (Fin r) E) (d : Fin r → Fv F v ⊗[F] E)
@@ -173,37 +173,37 @@ end Herm
 open Formalism.UG (cT) in
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hcm n J hJ r X Y hW v t B hB i k hk ϖ D hD e he1 he2`. Establish `hMeq : (matHom _ σ J ((splitEquiv hcm hJ t).symm (B * D * B⁻¹))).1 = splitPairMat hcm t (B * D * B⁻¹).1 (dualConj (splitGram hJ t) (B * D * B⁻¹)).1`. Rewrite using `[splitEquiv_symm_apply, matHom_splitLift]`. Both sides reduce to the same expression. Rewrite using `[hMeq]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Establish `hMt` using `splitPairMat_map hcm t (B * D * B⁻¹).1 (dualConj (splitGram hJ t) (B * D * B⁻¹)).1`. Establish `hMs` using `splitPairMat_map_comp hcm t (B * D * B⁻¹).1 (dualConj (splitGram hJ t) (B * D * B⁻¹)).1`. Establish `hU : (dualConj (splitGram hJ t) (B * D * B⁻¹)).1ᵀ * (splitGram hJ t).1 * (B * D * B⁻¹).1 = (splitGram hJ t).1` using `eq_dualConj_iff.1 rfl`. Establish `hrank : (B * D * B⁻¹).1 = 1 + (ϖ - 1) • vecMulVec (fun a => t (X a i)) (fun c => t ((cT (σ : E →+* E) Y * J) i c))`. Rewrite using `[conj_diag_update B D k ϖ hD]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 3`. Use function extensionality and compare the values at `a`. Conclude with `(hB i k hk).1 a`. Use function extensionality and compare the values at `a`. Conclude with `(hB i k hk).2 a`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hϖ : ϖ ≠ 0` using `by rw [← he1]; exact (e.isUnit.map (splitProj t)).ne_zero`. Establish `hpinv : splitProj t ((e⁻¹ : (Fv F v ⊗[F] E)ˣ) : Fv F v ⊗[F] E) = ϖ⁻¹` using `by rw [map_units_inv, he1]`. Establish `hqinv : splitProj (t.comp σ) ((e⁻¹ : (Fv F v ⊗[F] E)ˣ) : Fv F v ⊗[F] E) = 1`. Rewrite using `[map_units_inv, he2, inv_one]`. Establish `hXX : ∀ j j', pair σ J (fun a => X a j) (fun c => X c j') = 0` using `fun j j' => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[← cT_mul_mul_apply, hW.xx]`. Both sides reduce to the same expression. Establish `hYY : ∀ j j', pair σ J (fun a => Y a j) (fun c => Y c j') = 0` using `fun j j' => by`. Rewrite using `[← cT_mul_mul_apply, hW.yy]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hXY : ∀ j j', pair σ J (fun a => X a j) (fun c => Y c j') = (1 : Matrix (Fin r) (Fin r) E) j j'` using `fun j j' => by`. Rewrite using `[← cT_mul_mul_apply, hW.xy]`. Establish `hYX : ∀ j j', pair σ J (fun a => Y a j) (fun c => X c j') = if j' = j then 1 else 0` using `fun j j' => by`. Apply the tactic sequence `rw [pair_swap hcm hJ, hXY, Matrix.one_apply]; split_ifs <;> simp`. Establish `hfix : ∀ p : Fin n → E, pair σ J p (fun c => X c i) = 0 → (dualConj (splitGram hJ t) (B * D * B⁻¹)).1 *ᵥ (fun a => (t.comp σ) (p a)) = fun a => (t.comp σ) (p a)`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Introduce `p hp`. Rewrite using `[mulVec_of_unitary (splitGram hJ t) (B * D * B⁻¹) _ hU _ 1 one_ne_zero ?_, inv_one, one_smul]`. Rewrite using `[hrank, rank_one_vecMul, splitGram_val, dot_conj, hp, map_zero, mul_zero, zero_smul, add_zero, one_smul]`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Use `col_ext hcm t _ X _ (fun j => ?_) (fun j => ?_)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[hMt, hrank, rank_one_mulVec, dot_row, hYX]`. Distinguish the cases in `hj : j = i`. Substitute `hj` using the available equality. Rewrite using `[Function.update_self, he1, if_pos rfl, map_one]`. Use extensionality with `a`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `only [Pi.add_apply, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Function.update_of_ne hj, Pi.one_apply, map_one, if_neg hj, map_zero, mul_zero, zero_smul, add_zero, one_smul]`. Rewrite using `[hMs, hfix _ (hXX j i)]`. Establish `: splitProj (t.comp σ) (Function.update (1 : Fin r → Fv F v ⊗[F] E) i (e : Fv F v ⊗[F] E) j) = 1`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Distinguish the cases in `hj : j = i`. Substitute `hj` using the available equality. Rewrite using `[Function.update_self, he2]`. Rewrite using `[Function.update_of_ne hj, Pi.one_apply, map_one]`. Rewrite using `[this, one_smul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `col_ext hcm t _ Y _ (fun j => ?_) (fun j => ?_)` and prove the remaining obligations. Rewrite using `[hMt, hrank, rank_one_mulVec, dot_row, hYY, map_zero, mul_zero, zero_smul, add_zero]`. Establish `: splitProj t (Function.update (1 : Fin r → Fv F v ⊗[F] E) i (sigR (Fv F v) σ ((e⁻¹ : (Fv F v ⊗[F] E)ˣ) : Fv F v ⊗[F] E)) j) = 1`. Distinguish the cases in `hj : j = i`. Substitute `hj` using the available equality.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Function.update_self, ← splitProj_comp, hqinv]`. Rewrite using `[Function.update_of_ne hj, Pi.one_apply, map_one]`. Rewrite using `[this, one_smul]`. Rewrite using `[hMs]`. Distinguish the cases in `hj : j = i`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Substitute `hj` using the available equality. Rewrite using `[Function.update_self, splitProj_comp_sigR hcm, hpinv]`. Use `mulVec_of_unitary (splitGram hJ t) (B * D * B⁻¹) _ hU _ ϖ hϖ ?_` and prove the remaining obligations. Rewrite using `[hrank, rank_one_vecMul, splitGram_val, dot_conj, hYX, if_pos rfl, map_one, mul_one, vecMul_conj]`. Use extensionality with `a`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `only [Pi.add_apply, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hfix _ (by rw [hYX, if_neg (Ne.symm hj)]), Function.update_of_ne hj, Pi.one_apply, map_one, one_smul]`. Introduce `z hz1 hz2`. Establish `hsv : ∀ τ : E →ₐ[F] Fv F v, splitVec τ (fun a => inclR (F` using `F) (Fv F v) (z a)) = fun a => τ (z a) := fun τ => funext fun a => splitProj_inclR τ (z a)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `splitVec_ext hcm t ?_ ?_` and prove the remaining obligations. Rewrite using `[splitVec_mulVec, hsv, hMt, hrank, rank_one_mulVec, dot_row, ← cT_mul_mulVec_apply, hz2]`. Simplify using the standard rewrite rules. Rewrite using `[splitVec_mulVec, hsv, hMs]`. Use `hfix z ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[pair_swap hcm hJ, ← cT_mul_mulVec_apply, hz1]`. Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem frame_action_split : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (hcm : IsCMExt F E σ) (n : ℕ) (J : Matrix (Fin n) (Fin n) E) (hJ : IsHermND σ J) (r : ℕ)
     (X Y : Matrix (Fin n) (Fin r) E), IsWittFrame σ J X Y → ∀ (v : HeightOneSpectrum (𝓞 F)) (t : E →ₐ[F] Fv F v)

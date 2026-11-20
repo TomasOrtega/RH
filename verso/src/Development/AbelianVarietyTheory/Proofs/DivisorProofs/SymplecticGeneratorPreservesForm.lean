@@ -9,7 +9,7 @@ def sympForm {F : Type} [Field F] {κ : Type} [Fintype κ] (v w : κ ⊕ κ → 
   (v ∘ Sum.inl) ⬝ᵥ (w ∘ Sum.inr) - (w ∘ Sum.inl) ⬝ᵥ (v ∘ Sum.inr)
 
 /- English proof (translation)
-Rewrite using `[Matrix.fromBlocks_mulVec]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem fromBlocks_mulVec_inl {F : Type} [Field F] {κ : Type} [Fintype κ]
     (A B C D : Matrix κ κ F) (v : κ ⊕ κ → F) :
@@ -17,7 +17,7 @@ theorem fromBlocks_mulVec_inl {F : Type} [Field F] {κ : Type} [Fintype κ]
   rw [Matrix.fromBlocks_mulVec]; rfl
 
 /- English proof (translation)
-Rewrite using `[Matrix.fromBlocks_mulVec]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem fromBlocks_mulVec_inr {F : Type} [Field F] {κ : Type} [Fintype κ]
     (A B C D : Matrix κ κ F) (v : κ ⊕ κ → F) :
@@ -25,13 +25,13 @@ theorem fromBlocks_mulVec_inr {F : Type} [Field F] {κ : Type} [Fintype κ]
   rw [Matrix.fromBlocks_mulVec]; rfl
 
 /- English proof (translation)
-Break down `hg with (⟨A, hA, rfl⟩ | ⟨C, hC, rfl⟩) | hW` into its components or cases. Simplify using `only [sympForm, fromBlocks_mulVec_inl, fromBlocks_mulVec_inr, Matrix.zero_mulVec, add_zero, zero_add]`. Establish `key : ∀ x y : κ → F, (A *ᵥ x) ⬝ᵥ ((A⁻¹)ᵀ *ᵥ y) = x ⬝ᵥ y`. Introduce `x y`. Rewrite using `[Matrix.dotProduct_mulVec, Matrix.vecMul_transpose, Matrix.mulVec_mulVec, Matrix.nonsing_inv_mul A hA, Matrix.one_mulVec]`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[key, key]`. Simplify using `only [sympForm, fromBlocks_mulVec_inl, fromBlocks_mulVec_inr, Matrix.zero_mulVec, add_zero, Matrix.one_mulVec, Matrix.neg_mulVec]`. Establish `key : ∀ x y : κ → F, x ⬝ᵥ (C *ᵥ y) = y ⬝ᵥ (C *ᵥ x)`. Introduce `x y`. Rewrite using `[Matrix.dotProduct_mulVec, ← Matrix.mulVec_transpose, hC, dotProduct_comm]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [dotProduct_add, dotProduct_neg]`. Rewrite using `[key (v ∘ Sum.inl) (w ∘ Sum.inl)]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `hW` using `[Set.mem_singleton_iff]`. Substitute `hW` using the available equality.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality.
 
-Simplify using `only [sympForm, fromBlocks_mulVec_inl, fromBlocks_mulVec_inr, Matrix.zero_mulVec, add_zero, zero_add, Matrix.one_mulVec, Matrix.neg_mulVec, dotProduct_neg]`. Rewrite using `[dotProduct_comm (v ∘ Sum.inr), dotProduct_comm (w ∘ Sum.inr)]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem sympForm_gen {F : Type} [Field F] {κ : Type} [Fintype κ] [DecidableEq κ]
     (g : Matrix (κ ⊕ κ) (κ ⊕ κ) F) (hg : g ∈ gens F κ) (v w : κ ⊕ κ → F) :
@@ -59,9 +59,9 @@ theorem sympForm_gen {F : Type} [Field F] {κ : Type} [Fintype κ] [DecidableEq 
     ring
 
 /- English proof (translation)
-Use function extensionality and compare the values at `j`. Break down `j with i | i` into its components or cases. Use `h (Pi.single (Sum.inr i) 1)` as an intermediate fact. Simplify `this` using `[sympForm, Function.comp_def, Pi.single_apply, dotProduct]`. Use `h (Pi.single (Sum.inl i) 1)` as an intermediate fact.
+Apply function extensionality and compare values at an arbitrary argument. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify `this` using `[sympForm, Function.comp_def, Pi.single_apply, dotProduct]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem sympForm_nondeg {F : Type} [Field F] {κ : Type} [Fintype κ] [DecidableEq κ]
     (v : κ ⊕ κ → F) (h : ∀ w, sympForm v w = 0) : v = 0 := by
@@ -73,13 +73,13 @@ theorem sympForm_nondeg {F : Type} [Field F] {κ : Type} [Fintype κ] [Decidable
     simpa [sympForm, Function.comp_def, Pi.single_apply, dotProduct] using this
 
 /- English proof (translation)
-Establish `hf : ∀ v w : κ ⊕ κ → F, sympForm (g *ᵥ v) (g *ᵥ w) = sympForm v w`. Proceed by induction on `hg using Submonoid.closure_induction with`. Consider the case `mem x hx => exact sympForm_gen x hx`. Consider the case `one => intro v w`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules.
 
-Consider the case `mul x y _ _ hx hy => intro v w`. Rewrite using `[← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, hx, hy]`. Use `⟨hf, ?_⟩` and prove the remaining obligations. Establish `hinj : Function.Injective fun v : κ ⊕ κ → F => g *ᵥ v`. Introduce `v v' hvv`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h0 : v - v' = 0`. Apply `sympForm_nondeg` to reduce the goal to its premises. Introduce `w`. Rewrite using `[← hf]`. Simplify using `only at hvv`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Matrix.mulVec_sub, hvv, sub_self]`. Simplify using `[sympForm]`. Conclude with `sub_eq_zero.mp h0`. Conclude with `(Matrix.mulVec_surjective_iff_isUnit).mpr ((Matrix.mulVec_injective_iff_isUnit).mp hinj)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem closure_gens_symp (F : Type) [Field F] (κ : Type) [Fintype κ] [DecidableEq κ]
     (g : Matrix (κ ⊕ κ) (κ ⊕ κ) F) (hg : g ∈ Submonoid.closure (gens F κ)) :

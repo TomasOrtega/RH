@@ -54,7 +54,7 @@ structure LevSteps {T : LocLat G Qp LL O} {C : Coord W (baseIdOf hR) T} {c : ZMo
   lamSpan : Submodule.span LL (Set.range lam) = ⊤
 
 /- English proof (translation)
-Introduce `_ _` and use `rfl b_eq := fun _ _ => rfl η_eq := rfl k1b := hs.k1b hasU := fun _ _ => rfl k1c := hs.k1c k1d := hs.k1d unitsAt := hs.unitsAt compl := hs.compl filt := hs.filt jumps := hs.jumps mem := hs.mem locReg := hs.locReg pa1b := hs.pa1b equiv := hs.equiv span := hs.span ind := hs.ind flDe …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem finalLevels_of {T : LocLat G Qp LL O} {C : Coord W (baseIdOf hR) T} {c : ZMod n} {ell : ℕ}
     {H : ℕ → ℕ} {κ : PowerSeries O} {r : ℕ} {lam : Fin r → Dc W T c}
@@ -135,7 +135,7 @@ def levelMapOf (hC : CoordHom C₁ C₂ F)
   locL_comm := ms.loclComm
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨{ r₁ := r₁ r₂ := r₂ S₁ := lvData Hy₁ ((baseIdOf hR).Bs.ff' ell j M g) kind b η S₂ := lvData Hy₂ ((baseIdOf hR).Bs.ff' ell j M g) kind b η m := levelMapOf hC Hy₁ Hy₂ Mh j M g η kind b e₁ e₂ P ms D₁ := Dc W T₁ c D₂ := Dc W T₂ c R₁ := lvModel Hy₁ ((baseIdOf hR).Bs.ff' ell j M g) ki …`.
+Supply the required witnesses or components.
 -/
 theorem arc_of_steps (hC : CoordHom C₁ C₂ F)
     (Hy₁ : LvHyp Lb hR uZ ιZ C₁ c ell (Formalism.ExponentWindows.abelian₂ (baseIdOf hR).Bs.p H ell) κ₁ lam₁)

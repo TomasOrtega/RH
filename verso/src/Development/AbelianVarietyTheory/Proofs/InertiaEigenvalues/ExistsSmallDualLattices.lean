@@ -7,9 +7,9 @@ namespace GlobalTheory.JR.DualLattice
 variable {F : Type} [NontriviallyNormedField F]
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hy`. Use `push Not at hy`. Take `⟨x0, hx0, hx1⟩` from `hψ.2`. Establish `hy0 : y ≠ 0` using `by rintro rfl; simp at hy; linarith`. Establish `hinv : ‖y⁻¹‖ < 1` using `by rw [norm_inv]; exact inv_lt_one_of_one_lt₀ hy`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `h _ (hx1 _ hinv)` as an intermediate fact. Rewrite `this` using `[mul_assoc, inv_mul_cancel₀ hy0, mul_one]`. Conclude with `hx0 this`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem stdChar_key {ψ : AddChar F ℂ} (hψ : IsStdChar ψ) (y : F)
     (h : ∀ c : F, ‖c‖ ≤ 1 → ψ (c * y) = 1) : ‖y‖ ≤ 1 := by
@@ -23,7 +23,7 @@ theorem stdChar_key {ψ : AddChar F ℂ} (hψ : IsStdChar ψ) (y : F)
   exact hx0 this
 
 /- English proof (translation)
-Use `IsLocallyConstant.continuous ((IsLocallyConstant.iff_eventually_eq _).2 fun x => ?_)` and prove the remaining obligations. Use `filter_upwards [Metric.closedBall_mem_nhds x one_pos] with y hy`. Establish `: y = x + (y - x)` using `by ring`. Rewrite using `[this, AddChar.map_add_eq_mul, hψ.1 (y - x) (by simpa [dist_eq_norm] using hy), mul_one]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem stdChar_continuous {ψ : AddChar F ℂ} (hψ : IsStdChar ψ) : Continuous ψ := by
   refine IsLocallyConstant.continuous ((IsLocallyConstant.iff_eventually_eq _).2 fun x => ?_)
@@ -45,7 +45,7 @@ def box [IsUltrametricDist F] {ι : Type} (e : Module.Basis ι F V) (r : ℝ) (h
     simpa using ha i
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_box [IsUltrametricDist F] {ι : Type} (e : Module.Basis ι F V) (r : ℝ) (hr : 0 ≤ r) (x : V) :
     x ∈ box e r hr ↔ ∀ i, ‖e.repr x i‖ ≤ r := Iff.rfl
@@ -58,7 +58,7 @@ noncomputable def coordHomeo [TopologicalSpace V] [IsModuleTopology F V] {ι : T
     continuous_invFun := IsModuleTopology.continuous_of_linearMap e.equivFun.symm.toLinearMap }
 
 /- English proof (translation)
-Use extensionality with `x`. Rewrite using `[SetLike.mem_coe, mem_box, Set.mem_preimage, mem_closedBall_zero_iff, pi_norm_le_iff_of_nonneg hr]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem box_eq [IsUltrametricDist F] [TopologicalSpace V] [IsModuleTopology F V] {ι : Type} [Fintype ι]
     (e : Module.Basis ι F V) (r : ℝ) (hr : 0 ≤ r) :
@@ -68,7 +68,7 @@ theorem box_eq [IsUltrametricDist F] [TopologicalSpace V] [IsModuleTopology F V]
   rfl
 
 /- English proof (translation)
-Use `haveI : ProperSpace F := ProperSpace.of_nontriviallyNormedField_of_weaklyLocallyCompactSpace F`. Rewrite using `[box_eq]`. Conclude with `⟨(IsUltrametricDist.isOpen_closedBall _ hr.ne').preimage (coordHomeo e).continuous, (coordHomeo e).isCompact_preimage.2 (isCompact_closedBall _ _)⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem box_open_compact [IsUltrametricDist F] [LocallyCompactSpace F] [TopologicalSpace V]
     [IsModuleTopology F V] {ι : Type} [Fintype ι]
@@ -80,17 +80,15 @@ theorem box_open_compact [IsUltrametricDist F] [LocallyCompactSpace F] [Topologi
     (coordHomeo e).isCompact_preimage.2 (isCompact_closedBall _ _)⟩
 
 /- English proof (translation)
-Establish `htp : 0 < ‖t‖` using `norm_pos_iff.2 ht`. Prove the components needed by the constructor for the conclusion. Introduce `hy x hx`. Apply `hψ.1` to reduce the goal to its premises. Rewrite using `[hB]`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg zero_le_one fun i _ => ?_` and prove the remaining obligations. Rewrite using `[norm_mul]`. Combine the equalities or inequalities in the displayed calculation. Introduce `h i`. Establish `h1 : ‖t * e'.repr y i‖ ≤ 1`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `stdChar_key hψ _ fun c hc => ?_` and prove the remaining obligations. Establish `hx : (c * t) • e i ∈ box e ‖t‖ (norm_nonneg _)`. Introduce `j`. Rewrite using `[map_smul, Module.Basis.repr_self, Finsupp.smul_apply, Finsupp.single_apply]`. Use `split_ifs`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[smul_eq_mul, mul_one, norm_mul]`. Conclude with `mul_le_of_le_one_left (norm_nonneg _) hc`. Simplify using the standard rewrite rules. Use `h _ hx` as an intermediate fact. Rewrite `this` using `[hB, Finset.sum_eq_single i]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify `this` using `[mul_assoc]`. Introduce `j _ hj`. Simplify using `[Finsupp.single_apply, hj.symm]`. Simplify using the standard rewrite rules. Rewrite `h1` using `[norm_mul]`.
-
-Rewrite using `[norm_inv, ← one_div, le_div_iff₀ htp, mul_comm]`. Conclude with `h1`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem box_dual [IsUltrametricDist F] {ψ : AddChar F ℂ} (hψ : IsStdChar ψ) {ι : Type} [Fintype ι]
     (e e' : Module.Basis ι F V) (B : V → V → F)
@@ -131,17 +129,15 @@ end GlobalTheory.JR.DualLattice
 open GlobalTheory.JR.DualLattice in
 
 /- English proof (translation)
-Introduce `F _ _ _ ψ hψ V _ _ _ _ _ β hs hβ`. Set `e` to `Module.finBasis F V`. Set `e'` to `β.dualBasis hβ e`. Establish `hB : ∀ x y, β x y = ∑ i, e.repr x i * e'.repr y i`. Introduce `x y`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `conv_lhs => rw [← e.sum_repr x]`. Simplify using `only [map_sum, map_smul, LinearMap.sum_apply, LinearMap.smul_apply, smul_eq_mul]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.BilinForm.dualBasis_repr_apply, hs.eq]`. Use `⟨(stdChar_continuous hψ).comp ?_, fun U hU => ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [hB]`. Use `continuous_finset_sum _ fun i _ => ?_` and prove the remaining obligations. Conclude with `(((continuous_apply i).comp (coordHomeo e).continuous).comp continuous_fst).mul (((continuous_apply i).comp (coordHomeo e').continuous).comp continuous_snd)`. Establish `h0 : (coordHomeo e).symm 0 = 0` using `map_zero e.equivFun.symm`. Establish `hU' : (coordHomeo e).symm ⁻¹' U ∈ 𝓝 (0 : Fin (Module.finrank F V) → F)` using `(coordHomeo e).symm.continuous.continuousAt.preimage_mem_nhds (by rwa [h0])`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨ε, hε, hsub⟩` from `Metric.nhds_basis_closedBall.mem_iff.1 hU'`. Take `⟨t, ht0, htε⟩` from `NormedField.exists_norm_lt F hε`. Establish `ht : t ≠ 0` using `norm_pos_iff.1 ht0`. Establish `hti : 0 < ‖t⁻¹‖` using `norm_pos_iff.2 (inv_ne_zero ht)`. Use `⟨box e ‖t‖ (norm_nonneg _), box e' ‖t⁻¹‖ (norm_nonneg _), ?_, (box_open_compact e _ ht0).1, (box_open_compact e _ ht0).2, (box_open_compact e' _ hti).1, (box_open_compact e' _ hti).2, box_dual hψ e e' (fun x y => β x y) hB t ht, fun x => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[box_eq]`. Introduce `x hx`. Use `hsub (Metric.closedBall_subset_closedBall htε.le hx)` as an intermediate fact. Simplify using `using this`. Use `box_dual hψ e' e (fun y x => β x y) (fun y x => by simp only [hB, mul_comm]) t⁻¹ (inv_ne_zero ht) x` as an intermediate fact.
-
-Simplify `this` using `only [inv_inv]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.JR.exists_small_dual_lattices : ∀ (F : Type) [NontriviallyNormedField F] [IsUltrametricDist F] [LocallyCompactSpace F] (ψ : AddChar F ℂ), IsStdChar ψ → ∀ (V : Type) [AddCommGroup V] [Module F V] [Module.Finite F V] [TopologicalSpace V] [IsModuleTopology F V] (β : LinearMap.BilinForm F V), β.IsSymm → β.Nondegenerate → Continuous (fun p : V × V => ψ (β p.1 p.2)) ∧ (∀ U ∈ 𝓝 (0 : V), ∃ M N : AddSubgroup V, (M : Set V) ⊆ U ∧ IsOpen (M : Set V) ∧ IsCompact (M : Set V) ∧ IsOpen (N : Set V) ∧ IsCompact (N : Set V) ∧ (∀ y, y ∈ N ↔ ∀ x ∈ M, ψ (β x y) = 1) ∧ (∀ x, x ∈ M ↔ ∀ y ∈ N, ψ (β x y) = 1)) := by
   intro F _ _ _ ψ hψ V _ _ _ _ _ β hs hβ

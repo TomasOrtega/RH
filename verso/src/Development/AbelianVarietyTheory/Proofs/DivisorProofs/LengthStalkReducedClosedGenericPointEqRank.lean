@@ -7,15 +7,13 @@ open CategoryTheory AlgebraicGeometry TopologicalSpace GlobalTheory
 namespace GlobalTheory.StalkLength
 
 /- English proof (translation)
-Set `G` to `(Scheme.Modules.pushforward i).obj F`. Set `φ` to `i.stalkMap y`. Use `letI : Algebra (X.presheaf.stalk (i y)) (Y.presheaf.stalk y) := φ.hom.toAlgebra`. Use `letI : Module (X.presheaf.stalk (i y)) (F.presheaf.stalk y :) := Module.compHom _ (algebraMap (X.presheaf.stalk (i y)) (Y.presheaf.stalk y))`. Use `haveI : IsScalarTower (X.presheaf.stalk (i y)) (Y.presheaf.stalk y) (F.presheaf.stalk y :) := IsScalarTower.of_algebraMap_smul fun _ _ => rfl`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Equip the data with the indicated structure. Equip the data with the indicated structure. Introduce a local definition for the expression.
 
-Set `Ψ : (G.presheaf.stalk (i y) :) →+ (F.presheaf.stalk y :)` to `(F.presheaf.stalkPushforward _ i.base y).hom`. Establish `hΨ (U : X.Opens) (hU : i y ∈ U) (s : Γ(G, U)) : Ψ (G.presheaf.germ U _ hU s) = F.presheaf.germ (i ⁻¹ᵁ U) y hU s` using `congr($(TopCat.Presheaf.stalkPushforward_germ _ i.base F.presheaf U y hU).hom s)`. Establish `hiso` using `TopCat.Presheaf.stalkPushforward.stalkPushforward_iso_of_isInducing _ (f := i.base) i.isClosedEmbedding.isInducing F.presheaf y`. Establish `hbij : Function.Bijective Ψ` using `ConcreteCategory.bijective_of_isIso (F.presheaf.stalkPushforward _ i.base y)`. Establish `hsmul (a : X.presheaf.stalk (i y)) (m : (G.presheaf.stalk (i y) :)) : Ψ (a • m) = φ.hom a • Ψ m`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨U₁, hU₁, r, rfl⟩` from `X.presheaf.germ_exist a`. Take `⟨U₂, hU₂, s, rfl⟩` from `G.presheaf.germ_exist m`. Establish `hU : i y ∈ U₁ ⊓ U₂` using `⟨hU₁, hU₂⟩`. Rewrite using `[← TopCat.Presheaf.germ_res_apply X.presheaf (homOfLE (inf_le_left : U₁ ⊓ U₂ ≤ U₁)) _ hU, ← TopCat.Presheaf.germ_res_apply G.presheaf (homOfLE (inf_le_right : U₁ ⊓ U₂ ≤ U₂)) _ hU]`. Generalize the expression as in `X.presheaf.map (homOfLE (inf_le_left : U₁ ⊓ U₂ ≤ U₁)).op r = r'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable.
 
-Generalize the expression as in `G.presheaf.map (homOfLE (inf_le_right : U₁ ⊓ U₂ ≤ U₂)).op s = s'`. Rewrite using `[← GlobalTheory.QCoh.germ_smul G, hΨ, hΨ]`. Use `(GlobalTheory.QCoh.germ_smul F (U := i ⁻¹ᵁ (U₁ ⊓ U₂)) _ _ (i.app _ r') s').trans ?_` and prove the remaining obligations. Use `congr 1`. Conclude with `congr($(Scheme.Hom.germ_stalkMap i (U₁ ⊓ U₂) y hU).hom r').symm`.
-
-Set `e : (G.presheaf.stalk (i y) :) ≃ₗ[X.presheaf.stalk (i y)] (F.presheaf.stalk y :)` to `{ AddEquiv.ofBijective Ψ hbij with map_smul' := hsmul }`. Conclude with `e.length_eq.trans (Module.length_eq_of_surjective (i.stalkMap_surjective y))`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem length_stalk_pushforward {X Y : Scheme.{0}} (i : Y ⟶ X) [IsClosedImmersion i]
     (F : Y.Modules) (y : Y) :
@@ -56,7 +54,7 @@ theorem length_stalk_pushforward {X Y : Scheme.{0}} (i : Y ⟶ X) [IsClosedImmer
   exact e.length_eq.trans (Module.length_eq_of_surjective (i.stalkMap_surjective y))
 
 /- English proof (translation)
-Introduce `X Z _ G _`. Rewrite using `[length_stalk_pushforward]`. Conclude with `Module.length_eq_finrank (Scheme.IdealSheafData.vanishingIdeal Z).subscheme.functionField (GlobalTheory.VB.genStalk G)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem length_stalk_pushforward_genericPoint : ∀ (X : Scheme.{0}) (Z : Closeds X)
     [IsIntegral (Scheme.IdealSheafData.vanishingIdeal Z).subscheme]

@@ -6,11 +6,11 @@ open GlobalTheory.CompanionTheory.VacLoc GlobalTheory.CompanionTheory.FinHeis Gl
 namespace GlobalTheory.CompanionTheory.SchrLaw
 
 /- English proof (translation)
-Establish `hone : ∀ z : R, ((u⁻¹ : Rˣ) : R) * z ∈ O → ψ z = 1`. Introduce `z hz`. Establish `hu : ∀ y ∈ O, ψ ((u : R) * y) = 1` using `(h.ann (u : R)).2 (by rw [Units.inv_mul]; exact O.one_mem)`. Use `hu _ hz` as an intermediate fact. Rewrite `this` using `[Units.mul_inv_cancel_left]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite using `[IsLocallyConstant.iff_exists_open]`. Introduce `x`. Use `⟨{y | ((u⁻¹ : Rˣ) : R) * (y - x) ∈ O}, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `h.isOpen.preimage (continuous_const.mul (continuous_id.sub continuous_const))`. Simplify using `only [Set.mem_ofPred_eq, sub_self, mul_zero]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `O.zero_mem`. Introduce `y hy`. Establish `hy' : y = x + (y - x)` using `by abel`. Rewrite using `[hy', AddChar.map_add_eq_mul, hone _ hy, mul_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem goodChar_isLocallyConstant {R : Type} [CommRing R] [TopologicalSpace R] [IsTopologicalRing R]
     {ψ : AddChar R ℂ} {O : Subring R} {u : Rˣ} (h : GoodChar ψ O u) : IsLocallyConstant (ψ : R → ℂ) := by
@@ -31,19 +31,19 @@ theorem goodChar_isLocallyConstant {R : Type} [CommRing R] [TopologicalSpace R] 
     rw [hy', AddChar.map_add_eq_mul, hone _ hy, mul_one]
 
 /- English proof (translation)
-Introduce `R _ _ _ _ _ _ ψ O u W _ _ B κ _ d μ w w' φ φ' hψ hμ`. Establish `h2 : ⅟(2 : R) * 2 = 1` using `invOf_mul_self _`. Establish `hloc : IsLocallyConstant (ψ : R → ℂ)` using `goodChar_isLocallyConstant hψ`. Establish `hdot : ∀ b : κ → R, Continuous fun x : κ → R => x ⬝ᵥ b` using `fun b => continuous_finsetSum _ fun i _ => (continuous_apply i).mul continuous_const`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use function extensionality and compare the values at `x`. Simplify using `only [Darboux.rho, schr, Pi.smul_apply, smul_eq_mul, map_add, Prod.fst_add, Prod.snd_add, d.form]`. Rewrite using `[← mul_assoc, ← mul_assoc, ← AddChar.map_add_eq_mul, ← AddChar.map_add_eq_mul, add_assoc x]`. Use `congr 2`. Simplify using `only [add_dotProduct, dotProduct_add]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Take the linear combination `(-((d.e w).1 ⬝ᵥ (d.e w').2)) * h2`. Use function extensionality and compare the values at `x`. Simplify using `[Darboux.rho, schr]`. Introduce `hφ`. Express the relevant statement in the definitionally equal form `IsLocallyConstant _ ∧ HasCompactSupport _ at hφ`.
+Take a linear combination of the given relations to obtain the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `IsLocallyConstant _ ∧ HasCompactSupport _`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Conclude with `(hloc.comp_continuous ((hdot _).add continuous_const)).mul (hφ.1.comp_continuous (continuous_id.add continuous_const))`. Conclude with `(hφ.2.comp_homeomorph (Homeomorph.addRight (d.e w).1)).mul_left`. Set `_ : MeasurableSpace (κ → R)` to `borel _`.
+Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: BorelSpace (κ → R)` using `⟨rfl⟩`. Establish `: μ.IsAddHaarMeasure` using `hμ`. Establish `hpt : ∀ x, (starRingEnd ℂ) (d.rho ψ w φ x) * d.rho ψ w φ' x = (starRingEnd ℂ) (φ ((d.e w).1 + x)) * φ' ((d.e w).1 + x)`. Introduce `x`. Simplify using `only [Darboux.rho, schr, map_mul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hn : (starRingEnd ℂ) (ψ (x ⬝ᵥ (d.e w).2 + ⅟(2 : R) * ((d.e w).1 ⬝ᵥ (d.e w).2))) * ψ (x ⬝ᵥ (d.e w).2 + ⅟(2 : R) * ((d.e w).1 ⬝ᵥ (d.e w).2)) = 1`. Rewrite using `[Complex.conj_mul', hψ.norm_one]`. Simplify using the standard rewrite rules. Rewrite using `[add_comm (d.e w).1 x]`. Take the linear combination `((starRingEnd ℂ) (φ (x + (d.e w).1)) * φ' (x + (d.e w).1)) * hn`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Replace the relevant objects with their definitions. Rewrite the conclusion repeatedly using the stated equalities.
 
-Unfold `pair`. Repeatedly rewrite using `[hpt]`. Conclude with `integral_add_left_eq_self (fun x => (starRingEnd ℂ) (φ x) * φ' x) (d.e w).1`.
+A detailed English derivation is pending.
 -/
 theorem schr_law : ∀ {R : Type} [CommRing R] [TopologicalSpace R] [IsTopologicalRing R] [LocallyCompactSpace R] [T2Space R] [Invertible (2 : R)] (ψ : AddChar R ℂ) (O : Subring R) (u : Rˣ) {W : Type} [AddCommGroup W] [Module R W] {B : W → W → R} {κ : Type} [Fintype κ] (d : Darboux B κ) (μ : @Measure (κ → R) (borel _)) (w w' : W) (φ φ' : (κ → R) → ℂ), GoodChar ψ O u → @Measure.IsAddHaarMeasure _ _ _ (borel _) μ → d.rho ψ w (d.rho ψ w' φ) = ψ (⅟(2 : R) * B w w') • d.rho ψ (w + w') φ ∧ d.rho ψ 0 φ = φ ∧ (φ ∈ SB (κ → R) → d.rho ψ w φ ∈ SB (κ → R)) ∧ pair μ (d.rho ψ w φ) (d.rho ψ w φ') = pair μ φ φ' := by
   intro R _ _ _ _ _ _ ψ O u W _ _ B κ _ d μ w w' φ φ' hψ hμ

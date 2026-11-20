@@ -25,17 +25,15 @@ open scoped TensorProduct
 namespace GlobalTheory.IndLineGL
 
 /- English proof (translation)
-Introduce `hKP k _ _ _ _ a a' m hm ha α₀ β₀ hαs hβs hαu hβu P P₁ _ _ _ _ π σ₁ _ hπ hσ e ξ₁ ξ₂ A A' hA hA'`. Use `GlobalTheory.T.jacquet_hom_leviTgt_bound k _ m e P P₁ π σ₁ ξ₁ ξ₂ ?_ A A' hA hA'` and prove the remaining obligations. Use `GlobalTheory.T.jacquet_hom_equiv_transfer k _ m e P _ P₁ π _ σ₁ ξ₁ ξ₂ hπ ?_` and prove the remaining obligations. Rewrite using `[prod₂_detRep_eq]`. Take `⟨N, bb, hbb⟩` from `hKP.geometricLemmaFiltration k Bool (Fin 3) (Fin (a + a')) (Two (Fin a) (Fin a')) (fun j : Fin 3 => Fin (blk3 m j)) (two (stdSum rfl)) e`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨S, hmono, h0, htop, hstep⟩` from `hbb (ℂ ⊗[ℂ] ℂ) (detPair k a a' α₀ β₀) (isSmooth_detPair a a' hαs hβs)`. Establish `hE : ∀ t : Fin N, Nonempty ((subQuot (S t.succ) (S t.castSucc)).Equiv (cellFunctor (bb t).nonempty_rows.some (bb t).nonempty_cols.some (detPair k a a' α₀ β₀)))` using `fun t => hstep t _ _`. Use `GlobalTheory.T.filtration_central_char_distinct _ _ N S hmono h0 htop ?_ fun t => ?_` and prove the remaining obligations. Introduce `t t' htt`. Establish `hb : bb t ≠ bb t'` using `bb.injective.ne htt`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hcn` using `GlobalTheory.T.cell_character_distinct k a a' m α₀ β₀ hαu hβu ha (bb t) (bb t') hb`. Take `⟨t₁, t₂, hne⟩` from `hcn`. Establish `hτ : ∀ y, twist (leviTgt σ₁ ξ₁ ξ₂) (deltaHalf k fun i : Fin 3 => Fin (blk3 m i))⁻¹ (torusPt k m t₁ t₂) y = ((((deltaHalf k fun i : Fin 3 => Fin (blk3 m i))⁻¹ (torusPt k m t₁ t₂) : ℂˣ) : ℂ) * ((ξ₁ t₁ * ξ₂ t₂ : ℂˣ) : ℂ)) • y` using `fun y => by`. Rewrite using `[twist_apply, leviTgt_torusPt, smul_smul]`. Establish `hcell : ∀ s : Fin N, ∀ y, subQuot (S s.succ) (S s.castSucc) (torusPt k m t₁ t₂) y = (cellChar k a a' α₀ β₀ (bb s).1 t₁ t₂ : ℂ) • y` using `fun s y => smul_of_equiv (hE s).some (GlobalTheory.T.cell_functor_torus_character k a a' m α₀ β₀ (bb s) (bb s).nonempty_rows.some (bb s).nonempty_cols.some t₁ t₂) y`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hne' : (cellChar k a a' α₀ β₀ (bb t).1 t₁ t₂ : ℂ) ≠ cellChar k a a' α₀ β₀ (bb t').1 t₁ t₂` using `fun h => hne (Units.val_injective h)`. Distinguish the cases in `h1 : ((((deltaHalf k fun i : Fin 3 => Fin (blk3 m i))⁻¹ (torusPt k m t₁ t₂) : ℂˣ) : ℂ) * ((ξ₁ t₁ * ξ₂ t₂ : ℂˣ) : ℂ)) = cellChar k a a' α₀ β₀ (bb t).1 t₁ t₂`. Use `right`. Conclude with `⟨torusPt k m t₁ t₂, _, _, fun h2 => hne' (h1.symm.trans h2), hτ, hcell t'⟩`. Use `left`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `⟨torusPt k m t₁ t₂, _, _, h1, hτ, hcell t⟩`. Use `HomLeOne.of_equiv (hE t).some ?_` and prove the remaining obligations. Use `GlobalTheory.T.cell_functor_hom_le_one_of_irreducible k hKP a a' m α₀ β₀ hαs hβs P₁ σ₁ hσ ξ₁ ξ₂ (bb t) _ _ ?_` and prove the remaining obligations. Distinguish the cases in `hb : (bb t).1 false 0 = (bb t).1 false 2`. Conclude with `GlobalTheory.T.cell_middle_irreducible k hKP a a' m α₀ β₀ hαs hβs hαu hβu (bb t) hb`.
-
-Conclude with `GlobalTheory.MidMixedCell.isIrreducible hKP.geometricLemmaFiltration hKP.base.bernsteinZelevinskyFiniteness hKP.base.bernsteinUnitaryProductIrreducible k a a' m α₀ β₀ hαs hβs hαu hβu ha (bb t) hb`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. A detailed English derivation is pending.
 -/
 theorem proportional_of_glInd : GlobalTheory.ThK.KP → ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (a a' m : ℕ), m + 2 = a + a' → a' < a → ∀ (α₀ β₀ : kˣ →* ℂˣ), IsSmoothChar α₀ → IsSmoothChar β₀ →

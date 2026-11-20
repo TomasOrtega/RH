@@ -18,13 +18,11 @@ variable {G : Type*} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
   {V : Type*} [AddCommGroup V] [Module ℂ V] {ρ : Representation ℂ G V} {K : Subgroup G}
 
 /- English proof (translation)
-Establish `hmem : ρ g (fixedProj ρ hρ hKc hKo v : V) ∈ fixedVectors ρ K`. Introduce `k hk`. Establish `hk' : k = g * (g⁻¹ * k * g) * g⁻¹` using `by group`. Rewrite using `[hk', map_mul, map_mul, Module.End.mul_apply, Module.End.mul_apply, ← Module.End.mul_apply (ρ g⁻¹), ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply, (fixedProj ρ hρ hKc hKo v).2 _ (hg' k hk)]`. Establish `hmap : coinvariantsKer ρ K ≤ (coinvariantsKer ρ K).comap (ρ g)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨⟨k, x⟩, rfl⟩`. Simplify using `only [MonoidHom.coe_comp, Function.comp_apply, Subgroup.coe_subtype, SetLike.mem_coe, Submodule.mem_comap, map_sub]`. Establish `hk : ρ g (ρ (k : G) x) = ρ (g * (k : G) * g⁻¹) (ρ g x)`. Rewrite using `[← Module.End.mul_apply, ← map_mul, ← Module.End.mul_apply, ← map_mul, inv_mul_cancel_right]`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hk]`. Conclude with `sub_mem_coinvariantsKer (hg k k.2) (ρ g x)`. Establish `h` using `(fixedProj_eq_iff hρ hKc hKo (v := ρ g v) (w := ⟨_, hmem⟩)).2 (by show ρ g v - ρ g _ ∈ coinvariantsKer ρ K`. Rewrite using `[← map_sub]`. Conclude with `hmap (sub_fixedProj_mem hρ hKc hKo v))`.
-
-Conclude with `congrArg Subtype.val h`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fixedProj_act_of_normalizes (hρ : IsSmooth ρ) (hKc : IsCompact (K : Set G))
     (hKo : IsOpen (K : Set G)) {g : G} (hg : ∀ k ∈ K, g * k * g⁻¹ ∈ K)
@@ -61,7 +59,7 @@ section DiagPow
 open Cartan
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[Units.val_mul, coe_diagPow, coe_diagPow, coe_diagPow, diagonal_mul_diagonal]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Rewrite using `[Pi.add_apply, zpow_add₀ (Cartan.uniformizer_ne_zero F)]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 -/
 theorem diagPow_add (μ ν : Fin n → ℤ) : diagPow F n (μ + ν) = diagPow F n μ * diagPow F n ν := by
   apply Units.ext
@@ -71,7 +69,7 @@ theorem diagPow_add (μ ν : Fin n → ℤ) : diagPow F n (μ + ν) = diagPow F 
   rw [Pi.add_apply, zpow_add₀ (Cartan.uniformizer_ne_zero F)]
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[coe_diagPow, Units.val_one]`. Simplify using the standard rewrite rules.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem diagPow_zero : diagPow F n 0 = 1 := by
   apply Units.ext
@@ -79,14 +77,14 @@ theorem diagPow_zero : diagPow F n 0 = 1 := by
   simp
 
 /- English proof (translation)
-Use `eq_inv_of_mul_eq_one_left ?_` and prove the remaining obligations. Rewrite using `[← diagPow_add, neg_add_cancel, diagPow_zero]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem diagPow_neg (μ : Fin n → ℤ) : diagPow F n (-μ) = (diagPow F n μ)⁻¹ := by
   refine eq_inv_of_mul_eq_one_left ?_
   rw [← diagPow_add, neg_add_cancel, diagPow_zero]
 
 /- English proof (translation)
-Rewrite using `[← diagPow_neg]`. Rewrite using `[Units.val_mul, Units.val_mul, coe_diagPow, coe_diagPow, mul_diagonal, diagonal_mul, Pi.neg_apply, zpow_sub₀ (Cartan.uniformizer_ne_zero F), _root_.zpow_neg, div_eq_mul_inv]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem diagPow_conj_apply (μ : Fin n → ℤ) (g : GL (Fin n) F) (i j : Fin n) :
     (diagPow F n μ * g * (diagPow F n μ)⁻¹ : GL (Fin n) F) i j =
@@ -98,7 +96,7 @@ theorem diagPow_conj_apply (μ : Fin n → ℤ) (g : GL (Fin n) F) (i j : Fin n)
   ring
 
 /- English proof (translation)
-Rewrite using `[mem_levi]`. Introduce `i j hij`. Establish `: i ≠ j` using `fun h => hij (h ▸ rfl)`. Use `show (diagPow F n μ : Matrix (Fin n) (Fin n) F) i j = 0`. Rewrite using `[coe_diagPow, diagonal_apply_ne _ this]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem diagPow_mem_levi (μ : Fin n → ℤ) : diagPow F n μ ∈ levi F n β := by
   rw [mem_levi]
@@ -108,11 +106,11 @@ theorem diagPow_mem_levi (μ : Fin n → ℤ) : diagPow F n μ ∈ levi F n β :
   rw [coe_diagPow, diagonal_apply_ne _ this]
 
 /- English proof (translation)
-Rewrite using `[Submonoid.mem_center_iff]`. Introduce `g`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components.
 
-Use `show (((g : GL (Fin n) F) : Matrix (Fin n) (Fin n) F) * (diagPow F n c : Matrix (Fin n) (Fin n) F)) i j = ((diagPow F n c : Matrix (Fin n) (Fin n) F) * ((g : GL (Fin n) F) : Matrix (Fin n) (Fin n) F)) i j`. Rewrite using `[coe_diagPow, mul_diagonal, diagonal_mul]`. Distinguish the cases in `h : β i = β j`. Rewrite using `[hc i j h, mul_comm]`. Establish `: ((g : GL (Fin n) F) : Matrix (Fin n) (Fin n) F) i j = 0` using `mem_levi.1 g.2 i j h`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, zero_mul, mul_zero]`.
+A detailed English derivation is pending.
 -/
 theorem diagPow_mem_center {c : Fin n → ℤ} (hc : ∀ i j, β i = β j → c i = c j) :
     (⟨diagPow F n c, diagPow_mem_levi c⟩ : levi F n β) ∈ Submonoid.center (levi F n β) := by
@@ -130,15 +128,15 @@ theorem diagPow_mem_center {c : Fin n → ℤ} (hc : ∀ i j, β i = β j → c 
     rw [this, zero_mul, mul_zero]
 
 /- English proof (translation)
-Establish `key : ∀ x : F, ∀ i j, (x = (1 : Matrix (Fin n) (Fin n) F) i j ∨ μ j + C ≤ μ i) → (uniformizer F : F) ^ t * x ∈ 𝒪[F] → (uniformizer F : F) ^ (μ i - μ j) * x ∈ 𝒪[F] ∧ valuation F ((uniformizer F : F) ^ (μ i - μ j) * x - (1 : Matrix (Fin n) (Fin n) F) i j) ≤ valuation F (uniformizer …`. Introduce `x i j hx hxb`. Break down `hx with hx | hx` into its components or cases. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Rewrite using `[hx, sub_self, zpow_zero, one_mul, one_apply_eq, sub_self, map_zero]`. Conclude with `⟨one_mem _, zero_le'⟩`. Rewrite using `[hx, one_apply_ne hij, mul_zero, sub_zero, map_zero]`. Conclude with `⟨zero_mem _, zero_le'⟩`. Establish `hij : i ≠ j`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact.
 
-Introduce and unpack `rfl`. Use linear arithmetic over natural numbers and integers. Rewrite using `[one_apply_ne hij, sub_zero]`. Conclude with `⟨zpow_mul_mem hxb (by omega), valuation_zpow_mul_le hxb (by push_cast at hC ⊢; omega)⟩`. Rewrite using `[mem_congruenceSubgroup_iff, mem_integralGL_iff]`.
+Assume the hypotheses and unpack their components. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Use `⟨⟨fun i j => ?_, fun i j => ?_⟩, fun i j => ?_⟩` and prove the remaining obligations. Rewrite using `[diagPow_conj_apply]`. Conclude with `(key _ i j (hu i j) (hb i j)).1`. Establish `: (diagPow F n μ * u * (diagPow F n μ)⁻¹)⁻¹ = diagPow F n μ * u⁻¹ * (diagPow F n μ)⁻¹` using `by group`. Rewrite using `[this, diagPow_conj_apply]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(key _ i j (hu' i j) (hb' i j)).1`. Rewrite using `[diagPow_conj_apply]`. Conclude with `(key _ i j (hu i j) (hb i j)).2`.
+A detailed English derivation is pending.
 -/
 theorem diagPow_conj_mem_congruenceSubgroup {μ : Fin n → ℤ} {u : GL (Fin n) F} {t m : ℕ}
     {C : ℤ} (hC : ((t + m : ℕ) : ℤ) < C)
@@ -179,21 +177,19 @@ theorem diagPow_conj_mem_congruenceSubgroup {μ : Fin n → ℤ} {u : GL (Fin n)
 end DiagPow
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hcon`. Rewrite `hcon` using `[not_or]`. Take `⟨hA, hB⟩` from `hcon`. Use `push_neg at hB`. Take `⟨i, j, hij, hbig⟩` from `hB`.
+Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨j₀, hj₀, hmin⟩` from `Finset.exists_min_image (Finset.univ.filter fun k => β k = β j) μ ⟨j, by simp⟩`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at hj₀ hmin`. Establish `hj₀j : μ j₀ ≤ μ j` using `hmin j rfl`. Establish `hk : ∀ t : Fin n, ∃ k, β k = β j ∧ μ k < μ j₀ + ((t : ℕ) + 1 : ℤ) * C ∧ μ j₀ + ((t : ℕ) + 1 : ℤ) * C < μ k + C`. Introduce `t`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hne`. Use `push_neg at hne`. Apply `hA` to reduce the goal to its premises. Use `⟨μ j₀ + ((t : ℕ) + 1 : ℤ) * C, β j, ⟨i, hij, ?_⟩, ⟨j₀, hj₀, ?_⟩, fun k hk hlt => hne k hk hlt⟩` and prove the remaining obligations. Establish `ht : ((t : ℕ) + 1 : ℤ) ≤ n` using `by have := t.2; omega`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Use the polynomial consequences of the given equalities and inequalities.
 
-Use the polynomial consequences of the given equalities and inequalities. Use the polynomial consequences of the given equalities and inequalities. Use `choose k hkb hk1 hk2 using hk`. Establish `hinj : Function.Injective k`. Introduce `s t hst`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `hk1 s`. Establish `h2` using `hk2 s`. Establish `h3` using `hk1 t`. Establish `h4` using `hk2 t`. Rewrite `h1`, `h2` using `[hst]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Use the polynomial consequences of the given equalities and inequalities.
 
-Establish `hs : ((s : ℕ) : ℤ) < (t : ℕ) + 1`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Use the polynomial consequences of the given equalities and inequalities. Establish `ht : ((t : ℕ) : ℤ) < (s : ℕ) + 1`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Use the polynomial consequences of the given equalities and inequalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `h`. Use `push_neg at h`. Use the polynomial consequences of the given equalities and inequalities. Conclude with `Fin.ext (by omega)`. Take `⟨t, ht⟩` from `(Finite.injective_iff_surjective.1 hinj) j₀`.
-
-Establish `h1` using `hk2 t`. Rewrite `h1` using `[ht]`. Establish `: (0 : ℤ) ≤ ((t : ℕ) : ℤ) * C` using `by positivity`. Use the polynomial consequences of the given equalities and inequalities.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem gap_or_bounded (μ : Fin n → ℤ) {C : ℤ} (hC : 0 < C) :
     (∃ θ : ℤ, ∃ b : α, (∃ j, β j = b ∧ θ ≤ μ j) ∧ (∃ k, β k = b ∧ μ k < θ) ∧
@@ -258,13 +254,11 @@ def IsCuspidal (σ : Representation ℂ (levi F n β) W) : Prop :=
 def splitFun (S : Finset (Fin n)) : Fin n → ℕ := fun j => if j ∈ S then 0 else 1
 
 /- English proof (translation)
-Take `⟨i, j, hij, hi, hj⟩` from `hS`. Establish `hsub` using `hc (splitFun S) ⟨i, j, hij, by simp [splitFun, hi, hj]⟩`. Establish `hw : w ∈ Representation.Coinvariants.ker (σ.comp (leviUnipotent F n β (splitFun S)).subtype)` using `(Representation.Coinvariants.mk_eq_zero _).1 (Subsingleton.elim _ _)`. Take `⟨T, hT, hwT⟩` from `Submodule.mem_span_finite_of_mem_span hw`. Establish `hpre : ∀ y ∈ T, ∃ gv : leviUnipotent F n β (splitFun S) × W, σ (gv.1 : levi F n β) gv.2 - gv.2 = y`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `y hy`. Take `⟨gv, h⟩` from `hT hy`. Conclude with `⟨gv, h⟩`. Use `choose! pre hpre using hpre`. Use `⟨T.image fun y => ((pre y).1 : levi F n β), ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `u hu`. Take `⟨y, -, rfl⟩` from `Finset.mem_image.1 hu`. Conclude with `Subgroup.mem_subgroupOf.1 (pre y).1.2`. Use `Submodule.span_mono ?_ hwT` and prove the remaining obligations. Introduce `y hy`.
-
-Conclude with `⟨((pre y).1 : levi F n β), Finset.mem_image_of_mem _ hy, (pre y).2, (hpre y hy).symm⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_finset_of_isCuspidal {σ : Representation ℂ (levi F n β) W} (hc : IsCuspidal σ)
     {S : Finset (Fin n)} (hS : ∃ i j, β i = β j ∧ i ∈ S ∧ j ∉ S) (w : W) :
@@ -292,15 +286,13 @@ theorem exists_finset_of_isCuspidal {σ : Representation ℂ (levi F n β) W} (h
     exact ⟨((pre y).1 : levi F n β), Finset.mem_image_of_mem _ hy, (pre y).2, (hpre y hy).symm⟩
 
 /- English proof (translation)
-Take `⟨hP, h1⟩` from `mem_unipotentRadical.1 hN`. Distinguish the cases in `hb : β i = β j`. Use `swap`. Use `left`. Rewrite using `[mem_levi.1 hu i j hb, one_apply_ne (fun e => hb (by rw [e]))]`.
+Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules.
 
-Break down `lt_trichotomy (splitFun (Finset.univ.filter fun j => β j = b ∧ θ ≤ μ j) i) (splitFun (Finset.univ.filter fun j => β j = b ∧ θ ≤ μ j) j) with h | h | h` into its components or cases. Use `right`. Simplify using `only [splitFun, Finset.mem_filter, Finset.mem_univ, true_and] at h`. Use `split_ifs at h with hi hj`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `hjb : β j = b` using `hb.symm.trans hi.1`. Establish `hjθ : μ j < θ`. Assume the negation of the conclusion as `h'`. Conclude with `hj ⟨hjb, not_lt.1 h'⟩`. Use `hgap j hjb hjθ` as an intermediate fact.
+Combine the linear equalities and inequalities to obtain the conclusion. Use linear arithmetic over natural numbers and integers. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Combine the linear relations using `[hi.2]`. Use linear arithmetic over natural numbers and integers. Use linear arithmetic over natural numbers and integers. Use `left`. Conclude with `h1 i j h`.
-
-Use `left`. Establish `hij : i ≠ j` using `fun e => by rw [e] at h; exact lt_irrefl _ h`. Rewrite using `[one_apply_ne hij]`. Conclude with `hP h`.
+A detailed English derivation is pending.
 -/
 theorem apply_eq_or_gap {θ C : ℤ} {b : α} {μ : Fin n → ℤ}
     (hgap : ∀ k, β k = b → μ k < θ → μ k + C ≤ θ) {u : GL (Fin n) F} (hu : u ∈ levi F n β)
@@ -334,7 +326,7 @@ theorem apply_eq_or_gap {θ C : ℤ} {b : α} {μ : Fin n → ℤ}
     exact hP h
 
 /- English proof (translation)
-Establish `hU' : U ∈ comap (Subtype.val : levi F n β → GL (Fin n) F) (𝓝 (1 : GL (Fin n) F))`. Rewrite `hU` using `[nhds_subtype]`. Conclude with `hU`. Take `⟨m, -, hm⟩` from `((hasBasis_nhds_one F n).comap (Subtype.val : levi F n β → GL (Fin n) F)).mem_iff.1 hU'`. Conclude with `⟨m, by rw [Subgroup.coe_subgroupOf]; exact hm⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_subgroupOf_congruenceSubgroup_subset {U : Set (levi F n β)}
     (hU : U ∈ 𝓝 (1 : levi F n β)) :
@@ -351,67 +343,57 @@ instance secondCountableTopology_levi : SecondCountableTopology (levi F n β) :=
   inferInstanceAs (SecondCountableTopology (levi F n β : Set (GL (Fin n) F)))
 
 /- English proof (translation)
-Use `haveI : LocallyCompactSpace (levi F n β) := isClosed_levi.isClosedEmbedding_subtypeVal.locallyCompactSpace`. Set `KM : ℕ → Subgroup (levi F n β)` to `fun m => (congruenceSubgroup F n m).subgroupOf (levi F n β)`. Establish `hKMc : ∀ m, IsCompact (KM m : Set (levi F n β))` using `fun m => isCompact_subgroupOf_levi (isCompact_congruenceSubgroup F n m)`. Establish `hKMo : ∀ m, IsOpen (KM m : Set (levi F n β))` using `fun m => isOpen_subgroupOf_levi (isOpen_congruenceSubgroup F n m)`. Establish `hKManti : ∀ {m m' : ℕ}, m ≤ m' → KM m' ≤ KM m` using `fun h x hx => Subgroup.mem_subgroupOf.2 (congruenceSubgroup_antitone F n h (Subgroup.mem_subgroupOf.1 hx))`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨v, hv0⟩` from `exists_ne_zero_of_isIrreducible (ρ := σ)`. Establish `hspan : Submodule.span ℂ (Set.range fun g : levi F n β => σ g v) = ⊤`. Establish `hstable : ∀ g : levi F n β, Submodule.span ℂ (Set.range fun h : levi F n β => σ h v) ≤ (Submodule.span ℂ (Set.range fun h : levi F n β => σ h v)).comap (σ g)`. Introduce `g`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ ⟨h, rfl⟩`. Conclude with `Submodule.subset_span ⟨g * h, by simp [map_mul, Module.End.mul_apply]⟩`. Set `Wsub : Subrepresentation σ` to `⟨Submodule.span ℂ (Set.range fun h : levi F n β => σ h v), fun g _ hx => hstable g hx⟩`. Establish `hW : Wsub = ⊤` using `(eq_bot_or_eq_top Wsub).resolve_left fun h => hv0 (by`. Establish `hvW : v ∈ Wsub.toSubmodule` using `Submodule.subset_span ⟨1, by simp⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `hvW` using `[h]`. Conclude with `(Submodule.mem_bot ℂ).1 hvW)`. Conclude with `congrArg Subrepresentation.toSubmodule hW`. Take `⟨m₀, hm₀⟩` from `exists_subgroupOf_congruenceSubgroup_subset ((hσ v).mem_nhds (one_mem (stabilizerOf σ v)))`. Establish `hvm₀ : v ∈ fixedVectors σ (KM m₀)` using `fun k hk => hm₀ hk`.
+Establish an intermediate fact. Reduce the argument to an intermediate assertion. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-It suffices to establish `hmain : ∀ m, m₀ ≤ m → FiniteDimensional ℂ (fixedVectors σ (KM m)) by`. Use `⟨hσ, fun K hKc hKo => ?_⟩` and prove the remaining obligations. Take `⟨m₁, hm₁⟩` from `exists_subgroupOf_congruenceSubgroup_subset (hKo.mem_nhds K.one_mem)`. Establish `hle : KM (max m₀ m₁) ≤ K` using `fun x hx => hm₁ (hKManti (le_max_right _ _) hx)`. Use `hmain (max m₀ m₁) (le_max_left _ _)` as an intermediate fact.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `Submodule.finiteDimensional_of_le (fixedVectors_antitone _ hle)`. Introduce `m hm`. Use `set K := KM m with hKdef`. Use `set e := fixedProj σ hσ (hKMc m) (hKMo m) with hedef`. Establish `hvK : v ∈ fixedVectors σ K` using `fixedVectors_antitone _ (hKManti hm) hvm₀`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Set `K₀ : Subgroup (levi F n β)` to `(integralGL F n).subgroupOf (levi F n β)`. Establish `hK₀c : IsCompact (K₀ : Set (levi F n β))` using `isCompact_subgroupOf_levi (isCompact_integralGL F n)`. Establish `: CompactSpace K₀` using `isCompact_iff_compactSpace.1 hK₀c`. Establish `hQ : Finite (K₀ ⧸ K.subgroupOf K₀)`. Use `Subgroup.quotient_finite_of_isOpen _ ?_` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[Subgroup.coe_subgroupOf]`. Conclude with `(hKMo m).preimage continuous_subtype_val`. Use `Fintype.ofFinite (K₀ ⧸ K.subgroupOf K₀)` as an intermediate fact. Set `R : Finset (levi F n β)` to `Finset.univ.image fun q : K₀ ⧸ K.subgroupOf K₀ => ((Quotient.out q : K₀) : levi F n β)`. Establish `hR : ∀ k ∈ K₀, ∃ r ∈ R, ∀ w ∈ fixedVectors σ K, σ k w = σ r w`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Introduce `k hk`. Use `⟨_, Finset.mem_image_of_mem _ (Finset.mem_univ (QuotientGroup.mk (⟨k, hk⟩ : K₀))), fun w hw => ?_⟩` and prove the remaining obligations. Conclude with `act_eq_of_mk_eq σ hw (a := ⟨k, hk⟩) (b := Quotient.out (QuotientGroup.mk (⟨k, hk⟩ : K₀) : K₀ ⧸ K.subgroupOf K₀)) (QuotientGroup.out_eq' _).symm`. Establish `hnorm : ∀ k ∈ K₀, ∀ x ∈ K, k * x * k⁻¹ ∈ K` using `fun k hk x hx => Subgroup.mem_subgroupOf.2 (by`. Simplify using `using conj_mem_congruenceSubgroup F n (Subgroup.mem_subgroupOf.1 hk) (Subgroup.mem_subgroupOf.1 hx))`.
+Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hnorm' : ∀ k ∈ K₀, ∀ x ∈ K, k⁻¹ * x * k ∈ K` using `fun k hk x hx => by`. Simplify using `using hnorm k⁻¹ (K₀.inv_mem hk) x hx`. Establish `hecomm : ∀ k ∈ K₀, ∀ y : W, ((e (σ k y) : fixedVectors σ K) : W) = σ k (e y : fixedVectors σ K)` using `fun k hk y => fixedProj_act_of_normalizes hσ (hKMc m) (hKMo m) (hnorm k hk) (hnorm' k hk) y`. Set `V₂ : Finset W` to `R.image fun r => σ r v`. Establish `hU : ∀ S : Finset (Fin n), (∃ i j, β i = β j ∧ i ∈ S ∧ j ∉ S) → ∀ w : W, ∃ U : Finset (levi F n β), (∀ u ∈ U, (u : GL (Fin n) F) ∈ unipotentRadical F n (splitFun S)) ∧ w ∈ Submodule.span ℂ {y | ∃ u ∈ U, ∃ x, y = σ u x - x}` using `fun S hS w => exists_finset_of_isCuspidal hc hS w`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Use `choose! Uf hUf1 hUf2 using hU`. Set `Uall : Finset (levi F n β)` to `Finset.univ.biUnion fun S : Finset (Fin n) => V₂.biUnion (Uf S)`. Take `⟨t, ht⟩` from `exists_pow_mul_mem_of_isCompact F n (((Uall.image fun u : levi F n β => u.1) ∪ (Uall.image fun u : levi F n β => u.1⁻¹) : Finset (GL (Fin n) F)) : Set (GL (Fin n) F)).toFinite.isCompact`. Establish `hbu : ∀ u ∈ Uall, ∀ i j, (uniformizer F : F) ^ t * (u : GL (Fin n) F) i j ∈ 𝒪[F]` using `fun u hu => ht _ (by simp only [Finset.coe_union, Finset.coe_image, Set.mem_union, Set.mem_image, Finset.mem_coe]; exact Or.inl ⟨u, hu, rfl⟩)`. Establish `hbu' : ∀ u ∈ Uall, ∀ i j, (uniformizer F : F) ^ t * ((u : GL (Fin n) F)⁻¹ : GL (Fin n) F) i j ∈ 𝒪[F]` using `fun u hu => ht _ (by simp only [Finset.coe_union, Finset.coe_image, Set.mem_union, Set.mem_image, Finset.mem_coe]; exact Or.inr ⟨u, hu, rfl⟩)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `set C : ℤ := ((t + m : ℕ) : ℤ) + 1 with hCdef`. Establish `hC : ((t + m : ℕ) : ℤ) < C` using `lt_add_one _`. Establish `hC0 : 0 < C` using `by positivity`. Set `Nset : Finset (Fin n → ℤ)` to `Fintype.piFinset fun _ => Finset.Icc 0 (n * C)`. Set `T₀ : Finset W` to `(Nset ×ˢ V₂).image fun p => ((e (σ ⟨Cartan.diagPow F n p.1, diagPow_mem_levi p.1⟩ p.2) : fixedVectors σ K) : W)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Set `T : Finset W` to `(R ×ˢ T₀).image fun p => σ p.1 p.2`. Establish `hT₀K : ∀ x ∈ T₀, x ∈ fixedVectors σ K`. Introduce `x hx`. Take `⟨p, -, rfl⟩` from `Finset.mem_image.1 hx`. Conclude with `(e _).2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hclaim : ∀ g : levi F n β, ((e (σ g v) : fixedVectors σ K) : W) ∈ Submodule.span ℂ (T : Set W)`. Introduce `g`. Take `⟨μ, k₁, hk₁, k₂, hk₂, hg⟩` from `exists_eq_mul_diagPow_mul_levi g.2`. Use `set a : levi F n β := ⟨Cartan.diagPow F n μ, diagPow_mem_levi μ⟩ with hadef`. Establish `hk₁K : (⟨k₁, hk₁.1⟩ : levi F n β) ∈ K₀` using `Subgroup.mem_subgroupOf.2 hk₁.2`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hk₂K : (⟨k₂, hk₂.1⟩ : levi F n β) ∈ K₀` using `Subgroup.mem_subgroupOf.2 hk₂.2`. Establish `hgeq : g = ⟨k₁, hk₁.1⟩ * a * ⟨k₂, hk₂.1⟩` using `Subtype.ext hg`. Take `⟨r₂, hr₂, hr₂v⟩` from `hR _ hk₂K`. Take `⟨r₁, hr₁, hr₁v⟩` from `hR _ hk₁K`. Establish `hwV : σ r₂ v ∈ V₂` using `Finset.mem_image_of_mem _ hr₂`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `he : ((e (σ g v) : fixedVectors σ K) : W) = σ ⟨k₁, hk₁.1⟩ ((e (σ a (σ r₂ v)) : fixedVectors σ K) : W)`. Rewrite using `[hgeq, map_mul, map_mul, Module.End.mul_apply, Module.End.mul_apply, hr₂v v hvK, hecomm _ hk₁K]`. Rewrite using `[he]`. Break down `gap_or_bounded (β := β) μ hC0 with ⟨θ, b, ⟨i, hib, hiθ⟩, ⟨j, hjb, hjθ⟩, hgap⟩ | hbd` into its components or cases. Use `set S : Finset (Fin n) := Finset.univ.filter fun j => β j = b ∧ θ ≤ μ j with hSdef`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hS : ∃ i j, β i = β j ∧ i ∈ S ∧ j ∉ S` using `⟨i, j, hib.trans hjb.symm, by simp [S, hib, hiθ], by simp [S, hjb, not_le.2 hjθ]⟩`. Establish `hzero : ((e (σ a (σ r₂ v)) : fixedVectors σ K) : W) = 0`. Establish `hsp` using `hUf2 S hS (σ r₂ v)`. Establish `hker : Submodule.span ℂ {y | ∃ u ∈ Uf S (σ r₂ v), ∃ x, y = σ u x - x} ≤ LinearMap.ker ((fixedVectors σ K).subtype ∘ₗ e ∘ₗ σ a)`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `_ ⟨u, hu, x, rfl⟩`. Establish `huA : u ∈ Uall` using `Finset.mem_biUnion.2 ⟨S, Finset.mem_univ _, Finset.mem_biUnion.2 ⟨σ r₂ v, hwV, hu⟩⟩`. Establish `huN` using `hUf1 S hS (σ r₂ v) u hu`. Establish `hconj : a * u * a⁻¹ ∈ K`. Use `Subgroup.mem_subgroupOf.2 ?_` and prove the remaining obligations.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hco : ((a * u * a⁻¹ : levi F n β) : GL (Fin n) F) = Cartan.diagPow F n μ * (u : GL (Fin n) F) * (Cartan.diagPow F n μ)⁻¹` using `rfl`. Rewrite using `[hco]`. Conclude with `diagPow_conj_mem_congruenceSubgroup hC (apply_eq_or_gap hgap u.2 huN) (apply_eq_or_gap hgap ((levi F n β).inv_mem u.2) ((unipotentRadical F n _).inv_mem huN)) (hbu u huA) (hbu' u huA)`. Simplify using `only [SetLike.mem_coe, LinearMap.mem_ker, LinearMap.coe_comp, Function.comp_apply, Submodule.coe_subtype, map_sub]`. Establish `h1 : σ a (σ u x) = σ (a * u * a⁻¹) (σ a x)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← Module.End.mul_apply, ← map_mul, ← Module.End.mul_apply, ← map_mul, inv_mul_cancel_right]`. Rewrite using `[h1, fixedProj_apply_act hσ (hKMc m) (hKMo m) hconj, sub_self]`. Use `hker hsp` as an intermediate fact. Simplify using `using this`. Rewrite using `[hzero, map_zero]`.
+Supply the required witnesses or components. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.zero_mem _`. Set `cb : α → ℤ` to `fun b => if h : ∃ k, β k = b then ((Finset.univ.filter fun k => β k = b).image μ).min' (by`. Take `⟨k, hk⟩` from `h`. Conclude with `⟨μ k, Finset.mem_image_of_mem _ (by simp [hk])⟩) else 0`. Establish `hcb_le : ∀ k, cb (β k) ≤ μ k`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `k`. Simplify using `only [cb, dif_pos (⟨k, rfl⟩ : ∃ j, β j = β k)]`. Conclude with `Finset.min'_le _ _ (Finset.mem_image_of_mem _ (by simp))`. Establish `hcb_mem : ∀ j, ∃ k, β k = β j ∧ cb (β j) = μ k`. Introduce `j`.
+Prove the components needed by the constructor for the conclusion. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [cb, dif_pos (⟨j, rfl⟩ : ∃ k, β k = β j)]`. Take `⟨k, hk, hkeq⟩` from `Finset.mem_image.1 (Finset.min'_mem ((Finset.univ.filter fun k => β k = β j).image μ) _)`. Conclude with `⟨k, (Finset.mem_filter.1 hk).2, hkeq.symm⟩`. Set `c : Fin n → ℤ` to `fun j => cb (β j)`. Set `ν : Fin n → ℤ` to `μ - c`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hν : ν ∈ Nset`. Rewrite using `[Fintype.mem_piFinset]`. Introduce `j`. Rewrite using `[Finset.mem_Icc]`. Take `⟨k, hk, hkeq⟩` from `hcb_mem j`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1` using `hcb_le j`. Establish `h2` using `hbd j k hk.symm`. Prove the components needed by the constructor for the conclusion. Use `show 0 ≤ μ j - cb (β j)`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `show μ j - cb (β j) ≤ n * C`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hμ : μ = c + ν`. Use function extensionality and compare the values at `j`. Simplify using `[ν]`.
-
-Establish `hz` using `diagPow_mem_center (F := F) (β := β) (c := c) (fun i j h => by simp [c, h])`. Take `⟨lam, hlam⟩` from `exists_central_character hσ hz`. Establish `ha : a = ⟨Cartan.diagPow F n c, diagPow_mem_levi c⟩ * ⟨Cartan.diagPow F n ν, diagPow_mem_levi ν⟩`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show Cartan.diagPow F n μ = Cartan.diagPow F n c * Cartan.diagPow F n ν`.
-
-Rewrite using `[← diagPow_add, ← hμ]`. Establish `hmemT₀ : ((e (σ ⟨Cartan.diagPow F n ν, diagPow_mem_levi ν⟩ (σ r₂ v)) : fixedVectors σ K) : W) ∈ T₀` using `Finset.mem_image.2 ⟨(ν, σ r₂ v), Finset.mem_product.2 ⟨hν, hwV⟩, rfl⟩`. Rewrite using `[ha, map_mul, Module.End.mul_apply, hlam, map_smul, Submodule.coe_smul, map_smul, hr₁v _ (hT₀K _ hmemT₀)]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span (Finset.mem_coe.2 (Finset.mem_image.2 ⟨(r₁, _), Finset.mem_product.2 ⟨hr₁, hmemT₀⟩, rfl⟩)))`. Establish `hle : fixedVectors σ K ≤ Submodule.span ℂ (T : Set W)`.
-
-Introduce `x hx`. Establish `hx' : x = ((e x : fixedVectors σ K) : W)` using `(fixedProj_apply_of_mem hσ (hKMc m) (hKMo m) hx).symm`. Rewrite using `[hx']`. Establish `hxtop : x ∈ Submodule.span ℂ (Set.range fun g : levi F n β => σ g v)`. Rewrite using `[hspan]`.
-
-Conclude with `Submodule.mem_top`. Establish `hmap : Submodule.map ((fixedVectors σ K).subtype ∘ₗ e) (Submodule.span ℂ (Set.range fun g : levi F n β => σ g v)) ≤ Submodule.span ℂ (T : Set W)`. Rewrite using `[Submodule.map_span]`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨_, ⟨g, rfl⟩, rfl⟩`.
-
-Conclude with `hclaim g`. Conclude with `hmap ⟨x, hxtop, rfl⟩`. Conclude with `Submodule.finiteDimensional_of_le hle`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem isAdmissible_of_isCuspidal {σ : Representation ℂ (levi F n β) W} [σ.IsIrreducible]
     (hσ : IsSmooth σ) (hc : IsCuspidal σ) : IsAdmissible σ := by

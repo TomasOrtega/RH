@@ -20,14 +20,14 @@ def HomExtendsOverDVR : Prop :=
       ∃! F : G ⟶ G', IsMonHom F ∧ (Over.pullback (genericPt T K)).map F = f
 
 /- English proof (translation)
-The claim follows from `inferInstance`.
+A detailed English derivation is pending.
 -/
 example (T K : Type) [CommRing T] [Field K] [Algebra T K]
     (G G' : Over (Spec (.of T))) [GrpObj G] [GrpObj G'] (F : G ⟶ G') [IsMonHom F] :
     IsMonHom ((Over.pullback (genericPt T K)).map F) := inferInstance
 
 /- English proof (translation)
-Take `⟨F₀, -, hu⟩` from `h T (FractionRing T) G G hG hG (𝟙 _) inferInstance`. Rewrite using `[hu F ⟨inferInstance, hF⟩, hu (𝟙 G) ⟨inferInstance, CategoryTheory.Functor.map_id _ _⟩]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 example (h : HomExtendsOverDVR) (T : Type) [CommRing T] [IsDomain T] [IsDiscreteValuationRing T]
     (G : Over (Spec (.of T))) [GrpObj G] (hG : ReciprocityTheory.ChartRestriction.G.Semi.IsSemiAbelian G)

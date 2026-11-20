@@ -7,7 +7,7 @@ open NumberField IsDedekindDomain Polynomial UpperTheory.V UpperTheory.V.Z.Gam U
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 /- English proof (translation)
-Establish `e : ∀ c : ℝ, ((q ^ f : ℝ)) ^ c = (q ^ c) ^ f`. Introduce `c`. Rewrite using `[← Real.rpow_natCast q f, ← Real.rpow_mul hq.le, mul_comm, Real.rpow_mul hq.le, Real.rpow_natCast]`. Rewrite `h1`, `h2` using `[e]`. Conclude with `⟨lt_of_pow_lt_pow_left₀ f hx h1, lt_of_pow_lt_pow_left₀ f (Real.rpow_nonneg hq.le _) h2⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 -/
 private theorem rootBounds {q x a b : ℝ} {f : ℕ} (hf : 0 < f) (hq : 0 < q) (hx : 0 ≤ x)
     (h1 : ((q ^ f : ℝ)) ^ a < x ^ f) (h2 : x ^ f < ((q ^ f : ℝ)) ^ b) :
@@ -19,11 +19,11 @@ private theorem rootBounds {q x a b : ℝ} {f : ℕ} (hf : 0 < f) (hq : 0 < q) (
   exact ⟨lt_of_pow_lt_pow_left₀ f hx h1, lt_of_pow_lt_pow_left₀ f (Real.rpow_nonneg hq.le _) h2⟩
 
 /- English proof (translation)
-Introduce `K M _ _ _ _ _ _ _ h2 P π hsys t v hw`. Use `⟨indTor K M h2 P π hsys v fun w => ⟨(hw w).1.1, (hw w).2⟩, fun s hs ξ hξ => ?_⟩` and prove the remaining obligations. Establish `hs' : ∀ w : GroundTheory.Global.SemiLocal.PlacesOver M v, ∃ s', SuppAt π w.1 s'` using `fun w => (suppFacts M 2 (by norm_num) π w.1).1`. Use `choose s' hs' using hs'`. Take `⟨w, hζ⟩` from `indX K M h2 P π hsys v s s' hs hs' ξ hξ`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨hsm, -⟩` from `hξ`. Take `⟨-, hnorm, hf, hN⟩` from `normVal K M v w ξ`. Take `⟨b1, b2⟩` from `(hw w).1.2 (s' w) (hs' w) _ hζ`. Establish `hq : (0 : ℝ) < (Ideal.absNorm v.asIdeal : ℝ)` using `Nat.cast_pos.2 (Nat.pos_of_ne_zero (by simpa [Ideal.absNorm_eq_zero_iff] using v.ne_bot))`. Simplify using `only [MonoidHom.comp_apply] at b1 b2`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `b1`, `b2` using `[hnorm hsm, hN, Nat.cast_pow]`. Conclude with `rootBounds hf hq (norm_nonneg _) b1 b2`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.ImaginaryQuadraticEtaCharacter.winInd :
     UpperTheory.V.Z.ImaginaryQuadraticEtaCharacter.WinInd := by

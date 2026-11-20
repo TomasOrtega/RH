@@ -22,11 +22,11 @@ namespace GlobalTheory.Core.Rk.EulerProd
 open Filter Topology
 
 /- English proof (translation)
-Set `e : {v : ι // v ∉ (S : Set ι)} ↪ ι` to `Function.Embedding.subtype _`. Establish `ht : Tendsto (fun T : Finset {v : ι // v ∉ (S : Set ι)} => S ∪ T.map e) atTop atTop`. Use `tendsto_atTop.2 fun b => (eventually_ge_atTop (b.subtype fun v => v ∉ (S : Set ι))).mono fun T hT u hu => ?_` and prove the remaining obligations. Distinguish the cases in `hS : u ∈ S`. Conclude with `Finset.mem_union_left _ hS`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Conclude with `Finset.mem_union_right _ (Finset.mem_map.2 ⟨⟨u, hS⟩, hT (Finset.mem_subtype.2 hu), rfl⟩)`. Establish `h1` using `hJ.comp ht`. Establish `h2 : Tendsto (fun T : Finset {v : ι // v ∉ (S : Set ι)} => (∏ v ∈ T, f v.1) * I S) atTop (𝓝 (P * I S))` using `Tendsto.mul_const _ hP`. Use `tendsto_nhds_unique h1 (h2.congr fun T => ?_)` and prove the remaining obligations. Rewrite using `[Function.comp_apply, h (T.map e) _ ?_ fun u => Finset.mem_union, Finset.prod_map]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations.
 
-Both sides reduce to the same expression. Use `Finset.disjoint_left.2 fun u hu hu' => ?_` and prove the remaining obligations. Take `⟨w, -, rfl⟩` from `Finset.mem_map.1 hu'`. Conclude with `w.2 hu`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem limit_eq_prod_mul {ι : Type} (S : Finset ι) (f : ι → ℂ) (I : Finset ι → ℂ) {P J : ℂ}
     (hP : HasProd (fun v : {v : ι // v ∉ (S : Set ι)} => f v.1) P) (hJ : Tendsto I atTop (𝓝 J))
@@ -50,15 +50,15 @@ theorem limit_eq_prod_mul {ι : Type} (S : Finset ι) (f : ι → ℂ) (I : Fins
     exact w.2 hu
 
 /- English proof (translation)
-Introduce `w hw`. Establish `hv : w.under (𝓞 D.host.F) ∉ Sf` using `hw`. Establish `h0 : u ≠ 0` using `(hpar _ hw w rfl).ne_zero`. Establish `hs : SphFun A L Sf u` using `fun v hv k hk g => by`. Choose the witnesses or unpack the hypotheses as in `⟨w', hw'⟩ : ∃ w' : HeightOneSpectrum (𝓞 D.host.E), w'.under (𝓞 D.host.F) = v := by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `v.isMaximal` as an intermediate fact. Take `⟨Q, hQ, e⟩` from `Ideal.exists_ideal_over_maximal_of_isIntegral (S := 𝓞 D.host.E) v.asIdeal (by rw [(RingHom.injective_iff_ker_eq_bot (algebraMap (𝓞 D.host.F) (𝓞 D.host.E))).1 (FaithfulSMul.algebraMap_injective _ _)]; exact bot_le)`. Use `⟨⟨Q, hQ.isPrime, fun hb => v.ne_bot ?_⟩, HeightOneSpectrum.ext e⟩` and prove the remaining obligations. Rewrite using `[← e, hb, Ideal.comap_bot_of_injective (algebraMap (𝓞 D.host.F) (𝓞 D.host.E)) (FaithfulSMul.algebraMap_injective _ _)]`. Conclude with `(congrFun ((hpar v hv w' hw').mem_fixed ⟨k, hk⟩) g).trans (by simp)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hc` using `GlobalTheory.T.petersson_coefficient_bounded_spherical_unramified hP D θ A cA L hθ m hm Sf u hu u hu par hpar hs _ hv 1 (map_one _)`. Establish `h1 : MemL2Quotient (GQ A) m u` using `memL2_of_cusp_form hP hθ (mem_cuspForms.1 hu).1`. Establish `hpos` using `petersson_self_pos h1 (mem_cuspForms.1 hu).1.1.toIsAutFun.cont h0`. Establish `hne : rcoef m u u (1 * emb D.sp.cm.sig A.gram (w.under (𝓞 D.host.F)) 1) ≠ 0`. Establish `e : rTr A (1 * emb D.sp.cm.sig A.gram (w.under (𝓞 D.host.F)) 1) u = u` using `funext fun g => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [rTr, map_one, mul_one]`. Rewrite using `[rcoef, e]`. Introduce `h`. Rewrite `hpos` using `[h]`. Conclude with `lt_irrefl _ hpos`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨h2, h3⟩` from `hB A L hL _ trivial par _ hc hne w rfl`. Conclude with `⟨h2.le, h3⟩`.
+A detailed English derivation is pending.
 -/
 theorem bounded_of_isParamFun (hP : GlobalTheory.Published.CuspRapidDecay) {D : D7} (hB : ParamBoundOn D (fun _ => True))
     {θ : InfFam D} {A : HSp D} {cA : CptF A} {L : Lat A} (hθ : IsInfFam θ) (hL : IsSelfDualC A L)
@@ -91,9 +91,9 @@ theorem bounded_of_isParamFun (hP : GlobalTheory.Published.CuspRapidDecay) {D : 
   exact ⟨h2.le, h3⟩
 
 /- English proof (translation)
-Introduce `hP D hS hZ hB ψ θ A B χA χB sA sB t cA a om ν 𝓕 hp LA LB Sf Φ₁ Φ₂ hΦ₁ hΦ₂ hU m hm u₁ hu₁ u₂ hu₂ par hpar hsph s hs hint`. Establish `ha : (0 : ℝ) ≤ A.rank` using `Nat.cast_nonneg _`. Establish `hb` using `bounded_of_isParamFun hP hB hp.setting.2.2.2.1 hU.sdA m hm hu₁ hpar`. Establish `hL` using `GlobalTheory.T.hasProd_partialLFunctionTwistedByChar_local_factors D Sf par χB _ _ hb (s + 1 / 2) (by`. Establish `: (s + 1 / 2 : ℂ).re = s.re + 1 / 2` using `by simp`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[this]`. Use the proof step `linarith)`. Take `⟨hd0, hdv, hd⟩` from `(GlobalTheory.T.partialNormalizingFactorProduct_analytic_ne_zero D (Sf : Set (FinPl D)) A.rank B.rank).2 s (by linarith)`. Use `limit_eq_prod_mul Sf (fun v => GlobalTheory.LFun.LvTw par (GlobalTheory.LFun.val χB) v (s + 1 / 2) / GlobalTheory.LFun.dv D.host.E A.rank B.rank v s) (fun S => ∫ g in openOff A LA S, integrand om m ν 𝓕 LA a Φ₁ Φ₂ u₁ u₂ s g ∂m) ?_ (GlobalTheory.T.tendsto_setIntegral_unramifiedOuts …` and prove the remaining obligations. Conclude with `(Tendsto.div hL hd hd0).congr fun T => (Finset.prod_div_distrib _ _).symm`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem eulerRight : GlobalTheory.Published.CuspRapidDecay → ∀ D : D7, SphFactor D → LocalZetaOn D (fun _ => True) →
     ParamBoundOn D (fun _ => True) → EulerRight D := by

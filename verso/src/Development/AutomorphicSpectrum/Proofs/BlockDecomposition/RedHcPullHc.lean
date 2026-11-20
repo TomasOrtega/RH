@@ -20,7 +20,7 @@ def redFn (F : Fn O) (κ : O →+* OC l) (k : Bool) {m n : ℕ} (h : n ≤ m) :
     (dd_red k _ h) (basePt F _ (red_κb κ k h)) fun _ _ _ => rfl
 
 /- English proof (translation)
-Unfold `redHc pullHc redMor pullMorC`. Conclude with `cr_square (SH.pullM κ u k m) (redFn F κ k h) (redFn F' κ k h) (SH.pullM κ u k n) (SH.idc _) (red_cris _ h) (red_cris _ h) (SH.idc _) (fun r => (SH.idc ((base l).red h) r).symm) (SH.base_map u (red_κb κ k h)) j x`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem redHc_pullHc {F F' : Fn O} (κ : O →+* OC l) (u : Fn.Map F F') (k : Bool) {m n : ℕ} (h : n ≤ m) (j : ℕ)
     (x : Hc F' κ k m j) : redHc F κ k h j (pullHc κ u k m j x) = pullHc κ u k n j (redHc F' κ k h j x) := by

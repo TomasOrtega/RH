@@ -15,7 +15,7 @@ namespace GlobalTheory.KS
 open GlobalTheory.AbLaw GlobalTheory.AbLaw.SecOn GlobalTheory.AbLaw.CechOne
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `_ = (Y.presheaf.map ((homOfLE h₂).op ≫ (homOfLE h₁).op)).hom s`. Rewrite using `[Functor.map_comp]`. Both sides reduce to the same expression.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private lemma resG_resG_divisors {Y : Scheme.{0}} {A B C : Y.Opens} (h₁ : A ≤ B) (h₂ : B ≤ C)
     (s : Γ(Y, C)) : resG Y h₁ (resG Y h₂ s) = resG Y (h₁.trans h₂) s := by
@@ -24,7 +24,7 @@ private lemma resG_resG_divisors {Y : Scheme.{0}} {A B C : Y.Opens} (h₁ : A �
   rfl
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(Y.presheaf.map (𝟙 _)).hom s = s`. Rewrite using `[CategoryTheory.Functor.map_id]`. Both sides reduce to the same expression.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private lemma resG_self_moduli {Y : Scheme.{0}} {A : Y.Opens} (h : A ≤ A) (s : Γ(Y, A)) :
     resG Y h s = s := by
@@ -33,7 +33,7 @@ private lemma resG_self_moduli {Y : Scheme.{0}} {A : Y.Opens} (h : A ≤ A) (s :
   rfl
 
 /- English proof (translation)
-Unfold `rsT`. Rewrite using `[dif_pos h]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 private lemma rsT_eq_resG {Y : Scheme.{0}} {A B : Y.Opens} (s : Γ(Y, A)) (h : B ≤ A) :
     rsT s B = resG Y h s := by
@@ -41,7 +41,7 @@ private lemma rsT_eq_resG {Y : Scheme.{0}} {A B : Y.Opens} (s : Γ(Y, A)) (h : B
   rw [dif_pos h]
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (funext fun _ => h)`.
+A detailed English derivation is pending.
 -/
 private lemma triv_secOn_ext {X : Scheme.{0}} {W : X.Opens} (σ τ : SecOn (LB.triv X) W)
     (h : (show LB.secGroup (LB.triv X) W from σ).1 PUnit.unit =
@@ -49,17 +49,15 @@ private lemma triv_secOn_ext {X : Scheme.{0}} {W : X.Opens} (σ τ : SecOn (LB.t
   Subtype.ext (funext fun _ => h)
 
 /- English proof (translation)
-Introduce `X J U c hA hc`. Set `φ : ∀ a b, SecOn (LB.triv X) (U a ⊓ U b)` to `fun a b => show LB.secGroup (LB.triv X) (U a ⊓ U b) from ⟨fun _ => resG X inf_le_left (c a b), by`. Simplify using `only [LB.secGroup, LB.triv]`. Use `show _ ∈ secOn _ _`. Simplify using `only [secOn, Set.mem_ofPred_eq]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i j`. Rewrite using `[Units.val_one, map_one, _root_.one_mul, resG_resG_divisors]⟩`. Establish `hφ : IsCocycle (LB.triv X) U φ`. Introduce `a b d W ha hb hd`. Apply `triv_secOn_ext` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `h0` using `hc a b d`. Rewrite `h0` using `[rsT_eq_resG (c a b) (le_inf (inf_le_left.trans inf_le_left) (inf_le_left.trans inf_le_right)), rsT_eq_resG (c b d) (le_inf (inf_le_left.trans inf_le_right) inf_le_right), rsT_eq_resG (c a d) (le_inf (inf_le_left.trans inf_le_left) inf_le_right)]`. Establish `e` using `congrArg (resG X (inf_le_left.trans (le_inf (le_inf ha hb) hd) : W ⊓ (LB.triv X).U PUnit.unit ≤ U a ⊓ U b ⊓ U d)) h0`. Rewrite `e` using `[map_add, resG_resG_divisors, resG_resG_divisors, resG_resG_divisors]`. Express the relevant statement in the definitionally equal form `resG X _ (resG X _ (c a b)) + resG X _ (resG X _ (c b d)) = resG X _ (resG X _ (c a d))`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[resG_resG_divisors, resG_resG_divisors, resG_resG_divisors]`. Conclude with `e`. Take `⟨ψ, hψ⟩` from `cechHOneVanishesOnOpen_of_isAffineOpen (LB.isLB_triv X) hA J U (fun a => le_iSup U a) le_rfl φ hφ`. Use `⟨fun i => -resG X (le_inf le_rfl le_top : U i ≤ U i ⊓ (LB.triv X).U PUnit.unit) ((show LB.secGroup (LB.triv X) (U i) from ψ i).1 PUnit.unit), ?_⟩` and prove the remaining obligations. Introduce `i j`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `e` using `congrArg (fun σ : SecOn (LB.triv X) (U i ⊓ U j) => (show LB.secGroup (LB.triv X) (U i ⊓ U j) from σ).1 PUnit.unit) (hψ i j)`. Express the relevant statement in the definitionally equal form `resG X inf_le_left (c i j) = resG X (inf_le_inf_right _ inf_le_left) ((show LB.secGroup (LB.triv X) (U i) from ψ i).1 PUnit.unit) - resG X (inf_le_inf_right _ inf_le_right) ((show LB.secGroup (LB.triv X) (U j) from ψ j).1 PUnit.unit) at e`. Establish `e'` using `congrArg (resG X (le_inf le_rfl le_top : U i ⊓ U j ≤ U i ⊓ U j ⊓ (LB.triv X).U PUnit.unit)) e`. Rewrite `e'` using `[map_sub, resG_resG_divisors, resG_resG_divisors, resG_resG_divisors, resG_self_moduli]`. Rewrite using `[rsT_eq_resG _ inf_le_right, rsT_eq_resG _ inf_le_left, map_neg, map_neg, resG_resG_divisors, resG_resG_divisors, e']`.
-
-Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem isCob_of_isAffineOpen : ∀ (X : Scheme.{0}) (J : Type) (U : J → X.Opens) (c : C1 U),
     IsAffineOpen (⨆ α, U α) → IsCoc U c → IsCob U c := by

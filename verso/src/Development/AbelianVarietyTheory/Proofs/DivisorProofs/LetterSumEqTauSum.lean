@@ -19,11 +19,11 @@ open GlobalTheory.ShFam GlobalTheory.ShFam.Pad ReciprocityTheory.ChartRestrictio
 namespace GlobalTheory.LieLetters
 
 /- English proof (translation)
-Set `φ : D.what₂.Tau ⊕ D.what₂.Tau → (D.host.E →+* ℂ)` to `Sum.elim (DV.tauEmb D) (fun t => conjEmb (DV.tauEmb D t))`. Establish `hφ : Function.Bijective φ`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `(a|a) (b|b) hab`. Conclude with `congrArg Sum.inl (GlobalTheory.FirstRows.tauEmb_injective D (by simpa [φ] using hab))`.
+Introduce a local definition for the expression. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(GlobalTheory.LocM.EvTrue.tauEmb_ne_conjEmb O.A a b (by simpa [φ] using hab)).elim`. Conclude with `(GlobalTheory.LocM.EvTrue.tauEmb_ne_conjEmb O.A b a (by simpa [φ] using hab.symm)).elim`. Conclude with `congrArg Sum.inr (GlobalTheory.FirstRows.conj_tauEmb_injective D (by simpa [φ] using hab))`. Introduce `σ`. Break down `GlobalTheory.RootSum.eq_tau_or_conj (A := O.A) σ with ⟨_, t, ht⟩ | ⟨_, t, ht⟩` into its components or cases.
+Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Conclude with `⟨Sum.inl t, ht.symm⟩`. Conclude with `⟨Sum.inr t, ht.symm⟩`. Rewrite using `[← hφ.sum_comp h, Fintype.sum_sum_type, ← Finset.sum_add_distrib]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem sum_emb_eq_sum_tau (D : D7) (O : Setup D) (h : (D.host.E →+* ℂ) → ℝ) :
     ∑ σ, h σ = ∑ τ : D.what₂.Tau, (h (DV.tauEmb D τ) + h (conjEmb (DV.tauEmb D τ))) := by
@@ -45,9 +45,9 @@ theorem sum_emb_eq_sum_tau (D : D7) (O : Setup D) (h : (D.host.E →+* ℂ) → 
   rfl
 
 /- English proof (translation)
-Introduce `D O g`. Establish `hb` using `GlobalTheory.Proof.frame_combination_coeff_unique.get_bijective O.S.Dw`. Establish `h1 : (∑ j : Fin (letters O.S.Dw).length, g (((letters O.S.Dw).get j).1, (((letters O.S.Dw).get j).2 : ℕ))) = ∑ x : Pad.Letter O.S.Dw, g (x.1, (x.2 : ℕ))` using `hb.sum_comp (fun x : Pad.Letter O.S.Dw => g (x.1, (x.2 : ℕ)))`. Establish `h2 : ∀ σ : D.host.E →+* ℂ, ∑ i : Fin (O.S.Dw.mult σ), g (σ, (i : ℕ)) = ∑ i ∈ Finset.range (O.S.Dw.mult σ), g (σ, i)` using `fun σ => Fin.sum_univ_eq_sum_range (fun i => g (σ, i)) _`. Rewrite using `[h1, Fintype.sum_sigma]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [h2]`. Rewrite using `[sum_emb_eq_sum_tau D O (fun σ => ∑ i ∈ Finset.range (O.S.Dw.mult σ), g (σ, i))]`. Simplify using `only [LieGen.mult_tau, LieGen.mult_conj_tau]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem sum_letters_eq_sum_tau : ∀ (D : D7) (O : Setup D) (g : (D.host.E →+* ℂ) × ℕ → ℝ),
     ∑ j : Fin (letters O.S.Dw).length, g (((letters O.S.Dw).get j).1, (((letters O.S.Dw).get j).2 : ℕ)) =

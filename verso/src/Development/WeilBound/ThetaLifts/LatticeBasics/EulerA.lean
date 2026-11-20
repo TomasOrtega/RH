@@ -10,9 +10,9 @@ variable {H : Type} [Group H] [TopologicalSpace H] [IsTopologicalGroup H] [Measu
   [LocallyCompactSpace H] [SecondCountableTopology H] {ν : Measure H} [ν.IsHaarMeasure] {K : Subgroup H}
 
 /- English proof (translation)
-Establish `e` using `Measure.isMulLeftInvariant_eq_smul (ν.map (· * k)) ν`. Establish `m : Measurable fun x : H => x * k` using `measurable_mul_const k`. Establish `e2` using `congrArg (· (K : Set H)) e`. Establish `p : (fun x : H => x * k) ⁻¹' K = K` using `Set.ext fun x => K.mul_mem_cancel_right hk`. Simplify using `only [Measure.map_apply m hK, p, h1, Measure.coe_nnreal_smul_apply, mul_one] at e2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `⟨m, ?_⟩` and prove the remaining obligations. Rewrite using `[e, show Measure.haarScalarFactor (ν.map (· * k)) ν = 1 by exact_mod_cast e2.symm, one_smul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem pres_right (hK : MeasurableSet (K : Set H)) (h1 : ν K = 1) {k : H} (hk : k ∈ K) :
     MeasurePreserving (· * k) ν ν := by
@@ -28,27 +28,25 @@ variable {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [Measu
   [LocallyCompactSpace G] [SecondCountableTopology G] {μ : Measure G} [μ.IsHaarMeasure]
 
 /- English proof (translation)
-Set `S : Set (H × G)` to `{p | p.1⁻¹ * π p.2 ∈ K}`. Establish `hS : MeasurableSet S` using `(continuous_fst.inv.mul (hπ.comp continuous_snd)).measurable hK`. Set `Φ : H × G → ℂ` to `S.indicator fun p => A.indicator f p.2`. Establish `vol : ∀ g, ν {u | u⁻¹ * π g ∈ K} = 1` using `fun g => by`. Rewrite using `[← h1, ← measure_preimage_mul ν (π g)⁻¹ K]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use extensionality with `u`. Conclude with `(K.inv_mem_iff.symm.trans (by simp))`. Establish `mS : ∀ g, MeasurableSet {u | u⁻¹ * π g ∈ K}` using `fun g => (continuous_inv.mul continuous_const).measurable hK`. Establish `sl : ∀ g, (fun u => Φ (u, g)) = {u | u⁻¹ * π g ∈ K}.indicator fun _ => A.indicator f g` using `fun g => rfl`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfA` using `hf.indicator hA`. Establish `iΦ : Integrable Φ (ν.prod μ)`. Use `(integrable_prod_iff' (hfA.1.comp_snd.indicator hS)).2 ⟨Filter.Eventually.of_forall fun g => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[sl, integrable_indicator_iff (mS g)]`. Conclude with `integrableOn_const (by simp [vol])`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `hfA.norm.congr (Filter.Eventually.of_forall fun g => ?_)` and prove the remaining obligations. Establish `: (fun u => ‖Φ (u, g)‖) = {u | u⁻¹ * π g ∈ K}.indicator fun _ => ‖A.indicator f g‖`. Use function extensionality and compare the values at `fun u => by rw [congrFun (sl g) u, norm_indicator_eq_indicator_norm]`. Use `show _ = ∫ u, ‖Φ (u, g)‖ ∂ν`. Rewrite using `[this, integral_indicator_const _ (mS g), Measure.real, vol]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Establish `sh : MeasurePreserving (fun p : H × G => (p.1, i p.1 * p.2)) (ν.prod μ) (ν.prod μ)` using `(MeasurePreserving.id ν).skew_product (g := fun u g => i u * g) ((hi.comp continuous_fst).mul continuous_snd).measurable (Filter.Eventually.of_forall fun u => map_mul_left_eq_self μ (i u))`. Establish `i2` using `sh.integrable_comp_of_integrable iΦ`. Establish `mB : MeasurableSet (A ∩ π ⁻¹' K)` using `hA.inter (hπ.measurable hK)`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[← integral_indicator hA]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun g => ?_)` and prove the remaining obligations. Simplify using `only [sl]`. Rewrite using `[integral_indicator_const _ (mS g), Measure.real, vol]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `_ = ∫ u, ∫ g, Φ (u, i u * g) ∂μ ∂ν := by`. Rewrite using `[← integral_integral_swap (f := fun u g => Φ (u, g)) iΦ]`. Conclude with `integral_congr_ae (Filter.Eventually.of_forall fun u => (integral_mul_left_eq_self (fun g => Φ (u, g)) (i u)).symm)`. Use `_ = ∫ g, ∫ u, Φ (u, i u * g) ∂ν ∂μ := integral_integral_swap (f := fun u g => Φ (u, i u * g)) i2`. Use `_ = _ := by`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← integral_const_mul, ← integral_indicator mB]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun g => ?_)` and prove the remaining obligations. Distinguish the cases in `hg : g ∈ A ∩ π ⁻¹' K`. Establish `z : π (i (π g)⁻¹ * g) = 1` using `by rw [e, inv_mul_cancel]`. Establish `w : ∀ u, f (i u * g) = l (u * π g) * f (i (π g)⁻¹ * g)` using `fun u => by`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← hl _ _ z, ← mul_assoc, ← map_mul, mul_inv_cancel_right]`. Establish `w1` using `w 1`. Rewrite `w1` using `[map_one, one_mul, one_mul, hl1 _ hg.2, one_mul]`. Establish `: ∀ u, Φ (u, i u * g) = l (u * π g) * f g` using `fun u => by`. Simplify using `only [Φ]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Rewrite using `[indicator_of_mem (show (u, i u * g) ∈ S by simpa [S, e] using hg.2), indicator_of_mem ((hAi u g).2 hg.1), w, w1]`. Simplify using `only [this]`. Rewrite using `[indicator_of_mem hg, integral_mul_const, (pres_right hK h1 hg.2).integral_comp (Homeomorph.mulRight (π g)).measurableEmbedding l]`. Establish `: ∀ u, Φ (u, i u * g) = 0` using `fun u => by`. Simplify using `only [Φ]`.
-
-Distinguish the cases in `h2 : π g ∈ K`. Conclude with `indicator_apply_eq_zero.2 fun _ => indicator_of_notMem (fun h => hg ⟨(hAi u g).1 h, h2⟩) _`. Conclude with `indicator_of_notMem (by simpa [S, e] using h2) _`. Simplify using `only [this]`. Rewrite using `[indicator_of_notMem hg, integral_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem factor (hK : MeasurableSet (K : Set H)) (h1 : ν K = 1) (i : H →* G) (hi : Continuous i) (π : G → H) (hπ : Continuous π)
     (e : ∀ u g, π (i u * g) = u * π g) {f : G → ℂ} {l : H → ℂ} (hf : Integrable f μ)

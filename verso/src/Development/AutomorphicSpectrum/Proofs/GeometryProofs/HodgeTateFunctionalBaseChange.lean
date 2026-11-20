@@ -10,7 +10,7 @@ open GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.BT
 namespace GlobalTheory.CompanionTheory.Ar.BT.HTBaseChange
 
 /- English proof (translation)
-Unfold `valAt`. Use `congr 1`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments.
 -/
 theorem valAt_comp_top {B : Type} [CommRing B] {X Y : Scheme.{0}} (x : Spec (CommRingCat.of B) ⟶ X) (f : X ⟶ Y)
     (s : Γ(Y, ⊤)) : valAt (x ≫ f) ⊤ le_top s = valAt x ⊤ le_top (f.appTop.hom s) := by
@@ -18,7 +18,7 @@ theorem valAt_comp_top {B : Type} [CommRing B] {X Y : Scheme.{0}} (x : Spec (Com
   congr 1
 
 /- English proof (translation)
-Rewrite using `[valAt_comp_top]`. Establish `h` using `Scheme.ΓSpecIso_naturality (CommRingCat.ofHom ψ)`. Use `congrArg (fun φ => φ.hom (y.appTop.hom s)) h` as an intermediate fact. Simplify using `only [CommRingCat.comp_apply] at this`. Conclude with `this`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem valAt_spec_map {B C : Type} [CommRing B] [CommRing C] {X : Scheme.{0}} (ψ : B →+* C)
     (y : Spec (CommRingCat.of B) ⟶ X) (s : Γ(X, ⊤)) :
@@ -40,7 +40,7 @@ abbrev qmap {R R' : Type} [CommRing R] [CommRing R'] [Algebra R R'] (N : ℕ) :
       exact Ideal.subset_span rfl))
 
 /- English proof (translation)
-Apply the tactic sequence `ext a <;> simp [dualMap]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem dualMap_comp {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (g : B →+* C) :
     (dualMap g).comp (dualMap f) = dualMap (g.comp f) := by
@@ -51,21 +51,21 @@ end GlobalTheory.CompanionTheory.Ar.BT.HTBaseChange
 open GlobalTheory.CompanionTheory.Ar.BT.HTBaseChange in
 
 /- English proof (translation)
-Introduce `R _ _ T _ _ Γ S G _ _ x N i hi L _ _ M R' _ _ _ Γ' F hF hi' L' _ _ M' β hβ hspan χ w w' hw hHT`. Take `⟨s, hs, hv⟩` from `hHT`. Establish `hs' : Γ'.HasValues (F.appTop.hom s) (fun t => (((Units.map (algebraMap R R' : R →* R')).comp χ t : R'ˣ) : R'))`. Take `⟨B, instB, ib, j, j', σ, hj, hji, hj'i, -, hσj, hσj'⟩` from `hF.pts`. Introduce `t`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hb : valAt (σ t) ⊤ le_top s = ib (χ t)`. Apply `hj` to reduce the goal to its premises. Rewrite using `[← valAt_spec_map, hσj, hs t, ← RingHom.comp_apply, hji]`. Use `show valAt (Γ'.pt t).left ⊤ le_top (F.appTop.hom s) = _`. Rewrite using `[← valAt_comp_top, ← hσj', valAt_spec_map, hb, ← RingHom.comp_apply, hj'i]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Take `⟨l', hl'⟩` from `GlobalTheory.T.character_section_tangent_functional R' T Γ' S G (Spec.map (CommRingCat.ofHom (algebraMap R R')) ≫ x) N (F ≫ i) hi' L' M' ((Units.map (algebraMap R R' : R →* R')).comp χ) (F.appTop.hom s) hs'`. Establish `key : ∀ e, l' (β e) = Ideal.Quotient.mk (Ideal.span {(N : R')}) (w' (β e))`. Introduce `e`. Take `⟨v, hv1, hv2, hv3⟩` from `hv e`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hc : (Spec.map (CommRingCat.ofHom (dualMap (qmap (R` using `R) (R' := R') N))) ≫ v) ≫ Γ.G.hom = Spec.map (CommRingCat.ofHom ((algebraMap (R' ⧸ Ideal.span {(N : R')}) (DualNumber (R' ⧸ Ideal.span {(N : R')}))).comp (Ideal.Quotient.mk _))) ≫ Spec.map (CommRingCat.ofHom (algebraMap R R')) := by`. Rewrite using `[Category.assoc, hv1, ← Spec.map_comp, ← Spec.map_comp]`. Use `congr 1`. Use extensionality with `r`. Apply the tactic sequence `all_goals simp [dualMap, qmap, Ideal.quotientMap_mk, TrivSqZeroExt.algebraMap_eq_inl]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set v'' := hF.cart.lift _ _ hc with hv''`. Establish `h1` using `hF.cart.lift_fst _ _ hc`. Establish `h2` using `hF.cart.lift_snd _ _ hc`. Rewrite `h1`, `h2` using `[← hv'']`. Establish `h3 : v'' ≫ F ≫ i = Spec.map (CommRingCat.ofHom (dualMap (Ideal.Quotient.mk (Ideal.span {(N : R')})))) ≫ (M'.pt (β e)).left`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Rewrite using `[← Category.assoc, h1, Category.assoc, hv2, hβ e, ← Category.assoc, ← Category.assoc, ← Spec.map_comp, ← Spec.map_comp]`. Use `congr 2`. Use extensionality with `a`. Apply the tactic sequence `all_goals simp [dualMap, qmap, Ideal.quotientMap_mk, TrivSqZeroExt.algebraMap_eq_inl]`. Establish `h4` using `hl' (β e) v'' ⟨h2, h3⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h4` using `[← valAt_comp_top, h1, valAt_spec_map, hv3]`. Establish `h5` using `congrArg TrivSqZeroExt.snd h4`. Simplify using `only [dualMap, qmap, RingHom.coe_mk, MonoidHom.coe_mk, OneHom.coe_mk, TrivSqZeroExt.snd_add, TrivSqZeroExt.snd_inl, TrivSqZeroExt.snd_inr, TrivSqZeroExt.fst_add, TrivSqZeroExt.fst_inl, TrivSqZeroExt.fst_inr, zero_add, add_zero, Ideal.quotientMap_mk] at h5`. Rewrite using `[← h5, hw]`. Establish `heq : l' = (Ideal.Quotient.mkₐ R' (Ideal.span {(N : R')})).toLinearMap.comp w'` using `LinearMap.ext_on_range hspan (fun e => by simpa using key e)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨F.appTop.hom s, hs', fun e' => ?_⟩` and prove the remaining obligations. Take `⟨v', ⟨hv'1, hv'2⟩, -⟩` from `GlobalTheory.T.existsUnique_tangent_dual_number R' T Γ' S G (Spec.map (CommRingCat.ofHom (algebraMap R R')) ≫ x) N (F ≫ i) hi' L' M' e'`. Use `⟨v', hv'1, hv'2, ?_⟩` and prove the remaining obligations. Rewrite using `[hl' e' v' ⟨hv'1, hv'2⟩, heq]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.CompanionTheory.Ar.BT.QFGroup.isHT_baseChange : ∀ (R : Type) [CommRing R] [IsDomain R] (T : Type) [CommGroup T] [Finite T] (Γ : QFGroup R T) (S : Scheme.{0}) (G : Over S) [GrpObj G] [IsCommMonObj G] (x : Spec (CommRingCat.of R) ⟶ S) (N : ℕ) (i : Γ.G.left ⟶ G.left), Γ.IsTorsionAlong G x N i → ∀ (L : Type) [AddCommGroup L] [Module R L] (M : LieModel G x L) (R' : Type) [CommRing R'] [IsDomain R'] [Algebra R R'] (Γ' : QFGroup R' T) (F : Γ'.G.left ⟶ Γ.G.left), Γ'.IsBaseChange Γ (algebraMap R R') F → Γ'.IsTorsionAlong G (Spec.map (CommRingCat.ofHom (algebraMap R R')) ≫ x) N (F ≫ i) → ∀ (L' : Type) [AddCommGroup L'] [Module R' L'] (M' : LieModel G (Spec.map (CommRingCat.ofHom (algebraMap R R')) ≫ x) L') (β : L →+ L'), (∀ e, (M'.pt (β e)).left = Spec.map (CommRingCat.ofHom (dualMap (algebraMap R R'))) ≫ (M.pt e).left) → Submodule.span R' (Set.range β) = ⊤ → ∀ (χ : T →* Rˣ) (w : Module.Dual R L) (w' : Module.Dual R' L'), (∀ e, w' (β e) = algebraMap R R' (w e)) → Γ.IsHT i M N χ w → Γ'.IsHT (F ≫ i) M' N ((Units.map (algebraMap R R' : R →* R')).comp χ) w' := by
   intro R _ _ T _ _ Γ S G _ _ x N i hi L _ _ M R' _ _ _ Γ' F hF hi' L' _ _ M' β hβ hspan χ w w' hw hHT

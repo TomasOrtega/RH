@@ -18,31 +18,31 @@ import Formalism.MeanHeightDescent.AverageDegreeBounds.TwistLower
 namespace Formalism.ExtensionFiltration
 
 /- English proof (translation)
-The claim follows from `log_covolume_slope_mu`.
+A detailed English derivation is pending.
 -/
 theorem lcvMu : LcvMu := log_covolume_slope_mu
 /- English proof (translation)
-The claim follows from `descent_slope`.
+A detailed English derivation is pending.
 -/
 theorem descentSlope : DescentSlope := descent_slope
 /- English proof (translation)
-The claim follows from `span_min_slope`.
+A detailed English derivation is pending.
 -/
 theorem spanMuMin : SpanMuMin := span_min_slope
 /- English proof (translation)
-The claim follows from `good_bad_split`.
+A detailed English derivation is pending.
 -/
 theorem goodBadCut : GoodBadCut := good_bad_split
 /- English proof (translation)
-The claim follows from `twist_lower_bound`.
+A detailed English derivation is pending.
 -/
 theorem twistLower : TwistLower := twist_lower_bound
 /- English proof (translation)
-The claim follows from `max_slope_minkowski`.
+A detailed English derivation is pending.
 -/
 theorem muMaxMinkowski : MuMaxMinkowski := max_slope_minkowski
 /- English proof (translation)
-The claim follows from `mean_height_sum_bound_holds`.
+A detailed English derivation is pending.
 -/
 theorem mean_height_sum_bound : CombinedAverageDegreeBound := mean_height_sum_bound_holds
 

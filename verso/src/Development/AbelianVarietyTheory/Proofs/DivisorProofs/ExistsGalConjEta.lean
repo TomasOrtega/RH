@@ -17,13 +17,13 @@ section General
 variable {E : Type} [Field E] [NumberField E]
 
 /- English proof (translation)
-The claim follows from `(P.valuedAdicCompletion_eq_valuation' _).symm.trans (unif_spec P)`.
+A detailed English derivation is pending.
 -/
 theorem val_unif (P : HeightOneSpectrum (𝓞 E)) : P.valuation E ((unif P : Eˣ) : E) = WithZero.exp (-1 : ℤ) :=
   (P.valuedAdicCompletion_eq_valuation' _).symm.trans (unif_spec P)
 
 /- English proof (translation)
-Use `⟨(unif P ^ ordF P k)⁻¹ * k, ?_, by rw [mul_inv_cancel_left]⟩` and prove the remaining obligations. Establish `h0 : P.valuation E (k : E) ≠ 0` using `(Valuation.ne_zero_iff _).2 k.ne_zero`. Rewrite using `[Units.val_mul, Units.val_inv_eq_inv_val, Units.val_zpow_eq_zpow_val, map_mul, map_inv₀, map_zpow₀, val_unif, ← WithZero.exp_zsmul, ← WithZero.exp_neg, ordF]`. Use `conv_lhs => rw [← WithZero.exp_log h0, WithZero.log_exp, ← WithZero.exp_add]`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_unit_part (P : HeightOneSpectrum (𝓞 E)) (k : Eˣ) :
     ∃ u : Eˣ, P.valuation E (u : E) = 1 ∧ k = unif P ^ ordF P k * u := by
@@ -35,9 +35,9 @@ theorem exists_unit_part (P : HeightOneSpectrum (𝓞 E)) (k : Eˣ) :
   simp
 
 /- English proof (translation)
-Take `⟨u, hu, hk⟩` from `exists_unit_part P k`. Unfold `GlobalTheory.IndefiniteRowSideFullHecke.TwistedLevelValues.twVal`. Generalize the expression as in `ordF P k = n at hk ⊢`. Rewrite using `[hk, map_mul, h u hu, mul_one, map_zpow, Units.val_zpow_eq_zpow_val, mul_zpow]`. Use `congr 1`.
+Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Replace the chosen expression with an arbitrary variable. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `hN : (0 : ℝ) ≤ (Nat.card (kP P) : ℕ)` using `Nat.cast_nonneg _`. Rewrite using `[show Ideal.absNorm P.asIdeal = Nat.card (kP P) from rfl, ← Complex.ofReal_zpow, Real.sqrt_eq_rpow, ← Real.rpow_neg hN, ← Real.rpow_intCast, ← Real.rpow_mul hN, Complex.ofReal_cpow hN]`. Use `push_cast`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem twVal_half (χ : HChar E) (P : HeightOneSpectrum (𝓞 E)) (h : ∀ u : Eˣ, P.valuation E (u : E) = 1 → χ.locK P u = 1)
     (k : Eˣ) : GlobalTheory.IndefiniteRowSideFullHecke.TwistedLevelValues.twVal χ (1 / 2) P k =
@@ -57,17 +57,17 @@ theorem twVal_half (χ : HChar E) (P : HeightOneSpectrum (𝓞 E)) (h : ∀ u : 
 end General
 
 /- English proof (translation)
-Take `⟨ι, h1, h2, h3⟩` from `GlobalTheory.HostAdeleIso.exists_finiteAdele_equiv D`. Take `⟨e, he, hinf, hP, hQ⟩` from `GlobalTheory.PlaceIdem.exists_isPlIdem D ι h1 h2 h3 P`. Establish `key : ∀ k : D.host.E, P.valuation D.host.E k = 1 → finPart D (locE D e k) ∈ intAE D`. Introduce `k hk`. Rewrite using `[h2]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `Q`. Establish `h4 : ι (finPart D (incA D k)) = algebraMap D.host.E _ k` using `h1 k`. Establish `h5 : ι (finPart D (locE D e k)) = 1 + ι (finPart D e) * (ι (finPart D (incA D k)) - 1)` using `GlobalTheory.HeckeTensorRead.map_loc (ι.toRingHom.comp (finPart D)) e _`. Rewrite using `[h5, h4]`. Express the relevant statement in the definitionally equal form `Valued.v (1 + ι (finPart D e) Q * (algebraMap D.host.E (Q.adicCompletion D.host.E) k - 1)) ≤ 1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Distinguish the cases in `hQP : Q = P`. Substitute `hQP` using the available equality. Rewrite using `[hP, one_mul, add_sub_cancel]`. Conclude with `((Q.valuedAdicCompletion_eq_valuation' k).trans hk).le`. Rewrite using `[hQ Q hQP, zero_mul, add_zero, map_one]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hinv : (((locU he.1 u)⁻¹ : (AE D)ˣ) : AE D) = locE D e ((u⁻¹ : D.host.Eˣ) : D.host.E)`. Use `Units.inv_eq_of_mul_eq_one_right ?_` and prove the remaining obligations. Rewrite using `[locU_val, locE_mul_locE he.1]`. Simplify using `[locE]`. Establish `h6` using `hu (locU he.1 u) (by`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[locU_val, locE, RingHom.map_add, RingHom.map_one, RingHom.map_mul, hinf, zero_mul, add_zero])`. Use the proof step `(key _ h) (by`. Rewrite using `[hinv]`. Use `key _ ?_` and prove the remaining obligations. Rewrite using `[Units.val_inv_eq_inv_val, map_inv₀, h, inv_one])`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h7` using `hc.2 P e he u (locU he.1 u) rfl`. Rewrite `h7` using `[h6]`. Conclude with `Units.ext h7.symm`.
+A detailed English derivation is pending.
 -/
 theorem locK_eq_one {D : D7} {c : (AE D)ˣ →* Circle} {χ : HChar D.host.E} (hc : ChrEq c χ) (hu : UnramEverywhere D c)
     (P : Pl D.host.E) (u : D.host.Eˣ) (h : P.valuation D.host.E (u : D.host.E) = 1) : χ.locK P u = 1 := by
@@ -102,9 +102,9 @@ theorem locK_eq_one {D : D7} {c : (AE D)ˣ →* Circle} {χ : HChar D.host.E} (h
   exact Units.ext h7.symm
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 T0 A Ks _ _ _ R F hR σ s hσ η' hη`. Take `⟨ηH, hH⟩` from `GlobalTheory.HeckeTensorRead.exists_hchar_chrEq D η' hη.1`. Use `⟨ηH, fun P k => ?_, hH⟩` and prove the remaining obligations. Take `⟨ι, h1, h2, h3⟩` from `GlobalTheory.HostAdeleIso.exists_finiteAdele_equiv D`. Take `⟨e, he, -⟩` from `GlobalTheory.PlaceIdem.exists_isPlIdem D ι h1 h2 h3 P`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨y, hy1, hy2⟩` from `hη.2.2 P e he (locU he.1 (unif P)) rfl`. Establish `h0 : ∀ u : D.host.Eˣ, P.valuation D.host.E (u : D.host.E) = 1 → R.C.eta.locK P u = 1` using `fun u hu => R.C.isEta.unr P _ ((P.valuedAdicCompletion_eq_valuation' (u : D.host.E)).trans hu)`. Rewrite using `[twVal_half _ P (locK_eq_one hH hη.2.1 P), twVal_half _ P h0, map_zpow₀, ← hH.2 P e he _ (locU he.1 (unif P)) rfl, ← hR.lev.eta.2 P e he _ (locU he.1 (unif P)) rfl, ← hy1, ← hy2, hσ.1]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_galConj_eta : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : FamIn D.what₂.LL G Pl0 T0 D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A), R.Char F → ∀ (σ : D.what₂.LL →+* ℂ) (s : ℂ ≃+* ℂ), GlobalTheory.IndefiniteRowSideFullHecke.TwistedLevelValues.IsEmbOverK D σ s → ∀ η' : (AE D)ˣ →* Circle, GlobalTheory.IndefiniteRowSideFullHecke.WeilGramSignature.IsEtaConj σ R.eta η' → ∃ ηH : Formalism.L2.Host.HChar D.host.E, GlobalTheory.IndefiniteRowSideFullHecke.TwistedLevelValues.IsGalConj s (1 / 2) R.C.eta ηH ∧ ChrEq η' ηH := by
   intro D G _ _ Pl0 T0 A Ks _ _ _ R F hR σ s hσ η' hη

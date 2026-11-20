@@ -14,9 +14,9 @@ namespace GlobalTheory.LatJet.JetStable
 set_option autoImplicit false
 
 /- English proof (translation)
-Use `haveI := X.rm.hom a`. Introduce `c`. Establish `k` using `(homMor (dp0 R) (𝟙 _) (X.rm.act a)).comp m`. Establish `e1 : primPull J.κ (spMap J.π) (X.rm.act a) (m.pull c) = k.pull c` using `GrpMor.pull_pull m (homMor J.κ (spMap J.π) (X.rm.act a)) k (fun _ ↦ rfl) (by simp) c`. Establish `e2 : m.pull (primPull (dp0 R) (𝟙 _) (X.rm.act a) c) = k.pull c` using `GrpMor.pull_pull (homMor (dp0 R) (𝟙 _) (X.rm.act a)) m k (fun _ ↦ rfl) rfl c`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc : ∀ i, N i (act (dp0 R) (𝟙 _) X.rm a x) = act (dp0 R) (𝟙 _) X.rm a (N i x)` using `fun i ↦ LinearMap.congr_fun (hN i a).eq x`. Rewrite using `[act_apply, push_apply, e1, ← e2, hd]`. Simplify using `only [hc]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem isJetElt_act {F : Type} [Field F] [NumberField F] {𝔠 : FracId F} {R : Type} [CommRing R]
     {I : Type} [Fintype I] {n : ℕ} (J : JetRing R I n) (X : Obj F 𝔠 (Sp R))
@@ -38,7 +38,7 @@ theorem isJetElt_act {F : Type} [Field F] [NumberField F] {𝔠 : FracId F} {R :
   rfl
 
 /- English proof (translation)
-Use `haveI := X.rm.hom a`. Rewrite using `[act_apply]`. Conclude with `push_mem_Fil _ hx`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem act_mem_Fil {F : Type} [Field F] [NumberField F] {𝔠 : FracId F} {R : Type} [CommRing R]
     (X : Obj F 𝔠 (Sp R)) (a : 𝓞 F) {x : HdR X.A} (hx : x ∈ Fil X.A) :
@@ -52,7 +52,7 @@ end GlobalTheory.LatJet.JetStable
 open GlobalTheory.LatJet.JetStable in
 
 /- English proof (translation)
-Introduce `_ _ _ F _ _ _ 𝔠 R _ _ _ _ I _ n J X N hN m a`. Establish `key : Submodule.span J.B {d | ∃ x ∈ Fil X.A, IsJetElt J X N m x d} ≤ (Submodule.span J.B {d | ∃ x ∈ Fil X.A, IsJetElt J X N m x d}).comap (act J.κ (spMap J.π) X.rm a)`. Use `Submodule.span_le.2 fun d ⟨x, hx, hd⟩ ↦ Submodule.subset_span ?_` and prove the remaining obligations. Conclude with `⟨_, act_mem_Fil X a hx, isJetElt_act J X N hN.1 m a x d hd⟩`. Conclude with `fun d hd ↦ key hd`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.LatJet.jetFil_act_stable : GlobalTheory.Published.GrothendieckDeformation → GlobalTheory.Published.AbelianDeRham → GlobalTheory.Published.AbelianDualCrystal → ∀ (F : Type) [Field F] [NumberField F] [IsTotallyReal F] (𝔠 : FracId F) (R : Type) [CommRing R] [IsDomain R] [CharZero R]
     [IsLocalRing R] (I : Type) [Fintype I] (n : ℕ) (J : JetRing R I n) (X : Obj F 𝔠 (Sp R))

@@ -7,25 +7,23 @@ open Classical
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `V W _ _ _ _ H H' Φ hΦ hH' Λ₁ Λ₂ α F hα hF hn z`. Use `set f : V →+ W := (Φ : V →ₗ[ℂ] W).toAddMonoidHom with hf`. Establish `hfs : Function.Surjective f` using `Φ.surjective`. Establish `hfx : ∀ v, f v = Φ v` using `fun v => rfl`. Establish `hH : IsHerm H`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x y`. Rewrite using `[hΦ, hΦ, hH']`. Establish `hα' : IsSemiChar H (Λ₂.comap f) (fun v => α (Φ v))`. Use `⟨fun x hx => hα.1 (Φ x) hx, fun x hx y hy => ?_⟩` and prove the remaining obligations. Use `hα.2 (Φ x) hx (Φ y) hy` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_add, altE] at this ⊢`. Rewrite using `[this, hΦ]`. Establish `hopU : ∀ x (G : W → ℂ) v, opU H x (fun w => G (Φ w)) v = opU H' (Φ x) G (Φ v)`. Introduce `x G v`. Simplify using `only [opU, map_add, hΦ]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hF' : (fun v => F (Φ v)) ∈ fixedBy H (fun v => α (Φ v)) (Λ₁.comap f)`. Introduce `x hx v`. Rewrite using `[hopU]`. Conclude with `hF (Φ x) hx (Φ v)`. Establish `hidx : relIdx (Λ₁.comap f) (Λ₂.comap f) = relIdx Λ₁ Λ₂`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `relIdx`. Rewrite using `[AddSubgroup.relIndex_comap, AddSubgroup.map_comap_eq_self_of_surjective hfs]`. Take `⟨S, hS⟩` from `(cosetRepsExist W Λ₁ Λ₂ hn).1`. Establish `hS' : IsReps (Λ₁.comap f) (Λ₂.comap f) (S.image Φ.symm)`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `w hw`. Take `⟨x, hx, rfl⟩` from `Finset.mem_image.1 hw`. Use `show f (Φ.symm x) ∈ Λ₂`. Rewrite using `[hfx, LinearEquiv.apply_symm_apply]`. Conclude with `hS.1 x hx`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `w hw w' hw' hd`. Take `⟨x, hx, rfl⟩` from `Finset.mem_image.1 hw`. Take `⟨x', hx', rfl⟩` from `Finset.mem_image.1 hw'`. Establish `hd' : x - x' ∈ Λ₁`. Establish `: f (Φ.symm x - Φ.symm x') ∈ Λ₁` using `hd`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite `this` using `[hfx, map_sub, LinearEquiv.apply_symm_apply, LinearEquiv.apply_symm_apply]`. Then use the resulting hypothesis. Rewrite using `[hS.2.1 x hx x' hx' hd']`. Introduce `y hy`. Take `⟨x, hx, hd⟩` from `hS.2.2 (Φ y) hy`. Use `⟨Φ.symm x, Finset.mem_image.2 ⟨x, hx, rfl⟩, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Replace the relevant objects with their definitions.
 
-Use `show f (y - Φ.symm x) ∈ Λ₁`. Rewrite using `[hfx, map_sub, LinearEquiv.apply_symm_apply]`. Conclude with `hd`. Rewrite using `[InterReps_of semicharacterHom V H hH _ _ _ hα' _ hF' _ hS' z, InterReps_of semicharacterHom W H' hH' _ _ _ hα _ hF _ hS (Φ z), hidx]`. Use `congr 1`.
-
-Unfold `sumU`. Rewrite using `[Finset.sum_image (fun a _ b _ hab => Φ.symm.injective hab)]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Rewrite using `[hopU, LinearEquiv.apply_symm_apply]`. Simplify using `only [LinearEquiv.apply_symm_apply]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem inter_comap_isom : ∀ (V W : Type) [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W] (H : Sesq V) (H' : Sesq W) (Φ : V ≃ₗ[ℂ] W), (∀ x y, H x y = H' (Φ x) (Φ y)) → IsHerm H' → ∀ (Λ₁ Λ₂ : AddSubgroup W) (α : W → ℂ) (F : W → ℂ), IsSemiChar H' Λ₂ α → F ∈ fixedBy H' α Λ₁ → relIdx Λ₁ Λ₂ ≠ 0 → ∀ z, inter H (fun v => α (Φ v)) (Λ₁.comap (Φ : V →ₗ[ℂ] W).toAddMonoidHom) (Λ₂.comap (Φ : V →ₗ[ℂ] W).toAddMonoidHom) (fun v => F (Φ v)) z = inter H' α Λ₁ Λ₂ F (Φ z) := by
   intro V W _ _ _ _ H H' Φ hΦ hH' Λ₁ Λ₂ α F hα hF hn z

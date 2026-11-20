@@ -17,9 +17,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 variable {D : D7} (X : Formalism.L2.SG.HidaSetting.HidaSetting D)
 
 /- English proof (translation)
-Take `⟨d, hd⟩` from `Formalism.MainNotions.BridgeCSchur.fdeg_of_DS (X.B.lam v) (X.B.σ v) (X.ds v)`. Establish `hw : X.B.w v ≠ 0`. Introduce `h0`. Establish `h1` using `(X.low v).1`. Rewrite `h1` using `[h0, norm_zero]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `zero_ne_one h1`. Establish `e : X.dv v = d` using `Formalism.MainNotions.DiscreteSeriesInnerProducts.fdegOf_eq hd hw`. Rewrite using `[e]`. Conclude with `hd`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isFdeg_dv (v : InfinitePlace X.B.I.F) :
     IsFdeg (Formalism.REAL.muG (X.B.I.ε v)) (X.B.σ v) (X.dv v) := by
@@ -34,13 +34,13 @@ theorem isFdeg_dv (v : InfinitePlace X.B.I.F) :
   exact hd
 
 /- English proof (translation)
-Apply `ext_inner_left ℂ` to reduce the goal to its premises. Introduce `a`. Establish `hU : ∀ v, IsURepOn (UJset (X.B.I.ε v)) (X.B.σ v)` using `fun v => (X.ds v).2.2.1`. Establish `hw : ∀ v, ‖X.B.w v‖ = 1` using `fun v => (X.low v).1`. Establish `hs` using `(Formalism.L2.SG.Pf.glob_schur X.B.I X.B.σ X.dv X.B.w hU (isFdeg_dv X) hw hL X.B.σs X.B.tens X.B.tens_spec (ContinuousLinearMap.adjoint Φ a)).2`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[X.Rph_spec a (Φ (X.B.tens X.B.w))]`. Establish `hg : ∀ g : X.B.I.Ginf, X.B.R (g, 1) (Φ (X.B.tens X.B.w)) = Φ (X.B.σs g (X.B.tens X.B.w))`. Introduce `g`. Use `congrArg (fun L : X.B.Hs →L[ℂ] X.B.I.L2 X.B.μf X.B.fund => L (X.B.tens X.B.w)) (hΦ g)` as an intermediate fact. Simplify using `using this.symm`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hi : ∀ x : X.B.Hs, ⟪a, Φ x⟫_ℂ = ⟪ContinuousLinearMap.adjoint Φ a, x⟫_ℂ` using `fun x => (ContinuousLinearMap.adjoint_inner_left Φ x a).symm`. Rewrite using `[hi, ← hs]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun g => ?_)` and prove the remaining obligations. Use `show _ * _ = _ * _`. Rewrite using `[hg g, hi]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem rph_fix_hom
     (hL : ∀ v, Integrable (phLoc (ε := X.B.I.ε v) (X.B.σ v) (X.B.w v) (X.dv v)) (Formalism.REAL.muG (X.B.I.ε v)))
@@ -66,7 +66,7 @@ theorem rph_fix_hom
   rfl
 
 /- English proof (translation)
-Rewrite using `[Formalism.L2.SG.Pf.orbit_eq X.B.I X.B.σ X.B.σs X.B.tens X.B.tens_spec X.B.w g, X.B.tens_spec.1]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem inner_tens_orbit (g : X.B.I.Ginf) :
     ⟪X.B.tens X.B.w, X.B.σs g (X.B.tens X.B.w)⟫_ℂ = mInf X.B.I X.B.σ X.B.w g := by
@@ -74,7 +74,7 @@ theorem inner_tens_orbit (g : X.B.I.Ginf) :
   rfl
 
 /- English proof (translation)
-Rewrite using `[X.B.tens_spec.1]`. Use `Finset.prod_eq_one fun v _ => ?_` and prove the remaining obligations. Rewrite using `[inner_self_eq_norm_sq_to_K, (X.low v).1]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem inner_tens_self : ⟪X.B.tens X.B.w, X.B.tens X.B.w⟫_ℂ = 1 := by
   rw [X.B.tens_spec.1]
@@ -83,9 +83,9 @@ theorem inner_tens_self : ⟪X.B.tens X.B.w, X.B.tens X.B.w⟫_ℂ = 1 := by
   simp
 
 /- English proof (translation)
-Establish `hU : ∀ v, IsURepOn (UJset (X.B.I.ε v)) (X.B.σ v)` using `fun v => (X.ds v).2.2.1`. Establish `hw : ∀ v, ‖X.B.w v‖ = 1` using `fun v => (X.low v).1`. Establish `hs` using `Formalism.L2.SG.Pf.glob_schur X.B.I X.B.σ X.dv X.B.w hU (isFdeg_dv X) hw hL X.B.σs X.B.tens X.B.tens_spec (X.B.tens X.B.w)`. Rewrite `hs` using `[inner_tens_orbit X]`. Rewrite `hs` using `[inner_tens_self X]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses repeatedly using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hs`.
+A detailed English derivation is pending.
 -/
 theorem integral_ph_m
     (hL : ∀ v, Integrable (phLoc (ε := X.B.I.ε v) (X.B.σ v) (X.B.w v) (X.dv v)) (Formalism.REAL.muG (X.B.I.ε v))) :
@@ -100,7 +100,7 @@ theorem integral_ph_m
   exact hs
 
 /- English proof (translation)
-The claim follows from `Formalism.L2.SG.Closed.ProjRowsR_holds X.B.I X.B.μf X.B.fund X.B.fund_spec X.B.R X.B.R_spec X.B.H X.B.σ X.dv X.B.w (fun v => (X.ds v).2.2.1) (isFdeg_dv X) (fun v => (X.low v).1) hL X.Rph X.Rph_spec`.
+A detailed English derivation is pending.
 -/
 theorem rph_isRowProj
     (hL : ∀ v, Integrable (phLoc (ε := X.B.I.ε v) (X.B.σ v) (X.B.w v) (X.dv v)) (Formalism.REAL.muG (X.B.I.ε v))) :
@@ -109,13 +109,13 @@ theorem rph_isRowProj
     (fun v => (X.ds v).2.2.1) (isFdeg_dv X) (fun v => (X.low v).1) hL X.Rph X.Rph_spec
 
 /- English proof (translation)
-Establish `hP` using `rph_isRowProj X hL`. Establish `h1 : ⟪f, X.Rph f⟫_ℂ = ((‖f‖ ^ 2 : ℝ) : ℂ)`. Rewrite using `[X.Rph_spec f f]`. Establish `e : ∀ g, Formalism.L2.SG.ProjRows.phInf X.B.I X.B.σ X.B.w (fun v => fdegOf (Formalism.REAL.muG (X.B.I.ε v)) (X.B.σ v) (X.B.w v)) g * ⟪f, X.B.R (g, 1) f⟫_ℂ = ((‖f‖ ^ 2 : ℝ) : ℂ) * (X.ph g * mInf X.B.I X.B.σ X.B.w g)`. Introduce `g`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hc g]`. Use `show X.ph g * _ = _`. Expand and normalize the polynomial expressions, which then agree. Repeatedly rewrite using `[e]`. Rewrite using `[integral_const_mul, (integral_ph_m X hL).2, mul_one]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : ⟪X.Rph f, X.Rph f⟫_ℂ = ⟪f, X.Rph f⟫_ℂ`. Rewrite using `[hP.1 f (X.Rph f)]`. Use `congr 1`. Conclude with `congrArg (fun L : X.B.I.L2 X.B.μf X.B.fund →L[ℂ] X.B.I.L2 X.B.μf X.B.fund => L f) hP.2.1`. Establish `h3 : ⟪X.Rph f, f⟫_ℂ = ⟪f, X.Rph f⟫_ℂ` using `hP.1 f f`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h0 : ⟪f - X.Rph f, f - X.Rph f⟫_ℂ = 0`. Rewrite using `[inner_sub_left, inner_sub_right, inner_sub_right, h2, h3, h1, inner_self_eq_norm_sq_to_K]`. Simplify using the standard rewrite rules. Conclude with `(sub_eq_zero.1 (inner_self_eq_zero.1 h0)).symm`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem rph_fix_of_coef
     (hL : ∀ v, Integrable (phLoc (ε := X.B.I.ε v) (X.B.σ v) (X.B.w v) (X.dv v)) (Formalism.REAL.muG (X.B.I.ε v)))

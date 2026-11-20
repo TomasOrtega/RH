@@ -15,9 +15,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.CubeDual
 
 /- English proof (translation)
-Establish `h` using `hC S A hA L hL T a a' t`. Establish `hl` using `LB.isLB_linComb hL (fun k : Fin 8 ↦ (![a * a' * t, a * a', a * t, a' * t, a, a', t, 1] k).left) ![1, -1, -1, -1, 1, 1, 1, -1]`. Establish `e` using `(cls_eq_zero_iff hl).2 h`. Rewrite `e` using `[cls_linComb hL _ _ hl, Fin.sum_univ_eight]`. Simplify using `only [Matrix.cons_val, Matrix.cons_val_zero, Matrix.cons_val_one, one_smul, neg_smul] at e`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Unfold `lam`. Rewrite using `[← sub_eq_zero, ← e]`. Normalize the expressions using the abelian group laws.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem lam_mul_left (hC : GlobalTheory.Published.CubeTheorem) {S : Scheme.{0}} {A : Over S} [GrpObj A] (hA : IsAbelianScheme A)
     {L : LB A.left} (hL : L.IsLB) {T : Over S} (a a' t : T ⟶ A) :
@@ -33,7 +33,7 @@ theorem lam_mul_left (hC : GlobalTheory.Published.CubeTheorem) {S : Scheme.{0}} 
   abel
 
 /- English proof (translation)
-Rewrite using `[evc, show cls _ hP = lam (cls L hL) (fst A A) (snd A A) from cls_cube_two hL _ _ hP, pull_lam, lift_fst, lift_snd]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem evc_lam {S : Scheme.{0}} {A : Over S} [GrpObj A] {L : LB A.left} (hL : L.IsLB) (hP : (abelian₂ A L).IsLB)
     {Y : Over S} (a b : Y ⟶ A) : evc hP a b = lam (cls L hL) a b := by
@@ -41,9 +41,7 @@ theorem evc_lam {S : Scheme.{0}} {A : Over S} [GrpObj A] {L : LB A.left} (hL : L
     lift_snd]
 
 /- English proof (translation)
-Use `haveI := hA.comm`. Establish `hs : (swap (abelian₂ A L)).IsLB` using `pull_isLB hP _`. Use `⟨(isAdditive_iff hP).2 fun Y a a' t ↦ ?_, (isAdditive_iff hs).2 fun Y a a' t ↦ ?_⟩` and prove the remaining obligations. Rewrite using `[evc_lam hL, evc_lam hL, evc_lam hL]`. Conclude with `lam_mul_left hC hA hL a a' t`.
-
-Rewrite using `[evc_swap hP hs, evc_swap hP hs, evc_swap hP hs, evc_lam hL, evc_lam hL, evc_lam hL, lam_comm, lam_comm _ t a, lam_comm _ t a']`. Conclude with `lam_mul_left hC hA hL a a' t`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isAdditive_lam (hC : GlobalTheory.Published.CubeTheorem) {S : Scheme.{0}} {A : Over S} [GrpObj A] (hA : IsAbelianScheme A)
     {L : LB A.left} (hL : L.IsLB) (hP : (abelian₂ A L).IsLB) : IsAdditive (abelian₂ A L) ∧ IsAdditive (swap (abelian₂ A L)) := by
@@ -57,11 +55,11 @@ theorem isAdditive_lam (hC : GlobalTheory.Published.CubeTheorem) {S : Scheme.{0}
     exact lam_mul_left hC hA hL a a' t
 
 /- English proof (translation)
-Establish `h' : (ev P' (fst A B) (snd A B ≫ x)).IsLB` using `pull_isLB h.isLB _`. Establish `hc : cls P hP.isLB = cls _ h'` using `(cls_eq_iff hP.isLB h').2 hx`. Establish `key : ∀ {Y : Over S} (a : Y ⟶ A) (t : Y ⟶ B), evc hP.isLB a t = evc h.isLB a (t ≫ x)`. Introduce `Y a t`. Use `show CechPic.pull (lift a t).left (cls P hP.isLB) = _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hc, cls_ev h.isLB, pull_evc, lift_fst, lift_snd_assoc]`. Use `⟨fun {T} u v huv ↦ ?_⟩` and prove the remaining obligations. Establish `hw : (u * v⁻¹) ≫ x = 1` using `by rw [MonObj.mul_comp, GrpObj.inv_comp, huv, mul_inv_cancel]`. Establish `t` using `hP.ker_right T (u * v⁻¹) ((triv_ev_iff hP.isLB _ _).2 (by`. Rewrite using `[key, Category.assoc, hw, MonObj.comp_one, evc_one_right h.isLB h.zero]))`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `t` using `[mul_inv_eq_one]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem mono_of_isPerfect' {S : Scheme.{0}} {A B B' : Over S} [GrpObj A] [GrpObj B] [GrpObj B']
     {P : LB (A ⊗ B).left} {P' : LB (A ⊗ B').left} (h : IsDual A B' P') (hP : IsPerfect A B P) (x : B ⟶ B')
@@ -79,17 +77,15 @@ theorem mono_of_isPerfect' {S : Scheme.{0}} {A B B' : Over S} [GrpObj A] [GrpObj
   rwa [mul_inv_eq_one] at t
 
 /- English proof (translation)
-Introduce `hC hD hPD hF R _ A _ g hA hg L hL ψ hψ`. Use `haveI := hA.comm`. Establish `hP : (abelian₂ A L).IsLB` using `LB.isLB_linComb hL _ _`. Take `⟨haddL, haddS⟩` from `isAdditive_lam hC hA hL hP`. Take `⟨B, _, P, hB, hdim, h1, h2⟩` from `hD (Sp R) A hA`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hgB` using `hdim g hg`. Take `⟨x, hx, -⟩` from `h1.univ A (abelian₂ A L) hP haddL`. Use `haveI hmx : IsMonHom x := GlobalTheory.AbDual.isMonHom_of_classifying (Sp R) A A B (abelian₂ A L) P h1 h2.additive hP haddS x hx`. Establish `perf` using `h1.isPerfect h2`. Take `⟨φ, hφ⟩` from `exists_isCorrForm (cupSquare_of_free hF (AbelianSchemeGerms.isAbelianScheme_tensor A B hA hB) (smooth_prod hg hgB)) perf.isLB perf.zero_left perf.zero_right`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `e : LBIso (P.pull (lift (fst A A) (snd A A ≫ x)).left) (abelian₂ A L)` using `(cls_eq_iff (pull_isLB h1.isLB _) hP).1 ((cls_eq_iff hP (pull_isLB h1.isLB _)).2 hx).symm`. Take `⟨φ', hφ', k⟩` from `hφ.pull h1.isLB (homMor (dp0 R) (𝟙 _) (𝟙 A)) (homMor (dp0 R) (𝟙 _) x) (h := (lift (fst A A) (snd A A ≫ x)).left) (by simp only [← Over.comp_left, lift_fst, Category.comp_id]) (by simp only [← Over.comp_left, lift_snd]) hP e`. Establish `hψ'` using `isCorrForm_lam hψ`. Take `rfl` from `hφ'.unique (cupSquare_of_free hF (AbelianSchemeGerms.isAbelianScheme_tensor A A hA hA) (smooth_prod hg hg)) hP hψ'`. Establish `hform : ∀ a b, φ' a b = φ a (push (dp0 R) (𝟙 _) x b)` using `fun a b ↦ by`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `k (push (dp0 R) (𝟙 _) (𝟙 A) a) a (push (dp0 R) (𝟙 _) x b) b (fun _ ↦ rfl) fun _ ↦ rfl` as an intermediate fact. Rewrite using `[this, push_id]`. Both sides reduce to the same expression. Take `⟨-, orth⟩` from `hPD R A B g hA hB hg hgB P h1 φ hφ`. Use `⟨fun a ha b hb ↦ ?_, fun hK ↦ ?_⟩` and prove the remaining obligations.
+Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hform]`. Conclude with `orth a ha _ (push_mem_Fil x hb)`. Establish `mx : Mono x` using `mono_of_isPerfect' h1 (isPerfect_lam hL hK) x hx`. Establish `ix : IsIso x` using `GlobalTheory.T.abelianScheme_isIso_of_mono_same_dimension (Sp R) A B hA hB g hg hgB x hmx mx`. Establish `hd : IsDual A A (abelian₂ A L)` using `GlobalTheory.AbDual.transport (Sp R) A A B (abelian₂ A L) P h1 hP x ix hmx hx`.
-
-Conclude with `(hPD R A A g hA hA hg hg (abelian₂ A L) hd φ' hψ').1`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem abelianDeRham_duality : GlobalTheory.Published.CubeTheorem → GlobalTheory.Published.DualAbelianScheme →
     GlobalTheory.Published.PoincareDeRhamDuality → GlobalTheory.Published.AbelianDeRham.Free → GlobalTheory.Published.AbelianDeRham.Duality := by

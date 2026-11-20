@@ -7,9 +7,9 @@ open Formalism.BasicNotions Formalism.BasicNotions.DV Formalism.MainNotions Numb
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `hx : 1 < s.x` using `s.one_lt_alt`. Establish `hL : 0 ≤ s.L`. Unfold `Scale.L`. Conclude with `Real.rpow_nonneg (by linarith) _`. Establish `hb : 1 ≤ s.b`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `Scale.b`. Conclude with `Real.one_le_exp hL`. Unfold `Scale.a`. Conclude with `one_le_mul_of_one_le_of_one_le hx.le hb`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem scale_one_le_a (s : Scale) : 1 ≤ s.a := by
   have hx : 1 < s.x := s.one_lt_alt
@@ -23,7 +23,7 @@ theorem scale_one_le_a (s : Scale) : 1 ≤ s.a := by
   exact one_le_mul_of_one_le_of_one_le hx.le hb
 
 /- English proof (translation)
-Introduce `eps Fm x hx i`. Take `⟨-, -, -, -, -, -, hQD, -⟩` from `Fm.sizes x hx i`. Take `⟨-, -, -, -, -, -, hrd, -⟩` from `hQD`. Unfold `SizeData₂.La`. Conclude with `Real.log_nonneg (one_le_mul_of_one_le_of_one_le (scale_one_le_a _) hrd)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem famP_La_nonneg : ∀ (eps : ℝ) (Fm : FamP eps), ∀ x, Fm.x1 < x → ∀ i : Fm.Ix x,
     0 ≤ (Fm.L x i).La := by

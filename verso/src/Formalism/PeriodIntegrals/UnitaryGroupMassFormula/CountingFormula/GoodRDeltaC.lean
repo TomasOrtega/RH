@@ -14,7 +14,7 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   {sig : E →ₐ[F] E} {p : HeightOneSpectrum (𝓞 F)}
 
 /- English proof (translation)
-Take `⟨y, rfl⟩` from `IsIntegrallyClosed.isIntegral_iff.mp ht`. Conclude with `PadicInt.norm_le_one y`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem norm_le_one_of_isIntegral_zl {ℓ : ℕ} [Fact ℓ.Prime] {t : ℚ_[ℓ]} (ht : IsIntegral ℤ_[ℓ] t) :
     ‖t‖ ≤ 1 := by
@@ -22,13 +22,13 @@ theorem norm_le_one_of_isIntegral_zl {ℓ : ℕ} [Fact ℓ.Prime] {t : ℚ_[ℓ]
   exact PadicInt.norm_le_one y
 
 /- English proof (translation)
-Conclude with `(Valuation.integer.integers (ValuativeRel.valuation L.Fp)).mem_of_integral hs`.
+A detailed English derivation is pending.
 -/
 theorem mem_of_isIntegral_fp (L : LocAt F E sig p) {s : L.Fp} (hs : IsIntegral 𝒪[L.Fp] s) : s ∈ 𝒪[L.Fp] := by
   exact (Valuation.integer.integers (ValuativeRel.valuation L.Fp)).mem_of_integral hs
 
 /- English proof (translation)
-Use `haveI := L.free`. Use `haveI := PI.ProdFormulaE.Base.finite L`. Set `b : Module.Basis (Fin 2) L.Fp L.Ep` to `Module.finBasisOfFinrankEq L.Fp L.Ep L.rank`. Conclude with `mem_of_isIntegral_fp L (DeltaB.trace_isIntegral_rank2 b ((L.O_def y).mp hy))`.
+Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem trace_mem (L : LocAt F E sig p) {y : L.Ep} (hy : y ∈ L.O) : Algebra.trace L.Fp L.Ep y ∈ 𝒪[L.Fp] := by
   haveI := L.free

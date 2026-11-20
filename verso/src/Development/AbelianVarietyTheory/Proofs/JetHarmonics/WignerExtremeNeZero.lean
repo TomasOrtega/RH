@@ -6,7 +6,7 @@ open Finset
 namespace GlobalTheory.WigSh
 
 /- English proof (translation)
-Rewrite using `[Finset.prod_ne_zero_iff]`. Introduce `j hj`. Establish `h1 : j ≠ l` using `(Finset.mem_erase.mp hj).1`. Establish `h2 : L j ≠ L l` using `fun h => h1 (hL.injective h)`. Conclude with `sub_ne_zero.mpr (by exact_mod_cast h2)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem wigner_den_ne_zero {n : ℕ} (L : Fin (n+1) → ℤ) (l : Fin (n+1)) (hL : StrictAnti L) :
     (∏ j ∈ univ.erase l, ((L j : ℝ) - (L l : ℝ))) ≠ 0 := by
@@ -17,13 +17,13 @@ theorem wigner_den_ne_zero {n : ℕ} (L : Fin (n+1) → ℤ) (l : Fin (n+1)) (hL
   exact sub_ne_zero.mpr (by exact_mod_cast h2)
 
 /- English proof (translation)
-Introduce `n L l hL`. Use `⟨fun h => ?_, fun h => ?_⟩` and prove the remaining obligations. Unfold `wP`. Use `div_ne_zero ?_ (wigner_den_ne_zero L l hL)` and prove the remaining obligations. Rewrite using `[Finset.prod_ne_zero_iff]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `j _`. Establish `h1 : L j.castSucc - 1 - L l ≠ 0`. Use `h j.castSucc` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Conclude with `h1` after adjusting the coercions.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Replace the relevant objects with their definitions.
 
-Unfold `wM`. Use `div_ne_zero ?_ (wigner_den_ne_zero L l hL)` and prove the remaining obligations. Rewrite using `[Finset.prod_ne_zero_iff]`. Introduce `j _`. Establish `h1 : L j.succ + 1 - L l ≠ 0`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `h j.succ` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Conclude with `h1` after adjusting the coercions.
+Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem wigner_extreme_ne_zero : ∀ (n : ℕ) (L : Fin (n+1) → ℤ) (l : Fin (n+1)), StrictAnti L → ((∀ j, L j ≠ L l + 1) → GlobalTheory.WigSh.wP L (fun j : Fin n => L j.castSucc) l ≠ 0) ∧ ((∀ j, L j ≠ L l - 1) → GlobalTheory.WigSh.wM L (fun j : Fin n => L j.succ + 1) l ≠ 0) := by
   intro n L l hL

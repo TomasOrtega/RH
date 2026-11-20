@@ -17,7 +17,7 @@ namespace GlobalTheory.CompanionTheory.WaveK.Uniq
 variable {n : ℕ} {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V]
 
 /- English proof (translation)
-Establish `h` using `fun X : Mat n => GlobalTheory.CompanionTheory.RCalc.Rd_contDiffOn X hf`. Unfold `Eu`. Conclude with `((h _).add (contDiffOn_const.smul (h _))).const_smul _`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem Eu_smooth {f : Mat n → V} (hf : ContDiffOn ℝ ∞ f (GLs n)) (s : Bool) (a b : Fin n) :
     ContDiffOn ℝ ∞ (Eu s a b f) (GLs n) := by
@@ -26,11 +26,11 @@ theorem Eu_smooth {f : Mat n → V} (hf : ContDiffOn ℝ ∞ f (GLs n)) (s : Boo
   exact ((h _).add (contDiffOn_const.smul (h _))).const_smul _
 
 /- English proof (translation)
-Proceed by induction on `m with`. Consider the case `zero`. Introduce `a b`. Distinguish the cases in `hab : a = b`. Simplify `hf` using `[Epow, hab]`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `only [Epow, if_neg hab]`. Conclude with `contDiffOn_const (c := (0 : V))`. Consider the case `succ m ih`. Introduce `a b`. Establish `e : Epow s (m + 1) a b f = fun x => ∑ c, Eu s a c (Epow s m c b f) x`.
+Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `x`. Simplify using `only [Epow, Finset.sum_apply]`. Rewrite using `[e]`. Conclude with `ContDiffOn.sum fun c _ => Eu_smooth (ih c b) s a c`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Epow_smooth {f : Mat n → V} (hf : ContDiffOn ℝ ∞ f (GLs n)) (s : Bool) (m : ℕ) :
     ∀ a b : Fin n, ContDiffOn ℝ ∞ (Epow s m a b f) (GLs n) := by
@@ -50,9 +50,9 @@ theorem Epow_smooth {f : Mat n → V} (hf : ContDiffOn ℝ ∞ f (GLs n)) (s : B
     exact ContDiffOn.sum fun c _ => Eu_smooth (ih c b) s a c
 
 /- English proof (translation)
-Proceed by induction on `m with`. Consider the case `zero`. Introduce `a b x hx`. Apply the tactic sequence `by_cases hab : a = b <;> simp [Epow, hab]`. Consider the case `succ m ih`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Treat this case separately.
 
-Introduce `a b x hx`. Simplify using `only [Epow, Finset.sum_apply, Pi.sub_apply, ← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.CompanionTheory.WaveAll.Eu_congr GlobalTheory.CompanionTheory.WaveAll.isOpen_GLs (ih c b) s a c hx]`. Conclude with `GlobalTheory.CompanionTheory.WaveAll.Eu_sub (Epow_smooth hf s m c b) (Epow_smooth hf' s m c b) s a c hx`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Epow_sub {f f' : Mat n → V} (hf : ContDiffOn ℝ ∞ f (GLs n)) (hf' : ContDiffOn ℝ ∞ f' (GLs n))
     (s : Bool) (m : ℕ) :
@@ -69,7 +69,7 @@ theorem Epow_sub {f f' : Mat n → V} (hf : ContDiffOn ℝ ∞ f (GLs n)) (hf' :
     exact GlobalTheory.CompanionTheory.WaveAll.Eu_sub (Epow_smooth hf s m c b) (Epow_smooth hf' s m c b) s a c hx
 
 /- English proof (translation)
-Introduce `x hx`. Simplify using `only [gel, Finset.sum_apply, Pi.sub_apply, ← Finset.sum_sub_distrib]`. Conclude with `Finset.sum_congr rfl fun a _ => Epow_sub hf hf' s m a a hx`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem gel_sub {f f' : Mat n → V} (hf : ContDiffOn ℝ ∞ f (GLs n)) (hf' : ContDiffOn ℝ ∞ f' (GLs n))
     (s : Bool) (m : ℕ) : Set.EqOn (gel s m (f - f')) (gel s m f - gel s m f') (GLs n) := by
@@ -78,7 +78,7 @@ theorem gel_sub {f f' : Mat n → V} (hf : ContDiffOn ℝ ∞ f (GLs n)) (hf' : 
   exact Finset.sum_congr rfl fun a _ => Epow_sub hf hf' s m a a hx
 
 /- English proof (translation)
-Introduce `x hx`. Simplify using `only [Om, Pi.smul_apply, Pi.add_apply, Pi.sub_apply, gel_sub hf hf' _ _ hx, smul_sub, smul_add]`. Normalize the expressions using the abelian group laws.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 theorem Om_sub {f f' : Mat n → V} (hf : ContDiffOn ℝ ∞ f (GLs n)) (hf' : ContDiffOn ℝ ∞ f' (GLs n)) :
     Set.EqOn (Om (f - f')) (Om f - Om f') (GLs n) := by
@@ -87,11 +87,11 @@ theorem Om_sub {f f' : Mat n → V} (hf : ContDiffOn ℝ ∞ f (GLs n)) (hf' : C
   abel
 
 /- English proof (translation)
-Use `⟨?_, fun t => ⟨?_, ?_⟩, fun t g hg => ?_, fun g hg => ?_⟩` and prove the remaining obligations. Conclude with `hu.1.sub hv.1`. Conclude with `(hu.2.1 t).1.sub (hv.2.1 t).1`. Introduce `g hg k`. Simplify using `only [Pi.sub_apply, (hu.2.1 t).2 g hg k, (hv.2.1 t).2 g hg k, map_sub]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `(GlobalTheory.CompanionTheory.WaveAll.wave_line hu hg).contDiffAt (x := t)`. Establish `h2` using `(GlobalTheory.CompanionTheory.WaveAll.wave_line hv hg).contDiffAt (x := t)`. Establish `e : (fun s => (u - v) s g) = (fun s => u s g) - fun s => v s g` using `rfl`. Rewrite using `[e, iteratedDeriv_sub (h1.of_le (WithTop.coe_le_coe.2 le_top)) (h2.of_le (WithTop.coe_le_coe.2 le_top)), hu.2.2.1 t g hg, hv.2.2.1 t g hg]`. Conclude with `(Om_sub (hu.2.1 t).1 (hv.2.1 t).1 hg).symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : DifferentiableAt ℝ (fun s => u s g) 0` using `((GlobalTheory.CompanionTheory.WaveAll.wave_line hu hg).differentiable (by simp)).differentiableAt`. Establish `h2 : DifferentiableAt ℝ (fun s => v s g) 0` using `((GlobalTheory.CompanionTheory.WaveAll.wave_line hv hg).differentiable (by simp)).differentiableAt`. Establish `e : (fun s => (u - v) s g) = (fun s => u s g) - fun s => v s g` using `rfl`. Rewrite using `[e, deriv_sub h1 h2, hu.2.2.2 g hg, hv.2.2.2 g hg, sub_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem wave_sub {E : KMod n} {u v : ℝ → Mat n → E.V} (hu : IsWave E u) (hv : IsWave E v) :
     IsWave E (u - v) := by
@@ -114,9 +114,9 @@ theorem wave_sub {E : KMod n} {u v : ℝ → Mat n → E.V} (hu : IsWave E u) (h
     rw [e, deriv_sub h1 h2, hu.2.2.2 g hg, hv.2.2.2 g hg, sub_zero]
 
 /- English proof (translation)
-Introduce `hS n E u v hu hv h0 t x hx`. Take `⟨c, hc⟩` from `hS n`. Establish `hw` using `wave_sub hu hv`. Establish `h` using `hc E (u - v) hw t x hx fun y hy _ => by`. Simplify using `only [Pi.sub_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `sub_eq_zero.2 (h0 _ (GlobalTheory.CompanionTheory.WaveAll.mul_mem_GLs hx hy))`. Conclude with `sub_eq_zero.1 h`.
+A detailed English derivation is pending.
 -/
 theorem waveUniq_of_waveSpeed : WaveSpeed → WaveUniq := by
   intro hS n E u v hu hv h0 t x hx

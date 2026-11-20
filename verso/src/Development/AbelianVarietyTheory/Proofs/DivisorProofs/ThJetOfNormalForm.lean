@@ -17,9 +17,9 @@ open GlobalTheory.MBLow.Cl Matrix
 namespace GlobalTheory.MBLow.Cl
 
 /- English proof (translation)
-Establish `hc` using `P.isLB.cover`. Set `p : (Sp ℂ)` to `default`. Establish `hp : (eSec P.A) p ∈ (⨆ i, P.L.U i)` using `by rw [hc]; trivial`. Take `⟨i, hi⟩` from `TopologicalSpace.Opens.mem_iSup.1 hp`. Use `⟨i, fun q _ => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: q = p` using `Subsingleton.elim (α := Sp ℂ) _ _`. Rewrite using `[this]`. Conclude with `hi`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_chart_origin (P : PolAV (Sp ℂ)) : ∃ i : P.L.ι, ⊤ ≤ (eSec P.A) ⁻¹ᵁ P.L.U i := by
   have hc := P.isLB.cover
@@ -31,7 +31,7 @@ theorem exists_chart_origin (P : PolAV (Sp ℂ)) : ∃ i : P.L.ι, ⊤ ≤ (eSec
   rw [this]; exact hi
 
 /- English proof (translation)
-Unfold `trF trFac`. Use `Differentiable.mul ?_ (h.comp (by fun_prop))` and prove the remaining obligations. Use `Differentiable.cexp ?_` and prove the remaining obligations. Simplify using `only [dotProduct]`. Use `fun_prop`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem differentiable_trF {g : ℕ} (τ : Matrix (Fin g) (Fin g) ℂ) (a b : Fin g → ℂ) (m : ℕ) (M N : Fin g → ℤ)
     (h : Differentiable ℂ (thetaChar τ a b)) : Differentiable ℂ (trF τ a b m M N) := by
@@ -42,19 +42,17 @@ theorem differentiable_trF {g : ℕ} (τ : Matrix (Fin g) (Fin g) ℂ) (a b : Fi
   fun_prop
 
 /- English proof (translation)
-Introduce `g x hg u τ a b c W hNF m hm I M N pt hpt e`. Take `⟨⟨th, hth⟩, hfn, -⟩` from `GlobalTheory.T.thetaSection_inverseImage_baseProduct_function g x hg u τ a b c W hNF`. Take `⟨α, s₁, hα, hcorr, htw, hs₁⟩` from `GlobalTheory.T.exists_normalised_multiplicationPullback_function g x hg u τ a b c W hNF m th _ (hfn th hth)`. Establish `hU` using `fun i => GlobalTheory.T.exists_symLift_torsionPoint_classical_action g x hg u τ a b c W hNF m hm (M i) (N i) (pt i) (hpt i)`. Use `choose U hUs hUa using hU`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ht` using `fun i => hUa i s₁ _ hs₁`. Use `choose t hta htf using ht`. Take `⟨hsy, hpos, ha, hb, hc, hΛ, hrig, hFn, hdiff⟩` from `hNF`. Take `⟨i₀, hi₀⟩` from `exists_chart_origin x.P`. Establish `hm0 : (m : ℂ) ≠ 0` using `by exact_mod_cast hm.pos.ne'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hθ` using `(thetaChar_entire_ne_zero_automorphy g τ a b hsy hpos ha hb).1`. Establish `hF : ∀ i, (fun z => trFac τ a b m (M i) (N i) z * (c * thetaChar τ a b ((m : ℂ) • (z + ((m : ℂ) ^ 2)⁻¹ • perV τ (M i) (N i))))) = fun z => c * trF τ a b m (M i) (N i) z`. Introduce `i`. Use function extensionality and compare the values at `z`. Establish `: (m : ℂ) * ((m : ℂ) ^ 2)⁻¹ = (m : ℂ)⁻¹` using `by field_simp`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[smul_add, smul_smul, this, trF]`. Expand and normalize the polynomial expressions, which then agree. Use `⟨th, hth, U, t, i₀, fun j => ((m ^ 2 : ℕ) : ℂ) * fderiv ℂ (u.fr i₀) 0 (W j) / u.fr i₀ 0 - e j, fun i => ⟨hUs i, α, s₁, hα, hcorr, htw, hta i⟩, ?_, fun i j => ?_⟩` and prove the remaining obligations. Simplify using `using hi₀`. Establish `hd` using `differentiable_trF τ a b m (M i) (N i) hθ`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hf : FnT u (m ^ 2) (t i) fun z => c * trF τ a b m (M i) (N i) z`. Rewrite using `[← hF i]`. Conclude with `htf i`. Establish `h1` using `GlobalTheory.T.sectionValue_tangentLift_eq_firstJet g x.P u (m ^ 2) (t i) _ (x.v (j.cast hg.symm)) (W j) i₀ hf (hd.const_mul c) (x.basis.1 _) (hdiff j) hi₀`. Establish `h2 : u.fr i₀ 0 = valR (𝟙 (Sp ℂ)) ((x.P.L.pull (eSec x.P.A)).U fun _ => i₀) (x.rig.s fun _ => i₀).val`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `hrig (fun _ => i₀) ?_` and prove the remaining obligations. Introduce `q hq`. Conclude with `Set.mem_iInter.2 fun _ => hi₀ hq`. Use `h1.trans ?_` and prove the remaining obligations. Rewrite using `[← h2, fderiv_const_mul (hd 0)]`.
-
-Use `congr 3`. Simplify using `only [ContinuousLinearMap.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem thJet_of_normalForm : ∀ (g : ℕ) (x : KeyIn ℂ) (hg : x.P.g = g) (u : HolUnif x.P.A x.P.L g) (τ : Matrix (Fin g) (Fin g) ℂ) (a b : Fin g → ℂ) (c : ℂ) (W : Fin g → Fin g → ℂ), NF x hg u τ a b c W → ∀ m : ℕ, Odd m → ∀ (I : Type) (M N : I → Fin g → ℤ) (pt : I → ((baseOver (Sp ℂ)) ⟶ x.P.A)), (∀ i, (pt i).left = (u.ex (((m : ℂ) ^ 2)⁻¹ • perV τ (M i) (N i))).left) → ∀ e : Fin g → ℂ, ThJet x hg m pt (fun i => c * trF τ a b m (M i) (N i) 0) (fun i j => c * fderiv ℂ (trF τ a b m (M i) (N i)) 0 (W j) + e j * (c * trF τ a b m (M i) (N i) 0)) := by
   intro g x hg u τ a b c W hNF m hm I M N pt hpt e

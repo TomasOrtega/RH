@@ -6,7 +6,7 @@ import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SiegelEise
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `hC hE hP` and use `GlobalTheory.T.siegel_eisenstein_continuation_and_poles hC (fun D V h0 a ha hI μ b hμ hb s₁ φ hφ => ⟨hE D V h0 a ha hI μ b hμ hb s₁ φ hφ, fun hab => hP D V h0 a ha hI μ b hμ hb s₁ φ hφ hab⟩)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem doublingMethod_of_three : GlobalTheory.Published.CuspRapidDecay → GlobalTheory.Published.SiegelEisensteinContinuation →
     GlobalTheory.Published.SiegelEisensteinSimplePole → GlobalTheory.Published.DoublingMethod :=

@@ -11,13 +11,13 @@ namespace GroundTheory.Heights₂.Heights
 open ReciprocityTheory.ChartRestriction.G.Geo (MRing HermLine IsSmoothHerm IsArithVar ptsIntegral pot segre)
 
 /- English proof (translation)
-Introduce `K _ ι _ P n L B B' hP hL hB hB' hB0 hB'0`. Establish `hw` using `isDegZeroSmooth_log hB hB0`. Establish `hw'` using `isDegZeroSmooth_log hB' hB'0`. Establish `hne : ∀ k, Nonempty (ι k)` using `fun k => by`. Take `⟨i, -⟩` from `hP.2.1.2.2 k`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨i⟩`. Take `⟨δ, hδ, ρ, hρs, hρ1, hρ0⟩` from `hPart K ι hne`. Establish `hpiece : ∀ i, IsDegZeroSmooth (fun z => ρ i z * Real.log (B.h z))` using `fun i => (hρs i).mul hw`. Establish `key : ∀ i, ptsIntegral P (Fin.cons (fun z => Real.log (B'.h z)) (pot L)) (fun z => ρ i z * Real.log (B.h z)) = ptsIntegral P (Fin.cons (fun z => ρ i z * Real.log (B.h z)) (pot L)) (fun z => Real.log (B'.h z))`. Introduce `i`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨m, Js, U, V, Φ, hJ, hU, h1, h2⟩` from `hChart K ι P n L (fun z => ρ i z * Real.log (B.h z)) (fun z => Real.log (B'.h z)) i δ hP hL (hpiece i) hw' hδ (fun z hz => by simp only [hρ0 i z hz, zero_mul])`. Rewrite using `[h1, h2]`. Use `Finset.sum_congr rfl fun J hJs => ?_` and prove the remaining obligations. Take `⟨hJp, hJd, hUs, hVs, hΦs⟩` from `hJ J hJs`. Conclude with `hSV m n J U V Φ hJp hJd hUs hVs hΦs (Or.inl hU)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hsum : (fun z => Real.log (B.h z)) = fun z => ∑ i, ρ i z * Real.log (B.h z)`. Use function extensionality and compare the values at `z`. Rewrite using `[← Finset.sum_mul, hρ1 z, one_mul]`. Take `⟨hA, hC⟩` from `hBil K ι P n L _ (fun i z => ρ i z * Real.log (B.h z)) (fun z => Real.log (B'.h z)) hP hL hpiece hw'`. Combine the equalities or inequalities in the displayed calculation.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem StokesStatement.of_found (hBil : PtsBilinear.Statement) (hPart : SegrePartition.Statement)
     (hChart : SegreChart.Statement) (hSV : StokesOnVariety.Statement) :

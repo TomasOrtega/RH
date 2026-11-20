@@ -40,7 +40,7 @@ theorem coeO_int {E : Type} [Field E] [NumberField E] (k : ℤ) : ((k : 𝓞 E) 
   rfl
 
 /- English proof (translation)
-Take `⟨y, hy0, hy⟩` from `exists_integral_multiples ℤ ℚ (L := E) {e}`. Establish `h` using `hy e (Finset.mem_singleton_self e)`. Rewrite `h` using `[zsmul_eq_mul]`. Conclude with `⟨y, hy0, ⟨(y : E) * e, h⟩, rfl⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 -/
 theorem exists_int_mul_eq {E : Type} [Field E] [NumberField E] (e : E) :
     ∃ m : ℤ, m ≠ 0 ∧ ∃ o : 𝓞 E, (m : E) * e = o := by
@@ -50,7 +50,7 @@ theorem exists_int_mul_eq {E : Type} [Field E] [NumberField E] (e : E) :
   exact ⟨y, hy0, ⟨(y : E) * e, h⟩, rfl⟩
 
 /- English proof (translation)
-Take `⟨k, rfl⟩` from `h`. Take `⟨o, ho⟩` from `he`. Use `⟨(k : 𝓞 E) * o, ?_⟩` and prove the remaining obligations. Rewrite using `[coeO_mul, coeO_int, ← ho]`. Use `push_cast`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -64,9 +64,9 @@ theorem clear_of_dvd {E : Type} [Field E] [NumberField E] {m D : ℤ} (h : m ∣
   ring
 
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.IntMulIntegerSmulMemLattice.exists_int_smul_mem_lattice`. Consider the case `exact _root_.GlobalTheory.IntMulIntegerSmulMemLattice.exists_int_smul_mem_lattice`. Consider the case `(apply _root_.GlobalTheory.IntMulIntegerSmulMemLattice.exists_int_smul_mem_lattice <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.IntMulIntegerSmulMemLattice.exists_int_smul_mem_lattice <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.IntMulIntegerSmulMemLattice.exists_int_smul_mem_lattice <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.IntMulIntegerSmulMemLattice.exists_int_smul_mem_lattice ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem exists_int_smul_mem {E : Type} [Field E] [NumberField E] {n : ℕ}
     (Λ : Submodule (𝓞 E) (Fin n → E)) (hΛ : Submodule.IsLattice E Λ) (w : Fin n → E) :
@@ -80,25 +80,23 @@ theorem exists_int_smul_mem {E : Type} [Field E] [NumberField E] {n : ℕ}
   | (intros; exact _root_.GlobalTheory.IntMulIntegerSmulMemLattice.exists_int_smul_mem_lattice ..)
 
 /- English proof (translation)
-Introduce `E _ _ n ι κ _ _ v g Hm sg Λ hΛ`. Use `choose mv hmv0 hmv using fun i => exists_int_mul_eq (v i)`. Use `choose mg hmg0 hmg using fun l => exists_int_smul_mem Λ hΛ (g l)`. Take `⟨s, hs⟩` from `Submodule.IsLattice.fg (A := E) (M := Λ)`. Use `choose mp hmp0 hmp using fun (p : κ × (Fin n → E)) => exists_int_mul_eq (∑ a, ∑ b, p.2 a * Hm a b * sg (g p.1 b))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `T : Finset (κ × (Fin n → E))` to `Finset.univ ×ˢ s`. Set `A : ℤ` to `∏ i, mv i`. Set `B : ℤ` to `∏ l, mg l`. Set `C : ℤ` to `∏ p ∈ T, mp p`. Establish `hA : A ≠ 0` using `Finset.prod_ne_zero_iff.2 fun i _ => hmv0 i`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hB : B ≠ 0` using `Finset.prod_ne_zero_iff.2 fun i _ => hmg0 i`. Establish `hC : C ≠ 0` using `Finset.prod_ne_zero_iff.2 fun i _ => hmp0 i`. Establish `dA : ∀ i, mv i ∣ A * B * C` using `fun i => ((Finset.dvd_prod_of_mem mv (Finset.mem_univ i)).mul_right B).mul_right C`. Establish `dB : ∀ l, mg l ∣ A * B * C` using `fun l => ((Finset.dvd_prod_of_mem mg (Finset.mem_univ l)).mul_left A).mul_right C`. Establish `dC : ∀ p ∈ T, mp p ∣ A * B * C` using `fun p hp => (Finset.dvd_prod_of_mem mp hp).mul_left _`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `⟨A * B * C, mul_ne_zero (mul_ne_zero hA hB) hC, fun i => clear_of_dvd (dA i) (hmv i), ?_, ?_⟩` and prove the remaining obligations. Introduce `x hx l`. Rewrite `hx` using `[← hs]`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Conclude with `clear_of_dvd (dC (l, x) (Finset.mem_product.2 ⟨Finset.mem_univ l, hx⟩)) (hmp (l, x))`. Consider the case `zero => exact ⟨0, by simp⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨o₁, h₁⟩` from `hx`. Take `⟨o₂, h₂⟩` from `hy`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨o₁ + o₂, ?_⟩` and prove the remaining obligations. Rewrite using `[coeO_add, ← h₁, ← h₂, ← mul_add, ← Finset.sum_add_distrib]`. Use `congr 1`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_add_distrib]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Treat this case separately.
 
-Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Simplify using `only [Pi.add_apply]`. Expand and normalize the polynomial expressions, which then agree. Consider the case `smul c x _ hx`. Take `⟨o, h⟩` from `hx`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨c * o, ?_⟩` and prove the remaining obligations. Rewrite using `[coeO_mul, ← h]`. Simplify using `only [Pi.smul_apply, ringOfIntegers_smul_eq, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => by ring`. Introduce `l`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨k, hk⟩` from `dB l`. Establish `: ((A * B * C : ℤ) : 𝓞 E) • g l = (k : 𝓞 E) • ((mg l : 𝓞 E) • g l)`. Rewrite using `[smul_smul, hk]`. Use `push_cast`. Rewrite using `[mul_comm]`.
-
-Rewrite using `[this]`. Conclude with `Λ.smul_mem _ (hmg l)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem den_clear : ∀ {E : Type} [Field E] [NumberField E] {n : ℕ} {ι κ : Type} [Fintype ι] [Fintype κ] (v : ι → E) (g : κ → Fin n → E) (Hm : Matrix (Fin n) (Fin n) E) (sg : E →+* E) (Λ : Submodule (𝓞 E) (Fin n → E)), Submodule.IsLattice E Λ → ∃ D : ℤ, D ≠ 0 ∧ (∀ i, ∃ o : 𝓞 E, (D : E) * v i = o) ∧ (∀ x ∈ Λ, ∀ l, ∃ o : 𝓞 E, (D : E) * ∑ a, ∑ b, x a * Hm a b * sg (g l b) = o) ∧ ∀ l, (D : 𝓞 E) • g l ∈ Λ := by
   intro E _ _ n ι κ _ _ v g Hm sg Λ hΛ

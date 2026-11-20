@@ -18,21 +18,19 @@ open ValuativeRel in
 open scoped Pointwise ENNReal Classical in
 
 /- English proof (translation)
-Introduce `F _ _ _ E _ _ _ _ M hM V _ _ H r k P S c R d0`. Use `haveI := hM.loc`. Use `haveI := hM.char0`. Take `⟨κ, hκ, hsum⟩` from `_root_.GlobalTheory.HL.CoordSum.tsum_reps_eq M hM H r k P S c R d0`. Establish `hamp` using `_root_.GlobalTheory.HL.CoordAmp.amp_mass_eq M hM H r k P S c R`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hvanA : ∀ (δ : S.Datum) (Q : Submodule M.L.O S.V → Prop), (¬ ∃ Λ, S.IsTerm δ Λ) → S.amp δ Q = 0`. Introduce `δ Q hδ`. Unfold `_root_.GlobalTheory.HL.Frames.amp`. Use `(tsum_congr fun o => ?_).trans tsum_zero` and prove the remaining obligations. Rewrite using `[if_neg fun h => hδ ⟨_, h.1⟩]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hvanM : ∀ (δ : S.Datum) (Q : Submodule M.L.O S.V → Prop), (¬ ∃ Λ, S.IsTerm δ Λ) → S.mass δ Q = 0`. Introduce `δ Q hδ`. Unfold `_root_.GlobalTheory.HL.Frames.mass`. Use `(tsum_congr fun o => ?_).trans tsum_zero` and prove the remaining obligations. Rewrite using `[if_neg fun h => hδ ⟨_, h.1⟩]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hinv : ∀ h ∈ S.H0, ∀ (δ : S.Datum) (Q : S.Datum → Submodule M.L.O S.V → Prop), (∀ δ', ∀ s ∈ S.St, ∀ Λ, S.IsTerm δ' Λ → Q δ' Λ → Q δ' (s • Λ)) → (∀ δ' Λ, S.IsTerm δ' Λ → (Q δ' Λ ↔ Q (h • δ') (h • Λ))) → S.amp (h • δ) (Q (h • δ)) = S.amp δ (Q δ) ∧ S.mass (h • δ) (Q (h • δ)) = S.mas …` using `fun h hh δ Q h1 h2 => _root_.GlobalTheory.InvH.amp_mass_smul M.L r k S h hh δ (Q δ) (Q (h • δ)) (fun s hs Λ hΛ => h1 δ s hs Λ hΛ) (fun Λ hΛ => h2 δ Λ hΛ)`. Establish `hBBst : ∀ δ', ∀ s ∈ S.St, ∀ Λ, S.IsTerm δ' Λ → (S.BBzero δ' (s • Λ) ↔ S.BBzero δ' Λ)` using `fun δ' s hs Λ hΛ => (_root_.GlobalTheory.FrameAct.stabiliser_acts_on_terms M.L r k S δ' Λ hΛ s hs).2.2.2.2.2.2.2.1`. Establish `hBBh : ∀ h ∈ S.H0, ∀ δ' Λ, S.IsTerm δ' Λ → (S.BBzero δ' Λ ↔ S.BBzero (h • δ') (h • Λ))`. Introduce `h hh δ' Λ hΛ`. Take `⟨-, -, -, hM', hsat, -⟩` from `_root_.GlobalTheory.HL.ComplAct.main M.L r k S δ' Λ hΛ h hh`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `_root_.GlobalTheory.HL.Frames.BBzero`. Rewrite using `[hM', hsat]`. Establish `hsq : ∀ z : ℂ, ((‖z‖₊ : ℝ≥0∞) ^ 2) = ENNReal.ofReal (‖z‖ ^ 2)` using `fun z => by`. Rewrite using `[ENNReal.ofReal_pow (norm_nonneg _), ofReal_norm_eq_enorm]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hA : ∀ (p : _root_.Formalism.MainNotions.S.Loc.Term V M r → Prop) (Q : S.Datum → Submodule M.L.O S.V → Prop), (∀ d, _root_.Formalism.MainNotions.S.LocNG.amp R d p = S.amp (c.dat d) (Q (c.dat d))) → (∀ δ', ∀ s ∈ S.St, ∀ Λ, S.IsTerm δ' Λ → Q δ' Λ → Q δ' (s • Λ)) → (∀ h ∈ S.H0, ∀ δ' …`. Introduce `p Q hpQ h1 h2`. Unfold `_root_.Formalism.MainNotions.S.LocNG.sumSq _root_.GlobalTheory.HL.Frames.ampSq`. Rewrite using `[← hsum (fun δ => ENNReal.ofReal (‖S.amp δ (Q δ)‖ ^ 2)) (fun h hh δ => by rw [(hinv h hh δ Q h1 (h2 h hh)).1]) (fun δ hδ => by rw [hvanA δ _ hδ, norm_zero]; simp)]`. Use `tsum_congr fun d => ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hpQ, hsq]`. Use `⟨κ, hκ, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `hA _ (fun δ Λ => ¬ S.BBzero δ Λ) (fun d => (hamp d).1) (fun δ' s hs Λ hΛ hq => by rwa [hBBst δ' s hs Λ hΛ]) (fun h hh δ' Λ hΛ => not_congr (hBBh h hh δ' Λ hΛ))`. Conclude with `hA _ S.BBzero (fun d => (hamp d).2.1) (fun δ' s hs Λ hΛ hq => (hBBst δ' s hs Λ hΛ).2 hq) (fun h hh δ' Λ hΛ => hBBh h hh δ' Λ hΛ)`. Conclude with `hA _ (fun _ _ => True) (fun d => (hamp d).2.2.1) (fun _ _ _ _ _ _ => trivial) (fun _ _ _ _ _ => Iff.rfl)`.
-
-Unfold `_root_.Formalism.MainNotions.S.LocNG.nn _root_.GlobalTheory.HL.Frames.nn`. Rewrite using `[← hsum (fun δ => S.mass δ (fun _ => True)) (fun h hh δ => (hinv h hh δ (fun _ _ => True) (fun _ _ _ _ _ _ => trivial) (fun _ _ _ => Iff.rfl)).2) (fun δ hδ => hvanM δ _ hδ)]`. Use `tsum_congr fun d => ?_` and prove the remaining obligations. Rewrite using `[(hamp d).2.2.2]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.HL.CoordSq.sums_eq : ∀ {F : Type} [Field F] [ValuativeRel F]
     [TopologicalSpace F] {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] [MeasurableSpace E]

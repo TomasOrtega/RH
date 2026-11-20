@@ -17,7 +17,7 @@ def idealLat (w : Fin ρ → Fin N → F) (a : Ideal (𝓞 F)) : Submodule (𝓞
   Submodule.map (Fintype.linearCombination (𝓞 F) w) (Submodule.pi Set.univ fun _ => a)
 
 /- English proof (translation)
-Establish `hw' : LinearIndependent (𝓞 F) w` using `(LinearIndependent.iff_fractionRing (𝓞 F) F).2 hw`. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `c hc`. Use function extensionality and compare the values at `i`. Conclude with `Fintype.linearIndependent_iff.1 hw' c (by rwa [Fintype.linearCombination_apply] at hc) i`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem linearCombination_injective {w : Fin ρ → Fin N → F} (hw : LinearIndependent F w) :
     Function.Injective (Fintype.linearCombination (𝓞 F) w) := by
@@ -29,7 +29,7 @@ theorem linearCombination_injective {w : Fin ρ → Fin N → F} (hw : LinearInd
 
 omit [NumberField F] in
 /- English proof (translation)
-Use extensionality with `x`. Simplify using `[idealLat, Submodule.mem_pi, AddSubgroup.mem_pi]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem idealLat_toAddSubgroup (w : Fin ρ → Fin N → F) (a : Ideal (𝓞 F)) :
     (idealLat w a).toAddSubgroup = AddSubgroup.map (Fintype.linearCombination (𝓞 F) w).toAddMonoidHom
@@ -38,7 +38,7 @@ theorem idealLat_toAddSubgroup (w : Fin ρ → Fin N → F) (a : Ideal (𝓞 F))
   simp [idealLat, Submodule.mem_pi, AddSubgroup.mem_pi]
 
 /- English proof (translation)
-Rewrite using `[idealLat_toAddSubgroup, idealLat_toAddSubgroup, AddSubgroup.relIndex_map_map_of_injective _ _ (linearCombination_injective hw)]`. Establish `h` using `AddSubgroup.relIndex_mul_index (H := AddSubgroup.pi Set.univ fun _ : Fin ρ => a.toAddSubgroup) (K := AddSubgroup.pi Set.univ fun _ : Fin ρ => b.toAddSubgroup) (fun x hx i hi => hab (hx i hi))`. Rewrite `h` using `[AddSubgroup.index_pi, AddSubgroup.index_pi]`. Simplify `h` using `[Ideal.absNorm_eq_index]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem idealLat_relIndex {w : Fin ρ → Fin N → F} (hw : LinearIndependent F w) {a b : Ideal (𝓞 F)}
     (hab : a ≤ b) :
@@ -54,9 +54,9 @@ theorem idealLat_relIndex {w : Fin ρ → Fin N → F} (hw : LinearIndependent F
 omit [NumberField F] in
 
 /- English proof (translation)
-Use extensionality with `x`. Simplify using `only [idealLat, Submodule.mem_map, Submodule.mem_pi, Set.mem_univ, true_implies, Fintype.linearCombination_apply]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨c, hc, rfl⟩`. Use `⟨fun i => r * c i, fun i => Ideal.mem_span_singleton_mul.2 ⟨c i, hc i, rfl⟩, ?_⟩` and prove the remaining obligations.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[smul_smul, mul_comm]`. Introduce and unpack `⟨c, hc, rfl⟩ choose d hd hdc using fun i => Ideal.mem_span_singleton_mul.1 (hc i)`. Use `⟨d, hd, Finset.sum_congr rfl fun i _ => ?_⟩` and prove the remaining obligations. Rewrite using `[← hdc i, smul_smul, mul_comm]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem idealLat_smul (w : Fin ρ → Fin N → F) (r : 𝓞 F) (a : Ideal (𝓞 F)) :
     idealLat (fun i => r • w i) a = idealLat w (Ideal.span {r} * a) := by
@@ -76,7 +76,7 @@ theorem idealLat_smul (w : Fin ρ → Fin N → F) (r : 𝓞 F) (a : Ideal (𝓞
 omit [NumberField F] in
 
 /- English proof (translation)
-Rewrite using `[idealLat, Submodule.pi_top, Submodule.map_top, Fintype.range_linearCombination]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem idealLat_top (w : Fin ρ → Fin N → F) :
     idealLat w ⊤ = Submodule.span (𝓞 F) (Set.range w) := by
@@ -91,20 +91,20 @@ variable {Em K : Type} [Field Em] [NumberField Em] [Field K] [NumberField K] {N 
 omit [NumberField K] in
 
 /- English proof (translation)
-The claim follows from `Submodule.span_mono (Set.image_mono fun _ ⟨x, hx, y, hy, hu⟩ => ⟨x, hx, y, h hy, hu⟩)`.
+A detailed English derivation is pending.
 -/
 theorem diffLat_mono (s : Em →+* K) {M M' : Submodule (𝓞 Em) (Fin N → Em)} (h : M ≤ M') :
     diffLat s M ≤ diffLat s M' :=
   Submodule.span_mono (Set.image_mono fun _ ⟨x, hx, y, hy, hu⟩ => ⟨x, hx, y, h hy, hu⟩)
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[diffLat, Submodule.span_le]`. Introduce and unpack `_ ⟨u, ⟨x, hx, y, hy, rfl⟩, rfl⟩`. Take `⟨c, rfl⟩` from `(Submodule.mem_span_range_iff_exists_fun (𝓞 Em)).1 hy`. Use `⟨fun a => RingOfIntegers.mapRingHom s (x * c a), fun a _ => Ideal.mem_map_of_mem _ (Ideal.mul_mem_right _ _ hx), ?_⟩` and prove the remaining obligations.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use function extensionality and compare the values at `i`. Simplify using `[Fintype.linearCombination_apply, Finset.sum_apply, map_sum, Algebra.smul_def, mul_assoc, Finset.mul_sum]`. Rewrite using `[idealLat, Submodule.map_le_iff_le_comap]`. Introduce `c hc`. Simplify using `only [Submodule.mem_comap, Fintype.linearCombination_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Use `Submodule.sum_mem _ fun a _ => ?_` and prove the remaining obligations. Establish `key : extDifferent s ≤ (diffLat s (Submodule.span (𝓞 Em) (Set.range w))).comap (LinearMap.toSpanSingleton (𝓞 K) _ (fun i => s (w a i)))`. Rewrite using `[extDifferent, Ideal.map_le_iff_le_comap]`. Introduce `x hx`. Simplify using `only [Ideal.mem_comap, Submodule.mem_comap, LinearMap.toSpanSingleton_apply]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Apply `Submodule.subset_span` to reduce the goal to its premises. Use `⟨(x : Em) • w a, ⟨x, hx, w a, Submodule.subset_span ⟨a, rfl⟩, rfl⟩, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Simplify using `[Algebra.smul_def]`. Conclude with `key (hc a (Set.mem_univ a))`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem diffLat_span (s : Em →+* K) (w : Fin ρ → Fin N → Em) :
     diffLat s (Submodule.span (𝓞 Em) (Set.range w)) = idealLat (fun a i => s (w a i)) (extDifferent s) := by

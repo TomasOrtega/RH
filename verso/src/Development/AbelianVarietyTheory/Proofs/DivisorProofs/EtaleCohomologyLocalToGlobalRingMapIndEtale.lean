@@ -14,7 +14,7 @@ noncomputable def pbIso (A X O : Type) [CommRing A] [CommRing X] [CommRing O] [A
   pullback.congrHom hg rfl ≪≫ pullbackSymmetry _ _ ≪≫ pullbackSpecIso A O X
 
 /- English proof (translation)
-Substitute `hg` using the available equality. Simplify using `[pbIso, pullback.congrHom_inv, pullbackSpecIso_inv_snd]`.
+Substitute using the available equality. Simplify using the standard rewrite rules.
 -/
 theorem pbIso_inv_fst (A X O : Type) [CommRing A] [CommRing X] [CommRing O] [Algebra A X] [Algebra A O]
     (g : Spec (CommRingCat.of X) ⟶ Spec (CommRingCat.of A)) (hg : g = Spec.map (CommRingCat.ofHom (algebraMap A X))) :
@@ -23,7 +23,7 @@ theorem pbIso_inv_fst (A X O : Type) [CommRing A] [CommRing X] [CommRing O] [Alg
   simp [pbIso, pullback.congrHom_inv, pullbackSpecIso_inv_snd]
 
 /- English proof (translation)
-Substitute `hg` using the available equality. Simplify using `[pbIso, pullback.congrHom_inv, pullbackSpecIso_inv_fst]`.
+Substitute using the available equality. Simplify using the standard rewrite rules.
 -/
 theorem pbIso_inv_snd (A X O : Type) [CommRing A] [CommRing X] [CommRing O] [Algebra A X] [Algebra A O]
     (g : Spec (CommRingCat.of X) ⟶ Spec (CommRingCat.of A)) (hg : g = Spec.map (CommRingCat.ofHom (algebraMap A X))) :
@@ -36,9 +36,9 @@ end GlobalTheory.LocGlobRing
 namespace GlobalTheory.LocGlobRing
 
 /- English proof (translation)
-Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, pullback.lift_fst, ← Category.assoc, pbIso_inv_fst, Category.assoc, pbIso_inv_fst, ← Spec.map_comp, ← Spec.map_comp]`. Use `congr 1`. Rewrite using `[Category.assoc, pullback.lift_snd, Category.comp_id, pbIso_inv_snd, Category.assoc, pbIso_inv_snd, ← Spec.map_comp]`. Use `congr 1`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use extensionality with `x`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem square (A B C O : Type) [CommRing A] [CommRing B] [CommRing C] [CommRing O] [Algebra A B] [Algebra A C] [Algebra A O]
     (φ : B →ₐ[A] C)
@@ -61,11 +61,11 @@ theorem square (A B C O : Type) [CommRing A] [CommRing B] [CommRing C] [CommRing
 end GlobalTheory.LocGlobRing
 
 /- English proof (translation)
-Introduce `R _ F hF A B C _ _ _ _ _ φ hyp`. Establish `hC : Spec.map (CommRingCat.ofHom φ.toRingHom) ≫ Spec.map (CommRingCat.ofHom (algebraMap A B)) = Spec.map (CommRingCat.ofHom (algebraMap A C))`. Rewrite using `[← Spec.map_comp]`. Use `congr 1`. Use extensionality with `x`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Simplify using the standard rewrite rules. Use `GlobalTheory.T.etaleEquivalence_scheme_of_strictlyHenselian_stalks R F hF (Spec (CommRingCat.of C)) (Spec (CommRingCat.of B)) (Spec (CommRingCat.of A)) (Spec.map (CommRingCat.ofHom φ.toRingHom)) (Spec.map (CommRingCat.ofHom (algebraMap A B))) ?_` and prove the remaining obligations. Introduce `O _ s hs`. Take `⟨inst, hSH, hInd, rfl⟩` from `GlobalTheory.T.isIndEtaleAlgebra_of_strictlyHenselianEtaleStalk_affine A O s hs`. Establish `h` using `@hyp O _ inst hSH hInd`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `eb` using `GlobalTheory.T.etaleCohomologyEquivalence_basic_properties R F`. Rewrite using `[← Iso.hom_inv_id_assoc (GlobalTheory.LocGlobRing.pbIso A C O _ hC) (pullback.map _ _ _ _ _ _ _ _ _), GlobalTheory.LocGlobRing.square A B C O φ hC, Functor.map_comp, Functor.map_comp]`. Conclude with `(eb.2.1 _ _ _ _ _).1 (eb.1 _ _ _ inferInstance) ((eb.2.1 _ _ _ _ _).1 h (eb.1 _ _ _ inferInstance))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.LocGlobRing.main : ∀ (R : Type) [CommRing R] (F : Shv R), Finitary F → ∀ (A B C : Type) [CommRing A] [CommRing B] [CommRing C] [Algebra A B] [Algebra A C] (φ : B →ₐ[A] C), (∀ (O : Type) [CommRing O] [Algebra A O], SH O → IndEt A O → Eqv R (spMap (Algebra.TensorProduct.map (AlgHom.id A O) φ).toRingHom) F) → Eqv R (spMap φ.toRingHom) F := by
   intro R _ F hF A B C _ _ _ _ _ φ hyp

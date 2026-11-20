@@ -14,7 +14,7 @@ open CategoryTheory AlgebraicGeometry GlobalTheory.LogCris ReciprocityTheory.Cha
 namespace CrystallineSemistableComparison.Pb
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.projective_chart_affine_coords`.
+A detailed English derivation is pending.
 -/
 theorem cone_transfer : KH.LocGr → KH.PolyTf → KH.GrAff →
     ∀ {K : Type} [Field K] [CharZero K] {X : Scheme.{0}} (q : X ⟶ Spec (CommRingCat.of K)) (n : ℕ)

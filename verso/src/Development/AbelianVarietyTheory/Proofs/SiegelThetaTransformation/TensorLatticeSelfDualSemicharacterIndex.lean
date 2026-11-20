@@ -16,19 +16,19 @@ noncomputable section
 variable {E : Type} [Field E] [NumberField E] {n r : ℕ}
 
 /- English proof (translation)
-The claim follows from `L.smul_mem (⟨a, ha⟩ : 𝓞 E) hu`.
+A detailed English derivation is pending.
 -/
 theorem int_smul_mem {L : Lt E r} {a : E} (ha : IsIntegral ℤ a) {u : Fin r → E} (hu : u ∈ L) :
     a • u ∈ L := L.smul_mem (⟨a, ha⟩ : 𝓞 E) hu
 
 /- English proof (translation)
-The claim follows from `AddSubgroup.subset_closure ⟨v, hv, u, hu, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem pure_mem {A : Lt E n} {B : Lt E r} {v : Fin n → E} {u : Fin r → E} (hv : v ∈ A)
     (hu : u ∈ B) : vecMulVec v u ∈ tens A B := AddSubgroup.subset_closure ⟨v, hv, u, hu, rfl⟩
 
 /- English proof (translation)
-Use `(AddSubgroup.closure_le _).2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨v, hv, u, hu, rfl⟩`. Conclude with `h v hv u hu`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem tens_le {A : Lt E n} {B : Lt E r} {H : AddSubgroup (Matrix (Fin n) (Fin r) E)}
     (h : ∀ v ∈ A, ∀ u ∈ B, vecMulVec v u ∈ H) : tens A B ≤ H := by
@@ -37,7 +37,7 @@ theorem tens_le {A : Lt E n} {B : Lt E r} {H : AddSubgroup (Matrix (Fin n) (Fin 
   exact h v hv u hu
 
 /- English proof (translation)
-Establish `key : ∀ {n r : ℕ} (A : Lt E n) (B : Lt E r), tens A B ≤ (tens B A).comap (Matrix.transposeAddEquiv (Fin n) (Fin r) E).toAddMonoidHom` using `fun A B => tens_le fun v hv u hu => by`. Express the relevant statement in the definitionally equal form `(vecMulVec v u)ᵀ ∈ tens B A`. Rewrite using `[Matrix.transpose_vecMulVec]`. Conclude with `pure_mem hu hv`. Conclude with `le_antisymm (key A B) fun y hy => key B A hy`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tens_eq_comap (A : Lt E n) (B : Lt E r) :
     tens A B = (tens B A).comap (Matrix.transposeAddEquiv (Fin n) (Fin r) E).toAddMonoidHom := by
@@ -50,7 +50,7 @@ theorem tens_eq_comap (A : Lt E n) (B : Lt E r) :
   exact le_antisymm (key A B) fun y hy => key B A hy
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `(FractionalIdeal.mem_one_iff _).1 ((FractionalIdeal.mem_inv_iff hc).1 hb x hx)`. Conclude with `ha ▸ a.isIntegral_coe`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem isIntegral_mul_inv {c : FractionalIdeal (𝓞 E)⁰ E} (hc : c ≠ 0) {x b : E} (hx : x ∈ c)
     (hb : b ∈ c⁻¹) : IsIntegral ℤ (b * x) := by
@@ -64,17 +64,17 @@ def fracMul (c : FractionalIdeal (𝓞 E)⁰ E) (B : Lt E r) : AddSubgroup (Fin 
   neg_mem' := fun hu b hb => by rw [smul_neg]; exact B.neg_mem (hu b hb)
 
 /- English proof (translation)
-Establish `hNE : (N : E) ≠ 0` using `by simpa using hN`. Take `⟨x, hx⟩` from `IsDedekindDomain.exists_add_spanSingleton_mul_eq (a := FractionalIdeal.spanSingleton (𝓞 E)⁰ (N : E)) (b := c⁻¹) (c := 1) (FractionalIdeal.spanSingleton_le_iff_mem.2 ((FractionalIdeal.mem_one_iff _).2 ⟨N, rfl⟩)) (FractionalIdeal.spanSingleton_ne_zero_iff.2 hNE) (inv_ne_zero hc)`. Establish `hxc : x ∈ c`. Establish `h1 : FractionalIdeal.spanSingleton (𝓞 E)⁰ x * c⁻¹ ≤ 1` using `hx ▸ le_sup_right`. Establish `h2 : FractionalIdeal.spanSingleton (𝓞 E)⁰ x * c⁻¹ * c ≤ 1 * c` using `by gcongr`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h2` using `[mul_assoc, inv_mul_cancel₀ hc, mul_one, one_mul]`. Conclude with `FractionalIdeal.spanSingleton_le_iff_mem.1 h2`. Choose the witnesses or unpack the hypotheses as in `⟨t, b, ht, hb, htb⟩ : ∃ t b : E, IsIntegral ℤ t ∧ b ∈ c⁻¹ ∧ t * N + x * b = 1 := by`. Establish `h1 : (1 : E) ∈ FractionalIdeal.spanSingleton (𝓞 E)⁰ (N : E) + FractionalIdeal.spanSingleton (𝓞 E)⁰ x * c⁻¹` using `hx ▸ FractionalIdeal.one_mem_one _`. Take `⟨y, hy, z, hz, hyz⟩` from `(FractionalIdeal.mem_add _ _ _).1 h1`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨t, rfl⟩` from `(FractionalIdeal.mem_spanSingleton _).1 hy`. Take `⟨b, hb, rfl⟩` from `FractionalIdeal.mem_singleton_mul.1 hz`. Conclude with `⟨t, b, t.isIntegral_coe, hb, hyz⟩`. Use `TensorLat.relIndex_eq_of_hom (DistribSMul.toAddMonoidHom (Fin r → E) x) (fun v hv => ?_) (fun v hv => ?_) (fun u hu => ?_)` and prove the remaining obligations. Introduce `b' hb'`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[DistribSMul.toAddMonoidHom_apply, smul_smul]`. Conclude with `int_smul_mem (isIntegral_mul_inv hc hxc hb') hv`. Rewrite using `[DistribSMul.toAddMonoidHom_apply]`. Use `⟨fun h => ?_, fun h b' hb' => ?_⟩` and prove the remaining obligations. Establish `: v = t • (N : E) • v + b • x • v`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[smul_smul, smul_smul, ← add_smul, mul_comm b, htb, one_smul]`. Rewrite using `[this]`. Conclude with `B'.add_mem (int_smul_mem ht (hB v hv)) (h b hb)`. Rewrite using `[smul_smul]`. Conclude with `int_smul_mem (isIntegral_mul_inv hc hxc hb') h`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `⟨b • u, hu b hb, fun b' hb' => ?_⟩` and prove the remaining obligations. Establish `h1 : u - DistribSMul.toAddMonoidHom (Fin r → E) x (b • u) = t • (N : E) • u`. Rewrite using `[DistribSMul.toAddMonoidHom_apply, smul_smul, smul_smul, eq_sub_of_add_eq htb, sub_smul, one_smul]`. Rewrite using `[h1, smul_comm b', smul_comm b']`. Conclude with `int_smul_mem ht (hB _ (hu b' hb'))`.
+A detailed English derivation is pending.
 -/
 theorem relIndex_fracMul {c : FractionalIdeal (𝓞 E)⁰ E} (hc : c ≠ 0) {B B' : Lt E r} {N : 𝓞 E}
     (hN : N ≠ 0) (hB : ∀ u ∈ B, (N : E) • u ∈ B') :
@@ -117,11 +117,9 @@ theorem relIndex_fracMul {c : FractionalIdeal (𝓞 E)⁰ E} (hc : c ≠ 0) {B B
     exact int_smul_mem ht (hB _ (hu b' hb'))
 
 /- English proof (translation)
-Take `⟨s, rfl⟩` from `hfg`. Use `choose d hd0 hd using fun v : Fin r → E => exists_smul_mem_of_mem_span_fraction (K := E) B' v (hsp ▸ Submodule.mem_top)`. Use `⟨∏ v ∈ s, d v, Finset.prod_ne_zero_iff.2 fun v _ => hd0 v, fun u hu => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(∏ v ∈ s, d v) • u ∈ B'`. Proceed by induction on `hu using Submodule.span_induction with`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Proceed by induction. Treat this case separately.
 
-Consider the case `mem v hv`. Rewrite using `[← Finset.prod_erase_mul _ _ hv, mul_smul]`. Conclude with `B'.smul_mem _ (hd v)`. Consider the case `zero => simp`. Consider the case `add a b _ _ ha hb => rw [smul_add]`.
-
-Conclude with `B'.add_mem ha hb`. Consider the case `smul α a _ ha => rw [smul_comm]`. Conclude with `B'.smul_mem α ha`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem exists_mul_le {B B' : Lt E r} (hfg : B.FG)
     (hsp : Submodule.span E (B' : Set (Fin r → E)) = ⊤) :
@@ -147,19 +145,17 @@ def colCoord (e : Module.Basis (Fin n) E (Fin n → E)) :
     simp
 
 /- English proof (translation)
-Use `le_antisymm (tens_le fun v hv u hu a _ b hb => ?_) fun y hy => ?_` and prove the remaining obligations. Establish `: colCoord e (vecMulVec v u) a = e.repr v a • u`. Use function extensionality and compare the values at `j`. Establish `: (vecMulVec v u)ᵀ j = u j • v`. Use function extensionality and compare the values at `k`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `[vecMulVec_apply, mul_comm]`. Express the relevant statement in the definitionally equal form `e.repr ((vecMulVec v u)ᵀ j) a = _`. Rewrite using `[this]`. Simplify using `[mul_comm]`. Rewrite using `[this, smul_smul]`.
+Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `int_smul_mem (isIntegral_mul_inv (hc a) ((hA v).1 hv a) hb) hu`. Establish `h1 : y = ∑ a, vecMulVec (e a) (colCoord e y a)`. Use extensionality with `k j`. Use `congrFun (e.sum_repr (yᵀ j)) k` as an intermediate fact. Rewrite `this` using `[Matrix.transpose_apply]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← this, Matrix.sum_apply, Finset.sum_apply]`. Conclude with `Finset.sum_congr rfl fun a _ => mul_comm _ _`. Rewrite using `[h1]`. Use `AddSubgroup.sum_mem _ fun a _ => ?_` and prove the remaining obligations. Establish `h2 : ∀ z ∈ c a * (c a)⁻¹, vecMulVec (e a) (z • colCoord e y a) ∈ tens A B`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `z hz`. Use `FractionalIdeal.mul_induction_on hz (fun t ht b hb => ?_) fun s t hs ht => ?_` and prove the remaining obligations. Rewrite using `[mul_smul, vecMulVec_smul, ← smul_vecMulVec]`. Use `pure_mem ((hA _).2 fun a' => ?_) (hy a (Set.mem_univ _) b hb)` and prove the remaining obligations. Distinguish the cases in `h : a = a'`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts.
 
-Substitute `h` using the available equality. Simplify using `using ht`. Simplify `(c a').zero_mem` using `[h]`. Rewrite using `[add_smul, vecMulVec_add]`. Conclude with `add_mem hs ht`.
-
-Simplify using `using h2 1 (by rw [mul_inv_cancel₀ (hc a)]; exact FractionalIdeal.one_mem_one _)`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem tens_eq_of_pseudoBasis {A : Lt E n} (e : Module.Basis (Fin n) E (Fin n → E))
     (c : Fin n → FractionalIdeal (𝓞 E)⁰ E) (hc : ∀ a, c a ≠ 0)
@@ -195,9 +191,9 @@ theorem tens_eq_of_pseudoBasis {A : Lt E n} (e : Module.Basis (Fin n) E (Fin n �
     simpa using h2 1 (by rw [mul_inv_cancel₀ (hc a)]; exact FractionalIdeal.one_mem_one _)
 
 /- English proof (translation)
-Take `⟨-, e, c, hc, he, -⟩` from `exists_pseudoBasis_adapted E n A ⊤ hA hAs`. Take `⟨N, hN, hB⟩` from `exists_mul_le hfg hsp`. Establish `hs : Function.Surjective (colCoord (r` using `r) e) := fun z => ⟨(Matrix.of fun j => e.equivFun.symm fun a => z a j)ᵀ, by`. Use function extensionality and compare the values at `a j`. Conclude with `congrFun (e.equivFun.apply_symm_apply fun a => z a j) a⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[tens_eq_of_pseudoBasis e c hc he, tens_eq_of_pseudoBasis e c hc he, AddSubgroup.relIndex_comap, AddSubgroup.map_comap_eq_self_of_surjective hs, TensorLat.relIndex_pi_univ, Finset.prod_congr rfl fun a _ => (relIndex_fracMul (hc a) hN hB).symm]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem relIndex_tens_right {A : Lt E n} (hA : A.FG)
     (hAs : Submodule.span E (A : Set (Fin n → E)) = ⊤) {B B' : Lt E r} (hfg : B.FG)
@@ -216,7 +212,7 @@ theorem relIndex_tens_right {A : Lt E n} (hA : A.FG)
   simp
 
 /- English proof (translation)
-Rewrite using `[tens_eq_comap A, tens_eq_comap A', AddSubgroup.relIndex_comap, AddSubgroup.map_comap_eq_self_of_surjective (AddEquiv.surjective _), relIndex_tens_right hB hBs hfg hsp]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem relIndex_tens_left {B : Lt E r} (hB : B.FG)
     (hBs : Submodule.span E (B : Set (Fin r → E)) = ⊤) {A A' : Lt E n} (hfg : A.FG)
@@ -231,14 +227,14 @@ variable [IsCMField E]
 def ctr (y : Matrix (Fin n) (Fin r) E) (w : Fin n → E) : Fin r → E := ∑ k, cc (w k) • y k
 
 /- English proof (translation)
-Simplify using `[ctr, Base.herm_one, Finset.sum_apply, mul_comm]`.
+Simplify using the standard rewrite rules.
 -/
 theorem ctr_apply (y : Matrix (Fin n) (Fin r) E) (w : Fin n → E) (j : Fin r) :
     ctr y w j = herm 1 (yᵀ j) w := by
   simp [ctr, Base.herm_one, Finset.sum_apply, mul_comm]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `j`. Simplify using `only [ctr_apply, Base.herm_one, Pi.smul_apply, smul_eq_mul, Finset.sum_mul, Matrix.transpose_apply, vecMulVec_apply]`. Conclude with `Finset.sum_congr rfl fun _ _ => by ring`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem ctr_pure (v w : Fin n → E) (u : Fin r → E) : ctr (vecMulVec v u) w = herm 1 v w • u := by
   funext j
@@ -247,7 +243,7 @@ theorem ctr_pure (v w : Fin n → E) (u : Fin r → E) : ctr (vecMulVec v u) w =
   exact Finset.sum_congr rfl fun _ _ => by ring
 
 /- English proof (translation)
-Use extensionality with `k j`. Use `congrFun (h (yᵀ j)) k` as an intermediate fact. Rewrite `this` using `[Matrix.transpose_apply]`. Rewrite using `[this, Matrix.sum_apply, Finset.sum_apply]`. Conclude with `Finset.sum_congr rfl fun a _ => by simp [vecMulVec_apply, ctr_apply, mul_comm]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_sum_ctr {m : ℕ} {v w : Fin m → Fin n → E}
     (h : ∀ u : Fin n → E, u = ∑ i, herm 1 u (w i) • v i) (y : Matrix (Fin n) (Fin r) E) :
@@ -259,11 +255,11 @@ theorem eq_sum_ctr {m : ℕ} {v w : Fin m → Fin n → E}
   exact Finset.sum_congr rfl fun a _ => by simp [vecMulVec_apply, ctr_apply, mul_comm]
 
 /- English proof (translation)
-Take `⟨-, m, v, w, hv, hw, h⟩` from `exists_dual_family Λ hΛ.1 (fun x => (hΛ.2.1 x).1) fun x => (hΛ.2.1 x).2`. Prove the components needed by the constructor for the conclusion. Introduce `hy u hu`. Set `f : Matrix (Fin n) (Fin r) E →+ (Fin r → E)` to `AddMonoidHom.mk' (fun y => ctr y u) fun y y' => by`. Establish `: ∀ i, (y + y') i = y i + y' i` using `fun _ => rfl`.
+Extract witnesses or component facts from the available result. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Simplify using `only [ctr, this, smul_add, Finset.sum_add_distrib]`. Use `tens_le (H := L.toAddSubgroup.comap f) (fun a ha b hb => ?_) hy` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `ctr _ u ∈ L`. Rewrite using `[ctr_pure]`. Conclude with `int_smul_mem ((hΛ.2.1 a).1 ha u hu) hb`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hy`. Rewrite using `[eq_sum_ctr h y]`. Conclude with `AddSubgroup.sum_mem _ fun i _ => pure_mem (hv i) (hy _ (hw i))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_tens_iff {M : ℕ} {Λ : Lt E n} (hΛ : Λ ∈ Vset E n M) (L : Lt E r)
     (y : Matrix (Fin n) (Fin r) E) : y ∈ tens Λ L ↔ ∀ w ∈ Λ, ctr y w ∈ L := by
@@ -284,11 +280,11 @@ theorem mem_tens_iff {M : ℕ} {Λ : Lt E n} (hΛ : Λ ∈ Vset E n M) (L : Lt E
     exact AddSubgroup.sum_mem _ fun i _ => pure_mem (hv i) (hy _ (hw i))
 
 /- English proof (translation)
-Take `⟨-, m, v, w, hv, hw, h⟩` from `exists_dual_family Λ hΛ.1 (fun x => (hΛ.2.1 x).1) fun x => (hΛ.2.1 x).2`. Set `f : (Fin m → Fin r → E) →+ Matrix (Fin n) (Fin r) E` to `AddMonoidHom.mk' (fun u => ∑ i, vecMulVec (v i) (u i)) fun y y' => by simp [vecMulVec_add, Finset.sum_add_distrib]`. Establish `h1 : (Submodule.pi Set.univ fun _ : Fin m => L.restrictScalars ℤ).FG` using `Submodule.fg_pi fun _ => hL.restrictScalars`. Establish `h2 : tens Λ L = ((Submodule.pi Set.univ fun _ : Fin m => L.restrictScalars ℤ).map f.toIntLinearMap).toAddSubgroup`. Use extensionality with `y`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Prove the components needed by the constructor for the conclusion. Introduce `hy`. Conclude with `⟨fun i => ctr y (w i), fun i _ => (mem_tens_iff hΛ L y).1 hy _ (hw i), (eq_sum_ctr h y).symm⟩`. Introduce and unpack `⟨u, hu, rfl⟩`. Express the relevant statement in the definitionally equal form `∑ i, vecMulVec (v i) (u i) ∈ tens Λ L`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Express the relevant assertion in an equivalent form by its definition.
 
-Conclude with `AddSubgroup.sum_mem _ fun i _ => pure_mem (hv i) (hu i (Set.mem_univ _))`. Rewrite using `[h2]`. Conclude with `(Submodule.fg_iff_addSubgroup_fg _).1 (h1.map _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tens_fg {M : ℕ} {Λ : Lt E n} (hΛ : Λ ∈ Vset E n M) {L : Lt E r} (hL : L.FG) :
     (tens Λ L).FG := by
@@ -315,19 +311,19 @@ theorem tens_fg {M : ℕ} {Λ : Lt E n} (hΛ : Λ ∈ Vset E n M) {L : Lt E r} (
 variable (X : Data E r)
 
 /- English proof (translation)
-The claim follows from `(traceFormBilin_apply _ _ _ _).symm`.
+A detailed English derivation is pending.
 -/
 theorem EF_eq_bilin (u v : Fin r → E) : EF X u v = traceFormBilin (X.κ0 / 2) X.Gm u v :=
   (traceFormBilin_apply _ _ _ _).symm
 
 /- English proof (translation)
-The claim follows from `EFf_smul_left _ _ _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem EF_smul (a : E) (u v : Fin r → E) : EF X (a • u) v = EF X u (cc a • v) :=
   EFf_smul_left _ _ _ _ _
 
 /- English proof (translation)
-Use `EFf_swap ?_ X.Gm_herm u v` and prove the remaining obligations. Establish `h` using `X.ξ0_im`. Unfold `cc at h ⊢`. Apply the tactic sequence `rcases X.κ0_xi with k | k <;> simp [k, h, map_ofNat, neg_div]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem EF_swap (u v : Fin r → E) : EF X v u = -EF X u v := by
   refine EFf_swap ?_ X.Gm_herm u v
@@ -336,9 +332,9 @@ theorem EF_swap (u v : Fin r → E) : EF X v u = -EF X u v := by
   rcases X.κ0_xi with k | k <;> simp [k, h, map_ofNat, neg_div]
 
 /- English proof (translation)
-Rewrite using `[ctr, EF_eq_bilin, map_sum, LinearMap.sum_apply]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[← EF_eq_bilin, EF_smul]`. Use `congr 1`. Use function extensionality and compare the values at `j`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `[cc, vecMulVec_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sum_EF_pure (y : Matrix (Fin n) (Fin r) E) (v : Fin n → E) (u : Fin r → E) :
     ∑ k, EF X (y k) (vecMulVec v u k) = EF X (ctr y v) u := by
@@ -350,13 +346,13 @@ theorem sum_EF_pure (y : Matrix (Fin n) (Fin r) E) (v : Fin n → E) (u : Fin r 
   simp [cc, vecMulVec_apply]
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Take `⟨f, hf0, hf⟩` from `Submodule.exists_le_ker_of_lt_top _ (lt_top_iff_ne_top.mpr hne)`. Take `⟨z, hz⟩` from `DualFamily.exists_herm_eq f`. Establish `hu : IsUnit X.Gm.det` using `isUnit_iff_ne_zero.2 X.Gm_det`. Establish `h0 : z ᵥ* X.Gm⁻¹ = 0`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `DualFamily.eq_zero_of_line L hL.1 _ fun c => (hL.2 _).2 fun y hy => ⟨0, ?_⟩` and prove the remaining obligations. Establish `h1 : herm 1 y z = 0` using `by rw [← hz]; exact hf (Submodule.subset_span hy)`. Establish `h2 : herm X.Gm (c • (z ᵥ* X.Gm⁻¹)) y = c * herm 1 z y`. Rewrite using `[herm_eq_dotProduct, herm_eq_dotProduct, smul_dotProduct, dotProduct_mulVec, vecMul_vecMul, Matrix.nonsing_inv_mul _ hu, dotProduct_mulVec, smul_eq_mul]`. Rewrite using `[EF_def, h2, DualFamily.herm_one_symm, h1]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[cc]`. Establish `h1 : z = 0`. Use `congrArg (· ᵥ* X.Gm) h0` as an intermediate fact. Simplify `this` using `[vecMul_vecMul, Matrix.nonsing_inv_mul _ hu]`. Use `hf0 (LinearMap.ext fun u => ?_)` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hz, h1]`. Simplify using `[Base.herm_one, cc]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem span_of_selfD {L : Lt E r} (hL : SelfD X L) :
     Submodule.span E (L : Set (Fin r → E)) = ⊤ := by
@@ -382,11 +378,11 @@ theorem span_of_selfD {L : Lt E r} (hL : SelfD X L) :
 variable {X}
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hy y' hy'`. Set `f : Matrix (Fin n) (Fin r) E →+ ℚ` to `AddMonoidHom.mk' (fun y' => ∑ i, EF X (y i) (y' i)) fun a b => by`. Establish `: ∀ i, (a + b) i = a i + b i` using `fun _ => rfl`. Simplify using `only [EF_eq_bilin, this, map_add, Finset.sum_add_distrib]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Take `⟨k, hk⟩` from `tens_le (H := (Int.castAddHom ℚ).range.comap f) (fun a ha b hb => by`. Take `⟨k, hk⟩` from `(hL.2 _).1 ((mem_tens_iff hΛ L y).1 hy a ha) b hb`. Conclude with `⟨k, (hk.symm.trans (sum_EF_pure X y a b).symm :)⟩) hy'`. Conclude with `⟨k, hk.symm⟩`. Introduce `h`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `(mem_tens_iff hΛ L y).2 fun w hw => (hL.2 _).2 fun u hu => ?_` and prove the remaining obligations. Rewrite using `[← sum_EF_pure]`. Conclude with `h _ (pure_mem hw hu)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tens_selfDual {M : ℕ} {Λ : Lt E n} (hΛ : Λ ∈ Vset E n M) {L : Lt E r} (hL : SelfD X L)
     (y : Matrix (Fin n) (Fin r) E) :
@@ -407,9 +403,9 @@ theorem tens_selfDual {M : ℕ} {Λ : Lt E n} (hΛ : Λ ∈ Vset E n M) {L : Lt 
     exact h _ (pure_mem hw hu)
 
 /- English proof (translation)
-Rewrite `hy`, the goal using `[mem_tens_iff hΛ]`. Introduce `v hv`. Establish `: ctr (w • y) v = w • ctr y v`. Use function extensionality and compare the values at `j`. Simplify using `[ctr, Finset.sum_apply, Finset.mul_sum, mul_left_comm]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Rewrite using `[this]`. Conclude with `int_smul_mem hw (hy v hv)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem smul_mem_tens {M : ℕ} {Λ : Lt E n} (hΛ : Λ ∈ Vset E n M) {L : Lt E r} {w : E}
     (hw : IsIntegral ℤ w) {y : Matrix (Fin n) (Fin r) E} (hy : y ∈ tens Λ L) :
@@ -423,15 +419,15 @@ theorem smul_mem_tens {M : ℕ} {Λ : Lt E n} (hΛ : Λ ∈ Vset E n M) {L : Lt 
   exact int_smul_mem hw (hy v hv)
 
 /- English proof (translation)
-Establish `hint : ∀ y' ∈ tens Λ L, ∃ k : ℤ, ∑ i, EF X (y i) (w • y' i) = k` using `fun y' hy' => (tens_selfDual hΛ hL y).1 hy _ (smul_mem_tens hΛ hw hy')`. Prove the components needed by the constructor for the conclusion. Take `⟨k, hk⟩` from `hint y hy`. Rewrite using `[epsW, hk, ← Complex.exp_nat_mul, ← Complex.exp_int_mul_two_pi_mul_I k]`. Use `congr 1`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Introduce `y' hy'`. Take `⟨k, hk⟩` from `hint y' hy'`. Establish `h1 : ∀ i, EF X ((y + y') i) (w • (y + y') i) = EF X (y i) (w • y i) + EF X (y' i) (w • y' i) - EF X (y i) (y' i) + 2 * EF X (y i) (w • y' i)`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `i`. Establish `e : (y + y') i = y i + y' i` using `rfl`. Establish `h2 : EF X (y' i) (w • y i) = -EF X (y i) (cc w • y' i)` using `by rw [EF_swap, EF_smul]`. Establish `h3 : EF X (y i) (w • y' i) + EF X (y i) (cc w • y' i) = EF X (y i) (y' i)`. Rewrite using `[EF_eq_bilin, EF_eq_bilin, ← map_add, ← add_smul, hw1, one_smul, EF_eq_bilin]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [EF_eq_bilin] at h2 h3 ⊢`. Simplify using `only [e, smul_add, map_add, LinearMap.add_apply]`. Combine the linear equalities and inequalities to obtain the conclusion. Simplify using `only [epsW, h1, Finset.sum_add_distrib, Finset.sum_sub_distrib, ← Finset.mul_sum, hk]`. Rewrite using `[← Complex.exp_add, ← Complex.exp_add, ← mul_one (cexp (_ + _)), ← Complex.exp_int_mul_two_pi_mul_I k, ← Complex.exp_add]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem epsW_semichar {M : ℕ} {Λ : Lt E n} (hΛ : Λ ∈ Vset E n M) {L : Lt E r} (hL : SelfD X L)
     {w : E} (hw : IsIntegral ℤ w) (hw1 : w + cc w = 1) {y : Matrix (Fin n) (Fin r) E}
@@ -465,11 +461,11 @@ theorem epsW_semichar {M : ℕ} {Λ : Lt E n} (hΛ : Λ ∈ Vset E n M) {L : Lt 
     ring
 
 /- English proof (translation)
-Rewrite using `[mem_tens_iff (Base.stdL_mem_Vset n 1)]`. Prove the components needed by the constructor for the conclusion. Introduce `h k`. Use `h (Pi.single k 1) (Submodule.subset_span ⟨k, rfl⟩)` as an intermediate fact. Rewrite `this` using `[ctr, Finset.sum_eq_single k]`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify `this` using `[cc]`. Introduce `j _ hj`. Simplify using `[hj, cc]`. Simplify using the standard rewrite rules. Introduce `h w hw`.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `L.sum_mem fun k _ => int_smul_mem (Base.isIntegral_cc ((Base.mem_stdL w).1 hw k)) (h k)`.
+A detailed English derivation is pending.
 -/
 theorem mem_tens_stdL (L : Lt E r) (y : Matrix (Fin n) (Fin r) E) :
     y ∈ tens (stdL E n) L ↔ ∀ k, y k ∈ L := by
@@ -487,9 +483,9 @@ theorem mem_tens_stdL (L : Lt E r) (y : Matrix (Fin n) (Fin r) E) :
 end
 
 /- English proof (translation)
-Introduce `E _ _ _ r X g _ _ n _ _ w hw hw1 L hL M Λ hΛ`. Establish `hsp : ∀ Λ ∈ Vset E n M, Submodule.span E (Λ : Set (Fin n → E)) = ⊤` using `fun Λ hΛ => DualFamily.span_eq_top Λ hΛ.1 fun x => (hΛ.2.1 x).2`. Use `⟨tens_fg hΛ hL.1, tens_selfDual hΛ hL, fun y hy => epsW_semichar hΛ hL hw hw1 hy, mem_tens_stdL L, fun L' hL' => ⟨relIndex_tens_right hΛ.1 (hsp Λ hΛ) hL.1 (span_of_selfD X hL'), ?_⟩, fun Λ' hΛ' => relIndex_tens_left hL.1 (span_of_selfD X hL) hΛ.1 (hsp Λ' hΛ')⟩` and prove the remaining obligations. Use extensionality with `y`. Simplify using `only [AddSubgroup.mem_inf, mem_tens_iff hΛ, Submodule.mem_inf]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Conclude with `⟨fun h v hv => ⟨h.1 v hv, h.2 v hv⟩, fun h => ⟨fun v hv => (h v hv).1, fun v hv => (h v hv).2⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem tens_selfDual_semichar_index : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (X : Data E r) (g : ℕ) (bas : (Fin g ⊕ Fin g → ℤ) ≃ₗ[ℤ] X.Λ) (idx : Fin g ≃ X.Ψ × Fin r) (n : ℕ), IsSympl X bas → Even n → ∀ w : E, IsIntegral ℤ w → w + cc w = 1 → ∀ L, SelfD X L → ∀ (M : ℕ), ∀ Λ ∈ Vset E n M, (tens Λ L).FG ∧ (∀ y, y ∈ tens Λ L ↔ ∀ y' ∈ tens Λ L, ∃ k : ℤ, ∑ i, EF X (y i) (y' i) = k) ∧ (∀ y ∈ tens Λ L, epsW X w y ^ 2 = 1 ∧ ∀ y' ∈ tens Λ L, epsW X w (y + y') = epsW X w y * epsW X w y' * cexp (-(π * I * ((∑ k, EF X (y k) (y' k) : ℚ) : ℂ)))) ∧ (∀ y : Matrix (Fin n) (Fin r) E, y ∈ tens (stdL E n) L ↔ ∀ k, y k ∈ L) ∧ (∀ L', SelfD X L' → (tens Λ L').relIndex (tens Λ L) = L'.toAddSubgroup.relIndex L.toAddSubgroup ^ n ∧ tens Λ L ⊓ tens Λ L' = tens Λ (L ⊓ L')) ∧ ∀ Λ' ∈ Vset E n M, (tens Λ' L).relIndex (tens Λ L) = Λ'.toAddSubgroup.relIndex Λ.toAddSubgroup ^ r := by
   intro E _ _ _ r X g _ _ n _ _ w hw hw1 L hL M Λ hΛ

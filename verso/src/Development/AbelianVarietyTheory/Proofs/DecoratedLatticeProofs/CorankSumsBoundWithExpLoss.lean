@@ -12,7 +12,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.Core.Deg
 
 /- English proof (translation)
-The claim follows from `(Real.rpow_le_rpow_of_exponent_le hx huw).trans (Real.rpow_le_rpow (by linarith) hxy (hu.trans huw))`.
+A detailed English derivation is pending.
 -/
 theorem rpow_le_rpow_both {x y u w : ℝ} (hx : 1 ≤ x) (hxy : x ≤ y) (hu : 0 ≤ u) (huw : u ≤ w) :
     x ^ u ≤ y ^ w :=
@@ -20,7 +20,7 @@ theorem rpow_le_rpow_both {x y u w : ℝ} (hx : 1 ≤ x) (hxy : x ≤ y) (hu : 0
     (Real.rpow_le_rpow (by linarith) hxy (hu.trans huw))
 
 /- English proof (translation)
-Unfold `Formalism.HermitianLatticeCounting.LatticeSumBounds.bigH`. Conclude with `Real.one_le_rpow hb (by positivity)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem bigH_one_le (C : ℝ) (hC : 0 ≤ C) (m f : ℕ) {b : ℝ} (hb : 1 ≤ b) :
     1 ≤ Formalism.HermitianLatticeCounting.LatticeSumBounds.bigH C m f b := by
@@ -28,7 +28,7 @@ theorem bigH_one_le (C : ℝ) (hC : 0 ≤ C) (m f : ℕ) {b : ℝ} (hb : 1 ≤ b
   exact Real.one_le_rpow hb (by positivity)
 
 /- English proof (translation)
-Unfold `Formalism.HermitianLatticeCounting.LatticeSumBounds.bigH`. Apply `Real.rpow_le_rpow_of_exponent_le hb` to reduce the goal to its premises. Establish `: (0:ℝ) ≤ (m:ℝ)^2 * f` using `by positivity`. Use the polynomial consequences of the given equalities and inequalities.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem bigH_mono {C D : ℝ} (hC : 0 ≤ C) (hCD : C ≤ D) (m f : ℕ) {b : ℝ} (hb : 1 ≤ b) :
     Formalism.HermitianLatticeCounting.LatticeSumBounds.bigH C m f b ≤ Formalism.HermitianLatticeCounting.LatticeSumBounds.bigH D m f b := by
@@ -43,15 +43,15 @@ namespace GlobalTheory.Core.Deg
 
 open Formalism.HermitianLatticeCounting.LatticeSumBounds in
 /- English proof (translation)
-Establish `hC0 : (0:ℝ) ≤ C` using `by linarith`. Establish `hD0 : (0:ℝ) ≤ D` using `by linarith`. Establish `hH1` using `bigH_one_le C hC0 m f hb`. Establish `hHD1` using `bigH_one_le D hD0 m f hb`. Establish `hHm` using `bigH_mono hC0 hCD m f hb`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨fun s hs hsk => ?_, fun s hs => ?_⟩` and prove the remaining obligations. Take `⟨h0, h1⟩` from `h.1 s hs hsk`. Use `⟨h0, h1.trans ?_⟩` and prove the remaining obligations. Establish `e1 : bigH C m f b ^ C ≤ bigH D m f b ^ D` using `rpow_le_rpow_both hH1 hHm hC0 hCD`. Establish `e2 : C ^ (s * k * f) ≤ D ^ (s * k * f)` using `pow_le_pow_left₀ hC0 hCD _`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `mul_le_mul e1 e2 (by positivity) (by positivity)`. Take `⟨h0, h1⟩` from `h.2 s hs`. Use `⟨h0, h1.trans ?_⟩` and prove the remaining obligations. Establish `hk0 : (0:ℝ) ≤ k` using `Nat.cast_nonneg k`. Establish `hm0 : (0:ℝ) ≤ m` using `Nat.cast_nonneg m`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : (C * k) ^ (k * f) ≤ (D * k) ^ (k * f)` using `pow_le_pow_left₀ (by positivity) (mul_le_mul_of_nonneg_right hCD hk0) _`. Establish `a1 : 1 ≤ bigH C m f b ^ (C * m)` using `Real.one_le_rpow hH1 (by positivity)`. Establish `a2 : bigH C m f b ^ (C * m) ≤ bigH D m f b ^ (D * m)` using `rpow_le_rpow_both hH1 hHm (by positivity) (mul_le_mul_of_nonneg_right hCD hm0)`. Establish `e2 : (bigH C m f b ^ (C * m) * NT) ^ (C * k) ≤ (bigH D m f b ^ (D * m) * NT) ^ (D * k)`. Apply `rpow_le_rpow_both` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Use the polynomial consequences of the given equalities and inequalities.
 
-Use the polynomial consequences of the given equalities and inequalities. Conclude with `mul_le_mul_of_nonneg_right a2 (by linarith)`. Check the signs of the components of the expression. Conclude with `mul_le_mul_of_nonneg_right hCD hk0`. Conclude with `mul_le_mul e1 e2 (by positivity) (by positivity)`.
+Check the signs of the components of the expression. A detailed English derivation is pending.
 -/
 theorem xiHyp_mono {C D : ℝ} (hC : 1 ≤ C) (hCD : C ≤ D) {k m f : ℕ} {b v NT : ℝ} {Xi : ℕ → ℝ}
     (hb : 1 ≤ b) (hNT : 1 ≤ NT) (h : XiHyp C k m f b v NT Xi) : XiHyp D k m f b v NT Xi := by
@@ -85,11 +85,11 @@ theorem xiHyp_mono {C D : ℝ} (hC : 1 ≤ C) (hCD : C ≤ D) {k m f : ℕ} {b v
 
 open Formalism.HermitianLatticeCounting.LatticeSumBounds in
 /- English proof (translation)
-Take `⟨h1, h2, h3, h4, h5, h6, h7, h8, h9, h10, h11, h12⟩` from `h`. Establish `hlb : 0 ≤ Real.log b` using `Real.log_nonneg (by linarith)`. Establish `hX : (0:ℝ) ≤ (m:ℝ) ^ 5 * f * Real.log b` using `by positivity`. Use `⟨h1, h2, h3, h4, h5, ?_, h7, h8, h9, ?_, le_rfl, ?_⟩` and prove the remaining obligations. Use `mul_le_mul_of_nonneg_right hK hX` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use the polynomial consequences of the given equalities and inequalities. Use `h10.trans (Real.rpow_le_rpow_of_exponent_le (by linarith) ?_)` and prove the remaining obligations. Establish `: (0:ℝ) ≤ (m:ℝ) * f` using `by positivity`. Use the polynomial consequences of the given equalities and inequalities. Establish `: (0:ℝ) ≤ D` using `by linarith`.
+Use the polynomial consequences of the given equalities and inequalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Conclude with `Real.one_le_exp (by positivity)`.
+A detailed English derivation is pending.
 -/
 theorem params_mono {C D K K₀ : ℝ} (hC : 1 ≤ C) (hCD : C ≤ D) (hK : K ≤ K₀) {k m f : ℕ} {b g v NT : ℝ}
     (h : Params C K₀ k m f b g v NT 1) : Params D K k m f b g v NT 1 := by
@@ -110,7 +110,7 @@ end GlobalTheory.Core.Deg
 namespace GlobalTheory.Core.Deg
 
 /- English proof (translation)
-Rewrite using `[mul_pow, ← Real.exp_nat_mul, mul_one, mul_comm (Real.exp _)]`. Use `mul_le_mul_of_nonneg_left (hG.trans (Real.exp_le_exp.2 ?_)) (by positivity)` and prove the remaining obligations. Establish `hf' : (1:ℝ) ≤ f` using `by exact_mod_cast hf`. Establish `hk : (0:ℝ) ≤ k` using `Nat.cast_nonneg k`. Use `push_cast`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
 Use the polynomial consequences of the given equalities and inequalities.
 -/
@@ -125,15 +125,15 @@ theorem gam_absorb {C Gam : ℝ} (hC : 0 ≤ C) {k f : ℕ} (hf : 1 ≤ f) (hG :
 
 open Formalism.HermitianLatticeCounting.LatticeSumBounds in
 /- English proof (translation)
-Establish `hC0 : (0:ℝ) ≤ C` using `by linarith`. Establish `hCD : C ≤ Real.exp 1 * C` using `le_mul_of_one_le_left hC0 (Real.one_le_exp (by norm_num))`. Establish `hD0 : (0:ℝ) ≤ Real.exp 1 * C` using `by linarith`. Establish `hH1` using `bigH_one_le C hC0 m f hb`. Establish `hHm` using `bigH_mono hC0 hCD m f hb`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hHDpos : 0 < bigH (Real.exp 1 * C) m f b` using `lt_of_lt_of_le zero_lt_one (hH1.trans hHm)`. Establish `hHCpos : 0 < bigH C m f b` using `lt_of_lt_of_le zero_lt_one hH1`. Establish `e0 : 0 ≤ (2 / g) ^ ((s - 1) * k * f) * ((k : ℝ) * v) ^ (k * f) * Xi s` using `by positivity`. Establish `eH : bigH C m f b ^ (C * ((s : ℝ) + m) * (m : ℝ) ^ 2) ≤ bigH (Real.exp 1 * C) m f b ^ (Real.exp 1 * C * ((s : ℝ) + m) * (m : ℝ) ^ 2)`. Apply `rpow_le_rpow_both hH1 hHm (by positivity)` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `: (0:ℝ) ≤ ((s : ℝ) + m) * (m : ℝ) ^ 2` using `by positivity`. Use the polynomial consequences of the given equalities and inequalities. Establish `eP : (C * s * f) ^ (6 * s * f) ≤ (Real.exp 1 * C * s * f) ^ (6 * s * f)`. Apply `pow_le_pow_left₀ (by positivity)` to reduce the goal to its premises. Establish `: (0:ℝ) ≤ (s : ℝ) * f` using `by positivity`.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Use the polynomial consequences of the given equalities and inequalities. Establish `eG` using `gam_absorb hC0 hf hG (k := k)`. Unfold `ndRow`. Combine the equalities or inequalities in the displayed calculation. Establish `hH0 : 0 ≤ bigH C m f b ^ (C * ((s : ℝ) + m) * (m : ℝ) ^ 2)` using `le_trans zero_le_one (Real.one_le_rpow hH1 (by positivity))`.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Use `gcongr`. Use `_ = _ := by ring`.
+A detailed English derivation is pending.
 -/
 theorem ndRow_mono {C Gam : ℝ} (hC : 1 ≤ C) {k m f s : ℕ} {b g v : ℝ} {Xi : ℕ → ℝ}
     (hf : 1 ≤ f) (hb : 1 ≤ b) (hg : 0 < g) (hv : 0 ≤ v) (hXi : 0 ≤ Xi s)
@@ -172,17 +172,17 @@ theorem ndRow_mono {C Gam : ℝ} (hC : 1 ≤ C) {k m f s : ℕ} {b g v : ℝ} {X
 
 open Formalism.HermitianLatticeCounting.LatticeSumBounds in
 /- English proof (translation)
-Establish `hC0 : (0:ℝ) ≤ C` using `by linarith`. Establish `hCD : C ≤ Real.exp 1 * C` using `le_mul_of_one_le_left hC0 (Real.one_le_exp (by norm_num))`. Establish `hD0 : (0:ℝ) ≤ Real.exp 1 * C` using `by linarith`. Establish `hH1` using `bigH_one_le C hC0 m f hb`. Establish `hHm` using `bigH_mono hC0 hCD m f hb`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hHDpos : 0 < bigH (Real.exp 1 * C) m f b` using `lt_of_lt_of_le zero_lt_one (hH1.trans hHm)`. Establish `hHCpos : 0 < bigH C m f b` using `lt_of_lt_of_le zero_lt_one hH1`. Establish `hlb : 0 ≤ Real.log b` using `Real.log_nonneg hb`. Establish `e0 : 0 ≤ (2 / g) ^ ((s - 2) * k * f) * ((k : ℝ) * v) ^ (k * f) * Xi s` using `by positivity`. Establish `eH : bigH C m f b ^ (C * ((s : ℝ) + m) * (m : ℝ) ^ 2) ≤ bigH (Real.exp 1 * C) m f b ^ (Real.exp 1 * C * ((s : ℝ) + m) * (m : ℝ) ^ 2)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `rpow_le_rpow_both hH1 hHm (by positivity)` to reduce the goal to its premises. Establish `: (0:ℝ) ≤ ((s : ℝ) + m) * (m : ℝ) ^ 2` using `by positivity`. Use the polynomial consequences of the given equalities and inequalities. Establish `eP : (C * s * f) ^ (6 * s * f) ≤ (Real.exp 1 * C * s * f) ^ (6 * s * f)`. Apply `pow_le_pow_left₀ (by positivity)` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `: (0:ℝ) ≤ (s : ℝ) * f` using `by positivity`. Use the polynomial consequences of the given equalities and inequalities. Establish `eE : Real.exp (C * (m : ℝ) ^ 6 * f * Real.log b) ≤ Real.exp (Real.exp 1 * C * (m : ℝ) ^ 6 * f * Real.log b)`. Apply `Real.exp_le_exp.2` to reduce the goal to its premises. Establish `: (0:ℝ) ≤ (m : ℝ) ^ 6 * f * Real.log b` using `by positivity`.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Use the polynomial consequences of the given equalities and inequalities. Establish `eQ : (C / k) ^ (k * f) ≤ (Real.exp 1 * C / k) ^ (k * f)`. Apply `pow_le_pow_left₀ (by positivity)` to reduce the goal to its premises. Conclude with `div_le_div_of_nonneg_right hCD (Nat.cast_nonneg k)`. Establish `eG` using `gam_absorb hC0 hf hG (k := k)`.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hH0 : 0 ≤ bigH C m f b ^ (C * ((s : ℝ) + m) * (m : ℝ) ^ 2)` using `le_trans zero_le_one (Real.one_le_rpow hH1 (by positivity))`. Unfold `degRow`. Combine the equalities or inequalities in the displayed calculation.
+Replace the relevant objects with their definitions. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem degRow_mono {C Gam : ℝ} (hC : 1 ≤ C) {k m f s : ℕ} {b g v : ℝ} {Xi : ℕ → ℝ}
     (hf : 1 ≤ f) (hb : 1 ≤ b) (hg : 0 < g) (hv : 0 ≤ v) (hXi : 0 ≤ Xi s)
@@ -238,19 +238,17 @@ namespace GlobalTheory.Core.Deg
 open Formalism.HermitianLatticeCounting.LatticeSumBounds in
 
 /- English proof (translation)
-Introduce `C hC`. Establish `hC0 : (0:ℝ) ≤ C` using `by linarith`. Establish `hCD : C ≤ Real.exp 1 * C` using `le_mul_of_one_le_left hC0 (Real.one_le_exp (by norm_num))`. Establish `hD : 1 ≤ Real.exp 1 * C` using `hC.trans hCD`. Take `⟨K1, H1⟩` from `Formalism.HermitianLatticeCounting.P.sumNondegenerateRowsLe (Real.exp 1 * C) hD`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨K2, H2⟩` from `Formalism.HermitianLatticeCounting.P.sumDegenerateRowsLe (Real.exp 1 * C) hD`. Use `⟨max K1 K2, ?_⟩` and prove the remaining obligations. Introduce `k m f b g v NT Gam Xi hP hXi _hG0 hG`. Take `⟨hm4, hmf, hfk, hb2, hg8, -, hv1, -, hNT1, -⟩` from `id hP`. Establish `hb1 : (1:ℝ) ≤ b` using `by linarith`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hf : 1 ≤ f` using `by omega`. Establish `hk : (1:ℝ) ≤ k` using `by exact_mod_cast (show 1 ≤ k by omega)`. Establish `hkb : 0 < (k:ℝ) * b` using `mul_pos (by linarith) (by linarith)`. Establish `hg : 0 < g` using `lt_of_lt_of_le (pow_pos hkb 8) hg8`. Establish `hv : (0:ℝ) ≤ v` using `by linarith`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `P1` using `params_mono hC hCD (le_max_left K1 K2) hP`. Establish `P2` using `params_mono hC hCD (le_max_right K1 K2) hP`. Establish `X'` using `xiHyp_mono hC hCD hb1 hNT1 hXi`. Establish `hXs : ∀ s ∈ Finset.Icc 2 k, 0 ≤ Xi s`. Introduce `s hs`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hs` using `[Finset.mem_Icc]`. Distinguish the cases in `h2 : s + 2 ≤ k`. Conclude with `(hXi.1 s hs.1 h2).1`. Conclude with `(hXi.2 s (by omega)).1`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `le_trans (Finset.sum_le_sum fun s hs => ?_) (H1 k m f b g v NT 1 Xi P1 X')` and prove the remaining obligations. Conclude with `ndRow_mono hC hf hb1 hg hv (hXs s hs) hG`. Establish `E2` using `H2 k m f b g v NT 1 Xi P2 X'`. Rewrite `E2` using `[one_pow, inv_one, mul_one]`. Use `le_trans (Finset.sum_le_sum fun s hs => ?_) E2` and prove the remaining obligations.
-
-Conclude with `degRow_mono hC hf hb1 hg hv (hXs s hs) hG`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem corankSums_expLoss : ∀ C : ℝ, 1 ≤ C → ∃ K₀ : ℝ, ∀ (k m f : ℕ) (b g v NT Gam : ℝ) (Xi : ℕ → ℝ),
     Formalism.HermitianLatticeCounting.LatticeSumBounds.Params C K₀ k m f b g v NT 1 → Formalism.HermitianLatticeCounting.LatticeSumBounds.XiHyp C k m f b v NT Xi → 0 ≤ Gam →

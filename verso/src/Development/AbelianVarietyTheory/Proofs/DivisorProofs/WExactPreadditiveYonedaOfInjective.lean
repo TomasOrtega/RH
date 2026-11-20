@@ -9,17 +9,15 @@ open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComp
 namespace GlobalTheory.EtC
 
 /- English proof (translation)
-Set `K : SimplicialObject (Shv R)` to `((SimplicialObject.whiskering _ _).obj (free R)).obj ((X ⋙ Ψ).leftOp)`. Set `B : Shv R` to `(free R).obj (Ψ.obj U).unop`. Set `f : K ⟶ (SimplicialObject.const (Shv R)).obj B` to `((SimplicialObject.whiskering _ _).obj (free R)).map (lev Ψ a) ≫ (Functor.constComp _ _ _).hom`. Use `haveI h1 : QuasiIso ((chainsN R).map (lev Ψ a)) := (HomologicalComplex.quasiIso_extendMap_iff _ _).1 hq`. Establish `hq' : QuasiIso ((AlgebraicTopology.alternatingFaceMapComplex (Shv R)).map f)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : (AlgebraicTopology.alternatingFaceMapComplex (Shv R)).map f = (AlgebraicTopology.alternatingFaceMapComplex (Shv R)).map (((SimplicialObject.whiskering _ _).obj (free R)).map (lev Ψ a)) ≫ (AlgebraicTopology.alternatingFaceMapComplex (Shv R)).map (Functor.constComp _ _ _).hom` using `Functor.map_comp _ _ _`. Rewrite using `[e]`. Use `haveI : IsIso ((AlgebraicTopology.alternatingFaceMapComplex (Shv R)).map (Functor.constComp SimplexCategoryᵒᵖ (Ψ.obj U).unop (free R)).hom) := Functor.map_isIso _ _`. Use `haveI h2 : QuasiIso ((AlgebraicTopology.alternatingFaceMapComplex (Shv R)).map (((SimplicialObject.whiskering _ _).obj (free R)).map (lev Ψ a))) := h1`. Use `haveI h3 : QuasiIso ((AlgebraicTopology.alternatingFaceMapComplex (Shv R)).map (Functor.constComp SimplexCategoryᵒᵖ (Ψ.obj U).unop (free R)).hom) := quasiIso_of_isIso _`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `quasiIso_comp (hφ := h2) (hφ' := h3) _ _`. Take `⟨hepi, ⟨w, hex⟩, hn⟩` from `(GlobalTheory.T.face_map_complex_quasi_iso_iff_epi_exact _ K B f).1 hq'`. Establish `hepi' : Epi ((free R).map (Ψ.map (a.app (SimplexCategory.mk 0))).unop)`. Establish `e : f.app (op (SimplexCategory.mk 0)) = (free R).map (Ψ.map (a.app (SimplexCategory.mk 0))).unop` using `Category.comp_id _`. Rewrite using `[← e]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition.
 
-Conclude with `hepi`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `x y hxy`. Express the relevant statement in the definitionally equal form `(free R).map (Ψ.map (a.app (SimplexCategory.mk 0))).unop ≫ x = (free R).map (Ψ.map (a.app (SimplexCategory.mk 0))).unop ≫ y at hxy`. Conclude with `(cancel_epi _).1 hxy`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `y hy`. Express the relevant statement in the definitionally equal form `(free R).map (Ψ.map (X.δ (n := 0) 0)).unop ≫ y = (free R).map (Ψ.map (X.δ (n := 0) 1)).unop ≫ y at hy`. Set `y' : K.obj (op (SimplexCategory.mk 0)) ⟶ J` to `y`. Establish `hy' : (K.δ (n` using `0) 0 - K.δ (n := 0) 1) ≫ y' = 0 := by`. Use `(Preadditive.sub_comp _ _ _).trans (sub_eq_zero.2 ?_)` and prove the remaining obligations.
-
-Conclude with `hy`. Use `⟨hex.descToInjective (J := J) y' hy', ?_⟩` and prove the remaining obligations. Conclude with `hex.comp_descToInjective (J := J) y' hy'`. Introduce `n`. Conclude with `GlobalTheory.alternatingCofaceMapComplex_preadditiveYoneda_exactAt_succ K J n (hn n)`.
+A detailed English derivation is pending.
 -/
 theorem wExact_preadditiveYoneda_of_injective (R : Type) [CommRing R] (T : Type 1) [Category.{0} T]
     (Ψ : T ⥤ PShᵒᵖ) (U : T) (X : CosimplicialObject T) (a : (CosimplicialObject.const T).obj U ⟶ X)

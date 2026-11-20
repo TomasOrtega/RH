@@ -12,17 +12,17 @@ open GlobalTheory.SignedHC
 namespace GlobalTheory.KerConjMean.TopSizes
 
 /- English proof (translation)
-Establish `hn : 0 < n` using `a.pos`. Establish `key : (wtOf n E).natW a = ((wtOf n E).w a - (wtOf n E).w ⟨n - 1, by omega⟩).toNat`. Simplify using `only [DomWeight.natW, DomWeight.detShift, dif_pos hn]`. Establish `hd : (((wtOf n E).w a - (wtOf n E).w ⟨n - 1, by omega⟩ : ℤ) : ℝ) ≤ hi - lo + 1`. Unfold `wtOf`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Use `split_ifs with h`. Establish `e0` using `hE _ (descEnum_mem E h.1 a)`. Establish `e1` using `hE _ (descEnum_mem E h.1 ⟨n - 1, by omega⟩)`. Establish `f0 : ((⌊highestWeight E h.1 a⌋ : ℤ) : ℝ) ≤ ((highestWeight E h.1 a : ℚ) : ℝ)`. Conclude with `Int.floor_le _` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `f1 : ((highestWeight E h.1 ⟨n - 1, by omega⟩ : ℚ) : ℝ) - 1 < ((⌊highestWeight E h.1 ⟨n - 1, by omega⟩⌋ : ℤ) : ℝ)`. Conclude with `Int.sub_one_lt_floor _` after adjusting the coercions. Establish `hr : ((a : ℕ) : ℝ) + 1 ≤ (n : ℝ)` using `by exact_mod_cast a.2`. Establish `hc : ((n - 1 : ℕ) : ℝ) = (n : ℝ) - 1` using `by rw [Nat.cast_sub hn]; simp`. Establish `g0 : ((highestWeight E h.1 a : ℚ) : ℝ) ≤ hi + ((n : ℝ) - 1) / 2`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Simplify using `only [highestWeight]`. Use `push_cast`. Combine the linear relations using `[e0.2]`. Establish `g1 : lo + ((n : ℝ) - 1) / 2 ≤ ((highestWeight E h.1 ⟨n - 1, by omega⟩ : ℚ) : ℝ)`. Simplify using `only [highestWeight, Rat.cast_sub, Rat.cast_div, Rat.cast_natCast, Rat.cast_one, Rat.cast_ofNat, hc]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear relations using `[e1.1]`. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
+Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[key]`. Establish `c : ∀ z : ℤ, (z.toNat : ℝ) = (((z.toNat : ℕ) : ℤ) : ℝ)` using `fun z => (Int.cast_natCast _).symm`. Rewrite using `[c, Int.toNat_eq_max]`. Use `push_cast`. Conclude with `max_le (by push_cast at hd; exact hd) (by linarith)`.
+Move the embeddings inside the algebraic operations. A detailed English derivation is pending.
 -/
 theorem natW_wtOf_le (n : ℕ) (E : Finset ℚ) (lo hi : ℝ) (hM : lo ≤ hi) (hE : ∀ x ∈ E, lo ≤ (x : ℝ) ∧ (x : ℝ) ≤ hi) (a : Fin n) :
     (((wtOf n E).natW a : ℕ) : ℝ) ≤ hi - lo + 1 := by
@@ -56,9 +56,9 @@ theorem natW_wtOf_le (n : ℕ) (E : Finset ℚ) (lo hi : ℝ) (hM : lo ≤ hi) (
   exact max_le (by push_cast at hd; exact hd) (by linarith)
 
 /- English proof (translation)
-Unfold `GridData.extend`. Use `split_ifs with hj`. Take `⟨h1, h2⟩` from `hf ⟨j - d, hj⟩`. Establish `a1 : (0 : ℚ) ≤ f ⟨j - d, hj⟩` using `by exact_mod_cast h1`. Use `⟨by exact_mod_cast Int.floor_nonneg.2 a1, le_trans ?_ h2⟩` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Conclude with `Int.floor_le _` after adjusting the coercions. Simplify using `[hh]`.
+A detailed English derivation is pending.
 -/
 theorem extend_bounds {n : ℕ} (d : ℕ) (f : Fin n → ℚ) (h : ℝ) (hh : 0 ≤ h)
     (hf : ∀ i, 0 ≤ ((f i : ℚ) : ℝ) ∧ ((f i : ℚ) : ℝ) ≤ h) (j : ℕ) :
@@ -72,31 +72,31 @@ theorem extend_bounds {n : ℕ} (d : ℕ) (f : Fin n → ℚ) (h : ℝ) (hh : 0 
   · simp [hh]
 
 /- English proof (translation)
-Take `⟨hN, -, -, -, hm2, -, -, hb12⟩` from `GlobalTheory.SizesOfRows.sizes_of_sizeRows large₂ hs`. Take `⟨-, -, -, -, -, -, -, -, -, -, -, hgap, hbe, -⟩` from `hs`. Establish `hSc` using `large₂.Sc_pos`. Establish `hg0 : (0 : ℝ) ≤ (gap D 1 : ℝ)` using `Nat.cast_nonneg _`. Establish `hm0 : (0 : ℝ) ≤ (D.R.m : ℝ)` using `Nat.cast_nonneg _`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hScb : large₂.Sc ≤ large₂.sc.b` using `by nlinarith`. Establish `hts : D.R.t + sLen D + 1 ≤ bigN D`. Establish `: D.R.t + sLen D + 1 ≤ D.R.m * (D.R.t + sLen D + 1)` using `Nat.le_mul_of_pos_left _ (by omega)`. Unfold `bigN`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers.
 
-Establish `hts' : (D.R.t : ℝ) + (sLen D : ℝ) + 1 ≤ large₂.sc.b` using `le_trans (by exact_mod_cast hts) hN`. Establish `ht0 : (0 : ℝ) ≤ (D.R.t : ℝ)` using `Nat.cast_nonneg _`. Establish `hs0 : (0 : ℝ) ≤ (sLen D : ℝ)` using `Nat.cast_nonneg _`. Establish `hv : ∀ j, 0 ≤ ((GridData.extend 2 (D.hc τ).v j : ℤ) : ℝ) ∧ ((GridData.extend 2 (D.hc τ).v j : ℤ) : ℝ) ≤ large₂.Sc` using `extend_bounds 2 _ _ hSc.le fun l => large₂.cloud_v τ l`. Establish `hel : ∀ l : Fin D.R.m, 0 ≤ (((D.hc τ).e l : ℚ) : ℝ) ∧ (((D.hc τ).e l : ℚ) : ℝ) ≤ 4 * large₂.sc.b` using `fun l => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨h1, h2⟩` from `hbe τ l`. Establish `h3` using `(D.hc τ).gap_be l`. Establish `ht : (0 : ℚ) ≤ D.R.t` using `Nat.cast_nonneg _`. Establish `h4 : 0 ≤ (D.hc τ).e l` using `by linarith`. Conclude with `⟨by exact_mod_cast h4, h2⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 
-Establish `he` using `extend_bounds 1 _ _ (by linarith) hel`. Establish `hcen : ∀ j, 1 ≤ j → j ≤ D.R.m → 0 ≤ ((cen D 1 τ j : ℤ) : ℝ) ∧ ((cen D 1 τ j : ℤ) : ℝ) ≤ large₂.sc.b`. Introduce `j hj1 hj2`. Establish `e` using `GridData.mid_eq (GridData.ofHCParam (D.hc τ) (sLen D) (gap D 1) 0) hj1`. Establish `hv2` using `hv 2`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hj1' : (1 : ℝ) ≤ (j : ℝ)` using `by exact_mod_cast hj1`. Establish `hj2' : (j : ℝ) ≤ (D.R.m : ℝ)` using `by exact_mod_cast hj2`. Establish `hmid : 0 ≤ (((GridData.ofHCParam (D.hc τ) (sLen D) (gap D 1) 0).mid j : ℚ) : ℝ) ∧ (((GridData.ofHCParam (D.hc τ) (sLen D) (gap D 1) 0).mid j : ℚ) : ℝ) ≤ large₂.sc.b`. Rewrite using `[e]`. Simplify using `only [GridData.a, GridData.ofHCParam]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `push_cast`. Apply the tactic sequence `constructor <;> nlinarith`. Unfold `cen`. Use `⟨by exact_mod_cast Int.floor_nonneg.2 (by exact_mod_cast hmid.1), le_trans ?_ hmid.2⟩` and prove the remaining obligations. Conclude with `Int.floor_le _` after adjusting the coercions.
+Move the embeddings inside the algebraic operations. Apply the first step, then apply the next step to every resulting obligation. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x hx`. Break down `GridData.mem_weightX.1 hx with h | h | ⟨i, hi1, hi2, h⟩ | ⟨l, -, -, h⟩` into its components or cases. Take `⟨i, hi, rfl⟩` from `GridData.mem_tops.1 h`. Establish `hi' : (i : ℝ) ≤ (D.R.m : ℝ)` using `by exact_mod_cast (show i ≤ D.R.m from hi)`. Establish `hi0 : (0 : ℝ) ≤ (i : ℝ)` using `Nat.cast_nonneg _`.
+Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hv2` using `hv 2`. Simplify using `only [GridData.a, num, GridData.ofHCParam]`. Use `push_cast`. Apply the tactic sequence `constructor <;> nlinarith`. Take `⟨i, -, -, rfl⟩` from `GridData.mem_cloudHalf.1 h`.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h : 0 ≤ (((num D 1 τ).v i : ℤ) : ℝ) ∧ (((num D 1 τ).v i : ℤ) : ℝ) ≤ large₂.Sc` using `hv i`. Simplify using `only [GridData.vHalf]`. Use `push_cast`. Apply the tactic sequence `constructor <;> linarith`. Take `⟨a, ha, rfl⟩` from `GlobalTheory.SignedHC.mem_block.1 h`.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h : 0 ≤ (((num D 1 τ).cen i : ℤ) : ℝ) ∧ (((num D 1 τ).cen i : ℤ) : ℝ) ≤ large₂.sc.b` using `hcen i hi1 hi2`. Establish `h1 : (((num D 1 τ).s - 1 : ℕ) : ℝ) ≤ (sLen D : ℝ)`. Conclude with `(show sLen D - 1 ≤ sLen D from Nat.sub_le _ _)` after adjusting the coercions. Establish `ha' : (a : ℝ) + 1 ≤ (((num D 1 τ).s - 1 : ℕ) : ℝ)` using `by exact_mod_cast ha`. Establish `ha0 : (0 : ℝ) ≤ (a : ℝ)` using `Nat.cast_nonneg _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Simplify using `only [Rat.cast_sub, Rat.cast_add, Rat.cast_div, Rat.cast_natCast, Rat.cast_intCast, Rat.cast_one, Rat.cast_ofNat]`. Apply the tactic sequence `constructor <;> linarith`. Take `⟨a, ha, rfl⟩` from `GlobalTheory.SignedHC.mem_block.1 h`. Establish `h : 0 ≤ (((num D 1 τ).e l : ℤ) : ℝ) ∧ (((num D 1 τ).e l : ℤ) : ℝ) ≤ 4 * large₂.sc.b` using `he l`. Establish `h1 : ((num D 1 τ).t : ℝ) = (D.R.t : ℝ)` using `rfl`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ha' : (a : ℝ) ≤ ((num D 1 τ).t : ℝ)` using `by exact_mod_cast Nat.lt_succ_iff.1 ha`. Establish `ha0 : (0 : ℝ) ≤ (a : ℝ)` using `Nat.cast_nonneg _`. Use `push_cast`. Apply the tactic sequence `constructor <;> linarith`.
+Move the embeddings inside the algebraic operations. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem entry_bounds {D : D7} (large₂ : SizeData₂ D) (hs : GlobalTheory.IndefiniteRowSideFullHecke.LevelPlusSubgroup.SizeRows large₂) (j : ℕ) (τ : D.what₂.Tau) :
     ∀ x ∈ (num D 1 τ).weightX j, -(5 * large₂.sc.b) ≤ (x : ℝ) ∧ (x : ℝ) ≤ 2 * large₂.sc.b := by
@@ -167,13 +167,11 @@ theorem entry_bounds {D : D7} (large₂ : SizeData₂ D) (hs : GlobalTheory.Inde
     constructor <;> linarith
 
 /- English proof (translation)
-Use `⟨0, fun CF _ => ⟨0, fun ε C _ => ⟨0, ?_⟩⟩⟩` and prove the remaining obligations. Introduce `D large₂ _ _ Γ _ _ Pl0 T A Ks _ _ _ R F hS ch _ hch _`. Take `⟨hN, hf, hN1, hf1, -, hrd1, hrd, hb12⟩` from `GlobalTheory.SizesOfRows.sizes_of_sizeRows large₂ hS.size`. Establish `hlb : 0 ≤ Real.log large₂.sc.b` using `Real.log_nonneg (by linarith)`. Establish `hc : ch.sc.cGap = 1`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h : ch.sc = { cGap` using `1, cDep := CF, b := large₂.sc.b } := hch`. Rewrite using `[h]`. Use `⟨by linarith, hN1, hN, hf1, hf, (Lnk.card_Tau D).le, by linarith, ?_, fun j hj => ⟨?_, fun τ i => ?_⟩⟩` and prove the remaining obligations. Conclude with `(Real.log_le_log_iff (by linarith) (by linarith)).1 (by linarith)`. Conclude with `GlobalTheory.DefRank.rank_le_bigN ch.G (.top j) hj`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `key : ∀ x ∈ entries (Node.par D ch.sc.cGap (.top j) τ), -(5 * large₂.sc.b) ≤ (x : ℝ) ∧ (x : ℝ) ≤ 2 * large₂.sc.b`. Rewrite using `[hc]`. Introduce `x hx`. Establish `e : entries (Node.par D 1 (.top j) τ) = (num D 1 τ).weightX j` using `entries_plus _`. Conclude with `entry_bounds large₂ hS.size j τ x (e ▸ hx)`.
-
-Establish `hw` using `natW_wtOf_le _ _ _ _ (by linarith) key i`. Combine the equalities or inequalities in the displayed calculation.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem sizesK : BigC fun {D} _ _ _ _ _ A _ _ _ _ _ _ ch _ b => 3 ≤ b ∧ 1 ≤ bigN D ∧ (bigN D : ℝ) ≤ b ∧ 1 ≤ D.R.f ∧ (D.R.f : ℝ) ≤ b ∧
   Fintype.card D.what₂.Tau ≤ D.R.f ∧ 0 ≤ D.host.rdE ∧ D.host.rdE ≤ b ∧ ∀ j : ℕ, j ≤ D.R.m →

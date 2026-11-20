@@ -13,9 +13,9 @@ open scoped CategoryTheory.Obj CategoryTheory.MonObj
 namespace GlobalTheory.CompanionTheory.Ar.Approx
 
 /- English proof (translation)
-Establish `hm : (RingHom.ker φ).IsMaximal`. Establish `: (RingHom.ker φ).IsPrime` using `RingHom.ker_isPrime φ`. Conclude with `IsArtinianRing.isMaximal_of_isPrime _`. Establish `he : RingHom.ker φ = IsLocalRing.maximalIdeal A` using `IsLocalRing.eq_maximalIdeal hm`. Establish `H : ∀ a ∈ IsLocalRing.maximalIdeal A, φ a = 0` using `fun a ha => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `ha` using `[← he]`. Conclude with `(RingHom.mem_ker).1 ha`. Conclude with `⟨Ideal.Quotient.lift (IsLocalRing.maximalIdeal A) φ H, RingHom.ext fun a => Ideal.Quotient.lift_mk (IsLocalRing.maximalIdeal A) φ H⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_comp_residue_eq (A : Type) [CommRing A] [IsLocalRing A] [IsArtinianRing A]
     (K : Type) [Field K] (φ : A →+* K) :
@@ -31,11 +31,11 @@ theorem exists_comp_residue_eq (A : Type) [CommRing A] [IsLocalRing A] [IsArtini
     RingHom.ext fun a => Ideal.Quotient.lift_mk (IsLocalRing.maximalIdeal A) φ H⟩
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `K _ y Z fst snd hpb`. Take `⟨ψ, hψ⟩` from `exists_comp_residue_eq A K (Spec.preimage y).hom`. Establish `hy : Spec.map (CommRingCat.ofHom ψ) ≫ spMap (IsLocalRing.residue A) = y`. Rewrite using `[spMap, ← Spec.map_comp, ← CommRingCat.ofHom_comp, hψ, CommRingCat.ofHom_hom]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Spec.map_preimage y`. Establish `hw : fst ≫ p = (snd ≫ Spec.map (CommRingCat.ofHom ψ)) ≫ spMap (IsLocalRing.residue A)`. Rewrite using `[Category.assoc, hy]`. Conclude with `hpb.w`. Establish `hbig : IsPullback (pullback.lift fst (snd ≫ Spec.map (CommRingCat.ofHom ψ)) hw ≫ pullback.fst p (spMap (IsLocalRing.residue A))) snd p (Spec.map (CommRingCat.ofHom ψ) ≫ spMap (IsLocalRing.residue A))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[pullback.lift_fst, hy]`. Conclude with `hpb`. Establish `hsq : IsPullback (pullback.lift fst (snd ≫ Spec.map (CommRingCat.ofHom ψ)) hw) snd (pullback.snd p (spMap (IsLocalRing.residue A))) (Spec.map (CommRingCat.ofHom ψ))` using `IsPullback.of_right hbig (pullback.lift_snd _ _ _) (IsPullback.of_hasPullback _ _)`. Conclude with `h.geometrically_isIntegral (Spec.map (CommRingCat.ofHom ψ)) _ snd hsq`.
+A detailed English derivation is pending.
 -/
 theorem geometricallyIntegral_of_closedFibre (A : Type) [CommRing A] [IsLocalRing A]
     [IsArtinianRing A] (X : Scheme.{0}) (p : X ⟶ Sp A)
@@ -61,9 +61,7 @@ theorem geometricallyIntegral_of_closedFibre (A : Type) [CommRing A] [IsLocalRin
   exact h.geometrically_isIntegral (Spec.map (CommRingCat.ofHom ψ)) _ snd hsq
 
 /- English proof (translation)
-Introduce `A _ _ _ X p hflat hprop hgi`. Use `haveI : IsAffine (Sp A) := inferInstanceAs (IsAffine (Spec (CommRingCat.of A)))`. Use `haveI : IsLocallyNoetherian (Sp A) := inferInstanceAs (IsLocallyNoetherian (Spec (CommRingCat.of A)))`. Use `haveI := hflat`. Use `haveI := hprop`.
-
-Use `haveI : GeometricallyIntegral p := geometricallyIntegral_of_closedFibre A X p hgi`. Conclude with `GlobalTheory.ProperFunctions.isIso_appTop_of_isAffine p`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem isIso_appTop_of_artinian : ∀ (A : Type) [CommRing A] [IsLocalRing A] [IsArtinianRing A]
     (X : Scheme.{0}) (p : X ⟶ Sp A), Flat p → IsProper p →

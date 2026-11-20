@@ -10,21 +10,19 @@ namespace GlobalTheory.SplitCriterion
 variable {K N : Type} [Field K] [NumberField K] [Field N] [NumberField N] [Algebra K N] [IsGalois K N]
 
 /- English proof (translation)
-Use `𝔭.isPrime` as an intermediate fact. Use `𝔭.isMaximal` as an intermediate fact. Establish `hne : P ≠ ⊥` using `Ideal.ne_bot_of_liesOver_of_ne_bot 𝔭.ne_bot P`. Establish `: Finite (𝓞 N ⧸ P)` using `Ideal.finiteQuotientOfFreeOfNeBot _ hne`. Establish `: Finite (𝓞 K ⧸ 𝔭.asIdeal)` using `Ideal.finiteQuotientOfFreeOfNeBot _ 𝔭.ne_bot`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: P.IsMaximal` using `hP.isMaximal hne`. Take `⟨σ, hσ⟩` from `IsArithFrobAt.exists_of_isInvariant (𝓞 K) (N ≃ₐ[K] N) P`. Establish `hu : P.under (𝓞 K) = 𝔭.asIdeal` using `hPo.over.symm`. Use `set q := Ideal.absNorm 𝔭.asIdeal with hq`. Establish `hq' : q = Nat.card (𝓞 K ⧸ 𝔭.asIdeal)` using `by rw [hq, Ideal.absNorm_apply, Submodule.cardQuot_apply]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hσ' : ∀ x : 𝓞 N, Ideal.Quotient.mk P (σ • x) = Ideal.Quotient.mk P x ^ q` using `fun x => by`. Use `hσ x` as an intermediate fact. Rewrite `this` using `[hu, ← hq']`. Rewrite using `[← map_pow, Ideal.Quotient.eq]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hσH : σ ∈ H` using `h σ ⟨P, hP, hPo, fun x => by`. Rewrite using `[← Ideal.Quotient.eq, map_pow]`. Conclude with `hσ' x⟩`. Establish `hpow : ∀ (i : ℕ) (x : 𝓞 N), Ideal.Quotient.mk P ((σ ^ i) • x) = Ideal.Quotient.mk P x ^ (q ^ i)`. Introduce `i`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Proceed by induction on `i with`. Consider the case `zero => simp`. Consider the case `succ i ih => intro x`. Rewrite using `[pow_succ', mul_smul, hσ', ih, ← pow_mul, pow_succ]`. Use `letI : Field (𝓞 K ⧸ 𝔭.asIdeal) := Ideal.Quotient.field _`.
+Rewrite the conclusion using the stated equalities. Equip the data with the indicated structure. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `letI : Field (𝓞 N ⧸ P) := Ideal.Quotient.field _`. Take `⟨p, hp⟩` from `CharP.exists (𝓞 K ⧸ 𝔭.asIdeal)`. Establish `: Fact p.Prime` using `⟨CharP.char_is_prime (𝓞 K ⧸ 𝔭.asIdeal) p⟩`. Take `⟨i, hi⟩` from `FiniteField.exists_forall_apply_eq_pow (𝓞 K ⧸ 𝔭.asIdeal) p (𝓞 N ⧸ P) (Ideal.Quotient.stabilizerHom P 𝔭.asIdeal (N ≃ₐ[K] N) ⟨τ, hτ⟩)`. Establish `hτ' : ∀ x : 𝓞 N, Ideal.Quotient.mk P (τ • x) = Ideal.Quotient.mk P x ^ (q ^ i)` using `fun x => by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite using `[hq', ← hi, Ideal.Quotient.stabilizerHom_apply]`. Both sides reduce to the same expression. Establish `h1 : σ * τ * (σ ^ i)⁻¹ ∈ H` using `h _ ⟨P, hP, hPo, fun x => by`. Rewrite using `[← Ideal.Quotient.eq, map_pow, mul_smul, mul_smul, hσ', hτ', ← hpow, smul_inv_smul]⟩`. Establish `h2` using `H.mul_mem (H.mul_mem (H.inv_mem hσH) h1) (H.pow_mem hσH i)`.
-
-Simplify `h2` using `[mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem mem_of_smul_eq (H : Subgroup (N ≃ₐ[K] N)) (𝔭 : HeightOneSpectrum (𝓞 K))
     (h : ∀ σ, GlobalTheory.NT.IsFrob N 𝔭 σ → σ ∈ H) (P : Ideal (𝓞 N)) [hP : P.IsPrime] [hPo : P.LiesOver 𝔭.asIdeal]
@@ -66,27 +64,25 @@ theorem mem_of_smul_eq (H : Subgroup (N ≃ₐ[K] N)) (𝔭 : HeightOneSpectrum 
   simpa [mul_assoc] using h2
 
 /- English proof (translation)
-Use `𝔭.isPrime` as an intermediate fact. Establish `hH : ∀ σ, GlobalTheory.NT.IsFrob N 𝔭 σ → σ ∈ M.fixingSubgroup` using `fun σ hσ => (IntermediateField.mem_fixingSubgroup_iff _ _).2 (h σ hσ)`. Take `⟨P, hP, hPo⟩` from `(inferInstance : Nonempty (𝔭.asIdeal.primesOver (𝓞 N)))`. Set `f : (N ≃ₐ[K] N) → Ideal (𝓞 M)` to `fun σ => (σ⁻¹ • P).under (𝓞 M)`. Establish `hker : ∀ σ τ, f σ = f τ ↔ σ⁻¹ * τ ∈ M.fixingSubgroup`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `σ τ`. Prove the components needed by the constructor for the conclusion. Introduce `e`. Take `⟨g, hg⟩` from `Algebra.IsInvariant.exists_smul_of_under_eq (𝓞 M) (𝓞 N) (N ≃ₐ[M] N) (σ⁻¹ • P) (τ⁻¹ • P) e`. Establish `hg' : τ⁻¹ • P = (g.restrictScalars K) • (σ⁻¹ • P)`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[hg]`. Both sides reduce to the same expression. Establish `hgH : g.restrictScalars K ∈ M.fixingSubgroup` using `(IntermediateField.mem_fixingSubgroup_iff _ _).2 fun x hx => g.commutes ⟨x, hx⟩`. Establish `h1` using `mem_of_smul_eq M.fixingSubgroup 𝔭 hH (σ⁻¹ • P) (σ⁻¹ * τ * g.restrictScalars K) (by`. Rewrite using `[mul_smul, ← hg', mul_smul, smul_inv_smul])`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(M.fixingSubgroup.mul_mem_cancel_right hgH).1 h1`. Introduce `e`. Establish `e'` using `(IntermediateField.mem_fixingSubgroup_iff _ _).1 e`. Use extensionality with `x`. Simplify using `only [f, Ideal.under, Ideal.mem_comap, Ideal.mem_inv_pointwise_smul_iff]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `: (σ⁻¹ * τ) • algebraMap (𝓞 M) (𝓞 N) x = algebraMap (𝓞 M) (𝓞 N) x`. Apply `RingOfIntegers.ext` to reduce the goal to its premises. Conclude with `e' _ (x : M).2`. Rewrite `this` using `[mul_smul, inv_smul_eq_iff]`. Rewrite using `[this]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `hr : Set.range f = 𝔭.asIdeal.primesOver (𝓞 M)`. Use extensionality with `Q`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨σ, rfl⟩`. Use `⟨inferInstance, ⟨?_⟩⟩` and prove the remaining obligations.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [f]`. Rewrite using `[Ideal.under_under]`. Conclude with `Ideal.LiesOver.over`. Introduce and unpack `⟨hQ, hQo⟩`. Take `⟨P', hP', hPo'⟩` from `(inferInstance : Nonempty (Q.primesOver (𝓞 N)))`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `: P'.LiesOver 𝔭.asIdeal` using `Ideal.LiesOver.trans P' Q _`. Take `⟨g, hg⟩` from `Algebra.IsInvariant.exists_smul_of_under_eq (𝓞 K) (𝓞 N) (N ≃ₐ[K] N) P P' (hPo.over.symm.trans this.over)`. Conclude with `⟨g⁻¹, by simp only [f]; rw [inv_inv, ← hg]; exact hPo'.over.symm⟩`. Establish `hs : (fun Q : HeightOneSpectrum (𝓞 M) => Q.asIdeal) '' {Q | Q.asIdeal.comap (algebraMap (𝓞 K) (𝓞 M)) = 𝔭.asIdeal} = 𝔭.asIdeal.primesOver (𝓞 M)`. Use extensionality with `Q`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨Q, hQ, rfl⟩`. Conclude with `⟨Q.isPrime, ⟨Eq.symm hQ⟩⟩`. Introduce and unpack `⟨hQ, hQo⟩`. Conclude with `⟨⟨Q, hQ, Ideal.ne_bot_of_liesOver_of_ne_bot 𝔭.ne_bot Q⟩, hQo.over.symm, rfl⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Rewrite using `[← Set.ncard_image_of_injective _ (fun _ _ e => HeightOneSpectrum.ext e), hs, ← hr, IntermediateField.finrank_eq_fixingSubgroup_index, Subgroup.index, ← Nat.card_coe_set_eq, ← Nat.card_congr (Setoid.quotientKerEquivRange f)]`. Establish `: Setoid.ker f = QuotientGroup.leftRel M.fixingSubgroup`. Use extensionality with `σ τ`. Rewrite using `[Setoid.ker_def, QuotientGroup.leftRel_apply, hker]`. Rewrite using `[this]`.
-
-Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem ncard_primes_eq_finrank_of_frob_fix (K N : Type) [Field K] [NumberField K] [Field N] [NumberField N]
     [Algebra K N] [IsGalois K N] (M : IntermediateField K N) (𝔭 : HeightOneSpectrum (𝓞 K))

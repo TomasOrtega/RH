@@ -27,7 +27,7 @@ def altSign {k : ℕ} (ε : Fin k → Bool) : ℤ := ∏ i, if ε i then 1 else 
 def altPoint {k : ℕ} (y : Fin k → V) (ε : Fin k → Bool) : V := ∑ i, if ε i then y i else 0
 
 /- English proof (translation)
-The claim follows from `| 0, h, y, s => by simp [altSign, altPoint] | k + 1, h, y, s => by rw [altSum_succ, altSum_eq_sum k, ← (Fin.consEquiv fun _ => Bool).sum_comp, Fintype.sum_prod_type, Fintype.sum_bool, ← Finset.sum_add_distrib] refine Finset.sum_congr rfl fun ε _ => ?_ simp only [Fin.consEquiv_app …`.
+A detailed English derivation is pending.
 -/
 theorem altSum_eq_sum : ∀ (k : ℕ) (h : V → W) (y : Fin k → V) (s : V),
     altSum k h y s = ∑ ε : Fin k → Bool, altSign ε • h (s + altPoint y ε)

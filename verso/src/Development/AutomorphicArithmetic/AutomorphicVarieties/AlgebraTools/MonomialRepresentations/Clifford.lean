@@ -22,7 +22,7 @@ private def cliffTr (g : G) (W : Subrepresentation (ρ.comp N.subtype : Represen
     exact h
 
 /- English proof (translation)
-Apply `Subrepresentation.toSubmodule_injective` to reduce the goal to its premises. Use extensionality with `v`. Express the relevant statement in the definitionally equal form `ρ g (ρ h v) ∈ W.toSubmodule ↔ _`. Rewrite using `[← Module.End.mul_apply, ← map_mul, hgh, map_one]`. Both sides reduce to the same expression.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem cliffTr_mul (g h : G) (hgh : g * h = 1)
     (W : Subrepresentation (ρ.comp N.subtype : Representation K N V)) :
@@ -48,25 +48,21 @@ end
 end UpperTheory.V.AlgebraTools
 
 /- English proof (translation)
-Introduce `K G V _ _ _ _ _ ρ N _ hirr`. Rewrite using `[Representation.isSemisimpleRepresentation_iff_isSemisimpleModule_asModule, ← sSup_simples_eq_top_iff_isSemisimpleModule]`. Set `e` to `Subrepresentation.subrepresentationSubmoduleOrderIso (ρ := ρ.comp N.subtype)`. Set `A` to `{m : Submodule (MonoidAlgebra K N) (Representation.asModule (ρ.comp N.subtype)) | IsSimpleModule (MonoidAlgebra K N) m}`. Establish `hA : ∀ m, m ∈ A ↔ IsAtom m` using `fun m => isSimpleModule_iff_isAtom`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `sSup A = ⊤`. Establish `inv : ∀ g : G, ∀ v : V, v ∈ e.symm (sSup A) → ρ g v ∈ e.symm (sSup A)`. Introduce `g v hv`. Set `φ` to `e.symm.trans ((UpperTheory.V.AlgebraTools.cliffIso ρ N g).trans e)`. Establish `hφ : φ (sSup A) = sSup A`.
+Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[OrderIso.map_sSup]`. Apply `le_antisymm` to reduce the goal to its premises. Use `iSup₂_le fun a ha => le_sSup ?_` and prove the remaining obligations. Conclude with `(hA _).2 ((φ.isAtom_iff a).2 ((hA a).1 ha))`. Use `sSup_le fun b hb => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hb' : φ.symm b ∈ A` using `(hA _).2 ((φ.symm.isAtom_iff b).2 ((hA b).1 hb))`. Establish `h` using `le_iSup₂ (f := fun a (_ : a ∈ A) => φ a) (φ.symm b) hb'`. Simplify using `using h`. Establish `h : v ∈ e.symm (φ (sSup A))` using `by rw [hφ]; exact hv`. Conclude with `h`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Introduce a local definition for the expression. Separate the alternatives or extract the components of the hypothesis.
 
-Set `T : Subrepresentation ρ` to `⟨(e.symm (sSup A)).toSubmodule, fun g v hv => inv g v hv⟩`. Break down `eq_bot_or_eq_top T with hT | hT` into its components or cases. It suffices to derive a contradiction. Establish `hmono : StrictMono (Subrepresentation.toSubmodule : Subrepresentation (ρ.comp N.subtype) → Submodule K V)` using `fun x y h => h`. Use `haveI := hmono.wellFoundedLT`.
+It suffices to derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Use `haveI : IsAtomic (Subrepresentation (ρ.comp N.subtype)) := isAtomic_of_orderBot_wellFounded_lt wellFounded_lt`. Establish `hne : (⊤ : Subrepresentation (ρ.comp N.subtype)) ≠ ⊥`. Introduce `h`. Apply `(bot_ne_top : (⊥ : Subrepresentation ρ) ≠ ⊤)` to reduce the goal to its premises. Apply `Subrepresentation.ext` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Conclude with `(congrArg Subrepresentation.toSubmodule h).symm`. Take `⟨a, ha, -⟩` from `(eq_bot_or_exists_atom_le (⊤ : Subrepresentation (ρ.comp N.subtype))).resolve_left hne`. Establish `h1 : a ≤ e.symm (sSup A)`. Establish `h0 : e a ≤ sSup A` using `le_sSup ((hA _).2 ((e.isAtom_iff a).2 ha))`. Simplify using `using e.symm.monotone h0`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h2 : (e.symm (sSup A)).toSubmodule = ⊥` using `congrArg Subrepresentation.toSubmodule hT`. Apply `ha.1` to reduce the goal to its premises. Apply `Subrepresentation.ext` to reduce the goal to its premises. Apply `le_antisymm _ bot_le` to reduce the goal to its premises. Introduce `v hv`.
-
-Establish `h3 : v ∈ (e.symm (sSup A)).toSubmodule` using `h1 hv`. Rewrite `h3` using `[h2]`. Conclude with `h3`. Use `eq_top_iff.2 fun v _ => ?_` and prove the remaining obligations. Establish `h3 : (show V from v) ∈ T.toSubmodule` using `by rw [hT]; exact Submodule.mem_top`.
-
-Conclude with `h3`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.AlgebraTools.clifford :
     ∀ (K G V : Type) [Field K] [Group G] [AddCommGroup V] [Module K V] [FiniteDimensional K V] (ρ : Representation K G V)

@@ -15,17 +15,15 @@ variable {G : Type*} [Group G] [MeasurableSpace G] [MeasurableMul₂ G] [Measura
   {H : Subgroup G} {μH : Measure H} [SFinite μH] [μH.IsInvInvariant]
 
 /- English proof (translation)
-Establish `hmulH : Measurable fun p : H × G => (p.1 : G) * p.2` using `(measurable_subtype_coe.comp measurable_fst).mul measurable_snd`. Use `set E : Set G := {g | ρ g = ∞} with hEdef`. Establish `hE : MeasurableSet E` using `hρ.1 (measurableSet_singleton ∞)`. Establish `hind : Measurable (E.indicator (1 : G → ℝ≥0∞))` using `measurable_one.indicator hE`. Establish `hzero : ∀ g : G, ∫⁻ h : H, E.indicator (1 : G → ℝ≥0∞) ((h : G) * g) ∂μH = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `g`. Establish `hm : Measurable fun h : H => ρ ((h : G) * g)` using `hρ.1.comp (measurable_subtype_coe.mul_const g)`. Establish `hfin : ∀ᵐ h : H ∂μH, ρ ((h : G) * g) < ∞` using `ae_lt_top hm (by rw [hρ.2 g]; exact ENNReal.one_ne_top)`. Use `(lintegral_congr_ae ?_).trans lintegral_zero` and prove the remaining obligations. Use `filter_upwards [hfin] with h hh`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[hEdef, Set.indicator, hh.ne]`. Establish `key : ∫⁻ h : H, ∫⁻ g, E.indicator (1 : G → ℝ≥0∞) ((h : G) * g) ∂μG ∂μH = 0`. Rewrite using `[lintegral_lintegral_swap]`. Simplify using `[hzero]`. Conclude with `(hind.comp hmulH).aemeasurable`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `h2 : ∀ h : H, ∫⁻ g, E.indicator (1 : G → ℝ≥0∞) ((h : G) * g) ∂μG = μG E` using `fun h => by`. Rewrite using `[lintegral_mul_left_eq_self (E.indicator (1 : G → ℝ≥0∞)) (h : G), lintegral_indicator_one hE]`. Simplify using `only [h2, lintegral_const] at key`. Establish `hne : μH Set.univ ≠ 0`. Introduce `h0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `h1` using `hρ.2 1`. Rewrite `h1` using `[Measure.measure_univ_eq_zero.1 h0]`. Simplify using `at h1`. Establish `hE0 : μG E = 0` using `(mul_eq_zero.1 key).resolve_right hne`. Use `filter_upwards [measure_eq_zero_iff_ae_notMem.1 hE0] with g hg`.
-
-Conclude with `lt_top_iff_ne_top.2 hg`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem ae_lt_top_of_normaliser {ρ : G → ℝ≥0∞} (hρ : IsQuotNormaliser H μH ρ) :
     ∀ᵐ g ∂μG, ρ g < ∞ := by
@@ -61,9 +59,9 @@ theorem ae_lt_top_of_normaliser {ρ : G → ℝ≥0∞} (hρ : IsQuotNormaliser 
   exact lt_top_iff_ne_top.2 hg
 
 /- English proof (translation)
-Establish `aux : ∀ {σ : G → ℝ≥0∞}, IsQuotNormaliser H μH σ → ∫ g, f g * (σ g).toReal ∂μG = (∫⁻ g, ENNReal.ofReal (f g) * σ g ∂μG).toReal`. Introduce `σ hσ`. Rewrite using `[integral_eq_lintegral_of_nonneg_ae (Eventually.of_forall fun g => mul_nonneg (hf0 g) ENNReal.toReal_nonneg) (hf.mul hσ.1.ennreal_toReal).aestronglyMeasurable]`. Use `congr 1`. Use `lintegral_congr_ae ?_` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Use `filter_upwards [ae_lt_top_of_normaliser (μG := μG) hσ] with g hg`. Rewrite using `[ENNReal.ofReal_mul (hf0 g), ENNReal.ofReal_toReal hg.ne]`. Rewrite using `[aux hρ, aux hρ', lintegral_normaliser_eq (F := fun g => ENNReal.ofReal (f g)) hf.ennreal_ofReal (fun h hh g => by simp only [hfH h hh g]) hρ hρ']`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integral_nonneg_normaliser_eq {f : G → ℝ} (hf : Measurable f) (hf0 : ∀ g, 0 ≤ f g)
     (hfH : ∀ h ∈ H, ∀ g, f (h * g) = f g) {ρ ρ' : G → ℝ≥0∞}
@@ -83,9 +81,9 @@ theorem integral_nonneg_normaliser_eq {f : G → ℝ} (hf : Measurable f) (hf0 :
     hf.ennreal_ofReal (fun h hh g => by simp only [hfH h hh g]) hρ hρ']
 
 /- English proof (translation)
-Establish `aux : ∀ {σ : G → ℝ≥0∞}, IsQuotNormaliser H μH σ → ∫⁻ g, ‖F g * ((σ g).toReal : ℂ)‖ₑ ∂μG = ∫⁻ g, ‖F g‖ₑ * σ g ∂μG`. Introduce `σ hσ`. Use `lintegral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [ae_lt_top_of_normaliser (μG := μG) hσ] with g hg`. Rewrite using `[enorm_mul, ← ofReal_norm_eq_enorm ((σ g).toReal : ℂ), Complex.norm_real, Real.norm_of_nonneg ENNReal.toReal_nonneg, ENNReal.ofReal_toReal hg.ne]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hm : ∀ {σ : G → ℝ≥0∞}, IsQuotNormaliser H μH σ → AEStronglyMeasurable (fun g => F g * ((σ g).toReal : ℂ)) μG` using `fun hσ => (hF.mul (Complex.measurable_ofReal.comp hσ.1.ennreal_toReal)).aestronglyMeasurable`. Establish `heq` using `lintegral_normaliser_eq (μG := μG) (F := fun g => ‖F g‖ₑ) hF.enorm (fun h hh g => by simp only [hFH h hh g]) hρ hρ'`. Simplify using `only [Integrable, hm hρ, hm hρ', true_and, hasFiniteIntegral_iff_enorm, aux hρ, aux hρ', heq]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem integrable_normaliser_iff {F : G → ℂ} (hF : Measurable F)
     (hFH : ∀ h ∈ H, ∀ g, F (h * g) = F g) {ρ ρ' : G → ℝ≥0∞}
@@ -107,15 +105,13 @@ theorem integrable_normaliser_iff {F : G → ℂ} (hF : Measurable F)
   simp only [Integrable, hm hρ, hm hρ', true_and, hasFiniteIntegral_iff_enorm, aux hρ, aux hρ', heq]
 
 /- English proof (translation)
-Establish `part : ∀ {σ : G → ℝ≥0∞} {u : G → ℝ}, IsQuotNormaliser H μH σ → Measurable u → (∀ g, |u g| ≤ |f g|) → Integrable (fun g => f g * (σ g).toReal) μG → Integrable (fun g => u g * (σ g).toReal) μG`. Introduce `σ u hσ hu hle h`. Use `h.mono (hu.mul hσ.1.ennreal_toReal).aestronglyMeasurable (ae_of_all _ fun g => ?_)` and prove the remaining obligations. Simplify using `only [norm_mul, Real.norm_eq_abs]`. Conclude with `mul_le_mul_of_nonneg_right (hle g) (abs_nonneg _)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hp : Measurable fun g => max (f g) 0` using `hf.max measurable_const`. Establish `hn : Measurable fun g => max (-f g) 0` using `hf.neg.max measurable_const`. Establish `hpl : ∀ g, |max (f g) 0| ≤ |f g|` using `fun g => by`. Rewrite using `[abs_of_nonneg (le_max_right _ _)]`. Conclude with `max_le (le_abs_self _) (abs_nonneg _)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hnl : ∀ g, |max (-f g) 0| ≤ |f g|` using `fun g => by`. Rewrite using `[abs_of_nonneg (le_max_right _ _)]`. Conclude with `max_le (neg_le_abs _) (abs_nonneg _)`. Establish `dec : ∀ {σ : G → ℝ≥0∞}, IsQuotNormaliser H μH σ → Integrable (fun g => f g * (σ g).toReal) μG → ∫ g, f g * (σ g).toReal ∂μG = ∫ g, max (f g) 0 * (σ g).toReal ∂μG - ∫ g, max (-f g) 0 * (σ g).toReal ∂μG`. Introduce `σ hσ h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[← integral_sub (part hσ hp hpl h) (part hσ hn hnl h)]`. Use `integral_congr_ae (ae_of_all _ fun g => ?_)` and prove the remaining obligations. Establish `: f g = max (f g) 0 - max (-f g) 0` using `(max_zero_sub_max_neg_zero_eq_self (f g)).symm`. Simplify using `only`. Rewrite using `[← sub_mul, ← this]`.
-
-Rewrite using `[dec hρ hi, dec hρ' hi', integral_nonneg_normaliser_eq hp (fun g => le_max_right _ _) (fun h hh g => by simp only [hfH h hh g]) hρ hρ', integral_nonneg_normaliser_eq hn (fun g => le_max_right _ _) (fun h hh g => by simp only [hfH h hh g]) hρ hρ']`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integral_real_normaliser_eq {f : G → ℝ} (hf : Measurable f)
     (hfH : ∀ h ∈ H, ∀ g, f (h * g) = f g) {ρ ρ' : G → ℝ≥0∞}
@@ -155,15 +151,13 @@ theorem integral_real_normaliser_eq {f : G → ℝ} (hf : Measurable f)
       (fun h hh g => by simp only [hfH h hh g]) hρ hρ']
 
 /- English proof (translation)
-Establish `hiff` using `integrable_normaliser_iff (μG := μG) hF hFH hρ hρ'`. Distinguish the cases in `hi : Integrable (fun g => F g * ((ρ g).toReal : ℂ)) μG`. Establish `hi'` using `hiff.1 hi`. Establish `ere : ∀ {σ : G → ℝ≥0∞}, Integrable (fun g => F g * ((σ g).toReal : ℂ)) μG → Integrable (fun g => (F g).re * (σ g).toReal) μG ∧ (∫ g, F g * ((σ g).toReal : ℂ) ∂μG).re = ∫ g, (F g).re * (σ g).toReal ∂μG`. Introduce `σ h`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1` using `Complex.reCLM.integrable_comp h`. Establish `h2` using `Complex.reCLM.integral_comp_comm h`. Simplify using `only [Complex.reCLM_apply, Complex.re_mul_ofReal] at h1 h2`. Conclude with `⟨h1, h2.symm⟩`. Establish `eim : ∀ {σ : G → ℝ≥0∞}, Integrable (fun g => F g * ((σ g).toReal : ℂ)) μG → Integrable (fun g => (F g).im * (σ g).toReal) μG ∧ (∫ g, F g * ((σ g).toReal : ℂ) ∂μG).im = ∫ g, (F g).im * (σ g).toReal ∂μG`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Supply the required witnesses or components. Establish an intermediate fact.
 
-Introduce `σ h`. Establish `h1` using `Complex.imCLM.integrable_comp h`. Establish `h2` using `Complex.imCLM.integral_comp_comm h`. Simplify using `only [Complex.imCLM_apply, Complex.im_mul_ofReal] at h1 h2`. Conclude with `⟨h1, h2.symm⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 
-Apply `Complex.ext` to reduce the goal to its premises. Rewrite using `[(ere hi).2, (ere hi').2]`. Conclude with `integral_real_normaliser_eq (Complex.measurable_re.comp hF) (fun h hh g => by simp only [Function.comp, hFH h hh g]) hρ hρ' (ere hi).1 (ere hi').1`. Rewrite using `[(eim hi).2, (eim hi').2]`. Conclude with `integral_real_normaliser_eq (Complex.measurable_im.comp hF) (fun h hh g => by simp only [Function.comp, hFH h hh g]) hρ hρ' (eim hi).1 (eim hi').1`.
-
-Rewrite using `[integral_undef hi, integral_undef (fun h => hi (hiff.2 h))]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integral_normaliser_eq_of {F : G → ℂ} (hF : Measurable F)
     (hFH : ∀ h ∈ H, ∀ g, F (h * g) = F g) {ρ ρ' : G → ℝ≥0∞}
@@ -198,7 +192,7 @@ theorem integral_normaliser_eq_of {F : G → ℂ} (hF : Measurable F)
   · rw [integral_undef hi, integral_undef (fun h => hi (hiff.2 h))]
 
 /- English proof (translation)
-Establish `hex : ∃ ρ, IsQuotNormaliser H μH ρ` using `⟨ρ, hρ⟩`. Rewrite using `[quotIntegral, dif_pos hex]`. Conclude with `integral_normaliser_eq_of hF hFH hex.choose_spec hρ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem quotIntegral_eq {F : G → ℂ} (hF : Measurable F)
     (hFH : ∀ h ∈ H, ∀ g, F (h * g) = F g) {ρ : G → ℝ≥0∞} (hρ : IsQuotNormaliser H μH ρ) :
@@ -208,7 +202,7 @@ theorem quotIntegral_eq {F : G → ℂ} (hF : Measurable F)
   exact integral_normaliser_eq_of hF hFH hex.choose_spec hρ
 
 /- English proof (translation)
-Introduce `G _ _ _ _ _ _ _ μ _ H μH _ _ F ρ₁ ρ₂ hF hFH hρ₁ hρ₂`. Conclude with `integral_normaliser_eq_of (μG := μ) hF hFH hρ₁ hρ₂`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem integral_normaliser_eq : PositivityTheory.Rg.BcB.D4.NormEq := by
   intro G _ _ _ _ _ _ _ μ _ H μH _ _ F ρ₁ ρ₂ hF hFH hρ₁ hρ₂

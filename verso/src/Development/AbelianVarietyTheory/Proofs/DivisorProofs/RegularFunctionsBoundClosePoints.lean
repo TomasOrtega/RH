@@ -16,7 +16,7 @@ noncomputable section
 namespace GlobalTheory.HtLocBound
 
 /- English proof (translation)
-Take `⟨a, rfl⟩` from `hf`. Take `⟨b, rfl⟩` from `hg`. Rewrite using `[← map_mul, Base.valAt_stalk, Base.valAt_stalk, Base.valAt_stalk, map_mul]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem valAt_mul {K : Type} [Field K] {Z : Scheme.{0}} [IsIntegral Z] (y : Sp K ⟶ Z) {f g : Z.functionField}
     (hf : RegAt (below y) f) (hg : RegAt (below y) g) : valAt y (f * g) = valAt y f * valAt y g := by
@@ -25,9 +25,9 @@ theorem valAt_mul {K : Type} [Field K] {Z : Scheme.{0}} [IsIntegral Z] (y : Sp K
   rw [← map_mul, Base.valAt_stalk, Base.valAt_stalk, Base.valAt_stalk, map_mul]
 
 /- English proof (translation)
-Take `⟨a, rfl⟩` from `hf`. Take `⟨b, rfl⟩` from `hg`. Take `⟨c, hc, e⟩` from `h`. Rewrite `e` using `[← map_mul]`. Take `rfl` from `IsFractionRing.injective (X.presheaf.stalk x) X.functionField e`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨b, isUnit_of_mul_isUnit_right hc, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem unitAt_of_mul {X : Scheme.{0}} [IsIntegral X] {x : X} {f g : X.functionField} (hf : RegAt x f)
     (hg : RegAt x g) (h : UnitAt x (f * g)) : UnitAt x g := by
@@ -39,9 +39,9 @@ theorem unitAt_of_mul {X : Scheme.{0}} [IsIntegral X] {x : X} {f g : X.functionF
   exact ⟨b, isUnit_of_mul_isUnit_right hc, rfl⟩
 
 /- English proof (translation)
-Take `⟨e, he, hu⟩` from `hg`. Establish `h1` using `he.regularAt_iff.1 hf`. Establish `hg0 : g ≠ 0` using `left_ne_zero_of_mul hu.ne_zero`. Establish `he0 : (e : X.functionField) ≠ 0` using `e.ne_zero`. Establish `h2 : f / g = f * e * (g * e)⁻¹` using `by field_simp`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[h2]`. Conclude with `h1.mul hu.inv.regAt`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem regAt_div {X : Scheme.{0}} [IsIntegral X] {D : CartierDiv X} {x : X} {f g : X.functionField}
     (hf : D.RegularAt x f) (hg : D.GeneratesAt x g) : RegAt x (f / g) := by
@@ -54,7 +54,7 @@ theorem regAt_div {X : Scheme.{0}} [IsIntegral X] {D : CartierDiv X} {x : X} {f 
   exact h1.mul hu.inv.regAt
 
 /- English proof (translation)
-Take `⟨e, he, hu⟩` from `ht`. Use `⟨e, he, unitAt_of_mul h (he.regularAt_iff.1 hs) ?_⟩` and prove the remaining obligations. Establish `h2 : t / s * (s * e) = t * e` using `by field_simp`. Rewrite using `[h2]`. Conclude with `hu`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem generatesAt_of_div {X : Scheme.{0}} [IsIntegral X] {D : CartierDiv X} {x : X} {s t : X.functionField}
     (hs : D.RegularAt x s) (ht : D.GeneratesAt x t) (h : RegAt x (t / s)) (hs0 : s ≠ 0) :
@@ -66,31 +66,29 @@ theorem generatesAt_of_div {X : Scheme.{0}} [IsIntegral X] {D : CartierDiv X} {x
   exact hu
 
 /- English proof (translation)
-Introduce `F _ _ C Y A hA ⟨M, L, q, hI⟩ hsm`. Take `⟨m, hm, hg⟩` from `InducedGen.exists_isGenerated_pow F C Y A M L q 0 hI hA`. Establish `hI'` using `InducedPow.induced_pow F C Y A M L q ⟨m, hm⟩ 0 hI`. Generalize the expression as in `hk : q * ⟨m, hm⟩ = k at hI'`. Take `⟨-, r, hr, -, -⟩` from `id hI'`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Extract witnesses or component facts from the available result.
 
-Take `⟨N, σ, hσ⟩` from `hg`. Establish `hgen : ∀ x : Y.X, ∃ i, ((k : ℕ) • A.D).GeneratesAt x (hr.rat (σ i))` using `fun x => by`. Take `⟨i, hi⟩` from `Opens.mem_iSup.1 (hσ.ge (Set.mem_univ x))`. Conclude with `⟨i, (hr.generatesAt_rat_iff _).2 hi⟩`. Take `⟨i₀, hi₀⟩` from `hgen (genericPoint Y.X)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Set `s : Fin (N + 1) → Y.Fn` to `Fin.cons (hr.rat (σ i₀)) fun i => hr.rat (σ i)`. Establish `hsH : ∀ i, s i ∈ Y.H0 ((k : ℕ) • A.D)` using `fun i => by`. Apply the tactic sequence `refine Fin.cases ?_ (fun i => ?_) i <;> exact Var.mem_riemannRochSpace_iff_regularAt_everywhere.2 (CartierDiv.mem_sections.1 (hr.rat_mem _))`. Establish `hsgen : ∀ x : Y.X, ∃ i, ((k : ℕ) • A.D).GeneratesAt x (s i)` using `fun x =>`. Establish `⟨i, hi⟩` using `hgen x`.
+Introduce a local definition for the expression. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact.
 
-Use the proof step `⟨i.succ, hi⟩`. Establish `hne : s 0 ≠ 0` using `hi₀.ne_zero`. Use `⟨N + 1, fun i => s i / s 0, ⟨Out.nonzeroLocus (σ i₀), ⟨genericPoint Y.X, (hr.generatesAt_rat_iff _).1 hi₀⟩, fun x hx i => regAt_div (Var.mem_riemannRochSpace_iff_regularAt_everywhere.1 (hsH i) x) ((hr.generatesAt_rat_iff _).2 hx)⟩, ?_⟩` and prove the remaining obligations. Introduce `a b hb`. Use `choose c hc hcz using fun τ : F →+* ℂ => GlobalTheory.T.generated_sections_metric_lower_bound F C Y A.D τ (A.m τ) (hsm τ) k (N + 1) s hsH hsgen`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨d, hd, hdy⟩` from `GlobalTheory.T.generated_sections_finite_metric_bound F C Y A M _ k hI' (N + 1) s hsH hsgen`. Use `⟨(∑ τ : F →+* ℂ, (Real.log ((a ^ 2 + 1) / c τ) / 2 + (k : ℕ) * (A.n : ℕ) * A.ci (InfinitePlace.mk τ)) + ∑ᶠ v, (d v + b v)) / ((k : ℕ) * (A.n : ℕ) * (Module.finrank ℚ F : ℝ)), fun x hx hreg harch hfin => ?_⟩` and prove the remaining obligations. Establish `hgx : ((k : ℕ) • A.D).GeneratesAt x (s 0)`. Take `⟨j, hj⟩` from `hsgen x`. Conclude with `generatesAt_of_div (Var.mem_riemannRochSpace_iff_regularAt_everywhere.1 (hsH 0) x) hj (hreg j) hne`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `GlobalTheory.T.adelic_metric_generated_sections_bound F C Y A k x hx (fun y _ => finite_places_lg_ne_zero F C Y A M _ k 0 hI' y) (s 0) hgx (fun τ => Real.log ((a ^ 2 + 1) / c τ) / 2) (fun v => d v + b v) ((hd.union hb).subset (Function.support_add _ _)) ?_ ?_` and prove the remaining obligations. Introduce `τ z hz`. Take `⟨j, hj⟩` from `hcz τ z`. Establish `e1 : s j = s j / s 0 * s 0` using `(div_mul_cancel₀ _ hne).symm`. Establish `hreg' : RegAt (under z) (s j / s 0)` using `hz ▸ hreg j`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hpn` using `C.pn_mul Y τ _ (C.mPow Y τ A.D (k : ℕ) (A.m τ)) (s j / s 0) (s 0) z hreg' (Var.mem_riemannRochSpace_iff_regularAt_everywhere.1 (hsH 0) _)`. Rewrite `hpn` using `[← e1]`. Rewrite `hj` using `[hpn]`. Establish `ha` using `harch τ z hz j`. Establish `hp0` using `C.pn_nonneg Y τ _ (C.mPow Y τ A.D (k : ℕ) (A.m τ)) (C.cx Y τ (s 0)) z`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hn` using `norm_nonneg (ratVal (s j / s 0) z)`. Establish `hc0` using `hc τ`. Establish `hex : Real.exp (-(2 * (Real.log ((a ^ 2 + 1) / c τ) / 2))) = c τ / (a ^ 2 + 1)`. Rewrite using `[show -(2 * (Real.log ((a ^ 2 + 1) / c τ) / 2)) = -Real.log ((a ^ 2 + 1) / c τ) by ring, Real.exp_neg, Real.exp_log (by positivity), inv_div]`. Rewrite using `[hex, div_le_iff₀ (by positivity)]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h2 : ‖ratVal (s j / s 0) z‖ ^ 2 ≤ a ^ 2` using `pow_le_pow_left₀ hn ha 2`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_right h2 hp0]`. Introduce `v e y hy`. Take `⟨j, hj⟩` from `hdy v e y`. Rewrite `hj` using `[hy]`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `hg0 : RegAt x (s 0 * (eqn A.D x : Y.Fn) ^ (k : ℕ))`. Establish `h1` using `((Base.isEqn_eqn A.D x).nsmul (k : ℕ)).regularAt_iff.1 (Var.mem_riemannRochSpace_iff_regularAt_everywhere.1 (hsH 0) x)`. Rewrite `h1` using `[Units.val_pow_eq_pow_val]`. Then use the resulting hypothesis. Establish `e1 : s j * (eqn A.D x : Y.Fn) ^ (k : ℕ) = s j / s 0 * (s 0 * (eqn A.D x : Y.Fn) ^ (k : ℕ))`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hj` using `[e1, valAt_mul y.1 (hy ▸ hreg j) (hy ▸ hg0), map_mul]`. Establish `hw` using `hfin v e y hy j`. Establish `hW` using `e.w.nonneg (valAt y.1 (s 0 * (eqn A.D x : Y.Fn) ^ (k : ℕ)))`. Establish `hE` using `Real.exp_pos ((k : ℕ) * A.lg v e y)`. Establish `hb0` using `Real.exp_pos (b v)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : Real.exp (-d v) ≤ Real.exp (b v) * (e.w (valAt y.1 (s 0 * (eqn A.D x : Y.Fn) ^ (k : ℕ))) * Real.exp ((k : ℕ) * A.lg v e y))`. Use `hj.trans ?_` and prove the remaining obligations. Rewrite using `[mul_assoc]`. Conclude with `mul_le_mul_of_nonneg_right hw (by positivity)`. Rewrite using `[neg_add, Real.exp_add, Real.exp_neg (b v), mul_inv_le_iff₀ hb0]`.
-
-Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem htLoc : ∀ (F : Type) [Field F] [NumberField F] (C : CxSt F) (Y : Var F) (A : Adl C Y), Y.ample A.D →
   (∃ (M : Model Y) (L : GlobalTheory.HermLB M.p) (q : ℕ+), A.Induced M L q 0) → (∀ σ, C.mSmooth Y σ A.D (A.m σ)) →

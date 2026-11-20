@@ -22,23 +22,21 @@ namespace GlobalTheory.CoverLift
 open Limits GlobalTheory.MixHt
 
 /- English proof (translation)
-Introduce `k _ X X' Y _ _ _ p D E ρ π hX hX' hY hρ`. Take `⟨N, j, _, hj⟩` from `hX.isProjOver`. Use `isProper_str k N` as an intermediate fact. Establish `: IsProper p` using `hj ▸ inferInstance`. Take `⟨N', j', _, hj'⟩` from `hX'.isProjOver`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `: IsProper (ρ ≫ p)` using `hj' ▸ inferInstance`. Establish `: IsProper ρ` using `IsProper.of_comp ρ p`. Establish `hs : Function.Surjective ρ`. Rewrite using `[← Set.range_eq_univ]`. Use `Set.eq_univ_of_univ_subset ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← (genericPoint_spec X).def, ← ρ.isClosedMap.isClosed_range.closure_eq]`. Conclude with `closure_mono (Set.singleton_subset_iff.2 ⟨_, hρ⟩)`. Establish `: Surjective ρ` using `⟨hs⟩`. Take `⟨z, hz, hdeg⟩` from `exists_residueDegree_pos_of_mem_range _ _ (pullback.fst π ρ) (genericPoint Y) ((inferInstance : Surjective (pullback.fst π ρ)).surj _)`. Use `set g := cloι z ≫ pullback.fst π ρ with hgdef`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hg : g (genericPoint (clo z)) = genericPoint Y`. Rewrite using `[hgdef, Scheme.Hom.comp_apply, cloι_genericPoint, hz]`. Establish `hdeg' : g.residueDegree (genericPoint (clo z)) ≠ 0`. Rewrite using `[hgdef, CurveDegreesCompare.residueDegree_comp, Published.residueDegree_of_isClosedImmersion (cloι z), mul_one, cloι_genericPoint]`. Conclude with `hdeg.ne'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hP : IsProjOver (pullback.fst π ρ ≫ π ≫ p)` using `FlagFamily.isProjOver_pullback_over hX.isProjOver hY.isProjOver hX'.isProjOver`. Establish `hA : IsAmb (g ≫ π ≫ p)`. Use `(IsAmb.mk hX.1 hX.2 hP).sub (cloι z)` as an intermediate fact. Rewrite `this` using `[← Category.assoc]`. Then use the resulting hypothesis. Establish `hAY : IsAmb (π ≫ p)` using `isAmb_of_isArithVar hY`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨⟨m, hm⟩, -, -, -, -, hgen⟩` from `hasDim_basic k (clo z) (g ≫ π ≫ p) hA`. Take `⟨d, -, hd⟩` from `hm (genericPoint (clo z))`. Establish `hdY : HasDim (g (genericPoint (clo z))) (E + 1)`. Rewrite using `[hg]`. Conclude with `(DimBasic.hasDim_genericPoint_iff Y (E + 1)).2 hY.dim_eq`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcmp` using `DimDeg.dim_le_and_residueDegree_ne_zero_iff k Y (clo z) (π ≫ p) (g ≫ π ≫ p) hAY hA g rfl (genericPoint (clo z)) d (E + 1) hd hdY`. Establish `hdim : topologicalKrullDim (clo z) = (E + 1 : ℕ)` using `(hgen (clo z) (E + 1)).1 (hcmp.2.1 hdeg' ▸ hd)`. Establish `hcY : CharZero Γ(Y, ⊤)` using `hY.charZero`. Establish `h₁ : CharZero Y.functionField` using `charZero_of_injective_ringHom (fnOf_injective (⊤ : Y.Opens) (Opens.mem_top _))`. Establish `h₂ : CharZero (Y.residueField (genericPoint Y))`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `f : Y.functionField →+* Y.residueField (genericPoint Y)` to `(Y.residue _).hom`. Conclude with `charZero_of_injective_ringHom f.injective`. Establish `h₃ : CharZero (Y.residueField (g (genericPoint (clo z))))` using `hg ▸ h₂`. Establish `h₄ : CharZero ((clo z).residueField (genericPoint (clo z)))` using `charZero_of_injective_ringHom (g.residueFieldMap _).hom.injective`. Establish `h₅ : CharZero (clo z).functionField`.
-
-Set `f : (clo z).functionField →+* (clo z).residueField (genericPoint (clo z))` to `((clo z).residue _).hom`. Conclude with `(RingHom.charZero_iff f.injective).2 h₄`. Establish `h₆ : CharZero Γ(clo z, ⊤)` using `(RingHom.charZero_iff (fnOf_injective (⊤ : (clo z).Opens) (Opens.mem_top _))).2 h₅`. Use `⟨clo z, inferInstance, g, cloι z ≫ pullback.snd π ρ, ?_, ⟨hX.1, hX.2, inferInstance, hA.isProjOver, (flat_int_iff_charZero _).2 h₆, hdim⟩, hg, hdeg'⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, ← pullback.condition, ← Category.assoc]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_cover_over_modification : ∀ (k : Type) [CommRing k] (X X' Y : Scheme.{0}) [IsIntegral X] [IsIntegral X']
     [IsIntegral Y] (p : X ⟶ Sp k) (D E : ℕ) (ρ : X' ⟶ X) (π : Y ⟶ X), IsArithVar p D → IsArithVar (ρ ≫ p) D →

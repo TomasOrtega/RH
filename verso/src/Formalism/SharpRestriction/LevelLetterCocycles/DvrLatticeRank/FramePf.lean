@@ -28,11 +28,11 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     (hu : IsUnit (algebraMap (LetA O n) W.EE π'))
 
 /- English proof (translation)
-Introduce `H H' K₁ K₂ lam h₁ h₂`. Take `⟨βφ, hβφ⟩` from `framepf_phiBasis Bs hT`. Set `eb : Module.Basis (Fin Bs.r) O (LcQ W T π' c)` to `Module.Basis.ofEquivFun (framepf_Lbas Bs π' c hπ0 hΔπ hR2 γ0 hu)`. Establish `heb : ∀ j, eb j = framepf_ebar Bs π' c hπ0 hΔπ hR2 γ0 hu j` using `fun j => by`. Simplify using `only [eb, Module.Basis.coe_ofEquivFun, framepf_ebar]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hΨ : ∀ (e : W.EE) j, framepf_Ψα Bs π' c hπ0 hΔπ hR2 γ0 hu H (e ⊗ₜ eb j) = e • ∑ m, W.φA (framepf_ι π' (c - 1) (H m j)) • W.φD T (Bs.b m)` using `fun e j => by`. Rewrite using `[heb, framepf_Ψα_tmul, framepf_hh_ebar, framepf_φD_vec]`. Establish `hΦ : ∀ a : Fin Bs.r → LetA O n, framepf_Ψβ Bs π' c hπ0 hΔπ hR2 γ0 hu βφ H' (∑ k, a k • W.φD T (Bs.b k)) = ∑ j, algebraMap (LetA O n) W.EE (∑ k, a k * W.φA (framepf_ι π' (c - 1) (H' j k))) ⊗ₜ eb j` using `fun a => by simp only [heb]; exact framepf_Ψβ_sum Bs π' c hπ0 hΔπ hR2 γ0 hu βφ hβφ H' a`. Establish `hS : ∀ (Km : Matrix (Fin Bs.r) (Fin Bs.r) (PowerSeries O)) m k, u * W.φA (framepf_ι π' (c - 1) (Km m k)) ∈ W.AΔ` using `fun Km m k => W.AΔ.mul_mem huΔ (framepf_φA_ι_mem π' c hπ0 hΔπ γ0 _)`. Use `⟨framepf_Ψβ Bs π' c hπ0 hΔπ hR2 γ0 hu βφ H', framepf_Ψβ_Lam Bs π' c hπ0 hΔπ hR2 γ0 hu βφ hβφ Eπ hEΔ h' hT H', framepf_Ψβ_J Bs π' c hπ0 hΔπ hR2 γ0 hu βφ hβφ Eπ h' M hT H', framepf_βα_core Bs π' Eπ h' M c huE eb (fun j k => W.φA (framepf_ι π' (c - 1) (H' j k))) (fun j k => W.φA (fr …` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Apply the tactic sequence `rw [framepf_φA_ι_matmul Bs π' c hπ0, h₁, framepf_φA_ι_entry Bs π' c hπ0, hφ, mul_assoc _ u]`. Apply the tactic sequence `rw [framepf_φA_ι_matmul Bs π' c hπ0, h₂, framepf_φA_ι_entry Bs π' c hπ0, hφ, mul_assoc _ u]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem framepf_back (hT : IsCrys PD T.ρ) (Eπ : LetA O n) (h' M : ℕ)
     (huE : IsUnit (algebraMap (LetA O n) W.EE Eπ)) (hEΔ : Eπ ∈ W.AΔ) (u : LetA O n) (huΔ : u ∈ W.AΔ)
@@ -69,7 +69,7 @@ end Local
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `D HW F Cm CA CB CK hA l _ hl K LL hG π' E hR h' hh' c`. Conclude with `framepf_rec D HW F Cm hA.1 l hl K LL hG π' E hR h' hh' c fun T hT Bs hπ0 hΔπ hR2 γ0 hu huE hEΔ u huΔ hφ => framepf_back Bs π' c hπ0 hΔπ hR2 γ0 hu hT _ h' _ huE hEΔ u huΔ hφ`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem frame_pf : FrameStep := by
   intro D HW F Cm CA CB CK hA l _ hl K LL hG π' E hR h' hh' c

@@ -16,7 +16,7 @@ namespace HasseNormSt
 open scoped TensorProduct
 
 /- English proof (translation)
-Take `⟨r, rfl⟩` from `hδ`. Establish `hr : r ≠ 0` using `fun hr => h0 (by rw [hr, mul_zero])`. Establish `h2 : (2 : F) ≠ 0` using `two_ne_zero`. Use `⟨(x + 1) / 2, (x - 1) / (2 * r), ?_⟩` and prove the remaining obligations. Clear the denominators using the available nonvanishing facts.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Clear the denominators using the available nonvanishing facts.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/

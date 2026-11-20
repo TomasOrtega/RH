@@ -8,7 +8,7 @@ open NumberField IsDedekindDomain MeasureTheory Formalism.L2.Host GlobalTheory.C
 namespace GlobalTheory.CuspOrth
 
 /- English proof (translation)
-Introduce `E _ _ _ a μ _ π π' ω hω hπ hπ' hne`. Conclude with `pet_eq_zero_of_mk_ne μ hω (CuspSub.hasCentral_iff.2 hπ) (CuspSub.hasCentral_iff.2 hπ') hne`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem pet_eq_zero_of_ne_of_hasCentChar : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ)
     (μ : Measure (GA E a)) [μ.IsHaarMeasure] (π π' : CuspSub E a) (ω : HChar E), ω.IsUnitary →

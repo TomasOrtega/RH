@@ -7,17 +7,15 @@ open scoped TensorProduct
 namespace GlobalTheory.TopFrameEt
 
 /- English proof (translation)
-Introduce `k A₀ A _ _ _ α β ρ hc n r z b hb t hφ`. Use `letI := α.toAlgebra`. Use `letI := β.toAlgebra`. Use `letI := ρ.toAlgebra`. Use `haveI : IsScalarTower k A₀ A := IsScalarTower.of_algebraMap_eq' hc.symm`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Equip the data with the indicated structure. Equip the data with the indicated structure. Introduce a local definition for the expression.
 
-Set `φ` to `MvPolynomial.eval₂Hom ρ t`. Use `letI : Algebra (MvPolynomial (Fin r) A₀) A := φ.toAlgebra`. Use `haveI : IsScalarTower A₀ (MvPolynomial (Fin r) A₀) A := IsScalarTower.of_algebraMap_eq fun a ↦ by`. Express the relevant statement in the definitionally equal form `_ = φ (MvPolynomial.C a)`. Simplify using `[φ, RingHom.algebraMap_toAlgebra]`.
+Equip the data with the indicated structure. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `haveI : Algebra.FormallyEtale (MvPolynomial (Fin r) A₀) A := hφ`. Use `haveI : Algebra.FormallySmooth A₀ A := Algebra.FormallySmooth.comp A₀ (MvPolynomial (Fin r) A₀) A`. Use `haveI : Subsingleton (Algebra.H1Cotangent A₀ A) := Algebra.FormallySmooth.subsingleton_h1Cotangent`. Establish `hinj : Function.Injective (KaehlerDifferential.mapBaseChange k A₀ A)`. Rewrite using `[injective_iff_map_eq_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `y hy`. Take `⟨w, rfl⟩` from `(Algebra.H1Cotangent.exact_δ_mapBaseChange k A₀ A y).1 hy`. Rewrite using `[Subsingleton.elim w 0, map_zero]`. Set `w : Module.Basis (Fin r) A (Ω[A⁄A₀])` to `(KaehlerDifferential.isBaseChange_of_formallyEtale A₀ (MvPolynomial (Fin r) A₀) A).basis (KaehlerDifferential.mvPolynomialBasis A₀ (Fin r))`. Establish `hw : ∀ i, w i = KaehlerDifferential.D A₀ A (t i)` using `fun i ↦ by`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[w, IsBaseChange.basis_apply, KaehlerDifferential.mvPolynomialBasis_apply, KaehlerDifferential.map_D, RingHom.algebraMap_toAlgebra, φ]`. Take `⟨B, hB⟩` from `exists_basis_of_exact (KaehlerDifferential.mapBaseChange k A₀ A) (KaehlerDifferential.map k A₀ A A) hinj (KaehlerDifferential.exact_mapBaseChange_map k A₀ A) (b.baseChange A) w (fun i ↦ KaehlerDifferential.D k A (t i)) (fun i ↦ by rw [hw, KaehlerDifferential.map_D]; rfl)`. Set `e : Fin (r + n) ≃ Fin n ⊕ Fin r` to `finSumFinEquiv.symm.trans (Equiv.sumComm _ _)`. Use `isFreeGen_dForm _ (B.reindex e.symm) fun a ↦ ?_` and prove the remaining obligations. Rewrite using `[Module.Basis.reindex_apply, Equiv.symm_symm, hB]`.
-
-Use `Fin.addCases (fun i ↦ ?_) (fun i ↦ ?_) a` and prove the remaining obligations. Simplify using `[e, Fin.append_left]`. Simplify using `only [e, Equiv.trans_apply, finSumFinEquiv_symm_apply_natAdd, Equiv.sumComm_apply, Sum.swap_inr, Sum.elim_inl, Module.Basis.baseChange_apply, KaehlerDifferential.mapBaseChange_tmul, one_smul, hb, dFun, KaehlerDifferential.map_D, Fin.append_right]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem isFreeGen_dForm_of_formallyEtale_mvPolynomial :
     ∀ {k A₀ A : Type} [CommRing k] [CommRing A₀] [CommRing A] (α : k →+* A₀) (β : k →+* A)

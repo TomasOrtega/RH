@@ -12,11 +12,11 @@ namespace GroundTheory.Heights₂.Heights.Kleiman.SectionsOverLocalization
 open ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.KH (secOver)
 
 /- English proof (translation)
-Introduce `F _ K _ _ ι _ Ω _ _ y k₀ N e hmod β Q hQ`. Establish `hx : ∃ i, (IndefiniteRowSideFullHecke.Kleiman2.blockVec y k₀ ∘ e.symm) i ≠ 0`. Take `⟨i, hi⟩` from `hmod.1 k₀`. Conclude with `⟨e i, by simpa [IndefiniteRowSideFullHecke.Kleiman2.blockVec] using hi⟩`. Take `⟨n, hn⟩` from `Generated.full.{0, 0} F Ω N (IndefiniteRowSideFullHecke.Kleiman2.blockVec y k₀ ∘ e.symm) Q`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `⟨r, g, -, hg⟩` from `GraphClosedAlt.exists_fin_generators (Q.tensorProd (twistBundle F (IndefiniteRowSideFullHecke.Kleiman2.blockVec y k₀ ∘ e.symm) n)) (hn n le_rfl)`. Establish `hgen : IsGraphGen Q n g` using `hg`. Establish `hmod'` using `GraphModel.full F N Ω _ Q n (r + 1) g hx hgen`. Establish `hsec` using `twist_secs_eq_secOver Q n g hgen`. Rewrite using `[hNef F N Ω _ Q n (r + 1) g hgen]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(hCh F Ω N K ι y k₀ e (Unit ⊕ Unit) (graphIdx N (r + 1)) _ baseBlock (Equiv.refl _) hmod hmod' rfl β (graphDeg n) (fun c => (hQ c).symm.trans (hsec c))).symm`.
+A detailed English derivation is pending.
 -/
 theorem ModelNefEq.proof (hNef : NefEq.Statement) (hCh : ModelChangeNef.Statement) :
     ModelNefEq.Statement := by

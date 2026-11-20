@@ -12,7 +12,7 @@ namespace DiscreteGroups.T1.G
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `Complex.exp (u * GlobalTheory.Mem.Chr.CharModel.logNorm E (GlobalTheory.Mem.Chr.localIdele E w x)) = _`. Rewrite using `[GlobalTheory.Mem.Chr.CharModel.logNorm_local w x n hx]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem absC_loc (u : ℂ) (w : HeightOneSpectrum (𝓞 E)) (x : (w.adicCompletion E)ˣ) (n : ℤ)
     (hx : Valued.v (x : w.adicCompletion E) = WithZero.exp (-n)) :
@@ -21,7 +21,7 @@ theorem absC_loc (u : ℂ) (w : HeightOneSpectrum (𝓞 E)) (x : (w.adicCompleti
   rw [GlobalTheory.Mem.Chr.CharModel.logNorm_local w x n hx]
 
 /- English proof (translation)
-Introduce `x hx`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[absC_loc u w x 0 (by rw [hx]; simp)]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem absC_unrAt (u : ℂ) (w : HeightOneSpectrum (𝓞 E)) : (Model.absC E u).UnrAt w := by
   intro x hx
@@ -30,9 +30,9 @@ theorem absC_unrAt (u : ℂ) (w : HeightOneSpectrum (𝓞 E)) : (Model.absC E u)
   simp
 
 /- English proof (translation)
-Establish `hu : Valued.v ((atFin w (unif w) : (w.adicCompletion E)ˣ) : w.adicCompletion E) = WithZero.exp (-(1 : ℤ))` using `unif_spec w`. Establish `h` using `absC_loc u w (atFin w (unif w)) 1 hu`. Express the relevant statement in the definitionally equal form `(((Model.absC E u).loc w (atFin w (unif w)) : ℂˣ) : ℂ) = _`. Rewrite using `[h, Complex.cpow_def_of_ne_zero (Nat.cast_ne_zero.2 (qV_ne_zero w))]`. Establish `e : Complex.log ((qV E w : ℕ) : ℂ) = ((Real.log (Ideal.absNorm w.asIdeal : ℕ) : ℝ) : ℂ)`.
+Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Complex.ofReal_log (Nat.cast_nonneg _), Complex.ofReal_natCast]`. Both sides reduce to the same expression. Rewrite using `[e]`. Use `congr 1`. Use `push_cast`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -51,9 +51,9 @@ theorem absC_val (u : ℂ) (w : HeightOneSpectrum (𝓞 E)) :
   ring
 
 /- English proof (translation)
-Introduce `E _ _ _ m σ u`. Use `⟨σ.twist (Model.absC E (-u)), Filter.Eventually.of_forall fun w B hB => ?_⟩` and prove the remaining obligations. Use `⟨B.map (· * (Model.absC E (-u)).val w), GlobalTheory.SphGal.hasSatGL_twist E m σ _ w B (absC_unrAt (-u) w) hB, ?_⟩` and prove the remaining obligations. Rewrite using `[Multiset.map_map]`. Unfold `sclQ`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Use `Multiset.map_congr rfl fun b _ => ?_` and prove the remaining obligations. Simplify using `only [Function.comp_apply, Units.val_mul, absC_val, neg_neg]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem twistSat_holds : TwistSat := by
   intro E _ _ _ m σ u

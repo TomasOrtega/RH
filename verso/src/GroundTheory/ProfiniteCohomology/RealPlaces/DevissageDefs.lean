@@ -43,11 +43,9 @@ noncomputable abbrev tateCompactCohomologyResMap {A B : Rep.{u} k G} [IsDiscrete
 variable {A B C : Rep.{u} k G} [IsDiscreteRep A] [IsDiscreteRep B] [IsDiscreteRep C]
 
 /- English proof (translation)
-Use extensionality with `n : 1`. Use `ModuleCat.hom_ext (LinearMap.ext fun (p : (tateGlobalComplex A fun w => Rep.res (ψ w).toMonoidHom A).X n × shiftNegOneX (tateLocalComplex (fun v => Rep.res (φ v).toMonoidHom A) fun w => Rep.res (ψ w).toMonoidHom A) n) => Prod.ext (Prod.ext ?_ ?_) ?_)` and prove the remaining obligations. Conclude with `congrArg (fun F => (F.f n).hom p.1.1) (cochainsMap_add g₁ g₂)`. Consider the cases of `n with`. Consider the case `zero => rfl`.
+By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 
-Consider the case `succ n => exact Subsingleton.elim _ _`. Consider the cases of `n with`. Consider the case `zero => rfl`. Consider the case `succ n`. Use `Prod.ext (funext fun v => ?_) (funext fun w => ?_)` and prove the remaining obligations.
-
-Conclude with `congrArg (fun F => (F.f n).hom (p.2.1 v)) (cochainsMap_add ((Rep.resFunctor (φ v).toMonoidHom).map g₁) ((Rep.resFunctor (φ v).toMonoidHom).map g₂))`. Conclude with `congrArg (fun F => (F.f n).hom (p.2.2 w)) (cochainsMap_add ((Rep.resFunctor (ψ w).toMonoidHom).map g₁) ((Rep.resFunctor (ψ w).toMonoidHom).map g₂))`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem tateCompactCochainsResMap_add (g₁ g₂ : A ⟶ B) :
     tateCompactCochainsResMap φ ψ (g₁ + g₂) =
@@ -71,11 +69,9 @@ theorem tateCompactCochainsResMap_add (g₁ g₂ : A ⟶ B) :
           ((Rep.resFunctor (ψ w).toMonoidHom).map g₁) ((Rep.resFunctor (ψ w).toMonoidHom).map g₂))
 
 /- English proof (translation)
-Use extensionality with `n : 1`. Use `ModuleCat.hom_ext (LinearMap.ext fun (p : (tateGlobalComplex A fun w => Rep.res (ψ w).toMonoidHom A).X n × shiftNegOneX (tateLocalComplex (fun v => Rep.res (φ v).toMonoidHom A) fun w => Rep.res (ψ w).toMonoidHom A) n) => Prod.ext (Prod.ext ?_ ?_) ?_)` and prove the remaining obligations. Conclude with `congrArg (fun F => (F.f n).hom p.1.1) (cochainsMap_zero (A := A) (B := B))`. Consider the cases of `n with`. Consider the case `zero => rfl`.
+By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 
-Consider the case `succ n => exact Subsingleton.elim _ _`. Consider the cases of `n with`. Consider the case `zero => rfl`. Consider the case `succ n`. Use `Prod.ext (funext fun v => ?_) (funext fun w => ?_)` and prove the remaining obligations.
-
-Conclude with `congrArg (fun F => (F.f n).hom (p.2.1 v)) (cochainsMap_zero (A := Rep.res (φ v).toMonoidHom A) (B := Rep.res (φ v).toMonoidHom B))`. Conclude with `congrArg (fun F => (F.f n).hom (p.2.2 w)) (cochainsMap_zero (A := Rep.res (ψ w).toMonoidHom A) (B := Rep.res (ψ w).toMonoidHom B))`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem tateCompactCochainsResMap_zero :
     tateCompactCochainsResMap φ ψ (0 : A ⟶ B) = 0 := by
@@ -98,9 +94,9 @@ theorem tateCompactCochainsResMap_zero :
           (cochainsMap_zero (A := Rep.res (ψ w).toMonoidHom A) (B := Rep.res (ψ w).toMonoidHom B))
 
 /- English proof (translation)
-Use extensionality with `n : 1`. Use `ModuleCat.hom_ext (LinearMap.ext fun (p : (tateGlobalComplex A fun w => Rep.res (ψ w).toMonoidHom A).X n × shiftNegOneX (tateLocalComplex (fun v => Rep.res (φ v).toMonoidHom A) fun w => Rep.res (ψ w).toMonoidHom A) n) => Prod.ext (Prod.ext rfl ?_) ?_)` and prove the remaining obligations. Consider the cases of `n with`. Consider the case `zero => rfl`. Consider the case `succ n => exact Subsingleton.elim _ _`.
+By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 
-Consider the cases of `n with`. Consider the case `zero => rfl`. Consider the case `succ n => rfl`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 -/
 theorem tateCompactCochainsResMap_id : tateCompactCochainsResMap φ ψ (𝟙 A) = 𝟙 _ := by
   ext n : 1
@@ -116,9 +112,9 @@ theorem tateCompactCochainsResMap_id : tateCompactCochainsResMap φ ψ (𝟙 A) 
     | succ n => rfl
 
 /- English proof (translation)
-Use extensionality with `n : 1`. Use `ModuleCat.hom_ext (LinearMap.ext fun (p : (tateGlobalComplex A fun w => Rep.res (ψ w).toMonoidHom A).X n × shiftNegOneX (tateLocalComplex (fun v => Rep.res (φ v).toMonoidHom A) fun w => Rep.res (ψ w).toMonoidHom A) n) => Prod.ext (Prod.ext rfl ?_) ?_)` and prove the remaining obligations. Consider the cases of `n with`. Consider the case `zero => rfl`. Consider the case `succ n => exact Subsingleton.elim _ _`.
+By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 
-Consider the cases of `n with`. Consider the case `zero => rfl`. Consider the case `succ n => rfl`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 -/
 theorem tateCompactCochainsResMap_comp (g : A ⟶ B) (g' : B ⟶ C) :
     tateCompactCochainsResMap φ ψ (g ≫ g') =
@@ -136,7 +132,7 @@ theorem tateCompactCochainsResMap_comp (g : A ⟶ B) (g' : B ⟶ C) :
     | succ n => rfl
 
 /- English proof (translation)
-Rewrite using `[tateCompactCohomologyResMap, tateCompactCochainsResMap_add, HomologicalComplex.homologyMap_add]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem tateCompactCohomologyResMap_add (g₁ g₂ : A ⟶ B) (n : ℕ) :
     tateCompactCohomologyResMap φ ψ (g₁ + g₂) n =
@@ -146,7 +142,7 @@ theorem tateCompactCohomologyResMap_add (g₁ g₂ : A ⟶ B) (n : ℕ) :
   rfl
 
 /- English proof (translation)
-Rewrite using `[tateCompactCohomologyResMap, tateCompactCochainsResMap_zero, HomologicalComplex.homologyMap_zero]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem tateCompactCohomologyResMap_zero (n : ℕ) :
     tateCompactCohomologyResMap φ ψ (0 : A ⟶ B) n = 0 := by
@@ -155,7 +151,7 @@ theorem tateCompactCohomologyResMap_zero (n : ℕ) :
   rfl
 
 /- English proof (translation)
-Rewrite using `[tateCompactCohomologyResMap, tateCompactCochainsResMap_id, HomologicalComplex.homologyMap_id]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem tateCompactCohomologyResMap_id (n : ℕ) :
     tateCompactCohomologyResMap φ ψ (𝟙 A) n = 𝟙 _ := by
@@ -164,7 +160,7 @@ theorem tateCompactCohomologyResMap_id (n : ℕ) :
   rfl
 
 /- English proof (translation)
-Rewrite using `[tateCompactCohomologyResMap, tateCompactCochainsResMap_comp, HomologicalComplex.homologyMap_comp]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem tateCompactCohomologyResMap_comp (g : A ⟶ B) (g' : B ⟶ C) (n : ℕ) :
     tateCompactCohomologyResMap φ ψ (g ≫ g') n =
@@ -174,7 +170,7 @@ theorem tateCompactCohomologyResMap_comp (g : A ⟶ B) (g' : B ⟶ C) (n : ℕ) 
   rfl
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction with`. Consider the case `empty => simp [tateCompactCohomologyResMap_zero]`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.sum_insert ha, Finset.sum_insert ha, tateCompactCohomologyResMap_add, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem tateCompactCohomologyResMap_finsetSum {J : Type*} (s : Finset J) (f : J → (A ⟶ B))
     (m : ℕ) :
@@ -187,9 +183,9 @@ theorem tateCompactCohomologyResMap_finsetSum {J : Type*} (s : Finset J) (f : J 
     rw [Finset.sum_insert ha, Finset.sum_insert ha, tateCompactCohomologyResMap_add, ih]
 
 /- English proof (translation)
-Establish `h0 : (∑ _j ∈ Finset.range m, 𝟙 A) = 0`. Rewrite using `[Finset.sum_const, Finset.card_range]`. Use extensionality with `a`. Conclude with `hm a`. Establish `e : (tateCompactCohomologyResMap φ ψ (∑ _j ∈ Finset.range m, 𝟙 A) n).hom x = (tateCompactCohomologyResMap φ ψ (0 : A ⟶ A) n).hom x` using `by rw [h0]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e` using `[tateCompactCohomologyResMap_finsetSum, tateCompactCohomologyResMap_zero]`. Simplify using `only [tateCompactCohomologyResMap_id, Finset.sum_const, Finset.card_range] at e`. Simplify using `using e`.
+Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem nsmul_tateCompactCohomologyRes_eq_zero {m : ℕ} (hm : ∀ a : A, m • a = 0) (n : ℕ)
     (x : tateCompactCohomologyRes φ ψ A n) : m • x = 0 := by
@@ -226,7 +222,7 @@ variable (hS : S.ShortExact)
 include hS in
 
 /- English proof (translation)
-The claim follows from `tateCompactCohomology_exact₂ φ ψ (Sᵥ := fun v => S.map (Rep.resFunctor (φ v).toMonoidHom)) (fun _ => 𝟙 _) (Sᵣ := fun w => S.map (Rep.resFunctor (ψ w).toMonoidHom)) (fun _ => 𝟙 _) hS (fun v => (Rep.shortExact_res (φ v).toMonoidHom).2 hS) (fun w => (Rep.shortExact_res (ψ w).toMonoi …`.
+A detailed English derivation is pending.
 -/
 theorem tateCompactRes_exact₂ (n : ℕ) :
     (ShortComplex.mk (tateCompactCohomologyResMap φ ψ S.f n) (tateCompactCohomologyResMap φ ψ S.g n)
@@ -237,7 +233,7 @@ theorem tateCompactRes_exact₂ (n : ℕ) :
     (fun w => (Rep.shortExact_res (ψ w).toMonoidHom).2 hS) n
 
 /- English proof (translation)
-The claim follows from `tateCompactCohomology_exact₃ φ ψ (Sᵥ := fun v => S.map (Rep.resFunctor (φ v).toMonoidHom)) (fun _ => 𝟙 _) (Sᵣ := fun w => S.map (Rep.resFunctor (ψ w).toMonoidHom)) (fun _ => 𝟙 _) hS (fun v => (Rep.shortExact_res (φ v).toMonoidHom).2 hS) (fun w => (Rep.shortExact_res (ψ w).toMonoi …`.
+A detailed English derivation is pending.
 -/
 theorem tateCompactRes_exact₃ (n : ℕ) :
     (ShortComplex.mk (tateCompactCohomologyResMap φ ψ S.g n) (tateCompactδRes φ ψ hS n)
@@ -252,7 +248,7 @@ theorem tateCompactRes_exact₃ (n : ℕ) :
     (fun w => (Rep.shortExact_res (ψ w).toMonoidHom).2 hS) n
 
 /- English proof (translation)
-The claim follows from `tateCompactCohomology_exact₁ φ ψ (Sᵥ := fun v => S.map (Rep.resFunctor (φ v).toMonoidHom)) (fun _ => 𝟙 _) (Sᵣ := fun w => S.map (Rep.resFunctor (ψ w).toMonoidHom)) (fun _ => 𝟙 _) hS (fun v => (Rep.shortExact_res (φ v).toMonoidHom).2 hS) (fun w => (Rep.shortExact_res (ψ w).toMonoi …`.
+A detailed English derivation is pending.
 -/
 theorem tateCompactRes_exact₁ (n : ℕ) :
     (ShortComplex.mk (tateCompactδRes φ ψ hS n) (tateCompactCohomologyResMap φ ψ S.f (n + 1))

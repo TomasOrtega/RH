@@ -15,7 +15,7 @@ section Adele
 variable (F : Type) [Field F] [NumberField F]
 
 /- English proof (translation)
-Use `show Continuous fun y : InfiniteAdeleRing F => ∏ v, ‖y v‖ ^ v.mult`. Conclude with `continuous_finsetProd _ fun v _ => ((continuous_apply v).norm).pow _`.
+A detailed English derivation is pending.
 -/
 theorem continuous_norm_inf : Continuous fun y : InfiniteAdeleRing F => ‖y‖ := by
   show Continuous fun y : InfiniteAdeleRing F => ∏ v, ‖y v‖ ^ v.mult
@@ -24,22 +24,22 @@ theorem continuous_norm_inf : Continuous fun y : InfiniteAdeleRing F => ‖y‖ 
 def nbhdA : Set (AF F) := {x | ‖x.1‖ < 1 ∧ x.2 ∈ PI.AdCpctDenWork.intAd F}
 
 /- English proof (translation)
-The claim follows from `(isOpen_lt ((continuous_norm_inf F).comp continuous_fst) continuous_const).inter (PI.AdCpctDenWork.isOpen_intAd.preimage continuous_snd)`.
+A detailed English derivation is pending.
 -/
 theorem isOpen_nbhdA : IsOpen (nbhdA F) :=
   (isOpen_lt ((continuous_norm_inf F).comp continuous_fst) continuous_const).inter
     (PI.AdCpctDenWork.isOpen_intAd.preimage continuous_snd)
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `hf`. Establish `hint : ∀ v : HeightOneSpectrum (𝓞 F), v.valuation F f ≤ 1`. Introduce `v`. Rewrite using `[← valuedAdicCompletion_eq_valuation', ← mem_adicCompletionIntegers]`. Establish `h3 : (algebraMap F (FiniteAdeleRing (𝓞 F) F) f) v ∈ v.adicCompletionIntegers F` using `h2 v`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h3` using `[FiniteAdeleRing.algebraMap_apply]`. Conclude with `h3`. Take `⟨r, hr⟩` from `mem_integers_of_valuation_le_one (R := 𝓞 F) (K := F) _ hint`. Establish `h4 : ‖algebraMap F (InfiniteAdeleRing F) f‖ < 1` using `h1`. Rewrite `h4` using `[InfiniteAdeleRing.coe_norm_eq_abs_norm]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hf0`. Establish `hr0 : r ≠ 0`. Introduce and unpack `rfl`. Apply `hf0` to reduce the goal to its premises. Rewrite using `[← hr, map_zero]`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h5 : (1 : ℚ) ≤ |Algebra.norm ℚ ((r : 𝓞 F) : F)|`. Use `Int.one_le_abs (Algebra.norm_ne_zero_iff.mpr hr0)` as an intermediate fact. Rewrite using `[← Algebra.coe_norm_int]`. Conclude with `this` after adjusting the coercions. Establish `h6 : ((r : 𝓞 F) : F) = f` using `hr`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h5` using `[h6]`. Establish `h4' : |Algebra.norm ℚ f| < 1` using `by exact_mod_cast h4`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_mem_nbhdA (f : F) (hf : algebraMap F (AF F) f ∈ nbhdA F) : f = 0 := by
   obtain ⟨h1, h2⟩ := hf
@@ -67,9 +67,9 @@ theorem eq_zero_of_mem_nbhdA (f : F) (hf : algebraMap F (AF F) f ∈ nbhdA F) : 
   linarith
 
 /- English proof (translation)
-Establish `h : algebraMap F (AF F) 0 ∈ nbhdA F`. Use `⟨?_, fun v => ?_⟩` and prove the remaining obligations. Use `show ‖algebraMap F (InfiniteAdeleRing F) 0‖ < 1`. Rewrite using `[InfiniteAdeleRing.coe_norm_eq_abs_norm]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `show (algebraMap F (FiniteAdeleRing (𝓞 F) F) 0) v ∈ v.adicCompletionIntegers F`. Rewrite using `[map_zero]`. Conclude with `zero_mem _`. Rewrite `h` using `[map_zero]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem zero_mem_nbhdA : (0 : AF F) ∈ nbhdA F := by
   have h : algebraMap F (AF F) 0 ∈ nbhdA F := by
@@ -89,13 +89,13 @@ section Tens
 variable (F E : Type) [Field F] [NumberField F] [Field E] [Algebra F E] [Module.Finite F E]
 
 /- English proof (translation)
-Use `haveI : IsModuleTopology (AF F) (AF F ⊗[F] E) := ⟨rfl⟩`. Set `b` to `Module.finBasis F E`. Set `B` to `Algebra.TensorProduct.basis (AF F) b`. Use `⟨⋂ i, (B.coord i) ⁻¹' nbhdA F, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `isOpen_iInter_of_finite fun i => (isOpen_nbhdA F).preimage (IsModuleTopology.continuous_of_linearMap (B.coord i))`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Simplify using `only [Set.mem_iInter, Set.mem_preimage, map_zero]`. Conclude with `fun _ => zero_mem_nbhdA F`. Introduce `e he`. Simplify using `only [Set.mem_iInter, Set.mem_preimage] at he`. Establish `hc : ∀ i, b.repr e i = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `i`. Apply `eq_zero_of_mem_nbhdA F` to reduce the goal to its premises. Use `he i` as an intermediate fact. Establish `hco : B.coord i (inclR (F` using `F) (AF F) e) = algebraMap F (AF F) (b.repr e i) := by`. Simplify using `[B, inclR, Module.Basis.coord_apply, Algebra.TensorProduct.basis_repr_tmul]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Rewrite `this` using `[hco]`. Then use the resulting hypothesis. Establish `: b.repr e = 0` using `Finsupp.ext hc`. Simplify using `using this`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem exists_nbhd_tens : ∃ U : Set (AF F ⊗[F] E), IsOpen U ∧ (0 : AF F ⊗[F] E) ∈ U ∧
     ∀ e : E, inclR (F := F) (AF F) e ∈ U → e = 0 := by
@@ -122,25 +122,21 @@ theorem exists_nbhd_tens : ∃ U : Set (AF F ⊗[F] E), IsOpen U ∧ (0 : AF F �
 end Tens
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hCM M J _`. Use `haveI : Module.Finite F E := Module.finite_of_finrank_pos (by rw [hCM.2.2.1]; norm_num)`. Take `⟨h1, -, -, -⟩` from `hT F E`. Prove the components needed by the constructor for the conclusion. Use `haveI : Countable E := (Module.finBasis ℚ E).equivFun.toEquiv.injective.countable haveI : Countable (Matrix (Fin M) (Fin M) E) := inferInstanceAs (Countable (Fin M → Fin M → E)) haveI : Countable (GL (Fin M) E) := (Units.val_injective (α := Matrix (Fin M) (Fin M) E)).countable`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Prove the components needed by the constructor for the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hS : (HFin (AF F) σ J : Set (GL (Fin M) (AF F ⊗[F] E))).Countable`. Rewrite using `[HFin, Subgroup.coe_map]`. Conclude with `(Set.to_countable _).image _`. Use `haveI : Countable (HFin (AF F) σ J) := hS.to_subtype`. Set `φ : HFinIn (AF F) σ J → HFin (AF F) σ J` to `fun x => ⟨x.1.1, Subgroup.mem_subgroupOf.1 x.2⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Establish `hφ : Function.Injective φ`. Introduce `x y h`. Simplify using `only [φ, Subtype.mk.injEq] at h`. Conclude with `Subtype.ext (Subtype.ext h)`. Conclude with `hφ.countable`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Take `⟨U, hUo, hU0, hUe⟩` from `exists_nbhd_tens F E`. Rewrite using `[discreteTopology_iff_isOpen_singleton]`. Introduce `x`. Take `⟨γ, -, hγ⟩` from `Subgroup.mem_map.1 (Subgroup.mem_subgroupOf.1 x.2)`. Set `V : Set (HR (AF F) σ J)` to `{g | ∀ i j, ((g : GL (Fin M) (AF F ⊗[F] E)) : Matrix (Fin M) (Fin M) (AF F ⊗[F] E)) i j - ((x.1 : GL (Fin M) (AF F ⊗[F] E)) : Matrix (Fin M) (Fin M) (AF F ⊗[F] E)) i j ∈ U}`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hVo : IsOpen V`. Establish `hc : Continuous fun g : HR (AF F) σ J => ((g : GL (Fin M) (AF F ⊗[F] E)) : Matrix (Fin M) (Fin M) (AF F ⊗[F] E))` using `Units.continuous_val.comp continuous_subtype_val`. Establish `: V = ⋂ i, ⋂ j, (fun g : HR (AF F) σ J => ((g : GL (Fin M) (AF F ⊗[F] E)) : Matrix (Fin M) (Fin M) (AF F ⊗[F] E)) i j - ((x.1 : GL (Fin M) (AF F ⊗[F] E)) : Matrix (Fin M) (Fin M) (AF F ⊗[F] E)) i j) ⁻¹' U`. Use extensionality with `g`. Simplify using `[V]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[this]`. Conclude with `isOpen_iInter_of_finite fun i => isOpen_iInter_of_finite fun j => hUo.preimage (((continuous_apply j).comp ((continuous_apply i).comp hc)).sub continuous_const)`. Rewrite using `[isOpen_induced_iff]`. Use `⟨V, hVo, Set.ext fun y => ?_⟩` and prove the remaining obligations. Simplify using `only [Set.mem_preimage, Set.mem_singleton_iff]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Prove the components needed by the constructor for the conclusion. Introduce `hy`. Take `⟨δ, -, hδ⟩` from `Subgroup.mem_map.1 (Subgroup.mem_subgroupOf.1 y.2)`. Establish `hent : ∀ i j, (δ : Matrix (Fin M) (Fin M) E) i j = (γ : Matrix (Fin M) (Fin M) E) i j`. Introduce `i j`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `h` using `hy i j`. Rewrite `h` using `[← hδ, ← hγ]`. Establish `h' : inclR (F` using `F) (AF F) ((δ : Matrix (Fin M) (Fin M) E) i j - (γ : Matrix (Fin M) (Fin M) E) i j) ∈ U := by`. Rewrite using `[map_sub]`. Conclude with `h`.
-
-Conclude with `sub_eq_zero.1 (hUe _ h')`. Establish `hm : δ = γ` using `Units.ext (Matrix.ext hent)`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[← hδ, ← hγ, hm]`.
-
-Introduce and unpack `rfl i j`. Simplify using `only [sub_self]`. Conclude with `hU0`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem discHA_of (hT : TensTop) : DiscHA := by
   intro F E _ _ _ _ _ σ hCM M J _

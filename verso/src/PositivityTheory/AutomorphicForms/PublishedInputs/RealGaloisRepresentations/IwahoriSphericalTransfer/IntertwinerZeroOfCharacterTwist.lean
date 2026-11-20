@@ -3,7 +3,7 @@ import Formalism.SharpRestriction.LevelLetterCocycles.DataN
 import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.IntertwinerZeroOfCharacterTwist
 open Formalism.MainNotions.N
 /- English proof (citation)
-Apply `GlobalTheory.commute_on_ker_of_commute_on_ker_inter` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FGlobalInterpolation%2FIntertwinerZeroOfCharacterTwist.lean&line=8#L8)
 -/

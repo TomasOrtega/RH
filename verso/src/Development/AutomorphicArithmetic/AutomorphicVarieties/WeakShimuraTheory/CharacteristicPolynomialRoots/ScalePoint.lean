@@ -4,7 +4,7 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.WeakShimuraTheory.
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC Formalism.MainNotions.N ReciprocityTheory.Gal IsLocalRing Polynomial UpperTheory.V UpperTheory.V.Base UpperTheory.V.Alg UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.Ws GlobalTheory.GalOfCusp
 
 /- English proof (translation)
-Establish `h1 : i p.leadingCoeff = 1`. Rewrite using `[← leadingCoeff_map_of_injective hi, hp, (Matrix.charpoly_monic M).leadingCoeff]`. Rewrite using `[map_scaleRoots _ _ _ (by simp [h1]), ← Polynomial.map_map, hp, Matrix.charpoly_map]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem scale_point {A B K : Type} [CommRing A] [CommRing B] [Field K] {n : ℕ} (i : B →+* A)
     (hi : Function.Injective i) (y : A →+* K) (p : B[X]) (M : Matrix (Fin n) (Fin n) A) (hp : p.map i = M.charpoly)
@@ -15,9 +15,9 @@ private theorem scale_point {A B K : Type} [CommRing A] [CommRing B] [Field K] {
   rfl
 
 /- English proof (translation)
-Introduce `Ω _ _ _ l _ c D T c' h K X B φ y ρ hφ hρ g`. Establish `hxe : (Link.pt φ y : B.B →+* PadicAlgCl l) = ((y : X.A →+* PadicAlgCl l).comp (algebraMap X.B X.A)).comp (φ : B.B →+* X.B)` using `RingHom.ext fun b => Link.pt_apply K φ y b`. Establish `hs : (y : X.A →+* PadicAlgCl l) (algebraMap X.B X.A (algebraMap c'.O X.B (K.κ g * K.β g ^ 0))) = (K.kapQ g : PadicAlgCl l)`. Rewrite using `[← IsScalarTower.algebraMap_apply, pow_zero, mul_one]`. Conclude with `y.commutes _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[UpperTheory.V.Ws.Pu.repChi K.V B _ ρ hρ g, hxe, ← Polynomial.map_map]`. Use `(congrArg (Polynomial.map _) (hφ.1 g)).trans ?_` and prove the remaining obligations. Rewrite using `[scale_point _ X.inj _ _ _ (X.cp_map _), hs]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Ws.Pu.ptCp :
     ∀ {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime] {c : Coef l} {D : Raw Ω c} {T : Tower D} {c' : Coef l} {h : c.O ≤ c'.O} (K : Link T c' h) (X : Space (T.fr ∅) (inc h)) (B : W.UniversalOrdinaryDeterminantRing K.r) (φ : B.B →ₐ[c'.O] X.B) (y : X.A →ₐ[c'.O] PadicAlgCl l) (ρ : G T.L Ω →* GL (Fin 4) (PadicAlgCl l)), K.IsPhi X 0 B φ → (Link.pt φ y).IsRep ρ →

@@ -27,19 +27,19 @@ variable {Ω : Type} [Field Ω] {q : ℕ} (w : Fin q → Ω)
 abbrev pc (n : ℕ) : AddSubgroup Ω := gradedSpan w (fun _ : Fin 1 => 0) (fun _ => 1) n
 
 /- English proof (translation)
-Apply the tactic sequence `apply _root_.UpperTheory.Reformulated.B.GradedSpanProducts.pc_mul <;> assumption`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem pc_mul {a b : ℕ} {x z : Ω} (hx : x ∈ pc w a) (hz : z ∈ pc w b) : x * z ∈ pc w (a + b) :=
   by apply _root_.UpperTheory.Reformulated.B.GradedSpanProducts.pc_mul <;> assumption
 
 /- English proof (translation)
-The claim follows from `AddSubgroup.subset_closure ⟨0, 0, by simp, by simp⟩`.
+A detailed English derivation is pending.
 -/
 theorem pc_one : (1 : Ω) ∈ pc w 0 :=
   AddSubgroup.subset_closure ⟨0, 0, by simp, by simp⟩
 
 /- English proof (translation)
-Establish `h` using `gradedSpan_gen_mem w (fun _ : Fin 1 => 0) (fun _ => 1) 0 (Pi.single j 1)`. Establish `e : ∏ i, w i ^ (Pi.single j 1 : Fin q → ℕ) i = w j`. Rewrite using `[Finset.prod_eq_single j (fun b _ hb => by simp [hb]) (by simp)]; simp`. Simplify `h` using `[e]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem pc_gen (j : Fin q) : w j ∈ pc w 1 := by
   have h := gradedSpan_gen_mem w (fun _ : Fin 1 => 0) (fun _ => 1) 0 (Pi.single j 1)
@@ -48,7 +48,7 @@ theorem pc_gen (j : Fin q) : w j ∈ pc w 1 := by
   simpa [e] using h
 
 /- English proof (translation)
-Proceed by induction on `e with`. Consider the case `zero => simpa using pc_one w`. Consider the case `succ e ih => rw [pow_succ, Nat.mul_succ]`. Conclude with `pc_mul w ih hx`.
+Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem pc_pow {a : ℕ} {x : Ω} (hx : x ∈ pc w a) (e : ℕ) : x ^ e ∈ pc w (a * e) := by
   induction e with
@@ -56,13 +56,13 @@ theorem pc_pow {a : ℕ} {x : Ω} (hx : x ∈ pc w a) (e : ℕ) : x ^ e ∈ pc w
   | succ e ih => rw [pow_succ, Nat.mul_succ]; exact pc_mul w ih hx
 
 /- English proof (translation)
-Rewrite using `[← nsmul_eq_mul]`. Conclude with `AddSubgroup.nsmul_mem _ hx N`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pc_natCast_mul (N : ℕ) {a : ℕ} {x : Ω} (hx : x ∈ pc w a) : (N : Ω) * x ∈ pc w a := by
   rw [← nsmul_eq_mul]; exact AddSubgroup.nsmul_mem _ hx N
 
 /- English proof (translation)
-Rewrite using `[← zsmul_eq_mul]`. Conclude with `AddSubgroup.zsmul_mem _ hx N`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pc_intCast_mul (N : ℤ) {a : ℕ} {x : Ω} (hx : x ∈ pc w a) : (N : Ω) * x ∈ pc w a := by
   rw [← zsmul_eq_mul]; exact AddSubgroup.zsmul_mem _ hx N
@@ -81,19 +81,19 @@ def sw (y : (Σ k, ι k) → Ω) : Fin (Fintype.card (∀ k, ι k)) → Ω :=
   fun j => segre y ((Fintype.equivFin (∀ k, ι k)).symm j)
 
 /- English proof (translation)
-Simplify using `[sw]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sw_equiv (y : (Σ k, ι k) → Ω) (c : ∀ k, ι k) : sw y (Fintype.equivFin _ c) = segre y c := by
   simp [sw]
 
 /- English proof (translation)
-Rewrite using `[← sw_equiv]`. Conclude with `pc_gen _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem segre_mem (y : (Σ k, ι k) → Ω) (c : ∀ k, ι k) : segre y c ∈ pc (sw y) 1 := by
   rw [← sw_equiv]; exact pc_gen _ _
 
 /- English proof (translation)
-Take `⟨k, i⟩` from `p`. Simplify using `only [segre, SectionsDimZero.rt]`. Rewrite using `[← Finset.mul_prod_erase Finset.univ _ (Finset.mem_univ k), ← Finset.mul_prod_erase Finset.univ _ (Finset.mem_univ k)]`. Establish `hrest : ∏ x ∈ Finset.univ.erase k, y ⟨x, Function.update c k i x⟩ = ∏ x ∈ Finset.univ.erase k, y ⟨x, c x⟩` using `Finset.prod_congr rfl fun x hx => by rw [Function.update_of_ne (Finset.ne_of_mem_erase hx)]`. Rewrite using `[hrest, Function.update_self, ← mul_assoc, div_mul_cancel₀ _ (hc k)]`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem rt_mul_segre (y : (Σ k, ι k) → Ω) (c : ∀ k, ι k) (hc : ∀ k, y ⟨k, c k⟩ ≠ 0) (p : Σ k, ι k) :
     SectionsDimZero.rt y c p * segre y c = segre y (Function.update c p.1 p.2) := by
@@ -107,21 +107,21 @@ theorem rt_mul_segre (y : (Σ k, ι k) → Ω) (c : ∀ k, ι k) (hc : ∀ k, y 
   rw [hrest, Function.update_self, ← mul_assoc, div_mul_cancel₀ _ (hc k)]
 
 /- English proof (translation)
-Establish `hWp : ∀ e, segre y c ^ e ∈ pc (sw y) e` using `fun e => by simpa using pc_pow _ (segre_mem y c) e`. Rewrite `hx` using `[chartRingQ]`. Proceed by induction on `hx using Algebra.adjoin_induction with`. Consider the case `mem x hx`. Take `⟨p, rfl⟩` from `hx`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Use `⟨1, one_pos, 1, fun e he => ?_⟩` and prove the remaining obligations. Take `⟨e, rfl⟩` from `Nat.exists_eq_add_of_le he`. Establish `h1 : SectionsDimZero.rt y c p * segre y c ∈ pc (sw y) 1`. Rewrite using `[rt_mul_segre y c hc]`. Conclude with `segre_mem y _`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2` using `pc_mul _ h1 (hWp e)`. Rewrite using `[Nat.cast_one, one_mul, pow_add, pow_one, ← mul_assoc]`. Conclude with `h2`. Consider the case `algebraMap r`. Use `⟨r.den, r.den_pos, 0, fun e _ => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hd : (r.den : Ω) ≠ 0` using `Nat.cast_ne_zero.mpr r.den_nz`. Establish `h : (r.den : Ω) * algebraMap ℚ Ω r = (r.num : Ω)`. Rewrite using `[eq_ratCast, Rat.cast_def]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[h]`.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Conclude with `pc_intCast_mul _ _ (hWp e)`. Consider the case `add x z _ _ hx hz`. Take `⟨N1, hN1, D1, h1⟩` from `hx`. Take `⟨N2, hN2, D2, h2⟩` from `hz`. Use `⟨N1 * N2, Nat.mul_pos hN1 hN2, max D1 D2, fun e he => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Establish `e1` using `pc_natCast_mul _ N2 (h1 e (le_of_max_le_left he))`. Establish `e2` using `pc_natCast_mul _ N1 (h2 e (le_of_max_le_right he))`. Use `add_mem e1 e2 using 1` and compare the differences between its conclusion and the goal. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Consider the case `mul x z _ _ hx hz`. Take `⟨N1, hN1, D1, h1⟩` from `hx`. Take `⟨N2, hN2, D2, h2⟩` from `hz`. Use `⟨N1 * N2, Nat.mul_pos hN1 hN2, D1 + D2, fun e he => ?_⟩` and prove the remaining obligations. Take `⟨e', rfl⟩` from `Nat.exists_eq_add_of_le he`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Establish `h` using `pc_mul _ (h1 D1 le_rfl) (h2 (D2 + e') (Nat.le_add_right _ _))`. Rewrite using `[show D1 + D2 + e' = D1 + (D2 + e') by ring]`. Use `h using 1` and compare the differences between its conclusion and the goal. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem chart_mem (y : (Σ k, ι k) → Ω) (c : ∀ k, ι k) (hc : ∀ k, y ⟨k, c k⟩ ≠ 0) {x : Ω}
     (hx : x ∈ chartRingQ y c) :
@@ -163,11 +163,11 @@ theorem chart_mem (y : (Σ k, ι k) → Ω) (c : ∀ k, ι k) (hc : ∀ k, y ⟨
     push_cast; ring
 
 /- English proof (translation)
-Proceed by induction on `hx using AddSubgroup.closure_induction with`. Consider the case `mem x hx`. Take `⟨l, μ, hμ, rfl⟩` from `hx`. Establish `h` using `GroundTheory.Heights₂.Heights.Inter.AvoidRing.isMultiHomog_prod (R := ℤ) Finset.univ (fun j => (∏ k, (X ⟨k, ((Fintype.equivFin (∀ k, ι k)).symm j) k⟩ : MRing ι) ^ (fun _ : K => 1) k) ^ μ j) (fun j => μ j • (fun _ : K => 1)) (fun j _ => GroundTheory.Heights₂.Heights.Inter.AvoidRin …`. Establish `hdeg : (∑ j, μ j • (fun _ : K => (1 : ℕ))) = fun _ => n`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `k`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, mul_one] at hμ ⊢`. Simplify using `using hμ`. Rewrite `h` using `[hdeg]`. Use `Submodule.subset_span ⟨_, h, ?_⟩` and prove the remaining obligations.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[sw, segre, map_prod, map_pow]`. Consider the case `zero => exact zero_mem _`. Consider the case `add _ _ _ _ h h' => exact add_mem h h'`. Consider the case `neg _ _ h => exact neg_mem h`.
+Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem pc_le_valueSpan (y : (Σ k, ι k) → Ω) (n : ℕ) {x : Ω} (hx : x ∈ pc (sw y) n) :
     x ∈ valueSpan y (fun _ => n) := by
@@ -191,9 +191,9 @@ theorem pc_le_valueSpan (y : (Σ k, ι k) → Ω) (n : ℕ) {x : Ω} (hx : x ∈
   | neg _ _ h => exact neg_mem h
 
 /- English proof (translation)
-Establish `hW : segre y c ≠ 0` using `Finset.prod_ne_zero_iff.2 fun k _ => hc k`. Establish `hprod : (∏ k, y ⟨k, c k⟩ ^ (-(((1 : ℕ) : ℤ) * ((n : ℤ) • (1 : K → ℤ)) k))) = (segre y c ^ n)⁻¹`. Rewrite using `[segre, ← Finset.prod_pow, ← Finset.prod_inv_distrib]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Simplify using `[zpow_neg]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[hprod, pow_add]`. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 -/
 theorem prod_neg_mul (y : (Σ k, ι k) → Ω) (c : ∀ k, ι k) (hc : ∀ k, y ⟨k, c k⟩ ≠ 0) (n D : ℕ) (s : Ω) :
     s * (∏ k, y ⟨k, c k⟩ ^ (-(((1 : ℕ) : ℤ) * ((n : ℤ) • (1 : K → ℤ)) k))) * segre y c ^ (n + D) =
@@ -208,19 +208,19 @@ theorem prod_neg_mul (y : (Σ k, ι k) → Ω) (c : ∀ k, ι k) (hc : ∀ k, y 
   field_simp
 
 /- English proof (translation)
-Take `⟨c0, hc0⟩` from `hrel`. Establish `hw : ∃ j, sw y j ≠ 0` using `⟨Fintype.equivFin _ c0, by rw [sw_equiv]; exact Finset.prod_ne_zero_iff.2 fun k _ => hc0 k⟩`. Take `⟨n₀, hn₀⟩` from `SerreGraded.proof Ω _ 1 (sw y) (fun _ => 0) (fun _ => 1) hw`. Use `⟨n₀, fun n hn s hs => ?_⟩` and prove the remaining obligations. Establish `hloc : ∀ c : ∀ k, ι k, ∃ N : ℕ, 0 < N ∧ ∃ D : ℕ, (∀ k, y ⟨k, c k⟩ ≠ 0) → (N : Ω) * s * segre y c ^ D ∈ pc (sw y) (n + D)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Introduce `c`. Distinguish the cases in `hc : ∀ k, y ⟨k, c k⟩ ≠ 0`. Take `⟨N, hN, D, hD⟩` from `chart_mem y c hc (hs c hc)`. Use `⟨N, hN, D, fun _ => ?_⟩` and prove the remaining obligations. Establish `h` using `hD (n + D) (Nat.le_add_left _ _)`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `h` using `[mul_assoc, prod_neg_mul y c hc n D s]`. Rewrite using `[mul_assoc]` and apply the resulting hypothesis. Conclude with `⟨1, one_pos, 0, fun h => absurd h hc⟩`. Use `choose N hN D hD using hloc`. Establish `hM : 0 < ∏ c, N c` using `Finset.prod_pos fun c _ => hN c`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmem : ((∏ c, N c : ℕ) : Ω) * s ∈ pc (sw y) n`. Use `hn₀ n hn _ fun j hj => ?_` and prove the remaining obligations. Establish `hjc : sw y j = segre y ((Fintype.equivFin (∀ k, ι k)).symm j)` using `rfl`. Establish `hc : ∀ k, y ⟨k, ((Fintype.equivFin (∀ k, ι k)).symm j) k⟩ ≠ 0` using `fun k h0 => hj (by rw [hjc, segre]; exact Finset.prod_eq_zero (Finset.mem_univ k) h0)`. Take `⟨m, hm⟩` from `Finset.dvd_prod_of_mem N (Finset.mem_univ ((Fintype.equivFin (∀ k, ι k)).symm j))`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨D ((Fintype.equivFin (∀ k, ι k)).symm j), ?_⟩` and prove the remaining obligations. Establish `h` using `pc_natCast_mul _ m (hD _ hc)`. Rewrite using `[hjc, hm]`. Use `h using 1` and compare the differences between its conclusion and the goal. Use `push_cast`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hV` using `pc_le_valueSpan y n hmem`. Establish `hM0 : ((∏ c, N c : ℕ) : Ω) ≠ 0` using `Nat.cast_ne_zero.mpr hM.ne'`. Establish `e : s = ((∏ c, N c : ℕ) : ℚ)⁻¹ • (((∏ c, N c : ℕ) : Ω) * s)`. Rewrite using `[Algebra.smul_def, ← mul_assoc, map_inv₀, map_natCast, inv_mul_cancel₀ hM0, one_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `Submodule.smul_mem _ _ hV`.
+A detailed English derivation is pending.
 -/
 theorem exists_chartLatQ_le (y : (Σ k, ι k) → Ω) (hrel : ∃ c : ∀ k, ι k, ∀ k, y ⟨k, c k⟩ ≠ 0) :
     ∃ n₀ : ℕ, ∀ n, n₀ ≤ n → chartLatQ y ((n : ℤ) • (1 : K → ℤ)) 1 ≤ valueSpan y (fun _ => n) := by
@@ -260,9 +260,9 @@ theorem exists_chartLatQ_le (y : (Σ k, ι k) → Ω) (hrel : ∃ c : ∀ k, ι 
   exact Submodule.smul_mem _ _ hV
 
 /- English proof (translation)
-Introduce `s hs c hc`. Take `⟨t, ht, rfl⟩` from `Submodule.mem_map.mp (SectionsDimZero.valueSpan_le y c hc _ hs)`. Establish `h1 : (∏ k, y ⟨k, c k⟩ ^ (fun _ : K => n) k) * ∏ k, y ⟨k, c k⟩ ^ (-(((1 : ℕ) : ℤ) * ((n : ℤ) • (1 : K → ℤ)) k)) = 1`. Rewrite using `[← Finset.prod_mul_distrib]`. Conclude with `Finset.prod_eq_one fun k _ => by simp [zpow_neg, hc k]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[LinearMap.mulRight_apply, mul_assoc, h1, mul_one]`. Conclude with `ht`.
+A detailed English derivation is pending.
 -/
 theorem valueSpan_le_chartLatQ (y : (Σ k, ι k) → Ω) (n : ℕ) :
     valueSpan y (fun _ => n) ≤ chartLatQ y ((n : ℤ) • (1 : K → ℤ)) 1 := by
@@ -278,9 +278,9 @@ theorem valueSpan_le_chartLatQ (y : (Σ k, ι k) → Ω) (n : ℕ) :
 end Charts
 
 /- English proof (translation)
-Proceed by induction on `e with`. Consider the case `zero => simp`. Consider the case `succ e ih`. Establish `h0 : (t - 1) ^ (e + 1) ≤ t ^ (e + 1)` using `pow_le_pow_left₀ (by linarith) (by linarith) _`. Establish `key : t ^ (e + 1 + 1) - (t - 1) ^ (e + 1 + 1) = t * (t ^ (e + 1) - (t - 1) ^ (e + 1)) + (t - 1) ^ (e + 1)` using `by ring`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[key]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem pow_sub_pow_le (t : ℚ) (ht : 1 ≤ t) (e : ℕ) : t ^ (e + 1) - (t - 1) ^ (e + 1) ≤ (e + 1) * t ^ e := by
   induction e with
@@ -295,15 +295,15 @@ theorem pow_sub_pow_le (t : ℚ) (ht : 1 ≤ t) (e : ℕ) : t ^ (e + 1) - (t - 1
       _ = ((e + 1 : ℕ) + 1) * t ^ (e + 1) := by push_cast; ring
 
 /- English proof (translation)
-Establish `hev : ∀ t : ℚ, eval (fun _ => t) p = ∑ m ∈ p.support, coeff m p * t ^ (m.sum fun _ e => e)`. Introduce `t`. Rewrite using `[MvPolynomial.eval_eq]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.prod_pow_eq_pow_sum]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Use `⟨∑ m ∈ p.support, |coeff m p| * (m.sum fun _ e => e : ℕ), fun t ht => ?_⟩` and prove the remaining obligations. Rewrite using `[hev, hev, ← Finset.sum_sub_distrib, Finset.sum_mul]`. Use `Finset.sum_le_sum fun m hm => ?_` and prove the remaining obligations. Establish `he : (m.sum fun _ e => e) ≤ D` using `(le_totalDegree hm).trans hp`.
+Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `set e := m.sum fun _ e => e`. Establish `h0 : (t - 1) ^ e ≤ t ^ e` using `pow_le_pow_left₀ (by linarith) (by linarith) _`. Establish `h2 : t ^ e - (t - 1) ^ e ≤ (e : ℚ) * t ^ (D - 1)`. Break down `Nat.eq_zero_or_pos e with h | h` into its components or cases. Simplify using `[h]`.
+Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Take `⟨e', he'⟩` from `Nat.exists_eq_add_of_lt h`. Establish `h3` using `pow_sub_pow_le t ht e'`. Establish `h4 : t ^ e' ≤ t ^ (D - 1)` using `pow_le_pow_right₀ ht (by omega)`. Rewrite using `[he', zero_add]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem poly_diff_bound {σ : Type} (p : MvPolynomial σ ℚ) (D : ℕ) (hp : p.totalDegree ≤ D) :
     ∃ C : ℚ, ∀ t : ℚ, 1 ≤ t → eval (fun _ => t) p - eval (fun _ => t - 1) p ≤ C * t ^ (D - 1) := by
@@ -337,17 +337,17 @@ theorem poly_diff_bound {σ : Type} (p : MvPolynomial σ ℚ) (D : ℕ) (hp : p.
 end DiagonalSectionDifference
 
 /- English proof (translation)
-Introduce `K _ ι _ Ω _ _ y D _ hV`. Take `⟨hQ, hdim⟩` from `ShiftDegreePolynomial.genericFibre hV`. Take `⟨p, a₀, hpdeg, hp⟩` from `MultigradedHilbertPolynomial.proof EventualPolynomial.proof ℚ K ι _ D hQ hdim`. Establish `hrel : ∃ c : ∀ k, ι k, ∀ k, y ⟨k, c k⟩ ≠ 0` using `by choose c hcX using hV.2.1.2.2`. Conclude with `⟨c, fun k h0 => hcX k (CoordCurveDegree.X_mem_of_eq_zero h0)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 
-Take `⟨n₀, hn₀⟩` from `DiagonalSectionDifference.exists_chartLatQ_le y hrel`. Establish `hval : ∀ n, max n₀ a₀ ≤ n → (Module.finrank ℚ (chartLatQ y ((n : ℤ) • (1 : K → ℤ)) 1) : ℚ) = eval (fun _ => (n : ℚ)) p`. Introduce `n hn`. Rewrite using `[le_antisymm (hn₀ n (le_of_max_le_left hn)) (DiagonalSectionDifference.valueSpan_le_chartLatQ y n)]`. Establish `h1` using `HilbFnValueSpan.proof K ι Ω y (fun _ => n)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2` using `hp (fun _ => n) (fun _ => le_of_max_le_right hn)`. Rewrite `h2` using `[h1]`. Conclude with `h2` after adjusting the coercions. Take `⟨C, hC⟩` from `DiagonalSectionDifference.poly_diff_bound p D hpdeg`. Use `⟨C, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `filter_upwards [eventually_ge_atTop (max n₀ a₀ + 1)] with j hj`. Establish `hj1 : (j : ℤ) • (1 : K → ℤ) - 1 = ((j - 1 : ℕ) : ℤ) • (1 : K → ℤ)`. Use function extensionality and compare the values at `k`. Simplify using `only [Pi.sub_apply, Pi.smul_apply, Pi.one_apply, smul_eq_mul, mul_one]`. Use linear arithmetic over natural numbers and integers.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hj1]`. Establish `e1` using `hval j (by omega)`. Establish `e2` using `hval (j - 1) (by omega)`. Establish `hc` using `hC (j : ℚ) (by exact_mod_cast (show 1 ≤ j by omega))`. Establish `hcast : ((j - 1 : ℕ) : ℚ) = (j : ℚ) - 1` using `by rw [Nat.cast_sub (by omega)]; simp`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `e2` using `[hcast]`. Establish `key : (Module.finrank ℚ (chartLatQ y ((j : ℤ) • (1 : K → ℤ)) 1) : ℚ) ≤ Module.finrank ℚ (chartLatQ y (((j - 1 : ℕ) : ℤ) • (1 : K → ℤ)) 1) + C * (j : ℚ) ^ (D - 1)`. Rewrite using `[e1, e2]`. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `key` after adjusting the coercions.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem DiagonalSectionDifference.proof : DiagonalSectionDifference.Statement := by
   classical

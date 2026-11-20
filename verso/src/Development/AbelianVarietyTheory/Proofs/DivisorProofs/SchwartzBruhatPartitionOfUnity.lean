@@ -12,13 +12,13 @@ noncomputable section
 namespace GlobalTheory.CoverSB
 
 /- English proof (translation)
-Use `⟨?_, hg.2.mono fun x hx => by` and prove the remaining obligations. Apply the tactic sequence `by_contra h; exact hx (by by_cases hxW : x ∈ W <;> simp [Set.indicator, hxW, Function.notMem_support.1 h])⟩`. Establish `h1 : IsLocallyConstant (W.indicator (fun _ => (1 : ℂ)))` using `(IsLocallyConstant.iff_isOpen_fiber).2 fun c => by`. Apply the tactic sequence `by_cases h0 : c = 1 <;> by_cases h0' : c = 0`. Substitute `h0` using the available equality.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Substitute using the available equality.
 
-Simplify using `at h0'`. Substitute `h0` using the available equality. Use `hW.isOpen using 1` and compare the differences between its conclusion and the goal. Apply the tactic sequence `ext x; by_cases hx : x ∈ W <;> simp [Set.indicator, hx]`. Substitute `h0'` using the available equality.
+Simplify using the standard rewrite rules. Substitute using the available equality. Apply an available result and prove the equalities needed to match it to the conclusion. Apply the first step, then apply the next step to every resulting obligation. Substitute using the available equality.
 
-Use `hW.compl.isOpen using 1` and compare the differences between its conclusion and the goal. Apply the tactic sequence `ext x; by_cases hx : x ∈ W <;> simp [Set.indicator, hx]`. Use `(isOpen_empty : IsOpen (∅ : Set X)) using 1` and compare the differences between its conclusion and the goal. Apply the tactic sequence `ext x; by_cases hx : x ∈ W <;> simp [Set.indicator, hx, Ne.symm h0, Ne.symm h0']`. Establish `e : W.indicator g = fun x => W.indicator (fun _ => (1 : ℂ)) x * g x`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Apply the first step, then apply the next step to every resulting obligation. Apply an available result and prove the equalities needed to match it to the conclusion. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Apply the tactic sequence `funext x; by_cases hx : x ∈ W <;> simp [Set.indicator, hx]`. Rewrite using `[e]`. Conclude with `h1.mul hg.1`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem indicator_mem_SB {X : Type} [TopologicalSpace X] {W : Set X} (hW : IsClopen W) {g : X → ℂ}
     (hg : g ∈ SB X) : W.indicator g ∈ SB X := by
@@ -45,9 +45,9 @@ theorem indicator_mem_SB {X : Type} [TopologicalSpace X] {W : Set X} (hW : IsClo
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Establish `h0 : (fun y => x + y) ⁻¹' U ∈ 𝓝 (0 : Matrix A D k)`. Use `(continuous_const.add continuous_id).continuousAt.preimage_mem_nhds ?_` and prove the remaining obligations. Simplify using `using hU.mem_nhds hx`. Take `⟨a, ha⟩` from `GlobalTheory.LocMod.Inhab.exists_box_subset h0`. Establish `hBo` using `GlobalTheory.LocMod.Inhab.isOpen_box (Y := A) (Y' := D) a`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hBc : IsClosed ((GlobalTheory.LocMod.Inhab.box A D a : AddSubgroup (Matrix A D k)) : Set (Matrix A D k))` using `AddSubgroup.isClosed_of_isOpen _ hBo`. Use `⟨(fun y => y - x) ⁻¹' (GlobalTheory.LocMod.Inhab.box A D a : Set (Matrix A D k)), ⟨hBc.preimage (continuous_id.sub continuous_const), hBo.preimage (continuous_id.sub continuous_const)⟩, by simpa using (GlobalTheory.LocMod.Inhab.box A D a).zero_mem, fun y hy => ?_⟩` and prove the remaining obligations. Use `ha _ hy` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem exists_isClopen_subset {A D : Type} [Fintype A] [DecidableEq A] [Fintype D] [DecidableEq D]
     {U : Set (Matrix A D k)} (hU : IsOpen U) {x : Matrix A D k} (hx : x ∈ U) :
@@ -70,21 +70,19 @@ end GlobalTheory.CoverSB
 namespace GlobalTheory.CoverSB
 
 /- English proof (translation)
-Introduce `k _ _ _ _ A D _ _ _ _ ι _ U hU f hf hcov`. Use `set P := Submodule.span ℂ {g | g ∈ SB (Matrix A D k) ∧ ∃ i, ∀ Y, g Y ≠ 0 → Y ∈ U i} with hP`. Establish `hcl : IsClosed (Function.support f)`. Establish `: Function.support f = (f ⁻¹' {0})ᶜ` using `by ext; simp`. Rewrite using `[this]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(hf.1.isOpen_fiber 0).isClosed_compl`. Establish `hcpt : IsCompact (Function.support f)`. Use `hf.2` as an intermediate fact. Rewrite `this` using `[HasCompactSupport, tsupport, hcl.closure_eq]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Set `p : Set (Matrix A D k) → Prop` to `fun T => ∃ W, IsClopen W ∧ T ⊆ W ∧ ∀ g ∈ SB (Matrix A D k), Function.support g ⊆ W → g ∈ P`. Establish `hp : p (Function.support f)`. Use `hcpt.induction_on ?_ ?_ ?_ ?_` and prove the remaining obligations. Use `⟨∅, isClopen_empty, subset_rfl, fun g _ hg => ?_⟩` and prove the remaining obligations. Establish `: g = 0`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `y`. Assume the negation of the conclusion as `h`. Conclude with `hg h`. Rewrite using `[this]`. Conclude with `P.zero_mem`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `s t hst ⟨W, hW, htW, h⟩`. Conclude with `⟨W, hW, hst.trans htW, h⟩`. Introduce and unpack `s t ⟨W₁, hW₁, hs, h₁⟩ ⟨W₂, hW₂, ht, h₂⟩`. Use `⟨W₁ ∪ W₂, hW₁.union hW₂, Set.union_subset_union hs ht, fun g hg hsupp => ?_⟩` and prove the remaining obligations. Rewrite using `[← Set.indicator_self_add_compl W₁ g]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Separate the alternatives or extract the components of the hypothesis.
 
-Use `P.add_mem (h₁ _ (indicator_mem_SB hW₁ hg) Set.support_indicator_subset) (h₂ _ (indicator_mem_SB hW₁.compl hg) fun y hy => ?_)` and prove the remaining obligations. Establish `hyc : y ∈ W₁ᶜ` using `Set.support_indicator_subset hy`. Establish `hyg : y ∈ Function.support g`. Assume the negation of the conclusion as `h; exact hy (by simp [Set.indicator, hyc, Function.notMem_support.1 h])`. Break down `hsupp hyg with h | h` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `absurd h hyc`. Conclude with `h`. Introduce `x hx`. Take `⟨i, hi⟩` from `hcov x hx`. Take `⟨V, hV, hxV, hVU⟩` from `exists_isClopen_subset (hU i) hi`.
-
-Use `⟨V, mem_nhdsWithin_of_mem_nhds (hV.isOpen.mem_nhds hxV), V, hV, subset_rfl, fun g hg hsupp => ?_⟩` and prove the remaining obligations. Conclude with `Submodule.subset_span ⟨hg, i, fun Y hY => hVU (hsupp hY)⟩`. Take `⟨W, -, hW, h⟩` from `hp`. Conclude with `h f hf hW`.
+A detailed English derivation is pending.
 -/
 theorem mem_span_of_cover : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (A D : Type) [Fintype A] [DecidableEq A] [Fintype D] [DecidableEq D] (ι : Type) [Finite ι] (U : ι → Set (Matrix A D k)), (∀ i, IsOpen (U i)) → ∀ f ∈ SB (Matrix A D k), (∀ Y, f Y ≠ 0 → ∃ i, Y ∈ U i) → f ∈ Submodule.span ℂ {g | g ∈ SB (Matrix A D k) ∧ ∃ i, ∀ Y, g Y ≠ 0 → Y ∈ U i} := by
   intro k _ _ _ _ A D _ _ _ _ ι _ U hU f hf hcov

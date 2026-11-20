@@ -8,9 +8,7 @@ open CategoryTheory AlgebraicGeometry MonoidalCategory CartesianMonoidalCategory
 namespace PositivityTheory.HtPt.Weilfun
 
 /- English proof (translation)
-Introduce `E _ _ _ H S _ t n _`. Use `⟨fun T x z hx hz => weilUnit t.cub n T x z hx hz, ?_, ?_⟩` and prove the remaining obligations. Introduce `T T' f x z hx hz hx' hz'`. Conclude with `weilUnit_comp t.cub n f hx hz hx' hz'`. Introduce `k _ _ g _ x z hx hz c hw haveI : Subsingleton ↥(Over.mk g).left := by show Subsingleton (PrimeSpectrum k) infer_instance`.
-
-Conclude with `weilUnit_eq_of_weilIs t.cub n hx hz _ hw`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem weil_fun : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (S : Scheme.{0}) [IsLocallyNoetherian S] (t : SAB H S) (n : ℕ), 1 ≤ n → ∃ (w : ∀ (T : Over S) (x z : T ⟶ t.G), x ^ n = 1 → z ^ n = 1 → Γ(T.left, ⊤)ˣ), (∀ (T T' : Over S) (f : T' ⟶ T) (x z : T ⟶ t.G) (hx : x ^ n = 1) (hz : z ^ n = 1) (hx' : (f ≫ x) ^ n = 1) (hz' : (f ≫ z) ^ n = 1), (w T' (f ≫ x) (f ≫ z) hx' hz' : Γ(T'.left, ⊤)) = f.left.appTop.hom (w T x z hx hz)) ∧ ∀ (k : Type) [Field k] [IsAlgClosed k] (g : Sp k ⟶ S), IsProper (Limits.pullback.snd t.G.hom g) → ∀ (x z : Over.mk g ⟶ t.G) (hx : x ^ n = 1) (hz : z ^ n = 1) (c : kˣ), Out.WeilIs t.G t.PP.L n x z (unitOn c) → w (Over.mk g) x z hx hz = unitOn c := by
   intro E _ _ _ H S _ t n _

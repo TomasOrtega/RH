@@ -32,7 +32,7 @@ def boundSub (he : ∀ x, x ∈ (algebraMap K.O K.E).range ↔ Valued.v (e x) �
       _ = WithZero.exp m := one_mul _
 
 /- English proof (translation)
-Distinguish the cases in `h : Valued.v (e x) = 0`. Conclude with `⟨0, by rw [h]; exact zero_le'⟩`. Conclude with `⟨(Valued.v (e x)).log, (WithZero.exp_log h).ge⟩`.
+Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Supply the required witnesses or components.
 -/
 theorem exists_bound (x : K.E) : ∃ m : ℤ, Valued.v (e x) ≤ WithZero.exp m := by
   by_cases h : Valued.v (e x) = 0
@@ -40,15 +40,15 @@ theorem exists_bound (x : K.E) : ∃ m : ℤ, Valued.v (e x) ≤ WithZero.exp m 
   · exact ⟨(Valued.v (e x)).log, (WithZero.exp_log h).ge⟩
 
 /- English proof (translation)
-Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible K.O`. Use `⟨ϖ, hϖ.ne_zero, ?_⟩` and prove the remaining obligations. Use `set w := Valued.v (e (algebraMap K.O K.E ϖ)) with hw`. Establish `hE : algebraMap K.O K.E ϖ ≠ 0`. Introduce `h0`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `hϖ.ne_zero (IsFractionRing.injective K.O K.E (by simpa using h0))`. Establish `w0 : w ≠ 0`. Rewrite using `[hw, Valuation.ne_zero_iff]`. Conclude with `(map_ne_zero e).2 hE`. Establish `w1 : w ≤ 1` using `(he _).1 ⟨ϖ, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `wne : w ≠ 1`. Introduce `h1`. Establish `: Valued.v (e (algebraMap K.O K.E ϖ)⁻¹) ≤ 1`. Rewrite using `[map_inv₀, map_inv₀, ← hw, h1, inv_one]`. Take `⟨u, hu⟩` from `(he _).2 this`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Apply `hϖ.not_isUnit` to reduce the goal to its premises. Use `IsUnit.of_mul_eq_one (b := u) (IsFractionRing.injective K.O K.E ?_)` and prove the remaining obligations. Rewrite using `[map_mul, hu, map_one, mul_inv_cancel₀ hE]`. Establish `wlt : w < 1` using `lt_of_le_of_ne w1 wne`. Establish `hlog : w.log < 0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Rewrite using `[← WithZero.exp_lt_exp, WithZero.exp_log w0, WithZero.exp_zero]`. Conclude with `wlt`. Rewrite using `[← WithZero.exp_log w0, WithZero.exp_le_exp]`. Use linear arithmetic over natural numbers and integers.
+A detailed English derivation is pending.
 -/
 theorem exists_unif (he : ∀ x, x ∈ (algebraMap K.O K.E).range ↔ Valued.v (e x) ≤ 1) :
     ∃ ϖ : K.O, ϖ ≠ 0 ∧ Valued.v (e (algebraMap K.O K.E ϖ)) ≤ WithZero.exp (-1) := by
@@ -81,25 +81,21 @@ end GlobalTheory.IntMatBound
 
 open GlobalTheory.IntMatBound in
 /- English proof (translation)
-Introduce `K L _ _ e he n M`. Prove the components needed by the constructor for the conclusion. Introduce `hM`. Take `⟨s, hs⟩` from `hM.fg_adjoin_singleton`. Establish `hb : ∀ p : s × Fin n × Fin n, ∃ m : ℤ, Valued.v (e ((p.1 : Matrix (Fin n) (Fin n) K.E) p.2.1 p.2.2)) ≤ WithZero.exp m` using `fun p => exists_bound K e _`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `choose f hf using hb`. Take `⟨m, hm⟩` from `(Set.finite_range f).bddAbove`. Use `⟨m, fun k i j => ?_⟩` and prove the remaining obligations. Establish `hle : Submodule.span K.O (s : Set (Matrix (Fin n) (Fin n) K.E)) ≤ boundSub K e he n m`. Rewrite using `[Submodule.span_le]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `X hX i j`. Conclude with `(hf ⟨⟨X, hX⟩, i, j⟩).trans (WithZero.exp_le_exp.2 (hm ⟨_, rfl⟩))`. Establish `hk : M ^ k ∈ Submodule.span K.O (s : Set (Matrix (Fin n) (Fin n) K.E))`. Rewrite using `[hs]`. Conclude with `Subalgebra.pow_mem _ (Algebra.self_mem_adjoin_singleton K.O M) k`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `hle hk i j`. Introduce and unpack `⟨m, hm⟩`. Take `⟨ϖ, hϖ0, hϖ⟩` from `exists_unif K e he`. Establish `hE : algebraMap K.O K.E ϖ ≠ 0`. Introduce `h0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hϖ0 (IsFractionRing.injective K.O K.E (by simpa using h0))`. Use `set N := m.toNat with hN`. Use `set y : K.E := (algebraMap K.O K.E ϖ)⁻¹ ^ N with hy`. Use `set S : Submodule K.O (Matrix (Fin n) (Fin n) K.E) := Submodule.span K.O (Set.range fun p : Fin n × Fin n => Matrix.single p.1 p.2 y) with hS`. Establish `hmem : ∀ X : Matrix (Fin n) (Fin n) K.E, (∀ i j, Valued.v (e (X i j)) ≤ WithZero.exp m) → X ∈ S`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Introduce `X hX`. Rewrite using `[Matrix.matrix_eq_sum_single X]`. Use `Submodule.sum_mem _ fun i _ => Submodule.sum_mem _ fun j _ => ?_` and prove the remaining obligations. Establish `hv : Valued.v (e ((algebraMap K.O K.E ϖ) ^ N * X i j)) ≤ 1`. Rewrite using `[map_mul, map_pow, Valuation.map_mul, Valuation.map_pow]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[WithZero.exp_le_exp, nsmul_eq_mul, hN]`. Use linear arithmetic over natural numbers and integers. Use `_ = 1 := WithZero.exp_zero`. Take `⟨c, hc⟩` from `(he _).2 hv`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `: Matrix.single i j (X i j) = c • Matrix.single i j y`. Rewrite using `[Matrix.smul_single, Algebra.smul_def, hc, hy, inv_pow, mul_assoc, mul_comm (X i j), ← mul_assoc, mul_inv_cancel₀ (pow_ne_zero _ hE), one_mul]`. Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨(i, j), rfl⟩)`. Establish `hSfg : S.FG` using `Submodule.fg_span (Set.finite_range _)`.
-
-Establish `hle : Subalgebra.toSubmodule (Algebra.adjoin K.O {M}) ≤ S`. Rewrite using `[Algebra.adjoin_eq_span, Submodule.span_le]`. Introduce and unpack `_ hx`. Take `⟨k, rfl⟩` from `Submonoid.mem_closure_singleton.1 hx`. Conclude with `hmem _ (hm k)`.
-
-Use `haveI := isNoetherian_of_fg_of_noetherian S hSfg`. Use `haveI := isNoetherian_of_le hle`. Establish `hfg : (Subalgebra.toSubmodule (Algebra.adjoin K.O {M})).FG` using `Module.Finite.iff_fg.mp inferInstance`. Conclude with `IsIntegral.of_mem_of_fg _ hfg M (Algebra.self_mem_adjoin_singleton K.O M)`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.IntMatBound.isIntegral_iff_bounded : ∀ (K : UQ) {L : Type} [Field L] [Valued L (WithZero (Multiplicative ℤ))] (e : K.E ≃+* L), (∀ x, x ∈ (algebraMap K.O K.E).range ↔ Valued.v (e x) ≤ 1) → ∀ (n : ℕ) (M : Matrix (Fin n) (Fin n) K.E), IsIntegral K.O M ↔ ∃ m : ℤ, ∀ k : ℕ, ∀ i j, Valued.v (e ((M ^ k) i j)) ≤ WithZero.exp m := by
   intro K L _ _ e he n M

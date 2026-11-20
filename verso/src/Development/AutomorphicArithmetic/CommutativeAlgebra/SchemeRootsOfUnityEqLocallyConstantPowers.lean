@@ -7,17 +7,15 @@ noncomputable section
 open CategoryTheory Limits AlgebraicGeometry IsLocalRing GlobalTheory.EtC UpperTheory.Et LateralTheory.E.t_E2Cut LateralTheory.E.LineOneCut LateralTheory.E.StandardEtaleChartsMultivariableHensel
 
 /- English proof (translation)
-Introduce `X _ q _ ζ hζ`. Establish `hb : ∀ (x : X) (f : Γ(X, ⊤)), x ∉ X.basicOpen f ↔ f ∈ (X.toSpecΓ x).asIdeal`. Introduce `x f`. Rewrite using `[← Scheme.toSpecΓ_preimage_basicOpen]`. Conclude with `not_not`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Set `h` to `X.isoSpec.hom.homeomorph`. Take `⟨h1, h2, h3⟩` from `UpperTheory.roots_of_unity_eq_locallyConstant_powers_spectrum Γ(X, ⊤) q ζ hζ`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `g`. Take `⟨w, hwq, hw⟩` from `h1 (LocallyConstant.comap ⟨h.symm, h.symm.continuous⟩ g)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨w, hwq, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[hb]`. Establish `hx` using `hw (h x)`. Express the relevant statement in the definitionally equal form `w - ζ ^ (g (h.symm (h x))).val ∈ (h x).asIdeal at hx`. Rewrite `hx` using `[h.symm_apply_apply]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hx`. Introduce `w hw`. Take `⟨g, hg⟩` from `h2 w hw`. Use `⟨LocallyConstant.comap ⟨h, h.continuous⟩ g, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[hb]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hg (h x)`. Introduce `a b x hx`. Rewrite `hx` using `[hb]`. Conclude with `h3 a b _ hx`. Introduce `x`.
-
-Conclude with `⟨(X.toSpecΓ x).asIdeal, fun f => (hb x f).symm⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.scheme_roots_of_unity_eq_locallyConstant_powers :
     ∀ (X : Scheme.{0}) [IsAffine X] (q : ℕ) [NeZero q] (ζ : Γ(X, ⊤)), GoodRoot q ζ →

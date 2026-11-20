@@ -8,15 +8,15 @@ import Formalism.LogFactorialIndices.SignedSubspaceIndex.SubspaceLatticeIndex
 namespace Formalism.LatticeIndexTer
 
 /- English proof (translation)
-The claim follows from `lattice_quotient_finite`.
+A detailed English derivation is pending.
 -/
 theorem latFinite : LatFinite := lattice_quotient_finite
 /- English proof (translation)
-The claim follows from `lattice_has_basis`.
+A detailed English derivation is pending.
 -/
 theorem latBasis : LatBasis := lattice_has_basis
 /- English proof (translation)
-The claim follows from `lattice_index_eq_det_valuation`.
+A detailed English derivation is pending.
 -/
 theorem idxDet : IdxDet := lattice_index_eq_det_valuation
 

@@ -27,23 +27,21 @@ set_option maxHeartbeats 4000000 in
 set_option synthInstance.maxHeartbeats 400000 in
 
 /- English proof (translation)
-Introduce `hPr hL hPt`. Establish `hG` using `GlobalTheory.T.good_fiber_types_all hPr hL`. Establish `hI` using `GlobalTheory.T.twistedPlace_innerProduct_classSum_rows`. Establish `hcheb` using `GlobalTheory.ChebSplitDense.chebSplit_nd hPr.what₂.cheb`. Unfold `PtSt at hPt`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `AllSt at hPt hG ⊢`. Unfold `OverRows at hI`. Unfold `StepW GroupRetwisting.Step EvLgG at hPt hG ⊢`. Use `EvG.imp (EvG.inter (EvG.inter hPt hG) hI) fun K _ _ _ _ h => ?_` and prove the remaining obligations. Use `large₂.imp (large₂.inter (large₂.inter h.1.1 h.1.2) h.2) fun B f T _ g => ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `hKP hF _ w hS P x l`. Establish `hpin : ColPin w` using `hS.1.some`. Take `⟨big, hbig⟩` from `g.1.1 hKP hF trivial w hS P x l`. Use `⟨big, fun L hB hO => ?_⟩` and prove the remaining obligations. Establish `hB0` using `hB`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take `⟨hconds, hEig, hIso⟩` from `hbig L hB`. Take `⟨-, -, h42, hZ⟩` from `hconds hO`. Establish `hgood : GoodFTAll (withLoc L)` using `g.1.2 hKP hF trivial w hS P x l.toLA`. Establish `hmt : MtInput (Dof x) l.mt.M l.c.tp.tup l.c.ch.Q`. Establish `h0` using `l.mt.mt`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1` using `l.c.xi_eq`. Establish `e2` using `l.c.Q_eq`. Unfold `TupTied.tup`. Rewrite using `[e1, e2]`. Conclude with `h0`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hlat` using `GlobalTheory.CoefDuty.latInt_member (Dof x) (cfOf x) l.a.jE l.a.A l.mt.M l.c.ch l.c.tp.tup hmt big L hB`. Establish `hsum : SumTw (Dof x) l.mt.M` using `g.2 hKP w hpin x.o.Z P.Wt P.hX x.m.z x.s.p0 x.r.Y x.m.intersectionNumber_baseChange x.m.exAt x.m.inGeo x.fits.grp x.fits.grpAt l.mt.M l.c.tp.tup l.c.ch.Q l.mt.ad hmt`. Take `⟨Sp, ⟨Au⟩, hss⟩` from `hB`. Take `⟨Hk, -⟩` from `GlobalTheory.FitHecke.heckeOpen_withLoc (Dof x) (cfOf x) l.a.jE l.a.A (lowAll (Dof x)) l.Pq l.rat.S l.rat.In.hL l.rat.In.eig l.rat.In.θ l.b.Bs l.mt.M l.c.ch l.c.tp l.c.side hmt l.a.elem.star l.a.elem.int l.a.elem.split (hcheb (Dof x)) big L Sp Au`. Set `cover : NormalizedLocalCompatibility (withLoc L) (mtL L l.mt.M)` to `{ B := { Sp.B with } Q_eq := Sp.Q_eq mx := Sp.mx mx_max := Sp.mx_max mx_inj := Sp.mx_inj mx_all := Sp.mx_all phO := Sp.phO phK := Sp.phK phK_alg := Sp.phK_alg phK_emb := Sp.phK_emb Psi := Sp.Psi Psi_inj := Sp.Psi_inj Psi_range := Sp.Psi_range Psi_pr := Sp.Psi_pr ptX := Sp.ptX ptX …`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `e1 : (withLoc L).naut.iotaQ i = Sp.iq i` using `Au.iotaQ i`. Establish `e2 : (withLoc L).naut.iotaQC i = qCast ((withLoc L).nd.w_l i) (l.a.A.pl.ι ((withLoc L).nd.w i))` using `Au.iotaQC i`. Unfold `iotaOC`. Rewrite using `[RingHom.comp_apply, RingHom.comp_apply, e1, e2]`. Conclude with `Sp.iotaC_coh j w i h z }`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hstd : HeckeStdTw cover.B` using `heckeStdTw_of_std Sp.std`. Establish `hcls : ∀ i, CoefDuty.ClassSum ((mtL L l.mt.M).loc i)`. Introduce `i`. Establish `hj` using `L.X.j_range i`. Establish `h0` using `hsum (L.X.w i) (L.X.w_tw i) (L.X.j i) hj.1 hj.2`.
-
-Conclude with `GlobalTheory.FitHecke.mt_transport l.mt.M (fun μ j m => CoefDuty.ClassSum m) (L.X.mu_w i).symm rfl hj.1 hj.2 hj.1 hj.2 h0`. Conclude with `GlobalTheory.T.coefficient_built_local_hypothesis hPr hL hKP hF hS x l big L hB0 hO (mtL L l.mt.M) cover l.c.ch.Q hstd hlat.1 hlat.2 Hk.hecke Hk.rational Hk.av hcls hEig hIso h42 hZ hgood`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem etaJ_built : PrN → ∀ hL : GlobalTheory.Published.LocalLanglandsGL, PtSt hL → AllSt fun _ _ _ _ _ P x => ∀ l : LC hL x, GlobalTheory.CoefDuty.EvO l.a.A l.mt.M l.c.ch l.c.tp.tup fun D' => SumRepresentations.hypO D' → ∀ j v, 1 ≤ j → j ≤ (Dof x).R.m → ∀ v' : D'.what₂.places.Pl, HEq v' v → D'.what₂.etaJ j v' = P.q.eta j v := by
   intro hPr hL hPt

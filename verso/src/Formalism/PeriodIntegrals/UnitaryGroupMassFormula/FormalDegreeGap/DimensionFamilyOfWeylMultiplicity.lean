@@ -13,13 +13,11 @@ namespace PI.UnitaryGroupMassFormula.HCFdegRGap
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.S Formalism.MainNotions.StandardLattice
 
 /- English proof (translation)
-Take `⟨H, i1, i2, σ, hσ⟩` from `hex`. Use `haveI : CompleteSpace H := hσ.1`. Take `⟨d, hd0, hdI⟩` from `Formalism.MainNotions.BridgeCSchur.fdeg_of_DS _ σ hσ`. Establish `hc : (0 : ℝ) < (D.s.cdScale _ (epsSH D.R) : ℝ)` using `D.s.cdScale_pos _ _`. Establish `hF : IsFdeg ((D.s.cdScale _ (epsSH D.R) : ENNReal) • Formalism.REAL.muG (epsSH D.R)) σ (d / (D.s.cdScale _ (epsSH D.R) : ℝ))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨div_pos hd0 hc, fun v w v' w' => ⟨(hdI v w v' w').1.smul_measure ENNReal.coe_ne_top, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[MeasureTheory.integral_smul_measure, (hdI v w v' w').2, ENNReal.coe_toReal]`. Establish `hc' : ((D.s.cdScale _ (epsSH D.R) : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast hc.ne'`. Establish `hd' : ((d : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast hd0.ne'`. Rewrite using `[Complex.real_smul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Clear the denominators using the available nonvanishing facts. Establish `key` using `hd ρ H σ _ hσ hF`. Use `⟨H, i1, i2, σ, hσ, ?_⟩` and prove the remaining obligations. Rewrite using `[← key]`.
-
-Conclude with `hF`.
+Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dsigEx_at (D : D7) (hd : dsigTie D) (ρ : D.what₂.Tau)
     (hex : ∃ (H : Type) (_ : NormedAddCommGroup H) (_ : InnerProductSpace ℂ H)
@@ -48,27 +46,25 @@ theorem dsigEx_at (D : D7) (hd : dsigTie D) (ρ : D.what₂.Tau)
   exact hF
 
 /- English proof (translation)
-Establish `hAll : StandardLattice.DiscreteSeriesDegreeBoundsOfGap D` using `Formalism.MainNotions.RT.theorem_three_under_scale_of_general (dimension_bound_of_gap_uniform hCFdegRGap_holds hW hL) D hc`. Establish `hT` using `DiscreteSeriesWeylDimension.lowest_K_type_count_of_weyl D hW hL`. Introduce `ep0 he1 he2 ρ hgap`. Establish `hHC` using `line_param_harish_chandra D ρ`. Establish `hp : ((Finset.univ.filter (fun a => epsSH D.R a = true)).card : ℝ) = (pY D : ℝ)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: (Finset.univ.filter (fun a => epsSH D.R a = true)).card = nPlus (epsSH D.R)` using `rfl`. Rewrite using `[this, sign_vector_eq_line_sign, count_plus_finCast, count_plus_line_sign]`. Establish `hq : ((Finset.univ.filter (fun a => epsSH D.R a = false)).card : ℝ) = (qY D : ℝ)`. Establish `: (Finset.univ.filter (fun a => epsSH D.R a = false)).card = nMinus (epsSH D.R)` using `rfl`. Rewrite using `[this, sign_vector_eq_line_sign, count_minus_finCast, count_minus_line_sign]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hN : ((2 * D.R.rS + D.R.k + 1 : ℕ) : ℝ) = (D.R.r : ℝ)` using `by rw [dimS_eq]`. Establish `hg' : Formalism.QuantumDeterminants.GapAtLeast (epsSH D.R) (lamSH D.R (D.hc ρ)) (spectralGapLowerBound D ep0)`. Rewrite using `[sign_vector_eq_line_sign, param_vector_eq_line_param]`. Conclude with `gapAtLeast_finCast _ _ _ _ hgap`. Establish `hp1 : (1 : ℝ) ≤ ((Finset.univ.filter (fun a => epsSH D.R a = true)).card : ℝ)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hp]`. Conclude with `(signature_counts_ge_one D).1` after adjusting the coercions. Establish `hq1 : (1 : ℝ) ≤ ((Finset.univ.filter (fun a => epsSH D.R a = false)).card : ℝ)`. Rewrite using `[hq]`. Conclude with `(signature_counts_ge_one D).2` after adjusting the coercions.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Establish `hsum : ((2 * D.R.rS + D.R.k + 1 : ℕ) : ℝ) = ((Finset.univ.filter (fun a => epsSH D.R a = true)).card : ℝ) + ((Finset.univ.filter (fun a => epsSH D.R a = false)).card : ℝ)`. Establish `h'` using `congrArg (fun x : ℕ => (x : ℝ)) (card_add_card (epsSH D.R))`. Move the coercions through the operations in `at h' ⊢`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hbig` using `gap_big (h0 := spectralGapLowerBound D ep0) hp1 hq1 hsum (by rw [hN]; exact he1) he2 (le_of_eq (by rw [hp, hq, hN]; unfold spectralGapLowerBound; rw [Nat.cast_min]))`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hq0 : ((ReciprocityTheory.ChartRestriction.DS.S7.q0 (epsSH D.R) : ℕ) : ℝ) ≤ ((Finset.univ.filter (fun a => epsSH D.R a = true)).card : ℝ)`. Establish `: ReciprocityTheory.ChartRestriction.DS.S7.q0 (epsSH D.R) ≤ (Finset.univ.filter (fun a => epsSH D.R a = true)).card` using `min_le_left _ _`. Conclude with `this` after adjusting the coercions. Establish `hmax : max (2 * ((2 * D.R.rS + D.R.k + 1 : ℕ) : ℝ)) (8 * ((2 * D.R.rS + D.R.k + 1 : ℕ) : ℝ) * (ReciprocityTheory.ChartRestriction.DS.S7.q0 (epsSH D.R) : ℝ)) < spectralGapLowerBound D ep0`. Generalize the expression as in `((Finset.univ.filter (fun a => epsSH D.R a = true)).card : ℝ) = p at *`.
+Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact.
 
-Generalize the expression as in `((Finset.univ.filter (fun a => epsSH D.R a = false)).card : ℝ) = q at *`. Generalize the expression as in `((ReciprocityTheory.ChartRestriction.DS.S7.q0 (epsSH D.R) : ℕ) : ℝ) = r at *`. Generalize the expression as in `((2 * D.R.rS + D.R.k + 1 : ℕ) : ℝ) = n at *`. Establish `hpq : 1 ≤ p * q` using `by nlinarith`. Establish `hn : 1 ≤ n` using `by linarith`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Use the polynomial consequences of the given equalities and inequalities.
 
-Establish `hrpq : r ≤ p * q` using `by nlinarith`. Rewrite using `[max_lt_iff]`. Prove the components needed by the constructor for the conclusion. Use the polynomial consequences of the given equalities and inequalities. Use the polynomial consequences of the given equalities and inequalities.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hEx` using `dsigEx_at D hdt ρ (ReciprocityTheory.ChartRestriction.DS.G2.discrete_series_exists_large_gap _ (epsSH D.R) _ hHC (spectralGapLowerBound D ep0) hg' (Or.inr hmax))`. Take `⟨H, i1, i2, σ, hDS, hF⟩` from `hEx`. Establish `hcs : CompleteSpace H` using `hDS.1`. Establish `hnt : Nontrivial H` using `hDS.2.1`. Take `⟨w, hw⟩` from `exists_ne (0 : H)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hdt'` using `(hT _ (epsSH D.R) (lamSH D.R (D.hc ρ)) hHC H σ hDS).2`. Establish `key` using `hAll _ (epsSH D.R) (lamSH D.R (D.hc ρ)) ep0 (spectralGapLowerBound D ep0) H σ w (by rw [hp]; exact_mod_cast (signature_counts_ge_one D).1) (by rw [hq]; exact_mod_cast (signature_counts_ge_one D).2) hHC hg' (by rw [hN]; exact he1) he2 (by rw [hp, hq, hN]; unfold spectralGapLowerBo …`. Rewrite `key` using `[formal_degree_of_eq _ σ _ hF w hw, hp, hq, hdt']`. Rewrite `key` using `[← dimV_eq_fdegHC _ hHC.1]`. Rewrite `key` using `[sign_vector_eq_line_sign, param_vector_eq_line_param, dim_weyl_finCast, formal_degree_finCast, abs_param_sup_finCast]`.
-
-Use `⟨key.1, ?_⟩` and prove the remaining obligations. Establish `e : ((pY D : ℝ) * (qY D : ℝ)) = ((pY D * qY D : ℕ) : ℝ)` using `by push_cast; rfl`. Rewrite `key` using `[e, Real.rpow_natCast]`. Conclude with `key.2`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dimension_bound_of_scale_equalities (D : D7) (hc : cdScaleTie D) (hdt : dsigTie D) (hW : DiscreteSeriesWeylDimension.WeylForK)
     (hL : DiscreteSeriesWeylDimension.LowKMultOne) : StandardLattice.SigmaDegreeTwoSidedBoundOfGap D := by
@@ -136,7 +132,7 @@ theorem dimension_bound_of_scale_equalities (D : D7) (hc : cdScaleTie D) (hdt : 
   exact key.2
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨0, fun x _ _ i => dimension_bound_of_scale_equalities _ (Fm.ties x i).cdScale_tie (Fm.ties x i).dsig_tie hW hL⟩`.
+Supply the required witnesses or components.
 -/
 theorem dimension_family_of_weyl_multiplicity {eps : ℝ} (Fm : Formalism.MainNotions.FamP eps) (hW : DiscreteSeriesWeylDimension.WeylForK) (hL : DiscreteSeriesWeylDimension.LowKMultOne) :
     Formalism.MainNotions.flipTwoThree.fam0 Fm Formalism.MainNotions.StandardLattice.SigmaDegreeTwoSidedBoundOfGap := ⟨0, fun x _ _ i => dimension_bound_of_scale_equalities _ (Fm.ties x i).cdScale_tie (Fm.ties x i).dsig_tie hW hL⟩

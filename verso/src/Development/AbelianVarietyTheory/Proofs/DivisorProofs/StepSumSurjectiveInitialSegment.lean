@@ -7,27 +7,25 @@ open scoped TensorProduct
 namespace GlobalTheory
 
 /- English proof (translation)
-Set `w : ℕ → ℝ` to `fun n => if h : n < r then v ⟨n, h⟩ else 0`. Use `⟨fun k => w k.val - w (k.val + 1), ?_⟩` and prove the remaining obligations. Establish `key : ∀ d : ℕ, ∀ i : Fin r, r - i.val = d → stepSum S (fun k => w k.val - w (k.val + 1)) i = v i`. Introduce `d`. Proceed by induction on `d with`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `zero => intro i hi`. Use `i.2` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Consider the case `succ d ih`. Introduce `i hi`.
+Treat this case separately. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Unfold `stepSum`. Distinguish the cases in `hiS : i ∈ S`. Distinguish the cases in `h : i.val + 1 < r`. Use `set j : Fin r := ⟨i.val + 1, h⟩ with hj`. Establish `hset : S.filter (fun k => i ≤ k) = insert i (S.filter (fun k => j ≤ k))`.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `k`. Simplify using `only [Finset.mem_filter, Finset.mem_insert, Fin.le_def, hj, Fin.ext_iff]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hk, hik⟩`. Distinguish the cases in `hki : k.val = i.val`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Consider separately whether the proposition holds or fails. Prove the first alternative.
 
-Conclude with `Or.inl hki`. Conclude with `Or.inr ⟨hk, by omega⟩`. Introduce and unpack `(hki | ⟨hk, hjk⟩)`. Establish `: k = i` using `Fin.ext hki`. Substitute `this` using the available equality.
+Prove the second alternative. Assume the hypotheses and unpack their components. Establish an intermediate fact. Substitute using the available equality. Supply the required witnesses or components.
 
-Conclude with `⟨hiS, le_refl _⟩`. Conclude with `⟨hk, by omega⟩`. Establish `hnot : i ∉ S.filter (fun k => j ≤ k)`. Simplify using `[Fin.le_def, hj]`. Establish `hj'` using `ih j (by simp [hj]; omega)`.
+Supply the required witnesses or components. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `stepSum at hj'`. Rewrite using `[hset, Finset.sum_insert hnot, hj']`. Simplify using `only [w, dif_pos i.2, dif_pos h]`. Expand and normalize the polynomial expressions, which then agree. Establish `hset : S.filter (fun k => i ≤ k) = {i}`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `k`. Simplify using `only [Finset.mem_filter, Finset.mem_singleton, Fin.le_def]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hk, hik⟩; exact Fin.ext (by have := k.2; omega)`. Introduce and unpack `rfl`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Conclude with `⟨hiS, le_refl _⟩`. Rewrite using `[hset, Finset.sum_singleton]`. Simplify using `only [w, dif_pos i.2, dif_neg h]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hv i hiS]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `k hk`. Rewrite `hk` using `[Finset.mem_filter]`. Conclude with `absurd (hS k hk.1 i hk.2) hiS`. Use function extensionality and compare the values at `i`.
-
-Conclude with `key _ i rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem stepSum_surj_of_initial {r : ℕ} {S : Finset (Fin r)} (hS : ∀ k ∈ S, ∀ i, i ≤ k → i ∈ S)
     (v : Fin r → ℝ) (hv : ∀ i ∉ S, v i = 0) : ∃ u, stepSum S u = v := by

@@ -24,7 +24,7 @@ variable {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotio
   {Y0 : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Y0 cX} {Csz : ℝ} (p : PtAt ex Csz) (i : Fin D.R.m)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun v => by rw [← InfinitePlace.not_isReal_iff_isComplex, InfinitePlace.isReal_iff, ComplexEmbedding.isReal_iff] exact fun e => CompHt.conj_comp_ne (c := p.T.Q.c) v.embedding (RingHom.ext fun a => RingHom.congr_fun e a)⟩`.
+Supply the required witnesses or components.
 -/
 theorem totallyComplex_core : IsTotallyComplex p.T.Q.c.F :=
   ⟨fun v => by
@@ -32,7 +32,7 @@ theorem totallyComplex_core : IsTotallyComplex p.T.Q.c.F :=
     exact fun e => CompHt.conj_comp_ne (c := p.T.Q.c) v.embedding (RingHom.ext fun a => RingHom.congr_fun e a)⟩
 
 /- English proof (translation)
-Establish `e : (starRingEnd ℂ).comp σ = ComplexEmbedding.conjugate σ`. Use extensionality with `x`. Simplify using `[ComplexEmbedding.conjugate_coe_eq]`. Rewrite using `[e]`. Conclude with `goodOf_conj (c := c) σ`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem goodOf_conj' {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {l : Level H}
     (c : Coeff l) (σ : c.F →+* ℂ) : goodOf c ((starRingEnd ℂ).comp σ) = goodOf c σ := by
@@ -41,7 +41,7 @@ theorem goodOf_conj' {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Rec
   rw [e]; exact goodOf_conj (c := c) σ
 
 /- English proof (translation)
-Simplify using `only [nrmK, normW, petW]`. Rewrite using `[goodOf_conj']`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem nrmK_conj (σ : p.T.Q.c.F →+* ℂ) (x : VK p.fw i) :
     nrmK p.fw i ((starRingEnd ℂ).comp σ) x = nrmK p.fw i σ x := by
@@ -49,13 +49,13 @@ theorem nrmK_conj (σ : p.T.Q.c.F →+* ℂ) (x : VK p.fw i) :
   rw [goodOf_conj']
 
 /- English proof (translation)
-Use `haveI := totallyComplex_core p`. Take `⟨ι, h1, h2, h3⟩` from `GlobalTheory.T.exists_semilinear_emb_supLattice_onto_realisation D _ _ _ _ p.T p.R.toRealDat p.κ p.v₀ p.fw i`. Use `choose c hc0 hcB hcE using hM`. Establish `hAll : latAll p.R.toRealDat i = Submodule.span (𝓞 D.what₂.LL) (ι '' (latW (p.T.U ((i : ℕ) + 1)) (Gk p i) : Set (VK p.fw i)))`. Unfold `latAll`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[h3]`. Establish `hne : latW (p.T.U ((i : ℕ) + 1)) (Gk p i) ≠ ⊥`. Introduce `h0`. Apply `hG.2.2.1` to reduce the goal to its premises. Use `le_bot_iff.1 ((latGood_le _ _ _).trans ((inf_le_left : latType p.R.toRealDat p.F.lv2 i ≤ latAll p.R.toRealDat i).trans ?_))` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `latAll p.R.toRealDat i ≤ ⊥`. Rewrite using `[hAll, h0]`. Simplify using the standard rewrite rules. Establish `key` using `GlobalTheory.T.maxSlope_sq_fieldExtension_le_comparable_norms p.T.Q.c.F D.what₂.LL (VK p.fw i) (Fin (p.R.toRealDat.nW i) → D.what₂.LL) (nrmK p.fw i) (nrmR p.R.toRealDat i) ι (latW (p.T.U ((i : ℕ) + 1)) (Gk p i)) c (Cm * unitE p) hG.2.2.2.1 hG.1 (nrmK_conj p i) h2 hG.2.2.2.2.1 hne …`. Take `⟨h, e⟩` from `h1 x`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `hcE σ ⟨x, h⟩)`. Rewrite using `[hAll]`. Conclude with `key`.
+A detailed English derivation is pending.
 -/
 theorem slopeMax_all_le (Cm : ℝ) (hG : GramAt p i) (hM : MeasAt p i Cm) :
     slopeMax_sq (nrmR p.R.toRealDat i) (latAll p.R.toRealDat i) ≤
@@ -83,15 +83,15 @@ theorem slopeMax_all_le (Cm : ℝ) (hG : GramAt p i) (hM : MeasAt p i Cm) :
   exact key
 
 /- English proof (translation)
-Rewrite using `[hW.unit]`. Establish `hX : 10 ≤ L.sc.x` using `hH.big.2.1.trans hH.big.2.2.1`. Establish `hX0 : 0 < L.sc.x` using `by linarith`. Establish `hL0 : 0 ≤ L.sc.L` using `by linarith [hH.big.2.1]`. Establish `hb : 0 ≤ L.sc.b` using `le_trans (by positivity) hH.room`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlog : Real.log L.sc.x ≤ L.sc.x - 1` using `Real.log_le_sub_one_of_pos hX0`. Establish `hlogpos : 0 < Real.log L.sc.x` using `Real.log_pos (by linarith)`. Establish `hll : Real.log (Real.log L.sc.x) ≤ L.sc.x`. Use `Real.log_le_sub_one_of_pos hlogpos` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `hll0 : 0 ≤ Real.log (Real.log L.sc.x)` using `by linarith [hH.big.2.2.2]`. Establish `hmr : D.R.m ≤ D.R.r * D.R.nV`. Establish `h1 : D.R.m ≤ D.R.r` using `by have := D.R.m_add_three_le_k; unfold Ranks.r; omega`. Establish `h2 : 1 ≤ D.R.nV` using `by have := D.R.two_le_m; unfold Ranks.nV; omega`. Conclude with `h1.trans (Nat.le_mul_of_pos_right _ h2)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmr' : (D.R.m : ℝ) ≤ (D.R.r : ℝ) * D.R.nV` using `by exact_mod_cast hmr`. Establish `hf : (0 : ℝ) ≤ D.R.f` using `Nat.cast_nonneg _`. Establish `hfm : (D.R.f : ℝ) * D.R.m * L.sc.L ≤ (D.R.f : ℝ) * D.R.r * D.R.nV * L.sc.L`. Use `mul_le_mul_of_nonneg_left hmr' hf` as an intermediate fact. Use `mul_le_mul_of_nonneg_right this hL0` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hpoly` using `hH.poly.2.2`. Establish `hfm0 : 0 ≤ (D.R.f : ℝ) * D.R.m * L.sc.L` using `by positivity`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem unitE_le {PP A M : ℝ} (hH : HostNum D L PP A M) (hW : WtNum p i PP) :
     unitE p ≤ L.sc.x ^ (A + 1) * L.sc.b := by
@@ -125,15 +125,15 @@ theorem unitE_le {PP A M : ℝ} (hH : HostNum D L PP A M) (hW : WtNum p i PP) :
     _ = L.sc.x ^ (A + 1) * L.sc.b := by rw [Real.rpow_add_one hX0.ne']; ring
 
 /- English proof (translation)
-Establish `hX0 : 0 < X` using `by linarith`. Establish `hP : 1 ≤ X ^ A1` using `Real.one_le_rpow (by linarith) hA1`. Establish `hQ : 1 ≤ X ^ (A + 1)` using `Real.one_le_rpow (by linarith) (by linarith)`. Establish `hK : 1 + 2 * Cm ≤ X ^ (⌈2 * Cm⌉₊ : ℝ)`. Rewrite using `[Real.rpow_natCast]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1` using `one_add_mul_le_pow (show (-2 : ℝ) ≤ X - 1 by linarith) ⌈2 * Cm⌉₊`. Establish `h2 : 2 * Cm ≤ (⌈2 * Cm⌉₊ : ℝ)` using `Nat.le_ceil _`. Establish `h3 : (⌈2 * Cm⌉₊ : ℝ) ≤ (⌈2 * Cm⌉₊ : ℝ) * (X - 1)` using `le_mul_of_one_le_right (Nat.cast_nonneg _) (by linarith)`. Establish `h4 : (1 : ℝ) + (X - 1) = X` using `by ring`. Rewrite `h1` using `[h4]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[Real.rpow_add hX0, Real.rpow_add hX0]`. Use `set P := X ^ A1`. Use `set Q := X ^ (A + 1)`. Use `set K := X ^ (⌈2 * Cm⌉₊ : ℝ)`.
+Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : P * b ≤ P * Q * b`. Establish `: P ≤ P * Q` using `le_mul_of_one_le_right (by linarith) hQ`. Conclude with `mul_le_mul_of_nonneg_right this hb`. Establish `e2 : 2 * (Cm * u) ≤ 2 * Cm * (P * Q * b)`. Establish `: u ≤ P * Q * b` using `hu.trans (by`.
+Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Establish `: Q ≤ P * Q` using `le_mul_of_one_le_left (by linarith) hP`. Conclude with `mul_le_mul_of_nonneg_right this hb)`. Use the polynomial consequences of the given equalities and inequalities. Establish `e3 : P * Q * b * (1 + 2 * Cm) ≤ P * Q * b * K` using `mul_le_mul_of_nonneg_left hK (by positivity)`. Use the polynomial consequences of the given equalities and inequalities.
+A detailed English derivation is pending.
 -/
 theorem le_rpow_of_add {X b A1 A Cm u s : ℝ} (hX : 10 ≤ X) (hb : 0 ≤ b) (hA1 : 0 ≤ A1) (hA : 0 ≤ A) (hCm : 0 ≤ Cm)
     (hu : u ≤ X ^ (A + 1) * b) (hs : s ≤ X ^ A1 * b + 2 * (Cm * u)) :
@@ -167,11 +167,11 @@ theorem le_rpow_of_add {X b A1 A Cm u s : ℝ} (hX : 10 ≤ X) (hb : 0 ≤ b) (h
   nlinarith
 
 /- English proof (translation)
-Introduce `hP hG hM`. Establish `hc` using `GlobalTheory.T.slope_max_squared_bound hP hG`. Establish `hH : HostN 1` using `GlobalTheory.CovTop.Sizes.hostN 1`. Establish `hW : WtN` using `GlobalTheory.T.weight_bound_holds`. Use `Closed.imp ((((hc.and hM).and hH).and hG).and hW) ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `eps Fm CH _ h`. Take `⟨⟨⟨⟨⟨A1, hA1, hc⟩, ⟨Cm, hCm, hm⟩⟩, ⟨Ah, hAh, hh⟩⟩, ⟨Cg, -, hg⟩⟩, ⟨Cw, -, hw⟩⟩` from `h`. Use `⟨A1 + (Ah + 1) + (⌈2 * Cm⌉₊ : ℝ), by have := Nat.cast_nonneg (α := ℝ) ⌈2 * Cm⌉₊; linarith, ?_⟩` and prove the remaining obligations. Take `⟨x0, H⟩` from `(((hc.and hm).and hh).and hg).and hw`. Use `⟨x0, fun x hx hle ι p hp i => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨⟨⟨⟨a, b⟩, c⟩, d⟩, e⟩` from `H x hx hle ι p hp`. Establish `hH1` using `c i`. Establish `hX : 10 ≤ (Fm.L x ι).sc.x` using `hH1.big.2.1.trans hH1.big.2.2.1`. Establish `hb : 0 ≤ (Fm.L x ι).sc.b` using `le_trans (by positivity) hH1.room`. Conclude with `le_rpow_of_add hX hb hA1 (by linarith [hH1.poly.1]) hCm (unitE_le p i hH1 (e i)) ((slopeMax_all_le p i Cm (d i) (b i)).trans (by linarith [a i]))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem lam : Hypotheses2 → Gram → Meas → abelian₂ := by
   intro hP hG hM

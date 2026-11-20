@@ -9,21 +9,21 @@ open scoped TensorProduct
 namespace GlobalTheory.TorsDim
 
 /- English proof (translation)
-Introduce `p _ O _ G k m hk B _ _ _ _ _ j ρ hρ hj q`. Take `⟨r, μ, hr, hker, hμ, hμq⟩` from `GlobalTheory.T.exists_mulPow_fibreRank_eq_pDivGroup p O G k m`. Establish `hjq : fibreRank (j : B →ₐ[O] G.A (k + m)).toLinearMap q = fibreDim B q` using `(GlobalTheory.T.linearMapFibreRank_split_comp_surjective O B (G.A (k + m)) (G.A (k + m)) (j : B →ₐ[O] G.A (k + m)).toLinearMap).1 ρ hρ q`. Establish `h1` using `fibreDim_eq_ker_mul_range j q`. Rewrite `h1` using `[hjq, G.fibreDim_eq]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2` using `fibreDim_eq_ker_mul_range (r.comp j) q`. Rewrite `h2` using `[G.fibreDim_eq]`. Establish `hle : RingHom.ker r ≤ kerIdeal j`. Rewrite using `[hker]`. Conclude with `(torsionIdeal_le_of_dvd (dvd_pow_self p (by omega))).trans (by simpa using hj)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Set `J : Ideal (G.A k)` to `kerIdeal (r.comp j)`. Set `φ : G.A (k + m) →ₐ[O] G.A k ⧸ J` to `(Ideal.Quotient.mkₐ O J).comp (r : G.A (k + m) →ₐ[O] G.A k)`. Establish `hφ : Function.Surjective φ` using `(Ideal.Quotient.mkₐ_surjective O J).comp hr`. Establish `hkerφ : RingHom.ker φ = kerIdeal j`. Establish `h5 : RingHom.ker φ = J.comap (r : G.A (k + m) →ₐ[O] G.A k)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `a`. Simplify using `[φ, RingHom.mem_ker, Ideal.Quotient.eq_zero_iff_mem]`. Rewrite using `[h5, show J = Ideal.map (r : G.A (k + m) →ₐ[O] G.A k) (kerIdeal j) from kerIdeal_comp r j, Ideal.comap_map_of_surjective (r : G.A (k + m) →ₐ[O] G.A k) hr, sup_eq_left]`. Conclude with `fun a ha => hle ha`. Set `e : (G.A (k + m) ⧸ kerIdeal j) ≃ₗ[O] (G.A k ⧸ J)` to `((Ideal.quotientEquivAlgOfEq O hkerφ).symm.trans (Ideal.quotientKerAlgEquivOfSurjective hφ)).toLinearEquiv`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Introduce a local definition for the expression. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[← fibreDim_congr e q]`. Establish `h3` using `fibreDim_eq_ker_mul_range (mulBy O B (p ^ m)) q`. Establish `hlin : (j : B →ₐ[O] G.A (k + m)).toLinearMap ∘ₗ (mulBy O B (p ^ m) : B →ₐ[O] B).toLinearMap = (μ : G.A k →ₐ[O] G.A (k + m)).toLinearMap ∘ₗ ((r.comp j) : B →ₐ[O] G.A k).toLinearMap`. Use extensionality with `b`. Express the relevant statement in the definitionally equal form `j (mulBy O B (p ^ m) b) = μ (r (j b))`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mulBy, hμ]`. Establish `h4 : fibreRank (mulBy O B (p ^ m) : B →ₐ[O] B).toLinearMap q = fibreRank ((r.comp j) : B →ₐ[O] G.A k).toLinearMap q`. Rewrite using `[← (GlobalTheory.T.linearMapFibreRank_split_comp_surjective O B B (G.A (k + m)) _).2.1 _ q hjq, hlin, (GlobalTheory.T.linearMapFibreRank_split_comp_surjective O B (G.A k) (G.A (k + m)) _).2.1 _ q (hμq q)]`. Express the relevant statement in the definitionally equal form `fibreDim (B ⧸ kerIdeal (mulBy O B (p ^ m))) q = _`. Rewrite `h3` using `[h4]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hp : 0 < p ^ (k * G.height)` using `pow_pos (Fact.out : p.Prime).pos _`. Establish `h6 : p ^ ((k + m) * G.height) = p ^ (m * G.height) * p ^ (k * G.height)`. Rewrite using `[← pow_add]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations.
 
-Use `(Nat.eq_of_mul_eq_mul_right hp ?_).symm` and prove the remaining obligations. Rewrite using `[← h6, h1, h3, h2]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem fibreDim_quot_torsionIdeal : ∀ (p : ℕ) [Fact p.Prime] (O : Type) [CommRing O] (G : PDivGroup p O) (k m : ℕ), 1 ≤ k → ∀ (B : Type) [CommRing B] [HopfAlgebra O B] [IsCocomm O B] [Module.Finite O B] [Module.Projective O B] (j : B →ₐc[O] G.A (k + m)) (ρ : G.A (k + m) →ₗ[O] B), (∀ b, ρ (j b) = b) → torsionIdeal O (G.A (k + m)) p ≤ kerIdeal j → ∀ q : PrimeSpectrum O, fibreDim (B ⧸ torsionIdeal O B (p ^ m)) q = p ^ (m * G.height) := by
   intro p _ O _ G k m hk B _ _ _ _ _ j ρ hρ hj q

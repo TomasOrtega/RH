@@ -6,7 +6,7 @@ open CategoryTheory AlgebraicGeometry
 
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SteinFibre.finite_coheight_one_and_exists_specializes | exact GlobalTheory.SteinFibre.finite_coheight_one_and_exists_specializes | (intros; apply GlobalTheory.SteinFibre.finite_coheight_one_and_exists_specializes <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.fibre_over_maximal_codim_one_finite : ∀ (X : Scheme.{0}) [IsIntegral X] [IsNoetherian X] [Ring.DimensionLEOne Γ(X, ⊤)] (P : Ideal Γ(X, ⊤))
     (t : Γ(X, ⊤)), P.IsMaximal → t ∈ P → t ≠ 0 →

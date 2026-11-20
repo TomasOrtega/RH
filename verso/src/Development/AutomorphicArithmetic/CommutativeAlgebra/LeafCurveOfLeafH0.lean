@@ -11,11 +11,9 @@ open CategoryTheory Limits AlgebraicGeometry Opposite GlobalTheory.EtC LateralTh
 namespace UpperTheory.Cb.CurveInd
 
 /- English proof (translation)
-Establish `hH'` using `hH`. Take `⟨a1, a2, a3, a4, a5, a7, a8, a9, a10, a11, b1, b2, b3, b4, b5, b7, c1, c2, c3, c4, c5, d1, d2, d3, e1, e2, e3⟩` from `hH'`. Establish `hsub : ∀ m : ℤ, 2 ≤ m → Subsingleton (Ht q (sp B) m i)` using `fun m hm => c2 q Ω B hq m i hm`. Use `⟨fun m => ?_, hsub⟩` and prove the remaining obligations. Break down `lt_trichotomy m 0 with hm | rfl | hm` into its components or cases.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis.
 
-Use `haveI : Subsingleton (Ht q (sp B) m i) := (a9 (ZMod q) (tw q i)).1 (sp B) m hm infer_instance`. Take `⟨hfin, hbij⟩` from `hH0 hH q Ω hq i haveI := hfin`. Conclude with `Finite.of_surjective _ (hbij (Spec.map (CommRingCat.ofHom (algebraMap Ω B)))).2`. Break down `(show m = 1 ∨ 2 ≤ m by omega) with rfl | hm2` into its components or cases. Conclude with `hB B`.
-
-Use `haveI := hsub m hm2 infer_instance`.
+Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 private theorem sp_facts (hH0 : H0TwistOverClosedField) (hH : Hyps) (q : ℕ) [NeZero q] (Ω : Type) [Field Ω] [IsAlgClosed Ω]
     (hq : IsUnit (q : Ω)) (i : ℤ)
@@ -39,17 +37,13 @@ private theorem sp_facts (hH0 : H0TwistOverClosedField) (hH : Hyps) (q : ℕ) [N
       infer_instance
 
 /- English proof (translation)
-Distinguish the cases in `hne : (j.opensRange : Set C).Nonempty`. Establish `hUne : (U : Set C).Nonempty` using `hne.mono hj`. Establish `hcur` using `UpperTheory.isDedekindDomain_affine_sections_of_isCurve Ω c hc`. Use `haveI : IsDedekindDomain (Γ(C, U) : Type) := (hcur.1 U hU hUne).1`. Establish `hWa : IsAffineOpen j.opensRange`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : IsAffineOpen (hU.fromSpec ⁻¹ᵁ j.opensRange)` using `UpperTheory.dedekind_spec_open_isAffine (Γ(C, U) : Type) _`. Establish `h2` using `h1.image_of_isOpenImmersion hU.fromSpec`. Rewrite `h2` using `[Scheme.Hom.image_preimage_eq_opensRange_inf, IsAffineOpen.opensRange_fromSpec, inf_eq_right.mpr hj]`. Then use the resulting hypothesis. Use `haveI : IsDedekindDomain (Γ(C, j.opensRange) : Type) := (hcur.1 _ hWa hne).1`. Establish `e : j.opensRange ≤ c ⁻¹ᵁ ⊤` using `by simp`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Use `letI : Algebra Ω (Γ(C, j.opensRange) : Type) := ((c.appLE ⊤ j.opensRange e).hom.comp (Scheme.ΓSpecIso (CommRingCat.of Ω)).inv.hom).toAlgebra`. Use `haveI : LocallyOfFiniteType c := by haveI : IsProper c := hc.2.1 infer_instance`. Use `haveI : Algebra.FiniteType Ω (Γ(C, j.opensRange) : Type) := by`. Establish `hft` using `HasRingHomProperty.appLE @LocallyOfFiniteType c inferInstance ⟨⊤, isAffineOpen_top _⟩ ⟨j.opensRange, hWa⟩ e`. Conclude with `RingHom.FiniteType.comp hft (RingHom.FiniteType.of_surjective _ (fun x => ⟨(Scheme.ΓSpecIso (CommRingCat.of Ω)).hom x, by simp⟩))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨h1, h2⟩` from `sp_facts hH0 hH q Ω hq i hB (Γ(C, j.opensRange) : Type)`. Establish `iso : Y ≅ Spec (CommRingCat.of (Γ(C, j.opensRange) : Type))` using `j.isoOpensRange ≪≫ hWa.isoSpec`. Use `⟨fun m => ?_, fun m hm => ?_⟩` and prove the remaining obligations. Use `haveI := h1 m`. Conclude with `Finite.of_equiv _ (CurveCut.isoH (ZMod q) (tw q i) iso m)`.
-
-Use `haveI := h2 m hm`. Conclude with `(CurveCut.isoH (ZMod q) (tw q i) iso m).symm.subsingleton`. Establish `hr : Set.range j.base = ∅` using `Set.not_nonempty_iff_eq_empty.mp hne`. Establish `iso : Y ≅ ((⊥ : C.Opens) : Scheme.{0})` using `IsOpenImmersion.isoOfRangeEq j (⊥ : C.Opens).ι (by`. Rewrite using `[Scheme.Opens.range_ι]`.
-
-Simplify using `using hr)`. Establish `hs : ∀ m : ℤ, Subsingleton (Ht q (sch.obj Y) m i)` using `fun m => haveI := LateralTheory.E.E8.leafEmptyVanish (ZMod q) (X := C) (tw q i) m (CurveCut.isoH (ZMod q) (tw q i) iso m).symm.subsingleton`. Use `⟨fun m => ?_, fun m _ => hs m⟩` and prove the remaining obligations. Use `haveI := hs m`. Use `infer_instance`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem aff_facts (hH0 : H0TwistOverClosedField) (hH : Hyps) (q : ℕ) [NeZero q] (Ω : Type) [Field Ω] [IsAlgClosed Ω]
     (hq : IsUnit (q : Ω)) (i : ℤ)
@@ -101,19 +95,15 @@ end UpperTheory.Cb.CurveInd
 
 open UpperTheory.Cb.CurveInd in
 /- English proof (translation)
-Introduce `hH0 hH q _ Ω _ _ hq i hB C c hc`. Establish `hMV` using `UpperTheory.Cb.curve_mayer_vietoris_of_degree_zero hH0`. Use `haveI : IsProper c := hc.2.1`. Use `haveI : CompactSpace C := QuasiCompact.compactSpace_of_compactSpace c`. Establish `key : ∀ (Y : Scheme.{0}) (j : Y ⟶ C) [IsOpenImmersion j], j.opensRange ≤ ⊤ → (∀ m : ℤ, Finite (Ht q (sch.obj Y) m i)) ∧ ∀ m : ℤ, 3 ≤ m → Subsingleton (Ht q (sch.obj Y) m i)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 
-Use `compact_open_induction_on (P := fun W : C.Opens => ∀ (Y : Scheme.{0}) (j : Y ⟶ C) [IsOpenImmersion j], j.opensRange ≤ W → (∀ m : ℤ, Finite (Ht q (sch.obj Y) m i)) ∧ ∀ m : ℤ, 3 ≤ m → Subsingleton (Ht q (sch.obj Y) m i)) ⊤ ?_ ?_ ?_` and prove the remaining obligations. Simplify using `using (isCompact_univ : IsCompact (Set.univ : Set C))`. Introduce `Y j _ hj`. Take `⟨h1, h2⟩` from `aff_facts hH0 hH q Ω hq i hB c hc ⊥ (isAffineOpen_bot C) j hj`. Conclude with `⟨h1, fun m hm => h2 m (by omega)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `S _ U ih Y j _ hj`. Establish `hAB : j ⁻¹ᵁ S ⊔ j ⁻¹ᵁ (U : C.Opens) = ⊤`. Use `top_le_iff.mp fun y _ => ?_` and prove the remaining obligations. Establish `hy : j.base y ∈ S ⊔ (U : C.Opens)` using `hj ⟨y, rfl⟩`. Break down `(TopologicalSpace.Opens.mem_sup).mp hy with h | h` into its components or cases.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components.
 
-Conclude with `(TopologicalSpace.Opens.mem_sup).mpr (Or.inl h)`. Conclude with `(TopologicalSpace.Opens.mem_sup).mpr (Or.inr h)`. Take `⟨fA, sA⟩` from `ih (j ⁻¹ᵁ S) ((j ⁻¹ᵁ S).ι ≫ j) (by`. Introduce and unpack `x ⟨a, rfl⟩`. Conclude with `a.2)`.
+Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨fB, sB⟩` from `aff_facts hH0 hH q Ω hq i hB c hc U U.2 ((j ⁻¹ᵁ (U : C.Opens)).ι ≫ j) (by`. Introduce and unpack `x ⟨a, rfl⟩`. Conclude with `a.2)`. Take `⟨fI, sI⟩` from `aff_facts hH0 hH q Ω hq i hB c hc U U.2 ((j ⁻¹ᵁ S ⊓ j ⁻¹ᵁ (U : C.Opens)).ι ≫ j) (by`. Introduce and unpack `x ⟨a, rfl⟩`.
-
-Conclude with `a.2.2)`. Use `⟨fun m => ?_, fun m hm => ?_⟩` and prove the remaining obligations. Take `⟨n, rfl⟩ : ∃ n : ℤ, m = n + 1` from `⟨m - 1, by ring⟩`. Conclude with `CurveCut.finite_of_mv hMV hH (ZMod q) (tw q i) Y _ _ hAB n (fI n) (fA (n + 1)) (fB (n + 1))`. Take `⟨n, rfl⟩ : ∃ n : ℤ, m = n + 1` from `⟨m - 1, by ring⟩`.
-
-Conclude with `CurveCut.subsingleton_of_mv hMV hH (ZMod q) (tw q i) Y _ _ hAB n (sI n (by omega)) (sA (n + 1) hm) (sB (n + 1) (by omega))`. Take `⟨h1, h2⟩` from `key C (𝟙 C) le_top`. Conclude with `⟨h1 1, h1 2, h2⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.leafCurve_of_leafH0 :
     LateralTheory.E.E4.H0TwistOverClosedField → LateralTheory.E.E4.LeafCurve := by

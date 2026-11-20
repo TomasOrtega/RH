@@ -5,7 +5,7 @@ open Formalism.UG GlobalTheory.LKDef.HeckeTraceForms UpperTheory.Gal.W2.Seed
 open scoped Classical
 
 /- English proof (translation)
-Use `⟨L'.pr k, hF.2 k hk, (L'.loc (L'.pr k))⁻¹ * k, K.mul_mem (K.inv_mem (hF.1 _ (hF.2 k hk))) hk, ?_, by group⟩` and prove the remaining obligations. Simplify using `[L'.pr_loc]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 private theorem loc_split {X M' : Type} [Group X] [Group M'] (L' : Loc X M') {K : Subgroup X} {Kw : Subgroup M'}
     (hF : L'.Fact K Kw) {k : X} (hk : k ∈ K) :
@@ -14,7 +14,7 @@ private theorem loc_split {X M' : Type} [Group X] [Group M'] (L' : Loc X M') {K 
   simp [L'.pr_loc]
 
 /- English proof (translation)
-Establish `hprod : L'.pr (k₀ * r * k₁) = 1` using `by simp [map_mul, h₀, hr, h₁]`. Establish `e1` using `L'.comm t k₀ h₀`. Establish `e2` using `L'.comm b (k₀ * r * k₁) hprod`. Rewrite using `[map_mul, map_mul]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 private theorem loc_key {X M' : Type} [Group X] [Group M'] (L' : Loc X M') (a t b : M') {k₀ r k₁ : X}
     (h₀ : L'.pr k₀ = 1) (hr : L'.pr r = 1) (h₁ : L'.pr k₁ = 1) :
@@ -30,21 +30,21 @@ private theorem loc_key {X M' : Type} [Group X] [Group M'] (L' : Loc X M') (a t 
     _ = L'.loc a * L'.loc t * L'.loc b * (k₀ * r * k₁) := by rw [← e2]; group
 
 /- English proof (translation)
-Introduce `X M' _ _ L' K Kw hF t r hr g`. Prove the components needed by the constructor for the conclusion. Introduce `hg`. Rewrite `hg` using `[DoubleCoset.mem_doubleCoset]`. Take `⟨x, hx, y, hy, rfl⟩` from `hg`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨a, ha, k₀, hk₀, h₀, rfl⟩` from `loc_split L' hF hx`. Take `⟨b, hb, k₁, hk₁, h₁, rfl⟩` from `loc_split L' hF hy`. Establish `hc : L'.loc b * k₁ = k₁ * L'.loc b` using `L'.comm b k₁ h₁`. Rewrite using `[hc, loc_key L' a t b h₀ hr h₁]`. Establish `hpr : L'.pr (L'.loc (a * t * b) * (k₀ * r * k₁)) = a * t * b`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `[map_mul, h₀, hr, h₁, L'.pr_loc]`. Rewrite using `[hpr]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[DoubleCoset.mem_doubleCoset]`. Conclude with `⟨a, ha, b, hb, rfl⟩`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Rewrite using `[DoubleCoset.mem_doubleCoset, inv_mul_cancel_left]`. Conclude with `⟨k₀, hk₀, k₁, hk₁, rfl⟩`. Introduce and unpack `⟨h1, h2⟩`. Rewrite `h1`, `h2`, the goal using `[DoubleCoset.mem_doubleCoset]`. Take `⟨a, ha, b, hb, hab⟩` from `h1`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨k₀, hk₀, k₁, hk₁, hk⟩` from `h2`. Establish `hg : g = L'.loc (L'.pr g) * (k₀ * r * k₁)`. Rewrite using `[← hk]`. Use `group`. Establish `hpg` using `congrArg L'.pr hg`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_mul, L'.pr_loc, hr, mul_one] at hpg`. Establish `hpk : L'.pr k₀ * L'.pr k₁ = 1`. Combine the equalities or inequalities in the displayed calculation. Establish `hcr` using `L'.comm (L'.pr k₀) r hr`. Establish `hk0 : L'.pr (k₀ * (L'.loc (L'.pr k₀))⁻¹) = 1`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[map_mul, map_inv, L'.pr_loc]`. Establish `hk1 : L'.pr (L'.loc (L'.pr k₀) * k₁) = 1`. Rewrite using `[map_mul, L'.pr_loc, hpk]`. Establish `hsplit : k₀ * r * k₁ = k₀ * (L'.loc (L'.pr k₀))⁻¹ * r * (L'.loc (L'.pr k₀) * k₁)`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨L'.loc a * (k₀ * (L'.loc (L'.pr k₀))⁻¹), ?_, L'.loc (L'.pr k₀) * k₁ * L'.loc b, ?_, ?_⟩` and prove the remaining obligations. Conclude with `K.mul_mem (hF.1 a ha) (K.mul_mem hk₀ (K.inv_mem (hF.1 _ (hF.2 _ hk₀))))`. Conclude with `K.mul_mem (K.mul_mem (hF.1 _ (hF.2 _ hk₀)) hk₁) (hF.1 b hb)`. Rewrite using `[loc_key L' a t b hk0 hr hk1, ← hab, ← hsplit]`. Conclude with `hg`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.W2.Seed.pDosetIff :
     ∀ (X M' : Type) [Group X] [Group M'] (L' : Loc X M') (K : Subgroup X) (Kw : Subgroup M'), L'.Fact K Kw → ∀ (t : M') (r : X), L'.pr r = 1 → ∀ g, g ∈ DoubleCoset.doubleCoset (L'.loc t * r) (K : Set X) K ↔ L'.pr g ∈ DoubleCoset.doubleCoset t (Kw : Set M') Kw ∧ (L'.loc (L'.pr g))⁻¹ * g ∈ DoubleCoset.doubleCoset r (K : Set X) K := by

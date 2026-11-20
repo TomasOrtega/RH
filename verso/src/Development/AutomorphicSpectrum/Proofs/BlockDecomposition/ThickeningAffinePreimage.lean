@@ -11,13 +11,13 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.FormalAlg.Lift
 
 /- English proof (translation)
-Establish `ex : Function.Exact (Submodule.subtype (RingHom.ker (algebraMap A A'))) (Algebra.linearMap A A')` using `fun a => by`. Prove the components needed by the constructor for the conclusion. Introduce `ha`. Conclude with `⟨⟨a, ha⟩, rfl⟩`. Introduce and unpack `⟨b, rfl⟩`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `b.2`. Establish `hs' : Function.Surjective (Algebra.linearMap A A')` using `hs`. Establish `ex2` using `rTensor_exact M ex hs'`. Establish `h0 : LinearMap.rTensor M (Algebra.linearMap A A') ((1 : A) ⊗ₜ[A] x) = 0`. Simplify using `using h`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result.
 
-Take `⟨z, hz⟩` from `(ex2 _).1 h0`. Establish `key : ∀ z : (RingHom.ker (algebraMap A A')) ⊗[A] M, TensorProduct.lid A M (LinearMap.rTensor M (Submodule.subtype (RingHom.ker (algebraMap A A'))) z) ∈ (RingHom.ker (algebraMap A A')) • (⊤ : Submodule A M)`. Introduce `z`. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `add a b ha hb => simpa only [map_add] using add_mem ha hb`. Consider the case `tmul a m => simpa using Submodule.smul_mem_smul a.2 Submodule.mem_top`. Use `key z` as an intermediate fact. Rewrite `this` using `[hz]`. Simplify using `using this`.
+Treat this case separately. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem mem_ker_smul_top_of_one_tmul_eq_zero {A A' M : Type*} [CommRing A] [CommRing A'] [Algebra A A']
     (hs : Function.Surjective (algebraMap A A')) [AddCommGroup M] [Module A M] (x : M)
@@ -49,9 +49,7 @@ theorem mem_ker_smul_top_of_one_tmul_eq_zero {A A' M : Type*} [CommRing A] [Comm
   simpa using this
 
 /- English proof (translation)
-Use `appLE_cst (f := f ≫ Spec.map (CommRingCat.ofHom q)) (f' := f) (π := 𝟙 X) (g := q) (by simp) (V := V) (V' := V) le_rfl r` as an intermediate fact. Establish `e : (𝟙 X : X ⟶ X).appLE V V le_rfl = 𝟙 _`. Simplify using `[Scheme.Hom.appLE]`. Conclude with `X.presheaf.map_id _`. Rewrite `this` using `[e]`.
-
-Conclude with `this`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cst_comp_spec {X : Scheme.{0}} {R A : Type} [CommRing R] [CommRing A]
     (f : X ⟶ Spec (CommRingCat.of A)) (q : R →+* A) (V : X.Opens) (r : R) :
@@ -65,11 +63,11 @@ theorem cst_comp_spec {X : Scheme.{0}} {R A : Type} [CommRing R] [CommRing A]
   exact this
 
 /- English proof (translation)
-Use `letI := g.toAlgebra`. Establish `hb` using `SecOnR.baseChangeHom_bijective (R := A) (R' := A') hM H hV rfl`. Prove the components needed by the constructor for the conclusion. Introduce `y`. Take `⟨z, hz⟩` from `hb.2 y`.
+Equip the data with the indicated structure. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨x, rfl⟩` from `TensorProduct.mk_surjective A (SecOnR f M V) A' hg z`. Use `⟨x, ?_⟩` and prove the remaining obligations. Establish `h` using `(SecOnR.baseChangeHom_tmul (R := A) (R' := A') H.w le_rfl 1 x).symm.trans hz`. Rewrite `h` using `[one_smul]`. Conclude with `h`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `s hs`. Use `mem_ker_smul_top_of_one_tmul_eq_zero hg s (hb.1 ?_)` and prove the remaining obligations. Rewrite using `[map_zero, SecOnR.baseChangeHom_tmul, one_smul]`. Conclude with `hs`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pull_surjective_ker {A A' : Type} [CommRing A] [CommRing A'] (g : A →+* A')
     (hg : Function.Surjective g) {X X' : Scheme.{0}} {f : X ⟶ Spec (CommRingCat.of A)}
@@ -95,11 +93,9 @@ theorem pull_surjective_ker {A A' : Type} [CommRing A] [CommRing A'] (g : A →+
     exact hs
 
 /- English proof (translation)
-Proceed by induction on `hs using Submodule.smul_induction_on' with`. Consider the case `smul a ha m _`. Take `⟨r, hr, rfl⟩` from `hK a ha`. Establish `e : SecOnR.of (f ≫ Spec.map (CommRingCat.ofHom q)) M V ((SecOnR.of f M V).symm (q r • m)) = r • SecOnR.of (f ≫ Spec.map (CommRingCat.ofHom q)) M V ((SecOnR.of f M V).symm m)`. Rewrite using `[SecOnR.smul_def r, cst_comp_spec]`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[e]`. Conclude with `Submodule.smul_mem_smul hr Submodule.mem_top`. Consider the case `add x _ y _ hx hy`. Rewrite using `[map_add, map_add]`.
-
-Conclude with `add_mem hx hy`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_smul_top_of_comp {X : Scheme.{0}} {R A : Type} [CommRing R] [CommRing A]
     (f : X ⟶ Spec (CommRingCat.of A)) (q : R →+* A) (M : LB X) (V : X.Opens) (J : Ideal A)
@@ -122,13 +118,13 @@ theorem mem_smul_top_of_comp {X : Scheme.{0}} {R A : Type} [CommRing R] [CommRin
     exact add_mem hx hy
 
 /- English proof (translation)
-Introduce `R _ I Y β hβ L w hL e V V' h hV`. Substitute `h` using the available equality. Establish `hle : I ^ (e + 1 + 1) ≤ I ^ (e + 1)` using `Ideal.pow_le_pow_right (Nat.le_succ (e + 1))`. Establish `hq : Function.Surjective (Ideal.Quotient.factor hle)` using `Ideal.Quotient.factor_surjective hle`. Take `⟨h1, h2⟩` from `pull_surjective_ker (Ideal.Quotient.factor hle) hq (hβ e) (hL (e + 1)).1 hV`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Set `E` to `SecOnR.linEquiv (toR I Y e) (SecOn.congr (hL e).1 (LB.isLB_pull (hL (e + 1)).1 (β e)) (w e) (hL e).2 (β e ⁻¹ᵁ V))`. Establish `hred (s) : redL I Y β hβ L w hL e V _ le_rfl s = E.symm (SecOnR.pull (L (e + 1)) (toR_w I Y β hβ e) V _ le_rfl s)` using `rfl`. Use `⟨fun y => ?_, le_antisymm (fun s hs => ?_) (Submodule.smul_le.2 fun r hr s _ => ?_)⟩` and prove the remaining obligations. Take `⟨x, hx⟩` from `h1 (E y)`. Conclude with `⟨x, (hred x).trans ((E.symm_apply_eq).2 hx)⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `hs0` using `(E.symm.map_eq_zero_iff).1 ((hred s).symm.trans (LinearMap.mem_ker.1 hs))`. Use `mem_smul_top_of_comp (Y (e + 1)).hom (Ideal.Quotient.mk (I ^ (e + 1 + 1))) (L (e + 1)) V (RingHom.ker (Ideal.Quotient.factor hle)) (I ^ (e + 1)) (fun a ha => ?_) s (h2 s hs0)` and prove the remaining obligations. Take `⟨r, rfl⟩` from `Ideal.Quotient.mk_surjective a`. Use `⟨r, ?_, rfl⟩` and prove the remaining obligations. Rewrite `ha` using `[RingHom.mem_ker, Ideal.Quotient.factor_mk, Ideal.Quotient.eq_zero_iff_mem]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `ha`. Rewrite using `[LinearMap.mem_ker, map_smul, SecOnR.smul_def]`. Establish `e0 : cst (toR I Y e) (β e ⁻¹ᵁ V) r = 0`. Rewrite using `[toR, cst_comp_spec, Ideal.Quotient.eq_zero_iff_mem.2 hr, map_zero]`. Rewrite using `[e0, zero_smul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem redL_surjective_ker : ∀ (R : Type) [CommRing R] (I : Ideal R) (Y : ∀ e : ℕ, Over (Spec (CommRingCat.of (R ⧸ I ^ (e + 1))))) (β : ∀ e, (Y e).left ⟶ (Y (e + 1)).left) (hβ : ∀ e, IsPullback (β e) (Y e).hom (Y (e + 1)).hom (thickTrans R I e)) (L : ∀ e, LB (Y e).left) (w : ∀ e, LB.Iso (L e) ((L (e + 1)).pull (β e))) (hL : ∀ e, (L e).IsLB ∧ (w e).IsGen) (e : ℕ) (V : (Y (e + 1)).left.Opens) (V' : (Y e).left.Opens) (h : β e ⁻¹ᵁ V = V'), IsAffineOpen V → Function.Surjective (redL I Y β hβ L w hL e V V' h.ge) ∧ LinearMap.ker (redL I Y β hβ L w hL e V V' h.ge) = I ^ (e + 1) • ⊤ := by
   intro R _ I Y β hβ L w hL e V V' h hV

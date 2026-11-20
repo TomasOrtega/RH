@@ -15,14 +15,14 @@ def hStd (K : Type) [Field K] [NumberField K] (r : ℕ) : Submodule (𝓞 K) (Fi
   Submodule.pi Set.univ fun _ => (1 : Submodule (𝓞 K) K)
 
 /- English proof (translation)
-Simplify using `[hStd, Submodule.mem_pi, Submodule.mem_one]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_standardLattice_iff {x : Fin r → K} :
     x ∈ hStd K r ↔ ∀ i, ∃ y : 𝓞 K, algebraMap (𝓞 K) K y = x i := by
   simp [hStd, Submodule.mem_pi, Submodule.mem_one]
 
 /- English proof (translation)
-Rewrite using `[mem_standardLattice_iff]`. Introduce `j`. Distinguish the cases in `h : j = i`. Substitute `h; exact ⟨1, by simp⟩` using the available equality. Conclude with `⟨0, by simp [Pi.single_apply, h]⟩`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Supply the required witnesses or components.
 -/
 theorem pi_single_one_mem_hStd (i : Fin r) : (Pi.single i (1 : K) : Fin r → K) ∈ hStd K r := by
   rw [mem_standardLattice_iff]
@@ -32,13 +32,11 @@ theorem pi_single_one_mem_hStd (i : Fin r) : (Pi.single i (1 : K) : Fin r → K)
   · exact ⟨0, by simp [Pi.single_apply, h]⟩
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Introduce `x hx`. Rewrite `hx` using `[mem_standardLattice_iff]`. Use `choose y hy using hx`. Establish `e : x = ∑ i, y i • (Pi.single i (1 : K) : Fin r → K)`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `j`. Rewrite using `[Finset.sum_apply, Finset.sum_eq_single j]`. Simplify using `[← hy j, Algebra.smul_def]`. Introduce `i _ hij`. Simplify using `[Pi.single_apply, Ne.symm hij]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Rewrite using `[e]`. Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`.
-
-Conclude with `pi_single_one_mem_hStd i`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem hStd_eq_span_pi_single : hStd K r =
     Submodule.span (𝓞 K) (Set.range fun i : Fin r => (Pi.single i (1 : K) : Fin r → K)) := by
@@ -60,35 +58,31 @@ theorem hStd_eq_span_pi_single : hStd K r =
     exact pi_single_one_mem_hStd i
 
 /- English proof (translation)
-Use `set W := Submodule.span K (Set.range b) with hW`. Set `T` to `W.mkQ`. Set `v : Fin r → (Fin r → K) ⧸ W` to `fun i => T (Pi.single i 1)`. Take `⟨s, hs, hspan, hli⟩` from `exists_linearIndependent K (Set.range v)`. Establish `hspan_top : Submodule.span K (Set.range v) = ⊤`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : Set.range v = T '' Set.range (Pi.basisFun K (Fin r))`. Use extensionality with `y`. Simplify using `[v, Set.mem_image, Set.mem_range]`. Rewrite using `[e1, Submodule.span_image, (Pi.basisFun K (Fin r)).span_eq, Submodule.map_top, Submodule.range_mkQ]`. Establish `hsfin : s.Finite` using `(Set.finite_range v).subset hs`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : Fintype s := hsfin.fintype`. Establish `hcard : Fintype.card s = r - k`. Establish `h1 : Fintype.card s = Module.finrank K ((Fin r → K) ⧸ W)`. Rewrite using `[← Set.toFinset_card, ← finrank_span_set_eq_card hli, hspan, hspan_top, finrank_top]`. Establish `hWk : Module.finrank K W = k` using `by rw [hW, finrank_span_eq_card hb, Fintype.card_fin]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2` using `Submodule.finrank_quotient_add_finrank W`. Rewrite `h2` using `[hWk, Module.finrank_fin_fun]`. Use linear arithmetic over natural numbers and integers. Set `eq : Fin (r - k) ≃ s` to `(Fintype.equivFinOfCardEq hcard).symm`. Establish `hidx : ∀ y : s, ∃ i, v i = y` using `fun y => hs y.2`.
+Use linear arithmetic over natural numbers and integers. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `choose idx hidx' using hidx`. Set `c : Fin (r - k) → Fin r → K` to `fun j => Pi.single (idx (eq j)) 1`. Establish `hTc : ∀ j, T (c j) = (eq j : (Fin r → K) ⧸ W)` using `fun j => hidx' (eq j)`. Establish `hTli : LinearIndependent K (fun j => T (c j))`. Rewrite using `[show (fun j => T (c j)) = Subtype.val ∘ eq from funext hTc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `hli.comp eq eq.injective`. Establish `hTspan : ∀ y, y ∈ Submodule.span K (Set.range fun j => T (c j))`. Introduce `y`. Establish `e2 : Set.range (fun j => T (c j)) = s`. Use extensionality with `z`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨j, rfl⟩`. Use `show T (c j) ∈ s`. Rewrite using `[hTc]`. Conclude with `(eq j).2`.
+Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hz; exact ⟨eq.symm ⟨z, hz⟩, by show T (c (eq.symm ⟨z, hz⟩)) = z; rw [hTc]; simp⟩`. Rewrite using `[e2, hspan, hspan_top]`. Discharge the goal by the elementary cases of `trivial`. Use `⟨c, fun j => pi_single_one_mem_hStd _, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Fintype.linearIndependent_iff]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `g hg`. Rewrite `hg` using `[Fin.sum_univ_add]`. Simplify using `only [Fin.append_left, Fin.append_right] at hg`. Establish `h1 : ∑ j, g (Fin.natAdd k j) • T (c j) = 0`. Use `congrArg T hg` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Rewrite `this` using `[map_add, map_zero, map_sum, map_sum]`. Establish `h0 : ∑ i, T (g (Fin.castAdd (r - k) i) • b i) = 0` using `Finset.sum_eq_zero fun i _ => by`. Rewrite using `[Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`. Rewrite `this` using `[h0, zero_add]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `using this`. Establish `h2` using `Fintype.linearIndependent_iff.mp hTli _ h1`. Establish `h3 : ∑ i, g (Fin.castAdd (r - k) i) • b i = 0`. Rewrite using `[← hg]`. Simplify using `[h2]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h4` using `Fintype.linearIndependent_iff.mp hb _ h3`. Introduce `i`. Use `Fin.addCases (fun i => ?_) (fun j => ?_) i` and prove the remaining obligations. Conclude with `h4 i`. Conclude with `h2 j`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `x`. Take `⟨β, hβ⟩` from `(Submodule.mem_span_range_iff_exists_fun K).1 (hTspan (T x))`. Establish `hT0 : T (x - ∑ j, β j • c j) = 0`. Rewrite using `[map_sub, map_sum]`. Simplify using `only [map_smul]`.
-
-Rewrite using `[hβ, sub_self]`. Rewrite `hT0` using `[Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`. Take `⟨α, hα⟩` from `(Submodule.mem_span_range_iff_exists_fun K).1 hT0`. Establish `hx : x = ∑ i, α i • b i + ∑ j, β j • c j` using `by rw [hα]; abel`. Rewrite using `[hx]`.
-
-Use `Submodule.add_mem _ (Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ ?_) (Submodule.sum_mem _ fun j _ => Submodule.smul_mem _ _ ?_)` and prove the remaining obligations. Conclude with `Submodule.subset_span ⟨Fin.castAdd (r - k) i, Fin.append_left b c i⟩`. Conclude with `Submodule.subset_span ⟨Fin.natAdd k j, Fin.append_right b c j⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_integral_completion {b : Fin k → Fin r → K} (hb : LinearIndependent K b) (hk : k ≤ r) :
     ∃ c : Fin (r - k) → Fin r → K, (∀ j, c j ∈ hStd K r) ∧ LinearIndependent K (Fin.append b c) ∧
@@ -175,28 +169,28 @@ section Deg2
 variable {K : Type} [Field K] [NumberField K] {r k : ℕ}
 
 /- English proof (translation)
-Rewrite using `[hStd_eq_span_pi_single]`. Conclude with `Submodule.fg_span (Set.finite_range _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem standardLattice_fg : (hStd K r).FG := by
   rw [hStd_eq_span_pi_single]
   exact Submodule.fg_span (Set.finite_range _)
 
 /- English proof (translation)
-Set `std : Fin n → Fin r → K` to `fun i => Pi.single (finCongr h i) 1`. Establish `hstd_eq : std = ⇑(Pi.basisFun K (Fin r)) ∘ finCongr h`. Use function extensionality and compare the values at `i`. Simplify using `[std]`. Establish `hrange : Set.range std = Set.range fun i : Fin r => (Pi.single i (1 : K) : Fin r → K)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[hstd_eq, (finCongr h).surjective.range_comp]`. Use extensionality with `x`. Simplify using the standard rewrite rules. Establish `hstd : ReciprocityTheory.MultiplicativeHeights.IsKBasisIn (hStd K r) std`. Use `⟨fun i => pi_single_one_mem_hStd _, ?_, fun x _ => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hstd_eq]`. Conclude with `(Pi.basisFun K (Fin r)).linearIndependent.comp _ (finCongr h).injective`. Rewrite using `[hstd_eq, (finCongr h).surjective.range_comp, (Pi.basisFun K (Fin r)).span_eq]`. Discharge the goal by the elementary cases of `trivial`. Rewrite using `[ReciprocityTheory.MultiplicativeHeights.latDegBasis_holds K r n _ (hStd K r) v std (fun _ => PosDef.one) standardLattice_fg hv hstd]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hspan : Submodule.span (𝓞 K) (Set.range std) = hStd K r`. Rewrite using `[hrange, hStd_eq_span_pi_single]`. Establish `hgram : ∀ σ : K →+* ℂ, ReciprocityTheory.MultiplicativeHeights.gramC 1 σ std = 1`. Introduce `σ`. Use extensionality with `i j`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `only [ReciprocityTheory.MultiplicativeHeights.gramC, ReciprocityTheory.MultiplicativeHeights.embVec, Matrix.of_apply, one_mulVec, dotProduct, Pi.star_apply, std, Matrix.one_apply]`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Rewrite using `[Finset.sum_eq_single (finCongr h i)]`. Simplify using the standard rewrite rules.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `l _ hl`. Establish `hl' : ¬ l = Fin.cast h i` using `hl`. Simplify using `[Pi.single_apply, hl']`. Simplify using the standard rewrite rules. Rewrite using `[if_neg hij]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_eq_zero fun l _ => ?_` and prove the remaining obligations. Distinguish the cases in `hl : l = finCongr h i`. Establish `: l ≠ finCongr h j`. Rewrite using `[hl]`. Conclude with `fun e => hij ((finCongr h).injective e)`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact.
 
-Establish `this' : ¬ l = Fin.cast h j` using `this`. Simplify using `[Pi.single_apply, this']`. Establish `hl' : ¬ l = Fin.cast h i` using `hl`. Simplify using `[Pi.single_apply, hl']`. Simplify using `only [ReciprocityTheory.MultiplicativeHeights.latDeg, hspan, AddSubgroup.relIndex_self, Nat.cast_one, Real.log_one, hgram, det_one, Complex.one_re, Finset.sum_const_zero, mul_zero, sub_zero]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem latDeg_standard_basis {n : ℕ} (h : n = r) (v : Fin n → Fin r → K)
     (hv : ReciprocityTheory.MultiplicativeHeights.IsKBasisIn (hStd K r) v) :
@@ -246,9 +240,9 @@ theorem latDeg_standard_basis {n : ℕ} (h : n = r) (v : Fin n → Fin r → K)
     hgram, det_one, Complex.one_re, Finset.sum_const_zero, mul_zero, sub_zero]
 
 /- English proof (translation)
-Establish `hadd` using `ReciprocityTheory.MultiplicativeHeights.degAdd_holds K r k m (fun _ => 1) (hStd K r) b c (fun _ => PosDef.one) standardLattice_fg hbL hc hli (fun x _ => hsp x)`. Establish `hmem : ∀ i, Fin.append b c i ∈ hStd K r`. Introduce `i`. Use `Fin.addCases (fun i => ?_) (fun j => ?_) i` and prove the remaining obligations. Rewrite using `[Fin.append_left]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hbL i`. Rewrite using `[Fin.append_right]`. Conclude with `hc j`. Establish `h0` using `latDeg_standard_basis h (Fin.append b c) ⟨hmem, hli, fun x _ => hsp x⟩`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem latDeg_saturation {m : ℕ} (h : k + m = r) {b : Fin k → Fin r → K}
     (hbL : ∀ j, b j ∈ hStd K r) (c : Fin m → Fin r → K) (hc : ∀ j, c j ∈ hStd K r)
@@ -267,7 +261,7 @@ theorem latDeg_saturation {m : ℕ} (h : k + m = r) {b : Fin k → Fin r → K}
   linarith
 
 /- English proof (translation)
-Establish `e1 : ReciprocityTheory.MultiplicativeHeights.quotGramC 1 σ b c = (hBm σ c)ᴴ * hPm σ b * hBm σ c`. Simplify using `only [ReciprocityTheory.MultiplicativeHeights.quotGramC, crossGram_eq_embeddingColumns, gramMatrix_eq_embeddingColumns, hPm, Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_one, Matrix.mul_assoc]`. Rewrite using `[e1]`. Simplify using `only [conjTranspose_mul, orthogonalProjector_conjTranspose, Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc (hPm σ b) (hPm σ b), orthogonalProjector_mul_self σ hb]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem quotGram_eq_conjTranspose_mul (σ : K →+* ℂ) {b : Fin k → Fin r → K} (hb : LinearIndependent K b)
     {m : ℕ} (c : Fin m → Fin r → K) :
@@ -280,17 +274,15 @@ theorem quotGram_eq_conjTranspose_mul (σ : K →+* ℂ) {b : Fin k → Fin r �
   rw [← Matrix.mul_assoc (hPm σ b) (hPm σ b), orthogonalProjector_mul_self σ hb]
 
 /- English proof (translation)
-Establish `hinj : Function.Injective (hPm σ b * hBm σ c).mulVec`. Introduce `z z' hzz`. Establish `h0 : hPm σ b *ᵥ (hBm σ c *ᵥ (z - z')) = 0`. Rewrite using `[mulVec_mulVec, mulVec_sub, hzz, sub_self]`. Use `set y := ((hBm σ b)ᴴ * hBm σ b)⁻¹ *ᵥ ((hBm σ b)ᴴ *ᵥ (hBm σ c *ᵥ (z - z'))) with hy`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : hBm σ c *ᵥ (z - z') - hBm σ b *ᵥ y = 0`. Establish `h2` using `h0`. Simplify using `only [hPm, sub_mulVec, one_mulVec, ← mulVec_mulVec] at h2`. Conclude with `h2`. Establish `hl` using `linearIndependent_map_embedding σ hli`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h3 : ∑ i, Fin.append (-y) (z - z') i • (fun l => σ (Fin.append b c i l)) = 0`. Rewrite using `[Fin.sum_univ_add]`. Simplify using `only [Fin.append_left, Fin.append_right]`. Rewrite using `[← h1, embeddingColumns_mulVec, embeddingColumns_mulVec]`. Simplify using `only [Pi.neg_apply, neg_smul, Finset.sum_neg_distrib]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Establish an intermediate fact.
 
-Normalize the expressions using the abelian group laws. Establish `h4` using `Fintype.linearIndependent_iff.mp hl _ h3`. Use function extensionality and compare the values at `j`. Use `h4 (Fin.natAdd k j)` as an intermediate fact. Rewrite `this` using `[Fin.append_right]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `sub_eq_zero.mp this`. Establish `hpd` using `PosDef.conjTranspose_mul_self (hPm σ b * hBm σ c) hinj`. Rewrite `hpd` using `[← quotGram_eq_conjTranspose_mul σ hb c]`. Establish `hpos` using `hpd.det_pos`. Rewrite `hpos` using `[← quotientGram_det_re_eq σ hb c]`.
-
-Conclude with `hpos` after adjusting the coercions.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem quotGram_det_pos (σ : K →+* ℂ) {m : ℕ} {b : Fin k → Fin r → K} (hb : LinearIndependent K b)
     (c : Fin m → Fin r → K) (hli : LinearIndependent K (Fin.append b c)) :

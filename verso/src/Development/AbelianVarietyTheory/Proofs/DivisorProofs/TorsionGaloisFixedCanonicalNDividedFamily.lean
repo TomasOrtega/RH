@@ -18,27 +18,25 @@ noncomputable section
 namespace GlobalTheory.Mum.CanonTors
 
 /- English proof (translation)
-Introduce `o W _ _ _ T R _ _ _ iw I _ s ε n hCN hn hnu ζ hζ Q e hD hQ G _ _ P hC σ x hx`. Take `⟨-, D', F, A', G', _, _, U', oA, oG, inc, pr, hG', hlin, hinc, hpr, hip, hpi, -⟩` from `hC`. Use `haveI : CharZero R := hCN.2.2.2`. Establish `hadm : AdmBase R (maximalIdeal R)` using `⟨hCN.1, inferInstance, hCN.2.1, hCN.2.2.1⟩`. Take `⟨y, hy0⟩ : ∃ y : (Over.map (jK R)).obj (TFK (R` from `R) (AlgebraicClosure (FractionRing R))) ⟶ G', y = x ≫ inc := ⟨_, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨h, hh0⟩ : ∃ h : TFK (R` from `R) (AlgebraicClosure (FractionRing R)) ⟶ (Over.pullback (jK R)).obj G', h = (Over.mapPullbackAdj (jK R)).unit.app _ ≫ (Over.pullback (jK R)).map y := ⟨_, rfl⟩`. Establish `hy : y ^ n = 1`. Rewrite using `[hy0, ← MonObj.pow_comp, hx, MonObj.one_comp]`. Establish `hmp : ∀ m : ℕ, (Over.pullback (jK R)).map (y ^ m) = ((Over.pullback (jK R)).map y) ^ m`. Introduce `m`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Proceed by induction on `m with`. Consider the case `zero => simp [Functor.map_one]`. Consider the case `succ m ih => rw [pow_succ, Functor.map_mul, ih, pow_succ]`. Establish `hh : h ^ n = 1`. Rewrite using `[hh0, ← MonObj.comp_pow, ← hmp, hy, Functor.map_one, MonObj.comp_one]`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `haveI := U'.gen_hom`. Take `⟨a, ha0⟩ : ∃ a : TFK (R` from `R) (AlgebraicClosure (FractionRing R)) ⟶ A'.A, a = h ≫ U'.gen.hom := ⟨_, rfl⟩`. Establish `ha : a ^ n = 1`. Rewrite using `[ha0, ← MonObj.pow_comp, hh, MonObj.one_comp]`. Establish `hye : y ≫ oG.act F.e = y`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hy0, ← hpi, Category.assoc, ← Category.assoc inc, hip, Category.id_comp]`. Establish `hae : a ≫ oA.act F.e = a`. Rewrite using `[ha0, Category.assoc, ← hlin.ext, hh0]`. Simplify using `only [Category.assoc]`. Rewrite using `[← Functor.map_comp_assoc, hye]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨f, hT, -⟩` from `GlobalTheory.TorsionIso.torsion_clause R (maximalIdeal R) hadm D' A' G' hG' U' (AlgebraicClosure (FractionRing R)) n hn`. Take `⟨p, hp⟩` from `hT.2.1 a ha`. Take `⟨p₁, hy₁, hg₁, he₁⟩` from `GlobalTheory.T.exists_equivalent_idempotent_image_fixed_torsion R hCN n hn hnu Q D' F A' G' U' oA oG hG' hlin a ha hae p ((hT.1 p a).2 hp.symm)`. Establish `hf₁ : f p₁ = a` using `((hT.2.2.1 p₁ p).2 he₁).trans hp`. Take `⟨⟨p₁', hext⟩, hpt, hiff⟩` from `GlobalTheory.UT.Cl.galois_holds R (maximalIdeal R) hadm D' A' G' hG' U' (AlgebraicClosure (FractionRing R)) (AlgebraicClosure (FractionRing R)) σ.toAlgHom n hn p₁`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨a', ha'⟩` from `hpt a`. Establish `h2` using `(hiff p₁' a a' hext ha').1 ((hT.1 p₁ a).2 hf₁.symm)`. Establish `heq` using `GlobalTheory.T.idempotent_image_nDividedPoint_galoisConj_equiv T R iw s ε n hCN hn hnu ζ hζ Q e hD hQ D' F A' G' U' oA oG hG' hlin σ p p₁ p₁' hy₁ hg₁ hext`. Establish `haa : a' = a` using `((hT.1 p₁' a').1 h2).trans (((hT.2.2.1 p₁ p₁').2 heq).symm.trans hf₁)`. Rewrite `ha'` using `[haa]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : (Over.mapPullbackAdj (jK R)).homEquiv _ _ y = h` using `by rw [Adjunction.homEquiv_unit, hh0]`. Establish `hyl : y.left = h.left ≫ ((Over.mapPullbackAdj (jK R)).counit.app G').left`. Establish `e2 : y = (Over.map (jK R)).map h ≫ (Over.mapPullbackAdj (jK R)).counit.app G'` using `by conv_lhs => rw [← ((Over.mapPullbackAdj (jK R)).homEquiv _ _).symm_apply_apply y, e1]`. Conclude with `Adjunction.homEquiv_counit _ _ _ _`. Rewrite using `[e2, Over.comp_left]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Establish `hhl : spMap σ.toAlgHom.toRingHom ≫ h.left = h.left`. Use `congrArg (· ≫ U'.gen.inv.left) ha'` as an intermediate fact. Simplify using `only [ha0, Over.comp_left, Category.assoc] at this`. Rewrite `this` using `[← Over.comp_left _ _ _ U'.gen.hom U'.gen.inv, Iso.hom_inv_id, Over.id_left, Category.comp_id]`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `this.symm`. Establish `hyx : spMap σ.toAlgHom.toRingHom ≫ y.left = y.left`. Rewrite using `[hyl, ← Category.assoc, hhl]`. Use `congrArg (· ≫ pr.left) hyx` as an intermediate fact. Simplify using `only [hy0, Over.comp_left, Category.assoc] at this`.
-
-Rewrite `this` using `[← Over.comp_left _ _ _ inc pr, hip, Over.id_left, Category.comp_id]`. Conclude with `this`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem galois_fixed : ∀ {o W : Type} [CommRing o] [CommRing W] [IsLocalRing W] (T : TautBase o W) (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] (iw : W →+* R) {I : Type} [Fintype I] (s : I → R) (ε : I → LinearMap.BilinForm ℤ (Fin T.r → ℤ)) (n : ℕ), IsCN R → 1 ≤ n → IsUnit (n : R) → ∀ ζ : R, IsPrimitiveRoot ζ n → ∀ (Q : Data R) (e : Q.X ≃+ (Fin T.r → ℤ)), DataFrom T iw s ε n Q e → TorsRat Q.B n → ∀ (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G] (P : LB (G2 G).left), Canon Q G P → ∀ (σ : AlgebraicClosure (FractionRing R) ≃ₐ[FractionRing R] AlgebraicClosure (FractionRing R)) (x : Over.mk (spMap (algebraMap (FractionRing R) (AlgebraicClosure (FractionRing R))) ≫ jK R) ⟶ G), x ^ n = 1 → spMap σ.toAlgHom.toRingHom ≫ x.left = x.left := by
   intro o W _ _ _ T R _ _ _ iw I _ s ε n hCN hn hnu ζ hζ Q e hD hQ G _ _ P hC σ x hx

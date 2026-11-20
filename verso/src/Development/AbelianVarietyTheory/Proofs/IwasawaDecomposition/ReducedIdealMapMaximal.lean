@@ -4,15 +4,13 @@ open IsLocalRing
 namespace GlobalTheory
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Set `M : Submonoid B` to `P.primeCompl ⊔ Submonoid.powers x`. Establish `hdisj : Disjoint (J : Set B) M`. Rewrite using `[Set.disjoint_left]`.
+Assume the negation of the conclusion and derive a contradiction. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `y hyJ hyM`. Take `⟨a, ha, b, hb, rfl⟩` from `Submonoid.mem_sup.1 hyM`. Take `⟨n, rfl⟩` from `hb`. Apply `hcon a ha` to reduce the goal to its premises. Apply `hrad` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨n + 1, ?_⟩` and prove the remaining obligations. Establish `: (a * x) ^ (n + 1) = (a ^ n * x) * (a * x ^ n)` using `by ring`. Rewrite using `[this]`. Conclude with `J.mul_mem_left _ hyJ`. Take `⟨P', hP', hJP', hdisj'⟩` from `Ideal.exists_le_prime_disjoint J M hdisj`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hle : P' ≤ P`. Introduce `y hy`. Assume the negation of the conclusion as `hyP`. Conclude with `Set.disjoint_left.1 hdisj' hy (Submonoid.mem_sup_left (show y ∈ P.primeCompl from hyP))`. Establish `hPP` using `hmin P' hP' hJP' hle`.
-
-Substitute `hPP` using the available equality. Conclude with `Set.disjoint_left.1 hdisj' hx (Submonoid.mem_sup_right (Submonoid.mem_powers x))`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem exists_mul_mem_of_isRadical_of_minimal {B : Type} [CommRing B] (P J : Ideal B) [P.IsPrime]
     (hrad : J.IsRadical) (hmin : ∀ P' : Ideal B, P'.IsPrime → J ≤ P' → P' ≤ P → P' = P)
@@ -41,13 +39,9 @@ theorem exists_mul_mem_of_isRadical_of_minimal {B : Type} [CommRing B] (P J : Id
   exact Set.disjoint_left.1 hdisj' hx (Submonoid.mem_sup_right (Submonoid.mem_powers x))
 
 /- English proof (translation)
-Use `algebraize [ψ]`. Use `haveI hQ' : (Q.comap ψ).IsPrime := Ideal.comap_isPrime ψ Q`. Use `letI : Algebra (Localization.AtPrime (Q.comap ψ)) (Localization.AtPrime Q) := (Localization.localRingHom (Q.comap ψ) Q ψ rfl).toAlgebra`. Establish `hcomp : (algebraMap (Localization.AtPrime (Q.comap ψ)) (Localization.AtPrime Q)).comp (algebraMap B (Localization.AtPrime (Q.comap ψ))) = (algebraMap R (Localization.AtPrime Q)).comp ψ`. Use extensionality with `b`.
+Equip the data with the indicated structure. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[RingHom.algebraMap_toAlgebra, Localization.localRingHom_to_map]`. Use `haveI : IsScalarTower B (Localization.AtPrime (Q.comap ψ)) (Localization.AtPrime Q) := IsScalarTower.of_algebraMap_eq (fun b => (RingHom.congr_fun hcomp b).symm)`. Use `haveI : Algebra.FormallyUnramified B R := hu`. Use `haveI : Algebra.FormallyUnramified B (Localization.AtPrime Q) := Algebra.FormallyUnramified.comp B R _`. Use `haveI : Algebra.FormallyUnramified (Localization.AtPrime (Q.comap ψ)) (Localization.AtPrime Q) := .of_restrictScalars B _ _`.
-
-Use `haveI : Module.Finite B R := hf`. Use `haveI : Algebra.EssFiniteType B (Localization.AtPrime Q) := .comp B R _`. Use `haveI : Algebra.EssFiniteType (Localization.AtPrime (Q.comap ψ)) (Localization.AtPrime Q) := .of_comp B _ _`. Use `haveI : IsLocalHom (algebraMap (Localization.AtPrime (Q.comap ψ)) (Localization.AtPrime Q)) := by`. Rewrite using `[RingHom.algebraMap_toAlgebra]`.
-
-Use `infer_instance`. Establish `h` using `Algebra.FormallyUnramified.map_maximalIdeal (R := Localization.AtPrime (Q.comap ψ)) (S := Localization.AtPrime Q)`. Rewrite `h` using `[← Localization.AtPrime.map_eq_maximalIdeal, Ideal.map_map, hcomp]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem comap_map_eq_maximalIdeal_of_finite_formallyUnramified {B R : Type} [CommRing B] [CommRing R]
     (ψ : B →+* R) (hf : ψ.Finite) (hu : ψ.FormallyUnramified) (Q : Ideal R) [Q.IsPrime] :
@@ -78,11 +72,9 @@ theorem comap_map_eq_maximalIdeal_of_finite_formallyUnramified {B R : Type} [Com
   exact h
 
 /- English proof (translation)
-Introduce `B R _ _ ψ hf hu Q _ J hJ hred hmin`. Rewrite using `[← comap_map_eq_maximalIdeal_of_finite_formallyUnramified ψ hf hu Q]`. Apply `le_antisymm (Ideal.map_mono hJ)` to reduce the goal to its premises. Rewrite using `[Ideal.map_le_iff_le_comap]`. Introduce `x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `haveI : (Q.comap ψ).IsPrime := Ideal.comap_isPrime ψ Q`. Take `⟨s, hs, hsx⟩` from `exists_mul_mem_of_isRadical_of_minimal (Q.comap ψ) J ((Ideal.isRadical_iff_quotient_reduced J).2 hred) hmin x hx`. Establish `hunit : IsUnit (((algebraMap R (Localization.AtPrime Q)).comp ψ) s)` using `IsLocalization.map_units (Localization.AtPrime Q) (⟨ψ s, hs⟩ : Q.primeCompl)`. Establish `hmem` using `Ideal.mem_map_of_mem ((algebraMap R (Localization.AtPrime Q)).comp ψ) hsx`. Rewrite `hmem` using `[map_mul]`.
-
-Conclude with `Ideal.mem_comap.2 ((Ideal.unit_mul_mem_iff_mem _ hunit).1 hmem)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_eq_maximalIdeal_of_reduced_minimal :
     ∀ {B R : Type} [CommRing B] [CommRing R] (ψ : B →+* R),

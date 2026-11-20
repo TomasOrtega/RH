@@ -61,7 +61,7 @@ structure TwPAtG {Tw : TwForms D} {T : Formalism.L2.Herm.TwChTied D inQ} {F : �
     (∀ v ∈ T.Q μ, bc (prV (E := D.host.E) v) κ.1 = 1) → (P.cls u μ hμ).lev.chi κ = (F u).clsP.lev.chi κ'
 
 /- English proof (translation)
-The claim follows from `(P.val u μ hμ).lat w (Or.inr hw) x`.
+A detailed English derivation is pending.
 -/
 theorem TwPTied.latT {Tw : TwForms D} {T : Formalism.L2.Herm.TwChTied D inQ} {F : ∀ u, FormsTied D u} {W : TwFormsTied D Tw T F}
     {Lv : TwistedLevelData W} (P : TwPTied Lv) (u : D.what₂.Word) (μ : D.what₂.Tup) (hμ : μ ≠ D.what₂.mu0) (w : D.what₂.places.Pl)
@@ -74,11 +74,11 @@ theorem TwPTied.latT {Tw : TwForms D} {T : Formalism.L2.Herm.TwChTied D inQ} {F 
   (P.val u μ hμ).lat w (Or.inr hw) x
 
 /- English proof (translation)
-Use function extensionality and compare the values at `τ`. Establish `h : ((Tw.fm u μ).sg τ).w = ((D.fm u).sg τ).w`. Use function extensionality and compare the values at `i`. Establish `h1` using `(P.val u μ hμ).sg τ i`. Establish `h2` using `(F u).valP.sg τ i`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `h1.trans h2.symm` after adjusting the coercions. Consider the cases of `h1 : (Tw.fm u μ).sg τ`. Consider the cases of `h2 : (D.fm u).sg τ`. Simplify using `only [h1, h2] at h`. Substitute `h` using the available equality.
+Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Simplify using the standard rewrite rules. Substitute using the available equality. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem TwPTied.sg_eq {Tw : TwForms D} {T : Formalism.L2.Herm.TwChTied D inQ} {F : ∀ u, FormsTied D u} {W : TwFormsTied D Tw T F}
     {Lv : TwistedLevelData W} (P : TwPTied Lv) (u : D.what₂.Word) (μ : D.what₂.Tup) (hμ : μ ≠ D.what₂.mu0) :

@@ -15,13 +15,13 @@ variable {ι : Type*} [Fintype ι] [DecidableEq ι]
 def torusProj (ι : Type*) : (ι → ℝ) → UnitAddTorus ι := fun t i => (t i : UnitAddCircle)
 
 /- English proof (translation)
-The claim follows from `IsOpenQuotientMap.piMap fun _ => QuotientAddGroup.isOpenQuotientMap_mk`.
+A detailed English derivation is pending.
 -/
 theorem torusProj_isOpenQuotientMap : IsOpenQuotientMap (torusProj ι) :=
   IsOpenQuotientMap.piMap fun _ => QuotientAddGroup.isOpenQuotientMap_mk
 
 /- English proof (translation)
-Introduce `θ`. Use `choose t ht using fun i => QuotientAddGroup.mk_surjective (θ i)`. Conclude with `⟨t, funext ht⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem torusProj_surjective : Function.Surjective (torusProj ι) := by
   intro θ
@@ -29,9 +29,9 @@ theorem torusProj_surjective : Function.Surjective (torusProj ι) := by
   exact ⟨t, funext ht⟩
 
 /- English proof (translation)
-Establish `hi : ∀ i, ∃ k : ℤ, t i = s i + (k : ℝ)`. Introduce `i`. Establish `h1` using `congrFun h i`. Take `⟨k, hk⟩` from `AddSubgroup.mem_zmultiples_iff.mp (QuotientAddGroup.eq.mp h1)`. Use `⟨k, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [zsmul_eq_mul, mul_one] at hk`. Combine the linear equalities and inequalities to obtain the conclusion. Use `choose n hn using hi`. Conclude with `⟨n, funext fun i => by simp [hn i]⟩`.
+Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem torusProj_eq (s t : ι → ℝ) (h : torusProj ι s = torusProj ι t) :
     ∃ n : ι → ℤ, t = s + fun i => (n i : ℝ) := by
@@ -46,7 +46,7 @@ theorem torusProj_eq (s t : ι → ℝ) (h : torusProj ι s = torusProj ι t) :
   exact ⟨n, funext fun i => by simp [hn i]⟩
 
 /- English proof (translation)
-Use `first`. Consider the case `exact e.equivFun_symm_apply t`. Consider the case `simp [Module.Basis.equivFunL, Module.Basis.equivFun_symm_apply]`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem equivFunL_symm_eq (e : Module.Basis ι ℝ V) (t : ι → ℝ) :
     e.equivFunL.symm t = ∑ i, t i • e i := by
@@ -55,9 +55,9 @@ theorem equivFunL_symm_eq (e : Module.Basis ι ℝ V) (t : ι → ℝ) :
   | simp [Module.Basis.equivFunL, Module.Basis.equivFun_symm_apply]
 
 /- English proof (translation)
-Rewrite using `[map_add, add_comm]`. Apply `hper` to reduce the goal to its premises. Rewrite using `[equivFunL_symm_eq]`. Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Use `show ((n i : ℝ)) • e i ∈ _`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Int.cast_smul_eq_zsmul ℝ]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`.
+A detailed English derivation is pending.
 -/
 theorem periodic_comp (e : Module.Basis ι ℝ V) (G : V → ℂ)
     (hper : ∀ l ∈ Submodule.span ℤ (Set.range e), ∀ x, G (l + x) = G x)
@@ -75,7 +75,7 @@ def torusFun (e : Module.Basis ι ℝ V) (G : V → ℂ) : UnitAddTorus ι → �
   fun θ => G (e.equivFunL.symm (Function.surjInv (torusProj_surjective (ι := ι)) θ))
 
 /- English proof (translation)
-Take `⟨n, hn⟩` from `torusProj_eq _ t (Function.surjInv_eq (torusProj_surjective (ι := ι)) (torusProj ι t))`. Establish `h1` using `periodic_comp e G hper (Function.surjInv (torusProj_surjective (ι := ι)) (torusProj ι t)) n`. Rewrite `h1` using `[← hn]`. Conclude with `h1.symm`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem torusFun_proj (e : Module.Basis ι ℝ V) (G : V → ℂ)
     (hper : ∀ l ∈ Submodule.span ℤ (Set.range e), ∀ x, G (l + x) = G x) (t : ι → ℝ) :
@@ -87,7 +87,7 @@ theorem torusFun_proj (e : Module.Basis ι ℝ V) (G : V → ℂ)
   exact h1.symm
 
 /- English proof (translation)
-Rewrite using `[torusProj_isOpenQuotientMap.isQuotientMap.continuous_iff]`. Establish `h1 : torusFun e G ∘ torusProj ι = fun t => G (e.equivFunL.symm t)`. Use function extensionality and compare the values at `(torusFun_proj e G hper)`. Rewrite using `[h1]`. Conclude with `hG.comp e.equivFunL.symm.continuous`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem torusFun_continuous (e : Module.Basis ι ℝ V) (G : V → ℂ) (hG : Continuous G)
     (hper : ∀ l ∈ Submodule.span ℤ (Set.range e), ∀ x, G (l + x) = G x) :
@@ -104,11 +104,11 @@ def torusFunC (e : Module.Basis ι ℝ V) (G : V → ℂ) (hG : Continuous G)
   ⟨torusFun e G, torusFun_continuous e G hG hper⟩
 
 /- English proof (translation)
-Establish `hinner : (⟪dualVec e m, e.equivFunL.symm t⟫ : ℝ) = ∑ i, (m i : ℝ) * t i`. Rewrite using `[equivFunL_symm_eq, inner_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[real_inner_smul_right, inner_dualVec_basis, mul_comm]`. Rewrite using `[hinner]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `show (∏ i, fourier (m i) ((t i : ℝ) : UnitAddCircle)) = _`. Rewrite using `[Complex.ofReal_sum, Finset.mul_sum, Complex.exp_sum]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[fourier_coe_apply]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem mFourier_torusProj (e : Module.Basis ι ℝ V) (m : ι → ℤ) (t : ι → ℝ) :
     UnitAddTorus.mFourier m (torusProj ι t) =
@@ -127,9 +127,7 @@ theorem mFourier_torusProj (e : Module.Basis ι ℝ V) (m : ι → ℤ) (t : ι 
   ring
 
 /- English proof (translation)
-Establish `h1 : ({x : ι → ℝ | ∀ i, x i ∈ Ioc ((0 : ι → ℝ) i) ((0 : ι → ℝ) i + 1)} : Set (ι → ℝ)) = Set.univ.pi fun i => Ioc ((0 : ι → ℝ) i) ((1 : ι → ℝ) i)`. Use extensionality with `x`. Simplify using `[Set.mem_univ_pi]`. Rewrite using `[h1]`. Use `show _ =ᵐ[Measure.pi fun _ => volume] _`.
-
-Conclude with `Measure.univ_pi_Ioc_ae_eq_Icc.trans Measure.univ_pi_Ico_ae_eq_Icc.symm`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem boxIoc_ae_eq :
     ({x : ι → ℝ | ∀ i, x i ∈ Ioc ((0 : ι → ℝ) i) ((0 : ι → ℝ) i + 1)} : Set (ι → ℝ))
@@ -143,17 +141,15 @@ theorem boxIoc_ae_eq :
   exact Measure.univ_pi_Ioc_ae_eq_Icc.trans Measure.univ_pi_Ico_ae_eq_Icc.symm
 
 /- English proof (translation)
-Establish `hS : (Set.univ.pi fun _ : ι => Ioc (0 : ℝ) (0 + 1)) = {x : ι → ℝ | ∀ i, x i ∈ Ioc ((0 : ι → ℝ) i) ((0 : ι → ℝ) i + 1)}`. Use extensionality with `x`. Simplify using `[Set.mem_univ_pi]`. Establish `hmp : MeasurePreserving (torusProj ι) (volume.restrict {x : ι → ℝ | ∀ i, x i ∈ Ioc ((0 : ι → ℝ) i) ((0 : ι → ℝ) i + 1)}) (@volume (UnitAddTorus ι) (@MeasureSpace.pi ι _ (fun _ => UnitAddCircle) fun _ => instMeasureSpaceUnitAddCircle))`. Establish `hvol : @volume UnitAddCircle instMeasureSpaceUnitAddCircle = @volume UnitAddCircle (AddCircle.measureSpace 1)` using `by first`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Consider the case `rfl`. Consider the case `(rw [AddCircle.volume_eq_smul_haarAddCircle]; simp; rfl)`. Consider the case `(simp [AddCircle.volume_eq_smul_haarAddCircle])`. Consider the case `(rw [AddCircle.volume_eq_smul_haarAddCircle]; simp)`. Rewrite using `[← hS]`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Use `show MeasurePreserving _ ((Measure.pi fun _ => volume).restrict _) (Measure.pi fun _ => @volume UnitAddCircle instMeasureSpaceUnitAddCircle)`. Rewrite using `[Measure.restrict_pi_pi, hvol]`. Conclude with `measurePreserving_pi (μ := fun _ => volume.restrict (Ioc (0 : ℝ) (0 + 1))) (ν := fun _ => @volume UnitAddCircle (AddCircle.measureSpace 1)) (fun _ => AddCircle.measurePreserving_mk 1 0)`. Establish `hneg : dualVec e (-m) = -dualVec e m`. Simplify using `only [dualVec, Pi.neg_apply, neg_smul, Finset.sum_neg_distrib]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hmap` using `integral_map (f := fun θ => UnitAddTorus.mFourier (-m) θ • torusFunC e G hG hper θ) hmp.aemeasurable ((UnitAddTorus.mFourier (-m)).continuous.smul (torusFunC e G hG hper).continuous).aestronglyMeasurable`. Rewrite `hmap` using `[hmp.map_eq]`. Rewrite using `[UnitAddTorus.mFourierCoeff]`. Use `hmap.trans ?_` and prove the remaining obligations. Rewrite using `[Measure.restrict_congr_set boxIoc_ae_eq]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `integral_congr_ae (Filter.Eventually.of_forall fun t => ?_)` and prove the remaining obligations. Use `show UnitAddTorus.mFourier (-m) (torusProj ι t) * torusFun e G (torusProj ι t) = _`. Rewrite using `[torusFun_proj e G hper, mFourier_torusProj e (-m) t, mul_comm, hneg, inner_neg_left]`. Use `congr 1`. Use `push_cast`.
-
-Expand and normalize the polynomial expressions, which then agree. Apply the tactic sequence `all_goals first | infer_instance | assumption`.
+Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem mFourierCoeff_torusFunC (e : Module.Basis ι ℝ V) (G : V → ℂ) (hG : Continuous G)
     (hper : ∀ l ∈ Submodule.span ℤ (Set.range e), ∀ x, G (l + x) = G x) (m : ι → ℤ) :

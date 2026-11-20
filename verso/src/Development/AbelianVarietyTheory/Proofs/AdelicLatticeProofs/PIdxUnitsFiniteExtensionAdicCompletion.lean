@@ -14,9 +14,9 @@ open scoped WithZero TensorProduct
 namespace GlobalTheory.CNorm
 
 /- English proof (translation)
-Establish `h : pows p j.range = (pows p (⊤ : Subgroup A)).map j`. Use extensionality with `x`. Simplify using `only [pows, Subgroup.mem_map, MonoidHom.mem_range, powMonoidHom_apply, Subgroup.mem_top, true_and]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨_, ⟨a, rfl⟩, rfl⟩`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨_, ⟨a, rfl⟩, map_pow _ _ _⟩`. Introduce and unpack `⟨_, ⟨a, rfl⟩, rfl⟩`. Conclude with `⟨_, ⟨a, rfl⟩, (map_pow _ _ _).symm⟩`. Unfold `pIdx`. Rewrite using `[h, MonoidHom.range_eq_map, Subgroup.relIndex_map_map_of_injective _ _ hj]`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem pIdx_range_of_injective (p : ℕ) {A B : Type} [CommGroup A] [CommGroup B] (j : A →* B)
     (hj : Function.Injective j) : pIdx p j.range = pIdx p (⊤ : Subgroup A) := by
@@ -33,9 +33,9 @@ theorem pIdx_range_of_injective (p : ℕ) {A B : Type} [CommGroup A] [CommGroup 
   rw [h, MonoidHom.range_eq_map, Subgroup.relIndex_map_map_of_injective _ _ hj]
 
 /- English proof (translation)
-Unfold `pTor`. Use `symm`. Use `Nat.card_congr (Equiv.ofBijective (fun x => ⟨j x.1, ⟨x.1, rfl⟩, by rw [← map_pow, x.2.2, map_one]⟩) ⟨?_, ?_⟩)` and prove the remaining obligations. Introduce `x y h`. Conclude with `Subtype.ext (hj (congrArg Subtype.val h))`.
+Replace the relevant objects with their definitions. Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨_, ⟨a, rfl⟩, h⟩`. Conclude with `⟨⟨a, trivial, hj (by rw [map_pow, h, map_one])⟩, rfl⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem pTor_range_of_injective (p : ℕ) {A B : Type} [CommGroup A] [CommGroup B] (j : A →* B)
     (hj : Function.Injective j) : pTor p j.range = pTor p (⊤ : Subgroup A) := by
@@ -49,17 +49,15 @@ theorem pTor_range_of_injective (p : ℕ) {A B : Type} [CommGroup A] [CommGroup 
     exact ⟨⟨a, trivial, hj (by rw [map_pow, h, map_one])⟩, rfl⟩
 
 /- English proof (translation)
-Establish `htor : ∀ U : Subgroup (Multiplicative ℤ), pTor p U = 1`. Introduce `U`. Unfold `pTor`. Rewrite using `[Nat.card_eq_one_iff_unique]`. Use `⟨⟨fun x y => Subtype.ext ?_⟩, ⟨⟨1, U.one_mem, one_pow _⟩⟩⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[(pow_eq_one_iff_left hp.ne').1 x.2.2, (pow_eq_one_iff_left hp.ne').1 y.2.2]`. Use `⟨htor H, ?_⟩` and prove the remaining obligations. Take `⟨d, hd⟩` from `(Subgroup.isCyclic_iff_exists_zpowers_eq_top H).1 inferInstance`. Establish `hd1 : d ≠ 1`. Introduce and unpack `rfl`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Conclude with `hH (by rw [← hd, Subgroup.zpowers_one_eq_bot])`. Establish `hr : H = (zpowersHom (Multiplicative ℤ) d).range`. Rewrite using `[← hd]`. Both sides reduce to the same expression. Establish `hinj : Function.Injective (zpowersHom (Multiplicative ℤ) d)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a b h`. Simplify using `only [zpowersHom_apply] at h`. Establish `h2` using `congrArg Multiplicative.toAdd h`. Simplify using `only [toAdd_zpow, smul_eq_mul] at h2`. Establish `hd0 : d.toAdd ≠ 0` using `fun h0 => hd1 (by simpa using h0)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Multiplicative.toAdd.injective (mul_right_cancel₀ hd0 h2)`. Rewrite using `[hr, pIdx_range_of_injective p _ hinj]`. Establish `h` using `(pIdx_top_of_fg p (Multiplicative ℤ) hp).2`. Establish `hf : Module.finrank ℤ (Additive (Multiplicative ℤ)) = 1`. Rewrite using `[(AddEquiv.additiveMultiplicative ℤ).toIntLinearEquiv.finrank_eq]`.
-
-Conclude with `Module.finrank_self ℤ`. Rewrite using `[h, htor, hf, pow_one, mul_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pTor_pIdx_subgroup_int (p : ℕ) (hp : 0 < p) (H : Subgroup (Multiplicative ℤ))
     (hH : H ≠ ⊥) : pTor p H = 1 ∧ pIdx p H = p := by
@@ -91,9 +89,9 @@ theorem pTor_pIdx_subgroup_int (p : ℕ) (hp : 0 < p) (H : Subgroup (Multiplicat
   rw [h, htor, hf, pow_one, mul_one]
 
 /- English proof (translation)
-Take `⟨r1, r2⟩` from `pTor_pIdx_subgroup_int p hp g.range hg`. Establish `k1 : pTor p g.ker = pTor p (⊤ : Subgroup A)`. Rewrite using `[hk, pTor_range_of_injective p j hj]`. Establish `k2 : pIdx p g.ker = N * pTor p (⊤ : Subgroup A)`. Rewrite using `[hk, pIdx_range_of_injective p j hj, h2]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨-, a2, a3⟩` from `pIdx_pTor_ker_range p B (Multiplicative ℤ) g (by rw [k2]; exact mul_ne_zero hN h1) (by rw [k1]; exact h1) (by rw [r2]; exact hp.ne') (by rw [r1]; exact one_ne_zero)`. Use `⟨a2, ?_⟩` and prove the remaining obligations. Rewrite `a3` using `[k1, k2, r1, r2]`. Apply `Nat.eq_of_mul_eq_mul_right (Nat.pos_of_ne_zero h1)` to reduce the goal to its premises. Combine the linear equalities and inequalities to obtain the conclusion.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem pIdx_of_ker_eq_range (p : ℕ) (hp : 0 < p) {A B : Type} [CommGroup A] [CommGroup B]
     (j : A →* B) (hj : Function.Injective j) (g : B →* Multiplicative ℤ) (hk : g.ker = j.range)
@@ -114,41 +112,35 @@ theorem pIdx_of_ker_eq_range (p : ℕ) (hp : 0 < p) {A B : Type} [CommGroup A] [
   linarith
 
 /- English proof (translation)
-Use `letI : Algebra (v.adicCompletionIntegers F) L := ((algebraMap (v.adicCompletion F) L).comp (algebraMap (v.adicCompletionIntegers F) (v.adicCompletion F))).toAlgebra`. Use `haveI : IsScalarTower (v.adicCompletionIntegers F) (v.adicCompletion F) L := IsScalarTower.of_algebraMap_eq (fun _ => rfl)`. Use `haveI : CharZero (v.adicCompletion F) := charZero_of_injective_algebraMap (algebraMap F (v.adicCompletion F)).injective`. Use `haveI : CharZero L := charZero_of_injective_algebraMap (algebraMap (v.adicCompletion F) L).injective`. Establish `hinjRL : Function.Injective (algebraMap (v.adicCompletionIntegers F) L)` using `(algebraMap (v.adicCompletion F) L).injective.comp Subtype.val_injective`.
+Equip the data with the indicated structure. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `haveI : FaithfulSMul (v.adicCompletionIntegers F) L := (faithfulSMul_iff_algebraMap_injective _ _).2 hinjRL`. Set `O : Type` to `integralClosure (v.adicCompletionIntegers F) L`. Use `haveI : Module.Finite (v.adicCompletionIntegers F) O := IsIntegralClosure.finite (v.adicCompletionIntegers F) (v.adicCompletion F) L O`. Use `haveI : Module.Free (v.adicCompletionIntegers F) O := IsIntegralClosure.module_free (v.adicCompletionIntegers F) (v.adicCompletion F) L O`. Establish `hrank : Module.finrank (v.adicCompletionIntegers F) O = Module.finrank (v.adicCompletion F) L` using `IsIntegralClosure.rank (v.adicCompletionIntegers F) (v.adicCompletion F) L O`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Introduce a local definition for the expression.
 
-Take `⟨⟨π₀, -, hπ₀⟩, hval, -⟩` from `exists_uniformizer_and_residue_representatives F v`. Take `⟨hc, hcard⟩` from `isAdicComplete_and_card_quotient_adicCompletionIntegers F v`. Establish `hlt : (WithZero.exp (-1) : ℤᵐ⁰) < 1`. Rewrite using `[← WithZero.exp_zero, WithZero.exp_lt_exp]`. Evaluate the numerical expressions.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Set `π : v.adicCompletionIntegers F` to `⟨algebraMap F (v.adicCompletion F) π₀, by`. Rewrite using `[HeightOneSpectrum.mem_adicCompletionIntegers, hπ₀]`. Conclude with `hlt.le⟩`. Establish `hπ : Valued.v (π : v.adicCompletion F) = WithZero.exp (-1)` using `hπ₀`. Establish `hπK : (π : v.adicCompletion F) ≠ 0`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `h`. Rewrite `hπ` using `[h, map_zero]`. Conclude with `WithZero.exp_ne_zero hπ.symm`. Establish `hπL : algebraMap (v.adicCompletion F) L π ≠ 0`. Simplify using `using hπK`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hvp : Valued.v (((p : v.adicCompletionIntegers F)) : v.adicCompletion F) = WithZero.exp (-(e : ℤ))`. Rewrite using `[← he, ← hval]`. Simplify using the standard rewrite rules. Establish `hq : Ideal.absNorm v.asIdeal ≠ 0`. Rewrite using `[Ne, Ideal.absNorm_eq_zero_iff]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `v.ne_bot`. Establish `hπO : algebraMap (v.adicCompletionIntegers F) O π ≠ 0`. Introduce `h`. Conclude with `hπL (congrArg Subtype.val h)`. Establish `hcomp` using `isAdicComplete_span_algebraMap_of_free_finite (v.adicCompletionIntegers F) O π (hc π (by rw [hπ]; exact hlt))`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
-Establish `hc1 : Nat.card (O ⧸ Ideal.span {(p : O)}) = (Ideal.absNorm v.asIdeal ^ e) ^ Module.finrank (v.adicCompletion F) L`. Use `card_quot_span_algebraMap (v.adicCompletionIntegers F) O (p : _)` as an intermediate fact. Rewrite `this` using `[map_natCast, hcard _ e hvp, hrank]`. Conclude with `this`. Establish `hc2 : Nat.card (O ⧸ Ideal.span {(p : O) * algebraMap (v.adicCompletionIntegers F) O π}) ≠ 0`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `card_quot_span_algebraMap (v.adicCompletionIntegers F) O ((p : _) * π)` as an intermediate fact. Rewrite using `[map_mul, map_natCast, hcard _ (e + 1) (by`. Rewrite using `[MulMemClass.coe_mul, map_mul, hvp, hπ, ← WithZero.exp_add]`. Use `congr 1`. Use `push_cast`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition.
 
-Use the proof step `ring)] at this`. Rewrite using `[this]`. Conclude with `pow_ne_zero _ (pow_ne_zero _ hq)`. Take `⟨u1, u2⟩` from `GlobalTheory.T.subgroupPowRelIndex_units_of_isAdicComplete p O _ hp hπO hcomp hc2`. Rewrite `u2` using `[hc1]`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hN : ∀ x : Lˣ, Valued.v (Algebra.norm (v.adicCompletion F) (x : L)) ≠ 0`. Introduce `x`. Rewrite using `[Ne, map_eq_zero, Algebra.norm_eq_zero_iff]`. Conclude with `x.ne_zero`. Set `g : Lˣ →* Multiplicative ℤ` to `{ toFun := fun x => Multiplicative.ofAdd (WithZero.log (Valued.v (Algebra.norm (v.adicCompletion F) (x : L)))) map_one' := by simp map_mul' := fun x y => by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Rewrite using `[Units.val_mul, map_mul, map_mul, WithZero.log_mul (hN x) (hN y), ofAdd_add] }`. Establish `hg : ∀ x : Lˣ, g x = 1 ↔ Valued.v (Algebra.norm (v.adicCompletion F) (x : L)) = 1`. Introduce `x`. Express the relevant statement in the definitionally equal form `Multiplicative.ofAdd (WithZero.log _) = 1 ↔ _`. Rewrite using `[ofAdd_eq_one]`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Rewrite using `[← WithZero.exp_log (hN x), h, WithZero.exp_zero]`. Introduce `h`. Rewrite using `[h, WithZero.log_one]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 
-Establish `hmul : ∀ x : Lˣ, Valued.v (Algebra.norm (v.adicCompletion F) (x : L)) * Valued.v (Algebra.norm (v.adicCompletion F) ((x⁻¹ : Lˣ) : L)) = 1`. Introduce `x`. Rewrite using `[← map_mul, ← map_mul, Units.mul_inv, map_one, map_one]`. Set `j : Oˣ →* Lˣ` to `Units.map ((integralClosure (v.adicCompletionIntegers F) L).val : O →* L)`. Use `pIdx_of_ker_eq_range p hp j (Units.map_injective Subtype.val_injective) g ?_ ?_ _ (pow_ne_zero _ (pow_ne_zero _ hq)) u1 u2` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use extensionality with `x`. Rewrite using `[MonoidHom.mem_ker, hg]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `h'` using `hmul x`.
-
-Rewrite `h'` using `[h, one_mul]`. Establish `i1` using `(isIntegral_iff_valued_norm_le_one F v L (x : L)).2 h.le`. Establish `i2` using `(isIntegral_iff_valued_norm_le_one F v L ((x⁻¹ : Lˣ) : L)).2 h'.le`. Conclude with `⟨⟨⟨x, i1⟩, ⟨(x⁻¹ : Lˣ), i2⟩, Subtype.ext x.mul_inv, Subtype.ext x.inv_mul⟩, Units.ext rfl⟩`. Introduce and unpack `⟨u, rfl⟩`.
-
-Establish `i1` using `(isIntegral_iff_valued_norm_le_one F v L ((j u : Lˣ) : L)).1 (u : O).2`. Establish `i2` using `(isIntegral_iff_valued_norm_le_one F v L (((j u)⁻¹ : Lˣ) : L)).1 ((u⁻¹ : Oˣ) : O).2`. Conclude with `eq_one_of_one_le_mul_left i1 i2 (hmul _).ge`. Introduce `h`. Establish `h1 : g (Units.mk0 _ hπL) = 1`.
-
-Rewrite using `[← Subgroup.mem_bot, ← h]`. Conclude with `⟨_, rfl⟩`. Rewrite `h1` using `[hg, Units.val_mk0, Algebra.norm_algebraMap, map_pow, hπ]`. Conclude with `(pow_lt_one₀ zero_le' hlt Module.finrank_pos.ne').ne h1`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pIdx_units_finite_extension_adicCompletion (p : ℕ) (F : Type) [Field F] [NumberField F]
     (v : HeightOneSpectrum (𝓞 F)) (e : ℕ) (L : Type) [Field L] [Algebra (v.adicCompletion F) L]

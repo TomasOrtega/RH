@@ -6,13 +6,13 @@ import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCou
 namespace Formalism.L2.SG.Pf.Cnt
 
 /- English proof (translation)
-The claim follows from `Formalism.L2.SG.Pf.G7.glueExists_of_local hloc`.
+A detailed English derivation is pending.
 -/
 theorem glueExists_of (hloc : Formalism.L2.SG.Pf.G7.GlueLocal) : GlueExists :=
   Formalism.L2.SG.Pf.G7.glueExists_of_local hloc
 
 /- English proof (translation)
-The claim follows from `glueExists_of (Formalism.L2.SG.Pf.GluingBases.glueLocal_of_fam hJ hV h0 h1 h2 Formalism.L2.SG.Pf.FamilyMeetLattice.family_meet_holds)`.
+A detailed English derivation is pending.
 -/
 theorem glueExists_of_fam (hJ : JordanExists) (hV : Formalism.L2.SG.Pf.GluingBases.GlueVecs)
     (h0 : Formalism.L2.SG.Pf.GluingBases.FamTop) (h1 : Formalism.L2.SG.Pf.GluingBases.FamGram) (h2 : Formalism.L2.SG.Pf.GluingBases.FamDual) :

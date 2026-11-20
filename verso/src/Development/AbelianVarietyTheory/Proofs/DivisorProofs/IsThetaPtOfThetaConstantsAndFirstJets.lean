@@ -22,9 +22,9 @@ namespace GlobalTheory.MBLow.ThetaOfJet
 open GlobalTheory.MBLow.JetUniq
 
 /- English proof (translation)
-Establish `e : th = TrSec.thSec x.P x.th`. Use `NormTheta.sec_ext fun j => ?_` and prove the remaining obligations. Take `⟨i, rfl⟩ : ∃ i : x.P.L.ι, j = fun _ => i` from `⟨j 0, funext fun k => congrArg j (Subsingleton.elim _ _)⟩`. Conclude with `(h i (TrSec.chart_le x.P _)).trans (TrSec.projectionPullbackSectionBaseProduct_isInverseImage x.P x.th i (TrSec.chart_le x.P _)).symm`. Substitute `e` using the available equality.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations.
 
-Use `haveI : Subsingleton (Over.mk (𝟙 (Sp K))).left := inferInstanceAs (Subsingleton (PrimeSpectrum K))`. Use `(GenSecFibre.isGenSec_iff_fibres firstFiveLaws.2.1 (Sp K) x.P K (𝟙 _) _).2 fun p => ?_` and prove the remaining obligations. Take `⟨z, -, hz⟩` from `x.th_ne p`. Conclude with `⟨_, Subsingleton.elim _ _, TrSec.nonzero_thSec x.P x.th z hz⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isGenSec_of_polAVSectionInverseImage {K : Type} [Field K] (x : KeyIn K)
     (th : LB.Sec (LPow x.P.A x.P.L ((1 : ℕ) : ℤ) (baseOver (Sp K))))
@@ -40,7 +40,7 @@ theorem isGenSec_of_polAVSectionInverseImage {K : Type} [Field K] (x : KeyIn K)
   exact ⟨_, Subsingleton.elim _ _, TrSec.nonzero_thSec x.P x.th z hz⟩
 
 /- English proof (translation)
-Rewrite using `[toProd, ← Over.comp_left, comp_lift, Category.comp_id, ptSecT]`. Use `congr 2`. Use `ext`. Simplify using `using (Over.w z).symm`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem ptSecT_left {R : Type} [CommRing R] {A : Over (Sp R)} [GrpObj A] (z : baseOver (Sp R) ⟶ A) :
     (ptSecT A z).left = z.left ≫ toProd A := by
@@ -52,7 +52,7 @@ theorem ptSecT_left {R : Type} [CommRing R] {A : Over (Sp R)} [GrpObj A] (z : ba
 open GlobalTheory.MBLow.JetUniq
 
 /- English proof (translation)
-Establish `h : ⊤ ≤ (𝟙 (Sp K)) ⁻¹ᵁ ⊤` using `fun _ _ => trivial`. Rewrite using `[valR, dif_pos h]`. Simplify using `[GlobalTheory.Ex.fnOf, Scheme.Hom.appLE]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem fnOf_valR_id {K : Type} [Field K] (f : Γ(Sp K, ⊤)) : GlobalTheory.Ex.fnOf (valR (𝟙 (Sp K)) ⊤ f) = f := by
   have h : ⊤ ≤ (𝟙 (Sp K)) ⁻¹ᵁ ⊤ := fun _ _ => trivial
@@ -61,29 +61,23 @@ theorem fnOf_valR_id {K : Type} [Field K] (f : Γ(Sp K, ⊤)) : GlobalTheory.Ex.
   rfl
 
 /- English proof (translation)
-Introduce `K _ x g hg m hm hK I pt ϑ J hJ`. Take `⟨th, hth, U, t, i₀, c, hUT, hi₀, H⟩` from `hJ`. Establish `hLaw : Laws` using `firstFiveLaws.1`. Establish `hL` using `x.P.isLB`. Set `T : Over (Sp K)` to `baseOver (Sp K)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Take `⟨α₀, hα₀⟩` from `hLaw.mulPull _ x.P m`. Establish `e₁ : (snd T x.P.A).left ≫ (mulA x.P.A m).left = (snd T x.P.A ^ m).left`. Rewrite using `[← Over.comp_left, MonObj.comp_pow, Category.comp_id]`. Take `⟨α₁, hα₁, -⟩` from `exists_gen hL (φ' := ![(snd T x.P.A).left, (snd T x.P.A ^ m).left]) (ε' := ![((m ^ 2 : ℕ) : ℤ), -((1 : ℕ) : ℤ)]) (fun U _ f => by`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `fin_cases i`. Conclude with `congrArg₂ (fun q n => f q ^ n) (Category.comp_id _) (Nat.cast_pow m 2).symm`. Conclude with `congrArg (fun q => f q ^ (-1 : ℤ)) e₁)`. Use the proof step `(LB.pullGen x.P.L ![𝟙 x.P.A.left, (mulA x.P.A m).left] ![(m : ℤ) ^ 2, -1] α₀ (snd T x.P.A).left)`. Use the proof step `(DVR.pullGen_isGen _ _ _ _ hα₀ _)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Take `⟨α, hα, hn⟩` from `NormTheta.exists_normalised hL x.rig_gen m _ _ (((m ^ 2 : ℕ) : ℤ) - 1) rfl α₁ hα₁`. Take `⟨s₁, hs₁⟩` from `ThetaPtExist.exists_isTwistPull hL (mulT x.P.A T m) (snd T x.P.A ^ m) (lift_snd _ _) ((m ^ 2 : ℕ) : ℤ) ((1 : ℕ) : ℤ) α hα th`. Use `choose s₂ hs₂ using fun i => ThetaPtExist.exists_isTwistPull hL (translT x.P.A (U i).pt) (translPt x.P.A (U i).pt) (lift_snd _ _) ((m ^ 2 : ℕ) : ℤ) ((m ^ 2 : ℕ) : ℤ) (U i).φ (U i).isGen s₁`. Establish `ht : ∀ i, t i = s₂ i` using `fun i => NormTheta.sec_ext (tr_unique x.P x.rig hm (fun _ => rfl) (hUT i).1 (hUT i).1 (hUT i).2 ⟨α, s₁, hα, hn, hs₁, hs₂ i⟩)`. Set `τ` to `rigT x.P.A x.P.L x.rig T ((m ^ 2 : ℕ) : ℤ)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hτ : τ.IsGen` using `NormTheta.rigT_isGen x.rig_gen _`. Use `choose w hw using fun i => ThetaPtExist.exists_isValueAt hL (s₂ i) 1 τ hτ`. Establish `k₀ : ⊤ ≤ eSec x.P.A ⁻¹ᵁ x.P.L.U i₀` using `fun z hz => hi₀ hz`. Set `r : K` to `valR (𝟙 (Sp K)) ((x.P.L.pull (eSec x.P.A)).U fun _ => i₀) (x.rig.s fun _ => i₀).val`. Establish `hr₀ : r ≠ 0` using `(isUnit_valR (𝟙 (Sp K)) ((x.P.L.pull (eSec x.P.A)).U fun _ => i₀) (fun z hz => Set.mem_iInter.2 fun _ => k₀ hz) _).ne_zero`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `V₁` to `(x.P.L.LinComb (fun _ : Fin 1 => (1 : T ⟶ x.P.A).left) fun _ => ((m ^ 2 : ℕ) : ℤ)).U fun _ => i₀`. Set `q : K` to `valR (𝟙 (Sp K)) V₁ (τ.s fun _ => i₀).val`. Establish `hq₀ : q ≠ 0` using `(isUnit_valR (𝟙 (Sp K)) V₁ (fun z hz => Set.mem_iInter.2 fun _ => k₀ hz) _).ne_zero`. Establish `hp : (ptSecT x.P.A (1 : T ⟶ x.P.A)).left = eSec x.P.A ≫ toProd x.P.A`. Rewrite using `[ptSecT_left, NormTheta.one_left]`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `congrArg (· ≫ toProd x.P.A) (Category.id_comp _)`. Set `j₀ : Fin g` to `⟨0, hg ▸ x.g_pos⟩`. Establish `hval : ∀ i, valR (𝟙 (Sp K)) ⊤ (w i) * q = r ^ (m ^ 2) * ϑ i` using `fun i => by`. Establish `e2` using `GlobalTheory.ZH.TorsReg.valR_valueAt x.P.A x.P.L _ (hw i) (𝟙 (Sp K)) i₀ (by`. Introduce and unpack `_ ⟨z, rfl⟩`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `k₀ trivial)`. Rewrite `e2` using `[Category.id_comp, hp, ← ht i]`. Set `V` to `LB.wchart x.P.L (fun _ : Fin 1 => (snd (baseOver (Sp K)) x.P.A).left) fun _ => i₀`. Establish `e : (valR (epsLift (x.v (Fin.cast hg.symm j₀))) V ((t i).f fun _ => i₀)).fst = r ^ (m ^ 2) * ϑ i`. Use `congrArg TrivSqZeroExt.fst (H i j₀)` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [TrivSqZeroExt.fst_mul, TrivSqZeroExt.fst_inl, TrivSqZeroExt.fst_add, TrivSqZeroExt.fst_inr, add_zero] at this`. Conclude with `this`. Rewrite `e` using `[epsLift_eq]`. Use `erw [GlobalTheory.HolHom.valR_comp (A := DualNumber K) (x.v (Fin.cast hg.symm j₀)).left (toProd x.P.A) V] at e`. Rewrite `e` using `[fst_valR (x.basis.1 _) (le_toProd k₀)]`.
-
-Use `erw [← GlobalTheory.HolHom.valR_comp (A := K) (eSec x.P.A) (toProd x.P.A) V] at e`. Conclude with `e2.symm.trans e`. Establish `un : ∀ a : K, a ≠ 0 → IsUnit (fnOf a)` using `fun a ha => (IsUnit.mk0 _ ha).map (Scheme.ΓSpecIso (CommRingCat.of K)).inv.hom`. Establish `hmu : IsUnit (m : Γ(T.left, ⊤))`. Use `un m hK` as an intermediate fact.
-
-Rewrite `this` using `[GlobalTheory.Ex.fnOf, map_natCast]`. Then use the resulting hypothesis. Use `haveI : Subsingleton T.left := inferInstanceAs (Subsingleton (PrimeSpectrum K))`. Use `ThetaSeries.isThetaPt_of_data x.P hm hmu (Nat.cast_pow m 2) th s₁ α τ U s₂ w (un _ (div_ne_zero hq₀ (pow_ne_zero (m ^ 2) hr₀))).unit ⟨isGenSec_of_polAVSectionInverseImage x th hth, hα, hτ, hs₁, fun i => (hUT i).1, hs₂, hw, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[IsUnit.unit_spec, ← fnOf_valR_id (w i), ← map_mul]`. Use `congr 1`.
-
-Clear the denominators using the available nonvanishing facts. Take the linear combination `(hval i).symm`.
+Reduce the equality to equality of the corresponding arguments. Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem isThetaPt_of_thJet : ∀ (K : Type) [Field K] (x : KeyIn K) (g : ℕ) (hg : x.P.g = g) (m : ℕ), Odd m → (m : K) ≠ 0 → ∀ (I : Type) (pt : I → (baseOver (Sp K) ⟶ x.P.A)) (ϑ : I → K) (J : I → Fin g → K), ThJet x hg m pt ϑ J → IsThetaPt x.P m pt fun i => fnOf (ϑ i) := by
   intro K _ x g hg m hm hK I pt ϑ J hJ

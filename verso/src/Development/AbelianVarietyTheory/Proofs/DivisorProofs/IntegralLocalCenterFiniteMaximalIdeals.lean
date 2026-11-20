@@ -13,7 +13,7 @@ namespace GlobalTheory.OrbFinAf
 variable {p : ℕ} [Fact p.Prime]
 
 /- English proof (translation)
-Establish `hf : Function.Injective (IsScalarTower.toAlgHom ℚ G.F G.C).toLinearMap` using `(algebraMap G.F G.C).injective`. Conclude with `Module.Flat.lTensor_preserves_injective_linearMap (M := Qv v) _ hf`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem iotaF_injective (G : HTGroup p) (v : AwayP p) : Function.Injective (iotaF G v) := by
   have hf : Function.Injective (IsScalarTower.toAlgHom ℚ G.F G.C).toLinearMap :=
@@ -47,9 +47,9 @@ def intFCoord (G : HTGroup p) (v : AwayP p) (h1 : IsIntV G v 1)
       rfl }
 
 /- English proof (translation)
-Introduce `a b hab`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `iotaF_injective G v` to reduce the goal to its premises. Apply `(basV G v).repr.injective` to reduce the goal to its premises. Use `Finsupp.ext fun i => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `congrArg Subtype.val (congrFun hab i)`.
+A detailed English derivation is pending.
 -/
 theorem intFCoord_injective (G : HTGroup p) (v : AwayP p) (h1 : IsIntV G v 1)
     (hm : ∀ y z : Qv v ⊗[ℚ] G.C, IsIntV G v y → IsIntV G v z → IsIntV G v (y * z)) :
@@ -62,7 +62,7 @@ theorem intFCoord_injective (G : HTGroup p) (v : AwayP p) (h1 : IsIntV G v 1)
   exact congrArg Subtype.val (congrFun hab i)
 
 /- English proof (translation)
-The claim follows from `letI := (intFAlgMap G v h1 hm).toAlgebra Module.Finite.of_injective (intFCoord G v h1 hm) (intFCoord_injective G v h1 hm)`.
+A detailed English derivation is pending.
 -/
 theorem intF_finite (G : HTGroup p) (v : AwayP p) (h1 : IsIntV G v 1)
     (hm : ∀ y z : Qv v ⊗[ℚ] G.C, IsIntV G v y → IsIntV G v z → IsIntV G v (y * z)) :
@@ -72,7 +72,7 @@ theorem intF_finite (G : HTGroup p) (v : AwayP p) (h1 : IsIntV G v 1)
   Module.Finite.of_injective (intFCoord G v h1 hm) (intFCoord_injective G v h1 hm)
 
 /- English proof (translation)
-Introduce `p _ G v h1 hm`. Use `letI := (intFAlgMap G v h1 hm).toAlgebra`. Use `haveI := intF_finite G v h1 hm`. Conclude with `ReciprocityTheory.ChartRestriction.G.T0.FiniteAlgebraLocalCompletion.finite_maximal_ideals_of_finite (R := v.1.adicCompletionIntegers ℚ) (intF G v h1 hm)`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem intF_finite_maximal : ∀ (p : ℕ) [Fact p.Prime] (G : HTGroup p) (v : AwayP p) (h1 : IsIntV G v 1)
     (hm : ∀ y z : Qv v ⊗[ℚ] G.C, IsIntV G v y → IsIntV G v z → IsIntV G v (y * z)),

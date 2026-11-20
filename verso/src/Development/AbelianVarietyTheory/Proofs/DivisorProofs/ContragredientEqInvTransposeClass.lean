@@ -18,22 +18,20 @@ def equivComp {G H V W : Type} [Group G] [Group H] [AddCommGroup V] [Module ℂ 
     (fun v => e.symm_apply_apply v) (fun w => e.apply_symm_apply w)
 
 /- English proof (translation)
-The claim follows from `MonoidHom.ext fun _ => Units.ext rfl`.
+A detailed English derivation is pending.
 -/
 theorem invTranspose_eq (k : Type) [Field k] (n : ℕ) :
     GlobalTheory.TypeTame.invTranspose (R := k) n = GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorLiftConclusion.invTranspose n k :=
   MonoidHom.ext fun _ => Units.ext rfl
 
 /- English proof (translation)
-Introduce `k _ _ _ _ hA x y`. Establish `hinv : ∀ n (g : GL (Fin n) k), GlobalTheory.TypeTame.invTranspose n (GlobalTheory.TypeTame.invTranspose n g) = g` using `fun n g => GlobalTheory.TypeTame.invTranspose_invTranspose n g`. Establish `hsm : ∀ (z : IrrGL k), IsSmooth (z.rep.comp (GlobalTheory.TypeTame.invTranspose z.1))` using `fun z v => (z.2.rep.smooth v).preimage (GlobalTheory.TypeTame.continuous_invTranspose z.1)`. Establish `hirr : ∀ (z : IrrGL k), Representation.IsIrreducible (z.rep.comp (GlobalTheory.TypeTame.invTranspose z.1))` using `fun z => GlobalTheory.GelfandKazhdan.isIrreducible_comp _ (fun g => ⟨_, hinv _ g⟩) z.2.rep.irr`. Establish `gk : ∀ {n : ℕ} (π : IrrRep (GL (Fin n) k)), Nonempty (Representation.Equiv (π.ρ.comp (GlobalTheory.TypeTame.invTranspose n) : Representation ℂ (GL (Fin n) k) π.V) (contra π.ρ))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `n π`. Rewrite using `[invTranspose_eq]`. Conclude with `GlobalTheory.GelfandKazhdan.equiv_contra k n π.V π.ρ (hA k n π.V π.ρ π.smooth π.irr) π.irr`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨n, π, π', rfl, rfl, ⟨e⟩⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨hsm _, hirr _, ?_⟩` and prove the remaining obligations. Take `⟨f⟩` from `gk π`. Take `⟨r⟩` from `IrrRep.nonempty_equiv_rep π`. Establish `e2 : Representation.Equiv ((cls π).rep.comp (GlobalTheory.TypeTame.invTranspose (cls π).1) : Representation ℂ (GL (Fin n) k) _) π'.ρ` using `(equivComp _ r).trans (f.trans e.symm)`. Use `show (⟨n, π'.cl⟩ : IrrGL k) = _`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: (⟨n, π'.cl⟩ : IrrGL k) = IrrGL.of π'.ρ π'.smooth π'.irr` using `rfl`. Rewrite using `[this]`. Conclude with `IrrGL.of_eq_of.2 ⟨e2.symm⟩`. Introduce and unpack `⟨h1, h2, rfl⟩`. Use `⟨x.1, x.2.rep, ⟨_, x.rep.comp (GlobalTheory.TypeTame.invTranspose x.1), h1, h2⟩, ?_, rfl, ?_⟩` and prove the remaining obligations.
-
-Conclude with `(congrArg (Sigma.mk x.1) x.2.cl_rep).symm`. Conclude with `gk x.2.rep`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem dualCl_iff : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k], GlobalTheory.Published.IrreducibleAdmissibleGL → ∀ x y : IrrGL k, DualCl x y ↔ ∃ (h1 : IsSmooth (x.rep.comp (GlobalTheory.TypeTame.invTranspose x.1))) (h2 : Representation.IsIrreducible (x.rep.comp (GlobalTheory.TypeTame.invTranspose x.1))), y = IrrGL.of (x.rep.comp (GlobalTheory.TypeTame.invTranspose x.1)) h1 h2 := by
   intro k _ _ _ _ hA x y

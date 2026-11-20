@@ -13,7 +13,7 @@ section cs
 variable {n : ℕ}
 
 /- English proof (translation)
-The claim follows from `| [], _, _ => rfl | l :: L, E, Y => by simp only [List.map_cons, Fr.xs] rw [xs_upL x0 L E Y] rfl`.
+A detailed English derivation is pending.
 -/
 theorem xs_upL (x0 : ℂ → ℂ) : ∀ (L : List (Letter ℂ (Fin n))) (E : Ix (Fin (n + 1))) (Y : ℂ),
     Fr.xs x0 (L.map PBF.upL) E Y = Fr.xs x0 L (fun a => E a.succ) Y
@@ -24,7 +24,7 @@ theorem xs_upL (x0 : ℂ → ℂ) : ∀ (L : List (Letter ℂ (Fin n))) (E : Ix 
     rfl
 
 /- English proof (translation)
-The claim follows from `| [], _ => rfl | l :: L, E => by simp only [List.map_cons, Fr.cs] simp only [cs_upL, xs_upL, show qw q0 (L.map PBF.upL) = qw q0 L from funext fun Y => PBF.qw_map_reindex q0 Fin.succ L Y] rfl`.
+A detailed English derivation is pending.
 -/
 theorem cs_upL (x0 q0 : ℂ → ℂ) : ∀ (L : List (Letter ℂ (Fin n))) (E : Ix (Fin (n + 1))),
     Fr.cs x0 q0 (L.map PBF.upL) E = Fr.cs x0 q0 L (fun a => E a.succ)
@@ -36,7 +36,7 @@ theorem cs_upL (x0 q0 : ℂ → ℂ) : ∀ (L : List (Letter ℂ (Fin n))) (E : 
     rfl
 
 /- English proof (translation)
-Unfold `Top.cW`. Rewrite using `[PBF.positioned_cons]`. Simplify using `only [Fr.cs, if_true]`. Simplify using `only [cs_upL, xs_upL, show qw (M.qC P) ((D.positionted w).map PBF.upL) = qw (M.qC P) (D.positionted w) from`. Use function extensionality and compare the values at `fun Y => PBF.qw_map_reindex _ Fin.succ _ Y]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument.
 -/
 theorem cW_cons_plus (P : M.Par) (l0 : ℕ) (y : ℝ) (w : List C.Letter) (E : Ix (Fin (w.length + 1))) (ρ : M.Ty P) :
     Top.cW P l0 ((true, y) :: w) E ρ = Top.cW P l0 w (fun a => E a.succ) ρ *
@@ -54,7 +54,7 @@ def topRprod {P : M.Par} (l0 : ℕ) (a : List C.Letter) (e : Ix (Fin a.length)) 
   | y :: ys => topRprod l0 a e ρ ys * topR l0 (KB.plusW ys a) (KB.firstSt ys e) ρ y
 
 /- English proof (translation)
-The claim follows from `| [] => by simp [topRprod, KB.plusW, KB.firstSt] | y :: ys => by have h := cW_cons_plus P l0 y (KB.plusW ys a) (Fin.cons (0 : Fin 2) (KB.firstSt ys e)) ρ simp only [Fin.cons_zero, Fin.cons_succ, if_true] at h show Top.cW P l0 ((true, y) :: KB.plusW ys a) (Fin.cons (0 : Fin 2) (KB …`.
+A detailed English derivation is pending.
 -/
 theorem cW_plusW (P : M.Par) (l0 : ℕ) (a : List C.Letter) (e : Ix (Fin a.length)) (ρ : M.Ty P) :
     ∀ ys : List ℝ, Top.cW P l0 (KB.plusW ys a) (KB.firstSt ys e) ρ = Top.cW P l0 a e ρ * topRprod l0 a e ρ ys

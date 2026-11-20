@@ -9,23 +9,21 @@ open TensorProduct
 namespace GlobalTheory.LBDescent
 
 /- English proof (translation)
-Introduce `X Y f V V₀ h hle c r m s n hm hs`. Establish `hD : Y.basicOpen r ≤ V₀` using `Y.basicOpen_le r`. Establish `hfD : f ⁻¹ᵁ Y.basicOpen r ≤ f ⁻¹ᵁ V₀` using `fun x hx => hD hx`. Establish `hB : f ⁻¹ᵁ Y.basicOpen r ≤ X.basicOpen ((f.app V₀).hom r)` using `(Scheme.preimage_basicOpen f r).le`. Establish `hunitA : IsUnit ((X.presheaf.map (homOfLE hfD).op).hom ((f.app V₀).hom r))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : IsUnit ((X.presheaf.map (homOfLE (X.basicOpen_le ((f.app V₀).hom r))).op).hom ((f.app V₀).hom r))` using `RingedSpace.isUnit_res_basicOpen X.toRingedSpace _`. Establish `h2` using `h1.map (X.presheaf.map (homOfLE hB).op).hom`. Rewrite `h2` using `[← CommRingCat.comp_apply, ← Functor.map_comp]`. Conclude with `h2`. Establish `hunit : IsUnit ((X.presheaf.map (homOfLE hfD).op).hom m)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `isUnit_of_mul_isUnit_left (y := (X.presheaf.map (homOfLE hfD).op).hom s)` to reduce the goal to its premises. Rewrite using `[← map_mul, hs, map_pow]`. Conclude with `hunitA.pow n`. Use `⟨hunit.unit, fun z hz => ?_⟩` and prove the remaining obligations. Establish `e : f (pullback.snd f f z) = f (pullback.fst f f z)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Scheme.Hom.comp_apply, ← Scheme.Hom.comp_apply, pullback.condition]`. Establish `hz1 : pullback.fst f f z ∈ f ⁻¹ᵁ Y.basicOpen r` using `hz`. Establish `hz2 : pullback.snd f f z ∈ f ⁻¹ᵁ Y.basicOpen r` using `by show f (pullback.snd f f z) ∈ Y.basicOpen r`. Rewrite using `[e]`. Conclude with `hz`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hz0 : z ∈ pullback.fst f f ⁻¹ᵁ f ⁻¹ᵁ V₀` using `hD hz`. Establish `hzV : z ∈ pullback.fst f f ⁻¹ᵁ f ⁻¹ᵁ V` using `hle hz0`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[Units.val_mul, gm_val _ z _ hz1, gm_val _ z _ hzV, gm_val _ z _ hz2, IsUnit.unit_spec]`. Establish `k1 : ((pullback f f).presheaf.germ (pullback.fst f f ⁻¹ᵁ f ⁻¹ᵁ Y.basicOpen r) z hz1).hom (((pullback.fst f f).app (f ⁻¹ᵁ Y.basicOpen r)).hom ((X.presheaf.map (homOfLE hfD).op).hom m)) = ((pullback f f).presheaf.germ (pullback.fst f f ⁻¹ᵁ f ⁻¹ᵁ V₀) z hz0).hom (((pullback.fst f f). …`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `e1` using `congrArg (fun q => q.hom m) ((pullback.fst f f).naturality (homOfLE hfD).op)`. Simplify using `only [CommRingCat.hom_comp, RingHom.comp_apply] at e1`. Rewrite using `[e1]`. Conclude with `TopCat.Presheaf.germ_res_apply _ _ _ _ _`. Establish `hz0' : z ∈ pullback.snd f f ⁻¹ᵁ f ⁻¹ᵁ V₀` using `h hz0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `k2 : ((pullback f f).presheaf.germ (pullback.snd f f ⁻¹ᵁ f ⁻¹ᵁ Y.basicOpen r) z hz2).hom (((pullback.snd f f).app (f ⁻¹ᵁ Y.basicOpen r)).hom ((X.presheaf.map (homOfLE hfD).op).hom m)) = ((pullback f f).presheaf.germ (pullback.snd f f ⁻¹ᵁ f ⁻¹ᵁ V₀) z hz0').hom (((pullback.snd f f) …`. Establish `e1` using `congrArg (fun q => q.hom m) ((pullback.snd f f).naturality (homOfLE hfD).op)`. Simplify using `only [CommRingCat.hom_comp, RingHom.comp_apply] at e1`. Rewrite using `[e1]`. Conclude with `TopCat.Presheaf.germ_res_apply _ _ _ _ _`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `k4 : ((pullback f f).presheaf.germ (pullback.fst f f ⁻¹ᵁ f ⁻¹ᵁ V₀) z hz0).hom (((pullback.snd f f).appLE (f ⁻¹ᵁ V₀) _ h).hom m) = ((pullback f f).presheaf.germ (pullback.snd f f ⁻¹ᵁ f ⁻¹ᵁ V₀) z hz0').hom (((pullback.snd f f).app (f ⁻¹ᵁ V₀)).hom m)`. Simplify using `only [Scheme.Hom.appLE, CommRingCat.hom_comp, RingHom.comp_apply]`. Conclude with `TopCat.Presheaf.germ_res_apply _ _ _ _ _`. Establish `k3 : ((pullback f f).presheaf.germ (pullback.fst f f ⁻¹ᵁ f ⁻¹ᵁ V₀) z hz0).hom ((res hle c).val) = ((pullback f f).presheaf.germ (pullback.fst f f ⁻¹ᵁ f ⁻¹ᵁ V) z hzV).hom c.val`. Simplify using `only [res, Units.coe_map, MonoidHom.coe_coe]`.
-
-Conclude with `TopCat.Presheaf.germ_res_apply _ _ _ _ _`. Establish `hm'` using `congrArg ((pullback f f).presheaf.germ (pullback.fst f f ⁻¹ᵁ f ⁻¹ᵁ V₀) z hz0).hom hm`. Rewrite `hm'` using `[map_mul, k3, k4]`. Rewrite using `[k1, k2, ← hm']`. Use `congr 1`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem coboundary_unit_basicOpen : ∀ {X Y : Scheme.{0}} (f : X ⟶ Y) (V V₀ : Y.Opens)
     (h : pullback.fst f f ⁻¹ᵁ f ⁻¹ᵁ V₀ ≤ pullback.snd f f ⁻¹ᵁ f ⁻¹ᵁ V₀)

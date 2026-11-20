@@ -15,7 +15,7 @@ variable {Y : Scheme.{0}}
 private abbrev rs {U V : Y.Opens} (h : V ≤ U) : Γ(Y, U) →+* Γ(Y, V) := (Y.presheaf.map (homOfLE h).op).hom
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `((Y.presheaf.map (homOfLE h).op ≫ Y.presheaf.map (homOfLE h').op)).hom x = _`. Rewrite using `[← Functor.map_comp]`. Both sides reduce to the same expression.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem rs_rs {U V T : Y.Opens} (h : V ≤ U) (h' : T ≤ V) (x : Γ(Y, U)) :
     rs h' (rs h x) = rs (h'.trans h) x := by
@@ -24,13 +24,11 @@ private theorem rs_rs {U V T : Y.Opens} (h : V ≤ U) (h' : T ≤ V) (x : Γ(Y, 
   rfl
 
 /- English proof (translation)
-Establish `hf : (Scheme.Hom.appLE (𝟙 Y) U V h).hom.Flat` using `HasRingHomProperty.appLE (P := @Flat) (Q := RingHom.Flat) (𝟙 Y) inferInstance ⟨U, hU⟩ ⟨V, hV⟩ h`. Establish `e : (Scheme.Hom.appLE (𝟙 Y) U V h).hom = rs h`. Use extensionality with `x`. Simplify using `only [Scheme.Hom.appLE, Scheme.Hom.id_app]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Rewrite `hf` using `[e]`. Use `letI : Algebra Γ(Y, U) Γ(Y, V) := (rs h).toAlgebra`. Use `haveI : Module.Flat Γ(Y, U) Γ(Y, V) := hf`. Establish `hr : IsSMulRegular Γ(Y, U) s` using `fun a b e => (mul_cancel_left_mem_nonZeroDivisors hs).1 e`. Establish `hr'` using `IsSMulRegular.of_flat (S := Γ(Y, V)) hr`.
+Rewrite the indicated hypotheses using the stated equalities. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mem_nonZeroDivisors_iff_right]`. Introduce `x hx`. Apply `hr'` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `rs h s * x = rs h s * 0`. Rewrite using `[mul_zero, mul_comm]`.
-
-Conclude with `hx`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem nzd_rs {U V : Y.Opens} (hU : IsAffineOpen U) (hV : IsAffineOpen V) (h : V ≤ U)
     {s : Γ(Y, U)} (hs : s ∈ nonZeroDivisors Γ(Y, U)) : rs h s ∈ nonZeroDivisors Γ(Y, V) := by
@@ -53,13 +51,13 @@ private theorem nzd_rs {U V : Y.Opens} (hU : IsAffineOpen U) (hV : IsAffineOpen 
   exact hx
 
 /- English proof (translation)
-Establish `key : ∀ {U : Y.Opens} (a : IsAffineOpen U) (h : T ≤ U) {s : Γ(Y, U)}, J.ideal ⟨U, a⟩ = Ideal.span {s} → J.ideal ⟨T, aT⟩ = Ideal.span {rs h s}`. Introduce `U a h s e`. Use `J.map_ideal (U := ⟨T, aT⟩) (V := ⟨U, a⟩) h` as an intermediate fact. Rewrite `this` using `[e, Ideal.map_span, Set.image_singleton]`. Conclude with `this.symm`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `k₁` using `key a₁ h₁ e₁`. Establish `k₂` using `key a₂ h₂ e₂`. Establish `m₁ : rs h₁ s₁ ∈ Ideal.span {rs h₂ s₂}`. Rewrite using `[← k₂, k₁]`. Conclude with `Ideal.mem_span_singleton_self _`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `m₂ : rs h₂ s₂ ∈ Ideal.span {rs h₁ s₁}`. Rewrite using `[← k₁, k₂]`. Conclude with `Ideal.mem_span_singleton_self _`. Take `⟨a, ha⟩` from `Ideal.mem_span_singleton'.1 m₁`. Take `⟨b, hb⟩` from `Ideal.mem_span_singleton'.1 m₂`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `n` using `nzd_rs a₂ aT h₂ n₂`. Establish `hab : a * b = 1`. Use `(mul_cancel_left_mem_nonZeroDivisors n).1 ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Conclude with `⟨⟨a, b, hab, by rw [mul_comm]; exact hab⟩, ha.symm⟩`.
+Chain the equalities or inequalities of the calculation. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem exists_unit (J : Y.IdealSheafData) {U₁ U₂ T : Y.Opens}
     (a₁ : IsAffineOpen U₁) (a₂ : IsAffineOpen U₂) (aT : IsAffineOpen T) (h₁ : T ≤ U₁) (h₂ : T ≤ U₂)
@@ -94,7 +92,7 @@ section
 variable {K : Type} [CommRing K] {X : Sch K}
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(Scheme.Hom.appLE (𝟙 X.left) U V h).hom x = _`. Simplify using `only [Scheme.Hom.appLE, Scheme.Hom.id_app]`. Both sides reduce to the same expression.
+Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 private theorem secRes_eq {U V : X.left.Opens} (h : V ≤ U) (x : Sec X U) :
     secRes X h x = rs h x := by
@@ -108,7 +106,7 @@ private abbrev Idx (J : X.left.IdealSheafData) : Type :=
 private abbrev idxU (J : X.left.IdealSheafData) (j : Idx J) : X.left.Opens := j.1.1
 
 /- English proof (translation)
-Establish `: cap (X` using `X) (idxU J) i = idxU J (i 0) ⊓ idxU J (i 1) := by`. Use extensionality with `x`. Simplify using `[mem_inter_iff, Fin.forall_fin_two]`. Rewrite using `[this]`. Conclude with `(i 0).1.2.inf (i 1).1.2`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem aff2 [X.left.IsSeparated] (J : X.left.IdealSheafData) (i : Fin 2 → Idx J) :
     IsAffineOpen (cap (X := X) (idxU J) i) := by
@@ -119,7 +117,7 @@ private theorem aff2 [X.left.IsSeparated] (J : X.left.IdealSheafData) (i : Fin 2
   exact (i 0).1.2.inf (i 1).1.2
 
 /- English proof (translation)
-Establish `: cap (X` using `X) (idxU J) i = idxU J (i 0) ⊓ idxU J (i 1) ⊓ idxU J (i 2) := by`. Use extensionality with `x`. Simplify using `[mem_inter_iff, Fin.forall_fin_succ, and_assoc]`. Rewrite using `[this]`. Conclude with `((i 0).1.2.inf (i 1).1.2).inf (i 2).1.2`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem aff3 [X.left.IsSeparated] (J : X.left.IdealSheafData) (i : Fin 3 → Idx J) :
     IsAffineOpen (cap (X := X) (idxU J) i) := by
@@ -130,7 +128,7 @@ private theorem aff3 [X.left.IsSeparated] (J : X.left.IdealSheafData) (i : Fin 3
   exact ((i 0).1.2.inf (i 1).1.2).inf (i 2).1.2
 
 /- English proof (translation)
-The claim follows from `exists_unit J (i 0).1.2 (i 1).1.2 (aff2 J i) _ _ (i 0).2.2.1 (i 1).2.2.1 (i 1).2.2.2`.
+A detailed English derivation is pending.
 -/
 private theorem exists_g [X.left.IsSeparated] (J : X.left.IdealSheafData) (i : Fin 2 → Idx J) :
     ∃ g : Γ(X.left, cap (X := X) (idxU J) i)ˣ, rs (inter_le (X := X.left.toTopCat) (idxU J) i 0) (i 0).2.1 =
@@ -141,7 +139,7 @@ private def gg [X.left.IsSeparated] (J : X.left.IdealSheafData) (i : Fin 2 → I
   (exists_g (X := X) J i).choose
 
 /- English proof (translation)
-Substitute `ha hc` using the available equality. Establish `e` using `congrArg (rs hT) (exists_g (X := X) J j).choose_spec`. Rewrite `e` using `[map_mul, rs_rs, rs_rs]`. Conclude with `e`.
+Substitute using the available equality. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem gg_spec [X.left.IsSeparated] (J : X.left.IdealSheafData) {T : X.left.Opens} (j : Fin 2 → Idx J)
     (a c : Idx J) (ha : j 0 = a) (hc : j 1 = c) (hT : T ≤ cap (X := X) (idxU J) j) (ta : T ≤ idxU J a) (tc : T ≤ idxU J c) :
@@ -152,9 +150,9 @@ private theorem gg_spec [X.left.IsSeparated] (J : X.left.IdealSheafData) {T : X.
   exact e
 
 /- English proof (translation)
-Establish `t : ∀ a, cap (X` using `X) (idxU J) i ≤ idxU J (i a) := inter_le (X := X.left.toTopCat) (idxU J) i`. Establish `A` using `gg_spec (X := X) J (i ∘ Fin.succAbove 2) (i 0) (i 1) rfl rfl (inter_le_comp (X := X.left.toTopCat) (idxU J) i (Fin.succAbove 2)) (t 0) (t 1)`. Establish `B` using `gg_spec (X := X) J (i ∘ Fin.succAbove 0) (i 1) (i 2) rfl rfl (inter_le_comp (X := X.left.toTopCat) (idxU J) i (Fin.succAbove 0)) (t 1) (t 2)`. Establish `C` using `gg_spec (X := X) J (i ∘ Fin.succAbove 1) (i 0) (i 2) rfl rfl (inter_le_comp (X := X.left.toTopCat) (idxU J) i (Fin.succAbove 1)) (t 0) (t 2)`. Use `(mul_cancel_right_mem_nonZeroDivisors (nzd_rs (i 2).1.2 (aff3 J i) (t 2) (i 2).2.2.2)).1 ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← C, mul_assoc, ← B, ← A]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem gg_coc [X.left.IsSeparated] (J : X.left.IdealSheafData) (i : Fin 3 → Idx J) :
     rs (inter_le_comp (X := X.left.toTopCat) (idxU J) i (Fin.succAbove 2)) (gg (X := X) J (i ∘ Fin.succAbove 2)).val *
@@ -171,9 +169,9 @@ private theorem gg_coc [X.left.IsSeparated] (J : X.left.IdealSheafData) (i : Fin
   rw [← C, mul_assoc, ← B, ← A]
 
 /- English proof (translation)
-Use `⟨{ ι := Idx J, U := idxU J, cov := ⟨fun j => j.1.2, ?_⟩, g := gg (X := X) J, coc := ?_ }, fun j => j.2.1, fun j => j.1.2, fun j => j.2.2.1, fun j => j.2.2.2, fun j => ?_⟩` and prove the remaining obligations. Use `eq_top_iff.2 fun x _ => ?_` and prove the remaining obligations. Take `⟨U, f, hx, hf, e⟩` from `hJ x`. Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨⟨U, f, e, hf⟩, hx⟩`. Introduce `i`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [secRes_eq]`. Conclude with `gg_coc (X := X) J i`. Use `(secRes_eq _ _).trans (((exists_g (X := X) J j).choose_spec).trans ?_)` and prove the remaining obligations. Conclude with `congrArg (fun t => (gg (X := X) J j).val * t) (secRes_eq _ _).symm`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem exists_coc [X.left.IsSeparated] (J : X.left.IdealSheafData) (hJ : IsLocallyGeneratedByNonZeroDivisor J) :
     ∃ (L : Coc X) (s : ∀ j : L.ι, Sec X (L.U j)) (a : ∀ j, IsAffineOpen (L.U j)),
@@ -195,17 +193,13 @@ private theorem exists_coc [X.left.IsSeparated] (J : X.left.IdealSheafData) (hJ 
 end
 
 /- English proof (translation)
-Introduce `R _ _ Z W D _ _ π hπ`. Use `haveI : Smooth Z.hom := SmoothOfRelativeDimension.smooth D Z.hom`. Take `⟨hp, hcl, -⟩` from `blOff R π hπ`. Use `haveI : IsProper π.left := hp`. Use `haveI : IsClosedImmersion (dg Z).left := by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `IsClosedImmersion (pullback.diagonal Z.hom)`. Use `infer_instance`. Use `haveI : IsSeparated (XX Z).hom := by`. Express the relevant statement in the definitionally equal form `IsSeparated (pullback.fst Z.hom Z.hom ≫ Z.hom)`. Use `infer_instance`.
+Prove the components needed by the constructor for the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `haveI : IsSeparated W.hom := by`. Rewrite using `[← Over.w π]`. Use `infer_instance`. Use `haveI : W.left.IsSeparated := by`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `: terminal.from W.left = W.hom ≫ terminal.from _` using `terminal.hom_ext _ _`. Rewrite using `[this]`. Use `infer_instance`. Take `⟨L, s, a, h1, h2, h3⟩` from `exists_coc (X := W) _ hπ.1`. Use `haveI : IsClosedImmersion (exI π).left := hcl`.
-
-Use `⟨L, s, hcl, fun j => ?_, h2, h3⟩` and prove the remaining obligations. Establish `e : (exI π).left.ker = (dg Z).left.ker.comap π.left` using `Scheme.IdealSheafData.ker_fst_of_isClosedImmersion (dg Z).left π.left`. Establish `e2` using `Scheme.Hom.ker_apply (exI π).left ⟨L.U j, a j⟩`. Rewrite `e2` using `[e, h1 j]`. Use `Eq.trans ?_ e2.symm` and prove the remaining obligations.
-
-Express the relevant statement in the definitionally equal form `RingHom.ker (Scheme.Hom.appLE (exI π).left (L.U j) _ le_rfl).hom = _`. Rewrite using `[Scheme.Hom.appLE_eq_app]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exDiv : ExDiv := by
   intro R _ _ Z W D _ _ π hπ

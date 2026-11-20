@@ -6,7 +6,7 @@ open CategoryTheory GroundTheory.ProfCoh ReciprocityTheory.Gal ValuativeRel
 namespace CompanionTheory.LocalTateOrthogonality.Gcoh
 
 /- English proof (translation)
-Establish `h : IsPGroup l (Multiplicative M)` using `fun g => ⟨r, by`. Apply `Multiplicative.toAdd.injective` to reduce the goal to its premises. Rewrite using `[toAdd_pow, toAdd_one, ← Nat.cast_smul_eq_nsmul (ZMod (l ^ r)), ZMod.natCast_self, zero_smul]⟩`. Conclude with `(IsPGroup.iff_card (p := l) (G := Multiplicative M)).1 h`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_card_eq_pow (l : ℕ) [hl : Fact l.Prime] (r : ℕ) (M : Type) [AddCommGroup M]
     [Module (ZMod (l ^ r)) M] [Finite M] : ∃ k, Nat.card M = l ^ k := by
@@ -17,15 +17,15 @@ theorem exists_card_eq_pow (l : ℕ) [hl : Fact l.Prime] (r : ℕ) (M : Type) [A
   exact (IsPGroup.iff_card (p := l) (G := Multiplicative M)).1 h
 
 /- English proof (translation)
-Introduce `l hl K hK r M _ _ _ _ _ rho _ hrho`. Take `⟨hsep, v, t, hloc, hcard⟩` from `hF l K hK`. Take `⟨A, hA, e, he⟩` from `hRep _ _ M rho hrho`. Take `⟨e0, -⟩` from `h0 _ _ M rho A e he`. Take `⟨e1, -⟩` from `h1 _ _ M rho A e he`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨e2, -⟩` from `h2 _ _ M rho A e he`. Take `⟨k, hk⟩` from `exists_card_eq_pow l r M`. Establish `: Finite A` using `Finite.of_equiv M e.toEquiv`. Establish `hA' : Nat.card A = l ^ k` using `(Nat.card_congr e.toEquiv).symm.trans hk`. Establish `hne : ((Nat.card A : ℕ) : K) ≠ 0`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hA']`. Conclude with `Nat.cast_ne_zero.2 (pow_ne_zero _ hl.out.ne_zero)`. Establish `hE` using `@card_cohomology_mul_div_eq K (PadicAlgCl l) _ v t hloc _ _ hsep A hA this hne`. Establish `hfin` using `@finite_cohomology_localField K (PadicAlgCl l) _ v t hloc _ _ hsep A hA this hne 1`. Rewrite `hE` using `[hA', hcard k]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Nat.card_congr e0.toEquiv, Nat.card_congr e1.toEquiv, Nat.card_congr e2.toEquiv, hk]`. Establish `hp1 : (Nat.card (cohomology A 1) : ℚ) ≠ 0` using `Nat.cast_ne_zero.2 Nat.card_pos.ne'`. Establish `hp2 : (((l ^ k) ^ Module.finrank ℚ_[l] K : ℕ) : ℚ) ≠ 0` using `Nat.cast_ne_zero.2 (pow_ne_zero _ (pow_ne_zero _ hl.out.ne_zero))`. Apply `Nat.cast_injective (R := ℚ)` to reduce the goal to its premises. Rewrite using `[Nat.cast_mul, Nat.cast_mul, (div_eq_iff hp1).1 hE]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Clear the denominators using the available nonvanishing facts.
+A detailed English derivation is pending.
 -/
 theorem euler_of (hRep : SgcRep) (h0 : Sgc0) (h1 : Sgc1) (h2 : Sgc2) (hF : SgcField) :
     Formalism.GaloisCohomology.LocalEulerCharK := by

@@ -6,7 +6,7 @@ open MeasureTheory Filter Topology
 namespace GlobalTheory.CompanionTheory.HolMean.DilatedGaussian
 
 /- English proof (translation)
-Establish `hb : 0 < ((Real.pi : ℂ)).re` using `by simpa using Real.pi_pos`. Establish `h` using `(GaussianFourier.integrable_cexp_neg_mul_sq_norm_add (V := ℂ) hb 0 0).norm`. Use `h.congr (Filter.Eventually.of_forall fun w => ?_)` and prove the remaining obligations. Simplify using `only [inner_zero_left, Complex.ofReal_zero, mul_zero, zero_mul, add_zero, Complex.norm_exp]`. Rewrite using `[← Complex.ofReal_pow, ← Complex.ofReal_neg, ← Complex.ofReal_mul, Complex.ofReal_re]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 lemma integrable_gauss_complex :
     Integrable (fun w : ℂ => Real.exp (-Real.pi * ‖w‖ ^ 2)) := by
@@ -17,7 +17,7 @@ lemma integrable_gauss_complex :
   rw [← Complex.ofReal_pow, ← Complex.ofReal_neg, ← Complex.ofReal_mul, Complex.ofReal_re]
 
 /- English proof (translation)
-Establish `h1 : Integrable (fun u : Fin n → ℂ => ∏ j, Real.exp (-Real.pi * ‖u j‖ ^ 2))` using `Integrable.fintype_prod (f := fun (_ : Fin n) (w : ℂ) => Real.exp (-Real.pi * ‖w‖ ^ 2)) (μ := fun _ => volume) (fun _ => integrable_gauss_complex)`. Establish `h2 : Integrable (fun v : Fin m → Fin n → ℂ => ∏ a, ∏ j, Real.exp (-Real.pi * ‖v a j‖ ^ 2))` using `Integrable.fintype_prod (f := fun (_ : Fin m) (u : Fin n → ℂ) => ∏ j, Real.exp (-Real.pi * ‖u j‖ ^ 2)) (μ := fun _ => volume) (fun _ => h1)`. Use `h2.congr (Filter.Eventually.of_forall fun v => ?_)` and prove the remaining obligations. Simplify using `only [← Real.exp_sum, Finset.mul_sum]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 lemma integrable_gauss (m n : ℕ) :
     Integrable (fun v : Fin m → Fin n → ℂ =>
@@ -36,7 +36,7 @@ noncomputable def dilated (m n : ℕ) (X : Fin n → ℝ) (v : Fin m → Fin n �
     Complex.exp (-(2 * Real.pi : ℂ) * ∑ a, ∑ j, Complex.exp (2 * z * X j) * ((‖v a j‖ ^ 2 : ℝ) : ℂ))
 
 /- English proof (translation)
-Unfold `dilated`. Use `fun_prop`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 lemma differentiable_dilated (m n : ℕ) (X : Fin n → ℝ) (v : Fin m → Fin n → ℂ) :
     Differentiable ℂ (dilated m n X v) := by
@@ -44,7 +44,7 @@ lemma differentiable_dilated (m n : ℕ) (X : Fin n → ℝ) (v : Fin m → Fin 
   fun_prop
 
 /- English proof (translation)
-Unfold `dilated`. Use `first`. Consider the case `fun_prop`. Consider the case `exact continuous_const.mul (Continuous.cexp (continuous_const.mul (continuous_finset_sum _ fun a _ => continuous_finset_sum _ fun j _ => continuous_const.mul (Complex.continuous_ofReal.comp ((continuous_norm.comp ((continuous_apply j).comp (continuous_apply a))).pow 2)))))`.
+Replace the relevant objects with their definitions. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 lemma continuous_dilated (m n : ℕ) (X : Fin n → ℝ) (z : ℂ) :
     Continuous (fun v : Fin m → Fin n → ℂ => dilated m n X v z) := by
@@ -56,9 +56,9 @@ lemma continuous_dilated (m n : ℕ) (X : Fin n → ℝ) (z : ℂ) :
         (Complex.continuous_ofReal.comp ((continuous_norm.comp ((continuous_apply j).comp (continuous_apply a))).pow 2)))))
 
 /- English proof (translation)
-Establish `hre : ∀ j, ∀ᶠ z : ℂ in 𝓝 0, 1 / 2 ≤ (Complex.exp (2 * z * X j)).re`. Introduce `j`. Establish `hc : Continuous fun z : ℂ => (Complex.exp (2 * z * X j)).re` using `by fun_prop`. Establish `h0 : (1 / 2 : ℝ) < (Complex.exp (2 * 0 * X j)).re` using `by norm_num`. Conclude with `((hc.tendsto 0).eventually (lt_mem_nhds h0)).mono fun z hz => hz.le`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hn : ∀ᶠ z : ℂ in 𝓝 0, ‖Complex.exp ((m : ℂ) * z * ∑ j, (X j : ℂ))‖ ≤ 2`. Establish `hc : Continuous fun z : ℂ => ‖Complex.exp ((m : ℂ) * z * ∑ j, (X j : ℂ))‖` using `by fun_prop`. Establish `h0 : ‖Complex.exp ((m : ℂ) * 0 * ∑ j, (X j : ℂ))‖ < 2` using `by norm_num`. Conclude with `((hc.tendsto 0).eventually (gt_mem_nhds h0)).mono fun z hz => hz.le`. Conclude with `(Filter.eventually_all.2 hre).and hn`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 lemma eventually_small (m n : ℕ) (X : Fin n → ℝ) :
     ∀ᶠ z : ℂ in 𝓝 0, (∀ j, 1 / 2 ≤ (Complex.exp (2 * z * X j)).re) ∧
@@ -75,11 +75,11 @@ lemma eventually_small (m n : ℕ) (X : Fin n → ℝ) :
   exact (Filter.eventually_all.2 hre).and hn
 
 /- English proof (translation)
-Unfold `dilated`. Rewrite using `[norm_mul]`. Establish `hre : (-(2 * Real.pi : ℂ) * ∑ a, ∑ j, Complex.exp (2 * z * X j) * ((‖v a j‖ ^ 2 : ℝ) : ℂ)).re = -(2 * Real.pi) * ∑ a, ∑ j, (Complex.exp (2 * z * X j)).re * ‖v a j‖ ^ 2`. Establish `e : (-(2 * Real.pi : ℂ)) = ((-(2 * Real.pi) : ℝ) : ℂ)` using `by push_cast; ring`. Rewrite using `[e, Complex.re_ofReal_mul, Complex.re_sum]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Complex.re_sum, Complex.re_mul_ofReal]`. Establish `hS : ∑ a, ∑ j, (1 / 2 : ℝ) * ‖v a j‖ ^ 2 ≤ ∑ a, ∑ j, (Complex.exp (2 * z * X j)).re * ‖v a j‖ ^ 2` using `Finset.sum_le_sum fun a _ => Finset.sum_le_sum fun j _ => mul_le_mul_of_nonneg_right (h1 j) (sq_nonneg _)`. Establish `hT : ∑ a, ∑ j, (1 / 2 : ℝ) * ‖v a j‖ ^ 2 = (1 / 2) * ∑ a, ∑ j, ‖v a j‖ ^ 2`. Simplify using `only [Finset.mul_sum]`. Establish `key : -(2 * Real.pi) * ∑ a, ∑ j, (Complex.exp (2 * z * X j)).re * ‖v a j‖ ^ 2 ≤ -Real.pi * ∑ a, ∑ j, ‖v a j‖ ^ 2`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite `hS` using `[hT]`. Use polynomial arithmetic with `[Real.pi_pos]`. Use `mul_le_mul h2 ?_ (norm_nonneg _) (by norm_num)` and prove the remaining obligations. Rewrite using `[Complex.norm_exp, hre]`. Conclude with `Real.exp_le_exp.2 key`.
+Rewrite the indicated hypotheses using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma norm_dilated_le (m n : ℕ) (X : Fin n → ℝ) (z : ℂ)
     (h1 : ∀ j, 1 / 2 ≤ (Complex.exp (2 * z * X j)).re)
@@ -107,15 +107,15 @@ lemma norm_dilated_le (m n : ℕ) (X : Fin n → ℝ) (z : ℂ)
   exact Real.exp_le_exp.2 key
 
 /- English proof (translation)
-Establish `hcm : ∀ (c : ℂ) (f : ℂ → ℂ) (r : ℕ), iteratedDeriv r (fun w => c * f w) = fun w => c * iteratedDeriv r f w`. Introduce `c f r`. Proceed by induction on `r with`. Consider the case `zero => simp only [iteratedDeriv_zero]`. Consider the case `succ r ih => rw [iteratedDeriv_succ, ih, deriv_const_mul_field', iteratedDeriv_succ]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Take `⟨ρ, hρ, hsmall⟩` from `Metric.eventually_nhds_iff_ball.1 (eventually_small m n X)`. Establish `hU : IsOpen (Metric.ball (0 : ℂ) ρ)` using `Metric.isOpen_ball`. Establish `hd : ∀ v : Fin m → Fin n → ℂ, DifferentiableOn ℂ (fun z => K v * dilated m n X v z) (Metric.ball (0 : ℂ) ρ)` using `fun v => ((differentiable_dilated m n X v).const_mul (K v)).differentiableOn`. Establish `hm : ∀ z ∈ Metric.ball (0 : ℂ) ρ, AEStronglyMeasurable (fun v : Fin m → Fin n → ℂ => K v * dilated m n X v z) volume` using `fun z _ => (hK.mul (continuous_dilated m n X z)).aestronglyMeasurable`. Establish `hb : ∀ z₀ ∈ Metric.ball (0 : ℂ) ρ, ∃ V ∈ 𝓝 z₀, ∃ g : (Fin m → Fin n → ℂ) → ℝ, Integrable g volume ∧ ∀ z ∈ V ∩ Metric.ball (0 : ℂ) ρ, ∀ v, ‖K v * dilated m n X v z‖ ≤ g v`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `z₀ _`. Use `⟨Set.univ, Filter.univ_mem, fun v => 2 * Real.exp (-Real.pi * ∑ a, ∑ j, ‖v a j‖ ^ 2), (integrable_gauss m n).const_mul 2, ?_⟩` and prove the remaining obligations. Introduce `z hz v`. Take `⟨h1, h2⟩` from `hsmall z hz.2`. Rewrite using `[norm_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hstep` using `integral_step (μ := volume) hU (fun z v => K v * dilated m n X v z) hd hm hb`. Use `⟨ρ, hρ, ?_, ?_⟩` and prove the remaining obligations. Introduce `z hz`. Conclude with `(hstep.1 z hz).differentiableAt.differentiableWithinAt`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `r`. Establish `h` using `iteratedDeriv_integral (μ := volume) hU r (fun z v => K v * dilated m n X v z) hd hm hb 0 (Metric.mem_ball_self hρ)`. Use `h.trans ?_` and prove the remaining obligations. Use `integral_congr_ae (Filter.Eventually.of_forall fun v => ?_)` and prove the remaining obligations. Conclude with `congrFun (hcm (K v) _ r) 0`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem holomorphic_integral (m n : ℕ) (X : Fin n → ℝ) (K : (Fin m → Fin n → ℂ) → ℂ)
     (hK : Continuous K) (hK1 : ∀ v, ‖K v‖ ≤ 1) :

@@ -14,19 +14,19 @@ section Param
 variable {o R : Type} [CommRing o] [CommRing R] [IsLocalRing R] {m : ℕ} {b : o →+* R} {t : Fin m → R}
 
 /- English proof (translation)
-Introduce `hi` and use `by have := h.mem_of_mem_sq (Pi.single i 1) (by simpa [Pi.single_apply] using hi) i simp at this`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem IsRelParam.notMem_sq (h : IsRelParam b t) (i : Fin m) : t i ∉ maximalIdeal R ^ 2 := fun hi => by
   have := h.mem_of_mem_sq (Pi.single i 1) (by simpa [Pi.single_apply] using hi) i
   simp at this
 
 /- English proof (translation)
-Introduce `h0` and use `h.notMem_sq i (h0 ▸ zero_mem _)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem IsRelParam.ne_zero (h : IsRelParam b t) (i : Fin m) : t i ≠ 0 := fun h0 => h.notMem_sq i (h0 ▸ zero_mem _)
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Take `⟨c, hc⟩` from `hd`. Use `h.mem_of_mem_sq (Pi.single j 1 - Pi.single i c) (by simp only [Pi.sub_apply, sub_mul, Finset.sum_sub_distrib]; simp [Pi.single_apply, hc, mul_comm c]) j` as an intermediate fact. Simplify using `[Ne.symm hne] at this`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem IsRelParam.eq_of_dvd (h : IsRelParam b t) {i j : Fin m} (hd : t i ∣ t j) : i = j := by
   by_contra hne
@@ -42,7 +42,7 @@ section Local
 variable {R : Type} [CommRing R] [IsDomain R] [IsLocalRing R] {m : ℕ}
 
 /- English proof (translation)
-Use `⟨fun h0 => ⟨fun y z => sub_eq_zero.1 (by_contra fun hy => ?_)⟩, fun h => by_contra fun h0 => ?_⟩` and prove the remaining obligations. Take `⟨i, -⟩` from `hm.exists_pos (maximalIdeal.isMaximal R).ne_top hy`. Conclude with `absurd i.2 (by omega)`. Conclude with `hγ.linearIndependent.ne_zero ⟨0, Nat.pos_of_ne_zero h0⟩ (Subsingleton.elim _ _)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem eq_zero_iff_subsingleton {φ : InvFun ℤ} (D : DegData R (maximalIdeal R)) {r : Fin m → R}
     {γ : Fin m → LinearMap.BilinForm ℤ D.toPre.X} (hγ : IsCone id φ γ) {c : ℤ}
@@ -53,11 +53,11 @@ theorem eq_zero_iff_subsingleton {φ : InvFun ℤ} (D : DegData R (maximalIdeal 
   · exact hγ.linearIndependent.ne_zero ⟨0, Nat.pos_of_ne_zero h0⟩ (Subsingleton.elim _ _)
 
 /- English proof (translation)
-Rewrite using `[PowerSeries.maximalIdeal_eq_span_X]`. Establish `hn' : (0 : ℤ) < n` using `by exact_mod_cast Nat.pos_of_ne_zero hn`. Establish `hs : ∀ y z : ℤ, ((2 * n : ℤ) • mulForm) y z = ((2 * n : ℤ) • mulForm) z y` using `fun y z => by simp [mul_comm]`. Establish `hp : ∀ y : ℤ, y ≠ 0 → 0 < ((2 * n : ℤ) • mulForm) y y` using `fun y hy => by`. Use `mul_self_pos.2 hy` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [LinearMap.smul_apply, mulForm_apply, smul_eq_mul]`. Check the signs of the components of the expression. Establish `he : ∀ y : ℤ, (2 : ℤ) ∣ ((2 * n : ℤ) • mulForm) y y` using `fun y => ⟨n * (y * y), by simp [mul_assoc]⟩`. Use `⟨ToricData.arcData (X := ℤ) k _ hs hp he, ![mulForm], Module.finrank_self ℤ, isCone_mulForm, ?_, fun i => ?_⟩` and prove the remaining obligations. Use `isMonomial_arcData (X := ℤ) k _ hs hp he using 1` and compare the differences between its conclusion and the goal.
+Simplify using the standard rewrite rules. Check the signs of the components of the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use function extensionality and compare the values at `i`. Use `fin_cases i`. Both sides reduce to the same expression. Use `(isCone_mulForm.evalZ_smul n i).trans ?_ fin_cases i` and prove the remaining obligations. Simplify using `[evalZ_minVal_int]`.
+Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_cusp_data (k : Type) [Field k] {n : ℕ} (hn : n ≠ 0) :
     ∃ (D : DegData (PowerSeries k) (maximalIdeal (PowerSeries k))) (γ : Fin 1 → LinearMap.BilinForm ℤ D.toPre.X),
@@ -84,7 +84,7 @@ theorem exists_cusp_data (k : Type) [Field k] {n : ℕ} (hn : n ≠ 0) :
 omit [IsLocalRing R] in
 
 /- English proof (translation)
-Introduce `h` and use `by obtain ⟨u, e, he, -⟩ := h y have := he 0 obtain ⟨a, rfl⟩ := hn simp [hy] at this omega`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem not_isMonomial_of_odd (D : DegPre R) (t : Fin 1 → R) (γ : LinearMap.BilinForm ℤ D.X) {y : D.X} (hy : γ y y = 1)
     {n : ℕ} (hn : Odd n) : ¬ IsMonomial D t fun _ => (n : ℤ) • γ := fun h => by
@@ -102,9 +102,9 @@ variable {o : Type} [CommRing o] {ζ : o} {g n : ℕ} {F : SFam g n ζ} {S : Sch
   {G : Over S} [GrpObj G] {e : F.univ.A.left ⟶ G.left}
 
 /- English proof (translation)
-Take `⟨R, _, _, b, ξ, m, t, R', _, _, _, ρ, r, G', _, _, π, D, A, U, γ, a, ⟨-, -, rfl, -, -⟩, ⟨ht, -, hj⟩, ⟨-, -, -, -, hρ, -⟩, ⟨hU, -, hγ, hm⟩, -, -⟩` from `h`. Use `⟨R', _, inferInstance, inferInstance, _, G', _, inferInstance, π, D, A, U, ?_, hU, ?_⟩` and prove the remaining obligations. Conclude with `congrArg ξ (comap_closedPoint ρ)`. Use `(hj _).trans (Iff.trans ?_ (eq_zero_iff_subsingleton D hγ hm))` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `∏ i, t i ∉ maximalIdeal R ↔ _`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[notMem_maximalIdeal, IsUnit.prod_univ_iff]`. Use `⟨fun hu => by_contra fun h0 => ?_, fun h0 i => absurd i.2 (by omega)⟩` and prove the remaining obligations. Conclude with `ht.1 ⟨0, Nat.pos_of_ne_zero h0⟩ (hu _)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem HasChart.exists_mem_iff [IsOpenImmersion j] {φ : InvFun ℤ} {BD : EffCartierData S} {d : ℕ} {x : S}
     (h : HasChart F s j e φ BD d x) :
@@ -125,7 +125,7 @@ theorem HasChart.exists_mem_iff [IsOpenImmersion j] {φ : InvFun ℤ} {BD : EffC
 end Charts
 
 /- English proof (translation)
-Take `⟨φ, hφ, h⟩` from `h g hg`. Take `⟨F, S, s, j, _, G, _, e, BD, d, N, h1, -, -, -, h2, -, -, h3, hd, hc, -, -, k₀, hk⟩` from `h n hn ho`. Conclude with `⟨S, s, G, _, BD, _, h1, h2, hk k₀ le_rfl, fun x => h3 ▸ (hc x).idl_eq_top_iff hφ (by omega) (by omega)⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_support (h : GlobalTheory.Published.SiegelToroidalIntegral) {g n : ℕ} (hg : 1 ≤ g) (hn : 3 ≤ n) (ho : Odd n) :
     ∃ (S : Scheme.{0}) (s : S ⟶ Sp (cycAway n)) (G : Over S) (_ : GrpObj G) (BD : EffCartierData S) (k : ℕ),

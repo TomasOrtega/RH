@@ -16,7 +16,7 @@ structure Retr (S N : Subgroup G) (π : G → G) : Prop where
   id : ∀ s ∈ S, π s = s
 
 /- English proof (translation)
-Establish `h1` using `h.mul 1 N.one_mem 1 N.one_mem`. Rewrite `h1` using `[mul_one]`. Simplify using `using h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem Retr.one {S N : Subgroup G} {π : G → G} (h : Retr S N π) : π 1 = 1 := by
   have h1 := h.mul 1 N.one_mem 1 N.one_mem
@@ -24,7 +24,7 @@ theorem Retr.one {S N : Subgroup G} {π : G → G} (h : Retr S N π) : π 1 = 1 
   simpa using h1
 
 /- English proof (translation)
-Establish `h1` using `h.mul x⁻¹ (N.inv_mem hx) x hx`. Rewrite `h1` using `[inv_mul_cancel, h.one]`. Conclude with `eq_inv_of_mul_eq_one_left h1.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Retr.inv {S N : Subgroup G} {π : G → G} (h : Retr S N π) {x : G} (hx : x ∈ N) : π x⁻¹ = (π x)⁻¹ := by
   have h1 := h.mul x⁻¹ (N.inv_mem hx) x hx
@@ -42,15 +42,15 @@ def img {S N : Subgroup G} {π : G → G} (h : Retr S N π) (H : Subgroup G) (hH
     exact ⟨x⁻¹, H.inv_mem hx, h.inv (hH hx)⟩
 
 /- English proof (translation)
-Use extensionality with `y`. Rewrite using `[mem_cj, mem_cj]`. Prove the components needed by the constructor for the conclusion. Introduce `hy`. Establish `hyS : y ∈ S` using `hC ((mem_cj).2 hy)`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hyN : y ∈ N` using `h.le hyS`. Use `(Set.mem_image π _ _).2 ⟨g₀ * y * g₀⁻¹, hy, ?_⟩` and prove the remaining obligations. Rewrite using `[h.mul _ (N.mul_mem hg hyN) _ (N.inv_mem hg), h.mul _ hg _ hyN, h.inv hg, h.id y hyS]`. Introduce `hy`. Take `⟨x, hx, hxe⟩` from `(Set.mem_image π _ _).1 hy`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hz : g₀⁻¹ * x * g₀ ∈ cj g₀ H`. Rewrite using `[mem_cj]`. Simplify `hx` using `[mul_assoc]`. Establish `hzS` using `hC hz`. Establish `e1 : π (g₀⁻¹ * x * g₀) = g₀⁻¹ * x * g₀` using `h.id _ hzS`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `e1` using `[h.mul _ (N.mul_mem (N.inv_mem hg) (hH hx)) _ hg, h.mul _ (N.inv_mem hg) _ (hH hx), h.inv hg, hxe]`. Establish `hyz : y = g₀⁻¹ * x * g₀`. Rewrite using `[← e1]`. Use `group`. Rewrite using `[hyz]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `hx` using `[mul_assoc]`.
+A detailed English derivation is pending.
 -/
 theorem cj_eq_cj_img {S N : Subgroup G} {π : G → G} (h : Retr S N π) {H : Subgroup G} (hH : H ≤ N) {g₀ : G}
     (hg : g₀ ∈ N) (hC : cj g₀ H ≤ S) : cj g₀ H = cj (π g₀) (img h H hH) := by

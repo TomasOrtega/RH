@@ -16,7 +16,7 @@ namespace GlobalTheory.LocMod.GSuppTwo
 variable {D : D7} {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Unfold `Place.hz Place.xi Place.pr`. Rewrite using `[l.norm, map_mul, map_mul, map_mul, map_mul, GlobalTheory.DualPairCheck.star_purely_imaginary_eq_neg, map_neg, map_neg]`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem hz_link (p : Place D k) {σ : ℕ} {B : BesLev D (σ + 1)} {B' : BesLev D σ} (l : Link B B'.L B'.ζ) :
     p.hz B = -p.xi ^ 2 * p.hz B' := by
@@ -25,7 +25,7 @@ theorem hz_link (p : Place D k) {σ : ℕ} {B : BesLev D (σ + 1)} {B' : BesLev 
   ring
 
 /- English proof (translation)
-Introduce `x a ha`. Establish `h1` using `h x a ha`. Simplify using `only [MonoidHom.inv_apply, Units.val_inv_eq_inv_val, Circle.coe_inv] at h1 ⊢`. Rewrite using `[h1, inv_inv]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem isComp_inv (p : Place D k) {χ : (AE D)ˣ →* Circle} {μ : kˣ →* ℂˣ} (h : p.IsComp χ⁻¹ μ) :
     p.IsComp χ μ⁻¹ := by
@@ -35,7 +35,7 @@ theorem isComp_inv (p : Place D k) {χ : (AE D)ˣ →* Circle} {μ : kˣ →* �
   rw [h1, inv_inv]
 
 /- English proof (translation)
-Use `⟨fun i j => by simp [Formalism.L2.Theta.mt], ?_⟩` and prove the remaining obligations. Establish `: Formalism.L2.Theta.mt S 1 = 1` using `by simp [Formalism.L2.Theta.mt]`. Rewrite using `[this, Matrix.map_one p.π (map_zero _) (map_one _)]`. Simplify using `[F.βγ]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem isLoc_one (p : Place D k) {S : HSp D} {Y : Type} [Fintype Y] [DecidableEq Y] (F : Frame k S.rank Y) :
     p.IsLoc F 1 1 := by
@@ -45,23 +45,23 @@ theorem isLoc_one (p : Place D k) {S : HSp D} {Y : Type} [Fintype Y] [DecidableE
   simp [F.βγ]
 
 /- English proof (translation)
-Introduce `D hOm hBF hFB hCo hSym k _ _ _ _ p s κ S t _ _ ψ hstd hψ j c H σ B J B' F s₁ s₂ l vL hμ T₁ T₂ hT₁ hT₂ Φ₁ Φ₂ hΦ₁ hΦ₂ h hh hne`. Set `_ : MeasurableSpace k` to `borel k`. Establish `_ : BorelSpace k` using `⟨rfl⟩`. Take `⟨ν, hν⟩` from `GlobalTheory.SplitWeil.exists_isUnitVol k`. Establish `_` using `hν.1`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hc : c = 2 * σ` using `by have := F.bes'.1; omega`. Take `⟨-, hchar, hxi, -, hcomp⟩` from `GlobalTheory.T.weilCharacter_splitPlace_exists_continuous_nontrivial D k p ψ hstd`. Establish `hcont : Continuous S.ψ` using `(hchar S.ψ hψ).1`. Take `⟨μT, hμT⟩` from `hcomp s₂.χW`. Establish `hμS` using `isComp_inv p hμ`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨hL1, hL2, hL3⟩` from `(GlobalTheory.T.splitPlace_localGroupElements_jacobi_bessel D k p).1 B'.V _ F.G₂`. Take `⟨hk, hhk⟩` from `hL2 h hh`. Set `Φ₂' : SB (Matrix (GlobalTheory.StepData.XIx (Fin κ) t (j + 1 + 1) ⊕ Fin (c + 1)) (GlobalTheory.StepData.XIx (Fin κ) t (j + 1) ⊕ Fin (c + 1 + 1)) k)` to `⟨om (S.μ (j + 1 + 1)) 1 hk Φ₂.1, GlobalTheory.SplitWeil.Model.om_mem_SB _ _ _ Φ₂.2⟩`. Establish `hom : s₂.om (1, h) (T₂ Φ₂) = T₂ Φ₂'` using `hOm k p ψ J.W B'.V s₂.χV s₂.χW s₂.om s₂.weil _ μT hμS hμT _ _ F.G₁ F.G₂ T₂ hT₂ 1 1 h hk (isLoc_one p F.G₁) hhk Φ₂ Φ₂' (by simp [Φ₂'])`. Take `⟨C₀, hC₀⟩` from `((GlobalTheory.T.bessel_fourierJacobi_normalFrames_exist_splitPlace D k p _ (σ + 1) F.s F.s_ne).1 B F.F₀).1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨C₂, hC₂⟩` from `((GlobalTheory.T.bessel_fourierJacobi_normalFrames_exist_splitPlace D k p _ σ (F.s * p.xi) (mul_ne_zero F.s_ne hxi)).1 B' F.F₂).1`. Take `⟨U₁, hU₁, hflat₁⟩` from `hBF k p ν hν.1 ψ S.ψ hψ (σ + 1) B J s₁ F.s F.s_ne _ _ (c + 1 + 1) F.F₀ C₀ F.G₀ F.F₁ F.G₁ hC₀ F.bes F.jac T₁ hT₁`. Establish `hjac' : p.IsJacFrame J F.s (-p.xi ^ 2 * p.hz B') F.F₁ F.G₁` using `hz_link p l ▸ F.jac`. Take `⟨U₂, hU₂, hflat₂⟩` from `hFB k p ν hν.1 ψ S.ψ hψ σ J B' s₂ F.s F.s_ne _ _ (c + 1) F.F₁ F.G₁ F.F₂ C₂ F.G₂ hjac' hC₂ F.bes' T₂ hT₂`. Establish `hsb` using `GlobalTheory.T.flatMaps_preserve_schwartzBruhat_and_surjective k S.ψ ν hcont hν.1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Set `Ψ₁ : SB (Matrix (GlobalTheory.StepData.XIx (Fin κ) t (j + 1)) (GlobalTheory.StepData.XIx (Fin κ) t j ⊕ Unit) k)` to `⟨GlobalTheory.LocFlat.flCol S.ψ ν (σ + 1 + 1) Φ₁.1, ((hsb _ _ (c + 1 + 1) (σ + 1 + 1) (by omega)).1 (by omega)).1 _ Φ₁.2⟩`. Set `Ψ₂ : SB (Matrix (GlobalTheory.StepData.XIx (Fin κ) t (j + 1 + 1) ⊕ Unit) (GlobalTheory.StepData.XIx (Fin κ) t (j + 1)) k)` to `⟨GlobalTheory.LocFlat.flRow S.ψ ν (σ + 1) Φ₂'.1, ((hsb _ _ (c + 1) (σ + 1) (by omega)).2 (by omega)).1 _ Φ₂'.2⟩`. Take `⟨Λ, -, hΛ⟩` from `hCo k p ν hν.1 ψ hstd S.ψ hψ (σ + 1) σ B B' l J.W₀ vL F.s F.s_ne _ _ _ F.F₀ C₀ F.F₁ F.F₂ C₂ hC₀ hC₂ U₁ U₂ hU₁ hU₂`. Take `⟨Ξ, hΞ, hΞΛ⟩` from `hΛ Ψ₁ Ψ₂`. Rewrite `hne` using `[hom, hflat₁ Φ₁ Ψ₁ rfl, hflat₂ Φ₂' Ψ₂ rfl, hΞΛ]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hΞ0 : Ξ.1 ≠ 0`. Introduce `h0`. Apply `hne` to reduce the goal to its premises. Establish `: Ξ = 0` using `Subtype.ext h0`. Rewrite using `[this, map_zero]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hds` using `((hSym k ν hν s κ S t).2.2.2 j c H σ hc).1 hk (by`. Rewrite `hΞ0` using `[hΞ]`. Simplify `hΞ0)` using `[Ψ₁, Ψ₂, Φ₂', hΦ₁, hΦ₂]`. Take `⟨q, hq, u, hu, hkqu⟩` from `hds`. Take `⟨r, hr⟩` from `(hL1 q).exists`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨u', hu'⟩` from `(hL1 u).exists`. Establish `hrB` using `(GlobalTheory.T.splitPlace_localGroupElements_jacobi_bessel D k p).2.2 _ (c + 1) σ B' (F.s * p.xi) F.F₂ F.G₂ F.bes' r q hq hr`. Use `⟨r, hrB, hr.1, u', u, hu', hu, ?_⟩` and prove the remaining obligations. Establish `h1` using `hL3 r q u' u hr hu'`. Rewrite `h1` using `[← hkqu]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(hL1 hk).unique hhk h1`.
+A detailed English derivation is pending.
 -/
 theorem gsupp2_std : ∀ (D : D7), OmLoc D → FlatBF D → FlatFB D → ContrLoc D → GlobalTheory.LocFlat.SymCollapse →
   ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (p : Place D k) (s κ : ℕ) (S : GlobalTheory.SymChain.SymData k s κ) (t : Type) [Fintype t] [DecidableEq t]

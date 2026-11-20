@@ -41,15 +41,15 @@ def riemConst (U : Formalism.L2.PjFree.Unf Xo c σ r) (k : U.Comp) (τ : E →+*
     else ComplexEmbedding.conjugate (Formalism.L2.PjFree.relab c σ τ)) (-(U.X k).ξ0)).im
 
 /- English proof (translation)
-Take `⟨hp0, hty⟩` from `hU.2.1 k`. Take `⟨hbij, hrt, -, -⟩` from `GlobalTheory.Relab.relab_good E H l c σ hσ`. Take `⟨f, hf⟩` from `FrameUnif.exists_letter_equiv (U.X k).Ψ (U.X k).cmType Dw.p Dw.q r hU.1 (Formalism.L2.PjFree.relab c σ) hbij Dw.mult (fun τ h => by unfold Datum.mult; rw [if_pos ((hrt τ).1 ((hty _).1 h))]) (fun τ h => by unfold Datum.mult; rw [if_neg (fun h' => h ((hty _).2 ((hrt τ).2 h')))])`. Rewrite `hf` using `[← hp0]`. Establish `hper (v) : W.Pm k x v = perVec (U.X k) (W.e.trans f) x.1 (W.φ k v : Fin r → E)` using `funext fun j => by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[W.Pm_eq, perVec, Equiv.trans_apply]`. Establish `h` using `hf (W.e j)`. Generalize the expression as in `f (W.e j) = t at h ⊢`. Take `⟨⟨τ, hτ⟩, ⟨n, hn⟩⟩` from `t`. Simplify using `only at h ⊢`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Extract witnesses or component facts from the available result. Simplify by unfolding definitions.
 
-Break down `h with ⟨a, rfl, rfl⟩ | ⟨a, rfl, rfl, d⟩` into its components or cases. Rewrite using `[if_neg (by omega), Formalism.L2.PjFree.perFr, dif_pos a, dif_pos hn]`. Rewrite using `[if_pos (by omega), Formalism.L2.PjFree.perFr, dif_neg a, dif_pos (show conjEmb (Formalism.L2.PjFree.relab c σ (W.e j).1) ∈ (U.X k).Ψ from hτ), dif_pos hn]`. Both sides reduce to the same expression. Use `⟨diagXi (U.X k) (W.e.trans f), fun τ j => ?_, fun v w => ?_⟩` and prove the remaining obligations.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[diagXi, Equiv.trans_apply, Equiv.apply_symm_apply]`. Break down `hf ⟨τ, j⟩ with ⟨a, h1, -⟩ | ⟨a, h1, -, -⟩` into its components or cases. Rewrite using `[h1]`. Simplify using `only [riemConst, if_pos a]`. Rewrite using `[h1]`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [riemConst, if_neg a]`. Rewrite using `[hper, hper, im_diag_ortho _ _ _ hx, ← W.iso]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem exists_diag_im {U : Formalism.L2.PjFree.Unf Xo c σ r} (hσ : Formalism.L2.PjFree.GoodEmb c σ)
     (hU : Formalism.L2.PjFree.IsUnf U) (W : UnfWit U) (k : U.Comp) (x : (U.X k).dom) (hx : IsOrth (U.X k) x.1) :
@@ -85,11 +85,11 @@ theorem exists_diag_im {U : Formalism.L2.PjFree.Unf Xo c σ r} (hσ : Formalism.
     simp
 
 /- English proof (translation)
-Take `⟨D, hD, him⟩` from `exists_diag_im hσ hU W k x hx`. Take `⟨-, -, -, hspan, Hm₀, -, hpos, hHm₀⟩` from `W.period k x`. Establish `e` using `UnitDet.eq_of_im_hermForm_eq _ hspan (diagonal D) Hm₀ (by`. Introduce and unpack `_ ⟨v, rfl⟩ _ ⟨w, rfl⟩`. Rewrite using `[him, hHm₀])`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Use `set j := W.e.symm ⟨τ, ⟨0, hτ⟩⟩`. Establish `h` using `hpos (Pi.single j 1) (by simp)`. Rewrite `h` using `[← e]`. Establish `h2 : hermForm (diagonal D) (Pi.single j 1) (Pi.single j 1) = D j`. Simplify using `[hermForm]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[h2, hD]`. Simplify using `using h`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem riemConst_pos {U : Formalism.L2.PjFree.Unf Xo c σ r} (hσ : Formalism.L2.PjFree.GoodEmb c σ)
     (hU : Formalism.L2.PjFree.IsUnf U) (W : UnfWit U) (k : U.Comp) (x : (U.X k).dom) (hx : IsOrth (U.X k) x.1)
@@ -115,29 +115,27 @@ end EigenvectorOrthogonality
 open GlobalTheory.HodgeSmooth.EigOrth in
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c σ r U hσ hU W`. Use `⟨fun k τ => riemConst U k τ, fun k x hx τ hτ => riemConst_pos hσ hU W k x hx τ hτ, ?_⟩` and prove the remaining obligations. Introduce `k x hx i P hP Hm hH hPu τ τ' zz zz' uu uu' T T' hder hder' hT hT'`. Take `⟨D, hD, him⟩` from `exists_diag_im hσ hU W k x hx`. Establish `p` using `W.period k x`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨hPx, hv⟩` from `W.lie k x`. Take `⟨h, gam, hex, hh, hiso, -⟩` from `familyUnif_exp_unique E H Dw l Xo _ _ _ W.F i (W.ik k) P _ hP p (by rw [← hPx]; exact hPu)`. Use `set A := LinearMap.toMatrix' h.toLinearMap with hA`. Establish `hAv : ∀ z, A *ᵥ z = h z` using `fun z => by rw [hA, LinearMap.toMatrix'_mulVec]; rfl`. Establish `hcol : ∀ (τ : E →+* ℂ) (zz : Fin (Dw.mult τ) → (Fin W.g → ℂ)) (uu : Fin (Dw.mult τ) → (Sp (DualNumber ℂ) ⟶ Xo.univ.t.G.left)) (T : Matrix (Fin (Dw.mult τ)) (Fin (Dw.mult τ)) ℂ), (∀ b, IsDerivAt0 (fun w => (W.F.ex i P w).left) (zz b) (uu b)) → (∀ b, IsCombAt (U.un k x).x ((U.un k …`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `τ zz uu T hder hT b`. Establish `d1` using `(DerLin.isCombAt_iff_isDerivAt0 E H Dw l Xo _ _ _ W.F _ _ p _ ((U.un k x).u τ) _ (hv τ) _ (uu b)).1 (hPx ▸ hT b)`. Establish `d2` using `(ExpChain.isDerivAt0_ex_iff E H Dw l Xo _ _ _ W.F _ P hP _ _ h.toLinearMap p hex _ _).1 (hder b)`. Establish `tn` using `isDerivAt0_ex_isTanAt E H Dw l Xo _ _ _ W.F _ _ p`. Rewrite using `[hAv]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(tn.2.2 _ (tn.1 _ _ d2)).unique d2 d1`. Establish `key` using `UnitDet.eq_of_im_hermForm_eq _ hP.2.2.2.1 (Aᵀ * (diagonal D * A.map (starRingEnd ℂ))) Hm (by`. Introduce and unpack `_ ⟨v, rfl⟩ _ ⟨w, rfl⟩`. Rewrite using `[← UnitDet.hermForm_mulVec, hAv, hAv, ← hh, ← hh, him, hiso, hH])`. Use `⟨?_, fun hne b b' => ?_⟩` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hsupp : ∀ b, diagonal D *ᵥ star (∑ j, T j b • (Pi.single (W.e.symm ⟨τ, j⟩) 1 : Fin W.g → ℂ)) = (((riemConst U k τ : ℝ) : ℂ) • (1 : Matrix (Fin W.g) (Fin W.g) ℂ)) *ᵥ star (∑ j, T j b • (Pi.single (W.e.symm ⟨τ, j⟩) 1 : Fin W.g → ℂ))`. Introduce `b`. Simplify using `only [smul_mulVec, Matrix.one_mulVec]`. Use function extensionality and compare the values at `p'`. Rewrite using `[mulVec_diagonal, Pi.smul_apply, smul_eq_mul]`.
+Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Distinguish the cases in `hp : ∃ j, W.e.symm ⟨τ, j⟩ = p'`. Take `⟨j, rfl⟩` from `hp`. Rewrite using `[hD τ j]`. Use `push_neg at hp`. Establish `: (∑ j, T j b • (Pi.single (W.e.symm ⟨τ, j⟩) 1 : Fin W.g → ℂ)) p' = 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. By extensionality, compare the relevant components.
 
-Rewrite using `[Finset.sum_apply]`. Conclude with `Finset.sum_eq_zero fun j _ => by rw [Pi.smul_apply, Pi.single_eq_of_ne (hp j).symm, smul_zero]`. Simplify using `[Pi.star_apply, this]`. Use extensionality with `b b'`. Rewrite using `[of_apply, ← key, ← UnitDet.hermForm_mulVec, hcol τ zz uu T hder hT, hcol τ zz uu T hder hT, hermForm, hsupp, ← hermForm]`.
+Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `beta_reduce`. Generalize the expression as in `((riemConst U k τ : ℝ) : ℂ) = dd`. Use `clear hsupp key hcol hAv hiso hh hex him hD hT hder hH hPu hT' hder'`. Establish `hi : ∀ j j' : Fin (Dw.mult τ), W.e.symm ⟨τ, j⟩ = W.e.symm ⟨τ, j'⟩ ↔ j = j'` using `fun j j' => by simp`. Simplify using `[hermForm, smul_mulVec, sum_dotProduct, dotProduct_sum, star_sum, Pi.single_apply, hi, mul_apply, mul_comm]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[← key, ← UnitDet.hermForm_mulVec, hcol τ' zz' uu' T' hder' hT', hcol τ zz uu T hder hT]`. Simplify using `only [hermForm, dotProduct, mulVec_diagonal, Pi.star_apply]`. Use `Finset.sum_eq_zero fun q _ => ?_` and prove the remaining obligations. Distinguish the cases in `hq : ∃ j, W.e.symm ⟨τ', j⟩ = q`. Take `⟨j, rfl⟩` from `hq`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `: (∑ j'', T j'' b • (Pi.single (W.e.symm ⟨τ, j''⟩) 1 : Fin W.g → ℂ)) (W.e.symm ⟨τ', j⟩) = 0`. Rewrite using `[Finset.sum_apply]`. Use `Finset.sum_eq_zero fun j'' _ => ?_` and prove the remaining obligations. Rewrite using `[Pi.smul_apply, Pi.single_eq_of_ne, smul_zero]`. Introduce `he`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `hne (congrArg Sigma.fst (W.e.symm.injective he))`. Rewrite using `[this]`. Simplify using the standard rewrite rules. Use `push_neg at hq`. Establish `: (∑ j, T' j b' • (Pi.single (W.e.symm ⟨τ', j⟩) 1 : Fin W.g → ℂ)) q = 0`.
-
-Rewrite using `[Finset.sum_apply]`. Conclude with `Finset.sum_eq_zero fun j _ => by rw [Pi.smul_apply, Pi.single_eq_of_ne (hq j).symm, smul_zero]`. Rewrite using `[this]`. Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.HodgeSmooth.exists_diag_riem_orth : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (σ : c.F →+* ℂ) (r : ℕ) (U : Formalism.L2.PjFree.Unf Xo c σ r), Formalism.L2.PjFree.GoodEmb c σ → Formalism.L2.PjFree.IsUnf U → ∀ (W : UnfWit U), ∃ d : U.Comp → (E →+* ℂ) → ℝ, (∀ (k : U.Comp) (x : (U.X k).dom), IsOrth (U.X k) x.1 → ∀ τ : E →+* ℂ, 0 < Dw.mult τ → 0 < d k τ) ∧ ∀ (k : U.Comp) (x : (U.X k).dom), IsOrth (U.X k) x.1 → ∀ (i : Fin W.F.n) (P : (W.F.Di i).La →+ (Fin W.g → ℂ)), IsPeriod (W.F.Di i) (fun j => Formalism.L2.PjFree.relab c σ (W.e j).1) P → ∀ (Hm : Matrix (Fin W.g) (Fin W.g) ℂ), (∀ v w, (hermForm Hm (P v) (P w)).im = (W.F.Di i).EF v w) → W.F.u i P = (U.un k x).x → ∀ (τ τ' : E →+* ℂ) (zz : Fin (Dw.mult τ) → (Fin W.g → ℂ)) (zz' : Fin (Dw.mult τ') → (Fin W.g → ℂ)) (uu : Fin (Dw.mult τ) → (Sp (DualNumber ℂ) ⟶ Xo.univ.t.G.left)) (uu' : Fin (Dw.mult τ') → (Sp (DualNumber ℂ) ⟶ Xo.univ.t.G.left)) (T : Matrix (Fin (Dw.mult τ)) (Fin (Dw.mult τ)) ℂ) (T' : Matrix (Fin (Dw.mult τ')) (Fin (Dw.mult τ')) ℂ), (∀ b, IsDerivAt0 (fun w => (W.F.ex i P w).left) (zz b) (uu b)) → (∀ b, IsDerivAt0 (fun w => (W.F.ex i P w).left) (zz' b) (uu' b)) → (∀ b, IsCombAt (U.un k x).x ((U.un k x).u τ) (show Fin (Dw.mult τ) → CAt σ from fun b' => T b' b) (uu b)) → (∀ b, IsCombAt (U.un k x).x ((U.un k x).u τ') (show Fin (Dw.mult τ') → CAt σ from fun b' => T' b' b) (uu' b)) → (of fun b b' => hermForm Hm (zz b') (zz b)) = ((d k τ : ℝ) : ℂ) • (Tᴴ * T) ∧ (τ' ≠ τ → ∀ b b', hermForm Hm (zz' b') (zz b) = 0) := by
   classical

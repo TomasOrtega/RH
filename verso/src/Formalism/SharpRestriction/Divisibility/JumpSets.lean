@@ -20,7 +20,7 @@ def posPairs (N : ℕ) : Finset (Fin N × Fin N) := Finset.univ.filter fun p => 
 def Uv {N : ℕ} (lam : DomWeight N) : Fin N → ℤ := fun i => lam.w i + ((N : ℤ) - 1 - (i : ℤ))
 
 /- English proof (translation)
-Introduce `i j hij`. Establish `h1` using `lam.anti hij`. Establish `h2 : (i : ℤ) ≤ (j : ℤ)` using `by exact_mod_cast hij`. Simplify using `only [Uv]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem Uv_antitone {N : ℕ} (lam : DomWeight N) : Antitone (Uv lam) := by
   intro i j hij
@@ -42,9 +42,9 @@ def eRest {N : ℕ} (l : ℕ) (lam : DomWeight N) (a : ℕ) : ℕ := ePart l lam
 def eCross {N : ℕ} (l : ℕ) (lam : DomWeight N) (a : ℕ) : ℕ := ePart l lam fun p => (p.1 : ℕ) < a ∧ a ≤ (p.2 : ℕ)
 
 /- English proof (translation)
-Simplify using `only [eF, eCl, eRest, eCross, ePart, Finset.sum_filter, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun p hp => ?_` and prove the remaining obligations. Establish `h12 : (p.1 : ℕ) < p.2`. Simplify using `only [posPairs, Finset.mem_filter, Finset.mem_univ, true_and] at hp`. Conclude with `hp`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `split_ifs <;> omega`.
+A detailed English derivation is pending.
 -/
 theorem eF_split {N : ℕ} (l : ℕ) (lam : DomWeight N) (a : ℕ) :
     eF l lam = eCl l lam a + eRest l lam a + eCross l lam a := by
@@ -111,11 +111,11 @@ def tightSh {N : ℕ} (kc : ℕ) (U : Fin N → ℤ) (sh : ShapeData) : ShapeDat
     xm := if h : kc - 1 < N then U ⟨kc - 1, h⟩ else sh.xm }
 
 /- English proof (translation)
-Introduce `i`. Use `⟨fun h0 _ => ?_, fun h1 => ?_⟩` and prove the remaining obligations. Establish `hN : 0 < N` using `lt_of_le_of_lt (Nat.zero_le _) i.2`. Simplify using `only [tightSh, dif_pos hN]`. Use `congr 1`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Use `ext`. Simplify using `[h0]`. Establish `hk : kc - 1 < N` using `by omega`. Simplify using `only [tightSh, dif_pos hk]`. Use `congr 1`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Use `ext`. Simplify using `only`. Use linear arithmetic over natural numbers and integers.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem tight_tightSh {N : ℕ} (kc : ℕ) (U : Fin N → ℤ) (sh : ShapeData) : Tight kc U (tightSh kc U sh) := by
   intro i
@@ -133,11 +133,11 @@ theorem tight_tightSh {N : ℕ} (kc : ℕ) (U : Fin N → ℤ) (sh : ShapeData) 
     omega
 
 /- English proof (translation)
-Take `⟨h1, h2, h3, h4⟩` from `h`. Establish `hkN : kc - 1 < N` using `by omega`. Establish `h0N : 0 < N` using `by omega`. Establish `e1 : (tightSh kc U sh).xp = U ⟨0, h0N⟩` using `by simp only [tightSh, dif_pos h0N]`. Establish `e2 : (tightSh kc U sh).xm = U ⟨kc - 1, hkN⟩` using `by simp only [tightSh, dif_pos hkN]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨⟨h1, h2, fun i hi => ?_, h4⟩, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[e1, e2]`. Conclude with `⟨hU (show (i : ℕ) ≤ kc - 1 by omega), hU (show (0 : ℕ) ≤ i from Nat.zero_le _)⟩`. Rewrite using `[e2]`. Conclude with `(h3 ⟨kc - 1, hkN⟩ (show kc - 1 < kc by omega)).1`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e1]`. Conclude with `(h3 ⟨0, h0N⟩ (show 0 < kc from hk)).2`.
+A detailed English derivation is pending.
 -/
 theorem HasShape.tight {N kc t m : ℕ} {U : Fin N → ℤ} {sh : ShapeData} (hU : Antitone U) (hk : 0 < kc)
     (h : HasShape kc t m U sh) :
@@ -206,7 +206,7 @@ def tensSub {R : Type} [CommRing R] {ι : Type} {N : ℕ}
 def kCl (D : D7) : ℕ := D.R.k - 1
 
 /- English proof (translation)
-Use `D.R.m_add_three_le_k` as an intermediate fact. Simplify using `only [kCl]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem kCl_pos (D : D7) : 0 < kCl D := by
   have := D.R.m_add_three_le_k
@@ -430,7 +430,7 @@ def crysCharW (X : Prov D) (l : ℕ) [Fact l.Prime] (w : HeightOneSpectrum (𝓞
   crysRepW X l w hw (n := 1) (fun σ _ => s σ)
 
 /- English proof (translation)
-Take `⟨r, rfl, hr⟩` from `hP`. Conclude with `⟨r.comp (DecW D w).subtype, rfl, hr w hw⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem crysRepE_res {X : Prov D} {l : ℕ} [Fact l.Prime] {n : ℕ} {Wt : DV.EmbC D → Fin n → ℤ} {P : ResRep D l}
     (hP : P ∈ crysRepE X l Wt) (w : HeightOneSpectrum (𝓞 D.host.E)) (hw : w ∈ placesOver D.host.E l) :
@@ -463,7 +463,7 @@ def IsBlock (X : Prov D) (l : ℕ) [Fact l.Prime] (h : ℕ) (c : X.Lev l) (mt : 
     ∀ rm : ResRep D l, X.attached l h c mt rm → BlockAt X l h sh rm
 
 /- English proof (translation)
-Use function extensionality and compare the values at `σ`. Apply the tactic sequence `cases σ <;> rfl`.
+Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem blockE_tightSh (D : D7) (h kc : ℕ) (U : D.what₂.Tau → Fin D.R.nV → ℤ) (sh : D.what₂.Tau → ShapeData) :
     blockE D h (fun τ => tightSh kc (U τ) (sh τ)) = blockE D h sh := by
@@ -471,7 +471,7 @@ theorem blockE_tightSh (D : D7) (h kc : ℕ) (U : D.what₂.Tau → Fin D.R.nV �
   cases σ <;> rfl
 
 /- English proof (translation)
-Simplify using `only [IsBlock, BlockAt, blockE_tightSh]`.
+Simplify using the standard rewrite rules.
 -/
 theorem isBlock_tightSh (X : Prov D) (l : ℕ) [Fact l.Prime] (h : ℕ) (c : X.Lev l) (mt : Ideal (X.Hk l c)) (kc : ℕ)
     (U : D.what₂.Tau → Fin D.R.nV → ℤ) (sh : D.what₂.Tau → ShapeData) :
@@ -491,7 +491,7 @@ def IsBlockG (X : Prov D) (l : ℕ) [Fact l.Prime] (h : ℕ) (c : X.Lev l) (mt :
     ∀ rm : ResRep D l, X.attached l h c mt rm → BlockGAt X l h sh rm
 
 /- English proof (translation)
-Take `⟨rb, ch, sB, himg, hch, hrm⟩` from `H`. Introduce `w hw`. Use `⟨rb.comp (DecW D w).subtype, fun s g => ch s g, sB, fun σ _ => himg σ, fun s => crysRepE_res (hch s) w hw, fun g => ?_⟩` and prove the remaining obligations. Rewrite using `[hrm, Pi.mul_apply, Finset.prod_apply]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem BlockGAt.blockAt {X : Prov D} {l : ℕ} [Fact l.Prime] {h : ℕ} {sh : D.what₂.Tau → ShapeData} {rm : ResRep D l}
     (H : BlockGAt X l h sh rm) : BlockAt X l h sh rm := by
@@ -503,7 +503,7 @@ theorem BlockGAt.blockAt {X : Prov D} {l : ℕ} [Fact l.Prime] {h : ℕ} {sh : D
   rfl
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨H.1, fun rm hrm => (H.2 rm hrm).blockAt⟩`.
+Supply the required witnesses or components.
 -/
 theorem IsBlockG.isBlock {X : Prov D} {l : ℕ} [Fact l.Prime] {h : ℕ} {c : X.Lev l} {mt : Ideal (X.Hk l c)}
     {sh : D.what₂.Tau → ShapeData} (H : IsBlockG X l h c mt sh) : IsBlock X l h c mt sh :=
@@ -715,11 +715,11 @@ def S2 (D : D7) (L : SizeData₂ D) (A0 : ℝ) (h : ℕ) (eta S h0 lStar : ℝ)
     ∀ x ∈ blockSet D.R.t (sh τ).maxB, L.sc.w'' D.R.n / 2 ≤ |((Uv (lam τ) i - x : ℤ) : ℝ)|)
 
 /- English proof (translation)
-Take `⟨h1, h2, h3, h4, h5, h6, h7, h8, h9, h10, h11, h12, h13, h14, h15, h16, h17, h18, h19⟩` from `H`. Establish `hx0 : 0 < L.sc.x` using `by linarith [L.sc.one_lt_alt]`. Establish `hx : L.sc.x ^ A0 ≤ L.sc.x ^ A0'` using `Real.rpow_le_rpow_of_exponent_le L.sc.one_lt_alt.le hA`. Use `⟨h1, h2, h3, h4, h5, h6, h7.trans hx, h8.trans hx, h9.trans hx, h10, h11, h12, fun τ hτ => ?_, h14, h15, h16, h17, h18, h19⟩` and prove the remaining obligations. Take `⟨lo, hlo⟩` from `h13 τ hτ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨lo, fun i => ⟨(hlo i).1, ?_⟩⟩` and prove the remaining obligations. Establish `hp : 0 < L.sc.x ^ A0` using `Real.rpow_pos_of_pos hx0 _`. Establish `hb : 0 ≤ L.sc.b'`. Assume the negation of the conclusion as `hn`. Use `push_neg at hn`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Use `mul_neg_of_neg_of_pos hn hp` as an intermediate fact. Combine the linear relations using `[(hlo i).1, (hlo i).2]`. Use `mul_le_mul_of_nonneg_left hx hb` as an intermediate fact. Combine the linear relations using `[(hlo i).2]`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem S2.mono {L : SizeData₂ D} {A0 A0' : ℝ} (hA : A0 ≤ A0') {h : ℕ} {eta S h0 lStar : ℝ}
     {lam : D.what₂.Tau → DomWeight D.R.nV} {sh : D.what₂.Tau → ShapeData}
@@ -741,9 +741,9 @@ theorem S2.mono {L : SizeData₂ D} {A0 A0' : ℝ} (hA : A0 ≤ A0') {h : ℕ} {
   linarith [(hlo i).2]
 
 /- English proof (translation)
-Take `⟨h1, h2, h3, h4, h5, h6, h7, h8, h9, h10, h11, h12, h13, h14, h15, h16, h17, h18, h19⟩` from `H`. Use `⟨h1, h2, h3, h4, h5, h6, h7, h8, h9, h10, fun τ => (HasShape.tight (Uv_antitone (lam τ)) (kCl_pos D) (h11 τ)).1, fun τ hτ => ?_, h13, h14, h15, h16, h17, h18, h19⟩` and prove the remaining obligations. Take `⟨_, hm, hp⟩` from `HasShape.tight (Uv_antitone (lam τ)) (kCl_pos D) (h11 τ)`. Take `⟨a, b, c⟩` from `h12 τ hτ`. Use `⟨?_, b, c⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e : ((tightSh (kCl D) (Uv (lam τ)) (sh τ)).xp - (tightSh (kCl D) (Uv (lam τ)) (sh τ)).xm : ℤ) ≤ (sh τ).xp - (sh τ).xm` using `by linarith`. Establish `e' : (((tightSh (kCl D) (Uv (lam τ)) (sh τ)).xp - (tightSh (kCl D) (Uv (lam τ)) (sh τ)).xm : ℤ) : ℝ) ≤ (((sh τ).xp - (sh τ).xm : ℤ) : ℝ)` using `by exact_mod_cast e`. Conclude with `e'.trans a`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem S2.tight {L : SizeData₂ D} {A0 : ℝ} {h : ℕ} {eta S h0 lStar : ℝ}
     {lam : D.what₂.Tau → DomWeight D.R.nV} {sh : D.what₂.Tau → ShapeData}
@@ -772,7 +772,7 @@ def CorIdeal (L : SizeData₂ D) (X : Prov D) (l : ℕ) [Fact l.Prime] (h : ℕ)
     (X.hyp l c ∧ IsBlock X l h c mt sh)
 
 /- English proof (translation)
-Simplify using `only [CorIdeal, isBlock_tightSh]`.
+Simplify using the standard rewrite rules.
 -/
 theorem corIdeal_tightSh (L : SizeData₂ D) (X : Prov D) (l : ℕ) [Fact l.Prime] (h : ℕ) (c : X.Lev l) (mt : Ideal (X.Hk l c))
     (kc : ℕ) (U : D.what₂.Tau → Fin D.R.nV → ℤ) (sh : D.what₂.Tau → ShapeData) :
@@ -838,7 +838,7 @@ def AdmF {eps : ℝ} (Fm : Formalism.MainNotions.FamP eps) (XF : ProvF Fm) : Pro
   ∃ x0 : ℝ, ∀ x : ℝ, x0 ≤ x → ∀ (hx : Fm.x1 < x) (i : Fm.Ix x), admitted (Fm.D x i) (XF x hx i)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨0, fun x _ hx i => h x hx i⟩`.
+Supply the required witnesses or components.
 -/
 theorem AdmF.admissible_family_of_threshold {eps : ℝ} {Fm : Formalism.MainNotions.FamP eps} {XF : ProvF Fm}
     (h : ∀ x (hx : Fm.x1 < x) (i : Fm.Ix x), admitted (Fm.D x i) (XF x hx i)) : AdmF Fm XF :=
@@ -847,9 +847,9 @@ theorem AdmF.admissible_family_of_threshold {eps : ℝ} {Fm : Formalism.MainNoti
 def LiteratureHypotheses (D : D7) (X : Prov D) : Prop := adm3 D X ∧ ArchimedeanSignatureMatching D X ∧ adm6 D X ∧ adm7 D X
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `h`. Take `⟨b, hb⟩` from `h5`. Use `⟨max a b, fun x hx hx1 i => ?_⟩` and prove the remaining obligations. Establish `e1` using `ha x (le_of_max_le_left hx) hx1 i`. Establish `e2` using `hb x (le_of_max_le_right hx) hx1 i`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `⟨e1.1, e1.2.1, e2, e1.2.2.1, e1.2.2.2⟩`.
+Supply the required witnesses or components.
 -/
 theorem AdmF.of_parts {eps : ℝ} {Fm : Formalism.MainNotions.FamP eps} {XF : ProvF Fm}
     (h : ∃ x0 : ℝ, ∀ x : ℝ, x0 ≤ x → ∀ (hx : Fm.x1 < x) (i : Fm.Ix x), LiteratureHypotheses (Fm.D x i) (XF x hx i))
@@ -866,7 +866,7 @@ def KudlaFamilyStatement {eps : ℝ} (Fm : Formalism.MainNotions.FamP eps) (XF :
   AdmF Fm XF → WeightModularityFamily Fm XF ∧ Conclusion1Family Fm XF ∧ Conclusion2Family Fm XF ∧ Conclusion3Family Fm XF
 
 /- English proof (translation)
-Introduce `hA`. Take `⟨x0, hx0⟩` from `hA`. Use `⟨⟨x0, fun x hx hx1 i => (h0 x hx1 i (hx0 x hx hx1 i)).1⟩, ⟨x0, fun x hx hx1 i => (h0 x hx1 i (hx0 x hx hx1 i)).2.1⟩, ⟨x0, fun x hx hx1 i => (h0 x hx1 i (hx0 x hx hx1 i)).2.2⟩, fun A0 => ?_⟩` and prove the remaining obligations. Take `⟨x1, hx1'⟩` from `h A0`. Conclude with `⟨max x0 x1, fun x hx hx1 i => (hx1' x (le_of_max_le_right hx) hx1 i (hx0 x (le_of_max_le_left hx) hx1 i)).2.2.2⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem stmtF_of_all {eps : ℝ} (Fm : Formalism.MainNotions.FamP eps) (XF : ProvF Fm)
     (h : ∀ A0 : ℝ, ∃ x0 : ℝ, ∀ x : ℝ, x0 ≤ x → ∀ (hx : Fm.x1 < x) (i : Fm.Ix x),

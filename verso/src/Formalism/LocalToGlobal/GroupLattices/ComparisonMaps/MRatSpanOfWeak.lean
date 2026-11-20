@@ -12,9 +12,9 @@ variable {W Qq : Type} [CommRing W] [IsDomain W] [IsDiscreteValuationRing W] [Fi
   [IsFractionRing W Qq] {k : ℕ}
 
 /- English proof (translation)
-Take `⟨⟨c, s⟩, hs⟩` from `IsLocalization.surj (nonZeroDivisors W) x`. Establish `hs0 : (s : W) ≠ 0` using `nonZeroDivisors.ne_zero s.2`. Take `⟨n, u, hu⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible hs0 hπ`. Use `⟨n, ((u⁻¹ : Wˣ) : W) * c, ?_⟩` and prove the remaining obligations. Simplify using `only at hs`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite `hs` using `[hu, map_mul, map_pow]`. Establish `hu' : algebraMap W Qq (u : W) * algebraMap W Qq ((u⁻¹ : Wˣ) : W) = 1`. Rewrite using `[← map_mul, Units.mul_inv, map_one]`. Rewrite using `[map_mul]`. Take the linear combination `algebraMap W Qq ((u⁻¹ : Wˣ) : W) * hs - algebraMap W Qq π ^ n * x * hu'`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem den_one (π : W) (hπ : Irreducible π) (x : Qq) :
     ∃ (n : ℕ) (c : W), algebraMap W Qq π ^ n * x = algebraMap W Qq c := by
@@ -30,9 +30,9 @@ theorem den_one (π : W) (hπ : Irreducible π) (x : Qq) :
   linear_combination algebraMap W Qq ((u⁻¹ : Wˣ) : W) * hs - algebraMap W Qq π ^ n * x * hu'
 
 /- English proof (translation)
-Use `choose nn cc hnc using fun i j => den_one π hπ (h i j)`. Use `⟨∑ i, ∑ j, nn i j, Matrix.of fun i j => π ^ (∑ i, ∑ j, nn i j - nn i j) * cc i j, ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Establish `hle : nn i j ≤ ∑ i, ∑ j, nn i j` using `(Finset.single_le_sum (fun j _ => Nat.zero_le (nn i j)) (Finset.mem_univ j)).trans (Finset.single_le_sum (f := fun i => ∑ j, nn i j) (fun i _ => Nat.zero_le _) (Finset.mem_univ i))`. Simplify using `only [Matrix.smul_apply, smul_eq_mul, Matrix.map_apply, Matrix.of_apply, map_mul, map_pow, ← hnc i j]`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← mul_assoc, ← pow_add, Nat.sub_add_cancel hle]`.
+A detailed English derivation is pending.
 -/
 theorem den_mat (π : W) (hπ : Irreducible π) (h : Matrix (Fin k) (Fin k) Qq) :
     ∃ (N : ℕ) (H : Matrix (Fin k) (Fin k) W), algebraMap W Qq π ^ N • h = H.map (algebraMap W Qq) := by
@@ -46,9 +46,9 @@ theorem den_mat (π : W) (hπ : Irreducible π) (h : Matrix (Fin k) (Fin k) Qq) 
   rw [← mul_assoc, ← pow_add, Nat.sub_add_cancel hle]
 
 /- English proof (translation)
-Unfold `colSpan`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨c, rfl⟩`. Establish `h : (fun i => (g * U.map (algebraMap W Qq)) i c) = ∑ b, U b c • (fun i => g i b)`. Use function extensionality and compare the values at `i`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `[Matrix.mul_apply, Finset.sum_apply, Algebra.smul_def, mul_comm]`. Use `show (fun i => (g * U.map (algebraMap W Qq)) i c) ∈ Submodule.span W (Set.range fun c : Fin k => fun i => g i c)`. Rewrite using `[h]`. Conclude with `Submodule.sum_mem _ fun b _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨b, rfl⟩)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem colSpan_mul_le (g : Matrix (Fin k) (Fin k) Qq) (U : Matrix (Fin k) (Fin k) W) :
     colSpan W (g * U.map (algebraMap W Qq)) ≤ colSpan W g := by
@@ -63,7 +63,7 @@ theorem colSpan_mul_le (g : Matrix (Fin k) (Fin k) Qq) (U : Matrix (Fin k) (Fin 
   exact Submodule.sum_mem _ fun b _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨b, rfl⟩)
 
 /- English proof (translation)
-Apply `le_antisymm (colSpan_mul_le g U)` to reduce the goal to its premises. Establish `h` using `colSpan_mul_le (g * U.map (algebraMap W Qq)) U⁻¹`. Rewrite `h` using `[Matrix.mul_assoc, ← Matrix.map_mul, Matrix.mul_nonsing_inv U hU, Matrix.map_one _ (map_zero _) (map_one _), Matrix.mul_one]`. Then use the resulting hypothesis.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem colSpan_mul_unit (g : Matrix (Fin k) (Fin k) Qq) (U : Matrix (Fin k) (Fin k) W) (hU : IsUnit U.det) :
     colSpan W (g * U.map (algebraMap W Qq)) = colSpan W g := by
@@ -73,9 +73,9 @@ theorem colSpan_mul_unit (g : Matrix (Fin k) (Fin k) Qq) (U : Matrix (Fin k) (Fi
     Matrix.mul_one] at h
 
 /- English proof (translation)
-Rewrite using `[← IsLocalRing.residue_ne_zero_iff_isUnit, RingHom.map_det]`. Establish `hπ0 : IsLocalRing.residue W π = 0` using `(IsLocalRing.residue_eq_zero_iff π).mpr ((IsLocalRing.mem_maximalIdeal _).mpr hπ.not_isUnit)`. Establish `h1 : (IsLocalRing.residue W).mapMatrix (1 + π • D) = 1`. Use extensionality with `i j`. Simplify using `only [RingHom.mapMatrix_apply, Matrix.map_apply, Matrix.add_apply, Matrix.smul_apply, smul_eq_mul, map_add, map_mul, hπ0, zero_mul, add_zero, Matrix.one_apply]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `split_ifs <;> simp`. Rewrite using `[h1, Matrix.det_one]`. Conclude with `one_ne_zero`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem det_one_add_unit (π : W) (hπ : Irreducible π) (D : Matrix (Fin k) (Fin k) W) : IsUnit (1 + π • D).det := by
   rw [← IsLocalRing.residue_ne_zero_iff_isUnit, RingHom.map_det]
@@ -90,13 +90,13 @@ theorem det_one_add_unit (π : W) (hπ : Irreducible π) (D : Matrix (Fin k) (Fi
   exact one_ne_zero
 
 /- English proof (translation)
-Take `⟨N, H, hH⟩` from `den_mat π hπ g⁻¹`. Use `⟨N + 1, fun N' hN A C hA => ?_⟩` and prove the remaining obligations. Establish `hU : IsUnit (1 + π • (π ^ (N' - (N + 1)) • (H * C))).det` using `det_one_add_unit π hπ _`. Establish `hAU : A = g * (1 + π • (π ^ (N' - (N + 1)) • (H * C))).map (algebraMap W Qq)`. Rewrite using `[hA, Matrix.map_add _ (map_add _), Matrix.map_one _ (map_zero _) (map_one _), Matrix.map_smul' _ _ _ (map_mul _), Matrix.map_smul' _ _ _ (map_mul _), Matrix.map_mul, map_pow, ← hH, Matrix.mul_add, Matrix.mul_one, Matrix.mul_smul, Matrix.mul_smul, Matrix.smul_mul, Matrix.mul_smul, …`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 2`. Rewrite using `[← pow_succ', ← pow_add]`. Use `congr 1`. Use linear arithmetic over natural numbers and integers. Use `⟨by rw [hAU]; exact colSpan_mul_unit g _ hU, ?_⟩` and prove the remaining obligations.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Use linear arithmetic over natural numbers and integers. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hAU, Matrix.det_mul]`. Use `hg.mul ?_` and prove the remaining obligations. Establish `h2 : ((1 + π • (π ^ (N' - (N + 1)) • (H * C))).map (algebraMap W Qq)).det = algebraMap W Qq (1 + π • (π ^ (N' - (N + 1)) • (H * C))).det`. Rewrite using `[RingHom.map_det]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[h2]`. Conclude with `hU.map _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem approx_local (π : W) (hπ : Irreducible π) (g : Matrix (Fin k) (Fin k) Qq) (hg : IsUnit g.det) :
     ∃ N : ℕ, ∀ N', N ≤ N' → ∀ (A : Matrix (Fin k) (Fin k) Qq) (C : Matrix (Fin k) (Fin k) W),
@@ -131,15 +131,13 @@ def WeakApprox : Prop :=
     iw v a = x v + (p : G.P.Qq v) ^ N * algebraMap (G.P.W v) (G.P.Qq v) c
 
 /- English proof (translation)
-Introduce `L hL`. Distinguish the cases in `hne : Nonempty (Fin G.P.nV)`. Use `swap`. Conclude with `⟨1, fun v => (hne ⟨v⟩).elim⟩`. Use `choose g hg hLg using hL`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `fun v => (G.P.setting v).frac_alt` as an intermediate fact. Use `choose N hN using fun v => approx_local (p : G.P.W v) (G.P.setting v).p_unif (g v) (hg v)`. Use `choose a c hac using fun x y => h (fun v => g v x y) (∑ v, N v)`. Establish `key : ∀ v, colSpan (G.P.W v) ((Matrix.of a).map (iw v)) = colSpan (G.P.W v) (g v) ∧ IsUnit ((Matrix.of a).map (iw v)).det` using `fun v => hN v (∑ v, N v) (Finset.single_le_sum (f := N) (fun _ _ => Nat.zero_le _) (Finset.mem_univ v)) ((Matrix.of a).map (iw v)) (fun x y => c x y v) (by`. Use extensionality with `x y`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Matrix.map_apply, Matrix.of_apply, Matrix.add_apply, Matrix.smul_apply, smul_eq_mul, map_natCast]`. Conclude with `hac x y v)`. Take `⟨v0⟩` from `hne`. Establish `hdet : IsUnit (Matrix.of a).det`. Establish `h1` using `(key v0).2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `h2 : ((Matrix.of a).map (iw v0)).det = iw v0 (Matrix.of a).det`. Rewrite using `[RingHom.map_det]`. Both sides reduce to the same expression. Rewrite `h1` using `[h2]`. Rewrite `h1`, the goal using `[isUnit_iff_ne_zero]`.
-
-Introduce `h0`. Conclude with `h1 (by rw [h0, map_zero])`. Conclude with `⟨Matrix.nonsingInvUnit (Matrix.of a) hdet, fun v => by rw [hLg v]; exact (key v).1.symm⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem ratTup_of_weak (h : WeakApprox G iw) : RatTup G iw := by
   intro L hL

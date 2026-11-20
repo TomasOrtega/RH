@@ -11,7 +11,7 @@ noncomputable section
 namespace GlobalTheory.HTGlue
 
 /- English proof (translation)
-Introduce `p _ D R _ b N k _ _ tk s o₀ _ d f`. Take `⟨M₀, hM₀⟩` from `Submodule.exists_isCompl (Fil o₀.A)`. Conclude with `⟨_, isCompl_glueFil o₀.A o₀.ab f M₀ hM₀⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_isCompl_glueFil : ∀ (p : ℕ) [Fact p.Prime] (D : GlobalTheory.UPel.HT.Datum p) (R : Type) [CommRing R]
     (b : GlobalTheory.UPel.HT.Base D R) (N : ℕ) (k : Type) [Field k] [IsAlgClosed k] (tk : R →+* k) (s : Sp k ⟶ Sp R)

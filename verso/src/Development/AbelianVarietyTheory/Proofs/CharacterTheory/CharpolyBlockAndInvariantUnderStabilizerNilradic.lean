@@ -8,13 +8,13 @@ namespace GlobalTheory.CuspGL
 open Module Module.Basis in
 
 /- English proof (translation)
-Set `bA` to `Module.finBasis F A`. Set `bQ` to `Module.finBasis F (V ⧸ A)`. Set `b` to `sumQuot bA bQ`. Establish `hmat : LinearMap.toMatrix b b g = Matrix.fromBlocks (LinearMap.toMatrix bA bA (g.restrict hg)) (Matrix.of fun i j => b.repr (g (b (Sum.inr j))) (Sum.inl i)) 0 (LinearMap.toMatrix bQ bQ (A.mapQ A g (fun x hx => hg x hx)))`. Use extensionality with `i j`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Apply the tactic sequence `rcases i with i | i <;> rcases j with j | j`. Simplify using `only [LinearMap.toMatrix_apply, Matrix.fromBlocks_apply₁₁, b, sumQuot_inl]`. Rewrite using `[sumQuot_repr_inl_of_mem bA bQ _ (hg _ (bA j).2)]`. Both sides reduce to the same expression. Simplify using `[LinearMap.toMatrix_apply, Matrix.fromBlocks_apply₁₂, b]`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Simplify using the standard rewrite rules.
 
-Simplify using `only [LinearMap.toMatrix_apply, Matrix.fromBlocks_apply₂₁, b, sumQuot_inl, Matrix.zero_apply]`. Conclude with `sumQuot_repr_inr_of_mem bA bQ _ (hg _ (bA j).2) i`. Simplify using `only [LinearMap.toMatrix_apply, Matrix.fromBlocks_apply₂₂, b]`. Rewrite using `[sumQuot_repr_inr, ← sumQuot_inr bA bQ j, Submodule.mapQ_apply]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← LinearMap.charpoly_toMatrix g b, hmat, Matrix.charpoly_fromBlocks_zero₂₁, LinearMap.charpoly_toMatrix, LinearMap.charpoly_toMatrix]`.
+A detailed English derivation is pending.
 -/
 theorem charpoly_eq_restrict_mul_mapQ {F : Type} [Field F] {V : Type} [AddCommGroup V] [Module F V]
     [FiniteDimensional F V] (A : Submodule F V) (g : Module.End F V) (hg : ∀ x ∈ A, g x ∈ A) :
@@ -43,11 +43,11 @@ theorem charpoly_eq_restrict_mul_mapQ {F : Type} [Field F] {V : Type} [AddCommGr
     LinearMap.charpoly_toMatrix, LinearMap.charpoly_toMatrix]
 
 /- English proof (translation)
-Introduce `F _ V _ _ _ A g hg`. Use `⟨charpoly_eq_restrict_mul_mapQ A g hg, ?_⟩` and prove the remaining obligations. Introduce and unpack `h ⟨himg, hker⟩`. Establish `hgh : ∀ x ∈ A, (g + h) x ∈ A` using `fun x hx => by`. Simplify `hg x hx` using `[LinearMap.add_apply, hker x hx]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hres : (g + h).restrict hgh = g.restrict hg`. Use extensionality with `x`. Simplify using `[LinearMap.restrict_apply, hker x x.2]`. Establish `hquot : A.mapQ A (g + h) (fun x hx => hgh x hx) = A.mapQ A g (fun x hx => hg x hx)`. Apply `Submodule.linearMap_qext` to reduce the goal to its premises.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Use extensionality with `x`. Simplify using `only [LinearMap.comp_apply, Submodule.mkQ_apply, Submodule.mapQ_apply]`. Rewrite using `[Submodule.Quotient.eq]`. Simplify `himg x` using `[LinearMap.add_apply]`. Rewrite using `[charpoly_eq_restrict_mul_mapQ A (g + h) hgh, charpoly_eq_restrict_mul_mapQ A g hg, hres, hquot]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 -/
 theorem charpoly_block : ∀ (F : Type) [Field F] (V : Type) [AddCommGroup V] [Module F V] [FiniteDimensional F V]
     (A : Submodule F V) (g : Module.End F V) (hg : ∀ x ∈ A, g x ∈ A),

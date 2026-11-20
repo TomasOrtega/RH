@@ -15,7 +15,7 @@ abbrev opN {n : ℕ} (g : Matrix (Fin n) (Fin n) ℂ) : ℝ :=
   ‖LinearMap.toContinuousLinearMap (Matrix.toEuclideanLin g)‖
 
 /- English proof (translation)
-Use extensionality with `i`. Simplify using `[Matrix.mulVec, dotProduct]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 private theorem map_conj_mulVec_eq_star_mulVec_star {n : ℕ} (g : Matrix (Fin n) (Fin n) ℂ) (x : Fin n → ℂ) :
     g.map (starRingEnd ℂ) *ᵥ x = star (g *ᵥ star x) := by
@@ -23,7 +23,7 @@ private theorem map_conj_mulVec_eq_star_mulVec_star {n : ℕ} (g : Matrix (Fin n
   simp [Matrix.mulVec, dotProduct]
 
 /- English proof (translation)
-Simplify using `[EuclideanSpace.norm_eq]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem norm_toLp_star_eq_norm_toLp {n : ℕ} (v : Fin n → ℂ) :
     ‖(WithLp.toLp 2 (star v) : EuclideanSpace ℂ (Fin n))‖ =
@@ -31,11 +31,9 @@ private theorem norm_toLp_star_eq_norm_toLp {n : ℕ} (v : Fin n → ℂ) :
   simp [EuclideanSpace.norm_eq]
 
 /- English proof (translation)
-Use `ContinuousLinearMap.opNorm_le_bound _ (norm_nonneg _) fun x => ?_` and prove the remaining obligations. Establish `key` using `(LinearMap.toContinuousLinearMap (Matrix.toEuclideanLin g)).le_opNorm (WithLp.toLp 2 (star (WithLp.ofLp x)))`. Establish `e1 : (LinearMap.toContinuousLinearMap (Matrix.toEuclideanLin (g.map (starRingEnd ℂ)))) x = WithLp.toLp 2 (star (g *ᵥ star (WithLp.ofLp x)))`. Rewrite using `[← map_conj_mulVec_eq_star_mulVec_star]`. Apply the tactic sequence `all_goals rfl`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e2 : (LinearMap.toContinuousLinearMap (Matrix.toEuclideanLin g)) (WithLp.toLp 2 (star (WithLp.ofLp x))) = WithLp.toLp 2 (g *ᵥ star (WithLp.ofLp x))` using `rfl`. Establish `e3 : ‖(WithLp.toLp 2 (star (WithLp.ofLp x)) : EuclideanSpace ℂ (Fin n))‖ = ‖x‖`. Rewrite using `[norm_toLp_star_eq_norm_toLp]`. Rewrite using `[e1, norm_toLp_star_eq_norm_toLp, ← e2]`. Rewrite `key` using `[e3]`.
-
-Conclude with `key`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem opN_conj_le {n : ℕ} (g : Matrix (Fin n) (Fin n) ℂ) :
     opN (g.map (starRingEnd ℂ)) ≤ opN g := by
@@ -55,9 +53,9 @@ theorem opN_conj_le {n : ℕ} (g : Matrix (Fin n) (Fin n) ℂ) :
   exact key
 
 /- English proof (translation)
-Use `le_antisymm (opN_conj_le g) ?_` and prove the remaining obligations. Establish `h` using `opN_conj_le (g.map (starRingEnd ℂ))`. Establish `e : (g.map (starRingEnd ℂ)).map (starRingEnd ℂ) = g`. Use extensionality with `i j`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite `h` using `[e]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem opN_conj {n : ℕ} (g : Matrix (Fin n) (Fin n) ℂ) :
     opN (g.map (starRingEnd ℂ)) = opN g := by
@@ -69,7 +67,7 @@ theorem opN_conj {n : ℕ} (g : Matrix (Fin n) (Fin n) ℂ) :
   rwa [e] at h
 
 /- English proof (translation)
-Establish `h : Continuous (fun g : Matrix (Fin n) (Fin n) ℂ => LinearMap.toContinuousLinearMap (Matrix.toEuclideanLin g))` using `LinearMap.continuous_of_finiteDimensional ((LinearMap.toContinuousLinearMap : (EuclideanSpace ℂ (Fin n) →ₗ[ℂ] EuclideanSpace ℂ (Fin n)) ≃ₗ[ℂ] (EuclideanSpace ℂ (Fin n) →L[ℂ] EuclideanSpace ℂ (Fin n))).toLinearMap ∘ₗ (Matrix.toEuclideanLin : Matrix (Fin n) (Fin n) ℂ ≃ₗ[ℂ] _).toLin …`. Conclude with `continuous_norm.comp h`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem continuous_opN {n : ℕ} : Continuous (fun g : Matrix (Fin n) (Fin n) ℂ => opN g) := by
   have h : Continuous (fun g : Matrix (Fin n) (Fin n) ℂ =>
@@ -82,9 +80,9 @@ theorem continuous_opN {n : ℕ} : Continuous (fun g : Matrix (Fin n) (Fin n) �
   exact continuous_norm.comp h
 
 /- English proof (translation)
-Establish `: Nontrivial (EuclideanSpace ℂ (Fin n))` using `⟨⟨EuclideanSpace.single ⟨0, hn⟩ (1 : ℂ), 0, fun h => by simpa using congrArg norm h⟩⟩`. Establish `h : LinearMap.toContinuousLinearMap (Matrix.toEuclideanLin (1 : Matrix (Fin n) (Fin n) ℂ)) = ContinuousLinearMap.id ℂ (EuclideanSpace ℂ (Fin n))`. Use `ContinuousLinearMap.ext fun v => ?_` and prove the remaining obligations. Use `show WithLp.toLp 2 ((1 : Matrix (Fin n) (Fin n) ℂ) *ᵥ WithLp.ofLp v) = v`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `show ‖LinearMap.toContinuousLinearMap (Matrix.toEuclideanLin (1 : Matrix (Fin n) (Fin n) ℂ))‖ = 1`. Rewrite using `[h]`. Conclude with `ContinuousLinearMap.norm_id`.
+A detailed English derivation is pending.
 -/
 theorem opN_one {n : ℕ} (hn : 1 ≤ n) : opN (1 : Matrix (Fin n) (Fin n) ℂ) = 1 := by
   have : Nontrivial (EuclideanSpace ℂ (Fin n)) :=
@@ -99,7 +97,7 @@ theorem opN_one {n : ℕ} (hn : 1 ≤ n) : opN (1 : Matrix (Fin n) (Fin n) ℂ) 
   exact ContinuousLinearMap.norm_id
 
 /- English proof (translation)
-Establish `h0 : opN (1 : Matrix (Fin n) (Fin n) ℂ) ≠ 0`. Rewrite using `[opN_one hn]`. Conclude with `one_ne_zero`. Establish `h : ContinuousAt (fun g : Matrix (Fin n) (Fin n) ℂ => Real.log (opN g)) 1` using `(continuous_opN.continuousAt).log h0`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem continuousAt_dOp {n : ℕ} (hn : 1 ≤ n) :
     ContinuousAt (fun g : Matrix (Fin n) (Fin n) ℂ => dOp g) 1 := by
@@ -111,16 +109,16 @@ theorem continuousAt_dOp {n : ℕ} (hn : 1 ≤ n) :
   exact h
 
 /- English proof (translation)
-Use `show Real.log (opN (1 : Matrix (Fin n) (Fin n) ℂ)) = 0`. Rewrite using `[opN_one hn, Real.log_one]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dOp_one {n : ℕ} (hn : 1 ≤ n) : dOp (1 : Matrix (Fin n) (Fin n) ℂ) = 0 := by
   show Real.log (opN (1 : Matrix (Fin n) (Fin n) ℂ)) = 0
   rw [opN_one hn, Real.log_one]
 
 /- English proof (translation)
-Simplify using `only [frm]`. Rewrite using `[if_pos h, if_pos h]`. Use `clear h`. Generalize the expression as in `w.comap (algebraMap I.F I.E) = v`. Establish `hA : IsUnit (I.P v * uMat (x.1 v))` using `(I.P_unit v).mul (Units.isUnit _)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hAd : IsUnit (I.P v * uMat (x.1 v)).det` using `(Matrix.isUnit_iff_isUnit_det _).mp hA`. Establish `hmul : I.P v * uMat ((x * k).1 v) = (I.P v * uMat (x.1 v)) * uMat (k.1 v)`. Rewrite using `[Matrix.mul_assoc]`. Apply the tactic sequence `all_goals rfl`. Rewrite using `[hmul, ← Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hAd, Matrix.one_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem inv_frm_mul_frm_mul_eq_uMat_of_eq_embedding (I : AutInst) (x k : I.GA) (w : InfinitePlace I.E)
     (h : w.embedding = I.φ (w.comap (algebraMap I.F I.E))) :
@@ -137,11 +135,9 @@ private theorem inv_frm_mul_frm_mul_eq_uMat_of_eq_embedding (I : AutInst) (x k :
   rw [hmul, ← Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hAd, Matrix.one_mul]
 
 /- English proof (translation)
-Simplify using `only [frm]`. Rewrite using `[if_neg h, if_neg h]`. Use `clear h`. Generalize the expression as in `w.comap (algebraMap I.F I.E) = v`. Establish `hA : IsUnit (I.P v * uMat (x.1 v))` using `(I.P_unit v).mul (Units.isUnit _)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmul : I.P v * uMat ((x * k).1 v) = (I.P v * uMat (x.1 v)) * uMat (k.1 v)`. Rewrite using `[Matrix.mul_assoc]`. Apply the tactic sequence `all_goals rfl`. Establish `hB : IsUnit ((I.P v * uMat (x.1 v)).map (starRingEnd ℂ)).det` using `(Matrix.isUnit_iff_isUnit_det _).mp (hA.map (starRingEnd ℂ).mapMatrix)`. Establish `hm2 : ((I.P v * uMat (x.1 v)) * uMat (k.1 v)).map (starRingEnd ℂ) = (I.P v * uMat (x.1 v)).map (starRingEnd ℂ) * (uMat (k.1 v)).map (starRingEnd ℂ)` using `Matrix.map_mul`.
-
-Rewrite using `[hmul, hm2, ← Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hB, Matrix.one_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem inv_frm_mul_frm_mul_eq_conj_uMat_of_ne_embedding (I : AutInst) (x k : I.GA) (w : InfinitePlace I.E)
     (h : ¬ w.embedding = I.φ (w.comap (algebraMap I.F I.E))) :
@@ -163,9 +159,7 @@ private theorem inv_frm_mul_frm_mul_eq_conj_uMat_of_ne_embedding (I : AutInst) (
   rw [hmul, hm2, ← Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hB, Matrix.one_mul]
 
 /- English proof (translation)
-Use `show opN ((frm I x w)⁻¹ * (LinearMap.toMatrix (bas I) (bas I) LinearMap.id).map w.embedding * frm I (x * k) w) = _`. Rewrite using `[LinearMap.toMatrix_id, Matrix.map_one (⇑w.embedding) (map_zero _) (map_one _), Matrix.mul_one]`. Distinguish the cases in `h : w.embedding = I.φ (w.comap (algebraMap I.F I.E))`. Rewrite using `[inv_frm_mul_frm_mul_eq_uMat_of_eq_embedding I x k w h]`. Rewrite using `[inv_frm_mul_frm_mul_eq_conj_uMat_of_ne_embedding I x k w h]`.
-
-Conclude with `opN_conj _`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem opNormAt_id (I : AutInst) (x k : I.GA) (w : InfinitePlace I.E) :
     opNormAt (bas I) (frm I (x * k)) (bas I) (frm I x) w LinearMap.id =
@@ -180,23 +174,23 @@ theorem opNormAt_id (I : AutInst) (x k : I.GA) (w : InfinitePlace I.E) :
     exact opN_conj _
 
 /- English proof (translation)
-Establish `h31x` using `GlobalTheory.T.autPointMajorantFrames_give_majorants I x`. Establish `h31k` using `GlobalTheory.T.autPointMajorantFrames_give_majorants I (x * k)`. Establish `h30` using `GlobalTheory.T.autPointLatticeIntersection_selfDual_properties I x`. Establish `: IsTotallyComplex I.E` using `h31x.1`. Establish `hnPl : nPl I.E = I.f` using `h31x.2.1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hbij` using `h31x.2.2.2.1`. Establish `hLk : lamX I (x * k) = lamX I x` using `h30.2.2.2.2 k hk`. Establish `hfg : (lamX I x).FG` using `h30.2.1`. Establish `hspan : Submodule.span I.E (lamX I x : Set (Fin I.n → I.E)) = ⊤` using `h30.2.2.1`. Establish `hne : lamX I x ≠ ⊥`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `h`. Rewrite `hspan` using `[h, Submodule.bot_coe, Submodule.span_zero_singleton]`. Establish `: Nonempty (Fin I.n)` using `⟨⟨0, hn⟩⟩`. Conclude with `bot_ne_top hspan`. Establish `hux : ∀ w, IsUnit (frm I x w).det` using `fun w => (h31x.2.2.2.2 w).1`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `huk : ∀ w, IsUnit (frm I (x * k) w).det` using `fun w => (h31k.2.2.2.2 w).1`. Establish `hmap : (lamX I x).map ((LinearMap.id : (Fin I.n → I.E) →ₗ[I.E] (Fin I.n → I.E)).restrictScalars (𝓞 I.E)) = lamX I x`. Use extensionality with `y`. Simplify using the standard rewrite rules. Establish `hS` using `slopeIneqMean I.E (Fin I.n → I.E) (Fin I.n) (Fin I.n → I.E) (Fin I.n) (bas I) (frm I (x * k)) (bas I) (frm I x) huk hux LinearMap.id (lamX I x) hfg (by rw [hmap]; exact hne)`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `(hS.2 (lamX I x) hfg hmap.le).2 (fun a _ b _ h => h)`. Establish `hSMx` using `sizeMu I.E (Fin I.n → I.E) (Fin I.n) (bas I) (frm I x) hux (lamX I x) hfg hne`. Establish `hSMk` using `sizeMu I.E (Fin I.n → I.E) (Fin I.n) (bas I) (frm I (x * k)) huk (lamX I x) hfg hne`. Simplify using `only at hSMx hSMk`. Establish `hd : ∀ g : Matrix (Fin I.n) (Fin I.n) ℂ, dOp g = Real.log (opN g)` using `fun g => rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify by unfolding definitions. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs : ∑ w : InfinitePlace I.E, dOp (uMat (k.1 (w.comap (algebraMap I.F I.E)))) = ∑ v, dOp (uMat (k.1 v))` using `hbij.sum_comp (fun v => dOp (uMat (k.1 v)))`. Establish `hH : htMap (bas I) (frm I (x * k)) (bas I) (frm I x) LinearMap.id = 2 * ((∑ v, dOp (uMat (k.1 v))) / I.f)`. Unfold `Formalism.HN.htMap`. Rewrite using `[hnPl]`. Establish `hw : ∀ w : InfinitePlace I.E, Real.log (opNormAt (bas I) (frm I (x * k)) (bas I) (frm I x) w LinearMap.id ^ 2) = 2 * dOp (uMat (k.1 (w.comap (algebraMap I.F I.E))))`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `w`. Rewrite using `[opNormAt_id, Real.log_pow, hd]`. Apply the tactic sequence `all_goals norm_num`. Simplify using `only [hw]`. Rewrite using `[← Finset.mul_sum, hs]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hlx : least I x = leastSize (bas I) (frm I x) (lamX I x)` using `rfl`. Establish `hlk : least I (x * k) = leastSize (bas I) (frm I (x * k)) (lamX I x)`. Rewrite using `[← hLk]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[hlx, hlk, hSMx.2.2.2.1, hSMk.2.2.2.1, ← Real.exp_add]`. Apply `Real.exp_le_exp.mpr` to reduce the goal to its premises. Unfold `Formalism.HN.muMaxDef at h2`. Rewrite `h2` using `[hH]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem least_var (I : AutInst) (hn : 1 ≤ I.n) (x k : I.GA) (hk : k.2 ∈ I.Kset) :
     least I x * Real.exp (-((∑ v, dOp (uMat (k.1 v))) / I.f)) ≤ least I (x * k) := by
@@ -255,15 +249,15 @@ theorem least_var (I : AutInst) (hn : 1 ≤ I.n) (x k : I.GA) (hk : k.2 ∈ I.Ks
 
 open scoped Matrix.Norms.L2Operator in
 /- English proof (translation)
-Establish `: Nonempty (Fin n)` using `⟨⟨0, hn⟩⟩`. Establish `hg : (uMat g)ᴴ * Formalism.REAL.Jm ε * uMat g = Formalism.REAL.Jm ε` using `g.2`. Establish `hJJ : Formalism.REAL.Jm ε * Formalism.REAL.Jm ε = 1` using `Formalism.REAL.Jm_mul_self ε`. Establish `hJh : (Formalism.REAL.Jm ε)ᴴ = Formalism.REAL.Jm ε` using `Formalism.REAL.Jm_conjTranspose ε`. Establish `hJn : ‖Formalism.REAL.Jm ε‖ = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `Matrix.l2_opNorm_conjTranspose_mul_self (Formalism.REAL.Jm ε)`. Rewrite `h1` using `[hJh, hJJ, CStarRing.norm_one]`. Establish `hle : ‖Formalism.REAL.Jm ε‖ ≤ 1` using `by nlinarith [norm_nonneg (Formalism.REAL.Jm ε)]`. Establish `hge : 1 ≤ ‖Formalism.REAL.Jm ε‖` using `by nlinarith [norm_nonneg (Formalism.REAL.Jm ε)]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `hinv : (Formalism.REAL.Jm ε * (uMat g)ᴴ * Formalism.REAL.Jm ε) * uMat g = 1`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = 1 := by rw [hg, hJJ]`. Establish `h1 : (1 : ℝ) ≤ ‖uMat g‖ * ‖uMat g‖`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hA` using `Matrix.l2_opNorm_mul (Formalism.REAL.Jm ε * (uMat g)ᴴ * Formalism.REAL.Jm ε) (uMat g)`. Establish `hB` using `Matrix.l2_opNorm_mul (Formalism.REAL.Jm ε * (uMat g)ᴴ) (Formalism.REAL.Jm ε)`. Establish `hC` using `Matrix.l2_opNorm_mul (Formalism.REAL.Jm ε) (uMat g)ᴴ`. Rewrite `hA` using `[hinv, CStarRing.norm_one]`. Rewrite `hB` using `[hJn]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hC` using `[hJn, Matrix.l2_opNorm_conjTranspose]`. Establish `hN : ‖Formalism.REAL.Jm ε * (uMat g)ᴴ * Formalism.REAL.Jm ε‖ ≤ ‖uMat g‖` using `by linarith`. Combine the equalities or inequalities in the displayed calculation. Establish `hM1 : 1 ≤ ‖uMat g‖` using `by nlinarith [norm_nonneg (uMat g)]`. Conclude with `Real.log_nonneg hM1`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem dOp_nonneg {n : ℕ} (hn : 1 ≤ n) {ε : Fin n → Bool} (g : UJ ε) : 0 ≤ dOp (uMat g) := by
   have : Nonempty (Fin n) := ⟨⟨0, hn⟩⟩
@@ -295,11 +289,11 @@ theorem dOp_nonneg {n : ℕ} (hn : 1 ≤ n) {ε : Fin n → Bool} (g : UJ ε) : 
   exact Real.log_nonneg hM1
 
 /- English proof (translation)
-Establish `h` using `least_var I hn x k hk`. Establish `hD : 0 ≤ (∑ v, dOp (uMat (k.1 v))) / (I.f : ℝ)` using `div_nonneg (Finset.sum_nonneg fun v _ => dOp_nonneg hn (k.1 v)) (Nat.cast_nonneg _)`. Establish `he : Real.exp (-((∑ v, dOp (uMat (k.1 v))) / I.f)) ≤ 1` using `Real.exp_le_one_iff.mpr (by linarith)`. Establish `he0 : 0 < Real.exp (-((∑ v, dOp (uMat (k.1 v))) / I.f))` using `Real.exp_pos _`. Establish `e1 : tau1 I x = min (1 / 2) (least I x)` using `rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2 : tau1 I (x * k) = min (1 / 2) (least I (x * k))` using `rfl`. Rewrite using `[e1, e2]`. Use `le_min ?_ ?_` and prove the remaining obligations. Establish `h3` using `mul_le_mul_of_nonneg_right (min_le_left (1 / 2 : ℝ) (least I x)) he0.le`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Conclude with `(mul_le_mul_of_nonneg_right (min_le_right (1 / 2 : ℝ) (least I x)) he0.le).trans h`.
+A detailed English derivation is pending.
 -/
 theorem truncatedLeastLatticeSize_rightTranslate_lower_bound (I : AutInst) (hn : 1 ≤ I.n) (x k : I.GA) (hk : k.2 ∈ I.Kset) :
     tau1 I x * Real.exp (-((∑ v, dOp (uMat (k.1 v))) / I.f)) ≤ tau1 I (x * k) := by
@@ -318,11 +312,9 @@ theorem truncatedLeastLatticeSize_rightTranslate_lower_bound (I : AutInst) (hn :
   · exact (mul_le_mul_of_nonneg_right (min_le_right (1 / 2 : ℝ) (least I x)) he0.le).trans h
 
 /- English proof (translation)
-Establish `hc : ∀ v, ContinuousAt (fun k : I.GA => dOp (uMat (k.1 v))) 1`. Introduce `v`. Establish `hu : Continuous (fun k : I.GA => uMat (k.1 v))` using `Units.continuous_val.comp (continuous_subtype_val.comp ((continuous_apply v).comp continuous_fst))`. Establish `h1 : (fun k : I.GA => uMat (k.1 v)) 1 = 1` using `rfl`. Conclude with `(continuousAt_dOp hn).comp_of_eq hu.continuousAt h1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0 : ∀ v, dOp (uMat ((1 : I.GA).1 v)) = 0` using `fun v => by show dOp (1 : Matrix (Fin I.n) (Fin I.n) ℂ) = 0`. Conclude with `dOp_one hn`. Establish `hs` using `tendsto_finsetSum (f := fun v (k : I.GA) => dOp (uMat (k.1 v))) Finset.univ (fun v _ => (hc v).tendsto)`. Rewrite `hs` using `[Finset.sum_eq_zero (fun v _ => h0 v)]`. Establish `hq` using `hs.div_const (I.f : ℝ)`.
-
-Rewrite `hq` using `[zero_div]`. Conclude with `hq`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tendsto_dist (I : AutInst) (hn : 1 ≤ I.n) :
     Filter.Tendsto (fun k : I.GA => (∑ v, dOp (uMat (k.1 v))) / I.f) (nhds 1) (nhds 0) := by
@@ -343,25 +335,21 @@ theorem tendsto_dist (I : AutInst) (hn : 1 ≤ I.n) :
   exact hq
 
 /- English proof (translation)
-Take `⟨Ks, hKs⟩` from `(GlobalTheory.CongTop.adelic_topology I).2.2.2.2.2.1`. Establish `hKo : IsOpen I.Kset` using `(GlobalTheory.CongTop.adelic_topology I).2.2.2.2.1`. Establish `hU : {k : I.GA | k.2 ∈ I.Kset ∧ k⁻¹.2 ∈ I.Kset} ∈ nhds (1 : I.GA)`. Establish `h1 : (1 : I.GA).2 ∈ I.Kset`. Rewrite using `[← hKs]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Ks.one_mem`. Establish `ho : IsOpen {k : I.GA | k.2 ∈ I.Kset}` using `hKo.preimage continuous_snd`. Use `Filter.mem_of_superset (ho.mem_nhds h1) ?_` and prove the remaining obligations. Introduce `k hk`. Establish `hk' : k.2 ∈ (Ks : Set I.Gf)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hKs]`. Conclude with `hk`. Use `⟨hk, ?_⟩` and prove the remaining obligations. Use `show k⁻¹.2 ∈ I.Kset`. Rewrite using `[← hKs]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Ks.inv_mem hk'`. Use `continuous_iff_continuousAt.mpr fun x => ?_` and prove the remaining obligations. Establish `hlow : Filter.Tendsto (fun k : I.GA => least I x * Real.exp (-((∑ v, dOp (uMat (k.1 v))) / I.f))) (nhds 1) (nhds (least I x))`. Establish `h2` using `((Real.continuous_exp.tendsto _).comp (tendsto_dist I hn).neg).const_mul (least I x)`. Rewrite `h2` using `[neg_zero, Real.exp_zero, mul_one]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h2`. Establish `hup : Filter.Tendsto (fun k : I.GA => least I x * Real.exp ((∑ v, dOp (uMat (k⁻¹.1 v))) / I.f)) (nhds 1) (nhds (least I x))`. Establish `h1 : Filter.Tendsto (fun k : I.GA => (∑ v, dOp (uMat (k⁻¹.1 v))) / (I.f : ℝ)) (nhds 1) (nhds 0)` using `(tendsto_dist I hn).comp (continuous_inv.tendsto' (1 : I.GA) 1 inv_one)`. Establish `h2` using `((Real.continuous_exp.tendsto _).comp h1).const_mul (least I x)`. Rewrite `h2` using `[Real.exp_zero, mul_one]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `h2`. Establish `hg : Filter.Tendsto (fun k : I.GA => least I (x * k)) (nhds 1) (nhds (least I x))`. Use `tendsto_of_tendsto_of_tendsto_of_le_of_le' hlow hup ?_ ?_` and prove the remaining obligations. Use `filter_upwards [hU] with k hk`. Conclude with `least_var I hn x k hk.1`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `filter_upwards [hU] with k hk`. Establish `h` using `least_var I hn (x * k) k⁻¹ hk.2`. Rewrite `h` using `[mul_inv_cancel_right]`. Establish `he` using `Real.exp_pos ((∑ v, dOp (uMat (k⁻¹.1 v))) / (I.f : ℝ))`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Rewrite using `[mul_assoc, ← Real.exp_add, neg_add_cancel, Real.exp_zero, mul_one]`. Use `_ ≤ least I x * Real.exp ((∑ v, dOp (uMat (k⁻¹.1 v))) / (I.f : ℝ)) := mul_le_mul_of_nonneg_right h he.le`. Establish `hcont : Continuous (fun y : I.GA => x⁻¹ * y)` using `continuous_const.mul continuous_id`. Establish `hmove : Filter.Tendsto (fun y : I.GA => x⁻¹ * y) (nhds x) (nhds 1)`. Establish `h` using `hcont.tendsto x`.
-
-Rewrite `h` using `[inv_mul_cancel]`. Then use the resulting hypothesis. Establish `hfin` using `hg.comp hmove`. Establish `he : ((fun k : I.GA => least I (x * k)) ∘ fun y : I.GA => x⁻¹ * y) = least I`. Use function extensionality and compare the values at `y`. Simplify using `only [Function.comp_apply, mul_inv_cancel_left]`.
-
-Rewrite `hfin` using `[he]`. Conclude with `hfin`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_least (I : AutInst) (hn : 1 ≤ I.n) : Continuous (least I) := by
   obtain ⟨Ks, hKs⟩ := (GlobalTheory.CongTop.adelic_topology I).2.2.2.2.2.1
@@ -422,7 +410,7 @@ theorem continuous_least (I : AutInst) (hn : 1 ≤ I.n) : Continuous (least I) :
   exact hfin
 
 /- English proof (translation)
-Introduce `I hn`. Use `⟨fun x k hk => ⟨least_var I hn x k hk, truncatedLeastLatticeSize_rightTranslate_lower_bound I hn x k hk⟩, continuous_least I hn, ?_⟩` and prove the remaining obligations. Use `show Continuous (fun x => min (1 / 2 : ℝ) (least I x))`. Conclude with `continuous_const.min (continuous_least I hn)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem least_variation_continuity : ∀ I : AutInst, 1 ≤ I.n → (∀ x k : I.GA, k.2 ∈ I.Kset → least I x * Real.exp (-((∑ v, dOp (uMat (k.1 v))) / I.f)) ≤ least I (x * k) ∧ tau1 I x * Real.exp (-((∑ v, dOp (uMat (k.1 v))) / I.f)) ≤ tau1 I (x * k)) ∧ Continuous (least I) ∧ Continuous (tau1 I) := by
   intro I hn

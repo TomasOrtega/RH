@@ -16,7 +16,7 @@ open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions F
 namespace GlobalTheory.Shares
 
 /- English proof (translation)
-Use `show wadd u (wsmul 0 wL) = u`. Consider the cases of `u`. Simplify using `[wadd, wsmul]`.
+Split into cases according to the possible forms of the given data. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem addL_zero_pts {D : D7} {j : ℕ} (u wL : WeightFamilies.Wt D j) : addL u wL 0 = u := by
   show wadd u (wsmul 0 wL) = u
@@ -24,7 +24,7 @@ theorem addL_zero_pts {D : D7} {j : ℕ} (u wL : WeightFamilies.Wt D j) : addL u
   simp [wadd, wsmul]
 
 /- English proof (translation)
-Simplify using `only [Rdg.s, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, hR.2]`.
+Simplify using the standard rewrite rules.
 -/
 theorem rdg_s_apply {D : D7} {T : Top D} {h : LawsP T} {j : ℕ} {hj : InR D j} {n : SecNorm (recB h.toLawsCore)}
     {R : Rdg (recPlusN h j hj n)} {e : R.Y ≃ DomPt T j} (hR : IsRdgU h j hj n R e) {N : ℕ} {wL : WeightFamilies.Wt D j}
@@ -33,9 +33,9 @@ theorem rdg_s_apply {D : D7} {T : Top D} {h : LawsP T} {j : ℕ} {hj : InR D j} 
   simp only [Rdg.s, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, hR.2]
 
 /- English proof (translation)
-Take `⟨m, a, F, -, hF⟩` from `hO f hf`. Establish `hfun : (fun y => f (e y).1 (e y).2.1) = ∑ i, a i • R.ev ((recPlusN h j hj n).inc u (F i))`. Use function extensionality and compare the values at `y`. Rewrite using `[hF _ _ (e y).2.2]`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, hR.2]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hfun]`. Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨F i, Set.mem_univ _, rfl⟩)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_sp_of_rdOnto {D : D7} {T : Top D} {h : LawsP T} {j : ℕ} {hj : InR D j} {n : SecNorm (recB h.toLawsCore)}
     {R : Rdg (recPlusN h j hj n)} {e : R.Y ≃ DomPt T j} (hR : IsRdgU h j hj n R e) {u : WeightFamilies.Wt D j}
@@ -52,21 +52,19 @@ theorem mem_sp_of_rdOnto {D : D7} {T : Top D} {h : LawsP T} {j : ℕ} {hj : InR 
     Submodule.smul_mem _ _ (Submodule.subset_span ⟨F i, Set.mem_univ _, rfl⟩)
 
 /- English proof (translation)
-Introduce `D T h j hj n R e hR N wL wF w Tn c1 A t Fl δ xs en hxs hO`. Establish `hvan : ∀ (k : (T.U j T.σ₀).Comp) (a : Fin (nd ((T.U j T.σ₀).X k))) (p : Fin (Fl.Fl k).δ), (Fl.Fl k).s a ((Fl.Fl k).xs p) = 0`. Introduce `k a p`. Establish `hb : (fun _ => (1 : Matrix (Fin D.R.r) (Fin D.R.r) ℂ) : Frame ((T.U j T.σ₀).X k).Ψ D.R.r) ∈ Bor ((T.U j T.σ₀).X k).Ψ D.R.r`. Introduce `τ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨?_, fun a c hca => Matrix.one_apply_ne hca.ne'⟩` and prove the remaining obligations. Use `show (1 : Matrix (Fin D.R.r) (Fin D.R.r) ℂ).det ≠ 0`. Simplify using the standard rewrite rules. Establish `hself : (Fl.Fl k).xs p = lact 1 (rmul ((Fl.Fl k).xs p) (fun _ => (1 : Matrix (Fin D.R.r) (Fin D.R.r) ℂ)))`. Use function extensionality and compare the values at `τ a c`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using `only [lact, rmul, mat, Units.val_one, Matrix.map_one _ (map_zero τ.1) (map_one τ.1), one_mul]`. Establish `hm : (Matrix.of ((Fl.Fl k).xs p τ) : Matrix (Fin D.R.r) (Fin D.R.r) ℂ) * 1 = Matrix.of ((Fl.Fl k).xs p τ)` using `Matrix.mul_one _`. Conclude with `(congrFun (congrFun hm a) c).symm`. Conclude with `(((Fl.Fl k).S_eq _ ((Fl.Fl k).xs_mem p)).2 ⟨p, 1, ((T.U j T.σ₀).X k).Γ.one_mem, _, hb, hself⟩) a`. Use `⟨fun q => ⟨?_, fun i => ?_⟩, fun v => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[rdg_s_apply hR, hxs q] dsimp only`. Rewrite using `[← Fl.h0]`. Conclude with `(Fl.Fl _).w0_ne _`. Rewrite using `[rdg_s_apply hR, hxs q] dsimp only`. Establish `hs` using `Fl.hs (en q).1 (Fin.cast (A.dim (en q).1).symm i) ((Fl.Fl (en q).1).xs (en q).2)`.
+Rewrite the conclusion using the stated equalities. Simplify by unfolding definitions. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hi : Fin.cast (A.dim (en q).1) (Fin.cast (A.dim (en q).1).symm i) = i` using `Fin.ext rfl`. Rewrite `hs` using `[hi]`. Rewrite using `[← hs]`. Conclude with `hvan _ _ _`. Establish `hF : ∀ k : (T.U j T.σ₀).Comp, ∃ F ∈ ((T.U j T.σ₀).X k).SSgt (A.Xa k).Fp 0, ∀ p, F ((Fl.Fl k).xs p) = v (en.symm ⟨k, p⟩)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `k`. Take `⟨bb, m, h1, h2, h3⟩` from `(A.mar k).1`. Conclude with `interpStatement_holds _ _ (A.Xa k) (Fl.Fl k) (GlobalTheory.ClosedDiscontinuity.propDisc_closed _ _) ⟨bb, m, h1, h2, fun x0 hx0 z hz ξ => by simpa using h3 0 (Set.mem_insert _ _) x0 hx0 z hz ξ⟩ (A.mar k).2.2.1 (fun P hP => by simpa using (A.mar k).2.2.2.2 0 P (by simpa using hP)) …`. Use `choose F hFmem hFval using hF`. Establish `hO0 : RdOnto h j wF`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `h0` using `hO 0`. Rewrite `h0` using `[addL_zero_pts]`. Then use the resulting hypothesis. Establish `hf : ∀ k, F k ∈ ((T.U j T.σ₀).X k).SS (laR T j wF k)`. Introduce `k`. Rewrite using `[← A.hF k]`.
-
-Conclude with `(hFmem k).1`. Use `⟨_, mem_sp_of_rdOnto hR hO0 F hf, fun q => ?_⟩` and prove the remaining obligations. Use `show F (e (xs q)).1 (e (xs q)).2.1 = v q`. Rewrite using `[hxs q]`. Conclude with `(hFval _ _).trans (by simp)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem points_and_interp : ∀ (D : D7) (T : Top D) (h : LawsP T) (j : ℕ) (hj : InR D j) (n : SecNorm (recB h.toLawsCore)) (R : Rdg (recPlusN h j hj n)) (e : R.Y ≃ DomPt T j), IsRdgU h j hj n R e → ∀ (N : ℕ) (wL wF : WeightFamilies.Wt D j) (w : Fin N → (recB h.toLawsCore).Cusp j wL) (Tn : ℕ) (c1 : ℝ) (A : ArchAt h j w wF Tn c1) (t : Idx D j N → ℂ) (Fl : FlatAt h j A t) (δ : ℕ) (xs : Fin δ → R.Y) (en : Fin δ ≃ Σ k : (T.U j T.σ₀).Comp, Fin (Fl.Fl k).δ), (∀ q, e (xs q) = ⟨(en q).1, ⟨(Fl.Fl (en q).1).xs (en q).2, (Fl.Fl (en q).1).xs_mem _⟩⟩) → (∀ k : ℕ, RdOnto h j (addL wF wL k)) → (∀ q, R.s w t 0 (xs q) ≠ 0 ∧ ∀ i : Fin (WeightFamilies.dimY D j), R.s w t i.succ (xs q) = 0) ∧ ∀ v : Fin δ → ℂ, ∃ f ∈ R.sp wF Set.univ, ∀ q, f (xs q) = v q := by
   intro D T h j hj n R e hR N wL wF w Tn c1 A t Fl δ xs en hxs hO

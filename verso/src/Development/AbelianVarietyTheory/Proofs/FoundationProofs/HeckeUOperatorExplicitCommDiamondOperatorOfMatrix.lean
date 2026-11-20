@@ -10,7 +10,7 @@ def gam (a b c d : ℤ) (j j' q : ℕ) (Y : ℤ) : Matrix (Fin 2) (Fin 2) ℤ :=
   !![a*d - b*q*c - a*j*c, a*b + b*j'*c + a*Y; c*d - c^2*j - c*d*q, a*d + c*d*j' + c*Y]
 
 /- English proof (translation)
-Rewrite using `[gam, Matrix.det_fin_two_of]`. Substitute `hY` using the available equality. Take the linear combination `(a*d - (a*j + j*j'*c - j'*d - q*Y)*c + 1) * hdet`.
+Rewrite the conclusion using the stated equalities. Substitute using the available equality. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem det_gam (a b c d : ℤ) (j j' q : ℕ) (Y : ℤ) (hdet : a*d - b*c = 1)
     (hY : b = a*j + j*j'*c - j'*d - q*Y) : (gam a b c d j j' q Y).det = 1 := by
@@ -19,9 +19,9 @@ theorem det_gam (a b c d : ℤ) (j j' q : ℕ) (Y : ℤ) (hdet : a*d - b*c = 1)
   linear_combination (a*d - (a*j + j*j'*c - j'*d - q*Y)*c + 1) * hdet
 
 /- English proof (translation)
-Substitute `hY` using the available equality. Prove the components needed by the constructor for the conclusion. Apply `mul_left_cancel₀ hq` to reduce the goal to its premises. Take the linear combination `a*hwq - (a*d - (a*j + j*j'*c - j'*d - q*Y)*q*c - a*j*c)*hzq - (a*(t+j) + (a*j + j*j'*c - j'*d - q*Y)*q)*hdet`. Apply `mul_left_cancel₀ hq` to reduce the goal to its premises.
+Substitute using the available equality. Prove the components needed by the constructor for the conclusion. Reduce the claim to the hypotheses of an applicable result. Take a linear combination of the given relations to obtain the conclusion. Reduce the claim to the hypotheses of an applicable result.
 
-Take the linear combination `c*hwq - (c*d - c^2*j - c*d*q)*hzq - (c*(t+j) + d*q)*hdet`.
+Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem alg (a b c d Y t w z j j' q : ℂ) (hq : q ≠ 0) (hdet : a*d - b*c = 1)
     (hY : b = a*j + j*j'*c - j'*d - q*Y) (hwq : w*q = t + j)
@@ -37,41 +37,39 @@ theorem alg (a b c d Y t w z j j' q : ℂ) (hq : q ≠ 0) (hdet : a*d - b*c = 1)
     linear_combination c*hwq - (c*d - c^2*j - c*d*q)*hzq - (c*(t+j) + d*q)*hdet
 
 /- English proof (translation)
-Establish `hdetZ : ρ 0 0 * ρ 1 1 - ρ 0 1 * ρ 1 0 = 1`. Use `ρ.det_coe` as an intermediate fact. Rewrite `this` using `[Matrix.det_fin_two]`. Then use the resulting hypothesis. Establish `hqC : (q : ℂ) ≠ 0` using `by exact_mod_cast hq.ne'`. Establish `hqR : (0 : ℝ) < q` using `by exact_mod_cast hq`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set γ : SL(2, ℤ) := ⟨gam (ρ 0 0) (ρ 0 1) (ρ 1 0) (ρ 1 1) j j' q Y, det_gam _ _ _ _ _ _ _ _ hdetZ hY⟩ with hγdef`. Establish `hdiv : ((N * l : ℕ) : ℤ) ∣ ρ 1 0` using `(ZMod.intCast_zmod_eq_zero_iff_dvd _ _).mp hcN`. Establish `hN : ((ρ 1 0 : ℤ) : ZMod N) = 0` using `(ZMod.intCast_zmod_eq_zero_iff_dvd _ _).mpr (dvd_trans (by push_cast; exact dvd_mul_right _ _) hdiv)`. Establish `hl : ((ρ 1 0 : ℤ) : ZMod l) = 0` using `(ZMod.intCast_zmod_eq_zero_iff_dvd _ _).mpr (dvd_trans (by push_cast; exact dvd_mul_left _ _) hdiv)`. Establish `hγ : γ ∈ GlobalTheory.Hk.lev N l`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `Subgroup.mem_inf.mpr ⟨(Gamma1_mem _ _).mpr ⟨?_, ?_, ?_⟩, Gamma0_mem.mpr ?_⟩` and prove the remaining obligations. Establish `e : γ 0 0 = 1 + ρ 1 0 * (ρ 0 1 - ρ 0 1 * q - ρ 0 0 * j)`. Simplify using `only [hγdef, gam]`. Simplify using the standard rewrite rules. Take the linear combination `hdetZ`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Use `push_cast`. Rewrite using `[hN]`. Expand and normalize the polynomial expressions, which then agree. Establish `e : γ 1 1 = 1 + ρ 1 0 * (ρ 0 1 + ρ 1 1 * j' + Y)`.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [hγdef, gam]`. Simplify using the standard rewrite rules. Take the linear combination `hdetZ`. Rewrite using `[e]`. Use `push_cast`.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hN]`. Expand and normalize the polynomial expressions, which then agree. Establish `e : γ 1 0 = ρ 1 0 * (ρ 1 1 - ρ 1 0 * j - ρ 1 1 * q)`. Simplify using `only [hγdef, gam]`. Simplify using the standard rewrite rules.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Use `push_cast`. Rewrite using `[hN]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `e : γ 1 0 = ρ 1 0 * (ρ 1 1 - ρ 1 0 * j - ρ 1 1 * q)`. Simplify using `only [hγdef, gam]`. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Rewrite using `[hl]`. Expand and normalize the polynomial expressions, which then agree. Establish `hpos : ∀ x : ℍ, ∀ n : ℕ, 0 < (((x : ℂ) + n) / q).im`. Introduce `x n`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `x.im_pos` as an intermediate fact. Rewrite using `[Complex.div_natCast_im]`. Simplify using the standard rewrite rules. Check the signs of the components of the expression. Use `set w : ℍ := ofComplex (((τ : ℂ) + j) / q) with hwdef`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Check the signs of the components of the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set z : ℍ := ofComplex ((((ρ • τ : ℍ) : ℂ) + j') / q) with hzdef`. Establish `hwc : (w : ℂ) = ((τ : ℂ) + j) / q` using `by rw [hwdef, ofComplex_apply_of_im_pos (hpos τ j)]`. Establish `hzc : (z : ℂ) = (((ρ • τ : ℍ) : ℂ) + j') / q`. Rewrite using `[hzdef, ofComplex_apply_of_im_pos (hpos (ρ • τ) j')]`. Establish `hu : ((ρ 1 0 : ℤ) : ℂ) * τ + ((ρ 1 1 : ℤ) : ℂ) ≠ 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Use `denom_ne_zero ρ τ` as an intermediate fact. Rewrite `this` using `[ModularGroup.denom_apply]`. Then use the resulting hypothesis. Establish `hρτ : ((ρ • τ : ℍ) : ℂ) = (((ρ 0 0 : ℤ) : ℂ) * τ + ((ρ 0 1 : ℤ) : ℂ)) / (((ρ 1 0 : ℤ) : ℂ) * τ + ((ρ 1 1 : ℤ) : ℂ))`. Rewrite using `[coe_specialLinearGroup_apply]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hwq : (w : ℂ) * q = τ + j` using `by rw [hwc]; field_simp`. Establish `hzq : (z : ℂ) * q * (((ρ 1 0 : ℤ) : ℂ) * τ + ((ρ 1 1 : ℤ) : ℂ)) = ((ρ 0 0 : ℤ) : ℂ) * τ + ((ρ 0 1 : ℤ) : ℂ) + (j' : ℂ) * (((ρ 1 0 : ℤ) : ℂ) * τ + ((ρ 1 1 : ℤ) : ℂ))`. Rewrite using `[hzc, div_mul_cancel₀ _ hqC, hρτ, add_mul, div_mul_cancel₀ _ hu]`. Establish `hdetC : ((ρ 0 0 : ℤ) : ℂ) * ((ρ 1 1 : ℤ) : ℂ) - ((ρ 0 1 : ℤ) : ℂ) * ((ρ 1 0 : ℤ) : ℂ) = 1`. Conclude with `hdetZ` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hYC : ((ρ 0 1 : ℤ) : ℂ) = ((ρ 0 0 : ℤ) : ℂ) * (j : ℂ) + (j : ℂ) * (j' : ℂ) * ((ρ 1 0 : ℤ) : ℂ) - (j' : ℂ) * ((ρ 1 1 : ℤ) : ℂ) - (q : ℂ) * (Y : ℂ)` using `by exact_mod_cast hY`. Take `⟨hA, hB⟩` from `alg _ _ _ _ (Y : ℂ) (τ : ℂ) (w : ℂ) (z : ℂ) (j : ℂ) (j' : ℂ) (q : ℂ) hqC hdetC hYC hwq hzq`. Establish `hγ10 : ((γ 1 0 : ℤ) : ℂ) * z + ((γ 1 1 : ℤ) : ℂ) ≠ 0`. Use `denom_ne_zero γ z` as an intermediate fact. Rewrite `this` using `[ModularGroup.denom_apply]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hsm : ρ • w = γ • z`. Apply `UpperHalfPlane.ext` to reduce the goal to its premises. Rewrite using `[coe_specialLinearGroup_apply, coe_specialLinearGroup_apply]`. Simplify using `only [hγdef, gam, algebraMap_int_eq, eq_intCast, Complex.ofReal_intCast]`. Simplify using `only [Matrix.SpecialLinearGroup.coe_mk, Matrix.of_apply, Matrix.cons_val', Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.empty_val', Matrix.cons_val_fin_one, Matrix.head_cons, Matrix.head_fin_const]`.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Rewrite using `[hA, hB, mul_div_mul_left _ _ hu]`. Establish `hden : denom ρ w = denom ρ τ * denom γ z`. Rewrite using `[ModularGroup.denom_apply, ModularGroup.denom_apply, ModularGroup.denom_apply, hB]`. Simplify using `only [hγdef, gam]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Rewrite using `[ModularForm.SL_slash_apply, hsm, SlashInvariantForm.slash_action_eqn_SL'' f hγ z, hden, mul_zpow]`. Establish `h1` using `denom_ne_zero ρ τ`. Establish `h2` using `denom_ne_zero γ z`. Rewrite using `[zpow_neg, zpow_neg]`.
-
-Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem key {N l q : ℕ} {k : ℤ} (f : ModularForm (GlobalTheory.Hk.lev N l) k) (ρ : SL(2, ℤ))
     (hcN : ((ρ 1 0 : ℤ) : ZMod (N * l)) = 0) (hq : 0 < q) (j j' : ℕ) (Y : ℤ)
@@ -147,7 +145,7 @@ theorem key {N l q : ℕ} {k : ℤ} (f : ModularForm (GlobalTheory.Hk.lev N l) k
   field_simp
 
 /- English proof (translation)
-Establish `h0 : 0 ≤ x % (q : ℤ)` using `Int.emod_nonneg _ (by exact_mod_cast hq.ne')`. Rewrite using `[show (((x % (q : ℤ)).toNat : ℕ) : ZMod q) = (((x % (q : ℤ)).toNat : ℤ) : ZMod q) by push_cast; rfl, Int.toNat_of_nonneg h0, ZMod.intCast_mod]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem cast_toNat_emod {q : ℕ} (hq : 0 < q) (x : ℤ) :
     (((x % (q : ℤ)).toNat : ℕ) : ZMod q) = (x : ZMod q) := by
@@ -156,14 +154,14 @@ theorem cast_toNat_emod {q : ℕ} (hq : 0 < q) (x : ℤ) :
     push_cast; rfl, Int.toNat_of_nonneg h0, ZMod.intCast_mod]
 
 /- English proof (translation)
-Establish `h1 : x % (q : ℤ) < q` using `Int.emod_lt_of_pos _ (by exact_mod_cast hq)`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem toNat_emod_lt {q : ℕ} (hq : 0 < q) (x : ℤ) : (x % (q : ℤ)).toNat < q := by
   have h1 : x % (q : ℤ) < q := Int.emod_lt_of_pos _ (by exact_mod_cast hq)
   omega
 
 /- English proof (translation)
-Use `haveI : NeZero q := ⟨by omega⟩`. Rewrite using `[← ZMod.val_cast_of_lt hi, ← ZMod.val_cast_of_lt hi', h]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_of_cast_eq {q : ℕ} {i i' : ℕ} (hi : i < q) (hi' : i' < q)
     (h : (i : ZMod q) = (i' : ZMod q)) : i = i' := by
@@ -175,31 +173,29 @@ end GlobalTheory.Hk.UDia
 open GlobalTheory.Hk.UDia in
 
 /- English proof (translation)
-Introduce `N l q k d ρ _ _ hqp hqNl hρ f`. Establish `hq : 0 < q` using `hqp.pos`. Establish `hcN` using `hρ.1`. Establish `hdetZ : ρ 0 0 * ρ 1 1 - ρ 0 1 * ρ 1 0 = 1`. Use `ρ.det_coe` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[Matrix.det_fin_two]`. Then use the resulting hypothesis. Establish `hdiv : ((N * l : ℕ) : ℤ) ∣ ρ 1 0` using `(ZMod.intCast_zmod_eq_zero_iff_dvd _ _).mp hcN`. Establish `hcq : ((ρ 1 0 : ℤ) : ZMod q) = 0` using `(ZMod.intCast_zmod_eq_zero_iff_dvd _ _).mpr (dvd_trans (by exact_mod_cast hqNl) hdiv)`. Establish `had : ((ρ 0 0 : ℤ) : ZMod q) * ((ρ 1 1 : ℤ) : ZMod q) = 1`. Establish `h` using `congrArg (fun x : ℤ => (x : ZMod q)) hdetZ`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Move the coercions through the operations in `at h`. Rewrite `h` using `[hcq]`. Take the linear combination `h`. Use `set a : ℤ := ρ 0 0`. Use `set b : ℤ := ρ 0 1`.
+Move the embeddings inside the algebraic operations. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Use `set dd : ℤ := ρ 1 1`. Set `φ : ℕ → ℕ` to `fun i => ((a * (a * i - b)) % (q : ℤ)).toNat`. Set `ψ : ℕ → ℕ` to `fun i => ((dd * (dd * i + b)) % (q : ℤ)).toNat`. Use function extensionality and compare the values at `τ`. Simplify using `only [GlobalTheory.Hk.dia]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ModularForm.SL_slash_apply]`. Simplify using `only [GlobalTheory.Hk.uOp]`. Rewrite using `[mul_assoc]`. Use `congr 1`. Rewrite using `[Finset.sum_mul]`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hterm : ∀ i ∈ Finset.range q, (⇑f ∣[k] ρ) (ofComplex (((τ : ℂ) + i) / q)) = f (ofComplex ((((ρ • τ : ℍ) : ℂ) + (φ i : ℕ)) / q)) * denom ρ τ ^ (-k)`. Introduce `i _`. Establish `hX : ((q : ℕ) : ℤ) ∣ a * i + i * (φ i) * ρ 1 0 - (φ i) * dd - b`. Apply `(ZMod.intCast_zmod_eq_zero_iff_dvd _ _).mp` to reduce the goal to its premises. Use `push_cast`.
+Reduce the claim to the hypotheses of an applicable result. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion.
 
-Rewrite using `[cast_toNat_emod hq, hcq]`. Use `push_cast`. Take the linear combination `(-(((a : ℤ) : ZMod q) * i - b)) * had`. Take `⟨Y, hY⟩` from `hX`. Conclude with `key f ρ hcN hq i (φ i) Y (by linear_combination -hY) τ`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[Finset.sum_congr rfl hterm]`. Use `Finset.sum_nbij' φ ψ ?_ ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `i _`. Simplify using `using toNat_emod_lt hq _`. Introduce `i _`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `using toNat_emod_lt hq _`. Introduce `i hi`. Simplify using `only [Finset.mem_coe, Finset.mem_range] at hi`. Apply `eq_of_cast_eq (toNat_emod_lt hq _) hi` to reduce the goal to its premises. Simplify using `only [ψ, φ]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[cast_toNat_emod hq]`. Use `push_cast`. Rewrite using `[cast_toNat_emod hq]`. Use `push_cast`. Take the linear combination `((((a : ℤ) : ZMod q) * dd + 1) * i - dd * b) * had`.
+Take a linear combination of the given relations to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Introduce `i hi`. Simplify using `only [Finset.mem_coe, Finset.mem_range] at hi`. Apply `eq_of_cast_eq (toNat_emod_lt hq _) hi` to reduce the goal to its premises. Simplify using `only [ψ, φ]`. Rewrite using `[cast_toNat_emod hq]`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion.
 
-Use `push_cast`. Rewrite using `[cast_toNat_emod hq]`. Use `push_cast`. Take the linear combination `((((a : ℤ) : ZMod q) * dd + 1) * i + a * b) * had`. Introduce `i _`.
-
-Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.Hk.uOp_dia_comm : ∀ (N l q : ℕ) (k d : ℤ) (ρ : SL(2, ℤ)), 0 < N → 0 < l → q.Prime →
     q ∣ N * l → GlobalTheory.Hk.IsDia N l d ρ → ∀ f : ModularForm (GlobalTheory.Hk.lev N l) k,

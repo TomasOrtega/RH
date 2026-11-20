@@ -17,9 +17,9 @@ noncomputable section
 namespace GlobalTheory.RowSingle
 
 /- English proof (translation)
-Introduce `w hw`. Unfold `locPl at hw`. Break down `Finset.mem_union.1 hw with h | h` into its components or cases. Use `left`. Unfold `Places.W0 at h`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Separate the alternatives or extract the components of the hypothesis. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result.
 
-Take `⟨v, hv, rfl⟩` from `by simpa only [Finset.mem_image] using h`. Rewrite using `[G.pl.under_w hv]`. Conclude with `hv`. Conclude with `Or.inr ⟨w, h, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Prove the second alternative. A detailed English derivation is pending.
 -/
 theorem locPl_under {D : D7} {T : Type} {L : LevCh D T} {sc : GlobalTheory.ChiGrid.Consts} (G : GridData L sc) (t : T) :
     ∀ w ∈ locPl G t, w.under (𝓞 D.host.F) ∈ G.pl.S0 ∨ ∃ w' ∈ L.Q t, w.under (𝓞 D.host.F) = w'.under (𝓞 D.host.F) := by
@@ -34,9 +34,9 @@ theorem locPl_under {D : D7} {T : Type} {L : LevCh D T} {sc : GlobalTheory.ChiGr
   · exact Or.inr ⟨w, h, rfl⟩
 
 /- English proof (translation)
-Set `dr : ∀ i : Fin D.R.m, FinDatum G t (.chi i D.R.m)` to `fun i => { FinDatum.ind G t (.chi i D.R.m) (locPl G t) (locPl_under G t) e he with fn := F i, sb := (hfr i).1 }`. Set `d : PureDat G t` to `(fun j => FinDatum.vacuum G t (.top t j), dr)`. Take `⟨c, hc⟩` from `GlobalTheory.CombsExist.exists_isCombs W hL (Finsupp.single d 1)`. Establish `hc'` using `(hc d (by simp)).2`. Use `⟨dr, fun i => (c d).2 i, fun i => ⟨rfl, hc' i⟩, fun i => ?_, fun i => rfl⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hv` using `ρ.vX_is i D.R.m i.2 le_rfl`. Take `⟨⟨Tm, hTm⟩, h1⟩` from `(hc' i).2.2 (ρ.vX i D.R.m) hv.2.theta hv.2.lat`. Conclude with `(h1 Tm hTm).trans ((hfr i).2.2 Tm hTm).symm`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exists_rowData {D : D7} {T : Type} {L : LevCh D T} {sc : GlobalTheory.ChiGrid.Consts} {G : GridData L sc} (W : G.Weil)
     {μ₀ : T} (hL : L.Is μ₀) (ρ : RealMatch W) (t : T) (e : AE D) (he : IsIdemSum e (locPl G t))
@@ -57,7 +57,7 @@ theorem exists_rowData {D : D7} {T : Type} {L : LevCh D T} {sc : GlobalTheory.Ch
   exact (h1 Tm hTm).trans ((hfr i).2.2 Tm hTm).symm
 
 /- English proof (translation)
-Use `⟨0, fun _ _ _ => ⟨0, fun D large₂ _ _ Γ _ _ Pl0 T A Ks _ _ _ R F s ch _ _ => ?_⟩⟩` and prove the remaining obligations. Introduce `t e he φ fr hfr`. Take `⟨dr, cr, h1, h2, h3⟩` from `exists_rowData ch.W s.core.lev ch.rm t e he _ fr hfr`. Conclude with `⟨dr, cr, h1, h2, fun i y hy => by rw [h3 i]; exact if_pos hy⟩`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem rowData : Big fun {D} _ _ _ _ {T} _ _ _ _ _ _ ch => ∀ (t : T) (e : AE D), IsIdemSum e (locPl ch.G t) → ∀ (φ : (∀ w : locPl ch.G t, ∀ b : GlobalTheory.SplitFlip.Edge, Matrix (Fin ((locGrid ch.G t w.1).rank b.tgt)) (Fin ((locGrid ch.G t w.1).rank b.src)) (Kw w.1) → ℂ)) (fr : SchRow ch.G), (∀ i : Fin D.R.m, IsLocVec ch.W (.chi i D.R.m) e (ch.rm.vX i D.R.m) (fun y => if IsHalf e y then ∏ w : locPl ch.G t, φ w (.ex i D.R.m) (ch.S.B.coord t w.1 (X := (i, D.R.m)) (Y := (i + 1, D.R.m)) ⟨i.2.le, le_rfl⟩ ⟨i.2, le_rfl⟩ (y.map fun a => cpt w.1 (toEAf D a))) else 0) (fr i)) → ∃ (dr : ∀ i : Fin D.R.m, FinDatum ch.G t (.chi i D.R.m)) (cr : ∀ i : Fin D.R.m, WO (ch.G.pS (.chi i D.R.m : Pair T)) (ch.G.pT (.chi i D.R.m : Pair T)) →₀ ℂ), (∀ i, (dr i).e = e ∧ IsCombOf ch.W (dr i) (cr i)) ∧ (∀ i, comb ch.W.ψ _ _ (cr i) (ch.rm.vX i D.R.m) = fr i) ∧ ∀ i y, IsHalf e y → (dr i).fn y = ∏ w : locPl ch.G t, φ w (.ex i D.R.m) (ch.S.B.coord t w.1 (X := (i, D.R.m)) (Y := (i + 1, D.R.m)) ⟨i.2.le, le_rfl⟩ ⟨i.2, le_rfl⟩ (y.map fun a => cpt w.1 (toEAf D a))) := by
   refine ⟨0, fun _ _ _ => ⟨0, fun D large₂ _ _ Γ _ _ Pl0 T A Ks _ _ _ R F s ch _ _ => ?_⟩⟩

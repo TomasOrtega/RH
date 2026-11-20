@@ -12,9 +12,9 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hp`. Use `⟨fun hw Φ hΦ => ?_, fun _ Φ hΦ => ?_⟩` and prove the remaining obligations. Take `⟨m, f, φ, hφ, rfl⟩` from `(hF F E σ B n d X W M χX χW om r s r' s' hp).2.1 Φ hΦ`. Establish `hd` using `hW F E σ B n d X W M χX χW om r s r' s' hp hw`. Rewrite using `[show M.I om (∑ i, pureA F (f i) (φ i)) = _ from funext (dom_sum hB hp hd f φ hφ hφ).2.2]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `continuous_finset_sum _ fun i _ => dom_continuous hB hT hE hp hd (hφ i) (hφ i) (f i)`. Take `⟨m, f, φ, hφ, rfl⟩` from `(hF F E σ B n d X W M χX χW om r s r' s' hp).1 Φ hΦ`. Establish `hd` using `dom_of_domSoU hS hp`. Rewrite using `[show M.I om (∑ i, pureA F (f i) (φ i)) = _ from funext (dom_sum hB hp hd f φ hφ fun i => (hφ i).1).2.2]`. Conclude with `continuous_finset_sum _ fun i _ => dom_continuous hB hT hE hp hd (hφ i) (hφ i).1 (f i)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem iCont_of (hB : ThetaBasic) (hT : GrpTop) (hE : EpsOf) (hW : DomWeil) (hS : DomSoU) (hF : SoFin) :
     PositivityTheory.ThKF.ICont := by

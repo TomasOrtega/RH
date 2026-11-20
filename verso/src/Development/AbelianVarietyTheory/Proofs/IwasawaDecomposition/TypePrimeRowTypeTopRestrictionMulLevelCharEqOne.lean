@@ -13,31 +13,29 @@ namespace GlobalTheory.Mem.Col2.AdT
 open GlobalTheory.TopStep GlobalTheory.LastSteps
 
 /- English proof (translation)
-Introduce `X Pr R Ch w h0 hh0 g g' g'' hJ hcomm hg' hred hcong`. Take `⟨σ₀⟩ : Nonempty (X.K →+* ℂ)` from `inferInstance`. Establish `hN : R.N R.m = (R.N R.m - 1) + 1` using `N_m_succ R`. Establish `ht` using `t_pos R`. Establish `hrr` using `r_eq_sym R`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hX'` using `rank_X'_eq R`. Establish `hint : g'' ∈ GLint X.E (R.N R.m - 1) w.1`. Introduce `x`. Establish `h1` using `(Subgroup.mem_inf.1 hJ).1 x`. Rewrite `h1` using `[lamY_zero]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `hredr : ∀ x ∈ stdAt X.E (R.N R.m - 1) w.1, redV w.1 (g'' x) = (h0⁻¹).1.mulVec (redV w.1 x)`. Introduce `x hx`. Set `v : Sp X.E (R.N R.m)` to `fun l => if hl : l.1 < R.N R.m - 1 then x ⟨l.1, hl⟩ else 0`. Establish `hv : v ∈ stdAt X.E (R.N R.m) w.1`. Rewrite using `[mem_stdAt]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `l`. Distinguish the cases in `hl : l.1 < R.N R.m - 1`. Simplify using `only [v, dif_pos hl]`. Conclude with `mem_stdAt.1 hx _`. Simplify using `only [v, dif_neg hl]`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `intAt_zero`. Establish `hpv : prXpG X.E (R.N R.m) v = x`. Use function extensionality and compare the values at `i`. Establish `hi : i.1 < R.N R.m - 1` using `i.2`. Simplify using `[prXpG, LinearMap.funLeft_apply, v, hi]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hgx : g'' x = prXpG X.E (R.N R.m) (g v)`. Establish `h2` using `LinearMap.congr_fun hcomm v`. Simplify using `only [LinearMap.comp_apply, LinearEquiv.coe_coe] at h2`. Rewrite using `[h2, hpv]`. Establish `hc` using `hcong v hv`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `i`. Establish `eL : redV w.1 (g'' x) i = redV w.1 (g' v) (Br.iC hN i)`. Rewrite using `[hgx]`. Use `show redP w.1 (g v (Br.iC hN i)) = redP w.1 (g' v (Br.iC hN i))`. Establish `hz` using `mem_stdAt.1 hc (Br.iC hN i)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hq : ((qOf w.1 : ℕ) : X.E) ≠ 0` using `qOf_ne_zero`. Establish `e : g v (Br.iC hN i) = g' v (Br.iC hN i) + (qOf w.1 : X.E) * (((((qOf w.1 : ℕ) : X.E) ^ 1)⁻¹ • (g v - g' v)) (Br.iC hN i))`. Simplify using `only [pow_one, Pi.smul_apply, Pi.sub_apply, smul_eq_mul]`. Rewrite using `[mul_inv_cancel_left₀ hq]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[e, redP_add_q hz]`. Rewrite using `[eL, hred v hv, ← map_inv, diagEmb_val, (diagMat_mulVec hN _ _).1 i]`. Use `congr 1`. Use function extensionality and compare the values at `j`. Use `show redP w.1 (v (Br.iC hN j)) = redP w.1 (x j)`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hj : (Br.iC hN j).1 < R.N R.m - 1` using `j.2`. Simplify using `only [v, dif_pos hj]`. Both sides reduce to the same expression. Establish `hM : h0⁻¹ ∈ HJsym (𝓞 X.E ⧸ w.1.asIdeal) (R.N R.m - 1) R.k R.r R.t R.m R.rS (r_le_X' R)` using `inv_mem hh0`. Establish `e1 : psi0P Ch w.1 = Ch.psi0 w`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `psi0P`. Rewrite using `[dif_pos w.2]`. Establish `e2 : chiP Ch w.1 = chiAt Ch w`. Unfold `chiP`. Rewrite using `[dif_pos w.2]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlam : LocE.lamGBS (qOf w.1) (psi0P Ch w.1) (chiP Ch w.1) R.k R.r R.t R.m (R.N R.m - 1) 0 g''.toLinearMap = ((lamJsym (Ch.psi0 w) (chiAt Ch w) (R.N R.m - 1) R.k R.r R.t R.m R.rS (r_le_X' R) ⟨h0⁻¹, hM⟩ : X.Kˣ) : X.K)`. Rewrite using `[e1, e2]`. Conclude with `clW_lamGBS_lamJsym σ₀ _ _ hrr ht (by omega) (r_le_X' R) (by omega) ⟨h0⁻¹, hM⟩ g'' hint hredr`. Establish `hr : ((rowTyG Ch (rPsymF Ch) w).lam ⟨h0, hh0⟩ : X.Kˣ) = lamJsym (Ch.psi0 w) (chiAt Ch w) (R.N R.m - 1) R.k R.r R.t R.m R.rS (r_le_X' R) ⟨h0, hh0⟩` using `rfl`. Establish `hprod : (⟨h0⁻¹, hM⟩ * ⟨h0, hh0⟩ : ↥(HJsym (𝓞 X.E ⧸ w.1.asIdeal) (R.N R.m - 1) R.k R.r R.t R.m R.rS (r_le_X' R))) = 1` using `Subtype.ext (inv_mul_cancel h0)`.
-
-Rewrite using `[hlam, hr, ← Units.val_mul, ← map_mul, hprod, map_one, Units.val_one]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lamGBS_top_mul_lam_eq_one : ∀ {X : Fields} {Pr : Primes X} {R : Ranks} (Ch : Chars X Pr R.m) (w : {w // w ∈ Pr.vGs})
     (h0 : GL (Fin (R.N R.m - 1)) (𝓞 X.E ⧸ w.1.asIdeal)) (hh0 : h0 ∈ (rowTyG Ch (rPsymF Ch) w).H)

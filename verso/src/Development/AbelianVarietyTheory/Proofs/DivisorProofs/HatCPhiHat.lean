@@ -13,11 +13,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.AdTh
 
 /- English proof (translation)
-Introduce `x hx h1 h2`. Use `h x ?_ h1 h2` and prove the remaining obligations. Take `⟨α, rfl, -⟩` from `hε`. Establish `h3` using `congrArg (infPart D) hx`. Establish `h4 : infPart D (algebraMap (AF D.host.F) (AE D) (pairA D.host.F 0 α)) = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2 : fstA D.host.F (pairA D.host.F 0 α) = 0` using `rfl`. Establish `e3` using `Algebra.TensorProduct.map_tmul (fstA D.host.F) (AlgHom.id D.host.F D.host.E) (pairA D.host.F 0 α) 1`. Rewrite `e3` using `[e2, TensorProduct.zero_tmul]`. Conclude with `e3`. Rewrite `h3` using `[map_mul, h4, zero_mul, map_sub, map_one]`.
-
-Conclude with `(sub_eq_zero.1 h3.symm)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unr_of {D : D7} {χ : (AE D)ˣ →* Circle} (h : UnramEverywhere D χ) {v ε} (hε : IsPlaceIdem D v ε) : UnramAt ε χ := by
   intro x hx h1 h2
@@ -33,13 +31,13 @@ theorem unr_of {D : D7} {χ : (AE D)ˣ →* Circle} (h : UnramEverywhere D χ) {
   exact (sub_eq_zero.1 h3.symm)
 
 /- English proof (translation)
-Establish `hH : ∀ n : ℕ, IsHeckeChar D (η ^ n)` using `fun n => ⟨by`. Establish `: ((η ^ n : (AE D)ˣ →* Circle) : (AE D)ˣ → Circle) = fun x => η x ^ n` using `by funext x; simp`. Rewrite using `[this]; exact hη.1.1.pow n, fun x => by rw [MonoidHom.pow_apply, hη.1.2 x, one_pow]⟩`. Establish `hR : ∀ n : ℕ, ResEta D (η ^ n) n` using `fun n => ⟨hη.2.2.1.1, fun e he a => by rw [MonoidHom.pow_apply, hη.2.2.1.2 e he a, pow_one]⟩`. Establish `hE : ∀ (n : ℕ) τ, HasInfExp D (η ^ n) τ ((n : ℚ) / 2)` using `fun n τ => by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨m, hm, ha, hb⟩` from `hη.2.2.2 τ`. Establish `hm1 : m = 1`. Establish `: (m : ℚ) = 1` using `by rw [hm]; norm_num`. Conclude with `this` after adjusting the coercions. Substitute `hm1` using the available equality.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨n, by push_cast; ring, ha, fun θ' hθ' x hx hx' => ?_⟩` and prove the remaining obligations. Rewrite using `[MonoidHom.pow_apply, Circle.coe_pow, hb θ' hθ' x hx hx', zpow_one, zpow_natCast]`. Establish `hU : ∀ n : ℕ, UnramEverywhere D (η ^ n)` using `fun n x a b c => by`. Rewrite using `[MonoidHom.pow_apply, hη.2.1 x a b c, one_pow]`. Take `⟨om, hom⟩` from `GlobalTheory.T.exists_weilDatum_of_splittingCharacters D ψ hψ V W _ _ ⟨η, hη⟩ (hH _) (hH _) (hR _) (hR _)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨om, hom, hθ, h1, h2, h3, h4, fun τ => ?_, fun τ => ⟨0, by simpa using hE W.rank τ⟩, fun v ε h => ⟨unr_of (hU _) h.1, unr_of (hU _) h.1⟩, ⟨η, hη⟩⟩` and prove the remaining obligations. Take `⟨a, ha⟩` from `h2`. Use `⟨a, ?_⟩` and prove the remaining obligations. Use `hE V.rank τ` as an intermediate fact. Rewrite `this` using `[show ((V.rank : ℚ) / 2) = ((a : ℤ) : ℚ) by rw [ha]; push_cast; ring]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem isPair_pow (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (hψ : IsStdChar D ψ (-1)) (θ : InfFam D) (hθ : IsInfFam θ)
     (V W : HSp D) (h1 : V.gram = 1) (h2 : Even V.rank) (h3 : V.SigOK) (h4 : W.SigOK) (η) (hη : IsEtaTilde D η) :
@@ -69,9 +67,9 @@ theorem isPair_pow (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (hψ : IsStdChar D 
   rwa [show ((V.rank : ℚ) / 2) = ((a : ℤ) : ℚ) by rw [ha]; push_cast; ring] at this
 
 /- English proof (translation)
-Establish `hr : 0 < D.R.r`. Use `D.R.m_add_three_le_k` as an intermediate fact. Simplify using `only [Ranks.r]`. Use linear arithmetic over natural numbers and integers. Take `⟨θ, hθ⟩` from `hψ.2.1`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result.
 
-Use `⟨hr.trans_le (r_le_V i), hr.trans_le (r_le_rank_Wc i), θ, _, _, isPair_pow D ψ hψ θ hθ _ _ hV.1 ?_ (D.sp.V_sig _) (D.sp.W_sig _) η hη⟩` and prove the remaining obligations. Rewrite using `[D.sp.V_rank _ (Nat.le_add_left _ _) i.2]`. Conclude with `(kapDom D).2`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isPair_rec (D : D7) (i : Fin D.R.m) (hV : VStd D i) (ψ : AddChar (AF D.host.F) ℂ) (hψ : IsStdChar D ψ (-1)) (η) (hη : IsEtaTilde D η) :
     0 < (Vc D i).rank ∧ 0 < (Wc D i).rank ∧ ∃ θ χV χW om, IsPair ψ θ (Vc D i) (Wc D i) χV χW om := by
@@ -85,13 +83,13 @@ theorem isPair_rec (D : D7) (i : Fin D.R.m) (hV : VStd D i) (ψ : AddChar (AF D.
   exact (kapDom D).2
 
 /- English proof (translation)
-Establish `hz : ((zetaM c : c.F) : ℂ) = Complex.exp (2 * Real.pi * Complex.I / (l.M : ℂ))`. Establish `hM : (l.M : ℂ) ≠ 0` using `by have := l.three_le; exact_mod_cast (by omega : l.M ≠ 0)`. Establish `hM' : l.M' ≠ 0` using `Nat.lcm_ne_zero (by have := l.three_le; omega) l.A_pos.ne'`. Take `⟨k, hk⟩ : l.M ∣ l.M'` from `Nat.dvd_lcm_left _ _`. Establish `hk0 : (k : ℂ) ≠ 0` using `by exact_mod_cast (by rintro rfl; simp at hk; exact hM' hk : k ≠ 0)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Simplify using `only [zetaM, SubmonoidClass.coe_pow, zeta]`. Rewrite using `[← Complex.exp_nat_mul, hk, Nat.mul_div_cancel_left _ (by have := l.three_le; omega)]`. Use `congr 1`. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts.
 
-Use `Fintype.ofFinite (Fin n → LevQc Dw l)` as an intermediate fact. Unfold `hatC phiHat`. Rewrite using `[finsum_eq_sum_of_fintype, finsum_eq_sum_of_fintype, ← hz]`. Use `show _ = c.F.val _`. Rewrite using `[map_sum]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_zpow₀]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem hatC_phiHat {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H} {l : Level H}
     (c : Coeff l) {n : ℕ} (φ : (Fin n → LevQc Dw l) → c.F) (hf : Finite (Fin n → LevQc Dw l)) (q : Fin n → LevQ Dw l) :
@@ -114,7 +112,7 @@ theorem hatC_phiHat {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Reci
   rfl
 
 /- English proof (translation)
-Introduce `a _`. Use `⟨0, zero_mem _, ?_⟩` and prove the remaining obligations. Rewrite using `[map_one, nsmul_zero, Units.val_one, Matrix.one_mulVec]`. Conclude with `sub_self _`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem markAd_one {D : D7} {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host D.host.E} {Dw : Datum H} (l : Level H) (W : HSp D)
     (ι : Dw.La →ₗ[𝓞 D.host.E] (Fin W.rank → D.host.E)) : MarkAd l W rfl ι 1 ι := by

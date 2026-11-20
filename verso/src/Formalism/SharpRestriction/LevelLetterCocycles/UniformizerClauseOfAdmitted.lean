@@ -26,9 +26,9 @@ variable (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (Cm : CmpOf D.lo
 variable {CR CA CB CK : ℝ}
 
 /- English proof (translation)
-Establish `hpl : ((D.loc l).PD K).p = l` using `(D.loc l).PD_p K`. Use `⟨fun x hx => ?_, by rw [← hpl]; exact hCA.2.2, hg⟩` and prove the remaining obligations. Take `⟨y, hy⟩` from `hCA.1.2 ⟨x, hx⟩`. Establish `h2` using `y.2.2`. Establish `: ((y : ↥(K0 K)) : Om l) = x` using `congrArg Subtype.val hy`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h2` using `[this]`. Conclude with `h2`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem caseA_loc' {l : ℕ} [Fact l.Prime] {K LL : Loc.FinExt l} (hg : Loc.Good K 1 LL)
     (hCA : Formalism.MainNotions.LiftingTheory.CaseA ((HW l).W K 1 LL hg)) : Loc.CaseA K LL := by
@@ -41,19 +41,19 @@ theorem caseA_loc' {l : ℕ} [Fact l.Prime] {K LL : Loc.FinExt l} (hg : Loc.Good
   exact h2
 
 /- English proof (translation)
-Introduce `l _ K s LL h` and use `(hA.1 l K s LL h).2.2.2.1`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem laurent_clause_of_admitted' (hA : admitted D HW F Cm CR CA CB CK) : Formalism.MainNotions.DeltaInvariantLattices.P4 D HW F Cm :=
   fun l _ K s LL h => (hA.1 l K s LL h).2.2.2.1
 
 /- English proof (translation)
-Introduce `l _ K s LL h` and use `(hA.1 l K s LL h).2.2.2.2.2.2.2.2.1`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem uniformizer_clause_of_admitted (hA : admitted D HW F Cm CR CA CB CK) : Formalism.MainNotions.DeltaInvariantLattices.P9 D HW F :=
   fun l _ K s LL h => (hA.1 l K s LL h).2.2.2.2.2.2.2.2.1
 
 /- English proof (translation)
-The claim follows from `Formalism.MainNotions.UnusedSlot80.tools_unramified_statement D HW F Cm ⟨fun l _ K s LL h => (hA.1 l K s LL h).2.2.1, laurent_clause_of_admitted' D HW F Cm hA, uniformizer_clause_of_admitted D HW F Cm hA⟩`.
+A detailed English derivation is pending.
 -/
 theorem level_tools_of_admitted' (hA : admitted D HW F Cm CR CA CB CK) : Formalism.MainNotions.WachCoordinates.adm7 D HW F Cm :=
   Formalism.MainNotions.UnusedSlot80.tools_unramified_statement D HW F Cm ⟨fun l _ K s LL h => (hA.1 l K s LL h).2.2.1, laurent_clause_of_admitted' D HW F Cm hA,
@@ -62,29 +62,25 @@ theorem level_tools_of_admitted' (hA : admitted D HW F Cm CR CA CB CK) : Formali
 set_option maxHeartbeats 0 in
 
 /- English proof (translation)
-Introduce `d T₁ T₂ F' b S η m hset`. Establish `hCA : Formalism.MainNotions.LiftingTheory.CaseA ((HW l).W K 1 LL hg)` using `hset.1`. Establish `hpl : ((D.loc l).PD K).p = l` using `(D.loc l).PD_p K`. Establish `hCAl : Loc.CaseA K LL` using `caseA_loc' D HW hg hCA`. Establish `h5l : 5 ≤ l` using `by have := hset.2.1; rw [hpl] at this; omega`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set W := (HW l).W K 1 LL hg with hW`. Establish `h1` using `hA.1 l K 1 LL hg`. Establish `h9 : Formalism.MainNotions.DeltaInvariantLattices.P9W W` using `h1.2.2.2.2.2.2.2.2.1`. Take `⟨hE, hC, hQ⟩` from `hA.2.2.2.2.2.2.2.2.2.2.1 l K LL`. Establish `hs : W.s = 1` using `hCA.2.1`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : IsFractionRing ↥(OL LL) ↥LL.1 := Formalism.MainNotions.UnusedSlot80.BCF.isFrac_OL LL`. Use `haveI : IsLocalRing ↥(OL LL) := Formalism.MainNotions.LiftingTheory.lkd_local (D.loc l) LL`. Use `haveI : IsAdicComplete (IsLocalRing.maximalIdeal ↥(OL LL)) ↥(OL LL) := Formalism.MainNotions.RamifiedCoefficientChains.S9.DLev.complete_max LL`. Establish `hring : Formalism.MainNotions.UnusedSlot80.ToolsR.RingP W` using `(((h9 _ (Formalism.MainNotions.LiftingTheory.gen_one_crys W)) hs hCA.2.2).2.2 (Formalism.MainNotions.UnusedSlot80.finrank_K0_eq_one_of_le_Kur hCAl.1)).1`. Establish `C` using `((Cm l).C K 1 LL hg).tie`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hG` using `Formalism.MainNotions.N.Pv.LocalLengthBound.gam_of_tie W hs C`. Establish `hLev : Formalism.MainNotions.WachCoordinates.LevelMapHodgeFiltration W` using `(level_tools_of_admitted' D HW F Cm hA l K LL hCAl h5l).2`. Establish `hRu : Formalism.MainNotions.RamifiedCoefficientChains.Sh.ExpRules W` using `Formalism.MainNotions.N.Pv.LocalLengthBound.expRules_of W hLev hG.1 hG.2`. Establish `hRing : Formalism.MainNotions.RamifiedCoefficientChains.Sh.ExpRing W` using `Formalism.MainNotions.N.Pv.LocalLengthBound.expRing_of W hring`. Establish `hpt` using `Formalism.MainNotions.UnusedSlot80.points_exist_of_ring_condition D HW F (uniformizer_clause_of_admitted D HW F Cm hA)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hL` using `Formalism.MainNotions.UnusedSlot80.levCoeff_of_pt D HW F Cm (laurent_clause_of_admitted' D HW F Cm hA) hpt`. Establish `hBall : ∀ (l' : ℕ) [Fact l'.Prime] (K' LL' : FinExt l') (hg' : Good K' 1 LL') [NeZero (Module.finrank ℚ_[l'] ↥(K0 K'))], Formalism.MainNotions.RamifiedCoefficientChains.Sh.BasTool ((HW l').W K' 1 LL' hg')`. Introduce `l' _ K' LL' hg' _`. Use `haveI : IsFractionRing ↥(OL LL') ↥LL'.1 := Formalism.MainNotions.UnusedSlot80.BCF.isFrac_OL LL'`. Conclude with `Formalism.MainNotions.RamifiedCoefficientChains.Sh.basTool_of _ (hA.1 l' K' 1 LL' hg').2.2.2.2.2.2.2.2.1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `hEC : Formalism.MainNotions.RamifiedCoefficientChains.Sh.ExpCrit W` using `Formalism.MainNotions.N.Pv.LocalLengthBound.expCrit_D' D HW F Cm CR CA CB CK hA hL hBall l K LL hCAl h5l`. Establish `hGM` using `Formalism.MainNotions.RamifiedCoefficientChains.S9.GM.gMem_of W hE hC hQ h1.2.2.2.2.1 h9 hRu hEC`. Establish `hBas : Formalism.MainNotions.RamifiedCoefficientChains.Sh.BasTool W` using `Formalism.MainNotions.RamifiedCoefficientChains.Sh.basTool_of W h9`. Establish `hΔ : IsUnit ((W.DelF.card : ℕ) : ↥(OL LL))`. Establish `hcard : W.DelF.card = l - 1` using `Formalism.MainNotions.UnusedSlot80.LevR.card_delF D HW F (uniformizer_clause_of_admitted D HW F Cm hA) l K LL hCAl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hnu`. Establish `hm : ((W.DelF.card : ℕ) : ↥(OL LL)) ∈ IsLocalRing.maximalIdeal ↥(OL LL)` using `hnu`. Establish `hlm` using `Formalism.BasicNotions.Examples₂.LB.l_mem_max LL`. Establish `e : ((l : ℕ) : ↥(OL LL)) - ((W.DelF.card : ℕ) : ↥(OL LL)) = 1`. Rewrite using `[hcard, Nat.cast_sub (by omega)]; simp`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `Submodule.sub_mem _ hlm hm`. Rewrite `h3` using `[e]`. Conclude with `(IsLocalRing.maximalIdeal.isMaximal ↥(OL LL)).ne_top ((Ideal.eq_top_iff_one _).2 h3)`. Establish `hTH : Formalism.MainNotions.CrystallineLiftingInputs.THor W` using `Formalism.MainNotions.CrystallineLiftingInputs.Tools.frobenius_power_congruence_local D HW F Cm hA.1 l K LL hg`. Establish `hZ` using `Formalism.MainNotions.RamifiedCoefficientChains.Sh.ZT.zTool_of W h9 (((Formalism.MainNotions.CrystallineLiftingInputs.truncatedSeriesData.truncation_clause_of_lattice_hypotheses D HW F Cm (uniformizer_clause_of_admitted D HW F Cm hA) hA.2.2.2.2.2.2.2.1 hA.2.2.2.2.2.2.2.2.1).2 l K …`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hAd : Formalism.MainNotions.RamifiedCoefficientChains.S9.ShB.AdaptBas W` using `Formalism.MainNotions.RamifiedCoefficientChains.S9.AdM.adaptBas_of W hE hC hQ h1.2.2.1 h1.2.2.2.2.1 h9 (Formalism.MainNotions.WachCoordinates.Br.valRing_rec (D.loc l) LL)`. Establish `hpm : ((((D.loc l).PD K).p : ℕ) : ↥(OL LL)) ∈ IsLocalRing.maximalIdeal ↥(OL LL)`. Rewrite using `[hpl]`. Conclude with `Formalism.BasicNotions.Examples₂.LB.l_mem_max LL`. Establish `hPt : Formalism.MainNotions.LiftingTheory.CaseA W → ∀ (i : ZMod (Module.finrank ℚ_[l] ↥(K0 K))) (ζ : ↥LL.1), IsPrimitiveRoot ζ ((D.loc l).PD K).p → ∃ τ : ↥K.1 →ₐ[ℚ_[l]] ↥LL.1, Formalism.MainNotions.LiftingTheory.Over W τ i ∧ Formalism.MainNotions.DeltaInvariantLattices.ptK D.loc …`.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `_ c ζ hζ`. Take `⟨τ, hτ⟩` from `hpt l K LL hCAl h5l c ζ (by rwa [hpl] at hζ)`. Use `⟨τ, ?_, hτ⟩` and prove the remaining obligations. Take `⟨τs, ⟨hemb, -⟩, hres⟩` from `hτ`. Apply `AlgHom.ext` to reduce the goal to its premises.
-
-Introduce `x`. Establish `hy : (x : Om l) ∈ Ks K 1` using `(le_sup_left : K0 K ≤ Ks K 1) x.2`. Use `show τ (algebraMap ↥(K0 K) ↥K.1 x) = _`. Rewrite using `[hres (algebraMap ↥(K0 K) ↥K.1 x) ⟨x, hy⟩ rfl]`. Conclude with `hemb x ⟨x, hy⟩ rfl`.
-
-Establish `hDT : Formalism.MainNotions.RamifiedCoefficientChains.Sh.DetTool W` using `Formalism.MainNotions.RamifiedCoefficientChains.Sh.detTool_of W h9 _ h1.2.2.2.1 hPt hQ hpm hset.2.2.2.2.1`. Establish `hDet` using `Formalism.MainNotions.RamifiedCoefficientChains.S9.DetA.detAlg_of W hE hC hQ h1.2.2.2.2.1 h9 hBas (fun _ => hDT) (Formalism.MainNotions.RamifiedCoefficientChains.S9.GCoord.gCoord_holds W)`. Conclude with `Formalism.MainNotions.RamifiedCoefficientChains.S9.DetS.lemmaDN_of_S1E W hZ hAd hGM hDet d T₁ T₂ F' b S η m hset`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem dual_lemma_of_admitted (hA : admitted D HW F Cm CR CA CB CK) (l : ℕ) [Fact l.Prime] (K LL : Loc.FinExt l)
     (hg : Loc.Good K 1 LL) [NeZero (Module.finrank ℚ_[l] ↥(Loc.K0 K))] : LemmaDN ((HW l).W K 1 LL hg) := by

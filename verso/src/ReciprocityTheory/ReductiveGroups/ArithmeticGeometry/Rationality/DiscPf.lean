@@ -4,11 +4,11 @@ import ReciprocityTheory.SemistableReduction.CauchyInequalityOnTorus
 namespace ReciprocityTheory.ChartRestriction.G.FreeQuotientRank
 
 /- English proof (translation)
-Take `⟨hlim, hbd⟩` from `hc t htS`. Set `e` to `Equiv.funUnique (Fin 1) ℤ`. Establish `key` using `ReciprocityTheory.MultiplicativeHeights.cauchy_inequality_on_torus K K₀ hres 1 (fun χ => c (χ 0) * t ^ (χ 0)) ?_ ?_ (fun _ => n)`. Simplify `key` using `[norm_mul, norm_zpow]`. Conclude with `(hlim.comp e.injective.tendsto_cofinite :)`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `τ hτ`. Establish `h` using `hbd (τ 0) (hτ 0).1 (hτ 0).2`. Unfold `ReciprocityTheory.MultiplicativeHeights.torusSum`. Establish `h2 : (fun χ : Fin 1 → ℤ => c (χ 0) * t ^ (χ 0) * ∏ i, τ i ^ χ i) = fun χ => (fun m : ℤ => c m * (t * τ 0) ^ m) (e χ)`. Use function extensionality and compare the values at `χ`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using `[e, Fin.prod_univ_one, mul_zpow, mul_assoc]`. Rewrite using `[h2]`. Use `h using 2` and compare the differences between its conclusion and the goal. Conclude with `e.tsum_eq (fun m : ℤ => c m * (t * τ 0) ^ m)`.
+Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. A detailed English derivation is pending.
 -/
 theorem disc_bound {K : Type} [NormedField K] [IsUltrametricDist K] [CompleteSpace K]
     (K₀ : Subfield K) (hres : ReciprocityTheory.MultiplicativeHeights.ResidueFieldInfiniteOn (K₀ : Set K)) (c : ℤ → K)
@@ -34,25 +34,23 @@ theorem disc_bound {K : Type} [NormedField K] [IsUltrametricDist K] [CompleteSpa
     exact e.tsum_eq (fun m : ℤ => c m * (t * τ 0) ^ m)
 
 /- English proof (translation)
-Introduce `K _ _ _ K₀ hres S hS hdense c b hb hc n`. Establish `hbd : ∀ t ∈ S, ‖c n‖ * ‖t‖ ^ n ≤ 1` using `fun t ht => disc_bound K₀ hres c S hc t ht n`. Prove the components needed by the constructor for the conclusion. Assume the negation of the conclusion as `hlt push_neg at hlt`. Establish `hcont : ContinuousAt (fun x : ℝ => ‖c n‖ * x ^ n) 1` using `continuousAt_const.mul (continuousAt_zpow₀ (1 : ℝ) n (Or.inl one_ne_zero))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `hev : ∀ᶠ x in nhds (1 : ℝ), 1 < ‖c n‖ * x ^ n` using `hcont.eventually (lt_mem_nhds (by simpa using hlt))`. Take `⟨ε, hε, hball⟩` from `Metric.eventually_nhds_iff.1 hev`. Use `set r : ℝ := max (1 / 2) (1 - ε / 2) with hr`. Establish `hr0 : 0 < r` using `lt_max_of_lt_left (by norm_num)`. Establish `hr1 : r < 1` using `max_lt (by norm_num) (by linarith)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨t, htS, ht⟩` from `hdense r hr0 hr1 (min (ε / 2) (1 - r)) (lt_min (by linarith) (by linarith))`. Establish `h1` using `hbd t htS`. Establish `h2` using `(hS t htS).2`. Establish `hdist : dist ‖t‖ 1 < ε`. Rewrite using `[Real.dist_eq, abs_sub_comm, abs_of_pos (by linarith : (0 : ℝ) < 1 - ‖t‖)]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h4` using `(abs_lt.1 ht).1`. Establish `h5 : min (ε / 2) (1 - r) ≤ ε / 2` using `min_le_left _ _`. Establish `h3 : 1 - ε / 2 ≤ r` using `le_max_right _ _`. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `absurd h1 (not_le.2 (hball hdist))`.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Introduce `hn`. Assume the negation of the conclusion as `hne`. Establish `hq : 0 < ‖c n‖` using `norm_pos_iff.2 hne`. Establish `hm : 0 < -n` using `by omega`. Establish `hcont : ContinuousAt (fun x : ℝ => x ^ (-n)) 0` using `continuousAt_zpow₀ (0 : ℝ) (-n) (Or.inr hm.le)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0 : (fun x : ℝ => x ^ (-n)) 0 = 0` using `zero_zpow _ hm.ne'`. Establish `hev : ∀ᶠ x in nhds (0 : ℝ), x ^ (-n) < ‖c n‖` using `hcont.eventually (gt_mem_nhds (by rw [h0]; exact hq))`. Take `⟨ε, hε, hball⟩` from `Metric.eventually_nhds_iff.1 hev`. Use `set r : ℝ := min (1 / 2) (ε / 2) with hr`. Establish `hr0 : 0 < r` using `lt_min (by norm_num) (by linarith)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hr1 : r < 1` using `lt_of_le_of_lt (min_le_left _ _) (by norm_num)`. Take `⟨t, htS, ht⟩` from `hdense r hr0 hr1 r hr0`. Establish `htpos` using `(hS t htS).1`. Establish `hdist : dist ‖t‖ 0 < ε`. Rewrite using `[Real.dist_eq, sub_zero, abs_of_pos htpos]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `h4` using `(abs_lt.1 ht).2`. Establish `h5 : r ≤ ε / 2` using `min_le_right _ _`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h6` using `hball hdist`. Establish `h1` using `hbd t htS`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h7 : ‖t‖ ^ n * ‖t‖ ^ (-n) = 1`. Rewrite using `[← zpow_add₀ htpos.ne', add_neg_cancel, zpow_zero]`. Establish `h9 : ‖c n‖ ≤ ‖t‖ ^ (-n)`. Establish `h10` using `mul_le_mul_of_nonneg_right h1 (zpow_pos htpos (-n)).le`. Rewrite `h10` using `[mul_assoc, h7, mul_one, one_mul]`.
-
-Conclude with `h10`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem disc_holds : DiscStatement := by
   intro K _ _ _ K₀ hres S hS hdense c b hb hc n

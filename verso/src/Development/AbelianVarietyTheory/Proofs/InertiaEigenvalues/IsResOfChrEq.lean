@@ -19,17 +19,17 @@ variable {D : D7}
 set_option maxHeartbeats 800000 in
 
 /- English proof (translation)
-Introduce `D δ hδ χ hχ P hP a k u hka hu`. Establish `h` using `hδ.split.isIdemAt hP`. Establish `he : GlobalTheory.ExportSeries.idemAt P * GlobalTheory.ExportSeries.idemAt P = GlobalTheory.ExportSeries.idemAt P` using `h.1.1`. Establish `e1` using `hχ.2 P _ (by obtain ⟨⟨g1, g2, v, ε, hv, hs⟩, g3⟩ := h; exact ⟨g1, ⟨v, ε, hv, Or.inl ⟨g2, hs⟩⟩, g3⟩) k (locU he k) (locU_val he k)`. Take `⟨hi, h1⟩` from `GlobalTheory.IdemRes.resS_idem_eq_one D _ P h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hb : toEAf D (incA D (k : D.host.E)) = ((oToS D.host.F D.host.E a : Formalism.L2.Herm.intAf D.host.F D.host.E) : EAf D)`. Rewrite using `[hka]`. Both sides reduce to the same expression. Establish `hx0 : ((locU he k : (AE D)ˣ) : AE D) = 1 + GlobalTheory.ExportSeries.idemAt P * (incA D (k : D.host.E) - 1)` using `rfl`. Establish `hv : toEAf D ((locU he k : (AE D)ˣ) : AE D) = ((1 + ⟨_, hi⟩ * (oToS D.host.F D.host.E a - 1) : Formalism.L2.Herm.intAf D.host.F D.host.E) : EAf D)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hx0, GlobalTheory.ConjTwist.map_loc, hb]`. Both sides reduce to the same expression. Establish `hx : toEAf D ((locU he k : (AE D)ˣ) : AE D) ∈ Formalism.L2.Herm.intAf D.host.F D.host.E`. Rewrite using `[hv]`. Conclude with `Subtype.property _`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hoff : (1 - GlobalTheory.ExportSeries.idemAt P) * ((locU he k : (AE D)ˣ) : AE D) = 1 - GlobalTheory.ExportSeries.idemAt P`. Rewrite using `[hx0]`. Take the linear combination `(1 - incA D (k : D.host.E)) * he`. Establish `hres : resS D.host.F P ⟨_, hx⟩ = u`. Establish `e2 : (⟨_, hx⟩ : Formalism.L2.Herm.intAf D.host.F D.host.E) = 1 + ⟨_, hi⟩ * (oToS D.host.F D.host.E a - 1)` using `Subtype.ext hv`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `(congrArg (resS D.host.F P) e2).trans ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.ConjTwist.map_loc, h1, resS_oToS, hu]`. Expand and normalize the polynomial expressions, which then agree. Establish `e3` using `hδ.res P hP _ hoff hx u hres`. Use `Units.ext ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← e1, e3]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem isRes_of_chrEq : ∀ (D : D7) (δ : GlobalTheory.ExportSeries.Twist D Circle), δ.Good → ∀ (χ : Formalism.L2.Host.HChar D.host.E),
     ChrEq δ.chi χ → ∀ P ∈ δ.Q, IsRes χ P (δ.resC P) := by

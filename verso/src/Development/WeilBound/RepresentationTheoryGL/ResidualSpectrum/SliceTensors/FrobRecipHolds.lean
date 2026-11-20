@@ -55,7 +55,7 @@ end SliceFrobeniusReciprocity
 
 open SliceFrobeniusReciprocity in
 /- English proof (translation)
-Introduce `k _ _ _ _ N c n h σ' W _ _ ρ ℓ hℓ0 hℓ`. Use `⟨frobMap hℓ, fun h0 => hℓ0 (LinearMap.ext fun v => ?_)⟩` and prove the remaining obligations. Establish `h1` using `congrArg (fun f : _ →ₗ[ℂ] _ => (f v).1.1 1) h0`. Simplify `h1` using `[frobMap, frobFun_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem frobRecip_holds : PositivityTheory.RSHS.LS.FrobRecip := by
   intro k _ _ _ _ N c n h σ' W _ _ ρ ℓ hℓ0 hℓ

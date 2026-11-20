@@ -14,15 +14,15 @@ section Orbit
 open MulAction
 
 /- English proof (translation)
-Use `Fintype.ofFinite A` as an intermediate fact. Use `Fintype.ofFinite G` as an intermediate fact. Use `Fintype.ofFinite (Quotient (orbitRel A G))` as an intermediate fact. Rewrite using `[finsum_eq_sum_of_fintype]`. Establish `hA : (0 : ℝ) < (Nat.card A : ℝ)` using `by exact_mod_cast Nat.card_pos`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : ∀ ω : Quotient (orbitRel A G), ((Nat.card (stabilizer A ω.out) : ℕ) : ℝ)⁻¹ = (Nat.card (orbit A ω.out) : ℝ) / (Nat.card A : ℝ)`. Introduce `ω`. Establish `h` using `MulAction.card_orbit_mul_card_stabilizer_eq_card_group A ω.out`. Establish `h' : (Nat.card (orbit A ω.out) : ℝ) * (Nat.card (stabilizer A ω.out) : ℝ) = (Nat.card A : ℝ)`. Rewrite using `[Nat.card_eq_fintype_card, Nat.card_eq_fintype_card, Nat.card_eq_fintype_card]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h` after adjusting the coercions. Establish `hs : (0 : ℝ) < (Nat.card (stabilizer A ω.out) : ℝ)` using `by exact_mod_cast Nat.card_pos`. Use `haveI : Nonempty (orbit A ω.out) := ⟨⟨_, mem_orbit_self _⟩⟩`. Establish `ho : (0 : ℝ) < (Nat.card (orbit A ω.out) : ℝ)` using `by exact_mod_cast Nat.card_pos`. Rewrite using `[← h']`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities.
 
-Clear the denominators using the available nonvanishing facts. Rewrite using `[Finset.sum_congr rfl fun ω _ => h1 ω, ← Finset.sum_div]`. Use `congr 1`. Establish `h2 : Nat.card G = ∑ ω : Quotient (orbitRel A G), Nat.card (orbit A ω.out)`. Rewrite using `[Nat.card_congr (MulAction.selfEquivSigmaOrbits A G), Nat.card_sigma]`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[h2]`. Use `push_cast`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem sum_orbits_inv_card_stabilizer (A G : Type) [Group A] [MulAction A G] [Finite A] [Finite G] :
     ∑ᶠ ω : Quotient (orbitRel A G), ((Nat.card (stabilizer A ω.out) : ℕ) : ℝ)⁻¹ =
@@ -56,11 +56,9 @@ theorem sum_orbits_inv_card_stabilizer (A G : Type) [Group A] [MulAction A G] [F
 end Orbit
 
 /- English proof (translation)
-Establish `key : ((Algebra.trace ℚ K (h x x) : ℚ) : ℂ) = ∑ σ : K →ₐ[ℚ] ℂ, σ (h x x)`. Rewrite using `[← eq_ratCast (algebraMap ℚ ℂ), trace_eq_sum_embeddings (E := ℂ)]`. Establish `key' : ((Algebra.trace ℚ K (h x x) : ℚ) : ℝ) = ∑ σ : K →ₐ[ℚ] ℂ, (σ (h x x)).re`. Use `congrArg Complex.re key` as an intermediate fact. Rewrite `this` using `[Complex.re_sum]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← this]`. Simplify using the standard rewrite rules. Establish `hpos : 0 < ∑ σ : K →ₐ[ℚ] ℂ, (σ (h x x)).re`. Set `σ0 : K →ₐ[ℚ] ℂ` to `IsAlgClosed.lift`. Conclude with `Finset.sum_pos (fun σ _ => hp σ.toRingHom x hx) ⟨σ0, Finset.mem_univ _⟩`.
-
-Conclude with `key' ▸ hpos` after adjusting the coercions.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem trace_inner_self_pos {K V : Type} [Field K] [NumberField K] [StarRing K] [AddCommGroup V] [Module K V]
     [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] (h : V →ₗ⋆[K] V →ₗ[K] K) (hp : IsPosDef h) (x : V) (hx : x ≠ 0) :
@@ -90,13 +88,11 @@ def FibresOrthLatticeOneGenus (D : D7) (u : D.what₂.Word) : Prop :=
         ((Tu D u : ℝ) - 1) ^ D.R.f * ((Nat.card (Formalism.ThetaLiftIndependence.autL (D.sp.X 0).hT M) : ℕ) : ℝ)⁻¹
 
 /- English proof (translation)
-Rewrite using `[← Finset.sum_biUnion]`. Use `Finset.sum_congr ?_ fun _ _ => rfl` and prove the remaining obligations. Use extensionality with `a`. Simplify using `only [Finset.mem_biUnion, Finset.mem_filter]`. Prove the components needed by the constructor for the conclusion.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Introduce `ha`. Take `⟨N, ⟨hN, hg⟩, _⟩` from `hreps.2 (c a) (hc a ha)`. Conclude with `⟨N, hN, ha, hg⟩`. Introduce and unpack `⟨N, _, ha, _⟩`. Conclude with `ha`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `M hM M' hM' hne`. Rewrite using `[Function.onFun, Finset.disjoint_left]`. Introduce `a ha ha'`. Rewrite `ha`, `ha'` using `[Finset.mem_filter]`. Take `⟨N, _, huniq⟩` from `hreps.2 (c a) (hc a ha.1)`.
-
-Conclude with `hne ((huniq M ⟨hM, ha.2⟩).trans (huniq M' ⟨hM', ha'.2⟩).symm)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem sum_eq_sum_over_class_reps {K V α : Type} [Field K] [NumberField K] [StarRing K] [AddCommGroup V] [Module K V]
     [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] (h : V →ₗ⋆[K] V →ₗ[K] K) (L : Submodule (𝓞 K) V)
@@ -121,9 +117,9 @@ theorem sum_eq_sum_over_class_reps {K V α : Type} [Field K] [NumberField K] [St
     exact hne ((huniq M ⟨hM, ha.2⟩).trans (huniq M' ⟨hM', ha'.2⟩).symm)
 
 /- English proof (translation)
-Introduce `hT h3 hsp F0 he hz Λ hΛ s hs`. Take `⟨hgen, hfib⟩` from `hR hT h3 hsp F0 he hz Λ hΛ s hs`. Take `⟨⟨reps, hreps⟩, hmass, _⟩` from `Formalism.HermitianLatticesTheory.final_massBasic D.host.E (D.sp.X 0).V (D.sp.X 0).hT (D.sp.X 0).herm (trace_inner_self_pos _ hpos) (L0X D Λ (lf D F0)) (hlat hT h3 hsp F0 he hz Λ hΛ)`. Rewrite using `[hmass reps hreps]`. Unfold `massRows`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[sum_eq_sum_over_class_reps (D.sp.X 0).hT _ reps hreps s (fun Λ' => L0X D Λ' (lf D F0)) hgen, Finset.sum_congr rfl fun M hM => hfib M (hreps.1 M hM), ← Finset.mul_sum, mul_comm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem gluing_mass_of_fibre_structure (D : D7) (u : D.what₂.Word) (hpos : IsPosDef (D.sp.X 0).hT)
     (hlat : ForPrimeFlagLattice D u fun F0 Λ => Submodule.IsLattice D.host.E (L0X D Λ (lf D F0)))

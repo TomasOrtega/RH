@@ -16,15 +16,15 @@ def facM (m : S →₀ ℕ) : ℝ := ∏ s, ((m s).factorial : ℝ)
 
 omit [DecidableEq S] in
 /- English proof (translation)
-The claim follows from `Finset.prod_pos fun s _ => by exact_mod_cast Nat.factorial_pos _`.
+A detailed English derivation is pending.
 -/
 theorem facM_pos (m : S →₀ ℕ) : 0 < facM m :=
   Finset.prod_pos fun s _ => by exact_mod_cast Nat.factorial_pos _
 
 /- English proof (translation)
-Unfold `facM`. Rewrite using `[← Finset.mul_prod_erase _ _ (Finset.mem_univ s), ← Finset.mul_prod_erase _ _ (Finset.mem_univ s), ← mul_assoc]`. Use `congr 1`. Take `⟨k, hk⟩` from `Nat.exists_eq_succ_of_ne_zero h`. Simplify using `[hk, Nat.factorial_succ]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Use `Finset.prod_congr rfl fun t ht => ?_` and prove the remaining obligations. Use `Finset.ne_of_mem_erase ht` as an intermediate fact. Simplify using `[Finsupp.single_apply, this.symm]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem facM_sub (m : S →₀ ℕ) (s : S) (h : m s ≠ 0) :
     facM m = m s * facM (m - Finsupp.single s 1) := by
@@ -43,7 +43,7 @@ def apol (P : MvPolynomial S ℝ) : MvPolynomial S ℝ →ₗ[ℝ] ℝ :=
 
 omit [DecidableEq S] in
 /- English proof (translation)
-Establish `: (monomial m c : MvPolynomial S ℝ) = c • basisMonomials S ℝ m`. Simplify using `[coe_basisMonomials, smul_monomial]`. Rewrite using `[this, map_smul, apol, Module.Basis.constr_basis, smul_eq_mul]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem apol_monomial (P : MvPolynomial S ℝ) (m : S →₀ ℕ) (c : ℝ) :
     apol P (monomial m c) = c * (facM m * P.coeff m) := by
@@ -52,9 +52,9 @@ theorem apol_monomial (P : MvPolynomial S ℝ) (m : S →₀ ℕ) (c : ℝ) :
   rw [this, map_smul, apol, Module.Basis.constr_basis, smul_eq_mul]
 
 /- English proof (translation)
-Proceed by induction on `Q using MvPolynomial.induction_on' with`. Consider the case `monomial u a`. Rewrite using `[apol_monomial, coeff_monomial, coeff_monomial]`. Distinguish the cases in `h : m = u`. Substitute `h` using the available equality.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[if_neg h, if_neg (Ne.symm h)]`. Simplify using the standard rewrite rules. Consider the case `add p q hp hq => rw [map_add, hp, hq, coeff_add]`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -69,9 +69,9 @@ theorem apol_monomial_left (Q : MvPolynomial S ℝ) (m : S →₀ ℕ) (c : ℝ)
   | add p q hp hq => rw [map_add, hp, hq, coeff_add]; ring
 
 /- English proof (translation)
-Proceed by induction on `Q using MvPolynomial.induction_on' with`. Consider the case `monomial u a`. Rewrite using `[apol_monomial, map_sum, Finset.sum_mul, coeff_sum, Finset.mul_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, pderiv_monomial, apol_monomial, mul_assoc, coeff_C_mul, coeff_X_mul', smul_eq_mul]`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `h : u s = 0`. Simplify using `[h]`. Rewrite using `[if_pos (by simpa using h), facM_sub u s h]; ring`. Consider the case `add p q hp hq`. Simplify using `only [map_add, smul_add, Finset.sum_add_distrib, hp, hq]`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately. Simplify using the standard rewrite rules.
 -/
 theorem apol_lin (c : S → ℝ) (P Q : MvPolynomial S ℝ) :
     apol ((∑ s, C (c s) * X s) * P) Q = apol P (∑ s, c s • pderiv s Q) := by
@@ -89,7 +89,7 @@ theorem apol_lin (c : S → ℝ) (P Q : MvPolynomial S ℝ) :
 def dirD (c : S → ℝ) : Derivation ℝ (MvPolynomial S ℝ) (MvPolynomial S ℝ) := ∑ s, c s • pderiv s
 
 /- English proof (translation)
-Unfold `dirD`. Proceed by induction on `(Finset.univ : Finset S) using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert a s ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, Derivation.add_apply, ih]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Treat this case separately. Both sides reduce to the same expression.
 -/
 theorem dirD_apply (c : S → ℝ) (Q : MvPolynomial S ℝ) : dirD c Q = ∑ s, c s • pderiv s Q := by
   unfold dirD
@@ -98,7 +98,7 @@ theorem dirD_apply (c : S → ℝ) (Q : MvPolynomial S ℝ) : dirD c Q = ∑ s, 
   | insert a s ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, Derivation.add_apply, ih]; rfl
 
 /- English proof (translation)
-Rewrite using `[dirD_apply, Finset.sum_eq_single s]`. Simplify using `[smul_eq_C_mul]`. Introduce `t _ ht`. Simplify using `[pderiv_X_of_ne (Ne.symm ht)]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem dirD_X (c : S → ℝ) (s : S) : dirD c (X s) = C (c s) := by
   rw [dirD_apply, Finset.sum_eq_single s]
@@ -107,7 +107,7 @@ theorem dirD_X (c : S → ℝ) (s : S) : dirD c (X s) = C (c s) := by
   · simp
 
 /- English proof (translation)
-Proceed by induction on `n generalizing Q with`. Consider the case `zero => simp`. Consider the case `succ n ih => rw [pow_succ', mul_assoc, apol_lin, ih, ← dirD_apply, Function.iterate_succ_apply]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem apol_pow (c : S → ℝ) (n : ℕ) (P Q : MvPolynomial S ℝ) :
     apol ((∑ s, C (c s) * X s) ^ n * P) Q = apol P ((dirD c)^[n] Q) := by
@@ -121,9 +121,9 @@ section Deriv
 variable {A : Type} [CommRing A] [Algebra ℝ A] (D : Derivation ℝ A A)
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simp [hl, Algebra.smul_def]`. Expand and normalize the polynomial expressions, which then agree. Consider the case `succ n ih`. Rewrite using `[Function.iterate_succ_apply', ih, map_add, Derivation.map_smul, Derivation.leibniz, hl, ← Function.iterate_succ_apply' D (n + 1), ← Function.iterate_succ_apply' D n]`.
+Proceed by induction. Treat this case separately. Expand and normalize the polynomial expressions, which then agree. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Algebra.smul_def, smul_eq_mul, map_mul, map_add, map_one, Nat.cast_add, Nat.cast_one, Algebra.algebraMap_self, RingHom.id_apply]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem iter_mul (l F : A) (c : ℝ) (hl : D l = algebraMap ℝ A c) (n : ℕ) :
     D^[n + 1] (l * F) = l * D^[n + 1] F + (((n : ℝ) + 1) * c) • D^[n] F := by
@@ -136,9 +136,9 @@ theorem iter_mul (l F : A) (c : ℝ) (hl : D l = algebraMap ℝ A c) (n : ℕ) :
     ring
 
 /- English proof (translation)
-Proceed by induction on `T using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert a s ha ih`. Establish `ih'` using `ih fun p hp => hl p (Finset.mem_insert_of_mem hp)`. Rewrite using `[Finset.card_insert_of_notMem ha, Finset.prod_insert ha, mul_assoc, iter_mul D _ _ c (hl a (Finset.mem_insert_self _ _)), Function.iterate_succ_apply', ih', Derivation.map_smul, hW, smul_zero, mul_zero, zero_add, smul_smul, Nat.factorial_succ]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem iter_prod {κ : Type} (T : Finset κ) (l : κ → A) (W : A) (c : ℝ) (hW : D W = 0)
     (hl : ∀ p ∈ T, D (l p) = algebraMap ℝ A c) :
@@ -156,7 +156,7 @@ theorem iter_prod {κ : Type} (T : Finset κ) (l : κ → A) (W : A) (c : ℝ) (
     ring
 
 /- English proof (translation)
-Proceed by induction on `T using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.prod_insert ha, Derivation.leibniz, ih fun p hp => hl p (Finset.mem_insert_of_mem hp), hl a (Finset.mem_insert_self _ _)]`. Simplify using the standard rewrite rules.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem deriv_prod_zero {κ : Type} (T : Finset κ) (l : κ → A) (hl : ∀ p ∈ T, D (l p) = 0) :
     D (∏ p ∈ T, l p) = 0 := by
@@ -171,13 +171,13 @@ theorem deriv_prod_zero {κ : Type} (T : Finset κ) (l : κ → A) (hl : ∀ p �
 end Deriv
 
 /- English proof (translation)
-Set `m : MonomialOrder S` to `MonomialOrder.lex`. Establish `hlt : ∀ p ∈ T, m.toSyn (m.degree (X (v p) : MvPolynomial S ℝ)) < m.toSyn (m.degree (X (u p) : MvPolynomial S ℝ))`. Introduce `p hp`. Rewrite using `[MonomialOrder.degree_X, MonomialOrder.degree_X]`. Use `MonomialOrder.lex_lt_iff.mpr ?_` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Finsupp.Lex.single_strictAnti (h p hp)`. Establish `hmon : ∀ p ∈ T, m.Monic (X (u p) - X (v p) : MvPolynomial S ℝ)`. Introduce `p hp`. Unfold `MonomialOrder.Monic`. Rewrite using `[MonomialOrder.leadingCoeff_sub_of_lt (hlt p hp), MonomialOrder.leadingCoeff_X]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1` using `(MonomialOrder.Monic.prod hmon).coeff_degree`. Rewrite `h1` using `[MonomialOrder.degree_prod (fun p hp => (hmon p hp).ne_zero)]`. Rewrite using `[← h1]`. Use `congr 1`. Use `Finset.sum_congr rfl fun p hp => ?_` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[MonomialOrder.degree_sub_of_lt (hlt p hp), MonomialOrder.degree_X]`.
+A detailed English derivation is pending.
 -/
 theorem coeff_lead {S κ : Type} [Finite S] [LinearOrder S] (T : Finset κ) (u v : κ → S)
     (h : ∀ p ∈ T, u p < v p) :
@@ -205,15 +205,15 @@ variable {ι : Type} [Fintype ι] [DecidableEq ι] {N : ℕ}
 def rootP (p : ι × Fin N × Fin N) : Pol ι N := X (p.1, p.2.1) - X (p.1, p.2.2)
 
 /- English proof (translation)
-Establish `h1 : ∀ τ : ι, (∏ a : Fin N, ∏ b : Fin N, if a < b then rootP (τ, a, b) else 1) = ∑ s : Equiv.Perm (Fin N), C ((Equiv.Perm.sign s : ℤ) : ℝ) * ∏ i : Fin N, (X (τ, i) : Pol ι N) ^ (N - 1 - (s i : ℕ))`. Introduce `τ`. Establish `h` using `Matrix.det_projVandermonde (fun _ : Fin N => (1 : Pol ι N)) (fun i => X (τ, i))`. Rewrite `h` using `[← Matrix.det_transpose, Matrix.det_apply']`. Simplify using `only [Matrix.transpose_apply, Matrix.projVandermonde_apply, one_pow, one_mul, Fin.val_rev] at h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Combine the equalities or inequalities in the displayed calculation. Use `Finset.prod_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.prod_filter]`. Use `Finset.prod_congr (by ext; simp) fun b _ => rfl` and prove the remaining obligations. Use `_ = _ := by`.
+Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← h]`. Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations. Rewrite using `[map_intCast]`. Use `congr 1`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Use linear arithmetic over natural numbers and integers. Rewrite using `[Finset.prod_filter, Fintype.prod_prod_type]`. Simplify using `only [Fintype.prod_prod_type, h1]`. Rewrite using `[Finset.prod_univ_sum, Fintype.piFinset_univ]`.
+Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.prod_mul_distrib, monomial_eq, Finsupp.prod_fintype _ _ (by simp), Fintype.prod_prod_type, map_prod]`. Simplify using `only [PPowSum.permExp_apply]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem alt_eq :
     (∑ σ : ι → Equiv.Perm (Fin N), monomial (permExp σ) (∏ τ, ((Equiv.Perm.sign (σ τ) : ℤ) : ℝ)) : Pol ι N) =
@@ -245,7 +245,7 @@ theorem alt_eq :
   simp only [PPowSum.permExp_apply]
 
 /- English proof (translation)
-Unfold `facM`. Simplify using `only [Fintype.prod_prod_type, PPowSum.permExp_apply]`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Conclude with `Equiv.prod_comp (σ τ) (fun i : Fin N => ((N - 1 - (i : ℕ)).factorial : ℝ))`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem facM_permExp (σ : ι → Equiv.Perm (Fin N)) :
     facM (permExp σ) = facM (permExp (fun _ : ι => (1 : Equiv.Perm (Fin N)))) := by
@@ -255,7 +255,7 @@ theorem facM_permExp (σ : ι → Equiv.Perm (Fin N)) :
   exact Equiv.prod_comp (σ τ) (fun i : Fin N => ((N - 1 - (i : ℕ)).factorial : ℝ))
 
 /- English proof (translation)
-Rewrite using `[← alt_eq, map_sum, degFl, mul_left_comm]`. Use `congr 1`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Rewrite using `[apol_monomial, facM_permExp σ]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -273,9 +273,9 @@ def cf (j : ℕ) (x : ι × Fin N) : ℝ := if (x.2 : ℕ) < j then -1 else 1
 
 omit [DecidableEq ι] in
 /- English proof (translation)
-Unfold `lamA pHigh pLow cf`. Rewrite using `[Fintype.sum_prod_type]`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_filter, Finset.sum_filter, ← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Distinguish the cases in `h : (i : ℕ) < j`. Simplify using `[h, not_le.mpr h]`. Simplify using `[h, not_lt.mp h]`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem lamA_eq (j : ℕ) : lamA ι N j = ∑ x : ι × Fin N, C (cf j x) * X x := by
   unfold lamA pHigh pLow cf
@@ -294,9 +294,9 @@ def sameP (ι : Type) [Fintype ι] (N j : ℕ) : Finset (ι × Fin N × Fin N) :
   Finset.univ.filter fun p => p.2.1 < p.2.2 ∧ ¬ ((p.2.1 : ℕ) < j ∧ j ≤ (p.2.2 : ℕ))
 
 /- English proof (translation)
-Rewrite using `[← Nat.card_Ico, ← Finset.card_map Fin.valEmbedding]`. Use `congr 1`. Use extensionality with `i`. Simplify using `only [Finset.mem_map, Finset.mem_filter, Finset.mem_univ, true_and, Fin.valEmbedding_apply, Finset.mem_Ico]`. Prove the components needed by the constructor for the conclusion.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨k, hk, rfl⟩`. Conclude with `(h k k.isLt).mp hk`. Introduce `hi; exact ⟨⟨i, by omega⟩, (h i (by omega)).mpr hi, rfl⟩`.
+Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem card_fin_filter (q : ℕ → Prop) [DecidablePred q] (a b : ℕ) (hb : b ≤ N) (h : ∀ i < N, q i ↔ a ≤ i ∧ i < b) :
     (Finset.univ.filter fun i : Fin N => q i).card = b - a := by
@@ -310,7 +310,7 @@ theorem card_fin_filter (q : ℕ → Prop) [DecidablePred q] (a b : ℕ) (hb : b
 
 omit [DecidableEq ι] in
 /- English proof (translation)
-Establish `: crossP ι N j = Finset.univ ×ˢ ((Finset.univ.filter fun i : Fin N => (i : ℕ) < j) ×ˢ (Finset.univ.filter fun i : Fin N => j ≤ (i : ℕ)))`. Use extensionality with `p`. Simplify using `[crossP]`. Rewrite using `[this, Finset.card_product, Finset.card_product, card_fin_filter (fun i => i < j) 0 j hj (by omega), card_fin_filter (fun i => j ≤ i) j N le_rfl (by omega)]`. Simplify using `[dimGr]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem card_crossP (j : ℕ) (hj : j ≤ N) : (crossP ι N j).card = dimGr ι N j := by
   have : crossP ι N j = Finset.univ ×ˢ ((Finset.univ.filter fun i : Fin N => (i : ℕ) < j) ×ˢ
@@ -322,7 +322,7 @@ theorem card_crossP (j : ℕ) (hj : j ≤ N) : (crossP ι N j).card = dimGr ι N
 
 omit [DecidableEq ι] in
 /- English proof (translation)
-Rewrite using `[← Finset.prod_filter_mul_prod_filter_not _ (fun p : ι × Fin N × Fin N => (p.2.1 : ℕ) < j ∧ j ≤ (p.2.2 : ℕ)), Finset.filter_filter, Finset.filter_filter]`. Use `congr 2`. Use extensionality with `p`. Simplify using `only [crossP, Finset.mem_filter, Finset.mem_univ, true_and, Fin.lt_def]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem prod_split (j : ℕ) :
     ∏ p ∈ Finset.univ.filter (fun p : ι × Fin N × Fin N => p.2.1 < p.2.2), rootP p =
@@ -338,13 +338,13 @@ def fibExp (ι : Type) [Fintype ι] (N j : ℕ) (x : ι × Fin N) : ℕ :=
   if (x.2 : ℕ) < j then j - 1 - (x.2 : ℕ) else N - 1 - (x.2 : ℕ)
 
 /- English proof (translation)
-Use extensionality with `⟨τ, a⟩`. Rewrite using `[Finsupp.finset_sum_apply]`. Simplify using `only [Finsupp.single_apply, Finsupp.equivFunOnFinite_symm_apply_apply]`. Rewrite using `[← Finset.card_filter]`. Establish `: (sameP ι N j).filter (fun p => (p.1, p.2.1) = (τ, a)) = (Finset.univ.filter fun b : Fin N => (a : ℕ) < b ∧ ¬ ((a : ℕ) < j ∧ j ≤ (b : ℕ))).map ⟨fun b => (τ, a, b), fun b b' h => by simpa using h⟩`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use extensionality with `⟨t, x, y⟩`. Simplify using `only [sameP, Finset.mem_filter, Finset.mem_univ, true_and, Prod.mk.injEq, Finset.mem_map, Function.Embedding.coeFn_mk, Fin.lt_def]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h, rfl, rfl⟩`. Conclude with `⟨y, h, rfl⟩`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `⟨b, h, he⟩`. Consider the cases of `he`. Conclude with `⟨h, rfl, rfl⟩`. Rewrite using `[this, Finset.card_map]`. Establish `ha` using `a.isLt`.
+Assume the hypotheses and unpack their components. Split into cases according to the possible forms of the given data. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [fibExp]`. Distinguish the cases in `h : (a : ℕ) < j`. Rewrite using `[card_fin_filter (fun b => (a : ℕ) < b ∧ ¬ ((a : ℕ) < j ∧ j ≤ b)) (a + 1) j hj (by omega), if_pos h]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[card_fin_filter (fun b => (a : ℕ) < b ∧ ¬ ((a : ℕ) < j ∧ j ≤ b)) (a + 1) N le_rfl (by omega), if_neg h]`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
 
 Use linear arithmetic over natural numbers and integers.
 -/
@@ -375,11 +375,11 @@ theorem sum_sameP (j : ℕ) (hj : j ≤ N) :
     omega
 
 /- English proof (translation)
-Rewrite using `[← sum_sameP j hj]`. Set `f : ι × Fin N → Fin (Fintype.card ι) ×ₗ Fin N` to `fun x => toLex (Fintype.equivFin ι x.1, x.2)`. Establish `hf : Function.Injective f`. Introduce and unpack `⟨a, b⟩ ⟨c, d⟩ h`. Simplify `h` using `[f]`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify to obtain the desired conclusion from the available facts.
 
-Use `@coeff_lead (ι × Fin N) _ _ (LinearOrder.lift' f hf) (sameP ι N j) (fun p => (p.1, p.2.1)) (fun p => (p.1, p.2.2)) ?_` and prove the remaining obligations. Introduce `p hp`. Establish `: p.2.1 < p.2.2` using `(Finset.mem_filter.mp hp).2.1`. Express the relevant statement in the definitionally equal form `f _ < f _`. Simplify using `only [f, Prod.Lex.toLex_lt_toLex]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 
-Conclude with `Or.inr ⟨trivial, this⟩`.
+Prove the second alternative.
 -/
 theorem coeff_sameP (j : ℕ) (hj : j ≤ N) :
     (∏ p ∈ sameP ι N j, rootP p).coeff (Finsupp.equivFunOnFinite.symm (fibExp ι N j)) = 1 := by
@@ -398,9 +398,9 @@ theorem coeff_sameP (j : ℕ) (hj : j ≤ N) :
 
 omit [DecidableEq ι] in
 /- English proof (translation)
-Establish `h1 : ∑ i : Fin N, (if (i : ℕ) < j then N - j else 0) = j * (N - j)`. Rewrite using `[← Finset.sum_filter, Finset.sum_const, card_fin_filter (fun i => i < j) 0 j hj (by omega)]`. Simplify using the standard rewrite rules. Rewrite using `[Fintype.sum_prod_type, dimFl, dimGr, ← PermutationPointDegree.sum_delta, ← h1]`. Simplify using `only [fibExp, Finset.sum_const, Finset.card_univ, smul_eq_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← mul_add, ← Finset.sum_add_distrib]`. Use `congr 1`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> omega`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem dim_add (j : ℕ) (hj : j ≤ N) : dimFl ι N = dimGr ι N j + ∑ x, fibExp ι N j x := by
   have h1 : ∑ i : Fin N, (if (i : ℕ) < j then N - j else 0) = j * (N - j) := by
@@ -414,15 +414,15 @@ theorem dim_add (j : ℕ) (hj : j ≤ N) : dimFl ι N = dimGr ι N j + ∑ x, fi
   split_ifs <;> omega
 
 /- English proof (translation)
-Establish `hfib : fibPt ι N j = monomial (Finsupp.equivFunOnFinite.symm (fibExp ι N j)) ((-1 : ℝ) ^ (∑ x, fibExp ι N j x))`. Use `PermutationPointDegree.prod_negX (fibExp ι N j)` as an intermediate fact. Rewrite `this` using `[C_mul_monomial, mul_one]`. Conclude with `this`. Establish `hD : ∀ p : ι × Fin N × Fin N, dirD (cf j) (rootP p) = C (cf j (p.1, p.2.1) - cf j (p.1, p.2.2))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `p`. Rewrite using `[rootP, map_sub, dirD_X, dirD_X, map_sub]`. Establish `hit` using `iter_prod (dirD (cf (ι := ι) (N := N) j)) (crossP ι N j) rootP (∏ p ∈ sameP ι N j, rootP p) (-2) (deriv_prod_zero _ _ _ fun p hp => by`. Establish `h` using `(Finset.mem_filter.mp hp).2`. Rewrite `h` using `[Fin.lt_def]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hD]`. Unfold `cf`. Distinguish the cases in `h1 : (p.2.1 : ℕ) < j`. Rewrite using `[if_pos h1, if_pos (show (p.2.2 : ℕ) < j by omega)]; simp`. Rewrite using `[if_neg h1, if_neg (show ¬ (p.2.2 : ℕ) < j by omega)]; simp)`.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use the proof step `(fun p hp => by`. Establish `h` using `(Finset.mem_filter.mp hp).2`. Rewrite using `[hD]`. Unfold `cf`. Rewrite using `[if_pos h.1, if_neg (show ¬ (p.2.2 : ℕ) < j by omega), algebraMap_eq]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `norm_num)`. Rewrite `hit` using `[card_crossP j hj]`. Rewrite using `[degFl_eq_apol, lamA_eq, apol_pow, prod_split j, hit, map_smul, hfib, apol_monomial_left, coeff_sameP j hj, dim_add j hj, smul_eq_mul, pow_add, neg_pow (2 : ℝ)]`. Establish `e1 : ∀ n : ℕ, ((-1 : ℝ) ^ n) * (-1) ^ n = 1` using `fun n => by rw [← mul_pow]; simp`. Take the linear combination `(((dimGr ι N j).factorial : ℝ) * 2 ^ dimGr ι N j * facM (Finsupp.equivFunOnFinite.symm (fibExp ι N j))) * (((-1 : ℝ) ^ (∑ x, fibExp ι N j x)) ^ 2 * e1 (dimGr ι N j) + e1 (∑ x, fibExp ι N j x))`.
+Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem degFl_hodge_pow (j : ℕ) (hj : j ≤ N) :
     facM (permExp (fun _ : ι => (1 : Equiv.Perm (Fin N)))) * degFl ι N (lamA ι N j ^ dimGr ι N j * fibPt ι N j) =
@@ -458,7 +458,7 @@ theorem degFl_hodge_pow (j : ℕ) (hj : j ≤ N) :
       (((-1 : ℝ) ^ (∑ x, fibExp ι N j x)) ^ 2 * e1 (dimGr ι N j) + e1 (∑ x, fibExp ι N j x))
 
 /- English proof (translation)
-Introduce `ι _ _ N _ j _ hj`. Use `(mul_pos_iff_of_pos_left (facM_pos (permExp (fun _ : ι => (1 : Equiv.Perm (Fin N)))))).mp ?_` and prove the remaining obligations. Rewrite using `[degFl_hodge_pow j hj.le]`. Use `facM_pos (Finsupp.equivFunOnFinite.symm (fibExp ι N j))` as an intermediate fact. Check the signs of the components of the expression.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Check the signs of the components of the expression.
 -/
 theorem degFl_lamA_pow_pos : ∀ (ι : Type) [Fintype ι] [DecidableEq ι] (N : ℕ) [Nonempty ι] (j : ℕ), 1 ≤ j → j < N →
     0 < degFl ι N (lamA ι N j ^ dimGr ι N j * fibPt ι N j) := by

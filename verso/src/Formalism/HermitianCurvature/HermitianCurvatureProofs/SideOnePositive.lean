@@ -8,7 +8,7 @@ noncomputable section
 namespace Formalism.FourierDecayAlt.P
 
 /- English proof (translation)
-The claim follows from `LevelPointCoordinates.side1Pos_of smooth_truncation_induction smooth_truncation_exists (SliceIntegralLemmas.side0Pos_of'' proper_left_variables_domain) letters_pass_partial_bessel proper_left_variables_domain`.
+A detailed English derivation is pending.
 -/
 theorem side_one_positive : CutHB.Side1Pos :=
   LevelPointCoordinates.side1Pos_of smooth_truncation_induction smooth_truncation_exists (SliceIntegralLemmas.side0Pos_of'' proper_left_variables_domain)

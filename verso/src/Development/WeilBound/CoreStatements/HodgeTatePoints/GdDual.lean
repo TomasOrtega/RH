@@ -16,7 +16,7 @@ variable {C : Type} [Field C] {v : Valuation C NNReal} {O : Type} [CommRing O] [
 omit [IsAlgClosed C] [CharZero C] in
 
 /- English proof (translation)
-Conclude with `⟨P.ht y, ⟨y, hy, rfl⟩, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem proj_ht_mem (P : HTPoint C O c κ N V Ω) (τ : E →+* C) {y : V} (hy : y ∈ P.T) :
     eigProj P.ρΩ τ (P.ht y) ∈ P.omHT τ := by
@@ -24,7 +24,7 @@ theorem proj_ht_mem (P : HTPoint C O c κ N V Ω) (τ : E →+* C) {y : V} (hy :
 
 omit [IsAlgClosed C] [CharZero C] in
 /- English proof (translation)
-Establish `h` using `P.alt (x + y)`. Simplify using `only [map_add, LinearMap.add_apply, P.alt, zero_add, add_zero] at h`. Take the linear combination `h`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 private theorem htPoint_e_antisymm (P : HTPoint C O c κ N V Ω) (x y : V) : P.e x y = - P.e y x := by
   have h := P.alt (x + y)
@@ -33,16 +33,16 @@ private theorem htPoint_e_antisymm (P : HTPoint C O c κ N V Ω) (x y : V) : P.e
 
 omit [IsAlgClosed C] [CharZero C] in
 /- English proof (translation)
-The claim follows from `P.nondeg x (fun z => by rw [htPoint_e_antisymm P z x, h z, neg_zero])`.
+A detailed English derivation is pending.
 -/
 private theorem htPoint_eq_zero_of_e_left_eq_zero (P : HTPoint C O c κ N V Ω) {x : V} (h : ∀ y, P.e x y = 0) : x = 0 :=
   P.nondeg x (fun z => by rw [htPoint_e_antisymm P z x, h z, neg_zero])
 
 omit [IsAlgClosed C] [CharZero C] in
 /- English proof (translation)
-Establish `hfree : IsFreeOn P.ρ P.T P.t` using `P.free`. Take `⟨hli, hspan, hT⟩` from `hfree`. Establish `hsp : ⊤ ≤ Submodule.span C (Set.range fun q : Fin N × Module.Free.ChooseBasisIndex ℤ (𝓞 E) => P.ρ (RingOfIntegers.basis E q.2) (P.t q.1))`. Rewrite using `[← hspan]`. Apply `Submodule.span_le.mpr` to reduce the goal to its premises.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `y hy`. Rewrite `hy` using `[hT]`. Conclude with `Submodule.span_subset_span O C _ hy`. Conclude with `⟨Basis.mk hli hsp, fun q => Basis.mk_apply hli hsp q, hT⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem htPoint_exists_basis_rho_t_span (P : HTPoint C O c κ N V Ω) :
     ∃ B : Basis (Fin N × Module.Free.ChooseBasisIndex ℤ (𝓞 E)) C V,
@@ -62,19 +62,17 @@ private theorem htPoint_exists_basis_rho_t_span (P : HTPoint C O c κ N V Ω) :
 
 omit [IsAlgClosed C] [CharZero C] in
 /- English proof (translation)
-Take `⟨B, hB, hT⟩` from `htPoint_exists_basis_rho_t_span P`. Establish `hbT : ∀ q, B q ∈ P.T`. Introduce `q`. Rewrite using `[hB, hT]`. Conclude with `Submodule.subset_span ⟨q, rfl⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨B.constr C (fun q => algebraMap O C (g ⟨B q, hbT q⟩)), ?_⟩` and prove the remaining obligations. Introduce `y hy`. Establish `hy' : y ∈ Submodule.span O (Set.range fun q : Fin N × Module.Free.ChooseBasisIndex ℤ (𝓞 E) => P.ρ (RingOfIntegers.basis E q.2) (P.t q.1))` using `hT ▸ hy`. Use `revert hy`. Proceed by induction on `hy' using Submodule.span_induction with`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Consider the case `mem x hx`. Take `⟨q, rfl⟩` from `hx`. Introduce `hy`. Establish `e2 : (⟨_, hy⟩ : P.T) = ⟨B q, hbT q⟩` using `Subtype.ext (hB q).symm`. Rewrite using `[e2]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Treat this case separately.
 
-Establish `h1` using `B.constr_basis C (fun q => algebraMap O C (g ⟨B q, hbT q⟩)) q`. Conclude with `(congrArg (B.constr C (fun q => algebraMap O C (g ⟨B q, hbT q⟩))) (hB q)).symm.trans h1`. Consider the case `zero`. Introduce `hy`. Establish `: (⟨0, hy⟩ : P.T) = 0` using `rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[map_zero, this, map_zero, map_zero]`. Consider the case `add x z hx hz ihx ihz`. Introduce `hy`. Establish `hxT : x ∈ P.T` using `hT ▸ hx`. Establish `hzT : z ∈ P.T` using `hT ▸ hz`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Establish `: (⟨x + z, hy⟩ : P.T) = ⟨x, hxT⟩ + ⟨z, hzT⟩` using `rfl`. Rewrite using `[map_add, this, map_add, map_add, ihx hxT, ihz hzT]`. Consider the case `smul a x hx ihx`. Introduce `hy`. Establish `hxT : x ∈ P.T` using `hT ▸ hx`.
-
-Establish `: (⟨a • x, hy⟩ : P.T) = a • ⟨x, hxT⟩` using `rfl`. Rewrite using `[this, ← algebraMap_smul C a x, LinearMap.map_smul, LinearMap.map_smul, ihx hxT, smul_eq_mul, smul_eq_mul, map_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem htPoint_exists_linearMap_ext_of_T (P : HTPoint C O c κ N V Ω) (g : P.T →ₗ[O] O) :
     ∃ ℓ : V →ₗ[C] C, ∀ y (hy : y ∈ P.T), ℓ y = algebraMap O C (g ⟨y, hy⟩) := by
@@ -115,9 +113,9 @@ private theorem htPoint_exists_linearMap_ext_of_T (P : HTPoint C O c κ N V Ω) 
 
 omit [IsAlgClosed C] [CharZero C] in
 /- English proof (translation)
-Take `⟨B, -, -⟩` from `htPoint_exists_basis_rho_t_span P`. Use `haveI : FiniteDimensional C V := Module.Finite.of_basis B`. Establish `hinj : Function.Injective P.e`. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `x hx`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `htPoint_eq_zero_of_e_left_eq_zero P (fun y => by rw [hx, LinearMap.zero_apply])`. Establish `hsurj : Function.Surjective P.e` using `(LinearMap.injective_iff_surjective_of_finrank_eq_finrank (Subspace.dual_finrank_eq).symm).mp hinj`. Take `⟨w, hw⟩` from `hsurj ℓ`. Conclude with `⟨w, fun y => by rw [hw]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem htPoint_exists_e_left_eq_linearMap (P : HTPoint C O c κ N V Ω) (ℓ : V →ₗ[C] C) :
     ∃ w : V, ∀ y, P.e w y = ℓ y := by
@@ -135,7 +133,7 @@ private theorem htPoint_exists_e_left_eq_linearMap (P : HTPoint C O c κ N V Ω)
 omit [IsAlgClosed C] [CharZero C] in
 
 /- English proof (translation)
-Take `⟨ℓ, hℓ⟩` from `htPoint_exists_linearMap_ext_of_T P g`. Take `⟨w, hw⟩` from `htPoint_exists_e_left_eq_linearMap P ℓ`. Conclude with `⟨w, fun y => by rw [hw]; exact hℓ y y.2⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_vec (P : HTPoint C O c κ N V Ω) (g : P.T →ₗ[O] O) :
     ∃ w : V, ∀ y : P.T, P.e w y = algebraMap O C (g y) := by
@@ -145,21 +143,19 @@ theorem exists_vec (P : HTPoint C O c κ N V Ω) (g : P.T →ₗ[O] O) :
 
 omit [IsAlgClosed C] [CharZero C] in
 /- English proof (translation)
-Establish `hsc : ∀ a : C, ∃ s : O, algebraMap O C s ≠ 0 ∧ ∃ u : O, algebraMap O C u = algebraMap O C s * a`. Introduce `a`. Distinguish the cases in `ha : v a ≤ 1`. Take `⟨u, hu⟩` from `hv.exists_of_le_one ha`. Conclude with `⟨1, by simp, u, by simp [hu]⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `ha0 : a ≠ 0`. Introduce and unpack `rfl`. Simplify using `at ha`. Establish `hle : v a⁻¹ ≤ 1`. Rewrite using `[map_inv₀]`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `push_neg at ha`. Conclude with `inv_le_one_of_one_le₀ ha.le`. Take `⟨s, hs⟩` from `hv.exists_of_le_one hle`. Conclude with `⟨s, by rw [hs]; exact inv_ne_zero ha0, 1, by rw [hs, map_one, inv_mul_cancel₀ ha0]⟩`. Establish `hfree : IsFreeOn P.ρ P.T P.t` using `P.free`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨-, hspan, -⟩` from `hfree`. Establish `hy : y ∈ Submodule.span C (P.T : Set V)` using `hspan ▸ Submodule.mem_top`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem x hx => exact ⟨1, by simp, by rw [one_smul]; exact hx⟩`. Consider the case `zero => exact ⟨1, by simp, by rw [smul_zero]; exact P.T.zero_mem⟩`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Consider the case `add x z _ _ ihx ihz`. Take `⟨s, hs, hsx⟩` from `ihx`. Take `⟨r, hr, hrz⟩` from `ihz`. Use `⟨s * r, by rw [map_mul]; exact mul_ne_zero hs hr, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_add, mul_smul s r z, mul_comm s r, mul_smul r s x]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Conclude with `P.T.add_mem (P.T.smul_mem r hsx) (P.T.smul_mem s hrz)`. Consider the case `smul a x _ ihx`. Take `⟨s, hs, hsx⟩` from `ihx`. Take `⟨t, ht, u, hu⟩` from `hsc a`. Use `⟨t * s, by rw [map_mul]; exact mul_ne_zero ht hs, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `key : (t * s) • (a • x) = u • (s • x)`. Rewrite using `[← algebraMap_smul C (t * s), ← algebraMap_smul C u, ← algebraMap_smul C s, smul_smul, smul_smul, map_mul, hu]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[key]`.
-
-Conclude with `P.T.smul_mem u hsx`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem htPoint_exists_smul_mem_T (hv : v.Integers O) (P : HTPoint C O c κ N V Ω) (y : V) :
     ∃ s : O, algebraMap O C s ≠ 0 ∧ s • y ∈ P.T := by
@@ -203,21 +199,17 @@ private theorem htPoint_exists_smul_mem_T (hv : v.Integers O) (P : HTPoint C O c
 
 omit [IsAlgClosed C] [CharZero C] in
 /- English proof (translation)
-Take `⟨B, -, hT⟩` from `htPoint_exists_basis_rho_t_span P`. Rewrite `hz`, the goal using `[hT]`. Use `set S := Submodule.span O (Set.range fun q : Fin N × Module.Free.ChooseBasisIndex ℤ (𝓞 E) => P.ρ (RingOfIntegers.basis E q.2) (P.t q.1)) with hS`. Establish `key : ∀ (m : 𝓞 E) (i : Fin N), P.ρ m (P.t i) ∈ S`. Introduce `m i`.
+Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hm : m ∈ Submodule.span ℤ (Set.range (RingOfIntegers.basis E))`. Rewrite using `[(RingOfIntegers.basis E).span_eq]`. Conclude with `Submodule.mem_top`. Proceed by induction on `hm using Submodule.span_induction with`. Consider the case `mem x hx`.
+Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately.
 
-Take `⟨j, rfl⟩` from `hx`. Conclude with `Submodule.subset_span ⟨(i, j), rfl⟩`. Consider the case `zero`. Rewrite using `[map_zero, LinearMap.zero_apply]`. Conclude with `S.zero_mem`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Simplify using the standard rewrite rules.
 
-Consider the case `add x z _ _ hx hz`. Rewrite using `[map_add, LinearMap.add_apply]`. Conclude with `S.add_mem hx hz`. Consider the case `smul n x _ hx`. Simplify using `only [map_zsmul, LinearMap.smul_apply]`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Conclude with `zsmul_mem hx n`. Proceed by induction on `hz using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨q, rfl⟩` from `hx`. Use `show P.ρ a (P.ρ (RingOfIntegers.basis E q.2) (P.t q.1)) ∈ S`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Module.End.mul_apply, ← map_mul]`. Conclude with `key _ _`. Consider the case `zero`. Rewrite using `[map_zero]`. Conclude with `S.zero_mem`.
-
-Consider the case `add x y _ _ hx hy`. Rewrite using `[map_add]`. Conclude with `S.add_mem hx hy`. Consider the case `smul o x _ hx`. Rewrite using `[LinearMap.map_smul_of_tower]`.
-
-Conclude with `S.smul_mem o hx`.
+A detailed English derivation is pending.
 -/
 private theorem htPoint_rho_mem_T (P : HTPoint C O c κ N V Ω) (a : 𝓞 E) {z : V} (hz : z ∈ P.T) :
     P.ρ a z ∈ P.T := by
@@ -260,31 +252,29 @@ private theorem htPoint_rho_mem_T (P : HTPoint C O c κ N V Ω) (a : 𝓞 E) {z 
     exact S.smul_mem o hx
 
 /- English proof (translation)
-Set `K : P.T →ₗ[O] P.omHT (σ.comp c.toRingHom)` to `LinearMap.codRestrict (P.omHT (σ.comp c.toRingHom)) (((eigProj P.ρΩ (σ.comp c.toRingHom)).restrictScalars O).comp ((P.ht.restrictScalars O).comp P.T.subtype)) (fun y => proj_ht_mem P (σ.comp c.toRingHom) y.2)`. Take `⟨ℓ, hℓ⟩` from `htPoint_exists_linearMap_ext_of_T P (f.comp K)`. Take `⟨w, hw⟩` from `htPoint_exists_e_left_eq_linearMap P ℓ`. Establish `hK : ∀ y (hy : y ∈ P.T), (K ⟨y, hy⟩ : Ω) = eigProj P.ρΩ (σ.comp c.toRingHom) (P.ht y)` using `fun y hy => rfl`. Establish `hℓs : ∀ (s : O) (y : V), ℓ (s • y) = algebraMap O C s * ℓ y`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `s y`. Rewrite using `[← algebraMap_smul C s y, LinearMap.map_smul, smul_eq_mul]`. Establish `hker : P.ht w = 0`. Rewrite using `[P.lagr w]`. Introduce `y hy0`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hw]`. Take `⟨s, hs, hsy⟩` from `htPoint_exists_smul_mem_T hv P y`. Establish `h0 : K ⟨s • y, hsy⟩ = 0`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [hK, LinearMap.map_smul_of_tower, hy0, smul_zero, map_zero, Submodule.coe_zero]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Establish `h1` using `hℓ (s • y) hsy`. Rewrite `h1` using `[LinearMap.comp_apply, h0, map_zero, map_zero, hℓs]`. Conclude with `(mul_eq_zero.mp h1).resolve_left hs`. Establish `hσu : ∀ a : 𝓞 E, ∃ u : O, algebraMap O C u = σ (a : E)`. Introduce `a`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hint : IsIntegral O (σ (a : E))`. Establish `h` using `(NumberField.RingOfIntegers.isIntegral_coe a).map σ.toIntAlgHom`. Conclude with `h.tower_top`. Conclude with `hv.exists_of_le_one (hv.mem_of_integral hint)`. Establish `hρ : ∀ (a : 𝓞 E) (y : V), ℓ (P.ρ (RingOfIntegers.mapRingEquiv c a) y) = σ (a : E) * ℓ y`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `a y`. Take `⟨u, hu⟩` from `hσu a`. Establish `hT1 : ∀ z (hz : z ∈ P.T), ℓ (P.ρ (RingOfIntegers.mapRingEquiv c a) z) = σ (a : E) * ℓ z`. Introduce `z hz`. Establish `hz'` using `htPoint_rho_mem_T P (RingOfIntegers.mapRingEquiv c a) hz`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `hK2 : K ⟨_, hz'⟩ = u • K ⟨z, hz⟩`. Apply `Subtype.ext` to reduce the goal to its premises. Establish `e3` using `LinearMap.congr_fun ((ProjEig.eigProj_mul_rho_comm P.ρΩ (σ.comp c.toRingHom) (RingOfIntegers.mapRingEquiv c a)).trans (ProjEig.rho_mul_eigProj P.ρΩ (σ.comp c.toRingHom) (RingOfIntegers.mapRingEquiv c a))) (P.ht z)`. Rewrite `e3` using `[Module.End.mul_apply, LinearMap.smul_apply]`. Establish `e4 : (σ.comp c.toRingHom) ((RingOfIntegers.mapRingEquiv c a : 𝓞 E) : E) = algebraMap O C u`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hu]`. Simplify using `[hc]`. Rewrite using `[Submodule.coe_smul, hK, hK, P.ht_lin, e3, e4, algebraMap_smul]`. Rewrite using `[hℓ _ hz', hℓ z hz, LinearMap.comp_apply, LinearMap.comp_apply, hK2, map_smul, smul_eq_mul, map_mul, hu]`. Take `⟨s, hs, hsy⟩` from `htPoint_exists_smul_mem_T hv P y`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `h1` using `hT1 _ hsy`. Rewrite `h1` using `[LinearMap.map_smul_of_tower, hℓs, hℓs]`. Apply `mul_left_cancel₀ hs` to reduce the goal to its premises. Rewrite using `[h1]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `heig : ∀ a : 𝓞 E, P.ρ a w = σ (a : E) • w`. Introduce `a`. Establish `h0 : P.ρ a w - σ (a : E) • w = 0`. Apply `htPoint_eq_zero_of_e_left_eq_zero P` to reduce the goal to its premises. Introduce `y`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_sub, LinearMap.sub_apply, P.adj, map_smul, LinearMap.smul_apply, hw, hw, smul_eq_mul, hρ, sub_self]`. Conclude with `sub_eq_zero.mp h0`. Use `⟨w, Submodule.mem_inf.mpr ⟨?_, Submodule.mem_inf.mpr ⟨?_, ?_⟩⟩, fun y hy => ?_⟩` and prove the remaining obligations. Rewrite using `[Submodule.restrictScalars_mem]`. Conclude with `LinearMap.mem_ker.mpr hker`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← P.perfect]`. Introduce `x hx`. Rewrite using `[htPoint_e_antisymm P x w, hw, hℓ x hx]`. Conclude with `RingHom.mem_range.mpr ⟨_, map_neg _ _⟩`. Rewrite using `[Submodule.restrictScalars_mem]`.
-
-Simplify using `only [eigSp, Submodule.mem_iInf, LinearMap.mem_ker]`. Introduce `a`. Rewrite using `[LinearMap.sub_apply, LinearMap.smul_apply, Module.End.one_apply, heig, sub_self]`. Rewrite using `[hw]`. Conclude with `hℓ y hy`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_alt_bis (hv : v.Integers O) (hc : ∀ x, c (c x) = x) (P : HTPoint C O c κ N V Ω) (σ : E →+* C)
     (f : P.omHT (σ.comp c.toRingHom) →ₗ[O] O) :

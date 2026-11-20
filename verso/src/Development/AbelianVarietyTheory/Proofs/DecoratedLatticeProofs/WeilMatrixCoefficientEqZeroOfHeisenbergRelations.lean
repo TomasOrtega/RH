@@ -14,21 +14,17 @@ noncomputable section
 namespace GlobalTheory.ChainOnto
 
 /- English proof (translation)
-Introduce `D ψ S T χS χT om hw m X hm F hF g n a y h1 h2`. Establish `hψ` using `hw.std`. Establish `hth` using `(GlobalTheory.HeisThetaLaws.heis_theta_laws D ψ hψ S T).1`. Establish `laws` using `fun {u v : WO S T → ℂ} (hu : IsThetaFunO ψ S T u) (hv : IsThetaFunO ψ S T v) => GlobalTheory.ThetaPairingLaws.ipO_laws D ψ S T m X hψ hm u v hu hv`. Establish `hG : IsThetaFunO ψ S T (om (g, 1) F)` using `hw.om_pres _ F hF`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key : ∀ i, (∫ x in X, om (g, 1) F x * conj (heisO ψ S T (y i) F x) ∂m) = ∫ x in X, om (g, 1) (heisO ψ S T (actO S T g⁻¹ 1 (-(y i))) F) x * conj (F x) ∂m`. Introduce `i`. Establish `hact : actO S T g 1 (actO S T g⁻¹ 1 (-(y i))) = -(y i)`. Use `GlobalTheory.AdelicLatMove.actO_actO_inv S T g 1 (-(y i))` as an intermediate fact. Rewrite `this` using `[inv_one]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite using `[hw.om_heis g 1 _ F hF, hact]`. Use `((laws hG hF).2.2.2.2.2.2.1 (-(y i))).2` as an intermediate fact. Rewrite `this` using `[neg_neg]`. Conclude with `this.symm`. Establish `hpt : ∀ x, om (g, 1) F x * conj (F x) = ∑ i, conj (a i) * (om (g, 1) F x * conj (heisO ψ S T (y i) F x))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x`. Establish `e` using `congrFun h1 x`. Rewrite `e` using `[Finset.sum_apply]`. Use `conv_lhs => rw [← e]`. Rewrite using `[map_sum, Finset.mul_sum]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [Pi.smul_apply, smul_eq_mul, map_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `hz : ∀ x, om (g, 1) (∑ i, conj (a i) • heisO ψ S T (actO S T g⁻¹ 1 (-(y i))) F) x * conj (F x) = ∑ i, conj (a i) * (om (g, 1) (heisO ψ S T (actO S T g⁻¹ 1 (-(y i))) F) x * conj (F x))`. Introduce `x`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_sum, Finset.sum_apply, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, Pi.smul_apply, smul_eq_mul, mul_assoc]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[integral_finset_sum _ (fun i _ => ((laws hG (hth _ F hF)).1).const_mul _)]`.
-
-Conclude with `Finset.sum_congr rfl fun i _ => integral_const_mul _ _`. Use `_ = ∑ i, conj (a i) * ∫ x in X, om (g, 1) (heisO ψ S T (actO S T g⁻¹ 1 (-(y i))) F) x * conj (F x) ∂m := Finset.sum_congr rfl fun i _ => by rw [key i]`. Use `_ = ∫ x in X, ∑ i, conj (a i) * (om (g, 1) (heisO ψ S T (actO S T g⁻¹ 1 (-(y i))) F) x * conj (F x)) ∂m := by`. Rewrite using `[integral_finset_sum _ (fun i _ => ((laws (hw.om_pres _ _ (hth _ F hF)) hF).1).const_mul _)]`. Conclude with `Finset.sum_congr rfl fun i _ => (integral_const_mul _ _).symm`.
-
-Use `_ = ∫ x in X, om (g, 1) (∑ i, conj (a i) • heisO ψ S T (actO S T g⁻¹ 1 (-(y i))) F) x * conj (F x) ∂m := integral_congr_ae (Filter.Eventually.of_forall fun x => (hz x).symm)`. Use `_ = 0 := by simp [h2]`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coef_zero_of_heis_relations : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (χS χT : (AE D)ˣ →* Circle) (om : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ)), IsWeilDatumO ψ S T χS χT om → ∀ (m : Measure (WO S T)) (X : Set (WO S T)), IsCovolOne (ratL T S) m X → ∀ F : WO S T → ℂ, IsThetaFunO ψ S T F → ∀ (g : GA D S) (n : ℕ) (a : Fin n → ℂ) (y : Fin n → WO S T), ∑ i, a i • heisO ψ S T (y i) F = F → ∑ i, conj (a i) • heisO ψ S T (actO S T g⁻¹ 1 (-(y i))) F = 0 → ∫ w in X, om (g, 1) F w * conj (F w) ∂m = 0 := by
   intro D ψ S T χS χT om hw m X hm F hF g n a y h1 h2

@@ -16,7 +16,7 @@ local notation "𝔹" => BDeRhamPlus (normInteger ℂ_[p]) p
 local notation "𝔹dR" => BDeRham (normInteger ℂ_[p]) p
 
 /- English proof (translation)
-Take `⟨n, w, hw⟩` from `IsLocalization.Away.surj r x`. Use `⟨w, n, ?_⟩` and prove the remaining obligations. Use `congrArg f hw` as an intermediate fact. Rewrite `this` using `[map_mul, map_pow, hfg, hfg]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem exists_mul_pow_eq_of_away {R B : Type*} [CommRing R] [CommRing B] {r : R} (g : R →+* B)
     (f : Localization.Away r →+* B) (hfg : ∀ a, f (algebraMap R _ a) = g a)
@@ -30,13 +30,13 @@ def IsACrisFraction (y : PadicAlgCl p) : Prop :=
   ∃ a b : ACris ℂ_[p] p, b ≠ 0 ∧ iota ℂ_[p] p a = algClToBdR p y * iota ℂ_[p] p b
 
 /- English proof (translation)
-Introduce `h` and use `hb (iota_injective (by rw [h, map_zero]))`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem iota_ne_zero {b : ACris ℂ_[p] p} (hb : b ≠ 0) : iota ℂ_[p] p b ≠ 0 :=
   fun h => hb (iota_injective (by rw [h, map_zero]))
 
 /- English proof (translation)
-Introduce `h`. Use `congrArg (iota ℂ_[p] p) h` as an intermediate fact. Rewrite `this` using `[map_one, map_zero]`. Conclude with `one_ne_zero this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem one_ne_zero_aCris : (1 : ACris ℂ_[p] p) ≠ 0 := by
   intro h
@@ -45,7 +45,7 @@ theorem one_ne_zero_aCris : (1 : ACris ℂ_[p] p) ≠ 0 := by
   exact one_ne_zero this
 
 /- English proof (translation)
-Introduce `h`. Use `congrArg (iota ℂ_[p] p) h` as an intermediate fact. Rewrite `this` using `[map_mul, map_zero]`. Conclude with `mul_ne_zero (iota_ne_zero hb) (iota_ne_zero hc) this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mul_ne_zero_aCris {b c : ACris ℂ_[p] p} (hb : b ≠ 0) (hc : c ≠ 0) : b * c ≠ 0 := by
   intro h
@@ -54,7 +54,7 @@ theorem mul_ne_zero_aCris {b c : ACris ℂ_[p] p} (hb : b ≠ 0) (hc : c ≠ 0) 
   exact mul_ne_zero (iota_ne_zero hb) (iota_ne_zero hc) this
 
 /- English proof (translation)
-Take `⟨a, b, hb, h⟩` from `hy`. Take `⟨a', b', hb', h'⟩` from `hz`. Use `⟨a * a', b * b', mul_ne_zero_aCris hb hb', ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, map_mul, map_mul, h, h']`. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem IsACrisFraction.mul {y z : PadicAlgCl p} (hy : IsACrisFraction y) (hz : IsACrisFraction z) :
     IsACrisFraction (y * z) := by
@@ -65,7 +65,7 @@ theorem IsACrisFraction.mul {y z : PadicAlgCl p} (hy : IsACrisFraction y) (hz : 
   ring
 
 /- English proof (translation)
-Take `⟨a, b, hb, h⟩` from `hy`. Take `⟨a', b', hb', h'⟩` from `hz`. Use `⟨a * b' - a' * b, b * b', mul_ne_zero_aCris hb hb', ?_⟩` and prove the remaining obligations. Rewrite using `[map_sub, map_mul, map_mul, map_mul, map_sub, h, h']`. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem IsACrisFraction.sub {y z : PadicAlgCl p} (hy : IsACrisFraction y) (hz : IsACrisFraction z) :
     IsACrisFraction (y - z) := by
@@ -76,7 +76,7 @@ theorem IsACrisFraction.sub {y z : PadicAlgCl p} (hy : IsACrisFraction y) (hz : 
   ring
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => exact ⟨1, 1, one_ne_zero_aCris, by rw [pow_zero, map_one, map_one, one_mul]⟩`. Consider the case `succ n ih => rw [pow_succ]`. Conclude with `ih.mul hy`.
+Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem IsACrisFraction.pow {y : PadicAlgCl p} (hy : IsACrisFraction y) (n : ℕ) :
     IsACrisFraction (y ^ n) := by
@@ -85,9 +85,9 @@ theorem IsACrisFraction.pow {y : PadicAlgCl p} (hy : IsACrisFraction y) (n : ℕ
   | succ n ih => rw [pow_succ]; exact ih.mul hy
 
 /- English proof (translation)
-Take `⟨x, hx⟩` from `mem_algClInBCrisPlus.1 (unramifiedClosure_le hu)`. Take `⟨w, n, hw⟩` from `exists_mul_pow_eq_of_away (iota ℂ_[p] p) (iotaPlus ℂ_[p] p) (fun a => iotaPlus_algebraMap a) x`. Use `⟨w, (p : ACris ℂ_[p] p) ^ n, fun h0 => ?_, ?_⟩` and prove the remaining obligations. Use `congrArg (iota ℂ_[p] p) h0` as an intermediate fact. Rewrite `this` using `[map_pow, map_natCast, map_zero, ← map_natCast (algebraMap ℚ_[p] 𝔹) p, ← map_pow]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `pow_ne_zero n (Nat.cast_ne_zero.2 hp.out.ne_zero : (p : ℚ_[p]) ≠ 0) ((algebraMap ℚ_[p] 𝔹).injective (by rw [this, map_zero]))`. Rewrite using `[← hw, hx, map_pow]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isACrisFraction_of_mem {u : PadicAlgCl p} (hu : u ∈ unramifiedClosure p) :
     IsACrisFraction u := by
@@ -102,7 +102,7 @@ theorem isACrisFraction_of_mem {u : PadicAlgCl p} (hu : u ∈ unramifiedClosure 
   · rw [← hw, hx, map_pow]
 
 /- English proof (translation)
-Take `⟨a, b, hb, h⟩` from `hy`. Conclude with `exists_norm_eq_zpow_of_iota_eq hy0 hb h`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem IsACrisFraction.exists_norm_eq_zpow {y : PadicAlgCl p} (hy : IsACrisFraction y)
     (hy0 : y ≠ 0) : ∃ D : ℤ, ‖y‖ = ‖(p : PadicAlgCl p)‖ ^ D := by
@@ -110,11 +110,11 @@ theorem IsACrisFraction.exists_norm_eq_zpow {y : PadicAlgCl p} (hy : IsACrisFrac
   exact exists_norm_eq_zpow_of_iota_eq hy0 hb h
 
 /- English proof (translation)
-Distinguish the cases in `hy0 : y = 0`. Rewrite using `[hy0, norm_zero]`. Conclude with `norm_nonneg _`. Take `⟨D, hD⟩` from `hy.exists_norm_eq_zpow hy0`. Establish `hp0 : 0 < ‖(p : PadicAlgCl p)‖` using `by rw [norm_p_algCl]; exact inv_p_pos`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hp1 : ‖(p : PadicAlgCl p)‖ ≤ 1` using `by rw [norm_p_algCl]; exact inv_p_lt_one.le`. Rewrite using `[hD]`. Distinguish the cases in `hD1 : 1 ≤ D`. Conclude with `(zpow_le_zpow_right_of_le_one₀ hp0 hp1 hD1).trans_eq (zpow_one _)`. It suffices to derive a contradiction.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. It suffices to derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: (1 : ℝ) ≤ ‖(p : PadicAlgCl p)‖ ^ D`. Rewrite using `[← zpow_zero ‖(p : PadicAlgCl p)‖]`. Conclude with `zpow_le_zpow_right_of_le_one₀ hp0 hp1 (by omega)`. Rewrite `this` using `[← hD]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem IsACrisFraction.norm_le {y : PadicAlgCl p} (hy : IsACrisFraction y) (h1 : ‖y‖ < 1) :
     ‖y‖ ≤ ‖(p : PadicAlgCl p)‖ := by
@@ -134,15 +134,13 @@ theorem IsACrisFraction.norm_le {y : PadicAlgCl p} (hy : IsACrisFraction y) (h1 
     linarith
 
 /- English proof (translation)
-Use `set O := normInteger F`. Use `set a' : O := ⟨a, mem_normInteger.2 ha⟩`. Use `set b' : O := ⟨b, mem_normInteger.2 hb⟩`. Establish `hnu : (p : O) ∈ nonunits O`. Rewrite using `[mem_nonunits_iff]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Introduce and unpack `⟨u, hu⟩`. Establish `h1` using `congrArg (fun z : O => (z : F)) u.mul_inv`. Simplify using `only [MulMemClass.coe_mul, OneMemClass.coe_one] at h1`. Rewrite `h1` using `[hu]`. Move the coercions through the operations in `at h1`.
+Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h2` using `congrArg norm h1`. Rewrite `h2` using `[norm_mul, norm_one]`. Establish `h3 : ‖(((u⁻¹ : Oˣ) : O) : F)‖ ≤ 1` using `mem_normInteger.1 (u⁻¹ : Oˣ).val.2`. Use polynomial arithmetic with `[norm_nonneg ((p : F))]`. Use `haveI := CharP.quotient O p hnu`.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h` using `sub_pow_char_pow (p := p) (n := k) (Ideal.Quotient.mk (Ideal.span {(p : O)}) a') (Ideal.Quotient.mk (Ideal.span {(p : O)}) b')`. Rewrite `h` using `[← map_sub, ← map_pow, ← map_pow, ← map_pow, ← map_sub, Ideal.Quotient.eq]`. Take `⟨c, hc⟩` from `Ideal.mem_span_singleton'.1 h`. Establish `h4` using `congrArg (fun z : O => (z : F)) hc`. Move the coercions through the operations in `at h4`.
-
-Rewrite using `[← h4, norm_mul]`. Conclude with `mul_le_of_le_one_left (norm_nonneg _) (mem_normInteger.1 c.2)`.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_sub_pow_sub_le {F : Type*} [NormedField F] [IsUltrametricDist F] (hpF : ‖(p : F)‖ < 1)
     {a b : F} (ha : ‖a‖ ≤ 1) (hb : ‖b‖ ≤ 1) (k : ℕ) :
@@ -172,33 +170,29 @@ theorem norm_sub_pow_sub_le {F : Type*} [NormedField F] [IsUltrametricDist F] (h
   exact mul_le_of_le_one_left (norm_nonneg _) (mem_normInteger.1 c.2)
 
 /- English proof (translation)
-Rewrite using `[norm_p_algCl]`. Conclude with `inv_p_lt_one`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_p_algCl_lt_one : ‖(p : PadicAlgCl p)‖ < 1 := by
   rw [norm_p_algCl]; exact inv_p_lt_one
 
 /- English proof (translation)
-Proceed by induction on `m with`. Consider the case `zero => intro y _ hy1; exact ⟨0, zero_mem _, by rw [sub_zero, pow_zero]; exact hy1⟩`. Consider the case `succ m ih`. Introduce `y hy hy1`. Establish `hp1` using `norm_p_algCl_lt_one (p := p)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Take `⟨k₀, k₁, hk, hkk⟩` from `exists_lt_norm_pow_sub_lt hy1 one_pos (fun k => p ^ k)`. Use `set r := k₁ - k₀ with hr`. Establish `hr1 : 1 ≤ r` using `by omega`. Use `set z := y ^ p ^ r - y with hz`. Establish `hyr : ‖y ^ p ^ r‖ ≤ 1` using `by rw [norm_pow]; exact pow_le_one₀ (norm_nonneg _) hy1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hbin` using `norm_sub_pow_sub_le hp1 hyr hy1 k₀`. Establish `hk1 : (y ^ p ^ r) ^ p ^ k₀ = y ^ p ^ k₁`. Rewrite using `[← pow_mul, ← pow_add, hr, Nat.sub_add_cancel hk.le]`. Rewrite `hbin` using `[hk1]`. Establish `hz1 : ‖z ^ p ^ k₀‖ < 1`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e : z ^ p ^ k₀ = (z ^ p ^ k₀ - (y ^ p ^ k₁ - y ^ p ^ k₀)) + (y ^ p ^ k₁ - y ^ p ^ k₀)` using `by ring`. Rewrite using `[e]`. Conclude with `(IsUltrametricDist.norm_add_le_max _ _).trans_lt (max_lt (hbin.trans_lt hp1) hkk)`. Establish `hz2 : ‖z‖ < 1`. Rewrite `hz1` using `[norm_pow]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(pow_lt_one_iff_of_nonneg (norm_nonneg _) (pow_ne_zero _ hp.out.ne_zero)).1 hz1`. Establish `hzf : IsACrisFraction z` using `(hy.pow _).sub hy`. Establish `hz3` using `hzf.norm_le hz2`. Establish `hyC : ‖(y : ℂ_[p])‖ ≤ 1` using `by rw [PadicComplex.norm_extends]; exact hy1`. Establish `hzC : ‖(y : ℂ_[p]) ^ p ^ r - (y : ℂ_[p])‖ ≤ ‖(p : ℂ_[p])‖ ^ 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[pow_one, ← PadicComplex.coe_natCast, PadicComplex.norm_extends]`. Establish `: (y : ℂ_[p]) ^ p ^ r - (y : ℂ_[p]) = ((y ^ p ^ r - y : PadicAlgCl p) : ℂ_[p])`. Simplify using `only [PadicComplex.coe_eq, map_sub, map_pow]`. Rewrite using `[this, PadicComplex.norm_extends]`. Conclude with `hz3`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨u₀, hu₀, hu₀y⟩` from `exists_approx_of_pow_sub hyC hr1 hzC`. Rewrite using `[pow_one, ← PadicComplex.coe_natCast, PadicComplex.norm_extends, show (y : ℂ_[p]) - (u₀ : ℂ_[p]) = ((y - u₀ : PadicAlgCl p) : ℂ_[p]) by`. Simplify using `only [PadicComplex.coe_eq, map_sub],`. Use the proof step `PadicComplex.norm_extends] at hu₀y`. Establish `hpne : (p : PadicAlgCl p) ≠ 0` using `Nat.cast_ne_zero.2 hp.out.ne_zero`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `set y' := (y - u₀) * (p : PadicAlgCl p)⁻¹ with hy'`. Establish `hpinv : (p : PadicAlgCl p)⁻¹ ∈ unramifiedClosure p` using `inv_mem (natCast_mem _ p)`. Establish `hy'f : IsACrisFraction y'` using `(hy.sub (isACrisFraction_of_mem hu₀)).mul (isACrisFraction_of_mem hpinv)`. Establish `hnp0 : 0 < ‖(p : PadicAlgCl p)‖` using `norm_pos_iff.2 hpne`. Establish `hy'1 : ‖y'‖ ≤ 1`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Rewrite using `[hy', norm_mul, norm_inv]`. Rewrite using `[← div_eq_mul_inv]`. Conclude with `(div_le_one hnp0).2 hu₀y`. Take `⟨u', hu', hu'y⟩` from `ih y' hy'f hy'1`. Use `⟨u₀ + (p : PadicAlgCl p) * u', add_mem hu₀ (mul_mem (natCast_mem _ p) hu'), ?_⟩` and prove the remaining obligations.
-
-Establish `e : y - (u₀ + (p : PadicAlgCl p) * u') = (p : PadicAlgCl p) * (y' - u')`. Rewrite using `[hy']`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, norm_mul, pow_succ, mul_comm]`.
-
-Conclude with `mul_le_mul_of_nonneg_right hu'y (norm_nonneg _)`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_approx_of_isACrisFraction (m : ℕ) :
     ∀ y : PadicAlgCl p, IsACrisFraction y → ‖y‖ ≤ 1 →
@@ -258,11 +252,11 @@ theorem exists_approx_of_isACrisFraction (m : ℕ) :
     exact mul_le_mul_of_nonneg_right hu'y (norm_nonneg _)
 
 /- English proof (translation)
-Establish `hpne : (p : PadicAlgCl p) ≠ 0` using `Nat.cast_ne_zero.2 hp.out.ne_zero`. Establish `hp1` using `norm_p_algCl_lt_one (p := p)`. Establish `hnp0 : 0 < ‖(p : PadicAlgCl p)‖` using `norm_pos_iff.2 hpne`. Take `⟨n, hn⟩` from `exists_pow_lt_of_lt_one (inv_pos.2 (zero_lt_one.trans_le (le_max_left 1 ‖y‖))) hp1`. Use `set y' := (p : PadicAlgCl p) ^ n * y`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hy'1 : ‖y'‖ ≤ 1`. Rewrite using `[norm_mul, norm_pow]`. Combine the equalities or inequalities in the displayed calculation. Establish `hy'f : IsACrisFraction y'` using `(isACrisFraction_of_mem (pow_mem (natCast_mem _ p) n)).mul hy`. Establish `hy' : y' ∈ unramifiedClosure p` using `mem_unramifiedClosure_of_forall_approx fun m => exists_approx_of_isACrisFraction m y' hy'f hy'1`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: y = ((p : PadicAlgCl p) ^ n)⁻¹ * y'`. Rewrite using `[← mul_assoc, inv_mul_cancel₀ (pow_ne_zero _ hpne), one_mul]`. Rewrite using `[this]`. Conclude with `mul_mem (inv_mem (pow_mem (natCast_mem _ p) n)) hy'`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsACrisFraction.mem_unramifiedClosure {y : PadicAlgCl p} (hy : IsACrisFraction y) :
     y ∈ unramifiedClosure p := by

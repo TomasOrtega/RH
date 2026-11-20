@@ -18,11 +18,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.TwV
 
 /- English proof (translation)
-Introduce `D L hT Gi Gl Kc Dx cX ex u μ w hg Lv I H X _ std t J S _hD hP hPos hSc`. Use `⟨?_, ?_, ?_, hSc, J.rho std, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `j hj L0 hL0 La' hLa'`. Conclude with `(hP j hj L0 La' (repOf_lat _ _ j L0 hL0) hLa').1`. Take `⟨hpos, hS⟩` from `GlobalTheory.T.site_finite_data_level_pos_bad_prime_factors t std J`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨hpos, fun hd => GlobalTheory.T.site_residue_char_not_mem_bad_primes t std J (hS _ Fact.out hd)⟩`. Conclude with `⟨(t.O u μ).S, GlobalTheory.T.site_residue_char_not_mem_bad_primes t std J, fun j _ L0 _ La' _ y => GlobalTheory.T.intOff_xi0_of_joint t std J S j L0 La' y⟩`. Conclude with `GlobalTheory.TwU.lamPosG_of_lamPos _ S.E D _ _ _ hPos`. Conclude with `fun j La v => GlobalTheory.isUnit_det_frameMatrix_ofCharts _ _ _ j La v`. Use `GlobalTheory.T.orthonormal_local_bases_carry_witt_lattices _ S.hfin D (J.fd std) (J.rho std) (halfDiffInv_integral_at_split D _ _ hg) ?_` and prove the remaining obligations.
+Supply the required witnesses or components. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `j hj La La' h1 h2`. Establish `q` using `hP j hj La La' h1 h2`. Conclude with `⟨q.1, fun v => ⟨(q.2.2.2.2.2.2.2 v).2.2.1, (q.2.2.2.2.2.2.2 v).2.2.2⟩⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem kernelSite_seriesData_below_lastStep : AllSites (fun {D L hT Gi Gl Kc Dx cX ex u μ w hg Lv I H X} [Fact (D.what₂.places.resChar w).Prime] {std t J} S =>
     J.Dict std → S.Pair → S.Pos → S.Scal → S.K1) := by

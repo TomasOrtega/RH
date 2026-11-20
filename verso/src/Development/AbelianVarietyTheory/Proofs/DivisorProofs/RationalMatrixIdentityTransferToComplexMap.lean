@@ -20,7 +20,7 @@ noncomputable def endRealMatrixRingHom {g n : ℕ} (e : Module.Basis (Fin n) ℝ
     rw [this]; exact map_add _ _ _
 
 /- English proof (translation)
-Introduce `f h hfh`. Establish `h1 : f.restrictScalars ℝ = h.restrictScalars ℝ` using `(LinearMap.toMatrix e e).injective hfh`. Conclude with `LinearMap.restrictScalars_injective ℝ h1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem endRealMatrixRingHom_injective {g n : ℕ} (e : Module.Basis (Fin n) ℝ (Fin g → ℂ)) :
     Function.Injective (endRealMatrixRingHom e) := by
@@ -29,11 +29,11 @@ theorem endRealMatrixRingHom_injective {g n : ℕ} (e : Module.Basis (Fin n) ℝ
   exact LinearMap.restrictScalars_injective ℝ h1
 
 /- English proof (translation)
-Set `F` to `(endRealMatrixRingHom e).toRatAlgHom`. Set `ψ : Matrix (Fin n) (Fin n) ℚ →ₐ[ℚ] Matrix (Fin n) (Fin n) ℝ` to `(Algebra.ofId ℚ ℝ).mapMatrix`. Establish `hψ : ∀ M, ψ M = M.map (Rat.cast : ℚ → ℝ)`. Introduce `M`. Use extensionality with `i j`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Simplify using `[ψ]`. Establish `hFγ : F γ = ψ Tq` using `by rw [hψ, hT]; rfl`. Apply `endRealMatrixRingHom_injective e` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `F 1 = F _`. Establish `key` using `congrArg ψ hid`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact.
 
-Rewrite `key` using `[map_one]`. Rewrite using `[map_one, key]`. Simplify using `only [map_add, map_sum, map_smul, map_mul, map_pow, ← Polynomial.aeval_algHom_apply, hFγ]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem matrix_identity_transfer (g n : ℕ) (e : Module.Basis (Fin n) ℝ (Fin g → ℂ))
     (γ : (Fin g → ℂ) →ₗ[ℂ] (Fin g → ℂ)) (Tq : Matrix (Fin n) (Fin n) ℚ)

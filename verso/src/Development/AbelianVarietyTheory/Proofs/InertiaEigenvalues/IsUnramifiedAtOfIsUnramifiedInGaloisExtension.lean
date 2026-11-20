@@ -9,9 +9,9 @@ namespace GlobalTheory.NT
 open NumberField IsDedekindDomain
 
 /- English proof (translation)
-Establish `: IsGaloisGroup (L ≃ₐ[K] L) (𝓞 K) (𝓞 L)` using `IsGaloisGroup.of_isFractionRing _ _ _ K L`. Use `𝔭.isMaximal` as an intermediate fact. Establish `hu : P.under (𝓞 K) = 𝔭.asIdeal` using `(Ideal.over_def P 𝔭.asIdeal).symm`. Establish `: (P.under (𝓞 K)).IsMaximal` using `by rw [hu]; infer_instance`. Establish `: Finite (𝓞 K ⧸ 𝔭.asIdeal)` using `Ideal.finiteQuotientOfFreeOfNeBot _ 𝔭.ne_bot`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: P.IsMaximal` using `Ideal.IsPrime.isMaximal inferInstance (Ideal.ne_bot_of_liesOver_of_ne_bot 𝔭.ne_bot P)`. Establish `h1 : P.inertia (L ≃ₐ[K] L) = ⊥` using `(Subgroup.eq_bot_iff_forall _).2 fun τ hτ => h τ ⟨P, inferInstance, inferInstance, hτ⟩`. Establish `h2` using `Ideal.card_inertia_eq_ramificationIdxIn (G := L ≃ₐ[K] L) 𝔭.asIdeal P`. Rewrite `h2` using `[h1, Subgroup.card_bot, Ideal.ramificationIdxIn_eq_ramificationIdx _ P (L ≃ₐ[K] L)]`. Conclude with `Ideal.ramificationIdx_eq_one_iff.1 h2.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUnramifiedAt_of_unramIn {K L : Type} [Field K] [NumberField K] [Field L] [NumberField L] [Algebra K L]
     [IsGalois K L] {𝔭 : HeightOneSpectrum (𝓞 K)} (h : UnramIn L 𝔭) (P : Ideal (𝓞 L)) [P.IsPrime]
@@ -29,7 +29,7 @@ theorem isUnramifiedAt_of_unramIn {K L : Type} [Field K] [NumberField K] [Field 
   exact Ideal.ramificationIdx_eq_one_iff.1 h2.symm
 
 /- English proof (translation)
-Introduce `h P` and use `isUnramifiedAt_of_unramIn h P`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 example : ∀ {K L : Type} [Field K] [NumberField K] [Field L] [NumberField L] [Algebra K L] [IsGalois K L] {𝔭 : HeightOneSpectrum (𝓞 K)}, GlobalTheory.NT.UnramIn L 𝔭 → ∀ (P : Ideal (𝓞 L)) [P.IsPrime] [P.LiesOver 𝔭.asIdeal], Algebra.IsUnramifiedAt (𝓞 K) P :=
   fun h P => isUnramifiedAt_of_unramIn h P

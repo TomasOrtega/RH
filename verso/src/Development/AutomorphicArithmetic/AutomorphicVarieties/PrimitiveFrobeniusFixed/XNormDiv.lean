@@ -19,7 +19,7 @@ variable {M : ℕ} [NeZero M] {K : Type} [Field K] [NumberField K] [IsCyclotomic
 end One
 
 /- English proof (translation)
-Unfold `sgO`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Both sides reduce to the same expression.
 -/
 private theorem algebraMap_sgO_eq_sg_algebraMap (M : ℕ) [NeZero M] (K : Type) [Field K] [NumberField K] [IsCyclotomicExtension {M} ℚ K] (t : (ZMod M)ˣ) (x : 𝓞 K) :
     algebraMap (𝓞 K) K (sgO M K t x) = sg M K t (algebraMap (𝓞 K) K x) := by
@@ -27,7 +27,7 @@ private theorem algebraMap_sgO_eq_sg_algebraMap (M : ℕ) [NeZero M] (K : Type) 
   rfl
 
 /- English proof (translation)
-Apply `FaithfulSMul.algebraMap_injective (𝓞 K) K` to reduce the goal to its premises. Rewrite using `[algebraMap_sgO_eq_sg_algebraMap, algebraMap_sgO_eq_sg_algebraMap, algebraMap_sgO_eq_sg_algebraMap, map_mul, AlgEquiv.mul_apply]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 private theorem sgO_mul_apply (M : ℕ) [NeZero M] (K : Type) [Field K] [NumberField K] [IsCyclotomicExtension {M} ℚ K] (a b : (ZMod M)ˣ) (x : 𝓞 K) :
     sgO M K (a * b) x = sgO M K a (sgO M K b x) := by
@@ -35,7 +35,7 @@ private theorem sgO_mul_apply (M : ℕ) [NeZero M] (K : Type) [Field K] [NumberF
   rw [algebraMap_sgO_eq_sg_algebraMap, algebraMap_sgO_eq_sg_algebraMap, algebraMap_sgO_eq_sg_algebraMap, map_mul, AlgEquiv.mul_apply]
 
 /- English proof (translation)
-Rewrite using `[RingEquiv.symm_apply_eq, ← sgO_mul_apply, mul_inv_cancel]`. Apply `FaithfulSMul.algebraMap_injective (𝓞 K) K` to reduce the goal to its premises. Rewrite using `[algebraMap_sgO_eq_sg_algebraMap, map_one, AlgEquiv.one_apply]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 private theorem sgO_symm_apply_eq_sgO_inv (M : ℕ) [NeZero M] (K : Type) [Field K] [NumberField K] [IsCyclotomicExtension {M} ℚ K] (a : (ZMod M)ˣ) (x : 𝓞 K) :
     (sgO M K a).symm x = sgO M K a⁻¹ x := by
@@ -44,7 +44,7 @@ private theorem sgO_symm_apply_eq_sgO_inv (M : ℕ) [NeZero M] (K : Type) [Field
   rw [algebraMap_sgO_eq_sg_algebraMap, map_one, AlgEquiv.one_apply]
 
 /- English proof (translation)
-Unfold `conjI`. Rewrite using `[Ideal.map_comap_of_equiv]`. Use extensionality with `x`. Rewrite using `[Ideal.mem_comap, Ideal.mem_comap, Ideal.mem_comap, sgO_symm_apply_eq_sgO_inv, sgO_mul_apply]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 -/
 private theorem map_sgO_conjI_eq_conjI_mul_inv (M : ℕ) [NeZero M] (K : Type) [Field K] [NumberField K] [IsCyclotomicExtension {M} ℚ K] (𝔞 : Ideal (𝓞 K)) (s t : (ZMod M)ˣ) :
     Ideal.map ((sgO M K s : 𝓞 K ≃+* 𝓞 K) : 𝓞 K →+* 𝓞 K) (conjI M K 𝔞 t) = conjI M K 𝔞 (t * s⁻¹) := by
@@ -54,11 +54,11 @@ private theorem map_sgO_conjI_eq_conjI_mul_inv (M : ℕ) [NeZero M] (K : Type) [
   rw [Ideal.mem_comap, Ideal.mem_comap, Ideal.mem_comap, sgO_symm_apply_eq_sgO_inv, sgO_mul_apply]
 
 /- English proof (translation)
-Set `f : 𝓞 K →+* 𝓞 K` to `((sgO M K s : 𝓞 K ≃+* 𝓞 K) : 𝓞 K →+* 𝓞 K)`. Establish `hf : (𝓞 K)⁰ ≤ Submonoid.comap f (𝓞 K)⁰` using `nonZeroDivisors_le_comap_nonZeroDivisors_of_injective _ (sgO M K s).injective`. Establish `key : IsLocalization.map K f hf = ((sg M K s : K ≃ₐ[ℚ] K) : K →+* K)`. Apply `IsLocalization.ringHom_ext (𝓞 K)⁰` to reduce the goal to its premises. Use extensionality with `x`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components.
 
-Simplify using `only [RingHom.comp_apply, IsLocalization.map_eq]`. Conclude with `algebraMap_sgO_eq_sg_algebraMap M K s x`. Establish `h` using `congrArg (FractionalIdeal.extendedHom' K hf) hX`. Rewrite `h` using `[FractionalIdeal.extendedHom'_apply, FractionalIdeal.extended_spanSingleton, key, map_prod]`. Rewrite using `[show (sg M K s) X = ((sg M K s : K ≃ₐ[ℚ] K) : K →+* K) X from rfl, h]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Fintype.prod_equiv (Equiv.mulRight s⁻¹) _ _ (fun t => ?_)` and prove the remaining obligations. Rewrite using `[map_zpow₀, FractionalIdeal.extendedHom'_apply, FractionalIdeal.extended_coeIdeal_eq_map, Equiv.coe_mulRight, inv_mul_cancel_right]`. Use `beta_reduce`. Simplify using `only [f]`. Rewrite using `[map_sgO_conjI_eq_conjI_mul_inv]`.
+Rewrite the conclusion using the stated equalities. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem spanSingleton_sg_eq_prod_conjI_pow_th_mul_of_eq_prod (M : ℕ) [NeZero M] (K : Type) [Field K] [NumberField K] [IsCyclotomicExtension {M} ℚ K] (b : ℕ) (𝔞 : Ideal (𝓞 K)) (X : K)
     (hX : FractionalIdeal.spanSingleton (𝓞 K)⁰ X = ∏ t, ((conjI M K 𝔞 t : Ideal (𝓞 K)) : FractionalIdeal (𝓞 K)⁰ K) ^ th M b ↑t)
@@ -83,9 +83,9 @@ private theorem spanSingleton_sg_eq_prod_conjI_pow_th_mul_of_eq_prod (M : ℕ) [
   rw [map_sgO_conjI_eq_conjI_mul_inv]
 
 /- English proof (translation)
-Use `haveI : IsGalois ℚ K := IsCyclotomicExtension.isGalois {M} ℚ K`. Establish `h` using `IsCyclotomicExtension.Rat.galEquivZMod_restrictNormal_apply (q * M) K' K (dvd_mul_left M q) (sg (q * M) K' t)`. Establish `e2 : (sg (q * M) K' t).restrictNormal K = sg M K (ZMod.unitsMap (dvd_mul_left M q) t)`. Unfold `sg at h ⊢`. Rewrite `h` using `[MulEquiv.apply_symm_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← h, MulEquiv.symm_apply_apply]`. Rewrite using `[← AlgEquiv.restrictNormal_commutes, e2]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem sg_algebraMap_eq_algebraMap_sg_unitsMap (M q : ℕ) [NeZero M] [NeZero (q * M)] (K K' : Type) [Field K] [NumberField K] [IsCyclotomicExtension {M} ℚ K] [Field K'] [NumberField K'] [IsCyclotomicExtension {q * M} ℚ K'] [Algebra K K'] (t : (ZMod (q * M))ˣ) (x : K) :
     sg (q * M) K' t (algebraMap K K' x) = algebraMap K K' (sg M K (ZMod.unitsMap (dvd_mul_left M q) t) x) := by
@@ -98,7 +98,7 @@ private theorem sg_algebraMap_eq_algebraMap_sg_unitsMap (M q : ℕ) [NeZero M] [
   rw [← AlgEquiv.restrictNormal_commutes, e2]
 
 /- English proof (translation)
-Establish `hab : a * b = b * a` using `(IsCyclotomicExtension.Rat.galEquivZMod N K').injective (by rw [map_mul, map_mul, mul_comm])`. Rewrite using `[← AlgEquiv.mul_apply, hab, AlgEquiv.mul_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 private theorem cyclotomic_rat_algEquiv_apply_comm (N : ℕ) [NeZero N] (K' : Type) [Field K'] [NumberField K'] [IsCyclotomicExtension {N} ℚ K'] (a b : K' ≃ₐ[ℚ] K') (y : K') :
     a (b y) = b (a y) := by
@@ -107,9 +107,7 @@ private theorem cyclotomic_rat_algEquiv_apply_comm (N : ℕ) [NeZero N] (K' : Ty
   rw [← AlgEquiv.mul_apply, hab, AlgEquiv.mul_apply]
 
 /- English proof (translation)
-Use `haveI : IsGalois ℚ K' := IsCyclotomicExtension.isGalois {q * M} ℚ K'`. Use `haveI : IsGalois K K' := IsGalois.tower_top_of_isGalois ℚ K K'`. Apply `(algebraMap K K').injective` to reduce the goal to its premises. Rewrite using `[← sg_algebraMap_eq_algebraMap_sg_unitsMap, Algebra.norm_eq_prod_automorphisms, Algebra.norm_eq_prod_automorphisms, map_prod]`. Use `Finset.prod_congr rfl fun σ _ => ?_` and prove the remaining obligations.
-
-Conclude with `cyclotomic_rat_algEquiv_apply_comm (q * M) K' (σ.restrictScalars ℚ) (sg (q * M) K' t) y`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem norm_sg_eq_sg_unitsMap_norm (M q : ℕ) [NeZero M] [NeZero (q * M)] (K K' : Type) [Field K] [NumberField K] [IsCyclotomicExtension {M} ℚ K] [Field K'] [NumberField K'] [IsCyclotomicExtension {q * M} ℚ K'] [Algebra K K'] (t : (ZMod (q * M))ˣ) (y : K') :
     Algebra.norm K (sg (q * M) K' t y) = sg M K (ZMod.unitsMap (dvd_mul_left M q) t) (Algebra.norm K y) := by
@@ -121,19 +119,17 @@ private theorem norm_sg_eq_sg_unitsMap_norm (M q : ℕ) [NeZero M] [NeZero (q * 
   exact cyclotomic_rat_algEquiv_apply_comm (q * M) K' (σ.restrictScalars ℚ) (sg (q * M) K' t) y
 
 /- English proof (translation)
-Use `haveI : IsGalois ℚ K := IsCyclotomicExtension.isGalois {M} ℚ K`. Use `haveI : IsGalois ℚ K' := IsCyclotomicExtension.isGalois {q * M} ℚ K'`. Use `haveI : IsGalois K K' := IsGalois.tower_top_of_isGalois ℚ K K'`. Rewrite using `[Algebra.norm_eq_prod_automorphisms]`. Use `Finset.prod_bij (fun σ _ => IsCyclotomicExtension.Rat.galEquivZMod (q * M) K' (σ.restrictScalars ℚ)) ?_ ?_ ?_ ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `σ _`. Rewrite using `[Finset.mem_filter]`. Use `⟨Finset.mem_univ _, ?_⟩` and prove the remaining obligations. Rewrite using `[← IsCyclotomicExtension.Rat.galEquivZMod_restrictNormal_apply (q * M) K' K (dvd_mul_left M q)]`. Establish `h1 : (σ.restrictScalars ℚ).restrictNormal K = 1`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `x`. Apply `(algebraMap K K').injective` to reduce the goal to its premises. Rewrite using `[AlgEquiv.restrictNormal_commutes, AlgEquiv.one_apply]`. Conclude with `σ.commutes x`. Rewrite using `[h1, map_one]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression.
 
-Introduce `σ₁ _ σ₂ _ h`. Conclude with `AlgEquiv.restrictScalars_injective ℚ ((IsCyclotomicExtension.Rat.galEquivZMod (q * M) K').injective h)`. Introduce `k hk`. Rewrite `hk` using `[Finset.mem_filter]`. Set `σ : K' ≃ₐ[K] K'` to `AlgEquiv.ofRingEquiv (f := (sg (q * M) K' k).toRingEquiv) (fun x => by`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Express the relevant statement in the definitionally equal form `sg (q * M) K' k (algebraMap K K' x) = algebraMap K K' x`. Rewrite using `[sg_algebraMap_eq_algebraMap_sg_unitsMap, hk.2, map_one, AlgEquiv.one_apply])`. Use `⟨σ, Finset.mem_univ _, ?_⟩` and prove the remaining obligations. Establish `hσ : σ.restrictScalars ℚ = sg (q * M) K' k`. Use extensionality with `x`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition.
 
-Both sides reduce to the same expression. Rewrite using `[hσ]`. Unfold `sg`. Conclude with `MulEquiv.apply_symm_apply _ _`. Introduce `σ _`.
-
-Express the relevant statement in the definitionally equal form `σ y = sg (q * M) K' (IsCyclotomicExtension.Rat.galEquivZMod (q * M) K' (σ.restrictScalars ℚ)) y`. Unfold `sg`. Rewrite using `[MulEquiv.symm_apply_apply]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 private theorem algebraMap_norm_eq_prod_sg_ker_unitsMap (M q : ℕ) [NeZero M] [NeZero (q * M)] (K K' : Type) [Field K] [NumberField K] [IsCyclotomicExtension {M} ℚ K] [Field K'] [NumberField K'] [IsCyclotomicExtension {q * M} ℚ K'] [Algebra K K'] (y : K') :
     algebraMap K K' (Algebra.norm K y) =
@@ -175,7 +171,7 @@ private theorem algebraMap_norm_eq_prod_sg_ker_unitsMap (M q : ℕ) [NeZero M] [
     rfl
 
 /- English proof (translation)
-Apply `FaithfulSMul.algebraMap_injective (𝓞 K') K'` to reduce the goal to its premises. Rewrite using `[algebraMap_sgO_eq_sg_algebraMap, ← IsScalarTower.algebraMap_apply (𝓞 K) (𝓞 K') K', ← IsScalarTower.algebraMap_apply (𝓞 K) (𝓞 K') K', IsScalarTower.algebraMap_apply (𝓞 K) K K', IsScalarTower.algebraMap_apply (𝓞 K) K K', sg_algebraMap_eq_algebraMap_sg_unitsMap, algebraMap_sgO_eq_s …`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 private theorem sgO_algebraMap_eq_algebraMap_sgO_unitsMap (M q : ℕ) [NeZero M] [NeZero (q * M)] (K K' : Type) [Field K] [NumberField K] [IsCyclotomicExtension {M} ℚ K] [Field K'] [NumberField K'] [IsCyclotomicExtension {q * M} ℚ K'] [Algebra K K'] (t : (ZMod (q * M))ˣ) (x : 𝓞 K) :
     sgO (q * M) K' t (algebraMap (𝓞 K) (𝓞 K') x) = algebraMap (𝓞 K) (𝓞 K') (sgO M K (ZMod.unitsMap (dvd_mul_left M q) t) x) := by
@@ -184,9 +180,9 @@ private theorem sgO_algebraMap_eq_algebraMap_sgO_unitsMap (M q : ℕ) [NeZero M]
     IsScalarTower.algebraMap_apply (𝓞 K) K K', IsScalarTower.algebraMap_apply (𝓞 K) K K', sg_algebraMap_eq_algebraMap_sg_unitsMap, algebraMap_sgO_eq_sg_algebraMap]
 
 /- English proof (translation)
-Establish `h1 : Ideal.comap e J = Ideal.map (e.symm : A →+* A) J` using `(Ideal.map_comap_of_equiv e.symm).symm`. Establish `h2 : Ideal.comap e' (Ideal.map ι J) = Ideal.map (e'.symm : B →+* B) (Ideal.map ι J)` using `(Ideal.map_comap_of_equiv e'.symm).symm`. Rewrite using `[h1, h2, Ideal.map_map, Ideal.map_map]`. Use `congr 1`. Use extensionality with `x`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Express the relevant statement in the definitionally equal form `ι (e.symm x) = e'.symm (ι x)`. Rewrite using `[RingEquiv.eq_symm_apply, ← h, RingEquiv.apply_symm_apply]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 private theorem map_comap_ringEquiv_eq_comap_map_of_semiconj {A B : Type} [CommRing A] [CommRing B] (ι : A →+* B) (e : A ≃+* A) (e' : B ≃+* B)
     (h : ∀ x, ι (e x) = e' (ι x)) (J : Ideal A) :
@@ -201,7 +197,7 @@ private theorem map_comap_ringEquiv_eq_comap_map_of_semiconj {A B : Type} [CommR
   rw [RingEquiv.eq_symm_apply, ← h, RingEquiv.apply_symm_apply]
 
 /- English proof (translation)
-Establish `h1 : ∀ J : Ideal B, Ideal.comap e J = Ideal.mapHom (e.symm : B →+* B) J` using `fun J => (Ideal.map_comap_of_equiv e.symm).symm`. Simplify using `only [h1]`. Conclude with `map_prod (Ideal.mapHom (e.symm : B →+* B)) I s`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem ideal_comap_ringEquiv_prod {B : Type} [CommRing B] (e : B ≃+* B) {ι : Type} (s : Finset ι) (I : ι → Ideal B) :
     Ideal.comap e (∏ i ∈ s, I i) = ∏ i ∈ s, Ideal.comap e (I i) := by
@@ -211,7 +207,7 @@ private theorem ideal_comap_ringEquiv_prod {B : Type} [CommRing B] (e : B ≃+* 
   exact map_prod (Ideal.mapHom (e.symm : B →+* B)) I s
 
 /- English proof (translation)
-Establish `h1 : Ideal.comap e (Ideal.span {x}) = Ideal.map (e.symm : B →+* B) (Ideal.span {x})` using `(Ideal.map_comap_of_equiv e.symm).symm`. Rewrite using `[h1, Ideal.map_span, Set.image_singleton]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem ideal_comap_ringEquiv_span_singleton {B : Type} [CommRing B] (e : B ≃+* B) (x : B) :
     Ideal.comap e (Ideal.span {x}) = Ideal.span {e.symm x} := by
@@ -221,7 +217,7 @@ private theorem ideal_comap_ringEquiv_span_singleton {B : Type} [CommRing B] (e 
   rfl
 
 /- English proof (translation)
-Establish `h1 : ∀ I : Ideal B, Ideal.comap e I = Ideal.map (e.symm : B →+* B) I` using `fun I => (Ideal.map_comap_of_equiv e.symm).symm`. Rewrite using `[h1, h1, Ideal.map_pow]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 private theorem ideal_comap_ringEquiv_pow {B : Type} [CommRing B] (e : B ≃+* B) (J : Ideal B) (n : ℕ) :
     Ideal.comap e (J ^ n) = (Ideal.comap e J) ^ n := by
@@ -230,17 +226,17 @@ private theorem ideal_comap_ringEquiv_pow {B : Type} [CommRing B] (e : B ≃+* B
   rw [h1, h1, Ideal.map_pow]
 
 /- English proof (translation)
-Establish `hmem : 𝔞 ∈ (Ideal (𝓞 K'))⁰` using `mem_nonZeroDivisors_of_ne_zero h𝔞`. Establish `hn0 : orderOf (ClassGroup.mk0 ⟨𝔞, hmem⟩) ≠ 0` using `(orderOf_pos _).ne'`. Choose the witnesses or unpack the hypotheses as in `⟨x, hx⟩ : ∃ x : 𝓞 K', 𝔞 ^ orderOf (ClassGroup.mk0 ⟨𝔞, hmem⟩) = Ideal.span {x} := by`. Establish `h1 : ClassGroup.mk0 ⟨𝔞 ^ orderOf (ClassGroup.mk0 ⟨𝔞, hmem⟩), pow_mem hmem _⟩ = 1`. Rewrite using `[show (⟨𝔞 ^ orderOf (ClassGroup.mk0 ⟨𝔞, hmem⟩), pow_mem hmem _⟩ : (Ideal (𝓞 K'))⁰) = ⟨𝔞, hmem⟩ ^ orderOf (ClassGroup.mk0 ⟨𝔞, hmem⟩) from Subtype.ext (by simp), map_pow, pow_orderOf_eq_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨x, hx⟩` from `((ClassGroup.mk0_eq_one_iff _).mp h1).principal`. Conclude with `⟨x, hx⟩`. Apply `pow_left_injective hn0` to reduce the goal to its premises. Simplify using `only`. Rewrite using `[← Ideal.map_pow, ← map_pow, hx, Ideal.relNorm_singleton, Ideal.map_span, Set.image_singleton, ← Finset.prod_pow]`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the claim to the hypotheses of an applicable result. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `conjI`. Repeatedly rewrite using `[← ideal_comap_ringEquiv_pow, hx, ideal_comap_ringEquiv_span_singleton, sgO_symm_apply_eq_sgO_inv]`. Rewrite using `[Ideal.prod_span_singleton]`. Use `congr 2`. Apply `FaithfulSMul.algebraMap_injective (𝓞 K') K'` to reduce the goal to its premises.
+Replace the relevant objects with their definitions. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[← IsScalarTower.algebraMap_apply (𝓞 K) (𝓞 K') K', IsScalarTower.algebraMap_apply (𝓞 K) K K', Algebra.algebraMap_intNorm (L := K'), algebraMap_norm_eq_prod_sg_ker_unitsMap M q K K', map_prod]`. Repeatedly rewrite using `[algebraMap_sgO_eq_sg_algebraMap]`. Use `Finset.prod_nbij' (·⁻¹) (·⁻¹) ?_ ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `k hk`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.coe_filter, Set.mem_setOf_eq] at hk ⊢`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Rewrite using `[map_inv, hk, inv_one]`. Introduce `k hk`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.coe_filter, Set.mem_setOf_eq] at hk ⊢`. Rewrite using `[map_inv, hk, inv_one]`. Introduce `k _`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using the standard rewrite rules. Introduce `k _`. Simplify using the standard rewrite rules. Introduce `k _`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 private theorem map_relNorm_eq_prod_conjI_ker_unitsMap (M q : ℕ) [NeZero M] [NeZero (q * M)] (K K' : Type) [Field K] [NumberField K] [IsCyclotomicExtension {M} ℚ K] [Field K'] [NumberField K'] [IsCyclotomicExtension {q * M} ℚ K'] [Algebra K K'] (𝔞 : Ideal (𝓞 K')) (h𝔞 : 𝔞 ≠ ⊥) :
     Ideal.map (algebraMap (𝓞 K) (𝓞 K')) (Ideal.relNorm (𝓞 K) 𝔞) =
@@ -280,13 +276,13 @@ private theorem map_relNorm_eq_prod_conjI_ker_unitsMap (M q : ℕ) [NeZero M] [N
     simp
 
 /- English proof (translation)
-Take `⟨t₀, rfl⟩` from `ZMod.unitsMap_surjective (dvd_mul_left M q) t`. Rewrite using `[show conjI M K (Ideal.relNorm (𝓞 K) 𝔞) (ZMod.unitsMap (dvd_mul_left M q) t₀) = Ideal.comap (sgO M K (ZMod.unitsMap (dvd_mul_left M q) t₀)) (Ideal.relNorm (𝓞 K) 𝔞) from rfl, map_comap_ringEquiv_eq_comap_map_of_semiconj (algebraMap (𝓞 K) (𝓞 K')) (sgO M K _) (sgO (q * M) K' t₀) (fu …`. Use `Finset.prod_nbij' (· * t₀) (· * t₀⁻¹) ?_ ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `k hk`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.coe_filter, Set.mem_setOf_eq] at hk ⊢`.
+Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Rewrite using `[map_mul, hk, one_mul]`. Introduce `k hk`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.coe_filter, Set.mem_setOf_eq] at hk ⊢`. Rewrite using `[map_mul, hk, map_inv, mul_inv_cancel]`. Introduce `k _`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using the standard rewrite rules. Introduce `k _`. Simplify using the standard rewrite rules. Introduce `k _`. Unfold `conjI`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Use extensionality with `x`. Rewrite using `[Ideal.mem_comap, Ideal.mem_comap, Ideal.mem_comap, sgO_mul_apply]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 -/
 private theorem map_conjI_relNorm_eq_prod_conjI_fiber_unitsMap (M q : ℕ) [NeZero M] [NeZero (q * M)] (K K' : Type) [Field K] [NumberField K] [IsCyclotomicExtension {M} ℚ K] [Field K'] [NumberField K'] [IsCyclotomicExtension {q * M} ℚ K'] [Algebra K K'] (𝔞 : Ideal (𝓞 K')) (h𝔞 : 𝔞 ≠ ⊥) (t : (ZMod M)ˣ) :
     Ideal.map (algebraMap (𝓞 K) (𝓞 K')) (conjI M K (Ideal.relNorm (𝓞 K) 𝔞) t) =
@@ -314,7 +310,7 @@ private theorem map_conjI_relNorm_eq_prod_conjI_fiber_unitsMap (M q : ℕ) [NeZe
     rw [Ideal.mem_comap, Ideal.mem_comap, Ideal.mem_comap, sgO_mul_apply]
 
 /- English proof (translation)
-Use `Finset.cons_induction ?_ (fun j s hj ih => ?_) s` and prove the remaining obligations. Simplify using the standard rewrite rules. Rewrite using `[Finset.prod_cons, Finset.sum_cons, ih, zpow_add₀ ha]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 private theorem prod_zpow_eq_zpow_sum_of_ne_zero {G : Type} [CommGroupWithZero G] (a : G) (ha : a ≠ 0) {ι : Type} (s : Finset ι) (f : ι → ℤ) :
     ∏ i ∈ s, a ^ f i = a ^ ∑ i ∈ s, f i := by
@@ -323,7 +319,7 @@ private theorem prod_zpow_eq_zpow_sum_of_ne_zero {G : Type} [CommGroupWithZero G
   · rw [Finset.prod_cons, Finset.sum_cons, ih, zpow_add₀ ha]
 
 /- English proof (translation)
-Use `Finset.cons_induction ?_ (fun j s hj ih => ?_) s` and prove the remaining obligations. Simplify using `[FractionalIdeal.spanSingleton_one]`. Rewrite using `[Finset.prod_cons, Finset.prod_cons, ← FractionalIdeal.spanSingleton_mul_spanSingleton, ih]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 private theorem fractionalIdeal_spanSingleton_finset_prod {R P : Type} [CommRing R] [CommRing P] [Algebra R P] {S : Submonoid R} [IsLocalization S P] {ι : Type} (s : Finset ι) (f : ι → P) :
     FractionalIdeal.spanSingleton S (∏ i ∈ s, f i) = ∏ i ∈ s, FractionalIdeal.spanSingleton S (f i) := by
@@ -332,7 +328,7 @@ private theorem fractionalIdeal_spanSingleton_finset_prod {R P : Type} [CommRing
   · rw [Finset.prod_cons, Finset.prod_cons, ← FractionalIdeal.spanSingleton_mul_spanSingleton, ih]
 
 /- English proof (translation)
-Establish `h : (IsFractionRing.map (FaithfulSMul.algebraMap_injective (𝓞 K) (𝓞 K')) : K →+* K') = algebraMap K K'`. Apply `IsLocalization.ringHom_ext (𝓞 K)⁰` to reduce the goal to its premises. Use extensionality with `y`. Rewrite using `[RingHom.comp_apply, RingHom.comp_apply, IsFractionRing.map, IsLocalization.map_eq, ← IsScalarTower.algebraMap_apply (𝓞 K) (𝓞 K') K', ← IsScalarTower.algebraMap_apply (𝓞 K) K K']`. Conclude with `RingHom.congr_fun h x`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem isFractionRing_map_ringOfIntegers_eq_algebraMap (K K' : Type) [Field K] [NumberField K] [Field K'] [NumberField K'] [Algebra K K'] (x : K) :
     IsFractionRing.map (FaithfulSMul.algebraMap_injective (𝓞 K) (𝓞 K')) x = algebraMap K K' x := by
@@ -344,14 +340,14 @@ private theorem isFractionRing_map_ringOfIntegers_eq_algebraMap (K K' : Type) [F
   exact RingHom.congr_fun h x
 
 /- English proof (translation)
-The claim follows from `map_prod (FractionalIdeal.coeIdealHom S P) I s`.
+A detailed English derivation is pending.
 -/
 private theorem fractionalIdeal_coeIdeal_finset_prod {R P : Type} [CommRing R] [CommRing P] [Algebra R P] (S : Submonoid R) {ι : Type} (s : Finset ι) (I : ι → Ideal R) :
     ((∏ i ∈ s, I i : Ideal R) : FractionalIdeal S P) = ∏ i ∈ s, (I i : FractionalIdeal S P) :=
   map_prod (FractionalIdeal.coeIdealHom S P) I s
 
 /- English proof (translation)
-Rewrite using `[← Finset.prod_fiberwise Finset.univ g (fun t' => F t' ^ e (g t'))]`. Use `Finset.prod_congr rfl (fun t _ => ?_)` and prove the remaining obligations. Rewrite using `[← Finset.prod_zpow]`. Use `Finset.prod_congr rfl (fun t' ht' => ?_)` and prove the remaining obligations. Rewrite using `[(Finset.mem_filter.mp ht').2]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 private theorem prod_fiber_prod_zpow_eq_prod_zpow_comp {G α β : Type} [DivisionCommMonoid G] [Fintype α] [Fintype β] [DecidableEq β] (g : α → β) (F : α → G) (e : β → ℤ) :
     ∏ t, (∏ t' ∈ Finset.univ.filter (fun t' => g t' = t), F t') ^ e t = ∏ t', F t' ^ e (g t') := by
@@ -362,7 +358,7 @@ private theorem prod_fiber_prod_zpow_eq_prod_zpow_comp {G α β : Type} [Divisio
   rw [(Finset.mem_filter.mp ht').2]
 
 /- English proof (translation)
-Rewrite using `[FractionalIdeal.coeIdeal_ne_zero]`. Unfold `conjI`. Establish `h1 : Ideal.comap (sgO N K' t) 𝔞 = Ideal.map ((sgO N K' t).symm : 𝓞 K' →+* 𝓞 K') 𝔞` using `(Ideal.map_comap_of_equiv (sgO N K' t).symm).symm`. Rewrite using `[h1, Ne, Ideal.map_eq_bot_iff_of_injective (f := ((sgO N K' t).symm : 𝓞 K' →+* 𝓞 K')) (sgO N K' t).symm.injective]`. Conclude with `h𝔞`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem coeIdeal_conjI_ne_zero_of_ne_bot (N : ℕ) [NeZero N] (K' : Type) [Field K'] [NumberField K'] [IsCyclotomicExtension {N} ℚ K'] (𝔞 : Ideal (𝓞 K')) (h𝔞 : 𝔞 ≠ ⊥) (t : (ZMod N)ˣ) :
     ((conjI N K' 𝔞 t : Ideal (𝓞 K')) : FractionalIdeal (𝓞 K')⁰ K') ≠ 0 := by
@@ -374,29 +370,29 @@ private theorem coeIdeal_conjI_ne_zero_of_ne_bot (N : ℕ) [NeZero N] (K' : Type
   exact h𝔞
 
 /- English proof (translation)
-Introduce `M q _ _ K K' _ _ _ _ _ _ _ hq u hu b hb 𝔞 X' X h𝔞 hX' hX`. Unfold `IsX at hX' hX`. Establish `hneg : ZMod.unitsMap (dvd_mul_left M q) (-1) = -1`. Use `ext`. Simplify using `[ZMod.unitsMap]`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Establish `hN1 : Algebra.norm K X' * sg M K (-1) (Algebra.norm K X') = 1`. Rewrite using `[← hneg, ← norm_sg_eq_sg_unitsMap_norm M q K K', ← map_mul, hX'.1, map_one]`. Establish `hY1 : X / (sg M K u)⁻¹ X * sg M K (-1) (X / (sg M K u)⁻¹ X) = 1`. Establish `hc : (sg M K u)⁻¹ (sg M K (-1) X) = sg M K (-1) ((sg M K u)⁻¹ X)` using `cyclotomic_rat_algEquiv_apply_comm M K (sg M K u)⁻¹ (sg M K (-1)) X`. Rewrite using `[map_div₀, ← hc, div_mul_div_comm, ← map_mul, hX.1, map_one, div_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hτX : FractionalIdeal.spanSingleton (𝓞 K)⁰ ((sg M K u)⁻¹ X) = ∏ t, ((conjI M K (Ideal.relNorm (𝓞 K) 𝔞) t : Ideal (𝓞 K)) : FractionalIdeal (𝓞 K)⁰ K) ^ th M b ↑(t * u⁻¹)`. Rewrite using `[← map_inv]`. Conclude with `spanSingleton_sg_eq_prod_conjI_pow_th_mul_of_eq_prod M K b _ X hX.2 u⁻¹`. Establish `hspan : FractionalIdeal.spanSingleton (𝓞 K)⁰ (Algebra.norm K X') = FractionalIdeal.spanSingleton (𝓞 K)⁰ (X / (sg M K u)⁻¹ X)`. Apply `FractionalIdeal.extendedHom_injective (𝓞 K) K K' (𝓞 K')` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify by unfolding definitions.
 
-Simplify using `only`. Rewrite using `[← FractionalIdeal.spanSingleton_div_spanSingleton, hX.2, hτX, map_div₀, map_prod, map_prod, FractionalIdeal.extendedHom_spanSingleton, isFractionRing_map_ringOfIntegers_eq_algebraMap, algebraMap_norm_eq_prod_sg_ker_unitsMap M q K K', fractionalIdeal_spanSingleton_finset_prod]`. Repeatedly rewrite using `[map_zpow₀, FractionalIdeal.extendedHom_coeIdeal_eq_map, map_conjI_relNorm_eq_prod_conjI_fiber_unitsMap M q K K' 𝔞 h𝔞, fractionalIdeal_coeIdeal_finset_prod, spanSingleton_sg_eq_prod_conjI_pow_th_mul_of_eq_prod (q * M) K' b 𝔞 X' hX'.2]`. Rewrite using `[prod_fiber_prod_zpow_eq_prod_zpow_comp, prod_fiber_prod_zpow_eq_prod_zpow_comp, Finset.prod_comm, ← Finset.prod_div_distrib]`. Use `Finset.prod_congr rfl (fun t' _ => ?_)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[prod_zpow_eq_zpow_sum_of_ne_zero _ (coeIdeal_conjI_ne_zero_of_ne_bot (q * M) K' 𝔞 h𝔞 t'), ← zpow_sub₀ (coeIdeal_conjI_ne_zero_of_ne_bot (q * M) K' 𝔞 h𝔞 t')]`. Use `congr 1`. Rewrite using `[mul_comm (ZMod.unitsMap (dvd_mul_left M q) t') u⁻¹, ← thDist M q b hq hb u hu (ZMod.unitsMap (dvd_mul_left M q) t')]`. Use `Finset.sum_nbij' (t' * ·) (t'⁻¹ * ·) ?_ ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `k hk`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.coe_filter, Set.mem_setOf_eq] at hk ⊢`. Rewrite using `[map_mul, hk, mul_one]`. Introduce `k hk`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.coe_filter, Set.mem_setOf_eq] at hk ⊢`. Rewrite using `[map_mul, hk, map_inv, inv_mul_cancel]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `k _`. Simplify using the standard rewrite rules. Introduce `k _`. Simplify using the standard rewrite rules. Introduce `k _`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Establish `hY0 : X / (sg M K u)⁻¹ X ≠ 0`. Introduce `h`. Rewrite `hY1` using `[h, zero_mul]`. Conclude with `zero_ne_one hY1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hr1 : Algebra.norm K X' / (X / (sg M K u)⁻¹ X) * sg M K (-1) (Algebra.norm K X' / (X / (sg M K u)⁻¹ X)) = 1`. Rewrite using `[map_div₀ (sg M K (-1)) (Algebra.norm K X'), div_mul_div_comm, hN1, hY1, div_one]`. Establish `hrs : FractionalIdeal.spanSingleton (𝓞 K)⁰ (Algebra.norm K X' / (X / (sg M K u)⁻¹ X)) = 1`. Rewrite using `[← FractionalIdeal.spanSingleton_div_spanSingleton, hspan, div_self]`. Rewrite using `[Ne, FractionalIdeal.spanSingleton_eq_zero_iff]` and apply the resulting hypothesis.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `hIsXr : IsX M K b ⊤ (Algebra.norm K X' / (X / (sg M K u)⁻¹ X))`. Unfold `IsX`. Use `⟨hr1, ?_⟩` and prove the remaining obligations. Rewrite using `[hrs]`. Simplify using `[conjI, FractionalIdeal.coeIdeal_top]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `hIsX1 : IsX M K b ⊤ 1`. Unfold `IsX`. Use `⟨by simp, ?_⟩` and prove the remaining obligations. Simplify using `[conjI, FractionalIdeal.coeIdeal_top, FractionalIdeal.spanSingleton_one]`. Take `⟨ζ, hζ, hrζ⟩` from `xUniq M K b ⊤ 1 _ top_ne_bot hIsX1 hIsXr`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `⟨ζ, hζ, ?_⟩` and prove the remaining obligations. Rewrite `hrζ` using `[mul_one]`. Rewrite using `[← hrζ, div_mul_cancel₀ _ hY0]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.ML.xNormDiv :
     ∀ (M q : ℕ) [NeZero M] [NeZero (q * M)] (K K' : Type) [Field K] [NumberField K] [IsCyclotomicExtension {M} ℚ K] [Field K'] [NumberField K'] [IsCyclotomicExtension {q * M} ℚ K'] [Algebra K K'], q.Prime → ∀ u : (ZMod M)ˣ, (u : ZMod M) = q → ∀ (b : ℕ), b < q → ∀ (𝔞 : Ideal (𝓞 K')) (X' : K') (X : K), 𝔞 ≠ ⊥ → IsX (q * M) K' b 𝔞 X' → IsX M K b (Ideal.relNorm (𝓞 K) 𝔞) X →

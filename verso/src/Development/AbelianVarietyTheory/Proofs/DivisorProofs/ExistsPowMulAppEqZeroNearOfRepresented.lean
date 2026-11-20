@@ -4,9 +4,9 @@ open AlgebraicGeometry CategoryTheory TopologicalSpace
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `e : (g ≫ U.ι).app (U.ι ''ᵁ V) = g.app V ≫ T.presheaf.map (eqToHom (by simp)).op`. Simplify using `only [Scheme.Hom.comp_app, Scheme.Opens.ι_app]`. Use `(g.naturality (homOfLE (U.ι.preimage_image_eq V).le).op).trans ?_` and prove the remaining obligations. Use `congr 2`. Rewrite using `[e]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Conclude with `map_eq_zero_iff (T.presheaf.map _).hom (ConcreteCategory.bijective_of_isIso _).1`.
+A detailed English derivation is pending.
 -/
 private theorem app_comp_ι_eq_zero_iff {T S : Scheme.{0}} (U : S.Opens) (g : T ⟶ U) (V : U.toScheme.Opens) (x : Γ(S, U.ι ''ᵁ V)) :
     ((g ≫ U.ι).app (U.ι ''ᵁ V)).hom x = 0 ↔ (g.app V).hom x = 0 := by
@@ -18,7 +18,7 @@ private theorem app_comp_ι_eq_zero_iff {T S : Scheme.{0}} (U : S.Opens) (g : T 
   exact map_eq_zero_iff (T.presheaf.map _).hom (ConcreteCategory.bijective_of_isIso _).1
 
 /- English proof (translation)
-Rewrite using `[morphismRestrict_app]`. Conclude with `map_eq_zero_iff (T.presheaf.map _).hom (ConcreteCategory.bijective_of_isIso _).1`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem restrict_app_eq_zero_iff {T S : Scheme.{0}} (f : T ⟶ S) (U : S.Opens) (V : U.toScheme.Opens) (a : Γ(S, U.ι ''ᵁ V)) :
     ((f ∣_ U).app V).hom a = 0 ↔ (f.app (U.ι ''ᵁ V)).hom a = 0 := by
@@ -26,7 +26,7 @@ private theorem restrict_app_eq_zero_iff {T S : Scheme.{0}} (f : T ⟶ S) (U : S
   exact map_eq_zero_iff (T.presheaf.map _).hom (ConcreteCategory.bijective_of_isIso _).1
 
 /- English proof (translation)
-Establish `e` using `congrArg (fun φ => φ.hom b) (t.naturality (homOfLE h).op)`. Simplify using `only [CommRingCat.hom_comp, RingHom.comp_apply] at e`. Rewrite using `[e, hb, map_zero]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 private theorem app_res_eq_zero {S T : Scheme.{0}} (t : T ⟶ S) {V W : S.Opens} (h : V ≤ W) (b : Γ(S, W))
     (hb : (t.app W).hom b = 0) : (t.app V).hom ((S.presheaf.map (homOfLE h).op).hom b) = 0 := by
@@ -35,23 +35,21 @@ private theorem app_res_eq_zero {S T : Scheme.{0}} (t : T ⟶ S) {V W : S.Opens}
   rw [e, hb, map_zero]
 
 /- English proof (translation)
-Introduce `S Φ hstab U Z i hi hrep W s c hc y hyU hyW`. Establish `hm : (⟨y, hyU⟩ : U.toScheme) ∈ U.ι ⁻¹ᵁ W` using `hyW`. Take `⟨V', hV'aff, hyV', hV'le⟩` from `(Opens.isBasis_iff_nbhd.mp U.toScheme.isBasis_affineOpens) hm`. Establish `hV : U.ι ''ᵁ V' ≤ W`. Introduce `x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨x', hx', rfl⟩` from `hx`. Conclude with `hV'le hx'`. Use `⟨U.ι ''ᵁ V', hV, ⟨⟨y, hyU⟩, hyV', rfl⟩, ?_⟩` and prove the remaining obligations. Use `set V : S.Opens := U.ι ''ᵁ V' with hVdef`. Use `set p : Z ⟶ S := i ≫ U.ι with hpdef`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `cV : Γ(S, V)` to `(S.presheaf.map (homOfLE hV).op).hom c`. Set `sV : Γ(S, V)` to `(S.presheaf.map (homOfLE hV).op).hom s`. Establish `hpre : p ⁻¹ᵁ V = i ⁻¹ᵁ V'`. Rewrite using `[hpdef, Scheme.Hom.comp_preimage, hVdef, U.ι.preimage_image_eq V']`. Establish `hcpt : IsCompact ((p ⁻¹ᵁ V : Z.Opens) : Set Z)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hpre]`. Conclude with `QuasiCompact.isCompact_preimage (f := i) _ V'.2 hV'aff.isCompact`. Establish `hΦi : Φ Z p` using `(hrep Z i).2 ⟨𝟙 _, Category.id_comp _⟩`. Establish `h0` using `hc Z p hΦi`. Establish `h1` using `app_res_eq_zero p (inf_le_right : V ⊓ S.basicOpen s ≤ S.basicOpen s) _ h0`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hres : (S.presheaf.map (homOfLE (inf_le_left : V ⊓ S.basicOpen s ≤ V)).op).hom cV = (S.presheaf.map (homOfLE (inf_le_right : V ⊓ S.basicOpen s ≤ S.basicOpen s)).op).hom ((S.presheaf.map (homOfLE (S.basicOpen_le s)).op).hom c)`. Simplify using `only [cV, ← CommRingCat.comp_apply, ← Functor.map_comp]`. Both sides reduce to the same expression. Establish `key : ∀ (O : Z.Opens) (_ : O = p ⁻¹ᵁ (V ⊓ S.basicOpen s)) (h : O ≤ p ⁻¹ᵁ V), (Z.presheaf.map (homOfLE h).op).hom ((p.app V).hom cV) = 0`. Introduce and unpack `O rfl h`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `e` using `congrArg (fun φ => φ.hom cV) (p.naturality (homOfLE (inf_le_left : V ⊓ S.basicOpen s ≤ V)).op)`. Simplify using `only [CommRingCat.hom_comp, RingHom.comp_apply] at e`. Use `e.symm.trans ?_` and prove the remaining obligations. Rewrite using `[hres]`. Conclude with `h1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hO : Z.basicOpen ((p.app V).hom sV) = p ⁻¹ᵁ (V ⊓ S.basicOpen s)`. Rewrite using `[← Scheme.preimage_basicOpen, Scheme.basicOpen_res]`. Take `⟨n, hn⟩` from `exists_pow_mul_eq_zero_of_res_basicOpen_eq_zero_of_isCompact Z hcpt ((p.app V).hom cV) ((p.app V).hom sV) (key _ hO _)`. Establish `hpa : (p.app V).hom ((S.presheaf.map (homOfLE hV).op).hom (s ^ n * c)) = 0`. Rewrite using `[map_mul, map_pow, map_mul, map_pow]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `hn`. Establish `hia` using `(app_comp_ι_eq_zero_iff U i V' _).1 hpa`. Use `⟨n, fun T t ht => ?_⟩` and prove the remaining obligations. Establish `ht' : Φ _ ((t ∣_ U) ≫ U.ι)`. Rewrite using `[morphismRestrict_ι]`.
-
-Conclude with `hstab _ _ t _ ht`. Take `⟨z, hz⟩` from `(hrep _ (t ∣_ U)).1 ht'`. Use `(restrict_app_eq_zero_iff t U V' _).1 ?_` and prove the remaining obligations. Rewrite using `[← hz, Scheme.Hom.comp_app]`. Conclude with `(congrArg (fun x => (z.app (i ⁻¹ᵁ V')).hom x) hia).trans (map_zero _)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_pow_mul_app_eq_zero_near_of_represented : ∀ (S : Scheme.{0}) (Φ : ∀ (T : Scheme.{0}), (T ⟶ S) → Prop), (∀ (T T' : Scheme.{0}) (t : T ⟶ S) (u : T' ⟶ T), Φ T t → Φ T' (u ≫ t)) → ∀ (U : S.Opens) (Z : Scheme.{0}) (i : Z ⟶ U), IsClosedImmersion i → (∀ (T : Scheme.{0}) (t : T ⟶ U), Φ T (t ≫ U.ι) ↔ ∃ z : T ⟶ Z, z ≫ i = t) → ∀ (W : S.Opens) (s c : Γ(S, W)), (∀ (T : Scheme.{0}) (t : T ⟶ S), Φ T t → (t.app (S.basicOpen s)).hom ((S.presheaf.map (homOfLE (S.basicOpen_le s)).op).hom c) = 0) → ∀ y : S, y ∈ U → y ∈ W → ∃ (V : S.Opens) (hV : V ≤ W), y ∈ V ∧ ∃ n : ℕ, ∀ (T : Scheme.{0}) (t : T ⟶ S), Φ T t → (t.app V).hom ((S.presheaf.map (homOfLE hV).op).hom (s ^ n * c)) = 0 := by
   intro S Φ hstab U Z i hi hrep W s c hc y hyU hyW

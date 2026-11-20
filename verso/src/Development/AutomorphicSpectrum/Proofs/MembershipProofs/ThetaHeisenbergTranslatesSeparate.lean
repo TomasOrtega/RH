@@ -8,11 +8,11 @@ open scoped TensorProduct
 namespace GlobalTheory.CompanionTheory.AdeleModule
 
 /- English proof (translation)
-Introduce `F _ _ _ _ a`. Establish `: (GroundTheory.Global.adeleMeasure F).Regular`. Take `⟨K⟩` from `(inferInstance : Nonempty (TopologicalSpace.PositiveCompacts (AdeleRing (𝓞 F) F)))`. Conclude with `Measure.regular_of_isAddLeftInvariant K.isCompact K.interior_nonempty K.isCompact.measure_lt_top.ne`. Use `distribHaarChar_eq_of_measure_smul_eq_mul (μ := GroundTheory.Global.adeleMeasure F) (s := GroundTheory.Global.fundamentalSet F) ?_ ?_ ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[GroundTheory.Global.adeleMeasure_fundamentalSet]`. Conclude with `one_ne_zero`. Rewrite using `[GroundTheory.Global.adeleMeasure_fundamentalSet]`. Conclude with `ENNReal.one_ne_top`. Establish `h` using `GroundTheory.Global.adeleMeasure_smul (K := F) (GroundTheory.Global.IdeleGroup.diagonal F a) (GroundTheory.Global.fundamentalSet F)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite `h` using `[GroundTheory.Global.IdeleGroup.ideleModule_diagonal]`. Rewrite using `[ENNReal.coe_one]`. Simplify using `using! h`.
+A detailed English derivation is pending.
 -/
 theorem distribHaarChar_principal : ∀ (F : Type) [Field F] [NumberField F]
     [LocallyCompactSpace (AdeleRing (𝓞 F) F)] [Invertible (2 : AdeleRing (𝓞 F) F)] (a : Fˣ),

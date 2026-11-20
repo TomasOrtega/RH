@@ -4,47 +4,43 @@ open scoped TensorProduct
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `k A _ _ _ _ ε Δ ⟨hL, hR⟩`. Use `haveI : IsArtinianRing A := IsArtinianRing.of_finite k A`. Use `set I : Ideal A := RingHom.ker ε with hI`. Take `⟨n, hn⟩` from `IsArtinian.monotone_stabilizes (⟨fun m => OrderDual.toDual (I ^ m), fun a b h => Ideal.pow_le_pow_right h⟩ : ℕ →o (Ideal A)ᵒᵈ)`. Establish `hst : ∀ m, n ≤ m → I ^ n = I ^ m` using `fun m hm => hn m hm`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `set N := n + 1 with hN`. Use `set J : Ideal A := I ^ N with hJ`. Establish `hJJ : IsIdempotentElem J` using `by show J * J = J`. Rewrite using `[hJ, ← pow_add, ← hst (N + N) (by omega), hst N (by omega)]`. Establish `hfg : J.FG` using `IsNoetherian.noetherian J`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨e', he', hJe⟩` from `(Ideal.isIdempotentElem_iff_of_fg J hfg).mp hJJ`. Establish `he'J : e' ∈ J` using `by rw [hJe]; exact Submodule.mem_span_singleton_self e'`. Establish `hJI : J ≤ I` using `Ideal.pow_le_self (by omega)`. Establish `he'0 : ε e' = 0` using `hJI he'J`. Use `⟨1 - e', by simp [he'0], he'.one_sub, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Establish `hspan : Ideal.span {1 - (1 - e')} = J`. Rewrite using `[sub_sub_cancel, hJe]`. Rewrite using `[hspan]`. Use `set mk : A →ₐ[k] A ⧸ J := Ideal.Quotient.mkₐ k J with hmk`. Set `ε' : A ⧸ J →ₐ[k] k` to `Ideal.Quotient.liftₐ J ε (fun a ha => hJI ha)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hε' : ∀ a, ε' (mk a) = ε a` using `fun a => rfl`. Establish `hnil : ∀ y ∈ RingHom.ker ε', IsNilpotent y`. Introduce `y hy`. Take `⟨a, rfl⟩` from `Ideal.Quotient.mkₐ_surjective k J y`. Establish `ha : a ∈ I` using `by rw [RingHom.mem_ker] at hy ⊢; rw [← hε']; exact hy`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `⟨N, ?_⟩` and prove the remaining obligations. Rewrite using `[← map_pow]`. Conclude with `(Ideal.Quotient.eq_zero_iff_mem).2 (Ideal.pow_mem_pow ha N)`. Set `φ : (A ⧸ J) ⊗[k] (A ⧸ J) →ₐ[k] k` to `Algebra.TensorProduct.productMap ε' ε'`. Set `Δ'' : A →ₐ[k] (A ⧸ J) ⊗[k] (A ⧸ J)` to `(Algebra.TensorProduct.map mk mk).comp Δ`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Establish `hφ : ∀ t : A ⊗[k] A, φ (Algebra.TensorProduct.map mk mk t) = ε (TensorProduct.rid k A (LinearMap.lTensor A ε.toLinearMap t))`. Introduce `t`. Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul x y => simp [φ, hε', mul_comm]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Consider the case `add s t hs ht => simp only [map_add, hs, ht]`. Establish `hφΔ : ∀ a, φ (Δ'' a) = ε a`. Introduce `a`. Use `show φ (Algebra.TensorProduct.map mk mk (Δ a)) = ε a`. Rewrite using `[hφ, hR]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Set `iL : A ⧸ J →ₐ[k] (A ⧸ J) ⊗[k] (A ⧸ J)` to `Algebra.TensorProduct.includeLeft`. Set `iR : A ⧸ J →ₐ[k] (A ⧸ J) ⊗[k] (A ⧸ J)` to `Algebra.TensorProduct.includeRight`. Establish `key : ∀ t : (A ⧸ J) ⊗[k] (A ⧸ J), t - algebraMap k _ (φ t) ∈ nilradical _`. Introduce `t`. Proceed by induction on `t using TensorProduct.induction_on with`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Consider the case `zero => simp`. Consider the case `tmul x y => set u := x - algebraMap k (A ⧸ J) (ε' x) with hu set v := y - algebraMap k (A ⧸ J) (ε' y) with hv`. Establish `hu0 : IsNilpotent u` using `hnil _ (by simp [RingHom.mem_ker, u])`. Establish `hv0 : IsNilpotent v` using `hnil _ (by simp [RingHom.mem_ker, v])`. Establish `hL : iL u ∈ nilradical _` using `mem_nilradical.2 (hu0.map _)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hR' : iR v ∈ nilradical _` using `mem_nilradical.2 (hv0.map _)`. Establish `heq : x ⊗ₜ[k] y - algebraMap k _ (φ (x ⊗ₜ[k] y)) = iL u * iR v + algebraMap k _ (ε' y) * iL u + algebraMap k _ (ε' x) * iR v`. Establish `h1 : x ⊗ₜ[k] y = iL x * iR y`. Simplify using `[iL, iR, Algebra.TensorProduct.tmul_mul_tmul]`. Establish `h2 : iL x = iL u + algebraMap k _ (ε' x)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← AlgHom.commutes iL, ← map_add]`. Simplify using `[u]`. Establish `h3 : iR y = iR v + algebraMap k _ (ε' y)`. Rewrite using `[← AlgHom.commutes iR, ← map_add]`. Simplify using `[v]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Establish `h4 : φ (x ⊗ₜ[k] y) = ε' x * ε' y` using `by simp [φ]`. Rewrite using `[h4, map_mul, h1, h2, h3]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[heq]`. Conclude with `add_mem (add_mem (Ideal.mul_mem_right _ _ hL) (Ideal.mul_mem_left _ _ hL)) (Ideal.mul_mem_left _ _ hR')`.
+Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Consider the case `add s t hs ht`. Use `add_mem hs ht` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Simplify using `only [map_add]`. Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hkill : ∀ a ∈ J, Δ'' a = 0`. Establish `h0 : Δ'' e' = 0`. Apply `(he'.map Δ'').eq_zero_of_isNilpotent` to reduce the goal to its premises. Use `mem_nilradical.1 (key (Δ'' e'))` as an intermediate fact. Rewrite `this` using `[hφΔ, he'0, map_zero, sub_zero]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a ha`. Rewrite `ha` using `[hJe]`. Take `⟨c, rfl⟩` from `Ideal.mem_span_singleton'.1 ha`. Rewrite using `[map_mul, h0, mul_zero]`. Set `Δ' : A ⧸ J →ₐ[k] (A ⧸ J) ⊗[k] (A ⧸ J)` to `Ideal.Quotient.liftₐ J Δ'' hkill`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Establish `hΔ' : ∀ a, Δ' (mk a) = Algebra.TensorProduct.map mk mk (Δ a)` using `fun a => rfl`. Use `⟨ε', Δ', ⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations. Introduce `a'`. Take `⟨a, rfl⟩` from `Ideal.Quotient.mkₐ_surjective k J a'`. Establish `gen : ∀ t : A ⊗[k] A, TensorProduct.lid k (A ⧸ J) (LinearMap.rTensor (A ⧸ J) ε'.toLinearMap (Algebra.TensorProduct.map mk mk t)) = mk (TensorProduct.lid k A (LinearMap.rTensor A ε.toLinearMap t))`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `t`. Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul x y => simp [hε']`. Consider the case `add s t hs ht => simp only [map_add, hs, ht]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Rewrite using `[← hmk, hΔ', gen, hL]`. Introduce `a'`. Take `⟨a, rfl⟩` from `Ideal.Quotient.mkₐ_surjective k J a'`. Establish `gen : ∀ t : A ⊗[k] A, TensorProduct.rid k (A ⧸ J) (LinearMap.lTensor (A ⧸ J) ε'.toLinearMap (Algebra.TensorProduct.map mk mk t)) = mk (TensorProduct.rid k A (LinearMap.lTensor A ε.toLinearMap t))`. Introduce `t`.
-
-Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul x y => simp [hε']`. Consider the case `add s t hs ht => simp only [map_add, hs, ht]`. Rewrite using `[← hmk, hΔ', gen, hR]`.
-
-Rewrite using `[Ideal.FG.isNilpotent_iff_le_nilradical (IsNoetherian.noetherian _)]`. Introduce `y hy`. Conclude with `mem_nilradical.2 (hnil y hy)`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem localFactor_counital_descends :
     ∀ (k A : Type) [Field k] [CommRing A] [Algebra k A] [Module.Finite k A] (ε : A →ₐ[k] k) (Δ : A →ₐ[k] A ⊗[k] A), ((∀ a : A, TensorProduct.lid k A (LinearMap.rTensor A ε.toLinearMap (Δ a)) = a) ∧ (∀ a : A, TensorProduct.rid k A (LinearMap.lTensor A ε.toLinearMap (Δ a)) = a)) → ∃ e : A, ε e = 1 ∧ IsIdempotentElem e ∧ ∃ (ε' : (A ⧸ Ideal.span {1 - e}) →ₐ[k] k) (Δ' : (A ⧸ Ideal.span {1 - e}) →ₐ[k] (A ⧸ Ideal.span {1 - e}) ⊗[k] (A ⧸ Ideal.span {1 - e})), ((∀ a : (A ⧸ Ideal.span {1 - e}), TensorProduct.lid k (A ⧸ Ideal.span {1 - e}) (LinearMap.rTensor (A ⧸ Ideal.span {1 - e}) ε'.toLinearMap (Δ' a)) = a) ∧ (∀ a : (A ⧸ Ideal.span {1 - e}), TensorProduct.rid k (A ⧸ Ideal.span {1 - e}) (LinearMap.lTensor (A ⧸ Ideal.span {1 - e}) ε'.toLinearMap (Δ' a)) = a)) ∧ IsNilpotent (RingHom.ker ε') := by

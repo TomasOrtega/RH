@@ -16,7 +16,7 @@ def chartVar (e n : ℕ) (ij : Fin (e + 1) × Fin n) : Par e n :=
   Fin.cases (motive := fun _ => Par e n) (.inr ij.2) (fun i => .inl (i, ij.2)) ij.1
 
 /- English proof (translation)
-Introduce and unpack `⟨i, j⟩ ⟨i', j'⟩ h`. Apply the tactic sequence `induction i using Fin.cases <;> induction i' using Fin.cases <;>`. Simplify using `[chartVar, Fin.cases_zero, Fin.cases_succ]`.
+Assume the hypotheses and unpack their components. Apply the first step, then apply the next step to every resulting obligation. Simplify the hypotheses and the goal together.
 -/
 theorem chartVar_injective (e n : ℕ) : Function.Injective (chartVar e n) := by
   rintro ⟨i, j⟩ ⟨i', j'⟩ h
@@ -24,7 +24,7 @@ theorem chartVar_injective (e n : ℕ) : Function.Injective (chartVar e n) := by
     simp_all [chartVar, Fin.cases_zero, Fin.cases_succ]
 
 /- English proof (translation)
-Rewrite using `[parToFrac, IsLocalization.lift_eq]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem parToFrac_algebraMap' (e n : ℕ) (v : HeightOneSpectrum (𝓞 K))
     (x : MvPolynomial (Par e n) (𝓞 K)) :
@@ -32,7 +32,7 @@ theorem parToFrac_algebraMap' (e n : ℕ) (v : HeightOneSpectrum (𝓞 K))
   rw [parToFrac, IsLocalization.lift_eq]
 
 /- English proof (translation)
-Rewrite using `[kToFrac, IsFractionRing.lift_algebraMap, RingHom.comp_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem kToFrac_algebraMap (e n : ℕ) (a : 𝓞 K) :
     kToFrac K e n (algebraMap (𝓞 K) K a) =
@@ -40,9 +40,9 @@ theorem kToFrac_algebraMap (e n : ℕ) (a : 𝓞 K) :
   rw [kToFrac, IsFractionRing.lift_algebraMap, RingHom.comp_apply]
 
 /- English proof (translation)
-Establish `h : ((eval fun j => parYF K e n (.inr j)).comp ((eval₂Hom (C.comp (kToFrac K e n)) (fun ij => Fin.cases (motive` using `fun _ => MvPolynomial (Fin n) (ParFrac K e n)) (X ij.2) (fun i => C (parYF K e n (.inl (i, ij.2)))) ij.1)).comp (map (algebraMap (𝓞 K) K)))) = (algebraMap (MvPolynomial (Par e n) (𝓞 K)) (ParFrac K e n)).comp (rename (chartVar e n)).toRingHom := by`. Use `MvPolynomial.ringHom_ext (fun a => ?_) (fun ij => ?_)` and prove the remaining obligations. Simplify using `[kToFrac_algebraMap]`. Break down `ij with ⟨i, j⟩` into its components or cases. Apply the tactic sequence `induction i using Fin.cases <;> simp [chartVar, parYF]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Apply the first step, then apply the next step to every resulting obligation.
 
-Conclude with `congrArg (fun φ => φ g) h`.
+A detailed English derivation is pending.
 -/
 theorem eval_specRest_chart (g : MvPolynomial (Fin (e + 1) × Fin n) (𝓞 K)) :
     eval (fun j => parYF K e n (.inr j))
@@ -60,9 +60,9 @@ theorem eval_specRest_chart (g : MvPolynomial (Fin (e + 1) × Fin n) (𝓞 K)) :
   exact congrArg (fun φ => φ g) h
 
 /- English proof (translation)
-Establish `h : ((eval fun j => kToFrac K e n (algebraMap (𝓞 K) K (u j))).comp ((eval₂Hom (C.comp (kToFrac K e n)) (fun ij => Fin.cases (motive` using `fun _ => MvPolynomial (Fin n) (ParFrac K e n)) (X ij.2) (fun i => C (parYF K e n (.inl (i, ij.2)))) ij.1)).comp (map (algebraMap (𝓞 K) K)))) = (algebraMap (MvPolynomial (Par e n) (𝓞 K)) (ParFrac K e n)).comp ((rename (Sum.inl : Fin e × Fin n → Par e n)).toRingHom.comp (bind₁ (spe …`. Use `MvPolynomial.ringHom_ext (fun a => ?_) (fun ij => ?_)` and prove the remaining obligations. Simplify using `[kToFrac_algebraMap]`. Break down `ij with ⟨i, j⟩` into its components or cases. Apply the tactic sequence `induction i using Fin.cases <;> simp [specFirstVar, parYF, kToFrac_algebraMap]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Apply the first step, then apply the next step to every resulting obligation.
 
-Conclude with `congrArg (fun φ => φ g) h`.
+A detailed English derivation is pending.
 -/
 theorem eval_specRest_lin (g : MvPolynomial (Fin (e + 1) × Fin n) (𝓞 K)) (u : Fin n → 𝓞 K) :
     eval (fun j => kToFrac K e n (algebraMap (𝓞 K) K (u j)))
@@ -81,7 +81,7 @@ theorem eval_specRest_lin (g : MvPolynomial (Fin (e + 1) × Fin n) (𝓞 K)) (u 
   exact congrArg (fun φ => φ g) h
 
 /- English proof (translation)
-Simplify using `only [secLin, linForm, map_sum, map_mul]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem secLin_eq_sum {R : Type*} [CommRing R] {Q : Ideal (MvPolynomial (Fin n) R)} {y : Par e n → R}
     (w : Fin n → R) : secLin Q y w = ∑ j, algebraMap R (SecAlg Q y) (w j) * secCoord Q y j := by
@@ -89,7 +89,7 @@ theorem secLin_eq_sum {R : Type*} [CommRing R] {Q : Ideal (MvPolynomial (Fin n) 
   rfl
 
 /- English proof (translation)
-Rewrite using `[← secLin_eq_sum]`. Establish `hmem : chartForm y - 1 ∈ secIdeal Q y` using `Ideal.mem_sup_right (Ideal.subset_span rfl)`. Establish `h` using `Ideal.Quotient.eq.mpr hmem`. Rewrite `h` using `[map_one]`. Conclude with `h`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chart_sum_eq_one {R : Type*} [CommRing R] {Q : Ideal (MvPolynomial (Fin n) R)}
     {y : Par e n → R} : ∑ j, algebraMap R (SecAlg Q y) (y (.inr j)) * secCoord Q y j = 1 := by
@@ -102,27 +102,27 @@ theorem chart_sum_eq_one {R : Type*} [CommRing R] {Q : Ideal (MvPolynomial (Fin 
 end Lemmas
 
 /- English proof (translation)
-Introduce `K _ _ n e I g u v hI hf hu hprim`. Use `hdvr K e n v` as an intermediate fact. Take `⟨φ, hφc, hφr, hφloc⟩` from `hgen K n e I v hI`. Establish `hfinB : Module.Finite (ParDVR e n v) (SecB e I v)` using `hfin K n e I _ v hI hf`. Establish `htfB : Module.IsTorsionFree (ParDVR e n v) (SecB e I v)` using `Module.IsTorsionFree.of_smul_eq_zero fun r b h => by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Distinguish the cases in `hr : r = 0`. Conclude with `Or.inl hr`. Conclude with `Or.inr (htf K n e I v hI r b hr h)`. Establish `hfreeB : Module.Free (ParDVR e n v) (SecB e I v)` using `Module.free_of_finite_type_torsion_free'`. Set `_iRF : Algebra (ParDVR e n v) (ParFrac K e n)` to `(parToFrac e n v).toAlgebra`.
+Consider separately whether the proposition holds or fails. Prove the first alternative. Prove the second alternative. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hFR : IsFractionRing (ParDVR e n v) (ParFrac K e n)` using `hfr K e n v`. Set `_iKF : Algebra K (ParFrac K e n)` to `(kToFrac K e n).toAlgebra`. Set `_iBL : Algebra (SecB e I v) (SecAlg (idealF e I) (parYF K e n))` to `φ.toAlgebra`. Establish `_t1 : IsScalarTower (ParDVR e n v) (SecB e I v) (SecAlg (idealF e I) (parYF K e n))` using `IsScalarTower.of_algebraMap_eq (R := ParDVR e n v) (S := SecB e I v) (A := SecAlg (idealF e I) (parYF K e n)) fun r => (hφr r).symm`. Establish `hNL` using `hloc (ParDVR e n v) (ParFrac K e n) (SecB e I v) (SecAlg (idealF e I) (parYF K e n)) n (secCoord (modelR e I v) (parY e n v))`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hxs : (fun j => algebraMap (SecB e I v) (SecAlg (idealF e I) (parYF K e n)) (secCoord (modelR e I v) (parY e n v) j)) = secCoord (idealF e I) (parYF K e n)` using `funext hφc`. Rewrite `hNL` using `[hxs]`. Take `⟨-, c, -, hcn'⟩` from `hcn K (ParFrac K e n) n e I (g.map (algebraMap (𝓞 K) K)) (parYF K e n) (hai K e n) hI hf`. Use `set P := normForm (R := ParDVR e n v) (SecB e I v) (secCoord (modelR e I v) (parY e n v)) with hP`. Use `replace hcn' : specRest (kToFrac K e n) (g.map (algebraMap (𝓞 K) K)) (parYF K e n) = C c * P.map (algebraMap (ParDVR e n v) (ParFrac K e n)) := by`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hNL]`. Conclude with `hcn'`. Establish `hevP : ∀ z : Fin n → ParDVR e n v, eval (fun j => parToFrac e n v (z j)) (P.map (algebraMap (ParDVR e n v) (ParFrac K e n))) = parToFrac e n v (Algebra.norm (ParDVR e n v) (∑ j, algebraMap (ParDVR e n v) (SecB e I v) (z j) * secCoord (modelR e I v) (parY e n v) j))`. Introduce `z`. Rewrite using `[eval_map, ← hev (ParDVR e n v) (SecB e I v) n _ z, ← hP]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Use `show eval₂ _ _ P = parToFrac e n v (eval₂ (RingHom.id _) z P)`. Rewrite using `[hom_eval₂]`. Both sides reduce to the same expression. Establish `hT` using `congrArg (eval fun j => parYF K e n (.inr j)) hcn'`. Rewrite `hT` using `[eval_specRest_chart, map_mul, eval_C]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hTpt : (fun j => parYF K e n (.inr j)) = fun j => parToFrac e n v (parY e n v (.inr j))`. Use function extensionality and compare the values at `j`. Rewrite using `[parY, parToFrac_algebraMap']`. Both sides reduce to the same expression. Rewrite `hT` using `[hTpt, hevP, chart_sum_eq_one, map_one, map_one, mul_one]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hU` using `congrArg (eval fun j => kToFrac K e n (algebraMap (𝓞 K) K (u j))) hcn'`. Rewrite `hU` using `[eval_specRest_lin, map_mul, eval_C]`. Establish `hUpt : (fun j => kToFrac K e n (algebraMap (𝓞 K) K (u j))) = fun j => parToFrac e n v (algebraMap (𝓞 K) (ParDVR e n v) (u j))`. Use function extensionality and compare the values at `j`. Rewrite using `[kToFrac_algebraMap, IsScalarTower.algebraMap_apply (𝓞 K) (MvPolynomial (Par e n) (𝓞 K)) (ParDVR e n v), parToFrac_algebraMap']`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Rewrite `hU` using `[hUpt, hevP, ← secLin_eq_sum, ← hT, ← parToFrac_algebraMap', ← parToFrac_algebraMap', ← map_mul]`. Establish `hinj : Function.Injective (parToFrac e n v)` using `IsFractionRing.injective (ParDVR e n v) (ParFrac K e n)`. Establish `hUR` using `hinj hU`. Take `⟨m, hm⟩` from `hprim`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hnot : rename (chartVar e n) g ∈ (parPrime e n v).primeCompl`. Introduce `hmem`. Establish `hmem' : rename (chartVar e n) g ∈ Ideal.map C v.asIdeal` using `hmem`. Rewrite `hmem'` using `[MvPolynomial.mem_map_C_iff]`. Establish `hmem` using `hmem'`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Supply the required witnesses or components.
 
-Use `hmem (Finsupp.mapDomain (chartVar e n) m)` as an intermediate fact. Rewrite `this` using `[coeff_rename_mapDomain _ (chartVar_injective e n)]`. Conclude with `hm this`. Establish `hunit : IsUnit (algebraMap (MvPolynomial (Par e n) (𝓞 K)) (ParDVR e n v) (rename (chartVar e n) g))` using `IsLocalization.map_units (ParDVR e n v) (⟨_, hnot⟩ : (parPrime e n v).primeCompl)`. Conclude with `⟨hunit.unit, hUR⟩`.
+A detailed English derivation is pending.
 -/
 theorem NormIdentity.proof (hcn : ChowNormForm.Statement) (hfin : SecBFinite.Statement)
     (htf : SecBTorsionFree.Statement) (hgen : SecBGeneric.Statement)

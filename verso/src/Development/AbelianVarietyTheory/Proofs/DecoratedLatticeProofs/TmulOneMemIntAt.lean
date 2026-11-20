@@ -21,15 +21,13 @@ namespace GlobalTheory.SeeSaw.IdVMul
 variable {D : D7}
 
 /- English proof (translation)
-Use `AddSubgroup.closure_induction₂ (p := fun x y _ _ => x * y ∈ intAE D) ?_ ?_ ?_ ?_ ?_ ?_ ?_ hx hy` and prove the remaining obligations. Introduce and unpack `_ _ ⟨a, ha, u, rfl⟩ ⟨b, hb, w, rfl⟩`. Use `AddSubgroup.subset_closure ⟨a * b, fun w' => ?_, u * w, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul]`. Conclude with `mul_mem (ha w') (hb w')`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul]`. Both sides reduce to the same expression. Introduce `x _`. Rewrite using `[zero_mul]`. Conclude with `zero_mem _`.
+Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `x _`. Rewrite using `[mul_zero]`. Conclude with `zero_mem _`. Introduce `x y z _ _ _ h1 h2`. Rewrite using `[add_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `add_mem h1 h2`. Introduce `x y z _ _ _ h1 h2`. Rewrite using `[mul_add]`. Conclude with `add_mem h1 h2`. Introduce `x y _ _ h`.
-
-Rewrite using `[neg_mul]`. Conclude with `neg_mem h`. Introduce `x y _ _ h`. Rewrite using `[mul_neg]`. Conclude with `neg_mem h`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem intAE_mul_mem' {x y : Af D.host.F ⊗[D.host.F] D.host.E} (hx : x ∈ intAE D)
     (hy : y ∈ intAE D) : x * y ∈ intAE D := by
@@ -48,33 +46,33 @@ theorem intAE_mul_mem' {x y : Af D.host.F ⊗[D.host.F] D.host.E} (hx : x ∈ in
 variable {v : Pl D}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨Ideal.mul_mem_right _ _ ha.1, by rw [(finPart D).map_mul]; exact intAE_mul_mem' ha.2 hb.2⟩`.
+Supply the required witnesses or components.
 -/
 theorem intAt_mul {a b : AE D} (ha : a ∈ intAt D (· = v)) (hb : b ∈ intAt D (· = v)) :
     a * b ∈ intAt D (· = v) :=
   ⟨Ideal.mul_mem_right _ _ ha.1, by rw [(finPart D).map_mul]; exact intAE_mul_mem' ha.2 hb.2⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨zero_mem _, by rw [(finPart D).map_zero]; exact zero_mem _⟩`.
+Supply the required witnesses or components.
 -/
 theorem intAt_zero : (0 : AE D) ∈ intAt D (· = v) :=
   ⟨zero_mem _, by rw [(finPart D).map_zero]; exact zero_mem _⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨add_mem ha.1 hb.1, by rw [(finPart D).map_add]; exact add_mem ha.2 hb.2⟩`.
+Supply the required witnesses or components.
 -/
 theorem intAt_add {a b : AE D} (ha : a ∈ intAt D (· = v)) (hb : b ∈ intAt D (· = v)) :
     a + b ∈ intAt D (· = v) :=
   ⟨add_mem ha.1 hb.1, by rw [(finPart D).map_add]; exact add_mem ha.2 hb.2⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨neg_mem ha.1, by rw [(finPart D).map_neg]; exact neg_mem ha.2⟩`.
+Supply the required witnesses or components.
 -/
 theorem intAt_neg {a : AE D} (ha : a ∈ intAt D (· = v)) : -a ∈ intAt D (· = v) :=
   ⟨neg_mem ha.1, by rw [(finPart D).map_neg]; exact neg_mem ha.2⟩
 
 /- English proof (translation)
-Use `show ((0 : Ainf D.host.F) * 0, α * β) = ((0 : Ainf D.host.F), α * β)`. Rewrite using `[zero_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pairA_zero_mul (α β : Af D.host.F) :
     pairA D.host.F 0 α * pairA D.host.F 0 β = pairA D.host.F 0 (α * β) := by
@@ -82,21 +80,21 @@ theorem pairA_zero_mul (α β : Af D.host.F) :
   rw [zero_mul]
 
 /- English proof (translation)
-Conclude with `RestrictedProduct.single_eq_same (fun w : Pl D => w.adicCompletionIntegers D.host.F) v 1`.
+A detailed English derivation is pending.
 -/
 theorem evalV_single_self (v : Pl D) : evalV D.host.F v (singleV D.host.F v 1) = 1 := by
   classical
   exact RestrictedProduct.single_eq_same (fun w : Pl D => w.adicCompletionIntegers D.host.F) v 1
 
 /- English proof (translation)
-Conclude with `RestrictedProduct.single_eq_of_ne (fun w : Pl D => w.adicCompletionIntegers D.host.F) 1 hw`.
+A detailed English derivation is pending.
 -/
 theorem evalV_single_ne {v w : Pl D} (hw : w ≠ v) : evalV D.host.F w (singleV D.host.F v 1) = 0 := by
   classical
   exact RestrictedProduct.single_eq_of_ne (fun w : Pl D => w.adicCompletionIntegers D.host.F) 1 hw
 
 /- English proof (translation)
-Introduce `w` and use `by by_cases hw : w = v · subst hw; rw [evalV_single_self]; exact one_mem _ · rw [evalV_single_ne hw]; exact zero_mem _`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem single_int (v : Pl D) : singleV D.host.F v 1 ∈ intAf D.host.F := fun w => by
   by_cases hw : w = v
@@ -104,9 +102,9 @@ theorem single_int (v : Pl D) : singleV D.host.F v 1 ∈ intAf D.host.F := fun w
   · rw [evalV_single_ne hw]; exact zero_mem _
 
 /- English proof (translation)
-Apply `RestrictedProduct.ext` to reduce the goal to its premises. Introduce `w`. Express the relevant statement in the definitionally equal form `evalV D.host.F w (α * singleV D.host.F v 1) = evalV D.host.F w α`. Rewrite using `[map_mul]`. Distinguish the cases in `hw : w = v`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Substitute `hw` using the available equality. Rewrite using `[evalV_single_self, mul_one]`. Rewrite using `[hα w hw, zero_mul]`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem mul_single {α : Af D.host.F} (hα : ∀ w, w ≠ v → evalV D.host.F w α = 0) :
     α * singleV D.host.F v 1 = α := by
@@ -119,14 +117,14 @@ theorem mul_single {α : Af D.host.F} (hα : ∀ w, w ≠ v → evalV D.host.F w
   · rw [hα w hw, zero_mul]
 
 /- English proof (translation)
-The claim follows from `AddSubgroup.subset_closure ⟨α, hα, hαv, a, ha, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem gen_mem {𝔞 : FI D} {α : Af D.host.F} (hα : α ∈ intAf D.host.F) (hαv : ∀ w, w ≠ v → evalV D.host.F w α = 0)
     {a : D.host.E} (ha : a ∈ 𝔞) : (pairA D.host.F 0 α) ⊗ₜ[D.host.F] a ∈ idV 𝔞 v :=
   AddSubgroup.subset_closure ⟨α, hα, hαv, a, ha, rfl⟩
 
 /- English proof (translation)
-Use `Ideal.mem_inf.2 ⟨?_, Ideal.mem_iInf.2 fun w => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(0 : Ainf D.host.F) ⊗ₜ[D.host.F] x = 0`. Conclude with `TensorProduct.zero_tmul _ _`. Express the relevant statement in the definitionally equal form `(evalV D.host.F w.1 α) ⊗ₜ[D.host.F] x = 0`. Rewrite using `[hαv _ w.2, TensorProduct.zero_tmul]`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tmul_mem_idAt {α : Af D.host.F} (hαv : ∀ w, w ≠ v → evalV D.host.F w α = 0) (x : D.host.E) :
     (pairA D.host.F 0 α) ⊗ₜ[D.host.F] x ∈ idAt D (· = v) := by
@@ -137,7 +135,7 @@ theorem tmul_mem_idAt {α : Af D.host.F} (hαv : ∀ w, w ≠ v → evalV D.host
     rw [hαv _ w.2, TensorProduct.zero_tmul]
 
 /- English proof (translation)
-Use `⟨tmul_mem_idAt hαv 1, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `α ⊗ₜ[D.host.F] (1 : D.host.E) ∈ intAE D`. Conclude with `AddSubgroup.subset_closure ⟨α, hα, 1, by simp⟩`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. A detailed English derivation is pending.
 -/
 theorem tmul_one_mem_intAt {α : Af D.host.F} (hα : α ∈ intAf D.host.F) (hαv : ∀ w, w ≠ v → evalV D.host.F w α = 0) :
     (pairA D.host.F 0 α) ⊗ₜ[D.host.F] (1 : D.host.E) ∈ intAt D (· = v) := by
@@ -146,7 +144,7 @@ theorem tmul_one_mem_intAt {α : Af D.host.F} (hα : α ∈ intAf D.host.F) (hα
   exact AddSubgroup.subset_closure ⟨α, hα, 1, by simp⟩
 
 /- English proof (translation)
-Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, pairA_zero_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem tmul_mul_tmul' (α β : Af D.host.F) (a b : D.host.E) :
     ((pairA D.host.F 0 α) ⊗ₜ[D.host.F] a : AE D) * ((pairA D.host.F 0 β) ⊗ₜ[D.host.F] b) =
@@ -154,7 +152,7 @@ theorem tmul_mul_tmul' (α β : Af D.host.F) (a b : D.host.E) :
   rw [Algebra.TensorProduct.tmul_mul_tmul, pairA_zero_mul]
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `((1 : AF D.host.F) ⊗ₜ[D.host.F] x : AE D) * (α ⊗ₜ[D.host.F] b) = _`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, one_mul]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem incA_mul_tmul (x : D.host.E) (α : AF D.host.F) (b : D.host.E) :
     incA D x * (α ⊗ₜ[D.host.F] b : AE D) = α ⊗ₜ[D.host.F] (x * b) := by
@@ -162,15 +160,13 @@ theorem incA_mul_tmul (x : D.host.E) (α : AF D.host.F) (b : D.host.E) :
   rw [Algebra.TensorProduct.tmul_mul_tmul, one_mul]
 
 /- English proof (translation)
-Proceed by induction on `ha using AddSubgroup.closure_induction with`. Consider the case `mem a' ha'`. Take `⟨α, hα, hαv, a, ha, rfl⟩` from `ha'`. Proceed by induction on `hb using AddSubgroup.closure_induction with`. Consider the case `mem b' hb'`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately.
 
-Take `⟨β, hβ, hβv, b, hb, rfl⟩` from `hb'`. Rewrite using `[tmul_mul_tmul']`. Use `gen_mem (fun w => ?_) (fun w hw => ?_) (FractionalIdeal.mul_mem_mul ha hb)` and prove the remaining obligations. Rewrite using `[map_mul]`. Conclude with `mul_mem (hα w) (hβ w)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul, hαv w hw, zero_mul]`. Consider the case `zero => rw [mul_zero]`. Conclude with `zero_mem _`. Consider the case `add x y _ _ h1 h2 => rw [mul_add]`. Conclude with `add_mem h1 h2`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `neg x _ h => rw [mul_neg]`. Conclude with `neg_mem h`. Consider the case `zero => rw [zero_mul]`. Conclude with `zero_mem _`. Consider the case `add x y _ _ h1 h2 => rw [add_mul]`.
-
-Conclude with `add_mem h1 h2`. Consider the case `neg x _ h => rw [neg_mul]`. Conclude with `neg_mem h`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem mul_mem_idV {𝔞 𝔟 : FI D} {a b : AE D} (ha : a ∈ idV 𝔞 v) (hb : b ∈ idV 𝔟 v) : a * b ∈ idV (𝔞 * 𝔟) v := by
   induction ha using AddSubgroup.closure_induction with
@@ -191,11 +187,11 @@ theorem mul_mem_idV {𝔞 𝔟 : FI D} {a b : AE D} (ha : a ∈ idV 𝔞 v) (hb 
   | neg x _ h => rw [neg_mul]; exact neg_mem h
 
 /- English proof (translation)
-Proceed by induction on `ht using AddSubgroup.closure_induction with`. Consider the case `mem t' ht'`. Take `⟨β, hβ, hβv, b, hb, rfl⟩` from `ht'`. Establish `e : incA D x * ((pairA D.host.F 0 β) ⊗ₜ[D.host.F] b) = ((pairA D.host.F 0 β) ⊗ₜ[D.host.F] x : AE D) * ((pairA D.host.F 0 (singleV D.host.F v 1)) ⊗ₜ[D.host.F] b)`. Rewrite using `[incA_mul_tmul, tmul_mul_tmul', mul_single hβv]`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Use `mul_mem_idV ((hx _).2 ⟨?_, tmul_mem_idAt hβv x⟩) (gen_mem (single_int v) (fun w hw => evalV_single_ne hw) hb)` and prove the remaining obligations. Rewrite using `[incA_mul_tmul, inv_mul_cancel₀ hx0]`. Conclude with `tmul_one_mem_intAt hβ hβv`. Consider the case `zero => rw [mul_zero]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately.
 
-Conclude with `zero_mem _`. Consider the case `add a b _ _ ha hb => rw [mul_add]`. Conclude with `add_mem ha hb`. Consider the case `neg a _ ha => rw [mul_neg]`. Conclude with `neg_mem ha`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem incA_mul_mem {𝔞 𝔟 : FI D} {x : D.host.E} (hx0 : x ≠ 0)
     (hx : ∀ s, s ∈ idV 𝔞 v ↔ incA D x⁻¹ * s ∈ intAt D (· = v) ∧ s ∈ idAt D (· = v)) {t : AE D} (ht : t ∈ idV 𝔟 v) :
@@ -216,21 +212,21 @@ theorem incA_mul_mem {𝔞 𝔟 : FI D} {x : D.host.E} (hx0 : x ≠ 0)
   | neg a _ ha => rw [mul_neg]; exact neg_mem ha
 
 /- English proof (translation)
-Introduce `D v 𝔞 𝔟 x y hx0 hy0 hx hy`. Establish `hxy0 : x * y ≠ 0` using `mul_ne_zero hx0 hy0`. Introduce `s`. Prove the components needed by the constructor for the conclusion. Introduce `hs`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `AddSubgroup.closure_induction (p := fun s _ => incA D (x * y)⁻¹ * s ∈ intAt D (· = v) ∧ s ∈ idAt D (· = v)) ?_ ?_ ?_ ?_ hs` and prove the remaining obligations. Introduce and unpack `_ ⟨α, hα, hαv, c, hc, rfl⟩`. Use `FractionalIdeal.mul_induction_on (C := fun c => incA D (x * y)⁻¹ * ((pairA D.host.F 0 α) ⊗ₜ[D.host.F] c) ∈ intAt D (· = v) ∧ (pairA D.host.F 0 α) ⊗ₜ[D.host.F] c ∈ idAt D (· = v)) hc ?_ ?_` and prove the remaining obligations. Introduce `a ha b hb`. Establish `hA` using `(hx _).1 (gen_mem hα hαv ha)`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hB` using `(hy _).1 (gen_mem (single_int v) (fun w hw => evalV_single_ne hw) hb)`. Establish `e : (pairA D.host.F 0 α) ⊗ₜ[D.host.F] (a * b) = ((pairA D.host.F 0 α) ⊗ₜ[D.host.F] a : AE D) * ((pairA D.host.F 0 (singleV D.host.F v 1)) ⊗ₜ[D.host.F] b)`. Rewrite using `[tmul_mul_tmul', mul_single hαv]`. Rewrite using `[e]`. Use `⟨?_, Ideal.mul_mem_right _ _ hA.2⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e2 : incA D (x * y)⁻¹ * (((pairA D.host.F 0 α) ⊗ₜ[D.host.F] a : AE D) * ((pairA D.host.F 0 (singleV D.host.F v 1)) ⊗ₜ[D.host.F] b)) = (incA D x⁻¹ * ((pairA D.host.F 0 α) ⊗ₜ[D.host.F] a)) * (incA D y⁻¹ * ((pairA D.host.F 0 (singleV D.host.F v 1)) ⊗ₜ[D.host.F] b))`. Rewrite using `[mul_inv, (incA D).map_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e2]`. Conclude with `intAt_mul hA.1 hB.1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `c d hc hd`. Rewrite using `[TensorProduct.tmul_add, mul_add]`. Conclude with `⟨intAt_add hc.1 hd.1, add_mem hc.2 hd.2⟩`. Rewrite using `[mul_zero]`. Conclude with `⟨intAt_zero, zero_mem _⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a b _ _ ha hb`. Rewrite using `[mul_add]`. Conclude with `⟨intAt_add ha.1 hb.1, add_mem ha.2 hb.2⟩`. Introduce `a _ ha`. Rewrite using `[mul_neg]`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `⟨intAt_neg ha.1, neg_mem ha.2⟩`. Introduce and unpack `⟨ho, hs⟩`. Establish `hso : s = incA D x * (incA D y * (incA D (x * y)⁻¹ * s))`. Rewrite using `[← mul_assoc, ← mul_assoc, ← (incA D).map_mul, ← (incA D).map_mul, mul_inv_cancel₀ hxy0, (incA D).map_one, one_mul]`. Establish `ht : incA D y * (incA D (x * y)⁻¹ * s) ∈ idV 𝔟 v`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `(hy _).2 ⟨?_, Ideal.mul_mem_left _ _ ho.1⟩` and prove the remaining obligations. Rewrite using `[← mul_assoc, ← (incA D).map_mul, inv_mul_cancel₀ hy0, (incA D).map_one, one_mul]`. Conclude with `ho`. Rewrite using `[hso]`. Conclude with `incA_mul_mem hx0 hx ht`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem idV_mul_gen : ∀ (D : D7) (v : Pl D) (𝔞 𝔟 : FI D) (x y : D.host.E), x ≠ 0 → y ≠ 0 → (∀ s, s ∈ idV 𝔞 v ↔ incA D x⁻¹ * s ∈ intAt D (· = v) ∧ s ∈ idAt D (· = v)) → (∀ s, s ∈ idV 𝔟 v ↔ incA D y⁻¹ * s ∈ intAt D (· = v) ∧ s ∈ idAt D (· = v)) → ∀ s, s ∈ idV (𝔞 * 𝔟) v ↔ incA D (x * y)⁻¹ * s ∈ intAt D (· = v) ∧ s ∈ idAt D (· = v) := by
   intro D v 𝔞 𝔟 x y hx0 hy0 hx hy

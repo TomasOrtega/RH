@@ -10,15 +10,15 @@ open Set Filter Topology
 variable {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ E]
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => intro k t _`. Simplify using `using hb k t`. Consider the case `succ n ih`. Introduce `k t ht`.
+Proceed by induction. Treat this case separately. Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `set A : ℝ := C * ρ ^ (k + (n + 1)) * ((k + (n + 1)).factorial : ℝ) with hA`. Establish `hB : ∀ x : ℝ, HasDerivAt (fun s : ℝ => A * ((s - t0) ^ (n + 1) / ((n + 1).factorial : ℝ))) (A * ((x - t0) ^ n / (n.factorial : ℝ))) x`. Introduce `x`. Establish `h1 : HasDerivAt (fun s : ℝ => (s - t0) ^ (n + 1)) (((n + 1 : ℕ) : ℝ) * (x - t0) ^ n * 1) x`. Conclude with `((hasDerivAt_id x).sub_const t0).pow (n + 1)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h2` using `(h1.div_const ((n + 1).factorial : ℝ)).const_mul A`. Use `h2.congr_deriv ?_` and prove the remaining obligations. Use `congr 1`. Rewrite using `[Nat.factorial_succ]`. Establish `: (n.factorial : ℝ) ≠ 0` using `by positivity`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Establish `: ((n + 1 : ℕ) : ℝ) ≠ 0` using `by positivity`. Move the coercions through the operations in `at *`. Clear the denominators using the available nonvanishing facts. Use `image_norm_le_of_norm_deriv_right_le_deriv_boundary (f := g k) (f' := g (k + 1)) (a := t0) (b := t) (fun x _ => (hd k x).continuousAt.continuousWithinAt) (fun x _ => (hd k x).hasDerivWithinAt) (by simp [h0 k]) hB (fun x hx => by` as an intermediate fact. Establish `h` using `ih (k + 1) x hx.1`.
+Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `e : k + 1 + n = k + (n + 1)` using `by ring`. Rewrite using `[e] at h) (x := t) ⟨ht, le_rfl⟩` and apply the resulting hypothesis. Conclude with `this`.
+A detailed English derivation is pending.
 -/
 theorem norm_le_right (g : ℕ → ℝ → E) (C ρ t0 : ℝ)
     (hd : ∀ k t, HasDerivAt (g k) (g (k + 1) t) t)
@@ -53,13 +53,11 @@ theorem norm_le_right (g : ℕ → ℝ → E) (C ρ t0 : ℝ)
     exact this
 
 /- English proof (translation)
-Establish `hr : ‖ρ * (t - t0)‖ < 1`. Rewrite using `[Real.norm_of_nonneg (mul_nonneg hρ.le (sub_nonneg.2 ht))]`. Conclude with `ht'`. Establish `hs` using `(summable_choose_mul_geometric_of_norm_lt_one k hr).tendsto_atTop_zero`. Establish `hs2` using `hs.const_mul (C * ρ ^ k * (k.factorial : ℝ))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hs2` using `[mul_zero]`. Establish `hle : ‖g k t‖ ≤ 0`. Use `ge_of_tendsto' hs2 fun n => ?_` and prove the remaining obligations. Establish `h` using `norm_le_right g C ρ t0 hd hb h0 n k t ht`. Use `h.trans (le_of_eq ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e : ((k + n).factorial : ℝ) = ((n + k).choose k : ℝ) * n.factorial * k.factorial`. Rewrite using `[add_comm k n]`. Conclude with `(Nat.add_choose_mul_factorial_mul_factorial n k).symm` after adjusting the coercions. Establish `: (n.factorial : ℝ) ≠ 0` using `by positivity`. Rewrite using `[e, mul_pow, pow_add]`.
-
-Clear the denominators using the available nonvanishing facts. Conclude with `norm_le_zero_iff.1 hle`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem eq_zero_near_right (g : ℕ → ℝ → E) (C ρ t0 : ℝ) (hρ : 0 < ρ)
     (hd : ∀ k t, HasDerivAt (g k) (g (k + 1) t) t)
@@ -82,17 +80,15 @@ theorem eq_zero_near_right (g : ℕ → ℝ → E) (C ρ t0 : ℝ) (hρ : 0 < ρ
   exact norm_le_zero_iff.1 hle
 
 /- English proof (translation)
-Establish `key : ∀ m : ℕ, ∀ k (t : ℝ), 0 ≤ t → 2 * ρ * t ≤ m → g k t = 0`. Introduce `m`. Proceed by induction on `m with`. Consider the case `zero`. Introduce `k t ht h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `: t = 0`. Establish `: t ≤ 0`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Use `mul_pos hρ hc` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `at h`. Use the polynomial consequences of the given equalities and inequalities. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[this, h0]`. Consider the case `succ m ih`.
+Use the polynomial consequences of the given equalities and inequalities. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `k t ht h`. Distinguish the cases in `hm : 2 * ρ * t ≤ m`. Conclude with `ih k t ht hm`. Use `push_neg at hm`. Establish `e : 2 * ρ * ((m : ℝ) / (2 * ρ)) = m` using `by field_simp`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1 : (m : ℝ) / (2 * ρ) ≤ t`. Rewrite using `[div_le_iff₀ (by positivity)]; linarith`. Use `eq_zero_near_right g C ρ ((m : ℝ) / (2 * ρ)) hρ hd hb (fun j => ih j _ (by positivity) e.le) k t h1 ?_` and prove the remaining obligations. Move the coercions through the operations in `at h`. Combine the linear equalities and inequalities to obtain the conclusion.
-
-Conclude with `key ⌈2 * ρ * t⌉₊ k t ht (Nat.le_ceil _)`.
+Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem eq_zero_right (g : ℕ → ℝ → E) (C ρ : ℝ) (hρ : 0 < ρ)
     (hd : ∀ k t, HasDerivAt (g k) (g (k + 1) t) t)
@@ -127,9 +123,9 @@ theorem eq_zero_right (g : ℕ → ℝ → E) (C ρ : ℝ) (hρ : 0 < ρ)
   exact key ⌈2 * ρ * t⌉₊ k t ht (Nat.le_ceil _)
 
 /- English proof (translation)
-Introduce `E _ _ g C ρ _ hρ hd hb h0 k t`. Break down `le_total 0 t with ht | ht` into its components or cases. Conclude with `eq_zero_right g C ρ hρ hd hb h0 k t ht`. Establish `h` using `eq_zero_right (fun j s => ((-1 : ℝ) ^ j) • g j (-s)) C ρ hρ (fun j s => by`. Establish `h1` using `((hd j (-s)).scomp s (hasDerivAt_neg s)).const_smul ((-1 : ℝ) ^ j)`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `h1.congr_deriv ?_` and prove the remaining obligations. Rewrite using `[smul_smul, pow_succ])`. Use the proof step `(fun j s => by simpa [norm_smul] using hb j (-s))`. Use the proof step `(fun j => by simp [h0 j]) k (-t) (by linarith)`. Simplify using `using h`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_factorial_bound :
     ∀ (E : Type) [NormedAddCommGroup E] [NormedSpace ℝ E] (g : ℕ → ℝ → E) (C ρ : ℝ), 0 ≤ C → 0 < ρ → (∀ k t, HasDerivAt (g k) (g (k + 1) t) t) → (∀ k t, ‖g k t‖ ≤ C * ρ ^ k * (k.factorial : ℝ)) → (∀ k, g k 0 = 0) → ∀ k t, g k t = 0 := by

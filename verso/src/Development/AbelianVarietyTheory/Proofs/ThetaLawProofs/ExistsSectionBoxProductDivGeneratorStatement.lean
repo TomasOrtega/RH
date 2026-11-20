@@ -15,7 +15,7 @@ open GlobalTheory.AbLaw
 open GlobalTheory.KeyKa
 
 /- English proof (citation)
-Apply `GlobalTheory.KeyQuot.exists_sec_quot` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FThetaLawProofs%2FExistsSectionBoxProductDivGenerator.lean&line=48#L48)
 -/

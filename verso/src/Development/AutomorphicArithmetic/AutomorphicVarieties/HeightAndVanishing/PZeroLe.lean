@@ -4,9 +4,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.HeightAndVanishing
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC ReciprocityTheory.Gal Formalism.GaloisCohomology UpperTheory.V UpperTheory.V.Base UpperTheory.Top UpperTheory.V.HV
 
 /- English proof (translation)
-Introduce `m hm`. Take `⟨p, hp, h1, h2⟩` from `Nat.exists_prime_lt_and_le_two_mul (m + 5) (by omega)`. Establish `hmem : p ∈ {p : ℕ | p.Prime ∧ 5 ≤ p ∧ ¬ p ∣ m}` using `⟨hp, by omega, fun h => by have := Nat.le_of_dvd hm h; omega⟩`. Establish `h3 : UpperTheory.V.HV.pZero m ∈ {p : ℕ | p.Prime ∧ 5 ≤ p ∧ ¬ p ∣ m}` using `Nat.sInf_mem ⟨p, hmem⟩`. Establish `h4 : UpperTheory.V.HV.pZero m ≤ p` using `Nat.sInf_le hmem`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `⟨h3.1, h3.2.1, h3.2.2, by omega⟩`.
+Supply the required witnesses or components.
 -/
 theorem UpperTheory.V.HV.pZeroLe :
     ∀ m : ℕ, 0 < m → (pZero m).Prime ∧ 5 ≤ pZero m ∧ ¬ pZero m ∣ m ∧ pZero m ≤ 2 * m + 10 := by

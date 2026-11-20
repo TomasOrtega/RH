@@ -20,20 +20,20 @@ private def zf (y : Af E) : Ad E := ((0, y) : InfiniteAdeleRing E × Af E)
 
 omit [IsTotallyReal E] in
 /- English proof (translation)
-The claim follows from `(continuous_const.prodMk continuous_id : Continuous fun y : Af E => ((0, y) : InfiniteAdeleRing E × Af E))`.
+A detailed English derivation is pending.
 -/
 private theorem continuous_zf : Continuous (zf (E := E)) :=
   (continuous_const.prodMk continuous_id : Continuous fun y : Af E => ((0, y) : InfiniteAdeleRing E × Af E))
 
 /- English proof (translation)
-The claim follows from `((TR.continuous_infEq E).prodMk continuous_const : Continuous fun x : TR.Rinf E => ((TR.infEq E x, 0) : InfiniteAdeleRing E × Af E))`.
+A detailed English derivation is pending.
 -/
 private theorem continuous_sInf : Continuous (TR.sInf E) :=
   ((TR.continuous_infEq E).prodMk continuous_const :
     Continuous fun x : TR.Rinf E => ((TR.infEq E x, 0) : InfiniteAdeleRing E × Af E))
 
 /- English proof (translation)
-Establish `h : Continuous (TR.infEq E).symm` using `continuous_pi fun w => (InfinitePlace.Completion.isometryEquivRealOfIsReal (IsTotallyReal.isReal w)).continuous.comp (continuous_apply w)`. Conclude with `h.comp continuous_fst`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem continuous_pInf : Continuous (TR.pInf E) := by
   have h : Continuous (TR.infEq E).symm := continuous_pi fun w =>
@@ -42,13 +42,13 @@ private theorem continuous_pInf : Continuous (TR.pInf E) := by
   exact h.comp continuous_fst
 
 /- English proof (translation)
-The claim follows from `Prod.ext (((TR.infEq E).apply_symm_apply _).symm.trans (add_zero _).symm) (zero_add _).symm`.
+A detailed English derivation is pending.
 -/
 private theorem split (x : Ad E) : x = TR.sInf E (TR.pInf E x) + zf (pFin E x) :=
   Prod.ext (((TR.infEq E).apply_symm_apply _).symm.trans (add_zero _).symm) (zero_add _).symm
 
 /- English proof (translation)
-Use `FiniteAdeleRing.ext _ fun u => ?_` and prove the remaining obligations. Establish `hc : Continuous fun t : TR.Rinf E => (f (TR.sInf E t)) u` using `(RestrictedProduct.continuous_eval u).comp (hf.comp continuous_sInf)`. Establish `h` using `(isPreconnected_range hc).subsingleton ⟨t, rfl⟩ ⟨0, rfl⟩`. Simplify using `using h`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem fin_kill (f : Ad E →+* Af E) (hf : Continuous f) (t : TR.Rinf E) : f (TR.sInf E t) = 0 := by
   refine FiniteAdeleRing.ext _ fun u => ?_
@@ -60,11 +60,11 @@ private theorem fin_kill (f : Ad E →+* Af E) (hf : Continuous f) (t : TR.Rinf 
 omit [IsTotallyReal E] in
 
 /- English proof (translation)
-Establish `h1 : f (zf 1) = 0`. Take `⟨C, hC⟩` from `((GroundTheory.Global.isCompact_integralFiniteAdeles E).image (hf.comp continuous_zf)).isBounded.exists_norm_le`. Assume the negation of the conclusion as `h0`. Establish `hp : 0 < ‖f (zf 1)‖` using `norm_pos_iff.2 h0`. Take `⟨n, hn⟩` from `exists_nat_gt (C / ‖f (zf 1)‖)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `h2` using `hC _ ⟨(n : Af E), natCast_mem _ n, rfl⟩`. Establish `e : zf (n : Af E) = (n : Ad E) * zf 1` using `Prod.ext (mul_zero _).symm (mul_one _).symm`. Rewrite `h2` using `[Function.comp_apply, e, map_mul, map_natCast, norm_mul, Real.norm_natCast]`. Rewrite `hn` using `[div_lt_iff₀ hp]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `e : zf y = zf y * zf 1` using `Prod.ext (mul_zero _).symm (mul_one _).symm`. Rewrite using `[e, map_mul, h1, mul_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 private theorem inf_kill (f : Ad E →+* ℝ) (hf : Continuous f) (y : Af E) : f (zf y) = 0 := by
   have h1 : f (zf 1) = 0 := by
@@ -81,7 +81,7 @@ private theorem inf_kill (f : Ad E →+* ℝ) (hf : Continuous f) (y : Af E) : f
   rw [e, map_mul, h1, mul_zero]
 
 /- English proof (translation)
-Establish `: TR.pInf E (algebraMap E (Ad E) x) v = InfinitePlace.embedding_of_isReal (IsTotallyReal.isReal v) x`. Express the relevant statement in the definitionally equal form `InfinitePlace.Completion.ringEquivRealOfIsReal (IsTotallyReal.isReal v) (algebraMap E (InfiniteAdeleRing E) x v) = _`. Simplify using the standard rewrite rules. Rewrite using `[this]`. Conclude with `InfinitePlace.norm_embedding_of_isReal _ _`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem abs_pInf (x : E) (v : InfinitePlace E) : ‖TR.pInf E (algebraMap E (Ad E) x) v‖ = v x := by
   have : TR.pInf E (algebraMap E (Ad E) x) v = InfinitePlace.embedding_of_isReal (IsTotallyReal.isReal v) x := by
@@ -91,11 +91,11 @@ private theorem abs_pInf (x : E) (v : InfinitePlace E) : ‖TR.pInf E (algebraMa
   exact InfinitePlace.norm_embedding_of_isReal _ _
 
 /- English proof (translation)
-Use `Fintype.ofFinite ι` as an intermediate fact. Take `⟨v, hv⟩ : ∃ v, g (Pi.single v 1) ≠ 0` from `by by_contra! h`. Establish `h1` using `map_sum g (fun v => Pi.single v (1 : ℝ)) Finset.univ`. Rewrite `h1` using `[show ∑ v, Pi.single v (1 : ℝ) = (1 : ι → ℝ) from Finset.univ_sum_single (1 : ι → ℝ)]`. Simplify using `[h] at h1`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `⟨v, fun t => mul_right_cancel₀ hv ?_⟩` and prove the remaining obligations. Establish `e : t * Pi.single v 1 = algebraMap ℝ (ι → ℝ) (t v) * Pi.single v 1`. Use function extensionality and compare the values at `u`. Apply the tactic sequence `by_cases h : u = v <;> simp [h]`. Establish `e2 : g (algebraMap ℝ (ι → ℝ) (t v)) = t v` using `DFunLike.congr_fun (Subsingleton.elim (g.comp (algebraMap ℝ (ι → ℝ))) (RingHom.id ℝ)) (t v)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Rewrite using `[← map_mul, e, map_mul, e2]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem ringHom_pi {ι : Type} [Finite ι] (g : (ι → ℝ) →+* ℝ) : ∃ v, ∀ t, g t = t v := by
   classical
@@ -117,9 +117,9 @@ variable {σ : E ≃+* E} {s : Ad E →+* Ad E} (hs : IsAdExt (σ : E →+* E) s
 include hs
 
 /- English proof (translation)
-Establish `hf : Continuous ((pFin E).comp s)` using `continuous_snd.comp hs.1`. Establish `h1 : ∀ x, pFin E (s x) = pFin E (s (zf (pFin E x)))` using `fun x => by conv_lhs => rw [split x, map_add, map_add]`. Rewrite using `[show pFin E (s (TR.sInf E _)) = 0 from fin_kill _ hf _, zero_add]`. Rewrite using `[h1]`. Use `congrFun ((GroundTheory.Automorphic.AdelicGLn.denseRange_algebraMap_finiteAdeleRing E).equalizer (hf.comp continuous_zf) (continuous_finMap σ) (funext fun k => ?_)) _` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(h1 (algebraMap E (Ad E) k)).symm.trans ((congrArg (pFin E) (hs.2 k)).trans (FieldIso.finMap_algebraMap σ k).symm)`.
+A detailed English derivation is pending.
 -/
 private theorem pFin_ext (x : Ad E) : pFin E (s x) = finMap σ (pFin E x) := by
   have hf : Continuous ((pFin E).comp s) := continuous_snd.comp hs.1
@@ -133,13 +133,11 @@ private theorem pFin_ext (x : Ad E) : pFin E (s x) = finMap σ (pFin E x) := by
     (FieldIso.finMap_algebraMap σ k).symm)
 
 /- English proof (translation)
-Set `f : Ad E →+* ℝ` to `(Pi.evalRingHom (fun _ => ℝ) w).comp ((TR.pInf E).comp s)`. Establish `hf : Continuous f` using `(continuous_apply w).comp (continuous_pInf.comp hs.1)`. Establish `h1 : ∀ x, f x = f (TR.sInf E (TR.pInf E x))` using `fun x => by conv_lhs => rw [split x, map_add, inf_kill f hf, add_zero]`. Set `g : TR.Rinf E →+* ℝ` to `{ toFun := fun t => f (TR.sInf E t) map_one' := by`. Use `h1 1` as an intermediate fact.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite `this` using `[map_one, map_one]`. Conclude with `this.symm`. Use the proof step `map_mul' := fun a b => by rw [map_mul, map_mul]`. Use the proof step `map_zero' := by rw [map_zero, map_zero]`. Use the proof step `map_add' := fun a b => by rw [map_add, map_add] }`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Take `⟨v, hv⟩` from `ringHom_pi g`. Establish `h2 : ∀ x, TR.pInf E (s x) w = TR.pInf E x v` using `fun x => (h1 x).trans (hv _)`. Establish `h3 : v = w.comap (σ : E →+* E)`. Use extensionality with `k`. Use `h2 (algebraMap E (Ad E) k)` as an intermediate fact.
-
-Rewrite `this` using `[hs.2]`. Rewrite using `[InfinitePlace.comap_apply, ← abs_pInf, ← abs_pInf, this]`. Rewrite using `[h2, h3]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem pInf_ext (x : Ad E) (w : InfinitePlace E) :
     TR.pInf E (s x) w = TR.pInf E x (w.comap (σ : E →+* E)) := by
@@ -189,21 +187,21 @@ variable {σ : E ≃+* E} {s : Ad E →+* Ad E} (hs : IsAdExt (σ : E →+* E) s
 include hs
 
 /- English proof (translation)
-The claim follows from `Units.ext (Matrix.ext fun _ _ => funext fun w => pInf_ext hs _ w)`.
+A detailed English derivation is pending.
 -/
 private theorem pInf_map (g : GA E a) : GeneralLinearGroup.map (TR.pInf E) (GeneralLinearGroup.map s g) =
     GeneralLinearGroup.map (rinf σ) (GeneralLinearGroup.map (TR.pInf E) g) :=
   Units.ext (Matrix.ext fun _ _ => funext fun w => pInf_ext hs _ w)
 
 /- English proof (translation)
-The claim follows from `Units.ext (Matrix.ext fun _ _ => pFin_ext hs _)`.
+A detailed English derivation is pending.
 -/
 private theorem pFin_map (g : GA E a) : GeneralLinearGroup.map (pFin E) (GeneralLinearGroup.map s g) =
     GeneralLinearGroup.map (finMap σ) (GeneralLinearGroup.map (pFin E) g) :=
   Units.ext (Matrix.ext fun _ _ => pFin_ext hs _)
 
 /- English proof (translation)
-The claim follows from `TR.ga_ext (by rw [pInf_map hs, TR.pInf_infGL, TR.pInf_infGL]) (by rw [pFin_map hs, TR.pFin_infGL, TR.pFin_infGL, map_one])`.
+A detailed English derivation is pending.
 -/
 private theorem map_infGL (y : GL (Fin a) (TR.Rinf E)) :
     GeneralLinearGroup.map s (TR.infGL E a y) = TR.infGL E a (GeneralLinearGroup.map (rinf σ) y) :=
@@ -211,7 +209,7 @@ private theorem map_infGL (y : GL (Fin a) (TR.Rinf E)) :
     (by rw [pFin_map hs, TR.pFin_infGL, TR.pFin_infGL, map_one])
 
 /- English proof (translation)
-Take `⟨u, hu⟩` from `id hx`. Take `rfl : x = TR.toL u.val` from `hu.symm`. Establish `e : lieMap a σ (TR.toL u.val) = TR.toL (GeneralLinearGroup.map (rinf σ) u).val` using `rfl`. Rewrite using `[e, TR.chart_val, TR.chart_val, map_mul, map_infGL hs]`. Conclude with `⟨rfl, TR.val_mem_invSet _⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 private theorem chart_map (φ : GA E a → ℂ) (g : GA E a) {x : TR.Lie E a} (hx : x ∈ TR.invSet E a) :
     TR.chart (fun g => φ (GeneralLinearGroup.map s g)) g x = TR.chart φ (GeneralLinearGroup.map s g) (lieMap a σ x) ∧

@@ -16,12 +16,12 @@ open UpperTheory.V.Af.Smo (EigAt)
 open scoped ComplexOrder
 
 /- English proof (translation)
-The claim follows from `compl_mem_ae_iff.2 (measure_singleton (0 : ℝ))`.
+A detailed English derivation is pending.
 -/
 private theorem ae_ne' : ∀ᵐ y : ℝ, y ≠ 0 := compl_mem_ae_iff.2 (measure_singleton (0 : ℝ))
 
 /- English proof (translation)
-Establish `h1` using `congrArg (fun u : ℂˣ => ‖(u : ℂ)‖) (h a)`. Simplify using `only [Units.val_pow_eq_pow_val, Units.val_mul, norm_pow, norm_mul, Units.val_one, norm_one, hω a, mul_one] at h1`. Conclude with `(pow_eq_one_iff_of_nonneg (norm_nonneg _) two_ne_zero).1 h1`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem norm_chi' {ω χ : HChar ℚ} (hω : Unit1 ω) (h : ∀ a, (χ.1 a * ω.1 a) ^ 2 = 1) (a : (A ℚ)ˣ) :
     ‖((χ.1 a : ℂˣ) : ℂ)‖ = 1 := by
@@ -30,17 +30,15 @@ private theorem norm_chi' {ω χ : HChar ℚ} (hω : Unit1 ω) (h : ∀ a, (χ.1
   exact (pow_eq_one_iff_of_nonneg (norm_nonneg _) two_ne_zero).1 h1
 
 /- English proof (translation)
-Simplify using `[ab, map_mul]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem ab_mul' (a b : (A ℚ)ˣ) : ab (a * b) = ab a * ab b := by
   simp [ab, map_mul]
 
 /- English proof (translation)
-Use `Prod.ext ?_ (FiniteAdeleRing.ext (K := ℚ) fun w => ?_)` and prove the remaining obligations. Use `show y.1 * 0 = 0`. Conclude with `mul_zero _`. Distinguish the cases in `h : w = v`. Substitute `h show y.2 w * (H.sg w x).2 w = (H.sg w (H.cp w y * x)).2 w` using the available equality.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `a1 : ∀ z : H.Kv w, (H.sg w z).2 w = z` using `fun z => GroundTheory.Global.finiteAdeleSingleAdd_apply_self w z`. Rewrite using `[a1, a1]`. Both sides reduce to the same expression. Use `show y.2 w * (H.sg v x).2 w = (H.sg v (H.cp v y * x)).2 w`. Establish `a1 : ∀ z : H.Kv v, (H.sg v z).2 w = 0` using `fun z => GroundTheory.Global.finiteAdeleSingleAdd_apply_of_ne h z`.
-
-Rewrite using `[a1, a1, mul_zero]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem mul_sg (v : H.P ℚ) (y : A ℚ) (x : H.Kv v) : y * H.sg v x = H.sg v (H.cp v y * x) := by
   refine Prod.ext ?_ (FiniteAdeleRing.ext (K := ℚ) fun w => ?_)
@@ -57,9 +55,9 @@ private theorem mul_sg (v : H.P ℚ) (y : A ℚ) (x : H.Kv v) : y * H.sg v x = H
       rw [a1, a1, mul_zero]
 
 /- English proof (translation)
-Establish `h0 : 0 < |r|` using `abs_pos.2 hr`. Establish `h0c : ((|r| : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast h0.ne'`. Establish `e : s - 2 = (s - 1) - 1` using `by ring`. Establish `e4 : ((|r| : ℝ) : ℂ) ^ (s - 2) = ((|r| : ℝ) : ℂ) ^ (s - 1) / ((|r| : ℝ) : ℂ)`. Rewrite using `[e, Complex.cpow_sub _ _ h0c, Complex.cpow_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Complex.ofReal_mul, Complex.mul_cpow_ofReal_nonneg h0.le ha.le, e4, mul_div_right_comm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem cpid (s : ℂ) {r a : ℝ} (hr : r ≠ 0) (ha : 0 < a) :
     (((|r| * a : ℝ) : ℂ)) ^ (s - 1) / ((|r| : ℝ) : ℂ) = ((|r| : ℝ) : ℂ) ^ (s - 2) * (a : ℂ) ^ (s - 1) := by
@@ -71,17 +69,17 @@ private theorem cpid (s : ℂ) {r a : ℝ} (hr : r ≠ 0) (ha : 0 < a) :
   rw [Complex.ofReal_mul, Complex.mul_cpow_ofReal_nonneg h0.le ha.le, e4, mul_div_right_comm]
 
 /- English proof (translation)
-Establish `hy0 : 0 < |r|` using `abs_pos.2 hr`. Use `set m := ⌈s.re⌉₊ with hm`. Use `set b := 1 + |r| with hb`. Establish `hb1 : 1 ≤ b` using `by rw [hb]; linarith`. Establish `hb0 : 0 < b` using `by linarith`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hyb : |r| ≤ b` using `by rw [hb]; linarith`. Establish `hσ : 0 ≤ s.re - 2` using `by linarith`. Establish `hm' : s.re - 2 ≤ (m : ℝ)`. Use `Nat.le_ceil s.re` as an intermediate fact. Rewrite `this` using `[← hm]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `e1 : |r| ^ (s.re - 2) ≤ b ^ m`. Combine the equalities or inequalities in the displayed calculation. Establish `e3 : 1 + r ^ 2 ≤ b ^ 2`. Rewrite using `[hb]`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Use polynomial arithmetic with `[abs_nonneg r, sq_abs r]`. Establish `hB : 0 ≤ B`. Establish `h1 : 0 ≤ B * (b ^ (m + 2))⁻¹` using `(norm_nonneg _).trans hW`. Establish `h2 : 0 < (b ^ (m + 2))⁻¹` using `by positivity`. Conclude with `nonneg_of_mul_nonneg_left h1 h2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `e2 : ‖W * c * (((|r| * a : ℝ) : ℂ)) ^ (s - 1) / ((|r| : ℝ) : ℂ)‖ = ‖W‖ * (|r| ^ (s.re - 2) * a ^ (s.re - 1))`. Rewrite using `[mul_div_assoc, cpid s hr ha, norm_mul, norm_mul, hc, mul_one, norm_mul, Complex.norm_cpow_eq_rpow_re_of_pos hy0, Complex.norm_cpow_eq_rpow_re_of_pos ha]`. Simplify using the standard rewrite rules. Rewrite using `[e2]`. Establish `ha' : 0 ≤ a ^ (s.re - 1)` using `Real.rpow_nonneg ha.le _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 
-Combine the equalities or inequalities in the displayed calculation. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ a ^ (s.re - 1) * (B * (1 + r ^ 2)⁻¹) := by gcongr`.
+A detailed English derivation is pending.
 -/
 private theorem core {s : ℂ} (hs : 4 < s.re) {W c : ℂ} {r a B : ℝ} (hr : r ≠ 0) (ha : 0 < a) (hc : ‖c‖ = 1)
     (hW : ‖W‖ ≤ B * ((1 + |r|) ^ (⌈s.re⌉₊ + 2))⁻¹) :
@@ -125,13 +123,13 @@ section
 variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E]
 
 /- English proof (translation)
-Establish `h` using `infGL_mul_finGL (E := E) (a := 2) (em E (rot t))`. Establish `e2 : ∀ i j, ((rot t).val i j).2 = ((1 : Matrix (Fin 2) (Fin 2) (A ℚ)) i j).2`. Introduce `i j`. Establish `e : (rot t).val i j = (1 : Matrix (Fin 2) (Fin 2) (A ℚ)) i j - TR.sInf ℚ ((1 : Matrix (Fin 2) (Fin 2) (TR.Rinf ℚ)) i j) + TR.sInf ℚ ((Nz.X t).val i j)`. Rewrite using `[Nz.rot_eq]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[e]`. Use `show ((1 : Matrix (Fin 2) (Fin 2) (A ℚ)) i j).2 - 0 + 0 = _`. Simplify using the standard rewrite rules. Establish `h1 : Matrix.GeneralLinearGroup.map (pFin E) (em E (rot t)) = 1`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `Units.ext (Matrix.ext fun i j => ?_)` and prove the remaining obligations. Establish `e3 : (AdeleBaseChange.adeleMap ℚ E ((rot t).val i j)).2 = (AdeleBaseChange.adeleMap ℚ E ((1 : Matrix (Fin 2) (Fin 2) (A ℚ)) i j)).2`. Rewrite using `[AdeleBaseChange.adeleMap_apply, AdeleBaseChange.adeleMap_apply, e2]`. Express the relevant statement in the definitionally equal form `(AdeleBaseChange.adeleMap ℚ E ((rot t).val i j)).2 = _`. Rewrite using `[e3]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [Matrix.one_apply] <;> rfl`. Rewrite `h` using `[h1, map_one, mul_one]`. Conclude with `⟨_, h⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem ex_X (t : ℝ) : ∃ X, infGL E 2 X = em E (rot t) := by
   have h := infGL_mul_finGL (E := E) (a := 2) (em E (rot t))
@@ -155,11 +153,11 @@ private theorem ex_X (t : ℝ) : ∃ X, infGL E 2 X = em E (rot t) := by
   exact ⟨_, h⟩
 
 /- English proof (translation)
-Establish `hgd` using `hG.pl v hv`. Use `hgd.psi.2.2 _ fun c hc => ?_` and prove the remaining obligations. Establish `hfix` using `UpperTheory.right_invariant_baseChangeUnipotent_of_places_above_fixed E D φ v hgd (fun w hw => (hG.fix w (by rwa [hw])).1) c hc`. Establish `e` using `UpperTheory.whittaker_unipotent_translate_of_infinite_component_zero E D φ hA.cont hA.left (H.sg v c) rfl y X`. Establish `e' : (fun g => φ (g * Xg.nu D (H.sg v c))) = φ` using `funext hfix`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `e` using `[e']`. Establish `h1 : ψ (-((y : A ℚ) * H.sg v c)) = 1`. Establish `: (1 : ℂ) * Wo D φ (em E (aE y) * infGL E 2 X) = ψ (-((y : A ℚ) * H.sg v c)) * Wo D φ (em E (aE y) * infGL E 2 X)`. Rewrite using `[one_mul]`. Conclude with `e`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(mul_right_cancel₀ hne this).symm`. Establish `h2` using `Nz.psi_neg_mul ((y : A ℚ) * H.sg v c)`. Rewrite `h2` using `[h1, one_mul, mul_sg, mul_comm]`. Conclude with `h2`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem wo_int {D : Dat ℚ E} {P : CuspSub E 2} {ω : HChar ℚ} {L N : ℕ} {φ : GL (Fin 2) (A E) → ℂ} (hA : admitted D ω φ) (hG : Gd D P L N φ)
     (y : (A ℚ)ˣ) (X) (hne : Wo D φ (em E (aE y) * infGL E 2 X) ≠ 0) (v : H.P ℚ) (hv : ¬ Bad N v) :
@@ -181,49 +179,45 @@ private theorem wo_int {D : Dat ℚ E} {P : CuspSub E 2} {ω : HChar ℚ} {L N :
 end
 
 /- English proof (translation)
-Introduce `E _ _ _ D P ω χ hCen hU hχω L N hχ φ hA hG μ hμ s hs t`. Establish `hLpos : 0 < L` using `Nat.pos_of_dvd_of_pos hG.dvd hG.pos`. Establish `nχ` using `norm_chi' hU hχω`. Take `⟨X, hX⟩` from `ex_X (E := E) t`. Take `⟨hab1, hab2, hab3, hab4⟩` from `UpperTheory.ratIdeleAbs_realIdele_natIdele_unitIdeles`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨f, hf⟩ : ∃ f : IdeleGroup ℚ → ℂ, f = fun y => Wo D φ (em E (aE y * rot t)) * ((χ.1 y : ℂˣ) : ℂ) * ((ab y : ℝ) : ℂ) ^ (s - 1)` from `⟨_, rfl⟩`. Establish `hW : ∀ y : (A ℚ)ˣ, Wo D φ (em E (aE y * rot t)) = Wo D φ (em E (aE y) * infGL E 2 X)` using `fun y => by rw [map_mul, hX]`. Establish `hinv : ∀ τ ∈ TT L, ∀ y : IdeleGroup ℚ, f (y * τ) = f y`. Introduce `τ hτ y`. Establish `h1 : χ.1 τ = 1` using `hχ τ hτ.1 hτ.2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h2 : ab τ = 1` using `hab3 τ hτ.1`. Simplify using `only [hf]`. Rewrite using `[hW, hW y, hG.tor τ hτ.1 hτ.2 y X, map_mul, h1, mul_one, ab_mul', h2, mul_one]`. Establish `hsupp : ∀ y : IdeleGroup ℚ, f y ≠ 0 → ∃ (n : ℕ) (r : ℝ) (τ : (A ℚ)ˣ), 0 < n ∧ n.Coprime N ∧ r ≠ 0 ∧ τ ∈ TT L ∧ y = iy r * pin n * τ`. Introduce `y hy`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hne : Wo D φ (em E (aE y) * infGL E 2 X) ≠ 0`. Introduce `h0`. Apply `hy` to reduce the goal to its premises. Simplify using `only [hf]`. Rewrite using `[hW, h0]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Conclude with `UpperTheory.exists_factorization_of_ideleCongruence_divisor_level L N hG.pos hG.dvd hG.same y (hG.supp y X hne) (fun v hv => wo_int hA hG y X hne v hv)`. Take `⟨K, -, hK⟩` from `hA.wdec {em E (rot t)} isCompact_singleton`. Take `⟨B0, hB0⟩` from `hK (⌈s.re⌉₊ + 2)`. Establish `hb : ∀ y : (A ℚ)ˣ, ‖Wo D φ (em E (aE y * rot t))‖ ≤ |B0| * ((1 + |re y|) ^ (⌈s.re⌉₊ + 2))⁻¹`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `y`. Establish `h1` using `(hB0 y (em E (rot t)) rfl).1`. Rewrite `h1` using `[← map_mul]`. Conclude with `h1.trans (mul_le_mul_of_nonneg_right (le_abs_self _) (by positivity))`. Take `⟨G, hGd⟩ : ∃ G : ℝ → ℂ, G = fun y => Wo D φ (em E (aE (iy y) * rot t)) * ((χ.1 (iy y) : ℂˣ) : ℂ) * (y : ℂ) ^ 0 * ((|y| : ℝ) : ℂ) ^ (s - 2)` from `⟨_, rfl⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hGmeas : AEStronglyMeasurable G volume`. Establish `hcont : ContinuousOn G ({0}ᶜ : Set ℝ)`. Use `continuousOn_iff_continuous_restrict.2 ?_` and prove the remaining obligations. Establish `ci : Continuous fun y : ({0}ᶜ : Set ℝ) => iy y.1` using `continuousOn_iff_continuous_restrict.1 Nz.contOn_iy`. Establish `h1 : Continuous fun y : ({0}ᶜ : Set ℝ) => Wo D φ (em E (aE (iy y.1) * rot t))` using `Nz.cont_Wo D hA.cont hA.bdd (Nz.cont_em.comp ((continuous_aE.comp ci).mul continuous_const))`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : Continuous fun y : ({0}ᶜ : Set ℝ) => ((χ.1 (iy y.1) : ℂˣ) : ℂ)` using `Units.continuous_val.comp (χ.2.1.comp ci)`. Establish `h3 : Continuous fun y : ({0}ᶜ : Set ℝ) => ((y.1 : ℝ) : ℂ) ^ 0` using `(Complex.continuous_ofReal.comp continuous_subtype_val).pow 0`. Establish `h4 : Continuous fun y : ({0}ᶜ : Set ℝ) => (((|y.1| : ℝ)) : ℂ) ^ (s - 2)` using `Continuous.cpow (Complex.continuous_ofReal.comp (continuous_abs.comp continuous_subtype_val)) continuous_const fun y => Complex.ofReal_mem_slitPlane.2 (abs_pos.2 y.2)`. Rewrite using `[hGd]`. Conclude with `((h1.mul h2).mul h3).mul h4`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `h` using `hcont.aestronglyMeasurable (μ := volume) (measurableSet_singleton (0 : ℝ)).compl`. Rewrite `h` using `[Measure.restrict_eq_self_of_ae_mem (s := ({0}ᶜ : Set ℝ)) ae_ne']`. Then use the resulting hypothesis. Establish `hGb : ∀ r : ℝ, r ≠ 0 → ‖G r‖ ≤ |B0| * (1 + r ^ 2)⁻¹`. Introduce `r hr`. Establish `h1` using `core hs (W := Wo D φ (em E (aE (iy r) * rot t))) (c := ((χ.1 (iy r) : ℂˣ) : ℂ)) (a := 1) hr one_pos (nχ _) (by simpa only [Nz.re_iy hr] using hb (iy r))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Rewrite `h1` using `[mul_div_assoc, cpid s hr one_pos]`. Simplify `h1` using `[hGd]`. Establish `hGint : Integrable G`. Use `Integrable.mono' (integrable_inv_one_add_sq.const_mul |B0|) hGmeas ?_` and prove the remaining obligations. Use `filter_upwards [ae_ne'] with y hy using hGb y hy`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hev : ∀ n : {n : ℕ // 0 < n ∧ n.Coprime N}, ∀ r : ℝ, r ≠ 0 → f (iy r * pin n) / ((|r| : ℝ) : ℂ) = (μ n * ((χ.1 (pin n) : ℂˣ) : ℂ) * (n : ℂ) ^ (1 - s)) * G r`. Introduce `n r hr`. Establish `hn0 : (0 : ℝ) < (n : ℕ)` using `by exact_mod_cast n.2.1`. Establish `hn1 : 0 < ((n : ℕ) : ℝ)⁻¹` using `inv_pos.2 hn0`. Establish `hab : ab (iy r * pin n) = |r| * ((n : ℕ) : ℝ)⁻¹`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[ab_mul', hab1 r hr, hab2 n n.2.1]`. Establish `hc : (((((n : ℕ) : ℝ)⁻¹ : ℝ)) : ℂ) ^ (s - 1) = (((n : ℕ)) : ℂ) ^ (1 - s)`. Rewrite using `[Complex.ofReal_inv, Complex.ofReal_natCast, Complex.inv_cpow _ _ (by simp [Complex.natCast_arg, Real.pi_ne_zero.symm]), ← Complex.cpow_neg]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [hf, hGd]`. Establish `hχm : χ.1 (iy r * pin n) = χ.1 (iy r) * χ.1 (pin n)` using `map_mul _ _ _`. Rewrite using `[hμ n n.2.1 n.2.2 r t hr, hab, mul_div_assoc, cpid s hr hn1, hc, hχm]`. Simplify using `only [Units.val_mul, pow_zero, mul_one]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hFint : ∀ n : {n : ℕ // 0 < n ∧ n.Coprime N}, Integrable (fun r : ℝ => f (iy r * pin n) / ((|r| : ℝ) : ℂ))`. Introduce `n`. Use `(hGint.const_mul (μ n * ((χ.1 (pin n) : ℂˣ) : ℂ) * (n : ℂ) ^ (1 - s))).congr ?_` and prove the remaining obligations. Use `filter_upwards [ae_ne'] with r hr using (hev n r hr).symm`. Establish `hI : ∀ n : {n : ℕ // 0 < n ∧ n.Coprime N}, ∫ r : ℝ, f (iy r * pin n) / ((|r| : ℝ) : ℂ) = (μ n * ((χ.1 (pin n) : ℂˣ) : ℂ) * (n : ℂ) ^ (1 - s)) * It D χ φ s t`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Introduce `n`. Establish `e : It D χ φ s t = ∫ r, G r` using `by rw [hGd]; rfl`. Rewrite using `[e, ← integral_const_mul]`. Use `integral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [ae_ne'] with r hr using hev n r hr`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hbd : ∀ n : {n : ℕ // 0 < n ∧ n.Coprime N}, ∀ r : ℝ, r ≠ 0 → ‖f (iy r * pin n) / ((|r| : ℝ) : ℂ)‖ ≤ ((((n : ℕ) : ℝ)⁻¹) ^ (s.re - 1)) * (|B0| * (1 + r ^ 2)⁻¹)`. Introduce `n r hr`. Establish `hn0 : (0 : ℝ) < (n : ℕ)` using `by exact_mod_cast n.2.1`. Establish `hn1 : 0 < ((n : ℕ) : ℝ)⁻¹` using `inv_pos.2 hn0`. Establish `hab : ab (iy r * pin n) = |r| * ((n : ℕ) : ℝ)⁻¹`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[ab_mul', hab1 r hr, hab2 n n.2.1]`. Establish `h1` using `core hs (W := Wo D φ (em E (aE (iy r * pin n) * rot t))) (c := ((χ.1 (iy r * pin n) : ℂˣ) : ℂ)) hr hn1 (nχ _) (by simpa only [hab4 r n hr n.2.1] using hb (iy r * pin n))`. Simplify using `only [hf]`. Rewrite using `[hab]`. Conclude with `h1`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hSum : Summable (fun n : {n : ℕ // 0 < n ∧ n.Coprime N} => ∫ r : ℝ, ‖f (iy r * pin n) / ((|r| : ℝ) : ℂ)‖)`. Establish `hbi : Integrable fun r : ℝ => |B0| * (1 + r ^ 2)⁻¹` using `integrable_inv_one_add_sq.const_mul |B0|`. Establish `hs1 : Summable fun n : ℕ => ((n : ℝ)⁻¹ ^ (s.re - 1)) * ∫ r : ℝ, |B0| * (1 + r ^ 2)⁻¹`. Use `Summable.mul_right _ ?_` and prove the remaining obligations. Establish `h2 : Summable fun n : ℕ => (n : ℝ) ^ (-(s.re - 1))` using `Real.summable_nat_rpow.2 (by linarith)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `h2.congr fun n => ?_` and prove the remaining obligations. Rewrite using `[Real.inv_rpow (Nat.cast_nonneg n), Real.rpow_neg (Nat.cast_nonneg n)]`. Establish `hs2` using `hs1.subtype {n : ℕ | 0 < n ∧ n.Coprime N}`. Use `Summable.of_nonneg_of_le (fun n => integral_nonneg fun r => norm_nonneg _) (fun n => ?_) hs2` and prove the remaining obligations. Use `show _ ≤ ((((n : ℕ) : ℝ)⁻¹) ^ (s.re - 1)) * ∫ r : ℝ, |B0| * (1 + r ^ 2)⁻¹`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← integral_const_mul]`. Use `integral_mono_ae (hFint n).norm (hbi.const_mul _) ?_` and prove the remaining obligations. Use `filter_upwards [ae_ne'] with r hr using hbd n r hr`. Establish `key` using `UpperTheory.hasSum_coprime_integral_eq_idele_integral L N hLpos f hinv hsupp hFint hSum`. Establish `eY : Yt D χ φ s (rot t) = ∫ y, f y ∂(ideleMeasure ℚ)` using `by rw [hf]; rfl`.
-
-Rewrite using `[eY]`. Establish `e5 : (fun n : {n : ℕ // 0 < n ∧ n.Coprime N} => (cT L : ℂ) * (μ n * ((χ.1 (pin n) : ℂˣ) : ℂ) * (n : ℂ) ^ (1 - s)) * It D χ φ s t) = fun n : {n : ℕ // 0 < n ∧ n.Coprime N} => (cT L : ℂ) * ∫ r : ℝ, f (iy r * pin n) / ((|r| : ℝ) : ℂ)`. Use function extensionality and compare the values at `n`. Rewrite using `[hI n, mul_assoc]`. Rewrite using `[e5]`.
-
-Conclude with `key`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.has_sum_twisted_zeta_integral_dirichlet_series :
     ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (D : Dat ℚ E) (P : CuspSub E 2) (ω χ : HChar ℚ),

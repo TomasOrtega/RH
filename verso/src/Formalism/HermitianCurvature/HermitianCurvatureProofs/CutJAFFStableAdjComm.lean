@@ -5,7 +5,7 @@ import Formalism.HermitianCurvature.HermitianCurvatureProofs.CutJAFFStableAdjInt
 namespace Formalism.FourierDecayAlt.P.CutMP.JA.FFS
 
 /- English proof (translation)
-The claim follows from `adjComm_of_parts fundamental_domain_group adjoint_continuity_holds adjoint_integral_identity_holds`.
+A detailed English derivation is pending.
 -/
 theorem adjoint_commutation_holds : AdjComm := adjComm_of_parts fundamental_domain_group adjoint_continuity_holds adjoint_integral_identity_holds
 

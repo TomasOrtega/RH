@@ -10,19 +10,17 @@ noncomputable section
 namespace GlobalTheory.MixedLagr
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ n d X W M h`. Use `choose y z hyz using h`. Establish `hA : Function.Injective (algebraMap F (AF F))` using `AdeleRing.algebraMap_injective (𝓞 F) F`. Establish `hg : ∀ x, hat ((y x, z x) : (Fin n × Fin d → F) × (Fin n × Fin d → F)) = M.co.e (incM F x)` using `fun x => (hyz x).symm`. Establish `hinj : Function.Injective (hat : (Fin n × Fin d → F) × (Fin n × Fin d → F) → _)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a b hab`. Simplify using `only [hat, Prod.mk.injEq] at hab`. Conclude with `Prod.ext (funext fun i => hA (congrFun hab.1 i)) (funext fun i => hA (congrFun hab.2 i))`. Establish `hadd : ∀ x x' : Matrix (Fin n) (Fin d) E, incM F (x + x') = incM F x + incM F x'`. Introduce `x x'`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use extensionality with `i j`. Simplify using `[incM, Matrix.map_apply, map_add]`. Establish `hsmul : ∀ (c : F) (x : Matrix (Fin n) (Fin d) E), incM F (c • x) = algebraMap F (AF F) c • incM F x`. Introduce `c x`. Use extensionality with `i j`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [incM, Matrix.map_apply, Matrix.smul_apply]`. Use `show (Algebra.TensorProduct.includeRight : E →ₐ[F] AE F E) (c • x i j) = algebraMap F (AF F) c • (Algebra.TensorProduct.includeRight : E →ₐ[F] AE F E) (x i j)`. Rewrite using `[map_smul, algebraMap_smul]`. Establish `hI : Function.Injective (incM F : Matrix (Fin n) (Fin d) E → Matrix (Fin n) (Fin d) (AE F E))` using `Matrix.map_injective (Algebra.TensorProduct.includeRight_injective hA)`. Use `⟨{ toFun := fun x => (y x, z x), map_add' := ?_, map_smul' := ?_ }, ?_, hg⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Introduce `x x'`. Apply `hinj` to reduce the goal to its premises. Rewrite using `[hat_add, hg, hg, hg, hadd, map_add]`. Introduce `c x`. Apply `hinj` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[RingHom.id_apply, hat_smul, hg, hg, hsmul, LinearEquiv.map_smul]`. Introduce `x x' hx`. Apply `hI` to reduce the goal to its premises. Apply `M.co.e.injective` to reduce the goal to its premises. Rewrite using `[← hg, ← hg]`.
-
-Conclude with `congrArg hat hx`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ratCoord_linear_injective : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (n d : ℕ) (X : Spc F E n) (W : Spc F E d) (M : Model σ X W),

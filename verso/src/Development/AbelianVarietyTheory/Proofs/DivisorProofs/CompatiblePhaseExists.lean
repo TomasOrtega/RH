@@ -21,7 +21,7 @@ def skw (st : S →+ S) (e : S) (h : R) (z : S) : S :=
 def ex (h : R) (x : S) : S := 1 + x + h • (x * x)
 
 /- English proof (translation)
-Use `hm (st 1) 1` as an intermediate fact. Rewrite `this` using `[mul_one, hi, mul_one]`. Conclude with `this.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem st_one' (hm : ∀ x y, st (x * y) = st y * st x) (hi : ∀ x, st (st x) = x) : st 1 = 1 := by
   have := hm (st 1) 1
@@ -29,18 +29,18 @@ theorem st_one' (hm : ∀ x y, st (x * y) = st y * st x) (hi : ∀ x, st (st x) 
   exact this.symm
 
 /- English proof (translation)
-Rewrite using `[← add_smul, hh, one_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem half_add (hh : h + h = 1) (x : S) : h • x + h • x = x := by rw [← add_smul, hh, one_smul]
 
 /- English proof (translation)
-Use `conv_rhs => rw [← half_add hh x, map_add, smul_add, half_add hh]`.
+A detailed English derivation is pending.
 -/
 theorem st_smul (hh : h + h = 1) (x : S) : st (h • x) = h • st x := by
   conv_rhs => rw [← half_add hh x, map_add, smul_add, half_add hh]
 
 /- English proof (translation)
-Establish `: x * y * w = x * ((1 - e) * y * (1 - f)) * w + x * e * (y * w) + x * y * (f * w) - x * e * (y * (f * w))` using `by noncomm_ring`. Rewrite using `[this, hx, hy, hw]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem cube_zero {f x y w : S} (hx : x * e = 0) (hy : (1 - e) * y * (1 - f) = 0) (hw : f * w = 0) : x * y * w = 0 := by
   have : x * y * w = x * ((1 - e) * y * (1 - f)) * w + x * e * (y * w) + x * y * (f * w) - x * e * (y * (f * w)) := by
@@ -48,9 +48,9 @@ theorem cube_zero {f x y w : S} (hx : x * e = 0) (hy : (1 - e) * y * (1 - f) = 0
   rw [this, hx, hy, hw]; simp
 
 /- English proof (translation)
-Establish `h4 : x * x * (x * x) = 0` using `by rw [← mul_assoc, h3, zero_mul]`. Establish `h3' : x * (x * x) = 0` using `by rw [← mul_assoc, h3]`. Simplify using `only [ex, map_add, st_one' hm hi, st_smul hh, hm, hs, add_mul, mul_add, smul_mul_assoc, mul_smul_comm, neg_mul, mul_neg, neg_neg, h3, h3', h4, one_mul, mul_one, smul_zero, add_zero, neg_zero]`. Use `half_add hh (x * x)` as an intermediate fact. Generalize the expression as in `h • (x * x) = y at this ⊢`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable.
 
-Rewrite using `[← this]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem ex_unitary (hm : ∀ x y, st (x * y) = st y * st x) (hi : ∀ x, st (st x) = x) (hh : h + h = 1) {x : S}
     (hs : st x = -x) (h3 : x * x * x = 0) : st (ex h x) * ex h x = 1 := by
@@ -63,9 +63,9 @@ theorem ex_unitary (hm : ∀ x y, st (x * y) = st y * st x) (hi : ∀ x, st (st 
   rw [← this]; abel
 
 /- English proof (translation)
-Establish `he' : st e * st e = st e` using `by rw [← hm, he]`. Establish `e1 : st (e * z * (1 - e - h • st e)) = (1 - st e - h • e) * st z * st e`. Rewrite using `[hm, hm, map_sub, map_sub, st_one' hm hi, st_smul hh, hi, mul_assoc]`. Use `ex_unitary hm hi hh (by rw [skw, map_sub, hi, neg_sub]) (cube_zero (e := e) (f := st e) ?_ ?_ ?_)` and prove the remaining obligations. Rewrite using `[skw, e1, sub_mul, mul_assoc, mul_assoc _ (st e), h0, sub_mul, sub_mul, smul_mul_assoc, h0, he]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Rewrite using `[skw, e1, mul_sub (1 - e), sub_mul, ← mul_assoc, ← mul_assoc, sub_mul 1 e e, he, mul_assoc (1 - e), mul_assoc _ (st e), mul_sub (st e), he']`. Simplify using the standard rewrite rules. Rewrite using `[skw, e1, mul_sub, ← mul_assoc, ← mul_assoc, h0, ← mul_assoc, ← mul_assoc, mul_sub (st e), mul_sub (st e), he', mul_smul_comm, h0]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem skw_spec (hm : ∀ x y, st (x * y) = st y * st x) (hi : ∀ x, st (st x) = x) (hh : h + h = 1) (he : e * e = e)
     (h0 : st e * e = 0) (z : S) : st (ex h (skw st e h z)) * ex h (skw st e h z) = 1 := by
@@ -80,25 +80,25 @@ theorem skw_spec (hm : ∀ x y, st (x * y) = st y * st x) (hi : ∀ x, st (st x)
   · rw [skw, e1, mul_sub, ← mul_assoc, ← mul_assoc, h0, ← mul_assoc, ← mul_assoc, mul_sub (st e), mul_sub (st e), he', mul_smul_comm, h0]; simp
 
 /- English proof (translation)
-Establish `s1` using `st_one' hm hi`. Establish `k1 : g * e = e` using `by rwa [sub_mul, one_mul, sub_eq_zero] at h1`. Establish `k2 : st g * e = e` using `by conv_lhs => rw [← k1, ← mul_assoc, hu, one_mul]`. Establish `k3 : st e * (g - 1) = 0`. Use `congrArg st k2` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[hm, hi]`. Rewrite using `[mul_sub, this, mul_one, sub_self]`. Take `⟨m, rfl⟩ : ∃ m, g = 1 + m` from `⟨g - 1, by abel⟩`. Rewrite `h1`, `h2`, `k3` using `[add_sub_cancel_left]`. Establish `m3 : m * m * m = 0` using `cube_zero h1 h2 k3`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `m3' : m * (m * m) = 0` using `by rw [← mul_assoc, m3]`. Establish `m4 : m * m * (m * m) = 0` using `by rw [← mul_assoc, m3, zero_mul]`. Establish `sm : st m = m * m - m`. Establish `a : (1 + m) * (1 - m + m * m) = 1`. Rewrite using `[show (1 + m) * (1 - m + m * m) = 1 + m * m * m by noncomm_ring, m3, add_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Use `left_inv_eq_right_inv hu a` as an intermediate fact. Rewrite `this` using `[map_add, s1]`. Rewrite using `[← add_right_inj 1, this]`. Normalize the expressions using the abelian group laws. Establish `sx : st (m - h • (m * m)) = -(m - h • (m * m))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact.
 
-Simplify using `only [map_sub, st_smul hh, hm, sm, mul_sub, sub_mul, m3, m3', m4, sub_zero, zero_sub, neg_neg, sub_self]`. Use `half_add hh (m * m)` as an intermediate fact. Generalize the expression as in `h • (m * m) = y at this ⊢`. Rewrite using `[← this]`. Normalize the expressions using the abelian group laws.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Establish `x2 : (1 - e) * (m - h • (m * m)) * (1 - st e) = 0`. Establish `: (1 - e) * (m * m) * (1 - st e) = 0`. Establish `a : (1 - e) * m = (1 - e) * m * st e` using `by rwa [mul_sub, mul_one, sub_eq_zero] at h2`. Rewrite using `[← mul_assoc, a, mul_assoc _ (st e), k3, mul_zero, zero_mul]`. Rewrite using `[mul_sub (1 - e), sub_mul, h2, mul_smul_comm, smul_mul_assoc, this]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Establish `x1 : (m - h • (m * m)) * e = 0` using `by rw [sub_mul, smul_mul_assoc, mul_assoc, h1]; simp`. Establish `x3 : st e * (m - h • (m * m)) = 0` using `by rw [mul_sub, mul_smul_comm, ← mul_assoc, k3]; simp`. Use `⟨m - h • (m * m), ?_⟩` and prove the remaining obligations. Establish `q : skw st e h (m - h • (m * m)) = m - h • (m * m)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Generalize the expression as in `m - h • (m * m) = x at sx x1 x2 x3`. Rewrite using `[skw, hm, hm, map_sub, map_sub, s1, st_smul hh, hi, sx]`. Establish `x1' : e * x * e = 0` using `by rw [mul_assoc, x1, mul_zero]`. Establish `x3' : st e * (x * st e) = 0` using `by rw [← mul_assoc, x3, zero_mul]`. Simplify using `only [mul_sub, sub_mul, one_mul, mul_one, mul_smul_comm, smul_mul_assoc, mul_neg, neg_mul, x1', x3', smul_neg, ← mul_assoc e] at x2 ⊢`.
+Replace the chosen expression with an arbitrary variable. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `half_add hh (e * x * st e)` as an intermediate fact. Generalize the expression as in `h • (e * x * st e) = y at this ⊢`. Rewrite `x2` using `[← this]`. Conclude with `sub_eq_zero.1 (neg_eq_zero.1 (Eq.trans (by abel) x2))`. Rewrite using `[q, ex]`.
+Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [mul_sub, sub_mul, mul_smul_comm, smul_mul_assoc, m3, m3', m4, smul_zero, sub_zero]`. Normalize the expressions using the abelian group laws.
+Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem exists_log (hm : ∀ x y, st (x * y) = st y * st x) (hi : ∀ x, st (st x) = x) (hh : h + h = 1) {g : S}
     (hu : st g * g = 1) (h1 : (g - 1) * e = 0) (h2 : (1 - e) * (g - 1) * (1 - st e) = 0) : ∃ z, ex h (skw st e h z) = g := by
@@ -149,7 +149,7 @@ theorem exists_log (hm : ∀ x y, st (x * y) = st y * st x) (hi : ∀ x, st (st 
   abel
 
 /- English proof (translation)
-Rewrite `h1` using `[map_sub, sub_eq_zero]`. Rewrite `h2` using `[map_sub, map_sub, sub_eq_zero]`. Establish `q : π (skw st e h y) = π (skw st e h a)`. Simplify using `only [skw, map_sub π, hm, map_mul, h1, h2]`. Simplify using `only [ex, Algebra.smul_def, map_add, map_mul, q]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem map_ex_skw {T : Type} [Ring T] (π : S →+* T) {a y : S} (h1 : π (y - a) = 0) (h2 : π (st (y - a)) = 0)
     (hm : ∀ x y, st (x * y) = st y * st x) : π (ex h (skw st e h y)) = π (ex h (skw st e h a)) := by
@@ -160,9 +160,7 @@ theorem map_ex_skw {T : Type} [Ring T] (π : S →+* T) {a y : S} (h1 : π (y - 
   simp only [ex, Algebra.smul_def, map_add, map_mul, q]
 
 /- English proof (translation)
-Establish `q : e * a * (1 - e - h • st e) ∈ S₀`. Rewrite using `[Algebra.smul_def]`. Conclude with `mul_mem (mul_mem he ha) (sub_mem (sub_mem (one_mem _) he) (mul_mem hh (h0 _ he)))`. Establish `q' : skw st e h a ∈ S₀` using `sub_mem q (h0 _ q)`. Rewrite using `[ex, Algebra.smul_def]`.
-
-Conclude with `add_mem (add_mem (one_mem _) q') (mul_mem hh (mul_mem q' q'))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ex_skw_mem (S₀ : Subring S) (h0 : ∀ x ∈ S₀, st x ∈ S₀) (he : e ∈ S₀) (hh : algebraMap R S h ∈ S₀) {a : S} (ha : a ∈ S₀) :
     ex h (skw st e h a) ∈ S₀ := by
@@ -174,7 +172,7 @@ theorem ex_skw_mem (S₀ : Subring S) (h0 : ∀ x ∈ S₀, st x ∈ S₀) (he :
   exact add_mem (add_mem (one_mem _) q') (mul_mem hh (mul_mem q' q'))
 
 /- English proof (translation)
-Simplify using `only [ex, skw, Algebra.smul_def]`. Use `fun_prop`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem continuous_ex_skw [TopologicalSpace S] [IsTopologicalRing S] (hc : Continuous st) :
     Continuous fun z => ex h (skw st e h z) := by
@@ -199,17 +197,15 @@ abbrev sndT (F E : Type) [Field F] [NumberField F] [Field E] [Algebra F E] : AF 
 omit [NumberField E] in
 
 /- English proof (translation)
-Establish `: IsModuleTopology (AF F) (AF F ⊗[F] E)` using `⟨rfl⟩`. Establish `: IsTopologicalAddGroup (AF F ⊗[F] E)` using `IsModuleTopology.topologicalAddGroup (AF F) _`. Set `B : AddSubgroup (AF F ⊗[F] E)` to `(inclR (F := F) (E := E) (AF F)).toAddMonoidHom.range ⊔ (sndT F E).toAddMonoidHom.ker`. Establish `hB : ∀ x, x ∈ B.topologicalClosure` using `fun x => by`. Proceed by induction on `x using TensorProduct.induction_on with`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Proceed by induction.
 
-Consider the case `zero => exact zero_mem _`. Consider the case `add x y hx hy => exact add_mem hx hy`. Consider the case `tmul a x`. Establish `hc : Continuous fun a : AF F => a ⊗ₜ[F] x`. Establish `: (fun a : AF F => a ⊗ₜ[F] x) = fun a : AF F => a • ((1 : AF F) ⊗ₜ[F] x)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `a`. Rewrite using `[TensorProduct.smul_tmul', smul_eq_mul, mul_one]`. Rewrite using `[this]`. Use `fun_prop`. Establish `hd : Dense ((Set.univ : Set (Ainf F)) ×ˢ Set.range (algebraMap F (Af F)))` using `dense_univ.prod GlobalTheory.AdeleCharTwist.denseRange_fin`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `map_mem_closure (s := (Set.univ : Set (Ainf F)) ×ˢ Set.range (algebraMap F (Af F))) hc (hd a) ?_` and prove the remaining obligations. Introduce and unpack `(b : AF F) ⟨-, c, hc⟩`. Use `AddSubgroup.mem_sup.2 ⟨_, ⟨c • x, rfl⟩, (b - algebraMap F (AF F) c) ⊗ₜ[F] x, ?_, ?_⟩` and prove the remaining obligations. Use `show sndA F (b - algebraMap F (AF F) c) ⊗ₜ[F] x = 0`. Rewrite using `[map_sub, AlgHom.commutes, hc]`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(congrArg (· ⊗ₜ[F] x) (sub_self b.2)).trans (TensorProduct.zero_tmul _ _)`. Use `show (1 : AF F) ⊗ₜ[F] (c • x) + _ = _`. Rewrite using `[TensorProduct.sub_tmul, ← TensorProduct.smul_tmul, Algebra.algebraMap_eq_smul_one, add_sub_cancel]`. Use `Dense.mono (s₁ := (B : Set (AF F ⊗[F] E))) (fun x hx => ?_) hB` and prove the remaining obligations. Take `⟨_, ⟨a, rfl⟩, z, hz, rfl⟩` from `AddSubgroup.mem_sup.1 hx`.
-
-Conclude with `⟨a, (congrArg (sndT F E) (add_sub_cancel_left _ _)).trans hz⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem dense_ratFin : Dense {x : AF F ⊗[F] E | ∃ a : E, sndT F E (x - inclR (F := F) (AF F) a) = 0} := by
   have : IsModuleTopology (AF F) (AF F ⊗[F] E) := ⟨rfl⟩
@@ -240,7 +236,7 @@ theorem dense_ratFin : Dense {x : AF F ⊗[F] E | ∃ a : E, sndT F E (x - inclR
 
 omit [NumberField E] in
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a x => rfl`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem sndT_sigR (σ : E →ₐ[F] E) (x : AF F ⊗[F] E) :
     sndT F E (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR (AF F) σ x) = Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR (Af F) σ (sndT F E x) := by
@@ -259,7 +255,7 @@ Both sides reduce to the same expression.
 theorem finHom_val (g : GA D V) : (finHom V g).1 = (sndT D.host.F D.host.E).mapMatrix (Formalism.L2.Theta.mt V g) := rfl
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.AutFunCompare.adj_apply, map_mul, map_mul]`. Use `mul_eq_zero_of_left (mul_eq_zero_of_right _ ?_) _` and prove the remaining obligations. Use extensionality with `i j`. Conclude with `(sndT_sigR _ (b j i)).trans ((congrArg _ (congrFun (congrFun hb j) i)).trans (map_zero _))`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem sndT_adj {b : Matrix (Fin V.rank) (Fin V.rank) (AF D.host.F ⊗[D.host.F] D.host.E)}
     (hb : (sndT D.host.F D.host.E).mapMatrix b = 0) :
@@ -270,7 +266,7 @@ theorem sndT_adj {b : Matrix (Fin V.rank) (Fin V.rank) (AF D.host.F ⊗[D.host.F
   exact (sndT_sigR _ (b j i)).trans ((congrArg _ (congrFun (congrFun hb j) i)).trans (map_zero _))
 
 /- English proof (translation)
-Rewrite using `[← map_add, add_halves, map_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem half_adele : incA D (1 / 2) + incA D (1 / 2) = 1 := by rw [← map_add, add_halves, map_one]
 
@@ -280,7 +276,7 @@ def exA (V : HSp D) (e : Matrix (Fin V.rank) (Fin V.rank) D.host.E)
   ex (incA D (1 / 2)) (skw (GlobalTheory.AutFunCompare.adj D.sp.cm V) (e.map (incA D)) (incA D (1 / 2)) z)
 
 /- English proof (translation)
-Establish `: IsModuleTopology (AF D.host.F) (AF D.host.F ⊗[D.host.F] D.host.E)` using `⟨rfl⟩`. Establish `: IsTopologicalRing (AF D.host.F ⊗[D.host.F] D.host.E)` using `IsModuleTopology.isTopologicalRing (AF D.host.F) _`. Conclude with `continuous_ex_skw ((continuous_const.matrix_mul (continuous_id.matrix_map (GlobalTheory.AdelicUnitaryTop.continuous_sigR (AF D.host.F) D.sp.cm.sig)).matrix_transpose).matrix_mul continuous_const)`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem continuous_exA (e : Matrix (Fin V.rank) (Fin V.rank) D.host.E) : Continuous (exA V e) := by
   have : IsModuleTopology (AF D.host.F) (AF D.host.F ⊗[D.host.F] D.host.E) := ⟨rfl⟩
@@ -289,7 +285,7 @@ theorem continuous_exA (e : Matrix (Fin V.rank) (Fin V.rank) D.host.E) : Continu
       (GlobalTheory.AdelicUnitaryTop.continuous_sigR (AF D.host.F) D.sp.cm.sig)).matrix_transpose).matrix_mul continuous_const)
 
 /- English proof (translation)
-The claim follows from `ex_skw_mem ((incA D).mapMatrix (m := Fin V.rank)).range (by rintro _ ⟨X, rfl⟩; exact ⟨_, (GlobalTheory.AutFunCompare.adj_map D.sp.cm V X).symm⟩) ⟨_, rfl⟩ ⟨Matrix.scalar _ (1 / 2), by ext i j; by_cases h : i = j <;> simp [h, Matrix.algebraMap_matrix_apply]⟩ ⟨_, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem exA_rat (e a : Matrix (Fin V.rank) (Fin V.rank) D.host.E) :
     exA V e (a.map (incA D)) ∈ ((incA D).mapMatrix (m := Fin V.rank)).range :=
@@ -298,9 +294,9 @@ theorem exA_rat (e a : Matrix (Fin V.rank) (Fin V.rank) D.host.E) :
     ⟨Matrix.scalar _ (1 / 2), by ext i j; by_cases h : i = j <;> simp [h, Matrix.algebraMap_matrix_apply]⟩ ⟨_, rfl⟩
 
 /- English proof (translation)
-Establish `h2` using `sndT_adj hb`. Establish `hm` using `GlobalTheory.AutFunCompare.adj_mul D.sp.cm V`. Unfold `exA`. Generalize the expression as in `GlobalTheory.AutFunCompare.adj D.sp.cm V = st at h2 hm ⊢`. Generalize the expression as in `(sndT D.host.F D.host.E).mapMatrix (m := Fin V.rank) = π at hb h2 ⊢`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable.
 
-Conclude with `map_ex_skw π hb h2 hm`.
+A detailed English derivation is pending.
 -/
 theorem sndT_exA (e : Matrix (Fin V.rank) (Fin V.rank) D.host.E)
     {y a : Matrix (Fin V.rank) (Fin V.rank) (AF D.host.F ⊗[D.host.F] D.host.E)}
@@ -314,9 +310,9 @@ theorem sndT_exA (e : Matrix (Fin V.rank) (Fin V.rank) D.host.E)
   exact map_ex_skw π hb h2 hm
 
 /- English proof (translation)
-Use `skw_spec (GlobalTheory.AutFunCompare.adj_mul D.sp.cm V) (GlobalTheory.AutFunCompare.adj_adj D.sp.cm V) half_adele ?_ ?_ z` and prove the remaining obligations. Rewrite using `[← Matrix.map_mul, Matrix.mul_assoc, ← Matrix.mul_assoc L, hL, Matrix.one_mul]`. Use `hC.2.2` as an intermediate fact. Rewrite using `[GlobalTheory.AutFunCompare.adj_map, ← Matrix.map_mul, Formalism.UG.cT_mul]`. Simplify using `only [Matrix.mul_assoc] at this ⊢`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← Matrix.mul_assoc V.gram C, ← Matrix.mul_assoc (Formalism.UG.cT _ C), this]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem exA_unitary {r : ℕ} {C : Matrix (Fin V.rank) (Fin r) D.host.E} (hC : IsIsoFrame V C)
     {L : Matrix (Fin r) (Fin V.rank) D.host.E} (hL : L * C = 1) (z) :
@@ -330,13 +326,11 @@ theorem exA_unitary {r : ℕ} {C : Matrix (Fin V.rank) (Fin r) D.host.E} (hC : I
     simp
 
 /- English proof (translation)
-Establish `cc : Continuous c` using `GlobalTheory.MixModel.continuous_of_mt V (by simp only [hc]; exact continuous_exA e)`. Establish `hd : Dense (Set.pi Set.univ fun _ : Fin V.rank => Set.pi Set.univ fun _ : Fin V.rank => {x : AF D.host.F ⊗[D.host.F] D.host.E | ∃ a : D.host.E, sndT _ _ (x - incA D a) = 0})` using `dense_pi _ fun _ _ => dense_pi _ fun _ _ => dense_ratFin`. Use `hK.closure_subset (map_mem_closure cc (hd z) fun y hy => ?_)` and prove the remaining obligations. Use `choose a ha using fun i j => hy i trivial j trivial`. Establish `h1 : c ((Matrix.of a).map (incA D)) ∈ GQ V`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `(GlobalTheory.MixModel.mem_GQ_iff V _).2 ?_` and prove the remaining obligations. Rewrite using `[hc]`. Conclude with `exA_rat e _`. Establish `h2 : finHom V (c y) = finHom V (c ((Matrix.of a).map (incA D)))`. Use `Units.ext ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable.
 
-Rewrite using `[finHom_val, finHom_val, hc, hc]`. Conclude with `sndT_exA e (by ext i j; exact ha i j)`. Generalize the expression as in `c ((Matrix.of a).map (incA D)) = γ at h1 h2`. Establish `h3 : γ⁻¹ * c y ∈ GinfC V` using `by show finHom V _ = 1`. Rewrite using `[map_mul, map_inv, h2, inv_mul_cancel]`.
-
-Use `K.mul_mem (hQ h1) (hR h3)` as an intermediate fact. Rewrite `this` using `[mul_inv_cancel_left]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem mem_of_param (K : Subgroup (GA D V)) (hK : IsClosed (K : Set (GA D V))) (hQ : GQ V ≤ K) (hR : GinfC V ≤ K)
     (e : Matrix (Fin V.rank) (Fin V.rank) D.host.E)
@@ -364,7 +358,7 @@ theorem mem_of_param (K : Subgroup (GA D V)) (hK : IsClosed (K : Set (GA D V))) 
   rwa [mul_inv_cancel_left] at this
 
 /- English proof (translation)
-Generalize the expression as in `exA V e = f at hu`. Conclude with `⟨fun z => ⟨⟨_, _, mul_eq_one_comm.1 (hu z), hu z⟩, (GlobalTheory.AutFunCompare.adj_mul_self_iff D.sp.cm V _).1 (hu z)⟩, fun _ => rfl⟩`.
+Replace the chosen expression with an arbitrary variable. Supply the required witnesses or components.
 -/
 theorem exists_param {e : Matrix (Fin V.rank) (Fin V.rank) D.host.E}
     (hu : ∀ z, GlobalTheory.AutFunCompare.adj D.sp.cm V (exA V e z) * exA V e z = 1) :
@@ -375,7 +369,7 @@ theorem exists_param {e : Matrix (Fin V.rank) (Fin V.rank) D.host.E}
     fun _ => rfl⟩
 
 /- English proof (translation)
-Unfold `exA`. Conclude with `exists_log (GlobalTheory.AutFunCompare.adj_mul D.sp.cm V) (GlobalTheory.AutFunCompare.adj_adj D.sp.cm V) half_adele hu h1 h2`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem exists_logA {e : Matrix (Fin V.rank) (Fin V.rank) D.host.E}
     {g : Matrix (Fin V.rank) (Fin V.rank) (AF D.host.F ⊗[D.host.F] D.host.E)} (hu : GlobalTheory.AutFunCompare.adj D.sp.cm V g * g = 1)
@@ -386,11 +380,11 @@ theorem exists_logA {e : Matrix (Fin V.rank) (Fin V.rank) D.host.E}
   exact exists_log (GlobalTheory.AutFunCompare.adj_mul D.sp.cm V) (GlobalTheory.AutFunCompare.adj_adj D.sp.cm V) half_adele hu h1 h2
 
 /- English proof (translation)
-Introduce `n hn`. Take `⟨L, hL, -⟩` from `GlobalTheory.AutFunCompare.exists_dual D.sp.cm V C hC.2.1 hC.2.2`. Rewrite `hn` using `[GlobalTheory.AutFunCompare.NI_eq]`. Establish `hn'` using `(GlobalTheory.AutFunCompare.mem_unipRad_idem D.sp.cm V C L hL n).1 hn`. Establish `h'` using `exists_param (exA_unitary hC hL)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨c, hc⟩` from `h'`. Establish `h` using `exists_logA ((GlobalTheory.AutFunCompare.adj_mul_self_iff D.sp.cm V _).2 n.2) hn'.1 hn'.2`. Take `⟨z, hz⟩` from `h`. Establish `hzn : c z = n` using `GlobalTheory.MixModel.mt_injective V ((hc z).trans hz)`. Rewrite using `[← hzn]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mem_of_param K hK hQ hR _ c hc z`.
+A detailed English derivation is pending.
 -/
 theorem NI_le (K : Subgroup (GA D V)) (hK : IsClosed (K : Set (GA D V))) (hQ : GQ V ≤ K) (hR : GinfC V ≤ K) {r : ℕ}
     {C : Matrix (Fin V.rank) (Fin r) D.host.E} (hC : IsIsoFrame V C) : NI V C ≤ K := by
@@ -416,9 +410,7 @@ structure CompFun (V : HSp D) (u : GA D V → ℂ) : Prop where
   lev : ∃ U : Subgroup (GA D V), IsOpen (U : Set (GA D V)) ∧ ∀ k ∈ U, ∀ g, u (g * k) = u g
 
 /- English proof (translation)
-Use `haveI : IsTopologicalGroup (GA D V) := Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.topGroupHA _ _`. Take `⟨U, hU, e⟩` from `hu.lev`. Use `continuous_iff_continuousAt.2 fun g => (continuousAt_const (y := u g)).congr ?_` and prove the remaining obligations. Establish `: ∀ᶠ x in nhds g, g⁻¹ * x ∈ (U : Set (GA D V))` using `(continuous_const.mul continuous_id).continuousAt.preimage_mem_nhds (hU.mem_nhds (by simp))`. Use `filter_upwards [this] with x hx`.
-
-Rewrite using `[← e _ hx g, mul_inv_cancel_left]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem CompFun.cont (hu : CompFun V u) : Continuous u := by
   haveI : IsTopologicalGroup (GA D V) := Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.topGroupHA _ _
@@ -430,9 +422,9 @@ theorem CompFun.cont (hu : CompFun V u) : Continuous u := by
   rw [← e _ hx g, mul_inv_cancel_left]
 
 /- English proof (translation)
-Use `haveI : IsTopologicalGroup (GA D V) := Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.topGroupHA _ _`. Set `K : Subgroup (GA D V)` to `{ carrier := {n | ∀ g, u (n * g) = u g} one_mem' := fun g => by rw [one_mul] mul_mem' := fun ha hb g => by rw [mul_assoc, ha, hb] inv_mem' := fun {a} ha g => by rw [← ha, mul_inv_cancel_left] }`. Use `NI_le K ?_ hu.left (fun k hk g => ?_) hC hn g` and prove the remaining obligations. Establish `: (K : Set (GA D V)) = ⋂ g, {n | u (n * g) = u g}` using `Set.ext fun n => ⟨fun h => Set.mem_iInter.2 h, fun h => Set.mem_iInter.1 h⟩`. Rewrite using `[this]`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `isClosed_iInter fun g => isClosed_eq (hu.cont.comp (continuous_mul_const g)) continuous_const`. Rewrite using `[← hu.real _ ((MonoidHom.normal_ker (finHom V)).conj_mem' k hk g) g]`. Use `congr 1`. Use `group`.
+Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem CompFun.unip (hu : CompFun V u) {r : ℕ} {C : Matrix (Fin V.rank) (Fin r) D.host.E} (hC : IsIsoFrame V C)
     {n : GA D V} (hn : n ∈ NI V C) (g : GA D V) : u (n * g) = u g := by
@@ -450,7 +442,7 @@ theorem CompFun.unip (hu : CompFun V u) {r : ℕ} {C : Matrix (Fin V.rank) (Fin 
     congr 1; group
 
 /- English proof (translation)
-Unfold `atTau`. Use `split_ifs with h`. Use `exacts [h.choose_spec.1, one_mem _]`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem atTau_mem_real (τ : D.what₂.Tau) (g : Matrix (Fin V.rank) (Fin V.rank) ℂ) : atTau θ V τ g ∈ GinfC V := by
   unfold atTau
@@ -458,7 +450,7 @@ theorem atTau_mem_real (τ : D.what₂.Tau) (g : Matrix (Fin V.rank) (Fin V.rank
   exacts [h.choose_spec.1, one_mem _]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `g`. Simplify using `only [Rder, Pi.mul_apply, oneP, hu.real _ (atTau_mem_real τ _), deriv_const_mul_field]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem CompFun.rder (hu : CompFun V u) (τ : D.what₂.Tau) (X : Matrix (Fin V.rank) (Fin V.rank) ℂ) (φ : GA D V → ℂ) :
     Rder θ V τ X (u * φ) = u * Rder θ V τ X φ := by
@@ -466,7 +458,7 @@ theorem CompFun.rder (hu : CompFun V u) (τ : D.what₂.Tau) (X : Matrix (Fin V.
   simp only [Rder, Pi.mul_apply, oneP, hu.real _ (atTau_mem_real τ _), deriv_const_mul_field]
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => rfl`. Consider the case `cons a l ih => rw [List.foldr_cons, List.foldr_cons, ih, hF]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem foldr_mul {α : Type} (F : α → (GA D V → ℂ) → (GA D V → ℂ)) (hF : ∀ a φ, F a (u * φ) = u * F a φ) (l : List α)
     (φ : GA D V → ℂ) : l.foldr F (u * φ) = u * l.foldr F φ := by
@@ -475,9 +467,9 @@ theorem foldr_mul {α : Type} (F : α → (GA D V → ℂ) → (GA D V → ℂ))
   | cons a l ih => rw [List.foldr_cons, List.foldr_cons, ih, hF]
 
 /- English proof (translation)
-Establish `h : ∀ (l : List (Matrix (Fin V.rank) (Fin V.rank) ℂ)), (l.map (RderC θ V τ)).foldr (fun f acc => f acc) (u * φ) = u * (l.map (RderC θ V τ)).foldr (fun f acc => f acc) φ`. Introduce `l`. Rewrite using `[List.foldr_map, List.foldr_map]`. Use `foldr_mul (fun Z acc => RderC θ V τ Z acc) (fun Z ψ => ?_) l φ` and prove the remaining obligations. Simplify using `only [RderC, hu.rder, mul_add, mul_smul_comm]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [Formalism.L2.Theta.gelf, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun idx _ => ?_` and prove the remaining obligations. Use `h (List.ofFn fun a : Fin (k + 1) => Matrix.single (idx a) (idx (a + 1)) 1)` as an intermediate fact. Rewrite `this` using `[List.map_ofFn]`. Conclude with `this`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem CompFun.gelf (hu : CompFun V u) (τ : D.what₂.Tau) (k : ℕ) (φ : GA D V → ℂ) :
     gelf θ V τ k (u * φ) = u * gelf θ V τ k φ := by
@@ -494,15 +486,13 @@ theorem CompFun.gelf (hu : CompFun V u) (τ : D.what₂.Tau) (k : ℕ) (φ : GA 
   exact this
 
 /- English proof (translation)
-Use `⟨⟨fun γ hγ g => ?_, ?_, hu.cont.mul h.cont⟩, fun k τs Xs hX g => ?_, ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [Pi.mul_apply, h.left γ hγ, hu.left γ hγ]`. Take `⟨U, hU, e⟩` from `h.level`. Take `⟨U', hU', e'⟩` from `hu.lev`. Use `⟨U ⊓ U', hU.inter hU', fun k hk hf g => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Pi.mul_apply, e k hk.1 hf, e' k hk.2]`. Establish `hc : ∀ t : Fin k → ℝ, u (g * (List.ofFn fun i => oneP θ V (τs i) (Xs i) (t i)).prod) = u g` using `fun t => hu.real _ (Subgroup.list_prod_mem _ fun x hx => by`. Take `⟨i, rfl⟩` from `List.mem_ofFn.1 hx`. Conclude with `atTau_mem_real _ _) g`. Simplify using `only [Pi.mul_apply, hc]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Conclude with `contDiff_const.mul (h.smooth k τs Xs hX g)`. Take `⟨W, hW, m, s⟩` from `h.zfin`. Use `⟨W.map (LinearMap.mulLeft ℂ u), inferInstance, ⟨φ, m, rfl⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `τ k _ ⟨f, hf, rfl⟩`. Conclude with `⟨_, s τ k f hf, (hu.gelf τ k f).symm⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨N, hN⟩` from `h.growth`. Use `⟨N, fun l hl x => ?_⟩` and prove the remaining obligations. Take `⟨C, hC⟩` from `hN l hl x`. Use `⟨‖u x‖ * C, fun g hg => ?_⟩` and prove the remaining obligations. Establish `e` using `foldr_mul (u := u) (fun (p : D.what₂.Tau × Matrix (Fin V.rank) (Fin V.rank) ℂ) f => Rder θ V p.1 p.2 f) (fun p f => hu.rder p.1 p.2 f) l φ`.
-
-Rewrite using `[e, Pi.mul_apply, hu.real g hg, norm_mul, mul_assoc]`. Conclude with `mul_le_mul_of_nonneg_left (hC g hg) (norm_nonneg _)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem CompFun.aut (hu : CompFun V u) {φ : GA D V → ℂ} (h : IsAutFunSm θ V φ) : IsAutFunSm θ V (u * φ) := by
   refine ⟨⟨fun γ hγ g => ?_, ?_, hu.cont.mul h.cont⟩, fun k τs Xs hX g => ?_, ?_, ?_⟩
@@ -531,7 +521,7 @@ theorem CompFun.aut (hu : CompFun V u) {φ : GA D V → ℂ} (h : IsAutFunSm θ 
     exact mul_le_mul_of_nonneg_left (hC g hg) (norm_nonneg _)
 
 /- English proof (translation)
-Introduce `r C hC μ 𝓕 hμ h𝓕 g`. Establish `: (fun n : NI V C => (u * φ) ((n : GA D V) * g)) = fun n : NI V C => u g * φ ((n : GA D V) * g)`. Use function extensionality and compare the values at `fun n => congrArg (· * φ ((n : GA D V) * g)) (hu.unip hC n.2 g)`. Rewrite using `[this, integral_const_mul, h r C hC μ 𝓕 hμ h𝓕 g, mul_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 -/
 theorem CompFun.cusp (hu : CompFun V u) {φ : GA D V → ℂ} (h : IsCuspFun V φ) : IsCuspFun V (u * φ) := by
   intro r C hC μ 𝓕 hμ h𝓕 g
@@ -542,9 +532,9 @@ theorem CompFun.cusp (hu : CompFun V u) {φ : GA D V → ℂ} (h : IsCuspFun V �
 variable {S : D.what₂.Tau → SPar} {M : DSModel V S} {J : Set (GA D V)} {χ : GA D V → ℂ}
 
 /- English proof (translation)
-Use `⟨fun v => hu.aut (h.aut v), fun v => hu.cusp (h.cusp v), fun v k hk g => ?_, fun τ g hg v w hw => ?_, fun τ v x => ?_⟩` and prove the remaining obligations. Use `show u (g * k) * T v (g * k) = χ k * (u g * T v g)`. Rewrite using `[hJ k hk, h.lev v k hk, mul_left_comm]`. Use function extensionality and compare the values at `x show u x * T _ x = u (x * atTau θ V τ g) * T v (x * atTau θ V τ g)`. Rewrite using `[h.equiv τ g hg v w hw, hu.real _ (atTau_mem_real τ g)]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Take `⟨ℓ, s, e⟩` from `h.cont τ v x`. Conclude with `⟨u x • ℓ, GlobalTheory.MultMem.sobCont_smul _ s, fun w => by rw [LinearMap.smul_apply, e]; rfl⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem CompFun.multMap (hu : CompFun V u) (hJ : ∀ k ∈ J, ∀ g, u (g * k) = u g) {T : MMap M} (h : IsMultMap θ M J χ T) :
     IsMultMap θ M J χ (postOn M (LinearMap.mulLeft ℂ u) T) := by
@@ -559,11 +549,11 @@ theorem CompFun.multMap (hu : CompFun V u) (hJ : ∀ k ∈ J, ∀ g, u (g * k) =
     exact ⟨u x • ℓ, GlobalTheory.MultMem.sobCont_smul _ s, fun w => by rw [LinearMap.smul_apply, e]; rfl⟩
 
 /- English proof (translation)
-Establish `e : ∀ v v' g, star (postOn M (LinearMap.mulLeft ℂ u) T v g) * postOn M (LinearMap.mulLeft ℂ u) T' v' g = star (T v g) * T' v' g` using `fun v v' g => by show star (u g * T v g) * (u g * T' v' g) = _`. Establish `: star (u g) * u g = 1`. Rewrite using `[Complex.star_def, Complex.conj_mul', hn]`. Simplify using the standard rewrite rules. Rewrite using `[star_mul']`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Take the linear combination `(star (T v g) * T' v' g) * this`. Establish `: IsMultIP M μ 𝓕 (postOn M (LinearMap.mulLeft ℂ u) T) (postOn M (LinearMap.mulLeft ℂ u) T') = IsMultIP M μ 𝓕 T T'`. Use function extensionality and compare the values at `c`. Simplify using `only [IsMultIP, e]`. Unfold `ipM`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions.
 
-Rewrite using `[this]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem ipM_phase (hn : ∀ h, ‖u h‖ = 1) (μ : Measure (GA D V)) (𝓕 : Set (GA D V)) (T T' : MMap M) :
     ipM M μ 𝓕 (postOn M (LinearMap.mulLeft ℂ u) T) (postOn M (LinearMap.mulLeft ℂ u) T') = ipM M μ 𝓕 T T' := by
@@ -583,7 +573,7 @@ theorem ipM_phase (hn : ∀ h, ‖u h‖ = 1) (μ : Measure (GA D V)) (𝓕 : Se
 end Phase
 
 /- English proof (translation)
-Take `⟨h1, rfl, h3⟩` from `hH`. Set `f : H.H →ₗ[ℂ] H.H` to `(LinearEquiv.ofInjective H.e h1).symm.toLinearMap ∘ₗ (L ∘ₗ H.e).codRestrict (LinearMap.range H.e) fun y => hL _ ⟨y, rfl⟩`. Establish `hf : ∀ y, H.e (f y) = L (H.e y)` using `fun y => congrArg Subtype.val ((LinearEquiv.ofInjective H.e h1).apply_symm_apply ⟨L (H.e y), hL _ ⟨y, rfl⟩⟩)`. Conclude with `⟨(f.isometryOfInner fun x y => by rw [h3, h3, hf, hf, hip]).toLinearIsometryEquiv rfl, hf⟩`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem exists_unitary {X : Type} [AddCommGroup X] [Module ℂ X] (H : HMod X) {U : Submodule ℂ X} {ip : X → X → ℂ}
     (hH : H.Is U ip) (L : X →ₗ[ℂ] X) (hL : ∀ x ∈ U, L x ∈ U) (hip : ∀ x y, ip (L x) (L y) = ip x y) :
@@ -596,9 +586,9 @@ theorem exists_unitary {X : Type} [AddCommGroup X] [Module ℂ X] (H : HMod X) {
   exact ⟨(f.isometryOfInner fun x y => by rw [h3, h3, hf, hf, hip]).toLinearIsometryEquiv rfl, hf⟩
 
 /- English proof (translation)
-Use `⟨h1, h2, _, GlobalTheory.ParahoricCompact.isOpen_comap_lev V β L, fun k hk g => ?_⟩` and prove the remaining obligations. Take `⟨a, ha, b, hb, rfl⟩` from `(GlobalTheory.UnitarySplit.real_finite_split D V).1 k`. Establish `e : Lev.finE V (a * b) = Lev.finE V b`. Establish `: finHom V a = 1` using `ha`. Rewrite using `[map_mul, Lev.finE, MonoidHom.comp_apply, this, map_one, one_mul]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← mul_assoc, h3 b ⟨hb, (e ▸ hk : Lev.finE V b ∈ lev D.sp.cm V.gram β L)⟩, h2 a ha]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem compFun_of_level (β : GL (Fin V.rank) (Lev.EAf D)) (L : LevDat D.host.E ℂ V.rank) {u : GA D V → ℂ}
     (h1 : ∀ γ ∈ GQ V, ∀ h, u (γ * h) = u h) (h2 : ∀ g ∈ GinfC V, ∀ h, u (h * g) = u h)

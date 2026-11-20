@@ -15,11 +15,11 @@ set_option autoImplicit false in
 open CategoryTheory TensorProduct Coalgebra Bialgebra in
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Use extensionality with `b`. Take `⟨a, rfl⟩` from `hf b`. Establish `hcomm : ∀ y : A ⊗[k] A, TensorProduct.comm k B B (TensorProduct.map (f : A →ₗ[k] B) (f : A →ₗ[k] B) y) = TensorProduct.map (f : A →ₗ[k] B) (f : A →ₗ[k] B) (TensorProduct.comm k A A y)`. Introduce `y`.
+Prove the components needed by the constructor for the conclusion. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul x y => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Establish `hA : TensorProduct.comm k A A (comul a) = comul a` using `LinearMap.congr_fun (Coalgebra.comm_comp_comul (R := k) (A := A)) a`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Simplify using `only [LinearMap.coe_comp, LinearEquiv.coe_coe, Function.comp_apply]`. Rewrite using `[← CoalgHomClass.map_comp_comul_apply, hcomm, hA]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem _root_.GlobalTheory.PDivGroup.KerGrp.isCocomm_of_surjective {k A B : Type} [CommRing k] [CommRing A] [CommRing B]
     [Bialgebra k A] [Bialgebra k B] [IsCocomm k A] (f : A →ₐc[k] B)
@@ -44,9 +44,9 @@ set_option autoImplicit false in
 open CategoryTheory TensorProduct Coalgebra Bialgebra in
 
 /- English proof (translation)
-Establish `hc` using `congrArg (fun g : H.A (n + 1) →ₐc[k] G.A n => ((g : H.A (n + 1) →ₐ[k] G.A n) : H.A (n + 1) →+* G.A n)) (_root_.GlobalTheory.PDivGroup.Hom.comm u n)`. Establish `hres : Ideal.map (H.res n : H.A (n + 1) →ₐ[k] H.A n) (_root_.GlobalTheory.PDiv.augIdeal k (H.A (n + 1))) = _root_.GlobalTheory.PDiv.augIdeal k (H.A n)` using `_root_.GlobalTheory.PDiv.kerIdeal_of_surjective (H.10 n)`. Unfold `_root_.GlobalTheory.PDiv.kerIdeal`. Express the relevant statement in the definitionally equal form `Ideal.map ((G.res n : G.A (n + 1) →ₐ[k] G.A n) : G.A (n + 1) →+* G.A n) (Ideal.map ((u.app (n + 1) : H.A (n + 1) →ₐ[k] G.A (n + 1)) : H.A (n + 1) →+* G.A (n + 1)) (_root_.GlobalTheory.PDiv.augIdeal k (H.A (n + 1)))) = Ideal.map ((u.app n : H.A n →ₐ[k] G.A n) : H.A n →+* G.A n) (_ …`. Rewrite using `[Ideal.map_map]`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[show ((G.res n : G.A (n + 1) →ₐ[k] G.A n) : G.A (n + 1) →+* G.A n).comp ((u.app (n + 1) : H.A (n + 1) →ₐ[k] G.A (n + 1)) : H.A (n + 1) →+* G.A (n + 1)) = ((u.app n : H.A n →ₐ[k] G.A n) : H.A n →+* G.A n).comp ((H.res n : H.A (n + 1) →ₐ[k] H.A n) : H.A (n + 1) →+* H.A n) from hc, …`. Rewrite using `[← hres]`. Both sides reduce to the same expression.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem _root_.GlobalTheory.PDivGroup.KerGrp.map_res_kerIdeal {p : ℕ} {k : Type} [CommRing k] {G H : _root_.GlobalTheory.PDivGroup p k} (u : G ⟶ H)
     (n : ℕ) : Ideal.map (G.res n : G.A (n + 1) →ₐ[k] G.A n) (_root_.GlobalTheory.PDiv.kerIdeal (u.app (n + 1))) =
@@ -82,19 +82,17 @@ theorem _root_.GlobalTheory.PDivGroup.KerGrp.map_res_kerIdeal {p : ℕ} {k : Typ
   rfl
 
 /- English proof (translation)
-Use `haveI : ∀ n, IsCocomm k (B n) := fun n => isCocomm_of_surjective (π n) (hπ n)`. Establish `hle : ∀ n, RingHom.ker (π (n + 1)) ≤ RingHom.ker ((π n).comp (G.res n))` using `fun n a ha => by`. Establish `: G.res n a ∈ RingHom.ker (π n)`. Rewrite using `[hk, ← map_res_kerIdeal]`. Rewrite `ha` using `[hk]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression.
 
-Conclude with `Ideal.mem_map_of_mem (G.res n : G.A (n + 1) →ₐ[k] G.A n) ha`. Conclude with `this`. Set `r` to `fun n => liftSurj (π (n + 1)) (hπ (n + 1)) ((π n).comp (G.res n)) (hle n)`. Establish `hr : ∀ n a, r n (π (n + 1) a) = π n (G.res n a)` using `fun n a => liftSurj_apply ..`. Set `K : PDivGroup p k` to `{ height := h₀ A := B finite := fun n => Module.Finite.of_surjective (π n : G.A n →ₗ[k] B n) (hπ n) rank_eq := fun n q => by rw [Module.rankAtStalk_eq_finrank_of_free, h]; rfl res := r res_surjective := fun n b => by`.
+Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨c, rfl⟩` from `hπ n b`. Take `⟨a, rfl⟩` from `G.res_surjective n c`. Conclude with `⟨_, hr n a⟩`. Use `ker_res := fun n => by`. Rewrite using `[← map_torsionIdeal (hπ (n + 1)), ← G.ker_res]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `le_antisymm (fun b hb => ?_) (Ideal.map_le_iff_le_comap.2 fun a ha => ?_)` and prove the remaining obligations. Take `⟨a, rfl⟩` from `hπ _ b`. Establish `h1 : G.res n a ∈ RingHom.ker (π n)` using `(hr n a).symm.trans hb`. Rewrite `h1` using `[hk, ← map_res_kerIdeal]`. Take `⟨c, hc, e⟩` from `(Ideal.mem_map_iff_of_surjective (G.res n : G.A (n + 1) →ₐ[k] G.A n) (G.res_surjective n)).1 h1`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hc` using `[← hk]`. Establish `hc' : π (n + 1) c = 0` using `hc`. Establish `e' : G.res n c = G.res n a` using `e`. Establish `h2 : a - c ∈ RingHom.ker (G.res n)`. Rewrite using `[RingHom.mem_ker, map_sub, e', sub_self]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `h3 : π (n + 1) a = π (n + 1) (a - c)` using `by rw [map_sub, hc', sub_zero]`. Rewrite using `[h3]`. Conclude with `Ideal.mem_map_of_mem (π (n + 1) : G.A (n + 1) →ₐ[k] B (n + 1)) h2`. Establish `ha' : G.res n a = 0` using `ha`. Express the relevant statement in the definitionally equal form `r n (π (n + 1) a) = 0`.
-
-Rewrite using `[hr, ha', map_zero] }`. Conclude with `⟨K, ⟨π, fun n => BialgHom.ext fun a => hr n a⟩, fun n => ⟨hπ n, hk n⟩⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_of_family {p : ℕ} {k : Type} [Field k] (G : PDivGroup p k)
     (u : G ⟶ G) (h₀ : ℕ) (B : ℕ → Type) [∀ n, CommRing (B n)] [∀ n, HopfAlgebra k (B n)]
@@ -147,31 +145,29 @@ set_option autoImplicit false in
 open CategoryTheory TensorProduct Coalgebra Bialgebra in
 
 /- English proof (translation)
-Take `⟨I, hIdef⟩ : ∃ I : ∀ n, Ideal (G.A n), ∀ n, I n = _root_.GlobalTheory.PDiv.kerIdeal (u.app n)` from `⟨_, fun n => rfl⟩`. Use `haveI hH : ∀ n, (I n).IsHopfIdeal k := fun n => by`. Rewrite using `[hIdef]`. Conclude with `_root_.GlobalTheory.PDiv.isHopfIdeal_kerIdeal_of_bialgHom k _ _ (u.app n)`. Establish `hq : ∀ n, Function.Surjective (Bialgebra.Quotient.mkBialgHom (R` using `k) (I n)) := by`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `n x`. Take `⟨a, rfl⟩` from `Ideal.Quotient.mk_surjective x`. Conclude with `⟨a, by simp⟩`. Use `haveI hcoc : ∀ n, IsCocomm k (G.A n ⧸ I n) := fun n => _root_.GlobalTheory.PDivGroup.KerGrp.isCocomm_of_surjective _ (hq n)`. Establish `hmapI : ∀ n, Ideal.map (G.res n : G.A (n + 1) →ₐ[k] G.A n) (I (n + 1)) = I n`.
+Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `n`. Rewrite using `[hIdef, hIdef]`. Conclude with `_root_.GlobalTheory.PDivGroup.KerGrp.map_res_kerIdeal u n`. Establish `hle : ∀ n, I (n + 1) ≤ (I n).comap (G.res n : G.A (n + 1) →ₐ[k] G.A n)` using `fun n => Ideal.map_le_iff_le_comap.1 (hmapI n).le`. Set `φ : ∀ n, (G.A (n + 1) ⧸ I (n + 1)) →ₐ[k] (G.A n ⧸ I n)` to `fun n => Ideal.quotientMapₐ (I n) (G.res n : G.A (n + 1) →ₐ[k] G.A n) (hle n)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hφ : ∀ n a, φ n (Ideal.Quotient.mk (I (n + 1)) a) = Ideal.Quotient.mk (I n) (G.res n a)` using `fun n a => rfl`. Establish `hcounit : ∀ n, (Bialgebra.counitAlgHom k _).comp (φ n) = Bialgebra.counitAlgHom k (G.A (n + 1) ⧸ I (n + 1))`. Introduce `n`. Use `AlgHom.ext fun x => ?_` and prove the remaining obligations. Take `⟨a, rfl⟩` from `Ideal.Quotient.mk_surjective x`.
+Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Express the relevant statement in the definitionally equal form `CoalgebraStruct.counit (R := k) (Ideal.Quotient.mk (I n) (G.res n a)) = CoalgebraStruct.counit (R := k) (Ideal.Quotient.mk (I (n + 1)) a)`. Rewrite using `[← Bialgebra.Quotient.mkBialgHom_apply (R := k), ← Bialgebra.Quotient.mkBialgHom_apply (R := k), CoalgHomClass.counit_comp_apply, CoalgHomClass.counit_comp_apply, CoalgHomClass.counit_comp_apply]`. Establish `hcomul : ∀ n, (Algebra.TensorProduct.map (φ n) (φ n)).comp (Bialgebra.comulAlgHom k _) = (Bialgebra.comulAlgHom k _).comp (φ n)`. Introduce `n`. Use `AlgHom.ext fun x => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable.
 
-Take `⟨a, rfl⟩` from `Ideal.Quotient.mk_surjective x`. Express the relevant statement in the definitionally equal form `Algebra.TensorProduct.map (φ n) (φ n) (CoalgebraStruct.comul (R := k) (Ideal.Quotient.mk (I (n + 1)) a)) = CoalgebraStruct.comul (R := k) (Ideal.Quotient.mk (I n) (G.res n a))`. Rewrite using `[← Bialgebra.Quotient.mkBialgHom_apply (R := k) (I (n + 1)), ← Bialgebra.Quotient.mkBialgHom_apply (R := k) (I n), ← CoalgHomClass.map_comp_comul_apply (Bialgebra.Quotient.mkBialgHom (R := k) (I (n + 1))), ← CoalgHomClass.map_comp_comul_apply (Bialgebra.Quotient.mkBialgHom (R := …`. Generalize the expression as in `CoalgebraStruct.comul (R := k) a = y`. Proceed by induction on `y using TensorProduct.induction_on with`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Introduce a local definition for the expression.
 
-Consider the case `zero => simp`. Consider the case `tmul x y => simp [hφ]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Set `r : ∀ n, (G.A (n + 1) ⧸ I (n + 1)) →ₐc[k] (G.A n ⧸ I n)` to `fun n => BialgHom.ofAlgHom (φ n) (hcounit n) (hcomul n)`. Establish `hr : ∀ n a, r n (Ideal.Quotient.mk (I (n + 1)) a) = Ideal.Quotient.mk (I n) (G.res n a)` using `fun n a => rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hrs : ∀ n, Function.Surjective (r n)`. Introduce `n x`. Take `⟨a, rfl⟩` from `Ideal.Quotient.mk_surjective x`. Take `⟨b, rfl⟩` from `G.10 n a`. Conclude with `⟨Ideal.Quotient.mk _ b, hr n b⟩`.
+Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result.
 
-Establish `hker : ∀ n, RingHom.ker (r n) = _root_.GlobalTheory.PDiv.torsionIdeal k (G.A (n + 1) ⧸ I (n + 1)) (p ^ n)`. Introduce `n`. Use extensionality with `x`. Take `⟨a, rfl⟩` from `Ideal.Quotient.mk_surjective x`. Rewrite using `[RingHom.mem_ker, hr, Ideal.Quotient.eq_zero_iff_mem, ← _root_.GlobalTheory.PDiv.map_torsionIdeal (hq (n + 1))]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `_ ↔ Ideal.Quotient.mk (I (n + 1)) a ∈ Ideal.map (Ideal.Quotient.mk (I (n + 1))) _`. Rewrite using `[Ideal.mem_quotient_iff_mem_sup, ← G.ker_res n]`. Express the relevant statement in the definitionally equal form `a ∈ Ideal.comap (G.res n : G.A (n + 1) →ₐ[k] G.A n) (I n) ↔ _`. Rewrite using `[← hmapI n, Ideal.comap_map_of_surjective (G.res n : G.A (n + 1) →ₐ[k] G.A n) (G.10 n), ← RingHom.ker_eq_comap_bot, sup_comm]`. Apply the tactic sequence `all_goals rfl`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Establish `hkq : ∀ n, RingHom.ker (Bialgebra.Quotient.mkBialgHom (R` using `k) (I n)) = _root_.GlobalTheory.PDiv.kerIdeal (u.app n) := by`. Introduce `n`. Rewrite using `[← hIdef]`. Use extensionality with `x`. Simplify using `[RingHom.mem_ker, Ideal.Quotient.eq_zero_iff_mem]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Use `⟨_root_.GlobalTheory.PDivGroup.mk h₀ (fun n => G.A n ⧸ I n) (commRing := fun n => inferInstance) (hopf := fun n => inferInstance) (cocomm := hcoc) (finite := fun n => Module.Finite.of_surjective (Ideal.Quotient.mkₐ k (I n)).toLinearMap Ideal.Quotient.mk_surjective) (projective := …` and prove the remaining obligations. Rewrite using `[Module.rankAtStalk_eq_finrank_of_free]`. Establish `hn` using `h n`. Rewrite `hn` using `[← hIdef]`. Simplify using `using hn`.
-
-Conclude with `DFunLike.ext _ _ fun a => rfl`. Conclude with `hkq n`.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.PDivGroup.KerGrp.exists_kernel (p : ℕ) [Fact p.Prime] (k : Type) [Field k] (G : _root_.GlobalTheory.PDivGroup p k)
     (u : G ⟶ G) (h₀ : ℕ)

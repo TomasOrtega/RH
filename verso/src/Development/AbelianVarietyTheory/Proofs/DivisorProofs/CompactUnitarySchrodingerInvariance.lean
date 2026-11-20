@@ -18,9 +18,9 @@ noncomputable section
 namespace GlobalTheory.ConeUnif
 
 /- English proof (translation)
-Set `e` to `Fintype.equivFin I`. Establish `hc : Continuous fun (u : Fin (Fintype.card I) → FiniteAdeleRing (𝓞 F) F) (i : I) => u (e i)` using `continuous_pi fun i => continuous_apply _`. Establish `hV' : (fun (u : Fin (Fintype.card I) → FiniteAdeleRing (𝓞 F) F) (i : I) => u (e i)) ⁻¹' V ∈ 𝓝 (0 : Fin (Fintype.card I) → FiniteAdeleRing (𝓞 F) F)` using `hc.continuousAt.preimage_mem_nhds hV`. Take `⟨L, hLo, -, hL⟩` from `GlobalTheory.SWQ.FinAnnih.basis_nhds (F := F) _ hV'`. Use `⟨AddSubgroup.pi Set.univ (fun _ => L), ?_, fun η hη => ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `isOpen_set_pi Set.finite_univ fun _ _ => hLo`. Use `hL (fun l => η (e.symm l)) fun l => hη _ (Set.mem_univ _)` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem exists_open_addSubgroup (F : Type) [Field F] [NumberField F] {I : Type} [Fintype I]
     (V : Set (I → FiniteAdeleRing (𝓞 F) F)) (hV : V ∈ 𝓝 (0 : I → FiniteAdeleRing (𝓞 F) F)) :
@@ -39,34 +39,28 @@ theorem exists_open_addSubgroup (F : Type) [Field F] [NumberField F] {I : Type} 
     simpa using this
 
 /- English proof (translation)
-Use `show ((0 * c.1, 1 * c.2) : _ × _) = (0, c.2)`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem ef_mul (F : Type) [Field F] [NumberField F] (c : AF F) : pairA F 0 1 * c = pairA F 0 c.2 := by
   show ((0 * c.1, 1 * c.2) : _ × _) = (0, c.2)
   simp
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ n d n₁ d₁ X W X₁ W₁ M M₁ ι ι' K hK N hN`. Use `haveI : Module.Finite F E := Module.Finite.of_restrictScalars_finite ℚ F E`. Use `haveI : IsModuleTopology (AF F) (AE F E) := ⟨rfl⟩`. Use `haveI : IsTopologicalRing (AE F E) := IsModuleTopology.isTopologicalRing (AF F) _`. Use `haveI hMt : ∀ a b : ℕ, IsModuleTopology (AF F) (Matrix (Fin a) (Fin b) (AE F E)) := fun a b => inferInstanceAs (IsModuleTopology (AF F) (Fin a → Fin b → AE F E))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc1 : Continuous M.co.e`. Use `IsModuleTopology.continuous_of_linearMap (R := AF F) M.co.e.toLinearMap` as an intermediate fact. Conclude with `this`. Establish `hc2 : Continuous M₁.co.e.symm`. Use `IsModuleTopology.continuous_of_linearMap (R := AF F) M₁.co.e.symm.toLinearMap` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Conclude with `this`. Establish `hsn : Continuous (fun a : AF F => a.2)` using `continuous_snd`. Establish `hpa : Continuous (fun y : FiniteAdeleRing (𝓞 F) F => pairA F 0 y)` using `continuous_const.prodMk continuous_id`. Establish `hm : Continuous fun g : UA σ X.J => mat g` using `Units.continuous_val.comp continuous_subtype_val`. Establish `hmi : Continuous fun g : UA σ X.J => mat g⁻¹` using `hm.comp continuous_inv`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Set `z : (Fin n₁ × Fin d₁ → FiniteAdeleRing (𝓞 F) F) → Matrix (Fin n₁) (Fin d₁) (AE F E)` to `fun η => M₁.co.e.symm (0, fun i => pairA F 0 (η i))`. Establish `hz : Continuous z` using `hc2.comp (continuous_const.prodMk (continuous_pi fun i => hpa.comp (continuous_apply i)))`. Establish `hz0 : z 0 = 0` using `by show M₁.co.e.symm (0, fun i => pairA F 0 0) = 0`. Conclude with `map_zero M₁.co.e.symm`. Establish `hzf : ∀ η, pairA F 0 1 • z η = z η`.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `η`. Use `show pairA F 0 1 • M₁.co.e.symm (0, fun i => pairA F 0 (η i)) = M₁.co.e.symm (0, fun i => pairA F 0 (η i))`. Rewrite using `[← map_smul]`. Use `congr 1`. Use `Prod.ext (smul_zero _) (funext fun i => ?_)` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `ef_mul F _`. Set `out : (Fin n₁ × Fin d₁ → FiniteAdeleRing (𝓞 F) F) × UA σ X.J → (Fin n × Fin d → AF F) × (Fin n × Fin d → AF F)` to `fun q => M.co.e (mat q.2⁻¹ * (incM F ι * z q.1 * (incM F ι')ᵀ))`. Establish `hout : Continuous out` using `hc1.comp ((hmi.comp continuous_snd).matrix_mul ((continuous_const.matrix_mul (hz.comp continuous_fst)).matrix_mul continuous_const))`. Establish `houtf : ∀ q, pairA F 0 1 • out q = out q`. Introduce `q`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `show pairA F 0 1 • M.co.e (mat q.2⁻¹ * (incM F ι * z q.1 * (incM F ι')ᵀ)) = M.co.e (mat q.2⁻¹ * (incM F ι * z q.1 * (incM F ι')ᵀ))`. Rewrite using `[← map_smul, ← Matrix.mul_smul, ← Matrix.smul_mul, ← Matrix.mul_smul, hzf]`. Set `p : (Fin n₁ × Fin d₁ → FiniteAdeleRing (𝓞 F) F) × UA σ X.J → (Fin n × Fin d → FiniteAdeleRing (𝓞 F) F) × (Fin n × Fin d → FiniteAdeleRing (𝓞 F) F)` to `fun q => (fun i => ((out q).1 i).2, fun i => ((out q).2 i).2)`. Establish `hp : Continuous p` using `(continuous_pi fun i => hsn.comp ((continuous_apply i).comp (continuous_fst.comp hout))).prodMk (continuous_pi fun i => hsn.comp ((continuous_apply i).comp (continuous_snd.comp hout)))`. Establish `hp0 : ∀ k, p (0, k) = 0`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Introduce `k`. Establish `h0 : out (0, k) = 0` using `by show M.co.e (mat k⁻¹ * (incM F ι * z 0 * (incM F ι')ᵀ)) = 0`. Rewrite using `[hz0, Matrix.mul_zero, Matrix.zero_mul, Matrix.mul_zero, map_zero]`. Use `show ((fun i => ((out (0, k)).1 i).2, fun i => ((out (0, k)).2 i).2) : _ × _) = 0`. Rewrite using `[h0]`.
-
-Both sides reduce to the same expression. Establish `hev : ∀ᶠ η in 𝓝 (0 : Fin n₁ × Fin d₁ → FiniteAdeleRing (𝓞 F) F), ∀ k ∈ K, p (η, k) ∈ N`. Use `hK.eventually_forall_of_forall_eventually fun k _ => ?_` and prove the remaining obligations. Use `hp.continuousAt.preimage_mem_nhds ?_` and prove the remaining obligations. Rewrite using `[hp0]`.
-
-Conclude with `hN`. Take `⟨U, hUo, hU⟩` from `exists_open_addSubgroup F _ hev`. Use `⟨U, hUo, fun k hk η hη => ⟨p (η, k), hU η hη k hk, ?_⟩⟩` and prove the remaining obligations. Use `show out (η, k) = _`. Rewrite using `[← houtf]`.
-
-Conclude with `Prod.ext (funext fun i => ef_mul F _) (funext fun i => ef_mul F _)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coords_small_unif : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     {n d n₁ d₁ : ℕ} (X : Spc F E n) (W : Spc F E d) (X₁ : Spc F E n₁) (W₁ : Spc F E d₁) (M : Model σ X W) (M₁ : Model σ X₁ W₁)

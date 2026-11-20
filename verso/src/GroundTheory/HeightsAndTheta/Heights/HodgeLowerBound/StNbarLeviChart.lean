@@ -30,7 +30,7 @@ open GroundTheory.Heights₂.Heights (CP)
 open GroundTheory.Heights₂.Heights.Regular.ProjectiveLine
 
 /- English proof (translation)
-Introduce `f hf`. Rewrite `hf` using `[mCoordIdeal_yLine, Ideal.mem_bot]`. Substitute `hf` using the available equality. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Simplify using the standard rewrite rules.
 -/
 theorem isConeTangent_velL :
     IsConeTangent (Int.castRingHom ℂ) (mCoordIdeal yLine) (discL 0) velL := by
@@ -40,13 +40,13 @@ theorem isConeTangent_velL :
   simp
 
 /- English proof (translation)
-Establish `hne : vecL (discL 0) ≠ 0` using `vecL_ne_zero (discL_mem 0)`. Establish `h0 : sChart 0 (projL (discL 0)) = 0`. Rewrite using `[sChart_projL_discL]`. Use function extensionality and compare the values at `j`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use `⟨(mem_sChart_source_iff 0 _).2 ⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations. Unfold `projL`. Rewrite using `[dif_pos hne, CP.mk_mem_chartDomain]`. Simplify using `[vecL, discL]`. Unfold `projL`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions.
 
-Rewrite using `[dif_pos hne, CP.chartCoord_mk]`. Establish `: (fun j : Fin 1 => vecL (discL 0) ((0 : Fin 2).succAbove j) / vecL (discL 0) 0) = 0`. Use function extensionality and compare the values at `j`. Simplify using `[vecL, discL]`. Rewrite using `[this, norm_zero]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Evaluate the numerical expressions. Use `show sChart 0 (projL (discL 0)) ∈ Metric.ball 0 (7 / 8)`. Rewrite using `[h0]`. Conclude with `Metric.mem_ball_self (by norm_num)`.
+Evaluate the numerical expressions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem projL_discL_mem_mid : projL (discL 0) ∈ cpMid 0 := by
   have hne : vecL (discL 0) ≠ 0 := vecL_ne_zero (discL_mem 0)
@@ -72,7 +72,7 @@ theorem projL_discL_mem_mid : projL (discL 0) ∈ cpMid 0 := by
 end Line
 
 /- English proof (translation)
-Take `⟨t, -, ht, hs, -⟩` from `NbarChartSemipos.hyps_of_setting (Line.projLineComponentSetting Line.zeroSystem Line.zero_hII) one_pos`. Conclude with `⟨t, ht, hs, Line.discL_mem 0, Line.isConeTangent_velL, (0 : Fin 2), Line.projL_discL_mem_mid⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem Line.NbarLeviChart.hyps_inhabited :
     ∃ t : ℝ, 0 < t ∧ (Line.projLineComponentSetting Line.zeroSystem Line.zero_hII).M.atlas.Smooth

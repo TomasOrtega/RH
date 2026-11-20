@@ -15,11 +15,11 @@ namespace GlobalTheory.FinWeil
 open Classical in
 open scoped BigOperators in
 /- English proof (translation)
-Introduce `b hb`. Establish `hstep : ∀ x s : X, x ∈ A → s ∈ S → W (x + s) y = W x y` using `fun x s hx hs => by`. Rewrite using `[← hW.comp_of_mem hA hx (hSA s hs), hy s hs]`. Rewrite using `[map_sum]`. Set `b' : ↥A.toAddSubgroup` to `⟨b, hb⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Use `Fintype.sum_equiv (Equiv.addLeft (QuotientAddGroup.mk b' : ↥A.toAddSubgroup ⧸ S.addSubgroupOf A.toAddSubgroup)) _ _ (fun q => ?_)` and prove the remaining obligations. Rewrite using `[hW.comp_of_mem hA hb (Quotient.out q).2 y]`. Establish `hmem : -(b' + Quotient.out q) + Quotient.out ((QuotientAddGroup.mk b' : ↥A.toAddSubgroup ⧸ S.addSubgroupOf A.toAddSubgroup) + q) ∈ S.addSubgroupOf A.toAddSubgroup`. Rewrite using `[← QuotientAddGroup.eq]`. Simplify using `[QuotientAddGroup.out_eq']`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Equiv.coe_addLeft]`. Establish `hdec : ((Quotient.out ((QuotientAddGroup.mk b' : ↥A.toAddSubgroup ⧸ S.addSubgroupOf A.toAddSubgroup) + q) : ↥A.toAddSubgroup) : X) = (b + ((Quotient.out q : ↥A.toAddSubgroup) : X)) + ((-(b' + Quotient.out q) + Quotient.out ((QuotientAddGroup.mk b' : ↥A.toAddSubgroup ⧸ S.addSubgro …`. Use `push_cast`. Normalize the expressions using the abelian group laws. Rewrite using `[hdec, hstep _ _ (A.add_mem hb (Quotient.out q).2) (AddSubgroup.mem_addSubgroupOf.mp hmem)]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities.
 -/
 private theorem sum_over_quotient_fixed_of_fixed {R X M : Type} [CommRing R] [AddCommGroup X]
     [Module R X] [AddCommGroup M] [Module ℂ M] {σ : R →+* R} {w : R} {γ : X → X → ℂ}
@@ -58,37 +58,31 @@ open Classical in
 open scoped BigOperators in
 
 /- English proof (translation)
-Introduce `R X M _ _ _ _ _ σ w γ W hW A hA hloc`. Rewrite using `[eq_top_iff]`. Introduce and unpack `v -`. Take `⟨T, hT, hfix⟩` from `hloc v`. Establish `hAdual : ∀ x, x ∈ A ↔ ∀ a ∈ A, γ x a = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Unfold `_root_.GlobalTheory.FinWeil.SelfDual at hA`. Conclude with `hA`. Unfold `_root_.GlobalTheory.FinWeil.idx at hT`. Set `S : AddSubgroup X` to `{ carrier := {a | a ∈ A ∧ ∀ t ∈ T, γ a t = 1} add_mem' := fun {a b} ha hb => ⟨A.add_mem ha.1 hb.1, fun t ht => by`. Rewrite using `[hW.add_left, ha.2 t ht, hb.2 t ht, one_mul]⟩`.
+Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `zero_mem' := ⟨A.zero_mem, fun t _ => hW.zero_left t⟩`. Use the proof step `neg_mem' := fun {a} ha => ⟨A.neg_mem ha.1, fun t ht => by`. Rewrite using `[hW.neg_left, ha.2 t ht, inv_one]⟩ }`. Establish `hSmem : ∀ a, a ∈ S ↔ a ∈ A ∧ ∀ t ∈ T, γ a t = 1` using `fun a => Iff.rfl`. Set `T₀ : AddSubgroup X` to `A.toAddSubgroup ⊓ T.toAddSubgroup`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hS : ∀ a ∈ A.toAddSubgroup, a ∈ S ↔ ∀ t ∈ T.toAddSubgroup, γ a t = 1` using `fun a ha => ⟨fun h => h.2, fun h => ⟨ha, h⟩⟩`. Establish `hT₀ : ∀ t ∈ T.toAddSubgroup, t ∈ T₀ ↔ ∀ a ∈ A.toAddSubgroup, γ a t = 1`. Introduce `t ht`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨htA, -⟩ a ha`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Establish an intermediate fact.
 
-Conclude with `hW.iso hA ha htA`. Introduce `h`. Conclude with `⟨(hAdual t).2 fun a ha => hW.swap_eq_one (h a ha), ht⟩`. Establish `hidx : T₀.relIndex T.toAddSubgroup ≠ 0`. Rewrite using `[AddSubgroup.inf_relIndex_right]` and apply the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨hKN, -, -⟩` from `_root_.GlobalTheory.FinWeil.perfect_pairing_quotients hW S A.toAddSubgroup T₀ T.toAddSubgroup hS hT₀ hidx`. Establish `hK : S.relIndex A.toAddSubgroup ≠ 0` using `hKN ▸ hidx`. Take `⟨-, -, horth⟩` from `_root_.GlobalTheory.FinWeil.perfect_pairing_quotients hW T₀ T.toAddSubgroup S A.toAddSubgroup (fun t ht => by`. Rewrite using `[hT₀ t ht]`. Conclude with `⟨fun h a ha => hW.swap_eq_one (h a ha), fun h a ha => hW.swap_eq_one (h a ha)⟩)`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Equip the data with the indicated structure. Equip the data with the indicated structure.
 
-Use the proof step `(fun a ha => by`. Rewrite using `[hS a ha]`. Conclude with `⟨fun h t ht => hW.swap_eq_one (h t ht), fun h t ht => hW.swap_eq_one (h t ht)⟩) hK`. Use `haveI : (S.addSubgroupOf A.toAddSubgroup).FiniteIndex := ⟨hK⟩`. Use `haveI : (T₀.addSubgroupOf T.toAddSubgroup).FiniteIndex := ⟨hidx⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `letI := Fintype.ofFinite (↥A.toAddSubgroup ⧸ S.addSubgroupOf A.toAddSubgroup)`. Use `letI := Fintype.ofFinite (↥T.toAddSubgroup ⧸ T₀.addSubgroupOf T.toAddSubgroup)`. Establish `hz : ∀ t ∈ T, (∑ q : ↥A.toAddSubgroup ⧸ S.addSubgroupOf A.toAddSubgroup, γ ((Quotient.out q : ↥A.toAddSubgroup) : X) t • W ((Quotient.out q : ↥A.toAddSubgroup) : X) v) ∈ Submodule.span ℂ {m : M | ∃ x e, _root_.GlobalTheory.FinWeil.Fixes W A e ∧ m = W x e}`. Introduce `t ht`. Establish `hy : ∀ s ∈ S, W s (W t v) = W t v`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use symmetry to reverse the relation. Rewrite the conclusion using the stated equalities.
 
-Introduce `s hs`. Rewrite using `[hW.comm, hs.2 t ht, one_smul, hfix s hs.1 hs.2]`. Establish `hu` using `sum_over_quotient_fixed_of_fixed hW hA S (fun s hs => hs.1) (W t v) hy`. Use `set c := γ (w • -t) t with hc_def`. Establish `hc : c ≠ 0` using `hW.ne_zero _ _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Establish `key : (∑ q : ↥A.toAddSubgroup ⧸ S.addSubgroupOf A.toAddSubgroup, γ ((Quotient.out q : ↥A.toAddSubgroup) : X) t • W ((Quotient.out q : ↥A.toAddSubgroup) : X) v) = W (-t) (c⁻¹ • ∑ q : ↥A.toAddSubgroup ⧸ S.addSubgroupOf A.toAddSubgroup, W ((Quotient.out q : ↥A.toAddSubgroup) : X) (W …`. Use `symm`. Rewrite using `[map_smul, map_sum, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Rewrite using `[hW.comm _ t v, map_smul, hW.neg_comp, ← hc_def, smul_smul, smul_smul, mul_comm c⁻¹, mul_assoc, inv_mul_cancel₀ hc, mul_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[key]`. Use `Submodule.subset_span ⟨-t, c⁻¹ • ∑ q : ↥A.toAddSubgroup ⧸ S.addSubgroupOf A.toAddSubgroup, W ((Quotient.out q : ↥A.toAddSubgroup) : X) (W t v), ?_, rfl⟩` and prove the remaining obligations. Unfold `_root_.GlobalTheory.FinWeil.Fixes`. Introduce `a ha`. Rewrite using `[map_smul, hu a ha]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `horth' : ∀ q : ↥A.toAddSubgroup ⧸ S.addSubgroupOf A.toAddSubgroup, ∑ p : ↥T.toAddSubgroup ⧸ T₀.addSubgroupOf T.toAddSubgroup, γ ((Quotient.out p : ↥T.toAddSubgroup) : X) ((Quotient.out q : ↥A.toAddSubgroup) : X) = if ((Quotient.out q : ↥A.toAddSubgroup) : X) ∈ S then ((T₀.relInde …` using `fun q => by`. Rewrite using `[← finsum_eq_sum_of_fintype]`. Conclude with `horth _ (Quotient.out q).2`. Establish `hsum : (∑ p : ↥T.toAddSubgroup ⧸ T₀.addSubgroupOf T.toAddSubgroup, ∑ q : ↥A.toAddSubgroup ⧸ S.addSubgroupOf A.toAddSubgroup, γ ((Quotient.out q : ↥A.toAddSubgroup) : X) (-((Quotient.out p : ↥T.toAddSubgroup) : X)) • W ((Quotient.out q : ↥A.toAddSubgroup) : X) v) = ((T₀.relIndex T …`. Rewrite using `[Finset.sum_comm]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Repeatedly rewrite using `[← Finset.sum_smul, hW.neg_right, ← hW.swap, horth']`. Rewrite using `[Finset.sum_eq_single 0]`. Establish `h0 : ((Quotient.out (0 : ↥A.toAddSubgroup ⧸ S.addSubgroupOf A.toAddSubgroup) : ↥A.toAddSubgroup) : X) ∈ S` using `AddSubgroup.mem_addSubgroupOf.mp ((QuotientAddGroup.eq_zero_iff _).mp (QuotientAddGroup.out_eq' 0))`. Rewrite using `[if_pos h0, hfix _ h0.1 h0.2]`. Introduce `q _ hq`.
-
-Establish `hqS : ¬ (((Quotient.out q : ↥A.toAddSubgroup) : X) ∈ S)` using `fun h => hq (by`. Rewrite using `[← QuotientAddGroup.out_eq' q, QuotientAddGroup.eq_zero_iff]`. Conclude with `AddSubgroup.mem_addSubgroupOf.mpr h)`. Rewrite using `[if_neg hqS, zero_smul]`. Introduce `h`.
-
-Conclude with `absurd (Finset.mem_univ _) h`. Establish `hNne : ((T₀.relIndex T.toAddSubgroup : ℕ) : ℂ) ≠ 0` using `Nat.cast_ne_zero.mpr hidx`. Establish `hv : v = (((T₀.relIndex T.toAddSubgroup : ℕ) : ℂ))⁻¹ • ∑ p : ↥T.toAddSubgroup ⧸ T₀.addSubgroupOf T.toAddSubgroup, ∑ q : ↥A.toAddSubgroup ⧸ S.addSubgroupOf A.toAddSubgroup, γ ((Quotient.out q : ↥A.toAddSubgroup) : X) (-((Quotient.out p : ↥T.toAddSubgroup) : X)) • W ((Quotient.out …`. Rewrite using `[hsum, smul_smul, inv_mul_cancel₀ hNne, one_smul]`. Rewrite using `[hv]`.
-
-Conclude with `Submodule.smul_mem _ _ (Submodule.sum_mem _ fun p _ => hz _ (T.neg_mem (Quotient.out p).2))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.FinWeil.span_translates_vacua : ∀ {R X M : Type} [CommRing R] [AddCommGroup X] [Module R X] [AddCommGroup M] [Module ℂ M] {σ : R →+* R} {w : R} {γ : X → X → ℂ} {W : X → M →ₗ[ℂ] M}, _root_.GlobalTheory.FinWeil.IsHeis σ w γ W → ∀ A : Submodule R X, _root_.GlobalTheory.FinWeil.SelfDual γ A → (∀ v : M, ∃ T : Submodule R X, _root_.GlobalTheory.FinWeil.idx A T ≠ 0 ∧ ∀ a ∈ A, (∀ t ∈ T, γ a t = 1) → W a v = v) → Submodule.span ℂ {m : M | ∃ x e, _root_.GlobalTheory.FinWeil.Fixes W A e ∧ m = W x e} = ⊤ := by
   intro R X M _ _ _ _ _ σ w γ W hW A hA hloc

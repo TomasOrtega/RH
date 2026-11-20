@@ -7,11 +7,11 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.AnnihShrink
 
 /- English proof (translation)
-Take `⟨γ₀, h0, h1⟩` from `ValuativeRel.IsNontrivial.condition (R := k)`. Choose the witnesses or unpack the hypotheses as in `⟨ε, hε0, hε1⟩ : ∃ ε : ValueGroupWithZero k, ε ≠ 0 ∧ ε < 1 := by`. Break down `lt_or_gt_of_ne h1 with h | h` into its components or cases. Conclude with `⟨γ₀, h0, h⟩`. Conclude with `⟨γ₀⁻¹, inv_ne_zero h0, inv_lt_one_of_one_lt₀ h⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Take `⟨t, ht⟩` from `valuation_surjective (K := k) (ε * γ)`. Establish `hpos : 0 < γ` using `zero_lt_iff.mpr hγ`. Use `⟨t, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← (valuation k).ne_zero_iff, ht]`. Conclude with `mul_ne_zero hε0 hγ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ht]`. Conclude with `mul_lt_of_lt_one_left hpos hε1`.
+A detailed English derivation is pending.
 -/
 theorem exists_ne_zero_valuation_lt (k : Type) [Field k] [ValuativeRel k] [ValuativeRel.IsNontrivial k]
     (γ : ValueGroupWithZero k) (hγ : γ ≠ 0) : ∃ t : k, t ≠ 0 ∧ valuation k t < γ := by
@@ -38,7 +38,7 @@ def box (n : ℕ) (b : k) : AddSubgroup (Fin n → k) where
   neg_mem' := fun {x} hx j => by simpa using hx j
 
 /- English proof (translation)
-Establish `: (box n b : Set (Fin n → k)) = Set.univ.pi (fun _ => {y : k | valuation k y ≤ valuation k b})`. Use extensionality with `a`. Conclude with `⟨fun h j _ => h j, fun h j => h j (Set.mem_univ j)⟩`. Rewrite using `[this]`. Conclude with `isCompact_univ_pi fun _ => IsNonarchimedeanLocalField.isCompact_closedBall k _`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isCompact_box (n : ℕ) (b : k) : IsCompact (box n b : Set (Fin n → k)) := by
   have : (box n b : Set (Fin n → k)) =
@@ -49,7 +49,7 @@ theorem isCompact_box (n : ℕ) (b : k) : IsCompact (box n b : Set (Fin n → k)
   exact isCompact_univ_pi fun _ => IsNonarchimedeanLocalField.isCompact_closedBall k _
 
 /- English proof (translation)
-Establish `hvb : valuation k b ≠ 0` using `(Valuation.ne_zero_iff _).2 hb`. Establish `hU : Set.univ.pi (fun _ : Fin n => {y : k | valuation k y < valuation k b}) ∈ nhds (0 : Fin n → k)` using `set_pi_mem_nhds Set.finite_univ fun j _ => (IsValuativeTopology.hasBasis_nhds_zero' k).mem_of_mem hvb`. Use `(box n b).isOpen_of_mem_nhds (g := 0) (Filter.mem_of_superset hU ?_)` and prove the remaining obligations. Introduce `x hx j`. Conclude with `(hx j (Set.mem_univ j)).le`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem isOpen_box (n : ℕ) (b : k) (hb : b ≠ 0) : IsOpen (box n b : Set (Fin n → k)) := by
   have hvb : valuation k b ≠ 0 := (Valuation.ne_zero_iff _).2 hb
@@ -62,23 +62,21 @@ theorem isOpen_box (n : ℕ) (b : k) (hb : b ≠ 0) : IsOpen (box n b : Set (Fin
   exact (hx j (Set.mem_univ j)).le
 
 /- English proof (translation)
-Introduce `k _ _ _ _ ψ _ hne n U hU`. Choose the witnesses or unpack the hypotheses as in `⟨y₀, hy⟩ : ∃ y : k, ψ y ≠ 1 := by`. Assume the negation of the conclusion as `hall`. Use `push Not at hall`. Conclude with `hne (AddChar.ext _ _ fun t => by simpa using hall t)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `hy0 : y₀ ≠ 0`. Introduce and unpack `rfl`. Conclude with `hy (by simp)`. Choose the witnesses or unpack the hypotheses as in `⟨I, V, hV, hIV⟩ : ∃ (I : Set (Fin n)) (V : Fin n → Set k), (∀ i, V i ∈ nhds (0 : k)) ∧ I.pi V ⊆ U := by`. Rewrite `hU` using `[nhds_pi, Filter.mem_pi]`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Take `⟨I, _, V, hV, hIV⟩` from `hU`. Conclude with `⟨I, V, hV, hIV⟩`. Establish `hball : ∀ i, ∃ γ : (ValueGroupWithZero k)ˣ, {y : k | valuation k y < γ} ⊆ V i` using `fun i => (IsValuativeTopology.mem_nhds_zero_iff (V i)).1 (hV i)`. Use `choose g hg using hball`. Choose the witnesses or unpack the hypotheses as in `⟨γ, hγ0, hγ⟩ : ∃ γ : ValueGroupWithZero k, γ ≠ 0 ∧ ∀ i, γ ≤ (g i : ValueGroupWithZero k) := by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨m, hm⟩` from `Finite.exists_ge g`. Conclude with `⟨m, m.ne_zero, fun i => Units.val_le_val.2 (hm i)⟩`. Take `⟨t, ht0, ht⟩` from `exists_ne_zero_valuation_lt k γ hγ0`. Use `⟨box n (y₀ / t), isCompact_box n _, isOpen_box n _ (div_ne_zero hy0 ht0), ?_⟩` and prove the remaining obligations. Introduce `ξ hξ`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Apply `hIV` to reduce the goal to its premises. Introduce `i _`. Apply `hg i` to reduce the goal to its premises. Use `show valuation k (ξ i) < g i`. Use `lt_of_lt_of_le ?_ (hγ i)` and prove the remaining obligations.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hlt`. Establish `hle : γ ≤ valuation k (ξ i)` using `not_lt.mp hlt`. Establish `hvξ : valuation k (ξ i) ≠ 0` using `(lt_of_lt_of_le (zero_lt_iff.mpr hγ0) hle).ne'`. Establish `hξi : ξ i ≠ 0` using `(Valuation.ne_zero_iff _).1 hvξ`. Establish `hmem : (Pi.single i (y₀ / ξ i) : Fin n → k) ∈ box n (y₀ / t)`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `j`. Distinguish the cases in `h : j = i`. Substitute `h` using the available equality. Establish `he : y₀ / ξ j = (y₀ / t) * (t / ξ j)` using `by field_simp`. Rewrite using `[Pi.single_eq_same, he, map_mul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `mul_le_of_le_one_right' ?_` and prove the remaining obligations. Rewrite using `[map_div₀]`. Conclude with `(div_le_one₀ (zero_lt_iff.mpr hvξ)).2 (ht.le.trans hle)`. Simplify using `[Pi.single_eq_of_ne h]`. Establish `h1` using `hξ _ hmem`.
-
-Rewrite `h1` using `[dotProduct_single, mul_div_cancel₀ _ hξi]`. Conclude with `hy h1`.
+A detailed English derivation is pending.
 -/
 theorem exists_compact_open_annihilator_subset :
     ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]

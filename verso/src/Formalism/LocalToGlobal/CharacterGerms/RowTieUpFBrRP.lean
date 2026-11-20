@@ -19,13 +19,13 @@ variable {C : Type} [Field C] (V : VF C)
 def bb : NNReal := ((V.l : ℕ) : NNReal)⁻¹
 
 /- English proof (translation)
-Simplify using `[bb, V.l_prime.pos]`.
+Simplify using the standard rewrite rules.
 -/
 theorem bb_pos : 0 < bb V := by
   simp [bb, V.l_prime.pos]
 
 /- English proof (translation)
-Establish `h : (1 : NNReal) < ((V.l : ℕ) : NNReal)` using `by exact_mod_cast V.l_prime.one_lt`. Conclude with `inv_lt_one_of_one_lt₀ h`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem bb_lt : bb V < 1 := by
   have h : (1 : NNReal) < ((V.l : ℕ) : NNReal) := by exact_mod_cast V.l_prime.one_lt
@@ -34,7 +34,7 @@ theorem bb_lt : bb V < 1 := by
 variable {V}
 
 /- English proof (translation)
-Establish `h : V.v x ≠ ⊤` using `by rwa [Ne, AddValuation.top_iff]`. Take `⟨t, ht⟩` from `WithTop.ne_top_iff_exists.mp h`. Conclude with `⟨t, ht.symm⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_real {x : C} (hx : x ≠ 0) : ∃ t : ℝ, V.v x = (t : WithTop ℝ) := by
   have h : V.v x ≠ ⊤ := by rwa [Ne, AddValuation.top_iff]
@@ -48,7 +48,7 @@ def vmFun (x : C) : NNReal := if x = 0 then 0 else bb V ^ ((V.v x).untopD 0)
 variable {V}
 
 /- English proof (translation)
-Simplify using `[vmFun, hx, ht]`.
+Simplify using the standard rewrite rules.
 -/
 theorem vmFun_of {x : C} (hx : x ≠ 0) {t : ℝ} (ht : V.v x = (t : WithTop ℝ)) : vmFun V x = bb V ^ t := by
   simp [vmFun, hx, ht]
@@ -91,16 +91,16 @@ def vmOf : Valuation C NNReal where
 variable {V}
 
 /- English proof (translation)
-Use `show vmFun V x = _`. Conclude with `vmFun_of hx ht`.
+A detailed English derivation is pending.
 -/
 theorem vmOf_of {x : C} (hx : x ≠ 0) {t : ℝ} (ht : V.v x = (t : WithTop ℝ)) : vmOf V x = bb V ^ t := by
   show vmFun V x = _
   exact vmFun_of hx ht
 
 /- English proof (translation)
-Establish `hl : (V.l : C) ≠ 0`. Introduce `h`. Establish `h1` using `V.v_l`. Rewrite `h1` using `[h, AddValuation.map_zero]`. Simplify using `at h1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[vmOf_of hl (t := 1) (by rw [V.v_l]; rfl), NNReal.rpow_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem vmOf_l : vmOf V (V.l : C) = bb V := by
   have hl : (V.l : C) ≠ 0 := by
@@ -111,7 +111,7 @@ theorem vmOf_l : vmOf V (V.l : C) = bb V := by
   rw [vmOf_of hl (t := 1) (by rw [V.v_l]; rfl), NNReal.rpow_one]
 
 /- English proof (translation)
-Introduce `x hx`. Take `⟨t, ht⟩` from `exists_real (V := V) hx`. Use `⟨t, ht, ?_⟩` and prove the remaining obligations. Rewrite using `[vmOf_of hx ht, vmOf_l, NNReal.coe_rpow]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem valTie_vmOf : ValTie V (vmOf V) := by
   intro x hx
@@ -120,7 +120,7 @@ theorem valTie_vmOf : ValTie V (vmOf V) := by
   rw [vmOf_of hx ht, vmOf_l, NNReal.coe_rpow]
 
 /- English proof (translation)
-The claim follows from `Subtype.coe_injective map_le_one := by intro x show vmOf V (x : C) ≤ 1 by_cases hx : (x : C) = 0 · rw [hx, map_zero]; exact zero_le_one obtain ⟨t, ht⟩ := exists_real (V := V) hx rw [vmOf_of hx ht] have h0 : V.Ge 0 (x : C) := x.2 unfold VF.Ge at h0 rw [ht] at h0 exact NNReal.rpow_ …`.
+A detailed English derivation is pending.
 -/
 theorem integers_vmOf : (vmOf V).Integers V.RR where
   hom_inj := Subtype.coe_injective
@@ -149,11 +149,11 @@ theorem integers_vmOf : (vmOf V).Integers V.RR where
     exact absurd hr (not_le.mpr (NNReal.one_lt_rpow_of_pos_of_lt_one_of_neg (bb_pos V) (bb_lt V) (not_le.mp hneg)))
 
 /- English proof (translation)
-Introduce `hu`. Take `⟨y, hy⟩` from `hu.exists_right_inv`. Establish `h1 : (x : C) * (y : C) = 1`. Use `congrArg Subtype.val hy` as an intermediate fact. Simplify using `using this`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h2` using `congrArg V.v h1`. Rewrite `h2` using `[AddValuation.map_mul, AddValuation.map_one]`. Establish `hy0 : (0 : WithTop ℝ) ≤ V.v (y : C)` using `y.2`. Establish `hx0 : (0 : WithTop ℝ) < V.v (x : C)` using `hx`. Establish `h3 : (0 : WithTop ℝ) < V.v (x : C) + V.v (y : C)` using `lt_of_lt_of_le hx0 (le_add_of_nonneg_right hy0)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h3` using `[h2]`. Conclude with `lt_irrefl _ h3`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem not_isUnit_of_mm {x : V.RR} (hx : V.MM (x : C)) : ¬ IsUnit x := by
   intro hu
@@ -170,24 +170,22 @@ theorem not_isUnit_of_mm {x : V.RR} (hx : V.MM (x : C)) : ¬ IsUnit x := by
   exact lt_irrefl _ h3
 
 /- English proof (translation)
-Rewrite using `[AddValuation.map_pow, V.v_l]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem v_l_pow (n : ℕ) : V.v ((V.l : C) ^ n) = ((n : ℝ) : WithTop ℝ) := by
   rw [AddValuation.map_pow, V.v_l]
   simp
 
 /- English proof (translation)
-Establish `hl : (V.l : C) ≠ 0`. Introduce `h`. Establish `h1` using `V.v_l`. Rewrite `h1` using `[h, AddValuation.map_zero]`. Simplify using `at h1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hln : (V.l : C) ^ n ≠ 0` using `pow_ne_zero _ hl`. Rewrite using `[Ideal.span_singleton_pow, Ideal.smul_eq_mul, Ideal.mul_top, Ideal.mem_span_singleton]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, rfl⟩ show ((n : ℝ) : WithTop ℝ) ≤ V.v ((((((V.l : ℕ) : V.RR) ^ n * y : V.RR)) : C))`. Use `push_cast`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[AddValuation.map_mul, v_l_pow]`. Establish `hy : (0 : WithTop ℝ) ≤ V.v (y : C)` using `y.2`. Conclude with `le_add_of_nonneg_right hy`. Introduce `hx`. Establish `hxy : (x : C) = (V.l : C) ^ n * ((x : C) / (V.l : C) ^ n)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts.
 
-Clear the denominators using the available nonvanishing facts. Establish `h2 : V.v (x : C) = ((n : ℝ) : WithTop ℝ) + V.v ((x : C) / (V.l : C) ^ n)` using `by conv_lhs => rw [hxy]`. Rewrite using `[AddValuation.map_mul, v_l_pow]`. Establish `h3 : ((n : ℝ) : WithTop ℝ) + 0 ≤ ((n : ℝ) : WithTop ℝ) + V.v ((x : C) / (V.l : C) ^ n)`. Rewrite using `[add_zero, ← h2]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hx`. Establish `hy : V.Ge 0 ((x : C) / (V.l : C) ^ n)` using `(WithTop.add_le_add_iff_left WithTop.coe_ne_top).mp h3`. Use `⟨⟨(x : C) / (V.l : C) ^ n, hy⟩, ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Use `show (x : C) = ((((V.l : ℕ) : V.RR) ^ n : V.RR) : C) * ((x : C) / (V.l : C) ^ n)`.
-
-Use `push_cast`. Conclude with `hxy`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Move the embeddings inside the algebraic operations. A detailed English derivation is pending.
 -/
 theorem mem_pow_iff (n : ℕ) (x : V.RR) :
     x ∈ (Ideal.span {((V.l : ℕ) : V.RR)} ^ n • ⊤ : Submodule V.RR V.RR) ↔ V.Ge n (x : C) := by
@@ -222,11 +220,9 @@ theorem mem_pow_iff (n : ℕ) (x : V.RR) :
     exact hxy
 
 /- English proof (translation)
-Introduce `x hx`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show (x : C) = 0`. Assume the negation of the conclusion as `h0`. Take `⟨t, ht⟩` from `exists_real (V := V) h0`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨n, hn⟩` from `exists_nat_gt t`. Establish `h1` using `hx n`. Rewrite `h1` using `[SModEq.sub_mem, sub_zero, mem_pow_iff]`. Unfold `VF.Ge at h1`. Rewrite `h1` using `[ht]`.
-
-Conclude with `absurd (WithTop.coe_le_coe.mp h1) (not_le.mpr hn)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hausdorff_RR : IsHausdorff (Ideal.span {((V.l : ℕ) : V.RR)}) V.RR where
   haus' := by
@@ -243,15 +239,15 @@ theorem hausdorff_RR : IsHausdorff (Ideal.span {((V.l : ℕ) : V.RR)}) V.RR wher
     exact absurd (WithTop.coe_le_coe.mp h1) (not_le.mpr hn)
 
 /- English proof (translation)
-Introduce `f hf`. Take `⟨x, hx⟩` from `hc (fun n => (f n : C)) (fun n => by`. Establish `h1` using `hf (Nat.le_succ n)`. Rewrite `h1` using `[SModEq.sub_mem, mem_pow_iff]`. Establish `h2` using `h1.neg`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `e : -(((f n - f (n + 1) : V.RR)) : C) = (f (n + 1) : C) - (f n : C)`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite `h2` using `[e]`. Conclude with `h2)`.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hx0 : V.Ge 0 x`. Establish `h1 : V.Ge 0 (x - (f 0 : C))` using `by simpa using hx 0`. Establish `h2 : V.Ge 0 ((f 0 : V.RR) : C)` using `(f 0).2`. Use `h1.add h2` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨⟨x, hx0⟩, fun n => ?_⟩` and prove the remaining obligations. Rewrite using `[SModEq.sub_mem, mem_pow_iff]`. Establish `h2` using `(hx n).neg`. Establish `e : -(x - (f n : C)) = (((f n - (⟨x, hx0⟩ : V.RR) : V.RR)) : C)`. Use `push_cast`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite `h2` using `[e]`. Conclude with `h2`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem precomplete_RR
     (hc : ∀ s : ℕ → C, (∀ n : ℕ, V.Ge n (s (n + 1) - s n)) → ∃ x, ∀ n : ℕ, V.Ge n (x - s n)) :
@@ -288,7 +284,7 @@ section Zl
 variable (l : ℕ) [Fact l.Prime] (S : Type) [CommRing S]
 
 /- English proof (translation)
-Apply `ringChar.dvd` to reduce the goal to its premises. Establish `h` using `Ideal.Quotient.eq_zero_iff_mem.mpr (Ideal.pow_mem_pow (Ideal.mem_span_singleton_self (l : S)) n : (l : S) ^ n ∈ Ideal.span {(l : S)} ^ n)`. Simplify using `using h`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem ringChar_dvd_pow (n : ℕ) : ringChar (S ⧸ Ideal.span {(l : S)} ^ n) ∣ l ^ n := by
   apply ringChar.dvd
@@ -300,7 +296,7 @@ def zlStep (n : ℕ) : ℤ_[l] →+* S ⧸ Ideal.span {(l : S)} ^ n :=
   (ZMod.castHom (ringChar_dvd_pow l S n) (S ⧸ Ideal.span {(l : S)} ^ n)).comp (PadicInt.toZModPow n)
 
 /- English proof (translation)
-Unfold `zlStep`. Rewrite using `[← PadicInt.zmod_cast_comp_toZModPow m n hle, ← RingHom.comp_assoc, ← RingHom.comp_assoc]`. Use `congr 1`. Conclude with `Subsingleton.elim _ _`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem zlStep_compat {m n : ℕ} (hle : m ≤ n) :
     (Ideal.Quotient.factorPow (Ideal.span {(l : S)}) hle).comp (zlStep l S n) = zlStep l S m := by
@@ -315,27 +311,19 @@ def zlHom [IsAdicComplete (Ideal.span {(l : S)}) S] : ℤ_[l] →+* S :=
 end Zl
 
 /- English proof (translation)
-Introduce `C _ _ V hc`. Use `haveI : Fact V.l.Prime := ⟨V.l_prime⟩`. Establish `hl : (V.l : C) ≠ 0`. Introduce `h`. Establish `h1` using `V.v_l`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[h, AddValuation.map_zero]`. Simplify using `at h1`. Establish `hvl : V.MM ((((V.l : ℕ) : V.RR)) : C)` using `by show (0 : WithTop ℝ) < V.v ((((V.l : ℕ) : V.RR)) : C)`. Use `push_cast`. Rewrite using `[V.v_l]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(WithTop.coe_lt_coe.mpr (zero_lt_one : (0 : ℝ) < 1))`. Establish `hunit : ∀ x : V.RR, ¬ V.MM (x : C) → IsUnit x`. Introduce `x hx`. Establish `hx0 : (x : C) ≠ 0`. Introduce `h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `hx` to reduce the goal to its premises. Use `show (0 : WithTop ℝ) < V.v (x : C)`. Rewrite using `[h, AddValuation.map_zero]`. Conclude with `WithTop.coe_lt_top 0`. Establish `hv0 : V.v (x : C) = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : (0 : WithTop ℝ) ≤ V.v (x : C)` using `x.2`. Establish `h2 : ¬ (0 : WithTop ℝ) < V.v (x : C)` using `hx`. Conclude with `le_antisymm (not_lt.mp h2) h1`. Establish `hinv : V.Ge 0 ((x : C)⁻¹)` using `by show ((0 : ℝ) : WithTop ℝ) ≤ V.v ((x : C)⁻¹)`. Establish `h3 : V.v ((x : C) * (x : C)⁻¹) = 0`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[mul_inv_cancel₀ hx0, AddValuation.map_one]`. Rewrite `h3` using `[AddValuation.map_mul, hv0, zero_add]`. Rewrite using `[h3]`. Both sides reduce to the same expression. Use `isUnit_iff_exists_inv.mpr ⟨⟨(x : C)⁻¹, hinv⟩, ?_⟩` and prove the remaining obligations.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Use `show (x : C) * (x : C)⁻¹ = 1`. Conclude with `mul_inv_cancel₀ hx0`. Establish `hloc : IsLocalRing V.RR` using `IsLocalRing.of_nonunits_add (fun a b ha hb => by`. Establish `ha' : V.MM (a : C)`.
-
-Assume the negation of the conclusion as `h`. Conclude with `(mem_nonunits_iff.mp ha) (hunit a h)`. Establish `hb' : V.MM (b : C)`. Assume the negation of the conclusion as `h`. Conclude with `(mem_nonunits_iff.mp hb) (hunit b h)`.
-
-Conclude with `mem_nonunits_iff.mpr (not_isUnit_of_mm (V := V) (x := a + b) (lt_of_lt_of_le (lt_min ha' hb') (V.v.map_add _ _))))`. Use `haveI hcpl : IsAdicComplete (Ideal.span {((V.l : ℕ) : V.RR)}) V.RR := { haus' := (hausdorff_RR (V := V)).haus', prec' := (precomplete_RR (V := V) hc).prec' }`. Use `haveI := hloc`. Conclude with `⟨{ vm := vmOf V tie := valTie_vmOf int := integers_vmOf pos := by`. Rewrite using `[vmOf_l]`.
-
-Conclude with `bb_pos V` after adjusting the coercions. Use `lt := by`. Rewrite using `[vmOf_l]`. Conclude with `bb_lt V` after adjusting the coercions. Use `nonunit := not_isUnit_of_mm (V := V) hvl`.
-
-Use `cpl := hcpl`. Use `loc := hloc`. Use `alg := (zlHom V.l V.RR).toAlgebra`. Use `mm := fun x hx => (IsLocalRing.mem_maximalIdeal x).mpr (mem_nonunits_iff.mpr (not_isUnit_of_mm hx)) }⟩`.
+Assume the negation of the conclusion and derive a contradiction. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ringPkSt_holds : RingPkSt := by
   intro C _ _ V hc

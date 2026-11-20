@@ -18,7 +18,7 @@ variable {S κ K : Type} [CommRing S] [CommRing κ] [Field K] [ValuativeRel K] [
   [IsNonarchimedeanLocalField K] {φ : S →+* κ} {ψ : S →+* K} {r t j a : ℕ} {ea : Ix (Fin r) (Fin t) j ≃ Fin a}
 end Red
 /- English proof (translation)
-Introduce `_ _` and use `⟨0, fun _ _ _ => ⟨0, fun _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ s ch _ _ t k hk hk' c hc => scalar_of_is ch.S.toGridChoice s.core.lev t k hk hk' c hc⟩⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem firstRow_scalar_multiple : _root_.GlobalTheory.FunPr.ThetaLocalInputs → SumOKK → Big fun {D} {_Γ} _ _ {_Pl0} {T} {_A} {_Ks} _ _ _ {R} ch =>
     ∀ (t : T) (k : FinPt ch.G (.grid 0 D.R.m)), finG (ch.G.V (.grid 0 D.R.m)) k ∈ ch.S.levRow t 0 (Nat.zero_le _) →
@@ -40,7 +40,7 @@ open IsDedekindDomain NumberField MeasureTheory GlobalTheory.ChiGrid GlobalTheor
 attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField borelKw borelSpaceKw
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.FirstRowScalar.firstRow_scalar_multiple | exact _root_.GlobalTheory.FirstRowScalar.firstRow_scalar_multiple | (intros; apply _root_.GlobalTheory.FirstRowScalar.firstRow_scalar_multiple <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.twist_firstRow_scalar_multiple : _root_.GlobalTheory.FunPr.ThetaLocalInputs → SumOKK → Big fun {D} {_Γ} _ _ {_Pl0} {T} {_A} {_Ks} _ _ _ {R} ch =>
     ∀ (t : T) (k : FinPt ch.G (.grid 0 D.R.m)), finG (ch.G.V (.grid 0 D.R.m)) k ∈ ch.S.levRow t 0 (Nat.zero_le _) →

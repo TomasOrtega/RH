@@ -22,13 +22,11 @@ def splitEquiv {N N₁ N₂ : Type} [AddCommGroup N] [AddCommGroup N₁] [AddCom
   map_add' a b := by simp only [Prod.fst_add, Prod.snd_add, map_add]; abel
 
 /- English proof (translation)
-Set `e` to `splitEquiv ι₁ π₁ ι₂ π₂ h11 h22 hsum h12 h21`. Establish `e1 : (fun y : N₁ => e (y, 0)) = ι₁`. Use function extensionality and compare the values at `y`. Use `show ι₁ y + ι₂ 0 = ι₁ y`. Simplify using the standard rewrite rules.
+Introduce a local definition for the expression. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `e2 : (fun y : N₂ => e (0, y)) = ι₂`. Use function extensionality and compare the values at `y`. Use `show ι₁ 0 + ι₂ y = ι₂ y`. Simplify using the standard rewrite rules. Establish `h` using `tn_char AA e (fun g hg => by`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `hs₁ g hg using 3 with x` and compare the differences between its conclusion and the goal. Conclude with `congrFun e1 _)`. Rewrite `h` using `[e1, e2]`. Establish `h2` using `hasColen_tn ha hb`. Rewrite `h2` using `[← h]`.
-
-Establish `h3` using `hasColen_map v e.symm _ _ h2`. Rewrite `h3` using `[show AA.carrier.map (LinearMap.funLeft R C (e : N₁ × N₂ → N)) = AA.carrier.map (pbE (C := C) (R := R) e : (N → C) →ₗ[R] (N₁ × N₂ → C)) from rfl, map_pbE_symm]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem ret_colen {C : Type} [Field C] {v : Valuation C NNReal} {R : Type} [CommRing R]
     [Algebra R C] {N : Type} [AddCommGroup N] [Fintype N] [DecidableEq N]
@@ -62,7 +60,7 @@ theorem ret_colen {C : Type} [Field C] {v : Valuation C NNReal} {R : Type} [Comm
     map_pbE_symm] at h3
 
 /- English proof (translation)
-Use `le_antisymm h₁ (not_lt.1 fun hlt => ?_)` and prove the remaining obligations. Establish `a : x₁ ^ m < y₁ ^ m` using `pow_lt_pow_left₀ hlt zero_le hm`. Establish `b : x₂ ^ n ≤ y₂ ^ n` using `pow_le_pow_left₀ zero_le h₂ n`. Establish `c : 0 < y₂ ^ n` using `pow_pos (pos_iff_ne_zero.2 hy) n`. Conclude with `absurd h (ne_of_lt (lt_of_le_of_lt (mul_le_mul_of_nonneg_left b zero_le) (mul_lt_mul_of_pos_right a c)))`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem eq_of_pow_mul {x₁ y₁ x₂ y₂ : NNReal} {m n : ℕ} (hm : m ≠ 0) (h₁ : x₁ ≤ y₁) (h₂ : x₂ ≤ y₂)
     (hy : y₂ ≠ 0) (h : x₁ ^ m * x₂ ^ n = y₁ ^ m * y₂ ^ n) : x₁ = y₁ := by
@@ -74,23 +72,21 @@ theorem eq_of_pow_mul {x₁ y₁ x₂ y₂ : NNReal} {m n : ℕ} (hm : m ≠ 0) 
     (mul_lt_mul_of_pos_right a c)))
 
 /- English proof (translation)
-Introduce `p _ C _ _ _ v R _ _ hv hp N _ _ _ hN AA N' _ _ _ ι π hπ hst hT`. Establish `hcnt` using `@PositivityTheory.HtPt.Ra.cnt`. Establish `hlens` using `@PositivityTheory.HtPt.Rc.lens`. Set `ι₂ : π.ker →+ N` to `π.ker.subtype`. Set `π₂ : N →+ π.ker` to `(AddMonoidHom.id N - ι.comp π).codRestrict π.ker (fun x => by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Simplify using `[AddMonoidHom.mem_ker, hπ])`. Establish `hπ₂ : ∀ x, ι₂ (π₂ x) = x - ι (π x)` using `fun _ => rfl`. Establish `h12 : ∀ y, π (ι₂ y) = 0` using `fun y => y.2`. Establish `h22 : ∀ y, π₂ (ι₂ y) = y` using `fun y => Subtype.ext (by show ι₂ (π₂ (ι₂ y)) = ι₂ y`. Rewrite using `[hπ₂, h12]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `simp)`. Establish `h21 : ∀ y, π₂ (ι y) = 0` using `fun y => Subtype.ext (by show ι₂ (π₂ (ι y)) = 0`. Rewrite using `[hπ₂, hπ]`. Use the proof step `simp)`. Establish `hsum : ∀ x, ι (π x) + ι₂ (π₂ x) = x` using `fun x => by rw [hπ₂]; simp`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hs₂ : ∀ g ∈ AA.carrier, (fun x => g (ι₂ (π₂ x))) ∈ AA.carrier` using `(stabadd C R N N AA AA (AddMonoidHom.id N) (ι.comp π) (fun g hg => hg) hst).2`. Take `⟨⟨A₁, hA₁⟩, -⟩` from `ret_hopf p C v R hv hp N AA N' ι π hπ hst`. Take `⟨⟨A₂, hA₂⟩, -⟩` from `ret_hopf p C v R hv hp N AA π.ker ι₂ π₂ h22 hs₂`. Establish `hN₁ : ∀ y : N', p • y = 0` using `fun y => by rw [← hπ y, ← map_nsmul, hN, map_zero]`. Establish `hN₂ : ∀ y : π.ker, p • y = 0` using `fun y => by rw [← h22 y, ← map_nsmul, hN, map_zero]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨a₁, c₁, o₁, -, hc₁0, -, ha₁, hc₁, ho₁⟩` from `hlens p C v R hv hp N' hN₁ A₁`. Take `⟨a₂, c₂, o₂, -, hc₂0, ho₂0, ha₂, hc₂, ho₂⟩` from `hlens p C v R hv hp π.ker hN₂ A₂`. Establish `l₁` using `(hcnt p C v R hv hp N' hN₁ A₁ _ _ ha₁ hc₁).1`. Establish `l₂` using `(hcnt p C v R hv hp π.ker hN₂ A₂ _ _ ha₂ hc₂).1`. Establish `m₁` using `u4 p C v R hv hp N' hN₁ A₁ _ _ hc₁ ho₁`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `m₂` using `u4 p C v R hv hp π.ker hN₂ A₂ _ _ hc₂ ho₂`. Rewrite `ha₁`, `hc₁`, `ho₁` using `[hA₁]`. Rewrite `ha₂`, `hc₂`, `ho₂` using `[hA₂]`. Take `⟨a, c, o, ha, hc, ho, ea, eo⟩` from `hT`. Take `rfl` from `hasLen_unique hv ha (ret_af p C v R hv hp N AA N' π.ker ι π ι₂ π₂ hπ h22 hsum h12 h21 hst hs₂ _ _ ha₁ ha₂)`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `rfl` from `hasLen_unique hv ho (ret_om hv AA ι π ι₂ π₂ hπ h22 hsum h12 h21 hst hs₂ _ _ ho₁ ho₂)`. Take `rfl` from `hasColen_unique hv AA.lat hc (ret_colen AA ι π ι₂ π₂ hπ h22 hsum h12 h21 hst _ _ hc₁ hc₂)`. Establish `hcard : Fintype.card N = Fintype.card N' * Fintype.card π.ker`. Rewrite using `[← Fintype.card_prod]`. Conclude with `(Fintype.card_congr (splitEquiv ι π ι₂ π₂ hπ h22 hsum h12 h21).toEquiv).symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `ea`, `eo` using `[hcard]`. Use `⟨a₁, c₁, o₁, ha₁, hc₁, ho₁, ?_, ?_⟩` and prove the remaining obligations. Use `eq_of_pow_mul (m := Fintype.card π.ker) (n := Fintype.card N') Fintype.card_ne_zero l₁ l₂ (pow_ne_zero _ hc₂0) ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Use `(eq_of_pow_mul (m := Fintype.card π.ker) (n := Fintype.card N') Fintype.card_ne_zero m₁ m₂ (pow_ne_zero _ ho₂0) ?_).symm` and prove the remaining obligations.
-
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem ret_tight : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C] [CharZero C] (v : Valuation C NNReal) (R : Type) [CommRing R] [Algebra R C], v.Integers R → v (p : C) < 1 → ∀ (N : Type) [AddCommGroup N] [Fintype N] [DecidableEq N], (∀ x : N, p • x = 0) → ∀ AA : HopfOrder (C := C) R N, ∀ (N' : Type) [AddCommGroup N'] [Fintype N'] [DecidableEq N'], ∀ (ι : N' →+ N) (π : N →+ N'), (∀ y, π (ι y) = y) → (∀ g ∈ AA.carrier, (fun x => g (ι (π x))) ∈ AA.carrier) → IsTight v p AA.carrier → IsTight v p (AA.carrier.map (LinearMap.funLeft R C (ι : N' → N))) := by
   intro p _ C _ _ _ v R _ _ hv hp N _ _ _ hN AA N' _ _ _ ι π hπ hst hT

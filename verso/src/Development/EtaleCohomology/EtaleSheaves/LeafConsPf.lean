@@ -30,7 +30,7 @@ def LeafGlob : Prop := ∀ (q : ℕ) [NeZero q] (i : ℤ) {B W Y0 Y1 Y2 : Scheme
           pullback.condition n c) = eL n c ≫ (shiftFunctor _ n).map ℓ)
 
 /- English proof (translation)
-Introduce `q _ i B W Y0 Y1 Y2 ι _ p g1 g2`. Take `⟨K0, K1, K2, L, f, g, ℓ, l0, l1, l2, lL, r0, r1, r2, rL, mf, mg, mℓ⟩` from `hL q i ι p g1 g2`. Take `⟨e0, e2, eL, h1, h2, h3, h4⟩` from `hG q i ι p g1 g2 K0 K1 K2 L f g ℓ l0 l1 l2 lL r0 r1 r2 rL mf mg mℓ`. Conclude with `⟨K0, K1, K2, L, f, g, ℓ, l0, l1, l2, lL, e0, e2, eL, r0, r1, r2, rL, mf, mg, mℓ, h1, h2, h3, h4⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem LeafCons_of (hL : LeafLoc) (hG : LeafGlob) : LateralTheory.E.EtaleTopologySheaves.LeafCons := by
   intro q _ i B W Y0 Y1 Y2 ι _ p g1 g2

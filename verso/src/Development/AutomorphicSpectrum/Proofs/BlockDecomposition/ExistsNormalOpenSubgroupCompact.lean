@@ -6,13 +6,11 @@ open Matrix
 namespace GlobalTheory.CompanionTheory.OpenCore
 
 /- English proof (translation)
-Use `haveI : CompactSpace K := isCompact_iff_compactSpace.mp hKc`. Establish `hHo : IsOpen ((S.subgroupOf K : Subgroup K) : Set K)` using `hSo.preimage continuous_subtype_val`. Use `haveI : Finite (K ⧸ S.subgroupOf K) := Subgroup.quotient_finite_of_isOpen _ hHo`. Use `haveI : (S.subgroupOf K).FiniteIndex := Subgroup.finiteIndex_of_finite_quotient`. Establish `hN : IsOpen (((S.subgroupOf K).normalCore : Subgroup K) : Set K)` using `Subgroup.isOpen_of_isClosed_of_finiteIndex _ ((S.subgroupOf K).normalCore_isClosed ((S.subgroupOf K).isClosed_of_isOpen hHo))`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Use `⟨(S.subgroupOf K).normalCore.map K.subtype, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨x, -, rfl⟩`. Conclude with `x.2`. Rewrite using `[Subgroup.coe_map]`. Conclude with `hKo.isOpenMap_subtype_val _ hN`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ ⟨x, hx, rfl⟩`. Conclude with `Subgroup.mem_subgroupOf.1 (Subgroup.normalCore_le _ hx)`. Establish `e : ((S.subgroupOf K).normalCore.map K.subtype).relIndex K = (S.subgroupOf K).normalCore.index`. Rewrite using `[Subgroup.relIndex, ← Subgroup.comap_subtype, Subgroup.comap_map_eq_self_of_injective (Subgroup.subtype_injective K)]`. Rewrite using `[e]`.
-
-Conclude with `(inferInstance : (S.subgroupOf K).normalCore.FiniteIndex).1`. Introduce and unpack `κ hκ _ ⟨x, hx, rfl⟩`. Use `⟨⟨κ, hκ⟩ * x * (⟨κ, hκ⟩ : K)⁻¹, (Subgroup.normalCore_normal _).conj_mem x hx ⟨κ, hκ⟩, ?_⟩` and prove the remaining obligations. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_open_core {G : Type*} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] (K S : Subgroup G)
     (hKo : IsOpen (K : Set G)) (hKc : IsCompact (K : Set G)) (hSo : IsOpen (S : Set G)) :
@@ -42,7 +40,7 @@ theorem exists_open_core {G : Type*} [Group G] [TopologicalSpace G] [IsTopologic
     simp
 
 /- English proof (translation)
-Take `⟨S, hSo, hSU⟩` from `GlobalTheory.SmGL.ProdIrr.exists_openSubgroup_GL U hU`. Take `⟨K₁, h1, h2, h3, h4, h5⟩` from `exists_open_core (GlobalTheory.SplitWeil.KO k (Fin n)) S GlobalTheory.SplitFlip.isOpen_KO GlobalTheory.SplitFlip.isCompact_KO hSo`. Conclude with `⟨K₁, h1, h2, fun g hg => hSU g (h3 hg), h4, h5⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_open_normal_subgroup_KO (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] (n : ℕ) (U : Set (GL (Fin n) k)) (hU : U ∈ nhds (1 : GL (Fin n) k)) :

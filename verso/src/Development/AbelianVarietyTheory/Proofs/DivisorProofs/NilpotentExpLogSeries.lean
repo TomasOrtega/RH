@@ -11,17 +11,17 @@ noncomputable def expPoly (D : ℕ) : ℚ[X] :=
   ∑ i ∈ range D, C ((i.factorial : ℚ)⁻¹) * X ^ i
 
 /- English proof (translation)
-The claim follows from `dvd_sum fun j _ => dvd_mul_of_dvd_right (dvd_pow_self X (Nat.succ_ne_zero j)) _`.
+A detailed English derivation is pending.
 -/
 theorem X_dvd_logPoly (D : ℕ) : (X : ℚ[X]) ∣ logPoly D :=
   dvd_sum fun j _ => dvd_mul_of_dvd_right (dvd_pow_self X (Nat.succ_ne_zero j)) _
 
 /- English proof (translation)
-Establish `h1 : expPoly (N + 1) = expPoly N + C ((N.factorial : ℚ)⁻¹) * X ^ N`. Rewrite using `[expPoly, sum_range_succ]`. Both sides reduce to the same expression. Rewrite using `[h1, add_sub_cancel_right, ← h1, expPoly, sum_range_succ', derivative_add, derivative_sum]`. Simplify using `only [derivative_C_mul_X_pow, pow_zero, mul_one, derivative_C, add_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[expPoly]`. Use `sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Nat.add_sub_cancel]`. Use `congr 2`. Rewrite using `[Nat.factorial_succ]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts.
 -/
 theorem derivative_expPoly (N : ℕ) :
     derivative (expPoly (N + 1)) = expPoly (N + 1) - C ((N.factorial : ℚ)⁻¹) * X ^ N := by
@@ -37,7 +37,7 @@ theorem derivative_expPoly (N : ℕ) :
   field_simp
 
 /- English proof (translation)
-Rewrite using `[logPoly, derivative_sum]`. Use `sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[derivative_C_mul_X_pow, Nat.add_sub_cancel, neg_pow (X : ℚ[X]) j, show ((-1 : ℚ[X])) ^ j = C ((-1 : ℚ) ^ j) by simp]`. Use `congr 2`. Use `push_cast`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations.
 
 Clear the denominators using the available nonvanishing facts.
 -/
@@ -52,7 +52,7 @@ theorem derivative_logPoly (D : ℕ) :
     field_simp
 
 /- English proof (translation)
-Rewrite using `[derivative_logPoly]`. Use `geom_sum_mul (-X : ℚ[X]) D` as an intermediate fact. Take the linear combination `(-1 : ℚ[X]) * this`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem one_add_X_mul_derivative_logPoly (D : ℕ) :
     (1 + X) * derivative (logPoly D) = 1 - (-X : ℚ[X]) ^ D := by
@@ -61,23 +61,19 @@ theorem one_add_X_mul_derivative_logPoly (D : ℕ) :
   linear_combination (-1 : ℚ[X]) * this
 
 /- English proof (translation)
-Use `set p := logPoly (N + 1) with hp`. Use `set q := (expPoly (N + 1)).comp p with hqdef`. Use `set c : ℚ[X] := C ((N.factorial : ℚ)⁻¹) with hc`. Establish `hq' : derivative q = derivative p * (q - c * p ^ N)`. Rewrite using `[hqdef, derivative_comp, derivative_expPoly, sub_comp, mul_comp, C_comp, X_pow_comp]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hX : (X : ℚ[X]) ∣ p` using `X_dvd_logPoly _`. Establish `h2` using `one_add_X_mul_derivative_logPoly (N + 1)`. Rewrite `h2` using `[← hp]`. Establish `hQ : (X : ℚ[X]) ^ N ∣ (1 + X) * derivative (q - (1 + X)) - (q - (1 + X))`. Establish `e : (1 + X) * derivative (q - (1 + X)) - (q - (1 + X)) = -((-X) ^ (N + 1) * (q - c * p ^ N)) - c * p ^ N`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[derivative_sub, hq', derivative_add, derivative_one, derivative_X]`. Take the linear combination `(q - c * p ^ N) * h2`. Rewrite using `[e]`. Use `dvd_sub (dvd_neg.mpr (dvd_mul_of_dvd_left ?_ _)) (dvd_mul_of_dvd_right ?_ _)` and prove the remaining obligations. Rewrite using `[neg_pow]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `dvd_mul_of_dvd_right (pow_dvd_pow X (Nat.le_succ N)) _`. Conclude with `pow_dvd_pow_of_dvd hX N`. Use `set r := q - (1 + X) with hr`. Establish `hr0 : r.coeff 0 = 0`. Take `⟨p0, hp0⟩` from `hX`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `he : (expPoly (N + 1)).eval 0 = 1`. Rewrite using `[expPoly, eval_finset_sum, sum_range_succ']`. Simplify using the standard rewrite rules. Rewrite using `[coeff_zero_eq_eval_zero, hr, hqdef, eval_sub, eval_comp, hp0, eval_mul, eval_X, zero_mul, he]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hind : ∀ k, k ≤ N → r.coeff k = 0`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => intro _`. Conclude with `hr0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Consider the case `succ k ih`. Introduce `hk`. Establish `hk'` using `ih (by omega)`. Establish `h0` using `(X_pow_dvd_iff.mp hQ) k (by omega)`. Rewrite `h0` using `[coeff_sub, add_mul, one_mul, coeff_add, coeff_derivative, hk', sub_zero]`.
-
-Establish `hXr : ((X : ℚ[X]) * derivative r).coeff k = 0`. Break down `k with _ | k` into its components or cases. Conclude with `coeff_X_mul_zero _`. Rewrite using `[coeff_X_mul, coeff_derivative, hk', zero_mul]`. Rewrite `h0` using `[hXr, add_zero]`.
-
-Establish `hne : ((k : ℚ) + 1) ≠ 0` using `by positivity`. Conclude with `(mul_eq_zero.mp h0).resolve_right (by exact_mod_cast hne)`. Conclude with `X_pow_dvd_iff.mpr fun d hd => hind d (by omega)`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem X_pow_dvd_expPoly_comp_logPoly_sub (N : ℕ) :
     (X : ℚ[X]) ^ (N + 1) ∣ (expPoly (N + 1)).comp (logPoly (N + 1)) - (1 + X) := by
@@ -125,15 +121,15 @@ theorem X_pow_dvd_expPoly_comp_logPoly_sub (N : ℕ) :
   exact X_pow_dvd_iff.mpr fun d hd => hind d (by omega)
 
 /- English proof (translation)
-Introduce `A _ _ D n h`. Break down `D with _ | N` into its components or cases. Establish `: Subsingleton A` using `subsingleton_of_zero_eq_one (by simpa using h.symm)`. Conclude with `Subsingleton.elim _ _`. Establish `hvan : ∀ f : ℚ[X], X ^ (N + 1) ∣ f → aeval n f = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `f ⟨g, rfl⟩`. Rewrite using `[map_mul, map_pow, aeval_X, h, zero_mul]`. Establish `hS : aeval n (logPoly (N + 1)) = ∑ j ∈ Finset.range (N + 1), ((-1 : ℚ) ^ j / ((j : ℚ) + 1)) • n ^ (j + 1)`. Rewrite using `[logPoly, map_sum]`. Use `sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul, aeval_C, map_pow, aeval_X, Algebra.smul_def]`. Establish `hpow : (aeval n (logPoly (N + 1))) ^ (N + 1) = 0`. Rewrite using `[← map_pow]`. Conclude with `hvan _ (pow_dvd_pow_of_dvd (X_dvd_logPoly _) _)`. Rewrite using `[← hS, IsNilpotent.exp_eq_sum hpow]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hE : aeval n ((expPoly (N + 1)).comp (logPoly (N + 1))) = ∑ i ∈ range (N + 1), ((i.factorial : ℚ))⁻¹ • (aeval n (logPoly (N + 1))) ^ i`. Rewrite using `[aeval_comp, expPoly, map_sum]`. Use `sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, aeval_C, map_pow, aeval_X, Algebra.smul_def]`. Rewrite using `[← hE]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h3` using `hvan _ (X_pow_dvd_expPoly_comp_logPoly_sub N)`. Rewrite `h3` using `[map_sub, sub_eq_zero]`. Rewrite using `[h3, map_add, map_one, aeval_X]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exp_truncLog_one_add : ∀ (A : Type) [Ring A] [Algebra ℚ A] (D : ℕ) (n : A), n ^ D = 0 →
     IsNilpotent.exp (∑ j ∈ Finset.range D, ((-1 : ℚ) ^ j / ((j : ℚ) + 1)) • n ^ (j + 1)) = 1 + n := by

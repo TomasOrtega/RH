@@ -14,7 +14,7 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.G
 namespace GlobalTheory.CompanionTheory.Ar
 
 /- English proof (translation)
-Conclude with `@CoverDenseAlt.isPrincipal_iff_of_base_change`.
+A detailed English derivation is pending.
 -/
 theorem isPrincipal_iff_of_sabMap_field : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (L L' : Type) [Field L] [Field L'] (e : L →+* L') (t : SAB H (Sp L)) (t' : SAB H (Sp L')) (_ : SABMap t' t (spMap e)), IsPrincipal t' ↔ IsPrincipal t := by
   exact @CoverDenseAlt.isPrincipal_iff_of_base_change

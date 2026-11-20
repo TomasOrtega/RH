@@ -14,9 +14,9 @@ namespace GlobalTheory.HeightCounting.Up
 set_option maxHeartbeats 2000000 in
 
 /- English proof (translation)
-Introduce `hL`. Use `StepW.of_all fun K B f T w _ _ _ P x l => ?_` and prove the remaining obligations. Establish `hU : x.m.z.R.toRealDat.LUnif` using `x.m.intersectionNumber_baseChange.prim.unif`. Establish `hW : x.m.z.R.toRealDat.models_HW` using `x.m.z.pins.char.base.models.HW`. Establish `H` using `(GlobalTheory.ExportType.type_of_exportTie l.b.ser.ex hU hW).2.2.2`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `⟨⟨fun _ j _ => {_d | j ∈ Finset.Icc 1 (Dof x).R.m}, fun i j b a ha u => sub_eq_zero.1 (LinearMap.mem_ker.1 ((Submodule.mem_iInf _).1 (H i j ha b a) u))⟩, fun i j b h1 h2 => Set.eq_univ_of_forall fun _ => Finset.mem_Icc.2 ⟨h1, h2⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem sXd_all : ∀ hL : GlobalTheory.Published.LocalLanglandsGL, SXd hL := by
   intro hL

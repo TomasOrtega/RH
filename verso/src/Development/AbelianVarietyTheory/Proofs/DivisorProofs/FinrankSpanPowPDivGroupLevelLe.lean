@@ -42,9 +42,9 @@ def annPowIdeal (h : (p : K) = 0) (G : PDivGroup p K) (r : ℕ) : Ideal (G.dual.
       rw [e, mul_zero]
 
 /- English proof (translation)
-Use `Ideal.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨χ, hχ, rfl⟩ a`. Establish `h1` using `GlobalTheory.T.cartierDual_primePow_conv_pairing p K h G r r χ a`. Establish `hχ' : χ.ofConv 1 = 0` using `hχ`. Express the relevant statement in the definitionally equal form `(χ ^ p ^ r).ofConv (a ^ p ^ r) = 0`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `(χ ^ p ^ r).ofConv (a ^ p ^ r) = χ.ofConv (mulBy K (G.A r) (p ^ r) a) ^ p ^ r at h1`. Rewrite using `[h1, G.mulBy_pow_self r a, Algebra.algebraMap_eq_smul_one, map_smul, hχ', smul_zero, zero_pow (pow_ne_zero _ (Fact.out : p.Prime).ne_zero)]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem frobKerIdeal_le_annPowIdeal (h : (p : K) = 0) (G : PDivGroup p K) (r : ℕ) :
     frobKerIdeal (p ^ r) K (G.dual.A r) ≤ annPowIdeal h G r := by
@@ -61,21 +61,19 @@ end GlobalTheory.SpanPow
 
 open GlobalTheory.SpanPow in
 /- English proof (translation)
-Introduce `p _ K _ h G r`. Use `set S := Submodule.span K (Set.range fun a : G.A r => a ^ p ^ r) with hS`. Set `D` to `G.dual.A r`. Set `ev : D →ₗ[K] Module.Dual K S` to `S.subtype.dualMap ∘ₗ (CartierDual.toDual K (G.A r)).toLinearMap`. Establish `hev : Function.Surjective ev` using `(LinearMap.dualMap_surjective_of_injective S.injective_subtype).comp (CartierDual.toDual K (G.A r)).surjective`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `J` to `frobKerIdeal (p ^ r) K D`. Establish `hle : J.restrictScalars K ≤ LinearMap.ker ev`. Introduce `χ hχ`. Establish `hT` using `frobKerIdeal_le_annPowIdeal h G r hχ`. Rewrite using `[LinearMap.mem_ker]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `LinearMap.ext fun s => ?_` and prove the remaining obligations. Take `⟨s, hs⟩` from `s`. Express the relevant statement in the definitionally equal form `χ.ofConv s = 0`. Proceed by induction on `hs using Submodule.span_induction with`. Consider the case `mem x hx`.
+Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨a, rfl⟩` from `hx`. Conclude with `hT a`. Consider the case `zero => exact map_zero _`. Consider the case `add x y _ _ hx hy => rw [map_add, hx, hy, add_zero]`. Consider the case `smul c x _ hx => rw [map_smul, hx, smul_zero]`.
+Treat this case separately. Treat this case separately. Treat this case separately. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `φ : (D ⧸ J) →ₗ[K] Module.Dual K S` to `(J.restrictScalars K).liftQ ev hle ∘ₗ (Submodule.Quotient.restrictScalarsEquiv K J).symm.toLinearMap`. Establish `hφ : Function.Surjective φ`. Introduce `y`. Take `⟨x, rfl⟩` from `hev y`. Use `⟨Ideal.Quotient.mk J x, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Establish `h1 : Module.finrank K S ≤ Module.finrank K (D ⧸ J)`. Use `LinearMap.finrank_range_le φ` as an intermediate fact. Rewrite `this` using `[LinearMap.range_eq_top.2 hφ, finrank_top, Subspace.dual_finrank_eq]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `GlobalTheory.T.finrank_frobeniusKernelQuotient_le_pow_cotangent (p ^ r) K D (pow_pos (Fact.out : p.Prime).pos r)`. Establish `hfin` using `(GlobalTheory.T.finrank_rigidExtensions_eq_height_and_dim_add_dual p K h G.dual).1`. Establish `h3 : Module.finrank K (Cot K D) ≤ Module.finrank K G.dual.omega`. Use `LinearMap.finrank_range_le (G.dual.omegaLevel r)` as an intermediate fact. Rewrite `this` using `[LinearMap.range_eq_top.2 (G.dual.omegaLevel_surjective r), finrank_top]`. Then use the resulting hypothesis.
-
-Conclude with `h1.trans (h2.trans (Nat.pow_le_pow_right (pow_pos (Fact.out : p.Prime).pos r) h3))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.finrank_span_pow_le : ∀ (p : ℕ) [Fact p.Prime] (K : Type) [Field K] (h : (p : K) = 0) (G : PDivGroup p K), ∀ r : ℕ, Module.finrank K (Submodule.span K (Set.range fun a : G.A r => a ^ p ^ r)) ≤ (p ^ r) ^ Module.finrank K G.dual.omega := by
   intro p _ K _ h G r

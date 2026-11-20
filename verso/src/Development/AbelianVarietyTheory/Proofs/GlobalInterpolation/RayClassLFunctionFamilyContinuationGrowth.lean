@@ -12,9 +12,9 @@ section General
 variable {E : ℝ → ℂ} {C : ℝ}
 
 /- English proof (translation)
-Rewrite using `[mellin, setIntegral_eq_of_subset_of_forall_diff_eq_zero measurableSet_Ioi (s := Set.Ioi (1 : ℝ)) (fun t ht => Set.mem_Ioi.2 (zero_lt_one.trans (Set.mem_Ioi.1 ht)))]`. Use `setIntegral_congr_fun measurableSet_Ioi fun t ht => ?_` and prove the remaining obligations. Simplify using `only [smul_eq_mul, Set.indicator_of_mem ht]`. Rewrite using `[mul_comm]`. Introduce `t ht`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Set.indicator_of_notMem ht.2, smul_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mellin_indicator_eq (E : ℝ → ℂ) (s : ℂ) :
     mellin ((Set.Ioi (1 : ℝ)).indicator E) (-s) =
@@ -28,7 +28,7 @@ theorem mellin_indicator_eq (E : ℝ → ℂ) (s : ℂ) :
     rw [Set.indicator_of_notMem ht.2, smul_zero]
 
 /- English proof (translation)
-Distinguish the cases in `hx : x ∈ Set.Ioi (1 : ℝ)`. Rewrite using `[Set.indicator_of_mem hx]`. Conclude with `(hC x (le_of_lt hx)).trans (Real.le_norm_self _)`. Rewrite using `[Set.indicator_of_notMem hx, norm_zero]`. Conclude with `norm_nonneg _`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_indicator_le (hC : ∀ x, 1 ≤ x → ‖E x‖ ≤ C * Real.sqrt x) (x : ℝ) :
     ‖(Set.Ioi (1 : ℝ)).indicator E x‖ ≤ ‖C * Real.sqrt x‖ := by
@@ -39,13 +39,11 @@ theorem norm_indicator_le (hC : ∀ x, 1 ≤ x → ‖E x‖ ≤ C * Real.sqrt x
     exact norm_nonneg _
 
 /- English proof (translation)
-Establish `h : DifferentiableAt ℂ (mellin ((Set.Ioi (1 : ℝ)).indicator E)) (-s)`. Use `mellin_differentiableAt_of_isBigO_rpow (a := -(1 / 2)) (b := -s.re - 1) ?_ ?_ ?_ ?_ ?_` and prove the remaining obligations. Use `LocallyIntegrable.locallyIntegrableOn ?_ _` and prove the remaining obligations. Establish `hc : Continuous fun x : ℝ => C * Real.sqrt x` using `by fun_prop`. Conclude with `hc.locallyIntegrable.mono (hE.indicator measurableSet_Ioi).aestronglyMeasurable (Eventually.of_forall (norm_indicator_le hC))`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `IsBigO.of_bound ‖C‖ (Eventually.of_forall fun t => ?_)` and prove the remaining obligations. Use `(norm_indicator_le hC t).trans (le_of_eq ?_)` and prove the remaining obligations. Rewrite using `[norm_mul, neg_neg, Real.sqrt_eq_rpow]`. Simplify using `using hs`. Use `IsBigO.of_bound 0 ?_ filter_upwards [mem_nhdsWithin_of_mem_nhds (Iio_mem_nhds (zero_lt_one' ℝ))] with t ht` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Set.indicator_of_notMem (fun h => lt_asymm (Set.mem_Ioi.1 h) (Set.mem_Iio.1 ht))]`. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Use `h.comp s differentiableAt_id.neg` as an intermediate fact. Simplify using `only [← mellin_indicator_eq]`.
-
-Conclude with `this`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem differentiableAt_integral (hE : Measurable E)
     (hC : ∀ x, 1 ≤ x → ‖E x‖ ≤ C * Real.sqrt x) {s : ℂ} (hs : 1 / 2 < s.re) :
@@ -70,9 +68,9 @@ theorem differentiableAt_integral (hE : Measurable E)
   exact this
 
 /- English proof (translation)
-Use `(ae_restrict_iff' measurableSet_Ioi).2 (Eventually.of_forall fun t ht => ?_)` and prove the remaining obligations. Establish `ht0 : 0 < t` using `zero_lt_one.trans ht`. Rewrite using `[norm_mul, norm_cpow_eq_rpow_re_of_pos ht0]`. Use `(mul_le_mul_of_nonneg_right (hC _ (le_of_lt ht)) (Real.rpow_nonneg ht0.le _)).trans (le_of_eq ?_)` and prove the remaining obligations. Rewrite using `[Real.sqrt_eq_rpow, mul_assoc, ← Real.rpow_add ht0]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `congr 2`. Simplify using `only [sub_re, neg_re, one_re]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem norm_integrand_le (hC : ∀ x, 1 ≤ x → ‖E x‖ ≤ C * Real.sqrt x) (s : ℂ) :
     ∀ᵐ t ∂(volume.restrict (Set.Ioi (1 : ℝ))),
@@ -88,7 +86,7 @@ theorem norm_integrand_le (hC : ∀ x, 1 ≤ x → ‖E x‖ ≤ C * Real.sqrt x
   ring
 
 /- English proof (translation)
-Establish `hlt : -(s.re + 1 / 2) < -1` using `by linarith`. Use `Integrable.mono' ((integrableOn_Ioi_rpow_of_lt hlt zero_lt_one).const_mul C) ?_ (norm_integrand_le hC s)` and prove the remaining obligations. Conclude with `(hE.mul (measurable_ofReal.pow_const _)).aestronglyMeasurable`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem integrableOn_integrand (hE : Measurable E)
     (hC : ∀ x, 1 ≤ x → ‖E x‖ ≤ C * Real.sqrt x) {s : ℂ} (hs : 1 / 2 < s.re) :
@@ -99,9 +97,9 @@ theorem integrableOn_integrand (hE : Measurable E)
   exact (hE.mul (measurable_ofReal.pow_const _)).aestronglyMeasurable
 
 /- English proof (translation)
-Establish `hlt : -(s.re + 1 / 2) < -1` using `by linarith`. Use `(norm_integral_le_of_norm_le ((integrableOn_Ioi_rpow_of_lt hlt zero_lt_one).const_mul C) (norm_integrand_le hC s)).trans ?_` and prove the remaining obligations. Rewrite using `[integral_const_mul, integral_Ioi_rpow_of_lt hlt zero_lt_one, Real.one_rpow]`. Use `le_of_eq ?_` and prove the remaining obligations. Establish `: -(s.re + 1 / 2) + 1 = -(s.re - 1 / 2)` using `by ring`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[this, neg_div_neg_eq, mul_one_div]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem norm_integral_le (hC : ∀ x, 1 ≤ x → ‖E x‖ ≤ C * Real.sqrt x)
     {s : ℂ} (hs : 1 / 2 < s.re) :
@@ -119,18 +117,18 @@ end General
 variable (𝓕 : LFam) (χ : AddChar 𝓕.G ℂ)
 
 /- English proof (translation)
-Rewrite using `[← Finset.sum_mul, AddChar.sum_eq_ite, LFam.res, AddChar.one_eq_zero]`. Apply the tactic sequence `split_ifs <;> simp [mul_comm]`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem res_eq : 𝓕.res χ = ∑ g, χ g * (𝓕.κ : ℂ) := by
   rw [← Finset.sum_mul, AddChar.sum_eq_ite, LFam.res, AddChar.one_eq_zero]
   split_ifs <;> simp [mul_comm]
 
 /- English proof (translation)
-Establish `h : (∑ n ∈ Finset.Icc 1 ⌊x⌋₊, 𝓕.aChi χ n) - 𝓕.res χ * x = ∑ g, χ g * ((∑ n ∈ Finset.Icc 1 ⌊x⌋₊, 𝓕.a g n - 𝓕.κ * x : ℝ) : ℂ)`. Simplify using `only [LFam.aChi, res_eq]`. Rewrite using `[Finset.sum_comm, Finset.sum_mul, ← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun g _ => ?_` and prove the remaining obligations. Use `push_cast`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[← Finset.mul_sum]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h]`. Use `(norm_sum_le _ _).trans ?_` and prove the remaining obligations. Use `(Finset.sum_le_sum (g := fun _ => 10 * Real.sqrt x) fun g _ => ?_).trans ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[norm_mul, AddChar.norm_apply, one_mul, norm_real, Real.norm_eq_abs]`. Conclude with `𝓕.count g x hx`. Simplify using `only [Finset.sum_const, Finset.card_univ, nsmul_eq_mul]`. Use `mul_le_mul_of_nonneg_right 𝓕.card_le (by positivity : 0 ≤ 10 * Real.sqrt x)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem norm_rem_le (x : ℝ) (hx : 1 ≤ x) :
     ‖(∑ n ∈ Finset.Icc 1 ⌊x⌋₊, 𝓕.aChi χ n) - 𝓕.res χ * x‖ ≤ 10 * 𝓕.B * Real.sqrt x := by
@@ -152,7 +150,7 @@ theorem norm_rem_le (x : ℝ) (hx : 1 ≤ x) :
     linarith
 
 /- English proof (translation)
-The claim follows from `((measurable_from_top (f := fun m : ℕ => ∑ n ∈ Finset.Icc 1 m, 𝓕.aChi χ n)).comp Nat.measurable_floor).sub (measurable_ofReal.const_mul _)`.
+A detailed English derivation is pending.
 -/
 theorem measurable_rem :
     Measurable fun x : ℝ => (∑ n ∈ Finset.Icc 1 ⌊x⌋₊, 𝓕.aChi χ n) - 𝓕.res χ * x :=
@@ -160,25 +158,25 @@ theorem measurable_rem :
     Nat.measurable_floor).sub (measurable_ofReal.const_mul _)
 
 /- English proof (translation)
-The claim follows from `differentiableAt_integral (measurable_rem 𝓕 χ) (norm_rem_le 𝓕 χ) hs`.
+A detailed English derivation is pending.
 -/
 theorem differentiableAt_mel {s : ℂ} (hs : 1 / 2 < s.re) : DifferentiableAt ℂ (𝓕.mel χ) s :=
   differentiableAt_integral (measurable_rem 𝓕 χ) (norm_rem_le 𝓕 χ) hs
 
 /- English proof (translation)
-The claim follows from `norm_integral_le (norm_rem_le 𝓕 χ) hs`.
+A detailed English derivation is pending.
 -/
 theorem norm_mel_le {s : ℂ} (hs : 1 / 2 < s.re) : ‖𝓕.mel χ s‖ ≤ 10 * 𝓕.B / (s.re - 1 / 2) :=
   norm_integral_le (norm_rem_le 𝓕 χ) hs
 
 /- English proof (translation)
-Use `IsBigO.of_bound (Fintype.card 𝓕.G * 14) ?_` and prove the remaining obligations. Use `filter_upwards [eventually_ge_atTop 1] with n hn`. Establish `hn1 : (1 : ℝ) ≤ n` using `by exact_mod_cast hn`. Rewrite using `[Real.rpow_one, Real.norm_of_nonneg (Finset.sum_nonneg fun _ _ => norm_nonneg _), Real.norm_of_nonneg (Nat.cast_nonneg _)]`. Establish `h1 : ∀ k, ‖𝓕.aChi χ k‖ ≤ ∑ g, 𝓕.a g k` using `fun k => by`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `(norm_sum_le _ _).trans (Finset.sum_le_sum fun g _ => le_of_eq ?_)` and prove the remaining obligations. Rewrite using `[norm_mul, AddChar.norm_apply, one_mul, norm_real, Real.norm_of_nonneg (𝓕.a_nonneg g k)]`. Use `(Finset.sum_le_sum fun k _ => h1 k).trans ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`. Use `(Finset.sum_le_sum (g := fun _ => 14 * (n : ℝ)) fun g _ => ?_).trans (le_of_eq ?_)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h` using `(abs_le.1 (𝓕.count g n hn1)).2`. Rewrite `h` using `[Nat.floor_natCast]`. Establish `h2 : Real.sqrt n ≤ n` using `Real.sqrt_le_iff.2 ⟨by positivity, by nlinarith⟩`. Establish `h3 : 𝓕.κ * n ≤ 4 * n` using `mul_le_mul_of_nonneg_right 𝓕.κ_le (by positivity)`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Simplify using the standard rewrite rules.
 
-Simplify using `only [Finset.sum_const, Finset.card_univ, nsmul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem sum_norm_isBigO :
     (fun n : ℕ => ∑ k ∈ Finset.Icc 1 n, ‖𝓕.aChi χ k‖) =O[atTop] fun n => (n : ℝ) ^ (1 : ℝ) := by
@@ -202,11 +200,11 @@ theorem sum_norm_isBigO :
     ring
 
 /- English proof (translation)
-Rewrite using `[LSeries_eq_mul_integral' _ zero_le_one hs (sum_norm_isBigO 𝓕 χ)]`. Use `congr 1`. Establish `hlt : (-s).re < -1` using `by simpa using hs`. Establish `h1 : ∫ t in Set.Ioi (1 : ℝ), 𝓕.res χ * (t : ℂ) ^ (-s) = 𝓕.res χ / (s - 1)`. Rewrite using `[integral_const_mul, integral_Ioi_cpow_of_lt hlt zero_lt_one]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: -s + 1 = -(s - 1)` using `by ring`. Rewrite using `[ofReal_one, one_cpow, this, neg_div_neg_eq, mul_one_div]`. Rewrite using `[← h1, LFam.mel, ← integral_add (integrableOn_integrand (measurable_rem 𝓕 χ) (norm_rem_le 𝓕 χ) (by linarith)) ((integrableOn_Ioi_cpow_of_lt hlt zero_lt_one).const_mul _)]`. Use `setIntegral_congr_fun measurableSet_Ioi fun t ht => ?_` and prove the remaining obligations. Establish `ht0 : (t : ℂ) ≠ 0` using `ofReal_ne_zero.2 (zero_lt_one.trans ht).ne'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h2 : (t : ℂ) ^ (-s) = t * (t : ℂ) ^ (-s - 1)`. Rewrite using `[cpow_sub _ _ ht0, cpow_one]`. Clear the denominators using the available nonvanishing facts. Establish `h3 : -(s + 1) = -s - 1` using `by ring`. Rewrite using `[h2, h3]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -232,9 +230,9 @@ theorem LSeries_eq {s : ℂ} (hs : 1 < s.re) :
   ring
 
 /- English proof (translation)
-Establish `hB` using `𝓕.B_ge`. Establish `hκ : 0 ≤ 𝓕.κ` using `le_trans (by positivity) 𝓕.κ_ge`. Rewrite using `[LFam.res]`. Use `split_ifs`. Rewrite using `[norm_real, Real.norm_of_nonneg (by positivity)]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_le_mul 𝓕.κ_le 𝓕.card_le (by positivity) (by norm_num)`. Rewrite using `[norm_zero]`. Check the signs of the components of the expression.
+Check the signs of the components of the expression. A detailed English derivation is pending.
 -/
 theorem norm_res_le : ‖𝓕.res χ‖ ≤ 4 * 𝓕.B := by
   have hB := 𝓕.B_ge
@@ -247,7 +245,7 @@ theorem norm_res_le : ‖𝓕.res χ‖ ≤ 4 * 𝓕.B := by
     positivity
 
 /- English proof (translation)
-Rewrite using `[LFam.res]`. Use `split_ifs`. Conclude with `conj_ofReal _`. Conclude with `map_zero _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conj_res : (starRingEnd ℂ) (𝓕.res χ) = 𝓕.res χ := by
   rw [LFam.res]
@@ -256,9 +254,9 @@ theorem conj_res : (starRingEnd ℂ) (𝓕.res χ) = 𝓕.res χ := by
   · exact map_zero _
 
 /- English proof (translation)
-Rewrite using `[LFam.aChi, map_sum]`. Use `Finset.sum_congr rfl fun g _ => ?_` and prove the remaining obligations. Establish `h1 : χ g * χ g = 1`. Use `DFunLike.congr_fun h g` as an intermediate fact. Simplify using `using this`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[map_mul, conj_ofReal]`. Apply the tactic sequence `rcases mul_self_eq_one_iff.1 h1 with h2 | h2 <;> simp [h2]`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem conj_aChi (h : χ * χ = 1) (n : ℕ) : (starRingEnd ℂ) (𝓕.aChi χ n) = 𝓕.aChi χ n := by
   rw [LFam.aChi, map_sum]
@@ -270,11 +268,9 @@ theorem conj_aChi (h : χ * χ = 1) (n : ℕ) : (starRingEnd ℂ) (𝓕.aChi χ 
   rcases mul_self_eq_one_iff.1 h1 with h2 | h2 <;> simp [h2]
 
 /- English proof (translation)
-Rewrite using `[LFam.mel, LFam.mel, ← integral_conj]`. Use `setIntegral_congr_fun measurableSet_Ioi fun t ht => ?_` and prove the remaining obligations. Establish `ht0 : 0 < t` using `zero_lt_one.trans ht`. Establish `harg : (t : ℂ).arg ≠ Real.pi`. Rewrite using `[arg_ofReal_of_nonneg ht0.le]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Real.pi_ne_zero.symm`. Establish `h1 : (t : ℂ) ^ (-(starRingEnd ℂ) s - 1) = (starRingEnd ℂ) ((t : ℂ) ^ (-s - 1))`. Use `cpow_conj (t : ℂ) (-s - 1) harg` as an intermediate fact. Rewrite `this` using `[conj_ofReal, map_sub, map_neg, map_one]`. Conclude with `this`.
-
-Simplify using `only [map_mul, map_sub, map_sum, conj_aChi 𝓕 χ h, conj_res, conj_ofReal, h1]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mel_conj (h : χ * χ = 1) (s : ℂ) :
     𝓕.mel χ ((starRingEnd ℂ) s) = (starRingEnd ℂ) (𝓕.mel χ s) := by
@@ -291,23 +287,21 @@ theorem mel_conj (h : χ * χ = 1) (s : ℂ) :
   simp only [map_mul, map_sub, map_sum, conj_aChi 𝓕 χ h, conj_res, conj_ofReal, h1]
 
 /- English proof (translation)
-Introduce `𝓕 χ`. Use `⟨?_, fun s hs => ⟨?_, ?_⟩, fun s hs => ?_, fun h s => ?_⟩` and prove the remaining obligations. Use `DifferentiableOn.analyticOnNhd (fun z hz => ?_) (isOpen_lt continuous_const continuous_re)` and prove the remaining obligations. Establish `hm` using `differentiableAt_mel 𝓕 χ hz`. Use `DifferentiableAt.differentiableWithinAt ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Unfold `LFam.F`. Apply the tactic sequence `split_ifs <;> fun_prop`. Conclude with `LSeriesSummable_of_sum_norm_bigO (sum_norm_isBigO 𝓕 χ) zero_le_one hs`. Establish `hs1 : s - 1 ≠ 0` using `fun h => by`. Rewrite `hs` using `[sub_eq_zero.1 h]`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `at hs`. Rewrite using `[LSeries_eq 𝓕 χ hs, LFam.F]`. Use `split_ifs with h`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[LFam.res, h]`. Establish `hB` using `𝓕.B_ge`. Establish `hm : ‖𝓕.mel χ s‖ ≤ 200 * 𝓕.B`. Use `(norm_mel_le 𝓕 χ (by linarith)).trans ?_` and prove the remaining obligations. Rewrite using `[div_le_iff₀ (by linarith)]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Use the polynomial consequences of the given equalities and inequalities. Establish `hr` using `norm_res_le 𝓕 χ`. Establish `h0` using `norm_nonneg s`. Establish `h1 : ‖s * 𝓕.mel χ s‖ ≤ ‖s‖ * (200 * 𝓕.B)`. Rewrite using `[norm_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `mul_le_mul_of_nonneg_left hm h0`. Establish `hBs : 0 ≤ 𝓕.B * ‖s‖` using `by positivity`. Establish `hBs2 : 0 ≤ 𝓕.B * ‖s‖ ^ 2` using `by positivity`. Rewrite using `[LFam.F]`. Use `split_ifs`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : ‖s - 1‖ ≤ ‖s‖ + 1` using `by simpa using norm_sub_le s 1`. Establish `h3 : ‖(s - 1) * s * 𝓕.mel χ s‖ ≤ (‖s‖ + 1) * (‖s‖ * (200 * 𝓕.B))`. Rewrite using `[mul_assoc, norm_mul]`. Conclude with `mul_le_mul h2 h1 (norm_nonneg _) (by positivity)`. Establish `h4 : ‖𝓕.res χ * s‖ ≤ 4 * 𝓕.B * ‖s‖`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Use the polynomial consequences of the given equalities and inequalities. Use the polynomial consequences of the given equalities and inequalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[norm_mul]`. Conclude with `mul_le_mul_of_nonneg_right hr h0`. Use `(norm_add_le _ _).trans ?_` and prove the remaining obligations. Use the polynomial consequences of the given equalities and inequalities. Use the polynomial consequences of the given equalities and inequalities.
-
-Apply the tactic sequence `rw [LFam.F, LFam.F, mel_conj 𝓕 χ h] split_ifs <;> simp [conj_res]`.
+A detailed English derivation is pending.
 -/
 theorem continuation_growth : ∀ (𝓕 : LFam) (χ : AddChar 𝓕.G ℂ), AnalyticOnNhd ℂ (𝓕.F χ) {s | 1 / 2 < s.re} ∧ (∀ s : ℂ, 1 < s.re → LSeriesSummable (𝓕.aChi χ) s ∧ 𝓕.F χ s = (if χ = 1 then s - 1 else 1) * LSeries (𝓕.aChi χ) s) ∧ (∀ s : ℂ, 11 / 20 ≤ s.re → ‖𝓕.F χ s‖ ≤ 300 * 𝓕.B * (‖s‖ + 1) ^ 2) ∧ (χ * χ = 1 → ∀ s : ℂ, 𝓕.F χ ((starRingEnd ℂ) s) = (starRingEnd ℂ) (𝓕.F χ s)) := by
   intro 𝓕 χ

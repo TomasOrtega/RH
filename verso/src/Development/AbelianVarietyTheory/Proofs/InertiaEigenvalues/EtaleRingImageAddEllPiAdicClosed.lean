@@ -13,13 +13,13 @@ open scoped TensorProduct
 namespace GlobalTheory.Decompl
 
 /- English proof (translation)
-Use `set s : PowerSeries O := PowerSeries.mk fun n => PowerSeries.coeff (R := O) n (∑ i ∈ Finset.range (n + 1), PowerSeries.X ^ i * a i) with hs`. Use `⟨s, fun m => ?_⟩` and prove the remaining obligations. Establish `hdvd : PowerSeries.X ^ m ∣ s - ∑ i ∈ Finset.range m, PowerSeries.X ^ i * a i`. Rewrite using `[PowerSeries.X_pow_dvd_iff]`. Introduce `n hn`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_sub, hs, PowerSeries.coeff_mk, sub_eq_zero]`. Establish `key : ∀ d, PowerSeries.coeff (R` using `O) n (∑ i ∈ Finset.range (n + 1 + d), PowerSeries.X ^ i * a i) = PowerSeries.coeff (R := O) n (∑ i ∈ Finset.range (n + 1), PowerSeries.X ^ i * a i) := by`. Introduce `d`. Proceed by induction on `d with`. Consider the case `zero => rfl`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `succ d ih`. Rewrite using `[show n + 1 + (d + 1) = n + 1 + d + 1 by omega, Finset.sum_range_succ, map_add, ih, PowerSeries.coeff_X_pow_mul', if_neg (by omega), add_zero]`. Use `key (m - (n + 1))` as an intermediate fact. Rewrite `this` using `[show n + 1 + (m - (n + 1)) = m by omega]`. Conclude with `this.symm`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨b, hb⟩` from `hdvd`. Conclude with `⟨b, by rw [← hb]; ring⟩`.
+A detailed English derivation is pending.
 -/
 theorem powerSeries_exists_sum {O : Type} [CommRing O] (a : ℕ → PowerSeries O) :
     ∃ s : PowerSeries O, ∀ m, ∃ b,
@@ -47,9 +47,9 @@ theorem powerSeries_exists_sum {O : Type} [CommRing O] (a : ℕ → PowerSeries 
   exact ⟨b, by rw [← hb]; ring⟩
 
 /- English proof (translation)
-Use `choose s hs using fun k : ZMod n => powerSeries_exists_sum (fun i => a i k)`. Use `⟨s, fun m => ?_⟩` and prove the remaining obligations. Use `choose b hb using fun k => hs k m`. Use `⟨b, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `k`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[hb k]`. Unfold `letπ`. Simplify using `[Finset.sum_apply, Pi.pow_apply, Pi.mul_apply]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem letA_exists_sum {O : Type} [CommRing O] {n : ℕ} (a : ℕ → LetA O n) :
     ∃ s : LetA O n, ∀ m, ∃ b, s = ∑ i ∈ Finset.range m, letπ ^ i * a i + letπ ^ m * b := by
@@ -63,19 +63,17 @@ theorem letA_exists_sum {O : Type} [CommRing O] {n : ℕ} (a : ℕ → LetA O n)
   simp [Finset.sum_apply, Pi.pow_apply, Pi.mul_apply]
 
 /- English proof (translation)
-Unfold `Near at hsep hE hx`. Use `choose e he using hx`. Establish `hD : ∀ i, ∃ a r, f (e (i + 1) - e i) = t ^ i * ι a + (p : R) * r`. Introduce `i`. Take `⟨a0, r0, h0⟩` from `he i`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨a1, r1, h1⟩` from `he (i + 1)`. Use `⟨a0 - io π * a1, r0 - r1, ?_⟩` and prove the remaining obligations. Establish `hsplit : f (e (i + 1) - e i) = (x - f (e i)) - (x - f (e (i + 1)))`. Rewrite using `[map_sub]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hsplit, h0, h1, map_sub, map_mul, ht]`. Expand and normalize the polynomial expressions, which then agree. Use `choose a e' hae using fun i => hE i _ (hD i)`. Take `⟨s, hs⟩` from `hsum a`. Establish `hsumD : ∀ m, e m = e 0 + j (∑ i ∈ Finset.range m, π ^ i * a i) + (p : E) * ∑ i ∈ Finset.range m, e' i`.
+Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Introduce `m`. Proceed by induction on `m with`. Consider the case `zero => simp`. Consider the case `succ k ih`. Rewrite using `[Finset.sum_range_succ, Finset.sum_range_succ, map_add]`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Reduce the conclusion to the remaining proof obligations.
 
-Take the linear combination `hae k + ih`. Use `⟨e 0 + j s, hsep _ fun m => ?_⟩` and prove the remaining obligations. Take `⟨b, hb⟩` from `hs m`. Take `⟨a0, r0, h0⟩` from `he m`. Use `⟨a0 - io b, r0 + f (∑ i ∈ Finset.range m, e' i), ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `key : f (e 0 + j s) = f (e m) - (p : R) * f (∑ i ∈ Finset.range m, e' i) + t ^ m * ι (io b)`. Rewrite using `[hsumD m, hb]`. Simplify using `only [map_add, map_mul, map_pow, map_natCast, hext, ht]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[key, map_sub]`.
-
-Take the linear combination `h0`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem near_closed_abstract {A E S R : Type} [CommRing A] [CommRing E] [CommRing S] [CommRing R]
     (j : A →+* E) (io : A →+* S) (ι : S →+* R) (f : E →+* R) (p : ℕ) (π : A) (t : R)
@@ -119,11 +117,9 @@ theorem near_closed_abstract {A E S R : Type} [CommRing A] [CommRing E] [CommRin
 
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Take `⟨hsep, -⟩` from `GlobalTheory.T.nearPi_sep_complete_alt l P AI LL s`. Take `⟨hE, -⟩` from `GlobalTheory.T.etaleComparison_piAdic_filtration_mod_ell l P AI K s LL h W E`. Establish `hext : ∀ a, E.tie.ioE (algebraMap (LetA ↥(OL LL) (Module.finrank ℚ_[l] ↥(K0 K))) W.EE a) = inclR LL (E.tie.io a)`. Introduce `a`. Conclude with `E.tie.ioE_ext a`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `ht : inclR LL (E.tie.io letπ) = piR AI LL s`. Rewrite using `[E.tie.io_π]`. Both sides reduce to the same expression. Establish `hN : ∀ m y, NearPi AI LL s m y ↔ Near (inclR LL : RA LL →+* RW LL) l (piR AI LL s) m y` using `fun _ _ => Iff.rfl`. Simplify using `only [hN] at hsep hE hx`.
-
-Conclude with `near_closed_abstract (algebraMap _ W.EE) (E.tie.io : _ →+* RA LL) (inclR LL : RA LL →+* RW LL) (E.tie.ioE : W.EE →+* RW LL) l letπ (piR AI LL s) hext ht letA_exists_sum hsep hE x hx`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem ioE_closed_lemma (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P) (K : FinExt l)
     (s : ℕ) (LL : FinExt l) (h : Good K s LL) (W : Wach P K LL) (E : EtSit P AI K s LL h W) (x : RW LL)
@@ -145,7 +141,7 @@ private theorem ioE_closed_lemma (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI :
     (E.tie.ioE : W.EE →+* RW LL) l letπ (piR AI LL s) hext ht letA_exists_sum hsep hE x hx
 
 /- English proof (translation)
-Introduce `l _ P AI K s LL h W E x hx`. Conclude with `ioE_closed_lemma l P AI K s LL h W E x hx`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem ioE_closed : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P) (K : FinExt l) (s : ℕ) (LL : FinExt l) (h : Good K s LL) (W : Wach P K LL) (E : EtSit P AI K s LL h W) (x : RW LL), (∀ m, ∃ e, NearPi AI LL s m (x - E.tie.ioE e)) → ∃ e r, x - E.tie.ioE e = (l : RW LL) * r := by
   intro l _ P AI K s LL h W E x hx

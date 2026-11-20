@@ -5,15 +5,15 @@ open NumberField Matrix GlobalTheory.UPel.HT GlobalTheory.UPel.HT.Gen GlobalTheo
 open scoped TensorProduct
 
 /- English proof (translation)
-Introduce `E _ _ _ A n q hP`. Take `⟨e, he, hx, c', hc⟩` from `hP`. Use `⟨e ^ 3, Nat.Coprime.pow_left 3 he, fun f => ?_⟩` and prove the remaining obligations. Use `choose x hxf using fun i : Fin n => hx (((f.toAddMonoidHom.comp (AddMonoidHom.single _ i)).comp A.bar.toAddMonoidHom).toIntLinearMap)`. Use `⟨fun i => -((if (i : ℕ) = 0 then c' * (e : 𝓞 E) else c' ^ 2) * x i), ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `LinearMap.ext fun y => ?_` and prove the remaining obligations. Rewrite using `[Arith.EF_apply]`. Establish `key : ∀ i, A.hd n i * -((if (i : ℕ) = 0 then c' * (e : 𝓞 E) else c' ^ 2) * x i) * A.bar (y i) = ((e ^ 2 : ℕ) : 𝓞 E) * (x i * A.bar (y i))`. Introduce `i`. Simplify using `only [Arith.hd, Arith.dg]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Use `split_ifs`. Take the linear combination `((e : 𝓞 E) * x i * A.bar (y i)) * hc`. Take the linear combination `(c' * A.c + (e : 𝓞 E)) * x i * A.bar (y i) * hc`. Establish `hs : ∀ i, A.trd (x i * A.bar (y i)) = (e : ℤ) * f (Pi.single i (y i))`.
+Take a linear combination of the given relations to obtain the conclusion. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `i`. Rewrite using `[hxf i]`. Simplify using `[Arith.bar_bar]`. Rewrite using `[Finset.sum_congr rfl (fun i _ => key i), ← Finset.mul_sum, ← nsmul_eq_mul, map_nsmul, map_sum]`. Repeatedly rewrite using `[hs]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← Finset.mul_sum, ← map_sum, Finset.univ_sum_single]`. Simplify using `only [LinearMap.smul_apply, nsmul_eq_mul]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.W2.Seed.pFormPerfSt :
     FormPerfSt := by

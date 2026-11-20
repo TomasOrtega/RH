@@ -17,7 +17,7 @@ open MvPolynomial ReciprocityTheory.PGsh
 namespace GlobalTheory.CayleyBlock
 
 /- English proof (translation)
-Rewrite using `[map_pow, map_pow, cayDet, AlgHom.map_det, AlgHom.map_det]`. Use `congr 2`. Use extensionality with `i j`. Simplify using `[GlobalTheory.DomainDens.blockSym_apply, sumMap, blockEmb, Matrix.mvPolynomialX]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem det_pow_eq {p q : ℕ} (h1 : Fintype.card (Unit × Fin p × Fin q) = p * q) :
     (GlobalTheory.DomainDens.blockSym h1 ()).det ^ q = rename (blockEmb h1) (sumMap p q (cayDet p ℂ ^ q)) := by
@@ -27,9 +27,9 @@ theorem det_pow_eq {p q : ℕ} (h1 : Fintype.card (Unit × Fin p × Fin q) = p *
   simp [GlobalTheory.DomainDens.blockSym_apply, sumMap, blockEmb, Matrix.mvPolynomialX]
 
 /- English proof (translation)
-Rewrite using `[bigList, List.nodup_flatMap]`. Use `⟨fun b _ => (List.nodup_finRange p).map fun j k h => by simpa using congrArg (fun x => x.2.2) h, ?_⟩` and prove the remaining obligations. Use `(List.nodup_finRange q).imp fun {a b} hab => ?_` and prove the remaining obligations. Use `show List.Disjoint _ _`. Rewrite using `[List.disjoint_left]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x hx hy`. Simplify using `only [List.mem_map, List.mem_finRange, true_and] at hx hy`. Take `⟨j, rfl⟩` from `hx`. Take `⟨k, hk⟩` from `hy`. Conclude with `hab (congrArg Prod.fst hk).symm`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem bigList_nodup {p q : ℕ} (τ : Fin q → Equiv.Perm (Fin p)) : (bigList τ).Nodup := by
   rw [bigList, List.nodup_flatMap]
@@ -44,7 +44,7 @@ theorem bigList_nodup {p q : ℕ} (τ : Fin q → Equiv.Perm (Fin p)) : (bigList
   exact hab (congrArg Prod.fst hk).symm
 
 /- English proof (translation)
-Simplify using `[bigList, blockGraph, List.map_flatMap, Fin.sum_univ_def, List.map_map, Function.comp_def]`. Simplify using `[List.flatMap, List.sum_flatten, List.map_map, Function.comp_def]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem bigList_sum {p q : ℕ} (τ : Fin q → Equiv.Perm (Fin p)) :
     ((bigList τ).map fun v => Finsupp.single v 1).sum = blockGraph τ := by
@@ -52,9 +52,9 @@ theorem bigList_sum {p q : ℕ} (τ : Fin q → Equiv.Perm (Fin p)) :
   simp [List.flatMap, List.sum_flatten, List.map_map, Function.comp_def]
 
 /- English proof (translation)
-Proceed by induction on `P using MvPolynomial.induction_on with`. Consider the case `C a => simp [sumMap]`. Consider the case `add f g hf hg => simp only [map_add, hf, hg]`. Consider the case `mul_X f w hf`. Simplify using `only [map_mul, Derivation.leibniz, hf, smul_eq_mul, map_add]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules.
 
-Use `congr 1`. Simplify using `[sumMap, pderiv_X, Pi.single_apply, Prod.ext_iff]`. Apply the tactic sequence `by_cases h : w.1 = v.2.1 ∧ w.2 = v.2.2 <;> simp [h, Finset.filter_eq']`.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem pderiv_sumMap {p q : ℕ} (v : Fin q × Fin p × Fin p) (P : MvPolynomial (Fin p × Fin p) ℂ) :
     pderiv v (sumMap p q P) = sumMap p q (pderiv v.2 P) := by
@@ -68,9 +68,9 @@ theorem pderiv_sumMap {p q : ℕ} (v : Fin q × Fin p × Fin p) (P : MvPolynomia
     by_cases h : w.1 = v.2.1 ∧ w.2 = v.2.2 <;> simp [h, Finset.filter_eq']
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => simp [dList]`. Consider the case `cons v l ih`. Simplify using `only [dList, List.map_cons, List.prod_cons, Module.End.mul_apply] at ih ⊢`. Rewrite using `[ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `pderiv_sumMap v _`.
+A detailed English derivation is pending.
 -/
 theorem dList_sumMap {p q : ℕ} (l : List (Fin q × Fin p × Fin p)) (P : MvPolynomial (Fin p × Fin p) ℂ) :
     dList l (sumMap p q P) = sumMap p q (dList (l.map fun v => v.2) P) := by
@@ -82,13 +82,13 @@ theorem dList_sumMap {p q : ℕ} (l : List (Fin q × Fin p × Fin p)) (P : MvPol
     exact pderiv_sumMap v _
 
 /- English proof (translation)
-Simplify using `[bigList, smallList, List.map_flatMap, List.map_map, Function.comp_def]`.
+Simplify using the standard rewrite rules.
 -/
 theorem bigList_map {p q : ℕ} (τ : Fin q → Equiv.Perm (Fin p)) : (bigList τ).map (fun v => v.2) = smallList τ := by
   simp [bigList, smallList, List.map_flatMap, List.map_map, Function.comp_def]
 
 /- English proof (translation)
-Proceed by induction on `P using MvPolynomial.induction_on with`. Consider the case `C a => simp [sumMap]`. Consider the case `add f g hf hg => simp only [map_add, hf, hg]`. Consider the case `mul_X f w hf => simp [sumMap, constantCoeff_X]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem constantCoeff_sumMap (p q : ℕ) (P : MvPolynomial (Fin p × Fin p) ℂ) :
     constantCoeff (sumMap p q P) = constantCoeff P := by
@@ -102,9 +102,9 @@ end GlobalTheory.CayleyBlock
 open GlobalTheory.CayleyBlock ReciprocityTheory.PGsh MvPolynomial in
 
 /- English proof (translation)
-Introduce `p q h1`. Rewrite using `[det_pow_eq, GlobalTheory.T.topDegreeFormCoeff_rename_cayleyBlockSymbolEmbedding, ← GlobalTheory.T.constantCoeff_cayleyOperator_pow_determinant_pow, GlobalTheory.T.cayleyOperator_pow_eq_signed_sum_partialDerivs, LinearMap.sum_apply]`. Establish `key : ∀ τ : Fin q → Equiv.Perm (Fin p), (sgnProd τ : ℂ) * coeff (blockGraph τ) (sumMap p q (cayDet p ℂ ^ q)) = constantCoeff (sgnProd τ • dList (smallList τ) (cayDet p ℂ ^ q))`. Introduce `τ`. Rewrite using `[← bigList_sum, ← zero_add ((bigList τ).map _).sum, ← GlobalTheory.T.coeff_composedPartialDerivList_of_nodup _ (bigList_nodup τ) 0 (fun _ _ => rfl), dList_sumMap, bigList_map, ← constantCoeff_sumMap p q, map_zsmul, zsmul_eq_mul, ← map_intCast (C : ℂ →+* MvPolynomial (Fin q × Fin …`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Repeatedly rewrite using `[LinearMap.smul_apply, key, map_sum]`.
+Rewrite the conclusion repeatedly using the stated equalities.
 -/
 theorem GlobalTheory.topCoeff_blockSym_det_pow : ∀ (p q : ℕ) (h1 : Fintype.card (Unit × Fin p × Fin q) = p * q),
     GlobalTheory.GoodMetric.topCoeff ((GlobalTheory.DomainDens.blockSym h1 ()).det ^ q) =

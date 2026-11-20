@@ -17,28 +17,28 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r g : ℕ}
   (X : Data E r) (bas : (Fin g ⊕ Fin g → ℤ) ≃ₗ[ℤ] X.Λ) (idx : Fin g ≃ X.Ψ × Fin r) (x : Frame X.Ψ r)
 
 /- English proof (translation)
-Simplify using `only [hx, mulVec_add, add_dotProduct]`.
+Simplify using the standard rewrite rules.
 -/
 theorem fock_hx_add_left (z z' w : Fin g → ℂ) :
     hx X bas idx x (z + z') w = hx X bas idx x z w + hx X bas idx x z' w := by
   simp only [hx, mulVec_add, add_dotProduct]
 
 /- English proof (translation)
-Simplify using `only [hx, mulVec_add, star_add, dotProduct_add]`.
+Simplify using the standard rewrite rules.
 -/
 theorem fock_hx_add_right (z w w' : Fin g → ℂ) :
     hx X bas idx x z (w + w') = hx X bas idx x z w + hx X bas idx x z w' := by
   simp only [hx, mulVec_add, star_add, dotProduct_add]
 
 /- English proof (translation)
-Simplify using `only [hx, mulVec_smul, smul_dotProduct, smul_eq_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem fock_hx_smul_left (c : ℂ) (z w : Fin g → ℂ) :
     hx X bas idx x (c • z) w = c * hx X bas idx x z w := by
   simp only [hx, mulVec_smul, smul_dotProduct, smul_eq_mul]
 
 /- English proof (translation)
-Simplify using `only [hx, mulVec_smul, star_smul, dotProduct_smul, smul_eq_mul]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem fock_hx_smul_right (c : ℂ) (z w : Fin g → ℂ) :
     hx X bas idx x z (c • w) = conj c * hx X bas idx x z w := by
@@ -46,24 +46,24 @@ theorem fock_hx_smul_right (c : ℂ) (z w : Fin g → ℂ) :
   rfl
 
 /- English proof (translation)
-Simplify using `[hx]`.
+Simplify using the standard rewrite rules.
 -/
 theorem fock_hx_zero_right (z : Fin g → ℂ) : hx X bas idx x z 0 = 0 := by
   simp [hx]
 
 /- English proof (translation)
-Simplify using `only [hx, dotProduct, mulVec]`. Use `fun_prop`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem fock_hx_differentiable (w : Fin g → ℂ) : Differentiable ℂ fun z => hx X bas idx x z w := by
   simp only [hx, dotProduct, mulVec]
   fun_prop
 
 /- English proof (translation)
-Establish `h` using `imInv_isSymm idx hs hd`. Establish `hr : ∀ i j, conj (imInv X bas idx x i j) = imInv X bas idx x j i`. Introduce `i j`. Rewrite using `[h.apply i j]`. Simplify using `[ThFr.imInv]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [hx]`. Generalize the expression as in `hMat X bas idx x *ᵥ z = u`. Generalize the expression as in `hMat X bas idx x *ᵥ w = v`. Simplify using `only [dotProduct, mulVec, map_sum, map_mul, Finset.mul_sum, Pi.star_apply, hr, RCLike.star_def, conj_conj]`. Rewrite using `[Finset.sum_comm]`.
+Simplify using the standard rewrite rules. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations.
 -/
 theorem fock_hx_conj (hs : IsSympl X bas) (hd : x ∈ X.dom) (z w : Fin g → ℂ) :
     hx X bas idx x w z = conj (hx X bas idx x z w) := by
@@ -83,17 +83,17 @@ theorem fock_hx_conj (hs : IsSympl X bas) (hd : x ∈ X.dom) (z w : Fin g → �
 end
 
 /- English proof (translation)
-Introduce `E _ _ _ r X g bas idx n hs hn x hd k θ`. Use `⟨fun a b => ?_, ?_, fun N a => ?_, fun hθ a => ?_, fun th κ φ hφ h y z => ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `z`. Simplify using `only [fock, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[← _root_.mul_assoc, ← _root_.mul_assoc, ← Complex.exp_add, ← Complex.exp_add]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[add_assoc z a b]`. Use `congr 2`. Simplify using `only [fock_hx_add_left, fock_hx_add_right, fock_hx_smul_left, smul_add]`. Rewrite using `[fock_hx_conj X bas idx x hs hd a b]`. Use `Complex.sub_conj (hx X bas idx x a b)` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Move the coercions through the operations in `at this`. Take the linear combination `(-(k : ℂ) * Real.pi / 2) * this`. Use function extensionality and compare the values at `z`. Simplify using `[fock, fock_hx_zero_right]`. Use function extensionality and compare the values at `z`.
+Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [fock, smul_add]`. Use `congr 2`. Simplify using `only [fock_hx_add_left, fock_hx_smul_left, fock_hx_smul_right, map_natCast]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `h1` using `fock_hx_differentiable X bas idx x a`. Unfold `fock`. Use `Differentiable.mul (Differentiable.cexp (Differentiable.neg (Differentiable.const_mul ?_ _))) ?_` and prove the remaining obligations. Conclude with `h1.comp (differentiable_id.add_const _)`. Conclude with `hθ.comp (differentiable_id.add_const _)`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[((heisG_laws E r X g bas idx n hs hn).2.2.2 y φ hφ).2.2.2.2 x hd z]`. Simplify using `only [fock, Finset.prod_mul_distrib]`. Rewrite using `[h fun b => z b + pv X idx x (y b), ← Complex.exp_sum, mul_left_comm]`. Use `congr 2`. Simplify using `only [hx, pv, Finset.mul_sum, Finset.sum_neg_distrib, Nat.cast_one, _root_.one_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem fock_laws : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (X : Data E r) (g : ℕ) (bas : (Fin g ⊕ Fin g → ℤ) ≃ₗ[ℤ] X.Λ) (idx : Fin g ≃ X.Ψ × Fin r) (n : ℕ), IsSympl X bas → Even n → ∀ x ∈ X.dom, ∀ (k : ℕ) (θ : (Fin g → ℂ) → ℂ), (∀ a b, fock X bas idx x k a (fock X bas idx x k b θ) = cexp (-((k : ℂ) * Real.pi * I * ((hx X bas idx x a b).im : ℂ))) • fock X bas idx x k (a + b) θ) ∧ fock X bas idx x k 0 θ = θ ∧ (∀ (N : ℕ) a, fock X bas idx x (N ^ 2) a (fun z => θ ((N : ℂ) • z)) = fun z => fock X bas idx x 1 ((N : ℂ) • a) θ ((N : ℂ) • z)) ∧ (Differentiable ℂ θ → ∀ a, Differentiable ℂ (fock X bas idx x k a θ)) ∧ ∀ (th : Fin n → (Fin g → ℂ) → ℂ) (κ : ℂ) (φ : TF n g), IsSB φ → (∀ z : Fin n → Fin g → ℂ, ∏ b, th b (z b) = κ * thA X bas idx φ x z) → ∀ (y : Matrix (Fin n) (Fin r) E) (z : Fin n → Fin g → ℂ), ∏ b, fock X bas idx x 1 (pv X idx x (y b)) (th b) (z b) = κ * thA X bas idx (heisG X bas y φ) x z := by
   intro E _ _ _ r X g bas idx n hs hn x hd k θ

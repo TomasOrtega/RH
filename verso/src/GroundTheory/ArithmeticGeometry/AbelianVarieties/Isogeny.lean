@@ -16,7 +16,7 @@ def yOf {K : Type*} [Field K] (W : WeierstrassCurve K) : W.toAffine.Point → K
   | .some _ y _ => y
 
 /- English proof (translation)
-Consider the cases of `P with`. Consider the case `zero => exact absurd rfl hP`. Consider the case `some x y h => exact ⟨h, rfl⟩`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 -/
 theorem eq_some_xOf_yOf {K : Type*} [Field K] (W : WeierstrassCurve K) {P : W.toAffine.Point}
     (hP : P ≠ 0) : ∃ h : W.toAffine.Nonsingular (xOf W P) (yOf W P), P = .some _ _ h := by
@@ -59,7 +59,7 @@ noncomputable def y : E.toAffine.FunctionField := yOf _ φ.1
 
 omit [E.IsElliptic] [E'.IsElliptic] in
 /- English proof (translation)
-Take `⟨⟨x, y, h, he, -⟩, -⟩` from `φ.2`. Simplify using `only [Isogeny.x, Isogeny.y, he]`. Conclude with `h`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem nonsingular : (E'.baseChange E.toAffine.FunctionField).toAffine.Nonsingular φ.x φ.y := by
   obtain ⟨⟨x, y, h, he, -⟩, -⟩ := φ.2
@@ -68,7 +68,7 @@ theorem nonsingular : (E'.baseChange E.toAffine.FunctionField).toAffine.Nonsingu
 
 omit [E.IsElliptic] [E'.IsElliptic] in
 /- English proof (translation)
-Take `⟨⟨x, y, h, he, ht⟩, -⟩` from `φ.2`. Simplify using `only [Isogeny.x, he]`. Conclude with `ht`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem transcendental_alt : Transcendental F φ.x := by
   obtain ⟨⟨x, y, h, he, ht⟩, -⟩ := φ.2
@@ -80,13 +80,13 @@ noncomputable def comap : E'.toAffine.FunctionField →ₐ[F] E.toAffine.Functio
 
 omit [E.IsElliptic] [E'.IsElliptic] in
 /- English proof (translation)
-The claim follows from `liftPoint_genX _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem comap_genX : φ.comap (genX E') = φ.x := liftPoint_genX _ _ _
 
 omit [E.IsElliptic] [E'.IsElliptic] in
 /- English proof (translation)
-The claim follows from `liftPoint_genY _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem comap_genY : φ.comap (genY E') = φ.y := liftPoint_genY _ _ _
 
@@ -110,14 +110,14 @@ noncomputable def ratEmb : RatFunc F →ₐ[F] E.toAffine.FunctionField :=
 
 omit [E.IsElliptic] in
 /- English proof (translation)
-The claim follows from `RatFunc.liftAlgHom_injective _ (transcendental_iff_injective.mp (transcendental_genX E))`.
+A detailed English derivation is pending.
 -/
 theorem ratEmb_injective : Function.Injective (ratEmb E) :=
   RatFunc.liftAlgHom_injective _ (transcendental_iff_injective.mp (transcendental_genX E))
 
 omit [E.IsElliptic] in
 /- English proof (translation)
-The claim follows from `RatFunc.liftAlgHom_apply_div _ _ p q`.
+A detailed English derivation is pending.
 -/
 theorem ratEmb_div (p q : F[X]) :
     ratEmb E (algebraMap _ _ p / algebraMap _ _ q) = aeval (genX E) p / aeval (genX E) q :=
@@ -125,7 +125,7 @@ theorem ratEmb_div (p q : F[X]) :
 
 omit [E.IsElliptic] in
 /- English proof (translation)
-Use `ratEmb_div E X 1` as an intermediate fact. Rewrite `this` using `[map_one, div_one, map_one, div_one, aeval_X, RatFunc.algebraMap_X]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ratEmb_X : ratEmb E RatFunc.X = genX E := by
   have := ratEmb_div E X 1
@@ -133,7 +133,7 @@ theorem ratEmb_X : ratEmb E RatFunc.X = genX E := by
   exact this
 
 /- English proof (translation)
-Use extensionality with `z`. Simplify using `only [IntermediateField.mem_map, IntermediateField.mem_top, true_and, AlgHom.mem_fieldRange]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem map_top_eq_fieldRange {K L : Type*} [Field K] [Field L] [Algebra F K] [Algebra F L]
     (f : K →ₐ[F] L) : (⊤ : IntermediateField F K).map f = f.fieldRange := by
@@ -142,13 +142,13 @@ theorem map_top_eq_fieldRange {K L : Type*} [Field K] [Field L] [Algebra F K] [A
 
 omit [E.IsElliptic] in
 /- English proof (translation)
-Rewrite using `[← map_top_eq_fieldRange, ← RatFunc.adjoin_X, adjoin_map, Set.image_singleton, ratEmb_X]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem fieldRange_ratEmb : (ratEmb E).fieldRange = F⟮genX E⟯ := by
   rw [← map_top_eq_fieldRange, ← RatFunc.adjoin_X, adjoin_map, Set.image_singleton, ratEmb_X]
 
 /- English proof (translation)
-Rewrite using `[ne_eq, aeval_genX_eq_zero_iff]`. Conclude with `ΨSq_ne_zero_of_ne_zero E hn`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem aeval_genX_ΨSq_ne_zero {n : ℤ} (hn : n ≠ 0) : aeval (genX E) (E.ΨSq n) ≠ 0 := by
   rw [ne_eq, aeval_genX_eq_zero_iff]
@@ -156,7 +156,7 @@ theorem aeval_genX_ΨSq_ne_zero {n : ℤ} (hn : n ≠ 0) : aeval (genX E) (E.ΨS
 
 omit [E.IsElliptic] in
 /- English proof (translation)
-The claim follows from `eval_map_algebraMap _ _`.
+A detailed English derivation is pending.
 -/
 private theorem baseChange_eval (p : F[X]) :
     (p.map (algebraMap F E.toAffine.FunctionField)).eval (genX E) = aeval (genX E) p :=
@@ -170,7 +170,7 @@ theorem genericPoint_eq :
   rfl
 
 /- English proof (translation)
-Rewrite using `[genericPoint_eq, ne_eq, zsmul_eq_zero_iff]`. Use `show ¬((E.map (algebraMap F E.toAffine.FunctionField)).ΨSq n).eval (genX E) = 0`. Rewrite using `[map_ΨSq, baseChange_eval]`. Conclude with `aeval_genX_ΨSq_ne_zero E hn`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem zsmul_genericPoint_ne_zero {n : ℤ} (hn : n ≠ 0) : n • genericPoint E ≠ 0 := by
   rw [genericPoint_eq, ne_eq, zsmul_eq_zero_iff]
@@ -179,9 +179,7 @@ theorem zsmul_genericPoint_ne_zero {n : ℤ} (hn : n ≠ 0) : n • genericPoint
   exact aeval_genX_ΨSq_ne_zero E hn
 
 /- English proof (translation)
-Rewrite using `[genericPoint_eq, xOf_zsmul]`. Use `show ((E.map (algebraMap F E.toAffine.FunctionField)).Φ n).eval (genX E) / ((E.map (algebraMap F E.toAffine.FunctionField)).ΨSq n).eval (genX E) = _`. Rewrite using `[map_Φ, map_ΨSq, baseChange_eval, baseChange_eval]`. Use `show ((E.map (algebraMap F E.toAffine.FunctionField)).ΨSq n).eval (genX E) ≠ 0`. Rewrite using `[map_ΨSq, baseChange_eval]`.
-
-Conclude with `aeval_genX_ΨSq_ne_zero E hn`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem xOf_zsmul_genericPoint {n : ℤ} (hn : n ≠ 0) :
     xOf _ (n • genericPoint E) = aeval (genX E) (E.Φ n) / aeval (genX E) (E.ΨSq n) := by
@@ -198,20 +196,20 @@ noncomputable def ratΦΨ (n : ℤ) : RatFunc F :=
 
 omit [E.IsElliptic] in
 /- English proof (translation)
-The claim follows from `ratEmb_div E _ _`.
+A detailed English derivation is pending.
 -/
 theorem ratEmb_ratΦΨ (n : ℤ) :
     ratEmb E (ratΦΨ E n) = aeval (genX E) (E.Φ n) / aeval (genX E) (E.ΨSq n) :=
   ratEmb_div E _ _
 
 /- English proof (translation)
-Establish `hΨ0 : E.ΨSq n ≠ 0` using `ΨSq_ne_zero_of_ne_zero E hn`. Establish `hN : 0 < n.natAbs ^ 2` using `by have := Int.natAbs_pos.mpr hn; positivity`. Establish `hΦdeg` using `natDegree_Φ E n`. Establish `hΦ0 : E.Φ n ≠ 0` using `fun h => by rw [h, natDegree_zero] at hΦdeg; omega`. Establish `hnum_dvd : (ratΦΨ E n).num ∣ E.Φ n` using `RatFunc.num_div_dvd _ hΨ0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hden_dvd : (ratΦΨ E n).denom ∣ E.ΨSq n` using `RatFunc.denom_div_dvd _ _`. Establish `hrf0 : ratΦΨ E n ≠ 0` using `div_ne_zero ((map_ne_zero_iff _ (IsFractionRing.injective F[X] (RatFunc F))).mpr hΦ0) ((map_ne_zero_iff _ (IsFractionRing.injective F[X] (RatFunc F))).mpr hΨ0)`. Establish `hnum0 : (ratΦΨ E n).num ≠ 0` using `by rwa [ne_eq, RatFunc.num_eq_zero_iff]`. Establish `hcross : (ratΦΨ E n).num * E.ΨSq n = E.Φ n * (ratΦΨ E n).denom`. Establish `h1` using `RatFunc.num_div_denom (ratΦΨ E n)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `conv_rhs at h1 => rw [ratΦΨ]`. Establish `hb : algebraMap F[X] (RatFunc F) (ratΦΨ E n).denom ≠ 0` using `RatFunc.algebraMap_ne_zero (RatFunc.denom_ne_zero _)`. Establish `hd : algebraMap F[X] (RatFunc F) (E.ΨSq n) ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective F[X] (RatFunc F))).mpr hΨ0`. Rewrite `h1` using `[div_eq_div_iff hb hd, ← map_mul, ← map_mul]`. Conclude with `IsFractionRing.injective F[X] (RatFunc F) h1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hΦ_dvd : E.Φ n ∣ (ratΦΨ E n).num` using `(isCoprime_Φ_ΨSq E n).dvd_of_dvd_mul_right ⟨_, hcross⟩`. Establish `hnum : (ratΦΨ E n).num.natDegree = n.natAbs ^ 2` using `le_antisymm (hΦdeg ▸ natDegree_le_of_dvd hnum_dvd hΦ0) (hΦdeg ▸ natDegree_le_of_dvd hΦ_dvd hnum0)`. Establish `hden : (ratΦΨ E n).denom.natDegree ≤ n.natAbs ^ 2 - 1` using `(natDegree_le_of_dvd hden_dvd hΨ0).trans (natDegree_ΨSq_le E n)`. Rewrite using `[hnum]`. Conclude with `max_eq_left (hden.trans (Nat.sub_le _ _))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem max_natDegree_ratΦΨ {n : ℤ} (hn : n ≠ 0) :
     max (ratΦΨ E n).num.natDegree (ratΦΨ E n).denom.natDegree = n.natAbs ^ 2 := by
@@ -245,9 +243,9 @@ theorem max_natDegree_ratΦΨ {n : ℤ} (hn : n ≠ 0) :
   exact max_eq_left (hden.trans (Nat.sub_le _ _))
 
 /- English proof (translation)
-Apply `RatFunc.transcendental_of_ne_C` to reduce the goal to its premises. Introduce and unpack `⟨c, hc⟩`. Establish `h` using `max_natDegree_ratΦΨ E hn`. Rewrite `h` using `[hc, RatFunc.num_C, RatFunc.denom_C, natDegree_C, natDegree_one, max_self]`. Use `Int.natAbs_pos.mpr hn` as an intermediate fact.
+Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `: 0 < n.natAbs ^ 2` using `by positivity`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem transcendental_ratΦΨ {n : ℤ} (hn : n ≠ 0) : Transcendental F (ratΦΨ E n) := by
   apply RatFunc.transcendental_of_ne_C
@@ -271,7 +269,7 @@ noncomputable def mulIsogeny (n : ℤ) (hn : n ≠ 0) : Isogeny E E :=
         map_liftPoint_genericPoint E h₃ t₃, ← hadd, zsmul_add]⟩
 
 /- English proof (translation)
-The claim follows from `xOf_zsmul_genericPoint E hn`.
+A detailed English derivation is pending.
 -/
 theorem mulIsogeny_alt {n : ℤ} (hn : n ≠ 0) :
     (mulIsogeny E n hn).x = aeval (genX E) (E.Φ n) / aeval (genX E) (E.ΨSq n) :=
@@ -284,26 +282,24 @@ section Degree
 variable (E : WeierstrassCurve F) [E.IsElliptic]
 
 /- English proof (translation)
-Rewrite using `[RatFunc.finrank_eq_max_natDegree, max_natDegree_ratΦΨ E hn]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem finrank_adjoin_ratΦΨ {n : ℤ} (hn : n ≠ 0) :
     Module.finrank (IntermediateField.adjoin F {ratΦΨ E n}) (RatFunc F) = n.natAbs ^ 2 := by
   rw [RatFunc.finrank_eq_max_natDegree, max_natDegree_ratΦΨ E hn]
 
 /- English proof (translation)
-Use `set φ := mulIsogeny E n hn`. Use `set α := φ.comap`. Use `set E1 : IntermediateField F E.toAffine.FunctionField := F⟮genX E⟯`. Use `set M := α.fieldRange`. Use `set E0 : IntermediateField F E.toAffine.FunctionField := F⟮φ.x⟯`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Establish `hx : φ.x = ratEmb E (ratΦΨ E n)` using `by rw [ratEmb_ratΦΨ]; exact mulIsogeny_alt E hn`. Establish `hxE1 : φ.x ∈ E1`. Establish `hE1 : E1 = (ratEmb E).fieldRange` using `(fieldRange_ratEmb E).symm`. Rewrite using `[hx, hE1]`. Conclude with `⟨_, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hxM : φ.x ∈ M` using `⟨genX E, φ.comap_genX⟩`. Establish `h01 : E0 ≤ E1` using `adjoin_simple_le_iff.mpr hxE1`. Establish `h0M : E0 ≤ M` using `adjoin_simple_le_iff.mpr hxM`. Establish `e1 : relfinrank E1 ⊤ = 2` using `by rw [relfinrank_top_right, finrank_adjoin_genX]`. Establish `e2 : relfinrank E0 M = 2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hE0 : E0 = E1.map α`. Rewrite using `[adjoin_map, Set.image_singleton, φ.comap_genX]`. Establish `hM : M = (⊤ : IntermediateField F _).map α` using `(map_top_eq_fieldRange α).symm`. Rewrite using `[hE0, hM, relfinrank_map_map, e1]`. Establish `e3 : relfinrank E0 E1 = n.natAbs ^ 2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hE0 : E0 = (F⟮ratΦΨ E n⟯).map (ratEmb E)`. Rewrite using `[adjoin_map, Set.image_singleton, ← hx]`. Establish `hE1 : E1 = (⊤ : IntermediateField F (RatFunc F)).map (ratEmb E)`. Rewrite using `[map_top_eq_fieldRange, fieldRange_ratEmb]`. Rewrite using `[hE0, hE1, relfinrank_map_map, relfinrank_top_right, finrank_adjoin_ratΦΨ E hn]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `t1` using `relfinrank_mul_relfinrank h01 (le_top : E1 ≤ ⊤)`. Establish `t2` using `relfinrank_mul_relfinrank h0M (le_top : M ≤ ⊤)`. Rewrite `t1` using `[e1, e3]`. Rewrite `t2` using `[e2, ← t1]`. Establish `hdeg : φ.degree = relfinrank M ⊤` using `by rw [Isogeny.degree, relfinrank_top_right]`.
-
-Rewrite using `[hdeg]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem degree_mulIsogeny {n : ℤ} (hn : n ≠ 0) : (mulIsogeny E n hn).degree = n.natAbs ^ 2 := by
   set φ := mulIsogeny E n hn
@@ -346,13 +342,13 @@ end Degree
 section Separable
 
 /- English proof (translation)
-Establish `hD : b ^ 2 + 4 * c ≠ 0` using `fun h => hD' (by`. Rewrite using `[← map_pow, ← map_ofNat (algebraMap L K) 4, ← map_mul, ← map_add, h, map_zero])`. Establish `hq' : derivative (X ^ 2 + C b * X - C c : L[X]) = C 2 * X + C b`. Simplify using `only [derivative_sub, derivative_add, derivative_X_pow, derivative_C_mul_X, derivative_C]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Establish `hsep : (X ^ 2 + C b * X - C c : L[X]).Separable`. Rewrite using `[Polynomial.separable_def, hq']`. Use `⟨C (-4 * (b ^ 2 + 4 * c)⁻¹), C (b ^ 2 + 4 * c)⁻¹ * (C 2 * X + C b), ?_⟩` and prove the remaining obligations. Establish `e : (C 2 * X + C b) ^ 2 - 4 * (X ^ 2 + C b * X - C c) = C (b ^ 2 + 4 * c)`. Simplify using `only [map_add, map_pow, map_mul, map_ofNat]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [map_mul, map_neg, map_ofNat]`. Expand and normalize the polynomial expressions, which then agree. Use `_ = 1 := by rw [e, ← C_mul, inv_mul_cancel₀ hD, C_1]`.
+Expand and normalize the polynomial expressions, which then agree. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `hq : aeval y (X ^ 2 + C b * X - C c : L[X]) = 0`. Simplify using `only [map_sub, map_add, map_mul, map_pow, aeval_X, aeval_C]`. Conclude with `hy`. Conclude with `hsep.of_dvd (minpoly.dvd L y hq)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isSeparable_of_quadratic {L K : Type*} [Field L] [Field K] [Algebra L K] {y : K} (b c : L)
     (hy : y ^ 2 + algebraMap L K b * y - algebraMap L K c = 0)
@@ -381,11 +377,11 @@ theorem isSeparable_of_quadratic {L K : Type*} [Field L] [Field K] [Algebra L K]
 variable (E : WeierstrassCurve F) [E.IsElliptic]
 
 /- English proof (translation)
-Establish `hg : genX E ∈ extendScalars hL` using `(mem_extendScalars hL).mpr (mem_adjoin_simple_self F _)`. Establish `hcst : ∀ a : F, algebraMap F E.toAffine.FunctionField a ∈ extendScalars hL` using `fun a => (mem_extendScalars hL).mpr (IntermediateField.algebraMap_mem _ a)`. Use `isSeparable_of_quadratic (⟨algebraMap F _ E.a₁ * genX E + algebraMap F _ E.a₃, add_mem (mul_mem (hcst _) hg) (hcst _)⟩) (⟨genX E ^ 3 + algebraMap F _ E.a₂ * genX E ^ 2 + algebraMap F _ E.a₄ * genX E + algebraMap F _ E.a₆, add_mem (add_mem (add_mem (pow_mem hg 3) (mul_mem (hcst _) …` and prove the remaining obligations. Establish `e` using `(equation_iff _ _).mp (equation_gen E)`. Simplify using `only [WeierstrassCurve.baseChange, WeierstrassCurve.map_a₁, WeierstrassCurve.map_a₂, WeierstrassCurve.map_a₃, WeierstrassCurve.map_a₄, WeierstrassCurve.map_a₆] at e`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Express the relevant statement in the definitionally equal form `genY E ^ 2 + (algebraMap F _ E.a₁ * genX E + algebraMap F _ E.a₃) * genY E - (genX E ^ 3 + algebraMap F _ E.a₂ * genX E ^ 2 + algebraMap F _ E.a₄ * genX E + algebraMap F _ E.a₆) = 0`. Take the linear combination `e`. Introduce `h'`. Simplify using `only [IntermediateField.algebraMap_apply] at h'`. Establish `: aeval (genX E) E.Ψ₂Sq = 0`.
+Express the relevant assertion in an equivalent form by its definition. Take a linear combination of the given relations to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[← h']`. Simplify using `only [Ψ₂Sq, map_add, map_mul, map_pow, aeval_C, aeval_X, b₂, b₄, b₆, map_ofNat]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `this` using `[aeval_genX_eq_zero_iff]`. Conclude with `Ψ₂Sq_ne_zero E this`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isSeparable_genY (L : IntermediateField F E.toAffine.FunctionField)
     (hL : L ≤ F⟮genX E⟯) : IsSeparable (extendScalars hL) (genY E) := by

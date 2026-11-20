@@ -11,13 +11,13 @@ namespace GlobalTheory
 open IsLocalRing in
 
 /- English proof (translation)
-Establish `hT` using `tfae_of_isNoetherianRing_of_isLocalRing_of_isDomain (Localization.AtPrime q)`. Establish `h1 : IsIntegrallyClosed (Localization.AtPrime q)` using `isIntegrallyClosed_of_isLocalization _ q.primeCompl q.primeCompl_le_nonZeroDivisors`. Establish `h2 : ∀ Q' : Ideal (Localization.AtPrime q), Q' ≠ ⊥ → Q'.IsPrime → Q' = maximalIdeal (Localization.AtPrime q)`. Introduce `Q' hQ' hQ'p`. Establish `hc : (Q'.comap (algebraMap A (Localization.AtPrime q))).IsPrime` using `Ideal.comap_isPrime _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hle : Q'.comap (algebraMap A (Localization.AtPrime q)) ≤ q`. Introduce `x hx`. Assume the negation of the conclusion as `hxq`. Conclude with `hQ'p.ne_top (Ideal.eq_top_of_isUnit_mem _ hx (IsLocalization.map_units (Localization.AtPrime q) (⟨x, hxq⟩ : q.primeCompl)))`. Establish `hne : Q'.comap (algebraMap A (Localization.AtPrime q)) ≠ ⊥`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h0`. Apply `hQ'` to reduce the goal to its premises. Rewrite using `[← IsLocalization.map_under q.primeCompl (Localization.AtPrime q) Q']`. Rewrite using `[Ideal.under, h0, Ideal.map_bot]`. Establish `heq` using `hmin _ hc hne hle`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← IsLocalization.map_under q.primeCompl (Localization.AtPrime q) Q']`. Rewrite using `[Ideal.under, heq, Localization.AtPrime.map_eq_maximalIdeal]`. Establish `h12 : IsIntegrallyClosed (Localization.AtPrime q) ∧ ∀ Q' : Ideal (Localization.AtPrime q), Q' ≠ ⊥ → Q'.IsPrime → Q' = maximalIdeal (Localization.AtPrime q)` using `⟨h1, h2⟩`. Conclude with `(hT.out 3 1).mp h12`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem valuationRing_atPrime_of_minimal {A : Type} [CommRing A] [IsDomain A] [IsNoetherianRing A]
     [IsIntegrallyClosed A] (q : Ideal A) [q.IsPrime]
@@ -48,7 +48,7 @@ theorem valuationRing_atPrime_of_minimal {A : Type} [CommRing A] [IsDomain A] [I
   exact (hT.out 3 1).mp h12
 
 /- English proof (translation)
-Rewrite `h` using `[IsLocalization.mul_mk'_eq_mk'_of_mul, IsLocalization.mk'_eq_iff_eq_mul, ← map_mul]`. Conclude with `IsLocalization.injective (Localization.AtPrime q) q.primeCompl_le_nonZeroDivisors h`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mul_eq_mul_of_atPrime {A : Type} [CommRing A] [IsDomain A] (q : Ideal A) [q.IsPrime]
     (x y a : A) (s : q.primeCompl)
@@ -62,33 +62,31 @@ end GlobalTheory
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `K _ R _ _ _ E hRE hyp e he`. Set `φ : R →+* E` to `{ toFun := fun r => ⟨r, hRE r.2⟩, map_one' := rfl, map_mul' := fun _ _ => rfl, map_zero' := rfl, map_add' := fun _ _ => rfl }`. Set `q : Ideal R` to `(IsLocalRing.maximalIdeal E).comap φ`. Establish `hqmem : ∀ r : R, r ∈ q ↔ E.valuation (r : K) < 1` using `fun r => E.valuation_lt_one_iff (φ r)`. Establish `hRv : ∀ r : R, E.valuation (r : K) ≤ 1` using `fun r => (E.valuation_le_one_iff _).2 (hRE r.2)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hv1 : ∀ s : R, s ∉ q → E.valuation (s : K) = 1` using `fun s hs => le_antisymm (hRv s) (not_lt.1 ((hqmem s).not.1 hs))`. Establish `hinv : ∀ s : R, s ∉ q → (s : K)⁻¹ ∈ E`. Introduce `s hs`. Rewrite using `[← E.valuation_le_one_iff, map_inv₀, hv1 s hs, inv_one]`. Establish `hne0 : ∀ s : R, s ∉ q → (s : K) ≠ 0`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `s hs h`. Use `hv1 s hs` as an intermediate fact. Rewrite `this` using `[h, map_zero]`. Conclude with `zero_ne_one this`. Use `haveI : q.IsPrime := Ideal.comap_isPrime _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Simplify by unfolding definitions.
 
-Take `⟨⟨x, y⟩, hxy⟩` from `IsLocalization.mk'_surjective (S := K) (nonZeroDivisors R) e`. Simplify using `only at hxy`. Rewrite `hxy` using `[IsFractionRing.mk'_eq_div]`. Establish `hy0 : (algebraMap R K y) ≠ 0` using `IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors y.2`. Express the relevant statement in the definitionally equal form `((x : R) : K) / ((y : R) : K) = e at hxy`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition. Consider separately whether the proposition holds or fails.
 
-Express the relevant statement in the definitionally equal form `((y : R) : K) ≠ 0 at hy0`. Distinguish the cases in `hq : q = ⊥`. Establish `hyq : (y : R) ∉ q`. Rewrite using `[hq, Ideal.mem_bot]`. Introduce `h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `hy0` to reduce the goal to its premises. Rewrite using `[h]`. Both sides reduce to the same expression. Conclude with `⟨x, (x : R).2, y, (y : R).2, hinv _ hyq, hxy.symm⟩`. Establish `hmin : ∀ p : Ideal R, p.IsPrime → p ≠ ⊥ → p ≤ q → p = q`.
+Both sides reduce to the same expression. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `p hp hp0 hpq`. Use `le_antisymm hpq ?_` and prove the remaining obligations. Introduce `r hr`. Use `hyp p hp hp0 (fun t ht => ?_) r ?_` and prove the remaining obligations. Conclude with `E.mem_nonunits_iff.2 ((hqmem t).1 (hpq ht))`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify by unfolding definitions.
 
-Conclude with `E.mem_nonunits_iff.2 ((hqmem r).1 hr)`. Use `haveI : ValuationRing (Localization.AtPrime q) := valuationRing_atPrime_of_minimal q hmin`. Take `⟨c, hc⟩` from `ValuationRing.cond (algebraMap R (Localization.AtPrime q) x) (algebraMap R (Localization.AtPrime q) y)`. Take `⟨⟨a, s⟩, rfl⟩` from `IsLocalization.mk'_surjective (S := Localization.AtPrime q) q.primeCompl c`. Simplify using `only at hc`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsq : (s : R) ∉ q` using `s.2`. Break down `hc with hc | hc` into its components or cases. Establish `h` using `mul_eq_mul_of_atPrime q _ _ _ _ hc`. Establish `hK : ((x : R) : K) * (a : K) = ((y : R) : K) * ((s : R) : K)`. Use `congrArg (fun t : R => (t : K)) h` as an intermediate fact.
+Simplify to obtain the desired conclusion from the available facts. Consider separately whether the proposition holds or fails. It suffices to derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `using this`. Distinguish the cases in `haq : a ∈ q`. It suffices to derive a contradiction. Establish `hea : e * (a : K) = ((s : R) : K)`. Rewrite using `[← hxy]`.
+Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Clear the denominators using the available nonvanishing facts. Take the linear combination `hK`. Establish `h1` using `hv1 _ hsq`. Rewrite `h1` using `[← hea, map_mul]`. Establish `hle : E.valuation e * E.valuation (a : K) ≤ E.valuation (a : K)` using `mul_le_of_le_one_left' ((E.valuation_le_one_iff e).2 he)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Use `(hqmem a).1 haq` as an intermediate fact. Rewrite `hle` using `[h1]`. Conclude with `absurd (lt_of_le_of_lt hle this) (lt_irrefl 1)`. Use `⟨((s : R) : K), (s : R).2, (a : K), a.2, hinv a haq, ?_⟩` and prove the remaining obligations. Rewrite using `[← hxy, div_eq_div_iff hy0 (hne0 a haq)]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations.
 
-Take the linear combination `hK`. Establish `h` using `mul_eq_mul_of_atPrime q _ _ _ _ hc`. Establish `hK : ((y : R) : K) * (a : K) = ((x : R) : K) * ((s : R) : K)`. Use `congrArg (fun t : R => (t : K)) h` as an intermediate fact. Simplify using `using this`.
-
-Use `⟨(a : K), a.2, ((s : R) : K), (s : R).2, hinv _ hsq, ?_⟩` and prove the remaining obligations. Rewrite using `[← hxy, div_eq_div_iff hy0 (hne0 _ hsq)]`. Take the linear combination `-hK`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem exists_div_of_center_height_le_one : ∀ (K : Type) [Field K] (R : Subring K) [IsNoetherianRing R]
     [IsIntegrallyClosed R] [IsFractionRing R K] (E : ValuationSubring K), R ≤ E.toSubring →

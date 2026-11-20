@@ -4,7 +4,7 @@ import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.AdjointInverseTranslate
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.AdjointInverseTranslate.OperatorModel
 
 /- English proof (translation)
-The claim follows from `AAInvW.operators_commute_translations_of_left_right AAInvW.left_aa (AAInvW.rightAA_of AAInvW.operator_model AAInvW.algebra_aa AAInvW.algebra_aa_vector AAInvW.hpk_involution AAInvW.subset_upper_hessenberg AAInvW.subset_inverse_column AAInvW.subset_row_star) AAInvW.subset_upper_hes …`.
+A detailed English derivation is pending.
 -/
 theorem operators_commute_translations : Formalism.FourierDecayAlt.C3.OperatorsCommuteTranslations :=
   AAInvW.operators_commute_translations_of_left_right AAInvW.left_aa

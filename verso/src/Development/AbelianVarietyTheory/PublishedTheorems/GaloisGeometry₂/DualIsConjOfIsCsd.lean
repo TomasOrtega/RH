@@ -17,14 +17,14 @@ def phiOp (L : Type) [Field L] [NumberField L] [IsCMField L] (a : ℕ) : Module.
   act (.fin (PhiU a (Af L))) * act (.cpt (PhiK L a))
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (by ext i j : 1 exact star_star _)`.
+A detailed English derivation is pending.
 -/
 theorem barK_barK (k : Kinf L a) : barK (barK k) = k := Subtype.ext (by
   ext i j : 1
   exact star_star _)
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `rt L a _ * rt L a _ = rt L a _ * rt L a _`. Rewrite using `[← map_mul, ← map_mul]`. Conclude with `congrArg _ (infGL_comm _ _)`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fin_cpt (k : GL (Fin a) (Af L)) (u : Kinf L a) :
     act (.cpt u) * act (.fin k) = act (.fin k) * act (Op.cpt u : Op L a) := by
@@ -33,17 +33,17 @@ theorem fin_cpt (k : GL (Fin a) (Af L)) (u : Kinf L a) :
   exact congrArg _ (infGL_comm _ _)
 
 /- English proof (translation)
-Consider the cases of `o with`. Consider the case `fin k`. Simplify using `only [phiOp, conjOp, invTOp, thetaOp]`. Rewrite using `[mul_assoc, fin_cpt, ← mul_assoc, ← mul_assoc]`. Use `congr 1`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Express the relevant statement in the definitionally equal form `finRep L a _ * finRep L a _ = finRep L a _ * finRep L a _`. Rewrite using `[← map_mul, ← map_mul]`. Use `congr 1`. Express the relevant statement in the definitionally equal form `_ = PhiU a (Af L) * _ * (PhiU a (Af L))⁻¹ * _`. Rewrite using `[inv_mul_cancel_right]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Consider the case `cpt k`. Simplify using `only [phiOp, conjOp, invTOp, thetaOp, barK_barK]`. Rewrite using `[← mul_assoc, fin_cpt, mul_assoc, mul_assoc]`. Use `congr 1`.
+Both sides reduce to the same expression. Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Express the relevant statement in the definitionally equal form `cptRep L a _ * cptRep L a _ = cptRep L a _ * cptRep L a _`. Rewrite using `[← map_mul, ← map_mul, inv_mul_cancel_right]`. Consider the case `lie X`. Simplify using `only [phiOp, conjOp, invTOp, thetaOp]`. Establish `h1` using `GlobalTheory.CapAdInv.rt_lie (Unitary.toUnits (PhiK L a)) (-(Matrix.of X)ᴴ)`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Treat this case separately. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h2` using `lie_rt_fin (E := L) (toL (-(GlobalTheory.Tw.Phi a (Cinf L) * (Matrix.of X)ᴴ * (GlobalTheory.Tw.Phi a (Cinf L))ᵀ))) (PhiU a (Af L))`. Establish `e : Unitary.toUnits (PhiK L a) = PhiU a (Cinf L)` using `Units.ext rfl`. Establish `e2 : (Unitary.toUnits (PhiK L a)).val * (-(Matrix.of X)ᴴ) * ((Unitary.toUnits (PhiK L a))⁻¹).val = -(GlobalTheory.Tw.Phi a (Cinf L) * (Matrix.of X)ᴴ * (GlobalTheory.Tw.Phi a (Cinf L))ᵀ)`. Rewrite using `[e, mul_neg, neg_mul]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite `h1` using `[e2]`. Rewrite using `[mul_assoc, ← mul_assoc (act (Op.lie _))]`. Conclude with `(congrArg (act (.fin (PhiU a (Af L))) * ·) h1).trans ((mul_assoc _ _ _).symm.trans (congrArg (· * _) h2.symm))`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem phiOp_mul (o : Op L a) : phiOp L a * act (invTOp (conjOp o)) = act (thetaOp o) * phiOp L a := by
   cases o with
@@ -78,19 +78,17 @@ theorem phiOp_mul (o : Op L a) : phiOp L a * act (invTOp (conjOp o)) = act (thet
       (congrArg (· * _) h2.symm))
 
 /- English proof (translation)
-Take `⟨B, h1, h2, h3, h4, h5⟩` from `h`. Take `⟨T, hT⟩` from `hc`. Set `P : Module.End ℂ π.V` to `π.op (.fin (PhiU a (Af L))) * π.op (.cpt (PhiK L a))`. Set `Q : Module.End ℂ π.V` to `π.op (.cpt (PhiK L a)⁻¹) * π.op (.fin (PhiU a (Af L))⁻¹)`. Establish `f1 : ∀ k k' : GL (Fin a) (Af L), k * k' = 1 → ∀ φ, π.op (.fin k) (π.op (.fin k') φ) = φ` using `fun k k' e φ => Subtype.ext (by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `(finRep L a k * finRep L a k') φ.1 = φ.1`. Rewrite using `[← map_mul, e, map_one]`. Use the proof step `rfl)`. Establish `f2 : ∀ k k' : Kinf L a, k * k' = 1 → ∀ φ, π.op (.cpt k) (π.op (.cpt k') φ) = φ` using `fun k k' e φ => Subtype.ext (by`. Express the relevant statement in the definitionally equal form `(cptRep L a k * cptRep L a k') φ.1 = φ.1`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← map_mul, e, map_one]`. Use the proof step `rfl)`. Set `Pe : π.V ≃ₗ[ℂ] π.V` to `LinearEquiv.ofLinear P Q (LinearMap.ext fun φ => by simp [P, Q, f1, f2]) (LinearMap.ext fun φ => by simp [P, Q, f1, f2])`. Set `S` to `Pe.trans T`. Establish `hS : ∀ o φ, S (π.op (invTOp (conjOp o)) φ) = π.op o (S φ)` using `fun o φ => by`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `T _ = π.op o (T _)`. Rewrite using `[← hT]`. Conclude with `congrArg T (Subtype.ext (LinearMap.congr_fun (phiOp_mul o) φ.1))`. Establish `hS' : ∀ o φ, S.symm (π.op o φ) = π.op (invTOp (conjOp o)) (S.symm φ)` using `fun o φ => by`. Rewrite using `[LinearEquiv.symm_apply_eq, hS, LinearEquiv.apply_symm_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Express the relevant assertion in an equivalent form by its definition.
 
-Use `⟨B.flip ∘ₗ S.symm.toLinearMap, fun φ h => ?_, fun ψ h => h1 ψ fun x => ?_, fun k φ ψ => ?_, fun k φ ψ => ?_, fun X φ ψ => ?_⟩` and prove the remaining obligations. Conclude with `(map_eq_zero_iff _ S.symm.injective).1 (h2 _ h)`. Simplify using `using h (S x)`. Express the relevant statement in the definitionally equal form `B _ (S.symm _) = B _ (S.symm _)`. Rewrite using `[hS']`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h3 _ _ _`. Express the relevant statement in the definitionally equal form `B _ (S.symm _) = B _ (S.symm _)`. Rewrite using `[hS']`. Conclude with `h4 _ _ _`. Express the relevant statement in the definitionally equal form `B _ (S.symm _) + B _ (S.symm _) = 0`.
-
-Rewrite using `[hS', add_comm]`. Conclude with `h5 _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem dualIsConj_of_isCsd {π : CuspSub L a} (h : Paired π π invTOp) (hc : π.IsCsd) : DualIsConj π := by
   obtain ⟨B, h1, h2, h3, h4, h5⟩ := h
@@ -126,16 +124,16 @@ theorem dualIsConj_of_isCsd {π : CuspSub L a} (h : Paired π π invTOp) (hc : �
     rw [hS', add_comm]; exact h5 _ _ _
 
 /- English proof (translation)
-Introduce `E Ω _ _ _ _ _ _ l _ ι a ha π hc hcoh` and use `H E Ω l ι a ha π (dualIsConj_of_isCsd (hG E a π) hc) hcoh`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem theta_form (hG : GlobalTheory.Published.GelfandKazhdanDual) (H : GlobalTheory.Published.CaraianiLocalGlobalDual) :
     GlobalTheory.Published.CaraianiLocalGlobal := fun E Ω _ _ _ _ _ _ l _ ι a ha π hc hcoh =>
   H E Ω l ι a ha π (dualIsConj_of_isCsd (hG E a π) hc) hcoh
 
 /- English proof (translation)
-Take `⟨T, hT⟩` from `h`. Take `⟨B, h1, h2, h3, h4, h5⟩` from `hd`. Establish `hT' : ∀ o φ, T.symm (π'.op o φ) = π.op o (T.symm φ)` using `fun o φ => by`. Rewrite using `[LinearEquiv.symm_apply_eq, hT, LinearEquiv.apply_symm_apply]`. Use `⟨B.compl₁₂ T.symm.toLinearMap T.symm.toLinearMap, fun φ h => ?_, fun ψ h => ?_, fun k φ ψ => ?_, fun k φ ψ => ?_, fun X φ ψ => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(map_eq_zero_iff _ T.symm.injective).1 (h1 _ fun x => by simpa using h (T x))`. Conclude with `(map_eq_zero_iff _ T.symm.injective).1 (h2 _ fun x => by simpa using h (T x))`. Simplify using `[hT', h3]`. Simplify using `[hT', h4]`. Simplify using `[hT', h5]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem dualIsConj_iso {π π' : CuspSub L a} (h : π.Iso π') (hd : DualIsConj π) : DualIsConj π' := by
   obtain ⟨T, hT⟩ := h
@@ -151,11 +149,11 @@ theorem dualIsConj_iso {π π' : CuspSub L a} (h : π.Iso π') (hd : DualIsConj 
   · simp [hT', h5]
 
 /- English proof (translation)
-Take `⟨B, h1, -, -, -, h5⟩` from `hd`. Establish `e : conjOp (.lie (oneL L a)) = (.lie (oneL L a) : Op L a)`. Express the relevant statement in the definitionally equal form `Op.lie _ = _`. Use `congr 1`. Use function extensionality and compare the values at `i j`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Apply the tactic sequence `by_cases h : i = j <;> simp [Matrix.one_apply, h]`. Take `⟨φ, hφ, h0⟩` from `(Submodule.ne_bot_iff _).1 π.ne_bot`. Assume the negation of the conclusion as `hne`. Use `h0 (congrArg Subtype.val (h1 ⟨φ, hφ⟩ fun ψ => ?_))` and prove the remaining obligations. Use `h5 (oneL L a) ⟨φ, hφ⟩ ψ` as an intermediate fact.
+Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `this` using `[e, hc, hc, map_smul, map_smul, LinearMap.smul_apply, smul_eq_mul, ← two_mul]`. Simplify `this` using `[hne]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem central_eq_zero {π : CuspSub L a} (hd : DualIsConj π) {c : ℂ} (hc : ∀ φ, π.op (.lie (oneL L a)) φ = c • φ) :
     c = 0 := by
@@ -175,13 +173,13 @@ theorem central_eq_zero {π : CuspSub L a} (hd : DualIsConj π) {c : ℂ} (hc : 
 variable (Ω : Type) [Field Ω] [Algebra L Ω] [IsAlgClosure L Ω] {l : ℕ} [Fact l.Prime] (ι : Qbar l ≃+* ℂ)
 
 /- English proof (translation)
-The claim follows from `H L Ω l ι a ha π hc hcoh`.
+A detailed English derivation is pending.
 -/
 theorem compat_of (H : GlobalTheory.Published.CaraianiLocalGlobalDual) (ha : 2 ≤ a) (π : CuspSub L a) (hc : DualIsConj π)
     (hcoh : GKCoh.IsCohomological π) : ∃ R, Compat Ω ι π R := H L Ω l ι a ha π hc hcoh
 
 /- English proof (translation)
-Use `⟨?_, ⟨_, GKCoh.isCohFor_triv le_rfl⟩, compat_triv Ω ι⟩` and prove the remaining obligations. Establish `h` using `GlobalTheory.ContraPair.Model.polarizedPair_triv (L := L).dual`. Rewrite `h` using `[pow_one, GlobalTheory.GalOfCusp.compNorm_quadChar, dualIsConjBy_one]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem triv_all : DualIsConj (CuspSub.triv L (le_refl 1)) ∧ GKCoh.IsCohomological (CuspSub.triv L (le_refl 1)) ∧
     Compat Ω ι (CuspSub.triv L (le_refl 1)) 1 := by

@@ -18,13 +18,11 @@ noncomputable section
 namespace GlobalTheory.FlagGenFib
 
 /- English proof (translation)
-Take `⟨g, hg⟩` from `h`. Establish `hcl : closure {g} = Set.univ`. Use `Set.eq_univ_of_forall fun y => ?_` and prove the remaining obligations. Rewrite using `[← specializes_iff_mem_closure, ← j.isEmbedding.isInducing.specializes_iff, hg]`. Conclude with `genericPoint_specializes _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: IrreducibleSpace G` using `(irreducibleSpace_def _).2 (show IsIrreducible (Set.univ : Set G) from hcl ▸ isIrreducible_singleton.closure)`. Establish `: ∀ x : G, _root_.IsReduced (G.presheaf.stalk x)` using `fun x => by`. Establish `hs` using `j.stalkMap_surjective x`. Establish `hf` using `Flat.stalkMap j x`. Establish `hi : Function.Injective (j.stalkMap x).hom`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `` to `(j.stalkMap x).hom.toAlgebra`. Establish `: Module.Flat (X.presheaf.stalk (j x)) (G.presheaf.stalk x)` using `hf`. Establish `: IsLocalHom (algebraMap (X.presheaf.stalk (j x)) (G.presheaf.stalk x))` using `inferInstanceAs (IsLocalHom (j.stalkMap x).hom)`. Establish `: Module.FaithfullyFlat (X.presheaf.stalk (j x)) (G.presheaf.stalk x)` using `Module.FaithfullyFlat.of_flat_of_isLocalHom`. Conclude with `FaithfulSMul.algebraMap_injective (X.presheaf.stalk (j x)) (G.presheaf.stalk x)`.
-
-Conclude with `isReduced_of_injective (RingEquiv.ofBijective _ ⟨hi, hs⟩).symm (RingEquiv.ofBijective _ ⟨hi, hs⟩).symm.injective`. Establish `: IsReduced G` using `isReduced_of_isReduced_stalk G`. Conclude with `isIntegral_of_irreducibleSpace_of_isReduced _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isIntegral_of_flat_preimmersion {G X : Scheme.{0}} [IsIntegral X] (j : G ⟶ X) [Flat j]
     [IsPreimmersion j] (h : genericPoint X ∈ Set.range j) : IsIntegral G := by
@@ -53,9 +51,9 @@ theorem isIntegral_of_flat_preimmersion {G X : Scheme.{0}} [IsIntegral X] (j : G
   exact isIntegral_of_irreducibleSpace_of_isReduced _
 
 /- English proof (translation)
-Use `hX.isDomain` as an intermediate fact. Use `hX.finite` as an intermediate fact. Use `hX.flat` as an intermediate fact. Set `t` to `p ≫ spMap (Int.castRingHom k)`. Establish `hb : (show Sp ℤ from (⊥ : PrimeSpectrum ℤ)) ⤳ t (genericPoint X)` using `(PrimeSpectrum.le_iff_specializes _ _).1 bot_le`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Take `⟨z, hz, hz'⟩` from `Flat.generalizingMap t hb`. Take `rfl : z = genericPoint X` from `(hz.antisymm (genericPoint_specializes z)).eq`. Use `Ideal.eq_bot_of_comap_eq_bot (R := ℤ) ?_` and prove the remaining obligations. Conclude with `congrArg PrimeSpectrum.asIdeal hz'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem asIdeal_genericPoint_eq_bot {k : Type} [CommRing k] {X : Scheme.{0}} [IsIntegral X]
     {p : X ⟶ Sp k} {n : ℕ} (hX : IsArithVar p n) : (p (genericPoint X)).asIdeal = ⊥ := by
@@ -71,11 +69,11 @@ theorem asIdeal_genericPoint_eq_bot {k : Type} [CommRing k] {X : Scheme.{0}} [Is
   exact congrArg PrimeSpectrum.asIdeal hz'
 
 /- English proof (translation)
-Introduce `D Bs Y₀ q π₀ n h`. Use `h.isIntegral` as an intermediate fact. Establish `: IsPreimmersion (spMap (algebraMap (𝓞 D.what₂.LL) D.what₂.LL))` using `IsPreimmersion.of_isLocalization (nonZeroDivisors (𝓞 D.what₂.LL)) (S := D.what₂.LL)`. Establish `: Flat (spMap (algebraMap (𝓞 D.what₂.LL) D.what₂.LL))`. Use `(HasRingHomProperty.Spec_iff (P := @Flat)).2 ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `RingHom.flat_algebraMap_iff.2 (IsLocalization.flat _ (nonZeroDivisors (𝓞 D.what₂.LL)))`. Establish `: IsPreimmersion (jf q π₀)` using `by unfold jf Gf; infer_instance`. Establish `: Flat (jf q π₀)` using `by unfold jf Gf; infer_instance`. Use `isIntegral_of_flat_preimmersion (jf q π₀) ?_` and prove the remaining obligations. Establish `hr` using `Scheme.Pullback.range_fst (π₀ ≫ q) (spMap (algebraMap (𝓞 D.what₂.LL) D.what₂.LL))`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `hr.ge ⟨(⊥ : PrimeSpectrum D.what₂.LL), PrimeSpectrum.ext ?_⟩` and prove the remaining obligations. Rewrite using `[asIdeal_genericPoint_eq_bot h]`. Conclude with `Ideal.comap_bot_of_injective _ (IsFractionRing.injective _ _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isIntegral_Gf : ∀ {D : D7} {Bs Y₀ : Scheme.{0}} (q : Bs ⟶ Sp (𝓞 D.what₂.LL)) (π₀ : Y₀ ⟶ Bs) (n : ℕ),
     IsArithVar (π₀ ≫ q) n → IsIntegral (GlobalTheory.FlagGenFib.Gf q π₀) := by

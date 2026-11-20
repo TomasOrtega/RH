@@ -6,9 +6,9 @@ open scoped ComplexConjugate ValuativeRel
 namespace GlobalTheory.CompanionTheory.QL.Iwasawa
 
 /- English proof (translation)
-Establish `key : ∀ (u : GL (Fin n) (ValuativeRel.valuation F).valuationSubring), IsInt 𝒪[F] ((GeneralLinearGroup.map (algebraMap (ValuativeRel.valuation F).valuationSubring F) u : GL (Fin n) F) : Matrix (Fin n) (Fin n) F)`. Introduce `u i j`. Establish `h` using `(u.1 i j).2`. Conclude with `h`. Use `⟨key k, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← map_inv]`. Conclude with `key k⁻¹`.
+A detailed English derivation is pending.
 -/
 theorem map_mem_GLint {F : Type} [Field F] [ValuativeRel F] {n : ℕ}
     (k : GL (Fin n) (ValuativeRel.valuation F).valuationSubring) :
@@ -26,9 +26,9 @@ theorem map_mem_GLint {F : Type} [Field F] [ValuativeRel F] {n : ℕ}
   exact key k⁻¹
 
 /- English proof (translation)
-Take `rfl` from `h.O_eq`. Take `⟨k, b, hb, hg⟩` from `GlobalTheory.ValIwasawa.iwasawa (ValuativeRel.valuation F).valuationSubring F n g⁻¹`. Use `⟨b⁻¹, ?_, _, (GLint _ n).inv_mem (map_mem_GLint k), ?_⟩` and prove the remaining obligations. Set `_ : Invertible (b : Matrix (Fin n) (Fin n) F)` to `Units.invertible b`. Rewrite using `[Matrix.coe_units_inv]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Matrix.blockTriangular_inv_of_blockTriangular hb`. Rewrite using `[← _root_.mul_inv_rev, ← hg, inv_inv]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_upper_mul_int {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
     [IsNonarchimedeanLocalField F] {O : Subring F} {ϖ : F} {nrm : AbsoluteValue F ℝ} {q : ℕ}

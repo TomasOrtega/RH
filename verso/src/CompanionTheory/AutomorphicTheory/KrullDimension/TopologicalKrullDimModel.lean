@@ -16,9 +16,9 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.G
 namespace ModelDimension.ModelDim
 
 /- English proof (translation)
-Establish `: IsDomain A` using `hφ.isDomain φ`. Establish `: CharZero A` using `φ.charZero`. Set `_ : Algebra A Ω` to `φ.toAlgebra`. Establish `: FaithfulSMul A Ω` using `(faithfulSMul_iff_algebraMap_injective _ _).2 hφ`. Establish `: IsFractionRing A Ω` using `IsFractionRing.of_field _ _ hfr`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: Algebra.IsAlgebraic A Ω` using `IsLocalization.isAlgebraic Ω (nonZeroDivisors A)`. Establish `h1` using `GroundTheory.Heights₂.Heights.IntDomainDim.proof A (algebraMap ℤ A).injective_int`. Rewrite using `[h1, ← GlobalTheory.trdeg_eq_of_isAlgebraic_top ℤ A Ω, hd, Cardinal.toENat_nat]`. Use `norm_cast`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Put the expressions in a common number system so they can be compared.
 -/
 theorem ringKrullDim_eq {A Ω : Type} [CommRing A] [Field Ω] [CharZero Ω] (φ : A →+* Ω)
     (hφ : Function.Injective φ) (hfr : ∀ x : Ω, ∃ a b : A, x = φ a / φ b) (hft : Algebra.FiniteType ℤ A) {d : ℕ}
@@ -34,13 +34,13 @@ theorem ringKrullDim_eq {A Ω : Type} [CommRing A] [Field Ω] [CharZero Ω] (φ 
   norm_cast
 
 /- English proof (translation)
-Use `M.lft` as an intermediate fact. Establish `: LocallyOfFiniteType (spMap (Int.castRingHom o))` using `(HasRingHomProperty.Spec_iff (P := @LocallyOfFiniteType)).2 (RingHom.finiteType_algebraMap.2 ho)`. Set `t : M.Z ⟶ Sp ℤ` to `M.s ≫ spMap (Int.castRingHom o)`. Establish `ht : LocallyOfFiniteType t` using `inferInstance`. Establish `key (U : M.Z.Opens) (hU : IsAffineOpen U) (hne : (U : Set M.Z).Nonempty) : topologicalKrullDim (U : Set M.Z) = (d + 1 : ℕ)`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : (t.appLE ⊤ U le_top).hom.FiniteType` using `HasRingHomProperty.appLE @LocallyOfFiniteType t ht ⟨⊤, isAffineOpen_top _⟩ ⟨U, hU⟩ _`. Establish `e : (t.appLE ⊤ U le_top).hom.comp (Scheme.ΓSpecIso (.of ℤ)).inv.hom = algebraMap ℤ Γ(M.Z, U)` using `RingHom.ext_int _ _`. Rewrite `h1` using `[← RingHom.finiteType_respectsIso.cancel_left_isIso (Scheme.ΓSpecIso (.of ℤ)).inv, e, RingHom.finiteType_algebraMap]`. Use `((GlobalTheory.topologicalKrullDim_eq_of_isEmbedding hU.fromSpec.isOpenEmbedding.isEmbedding hU.range_fromSpec).trans (PrimeSpectrum.topologicalKrullDim_eq_ringKrullDim (R := Γ(M.Z, U)))).trans ?_` and prove the remaining obligations. Use `ringKrullDim_eq (M.res U hne) (M.res_injective U hne) (fun x => ?_) h1 hd` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨a, b, -, h⟩` from `GlobalTheory.ZH.RatModel.exists_eq_div hU hne x`. Conclude with `⟨a, b, by rw [M.res_apply, M.res_apply]; exact h⟩`. Apply `le_antisymm` to reduce the goal to its premises. Use `GlobalTheory.topologicalKrullDim_le_of_forall_exists_isOpen fun x => ?_` and prove the remaining obligations. Take `⟨U, hU, hx, -⟩` from `exists_isAffineOpen_mem_and_subset (U := ⊤) (x := x) trivial`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨U, U.isOpen, hx, (key U hU ⟨x, hx⟩).le⟩`. Take `⟨U, hU, hx, -⟩` from `exists_isAffineOpen_mem_and_subset (U := ⊤) (x := genericPoint M.Z) trivial`. Rewrite using `[← key U hU ⟨_, hx⟩]`. Conclude with `topologicalKrullDim_subspace_le _ _`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem topologicalKrullDim_model {o Ω : Type} [CommRing o] [Field Ω] [CharZero Ω] [Algebra o Ω]
     (ho : Algebra.FiniteType ℤ o) (M : GlobalTheory.ZH.RatModel o Ω) {d : ℕ} (hd : Algebra.trdeg ℤ Ω = d) :
@@ -72,21 +72,19 @@ theorem topologicalKrullDim_model {o Ω : Type} [CommRing o] [Field Ω] [CharZer
     exact topologicalKrullDim_subspace_le _ _
 
 /- English proof (translation)
-Take `⟨N, b, f, hf⟩` from `(imageDeg_pos_iff ev d).1 hd`. Use `set y : Fin N → Ω := fun j => ev (b j) with hy`. Establish `hy0 : y ≠ 0` using `fun h => hg.1 (b.ext fun j => congrFun h j)`. Establish `hgen : Subfield.closure (Set.range (algebraMap K Ω) ∪ {r | ∃ i j, r = y i / y j}) = ⊤`. Take `⟨j, hj⟩` from `Function.ne_iff.1 hy0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hj' : y j ≠ 0` using `hj`. Use `set F := Subfield.closure (Set.range (algebraMap K Ω) ∪ {r | ∃ i j, r = y i / y j}) with hF`. Establish `h1 : ∀ v, ev v / y j ∈ F` using `fun v => by`. Rewrite using `[← b.sum_repr v, map_sum, Finset.sum_div]`. Use `sum_mem fun i _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[map_smul, Algebra.smul_def, mul_div_assoc]`. Conclude with `mul_mem (Subfield.subset_closure (Or.inl ⟨_, rfl⟩)) (Subfield.subset_closure (Or.inr ⟨i, j, rfl⟩))`. Establish `h2` using `congrArg IntermediateField.toSubfield hg.2`. Rewrite `h2` using `[GlobalTheory.DegVal.ratioField, IntermediateField.adjoin_toSubfield, IntermediateField.top_toSubfield]`. Use `top_unique (h2 ▸ Subfield.closure_le.2 ?_)` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce and unpack `_ (⟨c, rfl⟩ | ⟨v, w, rfl⟩)`. Conclude with `Subfield.subset_closure (Or.inl ⟨_, rfl⟩)`. Rewrite using `[← div_div_div_cancel_right₀ hj']`. Conclude with `div_mem (h1 v) (h1 w)`. Use `isPrime_coneIdeal (K := K) y` as an intermediate fact.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hdim : ringKrullDim (MvPolynomial (Fin N) K ⧸ coneIdeal K y) = (d + 1 : ℕ)` using `GlobalTheory.ConeDeg.ringKrullDim_of_isChowFormInt (fun g hg n => homogeneousComponent_mem_of_mem (isHomogeneous_coneIdeal y) hg n) hf`. Take `⟨e, he1, he2⟩` from `GlobalTheory.exists_ringKrullDim_eq_and_trdeg_eq K (MvPolynomial (Fin N) K ⧸ coneIdeal K y)`. Take `rfl : e = d + 1` from `by exact_mod_cast he1.symm.trans hdim`. Set `φ` to `Ideal.kerLiftAlg (coneMap K y)`. Establish `hφ : Function.Injective φ` using `Ideal.kerLiftAlg_injective _`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `A` to `φ.range`. Set `e` to `AlgEquiv.ofInjective φ hφ`. Establish `hQA : Algebra.trdeg K (MvPolynomial (Fin N) K ⧸ coneIdeal K y) = Algebra.trdeg K A` using `le_antisymm (trdeg_le_of_injective e.toAlgHom e.injective) (trdeg_le_of_injective e.symm.toAlgHom e.symm.injective)`. Establish `hXy : ∀ i, Polynomial.X * Polynomial.C (y i) ∈ A` using `fun i => by`. Use `AlgHom.mem_range_self φ (Ideal.Quotient.mk _ (X i))` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[Ideal.kerLiftAlg_mk]`. Simplify using `only [coneMap, aeval_X] at this`. Conclude with `this`. Use `GlobalTheory.Adelic.ConeDim.isAlgebraic_of_closure_eq_top y hy0 hgen A hXy` as an intermediate fact. Establish `: FaithfulSMul K A` using `(faithfulSMul_iff_algebraMap_injective _ _).2 (RingHom.injective _)`.
-
-Establish `: FaithfulSMul A (Polynomial Ω)` using `(faithfulSMul_iff_algebraMap_injective _ _).2 Subtype.val_injective`. Rewrite `he2` using `[hQA, ← GlobalTheory.trdeg_eq_of_isAlgebraic_top K A (Polynomial Ω), ← trdeg_add_eq K Ω (A := Polynomial Ω), Polynomial.trdeg_of_isDomain, Nat.cast_add, Nat.cast_one]`. Conclude with `(Cardinal.add_one_inj).1 he2`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem trdeg_eq {K V Ω : Type} [Field K] [AddCommGroup V] [Module K V] [Field Ω] [Algebra K Ω]
     (ev : V →ₗ[K] Ω) (hg : GlobalTheory.DegVal.GenRatios ev) {d : ℕ} (hd : 0 < imageDeg ev d) :

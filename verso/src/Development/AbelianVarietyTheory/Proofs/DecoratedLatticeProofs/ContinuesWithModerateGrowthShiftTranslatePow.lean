@@ -17,7 +17,7 @@ namespace GlobalTheory.EisCont.Shift
 open Set Metric
 
 /- English proof (translation)
-Take `⟨H₀, hH⟩` from `a`. Establish `ha` using `hH.isExtAt (mem_univ t)`. Conclude with `ha.holValueAt_iff.2 ((b.tendsto.mono_left nhdsWithin_le_nhds).congr' ha.cont_eventuallyEq)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem holValueAt_of_continuousAt {h : ℂ → ℂ} (a : GlobalTheory.Cont.Continues h) {t : ℂ}
     (b : ContinuousAt (GlobalTheory.Cont.cont h) t) : GlobalTheory.Cont.HolValueAt h t (GlobalTheory.Cont.cont h t) := by
@@ -26,31 +26,29 @@ theorem holValueAt_of_continuousAt {h : ℂ → ℂ} (a : GlobalTheory.Cont.Cont
   exact ha.holValueAt_iff.2 ((b.tendsto.mono_left nhdsWithin_le_nhds).congr' ha.cont_eventuallyEq)
 
 /- English proof (translation)
-The claim follows from `(GlobalTheory.Eis.differentiable_npow hc).comp (differentiable_const _ |>.sub differentiable_id)`.
+A detailed English derivation is pending.
 -/
 theorem differentiable_npow_sub {c : ℝ≥0} (hc : 0 < c) (s₁ : ℂ) : Differentiable ℂ fun s => npow c (s₁ - s) :=
   (GlobalTheory.Eis.differentiable_npow hc).comp (differentiable_const _ |>.sub differentiable_id)
 
 /- English proof (translation)
-Establish `hd` using `differentiable_npow_sub hc s₁`. Establish `hfun : ∀ g, (fun z => e' z g) = fun z => npow c (s₁ - z) * (fun w => e w (g * x)) (z + s₂)` using `fun g => funext fun z => he z g`. Use `⟨fun g => ?_, fun s₀ => ?_⟩` and prove the remaining obligations. Take `⟨H₀, hH⟩` from `hm.1 (g * x)`. Rewrite `hH` using `[GlobalTheory.Cont.isMerExt_univ]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨σ, hσ⟩` from `hH.2`. Use `⟨fun z => npow c (s₁ - z) * H₀ (z + s₂), GlobalTheory.Cont.isMerExt_univ.2 ⟨fun z => ?_, σ - s₂.re, fun z hz => ?_⟩⟩` and prove the remaining obligations. Conclude with `(hd.analyticAt z).meromorphicAt.fun_mul ((hH.1 (z + s₂)).comp_analyticAt (g := (· + s₂)) (by fun_prop))`. Simplify using `only [he]`. Use `congr 1`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Extract witnesses or component facts from the available result.
 
-Conclude with `hσ (by simpa [GlobalTheory.Cont.mem_rightOf] using sub_lt_iff_lt_add.1 hz)`. Take `⟨k, r, H, hr, h1, h2, h3, C, N, h4⟩` from `hm.2 (s₀ + s₂)`. Establish `hball : ∀ s ∈ ball s₀ r, s + s₂ ∈ ball (s₀ + s₂) r` using `fun s hs => by`. Simplify `hs` using `[mem_ball, dist_eq_norm]`. Establish `hval : ∀ s ∈ ball s₀ r, s ≠ s₀ → ∀ g, GlobalTheory.Cont.cont (fun z => e' z g) s = npow c (s₁ - s) * GlobalTheory.Cont.cont (fun z => e z (g * x)) (s + s₂)`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `s hs hne g`. Establish `hne' : s + s₂ ≠ s₀ + s₂` using `fun h => hne (add_right_cancel h)`. Establish `hopen : ball (s₀ + s₂) r ∩ {s₀ + s₂}ᶜ ∈ 𝓝 (s + s₂)` using `(isOpen_ball.inter isOpen_compl_singleton).mem_nhds ⟨hball s hs, hne'⟩`. Establish `hcont : ContinuousAt (GlobalTheory.Cont.cont fun z => e z (g * x)) (s + s₂)`. Establish `hq : ContinuousAt (fun t => H t (g * x) / (t - (s₀ + s₂)) ^ k) (s + s₂)` using `(((h2 (g * x)).continuousOn.continuousAt (isOpen_ball.mem_nhds (hball s hs)))).div (by fun_prop) (pow_ne_zero _ (sub_ne_zero.2 hne'))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `hq.congr (Filter.eventually_of_mem hopen fun t ht => ?_)` and prove the remaining obligations. Use `h1 t ht.1 ht.2 (g * x)` as an intermediate fact. Use `show H t (g * x) / _ = _`. Rewrite using `[this, mul_div_cancel_left₀ _ (pow_ne_zero _ (sub_ne_zero.2 ht.2))]`. Establish `hv` using `holValueAt_of_continuousAt (hm.1 (g * x)) hcont`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hn : GlobalTheory.Cont.HolValueAt (fun z => npow c (s₁ - z)) s (npow c (s₁ - s))` using `GlobalTheory.Cont.IsHolExt.holValueAt ⟨GlobalTheory.Cont.isRightDomain_univ, fun z _ => hd.analyticAt z, .refl _⟩ (mem_univ s)`. Establish `hp` using `hn.mul hv.comp_add`. Rewrite using `[hfun g]`. Conclude with `hp.valueAt.cont_eq`. Take `⟨B, hB⟩` from `(isCompact_closedBall s₀ r).exists_bound_of_continuousOn hd.continuous.continuousOn`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hB0 : 0 ≤ B` using `(norm_nonneg _).trans (hB s₀ (mem_closedBall_self hr.le))`. Use `⟨k, r, fun s g => npow c (s₁ - s) * H (s + s₂) (g * x), hr, fun s hs hne g => ?_, fun g => ?_, ?_, B * |C| * GlobalTheory.Grow.height T x ^ N, N, fun s hs g => ?_⟩` and prove the remaining obligations. Use `show npow c (s₁ - s) * H (s + s₂) (g * x) = _`. Rewrite using `[hval s hs hne g, h1 _ (hball s hs) (fun h => hne (add_right_cancel h)) (g * x)]`. Rewrite using `[show s + s₂ - (s₀ + s₂) = s - s₀ by ring]`.
+Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Use `(hd.differentiableOn).mul ((h2 (g * x)).comp (by fun_prop) fun s hs => hball s hs)` and prove the remaining obligations. Use `(hd.continuous.comp continuous_fst).continuousOn.mul ?_` and prove the remaining obligations. Conclude with `h3.comp (f := fun p : ℂ × GA D T => (p.1 + s₂, p.2 * x)) (by fun_prop) fun (p : ℂ × GA D T) (hp : p ∈ ball s₀ r ×ˢ univ) => ⟨hball p.1 hp.1, mem_univ _⟩`. Establish `hH` using `h4 _ (hball s hs) (g * x)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hn` using `hB s (ball_subset_closedBall hs)`. Establish `hg` using `GlobalTheory.Grow.height_mul_le T g x`. Establish `hg0` using `(GlobalTheory.Grow.height_pos T g).le`. Establish `hx0` using `(GlobalTheory.Grow.height_pos T x).le`. Establish `hgx0` using `(GlobalTheory.Grow.height_pos T (g * x)).le`.
-
-Establish `e1 : ‖H (s + s₂) (g * x)‖ ≤ |C| * (GlobalTheory.Grow.height T g * GlobalTheory.Grow.height T x) ^ N` using `hH.trans ((mul_le_mul_of_nonneg_right (le_abs_self C) (pow_nonneg hgx0 N)).trans (mul_le_mul_of_nonneg_left (pow_le_pow_left₀ hgx0 hg N) (abs_nonneg C)))`. Rewrite using `[norm_mul]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem contMod_shift (D : D7) (T : HSp D) (e e' : ℂ → GA D T → ℂ) (x : GA D T) (c : ℝ≥0) (s₁ s₂ : ℂ) (hc : 0 < c)
     (he : ∀ s g, e' s g = npow c (s₁ - s) * e (s + s₂) (g * x)) (hm : ContMod T e) : ContMod T e' := by

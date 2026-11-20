@@ -33,11 +33,11 @@ variable (hP : IsPeriod (Fu.Di i) (fun j => Formalism.L2.PjFree.relab c σ (e j)
 include hP hu hy hW in
 
 /- English proof (translation)
-Use `choose v₀ h1 h2 h3 using hW`. Establish `hx : y ≫ Z.jQ ≫ pullback.fst _ _ = a.1.1 ≫ genι Z` using `by rw [← Category.assoc, hy]`. Take `⟨t1, t2, t3⟩` from `GlobalTheory.isDerivAt0_ex_isTanAt E H Dw l Xo _ g _ Fu i P hP`. Take `⟨v, hv, -⟩` from `t2 w`. Establish `ht` using `t1 w v hv`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `he` using `(GlobalTheory.isEigAt_iff_of_isDerivAt0 E H Dw l Xo c σ g e Fu i P hP w v τ hv).2 hw`. Take `⟨v', k1, rfl⟩` from `exists_lift Z.m0.toSABMap (spMap (algebraMap ℂ (DualNumber ℂ)) ≫ y) v (by rw [ht.1, ← hu, Category.assoc])`. Take `⟨cf, hcf, -⟩` from `a.2.basis τ (v' ≫ Z.m.φ) ((tan_iff Z.m hx k1).2 ((tan_iff Z.m0.toSABMap hu k1).1 ht)) fun b => (eig_iff Z.m k1 b _).2 ((eig_iff Z.m0.toSABMap k1 b _).1 (he b))`. Establish `e1 : a.2.v τ = fun k => v₀ ⟨τ, k⟩ ≫ Z.m.φ` using `funext fun k => (h2 ⟨τ, k⟩).symm`. Rewrite `hcf` using `[e1]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hc` using `(comb_iff Z.m0.toSABMap hu (fun k => h1 ⟨τ, k⟩) cf k1).2 ((comb_iff Z.m hx (fun k => h1 ⟨τ, k⟩) cf k1).1 hcf)`. Conclude with `⟨cf, (t3 _ ht).unique hv ((GlobalTheory.DerLin.isCombAt_iff_isDerivAt0 E H Dw l Xo _ g _ Fu i P hP _ _ (fun k => W ⟨τ, k⟩) (fun k => h3 ⟨τ, k⟩) cf _).1 hc)⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem dirs_exists_comb (τ : E →+* ℂ) (w : Fin g → ℂ) (hw : ∀ j, w j ≠ 0 → (e j).1 = τ) :
     ∃ cf : Fin (Dw.mult τ) → ℂ, w = ∑ k, cf k • W ⟨τ, k⟩ := by
@@ -60,9 +60,9 @@ theorem dirs_exists_comb (τ : E →+* ℂ) (w : Fin g → ℂ) (hw : ∀ j, w j
 include hP hu hy hW in
 
 /- English proof (translation)
-Rewrite using `[← (Pi.basisFun ℂ (Fin g)).span_eq, Submodule.span_le]`. Introduce and unpack `_ ⟨j, rfl⟩`. Take `⟨cf, h⟩` from `dirs_exists_comb hP hu hy hW (e j).1 (Pi.basisFun ℂ (Fin g) j) fun k hk => by`. Assume the negation of the conclusion as `hne`. Conclude with `hk (by rw [Pi.basisFun_apply]; exact Pi.single_eq_of_ne (fun h => hne (by rw [h])) _)`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h]`. Conclude with `Submodule.sum_mem _ fun k _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨_, rfl⟩)`.
+A detailed English derivation is pending.
 -/
 theorem dirs_span : ⊤ ≤ Submodule.span ℂ (Set.range W) := by
   rw [← (Pi.basisFun ℂ (Fin g)).span_eq, Submodule.span_le]
@@ -76,7 +76,7 @@ theorem dirs_span : ⊤ ≤ Submodule.span ℂ (Set.range W) := by
 include hP hu hy hW in
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨basisOfTopLeSpanOfCardEqFinrank W (dirs_span hP hu hy hW) (by rw [Module.finrank_fin_fun, ← Fintype.card_congr e, Fintype.card_fin]), coe_basisOfTopLeSpanOfCardEqFinrank _ _ _⟩`.
+Supply the required witnesses or components.
 -/
 theorem dirs_basis : ∃ b : Module.Basis (Letter Dw) ℂ (Fin g → ℂ), ⇑b = W :=
   ⟨basisOfTopLeSpanOfCardEqFinrank W (dirs_span hP hu hy hW) (by
@@ -85,9 +85,9 @@ theorem dirs_basis : ∃ b : Module.Basis (Letter Dw) ℂ (Fin g → ℂ), ⇑b 
 end Directions
 
 /- English proof (translation)
-Use `Z.jQ_open` as an intermediate fact. Establish `hr : Set.range x.1 ⊆ Set.range Z.jQ`. Introduce and unpack `_ ⟨p, rfl⟩`. Take `rfl : p = IsLocalRing.closedPoint ℂ` from `Subsingleton.elim (α := PrimeSpectrum ℂ) _ _`. Conclude with `not_not.1 h`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨IsOpenImmersion.lift Z.jQ _ hr, IsOpenImmersion.lift_fac _ _ _⟩`.
+A detailed English derivation is pending.
 -/
 theorem Inner.exists_lift {x : CxPts (genStr Z) σ} (h : Inner x) : ∃ y : Sp ℂ ⟶ Xo.XF c, y ≫ Z.jQ = x.1 := by
   have := Z.jQ_open
@@ -98,7 +98,7 @@ theorem Inner.exists_lift {x : CxPts (genStr Z) σ} (h : Inner x) : ∃ y : Sp �
   exact ⟨IsOpenImmersion.lift Z.jQ _ hr, IsOpenImmersion.lift_fac _ _ _⟩
 
 /- English proof (translation)
-Establish `hx : y ≫ Z.jQ ≫ pullback.fst _ _ = a.1.1 ≫ genι Z` using `by rw [← Category.assoc, hy]`. Use `choose v₀ h1 h2 using fun z : Letter Dw => exists_lift Z.m (spMap (algebraMap ℂ (DualNumber ℂ)) ≫ y) (a.2.v z.1 z.2) (by rw [(a.2.tan z.1 z.2).1, ← hx, Category.assoc])`. Use `choose W hW using fun z : Letter Dw => ((GlobalTheory.isDerivAt0_ex_isTanAt E H Dw l Xo _ g _ Fu i P hP).2.2 _ ((tan_iff Z.m0.toSABMap hu (h1 z)).2 ((tan_iff Z.m hx (h1 z)).1 (h2 z ▸ a.2.tan z.1 z.2)))).exists`. Conclude with `⟨W, fun z => ⟨v₀ z, h1 z, h2 z, hW z⟩⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_dirs (hP : IsPeriod (Fu.Di i) (fun j => Formalism.L2.PjFree.relab c σ (e j).1) P)
     (hu : y ≫ pullback.fst _ _ = Fu.u i P) (hy : y ≫ Z.jQ = a.1.1) :
@@ -113,7 +113,7 @@ theorem exists_dirs (hP : IsPeriod (Fu.Di i) (fun j => Formalism.L2.PjFree.relab
   exact ⟨W, fun z => ⟨v₀ z, h1 z, h2 z, hW z⟩⟩
 
 /- English proof (translation)
-Take `⟨W, hW⟩` from `exists_dirs hP hu hy`. Take `⟨b, rfl⟩` from `dirs_basis hP hu hy hW`. Conclude with `⟨b.equivFun.toLinearMap.toAddMonoidHom.comp P, P, b, y, hP, hu, hy, hW, fun v => (b.sum_equivFun (P v)).symm⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_per_of_isPeriod (hP : IsPeriod (Fu.Di i) (fun j => Formalism.L2.PjFree.relab c σ (e j).1) P)
     (hu : y ≫ pullback.fst _ _ = Fu.u i P) (hy : y ≫ Z.jQ = a.1.1) : ∃ Q, Per Fu a i Q := by
@@ -122,9 +122,9 @@ theorem exists_per_of_isPeriod (hP : IsPeriod (Fu.Di i) (fun j => Formalism.L2.P
   exact ⟨b.equivFun.toLinearMap.toAddMonoidHom.comp P, P, b, y, hP, hu, hy, hW, fun v => (b.sum_equivFun (P v)).symm⟩
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c O _ β Z σ g e Fu a ha`. Take `⟨y, hy⟩` from `ha.exists_lift`. Establish `hs : y ≫ pullback.snd _ _ = spMap σ`. Rewrite using `[← Z.jQ_over, ← Category.assoc, hy]`. Conclude with `a.1.2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨i, P, hP, hu⟩` from `Fu.onto (y ≫ pullback.fst _ _) (by`. Rewrite using `[Category.assoc, pullback.condition, ← Category.assoc, hs, OpenReg.spMap_comp])`. Conclude with `⟨i, exists_per_of_isPeriod hP hu.symm hy⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_per : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Z : Model Xo c β) (σ : c.F →+* ℂ) (g : ℕ) (e : Fin g ≃ Letter Dw) (Fu : Fam Xo c σ e) (a : CxFr Z σ), Inner a.1 → ∃ i Q, Per Fu a i Q := by
   intro E _ _ _ H Dw l Xo c O _ β Z σ g e Fu a ha

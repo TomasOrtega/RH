@@ -17,19 +17,19 @@ Both sides reduce to the same expression.
 @[simp] lemma ofR_apply (g : C(X, ℝ)) (x : X) : ofR g x = (g x : ℂ) := rfl
 
 /- English proof (translation)
-Use extensionality with `x`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 lemma ofR_add (g h : C(X, ℝ)) : ofR (g + h) = ofR g + ofR h := by
   ext x; simp
 
 /- English proof (translation)
-Use extensionality with `x`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 lemma ofR_sub (g h : C(X, ℝ)) : ofR (g - h) = ofR g - ofR h := by
   ext x; simp
 
 /- English proof (translation)
-Use extensionality with `x`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 lemma ofR_smul (c : ℝ) (g : C(X, ℝ)) : ofR (c • g) = (c : ℂ) • ofR g := by
   ext x; simp
@@ -38,7 +38,7 @@ def reC (f : C(X, ℂ)) : C(X, ℝ) := ⟨fun x => (f x).re, by fun_prop⟩
 def imC (f : C(X, ℂ)) : C(X, ℝ) := ⟨fun x => (f x).im, by fun_prop⟩
 
 /- English proof (translation)
-Use extensionality with `x`. Simplify using `[reC, imC, mul_comm Complex.I, Complex.re_add_im]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 lemma eq_ofR_re_add_im (f : C(X, ℂ)) : f = ofR (reC f) + Complex.I • ofR (imC f) := by
   ext x
@@ -49,9 +49,9 @@ variable (Λ : C(X, ℂ) →ₗ[ℂ] ℂ) (hΛ : ∀ f : C(X, ℂ), 0 ≤ Λ (st
 include hΛ
 
 /- English proof (translation)
-Set `s : C(X, ℝ)` to `⟨fun x => Real.sqrt (g x), by fun_prop⟩`. Establish `: ofR g = star (ofR s) * ofR s`. Use extensionality with `x`. Simplify using `only [ofR_apply, ContinuousMap.mul_apply, ContinuousMap.star_apply, s, ContinuousMap.coe_mk]`. Rewrite using `[Complex.star_def, Complex.conj_ofReal, ← Complex.ofReal_mul, Real.mul_self_sqrt (hg x)]`.
+Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Conclude with `hΛ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma nonneg_ofR {g : C(X, ℝ)} (hg : ∀ x, 0 ≤ g x) : 0 ≤ Λ (ofR g) := by
   let s : C(X, ℝ) := ⟨fun x => Real.sqrt (g x), by fun_prop⟩
@@ -63,11 +63,11 @@ lemma nonneg_ofR {g : C(X, ℝ)} (hg : ∀ x, 0 ≤ g x) : 0 ≤ Λ (ofR g) := b
   rw [this]; exact hΛ _
 
 /- English proof (translation)
-Set `p : C(X, ℝ)` to `⟨fun x => max (g x) 0, by fun_prop⟩`. Set `n : C(X, ℝ)` to `⟨fun x => max (-g x) 0, by fun_prop⟩`. Establish `hg : g = p - n`. Use extensionality with `x`. Simplify using `only [p, n, ContinuousMap.sub_apply, ContinuousMap.coe_mk]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Break down `le_total 0 (g x) with h | h` into its components or cases. Rewrite using `[max_eq_left h, max_eq_right (by linarith)]; ring`. Rewrite using `[max_eq_right h, max_eq_left (by linarith)]; ring`. Establish `hp` using `nonneg_ofR Λ hΛ (g := p) (fun x => le_max_right _ _)`. Establish `hn` using `nonneg_ofR Λ hΛ (g := n) (fun x => le_max_right _ _)`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hp`, `hn` using `[Complex.le_def]`. Rewrite using `[hg, ofR_sub, map_sub, Complex.sub_im, ← hp.2, ← hn.2]`. Simplify using the standard rewrite rules.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma im_ofR (g : C(X, ℝ)) : (Λ (ofR g)).im = 0 := by
   let p : C(X, ℝ) := ⟨fun x => max (g x) 0, by fun_prop⟩
@@ -84,7 +84,7 @@ lemma im_ofR (g : C(X, ℝ)) : (Λ (ofR g)).im = 0 := by
   rw [hg, ofR_sub, map_sub, Complex.sub_im, ← hp.2, ← hn.2]; simp
 
 /- English proof (translation)
-Apply the tactic sequence `apply Complex.ext <;> simp [im_ofR Λ hΛ g]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma ofR_eq_re (g : C(X, ℝ)) : Λ (ofR g) = ((Λ (ofR g)).re : ℂ) := by
   apply Complex.ext <;> simp [im_ofR Λ hΛ g]
@@ -94,15 +94,15 @@ end
 variable [CompactSpace X] [T2Space X] [MeasurableSpace X] [BorelSpace X]
 
 /- English proof (translation)
-Introduce the local definition `Λr : C_c(X, ℝ) →ₚ[ℝ] ℝ`. Use the proof step `{ toFun g := (Λ (ofR g.toContinuousMap)).re map_add' g g' := by`. Establish `: (g + g').toContinuousMap = g.toContinuousMap + g'.toContinuousMap` using `rfl`. Rewrite using `[this, ofR_add, map_add, Complex.add_re]`. Use the proof step `map_smul' c g := by`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: (c • g).toContinuousMap = c • g.toContinuousMap` using `rfl`. Rewrite using `[this, ofR_smul, map_smul]`. Simplify using the standard rewrite rules. Use the proof step `monotone' g g' hgg' := by`. Establish `h` using `nonneg_ofR Λ hΛ (g := g'.toContinuousMap - g.toContinuousMap) (fun x => sub_nonneg.2 (hgg' x))`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite `h` using `[ofR_sub, map_sub, Complex.le_def]`. Use `h.1` as an intermediate fact. Simplify using `only [Complex.zero_re, Complex.sub_re] at this`. Combine the linear relations using `}`. Use `⟨RealRMK.rieszMeasure Λr, inferInstance, inferInstance, fun f => ?_⟩` and prove the remaining obligations.
+Combine the linear equalities and inequalities to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `key : ∀ g : C(X, ℝ), Λ (ofR g) = ((∫ x, g x ∂(RealRMK.rieszMeasure Λr) : ℝ) : ℂ)`. Introduce `g`. Use `RealRMK.integral_rieszMeasure Λr (CompactlySupportedContinuousMap.continuousMapEquiv g)` as an intermediate fact. Rewrite using `[ofR_eq_re Λ hΛ g]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Conclude with `this.symm`. Establish `hint : Integrable (fun x => f x) (RealRMK.rieszMeasure Λr)` using `f.continuous.integrable_of_hasCompactSupport (HasCompactSupport.of_compactSpace _)`. Use `conv_lhs => rw [eq_ofR_re_add_im f]`. Rewrite using `[map_add, map_smul, key, key, ← integral_re_add_im hint, smul_eq_mul, mul_comm]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem exists_measure_of_positive (Λ : C(X, ℂ) →ₗ[ℂ] ℂ)
     (hΛ : ∀ f : C(X, ℂ), 0 ≤ Λ (star f * f)) :
@@ -140,9 +140,9 @@ end PositivityTheory.Rg.BcB.E2.P.Specmeas
 namespace PositivityTheory.Rg.BcB.E2.P
 
 /- English proof (translation)
-Introduce `K _ _ _ S _ _ _ _ _ π v`. Introduce the local definition `Λ : C(S, ℂ) →ₗ[ℂ] ℂ`. Use the proof step `{ toFun f := inner ℂ v (π f v) map_add' f g := by simp [map_add] map_smul' c f := by simp }`. Establish `hΛ : ∀ f : C(S, ℂ), 0 ≤ Λ (star f * f)`. Introduce `f`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `show 0 ≤ inner ℂ v (π (star f * f) v)`. Rewrite using `[map_mul, map_star, ContinuousLinearMap.star_eq_adjoint, ContinuousLinearMap.mul_apply, ContinuousLinearMap.adjoint_inner_right, inner_self_eq_norm_sq_to_K]`. Conclude with `pow_nonneg (Complex.zero_le_real.mpr (norm_nonneg (π f v))) 2`. Take `⟨ν, h1, h2, h3⟩` from `Specmeas.exists_measure_of_positive Λ hΛ`. Conclude with `⟨ν, h1, h2, fun f => (h3 f).symm⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem specmeas : SpecMeas := by
   intro K _ _ _ S _ _ _ _ _ π v

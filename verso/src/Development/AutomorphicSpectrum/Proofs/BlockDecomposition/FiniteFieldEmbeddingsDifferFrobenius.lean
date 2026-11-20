@@ -14,7 +14,7 @@ open GlobalTheory.CompanionTheory.LTPer.Tilt
 namespace GlobalTheory.CompanionTheory.LTPer.Tilt
 
 /- English proof (translation)
-Introduce `l _ k D _ _ _ _ _ α β`. Use `haveI : CharP k l := α.charP α.injective l`. Conclude with `GlobalTheory.ResidueChar.exists_pow_of_finite_field l α β`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem exists_frobenius_pow_of_ringHoms : ∀ {l : ℕ} [Fact l.Prime] {k D : Type} [Field k] [Finite k] [CommRing D] [IsDomain D] [CharP D l]
     (α β : k →+* D), ∃ i : ℕ, ∀ x, β x = α x ^ l ^ i := by

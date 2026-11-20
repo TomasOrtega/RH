@@ -16,13 +16,11 @@ open scoped Matrix nonZeroDivisors
 namespace GlobalTheory.ExpChain
 
 /- English proof (translation)
-Establish `key : spMap (TrivSqZeroExt.fstHom ℂ ℂ ℂ).toRingHom ≫ v = e 0 → ∀ (U : X.Opens) (_ : ⊤ ≤ v ⁻¹ᵁ U) (f : Γ(X, U)), fderiv ℂ (fun z => valAt' (e (L z)) U f) 0 w = fderiv ℂ (fun z => valAt' (e z) U f) 0 (L w)`. Introduce `h0 U hU f`. Establish `hmem : (0 : Fin g → ℂ) ∈ {b ∈ (Set.univ : Set (Fin g → ℂ)) | ⊤ ≤ e b ⁻¹ᵁ U}`. Use `⟨trivial, ?_⟩` and prove the remaining obligations. Rewrite using `[← h0]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `x _`. Conclude with `hU (Set.mem_univ _)`. Establish `hd : DifferentiableAt ℂ (fun z => valAt' (e z) U f) 0` using `((he U f).2 0 hmem).differentiableAt ((he U f).1.mem_nhds hmem)`. Set `L'` to `LinearMap.toContinuousLinearMap L`. Establish `hd' : HasFDerivAt (fun z => valAt' (e z) U f) (fderiv ℂ (fun z => valAt' (e z) U f) 0) (L' 0)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_zero]`. Conclude with `hd.hasFDerivAt`. Use `(hd'.comp (0 : Fin g → ℂ) L'.hasFDerivAt).fderiv` as an intermediate fact. Conclude with `DFunLike.congr_fun this w`. Unfold `IsDerivAt0`.
-
-Simplify using `only [map_zero]`. Conclude with `and_congr_right fun h0 => forall_congr' fun U => forall_congr' fun hU => forall_congr' fun f => by`. Rewrite using `[key h0 U hU f]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isDerivAt0_comp_linear {g : ℕ} {X : Scheme.{0}} (e : (Fin g → ℂ) → (Sp ℂ ⟶ X))
     (he : IsHolTo Set.univ e) (L : (Fin g → ℂ) →ₗ[ℂ] (Fin g → ℂ)) (w : Fin g → ℂ)
@@ -49,9 +47,9 @@ theorem isDerivAt0_comp_linear {g : ℕ} {X : Scheme.{0}} (e : (Fin g → ℂ) �
     rw [key h0 U hU f]
 
 /- English proof (translation)
-Introduce `U f`. Take `⟨h1, h2⟩` from `h U f`. Establish `hj : Differentiable ℂ (fun z : Fin g → ℂ => ((0 : Fin m → ℂ), z))` using `(differentiable_const _).prodMk differentiable_id`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `h3` using `h1.preimage hj.continuous`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify `h3` using `only [Set.preimage_setOf_eq, Set.mem_prod, Set.mem_univ, true_and]`. Conclude with `h2.comp hj.differentiableOn fun z hz => ⟨⟨trivial, trivial⟩, hz.2⟩`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem isHolTo_slice {g m : ℕ} {X : Scheme.{0}} (e : (Fin m → ℂ) × (Fin g → ℂ) → (Sp ℂ ⟶ X))
     (h : IsHolTo (Set.univ ×ˢ Set.univ) e) : IsHolTo Set.univ (fun z => e (0, z)) := by
@@ -65,7 +63,7 @@ theorem isHolTo_slice {g m : ℕ} {X : Scheme.{0}} (e : (Fin m → ℂ) × (Fin 
   · exact h2.comp hj.differentiableOn fun z hz => ⟨⟨trivial, trivial⟩, hz.2⟩
 
 /- English proof (translation)
-Establish `h` using `(F.hol k 0 Set.univ (fun _ => P) isOpen_univ ⟨fun _ _ => hP, fun _ => differentiableOn_const _⟩).2`. Establish `h2` using `isHolTo_slice _ h`. Simplify using `only at h2`. Conclude with `h2`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isHolTo_ex {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E}
     {Dw : Datum H} {l : Level H} {Xo : Moduli Dw l} {σ' : KA l →+* ℂ} {g : ℕ} {ty : Fin g → (E →+* ℂ)}
@@ -78,7 +76,7 @@ theorem isHolTo_ex {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Recip
   exact h2
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo σ' g ty F k P _ k' P' L hP' hL w v`. Rewrite using `[← isDerivAt0_comp_linear _ (isHolTo_ex F k' P' hP') L w v]`. Simplify using `only [hL]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem isDerivAt0_ex_iff : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (σ' : KA l →+* ℂ) (g : ℕ) (ty : Fin g → (E →+* ℂ)) (F : FamilyUnif Xo σ' ty) (k : Fin F.n) (P : (F.Di k).La →+ (Fin g → ℂ)), IsPeriod (F.Di k) ty P → ∀ (k' : Fin F.n) (P' : (F.Di k').La →+ (Fin g → ℂ)) (L : (Fin g → ℂ) →ₗ[ℂ] (Fin g → ℂ)), IsPeriod (F.Di k') ty P' → (∀ z, (F.ex k' P' (L z)).left = (F.ex k P z).left) → ∀ w (v : (Sp (DualNumber ℂ) ⟶ Xo.univ.t.G.left)), IsDerivAt0 (fun z => (F.ex k P z).left) w v ↔ IsDerivAt0 (fun z => (F.ex k' P' z).left) (L w) v := by
   intro E _ _ _ H Dw l Xo σ' g ty F k P _ k' P' L hP' hL w v

@@ -29,11 +29,9 @@ def petersson {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a : ℕ
     (fun c φ ψ => by simp only [map_smul, inner_smul_left, smul_eq_mul])
 
 /- English proof (translation)
-Introduce `hB E _ _ _ a μ _ _ π hπ`. Establish `hl` using `GlobalTheory.T.normalised_cusp_form_L2_bounded hB E a μ π hπ`. Establish `hm : ∀ φ ∈ π.V, GlobalTheory.AutomorphicL2Unitary.MemL2Quotient (GlobalTheory.UnitaryBC.latticeGL E a) μ φ.1` using `fun φ hφ => (hl φ hφ).1`. Establish `hb : ∀ φ ∈ π.V, ∃ C : ℝ, ∀ g, ‖φ.1 g‖ ≤ C` using `fun φ hφ => (hl φ hφ).2`. Use `⟨petersson μ π hm, fun X φ ψ => GlobalTheory.T.lie_action_skew_adjoint_L2 E a μ π hm hb X φ ψ, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨φ, hφ, hne⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot π.ne_bot`. Establish `hi : Function.Injective (toL2ₗ μ π.V hm)` using `toL2ₗ_injective hm fun ψ hψ => ContAut.continuous_of_isOpen_stab E a ψ (π.cusp ψ hψ).1.level`. Establish `hT : toL2ₗ μ π.V hm ⟨φ, hφ⟩ ≠ 0` using `fun h => hne (congrArg Subtype.val (hi (h.trans (map_zero _).symm)))`. Use `⟨⟨φ, hφ⟩, ?_⟩` and prove the remaining obligations. Use `show inner ℂ (toL2ₗ μ π.V hm ⟨φ, hφ⟩) (toL2ₗ μ π.V hm ⟨φ, hφ⟩) ≠ 0`.
-
-Conclude with `inner_self_ne_zero.2 hT`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_isHerm : GlobalTheory.Published.CuspFormsBoundedGL → ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ) (μ : Measure (GA E a)) [μ.IsHaarMeasure] [μ.IsMulRightInvariant] (π : CuspSub E a), GlobalTheory.DiscSpec.IsNormalised π → ∃ B : π.V →ₗ[ℂ] π.V →ₗ⋆[ℂ] ℂ, IsHerm π B := by
   intro hB E _ _ _ a μ _ _ π hπ

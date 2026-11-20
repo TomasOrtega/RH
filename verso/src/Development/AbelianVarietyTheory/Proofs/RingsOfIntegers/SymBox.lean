@@ -23,17 +23,17 @@ namespace GlobalTheory.PsiEvenBox
 open ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.BoxFamily
 
 /- English proof (translation)
-Establish `hψ : ∀ (i : Fin j) (a : Fin 2), (![(ι[D'.P.A]).left, 𝟙 D'.P.A.left] : Fin 2 → _) a ≫ (pD.pw.pr i).left = (pD.pw.pr i).left ≫ (![(ι[D.P.A]).left, 𝟙 D.P.A.left] : Fin 2 → _) a`. Introduce `i a`. Use `pD.pw.hom i` as an intermediate fact. Use `fin_cases a`. Simplify using `only [Fin.zero_eta, Matrix.cons_val_zero]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Over.comp_left, ← Over.comp_left, GrpObj.inv_hom]`. Simplify using the standard rewrite rules. Establish `he : eSec D'.P.A ≫ D'.P.A.hom = 𝟙 _` using `Over.w η[D'.P.A]`. Establish `hp : Function.Surjective D'.P.A.hom.appTop.hom` using `(hG _ D'.P.A D'.P.isAb).2`. Establish `hinv : eSec D'.P.A ≫ (ι[D'.P.A]).left = eSec D'.P.A`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `eSec`. Rewrite using `[← Over.comp_left, GrpObj.one_inv]`. Establish `hpr : ∀ i, eSec D'.P.A ≫ (pD.pw.pr i).left = eSec D.P.A` using `fun i => by`. Use `pD.pw.hom i` as an intermediate fact. Unfold `eSec`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Over.comp_left, IsMonHom.one_hom]`. Establish `hone : ∀ (E : DegPre R) (z : ↥(𝟙_ (Over (Spec (CommRingCat.of R)))).left) (K : ((𝟙_ (Over (Spec (CommRingCat.of R)))).left ⟶ E.P.A.left) → E.P.L.ι), Good E.P.L z K → val E.sym (eSec E.P.A) z K = 1`. Introduce `E z K hK`. Establish `h` using `val_corr hK E.sym_rig (𝟙 _)`. Rewrite `h` using `[val_pull hK, Category.id_comp, val_one]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `h`. Establish `key` using `GlobalTheory.CubBox.box_unique (φ' := ![(ι[D'.P.A]).left, 𝟙 D'.P.A.left]) (φ := ![(ι[D.P.A]).left, 𝟙 D.P.A.left]) (ε := ![1, -1]) (ρ := fun i => (pD.pw.pr i).left) D.P.isLB D'.P.isLB pD.w pD.w_gen hψ D'.sym_gen D.sym_gen D'.P.A.hom (eSec D'.P.A) he hp`. Specialize `key (by`. Introduce `z K K' hK hK'`. Rewrite using `[Fin.prod_univ_two]`.
+Apply the general hypothesis to the chosen values. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Matrix.cons_val_zero, Matrix.cons_val_one, zpow_one, zpow_neg_one, Category.comp_id, hinv, hpr, mul_inv_cancel]`. Rewrite using `[hone D' z K' hK', hone D z K hK, Finset.prod_const_one, _root_.mul_one]) Z r y J J' hJ hJ'`. Rewrite `key` using `[Fin.prod_univ_two]`. Simplify using `only [Matrix.cons_val_zero, Matrix.cons_val_one, zpow_one, zpow_neg_one, Category.comp_id] at key`. Conclude with `key`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sym_box (hG : GlobalFnsSt) {R : Type} [CommRing R] [IsDomain R] {j : ℕ} {D D' : DegPre R}
     (pD : IsPowDeg D' D j) {Z : Scheme.{0}} (r : Z ⟶ D'.P.A.left) (y : Z) {J J'} (hJ : Good D.P.L y J)
@@ -79,7 +79,7 @@ theorem sym_box (hG : GlobalFnsSt) {R : Type} [CommRing R] [IsDomain R] {j : ℕ
   exact key
 
 /- English proof (translation)
-Rewrite using `[← mul_inv_cancel_left a (b * c * s)]`. The two sides agree by associativity and commutativity.
+Rewrite the hypotheses and the conclusion using the stated equalities. The two sides agree by associativity and commutativity.
 -/
 private theorem mul_mul_eq_mul_mul_mul_inv_mul {G : Type*} [CommGroup G] (a b c s : G) :
     b * c * s = a * (c * (b * a⁻¹ * s)) := by
@@ -87,17 +87,17 @@ private theorem mul_mul_eq_mul_mul_mul_inv_mul {G : Type*} [CommGroup G] (a b c 
   ac_rfl
 
 /- English proof (translation)
-Introduce `hG R _ _ j D D' pD hE χ`. Use `corr_of_val D'.P.isLB (fun y J' hJ' => ?_)` and prove the remaining obligations. Take `⟨J, hJ⟩` from `exists_good_at D.P.isLB y`. Establish `ha : D'.xK (-χ) = D'.xK χ ≫ (ι[D'.P.A]).left` using `by show ptK (D'.c (-χ)) = ptK (D'.c χ) ≫ (ι[D'.P.A]).left`. Rewrite using `[GlobalTheory.PsiEvenPull.c_neg]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Unfold `ptK`. Rewrite using `[← Over.comp_left, Category.assoc]`. Establish `hb : ∀ i, D'.xK χ ≫ (pD.pw.pr i).left = D.xK (pD.xe χ i)`. Introduce `i`. Establish `h` using `cPoint_pr pD (TK R) χ i`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Unfold `cP at h`. Use `show ptK (D'.c χ) ≫ (pD.pw.pr i).left = ptK (D.c (pD.xe χ i))`. Unfold `ptK`. Rewrite using `[← Over.comp_left, h]`. Establish `hc : ∀ i, pD.xe (-χ) i = -pD.xe χ i` using `fun i => by`.
+Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_neg, Pi.neg_apply]`. Establish `h4 : ∀ i, val (D.psi (pD.xe (-χ) i)) (𝟙 _) y J * val D.sym (D'.xK χ ≫ (pD.pw.pr i).left) y J = val (D.psi (pD.xe χ i)) (𝟙 _) y J` using `fun i => by`. Establish `h` using `val_corr hJ (hE (pD.xe χ i)) (𝟙 _)`. Rewrite `h` using `[val_mul hJ, val_pull hJ, Category.id_comp]`. Rewrite using `[hc, hb]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `h`. Establish `h1` using `psi_val pD hJ hJ' χ (𝟙 _)`. Establish `h2` using `psi_val pD hJ hJ' (-χ) (𝟙 _)`. Establish `h3` using `sym_box hG pD (D'.xK χ) y hJ hJ'`. Rewrite `h1`, `h2` using `[Category.id_comp, inv_mul_eq_iff_eq_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h2` using `[ha]`. Rewrite using `[val_mul hJ', val_pull hJ', Category.id_comp, h1, h2]`. Simplify using `only [← h4, Finset.prod_mul_distrib]`. Rewrite using `[← h3]`. Conclude with `mul_mul_eq_mul_mul_mul_inv_mul _ _ _ _`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem main : GlobalFnsSt → ∀ (R : Type) [CommRing R] [IsDomain R] (j : ℕ) (D D' : DegPre R) (pD : IsPowDeg D' D j), D.PsiEven → D'.PsiEven := by
   intro hG R _ _ j D D' pD hE χ

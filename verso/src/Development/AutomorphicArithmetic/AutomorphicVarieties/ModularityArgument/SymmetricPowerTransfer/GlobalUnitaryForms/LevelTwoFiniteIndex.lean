@@ -250,7 +250,7 @@ end Dat
 end Global
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨∅, ⊤, ⊤, ⊤, 0, 0, 0, 1, 1, 1⟩`.
+Supply the required witnesses or components.
 -/
 example : SigData (K := ℚ) (-1) := ⟨∅, ⊤, ⊤, ⊤, 0, 0, 0, 1, 1, 1⟩
 

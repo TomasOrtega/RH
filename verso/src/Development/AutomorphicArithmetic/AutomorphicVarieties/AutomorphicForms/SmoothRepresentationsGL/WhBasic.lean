@@ -11,15 +11,13 @@ open scoped SchwartzMap FourierTransform RealInnerProductSpace ContDiff Topology
 
 open GroundTheory.Automorphic.FourierWhittaker in
 /- English proof (translation)
-Use `⟨fun p => ν.val p.1.1 p.1.2, Units.ext (Matrix.ext fun a b => ?_), ?_⟩` and prove the remaining obligations. Rewrite using `[coe_uGL, uMat_apply] split_ifs with h1 h2`. Substitute `h1` using the available equality. Conclude with `(hν a (Nat.zero_le _)).1`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Both sides reduce to the same expression. Replace the relevant objects with their definitions.
 
-Conclude with `(hν a (Nat.zero_le _)).2 b (lt_of_le_of_ne (not_lt.1 h2) (Ne.symm h1))`. Unfold `supN supSum`. Rewrite using `[← Finset.sum_product', ← Finset.sum_filter]`. Use `symm`. Use `Finset.sum_bij (fun p _ => p.1) ?_ ?_ ?_ ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `p hp`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_product] at hp ⊢`. Use linear arithmetic over natural numbers and integers. Introduce `p _ q _ h`. Conclude with `Subtype.ext h`.
+Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `q hq`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_product] at hq`. Use `⟨⟨q, by rw [Fin.lt_def]; omega⟩, ?_, rfl⟩` and prove the remaining obligations. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and]`. Use linear arithmetic over natural numbers and integers.
-
-Introduce `p _`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 private theorem exists_uGL {E : Type} [Field E] [NumberField E] {n : ℕ} (ν : GA E n) (hν : IsY 0 ν.val) :
     ∃ X : Pos n → Ad E, ν = uGL X ∧ supN ν.val = supSum 0 X := by
@@ -49,11 +47,11 @@ private theorem exists_uGL {E : Type} [Field E] [NumberField E] {n : ℕ} (ν : 
 
 open GroundTheory.Automorphic.FourierWhittaker in
 /- English proof (translation)
-Introduce `E _ _ n f hf`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Establish `: whittaker f = partialCoeff f 0` using `funext fun g => whittaker_eq_partialCoeff_zero hf.cont g`. Rewrite using `[this]`. Conclude with `continuous_partialCoeff hf.cont 0`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨C, hC⟩` from `hf.bdd`. Use `⟨C, fun g => ?_⟩` and prove the remaining obligations. Establish `h` using `norm_setIntegral_le_of_norm_le_const (μ := vecMeasure E (Pos n)) (s := vecDomain E (Pos n)) (f := fun X => f (uGL X * g) * (GroundTheory.Global.adelicChar E (-supSum 0 X) : ℂ)) (C := C) (by rw [vecMeasure_vecDomain]; exact ENNReal.one_lt_top) fun X _ => by`. Rewrite using `[norm_mul, Circle.norm_coe, mul_one]`. Conclude with `hC _`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `h` using `[measureReal_def, vecMeasure_vecDomain, ENNReal.toReal_one, mul_one]`. Then use the resulting hypothesis. Introduce `ν hν g`. Take `⟨X, h1, h2⟩` from `exists_uGL ν hν`. Rewrite using `[h2, h1]`. Conclude with `GroundTheory.Automorphic.MultiplicityOne.whittaker_uGL_mul hf.cont hf.left X g`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Af.Smo.whBasic :
     UpperTheory.V.Af.Smo.WhBasic := by

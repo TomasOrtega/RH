@@ -8,27 +8,27 @@ attribute [local instance] Over.cartesianMonoidalCategory CategoryTheory.Hom.gro
 namespace GlobalTheory.SemiAbAct
 
 /- English proof (translation)
-Introduce `O _ k _ _ G _ act _ T`. Use `letI := T.addCommGroup`. Use `letI := T.grpB`. Use `T.free` as an intermediate fact. Use `T.finite` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `T.i_hom` as an intermediate fact. Use `T.q_hom` as an intermediate fact. Use `T.q_flat` as an intermediate fact. Use `T.q_surjective` as an intermediate fact. Use `T.q_quasiCompact` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `T.isAbelian.proper` as an intermediate fact. Establish `hmono : Mono T.i` using `T.isKernel.flip.mono_snd_of_mono`. Establish `hepi : Epi T.q` using `GlobalTheory.SemiRigid.epi_of_fpqc T.q`. Establish `hA : ∀ a, IsMonHom (act.act a)` using `act.hom`. Establish `hT : ∀ a, T.i ≫ act.act a ≫ T.q = toUnit _ ≫ η`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `a`. Rewrite using `[GlobalTheory.SemiRigid.torus_const T.X T.B (T.i ≫ act.act a ≫ T.q)]`. Simplify using `[IsMonHom.one_hom_assoc, IsMonHom.one_hom]`. Set `fT : ∀ a, splitTorus (Sp k) T.X ⟶ splitTorus (Sp k) T.X` to `fun a ↦ T.isKernel.lift (T.i ≫ act.act a) (toUnit _) (by rw [Category.assoc, hT])`. Establish `hfT : ∀ a, fT a ≫ T.i = T.i ≫ act.act a` using `fun a ↦ T.isKernel.lift_fst _ _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hB : ∀ a, ∃ g, T.q ≫ g = act.act a ≫ T.q` using `fun a ↦ GlobalTheory.SemiRigid.exists_desc T.q (act.act a ≫ T.q) fun Z x y h ↦ by`. Take `⟨τ, hτ⟩` from `GlobalTheory.SemiRigid.exists_eq_mul T.isKernel h`. Rewrite using `[hτ, MonObj.mul_comp_assoc, MonObj.mul_comp, Category.assoc, Category.assoc, hT, comp_toUnit_assoc, ← Hom.one_def, _root_.one_mul, Category.assoc]`. Use `choose fB hfB using hB`. Establish `hmulT : ∀ a, IsMonHom (fT a)` using `fun a ↦ by`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← cancel_mono T.i, Category.assoc, hfT, IsMonHom.one_hom_assoc, IsMonHom.one_hom, IsMonHom.one_hom]`. Rewrite using `[← cancel_mono T.i, Category.assoc, hfT, IsMonHom.mul_hom_assoc, IsMonHom.mul_hom, Category.assoc, IsMonHom.mul_hom, tensorHom_comp_tensorHom_assoc, tensorHom_comp_tensorHom_assoc, hfT]`. Establish `hmulB : ∀ a, IsMonHom (fB a)` using `fun a ↦ by`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h` using `IsMonHom.one_hom (f := T.q)`. Rewrite using `[← h, Category.assoc, hfB, IsMonHom.one_hom_assoc, h]`. Establish `hqq : Epi (T.q ⊗ₘ T.q)`. Establish `: Epi (T.q ▷ G)` using `GlobalTheory.SemiRigid.epi_of_fpqc _`. Establish `: Epi (T.q ▷ T.B)` using `GlobalTheory.SemiRigid.epi_of_fpqc _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `have : Epi (lift (snd T.B G) (fst T.B G)) := epi_of_epi_fac (h := 𝟙 _) (f := lift (snd G T.B) (fst G T.B)) (by apply CartesianMonoidalCategory.hom_ext <;> simp)`. Apply the tactic sequence `have : Epi (lift (snd T.B T.B) (fst T.B T.B)) := epi_of_epi_fac (h := 𝟙 _) (f := lift (snd T.B T.B) (fst T.B T.B)) (by apply CartesianMonoidalCategory.hom_ext <;> simp)`. Establish `hs : T.B ◁ T.q = lift (snd T.B G) (fst T.B G) ≫ (T.q ▷ T.B) ≫ lift (snd T.B T.B) (fst T.B T.B)`. Apply the tactic sequence `apply CartesianMonoidalCategory.hom_ext <;> simp`. Rewrite using `[MonoidalCategory.tensorHom_def, hs]`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `infer_instance`. Rewrite using `[← cancel_epi (T.q ⊗ₘ T.q), ← IsMonHom.mul_hom_assoc, hfB, IsMonHom.mul_hom_assoc, IsMonHom.mul_hom, tensorHom_comp_tensorHom_assoc, tensorHom_comp_tensorHom_assoc, hfB]`. Use `⟨⟨fB, hmulB, ?_, ?_, ?_⟩, ⟨fT, hmulT, ?_, ?_, ?_⟩, hfB, hfT⟩` and prove the remaining obligations. Rewrite using `[← cancel_epi T.q, hfB, act.one, Category.comp_id, Category.id_comp]`. Introduce `a b`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← cancel_epi T.q, hfB, act.mul, Category.assoc, ← hfB, reassoc_of% hfB]`. Introduce `a b`. Rewrite using `[← cancel_epi T.q, hfB, MonObj.comp_mul, hfB, hfB, act.add, MonObj.mul_comp]`. Rewrite using `[← cancel_mono T.i, hfT, act.one, Category.comp_id, Category.id_comp]`. Introduce `a b`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← cancel_mono T.i, hfT, act.mul, Category.assoc, hfT, reassoc_of% hfT]`. Introduce `a b`. Rewrite using `[← cancel_mono T.i, hfT, MonObj.mul_comp, hfT, hfT, act.add, MonObj.comp_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_torus_quotient_act : ∀ (O : Type) [CommRing O] (k : Type) [Field k] [IsAlgClosed k] (G : Over (Sp k)) [GrpObj G] (act : OAct O G), IsSemiAbelian G → ∀ (T : TorusExtension G), letI := T.addCommGroup; letI := T.grpB; ∃ (actB : OAct O T.B) (actT : OAct O (splitTorus (Sp k) T.X)), (∀ a, T.q ≫ actB.act a = act.act a ≫ T.q) ∧ (∀ a, actT.act a ≫ T.i = T.i ≫ act.act a) := by
   intro O _ k _ _ G _ act _ T

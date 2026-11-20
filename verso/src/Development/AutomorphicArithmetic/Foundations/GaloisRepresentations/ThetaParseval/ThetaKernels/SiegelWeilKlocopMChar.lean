@@ -21,17 +21,17 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 namespace SD
 variable (d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ)
 /- English proof (translation)
-The claim follows from `d.chiW_mul_pf w`.
+A detailed English derivation is pending.
 -/
 theorem _root_.PositivityTheory.SiegelWeilFormula.SD_k.chiW_mul (w : InfinitePlace F) : ∀ z z' : ℂ, z ≠ 0 → z' ≠ 0 → d.chiW w (z * z') = d.chiW w z * d.chiW w z' :=
   d.chiW_mul_pf w
 /- English proof (translation)
-The claim follows from `d.chiW_cont_pf w`.
+A detailed English derivation is pending.
 -/
 theorem _root_.PositivityTheory.SiegelWeilFormula.SD_k.chiW_cont (w : InfinitePlace F) : ContinuousOn (d.chiW w) {z : ℂ | z ≠ 0} :=
   d.chiW_cont_pf w
 /- English proof (translation)
-Introduce `z _`. Distinguish the cases in `h : IsUnit (d.uW w z)`. Rewrite using `[_root_.PositivityTheory.SiegelWeilFormula.SD_k.chiW, dif_pos h]`. Conclude with `Circle.norm_coe _`. Rewrite using `[_root_.PositivityTheory.SiegelWeilFormula.SD_k.chiW, dif_neg h, norm_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.PositivityTheory.SiegelWeilFormula.SD_k.chiW_norm (w : InfinitePlace F) : ∀ z : ℂ, z ≠ 0 → ‖d.chiW w z‖ = 1 := by
   intro z _
@@ -40,12 +40,12 @@ theorem _root_.PositivityTheory.SiegelWeilFormula.SD_k.chiW_norm (w : InfinitePl
     exact Circle.norm_coe _
   · rw [_root_.PositivityTheory.SiegelWeilFormula.SD_k.chiW, dif_neg h, norm_one]
 /- English proof (translation)
-The claim follows from `d.chiW_pos_pf w`.
+A detailed English derivation is pending.
 -/
 theorem _root_.PositivityTheory.SiegelWeilFormula.SD_k.chiW_pos (w : InfinitePlace F) : ∀ r : ℝ, 0 < r → d.chiW w (r : ℂ) = 1 :=
   d.chiW_pos_pf w
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.continuous_unitary_multiplicative_eq_arg_pow (d.chiW w) (d.chiW_mul w) (d.chiW_cont w) (d.chiW_norm w) (d.chiW_pos w)`.
+A detailed English derivation is pending.
 -/
 theorem _root_.PositivityTheory.SiegelWeilFormula.SD_k.chiW_form (w : InfinitePlace F) : ∃ k : ℤ, ∀ z : ℂ, z ≠ 0 → d.chiW w z = (z / (‖z‖ : ℂ)) ^ k :=
   GlobalTheory.T.continuous_unitary_multiplicative_eq_arg_pow (d.chiW w) (d.chiW_mul w) (d.chiW_cont w) (d.chiW_norm w) (d.chiW_pos w)
@@ -53,16 +53,16 @@ end SD
 namespace RD
 variable {d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ} (R : _root_.PositivityTheory.SiegelWeilFormula.RD_k d) (w : InfinitePlace F)
 /- English proof (translation)
-The claim follows from `R.stepM_val_pf w hT`.
+A detailed English derivation is pending.
 -/
 theorem _root_.PositivityTheory.SiegelWeilFormula.RD_k.stepM_val (hT : _root_.PositivityTheory.SiegelWeilFormula.TAll_k) : ∀ (y : GR d.n) (a : Matrix (Fin d.n) (Fin d.n) ℂ), IsUnit a.det → mR y = mLoc a →
     R.StepOK w (R.ι w y) (fun f u => (d.chiW w a.det * (‖a.det‖ : ℂ) ^ d.m) * f (Matrix.of u * a)) id :=
   R.stepM_val_pf w hT
 variable {L : GR d.n → ((Fin d.m → Fin d.n → ℂ) → ℂ) → (Fin d.m → Fin d.n → ℂ) → ℂ}
 /- English proof (translation)
-Take `⟨k, hk⟩` from `d.chiW_form w`. Use `⟨k, fun y a ha hy f hf => ?_⟩` and prove the remaining obligations. Take `⟨Ψ, hΨ⟩` from `hG F E σ d R w`. Take `⟨Φ, hΦ, hT'⟩` from `R.exists_adm hT hΨ hf`. Establish `e1` using `(hL y f hf).2 Ψ hΨ.1 Φ hΦ hT'`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e2` using `((R.stepM_val w hT y a ha hy).2 Ψ hΨ.1).2 f hf Φ hΦ hT'`. Rewrite using `[R.tens_cancel hΨ.1 hΨ.2.1 (e1.symm.trans e2), hk _ ha.ne_zero]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem _root_.PositivityTheory.SiegelWeilFormula.RD_k.locOp_mM_law (hT : _root_.PositivityTheory.SiegelWeilFormula.TAll_k) (hG : _root_.PositivityTheory.SiegelWeilFormula.GoodAwayEx_k) (hL : R.IsLocOp w L) :
     ∃ k : ℤ, ∀ (y : GR d.n) (a : Matrix (Fin d.n) (Fin d.n) ℂ), IsUnit a.det → mR y = mLoc a → ∀ f, IsSw f →

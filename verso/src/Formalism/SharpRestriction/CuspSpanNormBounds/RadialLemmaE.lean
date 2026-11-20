@@ -165,7 +165,7 @@ def UniformExportStatement : Prop :=
     ∀ D : Formalism.BasicNotions.D7, Stmt D CB Co Cd Cv C1 C2 Cs c C₁ Cg CI C0 CA
 
 /- English proof (translation)
-Simplify using `only [hsInner, _root_.smul_apply, inner_smul_left, inner_smul_right, Complex.conj_ofReal, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem hsInner_smul_smul {Wp Wq : Type*} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
     [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wq] (w : ℝ) (A B : Wq →L[ℂ] Wp) :
@@ -176,22 +176,22 @@ theorem hsInner_smul_smul {Wp Wq : Type*} [NormedAddCommGroup Wp] [InnerProductS
   push_cast; ring
 
 /- English proof (translation)
-Simplify using `[hsInner]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hsInner_zero_left {Wp Wq : Type*} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
     [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wq] (B : Wq →L[ℂ] Wp) : hsInner (0 : Wq →L[ℂ] Wp) B = 0 := by
   simp [hsInner]
 
 /- English proof (translation)
-Establish `hG : 0 < Complex.normSq (zOf x) - T * T'` using `by linarith`. Establish `h1 : ((Complex.normSq (zOf x) - T * T') ^ ((((k0 + 1 : ℕ) : ℝ) - 1) / 2)) ^ 2 = (Complex.normSq (zOf x) - T * T') ^ (k0 + 1 - 1)`. Rewrite using `[← Real.rpow_natCast, ← Real.rpow_mul hG.le, ← Real.rpow_natCast]`. Use `congr 1`. Use `push_cast`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations.
 
-Simplify using the standard rewrite rules. Establish `h2 : (∏ a : Fin r, Complex.normSq (cOf x a))⁻¹ * (∏ a : Fin r, ‖cOf x a‖ ^ (Mdim (k0 + 1) r a - 1)) ^ 2 = ∏ a : Fin r, ‖cOf x a‖ ^ (2 * (Mdim (k0 + 1) r a - 2))`. Rewrite using `[← Finset.prod_inv_distrib, ← Finset.prod_pow, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun a _ => ?_` and prove the remaining obligations. Establish `hc : ‖cOf x a‖ ≠ 0`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[norm_ne_zero_iff]`. Conclude with `hx _`. Take `⟨n, hn⟩ : ∃ n, Mdim (k0 + 1) r a = n + 2` from `⟨2 * (r - a.val) + k0, by unfold Mdim; omega⟩`. Rewrite using `[hn, Complex.normSq_eq_norm_sq]`. Establish `e1 : n + 2 - 1 = n + 1` using `by omega`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2 : n + 2 - 2 = n` using `by omega`. Rewrite using `[e1, e2]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Unfold `bcWeight`.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_pos hz.le, mul_pow, h1, ← mul_assoc, h2]`.
+A detailed English derivation is pending.
 -/
 theorem weight_eq (k0 r : ℕ) (T T' : ℝ) (x : Fin (r + 1) → ℂ) (hx : x ∈ OmX (r + 1))
     (hz : T * T' < Complex.normSq (zOf x)) :
@@ -223,27 +223,25 @@ theorem weight_eq (k0 r : ℕ) (T T' : ℝ) (x : Fin (r + 1) → ℂ) (hx : x �
   rw [if_pos hz.le, mul_pow, h1, ← mul_assoc, h2]
 
 /- English proof (translation)
-Establish `hJ : ∀ G : Matrix (Fin (2 * r + (k0 + 1) + 1)) (Fin (2 * r + (k0 + 1) + 1)) ℂ → (L.Wq →L[ℂ] L.Wp), besselJ (k0 + 1) r L.z L.z' cStd L.π L.π' L.μW L.μN L.μW' G = L.J G`. Introduce `G`. Use function extensionality and compare the values at `g`. Simplify using `only [LocBessel.J, hc]`. Set `e : (Fin (r + 1) → ℂ) ≃ᵐ (Fin r → ℂ) × ℂ` to `(MeasurableEquiv.piFinSuccAbove (fun _ : Fin (r + 1) => ℂ) (Fin.last r)).trans MeasurableEquiv.prodComm`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Establish `he : MeasurePreserving e volume volume` using `(volume_preserving_piFinSuccAbove (fun _ : Fin (r + 1) => ℂ) (Fin.last r)).trans (Measure.measurePreserving_swap (μ := (volume : Measure ℂ)) (ν := (volume : Measure (Fin r → ℂ))))`. Establish `hex : ∀ x, e x = (cOf x, zOf x)`. Introduce `x`. Use `Prod.ext ?_ rfl` and prove the remaining obligations. Use function extensionality and compare the values at `a`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `show x ((Fin.last r).succAbove a) = x a.castSucc`. Rewrite using `[Fin.succAbove_last]`. Unfold `LocBessel.beta`. Rewrite using `[← he.integral_comp' (g := fun p : (Fin r → ℂ) × ℂ => (bcWeight (k0 + 1) r (Tz (k0 + 1) r L.z) (Tz (k0 + 1) r L.z') p : ℂ) * hsInner (L.J F (bigCell (k0 + 1) r p.1 (μsec p.2))) (L.J F' (bigCell (k0 + 1) r p.1 (μsec p.2))))]`. Use `show _ = ∫ x : Fin (r + 1) → ℂ, (((∏ a : Fin r, Complex.normSq (cOf x a))⁻¹ : ℝ) : ℂ) * hsInner (Wp := L.Wp) (Wq := L.Wq) (Btr (E := L.Wq →L[ℂ] L.Wp) (k0 + 1) r L.z L.z' μsec (besselJ (k0 + 1) r L.z L.z' cStd L.π L.π' L.μW L.μN L.μW' F) x) (Btr (E := L.Wq →L[ℂ] L.Wp) (k0 + 1) r L …`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `integral_congr_ae (Filter.Eventually.of_forall fun x => ?_)` and prove the remaining obligations. Simplify using `only [hex, hJ]`. Distinguish the cases in `hx : x ∈ BDom (k0 + 1) r L.z L.z'`. Simplify using `only [Btr, if_pos hx]`. Rewrite using `[hsInner_smul_smul, weight_eq k0 r _ _ x hx.1 hx.2]`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [Btr, if_neg hx, hsInner_zero_left, mul_zero]`. Establish `hw : bcWeight (k0 + 1) r (Tz (k0 + 1) r L.z) (Tz (k0 + 1) r L.z') (cOf x, zOf x) = 0`. Unfold `bcWeight`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Replace the relevant objects with their definitions. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Use `split_ifs with h`. Break down `h.lt_or_eq with h' | h'` into its components or cases. Establish `hO : x ∉ OmX (r + 1)` using `fun hO => hx ⟨hO, h'⟩`. Simplify using `only [OmX, Set.mem_ofPred_eq, not_forall, not_not] at hO`. Take `⟨l, hl⟩` from `hO`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `hTT : 0 < Tz (k0 + 1) r L.z * Tz (k0 + 1) r L.z'` using `mul_pos L.hz.2 L.hz'.2`. Establish `hl' : l ≠ Fin.last r`. Introduce and unpack `rfl`. Establish `: Complex.normSq (zOf x) = 0` using `by simp [zOf, hl]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨a, rfl⟩ : ∃ a : Fin r, a.castSucc = l` from `⟨l.castPred hl', Fin.castSucc_castPred l hl'⟩`. Establish `: (∏ a : Fin r, ‖cOf x a‖ ^ (2 * (Mdim (k0 + 1) r a - 2))) = 0`. Use `Finset.prod_eq_zero (Finset.mem_univ a) ?_` and prove the remaining obligations. Establish `: cOf x a = 0` using `hl`. Rewrite using `[this, norm_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Use `zero_pow ?_` and prove the remaining obligations. Use `a.isLt` as an intermediate fact. Unfold `Mdim`. Use linear arithmetic over natural numbers and integers. Use `show (∏ a : Fin r, ‖cOf x a‖ ^ (2 * (Mdim (k0 + 1) r a - 2))) * _ = 0`.
+Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, zero_mul]`. Use `show _ * (Complex.normSq (zOf x) - _) ^ (k0 + 1 - 1) = 0`. Rewrite using `[← h', sub_self, zero_pow (by omega), mul_zero]`. Both sides reduce to the same expression. Rewrite using `[hw]`.
-
-Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem beta_eq_lbeta (k0 r : ℕ) (hk : 0 < k0) (L : LocBessel (k0 + 1) r)
     (μsec : ℂ → Matrix (Fin (k0 + 1 + 1)) (Fin (k0 + 1 + 1)) ℂ) (hc : L.c = cStd)
@@ -310,15 +308,15 @@ theorem beta_eq_lbeta (k0 r : ℕ) (hk : 0 < k0) (L : LocBessel (k0 + 1) r)
     rw [hw]; simp
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨L.hz.1, L.hz'.1, L.hz.2, L.hz'.2, h⟩`.
+Supply the required witnesses or components.
 -/
 theorem levOf_Std {k0 r : ℕ} (L : LocBessel (k0 + 1) r) (μsec : ℂ → Matrix (Fin (k0 + 1 + 1)) (Fin (k0 + 1 + 1)) ℂ)
     (h : IsSection (k0 + 1) r L.z L.z' μsec) : (levOf L μsec).Std := ⟨L.hz.1, L.hz'.1, L.hz.2, L.hz'.2, h⟩
 
 /- English proof (translation)
-Introduce `k0 hk L μsec I N f χ w hS hu hu' hg hN hI`. Use `H k0 hk L μsec I N f χ w hS hu hu' ?_ hN ?_` and prove the remaining obligations. Introduce `a b hab`. Use `le_trans ?_ (hg a b hab)` and prove the remaining obligations. Use `gcongr`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `le_trans ?_ hI gcongr` and prove the remaining obligations.
+A detailed English derivation is pending.
 -/
 theorem lemma_E_mono_constants (D : Formalism.BasicNotions.D7) {Cg Cg' CI CI' : ℝ} (h1 : Cg ≤ Cg') (h2 : CI ≤ CI') (H : Conclusion1 D Cg CI) :
     Conclusion1 D Cg' CI' := by
@@ -331,7 +329,7 @@ theorem lemma_E_mono_constants (D : Formalism.BasicNotions.D7) {Cg Cg' CI CI' : 
     gcongr
 
 /- English proof (translation)
-Introduce `k0 hk L μsec I N A p F0 χ w hS hN hA hF0 hp`. Use `H k0 hk L μsec I N A p F0 χ w hS hN ?_ hF0 ?_` and prove the remaining obligations. Use `le_trans ?_ hA gcongr` and prove the remaining obligations. Use `le_trans ?_ hp gcongr` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem projector_bound_mono (D : Formalism.BasicNotions.D7) {C0 C0' CA CA' : ℝ} (h1 : C0 ≤ C0') (h2 : CA ≤ CA') (H : Conclusion2 D C0 CA) :
     Conclusion2 D C0' CA' := by
@@ -343,7 +341,7 @@ theorem projector_bound_mono (D : Formalism.BasicNotions.D7) {C0 C0' CA CA' : �
     gcongr
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hA.1 x i, hA.2.1 x i, hA.2.2.1 x i, hA.2.2.2.1 x i, hA.2.2.2.2.1 x i, hA.2.2.2.2.2.1 x i, hA.2.2.2.2.2.2.1 x i, hA.2.2.2.2.2.2.2.1 x i, hA.2.2.2.2.2.2.2.2.1 x i, hA.2.2.2.2.2.2.2.2.2.1 x i, hA.2.2.2.2.2.2.2.2.2.2.1 x i, hA.2.2.2.2.2.2.2.2.2.2.2.1 x i, hA.2.2.2.2.2.2.2.2.2.2.2.2. …`.
+Supply the required witnesses or components.
 -/
 theorem Adm_of_AdmF {eps : ℝ} (Fm : Formalism.MainNotions.FamP eps) {CB Co Cd Cv C1 C2 Cs c C₁ : ℝ}
     (hA : AdmF Fm CB Co Cd Cv C1 C2 Cs c C₁) (x : ℝ) (i : Fm.Ix x) : admitted (Fm.D x i) CB Co Cd Cv C1 C2 Cs c C₁ :=
@@ -354,7 +352,7 @@ theorem Adm_of_AdmF {eps : ℝ} (Fm : Formalism.MainNotions.FamP eps) {CB Co Cd 
     hA.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.1 x i, hA.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2 x i⟩
 
 /- English proof (translation)
-Introduce `hA` and use `⟨fun x i => (H _ (Adm_of_AdmF Fm hA x i)).1, fun x i => (H _ (Adm_of_AdmF Fm hA x i)).2⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem family_statement_of_parts {eps : ℝ} (Fm : Formalism.MainNotions.FamP eps) {CB Co Cd Cv C1 C2 Cs c C₁ Cg CI C0 CA : ℝ}
     (H : ∀ D : Formalism.BasicNotions.D7, Stmt D CB Co Cd Cv C1 C2 Cs c C₁ Cg CI C0 CA) :
@@ -362,7 +360,7 @@ theorem family_statement_of_parts {eps : ℝ} (Fm : Formalism.MainNotions.FamP e
   ⟨fun x i => (H _ (Adm_of_AdmF Fm hA x i)).1, fun x i => (H _ (Adm_of_AdmF Fm hA x i)).2⟩
 
 /- English proof (translation)
-Take `⟨a, b, c', d, h⟩` from `H CB Co Cd Cv C1 C2 Cs c C₁`. Conclude with `⟨a, b, c', d, fun Cg hg CI hI C0 h0 CA h1 _ Fm => family_statement_of_parts Fm (h Cg hg CI hI C0 h0 CA h1)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem family_statement_of_uniform (H : UniformExportStatement) (CB Co Cd Cv C1 C2 Cs c C₁ : ℝ) :
     ∃ Cg₀ CI₀ C0₀ CA₀ : ℝ, ∀ Cg ≥ Cg₀, ∀ CI ≥ CI₀, ∀ C0 ≥ C0₀, ∀ CA ≥ CA₀, ∀ {eps : ℝ} (Fm : Formalism.MainNotions.FamP eps),
@@ -371,7 +369,7 @@ theorem family_statement_of_uniform (H : UniformExportStatement) (CB Co Cd Cv C1
   exact ⟨a, b, c', d, fun Cg hg CI hI C0 h0 CA h1 _ Fm => family_statement_of_parts Fm (h Cg hg CI hI C0 h0 CA h1)⟩
 
 /- English proof (translation)
-Take `⟨a, b, c', d, h⟩` from `H CB Co Cd Cv C1 C2 Cs c C₁`. Use `⟨1, one_pos, fun eps _ _ => ⟨{ pre := 0, t := fun _ => 0, mid := fun _ => 0, last := fun _ => max (max a b) (max c' d) }, fun Fm CH _ hL => ?_⟩⟩` and prove the remaining obligations. Establish `hl : max (max a b) (max c' d) ≤ sCl Fm` using `(le_sC'_sCl hL).2`. Conclude with `family_statement_of_parts Fm (fun D => h _ (le_trans (le_trans (le_max_left _ _) (le_max_left _ _)) hl) _ (le_trans (le_trans (le_max_right _ _) (le_max_left _ _)) hl) _ (le_trans (le_trans (le_max_left _ _) (le_max_right _ _)) hl) _ (le_trans (le_trans (le_max_right _ _) (le_max …`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem closed_statement_large_constants (𝒞 : Formalism.MainNotions.FamClass) (H : UniformExportStatement) (CB Co Cd Cv C1 C2 Cs c C₁ : ℝ) :
     Formalism.MainNotions.Closed 𝒞 (fun Fm _ => KudlaFamilyStatement Fm CB Co Cd Cv C1 C2 Cs c C₁ (sCl Fm) (sCl Fm) (sCl Fm) (sCl Fm)) := by
@@ -384,13 +382,13 @@ theorem closed_statement_large_constants (𝒞 : Formalism.MainNotions.FamClass)
     _ (le_trans (le_trans (le_max_right _ _) (le_max_right _ _)) hl) D)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨L.hπ, L.hπ', h⟩`.
+Supply the required witnesses or components.
 -/
 theorem levOf_HC {k0 r : ℕ} (L : LocBessel (k0 + 1) r) (μsec : ℂ → Matrix (Fin (k0 + 1 + 1)) (Fin (k0 + 1 + 1)) ℂ)
     (h : ∀ i, ∃ m : ℤ, L.u i - L.u' i = m) : (levOf L μsec).HC L.u L.u' := ⟨L.hπ, L.hπ', h⟩
 
 /- English proof (translation)
-Establish `h1` using `D.R.m_add_three_le_k`. Establish `h2` using `D.R.two_le_m`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem minWeight_pos (D : Formalism.BasicNotions.D7) {k0 : ℕ} (hk : k0 + 1 = D.R.k) : 0 < k0 := by
   have h1 := D.R.m_add_three_le_k

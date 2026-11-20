@@ -20,47 +20,39 @@ open PositivityTheory.Rg.BcB.F PositivityTheory.Rg.BcB.F.Rd
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Use `haveI := B.ha`. Use `haveI := B.hb`. Use `haveI := B.hν`. Use `haveI : BorelSpace (G B.a) := ⟨rfl⟩`. Use `haveI : BorelSpace (G B.b) := ⟨rfl⟩`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `haveI : BorelSpace (Hf E B.a B.b) := ⟨rfl⟩`. Use `choose ta hta using hderA`. Use `choose tb htb using hderB`. Set `ka' : Bool → ℕ → Kers B.Ma` to `fun s m v => if h : 1 ≤ m ∧ 0 < B.a then (ta v s m h.1 h.2).ka v else if m = 0 then (B.a : ℂ) • t₀.ka v else 0`. Set `kb' : Bool → ℕ → Kers B.Mb` to `fun s m v => if h : 1 ≤ m ∧ 0 < B.b then (tb v s m h.1 h.2).kb v else if m = 0 then (B.b : ℂ) • t₀.kb v else 0`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Set `ca : InfinitePlace E → Bool → ℕ → ℂ` to `fun v s m => if 1 ≤ m ∧ 0 < B.a then σ (der v s m).1 else if m = 0 then (B.a : ℂ) * c else 0`. Set `cb : InfinitePlace E → Bool → ℕ → ℂ` to `fun v s m => if 1 ≤ m ∧ 0 < B.b then σ (der v s m).2 else if m = 0 then (B.b : ℂ) * c else 0`. Establish `hkerA : ∀ s m v, IsKer B.μa (B.Ma v) [(s, m)] bump (ka' s m v)`. Introduce `s m v`. Distinguish the cases in `h : 1 ≤ m ∧ 0 < B.a`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e1 : ka' s m v = (ta v s m h.1 h.2).ka v` using `dif_pos h`. Rewrite using `[e1]`. Conclude with `(hta v s m h.1 h.2).2.2.2.1`. Distinguish the cases in `hm : m = 0`. Establish `e1 : ka' s m v = (B.a : ℂ) • t₀.ka v` using `by show (if h : 1 ≤ m ∧ 0 < B.a then _ else _) = _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[dif_neg h, if_pos hm]`. Rewrite using `[e1, hm]`. Conclude with `isKer_smul_rank _ _ _ _ s (hka0 v)`. Establish `e1 : ka' s m v = 0` using `by show (if h : 1 ≤ m ∧ 0 < B.a then _ else _) = _`. Rewrite using `[dif_neg h, if_neg hm]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `ha : B.a = 0` using `by omega`. Rewrite using `[e1]`. Conclude with `isKer_zero_rank ha _ _ _ s m`. Establish `hkerB : ∀ s m v, IsKer B.μb (B.Mb v) [(s, m)] bump (kb' s m v)`. Introduce `s m v`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `h : 1 ≤ m ∧ 0 < B.b`. Establish `e1 : kb' s m v = (tb v s m h.1 h.2).kb v` using `dif_pos h`. Rewrite using `[e1]`. Conclude with `(htb v s m h.1 h.2).2.2.2.1`. Distinguish the cases in `hm : m = 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : kb' s m v = (B.b : ℂ) • t₀.kb v` using `by show (if h : 1 ≤ m ∧ 0 < B.b then _ else _) = _`. Rewrite using `[dif_neg h, if_pos hm]`. Rewrite using `[e1, hm]`. Conclude with `isKer_smul_rank _ _ _ _ s (hkb0 v)`. Establish `e1 : kb' s m v = 0` using `by show (if h : 1 ≤ m ∧ 0 < B.b then _ else _) = _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Rewrite using `[dif_neg h, if_neg hm]`. Establish `hb : B.b = 0` using `by omega`. Rewrite using `[e1]`. Conclude with `isKer_zero_rank hb _ _ _ s m`. Establish `hderA' : ∀ v s m, PositivityTheory.Rg.BcB.E.conv B.D.μ (tens (Function.update t₀.ka v (ka' s m v)) t₀.kb t₀.ψ) f = ca v s m • f`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Introduce `v s m`. Distinguish the cases in `h : 1 ≤ m ∧ 0 < B.a`. Establish `e1 : ka' s m v = (ta v s m h.1 h.2).ka v` using `dif_pos h`. Establish `e2 : ca v s m = σ (der v s m).1` using `if_pos h`. Take `⟨h1, h3, h4, -, h5⟩` from `hta v s m h.1 h.2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hu : Function.update t₀.ka v ((ta v s m h.1 h.2).ka v) = (ta v s m h.1 h.2).ka`. Use function extensionality and compare the values at `v'`. Distinguish the cases in `hv : v' = v`. Substitute `hv` using the available equality. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Function.update_of_ne hv]`. Conclude with `(h5 v' hv).symm`. Rewrite using `[e1, e2, hu, ← h4, ← show (ta v s m h.1 h.2).ψ = t₀.ψ from h3]`. Conclude with `hAt _ _ h1`. Distinguish the cases in `hm : m = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `e1 : ka' s m v = (B.a : ℂ) • t₀.ka v` using `by show (if h : 1 ≤ m ∧ 0 < B.a then _ else _) = _`. Rewrite using `[dif_neg h, if_pos hm]`. Establish `e2 : ca v s m = (B.a : ℂ) * c` using `by show (if 1 ≤ m ∧ 0 < B.a then _ else _) = _`. Rewrite using `[if_neg h, if_pos hm]`. Rewrite using `[e1, e2, tens_update_smul, conv_smulM, show tens t₀.ka t₀.kb t₀.ψ = t₀.Φ from rfl, h0, smul_smul]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Establish `e1 : ka' s m v = 0` using `by show (if h : 1 ≤ m ∧ 0 < B.a then _ else _) = _`. Rewrite using `[dif_neg h, if_neg hm]`. Establish `e2 : ca v s m = 0` using `by show (if 1 ≤ m ∧ 0 < B.a then _ else _) = _`. Rewrite using `[if_neg h, if_neg hm]`. Rewrite using `[e1, e2, tens_update_zero, conv_zeroM, zero_smul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hderB' : ∀ v s m, PositivityTheory.Rg.BcB.E.conv B.D.μ (tens t₀.ka (Function.update t₀.kb v (kb' s m v)) t₀.ψ) f = cb v s m • f`. Introduce `v s m`. Distinguish the cases in `h : 1 ≤ m ∧ 0 < B.b`. Establish `e1 : kb' s m v = (tb v s m h.1 h.2).kb v` using `dif_pos h`. Establish `e2 : cb v s m = σ (der v s m).2` using `if_pos h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨h1, h3, h4, -, h5⟩` from `htb v s m h.1 h.2`. Establish `hu : Function.update t₀.kb v ((tb v s m h.1 h.2).kb v) = (tb v s m h.1 h.2).kb`. Use function extensionality and compare the values at `v'`. Distinguish the cases in `hv : v' = v`. Substitute `hv` using the available equality.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using the standard rewrite rules. Rewrite using `[Function.update_of_ne hv]`. Conclude with `(h5 v' hv).symm`. Rewrite using `[e1, e2, hu, ← h4, ← show (tb v s m h.1 h.2).ψ = t₀.ψ from h3]`. Conclude with `hAt _ _ h1`.
-
-Distinguish the cases in `hm : m = 0`. Establish `e1 : kb' s m v = (B.b : ℂ) • t₀.kb v` using `by show (if h : 1 ≤ m ∧ 0 < B.b then _ else _) = _`. Rewrite using `[dif_neg h, if_pos hm]`. Establish `e2 : cb v s m = (B.b : ℂ) * c` using `by show (if 1 ≤ m ∧ 0 < B.b then _ else _) = _`. Rewrite using `[if_neg h, if_pos hm]`.
-
-Rewrite using `[e1, e2, tens_update_smul_b, conv_smulM, show tens t₀.ka t₀.kb t₀.ψ = t₀.Φ from rfl, h0, smul_smul]`. Establish `e1 : kb' s m v = 0` using `by show (if h : 1 ≤ m ∧ 0 < B.b then _ else _) = _`. Rewrite using `[dif_neg h, if_neg hm]`. Establish `e2 : cb v s m = 0` using `by show (if 1 ≤ m ∧ 0 < B.b then _ else _) = _`. Rewrite using `[if_neg h, if_neg hm]`.
-
-Rewrite using `[e1, e2, tens_update_zero_b, conv_zeroM, zero_smul]`. Establish `hψl : ∀ x y, ∀ u₁ ∈ K₁, ∀ u₂ ∈ K₂, ∀ h, t₀.ψ x y ((u₁, u₂) * h) = t₀.ψ x y h`. Introduce `x y u₁ hu₁ u₂ hu₂ h`. Establish `hu : ((u₁, u₂) : Hf E B.a B.b) ∈ (K₁.prod K₂ : Subgroup (Hf E B.a B.b))` using `Subgroup.mem_prod.2 ⟨hu₁, hu₂⟩`. Rewrite using `[hψ₀, hψ₀]`.
-
-Simplify using `only [Subgroup.mul_mem_cancel_left _ hu]`. Conclude with `hP B.D B.μa B.μb B.ν B.κ t₀.ka t₀.kb t₀.va t₀.vb t₀.T t₀.ψ bump ka' kb' K₁ K₂ M f c ca cb B.compat ht₀.ka ht₀.kb ht₀.ψ hbump hka0 hkb0 hkerA hkerB o₁ o₂ hψl hf hf0 hLI hW hc h0 hderA' hderB'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem packK (hBO : BlockOperatorsProductAdjoint) {E : Type} [Field E] [NumberField E] [IsCMField E] (B : Block E)
     (W₁ : Submodule ℂ (Kinf E B.a → ℂ)) (W₂ : Submodule ℂ (Kinf E B.b → ℂ))

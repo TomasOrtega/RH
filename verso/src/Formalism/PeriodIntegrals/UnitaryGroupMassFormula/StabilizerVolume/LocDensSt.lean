@@ -46,29 +46,25 @@ def DensAA : Prop := InCtx fun F E _ _ _ _ _ σ M J a X0 hT =>
       C * (qV v)⁻¹ ^ 2
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hCM M J hJ ha hc a ha1 ha2 X0 hT hdet ψ hψ νX hν h0`. Establish `: FiniteDimensional F E` using `Module.finite_of_finrank_pos (by rw [hCM.2.2.1]; norm_num)`. Take `⟨⟨μinf, hμinf⟩, a1⟩` from `hν.2`. Take `⟨⟨νinf, hνinf⟩, a2⟩` from `a1 μinf hμinf`. Take `⟨⟨μv, hμv⟩, a3⟩` from `a2 νinf hνinf`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨⟨νv, hνv⟩, a4⟩` from `a3 μv hμv`. Take `⟨⟨fibInf, hfi⟩, a5⟩` from `a4 νv hνv`. Take `⟨⟨fibV, hfv⟩, a6⟩` from `a5 fibInf hfi`. Set `b` to `Module.finBasis F E`. Take `⟨C, hC⟩` from `hD F E σ hCM M J hJ ha hc a ha1 ha2 X0 hT hdet ψ hψ _ b`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Take `⟨Φinf, hcΦ, hcs, hIinf⟩` from `hA F E σ hCM M J hJ ha hc a ha1 ha2 X0 hT hdet ψ hψ μinf hμinf νinf hνinf fibInf hfi`. Establish `hpos` using `fun v => hL F E σ hCM M J hJ ha hc a ha1 ha2 X0 hT hdet ψ hψ v (μv v) (hμv v) (νv v) (hνv v) (fibV v) (hfv v)`. Use `choose Φp hΦpSB hΦp using hpos`. Set `I : HeightOneSpectrum (𝓞 F) → ℂ` to `fun v => ∫ X, (latV b v).indicator (1 : (Fin a → Fin M → Fv F v ⊗[F] E) → ℂ) X ∂(fibV v (hermOf (Fv F v) σ (gramE σ J X0) hT))`. Establish `hsum : Summable fun v : HeightOneSpectrum (𝓞 F) => C * (qV v)⁻¹ ^ 2` using `(hQ F).mul_left C`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsmall : ∀ᶠ v in cofinite, C * (qV v)⁻¹ ^ 2 < 1` using `hsum.tendsto_cofinite_zero.eventually (gt_mem_nhds one_pos)`. Set `good : HeightOneSpectrum (𝓞 F) → Prop` to `fun v => ‖I v - 1‖ ≤ C * (qV v)⁻¹ ^ 2 ∧ C * (qV v)⁻¹ ^ 2 < 1`. Establish `hgood : ∀ᶠ v in cofinite, good v` using `by filter_upwards [hC, hsmall] with v hv1 hv2`. Conclude with `⟨hv1 (μv v) (hμv v) (νv v) (hνv v) (fibV v) (hfv v), hv2⟩`. Set `Φv : ∀ v : HeightOneSpectrum (𝓞 F), (Fin a → Fin M → Fv F v ⊗[F] E) → ℂ` to `fun v => if good v then (latV b v).indicator 1 else Φp v`.
+Introduce a local definition for the expression. Establish an intermediate fact. Supply the required witnesses or components. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `Φf : (Fin a → Fin M → Af F ⊗[F] E) → ℂ` to `fun Y => ∏ᶠ v, Φv v (projV v Y)`. Set `Φ : (Fin a → Fin M → AF F ⊗[F] E) → ℂ` to `fun X => Φinf (projInf X) * Φf (projFin X)`. Establish `hSB : ∀ v, IsSB (Φv v)` using `fun v => by`. Distinguish the cases in `h : good v`. Rewrite using `[show Φv v = (latV b v).indicator 1 from if_pos h]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `PositiveNearLattice.isSB_latV b v a M`. Rewrite using `[show Φv v = Φp v from if_neg h]`. Conclude with `hΦpSB v`. Establish `hpure : IsPureFin b Φf Φv`. Use `⟨hSB, ?_, fun _ => rfl⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression.
 
-Use `filter_upwards [hgood] with v hv`. Conclude with `if_pos hv`. Take `⟨-, -, heq⟩` from `a6 fibV hfv _ b Φ Φinf Φf Φv hcΦ hcs hpure (fun _ => rfl)`. Rewrite `heq` using `[h0, integral_zero_measure]`. Set `Jv : HeightOneSpectrum (𝓞 F) → ℂ` to `fun v => ∫ X, Φv v X ∂(fibV v (hermOf (Fv F v) σ (gramE σ J X0) hT))`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hJ0 : ∀ v, Jv v ≠ 0` using `fun v => by`. Distinguish the cases in `h : good v`. Establish `e : Jv v = I v`. Simplify using `only [Jv, I, Φv, if_pos h]`. Rewrite using `[e]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Introduce `hI`. Use `h.1` as an intermediate fact. Rewrite `this` using `[hI, zero_sub, norm_neg, norm_one]`. Combine the linear relations using `[h.2]`. Establish `e : Jv v = ∫ X, Φp v X ∂(fibV v (hermOf (Fv F v) σ (gramE σ J X0) hT))`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `only [Jv, Φv, if_neg h]`. Rewrite using `[e]`. Conclude with `hΦp v`. Establish `hJs : Summable fun v => ‖Jv v - 1‖`. Use `Summable.of_norm_bounded_eventually hsum ?_` and prove the remaining obligations.
-
-Use `filter_upwards [hgood] with v hv`. Establish `e : Jv v = I v`. Simplify using `only [Jv, I, Φv, if_pos hv]`. Rewrite using `[e, norm_norm]`. Conclude with `hv.1`.
-
-Establish `hne : ∏' v, (1 + (Jv v - 1)) ≠ 0` using `tprod_one_add_ne_zero_of_summable (fun v => by rw [add_sub_cancel]; exact hJ0 v) hJs`. Simplify using `only [add_sub_cancel] at hne`. Conclude with `mul_ne_zero hIinf hne heq.symm`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem nuNeZero_of_dens (hA : ArchPos) (hL : LocPos) (hD : DensAA) (hQ : QvSum) : NuNeZero := by
   classical

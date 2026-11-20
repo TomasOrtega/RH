@@ -26,9 +26,9 @@ theorem fr_smul (a : UF E n × GLG E n SG × GLQ E n Q) (p : DecoF E n ST SG Q) 
     (a • p).fr P = a.1.1 * p.fr P * ((a.2.2 P)⁻¹).1 := rfl
 
 /- English proof (translation)
-Establish `h' : p.1.1 = q.1.1` using `h`. Use `⟨fun P => ⟨(q.fr P)⁻¹ * p.fr P, fun x => ?_⟩, ?_⟩` and prove the remaining obligations. Establish `h1` using `q.2 P (((q.fr P)⁻¹ * p.fr P) x)`. Establish `h2 : q.1.2 P (((q.fr P)⁻¹ * p.fr P) x) = p.1.2 P x` using `LinearEquiv.apply_symm_apply (q.1.2 P) (p.1.2 P x)`. Rewrite `h1` using `[h2, ← h']`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h1.symm.trans (p.2 P x)`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Prod.ext` to reduce the goal to its premises. Conclude with `h'.symm.trans (one_smul (UF E n × GLG E n SG) p.1.1).symm`. Use function extensionality and compare the values at `P show q.fr P = (1 : Sp E n ≃ₗ[E] Sp E n) * p.fr P * ((q.fr P)⁻¹ * p.fr P)⁻¹ group`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem exists_smul_of_deco_eq {p q : DecoF E n ST SG Q} (h : p.deco = q.deco) :
     ∃ c : GLQ E n Q, q = ((1, 1, c) : UF E n × GLG E n SG × GLQ E n Q) • p := by
@@ -47,7 +47,7 @@ theorem exists_smul_of_deco_eq {p q : DecoF E n ST SG Q} (h : p.deco = q.deco) :
       group
 
 /- English proof (translation)
-Use `Prod.ext h1 (Prod.ext h2 ?_)` and prove the remaining obligations. Use function extensionality and compare the values at `P`. Establish `e1 : (a • p).fr P = (b • p).fr P` using `by rw [ha, hb]`. Rewrite `e1` using `[fr_smul, fr_smul, h1]`. Conclude with `inv_injective (Subtype.ext (mul_left_cancel e1))`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem stab_inj (p : DecoF E n ST SG Q) {a b : UF E n × GLG E n SG × GLQ E n Q}
     (ha : a • p = p) (hb : b • p = p) (h1 : a.1 = b.1) (h2 : a.2.1 = b.2.1) : a = b := by
@@ -64,7 +64,7 @@ section Form
 variable {X : Fields} {n : ℕ} {ST SG Q : Finset (HeightOneSpectrum (𝓞 X.E))}
 
 /- English proof (translation)
-Introduce `a b h`. Establish `h1` using `congrArg Prod.fst h`. Establish `h2` using `congrArg (fun x => x.2.1) h`. Establish `h3` using `congrArg (fun x => x.2.2) h`. Conclude with `Prod.ext h1 (Prod.ext (Subtype.ext h2) (Subtype.ext h3))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem incl_injective (Λ : LevFam X.E X.K n SG) (Θ : LevQFam X.E X.K n Q) :
     Function.Injective (FrmG.incl Λ Θ) := by
@@ -75,9 +75,9 @@ theorem incl_injective (Λ : LevFam X.E X.K n SG) (Θ : LevQFam X.E X.K n Q) :
   exact Prod.ext h1 (Prod.ext (Subtype.ext h2) (Subtype.ext h3))
 
 /- English proof (translation)
-Establish `h1 : ∀ R : Q, ((Θ R).H.comap (Pi.evalMonoidHom (fun P : Q => ↥(GLint X.E n P.1)) R)).FiniteIndex`. Introduce `R`. Use `⟨?_⟩` and prove the remaining obligations. Rewrite using `[Subgroup.index_comap_of_surjective _ (Function.surjective_eval R)]`. Conclude with `(h R).index_ne_zero`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2` using `Subgroup.finiteIndex_iInf h1`. Use `Subgroup.finiteIndex_of_le (H := ⨅ R : Q, (Θ R).H.comap (Pi.evalMonoidHom (fun P : Q => ↥(GLint X.E n P.1)) R)) ?_` and prove the remaining obligations. Introduce `c hc`. Conclude with `(Subgroup.mem_pi _).mpr fun R _ => Subgroup.mem_iInf.mp hc R`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem grp_finiteIndex (Θ : LevQFam X.E X.K n Q) (h : ∀ R : Q, (Θ R).H.FiniteIndex) :
     Θ.grp.FiniteIndex := by
@@ -93,9 +93,9 @@ theorem grp_finiteIndex (Θ : LevQFam X.E X.K n Q) (h : ∀ R : Q, (Θ R).H.Fini
   exact (Subgroup.mem_pi _).mpr fun R _ => Subgroup.mem_iInf.mp hc R
 
 /- English proof (translation)
-Take `⟨m, hm, hc⟩` from `Λ.chr_root g.2.1`. Take `⟨k, hk, hk'⟩` from `hΘ g.2.2`. Use `⟨m * k, Nat.mul_pos hm hk, ?_⟩` and prove the remaining obligations. Establish `hk2 : ((Θ.chr g.2.2 : X.Kˣ) : X.K) ^ k = 1`. Rewrite using `[← Units.val_pow_eq_pow_val, hk', Units.val_one]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Units.val_mul, mul_pow, pow_mul, hc, one_pow, one_mul, mul_comm m k, pow_mul, hk2, one_pow]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem chr_root (Λ : LevFam X.E X.K n SG) (Θ : LevQFam X.E X.K n Q)
     (hΘ : ∀ g, ∃ k : ℕ, 0 < k ∧ Θ.chr g ^ k = 1) (g : FrmG Λ Θ) :
@@ -108,23 +108,19 @@ theorem chr_root (Λ : LevFam X.E X.K n SG) (Θ : LevQFam X.E X.K n Q)
   rw [Units.val_mul, mul_pow, pow_mul, hc, one_pow, one_mul, mul_comm m k, pow_mul, hk2, one_pow]
 
 /- English proof (translation)
-Take `⟨s, hs, hrep⟩` from `DecoSet.finite_reps (ST := ST) (SG := SG) (n := n) (posStar_of_conj hX.conjE)`. Use `grp_finiteIndex Θ hfi` as an intermediate fact. Set `T : Set (DecoSet X.E n ST SG)` to `{d | d ∈ s ∧ ∃ p : DecoF X.E n ST SG Q, p.deco = d}`. Establish `hT : Finite T` using `hs.subset fun d hd => hd.1`. Set `S` to `frmGSD (C.pull (DecoF.deco (Q := Q))) Λ Θ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Use `Finite.of_surjective (fun x : T × (GLQ X.E n Q ⧸ Θ.grp) => S.cls (((1, 1, (x.2.out)⁻¹) : UF X.E n × GLG X.E n SG × GLQ X.E n Q) • x.1.2.2.choose)) ?_` and prove the remaining obligations. Introduce `c`. Proceed by induction on `c using Quotient.inductionOn' with`. Consider the case `h p`. Take `⟨d0, hd0, g, hg⟩` from `hrep (DecoF.deco p)`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Establish `hq : (((g⁻¹, 1, 1) : UF X.E n × GLG X.E n SG × GLQ X.E n Q) • (p : DecoF X.E n ST SG Q)).deco = d0`. Rewrite using `[deco_smul, hg, smul_smul]`. Simplify using `only [Prod.mk_mul_mk, inv_mul_cancel, mul_one]`. Conclude with `one_smul (UF X.E n × GLG X.E n SG) d0`. Establish `hd : d0 ∈ T` using `⟨hd0, _, hq⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨c, hc⟩` from `exists_smul_of_deco_eq (hd.2.choose_spec.trans hq.symm)`. Take `⟨h, hh⟩` from `QuotientGroup.mk_out_eq_mul Θ.grp c⁻¹`. Use `⟨(⟨d0, hd⟩, (c⁻¹ : GLQ X.E n Q)), ?_⟩` and prove the remaining obligations. Use `(S.cls_eq_iff _ p).mpr ⟨((g⁻¹, 1, h⁻¹) : FrmG Λ Θ), ?_⟩` and prove the remaining obligations. Use `show ((g⁻¹, 1, (h : GLQ X.E n Q)⁻¹) : UF X.E n × GLG X.E n SG × GLQ X.E n Q) • (p : DecoF X.E n ST SG Q) = ((1, 1, ((c⁻¹ : GLQ X.E n Q) : GLQ X.E n Q ⧸ Θ.grp).out⁻¹) : UF X.E n × GLG X.E n SG × GLQ X.E n Q) • hd.2.choose`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e1 : ((g⁻¹, 1, (h : GLQ X.E n Q)⁻¹) : UF X.E n × GLG X.E n SG × GLQ X.E n Q) = (1, 1, (h : GLQ X.E n Q)⁻¹) * (g⁻¹, 1, 1)` using `by simp`. Rewrite using `[e1, mul_smul, hc, smul_smul, hh]`. Simplify using the standard rewrite rules. Use `fin_stab := by`. Introduce `p`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `DecoSet.finite_stabilizer (posStar_of_conj hX.conjE) (DecoF.deco p)` as an intermediate fact. Use `Finite.of_injective (fun a : MulAction.stabilizer (frmGSD (C.pull (DecoF.deco (Q := Q))) Λ Θ).G p => (⟨((FrmG.incl Λ Θ a.1).1, (FrmG.incl Λ Θ a.1).2.1), congrArg DecoF.deco a.2⟩ : MulAction.stabilizer (UF X.E n × GLG X.E n SG) (DecoF.deco p))) ?_` and prove the remaining obligations. Introduce `a b hab`. Establish `h0` using `congrArg Subtype.val hab`. Conclude with `Subtype.ext (incl_injective Λ Θ (stab_inj p a.2 b.2 (Prod.mk.inj h0).1 (Prod.mk.inj h0).2))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `nab_smul := by`. Introduce `g p`. Take `⟨m, hm, hc⟩` from `chr_root Λ Θ hΘ g`. Conclude with `(hC.nab_smul ((FrmG.incl Λ Θ g).1, (FrmG.incl Λ Θ g).2.1) (DecoF.deco p)).trans (map_root_smul _ _ hm hc).symm`. Use `del_smul := by`.
-
-Introduce `g p`. Take `⟨m, hm, hc⟩` from `chr_root Λ Θ hΘ g`. Conclude with `(hC.del_smul ((FrmG.incl Λ Θ g).1, (FrmG.incl Λ Θ g).2.1) (DecoF.deco p)).trans (map_root_smul _ _ hm hc).symm`. Use `inv := by`. Introduce `g x y`.
-
-Take `⟨m, hm, hc⟩` from `chr_root Λ Θ hΘ g`. Use `show C.pair (((Λ.chr g.2.1 * Θ.chr g.2.2 : X.Kˣ) : X.K) • C.rho g.1 x) (((Λ.chr g.2.1 * Θ.chr g.2.2 : X.Kˣ) : X.K) • C.rho g.1 y) = C.pair x y`. Rewrite using `[LinearMap.map_smulₛₗ₂, map_smul, hC.inv g.1 x y, smul_smul]`. Use `show (star ((Λ.chr g.2.1 * Θ.chr g.2.2 : X.Kˣ) : X.K) * _) • _ = _`. Rewrite using `[star_mul_root hX.conjK hm hc, one_smul]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem frmGSD_ok (hX : X.Ok) (C : CoefPk X n (DecoSet X.E n ST SG)) (hC : C.Eqv)
     (Λ : LevFam X.E X.K n SG) (Θ : LevQFam X.E X.K n Q) (hfi : ∀ R : Q, (Θ R).H.FiniteIndex)
@@ -189,7 +185,7 @@ theorem frmGSD_ok (hX : X.Ok) (C : CoefPk X n (DecoSet X.E n ST SG)) (hC : C.Eqv
     rw [star_mul_root hX.conjK hm hc, one_smul]
 
 /- English proof (translation)
-Introduce `X hX n ST SG Q lam Λ Θ h1 h2`. Conclude with `frmGSD_ok hX _ ⟨fun a d => roundPk_nab X _ _ (d.1.Lsh_act a.1.2 a.2), fun a d => roundPk_del X _ _ (d.1.Lsh_act a.1.2 a.2), roundPk_inv X _ _ hX.emb_star⟩ Λ Θ h1 h2`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem main : ∀ {X : Fields} (_ : X.Ok) {n : ℕ} {ST SG Q : Finset (HeightOneSpectrum (𝓞 X.E))}
     (lam : X.Tau → DomWeight n) (Λ : LevFam X.E X.K n SG) (Θ : LevQFam X.E X.K n Q),

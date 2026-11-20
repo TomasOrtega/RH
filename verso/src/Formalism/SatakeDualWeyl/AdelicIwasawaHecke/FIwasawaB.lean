@@ -12,7 +12,7 @@ def fIwasawaP (π : Equiv.Perm (Fin n)) : Matrix (Fin n) (Fin n) L :=
   Matrix.of fun i j => if π i = j then 1 else 0
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `[fIwasawaP, Matrix.mulVec, dotProduct]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem permMatrix_mulVec₂ (π : Equiv.Perm (Fin n)) (w : Fin n → L) :
     fIwasawaP π *ᵥ w = fun i => w (π i) := by
@@ -20,14 +20,14 @@ theorem permMatrix_mulVec₂ (π : Equiv.Perm (Fin n)) (w : Fin n → L) :
   simp [fIwasawaP, Matrix.mulVec, dotProduct]
 
 /- English proof (translation)
-Simplify using `[fIwasawaP, Matrix.mul_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem permMatrix_mul_apply₂ (π : Equiv.Perm (Fin n)) (M : Matrix (Fin n) (Fin n) L) (i j : Fin n) :
     (fIwasawaP π * M : Matrix (Fin n) (Fin n) L) i j = M (π i) j := by
   simp [fIwasawaP, Matrix.mul_apply]
 
 /- English proof (translation)
-Apply `fIwasawa_un_of_isometry` to reduce the goal to its premises. Introduce `x y`. Simplify using `only [fIwasawaH, permMatrix_mulVec₂, hπ]`. Conclude with `Equiv.sum_comp π (fun k => σ (x (Fin.rev k)) * y k)`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem permMatrix_isUnitary_of_commute_rev (π : Equiv.Perm (Fin n)) (hπ : ∀ i, π (Fin.rev i) = Fin.rev (π i)) :
     fIwasawaUn σ (fIwasawaP (L := L) π) := by
@@ -41,7 +41,7 @@ def fIwasawaE (e z : Fin n → L) (c : L) : Matrix (Fin n) (Fin n) L :=
     c * e i * σ (e (Fin.rev j))
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `only [fIwasawaE, fIwasawaH, Matrix.mulVec, dotProduct, Matrix.of_apply, Pi.add_apply, Pi.sub_apply, Pi.smul_apply, smul_eq_mul, add_mul, sub_mul, Finset.sum_add_distrib, Finset.sum_sub_distrib, ite_mul, one_mul, zero_mul, Finset.sum_ite_eq, Finset.mem_univ, if_true, Finset.mul_su …`. Put the polynomial expressions in normal form.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Put the polynomial expressions in normal form.
 -/
 theorem fIwasawa_E_mulVec (e z : Fin n → L) (c : L) (w : Fin n → L) :
     fIwasawaE σ e z c *ᵥ w = w + fIwasawaH σ e w • z - fIwasawaH σ z w • e +
@@ -54,17 +54,17 @@ theorem fIwasawa_E_mulVec (e z : Fin n → L) (c : L) (w : Fin n → L) :
   ring_nf
 
 /- English proof (translation)
-Establish `Hal : ∀ x x' y : Fin n → L, fIwasawaH σ (x + x') y = fIwasawaH σ x y + fIwasawaH σ x' y`. Introduce `x x' y`. Simplify using `[fIwasawaH, add_mul, Finset.sum_add_distrib]`. Establish `Hsl : ∀ x x' y : Fin n → L, fIwasawaH σ (x - x') y = fIwasawaH σ x y - fIwasawaH σ x' y`. Introduce `x x' y`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[fIwasawaH, sub_mul, Finset.sum_sub_distrib]`. Establish `Hml : ∀ (t : L) (x y : Fin n → L), fIwasawaH σ (t • x) y = σ t * fIwasawaH σ x y`. Introduce `t x y`. Simplify using `[fIwasawaH, Finset.mul_sum, mul_assoc]`. Establish `Har : ∀ x y y' : Fin n → L, fIwasawaH σ x (y + y') = fIwasawaH σ x y + fIwasawaH σ x y'`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `x y y'`. Simplify using `[fIwasawaH, mul_add, Finset.sum_add_distrib]`. Establish `Hsr : ∀ x y y' : Fin n → L, fIwasawaH σ x (y - y') = fIwasawaH σ x y - fIwasawaH σ x y'`. Introduce `x y y'`. Simplify using `[fIwasawaH, mul_sub, Finset.sum_sub_distrib]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `Hmr : ∀ (t : L) (x y : Fin n → L), fIwasawaH σ x (t • y) = t * fIwasawaH σ x y`. Introduce `t x y`. Simplify using `only [fIwasawaH, Pi.smul_apply, smul_eq_mul, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun j _ => by ring`. Establish `Hsym : ∀ x y : Fin n → L, fIwasawaH σ y x = σ (fIwasawaH σ x y)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x y`. Simplify using `only [fIwasawaH, map_sum, map_mul, hσ]`. Conclude with `(Fintype.sum_equiv Fin.revPerm _ _ fun j => by simp [mul_comm]).symm`. Apply `fIwasawa_un_of_isometry` to reduce the goal to its premises. Introduce `w w'`.
+Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[fIwasawa_E_mulVec, fIwasawa_E_mulVec]`. Simplify using `only [Hal, Hsl, Hml, Har, Hsr, Hmr, map_mul]`. Simplify using `only [Hsym z w, Hsym e w, Hsym e z, hez, hee, map_zero]`. Take the linear combination `(σ (fIwasawaH σ e w) * fIwasawaH σ e w') * hc`.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem fIwasawa_E_un (hσ : ∀ x, σ (σ x) = x) (e z : Fin n → L) (c : L)
     (hee : fIwasawaH σ e e = 0) (hez : fIwasawaH σ e z = 0)
@@ -108,7 +108,7 @@ variable {L : Type} [Field L] [Valued L (WithZero (Multiplicative ℤ))] (σ : L
 def fIwasawaInt (M : Matrix (Fin n) (Fin n) L) : Prop := ∀ i j, Valued.v (M i j) ≤ 1
 
 /- English proof (translation)
-Introduce `i j`. Rewrite using `[Matrix.mul_apply]`. Conclude with `Valuation.map_sum_le _ fun k _ => by rw [map_mul]; exact mul_le_one' (hA i k) (hB k j)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fIwasawa_int_mul (A B : Matrix (Fin n) (Fin n) L) (hA : fIwasawaInt A) (hB : fIwasawaInt B) :
     fIwasawaInt (A * B) := by
@@ -117,7 +117,7 @@ theorem fIwasawa_int_mul (A B : Matrix (Fin n) (Fin n) L) (hA : fIwasawaInt A) (
   exact Valuation.map_sum_le _ fun k _ => by rw [map_mul]; exact mul_le_one' (hA i k) (hB k j)
 
 /- English proof (translation)
-Introduce `i j`. Rewrite using `[Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem fIwasawa_int_one : fIwasawaInt (1 : Matrix (Fin n) (Fin n) L) := by
   intro i j
@@ -125,11 +125,9 @@ theorem fIwasawa_int_one : fIwasawaInt (1 : Matrix (Fin n) (Fin n) L) := by
   split_ifs <;> simp
 
 /- English proof (translation)
-Establish `hJ : fIwasawaInt (antiJ L n)`. Introduce `i j`. Simplify using `only [antiJ]`. Apply the tactic sequence `split_ifs <;> simp`. Establish `hcT : fIwasawaInt (cT σ M)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Introduce `i j`. Simplify using `only [cT, Matrix.transpose_apply, Matrix.map_apply]`. Rewrite using `[hσv]`. Conclude with `hM j i`. Unfold `fIwasawaInv`.
-
-Conclude with `fIwasawa_int_mul _ _ (fIwasawa_int_mul _ _ hJ hcT) hJ`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem fIwasawa_int_inv (hσv : ∀ x, Valued.v (σ x) = Valued.v x) (M : Matrix (Fin n) (Fin n) L)
     (hM : fIwasawaInt M) : fIwasawaInt (fIwasawaInv σ M) := by
@@ -146,7 +144,7 @@ theorem fIwasawa_int_inv (hσv : ∀ x, Valued.v (σ x) = Valued.v x) (M : Matri
   exact fIwasawa_int_mul _ _ (fIwasawa_int_mul _ _ hJ hcT) hJ
 
 /- English proof (translation)
-Introduce `i j`. Simplify using `only [fIwasawaP, Matrix.of_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem fIwasawa_int_P (π : Equiv.Perm (Fin n)) : fIwasawaInt (fIwasawaP (L := L) π) := by
   intro i j
@@ -154,9 +152,9 @@ theorem fIwasawa_int_P (π : Equiv.Perm (Fin n)) : fIwasawaInt (fIwasawaP (L := 
   split_ifs <;> simp
 
 /- English proof (translation)
-Introduce `i j`. Simplify using `only [fIwasawaE, Matrix.of_apply]`. Apply the tactic sequence `have h1 : Valued.v (if i = j then (1 : L) else 0) ≤ 1 := by split_ifs <;> simp`. Use `Valuation.map_add_le _ (Valuation.map_sub_le _ (Valuation.map_add_le _ h1 ?_) ?_) ?_` and prove the remaining obligations. Rewrite using `[map_mul, hσv]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_le_one' (hz i) (he _)`. Rewrite using `[map_mul, hσv]`. Conclude with `mul_le_one' (he i) (hz _)`. Rewrite using `[map_mul, map_mul, hσv]`. Conclude with `mul_le_one' (mul_le_one' hc (he i)) (he _)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fIwasawa_int_E (hσv : ∀ x, Valued.v (σ x) = Valued.v x) (e z : Fin n → L) (c : L)
     (he : ∀ i, Valued.v (e i) ≤ 1) (hz : ∀ i, Valued.v (z i) ≤ 1) (hc : Valued.v c ≤ 1) :
@@ -173,13 +171,11 @@ theorem fIwasawa_int_E (hσv : ∀ x, Valued.v (σ x) = Valued.v x) (e z : Fin n
     exact mul_le_one' (mul_le_one' hc (he i)) (he _)
 
 /- English proof (translation)
-Establish `hinvI` using `fIwasawa_int_inv σ hσv M hI`. Rewrite using `[KU, Subgroup.mem_subgroupOf]`. Use `Subgroup.mem_inf.2 ⟨(fIwasawaMk σ M hM).2, ?_⟩` and prove the remaining obligations. Set `A : Matrix (Fin n) (Fin n) (intL L)` to `Matrix.of fun i j => ⟨M i j, hI i j⟩`. Set `B : Matrix (Fin n) (Fin n) (intL L)` to `Matrix.of fun i j => ⟨fIwasawaInv σ M i j, hinvI i j⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hinj : Function.Injective (RingHom.mapMatrix (intL L).subtype : Matrix (Fin n) (Fin n) (intL L) →+* Matrix (Fin n) (Fin n) L)` using `fun X Y h => by`. Use extensionality with `i j`. Conclude with `congrFun (congrFun h i) j`. Establish `hA : RingHom.mapMatrix (intL L).subtype A = M` using `by ext i j; rfl`. Establish `hB : RingHom.mapMatrix (intL L).subtype B = fIwasawaInv σ M` using `by ext i j; rfl`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hAB : A * B = 1` using `hinj (by rw [map_mul, hA, hB, map_one, fIwasawa_mul_inv σ M hM])`. Establish `hBA : B * A = 1` using `hinj (by rw [map_mul, hA, hB, map_one, fIwasawa_inv_mul σ M hM])`. Use `⟨⟨A, B, hAB, hBA⟩, ?_⟩` and prove the remaining obligations. Apply `Units.ext` to reduce the goal to its premises. Use `show RingHom.mapMatrix (intL L).subtype A = _`.
-
-Rewrite using `[hA]`. Conclude with `(fIwasawa_mk_val σ M hM).symm`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fIwasawa_mk_mem_K (hσv : ∀ x, Valued.v (σ x) = Valued.v x) (M : Matrix (Fin n) (Fin n) L)
     (hM : fIwasawaUn σ M) (hI : fIwasawaInt M) : fIwasawaMk σ M hM ∈ KU σ n := by
@@ -204,9 +200,7 @@ theorem fIwasawa_mk_mem_K (hσv : ∀ x, Valued.v (σ x) = Valued.v x) (M : Matr
   exact (fIwasawa_mk_val σ M hM).symm
 
 /- English proof (translation)
-Introduce `i j`. Establish `h1` using `Subgroup.mem_subgroupOf.1 hk`. Take `⟨k', hk'⟩` from `(Subgroup.mem_inf.1 h1).2`. Rewrite using `[← hk']`. Use `show Valued.v (((k' : Matrix (Fin n) (Fin n) (intL L)) i j : intL L) : L) ≤ 1`.
-
-Conclude with `(k' i j).2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fIwasawa_K_int (k : GU σ n) (hk : k ∈ KU σ n) :
     fIwasawaInt (((k : GL (Fin n) L) : Matrix (Fin n) (Fin n) L)) := by

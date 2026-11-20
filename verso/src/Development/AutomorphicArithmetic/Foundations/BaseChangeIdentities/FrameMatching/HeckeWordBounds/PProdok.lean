@@ -17,11 +17,11 @@ open UpperTheory.BaseChangeIdentities.FrameWordIdentity
 attribute [local instance] borelG borelF borelA GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 /- English proof (translation)
-Introduce `hT hL hW E _ _ _ n d hd ls a ha`. Establish `hk` using `(hL E n d hd a ha).1`. Establish `hbase : LM.Ok d.P (d.eL a)` using `(hL E n d hd a ha).2.2.2 _ (Or.inl rfl)`. Establish `hfix` using `(hL E n d hd a ha).2.2.1`. Establish `hrest : LM.Ok d.P (List.foldr LM.mul (d.eL a) (List.map (locL d a ha) ls))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Proceed by induction on `ls with`. Consider the case `nil => simpa using hbase`. Consider the case `cons p ls ih`. Simplify using `only [List.map_cons, List.foldr_cons]`. Conclude with `hT E a (n - a) d.kap d.P hk _ _ (hW E n d hd a ha p).1 ih`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[prodL, dif_pos ha, List.foldr_cons]`. Conclude with `hT E a (n - a) d.kap d.P hk _ _ hfix hrest`.
+A detailed English derivation is pending.
 -/
 theorem _root_.UpperTheory.BaseChangeIdentities.FrameWordIdentity.prodok_pf :
     TMul → LocOk → heckeLevelWordBase → ProdOk := by

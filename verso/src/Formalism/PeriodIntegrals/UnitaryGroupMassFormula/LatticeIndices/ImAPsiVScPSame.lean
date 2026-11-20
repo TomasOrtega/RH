@@ -14,7 +14,7 @@ def scP (p : TypX X) (c : Fv X.B.I.F p.1) : X.B.I.E ⊗[X.B.I.F] Formalism.MainN
   eOf X.B.I (singleV X.B.I.F p.1 c)
 
 /- English proof (translation)
-Simplify using `[PI.FinKW.psiV, eOf]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem imA_psiV_eOf (v : HeightOneSpectrum (𝓞 X.B.I.F)) (a : Formalism.MainNotions.S.Af X.B.I.F) :
     PI.FinKW.psiV X.B.I v (eOf X.B.I a) = algebraMap (Fv X.B.I.F v) (Fv X.B.I.F v ⊗[X.B.I.F] X.B.I.E) (a v) := by
@@ -22,23 +22,23 @@ theorem imA_psiV_eOf (v : HeightOneSpectrum (𝓞 X.B.I.F)) (a : Formalism.MainN
   rfl
 
 /- English proof (translation)
-Rewrite using `[scP, imA_psiV_eOf, Comp_single_same]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem component_scalarAt_same (p : TypX X) (c : Fv X.B.I.F p.1) :
     PI.FinKW.psiV X.B.I p.1 (scP X p c) = algebraMap (Fv X.B.I.F p.1) (Fv X.B.I.F p.1 ⊗[X.B.I.F] X.B.I.E) c := by
   rw [scP, imA_psiV_eOf, Comp_single_same]
 
 /- English proof (translation)
-Rewrite using `[scP, imA_psiV_eOf, Comp_single_ne X.B.I p.1 v h, map_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem component_scalarAt_of_ne (p : TypX X) (v : HeightOneSpectrum (𝓞 X.B.I.F)) (h : v ≠ p.1)
     (c : Fv X.B.I.F p.1) : PI.FinKW.psiV X.B.I v (scP X p c) = 0 := by
   rw [scP, imA_psiV_eOf, Comp_single_ne X.B.I p.1 v h, map_zero]
 
 /- English proof (translation)
-Apply `LocB_eOf_mem` to reduce the goal to its premises. Introduce `v`. Distinguish the cases in `h : v = p.1`. Substitute `h` using the available equality. Use `show singleV X.B.I.F _ _ _ ∈ _`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Comp_single_same]`. Conclude with `c.2`. Use `show singleV X.B.I.F p.1 _ v ∈ _`. Rewrite using `[Comp_single_ne X.B.I p.1 v h]`. Conclude with `zero_mem _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem scalarAt_mem_integralAdeles (p : TypX X) (c : p.1.adicCompletionIntegers X.B.I.F) :
     scP X p (c : Fv X.B.I.F p.1) ∈ Formalism.MainNotions.S.IntAf X.B.I.F X.B.I.E := by
@@ -49,7 +49,7 @@ theorem scalarAt_mem_integralAdeles (p : TypX X) (c : p.1.adicCompletionIntegers
   · show singleV X.B.I.F p.1 _ v ∈ _; rw [Comp_single_ne X.B.I p.1 v h]; exact zero_mem _
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Rewrite using `[← Algebra.smul_def]`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem imA_smul_alg (p : TypX X) (c : p.1.adicCompletionIntegers X.B.I.F)
     (u : Fin X.B.I.n → Fv X.B.I.F p.1 ⊗[X.B.I.F] X.B.I.E) :
@@ -60,14 +60,14 @@ theorem imA_smul_alg (p : TypX X) (c : p.1.adicCompletionIntegers X.B.I.F)
   rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `[PI.FinKW.vecV]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem imA_vecV_sub (v : HeightOneSpectrum (𝓞 X.B.I.F)) (a b : Fin X.B.I.n → X.B.I.E ⊗[X.B.I.F] Formalism.MainNotions.S.Af X.B.I.F) :
     PI.FinKW.vecV X.B.I v (a - b) = PI.FinKW.vecV X.B.I v a - PI.FinKW.vecV X.B.I v b := by
   funext i; simp [PI.FinKW.vecV]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `[PI.FinKW.vecV, map_mul]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem imA_vecV_smul' (v : HeightOneSpectrum (𝓞 X.B.I.F)) (t : X.B.I.E ⊗[X.B.I.F] Formalism.MainNotions.S.Af X.B.I.F)
     (w : Fin X.B.I.n → X.B.I.E ⊗[X.B.I.F] Formalism.MainNotions.S.Af X.B.I.F) :
@@ -75,7 +75,7 @@ theorem imA_vecV_smul' (v : HeightOneSpectrum (𝓞 X.B.I.F)) (t : X.B.I.E ⊗[X
   funext i; simp [PI.FinKW.vecV, map_mul]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Conclude with `PI.FinKW.local_vector_injective X.B.I (w i) fun v => congrFun (h v) i`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem imA_vec_ext (w : Fin X.B.I.n → X.B.I.E ⊗[X.B.I.F] Formalism.MainNotions.S.Af X.B.I.F)
     (h : ∀ v, PI.FinKW.vecV X.B.I v w = 0) : w = 0 := by

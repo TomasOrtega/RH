@@ -16,13 +16,13 @@ variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
 omit [Fintype K] [∀ k, Fintype (ι k)] in
 
 /- English proof (translation)
-Establish `hg` using `Quot.eqvGen_exact h`. Use `clear h`. Proceed by induction on `hg with`. Consider the case `rel x y hxy => exact hxy`. Consider the case `refl x => exact ⟨1, fun _ => one_ne_zero, by funext p; simp⟩`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `symm x y _ ih`. Take `⟨c, hc, e⟩` from `ih`. Use `⟨fun k => (c k)⁻¹, fun k => inv_ne_zero (hc k), ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `p`. Rewrite using `[e]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Clear denominators, using `[hc p.1]` for the nonvanishing conditions. Consider the case `trans x y w _ _ ih1 ih2`. Take `⟨c, hc, e⟩` from `ih1`. Take `⟨d, hd, e'⟩` from `ih2`. Use `⟨fun k => d k * c k, fun k => mul_ne_zero (hd k) (hc k), ?_⟩` and prove the remaining obligations.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `p`. Rewrite using `[e', e]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem rel_of_mk_eq {W : Ideal (MRing ι)} {a b : mcPts W}
     (h : (Quot.mk _ a : McClasses W) = Quot.mk _ b) :
@@ -48,13 +48,13 @@ theorem rel_of_mk_eq {W : Ideal (MRing ι)} {a b : mcPts W}
     ring
 
 /- English proof (translation)
-Simplify using `[maDensity, mixedDisc, Matrix.det_fin_zero]`.
+Simplify using the standard rewrite rules.
 -/
 theorem maDensity_zero (φ : Fin 0 → (Fin 0 → ℂ) → ℝ) (z : Fin 0 → ℂ) : maDensity φ z = 1 := by
   simp [maDensity, mixedDisc, Matrix.det_fin_zero]
 
 /- English proof (translation)
-Rewrite using `[Measure.volume_pi_eq_dirac y, integral_dirac]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem integral_fin_zero (F : (Fin 0 → ℂ) → ℝ) (y : Fin 0 → ℂ) : ∫ y', F y' = F y := by
   rw [Measure.volume_pi_eq_dirac y, integral_dirac]
@@ -62,7 +62,7 @@ theorem integral_fin_zero (F : (Fin 0 → ℂ) → ℝ) (y : Fin 0 → ℂ) : �
 omit [∀ k, Fintype (ι k)] in
 
 /- English proof (translation)
-Introduce `h0`. Use `choose p hp using hz.1`. Establish `h` using `congrFun h0 p`. Simplify using `only [segre, Pi.zero_apply] at h`. Conclude with `(Finset.prod_ne_zero_iff.mpr fun k _ => hp k) h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem segre_ne_zero {W : Ideal (MRing ι)} {z : (Σ k, ι k) → ℂ} (hz : z ∈ mcPts W) : segre z ≠ 0 := by
   intro h0
@@ -72,9 +72,9 @@ theorem segre_ne_zero {W : Ideal (MRing ι)} {z : (Σ k, ι k) → ℂ} (hz : z 
   exact (Finset.prod_ne_zero_iff.mpr fun k _ => hp k) h
 
 /- English proof (translation)
-Take `⟨f, hf⟩` from `Module.exists_dual_forall_apply_ne_zero (K := ℂ) (fun q : McClasses W => segre (q.out : (Σ k, ι k) → ℂ)) (fun q => segre_ne_zero q.out.2)`. Use `⟨LinearMap.pi fun _ => f, fun z hz h => ?_⟩` and prove the remaining obligations. Take `⟨c, hc, e⟩` from `rel_of_mk_eq (Quot.out_eq (Quot.mk _ ⟨z, hz⟩ : McClasses W))`. Establish `e' : z = fun p => c p.1 * ((Quot.mk _ ⟨z, hz⟩ : McClasses W).out : (Σ k, ι k) → ℂ) p` using `e`. Establish `h0` using `congrFun h 0`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h0` using `[LinearMap.pi_apply, Pi.zero_apply, e', segre_smul, map_smul, smul_eq_mul]`. Conclude with `hf _ ((mul_eq_zero.mp h0).resolve_left (Finset.prod_ne_zero_iff.mpr fun k _ => hc k))`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_goodProj {W : Ideal (MRing ι)} (hfin : Finite (McClasses W)) :
     ∃ Ψ : (((k : K) → ι k) → ℂ) →ₗ[ℂ] (Fin (0 + 1) → ℂ), IsGoodProj W Ψ := by
@@ -89,25 +89,23 @@ theorem exists_goodProj {W : Ideal (MRing ι)} (hfin : Finite (McClasses W)) :
   exact hf _ ((mul_eq_zero.mp h0).resolve_left (Finset.prod_ne_zero_iff.mpr fun k _ => hc k))
 
 /- English proof (translation)
-Use `set a : ((Σ k, ι k) → ℂ) → ℂ := fun z => Ψ (segre z) 0 with ha_def`. Establish `ha : ∀ z ∈ mcPts W, a z ≠ 0` using `fun z hz h0 => hΨ z hz (funext fun i => by rw [Fin.fin_one_eq_zero i]; exact h0)`. Use `set N : ((Σ k, ι k) → ℂ) → (((k : K) → ι k) → ℂ) := fun z => (a z)⁻¹ • segre z with hN`. Establish `hNmem : ∀ z (hz : z ∈ mcPts W), N z ∈ fibre W Ψ y`. Introduce `z hz`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Take `⟨k0⟩` from `‹Nonempty K›`. Set `u : K → ℂ` to `Pi.mulSingle k0 (a z)⁻¹`. Establish `hu : ∀ k, u k ≠ 0` using `fun k => by`. Distinguish the cases in `hk : k = k0`. Substitute `hk` using the available equality.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[u, ha z hz]`. Simplify using `[u, Pi.mulSingle_eq_of_ne hk]`. Use `⟨fun p => u p.1 * z p, mcPts_smul hW u hu hz, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[segre_smul]`. Simplify using `[u, N]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `i`. Rewrite using `[Fin.fin_one_eq_zero i]`. Simplify using `[N, a, ha z hz]`. Establish `hNrel : ∀ z z' : mcPts W, (∃ c : K → ℂ, (∀ k, c k ≠ 0) ∧ (z' : (Σ k, ι k) → ℂ) = fun p => c p.1 * (z : (Σ k, ι k) → ℂ) p) → N z = N z'`. Introduce and unpack `⟨z, hz⟩ ⟨z', hz'⟩ ⟨c, hc, e⟩`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Substitute using the available equality.
 
-Simplify using `only at e`. Substitute `e` using the available equality. Establish `hpc : (∏ k, c k) ≠ 0` using `Finset.prod_ne_zero_iff.mpr fun k _ => hc k`. Simplify using `only [N, a, segre_smul, map_smul, Pi.smul_apply, smul_eq_mul, smul_smul]`. Use `congr 1`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Clear the denominators using the available nonvanishing facts. Introduce a local definition for the expression.
 
-Clear denominators, using `[hpc, ha z hz]` for the nonvanishing conditions. Set `M : McClasses W → fibre W Ψ y` to `Quot.lift (fun z => ⟨N z, hNmem z z.2⟩) (fun z z' h => Subtype.ext (hNrel z z' h))`. Use `⟨M, ?_, ?_⟩` and prove the remaining obligations. Introduce `q q'`. Proceed by induction on `q using Quot.ind with | mk z => ?_`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Proceed by induction. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `q' using Quot.ind with | mk z' => ?_`. Introduce `h`. Establish `h' : N z = N z'` using `congrArg Subtype.val h`. Establish `hs : segre (z : (Σ k, ι k) → ℂ) = (a z * (a z')⁻¹) • segre (z' : (Σ k, ι k) → ℂ)`. Use `congrArg (fun v => a z • v) h'` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [N, smul_smul] at this`. Rewrite `this` using `[mul_inv_cancel₀ (ha z z.2), one_smul]`. Conclude with `this`. Take `⟨c, hc, e⟩` from `sameOrbit_of_segre z'.2.1 _ (mul_ne_zero (ha z z.2) (inv_ne_zero (ha z' z'.2))) hs`. Conclude with `(Quot.sound ⟨c, hc, e⟩).symm`.
+Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `⟨w, z, hz, rfl, hw⟩`. Use `⟨Quot.mk _ ⟨z, hz⟩, Subtype.ext ?_⟩` and prove the remaining obligations. Use `show N z = segre z`. Establish `h1 : a z = 1` using `by show Ψ (segre z) 0 = 1`. Rewrite using `[hw]`.
-
-Both sides reduce to the same expression. Simplify using `[N, h1]`.
+Both sides reduce to the same expression. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem bij_fibre [Nonempty K] {W : Ideal (MRing ι)} (hW : IsMultiHomogIdeal W)
     (Ψ : (((k : K) → ι k) → ℂ) →ₗ[ℂ] (Fin (0 + 1) → ℂ)) (hΨ : IsGoodProj W Ψ) (y : Fin 0 → ℂ) :
@@ -168,7 +166,7 @@ theorem bij_fibre [Nonempty K] {W : Ideal (MRing ι)} (hW : IsMultiHomogIdeal W)
 omit [∀ k, Fintype (ι k)] in
 
 /- English proof (translation)
-Take `⟨z, hz, rfl, hΨz⟩` from `hw`. Establish `hex : ∃ γ, IsSheet W Ψ y (segre z) γ` using `⟨fun _ => z, rfl, Filter.Eventually.of_forall fun y' => ⟨differentiableAt_const _, hz, by rw [Subsingleton.elim y' y]; exact hΨz⟩⟩`. Unfold `sheetDensity`. Rewrite using `[dif_pos hex, maDensity_zero, mul_one]`. Conclude with `hc _ hex.choose_spec.2.self_of_nhds.2.1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem density_ge {W : Ideal (MRing ι)} {Ψ : (((k : K) → ι k) → ℂ) →ₗ[ℂ] (Fin (0 + 1) → ℂ)}
     {φ : Fin 0 → ((Σ k, ι k) → ℂ) → ℝ} {g : ((Σ k, ι k) → ℂ) → ℝ} {c : ℝ}
@@ -188,13 +186,13 @@ end PtsIntegralZeroLowerNEAux
 open PtsIntegralZeroLowerNEAux in
 
 /- English proof (translation)
-Introduce `K _ _ ι _ W φ g c hW hfin _ hc`. Take `⟨Ψ0, hΨ0⟩` from `exists_goodProj hfin`. Establish `hex : ∃ Ψ : (((k : K) → ι k) → ℂ) →ₗ[ℂ] (Fin (0 + 1) → ℂ), IsGoodProj W Ψ` using `⟨Ψ0, hΨ0⟩`. Unfold `ptsIntegral`. Rewrite using `[dif_pos hex]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `hΨ : IsGoodProj W hex.choose` using `hex.choose_spec`. Set `y : Fin 0 → ℂ` to `fun i => i.elim0`. Unfold `ptsIntegralAt`. Rewrite using `[integral_fin_zero _ y]`. Take `⟨M, hM⟩` from `bij_fibre hW hex.choose hΨ y`.
+Establish an intermediate fact. Introduce a local definition for the expression. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `hfin` as an intermediate fact. Establish `: Finite (fibre W hex.choose y)` using `Finite.of_surjective M hM.2`. Establish `hF : (fibre W hex.choose y).Finite` using `Set.toFinite _`. Establish `hcard : degC W = hF.toFinset.card`. Rewrite using `[← Nat.card_eq_card_finite_toFinset hF, ← Nat.card_eq_of_bijective M hM]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[finsum_mem_eq_finite_toFinset_sum _ hF, hcard]`. Establish `h` using `Finset.card_nsmul_le_sum hF.toFinset (fun w => sheetDensity W hex.choose φ g y w) c (fun w hw => density_ge hc ((Set.Finite.mem_toFinset hF).mp hw))`. Rewrite `h` using `[nsmul_eq_mul]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem PtsIntegralZeroLowerNE.proof : PtsIntegralZeroLowerNE.Statement := by
   intro K _ _ ι _ W φ g c hW hfin _ hc

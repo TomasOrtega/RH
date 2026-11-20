@@ -21,7 +21,7 @@ def ratio (p : Σ k, ι k) : chartRingZ y c :=
 def dehom : MRing ι →ₐ[ℤ] chartRingZ y c := aeval (ratio y c)
 
 /- English proof (translation)
-Use `show ((chartRingZ y c).val.toRingHom.comp (dehom y c).toRingHom) f = ((aeval (fun k => (y ⟨k, c k⟩)⁻¹) : MvPolynomial K Ω →ₐ[Ω] Ω).toRingHom.comp (mConeMap y).toRingHom) f`. Use `RingHom.congr_fun (MvPolynomial.ringHom_ext (fun r => ?_) (fun p => ?_)) f` and prove the remaining obligations. Simplify using the standard rewrite rules. Simplify using `[dehom, ratio, mConeMap, div_eq_mul_inv]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem coe_dehom (f : MRing ι) :
     ((dehom y c f : chartRingZ y c) : Ω) = aeval (fun k => (y ⟨k, c k⟩)⁻¹) (mConeMap y f) := by
@@ -32,7 +32,7 @@ theorem coe_dehom (f : MRing ι) :
   · simp [dehom, ratio, mConeMap, div_eq_mul_inv]
 
 /- English proof (translation)
-Rewrite using `[coe_dehom, ProjLine.mConeMap_eq_of_isMultiHomog y hf, map_mul, aeval_C, map_prod]`. Simplify using `only [map_pow, aeval_X, Algebra.algebraMap_self, RingHom.id_apply]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem coe_dehom_of_homog {f : MRing ι} {d : K → ℕ} (hf : IsMultiHomog f d) :
     ((dehom y c f : chartRingZ y c) : Ω) = aeval y f * ∏ k, (y ⟨k, c k⟩)⁻¹ ^ d k := by
@@ -40,7 +40,7 @@ theorem coe_dehom_of_homog {f : MRing ι} {d : K → ℕ} (hf : IsMultiHomog f d
   simp only [map_pow, aeval_X, Algebra.algebraMap_self, RingHom.id_apply]
 
 /- English proof (translation)
-Establish `h0 : mConeMap y f = 0` using `RingHom.mem_ker.mp hf`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[coe_dehom, h0]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem dehom_eq_zero {f : MRing ι} (hf : f ∈ mCoordIdeal y) : dehom y c f = 0 := by
   have h0 : mConeMap y f = 0 := RingHom.mem_ker.mp hf
@@ -51,7 +51,7 @@ theorem dehom_eq_zero {f : MRing ι} (hf : f ∈ mCoordIdeal y) : dehom y c f = 
 abbrev ChartQ := chartRingZ y c ⧸ Ideal.span {((ℓ : ℕ) : chartRingZ y c)}
 
 /- English proof (translation)
-Rewrite using `[← map_natCast (Ideal.Quotient.mk (Ideal.span {((ℓ : ℕ) : chartRingZ y c)})) ℓ]`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.mpr (Ideal.mem_span_singleton_self _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem natCast_chartQ : ((ℓ : ℕ) : ChartQ y c ℓ) = 0 := by
   rw [← map_natCast (Ideal.Quotient.mk (Ideal.span {((ℓ : ℕ) : chartRingZ y c)})) ℓ]
@@ -62,7 +62,7 @@ def dehomMod : MRingOver (ZMod ℓ) ι →+* ChartQ y c ℓ :=
     (fun p => Ideal.Quotient.mk _ (ratio y c p))
 
 /- English proof (translation)
-Use `show ((dehomMod y c ℓ).comp (MvPolynomial.map (Int.castRingHom (ZMod ℓ)))) f = ((Ideal.Quotient.mk (Ideal.span {((ℓ : ℕ) : chartRingZ y c)})).comp (dehom y c).toRingHom) f`. Use `RingHom.congr_fun (MvPolynomial.ringHom_ext (fun r => ?_) (fun p => ?_)) f` and prove the remaining obligations. Simplify using `[dehomMod]`. Simplify using `[dehomMod, dehom]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem dehomMod_map (f : MRing ι) :
     dehomMod y c ℓ (MvPolynomial.map (Int.castRingHom (ZMod ℓ)) f) =
@@ -74,7 +74,7 @@ theorem dehomMod_map (f : MRing ι) :
   · simp [dehomMod, dehom]
 
 /- English proof (translation)
-Use `Ideal.map_le_iff_le_comap.mpr fun f hf => ?_` and prove the remaining obligations. Rewrite using `[Ideal.mem_comap, RingHom.mem_ker, dehomMod_map, dehom_eq_zero y c hf, map_zero]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem idealOver_le_ker : GenOnFibres.idealOver y (ZMod ℓ) ≤ RingHom.ker (dehomMod y c ℓ) := by
   refine Ideal.map_le_iff_le_comap.mpr fun f hf => ?_
@@ -84,7 +84,7 @@ def dehomQuot : MRingOver (ZMod ℓ) ι ⧸ GenOnFibres.idealOver y (ZMod ℓ) �
   Ideal.Quotient.lift _ (dehomMod y c ℓ) fun _ hf => RingHom.mem_ker.mp (idealOver_le_ker y c ℓ hf)
 
 /- English proof (translation)
-Take `⟨x, rfl⟩` from `Ideal.Quotient.mk_surjective m`. Rewrite using `[GenOnFibres.smul_mk, dehomQuot, Ideal.Quotient.lift_mk, Ideal.Quotient.lift_mk, map_mul]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem dehomQuot_smul (r : MRingOver (ZMod ℓ) ι) (m : MRingOver (ZMod ℓ) ι ⧸ GenOnFibres.idealOver y (ZMod ℓ)) :
     dehomQuot y c ℓ (r • m) = dehomMod y c ℓ r * dehomQuot y c ℓ m := by
@@ -92,9 +92,9 @@ theorem dehomQuot_smul (r : MRingOver (ZMod ℓ) ι) (m : MRingOver (ZMod ℓ) �
   rw [GenOnFibres.smul_mk, dehomQuot, Ideal.Quotient.lift_mk, Ideal.Quotient.lift_mk, map_mul]
 
 /- English proof (translation)
-Establish `hle : KH.cellMon (ZMod ℓ) I ≤ (⊥ : Submonoid (ChartQ y c ℓ)).comap (dehomMod y c ℓ).toMonoidHom`. Unfold `KH.cellMon`. Use `Submonoid.closure_le.mpr ?_` and prove the remaining obligations. Introduce and unpack `f ⟨k, i, hi, rfl⟩`. Take `rfl` from `hI k i hi`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Establish `h1 : ratio y c ⟨k, c k⟩ = 1` using `Subtype.ext (by simp [ratio, div_self (hc k)])`. Rewrite using `[SetLike.mem_coe, Submonoid.mem_comap, Submonoid.mem_bot]`. Simplify using `[dehomMod, h1]`. Conclude with `Submonoid.mem_bot.mp (hle ht)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem dehomMod_cellMon (hc : ∀ k, y ⟨k, c k⟩ ≠ 0) {I : ∀ k, Finset (ι k)} (hI : ∀ k, ∀ i ∈ I k, i = c k)
     {t : MRingOver (ZMod ℓ) ι} (ht : t ∈ KH.cellMon (ZMod ℓ) I) : dehomMod y c ℓ t = 1 := by
@@ -119,7 +119,7 @@ def dehomLocFun (T : Submonoid (MRingOver (ZMod ℓ) ι)) (hT : ∀ t ∈ T, deh
     exact h)
 
 /- English proof (translation)
-Unfold `dehomLocFun`. Rewrite using `[LocalizedModule.liftOn_mk]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem dehomLocFun_mk (T : Submonoid (MRingOver (ZMod ℓ) ι)) (hT : ∀ t ∈ T, dehomMod y c ℓ t = 1)
     (m : MRingOver (ZMod ℓ) ι ⧸ GenOnFibres.idealOver y (ZMod ℓ)) (t : T) :
@@ -147,7 +147,7 @@ def dehomLoc (T : Submonoid (MRingOver (ZMod ℓ) ι)) (hT : ∀ t ∈ T, dehomM
         one_mul, one_mul]
 
 /- English proof (translation)
-The claim follows from `dehomLocFun_mk T hT m t`.
+A detailed English derivation is pending.
 -/
 theorem dehomLoc_mk (T : Submonoid (MRingOver (ZMod ℓ) ι)) (hT : ∀ t ∈ T, dehomMod y c ℓ t = 1)
     (m : MRingOver (ZMod ℓ) ι ⧸ GenOnFibres.idealOver y (ZMod ℓ)) (t : T) :
@@ -159,19 +159,19 @@ end FibreRelLift
 open FibreRelLift in
 
 /- English proof (translation)
-Introduce `K _ _ ι _ _ Ω _ y ℓ a r s J u hs hc _ hrel`. Use `set c := GenOnFibres.cellChart J with hcdef`. Establish `hI : ∀ k, ∀ i ∈ J.1 k, i = c k`. Introduce `k i hi`. Establish `h1 : (J.1 k).card - 1 = 0` using `(Finset.sum_eq_zero_iff.mp J.2.2) k (Finset.mem_univ k)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Finset.card_le_one.mp (by omega) i hi (c k) (GenOnFibres.cellChart_mem J k)`. Establish `hT : ∀ t ∈ KH.cellMon (ZMod ℓ) J.1, dehomMod y c ℓ t = 1` using `fun t ht => dehomMod_cellMon y c ℓ hc hI ht`. Establish `hw : ∀ j, s j * ∏ k, y ⟨k, c k⟩ ^ (-a k) ∈ chartRingZ y c` using `fun j => by`. Simplify using `using hs j c hc`. Establish `hz : ∀ j, dehomLoc _ hT (GenOnFibres.secCoch y (ZMod ℓ) (s j) a J) = Ideal.Quotient.mk (Ideal.span {((ℓ : ℕ) : chartRingZ y c)}) ⟨_, hw j⟩`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `j`. Take `⟨e, F, ⟨d, hF, hd, hv⟩, h, he⟩` from `GenOnFibres.secCoch_spec (S := ZMod ℓ) (hs j) J hc`. Rewrite using `[he, dehomLoc_mk, dehomQuot, Ideal.Quotient.lift_mk, dehomMod_map]`. Use `congr 1`. Apply `Subtype.ext` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[coe_dehom_of_homog y c hF, hv, mul_assoc, ← Finset.prod_mul_distrib]`. Use `congr 1`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[inv_pow, ← zpow_natCast, ← zpow_natCast, ← zpow_neg, ← zpow_add₀ (hc k)]`. Use `congr 1`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Use `hd k` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `h1` using `congrArg (dehomLoc _ hT) hrel`. Rewrite `h1` using `[map_sum, map_one]`. Simplify using `only [map_mul, hz] at h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `choose b hb using fun j => Ideal.Quotient.mk_surjective (dehomLoc _ hT (u j))`. Simplify using `only [← hb, ← map_mul, ← map_sum] at h1`. Rewrite `h1` using `[← map_one (Ideal.Quotient.mk (Ideal.span {((ℓ : ℕ) : chartRingZ y c)})), Ideal.Quotient.eq, Ideal.mem_span_singleton']`. Take `⟨q, hq⟩` from `h1`. Use `⟨fun j => (b j : Ω), -(q : Ω), fun j => (b j).2, neg_mem q.2, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion.
 
-Establish `h2` using `congrArg (fun x : chartRingZ y c => (x : Ω)) hq`. Move the coercions through the operations in `at h2`. Take the linear combination `(-1 : Ω) * h2`.
+A detailed English derivation is pending.
 -/
 theorem FibreRelLift.proof : FibreRelLift.Statement := by
   intro K _ _ ι _ _ Ω _ y ℓ a r s J u hs hc _ hrel

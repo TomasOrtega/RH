@@ -21,7 +21,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : _root_.Reciproc
   {l : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level H} in
 variable {Xo : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Moduli Dw l} {c : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Coeff l} {n : ℕ} in
 /- English proof (translation)
-Take `⟨-, hM, -⟩` from `h`. Establish `h3` using `d.l₂.three_le`. Rewrite `h3` using `[hM]`. Use `Nat.pos_of_ne_zero fun h0 => ?_` and prove the remaining obligations. Rewrite `h3` using `[h0, mul_zero]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
 Use linear arithmetic over natural numbers and integers.
 -/
@@ -34,9 +34,9 @@ theorem _root_.GlobalTheory.LevelCoverDatum.pd_pos (d : _root_.Formalism.L2.Pj.D
   omega
 
 /- English proof (translation)
-Establish `hM : l.M ≠ 0` using `by have := l.three_le; omega`. Introduce `h`. Establish `: Ideal.span {(l.M : 𝓞 E)} ≤ l.Mb` using `l.prod ▸ Ideal.mul_le_left`. Use `this (Ideal.subset_span rfl)` as an intermediate fact. Rewrite `this` using `[h, Ideal.mem_bot]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hM (by exact_mod_cast this)`.
+A detailed English derivation is pending.
 -/
 theorem Mb_ne_bot (l : Level H) : l.Mb ≠ ⊥ := by
   have hM : l.M ≠ 0 := by have := l.three_le; omega
@@ -54,9 +54,9 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : _root_.Reciproc
 variable {Xo : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Moduli Dw l} {c : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Coeff l} {n : ℕ} in
 
 /- English proof (translation)
-Take `⟨-, hM, -, hMb, -⟩` from `h`. Establish `h2` using `d.l₂.prod`. Rewrite `h2` using `[hMb, Ideal.map_mul, hM, Nat.cast_mul, ← Ideal.span_singleton_mul_span_singleton, mul_mul_mul_comm, l.prod]`. Establish `hne : Ideal.span {(l.M : 𝓞 E)} ≠ 0`. Rewrite using `[Ne, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot, Nat.cast_eq_zero]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `l.three_le` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Conclude with `mul_left_cancel₀ hne h2`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.LevelCoverDatum.half_mul_conj (d : _root_.Formalism.L2.Pj.DeltaDat Xo c n) (h : d.IsLev) :
     d.I * d.I.map (H.bar : 𝓞 E →+* 𝓞 E) = Ideal.span {(d.pd : 𝓞 E)} := by
@@ -71,7 +71,7 @@ theorem _root_.GlobalTheory.LevelCoverDatum.half_mul_conj (d : _root_.Formalism.
   exact mul_left_cancel₀ hne h2
 
 /- English proof (translation)
-Establish `hM : 0 < l.M` using `by have := l.three_le; omega`. Use `⟨mul_left_cancel₀ (Mb_ne_bot l) ?_, Nat.eq_of_mul_eq_mul_left hM ?_⟩` and prove the remaining obligations. Rewrite using `[← h.2.2.2.1, ← h'.2.2.2.1, e]`. Rewrite using `[← h.2.1, ← h'.2.1, e]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem half_unique (d d' : DeltaDat Xo c n) (h : d.IsLev) (h' : d'.IsLev) (e : d.l₂ = d'.l₂) :
     d.I = d'.I ∧ d.pd = d'.pd := by
@@ -81,7 +81,7 @@ theorem half_unique (d d' : DeltaDat Xo c n) (h : d.IsLev) (h' : d'.IsLev) (e : 
   · rw [← h.2.1, ← h'.2.1, e]
 
 /- English proof (translation)
-The claim follows from `h`.
+A detailed English derivation is pending.
 -/
 theorem isLev_change (d : DeltaDat Xo c n) (h : d.IsLev) (φ : (Fin n → LevQ Dw d.l₂) → c.F)
     (nab : NabV d.Xo₂ d.c₂) : DeltaDat.IsLev { d with φδ := φ, nab₂ := nab } := h
@@ -95,9 +95,9 @@ variable {Xo : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Moduli Dw l} 
 set_option synthInstance.maxHeartbeats 200000 in
 
 /- English proof (translation)
-Take `⟨h1, h2, h3, h4, h5, h6, h7, h8, h9⟩` from `h`. Use `⟨h1, h2, h3, h4, h5, h6, h7, Submodule.smul_mem _ a h8, ?_⟩` and prove the remaining obligations. Introduce `k _ _ _ y₂`. Establish `hy` using `h9 k y₂`. Simplify using `only [_root_.Formalism.L2.Pj.evR] at hy ⊢`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[_root_.Formalism.L2.Pj.evalAt_smul]`. Conclude with `mul_ne_zero ((map_ne_zero _).mpr ha) hy`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.LevelCoverDatum.isLev_smul (d : _root_.Formalism.L2.Pj.DeltaDat Xo c n) (h : d.IsLev) (a : d.c₂.F) (ha : a ≠ 0) :
     _root_.Formalism.L2.Pj.DeltaDat.IsLev { d with cδ := a • d.cδ } := by
@@ -116,11 +116,11 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : _root_.Reciproc
   {l : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level H} in
 variable {Xo : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Moduli Dw l} {c : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Coeff l} {n : ℕ} in
 /- English proof (translation)
-Establish `h3` using `d.l₂.three_le`. Rewrite `h3` using `[h]`. Establish `hM : l.M ≠ 0` using `fun h0 => by rw [h0, zero_mul] at h3; omega`. Establish `hp : d.pd ≠ 0` using `fun h0 => by rw [h0, mul_zero] at h3; omega`. Apply `Subtype.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `only [SubmonoidClass.coe_pow]`. Express the relevant statement in the definitionally equal form `((_root_.Formalism.L2.Pj.zetaM d.c₂ : ℂ)) ^ d.pd = (_root_.Formalism.L2.Pj.zetaM c : ℂ)`. Rewrite using `[_root_.GlobalTheory.LevelPairing.zetaM_coe, _root_.GlobalTheory.LevelPairing.zetaM_coe, h]`. Unfold `_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.zeta`. Rewrite using `[← Complex.exp_nat_mul]`.
+Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts.
 -/
 theorem _root_.GlobalTheory.LevelCoverDatum.zetaM_cover (d : _root_.Formalism.L2.Pj.DeltaDat Xo c n) (h : d.l₂.M = l.M * d.pd) :
     _root_.Formalism.L2.Pj.zetaM d.c₂ ^ d.pd = d.eF (_root_.Formalism.L2.Pj.zetaM c) := by
@@ -146,7 +146,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : _root_.Reciproc
 variable {Xo : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Moduli Dw l} {c : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Coeff l} {n : ℕ} in
 
 /- English proof (translation)
-Use function extensionality and compare the values at `q`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [_root_.Formalism.L2.Pj.DeltaDat.w, _root_.Formalism.L2.Pj.noDelta, mul_one]`. Unfold `_root_.Formalism.L2.Pj.x0Dat`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Both sides reduce to the same expression.
 -/
 theorem _root_.GlobalTheory.LevelCoverDatum.noDelta_w (nab : _root_.Formalism.L2.Pj.NabV Xo c)
     (m : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.SABMap Xo.univ.t Xo.univ.t (𝟙 Xo.X)) (x0 : Fin n → Dw.La) :
@@ -165,7 +165,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : _root_.Reciproc
 variable {Xo : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Moduli Dw l} {c : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Coeff l} {n : ℕ} in
 
 /- English proof (translation)
-Simplify using `only [_root_.Formalism.L2.Pj.DeltaDat.EtaOK, _root_.Formalism.L2.Pj.noDelta, Nat.div_self l.A_pos, Category.id_comp]`. Apply the tactic sequence `refine and_congr (forall_congr' fun a => ?_) (forall_congr' fun a => ?_) <;>`. Apply `Iff.of_eq` to reduce the goal to its premises. Use `congr 3`. Use `open scoped MonObj in exact pow_one _`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Reduce the claim to the hypotheses of an applicable result. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.LevelCoverDatum.noDelta_etaOK (nab : _root_.Formalism.L2.Pj.NabV Xo c)
     (m : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.SABMap Xo.univ.t Xo.univ.t (𝟙 Xo.X)) :

@@ -19,13 +19,13 @@ namespace GlobalTheory.ThK.ShiftUnip
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
 /- English proof (translation)
-Establish `hc : ∀ k, cA σ (inclR (F` using `F) (AF F) (x k)) = inclR (F := F) (AF F) (σ (x k)) := fun k => by`. Simplify using `[cA, inclR, Algebra.TensorProduct.map_tmul]`. Establish `h0 : ∑ i, ∑ k, incV F x i * incM F J i k * cA σ (incV F x k) = 0`. Establish `: ∑ i, ∑ k, incV F x i * incM F J i k * cA σ (incV F x k) = inclR (F` using `F) (AF F) (form σ J x x) := by`. Simplify using `only [form, dotProduct, Matrix.mulVec, incV, incM, Matrix.map_apply, map_sum, map_mul, Finset.mul_sum]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun k _ => by rw [hc k]; ring`. Rewrite using `[this, hx, map_zero]`. Establish `hT : hTens (cA σ) (incM F J) JB (Matrix.vecMulVec (incV F x) p) (Matrix.vecMulVec (incV F x) q) = 0`. Unfold `hTens`. Establish `: ∀ i, ∑ j, ∑ k, ∑ l, Matrix.vecMulVec (incV F x) p i j * incM F J i k * JB j l * cA σ (Matrix.vecMulVec (incV F x) q k l) = ∑ k, (incV F x i * incM F J i k * cA σ (incV F x k)) * ∑ j, ∑ l, p j * JB j l * cA σ (q l)` using `fun i => by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.vecMulVec_apply, map_mul, Finset.mul_sum, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun l _ => by ring` and prove the remaining obligations. Simplify using `only [this, ← Finset.sum_mul, h0, zero_mul]`. Unfold `symp`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hT, mul_zero, map_zero]`.
+A detailed English derivation is pending.
 -/
 theorem symp_vecMulVec_eq_zero {n d : ℕ} (J : Matrix (Fin n) (Fin n) E) (JB : Matrix (Fin d) (Fin d) (AE F E))
     (x : Fin n → E) (hx : form σ J x x = 0) (p q : Fin d → AE F E) :
@@ -50,7 +50,7 @@ theorem symp_vecMulVec_eq_zero {n d : ℕ} (J : Matrix (Fin n) (Fin n) E) (JB : 
   rw [hT, mul_zero, map_zero]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[partFin, Matrix.vecMulVec_apply, Matrix.smul_apply, Pi.smul_apply, mul_smul_comm]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem partFin_vecMulVec {n d : ℕ} (v : Pl F) (x : Fin n → AE F E) (p : Fin d → AE F E) :
     partFin v (Matrix.vecMulVec x p) = Matrix.vecMulVec x (partFin v p) := by
@@ -58,7 +58,7 @@ theorem partFin_vecMulVec {n d : ℕ} (v : Pl F) (x : Fin n → AE F E) (p : Fin
   simp [partFin, Matrix.vecMulVec_apply, Matrix.smul_apply, Pi.smul_apply, mul_smul_comm]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [Matrix.mul_apply, Matrix.vecMulVec_apply, Matrix.transpose_apply, Matrix.mulVec, dotProduct, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem vecMulVec_mul_transpose' {R : Type} [CommRing R] {n d : ℕ} (y : Fin n → R) (x : Fin d → R)
     (N : Matrix (Fin d) (Fin d) R) : Matrix.vecMulVec y x * Nᵀ = Matrix.vecMulVec y (N *ᵥ x) := by
@@ -69,9 +69,9 @@ theorem vecMulVec_mul_transpose' {R : Type} [CommRing R] {n d : ℕ} (y : Fin n 
   ring
 
 /- English proof (translation)
-Take `⟨K, hK, hK0⟩` from `exists_compact_mem_nhds (0 : κ → Fv F v)`. Take `⟨U, hU, h0, hUK⟩` from `(loc_compact_Haus_tot_disc_of_zero_dim (H := κ → Fv F v)).mem_nhds_iff.1 hK0`. Establish `hU' : IsClopen U` using `hU`. Establish `hc : IsCompact U` using `hK.of_isClosed_subset hU'.isClosed hUK`. Use `⟨U.indicator 1, ⟨(IsLocallyConstant.iff_exists_open _).2 fun g => ?_, .intro hc fun x hx => Set.indicator_of_notMem hx _⟩, by simp [h0]⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Distinguish the cases in `hg : g ∈ U`. Conclude with `⟨U, hU'.isOpen, hg, fun x hx => by simp [hx, hg]⟩`. Conclude with `⟨Uᶜ, hU'.isClosed.isOpen_compl, hg, fun x hx => by`. Rewrite using `[Set.indicator_of_notMem hx, Set.indicator_of_notMem hg]⟩`.
+Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_SB_zero_eq_one {κ : Type} [Fintype κ] (v : Pl F) :
     ∃ h ∈ SB (κ → Fv F v), h 0 = 1 := by
@@ -87,9 +87,7 @@ theorem exists_SB_zero_eq_one {κ : Type} [Fintype κ] (v : Pl F) :
       rw [Set.indicator_of_notMem hx, Set.indicator_of_notMem hg]⟩
 
 /- English proof (translation)
-Use `⟨fun i => ((InfiniteAdeleRing.ringEquiv_mixedSpace F).symm (ξ i), singleFin v (y i)), ?_, ?_, fun u hu => ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Conclude with `(InfiniteAdeleRing.ringEquiv_mixedSpace F).apply_symm_apply (ξ i)`. Use function extensionality and compare the values at `i`. Conclude with `evalV_singleFin_self v (y i)`.
-
-Use function extensionality and compare the values at `i`. Conclude with `evalV_singleFin_ne hu (y i)`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Apply function extensionality and compare values at an arbitrary argument. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem exists_point {κ : Type} (v : Pl F) (ξ : κ → mixedEmbedding.mixedSpace F) (y : κ → Fv F v) :
     ∃ x : κ → AF F, (fun i => evI F (x i)) = ξ ∧ (fun i => evFin F v (x i)) = y ∧
@@ -103,35 +101,29 @@ theorem exists_point {κ : Type} (v : Pl F) (ξ : κ → mixedEmbedding.mixedSpa
     exact evalV_singleFin_ne hu (y i)
 
 /- English proof (translation)
-Take `⟨hei, hevv, hpure⟩` from `hloc`. Choose the witnesses or unpack the hypotheses as in `⟨f, hf⟩ : ∃ f, ei f ≠ 0 := by`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Conclude with `hei (ContinuousLinearMap.ext h)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction.
 
-Choose the witnesses or unpack the hypotheses as in `⟨ξ, hξ⟩ : ∃ ξ, ei f ξ ≠ 0 := by`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Conclude with `hf (SchwartzMap.ext h)`. Establish `hupd : ∀ φ₀ : ∀ u : Pl F, (Fin n × Fin d → Fv F u) → ℂ, (∀ u, φ₀ u ∈ SB _) → ∀ ψ ∈ SB (Fin n × Fin d → Fv F v), ∀ u, Function.update φ₀ v ψ u ∈ SB _`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Introduce `φ₀ h₀ ψ hψ' u`. Distinguish the cases in `hu : u = v`. Substitute `hu` using the available equality. Rewrite using `[Function.update_self]`. Conclude with `hψ'`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Function.update_of_ne hu]`. Conclude with `h₀ u`. Establish `hcof : ∀ φ₀ : ∀ u : Pl F, (Fin n × Fin d → Fv F u) → ℂ, (∀ᶠ u in cofinite, φ₀ u = M.vac u) → ∀ ψ : (Fin n × Fin d → Fv F v) → ℂ, ∀ᶠ u in cofinite, Function.update φ₀ v ψ u = M.vac u`. Introduce `φ₀ h₀ ψ`. Use `filter_upwards [Filter.eventually_cofinite_ne v, h₀] with u hu hu'`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[Function.update_of_ne hu, hu']`. Establish `hfin : {u | M₁.vac u 0 ≠ 1}.Finite`. Assume the negation of the conclusion as `hinf`. Take `⟨r, -, hrt⟩` from `GlobalTheory.PureFactor.exists_rest_factor v f M.vac hM.std`. Take `⟨x, hxi, hxv, hxu⟩` from `exists_point v ξ 0`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h0 : tens (evFin F v) (0 : (Fin n × Fin d → Fv F v) → ℂ) r = 0`. Use function extensionality and compare the values at `x`. Simplify using `[tens]`. Establish `h1` using `hpure f _ (hupd M.vac (fun u => (hM.vac u).1) 0 (zero_mem _)) (hcof M.vac (Filter.Eventually.of_forall fun _ => rfl) 0)`. Rewrite `h1` using `[← hrt, h0, map_zero]`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2` using `congrFun h1 x`. Simplify using `only [GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure, Pi.zero_apply] at h2`. Rewrite `h2` using `[hxi, finprod_of_infinite_mulSupport, mul_one]`. Conclude with `hξ h2.symm`. Use `Set.Infinite.mono (fun u hu => ?_) (Set.Infinite.diff hinf (Set.finite_singleton v))` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression.
 
-Establish `huv : u ≠ v` using `hu.2`. Rewrite using `[Function.mem_mulSupport, Function.update_of_ne huv, (hevv u).1, hxu u huv]`. Conclude with `hu.1`. Establish `hg : ∀ u : Pl F, ∃ g ∈ SB (Fin n × Fin d → Fv F u), ev u g 0 = 1` using `fun u => by`. Take `⟨h, hh, h0⟩` from `exists_SB_zero_eq_one (κ := Fin n₁ × Fin d₁) u`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite `hh` using `[← (hevv u).2]`. Take `⟨g, hg, rfl⟩` from `hh`. Conclude with `⟨g, hg, h0⟩`. Use `choose g hgS hg1 using hg`. Set `φ₀ : ∀ u : Pl F, (Fin n × Fin d → Fv F u) → ℂ` to `fun u => if M₁.vac u 0 = 1 then M.vac u else g u`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hφ₀S : ∀ u, φ₀ u ∈ SB _` using `fun u => by`. Simplify using `only [φ₀]`. Use `split_ifs`. Conclude with `(hM.vac u).1`. Conclude with `hgS u`.
+Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hφ₀c : ∀ᶠ u in cofinite, φ₀ u = M.vac u` using `by filter_upwards [hfin.compl_mem_cofinite] with u hu`. Conclude with `if_pos (not_not.1 hu)`. Establish `hφ₀1 : ∀ u, ev u (φ₀ u) 0 = 1` using `fun u => by`. Simplify using `only [φ₀]`. Use `split_ifs with hu`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[(hevv u).1, hu]`. Conclude with `hg1 u`. Establish `hφ₀std` using `(hφ₀c.and hM.std).mono fun u hu => hu.1.trans hu.2`. Take `⟨r₀, hr₀, hr₀t⟩` from `GlobalTheory.PureFactor.exists_rest_factor v f φ₀ hφ₀std`. Establish `hRest : ∀ ψ ∈ SB (Fin n × Fin d → Fv F v), Rest (evFin F v) ψ r₀` using `fun ψ hψ' => ⟨hr₀, by`.
-
-Rewrite using `[hr₀t ψ]`. Conclude with `GlobalTheory.TensUniq.pure_mem_schA f _ (hupd φ₀ hφ₀S ψ hψ') (GlobalTheory.PureFactor.update_eventually _ v ψ hφ₀std)⟩`. Use function extensionality and compare the values at `y`. Take `⟨x, hxi, hxv, hxu⟩` from `exists_point v ξ y`. Establish `hev_pure : ∀ ψ ∈ SB (Fin n × Fin d → Fv F v), e (tens (evFin F v) ψ r₀) x = ei f ξ * ev v ψ y`.
-
-Introduce `ψ hψ'`. Rewrite using `[hr₀t ψ, hpure f _ (hupd φ₀ hφ₀S ψ hψ') (hcof φ₀ hφ₀c ψ)]`. Simplify using `only [GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure]`. Rewrite using `[hxi, finprod_eq_single _ v, Function.update_self, hxv]`. Introduce `u hu`.
-
-Rewrite using `[Function.update_of_ne hu, hxu u hu, hφ₀1]`. Establish `h1` using `locOp_rho M.co hψ v w hφ`. Establish `h2` using `locOp_rho M.co hψ v w' hφ`. Apply `mul_left_cancel₀ hξ` to reduce the goal to its premises. Rewrite using `[← hev_pure _ (locOp_mem v _ φ), ← hev_pure _ (locOp_mem v _ φ), ← h1.1 r₀ (hRest φ hφ), ← h2.1 r₀ (hRest φ hφ), h _ (hRest φ hφ).2]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem loc_transfer {B : Base F E} {n d n₁ d₁ : ℕ} {X : Spc F E n} {W : Spc F E d} {X₁ : Spc F E n₁}
     {W₁ : Spc F E d₁} {M : Model σ X W} {M₁ : Model σ X₁ W₁} (hψ : Continuous B.ψ) (hM : M.IsGood B.ψ)
@@ -227,19 +219,19 @@ theorem loc_transfer {B : Base F E} {n d n₁ d₁ : ℕ} {X : Spc F E n} {W : S
     ← h2.1 r₀ (hRest φ hφ), h _ (hRest φ hφ).2]
 
 /- English proof (translation)
-Introduce `_ F E _ _ _ _ _ σ B b a' G G₁ H H' cfg e hev ei ev hloc X om om' T v u hu l φ hφ`. Take `⟨z, c, huy⟩` from `GlobalTheory.IsoMove.unip_mulVec_y F E σ B _ _ G.W G₁.W H' _ _ _ _ T.base.cm T.geo.hW cfg.hH' u hu`. Establish `hS : shiftA H H' l = Matrix.vecMulVec (incV F H.x) (l.1 • incV F H'.y)`. Use extensionality with `i j`. Simplify using `[shiftA, Matrix.vecMulVec_apply, mul_left_comm]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Establish `hSu : shiftA H H' l * (mat u)ᵀ = Matrix.vecMulVec (incV F H.x) (l.1 • incV F H'.y) + (Matrix.vecMulVec (incV F H.x) (incM F H'.ι *ᵥ (l.1 • z)) + Matrix.vecMulVec (incV F H.x) ((l.1 * c) • incV F H'.x))`. Rewrite using `[hS, vecMulVec_mul_transpose', Matrix.mulVec_smul, huy, Matrix.mulVec_smul]`. Use extensionality with `i j`. Simplify using `only [Matrix.add_apply, Matrix.vecMulVec_apply, Pi.add_apply, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hP : ∀ p q r : Fin (b + 2 + a') → AE F E, partFin v (Matrix.vecMulVec (incV F H.x) p + (Matrix.vecMulVec (incV F H.x) q + Matrix.vecMulVec (incV F H.x) r)) = Matrix.vecMulVec (incV F H.x) (partFin v q) + Matrix.vecMulVec (incV F H.x) (partFin v r) + Matrix.vecMulVec (incV F H.x) …`. Introduce `p q r`. Rewrite using `[partFin, smul_add, smul_add, ← partFin, ← partFin, ← partFin, partFin_vecMulVec, partFin_vecMulVec, partFin_vecMulVec]`. Normalize the expressions using the abelian group laws. Establish `hsy : ∀ p q : Fin (b + 2 + a') → AE F E, symp (cA σ) (-1) (incM F G.V.J) (incM F G.W.J) (Matrix.vecMulVec (incV F H.x) p) (Matrix.vecMulVec (incV F H.x) q) = 0` using `fun p q => symp_vecMulVec_eq_zero G.V.J _ H.x cfg.hH.xx p q`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact.
 
-Establish `hstd` using `T.base.std`. Use `loc_transfer hstd.1 T.geo.hM hloc v _ _ (fun Φ hΦ => ?_) hφ` and prove the remaining obligations. Rewrite using `[hSu, hP, hS, partFin_vecMulVec]`. Use `set A := Matrix.vecMulVec (incV F H.x) (partFin v (l.1 • incV F H'.y))`. Use `set D₁ := Matrix.vecMulVec (incV F H.x) (partFin v (incM F H'.ι *ᵥ (l.1 • z)))`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `set D₂ := Matrix.vecMulVec (incV F H.x) (partFin v ((l.1 * c) • incV F H'.x))`. Establish `hD₁ : D₁ ∈ isoA H H'`. Use `Or.inr ⟨partFin v (l.1 • z), ?_⟩` and prove the remaining obligations. Simplify using `only [D₁, partFin, Matrix.mulVec_smul]`. Establish `hD₂ : D₂ ∈ isoA H H'`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use `Or.inl ⟨partFin v (l.1 * c) • incV F H.x, ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Simplify using `only [D₂, partFin, Matrix.vecMulVec_apply, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[mul_smul_comm, smul_mul_assoc, smul_mul_assoc]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hΨ : G.M.co.rho B.ψ A Φ ∈ schA F _` using `GlobalTheory.HeisSchA.rho_mem_schA G.M B.ψ hstd _ _ hΦ`. Establish `hΨ₂ : G.M.co.rho B.ψ D₂ (G.M.co.rho B.ψ A Φ) ∈ schA F _` using `GlobalTheory.HeisSchA.rho_mem_schA G.M B.ψ hstd _ _ hΨ`. Rewrite using `[GlobalTheory.UnipEvLaw.rho_add G.M B.ψ _ _ (by simp only [D₁, D₂, A, ← Matrix.vecMulVec_add]; exact hsy _ _), GlobalTheory.UnipEvLaw.rho_add G.M B.ψ _ _ (hsy _ _), hev.inv _ hD₁ _ hΨ₂, hev.inv _ hD₂ _ hΨ]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem shiftUnip : GlobalTheory.FunPr.Hypotheses₂ → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) (B : Base F E) (b a' : ℕ)

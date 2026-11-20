@@ -9,7 +9,7 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 namespace GlobalTheory.ThKTorus.IntegralOfAdic
 
 /- English proof (translation)
-Use `show evalV F v 0 = 0`. Conclude with `map_zero _`.
+A detailed English derivation is pending.
 -/
 theorem evFin_realAd (F : Type) [Field F] [NumberField F] (v : Pl F) (x : ℝ) :
     evFin F v (realAd F x) = 0 := by
@@ -17,20 +17,18 @@ theorem evFin_realAd (F : Type) [Field F] [NumberField F] (v : Pl F) (x : ℝ) :
   exact map_zero _
 
 /- English proof (translation)
-Rewrite using `[tAd, map_add, evFin_realAd, map_one, add_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem evFin_tAd (F : Type) [Field F] [NumberField F] (v : Pl F) (s : ℝ) :
     evFin F v (tAd F s) = 1 := by
   rw [tAd, map_add, evFin_realAd, map_one, add_zero]
 
 /- English proof (translation)
-Establish `key : ∀ v : Pl F, v.valuation F ((m : F) * ξ j) ≤ 1`. Introduce `v`. Establish `hv` using `h v`. Establish `e : evFin F v ((m : AF F) * blkScale blk t (fun j => algebraMap F (AF F) (ξ j)) j) = algebraMap F (Fv F v) ((m : F) * ξ j)`. Simplify using `only [blkScale, map_mul, map_natCast, map_prod, AlgHom.commutes]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `: ∀ i, evFin F v (if j ∈ blk i then tAd F (t i) else 1) = 1`. Introduce `i`. Use `split_ifs`. Conclude with `evFin_tAd F v _`. Conclude with `map_one _`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [this, Finset.prod_const_one, one_mul]`. Rewrite `hv` using `[e]`. Rewrite `hv` using `[HeightOneSpectrum.mem_adicCompletionIntegers]`. Rewrite using `[← HeightOneSpectrum.valuedAdicCompletion_eq_valuation']`. Conclude with `hv`.
-
-Take `⟨y, hy⟩` from `HeightOneSpectrum.mem_integers_of_valuation_le_one F _ key`. Rewrite using `[← hy]`. Conclude with `(y.isIntegral_coe)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integral_of_evFin_mem (F : Type) [Field F] [NumberField F] {κ : Type} [Fintype κ] [DecidableEq κ] {q : ℕ}
     (blk : Fin q → Finset κ) (t : Fin q → ℝ) (m : ℕ) (ξ : κ → F) (j : κ)

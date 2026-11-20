@@ -19,13 +19,13 @@ noncomputable section
 namespace GlobalTheory.RowLevelSplit
 
 /- English proof (translation)
-Introduce `D V β L T x hg hq hx hK`. Establish `h3 : ∀ PP ∈ T, Formalism.L2.DIV.redFn β PP (finE V x) = 1`. Establish `h1 : finE V x ∈ ⨅ PP ∈ T, Formalism.L2.DIV.princAt β PP` using `hK.2`. Conclude with `fun PP hP => (Formalism.L2.DIV.mem_princAt.1 (Subgroup.mem_iInf.1 (Subgroup.mem_iInf.1 h1 PP) hP)).2`. Use `⟨⟨hx, Formalism.L2.DIV.Kg_le_lev hg hq hK⟩, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hr : Formalism.L2.DIV.rTup β L (finE V x) = 1`. Use function extensionality and compare the values at `PP`. Use `show Formalism.L2.DIV.upperLeftBlock L.hr (Formalism.L2.DIV.redFn β PP.1 (finE V x)) = 1`. Rewrite using `[h3 PP.1 (hg PP.2)]`. Conclude with `Formalism.L2.DIV.blockDiagonalExtendByOnePrimeField_one _ _`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `levChi Formalism.L2.DIV.levFn`. Rewrite using `[hr, Formalism.L2.DIV.blockDiagonalExtendByOnePrimeField_one, one_mul, Finset.prod_eq_one, Finset.prod_eq_one, one_mul]`. Both sides reduce to the same expression. Introduce `PP hP`. Rewrite using `[h3 PP (hq hP), Formalism.L2.DIV.dBlk, Formalism.L2.DIV.blockDiagonalExtendByOnePrimeField_one, map_one]`.
+Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `PP hP`. Use `Finset.prod_eq_one fun c _ => ?_` and prove the remaining obligations. Rewrite using `[h3 PP (hg hP), Formalism.L2.DIV.dBlk, Formalism.L2.DIV.blockDiagonalExtendByOnePrimeField_one, map_one]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lemB_pf : ∀ (D : D7) (V : HSp D) (β : GL (Fin V.rank) (EAf D)) (L : Formalism.L2.DIV.LevDat D.host.E ℂ V.rank) (T : Finset (Formalism.L2.DIV.Pl D.host.E)) (x : GA D V), L.Pg ⊆ T → L.Q ⊆ T → x ∈ GfC V → finE V x ∈ Formalism.L2.DIV.Kg D.sp.cm V.gram β T → x ∈ levS V β L ∧ levChi V β L x = 1 := by
   intro D V β L T x hg hq hx hK
@@ -47,9 +47,9 @@ theorem lemB_pf : ∀ (D : D7) (V : HSp D) (β : GL (Fin V.rank) (EAf D)) (L : F
     rw [h3 PP (hg hP), Formalism.L2.DIV.dBlk, Formalism.L2.DIV.blockDiagonalExtendByOnePrimeField_one, map_one]
 
 /- English proof (translation)
-Establish `h1 : (1 : Matrix (Fin n) (Fin n) (EAf D)) a b ∈ Formalism.L2.Herm.intAf D.host.F D.host.E`. Rewrite using `[Matrix.one_apply]`. Use `split_ifs`. Conclude with `one_mem _`. Conclude with `zero_mem _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `h2 : y a b - (1 : Matrix (Fin n) (Fin n) (EAf D)) a b ∈ Formalism.L2.Herm.intAf D.host.F D.host.E` using `(GlobalTheory.AdIsom.mem_OA _).2 fun Q => le_of_lt (h Q a b)`. Use `add_mem h2 h1` as an intermediate fact. Rewrite `this` using `[sub_add_cancel]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem int_of_lt {D : D7} {n : ℕ} (y : Matrix (Fin n) (Fin n) (EAf D))
     (h : ∀ (Q : Formalism.L2.DIV.Pl D.host.E) (a b : Fin n), Valued.v (GlobalTheory.StdFrames.cpt Q (y a b - (1 : Matrix (Fin n) (Fin n) (EAf D)) a b)) < 1)
@@ -65,9 +65,9 @@ theorem int_of_lt {D : D7} {n : ℕ} (y : Matrix (Fin n) (Fin n) (EAf D))
 
 set_option maxHeartbeats 2000000 in
 /- English proof (translation)
-Set `φ : Matrix (Fin n) (Fin n) (Formalism.L2.Herm.intAf D.host.F D.host.E) →+* Matrix (Fin n) (Fin n) (EAf D)` to `RingHom.mapMatrix (Formalism.L2.Herm.intAf D.host.F D.host.E).subtype`. Establish `inj : Function.Injective φ` using `fun M N h => Matrix.ext fun a b => Subtype.ext (congrFun (congrFun h a) b)`. Set `zM : Matrix (Fin n) (Fin n) (Formalism.L2.Herm.intAf D.host.F D.host.E)` to `Matrix.of fun a b => ⟨_, i1 a b⟩`. Set `zI : Matrix (Fin n) (Fin n) (Formalism.L2.Herm.intAf D.host.F D.host.E)` to `Matrix.of fun a b => ⟨_, i2 a b⟩`. Establish `e1 : φ zM = y.val` using `by ext a b; rfl`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `e2 : φ zI = (y⁻¹).val` using `by ext a b; rfl`. Establish `m1 : zM * zI = 1` using `inj (show φ (zM * zI) = φ 1 by rw [map_mul, map_one, e1, e2, Units.mul_inv])`. Establish `m2 : zI * zM = 1` using `inj (show φ (zI * zM) = φ 1 by rw [map_mul, map_one, e1, e2, Units.inv_mul])`. Conclude with `⟨⟨zM, zI, m1, m2⟩, Units.ext e1, fun a b => rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem glInt_of_int {D : D7} {n : ℕ} (y : GL (Fin n) (EAf D))
     (i1 : ∀ a b, y.val a b ∈ Formalism.L2.Herm.intAf D.host.F D.host.E) (i2 : ∀ a b, (y⁻¹).val a b ∈ Formalism.L2.Herm.intAf D.host.F D.host.E) :
@@ -86,15 +86,15 @@ theorem glInt_of_int {D : D7} {n : ℕ} (y : GL (Fin n) (EAf D))
 
 set_option maxHeartbeats 800000 in
 /- English proof (translation)
-Introduce `D V β x T hU h1 h2`. Establish `hyi : (β⁻¹ * x * β)⁻¹ = β⁻¹ * x⁻¹ * β` using `by group`. Establish `i1` using `int_of_lt (β⁻¹ * x * β).val h1`. Establish `i2` using `int_of_lt ((β⁻¹ * x * β)⁻¹).val (by rw [hyi]; exact h2)`. Take `⟨z, hz0, hzv⟩` from `glInt_of_int (β⁻¹ * x * β) i1 i2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hz : Formalism.L2.DIV.frGL β z = x` using `by show β * Formalism.L2.DIV.intGL D.host.F D.host.E V.rank z * β⁻¹ = x`. Rewrite using `[hz0]`. Use `group`. Establish `hS : x ∈ Formalism.L2.DIV.St β` using `⟨z, hz⟩`. Establish `hred : ∀ PP, Formalism.L2.DIV.redFn β PP x = 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `PP`. Rewrite using `[← hz, Formalism.L2.DIV.redFn_frGL]`. Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `a b`. Use `show Formalism.L2.DIV.resS D.host.F PP (z.val a b) = (1 : Matrix (Fin V.rank) (Fin V.rank) (Formalism.L2.DIV.kP PP)) a b`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h0 : Formalism.L2.DIV.resS D.host.F PP (z.val a b - (1 : Matrix (Fin V.rank) (Fin V.rank) (Formalism.L2.Herm.intAf D.host.F D.host.E)) a b) = 0`. Rewrite using `[GlobalTheory.AdIsom.resS_eq_zero_iff_cpt]`. Establish `e3 : ((z.val a b - (1 : Matrix (Fin V.rank) (Fin V.rank) (Formalism.L2.Herm.intAf D.host.F D.host.E)) a b : Formalism.L2.Herm.intAf D.host.F D.host.E) : EAf D) = (β⁻¹ * x * β).val a b - (1 : Matrix (Fin V.rank) (Fin V.rank) (EAf D)) a b`. Apply the tactic sequence `rw [← hzv a b, Matrix.one_apply, Matrix.one_apply]; split_ifs <;> rfl`. Rewrite using `[e3]`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Conclude with `h1 PP a b`. Rewrite `h0` using `[map_sub, sub_eq_zero]`. Apply the tactic sequence `rw [h0, Matrix.one_apply, Matrix.one_apply]; split_ifs <;> simp`. Conclude with `⟨⟨hU, hS⟩, Subgroup.mem_iInf.2 fun PP => Subgroup.mem_iInf.2 fun _ => Formalism.L2.DIV.mem_princAt.2 ⟨hS, hred PP⟩⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem kg_of_cpt : ∀ (D : D7) (V : HSp D) (β x : GL (Fin V.rank) (EAf D)) (T : Finset (Formalism.L2.DIV.Pl D.host.E)), x ∈ Formalism.L2.DIV.UA D.sp.cm V.gram → (∀ (Q : Formalism.L2.DIV.Pl D.host.E) (a b : Fin V.rank), Valued.v (GlobalTheory.StdFrames.cpt Q ((β⁻¹ * x * β).val a b - (1 : Matrix (Fin V.rank) (Fin V.rank) (EAf D)) a b)) < 1) → (∀ (Q : Formalism.L2.DIV.Pl D.host.E) (a b : Fin V.rank), Valued.v (GlobalTheory.StdFrames.cpt Q ((β⁻¹ * x⁻¹ * β).val a b - (1 : Matrix (Fin V.rank) (Fin V.rank) (EAf D)) a b)) < 1) → x ∈ Formalism.L2.DIV.Kg D.sp.cm V.gram β T := by
   intro D V β x T hU h1 h2
@@ -123,7 +123,7 @@ theorem kg_of_cpt : ∀ (D : D7) (V : HSp D) (β x : GL (Fin V.rank) (EAf D)) (T
   exact ⟨⟨hU, hS⟩, Subgroup.mem_iInf.2 fun PP => Subgroup.mem_iInf.2 fun _ => Formalism.L2.DIV.mem_princAt.2 ⟨hS, hred PP⟩⟩
 
 /- English proof (translation)
-Introduce `v hv` and use `by have h1 : (((x⁻¹ : Formalism.AUTREP.GAf L n) : GL (Fin n) (AL L)) : Matrix (Fin n) (Fin n) (AL L)) * ((x : GL (Fin n) (AL L)) : Matrix (Fin n) (Fin n) (AL L)) = 1 := by simp have h2 := congrArg (fun M => Matrix.map M (compAt L v)) h1 simp only [Matrix.map_mul, hx v hv, mul_one …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem trivOutside_inv {L : Type} [Field L] [NumberField L] [IsCMField L] {n : ℕ} {T : Set (IsDedekindDomain.HeightOneSpectrum (𝓞 (maximalRealSubfield L)))}
     {x : Formalism.AUTREP.GAf L n} (hx : TrivOutside T x) : TrivOutside T x⁻¹ := fun v hv => by
@@ -134,9 +134,9 @@ theorem trivOutside_inv {L : Type} [Field L] [NumberField L] [IsCMField L] {n : 
   exact h2
 
 /- English proof (translation)
-Introduce `D V n hF P β Λ N hS hβ s`. Take `⟨h, hh⟩` from `hC2 D V n hF P β Λ N hS hβ s`. Use `⟨h, fun κ hκ hk T => ?_⟩` and prove the remaining obligations. Establish `hk' : h⁻¹ * s.loc n κ⁻¹ * h ∈ GlobalTheory.SplitWeil.KOne (s.v.adicCompletion (maximalRealSubfield D.host.E)) (Fin n)`. Use `Subgroup.inv_mem _ hk` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[show (h⁻¹ * s.loc n κ * h)⁻¹ = h⁻¹ * (s.loc n κ)⁻¹ * h by group, ← map_inv]`. Then use the resulting hypothesis. Establish `e : finE V (P.ψ κ⁻¹) = (finE V (P.ψ κ))⁻¹` using `by rw [map_inv, map_inv]`. Use `kg_of_cpt D V β (finE V (P.ψ κ)) T (GlobalTheory.LevSplit.finE_mem_UA V _) (hh κ hκ hk) ?_` and prove the remaining obligations. Use `hh κ⁻¹ (trivOutside_inv hκ) hk'` as an intermediate fact. Rewrite `this` using `[e]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem lemA_pf (hC2 : ∀ (D : D7) (V : HSp D) (n : ℕ) (hF : D.host.F = maximalRealSubfield D.host.E) (P : principalLevelFrame.RowPsi V n) (β : GL (Fin V.rank) (EAf D)) (Λ : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E)) (N : ℕ), GlobalTheory.Mem.R3.StdFrame hF P → IsSDFrame V β Λ N → ∀ (s : SplitPlace D.host.E), ∃ h : GL (Fin n) (s.v.adicCompletion (maximalRealSubfield D.host.E)), ∀ κ : Formalism.AUTREP.GAf D.host.E n, TrivOutside {s.v} κ → h⁻¹ * s.loc n κ * h ∈ GlobalTheory.SplitWeil.KOne (s.v.adicCompletion (maximalRealSubfield D.host.E)) (Fin n) → ∀ (Q : Formalism.L2.DIV.Pl D.host.E) (a b : Fin V.rank), Valued.v (GlobalTheory.StdFrames.cpt Q ((β⁻¹ * finE V (P.ψ κ) * β).val a b - (1 : Matrix (Fin V.rank) (Fin V.rank) (EAf D)) a b)) < 1) : ∀ (D : D7) (V : HSp D) (n : ℕ) (hF : D.host.F = maximalRealSubfield D.host.E) (P : principalLevelFrame.RowPsi V n) (β : GL (Fin V.rank) (EAf D)) (Λ : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E)) (N : ℕ), GlobalTheory.Mem.R3.StdFrame hF P → IsSDFrame V β Λ N → ∀ (s : SplitPlace D.host.E), ∃ h : GL (Fin n) (s.v.adicCompletion (maximalRealSubfield D.host.E)), ∀ κ : Formalism.AUTREP.GAf D.host.E n, TrivOutside {s.v} κ → h⁻¹ * s.loc n κ * h ∈ GlobalTheory.SplitWeil.KOne (s.v.adicCompletion (maximalRealSubfield D.host.E)) (Fin n) → ∀ T : Finset (Formalism.L2.DIV.Pl D.host.E), finE V (P.ψ κ) ∈ Formalism.L2.DIV.Kg D.sp.cm V.gram β T := by
   intro D V n hF P β Λ N hS hβ s
@@ -151,11 +151,11 @@ theorem lemA_pf (hC2 : ∀ (D : D7) (V : HSp D) (n : ℕ) (hF : D.host.F = maxim
   rwa [e] at this
 
 /- English proof (translation)
-Introduce `D V n hF P β Λ N hS hβ s`. Take `⟨h, hh⟩` from `hDd D V n hF P β hS s`. Use `⟨h, fun κ hκ hk Q a b => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hQ : Q.asIdeal.comap (algebraMap (𝓞 (maximalRealSubfield D.host.E)) (𝓞 D.host.E)) = s.v.asIdeal`. Break down `hE D hF s Q hQ with rfl | rfl` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `hh κ hκ hk a b`. Establish `hk' : h⁻¹ * s.loc n κ⁻¹ * h ∈ GlobalTheory.SplitWeil.KOne (s.v.adicCompletion (maximalRealSubfield D.host.E)) (Fin n)`. Use `Subgroup.inv_mem _ hk` as an intermediate fact. Rewrite `this` using `[show (h⁻¹ * s.loc n κ * h)⁻¹ = h⁻¹ * (s.loc n κ)⁻¹ * h by group, ← map_inv]`. Then use the resulting hypothesis. Use `hC D V β Λ N hβ (P.ψ κ) s.w (fun a b => ?_) a b` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `hh κ⁻¹ (trivOutside_inv hκ) hk' a b` as an intermediate fact. Rewrite `this` using `[map_inv, map_inv]`. Then use the resulting hypothesis. Rewrite using `[map_sub, hA D V n hF P β hS s κ hκ Q hQ a b, sub_self, map_zero]`. Conclude with `zero_lt_one`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem stdFrame_splitPlace_entries_off_place (hA : ∀ (D : D7) (V : HSp D) (n : ℕ) (hF : D.host.F = maximalRealSubfield D.host.E) (P : principalLevelFrame.RowPsi V n) (β : GL (Fin V.rank) (EAf D)), GlobalTheory.Mem.R3.StdFrame hF P → ∀ (s : SplitPlace D.host.E) (κ : Formalism.AUTREP.GAf D.host.E n), TrivOutside {s.v} κ → ∀ (Q : Formalism.L2.DIV.Pl D.host.E), Q.asIdeal.comap (algebraMap (𝓞 (maximalRealSubfield D.host.E)) (𝓞 D.host.E)) ≠ s.v.asIdeal → ∀ (a b : Fin V.rank), GlobalTheory.StdFrames.cpt Q ((β⁻¹ * finE V (P.ψ κ) * β).val a b) = GlobalTheory.StdFrames.cpt Q ((1 : Matrix (Fin V.rank) (Fin V.rank) (EAf D)) a b)) (hC : ∀ (D : D7) (V : HSp D) (β : GL (Fin V.rank) (EAf D)) (Λ : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E)) (N : ℕ), IsSDFrame V β Λ N → ∀ (g : GA D V) (Q : Formalism.L2.DIV.Pl D.host.E), (∀ a b : Fin V.rank, Valued.v (GlobalTheory.StdFrames.cpt Q ((β⁻¹ * (finE V g)⁻¹ * β).val a b - (1 : Matrix (Fin V.rank) (Fin V.rank) (EAf D)) a b)) < 1) → ∀ a b : Fin V.rank, Valued.v (GlobalTheory.StdFrames.cpt (GlobalTheory.IdemSupport.cP Q) ((β⁻¹ * finE V g * β).val a b - (1 : Matrix (Fin V.rank) (Fin V.rank) (EAf D)) a b)) < 1) (hDd : ∀ (D : D7) (V : HSp D) (n : ℕ) (hF : D.host.F = maximalRealSubfield D.host.E) (P : principalLevelFrame.RowPsi V n) (β : GL (Fin V.rank) (EAf D)), GlobalTheory.Mem.R3.StdFrame hF P → ∀ (s : SplitPlace D.host.E), ∃ h : GL (Fin n) (s.v.adicCompletion (maximalRealSubfield D.host.E)), ∀ κ : Formalism.AUTREP.GAf D.host.E n, TrivOutside {s.v} κ → h⁻¹ * s.loc n κ * h ∈ GlobalTheory.SplitWeil.KOne (s.v.adicCompletion (maximalRealSubfield D.host.E)) (Fin n) → ∀ a b : Fin V.rank, Valued.v (GlobalTheory.StdFrames.cpt s.w ((β⁻¹ * finE V (P.ψ κ) * β).val a b - (1 : Matrix (Fin V.rank) (Fin V.rank) (EAf D)) a b)) < 1) (hE : ∀ (D : D7), D.host.F = maximalRealSubfield D.host.E → ∀ (s : SplitPlace D.host.E) (Q : Formalism.L2.DIV.Pl D.host.E), Q.asIdeal.comap (algebraMap (𝓞 (maximalRealSubfield D.host.E)) (𝓞 D.host.E)) = s.v.asIdeal → Q = s.w ∨ Q = GlobalTheory.IdemSupport.cP s.w) : ∀ (D : D7) (V : HSp D) (n : ℕ) (hF : D.host.F = maximalRealSubfield D.host.E) (P : principalLevelFrame.RowPsi V n) (β : GL (Fin V.rank) (EAf D)) (Λ : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E)) (N : ℕ), GlobalTheory.Mem.R3.StdFrame hF P → IsSDFrame V β Λ N → ∀ (s : SplitPlace D.host.E), ∃ h : GL (Fin n) (s.v.adicCompletion (maximalRealSubfield D.host.E)), ∀ κ : Formalism.AUTREP.GAf D.host.E n, TrivOutside {s.v} κ → h⁻¹ * s.loc n κ * h ∈ GlobalTheory.SplitWeil.KOne (s.v.adicCompletion (maximalRealSubfield D.host.E)) (Fin n) → ∀ (Q : Formalism.L2.DIV.Pl D.host.E) (a b : Fin V.rank), Valued.v (GlobalTheory.StdFrames.cpt Q ((β⁻¹ * finE V (P.ψ κ) * β).val a b - (1 : Matrix (Fin V.rank) (Fin V.rank) (EAf D)) a b)) < 1 := by
   intro D V n hF P β Λ N hS hβ s
@@ -174,7 +174,7 @@ theorem stdFrame_splitPlace_entries_off_place (hA : ∀ (D : D7) (V : HSp D) (n 
     exact zero_lt_one
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 I0 T A3 Ks _ _ _ R F cG X0 Y Z hP hH hHost k v s hs`. Establish `hβ` using `hP.char.base.lev.βY 0 Y.hm`. Take `⟨h, hh⟩` from `lemA_pf (stdFrame_splitPlace_entries_off_place GlobalTheory.T.frameComponent_eq_one_off_splitPlace_of_trivOutside GlobalTheory.T.standard_frame_conjugate_close GlobalTheory.T.exists_conjugate_into_K1 GlobalTheory.T.placeOver_splitPlace_eq_chosen_or_conjugate) D (Yc D 0) D.R.r Y.h …`. Use `⟨h, fun b κ hκ hk => ?_⟩` and prove the remaining obligations. Conclude with `lemB_pf D (Yc D 0) (R.βY 0) _ (_ ∪ _) (Y.PY.ψ κ) Finset.subset_union_left Finset.subset_union_right (Y.PY.into κ) (hh κ hκ hk _)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem levS_of_kOne_conj : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 I0 T : Type) (A3 : FamIn3 D.what₂.LL G Pl0 I0 (List ℕ) T D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat3 D A3 Ks) (F : Face3 D A3) (cG : G0 R.Pg D.R.r ≃* G0g D.nd) (X0 : BaseLevelRowSide D) (Y : Read (A3 := A3) R.toRealDat F.lv2 X0) (Z : ReadL R F X0 Y), Pins R F cG → Holds R F → HostHyp D → ∀ (k : Fin 2) (v : D.nd.PlG k) (s : SplitPlace D.host.E), s.w = D.naut.plGw k v → ∃ h : GL (Fin D.R.r) (s.v.adicCompletion (maximalRealSubfield D.host.E)), ∀ (b : Bool) (κ : Formalism.AUTREP.GAf D.host.E D.R.r), TrivOutside {s.v} κ → h⁻¹ * s.loc D.R.r κ * h ∈ GlobalTheory.SplitWeil.KOne (s.v.adicCompletion (maximalRealSubfield D.host.E)) (Fin D.R.r) → Y.PY.ψ κ ∈ levS _ (R.βY 0) (R.dat0 (R.toRealDat.levR F.lv2 b)) ∧ levChi _ (R.βY 0) (R.dat0 (R.toRealDat.levR F.lv2 b)) (Y.PY.ψ κ) = 1 := by
   intro D G _ _ Pl0 I0 T A3 Ks _ _ _ R F cG X0 Y Z hP hH hHost k v s hs

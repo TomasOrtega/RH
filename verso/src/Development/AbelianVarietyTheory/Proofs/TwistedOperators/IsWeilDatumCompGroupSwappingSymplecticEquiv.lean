@@ -15,20 +15,18 @@ namespace GlobalTheory.SwapWeil
 variable {D : D7}
 
 /- English proof (translation)
-Simplify using `only [symplOH, h]`.
+Simplify using the standard rewrite rules.
 -/
 theorem symplOH_of {A B C E : HSp D} (e : WO A B → WO C E) (h : ∀ x y, symplO C E (e x) (e y) = symplO A B x y)
     (x y : WO A B) : symplOH C E (e x) (e y) = symplOH A B x y := by
   simp only [symplOH, h]
 
 /- English proof (translation)
-Take `⟨γ', hγ'⟩` from `hrat (ratW B A γ) ⟨γ, rfl⟩`. Establish `e1 : e (ratW B A γ) = ratW E C γ'` using `hγ'.symm`. Use `show f (e (ratW B A γ + w)) = _`. Rewrite using `[map_add, e1, hf.quasi, ← e1, symplOH_of (⇑e) hs]`. Use `level := by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨U, hU, k⟩` from `hf.level`. Use `⟨U.comap (e : WO A B →+ WO C E), hU.preimage hc, fun u hu h0 => ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `w`. Use `congrFun (k (e u) hu (hinf u h0)) (e w)` as an intermediate fact. Simplify using `only [heisO] at this ⊢`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[map_add, ← symplOH_of (⇑e) hs]`. Conclude with `this`. Use `cont := hf.cont.comp hc`. Use `smooth k L hL h0 w := by`. Use `hf.smooth k ((e : WO A B →+ WO C E).comp L) (hc.comp hL) (fun t => hfin _ (h0 t)) (e w)` as an intermediate fact.
-
-Simplify `this` using `only [AddMonoidHom.comp_apply, AddMonoidHom.coe_coe, map_add]`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem theta_pull {ψ : AddChar (AF D.host.F) ℂ} {A B C E : HSp D} (e : WO A B ≃ₗ[AE D] WO C E) (hc : Continuous e)
     (hrat : ∀ x, x ∈ ratL B A → e x ∈ ratL E C) (hs : ∀ x y, symplO C E (e x) (e y) = symplO A B x y)
@@ -54,9 +52,9 @@ theorem theta_pull {ψ : AddChar (AF D.host.F) ℂ} {A B C E : HSp D} (e : WO A 
     simpa only [AddMonoidHom.comp_apply, AddMonoidHom.coe_coe, map_add] using this
 
 /- English proof (translation)
-Unfold `IsDetAt at hx`. Establish `hd : (mt V g⁻¹).det * (mt V g).det = 1`. Establish `hm : mt V g⁻¹ * mt V g = 1` using `by simp [Formalism.L2.Theta.mt]`. Rewrite using `[← Matrix.det_mul, hm, Matrix.det_one]`. Use `show ((x⁻¹ : (AE D)ˣ) : AE D) = e * (mt V₂ k).det + (1 - e)`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hk]`. Apply `Units.inv_eq_of_mul_eq_one_left` to reduce the goal to its premises. Rewrite using `[hx]`. Take the linear combination `e * hd + ((mt V g⁻¹).det * (mt V g).det - (mt V g⁻¹).det - (mt V g).det + 1) * he`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem isDetAt_inv {e : AE D} (he : e * e = e) {V V₂ : HSp D} {g : GA D V} {k : GA D V₂} {x : (AE D)ˣ}
     (hx : IsDetAt e V g x) (hk : (mt V₂ k).det = (mt V g⁻¹).det) : IsDetAt e V₂ k x⁻¹ := by
@@ -109,29 +107,25 @@ set_option maxHeartbeats 1600000 in
 open GlobalTheory.SwapWeil in
 
 /- English proof (translation)
-Introduce `D ψ S T S' T' hST hTS L φ φ' hLc hLsc hrat hs hinf hfin hφ hφ' hGQ hGQ' hact hsupp hsupp' hdet hdet' χS χT om H`. Establish `hs' : ∀ x y, symplO S' T' (L.symm x) (L.symm y) = symplO S T x y` using `fun x y => by`. Rewrite using `[← hs, LinearEquiv.apply_symm_apply, LinearEquiv.apply_symm_apply]`. Establish `thL : ∀ G : WO S T → ℂ, IsThetaFunO ψ S T G → IsThetaFunO ψ S' T' (fun w => G (L w))` using `fun G hG => theta_pull L hLc (fun x hx => (hrat x).2 hx) hs (fun x hx => (hinf x).2 hx) (fun x hx => (hfin x).2 hx) hG`. Establish `thLs : ∀ F : WO S' T' → ℂ, IsThetaFunO ψ S' T' F → IsThetaFunO ψ S T (fun x => F (L.symm x))` using `fun F hF => theta_pull L.symm hLsc (fun x hx => (hrat (L.symm x)).1 (by rwa [LinearEquiv.apply_symm_apply])) hs' (fun x hx => (hinf (L.symm x)).1 (by rwa [LinearEquiv.apply_symm_apply])) (fun x hx => (hfin (L.symm x)).1 (by rwa [LinearEquiv.apply_symm_apply])) hF`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hratS : ∀ x, L.symm.toAddEquiv x ∈ ratL T' S' ↔ x ∈ ratL T S` using `fun x => by show L.symm x ∈ ratL T' S' ↔ x ∈ ratL T S`. Rewrite using `[← hrat, LinearEquiv.apply_symm_apply]`. Use `⟨swapOm L φ φ' om, ⟨H.std, H.hecT, H.hecS, by rw [hST]; exact H.resT, by rw [hTS]; exact H.resS, fun p F hF => ?_, fun g h w₀ F hF => ?_, fun γ hγ γ' hγ' F hF => ?_, fun F hF w => ?_, fun μ 𝓕 hμ h𝓕 p F hF => ?_, fun e he g h hg hh x y hx hy => ?_⟩, fun g h f => ?_⟩` and prove the remaining obligations. Take `⟨g, h⟩` from `p`. Conclude with `thL _ (H.om_pres _ _ (thLs F hF))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e1 : (fun x => heisO ψ S' T' w₀ F (L.symm x)) = heisO ψ S T (L w₀) (fun x => F (L.symm x))`. Use function extensionality and compare the values at `x`. Simplify using `only [heisO]`. Rewrite using `[← symplOH_of (⇑L) hs (L.symm x) w₀, LinearEquiv.apply_symm_apply, map_add, LinearEquiv.symm_apply_apply]`. Use function extensionality and compare the values at `w`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use `show om (φ' h, φ g) (fun x => heisO ψ S' T' w₀ F (L.symm x)) (L w) = heisO ψ S' T' (actO S' T' g h w₀) (swapOm L φ φ' om (g, h) F) w`. Rewrite using `[e1, H.om_heis _ _ _ _ (thLs F hF), ← hact]`. Simplify using `only [heisO, swapOm_apply, map_add, symplOH_of (⇑L) hs]`. Use `show om (φ' γ', φ γ) (fun x => F (L.symm x)) (L 0) = F 0`. Rewrite using `[L.map_zero, H.om_aut _ (hGQ' γ' hγ') _ (hGQ γ hγ) _ (thLs F hF)]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `congrArg F L.symm.map_zero`. Conclude with `(H.om_cont _ (thLs F hF) (L w)).comp ((hφ'.comp continuous_snd).prodMk (hφ.comp continuous_fst))`. Use `haveI : BorelSpace (WO S T) := ⟨rfl⟩ haveI : BorelSpace (WO S' T') := ⟨rfl⟩`. Take `⟨ν, hν, h𝓖, hu⟩` from `GlobalTheory.WeilSrc.haar_pull L.symm.toAddEquiv hLsc hLc (ratL T S) (ratL T' S') hratS μ 𝓕 hμ h𝓕`. Establish `e1` using `hu fun w => ‖swapOm L φ φ' om p F w‖ₑ ^ 2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `e2` using `hu fun w => ‖F w‖ₑ ^ 2`. Establish `e3 : ∀ x, swapOm L φ φ' om p F (L.symm.toAddEquiv x) = om (φ' p.2, φ p.1) (fun x => F (L.symm x)) x` using `fun x => by show om _ _ (L (L.symm x)) = _`. Rewrite using `[LinearEquiv.apply_symm_apply]`. Simplify using `only [e3] at e1`. Rewrite using `[← e1, ← e2]`.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `H.om_unit ν _ hν h𝓖 _ _ (thLs F hF)`. Take `⟨r, hr, Hs⟩` from `H.om_split e he (φ' h) (φ g) (hsupp' e h hh) (hsupp e g hg) y⁻¹ x⁻¹ (isDetAt_inv he.1 hy (hdet' h)) (isDetAt_inv he.1 hx (hdet g))`. Use `⟨r, hr, fun ℓ hℓ F hF => ?_⟩` and prove the remaining obligations. Set `ℓ' : (WO S T → ℂ) →ₗ[ℂ] ℂ` to `ℓ ∘ₗ LinearMap.funLeft ℂ ℂ L`. Establish `hinv : ∀ u : WO S T, (∀ i j, cA D e * u i j = u i j) → ∀ G, IsThetaFunO ψ S T G → ℓ' (heisO ψ S T u G) = ℓ' G`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `u hu G hG`. Use `show ℓ (fun w => heisO ψ S T u G (L w)) = ℓ (fun w => G (L w))`. Establish `e1 : (fun w => heisO ψ S T u G (L w)) = heisO ψ S' T' (L.symm u) (fun w => G (L w))`. Use function extensionality and compare the values at `w`. Simplify using `only [heisO]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[← symplOH_of (⇑L) hs w (L.symm u), map_add, LinearEquiv.apply_symm_apply]`. Rewrite using `[e1]`. Use `hℓ _ ?_ _ (thL G hG)` and prove the remaining obligations. Establish `hu' : cA D e • u = u`. Use extensionality with `i j`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Conclude with `hu i j`. Introduce `i j`. Establish `k` using `congrArg (fun M : WO S' T' => M i j) (congrArg L.symm hu')`. Simplify `k` using `only [LinearEquiv.map_smul, Matrix.smul_apply, smul_eq_mul]`. Establish `main` using `Hs ℓ' hinv _ (thLs F hF)`.
-
-Establish `e1 : ℓ' (fun x => F (L.symm x)) = ℓ F` using `by show ℓ (fun w => F (L.symm (L w))) = ℓ F`. Simplify using `only [LinearEquiv.symm_apply_apply]`. Establish `hfac : splitFacO χS χT y⁻¹ x⁻¹ = splitFacO χT χS x y`. Unfold `splitFacO`. Rewrite using `[map_inv, map_inv, inv_inv, mul_comm]`.
-
-Rewrite `main` using `[e1, hfac]`. Conclude with `main`. Use function extensionality and compare the values at `u show om _ (fun x => f (L (L.symm x))) _ = _`. Simplify using `only [LinearEquiv.apply_symm_apply]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.SwapWeil.isWeilDatumO_swap : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (S T S' T' : HSp D), S'.rank = T.rank → T'.rank = S.rank →
     ∀ (L : WO S' T' ≃ₗ[AE D] WO S T) (φ : GA D S' →* GA D T) (φ' : GA D T' →* GA D S),

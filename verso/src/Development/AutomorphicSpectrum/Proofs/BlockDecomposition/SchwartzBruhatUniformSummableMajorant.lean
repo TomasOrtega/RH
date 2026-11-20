@@ -17,7 +17,7 @@ noncomputable section
 variable {K : Type*} [Field K] [NumberField K]
 
 /- English proof (translation)
-Rewrite using `[Matrix.vecMul_vecMul, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.vecMul_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem vecMul_vecMul_inv (x : Fin 2 → 𝔸[K]) (h : GL (Fin 2) 𝔸[K]) :
     (x ᵥ* (h : Matrix (Fin 2) (Fin 2) 𝔸[K])) ᵥ*
@@ -25,19 +25,19 @@ theorem vecMul_vecMul_inv (x : Fin 2 → 𝔸[K]) (h : GL (Fin 2) 𝔸[K]) :
   rw [Matrix.vecMul_vecMul, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.vecMul_one]
 
 /- English proof (translation)
-Conclude with `(GroundTheory.Global.homeomorphMixedSpace K).continuous.comp continuous_fst`.
+A detailed English derivation is pending.
 -/
 theorem continuous_infRingHom : Continuous (infRingHom (K := K)) := by
   exact (GroundTheory.Global.homeomorphMixedSpace K).continuous.comp continuous_fst
 
 /- English proof (translation)
-Conclude with `continuous_snd`.
+A detailed English derivation is pending.
 -/
 theorem continuous_finRingHom : Continuous (finRingHom (K := K)) := by
   exact continuous_snd
 
 /- English proof (translation)
-Conclude with `Units.continuous_coe_inv.matrix_elem i j`.
+A detailed English derivation is pending.
 -/
 theorem continuous_inv_entry (i j : Fin 2) :
     Continuous fun h : GL (Fin 2) 𝔸[K] ↦
@@ -45,7 +45,7 @@ theorem continuous_inv_entry (i j : Fin 2) :
   exact Units.continuous_coe_inv.matrix_elem i j
 
 /- English proof (translation)
-Use `(pi_norm_le_iff_of_nonneg (by positivity)).2 fun j => ?_` and prove the remaining obligations. Simplify using `only [Matrix.vecMul, dotProduct]`. Combine the equalities or inequalities in the displayed calculation.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation.
 -/
 theorem norm_vecMul_le (u : Fin 2 → mixedSpace K) (M : Matrix (Fin 2) (Fin 2) (mixedSpace K)) :
     ‖u ᵥ* M‖ ≤ (∑ i, ∑ j, ‖M i j‖) * ‖u‖ := by
@@ -61,9 +61,9 @@ theorem norm_vecMul_le (u : Fin 2 → mixedSpace K) (M : Matrix (Fin 2) (Fin 2) 
     _ = (∑ i, ∑ j', ‖M i j'‖) * ‖u‖ := mul_comm _ _
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `∀ v, Valued.v ((a * x) v) ≤ _`. Introduce `v`. Establish `h1 : Valued.v (x v) ≤ WithZero.exp (-FractionalIdeal.count K v (I : FractionalIdeal (𝓞 K)⁰ K))` using `hx v`. Establish `h2 : Valued.v (a v) ≤ 1` using `(mem_adicCompletionIntegers _ _ _).mp (ha v)`. Establish `h3 : (a * x) v = a v * x v` using `rfl`.
+Express the relevant assertion in an equivalent form by its definition. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[h3, Valuation.map_mul]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 private theorem mul_mem_idealFiniteAdeles_of_mem_integral {I : (FractionalIdeal (𝓞 K)⁰ K)ˣ} {x a : 𝔸ᶠ[K]}
     (hx : x ∈ idealFiniteAdeles I) (ha : a ∈ integralFiniteAdeles (𝓞 K) K) :
@@ -79,7 +79,7 @@ private theorem mul_mem_idealFiniteAdeles_of_mem_integral {I : (FractionalIdeal 
     _ ≤ _ := by rw [one_mul]; exact h1
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `∀ v, Valued.v (a v) ≤ _`. Introduce `v`. Rewrite using `[Units.val_one, FractionalIdeal.count_one, neg_zero, WithZero.exp_zero]`. Conclude with `(mem_adicCompletionIntegers _ _ _).mp (ha v)`.
+Express the relevant assertion in an equivalent form by its definition. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem mem_idealFiniteAdeles_one_of_mem_integral {a : 𝔸ᶠ[K]} (ha : a ∈ integralFiniteAdeles (𝓞 K) K) :
     a ∈ idealFiniteAdeles (1 : (FractionalIdeal (𝓞 K)⁰ K)ˣ) := by
@@ -89,21 +89,19 @@ private theorem mem_idealFiniteAdeles_one_of_mem_integral {a : 𝔸ᶠ[K]} (ha :
   exact (mem_adicCompletionIntegers _ _ _).mp (ha v)
 
 /- English proof (translation)
-Use `set S : Set 𝔸ᶠ[K] := ((⋃ i : Fin 2, ⋃ j : Fin 2, (fun h : GL (Fin 2) 𝔸[K] => finRingHom (((h⁻¹ : GL (Fin 2) 𝔸[K]) : Matrix (Fin 2) (Fin 2) 𝔸[K]) i j)) '' C) ∪ Set.range b) ∪ {1} with hS`. Apply the tactic sequence `have hSc : IsCompact S := ((isCompact_iUnion fun i => isCompact_iUnion fun j => hC.image (continuous_finRingHom.comp (continuous_inv_entry i j))).union (isCompact_range continuous_of_discreteTopology)).union isCompact_singleton`. Take `⟨d, hd0, hd⟩` from `exists_mul_mem_integralFiniteAdeles_of_isCompact hSc`. Establish `hL0 : ((I : FractionalIdeal (𝓞 K)⁰ K) ⊔ 1) ≠ 0`. Introduce `h0`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h1 : (1 : FractionalIdeal (𝓞 K)⁰ K) ≤ 0` using `h0 ▸ le_sup_right`. Conclude with `one_ne_zero (le_antisymm h1 (FractionalIdeal.zero_le _))`. Use `set L : (FractionalIdeal (𝓞 K)⁰ K)ˣ := Units.mk0 _ hL0 with hLdef`. Establish `hIL : (idealFiniteAdeles I : Set 𝔸ᶠ[K]) ⊆ idealFiniteAdeles L` using `idealFiniteAdeles_subset (by rw [hLdef, Units.val_mk0]; exact le_sup_left)`. Establish `h1L : (idealFiniteAdeles (1 : (FractionalIdeal (𝓞 K)⁰ K)ˣ) : Set 𝔸ᶠ[K]) ⊆ idealFiniteAdeles L` using `idealFiniteAdeles_subset (by rw [hLdef, Units.val_mk0, Units.val_one]; exact le_sup_right)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `set e : K := algebraMap (𝓞 K) K d with he_def`. Establish `he : e ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective (𝓞 K) K)).mpr hd0`. Establish `hE0 : FractionalIdeal.spanSingleton (𝓞 K)⁰ (e⁻¹ * e⁻¹) * (L : FractionalIdeal (𝓞 K)⁰ K) ≠ 0` using `mul_ne_zero ((FractionalIdeal.spanSingleton_ne_zero_iff).mpr (mul_ne_zero (inv_ne_zero he) (inv_ne_zero he))) (Units.ne_zero L)`. Use `⟨Units.mk0 _ hE0, fun h hh ξ hξ i => ?_⟩` and prove the remaining obligations. Use `set y := finPart ((fun i ↦ algebraMap K 𝔸[K] (ξ i)) ᵥ* (h : Matrix (Fin 2) (Fin 2) 𝔸[K])) with hy`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hrec : (fun i => algebraMap K 𝔸ᶠ[K] (ξ i)) = y ᵥ* ((((h⁻¹ : GL (Fin 2) 𝔸[K]) : Matrix (Fin 2) (Fin 2) 𝔸[K])).map finRingHom)`. Rewrite using `[hy, ← finPart_vecMul, vecMul_vecMul_inv, finPart_algebraMap]`. Establish `hξi : algebraMap K 𝔸ᶠ[K] (ξ i) = ∑ j, y j * finRingHom (((h⁻¹ : GL (Fin 2) 𝔸[K]) : Matrix (Fin 2) (Fin 2) 𝔸[K]) j i)`. Rewrite using `[congrFun hrec i]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set E : 𝔸ᶠ[K] := algebraMap K 𝔸ᶠ[K] e with hEdef`. Establish `hE1 : E ∈ integralFiniteAdeles (𝓞 K) K`. Use `hd 1 (Or.inr rfl)` as an intermediate fact. Rewrite `this` using `[mul_one]`. Then use the resulting hypothesis. Establish `hEs : ∀ j, E * finRingHom (((h⁻¹ : GL (Fin 2) 𝔸[K]) : Matrix (Fin 2) (Fin 2) 𝔸[K]) j i) ∈ integralFiniteAdeles (𝓞 K) K` using `fun j => hd _ (Or.inl (Or.inl (Set.mem_iUnion.2 ⟨j, Set.mem_iUnion.2 ⟨i, ⟨h, hh, rfl⟩⟩⟩)))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hEb : ∀ j, E * b j ∈ integralFiniteAdeles (𝓞 K) K` using `fun j => hd _ (Or.inl (Or.inr ⟨j, rfl⟩))`. Establish `hmemL : algebraMap K 𝔸ᶠ[K] (e * e * ξ i) ∈ idealFiniteAdeles L`. Rewrite using `[map_mul, map_mul, hξi, Finset.mul_sum]`. Use `sum_mem fun j _ => ?_` and prove the remaining obligations. Establish `hsplit : E * E * (y j * finRingHom (((h⁻¹ : GL (Fin 2) 𝔸[K]) : Matrix (Fin 2) (Fin 2) 𝔸[K]) j i)) = (E * (E * finRingHom (((h⁻¹ : GL (Fin 2) 𝔸[K]) : Matrix (Fin 2) (Fin 2) 𝔸[K]) j i))) * (y j - b j) + (E * b j) * (E * finRingHom (((h⁻¹ : GL (Fin 2) 𝔸[K]) : Matrix (Fin 2) (Fin 2) …`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hsplit]`. Use `add_mem (hIL (mul_mem_idealFiniteAdeles_of_mem_integral (hξ j) (mul_mem hE1 (hEs j)))) ?_` and prove the remaining obligations. Conclude with `h1L (mem_idealFiniteAdeles_one_of_mem_integral (mul_mem (hEb j) (hEs j)))`. Establish `hmem : e * e * ξ i ∈ (L : FractionalIdeal (𝓞 K)⁰ K)` using `(algebraMap_mem_idealFiniteAdeles_iff L _).mp hmemL`.
-
-Rewrite using `[Units.val_mk0]`. Establish `hξeq : ξ i = (e⁻¹ * e⁻¹) * (e * e * ξ i)` using `by field_simp`. Rewrite using `[hξeq]`. Conclude with `FractionalIdeal.mul_mem_mul (FractionalIdeal.mem_spanSingleton_self _ _) hmem`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_fractionalIdeal_of_isCompact (I : (FractionalIdeal (𝓞 K)⁰ K)ˣ) (b : Fin 2 → 𝔸ᶠ[K])
     {C : Set (GL (Fin 2) 𝔸[K])} (hC : IsCompact C) :
@@ -174,7 +172,7 @@ def latticeWeight (J : (FractionalIdeal (𝓞 K)⁰ K)ˣ) (k : ℕ) (x : K) : �
   if x ∈ (J : FractionalIdeal (𝓞 K)⁰ K) then ((1 + ‖mixedEmbedding K x‖) ^ k)⁻¹ else 0
 
 /- English proof (translation)
-Unfold `latticeWeight`. Apply the tactic sequence `split_ifs <;> positivity`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem latticeWeight_nonneg (J : (FractionalIdeal (𝓞 K)⁰ K)ˣ) (k : ℕ) (x : K) :
     0 ≤ latticeWeight J k x := by
@@ -182,9 +180,7 @@ theorem latticeWeight_nonneg (J : (FractionalIdeal (𝓞 K)⁰ K)ˣ) (k : ℕ) (
   split_ifs <;> positivity
 
 /- English proof (translation)
-Establish `hs : Summable (latticeWeight J (Module.finrank ℤ (idealLattice K J) + 1))`. Use `summable_ite_mem_of_summable_idealLattice J (h := fun z => ((1 + ‖z‖) ^ (Module.finrank ℤ (idealLattice K J) + 1))⁻¹) (summable_inv_one_add_norm_pow_idealLattice J)` as an intermediate fact. Unfold `latticeWeight`. Conclude with `this`. Establish `h2` using `Summable.mul_of_nonneg hs hs (fun x => latticeWeight_nonneg J _ x) (fun x => latticeWeight_nonneg J _ x)`.
-
-Conclude with `(finTwoArrowEquiv K).summable_iff.mpr h2`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem summable_latticeWeight_mul (J : (FractionalIdeal (𝓞 K)⁰ K)ˣ) :
     Summable fun ξ : Fin 2 → K ↦
@@ -201,31 +197,27 @@ theorem summable_latticeWeight_mul (J : (FractionalIdeal (𝓞 K)⁰ K)ˣ) :
   exact (finTwoArrowEquiv K).summable_iff.mpr h2
 
 /- English proof (translation)
-Take `⟨J, hJ⟩` from `exists_fractionalIdeal_of_isCompact I b hC`. Use `set N := Module.finrank ℤ (idealLattice K J) + 1 with hN`. Apply the tactic sequence `have hcont : Continuous fun h : GL (Fin 2) 𝔸[K] => ∑ i, ∑ j, ‖infRingHom (((h⁻¹ : GL (Fin 2) 𝔸[K]) : Matrix (Fin 2) (Fin 2) 𝔸[K]) i j)‖ := continuous_finsetSum _ fun i _ => continuous_finsetSum _ fun j _ => (continuous_infRingHom.comp (continuous_inv_entry i j)).norm`. Take `⟨M, hM⟩` from `hC.exists_bound_of_continuousOn hcont.continuousOn`. Use `set A : ℝ := 2 ^ (2 * N) * (Finset.Iic (2 * N, 0)).sup (fun m => SchwartzMap.seminorm ℝ m.1 m.2) φ with hAdef`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hA : ∀ w, (1 + ‖w‖) ^ (2 * N) * ‖φ w‖ ≤ A` using `fun w => by`. Use `SchwartzMap.one_add_le_sup_seminorm_apply (𝕜 := ℝ) (m := (2 * N, 0)) le_rfl le_rfl φ w` as an intermediate fact. Rewrite `this` using `[norm_iteratedFDeriv_zero]`. Then use the resulting hypothesis. Establish `hA0 : 0 ≤ A` using `le_trans (by positivity) (hA 0)`. Use `set M' : ℝ := max 1 M with hM'`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hM'1 : 1 ≤ M'` using `le_max_left _ _`. Use `⟨fun ξ => A * M' ^ (2 * N) * (latticeWeight J N (ξ 0) * latticeWeight J N (ξ 1)), (summable_latticeWeight_mul J).mul_left _, ?_⟩` and prove the remaining obligations. Introduce `h hh ξ`. Establish `hl0` using `latticeWeight_nonneg J N (ξ 0)`. Establish `hl1` using `latticeWeight_nonneg J N (ξ 1)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Check the signs of the components of the expression. Consider separately whether the proposition holds or fails.
 
-Establish `hu0 : 0 ≤ A * M' ^ (2 * N) * (latticeWeight J N (ξ 0) * latticeWeight J N (ξ 1))`. Check the signs of the components of the expression. Use `set x := (fun i ↦ algebraMap K 𝔸[K] (ξ i)) ᵥ* (h : Matrix (Fin 2) (Fin 2) 𝔸[K]) with hx`. Use `show ‖φ (infPart x) * finiteTensor2 (fun i ↦ cosetIndicator I (b i)) (finPart x)‖ ≤ _`. Distinguish the cases in `hmem : ∀ i, finPart x i - b i ∈ idealFiniteAdeles I`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Establish `hJξ` using `hJ h hh ξ hmem`. Establish `hind : ‖finiteTensor2 (fun i ↦ cosetIndicator I (b i)) (finPart x)‖ ≤ 1`. Simplify using `only [finiteTensor2, norm_prod]`. Use `Finset.prod_le_one (fun i _ => norm_nonneg _) (fun i _ => ?_)` and prove the remaining obligations. Simplify using `only [cosetIndicator]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `(norm_indicator_le_norm_self _ _).trans ?_` and prove the remaining obligations. Simplify using the standard rewrite rules. Establish `hinv : emb2 K ξ = infPart x ᵥ* ((((h⁻¹ : GL (Fin 2) 𝔸[K]) : Matrix (Fin 2) (Fin 2) 𝔸[K])).map infRingHom)`. Rewrite using `[hx, ← infPart_vecMul, vecMul_vecMul_inv, infPart_algebraMap]`. Establish `hE : ‖emb2 K ξ‖ ≤ M * ‖infPart x‖`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hinv]`. Use `(norm_vecMul_le _ _).trans (mul_le_mul_of_nonneg_right ?_ (norm_nonneg _))` and prove the remaining obligations. Simplify using `only [Matrix.map_apply]`. Conclude with `(Real.le_norm_self _).trans (hM h hh)`. Establish `hE' : ‖emb2 K ξ‖ ≤ M' * ‖infPart x‖` using `hE.trans (mul_le_mul_of_nonneg_right (le_max_right _ _) (norm_nonneg _))`.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Establish `hcomp : ∀ i, 1 + ‖mixedEmbedding K (ξ i)‖ ≤ M' * (1 + ‖infPart x‖)` using `fun i => by`. Establish `h1 : ‖mixedEmbedding K (ξ i)‖ ≤ ‖emb2 K ξ‖` using `norm_le_pi_norm (emb2 K ξ) i`. Use polynomial arithmetic with `[norm_nonneg (infPart x)]`. Establish `hP : (1 + ‖mixedEmbedding K (ξ 0)‖) ^ N * (1 + ‖mixedEmbedding K (ξ 1)‖) ^ N ≤ M' ^ (2 * N) * (1 + ‖infPart x‖) ^ (2 * N)`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hcomp 0`. Conclude with `hcomp 1`. Use `_ = M' ^ (2 * N) * (1 + ‖infPart x‖) ^ (2 * N) := by`. Rewrite using `[← pow_add, ← two_mul, mul_pow]`. Establish `hφ` using `hA (infPart x)`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `beta_reduce`. Unfold `latticeWeight`. Rewrite using `[if_pos (hJξ 0), if_pos (hJξ 1), norm_mul]`. Establish `hpos0 : 0 < (1 + ‖mixedEmbedding K (ξ 0)‖) ^ N` using `by positivity`. Establish `hpos1 : 0 < (1 + ‖mixedEmbedding K (ξ 1)‖) ^ N` using `by positivity`.
+Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← mul_inv, ← div_eq_mul_inv, le_div_iff₀ (mul_pos hpos0 hpos1)]`. Combine the equalities or inequalities in the displayed calculation. Use `push Not at hmem`. Take `⟨i, hi⟩` from `hmem`.
-
-Establish `h0 : finiteTensor2 (fun i ↦ cosetIndicator I (b i)) (finPart x) = 0`. Simplify using `only [finiteTensor2]`. Apply `Finset.prod_eq_zero (Finset.mem_univ i)` to reduce the goal to its premises. Simplify using `only [cosetIndicator]`. Apply `Set.indicator_of_notMem` to reduce the goal to its premises.
-
-Rewrite using `[Set.mem_vadd_set_iff_neg_vadd_mem, vadd_eq_add, neg_add_eq_sub]`. Conclude with `hi`. Rewrite using `[h0, mul_zero, norm_zero]`. Conclude with `hu0`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_summable_bound_tensor_cosetIndicator2 (φ : 𝓢(Fin 2 → mixedSpace K, ℂ))
     (I : (FractionalIdeal (𝓞 K)⁰ K)ˣ) (b : Fin 2 → 𝔸ᶠ[K]) {C : Set (GL (Fin 2) 𝔸[K])}
@@ -319,11 +311,11 @@ theorem exists_summable_bound_tensor_cosetIndicator2 (φ : 𝓢(Fin 2 → mixedS
     exact hu0
 
 /- English proof (translation)
-Rewrite `hF` using `[schwartzBruhat2_eq_cosetSpan2]`. Proceed by induction on `hF using Submodule.span_induction with`. Consider the case `mem F hF`. Take `⟨φ, I, b, rfl⟩` from `hF`. Conclude with `exists_summable_bound_tensor_cosetIndicator2 φ I b hC`.
+Rewrite the indicated hypotheses using the stated equalities. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately.
 
-Consider the case `zero => exact ⟨0, summable_zero, fun h _ ξ => by simp⟩`. Consider the case `add F G _ _ hF hG`. Take `⟨u, hu, hFu⟩` from `hF`. Take `⟨v, hv, hGv⟩` from `hG`. Conclude with `⟨u + v, hu.add hv, fun h hh ξ => (norm_add_le _ _).trans (add_le_add (hFu h hh ξ) (hGv h hh ξ))⟩`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately.
 
-Consider the case `smul c F _ hF`. Take `⟨u, hu, hFu⟩` from `hF`. Conclude with `⟨fun ξ => ‖c‖ * u ξ, hu.mul_left _, fun h hh ξ => by`. Rewrite using `[Pi.smul_apply, smul_eq_mul, norm_mul]`. Conclude with `mul_le_mul_of_nonneg_left (hFu h hh ξ) (norm_nonneg _)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_summable_bound_theta2 {F : (Fin 2 → 𝔸[K]) → ℂ} (hF : F ∈ schwartzBruhat2 K)
     {C : Set (GL (Fin 2) 𝔸[K])} (hC : IsCompact C) :

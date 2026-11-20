@@ -10,15 +10,13 @@ open scoped LaurentPolynomial
 namespace CrystallineSemistableComparison.D
 
 /- English proof (translation)
-Introduce `p _ B _ r hB hr h1 h2`. Take `⟨B₁, _, q, hq, hB₁, hreg, hker, ha, hv⟩` from `Leaf.tors_quot p B (r 0) hB`. Take `⟨T, _, g, hg⟩` from `Leaf.compl_ex B₁ (q (r 0))`. Use `⟨T, inferInstance, g.comp q, Leaf.compl_pf p B₁ T _ g hg hB₁, Leaf.compl_aic B₁ T _ g hg hreg (ha h1) (hv h2), Leaf.compl_val B₁ T _ g hg (hv h2), hg.compl, Leaf.compl_reg B₁ T _ g hg hreg, fun M y => ?_, fun M x hx k => ?_, fun T₁ _ x hc hx => ?_⟩` and prove the remaining obligations. Take `⟨x, hx⟩` from `hg.surj M y`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨x, rfl⟩` from `hq x`. Conclude with `⟨x, hx⟩`. Take `⟨b, hb⟩` from `Ideal.mem_span_singleton'.1 (hg.inj M (q x) hx)`. Take `⟨b, rfl⟩` from `hq b`. Establish `e : r 0 ^ 1 * (x - b * r 0 ^ M) = 0`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[pow_one, ← hker, map_sub, map_mul, map_pow, hb, sub_self]`. Establish `e'` using `((Leaf.pf_facts p B hB).2.2.2.2 r hr).2.2 1 _ e k`. Conclude with `Ideal.mem_span_singleton'.2 ⟨r k * b, by linear_combination -e'⟩`. Set `x₁ : B₁ →+* T₁` to `q.liftOfSurjective hq ⟨x, fun a ha => by`. Use `congrArg x ((hker a).1 ha)` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[map_mul, map_zero]`. Conclude with `(mul_left_mem_nonZeroDivisors_eq_zero_iff hx).1 this⟩`. Establish `hx₁ : ∀ a, x₁ (q a) = x a` using `fun a => RingHom.liftOfSurjective_comp_apply _ _ _ a`. Take `⟨ψ, hψ, hu⟩` from `Leaf.compl_univ B₁ T _ g hg T₁ x₁ (by rw [hx₁]; exact hc)`. Use `⟨ψ, RingHom.ext fun a => (RingHom.congr_fun hψ (q a)).trans (hx₁ a), fun ψ' h' => hu ψ' (RingHom.ext fun a => ?_)⟩` and prove the remaining obligations.
-
-Take `⟨a, rfl⟩` from `hq a`. Conclude with `(RingHom.congr_fun h' a).trans (hx₁ a).symm`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem test_of_pre : ∀ (p : ℕ) [Fact p.Prime] (B : Type) [CommRing B] (r : ℕ → B), Pf p B → IsRt p r → AIC B → VAL (r 0) → ∃ (T : Type) (_ : CommRing T) (g : B →+* T), Pf p T ∧ AIC T ∧ VAL (g (r 0)) ∧ IsAdicComplete (Ideal.span {g (r 0)}) T ∧ g (r 0) ∈ nonZeroDivisors T ∧ (∀ (M : ℕ) (y : T), ∃ x, y - g x ∈ Ideal.span {g (r 0) ^ M}) ∧ (∀ (M : ℕ) (x : B), g x ∈ Ideal.span {g (r 0) ^ M} → ∀ k, r k * x ∈ Ideal.span {r 0 ^ M}) ∧ ∀ (T₁ : Type) [CommRing T₁] (x : B →+* T₁), IsAdicComplete (Ideal.span {x (r 0)}) T₁ → x (r 0) ∈ nonZeroDivisors T₁ → ∃! ψ : T →+* T₁, ψ.comp g = x := by
   intro p _ B _ r hB hr h1 h2
@@ -47,13 +45,13 @@ theorem test_of_pre : ∀ (p : ℕ) [Fact p.Prime] (B : Type) [CommRing B] (r : 
     exact (RingHom.congr_fun h' a).trans (hx₁ a).symm
 
 /- English proof (translation)
-Introduce `p _ R _ _ _ r N _ _ A _ _ B _ _ K _ _ _ _ ι δ hr h1 hA hB hc hw hδ`. Establish `hK : ∀ n, Pf p (K n)` using `fun n => Leaf.wp_pf p A B (K n) n (ι n) (hw n) hA hB`. Establish `dd` using `Leaf.wp_dd A B K ι δ hw hδ`. Take `⟨H, hH⟩` from `Leaf.wp_htpy A B K ι δ hw hδ`. Take `⟨e0, e1⟩` from `Leaf.ami_exact p A B _ hA hc K (fun n => alt (δ n)) H hK dd hH`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `e1' : ∀ n z, ((alt (δ (n + 1))).restrictScalars R) z = 0 → ∀ k, r k • z ∈ LinearMap.range ((alt (δ n)).restrictScalars R)`. Introduce `n z hz k`. Take `⟨y, hy⟩` from `e1 n z hz k`. Conclude with `⟨y, hy.trans (algebraMap_smul A (r k) z)⟩`. Establish `tor : ∀ n (a : R) (x : K n), a ≠ 0 → a • x = 0 → ∀ k, r k • x = 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Introduce `n a x ha hx k`. Take `⟨M, c, hc⟩` from `h1 a ha`. Rewrite using `[Algebra.smul_def]`. Use `((Leaf.pf_facts p (K n) (hK n)).2.2.2.2 (fun k => algebraMap R (K n) (r k)) (fun k => by rw [← map_pow, hr k])).2.2 M x ?_ k` and prove the remaining obligations. Rewrite using `[← map_pow, ← Algebra.smul_def, hc, mul_comm, mul_smul, hx, smul_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨fun w hw k => ?_, fun n => Leaf.tens_exact p R r N _ _ _ _ _ _ ((alt (δ (n + 2))).restrictScalars R) hr (dd (n + 1)) (e1' n) (e1' (n + 1)) (tor _)⟩` and prove the remaining obligations. Take `⟨y, hy⟩` from `Leaf.tens_exact p R r N PUnit _ _ _ 0 _ ((alt (δ 1)).restrictScalars R) hr (dd 0) (fun z hz k => ⟨0, by rw [map_zero, ← algebraMap_smul A, e0 z hz k]⟩) (e1' 0) (tor _) w hw k`. Rewrite using `[← hy, LinearMap.lTensor_zero, LinearMap.zero_apply]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem cech_tens : ∀ (p : ℕ) [Fact p.Prime] (R : Type) [CommRing R] [IsDomain R] [ValuationRing R] (r : ℕ → R) (N : Type) [AddCommGroup N] [Module R N] (A : Type) [CommRing A] [Algebra R A](B : Type) [CommRing B] [Algebra A B] (K : ℕ → Type) [∀ n, CommRing (K n)] [∀ n, Algebra A (K n)] [∀ n, Algebra R (K n)] [∀ n, IsScalarTower R A (K n)] (ι : ∀ n, Fin n → (B →ₐ[A] K n)) (δ : ∀ n, Fin (n + 1) → (K n →ₐ[A] K (n + 1))), IsRt p r → (∀ a : R, a ≠ 0 → ∃ M : ℕ, a ∣ r 0 ^ M) → Pf p A → Pf p B → Cov p (fun k => algebraMap R A (r k)) B → (∀ n, IsWP (ι n)) → (∀ n k i, (δ n k).comp (ι n i) = ι (n + 1) (k.succAbove i)) → (∀ w : N ⊗[R] K 0, ((alt (δ 0)).restrictScalars R).lTensor N w = 0 → ∀ k, r k • w = 0) ∧ ∀ (n : ℕ) (w : N ⊗[R] K (n + 1)), ((alt (δ (n + 1))).restrictScalars R).lTensor N w = 0 → ∀ k, r k • w ∈ LinearMap.range (((alt (δ n)).restrictScalars R).lTensor N) := by
   intro p _ R _ _ _ r N _ _ A _ _ B _ _ K _ _ _ _ ι δ hr h1 hA hB hc hw hδ
@@ -78,13 +76,13 @@ theorem cech_tens : ∀ (p : ℕ) [Fact p.Prime] (R : Type) [CommRing R] [IsDoma
   rw [← hy, LinearMap.lTensor_zero, LinearMap.zero_apply]
 
 /- English proof (translation)
-Introduce `p _ A _ r 𝓔 hA hr h J hJ`. Proceed by induction on `J, hJ using Set.Finite.induction_on with`. Consider the case `empty => exact fun _ => ⟨A, inferInstance, inferInstance, hA, (Leaf.cov_mono p A r).1, fun _ h => h.elim⟩`. Consider the case `@insert E J _ _ ih`. Introduce `hs`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨B, _, _, hB, hc, hp⟩` from `ih fun x hx => hs (Or.inr hx)`. Take `⟨B₁, _, _, hB₁, hc₁, hp₁⟩` from `h E (hs (Or.inl rfl)) B hB`. Set `_ : Algebra A B₁` to `((algebraMap B B₁).comp (algebraMap A B)).toAlgebra`. Establish `: IsScalarTower A B B₁` using `IsScalarTower.of_algebraMap_eq fun _ => rfl`. Use `⟨B₁, inferInstance, inferInstance, hB₁, Leaf.cov_comp p A B B₁ r hA hB hr hc hc₁, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `E' (rfl | h')`. Conclude with `hp₁`. Take `⟨y, hy⟩` from `hp E' h'`. Use `⟨algebraMap B B₁ ∘ y, fun q hq => ?_⟩` and prove the remaining obligations. Use `congrArg (algebraMap B B₁) (hy q hq)` as an intermediate fact.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `this` using `[MvPolynomial.eval₂_comp_left, map_zero]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem fin_step : ∀ (p : ℕ) [Fact p.Prime] (A : Type) [CommRing A] (r : ℕ → A) (𝓔 : Set (Set (MvPolynomial (Fin 3) A))), Pf p A → IsRt p r → (∀ E ∈ 𝓔, ∀ (B : Type) [CommRing B] [Algebra A B], Pf p B → ∃ (B₁ : Type) (_ : CommRing B₁) (_ : Algebra B B₁), Pf p B₁ ∧ Cov p (fun k => algebraMap A B (r k)) B₁ ∧ Pt ((algebraMap B B₁).comp (algebraMap A B)) E) → ∀ J : Set (Set (MvPolynomial (Fin 3) A)), J.Finite → J ⊆ 𝓔 → ∃ (B : Type) (_ : CommRing B) (_ : Algebra A B), Pf p B ∧ Cov p r B ∧ ∀ E ∈ J, Pt (algebraMap A B) E := by
   intro p _ A _ r 𝓔 hA hr h J hJ

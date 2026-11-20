@@ -8,17 +8,17 @@ open GlobalTheory.Doubling (absE)
 namespace GlobalTheory.MixedLagr
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ n d X W M hE f hf hhat`. Use `haveI : Module.Finite F E := Module.finite_of_finrank_pos (by omega)`. Establish `hdom : Module.finrank F (Matrix (Fin n) (Fin d) E) = n * d * 2`. Rewrite using `[Module.finrank_matrix, hE]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hcod : Module.finrank F ((Fin n × Fin d → F) × (Fin n × Fin d → F)) = n * d * 2`. Rewrite using `[Module.finrank_prod, Module.finrank_fintype_fun_eq_card]`. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish `hsurj : Function.Surjective f` using `(LinearMap.injective_iff_surjective_of_finrank_eq_finrank (hdom.trans hcod.symm)).mp hf`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set g := (LinearMap.fst F (Fin n × Fin d → F) (Fin n × Fin d → F)).comp f with hg`. Establish `gsurj : Function.Surjective g`. Introduce `y`. Take `⟨x, hx⟩` from `hsurj (y, 0)`. Conclude with `⟨x, by simp [hg, hx]⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨LinearMap.ker g, ?_, ?_⟩` and prove the remaining obligations. Establish `h1` using `LinearMap.finrank_range_add_finrank_ker g`. Rewrite `h1` using `[LinearMap.range_eq_top.mpr gsurj, finrank_top, Module.finrank_fintype_fun_eq_card, hdom]`. Simplify using `at h1`. Establish `: Fintype.card (Fin n × Fin d) = n * d` using `by simp`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses.
 
-Use linear arithmetic over natural numbers and integers. Introduce `z hz`. Rewrite `hz` using `[LinearMap.mem_ker]`. Rewrite using `[← hhat z]`. Establish `hz' : (f z).1 = 0` using `by simpa [hg] using hz`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `i`. Simplify using `[hat, hz']`.
+A detailed English derivation is pending.
 -/
 theorem rat_first_zero_dim : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (n d : ℕ) (X : Spc F E n) (W : Spc F E d) (M : Model σ X W), Module.finrank F E = 2 →

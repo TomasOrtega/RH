@@ -16,7 +16,7 @@ variable {K F V : Type} [Field K] [NumberField K] [StarRing K] [Field F] [Number
   [Algebra F K] [AddCommGroup V] [Module K V] [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V]
 
 /- English proof (translation)
-Simplify using `only [Formalism.HermitianLatticesTheory.dual, Formalism.E.hdual, Submodule.mem_iInf, Submodule.mem_comap, LinearMap.restrictScalars_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_dual_iff (h : V →ₗ⋆[K] V →ₗ[K] K) (L : Submodule (𝓞 K) V) (x : V) :
     x ∈ Formalism.HermitianLatticesTheory.dual h L ↔ ∀ y ∈ L, h y x ∈ (1 : Submodule (𝓞 K) K) := by
@@ -39,7 +39,7 @@ def ldual (h : V →ₗ⋆[K] V →ₗ[K] K) (w : V) : Submodule (𝓞 K) V wher
     exact Submodule.smul_mem _ r hz
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 private lemma mem_locF_lemma {W : Type} [AddCommGroup W] [Module (𝓞 K) W] (𝔭 : Ideal (𝓞 F))
     (L : Submodule (𝓞 K) W) (x : W) :
@@ -47,9 +47,9 @@ private lemma mem_locF_lemma {W : Type} [AddCommGroup W] [Module (𝓞 K) W] (�
       {s : 𝓞 K | ∃ t : 𝓞 F, t ∉ 𝔭 ∧ algebraMap (𝓞 F) (𝓞 K) t = s}, s • x ∈ L := Iff.rfl
 
 /- English proof (translation)
-Proceed by induction on `hs using Submonoid.closure_induction with`. Consider the case `mem x hx`. Take `⟨t, -, rfl⟩` from `hx`. Conclude with `(hF _).mpr ⟨(t : F), rfl⟩`. Consider the case `one => simp`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately.
 
-Consider the case `mul x y _ _ hx hy => rw [map_mul, star_mul', hx, hy]`.
+A detailed English derivation is pending.
 -/
 private lemma star_fix_lemma_2 (hF : IsFixF K F) {𝔭 : Ideal (𝓞 F)} {s : 𝓞 K}
     (hs : s ∈ Submonoid.closure {s : 𝓞 K | ∃ t : 𝓞 F, t ∉ 𝔭 ∧ algebraMap (𝓞 F) (𝓞 K) t = s}) :
@@ -62,7 +62,7 @@ private lemma star_fix_lemma_2 (hF : IsFixF K F) {𝔭 : Ideal (𝓞 F)} {s : �
   | mul x y _ _ hx hy => rw [map_mul, star_mul', hx, hy]
 
 /- English proof (translation)
-Rewrite using `[← algebraMap_smul K t y, ← algebraMap_smul K s x]`. Simplify using `only [map_smulₛₗ, LinearMap.smul_apply, RingHom.id_apply, smul_eq_mul, starRingEnd_apply]`. Rewrite using `[star_fix_lemma_2 hF ht, Algebra.smul_def, map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 private lemma smul_smul_lemma_3 (hF : IsFixF K F) (h : V →ₗ⋆[K] V →ₗ[K] K) {𝔭 : Ideal (𝓞 F)} {s t : 𝓞 K}
     (ht : t ∈ Submonoid.closure {s : 𝓞 K | ∃ u : 𝓞 F, u ∉ 𝔭 ∧ algebraMap (𝓞 F) (𝓞 K) u = s})
@@ -73,9 +73,9 @@ private lemma smul_smul_lemma_3 (hF : IsFixF K F) (h : V →ₗ⋆[K] V →ₗ[K
   ring
 
 /- English proof (translation)
-Introduce `x hx`. Express the relevant statement in the definitionally equal form `∀ y ∈ locF 𝔭 L, h y x ∈ locF 𝔭 (1 : Submodule (𝓞 K) K)`. Introduce `y hy`. Take `⟨s, hs, hsx⟩` from `(mem_locF_lemma 𝔭 _ x).mp hx`. Take `⟨t, ht, hty⟩` from `(mem_locF_lemma 𝔭 _ y).mp hy`.
+Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `(mem_locF_lemma 𝔭 _ _).mpr ⟨t * s, Submonoid.mul_mem _ ht hs, ?_⟩` and prove the remaining obligations. Rewrite using `[← smul_smul_lemma_3 hF h ht x y]`. Conclude with `(mem_dual_iff h L (s • x)).mp hsx (t • y) hty`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem locF_dual_le (hF : IsFixF K F) (h : V →ₗ⋆[K] V →ₗ[K] K) (L : Submodule (𝓞 K) V)
     {𝔭 : Ideal (𝓞 F)} (hp : 𝔭.IsPrime) : locF 𝔭 (Formalism.HermitianLatticesTheory.dual h L) ≤ dualF h 𝔭 (locF 𝔭 L) := by
@@ -89,15 +89,13 @@ theorem locF_dual_le (hF : IsFixF K F) (h : V →ₗ⋆[K] V →ₗ[K] K) (L : S
   exact (mem_dual_iff h L (s • x)).mp hsx (t • y) hty
 
 /- English proof (translation)
-Introduce `x hx`. Establish `hx' : ∀ y ∈ locF 𝔭 L, h y x ∈ locF 𝔭 (1 : Submodule (𝓞 K) K)` using `hx`. Take `⟨G, rfl⟩` from `hL`. Establish `hg : ∀ g ∈ G, ∃ s ∈ Submonoid.closure {s : 𝓞 K | ∃ t : 𝓞 F, t ∉ 𝔭 ∧ algebraMap (𝓞 F) (𝓞 K) t = s}, s • h g x ∈ (1 : Submodule (𝓞 K) K)` using `fun g hg => (mem_locF_lemma 𝔭 _ _).mp (hx' g ((mem_locF_lemma 𝔭 _ g).mpr ⟨1, Submonoid.one_mem _, by rw [one_smul]; exact Submodule.subset_span hg⟩))`. Use `choose! sg hsg hsgx using hg`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `(mem_locF_lemma 𝔭 _ _).mpr ⟨∏ g ∈ G, sg g, Submonoid.prod_mem _ fun g hg => hsg g hg, ?_⟩` and prove the remaining obligations. Rewrite using `[mem_dual_iff]`. Introduce `y hy`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem y hy`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← algebraMap_smul K (∏ g ∈ G, sg g) x, LinearMap.map_smul, smul_eq_mul]`. Establish `e : algebraMap (𝓞 K) K (∏ g ∈ G, sg g) * h y x = (∏ g ∈ G.erase y, sg g) • (sg y • h y x)`. Rewrite using `[← Finset.mul_prod_erase G sg hy, Algebra.smul_def, Algebra.smul_def, map_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Conclude with `Submodule.smul_mem _ _ (hsgx y hy)`. Consider the case `zero => rw [map_zero, LinearMap.zero_apply]`. Conclude with `Submodule.zero_mem _`. Consider the case `add y z _ _ hy hz => rw [map_add, LinearMap.add_apply]`. Conclude with `Submodule.add_mem _ hy hz`.
-
-Consider the case `smul c y _ hy`. Take `⟨r, hr⟩` from `Formalism.HermitianLatticesTheory.star_algebraMap_ringOfIntegers_mem_range c`. Rewrite using `[← algebraMap_smul K c y, map_smulₛₗ h (algebraMap (𝓞 K) K c) y, LinearMap.smul_apply, smul_eq_mul, starRingEnd_apply, ← hr, ← smul_eq_mul, algebraMap_smul]`. Conclude with `Submodule.smul_mem _ r hy`.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dualF_locF_le (h : V →ₗ⋆[K] V →ₗ[K] K) {L : Submodule (𝓞 K) V} (hL : L.FG)
     {𝔭 : Ideal (𝓞 F)} (hp : 𝔭.IsPrime) : dualF h 𝔭 (locF 𝔭 L) ≤ locF 𝔭 (Formalism.HermitianLatticesTheory.dual h L) := by
@@ -133,15 +131,15 @@ theorem dualF_locF_le (h : V →ₗ⋆[K] V →ₗ[K] K) {L : Submodule (𝓞 K)
     exact Submodule.smul_mem _ r hy
 
 /- English proof (translation)
-The claim follows from `le_antisymm (locF_dual_le hF h L hp) (dualF_locF_le h hL hp)`.
+A detailed English derivation is pending.
 -/
 theorem locF_dual (hF : IsFixF K F) (h : V →ₗ⋆[K] V →ₗ[K] K) {L : Submodule (𝓞 K) V} (hL : L.FG)
     {𝔭 : Ideal (𝓞 F)} (hp : 𝔭.IsPrime) : locF 𝔭 (Formalism.HermitianLatticesTheory.dual h L) = dualF h 𝔭 (locF 𝔭 L) := le_antisymm (locF_dual_le hF h L hp) (dualF_locF_le h hL hp)
 
 /- English proof (translation)
-Proceed by induction on `hs using Submonoid.closure_induction with`. Consider the case `mem x hx`. Take `⟨t, ht, rfl⟩` from `hx`. Establish `ht0 : t ≠ 0` using `fun h0 => ht (h0 ▸ 𝔭.zero_mem)`. Establish `e : algebraMap (𝓞 K) K (algebraMap (𝓞 F) (𝓞 K) t) = algebraMap F K (t : F)` using `rfl`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[e]`. Conclude with `(map_ne_zero _).mpr (by simpa using ht0)`. Consider the case `one => simp`. Consider the case `mul x y _ _ hx hy => rw [map_mul]`. Conclude with `mul_ne_zero hx hy`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 private lemma ne_zero_lemma_4 {𝔭 : Ideal (𝓞 F)} {s : 𝓞 K}
     (hs : s ∈ Submonoid.closure {s : 𝓞 K | ∃ t : 𝓞 F, t ∉ 𝔭 ∧ algebraMap (𝓞 F) (𝓞 K) t = s}) :
@@ -157,11 +155,11 @@ private lemma ne_zero_lemma_4 {𝔭 : Ideal (𝓞 F)} {s : 𝓞 K}
   | mul x y _ _ hx hy => rw [map_mul]; exact mul_ne_zero hx hy
 
 /- English proof (translation)
-Use extensionality with `x`. Rewrite using `[mem_locF_lemma]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨s, hs, hsx⟩`. Establish `hs0 : algebraMap (𝓞 K) K s ≠ 0` using `ne_zero_lemma_4 hs`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `e : x = (algebraMap (𝓞 K) K s)⁻¹ • (s • x)`. Rewrite using `[← algebraMap_smul K s x, smul_smul, inv_mul_cancel₀ hs0, one_smul]`. Rewrite using `[e]`. Conclude with `U.smul_mem _ hsx`. Introduce `hx`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Conclude with `⟨1, Submonoid.one_mem _, by rwa [one_smul]⟩`.
+A detailed English derivation is pending.
 -/
 theorem locF_subspace (U : Submodule K V) {𝔭 : Ideal (𝓞 F)} (hp : 𝔭.IsPrime) :
     locF 𝔭 (U.restrictScalars (𝓞 K)) = U.restrictScalars (𝓞 K) := by
@@ -178,9 +176,9 @@ theorem locF_subspace (U : Submodule K V) {𝔭 : Ideal (𝓞 F)} (hp : 𝔭.IsP
     exact ⟨1, Submonoid.one_mem _, by rwa [one_smul]⟩
 
 /- English proof (translation)
-Proceed by induction on `hs using Submonoid.closure_induction with`. Consider the case `mem x hx => exact hx`. Consider the case `one => exact ⟨1, (Ideal.ne_top_iff_one 𝔭).mp hp.ne_top, map_one _⟩`. Consider the case `mul x y _ _ hx hy`. Take `⟨a, ha, rfl⟩` from `hx`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨b, hb, rfl⟩` from `hy`. Conclude with `⟨a * b, fun hab => (hp.mem_or_mem hab).elim ha hb, map_mul _ _ _⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private lemma mem_image_lemma_5 {𝔭 : Ideal (𝓞 F)} (hp : 𝔭.IsPrime) {s : 𝓞 K}
     (hs : s ∈ Submonoid.closure {s : 𝓞 K | ∃ t : 𝓞 F, t ∉ 𝔭 ∧ algebraMap (𝓞 F) (𝓞 K) t = s}) :
@@ -194,11 +192,11 @@ private lemma mem_image_lemma_5 {𝔭 : Ideal (𝓞 F)} (hp : 𝔭.IsPrime) {s :
     exact ⟨a * b, fun hab => (hp.mem_or_mem hab).elim ha hb, map_mul _ _ _⟩
 
 /- English proof (translation)
-Introduce `x hx`. Set `J : Ideal (𝓞 F)` to `Ideal.comap (algebraMap (𝓞 F) (𝓞 K)) (B.comap (LinearMap.toSpanSingleton (𝓞 K) V x))`. Establish `hJ : J = ⊤`. Assume the negation of the conclusion as `hne`. Take `⟨𝔭, hmax, hle⟩` from `Ideal.exists_le_maximal J hne`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Establish `hxA : x ∈ locF 𝔭 A` using `(mem_locF_lemma 𝔭 A x).mpr ⟨1, Submonoid.one_mem _, by rwa [one_smul]⟩`. Rewrite `hxA` using `[hAB 𝔭 hmax]`. Take `⟨s, hs, hsx⟩` from `(mem_locF_lemma 𝔭 B x).mp hxA`. Take `⟨t, ht, rfl⟩` from `mem_image_lemma_5 hmax.isPrime hs`. Conclude with `ht (hle (show t ∈ J from hsx))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h1 : (1 : 𝓞 F) ∈ J` using `by rw [hJ]; exact Submodule.mem_top`. Simplify `h1` using `[J]`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 private lemma le_of_locF_lemma_6 (A B : Submodule (𝓞 K) V)
     (hAB : ∀ 𝔭 : Ideal (𝓞 F), 𝔭.IsMaximal → locF 𝔭 A = locF 𝔭 B) : A ≤ B := by
@@ -218,7 +216,7 @@ private lemma le_of_locF_lemma_6 (A B : Submodule (𝓞 K) V)
   simpa [J] using h1
 
 /- English proof (translation)
-The claim follows from `le_antisymm (le_of_locF_lemma_6 A B hAB) (le_of_locF_lemma_6 B A fun 𝔭 h => (hAB 𝔭 h).symm)`.
+A detailed English derivation is pending.
 -/
 theorem eq_of_locF (A B : Submodule (𝓞 K) V)
     (hAB : ∀ 𝔭 : Ideal (𝓞 F), 𝔭.IsMaximal → locF 𝔭 A = locF 𝔭 B) : A = B := le_antisymm (le_of_locF_lemma_6 A B hAB) (le_of_locF_lemma_6 B A fun 𝔭 h => (hAB 𝔭 h).symm)

@@ -8,9 +8,9 @@ open UpperTheory.ConvolutionTheory.R2 UpperTheory.ConvolutionTheory.R2.G
 open scoped Classical ENNReal nonZeroDivisors
 
 /- English proof (translation)
-Distinguish the cases in `h : ∑' b, ‖f b‖ₑ = ⊤`. Simplify using `[h]`. Establish `hs : Summable fun b => ‖f b‖`. Simplify `ENNReal.summable_toReal h` using `[toReal_enorm]`. Establish `h1 : ‖∑' b, f b‖ ≤ ∑' b, ‖f b‖` using `norm_tsum_le_tsum_norm hs`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `h2 : ENNReal.ofReal (∑' b, ‖f b‖) = ∑' b, ‖f b‖ₑ`. Rewrite using `[ENNReal.ofReal_tsum_of_nonneg (fun _ => norm_nonneg _) hs]`. Simplify using `[ofReal_norm_eq_enorm]`. Rewrite using `[← h2, ← ofReal_norm_eq_enorm]`. Conclude with `ENNReal.ofReal_le_ofReal h1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem enorm_tsum_le' {β : Type*} (f : β → ℂ) : ‖∑' b, f b‖ₑ ≤ ∑' b, ‖f b‖ₑ := by
   by_cases h : ∑' b, ‖f b‖ₑ = ⊤
@@ -25,9 +25,9 @@ private theorem enorm_tsum_le' {β : Type*} (f : β → ℂ) : ‖∑' b, f b‖
     exact ENNReal.ofReal_le_ofReal h1
 
 /- English proof (translation)
-Establish `h' : ∑' p : α × β, ‖Function.uncurry f p‖ₑ ≠ ⊤`. Establish `: ∑' p : α × β, ‖Function.uncurry f p‖ₑ = ∑' a, ∑' b, ‖f a b‖ₑ` using `ENNReal.tsum_prod (f := fun a b => ‖f a b‖ₑ)`. Rewrite using `[this]` and apply the resulting hypothesis. Establish `hs : Summable fun p => ‖Function.uncurry f p‖`. Simplify `ENNReal.summable_toReal h'` using `[toReal_enorm]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Conclude with `(Summable.of_norm hs).tsum_comm`.
+A detailed English derivation is pending.
 -/
 private theorem tsum_comm_of_enorm {α β : Type*} (f : α → β → ℂ) (h : ∑' a, ∑' b, ‖f a b‖ₑ ≠ ⊤) :
     ∑' b, ∑' a, f a b = ∑' a, ∑' b, f a b := by
@@ -40,23 +40,19 @@ private theorem tsum_comm_of_enorm {α β : Type*} (f : α → β → ℂ) (h : 
   exact (Summable.of_norm hs).tsum_comm
 
 /- English proof (translation)
-Introduce `F _ _ _ M σ hσ ι _ u hu hL`. Use `haveI : Countable F := Finsupp.Countable.of_moduleFinite (R := ℚ)`. Establish `hLi : ∀ i, abelian₂ M (u i) ≠ ⊤` using `fun i => ne_top_of_le_ne_top hL (ENNReal.le_tsum i)`. Establish `hC` using `fun i => _root_.UpperTheory.ConvolutionTheory.R2.M.unfC F M σ (u i) hσ (hu i).1 (hu i).2 (hLi i)`. Establish `hTL : ∀ i, ∫⁻ g in M.D, ∑' r, ‖u i (ratS F (σ r) * g)‖ₑ ∂M.μ = abelian₂ M (u i)` using `fun i => _root_.UpperTheory.ConvolutionTheory.R2.M.unfL F M σ (fun g => ‖u i g‖ₑ) hσ (hu i).1.enorm (fun ξ g => by simp only [(hu i).2 ξ g])`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hTm : ∀ i, Measurable fun g : G1 F => ∑' r, ‖u i (ratS F (σ r) * g)‖ₑ` using `fun i => Measurable.ennreal_tsum fun r => ((hu i).1.comp (measurable_const_mul _)).enorm`. Establish `hTT : ∫⁻ g in M.D, ∑' i, ∑' r, ‖u i (ratS F (σ r) * g)‖ₑ ∂M.μ = ∑' i, abelian₂ M (u i)`. Rewrite using `[lintegral_tsum fun i => (hTm i).aemeasurable]`. Conclude with `tsum_congr hTL`. Establish `hfin : ∀ᵐ g ∂(M.μ.restrict M.D), ∑' i, ∑' r, ‖u i (ratS F (σ r) * g)‖ₑ ≠ ⊤`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm : AEMeasurable (fun g : G1 F => ∑' i, ∑' r, ‖u i (ratS F (σ r) * g)‖ₑ) (M.μ.restrict M.D)` using `(Measurable.ennreal_tsum hTm).aemeasurable`. Use `filter_upwards [ae_lt_top' hm (by rw [hTT]; exact hL)] with g hg using hg.ne`. Establish `hST : ∀ i g, ‖∑' r, u i (ratS F (σ r) * g)‖ₑ ≤ ∑' r, ‖u i (ratS F (σ r) * g)‖ₑ` using `fun i g => enorm_tsum_le' _`. Establish `hSL : ∀ i, ∫⁻ g in M.D, ‖∑' r, u i (ratS F (σ r) * g)‖ₑ ∂M.μ ≤ abelian₂ M (u i)` using `fun i => (lintegral_mono fun g => hST i g).trans_eq (hTL i)`. Establish `hsum : ∑' i, ∫⁻ g in M.D, ‖∑' r, u i (ratS F (σ r) * g)‖ₑ ∂M.μ ≠ ⊤` using `ne_top_of_le_ne_top hL (ENNReal.tsum_le_tsum hSL)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hSm : ∀ i, AEStronglyMeasurable (fun g => ∑' r, u i (ratS F (σ r) * g)) (M.μ.restrict M.D)` using `fun i => (hC i).2.1.aestronglyMeasurable`. Establish `hI` using `integral_tsum hSm hsum`. Establish `hae : ∀ᵐ g ∂(M.μ.restrict M.D), ∑' r, ∑' i, u i (ratS F (σ r) * g) = ∑' i, ∑' r, u i (ratS F (σ r) * g)` using `by filter_upwards [hfin] with g hg using tsum_comm_of_enorm (fun i r => u i (ratS F (σ r) * g)) hg`. Establish `hI0 : ∀ i, M.I0 (av (u i)) = ∫ g in M.D, ∑' r, u i (ratS F (σ r) * g) ∂M.μ` using `fun i => ((hC i).2.2.2).symm`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hle : ∀ i, ‖M.I0 (av (u i))‖ₑ ≤ ∫⁻ g in M.D, ‖∑' r, u i (ratS F (σ r) * g)‖ₑ ∂M.μ` using `fun i => by`. Rewrite using `[hI0 i]`. Conclude with `enorm_integral_le_lintegral_enorm _`. Establish `: ∑' i, ‖M.I0 (av (u i))‖ₑ ≠ ⊤` using `ne_top_of_le_ne_top hsum (ENNReal.tsum_le_tsum hle)`. Simplify `ENNReal.summable_toReal this` using `[toReal_enorm]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hsm : AEStronglyMeasurable (fun g => ∑' i, ∑' r, u i (ratS F (σ r) * g)) (M.μ.restrict M.D)`. Use `aestronglyMeasurable_of_tendsto_ae (atTop : Filter (Finset ι)) (f := fun (s : Finset ι) g => ∑ i ∈ s, ∑' r, u i (ratS F (σ r) * g)) ?_ ?_` and prove the remaining obligations. Introduce `s`. Conclude with `Finset.aestronglyMeasurable_fun_sum s fun i _ => hSm i`. Use `filter_upwards [hfin] with g hg`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h1 : ∑' i, ‖∑' r, u i (ratS F (σ r) * g)‖ₑ ≠ ⊤` using `ne_top_of_le_ne_top hg (ENNReal.tsum_le_tsum fun i => hST i g)`. Establish `h2 : Summable fun i => ‖∑' r, u i (ratS F (σ r) * g)‖`. Simplify `ENNReal.summable_toReal h1` using `[toReal_enorm]`. Conclude with `(Summable.of_norm h2).hasSum`. Establish `hint : Integrable (fun g => ∑' i, ∑' r, u i (ratS F (σ r) * g)) (M.μ.restrict M.D)`.
-
-Use `⟨hsm, ?_⟩` and prove the remaining obligations. Establish `hb : ∫⁻ g in M.D, ‖∑' i, ∑' r, u i (ratS F (σ r) * g)‖ₑ ∂M.μ ≤ ∑' i, abelian₂ M (u i)`. Rewrite using `[← hTT]`. Use `lintegral_mono fun g => ?_` and prove the remaining obligations. Conclude with `(enorm_tsum_le' _).trans (ENNReal.tsum_le_tsum fun i => hST i g)`.
-
-Conclude with `lt_of_le_of_lt hb hL.lt_top`. Conclude with `hint.congr (hae.mono fun g hg => hg.symm)`. Rewrite using `[integral_congr_ae hae, hI]`. Conclude with `tsum_congr fun i => (hI0 i).symm`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.R2.G.unfoldSum :
     ∀ (F : Type) [Field F] [NumberField F] [IsTotallyReal F] (M : Meas F) (σ : Rw F → Matrix.SpecialLinearGroup (Fin 2) F), _root_.UpperTheory.ConvolutionTheory.R2.M.RowSec σ → ∀ (ι : Type) [Countable ι] (u : ι → G1 F → ℂ), (∀ i, NInv (u i)) → ∑' i, abelian₂ M (u i) ≠ ⊤ →

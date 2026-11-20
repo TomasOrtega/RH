@@ -15,15 +15,13 @@ section Tensor
 variable {ι : Type} [Fintype ι] [DecidableEq ι] {M : ι → Type} [∀ i, AddCommGroup (M i)] [∀ i, Module ℂ (M i)]
 
 /- English proof (translation)
-Rewrite using `[← LinearMap.ker_eq_bot, eq_bot_iff]`. Introduce `x hx`. Rewrite `hx` using `[LinearMap.mem_ker]`. Rewrite using `[Submodule.mem_bot]`. Assume the negation of the conclusion as `hx0`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `hw : ∀ j, Function.update v i x j ≠ 0`. Introduce `j`. Distinguish the cases in `hj : j = i`. Substitute `hj` using the available equality. Simplify using `using hx0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[Function.update_of_ne hj]`. Conclude with `hv j`. Establish `hφ : ∀ j, ∃ φ : Module.Dual ℂ (M j), φ (Function.update v i x j) ≠ 0`. Introduce `j`. Assume the negation of the conclusion as `hc`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Use `push_neg at hc`. Conclude with `hw j ((Module.forall_dual_apply_eq_zero_iff ℂ _).1 hc)`. Use `choose φ hφ using hφ`. Establish `h1` using `congrArg (PiTensorProduct.lift ((MultilinearMap.mkPiAlgebra ℂ ι ℂ).compLinearMap φ)) hx`. Rewrite `h1` using `[MultilinearMap.toLinearMap_apply, PiTensorProduct.lift.tprod, map_zero, MultilinearMap.compLinearMap_apply, MultilinearMap.mkPiAlgebra_apply]`.
-
-Conclude with `(Finset.prod_ne_zero_iff.2 fun j _ => hφ j) h1`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tprod_update_injective (v : ∀ i, M i) (hv : ∀ i, v i ≠ 0) (i : ι) :
     Function.Injective ((PiTensorProduct.tprod ℂ).toLinearMap v i) := by
@@ -64,7 +62,7 @@ def blockNum (b : Fin r → Fin s) (c : Fin s) {d : ℕ} (h : Fintype.card (Bloc
   (blockIdx b c).trans (monoEquivOfFin _ h).toEquiv.symm
 
 /- English proof (translation)
-Simplify using `[blockNum, blockIdx]`.
+Simplify using the standard rewrite rules.
 -/
 theorem monoEquivOfFin_blockNum (b : Fin r → Fin s) (c : Fin s) {d : ℕ}
     (h : Fintype.card (Block (natBlocks b) (c : ℕ)) = d) (x : {i // b i = c}) :
@@ -72,11 +70,11 @@ theorem monoEquivOfFin_blockNum (b : Fin r → Fin s) (c : Fin s) {d : ℕ}
   simp [blockNum, blockIdx]
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Distinguish the cases in `hij : b i = c ∧ b j = c`. Establish `h1` using `blockEmb_in (natBlocks b) (c : ℕ) h g (blockNum b c h ⟨i, hij.1⟩) (blockNum b c h ⟨j, hij.2⟩)`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Rewrite `h1` using `[monoEquivOfFin_blockNum, monoEquivOfFin_blockNum]`. Establish `h2` using `blockExt_in b c ((glEquiv K (blockNum b c h)).symm g) ⟨i, hij.1⟩ ⟨j, hij.2⟩`. Rewrite using `[h1, h2]`. Both sides reduce to the same expression. Establish `hn : ¬ (natBlocks b i = (c : ℕ) ∧ natBlocks b j = (c : ℕ))`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Simplify `hij` using `[natBlocks, Fin.val_inj]`. Rewrite using `[blockEmb_out (natBlocks b) (c : ℕ) h g i j hn, blockExt_out b c _ i j hij]`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 -/
 theorem blockEmb_eq (b : Fin r → Fin s) (c : Fin s) {d : ℕ} (h : Fintype.card (Block (natBlocks b) (c : ℕ)) = d)
     (g : GL (Fin d) K) :
@@ -103,7 +101,7 @@ open GlobalTheory.IndefiniteRowSideFullHecke.BlockEmbeddingFactors
 variable {K : Type} [Field K] [Fintype K] [DecidableEq K] {r s : ℕ}
 
 /- English proof (translation)
-Use `show leviTensor b lam (blockEmb (natBlocks b) (c : ℕ) h g) = _`. Rewrite using `[blockEmb_eq, leviTensor_blockExt]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem blockRes_leviTensor (b : Fin r → Fin s) (lam : ∀ c : Fin s, FDRep ℂ (GL {i // b i = c} K)) (c : Fin s)
     {d : ℕ} (h : Fintype.card (Block (natBlocks b) (c : ℕ)) = d) (g : GL (Fin d) K) :
@@ -114,9 +112,9 @@ theorem blockRes_leviTensor (b : Fin r → Fin s) (lam : ∀ c : Fin s, FDRep �
   rw [blockEmb_eq, leviTensor_blockExt]
 
 /- English proof (translation)
-Rewrite using `[PiTensorProduct.map_tprod]`. Use `congr 1`. Use function extensionality and compare the values at `c'`. Distinguish the cases in `hc : c' = c`. Substitute `hc` using the available equality.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using the standard rewrite rules. Simplify using `[Function.update_of_ne hc]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem map_update_tprod {s : ℕ} {M : Fin s → Type} [∀ i, AddCommGroup (M i)] [∀ i, Module ℂ (M i)]
     (c : Fin s) (A : M c →ₗ[ℂ] M c) (v : ∀ i, M i) (x : M c) :
@@ -130,13 +128,11 @@ theorem map_update_tprod {s : ℕ} {M : Fin s → Type} [∀ i, AddCommGroup (M 
   · simp [Function.update_of_ne hc]
 
 /- English proof (translation)
-Introduce `K _ _ _ r s b lam hsimp c d h W _ _ ρ hF`. Use `⟨blockNum b c h, ?_⟩` and prove the remaining obligations. Use `set e := blockNum b c h`. Set `ρ' : Representation ℂ (GL (Fin d) K) (lam c)` to `(transp e (lam c)).ρ`. Establish `hirr : ρ'.IsIrreducible` using `GlobalTheory.SerOSys.ZSum.isIrreducible_of_simple _ (Formalism.L2.PT.simple_transp e (hsimp c))`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hnt : ∀ c', Nontrivial (lam c')` using `fun c' => PI.GreenLabelSurjWork.nontrivial_of_simple _ (hsimp c')`. Use `choose v hv using fun c' => exists_ne (0 : (lam c' : Type))`. Set `f : IntertwiningMap ρ' (blockRes (natBlocks b) (leviTensor b lam) (c : ℕ) h)` to `((PiTensorProduct.tprod ℂ).toLinearMap v c).intertwiningMap_of_isIntertwiningMap _ _ (fun g x => by`. Rewrite using `[blockRes_leviTensor, MultilinearMap.toLinearMap_apply, MultilinearMap.toLinearMap_apply, map_update_tprod]`. Use the proof step `rfl)`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hinj : Function.Injective (IntertwiningMap.equivLinearMapAsModule ρ' _ f)` using `tprod_update_injective v hv c`. Establish `hiso` using `hF.2.of_injective _ hinj`. Use `haveI : IsSimpleModule (MonoidAlgebra ℂ (GL (Fin d) K)) ρ'.asModule := (irreducible_iff_isSimpleModule_asModule ρ').1 hirr`. Use `haveI : IsSimpleModule (MonoidAlgebra ℂ (GL (Fin d) K)) (⊤ : Submodule (MonoidAlgebra ℂ (GL (Fin d) K)) ρ'.asModule) := IsSimpleModule.congr (Submodule.topEquiv)`. Set `E : ρ.asModule ≃ₗ[MonoidAlgebra ℂ (GL (Fin d) K)] ρ'.asModule` to `((hiso ⊤).some.symm.trans Submodule.topEquiv)`.
-
-Set `F : IntertwiningMap ρ ρ'` to `(IntertwiningMap.equivLinearMapAsModule ρ ρ').symm E.toLinearMap`. Use `⟨LinearEquiv.ofBijective F.toLinearMap E.bijective, fun g x => ?_⟩` and prove the remaining obligations. Conclude with `IntertwiningMap.isIntertwining ρ ρ' F g x`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem factor_iso : ∀ (K : Type) [Field K] [Fintype K] [DecidableEq K] (r s : ℕ) (b : Fin r → Fin s)
     (lam : ∀ c : Fin s, FDRep ℂ (GL {i // b i = c} K)), (∀ c, Simple (lam c)) → ∀ (c : Fin s) (d : ℕ)

@@ -22,7 +22,7 @@ variable {V : Type} [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] {ϖ : 
 include hϖ in
 
 /- English proof (translation)
-The claim follows from `exists_genHasVal hϖ D.toPre.P.L D.toPre.P.isLB _ _ _ _ (D.toPre.psi χ) (D.toPre.psi_gen χ)`.
+A detailed English derivation is pending.
 -/
 theorem exists_QVal (χ : D.toPre.X) : ∃ n : ℤ, QVal D.toPre ϖ χ n :=
   exists_genHasVal hϖ D.toPre.P.L D.toPre.P.isLB _ _ _ _ (D.toPre.psi χ) (D.toPre.psi_gen χ)
@@ -30,7 +30,7 @@ theorem exists_QVal (χ : D.toPre.X) : ∃ n : ℤ, QVal D.toPre ϖ χ n :=
 include hϖ in
 
 /- English proof (translation)
-The claim follows from `genHasVal_unique hϖ D.toPre.P.L D.toPre.P.isLB _ _ _ _ _ hn hm`.
+A detailed English derivation is pending.
 -/
 theorem QVal_unique {χ : D.toPre.X} {n m : ℤ} (hn : QVal D.toPre ϖ χ n) (hm : QVal D.toPre ϖ χ m) : n = m :=
   genHasVal_unique hϖ D.toPre.P.L D.toPre.P.isLB _ _ _ _ _ hn hm
@@ -44,7 +44,7 @@ instance (P : PolAV (Spec (CommRingCat.of V))) : IsSeparated P.A.hom := by
   infer_instance
 
 /- English proof (translation)
-Rewrite using `[Category.assoc, Over.w f]`. Use `first`. Consider the case `simpa using Over.w q`. Consider the case `exact Over.w q`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 lemma over_sec {Y B : Over (Spec (CommRingCat.of V))} (q : 𝟙_ (Over (Spec (CommRingCat.of V))) ⟶ Y) (f : Y ⟶ B) :
     (q.left ≫ f.left) ≫ B.hom = 𝟙 _ := by
@@ -54,7 +54,7 @@ lemma over_sec {Y B : Over (Spec (CommRingCat.of V))} (q : 𝟙_ (Over (Spec (Co
   | exact Over.w q
 
 /- English proof (translation)
-Apply the tactic sequence `fin_cases k <;> first`. Consider the case `exact ⟨_, rfl⟩`. Consider the case `(simp [rosatiφ]; exact ⟨_, rfl⟩)`.
+Apply the first step, then apply the next step to every resulting obligation. Treat this case separately. Treat this case separately.
 -/
 lemma rosatiφ_over {S : Scheme.{0}} (A : Over S) [GrpObj A] (f g : A ⟶ A) (k : Fin 6) :
     ∃ q : A ⊗ A ⟶ A, rosatiφ A f g k = q.left := by
@@ -63,7 +63,7 @@ lemma rosatiφ_over {S : Scheme.{0}} (A : Over S) [GrpObj A] (f g : A ⟶ A) (k 
   | (simp [rosatiφ]; exact ⟨_, rfl⟩)
 
 /- English proof (translation)
-Apply the tactic sequence `rintro (k | k) <;> simp [hf, hg]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma sumElim_sec {Y : Scheme.{0}} {Ix Ix' : Type} {f : Ix → (Spec (CommRingCat.of V) ⟶ Y)}
     {g : Ix' → (Spec (CommRingCat.of V) ⟶ Y)} {s : Y ⟶ Spec (CommRingCat.of V)}
@@ -71,7 +71,7 @@ lemma sumElim_sec {Y : Scheme.{0}} {Ix Ix' : Type} {f : Ix → (Spec (CommRingCa
   rintro (k | k) <;> simp [hf, hg]
 
 /- English proof (translation)
-The claim follows from `genHasVal_pullGen_of (ϖ := ϖ) D.toPre.P.L _ _ D.toPre.rig D.toPre.rig_gen (𝟙 _) (toUnit (TK V)).left (by rw [Category.comp_id]; rfl)`.
+A detailed English derivation is pending.
 -/
 theorem rigK_val : GenHasVal ϖ D.toPre.P.L (fun _ : PUnit => 𝟙 _ ≫ eSec D.toPre.P.A)
     (fun _ => (toUnit (TK V)).left ≫ eSec D.toPre.P.A) (fun _ => by rw [Category.id_comp]; rfl) (fun _ => 1)
@@ -82,9 +82,9 @@ theorem rigK_val : GenHasVal ϖ D.toPre.P.L (fun _ : PUnit => 𝟙 _ ≫ eSec D.
 include hϖ in
 
 /- English proof (translation)
-Establish `hL` using `D.toPre.P.isLB`. Establish `h1` using `genHasVal_mulGen hϖ D.toPre.P.L hL _ _ _ _ _ _ _ _ _ _ (hQ (a + b)) (genHasVal_invGen D.toPre.P.L hL _ _ _ _ _ (hQ a))`. Establish `h2` using `genHasVal_mulGen hϖ D.toPre.P.L hL _ _ _ _ _ _ _ _ _ _ h1 (genHasVal_invGen D.toPre.P.L hL _ _ _ _ _ (hQ b))`. Establish `h3` using `genHasVal_mulGen hϖ D.toPre.P.L hL _ _ _ _ _ _ _ _ _ _ h2 (genHasVal_invGen D.toPre.P.L hL _ _ _ _ _ (rigK_val D))`. Establish `h4 : Q (a + b) + -Q a + -Q b + -0 = bOf D.toPre Q a b` using `by simp only [bOf]; ring`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h3` using `[h4]`. Conclude with `⟨_, _, by secTac, h3⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 -/
 theorem tau_val (hQ : IsQ D.toPre ϖ Q) (a b : D.toPre.X) :
     ∃ (φ : _) (hφ : _), (∀ k, φ k ≫ D.toPre.P.A.hom = 𝟙 _) ∧
@@ -103,9 +103,9 @@ theorem tau_val (hQ : IsQ D.toPre ϖ Q) (a b : D.toPre.X) :
 include hϖ in
 
 /- English proof (translation)
-Establish `hL` using `D.toPre.P.isLB`. Take `⟨_, _, hsA, hA⟩` from `tau_val hϖ D hQ (a + a') b`. Take `⟨_, _, hsB, hB⟩` from `tau_val hϖ D hQ a b`. Take `⟨_, _, hsC, hC⟩` from `tau_val hϖ D hQ a' b`. Establish `hcub` using `genHasVal_pullGen_of (ϖ := ϖ) D.toPre.P.L _ _ D.toPre.cub.t D.toPre.cub.isGen (lift (D.toPre.c a) (lift (D.toPre.c a') (D.toPre.c b))).left (D.toPre.pt3 a a' b) (by simp [DegPre.pt3, ← CartesianMonoidalCategory.comp_lift])`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h1` using `genHasVal_mulGen hϖ D.toPre.P.L hL _ _ _ _ _ _ _ _ _ _ hA hcub`. Establish `h2` using `genHasVal_mulGen hϖ D.toPre.P.L hL _ _ _ _ _ _ _ _ _ _ hB hC`. Use `genHasVal_unique hϖ D.toPre.P.L hL _ _ _ _ _ (genHasVal_corr hϖ D.toPre.P.L hL D.toPre.P.A.hom _ _ _ _ _ _ _ _ (sumElim_sec hsA (fun _ => over_sec _ _)) (sumElim_sec hsB hsC) _ _ (genHasVal_isGen D.toPre.P.L _ _ _ _ _ h2) (D.tau_bimult a a' b) h1) h2` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem bOf_add_left (hQ : IsQ D.toPre ϖ Q) (a a' b : D.toPre.X) :
     bOf D.toPre Q (a + a') b = bOf D.toPre Q a b + bOf D.toPre Q a' b := by
@@ -127,7 +127,7 @@ theorem bOf_add_left (hQ : IsQ D.toPre ϖ Q) (a a' b : D.toPre.X) :
 include hϖ in
 
 /- English proof (translation)
-Establish `hL` using `D.toPre.P.isLB`. Establish `hsym` using `genHasVal_pullGen_of (ϖ := ϖ) D.toPre.P.L _ _ D.toPre.sym D.toPre.sym_gen (D.toPre.c χ).left (D.toPre.xK χ) (ptK_eq D.toPre χ)`. Establish `h1` using `genHasVal_mulGen hϖ D.toPre.P.L hL _ _ _ _ _ _ _ _ _ _ (hQ (-χ)) hsym`. Use `QVal_unique hϖ D (genHasVal_corr hϖ D.toPre.P.L hL D.toPre.P.A.hom _ _ _ _ _ _ _ _ (by secTac) (by secTac) _ _ (D.toPre.psi_gen χ) (D.psi_even χ) h1) (hQ χ)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem Q_neg (hQ : IsQ D.toPre ϖ Q) (χ : D.toPre.X) : Q (-χ) = Q χ := by
   have hL := D.toPre.P.isLB
@@ -141,7 +141,7 @@ theorem Q_neg (hQ : IsQ D.toPre ϖ Q) (χ : D.toPre.X) : Q (-χ) = Q χ := by
 include hϖ in
 
 /- English proof (translation)
-Establish `h` using `bOf_add_left hϖ D hQ 0 0 0`. Simplify using `only [bOf, add_zero] at h`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem Q_zero (hQ : IsQ D.toPre ϖ Q) : Q 0 = 0 := by
   have h := bOf_add_left hϖ D hQ 0 0 0
@@ -149,7 +149,7 @@ theorem Q_zero (hQ : IsQ D.toPre ϖ Q) : Q 0 = 0 := by
   linarith
 
 /- English proof (translation)
-Unfold `bOf`. Rewrite using `[add_comm χ χ']`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem bOf_comm (χ χ' : D.toPre.X) : bOf D.toPre Q χ χ' = bOf D.toPre Q χ' χ := by
   unfold bOf
@@ -159,7 +159,7 @@ theorem bOf_comm (χ χ' : D.toPre.X) : bOf D.toPre Q χ χ' = bOf D.toPre Q χ'
 include hϖ in
 
 /- English proof (translation)
-Establish `h` using `bOf_add_left hϖ D hQ χ (-χ) χ`. Establish `h0` using `Q_zero hϖ D hQ`. Establish `hn` using `Q_neg hϖ D hQ χ`. Simplify using `only [bOf, add_neg_cancel, zero_add, neg_add_cancel] at h`. Simplify using `only [bOf]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
 Combine the linear equalities and inequalities to obtain the conclusion.
 -/
@@ -174,7 +174,7 @@ theorem two_Q_eq (hQ : IsQ D.toPre ϖ Q) (χ : D.toPre.X) : 2 * Q χ = bOf D.toP
 include hϖ in
 
 /- English proof (translation)
-Establish `h` using `genHasVal_ge_of_in hϖ D.toPre.P.L D.toPre.P.isLB (D.toPre.c χ).left (D.toPre.xK χ) (ptK_eq D.toPre χ) (-1) (D.toPre.psi χ) 1 (fun j W hW hle h => by rw [pow_one]; exact D.psi_pos χ hχ j W hW hle h) (hQ χ)`. Conclude with `h` after adjusting the coercions.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem Q_pos (hQ : IsQ D.toPre ϖ Q) {χ : D.toPre.X} (hχ : χ ≠ 0) : 1 ≤ Q χ := by
   have h := genHasVal_ge_of_in hϖ D.toPre.P.L D.toPre.P.isLB (D.toPre.c χ).left (D.toPre.xK χ) (ptK_eq D.toPre χ)
@@ -198,15 +198,15 @@ lemma bHom_apply (hQ : IsQ D.toPre ϖ Q) (a b : D.toPre.X) : bHom hϖ D hQ a b =
 include hϖ in
 
 /- English proof (translation)
-Establish `hv : ∑ i, m i • b i ≠ 0`. Introduce `h0`. Conclude with `hm (funext fun i => Fintype.linearIndependent_iff.mp b.linearIndependent m h0 i)`. Establish `lin : ∀ (a : D.toPre.X) (c : Fin d → ℤ), bOf D.toPre Q a (∑ i, c i • b i) = ∑ i, c i * bOf D.toPre Q a (b i)`. Introduce `a c`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← bHom_apply hϖ D hQ, map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_zsmul, bHom_apply hϖ D hQ]`. Use `first`. Consider the case `rfl`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `simp`. Consider the case `exact zsmul_eq_mul _ _`. Establish `hexp : bOf D.toPre Q (∑ i, m i • b i) (∑ i, m i • b i) = ∑ i, ∑ j, m i * bOf D.toPre Q (b i) (b j) * m j`. Rewrite using `[lin]`. Repeatedly rewrite using `[bOf_comm D (Q := Q) (∑ i, m i • b i), lin, Finset.mul_sum]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[bOf_comm D (Q := Q) (b j) (b i)]`. Expand and normalize the polynomial expressions, which then agree. Establish `h2` using `two_Q_eq hϖ D hQ (∑ i, m i • b i)`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1` using `Q_pos hϖ D hQ hv`. Rewrite using `[← hexp]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 lemma gram_int_pos (hQ : IsQ D.toPre ϖ Q) {d : ℕ} (b : Module.Basis (Fin d) ℤ D.toPre.X) (m : Fin d → ℤ)
     (hm : m ≠ 0) : 0 < ∑ i, ∑ j, m i * bOf D.toPre Q (b i) (b j) * m j := by
@@ -240,53 +240,45 @@ open Matrix in
 include hϖ in
 
 /- English proof (translation)
-Use `set G : Matrix (Fin d) (Fin d) ℝ := Matrix.of fun i j => (bOf D.toPre Q (b i) (b j) : ℝ) with hG`. Use `set GQ : Matrix (Fin d) (Fin d) ℚ := Matrix.of fun i j => (bOf D.toPre Q (b i) (b j) : ℚ) with hGQ`. Establish `hsymm : G.IsHermitian`. Use extensionality with `i j`. Simplify using `[G, Matrix.conjTranspose_apply, bOf_comm D (Q := Q) (b i) (b j)]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hratQ : ∀ x : Fin d → ℚ, x ≠ 0 → 0 < x ⬝ᵥ (GQ *ᵥ x)`. Introduce `x hx`. Choose the witnesses or unpack the hypotheses as in `⟨N, hN, hNx⟩ : ∃ N : ℕ, 0 < N ∧ ∀ i, ∃ z : ℤ, (N : ℚ) * x i = z := by`. Use `⟨∏ i, (x i).den, Finset.prod_pos fun i _ => (x i).den_pos, fun i => ?_⟩` and prove the remaining obligations. Use `⟨(x i).num * ∏ k ∈ Finset.univ.erase i, ((x k).den : ℤ), ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : ((∏ k, (x k).den : ℕ) : ℚ) = ((x i).den : ℚ) * ∏ k ∈ Finset.univ.erase i, ((x k).den : ℚ)` using `by push_cast; exact (Finset.mul_prod_erase _ _ (Finset.mem_univ i)).symm`. Rewrite using `[h1]`. Use `push_cast`. Rewrite using `[← Rat.mul_den_eq_num (x i)]`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `choose m hm using hNx`. Establish `hm0 : m ≠ 0`. Introduce `h0`. Apply `hx` to reduce the goal to its premises. Use function extensionality and compare the values at `i`.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `hm i` as an intermediate fact. Rewrite `this` using `[h0]`. Simplify using `at this`. Break down `this with h | h` into its components or cases. Conclude with `absurd h (by exact_mod_cast hN.ne')`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
-Conclude with `h`. Establish `hpos` using `gram_int_pos hϖ D hQ b m hm0`. Establish `hexp : ((N : ℚ) ^ 2) * (x ⬝ᵥ (GQ *ᵥ x)) = ((∑ i, ∑ j, m i * bOf D.toPre Q (b i) (b j) * m j : ℤ) : ℚ)`. Simplify using `only [dotProduct, Matrix.mulVec, GQ, Matrix.of_apply, Finset.mul_sum]`. Use `push_cast`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `i _`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `j _`. Rewrite using `[← hm i, ← hm j]`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hN2 : (0 : ℚ) < (N : ℚ) ^ 2` using `by positivity`. Establish `: (0 : ℚ) < ((∑ i, ∑ j, m i * bOf D.toPre Q (b i) (b j) * m j : ℤ) : ℚ)` using `by exact_mod_cast hpos`. Rewrite `this` using `[← hexp]`. Conclude with `pos_of_mul_pos_right this hN2.le`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Use `set f : (Fin d → ℝ) → ℝ := fun x => x ⬝ᵥ (G *ᵥ x) with hf`. Establish `hcast : ∀ x : Fin d → ℚ, f (fun i => (x i : ℝ)) = ((x ⬝ᵥ (GQ *ᵥ x) : ℚ) : ℝ)`. Introduce `x`. Simplify using `only [f, dotProduct, Matrix.mulVec, G, GQ, Matrix.of_apply]`. Use `push_cast`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Establish `hcont : Continuous f`. Simplify using `only [f, dotProduct, Matrix.mulVec]`. Use `fun_prop`. Establish `hpsd : ∀ x, 0 ≤ f x`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Establish `hdense : DenseRange (fun x : Fin d → ℚ => fun i => (x i : ℝ))` using `DenseRange.piMap (fun _ => Rat.denseRange_cast)`. Introduce `x`. Establish `hclosed : IsClosed {y | 0 ≤ f y}` using `isClosed_le continuous_const hcont`. Establish `hsub : Set.range (fun x : Fin d → ℚ => fun i => (x i : ℝ)) ⊆ {y | 0 ≤ f y}`. Introduce and unpack `_ ⟨q, rfl⟩`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `show 0 ≤ f _`. Rewrite using `[hcast]`. Distinguish the cases in `hq : q = 0`. Substitute `hq` using the available equality. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(hratQ q hq).le` after adjusting the coercions. Conclude with `(hclosed.closure_subset_iff.mpr hsub) (hdense x)`. Establish `hdet : G.det ≠ 0`. Introduce `h0`. Establish `hGmap : G = GQ.map (Rat.castHom ℝ)` using `by ext i j; simp [G, GQ]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `hq0 : GQ.det = 0`. Establish `: ((GQ.det : ℚ) : ℝ) = 0`. Rewrite using `[← h0, hGmap]`. Conclude with `RingHom.map_det (Rat.castHom ℝ) GQ`. Conclude with `this` after adjusting the coercions.
+It suffices to derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Take `⟨v, hv, hGv⟩` from `Matrix.exists_mulVec_eq_zero_iff.mpr hq0`. Use `hratQ v hv` as an intermediate fact. Rewrite `this` using `[hGv, dotProduct_zero]`. Conclude with `lt_irrefl _ this`. Rewrite using `[Matrix.posDef_iff_dotProduct_mulVec]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨hsymm, fun x hx => ?_⟩` and prove the remaining obligations. Establish `hx' : star x = x` using `by ext i; simp`. Rewrite using `[hx']`. Break down `(hpsd x).lt_or_eq with h | h` into its components or cases. Conclude with `h`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-It suffices to derive a contradiction. Establish `hGx : G *ᵥ x = 0` using `by set y := G *ᵥ x`. Establish `key : ∀ t : ℝ, 0 ≤ 2 * t * (y ⬝ᵥ y) + t ^ 2 * (y ⬝ᵥ (G *ᵥ y))`. Introduce `t`. Establish `h1` using `hpsd (x + t • y)`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hsym' : ∀ u w : Fin d → ℝ, u ⬝ᵥ (G *ᵥ w) = w ⬝ᵥ (G *ᵥ u)`. Introduce `u w`. Rewrite using `[Matrix.dotProduct_mulVec, ← Matrix.mulVec_transpose]`. Establish `: Gᵀ = G` using `by ext i j; simp [G, bOf_comm D (Q := Q) (b i) (b j)]`. Rewrite using `[this, dotProduct_comm]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Simplify using `only [f, Matrix.mulVec_add, Matrix.mulVec_smul, dotProduct_add, add_dotProduct, dotProduct_smul, smul_dotProduct, smul_eq_mul] at h1`. Establish `h' : x ⬝ᵥ (G *ᵥ x) = 0` using `by simpa [f] using h.symm`. Establish `e1 : x ⬝ᵥ (G *ᵥ y) = y ⬝ᵥ y` using `by rw [hsym' x y]`. Establish `e2 : y ⬝ᵥ (G *ᵥ x) = y ⬝ᵥ y` using `rfl`. Rewrite `h1` using `[h', e1, e2]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 
-Establish `: 2 * t * (y ⬝ᵥ y) + t ^ 2 * (y ⬝ᵥ (G *ᵥ y)) = 0 + t * (y ⬝ᵥ y) + (t * (y ⬝ᵥ y) + t * (t * (y ⬝ᵥ (G *ᵥ y))))` using `by ring`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hyy : y ⬝ᵥ y = 0`. Establish `c0` using `hpsd y`. Simplify using `only [f] at c0`.
-
-Use `set a := y ⬝ᵥ y`. Use `set c := y ⬝ᵥ (G *ᵥ y)`. Establish `k1` using `key (-(a / (c + 1)))`. Establish `hc1 : 0 < c + 1` using `by linarith`. Establish `ha : 0 ≤ a` using `by simp only [a, dotProduct, ← sq]; positivity`.
-
-Assume the negation of the conclusion as `hne`. Establish `ha' : 0 < a` using `lt_of_le_of_ne ha (Ne.symm hne)`. Establish `: 2 * (-(a / (c + 1))) * a + (-(a / (c + 1))) ^ 2 * c < 0`. Establish `hq : a / (c + 1) > 0` using `div_pos ha' hc1`. Establish `hq2 : (a / (c + 1)) * c ≤ a`.
-
-Rewrite using `[div_mul_eq_mul_div, div_le_iff₀ hc1]`. Use the polynomial consequences of the given equalities and inequalities. Use polynomial arithmetic with `[hq2]`. Combine the linear equalities and inequalities to obtain the conclusion. Use `dotProduct_self_eq_zero.mp hyy` as an intermediate fact.
-
-Conclude with `this`. Take `⟨v, hv, hv0⟩ : ∃ v, v ≠ 0 ∧ G *ᵥ v = 0` from `⟨x, hx, hGx⟩`. Conclude with `hdet (Matrix.exists_mulVec_eq_zero_iff.mp ⟨v, hv, hv0⟩)`.
+Use the polynomial consequences of the given equalities and inequalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem gram_posDef (hQ : IsQ D.toPre ϖ Q) {d : ℕ} (b : Module.Basis (Fin d) ℤ D.toPre.X) :
     (Matrix.of fun i j => (bOf D.toPre Q (b i) (b j) : ℝ)).PosDef := by
@@ -406,7 +398,7 @@ theorem gram_posDef (hQ : IsQ D.toPre ϖ Q) {d : ℕ} (b : Module.Basis (Fin d) 
     exact hdet (Matrix.exists_mulVec_eq_zero_iff.mp ⟨v, hv, hv0⟩)
 
 /- English proof (translation)
-Use `ιD.onB.hom a` as an intermediate fact. Use `ιD.onB.hom (star a)` as an intermediate fact. Conclude with `ReciprocityTheory.ChartRestriction.G.Geo.Tor.exists_ros hLaws.globalFns D.toPre.P.isAb D.toPre.P.isLB _ _ (ιD.onB.rosati a)`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_rosati_gen (hLaws : Laws) {O : Type} [Ring O] [StarRing O] [Module O D.toPre.X] (ιD : D.OAct O) (a : O) :
     ∃ u : LB.Gen (LB.LinComb D.toPre.P.L (rosatiφ D.toPre.P.A (ιD.onB.act a) (ιD.onB.act (star a))) rosatiε),
@@ -419,11 +411,11 @@ theorem exists_rosati_gen (hLaws : Laws) {O : Type} [Ring O] [StarRing O] [Modul
 include hϖ in
 
 /- English proof (translation)
-Establish `hL` using `D.toPre.P.isLB`. Take `⟨u, hu, hnorm⟩` from `exists_rosati_gen D hLaws ιD a`. Establish `hc` using `ιD.tau_bal a u hu hnorm χ χ'`. Take `⟨_, _, hsA, hA⟩` from `tau_val hϖ D hQ (a • χ) χ'`. Take `⟨_, _, hsB, hB⟩` from `tau_val hϖ D hQ χ (star a • χ')`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hu0` using `genHasVal_pullGen_of (ϖ := ϖ) D.toPre.P.L _ _ u hu (lift (D.toPre.c χ) (D.toPre.c χ')).left (D.toPre.pt2 χ χ') (by simp [DegPre.pt2, ← CartesianMonoidalCategory.comp_lift])`. Establish `h1` using `genHasVal_mulGen hϖ D.toPre.P.L hL _ _ _ _ _ _ _ _ _ _ hA hu0`. Use `genHasVal_unique hϖ D.toPre.P.L hL _ _ _ _ _ (genHasVal_corr hϖ D.toPre.P.L hL D.toPre.P.A.hom _ _ _ _ _ _ _ _ (sumElim_sec hsA (fun k => by` as an intermediate fact. Take `⟨q, hq⟩` from `rosatiφ_over D.toPre.P.A (ιD.onB.act a) (ιD.onB.act (star a)) k`. Use `show (_ ≫ rosatiφ D.toPre.P.A (ιD.onB.act a) (ιD.onB.act (star a)) k) ≫ _ = _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hq]`. Conclude with `over_sec _ _)) hsB _ _`. Use the proof step `(genHasVal_isGen D.toPre.P.L _ _ _ _ _ hB) hc h1) hB`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem bOf_balance (hLaws : Laws) {O : Type} [Ring O] [StarRing O] [Module O D.toPre.X] (ιD : D.OAct O)
     (hQ : IsQ D.toPre ϖ Q) (a : O) (χ χ' : D.toPre.X) :

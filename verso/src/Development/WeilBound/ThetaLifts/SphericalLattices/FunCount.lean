@@ -9,9 +9,9 @@ section Count
 variable {G : Type} [Group G]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨b, hb, rfl⟩`. Simplify using `only [MulEquiv.coe_toMonoidHom, MulAut.conj_apply]`. Rewrite using `[show y⁻¹ * (y * b * y⁻¹) * y = b by group]` and apply the resulting hypothesis. Introduce `hz`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨_, hz, ?_⟩` and prove the remaining obligations. Simplify using `only [MulEquiv.coe_toMonoidHom, MulAut.conj_apply]`. Use `group`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mem_map_conj {H : Subgroup G} {y z : G} : z ∈ H.map (MulAut.conj y).toMonoidHom ↔ y⁻¹ * z * y ∈ H := by
   constructor
@@ -24,7 +24,7 @@ theorem mem_map_conj {H : Subgroup G} {y z : G} : z ∈ H.map (MulAut.conj y).to
     group
 
 /- English proof (translation)
-The claim follows from `QuotientGroup.eq.2 (by rw [mul_inv_rev, inv_mul_cancel_right]; exact H.inv_mem hb)`.
+A detailed English derivation is pending.
 -/
 theorem mk_mul_mem {H : Subgroup G} (x : G) {b : G} (hb : b ∈ H) : ((x * b : G) : G ⧸ H) = (x : G ⧸ H) :=
   QuotientGroup.eq.2 (by rw [mul_inv_rev, inv_mul_cancel_right]; exact H.inv_mem hb)
@@ -32,15 +32,15 @@ theorem mk_mul_mem {H : Subgroup G} (x : G) {b : G} (hb : b ∈ H) : ((x * b : G
 def orb (H : Subgroup G) (y : G) : Set (G ⧸ H) := {c | ∃ a ∈ H, c = ((a * y : G) : G ⧸ H)}
 
 /- English proof (translation)
-Use `set M := H.map (MulAut.conj y).toMonoidHom with hM`. Set `Φ : H ⧸ M.subgroupOf H → G ⧸ H` to `fun q => ((((Quotient.out q : H) : G) * y : G) : G ⧸ H)`. Establish `hinj : Function.Injective Φ` using `fun q q' e => by`. Establish `e'` using `QuotientGroup.eq.1 e`. Rewrite using `[← QuotientGroup.out_eq' q, ← QuotientGroup.out_eq' q']`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `QuotientGroup.eq.2 (Subgroup.mem_subgroupOf.2 ?_)` and prove the remaining obligations. Rewrite using `[Subgroup.coe_mul, Subgroup.coe_inv, mem_map_conj]`. Use `e' using 1` and compare the differences between its conclusion and the goal. Use `group`. Establish `hrange : Set.range Φ = orb H y`.
+Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Use extensionality with `c`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨q, rfl⟩`. Conclude with `⟨_, (Quotient.out q).2, rfl⟩`. Introduce and unpack `⟨a, ha, rfl⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨((⟨a, ha⟩ : H) : H ⧸ M.subgroupOf H), ?_⟩` and prove the remaining obligations. Take `⟨m, hm⟩` from `QuotientGroup.mk_out_eq_mul (M.subgroupOf H) (⟨a, ha⟩ : H)`. Establish `hm' : ((m : H) : G) ∈ M` using `Subgroup.mem_subgroupOf.1 m.2`. Rewrite `hm'` using `[mem_map_conj]`. Express the relevant statement in the definitionally equal form `((((Quotient.out ((⟨a, ha⟩ : H) : H ⧸ M.subgroupOf H) : H) : G) * y : G) : G ⧸ H) = _`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hm, Subgroup.coe_mul, show a * ((m : H) : G) * y = a * y * (y⁻¹ * ((m : H) : G) * y) by group]`. Conclude with `mk_mul_mem _ hm'`. Rewrite using `[← hrange, Set.ncard_range_of_injective hinj, Subgroup.relIndex, Subgroup.index_eq_card]`.
+A detailed English derivation is pending.
 -/
 theorem ncard_orb (H : Subgroup G) (y : G) : (orb H y).ncard = (H.map (MulAut.conj y).toMonoidHom).relIndex H := by
   classical
@@ -69,9 +69,9 @@ theorem ncard_orb (H : Subgroup G) (y : G) : (orb H y).ncard = (H.map (MulAut.co
   rw [← hrange, Set.ncard_range_of_injective hinj, Subgroup.relIndex, Subgroup.index_eq_card]
 
 /- English proof (translation)
-Use extensionality with `c`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, rfl⟩`. Use `⟨x * a, H.mul_mem hx ha, ?_⟩` and prove the remaining obligations. Rewrite using `[show x * (a * y * b) = x * a * y * b by group]`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Conclude with `mk_mul_mem _ hb`. Introduce and unpack `⟨x, hx, rfl⟩`. Use `⟨x * a⁻¹, H.mul_mem hx (H.inv_mem ha), ?_⟩` and prove the remaining obligations. Rewrite using `[show x * a⁻¹ * (a * y * b) = x * y * b by group]`. Conclude with `(mk_mul_mem _ hb).symm`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem orb_mul {H : Subgroup G} {a b : G} (ha : a ∈ H) (hb : b ∈ H) (y : G) : orb H (a * y * b) = orb H y := by
   ext c
@@ -86,7 +86,7 @@ theorem orb_mul {H : Subgroup G} {a b : G} (ha : a ∈ H) (hb : b ∈ H) (y : G)
     exact (mk_mul_mem _ hb).symm
 
 /- English proof (translation)
-Take `⟨a, ha, rfl⟩` from `h`. Take `⟨m, hm⟩` from `QuotientGroup.mk_out_eq_mul H (a * (Quotient.out d)⁻¹)`. Use `⟨m, m.2, ?_⟩` and prove the remaining obligations. Rewrite using `[hm, show (m : G) * (a * (Quotient.out d)⁻¹ * m)⁻¹ = Quotient.out d * a⁻¹ by group, mk_mul_mem _ (H.inv_mem ha), QuotientGroup.out_eq']`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem orb_symm (H : Subgroup G) {d e : G ⧸ H} (h : e ∈ orb H (Quotient.out d)⁻¹) : d ∈ orb H (Quotient.out e)⁻¹ := by
   obtain ⟨a, ha, rfl⟩ := h
@@ -100,7 +100,7 @@ def dblK (K : Subgroup G) (x : G) : Set G := {y | ∃ a ∈ K, ∃ b ∈ K, y = 
 def cosT (P K : Subgroup G) (x : G) : Set (G ⧸ (P ⊓ K)) := {d | ∃ p ∈ P, p ∈ dblK K x ∧ d = (p : G ⧸ (P ⊓ K))}
 
 /- English proof (translation)
-Take `⟨p, hp, ⟨a, ha, b, hb, rfl⟩, rfl⟩` from `hd`. Take `⟨m, hm⟩` from `QuotientGroup.mk_out_eq_mul (P ⊓ K) (a * x * b)`. Rewrite using `[hm]`. Conclude with `⟨P.mul_mem hp m.2.1, a, ha, b * m, K.mul_mem hb m.2.2, by group⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem out_cosT {P K : Subgroup G} {x : G} {d : G ⧸ (P ⊓ K)} (hd : d ∈ cosT P K x) :
     Quotient.out d ∈ P ∧ Quotient.out d ∈ dblK K x := by
@@ -110,7 +110,7 @@ theorem out_cosT {P K : Subgroup G} {x : G} {d : G ⧸ (P ⊓ K)} (hd : d ∈ co
   exact ⟨P.mul_mem hp m.2.1, a, ha, b * m, K.mul_mem hb m.2.2, by group⟩
 
 /- English proof (translation)
-Introduce and unpack `_ ⟨a, ha, rfl⟩`. Take `⟨h1, b, hb, c, hc, e⟩` from `out_cosT hd`. Use `⟨_, P.mul_mem ha.1 (P.inv_mem h1), ⟨a * c⁻¹, K.mul_mem ha.2 (K.inv_mem hc), b⁻¹, K.inv_mem hb, ?_⟩, rfl⟩` and prove the remaining obligations. Rewrite using `[e]`. Use `group`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem orb_sub_cosT {P K : Subgroup G} {x : G} {d : G ⧸ (P ⊓ K)} (hd : d ∈ cosT P K x) :
     orb (P ⊓ K) (Quotient.out d)⁻¹ ⊆ cosT P K x⁻¹ := by
@@ -121,27 +121,27 @@ theorem orb_sub_cosT {P K : Subgroup G} {x : G} {d : G ⧸ (P ⊓ K)} (hd : d �
   group
 
 /- English proof (translation)
-Establish `bi' : ∀ a ∈ P ⊓ K, ∀ g ∈ U, ∀ b ∈ P ⊓ K, f' (a * g * b) = f' g` using `fun a ha g hg b hb => by`. Rewrite using `[hf' a ha.1 g hg b hb.2]`. Establish `: f' a = 1` using `by simpa [f1'] using hf' 1 P.one_mem 1 U.one_mem a ha.2`. Rewrite using `[this, one_mul]`. Establish `finv : ∀ p ∈ P, f p * f p⁻¹ = 1` using `fun p hp => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `hf p hp p⁻¹ (hPU (P.inv_mem hp)) 1 K.one_mem` as an intermediate fact. Rewrite `this` using `[mul_one, mul_inv_cancel, f1, eq_comm]`. Then use the resulting hypothesis. Establish `hN : ∀ y : G, (orb (P ⊓ K) y).Finite → ((orb (P ⊓ K) y).ncard : ℂ) ≠ 0` using `fun y hy => Nat.cast_ne_zero.2 ((Set.ncard_pos hy).2 ⟨_, 1, (P ⊓ K).one_mem, rfl⟩).ne'`. Establish `finA : ∀ d ∈ A, (orb (P ⊓ K) (Quotient.out d)⁻¹).Finite` using `fun d hd => hB.subset (hAB d hd)`. Establish `finB : ∀ e ∈ B, (orb (P ⊓ K) (Quotient.out e)).Finite` using `fun e he => by`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hd : (((Quotient.out e)⁻¹ : G) : G ⧸ (P ⊓ K)) ∈ A` using `hBA e he ⟨1, (P ⊓ K).one_mem, by rw [one_mul]⟩`. Take `⟨m, hm⟩` from `QuotientGroup.mk_out_eq_mul (P ⊓ K) (Quotient.out e)⁻¹`. Establish `h2` using `finA _ hd`. Rewrite `h2` using `[hm, mul_inv_rev, inv_inv, show ((m : G))⁻¹ * Quotient.out e = ((m : G))⁻¹ * Quotient.out e * 1 by rw [mul_one], orb_mul ((P ⊓ K).inv_mem m.2) (P ⊓ K).one_mem]`. Then use the resulting hypothesis. Set `w : G ⧸ (P ⊓ K) → ℂ` to `fun d => f' (Quotient.out d) / ((orb (P ⊓ K) (Quotient.out d)⁻¹).ncard : ℂ)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Introduce a local definition for the expression.
 
-Establish `s1 : ∀ d ∈ A, f' (Quotient.out d) = ∑ e ∈ hB.toFinset, if e ∈ orb (P ⊓ K) (Quotient.out d)⁻¹ then w d else 0` using `fun d hd => by`. Rewrite using `[← Finset.sum_filter, Finset.sum_const, nsmul_eq_mul]`. Establish `e : ((hB.toFinset.filter (· ∈ orb (P ⊓ K) (Quotient.out d)⁻¹) : Finset (G ⧸ (P ⊓ K))) : Set (G ⧸ (P ⊓ K))) = orb (P ⊓ K) (Quotient.out d)⁻¹`. Use extensionality with `c`. Simplify using `only [Finset.coe_filter, Set.Finite.mem_toFinset, Set.mem_ofPred_eq]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Conclude with `⟨fun h => h.2, fun h => ⟨hAB d hd h, h⟩⟩`. Rewrite using `[← Set.ncard_coe_finset, e]`. Simplify using `only [w]`. Clear denominators, using `[hN _ (finA d hd)]` for the nonvanishing conditions. Establish `s2 : ∀ e ∈ B, (∑ d ∈ hA.toFinset, if e ∈ orb (P ⊓ K) (Quotient.out d)⁻¹ then w d else 0) = f (Quotient.out e)` using `fun e he => by`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact.
 
-Establish `hr : (Quotient.out e)⁻¹ ∈ P` using `P.inv_mem (hBP e he)`. Establish `hcond : ∀ d ∈ hA.toFinset, (if e ∈ orb (P ⊓ K) (Quotient.out d)⁻¹ then w d else 0) = if d ∈ orb (P ⊓ K) (Quotient.out e)⁻¹ then f' (Quotient.out e)⁻¹ / ((orb (P ⊓ K) (Quotient.out e)).ncard : ℂ) else 0` using `fun d _ => by`. Distinguish the cases in `h1 : e ∈ orb (P ⊓ K) (Quotient.out d)⁻¹`. Establish `h2` using `orb_symm (P ⊓ K) h1`. Rewrite using `[if_pos h1, if_pos h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨a, ha, hd'⟩` from `h2`. Take `⟨m, hm⟩` from `QuotientGroup.mk_out_eq_mul (P ⊓ K) (a * (Quotient.out e)⁻¹)`. Establish `hod : Quotient.out d = a * (Quotient.out e)⁻¹ * m` using `by rw [hd', hm]`. Simplify using `only [w]`. Rewrite using `[hod, bi' a ha _ (hPU hr) m m.2, mul_inv_rev, mul_inv_rev, inv_inv, ← mul_assoc, orb_mul ((P ⊓ K).inv_mem m.2) ((P ⊓ K).inv_mem ha)]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg h1, if_neg (fun h2 => h1 (orb_symm (P ⊓ K) h2))]`. Rewrite using `[Finset.sum_congr rfl hcond, ← Finset.sum_filter, Finset.sum_const, nsmul_eq_mul]`. Establish `e1 : ((hA.toFinset.filter (· ∈ orb (P ⊓ K) (Quotient.out e)⁻¹) : Finset (G ⧸ (P ⊓ K))) : Set (G ⧸ (P ⊓ K))) = orb (P ⊓ K) (Quotient.out e)⁻¹`. Use extensionality with `c`. Simplify using `only [Finset.coe_filter, Set.Finite.mem_toFinset, Set.mem_ofPred_eq]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Conclude with `⟨fun h => h.2, fun h => ⟨hBA e he h, h⟩⟩`. Rewrite using `[← Set.ncard_coe_finset, e1, ncard_orb, ncard_orb]`. Establish `hm` using `hmod _ hr`. Rewrite `hm` using `[inv_inv]`. Establish `hn2 : ((((P ⊓ K).map (MulAut.conj (Quotient.out e)).toMonoidHom).relIndex (P ⊓ K) : ℕ) : ℂ) ≠ 0`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← ncard_orb]`. Conclude with `hN _ (finB e he)`. Establish `hfr` using `finv _ hr`. Rewrite `hfr` using `[inv_inv]`. Rewrite using `[eq_comm, ← mul_div_assoc, eq_div_iff hn2, ← hm]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `((((((P ⊓ K).map (MulAut.conj (Quotient.out e)⁻¹).toMonoidHom).relIndex (P ⊓ K) : ℕ) : ℂ)) * f' (Quotient.out e)⁻¹) * hfr`. Rewrite using `[finsum_mem_eq_finite_toFinset_sum _ hA, finsum_mem_eq_finite_toFinset_sum _ hB]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem count_core {U P K : Subgroup G} (hPU : P ≤ U) {f f' : G → ℂ} (f1 : f 1 = 1) (f1' : f' 1 = 1)
     (hf : ∀ p ∈ P, ∀ g ∈ U, ∀ k ∈ K, f (p * g * k) = f p * f g)
@@ -221,27 +221,25 @@ theorem count_core {U P K : Subgroup G} (hPU : P ≤ U) {f f' : G → ℂ} (f1 :
     _ = ∑ e ∈ hB.toFinset, f (Quotient.out e) := Finset.sum_congr rfl fun e he => s2 e (hB.mem_toFinset.1 he)
 
 /- English proof (translation)
-Establish `hKPK : P ⊓ K ≤ K` using `inf_le_right`. Set `μ : K ⧸ (conjInf K h).subgroupOf K → G ⧸ K` to `fun q => ((((Quotient.out q : K) : G) * h : G) : G ⧸ K)`. Set `ι : G ⧸ (P ⊓ K) → G ⧸ K` to `Subgroup.quotientMapOfLE hKPK`. Establish `hι : ∀ x : G, ι (x : G ⧸ (P ⊓ K)) = (x : G ⧸ K)` using `fun x => Subgroup.quotientMapOfLE_apply_mk hKPK x`. Establish `hμ : Function.Injective μ` using `fun q q' e => by`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e'` using `QuotientGroup.eq.1 e`. Rewrite using `[← QuotientGroup.out_eq' q, ← QuotientGroup.out_eq' q']`. Use `QuotientGroup.eq.2 (Subgroup.mem_subgroupOf.2 ⟨((Quotient.out q)⁻¹ * Quotient.out q').2, mem_map_conj.2 ?_⟩)` and prove the remaining obligations. Rewrite using `[Subgroup.coe_mul, Subgroup.coe_inv]`. Use `e' using 1` and compare the differences between its conclusion and the goal.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use `group`. Establish `hrange : Set.range μ = ι '' cosT P K h`. Use extensionality with `c`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨q, rfl⟩`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Take `⟨p, hp, k, hk, e⟩` from `hIw _ (U.mul_mem (hKU (Quotient.out q).2) hh)`. Use `⟨(p : G ⧸ (P ⊓ K)), ⟨p, hp, ⟨_, (Quotient.out q).2, k⁻¹, K.inv_mem hk, by rw [e, mul_inv_cancel_right]⟩, rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[hι]`. Express the relevant statement in the definitionally equal form `_ = ((((Quotient.out q : K) : G) * h : G) : G ⧸ K)`. Rewrite using `[e, mk_mul_mem _ hk]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨_, ⟨p, hp, ⟨a, ha, b, hb, rfl⟩, rfl⟩, rfl⟩`. Use `⟨((⟨a, ha⟩ : K) : K ⧸ (conjInf K h).subgroupOf K), ?_⟩` and prove the remaining obligations. Take `⟨m, hm⟩` from `QuotientGroup.mk_out_eq_mul ((conjInf K h).subgroupOf K) (⟨a, ha⟩ : K)`. Establish `hm' : ((m : K) : G) ∈ K.map (MulAut.conj h).toMonoidHom` using `(Subgroup.mem_subgroupOf.1 m.2).2`. Rewrite `hm'` using `[mem_map_conj]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `key : ((Quotient.out ((⟨a, ha⟩ : K) : K ⧸ (conjInf K h).subgroupOf K) : K) : G) = a * ((m : K) : G)`. Rewrite using `[hm]`. Both sides reduce to the same expression. Rewrite using `[hι]`. Express the relevant statement in the definitionally equal form `((((Quotient.out ((⟨a, ha⟩ : K) : K ⧸ (conjInf K h).subgroupOf K) : K) : G) * h : G) : G ⧸ K) = _`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[key, show a * ((m : K) : G) * h = a * h * (h⁻¹ * ((m : K) : G) * h) by group, mk_mul_mem _ hm', mk_mul_mem _ hb]`. Establish `hinj : Set.InjOn ι (cosT P K h)`. Introduce and unpack `_ ⟨p, hp, -, rfl⟩ _ ⟨p', hp', -, rfl⟩ e`. Rewrite `e` using `[hι, hι]`. Conclude with `QuotientGroup.eq.2 ⟨P.mul_mem (P.inv_mem hp) hp', QuotientGroup.eq.1 e⟩`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfinT : (cosT P K h).Finite`. Establish `: Finite (K ⧸ (conjInf K h).subgroupOf K)` using `Subgroup.index_ne_zero_iff_finite.1 hfin`. Conclude with `Set.Finite.of_finite_image (hrange ▸ Set.finite_range μ) hinj`. Use `⟨hfinT, ?_⟩` and prove the remaining obligations. Establish `e1 : ∀ q, φ (((Quotient.out q : K) : G) * h) = φ (Quotient.out (μ q))` using `fun q => by`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Take `⟨m, hm⟩` from `QuotientGroup.mk_out_eq_mul K (((Quotient.out q : K) : G) * h)`. Express the relevant statement in the definitionally equal form `_ = φ (Quotient.out ((((Quotient.out q : K) : G) * h : G) : G ⧸ K))`. Rewrite using `[hm, hr _ (U.mul_mem (hKU (Quotient.out q).2) hh) _ m.2]`. Establish `e2 : ∀ d ∈ cosT P K h, φ (Quotient.out (ι d)) = φ (Quotient.out d)` using `fun d hd => by`. Establish `hιd : ι d = ((Quotient.out d : G) : G ⧸ K)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hι]`. Use `congr 1`. Conclude with `(QuotientGroup.out_eq' d).symm`. Rewrite using `[hιd]`. Take `⟨m, hm⟩` from `QuotientGroup.mk_out_eq_mul K (Quotient.out d)`.
-
-Rewrite using `[hm, hr _ (hPU (out_cosT hd).1) _ m.2]`. Combine the equalities or inequalities in the displayed calculation.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem sum_eq_cosT {U K P : Subgroup G} (hKU : K ≤ U) (hPU : P ≤ U) (hIw : ∀ g ∈ U, ∃ p ∈ P, ∃ k ∈ K, g = p * k)
     {h : G} (hh : h ∈ U) (hfin : (conjInf K h).relIndex K ≠ 0) {φ : G → ℂ} (hr : ∀ g ∈ U, ∀ k ∈ K, φ (g * k) = φ g) :
@@ -307,15 +305,13 @@ theorem sum_eq_cosT {U K P : Subgroup G} (hKU : K ≤ U) (hPU : P ≤ U) (hIw : 
 end Count
 
 /- English proof (translation)
-Introduce `G _ U K P f f' hKU hPU hIw hC hfin f1 f1' hf hf' hmod h hh`. Establish `rK : ∀ φ : G → ℂ, φ 1 = 1 → (∀ p ∈ P, ∀ g ∈ U, ∀ k ∈ K, φ (p * g * k) = φ p * φ g) → ∀ g ∈ U, ∀ k ∈ K, φ (g * k) = φ g` using `fun φ h1 hφ g hg k hk => by`. Simplify `hφ 1 P.one_mem g hg k hk` using `[h1]`. Take `⟨hT, e1⟩` from `sum_eq_cosT hKU hPU hIw hh (hfin h hh) (rK f f1 hf)`. Take `⟨-, e1'⟩` from `sum_eq_cosT hKU hPU hIw hh (hfin h hh) (rK f' f1' hf')`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨k₁, hk₁, k₂, hk₂, eC⟩` from `hC h hh`. Establish `hD : ∀ y, y ∈ dblK K h⁻¹ ↔ y ∈ dblK K h` using `fun y => by`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, ha, b, hb, rfl⟩`. Conclude with `⟨a * k₁, K.mul_mem ha hk₁, k₂ * b, K.mul_mem hk₂ hb, by rw [eC]; group⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `⟨a, ha, b, hb, rfl⟩`. Use `⟨a * k₁⁻¹, K.mul_mem ha (K.inv_mem hk₁), k₂⁻¹ * b, K.mul_mem (K.inv_mem hk₂) hb, ?_⟩` and prove the remaining obligations. Rewrite using `[eC]`. Use `group`. Establish `hTi : cosT P K h⁻¹ = cosT P K h` using `Set.ext fun d => ⟨fun ⟨p, hp, hp', e⟩ => ⟨p, hp, (hD p).1 hp', e⟩, fun ⟨p, hp, hp', e⟩ => ⟨p, hp, (hD p).2 hp', e⟩⟩`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsub : ∀ d ∈ cosT P K h, orb (P ⊓ K) (Quotient.out d)⁻¹ ⊆ cosT P K h` using `fun d hd => by`. Rewrite using `[← hTi]`. Conclude with `orb_sub_cosT hd`. Establish `core` using `count_core hPU f1 f1' hf hf' hmod hT hT (fun e he => (out_cosT he).1) hsub hsub`. Unfold `avgK`.
-
-Rewrite using `[e1, e1', core]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem countSt : CountSt := by
   classical

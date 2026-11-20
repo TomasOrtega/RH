@@ -16,7 +16,7 @@ def LatticeNablaDeltaBound : Prop :=
       (∀ x ∈ Nabla (O := O) E lam v, ((p : O) ^ (N0 n * deF p n (ellWt lam))) • x ∈ Delta (O := O) E v)
 
 /- English proof (translation)
-Introduce `p n' O _ _ _ S hR n _ lam V _ _ _ _ E v hI`. Use `⟨h p n' O S hR n lam V E v hI, ?_⟩` and prove the remaining obligations. Introduce `M hM _ hl`. Use `dvr_fraction_field_char_zero_prime S hR.prime` as an intermediate fact. Conclude with `highest_weight_lattice_bounds E hI.1.2.2 lam v M hM.1 hl`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem highest_weight_lattice_of_first_part (D : Formalism.BasicNotions.D7) (h : LatticeNablaDeltaBound) : NablaDeltaComparisonField D := by
   intro p n' O _ _ _ S hR n _ lam V _ _ _ _ E v hI

@@ -15,7 +15,7 @@ section Scale
 variable {K σ : Type} [Field K] [Fintype σ]
 
 /- English proof (translation)
-Rewrite using `[aeval_monomial, monomial_eq, smul_eq_C_mul, algebraMap_eq]`. Simplify using `only [mul_pow, Finsupp.prod_mul]`. Establish `h : (m.prod fun _ e => (C t : MvPolynomial σ K) ^ e) = C (t ^ (m.sum fun _ e => e))`. Simplify using `only [Finsupp.prod, Finsupp.sum, Finset.prod_pow_eq_pow_sum, map_pow]`. Rewrite using `[h, map_pow]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -29,11 +29,11 @@ theorem brp_aeval_scale_monomial (m : σ →₀ ℕ) (c t : K) :
   ring
 
 /- English proof (translation)
-Establish `hQ' : IsWeightedHomogeneous (Formalism.GradedWeylDivisibility.colW r n) Q ν`. Simplify `hQ` using `[mem_weightedHomogeneousSubmodule]`. Establish `hdeg : ∀ m ∈ Q.support, (m.sum fun _ e => e) = ∑ s, ν s`. Introduce `m hm`. Rewrite using `[← hQ' (mem_support_iff.mp hm)]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Finsupp.weight_apply, Finsupp.sum, Finset.sum_apply, Pi.smul_apply, Formalism.GradedWeylDivisibility.colW, smul_eq_mul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun v _ => ?_` and prove the remaining obligations. Simplify using `[Pi.single_apply]`. Use `conv_lhs => rw [Q.as_sum]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `conv_rhs => rw [Q.as_sum]`. Rewrite using `[map_sum, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun m hm => ?_` and prove the remaining obligations. Rewrite using `[brp_aeval_scale_monomial, hdeg m hm]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem brp_aeval_scale_whom {r n : ℕ} (ν : Fin n → ℕ) (Q : MvPolynomial (Fin r × Fin n) K)
     (hQ : Q ∈ weightedHomogeneousSubmodule K (Formalism.GradedWeylDivisibility.colW r n) ν) (t : K) :
@@ -62,16 +62,14 @@ variable (K : Type) [Field K] {n : ℕ}
 def brpSc (t : Kˣ) : GL (Fin n) K := Units.map (algebraMap K (Matrix (Fin n) (Fin n) K)).toMonoidHom t
 
 /- English proof (translation)
-Use `show algebraMap K (Matrix (Fin n) (Fin n) K) (t : K) = _`. Conclude with `Algebra.algebraMap_eq_smul_one _`.
+A detailed English derivation is pending.
 -/
 theorem brpSc_coe (t : Kˣ) : ((brpSc K t : GL (Fin n) K) : Matrix (Fin n) (Fin n) K) = (t : K) • 1 := by
   show algebraMap K (Matrix (Fin n) (Fin n) K) (t : K) = _
   exact Algebra.algebraMap_eq_smul_one _
 
 /- English proof (translation)
-Establish `hn : 0 < n` using `Fin.pos i`. Establish `h : lam.detShift ≤ lam.w i`. Rewrite using `[DomWeight.detShift, dif_pos hn]`. Conclude with `lam.anti (show i ≤ ⟨n - 1, by omega⟩ from Fin.le_iff_val_le_val.mpr (by simp; omega))`. Simplify using `only [DomWeight.natW]`.
-
-Conclude with `Int.toNat_of_nonneg (by omega)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem brp_natW_cast (lam : DomWeight n) (i : Fin n) : ((lam.natW i : ℕ) : ℤ) = lam.w i - lam.detShift := by
   have hn : 0 < n := Fin.pos i
@@ -82,7 +80,7 @@ theorem brp_natW_cast (lam : DomWeight n) (i : Fin n) : ((lam.natW i : ℕ) : �
   exact Int.toNat_of_nonneg (by omega)
 
 /- English proof (translation)
-Use `push_cast`. Simplify using `only [brp_natW_cast, Finset.sum_sub_distrib, Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem brp_wsum (lam : DomWeight n) :
     (∑ i, lam.w i) = ((∑ i, lam.natW i : ℕ) : ℤ) + n * lam.detShift := by
@@ -92,9 +90,9 @@ theorem brp_wsum (lam : DomWeight n) :
   ring
 
 /- English proof (translation)
-Unfold `Formalism.GradedWeylDivisibility.blockAct`. Use `congr 1`. Use function extensionality and compare the values at `v`. Rewrite using `[Finset.sum_eq_single v.2.1]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `b _ hb`. Simplify using `[Matrix.one_apply_ne hb]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem brp_blockAct_scalar (t : K) :
     Formalism.GradedWeylDivisibility.blockAct K (S := Unit) (k := n) (n := n) (fun _ => ((t • 1 : Matrix (Fin n) (Fin n) K))ᵀ) =
@@ -109,7 +107,7 @@ theorem brp_blockAct_scalar (t : K) :
   · simp
 
 /- English proof (translation)
-Proceed by induction on `Q using MvPolynomial.induction_on with`. Consider the case `C a => simp`. Consider the case `add p q hp hq => simp only [map_add, hp, hq]`. Consider the case `mul_X p v hp => simp only [map_mul, rename_X, aeval_X, rename_C, hp]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem brp_aeval_scale_rename {σ τ : Type} (f : σ → τ) (t : K) (Q : MvPolynomial σ K) :
     aeval (fun v => C t * X v) (rename f Q) = rename f (aeval (fun v => C t * X v) Q) := by
@@ -119,11 +117,11 @@ theorem brp_aeval_scale_rename {σ τ : Type} (f : σ → τ) (t : K) (Q : MvPol
   | mul_X p v hp => simp only [map_mul, rename_X, aeval_X, rename_C, hp]
 
 /- English proof (translation)
-Unfold `trAct`. Simplify using `only [brpSc_coe]`. Rewrite using `[brp_blockAct_scalar]`. Proceed by induction on `hF using Submodule.span_induction with`. Consider the case `mem P hP`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately.
 
-Take `⟨G, hG, rfl⟩` from `hP`. Rewrite using `[Fintype.prod_unique]`. Unfold `Formalism.GradedWeylDivisibility.blockEmb`. Establish `hW : G default ∈ weightedHomogeneousSubmodule K (Formalism.GradedWeylDivisibility.colW n n) lam.natW` using `(Submodule.mem_inf.1 (hG default)).1`. Rewrite using `[brp_aeval_scale_rename, brp_aeval_scale_whom _ _ hW, map_smul]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [map_add, hx, hy, smul_add]`. Consider the case `smul a x _ hx => rw [map_smul, hx, smul_comm]`.
+Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem brp_trAct_scalar (lam : DomWeight n) (t : Kˣ) (F : Pol K Unit n) (hF : F ∈ VV K (oneW lam)) :
     trAct (fun _ : Unit => brpSc K t) F = (t : K) ^ (∑ i, lam.natW i) • F := by
@@ -160,14 +158,14 @@ theorem chiW_apply (lam : DomWeight n) (g : GL (Fin n) K) :
     chiW K lam g = LinearMap.det (rhoK (oneW lam) (fun _ => g)) := rfl
 
 /- English proof (translation)
-The claim follows from `((Group.isUnit g).map (chiW K lam)).ne_zero`.
+A detailed English derivation is pending.
 -/
 theorem chiW_ne_zero (lam : DomWeight n) (g : GL (Fin n) K) : chiW K lam g ≠ 0 := ((Group.isUnit g).map (chiW K lam)).ne_zero
 
 def wsum (lam : DomWeight n) : ℤ := ∑ i, lam.w i
 
 /- English proof (translation)
-Establish `hdet : Matrix.GeneralLinearGroup.det (brpSc K t : GL (Fin n) K) = t ^ n`. Apply `Units.ext` to reduce the goal to its premises. Simplify using `[Matrix.GeneralLinearGroup.val_det_apply, brpSc_coe, Matrix.det_smul]`. Simplify using `only [detTwK, detPow, Finset.univ_unique, Finset.prod_singleton, hdet]`. Rewrite using `[← zpow_natCast, ← zpow_mul, Units.val_zpow_eq_zpow_val]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem brp_detTwK_scalar (lam : DomWeight n) (t : Kˣ) :
     detTwK (oneW lam) (fun _ : Unit => brpSc K t) = (t : K) ^ ((n : ℤ) * lam.detShift) := by
@@ -178,9 +176,9 @@ theorem brp_detTwK_scalar (lam : DomWeight n) (t : Kˣ) :
   rw [← zpow_natCast, ← zpow_mul, Units.val_zpow_eq_zpow_val]
 
 /- English proof (translation)
-Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `F`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show actP (oneW lam) (fun _ => brpSc K t) F.1 = _`. Rewrite using `[LinearMap.smul_apply, Module.End.one_apply, Submodule.coe_smul, actP, LinearMap.smul_apply, AlgHom.toLinearMap_apply, brp_trAct_scalar K lam t F.1 F.2, brp_detTwK_scalar, smul_smul]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Rewrite using `[wsum, brp_wsum, zpow_add₀ (Units.ne_zero t), zpow_natCast]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem rhoK_scalar (lam : DomWeight n) (t : Kˣ) :
     rhoK (oneW lam) (fun _ => brpSc K t) = ((t : K) ^ wsum lam) • (1 : Module.End K (VV K (oneW lam))) := by
@@ -195,7 +193,7 @@ theorem rhoK_scalar (lam : DomWeight n) (t : Kˣ) :
   ring
 
 /- English proof (translation)
-Rewrite using `[chiW_apply, rhoK_scalar, LinearMap.det_smul, map_one, mul_one, zpow_mul, zpow_natCast]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem chiW_scalar (lam : DomWeight n) (t : Kˣ) :
     chiW K lam (brpSc K t) = (t : K) ^ (wsum lam * (Module.finrank K (VV K (oneW lam)) : ℤ)) := by
@@ -215,18 +213,18 @@ Both sides reduce to the same expression.
 theorem brpGL_coe (M : Matrix (Fin n) (Fin n) K) (h : IsUnit M.det) : ((brpGL K M h : GL (Fin n) K) : Matrix (Fin n) (Fin n) K) = M := rfl
 
 /- English proof (translation)
-Rewrite using `[Matrix.det_transvection_of_ne _ _ hij]`. Conclude with `isUnit_one`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem brp_isUnit_transvection (i j : Fin n) (hij : i ≠ j) (c : K) : IsUnit (Matrix.transvection i j c).det := by
   rw [Matrix.det_transvection_of_ne _ _ hij]
   exact isUnit_one
 
 /- English proof (translation)
-Establish `h1 : Matrix.diagonal (Function.update (1 : Fin n → K) i 2) * Matrix.single i j c = Matrix.single i j (2 * c)`. Use extensionality with `a b`. Rewrite using `[Matrix.diagonal_mul]`. Distinguish the cases in `ha : a = i`. Substitute `ha` using the available equality.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Apply the tactic sequence `by_cases hb : j = b <;> simp [Matrix.single_apply, hb]`. Simplify using `[Matrix.single_apply, ha, Ne.symm ha]`. Establish `h2 : Matrix.single i j (2 * c) * Matrix.diagonal (Function.update (1 : Fin n → K) i 2) = Matrix.single i j (2 * c)`. Use extensionality with `a b`. Rewrite using `[Matrix.mul_diagonal]`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hb : b = j`. Substitute `hb` using the available equality. Simplify using `[Function.update_apply, Ne.symm hij]`. Simplify using `[Matrix.single_apply, Ne.symm hb]`. Rewrite using `[Matrix.transvection, Matrix.transvection, Matrix.mul_add, Matrix.add_mul, Matrix.mul_one, Matrix.one_mul, h1, h2]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem brp_diag_transvection (i j : Fin n) (hij : i ≠ j) (c : K) :
     Matrix.diagonal (Function.update (1 : Fin n → K) i 2) * Matrix.transvection i j c =
@@ -250,13 +248,13 @@ theorem brp_diag_transvection (i j : Fin n) (hij : i ≠ j) (c : K) :
   rw [Matrix.transvection, Matrix.transvection, Matrix.mul_add, Matrix.add_mul, Matrix.mul_one, Matrix.one_mul, h1, h2]
 
 /- English proof (translation)
-Establish `hD : IsUnit (Matrix.diagonal (Function.update (1 : Fin n → K) i 2)).det`. Rewrite using `[Matrix.det_diagonal, Finset.prod_update_of_mem (Finset.mem_univ i)]`. Simplify using the standard rewrite rules. Use `set T : K → GL (Fin n) K := fun c => brpGL K (Matrix.transvection i j c) (brp_isUnit_transvection K i j hij c) with hT`. Establish `hconj : brpGL K _ hD * T c = T (2 * c) * brpGL K _ hD`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Units.ext` to reduce the goal to its premises. Simplify using `only [Units.val_mul, hT, brpGL_coe]`. Conclude with `brp_diag_transvection K i j hij c`. Establish `hsq : T c * T c = T (2 * c)`. Apply `Units.ext` to reduce the goal to its premises.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [Units.val_mul, hT, brpGL_coe]`. Simplify using `[Matrix.transvection_mul_transvection_same, hij, two_mul]`. Establish `e1 : chiW K lam (T c) = chiW K lam (T (2 * c))`. Establish `h` using `congrArg (chiW K lam) hconj`. Rewrite `h` using `[map_mul, map_mul, mul_comm (chiW K lam (T (2 * c)))]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_left_cancel₀ (chiW_ne_zero K lam _) h`. Establish `e2 : chiW K lam (T c) * chiW K lam (T c) = chiW K lam (T c)`. Rewrite using `[← map_mul, hsq, ← e1]`. Conclude with `mul_left_cancel₀ (chiW_ne_zero K lam (T c)) (by rw [e2, mul_one])`.
+A detailed English derivation is pending.
 -/
 theorem chiW_transvection (lam : DomWeight n) (i j : Fin n) (hij : i ≠ j) (c : K) :
     chiW K lam (brpGL K (Matrix.transvection i j c) (brp_isUnit_transvection K i j hij c)) = 1 := by
@@ -297,16 +295,16 @@ section ChiPow2
 variable (K : Type) [Field K] [CharZero K] {n : ℕ}
 
 /- English proof (translation)
-Rewrite using `[Matrix.det_permutation]`. Apply the tactic sequence `rcases Int.units_eq_one_or (Equiv.Perm.sign σ) with h | h <;> simp [h]`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem brp_isUnit_perm (σ : Equiv.Perm (Fin n)) : IsUnit (Equiv.Perm.permMatrix K σ).det := by
   rw [Matrix.det_permutation]
   rcases Int.units_eq_one_or (Equiv.Perm.sign σ) with h | h <;> simp [h]
 
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using `only [Matrix.mul_diagonal, Matrix.diagonal_mul, Function.comp_apply]`. Distinguish the cases in `h : σ a = b`. Substitute `h` using the available equality. Conclude with `mul_comm _ _`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[Equiv.Perm.permMatrix, PEquiv.toMatrix_apply, h]`.
+A detailed English derivation is pending.
 -/
 theorem brp_perm_diag (σ : Equiv.Perm (Fin n)) (f : Fin n → K) :
     Equiv.Perm.permMatrix K σ * Matrix.diagonal f = Matrix.diagonal (f ∘ σ) * Equiv.Perm.permMatrix K σ := by
@@ -318,11 +316,9 @@ theorem brp_perm_diag (σ : Equiv.Perm (Fin n)) (f : Fin n → K) :
   · simp [Equiv.Perm.permMatrix, PEquiv.toMatrix_apply, h]
 
 /- English proof (translation)
-Use `set P := brpGL K (Equiv.Perm.permMatrix K (Equiv.swap a b)) (brp_isUnit_perm K _) with hP`. Establish `hc : P * brpDiag K (Pi.mulSingle a t) = brpDiag K (Pi.mulSingle b t) * P`. Apply `Units.ext` to reduce the goal to its premises. Simplify using `only [Units.val_mul, hP, brpGL_coe, brpDiag_coe]`. Rewrite using `[brp_perm_diag]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 2`. Use function extensionality and compare the values at `x`. Simplify using `only [Function.comp_apply, Pi.mulSingle_apply, Equiv.swap_apply_eq_iff, Equiv.swap_apply_left]`. Establish `h` using `congrArg (chiW K lam) hc`. Rewrite `h` using `[map_mul, map_mul, mul_comm (chiW K lam (brpDiag K (Pi.mulSingle b t)))]`.
-
-Conclude with `mul_left_cancel₀ (chiW_ne_zero K lam P) h`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chiW_single_eq (lam : DomWeight n) (a b : Fin n) (t : Kˣ) :
     chiW K lam (brpDiag K (Pi.mulSingle a t)) = chiW K lam (brpDiag K (Pi.mulSingle b t)) := by
@@ -345,7 +341,7 @@ section ChiPow3
 variable (K : Type) [Field K] [CharZero K] {n : ℕ}
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[brpDiag_coe, brpSc_coe, Matrix.smul_one_eq_diagonal]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem brpDiag_const (t : Kˣ) : brpDiag K (n := n) (fun _ => t) = brpSc K t := by
   apply Units.ext
@@ -354,13 +350,11 @@ theorem brpDiag_const (t : Kˣ) : brpDiag K (n := n) (fun _ => t) = brpSc K t :=
 abbrev dimW (lam : DomWeight n) : ℕ := Module.finrank K (VV K (oneW lam))
 
 /- English proof (translation)
-Break down `Nat.eq_zero_or_pos n with hn | hn` into its components or cases. Substitute `hn` using the available equality. Simplify using the standard rewrite rules. Set `g : Kˣ →* K` to `((chiW K lam).comp (brpDiag K)).comp (MonoidHom.mulSingle (fun _ : Fin n => Kˣ) ⟨0, hn⟩)`. Establish `hg : ∀ a (u : Kˣ), chiW K lam (brpDiag K (Pi.mulSingle a u)) = g u` using `fun a u => chiW_single_eq K lam a ⟨0, hn⟩ u`.
+Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hprod : ∀ e : Fin n → Kˣ, chiW K lam (brpDiag K e) = ∏ a, g (e a)`. Introduce `e`. Use `conv_lhs => rw [← Finset.univ_prod_mulSingle e]`. Rewrite using `[← MonoidHom.comp_apply (chiW K lam) (brpDiag K), map_prod]`. Simplify using `only [MonoidHom.comp_apply, hg]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hpow : ∀ u : Kˣ, g u ^ n = (u : K) ^ (wsum lam * (dimW K lam : ℤ))`. Introduce `u`. Establish `h` using `hprod (fun _ => u)`. Rewrite `h` using `[Finset.prod_const, Finset.card_univ, Fintype.card_fin, brpDiag_const, chiW_scalar]`. Conclude with `h.symm`.
-
-Rewrite using `[hprod, ← map_prod g d, hpow, Units.coe_prod]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chiW_diag_pow (lam : DomWeight n) (d : Fin n → Kˣ) :
     chiW K lam (brpDiag K d) ^ n = (∏ a, (d a : K)) ^ (wsum lam * (dimW K lam : ℤ)) := by
@@ -384,7 +378,7 @@ theorem chiW_diag_pow (lam : DomWeight n) (d : Fin n → Kˣ) :
     rw [hprod, ← map_prod g d, hpow, Units.coe_prod]
 
 /- English proof (translation)
-Proceed by induction on `L with`. Consider the case `nil => simp`. Consider the case `cons t L ih`. Rewrite using `[List.map_cons, List.prod_cons, map_mul, ih, mul_one]`. Conclude with `chiW_transvection K lam t.i t.j t.hij t.c`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chiW_list_transvec (lam : DomWeight n) (L : List (Matrix.TransvectionStruct (Fin n) K)) :
     chiW K lam (L.map fun t => brpGL K t.toMatrix (by rw [t.det]; exact isUnit_one)).prod = 1 := by
@@ -395,7 +389,7 @@ theorem chiW_list_transvec (lam : DomWeight n) (L : List (Matrix.TransvectionStr
     exact chiW_transvection K lam t.i t.j t.hij t.c
 
 /- English proof (translation)
-Proceed by induction on `L with`. Consider the case `nil => simp`. Consider the case `cons t L ih => rw [List.map_cons, List.prod_cons, Units.val_mul, ih, brpGL_coe, List.map_cons, List.prod_cons]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem brp_coe_list_transvec (L : List (Matrix.TransvectionStruct (Fin n) K)) :
     (((L.map fun t => brpGL K t.toMatrix (by rw [t.det]; exact isUnit_one)).prod : GL (Fin n) K) :
@@ -405,7 +399,7 @@ theorem brp_coe_list_transvec (L : List (Matrix.TransvectionStruct (Fin n) K)) :
   | cons t L ih => rw [List.map_cons, List.prod_cons, Units.val_mul, ih, brpGL_coe, List.map_cons, List.prod_cons]
 
 /- English proof (translation)
-Proceed by induction on `L with`. Consider the case `nil => simp`. Consider the case `cons t L ih => rw [List.map_cons, List.prod_cons, Matrix.det_mul, ih, t.det, one_mul]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem brp_det_list_transvec (L : List (Matrix.TransvectionStruct (Fin n) K)) :
     (L.map Matrix.TransvectionStruct.toMatrix).prod.det = 1 := by
@@ -414,11 +408,11 @@ theorem brp_det_list_transvec (L : List (Matrix.TransvectionStruct (Fin n) K)) :
   | cons t L ih => rw [List.map_cons, List.prod_cons, Matrix.det_mul, ih, t.det, one_mul]
 
 /- English proof (translation)
-Take `⟨L, L', D, hM⟩` from `Matrix.Pivot.exists_list_transvec_mul_diagonal_mul_list_transvec (g : Matrix (Fin n) (Fin n) K)`. Establish `hdetD : (Matrix.diagonal D).det = (g : Matrix (Fin n) (Fin n) K).det`. Rewrite using `[hM, Matrix.det_mul, Matrix.det_mul, brp_det_list_transvec, brp_det_list_transvec, one_mul, mul_one]`. Establish `hunit : ∀ a, IsUnit (D a)`. Introduce `a`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hg : IsUnit (g : Matrix (Fin n) (Fin n) K).det` using `Matrix.isUnits_det_units g`. Rewrite `hg` using `[← hdetD, Matrix.det_diagonal]`. Conclude with `isUnit_of_dvd_unit (Finset.dvd_prod_of_mem D (Finset.mem_univ a)) hg`. Set `d : Fin n → Kˣ` to `fun a => (hunit a).unit`. Establish `hDd : Matrix.diagonal D = Matrix.diagonal fun a => (d a : K)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[d]`. Establish `hg : g = (L.map fun t => brpGL K t.toMatrix (by rw [t.det]; exact isUnit_one)).prod * brpDiag K d * (L'.map fun t => brpGL K t.toMatrix (by rw [t.det]; exact isUnit_one)).prod`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[Units.val_mul, Units.val_mul, brp_coe_list_transvec, brp_coe_list_transvec, brpDiag_coe, ← hDd, hM]`. Rewrite using `[← hdetD, hDd, Matrix.det_diagonal, hg, map_mul, map_mul, chiW_list_transvec, chiW_list_transvec, one_mul, mul_one, chiW_diag_pow]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chiW_pow (lam : DomWeight n) (g : GL (Fin n) K) :
     chiW K lam g ^ n = ((g : Matrix (Fin n) (Fin n) K).det) ^ (wsum lam * (dimW K lam : ℤ)) := by

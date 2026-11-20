@@ -18,20 +18,20 @@ variable {S S' : Scheme.{0}} {G : Over S} {G' : Over S'} [GrpObj G] [GrpObj G'] 
   {φ : G'.left ⟶ G.left}
 
 /- English proof (translation)
-The claim follows from `congrArg (fun p => p.left) (map_one (pushHom h T))`.
+A detailed English derivation is pending.
 -/
 theorem one_left_comp (h : IsGrpPullback G' G f φ) (T : Over S') :
     (1 : T ⟶ G').left ≫ φ = (1 : Over.mk (T.hom ≫ f) ⟶ G).left :=
   congrArg (fun p => p.left) (map_one (pushHom h T))
 
 /- English proof (translation)
-Establish `one` using `one_left_comp h (Over.mk z)`. Establish `wv` using `Over.w v'`. Prove the components needed by the constructor for the conclusion. Introduce `hv`. Unfold `IsTanAt at hv ⊢`.
+Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Rewrite using `[e, ← Category.assoc, hv]`. Conclude with `one`. Introduce `hv`. Unfold `IsTanAt at hv ⊢`. Apply `h.1.hom_ext` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Category.assoc, ← e, hv]`. Conclude with `one.symm`. Establish `w1` using `Over.w (1 : Over.mk z ⟶ G')`. Rewrite using `[Category.assoc, w1, wv]`. Use `show Spec.map _ ≫ Spec.map _ ≫ z = z`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Rewrite using `[← Category.assoc, ← Spec.map_comp]`. Establish `e₁ : CommRingCat.ofHom (algebraMap ℂ (DualNumber ℂ)) ≫ CommRingCat.ofHom (TrivSqZeroExt.fstHom ℂ ℂ ℂ).toRingHom = 𝟙 _`. Use extensionality with `x`. Simplify using the standard rewrite rules. Rewrite using `[e₁, Spec.map_id, Category.id_comp]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isTanAt_iff (h : IsGrpPullback G' G f φ) (z : Spec (CommRingCat.of ℂ) ⟶ S') (v' : epsAt z ⟶ G')
     (v : epsAt (z ≫ f) ⟶ G) (e : v.left = v'.left ≫ φ) : IsTanAt G' z v' ↔ IsTanAt G (z ≫ f) v := by
@@ -60,7 +60,7 @@ theorem isTanAt_iff (h : IsGrpPullback G' G f φ) (z : Spec (CommRingCat.of ℂ)
 variable {X X' : Scheme.{0}}
 
 /- English proof (translation)
-Establish `hP : (L'.pull p).IsLB` using `pull_isLB hL' p`. Establish `hr` using `(isGen_iff _).1 (GlobalTheory.TorsionTauCompare.isGen_refl hP)`. Establish `hw'` using `(isGen_iff _).1 hw`. Take `⟨w₂, T⟩` from `exists_comp hL' w _ hw' hr hL hP`. Conclude with `⟨w₂, (isGen_iff _).2 (T.pgen_comp hL' hw' hr)⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_iso_comp {Y : Scheme.{0}} {L : LB X} {L' : LB X'} {F : X' ⟶ X} (hL : L.IsLB) (hL' : L'.IsLB)
     {w : LB.Iso L' (L.pull F)} (hw : w.IsGen) (p : Y ⟶ X') :
@@ -72,7 +72,7 @@ theorem exists_iso_comp {Y : Scheme.{0}} {L : LB X} {L' : LB X'} {F : X' ⟶ X} 
   exact ⟨w₂, (isGen_iff _).2 (T.pgen_comp hL' hw' hr)⟩
 
 /- English proof (translation)
-Establish `hP : (L.pull (p ≫ F)).IsLB` using `pull_isLB hL (p ≫ F)`. Establish `hr` using `(isGen_iff _).1 (GlobalTheory.TorsionTauCompare.isGen_refl hP)`. Establish `hw'` using `(isGen_iff _).1 hw`. Take `⟨w₂, T⟩` from `exists_cancel hL w _ hw' hr hL' hP`. Conclude with `⟨w₂, (isGen_iff _).2 (T.pgen_cancel hL hw' hr)⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_iso_cancel {Y : Scheme.{0}} {L : LB X} {L' : LB X'} {F : X' ⟶ X} (hL : L.IsLB) (hL' : L'.IsLB)
     {w : LB.Iso L' (L.pull F)} (hw : w.IsGen) (p : Y ⟶ X') :
@@ -86,17 +86,17 @@ theorem exists_iso_cancel {Y : Scheme.{0}} {L : LB X} {L' : LB X'} {F : X' ⟶ X
 end TripleHodge
 
 /- English proof (translation)
-Introduce `E _ _ _ H X t X' t' f m z v' w' v w c hv hw`. Take `⟨i, hi, -, -⟩` from `m.lin`. Establish `tv` using `TripleHodge.isTanAt_iff m.cart z v' v hv`. Establish `tw` using `TripleHodge.isTanAt_iff m.cart z w' w hw`. Establish `hL` using `t.PP.isLB`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hL'` using `t'.PP.isLB`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨-, h₁, h₂, A, _, φ, g, u, Hm, χ, a', b', a, b, p₁, p₂, p₃, p₄, p₅, p₆, rfl⟩`. Take `⟨i₂, hi₂⟩` from `TripleHodge.exists_iso_comp hL hL' hi φ`. Establish `hP` using `pull_isLB hL' φ`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hQ` using `pull_isLB hL (φ ≫ m.φ)`. Use `⟨hL, tv.1 h₁, tw.1 h₂, A, inferInstance, φ ≫ m.φ, g, GlobalTheory.TorsionTauCompare.transport hP hQ hi₂ u, Hm, χ, a', b', a, b, p₁.comp m.cart, GlobalTheory.TorsionTauCompare.isAH_transport hP hQ hi₂ u p₂, ?_, ?_, p₅, p₆, rfl⟩` and prove the remaining obligations. Rewrite using `[hv, ← p₃, Category.assoc]`. Rewrite using `[hw, ← p₄, Category.assoc]`. Introduce and unpack `⟨-, h₁, h₂, A, _, ψ, g, u, Hm, χ, a', b', a, b, p₁, p₂, p₃, p₄, p₅, p₆, rfl⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Take `⟨φ, rfl, hφ⟩ : ∃ φ : A.left ⟶ t'.G.left, φ ≫ m.φ = ψ ∧ φ ≫ t'.G.hom = A.hom ≫ z` from `⟨m.cart.1.lift ψ (A.hom ≫ z) (by rw [p₁.1.w, Category.assoc]), m.cart.1.lift_fst _ _ _, m.cart.1.lift_snd _ _ _⟩`. Take `⟨i₂, hi₂⟩` from `TripleHodge.exists_iso_cancel hL hL' hi φ`. Establish `hP` using `pull_isLB hL (φ ≫ m.φ)`. Establish `hQ` using `pull_isLB hL' φ`. Establish `lift : ∀ (x : epsR ℂ ⟶ A) (y : epsAt z ⟶ t'.G) (y₀ : epsAt (z ≫ f) ⟶ t.G), y₀.left = y.left ≫ m.φ → x.left ≫ φ ≫ m.φ = y₀.left → x.left ≫ φ = y.left`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `x y y₀ e e'`. Apply `m.cart.1.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, e', e]`. Rewrite using `[Category.assoc, hφ, ← Category.assoc, Over.w x, Over.w y]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Conclude with `⟨hL', tv.2 h₁, tw.2 h₂, A, inferInstance, φ, g, GlobalTheory.TorsionTauCompare.transport hP hQ hi₂ u, Hm, χ, a', b', a, b, IsGrpPullback.cancel m.cart p₁ hφ, GlobalTheory.TorsionTauCompare.isAH_transport hP hQ hi₂ u p₂, lift a' v' v hv p₃, lift b' w' w hw p₄, p₅, p₆, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem hodgeInnerProduct_tripleMap_iff : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (X : Scheme.{0})
     (t : SAB H X) (X' : Scheme.{0}) (t' : SAB H X') (f : X' ⟶ X) (m : SABMap t' t f)

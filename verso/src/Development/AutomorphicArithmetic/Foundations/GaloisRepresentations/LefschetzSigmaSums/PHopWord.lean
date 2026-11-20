@@ -14,7 +14,7 @@ open UpperTheory.Gal.G3 (Tower Th)
 variable {B : AlgebraicGeometry.Scheme.{0}} {Γ : Type} [Group Γ] (X : Tower B Γ) (T : Th.{0} B ℂ)
 
 /- English proof (translation)
-Establish `h` using `(hL X T hT j 0 0 0 hz hz).2`. Simplify using `using h`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem hecke_zero (hL : UpperTheory.Gal.G3.HopLin.{0}) (hT : T.Good) (j : X.ι) (hz : X.IsFn j (0 : Γ → ℂ)) :
     X.hecke T j 0 = 0 := by
@@ -22,9 +22,9 @@ private theorem hecke_zero (hL : UpperTheory.Gal.G3.HopLin.{0}) (hT : T.Good) (j
   simpa using h
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => exact ⟨by simpa using hz, by simpa using hecke_zero X T hL hT j hz⟩`. Consider the case `insert a s ha ih`. Take `⟨h1, h2⟩` from `ih fun i hi => hf i (Finset.mem_insert_of_mem hi)`. Establish `h3` using `hsm (c a) (f a) (hf a (Finset.mem_insert_self a s))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[Finset.sum_insert ha, Finset.sum_insert ha]`. Use `⟨hadd _ _ h3 h1, ?_⟩` and prove the remaining obligations. Rewrite using `[(hL X T hT j _ _ 0 h3 h1).1, h2, (hL X T hT j (f a) (f a) (c a) (hf a (Finset.mem_insert_self a s)) (hf a (Finset.mem_insert_self a s))).2]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 private theorem hecke_sum (hL : UpperTheory.Gal.G3.HopLin.{0}) (hT : T.Good) (j : X.ι) (hz : X.IsFn j (0 : Γ → ℂ))
     (hadd : ∀ f f' : Γ → ℂ, X.IsFn j f → X.IsFn j f' → X.IsFn j (f + f'))
@@ -45,15 +45,15 @@ private theorem hecke_sum (hL : UpperTheory.Gal.G3.HopLin.{0}) (hT : T.Good) (j 
 end UpperTheory.Gal.LocalSmoothExtension
 
 /- English proof (translation)
-Introduce `hR hL hM B Γ _ X T hT j`. Take `⟨-, hz, hfg, hsm⟩` from `hR X ℂ j`. Establish `hadd : ∀ f f' : Γ → ℂ, X.IsFn j f → X.IsFn j f' → X.IsFn j (f + f')` using `fun f f' a b => (hfg f f' a b).1`. Use `⟨fun m f c hf => hecke_sum X T hL hT j hz hadd hsm Finset.univ f c fun i _ => hf i, ?_⟩` and prove the remaining obligations. Introduce `J ψ f hψ hf`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hw : ∀ w : List J, X.IsFn j (wordFn (X.K j) ψ w f) ∧ X.hecke T j (wordFn (X.K j) ψ w f) = (w.map fun i => X.hecke T j (ψ i)).prod * X.hecke T j f`. Introduce `w`. Proceed by induction on `w with`. Consider the case `nil => exact ⟨hf, by simp [wordFn]⟩`. Consider the case `cons i w ih`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Take `⟨h1, h2⟩` from `ih`. Establish `e : wordFn (X.K j) ψ (i :: w) f = UpperTheory.Gal.G3.conv (X.K j) (ψ i) (wordFn (X.K j) ψ w f)` using `rfl`. Rewrite using `[e]`. Use `⟨(hfg _ _ (hψ i) h1).2, ?_⟩` and prove the remaining obligations. Rewrite using `[hM X T hT j _ _ (hψ i) h1, h2, List.map_cons, List.prod_cons, mul_assoc]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨hw, fun s => ?_⟩` and prove the remaining obligations. Establish `hs` using `hecke_sum X T hL hT j hz hadd hsm s.support (fun w => wordFn (X.K j) ψ w f) s fun w _ => (hw w).1`. Establish `e : polyFn (X.K j) ψ s f = ∑ w ∈ s.support, s w • wordFn (X.K j) ψ w f` using `rfl`. Rewrite using `[e]`. Use `⟨hs.1, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hs.2]`. Unfold `UpperTheory.Gal.CertificateRingHomMap.wop Finsupp.sum`. Rewrite using `[Finset.sum_mul]`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Rewrite using `[(hw w).2, smul_mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem UpperTheory.Gal.LocalSmoothExtension.hopWord_of :
     UpperTheory.Gal.G3.FnRing → UpperTheory.Gal.G3.HopLin.{0} → UpperTheory.Gal.G3.HopMul.{0} → HopWord := by

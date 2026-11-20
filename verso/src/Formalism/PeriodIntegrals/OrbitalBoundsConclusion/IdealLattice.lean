@@ -5,7 +5,7 @@ import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.IdealLatticeBasis.OKAre
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.IdealLatticeBasis.IdealBasis
 
 /- English proof (translation)
-The claim follows from `PI.IdealLatticeWork.idealLattice_of PI.IdealLatticeWork.okArea PI.IdealLatticeWork.idealBasis`.
+A detailed English derivation is pending.
 -/
 theorem ideal_lattice_basis : PI.IdealLattice :=
   PI.IdealLatticeWork.idealLattice_of PI.IdealLatticeWork.okArea PI.IdealLatticeWork.idealBasis

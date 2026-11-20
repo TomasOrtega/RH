@@ -32,21 +32,19 @@ namespace GlobalTheory.Mem.Lift
 variable {D : D7} {θ : InfF D}
 
 /- English proof (translation)
-Establish `hD` using `GlobalTheory.T.smoothCuspForm_mem_unitaryRapidDecayForms hP D θ hθ V F hF`. Take `⟨h1, h2, ⟨N, h3⟩, h4⟩` from `GlobalTheory.T.thetaKernelLift_converges_continuous_growth_deriv D θ hθ V W M κ hκ μ 𝓕 hq F hD`. Set `L : M → GA D W → ℂ` to `fun f h => ∫ g in 𝓕, κ f g h * F g ∂μ`. Establish `hd : ∀ f τ, ∀ X ∈ lieAt W τ, ∃ f', ∀ h, HasDerivAt (fun t : ℝ => L f (h * oneP θ W τ X t)) (L f' h) 0` using `fun f τ X hX => (hκ.derW τ X hX f).imp fun f' e => h4 τ X hX f f' e`. Use `⟨h1 f, ⟨fun γ hγ h => ?_, ?_, h2 f⟩, ?_, GlobalTheory.T.kernelLift_gelfandInvariantFinite_of_finite D θ hθ V W M κ hκ μ 𝓕 hq F hD hF.1.zfin f, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `fun g => hκ.left f 1 (one_mem _) γ hγ g h` as an intermediate fact. Simplify using `only [one_mul] at this`. Simplify using `only [this]`. Take `⟨U, U', -, hU', e⟩` from `hκ.level f`. Use `⟨U', hU', fun k a b h => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `fun g => e 1 (one_mem _) (one_mem _) k a b g h` as an intermediate fact. Simplify using `only [mul_one] at this`. Simplify using `only [this]`. Use `GlobalTheory.T.mem_smoothFunctions_of_closed_rightDerivatives D θ hθ W (Set.range L) ?_ ?_ _ ⟨f, rfl⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨f, rfl⟩`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Conclude with `h2 f`. Introduce and unpack `_ ⟨f, rfl⟩ τ X hX`. Take `⟨f', e⟩` from `hd f τ X hX`. Conclude with `⟨_, ⟨f', rfl⟩, e⟩`. Take `⟨K, hK⟩` from `GlobalTheory.T.unitaryAdelicHeight_coset_le_normInf_pow D θ W`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨K * N, fun l hl x => ?_⟩` and prove the remaining obligations. Establish `hw : ∃ f', l.foldr (fun p φ => Rder θ W p.1 p.2 φ) (L f) = L f'`. Proceed by induction on `l with`. Consider the case `nil => exact ⟨f, rfl⟩`. Consider the case `cons p l ih`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨f', e⟩` from `ih fun q hq => hl q (List.mem_cons_of_mem _ hq)`. Take `⟨f'', e'⟩` from `hd f' p.1 p.2 (hl p List.mem_cons_self)`. Conclude with `⟨f'', by rw [List.foldr_cons, e]; exact funext fun h => (e' h).deriv⟩`. Take `⟨f', e⟩` from `hw`. Take `⟨C, hC⟩` from `h3 f'`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨C', hC'⟩` from `hK x`. Use `⟨|C| * C' ^ N, fun g hg => ?_⟩` and prove the remaining obligations. Rewrite using `[show (fun h => ∫ g in 𝓕, κ f g h * F g ∂μ) = L f from rfl, e]`. Use `(hC _).trans ?_` and prove the remaining obligations. Rewrite using `[pow_mul, mul_assoc, ← mul_pow]`.
-
-Conclude with `mul_le_mul (le_abs_self _) (pow_le_pow_left₀ (NNReal.coe_nonneg _) (hC' g hg) N) (pow_nonneg (NNReal.coe_nonneg _) N) (abs_nonneg _)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsKerSys.lift (hP : GlobalTheory.Published.CuspRapidDecay) (hθ : IsInfFam θ) {V W : HSp D} {M : Type} [AddCommGroup M]
     [Module ℂ M] {κ : M →ₗ[ℂ] (GA D V → GA D W → ℂ)} (hκ : IsKerSys θ V W κ) {μ : Measure (GA D V)}
@@ -98,28 +96,28 @@ def matLin {A : Type} [Ring A] [Algebra ℂ A] {n : ℕ} (E : Fin n → Fin n �
   map_smul' c X := by simp [Finset.smul_sum, mul_smul]
 
 /- English proof (translation)
-Simplify using `[matLin, Matrix.single, ite_and]`.
+Simplify using the standard rewrite rules.
 -/
 theorem matLin_single {A : Type} [Ring A] [Algebra ℂ A] {n : ℕ} (E : Fin n → Fin n → A) (i j : Fin n) :
     matLin E (Matrix.single i j 1) = E i j := by
   simp [matLin, Matrix.single, ite_and]
 
 /- English proof (translation)
-Establish `cont : ∀ f, Continuous fun p : GA D S × GA D T => thKer ψ S T om f p.1 p.2` using `fun f => hc f.1 f.2 0`. Establish `left : ∀ f, ∀ γ ∈ GQ S, ∀ δ ∈ GQ T, ∀ g h, thKer ψ S T om f (γ * g) (δ * h) = thKer ψ S T om f g h`. Introduce `f γ hγ δ hδ g h`. Establish `e : om (γ * g, δ * h) = om (γ, δ) * om (g, h)` using `by rw [← map_mul]; rfl`. Express the relevant statement in the definitionally equal form `om (γ * g, δ * h) f.1 0 = om (g, h) f.1 0`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[e]`. Conclude with `hw.om_aut γ hγ δ hδ _ (hw.om_pres _ _ f.2)`. Establish `level : ∀ f, ∃ (U : Subgroup (GA D S)) (U' : Subgroup (GA D T)), IsOpen (U : Set (GA D S)) ∧ IsOpen (U' : Set (GA D T)) ∧ ∀ k ∈ U, k ∈ GfC S → ∀ k' ∈ U', k' ∈ GfC T → ∀ g h, thKer ψ S T om f (g * k) (h * k') = thKer ψ S T om f g h`. Introduce `f`. Take `⟨U, U', a, b, e⟩` from `GlobalTheory.T.exists_open_level_fixing_theta_function D ψ hψ S T om hw hc f.1 f.2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨U, U', a, b, fun k h1 h2 k' h3 h4 g h => ?_⟩` and prove the remaining obligations. Establish `e' : om (g * k, h * k') = om (g, h) * om (k, k')` using `by rw [← map_mul]; rfl`. Express the relevant statement in the definitionally equal form `om (g * k, h * k') f.1 0 = om (g, h) f.1 0`. Rewrite using `[e', Module.End.mul_apply, e k h1 h2 k' h3 h4]`. Take `⟨x, d, hx⟩` from `GlobalTheory.T.thetaKernel_lieAction_through_weylAlgebra D ψ hψ S T om hw hc θ hθ`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `derV : ∀ τ, ∀ X ∈ lieAt S τ, ∀ f, ∃ f', ∀ g h, HasDerivAt (fun t : ℝ => thKer ψ S T om f (g * oneP θ S τ X t) h) (thKer ψ S T om f' g h) 0` using `fun τ X hX f => ((hx τ).2.2 X hX).elim fun _ e => ⟨_, e f⟩`. Establish `derW : ∀ τ, ∀ X ∈ lieAt T τ, ∀ f, ∃ f', ∀ g h, HasDerivAt (fun t : ℝ => thKer ψ S T om f g (h * oneP θ T τ X t)) (thKer ψ S T om f' g h) 0` using `fun τ X hX f => ((hx τ).2.1 X hX).elim fun _ e => ⟨_, e f⟩`. Use `⟨cont, left, level, ?_, derV, derW, fun τ => ?_⟩` and prove the remaining obligations. Take `⟨N, hN⟩` from `GlobalTheory.T.weilRep_thetaFunction_polynomialGrowth_realPoints D ψ hψ S T om hw θ hθ`. Take `⟨N', hN'⟩` from `GlobalTheory.T.adelicHeight_growth_of_cosetGrowth_unitaryPair D θ hθ S T N`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨N', fun f => hN' _ (left f) (level f) fun x y => (hN f.1 f.2 x y).imp fun C e a ha b hb => e a ha b hb 0⟩`. Establish `sT : ∀ f g, thKer ψ S T om f g ∈ SmFun θ T` using `fun f g => by`. Use `GlobalTheory.T.mem_smoothFunctions_of_closed_rightDerivatives D θ hθ T (Set.range fun f => thKer ψ S T om f g) ?_ ?_ _ ⟨f, rfl⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨f, rfl⟩`. Conclude with `(cont f).comp (Continuous.prodMk_right g)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Introduce and unpack `_ ⟨f, rfl⟩ τ X hX`. Take `⟨f', e⟩` from `derW τ X hX f`. Conclude with `⟨_, ⟨f', rfl⟩, e g⟩`. Establish `sS : ∀ f h, swapKer (thKer ψ S T om) f h ∈ SmFun θ S` using `fun f h => by`. Use `GlobalTheory.T.mem_smoothFunctions_of_closed_rightDerivatives D θ hθ S (Set.range fun f => swapKer (thKer ψ S T om) f h) ?_ ?_ _ ⟨f, rfl⟩` and prove the remaining obligations.
+Supply the required witnesses or components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ ⟨f, rfl⟩`. Conclude with `(cont f).comp (Continuous.prodMk_left h)`. Introduce and unpack `_ ⟨f, rfl⟩ τ X hX`. Take `⟨f', e⟩` from `derV τ X hX f`. Conclude with `⟨_, ⟨f', rfl⟩, fun g => e g h⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨g1, g2⟩` from `GlobalTheory.T.glRel_of_canonicalCommutationRelations _ _ _ (x τ) (d τ) (hx τ).1`. Take `⟨c, e1⟩` from `GlobalTheory.T.gelfandInvariants_act_kernelFamily_shifted D θ hθ T _ _ (thKer ψ S T om) sT τ (matLin fun i j => ∑ a, x τ (i, a) * d τ (j, a)) (by simpa only [matLin_single] using g1) (hx τ).2.1`. Take `⟨c', e2⟩` from `GlobalTheory.T.gelfandInvariants_act_kernelFamily_shifted D θ hθ S _ _ (swapKer (thKer ψ S T om)) sS τ (matLin fun a b => -∑ i, x τ (i, b) * d τ (i, a)) (by simpa only [matLin_single] using g2) fun Y hY => ((hx τ).2.2 Y hY).imp fun _ e f h g => e f g h`. Simplify using `only [matLin_single] at e1 e2`. Conclude with `⟨_, _, e2, e1, (GlobalTheory.T.adjoin_gelfandInvariants_dual_pair_eq _ _ _ (x τ) (d τ) (hx τ).1 c c').symm⟩`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isKerSys_thKer (hθ : IsInfFam θ) {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1)) {S T : HSp D}
     {om : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ)} (hw : GlobalTheory.Ker.IsWeak ψ S T om) (hc : OmCont ψ S T om) :
@@ -176,16 +174,16 @@ theorem isKerSys_thKer (hθ : IsInfFam θ) {ψ : AddChar (AF D.host.F) ℂ} (hψ
     exact ⟨_, _, e2, e1, (GlobalTheory.T.adjoin_gelfandInvariants_dual_pair_eq _ _ _ (x τ) (d τ) (hx τ).1 c c').symm⟩
 
 /- English proof (translation)
-Unfold `toTWsmall`. Rewrite using `[Matrix.zero_mul, Matrix.transpose_zero]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem toTWsmall_zero (S T : HSp D) : toTWsmall S T 0 = 0 := by
   unfold toTWsmall
   rw [Matrix.zero_mul, Matrix.transpose_zero]
 
 /- English proof (translation)
-Take `⟨om, H, e⟩` from `GlobalTheory.T.exists_orientedWeilDatum_of_adelicWeilRep_theta D ψ hψ V W χ χ' _ ha hr (Wf.core.weil V W χ χ' ha)`. Take `⟨E, -, -, hE, -, -, -, h7, -⟩` from `GlobalTheory.OrientedCoord.exists_coord D V W hr.le`. Use `⟨om, GlobalTheory.Ker.isWeak_of_datum H, H.om_cont, fun Φ => ⟨⟨fun x => Φ.1 (toTWsmall V W x), ?_⟩, fun g h => ?_⟩⟩` and prove the remaining obligations. Use `(h7 ψ Φ.1).2 (mem_ThS.1 Φ.2)` as an intermediate fact. Simplify using `only [hE] at this`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `this`. Use `congrFun (e (g, h) Φ) 0` as an intermediate fact. Rewrite `this` using `[toTWsmall_zero]`. Conclude with `this.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_thKer {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1)) (Wf : WeilFun D ψ) {V W : HSp D}
     {χ χ' : IdC D} (ha : admitted V W χ χ') (hr : V.rank < W.rank) :
@@ -202,11 +200,11 @@ theorem exists_thKer {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1)
     exact this.symm
 
 /- English proof (translation)
-Introduce `hP D θ hθ ψ hψ Wf V W χ χ' ha μ 𝓕 hq Φ F hF`. Break down `lt_or_gt_of_ne ha.1 with hr | hr` into its components or cases. Take `⟨om, hw, hc, e⟩` from `exists_thKer hψ Wf ha hr`. Take `⟨f, e⟩` from `e Φ`. Simplify using `only [e]`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Conclude with `(isKerSys_thKer hθ hψ hw hc).lift hP hθ hq hF f`. Establish `ha' : admitted W V χ' χ` using `⟨ha.1.symm, ha.2.2.1, ha.2.1, ha.2.2.2.2, ha.2.2.2.1⟩`. Take `⟨om, hw, hc, e⟩` from `exists_thKer hψ Wf ha' hr`. Establish `hΦ` using `(GlobalTheory.Mem.ThetaClosed.thetaFun_closed D ψ hψ V W Φ.1).2.2 ha.1 (mem_ThS.1 Φ.2)`. Take `⟨f, e⟩` from `e ⟨_, mem_ThS.2 hΦ⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e' : ∀ g h, Wf.ker V W χ χ' Φ g h = swapKer (thKer ψ W V om) f g h` using `fun g h => (Wf.om_swap V W χ χ' ha g h Φ ⟨_, mem_ThS.2 hΦ⟩ (fun _ => rfl) 0).symm.trans (e h g)`. Simplify using `only [e']`. Conclude with `(isKerSys_thKer hθ hψ hw hc).swap.lift hP hθ hq hF f`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem liftAut : GlobalTheory.Published.CuspRapidDecay → ∀ D : D7, LiftAut D := by
   intro hP D θ hθ ψ hψ Wf V W χ χ' ha μ 𝓕 hq Φ F hF

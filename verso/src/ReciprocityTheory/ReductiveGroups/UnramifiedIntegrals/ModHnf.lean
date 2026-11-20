@@ -9,27 +9,23 @@ open ModularForm EisensteinSeries ModularFormClass UpperHalfPlane Formalism.L2.T
 namespace ReciprocityTheory.ChartRestriction.L1
 
 /- English proof (translation)
-Establish `hm' : (0 : ℤ) < m` using `by exact_mod_cast hm`. Use `set g : ℕ := Int.gcd p r with hg`. Establish `hg0 : 0 < g`. Break down `Nat.eq_zero_or_pos g with h0 | h0` into its components or cases. Rewrite `h0` using `[hg, Int.gcd_eq_zero_iff]`.
+Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[h0.1, h0.2]`. Simplify using `at h`. Use linear arithmetic over natural numbers and integers. Conclude with `h0`. Establish `hgZ : (0 : ℤ) < g` using `by exact_mod_cast hg0`.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨x, hx⟩ : (g : ℤ) ∣ p` from `Int.gcd_dvd_left p r`. Take `⟨z, hz⟩ : (g : ℤ) ∣ r` from `Int.gcd_dvd_right p r`. Use `set u := Int.gcdA p r`. Use `set v := Int.gcdB p r`. Establish `hbez : (g : ℤ) = p * u + r * v` using `Int.gcd_eq_gcd_ab p r`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `h1 : x * u + z * v = 1`. Establish `: (g : ℤ) * (x * u + z * v) = g * 1`. Rewrite using `[mul_one]`. Use `conv_rhs => rw [hbez, hx, hz]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Conclude with `mul_left_cancel₀ hgZ.ne' this`. Use `set E : ℤ := x * s - z * q with hE`. Establish `hgE : (g : ℤ) * E = m` using `by rw [← h, hx, hz, hE]; ring`. Establish `hE0 : 0 < E`. Assume the negation of the conclusion as `hc`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: (g : ℤ) * E ≤ 0` using `mul_nonpos_of_nonneg_of_nonpos hgZ.le (not_lt.mp hc)`. Use linear arithmetic over natural numbers and integers. Use `set b0 : ℤ := u * q + v * s with hb0`. Establish `hmod0 : 0 ≤ b0 % E` using `Int.emod_nonneg _ hE0.ne'`. Establish `hmod1 : b0 % E < E` using `Int.emod_lt_of_pos _ hE0`.
+Reduce the conclusion to the remaining proof obligations. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
 
-Establish `hdiv : b0 % E + E * (b0 / E) = b0` using `Int.emod_add_mul_ediv b0 E`. Use `set k := b0 / E`. Use `set B := b0 % E`. Establish `hEn : ((E.toNat : ℕ) : ℤ) = E` using `Int.toNat_of_nonneg hE0.le`. Establish `hBn : ((B.toNat : ℕ) : ℤ) = B` using `Int.toNat_of_nonneg hmod0`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Use `⟨x, x * k - v, z, z * k + u, g, B.toNat, E.toNat, ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Take the linear combination `h1`. Establish `: ((g * E.toNat : ℕ) : ℤ) = m` using `by push_cast; rw [hEn]; exact hgE`. Conclude with `this` after adjusting the coercions. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hx]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hEn, hBn]`. Establish `: x * B + (x * k - v) * E = x * b0 - v * E` using `by rw [← hdiv]; ring`. Rewrite using `[this, hb0, hE]`.
-
-Take the linear combination `(-q) * h1`. Rewrite using `[hz]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hEn, hBn]`. Establish `: z * B + (z * k + u) * E = z * b0 + u * E` using `by rw [← hdiv]; ring`.
-
-Rewrite using `[this, hb0, hE]`. Take the linear combination `(-s) * h1`.
+Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem exists_hermite_normal_form_coords {m : ℕ} (hm : 0 < m) (p q r s : ℤ) (h : p * s - q * r = m) :
     ∃ (x y z w : ℤ) (a b e : ℕ), x * w - y * z = 1 ∧ a * e = m ∧ b < e ∧
@@ -85,9 +81,9 @@ theorem exists_hermite_normal_form_coords {m : ℕ} (hm : 0 < m) (p q r s : ℤ)
     linear_combination (-s) * h1
 
 /- English proof (translation)
-Rewrite `hM` using `[Matrix.det_fin_two]`. Take `⟨x, y, z, w, a, b, e, hdet, hae, hbe, h00, h01, h10, h11⟩` from `exists_hermite_normal_form_coords hm (M 0 0) (M 0 1) (M 1 0) (M 1 1) hM`. Use `⟨⟨!![x, y; z, w], by rw [Matrix.det_fin_two_of]; exact hdet⟩, (a, b, e), (mem_Tm hm _).2 ⟨hae, hbe⟩, ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;>`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 
-Simplify using `[Tmat, Matrix.mul_apply, Fin.sum_univ_two, h00, h01, h10, h11]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hnf_exists {m : ℕ} (hm : 0 < m) (M : Matrix (Fin 2) (Fin 2) ℤ) (hM : M.det = m) :
     ∃ (γ : SL(2, ℤ)) (t : ℕ × ℕ × ℕ), t ∈ Tm m ∧ M = (γ : Matrix (Fin 2) (Fin 2) ℤ) * Tmat t := by
@@ -101,31 +97,29 @@ theorem hnf_exists {m : ℕ} (hm : 0 < m) (M : Matrix (Fin 2) (Fin 2) ℤ) (hM :
     simp [Tmat, Matrix.mul_apply, Fin.sum_univ_two, h00, h01, h10, h11]
 
 /- English proof (translation)
-Take `⟨a, b, e⟩` from `t`. Take `⟨a', b', e'⟩` from `t'`. Take `⟨hae, hbe⟩` from `(mem_Tm hm _).1 ht`. Take `⟨hae', hbe'⟩` from `(mem_Tm hm _).1 ht'`. Take `⟨ha, he⟩` from `Tm_pos hm ht`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨ha', he'⟩` from `Tm_pos hm ht'`. Simplify using `only at hae hbe hae' hbe' ha he ha' he'`. Establish `hdet : γ.1 0 0 * γ.1 1 1 - γ.1 0 1 * γ.1 1 0 = 1`. Rewrite using `[← Matrix.det_fin_two]`. Conclude with `γ.2`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h00 : (a : ℤ) = γ.1 0 0 * a'`. Use `congrFun (congrFun h 0) 0` as an intermediate fact. Simplify `this` using `[Tmat, Matrix.mul_apply, Fin.sum_univ_two]`. Establish `h01 : (b : ℤ) = γ.1 0 0 * b' + γ.1 0 1 * e'`. Use `congrFun (congrFun h 0) 1` as an intermediate fact.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `this` using `[Tmat, Matrix.mul_apply, Fin.sum_univ_two]`. Establish `h10 : (0 : ℤ) = γ.1 1 0 * a'`. Use `congrFun (congrFun h 1) 0` as an intermediate fact. Simplify `this` using `[Tmat, Matrix.mul_apply, Fin.sum_univ_two]`. Establish `h11 : (e : ℤ) = γ.1 1 0 * b' + γ.1 1 1 * e'`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `congrFun (congrFun h 1) 1` as an intermediate fact. Simplify `this` using `[Tmat, Matrix.mul_apply, Fin.sum_univ_two]`. Generalize the expression as in `γ.1 0 0 = x at *`. Generalize the expression as in `γ.1 0 1 = y at *`. Generalize the expression as in `γ.1 1 0 = z at *`.
+Simplify to obtain the desired conclusion from the available facts. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable.
 
-Generalize the expression as in `γ.1 1 1 = w at *`. Establish `haZ : (0 : ℤ) < a` using `by exact_mod_cast ha`. Establish `haZ' : (0 : ℤ) < a'` using `by exact_mod_cast ha'`. Establish `heZ' : (0 : ℤ) < e'` using `by exact_mod_cast he'`. Establish `hz : z = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `mul_eq_zero.1 h10.symm with h0 | h0` into its components or cases. Conclude with `h0`. Use linear arithmetic over natural numbers and integers. Substitute `hz` using the available equality. Establish `hxw : x * w = 1` using `by linear_combination hdet`.
+Use linear arithmetic over natural numbers and integers. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `hx0 : 0 < x`. Assume the negation of the conclusion as `hc`. Establish `: x * a' ≤ 0` using `mul_nonpos_of_nonpos_of_nonneg (not_lt.mp hc) haZ'.le`. Use linear arithmetic over natural numbers and integers. Establish `hx : x = 1`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Use linear arithmetic over natural numbers and integers.
 
-Break down `Int.eq_one_or_neg_one_of_mul_eq_one hxw with h0 | h0` into its components or cases. Conclude with `h0`. Use linear arithmetic over natural numbers and integers. Substitute `hx` using the available equality. Establish `hw : w = 1` using `by linear_combination hxw`.
+Substitute using the available equality. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact.
 
-Substitute `hw` using the available equality. Establish `e1 : a = a'` using `by omega`. Establish `e2 : e = e'` using `by omega`. Substitute `e1 e2` using the available equality. Establish `hy : y = 0`.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `hbZ : (b : ℤ) < e` using `by exact_mod_cast hbe`. Establish `hbZ' : (b' : ℤ) < e` using `by exact_mod_cast hbe'`. Assume the negation of the conclusion as `hc`. Break down `lt_or_gt_of_ne hc with h0 | h0` into its components or cases. Establish `: y * e ≤ -1 * e` using `mul_le_mul_of_nonneg_right (by omega) heZ'.le`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Establish `: 1 * (e : ℤ) ≤ y * e` using `mul_le_mul_of_nonneg_right (by omega) heZ'.le`. Use linear arithmetic over natural numbers and integers. Substitute `hy` using the available equality. Establish `e3 : b = b'` using `by omega`.
-
-Substitute `e3` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Establish an intermediate fact. Substitute using the available equality. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem hnf_unique {m : ℕ} (hm : 0 < m) {t t' : ℕ × ℕ × ℕ} (ht : t ∈ Tm m) (ht' : t' ∈ Tm m)
     (γ : SL(2, ℤ)) (h : Tmat t = (γ : Matrix (Fin 2) (Fin 2) ℤ) * Tmat t') : t = t' := by

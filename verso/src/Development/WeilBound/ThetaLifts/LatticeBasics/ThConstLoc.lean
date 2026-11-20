@@ -23,9 +23,9 @@ Both sides reduce to the same expression.
 theorem boxL_tmul (a : SB A) (b : SB B) : boxL (a ⊗ₜ[ℂ] b) = fun z => a.1 z.1 * b.1 z.2 := rfl
 
 /- English proof (translation)
-Use `LinearMap.ker_eq_bot'.2 fun x hx => ?_` and prove the remaining obligations. Set `e` to `Module.Basis.ofVectorSpace ℂ (SB A)`. Take `⟨c, rfl⟩` from `TensorProduct.eq_repr_basis_left e x`. Establish `h : ∀ i ∈ c.support, c i = 0` using `fun i hi => Subtype.ext (funext fun y => by`. Use `linearIndependent_iff'.1 e.linearIndependent c.support (fun i => (c i).1 y) (Subtype.ext (funext fun z => ?_)) i hi` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `congrFun hx (z, y)` as an intermediate fact. Simplify using `only [Finsupp.sum, map_sum, boxL_tmul, Finset.sum_apply] at this`. Simplify `this)` using `[mul_comm]`. Conclude with `Finset.sum_eq_zero fun i hi => by simp [h i hi]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem boxL_ker : LinearMap.ker (boxL (A := A) (B := B)) = ⊥ := by
   classical
@@ -40,17 +40,15 @@ theorem boxL_ker : LinearMap.ker (boxL (A := A) (B := B)) = ⊥ := by
   exact Finset.sum_eq_zero fun i hi => by simp [h i hi]
 
 /- English proof (translation)
-Establish `hK : IsCompact (tsupport f)` using `hf.2`. Establish `z : ∀ x y, (x, y) ∉ tsupport f → f (x, y) = 0` using `fun x y h => image_eq_zero_of_notMem_tsupport h`. Establish `hl : IsLocallyConstant fun x y => f (x, y)` using `(IsLocallyConstant.iff_eventually_eq _).2 fun x => by`. Establish `h1` using `(hK.image continuous_snd).eventually_forall_of_forall_eventually (x₀ := x) (P := fun x' y => f (x', y) = f (x, y)) fun y _ => by`. Establish `a` using `(IsLocallyConstant.iff_eventually_eq _).1 hf.1 (x, y)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `b : ∀ᶠ w : A × B in 𝓝 (x, y), f (x, w.2) = f (x, y)` using `(IsLocallyConstant.iff_eventually_eq _).1 (hf.1.comp_continuous (f := fun w : A × B => (x, w.2)) (by fun_prop)) (x, y)`. Use `filter_upwards [a, b] with w h h' using h.trans h'.symm`. Use `filter_upwards [h1] with x' h`. Use function extensionality and compare the values at `y`. Distinguish the cases in `hy : y ∈ Prod.snd '' tsupport f`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `h y hy`. Rewrite using `[z _ _ fun h => hy ⟨_, h, rfl⟩, z _ _ fun h => hy ⟨_, h, rfl⟩]`. Establish `hfin : ((fun x y => f (x, y)) '' (Prod.fst '' tsupport f)).Finite`. Use `letI : TopologicalSpace (B → ℂ) := ⊥`. Use `haveI : DiscreteTopology (B → ℂ) := ⟨rfl⟩`.
+Equip the data with the indicated structure. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Simplify to obtain the desired conclusion from the available facts.
 
-Conclude with `((hK.image continuous_fst).image hl.continuous).finite_of_discrete`. Establish `e : f = ∑ g ∈ hfin.toFinset, fun w : A × B => Set.indicator {x | (fun y => f (x, y)) = g} (fun x => if g = 0 then (0 : ℂ) else 1) w.1 * g w.2` using `funext fun w => by`. Rewrite using `[Finset.sum_apply, Finset.sum_eq_single (fun y => f (w.1, y)) (fun g _ hg => by simp [hg.symm])]`. Distinguish the cases in `h : (fun y => f (w.1, y)) = 0`. Simplify `congrFun h w.2` using `[h]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Simplify using `[h]`. Introduce `h`. Conclude with `mul_eq_zero_of_right _ (z w.1 w.2 fun h' => h (hfin.mem_toFinset.2 ⟨_, ⟨_, h', rfl⟩, rfl⟩))`. Rewrite using `[e]`. Use `Submodule.sum_mem _ fun g hg => ?_` and prove the remaining obligations.
-
-Take `⟨x, -, rfl⟩` from `hfin.mem_toFinset.1 hg`. Use `⟨(⟨_, (LocallyConstant.indicator (LocallyConstant.const A _) (hl.isClopen_fiber _)).2, HasCompactSupport.intro (hK.image continuous_fst) fun x' hx' => ?_⟩ : SB A) ⊗ₜ (⟨_, hf.1.comp_continuous (f := fun y => (x, y)) (by fun_prop), HasCompactSupport.intro (hK.image continuous_snd) …` and prove the remaining obligations. Establish `: (fun y => f (x', y)) = 0` using `funext fun y => z _ _ fun h => hx' ⟨_, h, rfl⟩`. Use `Set.indicator_apply_eq_zero.2 fun h => ?_` and prove the remaining obligations. Conclude with `if_pos (h.symm.trans this)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem mem_range_boxL [T2Space A] [T2Space B] {f : A × B → ℂ} (hf : f ∈ SB (A × B)) : f ∈ LinearMap.range boxL := by
   classical
@@ -92,7 +90,7 @@ theorem mem_range_boxL [T2Space A] [T2Space B] {f : A × B → ℂ} (hf : f ∈ 
   exact if_pos (h.symm.trans this)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hf.1.comp_continuous e.continuous, hf.2.comp_homeomorph e⟩`.
+Supply the required witnesses or components.
 -/
 theorem sb_comp {f : B → ℂ} (hf : f ∈ SB B) (e : A ≃ₜ B) : (fun x => f (e x)) ∈ SB A :=
   ⟨hf.1.comp_continuous e.continuous, hf.2.comp_homeomorph e⟩
@@ -112,14 +110,14 @@ def lrH (g : GL (Fin n) k) (h : GL (Fin d) k) : Matrix (Fin n) (Fin d) k ≃ₜ 
   continuous_invFun := by fun_prop
 
 /- English proof (translation)
-Simplify `sb_comp hf (lrH 1 h)` using `[lrH]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem sb_right {f : Matrix (Fin n) (Fin d) k → ℂ} (hf : f ∈ SB _) (h : GL (Fin d) k) :
     (fun y : Matrix (Fin n) (Fin d) k => f (y * h.1)) ∈ SB _ := by
   simpa [lrH] using sb_comp hf (lrH 1 h)
 
 /- English proof (translation)
-Simplify `sb_comp hf (lrH g 1)` using `[lrH]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem sb_left {f : Matrix (Fin n) (Fin d) k → ℂ} (hf : f ∈ SB _) (g : GL (Fin n) k) :
     (fun y : Matrix (Fin n) (Fin d) k => f (g.1 * y)) ∈ SB _ := by
@@ -141,19 +139,19 @@ def rowsH (e : Fin n ⊕ Fin n' ≃ Fin d) : Matrix (Fin d) (Fin d) k ≃ₜ Mat
 end Mat
 
 /- English proof (translation)
-Take `⟨q, hq⟩` from `(boxL (A := Matrix (Fin n) (Fin d) (Fv F v)) (B := Matrix (Fin n') (Fin d) (Fv F v))).exists_leftInverse_of_injective boxL_ker`. Set `l` to `TensorProduct.lift β ∘ₗ q ∘ₗ LinearMap.funLeft ℂ ℂ (rowsH (k := Fv F v) e).symm`. Establish `hl : ∀ x, l (fun y => boxL x (rowsH e y)) = TensorProduct.lift β x` using `fun x => by`. Establish `: LinearMap.funLeft ℂ ℂ (rowsH (k` using `Fv F v) e).symm (fun y => boxL x (rowsH e y)) = boxL x := funext fun y => by`. Simplify using `[LinearMap.funLeft_apply]`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [l, LinearMap.comp_apply, this]`. Rewrite using `[← LinearMap.comp_apply q, hq, LinearMap.id_apply]`. Set `G : Matrix (Fin d) (Fin d) (Fv F v)` to `Matrix.reindex e e (Matrix.fromBlocks g.1 0 0 1)`. Establish `hG : G.det = g.1.det` using `by simp [G]`. Set `G'` to `Matrix.GeneralLinearGroup.mkOfDetNeZero G (hG ▸ g.det_ne_zero)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `key` using `(hL F v d d ξ hξ l (fun φ hφ h => ?_)).2 rfl (fun y => boxL (a ⊗ₜ b) (rowsH e y)) (sb_comp (f := fun z => a.1 z.1 * b.1 z.2) ⟨(a.2.1.comp_continuous continuous_fst).mul (b.2.1.comp_continuous continuous_snd), HasCompactSupport.intro (a.2.2.prod b.2.2) fun z hz => ?_⟩ _) G'`. Rewrite `key` using `[hl, show Matrix.GeneralLinearGroup.det G' = Matrix.GeneralLinearGroup.det g from Units.ext hG]`. Rewrite using `[← TensorProduct.lift.tmul, ← hl, ← TensorProduct.lift.tmul, ← key]`. Use `congr 1`. Use function extensionality and compare the values at `y`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `: rowsH e (G * y) = (g.1 * (rowsH e y).1, (rowsH e y).2)`. Apply the tactic sequence `ext i j <;> simp [rowsH, G, Matrix.mul_apply, ← e.sum_comp, Matrix.one_apply]`. Conclude with `(congrArg (boxL (a ⊗ₜ b)) this).symm`. Take `⟨x, hx⟩` from `mem_range_boxL (sb_comp hφ (rowsH e).symm)`. Take `rfl : φ = fun y => boxL x (rowsH e y)` from `funext fun y => by simp [hx]`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Proceed by induction.
 
-Use `clear hx hφ`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp [← Pi.zero_def]`. Consider the case `add x y hx hy`. Simplify using `only [map_add, Pi.add_apply]`.
+Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Rewrite using `[← Pi.add_def, ← Pi.add_def, map_add, map_add, hx, hy, mul_add]`. Consider the case `tmul a b`. Rewrite using `[hl, TensorProduct.lift.tmul, ← hβ, ← TensorProduct.lift.tmul, ← hl]`. Both sides reduce to the same expression. Distinguish the cases in `h : z.1 ∈ tsupport a.1`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[image_eq_zero_of_notMem_tsupport (f := b.1) fun h' => hz ⟨h, h'⟩, mul_zero]`. Rewrite using `[image_eq_zero_of_notMem_tsupport h, zero_mul]`.
+A detailed English derivation is pending.
 -/
 theorem locBil (hL : LocDist) {F : Type} [Field F] [NumberField F] (v : Pl F) {n n' d : ℕ} (e : Fin n ⊕ Fin n' ≃ Fin d)
     (ξ : (Fv F v)ˣ →* ℂˣ) (hξ : ∀ t : ℝ, 0 < t → (ξ (unifAt v) : ℂ) ≠ t)

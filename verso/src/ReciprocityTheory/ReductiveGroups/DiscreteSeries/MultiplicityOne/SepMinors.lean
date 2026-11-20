@@ -17,9 +17,9 @@ open Formalism.QuantumDeterminants Formalism.FourierDecayAlt.B Formalism.Fourier
 variable {k r : ℕ} {Wp : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [FiniteDimensional ℂ Wp]
 
 /- English proof (translation)
-Introduce `A B A' B'`. Distinguish the cases in `h0 : ∀ E F, ka E F = 0`. Simplify using `[h0]`. Use `push Not at h0`. Take `⟨E, F, hEF⟩` from `h0`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hc : star (ka E F) ≠ 0` using `by simpa using hEF`. Establish `key : ∀ A B, ka A B = al A F * ga B E / star (ka E F)` using `fun A B => by`. Rewrite using `[eq_div_iff hc, h]`. Rewrite using `[key A B, key A' B', key A B', key A' B]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem sep_minors (I : Type) (ka al ga : I → I → ℂ)
     (h : ∀ A B E F, ka A B * star (ka E F) = al A F * ga B E) :
@@ -36,19 +36,19 @@ theorem sep_minors (I : Type) (ka al ga : I → I → ℂ)
   ring
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨gv_one, fun a i _ => by simp [Matrix.one_apply], fun i j _ _ _ => by simp [Matrix.one_apply]⟩`.
+Supply the required witnesses or components.
 -/
 theorem one_mem_N : (1 : Mat k r) ∈ Nset k r :=
   ⟨gv_one, fun a i _ => by simp [Matrix.one_apply], fun i j _ _ _ => by simp [Matrix.one_apply]⟩
 
 /- English proof (translation)
-Establish `hA` using `half_ratio_le_segment_base_of_std D.k_pos ha`. Establish `ha0 : 0 ≤ X.a` using `le_trans (by unfold aM nR; positivity) ha`. Establish `hV : ∀ u ∈ DDinf D X, u ∈ Vfl X`. Introduce and unpack `u ⟨φ, hφ, rfl⟩`. Conclude with `dd_mem D X ha0 hφ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `i11` using `incc_dd hSm D X hD hX ha ha₁ hb₁`. Establish `i22` using `incc_dd hSm D X hD hX ha ha₂ hb₂`. Establish `hI` using `beInt_integrable_of D X hD hX ha h0 h1 h1'`. Apply `hs_ext` to reduce the goal to its premises. Introduce `X₀`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `v1` using `beta_val h1p h2 hBI hXi D X hD hd hA hcB (mc X a₁ b₁) a₁ b₁ a₂ b₂ X₀ (fun g _ => rfl) i11 i22 (hI a₁ (hV _ ha₁) a₂ (hV _ ha₂)) (hI b₁ (hV _ hb₁) b₂ (hV _ hb₂))`. Establish `v2` using `beta_val h1p h2 hBI hXi D X hD hd hA hcB (mc X a₁ b₁ ∘ th k r γ) (C b₁) (C a₁) a₂ b₂ X₀ (fun g hg => hC1 g hg a₁ b₁) ((h4c k r Wp D X hD hX γ hγ).2 _ 5 _ i11) i22 (beInt_int_mixed D X hD hX ha h0 h1 h1' (hCm _ (hV _ hb₁)) (hV _ ha₂)) (beInt_int_mixed D X hD hX ha h0 h1 h1' (hCm _ …`. Establish `sym` using `hSB k r Wp D X hD hX γ hγ _ hA (jcont_of hIn D hA) (mc X a₁ b₁) (fun g => mc X a₂ b₂ g • X₀) i11 (h1p k r Wp _ 5 _ X₀ i22)`. Rewrite `sym` using `[v1, v2]`. Establish `hc' : (c : ℂ) ≠ 0` using `by exact_mod_cast hc.ne'`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hd' : (d : ℂ) ≠ 0` using `by exact_mod_cast hd.1.ne'`. Conclude with `((div_left_inj' hd').1 (mul_left_cancel₀ hc' sym)).symm`.
+A detailed English derivation is pending.
 -/
 theorem gi_of (hIn : UnitaryGroupStructuralFacts) (hXi : XiExists) (hSm : StSmooth) (h1p : StCut1p) (h2 : StCut2) (hBI : StBetaInf)
     (hSB : StSymBeta) (h4c : StInvCC) (h0 : StSchurG) (h1 : StPairs) (h1' : StBeConv)
@@ -86,11 +86,11 @@ theorem gi_of (hIn : UnitaryGroupStructuralFacts) (hXi : XiExists) (hSm : StSmoo
   exact ((div_left_inj' hd').1 (mul_left_cancel₀ hc' sym)).symm
 
 /- English proof (translation)
-Establish `hUg : gbar k r γ h ∈ UWset k r D.z` using `(hInv k r Wp D X hD hX γ hγ).2.2.1 h hh`. Establish `hthU : th k r γ h ∈ UWset k r D.z` using `uw_inv_mem hUg`. Establish `hthi : (th k r γ h)⁻¹ ∈ UWset k r D.z` using `uw_inv_mem hthU`. Establish `e1 : beOp D X (X.σ h a₁) a₂ = (D.π h).comp (beOp D X a₁ a₂)`. Use `(hD1 k r Wp D X hD hX a₁ a₂ (hI a₁ ha₁ a₂ ha₂) h hh 1 one_mem_N).1` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[one_mul, psiD_one, one_smul]`. Then use the resulting hypothesis. Establish `e4 : beOp D X (X.σ (th k r γ h)⁻¹ (C a₁)) b₂ = (D.π (th k r γ h)⁻¹).comp (beOp D X (C a₁) b₂)`. Use `(hD1 k r Wp D X hD hX (C a₁) b₂ (hIC a₁ ha₁ b₂ hb₂) _ hthi 1 one_mem_N).1` as an intermediate fact. Rewrite `this` using `[one_mul, psiD_one, one_smul]`. Then use the resulting hypothesis. Establish `hσa : X.σ h a₁ ∈ DDinf D X` using `h0cut k r Wp D X h (uw_gv hh) a₁ ha₁`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Rewrite using `[← e1, gi _ hσa _ ha₂ _ hb₁ _ hb₂, hC2 h (uw_gv hh) a₁, e4, ContinuousLinearMap.adjoint_comp, pi_adj D hthi, gv_inv_inv (uw_gv hthU), ContinuousLinearMap.comp_assoc]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem pq_of (h0cut : StCut0) (hInv : StInvGroup) (hD1 : StBeEquiv)
     (D : RealPlaceData k r Wp Wp) (X : SigData k r) (hD : IsDiag D) (hX : SqIntG D X)
@@ -134,27 +134,25 @@ open Formalism.QuantumDeterminants Formalism.FourierDecayAlt.B Formalism.Fourier
 variable {k r : ℕ} {Wp : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [FiniteDimensional ℂ Wp]
 
 /- English proof (translation)
-Establish `hA` using `half_ratio_le_segment_base_of_std D.k_pos ha`. Establish `ha0 : 0 ≤ X.a` using `le_trans (by unfold aM nR; positivity) ha`. Establish `hV : ∀ u ∈ DDinf D X, u ∈ Vfl X`. Introduce and unpack `u ⟨φ, hφ, rfl⟩`. Conclude with `dd_mem D X ha0 hφ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Take `⟨d, hd⟩` from `h0 k r Wp D X hD hX`. Take `⟨c, hc, hcB⟩` from `lemB_of hIn hXi D hA`. Take `⟨γ, hγ⟩` from `hF k r D.z D.k_pos D.z_mem D.T_pos`. Establish `hI` using `beInt_integrable_of D X hD hX ha h0 h1 h1'`. Establish `hc' : (c : ℂ) ≠ 0` using `by exact_mod_cast hc.ne'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hd' : (d : ℂ) ≠ 0` using `by exact_mod_cast hd.1.ne'`. Establish `hzero : (∀ a₁ ∈ DDinf D X, ∀ a₂ ∈ DDinf D X, ∀ η x : Wp, ⟪η, beOp D X a₁ a₂ x⟫_ℂ = 0) → ∀ u₁ ∈ DDinf D X, ∀ u₂ ∈ DDinf D X, ∀ u₃ ∈ DDinf D X, ∀ u₄ ∈ DDinf D X, ∀ e₁ e₂ e₃ e₄ : Wp, Mn D X u₁ u₂ u₃ u₄ e₁ e₂ e₃ e₄ = 0`. Introduce `hz u₁ hu₁ u₂ hu₂ u₃ hu₃ u₄ hu₄ e₁ e₂ e₃ e₄`. Simplify using `only [Mn, hz u₁ hu₁ u₂ hu₂, hz u₁ hu₁ u₄ hu₄, zero_mul, sub_zero]`. Break down `h9g k r Wp D X hD hX γ hγ with hZ | ⟨C, hC1, hC2⟩` into its components or cases.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hzero` to reduce the goal to its premises. Introduce `a₁ ha₁ a₂ ha₂ η x`. Establish `i11` using `incc_dd hSm D X hD hX ha ha₁ ha₁`. Establish `i22` using `incc_dd hSm D X hD hX ha ha₂ ha₂`. Establish `hAA : (ContinuousLinearMap.adjoint (beOp D X a₁ a₂)).comp (beOp D X a₁ a₂) = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hs_ext` to reduce the goal to its premises. Introduce `X₀`. Establish `v1` using `beta_val h1p h2 hBI hXi D X hD hd hA hcB (mc X a₁ a₁) a₁ a₁ a₂ a₂ X₀ (fun g _ => rfl) i11 i22 (hI _ (hV _ ha₁) _ (hV _ ha₂)) (hI _ (hV _ ha₁) _ (hV _ ha₂))`. Establish `sym` using `hSB k r Wp D X hD hX γ hγ _ hA (jcont_of hIn D hA) (mc X a₁ a₁) (fun g => mc X a₂ a₂ g • X₀) i11 (h1p k r Wp _ 5 _ X₀ i22)`. Rewrite `sym` using `[beta_zero h3 hInv h1p hBI hXi D X hD hX hA hcB γ hγ hZ a₁ a₁ a₂ a₂ X₀ ((h4c k r Wp D X hD hX γ hγ).2 _ 5 _ i11) i22, v1]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h5 : hsInner ((ContinuousLinearMap.adjoint (beOp D X a₁ a₂)).comp (beOp D X a₁ a₂)) X₀ = 0`. Break down `mul_eq_zero.1 sym.symm with h | h` into its components or cases. Conclude with `absurd h hc'`. Conclude with `(div_eq_zero_iff.1 h).resolve_right hd'`. Rewrite using `[h5]`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Unfold `hsInner`. Rewrite using `[show hsVec (0 : Wp →L[ℂ] Wp) = 0 by ext i; simp [hsVec], inner_zero_right]`. Establish `hAx : beOp D X a₁ a₂ x = 0`. Establish `h5 : ⟪beOp D X a₁ a₂ x, beOp D X a₁ a₂ x⟫_ℂ = 0`. Rewrite using `[← ContinuousLinearMap.adjoint_inner_right, ← ContinuousLinearMap.comp_apply, hAA]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Conclude with `inner_self_eq_zero.1 h5`. Rewrite using `[hAx, inner_zero_right]`. Establish `hCm : ∀ u ∈ Vfl X, C u ∈ VflA X (X.a - AG k r - 1)` using `h10 k r Wp D X hD hX γ hγ ha C hC1`. Establish `gi : ∀ a₁ ∈ DDinf D X, ∀ a₂ ∈ DDinf D X, ∀ b₁ ∈ DDinf D X, ∀ b₂ ∈ DDinf D X, (ContinuousLinearMap.adjoint (beOp D X b₁ b₂)).comp (beOp D X a₁ a₂) = (ContinuousLinearMap.adjoint (beOp D X (C a₁) b₂)).comp (beOp D X (C b₁) a₂)` using `fun a₁ ha₁ a₂ ha₂ b₁ hb₁ b₂ hb₂ => gi_of hIn hXi hSm h1p h2 hBI hSB h4c h0 h1 h1' D X hD hX ha hd hc hcB γ hγ C hC1 hCm ha₁ ha₂ hb₁ hb₂`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hIC : ∀ a₁ ∈ DDinf D X, ∀ b₂ ∈ DDinf D X, Integrable (beInt D X (C a₁) b₂) (D.μW.prod D.μN)` using `fun a₁ ha₁ b₂ hb₂ => beInt_int_mixed D X hD hX ha h0 h1 h1' (hCm _ (hV _ ha₁)) (hV _ hb₂)`. Establish `hPQ` using `fun {a₁ a₂ b₁ b₂ : X.Hs} (ha₁ : a₁ ∈ DDinf D X) (ha₂ : a₂ ∈ DDinf D X) (hb₁ : b₁ ∈ DDinf D X) (hb₂ : b₂ ∈ DDinf D X) => h4cut hW k r Wp D hD γ (beOp D X b₁ b₂) (beOp D X a₁ a₂) (beOp D X (C a₁) b₂) (beOp D X (C b₁) a₂) (fun h hh => pq_of h0cut hInv hD1 D X hD hX γ hγ C hC2 (fun a …`. Break down `h9w k r Wp D X hD hX γ hγ with hZW | ⟨C₀, hC₀1, -⟩` into its components or cases. Apply `hzero` to reduce the goal to its premises. Introduce `a₁ ha₁ a₂ ha₂ η x`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h4` using `(hPQ ha₁ ha₂ ha₁ ha₂).1 hZW x x η η`. Rewrite `h4` using `[← inner_conj_symm (beOp D X a₁ a₂ x) η, Complex.mul_conj]`. Establish `h6 : Complex.normSq ⟪η, beOp D X a₁ a₂ x⟫_ℂ = 0` using `by exact_mod_cast h4`. Conclude with `Complex.normSq_eq_zero.1 h6`. Introduce `u₁ hu₁ u₂ hu₂ u₃ hu₃ u₄ hu₄ e₁ e₂ e₃ e₄`.
-
-Establish `hsep` using `sep_minors ({u : X.Hs // u ∈ DDinf D X} × Wp) (fun A B => ⟪A.2, beOp D X A.1.1 B.1.1 B.2⟫_ℂ) (fun A F => ⟪A.2, C₀ (beOp D X (C A.1.1) F.1.1 F.2)⟫_ℂ) (fun B E => ⟪C₀ (beOp D X (C E.1.1) B.1.1 B.2), E.2⟫_ℂ) (fun A B E F => by`. Establish `h4` using `(hPQ A.1.2 B.1.2 E.1.2 F.1.2).2 C₀ hC₀1 B.2 F.2 E.2 A.2`. Rewrite using `[← h4, ← starRingEnd_apply, inner_conj_symm])`. Use the proof step `(⟨u₁, hu₁⟩, e₁) (⟨u₂, hu₂⟩, e₂) (⟨u₃, hu₃⟩, e₃) (⟨u₄, hu₄⟩, e₄)`. Conclude with `sub_eq_zero.2 hsep`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem minors_DD (hIn : UnitaryGroupStructuralFacts) (hXi : XiExists) (hSm : StSmooth) (h0cut : StCut0) (h1p : StCut1p)
     (h2 : StCut2) (h3 : StCut3) (h4cut : StCut4) (hBI : StBetaInf) (hSB : StSymBeta) (h4c : StInvCC)
@@ -248,7 +246,7 @@ namespace ReciprocityTheory.ChartRestriction.DS.Mult1.TopH
 open Formalism.QuantumDeterminants Formalism.FourierDecayAlt.B Formalism.FourierDecayAlt.B2 ReciprocityTheory.ChartRestriction.DS.Mult1
 
 /- English proof (translation)
-Establish `e : nR k r = 2 * (r : ℝ) + k + 1` using `by unfold nR; push_cast; ring`. Establish `hr : (0 : ℝ) ≤ r` using `Nat.cast_nonneg r`. Establish `hk' : (1 : ℝ) ≤ k` using `by exact_mod_cast hk`. Unfold `AB AG`. Rewrite using `[e]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
 Use the polynomial consequences of the given equalities and inequalities.
 -/

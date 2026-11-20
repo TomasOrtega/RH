@@ -23,7 +23,7 @@ def SolC : Prop :=
       (IsAut ι r ↔ IsAut ι (r.comp (resG F M Ω)))
 
 /- English proof (translation)
-Introduce `F₀ F M Ω _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ hs hp _ hM` and use `h F₀ F M Ω hs hp (Or.inr hM)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem solC_of_solDescent (h : SolDescent) : SolC :=
   fun F₀ F M Ω _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ hs hp _ hM => h F₀ F M Ω hs hp (Or.inr hM)

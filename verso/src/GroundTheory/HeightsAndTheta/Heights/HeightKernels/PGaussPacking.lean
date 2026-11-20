@@ -9,7 +9,7 @@ open MeasureTheory Metric
 namespace PGaussPacking
 
 /- English proof (translation)
-Introduce `x hx y hy hxy`. Apply `ball_disjoint_ball` to reduce the goal to its premises. Rewrite using `[dist_eq_norm]`. Combine the linear relations using `[hsep x hx y hy hxy]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem pairwiseDisjoint_balls {n : ℕ} (s : Finset (EuclideanSpace ℝ (Fin n))) {δ : ℝ}
     (hsep : ∀ x ∈ s, ∀ y ∈ s, x ≠ y → δ ≤ ‖x - y‖) :
@@ -20,9 +20,9 @@ theorem pairwiseDisjoint_balls {n : ℕ} (s : Finset (EuclideanSpace ℝ (Fin n)
   linarith [hsep x hx y hy hxy]
 
 /- English proof (translation)
-Introduce `z hz`. Simplify using `only [Set.mem_iUnion] at hz`. Take `⟨x, hx, hz⟩` from `hz`. Rewrite `hz`, the goal using `[mem_ball, dist_eq_norm]`. Rewrite using `[sub_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem biUnion_balls_subset {n : ℕ} (s : Finset (EuclideanSpace ℝ (Fin n))) {δ r : ℝ}
     (hs : ∀ x ∈ s, ‖x‖ ≤ r) :
@@ -42,15 +42,15 @@ end PGaussPacking
 open PGaussPacking in
 
 /- English proof (translation)
-Introduce `n s δ r hδ hr hsep hs`. Break down `Nat.eq_zero_or_pos n with rfl | hn` into its components or cases. Establish `h1 : s.card ≤ 1` using `Finset.card_le_one.2 (fun a _ b _ => Subsingleton.elim a b)`. Establish `h1' : (s.card : ℝ) ≤ 1` using `by exact_mod_cast h1`. Simplify using `using h1'`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `: Nontrivial (EuclideanSpace ℝ (Fin n))` using `Module.nontrivial_of_finrank_pos (R := ℝ) (by rw [finrank_euclideanSpace_fin]; exact hn)`. Establish `hδ2 : 0 < δ / 2` using `by positivity`. Establish `hR : 0 ≤ r + δ / 2` using `by positivity`. Establish `hmeas : ∑ x ∈ s, (volume : Measure (EuclideanSpace ℝ (Fin n))) (ball x (δ / 2)) ≤ volume (ball (0 : EuclideanSpace ℝ (Fin n)) (r + δ / 2))`. Rewrite using `[← measure_biUnion_finset (pairwiseDisjoint_balls s hsep) (fun x _ => measurableSet_ball)]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `measure_mono (biUnion_balls_subset s hs)`. Simplify using `only [Measure.addHaar_ball _ _ hδ2.le, Measure.addHaar_ball _ _ hR, finrank_euclideanSpace_fin, Finset.sum_const, nsmul_eq_mul] at hmeas`. Establish `hc0 : (volume : Measure (EuclideanSpace ℝ (Fin n))) (ball 0 1) ≠ 0` using `(measure_ball_pos _ _ one_pos).ne'`. Establish `hct : (volume : Measure (EuclideanSpace ℝ (Fin n))) (ball 0 1) ≠ ⊤` using `measure_ball_lt_top.ne`. Rewrite `hmeas` using `[← mul_assoc]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h2` using `(ENNReal.mul_le_mul_iff_left hc0 hct).1 hmeas`. Rewrite `h2` using `[← ENNReal.ofReal_natCast, ← ENNReal.ofReal_mul (by positivity), ENNReal.ofReal_le_ofReal_iff (by positivity)]`. Establish `hp : 0 < (δ / 2) ^ n` using `pow_pos hδ2 n`. Establish `key : (1 + 2 * r / δ) ^ n = (r + δ / 2) ^ n / (δ / 2) ^ n`. Rewrite using `[← div_pow]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[key, le_div_iff₀ hp]`. Conclude with `h2`.
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GaussPacking.proof : GaussPacking.Statement := by
   intro n s δ r hδ hr hsep hs

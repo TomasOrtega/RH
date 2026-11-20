@@ -13,19 +13,19 @@ open GlobalTheory.LineFrame
 namespace GlobalTheory.LineFrame
 
 /- English proof (translation)
-Introduce `k _ N m hr h2 n hn`. Establish `hu` using `GlobalTheory.SmGL.CuspMax.mem_unipRad_iff_entries.1 hn`. Set `g : Fin 1 ⊕ Fin m ⊕ Fin 1 → Fin 3` to `Sum.elim (fun _ => 0) (Sum.elim (fun _ => 1) (fun _ => 2))`. Establish `hb : ∀ x, blk (linePlace h2) (frameEquiv hr x) = g x`. Introduce and unpack `(i | j | i)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `e : frameEquiv hr (.inl i) = linePlace h2 ⟨0, ⟨0, by simp [tripSizes]⟩⟩`. Apply `Fin.ext` to reduce the goal to its premises. Rewrite using `[frameEquiv_inl, GlobalTheory.BlockForms.LeviLoc.tripPlace_val]`. Simplify using the standard rewrite rules. Rewrite using `[e, blk_apply]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `e : frameEquiv hr (.inr (.inl j)) = linePlace h2 ⟨1, ⟨j.val, by simp [tripSizes]; omega⟩⟩`. Apply `Fin.ext` to reduce the goal to its premises. Rewrite using `[frameEquiv_mid, GlobalTheory.BlockForms.LeviLoc.tripPlace_val]`. Simplify using the standard rewrite rules.
+Both sides reduce to the same expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use linear arithmetic over natural numbers and integers. Rewrite using `[e, blk_apply]`. Both sides reduce to the same expression. Establish `e : frameEquiv hr (.inr (.inr i)) = linePlace h2 ⟨2, ⟨0, by simp [tripSizes]; omega⟩⟩`. Apply `Fin.ext` to reduce the goal to its premises.
+Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[frameEquiv_inr, GlobalTheory.BlockForms.LeviLoc.tripPlace_val]`. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Rewrite using `[e, blk_apply]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hu' : ∀ x y, ¬ g x < g y → (n : Matrix (Fin N) (Fin N) k) (frameEquiv hr x) (frameEquiv hr y) = (1 : Matrix (Fin 1 ⊕ Fin m ⊕ Fin 1) _ k) x y`. Introduce `x y hxy`. Rewrite using `[hu _ _ (by rw [hb, hb]; exact hxy)]`. Simplify using `only [Matrix.one_apply, (frameEquiv hr).injective.eq_iff]`. Use `⟨fun i c => (n : Matrix (Fin N) (Fin N) k) (frameEquiv hr (.inl i)) (frameEquiv hr (.inr c)), fun j i => (n : Matrix (Fin N) (Fin N) k) (frameEquiv hr (.inr (.inl j))) (frameEquiv hr (.inr (.inr i))), ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Apply the tactic sequence `ext (i | i | i) (j | j | j) <;> simp only [Matrix.submatrix_apply] <;> first`. Consider the case `rfl`. Consider the case `(rw [hu' _ _ (by simp [g])]; simp [Matrix.one_apply, Matrix.fromBlocks])`.
+Apply the first step, then apply the next step to every resulting obligation. Treat this case separately. Treat this case separately.
 -/
 theorem unipRad_frame_blocks : ∀ (k : Type) [Field k] (N m : ℕ) (hr : N = m + 2) (h2 : 2 ≤ N) (n : GL (Fin N) k),
     n ∈ unipRad k (linePlace h2) →

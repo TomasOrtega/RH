@@ -19,9 +19,9 @@ variable {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E]
 variable {L : LocE F E} {r k : ℕ} (S : Frames L r k)
 
 /- English proof (translation)
-Unfold `Frames.spanTo`. Use `congr 1`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨i, -, rfl⟩`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨i, rfl⟩`. Introduce and unpack `⟨i, rfl⟩`. Conclude with `⟨i, i.2, rfl⟩`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem spanTo_top (g : Fin (r + 1) → S.V) :
     S.spanTo g (r + 1) = Submodule.span E (Set.range g) := by
@@ -35,29 +35,29 @@ theorem spanTo_top (g : Fin (r + 1) → S.V) :
     exact ⟨i, i.2, rfl⟩
 
 /- English proof (translation)
-The claim follows from `Submodule.subset_span (Or.inl ⟨b, rfl⟩)`.
+A detailed English derivation is pending.
 -/
 theorem left_mem (g g' : Fin (r + 1) → S.V) (b : Fin (r + 1)) : g b ∈ S.Mof g g' :=
   Submodule.subset_span (Or.inl ⟨b, rfl⟩)
 
 /- English proof (translation)
-The claim follows from `Submodule.subset_span (Or.inr ⟨b, rfl⟩)`.
+A detailed English derivation is pending.
 -/
 theorem diff_mem (g g' : Fin (r + 1) → S.V) (b : Fin (r + 1)) :
     algebraMap F E S.th⁻¹ • (g' b - g b) ∈ S.Mof g g' :=
   Submodule.subset_span (Or.inr ⟨b, rfl⟩)
 
 /- English proof (translation)
-Rewrite using `[smul_smul, ← map_mul, mul_inv_cancel₀ h0, map_one, one_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem th_smul (h0 : S.th ≠ 0) (v : S.V) :
     algebraMap F E S.th • algebraMap F E S.th⁻¹ • v = v := by
   rw [smul_smul, ← map_mul, mul_inv_cancel₀ h0, map_one, one_smul]
 
 /- English proof (translation)
-Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `x (⟨b, rfl⟩ | ⟨b, rfl⟩)`. Establish `h1` using `(S.Mof g g').smul_mem ⟨_, hO⟩ (diff_mem S g g' b)`. Establish `h2 : (⟨_, hO⟩ : L.O) • algebraMap F E S.th⁻¹ • (g' b - g b) = g' b - g b` using `th_smul S h0 _`. Rewrite `h1` using `[h2]`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h3` using `(S.Mof g g').add_mem h1 (left_mem S g g' b)`. Rewrite `h3` using `[sub_add_cancel]`. Then use the resulting hypothesis. Establish `h1` using `(S.Mof g g').neg_mem (diff_mem S g g' b)`. Rewrite `h1` using `[← smul_neg, neg_sub]`. Conclude with `h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Mof_le_swap (h0 : S.th ≠ 0) (hO : algebraMap F E S.th ∈ L.O) (g g' : Fin (r + 1) → S.V) :
     S.Mof g' g ≤ S.Mof g g' := by
@@ -74,22 +74,22 @@ theorem Mof_le_swap (h0 : S.th ≠ 0) (hO : algebraMap F E S.th ∈ L.O) (g g' :
     exact h1
 
 /- English proof (translation)
-The claim follows from `le_antisymm (Mof_le_swap S h0 hO g g') (Mof_le_swap S h0 hO g' g)`.
+A detailed English derivation is pending.
 -/
 theorem Mof_swap (h0 : S.th ≠ 0) (hO : algebraMap F E S.th ∈ L.O) (g g' : Fin (r + 1) → S.V) :
     S.Mof g' g = S.Mof g g' :=
   le_antisymm (Mof_le_swap S h0 hO g g') (Mof_le_swap S h0 hO g' g)
 
 /- English proof (translation)
-Unfold `Frames.Mof at hx`. Rewrite `hx` using `[Submodule.span_union]`. Take `⟨y, hy, z, hz, rfl⟩` from `Submodule.mem_sup.1 hx`. Take `⟨c, rfl⟩` from `(Submodule.mem_span_range_iff_exists_fun L.O).1 hz`. Establish `hyP : y ∈ P`.
+Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `: Submodule.span L.O (Set.range g) ≤ P.restrictScalars L.O`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨b, rfl⟩`. Conclude with `hg b`. Conclude with `this hy`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `set e : Fin (r + 1) → E := fun b => (c b : E) * algebraMap F E S.th⁻¹ with he`. Establish `hs : ∑ b, c b • algebraMap F E S.th⁻¹ • (g' b - g b) = ∑ b, e b • g' b - ∑ b, e b • g b`. Rewrite using `[← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[← smul_sub, he, mul_smul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Rewrite `hP`, the goal using `[hs]`. Establish `h1 : ∑ b, e b • g b ∈ P` using `P.sum_mem fun b _ => P.smul_mem _ (hg b)`. Establish `h2 : ∑ b, e b • g' b ∈ P'` using `P'.sum_mem fun b _ => P'.smul_mem _ (hg' b)`. Establish `h3 : ∑ b, e b • g' b ∈ P`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Use `P.add_mem (P.sub_mem hP hyP) h1` as an intermediate fact. Rewrite `this` using `[add_sub_cancel_left, sub_add_cancel]`. Then use the resulting hypothesis. Establish `h4 : ∑ b, e b • g' b = 0` using `(Submodule.disjoint_def.1 hd) _ h3 h2`. Establish `h5 : ∀ b, e b = 0` using `Fintype.linearIndependent_iff.1 hi e h4`. Simplify `hy` using `[h5]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem mem_span_of_mem_Mof (P P' : Submodule E S.V) (hd : Disjoint P P')
     (g g' : Fin (r + 1) → S.V) (hg : ∀ b, g b ∈ P) (hg' : ∀ b, g' b ∈ P')
@@ -122,13 +122,11 @@ theorem mem_span_of_mem_Mof (P P' : Submodule E S.V) (hd : Disjoint P P')
   simpa [h5] using hy
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`. Establish `h3 : x ∈ S.sat Λ` using `⟨h1, hME h2⟩`. Rewrite `h3` using `[hs]`. Rewrite `h2` using `[spanTo_top]`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `mem_span_of_mem_Mof S _ _ hd g g' hg hg' hi x h3 h2`. Introduce `hx`. Establish `: Submodule.span L.O (Set.range fun b => g b) ≤ Λ ⊓ (S.spanTo f (r + 1)).restrictScalars L.O`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨b, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `h1 : g b ∈ S.sat Λ` using `hs ▸ left_mem S g g' b`. Use `⟨h1.1, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `g b ∈ S.spanTo f (r + 1)`. Rewrite using `[spanTo_top]`. Conclude with `hg b`.
-
-Conclude with `this hx`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem trace_iff (Λ : Submodule L.O S.V) (f f' g g' : Fin (r + 1) → S.V)
     (hd : Disjoint (Submodule.span E (Set.range f)) (Submodule.span E (Set.range f')))
@@ -157,19 +155,19 @@ theorem trace_iff (Λ : Submodule L.O S.V) (f f' g g' : Fin (r + 1) → S.V)
 end
 
 /- English proof (translation)
-Introduce `F _ _ _ _ _ E _ _ _ L r k S Λ hΛ C hC p hp hs`. Take `⟨n, hn, n', hn', rfl⟩` from `hC`. Rewrite `hs` using `[((GlobalTheory.HL.FrameClass.frame_classes L r k S _ _).2.1 p hp).2]`. Take `⟨hli, -, -, -, -, h0, hth, -⟩` from `GlobalTheory.FrameBasic.main L r k S`. Take `⟨hon, hon', -⟩` from `GlobalTheory.HL.FrameOnto.unipotent_onto L r k S`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hO : algebraMap F E S.th ∈ L.O` using `(L.O_def _).2 (isIntegral_algebraMap (R := 𝒪[F]) (A := E) (x := ⟨S.th, hth⟩))`. Take `⟨hf, hf', hd⟩` from `linearIndependent_sum.1 hli`. Establish `hf1 : LinearIndependent E S.f` using `hf`. Establish `hf2 : LinearIndependent E S.f'` using `hf'`. Establish `hd1 : Disjoint (Submodule.span E (Set.range S.f)) (Submodule.span E (Set.range S.f'))` using `hd`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hi : LinearIndependent E fun b => n (S.f b)` using `hf1.map' (n : S.V →ₗ[E] S.V) n.ker`. Establish `hi' : LinearIndependent E fun b => n' (S.f' b)` using `hf2.map' (n' : S.V →ₗ[E] S.V) n'.ker`. Establish `hg : ∀ b, n (S.f b) ∈ Submodule.span E (Set.range S.f)`. Take `⟨s, -, h⟩` from `hon n hn`. Introduce `b`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[h b]`. Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`. Establish `hg' : ∀ b, n' (S.f' b) ∈ Submodule.span E (Set.range S.f')`. Take `⟨s, -, h⟩` from `hon' n' hn'`. Introduce `b`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h b]`. Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`. Take `⟨A, hA, m, hm, hme, hΛA⟩` from `GlobalTheory.HL.FrameLift.lift L r k S S.f S.es (Or.inl ⟨rfl, rfl⟩) Λ hΛ n hn (trace_iff S Λ S.f S.f' _ _ hd1 hg hg' hi' le_sup_left hs)`. Take `⟨A', hA', m', hm', hme', hΛA'⟩` from `GlobalTheory.HL.FrameLift.lift L r k S S.f' S.es' (Or.inr ⟨rfl, rfl⟩) Λ hΛ n' hn' (trace_iff S Λ S.f' S.f _ _ hd1.symm hg' hg hi le_sup_right (hs.trans (Mof_swap S h0 hO _ _)))`. Establish `hW : S.IsTermW (A, A', S.graphOf Λ) Λ m m'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨hA, hA', hm, hm', hΛA, hΛA', fun b => ?_, rfl⟩` and prove the remaining obligations. Rewrite using `[hme, hme']`. Establish `h1` using `diff_mem S (fun b => n (S.f b)) (fun b => n' (S.f' b)) b`. Rewrite `h1` using `[← hs]`. Conclude with `⟨_, h1.1, (th_smul S h0 _).symm⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Take `⟨-, hM, hFr, -⟩` from `GlobalTheory.HL.WitIndep.witness_independence L r k S _ _ _ _ hW`. Simplify using `only [hme, hme'] at hM hFr`. Conclude with `⟨_, ⟨(m, m'), hW⟩, hFr, hM.trans hs.symm⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem term_of_primitive : ∀ {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] [CharZero F] {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] (L : LocE F E), ∀ (r k : ℕ) (S : Frames L r k), ∀ Λ, IsSD L S.Hm Λ → ∀ C, S.IsCls C → ∀ p ∈ C, S.sat Λ = S.Mof p.1 p.2 → ∃ d, S.IsTerm d Λ ∧ S.Fr d Λ = C ∧ S.BBzero d Λ := by
   intro F _ _ _ _ _ E _ _ _ L r k S Λ hΛ C hC p hp hs

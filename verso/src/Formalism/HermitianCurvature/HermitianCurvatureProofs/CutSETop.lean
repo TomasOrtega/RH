@@ -11,7 +11,7 @@ namespace Formalism.FourierDecayAlt.P.CutSE
 open Formalism.FourierDecayAlt.P5.HerD
 
 /- English proof (translation)
-The claim follows from `expansion_L2_of_decay_pairs word_expansion (step_density_expansion_of_mirror boundary_torus_invariance (expansion_site_zero_induction hS hO boundary_torus_closure)) decay_pair_estimate h2 h3 h4`.
+A detailed English derivation is pending.
 -/
 theorem expansion_l2_of_open_estimates (hO : OneLetterDens) (hS : DensSmoothCls) (h2 : DecayPair2) (h3 : DecayPair3)
     (h4 : DecayPair4) : LevelDensitySquareIntegrable :=
@@ -19,7 +19,7 @@ theorem expansion_l2_of_open_estimates (hO : OneLetterDens) (hS : DensSmoothCls)
     decay_pair_estimate h2 h3 h4
 
 /- English proof (translation)
-The claim follows from `step_density_of_square (expansion_l2_of_open_estimates hO hS h2 h3 h4)`.
+A detailed English derivation is pending.
 -/
 theorem stepExp0_of_open (hO : OneLetterDens) (hS : DensSmoothCls) (h2 : DecayPair2) (h3 : DecayPair3)
     (h4 : DecayPair4) : StepExp0 :=

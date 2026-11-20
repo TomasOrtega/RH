@@ -17,11 +17,11 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 namespace GlobalTheory.Published.CharCrysExists
 
 /- English proof (translation)
-Introduce `E Ω _ _ _ _ _ l _ P AI hT ι art ha χ n μ h1 h2 h3 w A h O _ _ _ Bw hj hu`. Take `⟨rc, a, ha', -⟩` from `hL E Ω A w h`. Establish `hξ` using `ParamAboveModel.isComp_loc (w := w) χ`. Establish `hc : Continuous fun g : ↥(Dec (F` using `E) A) => (((rk1 μ).comp (Dec (F := E) A).subtype g : GL (Fin 1) (Om l)) : Matrix (Fin 1) (Fin 1) (Om l)) := by`. Use `continuous_matrix fun i j => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e : (fun g : ↥(Dec (F` using `E) A) => (((rk1 μ).comp (Dec (F := E) A).subtype g : GL (Fin 1) (Om l)) : Matrix (Fin 1) (Fin 1) (Om l)) i j) = fun g : ↥(Dec (F := E) A) => ((μ g : (Om l)ˣ) : Om l) := by`. Use function extensionality and compare the values at `g`. Rewrite using `[Subsingleton.elim i j]`. Simplify using `[rk1]`. Rewrite using `[e]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Units.continuous_val.comp (h2.comp continuous_subtype_val)`. Establish `hr` using `hB.isPstAt hT.some Bw _ hc (hD E Ω l P AI hT ι art ha χ n μ h1 h2 h3 w A h O Bw hj).1`. Rewrite using `[← GlobalTheory.PstLaws.unr_wdAt_iff Bw h hj P ι _ hr, hW E Ω l P AI hT ι art ha χ n μ h1 h2 h3 w A h O Bw hj _ hξ a ha', GlobalTheory.LocLanglands.Test.unr_lpOfChar_iff ha' hξ.1]`. Conclude with `(GlobalTheory.Published.CharCrysModel.isUnram_iff χ w).2 hu`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem of_classicalTheorems (hD : HeckeLAdicCharacterDeRham) (hB : DeRhamPotSemistable) (hW : AlgebraicCharacterWD)
     (hL : LocalLanglandsExists) : HeckeLAdicCharacterCrystalline := by
@@ -46,7 +46,7 @@ theorem of_classicalTheorems (hD : HeckeLAdicCharacterDeRham) (hB : DeRhamPotSem
   exact (GlobalTheory.Published.CharCrysModel.isUnram_iff χ w).2 hu
 
 /- English proof (translation)
-The claim follows from `of_classicalTheorems`.
+A detailed English derivation is pending.
 -/
 example : HeckeLAdicCharacterDeRham → DeRhamPotSemistable → AlgebraicCharacterWD → LocalLanglandsExists →
     HeckeLAdicCharacterCrystalline := of_classicalTheorems

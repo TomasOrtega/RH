@@ -12,9 +12,9 @@ def Dz (n : ℕ) : ((Fin (n + 1) → G) →₀ ℤ) →ₗ[ℤ] ((Fin n → G) �
   (inhomogeneousChains.d (Rep.trivial ℤ G ℤ) n).hom
 
 /- English proof (translation)
-Apply `Finsupp.lhom_ext` to reduce the goal to its premises. Introduce `g a`. Unfold `Dz bdZ`. Rewrite using `[inhomogeneousChains.d_single, Finsupp.linearCombination_single, smul_add, Finset.smul_sum]`. Use `congr 1`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Simplify using the standard rewrite rules. Use `Finset.sum_congr rfl (fun j _ => ?_)` and prove the remaining obligations. Rewrite using `[smul_comm, Finsupp.smul_single_one]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem Dz_eq_bdZ (n : ℕ) : Dz G n = bdZ G n := by
   apply Finsupp.lhom_ext
@@ -27,13 +27,13 @@ theorem Dz_eq_bdZ (n : ℕ) : Dz G n = bdZ G n := by
     rw [smul_comm, Finsupp.smul_single_one]
 
 /- English proof (translation)
-Rewrite using `[inhomogeneousChains.d_def]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem d_hom (n : ℕ) : ((inhomogeneousChains (Rep.trivial ℤ G ℤ)).d (n + 1) n).hom = Dz G n := by
   rw [inhomogeneousChains.d_def]; rfl
 
 /- English proof (translation)
-Use `congrArg ModuleCat.Hom.hom (inhomogeneousChains.d_comp_d (Rep.trivial ℤ G ℤ) n)` as an intermediate fact. Simplify using `only [ModuleCat.hom_comp, ModuleCat.hom_zero] at this`. Conclude with `this`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem Dz_Dz (n : ℕ) : Dz G n ∘ₗ Dz G (n + 1) = 0 := by
   have := congrArg ModuleCat.Hom.hom (inhomogeneousChains.d_comp_d (Rep.trivial ℤ G ℤ) n)
@@ -48,7 +48,7 @@ Simplify using the standard rewrite rules.
 theorem hnext : (ComplexShape.down ℕ).next (k + 1) = k := by simp
 
 /- English proof (translation)
-Rewrite using `[inhomogeneousChains.d_def]`. Apply `ModuleCat.hom_ext` to reduce the goal to its premises. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `x`. Conclude with `LinearMap.mem_ker.mp x.2`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem hlift : (ModuleCat.ofHom (LinearMap.ker (Dz G k)).subtype :
       ModuleCat.of ℤ (LinearMap.ker (Dz G k)) ⟶ (inhomogeneousChains (Rep.trivial ℤ G ℤ)).X (k + 1)) ≫
@@ -65,7 +65,7 @@ def cz : LinearMap.ker (Dz G k) →ₗ[ℤ] cycles (Rep.trivial ℤ G ℤ) (k + 
     k (hnext k) (hlift G k)).hom
 
 /- English proof (translation)
-Establish `h` using `HomologicalComplex.liftCycles_i (inhomogeneousChains (Rep.trivial ℤ G ℤ)) (ModuleCat.ofHom (LinearMap.ker (Dz G k)).subtype : ModuleCat.of ℤ (LinearMap.ker (Dz G k)) ⟶ (inhomogeneousChains (Rep.trivial ℤ G ℤ)).X (k + 1)) k (hnext k) (hlift G k)`. Establish `h2` using `congrArg (fun φ => φ.hom x) h`. Conclude with `h2`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem i_cz (x : LinearMap.ker (Dz G k)) :
     (iCycles (Rep.trivial ℤ G ℤ) (k + 1)).hom (cz G k x) = x.1 := by
@@ -77,7 +77,7 @@ theorem i_cz (x : LinearMap.ker (Dz G k)) :
   exact h2
 
 /- English proof (translation)
-The claim follows from `(ModuleCat.mono_iff_injective _).1 inferInstance`.
+A detailed English derivation is pending.
 -/
 theorem iCycles_injective (n : ℕ) : Function.Injective (iCycles (Rep.trivial ℤ G ℤ) n).hom :=
   (ModuleCat.mono_iff_injective _).1 inferInstance
@@ -87,9 +87,9 @@ def pz : LinearMap.ker (Dz G k) →ₗ[ℤ] grpH G (k + 1) :=
 
 set_option backward.isDefEq.respectTransparency false in
 /- English proof (translation)
-Introduce `y`. Take `⟨c, rfl⟩` from `(ModuleCat.epi_iff_surjective (π (Rep.trivial ℤ G ℤ) (k + 1))).1 inferInstance y`. Establish `hc : (iCycles (Rep.trivial ℤ G ℤ) (k + 1)).hom c ∈ LinearMap.ker (Dz G k)`. Rewrite using `[LinearMap.mem_ker, ← d_hom]`. Use `congrArg (fun φ => φ.hom c) ((inhomogeneousChains (Rep.trivial ℤ G ℤ)).iCycles_d (k + 1) k)` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify `this` using `[ModuleCat.hom_comp]`. Use `⟨⟨_, hc⟩, ?_⟩` and prove the remaining obligations. Simplify using `only [pz, LinearMap.coe_comp, Function.comp_apply]`. Use `congr 1`. Conclude with `iCycles_injective G (k + 1) (i_cz G k _)`.
+Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem pz_surjective : Function.Surjective (pz G k) := by
   intro y
@@ -105,15 +105,13 @@ theorem pz_surjective : Function.Surjective (pz G k) := by
   exact iCycles_injective G (k + 1) (i_cz G k _)
 
 /- English proof (translation)
-Use `set K := inhomogeneousChains (Rep.trivial ℤ G ℤ) with hK`. Establish `hex` using `ShortComplex.exact_of_g_is_cokernel (S := ShortComplex.mk (K.toCycles (k + 2) (k + 1)) (K.homologyπ (k + 1)) (K.toCycles_comp_homologyπ (k + 2) (k + 1))) (K.homologyIsCokernel (k + 2) (k + 1) (by simp))`. Rewrite `hex` using `[ShortComplex.moduleCat_exact_iff]`. Establish `hti : ∀ w, (iCycles (Rep.trivial ℤ G ℤ) (k + 1)).hom ((K.toCycles (k + 2) (k + 1)).hom w) = Dz G (k + 1) w`. Introduce `w`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h0` using `congrArg (fun φ => φ.hom w) (K.toCycles_i (k + 2) (k + 1))`. Simplify using `only [ModuleCat.hom_comp, LinearMap.comp_apply] at h0`. Rewrite using `[← d_hom]`. Conclude with `h0`. Prove the components needed by the constructor for the conclusion.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `h0`. Take `⟨w, hw⟩` from `hex (cz G k x) h0`. Use `⟨w, ?_⟩` and prove the remaining obligations. Rewrite using `[← hti, ← i_cz G k x]`. Conclude with `congrArg _ hw`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce and unpack `⟨w, hw⟩`. Establish `hc : (K.toCycles (k + 2) (k + 1)).hom w = cz G k x`. Apply `iCycles_injective` to reduce the goal to its premises. Rewrite using `[hti, i_cz, hw]`. Simplify using `only [pz, LinearMap.comp_apply, ← hc]`.
-
-Establish `h1` using `congrArg (fun φ => φ.hom w) (K.toCycles_comp_homologyπ (k + 2) (k + 1))`. Simplify using `only [ModuleCat.hom_comp, LinearMap.comp_apply] at h1`. Conclude with `h1`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem pz_eq_zero_iff (x : LinearMap.ker (Dz G k)) :
     pz G k x = 0 ↔ x.1 ∈ LinearMap.range (Dz G (k + 1)) := by
@@ -148,7 +146,7 @@ theorem pz_eq_zero_iff (x : LinearMap.ker (Dz G k)) :
 variable {G} {H : Type} [Group H] (f : G →* H)
 
 /- English proof (translation)
-Rewrite using `[chainsMap_f_hom]`. Apply `Finsupp.lhom_ext` to reduce the goal to its premises. Introduce `g a`. Simplify using `[trivHom]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem chainsMap_hom (n : ℕ) :
     ((chainsMap f (trivHom f)).f n).hom = Finsupp.lmapDomain ℤ ℤ (fun (g : Fin n → G) i => f (g i)) := by
@@ -159,7 +157,7 @@ theorem chainsMap_hom (n : ℕ) :
   rfl
 
 /- English proof (translation)
-Rewrite `hx`, the goal using `[LinearMap.mem_ker]`. Use `congrArg (fun φ => φ.hom x) ((chainsMap f (trivHom f)).comm (k + 1) k)` as an intermediate fact. Simplify using `only [ModuleCat.hom_comp, LinearMap.coe_comp, Function.comp_apply] at this`. Rewrite `this` using `[d_hom, d_hom, chainsMap_hom, chainsMap_hom]`. Rewrite using `[this, hx, map_zero]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem map_mem_ker (x : (Fin (k + 1) → G) →₀ ℤ) (hx : x ∈ LinearMap.ker (Dz G k)) :
     Finsupp.lmapDomain ℤ ℤ (fun (g : Fin (k + 1) → G) i => f (g i)) x ∈ LinearMap.ker (Dz H k) := by
@@ -170,9 +168,9 @@ theorem map_mem_ker (x : (Fin (k + 1) → G) →₀ ℤ) (hx : x ∈ LinearMap.k
   rw [this, hx, map_zero]
 
 /- English proof (translation)
-Simplify using `only [pz, LinearMap.coe_comp, Function.comp_apply, grpHMap]`. Use `congrArg (fun φ => φ.hom (cz G k x)) (π_map f (trivHom f) (k + 1))` as an intermediate fact. Simplify using `only [ModuleCat.hom_comp, LinearMap.coe_comp, Function.comp_apply] at this`. Rewrite using `[this]`. Use `congr 1`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Apply `iCycles_injective H (k + 1)` to reduce the goal to its premises. Rewrite using `[i_cz]`. Use `congrArg (fun φ => φ.hom (cz G k x)) (HomologicalComplex.cyclesMap_i (chainsMap f (trivHom f)) (k + 1))` as an intermediate fact. Simplify using `only [ModuleCat.hom_comp, LinearMap.coe_comp, Function.comp_apply] at this`. Rewrite using `[this, i_cz, chainsMap_hom]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem pz_natural (x : LinearMap.ker (Dz G k)) :
     pz H k ⟨_, map_mem_ker k f x.1 x.2⟩ = (grpHMap f (k + 1)).hom (pz G k x) := by

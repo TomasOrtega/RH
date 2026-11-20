@@ -10,11 +10,11 @@ open WeierstrassCurve WeierstrassCurve.Affine GroundTheory.Arith.Abelian
 universe u
 
 /- English proof (translation)
-Distinguish the cases in `hu : u = 0`. Substitute `hu` using the available equality. Break down `hE.a₄_ne_zero_or_a₆_ne_zero with h | h` into its components or cases. Conclude with `absurd (by simpa using h4) h`. Conclude with `absurd (by simpa using h6) h`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hn : u ^ automorphismOrder E = 1`. Use `(scale_conditions_iff hE u⁻¹).mp ⟨by rw [inv_inv]; exact h4.symm, by rw [inv_inv]; exact h6.symm⟩` as an intermediate fact. Rewrite `this` using `[inv_pow, inv_eq_one]`. Then use the resulting hypothesis. Use `⟨hn, ?_⟩` and prove the remaining obligations. Unfold `automorphismOrder at hn`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Use `split_ifs at hn`. Rewrite using `[show 12 = 4 * 3 by rfl, pow_mul, hn, one_pow]`. Rewrite using `[show 12 = 6 * 2 by rfl, pow_mul, hn, one_pow]`. Rewrite using `[show 12 = 2 * 6 by rfl, pow_mul, hn, one_pow]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pow_eq_one_of_scale {F : Type*} [Field F] {E : WeierstrassCurve F} [E.IsElliptic]
     (hE : IsShortForm E) {u : F} (h4 : E.a₄ = u ^ 4 * E.a₄) (h6 : E.a₆ = u ^ 6 * E.a₆) :
@@ -43,9 +43,9 @@ variable {F : Type u} [Field F] [IsAlgClosed F] [DecidableEq F] {A B : Weierstra
 omit [IsAlgClosed F] [A.IsElliptic] [B.IsElliptic] in
 
 /- English proof (translation)
-Consider the cases of `R with`. Consider the case `zero => rfl`. Consider the case `some x y h`. Take `⟨h', e⟩` from `constPoint_some A h`. Rewrite using `[e, vcPoint_some, vcPoint_some]`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use `show Point.some _ _ _ = Point.some _ _ _`. Rewrite using `[Point.some.injEq]`. Conclude with `⟨(map_vcX C (algebraMap F _) x).symm, (map_vcY C (algebraMap F _) x y).symm⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem vcPoint_constPoint (C : VariableChange F) (hC : C • A = B) (R : A.toAffine.Point) :
     vcPoint (C.baseChange A.toAffine.FunctionField) (Elliptic.baseChange_smul_eq C _ hC)
@@ -60,7 +60,7 @@ theorem vcPoint_constPoint (C : VariableChange F) (hC : C • A = B) (R : A.toAf
     exact ⟨(map_vcX C (algebraMap F _) x).symm, (map_vcY C (algebraMap F _) x y).symm⟩
 
 /- English proof (translation)
-Apply `Isogeny.pointMap_eq_of_map_translate` to reduce the goal to its premises. Rewrite using `[hψ, Elliptic.map_vcPoint C (translate A R) hC, map_translate_genericPoint, vcPoint_add, vcPoint_constPoint]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem pointMap_eq_vcPoint (C : VariableChange F) (hC : C • A = B) (ψ : Isogeny A B)
     (hψ : ψ.1 = vcPoint (C.baseChange A.toAffine.FunctionField)
@@ -71,15 +71,15 @@ theorem pointMap_eq_vcPoint (C : VariableChange F) (hC : C • A = B) (ψ : Isog
     vcPoint_constPoint]
 
 /- English proof (translation)
-Set `C : VariableChange F` to `⟨u⁻¹, 0, 0, 0⟩`. Establish `hC : C • A = B`. Use `ext`. Simplify using `[C, variableChange_a₁, hA.a₁_eq, hB.a₁_eq]`. Simplify using `[C, variableChange_a₂, hA.a₁_eq, hA.a₂_eq, hB.a₂_eq]`.
+Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[C, variableChange_a₃, hA.a₁_eq, hA.a₃_eq, hB.a₃_eq]`. Simplify using `[C, variableChange_a₄, hA.a₁_eq, hA.a₂_eq, hA.a₃_eq, h4]`. Simplify using `[C, variableChange_a₆, hA.a₁_eq, hA.a₂_eq, hA.a₃_eq, h6]`. Establish `hψ : ψ.1 = vcPoint (C.baseChange A.toAffine.FunctionField) (Elliptic.baseChange_smul_eq C _ hC) (genericPoint A)`. Rewrite using `[ψ.val_eq_some_x_y]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [GroundTheory.Arith.Abelian.genericPoint, vcPoint_some, Point.some.injEq]`. Prove the components needed by the constructor for the conclusion. Rewrite using `[hx]`. Simplify using `[C, vcX, VariableChange.baseChange, VariableChange.map]`. Rewrite using `[hy]`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[C, vcY, VariableChange.baseChange, VariableChange.map]`. Establish `ex : vcX C x = (u : F) ^ 2 * x` using `by simp [C, vcX]`. Establish `ey : vcY C x y = (u : F) ^ 3 * y` using `by simp [C, vcY]`. Establish `hN : B.toAffine.Nonsingular (vcX C x) (vcY C x y)` using `hC ▸ (nonsingular_vc C A x y).2 h`. Rewrite `hN` using `[ex, ey]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `⟨hN, ?_⟩` and prove the remaining obligations. Rewrite using `[pointMap_eq_vcPoint C hC ψ hψ, vcPoint_some, Point.some.injEq]`. Conclude with `⟨ex, ey⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem pointMap_some_of_scale (hA : IsShortForm A) (hB : IsShortForm B) (u : Fˣ)
     (h4 : B.a₄ = (u : F) ^ 4 * A.a₄) (h6 : B.a₆ = (u : F) ^ 6 * A.a₆) (ψ : Isogeny A B)
@@ -121,11 +121,11 @@ variable {F : Type u} [Field F] {A B : WeierstrassCurve F} [A.IsElliptic] [B.IsE
   {Ω : Type u} [Field Ω] [IsAlgClosed Ω] [Algebra F Ω] [DecidableEq Ω]
 
 /- English proof (translation)
-Take `⟨u, hx, hy, h4, h6⟩` from `exists_scale_of_degree_eq_one h2 h3 hA hB ψ h`. Use `⟨u, h4, h6, fun x y hxy => ?_⟩` and prove the remaining obligations. Set `v : Ωˣ` to `Units.map (algebraMap F Ω) u`. Establish `hv : (v : Ω) = algebraMap F Ω (u : F)` using `rfl`. Establish `h4' : (B.baseChange Ω).a₄ = (v : Ω) ^ 4 * (A.baseChange Ω).a₄` using `by show algebraMap F Ω B.a₄ = _ * algebraMap F Ω A.a₄`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[h4, hv, map_mul, map_pow]`. Establish `h6' : (B.baseChange Ω).a₆ = (v : Ω) ^ 6 * (A.baseChange Ω).a₆` using `by show algebraMap F Ω B.a₆ = _ * algebraMap F Ω A.a₆`. Rewrite using `[h6, hv, map_mul, map_pow]`. Establish `hx' : (isogBaseChange (F'` using `Ω) ψ).x = algebraMap Ω (A.baseChange Ω).toAffine.FunctionField ((v : Ω) ^ 2) * genX (A.baseChange Ω) := by`. Rewrite using `[isogBaseChange_alt, hx, map_mul, AlgHom.commutes, bcEmb_genX, hv, ← map_pow, ← IsScalarTower.algebraMap_apply]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hy' : (isogBaseChange (F'` using `Ω) ψ).y = algebraMap Ω (A.baseChange Ω).toAffine.FunctionField ((v : Ω) ^ 3) * genY (A.baseChange Ω) := by`. Rewrite using `[isogBaseChange_y, hy, map_mul, AlgHom.commutes, bcEmb_genY, hv, ← map_pow, ← IsScalarTower.algebraMap_apply]`. Conclude with `pointMap_some_of_scale (hA.baseChange Ω) (hB.baseChange Ω) v h4' h6' _ hx' hy' hxy`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pointMap_isogBaseChange_some_of_degree_eq_one (h2 : (2 : F) ≠ 0) (h3 : (3 : F) ≠ 0)
     (hA : IsShortForm A) (hB : IsShortForm B) (ψ : Isogeny A B) (h : ψ.degree = 1) :

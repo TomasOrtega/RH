@@ -11,19 +11,19 @@ namespace GlobalTheory.MemLoc.KerAll
 open Ideal
 
 /- English proof (translation)
-Set `g : {z // P z} → A × {z // P z}` to `fun z => ((h z.1 z.2).choose, ⟨(h z.1 z.2).choose_spec.choose, (h z.1 z.2).choose_spec.choose_spec.2⟩)`. Establish `hg : ∀ z : {z // P z}, z.1 = a * (g z).1 + q * (g z).2.1` using `fun z => (h z.1 z.2).choose_spec.choose_spec.1`. Set `xs : ℕ → {z // P z}` to `fun n => Nat.rec ⟨x, hx⟩ (fun _ z => (g z).2) n`. Establish `hxs : ∀ n, xs (n + 1) = (g (xs n)).2` using `fun n => rfl`. Set `S : ℕ → A` to `fun n => ∑ k ∈ Finset.range n, q ^ k * (g (xs k)).1`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hS : ∀ n, S (n + 1) = S n + q ^ n * (g (xs n)).1` using `fun n => Finset.sum_range_succ _ _`. Establish `hY : ∀ n, x = a * S n + q ^ n * (xs n).1`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => simp [S, xs]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `succ n ih`. Rewrite using `[hS, hxs]`. Take the linear combination `ih + q ^ n * hg (xs n)`. Establish `hC : ∀ m n, m ≤ n → S n - S m ∈ span {q ^ m}`. Introduce `m n hmn`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `n, hmn using Nat.le_induction with`. Consider the case `base => simp`. Consider the case `succ n hmn ih`. Rewrite using `[hS, show S n + q ^ n * (g (xs n)).1 - S m = (S n - S m) + q ^ n * (g (xs n)).1 by ring]`. Use `add_mem ih (mem_span_singleton.2 (Dvd.dvd.mul_right (pow_dvd_pow q hmn) _))` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨L, hL⟩` from `(inferInstance : IsPrecomplete (span {q}) A).prec' S (by`. Introduce `m n hmn`. Simplify using `only [Ideal.span_singleton_pow, smul_eq_mul, Ideal.mul_top, SModEq.sub_mem]`. Rewrite using `[← neg_sub]`. Conclude with `neg_mem (hC m n hmn))`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hxL : x - a * L = 0`. Use `(inferInstance : IsHausdorff (span {q}) A).haus' _ (fun n => ?_)` and prove the remaining obligations. Establish `hn` using `hL n`. Simplify using `only [Ideal.span_singleton_pow, smul_eq_mul, Ideal.mul_top, SModEq.sub_mem] at hn ⊢`. Rewrite using `[sub_zero, show x - a * L = a * (S n - L) + q ^ n * (xs n).1 by`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `hY n]`. Conclude with `add_mem (mul_mem_left _ _ hn) (mul_mem_right _ _ (mem_span_singleton_self _))`. Conclude with `⟨L, sub_eq_zero.1 hxL⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem dvd_of_step {A : Type*} [CommRing A] (q a : A)
     [IsAdicComplete (span {q}) A] (P : A → Prop)
@@ -71,19 +71,19 @@ variable {l : ℕ} [hl : Fact l.Prime]
 def rt (x : Per.Fl l) (n : ℕ) : Per.Fl l := ((frobeniusEquiv (Per.Fl l) l).symm)^[n] x
 
 /- English proof (translation)
-The claim follows from `Function.iterate_succ_apply' _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem rt_succ (x : Per.Fl l) (n : ℕ) :
     rt x (n + 1) = (frobeniusEquiv (Per.Fl l) l).symm (rt x n) := Function.iterate_succ_apply' _ _ _
 
 /- English proof (translation)
-Rewrite using `[rt_succ, frobeniusEquiv_symm_pow_p]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem rt_succ_pow (x : Per.Fl l) (n : ℕ) : rt x (n + 1) ^ l = rt x n := by
   rw [rt_succ, frobeniusEquiv_symm_pow_p]
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simp [rt]`. Consider the case `succ n ih => rw [pow_succ', pow_mul, rt_succ_pow, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem rt_pow (x : Per.Fl l) (n : ℕ) : rt x n ^ l ^ n = x := by
   induction n with
@@ -96,7 +96,7 @@ Both sides reduce to the same expression.
 theorem rootT_eq (x : Per.Fl l) (n : ℕ) : rootT x n = (rt x n).untilt := rfl
 
 /- English proof (translation)
-Rewrite using `[rootT, PreTilt.mk_untilt_eq_coeff_zero]`. Use `PreTilt.coeff_iterate_frobeniusEquiv_symm 0 n x` as an intermediate fact. Rewrite `this` using `[zero_add]`. Conclude with `this`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mk_rootT (x : Per.Fl l) (n : ℕ) :
     Ideal.Quotient.mk (span {(l : Per.OC l)}) (rootT x n) = PreTilt.coeff n x := by
@@ -106,19 +106,19 @@ theorem mk_rootT (x : Per.Fl l) (n : ℕ) :
   exact this
 
 /- English proof (translation)
-Rewrite using `[rootT_eq, ← map_pow, rt_pow]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem rootT_pow (x : Per.Fl l) (n : ℕ) : rootT x n ^ l ^ n = x.untilt := by
   rw [rootT_eq, ← map_pow, rt_pow]
 
 /- English proof (translation)
-Rewrite using `[rootT_eq, rootT_eq, ← map_pow, rt_succ_pow]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem rootT_succ_pow (x : Per.Fl l) (n : ℕ) : rootT x (n + 1) ^ l = rootT x n := by
   rw [rootT_eq, rootT_eq, ← map_pow, rt_succ_pow]
 
 /- English proof (translation)
-Use `Perfection.ext fun n => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `PreTilt.coeff n x = PreTilt.coeff n 0`. Establish `: rootT x n = 0` using `pow_eq_zero_iff (pow_ne_zero n hl.out.ne_zero) |>.1 (by rw [rootT_pow, h])`. Rewrite using `[← mk_rootT, this, map_zero, map_zero]`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem eq_zero_of_untilt {x : Per.Fl l} (h : x.untilt = 0) : x = 0 := by
   refine Perfection.ext fun n => ?_
@@ -129,47 +129,45 @@ theorem eq_zero_of_untilt {x : Per.Fl l} (h : x.untilt = 0) : x = 0 := by
 def nm (x : Per.Fl l) : ℝ := ‖(x.untilt : ℂ_[l])‖
 
 /- English proof (translation)
-Simplify using `[nm]`.
+Simplify using the standard rewrite rules.
 -/
 theorem nm_mul (x y : Per.Fl l) : nm (x * y) = nm x * nm y := by
   simp [nm]
 
 /- English proof (translation)
-Simplify using `[nm]`.
+Simplify using the standard rewrite rules.
 -/
 theorem nm_pow (x : Per.Fl l) (n : ℕ) : nm (x ^ n) = nm x ^ n := by
   simp [nm]
 
 /- English proof (translation)
-The claim follows from `norm_nonneg _`.
+A detailed English derivation is pending.
 -/
 theorem nm_nonneg (x : Per.Fl l) : 0 ≤ nm x := norm_nonneg _
 
 /- English proof (translation)
-The claim follows from `(GlobalTheory.RingBasics.mem_OC _).1 x.untilt.2`.
+A detailed English derivation is pending.
 -/
 theorem nm_le (x : Per.Fl l) : nm x ≤ 1 := (GlobalTheory.RingBasics.mem_OC _).1 x.untilt.2
 
 /- English proof (translation)
-Use `norm_pos_iff.2 fun h0 => h (eq_zero_of_untilt (Subtype.ext h0))` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations.
 -/
 theorem nm_pos {x : Per.Fl l} (h : x ≠ 0) : 0 < nm x := by
   refine norm_pos_iff.2 fun h0 => h (eq_zero_of_untilt (Subtype.ext h0))
 
 /- English proof (translation)
-Establish `hsne : ∀ n, rootT x n ≠ 0`. Introduce `n h0`. Apply `hx` to reduce the goal to its premises. Apply `eq_zero_of_untilt` to reduce the goal to its premises. Rewrite using `[← rootT_pow x n, h0, zero_pow (pow_ne_zero _ hl.out.ne_zero)]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `hdvd : ∀ n, rootT x n ∣ rootT c n`. Introduce `n`. Establish `h1 : ‖(rootT c n : ℂ_[l])‖ ^ l ^ n ≤ ‖(rootT x n : ℂ_[l])‖ ^ l ^ n`. Rewrite using `[← norm_pow, ← norm_pow]`. Establish `a` using `congrArg Subtype.val (rootT_pow c n)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `b` using `congrArg Subtype.val (rootT_pow x n)`. Move the coercions through the operations in `at a b`. Rewrite using `[a, b]`. Conclude with `h`. Establish `h2` using `(pow_le_pow_iff_left₀ (norm_nonneg _) (norm_nonneg _) (pow_ne_zero n hl.out.ne_zero)).1 h1`.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hne : (rootT x n : ℂ_[l]) ≠ 0` using `fun h0 => hsne n (Subtype.ext h0)`. Use `⟨⟨(rootT c n : ℂ_[l]) / rootT x n, (GlobalTheory.RingBasics.mem_OC _).2 ?_⟩, Subtype.ext ?_⟩` and prove the remaining obligations. Rewrite using `[norm_div, div_le_one (norm_pos_iff.2 hne)]` and apply the resulting hypothesis. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact.
 
-Use `choose e he using hdvd`. Establish `hcomp : ∀ n, e (n + 1) ^ l = e n`. Introduce `n`. Establish `h2` using `rootT_succ_pow c n`. Rewrite `h2` using `[he (n + 1), he n, mul_pow, rootT_succ_pow]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Simplify using the standard rewrite rules.
 
-Conclude with `mul_left_cancel₀ (hsne n) h2`. Set `d : Per.Fl l` to `⟨fun n => Ideal.Quotient.mk _ (e n), fun n => by`. Simplify using `only [← map_pow, hcomp]⟩`. Use `⟨d, Perfection.ext fun n => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `PreTilt.coeff n c = PreTilt.coeff n (x * d)`.
-
-Rewrite using `[map_mul, ← mk_rootT, ← mk_rootT, he n, map_mul]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem dvd_of_nm_le {x c : Per.Fl l} (hx : x ≠ 0) (h : nm c ≤ nm x) : x ∣ c := by
   have hsne : ∀ n, rootT x n ≠ 0 := by
@@ -206,13 +204,11 @@ theorem dvd_of_nm_le {x c : Per.Fl l} (hx : x ≠ 0) (h : nm c ≤ nm x) : x ∣
   rfl
 
 /- English proof (translation)
-Use `dvd_of_nm_le hx ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hlt`. Use `push Not at hlt`. Establish `hp` using `nm_pos hx`. Establish `hr : 1 < nm c / nm x` using `(one_lt_div hp).2 hlt`.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨n, hn⟩` from `pow_unbounded_of_one_lt (nm x)⁻¹ hr`. Take `⟨d, hd⟩` from `h n`. Establish `h1 : nm c * nm (rt x n) ≤ nm x`. Rewrite using `[← nm_mul, hd, nm_mul]`. Conclude with `mul_le_of_le_one_right hp.le (nm_le d)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2` using `pow_le_pow_left₀ (mul_nonneg (nm_nonneg _) (nm_nonneg _)) h1 (l ^ n)`. Rewrite `h2` using `[mul_pow, ← nm_pow (rt x n), rt_pow]`. Establish `h3 : (nm c / nm x) ^ n ≤ (nm c / nm x) ^ l ^ n` using `pow_le_pow_right₀ hr.le (Nat.lt_pow_self hl.out.one_lt).le`. Establish `h4 : (nm c / nm x) ^ l ^ n ≤ (nm x)⁻¹`. Rewrite using `[div_pow, div_le_iff₀ (pow_pos hp _), inv_mul_eq_div, le_div_iff₀ hp]`.
-
-Conclude with `h2`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem dvd_of_forall {x c : Per.Fl l} (hx : x ≠ 0) (h : ∀ n, x ∣ c * rt x n) : x ∣ c := by
   refine dvd_of_nm_le hx ?_
@@ -235,9 +231,9 @@ theorem dvd_of_forall {x c : Per.Fl l} (hx : x ≠ 0) (h : ∀ n, x ∣ c * rt x
   linarith
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => ext i`. Simplify using the standard rewrite rules. Consider the case `succ n ih`. Rewrite using `[Function.iterate_succ_apply', ih]`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Use `WittVector.ext fun i => ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.RingBasics.φA_apply, WittVector.coeff_frobenius_charP]`. Simplify using `[WittVector.map_coeff, iterateFrobenius_def, pow_succ, pow_mul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem iter_eq (n : ℕ) (a : Per.Ainf l) :
     (Per.φA l)^[n] a = WittVector.map (iterateFrobenius (Per.Fl l) l n) a := by
@@ -252,33 +248,33 @@ theorem iter_eq (n : ℕ) (a : Per.Ainf l) :
 def ph (n : ℕ) : Per.Ainf l →+* Per.Ainf l := WittVector.map (iterateFrobenius (Per.Fl l) l n)
 
 /- English proof (translation)
-Simplify using `[ph, WittVector.map_teichmuller, iterateFrobenius_def]`.
+Simplify using the standard rewrite rules.
 -/
 theorem ph_tm (n : ℕ) (x : Per.Fl l) : ph n (Per.tm x) = Per.tm (x ^ l ^ n) := by
   simp [ph, WittVector.map_teichmuller, iterateFrobenius_def]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨WittVector.map_injective _ (bijective_iterateFrobenius (Per.Fl l) l n).1, WittVector.map_surjective _ (bijective_iterateFrobenius (Per.Fl l) l n).2⟩`.
+Supply the required witnesses or components.
 -/
 theorem ph_bij (n : ℕ) : Function.Bijective (ph (l := l) n) :=
   ⟨WittVector.map_injective _ (bijective_iterateFrobenius (Per.Fl l) l n).1,
    WittVector.map_surjective _ (bijective_iterateFrobenius (Per.Fl l) l n).2⟩
 
 /- English proof (translation)
-Rewrite using `[xi, rt_succ]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem xi_rt (e : Per.Fl l) (n : ℕ) :
     xi (rt e n) = ∑ i ∈ Finset.range l, (Per.tm (rt e (n + 1))) ^ i := by
   rw [xi, rt_succ]
 
 /- English proof (translation)
-Rewrite using `[xi_rt, mu, mu, geom_sum_mul, ← map_pow, rt_succ_pow]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mu_rt (e : Per.Fl l) (n : ℕ) : mu (rt e n) = xi (rt e n) * mu (rt e (n + 1)) := by
   rw [xi_rt, mu, mu, geom_sum_mul, ← map_pow, rt_succ_pow]
 
 /- English proof (translation)
-Establish `: rt e (n + 1) ^ l ^ n = (frobeniusEquiv (Per.Fl l) l).symm e`. Rewrite using `[rt_succ, ← map_pow, rt_pow]`. Rewrite using `[xi_rt, xi, map_sum]`. Simplify using `only [map_pow (ph n), ph_tm, this]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem ph_xi (e : Per.Fl l) (n : ℕ) : ph n (xi (rt e n)) = xi e := by
   have : rt e (n + 1) ^ l ^ n = (frobeniusEquiv (Per.Fl l) l).symm e := by
@@ -287,7 +283,7 @@ theorem ph_xi (e : Per.Fl l) (n : ℕ) : ph n (xi (rt e n)) = xi e := by
   simp only [map_pow (ph n), ph_tm, this]
 
 /- English proof (translation)
-Take `⟨k, rfl⟩` from `Nat.exists_eq_add_of_le h`. Establish `: rt e (n + 1) ^ l ^ (n + 1 + k) = e ^ l ^ k`. Rewrite using `[pow_add, pow_mul, rt_pow]`. Rewrite using `[xi_rt, map_sum, map_sum]`. Simplify using `only [map_pow (ph _), ph_tm, this, map_pow (Per.θ l), WittVector.fontaineTheta_teichmuller, map_pow PreTilt.untilt, he]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
 Simplify using the standard rewrite rules.
 -/
@@ -302,16 +298,16 @@ theorem th_ph_xi {e : Per.Fl l} (he : e.untilt = 1) {n m : ℕ} (h : n + 1 ≤ m
   simp
 
 /- English proof (translation)
-Conclude with `hl.out.ne_zero` after adjusting the coercions.
+A detailed English derivation is pending.
 -/
 theorem l_ne : (l : Per.OC l) ≠ 0 := by exact_mod_cast hl.out.ne_zero
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => exact ⟨1, a, by simp [rt], by simp, by simp⟩`. Consider the case `succ n ih`. Take `⟨c, b, h1, h2, h3⟩` from `ih`. Establish `h4 : Per.θ l (ph n b) = 0`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `ha n` as an intermediate fact. Rewrite `this` using `[h2, map_mul, map_mul]`. Conclude with `(mul_eq_zero.1 this).resolve_left (h3 n le_rfl)`. Take `⟨y, hy⟩` from `(theta_eq_zero_iff_xi_dvd l e he _).1 h4`. Take `⟨y, rfl⟩` from `(ph_bij n).2 y`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hy` using `[← ph_xi e n, ← map_mul]`. Establish `hb` using `(ph_bij n).1 hy`. Use `⟨c * xi (rt e n), y, by rw [h1, mu_rt, mul_assoc], by rw [h2, hb, mul_assoc], fun m hm => ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, map_mul, th_ph_xi he.1 hm]`. Conclude with `mul_ne_zero (h3 m (by omega)) l_ne`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem factor {e : Per.Fl l} (he : IsEps e) {a : Per.Ainf l} (ha : ∀ n, Per.θ l (ph n a) = 0) (n : ℕ) :
     ∃ c b, mu e = c * mu (rt e n) ∧ a = c * b ∧ ∀ m, n ≤ m → Per.θ l (ph m c) ≠ 0 := by
@@ -332,7 +328,7 @@ theorem factor {e : Per.Fl l} (he : IsEps e) {a : Per.Ainf l} (ha : ∀ n, Per.�
     exact mul_ne_zero (h3 m (by omega)) l_ne
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => rfl`. Consider the case `succ n ih => rw [rt_succ, rt_succ, ih, map_sub, map_one]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem rt_sub_one (e : Per.Fl l) (n : ℕ) : rt (e - 1) n = rt e n - 1 := by
   induction n with
@@ -340,22 +336,22 @@ theorem rt_sub_one (e : Per.Fl l) (n : ℕ) : rt (e - 1) n = rt e n - 1 := by
   | succ n ih => rw [rt_succ, rt_succ, ih, map_sub, map_one]
 
 /- English proof (translation)
-Rewrite using `[mu, map_sub, map_one]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 -/
 theorem cc_mu (e : Per.Fl l) : WittVector.constantCoeff (mu e) = e - 1 := by
   rw [mu, map_sub, map_one]
   congr 1
 
 /- English proof (translation)
-Establish `hne : e - 1 ≠ 0`. Introduce `h`. Apply `he.2` to reduce the goal to its premises. Rewrite using `[sub_eq_zero.1 h, map_one, map_one]`. Establish `hd : e - 1 ∣ WittVector.constantCoeff a`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `dvd_of_forall hne fun n => ?_` and prove the remaining obligations. Take `⟨c, b, h1, h2, -⟩` from `factor he ha n`. Use `⟨WittVector.constantCoeff b, ?_⟩` and prove the remaining obligations. Establish `h3 : a * mu (rt e n) = mu e * b` using `by linear_combination mu (rt e n) * h2 - b * h1`. Establish `h4` using `congrArg WittVector.constantCoeff h3`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h4` using `[map_mul, map_mul, cc_mu, cc_mu]`. Rewrite using `[rt_sub_one, h4]`. Take `⟨d, hd⟩` from `hd`. Establish `hm : a - mu e * Per.tm d ∈ span {(l : Per.Ainf l)}`. Rewrite using `[← WittVector.ker_constantCoeff, RingHom.mem_ker, map_sub, map_mul, cc_mu, hd, sub_eq_zero]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `congrArg (fun w => (e - 1) * w) (WittVector.teichmuller_coeff_zero l d).symm`. Take `⟨z, hz⟩` from `mem_span_singleton'.1 hm`. Use `⟨Per.tm d, z, by linear_combination -hz, fun n => ?_⟩` and prove the remaining obligations. Establish `h0 : Per.θ l (ph n (mu e)) = 0`. Rewrite using `[mu, map_sub, map_sub, ph_tm, WittVector.fontaineTheta_teichmuller, map_pow, he.1]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Use `congrArg (fun w => Per.θ l (ph n w)) hz` as an intermediate fact. Simplify using `only [map_mul, map_sub, map_natCast, h0, ha n, zero_mul, sub_zero] at this`. Conclude with `(mul_eq_zero.1 this).resolve_right l_ne`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem step {e : Per.Fl l} (he : IsEps e) (a : Per.Ainf l) (ha : ∀ n, Per.θ l (ph n a) = 0) :
     ∃ y a', a = mu e * y + (l : Per.Ainf l) * a' ∧ ∀ n, Per.θ l (ph n a') = 0 := by
@@ -387,7 +383,7 @@ theorem step {e : Per.Fl l} (he : IsEps e) (a : Per.Ainf l) (ha : ∀ n, Per.θ 
 end GlobalTheory.MemLoc.KerAll
 
 /- English proof (translation)
-Introduce `l _ e he a ha`. Use `KerAll.dvd_of_step (l : Per.Ainf l) (mu e) (fun a => ∀ n, Per.θ l (KerAll.ph n a) = 0) (KerAll.step he) a fun n => ?_` and prove the remaining obligations. Use `ha n` as an intermediate fact. Rewrite `this` using `[KerAll.iter_eq]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem GlobalTheory.MemLoc.mu_dvd_of_theta_frob : ∀ (l : ℕ) [Fact l.Prime], ∀ e : Per.Fl l, IsEps e → ∀ a : Per.Ainf l, (∀ n : ℕ, Per.θ l ((Per.φA l)^[n] a) = 0) → mu e ∣ a := by
   intro l _ e he a ha

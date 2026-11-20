@@ -8,7 +8,7 @@ open scoped ComplexOrder ContDiff
 namespace GlobalTheory.InterpCurv
 
 /- English proof (translation)
-The claim follows from `|(leviForm (fun x => Real.log (r x)) z ξ ξ).re| ≤ 2 * Real.pi * |CP| * gnorm G ξ ^ 2 := by have hπ : (Real.pi : ℂ) ≠ 0 := by exact_mod_cast Real.pi_ne_zero have h2π : 0 < 2 * Real.pi := by positivity have key : ∀ a : ℝ, a / (2 * Real.pi) ≤ CP * gnorm G ξ ^ 2 → a ≤ 2 * Real.pi * | …`.
+A detailed English derivation is pending.
 -/
 theorem del_log_sq_le_and_levi_log_le (ι : Type) [Fintype ι] (r : (ι → ℂ) → ℝ) (G : Matrix ι ι ℂ)
     (CP : ℝ) (z : ι → ℂ) (hr : ContDiffAt ℝ 2 r z) (h0 : 0 < r z) (hG : G.PosSemidef)

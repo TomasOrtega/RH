@@ -20,23 +20,21 @@ open scoped TensorProduct
 set_option autoImplicit false
 
 /- English proof (translation)
-Introduce `K κ κ' L _ _ _ _ _ _ _ _ _ _ _ n k k' x τ' R π ρ hx hτ hO' hz hcompat hC hfrac E hER hcentre`. Establish `hinj : Function.Injective (algebraMap (K ⊗[ℂ] κ') L)` using `IsFractionRing.injective _ _`. Take `⟨t, ht⟩` from `IsDiscreteValuationRing.exists_irreducible E.ring`. Take `⟨zR, hzR⟩` from `GlobalTheory.T.exists_trBasis_in_image_of_fractionField k R π hfrac hz`. Take `⟨𝔭, h𝔭⟩` from `Ideal.nonempty_minimalPrimes (GlobalTheory.T.placeGraphIdealTensor_ne_top (κ' := κ') R π ρ E hcompat hC hfrac hER hcentre)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `haveI : 𝔭.IsPrime := h𝔭.1.1`. Establish `hle : graphIdeal E R π ρ ≤ 𝔭` using `h𝔭.1.2`. Establish `hQ : IsLocModel (algebraMap ℂ L) (locAt (L` using `L) 𝔭) := GlobalTheory.T.isLocalRingOfVarietyPoint_localization_placeTensor E 𝔭 hO'`. Use `letI := hQ.isLocalRing`. Establish `hmax` using `GlobalTheory.T.graphIdeal_localization_maximalIdeal_eq_span (L := L) k R π ρ E hER t zR 𝔭 hO' hcompat hC hfrac hcentre ht hzR h𝔭`.
+Establish an intermediate fact. Establish an intermediate fact. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdim` using `GlobalTheory.T.ringKrullDim_localization_graphIdeal_minimalPrime (L := L) k R π ρ E 𝔭 hO' hcompat hC hfrac hER hcentre hz h𝔭`. Establish `hz0 : ((toQ (L` using `L) 𝔭 (gens E R π ρ hER t zR 0) : locAt (L := L) 𝔭) : L) = algebraMap (K ⊗[ℂ] κ') L ((t : K) ⊗ₜ 1) := by`. Simplify using `[gens]`. Use `⟨locAt (L := L) 𝔭, hQ, fun i => toQ 𝔭 (gens E R π ρ hER t zR i), hmax, hdim, ?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `e he`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(toQ (L := L) 𝔭 ⟨e ⊗ₜ 1, tmul_mem (A := placeAlg E) he 1⟩).2`. Introduce `g hg`. Rewrite using `[hz0]`. Conclude with `GlobalTheory.T.exists_isUnit_mul_zpow_uniformiser_tmul E 𝔭 t hinj ht g hg`. Introduce `b hb`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Use `⟨toQ 𝔭 ⟨1 ⊗ₜ b, tmul_mem (one_mem (placeAlg E)) b⟩, isUnit_toQ 𝔭 hinj ?_, rfl⟩` and prove the remaining obligations. Introduce `h`. Apply `one_notMem 𝔭` to reduce the goal to its premises. Establish `h2` using `𝔭.mul_mem_right ⟨(1 : K) ⊗ₜ b⁻¹, tmul_mem (one_mem (placeAlg E)) b⁻¹⟩ h`. Use `h2 using 1` and compare the differences between its conclusion and the goal.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `[Algebra.TensorProduct.tmul_mul_tmul, mul_inv_cancel₀ hb, Algebra.TensorProduct.one_def]`. Introduce `l a b hs`. Establish `hw : ∑ i, (a i : K) ⊗ₜ[ℂ] b i ∈ tens (κ'` using `κ') (placeAlg E) := Subalgebra.sum_mem _ fun i _ => tmul_mem (hER _ (a i).2) (b i)`. Use `⟨toQ 𝔭 ⟨_, hw⟩, isUnit_toQ 𝔭 hinj (GlobalTheory.T.sum_tmul_notMem_prime_of_graph_image_ne_zero R π ρ E 𝔭 hle hER l a b ⟨_, hw⟩ rfl hs), ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `[map_sum]`. Introduce `M l a b hJ`. Establish `hw : ∑ i, (a i : K) ⊗ₜ[ℂ] b i ∈ tens (κ'` using `κ') (placeAlg E) := Subalgebra.sum_mem _ fun i _ => tmul_mem (hER _ (a i).2) (b i)`. Use `⟨toQ 𝔭 ⟨_, hw⟩, by simp [map_sum], ?_⟩` and prove the remaining obligations. Establish `h1` using `GlobalTheory.T.graphJets_mem_pow_sup_uniformiser R π ρ E 𝔭 t hle ht hcompat hC hfrac hER hcentre M l a b ⟨_, hw⟩ rfl hJ`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h2` using `Ideal.mem_map_of_mem (toQ (L := L) 𝔭) h1`. Rewrite `h2` using `[Ideal.map_sup, Ideal.map_pow, Ideal.map_span, Set.image_singleton]`. Establish `h3 : Ideal.map (toQ (L` using `L) 𝔭) 𝔭 ^ M ⊔ Ideal.span {toQ (L := L) 𝔭 ⟨(t : K) ⊗ₜ 1, tmul_mem t.2 1⟩} ≤ IsLocalRing.maximalIdeal (locAt (L := L) 𝔭) ^ M ⊔ Ideal.span {toQ (L := L) 𝔭 (gens E R π ρ hER t zR 0)} := sup_le_sup (Ideal.pow_right_mono (map_le_maximalIdeal 𝔭 hinj) M) le_rfl`. Conclude with `h3 h2`. Take `⟨y, q, hy, hq, e⟩` from `GlobalTheory.T.exists_freeGenerator_topForms_tensorLocalization_order n k' x τ' E 𝔭 t hQ.const_mem hx hτ hO' ht`.
-
-Use `⟨y, q, hy, hq, ?_⟩` and prove the remaining obligations. Rewrite using `[hz0]`. Conclude with `e`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.GraphLocal.exists_locModel_graph : ∀ {K κ κ' L : Type} [Field K] [Field κ] [Field κ'] [Field L] [Algebra ℂ K] [Algebra ℂ κ] [Algebra ℂ κ'] [Algebra ℂ L]
     [Algebra (K ⊗[ℂ] κ') L] [IsScalarTower ℂ (K ⊗[ℂ] κ') L] [IsFractionRing (K ⊗[ℂ] κ') L]

@@ -21,7 +21,7 @@ noncomputable def trivPull {G G' : Type} [Group G] [TopologicalSpace G] [Group G
   equiv _ _ := rfl
 
 /- English proof (translation)
-The claim follows from `connNat_holds ℤ _ _ _ _ _ _ _ _ _ _ (trivPull φ hφ ℤ).hom (trivPull φ hφ ℚ).hom (trivPull φ hφ QZ).hom δ δ' (admissibility_holds ℤ G _ _ _ _ _ (admissible_int_rat_sequence G)) (admissibility_holds ℤ G' _ _ _ _ _ (admissible_int_rat_sequence G')) (fun _ _ => rfl) (fun _ _ => rfl) …`.
+A detailed English derivation is pending.
 -/
 theorem conn_trivPull {G G' : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [Group G']
     [TopologicalSpace G'] [IsTopologicalGroup G'] (φ : G' →* G) (hφ : Continuous φ) (δ δ')
@@ -35,7 +35,7 @@ theorem conn_trivPull {G G' : Type} [Group G] [TopologicalSpace G] [IsTopologica
     (fun _ _ => rfl) (fun _ _ => rfl) hδ hδ' n x
 
 /- English proof (translation)
-Take `⟨e, he⟩` from `exists_h1_equiv_characters G`. Rewrite using `[← he x hx, ← he x hx, ofMul_pow, map_nsmul]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem cocycle_pow {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
     (x : (trivRep G QZ).coch.X 1) (hx : (trivRep G QZ).coch.d 1 x = 0)
@@ -45,7 +45,7 @@ theorem cocycle_pow {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGrou
   rfl
 
 /- English proof (translation)
-Introduce `x hx` and use `hσ x (Kur_le_Kur L hK hL h hx)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem resGK_mem_subG_Kur (hK : FiniteDimensional ℚ_[p] K) (hL : FiniteDimensional ℚ_[p] L) (h : K ≤ L)
     (σ : GK p L) (hσ : σ ∈ subG p L (MaximalUnramifiedExtension p L)) : resGK h σ ∈ subG p K (MaximalUnramifiedExtension p K) :=
@@ -87,7 +87,7 @@ theorem invMap_u {R : Type} [CommRing R] {G G' : Type} [Group G] [TopologicalSpa
     ((invMap Q N N' hN).u x).1 = Q.u x.1 := rfl
 
 /- English proof (translation)
-Proceed by induction on `x using Cx.H_ind with`. Consider the case `h x hx => exact Cx.cls_congr _ _ (Subtype.ext (funext fun _ => rfl))`.
+Proceed by induction. Treat this case separately.
 -/
 theorem invMap_H {R : Type} [CommRing R] {G G' : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [Group G']
     [TopologicalSpace G'] [IsTopologicalGroup G'] {M : TRep R G} {M' : TRep R G'} (Q : Pair M M') (N : Subgroup G)
@@ -102,7 +102,7 @@ noncomputable def urRes (hK : FiniteDimensional ℚ_[p] K) (hL : FiniteDimension
   invMap (resPair h) (subG p K (MaximalUnramifiedExtension p K)) (subG p L (MaximalUnramifiedExtension p L)) (resGK_mem_subG_Kur hK hL h)
 
 /- English proof (translation)
-Conclude with `⟨urRes hK hL h, invMap_φ (resPair h) _ _ _, invMap_u (resPair h) _ _ _, invMap_H (resPair h) _ _ _⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_urRes (hK : FiniteDimensional ℚ_[p] K) (hL : FiniteDimensional ℚ_[p] L) (h : K ≤ L) :
     ∃ P : Pair (urT p K) (urT p L), (∀ σ : GK p L, P.φ (QuotientGroup.mk σ) = QuotientGroup.mk (resGK h σ)) ∧
@@ -112,7 +112,7 @@ theorem exists_urRes (hK : FiniteDimensional ℚ_[p] K) (hL : FiniteDimensional 
   exact ⟨urRes hK hL h, invMap_φ (resPair h) _ _ _, invMap_u (resPair h) _ _ _, invMap_H (resPair h) _ _ _⟩
 
 /- English proof (translation)
-Apply `Int.cast_injective (α := ℝ)` to reduce the goal to its premises. Rewrite using `[vLayerMap_spec p (le_Kur (K := L)), smul_eq_mul, Int.cast_mul, vLayerMap_spec p (le_Kur (K := K)), eK_Kur p hK, eK_Kur p hL, eK_eq_mul p hL h, hxy]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem vLayerMap_urRes (hK : FiniteDimensional ℚ_[p] K) (hL : FiniteDimensional ℚ_[p] L) (h : K ≤ L)
     (x : (urT p K).V) (y : (urT p L).V) (hxy : y.1 = x.1) :
@@ -124,15 +124,15 @@ theorem vLayerMap_urRes (hK : FiniteDimensional ℚ_[p] K) (hL : FiniteDimension
   ring
 
 /- English proof (translation)
-Take `⟨⟨δ, hδ, -⟩, -⟩` from `lES_holds ℤ _ _ _ _ _ (admissibility_holds ℤ (GalLK p K (MaximalUnramifiedExtension p K)) _ _ _ _ _ (admissible_int_rat_sequence (GalLK p K (MaximalUnramifiedExtension p K))))`. Take `⟨⟨δ', hδ', -⟩, -⟩` from `lES_holds ℤ _ _ _ _ _ (admissibility_holds ℤ (GalLK p L (MaximalUnramifiedExtension p L)) _ _ _ _ _ (admissible_int_rat_sequence (GalLK p L (MaximalUnramifiedExtension p L))))`. Take `⟨c, hc⟩` from `(conn_int_rat_bijective _ δ hδ 1 one_pos).2 ((vLayer p K (MaximalUnramifiedExtension p K)).hom.H 2 x)`. Take `⟨χ, hχ, rfl⟩` from `Cx.exists_cls c`. Establish `h1` using `invUr_eq hK δ hδ x χ hχ hc.symm`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hv : (vLayer p L (MaximalUnramifiedExtension p L)).hom.H 2 (P.hom.H 2 x) = (eLK p K L : ℤ) • (trivPull P.φ P.φ_cont ℤ).hom.H 2 ((vLayer p K (MaximalUnramifiedExtension p K)).hom.H 2 x)`. Proceed by induction on `x using Cx.H_ind with`. Consider the case `h z hz`. Use `Cx.cls_congr _ _ (Subtype.ext (funext fun g => ?_))` and prove the remaining obligations. Conclude with `vLayerMap_urRes hK hL h _ _ (hu _)`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hn` using `conn_trivPull P.φ P.φ_cont δ δ' hδ hδ' 1 (Cx.cls _ 1 χ hχ)`. Rewrite `hv` using `[← hc]`. Establish `hd : (trivRep (GalLK p L (MaximalUnramifiedExtension p L)) QZ).coch.d 1 ((eLK p K L : ℤ) • (trivPull P.φ P.φ_cont QZ).hom.f 1 χ) = 0`. Rewrite using `[map_smul, ← Cx.Hom.comm, hχ, map_zero, smul_zero]`. Establish `h2` using `invUr_eq hL δ' hδ' (P.hom.H 2 x) ((eLK p K L : ℤ) • (trivPull P.φ P.φ_cont QZ).hom.f 1 χ) hd (hv.trans ((congrArg ((eLK p K L : ℤ) • ·) hn.symm).trans (map_smul (δ' 1) _ _).symm))`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : ((eLK p K L : ℤ) • (trivPull P.φ P.φ_cont QZ).hom.f 1 χ).1 ![frobLK p L (MaximalUnramifiedExtension p L)] = eLK p K L • χ.1 ![P.φ (frobLK p L (MaximalUnramifiedExtension p L))]`. Use `Eq.trans ?_ (natCast_zsmul _ _)` and prove the remaining obligations. Use `congrArg ((eLK p K L : ℤ) • ·) (congrArg χ.1 (funext fun i => ?_))` and prove the remaining obligations. Use `fin_cases i`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h4 : P.φ (frobLK p L (MaximalUnramifiedExtension p L)) = frobLK p K (MaximalUnramifiedExtension p K) ^ fLK p K L` using `(hφ _).trans (resGK_frobK L hK hL h (qK_eq_pow_fLK p hL h))`. Rewrite using `[h2, h3, h4, cocycle_pow χ hχ, h1, ← eLK_mul_fLK_eq_degLK p hL h]`. Conclude with `(mul_smul (eLK p K L) (fLK p K L) (χ.1 ![frobLK p K (MaximalUnramifiedExtension p K)] : QZ)).symm`.
+A detailed English derivation is pending.
 -/
 theorem invUr_urRes (hK : FiniteDimensional ℚ_[p] K) (hL : FiniteDimensional ℚ_[p] L) (h : K ≤ L)
     (P : Pair (urT p K) (urT p L)) (hφ : ∀ σ : GK p L, P.φ (QuotientGroup.mk σ) = QuotientGroup.mk (resGK h σ))
@@ -170,7 +170,7 @@ theorem invUr_urRes (hK : FiniteDimensional ℚ_[p] K) (hL : FiniteDimensional �
   exact (mul_smul (eLK p K L) (fLK p K L) (χ.1 ![frobLK p K (MaximalUnramifiedExtension p K)] : QZ)).symm
 
 /- English proof (translation)
-Take `⟨P, hφ, hu, hP⟩` from `exists_urRes hK hL h`. Conclude with `⟨P.hom.H 2 x, hP 2 x, invUr_urRes hK hL h P hφ hu x⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_res_ur (hK : FiniteDimensional ℚ_[p] K) (hL : FiniteDimensional ℚ_[p] L) (h : K ≤ L)
     (x : (urT p K).H 2) : ∃ y : (urT p L).H 2,

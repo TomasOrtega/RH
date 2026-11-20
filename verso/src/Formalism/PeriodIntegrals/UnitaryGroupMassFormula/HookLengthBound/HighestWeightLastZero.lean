@@ -7,13 +7,13 @@ noncomputable section
 namespace PI.HookSteps
 
 /- English proof (translation)
-Introduce `N ν _`. Consider the cases of `N with`. Consider the case `zero => simp [hw, detX]`. Consider the case `succ n`. Simplify using `only [hw]`.
+Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules.
 
-Rewrite using `[Fin.prod_univ_castSucc, Fin.prod_univ_castSucc]`. Establish `hlast : ∀ μ : Fin (n + 1) → ℕ, nuNext μ (Fin.last n) = 0`. Introduce `μ`. Simplify using `[nuNext]`. Establish `hcs : ∀ s : Fin n, (ν s.castSucc + 1) - nuNext (fun i => ν i + 1) s.castSucc = ν s.castSucc - nuNext ν s.castSucc`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `s`. Establish `hs` using `s.isLt`. Simplify using `only [nuNext, Fin.val_castSucc]`. Rewrite using `[dif_pos (show (s : ℕ) + 1 < n + 1 by omega), dif_pos (show (s : ℕ) + 1 < n + 1 by omega)]`. Use linear arithmetic over natural numbers and integers.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Simplify using `only [hlast, hcs, Nat.sub_zero]`. Establish `hL : lpMinor ℚ ((Fin.last n : ℕ) + 1) (r` using `n + 1) (n := n + 1) (by simp) (by simp) = detX (n + 1) := rfl`. Rewrite using `[hL, pow_succ]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem highest_weight_det_mul : HwDetMul := by
   intro N ν _
@@ -38,7 +38,7 @@ theorem highest_weight_det_mul : HwDetMul := by
     ring
 
 /- English proof (translation)
-Unfold `lpMinor`. Rewrite using `[AlgHom.map_det]`. Use `congr 1`. Use extensionality with `p q`. Simplify using `only [AlgHom.mapMatrix_apply, Matrix.map_apply, Matrix.of_apply, rename_X]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
 Both sides reduce to the same expression.
 -/
@@ -53,13 +53,13 @@ theorem lpMinor_rename (n s : ℕ) (h1 h2 : s ≤ n) (h3 h4 : s ≤ n + 1) :
   rfl
 
 /- English proof (translation)
-Introduce `n ν _ hl`. Simplify using `only [hw]`. Rewrite using `[Fin.prod_univ_castSucc, map_prod]`. Establish `hlast : nuNext ν (Fin.last n) = 0` using `by simp [nuNext]`. Rewrite using `[hlast, hl, Nat.sub_zero, pow_zero, mul_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.prod_congr rfl fun s _ => ?_` and prove the remaining obligations. Establish `hs` using `s.isLt`. Rewrite using `[map_pow, lpMinor_rename n ((s : ℕ) + 1) _ _ (by omega) (by omega)]`. Use `congr 1`. Simplify using `only [nuNext, Fin.val_castSucc]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Rewrite using `[dif_pos (show (s : ℕ) + 1 < n + 1 by omega)]`. Distinguish the cases in `h : (s : ℕ) + 1 < n`. Rewrite using `[dif_pos h]`. Both sides reduce to the same expression. Rewrite using `[dif_neg h]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Establish `: (⟨s.val + 1, by omega⟩ : Fin (n + 1)) = Fin.last n` using `Fin.ext (by simp; omega)`. Rewrite using `[this, hl]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem highest_weight_last_zero : HwLastZero := by
   intro n ν _ hl
@@ -80,9 +80,9 @@ theorem highest_weight_last_zero : HwLastZero := by
     rw [this, hl]
 
 /- English proof (translation)
-Introduce `σ τ φ hφ f g`. Unfold `fockQ`. Rewrite using `[support_rename_of_injective hφ, Finset.sum_image (fun a _ b _ h => Finsupp.mapDomain_injective hφ h)]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[coeff_rename_mapDomain φ hφ, coeff_rename_mapDomain φ hφ]`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `congr 2`. Rewrite using `[Finsupp.mapDomain_support_of_injective hφ, Finset.prod_image (fun a _ b _ h => hφ h)]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Finsupp.mapDomain_apply hφ]`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem rename_isomorphism : RenameIso := by
   intro σ τ φ hφ f g

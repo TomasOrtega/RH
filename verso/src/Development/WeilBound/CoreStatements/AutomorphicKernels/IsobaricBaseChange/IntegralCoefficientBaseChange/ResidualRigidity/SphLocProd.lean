@@ -14,9 +14,9 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 namespace GlobalTheory.Rigid
 
 /- English proof (translation)
-Establish `hKO : ∀ m, GlobalTheory.LFun.KGL w m = KO (w.adicCompletion E) (Fin m)` using `fun m => (GlobalTheory.SmGL.SphCompletion.KO_completion w m).symm`. Use `choose v hv hv0 using fun i => (Submodule.ne_bot_iff _).1 (hs i)`. Take `⟨f, hf, hf1⟩` from `GlobalTheory.SatInd.exists_fixed_apply_one (k := w.adicCompletion E) (stdBlocks N h) (ρ := piTensor fun i => (σ i).ρ) (x := PiTensorProduct.tprod ℂ v) (fun g hg => by`. Rewrite using `[piTensor_tprod]`. Use `congr 1`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `i`. Conclude with `GlobalTheory.LGrp.mem_fixed.1 (hv i) (g i) (by rw [hKO]; exact hg i))`. Use `(Submodule.ne_bot_iff _).2 ⟨f, by rw [hKO]; exact hf, fun h0 => GlobalTheory.ContrObj.tprod_ne_zero v hv0 ?_⟩` and prove the remaining obligations. Rewrite using `[← hf1, h0]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem isSpherical_locProd {E : Type} [Field E] [NumberField E] {c n : ℕ} {N : Fin c → ℕ} (h : ∑ i, N i = n)
     (w : HeightOneSpectrum (𝓞 E)) (σ : ∀ i, SmIrr (GL (Fin (N i)) (w.adicCompletion E)))

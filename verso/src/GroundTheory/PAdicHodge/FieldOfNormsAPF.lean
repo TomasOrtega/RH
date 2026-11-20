@@ -22,7 +22,7 @@ section GaloisAPF
 variable {L : IntermediateField K Ω} [IsGalois K L]
 
 /- English proof (translation)
-The claim follows from `(InfiniteGalois.normal_iff_isGalois L).mpr inferInstance`.
+A detailed English derivation is pending.
 -/
 theorem fixingSubgroup_normal_of_isGalois : L.fixingSubgroup.Normal :=
   (InfiniteGalois.normal_iff_isGalois L).mpr inferInstance
@@ -35,13 +35,13 @@ variable (hL : IsAPF K Ω L)
 include hL
 
 /- English proof (translation)
-The claim follows from `finiteDimensional_upperField hL u`.
+A detailed English derivation is pending.
 -/
 theorem finiteDimensional_upperField' (u : ℝ) : FiniteDimensional K (upperField K Ω L u) :=
   finiteDimensional_upperField hL u
 
 /- English proof (translation)
-Rewrite using `[← InfiniteGalois.normal_iff_isGalois, fixingSubgroup_upperField hL]`. Use `infer_instance`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isGalois_upperField (u : ℝ) : IsGalois K (upperField K Ω L u) := by
   rw [← InfiniteGalois.normal_iff_isGalois, fixingSubgroup_upperField hL]
@@ -58,7 +58,7 @@ theorem upperFieldFG_coe (u : ℝ) : (upperFieldFG hL u : IntermediateField K Ω
   rfl
 
 /- English proof (translation)
-Rewrite using `[IntermediateField.restrictNormalHom_ker, upperFieldFG_coe, fixingSubgroup_upperField hL]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem ker_restrictNormalHom_upperField (u : ℝ) :
     (AlgEquiv.restrictNormalHom (upperFieldFG hL u : IntermediateField K Ω)).ker =
@@ -66,7 +66,7 @@ theorem ker_restrictNormalHom_upperField (u : ℝ) :
   rw [IntermediateField.restrictNormalHom_ker, upperFieldFG_coe, fixingSubgroup_upperField hL]
 
 /- English proof (translation)
-Rewrite using `[← map_absUpper (upperFieldFG hL u') u', Subgroup.map_eq_bot_iff, ker_restrictNormalHom_upperField hL]`. Conclude with `absUpper_le_upperSupFixing u'`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem upperRamificationGroup_upperField_eq_bot (u' : ℝ) :
     upperRamificationGroup K (upperFieldFG hL u' : IntermediateField K Ω) u' = ⊥ := by
@@ -75,9 +75,9 @@ theorem upperRamificationGroup_upperField_eq_bot (u' : ℝ) :
   exact absUpper_le_upperSupFixing u'
 
 /- English proof (translation)
-Use `haveI := fixingSubgroup_normal_of_isGalois (L := L)`. Rewrite using `[upperIndex, ← upperRamificationGroup_zero, ← map_absUpper (upperFieldFG hL u') w, ← map_absUpper (upperFieldFG hL u') 0, Subgroup.relIndex_map_map, ker_restrictNormalHom_upperField hL, apfIndex]`. Establish `h1 : absUpper K Ω w ⊔ upperSupFixing K Ω L u' = upperSupFixing K Ω L w`. Rewrite using `[upperSupFixing, upperSupFixing, ← sup_assoc, sup_eq_left.mpr (absUpper_antitone K Ω hw)]`. Establish `h2 : absUpper K Ω 0 ⊔ upperSupFixing K Ω L u' = absUpper K Ω 0 ⊔ upperSupFixing K Ω L w`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[upperSupFixing, upperSupFixing, ← sup_assoc, ← sup_assoc, sup_eq_left.mpr (absUpper_antitone K Ω (hw0.trans hw)), sup_eq_left.mpr (absUpper_antitone K Ω hw0)]`. Rewrite using `[h1, h2, Subgroup.relIndex_sup_right]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem upperIndex_upperField {u' w : ℝ} (hw0 : 0 ≤ w) (hw : w ≤ u') :
     upperIndex K (upperFieldFG hL u' : IntermediateField K Ω) w = apfIndex K Ω L w := by
@@ -95,7 +95,7 @@ theorem upperIndex_upperField {u' w : ℝ} (hw0 : 0 ≤ w) (hw : w ≤ u') :
   rw [h1, h2, Subgroup.relIndex_sup_right]
 
 /- English proof (translation)
-Rewrite using `[← upperIndex_upperField hL hu' le_rfl, upperIndex, upperRamificationGroup_upperField_eq_bot, Subgroup.relIndex_bot_left, card_lowerRamificationGroup_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem ramificationIndex_upperField {u' : ℝ} (hu' : 0 ≤ u') :
     ramificationIndex K (upperFieldFG hL u' : IntermediateField K Ω) = apfIndex K Ω L u' := by
@@ -103,7 +103,7 @@ theorem ramificationIndex_upperField {u' : ℝ} (hu' : 0 ≤ u') :
     Subgroup.relIndex_bot_left, card_lowerRamificationGroup_zero]
 
 /- English proof (translation)
-Rewrite using `[herbrandPsi_eq_integral hu0, apfPsi]`. Use `intervalIntegral.integral_congr fun w hw ↦ ?_` and prove the remaining obligations. Rewrite `hw` using `[Set.uIcc_of_le hu0]`. Simplify using `only [upperIndex_upperField hL hw.1 (hw.2.trans hu)]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem herbrandPsi_upperField {u u' : ℝ} (hu0 : 0 ≤ u) (hu : u ≤ u') :
     herbrandPsi K (upperFieldFG hL u' : IntermediateField K Ω) u = apfPsi K Ω L u := by
@@ -113,15 +113,15 @@ theorem herbrandPsi_upperField {u u' : ℝ} (hu0 : 0 ≤ u) (hu : u ≤ u') :
   simp only [upperIndex_upperField hL hw.1 (hw.2.trans hu)]
 
 /- English proof (translation)
-Set `M` to `FiniteGaloisIntermediateField.adjoin K ({x} : Set Ω)`. Establish `hxM : x ∈ (M : IntermediateField K Ω)` using `FiniteGaloisIntermediateField.subset_adjoin K ({x} : Set Ω) rfl`. Take `⟨N, hN⟩` from `exists_lowerRamificationGroup_eq_bot K (M : IntermediateField K Ω)`. Use `⟨herbrandPhi K (M : IntermediateField K Ω) N, ?_⟩` and prove the remaining obligations. Rewrite using `[upperField, IntermediateField.mem_fixedField_iff]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `σ hσ`. Set `S : Subgroup Gal(Ω/K)` to `(IntermediateField.adjoin K ({x} : Set Ω)).fixingSubgroup`. Establish `hS : ∀ τ ∈ S, τ x = x` using `fun τ hτ ↦ (IntermediateField.mem_fixingSubgroup_iff _ _).mp hτ x (IntermediateField.subset_adjoin K _ rfl)`. Establish `hup : absUpper K Ω (herbrandPhi K (M : IntermediateField K Ω) N) ≤ S`. Introduce `τ hτ`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1` using `hτ M`. Rewrite `h1` using `[upperRamificationGroup_herbrandPhi, lowerRamificationGroupReal_natCast, hN N le_rfl, Subgroup.mem_bot]`. Rewrite using `[IntermediateField.mem_fixingSubgroup_iff]`. Introduce `y hy`. Establish `hyM : y ∈ (M : IntermediateField K Ω)` using `(IntermediateField.le_normalClosure _) hy`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `congrArg (fun f ↦ ((f ⟨y, hyM⟩ : M) : Ω)) h1` as an intermediate fact. Simplify `this` using `[AlgEquiv.restrictNormalHom_apply]`. Establish `hfix : L.fixingSubgroup ≤ S`. Introduce `τ hτ`. Rewrite using `[IntermediateField.mem_fixingSubgroup_iff]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `y hy`. Establish `hyL : y ∈ L` using `IntermediateField.adjoin_le_iff.mpr (Set.singleton_subset_iff.mpr hx) hy`. Conclude with `(IntermediateField.mem_fixingSubgroup_iff _ _).mp hτ y hyL`. Conclude with `hS σ (sup_le hup hfix hσ)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_mem_upperField {x : Ω} (hx : x ∈ L) : ∃ u : ℝ, x ∈ upperField K Ω L u := by
   let M := FiniteGaloisIntermediateField.adjoin K ({x} : Set Ω)
@@ -162,7 +162,7 @@ variable {L : IntermediateField K Ω} [IsGalois K L] (hL : IsAPF K Ω L)
 include hL
 
 /- English proof (translation)
-Rewrite using `[upperSupFixing, Subgroup.map_sup, map_absUpper]`. Establish `: L.fixingSubgroup.map (AlgEquiv.restrictNormalHom (upperFieldFG hL u' : IntermediateField K Ω)) = ⊥`. Rewrite using `[Subgroup.map_eq_bot_iff, ker_restrictNormalHom_upperField hL]`. Conclude with `fixingSubgroup_le_upperSupFixing u'`. Rewrite using `[this, sup_bot_eq]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_upperSupFixing {u u' : ℝ} :
     (upperSupFixing K Ω L u).map
@@ -176,7 +176,7 @@ theorem map_upperSupFixing {u u' : ℝ} :
   rw [this, sup_bot_eq]
 
 /- English proof (translation)
-Rewrite using `[apfPsi, apfPsi, ← intervalIntegral.integral_add_adjacent_intervals (b := u) (intervalIntegrable_apfIndex hL _ _) (intervalIntegrable_apfIndex hL _ _)]`. Use `gcongr`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem apfPsi_le_add {u u' : ℝ} (h : u ≤ u') :
     apfPsi K Ω L u' ≤ apfPsi K Ω L u + (u' - u) * apfIndex K Ω L u' := by
@@ -203,7 +203,7 @@ structure APFData (L : IntermediateField K Ω) where
   le_psi : ∀ u, u₀ ≤ u → c * apfIndex K Ω L u ≤ apfPsi K Ω L u
 
 /- English proof (translation)
-Take `⟨hapf, c, hc, hev⟩` from `h`. Take `⟨U, hU⟩` from `Filter.eventually_atTop.mp hev`. Conclude with `⟨⟨hapf, c, hc, max U 1, le_max_right _ _, fun u hu ↦ hU u ((le_max_left _ _).trans hu)⟩⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem IsStrictlyAPF.nonempty_apfData (h : IsStrictlyAPF K Ω L) : Nonempty (APFData L) := by
   obtain ⟨hapf, c, hc, hev⟩ := h
@@ -217,13 +217,13 @@ variable (d : APFData L)
 def u (n : ℕ) : ℝ := d.u₀ + n * (d.c / 2)
 
 /- English proof (translation)
-Simplify using `only [u]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem u_succ (n : ℕ) : d.u (n + 1) = d.u n + d.c / 2 := by
   simp only [u]; push_cast; ring
 
 /- English proof (translation)
-Use `d.one_le_u₀` as an intermediate fact. Establish `: 0 ≤ (n : ℝ) * (d.c / 2)` using `mul_nonneg n.cast_nonneg (by linarith [d.c_pos])`. Simplify using `only [u]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem one_le_u (n : ℕ) : 1 ≤ d.u n := by
   have := d.one_le_u₀
@@ -231,12 +231,12 @@ theorem one_le_u (n : ℕ) : 1 ≤ d.u n := by
   simp only [u]; linarith
 
 /- English proof (translation)
-The claim follows from `zero_le_one.trans (d.one_le_u n)`.
+A detailed English derivation is pending.
 -/
 theorem u_nonneg (n : ℕ) : 0 ≤ d.u n := zero_le_one.trans (d.one_le_u n)
 
 /- English proof (translation)
-Introduce `m n h`. Simplify using `only [u]`. Establish `: (m : ℝ) ≤ n` using `by exact_mod_cast h`. Use polynomial arithmetic with `[d.c_pos]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem u_mono : Monotone d.u := by
   intro m n h
@@ -245,7 +245,7 @@ theorem u_mono : Monotone d.u := by
   nlinarith [d.c_pos]
 
 /- English proof (translation)
-Take `⟨n, hn⟩` from `exists_nat_gt ((v - d.u₀) / (d.c / 2))`. Use `⟨n, ?_⟩` and prove the remaining obligations. Establish `hc : 0 < d.c / 2` using `by linarith [d.c_pos]`. Rewrite `hn` using `[div_lt_iff₀ hc]`. Simplify using `only [u]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
 Combine the linear equalities and inequalities to obtain the conclusion.
 -/
@@ -262,7 +262,7 @@ def H (n : ℕ) : Subgroup Gal((d.F (n + 1) : IntermediateField K Ω)/K) :=
   upperRamificationGroup K (d.F (n + 1) : IntermediateField K Ω) (d.u n)
 
 /- English proof (translation)
-Establish `: (g : Gal((d.F (n + 1) : IntermediateField K Ω)/K)) ∈ upperRamificationGroup K (d.F (n + 1) : IntermediateField K Ω) (d.u n)` using `g.2`. Rewrite `this` using `[← map_absUpper (d.F (n + 1)) (d.u n)]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_lift (n : ℕ) (g : d.H n) :
     ∃ σ ∈ absUpper K Ω (d.u n),
@@ -275,20 +275,20 @@ theorem exists_lift (n : ℕ) (g : d.H n) :
 def lift (n : ℕ) (g : d.H n) : Gal(Ω/K) := (d.exists_lift n g).choose
 
 /- English proof (translation)
-The claim follows from `(d.exists_lift n g).choose_spec.1`.
+A detailed English derivation is pending.
 -/
 theorem lift_mem (n : ℕ) (g : d.H n) : d.lift n g ∈ absUpper K Ω (d.u n) :=
   (d.exists_lift n g).choose_spec.1
 
 /- English proof (translation)
-The claim follows from `(d.exists_lift n g).choose_spec.2`.
+A detailed English derivation is pending.
 -/
 theorem restrict_lift (n : ℕ) (g : d.H n) :
     AlgEquiv.restrictNormalHom (d.F (n + 1) : IntermediateField K Ω) (d.lift n g) = g :=
   (d.exists_lift n g).choose_spec.2
 
 /- English proof (translation)
-Introduce `g g' h`. Use `congrArg (AlgEquiv.restrictNormalHom (d.F (n + 1) : IntermediateField K Ω)) h` as an intermediate fact. Rewrite `this` using `[restrict_lift, restrict_lift]`. Conclude with `Subtype.ext this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lift_injective (n : ℕ) : Function.Injective (d.lift n) := by
   intro g g' h
@@ -303,7 +303,7 @@ open Classical in
 def T (n : ℕ) : Finset Gal(Ω/K) := Finset.univ.image (d.lift n)
 
 /- English proof (translation)
-Rewrite using `[T, Finset.card_image_of_injective _ (d.lift_injective n), Finset.card_univ, Nat.card_eq_fintype_card]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem card_alt (n : ℕ) : (d.T n).card = Nat.card (d.H n) := by
   classical
@@ -311,14 +311,14 @@ theorem card_alt (n : ℕ) : (d.T n).card = Nat.card (d.H n) := by
     Nat.card_eq_fintype_card]
 
 /- English proof (translation)
-Rewrite using `[← d.restrict_lift n g, AlgEquiv.restrictNormalHom_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem lift_apply (n : ℕ) (g : d.H n) {y : Ω} (hy : y ∈ (d.F (n + 1) : IntermediateField K Ω)) :
     d.lift n g y = ((g : Gal((d.F (n + 1) : IntermediateField K Ω)/K)) ⟨y, hy⟩ : Ω) := by
   rw [← d.restrict_lift n g, AlgEquiv.restrictNormalHom_apply]
 
 /- English proof (translation)
-Establish `h1` using `d.le_psi (d.u (n + 1)) (by simp only [u]; have := d.c_pos; push_cast; nlinarith)`. Establish `h2` using `apfPsi_le_add d.apf (d.u_mono (Nat.le_succ n))`. Rewrite `h1`, `h2`, the goal using `[d.u_succ]`. Establish `: d.u n + d.c / 2 - d.u n = d.c / 2` using `by ring`. Rewrite `h2` using `[this]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
 Combine the linear equalities and inequalities to obtain the conclusion.
 -/
@@ -336,7 +336,7 @@ end Construction
 
 omit [IsGalois K Ω] in
 /- English proof (translation)
-Take `⟨z, rfl⟩ : ∃ z : F, (z : Ω) = y` from `⟨⟨y, hy⟩, rfl⟩`. Establish `hz : z ≠ 0`. Introduce and unpack `rfl`. Conclude with `hy0 (ZeroMemClass.coe_zero _)`. Conclude with `⟨_, nrm_eq_unifNrm_zpow F hz⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_nrm_eq_unifNrm_zpow (F : IntermediateField K Ω) [FiniteDimensional K F] {y : Ω}
     (hy : y ∈ F) (hy0 : y ≠ 0) : ∃ j : ℤ, nrm K y = unifNrm F ^ j := by
@@ -347,7 +347,7 @@ theorem exists_nrm_eq_unifNrm_zpow (F : IntermediateField K Ω) [FiniteDimension
 
 omit [IsGalois K Ω] in
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨_, SetLike.coe_mem ((unif F : 𝒪[F]) : F), rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_nrm_eq_unifNrm (F : IntermediateField K Ω) [FiniteDimensional K F] :
     ∃ π ∈ F, nrm K π = unifNrm F :=
@@ -358,7 +358,7 @@ namespace APFData
 variable {L : IntermediateField K Ω} [IsGalois K L] (d : APFData L)
 
 /- English proof (translation)
-Establish `h` using `d.psi_ge n`. Establish `hI : (0 : ℝ) < apfIndex K Ω L (d.u (n + 1))` using `by exact_mod_cast apfIndex_pos d.apf _`. Establish `hc : 0 < d.c / 2` using `by linarith [d.c_pos]`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem psi_pos (n : ℕ) : 0 < apfPsi K Ω L (d.u n) := by
   have h := d.psi_ge n
@@ -367,7 +367,7 @@ theorem psi_pos (n : ℕ) : 0 < apfPsi K Ω L (d.u n) := by
   nlinarith
 
 /- English proof (translation)
-The claim follows from `herbrandPsi_upperField d.apf (d.u_nonneg n) (d.u_mono (Nat.le_succ n))`.
+A detailed English derivation is pending.
 -/
 theorem herbrandPsi_F (n : ℕ) :
     herbrandPsi K (d.F (n + 1) : IntermediateField K Ω) (d.u n) = apfPsi K Ω L (d.u n) :=
@@ -376,19 +376,19 @@ theorem herbrandPsi_F (n : ℕ) :
 def i (n : ℕ) : ℕ := (⌈apfPsi K Ω L (d.u n)⌉).toNat
 
 /- English proof (translation)
-The claim follows from `Int.toNat_of_nonneg (Int.ceil_nonneg (d.psi_pos n).le)`.
+A detailed English derivation is pending.
 -/
 theorem i_cast (n : ℕ) : ((d.i n : ℕ) : ℤ) = ⌈apfPsi K Ω L (d.u n)⌉ :=
   Int.toNat_of_nonneg (Int.ceil_nonneg (d.psi_pos n).le)
 
 /- English proof (translation)
-Rewrite using `[H, upperRamificationGroup, lowerRamificationGroupReal, d.herbrandPsi_F, d.i_cast]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem H_eq (n : ℕ) : d.H n = lowerRamificationGroup K (d.F (n + 1) : IntermediateField K Ω) (d.i n) := by
   rw [H, upperRamificationGroup, lowerRamificationGroupReal, d.herbrandPsi_F, d.i_cast]
 
 /- English proof (translation)
-Establish `h` using `d.i_cast n`. Establish `: (1 : ℤ) ≤ ⌈apfPsi K Ω L (d.u n)⌉` using `Int.one_le_ceil_iff.mpr (d.psi_pos n)`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem one_le_i (n : ℕ) : 1 ≤ d.i n := by
   have h := d.i_cast n
@@ -396,7 +396,7 @@ theorem one_le_i (n : ℕ) : 1 ≤ d.i n := by
   omega
 
 /- English proof (translation)
-Use `(isPGroup_lowerRamificationGroup_one K (d.F (n + 1) : IntermediateField K Ω)).to_le ?_` and prove the remaining obligations. Rewrite using `[d.H_eq]`. Conclude with `lowerRamificationGroup_antitone K _ (by exact_mod_cast d.one_le_i n)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isPGroup_H (n : ℕ) : IsPGroup (ringChar 𝓀[K]) (d.H n) := by
   refine (isPGroup_lowerRamificationGroup_one K (d.F (n + 1) : IntermediateField K Ω)).to_le ?_
@@ -406,7 +406,7 @@ theorem isPGroup_H (n : ℕ) : IsPGroup (ringChar 𝓀[K]) (d.H n) := by
 instance fact_prime : Fact (ringChar 𝓀[K]).Prime := ⟨CharP.char_is_prime 𝓀[K] _⟩
 
 /- English proof (translation)
-The claim follows from `IsPGroup.iff_card.mp (d.isPGroup_H n)`.
+A detailed English derivation is pending.
 -/
 theorem exists_card_H (n : ℕ) : ∃ k : ℕ, Nat.card (d.H n) = ringChar 𝓀[K] ^ k :=
   IsPGroup.iff_card.mp (d.isPGroup_H n)
@@ -414,13 +414,13 @@ theorem exists_card_H (n : ℕ) : ∃ k : ℕ, Nat.card (d.H n) = ringChar 𝓀[
 def k (n : ℕ) : ℕ := (d.exists_card_H n).choose
 
 /- English proof (translation)
-The claim follows from `(d.exists_card_H n).choose_spec`.
+A detailed English derivation is pending.
 -/
 theorem card_H (n : ℕ) : Nat.card (d.H n) = ringChar 𝓀[K] ^ d.k n :=
   (d.exists_card_H n).choose_spec
 
 /- English proof (translation)
-Use `show _ ∈ upperRamificationGroup K (upperFieldFG d.apf (d.u (n + 1)) : IntermediateField K Ω) (d.u n)`. Rewrite using `[← map_upperSupFixing d.apf]`. Conclude with `Subgroup.mem_map_of_mem _ hτ`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem restrict_mem_H (n : ℕ) {τ : Gal(Ω/K)} (hτ : τ ∈ upperSupFixing K Ω L (d.u n)) :
     AlgEquiv.restrictNormalHom (d.F (n + 1) : IntermediateField K Ω) τ ∈ d.H n := by
@@ -429,11 +429,11 @@ theorem restrict_mem_H (n : ℕ) {τ : Gal(Ω/K)} (hτ : τ ∈ upperSupFixing K
   exact Subgroup.mem_map_of_mem _ hτ
 
 /- English proof (translation)
-Establish `e : (∏ σ ∈ d.T n, σ y) = ∏ g : d.H n, ((g : Gal((d.F (n + 1) : IntermediateField K Ω)/K)) ⟨y, hy⟩ : Ω)`. Rewrite using `[T, Finset.prod_image (fun g _ g' _ h ↦ d.lift_injective n h)]`. Conclude with `Finset.prod_congr rfl fun g _ ↦ d.lift_apply n g hy`. Rewrite using `[e]`. Use `show _ ∈ upperField K Ω L (d.u n)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[upperField, IntermediateField.mem_fixedField_iff]`. Introduce `τ hτ`. Rewrite using `[map_prod]`. Set `h : d.H n` to `⟨_, d.restrict_mem_H n hτ⟩`. Establish `hτg : ∀ g : d.H n, τ ((g : Gal((d.F (n + 1) : IntermediateField K Ω)/K)) ⟨y, hy⟩ : Ω) = (((h * g : d.H n) : Gal((d.F (n + 1) : IntermediateField K Ω)/K)) ⟨y, hy⟩ : Ω)`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `g`. Rewrite using `[Subgroup.coe_mul, AlgEquiv.mul_apply, ← AlgEquiv.restrictNormalHom_apply]`. Repeatedly rewrite using `[hτg]`. Conclude with `Fintype.prod_equiv (Equiv.mulLeft h) _ _ fun g ↦ rfl`.
+Rewrite the conclusion repeatedly using the stated equalities. A detailed English derivation is pending.
 -/
 theorem prod_mem (n : ℕ) {y : Ω} (hy : y ∈ (d.F (n + 1) : IntermediateField K Ω)) :
     (∏ σ ∈ d.T n, σ y) ∈ (d.F n : IntermediateField K Ω) := by
@@ -456,15 +456,13 @@ theorem prod_mem (n : ℕ) {y : Ω} (hy : y ∈ (d.F (n + 1) : IntermediateField
   exact Fintype.prod_equiv (Equiv.mulLeft h) _ _ fun g ↦ rfl
 
 /- English proof (translation)
-Simplify using `only [T, Finset.mem_image, Finset.mem_univ, true_and] at hσ`. Take `⟨g, rfl⟩` from `hσ`. Use `set F := (d.F (n + 1) : IntermediateField K Ω)`. Establish `hg : AlgEquiv.restrictNormalHom F (d.lift n g) ∈ lowerRamificationGroup K F (d.i n)`. Rewrite using `[d.restrict_lift, ← d.H_eq]`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `g.2`. Establish `h1` using `nrm_sub_le_of_mem_lowerRamificationGroup F hg ⟨x, hx⟩`. Use `h1.trans (mul_le_mul_of_nonneg_right ?_ (nrm_nonneg _))` and prove the remaining obligations. Use `set r := unifNrm F`. Use `set e := ramificationIndex K F`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hr0` using `unifNrm_pos F`. Establish `hr1` using `unifNrm_lt_one F`. Establish `hre : r ^ e = baseUnifNrm K Ω` using `unifNrm_pow_ramificationIndex F`. Establish `he : (e : ℝ) = apfIndex K Ω L (d.u (n + 1))`. Conclude with `ramificationIndex_upperField d.apf (d.u_nonneg (n + 1))` after adjusting the coercions.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hi : d.c / 2 * e ≤ d.i n`. Rewrite using `[he]`. Use `(d.psi_ge n).trans ?_` and prove the remaining obligations. Use `d.i_cast n` as an intermediate fact. Establish `h2 : apfPsi K Ω L (d.u n) ≤ (⌈apfPsi K Ω L (d.u n)⌉ : ℝ)` using `Int.le_ceil _`.
-
-Rewrite `h2` using `[← this]`. Conclude with `h2` after adjusting the coercions. Rewrite using `[← hre, ← Real.rpow_natCast r e, ← Real.rpow_mul hr0.le, ← Real.rpow_natCast r (d.i n)]`. Conclude with `Real.rpow_le_rpow_of_exponent_ge hr0 hr1.le (by linarith)`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem step (n : ℕ) {σ : Gal(Ω/K)} (hσ : σ ∈ d.T n) {x : Ω}
     (hx : x ∈ (d.F (n + 1) : IntermediateField K Ω)) :
@@ -496,13 +494,11 @@ theorem step (n : ℕ) {σ : Gal(Ω/K)} (hσ : σ ∈ d.T n) {x : Ω}
   exact Real.rpow_le_rpow_of_exponent_ge hr0 hr1.le (by linarith)
 
 /- English proof (translation)
-Use `set F := (d.F (n + 1) : IntermediateField K Ω)`. Establish `he1 : ramificationIndex K F = apfIndex K Ω L (d.u (n + 1))` using `ramificationIndex_upperField d.apf (d.u_nonneg (n + 1))`. Establish `he0 : ramificationIndex K (d.F n : IntermediateField K Ω) = apfIndex K Ω L (d.u n)` using `ramificationIndex_upperField d.apf (d.u_nonneg n)`. Establish `hidx : upperIndex K F (d.u n) = apfIndex K Ω L (d.u n)` using `upperIndex_upperField d.apf (d.u_nonneg n) (d.u_mono (Nat.le_succ n))`. Establish `hmul : ramificationIndex K F = ramificationIndex K (d.F n : IntermediateField K Ω) * Nat.card (d.H n)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[he0, ← hidx, ← card_lowerRamificationGroup_zero, upperIndex]`. Establish `hle : d.H n ≤ lowerRamificationGroup K F 0`. Rewrite using `[← upperRamificationGroup_zero]`. Conclude with `upperRamificationGroup_antitone K F (d.u_nonneg n)`. Use `relIndex_mul_card_inf (d.H n) (lowerRamificationGroup K F 0)` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `this` using `[inf_eq_left.mpr hle]`. Conclude with `this.symm`. Establish `h1` using `unifNrm_pow_ramificationIndex F`. Establish `h0` using `unifNrm_pow_ramificationIndex (d.F n : IntermediateField K Ω)`. Rewrite `h1` using `[hmul, mul_comm, pow_mul, ← h0, d.card_H]`.
-
-Establish `hpos : ramificationIndex K (d.F n : IntermediateField K Ω) ≠ 0` using `(ramificationIndex_pos K _).ne'`. Conclude with `(pow_left_inj₀ (pow_nonneg (unifNrm_pos F).le _) (unifNrm_pos _).le hpos).mp h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem value_succ (n : ℕ) :
     unifNrm (d.F (n + 1) : IntermediateField K Ω) ^ (ringChar 𝓀[K] ^ d.k n) =
@@ -532,9 +528,9 @@ theorem value_succ (n : ℕ) :
   exact (pow_left_inj₀ (pow_nonneg (unifNrm_pos F).le _) (unifNrm_pos _).le hpos).mp h1
 
 /- English proof (translation)
-Establish `hH : d.H m = ⊥`. Rewrite using `[← Subgroup.card_eq_one, d.card_H, hk, pow_zero]`. Introduce `x hx`. Use `show x ∈ upperField K Ω L (d.u m)`. Rewrite using `[upperField, IntermediateField.mem_fixedField_iff]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `τ hτ`. Establish `h` using `d.restrict_mem_H m hτ`. Rewrite `h` using `[hH, Subgroup.mem_bot]`. Use `congrArg (fun f ↦ ((f ⟨x, hx⟩ : (d.F (m + 1) : IntermediateField K Ω)) : Ω)) h` as an intermediate fact. Simplify `this` using `[AlgEquiv.restrictNormalHom_apply]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem F_succ_le_of_k_eq_zero {m : ℕ} (hk : d.k m = 0) :
     (d.F (m + 1) : IntermediateField K Ω) ≤ d.F m := by
@@ -550,16 +546,16 @@ theorem F_succ_le_of_k_eq_zero {m : ℕ} (hk : d.k m = 0) :
   simpa [AlgEquiv.restrictNormalHom_apply] using this
 
 /- English proof (translation)
-The claim follows from `upperField_le _`.
+A detailed English derivation is pending.
 -/
 theorem le_F_of_mem (n : ℕ) : (d.F n : IntermediateField K Ω) ≤ L := upperField_le _
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`. Establish `hstab : ∀ j, (d.F (n + j) : IntermediateField K Ω) ≤ d.F n`. Introduce `j`. Proceed by induction on `j with`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `zero => exact le_rfl`. Consider the case `succ j ih => exact (d.F_succ_le_of_k_eq_zero (hcon (n + j) (by omega))).trans ih`. Establish `hL : L ≤ d.F n`. Introduce `x hx`. Take `⟨v, hv⟩` from `exists_mem_upperField d.apf hx`.
+Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨m, hm⟩` from `d.exists_le_u v`. Establish `: x ∈ (d.F (n + m) : IntermediateField K Ω)` using `upperField_mono (hm.trans (d.u_mono (by omega))) hv`. Conclude with `hstab m this`. Conclude with `hinf (FiniteDimensional.of_injective (IntermediateField.inclusion hL).toLinearMap (IntermediateField.inclusion_injective hL))`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem frequently_ne_zero (hinf : ¬ FiniteDimensional K L) (n : ℕ) : ∃ m, n ≤ m ∧ d.k m ≠ 0 := by
   by_contra hcon
@@ -581,7 +577,7 @@ theorem frequently_ne_zero (hinf : ¬ FiniteDimensional K L) (n : ℕ) : ∃ m, 
 
 omit [IsGalois K Ω] in
 /- English proof (translation)
-Establish `h` using `CharZero.valuation_p_lt_one K (ringChar 𝓀[K])`. Rewrite using `[nrm_lt_one_iff, ← map_natCast (algebraMap K Ω)]`. Conclude with `(Valuation.HasExtension.val_map_lt_one_iff (valuation K) (valuation Ω) _).mpr h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nrm_ringChar_lt_one : nrm K ((ringChar 𝓀[K] : ℕ) : Ω) < 1 := by
   have h := CharZero.valuation_p_lt_one K (ringChar 𝓀[K])
@@ -589,14 +585,14 @@ theorem nrm_ringChar_lt_one : nrm K ((ringChar 𝓀[K] : ℕ) : Ω) < 1 := by
   exact (Valuation.HasExtension.val_map_lt_one_iff (valuation K) (valuation Ω) _).mpr h
 
 /- English proof (translation)
-The claim follows from `exists_nrm_eq_unifNrm_zpow _ hy hy0`.
+A detailed English derivation is pending.
 -/
 theorem value_zpow (n : ℕ) {y : Ω} (hy : y ∈ (d.F n : IntermediateField K Ω)) (hy0 : y ≠ 0) :
     ∃ j : ℤ, nrm K y = unifNrm (d.F n : IntermediateField K Ω) ^ j :=
   exists_nrm_eq_unifNrm_zpow _ hy hy0
 
 /- English proof (translation)
-The claim follows from `exists_nrm_eq_unifNrm _`.
+A detailed English derivation is pending.
 -/
 theorem exists_value (n : ℕ) : ∃ π ∈ (d.F n : IntermediateField K Ω),
     nrm K π = unifNrm (d.F n : IntermediateField K Ω) :=

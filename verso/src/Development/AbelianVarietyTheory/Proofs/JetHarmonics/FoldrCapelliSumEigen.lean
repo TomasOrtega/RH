@@ -13,9 +13,9 @@ variable {k r : ℕ} {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E]
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace in
 
 /- English proof (translation)
-Proceed by induction on `t using Finset.induction_on with`. Consider the case `empty => simpa using Formalism.FourierDecayAlt.P.Qx2.smooth_zero`. Consider the case `insert a t ha ih`. Introduce `g₀ hg₀`. Take `⟨U, f', hU, hgU, hf', he⟩` from `ih g₀ hg₀`.
+Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨V, h', hV, hgV, hh', he'⟩` from `hf a g₀ hg₀`. Use `⟨U ∩ V, fun y => c a • h' y + f' y, hU.inter hV, ⟨hgU, hgV⟩, ((hh'.mono Set.inter_subset_right).const_smul (c a)).add (hf'.mono Set.inter_subset_left), ?_⟩` and prove the remaining obligations. Introduce `g hg hgG`. Use `beta_reduce`. Rewrite using `[Finset.sum_insert ha, he' g hg.2 hgG, ← he g hg.1 hgG]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem smoothLev_finsum_smul {ι : Type} (t : Finset ι) (c : ι → ℂ) (f : ι → B.Mat k r → E)
     (hf : ∀ i, Q.SmoothLev k r 0 Set.univ (f i)) :
@@ -34,11 +34,11 @@ theorem smoothLev_finsum_smul {ι : Type} (t : Finset ι) (c : ι → ℂ) (f : 
     rw [Finset.sum_insert ha, he' g hg.2 hgG, ← he g hg.1 hgG]
 
 /- English proof (translation)
-Establish `hT` using `Formalism.FourierDecayAlt.P.Dx1.LZ.good_CV (k := k) (r := r) (E := E) Y`. Establish `hg'` using `Formalism.FourierDecayAlt.P.Dx1.LZ.glev0 hg`. Proceed by induction on `t using Finset.induction_on with`. Consider the case `empty => simpa using hT.map_zero hg'`. Consider the case `insert a t ha ih`.
+Establish an intermediate fact. Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Establish `h` using `hT.lin _ (f a) (c a) (smoothLev_finsum_smul t c f hf) (hf a) g hg'`. Simplify using `only [Finset.sum_insert ha]`. Rewrite using `[← ih, add_comm, ← h]`. Use `congr 1`. Use function extensionality and compare the values at `y`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[add_comm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem capelli_finsum_smul {ι : Type} (t : Finset ι) (c : ι → ℂ) (f : ι → B.Mat k r → E)
     (hf : ∀ i, Q.SmoothLev k r 0 Set.univ (f i)) (Y : ℂ) {g : B.Mat k r} (hg : g ∈ B.GV k r) :
@@ -59,11 +59,11 @@ theorem capelli_finsum_smul {ι : Type} (t : Finset ι) (c : ι → ℂ) (f : ι
 end
 
 /- English proof (translation)
-Introduce `k r Wp Wq _ _ _ _ _ _ N₀ Fi ev s F hs hev hF w`. Proceed by induction on `w with`. Consider the case `nil => intro g hg`. Simplify using `using hF g hg`. Consider the case `cons a w ih`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify to obtain the desired conclusion from the available facts. Treat this case separately.
 
-Introduce `g hg`. Establish `hT` using `Formalism.FourierDecayAlt.P.Dx1.LZ.good_CV (k := k) (r := r) (E := Wq →L[ℂ] Wp) (a.2 : ℂ)`. Establish `h1` using `hT.loc _ _ (fun y hy => ih y hy.1.1) g (Formalism.FourierDecayAlt.P.Dx1.LZ.glev0 hg)`. Establish `h2` using `capelli_finsum_smul Finset.univ (fun i => (w.map fun a => s * ev i a.2).prod) Fi (fun i => Formalism.FourierDecayAlt.P.Dx1.LZ.smooth_of_ck (hs i)) (a.2 : ℂ) hg`. Simplify using `only [List.foldr_cons, List.map_cons, List.prod_cons, Pi.smul_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[h1.trans h2, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[hev i a.2 g hg, smul_smul, smul_smul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem foldr_capelli_sum_eigen : ∀ (k r : ℕ) (Wp Wq : Type) [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq] (N₀ : ℕ) (Fi : Fin N₀ → B.Mat k r → (Wq →L[ℂ] Wp)) (ev : Fin N₀ → ℝ → ℂ) (s : ℂ) (F : B.Mat k r → (Wq →L[ℂ] Wp)), (∀ i, B.CkOn ⊤ (B.GV k r) (Fi i)) → (∀ i (Y : ℝ), ∀ g ∈ B.GV k r, Q.CV k r (Y : ℂ) (Fi i) g = ev i Y • Fi i g) → (∀ g ∈ B.GV k r, F g = ∑ i, Fi i g) → ∀ w : List (Bool × ℝ), ∀ g ∈ B.GV k r, (w.foldr (fun a H => s • Q.CV k r (a.2 : ℂ) H) F) g = ∑ i, (w.map fun a => s * ev i a.2).prod • Fi i g := by
   intro k r Wp Wq _ _ _ _ _ _ N₀ Fi ev s F hs hev hF w

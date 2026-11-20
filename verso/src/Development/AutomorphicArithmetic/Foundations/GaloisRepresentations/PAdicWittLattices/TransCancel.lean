@@ -40,7 +40,7 @@ def Wit (h : G.GAf) {N N' : ℕ} (X' : GenModel gb N') (X : GenModel gb N) (π :
     IsTrans L h X'.univ o ψ ∧ Φ = ψ.left ≫ φ.φ
 
 /- English proof (translation)
-Take `⟨-, o, ψ, φ, -, rfl⟩` from `H`. Rewrite using `[Category.assoc, φ.cart.1.w, ← Category.assoc, Over.w]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem Wit.w {L : Link D G} {h : G.GAf} {N N' : ℕ} {X' : GenModel gb N'} {X : GenModel gb N} {π : X'.X ⟶ X.X}
     {Φ : X'.univ.A.left ⟶ X.univ.A.left} (H : Wit L h X' X π Φ) : Φ ≫ X.univ.A.hom = X'.univ.A.hom ≫ π := by

@@ -7,7 +7,7 @@ namespace Formalism.L2.Th1.A
 variable {A : Type u} [CommRing A]
 
 /- English proof (translation)
-Use `⟨Derivation.mk' (AddMonoidHom.mk' D h.1).toIntLinearMap (fun a b => ?_), fun a => rfl⟩` and prove the remaining obligations. Simplify using `only [AddMonoidHom.coe_toIntLinearMap, AddMonoidHom.mk'_apply, smul_eq_mul]`. Conclude with `h.2 a b`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem IsDer.exists_derivation {D : A → A} (h : IsDer D) :
     ∃ d : Derivation ℤ A A, ∀ a, D a = d a := by
@@ -16,33 +16,33 @@ theorem IsDer.exists_derivation {D : A → A} (h : IsDer D) :
   exact h.2 a b
 
 /- English proof (translation)
-Rewrite using `[Derivation.leibniz, smul_eq_mul, smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem der_mul (d : Derivation ℤ A A) (a b : A) : d (a * b) = a * d b + b * d a := by
   rw [Derivation.leibniz, smul_eq_mul, smul_eq_mul]
 
 /- English proof (translation)
-Rewrite using `[pow_two, der_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem der_sq (d : Derivation ℤ A A) (a : A) : d (a ^ 2) = 2 * a * d a := by
   rw [pow_two, der_mul]
   ring
 
 /- English proof (translation)
-Rewrite using `[two_mul, map_add, two_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem der_two_mul (d : Derivation ℤ A A) (a : A) : d (2 * a) = 2 * d a := by
   rw [two_mul, map_add, two_mul]
 
 /- English proof (translation)
-Rewrite using `[show (3 : A) * a = a + a + a by ring, map_add, map_add]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the hypotheses and the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem der_three_mul (d : Derivation ℤ A A) (a : A) : d (3 * a) = 3 * d a := by
   rw [show (3 : A) * a = a + a + a by ring, map_add, map_add]
   ring
 
 /- English proof (translation)
-Establish `h0 : t * d s + s * d t = 0` using `by rw [← der_mul, ht, Derivation.map_one_eq_zero]`. Establish `h1 : d t = t * s * d t` using `by rw [ht, one_mul]`. Rewrite using `[h1]`. Take the linear combination `t * h0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem der_inv (d : Derivation ℤ A A) {t s : A} (ht : t * s = 1) : d t = -t ^ 2 * d s := by
   have h0 : t * d s + s * d t = 0 := by rw [← der_mul, ht, Derivation.map_one_eq_zero]
@@ -51,7 +51,7 @@ theorem der_inv (d : Derivation ℤ A A) {t s : A} (ht : t * s = 1) : d t = -t ^
   linear_combination t * h0
 
 /- English proof (translation)
-Establish `hα : (a₄ - 2 * L * (y - L * x) - a₁ * (y - L * x) - a₃ * L) - (x * xP + (x + xP) * (L ^ 2 + a₁ * L - a₂ - x - xP)) = 0`. Take the linear combination `(-((a₄ - 2 * L * (y - L * x) - a₁ * (y - L * x) - a₃ * L) - (x * xP + (x + xP) * (L ^ 2 + a₁ * L - a₂ - x - xP)))) * ht - t * hE + t * hEP - t * (L * xP + (y - L * x) + yP + a₁ * xP + a₃) * hL`. Use `⟨hα, ?_⟩` and prove the remaining obligations. Take the linear combination `(-1 : A) * hE - x * hα`.
+Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem chord_rel {a₁ a₂ a₃ a₄ a₆ x y xP yP t L : A}
     (hE : y ^ 2 + a₁ * x * y + a₃ * y = x ^ 3 + a₂ * x ^ 2 + a₄ * x + a₆)
@@ -70,9 +70,9 @@ theorem chord_rel {a₁ a₂ a₃ a₄ a₆ x y xP yP t L : A}
   linear_combination (-1 : A) * hE - x * hα
 
 /- English proof (translation)
-Establish `hE'` using `(WeierstrassCurve.Affine.equation_iff x y).1 hE`. Establish `hEP'` using `(WeierstrassCurve.Affine.equation_iff xP yP).1 hEP`. Establish `hL : ((y - yP) * t) * (x - xP) = y - yP` using `by linear_combination (y - yP) * ht`. Take `⟨hα, -⟩` from `chord_rel hE' hEP' ht hL`. Establish `hdt : d t = -t ^ 2 * d (x - xP)` using `der_inv d ht`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hdxs : d (x - xP) = d x` using `by rw [map_sub, hxP, sub_zero]`. Rewrite using `[der_mul, map_sub, hyP, sub_zero, hdt, hdxs, hx, hy]`. Simplify using `only [WeierstrassCurve.Affine.addX]`. Take the linear combination `(x - (((y - yP) * t) ^ 2 + W.a₁ * ((y - yP) * t) - W.a₂ - x - xP)) * ht + t * hα`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem der_slope (W : WeierstrassCurve A) (d : Derivation ℤ A A) {x y xP yP t : A}
     (hE : W.toAffine.Equation x y) (hx : d x = 2 * y + W.a₁ * x + W.a₃)
@@ -91,15 +91,15 @@ theorem der_slope (W : WeierstrassCurve A) (d : Derivation ℤ A A) {x y xP yP t
   linear_combination (x - (((y - yP) * t) ^ 2 + W.a₁ * ((y - yP) * t) - W.a₂ - x - xP)) * ht + t * hα
 
 /- English proof (translation)
-Introduce `A _ W D x y xP yP t hD hC hF hEP hxP hyP ht`. Take `⟨d, hd⟩` from `hD.exists_derivation`. Take `⟨hE, hx, hy⟩` from `hF`. Take `⟨c1, c2, c3, c4, c6⟩` from `hC`. Rewrite `hx`, `hy`, `hxP`, `hyP`, `c1`, `c2`, `c3`, `c4`, `c6` using `[hd]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hDL` using `der_slope W d hE hx hy hEP hxP hyP ht`. Establish `hE'` using `(WeierstrassCurve.Affine.equation_iff x y).1 hE`. Establish `hEP'` using `(WeierstrassCurve.Affine.equation_iff xP yP).1 hEP`. Establish `hL : ((y - yP) * t) * (x - xP) = y - yP` using `by linear_combination (y - yP) * ht`. Take `⟨hα, hβ⟩` from `chord_rel hE' hEP' ht hL`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `set L := (y - yP) * t with hLdef`. Establish `hDL' : d L = x - (L ^ 2 + W.a₁ * L - W.a₂ - x - xP)` using `hDL`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[WeierstrassCurve.Affine.equation_iff]`. Simplify using `only [WeierstrassCurve.Affine.addY, WeierstrassCurve.Affine.negY, WeierstrassCurve.Affine.negAddY, WeierstrassCurve.Affine.addX]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `(-1 : A) * hβ - (L ^ 2 + W.a₁ * L - W.a₂ - x - xP) * hα`. Rewrite using `[hd]`. Simplify using `only [WeierstrassCurve.Affine.addY, WeierstrassCurve.Affine.negY, WeierstrassCurve.Affine.negAddY, WeierstrassCurve.Affine.addX, map_sub, map_add, der_sq, der_mul, c1, c2, hx, hxP, hDL']`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hd]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [WeierstrassCurve.Affine.addY, WeierstrassCurve.Affine.negY, WeierstrassCurve.Affine.negAddY, WeierstrassCurve.Affine.addX, map_neg, map_sub, map_add, der_sq, der_mul, c1, c2, c3, hx, hy, hxP, hDL']`. Take the linear combination `(-2 : A) * hα`.
+Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem flowTranslation : FlowTranslate.{u} := by
   intro A _ W D x y xP yP t hD hC hF hEP hxP hyP ht
@@ -129,13 +129,13 @@ theorem flowTranslation : FlowTranslate.{u} := by
     linear_combination (-2 : A) * hα
 
 /- English proof (translation)
-Introduce `A _ W D x y xP yP t hD hC hF hEP hxP hyP ht`. Take `⟨d, hd⟩` from `hD.exists_derivation`. Take `⟨hE, hx, hy⟩` from `hF`. Take `⟨c1, c2, c3, c4, c6⟩` from `hC`. Rewrite `hx`, `hy`, `hxP`, `hyP`, `c1`, `c2`, `c3`, `c4`, `c6` using `[hd]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hEQ : W.toAffine.Equation xP (W.toAffine.negY xP yP)` using `(WeierstrassCurve.Affine.equation_neg xP yP).2 hEP`. Establish `hyQ : d (W.toAffine.negY xP yP) = 0`. Simplify using `only [WeierstrassCurve.Affine.negY, map_sub, map_neg, der_mul, hyP, hxP, c1, c3]`. Expand and normalize the polynomial expressions, which then agree. Establish `hP` using `der_slope W d hE hx hy hEP hxP hyP ht`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `hQ` using `der_slope W d hE hx hy hEQ hxP hyQ ht`. Establish `hsplit : t * (2 * y + W.a₁ * x + W.a₃) = (y - yP) * t + (y - W.toAffine.negY xP yP) * t + W.a₁ * (t * (x - xP))`. Simplify using `only [WeierstrassCurve.Affine.negY]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [hd]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
 
-Rewrite using `[hx, hsplit, map_add, map_add, hP, hQ, ht, mul_one, c1]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem flowLogDerivative : FlowLogDeriv.{u} := by
   intro A _ W D x y xP yP t hD hC hF hEP hxP hyP ht

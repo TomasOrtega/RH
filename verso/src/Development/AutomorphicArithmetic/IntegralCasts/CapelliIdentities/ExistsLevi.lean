@@ -10,7 +10,7 @@ import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.Hermiti
 
 open Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes in
 /- English proof (translation)
-Take `⟨_, _, _, hs⟩` from `h`. Set `t : E →+* ℂ` to `(IsAlgClosed.lift : E →ₐ[ℚ] ℂ).toRingHom`. Apply `t.injective` to reduce the goal to its premises. Rewrite using `[hs, hs, star_star]`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 private theorem sigma_sq {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     {σ : E →ₐ[F] E} (h : IsCMExt F E σ) (x : E) : σ (σ x) = x := by
@@ -21,7 +21,7 @@ private theorem sigma_sq {F E : Type} [Field F] [NumberField F] [Field E] [Numbe
 
 open Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes in
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a e => simp [sigR, h]`. Consider the case `add a b ha hb => simp [ha, hb]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 private theorem sigR_sq {F E : Type} [Field F] [Field E] [Algebra F E] (A : Type) [CommRing A] [Algebra F A]
     {σ : E →ₐ[F] E} (h : ∀ x, σ (σ x) = x) (x : TensorProduct F A E) :
@@ -33,7 +33,7 @@ private theorem sigR_sq {F E : Type} [Field F] [Field E] [Algebra F E] (A : Type
 
 open Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes in
 /- English proof (translation)
-Simplify using `[sigR, inclR]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem sigR_incl {F E : Type} [Field F] [Field E] [Algebra F E] (A : Type) [CommRing A] [Algebra F A]
     (σ : E →ₐ[F] E) (e : E) : sigR A σ (inclR A e) = inclR A (σ e) := by
@@ -41,7 +41,7 @@ private theorem sigR_incl {F E : Type} [Field F] [Field E] [Algebra F E] (A : Ty
 
 open Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes in
 /- English proof (translation)
-Rewrite using `[Matrix.map_mul]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 -/
 private theorem dual_map {F E : Type} [Field F] [Field E] [Algebra F E] (A : Type) [CommRing A] [Algebra F A]
     (σ : E →ₐ[F] E) {n r : ℕ} (J : Matrix (Fin n) (Fin n) E) (X : Matrix (Fin n) (Fin r) E) :
@@ -51,29 +51,27 @@ private theorem dual_map {F E : Type} [Field F] [Field E] [Algebra F E] (A : Typ
   congr 1
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ n J r X Y hCM hH hW A _ _ _ p B hB hpX`. Take `⟨hXX, hYY, hXY, -⟩` from `hW`. Establish `hτ` using `sigR_sq A (sigma_sq hCM)`. Set `τ` to `Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR A σ`. Set `ι` to `Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.inclR (F := F) (E := E) A`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `JA` to `Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.JR (F := F) A J`. Set `Xa` to `X.map ι`. Set `Ya` to `Y.map ι`. Set `Xd` to `(Formalism.UG.cT (↑σ : E →+* E) X * J).map ι`. Set `Yd` to `(Formalism.UG.cT (↑σ : E →+* E) Y * J).map ι`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `g : Matrix (Fin n) (Fin n) (TensorProduct F A E)` to `↑(GlobalTheory.AdelicU.matHom A σ J p)`. Establish `hXd : Xd = (Xa.map τ).transpose * JA` using `dual_map A σ J X`. Establish `hYd : Yd = (Ya.map τ).transpose * JA` using `dual_map A σ J Y`. Establish `hJh : (JA.map τ).transpose = JA`. Use extensionality with `i j`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `only [JA, Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.JR, Matrix.transpose_apply, Matrix.map_apply, τ]`. Rewrite using `[sigR_incl]`. Conclude with `congrArg _ (hH.1 i j)`. Establish `hJu : IsUnit JA.det`. Establish `h1 : JA.det = ι J.det` using `(RingHom.map_det ι J).symm`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1]`. Conclude with `(isUnit_iff_ne_zero.mpr hH.2).map ι`. Establish `hXX' : Xd * Xa = 0`. Simplify using `only [Xd, Xa]`. Rewrite using `[← Matrix.map_mul, hXX]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Establish `hYY' : Yd * Ya = 0`. Simplify using `only [Yd, Ya]`. Rewrite using `[← Matrix.map_mul, hYY]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hXY' : Xd * Ya = 1`. Simplify using `only [Xd, Ya]`. Rewrite using `[← Matrix.map_mul, hXY]`. Simplify using the standard rewrite rules. Establish `hgJ : (g.map τ).transpose * JA * g = JA` using `p.2`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Take `⟨hYX, hYgX, hXg, hdiag⟩` from `UpperTheory.hermitian_block_triangular τ hτ JA g Xa Ya B Xd Yd hJh hXd hYd hXY' hgJ hB hpX`. Set `d : Fin r → TensorProduct F A E` to `fun i => (Yd * g * Xa) i i`. Set `e : Fin r → TensorProduct F A E` to `fun i => (Xd * g * Ya) i i`. Set `P` to `1 - Xa * Yd - Ya * Xd`. Set `M` to `GlobalTheory.CompanionTheory.KFin.leviMat σ J A X Y g`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hM : M = (Xa * Matrix.diagonal d) * Yd + (Ya * Matrix.diagonal e) * Xd + P * g * P` using `rfl`. Establish `hdB : ∀ i, d i = B i i` using `fun i => by simp only [d, hYgX]`. Establish `hde : ∀ i, τ (e i) * d i = 1` using `fun i => by rw [hdB]; exact hdiag i`. Establish `hdu : ∀ i, IsUnit (d i)` using `fun i => IsUnit.of_mul_eq_one _ (by rw [mul_comm]; exact hde i)`. Take `⟨hu, hun, hmX, hmY⟩` from `UpperTheory.hermitian_block_diagonal τ hτ JA g P M Xa Ya (Xd * g * Ya) Xd Yd d e hJh hJu hXd hYd hXX' hYY' hXY' hgJ hXg hde rfl hM`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Take `⟨⟨B', hB1, hB2, hB3⟩, hz⟩` from `UpperTheory.hermitian_projection_eq g P M Xa Ya B (Xd * g * Ya) Xd Yd d e hXX' hYY' hXY' hYX hB hpX hXg hdB hdu rfl hM hu`. Set `m : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.HA A σ J` to `⟨Matrix.nonsingInvUnit M hu, hun⟩`. Establish `hmv : (↑(GlobalTheory.AdelicU.matHom A σ J m) : Matrix (Fin n) (Fin n) (TensorProduct F A E)) = M` using `rfl`. Establish `hinv : (↑(GlobalTheory.AdelicU.matHom A σ J (m⁻¹ * p)) : Matrix (Fin n) (Fin n) (TensorProduct F A E)) = M⁻¹ * g`. Rewrite using `[map_mul, map_inv, Units.val_mul, Matrix.coe_units_inv, hmv]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨m, rfl, ⟨d, hmX⟩, ⟨e, hmY⟩, ⟨B', hB1, hB2, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[hinv]`. Conclude with `hB3`. Introduce `z hzz`. Rewrite using `[hinv]`.
-
-Conclude with `hz z hzz`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.Gka3.exists_levi :
     ∀ {F E : Type} [inst : Field F] [inst_1 : NumberField F] [inst_2 : Field E] [inst_3 : NumberField E]

@@ -6,7 +6,7 @@ open GlobalTheory.ThK.Dbl
 namespace PositivityTheory.SiegelWeilFormula.Fin
 
 /- English proof (translation)
-The claim follows from `siegelWeilStd_of_ct (Act.ctSplit_of kfour.auxEx kfour.coefEx)`.
+A detailed English derivation is pending.
 -/
 theorem siegelWeilStd : SiegelWeilStd := siegelWeilStd_of_ct (Act.ctSplit_of kfour.auxEx kfour.coefEx)
 

@@ -23,21 +23,19 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.PolPrimeTo
 
 /- English proof (translation)
-Take `⟨m, hm0, hml, hm⟩` from `exists_uniform 𝔠 l c₀ hgen`. Take `⟨B, _, Q, hB, hBg, hd, hd'⟩` from `HD.1 (Sp R) X.A X.ab`. Establish `hBg` using `hBg _ X.dim`. Use `haveI : IsCommMonObj B := hB.comm`. Take `⟨c₁, hc₁⟩` from `exists_totPos 𝔠 c₀ hc₀`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hL` using `pull_isLB (X.isLB c₁) (lift (𝟙 X.A) (𝟙 X.A)).left`. Take `⟨H, hH, hamp⟩` from `GlobalTheory.BirigidLift.exists_relAmple_prod X.ab X.ab hL (X.pos c₁ hc₁) hL (X.pos c₁ hc₁)`. Take `⟨a₁, a₂⟩` from `GlobalTheory.BirigidLift.additive_of_triv X.ab X.ab hH hamp (X.isLB c₀) (X.rig₁ c₀) (X.rig₂ c₀)`. Take `⟨lam, hlam, hcls⟩` from `GlobalTheory.BirigidLift.exists_hom hd hd'.additive (X.isLB c₀) a₁ a₂`. Establish `hker : ∀ (T : Over (Sp R)) (x : T ⟶ X.A), x ≫ lam = 1 → x ^ m = 1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `T x hx`. Establish `tr : Triv (ev (X.P c₀) (fst X.A T) (snd X.A T ≫ x))`. Rewrite using `[triv_ev_iff (X.isLB c₀), GlobalTheory.BirigidLift.evc_of_cls hd.isLB (X.isLB c₀) hcls, Category.assoc, hx, comp_one]`. Conclude with `evc_one_right hd.isLB hd.zero _`. Establish `k` using `X.ker c₀ T x tr (m : 𝓞 F) hm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `k` using `[act_natCast, comp_pow, Category.comp_id]`. Conclude with `k`. Take `⟨μ', hμ', e₁, e₂⟩` from `GlobalTheory.IsogenyQuasiInverse.exists_quasiInverse R X.A B _ X.ab hB X.dim hBg lam hlam m hm0 hker`. Establish `hpush` using `bijective_push (dp0 R) (𝟙 _) lam μ' m (hunit m hml) e₁ e₂`. Take `⟨⟨φ, hφ, -⟩, hperf⟩` from `GlobalTheory.Published.AbelianDualCrystal.duality HR X.ab X.dim hB hBg (hd.isPerfect hd')`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `C` using `cupSquare_of_free HR.1 (AbelianSchemeGerms.isAbelianScheme_tensor X.A X.A X.ab X.ab) (smooth_prod X.dim X.dim)`. Establish `e : LBIso (ev Q (fst X.A X.A) (snd X.A X.A ≫ lam)) (ev (X.P c₀) (fst X.A X.A ≫ 𝟙 X.A) (snd X.A X.A))`. Use `(cls_eq_iff (pull_isLB hd.isLB _) (pull_isLB (X.isLB c₀) _)).1 ?_` and prove the remaining obligations. Rewrite using `[cls_ev hd.isLB, cls_ev (X.isLB c₀), GlobalTheory.BirigidLift.evc_of_cls hd.isLB (X.isLB c₀) hcls, Category.comp_id]`. Establish `hadj : ∀ x y, φ x (push (dp0 R) (𝟙 _) lam y) = ψ x y` using `fun x y ↦ by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `k` using `IsCorrForm.adjoint C hd.isLB (X.isLB c₀) hφ hψ (𝟙 X.A) lam e x y`. Rewrite `k` using `[push_id]`. Then use the resulting hypothesis. Use `haveI := (hperf φ hφ).1`. Establish `hφb : Function.Bijective φ` using `LinearMap.IsPerfPair.bijective_left φ`. Set `E` to `LinearEquiv.ofBijective _ hpush`.
+Introduce a local definition for the expression. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `: ⇑ψ = ⇑E.dualMap ∘ ⇑φ`. Use function extensionality and compare the values at `x`. Use `LinearMap.ext fun y ↦ ?_` and prove the remaining obligations. Rewrite using `[Function.comp_apply, LinearEquiv.dualMap_apply, ← hadj]`. Both sides reduce to the same expression.
-
-Rewrite using `[this]`. Conclude with `E.dualMap.bijective.comp hφb`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem perfect_of_primeTo (HR : GlobalTheory.Published.AbelianDeRham) (HD : GlobalTheory.Published.AbelianDualCrystal)
     (F : Type) [Field F] [NumberField F] (𝔠 : FracId F)

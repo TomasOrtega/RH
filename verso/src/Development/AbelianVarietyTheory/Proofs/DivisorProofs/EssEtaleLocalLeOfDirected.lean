@@ -5,23 +5,21 @@ open IsLocalRing
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `R T _ _ _ U μ _ _ _ V hmono hcov hloc W hWU hW`. Take `⟨A, _, _, _, q, _, ⟨e⟩⟩` from `hW`. Set `L` to `Localization.AtPrime q`. Set `φ : A →ₐ[R] T` to `W.val.comp (e.toAlgHom.comp (IsScalarTower.toAlgHom R A L))`. Establish `hφW : ∀ a, φ a ∈ W` using `fun a => (e (algebraMap A L a)).2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Take `⟨s, hs⟩` from `(Algebra.FiniteType.out : (⊤ : Subalgebra R A).FG)`. Use `choose f hf using fun a : A => hcov (φ a) (hWU (hφW a))`. Take `⟨M, hM⟩` from `(s.image f).exists_le`. Establish `hrange : ∀ a, φ a ∈ V M`. Establish `hle : (⊤ : Subalgebra R A) ≤ (V M).comap φ`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hs]`. Use `Algebra.adjoin_le ?_` and prove the remaining obligations. Introduce `a ha`. Conclude with `hmono (hM _ (Finset.mem_image_of_mem f ha)) (hf a)`. Introduce `a`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `hle Algebra.mem_top`. Use `⟨M, fun w hw => ?_⟩` and prove the remaining obligations. Take `⟨⟨a, t⟩, hat⟩` from `IsLocalization.mk'_surjective q.primeCompl (e.symm ⟨w, hw⟩)`. Use `set y : T := ((e (IsLocalization.mk' L (1 : A) t) : W) : T) with hy`. Establish `hyU : y ∈ U` using `hWU (e _).2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hxy : φ t * y = 1`. Establish `h1 : algebraMap A L t * IsLocalization.mk' L (1:A) t = 1`. Rewrite using `[IsLocalization.mul_mk'_eq_mk'_of_mul, mul_one, IsLocalization.mk'_self']`. Establish `h2 : ((e (algebraMap A L t * IsLocalization.mk' L (1:A) t) : W) : T) = 1`. Rewrite using `[h1, map_one]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Rewrite `h2` using `[map_mul, Subalgebra.coe_mul]`. Conclude with `h2`. Take `⟨z, hzV, hz⟩` from `hloc M (φ t) (hrange t) y hyU hxy`. Establish `hzy : z = y`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hw' : w = φ a * y`. Establish `h1 : (⟨w, hw⟩ : W) = e (IsLocalization.mk' L a t)`. Express the relevant statement in the definitionally equal form `IsLocalization.mk' L a t = _ at hat`. Rewrite using `[hat, AlgEquiv.apply_symm_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `h2 : IsLocalization.mk' L a t = algebraMap A L a * IsLocalization.mk' L (1:A) t`. Rewrite using `[IsLocalization.mul_mk'_eq_mk'_of_mul, mul_one]`. Establish `h3 : w = ((e (IsLocalization.mk' L a t) : W) : T)` using `congrArg Subtype.val h1`. Rewrite using `[h3, h2, map_mul, Subalgebra.coe_mul]`. Both sides reduce to the same expression.
-
-Rewrite using `[hw', ← hzy]`. Conclude with `(V M).mul_mem (hrange a) hzV`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem essEtaleLocal_le_of_directed :
   ∀ (R T : Type) [CommRing R] [CommRing T] [Algebra R T] (U : Subalgebra R T) (μ : Type) [Preorder μ] [IsDirected μ (· ≤ ·)] [Nonempty μ] (V : μ → Subalgebra R T), Monotone V → (∀ x ∈ U, ∃ m, x ∈ V m) → (∀ m, ∀ x ∈ V m, ∀ y ∈ U, x * y = 1 → ∃ z ∈ V m, x * z = 1) → ∀ (W : Subalgebra R T), W ≤ U → (∃ (A : Type) (_ : CommRing A) (_ : Algebra R A) (_ : Algebra.Etale R A) (q : Ideal A) (_ : q.IsPrime), Nonempty (Localization.AtPrime q ≃ₐ[R] W)) → ∃ m, W ≤ V m := by

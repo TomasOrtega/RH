@@ -22,23 +22,23 @@ open UpperTheory.V.Z.Tf PositivityTheory.AutomorphicGaloisHodgeTate.SaturatedBas
 namespace UpperTheory.Gal.Desc
 
 /- English proof (translation)
-The claim follows from `UpperTheory.BaseChangeIdentities.speh UpperTheory.BaseChangeIdentities.baseChangeNB`.
+A detailed English derivation is pending.
 -/
 theorem speh : GlobalTheory.BcSpeh.BcSpeh := UpperTheory.BaseChangeIdentities.speh UpperTheory.BaseChangeIdentities.baseChangeNB
 
 /- English proof (translation)
-The claim follows from `weakAll_of SR.splitRigid (GaloisFromTraceFormula.partNorm GaloisFromTraceFormula.absInf) GOne.unitOf GaloisFromTraceFormula.runTh`.
+A detailed English derivation is pending.
 -/
 theorem weakAll : WeakAll := weakAll_of SR.splitRigid (GaloisFromTraceFormula.partNorm GaloisFromTraceFormula.absInf) GOne.unitOf GaloisFromTraceFormula.runTh
 
 /- English proof (translation)
-The claim follows from `desc_of speh compUnique oneFactor PositivityTheory.JacquetShalikaLocal.jacquetShalikaBound PositivityTheory.jumpWindows.cuspidalMultiplicityOne SR.splitRigid GOne.thin GOne.unitOf weakAll`.
+A detailed English derivation is pending.
 -/
 theorem desc : GlobalTheory.Cong.Desc :=
   desc_of speh compUnique oneFactor PositivityTheory.JacquetShalikaLocal.jacquetShalikaBound PositivityTheory.jumpWindows.cuspidalMultiplicityOne SR.splitRigid GOne.thin GOne.unitOf weakAll
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.Cong.descOffT_of_desc desc`.
+A detailed English derivation is pending.
 -/
 theorem descOffT : GlobalTheory.Cong.DescOffT := GlobalTheory.Cong.descOffT_of_desc desc
 

@@ -11,7 +11,7 @@ open MvPowerSeries ReciprocityTheory.PGsh ReciprocityTheory.ChartRestriction.G.S
 namespace GlobalTheory.FGDepth
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ k ih`. Use `push_cast`. Use `le_trans (le_min ih (by simp)) (v.map_add _ _)` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Treat this case separately. Move the embeddings inside the algebraic operations. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem natCast_isInt {C : Type} [Field C] (v : AddValuation C (WithTop ℝ)) (n : ℕ) :
     0 ≤ v (n : C) := by
@@ -22,7 +22,7 @@ theorem natCast_isInt {C : Type} [Field C] (v : AddValuation C (WithTop ℝ)) (n
     refine le_trans (le_min ih (by simp)) (v.map_add _ _)
 
 /- English proof (translation)
-Consider the cases of `n with`. Consider the case `ofNat k => simpa using natCast_isInt v k`. Consider the case `negSucc k`. Rewrite using `[Int.cast_negSucc, v.map_neg]`. Conclude with `natCast_isInt v (k + 1)` after adjusting the coercions.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem intCast_isInt {C : Type} [Field C] (v : AddValuation C (WithTop ℝ)) (n : ℤ) :
     0 ≤ v (n : C) := by
@@ -33,9 +33,9 @@ theorem intCast_isInt {C : Type} [Field C] (v : AddValuation C (WithTop ℝ)) (n
     exact_mod_cast natCast_isInt v (k + 1)
 
 /- English proof (translation)
-Introduce `C _ _ v p hp hv i d c G u hu`. Take `⟨hhom, hint, -, -⟩` from `GlobalTheory.T.matrixVariablesDeterminantPow_monomial_shape C i c`. Establish `h0 : 0 ≤ detDepth G u c`. Unfold `detDepth`. Conclude with `GlobalTheory.T.depth_nonneg_integral_operator_integral_vectors C v (Fin i) (fun _ => d) (fun _ => G) (fun _ => Fin i) (fun _ => u) (detPow C i c) (fun _ a e => hu.1 a e) (fun α => by obtain ⟨n, hn⟩ := hint α; rw [hn]; exact intCast_isInt v n)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Establish `h1 : detDepth G u c ≤ content v (detPow C i c)`. Unfold `detDepth`. Conclude with `GlobalTheory.T.differentialOperatorDepth_le_dividedPowerContent C v (Fin i) (fun _ => d) (fun _ => i) (fun _ => G) (fun _ => u) (detPow C i c) (i * c) hhom (fun _ => hu)`. Conclude with `⟨h0, h1, h1.trans (GlobalTheory.T.dividedPowerContentValuation_detPow_bounds C v p hp hv i c).1⟩`.
+Replace the relevant objects with their definitions. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem detDepth_bounds : ∀ (C : Type) [Field C] [CharZero C] (v : AddValuation C (WithTop ℝ)) (p : ℕ),
     p.Prime → v (p : C) = 1 → ∀ (i d c : ℕ) (G : LogFGL v d) (u : Fin i → Fin d → C),

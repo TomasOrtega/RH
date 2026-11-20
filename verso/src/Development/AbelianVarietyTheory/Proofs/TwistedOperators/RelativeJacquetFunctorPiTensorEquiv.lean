@@ -22,9 +22,9 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
   [∀ a, Module ℂ (X a)] (ρ : ∀ a, Representation ℂ (GL (m a) k) (X a))
 
 /- English proof (translation)
-Rewrite using `[piTensor_tprod]`. Use `congr 1`. Use function extensionality and compare the values at `j`. Distinguish the cases in `h : j = a`. Substitute `h` using the available equality.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using the standard rewrite rules. Simplify using `[h]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem piTensor_mulSingle (a : α) (g : GL (m a) k) (x : ∀ j, X j) :
     piTensor ρ (Pi.mulSingle a g) (PiTensorProduct.tprod ℂ x) =
@@ -41,13 +41,13 @@ def qf : MultilinearMap ℂ X (Jacquet (piTensor ρ) (relUnip k e')) :=
   (twKer (piTensor ρ) (relUnip k e') 1).mkQ.compMultilinearMap (PiTensorProduct.tprod ℂ)
 
 /- English proof (translation)
-Unfold `twKer at hw`. Proceed by induction on `hw using Submodule.span_induction with`. Consider the case `mem z hz`. Take `⟨n, y, rfl⟩` from `hz`. Establish `hu : (Pi.mulSingle (M` using `fun a => GL (m a) k) i (n : GL (m i) k)) ∈ relUnip k e' := by`.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Simplify using `only [relUnip, Subgroup.mem_pi]`. Introduce `j _`. Distinguish the cases in `h : j = i`. Substitute `h` using the available equality. Simplify using `using n.2`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[Pi.mulSingle_eq_of_ne h]`. Conclude with `one_mem _`. Establish `h1 : PiTensorProduct.tprod ℂ (Function.update v i (ρ i (n : GL (m i) k) y)) = piTensor ρ (Pi.mulSingle (M` using `fun a => GL (m a) k) i (n : GL (m i) k)) (PiTensorProduct.tprod ℂ (Function.update v i y)) := by`. Rewrite using `[piTensor_mulSingle]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[qf, LinearMap.compMultilinearMap_apply, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero, MonoidHom.one_apply, Units.val_one, one_smul, MultilinearMap.map_update_sub, h1]`. Conclude with `Submodule.subset_span ⟨⟨_, hu⟩, PiTensorProduct.tprod ℂ (Function.update v i y), by simp⟩`. Consider the case `zero => simp [qf]`. Consider the case `add z z' _ _ hz hz' => rw [MultilinearMap.map_update_add, hz, hz', add_zero]`. Consider the case `smul r z _ hz => rw [MultilinearMap.map_update_smul, hz, smul_zero]`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem qf_update (v : ∀ a, X a) (i : α) (w : X i)
     (hw : w ∈ twKer (ρ i) (unipRad k (e' i)) 1) : qf e' ρ (Function.update v i w) = 0 := by
@@ -90,7 +90,7 @@ def qmap : (⨂[ℂ] a, X a) →ₗ[ℂ] ⨂[ℂ] a, Jacquet (ρ a) (unipRad k (
   PiTensorProduct.map fun a => (twKer (ρ a) (unipRad k (e' a)) 1).mkQ
 
 /- English proof (translation)
-Simplify using `only [qmap, PiTensorProduct.map_tprod, Submodule.mkQ_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem qmap_tprod (x : ∀ a, X a) :
     qmap e' ρ (PiTensorProduct.tprod ℂ x) =
@@ -98,11 +98,9 @@ theorem qmap_tprod (x : ∀ a, X a) :
   simp only [qmap, PiTensorProduct.map_tprod, Submodule.mkQ_apply]
 
 /- English proof (translation)
-Establish `hu' : ∀ a, u a ∈ unipRad k (e' a)`. Introduce `a`. Establish `h` using `hu`. Simplify using `only [relUnip, Subgroup.mem_pi] at h`. Conclude with `h a (Set.mem_univ a)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `PiTensorProduct.ext (MultilinearMap.ext fun x => ?_)` and prove the remaining obligations. Simplify using `only [LinearMap.compMultilinearMap_apply, LinearMap.comp_apply, piTensor_tprod, qmap_tprod]`. Use `congr 1`. Use function extensionality and compare the values at `a`. Rewrite using `[Submodule.Quotient.eq]`.
-
-Conclude with `Submodule.subset_span ⟨⟨u a, hu' a⟩, x a, by simp⟩`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem qmap_comp (u : ∀ a, GL (m a) k) (hu : u ∈ relUnip k e') :
     qmap e' ρ ∘ₗ piTensor ρ u = qmap e' ρ := by
@@ -119,7 +117,7 @@ theorem qmap_comp (u : ∀ a, GL (m a) k) (hu : u ∈ relUnip k e') :
   exact Submodule.subset_span ⟨⟨u a, hu' a⟩, x a, by simp⟩
 
 /- English proof (translation)
-Rewrite using `[twKer, Submodule.span_le]`. Introduce and unpack `_ ⟨n, y, rfl⟩`. Simplify using `only [SetLike.mem_coe, LinearMap.mem_ker, MonoidHom.one_apply, Units.val_one, one_smul, map_sub, sub_eq_zero]`. Conclude with `LinearMap.congr_fun (qmap_comp e' ρ (n : ∀ a, GL (m a) k) n.2) y`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem twKer_le_ker : twKer (piTensor ρ) (relUnip k e') 1 ≤ LinearMap.ker (qmap e' ρ) := by
   rw [twKer, Submodule.span_le]
@@ -135,7 +133,7 @@ def bwd : (⨂[ℂ] a, Jacquet (ρ a) (unipRad k (e' a))) →ₗ[ℂ] Jacquet (p
   PiTensorProduct.lift (descend (qf e' ρ) (qf_update e' ρ))
 
 /- English proof (translation)
-Rewrite using `[bwd, PiTensorProduct.lift.tprod]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem bwd_tprod (q : ∀ a, Jacquet (ρ a) (unipRad k (e' a))) :
     bwd e' ρ (PiTensorProduct.tprod ℂ q) = Submodule.Quotient.mk (PiTensorProduct.tprod ℂ
@@ -144,7 +142,7 @@ theorem bwd_tprod (q : ∀ a, Jacquet (ρ a) (unipRad k (e' a))) :
   rfl
 
 /- English proof (translation)
-Rewrite using `[bwd, PiTensorProduct.lift.tprod, descend_mk]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem bwd_tprod_mk (x : ∀ a, X a) :
     bwd e' ρ (PiTensorProduct.tprod ℂ fun a => (Submodule.Quotient.mk (x a) : Jacquet (ρ a) (unipRad k (e' a)))) =
@@ -153,7 +151,7 @@ theorem bwd_tprod_mk (x : ∀ a, X a) :
   rfl
 
 /- English proof (translation)
-Rewrite using `[fwd, Submodule.liftQ_apply, qmap_tprod]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem fwd_mk_tprod' (x : ∀ a, X a) :
     fwd e' ρ (Submodule.Quotient.mk (PiTensorProduct.tprod ℂ x)) =
@@ -173,7 +171,7 @@ def jacEquiv : Jacquet (piTensor ρ) (relUnip k e') ≃ₗ[ℂ] ⨂[ℂ] a, Jacq
         Submodule.mkQ_apply])
 
 /- English proof (translation)
-Use `⟨Representation.Equiv.mk (jacEquiv e' ρ) fun g => ?_⟩` and prove the remaining obligations. Use `Submodule.linearMap_qext _ (PiTensorProduct.ext (MultilinearMap.ext fun x => ?_))` and prove the remaining obligations. Simplify using `only [LinearMap.compMultilinearMap_apply, LinearMap.comp_apply, Submodule.mkQ_apply, LinearEquiv.coe_coe, jacEquiv, LinearEquiv.ofLinear_apply, relJac_mk, piTensor_tprod, relEmb_apply, map_smul, fwd_mk_tprod', jac_mk, MultilinearMap.map_smul_univ, relDeltaHalf_apply]`. Use `congr 1`. Rewrite using `[← Finset.prod_inv_distrib, Units.coe_prod]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 -/
 theorem relJac_piTensor :
     Nonempty ((relJac e' (piTensor ρ)).Equiv (piTensor fun a => jac (e' a) (ρ a))) := by
@@ -188,7 +186,7 @@ theorem relJac_piTensor :
 end Spec2
 
 /- English proof (translation)
-Introduce `k _ _ _ _ α β _ _ _ m _ _ c _ _ f X _ _ ρ`. Conclude with `relJac_piTensor f ρ`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem relJac_piTensor_equiv : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] (α β : Type) [Fintype α] [Fintype β] [LinearOrder β]

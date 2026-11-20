@@ -13,52 +13,46 @@ set_option maxHeartbeats 1600000
 variable {D : D7} (δ : ∀ p : PlF D, (D.s.atP p).Fp) (M : ∀ p : PlF D, Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep)
 
 /- English proof (translation)
-Rewrite using `[AlgEquiv.commutes]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem e_alg (p : PlF D) (g : Loc.SplitG (M p).L) (x : (D.s.atP p).Fp) :
     g.e (algebraMap (D.s.atP p).Fp (D.s.atP p).Ep x) = (x, x) := by
   rw [AlgEquiv.commutes]; rfl
 
 /- English proof (translation)
-Use `set cj : (D.s.atP p).Ep →+* (D.s.atP p).Ep := ((M p).L.cj : (D.s.atP p).Ep →+* (D.s.atP p).Ep) with hcj`. Establish `hinv : ∀ x, cj (cj x) = x` using `fun x => (M p).L.cj_cj x`. Use `set Mm := mmG (M p) g L P with hMm`. Use `set U := uuG (M p) g L P with hU`. Use `set qi : (D.s.atP p).Ep := algebraMap (D.s.atP p).Fp (D.s.atP p).Ep ((g.q : (D.s.atP p).Fp)⁻¹) with hqi`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `set A0 : Matrix (Fin (D.R.rS + 1) ⊕ Fin (D.R.rS + 1)) (Fin (D.R.rS + 1) ⊕ Fin (D.R.rS + 1)) (D.s.atP p).Ep := Matrix.fromBlocks 1 (-qi • (1 : Matrix (Fin (D.R.rS + 1)) (Fin (D.R.rS + 1)) (D.s.atP p).Ep)) 0 (qi • (1 : Matrix (Fin (D.R.rS + 1)) (Fin (D.R.rS + 1)) (D.s.atP p).Ep)) w …`. Use `set B : Matrix (Fin (D.R.rS + 1) ⊕ Fin (D.R.rS + 1)) (Fin (D.R.rS + 1) ⊕ Fin (D.R.rS + 1)) (D.s.atP p).Ep := Matrix.fromBlocks Mm (qi • (U - Mm)) 0 U with hB`. Use `set At : Matrix (Fin (D.R.rS + 1) ⊕ Fin (D.R.rS + 1)) (Fin (D.R.rS + 1) ⊕ Fin (D.R.rS + 1)) (D.s.atP p).Ep := Matrix.fromBlocks Mm 0 0 U with hAt`. Establish `hplus : ∀ Y : MatZ D, GaPlus M δ p T T' Y = cjT cj A0 * GaLoc M δ p T T' Y * A0`. Introduce `Y`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Unfold `GaPlus`. Rewrite using `[hs]`. Both sides reduce to the same expression. Establish `hloc : GaLoc M δ p T T' Z' = cjT cj At * GaLoc M δ p T T' Z * At`. Rewrite using `[gaLoc_blocks δ M hA, gaLoc_blocks δ M hA]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations.
 
-Use `(block_cong cj hinv _ _ _ _ _ _ _ _ ?_ ?_ ?_).symm` and prove the remaining obligations. Rewrite using `[gDiag_corner]`. Conclude with `condM_G (M p) g hL hP _`. Conclude with `condX_G (M p) g hs hL hP Tf Tf' hX`. Rewrite using `[gDiag_corner]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `condU_G (M p) g hL hP _`. Establish `hcomm : A0 * B = At * A0`. Rewrite using `[hA0, hB, hAt, Matrix.fromBlocks_multiply, Matrix.fromBlocks_multiply]`. Apply the tactic sequence `congr 1 <;> simp only [Matrix.one_mul, Matrix.mul_one, Matrix.zero_mul, Matrix.mul_zero, add_zero, zero_add, Matrix.smul_mul, Matrix.mul_smul, smul_sub, smul_zero] <;> module`. Use `⟨B, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hcomp : ∀ x ∈ (M p).R, (g.e x).1 ∈ 𝒪[(D.s.atP p).Fp] ∧ (g.e x).2 ∈ 𝒪[(D.s.atP p).Fp] ∧ ∃ c : 𝒪[(D.s.atP p).Fp], (g.e x).1 - (g.e x).2 = (g.q : (D.s.atP p).Fp) * c` using `fun x hx => Formalism.L2.SG.LocalCountModules.ThetaMbe0GWork.comp_of_mem_R hs hx`. Establish `hq` using `q_ne (M p) g`. Introduce `i j`. Apply the tactic sequence `rcases i with i | i <;> rcases j with j | j`. Use `Formalism.L2.SG.LocalCountModules.ThetaMbe0GWork.mem_O_of_comp g _ ?_ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[hB, hMm, mmG, (hcomp _ (hPR i j)).2.1]`. Simplify using `[hB, hMm, mmG, (hcomp _ (hLR j i)).1]`. Take `⟨-, -, c, hc⟩` from `hcomp _ (hPR i j)`. Take `⟨-, -, c', hc'⟩` from `hcomp _ (hLR j i)`. Use `Formalism.L2.SG.LocalCountModules.ThetaMbe0GWork.mem_O_of_comp g _ ?_ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities.
 
-Establish `: (g.e (B (Sum.inl i) (Sum.inr j))).1 = c`. Simplify using `only [hB, Matrix.fromBlocks_apply₁₂, Matrix.smul_apply, Matrix.sub_apply, smul_eq_mul, map_mul, map_sub, hqi, e_alg, hU, hMm, uuG, mmG, Matrix.of_apply, AlgEquiv.apply_symm_apply, Prod.fst_mul, Prod.fst_sub]`. Rewrite using `[hc]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[this]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Conclude with `c.2`. Establish `: (g.e (B (Sum.inl i) (Sum.inr j))).2 = -c'`. Simplify using `only [hB, Matrix.fromBlocks_apply₁₂, Matrix.smul_apply, Matrix.sub_apply, smul_eq_mul, map_mul, map_sub, hqi, e_alg, hU, hMm, uuG, mmG, Matrix.of_apply, AlgEquiv.apply_symm_apply, Prod.snd_mul, Prod.snd_sub]`. Rewrite using `[show (g.e (L j i)).2 - (g.e (L j i)).1 = -((g.e (L j i)).1 - (g.e (L j i)).2) by ring, hc']`. Clear the denominators using the available nonvanishing facts.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Conclude with `(-c').2`. Simplify using `[hB]`. Use `Formalism.L2.SG.LocalCountModules.ThetaMbe0GWork.mem_O_of_comp g _ ?_ ?_` and prove the remaining obligations. Simplify using `[hB, hU, uuG, (hcomp _ (hPR i j)).1]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[hB, hU, uuG, (hcomp _ (hLR j i)).2.1]`. Take `⟨yL, hyL, hLy⟩` from `hLu`. Take `⟨yP, hyP, hPy⟩` from `hPu`. Establish `cL` using `Formalism.L2.SG.LocalCountModules.ThetaMbe0GWork.comp_of_mem_R hs hyL`. Establish `cP` using `Formalism.L2.SG.LocalCountModules.ThetaMbe0GWork.comp_of_mem_R hs hyP`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `⟨g.e.symm ((g.e yP).2 * (g.e yP).1, (g.e yL).1 * (g.e yL).2), Formalism.L2.SG.LocalCountModules.ThetaMbe0GWork.mem_O_of_comp g _ (by simpa using mul_mem cP.2.1 cP.1) (by simpa using mul_mem cL.1 cL.2.1), ?_⟩` and prove the remaining obligations. Rewrite using `[hB, Matrix.det_fromBlocks_zero₂₁]`. Apply `g.e.injective` to reduce the goal to its premises. Establish `d1 : (g.e Mm.det).1 = (g.e P.det).2`. Use `RingHom.map_det (π1 (M p) g) Mm` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[π1_apply]`. Rewrite using `[this, RingHom.mapMatrix_apply, middleMatrix_map_firstComponent, ← RingHom.mapMatrix_apply, ← RingHom.map_det, π2_apply]`. Establish `d2 : (g.e Mm.det).2 = (g.e L.det).1`. Use `RingHom.map_det (π2 (M p) g) Mm` as an intermediate fact. Rewrite `this` using `[π2_apply]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[this, RingHom.mapMatrix_apply, middleMatrix_map_secondComponent, Matrix.det_transpose, ← RingHom.mapMatrix_apply, ← RingHom.map_det, π1_apply]`. Establish `d3 : (g.e U.det).1 = (g.e P.det).1`. Use `RingHom.map_det (π1 (M p) g) U` as an intermediate fact. Rewrite `this` using `[π1_apply]`. Rewrite using `[this, RingHom.mapMatrix_apply, unipotentMatrix_map_firstComponent, ← RingHom.mapMatrix_apply, ← RingHom.map_det, π1_apply]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `d4 : (g.e U.det).2 = (g.e L.det).2`. Use `RingHom.map_det (π2 (M p) g) U` as an intermediate fact. Rewrite `this` using `[π2_apply]`. Rewrite using `[this, RingHom.mapMatrix_apply, unipotentMatrix_map_secondComponent, Matrix.det_transpose, ← RingHom.mapMatrix_apply, ← RingHom.map_det, π2_apply]`. Establish `eL` using `congrArg g.e hLy`.
+Take a linear combination of the given relations to obtain the conclusion. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `eP` using `congrArg g.e hPy`. Rewrite `eL`, `eP` using `[map_mul, map_one]`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Simplify using `only [map_mul, Prod.fst_mul, AlgEquiv.apply_symm_apply, map_one, Prod.fst_one, d1, d3]`. Establish `e1` using `congrArg Prod.fst eP`.
+Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `e2` using `congrArg Prod.snd eP`. Simplify using `only [Prod.fst_mul, Prod.snd_mul, Prod.fst_one, Prod.snd_one] at e1 e2`. Take the linear combination `(g.e P.det).1 * (g.e yP).1 * e2 + e1`. Simplify using `only [map_mul, Prod.snd_mul, AlgEquiv.apply_symm_apply, map_one, Prod.snd_one, d2, d4]`. Establish `e1` using `congrArg Prod.fst eL`.
-
-Establish `e2` using `congrArg Prod.snd eL`. Simplify using `only [Prod.fst_mul, Prod.snd_mul, Prod.fst_one, Prod.snd_one] at e1 e2`. Take the linear combination `(g.e L.det).2 * (g.e yL).2 * e1 + e2`. Use `show GaPlus M δ p T T' Z' = cjT cj B * GaPlus M δ p T T' Z * B`. Rewrite using `[hplus, hplus, hloc]`.
-
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[cjT_mul]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = cjT cj (A0 * B) * GaLoc M δ p T T' Z * (A0 * B) := by rw [hcomm]`. Use `_ = cjT cj B * (cjT cj A0 * GaLoc M δ p T T' Z * A0) * B := by`.
-
-Rewrite using `[cjT_mul]`. Simplify using `only [Matrix.mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem gaCong_G (hA : ∀ q, Agree δ M q) (p : PlF D) (g : Loc.SplitG (M p).L) (hs : (M p).split = some g)
     (T T' : D.host.E) (Tf Tf' : (D.s.atP p).Fp) (Z Z' : MatZ D)

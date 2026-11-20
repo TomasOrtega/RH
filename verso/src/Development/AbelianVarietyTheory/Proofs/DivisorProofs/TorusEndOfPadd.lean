@@ -18,28 +18,28 @@ def ActsAs {R : Type} [CommRing R] [IsDomain R] {I : Ideal R} {D : DegData R I}
       TorusEndOf D.toPre.X h t ∧ (U.gt e).i ≫ (Over.pullback (thick R I e)).map g = t ≫ (U.gt e).i
 
 /- English proof (translation)
-Simplify using `[padd, Functor.Monoidal.lift_μ_assoc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem pull_padd {S S' : Scheme.{0}} (f : S' ⟶ S) {T G : Over S} [GrpObj G] (a b : T ⟶ G) :
     (Over.pullback f).map (padd G a b) = padd _ ((Over.pullback f).map a) ((Over.pullback f).map b) := by
   simp [padd, Functor.Monoidal.lift_μ_assoc]
 
 /- English proof (translation)
-Rewrite using `[padd, padd, comp_lift_assoc]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem comp_padd' {S : Scheme.{0}} {T T' G : Over S} [GrpObj G] (x : T ⟶ T') (a b : T' ⟶ G) :
     x ≫ padd G a b = padd G (x ≫ a) (x ≫ b) := by
   rw [padd, padd, comp_lift_assoc]
 
 /- English proof (translation)
-Rewrite using `[padd, padd, Category.assoc, IsMonHom.mul_hom, ← Category.assoc, lift_map]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem padd_comp_hom {S : Scheme.{0}} {X Y T : Over S} [GrpObj X] [GrpObj Y] (f f' : T ⟶ X) (h : X ⟶ Y) [IsMonHom h] :
     padd X f f' ≫ h = padd Y (f ≫ h) (f' ≫ h) := by
   rw [padd, padd, Category.assoc, IsMonHom.mul_hom, ← Category.assoc, lift_map]
 
 /- English proof (translation)
-Rewrite `ht`, `ht'`, the goal using `[GlobalTheory.LinearUnifCheck.torusEndOf_iff]`. Introduce `χ`. Establish `hc : ∀ x, (charUnit S X x).val = (GlobalTheory.splitTorusPointsEquiv S X (splitTorus S X) (𝟙 _) (Multiplicative.ofAdd x)).val` using `fun x => ((GlobalTheory.splitTorusPointsEquiv_val S X _ (𝟙 _) x).trans (SplitTorusHom.appTop_id _)).symm`. Establish `hp : padd (splitTorus S X) t t' = t * t'` using `rfl`. Rewrite using `[hp, ← GlobalTheory.splitTorusPointsEquiv_val, map_mul, MonoidHom.mul_apply, Units.val_mul, GlobalTheory.splitTorusPointsEquiv_val, GlobalTheory.splitTorusPointsEquiv_val, ht, ht', hc, hc, hc, Pi.add_apply, ofAdd_add, map_mul, Units.val_mul]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem torusEndOf_padd {S : Scheme.{0}} {X : Type} [AddCommGroup X] {h h' : X → X}
     {t t' : splitTorus S X ⟶ splitTorus S X} (ht : TorusEndOf X h t) (ht' : TorusEndOf X h' t') :
@@ -55,9 +55,9 @@ theorem torusEndOf_padd {S : Scheme.{0}} {X : Type} [AddCommGroup X] {h h' : X �
     map_mul, Units.val_mul]
 
 /- English proof (translation)
-Introduce `e`. Take `⟨q1, t, ht, i1⟩` from `hg e`. Take `⟨q2, t', ht', i2⟩` from `hg' e`. Use `(U.gt e).q_hom` as an intermediate fact. Use `(U.gt e).i_hom` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨?_, padd _ t t', torusEndOf_padd ht ht', ?_⟩` and prove the remaining obligations. Rewrite using `[pull_padd, pull_padd, padd_comp_hom, q1, q2, comp_padd']`. Rewrite using `[pull_padd, comp_padd', i1, i2, padd_comp_hom]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem actsAs_padd {R : Type} [CommRing R] [IsDomain R] {I : Ideal R} {D : DegData R I}
     {A : PolAV (Sp (FractionRing R))} {G : Over (Sp R)} [GrpObj G] [IsCommMonObj G]
@@ -73,9 +73,9 @@ theorem actsAs_padd {R : Type} [CommRing R] [IsDomain R] {I : Ideal R} {D : DegD
   · rw [pull_padd, comp_padd', i1, i2, padd_comp_hom]
 
 /- English proof (translation)
-Introduce `e`. Take `⟨q1, t, ht, i1⟩` from `hg e`. Take `⟨q2, t', ht', i2⟩` from `hg' e`. Use `⟨?_, t ≫ t', GlobalTheory.LinearUnifCheck.torusEndOf_comp ht ht', ?_⟩` and prove the remaining obligations. Rewrite using `[Functor.map_comp, Category.assoc, q2, ← Category.assoc, q1, Category.assoc, ← Functor.map_comp]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Functor.map_comp, ← Category.assoc, i1, Category.assoc, i2, Category.assoc]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem actsAs_comp {R : Type} [CommRing R] [IsDomain R] {I : Ideal R} {D : DegData R I}
     {A : PolAV (Sp (FractionRing R))} {G : Over (Sp R)} [GrpObj G] [IsCommMonObj G]
@@ -89,7 +89,7 @@ theorem actsAs_comp {R : Type} [CommRing R] [IsDomain R] {I : Ideal R} {D : DegD
   · rw [Functor.map_comp, ← Category.assoc, i1, Category.assoc, i2, Category.assoc]
 
 /- English proof (translation)
-Introduce `e`. Use `⟨by simp, 𝟙 _, ?_, by simp⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.LinearUnifCheck.torusEndOf_iff]`. Introduce `χ`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem actsAs_id {R : Type} [CommRing R] [IsDomain R] {I : Ideal R} {D : DegData R I}
     {A : PolAV (Sp (FractionRing R))} {G : Over (Sp R)} [GrpObj G] [IsCommMonObj G]

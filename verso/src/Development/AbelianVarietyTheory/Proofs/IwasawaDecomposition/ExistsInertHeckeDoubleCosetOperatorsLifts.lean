@@ -13,18 +13,18 @@ noncomputable section
 namespace GlobalTheory.Mem.R3.LiftBrg.InertTie
 
 /- English proof (translation)
-Simplify using `[LinearEquiv.conj_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem conj_symm_apply {K M N : Type} [CommSemiring K] [AddCommMonoid M] [Module K M] [AddCommMonoid N] [Module K N]
     (e : M ≃ₗ[K] N) (T : Module.End K M) (x : N) : e.symm (e.conj T x) = T (e.symm x) := by
   simp [LinearEquiv.conj_apply]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `g`. Rewrite using `[hP]`. Unfold `Bridge.dcOp`. Rewrite using `[Finset.sum_congr rfl (fun a _ => hP f (g * a))]`. Rewrite using `[hN _ (fun e => P.coef ((((Formalism.L2.Col.mtKGSD X.B.wts I.Ch I.sel t.1 ((i : ℕ) + 1)).res (Formalism.L2.Col.mtKOk X.B.wts I.Ch I.sel t.1 hX ((i : ℕ) + 1))).symm f).1 e)) g]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `(congrArg P.coef ?_).trans (map_sum P.coef _ _)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(((Formalism.L2.Col.mtKGSD X.B.wts I.Ch I.sel t.1 ((i : ℕ) + 1)).res (Formalism.L2.Col.mtKOk X.B.wts I.Ch I.sel t.1 hX ((i : ℕ) + 1))).symm (((Formalism.L2.Col.mtKGSD X.B.wts I.Ch I.sel t.1 ((i : ℕ) + 1)).res (Formalism.L2.Col.mtKOk X.B.wts I.Ch I.sel t.1 hX ((i : ℕ) + 1))).conj …`. Use `erw [conj_symm_apply]`. Use `erw [Formalism.L2.Col.heckeI_op_apply]`. Unfold `Formalism.L2.Col.DecoPts.nbI`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Simplify using `[formPts]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem opEq (X : Stages) {px : PreX X.B.toPre} (I : Col2.ColIn X.B px) (hX : X.B.fields.Ok) (U : Set I.ι)
     (Xg : Finset (Gc X.B px → X.B.LL)) (tr : TrI X.B px) (L : Formalism.IndefR.Links.LevCh X.toD7 (TupU I U))
@@ -58,11 +58,9 @@ theorem opEq (X : Stages) {px : PreX X.B.toPre} (I : Col2.ColIn X.B px) (hX : X.
   rfl
 
 /- English proof (translation)
-Introduce `X px I hX U Xg tr L eG hI hV hL hG cV i t A k hF P hR`. Establish `hN` using `fun (q : ↑((famR X I hX U Xg tr).okI t) × List ℕ) (hq : Formalism.L2.Col.InertTypeOk (Vc X.toD7 i).rank q.2) => GlobalTheory.T.inertNeighbours_lifts_doubleCoset_translates X px I hX U Xg tr L eG hI hV hL hG cV i t A k hF q hq`. Conclude with `⟨{ hx := fun q => if hq : Formalism.L2.Col.InertTypeOk (Vc X.toD7 i).rank q.2 then (hN q hq).choose else 1 hA := fun q => if hq : Formalism.L2.Col.InertTypeOk (Vc X.toD7 i).rank q.2 then (hN q hq).choose_spec.choose else ∅ hx_ok := fun q hq => by`. Simplify using `only [dif_pos hq]`. Conclude with `(hN q hq).choose_spec.choose_spec.1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Supply the required witnesses or components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use `hA_loc := fun q hq => by`. Simplify using `only [dif_pos hq]`. Conclude with `(hN q hq).choose_spec.choose_spec.2.1`. Use `chi_loc := fun q _ j hj => GlobalTheory.T.levelChar_eq_one_inert_prime_off_level X px I hX U Xg tr L eG hI hV hL hG cV i t q j hj`. Use `hDC := fun q hq => by`.
-
-Simplify using `only [dif_pos hq]`. Conclude with `(hN q hq).choose_spec.choose_spec.2.2.1`. Use `op_eq := fun q hq f => by`. Simplify using `only [dif_pos hq]`. Conclude with `opEq X I hX U Xg tr L cV i t A k P hR q _ (hN q hq).choose_spec.choose_spec.2.2.2 f }⟩`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_inertTie : ∀ (X : Stages) (px : PreX X.B.toPre) (I : Col2.ColIn X.B px) (hX : X.B.fields.Ok) (U : Set I.ι) (Xg : Finset (Gc X.B px → X.B.LL)) (tr : TrI X.B px) (L : Formalism.IndefR.Links.LevCh X.toD7 (TupU I U)) (eG : Gc X.B px ≃* G0 L.Pg X.toD7.R.r), I.Ok → ValsIn I → LevOf X I U L → IsPlacewiseIdentity X (px := px) eG → ∀ (cV : ∀ i, CoefA (Vc X.toD7 i)) (i : Fin X.toD7.R.m) (t : TupU I U) (A k : GL (Fin X.B.R.nV) (LiftBrg.EA X)), LiftBrg.FrameOK X I U i t A k → ∀ P : LiftBrg.PresL X I hX U Xg tr L cV i t, LiftBrg.ReadsStd X I hX U Xg tr L cV i t A k P →
     Nonempty (Bridge.HeckeTie (Bridge.ratF (Vc X.toD7 i)) P ((famR X I hX U Xg tr).heckeLI i t)

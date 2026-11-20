@@ -19,11 +19,11 @@ noncomputable section
 namespace GlobalTheory.SeeSaw.VanMany
 
 /- English proof (translation)
-Establish `key : ∀ S : Finset I, IsQuotIntL1 μR μG (fun x => ∑ i ∈ S, α i * f i x) (∑ i ∈ S, α i * z i)`. Introduce `S`. Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty`. Simplify using `only [Finset.sum_empty]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules.
 
-Conclude with `IsQuotIntL1.zero`. Consider the case `insert i S hi ih`. Use `((h i).smul (α i)).add ih` as an intermediate fact. Establish `e : (fun x => ∑ j ∈ insert i S, α j * f j x) = α i • f i + (fun x => ∑ j ∈ S, α j * f j x)`. Use function extensionality and compare the values at `x`.
+Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using `[Finset.sum_insert hi]`. Rewrite using `[e, Finset.sum_insert hi]`. Conclude with `this`. Conclude with `key Finset.univ`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem quot_lin {G : Type} [Group G] [MeasurableSpace G] {R : Subgroup G} {μR : Measure R} {μG : Measure G} {I : Type}
     [Fintype I] (α : I → ℂ) (f : I → G → ℂ) (z : I → ℂ) (h : ∀ i, IsQuotIntL1 μR μG (f i) (z i)) :
@@ -45,7 +45,7 @@ theorem quot_lin {G : Type} [Group G] [MeasurableSpace G] {R : Subgroup G} {μR 
   exact key Finset.univ
 
 /- English proof (translation)
-Use `choose g hg1 hg2 using h`. Conclude with `⟨fun q => ∑ i, α i * g i q, quot_lin α g v hg1, fun q => quot_lin α (fun i => f i q) (fun i => g i q) fun i => hg2 i q⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem iteratedQuotientIntegral_finite_linearCombination {G₁ G₂ : Type} [Group G₁] [MeasurableSpace G₁] [TopologicalSpace G₁] [Group G₂] [MeasurableSpace G₂]
     [TopologicalSpace G₂] {R₁ : Subgroup G₁} {R₂ : Subgroup G₂} (ρ₁ : Measure R₁) (μ₁ : Measure G₁) (ρ₂ : Measure R₂)
@@ -56,19 +56,19 @@ theorem iteratedQuotientIntegral_finite_linearCombination {G₁ G₂ : Type} [Gr
   exact ⟨fun q => ∑ i, α i * g i q, quot_lin α g v hg1, fun q => quot_lin α (fun i => f i q) (fun i => g i q) fun i => hg2 i q⟩
 
 /- English proof (translation)
-Introduce `D c t ht j σ h P₁ P₂ φ f K₁ T₁ hlaw hsupp`. Take `⟨hs1om, -⟩` from `ht.sBF j (σ + 1) h`. Take `⟨hs2om, -⟩` from `ht.sFB j σ h`. Establish `HH` using `fun φ' => GlobalTheory.HandHom.hand_hom D c.ψ σ _ _ _ (t.sBF j (σ + 1) h) (t.sFB j σ h) (c.lnk j σ h) (c.vL j σ h) φ'`. Establish `per0 : ∀ f', (c.B (j + 1 + 1) σ (idx_step h)).per c.ψ 0 f' = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `f'`. Use `(HH (fun _ => 0)).2.2 0 1 0 f'` as an intermediate fact. Simplify using `using this`. Use `⟨fun h₁ k hk => ?_, fun h₁ hne => ?_⟩` and prove the remaining obligations. Take `⟨a, ha, h1, h2⟩` from `hlaw k hk`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `key : ∀ α g h₂, Chain.hand (t.sBF j (σ + 1) h) (t.sFB j σ h) (c.lnk j σ h) (c.vL j σ h) (t.pt j P₁) (t.pt (j + 1) P₂) (φ α) g (h₁ * k) h₂ = Chain.hand (t.sBF j (σ + 1) h) (t.sFB j σ h) (c.lnk j σ h) (c.vL j σ h) (t.pt j P₁) (t.pt (j + 1) P₂) (φ α) g h₁ h₂`. Introduce `α g h₂`. Simplify using `only [Chain.hand]`. Establish `m1 : (t.sBF j (σ + 1) h).om (g, h₁ * k) (t.pt j P₁) = a⁻¹ • (t.sBF j (σ + 1) h).om (g, h₁) (t.pt j P₁)`. Establish `hm : ((g, h₁ * k) : GA D (c.V j) × GA D (c.V (j + 1))) = (g, h₁) * (1, k)` using `by simp`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hm, map_mul, Module.End.mul_apply, hs1om, h1, map_smul]`. Establish `m2 : (t.sFB j σ h).om (h₁ * k, h₂) (t.pt (j + 1) P₂) = a • (t.sFB j σ h).om (h₁, h₂) (t.pt (j + 1) P₂)`. Establish `hm : ((h₁ * k, h₂) : GA D (c.V (j + 1)) × GA D (c.V (j + 1 + 1))) = (h₁, h₂) * (k, 1)` using `by simp`. Rewrite using `[hm, map_mul, Module.End.mul_apply, hs2om, h2, map_smul]`. Rewrite using `[m1, m2, (HH (φ α)).1, inv_mul_cancel₀ ha, one_smul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `h₂`. Simplify using `only [Tup.integrand, key]`. Assume the negation of the conclusion as `hno push_neg at hno`. Apply `hne` to reduce the goal to its premises. Use function extensionality and compare the values at `h₂`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [Tup.integrand, Pi.zero_apply]`. Use `Finset.sum_eq_zero fun α _ => Finset.sum_eq_zero fun g hg => ?_` and prove the remaining obligations. Establish `hflat : flatBF (t.sBF j (σ + 1) h) ((t.sBF j (σ + 1) h).om (g, h₁) (t.pt j P₁)) = 0`. Assume the negation of the conclusion as `hf`. Rewrite `hf` using `[hs1om]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨q, hq, hc⟩` from `hsupp α g hg h₁ hf`. Conclude with `hno q hq hc`. Simplify using `only [Chain.hand, hflat, (HH (φ α)).2.1, per0, mul_zero]`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem invsupp : ∀ (D : D7) (c : Comm D) (t : Tup c), t.Is → ∀ j σ (h : j + 2 * (σ + 1) + 2 = D.R.m) P₁ P₂ (φ : t.Ch j → GA D (c.X j) → ℂ) (f : GA D (c.V (j + 1 + 1)) → ℂ) (K₁ : Subgroup (GA D (c.V (j + 1)))) (T₁ : Finset (GA D (c.V (j + 1)))), (∀ k ∈ K₁, ∃ a : ℂ, a ≠ 0 ∧ t.om j (1, k) (t.pt j P₁) = a⁻¹ • t.pt j P₁ ∧ t.om (j + 1) (k, 1) (t.pt (j + 1) P₂) = a • t.pt (j + 1) P₂) → (∀ α, ∀ g ∈ (t.e j α).support, ∀ h₁, flatBF (t.sBF j (σ + 1) h) (t.om j (g, h₁) (t.pt j P₁)) ≠ 0 → ∃ q ∈ T₁, InCell (jacGrp (c.jac j (σ + 1) h).d) q K₁ h₁) → (∀ h₁, ∀ k ∈ K₁, t.integrand j σ h P₁ P₂ φ f (h₁ * k) = t.integrand j σ h P₁ P₂ φ f h₁) ∧ (∀ h₁, t.integrand j σ h P₁ P₂ φ f h₁ ≠ 0 → ∃ q ∈ T₁, InCell (jacGrp (c.jac j (σ + 1) h).d) q K₁ h₁) := by
   intro D c t ht j σ h P₁ P₂ φ f K₁ T₁ hlaw hsupp
@@ -109,27 +109,23 @@ theorem invsupp : ∀ (D : D7) (c : Comm D) (t : Tup c), t.Is → ∀ j σ (h : 
     simp only [Chain.hand, hflat, (HH (φ α)).2.1, per0, mul_zero]
 
 /- English proof (translation)
-Introduce `D c 𝒯 t hDS hc ht hloc j σ h P₁ P₂ I _ s α φ f hφ hf hlift hV`. Break down `isEmpty_or_nonempty I with hI | hI` into its components or cases. Simplify using the standard rewrite rules. Take `⟨i₀⟩` from `hI`. Establish `hA` using `fun i => GlobalTheory.T.besselPeriod_double_step_iterated_quotient_integral D c (t (s i)) hDS hc (ht (s i)) j σ h P₁ P₂ (φ i) (f i) (hφ i) (hf i) (hlift i)`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `choose F₁ hF₁ hF₂ using hA`. Establish `hL` using `fun i => hloc (s i) j σ h P₁ P₂`. Use `choose K₁ T₁ hK₁f hK₁c hK₁o hT₁ hlaw hsupp using hL`. Establish `hIS` using `fun i => invsupp D c (t (s i)) (ht (s i)) j σ h P₁ P₂ (φ i) (f i) (K₁ i) (T₁ i) (hlaw i) (hsupp i)`. Take `⟨i1, i2, i3, i4, i5, -⟩` from `GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D (c.V (j + 1))`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨k1, k2, k3, k4, k5, -⟩` from `GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D (c.V (j + 1 + 1))`. Take `⟨gA₁, gB₁, gc₁, ge₁, gμ₁, gR₁⟩` from `GlobalTheory.T.unitaryAdelic_inf_fin_split_periods_unimodular D (c.V (j + 1))`. Take `⟨gA₂, gB₂, gc₂, ge₂, gμ₂, gR₂⟩` from `GlobalTheory.T.unitaryAdelic_inf_fin_split_periods_unimodular D (c.V (j + 1 + 1))`. Take `⟨⟨jsplit, -, jinvf⟩, -⟩` from `gR₁ _ _ (c.jac j (σ + 1) h).d`. Take `⟨-, bes⟩` from `gR₂ _ _ (c.bes (j + 1 + 1) σ (idx_step h)).d`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨bsplit, -, binvf⟩` from `bes _ _ (c.bes (j + 1 + 1) σ (idx_step h)).o`. Take `⟨jcl, jH, jI⟩` from `GlobalTheory.QuotZero.jac_haar_inv (c.J j (σ + 1) h)`. Take `⟨bcl, bH, bI⟩` from `GlobalTheory.QuotZero.bes_haar_inv (c.B (j + 1 + 1) σ (idx_step h))`. Establish `hQ1` using `quot_lin α F₁ _ hF₁`. Establish `hQ2` using `fun h₁ => quot_lin α (fun i => (t (s i)).integrand j σ h P₁ P₂ (φ i) (f i) h₁) (fun i => F₁ i h₁) (fun i => hF₂ i h₁)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `GlobalTheory.T.quotient_integral_vanish_of_iterated_finite_integrals (GA D (c.V (j + 1))) (GA D (c.V (j + 1 + 1))) (GinfC _) (GfC _) (jacGrp (c.jac j (σ + 1) h).d) (GinfC _) (GfC _) (besGrp (c.bes (j + 1 + 1) σ (idx_step h)).d (c.bes (j + 1 + 1) σ (idx_step h)).o) gA₁ gB₁ jcl gc₁ …` and prove the remaining obligations. Conclude with `iInf_le_of_le i₀ (hK₁f i₀)`. Rewrite using `[Subgroup.coe_iInf]`. Conclude with `IsCompact.of_isClosed_subset (hK₁c i₀) (isClosed_iInter fun i => (hK₁c i).isClosed) (Set.iInter_subset _ i₀)`. Establish `e : (((⨅ i, K₁ i).subgroupOf (GfC (c.V (j + 1))) : Subgroup (GfC (c.V (j + 1)))) : Set (GfC (c.V (j + 1)))) = ⋂ i, (((K₁ i).subgroupOf (GfC (c.V (j + 1))) : Subgroup (GfC (c.V (j + 1)))) : Set (GfC (c.V (j + 1))))`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use extensionality with `x`. Simplify using `[Subgroup.mem_subgroupOf, Subgroup.mem_iInf]`. Rewrite using `[e]`. Conclude with `isOpen_iInter_of_finite fun i => hK₁o i`. Conclude with `isCompact_iUnion fun i => hK₁c i`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Set.iUnion_subset fun i => hK₁f i`. Introduce `q hq`. Take `⟨i, -, hi⟩` from `Finset.mem_biUnion.1 hq`. Conclude with `hT₁ i q hi`. Introduce `h₁ k hk`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `h₂`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[(hIS i).1 h₁ k (Subgroup.mem_iInf.1 hk i)]`. Introduce `h₁ hne`. Establish `: ∃ i, (t (s i)).integrand j σ h P₁ P₂ (φ i) (f i) h₁ ≠ 0`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Apply `hne` to reduce the goal to its premises. Use function extensionality and compare the values at `h₂`. Simplify using `[hcon]`.
-
-Take `⟨i, hi⟩` from `this`. Take `⟨q, hq, r, hr, a, ha, k, hk, e⟩` from `(hIS i).2 h₁ hi`. Conclude with `⟨q, Finset.mem_biUnion.2 ⟨i, Finset.mem_univ _, hq⟩, r, hr, a, ha, k, Set.mem_iUnion.2 ⟨i, hk⟩, e⟩`. Introduce `a ha a' ha'`. Take `⟨v, hv, hsum⟩` from `hV a ha a' ha'`.
-
-Use `iteratedQuotientIntegral_finite_linearCombination (c.ρJ j (σ + 1) h) (c.μf (j + 1)) (c.ρB (j + 1 + 1) σ (idx_step h)) (c.μf (j + 1 + 1)) α _ v hv` as an intermediate fact. Rewrite `this` using `[hsum]`. Conclude with `this`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem vanMany : ∀ (D : D7) (c : Comm D) (𝒯 : Type) (t : 𝒯 → Tup c), DoubleStep D → c.Is → (∀ s, (t s).Is) → (∀ s, (t s).LocFin) → ∀ j σ (h : j + 2 * (σ + 1) + 2 = D.R.m) P₁ P₂ (I : Type) [Fintype I] (s : I → 𝒯) (α : I → ℂ) (φ : ∀ i, (t (s i)).Ch j → GA D (c.X j) → ℂ) (f : I → GA D (c.V (j + 1 + 1)) → ℂ), (∀ i a, IsContAut (c.X j) (φ i a)) → (∀ i, RapidDec _ (f i)) → (∀ i, RapidDec _ (liftS ((t (s i)).om (j + 1)) (c.vol (j + 1 + 1)).μ (c.vol (j + 1 + 1)).𝓕 (f i) ((t (s i)).pt (j + 1) P₂))) → (∀ a ∈ GinfC (c.V (j + 1)), ∀ a' ∈ GinfC (c.V (j + 1 + 1)), ∃ v : I → ℂ, (∀ i, Iter2 (c.ρJ j (σ + 1) h) (c.μf (j + 1)) (c.ρB (j + 1 + 1) σ (idx_step h)) (c.μf (j + 1 + 1)) (fun q₁ q₂ => (t (s i)).integrand j σ h P₁ P₂ (φ i) (f i) (a * q₁.1) (a' * q₂.1)) (v i)) ∧ ∑ i, α i * v i = 0) → ∑ i, α i * (t (s i)).perF j (σ + 1) h (φ i) (liftS ((t (s i)).om j) (c.vol (j + 1)).μ (c.vol (j + 1)).𝓕 (liftS ((t (s i)).om (j + 1)) (c.vol (j + 1 + 1)).μ (c.vol (j + 1 + 1)).𝓕 (f i) ((t (s i)).pt (j + 1) P₂)) ((t (s i)).pt j P₁)) = 0 := by
   classical

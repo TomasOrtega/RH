@@ -18,7 +18,7 @@ Both sides reduce to the same expression.
 theorem cA_tmul (a : AF D.host.F) (x : D.host.E) : cA D (a ⊗ₜ[D.host.F] x) = a ⊗ₜ[D.host.F] star x := rfl
 
 /- English proof (translation)
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a x => rw [cA_tmul, cA_tmul, star_star]`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem cA_cA (z : AE D) : cA D (cA D z) = z := by
   induction z using TensorProduct.induction_on with
@@ -33,17 +33,17 @@ theorem finPart_tmul (a : AF D.host.F) (x : D.host.E) :
     finPart D (a ⊗ₜ[D.host.F] x) = sndA D.host.F a ⊗ₜ[D.host.F] x := rfl
 
 /- English proof (translation)
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => exact ⟨0, 0, zero_mem _, 0, zero_mem _, by simp, by simp⟩`. Consider the case `add x y hx hy`. Take `⟨d, a, ha, a', ha', h, h'⟩` from `hx`. Take `⟨e, b, hb, b', hb', g, g'⟩` from `hy`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨d + e, a + b, add_mem ha hb, a' + b', add_mem ha' hb', ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[mul_add, ← h, ← g, ← map_add, TensorProduct.tmul_add]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[mul_add, ← h', ← g', ← map_add fp, TensorProduct.tmul_add, map_add c, map_add c]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Consider the case `tmul a x`. Take `⟨m, hm, hx⟩` from `hE x`. Establish `hm' : (m : F) ≠ 0` using `Int.cast_ne_zero.2 hm`.
+Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨f, β, hβ, hy⟩` from `hB ((m : F)⁻¹ • φ a)`. Establish `key : ∀ x : E, fp (a ⊗ₜ[F] x - 1 ⊗ₜ[F] (f • (m • x))) = N * (β ⊗ₜ[F] (m • x))`. Introduce `x`. Establish `e2 : φ a ⊗ₜ[F] x = ((m : F)⁻¹ • φ a) ⊗ₜ[F] (m • x)`. Rewrite using `[TensorProduct.smul_tmul, ← Int.cast_smul_eq_zsmul F, smul_smul, inv_mul_cancel₀ hm', one_smul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_sub, hfp, hfp, h1, e2, hy, TensorProduct.add_tmul, Algebra.algebraMap_eq_smul_one, TensorProduct.smul_tmul f, add_sub_cancel_left, ← TensorProduct.smul_tmul', nsmul_eq_mul]`. Establish `hx' : IsIntegral ℤ (m • σ x)`. Rewrite using `[← map_zsmul]`. Conclude with `hx.map σ.toIntAlgHom`. Use `⟨f • (m • x), _, hI _ hβ _ hx, _, hI _ hβ _ hx', key x, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hc, ← TensorProduct.smul_tmul, hc, TensorProduct.smul_tmul, map_zsmul]`. Conclude with `key _`.
+A detailed English derivation is pending.
 -/
 theorem approx_gen {F A B E : Type} [Field F] [CharZero F] [CommRing A] [CommRing B] [CommRing E] [Algebra F A]
     [Algebra F B] [Algebra F E] (φ : A → B) (σ : E →+* E) (fp : A ⊗[F] E →+* B ⊗[F] E) (c : A ⊗[F] E →+* A ⊗[F] E)
@@ -78,7 +78,7 @@ theorem approx_gen {F A B E : Type} [Field F] [CharZero F] [CommRing A] [CommRin
     exact key _
 
 /- English proof (translation)
-Establish `: IsUnit (N : R)`. Use `(IsUnit.mk0 (N : F) (Nat.cast_ne_zero.2 hN.ne')).map (algebraMap F R)` as an intermediate fact. Rewrite `this` using `[map_natCast]`. Then use the resulting hypothesis. Conclude with `this.mul_left_cancel h`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem cancel_gen {F R : Type} [Field F] [CharZero F] [CommRing R] [Algebra F R] {N : ℕ} (hN : 0 < N) {a b : R}
     (h : (N : R) * a = N * b) : a = b := by
@@ -88,22 +88,20 @@ theorem cancel_gen {F R : Type} [Field F] [CharZero F] [CommRing R] [Algebra F R
   exact this.mul_left_cancel h
 
 /- English proof (translation)
-The claim follows from `AddSubgroup.subset_closure ⟨a, ha, ⟨x, hx⟩, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem tmul_mem {a : Af D.host.F} (ha : a ∈ intAf D.host.F) {x : D.host.E} (hx : IsIntegral ℤ x) :
     a ⊗ₜ[D.host.F] x ∈ intAE D :=
   AddSubgroup.subset_closure ⟨a, ha, ⟨x, hx⟩, rfl⟩
 
 /- English proof (translation)
-Proceed by induction on `ha using AddSubgroup.closure_induction with`. Consider the case `zero => rw [zero_mul]`. Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy => rw [add_mul]`. Conclude with `add_mem hx hy`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `neg x _ hx => rw [neg_mul]`. Conclude with `neg_mem hx`. Consider the case `mem x hx`. Proceed by induction on `hb using AddSubgroup.closure_induction with`. Consider the case `zero => rw [mul_zero]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy => rw [mul_add]`. Conclude with `add_mem hx hy`. Consider the case `neg x _ hx => rw [mul_neg]`. Conclude with `neg_mem hx`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Consider the case `mem y hy`. Take `⟨a, ha, x, rfl⟩` from `hx`. Take `⟨b, hb, y, rfl⟩` from `hy`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul]`. Use `tmul_mem (fun v => ?_) (x.2.mul y.2)` and prove the remaining obligations.
-
-Rewrite using `[map_mul]`. Conclude with `mul_mem (ha v) (hb v)`.
+A detailed English derivation is pending.
 -/
 theorem mul_mem_intAE {a b : Af D.host.F ⊗[D.host.F] D.host.E} (ha : a ∈ intAE D) (hb : b ∈ intAE D) :
     a * b ∈ intAE D := by
@@ -124,7 +122,7 @@ theorem mul_mem_intAE {a b : Af D.host.F ⊗[D.host.F] D.host.E} (ha : a ∈ int
       rw [map_mul]; exact mul_mem (ha v) (hb v)
 
 /- English proof (translation)
-The claim follows from `approx_gen (F := D.host.F) (sndA D.host.F) (starRingEnd D.host.E) (finPart D) (cA D) finPart_tmul (map_one _) cA_tmul (intAf D.host.F) (intAE D) (fun _ hb _ hx => tmul_mem hb hx) (fun x => ((IsFractionRing.isAlgebraic_iff ℤ ℚ D.host.E).2 (Algebra.IsAlgebraic.isAlgebraic (R := ℚ) …`.
+A detailed English derivation is pending.
 -/
 theorem approx (N : ℕ) (hN : 0 < N) (z : AE D) : ∃ c : D.host.E, ∃ A ∈ intAE D, ∃ A' ∈ intAE D,
     finPart D (z - incA D c) = N * A ∧ finPart D (cA D z - incA D (star c)) = N * A' :=
@@ -137,13 +135,13 @@ theorem approx (N : ℕ) (hN : 0 < N) (z : AE D) : ∃ c : D.host.E, ∃ A ∈ i
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Establish `hNE : (N : D.host.E) ≠ 0` using `Nat.cast_ne_zero.2 hN.ne'`. Establish `hNk : (N : k) ≠ 0`. Use `(map_ne_zero (p.pr.comp (incA D))).2 hNE` as an intermediate fact. Rewrite `this` using `[map_natCast]`. Then use the resulting hypothesis. Establish `he : finPart D p.e ∈ intAE D`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Use `(p.int_iff 1).1 (one_mem _)` as an intermediate fact. Rewrite `this` using `[← map_one p.pr, p.sec_pr, mul_one]`. Then use the resulting hypothesis. Establish `h0 : (N : AE D) * p.sec (p.pr z / N) = p.e * z`. Rewrite using `[← p.sec_pr, ← nsmul_eq_mul, ← AddMonoidHom.map_nsmul, nsmul_eq_mul, mul_div_cancel₀ _ hNk]`. Establish `h1` using `congrArg (finPart D) h0`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h1` using `[RingHom.map_mul, RingHom.map_mul, h, mul_left_comm]`. Establish `h1' : finPart D (N : AE D) = N` using `map_natCast (finPart D) N`. Rewrite `h1` using `[h1']`. Establish `h2` using `cancel_gen (F := D.host.F) hN h1`. Establish `h3 : p.pr z / N ∈ 𝒪[k]` using `(p.int_iff _).2 (by rw [h2]; exact mul_mem_intAE he hA)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h4 : valuation k (p.pr z / N) ≤ 1` using `h3`. Establish `h5 : p.pr z = N * (p.pr z / N)` using `(mul_div_cancel₀ _ hNk).symm`. Rewrite using `[h5, map_mul]`. Conclude with `mul_le_of_le_one_right' h4`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem val_le (p : SplitPt D k) (N : ℕ) (hN : 0 < N) (z : AE D) (A : Af D.host.F ⊗[D.host.F] D.host.E)
     (hA : A ∈ intAE D) (h : finPart D z = N * A) : valuation k (p.pr z) ≤ valuation k (N : k) := by
@@ -168,13 +166,13 @@ theorem val_le (p : SplitPt D k) (N : ℕ) (hN : 0 < N) (z : AE D) (A : Af D.hos
   exact mul_le_of_le_one_right' h4
 
 /- English proof (translation)
-Establish `hlt : ∀ x : 𝒪[k], ¬ IsUnit x → valuation k (x : k) < 1` using `fun x hx => Valuation.Integer.not_isUnit_iff_valuation_lt_one.1 hx`. Establish `hq` using `hlt _ q.2.not_isUnit`. Use `⟨hq, ?_⟩` and prove the remaining obligations. Use `letI := Fintype.ofFinite (IsLocalRing.ResidueField 𝒪[k])`. Use `set Q := Fintype.card (IsLocalRing.ResidueField 𝒪[k])`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Establish `hQ : (Q : 𝒪[k]) ∈ IsLocalRing.maximalIdeal 𝒪[k]`. Rewrite using `[← IsLocalRing.residue_eq_zero_iff, map_natCast]`. Conclude with `FiniteField.cast_card_eq_zero _`. Rewrite `hQ` using `[q.2.maximalIdeal_eq, Ideal.mem_span_singleton]`. Take `⟨r, hr⟩` from `hQ`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hr' : (Q : k) = (q.1 : k) * r` using `by exact_mod_cast congrArg (fun x : 𝒪[k] => (x : k)) hr`. Establish `hle : valuation k (Q : k) ≤ valuation k ((q.1 : 𝒪[k]) : k)`. Rewrite using `[hr', map_mul]`. Conclude with `mul_le_of_le_one_right' r.2`. Establish `hq0 : 0 < valuation k ((q.1 : 𝒪[k]) : k)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Valuation.pos_iff]`. Conclude with `fun h => q.2.ne_zero (Subtype.ext h)`. Use `⟨Q * Q, Nat.mul_pos Fintype.card_pos Fintype.card_pos, ?_⟩` and prove the remaining obligations. Rewrite using `[Nat.cast_mul, map_mul]`. Conclude with `(mul_le_mul' hle hle).trans_lt (mul_lt_of_lt_one_right hq0 hq)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_nat (q : Unif k) : valuation k ((q.1 : 𝒪[k]) : k) < 1 ∧
     ∃ N : ℕ, 0 < N ∧ valuation k (N : k) < valuation k ((q.1 : 𝒪[k]) : k) := by
@@ -201,13 +199,13 @@ theorem exists_nat (q : Unif k) : valuation k ((q.1 : 𝒪[k]) : k) < 1 ∧
   exact (mul_le_mul' hle hle).trans_lt (mul_lt_of_lt_one_right hq0 hq)
 
 /- English proof (translation)
-Introduce `D k _ _ _ _ p q`. Take `⟨hq, N, hN, hNq⟩` from `exists_nat q`. Establish `hs : p.sec 1 = p.e` using `by rw [← map_one p.pr, p.sec_pr, mul_one]`. Establish `he : p.pr p.e = 1` using `by rw [← hs, p.pr_sec]`. Establish `hce : p.pr (cA D p.e) = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h : p.e * cA D p.e = 0` using `p.split.2.1`. Use `congrArg p.pr h` as an intermediate fact. Rewrite `this` using `[map_mul, he, one_mul, map_zero]`. Then use the resulting hypothesis. Establish `hcq : ∀ a, p.pr (cA D (p.sec a)) = 0` using `fun a => by`. Establish `h : p.sec a = p.e * p.sec a` using `by rw [← p.sec_pr, p.pr_sec]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[h, map_mul, map_mul, hce, zero_mul]`. Take `⟨c, A, hA, A', hA', h, h'⟩` from `approx N hN (p.sec (q.1 : k) + cA D p.e)`. Establish `v1` using `val_le p N hN _ A hA h`. Establish `v2` using `val_le p N hN _ A' hA' h'`. Rewrite `v1` using `[map_sub, map_add, p.pr_sec, hce, add_zero]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `v2` using `[map_sub, map_add, map_add, hcq, cA_cA, he, zero_add]`. Use `⟨c, ?_, ?_⟩` and prove the remaining obligations. Conclude with `Valuation.map_eq_of_sub_lt _ (by rw [Valuation.map_sub_swap]; exact v1.trans_lt hNq)`. Rewrite using `[← map_one (valuation k)]`. Conclude with `Valuation.map_eq_of_sub_lt _ (by rw [Valuation.map_sub_swap, map_one]; exact v2.trans_lt (hNq.trans hq))`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_unif_unit : ∀ (D : D7) (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (p : SplitPt D k) (q : Unif k), ∃ c : D.host.E, valuation k (p.pr (incA D c)) = valuation k ((q.1 : 𝒪[k]) : k) ∧ valuation k (p.pr (incA D (star c))) = 1 := by
   intro D k _ _ _ _ p q

@@ -14,11 +14,11 @@ namespace GlobalTheory.PullCocycle
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} {U C : Type} [Group U] [MulAction U C]
 
 /- English proof (translation)
-Proceed by induction on `hg using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨F, hF, rfl⟩` from `hy`. Conclude with `ha h F hF c x`. Consider the case `zero => show ((ρ h⁻¹ 0 : M.cusp ka) : C → M.dom → ℂ) c x = _`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Consider the case `add y z hy hz ihy ihz => show ((ρ h⁻¹ ((⟨y, hy⟩ : M.cusp ka) + ⟨z, hz⟩) : M.cusp ka) : C → M.dom → ℂ) c x = _`. Rewrite using `[map_add, Submodule.coe_add, Pi.add_apply, Pi.add_apply, ihy, ihz]`. Simplify using `[mul_add]`. Consider the case `smul t y hy ih => show ((ρ h⁻¹ (t • (⟨y, hy⟩ : M.cusp ka)) : M.cusp ka) : C → M.dom → ℂ) c x = _`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_smul, Submodule.coe_smul, Pi.smul_apply, Pi.smul_apply, smul_eq_mul, ih]`. Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem formula_span (M : TwoLevels E r U C) (ka : Wt M.Ψ r) (ρ : Representation ℂ U (M.cusp ka))
     (a : U → C → ℂˣ)
@@ -45,16 +45,16 @@ theorem formula_span (M : TwoLevels E r U C) (ka : Wt M.Ψ r) (ρ : Representati
     ring
 
 /- English proof (translation)
-Rewrite using `[← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem rho_inv_rho (M : TwoLevels E r U C) (ka : Wt M.Ψ r) (ρ : Representation ℂ U (M.cusp ka)) (h : U)
     (f : M.cusp ka) : ρ h⁻¹ (ρ h f) = f := by
   rw [← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply]
 
 /- English proof (translation)
-Use `set γ := M.tr (h * g) c * (M.tr h (g • c) * M.tr g c)⁻¹ with hγdef`. Establish `hγ : γ ∈ (M.comp ((h * g) • c)).Γ` using `M.tr_mul h g c`. Establish `e : lact γ (Lmap M h (g • c) (Lmap M g c x)).1 = (Lmap M (h * g) c x).1` using `by show lact γ (lact (M.tr h (g • c)) (lact (M.tr g c) x.1)) = lact (M.tr (h * g) c) x.1`. Rewrite using `[← ReciprocityTheory.ChartRestriction.G.AR.Up.FundSetPf.lact_mul (M.tr h (g • c)) (M.tr g c), ← ReciprocityTheory.ChartRestriction.G.AR.Up.FundSetPf.lact_mul γ, hγdef, inv_mul_cancel_right]`. Establish `hx : lact γ (Lmap M h (g • c) (Lmap M g c x)).1 ∈ M.dom` using `e ▸ (Lmap M (h * g) c x).2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hf ((h * g) • c) γ hγ (Lmap M h (g • c) (Lmap M g c x)) hx` as an intermediate fact. Establish `e2 : (⟨lact γ (Lmap M h (g • c) (Lmap M g c x)).1, hx⟩ : M.dom) = Lmap M (h * g) c x` using `Subtype.ext e`. Rewrite `this` using `[e2]`. Rewrite using `[this, mul_smul]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pull_mul_eq (M : TwoLevels E r U C) (f : C → M.dom → ℂ) (hf : IsInv M f) (g h : U) (c : C) (x : M.dom) :
     f ((h * g) • c) (Lmap M (h * g) c x) = f (h • g • c) (Lmap M h (g • c) (Lmap M g c x)) := by
@@ -71,27 +71,25 @@ theorem pull_mul_eq (M : TwoLevels E r U C) (f : C → M.dom → ℂ) (hf : IsIn
   rw [this, mul_smul]
 
 /- English proof (translation)
-Introduce `E _ _ _ r U C _ _ M ka ρ hρ hinv`. Take `⟨a, ha⟩` from `hρ`. Establish `hform : ∀ (h : U) (f : M.cusp ka) (c : C) (x : M.dom), ((ρ h⁻¹ f : M.cusp ka) : C → M.dom → ℂ) c x = (a h c : ℂ) * (f : C → M.dom → ℂ) (h • c) (Lmap M h c x)`. Introduce and unpack `h ⟨g, hg⟩ c x`. Conclude with `formula_span M ka ρ a ha h c x g hg`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Introduce a local definition for the expression.
 
-Set `C0 : C → Prop` to `fun c => ∃ f : M.cusp ka, ∃ x : M.dom, (f : C → M.dom → ℂ) c x ≠ 0`. Establish `hstab : ∀ (h : U) (c : C), C0 c → C0 (h • c)`. Introduce and unpack `h c ⟨f, x, hfx⟩`. Use `⟨ρ h f, Lmap M h c x, fun h0 => hfx ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[rho_inv_rho]`. Use `_ = (a h c : ℂ) * ((ρ h f : M.cusp ka) : C → M.dom → ℂ) (h • c) (Lmap M h c x) := hform h _ c x`. Use `_ = 0 := by rw [h0, mul_zero]`. Establish `hstab' : ∀ (h : U) (c : C), ¬ C0 c → ¬ C0 (h • c)` using `fun h c hc h1 => hc (by`. Use `hstab h⁻¹ (h • c) h1` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[inv_smul_smul] at this)` and apply the resulting hypothesis. Establish `hcoc : ∀ (g h : U) (c : C) (x : M.dom) (f : M.cusp ka), (a (h * g) c : ℂ) * (f : C → M.dom → ℂ) ((h * g) • c) (Lmap M (h * g) c x) = (a g c : ℂ) * (a h (g • c) : ℂ) * (f : C → M.dom → ℂ) ((h * g) • c) (Lmap M (h * g) c x)`. Introduce `g h c x f`. Establish `L` using `hform (h * g) f c x`. Establish `R : ((ρ (h * g)⁻¹ f : M.cusp ka) : C → M.dom → ℂ) c x = (a g c : ℂ) * ((a h (g • c) : ℂ) * (f : C → M.dom → ℂ) (h • g • c) (Lmap M h (g • c) (Lmap M g c x)))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[mul_inv_rev, map_mul, Module.End.mul_apply, hform g, hform h]`. Rewrite using `[← L, R, pull_mul_eq M _ (hinv _ f.2) g h c x]`. Expand and normalize the polynomial expressions, which then agree. Use `⟨fun h c => if C0 c then a h c else 1, ?_, ?_⟩` and prove the remaining obligations. Introduce `g h c`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact.
 
-Distinguish the cases in `hc : C0 c`. Establish `hgc : C0 (g • c)` using `hstab g c hc`. Establish `hhgc : C0 ((h * g) • c)` using `hstab (h * g) c hc`. Simplify using `only [hc, hgc, if_true]`. Take `⟨f', x, hfx⟩` from `hc`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Use `set f := ρ (h * g) f' with hfdef`. Establish `hV : (f : C → M.dom → ℂ) ((h * g) • c) (Lmap M (h * g) c x) ≠ 0`. Introduce `h0`. Apply `hfx` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Move the embeddings inside the algebraic operations. Establish an intermediate fact.
 
-Rewrite using `[hfdef, rho_inv_rho]`. Use `_ = 0 := by rw [hform, h0, mul_zero]`. Use `ext`. Use `push_cast`. Conclude with `mul_right_cancel₀ hV (hcoc g h c x f)`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hgc : ¬ C0 (g • c)` using `hstab' g c hc`. Simplify using `[hc, hgc]`. Introduce `h f c x`. Distinguish the cases in `hc : C0 c`. Simplify using `only [hc, if_true]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Conclude with `hform h f c x`. Establish `hhc : ¬ C0 (h • c)` using `hstab' h c hc`. Simplify using `only [hc, if_false, Units.val_one, one_mul]`. Establish `l0 : ((ρ h⁻¹ f : M.cusp ka) : C → M.dom → ℂ) c x = 0`. Assume the negation of the conclusion as `hne`.
-
-Conclude with `hc ⟨ρ h⁻¹ f, x, hne⟩`. Establish `r0 : (f : C → M.dom → ℂ) (h • c) (Lmap M h c x) = 0`. Assume the negation of the conclusion as `hne`. Conclude with `hhc ⟨f, _, hne⟩`. Rewrite using `[l0, r0]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_cocycle : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (U C : Type) [Group U] [MulAction U C] (M : TwoLevels E r U C) (ka : Wt M.Ψ r) (ρ : Representation ℂ U (M.cusp ka)), IsPullRep M ka ρ → (∀ f ∈ M.cusp ka, IsInv M f) → ∃ a : U → C → ℂˣ, (∀ (g h : U) (c : C), a (h * g) c = a g c * a h (g • c)) ∧ ∀ (h : U) (f : M.cusp ka) (c : C) (x : M.dom), ((ρ h⁻¹ f : M.cusp ka) : C → M.dom → ℂ) c x = (a h c : ℂ) * (f : C → M.dom → ℂ) (h • c) (Lmap M h c x) := by
   intro E _ _ _ r U C _ _ M ka ρ hρ hinv

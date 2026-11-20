@@ -16,13 +16,13 @@ noncomputable section
 namespace GlobalTheory.Mum.FibBC
 
 /- English proof (translation)
-The claim follows from `Category.comp_id _`.
+A detailed English derivation is pending.
 -/
 theorem pullCompIso_hom_eq {T S' S : Scheme.{0}} (p : T ⟶ S') (f : S' ⟶ S) (G : Over S) [GrpObj G] :
     (pullCompIso p f G).hom = (Over.pullbackComp p f).hom.app G := Category.comp_id _
 
 /- English proof (translation)
-Rewrite using `[pullCompIso_hom_eq]`. Simplify using `[Over.pullbackComp, Over.mapComp, pullback.lift_fst_assoc, pullback.lift_fst]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem pullCompIso_fst {T S' S : Scheme.{0}} (p : T ⟶ S') (f : S' ⟶ S) (G : Over S) [GrpObj G] :
     (pullCompIso p f G).hom.left ≫ pullback.fst _ p ≫ pullback.fst G.hom f = pullback.fst G.hom (p ≫ f) := by
@@ -30,29 +30,27 @@ theorem pullCompIso_fst {T S' S : Scheme.{0}} (p : T ⟶ S') (f : S' ⟶ S) (G :
   simp [Over.pullbackComp, Over.mapComp, pullback.lift_fst_assoc, pullback.lift_fst]
 
 /- English proof (translation)
-Rewrite using `[← pullCompIso_fst, ← Category.assoc, ← Over.comp_left, Iso.inv_hom_id, Over.id_left, Category.id_comp]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem pullCompIso_inv_fst {T S' S : Scheme.{0}} (p : T ⟶ S') (f : S' ⟶ S) (G : Over S) [GrpObj G] :
     (pullCompIso p f G).inv.left ≫ pullback.fst G.hom (p ≫ f) = pullback.fst _ p ≫ pullback.fst G.hom f := by
   rw [← pullCompIso_fst, ← Category.assoc, ← Over.comp_left, Iso.inv_hom_id, Over.id_left, Category.id_comp]
 
 /- English proof (translation)
-The claim follows from `pullback.lift_fst _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem pullback_map_fst {S S' : Scheme.{0}} (g : S' ⟶ S) {A B : Over S} (u : A ⟶ B) :
     ((Over.pullback g).map u).left ≫ pullback.fst B.hom g = pullback.fst A.hom g ≫ u.left :=
   pullback.lift_fst _ _ _
 
 /- English proof (translation)
-Introduce `S G _ W' _ _ G' _ ξ' β hβ k _ Y _ κ' e' he' Ω _ x κ Ω' _ io i₂ hc hκ`. Establish `hm : spMap i₂ ≫ spMap κ' = spMap (io.comp κ)`. Rewrite using `[hκ, ← Spec.map_comp]`. Both sides reduce to the same expression. Rewrite using `[← hm]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Establish `h₁ : IsGrpPullback ((Over.pullback (spMap i₂ ≫ spMap (residue W'))).obj G') G (spMap io ≫ x) (pullback.fst G'.hom (spMap i₂ ≫ spMap (residue W')) ≫ β)` using `((isGrpPullback_pullback G' (spMap i₂ ≫ spMap (residue W'))).comp hβ).congr (by rw [hc, Category.assoc]) rfl`. Take `⟨e₁, he₁, he₁f⟩` from `grpPullback_iso (isGrpPullback_pullback G (spMap io ≫ x)) h₁`. Set `e₂` to `pullCompIso (spMap i₂) (spMap (residue W')) G'`. Set `e₃` to `(Over.pullback (spMap i₂)).mapIso e'`. Set `e₄` to `(pullCompIso (spMap i₂) (spMap κ') Y).symm`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `i₃ : IsMonHom e₃.hom` using `by show IsMonHom ((Over.pullback (spMap i₂)).map e'.hom); infer_instance`. Establish `i₄ : IsMonHom e₄.hom` using `by show IsMonHom (pullCompIso (spMap i₂) (spMap κ') Y).inv; infer_instance`. Establish `f₂ : e₂.hom.left ≫ pullback.fst _ (spMap i₂) ≫ pullback.fst G'.hom (spMap (residue W')) = pullback.fst G'.hom (spMap i₂ ≫ spMap (residue W'))` using `pullCompIso_fst _ _ _`. Establish `f₃ : e₃.hom.left ≫ pullback.fst _ (spMap i₂) = pullback.fst _ (spMap i₂) ≫ e'.hom.left` using `pullback_map_fst _ _`. Establish `f₄ : e₄.hom.left ≫ pullback.fst Y.hom (spMap i₂ ≫ spMap κ') = pullback.fst _ (spMap i₂) ≫ pullback.fst Y.hom (spMap κ')` using `pullCompIso_inv_fst _ _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨e₁ ≪≫ e₂ ≪≫ e₃ ≪≫ e₄, e₁.hom.left ≫ e₂.hom.left ≫ pullback.fst _ (spMap i₂), ?_, ?_, ?_⟩` and prove the remaining obligations. Use `show IsMonHom (e₁.hom ≫ e₂.hom ≫ e₃.hom ≫ e₄.hom)`. Use `infer_instance`. Rewrite using `[Category.assoc, Category.assoc, reassoc_of% f₂, he₁f]`. Use `show (e₁.hom ≫ e₂.hom ≫ e₃.hom ≫ e₄.hom).left ≫ _ = _`.
-
-Simplify using `only [Over.comp_left, Category.assoc]`. Rewrite using `[f₄, reassoc_of% f₃]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fibre_baseChange : ∀ (S : Scheme.{0}) (G : Over S) [GrpObj G] (W' : Type) [CommRing W'] [IsLocalRing W'] (G' : Over (Sp W')) [GrpObj G'] (ξ' : Sp W' ⟶ S) (β : G'.left ⟶ G.left), IsGrpPullback G' G ξ' β → ∀ (k : Type) [Field k] (Y : Over (Sp k)) [GrpObj Y] (κ' : k →+* ResidueField W') (e' : (Over.pullback (spMap (residue W'))).obj G' ≅ (Over.pullback (spMap κ')).obj Y), IsMonHom e'.hom → ∀ (Ω : Type) [Field Ω] (x : Sp Ω ⟶ S) (κ : k →+* Ω) (Ω' : Type) [Field Ω'] (io : Ω →+* Ω') (i₂ : ResidueField W' →+* Ω'), spMap io ≫ x = spMap i₂ ≫ spMap (residue W') ≫ ξ' → io.comp κ = i₂.comp κ' → ∃ (e : (Over.pullback (spMap io ≫ x)).obj G ≅ (Over.pullback (spMap (io.comp κ))).obj Y) (τ : ((Over.pullback (spMap io ≫ x)).obj G).left ⟶ ((Over.pullback (spMap (residue W'))).obj G').left), IsMonHom e.hom ∧ τ ≫ pullback.fst G'.hom (spMap (residue W')) ≫ β = pullback.fst G.hom (spMap io ≫ x) ∧ e.hom.left ≫ pullback.fst Y.hom (spMap (io.comp κ)) = τ ≫ e'.hom.left ≫ pullback.fst Y.hom (spMap κ') := by
   intro S G _ W' _ _ G' _ ξ' β hβ k _ Y _ κ' e' he' Ω _ x κ Ω' _ io i₂ hc hκ

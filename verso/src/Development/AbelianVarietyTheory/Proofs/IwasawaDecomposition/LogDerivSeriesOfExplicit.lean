@@ -16,7 +16,7 @@ noncomputable section
 namespace GlobalTheory.MangoldtSeries
 
 /- English proof (translation)
-Proceed by induction on `N with`. Consider the case `zero => simp`. Consider the case `succ N ih`. Rewrite using `[show N + 1 + 1 = N + 2 from rfl, Finset.sum_Icc_succ_top (Nat.le_add_left 1 N), ih, Finset.sum_range_succ, Finset.sum_Icc_succ_top (Nat.le_add_left 1 N)]`. Expand and normalize the polynomial expressions, which then agree.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem abel (a f : ℕ → ℂ) (N : ℕ) :
     ∑ n ∈ Icc 1 N, a n * f n = (∑ n ∈ Icc 1 N, a n) * f (N + 1) +
@@ -29,7 +29,7 @@ theorem abel (a f : ℕ → ℂ) (N : ℕ) :
     ring
 
 /- English proof (translation)
-The claim follows from `|x ^ (-s) - (x + 1) ^ (-s)| ≤ 2 / x ^ 2 := by have hx0 : 0 < x := by linarith have hx1 : 0 < x + 1 := by linarith have hsplit : (x + 1) ^ (-s) = x ^ (-s) * (x / (x + 1)) ^ s := by rw [Real.div_rpow hx0.le hx1.le, Real.rpow_neg hx0.le, Real.rpow_neg hx1.le] have : 0 < x ^ s := Rea …`.
+A detailed English derivation is pending.
 -/
 theorem rpow_diff_le (x s : ℝ) (hx : 1 ≤ x) (h1 : 1 ≤ s) (h2 : s ≤ 2) :
     |x ^ (-s) - (x + 1) ^ (-s)| ≤ 2 / x ^ 2 := by
@@ -66,13 +66,13 @@ theorem rpow_diff_le (x s : ℝ) (hx : 1 ≤ x) (h1 : 1 ≤ s) (h2 : s ≤ 2) :
     _ = 2 / x ^ 2 := by ring
 
 /- English proof (translation)
-Use `push_cast`. Establish `hn : (0 : ℝ) ≤ n` using `n.cast_nonneg`. Establish `ha : 0 < Real.log ((n : ℝ) + 2)` using `Real.log_pos (by linarith)`. Establish `hab : Real.log ((n : ℝ) + 2) ≤ Real.log ((n : ℝ) + 3)` using `Real.log_le_log (by positivity) (by linarith)`. Establish `hb : 0 < Real.log ((n : ℝ) + 3)` using `by linarith`.
+Move the embeddings inside the algebraic operations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hd : Real.log ((n : ℝ) + 2) - Real.log ((n : ℝ) + 3) ≤ -1 / ((n : ℝ) + 3)`. Rewrite using `[← Real.log_div (by positivity) (by positivity)]`. Use `Real.log_le_sub_one_of_pos (show 0 < ((n : ℝ) + 2) / ((n : ℝ) + 3) by positivity)` as an intermediate fact. Establish `e : ((n : ℝ) + 2) / ((n : ℝ) + 3) - 1 = -1 / ((n : ℝ) + 3)` using `by field_simp; ring`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `h : 1 ≤ (Real.log ((n : ℝ) + 3) - Real.log ((n : ℝ) + 2)) * ((n : ℝ) + 3)`. Use `mul_le_mul_of_nonneg_right hd (show (0 : ℝ) ≤ (n : ℝ) + 3 by positivity)` as an intermediate fact. Rewrite `this` using `[div_mul_cancel₀ _ (by positivity)]`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[div_sub_div _ _ ha.ne' hb.ne', div_le_div_iff₀ (by positivity) (by positivity)]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 
-Use polynomial arithmetic with `[mul_le_mul_of_nonneg_right h (sq_nonneg (Real.log ((n : ℝ) + 3))), mul_le_mul_of_nonneg_right hab hb.le]`.
+Use the polynomial consequences of the given equalities and inequalities.
 -/
 private lemma sum_Ico_sub_succ_eq_telescope (n : ℕ) :
     1 / (((n + 3 : ℕ) : ℝ) * Real.log ((n + 3 : ℕ) : ℝ) ^ 2) ≤
@@ -97,11 +97,11 @@ private lemma sum_Ico_sub_succ_eq_telescope (n : ℕ) :
     mul_le_mul_of_nonneg_right hab hb.le]
 
 /- English proof (translation)
-Use `set f := fun n : ℕ => 1 / ((n : ℝ) * Real.log n ^ 2) with hf`. Establish `hf0 : ∀ n, 0 ≤ f n` using `fun n => by simp only [hf]; positivity`. Establish `key : ∀ n : ℕ, ∑ i ∈ Finset.range (n + 3), f i ≤ f 2 + 1 / Real.log 2 - 1 / Real.log ((n + 2 : ℕ) : ℝ)`. Introduce `n`. Proceed by induction on `n with`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `zero => norm_num [Finset.sum_range_succ, hf]`. Consider the case `succ n ih`. Rewrite using `[show n + 1 + 3 = (n + 3) + 1 from rfl, Finset.sum_range_succ, show n + 1 + 2 = n + 3 from rfl]`. Establish `ht : f (n + 3) ≤ 1 / Real.log ((n + 2 : ℕ) : ℝ) - 1 / Real.log ((n + 3 : ℕ) : ℝ)` using `sum_Ico_sub_succ_eq_telescope n`. Combine the linear equalities and inequalities to obtain the conclusion.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Reduce the conclusion to the remaining proof obligations.
 
-Use `summable_of_sum_range_le hf0 (c := f 2 + 1 / Real.log 2) (fun m => ?_)` and prove the remaining obligations. Establish `hlog : 0 ≤ 1 / Real.log ((m + 2 : ℕ) : ℝ)` using `div_nonneg zero_le_one (Real.log_nonneg (by norm_cast; omega))`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem summable_inv_mul_log_sq :
     Summable (fun n : ℕ => 1 / ((n : ℝ) * Real.log n ^ 2)) := by
@@ -127,7 +127,7 @@ theorem summable_inv_mul_log_sq :
     _ ≤ _ := by linarith
 
 /- English proof (translation)
-Rewrite using `[Real.rpow_neg (Nat.cast_nonneg n), Complex.ofReal_inv, Complex.ofReal_cpow (Nat.cast_nonneg n), Complex.ofReal_natCast, div_eq_mul_inv]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private lemma conv_eq_coeff_alg_mul (a : ℕ → ℂ) (s : ℝ) (n : ℕ) :
     a n / (n : ℂ) ^ (s : ℂ) = a n * ((((n : ℕ) : ℝ) ^ (-s) : ℝ) : ℂ) := by
@@ -135,7 +135,7 @@ private lemma conv_eq_coeff_alg_mul (a : ℕ → ℂ) (s : ℝ) (n : ℕ) :
     Complex.ofReal_cpow (Nat.cast_nonneg n), Complex.ofReal_natCast, div_eq_mul_inv]
 
 /- English proof (translation)
-Rewrite using `[Finset.sum_congr rfl (fun n _ => conv_eq_coeff_alg_mul a s n)]`. Conclude with `abel a (fun m => ((((m : ℕ) : ℝ) ^ (-s) : ℝ) : ℂ)) N`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma sum_div_cpow_eq_abel_summation (a : ℕ → ℂ) (s : ℝ) (N : ℕ) :
     ∑ n ∈ Icc 1 N, a n / (n : ℂ) ^ (s : ℂ) =
@@ -146,7 +146,7 @@ private lemma sum_div_cpow_eq_abel_summation (a : ℕ → ℂ) (s : ℝ) (N : �
   exact abel a (fun m => ((((m : ℕ) : ℝ) ^ (-s) : ℝ) : ℂ)) N
 
 /- English proof (translation)
-Proceed by induction on `N with`. Consider the case `zero => simp`. Consider the case `succ N ih`. Rewrite using `[Finset.sum_range_succ, ih, Finset.sum_Icc_succ_top (Nat.le_add_left 1 N), LSeries.term_of_ne_zero (Nat.succ_ne_zero N)]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 private lemma sum_range_lseries_term_eq_sum_Icc_div_cpow (a : ℕ → ℂ) (s : ℂ) (N : ℕ) :
     ∑ n ∈ range (N + 1), LSeries.term a s n = ∑ n ∈ Icc 1 N, a n / (n : ℂ) ^ s := by
@@ -157,13 +157,13 @@ private lemma sum_range_lseries_term_eq_sum_Icc_div_cpow (a : ℕ → ℂ) (s : 
       LSeries.term_of_ne_zero (Nat.succ_ne_zero N)]
 
 /- English proof (translation)
-Establish `hlim : Tendsto (fun N : ℕ => |K| / Real.log N ^ 2) atTop (𝓝 0)`. Apply `Tendsto.div_atTop tendsto_const_nhds` to reduce the goal to its premises. Conclude with `(tendsto_pow_atTop two_ne_zero).comp (Real.tendsto_log_atTop.comp tendsto_natCast_atTop_atTop)`. Use `squeeze_zero_norm' ?_ hlim` and prove the remaining obligations. Use `filter_upwards [Filter.eventually_ge_atTop 2] with N hN`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hN0 : (0 : ℝ) < N` using `by exact_mod_cast (by omega : 0 < N)`. Establish `hL : 0 < Real.log N` using `Real.log_pos (by exact_mod_cast (by omega : 1 < N))`. Establish `hNne` using `hN0.ne'`. Establish `hLne` using `hL.ne'`. Establish `hp : 0 < (((N + 1 : ℕ) : ℝ) ^ (-s) : ℝ)` using `Real.rpow_pos_of_pos (by positivity) _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `hle : (((N + 1 : ℕ) : ℝ) ^ (-s) : ℝ) ≤ 1 / N`. Combine the equalities or inequalities in the displayed calculation. Apply `one_div_le_one_div_of_le hN0` to reduce the goal to its premises. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion.
+Reduce the claim to the hypotheses of an applicable result. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[norm_mul, Complex.norm_real, Real.norm_eq_abs, abs_of_pos hp]`. Establish `hAN : ‖∑ n ∈ Icc 1 N, a n‖ ≤ |K| * N / Real.log N ^ 2` using `(hA N hN).trans (div_le_div_of_nonneg_right (mul_le_mul_of_nonneg_right (le_abs_self K) hN0.le) (sq_nonneg _))`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 private lemma tendsto_sum_Icc_mul_rpow_zero_of_bound_log_sq (a : ℕ → ℂ) (K : ℝ)
     (hA : ∀ N : ℕ, 2 ≤ N → ‖∑ n ∈ Icc 1 N, a n‖ ≤ K * N / Real.log N ^ 2) (s : ℝ) (hs : 1 ≤ s) :
@@ -197,7 +197,7 @@ private lemma tendsto_sum_Icc_mul_rpow_zero_of_bound_log_sq (a : ℕ → ℂ) (K
     _ = |K| / Real.log N ^ 2 := by field_simp
 
 /- English proof (translation)
-Use `Summable.add ?_ ?_` and prove the remaining obligations. Conclude with `((hasSum_ite_eq 0 (1 : ℝ)).summable).mul_left _`. Conclude with `((summable_nat_add_iff 1).2 summable_inv_mul_log_sq).mul_left _`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private lemma summable_indicator_add_inv_mul_log_sq (a : ℕ → ℂ) (K : ℝ) :
     Summable (fun n : ℕ => 2 * ‖a 1‖ * (if n = 0 then 1 else 0) +
@@ -207,13 +207,13 @@ private lemma summable_indicator_add_inv_mul_log_sq (a : ℕ → ℂ) (K : ℝ) 
   · exact ((summable_nat_add_iff 1).2 summable_inv_mul_log_sq).mul_left _
 
 /- English proof (translation)
-Establish `hx1 : (1 : ℝ) ≤ ((n + 1 : ℕ) : ℝ)` using `by norm_cast; omega`. Establish `hx0 : (0 : ℝ) < ((n + 1 : ℕ) : ℝ)` using `by linarith`. Establish `hd` using `rpow_diff_le ((n + 1 : ℕ) : ℝ) s hx1 h1 h2`. Establish `e2 : ((n + 2 : ℕ) : ℝ) = ((n + 1 : ℕ) : ℝ) + 1` using `by push_cast; ring`. Rewrite using `[← Complex.ofReal_sub, norm_mul, Complex.norm_real, Real.norm_eq_abs, e2]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hK0 : 0 ≤ 2 * |K| * (1 / (((n + 1 : ℕ) : ℝ) * Real.log ((n + 1 : ℕ) : ℝ) ^ 2))` using `mul_nonneg (by positivity) (one_div_nonneg.2 (mul_nonneg hx0.le (sq_nonneg _)))`. Break down `Nat.eq_zero_or_pos n with rfl | hn` into its components or cases. Establish `hA1 : ∑ k ∈ Icc 1 (0 + 1), a k = a 1` using `by simp`. Rewrite using `[hA1, if_pos rfl]`. Establish `hd' : |((0 + 1 : ℕ) : ℝ) ^ (-s) - (((0 + 1 : ℕ) : ℝ) + 1) ^ (-s)| ≤ 2`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[if_neg (by omega), mul_zero, zero_add]`. Establish `hL : 0 < Real.log ((n + 1 : ℕ) : ℝ)` using `Real.log_pos (by norm_cast; omega)`. Establish `hxne` using `hx0.ne'`.
+Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hLne` using `hL.ne'`. Establish `hAn : ‖∑ k ∈ Icc 1 (n + 1), a k‖ ≤ |K| * ((n + 1 : ℕ) : ℝ) / Real.log ((n + 1 : ℕ) : ℝ) ^ 2` using `(hA (n + 1) (by omega)).trans (div_le_div_of_nonneg_right (mul_le_mul_of_nonneg_right (le_abs_self K) hx0.le) (sq_nonneg _))`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 private lemma norm_sum_Icc_mul_rpow_sub_rpow_le (a : ℕ → ℂ) (K : ℝ)
     (hA : ∀ N : ℕ, 2 ≤ N → ‖∑ n ∈ Icc 1 N, a n‖ ≤ K * N / Real.log N ^ 2)
@@ -251,7 +251,7 @@ private lemma norm_sum_Icc_mul_rpow_sub_rpow_le (a : ℕ → ℂ) (K : ℝ)
       _ = _ := by field_simp
 
 /- English proof (translation)
-Apply `Tendsto.mono_left _ nhdsWithin_le_nhds` to reduce the goal to its premises. Establish `h1 : Continuous (fun s : ℝ => (((n + 1 : ℕ) : ℝ) ^ (-s) : ℝ))` using `continuous_const.rpow continuous_neg (fun _ => Or.inl (by positivity))`. Establish `h2 : Continuous (fun s : ℝ => (((n + 2 : ℕ) : ℝ) ^ (-s) : ℝ))` using `continuous_const.rpow continuous_neg (fun _ => Or.inl (by positivity))`. Conclude with `(continuous_const.mul ((Complex.continuous_ofReal.comp h1).sub (Complex.continuous_ofReal.comp h2))).tendsto 1`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private lemma tendsto_mul_rpow_sub_rpow_nhdsGT_one (c : ℂ) (n : ℕ) :
     Tendsto (fun s : ℝ => c * (((((n + 1 : ℕ) : ℝ) ^ (-s) : ℝ) : ℂ) -
@@ -267,17 +267,15 @@ private lemma tendsto_mul_rpow_sub_rpow_nhdsGT_one (c : ℂ) (n : ℕ) :
     (Complex.continuous_ofReal.comp h2))).tendsto 1
 
 /- English proof (translation)
-Establish `hB` using `summable_indicator_add_inv_mul_log_sq a K`. Establish `hg` using `norm_sum_Icc_mul_rpow_sub_rpow_le a K hA`. Establish `hsum : ∀ s : ℝ, 1 ≤ s → s ≤ 2 → Tendsto (fun N : ℕ => ∑ n ∈ Icc 1 N, a n / (n : ℂ) ^ (s : ℂ)) atTop (𝓝 (∑' n : ℕ, (∑ k ∈ Icc 1 (n + 1), a k) * (((((n + 1 : ℕ) : ℝ) ^ (-s) : ℝ) : ℂ) - ((((n + 2 : ℕ) : ℝ) ^ (-s) : ℝ) : ℂ))))`. Introduce `s h1 h2`. Establish `hS` using `(hB.of_norm_bounded (hg s h1 h2)).hasSum.tendsto_sum_nat`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h` using `(tendsto_sum_Icc_mul_rpow_zero_of_bound_log_sq a K hA s h1).add hS`. Rewrite `h` using `[zero_add]`. Use `h.congr (fun N => ?_)` and prove the remaining obligations. Rewrite using `[sum_div_cpow_eq_abel_summation]`. Establish `hF : Tendsto (fun s : ℝ => ∑' n : ℕ, (∑ k ∈ Icc 1 (n + 1), a k) * (((((n + 1 : ℕ) : ℝ) ^ (-s) : ℝ) : ℂ) - ((((n + 2 : ℕ) : ℝ) ^ (-s) : ℝ) : ℂ))) (𝓝[>] 1) (𝓝 (∑' n : ℕ, (∑ k ∈ Icc 1 (n + 1), a k) * (((((n + 1 : ℕ) : ℝ) ^ (-(1 : ℝ)) : ℝ) : ℂ) - ((((n + 2 : ℕ) : ℝ) ^ (-(1 : ℝ)) : ℝ) …`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `tendsto_tsum_of_dominated_convergence hB (fun n => tendsto_mul_rpow_sub_rpow_nhdsGT_one _ n) ?_` and prove the remaining obligations. Use `filter_upwards [self_mem_nhdsWithin, nhdsWithin_le_nhds (Iio_mem_nhds (by norm_num : (1 : ℝ) < 2))] with s hs1 hs2`. Conclude with `hg s (le_of_lt hs1) (le_of_lt hs2)`. Establish `hGs : ∀ s : ℝ, 1 < s → s ≤ 2 → G s = ∑' n : ℕ, (∑ k ∈ Icc 1 (n + 1), a k) * (((((n + 1 : ℕ) : ℝ) ^ (-s) : ℝ) : ℂ) - ((((n + 2 : ℕ) : ℝ) ^ (-s) : ℝ) : ℂ))`. Introduce `s h1 h2`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1' : Tendsto (fun N : ℕ => ∑ n ∈ Icc 1 N, a n / (n : ℂ) ^ (s : ℂ)) atTop (𝓝 (G s))`. Establish `h` using `(HasSum.tendsto_sum_nat (hL s h1)).comp (tendsto_add_atTop_nat 1)`. Use `h.congr (fun N => ?_)` and prove the remaining obligations. Conclude with `sum_range_lseries_term_eq_sum_Icc_div_cpow a s N`. Conclude with `tendsto_nhds_unique h1' (hsum s h1.le h2)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hG1 : G 1 = ∑' n : ℕ, (∑ k ∈ Icc 1 (n + 1), a k) * (((((n + 1 : ℕ) : ℝ) ^ (-(1 : ℝ)) : ℝ) : ℂ) - ((((n + 2 : ℕ) : ℝ) ^ (-(1 : ℝ)) : ℝ) : ℂ))`. Establish `hGt : Tendsto G (𝓝[>] 1) (𝓝 (G 1))` using `hG.tendsto.mono_left nhdsWithin_le_nhds`. Establish `hev : G =ᶠ[𝓝[>] 1] (fun s : ℝ => ∑' n : ℕ, (∑ k ∈ Icc 1 (n + 1), a k) * (((((n + 1 : ℕ) : ℝ) ^ (-s) : ℝ) : ℂ) - ((((n + 2 : ℕ) : ℝ) ^ (-s) : ℝ) : ℂ)))` using `by filter_upwards [self_mem_nhdsWithin, nhdsWithin_le_nhds (Iio_mem_nhds (by norm_num : (1 : ℝ) < 2))] with s hs1 hs2`. Conclude with `hGs s hs1 (le_of_lt hs2)`. Conclude with `tendsto_nhds_unique (hGt.congr' hev) hF`.
-
-Rewrite using `[hG1]`. Use `(hsum 1 le_rfl (by norm_num)).congr (fun N => Finset.sum_congr rfl (fun n _ => ?_))` and prove the remaining obligations. Rewrite using `[Complex.ofReal_one, Complex.cpow_one]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tendsto_of_partial_sums (a : ℕ → ℂ) (K : ℝ) (G : ℝ → ℂ)
     (hA : ∀ N : ℕ, 2 ≤ N → ‖∑ n ∈ Icc 1 N, a n‖ ≤ K * N / Real.log N ^ 2)
@@ -327,25 +325,19 @@ theorem tendsto_of_partial_sums (a : ℕ → ℂ) (K : ℝ) (G : ℝ → ℂ)
   rw [Complex.ofReal_one, Complex.cpow_one]
 
 /- English proof (translation)
-Use `set S := (Icc 1 N).filter (fun n => ¬ n.Coprime q) with hS`. Use `set L := Nat.log 2 N with hL`. Establish `hT0 : ∀ p n : ℕ, 0 ≤ (if n ∈ (Icc 1 L).image (p ^ ·) then Real.log p else 0)`. Introduce `p n`. Use `split_ifs`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `Real.log_natCast_nonneg p`. Conclude with `le_rfl`. Establish `hpt : ∀ n ∈ S, Λ n ≤ ∑ p ∈ q.primeFactors, (if n ∈ (Icc 1 L).image (p ^ ·) then Real.log p else 0)`. Introduce `n hn`. Rewrite `hn` using `[hS, Finset.mem_filter, Finset.mem_Icc]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨⟨hn1, hnN⟩, hnc⟩` from `hn`. Rewrite using `[ArithmeticFunction.vonMangoldt_apply]`. Use `split_ifs with hpp`. Take `⟨p, k, hp, hk, rfl⟩` from `(isPrimePow_nat_iff _).1 hpp`. Establish `hmin : (p ^ k).minFac = p` using `by rw [Nat.pow_minFac hk.ne', hp.minFac_eq]`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hpq : p ∣ q`. Assume the negation of the conclusion as `h`. Conclude with `hnc (Nat.Coprime.pow_left k ((Nat.Prime.coprime_iff_not_dvd hp).2 h))`. Establish `hpmem : p ∈ q.primeFactors` using `Nat.mem_primeFactors.2 ⟨hp, hpq, hq⟩`. Establish `hkL : k ∈ Icc 1 L`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[Finset.mem_Icc]`. Use `⟨hk, Nat.le_log_of_pow_le (by norm_num) ?_⟩` and prove the remaining obligations. Conclude with `(Nat.pow_le_pow_left hp.two_le k).trans hnN`. Establish `hTp : (if p ^ k ∈ (Icc 1 L).image (p ^ ·) then Real.log p else 0) = Real.log p` using `if_pos (Finset.mem_image.2 ⟨k, hkL, rfl⟩)`. Rewrite using `[hmin, ← hTp]`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Finset.single_le_sum (f := fun p' : ℕ => if p ^ k ∈ (Icc 1 L).image (p' ^ ·) then Real.log p' else 0) (fun p' _ => hT0 p' (p ^ k)) hpmem`. Conclude with `Finset.sum_nonneg (fun p _ => hT0 p n)`. Establish `hcard : ∀ p : ℕ, ((S ∩ (Icc 1 L).image (p ^ ·)).card : ℝ) ≤ L`. Introduce `p`. Establish `h1` using `Finset.card_le_card (Finset.inter_subset_right (s₁ := S) (s₂ := (Icc 1 L).image (p ^ ·)))`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `h2` using `Finset.card_image_le (s := Icc 1 L) (f := (p ^ ·))`. Establish `h3 : (Icc 1 L).card = L` using `by simp`. Conclude with `(h1.trans h2).trans h3.le` after adjusting the coercions. Combine the equalities or inequalities in the displayed calculation. Apply `Finset.sum_le_sum` to reduce the goal to its premises.
-
-Introduce `p _`. Rewrite using `[Finset.sum_ite_mem, Finset.sum_const, nsmul_eq_mul]`. Conclude with `mul_le_mul_of_nonneg_right (hcard p) (Real.log_natCast_nonneg p)`. Use `_ = (L : ℝ) * Real.log (∏ p ∈ q.primeFactors, (p : ℝ)) := by`. Rewrite using `[← Finset.mul_sum, Real.log_prod]`.
-
-Introduce `p hp`. Conclude with `(Nat.prime_of_mem_primeFactors hp).ne_zero` after adjusting the coercions. Use `_ ≤ (L : ℝ) * Real.log q := by`. Apply `mul_le_mul_of_nonneg_left _ (Nat.cast_nonneg _)` to reduce the goal to its premises. Apply `Real.log_le_log` to reduce the goal to its premises.
-
-Apply `Finset.prod_pos` to reduce the goal to its premises. Introduce `p hp`. Conclude with `(Nat.prime_of_mem_primeFactors hp).pos` after adjusting the coercions. Rewrite using `[← Nat.cast_prod]`. Conclude with `Nat.cast_le.2 (Nat.le_of_dvd (Nat.pos_of_ne_zero hq) (Nat.prod_primeFactors_dvd q))`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_not_coprime_le (q N : ℕ) (hq : q ≠ 0) :
     ∑ n ∈ (Icc 1 N).filter (fun n => ¬ n.Coprime q), Λ n ≤ Nat.log 2 N * Real.log q := by
@@ -408,13 +400,13 @@ theorem sum_not_coprime_le (q N : ℕ) (hq : q ≠ 0) :
           exact Nat.cast_le.2 (Nat.le_of_dvd (Nat.pos_of_ne_zero hq) (Nat.prod_primeFactors_dvd q))
 
 /- English proof (translation)
-Rewrite using `[← Finset.sum_sub_distrib, ← Finset.sum_filter_add_sum_filter_not (Icc 1 N) (fun n => ¬ n.Coprime q)]`. Rewrite using `[Finset.sum_eq_zero (s := (Icc 1 N).filter (fun n => ¬¬ n.Coprime q)) ?_, add_zero]`. Combine the equalities or inequalities in the displayed calculation. Apply `Finset.sum_le_sum` to reduce the goal to its premises. Introduce `n hn`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hn` using `[Finset.mem_filter]`. Establish `hχ0 : χ (n : ZMod q) = 0`. Apply `MulChar.map_nonunit` to reduce the goal to its premises. Rewrite using `[ZMod.isUnit_iff_coprime]`. Conclude with `hn.2`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hχ0, mul_zero, zero_sub, norm_neg, norm_mul, Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg ArithmeticFunction.vonMangoldt_nonneg]`. Combine the equalities or inequalities in the displayed calculation. Use `_ ≤ _ := sum_not_coprime_le q N (NeZero.ne q)`. Introduce `n hn`. Rewrite `hn` using `[Finset.mem_filter, not_not]`.
+Chain the equalities or inequalities of the calculation. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Establish `h` using `χ.primitiveCharacter_apply_of_isCoprime (a := (n : ℤ)) (Nat.isCoprime_iff_coprime.2 hn.2)`. Move the coercions through the operations in `at h`. Rewrite using `[h, sub_self]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_sub_primitive_le {q : ℕ} [NeZero q] (χ : DirichletCharacter ℂ q) (N : ℕ) :
     ‖∑ n ∈ Icc 1 N, ((Λ n : ℝ) : ℂ) * χ (n : ZMod q) -
@@ -448,11 +440,11 @@ theorem norm_sub_primitive_le {q : ℕ} [NeZero q] (χ : DirichletCharacter ℂ 
     rw [h, sub_self]
 
 /- English proof (translation)
-Establish `hy : 0 ≤ c * Real.sqrt L` using `by positivity`. Establish `h4` using `Real.pow_div_factorial_le_exp (c * Real.sqrt L) hy 4`. Establish `hs : Real.sqrt L ^ 2 = L` using `Real.sq_sqrt hL.le`. Establish `hpow : (c * Real.sqrt L) ^ 4 = c ^ 4 * L ^ 2`. Rewrite using `[mul_pow, show (4 : ℕ) = 2 * 2 from rfl, pow_mul (Real.sqrt L), hs]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `hE : c ^ 4 * L ^ 2 / 24 ≤ Real.exp (c * Real.sqrt L)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hpow]`. Evaluate the numerical expressions using `[Nat.factorial]`. Use `_ ≤ _ := h4`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[neg_mul, Real.exp_neg, inv_le_comm₀ (Real.exp_pos _) (by positivity)]`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem exp_neg_sqrt_le (c L : ℝ) (hc : 0 < c) (hL : 0 < L) :
     Real.exp (-c * Real.sqrt L) ≤ 24 / c ^ 4 / L ^ 2 := by
@@ -470,11 +462,11 @@ theorem exp_neg_sqrt_le (c L : ℝ) (hc : 0 < c) (hL : 0 < L) :
     _ ≤ _ := hE
 
 /- English proof (translation)
-Establish `hN0 : (0 : ℝ) < N` using `by exact_mod_cast (by omega : 0 < N)`. Establish `hl2 : 0 < Real.log 2` using `Real.log_pos (by norm_num)`. Establish `hlN : 0 < Real.log N` using `Real.log_pos (by exact_mod_cast (by omega : 1 < N))`. Establish `hk : (Nat.log 2 N : ℝ) * Real.log 2 ≤ Real.log N`. Establish `h` using `Nat.pow_log_le_self 2 (by omega : N ≠ 0)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h' : ((2 : ℝ) ^ Nat.log 2 N) ≤ N` using `by exact_mod_cast h`. Use `Real.log_le_log (by positivity) h'` as an intermediate fact. Rewrite `this` using `[Real.log_pow]`. Then use the resulting hypothesis. Establish `hc : Real.log N ^ 3 ≤ 6 * N`. Establish `h` using `Real.pow_div_factorial_le_exp (Real.log N) hlN.le 3`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h` using `[Real.exp_log hN0]`. Evaluate the numerical expressions using `[Nat.factorial] at h`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[le_div_iff₀ (by positivity), div_mul_eq_mul_div, le_div_iff₀ hl2]`. Use `mul_le_mul_of_nonneg_right hk (sq_nonneg (Real.log N))` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Evaluate the numerical expressions. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
 Use the polynomial consequences of the given equalities and inequalities.
 -/
@@ -498,27 +490,25 @@ theorem natLog_le (N : ℕ) (hN : 2 ≤ N) :
   nlinarith
 
 /- English proof (translation)
-Introduce `hZ hX hD hC hZF`. Unfold `Formalism.HermitianLattices.GL2a2.LogDerivSeries`. Introduce `q _ χ hχ`. Establish `: NeZero χ.conductor` using `⟨χ.conductor_ne_zero⟩`. Take `⟨C, c, hc, hψ⟩` from `GlobalTheory.T.exists_norm_psi0_le_exp_sqrt_log hZ hX hD hC hZF χ.conductor χ.primitiveCharacter χ.primitiveCharacter_isPrimitive`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hχ1 : χ.primitiveCharacter ≠ 1`. Introduce `h`. Apply `hχ` to reduce the goal to its premises. Rewrite using `[← χ.changeLevel_primitiveCharacter, h, map_one]`. Establish `hA : ∀ N : ℕ, 2 ≤ N → ‖∑ n ∈ Icc 1 N, ((Λ n : ℝ) : ℂ) * χ (n : ZMod q)‖ ≤ (|C| * 24 / c ^ 4 + 6 / Real.log 2 * Real.log q) * N / Real.log N ^ 2`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `N hN`. Establish `hN1 : (1 : ℝ) < N` using `by exact_mod_cast (by omega : 1 < N)`. Establish `hlog : 0 < Real.log N` using `Real.log_pos hN1`. Establish `h1` using `norm_sub_primitive_le χ N`. Establish `h2 : ‖∑ n ∈ Icc 1 N, ((Λ n : ℝ) : ℂ) * χ.primitiveCharacter (n : ZMod χ.conductor)‖ ≤ C * N * Real.exp (-c * Real.sqrt (Real.log N))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `hψ N (by exact_mod_cast hN)`. Unfold `Formalism.MainNotions.GlobalTheoryTheory.psi0 at h`. Rewrite `h` using `[if_neg hχ1, sub_zero, Nat.floor_natCast]`. Conclude with `h`. Establish `h3` using `exp_neg_sqrt_le c (Real.log N) hc hlog`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h4` using `natLog_le N hN`. Establish `hlq : 0 ≤ Real.log q` using `Real.log_natCast_nonneg q`. Establish `e1 : (Nat.log 2 N : ℝ) * Real.log q ≤ (6 / Real.log 2 * N / Real.log N ^ 2) * Real.log q` using `mul_le_mul_of_nonneg_right h4 hlq`. Establish `e2 : C * N * Real.exp (-c * Real.sqrt (Real.log N)) ≤ |C| * N * (24 / c ^ 4 / Real.log N ^ 2)`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `hfin : (|C| * 24 / c ^ 4 + 6 / Real.log 2 * Real.log q) * N / Real.log N ^ 2 = (6 / Real.log 2 * N / Real.log N ^ 2) * Real.log q + |C| * N * (24 / c ^ 4 / Real.log N ^ 2)`. Expand and normalize the polynomial expressions, which then agree. Establish `htri` using `norm_add_le (∑ n ∈ Icc 1 N, ((Λ n : ℝ) : ℂ) * χ (n : ZMod q) - ∑ n ∈ Icc 1 N, ((Λ n : ℝ) : ℂ) * χ.primitiveCharacter (n : ZMod χ.conductor)) (∑ n ∈ Icc 1 N, ((Λ n : ℝ) : ℂ) * χ.primitiveCharacter (n : ZMod χ.conductor))`. Rewrite `htri` using `[sub_add_cancel]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `hdiff : Differentiable ℂ (DirichletCharacter.LFunction χ)` using `DirichletCharacter.differentiable_LFunction hχ`. Establish `hne : DirichletCharacter.LFunction χ 1 ≠ 0` using `DirichletCharacter.LFunction_apply_one_ne_zero hχ`. Establish `hG : ContinuousAt (fun s : ℝ => -(deriv (DirichletCharacter.LFunction χ) (s : ℂ) / DirichletCharacter.LFunction χ (s : ℂ))) 1`. Establish `hcont : ContinuousAt (fun z : ℂ => -(deriv (DirichletCharacter.LFunction χ) z / DirichletCharacter.LFunction χ z)) ((1 : ℝ) : ℂ)`. Rewrite using `[Complex.ofReal_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `((hdiff.deriv.continuous.continuousAt).div hdiff.continuous.continuousAt hne).neg`. Conclude with `hcont.comp Complex.continuous_ofReal.continuousAt`. Establish `hL : ∀ s : ℝ, 1 < s → LSeriesHasSum (fun n : ℕ => ((Λ n : ℝ) : ℂ) * χ (n : ZMod q)) (s : ℂ) (-(deriv (DirichletCharacter.LFunction χ) (s : ℂ) / DirichletCharacter.LFunction χ (s : ℂ)))`. Introduce `s hs`. Establish `hre : 1 < (s : ℂ).re` using `by simpa using hs`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Establish `hfun : (fun n : ℕ => ((Λ n : ℝ) : ℂ) * χ (n : ZMod q)) = ((fun n : ℕ => χ (n : ZMod q)) * (fun n : ℕ => ((Λ n : ℝ) : ℂ)))`. Use extensionality with `n`. Simplify using `[mul_comm]`. Rewrite using `[hfun, LSeriesHasSum_iff]`. Use `⟨DirichletCharacter.LSeriesSummable_twist_vonMangoldt χ hre, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[DirichletCharacter.LSeries_twist_vonMangoldt_eq χ hre]`. Establish `hev : DirichletCharacter.LFunction χ =ᶠ[𝓝 (s : ℂ)] LSeries (fun n : ℕ => χ (n : ZMod q))` using `by filter_upwards [(isOpen_lt continuous_const Complex.continuous_re).mem_nhds hre] with z hz`. Conclude with `DirichletCharacter.LFunction_eq_LSeries χ hz`. Rewrite using `[hev.deriv_eq, DirichletCharacter.LFunction_eq_LSeries χ hre, neg_div]`. Establish `h` using `tendsto_of_partial_sums (fun n : ℕ => ((Λ n : ℝ) : ℂ) * χ (n : ZMod q)) (|C| * 24 / c ^ 4 + 6 / Real.log 2 * Real.log q) (fun s : ℝ => -(deriv (DirichletCharacter.LFunction χ) (s : ℂ) / DirichletCharacter.LFunction χ (s : ℂ))) hA hG hL`.
-
-Simplify using `only [Complex.ofReal_one] at h`. Conclude with `h`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem logDerivSeries : GlobalTheory.Mem.An.ExplZeta → GlobalTheory.Mem.An.ExplChi → GlobalTheory.Mem.An.LogDerOne → GlobalTheory.Mem.An.ZeroCount →
     Formalism.ZeroFreeDirichlet.ZFRDirichlet → Formalism.HermitianLattices.GL2a2.LogDerivSeries := by

@@ -73,7 +73,7 @@ def volHE (G : GaugeFam F E σ) (M : ℕ) (J : Matrix (Fin M) (Fin M) E) : ENNRe
 def volH (G : GaugeFam F E σ) (M : ℕ) (J : Matrix (Fin M) (Fin M) E) : ℝ := (volHE G M J).toReal
 
 /- English proof (translation)
-Establish `hf : HasFundamentalDomain (HFinIn (AF F) σ J) (HA (AF F) σ J) (G.μ M J)` using `⟨h⟩`. Use `⟨hf.ExistsIsFundamentalDomain.choose, hf.ExistsIsFundamentalDomain.choose_spec, ?_⟩` and prove the remaining obligations. Simplify using `[volHE, covolume, hf]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem volHE_spec (G : GaugeFam F E σ) (M : ℕ) (J : Matrix (Fin M) (Fin M) E)
     (h : ∃ 𝓕, IsFDH F E σ M J (G.μ M J) 𝓕) :
@@ -83,7 +83,7 @@ theorem volHE_spec (G : GaugeFam F E σ) (M : ℕ) (J : Matrix (Fin M) (Fin M) E
   simp [volHE, covolume, hf]
 
 /- English proof (translation)
-Take `⟨𝓕, h1, h2⟩` from `volHE_spec G M J h.1`. Rewrite using `[h2, h.2 𝓕 h1]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem volHE_eq (G : GaugeFam F E σ) (M : ℕ) (J : Matrix (Fin M) (Fin M) E) (c : ENNReal)
     (h : AllSome (IsFDH F E σ M J (G.μ M J)) fun 𝓕 => G.μ M J 𝓕 = c) : volHE G M J = c := by

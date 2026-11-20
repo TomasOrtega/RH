@@ -14,19 +14,19 @@ section GenU
 variable (Ω : Type) [Field Ω] {S : Type} (r : S → ℕ) (s : S)
 
 /- English proof (translation)
-Simplify using `[genU]`.
+Simplify using the standard rewrite rules.
 -/
 theorem genU_self (a : Fin (r s)) : genU Ω r s a a = 1 := by
   simp [genU]
 
 /- English proof (translation)
-Simplify using `[genU, not_lt.2 h.le, h.ne]`.
+Simplify using the standard rewrite rules.
 -/
 theorem genU_of_lt {a b : Fin (r s)} (h : a < b) : genU Ω r s a b = 0 := by
   simp [genU, not_lt.2 h.le, h.ne]
 
 /- English proof (translation)
-The claim follows from `dif_pos h`.
+A detailed English derivation is pending.
 -/
 theorem genU_of_gt {l k : Fin (r s)} (h : k < l) :
     genU Ω r s l k = algebraMap (MvPolynomial (GenIx r) Ω) (GenField Ω r) (MvPolynomial.X ⟨s, ⟨(l, k), h⟩⟩) :=
@@ -37,13 +37,13 @@ end GenU
 variable {Ψ : Type} {p q : ℕ} (Ω : Type) [Field Ω]
 
 /- English proof (translation)
-Rewrite using `[← blockEquiv_inl, Equiv.symm_apply_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem symm_omEmb (a : Fin q) : (blockEquiv p q).symm (omEmb p q a) = .inl a := by
   rw [← blockEquiv_inl, Equiv.symm_apply_apply]
 
 /- English proof (translation)
-Rewrite using `[← blockEquiv_inr, Equiv.symm_apply_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem symm_wEmb (a : Fin p) : (blockEquiv p q).symm (wEmb p q a) = .inr a := by
   rw [← blockEquiv_inr, Equiv.symm_apply_apply]
@@ -57,7 +57,7 @@ theorem gMat_apply (τ : Ψ) (i j : Fin (p + q)) :
   rfl
 
 /- English proof (translation)
-Rewrite using `[gMat_apply, symm_omEmb, symm_omEmb]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem gMat_om (τ : Ψ) (a b : Fin q) :
     gMat p q Ω τ (omEmb p q a) (omEmb p q b) = genU Ω (rk Ψ p q) (.inr τ) a b := by
@@ -65,7 +65,7 @@ theorem gMat_om (τ : Ψ) (a b : Fin q) :
   rfl
 
 /- English proof (translation)
-Rewrite using `[gMat_apply, symm_wEmb, symm_wEmb]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem gMat_w (τ : Ψ) (a b : Fin p) :
     gMat p q Ω τ (wEmb p q a) (wEmb p q b) = genU Ω (rk Ψ p q) (.inl τ) a b := by
@@ -73,22 +73,20 @@ theorem gMat_w (τ : Ψ) (a b : Fin p) :
   rfl
 
 /- English proof (translation)
-Rewrite using `[gMat_apply, symm_omEmb, symm_wEmb]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem gMat_om_w (τ : Ψ) (a : Fin q) (b : Fin p) : gMat p q Ω τ (omEmb p q a) (wEmb p q b) = 0 := by
   rw [gMat_apply, symm_omEmb, symm_wEmb]
   rfl
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `a`. Take `⟨x, rfl⟩` from `(blockEquiv p q).surjective a`. Break down `x with x | x` into its components or cases. Rewrite using `[blockEquiv_inl, gMat_om]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Conclude with `genU_self Ω (rk Ψ p q) (.inr τ) x`. Rewrite using `[blockEquiv_inr, gMat_w]`. Conclude with `genU_self Ω (rk Ψ p q) (.inl τ) x`. Introduce `a b hab`. Take `⟨x, rfl⟩` from `(blockEquiv p q).surjective a`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation.
 
-Take `⟨y, rfl⟩` from `(blockEquiv p q).surjective b`. Apply the tactic sequence `rcases x with x | x <;> rcases y with y | y`. Rewrite `hab`, the goal using `[blockEquiv_inl, blockEquiv_inl]`. Rewrite using `[gMat_om]`. Conclude with `genU_of_lt Ω (rk Ψ p q) (.inr τ) ((omEmb_strictMono p q).lt_iff_lt.1 hab)`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[blockEquiv_inl, blockEquiv_inr, gMat_om_w]`. Rewrite `hab` using `[blockEquiv_inr, blockEquiv_inl]`. Establish `h : q + (x : ℕ) < (y : ℕ)` using `hab`. Use `y.2` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
-
-Rewrite `hab`, the goal using `[blockEquiv_inr, blockEquiv_inr]`. Rewrite using `[gMat_w]`. Conclude with `genU_of_lt Ω (rk Ψ p q) (.inl τ) ((wEmb_strictMono p q).lt_iff_lt.1 hab)`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gMat_lowerUni (τ : Ψ) : IsLowerUni (gMat p q Ω τ) := by
   constructor
@@ -121,15 +119,15 @@ def loc (t : GenIx (rk Ψ p q)) : Ψ × Fin (p + q) × Fin (p + q) :=
   | ⟨.inr τ, lk⟩ => (τ, omEmb p q lk.1.1, omEmb p q lk.1.2)
 
 /- English proof (translation)
-Take `⟨⟨τ, a, b⟩, hlt, hiff⟩` from `x`. Take `⟨a, rfl⟩` from `(blockEquiv p q).surjective a`. Take `⟨b, rfl⟩` from `(blockEquiv p q).surjective b`. Apply the tactic sequence `rcases a with a | a <;> rcases b with b | b`. Simplify using `only [blockEquiv_inl] at hlt hiff ⊢`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 
-Establish `h : b < a` using `(omEmb_strictMono p q).lt_iff_lt.1 hlt`. Conclude with `⟨⟨.inr τ, ⟨(a, b), h⟩⟩, rfl, by`. Rewrite using `[gMat_om]`. Conclude with `genU_of_gt Ω (rk Ψ p q) (.inr τ) h⟩`. It suffices to derive a contradiction.
+Establish an intermediate fact. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. It suffices to derive a contradiction. Simplify using the standard rewrite rules.
 
-Simplify using `only [blockEquiv_inl, blockEquiv_inr] at hlt`. Establish `h : q + (b : ℕ) < (a : ℕ)` using `hlt`. Use `a.2` as an intermediate fact. Use linear arithmetic over natural numbers and integers. It suffices to derive a contradiction.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. It suffices to derive a contradiction. Simplify using the standard rewrite rules.
 
-Simplify using `only [blockEquiv_inl, blockEquiv_inr] at hiff`. Establish `h : (q + (a : ℕ) < p + q - p ↔ (b : ℕ) < p + q - p)` using `hiff`. Use `b.2` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Simplify using `only [blockEquiv_inr] at hlt hiff ⊢`.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h : b < a` using `(wEmb_strictMono p q).lt_iff_lt.1 hlt`. Conclude with `⟨⟨.inl τ, ⟨(a, b), h⟩⟩, rfl, by`. Rewrite using `[gMat_w]`. Conclude with `genU_of_gt Ω (rk Ψ p q) (.inl τ) h⟩`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_var (x : LowIdx Ψ (p + q) p) :
     ∃ t : GenIx (rk Ψ p q), loc t = x.1 ∧ gMat p q Ω x.1.1 x.1.2.1 x.1.2.2 =
@@ -158,9 +156,9 @@ theorem exists_var (x : LowIdx Ψ (p + q) p) :
       rw [gMat_w]; exact genU_of_gt Ω (rk Ψ p q) (.inl τ) h⟩
 
 /- English proof (translation)
-Use `choose e he₁ he₂ using exists_var (Ψ := Ψ) (p := p) (q := q) Ω`. Establish `hinj : Function.Injective e` using `fun x y h => Subtype.ext (by rw [← he₁ x, ← he₁ y, h])`. Establish `hX : AlgebraicIndependent Ω fun t : GenIx (rk Ψ p q) => algebraMap (MvPolynomial (GenIx (rk Ψ p q)) Ω) (GenField Ω (rk Ψ p q)) (MvPolynomial.X t)` using `(MvPolynomial.algebraicIndependent_X (GenIx (rk Ψ p q)) Ω).map' (f := IsScalarTower.toAlgHom Ω (MvPolynomial (GenIx (rk Ψ p q)) Ω) (GenField Ω (rk Ψ p q))) (IsFractionRing.injective _ _)`. Establish `e' : (fun x : LowIdx Ψ (p + q) p => gMat p q Ω x.1.1 x.1.2.1 x.1.2.2) = (fun t : GenIx (rk Ψ p q) => algebraMap (MvPolynomial (GenIx (rk Ψ p q)) Ω) (GenField Ω (rk Ψ p q)) (MvPolynomial.X t)) ∘ e`. Use function extensionality and compare the values at `he₂`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e']`. Conclude with `hX.comp e hinj`.
+A detailed English derivation is pending.
 -/
 theorem gMat_indep :
     AlgebraicIndependent Ω fun x : LowIdx Ψ (p + q) p => gMat p q Ω x.1.1 x.1.2.1 x.1.2.2 := by
@@ -179,7 +177,7 @@ theorem gMat_indep :
   exact hX.comp e hinj
 
 /- English proof (translation)
-Introduce `_ _ _ _ Ω _` and use `IsGenericFlag.of_lowerUni (fun τ => gMat_lowerUni Ω τ) (gMat_indep Ω)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem gMat_isGenericFlag : ∀ (Ψ : Type) [Fintype Ψ] (p q : ℕ) (Ω : Type) [Field Ω],
     GlobalTheory.CompanionTheory.Ar.PB.IsGenericFlag Ω p (gMat (Ψ := Ψ) p q Ω) := fun _ _ _ _ Ω _ =>

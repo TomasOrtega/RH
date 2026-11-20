@@ -20,7 +20,7 @@ variable {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [Measu
   {Γ : Subgroup G} [Countable Γ] {D : Set G} {r : G → G}
 
 /- English proof (translation)
-Rewrite using `[eLpNorm_eq_lintegral_rpow_enorm_toReal two_ne_zero ENNReal.ofNat_ne_top, eLpNorm_eq_lintegral_rpow_enorm_toReal two_ne_zero ENNReal.ofNat_ne_top, lintegral_comp_rep_mul hD hDm hr (fun x => ‖f x‖ₑ ^ (2 : ℝ≥0∞).toReal) g]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem eLpNorm_comp_rep_mul (hD : IsFundamentalDomain Γ D μ) (hDm : MeasurableSet D)
     (hr : ∀ y, ∃ γ : Γ, r y = (γ : G) * y ∧ r y ∈ D) (f : G → ℂ) (g : G) :
@@ -30,7 +30,7 @@ theorem eLpNorm_comp_rep_mul (hD : IsFundamentalDomain Γ D μ) (hDm : Measurabl
     lintegral_comp_rep_mul hD hDm hr (fun x => ‖f x‖ₑ ^ (2 : ℝ≥0∞).toReal) g]
 
 /- English proof (translation)
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Conclude with `((aestronglyMeasurable_comp_rep hD hDm hr (Lp.stronglyMeasurable F)).comp_quasiMeasurePreserving (measurePreserving_mul_right μ g).quasiMeasurePreserving).restrict`. Rewrite using `[eLpNorm_comp_rep_mul hD hDm hr]`. Conclude with `Lp.eLpNorm_lt_top F`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem memLp_comp_rep_mul (hD : IsFundamentalDomain Γ D μ) (hDm : MeasurableSet D)
     (hr : ∀ y, ∃ γ : Γ, r y = (γ : G) * y ∧ r y ∈ D) (F : Lp ℂ 2 (μ.restrict D)) (g : G) :
@@ -43,7 +43,7 @@ theorem memLp_comp_rep_mul (hD : IsFundamentalDomain Γ D μ) (hDm : MeasurableS
     exact Lp.eLpNorm_lt_top F
 
 /- English proof (translation)
-The claim follows from `ae_restrict_of_ae ((measurePreserving_mul_right μ g).quasiMeasurePreserving.ae (ae_rep hDm hr hp))`.
+A detailed English derivation is pending.
 -/
 theorem ae_rep_mul (hDm : MeasurableSet D) (hr : ∀ y, ∃ γ : Γ, r y = (γ : G) * y ∧ r y ∈ D)
     {p : G → Prop} (hp : ∀ᵐ x ∂(μ.restrict D), p x) (g : G) :
@@ -52,9 +52,9 @@ theorem ae_rep_mul (hDm : MeasurableSet D) (hr : ∀ y, ∃ γ : Γ, r y = (γ :
     ((measurePreserving_mul_right μ g).quasiMeasurePreserving.ae (ae_rep hDm hr hp))
 
 /- English proof (translation)
-Set `T₀ : Lp ℂ 2 (μ.restrict D) → Lp ℂ 2 (μ.restrict D)` to `fun F => (memLp_comp_rep_mul hD hDm hr F g).toLp _`. Establish `hT : ∀ F, (T₀ F : G → ℂ) =ᵐ[μ.restrict D] fun x => (F : G → ℂ) (r (x * g))` using `fun F => MemLp.coeFn_toLp _`. Set `T₁ : Lp ℂ 2 (μ.restrict D) →ₗ[ℂ] Lp ℂ 2 (μ.restrict D)` to `{ toFun := T₀ map_add' := fun F F' => Lp.ext <| by filter_upwards [hT (F + F'), hT F, hT F', Lp.coeFn_add (T₀ F) (T₀ F'), ae_rep_mul hDm hr (Lp.coeFn_add F F') g] with x h1 h2 h3 h4 h5`. Rewrite using `[h1, h4, h5, Pi.add_apply, Pi.add_apply, h2, h3]`. Use the proof step `map_smul' := fun c F => Lp.ext <| by filter_upwards [hT (c • F), hT F, Lp.coeFn_smul c (T₀ F), ae_rep_mul hDm hr (Lp.coeFn_smul c F) g] with x h1 h2 h4 h5`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[RingHom.id_apply, h1, h4, h5, Pi.smul_apply, Pi.smul_apply, h2] }`. Use `⟨T₁.mkContinuous 1 fun F => ?_, hT⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `‖T₀ F‖ ≤ _`. Rewrite using `[one_mul, Lp.norm_def, Lp.norm_def, eLpNorm_congr_ae (hT F), eLpNorm_comp_rep_mul hD hDm hr]`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_rightTranslation (hD : IsFundamentalDomain Γ D μ) (hDm : MeasurableSet D)
     (hr : ∀ y, ∃ γ : Γ, r y = (γ : G) * y ∧ r y ∈ D) (g : G) :
@@ -81,15 +81,15 @@ theorem exists_rightTranslation (hD : IsFundamentalDomain Γ D μ) (hDm : Measur
 end Abstract
 
 /- English proof (translation)
-Introduce `I μf _ _ fund hfund`. Take `⟨hT, hL, hS, -⟩` from `GlobalTheory.CongTop.adelic_topology I`. Take `⟨Γ, hΓ, hc, -, hfd⟩` from `GlobalTheory.RatDiscrete.rational_points I`. Take `⟨hl, hrt, -⟩` from `GlobalTheory.AdelicUnimod.adelic_unimodular I μf`. Establish `hD` using `hfd μf fund hfund`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `: BorelSpace I.GA` using `inferInstance`. Establish `: (I.muA μf).IsMulLeftInvariant` using `⟨hl⟩`. Establish `: (I.muA μf).IsMulRightInvariant` using `⟨hrt⟩`. Establish `: IsFiniteMeasureOnCompacts (I.muA μf)`. Unfold `AutInst.muA`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Use `infer_instance`. Establish `hr : ∀ y, ∃ γ : Γ, I.rep fund y = (γ : I.GA) * y ∧ I.rep fund y ∈ fund`. Introduce `y`. Establish `h` using `hfund.2.1 y`. Establish `e : I.rep fund y = h.choose * y`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `AutInst.rep`. Conclude with `dif_pos h`. Establish `hm : h.choose ∈ (Γ : Set I.GA)`. Establish `k` using `h.choose_spec.1`. Generalize the expression as in `h.choose = z at k ⊢`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Rewrite using `[hΓ]`. Conclude with `k`. Conclude with `⟨⟨h.choose, hm⟩, e, e ▸ h.choose_spec.2⟩`. Use `choose R hR using exists_rightTranslation hD hfund.1 hr`. Conclude with `⟨R, hR, RightRegFund.map_one hD hfund.1 hr hR, RightRegFund.map_mul hD hfund.1 hr hR, norm_map hD hfund.1 hr hR, continuous_map hD hfund.1 hr hR⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_rightReg : ∀ (I : AutInst) (μf : Measure I.Gf) [μf.IsHaarMeasure] [SigmaFinite μf] (fund : Set I.GA), I.IsFundDom (I.muA μf) fund → ∃ R : I.GA → (I.L2 μf fund →L[ℂ] I.L2 μf fund), I.IsRightReg μf fund R ∧ R 1 = ContinuousLinearMap.id ℂ _ ∧ (∀ x y, R (x * y) = (R x).comp (R y)) ∧ (∀ x F, ‖R x F‖ = ‖F‖) ∧ ∀ F, Continuous fun x => R x F := by
   intro I μf _ _ fund hfund

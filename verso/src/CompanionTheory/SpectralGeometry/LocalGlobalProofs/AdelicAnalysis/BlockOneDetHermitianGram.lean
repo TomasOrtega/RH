@@ -33,9 +33,9 @@ theorem blockOne_succ_succ (i j : Fin M) : blockOne t A i.succ j.succ = A i j :=
 end Entries
 
 /- English proof (translation)
-Rewrite using `[Matrix.det_succ_row_zero, Fin.sum_univ_succ]`. Establish `h0 : (blockOne t A).submatrix Fin.succ (Fin.succAbove (0 : Fin (M + 1))) = A`. Use extensionality with `i j`. Simplify using `[blockOne_succ_succ]`. Rewrite using `[h0, Finset.sum_eq_zero]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[blockOne_zero_zero]`. Introduce `j _`. Simplify using `[blockOne_zero_succ]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem det_blockOne {K : Type} [CommRing K] {M : ℕ} (t : K) (A : Matrix (Fin M) (Fin M) K) :
     (blockOne t A).det = t * A.det := by
@@ -51,7 +51,7 @@ theorem det_blockOne {K : Type} [CommRing K] {M : ℕ} (t : K) (A : Matrix (Fin 
 variable {F E : Type} [Field F] [Field E] [Algebra F E]
 
 /- English proof (translation)
-Simplify using `only [hE, hform, Fin.sum_univ_succ, Fin.cons_zero, Fin.cons_succ, blockOne_zero_zero, blockOne_zero_succ, blockOne_succ_zero, blockOne_succ_succ]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem hE_blockOne_cons (σ : E →ₐ[F] E) {M : ℕ} (J : Matrix (Fin M) (Fin M) E) (t a b : E)
     (x y : Fin M → E) :
@@ -62,25 +62,25 @@ theorem hE_blockOne_cons (σ : E →ₐ[F] E) {M : ℕ} (J : Matrix (Fin M) (Fin
   simp
 
 /- English proof (translation)
-Simplify using `[hE, hform]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hE_zero_left (σ : E →ₐ[F] E) {M : ℕ} (J : Matrix (Fin M) (Fin M) E) (y : Fin M → E) :
     hE σ J 0 y = 0 := by
   simp [hE, hform]
 
 /- English proof (translation)
-Simplify using `[hE, hform]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hE_zero_right (σ : E →ₐ[F] E) {M : ℕ} (J : Matrix (Fin M) (Fin M) E) (x : Fin M → E) :
     hE σ J x 0 = 0 := by
   simp [hE, hform]
 
 /- English proof (translation)
-Establish `hz : (fun _ : Fin M => (0 : E)) = 0` using `rfl`. Use extensionality with `a b`. Apply the tactic sequence `refine Fin.cases ?_ (fun a => ?_) a <;> refine Fin.cases ?_ (fun b => ?_) b`. Express the relevant statement in the definitionally equal form `hE σ (blockOne t J) (Fin.cons 1 (fun _ => 0)) (Fin.cons 1 (fun _ => 0)) = t`. Rewrite using `[hE_blockOne_cons, hz, hE_zero_left]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Express the relevant statement in the definitionally equal form `hE σ (blockOne t J) (Fin.cons 1 (fun _ => 0)) (Fin.cons 0 (X b)) = 0`. Rewrite using `[hE_blockOne_cons, hz, hE_zero_left]`. Simplify using the standard rewrite rules. Express the relevant statement in the definitionally equal form `hE σ (blockOne t J) (Fin.cons 0 (X a)) (Fin.cons 1 (fun _ => 0)) = 0`.
+Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[hE_blockOne_cons, hz, hE_zero_right]`. Simplify using the standard rewrite rules. Express the relevant statement in the definitionally equal form `hE σ (blockOne t J) (Fin.cons 0 (X a)) (Fin.cons 0 (X b)) = hE σ J (X a) (X b)`. Rewrite using `[hE_blockOne_cons]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem gramE_consTup (σ : E →ₐ[F] E) {M : ℕ} (J : Matrix (Fin M) (Fin M) E) (t : E) {n : ℕ}
     (X : Fin n → Fin M → E) :
@@ -102,15 +102,13 @@ theorem gramE_consTup (σ : E →ₐ[F] E) {M : ℕ} (J : Matrix (Fin M) (Fin M)
     simp
 
 /- English proof (translation)
-Establish `hz : (fun _ : Fin M => (0 : E)) = 0` using `rfl`. Establish `hsplit : ∀ a : Fin n, Y a.succ = Fin.cons (Y a.succ 0) (Fin.tail (Y a.succ))` using `fun a => (Fin.cons_self_tail _).symm`. Establish `hfirst : ∀ a : Fin n, Y a.succ 0 = 0`. Introduce `a`. Establish `h` using `congrFun (congrFun hY 0) a.succ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `hE σ (blockOne t J) (Y 0) (Y a.succ) = blockOne t T 0 a.succ at h`. Rewrite `h` using `[h0, hsplit a, hE_blockOne_cons, hz, hE_zero_left, blockOne_zero_succ]`. Simplify `h` using `[ht]`. Establish `hY' : ∀ a : Fin n, Y a.succ = Fin.cons 0 (Fin.tail (Y a.succ))`. Introduce `a`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `conv_lhs => rw [hsplit a, hfirst a]`. Use `⟨fun a => Fin.tail (Y a.succ), ?_, ?_⟩` and prove the remaining obligations. Use extensionality with `a b`. Establish `h` using `congrFun (congrFun hY a.succ) b.succ`. Express the relevant statement in the definitionally equal form `hE σ (blockOne t J) (Y a.succ) (Y b.succ) = blockOne t T a.succ b.succ at h`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[hY' a, hY' b, hE_blockOne_cons, blockOne_succ_succ]`. Express the relevant statement in the definitionally equal form `hE σ J (Fin.tail (Y a.succ)) (Fin.tail (Y b.succ)) = T a b`. Simplify using `using h`. Use function extensionality and compare the values at `a`. Use `Fin.cases ?_ (fun a => ?_) a` and prove the remaining obligations.
-
-Conclude with `h0`. Conclude with `hY' a`.
+Express the relevant assertion in an equivalent form by its definition. Simplify to obtain the desired conclusion from the available facts. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_consTup_of_gramE (σ : E →ₐ[F] E) {M : ℕ} (J : Matrix (Fin M) (Fin M) E) {t : E}
     (ht : t ≠ 0) {n : ℕ} (T : Matrix (Fin n) (Fin n) E) (Y : Fin (n + 1) → Fin (M + 1) → E)
@@ -141,11 +139,11 @@ theorem exists_consTup_of_gramE (σ : E →ₐ[F] E) {M : ℕ} (J : Matrix (Fin 
     · exact hY' a
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ _ M J t`. Use `⟨det_blockOne _ _, ?_, fun n X => gramE_consTup σ J _ X, ?_⟩` and prove the remaining obligations. Introduce `hJ a b`. Apply the tactic sequence `refine Fin.cases ?_ (fun a => ?_) a <;> refine Fin.cases ?_ (fun b => ?_) b`. Simplify using `[blockOne_zero_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 
-Simplify using `[blockOne_zero_succ, blockOne_succ_zero]`. Simplify using `[blockOne_zero_succ, blockOne_succ_zero]`. Simplify `hJ a b` using `[blockOne_succ_succ]`. Introduce `ht n T Y h0 hY`. Establish `ht' : algebraMap F E t ≠ 0`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `using ht`. Conclude with `exists_consTup_of_gramE σ J ht' T Y h0 hY`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem block_alg : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (M : ℕ) (J : Matrix (Fin M) (Fin M) E) (t : F), (blockOne (algebraMap F E t) J).det = algebraMap F E t * J.det ∧ ((∀ a b, σ (J b a) = J a b) → ∀ a b, σ (blockOne (algebraMap F E t) J b a) = blockOne (algebraMap F E t) J a b) ∧ (∀ (n : ℕ) (X : Fin n → Fin M → E), gramE σ (blockOne (algebraMap F E t) J) (consTup X) = blockOne (algebraMap F E t) (gramE σ J X)) ∧ (t ≠ 0 → ∀ (n : ℕ) (T : Matrix (Fin n) (Fin n) E) (Y : Fin (n + 1) → Fin (M + 1) → E), Y 0 = Fin.cons 1 (fun _ => 0) → gramE σ (blockOne (algebraMap F E t) J) Y = blockOne (algebraMap F E t) T → ∃ X, gramE σ J X = T ∧ Y = consTup X) := by
   intro F E _ _ _ _ _ σ _ M J t

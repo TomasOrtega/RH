@@ -9,29 +9,29 @@ namespace GlobalTheory.GaugeFrameBasis
 open GlobalTheory.VolTransport
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_assoc, k, ← Matrix.mul_assoc, h, Matrix.one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem eq_conj {A : Type} [CommRing A] {M : ℕ} {T T' x y : Matrix (Fin M) (Fin M) A}
     (h : T * T' = 1) (k : x * T' = T' * y) : y = T * x * T' := by
   rw [Matrix.mul_assoc, k, ← Matrix.mul_assoc, h, Matrix.one_mul]
 
 /- English proof (translation)
-Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, h, Matrix.one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem conj_rel {A : Type} [CommRing A] {M : ℕ} {T T' : Matrix (Fin M) (Fin M) A}
     (h : T' * T = 1) (x : Matrix (Fin M) (Fin M) A) : x * T' = T' * (T * x * T') := by
   rw [← Matrix.mul_assoc, ← Matrix.mul_assoc, h, Matrix.one_mul]
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ R _ _ _ _ _ _ _ _ _ M J J' P hJ`. Establish `h0 : IsoPair (σ : E →+* E) J J' ((P⁻¹ : GL (Fin M) E) : Matrix (Fin M) (Fin M) E) (P : Matrix (Fin M) (Fin M) E)`. Use `⟨Units.inv_mul P, Units.mul_inv P, ?_, hJ.symm⟩` and prove the remaining obligations. Rewrite using `[hJ]`. Combine the equalities or inequalities in the displayed calculation.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[Formalism.UG.cT_mul]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = J := by rw [Units.mul_inv, Formalism.UG.cT_one, Matrix.one_mul, Matrix.mul_one]`. Establish `h : IsoPair (sigR R σ) (JR R J) (JR R J') (((P⁻¹ : GL (Fin M) E) : Matrix (Fin M) (Fin M) E).map (inclR (F` using `F) R)) ((P : Matrix (Fin M) (Fin M) E).map (inclR (F := F) R)) := h0.map (inclR (F := F) R) (fun _ => rfl)`. Set `e0 : HA R σ J ≃* HA R σ J'` to `conjE h`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hm : ∀ g, ((HA.mat R σ J' (e0 g) : GL _ _) : Matrix (Fin M) (Fin M) (R ⊗[F] E)) = ((P⁻¹ : GL (Fin M) E) : Matrix (Fin M) (Fin M) E).map (inclR (F` using `F) R) * ((HA.mat R σ J g : GL _ _) : Matrix (Fin M) (Fin M) (R ⊗[F] E)) * (P : Matrix (Fin M) (Fin M) E).map (inclR (F := F) R) := fun _ => rfl`. Establish `hu : ∀ e : HA R σ J ≃* HA R σ J', (∀ g, FrameRelR R σ J J' (P : Matrix (Fin M) (Fin M) E) g (e g)) → e = e0`. Introduce `e he`. Use extensionality with `g`. Apply `Subtype.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Units.ext` to reduce the goal to its premises. Use `Eq.trans ?_ (hm g).symm` and prove the remaining obligations. Conclude with `eq_conj h.1 (he g)`. Use `⟨⟨e0, fun g => ?_, hu⟩, fun e he => ?_⟩` and prove the remaining obligations. Conclude with `conj_rel h.2.1 _`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Supply the required witnesses or components.
 
-Rewrite using `[hu e he]`. Establish `: FiniteDimensional F E` using `Module.Finite.of_restrictScalars_finite ℚ F E`. Conclude with `⟨conjU_continuous h, conjU_continuous h.symm⟩`.
+A detailed English derivation is pending.
 -/
 theorem frame_basis : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), ∀ (R : Type) [CommRing R] [Algebra F R] [TopologicalSpace R] [IsTopologicalRing R] [T2Space R] [LocallyCompactSpace R] [SecondCountableTopology R] [MeasurableSpace R] [BorelSpace R], ∀ (M : ℕ) (J J' : Matrix (Fin M) (Fin M) E) (P : GL (Fin M) E), J' = Formalism.UG.cT (σ : E →+* E) (P : Matrix (Fin M) (Fin M) E) * J * (P : Matrix (Fin M) (Fin M) E) → (∃! e : HA R σ J ≃* HA R σ J', ∀ g, FrameRelR R σ J J' (P : Matrix (Fin M) (Fin M) E) g (e g)) ∧ ∀ e : HA R σ J ≃* HA R σ J', (∀ g, FrameRelR R σ J J' (P : Matrix (Fin M) (Fin M) E) g (e g)) → Continuous e ∧ Continuous e.symm := by
   intro F E _ _ _ _ _ σ R _ _ _ _ _ _ _ _ _ M J J' P hJ

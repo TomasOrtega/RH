@@ -14,9 +14,9 @@ open GlobalTheory.SplitCut GlobalTheory.FinPl
 variable {D : D7}
 
 /- English proof (translation)
-Use `key_gen (Module.finBasis D.host.F D.host.E) _ y fun k => ?_` and prove the remaining obligations. Establish `h1 : fstA D.host.F ((Algebra.TensorProduct.basis (AF D.host.F) (Module.finBasis D.host.F D.host.E)).repr y k) = 0`. Rewrite using `[← GlobalTheory.InfZeroFinSum.repr_map_id (Module.finBasis D.host.F D.host.E) (fstA D.host.F) y k]`. Establish `: Algebra.TensorProduct.map (fstA D.host.F) (AlgHom.id D.host.F D.host.E) y = 0` using `hy`. Rewrite using `[this, map_zero, Finsupp.zero_apply]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `baseAdele_ext_infinite_finite ?_ ?_` and prove the remaining obligations. Rewrite using `[map_mul, h1, mul_zero, map_zero]`. Rewrite using `[map_mul, map_zero]`. Conclude with `zero_mul _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem real_idem_mul (y : AE D) (hy : infPart D y = 0) :
     algebraMap (AF D.host.F) (AE D) (pairA D.host.F 1 0) * y = 0 := by
@@ -31,9 +31,9 @@ theorem real_idem_mul (y : AE D) (hy : infPart D y = 0) :
     exact zero_mul _
 
 /- English proof (translation)
-Establish `h` using `congrArg (fun x : GL (Fin V.rank) (AE D ⧸ idAt D P) => x.1 i j) (show _ = (1 : GL _ _) from hg)`. Express the relevant statement in the definitionally equal form `Ideal.Quotient.mk (idAt D P) (mt V g i j) = _ at h`. Establish `h2 : Ideal.Quotient.mk (idAt D P) (mt V g i j) = Ideal.Quotient.mk (idAt D P) ((1 : Matrix (Fin V.rank) (Fin V.rank) (AE D)) i j)`. Apply the tactic sequence `rw [h, Units.val_one]; by_cases hij : i = j <;> simp [Matrix.one_apply, hij]`. Rewrite using `[Matrix.sub_apply]`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Ideal.Quotient.eq.mp h2`.
+A detailed English derivation is pending.
 -/
 theorem entry_memAt (V : HSp D) (P : Pl D → Prop) (g : GA D V) (hg : g ∈ grpAt V P) (i j : Fin V.rank) :
     (mt V g - 1) i j ∈ idAt D P := by
@@ -48,17 +48,17 @@ set_option maxHeartbeats 800000 in
 open GlobalTheory.LocWeil.PlaceIdem in
 
 /- English proof (translation)
-Introduce `D V n k _ _ _ _ q hv g hg`. Use `set E : Fin n → AE D := fun i => algebraMap (AF D.host.F) (AE D) (eFin D.host.F (q i).v) with hEdef`. Establish `hE : ∀ i, (q i).e + cA D (q i).e = E i` using `fun i => by`. Take `⟨ε, hε, h⟩` from `(q i).above`. Rewrite using `[h, eFin_of_placeIdem hε]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hEE : ∀ i, E i * E i = E i` using `fun i => by`. Simplify using `only [hEdef, ← map_mul, eFin_idem]`. Establish `hEc : ∀ i, cA D (E i) = E i` using `fun i => cA_algebraMap _`. Establish `hEo : ∀ i i', i ≠ i' → E i * E i' = 0` using `fun i i' hii => by`. Simplify using `only [hEdef, ← map_mul]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[eFin_mul_eFin _ (fun h => hii (hv h)), map_zero]`. Use `choose h hh using fun i => cut_exists V g (E i) (hEE i) (hEc i)`. Use `set M := mt V g with hM`. Use `⟨h, fun i a b => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hE i, hh i]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Apply the tactic sequence `exact idempotent_mul_cut_sub_one_entry _ (hEE i) M a b`. Apply `mt_injective` to reduce the goal to its premises. Rewrite using `[mt_list_prod V h E M hh hEo _ (List.nodup_finRange n)]`. Establish `hsum : ((List.finRange n).map E).sum = ∑ i, E i` using `(Fin.sum_univ_def E).symm`. Rewrite using `[hsum]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result.
 
-Use `exists_widePullback_of_iteratedLine _ M fun a b => ?_` and prove the remaining obligations. Establish `hm` using `entry_memAt V _ g hg a b`. Unfold `idAt at hm`. Take `⟨hinf, hoff⟩` from `Ideal.mem_inf.mp hm`. Rewrite `hoff` using `[Ideal.mem_iInf]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `key (fun i => (q i).v) hv ((M - 1) a b) (fun u hu => (RingHom.mem_ker).mp (hoff ⟨u, fun ⟨i, hi⟩ => hu ⟨i, hi.symm⟩⟩))`. Rewrite `h1` using `[map_sub, map_sub, map_one, map_sum]`. Establish `h2` using `real_idem_mul ((M - 1) a b) ((RingHom.mem_ker).mp hinf)`. Establish `h3 : (1 - ∑ i, E i) = (1 - algebraMap (AF D.host.F) (AE D) (pairA D.host.F 1 0) - ∑ i, E i) + algebraMap (AF D.host.F) (AE D) (pairA D.host.F 1 0)` using `by ring`. Rewrite using `[h3, add_mul, h1, h2, add_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem prod_of_grpAt : ∀ (D : D7) (V : HSp D) (n : ℕ) (k : Fin n → Type) [∀ i, Field (k i)] [∀ i, ValuativeRel (k i)] [∀ i, TopologicalSpace (k i)] [∀ i, IsNonarchimedeanLocalField (k i)] (q : ∀ i, GlobalTheory.FinPl.SplitPt D (k i)), Function.Injective (fun i => (q i).v) → ∀ g ∈ GlobalTheory.FinPl.grpAt V (fun p => ∃ i, p = (q i).v), ∃ h : Fin n → GA D V, (∀ i, SuppAt (q i).e V (h i)) ∧ g = ((List.finRange n).map h).prod := by
   intro D V n k _ _ _ _ q hv g hg

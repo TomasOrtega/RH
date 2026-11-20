@@ -11,13 +11,13 @@ section
 variable {Ω : Type} [Field Ω]
 
 /- English proof (translation)
-The claim follows from `(A.valuation_le_one_iff _).2 (intCast_mem A a)`.
+A detailed English derivation is pending.
 -/
 private theorem val_int_le (A : ValuationSubring Ω) (a : ℤ) : A.valuation (a : Ω) ≤ 1 :=
   (A.valuation_le_one_iff _).2 (intCast_mem A a)
 
 /- English proof (translation)
-Take `⟨c, rfl⟩` from `h`. Rewrite using `[Nat.cast_mul, map_mul]`. Conclude with `mul_lt_one_of_lt_of_le ha (by simpa using val_int_le A (c : ℤ))`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem val_dvd (A : ValuationSubring Ω) {a b : ℕ} (h : a ∣ b) (ha : A.valuation (a : Ω) < 1) :
     A.valuation (b : Ω) < 1 := by
@@ -26,11 +26,11 @@ private theorem val_dvd (A : ValuationSubring Ω) {a b : ℕ} (h : a ∣ b) (ha 
   exact mul_lt_one_of_lt_of_le ha (by simpa using val_int_le A (c : ℤ))
 
 /- English proof (translation)
-Proceed by induction on `n using Nat.recOnMul with`. Consider the case `zero => exact absurd rfl hn`. Consider the case `one => simp at h`. Consider the case `prime p hp => exact ⟨p, hp, dvd_rfl, h⟩`. Consider the case `mul a b iha ihb`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Rewrite `h` using `[Nat.cast_mul, map_mul]`. Distinguish the cases in `ha : A.valuation (a : Ω) < 1`. Take `⟨p, hp, hd, hv⟩` from `iha (left_ne_zero_of_mul hn) ha`. Conclude with `⟨p, hp, hd.mul_right _, hv⟩`. Establish `h1 : A.valuation (a : Ω) = 1` using `le_antisymm (by simpa using val_int_le A (a : ℤ)) (not_lt.1 ha)`.
+Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Rewrite `h` using `[h1, one_mul]`. Take `⟨p, hp, hd, hv⟩` from `ihb (right_ne_zero_of_mul hn) h`. Conclude with `⟨p, hp, hd.mul_left _, hv⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private theorem val_prime (A : ValuationSubring Ω) (n : ℕ) (hn : n ≠ 0) (h : A.valuation (n : Ω) < 1) :
     ∃ p : ℕ, p.Prime ∧ p ∣ n ∧ A.valuation (p : Ω) < 1 := by
@@ -49,11 +49,11 @@ private theorem val_prime (A : ValuationSubring Ω) (n : ℕ) (hn : n ≠ 0) (h 
       exact ⟨p, hp, hd.mul_left _, hv⟩
 
 /- English proof (translation)
-Introduce `hb`. Take `⟨u, v, e⟩` from `Nat.isCoprime_iff_coprime.2 h`. Establish `e' : (a : Ω) * (u : Ω) + (b : Ω) * (v : Ω) = 1`. Use `congrArg (Int.cast : ℤ → Ω) e` as an intermediate fact. Move the coercions through the operations in `at this`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[← this]`. Expand and normalize the polynomial expressions, which then agree. Establish `h1 : A.valuation ((a : Ω) * (u : Ω) + (b : Ω) * (v : Ω)) < 1`. Apply the tactic sequence `refine Valuation.map_add_lt _ ?_ ?_ <;> rw [map_mul]`. Conclude with `mul_lt_one_of_lt_of_le ha (val_int_le A u)`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `mul_lt_one_of_lt_of_le hb (val_int_le A v)`. Rewrite `h1` using `[e', map_one]`. Conclude with `lt_irrefl _ h1`.
+A detailed English derivation is pending.
 -/
 private theorem val_cop (A : ValuationSubring Ω) {a b : ℕ} (h : a.Coprime b) (ha : A.valuation (a : Ω) < 1) :
     ¬ A.valuation (b : Ω) < 1 := by
@@ -73,15 +73,15 @@ private theorem val_cop (A : ValuationSubring Ω) {a b : ℕ} (h : a.Coprime b) 
 variable [CharZero Ω] [IsAlgClosure ℚ Ω]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨IsAlgClosure.isAlgClosed ℚ, Algebra.IsAlgebraic.tower_top (K := ℚ) K⟩`.
+Supply the required witnesses or components.
 -/
 private theorem algClo (K : Type) [Field K] [NumberField K] [Algebra K Ω] : IsAlgClosure K Ω :=
   ⟨IsAlgClosure.isAlgClosed ℚ, Algebra.IsAlgebraic.tower_top (K := ℚ) K⟩
 
 /- English proof (translation)
-Use `haveI := algClo (Ω := Ω) L`. Establish `h1 : ∀ x : K, ∃ y : L, algebraMap L Ω y = algebraMap K Ω x` using `fun x => (InfiniteGalois.mem_range_algebraMap_iff_fixed (k := L) _).2 fun f => h (galEmb_mem ℚ L Ω f) x`. Use `choose f hf using h1`. Establish `hi` using `(algebraMap L Ω).injective`. Set `g : K →+* L` to `{ toFun := f map_one' := hi (by simp [hf]) map_mul' := fun a b => hi (by simp [hf]) map_zero' := hi (by simp [hf]) map_add' := fun a b => hi (by simp [hf]) }`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Equip the data with the indicated structure. Supply the required witnesses or components.
 
-Use `letI := g.toAlgebra`. Conclude with `⟨_, IsScalarTower.of_algebraMap_eq fun x => (hf x).symm⟩`.
+A detailed English derivation is pending.
 -/
 private theorem exists_alg (K L : Type) [Field K] [NumberField K] [Field L] [NumberField L] [Algebra K Ω] [Algebra L Ω]
     (h : galOf ℚ L Ω ≤ galOf ℚ K Ω) : ∃ _ : Algebra K L, IsScalarTower K L Ω := by
@@ -100,15 +100,13 @@ private theorem exists_alg (K L : Type) [Field K] [NumberField K] [Field L] [Num
   exact ⟨_, IsScalarTower.of_algebraMap_eq fun x => (hf x).symm⟩
 
 /- English proof (translation)
-Use `haveI := algClo (Ω := Ω) K`. Establish `hA' : A.valuation (((discr K).natAbs : ℕ) : Ω) < 1`. Break down `Int.natAbs_eq (discr K) with e | e` into its components or cases. Rewrite `hA` using `[e, Int.cast_natCast]`. Then use the resulting hypothesis. Rewrite `hA` using `[e, Int.cast_neg, Valuation.map_neg, Int.cast_natCast]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result.
 
-Take `⟨p, hp, hd, hv⟩` from `val_prime A _ (Int.natAbs_ne_zero.2 (discr_ne_zero K)) hA'`. Distinguish the cases in `hM : p ∣ M`. Conclude with `val_dvd A hM hv`. It suffices to derive a contradiction. Use `(CF.unramIff.2.1 K p hp).1 ((CF.unramIff.1 K p hp).2 fun w hw => ?_) (Int.natCast_dvd.2 hd)` and prove the remaining obligations.
+Consider separately whether the proposition holds or fails. It suffices to derive a contradiction. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨B, hB⟩ : ∃ B : ValuationSubring Ω, IsPlaceOver B w` from `exists_isPlaceOver Ω w`. Establish `hpB : B.valuation (p : Ω) < 1`. Use `(hB (p : 𝓞 K)).2 hw` as an intermediate fact. Simplify using `using this`. Establish `hI : Ine (F` using `ℚ) B ≤ galOf ℚ K Ω := by`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities.
 
-Assume the negation of the conclusion as `hc`. Conclude with `val_cop B ((Nat.Prime.coprime_iff_not_dvd hp).2 hM) hpB (h B hc)`. Rewrite using `[← CF.ineAbs ℚ K Ω B w hB, eq_bot_iff]`. Introduce and unpack `_ ⟨s, hs, rfl⟩`. Use `Subgroup.mem_bot.2 (AlgEquiv.ext fun x => (algebraMap K Ω).injective ?_)` and prove the remaining obligations.
-
-Rewrite using `[CF.resTo_commutes]`. Conclude with `hI hs x`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem discr_over (K : Type) [Field K] [NumberField K] [Algebra K Ω] [IsGalois ℚ K] (M : ℕ)
     (h : ∀ B : ValuationSubring Ω, ¬ Ine (F := ℚ) B ≤ galOf ℚ K Ω → B.valuation (M : Ω) < 1)
@@ -139,19 +137,17 @@ private theorem discr_over (K : Type) [Field K] [NumberField K] [Algebra K Ω] [
 end
 
 /- English proof (translation)
-Introduce `hC hR Ω _ _ _ l hl ι c _ N _ e ψ η σ g₁ B M H L _ _ _ _ _ Φ k`. Establish `hlM : ∀ A : ValuationSubring Ω, ¬ A.valuation (M : Ω) < 1 → ¬ A.valuation (l : Ω) < 1` using `fun A h h' => h (val_dvd A ((Dvd.intro _ rfl).trans H.dvd) h')`. Establish `hcyc : ∀ A : ValuationSubring Ω, ¬ A.valuation (l : Ω) < 1 → ∀ s ∈ Ine (F` using `L) A, (cycBar L Ω l)⁻¹ s = 1 := by`. Introduce `A hA s hs`. Establish `h1 : cycZ L Ω l s = 1` using `(places L Ω l A).2.2.2 hA hs`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `[cycBar, h1]`. Use `⟨⟨?_, ?_, fun A hA => hcyc A (hlM A hA), 1, fun h => hl.out.one_lt.ne' (Nat.dvd_one.1 h), fun A hA s hs => by rw [pow_one]; exact hcyc A hA s hs⟩, fun K _ _ _ hK κ hκ => ?_⟩` and prove the remaining obligations. Establish `h` using `(hC L Ω l ι).1 (-1) 1 (by rw [MonoidHom.ker_one, Subgroup.coe_top]; exact isOpen_univ)`. Rewrite `h` using `[mul_one, zpow_neg_one]`. Then use the resulting hypothesis. Introduce `s s' h`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1 : cycBar L Ω l s' = cycBar L Ω l s`. Express the relevant statement in the definitionally equal form `cycBar ℚ Ω l (galEmb ℚ L Ω s') = cycBar ℚ Ω l (galEmb ℚ L Ω s)`. Rewrite using `[h, map_mul, map_mul, map_inv, mul_inv_cancel_comm]`. Rewrite using `[MonoidHom.inv_apply, MonoidHom.inv_apply, h1, ← zpow_neg_one, ← zpow_add]`. Evaluate the numerical expressions.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 
-Establish `hle : galOf ℚ L Ω ≤ galOf ℚ K Ω`. Rewrite using `[k.gal, hK]`. Conclude with `inf_le_right`. Take `⟨_, _⟩` from `exists_alg K L hle`. Use `haveI := algClo (Ω := Ω) K`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `haveI := k.ab`. Use `haveI : IsAbelianGalois ℚ K := IsAbelianGalois.tower_bot ℚ K L`. Establish `hI : ∀ (A : ValuationSubring Ω) (s : G L Ω), s ∈ Ine (F` using `L) A → galEmb K L Ω s ∈ Ine (F := K) A := fun A s hs => ⟨hs.1, hs.2⟩`. Use `⟨κ.comp (galEmb K L Ω), ⟨hR K L Ω l ι κ ⟨hκ.cont, ?_⟩, fun s s' h => ?_, fun A hA s hs => ?_, ?_⟩, fun s s' h => ?_⟩` and prove the remaining obligations. Take `⟨art, Y, a, -, h1, h2, h3, -⟩` from `hκ.alg`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨art, Y, a, h1, h2, h3⟩`. Rewrite using `[show (1 : ℤ) - ((2 : ℕ) : ℤ) = -1 by norm_num, zpow_neg_one]`. Conclude with `hκ.conj (galEmb K L Ω s) (galEmb K L Ω s') h`. Conclude with `hκ.unr A (hlM A hA) (fun h => hA (discr_over K M (fun B' hB' => H.ram B' (hK ▸ hB')) A h)) _ (hI A s hs)`. Take `⟨m, -, h1, h2⟩` from `hκ.ord`.
-
-Conclude with `⟨m, h1, fun A hA s hs => h2 A hA _ (hI A s hs)⟩`. Conclude with `congrArg κ (AlgEquiv.ext fun x => AlgEquiv.congr_fun h x)`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Pr.kaOf :
     UpperTheory.V.Sd.AlgCyc → UpperTheory.V.Sd.AlgRes → UpperTheory.V.Pr.KaOf := by

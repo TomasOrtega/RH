@@ -10,9 +10,9 @@ open CompanionTheory.RgExh CompanionTheory.RgExh.Dec CompanionTheory.RgExh.Dec.J
 namespace GlobalTheory.CompanionTheory.RgTransport.Raise
 
 /- English proof (translation)
-Set `p : Polynomial ℂ` to `∏ s : Fin m, (Polynomial.X + Polynomial.C (χ s))`. Establish `hd : p.natDegree ≤ m`. Use `(Polynomial.natDegree_prod_le _ _).trans ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Use `⟨p.coeff, fun Y => ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e : Formalism.QuantumDeterminants.capP χ Y = p.eval Y`. Simplify using `[p, Formalism.QuantumDeterminants.capP, Polynomial.eval_prod]`. Rewrite using `[e, Polynomial.eval_eq_sum_range' (Nat.lt_succ_of_le hd)]`. Conclude with `Finset.sum_congr rfl fun j _ => mul_comm _ _`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_capelliPoly_eq_sum {m : ℕ} (χ : Fin m → ℂ) :
     ∃ a : ℕ → ℂ, ∀ Y : ℂ, Formalism.QuantumDeterminants.capP χ Y = ∑ j ∈ Finset.range (m + 1), Y ^ j * a j := by
@@ -28,23 +28,23 @@ theorem exists_capelliPoly_eq_sum {m : ℕ} (χ : Fin m → ℂ) :
   exact Finset.sum_congr rfl fun j _ => mul_comm _ _
 
 /- English proof (translation)
-Introduce `hS hT m M χ hM V _ _ E hE Φ hΦ hne`. Establish `hsup` using `hT m M χ hM`. Choose the witnesses or unpack the hypotheses as in `⟨r, hr⟩ : ∃ r, ¬ stepSub M (χ r) ≤ LinearMap.ker Φ := by`. Assume the negation of the conclusion as `h`. Use `push Not at h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `h' : (⊤ : Submodule ℂ (Fin m → M.V)) ≤ LinearMap.ker Φ` using `hsup ▸ iSup_le h`. Conclude with `hne (LinearMap.ker_eq_top.1 (top_le_iff.1 h'))`. Take `⟨N, hN⟩` from `hS m M χ r hM`. Set `f : (step M (χ r)).V →ₗ[ℂ] V` to `Φ ∘ₗ (stepSub M (χ r)).subtype`. Establish `hf : ∀ a b x, f ((step M (χ r)).E a b x) = E a b (f x)` using `fun a b x => hΦ a b x.1`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `D : ℂ → Module.End ℂ V` to `fun Y => qdet E (Y + ((m : ℂ) - 1) / 2) - Formalism.QuantumDeterminants.capP (χ + Pi.single r 1) Y • (1 : Module.End ℂ V)`. Establish `hI : LinearMap.range f ≠ ⊥`. Introduce `h0`. Use `hr fun x hx => ?_` and prove the remaining obligations. Establish `: f ⟨x, hx⟩ ∈ LinearMap.range f` using `⟨_, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `this` using `[h0]`. Conclude with `(Submodule.mem_bot ℂ).1 this`. Establish `hsh : ∀ Y x, f ((qdet (step M (χ r)).E (Y + ((m : ℂ) - 1) / 2) - Formalism.QuantumDeterminants.capP (χ + Pi.single r 1) Y • (1 : Module.End ℂ (step M (χ r)).V)) x) = D Y (f x)` using `fun Y x => shift_lin f _ _ (fun y => qdet_lin f (step M (χ r)).E E hf _ y) _ x`. Establish `hcomm : ∀ Y Y', Commute (D Y) (D Y')`. Introduce `Y Y'`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h0 : Commute (qdet E (Y + ((m : ℂ) - 1) / 2)) (qdet E (Y' + ((m : ℂ) - 1) / 2))` using `GlobalTheory.CentreFin.commute_qdet (fun a b => qDetCentral _ m E hE _ a b) _`. Use `Commute.sub_left (Commute.sub_right h0 ((Commute.one_right _).smul_right _)) ?_` and prove the remaining obligations. Conclude with `((Commute.one_left _).smul_left _).sub_right ((Commute.one_left _).smul_left _ |>.smul_right _)`. Establish `hst : ∀ Y, ∀ x ∈ LinearMap.range f, D Y x ∈ LinearMap.range f`. Introduce and unpack `Y _ ⟨x, rfl⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `⟨_, hsh Y x⟩`. Establish `hnil : ∀ Y, ∀ x ∈ LinearMap.range f, ∃ k : ℕ, (D Y ^ k) x = 0`. Introduce and unpack `Y _ ⟨x, rfl⟩`. Use `⟨N, ?_⟩` and prove the remaining obligations. Establish `e` using `pow_lin f _ (D Y) (hsh Y) N x`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite `e` using `[hN Y]`. Simplify using `using e.symm`. Take `⟨c, -, -, hc, -⟩` from `GlobalTheory.CentreFin.exists_coef E (-(((m : ℂ) - 1) / 2)) (B := ⊤) (fun _ => trivial)`. Take `⟨a, ha⟩` from `exists_capelliPoly_eq_sum (χ + Pi.single r 1)`. Establish `hD : ∀ Y, D Y = ∑ j ∈ Finset.range (m + 1), Y ^ j • (c j - a j • (1 : Module.End ℂ V))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `Y`. Establish `h1` using `hc Y`. Rewrite `h1` using `[sub_neg_eq_add]`. Simplify using `only [D, h1, ha Y, smul_sub, Finset.sum_sub_distrib, Finset.sum_smul, mul_smul]`. Take `⟨w, hw, hw0, hwD⟩` from `GlobalTheory.T.commuting_locally_nilpotent_common_kernel _ hI D hcomm hst hnil (m + 1) _ hD`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Take `⟨x, rfl⟩` from `hw`. Use `⟨r, f x, ⟨_, rfl⟩, hw0, fun Y => ?_⟩` and prove the remaining obligations. Establish `h2` using `hwD Y`. Simplify `h2` using `[D, sub_eq_zero]`.
+A detailed English derivation is pending.
 -/
 theorem exists_raised : StepChar → TensDecomp → ∀ {m : ℕ} (M : GMod m) (χ : Fin m → ℂ), HasChar M χ →
     ∀ {V : Type} [AddCommGroup V] [Module ℂ V] (E : Fin m → Fin m → Module.End ℂ V), GlRel E →

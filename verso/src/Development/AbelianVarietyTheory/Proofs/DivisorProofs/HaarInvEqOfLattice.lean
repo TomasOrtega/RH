@@ -6,15 +6,13 @@ open MeasureTheory
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `N _ _ _ _ _ _ _ _ Λ _ ν _ 𝓕 h𝓕 h0 htop`. Establish `hright : ∀ g : N, Measure.map (· * g) ν = ν`. Introduce `g`. Use `haveI : (Measure.map (· * g) ν).IsHaarMeasure := Measure.isHaarMeasure_map_mul_right ν g`. Use `set c := Measure.haarScalarFactor (Measure.map (· * g) ν) ν with hcdef`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc : Measure.map (· * g) ν = c • ν` using `Measure.isMulLeftInvariant_eq_smul _ _`. Establish `hqmp : Measure.QuasiMeasurePreserving (· * g) ν ν` using `⟨measurable_mul_const g, by rw [hc]; exact Measure.smul_absolutelyContinuous⟩`. Establish `hfd : IsFundamentalDomain Λ ((· * g) ⁻¹' 𝓕) ν` using `h𝓕.preimage_of_equiv hqmp (e := id) Function.bijective_id (fun l x => by simp [Subgroup.smul_def, smul_eq_mul, mul_assoc])`. Establish `h1 : ν ((· * g) ⁻¹' 𝓕) = ν 𝓕` using `hfd.measure_eq h𝓕`. Establish `h2 : ν ((· * g) ⁻¹' 𝓕) = (c : ENNReal) * ν 𝓕`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `(Homeomorph.mulRight g).toMeasurableEquiv.map_apply (μ := ν) 𝓕` as an intermediate fact. Simplify using `only [Homeomorph.toMeasurableEquiv_coe, Homeomorph.coe_mulRight] at this`. Rewrite using `[← this, hc, Measure.smul_apply, ENNReal.smul_def, smul_eq_mul]`. Establish `h3 : (c : ENNReal) = 1`. Establish `: (c : ENNReal) * ν 𝓕 = 1 * ν 𝓕` using `by rw [← h2, h1, one_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(ENNReal.mul_left_inj h0 htop).1 this`. Establish `h4 : c = 1` using `by exact_mod_cast h3`. Rewrite using `[hc, h4, one_smul]`. Use `haveI : ν.IsMulRightInvariant := ⟨hright⟩`. Use `haveI := GlobalTheory.QuotDiscrete.isInvInvariant_of_isMulRightInvariant ν`.
-
-Conclude with `Measure.IsInvInvariant.inv_eq_self`.
+A detailed English derivation is pending.
 -/
 theorem haar_inv_eq_of_lattice : ∀ (N : Type) [Group N] [TopologicalSpace N] [IsTopologicalGroup N] [LocallyCompactSpace N] [SecondCountableTopology N]
     [T2Space N] [MeasurableSpace N] [BorelSpace N] (Λ : Subgroup N) [Countable Λ] (ν : MeasureTheory.Measure N) [ν.IsHaarMeasure]

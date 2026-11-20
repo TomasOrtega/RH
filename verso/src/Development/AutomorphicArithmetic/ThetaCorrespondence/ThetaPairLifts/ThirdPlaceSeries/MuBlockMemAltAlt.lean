@@ -13,17 +13,15 @@ namespace GlobalTheory.MuBlockLoc
 end GlobalTheory.MuBlockLoc
 namespace GlobalTheory.MuBlockLoc
 /- English proof (translation)
-Introduce `D Rw hL j σ π μ Pa hA hR hB`. Establish `hgood : ∀ᶠ w in Filter.cofinite, ((∀ p ∈ Pa, D.naut.unr (D.naut.locG p.π w)) ∧ D.naut.unr (D.naut.locG μ w)) ∧ ∀ k : Fin 2, w ∉ placesOver D.host.E (D.host.g k)`. Use `Filter.Eventually.and (Filter.Eventually.and ?_ (D.naut.locG_unr_ae _)) ?_` and prove the remaining obligations. Conclude with `(Filter.eventually_all_finite (List.finite_toSet Pa)).2 fun p _ => D.naut.locG_unr_ae p.π`. Conclude with `Filter.eventually_all.2 fun k => (placesOver_finite D k).compl_mem_cofinite`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨w0, hw0, hs0⟩` from `GlobalTheory.MuBlock.exists_split_not_mem D.nd hL.an.2.2.1 _ (Filter.eventually_cofinite.1 hgood)`. Establish `hg0 : ((∀ p ∈ Pa, D.naut.unr (D.naut.locG p.π w0)) ∧ D.naut.unr (D.naut.locG μ w0)) ∧ ∀ k : Fin 2, w0 ∉ placesOver D.host.E (D.host.g k)`. Establish `h` using `hw0`. Simplify using `only [Set.mem_setOf_eq, not_not] at h`. Conclude with `h`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨⟨p0, hp0, hpt⟩, -⟩` from `_root_.GlobalTheory.MuBlockLoc.split_step_o_alt D Rw hL j σ π μ Pa hA hR hB w0 hs0 hg0.2 hg0.1.1 hg0.1.2`. Establish `hall : ∀ w, (((∀ p ∈ Pa, D.naut.unr (D.naut.locG p.π w)) ∧ D.naut.unr (D.naut.locG μ w)) ∧ ∀ k : Fin 2, w ∉ placesOver D.host.E (D.host.g k)) → IsSplitPl D.host w → p0.d = D.R.t ∧ D.naut.frobEig (D.naut.locG p0.π w) = D.naut.frobEig (D.naut.locG (D.naut.tw μ D.naut.etaTinv) w)` using `fun w hw hs => (_root_.GlobalTheory.MuBlockLoc.split_step_o_alt D Rw hL j σ π μ Pa hA hR hB w hs hw.2 hw.1.1 hw.1.2).2 p0 hp0 hpt`. Establish `htu : ∀ w, D.naut.unr (D.naut.locG μ w) → D.naut.unr (D.naut.locG (D.naut.tw μ D.naut.etaTinv) w)` using `fun w h => by`. Rewrite using `[D.naut.locG_tw]`. Conclude with `D.naut.unr_char _ _ (D.naut.locG_dim _ _) h (D.naut.etaTinv_def w).1`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨hd0, hf0⟩` from `hall w0 hg0 hs0`. Establish `ha0 : p0.a = 1`. Establish `h1` using `D.naut.frobEig_card _ (hg0.1.1 p0 hp0)`. Rewrite `h1` using `[hf0, D.naut.frobEig_card _ (htu w0 hg0.1.2), D.naut.locG_dim, D.naut.locG_dim]`. Conclude with `h1.symm`.
+Extract witnesses or component facts from the available result. Simplify by unfolding definitions. Substitute using the available equality. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨a, π', d⟩` from `p0`. Simplify using `only at ha0 hd0 hall hp0`. Substitute `ha0 hd0` using the available equality. Establish `hν : π' = D.naut.tw μ D.naut.etaTinv`. Use `hL.one π' _ ?_` and prove the remaining obligations.
-
-Use `filter_upwards [hgood] with w hw hs`. Rewrite using `[D.naut.unr_eq_lpUnr _ (hw.1.1 _ hp0), (hall w hw hs).2, ← D.naut.unr_eq_lpUnr _ (htu w hw.1.2)]`. Substitute `hν` using the available equality. Conclude with `hp0`.
+Rewrite the conclusion using the stated equalities. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem mu_block_mem_alt : ∀ (D : D7) (Rw : RowSide D), _root_.GlobalTheory.HeightCounting.Up.ParityLaws D → ∀ j σ π μ Pa, LiftAt D Rw j σ π μ → RowLoc D Rw σ →
     SphericalInertData.IsBC D.nd D.naut D.nbc j π Pa →

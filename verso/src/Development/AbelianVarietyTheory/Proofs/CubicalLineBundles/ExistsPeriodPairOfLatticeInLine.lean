@@ -6,21 +6,19 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `g Λ w hg hw hdisc hspan`. Substitute `hg` using the available equality. Establish `hw0 : w 0 ≠ 0`. Introduce `h`. Apply `hw` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Use function extensionality and compare the values at `j`. Use `fin_cases j`. Simplify using `using h`. Choose the witnesses or unpack the hypotheses as in `⟨e, he⟩ : ∃ e : ℂ ≃L[ℝ] (Fin 1 → ℂ), ∀ z, e z = z • w := by`. Set `φ : ℂ →ₗ[ℝ] (Fin 1 → ℂ)` to `{ toFun := fun z => z • w map_add' := fun a b => add_smul a b w map_smul' := fun r z => by`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Simplify using the standard rewrite rules.
 
-Simplify using `only [RingHom.id_apply]`. Conclude with `smul_assoc r z w }`. Establish `hinj : Function.Injective φ` using `fun a b h => smul_left_injective ℂ hw h`. Establish `hsurj : Function.Surjective φ`. Introduce `y`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `⟨y 0 / w 0, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `j`. Use `fin_cases j`. Simplify using `[φ, hw0]`. Conclude with `⟨(LinearEquiv.ofBijective φ ⟨hinj, hsurj⟩).toContinuousLinearEquiv, fun z => rfl⟩`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: DiscreteTopology Λ` using `hdisc`. Establish `: IsZLattice ℝ Λ` using `⟨hspan⟩`. Use `set Λ' := ZLattice.comap ℝ Λ e.toLinearMap with hΛ'`. Establish `hrank : Module.finrank ℤ Λ' = 2`. Rewrite using `[ZLattice.rank ℝ Λ', Complex.finrank_real_complex]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 
-Use `set b := Module.finBasisOfFinrankEq ℤ Λ' hrank with hb`. Use `set bR := b.ofZLatticeBasis ℝ Λ' with hbR`. Use `⟨⟨bR 0, bR 1, ?_⟩, fun z => ?_⟩` and prove the remaining obligations. Establish `hv : ![bR 0, bR 1] = ⇑bR`. Use function extensionality and compare the values at `i`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `fin_cases i <;> rfl`. Rewrite using `[hv]`. Conclude with `bR.linearIndependent`. Establish `hr : ({bR 0, bR 1} : Set ℂ) = Set.range bR`. Use extensionality with `x`.
-
-Simplify using `[Fin.exists_fin_two, eq_comm]`. Rewrite using `[PeriodPair.lattice]`. Simplify using `only`. Rewrite using `[hr, hbR, Module.Basis.ofZLatticeBasis_span, ← SetLike.mem_coe, hΛ', ZLattice.coe_comap]`. Simplify using `[he]`.
+Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_periodPair_of_lattice_in_line :
     ∀ (g : ℕ) (Λ : Submodule ℤ (Fin g → ℂ)) (w : Fin g → ℂ), g = 1 → w ≠ 0 → DiscreteTopology Λ →

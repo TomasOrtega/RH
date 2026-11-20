@@ -10,7 +10,7 @@ section QuadAlg
 variable {R : Type*} [CommRing R]
 
 /- English proof (translation)
-Rewrite using `[Algebra.norm_apply]`. Establish `: Algebra.lmul R (QuadraticAlgebra R a 0) z = DistribSMul.toLinearMap R (QuadraticAlgebra R a 0) z` using `LinearMap.ext fun w => rfl`. Rewrite using `[this, QuadraticAlgebra.det_toLinearMap_eq_norm, QuadraticAlgebra.norm_def]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem algebraNorm_quadraticAlgebra (a : R) (z : QuadraticAlgebra R a 0) :
     Algebra.norm R z = z.re ^ 2 - a * z.im ^ 2 := by
@@ -54,7 +54,7 @@ noncomputable def quadMap : QuadraticAlgebra L d 0 →ₐ[L] QuadraticAlgebra R 
   QuadraticAlgebra.lift (omegaRoot d R)
 
 /- English proof (translation)
-Simplify using `only [quadMap, QuadraticAlgebra.lift_apply_apply, omegaRoot]`. Apply the tactic sequence `ext <;> simp [Algebra.smul_def, algebraMap_quadraticAlgebra_apply]`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem quadMap_apply (z : QuadraticAlgebra L d 0) :
     quadMap d R z = ⟨algebraMap L R z.re, algebraMap L R z.im⟩ := by
@@ -66,7 +66,7 @@ noncomputable def quadTensorHom :
   Algebra.TensorProduct.lift (Algebra.ofId R _) (quadMap d R) (fun _ _ => Commute.all _ _)
 
 /- English proof (translation)
-Simplify using `only [quadTensorHom, Algebra.TensorProduct.lift_tmul, Algebra.ofId_apply, quadMap_apply]`. Apply the tactic sequence `ext <;> simp [QuadraticAlgebra.algebraMap_eq]`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem quadTensorHom_tmul (r : R) (z : QuadraticAlgebra L d 0) :
     quadTensorHom d R (r ⊗ₜ z) = ⟨r * algebraMap L R z.re, r * algebraMap L R z.im⟩ := by
@@ -78,7 +78,7 @@ noncomputable def quadTensorInv (z : QuadraticAlgebra R (algebraMap L R d) 0) :
   z.re ⊗ₜ 1 + z.im ⊗ₜ QuadraticAlgebra.omega
 
 /- English proof (translation)
-Simplify using `only [quadTensorInv, map_add, quadTensorHom_tmul]`. Apply the tactic sequence `ext <;> simp [quadraticAlgebra_re_one, quadraticAlgebra_im_one]`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem quadTensorHom_inv (z : QuadraticAlgebra R (algebraMap L R d) 0) :
     quadTensorHom d R (quadTensorInv d R z) = z := by
@@ -86,13 +86,13 @@ theorem quadTensorHom_inv (z : QuadraticAlgebra R (algebraMap L R d) 0) :
   ext <;> simp [quadraticAlgebra_re_one, quadraticAlgebra_im_one]
 
 /- English proof (translation)
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp [quadTensorInv]`. Consider the case `tmul r q`. Rewrite using `[quadTensorHom_tmul, quadTensorInv]`. Simplify using `only`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify by unfolding definitions.
 
-Establish `hq : q = q.re • (1 : QuadraticAlgebra L d 0) + q.im • QuadraticAlgebra.omega`. Apply the tactic sequence `ext <;> simp [quadraticAlgebra_re_one, quadraticAlgebra_im_one]`. Use `conv_rhs => rw [hq]`. Establish `h1 : ∀ c : L, r * algebraMap L R c = c • r` using `fun c => by`. Rewrite using `[Algebra.smul_def, mul_comm]`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[TensorProduct.tmul_add, TensorProduct.tmul_smul, TensorProduct.tmul_smul, h1, h1, TensorProduct.smul_tmul', TensorProduct.smul_tmul']`. Consider the case `add x y hx hy`. Establish `hadd : quadTensorInv d R (quadTensorHom d R (x + y)) = quadTensorInv d R (quadTensorHom d R x) + quadTensorInv d R (quadTensorHom d R y)`. Simplify using `only [map_add, quadTensorInv, QuadraticAlgebra.re_add, QuadraticAlgebra.im_add, TensorProduct.add_tmul]`. Normalize the expressions using the abelian group laws.
+Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hadd, hx, hy]`.
+A detailed English derivation is pending.
 -/
 theorem quadTensorInv_hom (z : R ⊗[L] QuadraticAlgebra L d 0) :
     quadTensorInv d R (quadTensorHom d R z) = z := by
@@ -123,7 +123,7 @@ noncomputable def quadTensorEquiv :
       Function.RightInverse.surjective (quadTensorHom_inv d R)⟩
 
 /- English proof (translation)
-The claim follows from `quadTensorHom_tmul d R r z`.
+A detailed English derivation is pending.
 -/
 theorem quadTensorEquiv_tmul (r : R) (z : QuadraticAlgebra L d 0) :
     quadTensorEquiv d R (r ⊗ₜ z) = ⟨r * algebraMap L R z.re, r * algebraMap L R z.im⟩ :=
@@ -147,7 +147,7 @@ instance numberField_quadraticAlgebra {a b : L} [Fact (∀ r : L, r ^ 2 ≠ a + 
 
 omit [NumberField L] in
 /- English proof (translation)
-Rewrite using `[← Algebra.norm_eq_of_algEquiv (quadTensorEquiv d R) z, algebraNorm_quadraticAlgebra]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem norm_tensor_quadratic (R : Type*) [CommRing R] [Algebra L R]
     (z : R ⊗[L] QuadraticAlgebra L d 0) :
@@ -156,15 +156,15 @@ theorem norm_tensor_quadratic (R : Type*) [CommRing R] [Algebra L R]
   rw [← Algebra.norm_eq_of_algEquiv (quadTensorEquiv d R) z, algebraNorm_quadraticAlgebra]
 
 /- English proof (translation)
-Use `set Lw := w.adicCompletion L`. Use `set e1 := SemiLocal.tensorEquiv (QuadraticAlgebra L d 0) w`. Establish `hN : ∀ z : Lw ⊗[L] QuadraticAlgebra L d 0, Algebra.norm Lw z = ∏ u, Algebra.norm Lw (e1 z u)`. Introduce `z`. Rewrite using `[← Algebra.norm_eq_of_algEquiv e1 z, norm_pi]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, rfl⟩ set z := e1.symm (fun u => (y u : _))`. Use `⟨(quadTensorEquiv d Lw z).re, (quadTensorEquiv d Lw z).im, ?_⟩` and prove the remaining obligations. Rewrite using `[← norm_tensor_quadratic, hN, IdeleNorm.coe_finiteLocalNorm]`. Simplify using `only [z, AlgEquiv.apply_symm_apply]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Assume the hypotheses and unpack their components.
 
-Both sides reduce to the same expression. Introduce and unpack `⟨x, y, hxy⟩ set z := (quadTensorEquiv d Lw).symm ⟨x, y⟩`. Establish `hz : Algebra.norm Lw z = β`. Rewrite using `[norm_tensor_quadratic]`. Simplify `hxy` using `[z]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hne : ∀ u, e1 z u ≠ 0`. Introduce `u hu`. Establish `: Algebra.norm Lw z = 0`. Rewrite using `[hN]`. Conclude with `Finset.prod_eq_zero (Finset.mem_univ u) (by rw [hu, Algebra.norm_zero])`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Conclude with `β.ne_zero (hz ▸ this)`. Use `⟨fun u => Units.mk0 (e1 z u) (hne u), Units.ext ?_⟩` and prove the remaining obligations. Rewrite using `[IdeleNorm.coe_finiteLocalNorm, ← hz, hN]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem mem_range_finiteLocalNorm_iff (w : HeightOneSpectrum (𝓞 L))
     (β : (w.adicCompletion L)ˣ) :
@@ -199,15 +199,13 @@ theorem mem_range_finiteLocalNorm_iff (w : HeightOneSpectrum (𝓞 L))
     rfl
 
 /- English proof (translation)
-Use `set Lw := w.Completion`. Use `set e1 := InfinitePlace.tensorPiEquiv (L := QuadraticAlgebra L d 0) w`. Establish `hN : ∀ z : Lw ⊗[L] QuadraticAlgebra L d 0, Algebra.norm Lw z = ∏ u : w.placesOver (QuadraticAlgebra L d 0), Algebra.norm Lw (e1 z u)` using `fun z => InfinitePlace.norm_tensor_eq_prod w z`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, rfl⟩ set z := e1.symm (fun u => (y u : _))`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨(quadTensorEquiv d Lw z).re, (quadTensorEquiv d Lw z).im, ?_⟩` and prove the remaining obligations. Rewrite using `[← norm_tensor_quadratic, hN, IdeleNorm.coe_infiniteLocalNorm]`. Simplify using `only [z, AlgEquiv.apply_symm_apply]`. Both sides reduce to the same expression. Introduce and unpack `⟨x, y, hxy⟩ set z := (quadTensorEquiv d Lw).symm ⟨x, y⟩`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hz : Algebra.norm Lw z = β`. Rewrite using `[norm_tensor_quadratic]`. Simplify using `only [z, AlgEquiv.apply_symm_apply]`. Conclude with `hxy`. Establish `hne : ∀ u, e1 z u ≠ 0`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `u hu`. Establish `: Algebra.norm Lw z = 0`. Rewrite using `[hN]`. Conclude with `Finset.prod_eq_zero (Finset.mem_univ u) (by rw [hu, Algebra.norm_zero])`. Conclude with `β.ne_zero (hz ▸ this)`.
-
-Use `⟨fun u => Units.mk0 (e1 z u) (hne u), Units.ext ?_⟩` and prove the remaining obligations. Rewrite using `[IdeleNorm.coe_infiniteLocalNorm, ← hz, hN]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem mem_range_infiniteLocalNorm_iff (w : InfinitePlace L) (β : (w.Completion)ˣ) :
     β ∈ (IdeleNorm.infiniteLocalNorm (QuadraticAlgebra L d 0) w).range ↔
@@ -252,11 +250,11 @@ universe u
 variable {L : Type u} [Field L] [NumberField L]
 
 /- English proof (translation)
-Establish `: Fact (∀ r : L, r ^ 2 ≠ d + 0 * r)` using `⟨by simpa using hd⟩`. Establish `h2 : Module.finrank L (QuadraticAlgebra L d 0) = 2` using `QuadraticAlgebra.finrank_eq_two d 0`. Establish `key` using `exists_norm_eq_iff_forall_local_of_finrank_eq_two (K := L) (L := QuadraticAlgebra L d 0) h2 hβ`. Establish `hl : (∃ x y : L, x ^ 2 - d * y ^ 2 = β) ↔ ∃ z : QuadraticAlgebra L d 0, Algebra.norm L z = β`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨x, y, h⟩`. Conclude with `⟨⟨x, y⟩, by rw [algebraNorm_quadraticAlgebra]; exact h⟩`. Introduce and unpack `⟨z, h⟩`. Conclude with `⟨z.re, z.im, by rw [← algebraNorm_quadraticAlgebra]; exact h⟩`. Rewrite using `[hl, key]`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Use `and_congr (forall_congr' fun w => ?_) (forall_congr' fun w => ?_)` and prove the remaining obligations. Rewrite using `[mem_range_finiteLocalNorm_iff, IdeleGroup.coe_finiteProj_diagonal, Units.val_mk0]`. Conclude with `Iff.rfl`. Rewrite using `[mem_range_infiniteLocalNorm_iff, IdeleGroup.coe_infiniteProj_diagonal]`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Unfold both sides to obtain the same proposition, which implies itself. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem exists_sq_sub_mul_sq_iff_forall_local {d β : L} (hd : ∀ r : L, r ^ 2 ≠ d) (hβ : β ≠ 0) :
     (∃ x y : L, x ^ 2 - d * y ^ 2 = β) ↔
@@ -283,9 +281,9 @@ theorem exists_sq_sub_mul_sq_iff_forall_local {d β : L} (hd : ∀ r : L, r ^ 2 
     simp
 
 /- English proof (translation)
-Establish `: Fact (∀ r : L, r ^ 2 ≠ d + 0 * r)` using `⟨by simpa using hd⟩`. Use `filter_upwards [IdeleNorm.eventually_map_integerUnitsOver_eq (K := L) (L := QuadraticAlgebra L d 0), IdeleNorm.eventually_finiteProj_mem (IdeleGroup.diagonal L (Units.mk0 β hβ))] with w hw hβw`. Rewrite `hβw` using `[← hw]`. Take `⟨y, -, hy⟩` from `Subgroup.mem_map.1 hβw`. Establish `hmem : IdeleGroup.finiteProj w (IdeleGroup.diagonal L (Units.mk0 β hβ)) ∈ (IdeleNorm.finiteLocalNorm (QuadraticAlgebra L d 0) w).range` using `⟨y, hy⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `hmem` using `[mem_range_finiteLocalNorm_iff, IdeleGroup.coe_finiteProj_diagonal, Units.val_mk0]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem eventually_exists_sq_sub_mul_sq {d β : L} (hd : ∀ r : L, r ^ 2 ≠ d) (hβ : β ≠ 0) :
     ∀ᶠ w : HeightOneSpectrum (𝓞 L) in cofinite, ∃ x y : w.adicCompletion L,

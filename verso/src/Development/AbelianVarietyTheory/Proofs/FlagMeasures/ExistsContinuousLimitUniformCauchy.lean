@@ -7,9 +7,9 @@ noncomputable section
 namespace GlobalTheory.SgInf.RegLimit
 
 /- English proof (translation)
-Establish `h1 : e + b ≤ 2 * max e b`. Rewrite using `[two_mul]`. Conclude with `add_le_add (le_max_left _ _) (le_max_right _ _)`. Establish `h2 : max e b ^ 2 ≤ e ^ 2 + b ^ 2`. Break down `le_total e b with h | h` into its components or cases.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[max_eq_right h]`. Conclude with `le_add_self`. Rewrite using `[max_eq_left h]`. Conclude with `le_self_add`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem sq_le_four (a e b : ENNReal) (h : a ≤ e + b) : a ^ 2 ≤ 4 * (e ^ 2 + b ^ 2) := by
   have h1 : e + b ≤ 2 * max e b := by
@@ -23,37 +23,31 @@ theorem sq_le_four (a e b : ENNReal) (h : a ≤ e + b) : a ^ 2 ≤ 4 * (e ^ 2 + 
     _ ≤ 4 * (e ^ 2 + b ^ 2) := by gcongr
 
 /- English proof (translation)
-Introduce `k r μ hμ Wp _ _ _ f g hf hg hC hL`. Use `set T : Set (Mt k r) → Set (Mat k r) := fun Q => GG k r ∩ {y | Matrix.of.symm y ∈ Q} with hT`. Establish `hUC : ∀ Q : Set (Mt k r), IsCompact Q → UniformCauchySeqOn f Filter.atTop (T Q)`. Introduce `Q hQ`. Use `Metric.uniformCauchySeqOn_iff.2 fun ε hε => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨N, hN⟩` from `hC Q hQ (ε / 2) (half_pos hε)`. Use `⟨N, fun m hm n hn y hy => ?_⟩` and prove the remaining obligations. Use `hN m hm n hn (Matrix.of.symm y) hy.2 (by simpa using hy.1)` as an intermediate fact. Simplify using `only [Equiv.apply_symm_apply] at this`. Rewrite using `[dist_eq_norm]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Use `set F : Mat k r → Wp := fun y => Filter.limUnder Filter.atTop (fun j => f j y) with hFdef`. Establish `hF : ∀ y ∈ GG k r, Filter.Tendsto (fun j => f j y) Filter.atTop (nhds (F y))`. Introduce `y hy`. Establish `hc` using `(hUC {Matrix.of.symm y} isCompact_singleton).cauchySeq (show y ∈ T {Matrix.of.symm y} from ⟨hy, rfl⟩)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨L, hL'⟩` from `cauchySeq_tendsto_of_complete hc`. Conclude with `tendsto_nhds_limUnder ⟨L, hL'⟩`. Establish `hU : ∀ Q : Set (Mt k r), IsCompact Q → TendstoUniformlyOn f F Filter.atTop (T Q)` using `fun Q hQ => (hUC Q hQ).tendstoUniformlyOn_of_tendsto (fun y hy => hF y hy.1)`. Establish `hsymm : Continuous (fun y : Mat k r => (Matrix.of.symm y : Mt k r))` using `continuous_id`. Establish `hof : Continuous (fun x : Mt k r => (Matrix.of x : Mat k r))` using `continuous_id`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hFc : ContinuousOn F (GG k r)`. Introduce `x hx`. Use `set Q : Set (Mt k r) := Metric.closedBall (Matrix.of.symm x) 1`. Establish `hQ : IsCompact Q` using `isCompact_closedBall _ _`. Establish `h1 : ContinuousOn F (T Q)` using `(hU Q hQ).continuousOn (Filter.Eventually.of_forall (f := Filter.atTop) fun j => (hf j).mono Set.inter_subset_left).frequently`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hxT : x ∈ T Q` using `⟨hx, show (Matrix.of.symm x : Mt k r) ∈ Q from Metric.mem_closedBall_self (x := (Matrix.of.symm x : Mt k r)) zero_le_one⟩`. Use `(h1 x hxT).mono_of_mem_nhdsWithin ?_` and prove the remaining obligations. Conclude with `inter_mem_nhdsWithin _ (hsymm.continuousAt.preimage_mem_nhds (Metric.closedBall_mem_nhds _ zero_lt_one))`. Establish `hGcl : IsClosed {x : Mt k r | Matrix.of x ∈ GG k r}` using `(gg_closedSub k r).2.1.preimage hof`. Establish `hGae : ∀ᵐ x ∂μ, Matrix.of x ∈ GG k r` using `ae_iff.2 hμ.2.2.1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `hFm : AEStronglyMeasurable (fun x : Mt k r => F (Matrix.of x)) μ`. Establish `h1 : ContinuousOn (fun x : Mt k r => F (Matrix.of x)) {x : Mt k r | Matrix.of x ∈ GG k r}` using `hFc.comp hof.continuousOn (fun x hx => hx)`. Establish `h2` using `h1.aestronglyMeasurable (μ := μ) hGcl.measurableSet`. Rewrite `h2` using `[Measure.restrict_eq_self_of_ae_mem (s := {x : Mt k r | Matrix.of x ∈ GG k r}) hGae]`. Then use the resulting hypothesis. Establish `hQae : ∀ Q : Set (Mt k r), IsCompact Q → MeasurableSet Q → ∀ᵐ x ∂(μ.restrict Q), F (Matrix.of x) = g x`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `Q hQ hQm`. Establish `hQfin : μ Q ≠ ⊤` using `(haar_compact_lt_top hμ hQ).ne`. Use `set a : Mt k r → ENNReal := fun x => (‖F (Matrix.of x) - g x‖₊ : ENNReal) ^ 2 with ha`. Establish `hbound : ∀ n : ℕ, ∫⁻ x in Q, a x ∂μ ≤ 4 * (ENNReal.ofReal (1 / ((n : ℝ) + 1)) ^ 2 * μ Q + ENNReal.ofReal (1 / ((n : ℝ) + 1)))`. Introduce `n`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hpos : (0 : ℝ) < 1 / ((n : ℝ) + 1)` using `by positivity`. Establish `e1` using `Metric.tendstoUniformlyOn_iff.1 (hU Q hQ) _ hpos`. Establish `e2` using `ENNReal.tendsto_nhds_zero.1 (hL Q hQ) _ (ENNReal.ofReal_pos.2 hpos)`. Take `⟨j, hj1, hj2⟩` from `(e1.and e2).exists`. Combine the equalities or inequalities in the displayed calculation.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Normalize the expressions using the abelian group laws.
 
-Use `lintegral_mono_ae ?_` and prove the remaining obligations. Use `filter_upwards [ae_restrict_mem hQm, ae_restrict_of_ae hGae] with x hxQ hxG`. Apply `sq_le_four` to reduce the goal to its premises. Establish `hd` using `hj1 (Matrix.of x) ⟨hxG, by simpa using hxQ⟩`. Establish `htri : ‖F (Matrix.of x) - g x‖₊ ≤ ‖F (Matrix.of x) - f j (Matrix.of x)‖₊ + ‖f j (Matrix.of x) - g x‖₊`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: F (Matrix.of x) - g x = (F (Matrix.of x) - f j (Matrix.of x)) + (f j (Matrix.of x) - g x)`. Normalize the expressions using the abelian group laws. Rewrite using `[this]`. Conclude with `nnnorm_add_le _ _`. Combine the equalities or inequalities in the displayed calculation.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Rewrite using `[← ENNReal.coe_add]`. Conclude with `ENNReal.coe_le_coe.2 htri`. Use `_ ≤ ENNReal.ofReal (1 / ((n : ℝ) + 1)) + ‖f j (Matrix.of x) - g x‖₊ := by gcongr`. Conclude with `ENNReal.coe_le_coe.2 ((Real.le_toNNReal_iff_coe_le hpos.le).2 (by rw [coe_nnnorm, ← dist_eq_norm]; exact hd.le))`. Use `_ = 4 * (ENNReal.ofReal (1 / ((n : ℝ) + 1)) ^ 2 * μ Q + ∫⁻ x in Q, (‖f j (Matrix.of x) - g x‖₊ : ENNReal) ^ 2 ∂μ) := by`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[lintegral_const_mul' _ _ (by norm_num), lintegral_add_left measurable_const, lintegral_const, Measure.restrict_apply_univ]`. Use `_ ≤ _ := by gcongr`. Establish `ht : Filter.Tendsto (fun n : ℕ => ENNReal.ofReal (1 / ((n : ℝ) + 1))) Filter.atTop (nhds 0)`. Simplify using `using ENNReal.tendsto_ofReal tendsto_one_div_add_atTop_nhds_zero_nat`. Establish `ht2 : Filter.Tendsto (fun n : ℕ => 4 * (ENNReal.ofReal (1 / ((n : ℝ) + 1)) ^ 2 * μ Q + ENNReal.ofReal (1 / ((n : ℝ) + 1)))) Filter.atTop (nhds 0)`.
-
-Use `ENNReal.Tendsto.const_mul ((ENNReal.Tendsto.mul_const (ENNReal.Tendsto.pow (n := 2) ht) (Or.inr hQfin)).add ht) (a := (4 : ENNReal)) (Or.inr (by norm_num))` as an intermediate fact. Simplify using `using this`. Establish `hzero : ∫⁻ x in Q, a x ∂μ = 0` using `le_antisymm (ge_of_tendsto' ht2 hbound) (zero_le)`. Establish `hm : AEStronglyMeasurable (fun x => F (Matrix.of x) - g x) (μ.restrict Q)` using `hFm.restrict.sub (hg Q hQ)`. Establish `hae` using `(lintegral_eq_zero_iff' (hm.nnnorm.aemeasurable.coe_nnreal_ennreal.pow_const 2)).1 hzero`.
-
-Use `filter_upwards [hae] with x hx`. Simplify `hx` using `[ha, sub_eq_zero]`. Use `⟨F, hFc, ?_, hF⟩` and prove the remaining obligations. Establish `hall : ∀ n : ℕ, ∀ᵐ x ∂(μ.restrict (Metric.closedBall (0 : Mt k r) n)), F (Matrix.of x) = g x` using `fun n => hQae _ (isCompact_closedBall _ _) Metric.isClosed_closedBall.measurableSet`. Use `(ae_restrict_iUnion_iff _ _).2 hall` as an intermediate fact.
-
-Rewrite `this` using `[Metric.iUnion_closedBall_nat, Measure.restrict_univ]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem exists_continuous_limit : ∀ (k r : ℕ) (μ : Measure (Mt k r)), IsHaarOn (GG k r) μ → ∀ {Wp : Type} [NormedAddCommGroup Wp] [NormedSpace ℂ Wp] [CompleteSpace Wp] (f : ℕ → Mat k r → Wp) (g : Mt k r → Wp), (∀ j, ContinuousOn (f j) (GG k r)) → (∀ Q : Set (Mt k r), IsCompact Q → AEStronglyMeasurable g (μ.restrict Q)) → (∀ Q : Set (Mt k r), IsCompact Q → ∀ ε : ℝ, 0 < ε → ∃ N : ℕ, ∀ j ≥ N, ∀ l ≥ N, ∀ x ∈ Q, Matrix.of x ∈ GG k r → ‖f j (Matrix.of x) - f l (Matrix.of x)‖ ≤ ε) → (∀ Q : Set (Mt k r), IsCompact Q → Filter.Tendsto (fun j : ℕ => ∫⁻ x in Q, (‖f j (Matrix.of x) - g x‖₊ : ENNReal) ^ 2 ∂μ) Filter.atTop (nhds 0)) → ∃ F : Mat k r → Wp, ContinuousOn F (GG k r) ∧ ((fun x : Mt k r => F (Matrix.of x)) =ᵐ[μ] g) ∧ ∀ x ∈ GG k r, Filter.Tendsto (fun j : ℕ => f j x) Filter.atTop (nhds (F x)) := by
   intro k r μ hμ Wp _ _ _ f g hf hg hC hL

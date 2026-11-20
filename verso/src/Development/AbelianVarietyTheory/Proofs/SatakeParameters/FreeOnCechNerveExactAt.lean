@@ -92,7 +92,7 @@ namespace GlobalTheory.Et.FreeCech
 variable {U V : Scheme.{0}} (π : V ⟶ U) (W : Scheme.{0})
 
 /- English proof (translation)
-Set `ed` to `(Arrow.AugmentedCechNerve.extraDegeneracy (Arrow.mk (toImg π W)) (split π W)).map (ModuleCat.free (ULift.{1} R))`. Set `h` to `ed.homotopyEquiv`. Use `haveI := h.quasiIso_hom`. Establish `h1` using `(exactAt_iff_of_quasiIsoAt h.hom (k + 1)).2 (ChainComplex.exactAt_succ_single_obj _ _)`. Conclude with `h1.of_iso ((AlgebraicTopology.alternatingFaceMapComplex _).mapIso (Functor.isoWhiskerRight (cechIso π W) _)).symm`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exactAt_pts (R : Type) [CommRing R] (k : ℕ) :
     ((AlgebraicTopology.alternatingFaceMapComplex (ModuleCat.{1} (ULift.{1} R))).obj
@@ -110,13 +110,11 @@ end GlobalTheory.Et.FreeCech
 namespace GlobalTheory.Et
 
 /- English proof (translation)
-Set `P` to `(Arrow.mk π).cechNerve ⋙ uliftYoneda.{1} ⋙ (Functor.whiskeringRight _ _ _).obj (ModuleCat.free (ULift.{1} R))`. Set `K` to `(AlgebraicTopology.alternatingFaceMapComplex _).obj P`. Establish `hK : K.ExactAt (n + 1)`. Rewrite using `[HomologicalComplex.exactAt_iff, ShortComplex.exact_iff_isZero_homology]`. Use `Functor.isZero _ fun W => ?_` and prove the remaining obligations.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `IsZero.of_iso ?_ ((K.sc (n + 1)).mapHomologyIso ((evaluation _ _).obj W)).symm` and prove the remaining obligations. Rewrite using `[← ShortComplex.exact_iff_isZero_homology]`. Establish `h` using `FreeCech.exactAt_pts π (unop W) R n`. Establish `e` using `Functor.congr_obj (AlgebraicTopology.map_alternatingFaceMapComplex ((evaluation Scheme.{0}ᵒᵖ (ModuleCat.{1} (ULift.{1} R))).obj W)) P`. Establish `h' : ((((evaluation Scheme.{0}ᵒᵖ (ModuleCat.{1} (ULift.{1} R))).obj W).mapHomologicalComplex _).obj K).ExactAt (n + 1)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[show K = (AlgebraicTopology.alternatingFaceMapComplex _).obj P from rfl]`. Use `erw [e]`. Conclude with `h`. Conclude with `h'`. Establish `e` using `Functor.congr_obj (AlgebraicTopology.map_alternatingFaceMapComplex (presheafToSheaf (Scheme.proetaleTopology.{0}) (ModuleCat.{1} (ULift.{1} R)))) P`.
-
-Establish `h2` using `hK.map (presheafToSheaf (Scheme.proetaleTopology.{0}) (ModuleCat.{1} (ULift.{1} R)))`. Express the relevant statement in the definitionally equal form `(((presheafToSheaf _ _).mapHomologicalComplex _).obj K).ExactAt (n + 1) at h2`. Use `erw [e] at h2`. Conclude with `h2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. A detailed English derivation is pending.
 -/
 theorem freeOn_cechNerve_exactAt {R : Type} [CommRing R] {U V : Scheme.{0}} (π : V ⟶ U) (n : ℕ) :
     ((AlgebraicTopology.alternatingFaceMapComplex (Shv R)).obj

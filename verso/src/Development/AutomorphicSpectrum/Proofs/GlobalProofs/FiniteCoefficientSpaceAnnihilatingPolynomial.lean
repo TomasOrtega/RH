@@ -12,19 +12,19 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.CompanionTheory.HcFinite.OneParam
 
 /- English proof (translation)
-Use `set I : ℝ → E := fun u => ∫ x in (0:ℝ)..u, φ x with hI`. Establish `hId : ∀ b, HasDerivAt I (φ b) b` using `fun b => (hc.integral_hasStrictDerivAt 0 b).hasDerivAt`. Establish `hslope` using `hasDerivAt_iff_tendsto_slope.mp (hId 0)`. Rewrite `hslope` using `[h0]`. Establish `hev : ∀ᶠ r in 𝓝[≠] (0:ℝ), ‖slope I 0 r - 1‖ < 1` using `(tendsto_iff_norm_sub_tendsto_zero.mp hslope).eventually (gt_mem_nhds one_pos)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨r, hr, hne⟩` from `(hev.and self_mem_nhdsWithin).exists`. Establish `hlt : ‖1 - slope I 0 r‖ < 1` using `by rw [norm_sub_rev]; exact hr`. Choose the witnesses or unpack the hypotheses as in `⟨u, hu⟩ : IsUnit (slope I 0 r) := by`. Establish `e : slope I 0 r = 1 - (1 - slope I 0 r)` using `by abel`. Rewrite using `[e]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `⟨Units.oneSub (1 - slope I 0 r) hlt, rfl⟩`. Establish `key : ∀ t, φ t * I r = I (t + r) - I t`. Introduce `t`. Establish `h1 : φ t * I r = ∫ x in (0:ℝ)..r, φ (t + x)`. Establish `hcomm` using `(ContinuousLinearMap.mul ℝ E (φ t)).intervalIntegral_comp_comm (hc.intervalIntegrable (μ := MeasureTheory.volume) 0 r)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [ContinuousLinearMap.mul_apply'] at hcomm`. Rewrite using `[hI, ← hcomm]`. Simplify using `only [hadd]`. Rewrite using `[h1, intervalIntegral.integral_comp_add_left (fun x => φ x) t, add_zero, hI, intervalIntegral.integral_interval_sub_left (hc.intervalIntegrable _ _) (hc.intervalIntegrable _ _)]`. Establish `hI0 : I 0 = 0` using `by simp [hI]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hφ : φ = fun t => (r⁻¹ • (I (t + r) - I t)) * ((u⁻¹ : Eˣ) : E)`. Use function extensionality and compare the values at `t`. Establish `e : φ t * slope I 0 r = r⁻¹ • (I (t + r) - I t)`. Rewrite using `[slope_def_module, sub_zero, hI0, sub_zero, mul_smul_comm, key]`. Rewrite using `[← e, ← hu, mul_assoc, Units.mul_inv, mul_one]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨r⁻¹ • (φ r - 1) * ((u⁻¹ : Eˣ) : E), fun t => ?_⟩` and prove the remaining obligations. Establish `h2 : HasDerivAt (fun t => I (t + r)) (φ (t + r)) t` using `HasDerivAt.comp_add_const t r (hId (t + r))`. Establish `hd : HasDerivAt (fun t => (r⁻¹ • (I (t + r) - I t)) * ((u⁻¹ : Eˣ) : E)) ((r⁻¹ • (φ (t + r) - φ t)) * ((u⁻¹ : Eˣ) : E)) t` using `((h2.sub (hId t)).const_smul r⁻¹).mul_const _`. Rewrite `hd` using `[← hφ]`. Use `hd using 1` and compare the differences between its conclusion and the goal.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hadd, ← mul_assoc, mul_smul_comm, mul_sub, mul_one]`.
+A detailed English derivation is pending.
 -/
 theorem hasDerivAt_of_oneParam {E : Type*} [NormedRing E] [NormedAlgebra ℝ E] [CompleteSpace E] (φ : ℝ → E)
     (hc : Continuous φ) (h0 : φ 0 = 1) (hadd : ∀ a b, φ (a + b) = φ a * φ b) :
@@ -69,15 +69,15 @@ theorem hasDerivAt_of_oneParam {E : Type*} [NormedRing E] [NormedAlgebra ℝ E] 
 attribute [local instance] Matrix.linftyOpNormedRing Matrix.linftyOpNormedAlgebra in
 
 /- English proof (translation)
-Set `b` to `Module.finBasis ℂ W`. Set `M : ℝ → Matrix (Fin (Module.finrank ℂ W)) (Fin (Module.finrank ℂ W)) ℂ` to `fun t => LinearMap.toMatrix b b (ρ (s t))`. Establish `hM0 : M 0 = 1` using `by simp [M, h0]`. Establish `hMadd : ∀ a c, M (a + c) = M a * M c`. Introduce `a c`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [M, hadd, map_mul, LinearMap.toMatrix_mul]`. Establish `hMc : Continuous M`. Use `continuous_pi fun i => continuous_pi fun j => ?_` and prove the remaining obligations. Simplify using `only [M, LinearMap.toMatrix_apply]`. Conclude with `(hρ (b.coord i) (b j)).comp hs`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Take `⟨D₀, hD₀⟩` from `hasDerivAt_of_oneParam M hMc hM0 hMadd`. Use `⟨Matrix.toLin b b D₀, fun L t => ?_⟩` and prove the remaining obligations. Set `L' : Matrix (Fin (Module.finrank ℂ W)) (Fin (Module.finrank ℂ W)) ℂ →L[ℝ] ℂ` to `LinearMap.toContinuousLinearMap ((L ∘ₗ (Matrix.toLin b b).toLinearMap).restrictScalars ℝ)`. Establish `hL' : ∀ X, L' X = L (Matrix.toLin b b X)` using `fun X => rfl`. Establish `hk` using `L'.hasFDerivAt.comp_hasDerivAt t (hD₀ t)`.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : (fun t => L (ρ (s t))) = L' ∘ M`. Use function extensionality and compare the values at `t`. Simplify using `[hL', M, Matrix.toLin_toMatrix]`. Rewrite using `[e1]`. Use `hk using 1` and compare the differences between its conclusion and the goal.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities.
 
-Use `show L (ρ (s t) * Matrix.toLin b b D₀) = L (Matrix.toLin b b (LinearMap.toMatrix b b (ρ (s t)) * D₀))`. Rewrite using `[Matrix.toLin_mul b b b, Matrix.toLin_toMatrix, Module.End.mul_eq_comp]`. Apply the tactic sequence `all_goals rfl`.
+A detailed English derivation is pending.
 -/
 theorem exists_generator {K W : Type} [Group K] [TopologicalSpace K] [AddCommGroup W] [Module ℂ W]
     [FiniteDimensional ℂ W] (ρ : Representation ℂ K W) (hρ : GlobalTheory.Published.AutFin.IsContRep ρ) (s : ℝ → K)
@@ -111,11 +111,11 @@ theorem exists_generator {K W : Type} [Group K] [TopologicalSpace K] [AddCommGro
   all_goals rfl
 
 /- English proof (translation)
-Proceed by induction on `j with`. Consider the case `zero`. Introduce `L`. Use function extensionality and compare the values at `t`. Simplify using the standard rewrite rules.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Consider the case `succ j ih`. Introduce `L`. Rewrite using `[iteratedDeriv_succ, ih L]`. Use function extensionality and compare the values at `t`. Establish `h` using `hD (L ∘ₗ LinearMap.mulRight ℂ (D ^ j)) t`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Simplify using `only [LinearMap.comp_apply, LinearMap.mulRight_apply] at h`. Rewrite using `[h.deriv, mul_assoc, ← pow_succ']`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem iteratedDeriv_eq {K W : Type} [Group K] [AddCommGroup W] [Module ℂ W] (ρ : Representation ℂ K W) (s : ℝ → K)
     (D : Module.End ℂ W)
@@ -135,11 +135,11 @@ theorem iteratedDeriv_eq {K W : Type} [Group K] [AddCommGroup W] [Module ℂ W] 
     rw [h.deriv, mul_assoc, ← pow_succ']
 
 /- English proof (translation)
-Proceed by induction on `hf using Submodule.span_induction with`. Consider the case `mem g hg`. Take `⟨ℓ, w, rfl⟩` from `hg`. Conclude with `⟨ℓ ∘ₗ (LinearMap.applyₗ w : Module.End ℂ W →ₗ[ℂ] W), fun x => rfl⟩`. Consider the case `zero => exact ⟨0, fun x => by simp⟩`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately.
 
-Consider the case `add g h _ _ hg hh`. Take `⟨Λ₁, h₁⟩` from `hg`. Take `⟨Λ₂, h₂⟩` from `hh`. Conclude with `⟨Λ₁ + Λ₂, fun x => by simp [h₁, h₂]⟩`. Consider the case `smul c g _ hg`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately.
 
-Take `⟨Λ, hΛ⟩` from `hg`. Conclude with `⟨c • Λ, fun x => by simp [hΛ]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem coeffSpan_factor {K W : Type} [Group K] [AddCommGroup W] [Module ℂ W] (ρ : Representation ℂ K W)
     (f : K → ℂ) (hf : f ∈ GlobalTheory.Published.AutFin.coeffSpan ρ) :
@@ -158,13 +158,13 @@ theorem coeffSpan_factor {K W : Type} [Group K] [AddCommGroup W] [Module ℂ W] 
     exact ⟨c • Λ, fun x => by simp [hΛ]⟩
 
 /- English proof (translation)
-Introduce `K W _ _ _ _ _ ρ hρ s hs h0 hadd`. Take `⟨D, hD⟩` from `exists_generator ρ hρ s hs h0 hadd`. Use `⟨LinearMap.charpoly D, (LinearMap.charpoly_monic D).ne_zero, ?_⟩` and prove the remaining obligations. Introduce `f hf k`. Take `⟨Λ, hΛ⟩` from `coeffSpan_factor ρ f hf`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Set `L : Module.End ℂ W →ₗ[ℂ] ℂ` to `Λ ∘ₗ LinearMap.mulLeft ℂ (ρ k)`. Establish `hfun : (fun t : ℝ => f (k * s t)) = fun t => L (ρ (s t))`. Use function extensionality and compare the values at `t`. Simplify using `[L, hΛ, map_mul]`. Establish `hit` using `iteratedDeriv_eq ρ s D hD`.
+Introduce a local definition for the expression. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [hfun, hit]`. Simplify using `only [h0, map_one, one_mul]`. Establish `hc` using `LinearMap.aeval_self_charpoly D`. Rewrite `hc` using `[Polynomial.aeval_eq_sum_range]`. Combine the equalities or inequalities in the displayed calculation.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Simplify using `[map_sum, smul_eq_mul]`. Use `_ = 0 := by rw [hc, map_zero]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem coeff_ode : ∀ (K W : Type) [Group K] [TopologicalSpace K] [AddCommGroup W] [Module ℂ W] [FiniteDimensional ℂ W] (ρ : Representation ℂ K W), GlobalTheory.Published.AutFin.IsContRep ρ → ∀ s : ℝ → K, Continuous s → s 0 = 1 → (∀ a b, s (a + b) = s a * s b) → ∃ m : Polynomial ℂ, m ≠ 0 ∧ ∀ f ∈ GlobalTheory.Published.AutFin.coeffSpan ρ, ∀ k : K, ∑ j ∈ Finset.range (m.natDegree + 1), m.coeff j * iteratedDeriv j (fun t : ℝ => f (k * s t)) 0 = 0 := by
   intro K W _ _ _ _ _ ρ hρ s hs h0 hadd

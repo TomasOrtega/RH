@@ -27,7 +27,7 @@ def sideEmb (σ : PsiT D × Bool) : D.host.E →+* ℂ :=
   if σ.2 then conjEmb (DV.tauEmb D (D.eTau.symm σ.1)) else DV.tauEmb D (D.eTau.symm σ.1)
 
 /- English proof (translation)
-Simplify using `[sideEmb]`.
+Simplify using the standard rewrite rules.
 -/
 example (t : D.what₂.Tau) : sideEmb D (D.eTau t, false) = DV.tauEmb D t ∧
     sideEmb D (D.eTau t, true) = conjEmb (DV.tauEmb D t) := by
@@ -81,16 +81,16 @@ Both sides reduce to the same expression.
 theorem evlTrue_kapB : (evlTrue ct).kapB y σ = RayEv.kapB (ct.dat y) (sideEmb D σ) := rfl
 
 /- English proof (translation)
-Introduce `a b h` and use `(RayEv.incT_exact (ct.dat y) (sideEmb D σ)).1 ((evlTrue_incT ct y σ a).symm.trans (h.trans (evlTrue_incT ct y σ b)))`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem evlTrue_incT_injective : Function.Injective ((evlTrue ct).incT y σ) := fun a b h =>
   (RayEv.incT_exact (ct.dat y) (sideEmb D σ)).1
     ((evlTrue_incT ct y σ a).symm.trans (h.trans (evlTrue_incT ct y σ b)))
 
 /- English proof (translation)
-Use extensionality with `v`. Rewrite using `[AddMonoidHom.mem_range, AddMonoidHom.mem_ker]`. Establish `h` using `(RayEv.incT_exact (ct.dat y) (sideEmb D σ)).2 v`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨w, hw⟩`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Conclude with `(evlTrue_resB ct y σ v).trans (h.2 ⟨w, (evlTrue_incT ct y σ w).symm.trans hw⟩)`. Introduce `e`. Take `⟨w, hw⟩` from `h.1 ((evlTrue_resB ct y σ v).symm.trans e)`. Conclude with `⟨w, (evlTrue_incT ct y σ w).trans hw⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem evlTrue_range_incT : ((evlTrue ct).incT y σ).range = ((evlTrue ct).resB y σ).ker := by
   ext v
@@ -104,7 +104,7 @@ theorem evlTrue_range_incT : ((evlTrue ct).incT y σ).range = ((evlTrue ct).resB
     exact ⟨w, (evlTrue_incT ct y σ w).trans hw⟩
 
 /- English proof (translation)
-The claim follows from `(congrFun₂ (evlTrue_kapGt ct y σ) u u').trans ((RayEv.kapGt_eq (ct.dat y) (sideEmb D σ) u u').trans ((congrFun₂ (evlTrue_kapB ct y σ) _ _).trans (congrArg₂ _ (evlTrue_resB ct y σ u) (evlTrue_resB ct y σ u'))).symm)`.
+A detailed English derivation is pending.
 -/
 theorem evlTrue_kap (u u' : (evlTrue ct).LieGt y σ) : (evlTrue ct).kapGt y σ u u' =
     (evlTrue ct).kapB y σ ((evlTrue ct).resB y σ u) ((evlTrue ct).resB y σ u') :=

@@ -108,7 +108,7 @@ theorem valR_of_field {F : Type} [Field F] {X : Scheme.{0}} (x : Sp F ⟶ X) (U 
     valR x U f = valF x U f := rfl
 
 /- English proof (translation)
-The claim follows from `hH.cover g_self i := (map_pow _ _ _).trans ((congrArg (· ^ d) (hH.g_self i)).trans (one_pow d)) cocycle i j l := by refine (congrArg₂ (· * ·) (map_pow _ _ _) (map_pow _ _ _)).trans ((mul_pow _ _ _).symm.trans ((congrArg (· ^ d) (hH.cocycle i j l)).trans (map_pow _ _ _).symm))`.
+A detailed English derivation is pending.
 -/
 theorem npw_isLB {X : Scheme.{0}} {H : LB X} (hH : H.IsLB) (d : ℕ) : (npw H d).IsLB where
   cover := hH.cover
@@ -118,7 +118,7 @@ theorem npw_isLB {X : Scheme.{0}} {H : LB X} (hH : H.IsLB) (d : ℕ) : (npw H d)
       ((congrArg (· ^ d) (hH.cocycle i j l)).trans (map_pow _ _ _).symm))
 
 /- English proof (translation)
-Use `ext`. Conclude with `congrArg (fun φ => φ.hom (u : Γ(X, U))) (f.naturality (homOfLE h).op)`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem pullU_res_eq {X Y : Scheme.{0}} (f : Y ⟶ X) {U V : X.Opens} (h : V ≤ U) (u : Γ(X, U)ˣ) :
     pullU f V (res h u) = res (Scheme.Hom.preimage_mono f h) (pullU f U u) := by
@@ -126,9 +126,9 @@ theorem pullU_res_eq {X Y : Scheme.{0}} (f : Y ⟶ X) {U V : X.Opens} (h : V ≤
   exact congrArg (fun φ => φ.hom (u : Γ(X, U))) (f.naturality (homOfLE h).op)
 
 /- English proof (translation)
-Use `⟨?_, fun i => ?_, fun i j l => ?_⟩` and prove the remaining obligations. Use `show ⨆ l, f ⁻¹ᵁ L.U l = ⊤`. Rewrite using `[← Scheme.Hom.preimage_iSup, hL.cover, Scheme.Hom.preimage_top]`. Establish `e` using `congrArg (pullU f _) (hL.g_self i)`. Rewrite `e` using `[map_one, pullU_res_eq]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `e`. Establish `e` using `congrArg (pullU f _) (hL.cocycle i j l)`. Rewrite `e` using `[map_mul, pullU_res_eq, pullU_res_eq, pullU_res_eq]`. Conclude with `e`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pullChart_isLB {X Y : Scheme.{0}} (f : Y ⟶ X) {L : LB X} (hL : L.IsLB) :
     (⟨L.ι, fun l => f ⁻¹ᵁ L.U l, fun l l' => pullU f (L.U l ⊓ L.U l') (L.g l l')⟩ : LB Y).IsLB := by
@@ -143,13 +143,13 @@ theorem pullChart_isLB {X Y : Scheme.{0}} (f : Y ⟶ X) {L : LB X} (hL : L.IsLB)
     exact e
 
 /- English proof (translation)
-The claim follows from `npw_isLB (pullChart_isLB Φ.D.q.left Φ.isLB) d`.
+A detailed English derivation is pending.
 -/
 theorem FibPre.H_isLB {k : Type} [Field k] (Φ : FibPre k) (d : ℕ) : (Φ.H d).IsLB :=
   npw_isLB (pullChart_isLB Φ.D.q.left Φ.isLB) d
 
 /- English proof (translation)
-The claim follows from `Module.Finite.iff_fg.2 ((MvPolynomial.homogeneousSubmodule_fg J k d).map _)`.
+A detailed English derivation is pending.
 -/
 theorem finite_forms {k J : Type} [Field k] [Finite J] (C : Set (J → k)) (d : ℕ) :
     Module.Finite k ((MvPolynomial.homogeneousSubmodule J k d).map
@@ -157,7 +157,7 @@ theorem finite_forms {k J : Type} [Field k] [Finite J] (C : Set (J → k)) (d : 
   Module.Finite.iff_fg.2 ((MvPolynomial.homogeneousSubmodule_fg J k d).map _)
 
 /- English proof (translation)
-Establish `e : ∀ (h : (⊤ : (Sp R).Opens) ≤ ⊤) (x : Γ(Sp R, ⊤)), ((Sp R).presheaf.map (homOfLE h).op).hom x = x` using `fun h x => congrArg (fun φ => CommRingCat.Hom.hom φ x) ((Sp R).presheaf.map_id _)`. Simplify using `only [valR, constFn, Scheme.Hom.appLE, Scheme.Hom.id_app, Category.id_comp]`. Use `(dif_pos (fun _ _ => trivial)).trans ?_` and prove the remaining obligations. Use `erw [e, e]`. Conclude with `(Scheme.ΓSpecIso (CommRingCat.of R)).inv_hom_id_apply a`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 example {R : Type} [CommRing R] (a : R) : valR (𝟙 (Sp R)) ⊤ (constFn (𝟙 (Sp R)) ⊤ a) = a := by
   have e : ∀ (h : (⊤ : (Sp R).Opens) ≤ ⊤) (x : Γ(Sp R, ⊤)), ((Sp R).presheaf.map (homOfLE h).op).hom x = x :=
@@ -168,18 +168,18 @@ example {R : Type} [CommRing R] (a : R) : valR (𝟙 (Sp R)) ⊤ (constFn (𝟙 
   exact (Scheme.ΓSpecIso (CommRingCat.of R)).inv_hom_id_apply a
 
 /- English proof (translation)
-The claim follows from `Module.finrank_zero_of_subsingleton`.
+A detailed English derivation is pending.
 -/
 example {k J : Type} [Field k] [Finite J] (d : ℕ) : hilb (∅ : Set (J → k)) d = 0 :=
   Module.finrank_zero_of_subsingleton
 
 /- English proof (translation)
-Introduce `_` and use `le_rfl`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 example {X : Type} [AddCommGroup X] (N : ℕ) (α : X) : Short (0 : QuadraticMap ℤ X ℝ) N α := fun _ => le_rfl
 
 /- English proof (translation)
-Introduce `h` and use `absurd h.four (by norm_num)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 example (g N' : ℕ) : ¬ Big g 3 N' := fun h => absurd h.four (by norm_num)
 

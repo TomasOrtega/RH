@@ -22,11 +22,11 @@ namespace GlobalTheory.CompanionTheory.SepPow
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ}
 
 /- English proof (translation)
-Establish `e` using `congrArg Valued.v h`. Rewrite `e` using `[map_mul, map_mul, hu, hv, mul_one, mul_one]`. Establish `h1 : Valued.v (ϖ : w.adicCompletion E) = WithZero.exp (-1 : ℤ)`. Rewrite using `[GlobalTheory.BorelUMod.v_eq_exp ϖ.ne_zero, hϖ.1]`. Establish `h0 : Valued.v (ϖ : w.adicCompletion E) ≠ 0`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[h1]`. Conclude with `WithZero.exp_ne_zero`. Establish `hne : Valued.v (ϖ : w.adicCompletion E) ≠ 1`. Rewrite using `[h1, ← WithZero.exp_zero]`. Introduce `h2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `WithZero.exp_injective h2` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite `e` using `[Units.val_zpow_eq_zpow_val, Units.val_zpow_eq_zpow_val, map_zpow₀, map_zpow₀]`. Conclude with `zpow_right_injective₀ (zero_lt_iff.2 h0) hne e`.
+Use linear arithmetic over natural numbers and integers. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem zpow_mul_inj {w : Pl E} {ϖ : (w.adicCompletion E)ˣ} (hϖ : IsUnifAt ϖ) {a c : ℤ} {u v : w.adicCompletion E}
     (hu : Valued.v u = 1) (hv : Valued.v v = 1)
@@ -47,17 +47,17 @@ theorem zpow_mul_inj {w : Pl E} {ϖ : (w.adicCompletion E)ˣ} (hϖ : IsUnifAt ϖ
   exact zpow_right_injective₀ (zero_lt_iff.2 h0) hne e
 
 /- English proof (translation)
-Establish `hy` using `(GlobalTheory.CompanionTheory.Wexp.wexp_strictAnti_rev n l hl).1`. Establish `h' : ∃ x ∈ iwU n w b, ∃ z ∈ iwU n w b, γ.1 = x.1 * (b * tdiag ϖ (wexp n l) * b⁻¹) * z.1`. Assume the negation of the conclusion as `hc`. Conclude with `h (if_neg hc)`. Take `⟨x, hx, z, hz, e⟩` from `h'`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨x', hx', ex⟩` from `Subgroup.mem_map.1 (Subgroup.mem_subgroupOf.1 hx)`. Take `⟨z', hz', ez⟩` from `Subgroup.mem_map.1 (Subgroup.mem_subgroupOf.1 hz)`. Establish `ex' : x.1 = b * x' * b⁻¹` using `ex.symm`. Establish `ez' : z.1 = b * z' * b⁻¹` using `ez.symm`. Establish `hδ : dcos n w (tdiag ϖ (wexp n l)) (b⁻¹ * γ.1 * b) ≠ 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: ∃ p ∈ iwGL n w, ∃ q ∈ iwGL n w, b⁻¹ * γ.1 * b = p * tdiag ϖ (wexp n l) * q` using `⟨x', hx', z', hz', by rw [e, ex', ez']; group⟩`. Simplify using `[dcos, this]`. Take `⟨m, -, τ, hτ, em⟩` from `GlobalTheory.CompanionTheory.IwahoriContraction.contr_id w ϖ hϖ n (wexp n l) hy _ hδ`. Establish `hval : (tdiag ϖ (wexp n l) * τ).val = Matrix.diagonal fun i => ((ϖ ^ wexp n l i : (w.adicCompletion E)ˣ) : w.adicCompletion E) * τ.val i i`. Establish `hτd : τ.val = Matrix.diagonal fun i => τ.val i i`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `i j`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[hτ.1 i j hij, Matrix.diagonal_apply_ne _ hij]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Units.val_mul, GlobalTheory.CompanionTheory.FUMulPf.tdiag_val, hτd, Matrix.diagonal_mul_diagonal]`. Simplify using the standard rewrite rules. Establish `hg : γ.1 = (b * m) * (tdiag ϖ (wexp n l) * τ) * (b * m)⁻¹`. Rewrite using `[← em]`. Use `group`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[GlobalTheory.CompanionTheory.UnitarySide.charpoly_conj_diagonal (b * m) _ γ.1 _ hval hg, Polynomial.separable_prod_X_sub_C_iff]`. Introduce `i j hij`. Conclude with `hy.injective (zpow_mul_inj hϖ (hτ.2 i) (hτ.2 j) hij)`.
+A detailed English derivation is pending.
 -/
 theorem separable_of_fU {w : Pl E} {b : GLw n w} {ϖ : (w.adicCompletion E)ˣ} (hϖ : IsUnifAt ϖ) {l : Fin (n / 2) → ℤ}
     (hl : Cone l) {γ : UL n w} (h : fU n w b ϖ l γ ≠ 0) : γ.1.val.charpoly.Separable := by
@@ -91,11 +91,11 @@ theorem separable_of_fU {w : Pl E} {b : GLw n w} {ϖ : (w.adicCompletion E)ˣ} (
   exact hy.injective (zpow_mul_inj hϖ (hτ.2 i) (hτ.2 j) hij)
 
 /- English proof (translation)
-Introduce `E _ _ _ hU n d hd hm m w hT y hy`. Take `⟨hs, hb, hϖ, hx⟩` from `hm.T w hT`. Establish `hx' : ∀ j, StrictAnti (GlobalTheory.CompanionTheory.MatchLMPlaces.xx d w j) ∧ Cone (lOf (GlobalTheory.CompanionTheory.MatchLMPlaces.xx d w j))` using `fun j => hx j.1 j.2`. Take `⟨J', _, c', x', hx'', e1, -⟩` from `GlobalTheory.CompanionTheory.MatchPow.pow_claim GlobalTheory.CompanionTheory.FUMulPf.fuMul GlobalTheory.CompanionTheory.DcosProduct.dcosMul hU hs 0 hb hϖ (GlobalTheory.CompanionTheory.MatchLMPlaces.cc d w) (GlobalTheory.CompanionTheory.MatchLMPlaces.xx d w) hx' m`. Establish `hKU : d.KU w = iwU n w (d.b w)` using `by simp [LocData.KU, hT]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hG : d.gU (m + 1) w y = (((iwU n w (d.b w)).relIndex (KL n w) : ℕ) : ℂ) ^ (m + 1) * (GlobalTheory.CompanionTheory.MatchPow.alpha n w (d.b w) ^ m * ∑ j, c' j * fU n w (d.b w) (d.ϖ w) (lOf (x' j)) y)`. Unfold `LocData.gU`. Rewrite using `[hKU, GlobalTheory.CompanionTheory.MatchLMPlaces.unitary_function_at_T d hT, GlobalTheory.CompanionTheory.MatchLMPlaces.lpow_scale, e1]`. Rewrite `hy` using `[hG]`. Establish `hsum : ∑ j, c' j * fU n w (d.b w) (d.ϖ w) (lOf (x' j)) y ≠ 0` using `fun h0 => hy (by rw [h0]; simp)`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Take `⟨j, -, hj⟩` from `Finset.exists_ne_zero_of_sum_ne_zero hsum`. Conclude with `separable_of_fU hϖ (hx'' j).2 (right_ne_zero_of_mul hj)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem sepPowT : SepPowT := by
   intro E _ _ _ hU n d hd hm m w hT y hy

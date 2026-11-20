@@ -14,45 +14,41 @@ open GroundTheory.Heights₂.Heights.HilbertSamuel
 noncomputable section
 
 /- English proof (translation)
-Introduce `K _ ι _ Ω _ _ y D N P0 II a ι' _ x' hD hII harith hbir hP0 hsemi hconj ha hx' hgen hbir'`. Take `⟨d, hdy, hdk, hmet, hlift⟩` from `hDat K ι Ω y D N P0 a ι' x' hD harith hbir hP0 hsemi hconj ha hx' hgen hbir'`. Rewrite `hmet`, `hlift` using `[hdy]`. Use `set v := liftCoords x' with hv_def`. Establish `hv1 : ∀ j, v j ∈ chartLat y (a • N.a) 1` using `fun j => hx' _`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hv : ∀ j, v j ∈ chartLat y N.a a` using `fun j => by`. Rewrite using `[← LiftBlockSections.chartLat_smul_one]`. Conclude with `hv1 j`. Establish `hgenv : KH.GeneratesOn y (fun k => (a : ℤ) * N.a k) v`. Introduce `c hc`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨u, hu, hsum⟩` from `hgen c hc`. Use `⟨fun j => u ((Fintype.equivFin ι').symm j), fun j => hu _, ?_⟩` and prove the remaining obligations. Rewrite using `[← hsum]`. Use `Fintype.sum_equiv (Fintype.equivFin ι').symm _ _ fun j => ?_` and prove the remaining obligations. Simplify using `[v, liftCoords]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsmooth : IsSmoothHerm N` using `hsemi.1`. Establish `hB : d.A.a = unitDeg (none : Option K)` using `by rw [d.deg, hdk]`. Establish `htop : II (Option K) (addIdx ι (Fintype.card ι')) (mCoordIdeal d.y) (D + 1) (fun _ => d.A) = (a : ℝ) ^ (D + 1) * II K ι (mCoordIdeal y) (D + 1) (fun _ => N)`. Rewrite using `[hdy]`. Conclude with `hTop K ι Ω y D N a (Fintype.card ι') v d.A II hII harith hsmooth ha hv hgenv hB d.semipos.1 hmet`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨hchi, C, hC⟩` from `hHSM D (Option K) (addIdx ι (Fintype.card ι')) Ω II d hII`. Rewrite `hchi` using `[htop]`. Use `set t := (a : ℝ) ^ (D + 1) * II K ι (mCoordIdeal y) (D + 1) (fun _ => N) with ht`. Take `⟨hfin, -⟩` from `hPack K ι Ω y D N (chartLat y N.a) harith hbir hsmooth (fun τ => SectionLatticeFinite.chartLat_le_nm y N.a τ)`. Establish `htrans : ∀ n, smallSectionCount (IsSmallH (mCoordIdeal d.y) d.y d.A) (fun τ => secM d.y (blockDeg d.k₀ τ)) n ≤ smallSectionCount (IsSmallH (mCoordIdeal y) y N) (chartLat y N.a) (a * n)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Introduce `n`. Use `LiftBlockSections.smallSectionCount_mono (fun s hs hsm => ⟨?_, ?_⟩) (hfin _)` and prove the remaining obligations. Rewrite `hs` using `[hdy, hdk]`. Use `LiftBlockSections.secM_le_chartLat y v (a • N.a) hv1 n hs` as an intermediate fact. Rewrite `this` using `[smul_smul, mul_comm, LiftBlockSections.chartLat_smul_one]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hsm` using `[hdy]`. Conclude with `LiftBlockSections.isSmallH_of_lift hB hv hmet hlift hsm`. Use `set h0 : ℕ → ℝ := fun τ => smallSectionCount (IsSmallH (mCoordIdeal d.y) d.y d.A) (fun τ => secM d.y (blockDeg d.k₀ τ)) τ with hh0`. Use `set C' := max C 1 with hC'`. Establish `hC'1 : 1 ≤ C'` using `le_max_right _ _`.
+Rewrite the conclusion using the stated equalities. Put the polynomial expressions in normal form. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hsq : ∀ n : ℕ, (n : ℝ) ^ ((D : ℝ) / 2) = Real.sqrt ((n : ℝ) ^ D)`. Introduce `n`. Rewrite using `[Real.sqrt_eq_rpow, ← Real.rpow_natCast, ← Real.rpow_mul (Nat.cast_nonneg _)]`. Put the polynomial expressions in normal form. Use `set E : ℕ → ℝ := fun n => 2 * C' ^ 2 * Real.log (Real.sqrt 2 * C' ^ 2) * (n : ℝ) ^ D + 2 * C' ^ 2 * D * ((n : ℝ) ^ D * Real.log n) with hE_def`.
+Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hlow : ∀ n : ℕ, 1 ≤ n → blockChi d n - E n ≤ h0 n`. Introduce `n hn`. Establish `hn1 : (1 : ℝ) ≤ n` using `by exact_mod_cast hn`. Use `set c := C' * Real.sqrt ((n : ℝ) ^ D) with hc`. Establish `hc1 : 1 ≤ c`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `: 1 ≤ Real.sqrt ((n : ℝ) ^ D)` using `Real.one_le_sqrt.mpr (one_le_pow₀ hn1)`. Use the polynomial consequences of the given equalities and inequalities. Establish `hc2 : c ^ 2 = C' ^ 2 * (n : ℝ) ^ D`. Rewrite using `[hc, mul_pow, Real.sq_sqrt (by positivity)]`. Establish `hbound : ∀ f : MRing (addIdx ι (Fintype.card ι')), IsMultiHomog f (blockDeg d.k₀ n) → ∀ z ∈ mcPts (mCoordIdeal d.y), ‖eval z (map (Int.castRingHom ℂ) f)‖ / d.A.h z ^ n ≤ c * blockL2Norm d n f`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Introduce `f hf z hz`. Use `(hC n hn f hf z hz).trans ?_` and prove the remaining obligations. Rewrite using `[hc, ← hsq]`. Conclude with `mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_right (le_max_left _ _) (by positivity)) (Real.sqrt_nonneg _)`. Take `⟨hr, hcnt⟩` from `hCount D (Option K) (addIdx ι (Fintype.card ι')) Ω d n c (by linarith) hbound`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Check the signs of the components of the expression. Establish an intermediate fact.
 
-Use `set r : ℝ := (Module.finrank ℤ (secM d.y (blockDeg d.k₀ n)) : ℝ) with hr_def`. Establish `hr0 : 0 ≤ r` using `Nat.cast_nonneg _`. Establish `hL : 0 ≤ Real.log (Real.sqrt 2 * c ^ 2)`. Apply `Real.log_nonneg` to reduce the goal to its premises. Establish `: 1 ≤ Real.sqrt 2` using `Real.one_le_sqrt.mpr (by norm_num)`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 
-Use the polynomial consequences of the given equalities and inequalities. Establish `hrE : r * Real.log (c * Real.sqrt r) ≤ 2 * c ^ 2 * Real.log (Real.sqrt 2 * c ^ 2)`. Distinguish the cases in `h0r : r = 0`. Rewrite using `[h0r, zero_mul]`. Check the signs of the components of the expression.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hrpos : 0 < r` using `lt_of_le_of_ne hr0 (Ne.symm h0r)`. Establish `hlog : Real.log (c * Real.sqrt r) ≤ Real.log (Real.sqrt 2 * c ^ 2)`. Apply `Real.log_le_log (by positivity)` to reduce the goal to its premises. Establish `h1 : Real.sqrt r ≤ Real.sqrt 2 * c`. Rewrite using `[← Real.sqrt_sq (by linarith : (0 : ℝ) ≤ c), ← Real.sqrt_mul (by norm_num)]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Real.sqrt_le_sqrt hr`. Use the polynomial consequences of the given equalities and inequalities. Combine the equalities or inequalities in the displayed calculation. Establish `hEn : 2 * c ^ 2 * Real.log (Real.sqrt 2 * c ^ 2) = E n`. Establish `hnpos : (0 : ℝ) < n` using `by linarith`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlg : Real.log (Real.sqrt 2 * c ^ 2) = Real.log (Real.sqrt 2 * C' ^ 2) + D * Real.log n`. Rewrite using `[hc2, ← mul_assoc, Real.log_mul (by positivity) (by positivity), Real.log_pow]`. Rewrite using `[hlg, hc2]`. Simplify using `only [hE_def]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: blockChi d n - E n ≤ blockChi d n - r * Real.log (c * Real.sqrt r)` using `by linarith`. Conclude with `this.trans hcnt`. Establish `hF : (fun n => hsDefect D (blockChi d) t n - E n) =o[atTop] pw D` using `hchi.sub (ArithmeticVolumeResolution.error_isLittleO D _ _)`. Introduce `ε hε`. Establish `hfac : (0 : ℝ) < ((D + 1).factorial : ℝ)` using `by positivity`.
+Establish an intermediate fact. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use `filter_upwards [hF.def (div_pos hε hfac), eventually_ge_atTop 1] with n hFn hn`. Establish `hn1 : (1 : ℝ) ≤ n` using `by exact_mod_cast hn`. Establish `hnpos : (0 : ℝ) < (n : ℝ) ^ (D + 1)` using `by positivity`. Establish `habs : -(ε / ((D + 1).factorial : ℝ) * (n : ℝ) ^ (D + 1)) ≤ hsDefect D (blockChi d) t n - E n`. Use `neg_abs_le (hsDefect D (blockChi d) t n - E n)` as an intermediate fact.
-
-Rewrite `hFn` using `[Real.norm_eq_abs, pw, Real.norm_eq_abs, abs_of_pos hnpos]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hl` using `hlow n hn`. Establish `htr` using `htrans n`. Establish `key : (t - ε) * ((n : ℝ) ^ (D + 1) / ((D + 1).factorial : ℝ)) = t * (n : ℝ) ^ (D + 1) / ((D + 1).factorial : ℝ) - ε / ((D + 1).factorial : ℝ) * (n : ℝ) ^ (D + 1)`.
-
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[key]`. Simplify using `only [hsDefect] at habs`. Simplify using `only [hh0] at hl`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem LiftCountAlongMultiples.proof (hDat : LiftBlockDatum.Statement) (hTop : PowerBlockTop.Statement)
     (hHSM : TheoremHSMBlock.Statement) (hCount : SupBoundCount.Statement) (hPack : SmallPacking.Statement) :

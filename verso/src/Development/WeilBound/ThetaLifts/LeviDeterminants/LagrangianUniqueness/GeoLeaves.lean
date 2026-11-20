@@ -13,7 +13,7 @@ namespace PositivityTheory.ThKF0
 open Geo
 
 /- English proof (translation)
-The claim follows from `map_line lagLine hψ hL T e hT he.Heisenberg₂ hTI he.inv aT (GeoAdm.comp_mem_adm F E σ B _ _ _ _ _ _ _ _ M M₁ _ _ _ e hM hM₁ he _ (proj_adm F _ 0)) (GlobalTheory.EvNonzero.exists_mem_schA_ev_ne_zero F E σ B _ _ _ _ _ _ _ _ M M₁ _ _ _ e hM hM₁ he)`.
+A detailed English derivation is pending.
 -/
 theorem evUniq {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} {B : Base F E}
     {n d n₁ d₁ : ℕ} {X : Spc F E n} {W : Spc F E d} {X₁ : Spc F E n₁} {W₁ : Spc F E d₁} {M : Model σ X W}
@@ -29,7 +29,7 @@ theorem evUniq {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] 
     (GlobalTheory.EvNonzero.exists_mem_schA_ev_ne_zero F E σ B _ _ _ _ _ _ _ _ M M₁ _ _ _ e hM hM₁ he)
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hP n₁ X₁ H i₀ i₁ M₁ om₁ r₁ s₁ hH hP₁ e he T h1 h2 h3`. Conclude with `evUniq hP.base.std hP.good hP₁.good (hasLag_X hP.base M M₁ hP.good hP₁.good hH) e he T h1 h2 (h3 0)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem hermitian_plane_theta_restriction : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (n d : ℕ) (X : Spc F E n) (W : Spc F E d)
     (M : Model σ X W) (χX χW : Chr F E) (om : Rep σ X W) (r s r' s' : ℕ), IsPair B M χX χW om r s r' s' →
@@ -45,7 +45,7 @@ theorem hermitian_plane_theta_restriction : ∀ (F E : Type) [Field F] [NumberFi
   exact evUniq hP.base.std hP.good hP₁.good (hasLag_X hP.base M M₁ hP.good hP₁.good hH) e he T h1 h2 (h3 0)
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hP n₁ X₁ H i₀ i₁ M₁ om₁ r₁ s₁ hH hP₁ e he y`. Conclude with `GeoAdm.comp_mem_adm F E σ B _ _ _ _ _ _ _ _ M M₁ _ _ _ e hP.good hP₁.good he _ (proj_adm F _ y)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem hermitian_plane_theta_cusp_integral : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (n d : ℕ) (X : Spc F E n) (W : Spc F E d)
     (M : Model σ X W) (χX χW : Chr F E) (om : Rep σ X W) (r s r' s' : ℕ), IsPair B M χX χW om r s r' s' →
@@ -57,7 +57,7 @@ theorem hermitian_plane_theta_cusp_integral : ∀ (F E : Type) [Field F] [Number
   exact GeoAdm.comp_mem_adm F E σ B _ _ _ _ _ _ _ _ M M₁ _ _ _ e hP.good hP₁.good he _ (proj_adm F _ y)
 
 /- English proof (translation)
-Conclude with `GlobalTheory.EvNonzero.exists_mem_schA_ev_ne_zero`.
+A detailed English derivation is pending.
 -/
 theorem evaluation_intertwining_support : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (n d n₁ d₁ : ℕ)
     (X : Spc F E n) (W : Spc F E d) (X₁ : Spc F E n₁) (W₁ : Spc F E d₁) (M : Model σ X W) (M₁ : Model σ X₁ W₁)
@@ -67,7 +67,7 @@ theorem evaluation_intertwining_support : ∀ (F E : Type) [Field F] [NumberFiel
   exact GlobalTheory.EvNonzero.exists_mem_schA_ev_ne_zero
 
 /- English proof (translation)
-Conclude with `GeoAdm.comp_mem_adm`.
+A detailed English derivation is pending.
 -/
 theorem evaluation_intertwining_of_models : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (n d n₁ d₁ : ℕ)
     (X : Spc F E n) (W : Spc F E d) (X₁ : Spc F E n₁) (W₁ : Spc F E d₁) (M : Model σ X W) (M₁ : Model σ X₁ W₁)

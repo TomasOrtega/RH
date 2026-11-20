@@ -19,9 +19,9 @@ instance xpHaar (p m : ℕ) : (volume : Measure (Xp p m)).IsAddHaarMeasure := by
   exact Measure.prod.instIsAddHaarMeasure _ _
 
 /- English proof (translation)
-Establish `hdet : LinearMap.det (t • LinearMap.id : E →ₗ[ℝ] E) = t ^ finrank ℝ E`. Rewrite using `[LinearMap.det_smul, LinearMap.det_id, mul_one]`. Establish `hne : LinearMap.det (t • LinearMap.id : E →ₗ[ℝ] E) ≠ 0`. Rewrite using `[hdet]`. Conclude with `pow_ne_zero _ ht`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hmap` using `MeasureTheory.Measure.map_linearMap_addHaar_eq_smul_addHaar μ hne`. Establish `hf' : (fun x => f (t • x)) = fun x => f ((t • LinearMap.id : E →ₗ[ℝ] E) x)` using `rfl`. Rewrite using `[hf', ← MeasureTheory.lintegral_map hf (LinearMap.continuous_of_finiteDimensional _).measurable, hmap, MeasureTheory.lintegral_smul_measure, hdet, smul_eq_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma lint_smul {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [MeasurableSpace E] [BorelSpace E]
     [FiniteDimensional ℝ E] (μ : Measure E) [μ.IsAddHaarMeasure] {f : E → ℝ≥0∞} (hf : Measurable f)
@@ -40,7 +40,7 @@ lemma lint_smul {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [Measurab
 def kc (s : ℝ) : ℝ≥0∞ := ∫⁻ z : ℂ, ENNReal.ofReal ((1 + ‖z‖ ^ 2) ^ (-s / 2))
 
 /- English proof (translation)
-Unfold `kc`. Establish `hi` using `integrable_rpow_neg_one_add_norm_sq (E := ℂ) (μ := (volume : Measure ℂ)) (r := s) (by rw [Complex.finrank_real_complex]; exact_mod_cast hs)`. Conclude with `hi.lintegral_lt_top`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 lemma kc_lt_top {s : ℝ} (hs : 2 < s) : kc s < ∞ := by
   unfold kc
@@ -49,21 +49,21 @@ lemma kc_lt_top {s : ℝ} (hs : 2 < s) : kc s < ∞ := by
   exact hi.lintegral_lt_top
 
 /- English proof (translation)
-Establish `h1 : ∫⁻ w : ℂ, ENNReal.ofReal ((Q * ‖w - c‖ ^ 2 + D) ^ (-s / 2)) = ∫⁻ w : ℂ, ENNReal.ofReal ((Q * ‖w‖ ^ 2 + D) ^ (-s / 2))`. Rewrite using `[← MeasureTheory.lintegral_add_right_eq_self (μ := (volume : Measure ℂ)) (fun w : ℂ => ENNReal.ofReal ((Q * ‖w - c‖ ^ 2 + D) ^ (-s / 2))) c]`. Simplify using `only [add_sub_cancel_right]`. Rewrite using `[h1]`. Take `⟨t, ht⟩ : ∃ t : ℝ, t = Real.sqrt (D / Q)` from `⟨_, rfl⟩`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `htpos : 0 < t`. Rewrite using `[ht]`. Conclude with `Real.sqrt_pos.mpr (div_pos hD hQ)`. Establish `ht2 : t ^ 2 = D / Q`. Rewrite using `[ht]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Real.sq_sqrt (div_pos hD hQ).le`. Establish `hmeas : Measurable (fun w : ℂ => ENNReal.ofReal ((Q * ‖w‖ ^ 2 + D) ^ (-s / 2)))` using `by first`. Consider the case `fun_prop`. Consider the case `measurability`. Establish `hmeas2 : Measurable (fun w : ℂ => ENNReal.ofReal ((1 + ‖w‖ ^ 2) ^ (-s / 2)))` using `by first`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Treat this case separately. Treat this case separately.
 
-Consider the case `fun_prop`. Consider the case `measurability`. Establish `h2` using `lint_smul (volume : Measure ℂ) hmeas htpos.ne'`. Use `beta_reduce at h2`. Rewrite `h2` using `[Complex.finrank_real_complex]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `h3 : ∀ z : ℂ, ENNReal.ofReal ((Q * ‖t • z‖ ^ 2 + D) ^ (-s / 2)) = ENNReal.ofReal (D ^ (-s / 2)) * ENNReal.ofReal ((1 + ‖z‖ ^ 2) ^ (-s / 2))`. Introduce `z`. Rewrite using `[norm_smul, Real.norm_eq_abs, abs_of_pos htpos, mul_pow, ht2, ← ENNReal.ofReal_mul (Real.rpow_nonneg hD.le _)]`. Use `congr 1`. Rewrite using `[← Real.mul_rpow hD.le (by positivity)]`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 
-Use `congr 1`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite `h2` using `[h3]`. Rewrite `h2` using `[MeasureTheory.lintegral_const_mul _ hmeas2]`.
+Rewrite the indicated hypotheses repeatedly using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `hinv : 0 < (t ^ 2)⁻¹` using `inv_pos.mpr (pow_pos htpos 2)`. Establish `h4 : ∫⁻ w : ℂ, ENNReal.ofReal ((Q * ‖w‖ ^ 2 + D) ^ (-s / 2)) = ENNReal.ofReal (t ^ 2) * (ENNReal.ofReal (D ^ (-s / 2)) * kc s)`. Unfold `kc`. Rewrite using `[h2, ← mul_assoc, ← ENNReal.ofReal_mul (pow_nonneg htpos.le 2), abs_of_pos hinv, mul_inv_cancel₀ (pow_pos htpos 2).ne', ENNReal.ofReal_one, one_mul]`. Rewrite using `[h4, ← mul_assoc, ← ENNReal.ofReal_mul (pow_nonneg htpos.le 2), ht2]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Use `congr 2`. Rewrite using `[show (1 : ℝ) - s / 2 = 1 + (-s / 2) by ring, Real.rpow_add hD, Real.rpow_one, div_eq_mul_inv]`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 lemma kernel (Q D : ℝ) (hQ : 0 < Q) (hD : 0 < D) (c : ℂ) (s : ℝ) :
     ∫⁻ w : ℂ, ENNReal.ofReal ((Q * ‖w - c‖ ^ 2 + D) ^ (-s / 2)) =
@@ -116,7 +116,7 @@ lemma kernel (Q D : ℝ) (hQ : 0 < Q) (hD : 0 < D) (c : ℂ) (s : ℝ) :
   ring
 
 /- English proof (translation)
-Rewrite using `[MeasurableEquiv.piFinSuccAbove_symm_apply]`. Use `first`. Consider the case `exact Fin.insertNth_zero' q.1 q.2`. Consider the case `simp [Fin.insertNthEquiv, Fin.insertNth_zero']`. Consider the case `rfl`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 lemma cons_symm {p : ℕ} (q : ℂ × (Fin p → ℂ)) :
     (MeasurableEquiv.piFinSuccAbove (fun _ : Fin (p + 1) => ℂ) 0).symm q = Fin.cons q.1 q.2 := by
@@ -127,11 +127,11 @@ lemma cons_symm {p : ℕ} (q : ℂ × (Fin p → ℂ)) :
   | rfl
 
 /- English proof (translation)
-Establish `hpi` using `(MeasureTheory.measurePreserving_piFinSuccAbove (fun _ : Fin (p + 1) => (volume : Measure ℂ)) 0).symm`. Establish `hF : Measurable fun x : Fin (p + 1) → ℂ => ∫⁻ r : R, G (x, r)` using `hG.lintegral_prod_right'`. Establish `hcons : ∀ w : ℂ, Measurable (fun q : (Fin p → ℂ) × R => ((Fin.cons w q.1 : Fin (p + 1) → ℂ), q.2))`. Introduce `w`. Establish `hm : Measurable (fun q : (Fin p → ℂ) × R => ((MeasurableEquiv.piFinSuccAbove (fun _ : Fin (p + 1) => ℂ) 0).symm (w, q.1), q.2))` using `by first`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Consider the case `exact ((MeasurableEquiv.measurable _).comp (measurable_const.prodMk measurable_fst)).prodMk measurable_snd`. Consider the case `exact ((MeasurableEquiv.measurable _).comp (measurable_const.prod_mk measurable_fst)).prod_mk measurable_snd`. Simplify `hm` using `only [cons_symm]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[MeasureTheory.lintegral_prod (fun y : ℂ × (Fin p → ℂ) => ∫⁻ r : R, G ((MeasurableEquiv.piFinSuccAbove (fun _ : Fin (p + 1) => ℂ) 0).symm y, r)) (hF.comp (MeasurableEquiv.measurable _)).aemeasurable]`.
+Treat this case separately. Treat this case separately. Simplify to obtain the desired conclusion from the available facts. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [cons_symm]`. Use `_ = ∫⁻ w : ℂ, ∫⁻ q : (Fin p → ℂ) × R, G (Fin.cons w q.1, q.2) := by`. Use `MeasureTheory.lintegral_congr fun w => ?_` and prove the remaining obligations. Conclude with `(MeasureTheory.lintegral_prod (fun q : (Fin p → ℂ) × R => G (Fin.cons w q.1, q.2)) (hG.comp (hcons w)).aemeasurable).symm`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 lemma split_cons {p : ℕ} {R : Type*} [MeasureSpace R] [SFinite (volume : Measure R)]
     (G : (Fin (p + 1) → ℂ) × R → ℝ≥0∞) (hG : Measurable G) :
@@ -160,9 +160,9 @@ lemma split_cons {p : ℕ} {R : Type*} [MeasureSpace R] [SFinite (volume : Measu
             (hG.comp (hcons w)).aemeasurable).symm
 
 /- English proof (translation)
-Rewrite using `[split_cons G hG]`. Apply `MeasureTheory.lintegral_lintegral_swap` to reduce the goal to its premises. Apply `Measurable.aemeasurable` to reduce the goal to its premises. Establish `hm : Measurable (fun x : ℂ × ((Fin p → ℂ) × R) => ((MeasurableEquiv.piFinSuccAbove (fun _ : Fin (p + 1) => ℂ) 0).symm (x.1, x.2.1), x.2.2))` using `by first`. Consider the case `exact ((MeasurableEquiv.measurable _).comp (measurable_fst.prodMk (measurable_fst.comp measurable_snd))).prodMk (measurable_snd.comp measurable_snd)`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Treat this case separately.
 
-Consider the case `exact ((MeasurableEquiv.measurable _).comp (measurable_fst.prod_mk (measurable_fst.comp measurable_snd))).prod_mk (measurable_snd.comp measurable_snd)`. Establish `h2` using `hG.comp hm`. Simplify using `only [cons_symm] at h2`. Conclude with `h2`.
+Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma split_cons' {p : ℕ} {R : Type*} [MeasureSpace R] [SFinite (volume : Measure R)]
     (G : (Fin (p + 1) → ℂ) × R → ℝ≥0∞) (hG : Measurable G) :
@@ -191,7 +191,7 @@ lemma sclL_apply (p m : ℕ) (t : ℝ) (x : Xp p m) :
     sclL p m t x = (t • x.1, t • x.2.1, t • x.2.2.1, t ^ 2 * x.2.2.2) := rfl
 
 /- English proof (translation)
-Unfold `sclL`. Rewrite using `[LinearMap.det_prodMap, LinearMap.det_prodMap, LinearMap.det_prodMap]`. Simplify using `only [LinearMap.det_smul, LinearMap.det_id, mul_one, Module.finrank_pi_fintype, Complex.finrank_real_complex, Finset.sum_const, Finset.card_univ, Fintype.card_fin, smul_eq_mul, Module.finrank_self]`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 lemma det_sclL (p m : ℕ) (t : ℝ) : LinearMap.det (sclL p m t) = t ^ (4 * p + 2 * m + 2) := by
   unfold sclL
@@ -201,9 +201,9 @@ lemma det_sclL (p m : ℕ) (t : ℝ) : LinearMap.det (sclL p m t) = t ^ (4 * p +
   ring
 
 /- English proof (translation)
-Establish `hdet : LinearMap.det (sclL p m t) ≠ 0`. Rewrite using `[det_sclL]`. Conclude with `pow_ne_zero _ ht.ne'`. Establish `hmap` using `MeasureTheory.Measure.map_linearMap_addHaar_eq_smul_addHaar (volume : Measure (Xp p m)) hdet`. Establish `htp : 0 < t ^ (4 * p + 2 * m + 2)` using `pow_pos ht _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← MeasureTheory.lintegral_map hG (LinearMap.continuous_of_finiteDimensional (sclL p m t)).measurable, hmap, MeasureTheory.lintegral_smul_measure, det_sclL, smul_eq_mul, ← mul_assoc, ← ENNReal.ofReal_mul htp.le, abs_of_pos (inv_pos.mpr htp), mul_inv_cancel₀ htp.ne', ENNReal.ofRea …`.
+A detailed English derivation is pending.
 -/
 lemma lint_scl {p m : ℕ} {G : Xp p m → ℝ≥0∞} (hG : Measurable G) {t : ℝ} (ht : 0 < t) :
     ∫⁻ x, G x = ENNReal.ofReal (t ^ (4 * p + 2 * m + 2)) * ∫⁻ x, G (sclL p m t x) := by
@@ -217,25 +217,23 @@ lemma lint_scl {p m : ℕ} {G : Xp p m → ℝ≥0∞} (hG : Measurable G) {t : 
     abs_of_pos (inv_pos.mpr htp), mul_inv_cancel₀ htp.ne', ENNReal.ofReal_one, one_mul]
 
 /- English proof (translation)
-Use `set u := x.2.2.1 with hu`. Use `set β := x.2.2.2 with hβ`. Use `set S : ℝ := ∑ i, ‖u i‖ ^ 2 with hS`. Establish `hS0 : 0 ≤ S` using `Finset.sum_nonneg fun i _ => by positivity`. Establish `ha : ‖u‖ ^ 2 ≤ S`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1 : ‖u‖ ≤ Real.sqrt S`. Rewrite using `[pi_norm_le_iff_of_nonneg (Real.sqrt_nonneg _)]`. Introduce `i`. Rewrite using `[Real.le_sqrt (norm_nonneg _) hS0]`. Conclude with `Finset.single_le_sum (f := fun i => ‖u i‖ ^ 2) (fun i _ => by positivity) (Finset.mem_univ i)`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hL : ∀ l : Fin 1, Lsq x l = 1`. Introduce `l`. Simplify using `[Lsq]`. Establish `hrho : rhoSq x 0 = 1 + S`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[rhoSq, hL, hS, hu]`. Establish `hbco : ‖bco x 0‖ ^ 2 = (S / 2) ^ 2 + β ^ 2`. Establish `h1 : bco x 0 = ((-S / 2 : ℝ) : ℂ) + (β : ℂ) * Complex.I`. Simplify using `[bco, hS, hu, hβ]`. Rewrite using `[h1, Complex.sq_norm, Complex.normSq_add_mul_I]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hpos : 0 < (1 + S / 2) ^ 2 + β ^ 2` using `by positivity`. Establish `hAq : de x 0 = Real.sqrt ((1 + S / 2) ^ 2 + β ^ 2)`. Unfold `de`. Rewrite using `[hL, hrho, hbco]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Establish `hs0 : s0N 0 m 0 = (m : ℝ) + 1` using `by simp [s0N]`. Rewrite using `[hAq, hs0, Real.sqrt_eq_rpow, ← Real.rpow_mul hpos.le]`. Establish `hsplit : (1 / 2 : ℝ) * -((m : ℝ) + 1 + v) = -((m : ℝ) + v / 2) / 2 + -(1 + v / 2) / 2` using `by ring`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hsplit, Real.rpow_add hpos]`. Establish `he1 : 0 ≤ (m : ℝ) + v / 2` using `by positivity`. Establish `hb1 : ((1 + S / 2) ^ 2 + β ^ 2) ^ (-((m : ℝ) + v / 2) / 2) ≤ 2 ^ ((m : ℝ) + v / 2) * (1 + ‖u‖ ^ 2) ^ (-(2 * ((m : ℝ) + v / 2)) / 2)`. Establish `hh : (1 + ‖u‖ ^ 2) / 2 ≤ 1 + S / 2` using `by linarith`. Establish `h0 : 0 ≤ (1 + ‖u‖ ^ 2) / 2` using `by positivity`.
+Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `hq : ((1 + ‖u‖ ^ 2) / 2) ^ 2 ≤ (1 + S / 2) ^ 2 + β ^ 2`. Use polynomial arithmetic with `[mul_le_mul hh hh h0 (by linarith), sq_nonneg β]`. Establish `hq0 : 0 < ((1 + ‖u‖ ^ 2) / 2) ^ 2` using `by positivity`. Combine the equalities or inequalities in the displayed calculation. Establish `hy : ((1 + ‖u‖ ^ 2) / 2) ^ 2 = ((1 + ‖u‖ ^ 2) / 2) ^ (2 : ℝ)` using `(Real.rpow_two _).symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Rewrite using `[hy, ← Real.rpow_mul h0, Real.div_rpow (by positivity) (by norm_num)]`. Rewrite using `[show (2 : ℝ) * (-((m : ℝ) + v / 2) / 2) = -((m : ℝ) + v / 2) by ring, show -(2 * ((m : ℝ) + v / 2)) / 2 = -((m : ℝ) + v / 2) by ring, Real.rpow_neg (by norm_num : (0 : ℝ) ≤ 2), div_inv_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `hb2 : ((1 + S / 2) ^ 2 + β ^ 2) ^ (-(1 + v / 2) / 2) ≤ (1 + ‖β‖ ^ 2) ^ (-(1 + v / 2) / 2)`. Establish `hq : 1 + ‖β‖ ^ 2 ≤ (1 + S / 2) ^ 2 + β ^ 2`.
-
-Rewrite using `[Real.norm_eq_abs, sq_abs]`. Use the polynomial consequences of the given equalities and inequalities. Conclude with `Real.rpow_le_rpow_of_nonpos (by positivity) hq (by linarith)`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 lemma base_pt (m : ℕ) (v : ℝ) (hv : 0 < v) (x : Xp 0 m) :
     de x 0 ^ (-(s0N 0 m 0 + v)) ≤ 2 ^ (m + v / 2 : ℝ) *
@@ -302,7 +300,7 @@ lemma base_pt (m : ℕ) (v : ℝ) (hv : 0 < v) (x : Xp 0 m) :
     _ = _ := by ring
 
 /- English proof (translation)
-Use `first`. Consider the case `simp [MeasureTheory.volume_pi, MeasureTheory.Measure.pi_univ]`. Consider the case `(rw [MeasureTheory.volume_pi, MeasureTheory.Measure.pi_univ]; simp)`. Consider the case `simp`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 lemma volume_univ_fin_zero : (volume : Measure (Fin 0 → ℂ)) Set.univ = 1 := by
   first
@@ -311,21 +309,19 @@ lemma volume_univ_fin_zero : (volume : Measure (Fin 0 → ℂ)) Set.univ = 1 := 
   | simp
 
 /- English proof (translation)
-Establish `hv` using `hν`. Establish `hf1 : MeasureTheory.Integrable (fun u : Fin m → ℂ => (1 + ‖u‖ ^ 2) ^ (-(2 * ((m : ℝ) + ν 0 / 2)) / 2))`. Apply `integrable_rpow_neg_one_add_norm_sq` to reduce the goal to its premises. Simplify using `only [Module.finrank_pi_fintype, Complex.finrank_real_complex, Finset.sum_const, Finset.card_univ, Fintype.card_fin, smul_eq_mul]`. Use `push_cast`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hf2 : MeasureTheory.Integrable (fun b : ℝ => (1 + ‖b‖ ^ 2) ^ (-(1 + ν 0 / 2) / 2))`. Apply `integrable_rpow_neg_one_add_norm_sq` to reduce the goal to its premises. Rewrite using `[Module.finrank_self]`. Use `push_cast`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hm1 : Measurable fun u : Fin m → ℂ => ENNReal.ofReal ((1 + ‖u‖ ^ 2) ^ (-(2 * ((m : ℝ) + ν 0 / 2)) / 2))` using `by first`. Consider the case `fun_prop`. Consider the case `measurability`. Establish `hm2 : Measurable fun b : ℝ => ENNReal.ofReal ((1 + ‖b‖ ^ 2) ^ (-(1 + ν 0 / 2) / 2))` using `by first`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Consider the case `fun_prop`. Consider the case `measurability`. Establish `hprod : ∫⁻ y : (Fin m → ℂ) × ℝ, ENNReal.ofReal ((1 + ‖y.1‖ ^ 2) ^ (-(2 * ((m : ℝ) + ν 0 / 2)) / 2)) * ENNReal.ofReal ((1 + ‖y.2‖ ^ 2) ^ (-(1 + ν 0 / 2) / 2)) < ∞`. Rewrite using `[MeasureTheory.Measure.volume_eq_prod, MeasureTheory.lintegral_prod_mul hm1.aemeasurable hm2.aemeasurable]`. Conclude with `ENNReal.mul_lt_top hf1.lintegral_lt_top hf2.lintegral_lt_top`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hpeel : ∀ {β : Type} [MeasureSpace β] [SFinite (volume : Measure β)] (g : β → ℝ≥0∞), Measurable g → ∫⁻ x : (Fin 0 → ℂ) × β, g x.2 = ∫⁻ y, g y`. Introduce `β _ _ g hg`. Rewrite using `[MeasureTheory.Measure.volume_eq_prod, MeasureTheory.lintegral_prod (fun x : (Fin 0 → ℂ) × β => g x.2) (hg.comp measurable_snd).aemeasurable]`. Simplify using `only [MeasureTheory.lintegral_const, volume_univ_fin_zero, mul_one]`. Establish `hbound : CHInt 0 m ν ≤ ∫⁻ x : Xp 0 m, ENNReal.ofReal (2 ^ ((m : ℝ) + ν 0 / 2)) * (ENNReal.ofReal ((1 + ‖x.2.2.1‖ ^ 2) ^ (-(2 * ((m : ℝ) + ν 0 / 2)) / 2)) * ENNReal.ofReal ((1 + ‖x.2.2.2‖ ^ 2) ^ (-(1 + ν 0 / 2) / 2)))`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `CHInt`. Use `MeasureTheory.lintegral_mono fun x => ?_` and prove the remaining obligations. Rewrite using `[Fin.prod_univ_one, ← ENNReal.ofReal_mul (Real.rpow_nonneg (by positivity : (0 : ℝ) ≤ 1 + ‖x.2.2.1‖ ^ 2) _), ← ENNReal.ofReal_mul (by positivity : (0 : ℝ) ≤ 2 ^ ((m : ℝ) + ν 0 / 2))]`. Conclude with `ENNReal.ofReal_le_ofReal (base_pt m (ν 0) hν x)`. Use `lt_of_le_of_lt hbound ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[MeasureTheory.lintegral_const_mul' _ _ ENNReal.ofReal_ne_top]`. Use `ENNReal.mul_lt_top ENNReal.ofReal_lt_top ?_` and prove the remaining obligations. Establish `hg1 : Measurable fun z : (Fin m → ℂ) × ℝ => ENNReal.ofReal ((1 + ‖z.1‖ ^ 2) ^ (-(2 * ((m : ℝ) + ν 0 / 2)) / 2)) * ENNReal.ofReal ((1 + ‖z.2‖ ^ 2) ^ (-(1 + ν 0 / 2) / 2))` using `(hm1.comp measurable_fst).mul (hm2.comp measurable_snd)`. Establish `e1 : ∫⁻ x : Xp 0 m, ENNReal.ofReal ((1 + ‖x.2.2.1‖ ^ 2) ^ (-(2 * ((m : ℝ) + ν 0 / 2)) / 2)) * ENNReal.ofReal ((1 + ‖x.2.2.2‖ ^ 2) ^ (-(1 + ν 0 / 2) / 2)) = ∫⁻ y : (Fin 0 → ℂ) × ((Fin m → ℂ) × ℝ), ENNReal.ofReal ((1 + ‖y.2.1‖ ^ 2) ^ (-(2 * ((m : ℝ) + ν 0 / 2)) / 2)) * ENNReal.ofRe …` using `hpeel (fun y : (Fin 0 → ℂ) × ((Fin m → ℂ) × ℝ) => ENNReal.ofReal ((1 + ‖y.2.1‖ ^ 2) ^ (-(2 * ((m : ℝ) + ν 0 / 2)) / 2)) * ENNReal.ofReal ((1 + ‖y.2.2‖ ^ 2) ^ (-(1 + ν 0 / 2) / 2))) (hg1.comp measurable_snd)`. Establish `e2 : ∫⁻ y : (Fin 0 → ℂ) × ((Fin m → ℂ) × ℝ), ENNReal.ofReal ((1 + ‖y.2.1‖ ^ 2) ^ (-(2 * ((m : ℝ) + ν 0 / 2)) / 2)) * ENNReal.ofReal ((1 + ‖y.2.2‖ ^ 2) ^ (-(1 + ν 0 / 2) / 2)) = ∫⁻ z : (Fin m → ℂ) × ℝ, ENNReal.ofReal ((1 + ‖z.1‖ ^ 2) ^ (-(2 * ((m : ℝ) + ν 0 / 2)) / 2)) * ENNReal.o …` using `hpeel (fun z : (Fin m → ℂ) × ℝ => ENNReal.ofReal ((1 + ‖z.1‖ ^ 2) ^ (-(2 * ((m : ℝ) + ν 0 / 2)) / 2)) * ENNReal.ofReal ((1 + ‖z.2‖ ^ 2) ^ (-(1 + ν 0 / 2) / 2))) hg1`.
-
-Rewrite using `[e1, e2]`. Conclude with `hprod`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma ch_base (m : ℕ) (ν : Fin 1 → ℝ) (hν : 0 < ν 0) : CHInt 0 m ν < ∞ := by
   have hv := hν

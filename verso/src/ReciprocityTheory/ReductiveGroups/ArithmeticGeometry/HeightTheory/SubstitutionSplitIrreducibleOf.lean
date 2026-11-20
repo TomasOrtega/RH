@@ -14,7 +14,7 @@ abbrev isX (v : V D N) : Prop := v.isRight = true
 abbrev isU (v : V D N) : Prop := v.isLeft = true
 
 /- English proof (translation)
-Unfold `WH.wt`. Rewrite using `[Fintype.sum_sum_type]`. Simplify using `[isX]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem wt_isX (s : V D N →₀ ℕ) : WH.wt isX s = ∑ i, s (Sum.inr i) := by
   unfold WH.wt
@@ -22,7 +22,7 @@ theorem wt_isX (s : V D N →₀ ℕ) : WH.wt isX s = ∑ i, s (Sum.inr i) := by
   simp [isX]
 
 /- English proof (translation)
-Unfold `WH.wt`. Rewrite using `[Fintype.sum_sum_type]`. Simplify using `[isU]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem wt_isU (s : V D N →₀ ℕ) : WH.wt isU s = ∑ p, s (Sum.inl p) := by
   unfold WH.wt
@@ -33,13 +33,13 @@ noncomputable def gImg (t : TVar D N) : MvPolynomial (V D N) K :=
   X (Sum.inr 0) * X (Sum.inl (t.1.succ, t.2)) - X (Sum.inr t.1.succ) * X (Sum.inl (0, t.2))
 
 /- English proof (translation)
-Establish `hw : ∀ s ∈ F.support, WH.wt (fun _ : TVar D N => True) s = (D + 1) * d0`. Introduce `s hs`. Simplify using `only [WH.wt, ↓reduceIte]`. Rewrite using `[Fintype.sum_prod_type, Finset.sum_congr rfl fun b _ => hmh s hs b]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `e` using `WH.psiP_eq_of_isWeightedHomogeneous (K := K) (fun _ : TVar D N => True) ((D + 1) * d0) F hw`. Establish `e2` using `congrArg (Polynomial.mapAlgHom (aeval fun t : TVar D N => gImg (K := K) t)) e`. Establish `h1 : WH.psiP p (bilinearSubstitution F) = aeval (fun t => Polynomial.C (gImg (K` using `K) t) * Polynomial.X) F := by`. Rewrite using `[show bilinearSubstitution F = aeval (fun t => gImg (K := K) t) F from rfl, MvPolynomial.comp_aeval_apply]`. Simplify using `only [hp]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[h1]`. Unfold `WH.psiP at e2`. Rewrite `e2` using `[MvPolynomial.comp_aeval_apply]`. Use `e2 using 1` and compare the differences between its conclusion and the goal. Use `congrArg (fun f => aeval f F) (funext fun t => ?_)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using the standard rewrite rules. Rewrite using `[show bilinearSubstitution F = aeval (fun t => gImg (K := K) t) F from rfl]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem weightGrading_substitution (p : V D N → Prop) [DecidablePred p]
     (hp : ∀ t : TVar D N, WH.psiP p (gImg (K := K) t) = Polynomial.C (gImg t) * Polynomial.X)
@@ -67,7 +67,7 @@ theorem weightGrading_substitution (p : V D N → Prop) [DecidablePred p]
     simp
 
 /- English proof (translation)
-Simplify using `[WH.psiP, gImg, isX]`. Apply the tactic sequence `try ring`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem psiX_g (t : TVar D N) :
     WH.psiP isX (gImg (K := K) t) = Polynomial.C (gImg t) * Polynomial.X := by
@@ -75,7 +75,7 @@ theorem psiX_g (t : TVar D N) :
   try ring
 
 /- English proof (translation)
-Simplify using `[WH.psiP, gImg, isU]`. Apply the tactic sequence `try ring`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem psiU_g (t : TVar D N) :
     WH.psiP isU (gImg (K := K) t) = Polynomial.C (gImg t) * Polynomial.X := by
@@ -83,31 +83,31 @@ theorem psiU_g (t : TVar D N) :
   try ring
 
 /- English proof (translation)
-Establish `hev1x0 : ev1 (X (Sum.inr 0) : MvPolynomial (V D N) K) = 1` using `by simp [ev1]`. Establish `hmono : ∀ (s : V D N →₀ ℕ) (a : K), ev1 (monomial s a) = monomial (s.erase (Sum.inr 0)) a`. Introduce `s a`. Establish `hs : monomial s a = monomial (s.erase (Sum.inr 0)) a * X (Sum.inr 0) ^ (s (Sum.inr 0))`. Rewrite using `[X_pow_eq_monomial, monomial_mul, mul_one, Finsupp.erase_add_single]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hs, map_mul, map_pow, hev1x0, one_pow, mul_one, ev1, aeval_monomial, monomial_eq, MvPolynomial.algebraMap_eq]`. Use `congr 1`. Apply `Finsupp.prod_congr` to reduce the goal to its premises. Introduce `v hv`. Rewrite using `[if_neg]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `rfl`. Simplify using `at hv`. Establish `hcoeff : ∀ u, coeff u (ev1 A) = ∑ s ∈ A.support, if s.erase (Sum.inr 0) = u then coeff s A else 0`. Introduce `u`. Use `conv_lhs => rw [A.as_sum]`.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_sum, coeff_sum]`. Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations. Rewrite using `[hmono, coeff_monomial]`. Establish `hwt : ∀ s : V D N →₀ ℕ, WH.wt isX s = WH.wt isX (s.erase (Sum.inr 0)) + s (Sum.inr 0)`. Introduce `s`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `conv_lhs => rw [← Finsupp.erase_add_single (Sum.inr 0) s]`. Rewrite using `[WH.wt_add, WH.wt_single, if_pos (show isX (Sum.inr 0 : V D N) from rfl)]`. Establish `hwt0 : WH.wt isX (0 : V D N →₀ ℕ) = 0` using `by simp [WH.wt]`. Establish `hinj : ∀ s ∈ A.support, ∀ s' ∈ A.support, s.erase (Sum.inr 0) = s'.erase (Sum.inr 0) → s = s'`. Introduce `s hs s' hs' he`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `hwt s`. Establish `h3` using `hwt s'`. Rewrite `h2` using `[hA s hs]`. Rewrite `h3` using `[hA s' hs', ← he]`. Establish `h4 : s (Sum.inr 0) = s' (Sum.inr 0)` using `by omega`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Finsupp.erase_add_single (Sum.inr 0) s, ← Finsupp.erase_add_single (Sum.inr 0) s', he, h4]`. Establish `hsingle : ∀ s ∈ A.support, s.erase (Sum.inr 0) = 0 → s = Finsupp.single (Sum.inr 0) m`. Introduce `s hs hs0`. Establish `h2` using `hwt s`. Rewrite `h2` using `[hA s hs, hs0, hwt0, zero_add]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Rewrite using `[← Finsupp.erase_add_single (Sum.inr 0) s, hs0, zero_add, ← h2]`. Use extensionality with `u`. Rewrite using `[coeff_C_mul, coeff_X_pow]`. Distinguish the cases in `hu : u ∈ A.support`. Establish `e` using `hcoeff (u.erase (Sum.inr 0))`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `e` using `[Finset.sum_eq_single u (fun s hs hne => if_neg (fun h => hne (hinj s hs u hu h))) (fun h => absurd hu h), if_pos rfl, h1, coeff_C]`. Rewrite using `[← e]`. Distinguish the cases in `h : Finsupp.single (Sum.inr 0) m = u`. Establish `h0 : 0 = u.erase (Sum.inr 0)`. Rewrite using `[← h]`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Rewrite using `[if_pos h0, if_pos h, mul_one]`. Establish `h0 : ¬ 0 = u.erase (Sum.inr 0)` using `fun h0 => h (hsingle u hu h0.symm).symm`. Rewrite using `[if_neg h0, if_neg h, mul_zero]`. Establish `hu0 : coeff u A = 0` using `by simpa using hu`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[hu0]`. Distinguish the cases in `h : Finsupp.single (Sum.inr 0) m = u`. Rewrite using `[if_pos h, mul_one]`. Establish `e` using `hcoeff 0`. Rewrite `e` using `[h1, coeff_C, if_pos rfl]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation.
 
-Rewrite using `[e]`. Use `symm`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `s hs`. Rewrite using `[if_neg]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `hs0`. Apply `hu` to reduce the goal to its premises. Rewrite using `[← h, ← hsingle s hs hs0]`. Conclude with `hs`. Rewrite using `[if_neg h, mul_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_monomial_of_dehomog_const (A : MvPolynomial (V D N) K) (m : ℕ) (hA : ∀ s ∈ A.support, WH.wt isX s = m)
     (k : K) (h1 : ev1 A = C k) : A = C k * X (Sum.inr 0) ^ m := by
@@ -199,33 +199,29 @@ namespace Data
 variable (d : Data K ι Ω WT A)
 
 /- English proof (translation)
-Establish `hF0 : F0 ≠ 0` using `hirr.ne_zero`. Establish `hirr1 : Irreducible (LinearSubstitution.ev1 (bilinearSubstitution F0))`. Rewrite using `[LinearSubstitution.evalOne_bilinearSubstitution]`. Conclude with `LinearSubstitution.irreducible_theta_rename F0 hirr`. Establish `hg0 : bilinearSubstitution F0 ≠ 0` using `fun h => hirr1.ne_zero (by rw [h, map_zero])`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hX : ∀ s ∈ (bilinearSubstitution F0).support, WH.wt LinearSubstitution.isX s = (d.D + 1) * d0` using `WH.hom_of_psiP LinearSubstitution.isX _ _ (LinearSubstitution.weightGrading_substitution LinearSubstitution.isX LinearSubstitution.psiX_g F0 d0 hmh)`. Establish `hU : ∀ s ∈ (bilinearSubstitution F0).support, WH.wt LinearSubstitution.isU s = (d.D + 1) * d0` using `WH.hom_of_psiP LinearSubstitution.isU _ _ (LinearSubstitution.weightGrading_substitution LinearSubstitution.isU LinearSubstitution.psiU_g F0 d0 hmh)`. Establish `hev : LinearSubstitution.ev1 (X (Sum.inr 0) : MvPolynomial (LinearSubstitution.V d.D d.N) K) = 1` using `by simp [LinearSubstitution.ev1]`. Establish `hbound : ∀ a, (X (Sum.inr 0) : MvPolynomial (LinearSubstitution.V d.D d.N) K) ^ a ∣ bilinearSubstitution F0 → a ≤ (bilinearSubstitution F0).totalDegree`. Introduce and unpack `a ⟨h, hh⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `hh0 : h ≠ 0`. Introduce and unpack `rfl`. Conclude with `hg0 (by rw [hh, mul_zero])`. Rewrite using `[hh, totalDegree_mul_of_isDomain (pow_ne_zero _ (X_ne_zero _)) hh0, totalDegree_X_pow]`. Use linear arithmetic over natural numbers and integers.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Choose the witnesses or unpack the hypotheses as in `⟨a, hPa, hle, hnot⟩ : ∃ a, (X (Sum.inr 0) : MvPolynomial (LinearSubstitution.V d.D d.N) K) ^ a ∣ bilinearSubstitution F0 ∧ d.D * d0 ≤ a ∧ ¬ (X (Sum.inr 0) : MvPolynomial (LinearSubstitution.V d.D d.N) K) ^ (a + 1) ∣ bilinearSubstitution F0 := by`. Establish `hP0` using `d.pow_first_var_dvd_substitution c F0 hF0 hker d0 hmh`. Conclude with `⟨Nat.findGreatest (fun a => (X (Sum.inr 0) : MvPolynomial (LinearSubstitution.V d.D d.N) K) ^ a ∣ bilinearSubstitution F0) (bilinearSubstitution F0).totalDegree, Nat.findGreatest_spec (P := fun a => (X (Sum.inr 0) : MvPolynomial (LinearSubstitution.V d.D d.N) K) ^ a ∣ bilinearSub …`. Take `⟨F1, hF1⟩` from `hPa`. Establish `hF10 : F1 ≠ 0`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Introduce and unpack `rfl`. Conclude with `hg0 (by rw [hF1, mul_zero])`. Establish `hev1 : LinearSubstitution.ev1 (bilinearSubstitution F0) = LinearSubstitution.ev1 F1`. Rewrite using `[hF1, map_mul, map_pow, hev, one_pow, one_mul]`. Establish `hdvdF1 : F1 ∣ bilinearSubstitution F0` using `⟨X (Sum.inr 0) ^ a, by rw [hF1, mul_comm]⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨deF, hdeF⟩` from `WH.hom_of_dvd LinearSubstitution.isX ((d.D + 1) * d0) (bilinearSubstitution F0) F1 hg0 hX hdvdF1`. Establish `hshift : ∀ s ∈ F1.support, s + Finsupp.single (Sum.inr 0) a ∈ (bilinearSubstitution F0).support`. Introduce `s hs`. Rewrite using `[mem_support_iff, hF1, mul_comm, X_pow_eq_monomial, coeff_mul_monomial, mul_one]`. Conclude with `mem_support_iff.1 hs`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨a, F1, deF, hF1, ⟨fun hu => ?_, fun G H hGH => ?_⟩, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `hirr1.not_isUnit (by rw [hev1]; exact hu.map _)`. Establish `hmul : LinearSubstitution.ev1 (bilinearSubstitution F0) = LinearSubstitution.ev1 G * LinearSubstitution.ev1 H` using `by rw [hev1, hGH, map_mul]`. Establish `key : ∀ G' : MvPolynomial (LinearSubstitution.V d.D d.N) K, G' ∣ F1 → IsUnit (LinearSubstitution.ev1 G') → IsUnit G'`. Introduce `G' hG' hu`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Split into cases according to the possible forms of the given data. Treat this case separately.
 
-Take `⟨k, hk, hkG⟩` from `MvPolynomial.isUnit_iff_eq_C_of_isReduced.1 hu`. Take `⟨m, hm⟩` from `WH.hom_of_dvd LinearSubstitution.isX _ (bilinearSubstitution F0) G' hg0 hX (hG'.trans hdvdF1)`. Establish `hG'eq` using `LinearSubstitution.eq_monomial_of_dehomog_const G' m hm k hkG`. Consider the cases of `m with`. Consider the case `zero`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. It suffices to derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hG'eq, pow_zero, mul_one]`. Conclude with `hk.map C`. Consider the case `succ m`. It suffices to derive a contradiction. Apply `hnot` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative.
 
-Take `⟨Q, hQ⟩` from `hG'`. Use `⟨C k * X (Sum.inr 0) ^ m * Q, ?_⟩` and prove the remaining obligations. Rewrite using `[hF1, hQ, hG'eq]`. Expand and normalize the polynomial expressions, which then agree. Break down `hirr1.isUnit_or_isUnit hmul with h | h` into its components or cases.
+Prove the second alternative. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `Or.inl (key G ⟨H, hGH⟩ h)`. Conclude with `Or.inr (key H ⟨G, by rw [hGH, mul_comm]⟩ h)`. Introduce `s hs`. Rewrite using `[← LinearSubstitution.wt_isX]`. Conclude with `hdeF s hs`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨s, hs⟩` from `MvPolynomial.ne_zero_iff.1 hF10`. Establish `hs' : s ∈ F1.support` using `mem_support_iff.2 hs`. Establish `h` using `hX _ (hshift s hs')`. Rewrite `h` using `[WH.wt_add, WH.wt_single, if_pos (show LinearSubstitution.isX (Sum.inr 0 : LinearSubstitution.V d.D d.N) from rfl), hdeF s hs']`. Establish `h2 : (d.D + 1) * d0 = d.D * d0 + d0` using `by ring`.
-
-Combine the linear equalities and inequalities to obtain the conclusion. Introduce `s hs`. Establish `h` using `hU _ (hshift s hs)`. Rewrite `h` using `[WH.wt_add, WH.wt_single, if_neg (by simp [LinearSubstitution.isU]), add_zero]`. Rewrite using `[← LinearSubstitution.wt_isU]`.
-
-Conclude with `h.le`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem substitution_split_irreducible_of (c : ι) (F0 : KTp K d.D d.N) (hirr : Irreducible F0) (d0 : ℕ)
     (hmh : ReciprocityTheory.MultiplicativeHeights.IsMultiHomogeneous (fun _ => d0) F0)

@@ -19,11 +19,11 @@ abbrev QA (n : ℕ) (ε : ℤˣ) : Matrix (Fin n ⊕ Fin n) (Fin n ⊕ Fin n) (A
   Matrix.fromBlocks 0 1 ((((ε : ℤ) : AE F E)) • 1) 0
 
 /- English proof (translation)
-Establish `hF` using `frameEq_adelic (F := F) hb`. Establish `hU : (mat2 x)ᵀ * dbl (incM F Y.J) * (mat2 x).map (cA σ) = dbl (incM F Y.J)` using `x.2`. Establish `hM : incM F b.1 * inFrame b x = mat2 x * incM F b.1`. Rewrite using `[matrix_eq_frame_conjugate b x]`. Simplify using `only [Matrix.mul_assoc]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[SiegelEisensteinSeries.Grp.incM_inv_mul, Matrix.mul_one]`. Establish `key : (incM F b.1 * inFrame b x)ᵀ * dbl (incM F Y.J) * (incM F b.1 * inFrame b x).map (cA σ) = QA n ε`. Rewrite using `[hM, Matrix.transpose_mul, map_cA_mul]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules.
 
-Use `_ = QA n ε := by rw [hU, hF]`. Rewrite `key` using `[Matrix.transpose_mul, map_cA_mul]`. Establish `hQ : QA (F` using `F) (E := E) n ε = (incM F b.1)ᵀ * dbl (incM F Y.J) * (incM F b.1).map (cA σ) := hF.symm`. Use `conv_lhs => rw [hQ]`. Simplify `key` using `only [Matrix.mul_assoc]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem frame_form {b : GL (Fin n ⊕ Fin n) E} {ε : ℤˣ} (hb : FrameEq σ Y b ε) (x : G2 σ Y) :
     (inFrame b x)ᵀ * QA (F := F) (E := E) n ε * (inFrame b x).map (cA σ) = QA n ε := by
@@ -45,7 +45,7 @@ theorem frame_form {b : GL (Fin n ⊕ Fin n) E} {ε : ℤˣ} (hb : FrameEq σ Y 
   simpa only [Matrix.mul_assoc] using key
 
 /- English proof (translation)
-Rewrite using `[Matrix.fromBlocks_transpose, Matrix.fromBlocks_map, QA, Matrix.fromBlocks_multiply, Matrix.fromBlocks_multiply]`. Simplify using `[Matrix.map_zero _ (map_zero _)]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem blk_form (ε : ℤˣ) (A D : Matrix (Fin n) (Fin n) (AE F E)) :
     (Matrix.fromBlocks A 0 0 D)ᵀ * QA (F := F) (E := E) n ε * (Matrix.fromBlocks A 0 0 D).map (cA σ) =
@@ -54,9 +54,9 @@ theorem blk_form (ε : ℤˣ) (A D : Matrix (Fin n) (Fin n) (AE F E)) :
   simp [Matrix.map_zero _ (map_zero _)]
 
 /- English proof (translation)
-Take `⟨⟨ε, hε⟩, -⟩` from `hb`. Establish `h1` using `frame_form (F := F) hε x`. Rewrite `h1` using `[h, blk_form]`. Take `⟨-, h2, h3, -⟩` from `Matrix.fromBlocks_inj.1 h1`. Use `⟨h2, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h4` using `congrArg (fun M => (((ε : ℤ) : AE F E)) • M) h3`. Simplify using `only [smul_smul, eps_sq, one_smul] at h4`. Conclude with `h4`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem blk_rel {b : GL (Fin n ⊕ Fin n) E} (hb : IsFrame2 σ Y b) (x : G2 σ Y)
     {A D : Matrix (Fin n) (Fin n) (AE F E)} (h : inFrame b x = Matrix.fromBlocks A 0 0 D) :
@@ -71,7 +71,7 @@ theorem blk_rel {b : GL (Fin n ⊕ Fin n) E} (hb : IsFrame2 σ Y b) (x : G2 σ Y
   exact h4
 
 /- English proof (translation)
-Rewrite using `[blk_form, h1, h2]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem blk_form_one {ε : ℤˣ} {A D : Matrix (Fin n) (Fin n) (AE F E)} (h1 : Aᵀ * D.map (cA σ) = 1)
     (h2 : Dᵀ * A.map (cA σ) = 1) :
@@ -79,19 +79,19 @@ theorem blk_form_one {ε : ℤˣ} {A D : Matrix (Fin n) (Fin n) (AE F E)} (h1 : 
   rw [blk_form, h1, h2]
 
 /- English proof (translation)
-Use extensionality with `i j`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Both sides reduce to the same expression.
 -/
 theorem incM_map_cA {p q : Type} (M : Matrix p q E) : (incM F M).map (cA σ) = incM F (M.map σ) := by
   ext i j; rfl
 
 /- English proof (translation)
-Use extensionality with `i j`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Both sides reduce to the same expression.
 -/
 theorem incM_transpose {p q : Type} (M : Matrix p q E) : (incM F M)ᵀ = incM F Mᵀ := by
   ext i j; rfl
 
 /- English proof (translation)
-Simplify using `only [incM, Matrix.fromBlocks_map]`.
+Simplify using the standard rewrite rules.
 -/
 theorem incM_fromBlocks (A B C D : Matrix (Fin n) (Fin n) E) :
     incM F (Matrix.fromBlocks A B C D) = Matrix.fromBlocks (incM F A) (incM F B) (incM F C) (incM F D) := by
@@ -105,9 +105,9 @@ def ptOf (b : GL (Fin n ⊕ Fin n) E) (M M' : Matrix (Fin n ⊕ Fin n) (Fin n �
   inv_val := (conj_mul_conj b _ _).trans (by rw [h2, Matrix.mul_one, SiegelEisensteinSeries.Grp.incM_mul_inv])
 
 /- English proof (translation)
-Establish `hF : (incM F b.1)ᵀ * dbl (incM F Y.J) * (incM F b.1).map (cA σ) = QA (F` using `F) (E := E) n ε := frameEq_adelic (F := F) hb`. Establish `e1 : (incM F (b⁻¹).1)ᵀ * (incM F b.1)ᵀ = 1`. Rewrite using `[← Matrix.transpose_mul, SiegelEisensteinSeries.Grp.incM_mul_inv, Matrix.transpose_one]`. Establish `e2 : (incM F b.1).map (cA σ) * (incM F (b⁻¹).1).map (cA σ) = 1`. Rewrite using `[← map_cA_mul, SiegelEisensteinSeries.Grp.incM_mul_inv, Matrix.map_one _ (map_zero _) (map_one _)]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `show (incM F b.1 * M * incM F (b⁻¹).1)ᵀ * dbl (incM F Y.J) * (incM F b.1 * M * incM F (b⁻¹).1).map (cA σ) = dbl (incM F Y.J)`. Rewrite using `[map_cA_mul, map_cA_mul, Matrix.transpose_mul, Matrix.transpose_mul]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem ptOf_mem {b : GL (Fin n ⊕ Fin n) E} {ε : ℤˣ} (hb : FrameEq σ Y b ε)
     {M M' : Matrix (Fin n ⊕ Fin n) (Fin n ⊕ Fin n) (AE F E)} (h1 : M * M' = 1) (h2 : M' * M = 1)
@@ -133,7 +133,7 @@ theorem ptOf_mem {b : GL (Fin n ⊕ Fin n) E} {ε : ℤˣ} (hb : FrameEq σ Y b 
     _ = dbl (incM F Y.J) := by rw [e1, e2, Matrix.one_mul, Matrix.mul_one]
 
 /- English proof (translation)
-Use `show incM F (b⁻¹).1 * (incM F b.1 * M * incM F (b⁻¹).1) * incM F b.1 = M`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[SiegelEisensteinSeries.Grp.incM_inv_mul, Matrix.mul_one, ← Matrix.mul_assoc, SiegelEisensteinSeries.Grp.incM_inv_mul, Matrix.one_mul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inFrame_ptOf {b : GL (Fin n ⊕ Fin n) E} {M M' : Matrix (Fin n ⊕ Fin n) (Fin n ⊕ Fin n) (AE F E)}
     (h1 : M * M' = 1) (h2 : M' * M = 1) (h : ptOf b M M' h1 h2 ∈ UG (cA σ) (dbl (incM F Y.J))) :
@@ -143,7 +143,7 @@ theorem inFrame_ptOf {b : GL (Fin n ⊕ Fin n) E} {M M' : Matrix (Fin n ⊕ Fin 
   rw [SiegelEisensteinSeries.Grp.incM_inv_mul, Matrix.mul_one, ← Matrix.mul_assoc, SiegelEisensteinSeries.Grp.incM_inv_mul, Matrix.one_mul]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [incM, Matrix.map_apply, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem incM_one' {p : Type} [DecidableEq p] : incM F (1 : Matrix p p E) = 1 := by
   ext i j
@@ -151,11 +151,11 @@ theorem incM_one' {p : Type} [DecidableEq p] : incM F (1 : Matrix p p E) = 1 := 
   split_ifs <;> simp
 
 /- English proof (translation)
-Establish `hMM : M * M' = 1`. Apply `kfour.incM_injective (F := F)` to reduce the goal to its premises. Rewrite using `[kfour.incM_mul' (F := F), ← hM, ← hM', ← inFrame_mul, mul_inv_cancel, inFrame_one, incM_one']`. Establish `hMM' : M' * M = 1` using `mul_eq_one_comm.1 hMM`. Set `gE : GL (Fin n ⊕ Fin n) E` to `⟨b.1 * M * (b⁻¹).1, b.1 * M' * (b⁻¹).1, by`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc (b⁻¹).1 b.1, Units.inv_mul, Matrix.one_mul, ← Matrix.mul_assoc M, hMM, Matrix.one_mul, Units.mul_inv], by`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc (b⁻¹).1 b.1, Units.inv_mul, Matrix.one_mul, ← Matrix.mul_assoc M', hMM', Matrix.one_mul, Units.mul_inv]⟩`. Use `Subgroup.mem_subgroupOf.2 ⟨gE, Units.ext ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `show (b.1 * M * (b⁻¹).1).map (inclR (F := F) (AF F)) = mat2 g`. Rewrite using `[matrix_eq_frame_conjugate b, hM]`. Use `show incM F (b.1 * M * (b⁻¹).1) = _`. Rewrite using `[kfour.incM_mul', kfour.incM_mul']`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rat_of {b : GL (Fin n ⊕ Fin n) E} (g : G2 σ Y) (M M' : Matrix (Fin n ⊕ Fin n) (Fin n ⊕ Fin n) E)
     (hM : inFrame b g = incM F M) (hM' : inFrame b g⁻¹ = incM F M') : g ∈ rat2 σ Y := by
@@ -179,35 +179,35 @@ theorem rat_of {b : GL (Fin n ⊕ Fin n) E} (g : G2 σ Y) (M M' : Matrix (Fin n 
   rw [kfour.incM_mul', kfour.incM_mul']
 
 /- English proof (translation)
-The claim follows from `Matrix.map_mul (f := (σ : E →+* E))`.
+A detailed English derivation is pending.
 -/
 theorem mapσ_mul {p : Type} [Fintype p] (X Z : Matrix p p E) : (X * Z).map σ = X.map σ * Z.map σ :=
   Matrix.map_mul (f := (σ : E →+* E))
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[hσ]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem mapσ_mapσ (hσ : ∀ a, σ (σ a) = a) {p q : Type} (X : Matrix p q E) : (X.map σ).map σ = X := by
   ext i j; simp [hσ]
 
 /- English proof (translation)
-The claim follows from `Matrix.map_one _ (map_zero σ) (map_one σ)`.
+A detailed English derivation is pending.
 -/
 theorem mapσ_one {p : Type} [DecidableEq p] : (1 : Matrix p p E).map σ = 1 :=
   Matrix.map_one _ (map_zero σ) (map_one σ)
 
 /- English proof (translation)
-Take `⟨⟨ε, hε⟩, -⟩` from `hb`. Use `set M0 : Matrix (Fin n ⊕ Fin n) (Fin n ⊕ Fin n) E := Matrix.fromBlocks a.1 0 0 (((a⁻¹).1)ᵀ.map σ) with hM0`. Use `set M1 : Matrix (Fin n ⊕ Fin n) (Fin n ⊕ Fin n) E := Matrix.fromBlocks (a⁻¹).1 0 0 ((a.1)ᵀ.map σ) with hM1`. Establish `hd : ((a⁻¹).1)ᵀ.map σ * (a.1)ᵀ.map σ = 1`. Rewrite using `[← mapσ_mul, ← Matrix.transpose_mul, Units.mul_inv, Matrix.transpose_one, mapσ_one]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hd' : (a.1)ᵀ.map σ * ((a⁻¹).1)ᵀ.map σ = 1`. Rewrite using `[← mapσ_mul, ← Matrix.transpose_mul, Units.inv_mul, Matrix.transpose_one, mapσ_one]`. Establish `h01 : M0 * M1 = 1`. Rewrite using `[hM0, hM1, Matrix.fromBlocks_multiply]`. Simplify using `only [Matrix.mul_zero, Matrix.zero_mul, add_zero, zero_add, Units.mul_inv, hd, Matrix.fromBlocks_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h10 : M1 * M0 = 1`. Rewrite using `[hM0, hM1, Matrix.fromBlocks_multiply]`. Simplify using `only [Matrix.mul_zero, Matrix.zero_mul, add_zero, zero_add, Units.inv_mul, hd', Matrix.fromBlocks_one]`. Establish `i01 : incM F M0 * incM F M1 = 1` using `by rw [← kfour.incM_mul', h01, incM_one']`. Establish `i10 : incM F M1 * incM F M0 = 1` using `by rw [← kfour.incM_mul', h10, incM_one']`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `r1 : (incM F a.1)ᵀ * (incM F (((a⁻¹).1)ᵀ.map σ)).map (cA σ) = 1`. Rewrite using `[incM_map_cA, mapσ_mapσ hσ, incM_transpose, ← kfour.incM_mul', ← Matrix.transpose_mul, Units.inv_mul, Matrix.transpose_one, incM_one']`. Establish `r2 : (incM F (((a⁻¹).1)ᵀ.map σ))ᵀ * (incM F a.1).map (cA σ) = 1`. Rewrite using `[incM_map_cA, incM_transpose, ← kfour.incM_mul', Matrix.transpose_map, Matrix.transpose_transpose, ← mapσ_mul, Units.inv_mul, mapσ_one, incM_one']`. Establish `hM : incM F M0 = Matrix.fromBlocks (incM F a.1) 0 0 (incM F (((a⁻¹).1)ᵀ.map σ))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hM0, incM_fromBlocks, show incM F (0 : Matrix (Fin n) (Fin n) E) = 0 from kfour.incM_zero]`. Establish `hmem` using `ptOf_mem (F := F) (Y := Y) hε i01 i10 (by rw [hM]; exact blk_form_one r1 r2)`. Use `set g : G2 σ Y := ⟨ptOf b _ _ i01 i10, hmem⟩`. Establish `hg : inFrame b g = incM F M0` using `inFrame_ptOf i01 i10 hmem`. Establish `hg' : inFrame b g⁻¹ = incM F M1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Supply the required witnesses or components.
 
-Establish `e : inFrame b g⁻¹ * inFrame b g = 1` using `by rw [← inFrame_mul, inv_mul_cancel, inFrame_one]`. Combine the equalities or inequalities in the displayed calculation. Conclude with `⟨g, rat_of g M0 M1 hg hg', hg.trans hM⟩`.
+A detailed English derivation is pending.
 -/
 theorem levi_ex (hσ : ∀ a, σ (σ a) = a) {b : GL (Fin n ⊕ Fin n) E} (hb : IsFrame2 σ Y b) (a : GL (Fin n) E) :
     ∃ g : G2 σ Y, g ∈ rat2 σ Y ∧ inFrame b g = Matrix.fromBlocks (incM F a.1) 0 0 (incM F (((a⁻¹).1)ᵀ.map σ)) := by
@@ -245,9 +245,9 @@ theorem levi_ex (hσ : ∀ a, σ (σ a) = a) {b : GL (Fin n ⊕ Fin n) E} (hb : 
   exact ⟨g, rat_of g M0 M1 hg hg', hg.trans hM⟩
 
 /- English proof (translation)
-Take `⟨u, hu⟩` from `Subgroup.mem_subgroupOf.1 hg`. Use `⟨(b⁻¹).1 * u.1 * b.1, ?_⟩` and prove the remaining obligations. Establish `h : mat2 g = incM F u.1` using `by show g.1.1 = _`. Rewrite using `[← hu]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `show incM F (b⁻¹).1 * mat2 g * incM F b.1 = _`. Rewrite using `[h, kfour.incM_mul', kfour.incM_mul']`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rat_frame {b : GL (Fin n ⊕ Fin n) E} (g : G2 σ Y) (hg : g ∈ rat2 σ Y) :
     ∃ G0 : Matrix (Fin n ⊕ Fin n) (Fin n ⊕ Fin n) E, inFrame b g = incM F G0 := by
@@ -261,9 +261,9 @@ theorem rat_frame {b : GL (Fin n ⊕ Fin n) E} (g : G2 σ Y) (hg : g ∈ rat2 σ
   rw [h, kfour.incM_mul', kfour.incM_mul']
 
 /- English proof (translation)
-Take `⟨G0, hG⟩` from `rat_frame (b := b) g hg`. Use `⟨G0.toBlocks₁₁, G0.toBlocks₂₂, ?_, ?_⟩` and prove the remaining obligations. Use `congrArg Matrix.toBlocks₁₁ (hAD.symm.trans hG)` as an intermediate fact. Rewrite `this` using `[Matrix.toBlocks_fromBlocks₁₁]`. Conclude with `this`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `congrArg Matrix.toBlocks₂₂ (hAD.symm.trans hG)` as an intermediate fact. Rewrite `this` using `[Matrix.toBlocks_fromBlocks₂₂]`. Conclude with `this`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rat_blocks {b : GL (Fin n ⊕ Fin n) E} (g : G2 σ Y) (hg : g ∈ rat2 σ Y) {A D : Matrix (Fin n) (Fin n) (AE F E)}
     (hAD : inFrame b g = Matrix.fromBlocks A 0 0 D) : ∃ A0 D0 : Matrix (Fin n) (Fin n) E, A = incM F A0 ∧ D = incM F D0 := by
@@ -298,14 +298,14 @@ def cNA (b : GL (Fin n ⊕ Fin n) E) (P Q P' Q' : Matrix (Fin n) (Fin n) (AE F E
   continuous_invFun := ((continuous_const.matrix_mul continuous_subtype_val).matrix_mul continuous_const).subtype_mk _
 
 /- English proof (translation)
-Simplify using `[Matrix.trace, incM, map_sum]`.
+Simplify using the standard rewrite rules.
 -/
 theorem trace_incM {p : Type} [Fintype p] (M : Matrix p p E) :
     (incM F M).trace = inclR (F := F) (AF F) M.trace := by
   simp [Matrix.trace, incM, map_sum]
 
 /- English proof (translation)
-Rewrite using `[trace_incM, kfour.inclR_eq, GlobalTheory.ThK.Dbl.Dense.trace_tmul, one_mul, ← map_neg]`. Conclude with `hψ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem psi_rat_trace {ψ : AddChar (AF F) ℂ} (hψ : ∀ x : F, ψ (algebraMap F (AF F) x) = 1) (M : Matrix (Fin n) (Fin n) E) :
     ψ (-(Algebra.trace (AF F) (AE F E) (incM F M).trace)) = 1 := by
@@ -313,19 +313,17 @@ theorem psi_rat_trace {ψ : AddChar (AF F) ℂ} (hψ : ∀ x : F, ψ (algebraMap
   exact hψ _
 
 /- English proof (translation)
-Take `⟨hlc, hsc, ht2, hbo⟩` from `nA_top hσ hb`. Use `hlc` as an intermediate fact. Use `hsc` as an intermediate fact. Use `hbo` as an intermediate fact. Establish `hm : Measurable τ` using `τ.continuous.measurable`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm' : Measurable τ.symm` using `τ.symm.continuous.measurable`. Establish `: (lam.map τ).IsAddHaarMeasure` using `τ.isAddHaarMeasure_map lam`. Establish `: (lam.map τ.symm).IsAddHaarMeasure` using `τ.symm.isAddHaarMeasure_map lam`. Establish `e1` using `Measure.isAddLeftInvariant_eq_smul (lam.map τ) lam`. Establish `e2` using `Measure.isAddLeftInvariant_eq_smul (lam.map τ.symm) lam`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hq : Measure.QuasiMeasurePreserving τ.symm lam lam` using `⟨hm', by`. Rewrite using `[e2]`. Conclude with `Measure.AbsolutelyContinuous.rfl.smul_left _⟩`. Set `eF : nF σ Y b ≃ nF σ Y b` to `{ toFun := fun γ => ⟨τ.symm γ.1, hτ' _ γ.2⟩ invFun := fun γ => ⟨τ γ.1, hτ _ γ.2⟩ left_inv := fun γ => Subtype.ext (τ.apply_symm_apply γ.1) right_inv := fun γ => Subtype.ext (τ.symm_apply_apply γ.1) }`. Establish `hfd : IsAddFundamentalDomain (nF σ Y b) (τ '' 𝓖) lam` using `h𝓖.image_of_equiv τ.toEquiv hq eF fun γ x => by show τ (τ.symm γ.1 + x) = γ.1 + τ x`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_add, τ.apply_symm_apply]`. Use `⟨⟨hm, ?_⟩, hfd⟩` and prove the remaining obligations. Establish `hmeas : lam (τ '' 𝓖) = 1` using `(hfd.measure_eq h𝓖).trans h1`. Set `τm : nA σ Y b ≃ᵐ nA σ Y b` to `τ.toHomeomorph.toMeasurableEquiv`. Establish `hmap : (lam.map τ) (τ '' 𝓖) = 1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: lam.map τ = lam.map τm` using `rfl`. Rewrite using `[this, MeasurableEquiv.map_apply]`. Establish `hpre : τm ⁻¹' (τ '' 𝓖) = 𝓖` using `Set.preimage_image_eq _ τ.injective`. Rewrite using `[hpre, h1]`. Rewrite `hmap`, the goal using `[e1]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hmap` using `[Measure.smul_apply, hmeas]`. Establish `hc : (lam.map τ).addHaarScalarFactor lam = 1`. Establish `h2 : (((lam.map τ).addHaarScalarFactor lam : ℝ≥0) : ENNReal) = 1`. Rewrite using `[← hmap, ENNReal.smul_def, smul_eq_mul, mul_one]`. Conclude with `h2` after adjusting the coercions.
-
-Rewrite using `[hc, one_smul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cNA_pres (hσ : ∀ a, σ (σ a) = a) {b : GL (Fin n ⊕ Fin n) E} (hb : IsFrame2 σ Y b) {lam : Measure (nA σ Y b)}
     {𝓖 : Set (nA σ Y b)} (hlam : lam.IsAddHaarMeasure) (h𝓖 : IsAddFundamentalDomain (nF σ Y b) 𝓖 lam) (h1 : lam 𝓖 = 1)
@@ -369,33 +367,31 @@ theorem cNA_pres (hσ : ∀ a, σ (σ a) = a) {b : GL (Fin n ⊕ Fin n) E} (hb :
   rw [hc, one_smul]
 
 /- English proof (translation)
-Establish `hn` using `hc.1`. Take `⟨r1, r2⟩` from `blk_rel hb g hAD`. Establish `s1 : (D.map (cA σ))ᵀ * A = 1`. Use `congrArg Matrix.transpose r1` as an intermediate fact. Rewrite `this` using `[Matrix.transpose_mul, Matrix.transpose_transpose, Matrix.transpose_one]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `s2 : A * (D.map (cA σ))ᵀ = 1` using `mul_eq_one_comm.1 s1`. Establish `s3 : (A.map (cA σ))ᵀ * D = 1`. Use `congrArg Matrix.transpose r2` as an intermediate fact. Rewrite `this` using `[Matrix.transpose_mul, Matrix.transpose_transpose, Matrix.transpose_one]`. Then use the resulting hypothesis. Establish `s4 : D * (A.map (cA σ))ᵀ = 1` using `mul_eq_one_comm.1 s3`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Use `set Dc := (D.map (cA σ))ᵀ with hDc`. Use `set Ac := (A.map (cA σ))ᵀ with hAc`. Establish `hinv : inFrame b g⁻¹ = Matrix.fromBlocks Dc 0 0 Ac`. Establish `e : inFrame b g⁻¹ * inFrame b g = 1` using `by rw [← inFrame_mul, inv_mul_cancel, inFrame_one]`. Establish `e'' : Matrix.fromBlocks A 0 0 D * Matrix.fromBlocks Dc 0 0 Ac = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Matrix.fromBlocks_multiply]`. Simplify using `only [Matrix.mul_zero, Matrix.zero_mul, add_zero, zero_add, s2, s4, Matrix.fromBlocks_one]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[e'', Matrix.mul_one]`. Use `_ = (inFrame b g⁻¹ * inFrame b g) * Matrix.fromBlocks Dc 0 0 Ac := by rw [hAD, Matrix.mul_assoc]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `_ = _ := by rw [e, Matrix.one_mul]`. Establish `hmem : ∀ β : nA σ Y b, Dc * β.1 * D ∈ nA σ Y b` using `fun β => AddSubgroup.subset_closure ⟨g⁻¹ * nb β * g, by`. Rewrite using `[inFrame_mul, inFrame_mul, hinv, hn β, hAD, Matrix.fromBlocks_multiply, Matrix.fromBlocks_multiply]`. Simplify using `only [Matrix.mul_zero, Matrix.zero_mul, add_zero, zero_add, Matrix.mul_one, s1, s3]⟩`. Establish `hmem' : ∀ β : nA σ Y b, A * β.1 * Ac ∈ nA σ Y b` using `fun β => AddSubgroup.subset_closure ⟨g * nb β * g⁻¹, by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[inFrame_mul, inFrame_mul, hinv, hn β, hAD, Matrix.fromBlocks_multiply, Matrix.fromBlocks_multiply]`. Simplify using `only [Matrix.mul_zero, Matrix.zero_mul, add_zero, zero_add, Matrix.mul_one, s2, s4]⟩`. Set `τ` to `cNA σ Y b Dc D A Ac hmem hmem' s2 s4 s1 s3`. Establish `hτv : ∀ β : nA σ Y b, (τ β).1 = Dc * β.1 * D` using `fun β => rfl`. Establish `hτv' : ∀ β : nA σ Y b, (τ.symm β).1 = A * β.1 * Ac` using `fun β => rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `key : ∀ β, nb β * g = g * nb (τ β)` using `fun β => inFrame_injective b (by`. Rewrite using `[inFrame_mul, inFrame_mul, hn, hn (τ β), hAD, hτv, Matrix.fromBlocks_multiply, Matrix.fromBlocks_multiply]`. Simplify using `only [Matrix.mul_zero, Matrix.zero_mul, add_zero, zero_add, Matrix.mul_one, Matrix.one_mul]`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, s2, Matrix.one_mul])`. Take `⟨A0, D0, hA0, hD0⟩` from `rat_blocks g hg hAD`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hτF : ∀ γ : nA σ Y b, γ ∈ nF σ Y b → τ γ ∈ nF σ Y b` using `fun γ h => by`. Take `⟨S, hS⟩` from `(mem_nF_iff γ).1 h`. Use `(mem_nF_iff _).2 ⟨(D0.map σ)ᵀ * S * D0, ?_⟩` and prove the remaining obligations. Rewrite using `[hτv, hS, hDc, hD0, incM_map_cA, incM_transpose, kfour.incM_mul', kfour.incM_mul']`. Establish `hτF' : ∀ γ : nA σ Y b, γ ∈ nF σ Y b → τ.symm γ ∈ nF σ Y b` using `fun γ h => by`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨S, hS⟩` from `(mem_nF_iff γ).1 h`. Use `(mem_nF_iff _).2 ⟨A0 * S * (A0.map σ)ᵀ, ?_⟩` and prove the remaining obligations. Rewrite using `[hτv', hS, hAc, hA0, incM_map_cA, incM_transpose, kfour.incM_mul', kfour.incM_mul']`. Take `⟨hpres, hfd⟩` from `cNA_pres hσ hb hc.2.1 hc.2.2.1 hc.2.2.2 τ hτF hτF'`. Take `⟨hlc, hsc, ht2, hbo⟩` from `nA_top hσ hb`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `hbo` as an intermediate fact. Set `H : nA σ Y b → ℂ` to `fun β => φ (nb β * x) * ψ (-(Algebra.trace (AF F) (AE F E) (Matrix.trace (T₁.1.1 * β.1))))`. Establish `hint : ∀ β : nA σ Y b, φ (nb β * (g * x)) * ψ (-(Algebra.trace (AF F) (AE F E) (Matrix.trace (T.1.1 * β.1)))) = H (τ β)` using `fun β => by show _ = φ (nb (τ β) * x) * ψ (-(Algebra.trace (AF F) (AE F E) (Matrix.trace (T₁.1.1 * (τ β).1))))`. Rewrite using `[← mul_assoc, key, mul_assoc, hφ g hg, hτv, ← hT]`. Use `congr 4`.
+Reduce the equality to equality of the corresponding arguments. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.trace_mul_comm Ac, Matrix.mul_assoc, Matrix.mul_assoc, s4, Matrix.mul_one]`. Use `_ = Matrix.trace (Ac * T.1.1 * A * (Dc * β.1 * D)) := by`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc A Dc, s2, Matrix.one_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hH : ∀ (γ : nF σ Y b) (β : nA σ Y b), H (γ +ᵥ β) = H β` using `fun γ β => by show φ (nb (γ.1 + β) * x) * ψ (-(Algebra.trace (AF F) (AE F E) (Matrix.trace (T₁.1.1 * (γ.1.1 + β.1))))) = H β`. Rewrite using `[nb_add hn, mul_assoc, hφ _ (nb_rat hn γ.1 γ.2)]`. Use `congr 1`. Take `⟨S, hS⟩` from `(mem_nF_iff γ.1).1 γ.2`. Take `⟨T1', hT1'⟩` from `(mem_nF_iff T₁.1).1 T₁.2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.mul_add, Matrix.trace_add, map_add, neg_add, AddChar.map_add_eq_mul, hT1', hS, ← kfour.incM_mul', psi_rat_trace hψ, one_mul]`. Use `hc.2.1` as an intermediate fact. Unfold `fc`. Simplify using `only [hint]`. Rewrite using `[← hpres.setIntegral_image_emb τ.toHomeomorph.toMeasurableEquiv.measurableEmbedding H 𝓖]`.
-
-Conclude with `hfd.setIntegral_eq hc.2.2.1 hH`.
+A detailed English derivation is pending.
 -/
 theorem fc_levi (hσ : ∀ a, σ (σ a) = a) {b : GL (Fin n ⊕ Fin n) E} (hb : IsFrame2 σ Y b) {ψ : AddChar (AF F) ℂ}
     (hψ : ∀ x : F, ψ (algebraMap F (AF F) x) = 1) {nb : nA σ Y b → G2 σ Y} {lam : Measure (nA σ Y b)}

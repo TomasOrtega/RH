@@ -8,21 +8,19 @@ open Finset MvPolynomial
 namespace UpperTheory.Gal.Schur
 
 /- English proof (translation)
-Introduce `K σ _ _ _ L a hL Q hQ`. Use `haveI : Infinite K := Infinite.of_injective (Nat.cast : ℕ → K) Nat.cast_injective`. Apply `MvPolynomial.funext` to reduce the goal to its premises. Introduce `x`. Rewrite using `[map_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hx : x - a ∈ Submodule.span K (L : Set (σ → K))`. Rewrite using `[hL]`. Conclude with `Submodule.mem_top`. Take `⟨n, c, v, hcv⟩` from `Submodule.mem_span_set'.mp hx`. Set `p0 : (Fin n → K) → σ → K` to `fun t j => a j + ∑ i, t i * (v i : σ → K) j`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `F : σ → MvPolynomial (Fin n) K` to `fun j => C (a j) + ∑ i, X i * C ((v i : σ → K) j)`. Establish `hev : ∀ t, eval t (bind₁ F Q) = eval (p0 t) Q`. Introduce `t`. Establish `h1 : aeval t (bind₁ F Q) = eval t (bind₁ F Q)` using `rfl`. Establish `h2 : aeval (fun j => aeval t (F j)) Q = eval (fun j => aeval t (F j)) Q` using `rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[← h1, aeval_bind₁, h2]`. Use `congr 2`. Use function extensionality and compare the values at `j`. Simplify using `[p0, F]`. Establish `hzero : bind₁ F Q = 0`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `MvPolynomial.funext_set (fun _ => Set.range (Int.cast : ℤ → K)) ?_ ?_` and prove the remaining obligations. Introduce `_`. Conclude with `Set.infinite_range_of_injective Int.cast_injective`. Introduce `t ht`. Rewrite using `[hev, map_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `choose m hm using fun i => ht i (Set.mem_univ i)`. Apply `hQ` to reduce the goal to its premises. Use `show p0 t - a ∈ L`. Establish `hsum : p0 t - a = ∑ i, m i • (v i : σ → K)`. Use function extensionality and compare the values at `j`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Simplify using `[p0, ← hm, Finset.sum_apply, zsmul_eq_mul]`. Rewrite using `[hsum]`. Conclude with `sum_mem (fun i _ => zsmul_mem (v i).2 (m i))`. Establish `hxp : p0 c = x`. Use function extensionality and compare the values at `j`.
-
-Establish `hj` using `congrFun hcv j`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Pi.sub_apply] at hj`. Simplify using `only [p0, hj]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[← hxp, ← hev, hzero, map_zero]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem denseSub : DenseSub := by
   intro K σ _ _ _ L a hL Q hQ

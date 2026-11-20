@@ -16,27 +16,25 @@ open GlobalTheory GlobalTheory.ArInt GlobalTheory.CxPts GlobalTheory.Cartier Glo
 namespace GlobalTheory.HSAmp
 
 /- English proof (translation)
-Introduce `k _ X _ p D _ P e x hx n u hn hu`. Establish `he : (0 : ℝ) < e` using `by exact_mod_cast hx.pos`. Establish `hnR : (0 : ℝ) < n` using `by exact_mod_cast hn`. Establish `hn0 : 2 * n ≠ 0` using `by omega`. Establish `hup` using `GlobalTheory.T.raiseFirstWeight_sections_loci_values_norms k X p P u (e : ℤ) 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hnn : ∀ (Q : Pair p) σ (y : CxPts p σ) f, 0 ≤ Q.nu e 0 σ y f` using `fun Q σ y f => by`. Rewrite using `[← norm_val]`. Conclude with `norm_nonneg _`. Establish `hS : ∀ σ (y : CxPts p σ), 0 < ∑ l, P.nu e 0 σ y (x l) ^ (2 * n)`. Introduce `σ y`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨l, hl⟩` from `hx.cover (under y)`. Establish `h` using `((GlobalTheory.T.regularNonvanishingLocusSection_properties k X p P e 0 (x l) (hx.mem l)).2.2.2.2 (x l) (hx.mem l) σ y hl).2`. Conclude with `lt_of_lt_of_le (pow_pos h _) (Finset.single_le_sum (f := fun l => P.nu e 0 σ y (x l) ^ (2 * n)) (fun i _ => pow_nonneg (hnn P σ y _) _) (Finset.mem_univ l))`. Establish `key : ∀ σ (y : CxPts p σ) f, (upperParabolic P u).nu e 0 σ y f ^ (2 * n) = P.nu e 0 σ y f ^ (2 * n) / ∑ l, P.nu e 0 σ y (x l) ^ (2 * n)`. Introduce `σ y f`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[(hup.2.2 σ y f).2, mul_pow, ← Real.exp_nat_mul, hu σ y]`. Establish `: ((2 * n : ℕ) : ℝ) * (-(((e : ℤ) : ℝ) * (((e : ℝ) * n)⁻¹ * Real.log (∑ l, P.nu e 0 σ y (x l) ^ (2 * n)))) / 2) = -Real.log (∑ l, P.nu e 0 σ y (x l) ^ (2 * n))` using `by push_cast; field_simp`. Rewrite using `[this, Real.exp_neg, Real.exp_log (hS σ y), div_eq_mul_inv]`. Use `⟨fun l σ y => ?_, fun σ y => ?_, ⟨hx.pos, fun l => hup.1 ▸ hx.mem l, fun z => ?_⟩, ⟨?_, fun l => ?_, fun z => ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[← pow_le_pow_iff_left₀ (hnn _ σ y _) zero_le_one hn0, one_pow, key, div_le_one (hS σ y)]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Finset.single_le_sum (f := fun l => P.nu e 0 σ y (x l) ^ (2 * n)) (fun i _ => pow_nonneg (hnn P σ y _) _) (Finset.mem_univ l)`. Take `⟨l, -, hl⟩` from `Finset.exists_max_image Finset.univ (fun l => P.nu e 0 σ y (x l)) Finset.univ_nonempty`. Use `⟨l, ?_⟩` and prove the remaining obligations. Rewrite using `[← pow_le_pow_iff_left₀ (Real.exp_pos _).le (hnn _ σ y _) hn0, key, ← Real.exp_nat_mul]`. Establish `e1 : ((2 * n : ℕ) : ℝ) * -(Real.log (D + 1) / (2 * n)) = -Real.log (D + 1)` using `by push_cast; field_simp`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Establish `hD : (0 : ℝ) < D + 1` using `by positivity`. Rewrite using `[e1, Real.exp_neg, Real.exp_log hD, inv_eq_one_div, div_le_div_iff₀ hD (hS σ y), one_mul]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul]`. Use `push_cast`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Expand and normalize the polynomial expressions, which then agree. Take `⟨l, hl⟩` from `hx.cover z`. Conclude with `⟨l, (hup.2.1 (x l)).symm ▸ hl⟩`. Conclude with `Nat.mul_pos hx.pos hn`. Establish `h` using `(GlobalTheory.VolBr.NuPow.pow_mem_H_and_nu_pow k X p P e 0 (x l) (hx.mem l) n).1`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Apply the tactic sequence `convert h using 2 <;> push_cast <;> ring`. Take `⟨l, hl⟩` from `hx.cover z`. Use `⟨l, ?_⟩` and prove the remaining obligations. Establish `h` using `(GlobalTheory.T.regularNonvanishingLocusSection_properties k X p P e 0 (x l) (hx.mem l)).2.2.1 n hn`. Establish `e2 : ((e * n : ℕ) : ℤ) = (n : ℤ) * (e : ℤ)` using `by push_cast; ring`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `e3 : (0 : ℤ) = (n : ℤ) * 0` using `by ring`. Use `show z ∈ NV P ((e * n : ℕ) : ℤ) 0 (x l ^ n)`. Rewrite using `[e2, e3, h]`. Conclude with `hl`. Introduce `σ y`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
-Establish `hp : ∀ l, P.nu ((e * n : ℕ) : ℤ) 0 σ y (x l ^ n) = P.nu e 0 σ y (x l) ^ n` using `fun l => by`. Establish `h` using `(GlobalTheory.VolBr.NuPow.pow_mem_H_and_nu_pow k X p P e 0 (x l) (hx.mem l) n).2 σ y`. Apply the tactic sequence `convert h using 2 <;> push_cast <;> ring`. Rewrite using `[hu σ y]`. Simplify using `only [hp, ← pow_mul]`.
-
-Use `push_cast`. Put the polynomial expressions in normal form.
+Put the polynomial expressions in normal form. A detailed English derivation is pending.
 -/
 theorem canNorms : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp k) (D : ℕ), IsArithVar p D → ∀ (P : Pair p), ∀ (e : ℕ) (x : Fin (D + 1) → X.functionField), Gens P D e x → ∀ (n : ℕ) (u : SmFn p), 1 ≤ n → IsCan P e n x u → (∀ l (σ : k →+* ℂ) (y : CxPts p σ), (upperParabolic P u).nu e 0 σ y (x l) ≤ 1) ∧ (∀ (σ : k →+* ℂ) (y : CxPts p σ), ∃ l, Real.exp (-(Real.log (D + 1) / (2 * n))) ≤ (upperParabolic P u).nu e 0 σ y (x l)) ∧ Gens (upperParabolic P u) D e x ∧ Gens P D (e * n) (fun l => x l ^ n) ∧ IsCan P (e * n) 1 (fun l => x l ^ n) u := by
   intro k _ X _ p D _ P e x hx n u hn hu

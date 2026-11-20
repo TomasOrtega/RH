@@ -44,11 +44,11 @@ variable {n : ℕ} {ε : Fin n → Bool} {M : Type*} [NormedAddCommGroup M] [Inn
   {E : Fin n → Fin n → Module.End ℂ M} {V : Submodule ℂ M}
 
 /- English proof (translation)
-Establish `hxg` using `(mem_eigenTensorSpace_gen_iff.1 hx).1`. Use `choose m hm using fun c => exists_layer_of_mem_genSub hE hVk (hxg c)`. Use `set K := Finset.univ.sup m`. Establish `hxK : ∀ c, x c ∈ layer ε E V K` using `fun c => layer_mono (Finset.le_sup (mem_univ c)) (hm c)`. Establish `hfdL : FiniteDimensional ℂ (layer ε E V K)` using `finiteDimensional_layer hVfd K`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hLk` using `layer_kStable hE hVk K`. Use `pi_submodule_finiteDimensional (n := n) (layer ε E V K)` as an intermediate fact. Use `⟨Submodule.pi Set.univ (fun _ => layer ε E V K) ⊓ Xs (LemK.eeV E) (genSub E V) θ, inf_le_right, Submodule.finiteDimensional_of_le inf_le_left, ?_, ⟨mem_pi_submodule_iff.2 hxK, hx⟩⟩` and prove the remaining obligations. Introduce `a b hab f hf`. Use `⟨mem_pi_submodule_iff.2 fun c => ?_, eigenTensorSpace_stable hE a b hf.2⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[entry_bounds_of_partialSum]`. Use `add_mem (hLk a b hab _ (mem_pi_submodule_iff.1 hf.1 c)) ?_` and prove the remaining obligations. Use `split_ifs`. Conclude with `mem_pi_submodule_iff.1 hf.1 b`. Conclude with `zero_mem _`.
+A detailed English derivation is pending.
 -/
 theorem exists_kStable_finiteDimensional_submodule_of_mem_Xs (hE : IsGlRep E) (hVfd : FiniteDimensional ℂ V) (hVk : IsKStableSub ε E V) {θ : ℝ}
     {x : Fin n → M} (hx : x ∈ Xs (LemK.eeV E) (genSub E V) θ) :
@@ -82,17 +82,17 @@ variable {n : ℕ} {ε : Fin n → Bool} {lam : Fin n → ℝ} {h : ℝ} {H : Ty
   {V : Submodule ℂ D}
 
 /- English proof (translation)
-Establish `hK2` using `(k2V n ε lam h H σ D E V s hσ hD hV hc hVK hint hmono hGL hp hq).2`. Establish `hKD : IsKUnitary ε E` using `isKUnitary_of_isInfUnitary (isInfUnitary_of_isDerivedOn hσ hD)`. Establish `hE : IsGlRep E` using `hD.glRep`. Establish `hXG : ∀ y ∈ Xs (LemK.eeV E) (genSub E V) (thV lam s), y ∈ Submodule.pi Set.univ (fun _ => genSub E V)` using `fun y hy => by simpa [Submodule.mem_pi] using (mem_eigenTensorSpace_gen_iff.1 hy).1`. Establish `hlift : ∀ ψ : (Fin n → D) →ₗ[ℂ] N, (∀ a b, ∀ y ∈ Submodule.pi Set.univ (fun _ => genSub E V), ψ (LemK.tensV E a b y) = EN a b (ψ y)) → ∀ w' ∈ (Xs (LemK.eeV E) (genSub E V) (thV lam s)).map ψ, IsKHWVec ε EN (lowK ε (lam + Pi.single s 1)) w' → ∃ y ∈ Xs (LemK.eeV E) (genSub E V) (th …`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `ψ hψ w' hw' hw'K`. Take `⟨y₀, hy₀, rfl⟩` from `Submodule.mem_map.1 hw'`. Take `⟨S, hSX, hfd, hSk, hy₀S⟩` from `exists_kStable_finiteDimensional_submodule_of_mem_Xs hE hV.1 hV.2.1 hy₀`. Take `⟨y, hyS, hyK, hyeq⟩` from `partialSum_succ_alt hKD ψ hfd hSk (fun a b _ z hz => hψ a b z (hXG z (hSX hz))) hy₀S hw'K`. Conclude with `⟨y, hSX hyS, hyK, hyeq⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Distinguish the cases in `hex : ∃ y ∈ Xs (LemK.eeV E) (genSub E V) (thV lam s), y ≠ 0 ∧ IsKHWVec ε (LemK.tensV E) (lowK ε (lam + Pi.single s 1)) y`. Take `⟨ys, hysX, hys0, hysK⟩` from `hex`. Use `⟨ys, hysX, fun ψ hψ w' hw' hw'K => ?_⟩` and prove the remaining obligations. Take `⟨y, hyX, hyK, rfl⟩` from `hlift ψ hψ w' hw' hw'K`. Take `⟨c₁, c₂, hne, hrel⟩` from `hK2 y ys hyX hysX hyK hysK`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Distinguish the cases in `hc1 : c₁ = 0`. It suffices to derive a contradiction. Rewrite `hrel` using `[hc1, zero_smul, zero_add]`. Conclude with `hys0 ((smul_eq_zero.1 hrel).resolve_left (hne.resolve_left (not_not.2 hc1)))`. Use `⟨-(c₁⁻¹ * c₂), ?_⟩` and prove the remaining obligations.
+Consider separately whether the proposition holds or fails. It suffices to derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h2 : c₁ • y = -(c₂ • ys)` using `eq_neg_of_add_eq_zero_left hrel`. Establish `hy : y = -(c₁⁻¹ * c₂) • ys`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hy, map_smul]`. Use `⟨0, zero_mem _, fun ψ hψ w' hw' hw'K => ⟨0, ?_⟩⟩` and prove the remaining obligations.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨y, hyX, hyK, rfl⟩` from `hlift ψ hψ w' hw' hw'K`. Establish `hy0 : y = 0`. Assume the negation of the conclusion as `hy0`. Conclude with `hex ⟨y, hyX, hy0, hyK⟩`. Rewrite using `[hy0, map_zero, zero_smul]`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem line_V (hσ : IsURepOn (UJset ε) σ) (hD : IsDerivedOn ε σ D E) (hV : IsKIrrHW ε E (lowK ε lam) V)
     (hc : ∀ v ∈ V, casimir E v = (casVal lam : ℂ) • v) (hVK : ∀ k ∈ Kset ε, ∀ v ∈ V, ∃ w ∈ V, (w : H) = σ k v)

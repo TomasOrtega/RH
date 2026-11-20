@@ -12,11 +12,11 @@ noncomputable section
 variable {C : Type} [Field C]
 
 /- English proof (translation)
-Consider the cases of `a with`. Consider the case `top => exact le_top`. Consider the case `coe r`. Establish `e : ((N • r : ℝ) : WithTop ℝ) = N • (r : WithTop ℝ)` using `WithTop.coe_nsmul _ _`. Rewrite `h` using `[← e]`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h' : (0 : ℝ) ≤ N • r` using `by exact_mod_cast h`. Rewrite `h'` using `[nsmul_eq_mul]`. Establish `hN' : (0 : ℝ) < N` using `by exact_mod_cast Nat.pos_of_ne_zero hN`. Establish `: 0 ≤ r`. Assume the negation of the conclusion as `hr`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Use `push Not at hr`. Use the polynomial consequences of the given equalities and inequalities. Conclude with `this` after adjusting the coercions.
+Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem powRow_nonneg_of_nsmul {a : WithTop ℝ} {N : ℕ} (hN : N ≠ 0) (h : 0 ≤ N • a) : 0 ≤ a := by
   cases a with
@@ -34,7 +34,7 @@ theorem powRow_nonneg_of_nsmul {a : WithTop ℝ} {N : ℕ} (hN : N ≠ 0) (h : 0
     exact_mod_cast this
 
 /- English proof (translation)
-Take `⟨x, hx⟩` from `IsAlgClosed.exists_pow_nat_eq y hN`. Use `⟨x, hx, powRow_nonneg_of_nsmul hN.ne' ?_⟩` and prove the remaining obligations. Rewrite using `[← AddValuation.map_pow, hx]`. Conclude with `hy`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem powRow_int_root [IsAlgClosed C] (v : AddValuation C (WithTop ℝ)) {N : ℕ} (hN : 0 < N)
     (y : C) (hy : IsIntV v y) : ∃ x, x ^ N = y ∧ IsIntV v x := by
@@ -44,11 +44,11 @@ theorem powRow_int_root [IsAlgClosed C] (v : AddValuation C (WithTop ℝ)) {N : 
   exact hy
 
 /- English proof (translation)
-Unfold `IsIntV`. Rewrite `h` using `[AddValuation.map_mul]`. Establish `hb' : v b ≠ ⊤` using `(v.ne_top_iff).2 hb`. Consider the cases of `hvb : v b with`. Consider the case `top => exact absurd hvb hb'`.
+Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Split into cases according to the possible forms of the given data. Treat this case separately.
 
-Consider the case `coe r`. Rewrite `h` using `[hvb]`. Consider the cases of `hva : v a with`. Consider the case `top => exact le_top`. Consider the case `coe s`.
+Treat this case separately. Rewrite the indicated hypotheses using the stated equalities. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 
-Rewrite `h` using `[hva]`. Establish `h2 : r ≤ s + r` using `by exact_mod_cast h`. Conclude with `(by linarith : (0 : ℝ) ≤ s)` after adjusting the coercions.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem powRow_int_of_le (v : AddValuation C (WithTop ℝ)) {a b : C} (hb : b ≠ 0)
     (h : v b ≤ v (a * b)) : IsIntV v a := by
@@ -67,57 +67,53 @@ theorem powRow_int_of_le (v : AddValuation C (WithTop ℝ)) {a b : C} (hb : b �
       exact_mod_cast (by linarith : (0 : ℝ) ≤ s)
 
 /- English proof (translation)
-Rewrite using `[AddValuation.map_pow, AddValuation.map_neg, AddValuation.map_one, smul_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem powRow_v_neg_one_pow (v : AddValuation C (WithTop ℝ)) (k : ℕ) : v ((-1 : C) ^ k) = 0 := by
   rw [AddValuation.map_pow, AddValuation.map_neg, AddValuation.map_one, smul_zero]
 
 /- English proof (translation)
-Introduce `m`. Proceed by induction on `m with`. Consider the case `zero`. Introduce `z _`. Conclude with `⟨1, fun w => w.elim0, by simp, fun w => w.elim0⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Consider the case `succ m ih`. Introduce `z hz`. Distinguish the cases in `hli : LinearIndependent C z`. Establish `hmj : m + 1 ≤ j`. Use `finrank_span_eq_card hli` as an intermediate fact.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Fintype.card_fin] at this`. Use linear arithmetic over natural numbers and integers. Use `⟨1, ?_, by simp [AddValuation.map_one], fun w hw => absurd hw (by omega)⟩` and prove the remaining obligations. Introduce `w u`. Unfold `IsIntV`.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Rewrite using `[Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`. Take `⟨g, hg, i, hi⟩` from `Fintype.not_linearIndependent_iff.1 hli`. Take `⟨u0, -, hu0⟩` from `Finset.exists_min_image Finset.univ (fun u => v (g u)) ⟨i, Finset.mem_univ _⟩`. Establish `hg0 : g u0 ≠ 0`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `h0`. Apply `hi` to reduce the goal to its premises. Use `hu0 i (Finset.mem_univ _)` as an intermediate fact. Rewrite `this` using `[h0, AddValuation.map_zero]`. Conclude with `(v.top_iff).1 (top_le_iff.1 this)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `set c : Fin (m + 1) → C := fun u => g u / g u0 with hc`. Establish `hc0 : c u0 = 1` using `div_self hg0`. Establish `hcint : ∀ u, IsIntV v (c u)`. Introduce `u`. Apply `powRow_int_of_le v hg0` to reduce the goal to its premises.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: c u * g u0 = g u` using `div_mul_cancel₀ _ hg0`. Rewrite using `[this]`. Conclude with `hu0 u (Finset.mem_univ _)`. Establish `hcz : ∑ u, c u • z u = 0`. Establish `: ∑ u, c u • z u = (g u0)⁻¹ • ∑ u, g u • z u`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.smul_sum]`. Use `Finset.sum_congr rfl fun u _ => ?_` and prove the remaining obligations. Rewrite using `[smul_smul, hc]`. Simplify using `only [div_eq_mul_inv, mul_comm]`. Rewrite using `[this, hg, smul_zero]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Use `choose r hr hrint using fun u => powRow_int_root v hN (c u) (hcint u)`. Use `set r' : Fin (m + 1) → C := Function.update r u0 1 with hr'`. Establish `hr'N : ∀ u, r' u ^ N = c u`. Introduce `u`. Distinguish the cases in `hu : u = u0`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Substitute `hu` using the available equality. Rewrite using `[hr', Function.update_self, one_pow, hc0]`. Rewrite using `[hr', Function.update_of_ne hu, hr]`. Establish `hr'int : ∀ u, IsIntV v (r' u)`. Introduce `u`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hu : u = u0`. Substitute `hu` using the available equality. Rewrite using `[hr', Function.update_self]`. Unfold `IsIntV`. Rewrite using `[AddValuation.map_one]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Rewrite using `[hr', Function.update_of_ne hu]`. Conclude with `hrint u`. Establish `hz' : Module.finrank C (Submodule.span C (Set.range (z ∘ u0.succAbove))) ≤ j`. Establish `: Module.Finite C (Submodule.span C (Set.range z))` using `Module.Finite.span_of_finite C (Set.finite_range z)`. Use `le_trans (Submodule.finrank_mono (Submodule.span_mono ?_)) hz` and prove the remaining obligations.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce and unpack `_ ⟨k, rfl⟩`. Conclude with `⟨_, rfl⟩`. Take `⟨x', hx'int, hx'det, hx'k⟩` from `ih (z ∘ u0.succAbove) hz'`. Set `A : Matrix (Fin (m + 1)) (Fin (m + 1)) C` to `Matrix.of (Fin.snoc (fun w' => Fin.insertNth (α := fun _ => C) u0 0 (x' w')) r')`. Establish `hAlast : ∀ u, A (Fin.last m) u = r' u`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `u`. Simplify using `[A, Fin.snoc_last]`. Establish `hAcs : ∀ w' u, A w'.castSucc u = Fin.insertNth (α` using `fun _ => C) u0 0 (x' w') u := by`. Introduce `w' u`. Simplify using `[A, Fin.snoc_castSucc]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Use `⟨A, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `w u`. Proceed by induction on `w using Fin.lastCases with`. Consider the case `last => rw [hAlast]`. Conclude with `hr'int u`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Consider the case `cast w'`. Rewrite using `[hAcs]`. Proceed by induction on `u using Fin.succAboveCases u0 with`. Consider the case `x`. Rewrite using `[Fin.insertNth_apply_same]`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Unfold `IsIntV`. Rewrite using `[AddValuation.map_zero]`. Conclude with `le_top`. Consider the case `p k => rw [Fin.insertNth_apply_succAbove]`. Conclude with `hx'int w' k`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Matrix.det_succ_column A u0]`. Rewrite using `[Fintype.sum_eq_single (Fin.last m)]`. Establish `hsub : A.submatrix (Fin.last m).succAbove u0.succAbove = x'`. Use extensionality with `w' k`. Simplify using `only [Matrix.submatrix_apply, Fin.succAbove_last]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Rewrite using `[hAcs, Fin.insertNth_apply_succAbove]`. Rewrite using `[hsub, hAlast]`. Rewrite using `[AddValuation.map_mul, AddValuation.map_mul, powRow_v_neg_one_pow, hx'det]`. Establish `: r' u0 = 1` using `by rw [hr', Function.update_self]`. Rewrite using `[this, AddValuation.map_one]`.
+Treat this case separately. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Simplify using the standard rewrite rules. Introduce `w hw`. Proceed by induction on `w using Fin.lastCases with`. Consider the case `last => exact absurd rfl hw`. Consider the case `cast w' => rw [hAcs, Fin.insertNth_apply_same]`.
+Simplify using the standard rewrite rules. Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Introduce `w hw`. Proceed by induction on `w using Fin.lastCases with`. Consider the case `last`. Simplify using `only [hAlast, hr'N]`.
-
-Conclude with `hcz`. Consider the case `cast w'`. Simplify using `only [hAcs]`. Rewrite using `[Fin.sum_univ_succAbove _ u0, Fin.insertNth_apply_same, zero_pow hN.ne', zero_smul, zero_add]`. Simplify using `only [Fin.insertNth_apply_succAbove]`.
-
-Conclude with `hx'k w' (by simpa using hw)`.
+A detailed English derivation is pending.
 -/
 theorem powRow_exists [IsAlgClosed C] (v : AddValuation C (WithTop ℝ)) {V : Type} [AddCommGroup V]
     [Module C V] (N : ℕ) (hN : 0 < N) (j : ℕ) : ∀ (m : ℕ) (z : Fin m → V),
@@ -228,7 +224,7 @@ theorem powRow_exists [IsAlgClosed C] (v : AddValuation C (WithTop ℝ)) {V : Ty
           exact hx'k w' (by simpa using hw)
 
 /- English proof (translation)
-Introduce `C _ _ v V _ _ N hN j m z hz`. Conclude with `powRow_exists v N hN j m z hz`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem powRow_matrix : ∀ (C : Type) [Field C] [IsAlgClosed C] (v : AddValuation C (WithTop ℝ)) (V : Type) [AddCommGroup V] [Module C V] (N : ℕ), 0 < N → ∀ (j m : ℕ) (z : Fin m → V), Module.finrank C (Submodule.span C (Set.range z)) ≤ j → ∃ x : Matrix (Fin m) (Fin m) C, (∀ w u, IsIntV v (x w u)) ∧ v x.det = 0 ∧ ∀ w : Fin m, j ≤ w.val → ∑ u, (x w u) ^ N • z u = 0 := by
   intro C _ _ v V _ _ N hN j m z hz

@@ -6,9 +6,9 @@ open scoped InnerProductSpace
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `V ι _ _ u v c s N hc hs hN hu hv`. Establish `hcs : (∑ i, ‖u i‖ * ‖v i‖) ^ 2 ≤ (∑ i, ‖u i‖ ^ 2) * ∑ i, ‖v i‖ ^ 2` using `Finset.sum_mul_sq_le_sq_mul_sq _ _ _`. Establish `hv0 : 0 ≤ ∑ i, ‖v i‖ ^ 2` using `Finset.sum_nonneg fun i _ => by positivity`. Establish `h1 : (∑ i, ‖u i‖ * ‖v i‖) ^ 2 ≤ (c * s * N) ^ 2`. Combine the equalities or inequalities in the displayed calculation.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `h2 : ∑ i, ‖u i‖ * ‖v i‖ ≤ c * s * N` using `(pow_le_pow_iff_left₀ (Finset.sum_nonneg fun i _ => by positivity) (by positivity) two_ne_zero).1 h1`. Establish `h3 : ∑ i, ‖u i + v i‖ ^ 2 ≤ ∑ i, (‖u i‖ ^ 2 + 2 * (‖u i‖ * ‖v i‖) + ‖v i‖ ^ 2)`. Use `Finset.sum_le_sum fun i _ => ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Rewrite `h3` using `[Finset.sum_add_distrib, Finset.sum_add_distrib, ← Finset.mul_sum]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Rewrite the indicated hypotheses using the stated equalities.
 
 Use the polynomial consequences of the given equalities and inequalities.
 -/

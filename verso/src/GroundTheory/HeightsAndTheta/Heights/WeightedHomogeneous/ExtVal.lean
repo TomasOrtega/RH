@@ -9,23 +9,21 @@ open MvPolynomial
 noncomputable section
 
 /- English proof (translation)
-Introduce `ι _ _ n P D d g hg z hz c hm`. Choose the witnesses or unpack the hypotheses as in `⟨j₀, hj₀⟩ : ∃ j, evalCone z (g c j) ≠ 0 := by`. Assume the negation of the conclusion as `h`. Conclude with `hm ((hV ι n P D d g hg z hz c).1 fun j ↦ by_contra fun hj ↦ h ⟨j, hj⟩)`. Establish `hlive : P.IsLive c`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hl`. Apply `hj₀` to reduce the goal to its premises. Rewrite using `[hg.dead c hl j₀]`. Simplify using `[evalCone]`. Set `sub : Coord D.extSizes → MvPolynomial (Coord n) ℤ` to `fun v ↦ match v with`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Treat this case separately.
 
-Consider the case `⟨none, j⟩ => g c j`. Consider the case `⟨some k, i⟩ => X ⟨k, i⟩`. Set `Φ : MvPolynomial (Coord D.extSizes) ℤ →+* MvPolynomial (Coord n) ℤ` to `eval₂Hom (Int.castRingHom _) sub`. Use `set w := D.joinPt z fun j ↦ evalCone z (g c j) with hw`. Establish `key1 : (eval₂Hom (Int.castRingHom ℂ) (fun v : Coord n ↦ z v.1 v.2)).comp Φ = eval₂Hom (Int.castRingHom ℂ) (fun v : Coord D.extSizes ↦ w v.1 v.2)`.
+Treat this case separately. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `r`. Simplify using `[Φ]`. Introduce and unpack `⟨_ | k, i⟩`. Simplify using `[Φ, sub, hw, AddBlockData.joinPt, evalCone]`.
+Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[Φ, sub, hw, AddBlockData.joinPt]`. Establish `key2 : P.mkF.comp Φ = (MvPolynomial.eval fun o : Option ι ↦ o.elim (P.mkF (chartMonomial c d)) fun _ ↦ 1).comp D.extMap`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `r`. Simplify using `[Φ]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 
-Introduce and unpack `⟨_ | k, i⟩`. Simplify using `only [RingHom.comp_apply, Φ, sub, AddBlockData.extMap, AddBlockData.extVal, coe_eval₂Hom, eval₂_X, eval_mul, eval_C, eval_X, Option.elim]`. Conclude with `(hg.value c hlive i).trans (mul_comm _ _)`. Simplify using `[Φ, sub, AddBlockData.extMap, AddBlockData.extVal]`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce and unpack `(_ | k)`. Introduce `h`. Conclude with `hj₀ (congrFun h j₀)`. Conclude with `hz.1 k`. Introduce `F hF`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0 : P.mkF (Φ F) = 0`. Use `RingHom.congr_fun key2 F` as an intermediate fact. Rewrite `this` using `[RingHom.comp_apply, RingHom.comp_apply, (RingHom.mem_ker).1 hF, map_zero]`. Conclude with `this`. Establish `hmem : Φ F ∈ P.ideal` using `(P.mkF_eq_zero_iff _).1 h0`.
-
-Establish `h1` using `RingHom.congr_fun key1 F`. Establish `h2 : evalCone z (Φ F) = 0` using `hz.2 _ hmem`. Simplify using `only [RingHom.comp_apply, coe_eval₂Hom] at h1`. Simplify `h2` using `[evalCone, h1]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem ConePointsConverse.proof (hV : ChartVanishing.Statement) : ConePointsConverse.Statement := by
   intro ι _ _ n P D d g hg z hz c hm

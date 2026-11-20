@@ -6,11 +6,11 @@ open Polynomial Classical GlobalTheory.BadShare
 namespace GlobalTheory.BadShare.CoDiag
 
 /- English proof (translation)
-Establish `h1 : op ρ e' = ρ t * op ρ e * ρ t⁻¹`. Unfold `op`. Rewrite using `[Finset.mul_sum, Finset.sum_mul, ← Equiv.sum_comp (MulAut.conj t).toEquiv]`. Use `Finset.sum_congr rfl fun u _ => ?_` and prove the remaining obligations. Simplify using `[h]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Set `T : M ≃ₗ[ℂ] M` to `LinearEquiv.ofLinear (ρ t) (ρ t⁻¹) (by rw [← Module.End.mul_eq_comp, ← map_mul]; simp [Module.End.one_eq_id]) (by rw [← Module.End.mul_eq_comp, ← map_mul]; simp [Module.End.one_eq_id])`. Establish `h2 : LinearMap.range (op ρ e') = (LinearMap.range (op ρ e)).map (T : M →ₗ[ℂ] M)`. Establish `: op ρ e' = (T : M →ₗ[ℂ] M) ∘ₗ (op ρ e ∘ₗ (T.symm : M →ₗ[ℂ] M))`. Rewrite using `[h1]`. Both sides reduce to the same expression.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[this, LinearMap.range_comp, LinearMap.range_comp, LinearEquiv.range, Submodule.map_top]`. Unfold `rk`. Rewrite using `[h2, LinearEquiv.finrank_map_eq]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem rk_eq_of_conj {G : Type} [Group G] [Fintype G] {M : Type} [AddCommGroup M] [Module ℂ M]
     (ρ : Representation ℂ G M) (e e' : G → ℂ) (t : G) (h : ∀ u, e' (t * u * t⁻¹) = e u) :
@@ -31,9 +31,9 @@ theorem rk_eq_of_conj {G : Type} [Group G] [Fintype G] {M : Type} [AddCommGroup 
   rw [h2, LinearEquiv.finrank_map_eq]
 
 /- English proof (translation)
-Set `F : ∀ b : Fin N, (∀ a, a < b → A) → A` to `fun b rec => if h : ∃ a, E a b then rec h.choose (hlt _ _ h.choose_spec) * r h.choose else 1`. Use `⟨wellFounded_lt.fix F, fun a b hab => ?_⟩` and prove the remaining obligations. Establish `h : ∃ a, E a b` using `⟨a, hab⟩`. Establish `ha : h.choose = a` using `huniq _ _ _ h.choose_spec hab`. Rewrite using `[WellFounded.fix_eq]`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: F b (fun y _ => wellFounded_lt.fix F y) = wellFounded_lt.fix F h.choose * r h.choose` using `dif_pos h`. Rewrite using `[this, ha]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_potential {N : ℕ} {A : Type} [Group A] (E : Fin N → Fin N → Prop)
     (hlt : ∀ a b, E a b → a < b) (huniq : ∀ a a' b, E a b → E a' b → a = a') (r : Fin N → A) :
@@ -48,9 +48,9 @@ theorem exists_potential {N : ℕ} {A : Type} [Group A] (E : Fin N → Fin N →
   rw [this, ha]
 
 /- English proof (translation)
-Establish `hp : ψ.IsPrimitive` using `AddChar.IsPrimitive.of_ne_one h`. Establish `hinj` using `AddChar.to_mulShift_inj_of_isPrimitive hp`. Establish `hbij : Function.Bijective ψ.mulShift` using `(Fintype.bijective_iff_injective_and_card _).2 ⟨hinj, (AddChar.card_eq (α := ZMod g)).symm⟩`. Take `⟨c, hc⟩` from `hbij.2 ψ'`. Establish `hc0 : c ≠ 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce and unpack `rfl`. Conclude with `h' (by rw [← hc, AddChar.mulShift_zero])`. Conclude with `⟨Units.mk0 c hc0, fun x => by rw [← hc]; simp⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_unit_shift (g : ℕ) [Fact g.Prime] (ψ ψ' : AddChar (ZMod g) ℂ) (h : ψ ≠ 1) (h' : ψ' ≠ 1) :
     ∃ c : (ZMod g)ˣ, ∀ x, ψ' x = ψ (c * x) := by
@@ -73,7 +73,7 @@ def diagUnit (t : Fin N → (ZMod g)ˣ) : GG g N where
   inv_val := by rw [Matrix.diagonal_mul_diagonal]; simp only [Units.inv_mul, Matrix.diagonal_one]
 
 /- English proof (translation)
-Establish `: (diagUnit t * u * (diagUnit t)⁻¹).val = Matrix.diagonal (fun a => (t a : ZMod g)) * u.val * Matrix.diagonal (fun a => (((t a)⁻¹ : (ZMod g)ˣ) : ZMod g))` using `rfl`. Rewrite using `[this, Matrix.mul_diagonal, Matrix.diagonal_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem conj_diagUnit_apply (t : Fin N → (ZMod g)ˣ) (u : GG g N) (a b : Fin N) :
     (diagUnit t * u * (diagUnit t)⁻¹).val a b = (t a : ZMod g) * u.val a b * ((t b)⁻¹ : (ZMod g)ˣ) := by
@@ -82,9 +82,9 @@ theorem conj_diagUnit_apply (t : Fin N → (ZMod g)ˣ) (u : GG g N) (a b : Fin N
   rw [this, Matrix.mul_diagonal, Matrix.diagonal_mul]
 
 /- English proof (translation)
-Establish `h0 : ∀ a b, (diagUnit t * u * (diagUnit t)⁻¹).val a b = 0 ↔ u.val a b = 0`. Introduce `a b`. Rewrite using `[conj_diagUnit_apply, Units.mul_left_eq_zero, Units.mul_right_eq_zero]`. Establish `h1 : ∀ a, (diagUnit t * u * (diagUnit t)⁻¹).val a a = u.val a a`. Introduce `a`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[conj_diagUnit_apply, mul_right_comm, Units.mul_inv, one_mul]`. Unfold `Lev.Mem IsUp`. Simplify using `only [h0, h1]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem mem_conj_diagUnit (L : Lev g N) (t : Fin N → (ZMod g)ˣ) (u : GG g N) :
     L.Mem (diagUnit t * u * (diagUnit t)⁻¹) ↔ L.Mem u := by
@@ -98,7 +98,7 @@ theorem mem_conj_diagUnit (L : Lev g N) (t : Fin N → (ZMod g)ˣ) (u : GG g N) 
   simp only [h0, h1]
 
 /- English proof (translation)
-Unfold `Lev.Edge at h`. Rewrite using `[Fin.lt_def]`. Apply the tactic sequence `split_ifs at h <;> omega`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem edge_lt (L : Lev g N) (a b : Fin N) (h : L.Edge a b) : a < b := by
   unfold Lev.Edge at h
@@ -106,7 +106,7 @@ theorem edge_lt (L : Lev g N) (a b : Fin N) (h : L.Edge a b) : a < b := by
   split_ifs at h <;> omega
 
 /- English proof (translation)
-Unfold `Lev.Edge at h h'`. Apply `Fin.ext` to reduce the goal to its premises. Apply the tactic sequence `split_ifs at h h' <;> omega`.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem edge_unique (L : Lev g N) (a a' b : Fin N) (h : L.Edge a b) (h' : L.Edge a' b) : a = a' := by
   unfold Lev.Edge at h h'
@@ -114,19 +114,19 @@ theorem edge_unique (L : Lev g N) (a a' b : Fin N) (h : L.Edge a b) (h' : L.Edge
   split_ifs at h h' <;> omega
 
 /- English proof (translation)
-Introduce `g _ N M _ _ _ ρ L L' h1 h2 h3`. Establish `hM : L'.Mem = L.Mem`. Use function extensionality and compare the values at `u`. Unfold `Lev.Mem`. Rewrite using `[h1, h2, h3]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `hE : L'.Edge = L.Edge`. Use function extensionality and compare the values at `a b`. Unfold `Lev.Edge`. Rewrite using `[h1, h2, h3]`. Take `⟨c, hc⟩` from `exists_unit_shift g L.ψ L'.ψ L.hψ L'.hψ`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨t, ht⟩` from `exists_potential L.Edge (edge_lt L) (edge_unique L) (fun a => c * L'.co a * (L.co a)⁻¹)`. Use `rk_eq_of_conj ρ _ _ (diagUnit t) fun u => ?_` and prove the remaining obligations. Establish `hchi : L'.chi (diagUnit t * u * (diagUnit t)⁻¹) = L.chi u`. Unfold `Lev.chi`. Rewrite using `[hc, hE, Finset.mul_sum]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Use `split_ifs with hab`.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[conj_diagUnit_apply, ht a b hab]`. Simplify using `only [Units.val_inv_eq_inv_val, Units.val_mul]`. Use `(t a).ne_zero` as an intermediate fact. Use `c.ne_zero` as an intermediate fact. Use `(L.co a).ne_zero` as an intermediate fact.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(L'.co a).ne_zero` as an intermediate fact. Clear the denominators using the available nonvanishing facts. Simplify using the standard rewrite rules. Unfold `Lev.e eps`. Rewrite using `[hchi, hM]`.
+Clear the denominators using the available nonvanishing facts. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [mem_conj_diagUnit]`.
+A detailed English derivation is pending.
 -/
 theorem rk_e_eq : ∀ (g : ℕ) [Fact g.Prime] (N : ℕ), ∀ (M : Type) [AddCommGroup M] [Module ℂ M] [FiniteDimensional ℂ M]
     (ρ : Representation ℂ (GG g N) M), ∀ L L' : Lev g N, L.sharp = L'.sharp → L.s = L'.s → L.k = L'.k →

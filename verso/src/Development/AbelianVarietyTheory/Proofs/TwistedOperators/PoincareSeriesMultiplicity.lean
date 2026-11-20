@@ -27,21 +27,19 @@ open GlobalTheory.IndefiniteRowSideFullHecke.KTypeExtension
 open Classical in
 
 /- English proof (translation)
-Introduce `hHC hCW hDS hRD D θ hθ V S M Λ 𝔪 hΛ h𝔪 v hv c hτ`. Take `⟨haut, ⟨T₀, hT₀⟩, hKeq⟩` from `GlobalTheory.T.coefficientPoincareSeries_isAutomorphic D θ hθ V S M Λ 𝔪 hΛ h𝔪 v hv c`. Establish `hder` using `GlobalTheory.T.poincareSeries_smooth_moderateGrowth_deriv hHC D θ hθ V S M Λ 𝔪 hΛ h𝔪 v hv c`. Establish `hcusp` using `GlobalTheory.T.poincare_series_cuspidal hDS D θ hθ V S M Λ 𝔪 hΛ h𝔪 v hv c hτ`. Take `⟨vol⟩` from `(GlobalTheory.Unf.VolExist.measures_exist D).1 V`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hGK : IsGKMap θ M (Lev.levA V (congLev D.sp.cm V.gram Λ 𝔪) : Set _) 1 vol.μ vol.𝓕 T₀`. Use `⟨fun u => ?_, fun u => ?_, fun u => ?_, fun u => ?_, fun u => ?_, fun u k hk g => ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hT₀]`. Conclude with `(haut u).1`. Rewrite using `[hT₀]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(hder u).1`. Rewrite using `[hT₀]`. Conclude with `hcusp u`. Rewrite using `[hT₀]`. Establish `hr` using `GlobalTheory.Grow.rapidDec_of_unifModGrowth hRD hθ (haut u).1 (hder u).1 (hder u).2.1 (hcusp u)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `GlobalTheory.CuspDecay.memLp_of_bounded hr.continuous hr.bounded _ _ vol.haar vol.fund 2`. Rewrite using `[hT₀]`. Conclude with `(hder u).2.1`. Rewrite using `[hT₀, (haut u).2.2.2 k hk g]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails.
 
-Introduce `τ k hk u w hw`. Rewrite using `[hT₀, hT₀]`. Establish `e : (fun τ' => ((Function.update u τ w τ' : kFin M τ') : M.H τ')) = Function.update (fun τ' => (u τ' : M.H τ')) τ (M.rep τ k (u τ))`. Use function extensionality and compare the values at `τ'`. Distinguish the cases in `h : τ' = τ`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Substitute `h` using the available equality. Simplify using `[hw]`. Simplify using `[Function.update_of_ne h]`. Rewrite using `[e]`. Conclude with `hKeq _ τ k (maxCpt_subset M τ hk)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `τ X hX u w hw`. Rewrite using `[hT₀, hT₀]`. Conclude with `(hder u).2.2 τ X hX w hw`. Take `⟨T, ⟨hTm, hTe⟩, -⟩` from `(GlobalTheory.GKExtensionToSmoothVectors.gkExtension hHC hCW D).1 θ hθ V S M _ 1 vol.μ vol.𝓕 vol.haar vol.fund T₀ hGK`. Use `⟨PiTensorProduct.lift T, ?_, fun a ha => ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[mem_multT, LinearEquiv.symm_apply_apply]`. Conclude with `Submodule.subset_span hTm`. Rewrite using `[PiTensorProduct.lift.tprod, hTe a (fun τ => ⟨a τ, ha τ⟩) (fun τ => rfl), hT₀]`.
+A detailed English derivation is pending.
 -/
 theorem exists_multT_eq_poin : GlobalTheory.Published.HarishChandraModules → GlobalTheory.Published.CasselmanWallach → GlobalTheory.Published.DiscreteSeriesCoefficientsCuspidal → GlobalTheory.Published.CuspRapidDecay → ∀ (D : D7) (θ : InfFam D), IsInfFam θ → ∀ (V : HSp D) (S : D.what₂.Tau → SPar) (M : DSModel V S) (Λ : Lat V) (𝔪 : Ideal (𝓞 D.host.E)), IsSelfDualC V Λ → 𝔪 ≠ ⊥ → ∀ (v : ∀ τ, M.H τ), KDecay M v → ∀ c : GA D V, Nonempty D.what₂.Tau → ∃ y ∈ MultT θ M (Lev.levA V (congLev D.sp.cm V.gram Λ 𝔪) : Set _) 1, ∀ a : M.Vec, (∀ τ, (a τ : M.H τ) ∈ GlobalTheory.IndefiniteRowSideFullHecke.KTypeExtension.kFin M τ) → y (PiTensorProduct.tprod ℂ a) = poin θ M (congLev D.sp.cm V.gram Λ 𝔪) v c fun τ => a τ := by
   intro hHC hCW hDS hRD D θ hθ V S M Λ 𝔪 hΛ h𝔪 v hv c hτ

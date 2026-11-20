@@ -6,7 +6,7 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.PatchingModules.Se
 open Matrix Filter NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal UpperTheory.V.Alg UpperTheory.V.W UpperTheory.V.Pa
 
 /- English proof (translation)
-Rewrite using `[Submodule.ideal_span_singleton_smul, Submodule.mem_smul_pointwise_iff_exists]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem dg_mem {A C : Type} [CommRing A] [AddCommGroup C] [Module A C] (a : A) (x : C) :
     x ∈ (Ideal.span {a} • ⊤ : Submodule A C) ↔ ∃ c, a • c = x := by
@@ -14,9 +14,9 @@ private theorem dg_mem {A C : Type} [CommRing A] [AddCommGroup C] [Module A C] (
   simp
 
 /- English proof (translation)
-Establish `hi : Function.Injective (T.liftQ R h.ge)`. Rewrite using `[← LinearMap.ker_eq_bot]`. Conclude with `Submodule.ker_liftQ_eq_bot _ _ _ h.le`. Establish `e` using `Submodule.equivMapOfInjective _ hi (S.map T.mkQ)`. Rewrite `e` using `[← Submodule.map_comp, Submodule.liftQ_mkQ]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `⟨e.toEquiv⟩`.
+A detailed English derivation is pending.
 -/
 private theorem dg_equiv {A C D : Type} [CommRing A] [AddCommGroup C] [Module A C] [AddCommGroup D] [Module A D]
     (R : C →ₗ[A] D) (T S : Submodule A C) (h : LinearMap.ker R = T) : Nonempty (S.map T.mkQ ≃ (R '' S : Set D)) := by
@@ -27,41 +27,35 @@ private theorem dg_equiv {A C D : Type} [CommRing A] [AddCommGroup C] [Module A 
   exact ⟨e.toEquiv⟩
 
 /- English proof (translation)
-Establish `htf' : ∀ (n : ℕ) (y : P), t ^ n • y = 0 → y = 0`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => intro y hy`. Simplify using `using hy`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify to obtain the desired conclusion from the available facts.
 
-Consider the case `succ n ih => exact fun y hy => htf y (ih _ (by rw [smul_smul, ← pow_succ, hy]))`. Set `C : Submodule A (G → P)` to `{ carrier := {f | ∀ m, IsLocallyConstant (red m ∘ f)} add_mem' := fun {a b} ha hb m => by`. Establish `: red m ∘ (a + b) = red m ∘ a + red m ∘ b` using `by funext g; simp`. Rewrite using `[this]`. Conclude with `(ha m).add (hb m)`.
+Treat this case separately. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use the proof step `zero_mem' := fun m => by`. Establish `: red m ∘ (0 : G → P) = fun _ => 0` using `by funext g; simp`. Rewrite using `[this]`. Conclude with `IsLocallyConstant.const _`. Use the proof step `smul_mem' := fun c a ha m => by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `: red m ∘ (c • a) = (fun y => c • y) ∘ (red m ∘ a)` using `by funext g; simp`. Rewrite using `[this]`. Conclude with `(ha m).comp _ }`. Establish `mC' : ∀ m (y : ι → P), y ∈ (Ideal.span {t ^ m} • ⊤ : Submodule A (ι → P)) ↔ ∀ i, red m (y i) = 0`. Introduce `m y`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[dg_mem]`. Simplify using `only [hker]`. Conclude with `⟨fun ⟨c, hc⟩ i => ⟨c i, congrFun hc i⟩, fun h => by choose c hc using h; exact ⟨c, funext hc⟩⟩`. Establish `mC : ∀ m (f : C), f ∈ (Ideal.span {t ^ m} • ⊤ : Submodule A C) ↔ ∀ g, red m (f.1 g) = 0`. Introduce `m f`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[dg_mem]`. Simplify using `only [hker]`. Use `⟨fun ⟨c, hc⟩ i => ⟨c.1 i, congrFun (congrArg Subtype.val hc) i⟩, fun h => ?_⟩` and prove the remaining obligations. Use `choose c hc using h`. Use `⟨⟨c, fun N => ?_⟩, Subtype.ext (funext hc)⟩` and prove the remaining obligations.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `h1` using `f.2 (m + N)`. Rewrite `h1`, the goal using `[IsLocallyConstant.iff_eventually_eq]`. Use `fun g => (h1 g).mono fun g' e => ?_` and prove the remaining obligations. Simplify using `only [Function.comp] at e ⊢`. Rewrite `e`, the goal using `[← sub_eq_zero, ← map_sub, hker]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Take `⟨p, hp⟩` from `e`. Use `⟨p, sub_eq_zero.1 (htf' m _ ?_)⟩` and prove the remaining obligations. Rewrite using `[smul_sub, smul_sub, hc, hc, smul_smul, ← pow_add, hp, sub_self]`. Set `R : ∀ m, C →ₗ[A] (G → Pm m)` to `fun m => ((red m).compLeft G).comp C.subtype`. Establish `hR : ∀ m, LinearMap.ker (R m) = (Ideal.span {t ^ m} • ⊤ : Submodule A C)` using `fun m => by`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Use extensionality with `f`. Rewrite using `[mC, LinearMap.mem_ker, funext_iff]`. Both sides reduce to the same expression. Establish `hS : ∀ m, R m '' ((Ideal.span {t ^ m} • ⊤ : Submodule A (ι → P)).comap (Φ.comp C.subtype) : Submodule A C) = Z m` using `fun m => by`. Use extensionality with `h`.
+Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨f, hf, rfl⟩`. Conclude with `(hZ m f.1).2 ⟨f.2 m, (mC' m _).1 hf⟩`. Introduce `hh`. Take `⟨s, hs⟩` from `(hsurj m).hasRightInverse`.
+Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e : red m ∘ (s ∘ h) = h` using `funext fun g => hs _`. Establish `h2` using `(hZ m (s ∘ h)).1 (by rw [e]; exact hh)`. Rewrite `h2` using `[e]`. Conclude with `⟨⟨s ∘ h, fun N => h2.1.comp (red N ∘ s)⟩, (mC' m _).2 h2.2, e⟩`. Establish `hH : IsHausdorff (Ideal.span {t}) C` using `⟨fun f hf => Subtype.ext (funext fun g => hsep _ fun m => by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hf m` as an intermediate fact. Rewrite `this` using `[SModEq.sub_mem, Ideal.span_singleton_pow, sub_zero, mC]`. Conclude with `this g)⟩`. Establish `hH' : IsHausdorff (Ideal.span {t}) (ι → P)` using `⟨fun f hf => funext fun g => hsep _ fun m => by`. Use `hf m` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `this` using `[SModEq.sub_mem, Ideal.span_singleton_pow, sub_zero, mC']`. Conclude with `this g⟩`. Establish `hP : IsPrecomplete (Ideal.span {t}) C` using `⟨fun u hu => by`. Establish `h1 : ∀ g, ∃ L, ∀ m, red m ((u m).1 g) = red m L` using `fun g => hcomp _ fun m n hmn => by`. Use `hu hmn` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite `this` using `[SModEq.sub_mem, Ideal.span_singleton_pow, mC]`. Rewrite using `[← sub_eq_zero, ← map_sub]`. Conclude with `this g`. Use `choose L hL using h1`. Use `⟨⟨L, fun m => ?_⟩, fun m => ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `: red m ∘ L = red m ∘ (u m).1` using `funext fun g => (hL g m).symm`. Rewrite using `[this]`. Conclude with `(u m).2 m`. Rewrite using `[SModEq.sub_mem, Ideal.span_singleton_pow, mC]`. Introduce `g`.
-
-Conclude with `(map_sub _ _ _).trans (sub_eq_zero.2 (hL g m))⟩`. Take `⟨-, e, he⟩` from `solCnt A C (ι → P) t (Φ.comp C.subtype) (B.comap C.subtype) ht (fun y hy => Subtype.ext (funext fun g => htf _ (congrFun (congrArg Subtype.val hy) g))) (fun y hy => funext fun g => htf _ (congrFun hy g)) hA {} hH' (by`. Take `⟨e⟩` from `dg_equiv (R 1) _ ((Ideal.span {t ^ 1} • ⊤ : Submodule A (ι → P)).comap (Φ.comp C.subtype)) (hR 1)`. Rewrite `e` using `[hS, pow_one]`. Use `hZ1.to_subtype` as an intermediate fact.
-
-Conclude with `Finite.of_equiv _ e.symm)`. Use the proof step `(fun b hb => (hB _ hb).1) (fun z hz => hdet z.1 z.2 hz)`. Use `⟨e, fun m => ?_⟩` and prove the remaining obligations. Take `⟨e1⟩` from `dg_equiv (R m) _ ((Ideal.span {t ^ m} • ⊤ : Submodule A (ι → P)).comap (Φ.comp C.subtype)) (hR m)`. Take `⟨e2⟩` from `dg_equiv (R m) _ (B.comap C.subtype) (hR m)`.
-
-Establish `h3` using `(he m).2`. Rewrite `h3` using `[Nat.card_congr e1, Nat.card_congr e2, hS, Nat.card_coe_set_eq, Nat.card_coe_set_eq]`. Use `h3.trans (Nat.mul_le_mul_right _ (Set.ncard_le_ncard ?_ (hBm m)))` and prove the remaining obligations. Introduce and unpack `_ ⟨b, hb, rfl⟩`. Conclude with `(hB _ hb).2 m`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 private theorem dg_abs (A P G ι : Type) [CommRing A] [IsDomain A] [IsDiscreteValuationRing A]
     [Finite (IsLocalRing.ResidueField A)] [AddCommGroup P] [Module A P] [TopologicalSpace G] (t : A)
@@ -174,7 +168,7 @@ section red
 variable {l : ℕ} [Fact l.Prime] {F : GFrame l} {n : ℕ} (x : NP F n)
 
 /- English proof (translation)
-Establish `: c • y = DD.C (algebraMap A X c) * y` using `rfl`. Rewrite using `[this]`. Apply the tactic sequence `ext <;> simp`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem dg_smul {A X : Type} [CommRing A] [CommRing X] [Algebra A X] {g : ℕ} (c : A) (y : DD X g) :
     c • y = ⟨algebraMap A X c * y.a, fun j => algebraMap A X c * y.ep j, fun j => algebraMap A X c * y.ep' j,
@@ -184,7 +178,7 @@ private theorem dg_smul {A X : Type} [CommRing A] [CommRing X] [Algebra A X] {g 
   ext <;> simp
 
 /- English proof (translation)
-Rewrite using `[Ideal.Quotient.eq, Ideal.mem_span_singleton, PowerSeries.X_pow_dvd_iff]`. Simplify using `only [map_sub, sub_eq_zero]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem dg_q (m : ℕ) (a b : x.A) :
     Ideal.Quotient.mk (Ideal.span {x.t ^ m}) a = Ideal.Quotient.mk _ b ↔
@@ -193,7 +187,7 @@ private theorem dg_q (m : ℕ) (a b : x.A) :
   simp only [map_sub, sub_eq_zero]
 
 /- English proof (translation)
-Rewrite using `[DD.ext_iff, funext_iff, funext_iff]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem dg_red (g m : ℕ) (a b : DD x.A g) : x.redD g m a = x.redD g m b ↔
     Ideal.Quotient.mk (Ideal.span {x.t ^ m}) a.a = Ideal.Quotient.mk _ b.a ∧
@@ -204,16 +198,14 @@ private theorem dg_red (g m : ℕ) (a b : DD x.A g) : x.redD g m a = x.redD g m 
   rfl
 
 /- English proof (translation)
-The claim follows from `PowerSeries.ext fun d => (dg_q x (d + 1) a 0).1 (e _) d (Nat.lt_succ_self d)`.
+A detailed English derivation is pending.
 -/
 private theorem dg_qsep {a : x.A}
     (e : ∀ m, Ideal.Quotient.mk (Ideal.span {x.t ^ m}) a = Ideal.Quotient.mk _ 0) : a = 0 :=
   PowerSeries.ext fun d => (dg_q x (d + 1) a 0).1 (e _) d (Nat.lt_succ_self d)
 
 /- English proof (translation)
-Establish `e' : ∀ m, x.redD g m a = x.redD g m 0` using `fun m => by rw [e, map_zero]`. Simplify using `only [dg_red] at e'`. Use `ext1`. Conclude with `dg_qsep x fun m => (e' m).1`. Conclude with `funext fun j => dg_qsep x fun m => (e' m).2.1 j`.
-
-Conclude with `funext fun j => dg_qsep x fun m => (e' m).2.2.1 j`. Conclude with `dg_qsep x fun m => (e' m).2.2.2`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem dg_sep {g : ℕ} {a : DD x.A g} (e : ∀ m, x.redD g m a = 0) : a = 0 := by
   have e' : ∀ m, x.redD g m a = x.redD g m 0 := fun m => by rw [e, map_zero]
@@ -225,9 +217,9 @@ private theorem dg_sep {g : ℕ} {a : DD x.A g} (e : ∀ m, x.redD g m a = 0) : 
   · exact dg_qsep x fun m => (e' m).2.2.2
 
 /- English proof (translation)
-Introduce and unpack `⟨a, ep, ep', eta⟩`. Establish `s` using `Ideal.Quotient.mk_surjective (I := Ideal.span {x.t ^ m})`. Take `⟨a, rfl⟩` from `s a`. Take `⟨eta, rfl⟩` from `s eta`. Use `choose e he using fun j => s (ep j)`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use `choose e' he' using fun j => s (ep' j)`. Conclude with `⟨⟨a, e, e', eta⟩, DD.ext rfl (funext he) (funext he') rfl⟩`.
+A detailed English derivation is pending.
 -/
 private theorem dg_surj (g m : ℕ) : Function.Surjective (x.redD g m) := by
   rintro ⟨a, ep, ep', eta⟩
@@ -239,11 +231,11 @@ private theorem dg_surj (g m : ℕ) : Function.Surjective (x.redD g m) := by
   exact ⟨⟨a, e, e', eta⟩, DD.ext rfl (funext he) (funext he') rfl⟩
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `e`. Rewrite `e` using `[← map_zero (x.redD g m), dg_red]`. Simplify using `only [Ideal.Quotient.eq, Ideal.mem_span_singleton, DD.zero_a, DD.zero_ep, DD.zero_ep', DD.zero_eta, sub_zero] at e`. Take `⟨⟨a', ha⟩, h2, h3, ⟨eta', heta⟩⟩` from `e`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Use `choose e he using h2`. Use `choose e' he' using h3`. Use `⟨⟨a', e, e', eta'⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[dg_smul]`. Conclude with `DD.ext ha.symm (funext fun j => (he j).symm) (funext fun j => (he' j).symm) heta.symm`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `⟨p, rfl⟩`. Establish `h0 : algebraMap x.A (x.Am m) (x.t ^ m) = 0` using `Ideal.Quotient.eq_zero_iff_mem.2 (Ideal.mem_span_singleton_self _)`. Rewrite using `[map_smul, dg_smul, h0]`. Apply the tactic sequence `ext <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 private theorem dg_ker (g m : ℕ) (a : DD x.A g) : x.redD g m a = 0 ↔ ∃ p, x.t ^ m • p = a := by
   constructor
@@ -264,14 +256,14 @@ private theorem dg_ker (g m : ℕ) (a : DD x.A g) : x.redD g m a = 0 ↔ ∃ p, 
     ext <;> simp
 
 /- English proof (translation)
-Rewrite `h` using `[dg_smul, DD.ext_iff, funext_iff, funext_iff]`. Simplify `h` using `[DD.ext_iff, funext_iff]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem dg_tf (g : ℕ) (a : DD x.A g) (h : x.t • a = 0) : a = 0 := by
   rw [dg_smul, DD.ext_iff, funext_iff, funext_iff] at h
   simpa [DD.ext_iff, funext_iff] using h
 
 /- English proof (translation)
-Use `⟨PowerSeries.mk fun d => PowerSeries.coeff d (u (d + 1)), fun m => (dg_q x _ _ _).2 fun d hd => ?_⟩` and prove the remaining obligations. Rewrite using `[PowerSeries.coeff_mk]`. Conclude with `((dg_q x _ _ _).1 (h (d + 1) m hd) d (Nat.lt_succ_self d)).symm`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem dg_qcomp (u : ℕ → x.A) (h : ∀ m n, m ≤ n →
     Ideal.Quotient.mk (Ideal.span {x.t ^ m}) (u m) = Ideal.Quotient.mk _ (u n)) :
@@ -281,9 +273,7 @@ private theorem dg_qcomp (u : ℕ → x.A) (h : ∀ m n, m ≤ n →
   exact ((dg_q x _ _ _).1 (h (d + 1) m hd) d (Nat.lt_succ_self d)).symm
 
 /- English proof (translation)
-Simplify using `only [dg_red] at h ⊢`. Take `⟨a, ha⟩` from `dg_qcomp x _ fun m n e => (h m n e).1`. Use `choose b hb using fun j => dg_qcomp x _ fun m n e => (h m n e).2.1 j`. Use `choose c hc using fun j => dg_qcomp x _ fun m n e => (h m n e).2.2.1 j`. Take `⟨d, hd⟩` from `dg_qcomp x _ fun m n e => (h m n e).2.2.2`.
-
-Conclude with `⟨⟨a, b, c, d⟩, fun m => ⟨ha m, fun j => hb j m, fun j => hc j m, hd m⟩⟩`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem dg_comp (g : ℕ) (u : ℕ → DD x.A g) (h : ∀ m n, m ≤ n → x.redD g m (u m) = x.redD g m (u n)) :
     ∃ L, ∀ m, x.redD g m (u m) = x.redD g m L := by
@@ -295,9 +285,7 @@ private theorem dg_comp (g : ℕ) (u : ℕ → DD x.A g) (h : ∀ m n, m ≤ n �
   exact ⟨⟨a, b, c, d⟩, fun m => ⟨ha m, fun j => hb j m, fun j => hc j m, hd m⟩⟩
 
 /- English proof (translation)
-Use `⟨fun h i j => h.comp fun Z => Z i j, fun h => ?_⟩` and prove the remaining obligations. Rewrite using `[IsLocallyConstant.iff_eventually_eq]`. Introduce `g0`. Establish `: ∀ᶠ g in nhds g0, ∀ i j, f g i j = f g0 i j` using `Filter.eventually_all.2 fun i => Filter.eventually_all.2 fun j => (h i j).eventually_eq g0`. Use `filter_upwards [this] with g hg`.
-
-Conclude with `Matrix.ext hg`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem dg_lc {Γ R : Type} [TopologicalSpace Γ] {n : ℕ} (f : Γ → Matrix (Fin n) (Fin n) R) :
     IsLocallyConstant f ↔ ∀ i j, IsLocallyConstant fun g => f g i j := by
@@ -310,9 +298,9 @@ private theorem dg_lc {Γ R : Type} [TopologicalSpace Γ] {n : ℕ} (f : Γ → 
   exact Matrix.ext hg
 
 /- English proof (translation)
-Introduce `m`. Establish `h1` using `h m`. Rewrite `h1`, the goal using `[IsLocallyConstant.iff_eventually_eq]`. Use `fun s => (h1 s).mono fun s' e => ?_` and prove the remaining obligations. Rewrite `e` using `[← sub_eq_zero, ← map_sub, dg_ker]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨p, hp⟩` from `e`. Rewrite using `[Ideal.Quotient.eq, Ideal.span_singleton_pow, Ideal.mem_span_singleton, ← map_pow, ← hp, Algebra.smul_def]`. Conclude with `dvd_mul_right _ _`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem dg_cont {Γ : Type} [TopologicalSpace Γ] {g : ℕ} (f : Γ → DD x.A g)
     (h : ∀ m, IsLocallyConstant fun s => x.redD g m (f s)) :
@@ -329,7 +317,7 @@ private theorem dg_cont {Γ : Type} [TopologicalSpace Γ] {g : ℕ} (f : Γ → 
 variable {x} (k : Kap x)
 
 /- English proof (translation)
-Establish `a1 : ∀ Z : Fin k.g → Matrix (Fin n) (Fin n) x.A, (x.redD k.g m).mapMatrix (DD.epM fun j => (Z j).map (algebraMap x.A x.A)) = DD.epM fun j => (Z j).map (algebraMap x.A (x.Am m))` using `fun Z => by`. Apply the tactic sequence `ext a b <;> simp [DD.epM]`. Establish `a2 : ∀ Z : Matrix (Fin n) (Fin n) x.A, (x.redD k.g m).mapMatrix (Z.map (algebraMap x.A (DD x.A k.g))) = Z.map (algebraMap x.A (DD (x.Am m) k.g))` using `fun Z => by ext1 a b`. Conclude with `(x.redD k.g m).commutes _`. Simplify using `only [Kap.ρ1, NP.ρX, map_mul, map_add, map_one, a1, a2]`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem dg_ρ1 (m : ℕ) (g : F.G₀) : (x.redD k.g m).mapMatrix (k.ρ1 x.A g) = k.ρ1 (x.Am m) g := by
   have a1 : ∀ Z : Fin k.g → Matrix (Fin n) (Fin n) x.A,
@@ -343,7 +331,7 @@ private theorem dg_ρ1 (m : ℕ) (g : F.G₀) : (x.redD k.g m).mapMatrix (k.ρ1 
   simp only [Kap.ρ1, NP.ρX, map_mul, map_add, map_one, a1, a2]
 
 /- English proof (translation)
-Simplify using `only [epsD, algebraMap_smul, map_smul]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem dg_eps (m : ℕ) (g : F.Γ) (Z : Matrix (Fin n) (Fin n) (DD x.A k.g)) :
     (x.redD k.g m).mapMatrix (epsD k x.A g • Z) = epsD k (x.Am m) g • (x.redD k.g m).mapMatrix Z := by
@@ -355,9 +343,9 @@ private def dgCut {X : Type} [CommRing X] {g : ℕ} (a : ℕ) (Z : Matrix (Fin n
     else ⟨(Z i j).a, (Z i j).ep, 0, (Z i j).eta⟩
 
 /- English proof (translation)
-Rewrite using `[← Matrix.ext_iff]`. Use `forall₂_congr fun i j => ?_` and prove the remaining obligations. Distinguish the cases in `h : ((i : ℕ) < a ↔ (j : ℕ) < a)`. Simplify using `only [dgCut, Matrix.of_apply, if_pos h]`. Simplify using `[h, ddPart, DD.ext_iff, funext_iff]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [dgCut, Matrix.of_apply, if_neg h]`. Simplify using `[h, ddPart, DD.ext_iff, funext_iff]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 private theorem dgCut_iff {A X : Type} [CommRing A] [CommRing X] [Algebra A X] {g : ℕ} (a : ℕ)
     (Z : Matrix (Fin n) (Fin n) (DD X g)) : dgCut a Z = 0 ↔ Z ∈ pairedDualFirstOrderDualMatrixSpace n A X g a := by
@@ -379,9 +367,9 @@ private noncomputable def dgPhi (z : F.G₀ → Matrix (Fin n) (Fin n) (DD X k.g
   | .inr (.inr (.inr j)) => Matrix.of fun _ _ => DD.C (ell k X (sg j) z)
 
 /- English proof (translation)
-Simplify using `only [Sum.forall, Prod.forall, dgPhi, sub_eq_zero, dgCut_iff (A := x.A)]`. Use `and_congr Iff.rfl (and_congr Iff.rfl (and_congr Iff.rfl (forall_congr' fun j => ⟨fun h => ?_, fun h => ?_⟩)))` and prove the remaining obligations. Establish `i : Fin n` using `⟨0, lt_of_lt_of_le x.a_pos x.a_le⟩`. Conclude with `congrArg DD.a (congrFun (congrFun h i) i)`. Rewrite using `[h, map_zero]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 private theorem dgPhi_iff (z : F.G₀ → Matrix (Fin n) (Fin n) (DD X k.g)) :
     (∀ i, dgPhi k X sg z i = 0) ↔ (∀ g, z g ∈ pairedDualFirstOrderDualMatrixSpace n x.A X k.g x.a) ∧
@@ -422,11 +410,11 @@ private noncomputable def dgL : (F.G₀ → Matrix (Fin n) (Fin n) (DD x.A k.g))
       ext <;> simp
 
 /- English proof (translation)
-Break down `i with g | p | g | j` into its components or cases. Use `ext1 a b`. Simplify using `only [dgPhi, dgCut, AlgHom.mapMatrix_apply, Matrix.map_apply, Matrix.of_apply]`. Apply the tactic sequence `split_ifs <;> ext <;> simp`. Simplify using `only [dgPhi, map_sub, map_add, dg_eps, map_mul, dg_ρ1]`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [dgPhi, map_sub, map_neg, dg_eps]`. Both sides reduce to the same expression. Establish `: ell k (x.Am m) (sg j) (fun g => (x.redD k.g m).mapMatrix (z g)) = Ideal.Quotient.mkₐ x.A _ (ell k x.A (sg j) z)`. Rewrite using `[ell, ← dg_ρ1, ← map_mul, AlgHom.mapMatrix_apply, ← AddMonoidHom.map_trace (x.redD k.g m)]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Simplify using the standard rewrite rules.
 
-Use `ext1 a b`. Simplify using `only [dgPhi]`. Rewrite using `[this]`. Simplify using `only [AlgHom.mapMatrix_apply, Matrix.map_apply, Matrix.of_apply]`. Apply the tactic sequence `ext <;> simp`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 private theorem dgPhi_nat (m : ℕ) (z : F.G₀ → Matrix (Fin n) (Fin n) (DD x.A k.g)) (i) :
     (x.redD k.g m).mapMatrix (dgPhi k x.A sg z i) =
@@ -465,31 +453,27 @@ private def dgB : Submodule x.A (F.G₀ → Matrix (Fin n) (Fin n) (DD x.A k.g))
 end red
 
 /- English proof (translation)
-Introduce `l _ L G0 n x k q sg hΦ hsg hD`. Set `χ : G0.Γ →* x.A` to `((algebraMap ℤ_[l] x.A : ℤ_[l] →+* x.A) : ℤ_[l] →* x.A).comp ((Units.coeHom ℤ_[l]).comp G0.ε)`. Establish `hok : AdOk G0.frame (fun g => k.ρ1 x.A g) (fun g => epsD k x.A g) (pairedDualFirstOrderDualMatrixSpace n x.A x.A k.g x.a)` using `(ok1 l L G0 G0 (Glob.Hom.refl G0) n x k x.A χ).2.1`. Take `⟨rep, r1, r2⟩` from `adEx l G0.frame _ _ n _ _ _ hok`. Establish `eK : IsLocalRing.ResidueField x.A ≃ x.K` using `(PowerSeries.residueFieldOfPowerSeries (k := x.K)).toEquiv`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `haveI : Finite (IsLocalRing.ResidueField x.A) := Finite.of_equiv _ eK.symm`. Rewrite using `[← Nat.card_congr eK]`. Use `dg_abs x.A _ G0.G₀ _ x.t (fun m => Matrix (Fin n) (Fin n) (DD (x.Am m) k.g)) (fun m => (x.redD k.g m).mapMatrix.toLinearMap) (dgL k sg) (dgB k) (fun m => {z | z ∈ TwZ k (x.Am m) ∧ ∀ j, ell k (x.Am m) (sg j) z = 0}) (fun m => TwB k (x.Am m)) PowerSeries.X_irreducible inferInstance …` and prove the remaining obligations. Use `choose Y hY using fun i j => dg_surj x k.g m (Z i j)`. Conclude with `⟨Matrix.of Y, Matrix.ext hY⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h choose Y hY using fun i j => (dg_ker x k.g m (Z i j)).1 (congrFun (congrFun h i) j)`. Conclude with `⟨Matrix.of Y, Matrix.ext hY⟩`. Introduce and unpack `⟨Y, rfl⟩`. Conclude with `Matrix.ext fun i j => (dg_ker x k.g m _).2 ⟨Y i j, rfl⟩`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `choose Y hY using fun i j => dg_comp x k.g (fun m => u m i j) fun a b e => congrFun (congrFun (h a b e) i) j`. Conclude with `⟨Matrix.of Y, fun m => Matrix.ext fun i j => hY i j m⟩`. Take `⟨-, -, -, -, -, -, ht, -⟩` from `finAm l G0.frame n x m k.g`. Establish `e : (∀ i, (x.redD k.g m).mapMatrix (dgPhi k x.A sg f i) = 0) ↔ _` using `(forall_congr' fun i => by rw [dgPhi_nat]).trans (dgPhi_iff k (x.Am m) sg fun g => (x.redD k.g m).mapMatrix (f g))`. Use `⟨fun ⟨⟨a1, a2, a3, a4⟩, a5⟩ => ⟨(dg_lc _).2 fun i j => (adicLC _ _ _ m _ ht).1 (a2 i j), e.2 ⟨a1, a3, a4, a5⟩⟩, fun ⟨a1, a2⟩ => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Take `⟨b1, b2, b3, b4⟩` from `e.1 a2`. Conclude with `⟨⟨b1, fun i j => (adicLC _ _ _ m _ ht).2 ((dg_lc _).1 a1 i j), b2, b3⟩, b4⟩`. Use `haveI := (finAm l G0.frame n x m k.g).2.2.1 haveI : Finite (Matrix (Fin n) (Fin n) (DD (x.Am m) k.g)) := inferInstanceAs (Finite (Fin n → Fin n → DD (x.Am m) k.g))`. Use `(Set.finite_range fun (Y : Matrix (Fin n) (Fin n) (DD (x.Am m) k.g)) (g : G0.frame.G₀) => epsD k (x.Am m) g • (k.ρ1 (x.Am m) g * Y * k.ρ1 (x.Am m) g⁻¹) - Y).subset ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨Y, -, -, rfl⟩`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `⟨Y, rfl⟩`. Introduce and unpack `_ ⟨Y, a1, a2, rfl⟩`. Use `⟨funext ((dgPhi_iff k x.A sg _).2 ?_), fun m => ⟨(x.redD k.g m).mapMatrix Y, ?_, ?_, funext fun g => ?_⟩⟩` and prove the remaining obligations. Take `⟨y, rfl⟩ : ∃ y : pairedDualFirstOrderDualMatrixSpace n x.A x.A k.g x.a, y.1 = Y` from `⟨⟨Y, a1⟩, rfl⟩`. Establish `hc : rep G0.c y = y` using `Subtype.ext ((r2 y).trans a2)`.
+Establish an intermediate fact. Both sides reduce to the same expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hc' : rep G0.c⁻¹ y = y` using `by conv_lhs => rw [← hc, ← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one]`. Both sides reduce to the same expression. Establish `e : ∀ g : G0.frame.G₀, epsD k x.A g • (k.ρ1 x.A g * y.1 * k.ρ1 x.A g⁻¹) - y.1 = (rep g y - y).1` using `fun g => by rw [Submodule.coe_sub, r1]`. Use `⟨fun g => by rw [e]; exact Subtype.property _, fun g h => ?_, fun g => ?_, fun j => ?_⟩` and prove the remaining obligations. Rewrite using `[e, e, e]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `Eq.trans ?_ (congrArg _ (r1 g _))` and prove the remaining obligations. Rewrite using `[← Submodule.coe_add, Subgroup.coe_mul, map_mul, map_sub, Module.End.mul_apply, sub_add_sub_cancel']`. Rewrite using `[e, e]`. Use `Eq.trans ?_ (r2 _)` and prove the remaining obligations. Establish `: ((G0.frame.conj g : G0.frame.G₀) : G0.Γ) = G0.c * g * G0.c⁻¹` using `rfl`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, map_mul, map_mul, Module.End.mul_apply, Module.End.mul_apply, hc', map_sub, hc]`. Establish `h1 : G0.ε (sg j) = 1` using `hsg j`. Establish `h2 : epsD k x.A (sg j : G0.frame.G₀) = 1`. Express the relevant statement in the definitionally equal form `algebraMap x.A _ (algebraMap ℤ_[l] x.A (G0.ε (sg j) : ℤ_[l])) = 1`. Rewrite using `[h1, Units.val_one, map_one, map_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h3 : k.ρ1 x.A (sg j)⁻¹ * k.ρ1 x.A (sg j) = 1`. Rewrite using `[← (rho1 l _ n x k x.A).2.1, inv_mul_cancel, (rho1 l _ n x k x.A).1]`. Simplify using `only [ell]`. Rewrite using `[h2, one_smul, Matrix.sub_mul, Matrix.mul_assoc, h3, Matrix.mul_one, Matrix.trace_sub, Matrix.trace_mul_comm, sub_self, DD.zero_eta]`. Use `dgPhi_nat k sg m (fun _ => Y) (.inl 1)` as an intermediate fact.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Simplify using `only [dgPhi] at this`. Rewrite `this` using `[(dgCut_iff (A := x.A) _ _).2 a1, map_zero]`. Conclude with `(dgCut_iff _ _).1 this.symm`. Use `congrArg (x.redD k.g m).mapMatrix a2` as an intermediate fact. Rewrite `this` using `[map_neg, dg_eps]`.
-
-Conclude with `this`. Express the relevant statement in the definitionally equal form `(x.redD k.g m).mapMatrix (_ - _) = _`. Simplify using `only [map_sub, dg_eps, map_mul, dg_ρ1]`. Take `⟨b1, b2, b3, b4⟩` from `(dgPhi_iff k x.A sg f).1 (congrFun h0)`. Use `hD f ⟨b1, fun i j => dg_cont x _ fun m => (dg_lc _).1 (hf m) i j, b2, b3⟩ ?_` and prove the remaining obligations.
-
-Introduce and unpack `_ ⟨j, rfl⟩`. Conclude with `b4 j`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Pa.exists_ncard_annihilated_cocycles_le_coboundaries_mul :
     ∀ (l : ℕ) [Fact l.Prime] (L : Loc) (G0 : Glob l L) (n : ℕ) (x : NP G0.frame n) (k : Kap x) (q : ℕ) (sg : Fin q → G0.G₀), PhiCond G0.Γ l → (∀ j, sg j ∈ G0.frame.G') → Detects k (Set.range sg) → ∃ C : ℕ, ∀ m, {z | z ∈ TwZ k (x.Am m) ∧ ∀ j, ell k (x.Am m) (sg j) z = 0}.ncard ≤ (TwB k (x.Am m)).ncard * Nat.card x.K ^ C := by

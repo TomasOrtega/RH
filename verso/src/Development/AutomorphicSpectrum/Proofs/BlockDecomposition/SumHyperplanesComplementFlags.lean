@@ -16,9 +16,9 @@ variable {k : Type} [Field k] [Fintype k] {n : ℕ} {V Γ : Type} [AddCommGroup 
   {v : Submodule k (Fin (n + 1) → k) → V}
 
 /- English proof (translation)
-Unfold `zx`. Rewrite using `[map_sum]`. Repeatedly rewrite using `[hD.equiv]`. Use `Finset.sum_equiv (gmapEquiv (red γ)) ?_ (fun _ _ => rfl)` and prove the remaining obligations. Introduce `M`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and]`. Use `show _ ↔ (red γ).val *ᵥ x ∈ gmap (red γ) M ∧ Module.finrank k ↥(gmap (red γ) M) + j = n + 1`. Rewrite using `[smul_mem_gmap, finrank_gmap]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem zx_map (hD : LatData k n B red ρ t v) (γ : Γ) (x : Fin (n + 1) → k) (j : ℕ) :
     ρ γ (zx v x j) = zx v ((red γ).val *ᵥ x) j := by
@@ -32,11 +32,11 @@ theorem zx_map (hD : LatData k n B red ρ t v) (γ : Γ) (x : Fin (n + 1) → k)
   rw [smul_mem_gmap, finrank_gmap]
 
 /- English proof (translation)
-Unfold `zx`. Use `Finset.sum_congr ?_ (fun _ _ => rfl)` and prove the remaining obligations. Use extensionality with `M`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and]`. Prove the components needed by the constructor for the conclusion.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨h1, h2⟩`. Use `⟨?_, h2⟩` and prove the remaining obligations. Establish `h3` using `M.smul_mem s⁻¹ h1`. Rewrite `h3` using `[smul_smul, inv_mul_cancel₀ hs, one_smul]`. Then use the resulting hypothesis. Introduce and unpack `⟨h1, h2⟩`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨M.smul_mem s h1, h2⟩`.
+Supply the required witnesses or components.
 -/
 theorem zx_smul (v : Submodule k (Fin (n + 1) → k) → V) (x : Fin (n + 1) → k) (j : ℕ) {s : k} (hs : s ≠ 0) :
     zx v (s • x) j = zx v x j := by
@@ -53,7 +53,7 @@ theorem zx_smul (v : Submodule k (Fin (n + 1) → k) → V) (x : Fin (n + 1) →
     exact ⟨M.smul_mem s h1, h2⟩
 
 /- English proof (translation)
-Rewrite using `[mem_stabV]`. Introduce `γ h`. Take `⟨s, hs, hse⟩` from `exists_scalar_stabilizer_line (red γ) h`. Rewrite using `[zx_map hD, hse, zx_smul v _ _ hs]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem zx_mem (hD : LatData k n B red ρ t v) (j : ℕ) : zx v (e0 k n) j ∈ stabV red ρ := by
   rw [mem_stabV]
@@ -62,13 +62,13 @@ theorem zx_mem (hD : LatData k n B red ρ t v) (j : ℕ) : zx v (e0 k n) j ∈ s
   rw [zx_map hD, hse, zx_smul v _ _ hs]
 
 /- English proof (translation)
-The claim follows from `congrArg (fun f : Module.End ℂ V => f x) (map_mul ρ a b)`.
+A detailed English derivation is pending.
 -/
 private theorem monoidHom_mul_apply_eq_apply_apply (ρ : Γ →* Module.End ℂ V) (a b : Γ) (x : V) : ρ (a * b) x = ρ a (ρ b x) :=
   congrArg (fun f : Module.End ℂ V => f x) (map_mul ρ a b)
 
 /- English proof (translation)
-Establish `hfix` using `(mem_stabV red ρ y).mp hy`. Establish `hδ : gmap (red (γ₂⁻¹ * γ₁)) (H0 k n) = H0 k n`. Rewrite using `[map_mul, gmap_mul, h, ← gmap_mul, ← map_mul, inv_mul_cancel, map_one, gmap_one]`. Establish `key` using `hD.fix y hfix (γ₂⁻¹ * γ₁) hδ`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem fix_of_gmap (hD : LatData k n B red ρ t v) {y : V} (hy : y ∈ stabV red ρ) {γ₁ γ₂ : Γ}
     (h : gmap (red γ₁) (H0 k n) = gmap (red γ₂) (H0 k n)) : ρ γ₁ (t y) = ρ γ₂ (t y) := by
@@ -81,7 +81,7 @@ theorem fix_of_gmap (hD : LatData k n B red ρ t v) {y : V} (hy : y ∈ stabV re
     _ = ρ γ₂ (t y) := by rw [key]
 
 /- English proof (translation)
-Establish `hsa : s • a ≠ 0` using `smul_ne_zero hs ha`. Apply `fix_of_gmap hD hy` to reduce the goal to its premises. Use extensionality with `z`. Rewrite using `[mem_GL_image_hyperplane_iff _ _ (hc (s • a) hsa) z, mem_GL_image_hyperplane_iff _ _ (hc a ha) z, smul_dotProduct, smul_eq_mul, mul_eq_zero, or_iff_right hs]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 -/
 theorem w_scale (hD : LatData k n B red ρ t v) {gam : (Fin (n + 1) → k) → Γ} (hc : IsCov red gam)
     {y : V} (hy : y ∈ stabV red ρ) {a : Fin (n + 1) → k} (ha : a ≠ 0) {s : k} (hs : s ≠ 0) :
@@ -101,7 +101,7 @@ def dualEquiv (g : GL (Fin (n + 1)) k) : (Fin (n + 1) → k) ≃ (Fin (n + 1) �
     simp only [Matrix.vecMul_vecMul, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.vecMul_one]
 
 /- English proof (translation)
-Use `show (a ᵥ* (g⁻¹).val) ⬝ᵥ (g.val *ᵥ x) = a ⬝ᵥ x`. Rewrite using `[← dotProduct_mulVec, mulVec_mulVec, ← Units.val_mul, inv_mul_cancel, Units.val_one, one_mulVec]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dualEquiv_dot (g : GL (Fin (n + 1)) k) (a x : Fin (n + 1) → k) :
     dualEquiv g a ⬝ᵥ (g.val *ᵥ x) = a ⬝ᵥ x := by
@@ -109,9 +109,9 @@ theorem dualEquiv_dot (g : GL (Fin (n + 1)) k) (a x : Fin (n + 1) → k) :
   rw [← dotProduct_mulVec, mulVec_mulVec, ← Units.val_mul, inv_mul_cancel, Units.val_one, one_mulVec]
 
 /- English proof (translation)
-Introduce `h`. Apply `ha` to reduce the goal to its premises. Apply `(dualEquiv g).injective` to reduce the goal to its premises. Rewrite using `[h]`. Use `show (0 : Fin (n + 1) → k) = 0 ᵥ* (g⁻¹).val`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[zero_vecMul]`.
+A detailed English derivation is pending.
 -/
 theorem dualEquiv_ne (g : GL (Fin (n + 1)) k) {a : Fin (n + 1) → k} (ha : a ≠ 0) : dualEquiv g a ≠ 0 := by
   intro h
@@ -122,9 +122,9 @@ theorem dualEquiv_ne (g : GL (Fin (n + 1)) k) {a : Fin (n + 1) → k} (ha : a �
   rw [zero_vecMul]
 
 /- English proof (translation)
-Establish `ha' : dualEquiv (red γ) a ≠ 0` using `dualEquiv_ne _ ha`. Rewrite using `[← monoidHom_mul_apply_eq_apply_apply]`. Apply `fix_of_gmap hD hy` to reduce the goal to its premises. Use extensionality with `z`. Rewrite using `[mem_GL_image_hyperplane_iff (red (gam (dualEquiv (red γ) a))) _ (hc _ ha') z]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul, gmap_mul, mem_gmap (red γ), mem_GL_image_hyperplane_iff _ _ (hc a ha)]`. Establish `key : dualEquiv (red γ) a ⬝ᵥ z = a ⬝ᵥ (((red γ)⁻¹).val *ᵥ z)`. Establish `h2` using `dualEquiv_dot (red γ) a (((red γ)⁻¹).val *ᵥ z)`. Rewrite `h2` using `[mulVec_mulVec, ← Units.val_mul, mul_inv_cancel, Units.val_one, one_mulVec]`. Then use the resulting hypothesis. Rewrite using `[key]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities.
 -/
 theorem w_map (hD : LatData k n B red ρ t v) {gam : (Fin (n + 1) → k) → Γ} (hc : IsCov red gam)
     {y : V} (hy : y ∈ stabV red ρ) (γ : Γ) {a : Fin (n + 1) → k} (ha : a ≠ 0) :
@@ -145,11 +145,11 @@ def ux (ρ : Γ →* Module.End ℂ V) (t : Module.End ℂ V) (gam : (Fin (n + 1
   ∑ a ∈ Finset.univ.filter (fun a : Fin (n + 1) → k => a ⬝ᵥ x = 1), ρ (gam a) (t y)
 
 /- English proof (translation)
-Unfold `ux`. Rewrite using `[map_sum]`. Use `Finset.sum_equiv (dualEquiv (red γ)) ?_ ?_` and prove the remaining obligations. Introduce `a`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, dualEquiv_dot]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `a ha`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at ha`. Establish `ha0 : a ≠ 0`. Introduce and unpack `rfl`. Simplify using `at ha`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 
-Conclude with `w_map hD hc hy γ ha0`.
+A detailed English derivation is pending.
 -/
 theorem ux_map (hD : LatData k n B red ρ t v) {gam : (Fin (n + 1) → k) → Γ} (hc : IsCov red gam)
     {y : V} (hy : y ∈ stabV red ρ) (γ : Γ) (x : Fin (n + 1) → k) :
@@ -167,11 +167,11 @@ theorem ux_map (hD : LatData k n B red ρ t v) {gam : (Fin (n + 1) → k) → Γ
     exact w_map hD hc hy γ ha0
 
 /- English proof (translation)
-Set `e : (Fin (n + 1) → k) ≃ (Fin (n + 1) → k)` to `{ toFun := fun a => s • a invFun := fun b => s⁻¹ • b left_inv := fun a => by simp only [smul_smul, inv_mul_cancel₀ hs, one_smul] right_inv := fun b => by simp only [smul_smul, mul_inv_cancel₀ hs, one_smul] }`. Unfold `ux`. Use `Finset.sum_equiv e ?_ ?_` and prove the remaining obligations. Introduce `a`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and]`.
+Introduce a local definition for the expression. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Use `show a ⬝ᵥ (s • x) = 1 ↔ (s • a) ⬝ᵥ x = 1`. Rewrite using `[dotProduct_smul, smul_dotProduct]`. Introduce `a ha`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at ha`. Establish `ha0 : a ≠ 0`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `rfl`. Simplify using `at ha`. Conclude with `(w_scale hD hc hy ha0 hs).symm`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem ux_smul (hD : LatData k n B red ρ t v) {gam : (Fin (n + 1) → k) → Γ} (hc : IsCov red gam)
     {y : V} (hy : y ∈ stabV red ρ) (x : Fin (n + 1) → k) {s : k} (hs : s ≠ 0) :
@@ -195,7 +195,7 @@ theorem ux_smul (hD : LatData k n B red ρ t v) {gam : (Fin (n + 1) → k) → �
     exact (w_scale hD hc hy ha0 hs).symm
 
 /- English proof (translation)
-Unfold `uop`. Conclude with `LinearMap.sum_apply _ _ _`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem uop_apply (ρ : Γ →* Module.End ℂ V) (t : Module.End ℂ V) (gam : (Fin (n + 1) → k) → Γ) (y : V) :
     uop ρ t gam y = ux ρ t gam y (e0 k n) := by
@@ -203,7 +203,7 @@ theorem uop_apply (ρ : Γ →* Module.End ℂ V) (t : Module.End ℂ V) (gam : 
   exact LinearMap.sum_apply _ _ _
 
 /- English proof (translation)
-Rewrite using `[mem_stabV]`. Introduce `γ h`. Take `⟨s, hs, hse⟩` from `exists_scalar_stabilizer_line (red γ) h`. Rewrite using `[uop_apply, ux_map hD hc hy, hse, ux_smul hD hc hy _ hs]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem uop_mem (hD : LatData k n B red ρ t v) {gam : (Fin (n + 1) → k) → Γ} (hc : IsCov red gam)
     {y : V} (hy : y ∈ stabV red ρ) : uop ρ t gam y ∈ stabV red ρ := by
@@ -213,15 +213,15 @@ theorem uop_mem (hD : LatData k n B red ρ t v) {gam : (Fin (n + 1) → k) → �
   rw [uop_apply, ux_map hD hc hy, hse, ux_smul hD hc hy _ hs]
 
 /- English proof (translation)
-Establish `hq : (0 : ℝ) < Fintype.card k` using `by exact_mod_cast Fintype.card_pos`. Establish `hpos : ∀ x : V, 0 ≤ (B x x).re`. Introduce `x`. Distinguish the cases in `hx : x = 0`. Simplify using `[hx]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Conclude with `(hD.pos x hx).le`. Establish `hw : ∀ a : Fin (n + 1) → k, a ≠ 0 → ∀ s : k, s ≠ 0 → ρ (gam (s • a)) (t y) = ρ (gam a) (t y)` using `fun a ha s hs => w_scale hD hc hy ha hs`. Establish `hc' : ∀ a : Fin (n + 1) → k, a ≠ 0 → (B (ρ (gam a) (t y)) (ρ (gam a) (t y))).re = (B y y).re`. Introduce `a _`. Rewrite using `[hD.unit, hD.isom]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hA : ∀ x : Fin (n + 1) → k, x ≠ 0 → (B (∑ a ∈ Finset.univ.filter (fun a : Fin (n + 1) → k => a ⬝ᵥ x = 1), ρ (gam a) (t y)) (∑ a ∈ Finset.univ.filter (fun a : Fin (n + 1) → k => a ⬝ᵥ x = 1), ρ (gam a) (t y))).re = (B (uop ρ t gam y) (uop ρ t gam y)).re`. Introduce `x hx`. Take `⟨g, hg⟩` from `exists_GL_first_basis_eq x hx`. Take `⟨γ, rfl⟩` from `hD.surj g`. Establish `h1 : ux ρ t gam y x = ρ γ (uop ρ t gam y)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[uop_apply, ux_map hD hc hy, hg]`. Use `show (B (ux ρ t gam y x) (ux ρ t gam y x)).re = _`. Rewrite using `[h1, hD.unit]`. Establish `key` using `GlobalTheory.T.hermitian_count_from_hyperplanes k n V B (fun a => ρ (gam a) (t y)) (B y y).re (B (uop ρ t gam y) (uop ρ t gam y)).re hpos (GlobalTheory.T.card_affine_hyperplane k n) (GlobalTheory.T.card_two_affine_hyperplanes k n) hw hc' hA`. Establish `hrpow : (Fintype.card k : ℝ) ^ ((n : ℝ) - 1) = (Fintype.card k : ℝ) ^ n / Fintype.card k`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Real.rpow_sub hq, Real.rpow_one, Real.rpow_natCast]`. Rewrite using `[hrpow, div_mul_eq_mul_div, div_le_iff₀ hq]`. Combine the linear relations using `[key]`.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem uop_bound (hD : LatData k n B red ρ t v) {gam : (Fin (n + 1) → k) → Γ} (hc : IsCov red gam)
     {y : V} (hy : y ∈ stabV red ρ) :
@@ -256,7 +256,7 @@ theorem uop_bound (hD : LatData k n B red ρ t v) {gam : (Fin (n + 1) → k) →
   linarith [key]
 
 /- English proof (translation)
-Apply `finsum_cond_eq_sum_of_cond_iff` to reduce the goal to its premises. Introduce `x _`. Simplify using the standard rewrite rules.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem finsum_conv (P : Submodule k (Fin (n + 1) → k) → Prop) [DecidablePred P] (f : Submodule k (Fin (n + 1) → k) → V) :
     ∑ᶠ (M : Submodule k (Fin (n + 1) → k)) (_ : P M), f M = ∑ M ∈ Finset.univ.filter P, f M := by
@@ -265,9 +265,9 @@ theorem finsum_conv (P : Submodule k (Fin (n + 1) → k) → Prop) [DecidablePre
   simp
 
 /- English proof (translation)
-Rewrite using `[eq_top_iff]`. Introduce `x _`. Establish `hx : x = x 0 • e0 K m + (x - x 0 • e0 K m)` using `(add_sub_cancel _ _).symm`. Rewrite using `[hx]`. Use `Submodule.add_mem_sup (M.smul_mem _ h) ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[mem_riemannRochSpace_iff_regularAt_everywhere]`. Simplify using `[e0]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem sup_H0_eq_top_of_e0_mem {K : Type} [Field K] {m : ℕ} (M : Submodule K (Fin (m + 1) → K)) (h : e0 K m ∈ M) :
     M ⊔ H0 K m = ⊤ := by
@@ -280,9 +280,9 @@ private theorem sup_H0_eq_top_of_e0_mem {K : Type} [Field K] {m : ℕ} (M : Subm
   simp [e0]
 
 /- English proof (translation)
-Rewrite using `[eq_bot_iff]`. Introduce `x hx`. Rewrite `hx` using `[Submodule.mem_inf, Submodule.mem_span_singleton, mem_riemannRochSpace_iff_regularAt_everywhere]`. Take `⟨⟨c, rfl⟩, h0⟩` from `hx`. Establish `hc : c = 0` using `by simpa [e0] using h0`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[hc, zero_smul]`. Conclude with `Submodule.zero_mem _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem span_e0_inf_H0_eq_bot {K : Type} [Field K] {m : ℕ} : Submodule.span K {e0 K m} ⊓ H0 K m = ⊥ := by
   rw [eq_bot_iff]
@@ -294,7 +294,7 @@ private theorem span_e0_inf_H0_eq_bot {K : Type} [Field K] {m : ℕ} : Submodule
   exact Submodule.zero_mem _
 
 /- English proof (translation)
-Establish `h1` using `Submodule.finrank_sup_add_finrank_inf_eq (Submodule.span K {e0 K m}) (H0 K m)`. Rewrite `h1` using `[sup_H0_eq_top_of_e0_mem _ (Submodule.mem_span_singleton_self _), span_e0_inf_H0_eq_bot, finrank_span_singleton first_basis_ne_zero]`. Simplify using `at h1`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 private theorem finrank_H0 {K : Type} [Field K] {m : ℕ} : Module.finrank K ↥(H0 K m) = m := by
   have h1 := Submodule.finrank_sup_add_finrank_inf_eq (Submodule.span K {e0 K m}) (H0 K m)
@@ -304,7 +304,7 @@ private theorem finrank_H0 {K : Type} [Field K] {m : ℕ} : Module.finrank K ↥
   omega
 
 /- English proof (translation)
-Establish `h1` using `Submodule.finrank_sup_add_finrank_inf_eq M (H0 K m)`. Rewrite `h1` using `[sup_H0_eq_top_of_e0_mem M h, finrank_H0]`. Simplify using `at h1`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 private theorem finrank_inf_H0_add_one_of_e0_mem {K : Type} [Field K] {m : ℕ} (M : Submodule K (Fin (m + 1) → K)) (h : e0 K m ∈ M) :
     Module.finrank K ↥(M ⊓ H0 K m) + 1 = Module.finrank K M := by
@@ -314,9 +314,9 @@ private theorem finrank_inf_H0_add_one_of_e0_mem {K : Type} [Field K] {m : ℕ} 
   omega
 
 /- English proof (translation)
-Establish `h1` using `Submodule.finrank_sup_add_finrank_inf_eq N (Submodule.span K {e0 K m})`. Establish `h2 : N ⊓ Submodule.span K {e0 K m} = ⊥`. Use `eq_bot_iff.mpr (le_trans ?_ (span_e0_inf_H0_eq_bot (K := K) (m := m)).le)` and prove the remaining obligations. Rewrite using `[inf_comm]`. Conclude with `inf_le_inf_left _ hN`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[h2, finrank_span_singleton first_basis_ne_zero]`. Simplify using `at h1`. Use linear arithmetic over natural numbers and integers.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 private theorem finrank_sup_span_e0_of_le_H0 {K : Type} [Field K] {m : ℕ} (N : Submodule K (Fin (m + 1) → K)) (hN : N ≤ H0 K m) :
     Module.finrank K ↥(N ⊔ Submodule.span K {e0 K m}) = Module.finrank K N + 1 := by
@@ -330,21 +330,21 @@ private theorem finrank_sup_span_e0_of_le_H0 {K : Type} [Field K] {m : ℕ} (N :
   omega
 
 /- English proof (translation)
-Unfold `zx`. Rewrite using `[map_sum]`. Use `Finset.sum_nbij' (fun M => M ⊓ H0 k n) (fun N => N ⊔ Submodule.span k {e0 k n}) ?_ ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `M hM`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at hM ⊢`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Use `⟨inf_le_right, ?_⟩` and prove the remaining obligations. Establish `h3` using `finrank_inf_H0_add_one_of_e0_mem M hM.1`. Use linear arithmetic over natural numbers and integers. Introduce `N hN`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at hN ⊢`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Use `⟨Submodule.mem_sup_right (Submodule.mem_span_singleton_self _), ?_⟩` and prove the remaining obligations. Establish `h3` using `finrank_sup_span_e0_of_le_H0 N hN.1`. Use linear arithmetic over natural numbers and integers. Introduce `M hM`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at hM`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Apply `le_antisymm` to reduce the goal to its premises. Conclude with `sup_le inf_le_left ((Submodule.span_singleton_le_iff_mem _ _).mpr hM.1)`. Introduce `x hx`. Establish `hx' : x = (x - x 0 • e0 k n) + x 0 • e0 k n` using `(sub_add_cancel _ _).symm`. Rewrite using `[hx']`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Submodule.add_mem_sup (Submodule.mem_inf.mpr ⟨M.sub_mem hx (M.smul_mem _ hM.1), ?_⟩) (Submodule.smul_mem _ _ (Submodule.mem_span_singleton_self _))` and prove the remaining obligations. Rewrite using `[mem_riemannRochSpace_iff_regularAt_everywhere]`. Simplify using `[e0]`. Introduce `N hN`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at hN`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `le_antisymm` to reduce the goal to its premises. Introduce `x hx`. Take `⟨hx1, hx2⟩` from `Submodule.mem_inf.mp hx`. Take `⟨y, hy, z, hz, rfl⟩` from `Submodule.mem_sup.mp hx1`. Take `⟨c, rfl⟩` from `Submodule.mem_span_singleton.mp hz`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hy0 : y 0 = 0` using `(mem_riemannRochSpace_iff_regularAt_everywhere y).mp (hN.1 hy)`. Rewrite `hx2` using `[mem_riemannRochSpace_iff_regularAt_everywhere]`. Establish `hc : c = 0` using `by simpa [e0, hy0] using hx2`. Rewrite using `[hc, zero_smul, add_zero]`. Conclude with `hy`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Conclude with `le_inf le_sup_left hN.1`. Introduce `M hM`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at hM`. Conclude with `hD.step M hM.1`.
+A detailed English derivation is pending.
 -/
 theorem t_zx (hD : LatData k n B red ρ t v) (j : ℕ) :
     t (zx v (e0 k n) j) = ∑ M ∈ Finset.univ.filter
@@ -391,13 +391,13 @@ theorem t_zx (hD : LatData k n B red ρ t v) (j : ℕ) :
     exact hD.step M hM.1
 
 /- English proof (translation)
-Rewrite using `[map_sum]`. Repeatedly rewrite using `[hD.equiv]`. Use `Finset.sum_equiv (gmapEquiv (red (gam a))) ?_ (fun _ _ => rfl)` and prove the remaining obligations. Introduce `M`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Use `show _ ↔ (∀ x ∈ gmap (red (gam a)) M, a ⬝ᵥ x = 0) ∧ Module.finrank k ↥(gmap (red (gam a)) M) + (j + 1) = n + 1`. Rewrite using `[finrank_gmap]`. Use `and_congr ?_ Iff.rfl` and prove the remaining obligations. Prove the components needed by the constructor for the conclusion. Introduce `hM x hx`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hx` using `[mem_gmap]`. Establish `h2` using `hc a ha (((red (gam a))⁻¹).val *ᵥ x)`. Rewrite `h2` using `[mulVec_mulVec, ← Units.val_mul, mul_inv_cancel, Units.val_one, one_mulVec]`. Rewrite using `[h2]`. Conclude with `(mem_riemannRochSpace_iff_regularAt_everywhere _).mp (hM hx)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `h z hz`. Rewrite using `[mem_riemannRochSpace_iff_regularAt_everywhere, ← hc a ha z]`. Conclude with `h _ ((smul_mem_gmap _ _ _).mpr hz)`.
+A detailed English derivation is pending.
 -/
 theorem sum_hyperplanes_complement_flags (hD : LatData k n B red ρ t v) {gam : (Fin (n + 1) → k) → Γ} (hc : IsCov red gam)
     {a : Fin (n + 1) → k} (ha : a ≠ 0) (j : ℕ) :
@@ -426,19 +426,19 @@ theorem sum_hyperplanes_complement_flags (hD : LatData k n B red ρ t v) {gam : 
     exact h _ ((smul_mem_gmap _ _ _).mpr hz)
 
 /- English proof (translation)
-Establish `hXne : ∀ a ∈ Finset.univ.filter (fun a : Fin (n + 1) → k => a ⬝ᵥ e0 k n = 1), a ≠ 0`. Introduce `a ha h0`. Rewrite `ha` using `[h0]`. Simplify using `at ha`. Establish `hfs : ∑ M ∈ Finset.univ.filter (fun M : Submodule k (Fin (n + 1) → k) => Module.finrank k M + (j + 1) = n + 1), v M = lam (j + 1) • v ⊤`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[← hl (j + 1) (by omega), finsum_conv]`. Establish `hswap : ∀ (a : Fin (n + 1) → k) (M : Submodule k (Fin (n + 1) → k)), a ∈ Finset.univ.filter (fun a : Fin (n + 1) → k => a ⬝ᵥ e0 k n = 1) ∧ M ∈ Finset.univ.filter (fun M : Submodule k (Fin (n + 1) → k) => (∀ x ∈ M, a ⬝ᵥ x = 0) ∧ Module.finrank k M + (j + 1) = n + 1) ↔ a ∈ Finset.u …`. Introduce `a M`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and]`. The claim follows by propositional logic.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. The claim follows by propositional logic.
 
-Establish `hterm : ∀ M ∈ Finset.univ.filter (fun M : Submodule k (Fin (n + 1) → k) => Module.finrank k M + (j + 1) = n + 1), (Finset.univ.filter (fun a : Fin (n + 1) → k => a ⬝ᵥ e0 k n = 1 ∧ ∀ x ∈ M, a ⬝ᵥ x = 0)).card • v M = (if e0 k n ∈ M then (0 : ℂ) else (Fintype.card k : ℂ) ^ j) • v M`. Introduce `M hM`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at hM`. Distinguish the cases in `he : e0 k n ∈ M`. Establish `h0 : (Finset.univ.filter (fun a : Fin (n + 1) → k => a ⬝ᵥ e0 k n = 1 ∧ ∀ x ∈ M, a ⬝ᵥ x = 0)).card = 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Rewrite using `[Finset.card_eq_zero, Finset.filter_eq_empty_iff]`. Introduce `a _ ha`. Establish `h3` using `ha.2 _ he`. Rewrite `h3` using `[ha.1]`. Conclude with `one_ne_zero h3`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h0, if_pos he, zero_smul, zero_smul]`. Rewrite using `[if_neg he, ← Nat.cast_smul_eq_nsmul ℂ, GlobalTheory.T.card_functionals_vanishing_subspace k n j M he hM, Nat.cast_pow]`. Rewrite using `[uop_apply]`. Unfold `ux`. Rewrite using `[t_zx hD j]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `(Finset.sum_congr rfl (fun a ha => sum_hyperplanes_complement_flags hD hc (hXne a ha) j)).trans ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm' hswap]`. Simplify using `only [Finset.sum_const]`. Use `(Finset.sum_congr rfl hterm).trans ?_` and prove the remaining obligations. Rewrite using `[← hfs]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Unfold `zx`. Rewrite using `[Finset.sum_filter, Finset.sum_filter, Finset.sum_filter, smul_sub, Finset.smul_sum, Finset.smul_sum, ← Finset.sum_sub_distrib]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `M _`. Apply the tactic sequence `by_cases h1 : Module.finrank k M + (j + 1) = n + 1 <;> by_cases h2 : e0 k n ∈ M <;> simp [h1, h2]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem uop_zx (hD : LatData k n B red ρ t v) {gam : (Fin (n + 1) → k) → Γ} (hc : IsCov red gam)
     (lam : ℕ → ℂ)
@@ -493,9 +493,9 @@ theorem uop_zx (hD : LatData k n B red ρ t v) {gam : (Fin (n + 1) → k) → Γ
   by_cases h1 : Module.finrank k M + (j + 1) = n + 1 <;> by_cases h2 : e0 k n ∈ M <;> simp [h1, h2]
 
 /- English proof (translation)
-Establish `h1 : Finset.univ.filter (fun x : Fin (n + 1) → k => x ≠ 0 ∧ x ∈ M) = (Finset.univ.filter (fun x : Fin (n + 1) → k => x ∈ M)).erase 0`. Use extensionality with `x`. Simplify using the standard rewrite rules. Establish `h2 : (Finset.univ.filter (fun x : Fin (n + 1) → k => x ∈ M)).card = Fintype.card k ^ Module.finrank k M`. Rewrite using `[← Fintype.card_subtype, ← Module.card_eq_pow_finrank]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1, Finset.card_erase_of_mem (by simp), h2, Nat.cast_sub (Nat.one_le_pow _ _ Fintype.card_pos), Nat.cast_pow, Nat.cast_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem card_ne_zero_mem (M : Submodule k (Fin (n + 1) → k)) :
     (((Finset.univ.filter (fun x : Fin (n + 1) → k => x ≠ 0 ∧ x ∈ M)).card : ℕ) : ℂ) =
@@ -511,17 +511,17 @@ theorem card_ne_zero_mem (M : Submodule k (Fin (n + 1) → k)) :
     Nat.cast_pow, Nat.cast_one]
 
 /- English proof (translation)
-Establish `hconst : ∀ x : Fin (n + 1) → k, x ≠ 0 → B (zx v x j) (v ⊤) = B (zx v (e0 k n) j) (v ⊤)`. Introduce `x hx`. Take `⟨g, hg⟩` from `exists_GL_first_basis_eq x hx`. Take `⟨γ, rfl⟩` from `hD.surj g`. Establish `htop : ρ γ (v ⊤) = v ⊤` using `by rw [hD.equiv, gmap_top]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hfs : ∑ M ∈ Finset.univ.filter (fun M : Submodule k (Fin (n + 1) → k) => Module.finrank k M + j = n + 1), v M = lam j • v ⊤`. Rewrite using `[← hl j hj, finsum_conv]`. Establish `hswap : ∀ (x : Fin (n + 1) → k) (M : Submodule k (Fin (n + 1) → k)), x ∈ Finset.univ.filter (fun x : Fin (n + 1) → k => x ≠ 0 ∧ x ∈ (⊤ : Submodule k (Fin (n + 1) → k))) ∧ M ∈ Finset.univ.filter (fun M : Submodule k (Fin (n + 1) → k) => x ∈ M ∧ Module.finrank k M + j = n + 1) ↔ x …`. Introduce `x M`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, Submodule.mem_top, and_true]`. The claim follows by propositional logic. Establish `hsum : ∑ x ∈ Finset.univ.filter (fun x : Fin (n + 1) → k => x ≠ 0 ∧ x ∈ (⊤ : Submodule k (Fin (n + 1) → k))), zx v x j = (((Fintype.card k : ℂ) ^ (n + 1 - j) - 1) * lam j) • v ⊤`. Unfold `zx`. Rewrite using `[Finset.sum_comm' hswap]`.
+Simplify using the standard rewrite rules. The claim follows by propositional logic. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Repeatedly rewrite using `[Finset.sum_const]`. Rewrite using `[Finset.sum_congr rfl (g := fun M => ((Fintype.card k : ℂ) ^ (n + 1 - j) - 1) • v M)]`. Rewrite using `[← Finset.smul_sum, hfs, smul_smul]`. Introduce `M hM`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at hM`.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Rewrite using `[← Nat.cast_smul_eq_nsmul ℂ, card_ne_zero_mem M, show Module.finrank k M = n + 1 - j by omega]`. Establish `hcard` using `card_ne_zero_mem (k := k) (n := n) ⊤`. Rewrite `hcard` using `[finrank_top, Module.finrank_fin_fun]`. Establish `e1 : ∑ x ∈ Finset.univ.filter (fun x : Fin (n + 1) → k => x ≠ 0 ∧ x ∈ (⊤ : Submodule k (Fin (n + 1) → k))), B (zx v x j) (v ⊤) = ((Fintype.card k : ℂ) ^ (n + 1) - 1) * B (zx v (e0 k n) j) (v ⊤)`. Rewrite using `[Finset.sum_congr rfl (fun x hx => hconst x (Finset.mem_filter.mp hx).2.1), Finset.sum_const, nsmul_eq_mul, hcard]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e2 : ∑ x ∈ Finset.univ.filter (fun x : Fin (n + 1) → k => x ≠ 0 ∧ x ∈ (⊤ : Submodule k (Fin (n + 1) → k))), B (zx v x j) (v ⊤) = ((Fintype.card k : ℂ) ^ (n + 1 - j) - 1) * lam j * B (v ⊤) (v ⊤)`. Rewrite using `[← LinearMap.sum_apply, ← map_sum, hsum, map_smul, LinearMap.smul_apply, smul_eq_mul]`. Rewrite using `[← e1, e2]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem pairing (hD : LatData k n B red ρ t v) (lam : ℕ → ℂ)
     (hl : ∀ j ≤ n + 1, ∑ᶠ (M : Submodule k (Fin (n + 1) → k)) (_ : Module.finrank k M + j = n + 1), v M = lam j • v ⊤)
@@ -568,11 +568,11 @@ theorem pairing (hD : LatData k n B red ρ t v) (lam : ℕ → ℂ)
   rw [← e1, e2]
 
 /- English proof (translation)
-Unfold `zx`. Rewrite using `[Finset.sum_eq_single ⊤]`. Introduce `M hM hne`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at hM`. It suffices to derive a contradiction.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. It suffices to derive a contradiction.
 
-Apply `hne` to reduce the goal to its premises. Apply `Submodule.eq_top_of_finrank_eq` to reduce the goal to its premises. Rewrite using `[Module.finrank_fin_fun]`. Use linear arithmetic over natural numbers and integers. Introduce `h`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses.
 
-It suffices to derive a contradiction. Apply `h` to reduce the goal to its premises. Simplify using the standard rewrite rules.
+It suffices to derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 -/
 theorem zx_zero (hD : LatData k n B red ρ t v) : zx v (e0 k n) 0 = v ⊤ := by
   unfold zx
@@ -590,9 +590,9 @@ theorem zx_zero (hD : LatData k n B red ρ t v) : zx v (e0 k n) 0 = v ⊤ := by
     simp
 
 /- English proof (translation)
-Unfold `zx`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `M hM`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at hM`. It suffices to derive a contradiction.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. It suffices to derive a contradiction.
 
-Establish `h0 : Module.finrank k M = 0` using `by omega`. Rewrite `h0` using `[Submodule.finrank_eq_zero]`. Establish `h1` using `hM.1`. Rewrite `h1` using `[h0, Submodule.mem_bot]`. Conclude with `first_basis_ne_zero h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem zx_last (v : Submodule k (Fin (n + 1) → k) → V) : zx v (e0 k n) (n + 1) = 0 := by
   unfold zx
@@ -607,11 +607,11 @@ theorem zx_last (v : Submodule k (Fin (n + 1) → k) → V) : zx v (e0 k n) (n +
   exact first_basis_ne_zero h1
 
 /- English proof (translation)
-Unfold `GapOp`. Introduce `k _ _ n V Γ _ _ _ B red ρ t v lam hD hl`. Establish `hgam : ∀ a : Fin (n + 1) → k, a ≠ 0 → ∃ γ : Γ, ∀ x, a ⬝ᵥ ((red γ).val *ᵥ x) = x 0`. Introduce `a ha`. Take `⟨g, hg⟩` from `exists_gl_cov a ha`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨γ, rfl⟩` from `hD.surj g`. Conclude with `⟨γ, hg⟩`. Set `gam : (Fin (n + 1) → k) → Γ` to `fun a => if ha : a = 0 then 1 else Classical.choose (hgam a ha)`. Establish `hc : IsCov red gam`. Introduce `a ha x`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1 : gam a = Classical.choose (hgam a ha)` using `dif_neg ha`. Rewrite using `[h1]`. Conclude with `Classical.choose_spec (hgam a ha) x`. Conclude with `⟨stabV red ρ, uop ρ t gam, zx v (e0 k n), fun y hy => uop_mem hD hc hy, fun j => zx_mem hD j, fun y hy => uop_bound hD hc hy, zx_zero hD, zx_last v, fun j hj => uop_zx hD hc lam hl hj, fun j hj => pairing hD lam hl hj⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem gapOp : PositivityTheory.Rg.Rs.GapOp := by
   unfold GapOp

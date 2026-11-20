@@ -7,7 +7,7 @@ noncomputable section
 namespace PI.UnitaryGroupMassFormula.AdIndexEq
 
 /- English proof (translation)
-The claim follows from `indexEq_of_open gl_character (qReflPow_of h)`.
+A detailed English derivation is pending.
 -/
 theorem indexEq_of_traceInt (h : TraceInt) : PI.AdIndexEq.IndexEq :=
   indexEq_of_open gl_character (qReflPow_of h)

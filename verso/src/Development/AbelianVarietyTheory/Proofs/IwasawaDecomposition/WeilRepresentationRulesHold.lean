@@ -32,18 +32,18 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 variable {D : D7} {ψ : AddChar (AF D.host.F) ℂ}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨ha.1.symm, ha.2.2.1, ha.2.1, ha.2.2.2.2, ha.2.2.2.1⟩`.
+Supply the required witnesses or components.
 -/
 theorem isAdmissibleSplittingCharPair_symm {V W : HSp D} {χ χ' : IdC D} (ha : admitted V W χ χ') : admitted W V χ' χ :=
   ⟨ha.1.symm, ha.2.2.1, ha.2.1, ha.2.2.2.2, ha.2.2.2.1⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨GlobalTheory.VolHeckeCompare.exists_isEta D, fun _ _ _ => by simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem resEta_one (D : D7) : ResEta D 1 0 := ⟨GlobalTheory.VolHeckeCompare.exists_isEta D, fun _ _ _ => by simp⟩
 
 /- English proof (translation)
-Take `⟨C, hC⟩` from `(GlobalTheory.Mem.HeckeExp.hecke_exp_laws D).1`. Conclude with `⟨ha.1, (hC _).1 (C.mul_mem ((hC _).2 ha.2.1) ((hC _).2 h1)), (hC _).1 (C.mul_mem ((hC _).2 ha.2.2.1) ((hC _).2 h2)), resEta_mul ha.2.2.2.1 r1, resEta_mul ha.2.2.2.2 r2⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem isAdmissibleSplittingCharPair_mul_twist {V W : HSp D} {χ χ' ν ν' : IdC D} (ha : admitted V W χ χ') (h1 : IsHC D ν) (h2 : IsHC D ν')
     (r1 : ResEta D ν 0) (r2 : ResEta D ν' 0) : admitted V W (χ * ν) (χ' * ν') := by
@@ -52,11 +52,11 @@ theorem isAdmissibleSplittingCharPair_mul_twist {V W : HSp D} {χ χ' ν ν' : I
     resEta_mul ha.2.2.2.1 r1, resEta_mul ha.2.2.2.2 r2⟩
 
 /- English proof (translation)
-Take `⟨o, ho, e⟩` from `GlobalTheory.Mem.WeilOriented.exists_isWeilDatumO D ψ hψ V W χ χ' om ha hr H`. Take `⟨o', ho', e'⟩` from `GlobalTheory.Mem.WeilOriented.exists_isWeilDatumO D ψ hψ V W _ _ om' (isAdmissibleSplittingCharPair_mul_twist ha h1 h2 r1 r2) hr H'`. Take `⟨o'', ho'', e''⟩` from `GlobalTheory.WeilChange.exists_weilDatum_twist D ψ hψ V W χ χ' ν ν' o ho h1.1 h2.1 r1 r2`. Take `⟨c, -, -, hc, -, -, -, hth, -⟩` from `GlobalTheory.OrientedCoord.exists_coord D V W hr.le`. Use `LinearMap.ext fun Φ => Subtype.ext (funext fun w => ?_)` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨u, rfl⟩` from `c.surjective w`. Establish `hf : IsThetaFunO ψ V W fun x => Φ.1 (toTWsmall V W x)`. Simplify `(hth ψ Φ.1).2 (mem_ThS.1 Φ.2)` using `only [hc]`. Establish `k` using `congrFun (GlobalTheory.T.weilDatum_unique_on_thetaFunctions D ψ hψ V W _ _ o' o'' ho' ho'' (g, h) _ hf) u`. Rewrite `k` using `[e', e'' g h x y hx hy, LinearMap.smul_apply, e]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hc]`. Conclude with `k`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem twist_small (hψ : IsStdChar D ψ (-1)) {V W : HSp D} {χ χ' ν ν' : IdC D} (ha : admitted V W χ χ') (hr : V.rank < W.rank)
     (h1 : IsHC D ν) (h2 : IsHC D ν') (r1 : ResEta D ν 0) (r2 : ResEta D ν' 0)
@@ -77,7 +77,7 @@ theorem twist_small (hψ : IsStdChar D ψ (-1)) {V W : HSp D} {χ χ' ν ν' : I
   exact k
 
 /- English proof (translation)
-Take `⟨om', H', e⟩` from `WeilSwap.exists_isWeilOn_swap D ψ hψ V W χ χ' om hne H`. Conclude with `⟨om', H', fun g h Φ => Subtype.ext (funext fun y => e g h Φ _ (fun _ => rfl) y.transpose)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_swap (hψ : IsStdChar D ψ (-1)) {V W : HSp D} {χ χ' : IdC D} (hne : V.rank ≠ W.rank)
     {om : GA D V × GA D W →* Module.End ℂ (ThS ψ V W)} (H : IsWeilOn ψ V W χ χ' om) :
@@ -87,9 +87,9 @@ theorem exists_swap (hψ : IsStdChar D ψ (-1)) {V W : HSp D} {χ χ' : IdC D} (
   exact ⟨om', H', fun g h Φ => Subtype.ext (funext fun y => e g h Φ _ (fun _ => rfl) y.transpose)⟩
 
 /- English proof (translation)
-Break down `ha.1.lt_or_gt with hr | hr` into its components or cases. Rewrite using `[if_pos hr]`. Conclude with `twist_small hψ ha hr h1 h2 r1 r2 H H' hx hy`. Rewrite using `[if_neg hr.not_gt]`. Take `⟨o, ho, e⟩` from `exists_swap hψ ha.1 H`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨o', ho', e'⟩` from `exists_swap hψ ha.1 H'`. Use `LinearMap.ext fun Φ => (WeilSwap.trEquiv ψ ha.1).injective ?_` and prove the remaining obligations. Rewrite using `[← e', twist_small hψ (isAdmissibleSplittingCharPair_symm ha) hr h2 h1 r2 r1 ho ho' hy hx, LinearMap.smul_apply, LinearMap.smul_apply, map_smul, e]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem twist (hψ : IsStdChar D ψ (-1)) {V W : HSp D} {χ χ' ν ν' : IdC D} (ha : admitted V W χ χ')
     (h1 : IsHC D ν) (h2 : IsHC D ν') (r1 : ResEta D ν 0) (r2 : ResEta D ν' 0)
@@ -105,7 +105,7 @@ theorem twist (hψ : IsStdChar D ψ (-1)) {V W : HSp D} {χ χ' ν ν' : IdC D} 
     rw [← e', twist_small hψ (isAdmissibleSplittingCharPair_symm ha) hr h2 h1 r2 r1 ho ho' hy hx, LinearMap.smul_apply, LinearMap.smul_apply, map_smul, e]
 
 /- English proof (translation)
-Use `MonoidHom.ext fun ⟨g, h⟩ => ?_` and prove the remaining obligations. Take `⟨x, hx⟩` from `GlobalTheory.RecDict.exists_isDetRoot D V g`. Take `⟨y, hy⟩` from `GlobalTheory.RecDict.exists_isDetRoot D W h`. Use `twist hψ ha (isHC_one D) (isHC_one D) (resEta_one D) (resEta_one D) H (by simpa only [mul_one] using H') hx hy` as an intermediate fact. Simplify using `using this`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem unique (hψ : IsStdChar D ψ (-1)) {V W : HSp D} {χ χ' : IdC D} (ha : admitted V W χ χ')
     {om om' : GA D V × GA D W →* Module.End ℂ (ThS ψ V W)} (H : IsWeilOn ψ V W χ χ' om)
@@ -117,7 +117,7 @@ theorem unique (hψ : IsStdChar D ψ (-1)) {V W : HSp D} {χ χ' : IdC D} (ha : 
   simpa using this
 
 /- English proof (translation)
-Use `congrArg φ hx` as an intermediate fact. Rewrite `this` using `[map_mul, ha, zero_mul, map_sub, map_one]`. Conclude with `sub_eq_zero.1 this.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_eq_one_of_supp {R R' : Type} [CommRing R] [CommRing R'] (φ : R →+* R') {a x : R} (ha : φ a = 0)
     (hx : a * (x - 1) = x - 1) : φ x = 1 := by
@@ -126,9 +126,9 @@ theorem map_eq_one_of_supp {R R' : Type} [CommRing R] [CommRing R'] (φ : R →+
   exact sub_eq_zero.1 this.symm
 
 /- English proof (translation)
-Take `⟨β, rfl, -, h0⟩` from `hε`. Introduce `x hx i1 i2`. Use `h x (map_eq_one_of_supp (infPart D) (TensorProduct.zero_tmul _ _) hx) i1 i2 fun w hw => ?_` and prove the remaining obligations. Use `map_eq_one_of_supp ((Algebra.TensorProduct.map (evalV D.host.F w) (AlgHom.id D.host.F D.host.E)).toRingHom.comp (finPart D)) ?_ hx` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `evalV D.host.F w β ⊗ₜ[D.host.F] (1 : D.host.E) = 0`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[h0 w fun e => hv (e ▸ hw), TensorProduct.zero_tmul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem unramAt_of_outside {χ : IdC D} {Z : Finset (HeightOneSpectrum (𝓞 D.host.F))} (h : UnramOutside D χ Z)
     {v : HeightOneSpectrum (𝓞 D.host.F)} (hv : v ∉ Z) {ε : AF D.host.F} (hε : IsPlaceIdem D v ε) : UnramAt ε χ := by
@@ -141,15 +141,15 @@ theorem unramAt_of_outside {χ : IdC D} {Z : Finset (HeightOneSpectrum (𝓞 D.h
   rw [h0 w fun e => hv (e ▸ hw), TensorProduct.zero_tmul]
 
 /- English proof (translation)
-Take `⟨KS, hKS, -⟩` from `GlobalTheory.Mem.Ksph.exists_subgroup_ksph D S ∅`. Take `⟨KT, hKT, -⟩` from `GlobalTheory.Mem.Ksph.exists_subgroup_ksph D T ∅`. Establish `hg' : g⁻¹ ∈ KsphC S ∅` using `by rw [← hKS] at hg ⊢; exact KS.inv_mem hg`. Establish `hh' : h⁻¹ ∈ KsphC T ∅` using `by rw [← hKT] at hh ⊢; exact KT.inv_mem hh`. Distinguish the cases in `hs : ∃ e : AE D, IsSplitIdem D e ∧ e + cA D e = algebraMap (AF D.host.F) (AE D) ε`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Take `⟨e, he, heq⟩` from `hs`. Take `⟨x, hx, hx1⟩` from `GlobalTheory.Mem.DetUnit.exists_isDetAt_unram D S ε e he heq g hg`. Take `⟨y, hy, hy1⟩` from `GlobalTheory.Mem.DetUnit.exists_isDetAt_unram D T ε e he heq h hh`. Establish `he' : cA D e * cA D e = cA D e` using `by rw [← map_mul, he.1]`. Establish `heε : algebraMap (AF D.host.F) (AE D) ε * e = e` using `by rw [← heq]; linear_combination he.1 + he.2.1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `heε' : algebraMap (AF D.host.F) (AE D) ε * cA D e = cA D e` using `by rw [← heq]; linear_combination he' + he.2.1`. Use `GlobalTheory.SplitHecke.om_eq_self_of_lattice_stable D ψ S T χS χT om H e he g h (fun i j => by rw [heq]; exact sg i j) (fun i j => by rw [heq]; exact sh i j) x y hx hy (by rw [splitFacO, hx1 _ uT, hy1 _ uS, inv_one, mul_one]) (GlobalTheory.LatStabAct.actO_mem_latO_of_stab D S T …` and prove the remaining obligations. Break down `hh with hh | hh` into its components or cases. Use `(GlobalTheory.PlaceModel.idem_smul_mem hε he.1 heε hu).1` as an intermediate fact. Rewrite `this` using `[show e • u = u from Matrix.ext hh]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `(GlobalTheory.PlaceModel.idem_smul_mem hε he' heε' hu).1` as an intermediate fact. Rewrite `this` using `[show cA D e • u = u from Matrix.ext hh]`. Then use the resulting hypothesis. Take `⟨η, e1, e2, e3, e4⟩` from `GlobalTheory.Mem.EtaTilde.exists_etaTilde D`. Establish `k` using `GlobalTheory.T.weilDatum_fixes_vacuum_nonSplitPlace_unramified D ψ H.std S T _ _ (GlobalTheory.PlaceModel.isSelfDualC_latFrame S) (GlobalTheory.PlaceModel.isSelfDualC_latFrame T) χS χT om ⟨η, e1, e4, e3, e2⟩ H v ε ⟨hε, hs⟩ uS uT g h sg sh`. Rewrite `k` using `[GlobalTheory.PlaceModel.coe_latFrame, GlobalTheory.PlaceModel.coe_latFrame]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `k (fun u => ⟨GlobalTheory.LatStabAct.actO_mem_latO_of_stab D S T _ hg _ hh _ u, fun hu => ?_⟩) f hf hv` and prove the remaining obligations. Use `GlobalTheory.LatStabAct.actO_mem_latO_of_stab D S T _ hg' _ hh' _ _ hu` as an intermediate fact. Establish `e` using `GlobalTheory.AdelicLatMove.actO_actO_inv S T g⁻¹ h⁻¹ u`. Rewrite `e` using `[inv_inv, inv_inv]`. Rewrite `this` using `[e]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem fixes_local {S T : HSp D} {χS χT : IdC D} {om : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ)}
     (H : IsWeilDatumO ψ S T χS χT om) {v : HeightOneSpectrum (𝓞 D.host.F)} {ε : AF D.host.F} (hε : IsPlaceIdem D v ε)
@@ -186,20 +186,18 @@ theorem fixes_local {S T : HSp D} {χS χT : IdC D} {om : GA D S × GA D T →* 
     rwa [e] at this
 
 /- English proof (translation)
-The claim follows from `AddSubgroup.closure_mono fun _ ⟨α, hα, h0, k⟩ => ⟨α, hα, fun w hw => h0 w fun e => hw (h w e), k⟩`.
+A detailed English derivation is pending.
 -/
 theorem latO_mono {S T : HSp D} {LS : Set (Fin S.rank → D.host.E)} {LT : Set (Fin T.rank → D.host.E)}
     {P Q : HeightOneSpectrum (𝓞 D.host.F) → Prop} (h : ∀ w, P w → Q w) : latO S T LS LT P ≤ latO S T LS LT Q :=
   AddSubgroup.closure_mono fun _ ⟨α, hα, h0, k⟩ => ⟨α, hα, fun w hw => h0 w fun e => hw (h w e), k⟩
 
 /- English proof (translation)
-Set `K : Subgroup (GA D S × GA D T)` to `{ carrier := {p | om p f = f} one_mem' := by simp mul_mem' := fun {a b} ha hb => by`. Express the relevant statement in the definitionally equal form `om (a * b) f = f`. Rewrite using `[map_mul, Module.End.mul_apply, show om b f = f from hb, show om a f = f from ha]`. Use the proof step `inv_mem' := fun {a} ha => by`. Express the relevant statement in the definitionally equal form `om a⁻¹ f = f`.
+Introduce a local definition for the expression. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use `conv_lhs => rw [← show om a f = f from ha]`. Rewrite using `[← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply] }`. Establish `hK : IsClosed (K : Set (GA D S × GA D T))` using `isClosed_eq (continuous_pi fun w => H.om_cont f hf w) continuous_const`. Establish `hl : ∀ v, v ∉ Z → ∀ u ∈ latO S T (L0c D S) (L0c D T) (fun w => w = v), heisO ψ S T u f = f` using `fun v hvZ u hu => hv u (latO_mono (fun w (e : w = v) => e ▸ hvZ) hu)`. Establish `one : ∀ V : HSp D, (1 : GA D V) ∈ KsphC V ∅` using `fun V => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨KV, hKV, -⟩` from `GlobalTheory.Mem.Ksph.exists_subgroup_ksph D V ∅`. Rewrite using `[← hKV]`. Conclude with `KV.one_mem`. Establish `sone : ∀ (V : HSp D) ε, SuppPl ε V 1` using `fun V ε i j => by simp [Formalism.L2.Theta.mt]`. Establish `k1 : g ∈ K.comap (MonoidHom.inl _ _)` using `GlobalTheory.LevelClosure.ksph_le_of_isClosed D S Z _ (hK.preimage (continuous_id.prodMk continuous_const)) (fun v hvZ ε hε g hg sg => fixes_local H hε (unramAt_of_outside uS hvZ hε) (unramAt_of_outside uT hvZ hε) hg (one T) sg (sone T ε) hf (hl v hvZ)) g hg`.
-
-Establish `k2 : h ∈ K.comap (MonoidHom.inr _ _)` using `GlobalTheory.LevelClosure.ksph_le_of_isClosed D T Z _ (hK.preimage (continuous_const.prodMk continuous_id)) (fun v hvZ ε hε h hh sh => fixes_local H hε (unramAt_of_outside uS hvZ hε) (unramAt_of_outside uT hvZ hε) (one S) hh (sone S ε) sh hf (hl v hvZ)) h hh`. Establish `: (g, h) ∈ K` using `by simpa using K.mul_mem k1 k2`. Conclude with `this`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem fixes_oriented {S T : HSp D} {χS χT : IdC D} {om : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ)}
     (H : IsWeilDatumO ψ S T χS χT om) {Z : Finset (HeightOneSpectrum (𝓞 D.host.F))}
@@ -236,9 +234,9 @@ theorem fixes_oriented {S T : HSp D} {χS χT : IdC D} {om : GA D S × GA D T �
   exact this
 
 /- English proof (translation)
-Take `⟨o, ho, e⟩` from `GlobalTheory.Mem.WeilOriented.exists_isWeilDatumO D ψ hψ V W χ χ' om ha hr H`. Take `⟨c, -, -, hc, -, -, hhe, hth, hl⟩` from `GlobalTheory.OrientedCoord.exists_coord D V W hr.le`. Establish `k` using `fixes_oriented ho u1 u2 hg hh ((hth ψ Φ.1).2 (mem_ThS.1 Φ.2)) fun u hu => by`. Rewrite using `[hhe, hv _ (hl Z u hu)]`. Simplify using `only [hc] at k`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite `k` using `[e]`. Use `Subtype.ext (funext fun w => ?_)` and prove the remaining obligations. Take `⟨u, rfl⟩` from `c.surjective w`. Rewrite using `[hc]`. Conclude with `congrFun k u`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fixes_small (hψ : IsStdChar D ψ (-1)) {V W : HSp D} {χ χ' : IdC D} (ha : admitted V W χ χ') (hr : V.rank < W.rank)
     {om : GA D V × GA D W →* Module.End ℂ (ThS ψ V W)} (H : IsWeilOn ψ V W χ χ' om)
@@ -257,11 +255,11 @@ theorem fixes_small (hψ : IsStdChar D ψ (-1)) {V W : HSp D} {χ χ' : IdC D} (
   exact congrFun k u
 
 /- English proof (translation)
-Establish `: latVWS V W Z ≤ (latVWS W V Z).comap (Matrix.transposeAddEquiv _ _ _).toAddMonoidHom`. Use `(AddSubgroup.closure_le _).2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨α, hα, h0, a, ha, x, hx, y, hy, rfl⟩`. Use `AddSubgroup.subset_closure ⟨α, hα, h0, a, ha, y, hy, x, hx, Matrix.ext fun i j => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ ⊗ₜ _ = _ ⊗ₜ _`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Use `congr 1`. Break down `hne.lt_or_gt with hr | hr` into its components or cases. Rewrite using `[if_pos hr.le, if_neg hr.not_ge]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[if_neg hr.not_ge, if_pos hr.le]`.
+Reduce the equality to equality of the corresponding arguments. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Conclude with `this hu`.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem transpose_mem_latVWS {V W : HSp D} (hne : V.rank ≠ W.rank) (Z : Finset (HeightOneSpectrum (𝓞 D.host.F)))
     {u : WA V W} (hu : u ∈ latVWS V W Z) : u.transpose ∈ latVWS W V Z := by
@@ -277,13 +275,13 @@ theorem transpose_mem_latVWS {V W : HSp D} (hne : V.rank ≠ W.rank) (Z : Finset
   exact this hu
 
 /- English proof (translation)
-Introduce `D ψ hψ Wc`. Use `⟨fun V W χ χ' ν ha h1 r1 g h x hx => ?_, fun V W χ χ' ν ha h1 r1 g h y hy => ?_, fun V W χ χ' ha g h Φ Φ' e x => ?_, fun V W χ χ' ha Z u1 u2 g hg h hh Φ hv => ?_⟩` and prove the remaining obligations. Take `⟨y, hy⟩` from `GlobalTheory.RecDict.exists_isDetRoot D W h`. Use `twist hψ ha (isHC_one D) h1 (resEta_one D) r1 (Wc.weil V W χ χ' ha) (Wc.weil V W _ _ (isAdmissibleSplittingCharPair_mul_twist ha (isHC_one D) h1 (resEta_one D) r1)) hx hy` as an intermediate fact. Simplify `this` using `only [mul_one, MonoidHom.one_apply, inv_one, one_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Take `⟨x, hx⟩` from `GlobalTheory.RecDict.exists_isDetRoot D V g`. Use `twist hψ ha h1 (isHC_one D) r1 (resEta_one D) (Wc.weil V W χ χ' ha) (Wc.weil V W _ _ (isAdmissibleSplittingCharPair_mul_twist ha h1 (isHC_one D) r1 (resEta_one D))) hx hy` as an intermediate fact. Simplify `this` using `only [mul_one, MonoidHom.one_apply, inv_one, one_mul]`. Take `⟨o, ho, k⟩` from `WeilSwap.exists_isWeilOn_swap D ψ hψ V W χ χ' _ ha.1 (Wc.weil V W χ χ' ha)`. Rewrite using `[unique hψ (isAdmissibleSplittingCharPair_symm ha) ho (Wc.weil W V χ' χ (isAdmissibleSplittingCharPair_symm ha))]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `k g h Φ Φ' e x`. Break down `ha.1.lt_or_gt with hr | hr` into its components or cases. Conclude with `fixes_small hψ ha hr (Wc.weil V W χ χ' ha) u1 u2 hg hh Φ hv`. Take `⟨o, ho, k⟩` from `exists_swap hψ ha.1 (Wc.weil V W χ χ' ha)`. Use `(WeilSwap.trEquiv ψ ha.1).injective ?_` and prove the remaining obligations.
+Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← k]`. Use `fixes_small hψ (isAdmissibleSplittingCharPair_symm ha) hr ho u2 u1 hh hg _ fun u hu => ?_` and prove the remaining obligations. Use `(WeilSwap.heis_transpose ψ ha.1.symm u Φ.1).symm.trans ?_` and prove the remaining obligations. Rewrite using `[hv _ (transpose_mem_latVWS ha.1.symm Z hu)]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem weilRules : ∀ D : D7, WeilRules D := by
   intro D ψ hψ Wc

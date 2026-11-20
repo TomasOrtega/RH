@@ -12,9 +12,9 @@ open HeckeCharacterZeroLocus.SiegelWeilU PositivityTheory.Rg.Mass
 namespace GlobalTheory.CompanionTheory.MassCocompact
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ J d b li lam μ 𝓕 mi m hCM hJ hA _ _ hμ h𝓕 _ _`. Establish `hW : GlobalTheory.SiegelSet.IsWittFrame σ J (0 : Matrix (Fin 2) (Fin 0) E) 0` using `⟨Subsingleton.elim _ _, Subsingleton.elim _ _, Subsingleton.elim _ _, fun z _ _ hz => hA z hz⟩`. Take `⟨C, hC, hcov⟩` from `GlobalTheory.SiegelSet.Model.compact_quotient GlobalTheory.CompanionTheory.SiegelRed.siegelSetUnitary hCM hJ hW`. Use `⟨⟨C, hC, fun h => ?_⟩, ?_, ?_⟩` and prove the remaining obligations. Take `⟨γ, hγ, c, hc, e⟩` from `hcov h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨⟨γ, hγ⟩, c, hc, e⟩`. Conclude with `(GlobalTheory.SiegelWeilConvCompare.measure_fundamentalDomain_pos F E σ 2 J μ hμ 𝓕 h𝓕).ne'`. Conclude with `(((GlobalTheory.CompanionTheory.SW.finVol_unitaryGroup F E σ hCM 2 J hJ).2 μ hμ).2 𝓕 h𝓕).ne`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem coCpt : CoCpt := by
   intro F E _ _ _ _ _ σ J d b li lam μ 𝓕 mi m hCM hJ hA _ _ hμ h𝓕 _ _

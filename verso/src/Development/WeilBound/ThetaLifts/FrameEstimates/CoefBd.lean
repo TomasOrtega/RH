@@ -17,7 +17,7 @@ namespace W
 variable {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ]
 
 /- English proof (translation)
-Rewrite using `[Algebra.trace_eq_matrix_trace (latticeBasis F), Algebra.trace_eq_matrix_trace (integralBasis F), Matrix.trace, Matrix.trace, Rat.cast_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.diag_apply, Matrix.diag_apply, Algebra.leftMulMatrix_eq_repr_mul, Algebra.leftMulMatrix_eq_repr_mul, latticeBasis_apply, ← map_mul, latticeBasis_repr_apply]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem trace_emb (a : F) : Algebra.trace ℝ (mixedSpace F) (mixedEmbedding F a) = (Algebra.trace ℚ F a : ℚ) := by
   classical
@@ -28,9 +28,9 @@ theorem trace_emb (a : F) : Algebra.trace ℝ (mixedSpace F) (mixedEmbedding F a
     latticeBasis_apply, ← map_mul, latticeBasis_repr_apply]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Use `(latticeBasis F).ext_elem fun j => ?_` and prove the remaining obligations. Use `h (Pi.single i (mixedEmbedding F ((integralBasis F).traceDual j)))` as an intermediate fact. Rewrite `this` using `[dotProduct_single, ← (latticeBasis F).sum_repr (l i)]`. Simplify using `only [Finset.sum_mul, smul_mul_assoc, map_sum, map_smul, latticeBasis_apply, ← map_mul, trace_emb, Module.Basis.trace_mul_traceDual] at this`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify `this` using `[apply_ite]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem trace_nondeg (l : κ → mixedSpace F) (h : ∀ y, Algebra.trace ℝ (mixedSpace F) (l ⬝ᵥ y) = 0) : l = 0 := by
   classical
@@ -43,17 +43,13 @@ theorem trace_nondeg (l : κ → mixedSpace F) (h : ∀ y, Algebra.trace ℝ (mi
   simpa [apply_ite] using this
 
 /- English proof (translation)
-Take `⟨h1, h2, -⟩` from `GlobalTheory.GaugeEx.CharLoc.char_local F ψ hψ`. Use `choose b hb using h1`. Establish `hO : ∀ v : Pl F, IsCompact (v.adicCompletionIntegers F : Set (Fv F v))` using `fun v => isCompact_iff_compactSpace.2 (GlobalTheory.AdelicUnitaryTop.compactSpace_adicCompletionIntegers F v)`. Set `P : Pl F → Prop` to `fun v => ∀ y : Fv F v, (∀ t ∈ v.adicCompletionIntegers F, psiV F ψ v (y * t) = 1) ↔ y ∈ v.adicCompletionIntegers F`. Use `⟨_, isCompact_box (fun v => if P v then (v.adicCompletionIntegers F : Set (Fv F v)) else (b v * ·) '' (v.adicCompletionIntegers F : Set (Fv F v))) (fun v => ?_) ?_, fun y hy v => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `split_ifs`. Conclude with `hO v`. Conclude with `(hO v).image (continuous_const.mul continuous_id)`. Use `filter_upwards [h2] with v hv`. Rewrite using `[if_pos hv]`.
+Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 
-Establish `key : ∀ t ∈ v.adicCompletionIntegers F, psiV F ψ v (evalV F v y * t) = 1` using `fun t ht => by`. Use `hy (singleFin v t) fun u => by show evalV F u (singleFin v t) ∈ _` as an intermediate fact. Distinguish the cases in `e : u = v`. Substitute `e` using the available equality. Rewrite using `[evalV_singleFin_self]` and apply the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction.
 
-Rewrite using `[evalV_singleFin_ne e]`. Conclude with `zero_mem _`. Rewrite `this` using `[show fi F (singleFin v t * y) = atPlace v t * fi F y from (mul_fi (atPlace v t) y).symm, atPlace_mul_right, mul_comm]`. Conclude with `this`. Use `split_ifs with h`.
-
-Conclude with `(h _).1 key`. Establish `hb0 : b v ≠ 0` using `fun h0 => hb v (by simpa [h0] using key 0 (zero_mem _))`. Use `⟨evalV F v y / b v, ?_, mul_div_cancel₀ _ hb0⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hn`. Establish `h3` using `((v.adicCompletionIntegers F).mem_or_inv_mem _).resolve_left hn`.
-
-Establish `hy0 : evalV F v y ≠ 0` using `fun h0 => hn (by rw [h0, zero_div]; exact zero_mem _)`. Use `key _ h3` as an intermediate fact. Rewrite `this` using `[inv_div, mul_div_cancel₀ _ hy0]`. Conclude with `hb v this`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dual_one [IsTotallyReal F] {ψ : AddChar (AF F) ℂ} (hψ : IsCharAF F ψ) : ∃ C : Set (Af F), IsCompact C ∧
     ∀ y, (∀ a : Af F, (∀ v, a v ∈ v.adicCompletionIntegers F) → ψ (fi F (a * y)) = 1) → y ∈ C := by
@@ -91,9 +87,9 @@ theorem dual_one [IsTotallyReal F] {ψ : AddChar (AF F) ℂ} (hψ : IsCharAF F �
       exact hb v this
 
 /- English proof (translation)
-Take `⟨C, hC, h⟩` from `dual_one hψ`. Use `choose N hN hNU using fun i : κ => GlobalTheory.AdLat.OpenLat.exists_nsmul_adele F ((fun x : Af F => (Pi.single i x : κ → Af F)) ⁻¹' U) ((continuous_single (A := fun _ : κ => Af F) i).continuousAt.preimage_mem_nhds (show U ∈ 𝓝 (Pi.single i 0) by rwa [Pi.single_zero]))`. Use `⟨_, isCompact_univ_pi fun i => hC.image (f := (algebraMap F (Af F) (N i : F)⁻¹ * ·)) (continuous_const.mul continuous_id), fun y hy i _ => ⟨N i • y i, h _ fun a ha => ?_, ?_⟩⟩` and prove the remaining obligations. Use `hy _ (hNU i a ha)` as an intermediate fact. Rewrite `this` using `[single_dotProduct, smul_mul_assoc, ← mul_smul_comm]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `: (N i : F) ≠ 0` using `by exact_mod_cast (hN i).ne'`. Simplify using `only`. Rewrite using `[nsmul_eq_mul, ← mul_assoc, ← map_natCast (algebraMap F (Af F)), ← map_mul, inv_mul_cancel₀ this, map_one, one_mul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dual_cpt [IsTotallyReal F] {ψ : AddChar (AF F) ℂ} (hψ : IsCharAF F ψ) (U : Set (κ → Af F)) (hU : U ∈ 𝓝 0) :
     ∃ K, IsCompact K ∧ ∀ y : κ → Af F, (∀ u ∈ U, ψ (fi F (u ⬝ᵥ y)) = 1) → y ∈ K := by
@@ -118,7 +114,7 @@ def spl : ((κ → mixedSpace F) × (κ → Af F)) ≃+ (κ → AF F) where
   map_add' p q := funext fun i => by simp only [Prod.fst_add, Prod.snd_add, Pi.add_apply, map_add]; abel
 
 /- English proof (translation)
-Use `show Continuous (fun p : (κ → mixedSpace F) × (κ → Af F) => fun i => re F (p.1 i) + fi F (p.2 i))`. Establish `hfi : Continuous (fi F)` using `by show Continuous fun x : Af F => Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.pairA F 0 x`. Conclude with `continuous_const.prodMk continuous_id`. Conclude with `continuous_pi fun i => (continuous_re.comp ((continuous_apply i).comp continuous_fst)).add (hfi.comp ((continuous_apply i).comp continuous_snd))`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem spl_cont : Continuous (spl F κ) := by
   show Continuous (fun p : (κ → mixedSpace F) × (κ → Af F) => fun i => re F (p.1 i) + fi F (p.2 i))
@@ -129,7 +125,7 @@ theorem spl_cont : Continuous (spl F κ) := by
     (hfi.comp ((continuous_apply i).comp continuous_snd))
 
 /- English proof (translation)
-Use `show Continuous (fun x : κ → AF F => ((fun i => evI F (x i)), (fun i => (x i).2)))`. Conclude with `(continuous_pi fun i => cont_evI.comp (continuous_apply i)).prodMk (continuous_pi fun i => continuous_snd.comp (continuous_apply i))`.
+A detailed English derivation is pending.
 -/
 theorem spl_symm_cont : Continuous (spl F κ).symm := by
   show Continuous (fun x : κ → AF F => ((fun i => evI F (x i)), (fun i => (x i).2)))
@@ -137,9 +133,9 @@ theorem spl_symm_cont : Continuous (spl F κ).symm := by
     (continuous_pi fun i => continuous_snd.comp (continuous_apply i))
 
 /- English proof (translation)
-Use `show f (fun i => evI F (spl F κ p i)) * φ (fun i => (spl F κ p i).2) = f p.1 * φ p.2`. Use `congr 1`. Use `congr 1`. Use function extensionality and compare the values at `i`. Use `show evI F (re F (p.1 i) + fi F (p.2 i)) = p.1 i`.
+Reduce the equality to equality of the corresponding arguments. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[evI_add, evI_re, evI_fi, add_zero]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Use `show (re F (p.1 i)).2 + (fi F (p.2 i)).2 = p.2 i`. Conclude with `zero_add _`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem pureA_spl (f : (κ → mixedSpace F) → ℂ) (φ : (κ → Af F) → ℂ) (p : (κ → mixedSpace F) × (κ → Af F)) :
     pureA F f φ (spl F κ p) = f p.1 * φ p.2 := by
@@ -155,9 +151,9 @@ theorem pureA_spl (f : (κ → mixedSpace F) → ℂ) (φ : (κ → Af F) → �
     exact zero_add _
 
 /- English proof (translation)
-Simplify using `only [dotProduct]`. Rewrite using `[map_sum, map_sum, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Use `show (re F (p.1 i) + fi F (p.2 i)) * (re F (q.1 i) + fi F (q.2 i)) = re F (p.1 i * q.1 i) + fi F (p.2 i * q.2 i)`. Rewrite using `[add_mul, mul_add, mul_add, re_mul, re_mul_fi, mul_comm (fi F (p.2 i)) (re F (q.1 i)), re_mul_fi, mul_fi, add_zero, zero_add]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem spl_dot (p q : (κ → mixedSpace F) × (κ → Af F)) :
     spl F κ p ⬝ᵥ spl F κ q = re F (p.1 ⬝ᵥ q.1) + fi F (p.2 ⬝ᵥ q.2) := by
@@ -171,21 +167,17 @@ theorem spl_dot (p q : (κ → mixedSpace F) × (κ → Af F)) :
   rfl
 
 /- English proof (translation)
-Establish `hψ` using `isCharAF hstd`. Use `haveI := GlobalTheory.AdelicUnitaryTop.locallyCompact_finiteAdele F`. Use `haveI := GlobalTheory.AdelicUnitaryTop.secondCountable_finiteAdele F`. Use `haveI := GlobalTheory.AdelicUnitaryTop.secondCountable_adele F`. Use `haveI : BorelSpace (κ → AF F) := ⟨rfl⟩`.
+Establish an intermediate fact. Equip the data with the indicated structure. Equip the data with the indicated structure. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Use `letI : MeasurableSpace (κ → Af F) := borel _`. Use `haveI : BorelSpace (κ → Af F) := ⟨rfl⟩`. Use `letI : MeasurableSpace (κ → mixedSpace F) := borel _`. Use `haveI : BorelSpace (κ → mixedSpace F) := ⟨rfl⟩`. Set `β : (κ → mixedSpace F) →ₗ[ℝ] (κ → mixedSpace F) →ₗ[ℝ] ℝ` to `LinearMap.mk₂ ℝ (fun y u => -Algebra.trace ℝ (mixedSpace F) (u ⬝ᵥ y)) (fun _ _ _ => by rw [dotProduct_add, map_add, neg_add]) (fun _ _ _ => by rw [dotProduct_smul, map_smul, smul_neg]) (fun _ _ _ => by rw [add_dotProduct, map_add, neg_add]) (fun _ _ _ => by rw [smul_dotProduct, m …`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨ν, hν, hb⟩` from `real_bound hR _ β fun y hy => trace_nondeg y fun u => by`. Rewrite using `[dotProduct_comm, ← neg_eq_zero]`. Conclude with `LinearMap.congr_fun hy u`. Take `⟨p, hp, hb⟩` from `hb N`. Set `ν' : Measure (κ → Af F)` to `Measure.addHaar`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Take `⟨C, K, hK, hC⟩` from `fin_bound ν' (fun y u : κ → Af F => ψ (fi F (u ⬝ᵥ y))) (fun _ _ => hψ.2.1 _) (fun _ _ _ => by rw [add_dotProduct, map_add, AddChar.map_add_eq_mul]) (dual_cpt hψ) h₁ h₂`. Use `haveI : (ν.prod ν').IsAddHaarMeasure := Measure.prod.instIsAddHaarMeasure _ _`. Use `haveI : (Measure.map (spl F κ) (ν.prod ν')).IsAddHaarMeasure := (spl F κ).isAddHaarMeasure_map (ν.prod ν') spl_cont spl_symm_cont`. Take `⟨c, hc⟩ : ∃ c : ℝ≥0, μ = c • Measure.map (spl F κ) (ν.prod ν')` from `⟨_, Measure.isAddLeftInvariant_eq_smul _ _⟩`. Set `e : ((κ → mixedSpace F) × (κ → Af F)) ≃ₜ (κ → AF F)` to `⟨(spl F κ).toEquiv, spl_cont, spl_symm_cont⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `key : ∀ (f₁ f₂ : SInf F κ) x y, coef F ψ μ (pureA F f₁ φ₁) (pureA F f₂ φ₂) (spl F κ x, spl F κ y) = c * (ψ (⅟(2 : AF F) * (spl F κ x ⬝ᵥ spl F κ y)) * ((∫ u, Complex.exp (2 * Real.pi * Complex.I * (β y.1 u : ℝ)) * f₁ (u + x.1) * (starRingEnd ℂ) (f₂ u) ∂ν) * ∫ u, ψ (fi F (u ⬝ᵥ y.2) …` using `fun f₁ f₂ x y => by`. Rewrite using `[coef, hc, integral_smul_nnreal_measure, NNReal.smul_def, Complex.real_smul, ← integral_prod_mul, show Measure.map (spl F κ) (ν.prod ν') = Measure.map e.toMeasurableEquiv (ν.prod ν') from rfl, integral_map_equiv]`. Use `congr 1`. Rewrite using `[← integral_const_mul]`. Use `integral_congr_ae (.of_forall fun u => ?_)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `show ψ (spl F κ u ⬝ᵥ spl F κ y + _) * pureA F f₁ φ₁ (spl F κ u + spl F κ x) * (starRingEnd ℂ) (pureA F f₂ φ₂ (spl F κ u)) = _`. Rewrite using `[← map_add, pureA_spl, pureA_spl, spl_dot u y, AddChar.map_add_eq_mul, AddChar.map_add_eq_mul, psi_re hstd, map_mul (starRingEnd ℂ)]`. Simplify using `only [β, LinearMap.mk₂_apply, Prod.fst_add, Prod.snd_add, Complex.ofReal_neg, mul_neg, neg_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `hC0 : 0 ≤ C` using `(norm_nonneg _).trans (hC 0 0).1`.
-
-Use `⟨p, c * C, K, hp, by positivity, hK, fun f₁ f₂ x y => ⟨?_, fun h => (hC x.2 y.2).2 fun h0 => h ?_⟩⟩` and prove the remaining obligations. Rewrite using `[key, norm_mul, norm_mul, norm_mul, hψ.2.1, one_mul, Complex.norm_real, NNReal.norm_eq]`. Establish `a` using `hb f₁ f₂ x.1 y.1`. Establish `b` using `(hC x.2 y.2).1`. Establish `gen : ∀ A B D Q : ℝ, 0 ≤ A * D → A * D ≤ Q → B ≤ C → c * (A * B) * D ≤ c * C * Q` using `fun A B D Q h0 h1 h2 => by`.
-
-Combine the equalities or inequalities in the displayed calculation. Conclude with `gen _ _ _ _ (by positivity) a b`. Rewrite using `[key, h0, mul_zero, mul_zero, mul_zero]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coef_split [IsTotallyReal F] (hR : CoefReal) {ψ : AddChar (AF F) ℂ} (hstd : IsStd ψ) (μ : Measure (κ → AF F))
     (hμ : μ.IsAddHaarMeasure) {φ₁ φ₂ : (κ → Af F) → ℂ} (h₁ : φ₁ ∈ SB _) (h₂ : φ₂ ∈ SB _) (N : ℕ) :
@@ -249,11 +241,11 @@ theorem coef_split [IsTotallyReal F] (hR : CoefReal) {ψ : AddChar (AF F) ℂ} (
 variable {E : Type} [Field E] [NumberField E] [Algebra F E] {n d : ℕ}
 
 /- English proof (translation)
-Use `PositivityTheory.ThKEst.LatticeQuotientCompactness.topRing (F := F) (E := E)` as an intermediate fact. Establish `hm : ∀ x : (κ → AF F) × (κ → AF F), m x = ∑ i, x.1 i • m (Pi.single i 1, 0) + ∑ i, x.2 i • m (0, Pi.single i 1)`. Introduce `x`. Establish `hx : x = ∑ i, x.1 i • ((Pi.single i 1 : κ → AF F), (0 : κ → AF F)) + ∑ i, x.2 i • ((0 : κ → AF F), (Pi.single i 1 : κ → AF F))`. Apply the tactic sequence `ext j <;> simp [Prod.fst_sum, Prod.snd_sum, Finset.sum_apply, Pi.single_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Use `conv_lhs => rw [hx]`. Simplify using `only [map_add, map_sum, map_smul]`. Establish `hc : Continuous fun x : (κ → AF F) × (κ → AF F) => (∑ i, x.1 i • m (Pi.single i 1, 0) + ∑ i, x.2 i • m (0, Pi.single i 1) : Matrix (Fin n) (Fin d) (AE F E))` using `by fun_prop`. Establish `he : (⇑m : (κ → AF F) × (κ → AF F) → Ten F E n d) = fun x => (∑ i, x.1 i • m (Pi.single i 1, 0) + ∑ i, x.2 i • m (0, Pi.single i 1) : Matrix (Fin n) (Fin d) (AE F E))`. Use function extensionality and compare the values at `hm`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[he]`. Conclude with `hc`.
+A detailed English derivation is pending.
 -/
 theorem lin_cont (m : ((κ → AF F) × (κ → AF F)) →ₗ[AF F] Ten F E n d) : Continuous m := by
   have := PositivityTheory.ThKEst.LatticeQuotientCompactness.topRing (F := F) (E := E)
@@ -275,9 +267,9 @@ theorem lin_cont (m : ((κ → AF F) × (κ → AF F)) →ₗ[AF F] Ten F E n d)
   exact hc
 
 /- English proof (translation)
-Rewrite using `[Algebra.smul_def, map_mul]`. Establish `h0 : GlobalTheory.AdelicU.evInf F w (fi F 1) = 0` using `by show GlobalTheory.AutFunCompare.evW w (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.fstA F (fi F 1)) = 0`. Establish `h : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.fstA F (fi F 1) = 0` using `rfl`. Rewrite using `[h, map_zero]`. Establish `h1 : piInf τ (algebraMap (AF F) (AE F E) (fi F 1)) = 0` using `by show GlobalTheory.AdelicU.infEmb τ (GlobalTheory.AdelicU.compInf F E w (fi F 1 ⊗ₜ[F] (1 : E))) = 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : GlobalTheory.AdelicU.compInf F E w (fi F 1 ⊗ₜ[F] (1 : E)) = 0` using `by show Algebra.TensorProduct.map (GlobalTheory.AdelicU.evInf F w) (AlgHom.id F E) (fi F 1 ⊗ₜ[F] (1 : E)) = 0`. Rewrite using `[Algebra.TensorProduct.map_tmul, h0, TensorProduct.zero_tmul]`. Rewrite using `[h2, map_zero]`. Rewrite using `[h1, zero_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem piInf_fi {w : InfinitePlace F} (τ : EmbOver E w) (z : AE F E) : piInf τ (fi F 1 • z) = 0 := by
   rw [Algebra.smul_def, map_mul]
@@ -294,15 +286,13 @@ theorem piInf_fi {w : InfinitePlace F} (τ : EmbOver E w) (z : AE F E) : piInf �
   rw [h1, zero_mul]
 
 /- English proof (translation)
-Set `L : InfinitePlace F → Fin n → Fin d → ((κ → mixedSpace F) × (κ → mixedSpace F)) →+ ℂ` to `fun w i j => { toFun := fun p => piInf (τ w) (m (spl F κ (p.1, 0), spl F κ (p.2, 0)) i j) map_zero' := by`. Rewrite using `[show ((0 : (κ → mixedSpace F) × (κ → mixedSpace F)).1, (0 : κ → Af F)) = 0 from rfl]`. Simplify using `only [show ((0 : (κ → mixedSpace F) × (κ → mixedSpace F)).2, (0 : κ → Af F)) = 0 from rfl, map_zero, Prod.mk_zero_zero, Matrix.zero_apply]`. Use the proof step `map_add' := fun p q => by`. Establish `e : ∀ a b : κ → mixedSpace F, spl F κ (a + b, 0) = spl F κ (a, 0) + spl F κ (b, 0)` using `fun a b => by`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← map_add, Prod.mk_add_mk, add_zero]`. Rewrite using `[Prod.fst_add, Prod.snd_add, e, e, ← Prod.mk_add_mk, map_add, Matrix.add_apply, map_add] }`. Establish `hL : ∀ w i j, Continuous (L w i j)` using `fun w i j => (LatticeQuotientCompactness.continuous_piInf (τ w)).comp ((continuous_apply j).comp ((continuous_apply i).comp ((lin_cont m).comp ((spl_cont.comp (continuous_fst.prodMk continuous_const)).prodMk (spl_cont.comp (continuous_snd.prodMk continuous_const))))))`. Set `K` to `∑ w, ∑ i, ∑ j, ‖(L w i j).toRealLinearMap (hL w i j)‖`. Establish `hK : 0 ≤ K` using `by positivity`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨1 + K, by linarith, fun x y => ?_⟩` and prove the remaining obligations. Establish `e : (spl F κ x, spl F κ y) = (spl F κ (x.1, 0), spl F κ (y.1, 0)) + fi F 1 • (spl F κ x, spl F κ y)`. Establish `: ∀ x, spl F κ x = spl F κ (x.1, 0) + fi F 1 • spl F κ x` using `fun x => funext fun i => by show re F _ + fi F _ = re F _ + fi F 0 + fi F 1 * (re F _ + fi F _)`. Rewrite using `[map_zero, add_zero, mul_add, mul_comm (fi F 1) (re F _), re_mul_fi, fi_mul, zero_add, one_mul]`. Conclude with `Prod.ext (this x) (this y)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h1 : sz τ (m (spl F κ x, spl F κ y)) ≤ K * (‖x.1‖ + ‖y.1‖)`. Simplify using `only [sz, K, Finset.sum_mul]`. Use `Finset.sum_le_sum fun w _ => Finset.sum_le_sum fun i _ => Finset.sum_le_sum fun j _ => ?_` and prove the remaining obligations. Rewrite using `[e, map_add, map_smul, Matrix.add_apply, Matrix.smul_apply, map_add, piInf_fi, add_zero]`. Use `(((L w i j).toRealLinearMap (hL w i j)).le_opNorm (x.1, y.1)).trans ?_` and prove the remaining obligations.
-
-Use `gcongr`. Conclude with `max_le (le_add_of_nonneg_right (norm_nonneg _)) (le_add_of_nonneg_left (norm_nonneg _))`. Use polynomial arithmetic with `[norm_nonneg x.1, norm_nonneg y.1]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem sz_le (τ : ∀ w : InfinitePlace F, EmbOver E w) (m : ((κ → AF F) × (κ → AF F)) →ₗ[AF F] Ten F E n d) :
     ∃ K : ℝ, 1 ≤ K ∧ ∀ x y, 1 + sz τ (m (spl F κ x, spl F κ y)) ≤ K * (1 + ‖x.1‖ + ‖y.1‖) := by
@@ -342,17 +332,15 @@ end W
 open W
 
 /- English proof (translation)
-Introduce `hR F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hP μ hμ φ₁ h₁ φ₂ h₂ N`. Use `haveI := hP.base.cm.1`. Take `⟨p, C, K, hp, hC, hK, h⟩` from `coef_split hR hP.base.std μ hμ h₁ h₂ N`. Take `⟨L, hL, hsz⟩` from `sz_le B.emb M.co.e.symm.toLinearMap`. Establish `hLN : 0 ≤ C * L ^ N` using `by positivity`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨(NNReal.mk (1 + C * L ^ N) (by positivity)) • p, (fun q => M.co.e.symm (spl F _ (0, q.1), spl F _ (0, q.2))) '' K, hp.const_smul _, hK.image ((lin_cont M.co.e.symm.toLinearMap).comp ((spl_cont.comp (continuous_const.prodMk continuous_fst)).prodMk (spl_cont.comp (continuous_const …` and prove the remaining obligations. Take `⟨w, rfl⟩` from `M.co.e.symm.surjective z`. Take `⟨x, hx⟩` from `(spl F _).surjective w.1`. Take `⟨y, hy⟩` from `(spl F _).surjective w.2`. Take `rfl : w = (spl F _ x, spl F _ y)` from `Prod.ext hx.symm hy.symm`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[LinearEquiv.apply_symm_apply]`. Take `⟨a, b⟩` from `h f₁ f₂ x y`. Distinguish the cases in `h0 : coef F B.ψ μ (pureA F f₁ φ₁) (pureA F f₂ φ₂) (spl F _ x, spl F _ y) = 0`. Rewrite using `[h0, norm_zero]`. Conclude with `mul_nonneg (mul_nonneg (apply_nonneg _ _) (apply_nonneg _ _)) (LatticeQuotientCompactness.maj_nonneg _ _ _ _)`.
+Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `s0` using `LatticeQuotientCompactness.sz_nonneg B.emb (M.co.e.symm (spl F _ x, spl F _ y))`. Rewrite using `[maj, if_pos, ← div_eq_mul_inv, le_div_iff₀ (by positivity)]`. Establish `q` using `mul_nonneg (apply_nonneg p f₁) (apply_nonneg p f₂)`. Combine the equalities or inequalities in the displayed calculation. Use polynomial arithmetic with `[mul_nonneg hLN q, mul_nonneg (mul_nonneg hLN hLN) q]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Use the polynomial consequences of the given equalities and inequalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨_, ⟨_, b h0, rfl⟩, fun u hu => ?_⟩` and prove the remaining obligations. Rewrite using `[← map_sub, ← map_smul, map_eq_zero_iff _ M.co.e.symm.injective, Prod.mk_sub_mk, ← map_sub, ← map_sub]`. Establish `: ∀ x : (Fin n × Fin d → mixedSpace F) × (Fin n × Fin d → Af F), u • spl F _ (x - (0, x.2)) = 0` using `fun x =>`. Use function extensionality and compare the values at `fun i => by show u * (re F _ + fi F (x.2 i - x.2 i)) = 0`. Rewrite using `[sub_self, map_zero, add_zero, ← re_add_fi u, hu, map_zero, zero_add, mul_comm, re_mul_fi]`.
-
-Conclude with `Prod.ext (this x) (this y)`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coefBd_of : CoefReal → CoefBd := by
   intro hR F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hP μ hμ φ₁ h₁ φ₂ h₂ N

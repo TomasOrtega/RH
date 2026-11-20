@@ -11,9 +11,7 @@ open UpperTheory.ConvolutionTheory.R2 UpperTheory.ConvolutionTheory.R2.G
 open scoped Classical ENNReal nonZeroDivisors
 
 /- English proof (translation)
-Introduce `h0`. Establish `hθ : D.θ = 0`. Establish `h` using `D.sq`. Rewrite `h` using `[h0, map_zero]`. Conclude with `pow_eq_zero_iff (two_ne_zero) |>.mp h`.
-
-Conclude with `D.b.ne_zero 1 (by rw [D.b1, hθ])`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem delta_ne {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (D : Dat F E) : D.δ ≠ 0 := by
@@ -25,19 +23,19 @@ private theorem delta_ne {F E : Type} [Field F] [NumberField F] [Field E] [Numbe
   exact D.b.ne_zero 1 (by rw [D.b1, hθ])
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ _ _ D W M π hN f hf φ hφ`. Establish `hδ : D.δ ≠ 0` using `delta_ne D`. Establish `hex` using `fun h => UpperTheory.ConvolutionTheory.R2.G.expand1 F E D W M π f hf φ hφ h`. Establish `hw` using `fun h => UpperTheory.ConvolutionTheory.R2.G.thetaFourierCoeff_zero_and_eq_shifted_whittaker F E D W M π f hf φ hφ h`. Establish `ho : ∀ h, _` using `fun h => UpperTheory.ConvolutionTheory.R2.G.orth F D.δ hδ 0 (Wx W M f.1 φ h) (fun u => lift W M f.1 φ (nE D u * h)) (hex h).1 (fun u => by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e` using `(hex (nE D u * h)).2`. Rewrite `e` using `[hN f hf φ hφ (nE D u * h)]`. Rewrite using `[e]`. Use `congr 1`. Use `tsum_congr fun ξ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(UpperTheory.ConvolutionTheory.R2.G.transN F E D W M f.1 φ h u).2 ξ)`. Establish `hWE : ∀ h, WE D (lift W M f.1 φ) h = W1 W M f.1 φ h` using `fun h => by`. Establish `e : WE D (lift W M f.1 φ) h = Wx W M f.1 φ h ![1, 0]` using `(ho h).2.2.2`. Rewrite using `[e, (hw h).2.1]`. Use `{ left := (UpperTheory.ConvolutionTheory.R2.equiv F E D W M π f hf φ).1 int0 := fun h => (ho h).1 int1 := fun h => (ho h).2.1 zero := fun h => ?_ sum := fun h => ?_ }` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e` using `(ho h).2.2.1`. Rewrite using `[e, (hw h).1, add_zero]`. Establish `hs : HasSum (fun ξ => Wx W M f.1 φ h ξ) (lift W M f.1 φ h)`. Establish `e` using `(hex h).2`. Rewrite `e` using `[hN f hf φ hφ h, zero_add]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `(Summable.of_norm (hex h).1).hasSum`. Establish `hsup : Function.support (fun ξ => Wx W M f.1 φ h ξ) ⊆ {ξ : Fin 2 → F | ξ ≠ 0}`. Introduce `ξ hξ h0`. Apply `hξ` to reduce the goal to its premises.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h0' : ξ = 0` using `h0`. Simplify `(hw h).1` using `[h0']`. Establish `hs'` using `(hasSum_subtype_iff_of_support_subset hsup).2 hs`. Establish `hs'' : HasSum (fun ξ : Rw F => Wx W M f.1 φ h ξ.1) (lift W M f.1 φ h)` using `hs'`. Establish `e : (fun ξ : Rw F => WE D (lift W M f.1 φ) (aE (al D ξ.1) * h)) = fun ξ : Rw F => Wx W M f.1 φ h ξ.1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `fun ξ => by`. Rewrite using `[hWE]`. Conclude with `((hw h).2.2 ξ.1 ξ.2).symm`. Rewrite using `[e]`. Conclude with `hs''`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.R2.G.goodLift :
     ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] [IsTotallyReal F] [IsTotallyComplex E] (D : Dat F E) (W : Weil D) (M : Meas F) (π : TR.CuspSub F 2), ThetaLiftTrivialOrbitTermsVanish W M π → ∀ f ∈ π.V, ∀ φ ∈ Fock D.δ, Good D (lift W M f.1 φ) := by

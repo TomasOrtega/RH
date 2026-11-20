@@ -14,14 +14,14 @@ variable {D : D7} {B : WeightFamilies.Prov D} {P : ModuliIntegralCharts.Prov D} 
   (G : GlobalFamilyData X ka wL wF) (la : HeightOneSpectrum (𝓞 B.KO))
 
 /- English proof (translation)
-Rewrite using `[Jid_pow_smul_HK, mem_JHs, mem_JHfr]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mem_pow_smul_HK_iff (u : WeightFamilies.Wt D j) (a : ℕ) (z : Lw X la G.w) :
     z ∈ Jid X la G.w ^ a • HK X la G.w u ↔ z ∈ JHfr X la G.w u a := by
   rw [Jid_pow_smul_HK, mem_JHs, mem_JHfr]
 
 /- English proof (translation)
-Establish `h : (Jid X la G.w ^ a • (⊤ : Submodule ↥(Frac0 X la G.w) ↥(HK X la G.w u))).map (HK X la G.w u).subtype = Jid X la G.w ^ a • HK X la G.w u`. Rewrite using `[Submodule.map_smul'', Submodule.map_top, Submodule.range_subtype]`. Rewrite using `[← h]`. Conclude with `⟨fun hx => ⟨x, hx, rfl⟩, fun ⟨y, hy, hxy⟩ => (Subtype.ext hxy : y = x) ▸ hy⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem mem_smul_top_iff (u : WeightFamilies.Wt D j) (a : ℕ) (x : ↥(HK X la G.w u)) :
     x ∈ Jid X la G.w ^ a • (⊤ : Submodule ↥(Frac0 X la G.w) ↥(HK X la G.w u)) ↔
@@ -40,38 +40,38 @@ theorem smul_eq_mul' (f : ↥(Frac0 X la G.w)) (z : Lw X la G.w) : f • z = (f 
 def hs (β : Idx D j G.N →₀ ℕ) (z : Lw X la G.w) : Lw X la G.w := hasse X la G.w β z
 
 /- English proof (translation)
-The claim follows from `hasse_mul X la G.w β a b`.
+A detailed English derivation is pending.
 -/
 theorem hs_mul (β : Idx D j G.N →₀ ℕ) (a b : Lw X la G.w) :
     hs G la β (a * b) = ∑ q ∈ Finset.HasAntidiagonal.antidiagonal β, hs G la q.1 a * hs G la q.2 b :=
   hasse_mul X la G.w β a b
 
 /- English proof (translation)
-The claim follows from `(hasse X la G.w β).map_add a b`.
+A detailed English derivation is pending.
 -/
 theorem hs_add (β : Idx D j G.N →₀ ℕ) (a b : Lw X la G.w) : hs G la β (a + b) = hs G la β a + hs G la β b :=
   (hasse X la G.w β).map_add a b
 
 /- English proof (translation)
-The claim follows from `map_sum (hasse X la G.w β) f s`.
+A detailed English derivation is pending.
 -/
 theorem hs_sum {ι : Type} (s : Finset ι) (β : Idx D j G.N →₀ ℕ) (f : ι → Lw X la G.w) :
     hs G la β (∑ i ∈ s, f i) = ∑ i ∈ s, hs G la β (f i) :=
   map_sum (hasse X la G.w β) f s
 
 /- English proof (translation)
-The claim follows from `hasse_zero X la G.w a`.
+A detailed English derivation is pending.
 -/
 theorem hs_zero (a : Lw X la G.w) : hs G la 0 a = a := hasse_zero X la G.w a
 
 /- English proof (translation)
-The claim follows from `(mem_HK X la G.w).2 ((mem_Frac0 X la G.w).1 (Subalgebra.one_mem _))`.
+A detailed English derivation is pending.
 -/
 theorem one_mem_hasse_kernel : (1 : Lw X la G.w) ∈ HK X la G.w (wt0 D j) :=
   (mem_HK X la G.w).2 ((mem_Frac0 X la G.w).1 (Subalgebra.one_mem _))
 
 /- English proof (translation)
-Use `mul_mem_Hfr X la G.w ((mem_HK X la G.w).1 hh) ((mem_HK X la G.w).1 hm)` as an intermediate fact. Rewrite `this` using `[zero_weight_add]`. Conclude with `(mem_HK X la G.w).2 this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mul_mem_HK {u : WeightFamilies.Wt D j} {h m : Lw X la G.w} (hh : h ∈ HK X la G.w (wt0 D j))
     (hm : m ∈ HK X la G.w u) : h * m ∈ HK X la G.w u := by
@@ -80,9 +80,9 @@ theorem mul_mem_HK {u : WeightFamilies.Wt D j} {h m : Lw X la G.w} (hh : h ∈ H
   exact (mem_HK X la G.w).2 this
 
 /- English proof (translation)
-Use `Submodule.smul_induction_on (p := fun z => z * m ∈ Jid X la G.w • HK X la G.w u) hz ?_ ?_` and prove the remaining obligations. Introduce `r hr n hn show (r • n) * m ∈ _`. Rewrite using `[smul_eq_mul' G la, mul_assoc, ← smul_eq_mul' G la]`. Conclude with `Submodule.smul_mem_smul hr (mul_mem_HK G la hn hm)`. Introduce `x y hx hy show (x + y) * m ∈ _`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[add_mul]`. Conclude with `Submodule.add_mem _ hx hy`.
+A detailed English derivation is pending.
 -/
 theorem mul_mem_J_smul_HK {u : WeightFamilies.Wt D j} {z m : Lw X la G.w}
     (hz : z ∈ Jid X la G.w • HK X la G.w (wt0 D j)) (hm : m ∈ HK X la G.w u) :
@@ -98,7 +98,7 @@ theorem mul_mem_J_smul_HK {u : WeightFamilies.Wt D j} {z m : Lw X la G.w}
     exact Submodule.add_mem _ hx hy
 
 /- English proof (translation)
-The claim follows from `(mem_pow_smul_HK_iff G la u _ _).2 (hasse_jid_power X la G.w u β a z ((mem_pow_smul_HK_iff G la u a z).1 hz))`.
+A detailed English derivation is pending.
 -/
 theorem hasse_mem_pow_smul_HK (u : WeightFamilies.Wt D j) (β : Idx D j G.N →₀ ℕ) (a : ℕ) (z : Lw X la G.w)
     (hz : z ∈ Jid X la G.w ^ a • HK X la G.w u) :
@@ -106,7 +106,7 @@ theorem hasse_mem_pow_smul_HK (u : WeightFamilies.Wt D j) (β : Idx D j G.N →�
   (mem_pow_smul_HK_iff G la u _ _).2 (hasse_jid_power X la G.w u β a z ((mem_pow_smul_HK_iff G la u a z).1 hz))
 
 /- English proof (translation)
-Use `Submodule.smul_mem_smul (prod_sfr_mem X la G.w γ) (one_mem_hasse_kernel G la)` as an intermediate fact. Rewrite `this` using `[smul_eq_mul', mul_one]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ym_mem (γ : Fin (WeightFamilies.dimY D j) → ℕ) :
     ((ym G la γ : ↥(Frac0 X la G.w)) : Lw X la G.w) ∈ Jid X la G.w ^ (∑ i, γ i) • HK X la G.w (wt0 D j) := by
@@ -115,14 +115,14 @@ theorem ym_mem (γ : Fin (WeightFamilies.dimY D j) → ℕ) :
   exact this
 
 /- English proof (translation)
-The claim follows from `(mem_HK X la G.w).2 (hasse_presentation X la G.w u β z ((mem_HK X la G.w).1 hz))`.
+A detailed English derivation is pending.
 -/
 theorem hasse_mem_HK (u : WeightFamilies.Wt D j) (β : Idx D j G.N →₀ ℕ) {z : Lw X la G.w} (hz : z ∈ HK X la G.w u) :
     hs G la β z ∈ HK X la G.w u :=
   (mem_HK X la G.w).2 (hasse_presentation X la G.w u β z ((mem_HK X la G.w).1 hz))
 
 /- English proof (translation)
-Rewrite using `[Finsupp.sum_fintype _ _ (fun _ => rfl), Fintype.sum_prod_type, Fin.sum_univ_succ]`. Simplify using `[bcol]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem bcol_size {N : ℕ} (jj : Fin N) (α : Fin (WeightFamilies.dimY D j) → ℕ) :
     ((bcol (D := D) (j := j) jj α).sum fun _ n => n) = ∑ i, α i := by
@@ -138,29 +138,27 @@ end THs
 
 open THs in
 /- English proof (translation)
-Introduce `D B P j X ka wL wF G la k x cf hx jj α hα h`. Establish `hk : ∑ i, α i = k` using `(Finset.Nat.mem_antidiagonalTuple).1 hα`. Establish `hβs : ((bcol (D` using `D) (j := j) jj α).sum fun _ n => n) = k := by rw [bcol_size, hk]`. Establish `huC : uC G la jj α = toOsK X la G.w (wfr G la jj ^ k)`. Simplify using `only [uC, map_pow, Finset.prod_pow_eq_pow_sum, hk]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hsm : toOsK X la G.w (wfr G la jj ^ k) • toA0K X la G.w wF (cf α) = toA0K X la G.w wF ((wfr G la jj ^ k) • cf α)`. Rewrite using `[map_smul]`. Conclude with `algebraMap_smul (OsK X la G.w) (wfr G la jj ^ k) (toA0K X la G.w wF (cf α))`. Rewrite using `[huC, hsm, ← sub_eq_zero, ← map_sub, reduction_eq_zero_iff_mem_ideal_smul, ← pow_one (Jid X la G.w), mem_smul_top_iff, Submodule.coe_sub, Submodule.coe_smul, pow_one]`. Rewrite `hx` using `[mem_smul_top_iff, Submodule.coe_sub, Submodule.coe_sum]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `set rr : Lw X la G.w := (x : Lw X la G.w) - ∑ γ ∈ mon D j k, ((ym G la γ • cf γ : ↥(HK X la G.w wF)) : Lw X la G.w) with hrr`. Establish `hxe : (x : Lw X la G.w) = rr + ∑ γ ∈ mon D j k, (ym G la γ : Lw X la G.w) * (cf γ : Lw X la G.w)`. Establish `e : ∑ γ ∈ mon D j k, ((ym G la γ • cf γ : ↥(HK X la G.w wF)) : Lw X la G.w) = ∑ γ ∈ mon D j k, (ym G la γ : Lw X la G.w) * (cf γ : Lw X la G.w)` using `Finset.sum_congr rfl fun γ _ => by rw [Submodule.coe_smul, smul_eq_mul']`. Rewrite using `[hrr, e, sub_add_cancel]`. Establish `h1 : hs G la (bcol jj α) rr ∈ Jid X la G.w • HK X la G.w wF`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `hasse_mem_pow_smul_HK G la wF (bcol jj α) (k + 1) rr hx` as an intermediate fact. Rewrite `this` using `[hβs, Nat.add_sub_cancel_left, pow_one]`. Then use the resulting hypothesis. Establish `h2 : ∀ γ ∈ mon D j k, hs G la (bcol jj α) ((ym G la γ : Lw X la G.w) * (cf γ : Lw X la G.w)) - (if γ = α then ((wfr G la jj ^ k : ↥(Frac0 X la G.w)) : Lw X la G.w) * (cf α : Lw X la G.w) else 0) ∈ Jid X la G.w • HK X la G.w wF`. Introduce `γ hγ`. Establish `hγk : ∑ i, γ i = k` using `(Finset.Nat.mem_antidiagonalTuple).1 hγ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hmem : ((bcol jj α, 0) : (Idx D j G.N →₀ ℕ) × (Idx D j G.N →₀ ℕ)) ∈ Finset.HasAntidiagonal.antidiagonal (bcol jj α)`. Rewrite using `[Finset.HasAntidiagonal.mem_antidiagonal, add_zero]`. Rewrite using `[hs_mul, ← Finset.add_sum_erase _ _ hmem]`. Establish `hYg` using `hY G la jj γ α (by rw [hγk, hk])`. Express the relevant statement in the definitionally equal form `hs G la _ _ = _ at hYg`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `htop : hs G la (bcol jj α) (ym G la γ : Lw X la G.w) * hs G la 0 (cf γ : Lw X la G.w) = (if γ = α then ((wfr G la jj ^ k : ↥(Frac0 X la G.w)) : Lw X la G.w) * (cf α : Lw X la G.w) else 0)`. Rewrite using `[hYg, hs_zero]`. Use `split_ifs with he`. Substitute `he` using the available equality. Rewrite using `[hk]`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Both sides reduce to the same expression. Rewrite using `[zero_mul]`. Simplify using `only at htop ⊢`. Rewrite using `[htop, add_sub_cancel_left]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `Submodule.sum_mem _ fun q hq => ?_` and prove the remaining obligations. Take `⟨hne, hq⟩` from `Finset.mem_erase.1 hq`. Rewrite `hq` using `[Finset.HasAntidiagonal.mem_antidiagonal]`. Establish `hq2 : q.2 ≠ 0`. Introduce `h0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Apply `hne` to reduce the goal to its premises. Rewrite `hq` using `[h0, add_zero]`. Conclude with `Prod.ext hq h0`. Establish `hdeg : Finsupp.degree q.1 + Finsupp.degree q.2 = k`. Rewrite using `[← map_add, hq, ← size_eq_degree, hβs]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hpos : Finsupp.degree q.2 ≠ 0` using `fun h0 => hq2 ((Finsupp.degree_eq_zero_iff _).1 h0)`. Establish `hA` using `hasse_mem_pow_smul_HK G la (wt0 D j) q.1 (∑ i, γ i) _ (ym_mem G la γ)`. Rewrite `hA` using `[hγk, size_eq_degree]`. Establish `hA' : hs G la q.1 (ym G la γ : Lw X la G.w) ∈ Jid X la G.w • HK X la G.w (wt0 D j)` using `Submodule.smul_mono_left (Ideal.pow_le_self (by omega)) hA`. Conclude with `mul_mem_J_smul_HK G la hA' (hasse_mem_HK G la wF q.2 (cf γ).2)`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `hs G la (bcol jj α) (x : Lw X la G.w) - _ ∈ _`. Rewrite using `[hxe, hs_add, hs_sum]`. Establish `hsum : ∑ γ ∈ mon D j k, (if γ = α then ((wfr G la jj ^ k : ↥(Frac0 X la G.w)) : Lw X la G.w) * (cf α : Lw X la G.w) else 0) = (wfr G la jj ^ k : ↥(Frac0 X la G.w)) • (cf α : Lw X la G.w)`. Rewrite using `[Finset.sum_ite_eq', if_pos hα, smul_eq_mul']`. Rewrite using `[← hsum, add_sub_assoc, ← Finset.sum_sub_distrib]`.
-
-Conclude with `Submodule.add_mem _ h1 (Submodule.sum_mem _ h2)`.
+A detailed English derivation is pending.
 -/
 theorem taylorHasse_of (hY : YmDeriv) : TaylorHasse := by
   intro D B P j X ka wL wF G la k x cf hx jj α hα h
@@ -230,7 +228,7 @@ theorem taylorHasse_of (hY : YmDeriv) : TaylorHasse := by
   exact Submodule.add_mem _ h1 (Submodule.sum_mem _ h2)
 
 /- English proof (translation)
-The claim follows from `taylorHasse_of PI.PoleLengthCount.ymDeriv`.
+A detailed English derivation is pending.
 -/
 theorem taylorHasse_holds : TaylorHasse := taylorHasse_of PI.PoleLengthCount.ymDeriv
 

@@ -20,7 +20,7 @@ def x0Mat (B : BesLev D σ) : Matrix (Fin B.V.rank) (Fin (σ + 1)) D.host.E :=
   Matrix.of fun k => Fin.snoc (α := fun _ => D.host.E) (B.d.e k) ((B.d.i₀ *ᵥ vecB B.o B.ζ) k)
 
 /- English proof (translation)
-Use `Matrix.ext fun k j => ?_` and prove the remaining obligations. Use `Fin.lastCases ?_ (fun b => ?_) j` and prove the remaining obligations. Simplify using `[x0Mat, x0, xLast, rat, HypDec.j0, ratV, Matrix.mulVec, dotProduct, map_sum, map_mul]`. Simplify using `[x0Mat, x0, xLast, rat, HypDec.jX]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem rat_x0Mat (B : BesLev D σ) : rat (x0Mat B) = x0 B := by
   refine Matrix.ext fun k j => ?_
@@ -31,14 +31,14 @@ theorem rat_x0Mat (B : BesLev D σ) : rat (x0Mat B) = x0 B := by
 def besselBasePointLevelNorm (B : BesLev D σ) : D.host.E := star (vecB B.o B.ζ) ⬝ᵥ B.V₀.gram *ᵥ vecB B.o B.ζ
 
 /- English proof (translation)
-Rewrite using `[besselBasePointLevelNorm, vecB, Matrix.star_mulVec, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, B.o.isoB]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem besselBasePointLevelNorm_eq_gram_form (B : BesLev D σ) : besselBasePointLevelNorm B = star B.ζ ⬝ᵥ B.L.gram *ᵥ B.ζ := by
   rw [besselBasePointLevelNorm, vecB, Matrix.star_mulVec, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec,
     B.o.isoB]
 
 /- English proof (translation)
-Rewrite using `[besselBasePointLevelNorm_eq_gram_form]`. Conclude with `B.line.2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem besselBasePointLevelNorm_ne_zero (B : BesLev D σ) : besselBasePointLevelNorm B ≠ 0 := by
   rw [besselBasePointLevelNorm_eq_gram_form]; exact B.line.2
@@ -48,39 +48,37 @@ def besselBasePointLeftInverse (B : BesLev D σ) : Matrix (Fin (σ + 1)) (Fin B.
     ((besselBasePointLevelNorm B)⁻¹ • (star (vecB B.o B.ζ) ᵥ* (B.V₀.gram * B.d.q0))))
 
 /- English proof (translation)
-The claim follows from `rat_injective (by rw [rat_mul, rat_one]; exact B.d.pX_jX)`.
+A detailed English derivation is pending.
 -/
 theorem besselLevelDatum_qX_dot_e_eq_one (B : BesLev D σ) : B.d.qX * B.d.e = 1 :=
   rat_injective (by rw [rat_mul, rat_one]; exact B.d.pX_jX)
 
 /- English proof (translation)
-The claim follows from `rat_injective (by rw [rat_mul, rat_zero]; exact B.d.pX_j0)`.
+A detailed English derivation is pending.
 -/
 theorem wittDecomposition_projectionX_mul_anisotropicInclusion_eq_zero (B : BesLev D σ) : B.d.qX * B.d.i₀ = 0 :=
   rat_injective (by rw [rat_mul, rat_zero]; exact B.d.pX_j0)
 
 /- English proof (translation)
-The claim follows from `rat_injective (by rw [rat_mul, rat_zero]; exact B.d.p0_jX)`.
+A detailed English derivation is pending.
 -/
 theorem wittDecomposition_projectionZero_mul_e_eq_zero (B : BesLev D σ) : B.d.q0 * B.d.e = 0 :=
   rat_injective (by rw [rat_mul, rat_zero]; exact B.d.p0_jX)
 
 /- English proof (translation)
-The claim follows from `rat_injective (by rw [rat_mul, rat_one]; exact B.d.p0_j0)`.
+A detailed English derivation is pending.
 -/
 theorem wittDecomposition_projectionZero_mul_anisotropicInclusion_eq_one (B : BesLev D σ) : B.d.q0 * B.d.i₀ = 1 :=
   rat_injective (by rw [rat_mul, rat_one]; exact B.d.p0_j0)
 
 /- English proof (translation)
-Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Apply the tactic sequence `refine Fin.lastCases ?_ (fun a => ?_) i <;> refine Fin.lastCases ?_ (fun b => ?_) j`. Establish `h : ((besselBasePointLevelNorm B)⁻¹ • (star (vecB B.o B.ζ) ᵥ* (B.V₀.gram * B.d.q0))) ⬝ᵥ (B.d.i₀ *ᵥ vecB B.o B.ζ) = 1`. Rewrite using `[smul_dotProduct, Matrix.dotProduct_mulVec, Matrix.vecMul_vecMul, Matrix.mul_assoc, wittDecomposition_projectionZero_mul_anisotropicInclusion_eq_one, Matrix.mul_one, ← Matrix.dotProduct_mulVec, smul_eq_mul]`. Conclude with `inv_mul_cancel₀ (besselBasePointLevelNorm_ne_zero B)`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.mul_apply, Matrix.one_apply_eq]`. Simplify using `only [besselBasePointLeftInverse, x0Mat, Matrix.of_apply, Fin.snoc_last]`. Conclude with `h`. Establish `h : ((besselBasePointLevelNorm B)⁻¹ • (star (vecB B.o B.ζ) ᵥ* (B.V₀.gram * B.d.q0))) ᵥ* B.d.e = 0`. Rewrite using `[Matrix.smul_vecMul, Matrix.vecMul_vecMul, Matrix.mul_assoc, wittDecomposition_projectionZero_mul_e_eq_zero, Matrix.mul_zero, Matrix.vecMul_zero, smul_zero]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Matrix.mul_apply, Matrix.one_apply_ne (Fin.castSucc_ne_last b).symm]`. Simplify using `only [besselBasePointLeftInverse, x0Mat, Matrix.of_apply, Fin.snoc_last, Fin.snoc_castSucc]`. Conclude with `congrFun h b`. Establish `h : B.d.qX *ᵥ (B.d.i₀ *ᵥ vecB B.o B.ζ) = 0`. Rewrite using `[Matrix.mulVec_mulVec, wittDecomposition_projectionX_mul_anisotropicInclusion_eq_zero, Matrix.zero_mulVec]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.mul_apply, Matrix.one_apply_ne (Fin.castSucc_ne_last a)]`. Simplify using `only [besselBasePointLeftInverse, x0Mat, Matrix.of_apply, Fin.snoc_last, Fin.snoc_castSucc]`. Conclude with `congrFun h a`. Rewrite using `[Matrix.mul_apply, Matrix.one_apply]`. Simplify using `only [Fin.castSucc_inj]`.
-
-Rewrite using `[← Matrix.one_apply (α := D.host.E) (i := a) (j := b), ← besselLevelDatum_qX_dot_e_eq_one B, Matrix.mul_apply]`. Simplify using `only [besselBasePointLeftInverse, x0Mat, Matrix.of_apply, Fin.snoc_castSucc]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem besselBasePointLeftInverse_mul_snocMatrix (B : BesLev D σ) : besselBasePointLeftInverse B * x0Mat B = 1 := by
   refine Matrix.ext fun i j => ?_
@@ -108,7 +106,7 @@ theorem besselBasePointLeftInverse_mul_snocMatrix (B : BesLev D σ) : besselBase
     simp only [besselBasePointLeftInverse, x0Mat, Matrix.of_apply, Fin.snoc_castSucc]
 
 /- English proof (translation)
-Introduce `_ _ B` and use `⟨⟨rat (besselBasePointLeftInverse B), rat_mem _, by rw [← rat_x0Mat, ← rat_mul, besselBasePointLeftInverse_mul_snocMatrix, rat_one]⟩, rat_x0Mat B ▸ rat_mem _⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem fourierBesselBasePoint_rational_with_rational_leftInverse : ∀ (D : D7) (σ : ℕ) (B : BesLev D σ),
     (∃ P ∈ ratMx D (σ + 1) B.V.rank, P ⬝ x0 B = 1) ∧ x0 B ∈ ratMx D B.V.rank (σ + 1) := fun _ _ B =>

@@ -14,9 +14,9 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 attribute [local instance] Over.cartesianMonoidalCategory
 
 /- English proof (translation)
-Establish `hint : ∀ a : 𝓞 E, ∃ z : T.V, algebraMap T.V T.Fr z = io (embK c σ a)`. Introduce `a`. Establish `h1 : IsIntegral T.V ((io.comp (embK c σ)) a)` using `IsIntegral.map_of_comp_eq (Int.castRingHom T.V) (io.comp (embK c σ)) (RingHom.ext_int _ _) (RingOfIntegers.isIntegral a)`. Conclude with `IsIntegrallyClosed.isIntegral_iff.1 h1`. Use `choose χ hχ using hint`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `refine ⟨{ toFun := χ, map_one' := ?_, map_mul' := ?_, map_zero' := ?_, map_add' := ?_ }, hχ⟩ <;>`. Apply the tactic sequence `intros <;> apply IsFractionRing.injective T.V T.Fr <;> simp [hχ]`.
+A detailed English derivation is pending.
 -/
 theorem exists_char {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {l : Level H} (c : Coeff l)
     (T : CDVR) (io : c.F →+* T.Fr) (σ : E →+* ℂ) :

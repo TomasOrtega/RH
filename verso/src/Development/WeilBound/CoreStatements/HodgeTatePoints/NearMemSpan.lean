@@ -16,7 +16,7 @@ variable {X : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Spec (CommRingCat.of Ω) 
   {E : Type} [AddCommGroup E] [Module Ω E]
 
 /- English proof (translation)
-Use `choose U hU hP using h`. Use `⟨⟨⋂ i, (U i : Set X), isOpen_iInter_of_finite fun i => (U i).isOpen⟩, ?_, fun q hq i => hP i q ?_⟩` and prove the remaining obligations. Conclude with `Set.mem_iInter.2 hU`. Conclude with `Set.mem_iInter.1 hq i`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem near_all {ι : Type} [Finite ι] (p : Cpt ξ) (P : ι → Cpt ξ → Prop)
     (h : ∀ i, ∃ U : X.Opens, p.1 ∈ U ∧ ∀ q : Cpt ξ, q.1 ∈ U → P i q) :
@@ -27,7 +27,7 @@ theorem near_all {ι : Type} [Finite ι] (p : Cpt ξ) (P : ι → Cpt ξ → Pro
   · exact Set.mem_iInter.1 hq i
 
 /- English proof (translation)
-Take `⟨c, hc⟩` from `(Submodule.mem_span_range_iff_exists_fun _).1 h`. Take `⟨U, hU, H⟩` from `near_all p (fun i q => (c i : Ω) ∈ regAt ξ q) fun i => (regAt_unitAt_open X Ω ξ p (c i)).1 (c i).2`. Conclude with `⟨U, hU, fun q hq => (Submodule.mem_span_range_iff_exists_fun _).2 ⟨fun i => ⟨c i, H q hq i⟩, hc⟩⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem near_mem_span {n : ℕ} (g : Fin n → E) (p : Cpt ξ) (e : E)
     (h : e ∈ Submodule.span (regAt ξ p) (Set.range g)) :
@@ -38,7 +38,7 @@ theorem near_mem_span {n : ℕ} (g : Fin n → E) (p : Cpt ξ) (e : E)
   exact ⟨U, hU, fun q hq => (Submodule.mem_span_range_iff_exists_fun _).2 ⟨fun i => ⟨c i, H q hq i⟩, hc⟩⟩
 
 /- English proof (translation)
-Take `⟨U, hU, H⟩` from `near_all p (fun i q => g i ∈ Submodule.span (regAt ξ q) (Set.range b)) fun i => near_mem_span b p _ (h ▸ Submodule.subset_span ⟨i, rfl⟩)`. Take `⟨U', hU', H'⟩` from `near_all p (fun i q => b i ∈ Submodule.span (regAt ξ q) (Set.range g)) fun i => near_mem_span g p _ (h ▸ Submodule.subset_span ⟨i, rfl⟩)`. Use `⟨U ⊓ U', ⟨hU, hU'⟩, fun q hq => le_antisymm ?_ ?_⟩` and prove the remaining obligations. Conclude with `Submodule.span_le.2 (Set.range_subset_iff.2 (H q hq.1))`. Conclude with `Submodule.span_le.2 (Set.range_subset_iff.2 (H' q hq.2))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem near_span_eq {n m : ℕ} (g : Fin n → E) (b : Fin m → E) (p : Cpt ξ)
     (h : Submodule.span (regAt ξ p) (Set.range g) = Submodule.span (regAt ξ p) (Set.range b)) :
@@ -55,7 +55,7 @@ theorem near_span_eq {n m : ℕ} (g : Fin n → E) (b : Fin m → E) (p : Cpt ξ
 end
 
 /- English proof (translation)
-Introduce `X Ω _ ξ E _ _ L T r b p hL hp hb`. Take `⟨U, hU, n, g, hg⟩` from `hL p hp`. Take `⟨U', hU', H⟩` from `near_span_eq g b p ((hg p hp hU).symm.trans hb.2)`. Conclude with `⟨U ⊓ U', ⟨hU, hU'⟩, fun q hq hqU => ⟨hb.1, (hg q hq hqU.1).trans (H q hqU.2)⟩⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem frame_spread : ∀ (X : Scheme.{0}) (Ω : Type) [Field Ω] (ξ : Spec (CommRingCat.of Ω) ⟶ X) (E : Type) [AddCommGroup E] [Module Ω E] (L : Lat ξ E) (T : Set (Cpt ξ)) (r : ℕ) (b : Fin r → E) (p : Cpt ξ), L.IsCohOn T → p ∈ T → L.IsFrameAt b p → ∃ U : X.Opens, p.1 ∈ U ∧ ∀ q ∈ T, q.1 ∈ U → L.IsFrameAt b q := by
   intro X Ω _ ξ E _ _ L T r b p hL hp hb
@@ -68,7 +68,7 @@ variable {X : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Spec (CommRingCat.of Ω) 
   {E E' : Type} [AddCommGroup E] [Module Ω E] [AddCommGroup E'] [Module Ω E']
 
 /- English proof (translation)
-Unfold `Lat.map`. Rewrite using `[h, Submodule.map_span, Set.range_comp]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem map_of_span {L : Lat ξ E} (φ : E →ₗ[Ω] E') {q : Cpt ξ} {ι : Type} {b : ι → E}
     (h : L q = Submodule.span (regAt ξ q) (Set.range b)) :
@@ -78,7 +78,7 @@ theorem map_of_span {L : Lat ξ E} (φ : E →ₗ[Ω] E') {q : Cpt ξ} {ι : Typ
   rfl
 
 /- English proof (translation)
-Introduce `p hp`. Take `⟨U, hU, n, g, hg⟩` from `h p hp`. Conclude with `⟨U, hU, n, φ ∘ g, fun q hq hqU => map_of_span φ (hg q hq hqU)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem coh_map {L : Lat ξ E} {T : Set (Cpt ξ)} (φ : E →ₗ[Ω] E') (h : L.IsCohOn T) : (L.map φ).IsCohOn T := by
   intro p hp
@@ -86,7 +86,7 @@ theorem coh_map {L : Lat ξ E} {T : Set (Cpt ξ)} (φ : E →ₗ[Ω] E') (h : L.
   exact ⟨U, hU, n, φ ∘ g, fun q hq hqU => map_of_span φ (hg q hq hqU)⟩
 
 /- English proof (translation)
-Introduce `p hp`. Take `⟨b, hV, hb⟩` from `hb p hp`. Take `⟨U, hU, H⟩` from `frame_spread X Ω ξ E L T r b p h hp hb`. Conclude with `⟨U, hU, b, hV, H⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem vb_of_coh {L : Lat ξ E} {T : Set (Cpt ξ)} {r : ℕ} {V : Submodule Ω E} (h : L.IsCohOn T)
     (hb : ∀ p ∈ T, ∃ b : Fin r → E, Submodule.span Ω (Set.range b) = V ∧ L.IsFrameAt b p) : L.IsVBOn T r V := by
@@ -96,9 +96,9 @@ theorem vb_of_coh {L : Lat ξ E} {T : Set (Cpt ξ)} {r : ℕ} {V : Submodule Ω 
   exact ⟨U, hU, b, hV, H⟩
 
 /- English proof (translation)
-Use `le_antisymm (Submodule.span_le.2 ?_) (Submodule.span_le.2 ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨i, rfl⟩`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`. Introduce and unpack `_ ⟨i, rfl⟩`. Establish `: b i = a⁻¹ • a • b i` using `by rw [smul_smul, inv_mul_cancel₀ ha, one_smul]`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`.
+A detailed English derivation is pending.
 -/
 theorem span_smul_fam {ι : Type} (b : ι → E) {a : Ω} (ha : a ≠ 0) :
     Submodule.span Ω (Set.range fun i => a • b i) = Submodule.span Ω (Set.range b) := by
@@ -111,7 +111,7 @@ theorem span_smul_fam {ι : Type} (b : ι → E) {a : Ω} (ha : a ≠ 0) :
     exact Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)
 
 /- English proof (translation)
-The claim follows from `hb.units_smul fun _ => Units.mk0 a ha`.
+A detailed English derivation is pending.
 -/
 theorem li_smul_fam {ι : Type} {b : ι → E} (hb : LinearIndependent Ω b) {a : Ω} (ha : a ≠ 0) :
     LinearIndependent Ω fun i => a • b i :=
@@ -120,13 +120,13 @@ theorem li_smul_fam {ι : Type} {b : ι → E} (hb : LinearIndependent Ω b) {a 
 end
 
 /- English proof (translation)
-Introduce `X Ω _ ξ E _ _ E' _ _ L L' T`. Use `⟨fun r V h => Lat.IsCohOn.of_isVBOn h, fun φ h => coh_map φ h, fun h h' p hp => ?_, fun r V a ha h p hp => ?_, fun r V h hb => vb_of_coh h hb⟩` and prove the remaining obligations. Take `⟨U, hU, n, g, hg⟩` from `h p hp`. Take `⟨U', hU', n', g', hg'⟩` from `h' p hp`. Use `⟨U ⊓ U', ⟨hU, hU'⟩, n + n', Fin.append g g', fun q hq hqU => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e : Set.range (Fin.append g g') = Set.range g ∪ Set.range g'`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨i, rfl⟩`. Proceed by induction on `i using Fin.addCases with`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Proceed by induction.
 
-Consider the case `left i => exact Or.inl ⟨i, by simp⟩`. Consider the case `right i => exact Or.inr ⟨i, by simp⟩`. Introduce and unpack `(⟨i, rfl⟩ | ⟨i, rfl⟩)`. Conclude with `⟨Fin.castAdd n' i, by simp⟩`. Conclude with `⟨Fin.natAdd n i, by simp⟩`.
+Treat this case separately. Treat this case separately. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Rewrite using `[e, Submodule.span_union, ← hg q hq hqU.1, ← hg' q hq hqU.2]`. Take `⟨U, hU, b, hV, hb⟩` from `h p hp`. Use `⟨U, hU, fun i => a • b i, (span_smul_fam b ha).trans hV, fun q hq hqU => ⟨li_smul_fam (hb q hq hqU).1 ha, ?_⟩⟩` and prove the remaining obligations. Conclude with `map_of_span _ (hb q hq hqU).2`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem coh_ops : ∀ (X : Scheme.{0}) (Ω : Type) [Field Ω] (ξ : Spec (CommRingCat.of Ω) ⟶ X) (E : Type) [AddCommGroup E] [Module Ω E] (E' : Type) [AddCommGroup E'] [Module Ω E'] (L L' : Lat ξ E) (T : Set (Cpt ξ)), (∀ r V, L.IsVBOn T r V → L.IsCohOn T) ∧ (∀ φ : E →ₗ[Ω] E', L.IsCohOn T → (L.map φ).IsCohOn T) ∧ (L.IsCohOn T → L'.IsCohOn T → Lat.IsCohOn (fun p => L p ⊔ L' p : Lat ξ E) T) ∧ (∀ (r : ℕ) (V : Submodule Ω E) (a : Ω), a ≠ 0 → L.IsVBOn T r V → (L.scale a).IsVBOn T r V) ∧ (∀ (r : ℕ) (V : Submodule Ω E), L.IsCohOn T → (∀ p ∈ T, ∃ b : Fin r → E, Submodule.span Ω (Set.range b) = V ∧ L.IsFrameAt b p) → L.IsVBOn T r V) := by
   intro X Ω _ ξ E _ _ E' _ _ L L' T

@@ -8,7 +8,7 @@ noncomputable def UpperTheory.Reformulated.B.P9.IsReps.{u_1} :
       (∀ x ∈ S, x ∈ Λ₂) ∧ (∀ x ∈ S, ∀ y ∈ S, x - y ∈ Λ₁ → x = y) ∧ ∀ y ∈ Λ₂, ∃ x ∈ S, y - x ∈ Λ₁
 
 /- English proof (translation)
-Introduce `V _ p Λ a b ha hb`. Conclude with `⟨Λ.add_mem ha.1 hb.1, by rw [map_add, ha.2, hb.2]⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem UpperTheory.Reformulated.B.P9.aux2 :
     ∀ {V : Type} [inst : AddCommGroup V] (p : V →+ V) (Λ : AddSubgroup V) {a b : V},
@@ -18,7 +18,7 @@ theorem UpperTheory.Reformulated.B.P9.aux2 :
   exact ⟨Λ.add_mem ha.1 hb.1, by rw [map_add, ha.2, hb.2]⟩
 
 /- English proof (translation)
-Introduce `V _ p Λ`. Conclude with `⟨Λ.zero_mem, map_zero p⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem UpperTheory.Reformulated.B.P9.aux3 :
     ∀ {V : Type} [inst : AddCommGroup V] (p : V →+ V) (Λ : AddSubgroup V), (0 : V) ∈ Λ ∧ (p : V → V) (0 : V) = (0 : V) := by
@@ -26,7 +26,7 @@ theorem UpperTheory.Reformulated.B.P9.aux3 :
   exact ⟨Λ.zero_mem, map_zero p⟩
 
 /- English proof (translation)
-Introduce `V _ p Λ a ha`. Conclude with `⟨Λ.neg_mem ha.1, by rw [map_neg, ha.2]⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem UpperTheory.Reformulated.B.P9.aux4 :
     ∀ {V : Type} [inst : AddCommGroup V] (p : V →+ V) (Λ : AddSubgroup V) {a : V},
@@ -41,7 +41,7 @@ noncomputable def UpperTheory.Reformulated.B.P9.partP :
         zero_mem' := UpperTheory.Reformulated.B.P9.aux3 p Λ, neg_mem' := @UpperTheory.Reformulated.B.P9.aux4 V inst p Λ : AddSubgroup V }
 
 /- English proof (translation)
-Introduce `V _ p Λ a b ha hb`. Conclude with `⟨Λ.add_mem ha.1 hb.1, by rw [map_add, ha.2, hb.2, add_zero]⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem UpperTheory.Reformulated.B.P9.aux6 :
     ∀ {V : Type} [inst : AddCommGroup V] (p : V →+ V) (Λ : AddSubgroup V) {a b : V},
@@ -51,7 +51,7 @@ theorem UpperTheory.Reformulated.B.P9.aux6 :
   exact ⟨Λ.add_mem ha.1 hb.1, by rw [map_add, ha.2, hb.2, add_zero]⟩
 
 /- English proof (translation)
-Introduce `V _ p Λ`. Conclude with `⟨Λ.zero_mem, map_zero p⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem UpperTheory.Reformulated.B.P9.aux7 :
     ∀ {V : Type} [inst : AddCommGroup V] (p : V →+ V) (Λ : AddSubgroup V), (0 : V) ∈ Λ ∧ (p : V → V) (0 : V) = (0 : V) := by
@@ -59,7 +59,7 @@ theorem UpperTheory.Reformulated.B.P9.aux7 :
   exact ⟨Λ.zero_mem, map_zero p⟩
 
 /- English proof (translation)
-Introduce `V _ p Λ a ha`. Conclude with `⟨Λ.neg_mem ha.1, by rw [map_neg, ha.2, neg_zero]⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem UpperTheory.Reformulated.B.P9.aux8 :
     ∀ {V : Type} [inst : AddCommGroup V] (p : V →+ V) (Λ : AddSubgroup V) {a : V},
@@ -74,19 +74,19 @@ noncomputable def UpperTheory.Reformulated.B.P9.partQ :
         zero_mem' := UpperTheory.Reformulated.B.P9.aux7 p Λ, neg_mem' := @UpperTheory.Reformulated.B.P9.aux8 V inst p Λ : AddSubgroup V }
 
 /- English proof (translation)
-Introduce `V _ _ M Λ p hpp hΛ hM A B hA hB`. Take `⟨hA1, hA2, hA3⟩` from `hA`. Take `⟨hB1, hB2, hB3⟩` from `hB`. Establish `hA1' : ∀ x ∈ A, x ∈ Λ ∧ p x = x` using `hA1`. Establish `hB1' : ∀ x ∈ B, x ∈ Λ ∧ p x = 0` using `hB1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hA3' : ∀ y, (y ∈ Λ ∧ p y = y) → ∃ x ∈ A, y - x ∈ M` using `hA3`. Establish `hB3' : ∀ y, (y ∈ Λ ∧ p y = 0) → ∃ x ∈ B, y - x ∈ M` using `hB3`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `x hx`. Take `⟨⟨a, b⟩, hw, rfl⟩` from `Finset.mem_image.1 hx`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨ha, hb⟩` from `Finset.mem_product.1 hw`. Conclude with `Λ.add_mem (hA1' a ha).1 (hB1' b hb).1`. Introduce `x hx y hy hxy`. Take `⟨⟨a, b⟩, hw, rfl⟩` from `Finset.mem_image.1 hx`. Take `⟨ha, hb⟩` from `Finset.mem_product.1 hw`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨⟨a', b'⟩, hw', rfl⟩` from `Finset.mem_image.1 hy`. Take `⟨ha', hb'⟩` from `Finset.mem_product.1 hw'`. Express the relevant statement in the definitionally equal form `a + b - (a' + b') ∈ M at hxy`. Express the relevant statement in the definitionally equal form `a + b = a' + b'`. Establish `h1 : p (a + b - (a' + b')) = a - a'`.
+Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_sub, map_add, map_add, (hA1' a ha).2, (hA1' a' ha').2, (hB1' b hb).2, (hB1' b' hb').2, add_zero, add_zero]`. Establish `h2 : a = a'` using `hA2 a ha a' ha' (h1 ▸ hM _ hxy)`. Establish `h3 : b = b'`. Use `hB2 b hb b' hb' ?_` and prove the remaining obligations. Rewrite `hxy` using `[h2, add_sub_add_left_eq_sub]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h2, h3]`. Introduce `y hy`. Take `⟨a, ha, hya⟩` from `hA3' (p y) ⟨hΛ y hy, hpp y⟩`. Take `⟨b, hb, hyb⟩` from `hB3' (y - p y) ⟨Λ.sub_mem hy (hΛ y hy), by rw [map_sub, hpp, sub_self]⟩`. Use `⟨a + b, Finset.mem_image.2 ⟨(a, b), Finset.mem_product.2 ⟨ha, hb⟩, rfl⟩, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h : y - (a + b) = (p y - a) + (y - p y - b)` using `by abel`. Rewrite using `[h]`. Conclude with `M.add_mem hya hyb`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.P9.reps_prod :
     ∀ {V : Type} [inst : AddCommGroup V] [_root_.Module ℂ V] {M Λ : AddSubgroup V} (p : V →+ V),

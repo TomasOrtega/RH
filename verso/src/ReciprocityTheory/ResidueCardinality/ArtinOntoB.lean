@@ -12,49 +12,45 @@ variable {F : Type} [Field F] [NumberField F]
 set_option maxHeartbeats 800000 in
 
 /- English proof (translation)
-Establish `hcoeO : ∀ r : 𝓞 F, ((algebraMap (𝓞 F) (v.adicCompletionIntegers F) r : v.adicCompletionIntegers F) : v.adicCompletion F) = algebraMap (𝓞 F) (v.adicCompletion F) r`. Introduce `r`. Both sides reduce to the same expression. Establish `hvR : ∀ r : 𝓞 F, Valued.v (algebraMap (𝓞 F) (v.adicCompletion F) r) = v.intValuation r`. Introduce `r`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[IsScalarTower.algebraMap_apply (𝓞 F) F (v.adicCompletion F)]`. Use `first`. Consider the case `(rw [v.valuedAdicCompletion_eq_valuation']; exact v.valuation_of_algebraMap r)`. Consider the case `(rw [v.valuedAdicCompletion_eq_valuation]; exact v.valuation_of_algebraMap r)`. Consider the case `(erw [v.valuedAdicCompletion_eq_valuation']; exact v.valuation_of_algebraMap r)`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `simp [v.valuedAdicCompletion_eq_valuation', v.valuation_of_algebraMap]`. Consider the case `simp [v.valuedAdicCompletion_eq_valuation, v.valuation_of_algebraMap]`. Establish `hmem : ∀ r : 𝓞 F, r ∈ v.asIdeal ↔ v.intValuation r < 1`. Introduce `r`. Conclude with `(v.intValuation_lt_one_iff_mem r).symm`.
+Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hpow : ∀ (r : 𝓞 F) (m : ℕ), r ∈ v.asIdeal ^ m ↔ v.intValuation r ≤ WithZero.exp (-(m : ℤ))`. Introduce `r m`. Conclude with `(v.intValuation_le_pow_iff_mem r m).symm`. Establish `hvp : Prime v.asIdeal` using `v.prime`. Establish `hcl : ∀ a b : 𝓞 F, b ≠ 0 → v.intValuation a ≤ v.intValuation b → ∃ c : 𝓞 F, v.intValuation (a - b * c) < v.intValuation b`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `a b hb hab`. Take `⟨n, hn⟩ : ∃ n : ℕ, v.intValuation b = WithZero.exp (-(n : ℤ))` from `⟨_, v.intValuation_if_neg hb⟩`. Establish `hbn1 : b ∉ v.asIdeal ^ (n + 1)`. Introduce `h`. Establish `h'` using `(hpow b (n + 1)).mp h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations. Use linear arithmetic over natural numbers and integers.
 
-Rewrite `h'` using `[hn, WithZero.exp_le_exp]`. Move the coercions through the operations in `at h'`. Use linear arithmetic over natural numbers and integers. Establish `han : a ∈ v.asIdeal ^ n` using `(hpow a n).mpr (hab.trans (le_of_eq hn))`. Establish `hJ : (Ideal.span {b} ⊔ v.asIdeal ^ (n + 1)) ∣ v.asIdeal ^ (n + 1)` using `Ideal.dvd_iff_le.mpr le_sup_right`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨i, hi, hJi⟩` from `(dvd_prime_pow hvp (n + 1)).mp hJ`. Establish `hJeq : Ideal.span {b} ⊔ v.asIdeal ^ (n + 1) = v.asIdeal ^ i` using `associated_iff_eq.mp hJi`. Establish `hin : i ≤ n`. Assume the negation of the conclusion as `h`. Establish `hi' : i = n + 1` using `by omega`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Apply `hbn1` to reduce the goal to its premises. Rewrite using `[← hi', ← hJeq]`. Conclude with `Ideal.mem_sup_left (Ideal.mem_span_singleton_self b)`. Establish `haJ : a ∈ Ideal.span {b} ⊔ v.asIdeal ^ (n + 1)`. Rewrite using `[hJeq]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `Ideal.pow_le_pow_right hin han`. Take `⟨y, hy, e, he, hye⟩` from `Submodule.mem_sup.mp haJ`. Take `⟨c, rfl⟩` from `Ideal.mem_span_singleton.mp hy`. Use `⟨c, ?_⟩` and prove the remaining obligations. Establish `hae : a - b * c = e` using `by rw [← hye]; ring`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[hae, hn]`. Establish `h'` using `(hpow e (n + 1)).mp he`. Use `lt_of_le_of_lt h' ?_` and prove the remaining obligations. Rewrite using `[WithZero.exp_lt_exp]`. Use `push_cast`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Establish `hdense : DenseRange (algebraMap F (v.adicCompletion F))` using `denseRange_algebraMap F v`. Establish `happrox : ∀ z : v.adicCompletion F, ∃ k : F, Valued.v (z - algebraMap F (v.adicCompletion F) k) < 1`. Introduce `z`. Establish `hU : {w : v.adicCompletion F | Valued.v (w - z) < 1} ∈ nhds z`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Valued.mem_nhds]`. Conclude with `⟨1, fun w hw => by simpa using hw⟩`. Take `⟨w, hw, k, rfl⟩` from `mem_closure_iff_nhds.mp (hdense z) _ hU`. Use `⟨k, ?_⟩` and prove the remaining obligations. Rewrite using `[Valuation.map_sub_swap]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `hw`. Establish `hsurj : Function.Surjective ((IsLocalRing.residue (v.adicCompletionIntegers F)).comp (algebraMap (𝓞 F) (v.adicCompletionIntegers F)))`. Introduce `y`. Take `⟨z, rfl⟩` from `IsLocalRing.residue_surjective y`. Take `⟨k, hk⟩` from `happrox (z : v.adicCompletion F)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨a, b, hb, hab⟩` from `IsFractionRing.div_surjective (A := 𝓞 F) k`. Establish `hb0 : b ≠ 0` using `nonZeroDivisors.ne_zero hb`. Establish `hbF : algebraMap (𝓞 F) F b ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective (𝓞 F) F)).mpr hb0`. Establish `hz : Valued.v (z : v.adicCompletion F) ≤ 1` using `z.2`. Establish `hk1 : Valued.v (algebraMap F (v.adicCompletion F) k) ≤ 1`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hsplit : algebraMap F (v.adicCompletion F) k = (z : v.adicCompletion F) - ((z : v.adicCompletion F) - algebraMap F (v.adicCompletion F) k)`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hsplit]`. Conclude with `Valuation.map_sub_le _ hz hk.le`. Establish `hkb : algebraMap F (v.adicCompletion F) k * algebraMap (𝓞 F) (v.adicCompletion F) b = algebraMap (𝓞 F) (v.adicCompletion F) a`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[IsScalarTower.algebraMap_apply (𝓞 F) F (v.adicCompletion F) b, IsScalarTower.algebraMap_apply (𝓞 F) F (v.adicCompletion F) a, ← map_mul, ← hab, div_mul_cancel₀ _ hbF]`. Establish `hvab : v.intValuation a ≤ v.intValuation b`. Rewrite using `[← hvR, ← hvR, ← hkb, map_mul]`. Combine the equalities or inequalities in the displayed calculation. Take `⟨c, hc⟩` from `hcl a b hb0 hvab`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `hkc : Valued.v (algebraMap F (v.adicCompletion F) k - algebraMap (𝓞 F) (v.adicCompletion F) c) < 1`. Establish `h1 : (algebraMap F (v.adicCompletion F) k - algebraMap (𝓞 F) (v.adicCompletion F) c) * algebraMap (𝓞 F) (v.adicCompletion F) b = algebraMap (𝓞 F) (v.adicCompletion F) (a - b * c)`. Rewrite using `[sub_mul, hkb, map_sub, map_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `h2` using `congrArg Valued.v h1`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h2` using `[map_mul, hvR b, hvR (a - b * c)]`. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Establish `hle : v.intValuation b ≤ v.intValuation (a - b * c)`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Expand and normalize the polynomial expressions, which then agree.
 
-Conclude with `absurd hc (not_lt.mpr hle)`. Use `⟨c, ?_⟩` and prove the remaining obligations. Rewrite using `[RingHom.comp_apply, ← sub_eq_zero, ← map_sub, IsLocalRing.residue_eq_zero_iff, ReciprocityTheory.Aut.mem_maxIdeal_iff]`. Establish `hco : ((algebraMap (𝓞 F) (v.adicCompletionIntegers F) c - z : v.adicCompletionIntegers F) : v.adicCompletion F) = algebraMap (𝓞 F) (v.adicCompletion F) c - (z : v.adicCompletion F)`. Rewrite using `[← hcoeO c]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Rewrite using `[hco]`. Establish `hsum : algebraMap (𝓞 F) (v.adicCompletion F) c - (z : v.adicCompletion F) = -(algebraMap F (v.adicCompletion F) k - algebraMap (𝓞 F) (v.adicCompletion F) c) + -((z : v.adicCompletion F) - algebraMap F (v.adicCompletion F) k)`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hsum]`.
-
-Apply `Valuation.map_add_lt` to reduce the goal to its premises. Rewrite using `[Valuation.map_neg]`. Conclude with `hkc`. Rewrite using `[Valuation.map_neg]`. Conclude with `hk`.
-
-Establish `hker : RingHom.ker ((IsLocalRing.residue (v.adicCompletionIntegers F)).comp (algebraMap (𝓞 F) (v.adicCompletionIntegers F))) = v.asIdeal`. Use extensionality with `r`. Rewrite using `[RingHom.mem_ker, RingHom.comp_apply, IsLocalRing.residue_eq_zero_iff, ReciprocityTheory.Aut.mem_maxIdeal_iff, hcoeO, hvR, hmem]`. Conclude with `(Nat.card_congr ((Ideal.quotEquivOfEq hker.symm).trans (RingHom.quotientKerEquivOfSurjective hsurj)).toEquiv).symm`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_residue (v : HeightOneSpectrum (𝓞 F)) :
     Nat.card (IsLocalRing.ResidueField (v.adicCompletionIntegers F)) = Nat.card (𝓞 F ⧸ v.asIdeal) := by

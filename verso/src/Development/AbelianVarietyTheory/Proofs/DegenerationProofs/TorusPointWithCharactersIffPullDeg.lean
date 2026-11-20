@@ -27,9 +27,9 @@ variable {R : Type} [CommRing R] [IsDomain R] {I : Ideal R} {D : DegPre R} {e : 
   {G : Over (Spec (CommRingCat.of R))} [GrpObj G] [IsCommMonObj G] (g : GtCoord I D e G)
 
 /- English proof (translation)
-Establish `hb : (fstG I e G).left ≫ G.hom ≫ eSec D.P.A = ((Over.map (thick R I e)).obj (thickObj R I e G)).hom ≫ eSec D.P.A` using `(Category.assoc _ _ _).symm.trans (congrArg (· ≫ eSec D.P.A) (Over.w (fstG I e G)))`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨τ, rfl⟩`. Establish `c` using `((CharAgree.comp_q_eq_one_iff g g.i).1 g.isKernel.w).trans (congrArg (g.i.left ≫ ·) hb)`. Conclude with `(Category.assoc _ _ _).trans ((congrArg (τ ≫ ·) c).trans (Category.assoc _ _ _).symm)`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Set `FinalForm : Over (Spec (CommRingCat.of (R ⧸ I ^ (e + 1))))` to `Over.mk (z ≫ (thickObj R I e G).hom)`. Set `a : FinalForm ⟶ thickObj R I e G` to `Over.homMk z rfl`. Establish `k` using `(CharAgree.comp_q_eq_one_iff g a).2 (h.trans (congrArg (z ≫ ·) hb.symm))`. Conclude with `⟨(g.isKernel.lift a (toUnit _) k).left, congrArg (fun q => q.left) (g.isKernel.lift_fst a (toUnit _) k)⟩`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem mem_torus_iff {T : Scheme.{0}} (z : T ⟶ (thickObj R I e G).left) :
     (∃ τ : T ⟶ (splitTorus (Spec (CommRingCat.of (R ⧸ I ^ (e + 1)))) D.X).left, τ ≫ g.i.left = z) ↔
@@ -49,7 +49,7 @@ theorem mem_torus_iff {T : Scheme.{0}} (z : T ⟶ (thickObj R I e G).left) :
       congrArg (fun q => q.left) (g.isKernel.lift_fst a (toUnit _) k)⟩
 
 /- English proof (translation)
-Set `FinalForm : Over (Spec (CommRingCat.of (R ⧸ I ^ (e + 1))))` to `Over.mk (τ ≫ (splitTorus _ D.X).hom)`. Set `a : FinalForm ⟶ splitTorus _ D.X` to `Over.homMk τ rfl`. Conclude with `(TorusCoord.val_torus_point_and_translate R I D e G g FinalForm a 1 y J hJ χ).1`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem val_torus {T : Scheme.{0}}
     (τ : T ⟶ (splitTorus (Spec (CommRingCat.of (R ⧸ I ^ (e + 1)))) D.X).left) (χ : D.X) {y : T}
@@ -72,9 +72,9 @@ variable {R R' : Type} [CommRing R] [IsDomain R] [CommRing R'] [IsDomain R'] {φ
 include hp in
 
 /- English proof (translation)
-Establish `b` using `TorusCoordPull.over_base hD p p' h hp`. Establish `l : (z ≫ p'.left) ≫ (hD.e.hom.left ≫ pullback.fst D.P.A.hom (specOf φ)) = (z ≫ h) ≫ p.left`. Rewrite using `[Category.assoc, hp, Category.assoc]`. Establish `r : (z ≫ T'.hom ≫ eSec D'.P.A) ≫ (hD.e.hom.left ≫ pullback.fst D.P.A.hom (specOf φ)) = (z ≫ h) ≫ T.hom ≫ eSec D.P.A`. Rewrite using `[Category.assoc, Category.assoc, hD.he, Category.assoc, reassoc_of% b]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨fun H => l.symm.trans ((congrArg (· ≫ _) H).trans r), fun H => ?_⟩` and prove the remaining obligations. Use `(pull_grp hD).1.hom_ext (l.trans (H.trans r.symm)) ?_` and prove the remaining obligations. Establish `u : eSec D'.P.A ≫ D'.P.A.hom = 𝟙 _` using `Over.w η[D'.P.A]`. Rewrite using `[Category.assoc, Category.assoc, Category.assoc, u, Over.w]`. Conclude with `congrArg (z ≫ ·) (Category.comp_id _).symm`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unit_iff {Z : Scheme.{0}} (z : Z ⟶ T'.left) :
     z ≫ p'.left = z ≫ T'.hom ≫ eSec D'.P.A ↔ (z ≫ h) ≫ p.left = (z ≫ h) ≫ T.hom ≫ eSec D.P.A := by
@@ -93,7 +93,7 @@ theorem unit_iff {Z : Scheme.{0}} (z : Z ⟶ T'.left) :
 end Two
 
 /- English proof (translation)
-Apply `TopCat.Presheaf.section_ext Z.sheaf ⊤` to reduce the goal to its premises. Introduce `z hz`. Use `congrArg Units.val (h z)` as an intermediate fact. Rewrite `this` using `[gm_val _ z ⊤ trivial, gm_val _ z ⊤ trivial]`. Conclude with `this`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem appTop_ext {Y Y' Z : Scheme.{0}} (r : Z ⟶ Y) (r' : Z ⟶ Y') (a : Γ(Y, ⊤)ˣ) (b : Γ(Y', ⊤)ˣ)
     (h : ∀ z, gm r z ⊤ a = gm r' z ⊤ b) : r.appTop.hom a.val = r'.appTop.hom b.val := by
@@ -104,17 +104,17 @@ theorem appTop_ext {Y Y' Z : Scheme.{0}} (r : Z ⟶ Y) (r' : Z ⟶ Y') (a : Γ(Y
   exact this
 
 /- English proof (translation)
-Introduce `R R' _ _ _ _ I I' φ D D' hD G _ _ G' _ _ e g g' h hp ht T z a`. Establish `mem` using `(mem_torus_iff g' z).trans ((unit_iff hD g.pG g'.pG h hp z).trans (mem_torus_iff g (z ≫ h)).symm)`. Establish `ch : ∀ τ' τ, τ' ≫ g'.i.left = z → τ ≫ g.i.left = z ≫ h → ∀ x, τ'.appTop.hom (charUnit _ D'.X x).val = τ.appTop.hom (charUnit _ D.X (hD.xe x)).val`. Introduce `τ' τ h' h₀ x`. Use `appTop_ext _ _ _ _ fun y => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨J, hJ⟩` from `TorusCoordPull.exists_good' D.P.isLB y`. Take `⟨J', hJ'⟩` from `TorusCoordPull.exists_good' D'.P.isLB y`. Take `⟨hψ, H⟩` from `ht x`. Establish `P` using `(maps_iff hD.w _ _ _ (g'.t x) (g.t (hD.xe x)) h _ (GeneratorPullback.pullAlong_le D.P.L _ h _ _ hψ) (fun _ => rfl)).1 H`. Set `FinalForm : Over (Spec (CommRingCat.of R'))` to `Over.mk (z ≫ ((Over.map (thick R' I' e)).obj (thickObj R' I' e G')).hom)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `ρ : FinalForm ⟶ (Over.map (thick R' I' e)).obj (thickObj R' I' e G')` to `Over.homMk z rfl`. Establish `hρ : ρ ≫ g'.pG = 1`. Use `Over.OverMorphism.ext (((mem_torus_iff g' z).1 ⟨τ', h'⟩).trans ?_)` and prove the remaining obligations. Establish `k : (toUnit FinalForm).left = FinalForm.hom` using `(Category.comp_id _).symm.trans (Over.w (toUnit FinalForm))`. Conclude with `(Category.assoc _ _ _).symm.trans (congrArg (· ≫ eSec D'.P.A) k.symm)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `v` using `TorusCoordPull.val_unit_pull hD g.pG g'.pG h hp P ρ hρ (y := y) hJ hJ'`. Establish `v'` using `val_torus g' τ' x hJ'`. Establish `v₀` using `val_torus g τ (hD.xe x) hJ`. Rewrite `v'` using `[h']`. Rewrite `v₀` using `[h₀]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Conclude with `v'.symm.trans (v.symm.trans v₀)`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨τ', h', hx⟩`. Take `⟨τ, h₀⟩` from `mem.1 ⟨τ', h'⟩`. Conclude with `⟨τ, h₀, fun x => (ch τ' τ h' h₀ x).symm.trans (hx x)⟩`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Introduce and unpack `⟨τ, h₀, hx⟩`. Take `⟨τ', h'⟩` from `mem.2 ⟨τ, h₀⟩`. Conclude with `⟨τ', h', fun x => (ch τ' τ h' h₀ x).trans (hx x)⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem torus_point_iff : ∀ (R R' : Type) [CommRing R] [IsDomain R] [CommRing R'] [IsDomain R'] (I : Ideal R) (I' : Ideal R') (φ : R →+* R') (D : DegPre R) (D' : DegPre R') (hD : IsPullDeg φ D D') (G : Over (Spec (CommRingCat.of R))) [GrpObj G] [IsCommMonObj G] (G' : Over (Spec (CommRingCat.of R'))) [GrpObj G'] [IsCommMonObj G'] (e : ℕ) (g : GtCoord I D e G) (g' : GtCoord I' D' e G') (h : (thickObj R' I' e G').left ⟶ (thickObj R I e G).left), g'.pG.left ≫ hD.e.hom.left ≫ pullback.fst D.P.A.hom (specOf φ) = h ≫ g.pG.left → (∀ x : D'.X, ∃ hψ : ∀ k : Fin 4, D'.Oφ g'.pG x k ≫ hD.e.hom.left ≫ pullback.fst D.P.A.hom (specOf φ) = h ≫ D.Oφ g.pG (hD.xe x) k, LB.Gen.Maps (LB.linCombIso hD.w _ Oinvε) (g'.t x) (GeneratorPullback.pullAlong D.P.L (hD.e.hom.left ≫ pullback.fst D.P.A.hom (specOf φ)) h _ Oinvε _ hψ (g.t (hD.xe x)))) → ∀ (T : Scheme.{0}) (z : T ⟶ (thickObj R' I' e G').left) (a : D'.X → Γ(T, ⊤)), (∃ τ' : T ⟶ (splitTorus (Spec (CommRingCat.of (R' ⧸ I' ^ (e + 1)))) D'.X).left, τ' ≫ g'.i.left = z ∧ ∀ x, τ'.appTop.hom (charUnit _ D'.X x).val = a x) ↔ ∃ τ : T ⟶ (splitTorus (Spec (CommRingCat.of (R ⧸ I ^ (e + 1)))) D.X).left, τ ≫ g.i.left = z ≫ h ∧ ∀ x, τ.appTop.hom (charUnit _ D.X (hD.xe x)).val = a x := by
   intro R R' _ _ _ _ I I' φ D D' hD G _ _ G' _ _ e g g' h hp ht T z a

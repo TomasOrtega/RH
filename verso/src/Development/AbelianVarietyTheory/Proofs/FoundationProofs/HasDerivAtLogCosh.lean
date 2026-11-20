@@ -18,11 +18,11 @@ open Formalism.BasicNotions.TH Formalism.MainNotions.SchurIrreducible GlobalTheo
 variable {p q n : ℕ}
 
 /- English proof (translation)
-Use extensionality with `i k`. Simplify using `only [rectDiag, Matrix.mul_apply, Matrix.conjTranspose_apply, Matrix.of_apply, Matrix.diagonal_apply]`. Distinguish the cases in `hi : (i : ℕ) < q`. Rewrite using `[Finset.sum_eq_single ⟨i, hi⟩]`. Distinguish the cases in `h : i = k`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Substitute `h` using the available equality. Simplify using the standard rewrite rules. Establish `: (k : ℕ) ≠ i` using `fun e => h (Fin.ext e.symm)`. Simplify using `[h, this]`. Introduce `j _ hj`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `: (i : ℕ) ≠ j` using `fun e => hj (Fin.ext e.symm)`. Simplify using `[this]`. Simplify using the standard rewrite rules. Simplify using `[hf i (by omega)]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem rectDiag_mul_ct (f g : ℕ → ℝ) (hf : ∀ i, min p q ≤ i → f i = 0) :
     rectDiag p q f * (rectDiag p q g)ᴴ = Matrix.diagonal fun i : Fin p => ((f i * g i : ℝ) : ℂ) := by
@@ -41,9 +41,9 @@ theorem rectDiag_mul_ct (f g : ℕ → ℝ) (hf : ∀ i, min p q ≤ i → f i =
   · simp [hf i (by omega)]
 
 /- English proof (translation)
-Establish `h : ∀ f : ℕ → ℝ, (rectDiag p q f)ᴴ = rectDiag q p f`. Introduce `f`. Use extensionality with `i j`. Simplify using `only [rectDiag, Matrix.conjTranspose_apply, Matrix.of_apply]`. Distinguish the cases in `e : (j : ℕ) = i`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Simplify using `[e]`. Simplify using `[e, Ne.symm e]`. Use `rectDiag_mul_ct (p := q) (q := p) f g (by rwa [min_comm])` as an intermediate fact. Rewrite `this` using `[← h f, ← h g, Matrix.conjTranspose_conjTranspose]`. Then use the resulting hypothesis.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem ct_mul_rectDiag (f g : ℕ → ℝ) (hf : ∀ i, min p q ≤ i → f i = 0) :
     (rectDiag p q f)ᴴ * rectDiag p q g = Matrix.diagonal fun i : Fin q => ((f i * g i : ℝ) : ℂ) := by
@@ -57,13 +57,11 @@ theorem ct_mul_rectDiag (f g : ℕ → ℝ) (hf : ∀ i, min p q ≤ i → f i =
   rwa [← h f, ← h g, Matrix.conjTranspose_conjTranspose] at this
 
 /- English proof (translation)
-Establish `hc : ∀ i, HasDerivAt (fun t : ℝ => ((Real.cosh (t * σ i) : ℝ) : ℂ)) ((σ i * Real.sinh (t * σ i) : ℝ) : ℂ) t` using `fun i => (((hasDerivAt_id t).mul_const (σ i)).cosh.congr_deriv (by simp [mul_comm])).ofReal_comp`. Establish `hs : ∀ i, HasDerivAt (fun t : ℝ => ((Real.sinh (t * σ i) : ℝ) : ℂ)) ((σ i * Real.cosh (t * σ i) : ℝ) : ℂ) t` using `fun i => (((hasDerivAt_id t).mul_const (σ i)).sinh.congr_deriv (by simp [mul_comm])).ofReal_comp`. Simplify using `only [diagP, hypMat, Matrix.fromBlocks_multiply, Matrix.zero_mul, zero_add, add_zero, rectDiag_mul_ct _ _ hσ, ct_mul_rectDiag _ _ hσ]`. Apply the tactic sequence `rcases a with a | a <;> rcases b with b | b`. Simplify using `only [Matrix.fromBlocks_apply₁₁, Matrix.diagonal_apply] split_ifs`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 
-Conclude with `hc a`. Conclude with `hasDerivAt_const _ _`. Simplify using `only [Matrix.fromBlocks_apply₁₂, Matrix.mul_diagonal, rectDiag, Matrix.of_apply] split_ifs with h`. Rewrite using `[← h, ← Complex.ofReal_mul]`. Conclude with `hs a`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[zero_mul]`. Conclude with `hasDerivAt_const _ _`. Simplify using `only [Matrix.fromBlocks_apply₂₁, Matrix.mul_diagonal, rectDiag, Matrix.of_apply, Matrix.conjTranspose_apply] split_ifs with h`. Simplify using `only [Complex.star_def, Complex.conj_ofReal, ← Complex.ofReal_mul]`. Conclude with `hs b`.
-
-Rewrite using `[star_zero, zero_mul]`. Conclude with `hasDerivAt_const _ _`. Simplify using `only [Matrix.fromBlocks_apply₂₂, Matrix.diagonal_apply] split_ifs`. Conclude with `hc a`. Conclude with `hasDerivAt_const _ _`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hasDerivAt_hyperbolicMatrix (σ : ℕ → ℝ) (hσ : ∀ i, min p q ≤ i → σ i = 0) (t : ℝ) (a b : Ix p q) :
     HasDerivAt (fun t => hypMat p q σ t a b) ((diagP p q σ * hypMat p q σ t) a b) t := by
@@ -95,7 +93,7 @@ theorem hasDerivAt_hyperbolicMatrix (σ : ℕ → ℝ) (hσ : ∀ i, min p q ≤
     · exact hasDerivAt_const _ _
 
 /- English proof (translation)
-Use extensionality with `a b`. Apply the tactic sequence `rcases a with a | a <;> rcases b with b | b <;> simp [hypMat, rectDiag, Matrix.one_apply]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem hypMat_zero (σ : ℕ → ℝ) : hypMat p q σ 0 = 1 := by
   ext a b
@@ -103,11 +101,11 @@ theorem hypMat_zero (σ : ℕ → ℝ) : hypMat p q σ 0 = 1 := by
 
 open scoped Matrix.Norms.Operator in
 /- English proof (translation)
-Use `set X := diagP p q σ with hX`. Establish `hG : ∀ t, HasDerivAt (hypMat p q σ) (X * hypMat p q σ t) t` using `fun t => hasDerivAt_pi.2 fun a => hasDerivAt_pi.2 fun b => hasDerivAt_hyperbolicMatrix σ hσ t a b`. Establish `hd : ∀ t : ℝ, HasDerivAt (fun t : ℝ => NormedSpace.exp (t • (-X)) * hypMat p q σ t) 0 t`. Introduce `t`. Use `((hasDerivAt_exp_smul_const (𝕂 := ℝ) (-X) t).fun_mul (hG t)).congr_deriv ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `[mul_assoc]`. Establish `h` using `is_const_of_deriv_eq_zero (fun t => (hd t).differentiableAt) (fun t => (hd t).deriv) t 0`. Rewrite `h` using `[zero_smul, NormedSpace.exp_zero, hypMat_zero, one_mul]`. Establish `h2 : NormedSpace.exp (t • X) * NormedSpace.exp (t • (-X)) = 1`. Rewrite using `[← Matrix.exp_add_of_commute _ _ (by rw [smul_neg]; exact (Commute.refl _).neg_right), smul_neg, add_neg_cancel, NormedSpace.exp_zero]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← mul_one (NormedSpace.exp (t • X)), ← h, ← mul_assoc, h2, one_mul]`.
+A detailed English derivation is pending.
 -/
 theorem exp_diagP (σ : ℕ → ℝ) (hσ : ∀ i, min p q ≤ i → σ i = 0) (t : ℝ) :
     NormedSpace.exp (t • diagP p q σ) = hypMat p q σ t := by
@@ -126,29 +124,27 @@ theorem exp_diagP (σ : ℕ → ℝ) (hσ : ∀ i, min p q ≤ i → σ i = 0) (
   rw [← mul_one (NormedSpace.exp (t • X)), ← h, ← mul_assoc, h2, one_mul]
 
 /- English proof (translation)
-Use `⟨rectDiag p q fun i => σ i / Real.cosh (t * σ i) ^ 2, (rectDiag p q fun i => σ i * (1 + Real.tanh (t * σ i) ^ 2))ᴴ, ?_⟩` and prove the remaining obligations. Establish `e : diagP p q σ + tanhDiag p q σ t - Matrix.fromBlocks 0 0 (rectDiag p q fun i => σ i * (1 + Real.tanh (t * σ i) ^ 2))ᴴ 0 = Matrix.fromBlocks (Matrix.diagonal fun i : Fin p => ((σ i * Real.tanh (t * σ i) : ℝ) : ℂ)) (rectDiag p q σ) (rectDiag p q fun i => -(σ i * Real.tanh (t * σ …`. Use extensionality with `a b`. Apply the tactic sequence `rcases a with a | a <;> rcases b with b | b`. Simplify using `[diagP, tanhDiag, Matrix.diagonal_apply, posIx]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 
-Simplify using `[diagP, tanhDiag]`. Simplify using `only [diagP, tanhDiag, Matrix.sub_apply, Matrix.add_apply, Matrix.fromBlocks_apply₂₁, rectDiag, Matrix.conjTranspose_apply, Matrix.of_apply]`. Rewrite using `[Matrix.diagonal_apply_ne _ (by simp)]`. Use `split_ifs with h1`. Simplify using `only [Complex.star_def, Complex.conj_ofReal]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Simplify using `[diagP, tanhDiag, Matrix.diagonal_apply, posIx]`. Establish `hs : ∀ i, min p q ≤ i → Real.sinh (t * σ i) = 0` using `fun i hi => by simp [hσ i hi]`.
+Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb : ∀ i, min p q ≤ i → σ i / Real.cosh (t * σ i) ^ 2 = 0` using `fun i hi => by simp [hσ i hi]`. Establish `hch : ∀ i, Real.cosh (t * σ i) ≠ 0` using `fun i => (Real.cosh_pos _).ne'`. Rewrite using `[e]`. Simplify using `only [hypMat, Matrix.fromBlocks_multiply, Matrix.zero_mul, zero_add, add_zero, rectDiag_mul_ct _ _ hs, ct_mul_rectDiag _ _ hs, rectDiag_mul_ct _ _ hb, Matrix.diagonal_mul_diagonal, Matrix.diagonal_add]`. Use `congr 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Use function extensionality and compare the values at `i`. Use `norm_cast`. Use `hch i` as an intermediate fact. Rewrite using `[Real.tanh_eq_sinh_div_cosh]`.
+Apply function extensionality and compare values at an arbitrary argument. Put the expressions in a common number system so they can be compared. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Clear the denominators using the available nonvanishing facts. Rewrite using `[Real.cosh_sq]`. Expand and normalize the polynomial expressions, which then agree. Use extensionality with `i j`. Simplify using `only [Matrix.add_apply, Matrix.mul_diagonal, Matrix.diagonal_mul, rectDiag, Matrix.of_apply]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `split_ifs with h`. Rewrite using `[← h]`. Use `norm_cast`. Use `hch i` as an intermediate fact. Rewrite using `[Real.tanh_eq_sinh_div_cosh]`.
+Put the expressions in a common number system so they can be compared. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities.
 
-Clear the denominators using the available nonvanishing facts. Rewrite using `[Real.cosh_sq]`. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Use extensionality with `i j`.
+Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.add_apply, Matrix.mul_diagonal, Matrix.diagonal_mul, rectDiag, Matrix.of_apply, Matrix.conjTranspose_apply, Matrix.zero_apply]`. Use `split_ifs with h`. Simplify using `only [Complex.star_def, Complex.conj_ofReal, ← h]`. Use `norm_cast`. Use `hch j` as an intermediate fact.
+Put the expressions in a common number system so they can be compared. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[Real.tanh_eq_sinh_div_cosh]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Rewrite using `[← Matrix.diagonal_zero]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Put the expressions in a common number system so they can be compared.
 
-Use `congr 1`. Use function extensionality and compare the values at `i`. Use `norm_cast`. Use `hch i` as an intermediate fact. Rewrite using `[Real.tanh_eq_sinh_div_cosh]`.
-
-Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem exists_gauss (σ : ℕ → ℝ) (hσ : ∀ i, min p q ≤ i → σ i = 0) (t : ℝ) :
     ∃ (B : Matrix (Fin p) (Fin q) ℂ) (C : Matrix (Fin q) (Fin p) ℂ),
@@ -218,13 +214,13 @@ theorem exists_gauss (σ : ℕ → ℝ) (hσ : ∀ i, min p q ≤ i → σ i = 0
     ring
 
 /- English proof (translation)
-Proceed by induction on `P using MvPolynomial.induction_on' with`. Consider the case `add P Q hP hQ => simp only [map_add, hP, hQ, smul_add]`. Consider the case `monomial α c`. Rewrite using `[dil_monomial, Derivation.map_smul, MvPolynomial.pderiv_monomial, dil_monomial, smul_smul]`. Distinguish the cases in `h : α l = 0`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Simplify using `[h]`. Use `congr 1`. Rewrite using `[← Complex.ofReal_mul, ← Real.exp_add]`. Use `congr 2`. Establish `: ∀ l' : Ln p q n 0, ((α l' : ℝ) + 1 / 2) * u l'.1 = (if l' = l then u l.1 else 0) + ((((α - Finsupp.single l 1 : Ln p q n 0 →₀ ℕ) l' : ℕ) : ℝ) + 1 / 2) * u l'.1`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Introduce `l'`. Use `split_ifs with e`. Substitute `e` using the available equality. Rewrite using `[Finsupp.tsub_apply, Finsupp.single_eq_same, Nat.cast_sub (Nat.pos_of_ne_zero h)]`. Use `push_cast`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Simplify using `[Finsupp.single_apply, Ne.symm e]`. Rewrite using `[Finset.sum_congr rfl fun l' _ => this l', Finset.sum_add_distrib]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem pderiv_dil (u : Ix p q → ℝ) (l : Ln p q n 0) (P : Pol p q n 0) :
     MvPolynomial.pderiv l (dil n u P) = ((Real.exp (u l.1) : ℝ) : ℂ) • dil n u (MvPolynomial.pderiv l P) := by
@@ -249,7 +245,7 @@ theorem pderiv_dil (u : Ix p q → ℝ) (l : Ln p q n 0) (P : Pol p q n 0) :
       simp
 
 /- English proof (translation)
-Introduce `a b`. Use `h a b` as an intermediate fact. Simplify using `only [lowerOp] at this ⊢`. Simplify using `only [pderiv_dil, Derivation.map_smul, ← Finset.smul_sum, ← map_sum, this, map_zero, smul_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem killed_dil (u : Ix p q → ℝ) {Φ : Pol p q n 0} (h : KilledByPMinus Φ) : KilledByPMinus (dil n u Φ) := by
   intro a b
@@ -258,9 +254,9 @@ theorem killed_dil (u : Ix p q → ℝ) {Φ : Pol p q n 0} (h : KilledByPMinus �
   simp only [pderiv_dil, Derivation.map_smul, ← Finset.smul_sum, ← map_sum, this, map_zero, smul_zero]
 
 /- English proof (translation)
-Apply `Complex.ofReal_injective` to reduce the goal to its premises. Establish `e : ∀ x : H, ((‖x‖ ^ 2 : ℝ) : ℂ) = inner ℂ x x` using `fun x => by`. Rewrite using `[inner_self_eq_norm_sq_to_K]`. Simplify using the standard rewrite rules. Rewrite using `[e, sum_inner, Complex.ofReal_sum]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun α hα => ?_` and prove the remaining obligations. Rewrite using `[inner_sum, Finset.sum_eq_single α, ← mul_pow, ← norm_smul, e]`. Introduce `β _ hβ`. Rewrite using `[inner_smul_left, inner_smul_right, h, if_neg (Ne.symm hβ), mul_zero, mul_zero]`. Conclude with `fun h => (h hα).elim`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem norm_sq_sum {σ H : Type} [DecidableEq σ] [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     {ι : MvPolynomial σ ℂ →ₗ[ℂ] H} (h : IsFockIP ι) (S : Finset (σ →₀ ℕ)) (c : (σ →₀ ℕ) → ℂ) :
@@ -277,11 +273,11 @@ theorem norm_sq_sum {σ H : Type} [DecidableEq σ] [NormedAddCommGroup H] [Inner
   · exact fun h => (h hα).elim
 
 /- English proof (translation)
-Establish `e : ∀ (α : Ln p q n 0 →₀ ℕ) (c : ℂ), (MvPolynomial.monomial α c : Pol p q n 0) = c • MvPolynomial.monomial α 1` using `fun α c => by simp [MvPolynomial.smul_monomial]`. Use `le_of_sq_le_sq ?_ (by positivity)` and prove the remaining obligations. Rewrite using `[mul_pow]`. Use `conv_lhs => rw [Φ.as_sum]`. Use `conv_rhs => rw [Φ.as_sum]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [map_sum, dil_monomial, e _ (MvPolynomial.coeff _ _), smul_smul, map_smul, norm_sq_sum h, Finset.mul_sum]`. Use `Finset.sum_le_sum fun α _ => ?_` and prove the remaining obligations. Rewrite using `[norm_mul, ← mul_assoc, ← mul_pow (Real.exp _), mul_comm (Real.exp _), Complex.norm_real, Real.norm_eq_abs, abs_of_pos (Real.exp_pos _)]`. Use `gcongr`. Rewrite using `[Finset.sum_div, ← Finset.sum_neg_distrib]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Finset.sum_le_sum fun l _ => ?_` and prove the remaining obligations. Establish `h1` using `hu l.1`. Establish `h2 : (0 : ℝ) ≤ α l` using `Nat.cast_nonneg _`. Simplify using `only [Pi.neg_apply]`. Use polynomial arithmetic with `[mul_nonneg h1 h2]`.
+Simplify using the standard rewrite rules. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem norm_dil_le {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] {ι : Pol p q n 0 →ₗ[ℂ] H}
     (h : IsFockIP ι) (u : Ix p q → ℝ) (hu : ∀ a, 0 ≤ u a) (Φ : Pol p q n 0) :
@@ -306,11 +302,11 @@ theorem norm_dil_le {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] 
   nlinarith [mul_nonneg h1 h2]
 
 /- English proof (translation)
-Establish `h : ∀ m, min p q ≤ m → ∑ i : Fin m, Real.log (Real.cosh (σ i)) = ∑ i : Fin (min p q), Real.log (Real.cosh (σ i))`. Introduce `m hm`. Rewrite using `[Fin.sum_univ_eq_sum_range (fun i => Real.log (Real.cosh (σ i))), Fin.sum_univ_eq_sum_range (fun i => Real.log (Real.cosh (σ i)))]`. Use `(Finset.sum_subset (Finset.range_subset_range.2 hm) fun i _ hi => ?_).symm` and prove the remaining obligations. Simplify using `[hσ i (not_lt.1 fun h => hi (Finset.mem_range.2 h))]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Establish `e : -((∑ l : Ln p q n 0, Real.log (Real.cosh (σ (posIx l.1)))) / 2) = ∑ i : Fin (min p q), Real.log (Real.cosh (σ i)) * ((-(n : ℤ) : ℤ) : ℝ)`. Rewrite using `[Fintype.sum_prod_type, ← Finset.sum_mul]`. Simplify using `only [Finset.sum_const, Finset.card_univ, Fintype.card_sum, Fintype.card_fin, add_zero, nsmul_eq_mul, ← Finset.mul_sum, Fintype.sum_sum_type, posIx, Sum.elim_inl, Sum.elim_inr, h p (min_le_left _ _), h q (min_le_right _ _)]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[e, Real.exp_sum]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← Real.rpow_def_of_pos (Real.cosh_pos _), Real.rpow_intCast]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem exp_sum_logCosh (σ : ℕ → ℝ) (hσ : ∀ i, min p q ≤ i → σ i = 0) :
     Real.exp (-((∑ l : Ln p q n 0, Real.log (Real.cosh (σ (posIx l.1)))) / 2)) =
@@ -335,19 +331,19 @@ theorem exp_sum_logCosh (σ : ℕ → ℝ) (hσ : ∀ i, min p q ≤ i → σ i 
   rw [← Real.rpow_def_of_pos (Real.cosh_pos _), Real.rpow_intCast]
 
 /- English proof (translation)
-Take `⟨B, rfl⟩` from `exists_pY hX`. Use `set L := Matrix.toEuclideanLin (Matrix.of B) with hL`. Use `⟨fun i => L.singularValues i, fun i hi => ?_, fun i => rfl, ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `h`. Establish `h1 : i ∈ L.singularValues.support` using `Finsupp.mem_support_iff.mpr h`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[L.support_singularValues, Finset.mem_range]`. Establish `h2` using `Submodule.finrank_le (LinearMap.range L)`. Establish `h3` using `LinearMap.finrank_range_le L`. Simplify using `only [finrank_euclideanSpace, Fintype.card_fin] at h2 h3`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result.
 
-Take `⟨U, hU, V, hV, h⟩` from `GlobalTheory.RectSVD.exists_svd_singularValues p q (Matrix.of B)`. Express the relevant statement in the definitionally equal form `Matrix.of B = U * rectDiag p q (fun i => L.singularValues i) * Vᴴ at h`. Establish `hU1 : Uᴴ * U = 1` using `Matrix.mem_unitaryGroup_iff'.1 hU`. Establish `hV1 : Vᴴ * V = 1` using `Matrix.mem_unitaryGroup_iff'.1 hV`. Establish `hU2 : U * Uᴴ = 1` using `Matrix.mem_unitaryGroup_iff.1 hU`.
+Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hV2 : V * Vᴴ = 1` using `Matrix.mem_unitaryGroup_iff.1 hV`. Set `g : GL (Ix p q) ℂ` to `⟨Matrix.fromBlocks U 0 0 V, Matrix.fromBlocks Uᴴ 0 0 Vᴴ, by simp [Matrix.fromBlocks_multiply, hU2, hV2], by simp [Matrix.fromBlocks_multiply, hU1, hV1]⟩`. Establish `hg : g ∈ Formalism.UG.Upq p q`. Express the relevant statement in the definitionally equal form `(Matrix.fromBlocks U 0 0 V)ᴴ * Jm p q * Matrix.fromBlocks U 0 0 V = Jm p q`. Simplify using `[Jm, Formalism.UG.Jpq, Matrix.fromBlocks_conjTranspose, Matrix.fromBlocks_multiply, hU1, hV1]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Take `⟨w, hw⟩` from `IsAlgClosed.exists_pow_nat_eq ((g : Mat p q).det) two_pos`. Establish `hw0 : w ≠ 0`. Introduce and unpack `rfl`. Conclude with `((Matrix.isUnit_iff_isUnit_det _).1 g.isUnit).ne_zero (by rw [← hw]; simp)`. Take `⟨k, ⟨hk, -⟩, -⟩` from `T.bij g hg (Units.mk0 w hw0) hw`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hm : matG T k = Matrix.fromBlocks U 0 0 V` using `by rw [matG, hk]`. Use `⟨k, ?_, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `IsKC (matG T k)`. Rewrite using `[hm]`. Introduce `a b hab`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `cases a <;> cases b <;> first | rfl | exact (hab trivial).elim`. Rewrite using `[hm, pY, pOf, h, diagP]`. Simplify using `[Matrix.fromBlocks_multiply, Matrix.mul_assoc, hU1, hV1]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_conj_diagP (T : GrpData p q) {X : Mat p q} (hX : X ∈ pR p q) :
     ∃ σ : ℕ → ℝ, (∀ i, min p q ≤ i → σ i = 0) ∧ (∀ i : Fin (min p q), σ i = singVal X i) ∧
@@ -397,7 +393,7 @@ open Formalism.BasicNotions.TH Formalism.MainNotions.SchurIrreducible GlobalTheo
 variable {p q r s : ℕ}
 
 /- English proof (translation)
-Establish `h1` using `T.expt_add Y hY (1 / 2) (1 / 2)`. Rewrite `h1` using `[add_halves, one_smul]`. Rewrite using `[h1, map_mul, Units.val_mul, ← sq, T.sq_sq, T.expt_cov _ (KStabLie.smul_mem_upq hY _), GlobalTheory.DetSqrtCover.det_exp, Matrix.trace_smul]`. Use `congr 1`. Simplify using `[div_eq_inv_mul]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 -/
 theorem sq_expt (T : GrpData p q) {Y : Mat p q} (hY : Y ∈ upq p q) :
     ((T.sq (T.expt Y) : ℂˣ) : ℂ) = Complex.exp (Y.trace / 2) := by
@@ -409,23 +405,23 @@ theorem sq_expt (T : GrpData p q) {Y : Mat p q} (hY : Y ∈ upq p q) :
   simp [div_eq_inv_mul]
 
 /- English proof (translation)
-Rewrite using `[← matG_mul, mul_inv_cancel, matG_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem matG_mul_inv (T : GrpData p q) (g : T.G) : matG T g * matG T g⁻¹ = 1 := by
   rw [← matG_mul, mul_inv_cancel, matG_one]
 
 /- English proof (translation)
-Rewrite using `[← matG_mul, inv_mul_cancel, matG_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem matG_inv_mul (T : GrpData p q) (g : T.G) : matG T g⁻¹ * matG T g = 1 := by
   rw [← matG_mul, inv_mul_cancel, matG_one]
 
 /- English proof (translation)
-Establish `h : Yᴴ * Jm p q + Jm p q * Y = 0` using `hY`. Establish `h1` using `matG_J T g`. Establish `h2 : (matG T g)ᴴ * Jm p q = Jm p q * matG T g⁻¹` using `by conv_rhs => rw [← h1]`. Rewrite using `[Matrix.mul_assoc _ (matG T g), matG_mul_inv, Matrix.mul_one]`. Establish `h3 : Jm p q * matG T g = (matG T g⁻¹)ᴴ * Jm p q` using `by conv_lhs => rw [← matG_J T g⁻¹]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Matrix.mul_assoc _ _ (matG T g), matG_inv_mul, Matrix.mul_one]`. Express the relevant statement in the definitionally equal form `_ + _ = 0`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.conjTranspose_mul, Matrix.mul_assoc]`. Use `_ = (matG T g⁻¹)ᴴ * (Yᴴ * Jm p q + Jm p q * Y) * matG T g⁻¹ := by`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h2, h3]`. Simplify using `only [Matrix.mul_add, Matrix.add_mul, Matrix.mul_assoc]`. Use `_ = 0 := by rw [h]; simp`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem conj_mem_upq (T : GrpData p q) (g : T.G) {Y : Mat p q} (hY : Y ∈ upq p q) :
     matG T g * Y * matG T g⁻¹ ∈ upq p q := by
@@ -445,9 +441,9 @@ theorem conj_mem_upq (T : GrpData p q) (g : T.G) {Y : Mat p q} (hY : Y ∈ upq p
     _ = 0 := by rw [h]; simp
 
 /- English proof (translation)
-Apply `T.emb.injective` to reduce the goal to its premises. Simplify using `only [map_mul, Prod.mk.injEq]`. Prove the components needed by the constructor for the conclusion. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[Units.val_mul, Units.val_mul, T.expt_cov _ (conj_mem_upq T g hY), T.expt_cov _ hY, matG_inv, matG, Matrix.exp_units_conj, Units.inv_mul_cancel_right]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_comm]`. Use `congr 1`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[sq_expt T hY, sq_expt T (conj_mem_upq T g hY), Matrix.trace_mul_cycle, matG_inv_mul, Matrix.one_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem expt_conj (T : GrpData p q) (g : T.G) {Y : Mat p q} (hY : Y ∈ upq p q) :
     T.expt (matG T g * Y * matG T g⁻¹) * g = g * T.expt Y := by
@@ -479,15 +475,13 @@ theorem kronOne_apply (Y : Mat p q) : kronOne p q r s Y =
     Matrix.reindex (lineEquiv p q r s) (lineEquiv p q r s) (Matrix.kroneckerMap (· * ·) Y (1 : Mat r s)) := rfl
 
 /- English proof (translation)
-Use `ext`. Simplify using `[kronOne_apply, mul_assoc]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem kronOne_smul (t : ℝ) (Y : Mat p q) : kronOne p q r s (t • Y) = t • kronOne p q r s Y := by
   ext; simp [kronOne_apply, mul_assoc]
 
 /- English proof (translation)
-Establish `hc : Continuous (kronOne p q r s)`. Use `continuous_pi fun a => continuous_pi fun b => ?_` and prove the remaining obligations. Simplify using `only [kronOne_apply, Matrix.reindex_apply, Matrix.submatrix_apply, Matrix.kroneckerMap_apply]`. Use `fun_prop`. Use `open scoped Matrix.Norms.Operator in`.
-
-Conclude with `NormedSpace.map_exp (kronOne p q r s) hc Y`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem kronOne_exp (Y : Mat p q) :
     kronOne p q r s (NormedSpace.exp Y) = NormedSpace.exp (kronOne p q r s Y) := by
@@ -501,7 +495,7 @@ theorem kronOne_exp (Y : Mat p q) :
 def sgnIx : Ix p q → ℂ := Sum.elim (fun _ => 1) (fun _ => -1)
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `Yᴴ * Jm p q + Jm p q * Y = 0 ↔ _`. Rewrite using `[KStabLie.Jm_eq, ← Matrix.ext_iff]`. Simplify using `only [Matrix.add_apply, Matrix.mul_diagonal, Matrix.diagonal_mul, Matrix.conjTranspose_apply, Matrix.zero_apply, sgnIx]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem mem_upq_iff (Y : Mat p q) : Y ∈ upq p q ↔ ∀ a b, star (Y b a) * sgnIx b + sgnIx a * Y a b = 0 := by
   change Yᴴ * Jm p q + Jm p q * Y = 0 ↔ _
@@ -510,7 +504,7 @@ theorem mem_upq_iff (Y : Mat p q) : Y ∈ upq p q ↔ ∀ a b, star (Y b a) * sg
     Matrix.zero_apply, sgnIx]
 
 /- English proof (translation)
-Establish `h` using `lineEquiv_isLeft l`. Apply the tactic sequence `rcases hl : lineEquiv p q r s l with x | x <;> rw [hl] at h <;>`. Apply the tactic sequence `rcases l with ⟨a | a, c | c⟩ <;> simp [linePos] at h <;> simp [sgnIx]`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem sgnIx_lineEquiv (l : Ln p q r s) : sgnIx (lineEquiv p q r s l) = sgnIx l.1 * sgnIx l.2 := by
   have h := lineEquiv_isLeft l
@@ -518,9 +512,9 @@ theorem sgnIx_lineEquiv (l : Ln p q r s) : sgnIx (lineEquiv p q r s l) = sgnIx l
     rcases l with ⟨a | a, c | c⟩ <;> simp [linePos] at h <;> simp [sgnIx]
 
 /- English proof (translation)
-Rewrite `hY`, the goal using `[mem_upq_iff]`. Introduce `a b`. Take `⟨⟨a, c⟩, rfl⟩` from `(lineEquiv p q r s).surjective a`. Take `⟨⟨b, d⟩, rfl⟩` from `(lineEquiv p q r s).surjective b`. Simplify using `only [kronOne_apply, sgnIx_lineEquiv, Matrix.reindex_apply, Matrix.submatrix_apply, Equiv.symm_apply_apply, Matrix.kroneckerMap_apply, Matrix.one_apply]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `h : c = d`. Substitute `h` using the available equality. Simplify using `only [if_true, mul_one]`. Take the linear combination `sgnIx c * hY a b`. Simplify using `[h, Ne.symm h]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Simplify using the standard rewrite rules.
 -/
 theorem kronOne_mem {Y : Mat p q} (hY : Y ∈ upq p q) :
     kronOne p q r s Y ∈ upq (p * r + q * s) (p * s + q * r) := by
@@ -537,7 +531,7 @@ theorem kronOne_mem {Y : Mat p q} (hY : Y ∈ upq p q) :
   · simp [h, Ne.symm h]
 
 /- English proof (translation)
-Establish `: (kronOne p q r s Y).trace = (Matrix.kroneckerMap (· * ·) Y (1 : Mat r s)).trace`. Simplify using `only [Matrix.trace, Matrix.diag, kronOne_apply, Matrix.reindex_apply, Matrix.submatrix_apply]`. Conclude with `(lineEquiv p q r s).symm.sum_comp fun l => Matrix.kroneckerMap (· * ·) Y (1 : Mat r s) l l`. Rewrite using `[this, Matrix.trace_kronecker, Matrix.trace_one, mul_comm]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem trace_kronOne (Y : Mat p q) : (kronOne p q r s Y).trace = ((r + s : ℕ) : ℂ) * Y.trace := by
   have : (kronOne p q r s Y).trace = (Matrix.kroneckerMap (· * ·) Y (1 : Mat r s)).trace := by
@@ -549,9 +543,9 @@ theorem trace_kronOne (Y : Mat p q) : (kronOne p q r s Y).trace = ((r + s : ℕ)
 variable {T0 : GrpData (p * r + q * s) (p * s + q * r)} {T1 : GrpData p q} {T2 : GrpData r s}
 
 /- English proof (translation)
-Apply `T0.emb.injective` to reduce the goal to its premises. Simplify using `only [Prod.mk.injEq]`. Prove the components needed by the constructor for the conclusion. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[F.emb_cov, T0.expt_cov _ (kronOne_mem hY), T1.expt_cov _ hY, map_one, Units.val_one, ← kronOne_exp]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[F.emb_sq, map_one, one_pow, mul_one, Units.val_pow_eq_pow_val, sq_expt T1 hY, sq_expt T0 (kronOne_mem hY), trace_kronOne, ← Complex.exp_nat_mul, mul_div_assoc]`.
+Both sides reduce to the same expression. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem emb_expt (F : FockData T0 T1 T2) {Y : Mat p q} (hY : Y ∈ upq p q) :
     F.emb (T1.expt Y, 1) = T0.expt (kronOne p q r s Y) := by
@@ -566,9 +560,9 @@ theorem emb_expt (F : FockData T0 T1 T2) {Y : Mat p q} (hY : Y ∈ upq p q) :
       trace_kronOne, ← Complex.exp_nat_mul, mul_div_assoc]
 
 /- English proof (translation)
-Establish `h` using `F.der _ (kronOne_mem (r := r) (s := s) hY) P`. Establish `hact : omAct p q r s (Matrix.reindex (lineEquiv p q r s).symm (lineEquiv p q r s).symm (kronOne p q r s Y)) = fockAct1 p q r s Y`. Rewrite using `[kronOne_apply, ← Matrix.reindex_symm, Equiv.symm_apply_apply]`. Both sides reduce to the same expression. Rewrite `h` using `[hact]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `h using 2 with t` and compare the differences between its conclusion and the goal. Rewrite using `[← kronOne_smul, ← emb_expt F (KStabLie.smul_mem_upq hY t)]`. Both sides reduce to the same expression.
+Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem hasDerivAt_pi (F : FockData T0 T1 T2) {Y : Mat p q} (hY : Y ∈ upq p q) (P : Pol p q r s) :
     HasDerivAt (fun t : ℝ => F.π (T1.expt (t • Y), 1) (F.ι P)) (F.ι (fockAct1 p q r s Y P)) 0 := by
@@ -583,32 +577,32 @@ theorem hasDerivAt_pi (F : FockData T0 T1 T2) {Y : Mat p q} (hY : Y ∈ upq p q)
   rfl
 
 /- English proof (translation)
-Rewrite using `[← ContinuousLinearMap.mul_apply, ← map_mul, Prod.mk_mul_mk, one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem pi_mul (F : FockData T0 T1 T2) (g h : T1.G) (x : F.H) :
     F.π (g * h, 1) x = F.π (g, 1) (F.π (h, 1) x) := by
   rw [← ContinuousLinearMap.mul_apply, ← map_mul, Prod.mk_mul_mk, one_mul]
 
 /- English proof (translation)
-Rewrite using `[Prod.mk_one_one, map_one, ContinuousLinearMap.one_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem pi_one (F : FockData T0 T1 T2) (x : F.H) : F.π (1, 1) x = x := by
   rw [Prod.mk_one_one, map_one, ContinuousLinearMap.one_apply]
 
 /- English proof (translation)
-The claim follows from `F.isom _ x`.
+A detailed English derivation is pending.
 -/
 theorem norm_pi (F : FockData T0 T1 T2) (g : T1.G) (x : F.H) : ‖F.π (g, 1) x‖ = ‖x‖ := F.isom _ x
 
 /- English proof (translation)
-The claim follows from `LinearIsometry.inner_map_map (⟨(F.π (g, 1)).toLinearMap, norm_pi F g⟩ : F.H →ₗᵢ[ℂ] F.H) x y`.
+A detailed English derivation is pending.
 -/
 theorem inner_pi (F : FockData T0 T1 T2) (g : T1.G) (x y : F.H) :
     inner ℂ (F.π (g, 1) x) (F.π (g, 1) y) = inner ℂ x y :=
   LinearIsometry.inner_map_map (⟨(F.π (g, 1)).toLinearMap, norm_pi F g⟩ : F.H →ₗᵢ[ℂ] F.H) x y
 
 /- English proof (translation)
-Establish `h1` using `((F.π (T1.expt (t • Y), 1)).restrictScalars ℝ).hasFDerivAt.comp_hasDerivAt (0 : ℝ) (hasDerivAt_pi F hY P)`. Establish `h2` using `HasDerivAt.comp_sub_const t t (by rw [sub_self]; exact h1)`. Use `h2 using 2 with u` and compare the differences between its conclusion and the goal. Simplify using `only [Function.comp_apply, ContinuousLinearMap.coe_restrictScalars']`. Rewrite using `[← pi_mul, ← T1.expt_add Y hY, add_sub_cancel]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -624,11 +618,11 @@ theorem hasDerivAt_pi_at (F : FockData T0 T1 T2) {Y : Mat p q} (hY : Y ∈ upq p
   · rfl
 
 /- English proof (translation)
-Use `set Z := matG T1 g * Y * matG T1 g⁻¹ with hZd`. Establish `hZ : Z ∈ upq p q` using `conj_mem_upq T1 g hY`. Establish `h1` using `((F.π (g, 1)).restrictScalars ℝ).hasFDerivAt.comp_hasDerivAt (0 : ℝ) (hasDerivAt_pi F hY P)`. Establish `h2` using `HasDerivAt.inner ℂ (hasDerivAt_pi F hZ Q) h1`. Establish `h3 : (fun t : ℝ => inner ℂ (F.π (T1.expt (t • Z), 1) (F.ι Q)) ((⇑((F.π (g, 1)).restrictScalars ℝ) ∘ fun t : ℝ => F.π (T1.expt (t • Y), 1) (F.ι P)) t)) = fun _ => inner ℂ (F.ι Q) (F.π (g, 1) (F.ι P))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `t`. Simplify using `only [Function.comp_apply, ContinuousLinearMap.coe_restrictScalars']`. Rewrite using `[← pi_mul, ← expt_conj T1 g (KStabLie.smul_mem_upq hY t), pi_mul, Matrix.mul_smul, Matrix.smul_mul, inner_pi]`. Rewrite `h2` using `[h3]`. Establish `h4` using `h2.unique (hasDerivAt_const (0 : ℝ) _)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Function.comp_apply, ContinuousLinearMap.coe_restrictScalars', zero_smul, T1.expt_zero, pi_one] at h4`. Take the linear combination `h4`.
+Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem covariance_real (F : FockData T0 T1 T2) (g : T1.G) {Y : Mat p q} (hY : Y ∈ upq p q)
     (P Q : Pol p q r s) :
@@ -652,7 +646,7 @@ theorem covariance_real (F : FockData T0 T1 T2) (g : T1.G) {Y : Mat p q} (hY : Y
   linear_combination h4
 
 /- English proof (translation)
-Establish `h : Yᴴ * Jm p q = -(Jm p q * Y)` using `eq_neg_of_add_eq_zero_left hY`. Rewrite using `[adjZ, Matrix.mul_assoc, h, Matrix.mul_neg, ← Matrix.mul_assoc, KStabLie.Jm_sq, Matrix.one_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem adjZ_of_mem {Y : Mat p q} (hY : Y ∈ upq p q) : adjZ Y = -Y := by
   have h : Yᴴ * Jm p q = -(Jm p q * Y) := eq_neg_of_add_eq_zero_left hY
@@ -661,11 +655,11 @@ theorem adjZ_of_mem {Y : Mat p q} (hY : Y ∈ upq p q) : adjZ Y = -Y := by
 open DerivedAdjoint in
 
 /- English proof (translation)
-Choose the witnesses or unpack the hypotheses as in `⟨X, Y, hX, hY, rfl⟩ : ∃ X Y : Mat p q, adjZ X = -X ∧ adjZ Y = -Y ∧ Z = X + Complex.I • Y := by`. Use `⟨(1 / 2 : ℂ) • (Z - adjZ Z), (-Complex.I / 2) • (Z + adjZ Z), ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[adjZ_smul, adjZ_sub, adjZ_adjZ, show star (1 / 2 : ℂ) = 1 / 2 by simp] module`. Rewrite using `[adjZ_smul, adjZ_add, adjZ_adjZ, show star (-Complex.I / 2) = Complex.I / 2 by simp] module`. Rewrite using `[smul_smul, show Complex.I * (-Complex.I / 2) = 1 / 2 by`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[← mul_div_assoc, mul_neg, Complex.I_mul_I, neg_neg]]`. Use `module`. Establish `hX'` using `mem_upq_of_adjZ hX`. Establish `hY'` using `mem_upq_of_adjZ hY`. Rewrite using `[Matrix.mul_add, Matrix.add_mul, Matrix.mul_smul, Matrix.smul_mul, adjZ_add, adjZ_smul, adjZ_of_mem (conj_mem_upq T1 g hX'), adjZ_of_mem (conj_mem_upq T1 g hY')]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_add, map_smul, map_neg, LinearMap.add_apply, LinearMap.smul_apply, LinearMap.neg_apply, inner_add_left, inner_add_right, inner_smul_left, inner_smul_right, inner_neg_left, covariance_real F g hX', covariance_real F g hY']`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem covariance (F : FockData T0 T1 T2) (g : T1.G) (Z : Mat p q) (P Q : Pol p q r s) :
     inner ℂ (F.ι Q) (F.π (g, 1) (F.ι (fockAct1 p q r s Z P))) =
@@ -699,9 +693,9 @@ open Formalism.BasicNotions.TH Formalism.MainNotions.SchurIrreducible GlobalTheo
 variable {p q n : ℕ} {T0 : GrpData (p * n + q * 0) (p * 0 + q * n)} {T1 : GrpData p q} {T2 : GrpData n 0}
 
 /- English proof (translation)
-Establish `e : (Matrix.fromBlocks 0 0 C 0 : Mat p q) = ∑ b, ∑ a, C b a • Eab (Sum.inr b) (Sum.inl a)`. Use extensionality with `i j`. Apply the tactic sequence `rcases i with i | i <;> rcases j with j | j <;>`. Simplify using `[Eab, Matrix.sum_apply, Matrix.single_apply, ite_and]`. Rewrite using `[e]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [map_sum, map_smul, LinearMap.sum_apply, LinearMap.smul_apply, fockAct1_lower, h _ _, neg_zero, smul_zero, Finset.sum_const_zero]`.
+Simplify using the standard rewrite rules.
 -/
 theorem act_lower {Φ : Pol p q n 0} (h : KilledByPMinus Φ) (C : Matrix (Fin q) (Fin p) ℂ) :
     fockAct1 p q n 0 (Matrix.fromBlocks 0 0 C 0) Φ = 0 := by
@@ -714,22 +708,22 @@ theorem act_lower {Φ : Pol p q n 0} (h : KilledByPMinus Φ) (C : Matrix (Fin q)
     smul_zero, Finset.sum_const_zero]
 
 /- English proof (translation)
-Simplify using `[adjZ, Jm, Formalism.UG.Jpq, Matrix.fromBlocks_conjTranspose, Matrix.fromBlocks_multiply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem adjZ_upper (B : Matrix (Fin p) (Fin q) ℂ) :
     adjZ (Matrix.fromBlocks 0 B 0 0 : Mat p q) = Matrix.fromBlocks 0 0 (-Bᴴ) 0 := by
   simp [adjZ, Jm, Formalism.UG.Jpq, Matrix.fromBlocks_conjTranspose, Matrix.fromBlocks_multiply]
 
 /- English proof (translation)
-Establish `hQ : F.π (k, 1) (F.ι Φ) ∈ LinearMap.range F.ι`. Rewrite using `[← MvPolynomial.sum_homogeneousComponent Φ, map_sum, map_sum]`. Use `Submodule.sum_mem _ fun d _ => ?_` and prove the remaining obligations. Take `⟨Q, -, e⟩` from `GlobalTheory.FockDegree.Om_Kset_homog p q n 0 T0 T1 T2 F _ (GlobalTheory.FockKFin.emb_mem_Kset F hk (GlobalTheory.FockKFin.one_mem_Kset T2)) d _ (MvPolynomial.homogeneousComponent_mem d Φ)`. Conclude with `⟨Q, e.symm⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨Q, hQ⟩` from `hQ`. Use `⟨Q, hQ.symm, fun a b => ?_⟩` and prove the remaining obligations. Use `set E : Mat p q := Eab (Sum.inr b) (Sum.inl a) with hE`. Establish `hE' : E = Matrix.fromBlocks 0 0 (Matrix.single b a 1) 0`. Use extensionality with `i j`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `rcases i with i | i <;> rcases j with j | j <;> simp [hE, Eab, Matrix.single_apply]`. Take `⟨U, -, V, -, h1⟩` from `exists_blocks T1 hk`. Take `⟨U', -, V', -, h2⟩` from `exists_blocks T1 ((Ksub T1).inv_mem hk)`. Establish `h3 : fockAct1 p q n 0 (matG T1 k⁻¹ * E * matG T1 k) Φ = 0`. Rewrite using `[h1, h2, hE']`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.fromBlocks_multiply, Matrix.mul_zero, Matrix.zero_mul, add_zero, zero_add]`. Conclude with `act_lower h _`. Establish `h4` using `covariance F k (matG T1 k⁻¹ * E * matG T1 k) Φ (fockAct1 p q n 0 E Q)`. Establish `h5` using `covariance F 1 E Q (fockAct1 p q n 0 E Q)`. Establish `h6 : matG T1 k * (matG T1 k⁻¹ * E * matG T1 k) * matG T1 k⁻¹ = E`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, matG_mul_inv, Matrix.one_mul, Matrix.mul_assoc, matG_mul_inv, Matrix.mul_one]`. Rewrite `h4` using `[h3, map_zero, map_zero, inner_zero_right, h6, ← hQ]`. Rewrite `h5` using `[inv_one, matG_one, Matrix.one_mul, Matrix.mul_one, pi_one, pi_one, ← h4, inner_self_eq_zero]`. Establish `h7` using `F.ι_inj (h5.trans (map_zero _).symm)`. Rewrite `h7` using `[hE, fockAct1_lower, neg_eq_zero]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem exists_killed (F : FockData T0 T1 T2) {k : T1.G} (hk : k ∈ T1.Kset) {Φ : Pol p q n 0}
     (h : KilledByPMinus Φ) : ∃ Q, F.π (k, 1) (F.ι Φ) = F.ι Q ∧ KilledByPMinus Q := by
@@ -763,11 +757,11 @@ theorem exists_killed (F : FockData T0 T1 T2) {k : T1.G} (hk : k ∈ T1.Kset) {�
   rwa [hE, fockAct1_lower, neg_eq_zero] at h7
 
 /- English proof (translation)
-Establish `e : tanhDiag p q σ t = ∑ a : Ix p q, ((if a.isLeft then 1 else -1) * ((σ (posIx a) * Real.tanh (t * σ (posIx a)) : ℝ) : ℂ)) • Eab a a`. Use extensionality with `i j`. Simplify using `only [tanhDiag, Eab, Matrix.sum_apply, Matrix.smul_apply, Matrix.single_apply, Matrix.diagonal_apply, ite_and, smul_eq_mul, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Rewrite using `[e, map_sum, LinearMap.sum_apply]`. Simplify using `only [map_smul, LinearMap.smul_apply, cartan1, smul_smul, ← Finset.sum_smul]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `congr 1`. Rewrite using `[Complex.ofReal_sum, Fintype.sum_prod_type]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Break down `c with c | c` into its components or cases. Apply the tactic sequence `rcases a with a | a <;> simp [lineSign] <;> ring`. Conclude with `c.elim0`.
+Separate the alternatives or extract the components of the hypothesis. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem act_tanhDiag (σ : ℕ → ℝ) (t : ℝ) (α : Ln p q n 0 →₀ ℕ) :
     fockAct1 p q n 0 (tanhDiag p q σ t) (MvPolynomial.monomial α 1) =
@@ -792,7 +786,7 @@ theorem act_tanhDiag (σ : ℕ → ℝ) (t : ℝ) (α : Ln p q n 0 →₀ ℕ) :
 def logCosh (σ : ℕ → ℝ) (t : ℝ) (a : Ix p q) : ℝ := Real.log (Real.cosh (t * σ (posIx a)))
 
 /- English proof (translation)
-Establish `h` using `((hasDerivAt_id t).mul_const (σ (posIx a))).cosh.log (Real.cosh_pos _).ne'`. Use `h.congr_deriv ?_` and prove the remaining obligations. Rewrite using `[Real.tanh_eq_sinh_div_cosh]`. Simplify using `only [id]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem hasDerivAt_logCosh (σ : ℕ → ℝ) (t : ℝ) (a : Ix p q) :
     HasDerivAt (fun t => logCosh σ t a) (σ (posIx a) * Real.tanh (t * σ (posIx a))) t := by
@@ -803,7 +797,7 @@ theorem hasDerivAt_logCosh (σ : ℕ → ℝ) (t : ℝ) (a : Ix p q) :
   ring
 
 /- English proof (translation)
-Use `conv_lhs => rw [Ψ.as_sum]`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun α _ => ?_` and prove the remaining obligations. Rewrite using `[dil_monomial, MvPolynomial.smul_monomial, MvPolynomial.smul_monomial]`. Simplify using `[mul_comm]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem dil_eq_sum (u : Ix p q → ℝ) (Ψ : Pol p q n 0) :
     dil n u Ψ = ∑ α ∈ Ψ.support, (Ψ.coeff α *
@@ -815,9 +809,9 @@ theorem dil_eq_sum (u : Ix p q → ℝ) (Ψ : Pol p q n 0) :
   simp [mul_comm]
 
 /- English proof (translation)
-Simplify using `only [dil_eq_sum, map_sum, map_smul]`. Use `HasDerivAt.fun_sum fun α _ => ?_` and prove the remaining obligations. Establish `h1 : HasDerivAt (fun t : ℝ => ∑ l : Ln p q n 0, ((α l : ℝ) + 1 / 2) * logCosh σ t l.1) (∑ l : Ln p q n 0, ((α l : ℝ) + 1 / 2) * (σ (posIx l.1) * Real.tanh (t * σ (posIx l.1)))) t` using `HasDerivAt.fun_sum fun l _ => (hasDerivAt_logCosh σ t l.1).const_mul _`. Establish `h2` using `(h1.exp.ofReal_comp.const_mul (Ψ.coeff α)).fun_smul (hasDerivAt_pi_at F (diagonalElement_mem p q σ).1 (MvPolynomial.monomial α 1) t)`. Use `h2.congr_deriv ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_add, LinearMap.add_apply, act_tanhDiag, map_add, map_add, map_smul, map_smul, smul_add, smul_smul, Complex.ofReal_mul, mul_assoc]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem hasDerivAt_flow (F : FockData T0 T1 T2) (σ : ℕ → ℝ) (Ψ : Pol p q n 0) (t : ℝ) :
     HasDerivAt (fun t : ℝ => F.π (T1.expt (t • diagP p q σ), 1) (F.ι (dil n (logCosh σ t) Ψ)))
@@ -835,13 +829,13 @@ theorem hasDerivAt_flow (F : FockData T0 T1 T2) (σ : ℕ → ℝ) (Ψ : Pol p q
     Complex.ofReal_mul, mul_assoc]
 
 /- English proof (translation)
-Establish `hd : ∀ t : ℝ, HasDerivAt (fun t : ℝ => inner ℂ (F.ι Φ) (F.π (T1.expt (t • diagP p q σ), 1) (F.ι (dil n (logCosh σ t) Ψ)))) 0 t`. Introduce `t`. Use `(HasDerivAt.inner ℂ (hasDerivAt_const t (F.ι Φ)) (hasDerivAt_flow F σ Ψ t)).congr_deriv ?_` and prove the remaining obligations. Take `⟨B, C, h⟩` from `exists_gauss σ hσ t`. Establish `hg : matG T1 (T1.expt (t • diagP p q σ)) = hypMat p q σ t`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[← exp_diagP σ hσ t]`. Conclude with `T1.expt_cov _ (KStabLie.smul_mem_upq (diagonalElement_mem p q σ).1 t)`. Establish `h1` using `covariance F (T1.expt (t • diagP p q σ)) (diagP p q σ + tanhDiag p q σ t - Matrix.fromBlocks 0 0 C 0) (dil n (logCosh σ t) Ψ) Φ`. Rewrite `h` using `[← hg]`. Rewrite `h1` using `[h, Matrix.mul_assoc, matG_mul_inv, Matrix.mul_one, adjZ_upper, act_lower hΦ, map_zero, inner_zero_left, map_sub, LinearMap.sub_apply, act_lower (killed_dil _ hΨ), sub_zero]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1, inner_zero_left, add_zero]`. Establish `h` using `is_const_of_deriv_eq_zero (fun t => (hd t).differentiableAt) (fun t => (hd t).deriv) 1 0`. Establish `h0 : (logCosh σ 0 : Ix p q → ℝ) = 0`. Use function extensionality and compare the values at `a`. Simplify using `[logCosh]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `h` using `only [one_smul, zero_smul, T1.expt_zero, pi_one, h0, dil_zero]`.
+A detailed English derivation is pending.
 -/
 theorem inner_flow (F : FockData T0 T1 T2) (σ : ℕ → ℝ) (hσ : ∀ i, min p q ≤ i → σ i = 0)
     {Ψ Φ : Pol p q n 0} (hΨ : KilledByPMinus Ψ) (hΦ : KilledByPMinus Φ) :
@@ -867,15 +861,15 @@ theorem inner_flow (F : FockData T0 T1 T2) (σ : ℕ → ℝ) (hσ : ∀ i, min 
   simpa only [one_smul, zero_smul, T1.expt_zero, pi_one, h0, dil_zero] using h
 
 /- English proof (translation)
-Introduce `p q n T0 T1 T2 F X hX Φ₁ Φ₂ h₁ h₂`. Take `⟨σ, hσ, hs, k, hk, hXk⟩` from `exists_conj_diagP T1 hX`. Establish `hk' : k⁻¹ ∈ T1.Kset` using `(Ksub T1).inv_mem hk`. Take `⟨Q₁, e₁, k₁⟩` from `exists_killed F hk' h₁`. Take `⟨Q₂, e₂, k₂⟩` from `exists_killed F hk' h₂`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hX' : matG T1 k * diagP p q σ * matG T1 k⁻¹ = X`. Rewrite using `[← hXk, Matrix.mul_assoc, matG_mul_inv, Matrix.mul_one]`. Establish `hg : k⁻¹ * T1.expt X = T1.expt (diagP p q σ) * k⁻¹`. Use `expt_conj T1 k (diagonalElement_mem p q σ).1` as an intermediate fact. Rewrite `this` using `[hX']`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[inv_mul_eq_iff_eq_mul, ← mul_assoc, ← this, mul_inv_cancel_right]`. Establish `hc : coef F X Φ₁ Φ₂ = inner ℂ (F.ι Q₂) (F.ι (dil n (-logCosh σ 1) Q₁))`. Rewrite using `[coef, ← inner_pi F k⁻¹, ← pi_mul, hg, pi_mul, e₁, e₂, ← inner_flow F σ hσ (killed_dil _ k₁) k₂, dil_dil_neg]`. Establish `hn` using `norm_dil_le (isFockIsometry_of_fockData F) (logCosh σ 1) (fun a => Real.log_nonneg (Real.one_le_cosh _)) Q₁`. Establish `hp` using `exp_sum_logCosh (n := n) σ hσ`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [logCosh, one_mul] at hn`. Rewrite `hn` using `[hp, ← e₁, norm_pi]`. Simplify using `only [hs] at hn`. Rewrite using `[hc, mul_comm]`. Use `(norm_inner_le_norm _ _).trans ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← e₂, norm_pi]`. Conclude with `mul_le_mul_of_nonneg_left hn (norm_nonneg _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem harmonicDecay : HarmonicDecay := by
   intro p q n T0 T1 T2 F X hX Φ₁ Φ₂ h₁ h₂

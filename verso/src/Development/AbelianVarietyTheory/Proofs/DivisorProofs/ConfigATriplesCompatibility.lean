@@ -16,23 +16,19 @@ noncomputable section
 namespace GlobalTheory.ConeDecay
 
 /- English proof (translation)
-Introduce `_ F E _ _ _ _ _ σ B b a' G G₁ H H' X om om' om₁ om₁' hC hT hT₁ e he ei ev _ hev hpure a n N`. Take `⟨m, y, K, hK⟩` from `GlobalTheory.T.triple_pair_period_identity_case_a_two F E σ B b a' G G₁ H H' X om om' om₁ om₁' hC hT hT₁`. Establish `hinv` using `GlobalTheory.T.triple_pair_period_identity_case_a F E σ B b a' G G₁ H H' X om om' om₁ om₁' hC hT hT₁ e he ei ev hev hpure`. Set `U : Fin m → _` to `fun j => GlobalTheory.ArchUniq.Coord.coordI G.M (Matrix.vecMulVec (y j) (incV F H'.x))`. Establish `hU : ∀ (j : Fin m) (s : ℝ) (f g : SInf F (Fin (b + 2) × Fin (b + 2 + a'))), ⇑g = GlobalTheory.ArchUniq.schrF (GlobalTheory.ArchUniq.trP F (Fin (b + 2) × Fin (b + 2 + a'))) (s • U j) ⇑f → ei g = ei f`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `j s f g hg`. Use `hinv (realAd F s • y j) f g ?_` and prove the remaining obligations. Rewrite using `[hg]`. Use `congr 1`. Simplify using `only [U]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Rewrite using `[← GlobalTheory.ArchUniq.Coord.coordI_smul, Matrix.smul_vecMulVec]`. Take `⟨M, hM⟩` from `GlobalTheory.T.schrodinger_invariant_operator_bound _ (GlobalTheory.ArchUniq.Coord.isPairing_trP _) ei U hU a n`. Take `⟨s, C, hsC⟩` from `hM (N + M)`. Use `⟨s, C * K ^ (N + M), fun h l hl => ?_⟩` and prove the remaining obligations. Establish `hg` using `(locOpInf_rho G.M.co hT.base.std (shiftA H H' l) h).2`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `key` using `hsC (GlobalTheory.ArchUniq.Coord.coordI G.M (shiftA H H' l)) h _ hg`. Establish `hK'` using `hK l hl`. Use `set A := 1 + ∑ w, ‖piInf (B.emb w) (l : AE F E)‖ with hA`. Use `set O := 1 + ∑ j, |GlobalTheory.ArchUniq.omega (GlobalTheory.ArchUniq.trP F (Fin (b + 2) × Fin (b + 2 + a'))) (GlobalTheory.ArchUniq.Coord.coordI G.M (shiftA H H' l)) (U j)| with hO`. Use `set Wn := 1 + ‖GlobalTheory.ArchUniq.Coord.coordI G.M (shiftA H H' l)‖ with hWn`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set p := SchwartzMap.seminorm ℂ a n (ei (locOpInf (G.M.co.rho B.ψ (partInf F (shiftA H H' l))) h))`. Use `set S := (s.sup (schwartzSeminormFamily ℂ (Fin (b + 2) × Fin (b + 2 + a') → mixedEmbedding.mixedSpace F) ℂ)) h`. Establish `hS0 : 0 ≤ ∑ w, ‖piInf (B.emb w) (l : AE F E)‖` using `Finset.sum_nonneg fun _ _ => norm_nonneg _`. Establish `hO1 : 1 ≤ O` using `le_add_of_nonneg_right (Finset.sum_nonneg fun _ _ => abs_nonneg _)`. Establish `hp : 0 ≤ p` using `apply_nonneg _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hWpos : 0 < Wn` using `by positivity`. Establish `h1 : A ≤ K * O` using `by linarith [norm_nonneg (GlobalTheory.ArchUniq.Coord.coordI G.M (shiftA H H' l))]`. Establish `h2 : Wn ≤ K * O` using `by linarith`. Establish `hA0 : 0 ≤ A` using `by linarith`. Establish `h3 : A ^ N * Wn ^ M ≤ K ^ (N + M) * O ^ (N + M)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Rewrite using `[← mul_pow, pow_add]`. Conclude with `mul_le_mul (pow_le_pow_left₀ hA0 h1 N) (pow_le_pow_left₀ hWpos.le h2 M) (pow_nonneg hWpos.le M) (pow_nonneg (hA0.trans h1) N)`. Establish `h4 : A ^ N * p * Wn ^ M ≤ C * K ^ (N + M) * S * Wn ^ M`. Combine the equalities or inequalities in the displayed calculation. Establish `hKp : 0 ≤ K`.
-
-Assume the negation of the conclusion as `hneg`. Use `push_neg at hneg`. Use the polynomial consequences of the given equalities and inequalities. Conclude with `mul_le_mul_of_nonneg_left key (pow_nonneg hKp _)`. Use `_ = C * K ^ (N + M) * S * Wn ^ M := by ring`.
-
-Conclude with `le_of_mul_le_mul_right h4 (pow_pos hWpos M)`.
+Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem decay : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (b a' : ℕ) (G : Geo σ (b + 2) a') (G₁ : Geo σ b a') (H : Plane E (b + 2) b) (H' : Plane E (b + 2 + a') (b + a'))

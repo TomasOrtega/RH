@@ -10,34 +10,32 @@ variable {n : ℕ} {ε : Fin n → Bool} {H : Type} [NormedAddCommGroup H] [Inne
   {σ : Mx n → (H →L[ℂ] H)}
 
 /- English proof (translation)
-The claim follows from `K_le_UJ (toMK_mem_K k)`.
+A detailed English derivation is pending.
 -/
 theorem toMK_mem_UJ (k : KG ε) : toMK k ∈ UJset ε := K_le_UJ (toMK_mem_K k)
 
 /- English proof (translation)
-The claim follows from `(hσ.2.2 w).comp_continuous (continuous_toMK ε) toMK_mem_UJ`.
+A detailed English derivation is pending.
 -/
 theorem continuous_orbit (hσ : IsURepOn (UJset ε) σ) (w : H) : Continuous fun k : KG ε => σ (toMK k) w :=
   (hσ.2.2 w).comp_continuous (continuous_toMK ε) toMK_mem_UJ
 
 /- English proof (translation)
-The claim follows from `(he.smul (continuous_orbit hσ w)).integrable_of_hasCompactSupport (HasCompactSupport.of_compactSpace _)`.
+A detailed English derivation is pending.
 -/
 theorem integrable_avg (hσ : IsURepOn (UJset ε) σ) {e : KG ε → ℂ} (he : Continuous e) (w : H) :
     Integrable (fun k : KG ε => e k • σ (toMK k) w) (muK ε) :=
   (he.smul (continuous_orbit hσ w)).integrable_of_hasCompactSupport (HasCompactSupport.of_compactSpace _)
 
 /- English proof (translation)
-The claim follows from `sigma_mul hσ (toMK_mem_UJ a) (toMK_mem_UJ b) w`.
+A detailed English derivation is pending.
 -/
 theorem sigma_K_mul (hσ : IsURepOn (UJset ε) σ) (a b : KG ε) (w : H) :
     σ (toMK (a * b)) w = σ (toMK a) (σ (toMK b) w) :=
   sigma_mul hσ (toMK_mem_UJ a) (toMK_mem_UJ b) w
 
 /- English proof (translation)
-Establish `h` using `LinearIsometry.inner_map_map ⟨(σ (toMK a) : H →ₗ[ℂ] H), hσ.2.1 _ (toMK_mem_UJ a)⟩ w (σ (toMK a⁻¹) x)`. Establish `e : σ (toMK a) (σ (toMK a⁻¹) x) = x`. Rewrite using `[← sigma_K_mul hσ, mul_inv_cancel]`. Conclude with `sigma_one hσ x`. Rewrite using `[← h]`.
-
-Conclude with `congrArg (fun z => ⟪σ (toMK a) w, z⟫_ℂ) e.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inner_K (hσ : IsURepOn (UJset ε) σ) (a : KG ε) (x w : H) :
     ⟪σ (toMK a) w, x⟫_ℂ = ⟪w, σ (toMK a⁻¹) x⟫_ℂ := by
@@ -48,33 +46,29 @@ theorem inner_K (hσ : IsURepOn (UJset ε) σ) (a : KG ε) (x w : H) :
   exact congrArg (fun z => ⟪σ (toMK a) w, z⟫_ℂ) e.symm
 
 /- English proof (translation)
-Take `⟨S, hS, hyS, hK⟩` from `hy`. Set `φ : H → H → KG ε → ℂ` to `fun s s' k => ⟪σ (toMK k) s', s⟫_ℂ`. Take `⟨t, ht⟩ : S.FG` from `Module.Finite.iff_fg.1 hS`. Establish `hfin : (Set.image2 φ (t : Set H) (t : Set H)).Finite` using `t.finite_toSet.image2 _ t.finite_toSet`. Establish `key : ∀ s ∈ S, ∀ s' ∈ S, φ s s' ∈ Submodule.span ℂ (Set.image2 φ (t : Set H) (t : Set H))`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `s hs s' hs'`. Rewrite `hs`, `hs'` using `[← ht]`. Proceed by induction on `hs using Submodule.span_induction with`. Consider the case `mem x hx`. Proceed by induction on `hs' using Submodule.span_induction with`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Proceed by induction. Treat this case separately. Proceed by induction.
 
-Consider the case `mem z hz => exact Submodule.subset_span (Set.mem_image2_of_mem hx hz)`. Consider the case `zero`. Establish `: φ x 0 = 0` using `by ext k; simp [φ]`. Rewrite using `[this]`. Conclude with `Submodule.zero_mem _`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `add a b _ _ ha hb`. Establish `: φ x (a + b) = φ x a + φ x b` using `by ext k; simp [φ, inner_add_left]`. Rewrite using `[this]`. Conclude with `Submodule.add_mem _ ha hb`. Consider the case `smul c a _ ha`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: φ x (c • a) = (starRingEnd ℂ c) • φ x a` using `by ext k; simp [φ, inner_smul_left, mul_comm]`. Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ _ ha`. Consider the case `zero`. Establish `: φ 0 s' = 0` using `by ext k; simp [φ]`.
+Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact.
 
-Rewrite using `[this]`. Conclude with `Submodule.zero_mem _`. Consider the case `add a b _ _ ha hb`. Establish `: φ (a + b) s' = φ a s' + φ b s'` using `by ext k; simp [φ, inner_add_right]`. Rewrite using `[this]`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Submodule.add_mem _ ha hb`. Consider the case `smul c a _ ha`. Establish `: φ (c • a) s' = c • φ a s'` using `by ext k; simp [φ, inner_smul_right]`. Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ _ ha`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `htS : ∀ x ∈ (t : Set H), x ∈ S` using `fun x hx => ht ▸ Submodule.subset_span hx`. Use `⟨Submodule.span ℂ (Set.image2 φ (t : Set H) (t : Set H)), FiniteDimensional.span_of_finite ℂ hfin, ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `: (fun k : KG ε => star ⟪y, σ (toMK k) y⟫_ℂ) = φ y y`. Use extensionality with `k`. Conclude with `inner_conj_symm _ _`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately.
 
-Rewrite using `[this]`. Conclude with `key y hyS y hyS`. Introduce `ψ hψ`. Proceed by induction on `hψ using Submodule.span_induction with`. Consider the case `mem x hx`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨a, -, b, -, rfl⟩` from `hx`. Conclude with `(continuous_orbit hσ b).inner continuous_const`. Consider the case `zero => exact continuous_zero`. Consider the case `add a b _ _ ha hb => exact ha.add hb`. Consider the case `smul c a _ ha => exact ha.const_smul c`.
+Prove the components needed by the constructor for the conclusion. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Introduce `ψ hψ k₀`. Proceed by induction on `hψ using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨a, ha, b, hb, rfl⟩` from `hx`. Prove the components needed by the constructor for the conclusion.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `: (fun k => φ a b (k₀ * k)) = φ (σ (toMK k₀⁻¹) a) b`. Use extensionality with `k`. Simplify using `only [φ]`. Rewrite using `[sigma_K_mul hσ, inner_K hσ]`. Rewrite using `[this]`.
-
-Conclude with `key _ (hK _ (toMK_mem_K _) _ (htS a ha)) _ (htS b hb)`. Establish `: (fun k => φ a b (k * k₀)) = φ a (σ (toMK k₀) b)`. Use extensionality with `k`. Simplify using `only [φ]`. Rewrite using `[sigma_K_mul hσ]`.
-
-Rewrite using `[this]`. Conclude with `key _ (htS a ha) _ (hK _ (toMK_mem_K _) _ (htS b hb))`. Consider the case `zero => exact ⟨Submodule.zero_mem _, Submodule.zero_mem _⟩`. Consider the case `add a b _ _ ha hb => exact ⟨Submodule.add_mem _ ha.1 hb.1, Submodule.add_mem _ ha.2 hb.2⟩`. Consider the case `smul c a _ ha => exact ⟨Submodule.smul_mem _ c ha.1, Submodule.smul_mem _ c ha.2⟩`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem kFinFun_coef (hσ : IsURepOn (UJset ε) σ) {y : H} (hy : IsKFin ε σ y) :
     KFinFun ε (fun k => star ⟪y, σ (toMK k) y⟫_ℂ) := by
@@ -138,7 +132,7 @@ theorem kFinFun_coef (hσ : IsURepOn (UJset ε) σ) {y : H} (hy : IsKFin ε σ y
 variable [CompleteSpace H]
 
 /- English proof (translation)
-Rewrite using `[kAvg, ← integral_inner (integrable_avg hσ he w)]`. Simplify using `only [inner_smul_right]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem inner_kAvg (hσ : IsURepOn (UJset ε) σ) {e : KG ε → ℂ} (he : Continuous e) (x w : H) :
     ⟪x, kAvg ε σ e w⟫_ℂ = ∫ k, e k * ⟪x, σ (toMK k) w⟫_ℂ ∂(muK ε) := by
@@ -146,11 +140,11 @@ theorem inner_kAvg (hσ : IsURepOn (UJset ε) σ) {e : KG ε → ℂ} (he : Cont
   simp only [inner_smul_right]
 
 /- English proof (translation)
-Establish `hc : Continuous fun k : KG ε => ⟪y, σ (toMK k) y⟫_ℂ` using `continuous_const.inner (continuous_orbit hσ y)`. Rewrite using `[inner_kAvg hσ hc.star]`. Establish `e : ∀ z : ℂ, star z * z = ((‖z‖ ^ 2 : ℝ) : ℂ)` using `fun z => by`. Rewrite using `[Complex.star_def, Complex.conj_mul']`. Use `push_cast`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Both sides reduce to the same expression. Simplify using `only [e]`. Rewrite using `[integral_complex_ofReal]`. Establish `hpos : 0 < ∫ k : KG ε, ‖⟪y, σ (toMK k) y⟫_ℂ‖ ^ 2 ∂(muK ε)`. Use `Continuous.integral_pos_of_hasCompactSupport_nonneg_nonzero (x := 1) (hc.norm.pow 2) (HasCompactSupport.of_compactSpace _) (fun k => by positivity) ?_` and prove the remaining obligations.
+Both sides reduce to the same expression. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: σ (toMK (1 : KG ε)) y = y` using `sigma_one hσ y`. Rewrite using `[this]`. Conclude with `pow_ne_zero _ (norm_ne_zero_iff.2 (inner_self_ne_zero.2 hy))`. Conclude with `hpos.ne'` after adjusting the coercions.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inner_kAvg_ne_zero (hσ : IsURepOn (UJset ε) σ) {y : H} (hy : y ≠ 0) :
     ⟪y, kAvg ε σ (fun k => star ⟪y, σ (toMK k) y⟫_ℂ) y⟫_ℂ ≠ 0 := by
@@ -171,9 +165,9 @@ theorem inner_kAvg_ne_zero (hσ : IsURepOn (UJset ε) σ) {y : H} (hy : y ≠ 0)
 omit [CompleteSpace H] in
 
 /- English proof (translation)
-Set `L : H →ₗ[ℂ] H` to `{ toFun := kAvg ε σ e map_add' := fun x y => by`. Simplify using `only [kAvg, map_add, smul_add]`. Conclude with `integral_add (integrable_avg hσ he x) (integrable_avg hσ he y)`. Use the proof step `map_smul' := fun c x => by`. Simplify using `only [kAvg, map_smul, RingHom.id_apply, smul_comm _ c]`.
+Introduce a local definition for the expression. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `integral_smul _ _ }`. Use `⟨L.mkContinuous (∫ k, ‖e k‖ ∂(muK ε)) fun w => ?_, fun w => rfl⟩` and prove the remaining obligations. Use `(norm_integral_le_integral_norm _).trans (le_of_eq ?_)` and prove the remaining obligations. Simplify using `only [norm_smul, fun k : KG ε => hσ.2.1 _ (toMK_mem_UJ k) w]`. Conclude with `integral_mul_const _ _`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_clm_kAvg (hσ : IsURepOn (UJset ε) σ) {e : KG ε → ℂ} (he : Continuous e) :
     ∃ Q : H →L[ℂ] H, ∀ w, Q w = kAvg ε σ e w := by
@@ -191,7 +185,7 @@ theorem exists_clm_kAvg (hσ : IsURepOn (UJset ε) σ) {e : KG ε → ℂ} (he :
   exact integral_mul_const _ _
 
 /- English proof (translation)
-Rewrite using `[← S.orthogonal_orthogonal, Submodule.mem_orthogonal]`. Introduce `u hu`. Rewrite using `[inner_kAvg hσ he]`. Establish `: ∀ k : KG ε, ⟪u, σ (toMK k) z⟫_ℂ = 0` using `fun k => Submodule.inner_left_of_mem_orthogonal (hK _ (toMK_mem_K k) z hz) hu`. Simplify using `[this]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem kAvg_mem (hσ : IsURepOn (UJset ε) σ) {e : KG ε → ℂ} (he : Continuous e) {S : Submodule ℂ H}
     [FiniteDimensional ℂ S] (hK : IsKStableOn ε σ S) {z : H} (hz : z ∈ S) : kAvg ε σ e z ∈ S := by
@@ -207,7 +201,7 @@ end GlobalTheory.TypeSum.KCoef
 namespace GlobalTheory.TypeSum
 
 /- English proof (translation)
-Introduce `_ _ _ _ _ _ _ hσ` and use `⟨fun _ hy => KCoef.kFinFun_coef hσ hy, fun _ hy => KCoef.inner_kAvg_ne_zero hσ hy, fun _ he => KCoef.exists_clm_kAvg hσ he, fun _ he _ _ hK _ hz => KCoef.kAvg_mem hσ he hK hz⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem kCoef_kAvg : ∀ (n : ℕ) (ε : Fin n → Bool) (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] (σ : Mx n → (H →L[ℂ] H)), IsURepOn (UJset ε) σ → (∀ y, IsKFin ε σ y → KFinFun ε (fun k => star ⟪y, σ (toMK k) y⟫_ℂ)) ∧ (∀ y : H, y ≠ 0 → ⟪y, kAvg ε σ (fun k => star ⟪y, σ (toMK k) y⟫_ℂ) y⟫_ℂ ≠ 0) ∧ (∀ e : KG ε → ℂ, Continuous e → ∃ Q : H →L[ℂ] H, ∀ w, Q w = kAvg ε σ e w) ∧ ∀ e : KG ε → ℂ, Continuous e → ∀ S : Submodule ℂ H, FiniteDimensional ℂ S → IsKStableOn ε σ S → ∀ z ∈ S, kAvg ε σ e z ∈ S :=
   fun _ _ _ _ _ _ _ hσ => ⟨fun _ hy => KCoef.kFinFun_coef hσ hy, fun _ hy => KCoef.inner_kAvg_ne_zero hσ hy,

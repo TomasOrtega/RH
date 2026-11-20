@@ -26,56 +26,52 @@ def AbstractGermZeroCondition : Prop :=
     IntGerm V t = IntGerm V t₂
 
 /- English proof (translation)
-Simplify using `only [IntS, AltInv.IntS, AltInv.IntC]`. Conclude with `Iff.rfl`.
+Simplify using the standard rewrite rules. Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem intS_iff_alt {σ : Type} (F : MvPowerSeries σ C) : IntS V F ↔ AltInv.IntS V.v F := by
   simp only [IntS, AltInv.IntS, AltInv.IntC]
   exact Iff.rfl
 
 /- English proof (translation)
-Use `set L : Matrix σ σ C := Matrix.of fun k c : σ => MvPowerSeries.coeff (Finsupp.single c 1) (φ k) with hLdef`. Establish `hdet : IsUnit L.det`. Use `isUnit_iff_ne_zero.mpr fun h0 => ?_` and prove the remaining obligations. Rewrite `hL` using `[h0]`. Simplify using `at hL`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `set N : Matrix σ σ C := L⁻¹ with hNdef`. Establish `hLN : L * N = 1` using `Matrix.mul_nonsing_inv L hdet`. Establish `hNL : N * L = 1` using `Matrix.nonsing_inv_mul L hdet`. Establish `comb : ∀ {M : Type} [AddCommGroup M] [Module C M] (A B : Matrix σ σ C), A * B = 1 → ∀ (X : σ → M) (i : σ), ∑ j, A i j • ∑ k, B j k • X k = X i`. Introduce `M _ _ A B hAB X i`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Finset.smul_sum, smul_smul]`. Rewrite using `[Finset.sum_comm]`. Simplify using `only [← Finset.sum_smul]`. Establish `hrow : ∀ k, ∑ j, A i j * B j k = (1 : Matrix σ σ C) i k` using `fun k => by`. Rewrite using `[← hAB, Matrix.mul_apply]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [hrow, Matrix.one_apply, ite_smul, one_smul, zero_smul, Finset.sum_ite_eq, Finset.mem_univ, if_true]`. Establish `hcoeff : ∀ (ψ : σ → MvPowerSeries σ C) j μ, MvPowerSeries.coeff μ (∑ k, N j k • ψ k) = ∑ k, N j k * MvPowerSeries.coeff μ (ψ k)`. Introduce `ψ j μ`. Simplify using `only [map_sum, MvPowerSeries.coeff_smul]`. Establish `hcc : ∀ (ψ : σ → MvPowerSeries σ C), (∀ k, MvPowerSeries.constantCoeff (ψ k) = 0) → ∀ j, MvPowerSeries.constantCoeff (∑ k, N j k • ψ k) = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `ψ hψ j`. Rewrite using `[← MvPowerSeries.coeff_zero_eq_constantCoeff_apply, hcoeff]`. Simplify using `[MvPowerSeries.coeff_zero_eq_constantCoeff_apply, hψ]`. Establish `hid : Formalism.FG.IsIdMod2 (fun j => ∑ k, N j k • φ k)`. Use `⟨hcc φ hφ0, fun j i => ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `show MvPowerSeries.coeff (Finsupp.single i 1) (∑ k, N j k • φ k) = _`. Rewrite using `[hcoeff]`. Establish `hNLji : ∑ k, N j k * MvPowerSeries.coeff (Finsupp.single i 1) (φ k) = (N * L) j i`. Rewrite using `[Matrix.mul_apply]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Rewrite using `[hNLji, hNL, Matrix.one_apply]`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[if_neg (Ne.symm hij), if_neg hij]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨h, hh0, hhs⟩` from `Formalism.FG.solve_exists_vector C σ σ (fun j => ∑ k, N j k • φ k) (fun j => ∑ k, N j k • φ₂ k) hid (hcc φ₂ hφ0₂)`. Establish `hsub_h : MvPowerSeries.HasSubst h` using `MvPowerSeries.hasSubst_of_constantCoeff_zero hh0`. Establish `hlin : ∀ (a : σ → MvPowerSeries σ C), MvPowerSeries.HasSubst a → ∀ j, MvPowerSeries.subst a (∑ k, N j k • φ k) = ∑ k, N j k • MvPowerSeries.subst a (φ k)`. Introduce `a ha j`. Rewrite using `[← MvPowerSeries.coe_substAlgHom ha, map_sum, MvPowerSeries.coe_substAlgHom ha]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Finset.sum_congr rfl fun k _ => MvPowerSeries.subst_smul ha _ _`. Establish `hφh : ∀ k, MvPowerSeries.subst h (φ k) = φ₂ k`. Establish `h1 : ∀ j, ∑ k, N j k • MvPowerSeries.subst h (φ k) = ∑ k, N j k • φ₂ k`. Introduce `j`. Rewrite using `[← hlin h hsub_h]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `hhs j`. Introduce `i`. Establish `e1` using `comb L N hLN (fun k => MvPowerSeries.subst h (φ k)) i`. Establish `e2` using `comb L N hLN φ₂ i`. Simplify using `only [h1] at e1`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `e1.symm.trans e2`. Establish `hhI : ∀ c, IntS V (h c)`. Establish `hint` using `AltInv.intS_invG φ h φ₂ hφ0 (fun k => (intS_iff_alt V _).mp (hφ k)) hL hh0 (fun k => (intS_iff_alt V _).mp (hφ₂ k)) hφh`. Conclude with `fun c => (intS_iff_alt V _).mpr (hint c)`. Establish `hsub_t : MvPowerSeries.HasSubst t` using `MvPowerSeries.hasSubst_of_constantCoeff_zero ht0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hsub_t₂ : MvPowerSeries.HasSubst t₂` using `MvPowerSeries.hasSubst_of_constantCoeff_zero ht0₂`. Use `set t' : σ → MvPowerSeries σ C := fun c => MvPowerSeries.subst t₂ (h c) with ht'`. Establish `hL1t : ∀ i, Formalism.FG.SolveVAux.Low 1 (t i)` using `fun i => (Formalism.FG.SolveVAux.low_one_iff _).mpr (ht0 i)`. Establish `hL1t' : ∀ i, Formalism.FG.SolveVAux.Low 1 (t' i)` using `fun i => Formalism.FG.SolveVAux.low_subst (fun j => (Formalism.FG.SolveVAux.low_one_iff _).mpr (ht0₂ j)) ((Formalism.FG.SolveVAux.low_one_iff _).mpr (hh0 i))`. Establish `hsub_t' : MvPowerSeries.HasSubst t'` using `MvPowerSeries.hasSubst_of_constantCoeff_zero fun i => (Formalism.FG.SolveVAux.low_one_iff _).mp (hL1t' i)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hφt : ∀ k, MvPowerSeries.subst t (φ k) = MvPowerSeries.subst t' (φ k)`. Introduce `k`. Rewrite using `[heq k, ← hφh k]`. Conclude with `MvPowerSeries.subst_comp_subst_apply hsub_h hsub_t₂ (φ k)`. Establish `hg2 : ∀ j, Formalism.FG.SolveVAux.Low 2 ((∑ k, N j k • φ k) - MvPowerSeries.X j)`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Introduce `j`. Unfold `Formalism.FG.SolveVAux.Low`. Introduce `d hd`. Rewrite using `[map_sub]`. Break down `(by omega : d.degree = 0 ∨ d.degree = 1) with hd0 | hd1` into its components or cases.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Establish `hd00 : d = 0` using `(Finsupp.degree_eq_zero_iff d).mp hd0`. Substitute `hd00` using the available equality. Simplify using `[MvPowerSeries.coeff_zero_eq_constantCoeff_apply, hφ0]`. Take `⟨i, rfl⟩` from `Formalism.FG.SolveVAux.degree_eq_one d hd1`. Rewrite using `[show MvPowerSeries.coeff (Finsupp.single i 1) (∑ k, N j k • φ k) = if i = j then 1 else 0 from hid.2 j i, MvPowerSeries.coeff_X]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[if_neg hij, if_neg]`. Simplify using the standard rewrite rules.
+Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `h'`. Conclude with `hij (Finsupp.single_left_injective one_ne_zero h')`. Establish `hlow : ∀ (M : ℕ) (i : σ), Formalism.FG.SolveVAux.Low M (t i - t' i)`. Introduce `M`. Proceed by induction on `M with`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Consider the case `zero => exact fun i => Formalism.FG.SolveVAux.low_zero _`. Consider the case `succ M ih`. Introduce `i`. Establish `hsplit : ∀ a : σ → MvPowerSeries σ C, MvPowerSeries.HasSubst a → MvPowerSeries.subst a (∑ k, N i k • φ k) = a i + MvPowerSeries.subst a ((∑ k, N i k • φ k) - MvPowerSeries.X i)`. Introduce `a ha`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[MvPowerSeries.subst_sub ha, MvPowerSeries.subst_X ha]`. Normalize the expressions using the abelian group laws. Establish `hfeq : MvPowerSeries.subst t (∑ k, N i k • φ k) = MvPowerSeries.subst t' (∑ k, N i k • φ k)`. Rewrite using `[hlin t hsub_t, hlin t' hsub_t']`. Simplify using `only [hφt]`.
+Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. By extensionality, compare the relevant components.
 
-Establish `h1` using `hsplit t hsub_t`. Establish `h2` using `hsplit t' hsub_t'`. Rewrite `h1` using `[hfeq]`. Establish `hdiff : t i - t' i = -(MvPowerSeries.subst t ((∑ k, N i k • φ k) - MvPowerSeries.X i) - MvPowerSeries.subst t' ((∑ k, N i k • φ k) - MvPowerSeries.X i))`. Take the linear combination `h2 - h1`.
-
-Rewrite using `[hdiff]`. Conclude with `Formalism.FG.SolveVAux.low_neg (Formalism.FG.SolveVAux.low_subst_sub hL1t hL1t' ih (hg2 i))`. Establish `htt : t = t'`. Use function extensionality and compare the values at `i`. Use extensionality with `d`.
-
-Establish `hd` using `hlow (d.degree + 1) i d (Nat.lt_succ_self _)`. Rewrite `hd` using `[map_sub]`. Conclude with `sub_eq_zero.mp hd`. Conclude with `⟨h, hh0, hhI, fun c => congrFun htt c⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem one_group {σ : Type} [Fintype σ] (t t₂ φ φ₂ : σ → MvPowerSeries σ C)
     (ht0₂ : ∀ c, MvPowerSeries.constantCoeff (t₂ c) = 0) (ht0 : ∀ c, MvPowerSeries.constantCoeff (t c) = 0)
@@ -220,11 +216,9 @@ theorem one_group {σ : Type} [Fintype σ] (t t₂ φ φ₂ : σ → MvPowerSeri
   exact ⟨h, hh0, hhI, fun c => congrFun htt c⟩
 
 /- English proof (translation)
-Rewrite using `[MvPowerSeries.constantCoeff_subst (MvPowerSeries.hasSubst_of_constantCoeff_zero ha)]`. Rewrite using `[finsum_eq_single _ 0]`. Simplify using the standard rewrite rules. Introduce `e he`. Choose the witnesses or unpack the hypotheses as in `⟨s, hs⟩ : ∃ s, e s ≠ 0 := by`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Assume the negation of the conclusion as `h`. Use `push_neg at h`. Conclude with `he (Finsupp.ext h)`. Rewrite using `[map_finsuppProd]`. Simplify using `only [map_pow, ha, Finsupp.prod]`.
-
-Rewrite using `[Finset.prod_eq_zero (Finsupp.mem_support_iff.mpr hs) (zero_pow hs), smul_zero]`.
+Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem cc_subst_lemma {σ τ A : Type} [Finite σ] [CommRing A] (a : σ → MvPowerSeries τ A)
     (ha : ∀ s, MvPowerSeries.constantCoeff (a s) = 0) (f : MvPowerSeries σ A) :
@@ -242,11 +236,11 @@ private theorem cc_subst_lemma {σ τ A : Type} [Finite σ] [CommRing A] (a : σ
     rw [Finset.prod_eq_zero (Finsupp.mem_support_iff.mpr hs) (zero_pow hs), smul_zero]
 
 /- English proof (translation)
-Establish `hX : MvPowerSeries.HasSubst (fun x : I g => (MvPowerSeries.X (⟨g, x⟩ : WV I) : MvPowerSeries (WV I) C))` using `MvPowerSeries.hasSubst_of_constantCoeff_zero (fun x => by simp)`. Establish `hT : MvPowerSeries.HasSubst (fun w : WV I => upG w.1 (t w.1 w.2))` using `MvPowerSeries.hasSubst_of_constantCoeff_zero (fun w => by`. Unfold `upG`. Rewrite using `[cc_subst_lemma _ (fun x => by simp)]`. Conclude with `ht0 w.1 w.2)`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `ht : MvPowerSeries.HasSubst (t g)` using `MvPowerSeries.hasSubst_of_constantCoeff_zero (ht0 g)`. Establish `e1 : upG g γ = MvPowerSeries.subst (fun x : I g => (MvPowerSeries.X (⟨g, x⟩ : WV I) : MvPowerSeries (WV I) C)) γ` using `rfl`. Establish `e2 : upG g (MvPowerSeries.subst (t g) γ) = MvPowerSeries.subst (fun x : I g => (MvPowerSeries.X (⟨g, x⟩ : WV I) : MvPowerSeries (WV I) C)) (MvPowerSeries.subst (t g) γ)` using `rfl`. Rewrite using `[e1, e2, MvPowerSeries.subst_comp_subst_apply hX hT, MvPowerSeries.subst_comp_subst_apply ht hX]`. Use `congr 1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `x`. Rewrite using `[MvPowerSeries.subst_X hT]`. Apply the tactic sequence `try rfl`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem upG_subst {I : Fin 2 → Type} [∀ g, Fintype (I g)] (t : ∀ g, I g → MvPowerSeries (I g) C)
     (ht0 : ∀ g c, MvPowerSeries.constantCoeff (t g c) = 0) (g : Fin 2) (γ : MvPowerSeries (I g) C) :
@@ -271,15 +265,13 @@ theorem upG_subst {I : Fin 2 → Type} [∀ g, Fintype (I g)] (t : ∀ g, I g �
   try rfl
 
 /- English proof (translation)
-Introduce and unpack `F ⟨γ, hγ, rfl⟩`. Establish `hX : ∀ (g : Fin 2) (x : I g), AltInv.IntS V.v (MvPowerSeries.X (⟨g, x⟩ : WV I) : MvPowerSeries (WV I) C)` using `fun g x => by`. Introduce `μ`. Rewrite using `[MvPowerSeries.coeff_X]`. Use `split_ifs`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `AltInv.intC_one (v := V.v)`. Conclude with `AltInv.intC_zero (v := V.v)`. Establish `hH0 : ∀ w : WV I, MvPowerSeries.constantCoeff (upG w.1 (h w.1 w.2)) = 0` using `fun w => by`. Unfold `upG`. Rewrite using `[cc_subst_lemma _ (fun x => by simp)]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hh0 w.1 w.2`. Establish `hHI : ∀ w : WV I, IntS V (upG w.1 (h w.1 w.2))` using `fun w => by`. Rewrite using `[intS_iff_alt]`. Conclude with `AltInv.intS_subst (v := V.v) (fun x => by simp) (fun x => hX w.1 x) ((intS_iff_alt V _).mp (hhI w.1 w.2))`. Establish `hH : MvPowerSeries.HasSubst (fun w : WV I => upG w.1 (h w.1 w.2))` using `MvPowerSeries.hasSubst_of_constantCoeff_zero hH0`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hT₂ : MvPowerSeries.HasSubst (fun w : WV I => upG w.1 (t₂ w.1 w.2))` using `MvPowerSeries.hasSubst_of_constantCoeff_zero (fun w => by`. Unfold `upG`. Rewrite using `[cc_subst_lemma _ (fun x => by simp)]`. Conclude with `ht0₂ w.1 w.2)`. Use `⟨MvPowerSeries.subst (fun w : WV I => upG w.1 (h w.1 w.2)) γ, ?_, ?_⟩` and prove the remaining obligations.
-
-Conclude with `AltInv.intS_subst (v := V.v) hH0 (fun w => (intS_iff_alt V _).mp (hHI w)) ((intS_iff_alt V γ).mp hγ)`. Rewrite using `[MvPowerSeries.subst_comp_subst_apply hH hT₂]`. Use `congr 1`. Use function extensionality and compare the values at `w`. Rewrite using `[upG_subst t₂ ht0₂, ← hth]`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem germ_sub {I : Fin 2 → Type} [∀ g, Fintype (I g)] (t t₂ h : ∀ g, I g → MvPowerSeries (I g) C)
     (ht0₂ : ∀ g c, MvPowerSeries.constantCoeff (t₂ g c) = 0)
@@ -317,7 +309,7 @@ theorem germ_sub {I : Fin 2 → Type} [∀ g, Fintype (I g)] (t t₂ h : ∀ g, 
     rw [upG_subst t₂ ht0₂, ← hth]
 
 /- English proof (translation)
-Introduce `I _ t t₂ φ φ₂ ht0 ht0₂ hφ0 hφ hL hφ0₂ hφ₂ hL₂ heq`. Use `choose h hh0 hhI hth using fun g => one_group V (t g) (t₂ g) (φ g) (φ₂ g) (ht0₂ g) (ht0 g) (hφ0 g) (hφ g) (hL g) (hφ0₂ g) (hφ₂ g) (heq g)`. Use `choose h' hh0' hhI' hth' using fun g => one_group V (t₂ g) (t g) (φ₂ g) (φ g) (ht0 g) (ht0₂ g) (hφ0₂ g) (hφ₂ g) (hL₂ g) (hφ0 g) (hφ g) (fun k => (heq g k).symm)`. Conclude with `Set.Subset.antisymm (germ_sub V t t₂ h ht0₂ hh0 hhI hth) (germ_sub V t₂ t h' ht0 hh0' hhI' hth')`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem abstract_germ_zero : AbstractGermZeroCondition V := by
   intro I _ t t₂ φ φ₂ ht0 ht0₂ hφ0 hφ hL hφ0₂ hφ₂ hL₂ heq

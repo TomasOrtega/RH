@@ -23,7 +23,7 @@ open scoped TensorProduct
 namespace UpperTheory.Gal.Ord
 
 /- English proof (translation)
-Use `haveI := u.isPrime`. Establish `hu : u.asIdeal = ⊥` using `Ideal.eq_bot_of_prime _`. Use `show Ideal.comap φ u.asIdeal = RingHom.ker φ`. Rewrite using `[hu, RingHom.ker_eq_comap_bot]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem asIdeal_spMap {B k : Type} [CommRing B] [Field k] (φ : B →+* k) (u : Sp k) :
     ((spMap φ).base u).asIdeal = RingHom.ker φ := by
@@ -33,9 +33,9 @@ private theorem asIdeal_spMap {B k : Type} [CommRing B] [Field k] (φ : B →+* 
   rw [hu, RingHom.ker_eq_comap_bot]
 
 /- English proof (translation)
-Establish `hk : RingHom.ker β = IsLocalRing.maximalIdeal R`. Rewrite using `[← asIdeal_spMap β u, h]`. Both sides reduce to the same expression. Establish `h0 : (p : k) = 0`. Establish `hm : (p : R) ∈ RingHom.ker β`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hk]`. Conclude with `hpR`. Rewrite `hm` using `[RingHom.mem_ker, map_natCast]`. Conclude with `hm`. Conclude with `(CharP.charP_iff_prime_eq_zero (Fact.out : p.Prime)).mpr h0`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem charP_of_eq_closedPoint {p : ℕ} [Fact p.Prime] {R : Type} [CommRing R] [IsLocalRing R]
     (hpR : (p : R) ∈ IsLocalRing.maximalIdeal R) {k : Type} [Field k] (β : R →+* k) (u : Sp k)
@@ -52,13 +52,11 @@ private theorem charP_of_eq_closedPoint {p : ℕ} [Fact p.Prime] {R : Type} [Com
   exact (CharP.charP_iff_prime_eq_zero (Fact.out : p.Prime)).mpr h0
 
 /- English proof (translation)
-Establish `hne : w ≠ ⊥`. Introduce `h`. Rewrite `hp` using `[h, Ideal.mem_bot]`. Conclude with `(Nat.cast_ne_zero.mpr (Fact.out : p.Prime).ne_zero) hp`. Use `haveI : w.IsMaximal := hw.isMaximal hne`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨inferInstance, ?_⟩` and prove the remaining obligations. Take `⟨q, n, hn, hqw, hq, hN⟩` from `Ideal.exists_prime_and_absNorm_eq_pow w`. Establish `hqp : q = p`. Assume the negation of the conclusion as `hne'`. Establish `hcop : Nat.Coprime p q` using `(Nat.coprime_primes Fact.out hq).mpr (Ne.symm hne')`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : (((Nat.gcd p q : ℕ) : ℤ) : 𝓞 F) ∈ w`. Rewrite using `[Nat.gcd_eq_gcd_ab]`. Use `push_cast`. Conclude with `w.add_mem (w.mul_mem_right _ hp) (w.mul_mem_right _ hqw)`. Rewrite `h1` using `[hcop.gcd_eq_one, Nat.cast_one, Int.cast_one]`.
-
-Conclude with `(Ideal.IsMaximal.ne_top inferInstance) ((Ideal.eq_top_iff_one w).mpr h1)`. Conclude with `⟨n, hn, hqp ▸ hN⟩`.
+Move the embeddings inside the algebraic operations. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem exists_absNorm_eq {p : ℕ} [Fact p.Prime] {F : Type} [Field F] [NumberField F] (w : Ideal (𝓞 F))
     (hw : w.IsPrime) (hp : (p : 𝓞 F) ∈ w) : w.IsMaximal ∧ ∃ f : ℕ, 0 < f ∧ Ideal.absNorm w = p ^ f := by
@@ -83,45 +81,37 @@ private theorem exists_absNorm_eq {p : ℕ} [Fact p.Prime] {F : Type} [Field F] 
 end UpperTheory.Gal.Ord
 
 /- English proof (translation)
-Introduce `p _ D R _ _ _ _ b N hN hNp hpR hm i w hw M z hz hmin k _ _ y hy`. Use `haveI : Smooth M.s := @SmoothOfRelativeDimension.smooth _ _ _ _ M.smooth`. Use `set β : R →+* k := (Spec.preimage (y ≫ M.s)).hom with hβdef`. Establish `hyβ : y ≫ M.s = spMap β` using `(Spec.map_preimage (y ≫ M.s)).symm`. Establish `hβbase : (spMap β).base (IsLocalRing.closedPoint k) = IsLocalRing.closedPoint R`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← hyβ]`. Conclude with `(congrArg M.s.base (hy _)).trans hz`. Use `haveI hchar : CharP k p := charP_of_eq_closedPoint hpR β _ hβbase`. Establish `hk : (p : k) = 0` using `CharP.cast_eq_zero k p`. Establish `hkerβ : RingHom.ker β = IsLocalRing.maximalIdeal R`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← asIdeal_spMap β (IsLocalRing.closedPoint k), hβbase]`. Both sides reduce to the same expression. Establish `hkerw : RingHom.ker (β.comp (b.t i)) = w`. Rewrite using `[← RingHom.comap_ker, hkerβ, hw]`. Establish `hwP : w.IsPrime`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← hkerw]`. Conclude with `RingHom.ker_isPrime _`. Establish `hpw : (p : 𝓞 D.F) ∈ w`. Rewrite using `[← hkerw, RingHom.mem_ker, RingHom.comp_apply, map_natCast, map_natCast]`. Conclude with `hk`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction.
 
-Take `⟨hwM, f, hf, hnorm⟩` from `exists_absNorm_eq w hwP hpw`. Take `⟨π⟩` from `par p D.F w f hwM hpw hf`. Take `⟨o₀, ⟨a₀⟩⟩` from `GlobalTheory.T.exists_harrisTaylorModuliObject_pullback p D R b N M.X (Sp k) M.s (spMap β) y hyβ M.univ`. Apply `ordPull p D R b N M.X M.s M.univ w k y (spMap β) o₀ a₀` to reduce the goal to its premises. Break down `point p D R b N hN hNp hm k hk β o₀ i w f hkerw hnorm hf π with hW | hNO` into its components or cases.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `hW`. It suffices to derive a contradiction. Establish `hLin` using `lin p D R b N hN hNp hm k hk β o₀ i w f hkerw hnorm hf π`. Establish `hcard : Nat.card (𝓞 D.F ⧸ w) = p ^ f`. Rewrite using `[← Submodule.cardQuot_apply, ← Ideal.absNorm_apply]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hnorm`. Take `⟨x, hxε, hxg, y0, hy0, hxy0⟩` from `alg2 p k (𝓞 D.F) w f hf hcard π (β.comp (b.t i)) _ (coh o₀) (PrimitiveSubmodule o₀.A) _ hLin`. Establish `hxFil : x ∈ Fil o₀.A`. Rewrite using `[Fil, Submodule.mem_dualAnnihilator]`. Introduce `c hc`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← hxε c]`. Establish `hle : Submodule.span k (Set.range fun c' => (coh o₀ π.g) ((⇑(frobDR p k hk o₀.A))^[f] c')) ≤ LinearMap.ker x`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨c', rfl⟩`. Conclude with `hxg c'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Both sides reduce to the same expression.
 
-Conclude with `hle (hNO c hc)`. Establish `hhom : hom o₀ π.ε x = x`. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `c`. Conclude with `hxε c`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨φ, hφ⟩` from `GlobalTheory.T.harrisTaylor_exists_deRham_pairing p D R b N hN hNp k (spMap β) o₀`. Take `⟨g, hKS, hgx⟩` from `ks p D R b N hN hNp hm k hk β o₀ i w f hkerw hnorm hf π φ hφ x hxFil hhom ⟨y0, hy0, hxy0⟩`. Take `⟨o', m', hlift⟩` from `GlobalTheory.T.harrisTaylor_realise_kodairaSpencer_direction p D R b N hN hNp k (spMap β) o₀ β rfl φ hφ g hKS`. Establish `hfst : (TrivSqZeroExt.fstHom k k k).toRingHom.comp (algebraMap k (DualNumber k)) = RingHom.id k`. Use extensionality with `a`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Both sides reduce to the same expression. Establish `hcomp : spMap (TrivSqZeroExt.fstHom k k k).toRingHom ≫ spMap (algebraMap k (DualNumber k)) = 𝟙 _`. Rewrite using `[← GlobalTheory.Cris.spMap_comp, hfst]`. Use `show Spec.map (CommRingCat.ofHom (RingHom.id k)) = _`. Rewrite using `[CommRingCat.ofHom_id, Spec.map_id]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨v, ⟨hv1, ⟨av⟩⟩, -⟩` from `M.rep (Sp (DualNumber k)) _ o'`. Establish `hcompv : Nonempty (ObjMap o₀ M.univ (spMap (TrivSqZeroExt.fstHom k k k).toRingHom ≫ v))` using `(GlobalTheory.T.harrisTaylorObjectPullback_comp_diagonalBundle p D R b N _ _ _ _ _ _ M.univ o' o₀ v _).1 ⟨m'⟩ ⟨av⟩`. Establish `hyv : y = spMap (TrivSqZeroExt.fstHom k k k).toRingHom ≫ v`. Apply `(M.rep (Sp k) (spMap β) o₀).unique ⟨hyβ, ⟨a₀⟩⟩ ⟨?_, hcompv⟩` to reduce the goal to its premises. Rewrite using `[Category.assoc, hv1, ← Category.assoc, hcomp, Category.id_comp]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hcl : (spMap (TrivSqZeroExt.fstHom k k k).toRingHom).base (IsLocalRing.closedPoint k) = IsLocalRing.closedPoint (DualNumber k)`. Apply `PrimeSpectrum.ext` to reduce the goal to its premises. Use `(asIdeal_spMap (TrivSqZeroExt.fstHom k k k).toRingHom (IsLocalRing.closedPoint k)).trans ?_` and prove the remaining obligations. Conclude with `IsLocalRing.eq_maximalIdeal (RingHom.ker_isMaximal_of_surjective _ (fun a => ⟨TrivSqZeroExt.inl a, rfl⟩))`. Establish `hvz : v.base (IsLocalRing.closedPoint (DualNumber k)) = z`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hcl]`. Establish `h1` using `hy (IsLocalRing.closedPoint k)`. Rewrite `h1` using `[hyv]`. Conclude with `h1`. Take `⟨σ, hσ⟩` from `gen R M.X M.s z hz hmin k y β (hy _) hyβ (fun r hr => by`.
+Extract witnesses or component facts from the available result. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hr' : r ∈ RingHom.ker β` using `hkerβ ▸ hr`. Conclude with `RingHom.mem_ker.mp hr')`. Take `⟨τ, hτ⟩` from `gen R M.X M.s z hz hmin (DualNumber k) v ((algebraMap k (DualNumber k)).comp β) hvz (hv1.trans (GlobalTheory.Cris.spMap_comp β _).symm) (fun r hr => by`. Establish `hr' : r ∈ RingHom.ker β` using `hkerβ ▸ hr`. Rewrite using `[RingHom.comp_apply, RingHom.mem_ker.mp hr', map_zero])`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨oκ, ⟨aκ⟩⟩` from `GlobalTheory.T.exists_harrisTaylorModuliObject_pullback p D R b N M.X _ M.s (M.X.fromSpecResidueField z ≫ M.s) (M.X.fromSpecResidueField z) rfl M.univ`. Establish `a₀' : ObjMap o₀ M.univ (spMap σ ≫ M.X.fromSpecResidueField z)`. Rewrite using `[hσ]`. Conclude with `a₀`. Establish `av' : ObjMap o' M.univ (spMap τ ≫ M.X.fromSpecResidueField z)`.
-
-Rewrite using `[hτ]`. Conclude with `av`. Take `⟨b₀⟩` from `factor p D R b N hN hNp _ _ _ M.s _ _ M.univ oκ o₀ (M.X.fromSpecResidueField z) (spMap σ)`. Use `rfl ((Category.assoc _ _ _).symm.trans ((congrArg (· ≫ M.s) hσ).trans hyβ)) aκ a₀'`. Take `⟨b'⟩` from `factor p D R b N hN hNp _ _ _ M.s _ _ M.univ oκ o' (M.X.fromSpecResidueField z) (spMap τ)`.
-
-Use `rfl ((Category.assoc _ _ _).symm.trans ((congrArg (· ≫ M.s) hτ).trans hv1)) aκ av'`. Establish `hκ : (p : M.X.residueField z) = 0` using `σ.injective (by rw [map_natCast, map_zero]; exact hk)`. Establish `hT : (p : DualNumber k) = 0`. Rewrite using `[← map_natCast (algebraMap k (DualNumber k)), hk, map_zero]`. Establish `hNO'` using `desc p D R b N w f π _ k (DualNumber k) hκ hk hT σ τ _ _ _ oκ o₀ o' b₀ b' hNO`.
-
-Establish `h0` using `estep p D R b N w f hf π k hk hT (spMap β) _ o₀ o' m' hNO' x hxg`. Rewrite `h0` using `[hhom]`. Establish `hmem` using `(GlobalTheory.T.hodgeFiltration_lift_determines_mod_fil k o₀.A o'.A m'.φ m'.cart o'.ab x hxFil (g x) 0 (hlift x hxFil)).mp h0`. Establish `hneg` using `(Fil o₀.A).neg_mem hmem`. Rewrite `hneg` using `[zero_sub, neg_neg]`.
-
-Conclude with `hgx hneg`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.Ord.ordGen :
     ∀ (p : ℕ) [Fact p.Prime] (D : Datum p) (R : Type) [CommRing R] [IsDomain R] [IsDiscreteValuationRing R] [CharZero R] (b : Base D R) (N : ℕ), 3 ≤ N → N.Coprime p → (p : R) ∈ IsLocalRing.maximalIdeal R → D.m = 1 → ∀ (i : Fin D.a) (w : Ideal (𝓞 D.F)), (IsLocalRing.maximalIdeal R).comap (b.t i) = w → ∀ (M : Model b N) (z : M.X), M.s.base z = IsLocalRing.closedPoint R → (∀ z' : M.X, M.s.base z' = IsLocalRing.closedPoint R → z' ⤳ z → z' = z) → ∀ (k : Type) [Field k] [IsAlgClosed k] (y : Sp k ⟶ M.X), (∀ q, y.base q = z) → IsWOrd M.univ w y := by

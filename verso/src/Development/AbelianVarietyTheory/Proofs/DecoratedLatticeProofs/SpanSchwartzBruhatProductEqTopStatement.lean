@@ -5,7 +5,7 @@ import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ProdFnMemS
 open GlobalTheory.SplitWeil GlobalTheory.LocFlat.CFac
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.LocFlat.CFac.Span.span_prodSB_eq_top` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FSpanSchwartzBruhatProductEqTop.lean&line=149#L149)
 -/

@@ -16,7 +16,7 @@ variable {E : Type} [Field E] [Algebra F E] [FiniteDimensional F E] {d : ℕ}
   (b : Module.Basis (Fin d) F E)
 
 /- English proof (translation)
-Simplify using `only [projV]`. Rewrite using `[crd_map]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem crd_projV {a M : ℕ} (Y : Fin a → Fin M → Af F ⊗[F] E) (v : HeightOneSpectrum (𝓞 F))
     (i : Fin a) (j : Fin M) (k : Fin d) :
@@ -26,9 +26,9 @@ theorem crd_projV {a M : ℕ} (Y : Fin a → Fin M → Af F ⊗[F] E) (v : Heigh
   rfl
 
 /- English proof (translation)
-Establish `h : ∀ (i : Fin a) (j : Fin M) (k : Fin d), ∀ᶠ v in cofinite, (crd b (Af F) (Y i j) k) v ∈ v.adicCompletionIntegers F` using `fun i j k => (crd b (Af F) (Y i j) k).2`. Use `filter_upwards [eventually_all.2 fun i => eventually_all.2 fun j => eventually_all.2 fun k => h i j k] with v hv`. Introduce `i j k`. Use `crd_projV b Y v i j k` as an intermediate fact. Simplify using `only [crd] at this`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Conclude with `hv i j k`.
+A detailed English derivation is pending.
 -/
 theorem eventually_mem_latV {a M : ℕ} (Y : Fin a → Fin M → Af F ⊗[F] E) :
     ∀ᶠ v in cofinite, projV v Y ∈ latV b v := by

@@ -15,11 +15,11 @@ set_option autoImplicit false
 namespace GlobalTheory.CompanionTheory.FormalAlg.Lift.Glue
 
 /- English proof (translation)
-Introduce `ι _ _ A _ P _ _ _ _ res hcomp H I hI m hm`. Establish `key : ∀ i, res {i} ({i} ∪ I) Finset.subset_union_left (m.1 i) = 0`. Introduce `i`. Establish `hJ : ({i} ∪ I).Nonempty` using `⟨i, Finset.mem_union_left I (Finset.mem_singleton_self i)⟩`. Establish `h1` using `ev_eq hcomp hJ (Finset.mem_union_left I (Finset.mem_singleton_self i)) m`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `res_ev hcomp hI hJ Finset.subset_union_right m`. Rewrite `h2` using `[hm, map_zero]`. Conclude with `h1.symm.trans h2.symm`. Use `choose L hL using fun i => H I {i} (m.1 i) (Finset.singleton_nonempty i) (key i)`. Use `⟨∑ j, L j, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `i`. Simplify using `only [Submodule.coe_smul, Pi.smul_apply, Submodule.coe_zero, Pi.zero_apply]`. Establish `hsum : ∑ j, L j = (∑ j, L j - L i) + L i` using `(Nat.sub_add_cancel (Finset.single_le_sum (fun _ _ => Nat.zero_le _) (Finset.mem_univ i))).symm`. Rewrite using `[hsum, pow_add, mul_smul, hL i, smul_zero]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem smul_eq_zero_of_ev_eq_zero : ∀ (ι : Type) [LinearOrder ι] [Fintype ι] (A : Type) [CommRing A] (P : Finset ι → Type) [∀ S, AddCommGroup (P S)] [∀ S, Module A (P S)] [∀ S, Module (MvPolynomial ι A) (P S)] [∀ S, IsScalarTower A (MvPolynomial ι A) (P S)] (res : ∀ S S' : Finset ι, S ⊆ S' → P S →ₗ[MvPolynomial ι A] P S'), (∀ S S' S'' (h : S ⊆ S') (h' : S' ⊆ S'') a, res S' S'' h' (res S S' h a) = res S S'' (h.trans h') a) → (∀ (T S : Finset ι) (a : P S), S.Nonempty → res S (S ∪ T) Finset.subset_union_left a = 0 → ∃ l : ℕ, xProd A T ^ l • a = 0) → ∀ (I : Finset ι) (hI : I.Nonempty) (m : glue res), ev res I hI m = 0 → ∃ l : ℕ, xProd A I ^ l • m = 0 := by
   intro ι _ _ A _ P _ _ _ _ res hcomp H I hI m hm

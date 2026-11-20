@@ -12,14 +12,14 @@ noncomputable section
 namespace SSEn
 
 /- English proof (translation)
-Rewrite using `[AddSubmonoidClass.coe_finsetSum, Finset.sum_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem coe_sum_apply {r : ℕ} {TT : ℝ} {ι : Type} (s : Finset ι) (g : ι → MA.SmQ r TT) (q : MA.Qp r TT) :
     Subtype.val (∑ i ∈ s, g i) q = ∑ i ∈ s, Subtype.val (g i) q := by
   rw [AddSubmonoidClass.coe_finsetSum, Finset.sum_apply]
 
 /- English proof (translation)
-Simplify using `only [MA.SS, Matrix.of_apply]`. Use `split_ifs with h`. Both sides reduce to the same expression. Rewrite using `[zero_mul]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem ss_entry_apply (P : M.Par) (l : ℕ) (ρ π' : M.Ty P) (f : MA.SmQ P.r P.TT) (q : MA.Qp P.r P.TT) :
     Subtype.val ((MA.SS P (MA.DQ P) l ρ π').1 f) q =
@@ -34,23 +34,21 @@ end SSEn
 
 open SSEn in
 /- English proof (translation)
-Introduce `Wp Wq _ _ _ _ _ _ P Bs hk X d hA e he hSSF l hl S hS ζ hζ π ρ`. Take `⟨hpl, hL, hSt, hRel, hQQ⟩` from `hA`. Establish `hTz : Tz P.k P.r Bs.z * Tz P.k P.r Bs.z' = P.TT` using `Gauge.GC.tz_TT P Bs hpl`. Establish `hRB` using `Gauge.GC.radBase_of P Bs hpl`. Set `c0 : Fin P.r → ℂ` to `fun _ => 1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hc0 : c0 ∈ OmX P.r` using `fun _ => one_ne_zero`. Establish `hsec : ((NF.QR P.k P.r Bs.z Bs.z').indicator fun q : (Fin P.r → ℂ) × ℂ => e π q.2) ∈ NF.RadSec P.k P.r Bs.z Bs.z' Bs.μsec Bs.π Bs.π'`. Use `⟨((he.1 π).comp contDiff_snd.contDiffOn fun q hq => ?_).congr fun q hq => ?_, fun q hq => ?_, fun q hq => ?_⟩` and prove the remaining obligations. Use `show P.TT < Complex.normSq q.2`. Rewrite using `[← hTz]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `hq.2`. Simplify using `[Set.indicator_of_mem hq]`. Rewrite using `[Set.indicator_of_mem hq]`. Conclude with `(he.2 q.2 (by rw [← hTz]; exact hq.2)).1 π`. Simplify using `[Set.indicator_of_notMem hq]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Take `⟨Ψ0, hΨ0, hΨr⟩` from `Formalism.FourierDecayAlt.P.radical_reduction_surjective Wp Wq P.k P.r Bs.z Bs.z' Bs.μsec Bs.π Bs.π' hRB _ hsec`. Set `Ψ : Q.RadSp P.k P.r Bs.z Bs.z' Bs.π Bs.π'` to `⟨Ψ0, hΨ0⟩`. Establish `hΨ : (Ψ : Q.Fn P.k P.r (Wq →L[ℂ] Wp)) c0 (NF.muZ P.k P.r Bs.μsec ζ) = e π ζ`. Establish `hq : ((c0, ζ) : (Fin P.r → ℂ) × ℂ) ∈ NF.QR P.k P.r Bs.z Bs.z'` using `⟨hc0, by rw [hTz]; exact hζ⟩`. Establish `h` using `congrFun hΨr (c0, ζ)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Simplify using `only [NF.radR, Set.indicator_of_mem hq] at h`. Conclude with `h`. Establish `hv : ∀ (Θ : Q.RadSp P.k P.r Bs.z Bs.z' Bs.π Bs.π') (σ : M.Ty P), ((Gauge.GC.trR P Bs e Θ σ : MA.SmQ P.r P.TT) : MA.Qp P.r P.TT → ℂ) = Gauge.rawR P Bs.μsec e (Θ : Q.Fn P.k P.r (Wq →L[ℂ] Wp)) σ` using `fun Θ σ => Formalism.FourierDecayAlt.P.CutMP.En.toSm_val_of_mem P (Gauge.GC.radial_space_smoothness Wp Wq P Bs hpl hk e he Θ σ)`. Set `q : MA.Qp P.r P.TT` to `⟨((c0, ζ) : MA.E P.r), ⟨fun _ => one_ne_zero, hζ⟩⟩`. Establish `hw` using `Gauge.GC.wRc_ne P hζ`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e1 : Subtype.val (Gauge.GC.trR P Bs e ((d.SS l).1 Ψ) ρ) q = ((Gauge.wR P.k P.TT ζ : ℝ) : ℂ) * inner ℂ (B.hsVec (e ρ ζ)) (B.hsVec (S ζ (e π ζ)))`. Use `(congrFun (hv ((d.SS l).1 Ψ) ρ) q).trans ?_` and prove the remaining obligations. Use `show ((Gauge.wR P.k P.TT ζ : ℝ) : ℂ) * inner ℂ (B.hsVec (e ρ ζ)) (B.hsVec ((((d.SS l).1 Ψ : Q.RadSp P.k P.r Bs.z Bs.z' Bs.π Bs.π') : Q.Fn P.k P.r (Wq →L[ℂ] Wp)) c0 (NF.muZ P.k P.r Bs.μsec ζ))) = _`. Rewrite using `[hS Ψ c0 hc0 ζ hζ, hΨ]`. Establish `e2 : Subtype.val (Gauge.GC.trR P Bs e ((d.SS l).1 Ψ) ρ) q = ∑ π', Subtype.val ((MA.SS P (MA.DQ P) l ρ π').1 (Gauge.GC.trR P Bs e Ψ π')) q`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `(congrArg (fun F : M.Ty P → MA.SmQ P.r P.TT => Subtype.val (F ρ) q) (hSSF l hl Ψ).1).trans ?_` and prove the remaining obligations. Conclude with `coe_sum_apply _ _ _`. Establish `hterm : ∀ π' : M.Ty P, Subtype.val (Gauge.GC.trR P Bs e Ψ π') q = ((Gauge.wR P.k P.TT ζ : ℝ) : ℂ) * (if π' = π then 1 else 0)`. Introduce `π'`. Rewrite using `[congrFun (hv Ψ π') q]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `show ((Gauge.wR P.k P.TT ζ : ℝ) : ℂ) * inner ℂ (B.hsVec (e π' ζ)) (B.hsVec ((Ψ : Q.Fn P.k P.r (Wq →L[ℂ] Wp)) c0 (NF.muZ P.k P.r Bs.μsec ζ))) = _`. Rewrite using `[hΨ, (he.2 ζ hζ).2.1 π' π]`. Establish `e3 : ∑ π', Subtype.val ((MA.SS P (MA.DQ P) l ρ π').1 (Gauge.GC.trR P Bs e Ψ π')) q = (if M.Up P l π ρ then ((Real.sqrt (M.Nrm P l π) : ℝ) : ℂ) else 0) * ((Gauge.wR P.k P.TT ζ : ℝ) : ℂ)`. Simplify using `only [ss_entry_apply, hterm]`. Rewrite using `[Finset.sum_eq_single π (fun π' _ hne => by simp [hne]) (fun h => absurd (Finset.mem_univ π) h)]`.
-
-Simplify using the standard rewrite rules. Establish `h2 : ((Gauge.wR P.k P.TT ζ : ℝ) : ℂ) * inner ℂ (B.hsVec (e ρ ζ)) (B.hsVec (S ζ (e π ζ))) = ((Gauge.wR P.k P.TT ζ : ℝ) : ℂ) * (if M.Up P l π ρ then ((Real.sqrt (M.Nrm P l π) : ℝ) : ℂ) else 0)`. Rewrite using `[← e1, e2, e3, mul_comm]`. Conclude with `mul_left_cancel₀ hw h2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem second_shift_entry_holds : SSn.Rep.Core.SSEntry := by
   intro Wp Wq _ _ _ _ _ _ P Bs hk X d hA e he hSSF l hl S hS ζ hζ π ρ

@@ -42,7 +42,7 @@ structure SameCar {F E : Type} [Field F] [NumberField F] [Field E] [NumberField 
 end Re
 
 /- English proof (translation)
-Simplify using `[Ranks.N]`.
+Simplify using the standard rewrite rules.
 -/
 theorem rank_eq_first_level (R : Ranks) : R.k = R.N 0 := by
   simp [Ranks.N]
@@ -112,14 +112,14 @@ def ColumnsExtraCompatible {D : D7} {C : ColsTied D} (Fu : ColsFull C) {L : Size
   Formalism.L2.Herm.ExtraTied Fu.full ex
 
 /- English proof (translation)
-Rewrite using `[C.gl_const u D.u₀]`. Conclude with `C.chi`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ColsTied.chi_all {D : D7} (C : ColsTied D) (u : D.what₂.Word) : CharacterCompatible (C.forms u).gl D.R.m := by
   rw [C.gl_const u D.u₀]
   exact C.chi
 
 /- English proof (translation)
-The claim follows from `(T.glev i hi).chi_unit x`.
+A detailed English derivation is pending.
 -/
 theorem FormsTied.chi_unit {D : D7} {u : D.what₂.Word} (T : FormsTied D u) (i : ℕ) (hi : i ≤ D.R.m)
     (x : (T.cls i hi).lev.U) : ‖(((T.cls i hi).lev.chi x : ℂˣ) : ℂ)‖ = 1 :=

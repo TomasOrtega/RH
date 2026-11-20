@@ -27,9 +27,9 @@ theorem stabilizerOf_comp (v : V) :
   rfl
 
 /- English proof (translation)
-Use extensionality with `v`. Simplify using `only [mem_fixedVectors, Subgroup.mem_map]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `hv _ ⟨k, hk, rfl⟩`. Conclude with `hv k hk`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hv k hk`. Conclude with `hv _ ⟨k, hk, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem fixedVectors_comp (K : Subgroup G) :
     fixedVectors (σ.comp e.toMulEquiv.toMonoidHom) K =
@@ -43,7 +43,7 @@ theorem fixedVectors_comp (K : Subgroup G) :
     exact hv _ ⟨k, hk, rfl⟩
 
 /- English proof (translation)
-Use `forall_congr' fun v => ?_` and prove the remaining obligations. Rewrite using `[stabilizerOf_comp]`. Conclude with `e.toHomeomorph.isOpen_preimage`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isSmooth_comp_iff : IsSmooth (σ.comp e.toMulEquiv.toMonoidHom) ↔ IsSmooth σ := by
   refine forall_congr' fun v => ?_
@@ -51,27 +51,25 @@ theorem isSmooth_comp_iff : IsSmooth (σ.comp e.toMulEquiv.toMonoidHom) ↔ IsSm
   exact e.toHomeomorph.isOpen_preimage
 
 /- English proof (translation)
-The claim follows from `Subgroup.coe_map _ _`.
+A detailed English derivation is pending.
 -/
 theorem coe_map_eq_image (K : Subgroup G) :
     ((K.map e.toMulEquiv.toMonoidHom : Subgroup H) : Set H) = e '' (K : Set G) :=
   Subgroup.coe_map _ _
 
 /- English proof (translation)
-The claim follows from `Subgroup.map_comap_eq_self_of_surjective e.toMulEquiv.surjective K`.
+A detailed English derivation is pending.
 -/
 theorem map_comap_eq (K : Subgroup H) :
     (K.comap e.toMulEquiv.toMonoidHom).map e.toMulEquiv.toMonoidHom = K :=
   Subgroup.map_comap_eq_self_of_surjective e.toMulEquiv.surjective K
 
 /- English proof (translation)
-Use `and_congr (isSmooth_comp_iff e σ) ⟨fun h K hKc hKo => ?_, fun h K hKc hKo => ?_⟩` and prove the remaining obligations. Establish `hc : IsCompact ((K.comap e.toMulEquiv.toMonoidHom : Subgroup G) : Set G)`. Rewrite using `[Subgroup.coe_comap]`. Conclude with `e.toHomeomorph.isCompact_preimage.2 hKc`. Establish `ho : IsOpen ((K.comap e.toMulEquiv.toMonoidHom : Subgroup G) : Set G)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Subgroup.coe_comap]`. Conclude with `hKo.preimage e.continuous`. Use `h _ hc ho` as an intermediate fact. Rewrite `this` using `[fixedVectors_comp, map_comap_eq]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[fixedVectors_comp]`. Use `h _ ?_ ?_` and prove the remaining obligations. Rewrite using `[coe_map_eq_image]`. Conclude with `hKc.image e.continuous`. Rewrite using `[coe_map_eq_image]`.
-
-Conclude with `e.toHomeomorph.isOpenMap _ hKo`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isAdmissible_comp_iff :
     IsAdmissible (σ.comp e.toMulEquiv.toMonoidHom) ↔ IsAdmissible σ := by
@@ -104,7 +102,7 @@ def subrepresentationCompOrderIso {G H : Type*} [Group G] [Group H] (f : G →* 
   map_rel_iff' := Iff.rfl
 
 /- English proof (translation)
-The claim follows from `OrderIso.isSimpleOrder_iff (subrepresentationCompOrderIso _ e.toMulEquiv.surjective σ)`.
+A detailed English derivation is pending.
 -/
 theorem isIrreducible_comp_iff :
     Representation.IsIrreducible (σ.comp e.toMulEquiv.toMonoidHom) ↔ σ.IsIrreducible :=
@@ -118,9 +116,9 @@ variable {F : Type*} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchi
   {n : ℕ} {α : Type*} [LinearOrder α] {β : Fin n → α}
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [blocks, Matrix.one_apply]`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Rewrite using `[if_neg (fun e => h (Subtype.ext e)), if_neg h]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem blocks_one (a : Set.range β) : blocks β F (1 : Matrix (Fin n) (Fin n) F) a = 1 := by
   ext i j
@@ -131,7 +129,7 @@ theorem blocks_one (a : Set.range β) : blocks β F (1 : Matrix (Fin n) (Fin n) 
   · rw [if_neg (fun e => h (Subtype.ext e)), if_neg h]
 
 /- English proof (translation)
-Rewrite using `[blocks_mul hX hY]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem blocks_mul_apply {X Y : Matrix (Fin n) (Fin n) F} (hX : ∀ i j, β i ≠ β j → X i j = 0)
     (hY : ∀ i j, β i ≠ β j → Y i j = 0) (a : Set.range β) :
@@ -140,7 +138,7 @@ theorem blocks_mul_apply {X Y : Matrix (Fin n) (Fin n) F} (hX : ∀ i j, β i �
   rfl
 
 /- English proof (translation)
-The claim follows from `mem_levi.1 hm`.
+A detailed English derivation is pending.
 -/
 theorem levi_blockDiag {m : GL (Fin n) F} (hm : m ∈ levi F n β) :
     ∀ i j, β i ≠ β j → (m : Matrix (Fin n) (Fin n) F) i j = 0 :=
@@ -190,11 +188,9 @@ theorem coe_leviAssemble (x : ∀ a : Set.range β, GL (Fiber β a) F) :
       blockAssemble β F fun a => (x a : Matrix (Fiber β a) (Fiber β a) F) := rfl
 
 /- English proof (translation)
-Use `continuous_matrix fun i j => ?_` and prove the remaining obligations. Distinguish the cases in `h : β i = β j`. Establish `hj : blockOf β j = blockOf β i` using `Subtype.ext h.symm`. Establish `e : (fun x => blockAssemble β F (f x) i j) = fun x => f x (blockOf β i) ⟨i, rfl⟩ ⟨j, hj⟩`. Use function extensionality and compare the values at `fun x => blockAssemble_apply_of_eq _ rfl hj`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[e]`. Conclude with `hf _ _ _`. Establish `e : (fun x => blockAssemble β F (f x) i j) = fun _ => 0`. Use function extensionality and compare the values at `fun x => blockAssemble_apply_of_ne _ h`. Rewrite using `[e]`.
-
-Conclude with `continuous_const`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_blockAssemble_apply {X : Type*} [TopologicalSpace X]
     {f : X → ∀ a : Set.range β, Matrix (Fiber β a) (Fiber β a) F}
@@ -264,7 +260,7 @@ variable {n : ℕ} {α : Type*} [LinearOrder α] (β : Fin n → α)
 def blockSize (a : Set.range β) : ℕ := Fintype.card (Fiber β a)
 
 /- English proof (translation)
-Rewrite using `[show ∑ a : Set.range β, blockSize β a = Fintype.card (Σ a : Set.range β, Fiber β a) from (Fintype.card_sigma).symm]`. Rewrite using `[Fintype.card_congr (Equiv.sigmaFiberEquiv (blockOf β)), Fintype.card_fin]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem sum_blockSize : ∑ a : Set.range β, blockSize β a = n := by
   rw [show ∑ a : Set.range β, blockSize β a = Fintype.card (Σ a : Set.range β, Fiber β a) from
@@ -272,16 +268,16 @@ theorem sum_blockSize : ∑ a : Set.range β, blockSize β a = n := by
   rw [Fintype.card_congr (Equiv.sigmaFiberEquiv (blockOf β)), Fintype.card_fin]
 
 /- English proof (translation)
-Take `⟨i, hi⟩` from `a.2`. Conclude with `Fintype.card_pos_iff.2 ⟨⟨i, Subtype.ext hi⟩⟩`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem blockSize_pos (a : Set.range β) : 0 < blockSize β a := by
   obtain ⟨i, hi⟩ := a.2
   exact Fintype.card_pos_iff.2 ⟨⟨i, Subtype.ext hi⟩⟩
 
 /- English proof (translation)
-Take `⟨i, j, hij⟩` from `hβ`. Establish `hout : ∃ k, blockOf β k ≠ a`. Assume the negation of the conclusion as `hall`. Use `push Not at hall`. Conclude with `hij ((congrArg Subtype.val (hall i)).trans (congrArg Subtype.val (hall j)).symm)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨k, hk⟩` from `hout`. Use `Fintype.card_subtype_lt (p := fun i => blockOf β i = a) hk` as an intermediate fact. Rewrite `this` using `[Fintype.card_fin]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem blockSize_lt (hβ : ∃ i j, β i ≠ β j) (a : Set.range β) : blockSize β a < n := by
   obtain ⟨i, j, hij⟩ := hβ
@@ -329,20 +325,18 @@ theorem leviEquivPi_apply (m : levi F n β) (a : Set.range β) (k l : Fin (block
       (m : GL (Fin n) F) (fiberFin β a k).1 (fiberFin β a l).1 := rfl
 
 /- English proof (translation)
-Rewrite using `[Equiv.apply_symm_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem fiberFin_symm_apply_blockOf (i : Fin n) :
     (fiberFin β (blockOf β i) ((fiberFin β (blockOf β i)).symm ⟨i, rfl⟩)).1 = i := by
   rw [Equiv.apply_symm_apply]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hm a k l hkl`. Rewrite using `[leviEquivPi_apply]`. Conclude with `hm hkl`. Introduce `h i j hij`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hb : β i = β j`. Establish `hj : blockOf β j = blockOf β i` using `Subtype.ext hb.symm set a := blockOf β i set k := (fiberFin β a).symm ⟨i, rfl⟩ set l := (fiberFin β a).symm ⟨j, hj⟩`. Establish `hk : (fiberFin β a k).1 = i` using `by simp [k]`. Establish `hl : (fiberFin β a l).1 = j` using `by simp [l]`. Establish `hkl : restrictFun β γ a l < restrictFun β γ a k`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [restrictFun, hk, hl]`. Conclude with `hij`. Use `h a hkl` as an intermediate fact. Rewrite `this` using `[leviEquivPi_apply, hk, hl]`. Conclude with `this`.
-
-Conclude with `mem_levi.1 m.2 i j hb`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_blockUpper_iff_leviEquivPi {α' : Type*} [LinearOrder α'] (γ : Fin n → α')
     (m : levi F n β) :
@@ -369,7 +363,7 @@ theorem mem_blockUpper_iff_leviEquivPi {α' : Type*} [LinearOrder α'] (γ : Fin
     · exact mem_levi.1 m.2 i j hb
 
 /- English proof (translation)
-Use `show (m : GL (Fin n) F) ∈ blockUpper F n γ ⊓ blockUpper F n (OrderDual.toDual ∘ γ) ↔ _`. Rewrite using `[Subgroup.mem_inf, mem_blockUpper_iff_leviEquivPi, mem_blockUpper_iff_leviEquivPi]`. Conclude with `⟨fun h a => ⟨h.1 a, h.2 a⟩, fun h => ⟨fun a => (h a).1, fun a => (h a).2⟩⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem mem_levi_iff_leviEquivPi {α' : Type*} [LinearOrder α'] (γ : Fin n → α')
     (m : levi F n β) :
@@ -380,19 +374,19 @@ theorem mem_levi_iff_leviEquivPi {α' : Type*} [LinearOrder α'] (γ : Fin n →
   exact ⟨fun h a => ⟨h.1 a, h.2 a⟩, fun h => ⟨fun a => (h a).1, fun a => (h a).2⟩⟩
 
 /- English proof (translation)
-Rewrite using `[mem_unipotentRadical, mem_blockUpper_iff_leviEquivPi]`. Simplify using `only [mem_unipotentRadical]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hP, h1⟩`. Use `fun a => ⟨hP a, fun k l hkl => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[leviEquivPi_apply, h1 _ _ hkl]`. Distinguish the cases in `hkl' : k = l`. Substitute `hkl'` using the available equality. Simplify using the standard rewrite rules. Establish `hne : (fiberFin β a k).1 ≠ (fiberFin β a l).1` using `fun e => hkl' ((fiberFin β a).injective (Subtype.ext e))`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[one_apply_ne hne, one_apply_ne hkl']`. Introduce `h`. Use `⟨fun a => (h a).1, fun i j hij => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hb : β i = β j`. Establish `hj : blockOf β j = blockOf β i` using `Subtype.ext hb.symm set a := blockOf β i set k := (fiberFin β a).symm ⟨i, rfl⟩ set l := (fiberFin β a).symm ⟨j, hj⟩`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Establish `hk : (fiberFin β a k).1 = i` using `by simp [k]`. Establish `hl : (fiberFin β a l).1 = j` using `by simp [l]`. Establish `hkl : restrictFun β γ a k = restrictFun β γ a l`. Simplify using `only [restrictFun, hk, hl]`. Conclude with `hij`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `(h a).2 k l hkl` as an intermediate fact. Rewrite `this` using `[leviEquivPi_apply, hk, hl]`. Rewrite using `[this]`. Distinguish the cases in `hij' : i = j`. Substitute `hij'` using the available equality.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact.
 
-Establish `hkl' : k = l` using `by simp [k, l]`. Rewrite using `[hkl', one_apply_eq, one_apply_eq]`. Establish `hkl' : k ≠ l` using `fun e => hij' (by rw [← hk, ← hl, e])`. Rewrite using `[one_apply_ne hkl', one_apply_ne hij']`. Establish `hne : i ≠ j` using `fun e => hb (by rw [e])`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mem_levi.1 m.2 i j hb, one_apply_ne hne]`.
+A detailed English derivation is pending.
 -/
 theorem mem_unipotentRadical_iff_leviEquivPi {α' : Type*} [LinearOrder α'] (γ : Fin n → α')
     (m : levi F n β) :

@@ -27,7 +27,7 @@ open GlobalTheory.Core.Rk.IP
 namespace GlobalTheory.Core.Rk.IP
 
 /- English proof (translation)
-Introduce `A L hL χ b hχ hr v _`. Distinguish the cases in `h : Formalism.MainNotions.SchurIrreducible.IsSplit (E := D.host.E) v`. Conclude with `hs A L hL χ b hχ hr v h`. Conclude with `hi A L hL χ b hχ hr v h`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. A detailed English derivation is pending.
 -/
 theorem localZetaOn_all_of_split_inert (D : D7)
     (hs : LocalZetaOn D fun v => Formalism.MainNotions.SchurIrreducible.IsSplit (E := D.host.E) v)
@@ -39,7 +39,7 @@ theorem localZetaOn_all_of_split_inert (D : D7)
   · exact hi A L hL χ b hχ hr v h
 
 /- English proof (translation)
-Introduce `A L hL v _`. Distinguish the cases in `h : Formalism.MainNotions.SchurIrreducible.IsSplit (E := D.host.E) v`. Conclude with `hs A L hL v h`. Conclude with `hi A L hL v h`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. A detailed English derivation is pending.
 -/
 theorem paramBoundOn_all_of_split_inert (D : D7)
     (hs : ParamBoundOn D fun v => Formalism.MainNotions.SchurIrreducible.IsSplit (E := D.host.E) v)
@@ -51,9 +51,9 @@ theorem paramBoundOn_all_of_split_inert (D : D7)
   · exact hi A L hL v h
 
 /- English proof (translation)
-Introduce `p1 p2 p3 p4 p5 p6 D`. Establish `hU` using `GlobalTheory.T.unramifiedDoublingIntegral_inert_place`. Establish `hG : GlobalForm D` using `GlobalTheory.T.global_form_of_siegel_weil p1 p2 p3 p4 p5 D`. Establish `hPB` using `paramBoundOn_all_of_split_inert D (GlobalTheory.T.sphericalParameterBound_split_place D) (GlobalTheory.T.sphericalParameterBound_nonsplit_places hU D)`. Establish `hLZ` using `localZetaOn_all_of_split_inert D (GlobalTheory.T.unramifiedDoublingIntegral_splitPlace_adelic p6 D) (GlobalTheory.T.unramified_doubling_integral_inert_adelic hU D (GlobalTheory.T.sphericalParameterBound_nonsplit_places hU D))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hE : EulerRight D` using `GlobalTheory.T.doubling_eulerProduct_farRight p2 D (GlobalTheory.T.doublingSphericalFactorization_of_weilDualPair p1 D) hLZ hPB`. Conclude with `GlobalTheory.T.heckeInnerProductFormula_of_doublingEuler D hG hE`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem heckeForm_of_doubling₂ : GlobalTheory.Published.WeilRepresentationUnitaryPair → GlobalTheory.Published.CuspRapidDecay →
     GlobalTheory.Published.WeilSiegelFormulaUnitary → GlobalTheory.Published.SiegelWeilUnitaryConvergent → GlobalTheory.Published.DoublingMethod →

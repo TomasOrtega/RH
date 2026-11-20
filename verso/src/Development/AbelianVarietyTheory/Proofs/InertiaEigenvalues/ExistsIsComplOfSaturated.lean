@@ -3,17 +3,15 @@ import Mathlib
 namespace GlobalTheory.SaturatedComplement
 
 /- English proof (translation)
-Establish `htf : Module.IsTorsionFree O (M ⧸ N)`. Rewrite using `[Module.isTorsionFree_iff_smul_eq_zero]`. Introduce `a q hq`. Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective N q`. Distinguish the cases in `ha : a = 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails.
 
-Conclude with `Or.inl ha`. Use `right`. Rewrite `hq` using `[← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero]`. Rewrite using `[Submodule.Quotient.mk_eq_zero]`. Conclude with `h a x ha hq`.
+Prove the first alternative. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨s, hs⟩` from `Module.projective_lifting_property N.mkQ LinearMap.id N.mkQ_surjective`. Establish `hsec : ∀ q, N.mkQ (s q) = q` using `fun q => by`. Simplify using `using LinearMap.congr_fun hs q`. Use `⟨LinearMap.range s, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Submodule.disjoint_def]`.
+Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Introduce and unpack `x hxN ⟨q, rfl⟩`. Establish `hq : q = 0`. Rewrite using `[← hsec q, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`. Conclude with `hxN`. Rewrite using `[hq, map_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[codisjoint_iff, eq_top_iff]`. Introduce `x _`. Establish `hx : x - s (N.mkQ x) ∈ N`. Rewrite using `[← Submodule.Quotient.mk_eq_zero, Submodule.Quotient.mk_sub, ← Submodule.mkQ_apply, ← Submodule.mkQ_apply, hsec, sub_self]`. Use `Submodule.add_mem_sup hx (LinearMap.mem_range_self s (N.mkQ x))` as an intermediate fact.
-
-Simplify using `using this`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem exists_isCompl_of_saturated {O M : Type} [CommRing O] [IsDomain O]
     [IsPrincipalIdealRing O] [AddCommGroup M] [Module O M] [Module.Finite O M]

@@ -10,17 +10,17 @@ open NumberField IsDedekindDomain IsLocalRing TensorProduct
 namespace GlobalTheory.LidxBaseChange
 
 /- English proof (translation)
-Establish `step : ∀ {p q : Submodule O M}, p ⋖ q → Module.length R q = Module.length R p + 1`. Introduce `p q h`. Set `f : p →ₗ[O] q` to `Submodule.inclusion h.le`. Establish `key : IsSimpleModule O (q ⧸ f.range)`. Rewrite using `[Submodule.range_inclusion, ← covBy_iff_quot_is_simple h.le]` and apply the resulting hypothesis.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 
-Take `⟨m, hm, ⟨e⟩⟩` from `isSimpleModule_iff_quot_maximal.mp key`. Rewrite `e` using `[eq_maximalIdeal hm]`. Set `g : q →ₗ[O] ResidueField O` to `e.comp f.range.mkQ`. Establish `: Function.Injective f` using `Submodule.inclusion_injective _`. Establish `: Function.Surjective g` using `e.surjective.comp f.range.mkQ_surjective`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: Function.Exact f g` using `LinearMap.exact_iff.mpr ((e.ker_comp f.range.mkQ).trans f.range.ker_mkQ)`. Rewrite using `[Module.length_eq_add_of_exact (f.restrictScalars R) (g.restrictScalars R) (by simpa) (by simpa) (by simpa), h1]`. Distinguish the cases in `h : IsFiniteLength O M`. Take `⟨s, hs_bot, hs_top⟩` from `isFiniteLength_iff_exists_compositionSeries.mp h`. Rewrite using `[← Module.length_compositionSeries s hs_bot hs_top]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-It suffices to establish `∀ k, Module.length R (s k) = k by`. Rewrite using `[← Fin.val_last s.length, ← this, ← RelSeries.last, hs_top]`. Conclude with `Module.length_top.symm`. Introduce `k`. Proceed by induction on `k using Fin.induction with`.
+Reduce the argument to an intermediate assertion. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `zero => rw [← RelSeries.head, hs_bot]`. Simplify using the standard rewrite rules. Consider the case `succ i hi => simpa [hi] using step (s.step i)`. Establish `: ¬ IsFiniteLength R M` using `by contrapose! h`. Rewrite `h`, the goal using `[isFiniteLength_iff_isNoetherian_isArtinian]`.
+Simplify using the standard rewrite rules. Treat this case separately. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h.imp (isNoetherian_of_tower R) (isArtinian_of_tower R)`. Rewrite `h`, `this` using `[← Module.length_ne_top_iff, not_ne_iff]`. Rewrite using `[h, this]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem length_eq_of_residue (R O M : Type*) [CommRing R] [CommRing O] [IsLocalRing O] [Algebra R O]
     [AddCommGroup M] [Module R M] [Module O M] [IsScalarTower R O M]
@@ -56,7 +56,7 @@ theorem length_eq_of_residue (R O M : Type*) [CommRing R] [CommRing O] [IsLocalR
     rw [h, this]
 
 /- English proof (translation)
-Rewrite using `[Module.length_eq_of_surjective (S := R) (R := ResidueField (Localization.AtPrime P)) (Ideal.algebraMap_residueField_surjective P)]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem length_residue_atPrime {R : Type*} [CommRing R] (P : Ideal R) [P.IsMaximal] :
     Module.length R (ResidueField (Localization.AtPrime P)) = 1 := by
@@ -65,15 +65,15 @@ theorem length_residue_atPrime {R : Type*} [CommRing R] (P : Ideal R) [P.IsMaxim
   simp
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨s, hs, hx⟩`. Take `⟨u, hu⟩` from `IsLocalization.map_units (Localization.AtPrime P) (⟨s, hs⟩ : P.primeCompl)`. Establish `: x = (↑u⁻¹ : Localization.AtPrime P) • (s • x)`. Rewrite using `[← algebraMap_smul (Localization.AtPrime P) s x]`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `x = _ • (algebraMap R (Localization.AtPrime P) ((⟨s, hs⟩ : P.primeCompl) : R)) • x`. Rewrite using `[← hu, smul_smul, Units.inv_mul, one_smul]`. Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span hx)`. Introduce `hx`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy => exact ⟨1, P.primeCompl.one_mem, by simpa using hy⟩`. Consider the case `zero => exact Submodule.zero_mem _`. Consider the case `add y z _ _ hy hz => exact Submodule.add_mem _ hy hz`. Consider the case `smul c y _ hy`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨s, hs, hy⟩` from `hy`. Take `⟨⟨a, t⟩, h⟩` from `IsLocalization.surj P.primeCompl c`. Use `⟨s * t, P.primeCompl.mul_mem hs t.2, ?_⟩` and prove the remaining obligations. Establish `: (s * (t : R)) • c • y = a • s • y`. Rewrite using `[mul_smul, ← algebraMap_smul (Localization.AtPrime P) (t : R), smul_smul _ c, mul_comm _ c]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify by unfolding definitions.
 
-Simplify using `only at h`. Rewrite using `[h, algebraMap_smul, smul_comm]`. Rewrite using `[this]`. Conclude with `X.smul_mem a hy`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_localization_iff {R W : Type*} [CommRing R] (P : Ideal R) [P.IsPrime] [AddCommGroup W] [Module R W]
     [Module (Localization.AtPrime P) W] [IsScalarTower R (Localization.AtPrime P) W] (X : Submodule R W) (x : W) :
@@ -104,7 +104,7 @@ theorem mem_localization_iff {R W : Type*} [CommRing R] (P : Ideal R) [P.IsPrime
       exact X.smul_mem a hy
 
 /- English proof (translation)
-Rewrite using `[← length_eq_of_residue R _ _ (length_residue_atPrime P)]`. Establish `hX : Formalism.HermitianLatticesTheory.localization₂ P X = (Submodule.span (Localization.AtPrime P) (X : Set W)).restrictScalars R` using `Submodule.ext fun x => mem_localization_iff P X x`. Establish `hY : Formalism.HermitianLatticesTheory.localization₂ P Y = (Submodule.span (Localization.AtPrime P) (Y : Set W)).restrictScalars R` using `Submodule.ext fun x => mem_localization_iff P Y x`. Rewrite using `[hX, hY]`. Conclude with `(Submodule.Quotient.restrictScalarsEquiv R ((Submodule.span (Localization.AtPrime P) (Y : Set W)).comap (Submodule.span (Localization.AtPrime P) (X : Set W)).subtype)).length_eq`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem length_localized_eq₂ {R W : Type*} [CommRing R] (P : Ideal R) [P.IsMaximal] [AddCommGroup W] [Module R W]
     [Module (Localization.AtPrime P) W] [IsScalarTower R (Localization.AtPrime P) W] (X Y : Submodule R W) :
@@ -122,7 +122,7 @@ theorem length_localized_eq₂ {R W : Type*} [CommRing R] (P : Ideal R) [P.IsMax
           (Submodule.span (Localization.AtPrime P) (X : Set W)).subtype)).length_eq
 
 /- English proof (translation)
-Establish `key : ∀ X : Submodule A V, Submodule.span O (φ '' (X : Set V)) = (X.baseChange O).map (φ.liftBaseChange O)` using `fun X => by`. Rewrite using `[Submodule.baseChange_eq_span, Submodule.map_span, Submodule.map_coe, Set.image_image]`. Use `congr 1`. Conclude with `Set.image_congr fun v _ => by simp`. Rewrite using `[key, key, key, baseChange_inf, Submodule.map_inf _ h]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem span_image_inf {A O V W : Type*} [CommRing A] [CommRing O] [Algebra A O] [Module.Flat A O]
     [AddCommGroup V] [Module A V] [AddCommGroup W] [Module A W] [Module O W] [IsScalarTower A O W]
@@ -137,23 +137,23 @@ theorem span_image_inf {A O V W : Type*} [CommRing A] [CommRing O] [Algebra A O]
   rw [key, key, key, baseChange_inf, Submodule.map_inf _ h]
 
 /- English proof (translation)
-Establish `hPm` using `P.isMaximal`. Establish `hPm'` using `P'.isMaximal`. Set `O` to `Localization.AtPrime P.asIdeal`. Set `O'` to `Localization.AtPrime P'.asIdeal`. Use `letI : Algebra O K := IsLocalization.localizationAlgebraOfSubmonoidLe O K P.asIdeal.primeCompl (nonZeroDivisors (𝓞 K)) P.asIdeal.primeCompl_le_nonZeroDivisors`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Equip the data with the indicated structure.
 
-Establish `: IsScalarTower (𝓞 K) O K` using `IsLocalization.localization_isScalarTower_of_submonoid_le O K _ _ _`. Use `letI : Algebra O' K' := IsLocalization.localizationAlgebraOfSubmonoidLe O' K' P'.asIdeal.primeCompl (nonZeroDivisors (𝓞 K')) P'.asIdeal.primeCompl_le_nonZeroDivisors`. Establish `: IsScalarTower (𝓞 K') O' K'` using `IsLocalization.localization_isScalarTower_of_submonoid_le O' K' _ _ _`. Establish `: IsFractionRing O K` using `IsFractionRing.isFractionRing_of_isDomain_of_isLocalization P.asIdeal.primeCompl O K`. Establish `: IsFractionRing O' K'` using `IsFractionRing.isFractionRing_of_isDomain_of_isLocalization P'.asIdeal.primeCompl O' K'`.
+Establish an intermediate fact. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsScalarTower (𝓞 K) O' K'` using `IsScalarTower.of_algebraMap_eq fun x => by`. Rewrite using `[IsScalarTower.algebraMap_apply (𝓞 K) (𝓞 K') O', ← IsScalarTower.algebraMap_apply (𝓞 K') O' K', ← IsScalarTower.algebraMap_apply]`. Use `letI : Algebra O O' := Localization.AtPrime.algebraOfLiesOver P.asIdeal P'.asIdeal`. Establish `: Localization.AtPrime.IsLiesOverAlgebra P.asIdeal P'.asIdeal` using `⟨rfl⟩`. Establish `: IsScalarTower (𝓞 K) O O'` using `inferInstance`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsLocalHom (algebraMap O O')` using `inferInstance`. Establish `: IsDiscreteValuationRing O` using `IsLocalization.AtPrime.isDiscreteValuationRing_of_dedekind_domain (𝓞 K) P.ne_bot _`. Establish `: IsDiscreteValuationRing O'` using `IsLocalization.AtPrime.isDiscreteValuationRing_of_dedekind_domain (𝓞 K') P'.ne_bot _`. Establish `: FaithfulSMul O O'` using `inferInstance`. Establish `: Module.Flat O O'` using `inferInstance`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsLocalHom (algebraMap O O)` using `inferInstance`. Use `⟨(maximalIdeal O').ramificationIdx O, ramificationIdx_maximalIdeal_pos O O', ?_⟩` and prove the remaining obligations. Establish `hlen : ∀ M N : Submodule (𝓞 K) (Fin d → K), N ≤ M → Formalism.HermitianLatticesTheory.locLen P'.asIdeal (Submodule.span (𝓞 K') (ψ '' (M : Set (Fin d → K)))) (Submodule.span (𝓞 K') (ψ '' (N : Set (Fin d → K)))) = Formalism.HermitianLatticesTheory.locLen P.asIdeal M N * (maximalIde …`. Introduce `M N hNM`. Unfold `Formalism.HermitianLatticesTheory.locLen`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Rewrite using `[length_localized_eq₂, length_localized_eq₂, Submodule.span_span_of_tower, Submodule.span_span_of_tower]`. Establish `h1` using `Formalism.BasicNotions.FBC.length_flat_tower P.asIdeal (IsFractionRing.injective O' K') ψ _ hψ N M hNM`. Establish `h2` using `Formalism.BasicNotions.FBC.length_flat_tower P.asIdeal (IsFractionRing.injective O K) (LinearMap.id : (Fin d → K) →ₗ[K] (Fin d → K)) (Pi.basisFun K (Fin d)) (Pi.basisFun K (Fin d)).linearIndependent N M hNM`. Rewrite `h1` using `[length_fibre_eq_ramificationIdx O O']`. Establish `h3 : Module.length O (O ⧸ (maximalIdeal O).map (algebraMap O O)) = 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Algebra.algebraMap_self, Ideal.map_id]`. Establish `h4` using `IsDiscreteValuationRing.length_quotient_pow_maximalIdeal O 1`. Rewrite `h4` using `[pow_one]`. Conclude with `h4` after adjusting the coercions. Rewrite `h2` using `[h3, mul_one, LinearMap.id_coe, Set.image_id, Set.image_id]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1, h2, ENat.toNat_mul, ENat.toNat_coe]`. Introduce `A B`. Establish `hinj` using `Formalism.BasicNotions.FBC.liftBaseChange_injective_top (A := 𝓞 K) (IsFractionRing.injective (𝓞 K') K') ψ _ hψ`. Establish `hinf` using `span_image_inf _ hinj A B`. Unfold `Formalism.HermitianLatticesTheory.lidx`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Move the embeddings inside the algebraic operations.
 
-Use `erw [hinf]`. Use `erw [hlen A _ inf_le_left, hlen B _ inf_le_right]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem exists_lidx_eq_mul (K K' : Type) [Field K] [NumberField K] [Field K'] [NumberField K'] [Algebra K K']
     {d d' : ℕ} (ψ : (Fin d → K) →ₗ[K] (Fin d' → K')) (hψ : LinearIndependent K' (ψ ∘ Pi.basisFun K (Fin d)))
@@ -218,13 +218,13 @@ theorem exists_lidx_eq_mul (K K' : Type) [Field K] [NumberField K] [Field K'] [N
   ring
 
 /- English proof (translation)
-Introduce `K K' _ _ _ _ φ d d' G hG P P' hP A B _ _`. Use `letI : Algebra K K' := φ.toAlgebra`. Establish `: P'.asIdeal.LiesOver P.asIdeal` using `⟨Ideal.ext fun x => hP x (algebraMap (𝓞 K) (𝓞 K') x) rfl⟩`. Set `ψ : (Fin d → K) →ₗ[K] (Fin d' → K')` to `(G.mulVecLin.restrictScalars K) ∘ₗ (Algebra.linearMap K K').compLeft (Fin d)`. Establish `hψ : LinearIndependent K' (ψ ∘ Pi.basisFun K (Fin d))`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `h` using `(Pi.basisFun K' (Fin d)).linearIndependent.map' G.mulVecLin (LinearMap.ker_eq_bot.2 hG.1)`. Establish `e : ψ ∘ Pi.basisFun K (Fin d) = G.mulVecLin ∘ Pi.basisFun K' (Fin d)`. Use function extensionality and compare the values at `i`. Simplify using `only [ψ, Function.comp_apply, LinearMap.comp_apply, LinearMap.restrictScalars_apply]`. Use `congr 1`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Use function extensionality and compare the values at `k`. Apply the tactic sequence `by_cases hk : k = i <;> simp [hk, Pi.single_apply]`. Rewrite using `[e]`. Conclude with `h`. Take `⟨e, he, h⟩` from `exists_lidx_eq_mul K K' ψ hψ P P'`.
+Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h'` using `h A B`. Establish `hf : (fun x : Fin d → K => Matrix.mulVec G fun k => φ (x k)) = ψ` using `rfl`. Rewrite using `[hf, h']`. Simplify using `[he.ne']`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem lidx_ne_zero_iff : ∀ (K K' : Type) [Field K] [NumberField K] [Field K'] [NumberField K'] (φ : K →+* K') (d d' : ℕ) (G : Matrix (Fin d') (Fin d) K'),
   Function.Bijective G.mulVec → ∀ (P : HeightOneSpectrum (𝓞 K)) (P' : HeightOneSpectrum (𝓞 K')),

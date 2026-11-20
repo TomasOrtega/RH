@@ -7,7 +7,7 @@ import Development.AbelianVarietyTheory.Proofs.CoherentCohomologyProofs.IsFinite
 open CategoryTheory AlgebraicGeometry TopologicalSpace GlobalTheory
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.QCoh.length_stalk_ne_top_of_no_generisation` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+Apply the cited theorem to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FLengthStalkNeTopOfNoGenerisation.lean&line=45#L45)
 -/

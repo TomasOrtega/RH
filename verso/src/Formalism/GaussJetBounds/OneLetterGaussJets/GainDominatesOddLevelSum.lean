@@ -10,17 +10,17 @@ namespace Formalism.DworkPowerSeriesWeights.OddLevelGainBounds
 open Formalism.IncomingBounds
 
 /- English proof (translation)
-The claim follows from `proposition_six`.
+A detailed English derivation is pending.
 -/
 theorem propSix7 : PropSix7 := proposition_six
 /- English proof (translation)
-The claim follows from `gain_ge_inner_sum`.
+A detailed English derivation is pending.
 -/
 theorem gain_dominates_oddLevel_sum : GainDominatesInnerSum := gain_ge_inner_sum
 /- English proof (translation)
-Introduce `l d _ hl hd he TT nu1 nu2 size k L w E pi y hpi0 hpi1 hk hw hE hD1 hD2 hy`. Use `hy.trans (Real.rpow_le_rpow_of_exponent_ge hpi0 hpi1.le ?_)` and prove the remaining obligations. Establish `h6` using `propSix7 l d hl hd he TT k (fun s => (Dl d TT nu1 size s : ℝ)) w E hk hw hE hD1 hD2`. Establish `hsum : ∑ s ∈ TT, oddLevelGainSum l d TT nu1 nu2 s ≤ ∑ s ∈ TT, topTerm l d TT nu1 nu2 s` using `Finset.sum_le_sum fun s _ => gain_dominates_oddLevel_sum l d (by omega) TT nu1 nu2 s`. Rewrite using `[Finset.sum_sub_distrib, ← Finset.mul_sum]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Combine the linear relations using `[h6.1, h6.2]`.
+Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem normCor7 : NormCor7 := by
   intro l d _ hl hd he TT nu1 nu2 size k L w E pi y hpi0 hpi1 hk hw hE hD1 hD2 hy
@@ -31,7 +31,7 @@ theorem normCor7 : NormCor7 := by
   rw [Finset.sum_sub_distrib, ← Finset.mul_sum]
   linarith [h6.1, h6.2]
 /- English proof (translation)
-The claim follows from `one_letter_gauss_bound`.
+A detailed English derivation is pending.
 -/
 theorem oneLetterGauss7 : OneLetterGauss7 := one_letter_gauss_bound
 

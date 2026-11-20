@@ -30,7 +30,7 @@ def DegForm (F G : HermLattice K i) : Prop :=
           geomDeg (grassIdeal 1 1 (i - 1)) (fsMulti (plBlocks 1 1 (i - 1))) (1 * 1 * (i - 1))
 
 /- English proof (translation)
-Introduce `T T' _ _ _ _ b hb b' hb' II hi hII`. Take `⟨S, hS, hdS, ⟨c⟩⟩` from `DualLatticeBasisExists.proof K i G`. Establish `hc` using `DualEmbBijective.proof K i G S c`. Establish `e₂` using `h₂ S T' c hc b' hb' II hi hII`. Establish `e₁` using `h₁ T S b hb c hc II hi hII`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
 Combine the linear equalities and inequalities to obtain the conclusion.
 -/
@@ -43,7 +43,7 @@ theorem DegForm.trans {F G H : HermLattice K i} (h₁ : DegForm F G) (h₂ : Deg
   linarith
 
 /- English proof (translation)
-Introduce `T T' _ _ _ _ b hb b' hb' II hi hII`. Establish `e` using `hBasis K i F.withStdMetric T T' b hb b' hb' II hi hII`. Rewrite using `[sub_self, zero_mul, add_zero]`. Conclude with `e`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem degForm_self (hBasis : DualTopBasisChange.Statement) (F : HermLattice K i) : DegForm F F := by
   intro T T' _ _ _ _ b hb b' hb' II hi hII
@@ -52,7 +52,7 @@ theorem degForm_self (hBasis : DualTopBasisChange.Statement) (F : HermLattice K 
   exact e
 
 /- English proof (translation)
-Consider the cases of `F`. Consider the cases of `G`. Consider the cases of `h`. Both sides reduce to the same expression.
+Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Both sides reduce to the same expression.
 -/
 theorem withStdMetric_eq {F G : HermLattice K i} (h : F.lattice = G.lattice) :
     F.withStdMetric = G.withStdMetric := by
@@ -62,13 +62,13 @@ theorem withStdMetric_eq {F G : HermLattice K i} (h : F.lattice = G.lattice) :
   rfl
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem degForm_iff (F G : HermLattice K i) : DegForm F G ↔ DegForm F.withStdMetric G.withStdMetric :=
   Iff.rfl
 
 /- English proof (translation)
-Rewrite using `[degForm_iff, withStdMetric_eq h]`. Conclude with `degForm_self hBasis _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem degForm_of_eq (hBasis : DualTopBasisChange.Statement) {F G : HermLattice K i}
     (h : G.lattice = F.lattice) : DegForm F G := by
@@ -76,7 +76,7 @@ theorem degForm_of_eq (hBasis : DualTopBasisChange.Statement) {F G : HermLattice
   exact degForm_self hBasis _
 
 /- English proof (translation)
-Introduce `T T' _ _ _ _ b hb b' hb' II hi hII` and use `hSimple K i F G T T' b hb b' hb' II hi hII hlt hcov`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem degForm_of_cover (hSimple : DualTopSimpleSub.Statement) {F G : HermLattice K i}
     (hlt : G.lattice < F.lattice)
@@ -85,14 +85,14 @@ theorem degForm_of_cover (hSimple : DualTopSimpleSub.Statement) {F G : HermLatti
   fun T T' _ _ _ _ b hb b' hb' II hi hII => hSimple K i F G T T' b hb b' hb' II hi hII hlt hcov
 
 /- English proof (translation)
-The claim follows from `_root_.GroundTheory.Variant₂.N1.exists_smul_mem_hermitianLattice X v`.
+A detailed English derivation is pending.
 -/
 theorem exists_smul_mem (X : HermLattice K i) (v : Fin i → K) :
     ∃ c : 𝓞 K, c ≠ 0 ∧ c • v ∈ X.lattice :=
   _root_.GroundTheory.Variant₂.N1.exists_smul_mem_hermitianLattice X v
 
 /- English proof (translation)
-The claim follows from `_root_.GroundTheory.Variant₂.N1.exists_cover hlt`.
+A detailed English derivation is pending.
 -/
 theorem exists_cover {F X : HermLattice K i} (hlt : X.lattice < F.lattice) :
     ∃ w ∈ F.lattice, w ∉ X.lattice ∧ ∀ N : Submodule (𝓞 K) (Fin i → K), X.lattice ≤ N →
@@ -108,15 +108,15 @@ def addVector (X : HermLattice K i) (w : Fin i → K) : HermLattice K i where
   conj := fun _ => by simp
 
 /- English proof (translation)
-Establish `: IsNoetherian (𝓞 K) F.lattice` using `isNoetherian_of_fg_of_noetherian _ F.fg`. It suffices to establish `h : ∀ N : Submodule (𝓞 K) F.lattice, ∀ G : HermLattice K i, G.lattice = N.map F.lattice.subtype → DegForm F G by`. Use `h (G.lattice.comap F.lattice.subtype) G ?_` and prove the remaining obligations. Rewrite using `[Submodule.map_comap_subtype, inf_eq_right.mpr hle]`. Introduce `N`.
+Establish an intermediate fact. Reduce the argument to an intermediate assertion. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `WellFoundedGT.induction (motive := fun N : Submodule (𝓞 K) F.lattice => ∀ G : HermLattice K i, G.lattice = N.map F.lattice.subtype → DegForm F G) N ?_` and prove the remaining obligations. Introduce `N IH G hG`. Distinguish the cases in `hGF : G.lattice = F.lattice`. Conclude with `degForm_of_eq hBasis hGF`. Establish `hlt : G.lattice < F.lattice` using `lt_of_le_of_ne (hG ▸ Submodule.map_subtype_le _ _) hGF`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨w, hwF, hwG, hcov⟩` from `exists_cover hlt`. Establish `hG'F : (addVector G w).lattice ≤ F.lattice` using `sup_le hlt.le ((Submodule.span_singleton_le_iff_mem _ _).mpr hwF)`. Establish `hGG' : G.lattice < (addVector G w).lattice` using `lt_of_le_of_ne le_sup_left fun h => hwG (h ▸ Submodule.mem_sup_right (Submodule.mem_span_singleton_self w))`. Establish `hNG : N = G.lattice.comap F.lattice.subtype`. Rewrite using `[hG, Submodule.comap_map_eq_of_injective F.lattice.injective_subtype]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hN : N < (addVector G w).lattice.comap F.lattice.subtype`. Rewrite using `[hNG]`. Use `lt_of_le_of_ne (Submodule.comap_mono hGG'.le) fun h => hGG'.ne ?_` and prove the remaining obligations. Establish `h2` using `congrArg (Submodule.map F.lattice.subtype) h`. Rewrite `h2` using `[Submodule.map_comap_subtype, Submodule.map_comap_subtype, inf_eq_right.mpr hlt.le, inf_eq_right.mpr hG'F]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `h1 : DegForm F (addVector G w)` using `IH _ hN (addVector G w) (by rw [Submodule.map_comap_subtype, inf_eq_right.mpr hG'F])`. Conclude with `h1.trans (degForm_of_cover hSimple hGG' hcov)`.
+A detailed English derivation is pending.
 -/
 theorem degForm_of_le (hSimple : DualTopSimpleSub.Statement) (hBasis : DualTopBasisChange.Statement)
     (F G : HermLattice K i) (hle : G.lattice ≤ F.lattice) : DegForm F G := by
@@ -157,7 +157,7 @@ end TopDualStacked
 open TopDualStacked in
 
 /- English proof (translation)
-Introduce `K _ _ i F F' T _ _ b hb b' hb' a II hi hII hle hab`. Establish `e` using `degForm_of_le hSimple hBasis F F' hle T T b hb b' hb' II hi hII`. Rewrite `e` using `[hDeg K i F F' T b b' a hle hab]`. Conclude with `e`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem DualTopStacked.proof (hSimple : DualTopSimpleSub.Statement) (hBasis : DualTopBasisChange.Statement)
     (hDeg : DualStackedDegree.Statement) : DualTopStacked.Statement := by

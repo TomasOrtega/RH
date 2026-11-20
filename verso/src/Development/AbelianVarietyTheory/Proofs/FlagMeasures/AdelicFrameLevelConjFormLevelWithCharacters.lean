@@ -25,9 +25,9 @@ variable {F : Type} [Field F] [NumberField F]
 omit [NumberField F] in
 
 /- English proof (translation)
-Establish `hc : IsCoprime (p : ℤ) (q : ℤ)` using `Nat.isCoprime_iff_coprime.mpr ((Nat.coprime_primes hp hq).mpr hpq)`. Take `⟨a, b, hab⟩` from `hc`. Establish `e : (1 : 𝓞 F) = (a : 𝓞 F) * (p : 𝓞 F) + (b : 𝓞 F) * (q : 𝓞 F)`. Use `congrArg (Int.cast : ℤ → 𝓞 F) hab` as an intermediate fact. Move the coercions through the operations in `at this`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Conclude with `this.symm`. Establish `h1' : (1 : 𝓞 F) ∈ v.asIdeal`. Rewrite using `[e]`. Conclude with `v.asIdeal.add_mem (v.asIdeal.mul_mem_left _ h1) (v.asIdeal.mul_mem_left _ h2)`. Conclude with `v.isPrime.ne_top ((Ideal.eq_top_iff_one _).mpr h1')`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem not_both_mem {p q : ℕ} (hp : p.Prime) (hq : q.Prime) (hpq : p ≠ q) (v : HeightOneSpectrum (𝓞 F))
     (h1 : (p : 𝓞 F) ∈ v.asIdeal) (h2 : (q : 𝓞 F) ∈ v.asIdeal) : False := by
@@ -44,9 +44,9 @@ theorem not_both_mem {p q : ℕ} (hp : p.Prime) (hq : q.Prime) (hpq : p ≠ q) (
   exact v.isPrime.ne_top ((Ideal.eq_top_iff_one _).mpr h1')
 
 /- English proof (translation)
-Establish `hI : Ideal.span {(p : 𝓞 F)} ≠ 0`. Rewrite using `[Ne, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot]`. Conclude with `hp` after adjusting the coercions. Use `(Ideal.finite_factors hI).subset ?_` and prove the remaining obligations. Introduce `v hv`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [Set.mem_ofPred_eq] at hv ⊢`. Rewrite using `[Ideal.dvd_iff_le, Ideal.span_singleton_le_iff_mem]`. Conclude with `hv`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finite_mem {p : ℕ} (hp : p ≠ 0) : {v : HeightOneSpectrum (𝓞 F) | (p : 𝓞 F) ∈ v.asIdeal}.Finite := by
   have hI : Ideal.span {(p : 𝓞 F)} ≠ 0 := by
@@ -63,7 +63,7 @@ variable {E : Type} [Field E] [NumberField E] [Algebra F E] {n : ℕ}
 omit [NumberField E] in
 
 /- English proof (translation)
-Rewrite using `[Matrix.sub_mulVec, Matrix.sub_mulVec, Matrix.one_mulVec, Matrix.one_mulVec, ← GlobalTheory.St.G.Carry.prVec_mulVec]`. Use function extensionality and compare the values at `i`. Simplify using `only [prVec, Pi.sub_apply, map_sub]`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem prVec_sub_one_mulVec (v : HeightOneSpectrum (𝓞 F)) (y : GL (Fin n) (E ⊗[F] Ad F))
     (x : Fin n → E ⊗[F] Ad F) :
@@ -74,9 +74,9 @@ theorem prVec_sub_one_mulVec (v : HeightOneSpectrum (𝓞 F)) (y : GL (Fin n) (E
   simp only [prVec, Pi.sub_apply, map_sub]
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.T.mem_adelicSpanOfLattice_iff_forall_place F E n L hL]`. Introduce `w`. Distinguish the cases in `hw : w = v`. Substitute `hw` using the available equality. Rewrite using `[GlobalTheory.St.G.Carry.prVec_single_self]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hx`. Rewrite using `[GlobalTheory.St.G.Carry.prVec_single_ne v w hw]`. Conclude with `Submodule.zero_mem _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_hat_of_loc {L : Submodule (𝓞 E) (Fin n → E)} (hL : IsLat L) (v : HeightOneSpectrum (𝓞 F))
     (x : Fin n → E ⊗[F] v.adicCompletion F) (hx : x ∈ loc v L) :
@@ -92,67 +92,61 @@ end SlopeTestRemainingChoices
 set_option maxHeartbeats 2000000 in
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ _ cm n J hJ hdet T f t k a sk fc gp S G Gl hk ha hsk hfc hT hgp hne hTg hsplit hsplitT hdeg Fr`. Establish `hL : IsLat S.Lb` using `⟨S.Lb_fin, S.Lb_span⟩`. Establish `hTL : TLat cm.sig J T f S.Lb` using `GlobalTheory.St.G.stepLevel_tLat F E n cm.sig J T f _ S`. Establish `hD` using `GlobalTheory.T.dual_lattice_local_characterization F E cm n J hJ hdet S.Lb hL`. Establish `hLD : IsLat (dualL cm.sig J S.Lb)` using `hD.1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsd : ∀ v : HeightOneSpectrum (𝓞 F), (T : 𝓞 F) ∉ v.asIdeal → ∀ x, x ∈ loc v (dualL cm.sig J S.Lb) ↔ x ∈ loc v S.Lb`. Introduce `v hv x`. Rewrite using `[hD.2.1 v x]`. Conclude with `(GlobalTheory.T.isLocallySelfDual_of_hermitianLatticeOfLevel F E cm n J hJ hdet T f S.Lb hTL v hv x).symm`. Establish `hlevI : ∀ v (g : GL (Fin n) (E ⊗[F] v.adicCompletion F)), g ∈ levelVL cm.sig J v S.Lb ↔ g ∈ UPts cm.sig J (v.adicCompletion F) ∧ g ∈ stabGL (loc v S.Lb)` using `fun v g => Iff.rfl`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hQauto : ∀ v : HeightOneSpectrum (𝓞 F), (T : 𝓞 F) ∉ v.asIdeal → ∀ g : GL (Fin n) (E ⊗[F] v.adicCompletion F), g ∈ stabGL (loc v S.Lb) → ∀ x ∈ loc v (dualL cm.sig J S.Lb), (g.1 - 1) *ᵥ x ∈ loc v S.Lb`. Introduce `v hv g hg x hx`. Rewrite `hx` using `[hsd v hv]`. Rewrite using `[Matrix.sub_mulVec, Matrix.one_mulVec]`. Conclude with `Submodule.sub_mem _ ((hg x).mp hx) hx`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `gm` using `fun (i : Fin 2) (v : HeightOneSpectrum (𝓞 F)) (hv : (gp i : 𝓞 F) ∈ v.asIdeal) => GlobalTheory.T.local_level_character_match_at_type_prime F E cm n J hJ hdet T f t k a sk fc gp S G Gl hk ha hsk hfc hT hgp hne hTg hsplit Fr i v hv`. Use `choose κl hκl hκs using gm`. Set `hf : ∀ v : HeightOneSpectrum (𝓞 F), GL (Fin n) (E ⊗[F] v.adicCompletion F)` to `fun v => if h0 : (gp 0 : 𝓞 F) ∈ v.asIdeal then κl 0 v h0 else if h1 : (gp 1 : 𝓞 F) ∈ v.asIdeal then κl 1 v h1 else 1`. Establish `hf_g : ∀ i v (h : (gp i : 𝓞 F) ∈ v.asIdeal), hf v = κl i v h`. Introduce `i v h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Apply the tactic sequence `obtain rfl | rfl : i = 0 ∨ i = 1 := by fin_cases i <;> simp`. Simplify using `only [hf, dif_pos h]`. Establish `h0 : (gp 0 : 𝓞 F) ∉ v.asIdeal` using `fun h0 => not_both_mem (hgp 0) (hgp 1) hne v h0 h`. Simplify using `only [hf, dif_neg h0, dif_pos h]`. Establish `hf_one : ∀ v, (gp 0 : 𝓞 F) ∉ v.asIdeal → (gp 1 : 𝓞 F) ∉ v.asIdeal → hf v = 1`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `v h0 h1`. Simplify using `only [hf, dif_neg h0, dif_neg h1]`. Establish `hf_lev : ∀ v, hf v ∈ levelVL cm.sig J v S.Lb`. Introduce `v`. Distinguish the cases in `h0 : (gp 0 : 𝓞 F) ∈ v.asIdeal`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hf_g 0 v h0]`. Conclude with `hκl 0 v h0`. Distinguish the cases in `h1 : (gp 1 : 𝓞 F) ∈ v.asIdeal`. Rewrite using `[hf_g 1 v h1]`. Conclude with `hκl 1 v h1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Rewrite using `[hf_one v h0 h1]`. Conclude with `Subgroup.one_mem _`. Establish `hfin : {v | hf v ≠ 1}.Finite`. Use `((finite_mem (hgp 0).ne_zero).union (finite_mem (hgp 1).ne_zero)).subset ?_` and prove the remaining obligations. Introduce `v hv`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Assume the negation of the conclusion as `hc`. Simplify using `only [Set.mem_union, Set.mem_ofPred_eq, not_or] at hc`. Conclude with `hv (hf_one v hc.1 hc.2)`. Take `⟨x0, hx0, hx0v⟩` from `GlobalTheory.T.exists_adelic_unitary_of_finite_support F E n cm.sig J hf (fun v => ((hlevI v _).mp (hf_lev v)).1) hfin`. Set `κ : UPts cm.sig J (Ad F)` to `⟨x0, hx0⟩`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hκv : ∀ v, bc (prV (E` using `E) v) (κ : GL (Fin n) (E ⊗[F] Ad F)) = hf v := hx0v`. Use `⟨κ, ?_, ?_⟩` and prove the remaining obligations. Conclude with `(GlobalTheory.T.adelicLattice_carry_iff_forall_place F E n S.Lb S.Lb hL hL x0).mpr (fun v x => by`. Rewrite using `[hx0v v]`. Conclude with `((hlevI v _).mp (hf_lev v)).2 x)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce `y`. Establish `hbcUP : ∀ v, bc (prV (E` using `E) v) (y : GL (Fin n) (E ⊗[F] Ad F)) ∈ UPts cm.sig J (v.adicCompletion F) := fun v => Formalism.UG.P.afsplit_bc_mem cm.sig J v _ y.2`. Establish `hwv : ∀ v, bc (prV (E` using `E) v) ((κ⁻¹ * y * κ : UPts cm.sig J (Ad F)) : GL (Fin n) (E ⊗[F] Ad F)) = (hf v)⁻¹ * bc (prV (E := E) v) (y : GL (Fin n) (E ⊗[F] Ad F)) * hf v := by`. Introduce `v`. Simplify using `only [Subgroup.coe_mul, Subgroup.coe_inv, map_mul, map_inv, hκv]`.
+Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hconj : ∀ v, (hf v)⁻¹ * bc (prV (E` using `E) v) (y : GL (Fin n) (E ⊗[F] Ad F)) * hf v ∈ levelVL cm.sig J v S.Lb → bc (prV (E := E) v) (y : GL (Fin n) (E ⊗[F] Ad F)) ∈ levelVL cm.sig J v S.Lb := by`. Introduce `v h`. Use `(levelVL cm.sig J v S.Lb).mul_mem ((levelVL cm.sig J v S.Lb).mul_mem (hf_lev v) h) ((levelVL cm.sig J v S.Lb).inv_mem (hf_lev v))` as an intermediate fact. Simplify `this` using `[mul_assoc]`. Establish `hA : (y : GL (Fin n) (E ⊗[F] Ad F)) ∈ stabGL (hat F S.Lb) ↔ ∀ v, bc (prV (E` using `E) v) (y : GL (Fin n) (E ⊗[F] Ad F)) ∈ stabGL (loc v S.Lb) := GlobalTheory.T.adelicLattice_carry_iff_forall_place F E n S.Lb S.Lb hL hL y`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hB : (∀ x, (∀ z ∈ hat F S.Lb, hR cm.sig J (Ad F) z x ∈ OAd F E) → (y.1.1 - 1) *ᵥ x ∈ hat F S.Lb) ↔ ∀ v, ∀ x ∈ loc v (dualL cm.sig J S.Lb), ((bc (prV (E` using `E) v) (y : GL (Fin n) (E ⊗[F] Ad F))).1 - 1) *ᵥ x ∈ loc v S.Lb := by`. Prove the components needed by the constructor for the conclusion. Introduce `h v x hx`. Establish `hx'` using `mem_hat_of_loc hLD v x hx`. Establish `h1` using `h _ ((hD.2.2 _).mp hx')`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h1` using `[GlobalTheory.T.mem_adelicSpanOfLattice_iff_forall_place F E n S.Lb hL]`. Establish `h2` using `h1 v`. Rewrite `h2` using `[prVec_sub_one_mulVec, GlobalTheory.St.G.Carry.prVec_single_self]`. Then use the resulting hypothesis. Introduce `h x hx`. Establish `hx'` using `(hD.2.2 x).mpr hx`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Rewrite `hx'` using `[GlobalTheory.T.mem_adelicSpanOfLattice_iff_forall_place F E n _ hLD]`. Rewrite using `[GlobalTheory.T.mem_adelicSpanOfLattice_iff_forall_place F E n S.Lb hL]`. Introduce `v`. Rewrite using `[prVec_sub_one_mulVec]`. Conclude with `h v _ (hx' v)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hIL` using `fun (hs : (y : GL (Fin n) (E ⊗[F] Ad F)) ∈ stabGL (hat F S.Lb)) => GlobalTheory.T.adelicLatticeFrame_condition_character_local F E cm n J hJ hdet k gp S.Lb Fr hgp hne hL S.Lb_int y.1 hs`. Establish `hK : Fr.InK y.1 ↔ ∀ v, bc (prV (E` using `E) v) (y : GL (Fin n) (E ⊗[F] Ad F)) ∈ stabGL (loc v S.Lb) ∧ (∀ x ∈ loc v (dualL cm.sig J S.Lb), ((bc (prV (E := E) v) (y : GL (Fin n) (E ⊗[F] Ad F))).1 - 1) *ᵥ x ∈ loc v S.Lb) ∧ ((gp 0 : 𝓞 F) ∈ v.asIdeal ∨ (gp 1 : 𝓞 F) ∈ v.asIdeal → Fr.LocK S.Lb v (bc (prV (E := E) v) (y : GL (F …`. Unfold `AdFrame.InK`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hs, hq, hc⟩`.
+Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hs'` using `hA.mp hs`. Establish `hq'` using `hB.mp hq`. Establish `hc'` using `(hIL hs).1.mp hc`. Introduce `v`. Use `⟨hs' v, hq' v, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Prove the first alternative. Prove the second alternative. Establish an intermediate fact.
 
-Introduce and unpack `(h | h)`. Conclude with `hc' 0 v h`. Conclude with `hc' 1 v h`. Introduce `h`. Establish `hs` using `hA.mpr (fun v => (h v).1)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨hs, hB.mpr (fun v => (h v).2.1), (hIL hs).1.mpr ?_⟩` and prove the remaining obligations. Introduce `i v hv`. Use `(h v).2.2 ?_` and prove the remaining obligations. Apply the tactic sequence `obtain rfl | rfl : i = 0 ∨ i = 1 := by fin_cases i <;> simp`. Conclude with `Or.inl hv`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `Or.inr hv`. Establish `hloc : ∀ v, bc (prV (E` using `E) v) ((κ⁻¹ * y * κ : UPts cm.sig J (Ad F)) : GL (Fin n) (E ⊗[F] Ad F)) ∈ S.Uloc v ↔ (bc (prV (E := E) v) (y : GL (Fin n) (E ⊗[F] Ad F)) ∈ stabGL (loc v S.Lb) ∧ (∀ x ∈ loc v (dualL cm.sig J S.Lb), ((bc (prV (E := E) v) (y : GL (Fin n) (E ⊗[F] Ad F))).1 - 1) *ᵥ x ∈ loc v S.Lb) ∧ ( …`. Introduce `v`. Rewrite using `[hwv v]`. Distinguish the cases in `hb : (gp 0 : 𝓞 F) ∈ v.asIdeal ∨ (gp 1 : 𝓞 F) ∈ v.asIdeal`.
+Establish an intermediate fact. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨i, hi⟩ : ∃ i, (gp i : 𝓞 F) ∈ v.asIdeal` from `hb.elim (fun h => ⟨0, h⟩) (fun h => ⟨1, h⟩)`. Establish `hTv : (T : 𝓞 F) ∉ v.asIdeal` using `fun hT' => not_both_mem hT (hgp i) (hTg i) v hT' hi`. Establish `sp` using `hκs i v hi`. Rewrite `sp` using `[← hf_g i v hi]`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Introduce `hu`. Establish `hl` using `hconj v (S.Uloc_lev v hu)`. Establish `hl'` using `(hlevI v _).mp hl`. Conclude with `⟨hl'.2, hQauto v hTv _ hl'.2, fun _ => ((sp _ hl).1).mpr hu⟩`. Introduce and unpack `⟨hs, -, hkk⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `hl : bc (prV (E` using `E) v) (y : GL (Fin n) (E ⊗[F] Ad F)) ∈ levelVL cm.sig J v S.Lb := (hlevI v _).mpr ⟨hbcUP v, hs⟩`. Conclude with `((sp _ hl).1).mp (hkk hb)`. Establish `h0 : (gp 0 : 𝓞 F) ∉ v.asIdeal` using `fun h => hb (Or.inl h)`. Establish `h1 : (gp 1 : 𝓞 F) ∉ v.asIdeal` using `fun h => hb (Or.inr h)`. Rewrite using `[hf_one v h0 h1, inv_one, one_mul, mul_one]`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Supply the required witnesses or components.
 
-Distinguish the cases in `hTv : (T : 𝓞 F) ∈ v.asIdeal`. Establish `fu` using `GlobalTheory.T.trivial_on_dual_quotient_iff_mem_localUnitary F E cm n J hJ hdet T f _ S hT hsplitT hdeg v hTv`. Prove the components needed by the constructor for the conclusion. Introduce `hu`. Establish `hl` using `S.Uloc_lev v hu`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨((hlevI v _).mp hl).2, (fu _ hl).mpr hu, fun h => absurd h hb⟩`. Introduce and unpack `⟨hs, hq, -⟩`. Establish `hl : bc (prV (E` using `E) v) (y : GL (Fin n) (E ⊗[F] Ad F)) ∈ levelVL cm.sig J v S.Lb := (hlevI v _).mpr ⟨hbcUP v, hs⟩`. Conclude with `(fu _ hl).mp hq`. Rewrite using `[S.Uloc_hyp v hb hTv]`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Prove the components needed by the constructor for the conclusion. Introduce `hl`. Establish `hl'` using `(hlevI v _).mp hl`. Conclude with `⟨hl'.2, hQauto v hTv _ hl'.2, fun h => absurd h hb⟩`. Introduce and unpack `⟨hs, -, -⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Conclude with `(hlevI v _).mpr ⟨hbcUP v, hs⟩`. Establish `hU : ((κ⁻¹ * y * κ : UPts cm.sig J (Ad F)) : GL (Fin n) (E ⊗[F] Ad F)) ∈ S.U ↔ ∀ v, bc (prV (E` using `E) v) (y : GL (Fin n) (E ⊗[F] Ad F)) ∈ stabGL (loc v S.Lb) ∧ (∀ x ∈ loc v (dualL cm.sig J S.Lb), ((bc (prV (E := E) v) (y : GL (Fin n) (E ⊗[F] Ad F))).1 - 1) *ᵥ x ∈ loc v S.Lb) ∧ ((gp 0 : 𝓞 F) ∈ v.asIdeal ∨ (gp 1 : 𝓞 F) ∈ v.asIdeal → Fr.LocK S.Lb v (bc (prV (E := E) v) (y : GL (F …`. Rewrite using `[S.U_eq]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨-, h⟩ v`.
+Prove the first alternative. Prove the second alternative. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify by unfolding definitions.
 
-Conclude with `(hloc v).mp (h v)`. Introduce `h`. Conclude with `⟨(κ⁻¹ * y * κ).2, fun v => (hloc v).mpr (h v)⟩`. Use `⟨hK.trans hU.symm, ?_⟩` and prove the remaining obligations. Introduce `hy`.
-
-Establish `hall` using `hU.mp hy`. Establish `hs : (y : GL (Fin n) (E ⊗[F] Ad F)) ∈ stabGL (hat F S.Lb)` using `hA.mpr (fun v => (hall v).1)`. Rewrite using `[(hIL hs).2, Gl.chi_eq ⟨_, hy⟩]`. Use `Finset.prod_congr rfl (fun i _ => finprod_congr (fun v => finprod_congr (fun h => ?_)))` and prove the remaining obligations. Establish `hb : (gp 0 : 𝓞 F) ∈ v.asIdeal ∨ (gp 1 : 𝓞 F) ∈ v.asIdeal`.
-
-Apply the tactic sequence `obtain rfl | rfl : i = 0 ∨ i = 1 := by fin_cases i <;> simp`. Conclude with `Or.inl h`. Conclude with `Or.inr h`. Establish `hl : bc (prV (E` using `E) v) (y : GL (Fin n) (E ⊗[F] Ad F)) ∈ levelVL cm.sig J v S.Lb := (hlevI v _).mpr ⟨hbcUP v, (hall v).1⟩`. Rewrite using `[(hκs i v h _ hl).2 ((hall v).2.2 hb)]`.
-
-Simplify using `only`. Rewrite using `[hwv v, hf_g i v h]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem level_conj_frame : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [StarRing E] [Algebra F E] (cm : CMData F E) (n : ℕ) (J : Matrix (Fin n) (Fin n) E), IsHerm (cm.sig : E →+* E) J → J.det ≠ 0 → ∀ (T f t k a sk fc : ℕ) (gp : Fin 2 → ℕ) (S : StepLevel F E cm.sig J T f {v : HeightOneSpectrum (𝓞 F) | (gp 0 : 𝓞 F) ∈ v.asIdeal ∨ (gp 1 : 𝓞 F) ∈ v.asIdeal}) (G : GLoc F E cm.sig gp) (Gl : GLev S G a t 0 sk fc false), k = n → a = n → sk = n → fc = n → T.Prime → (∀ i, (gp i).Prime) → gp 0 ≠ gp 1 → (∀ i, T ≠ gp i) → (∀ i, SplitsIn E (gp i)) → SplitsIn E T → Module.finrank ℚ E = 2 * f → ∀ (Fr : AdFrame cm.sig J (hat F S.Lb) (gp 0 * gp 1) k), ∃ κ : UPts cm.sig J (Ad F), κ.1 ∈ stabGL (hat F S.Lb) ∧ ∀ y : UPts cm.sig J (Ad F), (Fr.InK y.1 ↔ ((κ⁻¹ * y * κ : UPts cm.sig J (Ad F)) : GL _ _) ∈ S.U) ∧ ∀ hy : ((κ⁻¹ * y * κ : UPts cm.sig J (Ad F)) : GL _ _) ∈ S.U, Fr.chi y.1 = ((S.chi ⟨_, hy⟩ : ℂˣ) : ℂ) := by
   intro F E _ _ _ _ _ _ cm n J hJ hdet T f t k a sk fc gp S G Gl hk ha hsk hfc hT hgp hne hTg hsplit hsplitT hdeg Fr

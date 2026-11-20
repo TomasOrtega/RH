@@ -8,9 +8,7 @@ open scoped Matrix NNReal
 namespace GlobalTheory.RecOne.CycDvd
 
 /- English proof (translation)
-Use `haveI : IsAlgClosed Ω := IsAlgClosure.isAlgClosed ℚ`. Use `haveI : CharZero Ω := algebraRat.charZero Ω`. Use `haveI : NeZero (l : Ω) := ⟨by exact_mod_cast (Fact.out : l.Prime).ne_zero⟩`. Establish `h1` using `cyclotomicCharacter.spec (L := Ω) l (MulSemiringAction.toRingAut (G ℚ Ω) Ω s) t ht`. Establish `h2 : (cyclotomicCharacter Ω l (MulSemiringAction.toRingAut (G ℚ Ω) Ω s)).val.toZModPow n = ((cycMod ℚ Ω l n s : (ZMod (l ^ n))ˣ) : ZMod (l ^ n))`.
-
-Simplify using `[cycMod, cycZ]`. Rewrite `h1` using `[h2]`. Conclude with `h1`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem apply_eq_pow (l : ℕ) [Fact l.Prime] (Ω : Type) [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (n : ℕ) (s : G ℚ Ω)
     {t : Ω} (ht : t ^ (l ^ n) = 1) : s t = t ^ ((cycMod ℚ Ω l n s : (ZMod (l ^ n))ˣ) : ZMod (l ^ n)).val := by
@@ -25,9 +23,9 @@ theorem apply_eq_pow (l : ℕ) [Fact l.Prime] (Ω : Type) [Field Ω] [Algebra �
   exact h1
 
 /- English proof (translation)
-Establish `hpos : 0 < l ^ n` using `pow_pos (Fact.out : l.Prime).pos n`. Use `haveI : NeZero (l ^ n) := ⟨hpos.ne'⟩`. Take `⟨i, hi, hcop, rfl⟩` from `(hz.isPrimitiveRoot_iff).1 hμ`. Take `⟨⟨s, hs⟩, hsu⟩` from `GlobalTheory.InertiaPowers.cycMod_Ine_surjective l Ω A hA n (ZMod.unitOfCoprime i hcop)`. Use `⟨s, hs, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hsu' : cycMod ℚ Ω l n s = ZMod.unitOfCoprime i hcop` using `hsu`. Rewrite using `[apply_eq_pow l Ω n s hz.pow_eq_one, hsu', ZMod.coe_unitOfCoprime, ZMod.val_natCast, Nat.mod_eq_of_lt hi]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_Ine_apply_eq (l : ℕ) [Fact l.Prime] (Ω : Type) [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω]
     (A : ValuationSubring Ω) (hA : A.valuation (l : Ω) < 1) (n : ℕ) {z μ : Ω} (hz : IsPrimitiveRoot z (l ^ n))
@@ -41,17 +39,15 @@ theorem exists_Ine_apply_eq (l : ℕ) [Fact l.Prime] (Ω : Type) [Field Ω] [Alg
   rw [apply_eq_pow l Ω n s hz.pow_eq_one, hsu', ZMod.coe_unitOfCoprime, ZMod.val_natCast, Nat.mod_eq_of_lt hi]
 
 /- English proof (translation)
-Introduce `l _ Ω _ _ _ A hO n z hz R hR`. Establish `hA : A.valuation (l : Ω) < 1`. Take `⟨v, hv, hl⟩` from `hO`. Establish `h1` using `(hv ((l : ℕ) : 𝓞 ℚ)).2 hl`. Simplify using `using h1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hpos : 0 < l ^ n` using `pow_pos (Fact.out : l.Prime).pos n`. Set `f : fixA A →+* Ω` to `A.subtype.comp (fixA A).subtype`. Establish `hf : Function.Injective f` using `Subtype.val_injective.comp Subtype.val_injective`. Establish `h0 : Polynomial.eval₂ f (z : Ω) R = 0`. Use `Polynomial.hom_eval₂ R (algebraMap (fixA A) A) A.subtype z` as an intermediate fact.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[← Polynomial.aeval_def, hR, map_zero]`. Conclude with `this.symm`. Establish `hroot : ∀ μ ∈ primitiveRoots (l ^ n) Ω, (R.map f).eval μ = 0`. Introduce `μ hμ`. Take `⟨s, hs, rfl⟩` from `exists_Ine_apply_eq l Ω A hA n hz ((mem_primitiveRoots hpos).1 hμ)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e` using `Polynomial.hom_eval₂ R f (s : Ω →+* Ω) (z : Ω)`. Establish `e2 : (s : Ω →+* Ω).comp f = f` using `RingHom.ext fun a => a.2 s hs`. Rewrite `e` using `[h0, map_zero, e2]`. Rewrite using `[Polynomial.eval_map]`. Conclude with `e.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← Polynomial.map_dvd_map f hf (Polynomial.cyclotomic.monic _ _), Polynomial.map_cyclotomic, Polynomial.cyclotomic_eq_prod_X_sub_primitiveRoots hz]`. Use `Finset.prod_dvd_of_coprime ?_ ?_` and prove the remaining obligations. Introduce `a _ b _ hab`. Conclude with `Polynomial.isCoprime_X_sub_C_of_isUnit_sub (sub_ne_zero.2 hab).isUnit`. Introduce `μ hμ`.
-
-Conclude with `Polynomial.dvd_iff_isRoot.2 (hroot μ hμ)`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem cyclotomic_dvd : ∀ (l : ℕ) [Fact l.Prime] (Ω : Type) [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (A : ValuationSubring Ω), OverL l A → ∀ (n : ℕ) (z : A), IsPrimitiveRoot (z : Ω) (l ^ n) → ∀ R : Polynomial (fixA A), Polynomial.aeval z R = 0 → Polynomial.cyclotomic (l ^ n) (fixA A) ∣ R := by
   intro l _ Ω _ _ _ A hO n z hz R hR

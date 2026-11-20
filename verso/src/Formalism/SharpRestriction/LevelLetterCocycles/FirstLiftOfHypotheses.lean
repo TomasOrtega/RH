@@ -17,57 +17,51 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
 open Polynomial
 
 /- English proof (translation)
-Introduce `d T₁ T₂ F b S η m hS`. Use `haveI : Fact PD.p.Prime := ⟨PD.hp⟩`. Establish `hA : Formalism.MainNotions.LiftingTheory.CaseA W` using `hS.1`. Establish `hl : 11 ≤ PD.p` using `hS.2.1`. Take `⟨hdom, hdvr, hfrac⟩` from `hS.2.2.2.1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨ζ, hζ⟩` from `hS.2.2.2.2.1`. Establish `hT₂ : IsCrys PD T₂.ρ` using `hS.2.2.2.2.2.1.2.1`. Establish `hR` using `Formalism.MainNotions.LiftingTheory.lifta_ring_of W h9`. Use `set a := ⌈aR PD.p (hpar n b S + η)⌉₊ with ha_def`. Establish `hp1 : (1 : ℝ) < PD.p` using `by exact_mod_cast (by omega : 1 < PD.p)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpos : (0 : ℝ) < (PD.p : ℝ) - 1` using `by linarith`. Establish `haR : 0 ≤ aR PD.p (hpar n b S + η)`. Establish `hlam` using `lam_nonneg_of_one_lt PD.p (hpar n b S + η) (by omega)`. Unfold `aR`. Establish `: 0 ≤ ((hpar n b S + η : ℕ) : ℝ) * (2 * (PD.p : ℝ) - 1) / ((PD.p : ℝ) - 1) ^ 2` using `div_nonneg (mul_nonneg (by positivity) (by linarith)) (sq_nonneg _)`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hab : ∀ c, a + η < b c`. Introduce `c`. Establish `h1` using `hS.2.2.2.2.2.2.2.2.1 c`. Establish `h2 : (a : ℝ) < aR PD.p (hpar n b S + η) + 1` using `Nat.ceil_lt_add_one haR`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: (a : ℝ) + η < b c` using `by linarith`. Conclude with `this` after adjusting the coercions. Establish `hbh : ∀ c, b c ≤ hpar n b S` using `fun c => le_trans (Finset.le_sup (f := b) (Finset.mem_univ c)) (Nat.le_add_right _ _)`. Establish `hjw : ∀ c τ, Formalism.MainNotions.LiftingTheory.Over W τ c → JumpsInV PD T₂.ρ τ (JumpWinS d b S η c)` using `fun c τ hτ => Formalism.MainNotions.N.Pv.LocalLengthBound.rk_jumps₂ W hE hC hQ hS c τ hτ`. Use `set Mb : ZMod n → ℕ := fun i => b i + S + η with hMb`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `hJ : Formalism.MainNotions.LiftingTheory.JumpsLet W T₂ Mb Mb`. Introduce `i τ hτ x hx`. Establish `h` using `hjw i τ hτ x hx`. Unfold `JumpWinS at h`. Simplify using `only [hMb, Set.mem_Icc]`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply the tactic sequence `split_ifs at h <;> simp only [Set.mem_union, Set.mem_Icc] at h <;> omega`. Take `⟨cO, hcO, hc0, hcv⟩` from `step1Kill_cO W hV (hRN hA)`. Use `set Sx : ZMod n → Finset ℤ := fun c => (step1Kill_roots W T₂ c (Mb c) (Mb c) a).filter (· ≠ 0) with hSx_def`. Establish `hSx : ∀ c ∈ evens n d, ∀ x ∈ Sx c, x ≠ 0 ∧ ((1 - ((b c + S : ℕ) : ℤ) ≤ x ∧ x ≤ (a : ℤ) - b c) ∨ (1 - (η : ℤ) ≤ x ∧ x ≤ ((η + a : ℕ) : ℤ)))`. Introduce `c hc x hx`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hev : (c.val + d) % 2 = 0` using `by simpa [evens] using hc`. Rewrite `hx` using `[hSx_def, Finset.mem_filter, step1Kill_roots, Finset.mem_image]`. Take `⟨⟨p, hp, rfl⟩, hx0⟩` from `hx`. Rewrite `hp` using `[Finset.mem_product, Finset.mem_Icc]`. Take `⟨hu, hj1, hj2⟩` from `hp`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Unfold `jumpSetL at hu`. Simplify using `only [Finset.mem_filter] at hu`. Take `⟨-, τ, hτ, hjmp⟩` from `hu`. Establish `hw` using `hjw c τ hτ p.1 hjmp`. Simplify using `only [JumpWinS, hev, if_true, Set.mem_union, Set.mem_Icc] at hw`.
+Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨hx0, ?_⟩` and prove the remaining obligations. Move the coercions through the operations in `at hj1 hj2 ⊢`. Use linear arithmetic over natural numbers and integers. Establish `hbound : ∀ c ∈ evens n d, ((∑ x ∈ Sx c, padicValInt PD.p x : ℕ) : ℝ) ≤ B1 PD.p (hpar n b S) η S`. Introduce `c hc`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `hv` using `padicValInt_sum_le PD.p (b c) S η a (hab c) (Sx c) (hSx c hc)`. Establish `hv' : ((PD.p : ℝ) - 1) * ((∑ x ∈ Sx c, padicValInt PD.p x : ℕ) : ℝ) ≤ 2 * (a : ℝ) + 2 * η + S + ((PD.p : ℝ) - 1) * ((Nat.log PD.p (b c - a - 1) : ℝ) + 1)`. Use `(Nat.cast_le (α := ℝ)).2 hv` as an intermediate fact. Move the coercions through the operations in `[Nat.cast_sub (by omega : 1 ≤ PD.p)] at this ⊢`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `hH : (1 : ℝ) ≤ 2 * ((hpar n b S + η : ℕ) : ℝ)`. Establish `h1 : 1 ≤ hpar n b S + η` using `by have := hab c; have := hbh c; omega`. Establish `: (1 : ℝ) ≤ ((hpar n b S + η : ℕ) : ℝ)` using `by exact_mod_cast h1`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hlog : (Nat.log PD.p (b c - a - 1) : ℝ) ≤ Real.logb PD.p (2 * ((hpar n b S + η : ℕ) : ℝ))`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Break down `Nat.eq_zero_or_pos (b c - a - 1) with hK0 | hKpos` into its components or cases. Rewrite using `[hK0, Nat.log_zero_right, Nat.cast_zero]`. Conclude with `Real.logb_nonneg hp1 hH`. Establish `hKle : ((b c - a - 1 : ℕ) : ℝ) ≤ 2 * ((hpar n b S + η : ℕ) : ℝ)`. Establish `: b c - a - 1 ≤ hpar n b S + η` using `by have := hbh c; omega`.
+Combine the linear equalities and inequalities to obtain the conclusion. Chain the equalities or inequalities of the calculation. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: ((b c - a - 1 : ℕ) : ℝ) ≤ ((hpar n b S + η : ℕ) : ℝ)` using `by exact_mod_cast this`. Combine the linear equalities and inequalities to obtain the conclusion. Combine the equalities or inequalities in the displayed calculation. Unfold `B1 lam`. Establish `hm` using `mul_le_mul_of_nonneg_left hlog hpos.le`.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[show ((aN PD.p (hpar n b S + η) : ℕ) : ℝ) = (a : ℝ) from rfl, div_add' _ _ _ hpos.ne', le_div_iff₀ hpos]`. Use the polynomial consequences of the given equalities and inequalities. Establish `hB1 : 0 ≤ B1 PD.p (hpar n b S) η S`. Unfold `B1`. Use `lam_nonneg_of_one_lt PD.p (hpar n b S + η) (by omega)` as an intermediate fact.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `: 0 ≤ (2 * (aN PD.p (hpar n b S + η) : ℝ) + 2 * (η : ℝ) + (S : ℝ)) / ((PD.p : ℝ) - 1)` using `div_nonneg (by positivity) hpos.le`. Combine the linear equalities and inequalities to obtain the conclusion. Use `set s₁ : ℕ := (evens n d).sup fun c => ∑ x ∈ Sx c, padicValInt PD.p x with hs₁_def`. Establish `hs₁ : (s₁ : ℝ) ≤ B1 PD.p (hpar n b S) η S`. Establish `: s₁ ≤ ⌊B1 PD.p (hpar n b S) η S⌋₊` using `Finset.sup_le (fun c hc => Nat.le_floor (hbound c hc))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `le_trans (by exact_mod_cast this) (Nat.floor_le hB1)`. Use `⟨s₁, hs₁, ?_⟩` and prove the remaining obligations. Introduce `FF _ _ _ _ g N y z μ ν hX`. Use `haveI := hdom`. Use `haveI := hdvr`.
+Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI := hfrac`. Establish `hw : ∀ c, ∃ w : O, c ∈ evens n d → (C w * ∏ x ∈ Sx c, (X - C (cO x))).coeff 0 = ((PD.p : ℕ) : O) ^ s₁`. Introduce `c`. Distinguish the cases in `hc : c ∈ evens n d`. Take `⟨w, hw⟩` from `step1Kill_norm hV W.v_l cO hcv (Sx c) (by simp [hSx_def]) s₁ (Finset.le_sup (f := fun c => ∑ x ∈ Sx c, padicValInt PD.p x) hc)`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `⟨w, fun _ => hw⟩`. Conclude with `⟨0, fun h => absurd h hc⟩`. Use `choose wc hwc using hw`. Use `set R : ZMod n → Polynomial O := fun c => C (wc c) * ∏ x ∈ Sx c, (X - C (cO x)) with hR_def`. Establish `hkill : ∀ c ∈ evens n d, ∀ y₀, QLattice W T₂ c a y₀ → Polynomial.aeval (derivationOnWachModule W T₂) (X * R c) y₀ ∈ W.N T₂`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression.
 
-Introduce `c _ y₀ hy`. Establish `h` using `step1Kill_kill W T₂ hR hDS hD hA hT₂ Mb Mb hJ c cO hcO hc0 a hy`. Establish `e : X * R c = C (wc c) * (X * ∏ x ∈ Sx c, (X - C (cO x)))`. Simplify using `only [hR_def]`. Expand and normalize the polynomial expressions, which then agree.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[e, map_mul, Polynomial.aeval_C, Module.End.mul_apply, Module.algebraMap_end_apply]`. Conclude with `(W.N T₂).smul_of_tower_mem _ h`. Take `⟨hX1, hX2⟩` from `hX`. Establish `hzΔ : ∀ f, ∀ δ ∈ W.DelF, W.γD T₂ δ (z f) = z f`. Introduce `f δ hδ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Take `⟨x, -, hxe, -⟩` from `hX1 f`. Establish `h` using `delta_fixes_cocycle_second W T₂ x δ hδ`. Rewrite `h` using `[hxe]`. Conclude with `h`. Set `smE : W.EE → W.DD T₂ →ₗ[O] W.DD T₂` to `fun e => (LinearMap.lsmul W.EE (W.DD T₂) e).restrictScalars O`.
+Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 
-Set `smA : LetA O n → W.DD T₂ →ₗ[O] W.DD T₂` to `fun e => (LinearMap.lsmul (LetA O n) (W.DD T₂) e).restrictScalars O`. Set `ms : ZMod n → FF →ₗ[O] W.DD T₂` to `fun c => Polynomial.aeval (derivationOnWachModule W T₂) (R c) ∘ₗ smE (Ring.inverse (algebraMap (LetA O n) W.EE (Formalism.MainNotions.LiftingTheory.qp W)) ^ a) ∘ₗ ν c + Polynomial.aeval (derivationOnWachModule W T₂) (Polynomial.divX (R c)) ∘ₗ smE (uniformizerInverse W) ∘ₗ smA (le …`. Establish `hcore` using `fun c (hc : c ∈ evens n d) (f : FF) => lift_of_killing_polynomial W T₂ hR hDS hB hA hT₂ c a N s₁ (R c) (hwc c hc) (hkill c hc) ((letE c : LetA O n) • z f) (μ c f) (ν c f) (invariant_letter_idempotent_smul W T₂ (hzΔ f)) (hX2 c f).1 (hX2 c f).2.1 (hX2 c f).2.2.1 (hX2 c f).2.2.2.2.2`. Set `uL : ZMod n → FF →ₗ[O] W.DD T₂` to `fun c => ((PD.p : ℕ) : O) ^ N • ms c - ((PD.p : ℕ) : O) ^ s₁ • μ c`. Establish `hpass : ∀ c ∈ evens n d, (∀ (lenO : ℕ∞) (cc : ℝ) (A : Submodule O FF), ∃ B, PChain lenO m cc A B 1 0 ∧ ∀ f ∈ B, uL c f ∈ W.N T₂) ∧ (m = 0 → ∀ f, uL c f ∈ W.N T₂)`.
-
-Introduce `c hc`. Take `⟨τ, hτ⟩` from `exists_embedding_over_letter W hA c`. Conclude with `step1Pass_pass W T₂ hA hT₂ ζ hζ hEx hER hK hFD c τ hτ (Formalism.MainNotions.N.Pv.LocalLengthBound.rk_fd_letter₂ W hS c) (uL c) a m (fun f => ⟨(hcore c hc f).2.2.1.1, (hcore c hc f).2.2.1.2, (hcore c hc f).2.2.2⟩) (sum_multV_le W hFD hS hE hC hQ c hc τ hτ a (by have := hab c; ome …`. Establish `hout : ∀ F₁ : Submodule O FF, (∀ c ∈ evens n d, ∀ f ∈ F₁, uL c f ∈ W.N T₂) → Step1Out W T₂ d a N s₁ z μ F₁ ms`. Introduce `F₁ hF c hc f`.
-
-Conclude with `⟨(hcore c hc f).1, (hcore c hc f).2.1, (hcore c hc f).2.2.1.2, (hcore c hc f).2.2.2, fun hf => hF c hc f hf⟩`. Distinguish the cases in `hm0 : m = 0`. Conclude with `⟨⊤, ms, (PChain.refl _ _ _ ⊤).mono (Nat.zero_le _) le_rfl, fun _ => rfl, hout ⊤ (fun c hc f _ => (hpass c hc).2 hm0 f)⟩`. Take `⟨B, hBc, hBP⟩` from `iter_chain (lenO := lenOl PD (O := O)) (m := m) (c := lenC (finrank LL T₂.V) m PD.p (hpar n b S + η) S) (fun c B => ∀ f ∈ B, uL c f ∈ W.N T₂) (· ∈ evens n d) (fun _ _ _ hBA hP f hf => hP f (hBA hf)) ⊤ 1 0 (fun c hc A _ => (hpass c hc).1 _ _ A) (evens n d).toList (fun c hc => Fins …`. Use `⟨B, ms, ?_, fun h => absurd h hm0, hout B (fun c hc => hBP c (Finset.mem_toList.2 hc))⟩` and prove the remaining obligations.
-
-Simplify `hBc` using `[Finset.length_toList]`.
+A detailed English derivation is pending.
 -/
 theorem first_lift_of_hypotheses [NeZero n] (W : LocWach PD LL O v n) (hV : Formalism.MainNotions.WachCoordinates.Br.ValRing O v)
     (h9 : Formalism.MainNotions.LiftingTheory.P9π₀ W) (hRN : Formalism.MainNotions.LiftingTheory.CaseA W → Formalism.MainNotions.CrystallineLiftingInputs.RToolNum W)

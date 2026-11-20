@@ -16,7 +16,7 @@ noncomputable def UpperTheory.Reformulated.B.ChoiceOfModulusAndDiscriminant.cmTh
     fun (b : ℤ) (d : ℕ) ↦ ℚ⟮UpperTheory.Reformulated.B.ChoiceOfModulusAndDiscriminant.cmTheta b d⟯
 
 /- English proof (translation)
-Establish `h : ((√(d : ℝ) : ℝ) : ℂ) * ((√(d : ℝ) : ℝ) : ℂ) = (d : ℂ)`. Rewrite using `[← Complex.ofReal_mul, Real.mul_self_sqrt (Nat.cast_nonneg d)]`. Simplify using the standard rewrite rules. Unfold `UpperTheory.Reformulated.B.ChoiceOfModulusAndDiscriminant.cmTheta`. Take the linear combination `(((√(d : ℝ) : ℝ) : ℂ) * ((√(d : ℝ) : ℝ) : ℂ) / 4) * Complex.I_mul_I - (1 / 4 : ℂ) * h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Take a linear combination of the given relations to obtain the conclusion.
 -/
 private theorem UpperTheory.Reformulated.B.ChoiceOfModulusAndDiscriminant.theta_sq (b : ℤ) (d : ℕ) :
     UpperTheory.Reformulated.B.ChoiceOfModulusAndDiscriminant.cmTheta b d * UpperTheory.Reformulated.B.ChoiceOfModulusAndDiscriminant.cmTheta b d =
@@ -28,9 +28,9 @@ private theorem UpperTheory.Reformulated.B.ChoiceOfModulusAndDiscriminant.theta_
   linear_combination (((√(d : ℝ) : ℝ) : ℂ) * ((√(d : ℝ) : ℝ) : ℂ) / 4) * Complex.I_mul_I - (1 / 4 : ℂ) * h
 
 /- English proof (translation)
-Use `⟨Polynomial.X ^ 2 - Polynomial.C (b : ℚ) * Polynomial.X + Polynomial.C (((b : ℚ) ^ 2 + (d : ℚ)) / 4), ?_, ?_⟩` and prove the remaining obligations. Use `monicity!`. Establish `h` using `UpperTheory.Reformulated.B.ChoiceOfModulusAndDiscriminant.theta_sq b d`. Simplify using `only [Polynomial.eval₂_add, Polynomial.eval₂_sub, Polynomial.eval₂_mul, Polynomial.eval₂_X_pow, Polynomial.eval₂_X, Polynomial.eval₂_C, eq_ratCast]`. Use `push_cast`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `h`.
+A detailed English derivation is pending.
 -/
 private theorem UpperTheory.Reformulated.B.ChoiceOfModulusAndDiscriminant.theta_integral (b : ℤ) (d : ℕ) :
     IsIntegral ℚ (UpperTheory.Reformulated.B.ChoiceOfModulusAndDiscriminant.cmTheta b d) := by
@@ -44,13 +44,13 @@ private theorem UpperTheory.Reformulated.B.ChoiceOfModulusAndDiscriminant.theta_
     linear_combination h
 
 /- English proof (translation)
-Introduce `a b c d _ x hx`. Establish `hx' : x ∈ Algebra.adjoin ℚ {UpperTheory.Reformulated.B.ChoiceOfModulusAndDiscriminant.cmTheta b d}`. Rewrite using `[← IntermediateField.adjoin_simple_toSubalgebra_of_isAlgebraic (UpperTheory.Reformulated.B.ChoiceOfModulusAndDiscriminant.theta_integral b d).isAlgebraic]`. Conclude with `hx`. Use `clear hx`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately.
 
-Proceed by induction on `hx' using Algebra.adjoin_induction with`. Consider the case `mem y hy`. Rewrite `hy` using `[Set.mem_singleton_iff]`. Conclude with `⟨0, 1, by simp [hy]⟩`. Consider the case `algebraMap r => exact ⟨r, 0, by simp⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Consider the case `add y z _ _ hy hz`. Take `⟨u, v, rfl⟩` from `hy`. Take `⟨u', v', rfl⟩` from `hz`. Conclude with `⟨u + u', v + v', by push_cast; ring⟩`. Consider the case `mul y z _ _ hy hz`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨u, v, rfl⟩` from `hy`. Take `⟨u', v', rfl⟩` from `hz`. Use `⟨u * u' - v * v' * (((b : ℚ) ^ 2 + (d : ℚ)) / 4), u * v' + v * u' + v * v' * b, ?_⟩` and prove the remaining obligations. Use `push_cast`. Take the linear combination `((v : ℂ) * (v' : ℂ)) * UpperTheory.Reformulated.B.ChoiceOfModulusAndDiscriminant.theta_sq b d`.
+Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.ChoiceOfModulusAndDiscriminant.kap_repr :
     ∀ {a : ℕ} {b c : ℤ} {d : ℕ},

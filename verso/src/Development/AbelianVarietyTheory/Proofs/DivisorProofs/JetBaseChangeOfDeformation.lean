@@ -16,7 +16,7 @@ noncomputable section
 namespace GlobalTheory.LatJet
 
 /- English proof (translation)
-Use extensionality with `x`. Simplify using `only [RingHom.comp_apply, J.π_eq, J'.π_eq, hτ]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem jet_pi_tau {R R' : Type} [CommRing R] [CommRing R'] (σ : R →+* R') {I : Type} [Fintype I] {n : ℕ}
     (J : JetRing R I n) (J' : JetRing R' I n) (τ : J.B →+* J'.B)
@@ -24,7 +24,7 @@ theorem jet_pi_tau {R R' : Type} [CommRing R] [CommRing R'] (σ : R →+* R') {I
   ext x; simp only [RingHom.comp_apply, J.π_eq, J'.π_eq, hτ]
 
 /- English proof (translation)
-Use extensionality with `r`. Simplify using `only [RingHom.comp_apply, RingHom.id_apply, J.π_eq, Algebra.algebraMap_eq_smul_one, map_smul, ← J.one]`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem jet_pi_alg {R : Type} [CommRing R] {I : Type} [Fintype I] {n : ℕ} (J : JetRing R I n) :
     J.π.comp (algebraMap R J.B) = RingHom.id R := by
@@ -33,11 +33,11 @@ theorem jet_pi_alg {R : Type} [CommRing R] {I : Type} [Fintype I] {n : ℕ} (J :
   simp
 
 /- English proof (translation)
-Take `⟨Z', q, hq⟩` from `Obj.exists_isPullBy Y.X' (spMap τ)`. Establish `e1 : spMap σ ≫ spMap J.π = spMap J'.π ≫ spMap τ`. Rewrite using `[← ReciprocityTheory.ChartRestriction.G.Geo.Tor.spMap_comp, ← ReciprocityTheory.ChartRestriction.G.Geo.Tor.spMap_comp, jet_pi_tau σ J J' τ hτ]`. Establish `h1` using `hp.comp Y.pull`. Rewrite `h1` using `[e1]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨i', hi', hi'q⟩` from `h1.cancel hq`. Take `⟨δ', hδ', -⟩` from `hq.existsUnique_detGen τ Y.δ'`. Establish `hb : 𝟙 (Sp R') = spMap J'.π ≫ spMap (algebraMap R' J'.B)`. Rewrite using `[← ReciprocityTheory.ChartRestriction.G.Geo.Tor.spMap_comp, jet_pi_alg]`. Conclude with `(Spec.map_id _).symm`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `mor' : GrpMor (dp0 R') (𝟙 _) X₁.A J'.κ (spMap J'.π) X₁.A (algebraMap R' J'.B) (𝟙 _) (Over.Hom.left (𝟙 X₁.A))` using `GrpMor.of_hom (isDPMorphism_of_eq_bot _ rfl _ _) hb (𝟙 X₁.A)`. Conclude with `⟨{ X' := Z', i := i', pull := hi', mor := mor', δ' := δ' fil := GlobalTheory.T.jet_family_pullback_first H σ J J' Y hp m hN τ hτ hτdp hq hi' hi'q mor' gen := GlobalTheory.T.jet_family_pullback_second H σ J J' Y hp m hN τ hτ hτdp hq hi' hi'q mor' δ₁ hδ δ' hδ' }, q, hq, hδ'⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem family_bc (H : GlobalTheory.Published.AbelianDeRham) {F : Type} [Field F] [NumberField F] {𝔠 : FracId F}
     {R R' : Type} [CommRing R] [CommRing R'] (σ : R →+* R') {I : Type} [Fintype I] {n : ℕ}
@@ -65,7 +65,7 @@ theorem family_bc (H : GlobalTheory.Published.AbelianDeRham) {F : Type} [Field F
            gen := GlobalTheory.T.jet_family_pullback_second H σ J J' Y hp m hN τ hτ hτdp hq hi' hi'q mor' δ₁ hδ δ' hδ' }, q, hq, hδ'⟩
 
 /- English proof (translation)
-Introduce `_ H E _ _ _ I _ 𝔠 φ L R _ _ _ σ n J J' X₀ δ₀ N Y T hT`. Take `⟨p, m, hp, hδ, hN⟩` from `hT`. Take `⟨τ, hτ, hτdp⟩` from `GlobalTheory.T.jet_ring_complex_embedding σ J J'`. Take `⟨Y', q, hq, hδ'⟩` from `family_bc H σ J J' Y hp m hδ hN τ hτ hτdp`. Conclude with `⟨Y', τ, q, hτ, hq, hδ'⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem jetBC_of_grothendieckDeformation_abelianDeRham : GlobalTheory.Published.GrothendieckDeformation → GlobalTheory.Published.AbelianDeRham → JetBC := by
   intro _ H E _ _ _ I _ 𝔠 φ L R _ _ _ σ n J J' X₀ δ₀ N Y T hT

@@ -6,13 +6,11 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.CommutativeAlgebra
 open IsLocalRing UpperTheory.V.Alg UpperTheory.V.CA ReciprocityTheory.CA
 
 /- English proof (translation)
-Establish `hsub : Algebra.algebraMapSubmonoid (C ⧸ p) x.primeCompl = (x.map (Ideal.Quotient.mk p)).primeCompl`. Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨b, hb, rfl⟩`. Introduce `h`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `hb` to reduce the goal to its premises. Conclude with `(Ideal.mem_quotient_iff_mem hp).mp h`. Introduce `hy`. Take `⟨a, rfl⟩` from `Ideal.Quotient.mk_surjective y`. Conclude with `⟨a, fun ha => hy (Ideal.mem_map_of_mem _ ha), rfl⟩`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Replace the relevant objects with their definitions.
 
-Use `haveI : IsLocalization.AtPrime (Localization.AtPrime x ⧸ p.map (algebraMap C (Localization.AtPrime x))) (x.map (Ideal.Quotient.mk p)) := by`. Unfold `IsLocalization.AtPrime`. Rewrite using `[← hsub]`. Use `infer_instance`. Unfold `dimAt`.
-
-Conclude with `IsLocalization.AtPrime.ringKrullDim_eq_height _ _`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.V.CA.localDimension_eq_height {C : Type} [CommRing C] (x : Ideal C) [x.IsPrime] (p : Ideal C)
     (hp : p ≤ x) [(x.map (Ideal.Quotient.mk p)).IsPrime] :
@@ -36,19 +34,15 @@ private theorem UpperTheory.V.CA.localDimension_eq_height {C : Type} [CommRing C
   exact IsLocalization.AtPrime.ringKrullDim_eq_height _ _
 
 /- English proof (translation)
-Introduce `O _ _ _ _ B C _ _ _ _ _ _ x _ hCL hx p _ hp`. Use `set q := p.comap (algebraMap B C) with hq`. Establish `hqm : q ≤ maximalIdeal B`. Rewrite using `[← hx]`. Conclude with `Ideal.comap_mono hp`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : IsLocalRing (B ⧸ q) := IsLocalRing.of_surjective' (Ideal.Quotient.mk q) Ideal.Quotient.mk_surjective`. Use `haveI : FaithfulSMul (B ⧸ q) (C ⧸ p) := (faithfulSMul_iff_algebraMap_injective _ _).mpr Ideal.quotientMap_injective`. Establish `hcm : IsCMQuot (B ⧸ q)` using `cl_cmquot O (B ⧸ q) (cl_quot O B (B ⧸ q) (Ideal.Quotient.mkₐ O q) Ideal.Quotient.mk_surjective hCL)`. Establish `hlt : Algebra.trdeg (B ⧸ q) (C ⧸ p) < Cardinal.aleph0` using `by open Algebra in exact trdeg_lt_aleph0_of_finiteType`. Use `set t := (Algebra.trdeg (B ⧸ q) (C ⧸ p)).toNat`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction.
 
-Establish `ht : Algebra.trdeg (B ⧸ q) (C ⧸ p) = t` using `(Cardinal.cast_toNat_of_lt_aleph0 hlt).symm`. Establish `mapmax : ∀ {R : Type} [CommRing R] (I J : Ideal R), J.IsMaximal → I ≤ J → (J.map (Ideal.Quotient.mk I)).IsMaximal`. Introduce `R _ I J hJ hIJ`. Break down `Ideal.map_eq_top_or_isMaximal_of_surjective (Ideal.Quotient.mk I) Ideal.Quotient.mk_surjective hJ with h | h` into its components or cases. It suffices to derive a contradiction.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : Ideal.Quotient.mk I 1 ∈ J.map (Ideal.Quotient.mk I)`. Rewrite using `[h]`. Conclude with `Submodule.mem_top`. Rewrite `h1` using `[Ideal.mem_quotient_iff_mem hIJ]`. Conclude with `hJ.ne_top ((Ideal.eq_top_iff_one J).mpr h1)`.
+By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h`. Use `haveI hmax : (x.map (Ideal.Quotient.mk p)).IsMaximal := mapmax p x ‹x.IsMaximal› hp`. Establish `hmB : (maximalIdeal B).map (Ideal.Quotient.mk q) = maximalIdeal (B ⧸ q)` using `IsLocalRing.eq_maximalIdeal (mapmax q _ (IsLocalRing.maximalIdeal.isMaximal B) hqm)`. Establish `hcomap : (x.map (Ideal.Quotient.mk p)).comap (algebraMap (B ⧸ q) (C ⧸ p)) = maximalIdeal (B ⧸ q)`. Use extensionality with `b`.
-
-Take `⟨b, rfl⟩` from `Ideal.Quotient.mk_surjective b`. Rewrite using `[Ideal.mem_comap, ← hmB, Ideal.mem_quotient_iff_mem hqm]`. Express the relevant statement in the definitionally equal form `Ideal.Quotient.mk p (algebraMap B C b) ∈ _ ↔ _`. Rewrite using `[Ideal.mem_quotient_iff_mem hp, ← Ideal.mem_comap, hx]`. Use `⟨t, ht, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[UpperTheory.V.CA.localDimension_eq_height x p hp]`. Conclude with `g_dimform (B ⧸ q) (C ⧸ p) t hcm ht (x.map (Ideal.Quotient.mk p)) hcomap`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.CA.c3b :
     ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [IsAdicComplete (maximalIdeal O) O] {B C : Type} [CommRing B] [Algebra O B] [IsLocalRing B] [CommRing C] [Algebra B C] [Algebra.FiniteType B C] (x : Ideal C) [x.IsMaximal], IsCL O B → x.comap (algebraMap B C) = maximalIdeal B → ∀ (p : Ideal C) [p.IsPrime], p ≤ x → ∃ t : ℕ, Algebra.trdeg (B ⧸ p.comap (algebraMap B C)) (C ⧸ p) = t ∧ dimAt x p = ringKrullDim (B ⧸ p.comap (algebraMap B C)) + t := by

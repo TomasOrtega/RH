@@ -15,23 +15,21 @@ noncomputable section
 namespace GlobalTheory.FlatModel
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l' Xo' c' W Y p _ n _ hl yb yy P π ψ hP`. Take `⟨h1, h2, h3, h4, h5, h6⟩` from `hP`. Take `⟨β₀, hβ₀⟩ : ∃ β₀ : KA l' →+* ℂ_[p], yy ≫ (pullback.fst _ _ ≫ Xo'.s) = spMap β₀` from `⟨(Spec.preimage (yy ≫ (pullback.fst _ _ ≫ Xo'.s))).hom, by simp [spMap]⟩`. Take `⟨-, I, -, hI, -⟩` from `Y.oF.geom ℂ_[p] yy β₀ hβ₀`. Take `⟨e, he⟩` from `GlobalTheory.LiePull.exists_pushEquiv h4 (Over.mk (𝟙 _)) yy (Category.id_comp _).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hact : ∀ o : 𝓞 E, (P.oA.act o).left ≫ ψ = ψ ≫ (Y.oF.t.act.act o).left`. Introduce `o`. Apply `Y.m.cart.1.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, Category.assoc, h5, Y.m.act o, ← Category.assoc ψ, h5, ← Category.assoc, P.gen_act o, Category.assoc, Category.assoc, h3 o]`. Rewrite using `[Category.assoc, Category.assoc, Over.w (Y.oF.t.act.act o), h4.1.w, ← Category.assoc, Over.w]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hlin : ∀ (x : Over.mk (𝟙 (Sp ℂ_[p])) ⟶ P.A.A) (o : 𝓞 E), e (x ≫ P.oA.act o) = e x ≫ Y.oF.t.act.act o`. Introduce `x o`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Rewrite using `[he, Over.comp_left, Over.comp_left, he, Category.assoc, Category.assoc, hact]`. Establish `hsymm : ∀ y : Over.mk yy ⟶ Y.oF.t.G, (e.symm y).left ≫ ψ = y.left` using `fun y => by`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← he, MulEquiv.apply_symm_apply]`. Establish `hweil : ∀ (g : Sp ℂ_[p] ⟶ Xo'.XF c'), 𝟙 _ ≫ yy = g → ∀ (k : ℤ) (x y : Over.mk (𝟙 (Sp ℂ_[p])) ⟶ P.A.A) (x₀ y₀ : Over.mk g ⟶ Y.oF.t.G) (c : (Γ(Sp ℂ_[p], ⊤))ˣ), x₀.left = x.left ≫ ψ → y₀.left = y.left ≫ ψ → (Out.WeilIs P.A.A P.A.L k x y c ↔ Out.WeilIs Y.oF.t.G Y.oF.t.PP.L k x₀ y₀ c)`. Introduce and unpack `g rfl k x y x₀ y₀ c hx hy`. Conclude with `GlobalTheory.weilIs_grpPullback_of_comm _ _ Y.oF.t.G P.A.A yy ψ Y.oF.t.PP.L P.A.L Y.oF.t.PP.isLB P.A.isLB h4 h6 (Over.mk (𝟙 _)) k x y x₀ y₀ c hx hy`. Establish `onto : ∀ k, 0 < k → ∀ x : Over.mk (𝟙 (Sp ℂ_[p])) ⟶ P.A.A, x ^ k = 1 ↔ ∃ a, e.symm (I.ev k a) = x`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `k hk x`. Rewrite using `[← e.injective.eq_iff, map_pow, map_one, I.onto k hk]`. Simplify using `only [MulEquiv.symm_apply_eq]`. Use `⟨fun k a => e.symm (I.ev k a), I.ζ, I.ζ_prim, I.ζ_pow, ?_, ?_, onto, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `k a b`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [I.add, map_mul]`. Introduce `k o a`. Apply `e.injective` to reduce the goal to its premises. Rewrite using `[hlin, MulEquiv.apply_symm_apply, MulEquiv.apply_symm_apply]`. Conclude with `I.lin k o a`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `k m hk hm a`. Simplify using `only [← map_pow, I.tower k m hk hm a]`. Introduce `k hk a b`. Establish `hza : (e.symm (I.ev k a)) ^ k = 1` using `(onto k hk _).2 ⟨a, rfl⟩`. Establish `hzb : (e.symm (I.ev k b)) ^ k = 1` using `(onto k hk _).2 ⟨b, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `((GlobalTheory.HTLat.weilIs_iff (A := P.A) (Nat.one_le_iff_ne_zero.2 hk.ne') hza hzb _).1 ?_).symm` and prove the remaining obligations. Rewrite using `[hweil yy (Category.id_comp yy) _ _ _ (I.ev k a) (I.ev k b) _ (hsymm _).symm (hsymm _).symm]`. Conclude with `I.isom k hk a b`. Introduce `a`. Rewrite using `[hsymm, ← hl, ← hI a, Over.comp_left]`.
-
-Use `congr 1`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem tateIso_transport_ptOn : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E)
     (Dw : Datum H) (l' : Level H) (Xo' : Moduli Dw l') (c' : Coeff l') (W : ValuationSubring ℂ)

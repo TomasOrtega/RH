@@ -24,9 +24,7 @@ variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
 variable {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] {L : LocE F E} {r k : ℕ}
 
 /- English proof (translation)
-Unfold `Frames.th`. Use `split_ifs`. Rewrite using `[L.O_def]`. Conclude with `(isIntegral_algebraMap (R := 𝒪[F]) (A := F) (x := S.ϖ)).algebraMap`. Rewrite using `[map_one]`.
-
-Conclude with `L.O.one_mem`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem th_mem (S : Frames L r k) : algebraMap F E S.th ∈ L.O := by
   unfold Frames.th
@@ -37,7 +35,7 @@ theorem th_mem (S : Frames L r k) : algebraMap F E S.th ∈ L.O := by
     exact L.O.one_mem
 
 /- English proof (translation)
-Unfold `Frames.th`. Use `split_ifs`. Introduce `h`. Conclude with `S.ϖ_irr.ne_zero (Subtype.ext h)`. Conclude with `one_ne_zero`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem th_ne (S : Frames L r k) : S.th ≠ 0 := by
   unfold Frames.th
@@ -47,14 +45,14 @@ theorem th_ne (S : Frames L r k) : S.th ≠ 0 := by
   · exact one_ne_zero
 
 /- English proof (translation)
-Take `⟨y, hy, rfl⟩` from `h`. Conclude with `Λ.smul_mem ⟨algebraMap F E S.th, th_mem S⟩ hy`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem inTh_mem (S : Frames L r k) {Λ : Submodule L.O S.V} {x : S.V} (h : S.InTh Λ x) : x ∈ Λ := by
   obtain ⟨y, hy, rfl⟩ := h
   exact Λ.smul_mem ⟨algebraMap F E S.th, th_mem S⟩ hy
 
 /- English proof (translation)
-Take `⟨a, ha, rfl⟩` from `hx`. Take `⟨b, hb, rfl⟩` from `hy`. Unfold `Frames.InTh`. Conclude with `⟨a + b, Λ.add_mem ha hb, (smul_add _ _ _).symm⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Supply the required witnesses or components.
 -/
 theorem inTh_add (S : Frames L r k) {Λ : Submodule L.O S.V} {x y : S.V} (hx : S.InTh Λ x)
     (hy : S.InTh Λ y) : S.InTh Λ (x + y) := by
@@ -64,7 +62,7 @@ theorem inTh_add (S : Frames L r k) {Λ : Submodule L.O S.V} {x y : S.V} (hx : S
   exact ⟨a + b, Λ.add_mem ha hb, (smul_add _ _ _).symm⟩
 
 /- English proof (translation)
-Take `⟨a, ha, rfl⟩` from `hx`. Take `⟨b, hb, rfl⟩` from `hy`. Unfold `Frames.InTh`. Conclude with `⟨a - b, Λ.sub_mem ha hb, (smul_sub _ _ _).symm⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Supply the required witnesses or components.
 -/
 theorem inTh_sub (S : Frames L r k) {Λ : Submodule L.O S.V} {x y : S.V} (hx : S.InTh Λ x)
     (hy : S.InTh Λ y) : S.InTh Λ (x - y) := by
@@ -74,13 +72,13 @@ theorem inTh_sub (S : Frames L r k) {Λ : Submodule L.O S.V} {x y : S.V} (hx : S
   exact ⟨a - b, Λ.sub_mem ha hb, (smul_sub _ _ _).symm⟩
 
 /- English proof (translation)
-The claim follows from `hu x y`.
+A detailed English derivation is pending.
 -/
 private lemma hf_apply_apply_of_mem_isomG (S : Frames L r k) {u : S.GLV} (hu : u ∈ isomG L S.Hm) (x y : S.V) :
     hf L S.Hm (u x) (u y) = hf L S.Hm x y := hu x y
 
 /- English proof (translation)
-Take `⟨-, hsd2⟩` from `hsd`. Introduce `y hy`. Use `(hsd2 (u.symm y)).1 fun x hx => ?_` and prove the remaining obligations. Rewrite using `[← hf_apply_apply_of_mem_isomG S hu x (u.symm y), LinearEquiv.apply_symm_apply]`. Conclude with `(hsd2 y).2 hy (u x) (hmap x hx)`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem symm_mem_of_maps (S : Frames L r k) {Λ : Submodule L.O S.V} (hsd : IsSD L S.Hm Λ) (u : S.GLV)
     (hu : u ∈ isomG L S.Hm) (hmap : ∀ x ∈ Λ, u x ∈ Λ) : ∀ y ∈ Λ, u.symm y ∈ Λ := by
@@ -91,25 +89,25 @@ theorem symm_mem_of_maps (S : Frames L r k) {Λ : Submodule L.O S.V} (hsd : IsSD
   exact (hsd2 y).2 hy (u x) (hmap x hx)
 
 /- English proof (translation)
-The claim follows from `hu`.
+A detailed English derivation is pending.
 -/
 private lemma mem_isomG_of_hf_apply_apply (S : Frames L r k) {u : S.GLV}
     (hu : ∀ x y, hf L S.Hm (u x) (u y) = hf L S.Hm x y) : u ∈ isomG L S.Hm := hu
 
 /- English proof (translation)
-Establish `hu : (w.symm.trans m) ∈ isomG L S.Hm` using `mem_isomG_of_hf_apply_apply S fun x y => by`. Establish `h2` using `hf_apply_apply_of_mem_isomG S hw (w.symm x) (w.symm y)`. Rewrite `h2` using `[LinearEquiv.apply_symm_apply, LinearEquiv.apply_symm_apply]`. Rewrite using `[LinearEquiv.trans_apply, LinearEquiv.trans_apply, hf_apply_apply_of_mem_isomG S hm, h2]`. Establish `hmaps : ∀ x ∈ Λ, (w.symm.trans m) x ∈ Λ` using `fun x hx => by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e : (w.symm.trans m) x = (m (w.symm x) - x) + x`. Rewrite using `[LinearEquiv.trans_apply, sub_add_cancel]`. Rewrite using `[e]`. Conclude with `Λ.add_mem (inTh_mem S (h1 x hx)) hx`. Establish `hback` using `symm_mem_of_maps S hsd _ hu hmaps`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hA : Λ = w • I`. Use extensionality with `x`. Rewrite using `[GlobalTheory.HL.TermBasic.mem_smul S w I x]`. Prove the components needed by the constructor for the conclusion. Introduce `hx`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hux` using `hmaps x hx`. Rewrite `hux` using `[hI, GlobalTheory.HL.TermBasic.mem_smul S m I]`. Take `⟨z, hz, hzx⟩` from `hux`. Rewrite `hzx` using `[LinearEquiv.trans_apply]`. Use `⟨w.symm x, ?_, w.apply_symm_apply x⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 
-Rewrite using `[← m.injective hzx]` and apply the resulting hypothesis. Introduce and unpack `⟨z, hz, rfl⟩`. Establish `hmz : m z ∈ Λ`. Rewrite using `[hI, GlobalTheory.HL.TermBasic.mem_smul S m I]`. Conclude with `⟨z, hz, rfl⟩`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `h3` using `hback (m z) hmz`. Rewrite `h3` using `[LinearEquiv.symm_trans_apply, LinearEquiv.symm_symm, LinearEquiv.symm_apply_apply]`. Then use the resulting hypothesis. Use `⟨hA, fun x hx => ?_⟩` and prove the remaining obligations. Establish `hwx : w x ∈ Λ`. Rewrite using `[hA, GlobalTheory.HL.TermBasic.mem_smul S w I]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `⟨x, hx, rfl⟩`. Establish `h4` using `h1 (w x) hwx`. Rewrite `h4` using `[LinearEquiv.symm_apply_apply]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem hermitianIsometry_selfDual_eq_of_thetaClose (S : Frames L r k) {Λ I : Submodule L.O S.V} (hsd : IsSD L S.Hm Λ) {m w : S.GLV}
     (hm : m ∈ isomG L S.Hm) (hw : w ∈ isomG L S.Hm) (hI : Λ = m • I)
@@ -150,7 +148,7 @@ theorem hermitianIsometry_selfDual_eq_of_thetaClose (S : Frames L r k) {Λ I : S
   rwa [LinearEquiv.symm_apply_apply] at h4
 
 /- English proof (translation)
-Unfold `Frames.Nof at h`. Conclude with `(Subgroup.mem_inf.mp (Subgroup.mem_inf.mp h).1).1`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 private lemma mem_isomG_of_mem_Nof (S : Frames L r k) {g : Fin (r + 1) → S.V} {n : S.GLV}
     (h : n ∈ S.Nof g) : n ∈ isomG L S.Hm := by
@@ -160,13 +158,13 @@ private lemma mem_isomG_of_mem_Nof (S : Frames L r k) {g : Fin (r + 1) → S.V} 
 variable [IsNonarchimedeanLocalField F] [CharZero F]
 
 /- English proof (translation)
-Unfold `Frames.IsTermW at hT ⊢`. Take `⟨hin, hin', hmN, hm'N, hΛ, hΛ', hfr, hg⟩` from `hT`. Establish `hmI` using `mem_isomG_of_mem_Nof S hmN`. Establish `hm'I` using `mem_isomG_of_mem_Nof S hm'N`. Establish `hsd : IsSD L S.Hm Λ`.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hΛ]`. Conclude with `GlobalTheory.HL.TermBasic.isSD_smul S hmI (GlobalTheory.HL.StdLat.stdLat_spec L r k S S.f S.es (Or.inl ⟨rfl, rfl⟩) d.1 hin).1`. Take `⟨hA, hB⟩` from `hermitianIsometry_selfDual_eq_of_thetaClose S hsd hmI (mem_isomG_of_mem_Nof S hw) hΛ h1`. Take `⟨hA', hB'⟩` from `hermitianIsometry_selfDual_eq_of_thetaClose S hsd hm'I (mem_isomG_of_mem_Nof S hw') hΛ' h2`. Establish `hf1 : ∀ b, S.f b ∈ S.stdLat S.f S.es d.1` using `fun b => by`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using GlobalTheory.HL.WitIndep.frame_mem S S.f S.es (Or.inl ⟨rfl, rfl⟩) d.1 hin 1 b`. Establish `hf2 : ∀ b, S.f' b ∈ S.stdLat S.f' S.es' d.2.1` using `fun b => by`. Simplify using `using GlobalTheory.HL.WitIndep.frame_mem S S.f' S.es' (Or.inr ⟨rfl, rfl⟩) d.2.1 hin' 1 b`. Use `⟨hin, hin', hw, hw', hA, hA', fun b => ?_, hg⟩` and prove the remaining obligations. Establish `e : w' (S.f' b) - w (S.f b) = (m' (S.f' b) - m (S.f b) - (m' (S.f' b) - w' (S.f' b))) + (m (S.f b) - w (S.f b))`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Normalize the expressions using the abelian group laws.
 
-Normalize the expressions using the abelian group laws. Rewrite using `[e]`. Conclude with `inTh_add S (inTh_sub S (hfr b) (hB' _ (hf2 b))) (hB _ (hf1 b))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isTermW_of_close (S : Frames L r k) {d : S.Datum} {Λ : Submodule L.O S.V} {m m' w w' : S.GLV}
     (hT : S.IsTermW d Λ m m') (hw : w ∈ S.N) (hw' : w' ∈ S.N')
@@ -198,7 +196,7 @@ end Local
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {sig : E →ₐ[F] E}
 
 /- English proof (translation)
-Introduce `x`. Rewrite using `[LinearEquiv.symm_apply_eq, h (g x)]`. Use `congr 1`. Conclude with `(g.symm_apply_apply x).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem ext_symm (A : Places F E sig) {n : ℕ} (p : HeightOneSpectrum (𝓞 F))
     {g : (Fin n → E) ≃ₗ[E] (Fin n → E)} {w : (Fin n → (A.loc p).Ep) ≃ₗ[(A.loc p).Ep] (Fin n → (A.loc p).Ep)}
@@ -209,13 +207,13 @@ theorem ext_symm (A : Places F E sig) {n : ℕ} (p : HeightOneSpectrum (𝓞 F))
   exact (g.symm_apply_apply x).symm
 
 /- English proof (translation)
-Take `⟨hL, hloc⟩` from `hT`. Use `((GlobalTheory.T.numberField_lattice_determined_by_local_lattices A (k + 2 * r + 1) Λ hL).2.2.union (GlobalTheory.T.coordinateLattice_unique_term_almost_all_places A r k G hk)).subset ?_` and prove the remaining obligations. Introduce `p hp`. Assume the negation of the conclusion as `hq`. Rewrite `hq` using `[Set.mem_union, not_or]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨h1, h2⟩` from `hq`. Simplify using `only [Set.mem_setOf_eq, ne_eq, not_not] at h1 h2 hp`. Take `⟨-, -, -, d₀, hW, -, -, -, -, -⟩` from `h2`. Use `haveI := (A.loc p).lf`. Use `haveI := (A.loc p).char0`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hT0` using `hloc p`. Rewrite `hT0`, `hp` using `[h1]`. Establish `hd : d p = d₀`. Use `(GlobalTheory.HL.TermBasic.term_basic (A.L p) r k (G.S p) d₀ _ ?_).2.2.2.2.2.2.2 (d p) hT0` and prove the remaining obligations. Unfold `Frames.IsTerm`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Supply the required witnesses or components. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `⟨(1, 1), hW⟩`. Rewrite `hp` using `[hd]`. Conclude with `hp hW`.
+A detailed English derivation is pending.
 -/
 theorem good_places (A : Places F E sig) (r k : ℕ) (G : GFrames A r k) (hk : 4 * r + 7 ≤ k)
     (d : G.Dat) (Λ : G.Lt) (hT : G.IsTerm d Λ) :
@@ -240,7 +238,7 @@ theorem good_places (A : Places F E sig) (r k : ℕ) (G : GFrames A r k) (hk : 4
   exact hp hW
 
 /- English proof (translation)
-The claim follows from `h p`.
+A detailed English derivation is pending.
 -/
 private lemma exists_mem_Ext_of_mem_rat (A : Places F E sig) {n : ℕ}
     {K : ∀ p, Subgroup ((Fin n → (A.loc p).Ep) ≃ₗ[(A.loc p).Ep] (Fin n → (A.loc p).Ep))}
@@ -248,27 +246,25 @@ private lemma exists_mem_Ext_of_mem_rat (A : Places F E sig) {n : ℕ}
     ∃ g' ∈ K p, A.Ext p g g' := h p
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ sig A r k G hk d Λ hT`. Establish `hfin` using `good_places A r k G hk d Λ hT`. Take `⟨hL, hloc⟩` from `hT`. Establish `key : ∀ p, ∃ q : (G.S p).GLV × (G.S p).GLV, (G.S p).IsTermW (d p) (A.lat p Λ) q.1 q.2 ∧ ((G.S p).IsTermW (d p) (A.lat p Λ) 1 1 → q = 1)`. Introduce `p`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `h : (G.S p).IsTermW (d p) (A.lat p Λ) 1 1`. Conclude with `⟨1, h, fun _ => rfl⟩`. Use `haveI := (A.loc p).lf haveI := (A.loc p).char0`. Conclude with `⟨(G.S p).wit (d p) (A.lat p Λ), (GlobalTheory.HL.TermBasic.term_basic (A.L p) r k (G.S p) (d p) (A.lat p Λ) (hloc p)).2.1, fun h' => absurd h' h⟩`. Use `choose q hq using key`.
+Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmem : ∀ p, (q p).1 ∈ (G.S p).N ∧ (q p).2 ∈ (G.S p).N'` using `fun p => by`. Establish `h` using `(hq p).1`. Unfold `Frames.IsTermW at h`. Conclude with `⟨h.2.2.1, h.2.2.2.1⟩`. Establish `hone : ∀ p, p ∉ {p | ¬ (G.S p).IsTermW (d p) (A.lat p Λ) 1 1} → q p = 1` using `fun p hp => (hq p).2 (by simpa using hp)`.
+Replace the relevant objects with their definitions. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `hfinN : {p | ((q p).1)⁻¹ • A.lat p Λ ≠ A.lat p Λ}.Finite` using `hfin.subset fun p hp => by`. Assume the negation of the conclusion as `h`. Rewrite `hp` using `[Set.mem_setOf_eq, hone p h]`. Conclude with `hp (by simp)`. Establish `hfinN' : {p | ((q p).2)⁻¹ • A.lat p Λ ≠ A.lat p Λ}.Finite` using `hfin.subset fun p hp => by`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `h`. Rewrite `hp` using `[Set.mem_setOf_eq, hone p h]`. Conclude with `hp (by simp)`. Establish `hcfin : {p | ¬ ∃ u : (𝒪[(A.loc p).Fp])ˣ, ((u : 𝒪[(A.loc p).Fp]) : (A.loc p).Fp) = (Units.mk0 (G.S p).th (th_ne (G.S p)) : ((A.loc p).Fp)ˣ)}.Finite`. Use `G.gg_fin.subset fun p hp => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Assume the negation of the conclusion as `hg`. Rewrite `hp`, `hg` using `[Set.mem_setOf_eq]`. Apply `hp` to reduce the goal to its premises. Use `⟨1, ?_⟩` and prove the remaining obligations. Rewrite using `[Units.val_mk0]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[Frames.th, hg]`. Take `⟨g, hgN, hgP⟩` from `(GlobalTheory.T.strong_approximation_unipotent_alt A r k G Λ hL (fun p => Units.mk0 (G.S p).th (th_ne (G.S p))) hcfin (fun p => ((q p).1)⁻¹) hfinN).1 (fun p => inv_mem (hmem p).1)`. Take `⟨g', hg'N, hg'P⟩` from `(GlobalTheory.T.strong_approximation_unipotent_alt A r k G Λ hL (fun p => Units.mk0 (G.S p).th (th_ne (G.S p))) hcfin (fun p => ((q p).2)⁻¹) hfinN').2 (fun p => inv_mem (hmem p).2)`. Use `⟨⟨g⁻¹, inv_mem hgN, g'⁻¹, inv_mem hg'N, fun p m m' hm hm' => ?_⟩, fun m m' hmm => ?_⟩` and prove the remaining obligations. Use `haveI := (A.loc p).lf haveI := (A.loc p).char0`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hmN : m ∈ (G.S p).N`. Take `⟨m₀, hm₀, hext⟩` from `exists_mem_Ext_of_mem_rat A (K := fun p => (G.S p).N) (inv_mem hgN) p`. Rewrite using `[((GlobalTheory.HL.RatExt.rational_extend A _ p).2.2.1 g⁻¹).unique hm hext]` and apply the resulting hypothesis. Establish `hm'N : m' ∈ (G.S p).N'`. Take `⟨m₀, hm₀, hext⟩` from `exists_mem_Ext_of_mem_rat A (K := fun p => (G.S p).N') (inv_mem hg'N) p`.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Supply the required witnesses or components.
 
-Rewrite using `[((GlobalTheory.HL.RatExt.rational_extend A _ p).2.2.1 g'⁻¹).unique hm' hext]` and apply the resulting hypothesis. Use `isTermW_of_close (G.S p) (hq p).1 hmN hm'N (fun x hx => ?_) (fun x hx => ?_)` and prove the remaining obligations. Take `⟨y, hy, hxy⟩` from `hgP p m.symm (ext_symm A p hm) x hx`. Unfold `Frames.InTh`. Conclude with `⟨y, hy, hxy⟩`.
+Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Supply the required witnesses or components. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨y, hy, hxy⟩` from `hg'P p m'.symm (ext_symm A p hm') x hx`. Unfold `Frames.InTh`. Conclude with `⟨y, hy, hxy⟩`. Unfold `GFrames.om`. Use `finprod_congr fun p => ?_` and prove the remaining obligations.
-
-Use `haveI := (A.loc p).lf`. Use `haveI := (A.loc p).char0`. Conclude with `(GlobalTheory.HL.WitIndep.witness_independence (A.L p) r k (G.S p) (d p) (A.lat p Λ) (m p) (m' p) (hmm p)).1`.
+A detailed English derivation is pending.
 -/
 theorem global_witnesses : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     {sig : E →ₐ[F] E} (A : Places F E sig), ∀ (r k : ℕ) (G : GFrames A r k), 4 * r + 7 ≤ k → ∀ d Λ,

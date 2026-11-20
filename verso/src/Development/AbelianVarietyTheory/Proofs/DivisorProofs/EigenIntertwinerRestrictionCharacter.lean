@@ -17,11 +17,11 @@ local instance borelUA' {F E : Type} [Field F] [NumberField F] [Field E] [Number
 namespace GlobalTheory.ThKSwap
 
 /- English proof (translation)
-Establish `hfin : IsFiniteMeasure (μ.restrict s)` using `isFiniteMeasure_restrict.2 hs`. Establish `hlin : ∑' i, ∫⁻ u in s, ‖f i u‖ₑ ∂μ ≠ ⊤`. Rewrite using `[← lintegral_tsum (fun i => (hm i).enorm)]`. Use `ne_top_of_le_ne_top (b := ∫⁻ _ in s, ENNReal.ofReal C ∂μ) ?_ (lintegral_mono fun u => ?_)` and prove the remaining obligations. Rewrite using `[lintegral_const]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `ENNReal.mul_ne_top ENNReal.ofReal_ne_top (measure_ne_top _ _)`. Repeatedly rewrite using `[← ofReal_norm_eq_enorm]`. Rewrite using `[← ENNReal.ofReal_tsum_of_nonneg (fun _ => norm_nonneg _) (hb u).1]`. Conclude with `ENNReal.ofReal_le_ofReal (hb u).2`. Use `⟨?_, integral_tsum hm hlin⟩` and prove the remaining obligations.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `Summable.of_norm_bounded (g := fun i => (∫⁻ u in s, ‖f i u‖ₑ ∂μ).toReal) (ENNReal.summable_toReal hlin) fun i => ?_` and prove the remaining obligations. Use `(norm_integral_le_lintegral_norm _).trans_eq ?_` and prove the remaining obligations. Repeatedly rewrite using `[ofReal_norm_eq_enorm]`.
+Rewrite the conclusion repeatedly using the stated equalities. A detailed English derivation is pending.
 -/
 theorem swap_of_bound {ι G : Type*} [Countable ι] [MeasurableSpace G] (μ : Measure G) (s : Set G) (hs : μ s ≠ ⊤)
     (f : ι → G → ℂ) (hm : ∀ i, AEStronglyMeasurable (f i) (μ.restrict s)) (C : ℝ)
@@ -41,15 +41,15 @@ theorem swap_of_bound {ι G : Type*} [Countable ι] [MeasurableSpace G] (μ : Me
   simp_rw [ofReal_norm_eq_enorm]
 
 /- English proof (translation)
-The claim follows from `(Module.finBasis ℚ E).equivFun.injective.countable`.
+A detailed English derivation is pending.
 -/
 theorem countable_of_numberField (E : Type) [Field E] [NumberField E] : Countable E :=
   (Module.finBasis ℚ E).equivFun.injective.countable
 
 /- English proof (translation)
-Introduce `hK F E _ _ _ _ _ σ B n d d₁ X W W₁ M M₁ H' i₀ i₁ hH hG e₀ he χX χW om r s r' s' hP Ψ hΨ`. Take `⟨K, hKc, hcov⟩` from `GlobalTheory.T.adapted_plane_evaluation_character_twist hK F E σ B n d d₁ X W W₁ M M₁ H' i₀ i₁ hH hG e₀ he χX χW om r s r' s' hP`. Take `⟨C, hC⟩` from `GlobalTheory.T.adapted_plane_evaluation_representation hK F E σ B n d d₁ X W W₁ M M₁ H' i₀ i₁ hH hG e₀ he χX χW om r s r' s' hP Ψ hΨ K hKc`. Use `⟨C, fun u => ?_⟩` and prove the remaining obligations. Take `⟨γ, hγ, hk⟩` from `hcov u`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `key : ∀ ξ : Fin n → E, thetaSum F (e₀ (M.co.rho B.ψ (Matrix.vecMulVec (incV F ξ) (incV F H'.y)) (om (1, u.1) Ψ))) = thetaSum F (e₀ (M.co.rho B.ψ (Matrix.vecMulVec (incV F ξ) (incV F H'.y)) (om (1, (γ⁻¹ * u).1) Ψ)))` using `fun ξ => by`. Use `GlobalTheory.T.adapted_plane_evaluation_equivariant hK F E σ B n d d₁ X W W₁ M M₁ H' i₀ i₁ hH hG e₀ he χX χW om r s r' s' hP Ψ hΨ ξ γ (γ⁻¹ * u) hγ` as an intermediate fact. Rewrite `this` using `[mul_inv_cancel_left]`. Then use the resulting hypothesis. Repeatedly rewrite using `[key]`. Conclude with `hC _ hk`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion repeatedly using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bound_lem : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (n d d₁ : ℕ) (X : Spc F E n) (W : Spc F E d) (W₁ : Spc F E d₁) (M : Model σ X W) (M₁ : Model σ X W₁) (H' : Plane E d d₁) (i₀ i₁ : ℕ),
@@ -68,7 +68,7 @@ theorem bound_lem : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberFi
   exact hC _ hk
 
 /- English proof (translation)
-Introduce `hK F E _ _ _ _ _ σ B n d d₁ X W W₁ M M₁ H' i₀ i₁ hH hG e₀ he χX χW om r s r' s' hP μ 𝓕 _ _ h1 Ψ hΨ`. Take `⟨C, hC⟩` from `bound_lem hK F E σ B n d d₁ X W W₁ M M₁ H' i₀ i₁ hH hG e₀ he χX χW om r s r' s' hP Ψ hΨ`. Use `haveI := countable_of_numberField E`. Conclude with `swap_of_bound μ 𝓕 (by simp [h1]) _ (fun ξ => (GlobalTheory.T.adapted_plane_evaluation_intertwines hK F E σ B n d d₁ X W W₁ M M₁ H' i₀ i₁ hH hG e₀ he χX χW om r s r' s' hP Ψ hΨ ξ).aestronglyMeasurable) C hC`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem swap : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (n d d₁ : ℕ) (X : Spc F E n) (W : Spc F E d) (W₁ : Spc F E d₁) (M : Model σ X W) (M₁ : Model σ X W₁) (H' : Plane E d d₁) (i₀ i₁ : ℕ),

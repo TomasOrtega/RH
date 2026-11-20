@@ -6,9 +6,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.NumberFieldTowers.
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.GaloisCohomology UpperTheory.V UpperTheory.V.LDataCardLeFinrank UpperTheory.V.Base UpperTheory.V.Kum UpperTheory.V.Tower
 
 /- English proof (translation)
-Introduce `l _ M _ _ g t h`. Establish `ht : t = LinearMap.lcomp ℤ_[l] (QZ l) g` using `LinearMap.ext fun x => LinearMap.ext fun φ => h x φ`. Take `⟨h1, h2⟩` from `UpperTheory.V.Tower.dualKer l M M g`. Establish `hr : LinearMap.range t = LinearMap.ker (LinearMap.lcomp ℤ_[l] (QZ l) (LinearMap.ker g).subtype)`. Rewrite using `[ht]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h1`. Rewrite using `[← UpperTheory.V.Tower.lenDual l (LinearMap.ker g)]`. Conclude with `((Submodule.quotEquivOfEq _ _ hr).trans (LinearMap.quotKerEquivOfSurjective _ (h2 (LinearMap.ker g)))).length_eq`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Tower.cokerDual :
     ∀ (l : ℕ) [Fact l.Prime] (M : Type) [AddCommGroup M] [Module ℤ_[l] M] (g : Module.End ℤ_[l] M) (t : Module.End ℤ_[l] (M →ₗ[ℤ_[l]] QZ l)), (∀ x φ, t x φ = x (g φ)) →

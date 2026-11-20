@@ -7,21 +7,21 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AlgebraTools.Deter
 open IsLocalRing Matrix NumberField Formalism.ConjugateSelfDual ReciprocityTheory.Gal UpperTheory.V UpperTheory.V.Alg UpperTheory.V.W UpperTheory.V.Pa UpperTheory.V.HV UpperTheory.V.Th UpperTheory.V.Th.Nm GlobalTheory.GalOfCusp
 
 /- English proof (translation)
-Use `set f : DualNumber O →+* O := (TrivSqZeroExt.fstHom O O O : DualNumber O →+* O) with hf`. Establish `hmap : (GDet.ofRep (mat ρ')).map f = GDet.ofRep (mat ρ)`. Rewrite using `[(CA.d_gmap (GDet.ofRep (mat ρ'))).2.2.2 f (mat ρ'), ← hρ]`. Both sides reduce to the same expression. Establish `hres : ((res O (DualNumber O) : DualNumber O →ₐ[O] ResidueField O) : DualNumber O →+* ResidueField O) = (res O O : O →+* ResidueField O).comp f` using `RingHom.ext fun x => (res_map (TrivSqZeroExt.fstHom O O O) x).symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfst : ∀ v i g, f ((ψ' v i g : (DualNumber O)ˣ) : DualNumber O) = ((ψ v i g : Oˣ) : O)`. Introduce `v i g`. Use `congrArg (fun χ : F.Gv v →* Oˣ => ((χ g : Oˣ) : O)) (hψ' v i).1` as an intermediate fact. Simplify `this` using `[pushCh]`. Establish `hpsi : ∀ v i, r.IsPsi v i (ψ' v i)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `v i`. Use `⟨(hψ' v i).2.1, fun g => ?_, fun g => ?_⟩` and prove the remaining obligations. Establish `h1` using `res_map (TrivSqZeroExt.fstHom O O O) ((ψ' v i g : (DualNumber O)ˣ) : DualNumber O)`. Rewrite using `[← h1]`. Establish `h2` using `hfst v i g`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [hf] at h2`. Rewrite using `[show (TrivSqZeroExt.fstHom O O O) ((ψ' v i g : (DualNumber O)ˣ) : DualNumber O) = ((ψ v i g : Oˣ) : O) from h2]`. Conclude with `(hψ v i).red g`. Establish `hs` using `(hψ' v i).2.2 g (Or.inr g.2)`. Establish `h2` using `hfst v i g`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `h3` using `(hψ v i).mu g`. Use `ext`. Simplify using `only [hf] at h2`. Simplify `h2` using `[h3, TrivSqZeroExt.algebraMap_eq_inl]`. Simplify `hs` using `[TrivSqZeroExt.algebraMap_eq_inl]`.
+Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hred : (GDet.ofRep (mat ρ')).map (res O (DualNumber O) : DualNumber O →+* ResidueField O) = r.Dbar`. Rewrite using `[hres, ← (CA.d_gmap (GDet.ofRep (mat ρ'))).2.1, hmap, hD]`. Take `⟨p, hpD, hpψ⟩` from `pairOfRep F O r (DualNumber O) ρ' P' ψ' hn hcont hred hform hpsi hflag hine`. Use `⟨p, ⟨?_, ?_⟩, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hpD, hmap]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `v i`. Rewrite using `[hpψ]`. Conclude with `(hψ' v i).1`. Introduce `g`. Rewrite using `[hpD, (AlgebraTools.Det.repApi (mat ρ')).2.2.1 hn]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[GDet.repAlg]`. Introduce `v i g hg`. Rewrite using `[hpψ]`. Conclude with `(hψ' v i).2.2 g (Or.inl hg)`.
+A detailed English derivation is pending.
 -/
 private theorem auxiliaryVectors_pairing_eq_antiDiagonal_gram {l : ℕ} [Fact l.Prime] {n : ℕ} (F : GFrame l) (O : Type) [CommRing O] [IsLocalRing O] [Algebra ℤ_[l] O]
     (r : Resid F O n) [IsCO O O] [IsCO O (DualNumber O)] (ρ : F.G₀ →* GL (Fin n) O) (ψ : ∀ v, Fin n → F.Gv v →* Oˣ)
@@ -79,7 +79,7 @@ private theorem auxiliaryVectors_pairing_eq_antiDiagonal_gram {l : ℕ} [Fact l.
     exact (hψ' v i).2.2 g (Or.inl hg)
 
 /- English proof (translation)
-Introduce `l _ n F c r y z _ _ hn hz hD hψ`. Take `⟨ρ', P', ψ', hcont, hform, hflag, hine, hρ, htr, hψ'⟩` from `dualRep (reIu F r.Ip) c y z hz`. Take `⟨p, h1, h2, h3⟩` from `auxiliaryVectors_pairing_eq_antiDiagonal_gram F c.O r y.ρ y.ψ ρ' P' ψ' hn hD hψ hcont hform hflag hine hρ hψ'`. Conclude with `⟨p, h1, fun g => (congrArg TrivSqZeroExt.snd (h2 g)).trans (htr g), h3⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem UpperTheory.V.Th.Nm.pairDual :
     ∀ {l : ℕ} [Fact l.Prime] {n : ℕ} (F : GFrame l) (c : Coef l) (r : Resid F c.O n) (y : Pt (reIu F r.Ip) c.O n) (z : F.G₀ → Matrix (Fin n) (Fin n) c.O) [IsCO c.O c.O] [IsCO c.O (DualNumber c.O)], 1 ≤ n → OCoc y z → (GDet.ofRep (mat y.ρ)).map (res c.O c.O : c.O →+* ResidueField c.O) = r.Dbar → (∀ v i, r.IsPsi v i (y.ψ v i)) → ∃ p : Pair r (DualNumber c.O), p.Maps (TrivSqZeroExt.fstHom c.O c.O c.O : DualNumber c.O →+* c.O) (GDet.ofRep (mat y.ρ)) y.ψ ∧ (∀ g, (p.D.tr (MonoidAlgebra.single g 1)).snd = (z g * mat y.ρ g).trace) ∧ ∀ v i, ∀ g ∈ F.Iv v, ((p.ψ v i g : (DualNumber c.O)ˣ) : DualNumber c.O).snd = 0 := by

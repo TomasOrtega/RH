@@ -21,7 +21,7 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.Ar.Nform
 
 /- English proof (translation)
-Simplify using `only [hermForm, dotProduct, Matrix.mulVec, Matrix.map_apply, Pi.star_apply, Finset.mul_sum, Complex.re_sum, ← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem re_dot_sub_re_hermForm {g : ℕ} (B : Matrix (Fin g) (Fin g) ℝ) (ζ : Fin g → ℂ) :
     (ζ ⬝ᵥ (B.map fun x : ℝ => (x : ℂ)).mulVec ζ).re - (hermForm (B.map fun x : ℝ => (x : ℂ)) ζ ζ).re =
@@ -33,7 +33,7 @@ theorem re_dot_sub_re_hermForm {g : ℕ} (B : Matrix (Fin g) (Fin g) ℝ) (ζ : 
   ring
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[GroundTheory.Heights₂.Heights.periodMatrix]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem periodMatrix_map_im {g : ℕ} (X Y : Matrix (Fin g) (Fin g) ℝ) :
     (GroundTheory.Heights₂.Heights.periodMatrix X Y).map Complex.im = Y := by
@@ -41,7 +41,7 @@ theorem periodMatrix_map_im {g : ℕ} (X Y : Matrix (Fin g) (Fin g) ℝ) :
   simp [GroundTheory.Heights₂.Heights.periodMatrix]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `[GroundTheory.Heights₂.Heights.periodMatrix, Matrix.mulVec, dotProduct, Complex.im_sum]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem im_period_point {g : ℕ} (X Y : Matrix (Fin g) (Fin g) ℝ) (u₁ u₂ : Fin g → ℝ) :
     (fun i => (((GroundTheory.Heights₂.Heights.periodMatrix X Y).mulVec (fun i => (u₁ i : ℂ)) +
@@ -50,9 +50,9 @@ theorem im_period_point {g : ℕ} (X Y : Matrix (Fin g) (Fin g) ℝ) (u₁ u₂ 
   simp [GroundTheory.Heights₂.Heights.periodMatrix, Matrix.mulVec, dotProduct, Complex.im_sum]
 
 /- English proof (translation)
-Unfold `ReciprocityTheory.ChartRestriction.G.Geo.Tor.thetaChar GroundTheory.Heights₂.Heights.thetaChar`. Use `tsum_congr fun k => ?_` and prove the remaining obligations. Establish `e : ((fun i => (k i : ℂ)) + fun i => (a i : ℂ)) = fun i => ((intVec k i + a i : ℝ) : ℂ)`. Use function extensionality and compare the values at `i`. Simplify using `[intVec]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Rewrite using `[e]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem thetaChar_eq {g : ℕ} (X Y : Matrix (Fin g) (Fin g) ℝ) (a c : Fin g → ℝ) (ζ : Fin g → ℂ) :
     ReciprocityTheory.ChartRestriction.G.Geo.Tor.thetaChar (GroundTheory.Heights₂.Heights.periodMatrix X Y)
@@ -67,15 +67,15 @@ theorem thetaChar_eq {g : ℕ} (X Y : Matrix (Fin g) (Fin g) ℝ) (a c : Fin g �
   rw [e]
 
 /- English proof (translation)
-Introduce `g X Y a c h Hm θ κ _ hY hH hθ u₁ u₂ z hz`. Establish `him` using `periodMatrix_map_im X Y`. Establish `hinv : GlobalTheory.CanTh.imInv (GroundTheory.Heights₂.Heights.periodMatrix X Y) = Y⁻¹.map fun x : ℝ => (x : ℂ)`. Rewrite using `[GlobalTheory.CanTh.imInv, him]`. Establish `hq : (fun i => ((h.mulVec z) i).im) = Y.mulVec u₁`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hz]`. Conclude with `im_period_point X Y u₁ u₂`. Establish `hdiff` using `re_dot_sub_re_hermForm Y⁻¹ (h.mulVec z)`. Establish `hcancel : Y⁻¹.mulVec (Y.mulVec u₁) = u₁`. Rewrite using `[Matrix.mulVec_mulVec, Matrix.nonsing_inv_mul _ hY.det_pos.ne'.isUnit, Matrix.one_mulVec]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hdiff` using `[hq, hcancel, dotProduct_comm (Y.mulVec u₁) u₁, ← hinv]`. Establish `hqf : u₁ ⬝ᵥ Y.mulVec u₁ = qf Y u₁` using `rfl`. Rewrite `hdiff` using `[hqf]`. Rewrite using `[hθ z, hH z z, norm_mul, GlobalTheory.CanTh.canTh, norm_mul, Complex.norm_exp, thetaChar_eq, thetaNorm, ← hz]`. Establish `hre : ((Real.pi / 2 : ℂ) * (h.mulVec z ⬝ᵥ (GlobalTheory.CanTh.imInv (GroundTheory.Heights₂.Heights.periodMatrix X Y)).mulVec (h.mulVec z))).re = Real.pi / 2 * (h.mulVec z ⬝ᵥ (GlobalTheory.CanTh.imInv (GroundTheory.Heights₂.Heights.periodMatrix X Y)).mulVec (h.mulVec z)).re`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: ((Real.pi / 2 : ℂ)) = ((Real.pi / 2 : ℝ) : ℂ)` using `by push_cast; rfl`. Rewrite using `[this, Complex.re_ofReal_mul]`. Rewrite using `[hre]`. Establish `hexp : Real.exp (Real.pi / 2 * (h.mulVec z ⬝ᵥ (GlobalTheory.CanTh.imInv (GroundTheory.Heights₂.Heights.periodMatrix X Y)).mulVec (h.mulVec z)).re) * Real.exp (-(Real.pi * ((1 : ℕ) : ℝ) / 2) * (hermForm (GlobalTheory.CanTh.imInv (GroundTheory.Heights₂.Heights.periodMatrix X Y)) (h …`. Rewrite using `[← Real.exp_add]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Use `push_cast`. Take the linear combination `(Real.pi / 2) * hdiff`. Combine the equalities or inequalities in the displayed calculation.
+Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem norm_mul_canTh : ∀ (g : ℕ) (X Y : Matrix (Fin g) (Fin g) ℝ) (a c : Fin g → ℝ) (h Hm : Matrix (Fin g) (Fin g) ℂ)
     (θ : (Fin g → ℂ) → ℂ) (κ : ℂ),

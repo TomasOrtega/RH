@@ -42,7 +42,7 @@ instance (I : Ideal (MvPolynomial (Fin n) ℂ)) (q : Fin n → ℂ) :
     (Algebra (curveLocalRing I q) ↥(integralClosure (curveLocalRing I q) (FractionRing (curveLocalRing I q))))
 
 /- English proof (translation)
-Establish `hu : IsUnit (algebraMap (MvPolynomial (Fin n) ℂ) (Localization.AtPrime (RingHom.ker (eval q))) f)` using `IsLocalization.map_units _ (⟨f, fun h ↦ hf (RingHom.mem_ker.1 h)⟩ : (RingHom.ker (eval q)).primeCompl)`. Conclude with `hu.map (Ideal.Quotient.mk _)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isUnit_algebraMap_curveLocalRing (I : Ideal (MvPolynomial (Fin n) ℂ)) (q : Fin n → ℂ)
     (f : MvPolynomial (Fin n) ℂ) (hf : eval q f ≠ 0) :
@@ -52,7 +52,7 @@ theorem isUnit_algebraMap_curveLocalRing (I : Ideal (MvPolynomial (Fin n) ℂ)) 
   exact hu.map (Ideal.Quotient.mk _)
 
 /- English proof (translation)
-Simplify using `only [zeroSet, Set.mem_ofPred_eq, not_forall] at hq`. Take `⟨g, hg, hgq⟩` from `hq`. Unfold `curveLocalRing`. Rewrite using `[Ideal.Quotient.subsingleton_iff]`. Conclude with `Ideal.eq_top_of_isUnit_mem _ (Ideal.mem_map_of_mem _ hg) (IsLocalization.map_units _ (⟨g, fun h ↦ hgq (RingHom.mem_ker.1 h)⟩ : (RingHom.ker (eval q)).primeCompl))`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem curveLocalRing_subsingleton (I : Ideal (MvPolynomial (Fin n) ℂ)) (q : Fin n → ℂ)
     (hq : q ∉ zeroSet I) : Subsingleton (curveLocalRing I q) := by
@@ -64,7 +64,7 @@ theorem curveLocalRing_subsingleton (I : Ideal (MvPolynomial (Fin n) ℂ)) (q : 
     (IsLocalization.map_units _ (⟨g, fun h ↦ hgq (RingHom.mem_ker.1 h)⟩ : (RingHom.ker (eval q)).primeCompl))
 
 /- English proof (translation)
-Introduce `a b h`. Conclude with `IsLocalization.injective (FractionRing (curveLocalRing I q)) le_rfl (congrArg Subtype.val h)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem algebraMap_curveNormalisation_injective (I : Ideal (MvPolynomial (Fin n) ℂ)) (q : Fin n → ℂ) :
     Function.Injective (algebraMap (curveLocalRing I q) (curveNormalisation I q)) := by
@@ -72,9 +72,9 @@ theorem algebraMap_curveNormalisation_injective (I : Ideal (MvPolynomial (Fin n)
   exact IsLocalization.injective (FractionRing (curveLocalRing I q)) le_rfl (congrArg Subtype.val h)
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Establish `h` using `Ideal.height_le_ringKrullDim_of_ne_top (I := RingHom.ker (eval (0 : Fin 1 → ℂ))) (RingHom.ker_ne_top _)`. Rewrite `h` using `[MvPolynomial.ringKrullDim_of_isNoetherianRing, ringKrullDim_eq_zero_of_field, zero_add, Nat.card_eq_fintype_card, Fintype.card_fin]`. Conclude with `h` after adjusting the coercions. Rewrite using `[Order.one_le_iff_ne_zero, Ne, Ideal.height_eq_zero_iff_eq_bot]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Establish `hX : (X 0 : MvPolynomial (Fin 1) ℂ) ∈ RingHom.ker (eval (0 : Fin 1 → ℂ))` using `by simp`. Rewrite `hX` using `[h, Ideal.mem_bot]`. Conclude with `X_ne_zero _ hX`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem height_ker_eval_line : (RingHom.ker (eval (0 : Fin 1 → ℂ))).height = 1 := by
   apply le_antisymm
@@ -95,7 +95,7 @@ def curveLocalRingLineEquiv :
   (Ideal.quotEquivOfEq (Ideal.map_bot)).trans (RingEquiv.quotientBot _)
 
 /- English proof (translation)
-Rewrite using `[ringKrullDim_eq_of_ringEquiv curveLocalRingLineEquiv, IsLocalization.AtPrime.ringKrullDim_eq_height (RingHom.ker (eval (0 : Fin 1 → ℂ))), height_ker_eval_line]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem ringKrullDim_curveLocalRing_line :
     ringKrullDim (curveLocalRing (⊥ : Ideal (MvPolynomial (Fin 1) ℂ)) 0) = 1 := by
@@ -117,9 +117,9 @@ def CurveNormalisationLength.Statement : Prop :=
             Module.length (curveLocalRing I q) (curveNormalisation I q ⧸ P.asIdeal)
 
 /- English proof (translation)
-Use `⟨isRadicalAt_of_isRadical Ideal.isPrime_bot.isRadical 0, ringKrullDim_curveLocalRing_line, ?_⟩` and prove the remaining obligations. Establish `: IsDomain (curveLocalRing (⊥ : Ideal (MvPolynomial (Fin 1) ℂ)) 0)` using `curveLocalRingLineEquiv.toMulEquiv.isDomain`. Use `mem_nonZeroDivisors_of_ne_zero fun h ↦ ?_` and prove the remaining obligations. Establish `h'` using `congrArg curveLocalRingLineEquiv h`. Rewrite `h'` using `[map_zero]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hinj` using `IsLocalization.injective (Localization.AtPrime (RingHom.ker (eval (0 : Fin 1 → ℂ)))) (M := (RingHom.ker (eval (0 : Fin 1 → ℂ))).primeCompl) (Ideal.primeCompl_le_nonZeroDivisors _)`. Apply `X_ne_zero (R := ℂ) (0 : Fin 1)` to reduce the goal to its premises. Apply `hinj` to reduce the goal to its premises. Rewrite using `[map_zero]`. Conclude with `h'`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem CurveNormalisationLength.hypotheses_inhabited :
     IsRadicalAt (⊥ : Ideal (MvPolynomial (Fin 1) ℂ)) 0 ∧

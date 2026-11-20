@@ -31,7 +31,7 @@ theorem tinv_inv_val (g : GL (Fin r) K) :
   rfl
 
 /- English proof (translation)
-Use extensionality with `: 1`. Rewrite using `[tinv_val, tinv_inv_val, transpose_transpose]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 -/
 theorem tinv_tinv (g : GL (Fin r) K) : tinv (tinv g) = g := by
   ext : 1
@@ -47,7 +47,7 @@ theorem scalGL_val (c : Kˣ) :
     ((scalGL c : GL (Fin r) K) : Matrix (Fin r) (Fin r) K) = Matrix.scalar (Fin r) (c : K) := rfl
 
 /- English proof (translation)
-Use extensionality with `: 1`. Simplify using `only [Units.val_mul, scalGL_val]`. Conclude with `(Matrix.scalar_commute _ (fun _ => Commute.all _ _) _)`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem scalGL_comm (c : Kˣ) (g : GL (Fin r) K) : scalGL c * g = g * scalGL c := by
   ext : 1
@@ -55,7 +55,7 @@ theorem scalGL_comm (c : Kˣ) (g : GL (Fin r) K) : scalGL c * g = g * scalGL c :
   exact (Matrix.scalar_commute _ (fun _ => Commute.all _ _) _)
 
 /- English proof (translation)
-Use extensionality with `: 1`. Establish `h : (scalGL c : GL (Fin r) K)⁻¹ = scalGL c⁻¹` using `(map_inv (Units.map (Matrix.scalar (Fin r) : K →+* Matrix (Fin r) (Fin r) K).toMonoidHom) c).symm`. Rewrite using `[tinv_val, h, scalGL_val, Matrix.scalar_apply, Matrix.diagonal_transpose]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem tinv_scalGL (c : Kˣ) : tinv (scalGL c : GL (Fin r) K) = scalGL c⁻¹ := by
   ext : 1
@@ -63,14 +63,14 @@ theorem tinv_scalGL (c : Kˣ) : tinv (scalGL c : GL (Fin r) K) = scalGL c⁻¹ :
   rw [tinv_val, h, scalGL_val, Matrix.scalar_apply, Matrix.diagonal_transpose]
 
 /- English proof (translation)
-Rewrite using `[tinv_scalGL]`. Conclude with `map_inv (Units.map (Matrix.scalar (Fin r) : K →+* Matrix (Fin r) (Fin r) K).toMonoidHom) c`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tinv_scalGL' (c : Kˣ) : tinv (scalGL c : GL (Fin r) K) = (scalGL c)⁻¹ := by
   rw [tinv_scalGL]
   exact map_inv (Units.map (Matrix.scalar (Fin r) : K →+* Matrix (Fin r) (Fin r) K).toMonoidHom) c
 
 /- English proof (translation)
-Introduce `a b h` and use `by rw [← tinv_tinv a, h, tinv_tinv]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem tinv_injective : Function.Injective (tinv : GL (Fin r) K → GL (Fin r) K) := fun a b h => by
   rw [← tinv_tinv a, h, tinv_tinv]
@@ -78,7 +78,7 @@ theorem tinv_injective : Function.Injective (tinv : GL (Fin r) K → GL (Fin r) 
 omit [Field K] in
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Rewrite using `[GlobalTheory.LatHecke.glMap_mul, ← h, ← GlobalTheory.LatHecke.glMap_mul, inv_mul_cancel, GlobalTheory.LatHecke.glMap_one]`. Introduce `h conv_lhs => rw [← h, ← GlobalTheory.LatHecke.glMap_mul, mul_inv_cancel_left]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 -/
 theorem glMap_eq_glMap_iff {O : Type} [CommRing O] [Field K] [Algebra O K] (a b : GL (Fin r) K)
     (L : Submodule O (Fin r → K)) :
@@ -90,13 +90,13 @@ theorem glMap_eq_glMap_iff {O : Type} [CommRing O] [Field K] [Algebra O K] (a b 
     conv_lhs => rw [← h, ← GlobalTheory.LatHecke.glMap_mul, mul_inv_cancel_left]
 
 /- English proof (translation)
-Choose the witnesses or unpack the hypotheses as in `⟨n, α, rfl⟩ : ∃ (n : ℕ) (α : Fin n → ℂ), β = Finset.univ.val.map α := by`. Proceed by induction on `β using Quotient.inductionOn with`. Consider the case `h l => exact ⟨l.length, l.get, by simp⟩`. Establish `hα : ∀ i, α i ≠ 0` using `fun i => hβ _ (Multiset.mem_map_of_mem _ (Finset.mem_univ_val i))`. Establish `hn : (Finset.univ.val.map α).card = n` using `by simp`.
+Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hk`, the goal using `[hn]`. Simplify using `only [Multiset.map_map, Finset.esymm_map_val, Function.comp_def]`. Establish `h1 : Finset.powersetCard n (Finset.univ : Finset (Fin n)) = {Finset.univ}`. Simplify using `using Finset.powersetCard_self (Finset.univ : Finset (Fin n))`. Rewrite using `[h1, Finset.sum_singleton, Finset.sum_mul]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_nbij' compl compl (fun t ht => ?_) (fun t ht => ?_) (by simp) (by simp) fun t _ => ?_` and prove the remaining obligations. Simplify using `only [Finset.mem_powersetCard_univ] at ht ⊢`. Simplify using `[Finset.card_compl, ht]`. Simplify using `only [Finset.mem_powersetCard_univ] at ht ⊢`. Rewrite using `[Finset.card_compl, ht, Fintype.card_fin]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use linear arithmetic over natural numbers and integers. Rewrite using `[← Finset.prod_mul_prod_compl t, ← mul_assoc, ← Finset.prod_mul_distrib, Finset.prod_congr rfl (fun i _ => inv_mul_cancel₀ (hα i)), Finset.prod_const_one, one_mul]`.
+Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
 -/
 theorem esymm_inv_mul_esymm_card (β : Multiset ℂ) (hβ : ∀ b ∈ β, b ≠ 0) {k : ℕ} (hk : k ≤ β.card) :
     (β.map (·⁻¹)).esymm k * β.esymm β.card = β.esymm (β.card - k) := by

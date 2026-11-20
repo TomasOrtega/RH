@@ -27,19 +27,17 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 namespace GlobalTheory.TwistCond
 
 /- English proof (translation)
-Introduce `D T Lc sc G μ₀ hL i j t v τ hmu hchi hQ`. Use `set w := GlobalTheory.AdelicU.splitPrime τ with hw`. Establish `hfun : chrW (GlobalTheory.SqStep.chs G i j t).ν τ = ((nuH G t i j).loc w).comp (Units.map (GlobalTheory.LFun.complMap (GlobalTheory.AdelicU.splitPrime_under τ)).toMonoidHom)` using `MonoidHom.ext fun x => GlobalTheory.SqStepArith.chrW_chs G hL i j t τ x`. Establish `hloc : ∀ x, (nuH G t i j).loc w x = (Lc.C.mu0 j).loc w x * (Lc.xiH t).loc w x * ((G.ch.chiH (D.R.m - i)).loc w x)⁻¹`. Introduce `x`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `show ((Lc.C.mu0 j * Lc.xiH t) * (G.ch.chiH (D.R.m - i))⁻¹).loc w x = _`. Rewrite using `[Formalism.L2.Host.HChar.loc_mul, Formalism.L2.Host.HChar.loc_mul, Formalism.L2.Host.HChar.loc_inv]`. Establish `h1 : GlobalTheory.SplitFlip.CondLE (unifAt v) 1 (chrW (GlobalTheory.SqStep.chs G i j t).ν τ)`. Rewrite using `[hfun, GlobalTheory.CondLESplit.condLE_iff]`. Introduce `x hx hx1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hloc, hmu x hx, hchi x hx, hL.xi_tame t w x hx hx1]`. Simplify using the standard rewrite rules. Establish `h0 : ¬ GlobalTheory.SplitFlip.CondLE (unifAt v) 0 (chrW (GlobalTheory.SqStep.chs G i j t).ν τ)`. Rewrite using `[hfun, GlobalTheory.CondLESplit.condLE_iff]`. Introduce `h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `(hL.Q_ram t w).2 (Or.inl hQ)` to reduce the goal to its premises. Introduce `x hx`. Establish `hle : Valued.v ((x : w.adicCompletion D.host.E) - 1) ≤ WithZero.exp (-((0 : ℕ) : ℤ))`. Simplify using `only [Nat.cast_zero, neg_zero, WithZero.exp_zero]`. Conclude with `Valuation.map_sub_le _ (le_of_eq hx) (by simp)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Use `h x hx hle` as an intermediate fact. Rewrite `this` using `[hloc, hmu x hx, hchi x hx]`. Simplify using `using this`. Unfold `GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.condExp`. Establish `hne : ({c | GlobalTheory.SplitFlip.CondLE (unifAt v) c (chrW (GlobalTheory.SqStep.chs G i j t).ν τ)} : Set ℕ).Nonempty` using `⟨1, h1⟩`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `le_antisymm (Nat.sInf_le h1)` to reduce the goal to its premises. Rewrite using `[Nat.one_le_iff_ne_zero]`. Introduce `h`. Use `Nat.sInf_mem hne` as an intermediate fact. Rewrite `this` using `[h]`.
-
-Conclude with `h0 this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem condExp_twist_eq_one : ∀ {D : D7} {T : Type} {Lc : LevCh D T} {sc : Consts} (G : GridData Lc sc) {μ₀ : T}, Lc.Is μ₀ →
     ∀ (i j : Fin D.R.m) (t : T) {v : HeightOneSpectrum (𝓞 D.host.F)} (τ : D.host.E →ₐ[D.host.F] Fv D.host.F v),

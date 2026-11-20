@@ -42,9 +42,9 @@ namespace ChG
 open VP
 
 /- English proof (translation)
-Establish `ha : MvPowerSeries.HasSubst (fun i => ∑ c, U c i • (MvPowerSeries.X c : MvPowerSeries ι C))` using `VP.hs (fun i => by`. Rewrite using `[map_sum]`. Use `Finset.sum_eq_zero fun c _ => ?_` and prove the remaining obligations. Rewrite using `[MvPowerSeries.smul_eq_C_mul, map_mul, MvPowerSeries.constantCoeff_X, mul_zero])`. Rewrite using `[linF, ← MvPowerSeries.coe_substAlgHom ha, map_sum]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [map_smul, MvPowerSeries.coe_substAlgHom, MvPowerSeries.subst_X ha]`. Simplify using `only [Finset.smul_sum, smul_smul, Finset.sum_smul]`. Rewrite using `[Finset.sum_comm]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem subst_linU_linF {ι : Type} [Fintype ι] (U : ι → Fin dd → C) (y : Fin dd → C) :
     MvPowerSeries.subst (fun i => ∑ c, U c i • (MvPowerSeries.X c : MvPowerSeries ι C)) (linF y) =
@@ -60,7 +60,7 @@ theorem subst_linU_linF {ι : Type} [Fintype ι] (U : ι → Fin dd → C) (y : 
   rw [Finset.sum_comm]
 
 /- English proof (translation)
-Rewrite using `[map_sum]`. Use `Finset.sum_eq_zero fun c _ => ?_` and prove the remaining obligations. Rewrite using `[MvPowerSeries.smul_eq_C_mul, map_mul, MvPowerSeries.constantCoeff_X, mul_zero]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem cc_linU {ι κ : Type} [Fintype ι] (U : ι → κ → C) (i : κ) :
     MvPowerSeries.constantCoeff (∑ c, U c i • (MvPowerSeries.X c : MvPowerSeries ι C)) = 0 := by
@@ -71,11 +71,11 @@ theorem cc_linU {ι κ : Type} [Fintype ι] (U : ι → κ → C) (i : κ) :
 end ChG
 
 /- English proof (translation)
-Establish `hsum : ∀ {ι : Type} (s : Finset ι) (f : ι → C), (∀ i ∈ s, V.Ge 0 (f i)) → V.Ge 0 (∑ i ∈ s, f i)` using `fun s f hf => Finset.sum_induction f (fun z => V.Ge 0 z) (fun _ _ ha hb => VF.Ge.add ha hb) (VF.Ge.zero 0) hf`. Establish `hgm : ∀ a r s, V.Ge 0 (p.gm a r s)`. Introduce `a r s`. Take `⟨M, hM⟩` from `p.gm_lim 0`. Establish `h1 : V.Ge 0 (p.gm a r s - p.em a (M r s))` using `by simpa using hM a r s`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h2` using `VF.Ge.add h1 (p.em_int a (M r s))`. Simplify using `using h2`. Unfold `SelfData.yOf`. Use `hsum _ _ fun col _ => hsum _ _ fun i _ => ?_` and prove the remaining obligations. Use `VF.Ge.mul_int ((h col).1 _) ?_` and prove the remaining obligations.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `VF.Ge.mul_int (hgm _ _ _) (p.e_int _ _)`.
+A detailed English derivation is pending.
 -/
 theorem SelfData.yOf_int {Y : FBChart C V O dd} (p : SelfData Y d I0) (g : Fin 2) {χ : Fin 2 → PS C 1 dd}
     (h : ∀ col, Y.IsChar (χ col)) (x : I0) : V.Ge 0 (p.yOf g χ x) := by
@@ -95,17 +95,15 @@ theorem SelfData.yOf_int {Y : FBChart C V O dd} (p : SelfData Y d I0) (g : Fin 2
 
 open ChG VP in
 /- English proof (translation)
-Introduce `C _ _ V O _ _ dd Y d _ I0 _ p Hc χ hχ g S t ht`. Take `⟨P, hP0, hPI, -, hPt⟩` from `GeneralGermZero.sysK_P (Y.rawSelf p) (SelfConjugateGermZero.lawS Y) (SelfConjugateGermZero.lawS_const Y) (SelfConjugateGermZero.lawS_int Y) (SelfConjugateGermZero.lgS_add Y p) (SelfConjugateGermZero.lgS_lin Y p) (SelfConjugateGermZero.exS_lg Y p) (Hc g) (S g)`. Establish `ht0 : ∀ g c, MvPowerSeries.constantCoeff (t g c) = 0` using `fun g c => (ht g).1 c`. Use `set U : I0 → Fin 2 × Fin dd → C := fun c' i => (Y.rawSelf p).u g c' i with hU`. Use `set γ0 : MvPowerSeries I0 C := ∏ col : Fin 2, MvPowerSeries.subst (fun i => P (col, i)) (un1 (χ col)) with hγ0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hI : IntS V γ0` using `IntS_prod _ fun col _ => IntS.subst (fun i => hP0 (col, i)) (fun i => hPI (col, i)) (integralSeries_uncurry_one (hχ col).1)`. Establish `hcol : ∀ col : Fin 2, MvPowerSeries.subst (t g) (MvPowerSeries.subst (fun i => P (col, i)) (un1 (χ col))) = mvExp (∑ x : I0, (∑ i, dlogC (χ col) i * U x (col, i)) • (MvPowerSeries.X x : MvPowerSeries I0 C))`. Introduce `col`. Rewrite using `[subst_subst (fun i => hP0 (col, i)) (ht0 g)]`. Establish `h1 : (fun i => MvPowerSeries.subst (t g) (P (col, i))) = fun i => MvPowerSeries.subst (fun k : Fin dd => ∑ c', U c' (col, k) • (MvPowerSeries.X c' : MvPowerSeries I0 C)) (e Y i)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `i`. Rewrite using `[hPt (t g) (ht g) (col, i)]`. Use `show MvPowerSeries.subst (fun k : Fin 2 × Fin dd => ∑ c', U c' k • (MvPowerSeries.X c' : MvPowerSeries I0 C)) (MvPowerSeries.subst (fun x : Fin dd => (MvPowerSeries.X (col, x) : MvPowerSeries (Fin 2 × Fin dd) C)) (un1 (Y.ex i))) = _`. Rewrite using `[subst_subst (fun _ => cc_X _) (cc_linU U)]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `k`. Rewrite using `[subst_X (cc_linU U)]`. Rewrite using `[h1, ← subst_subst (cc_e Y) (fun k => cc_linU U (col, k))]`. Use `show MvPowerSeries.subst _ (Psi Y (χ col)) = _`. Rewrite using `[chi_exp Y (hχ col), subst_exp (fun k => cc_linU U (col, k)) (constantCoeff_linF _), subst_linU_linF (fun c' k => U c' (col, k))]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Establish `key : MvPowerSeries.subst (t g) γ0 = mvExp (∑ x : I0, p.yOf g χ x • (MvPowerSeries.X x : MvPowerSeries I0 C))`. Rewrite using `[hγ0, subst_prod (ht0 g), Finset.prod_congr rfl fun col _ => hcol col, ← Formalism.UnitaryBoundIntegral.ubint_mvExp_sum Finset.univ _ (fun col _ => cc_linU (fun x (_ : Unit) => ∑ i, dlogC (χ col) i * U x (col, i)) ()), Finset.sum_comm]`. Use `congr 1`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_smul]`.
-
-Both sides reduce to the same expression. Use `⟨upG (I := fun _ => I0) g γ0, ?_, ?_⟩` and prove the remaining obligations. Conclude with `IntS.subst (fun _ => cc_X _) (fun _ => IntS_X _) hI`. Rewrite using `[AbstractGermZero.upG_subst (I := fun _ => I0) t ht0 g, key]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem charGermSelf_holds : CharGermSelfSt := by
   intro C _ _ V O _ _ dd Y d _ I0 _ p Hc χ hχ g S t ht

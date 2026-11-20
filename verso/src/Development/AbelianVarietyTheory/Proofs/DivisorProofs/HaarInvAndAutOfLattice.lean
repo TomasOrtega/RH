@@ -5,13 +5,11 @@ open MeasureTheory
 namespace GlobalTheory.LatticeHaar
 
 /- English proof (translation)
-Introduce `N _ _ _ _ _ _ _ _ ν _ Λ _ 𝓕 h𝓕 _ hfin`. Use `haveI := GlobalTheory.SemiHaar.rightInv_of_fd Λ ν h𝓕 hfin`. Use `haveI := GlobalTheory.SemiHaar.invInv_of_rightInv ν`. Use `⟨⟨measurable_inv, ?_⟩, ?_⟩` and prove the remaining obligations. Conclude with `Measure.map_inv_eq_self ν`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Introduce `α hα hαs hΛ`. Set `φ : N ≃ₜ N` to `{ toEquiv := α.toEquiv, continuous_toFun := hα, continuous_invFun := hαs }`. Use `haveI : (ν.map φ).IsHaarMeasure := α.isHaarMeasure_map ν hα hαs`. Set `e : Λ → Λ` to `fun g => ⟨α.symm g, (hΛ (α.symm g)).1 (by simp)⟩`. Establish `he : Function.Bijective e`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨fun a b h => ?_, fun b => ⟨⟨α b, (hΛ b).2 b.2⟩, by ext; simp [e]⟩⟩` and prove the remaining obligations. Establish `: α.symm (a : N) = α.symm b` using `congrArg Subtype.val h`. Conclude with `Subtype.ext (α.symm.injective this)`. Establish `hφ : ∀ (g : Λ) (x : N), φ ((e g).1 * x) = g.1 * φ x`. Introduce `g x`.
-
-Simplify using `[φ, e, map_mul]`. Establish `hm` using `GlobalTheory.SemiHaar.map_eq_self_of_fd Λ ν h𝓕 hfin φ e he hφ`. Conclude with `⟨hα.measurable, hm⟩`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem haar_inv_and_aut_of_lattice : ∀ {N : Type} [Group N] [TopologicalSpace N] [IsTopologicalGroup N] [LocallyCompactSpace N] [SecondCountableTopology N] [T2Space N]
     [MeasurableSpace N] [BorelSpace N] (ν : Measure N) [ν.IsHaarMeasure] (Λ : Subgroup N) [Countable Λ] (𝓕 : Set N),

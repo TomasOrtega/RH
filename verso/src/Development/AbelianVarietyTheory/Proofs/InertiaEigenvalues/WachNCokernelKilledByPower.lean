@@ -17,11 +17,11 @@ namespace GlobalTheory.NL.CokerFin
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `D HW F Cm l _ K s LL h W E C T₀ T₁ T₂ ι π h0 h1 h2 hs`. Establish `hP : WachCharacterisationLattice W` using `GlobalTheory.T.wachModule_uniqueness_characterisation D HW F l K s LL h`. Establish `hp10 : p10 W T₂` using `hP T₂ h2`. Use `haveI := GlobalTheory.EtaleExact.finite_OL LL`. Use `haveI : IsNoetherianRing ↥(OL LL) := IsNoetherianRing.of_finite ℤ_[l] ↥(OL LL)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `haveI := ((D.loc l).PD K).finK₀`. Use `haveI : NeZero (Module.finrank ℚ_[l] ↥(K0 K)) := ⟨Module.finrank_pos.ne'⟩`. Establish `hfl : Module.Flat (AA K LL) W.EE` using `GlobalTheory.T.flat_wachLetterRing_completion_of_dense_saturated ↥(OL LL) (Module.finrank ℚ_[l] ↥(K0 K)) ((D.loc l).PD K).p W.EE W.EE_π W.EE_complete W.EE_dense W.EE_sat`. Take `⟨hfree, hbc⟩` from `GlobalTheory.T.wachSaturation_image_free_and_spans D HW F l K s LL h T₀ T₁ T₂ ι π h0 h1 h2 hs hfl`. Take `⟨hg1, hg2⟩` from `GlobalTheory.T.saturation_gamma_stable_of_good D HW F l K s LL h T₁ T₂ π h1 h2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `hS` using `hp10 _ hfree hbc hg1 hg2 (GlobalTheory.T.wachSaturation_frobenius_mem_up_to_Q_power D HW F l K s LL h T₁ T₂ π h1 h2) (GlobalTheory.T.wachSaturation_Q_power_mem_frobenius_span D HW F l K s LL h T₁ T₂ π h1 h2 hfree hbc)`. Take `⟨c, hc⟩` from `GlobalTheory.NL.Coker.uniform (W.N_fg T₂) hS.ge`. Use `⟨c, fun z hz => ?_⟩` and prove the remaining obligations. Take `⟨⟨y, hy, e1⟩, ⟨y', hy', e2⟩⟩` from `hc z hz`. Conclude with `⟨⟨y, hy, e1⟩, ⟨y', hy', e2⟩⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem coker_killed : ∀ (D : Formalism.BasicNotions.D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (Cm : CmpOf D.loc D.locA HW F) (l : ℕ) [Fact l.Prime] (K : FinExt l) (s : ℕ) (LL : FinExt l) (h : Good K s LL), let W := (HW l).W K s LL h; let E := ((F l).E K s LL h).tie; let C := Cm l; ∀ (T₀ T₁ T₂ : Lt K LL) (ι : LatHom T₀.L T₁.L) (π : LatHom T₁.L T₂.L), IsCrys ((D.loc l).PD K) T₀.ρ → IsCrys ((D.loc l).PD K) T₁.ρ → IsCrys ((D.loc l).PD K) T₂.ρ → IsSESLat (Qp := ℚ_[l]) ι π → ∃ c : ℕ, ∀ z ∈ W.N T₂, (∃ y ∈ W.N T₁, W.map π y = ((l : ℕ) : AA K LL) ^ c • z) ∧ ∃ y ∈ W.N T₁, W.map π y = (letπ : AA K LL) ^ c • z := by
   intro D HW F Cm l _ K s LL h W E C T₀ T₁ T₂ ι π h0 h1 h2 hs

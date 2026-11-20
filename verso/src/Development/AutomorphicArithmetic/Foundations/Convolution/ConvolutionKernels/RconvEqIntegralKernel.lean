@@ -11,9 +11,9 @@ variable {G : Type*} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [Loca
   (Γ : Subgroup G) [DiscreteTopology Γ]
 
 /- English proof (translation)
-Establish `hT : T2Space (RightCosetSpace Γ)` using `RightCosetSpace.t2Space Γ`. Establish `hC : IsCompact (mk Γ '' ((a * ·) '' tsupport (f : G → ℂ)))` using `(f.hasCompactSupport.isCompact.image (continuous_const_mul a)).image (continuous_mk Γ)`. Use `HasCompactSupport.intro hC fun q hq => ?_` and prove the remaining obligations. Take `⟨b, rfl⟩` from `mk_surjective Γ q`. Rewrite using `[quotientKernel_mk]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use `finsum_eq_zero_of_forall_eq_zero fun γ => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `h`. Use `hq ⟨(γ : G) * b, ⟨a⁻¹ * γ * b, subset_tsupport _ h, ?_⟩, mk_mul_of_mem γ.2 b⟩` and prove the remaining obligations. Simplify using `[mul_assoc]`.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 private theorem hasCompactSupport_kernel (f : CompactlySupportedContinuousMap G ℂ) (a : G) :
     HasCompactSupport fun q => quotientKernel Γ f (mk Γ a, q) := by
@@ -29,11 +29,11 @@ private theorem hasCompactSupport_kernel (f : CompactlySupportedContinuousMap G 
   simp [mul_assoc]
 
 /- English proof (translation)
-Establish `hint : Integrable (fun y => φ (mk Γ y) * f (a⁻¹ * y)) μ`. Simplify `integrable_rconv Γ μ f φ a` using `only [mul_comm]`. Establish `h1 : rconv Γ μ f φ a = ∫ y, φ (mk Γ y) * f (a⁻¹ * y) ∂μ`. Unfold `rconv`. Simplify using `only [mul_comm]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
-Rewrite using `[h1, integral_mul_eq_integral_mul_automorphize μ hint]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun y => ?_)` and prove the remaining obligations. Take `⟨b, rfl⟩` from `mk_surjective Γ y`. Simplify using `only`. Rewrite using `[quotientKernel_mk]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Express the relevant statement in the definitionally equal form `∑' γ : Γ, f (a⁻¹ * (γ • b)) = _`. Repeatedly rewrite using `[Subgroup.smul_def, smul_eq_mul, ← mul_assoc]`. Conclude with `tsum_eq_finsum (finite_support_automorphicKernel Γ f (a, b))`.
+Reduce the equality to equality of the corresponding arguments. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion repeatedly using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem rconv_eq_integral_kernel (μ : Measure G) [μ.IsMulLeftInvariant]
     [IsFiniteMeasureOnCompacts μ] (f : CompactlySupportedContinuousMap G ℂ)
@@ -57,11 +57,11 @@ private theorem rconv_eq_integral_kernel (μ : Measure G) [μ.IsMulLeftInvariant
 end Kernel
 
 /- English proof (translation)
-Introduce `K _ _ n μ _ f x`. Establish `hc : Continuous fun q => quotientKernel (Gam K n) f (mk (Gam K n) x, q)` using `(continuous_quotientKernel (Gam K n) f).comp (continuous_const.prodMk continuous_id)`. Establish `hcs` using `hasCompactSupport_kernel (Gam K n) f x`. Establish `hm : MemLp (fun q => (starRingEnd ℂ) (quotientKernel (Gam K n) f (mk (Gam K n) x, q))) 2 (quotientMeasure (Gam K n) μ)` using `(Complex.continuous_conj.comp hc).memLp_of_hasCompactSupport (hcs.comp_left (g := starRingEnd ℂ) (map_zero _))`. Establish `hkw : kv μ f x = hm.toLp _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `ext_inner_right ℂ fun φ => ?_` and prove the remaining obligations. Rewrite using `[inner_kv, rconv_eq_integral_kernel, L2.inner_def]`. Use `integral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [hm.coeFn_toLp] with q hq`. Rewrite using `[hq, RCLike.inner_apply', Complex.conj_conj, mul_comm]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hkw]`. Conclude with `hm.coeFn_toLp`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.K.kvAe :
     ∀ (K : Type) [Field K] [NumberField K] (n : ℕ) (μ : Measure (G1 K n)) [μ.IsHaarMeasure] (f : CC K n) (x : G1 K n),

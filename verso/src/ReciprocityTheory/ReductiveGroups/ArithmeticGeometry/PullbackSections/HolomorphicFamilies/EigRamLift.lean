@@ -13,9 +13,9 @@ variable {R : Type} [CommRing R] {d : ℕ} {O : Type} [CommRing O] [StarRing O]
 variable {k : Type} [Field k] [Algebra ℚ k] [Algebra R k]
 
 /- English proof (translation)
-Unfold `actP actD`. Rewrite using `[Matrix.sum_mulVec, Matrix.sum_mulVec]`. Simplify using `only [Matrix.smul_mulVec]`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Rewrite using `[Prod.fst_sum]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[Prod.snd_sum]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem actP_eq_sum (B : FB R d O) {n : ℕ} (b : Fin n → O) (c : Fin n → k) (ξ : (Fin d → k) × (Fin d → k)) :
     actP B b c ξ = ∑ i, c i • OactH k B (b i) ξ := by
@@ -29,11 +29,11 @@ theorem actP_eq_sum (B : FB R d O) {n : ℕ} (b : Fin n → O) (c : Fin n → k)
     rfl
 
 /- English proof (translation)
-Rewrite using `[actP_eq_sum]`. Establish `hmem : ∀ i, OactH k B (b i) ξ ∈ Hset (R` using `R) k h := fun i => ReciprocityTheory.ChartRestriction.G.TB.WickVanishing.gauge_stable R d O k hRQ B h hc (b i) ξ hξ`. Use `choose u φ hu using hmem`. Use `⟨∑ i, a i • u i, ∑ i, a i • φ i, ?_⟩` and prove the remaining obligations. Establish `hvec : (fun j => algebraMap R k ((∑ i, a i • u i) j)) = ∑ i, algebraMap R k (a i) • fun j => algebraMap R k (u i j)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `j`. Simplify using `[Finset.sum_apply, map_sum, map_mul, smul_eq_mul, Algebra.smul_def]`. Repeatedly rewrite using `[hu]`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Use function extensionality and compare the values at `j`.
+Simplify using the standard rewrite rules. Rewrite the conclusion repeatedly using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using `[Prod.fst_sum, Finset.sum_apply, map_sum, map_mul, smul_eq_mul, Algebra.smul_def]`. Rewrite using `[hvec, Matrix.mulVec_sum]`. Simplify using `only [Matrix.mulVec_smul]`. Use function extensionality and compare the values at `j`. Simplify using `[Prod.snd_sum, Finset.sum_apply, map_sum, map_mul, smul_eq_mul, Matrix.mulVec_smul, mul_sub, Finset.sum_sub_distrib, Algebra.smul_def]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem actP_mem (hRQ : IsRQ (R := R) k) (B : FB R d O) (h : PS k 2 d) (hc : B.IsCanonGauge k h) {n : ℕ}
     (b : Fin n → O) (a : Fin n → R) {ξ : (Fin d → k) × (Fin d → k)} (hξ : ξ ∈ Hset (R := R) k h) :
@@ -58,7 +58,7 @@ theorem actP_mem (hRQ : IsRQ (R := R) k) (B : FB R d O) (h : PS k 2 d) (hc : B.I
       Finset.sum_sub_distrib, Algebra.smul_def]
 
 /- English proof (translation)
-Unfold `actP actD`. Simplify using `only [Prod.smul_mk, ← Matrix.smul_mulVec, Finset.smul_sum, smul_smul]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem actP_smul (B : FB R d O) {n : ℕ} (b : Fin n → O) (c : Fin n → k) (r : k) (ξ : (Fin d → k) × (Fin d → k)) :
     r • actP B b c ξ = actP B b (fun i => r * c i) ξ := by
@@ -66,9 +66,9 @@ theorem actP_smul (B : FB R d O) {n : ℕ} (b : Fin n → O) (c : Fin n → k) (
   simp only [Prod.smul_mk, ← Matrix.smul_mulVec, Finset.smul_sum, smul_smul]
 
 /- English proof (translation)
-Unfold `actP actD evD`. Simplify using `only [Matrix.sum_mulVec, Matrix.smul_mulVec]`. Rewrite using `[Finset.sum_smul]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Use `show c i • (dAct k B (b i)).mulVec ξ.1 = _`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hv, smul_smul]`.
+A detailed English derivation is pending.
 -/
 theorem actP_fst_eig (B : FB R d O) (χ : O →+* k) {n : ℕ} (b : Fin n → O) (c : Fin n → k)
     (ξ : (Fin d → k) × (Fin d → k)) (hv : ∀ a, (dAct k B a).mulVec ξ.1 = χ a • ξ.1) :
@@ -81,9 +81,9 @@ theorem actP_fst_eig (B : FB R d O) (χ : O →+* k) {n : ℕ} (b : Fin n → O)
   rw [hv, smul_smul]
 
 /- English proof (translation)
-Introduce `i`. Take `⟨u, φ, hξ⟩` from `hX`. Establish `h1` using `congrArg Prod.fst hξ`. Establish `h2` using `congrArg Prod.snd hξ`. Simplify using `only at h1 h2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite `h2` using `[← h1, Matrix.mulVec_zero]`. Simplify using `only [Pi.zero_apply, sub_zero] at h2`. Conclude with `⟨φ i, (congrFun h2 i).symm⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 theorem hset_snd_int {h : PS k 2 d} {X : Fin d → k} (hX : ((0 : Fin d → k), X) ∈ Hset (R := R) k h) (_hinj : Function.Injective (algebraMap R k)) :
     ∀ i, X i ∈ (algebraMap R k).range := by
@@ -97,7 +97,7 @@ theorem hset_snd_int {h : PS k 2 d} {X : Fin d → k} (hX : ((0 : Fin d → k), 
   exact ⟨φ i, (congrFun h2 i).symm⟩
 
 /- English proof (translation)
-Unfold `betaH`. Rewrite using `[← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [Prod.fst_sub, Prod.snd_sub, Pi.sub_apply]`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem betaH_sub_left (ξ ξ' η : (Fin d → k) × (Fin d → k)) : betaH k (ξ - ξ') η = betaH k ξ η - betaH k ξ' η := by
   unfold betaH
@@ -107,7 +107,7 @@ theorem betaH_sub_left (ξ ξ' η : (Fin d → k) × (Fin d → k)) : betaH k (�
   ring
 
 /- English proof (translation)
-Unfold `betaH`. Rewrite using `[← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [Prod.fst_sub, Prod.snd_sub, Pi.sub_apply]`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem betaH_sub_right (ξ η η' : (Fin d → k) × (Fin d → k)) : betaH k ξ (η - η') = betaH k ξ η - betaH k ξ η' := by
   unfold betaH
@@ -119,41 +119,37 @@ theorem betaH_sub_right (ξ η η' : (Fin d → k) × (Fin d → k)) : betaH k �
 open Classical in
 
 /- English proof (translation)
-Establish `hinj : Function.Injective (algebraMap R k)` using `hRQ.1`. Establish `hξ0 : ∀ ℓ, ((fun j => algebraMap R k (u ℓ j)), -(sg1 k h).mulVec (fun j => algebraMap R k (u ℓ j))) ∈ Hset (R` using `R) k h := fun ℓ => ⟨u ℓ, 0, Prod.ext rfl (by funext i; simp)⟩`. Set `ξh : L → (Fin d → k) × (Fin d → k)` to `fun ℓ => actP B (bP (pl (ty ℓ))) (fun i => algebraMap R k (aP (pl (ty ℓ)) i)) ((fun j => algebraMap R k (u ℓ j)), -(sg1 k h).mulVec (fun j => algebraMap R k (u ℓ j)))`. Establish `hξh_mem : ∀ ℓ, ξh ℓ ∈ Hset (R` using `R) k h := fun ℓ => actP_mem hRQ B h hc _ _ (hξ0 ℓ)`. Establish `hξh_fst : ∀ ℓ, (ξh ℓ).1 = fun j => algebraMap R k (u ℓ j)`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `ℓ`. Use `show (actP B _ _ _).1 = _`. Rewrite using `[actP_fst_eig B (χ (ty ℓ)) _ _ _ (heig ℓ), hP, if_pos rfl, one_smul]`. Use `choose u1 φ1 hu1 using hξh_mem`. Establish `hU1 : ∀ ℓ, (fun j => algebraMap R k (u1 ℓ j)) = fun j => algebraMap R k (u ℓ j)` using `fun ℓ => (congrArg Prod.fst (hu1 ℓ)).symm.trans (hξh_fst ℓ)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hξh_eq : ∀ ℓ, ξh ℓ = ((fun j => algebraMap R k (u ℓ j)), fun i => algebraMap R k (φ1 ℓ i) - (sg1 k h).mulVec (fun j => algebraMap R k (u ℓ j)) i)`. Introduce `ℓ`. Rewrite using `[hu1 ℓ, hU1 ℓ]`. Set `ξ : L → (Fin d → k) × (Fin d → k)` to `fun ℓ => actP B (bE (ty ℓ)) (cE (ty ℓ)) (ξh ℓ)`. Establish `heigh : ∀ ℓ a, (dAct k B a).mulVec (ξh ℓ).1 = χ (ty ℓ) a • (ξh ℓ).1` using `fun ℓ a => by`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hξh_fst]`. Conclude with `heig ℓ a`. Establish `hξ_fst : ∀ ℓ, (ξ ℓ).1 = fun j => algebraMap R k (u ℓ j)`. Introduce `ℓ`. Use `show (actP B _ _ _).1 = _`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[actP_fst_eig B (χ (ty ℓ)) _ _ _ (heigh ℓ), hnE, one_smul, hξh_fst]`. Set `ψ : L → Fin d → k` to `fun ℓ i => (ξ ℓ).2 i - (ξh ℓ).2 i`. Establish `hdiff : ∀ ℓ, ξ ℓ - ξh ℓ = ((0 : Fin d → k), ψ ℓ)`. Introduce `ℓ`. Use `Prod.ext ?_ rfl` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[Prod.fst_sub, hξ_fst, hξh_fst, sub_self]`. Establish `hsuppP : ∀ w t, evD (χ t) (bP w) (fun i => algebraMap R k (aP w i)) ≠ 0 → pl t = w`. Introduce `w t ht`. Rewrite `ht` using `[hP]`. Assume the negation of the conclusion as `hne`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Conclude with `ht (if_neg hne)`. Establish `hsuppE : ∀ τ t, evD (χ t) (bE τ) (cE τ) ≠ 0 → pl t = pl τ`. Introduce `τ t ht`. Distinguish the cases in `he : t = τ`. Rewrite using `[he]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Take `⟨a, ha⟩` from `hχinj t τ he`. Conclude with `absurd (evD_orth (χ τ) (χ t) (bE τ) (cE τ) (heqE τ) a ha) ht`. Establish `hvan : ∀ {n n' : ℕ} (bz : Fin n → O) (cz : Fin n → k) (bw : Fin n' → O) (cw : Fin n' → k) (X Y : (Fin d → k) × (Fin d → k)) (l l' : L), ¬ (c (ty l) = c (ty l') ∧ s (ty l) ≠ s (ty l')) → (∀ t, evD (χ t) bz cz ≠ 0 → pl t = pl (ty l)) → (∀ t', evD (χ t') bw cw ≠ 0 → pl t' = pl (ty l …`. Introduce `n n' bz cz bw cw X Y l l' hnot hs1 hs2`. Use `beta_vanish B χ nt bt ct heqt hcompH hcompS bz cz bw cw X Y fun t t' h1 h2 => ?_` and prove the remaining obligations.
+It suffices to derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Distinguish the cases in `ht : t' = cjT t`. It suffices to derive a contradiction. Apply `hnot` to reduce the goal to its premises. Apply `hpair` to reduce the goal to its premises. Rewrite using `[← hs2 t' h2, ht, hpl, hs1 t h1]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hχsep t t' ht`. Establish `hA : ∀ l l', ¬ (c (ty l) = c (ty l') ∧ s (ty l) ≠ s (ty l')) → betaH k (ξh l) (ξh l') = 0` using `fun l l' hnot => hvan _ _ _ _ _ _ l l' hnot (hsuppP _) (hsuppP _)`. Establish `hB : ∀ l l', ¬ (c (ty l) = c (ty l') ∧ s (ty l) ≠ s (ty l')) → betaH k (ξ l) (ξh l') = 0` using `fun l l' hnot => hvan _ _ _ _ _ _ l l' hnot (hsuppE _) (hsuppP _)`. Establish `hC : ∀ l l', ¬ (c (ty l) = c (ty l') ∧ s (ty l) ≠ s (ty l')) → betaH k (ξh l) (ξ l') = 0` using `fun l l' hnot => hvan _ _ _ _ _ _ l l' hnot (hsuppP _) (hsuppE _)`. Use `⟨φ1, ψ, fun ℓ i => ?_, fun ℓ ℓ' hne => ?_, fun l l' hnot => ?_, fun l l' hnot => ?_, fun l l' hnot => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `choose v hv using hr (ty ℓ)`. Establish `hrξ : algebraMap R k (r (ty ℓ)) • ξ ℓ ∈ Hset (R` using `R) k h := by show algebraMap R k (r (ty ℓ)) • actP B _ _ _ ∈ _`. Rewrite using `[actP_smul]`. Establish `e : (fun i => algebraMap R k (r (ty ℓ)) * cE (ty ℓ) i) = fun i => algebraMap R k (v i)`. Use function extensionality and compare the values at `fun i => (hv i).symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[e]`. Conclude with `actP_mem hRQ B h hc _ _ (hu1 ℓ ▸ ⟨u1 ℓ, φ1 ℓ, rfl⟩)`. Establish `hrξh : algebraMap R k (-1) • (algebraMap R k (r (ty ℓ)) • ξh ℓ) ∈ Hset (R` using `R) k h := EigA.hset_smul k h (-1) (EigA.hset_smul k h (r (ty ℓ)) (hu1 ℓ ▸ ⟨u1 ℓ, φ1 ℓ, rfl⟩))`. Establish `hsum` using `EigA.hset_add k h hrξ hrξh`. Establish `e2 : algebraMap R k (r (ty ℓ)) • ξ ℓ + algebraMap R k (-1) • (algebraMap R k (r (ty ℓ)) • ξh ℓ) = ((0 : Fin d → k), fun i => algebraMap R k (r (ty ℓ)) * ψ ℓ i)`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[map_neg, map_one, neg_one_smul, ← sub_eq_add_neg, ← smul_sub, hdiff]`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Simplify using the standard rewrite rules. Use function extensionality and compare the values at `i`. Simplify using `[Algebra.smul_def]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite `hsum` using `[e2]`. Conclude with `hset_snd_int hsum hinj i`. Take `⟨a, ha⟩` from `hχsep (ty ℓ) (ty ℓ') hne`. Establish `hv1 : ∀ b : O, OactH k B b ((fun j => algebraMap R k (u ℓ j)), (0 : Fin d → k)) = χ (ty ℓ) b • ((fun j => algebraMap R k (u ℓ j)), (0 : Fin d → k))`. Introduce `b`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
 
-Rewrite using `[EigA.OactH_eq]`. Use `Prod.ext (heig ℓ b) ?_` and prove the remaining obligations. Simplify using the standard rewrite rules. Establish `hβ` using `eigen_orthogonality R d O k B (χ (ty ℓ)) (χ (ty ℓ')) _ (ξ ℓ') hv1 (fun b => actP_eig B (χ (ty ℓ')) _ _ (heqE (ty ℓ')) (ξh ℓ') b) ⟨a, isUnit_iff_ne_zero.2 (sub_ne_zero.2 ha)⟩`. Simplify using `only [betaH, Pi.zero_apply, zero_mul, sub_zero] at hβ`.
+Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Simplify by unfolding definitions.
 
-Establish `e3 : ∀ i, (ξ ℓ').2 i = algebraMap R k (φ1 ℓ' i) + ψ ℓ' i - (sg1 k h).mulVec (fun j => algebraMap R k (u ℓ' j)) i`. Introduce `i`. Use `show (ξ ℓ').2 i = algebraMap R k (φ1 ℓ' i) + ((ξ ℓ').2 i - (ξh ℓ').2 i) - (sg1 k h).mulVec (fun j => algebraMap R k (u ℓ' j)) i`. Rewrite using `[hξh_eq ℓ']`. Expand and normalize the polynomial expressions, which then agree.
-
-Simplify using `only [e3] at hβ`. Conclude with `hβ`. Simplify using `only`. Rewrite using `[← hξh_eq l, ← hξh_eq l']`. Conclude with `hA l l' hnot`.
-
-Simplify using `only`. Rewrite using `[← hξh_eq l', ← hdiff l, betaH_sub_left, hB l l' hnot, hA l l' hnot, sub_zero]`. Simplify using `only`. Rewrite using `[← hξh_eq l, ← hdiff l', betaH_sub_right, hC l l' hnot, hA l l' hnot, sub_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eigLiftRam_core (hRQ : IsRQ (R := R) k) (B : FB R d O) (h : PS k 2 d) (hc : B.IsCanonGauge k h)
     {L Ty Pl π : Type} [Fintype Ty] (ty : L → Ty) (χ : Ty → O →+* k) (cjT : Ty → Ty)

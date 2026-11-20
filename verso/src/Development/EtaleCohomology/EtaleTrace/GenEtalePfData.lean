@@ -5,13 +5,11 @@ open CategoryTheory Limits AlgebraicGeometry
 namespace LateralTheory.EtaleTrace.Cov
 
 /- English proof (translation)
-Introduce `k _ _ X P _ _ p r π hπ hr hfin hsurj`. Take `⟨x⟩ : Nonempty P` from `inferInstance`. Take `⟨U, hU, hxU, -⟩` from `TopologicalSpace.Opens.isBasis_iff_nbhd.mp P.isBasis_affineOpens (show x ∈ (⊤ : P.Opens) from trivial)`. Establish `hU' : IsAffineOpen (π ⁻¹ᵁ U)` using `hU.preimage π`. Use `⟨U, hU, ⟨x, hxU⟩, hU', ?_, ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hft : (r.appLE ⊤ U le_top).hom.FiniteType` using `HasRingHomProperty.appLE (P := @LocallyOfFiniteType) r hr ⟨⊤, isAffineOpen_top _⟩ ⟨U, hU⟩ le_top`. Use `letI := (r.appLE ⊤ U le_top).hom.toAlgebra`. Use `haveI : IsNoetherianRing Γ(S k, ⊤) := isNoetherianRing_of_ringEquiv k (Scheme.ΓSpecIso (CommRingCat.of k)).commRingCatIsoToRingEquiv.symm`. Use `haveI : Algebra.FiniteType Γ(S k, ⊤) Γ(P, U) := hft`. Conclude with `Algebra.FiniteType.isNoetherianRing Γ(S k, ⊤) Γ(P, U)`.
+Establish an intermediate fact. Equip the data with the indicated structure. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `haveI : IsAffine U := hU`. Establish `h0 : (π ∣_ U).appTop.hom.Finite` using `(π ∣_ U).finite_appTop`. Rewrite `h0` using `[morphismRestrict_appTop]`. Establish `gen : ∀ (W : P.Opens) (T : X.Opens) (h : T = π ⁻¹ᵁ W), W = U → RingHom.Finite (π.app W ≫ X.presheaf.map (eqToHom h).op).hom → RingHom.Finite (π.app U).hom`. Introduce and unpack `W T h rfl`.
-
-Substitute `h` using the available equality. Simplify using the standard rewrite rules. Conclude with `gen _ _ _ (by simp) h0`. Use `haveI : IsDominant π := inferInstance haveI : IsSchemeTheoreticallyDominant π := .of_isDominant π`. Conclude with `π.app_injective U`.
+Assume the hypotheses and unpack their components. Substitute using the available equality. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem genAffineData : GenAffineData := by
   intro k _ _ X P _ _ p r π hπ hr hfin hsurj
@@ -40,7 +38,7 @@ theorem genAffineData : GenAffineData := by
     exact π.app_injective U
 
 /- English proof (translation)
-The claim follows from `GenEtale_of' genAffineData h`.
+A detailed English derivation is pending.
 -/
 theorem GenEtale_of_atBot (h : GenEtaleAtBot) : GenEtale := GenEtale_of' genAffineData h
 

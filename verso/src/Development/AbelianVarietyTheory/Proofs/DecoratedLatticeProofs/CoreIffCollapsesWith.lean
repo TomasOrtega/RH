@@ -21,15 +21,15 @@ section Average
 variable {G V : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [T2Space G] [AddCommGroup V] [Module ℂ V]
 
 /- English proof (translation)
-Establish `: CompactSpace K` using `isCompact_iff_compactSpace.1 hK`. Use `borelize ↥K`. Set `η : Measure K` to `(Measure.haar : Measure K).inv`. Establish `hne : ((η.real Set.univ : ℝ) : ℂ) ≠ 0`. Establish `: η.real Set.univ ≠ 0`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Measure.real, ENNReal.toReal_ne_zero]`. Conclude with `⟨(isOpen_univ.measure_pos η Set.univ_nonempty).ne', measure_ne_top _ _⟩`. Conclude with `this` after adjusting the coercions. Set `ρK : Representation ℂ K V` to `ρ.comp K.subtype`. Establish `hs : PRep.IsSmooth ρK` using `fun v => (hρ v).preimage continuous_subtype_val`.
+Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `f : K → ℂ` to `fun _ => ((η.real Set.univ : ℝ) : ℂ)⁻¹`. Establish `hf : IsLocallyConstant f` using `IsLocallyConstant.const _`. Establish `hc : HasCompactSupport f` using `HasCompactSupport.of_compactSpace _`. Use `⟨OpTrace.smoothOp ρK η f, fun g hg w => ?_, fun w hw => ?_, fun j hj w => ?_⟩` and prove the remaining obligations. Use `OpTrace.eq_of_forall_dual fun l => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[hs.map_smoothOp hf hc, hs.map_smoothOp hf hc, ← integral_mul_right_eq_self (μ := η) (fun x => f x • l (ρK x w)) ⟨g, hg⟩]`. Use `congr 1`. Use function extensionality and compare the values at `x`. Simplify using `[ρK, f]`. Use `OpTrace.eq_of_forall_dual fun l => ?_` and prove the remaining obligations.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hs.map_smoothOp hf hc]`. Establish `: (fun x : K => f x • l (ρK x w)) = fun _ => ((η.real Set.univ : ℝ) : ℂ)⁻¹ * l w`. Use function extensionality and compare the values at `fun x => by rw [show ρK x w = w from hw x x.2]; rfl`. Rewrite using `[this, integral_const, Complex.real_smul, ← mul_assoc, mul_inv_cancel₀ hne, one_mul]`. Conclude with `hs.map_smoothOp_of_intertwining hs hf hc j (fun g v => hj g v) w`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_average (ρ : Representation ℂ G V) (hρ : IsSmoothRep ρ) (K : Subgroup G)
     (hK : IsCompact (K : Set G)) :
@@ -63,11 +63,11 @@ theorem exists_average (ρ : Representation ℂ G V) (hρ : IsSmoothRep ρ) (K :
   · exact hs.map_smoothOp_of_intertwining hs hf hc j (fun g v => hj g v) w
 
 /- English proof (translation)
-Take `⟨e, he1, he2, he3⟩` from `exists_average ρ hρ K hK`. Set `τ` to `Representation.linHom ρ (Representation.trivial ℂ G V)`. Set `U : Submodule ℂ (V →ₗ[ℂ] V)` to `{ carrier := {T | ∀ h w, T (π h w) = π h (T w)} add_mem' := fun ha hb h w => by simp [ha h w, hb h w] zero_mem' := fun h w => by simp smul_mem' := fun z T hT h w => by simp [hT h w] }`. Establish `hτ : ∀ g T w, τ g T w = T (ρ g⁻¹ w)` using `fun _ _ _ => rfl`. Set `τU` to `PRep.sub τ U fun g T hT h w => by rw [hτ, hτ, ← hcomm, hT]`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `eU : U` to `⟨e, fun h w => (he3 (π h) (fun g w => hcomm g h w) w).symm⟩`. Establish `heU : eU ∈ PRep.smoothPart τU` using `SmGL.mem_smoothPart_of_nhds (Filter.mem_of_superset (hKo.mem_nhds (one_mem _)) fun g hg => Subtype.ext (LinearMap.ext fun w => he1 g⁻¹ (inv_mem hg) w))`. Use `⟨PRep.smoothPart τU, Submodule.addCommGroup _, Submodule.module _, PRep.smoothRep τU, U.subtype ∘ₗ (PRep.smoothPart τU).subtype, ⟨eU, heU⟩, SmGL.isSmooth_smoothRep _, fun g h T w => ?_, he2⟩` and prove the remaining obligations. Use `Eq.trans ?_ (T.1.2 h w)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `T.1.1 (ρ g⁻¹ (ρ g (π h w))) = _`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[← Module.End.mul_apply (ρ g⁻¹), ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_equivariant {H : Type} [Group H] (ρ : Representation ℂ G V) (hρ : IsSmoothRep ρ)
     (π : Representation ℂ H V) (hcomm : ∀ g h w, π h (ρ g w) = ρ g (π h w)) (K : Subgroup G)
@@ -109,7 +109,7 @@ def omRep (μ : kˣ →* ℂˣ) : Representation ℂ (GL n' k × GL n k) (SB (Ma
   map_mul' g h := LinearMap.ext fun Φ => Subtype.ext (om_mul μ g.1 h.1 g.2 h.2 Φ.1)
 
 /- English proof (translation)
-Introduce `Φ` and use `by convert isOpen_stabilizer_om hμ Φ.2 using 3 exact Subtype.ext_iff`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem omRep_smooth {μ : kˣ →* ℂˣ} (hμ : IsOpen (μ.ker : Set kˣ)) : IsSmoothRep (omRep (n := n) (n' := n') μ) :=
   fun Φ => by
@@ -135,9 +135,9 @@ variable {ν : Measure k} {μX : Measure (GL n k)} {μG : Measure (GL (n ⊕ Fin
   {lam : J →* ℂˣ} {κ : ℝ}
 
 /- English proof (translation)
-Introduce `P' P A _ _ _ _ _ _ π' π σ _ _ _ b hb θ hθ φ F hF z`. Use `H P' P A π σ θ b (fun γ φ Ψ Ψ' e => ?_) hb φ F hF _ (fun h Ψ e => ?_) _ rfl z` and prove the remaining obligations. Use `hθ 1 γ φ Ψ` as an intermediate fact. Rewrite `this` using `[map_one, Module.End.one_apply]`. Rewrite using `[← this]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `congrArg _ (Subtype.ext e)`. Rewrite using `[show Ψ = flatS ψ ν μ Φ h from Subtype.ext e]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem Core.collapsesWith {Φ : SB (Matrix (n ⊕ Fin c) (n' ⊕ Fin (c + 1)) k)}
     (H : Core ν μX μG J bas ψ μ lam Φ.1 κ) : CollapsesWith ν μX μG J bas ψ μ lam Φ κ := by
@@ -150,7 +150,7 @@ theorem Core.collapsesWith {Φ : SB (Matrix (n ⊕ Fin c) (n' ⊕ Fin (c + 1)) k
   · rw [show Ψ = flatS ψ ν μ Φ h from Subtype.ext e]; rfl
 
 /- English proof (translation)
-Use `H ℂ ℂ ℂ 1 1 1 (fun _ => by simp) (fun _ => by simp) (fun _ => by simp) 0 ⟨fun φ g _ v => by simp, fun g φ v => by simp⟩ 0 (fun g h φ Ψ => by simp) 0 0 (fun κ => by simp) z` as an intermediate fact. Rewrite `this` using `[show integrand ψ ν μ Φ (1 : Representation ℂ _ ℂ) (0 : ℂ →ₗ[ℂ] ℂ →ₗ[ℂ] ℂ) (0 : ℂ →ₗ[ℂ] _ →ₗ[ℂ] ℂ) 0 0 = fun _ => 0 from funext fun h => by simp [integrand]]`. Simplify using `using this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem isQuotInt_zero_iff {Φ : SB (Matrix (n ⊕ Fin c) (n' ⊕ Fin (c + 1)) k)}
     (H : CollapsesWith ν μX μG J bas ψ μ lam Φ κ) (z : ℂ) : IsQuotInt ν μX μG 1 (fun _ => 0) z ↔ z = 0 := by
@@ -161,31 +161,27 @@ theorem isQuotInt_zero_iff {Φ : SB (Matrix (n ⊕ Fin c) (n' ⊕ Fin (c + 1)) k
   simpa using this
 
 /- English proof (translation)
-Introduce `V' V A _ _ _ _ _ _ π σ θ b hθ hb φ v hv f hf Ξ hΞ z`. Take `rfl : Ξ = xiOneS ψ ν μ Φ J bas` from `Subtype.ext hΞ`. Take `rfl : f = integrand ψ ν μ Φ σ b θ φ v` from `funext fun h => hf h _ rfl`. Distinguish the cases in `h0 : Φ = 0`. Establish `e : ∀ h, flatS ψ ν μ Φ h = 0` using `fun h => Subtype.ext (funext fun x => by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Simplify using `[flatS, flat, opE, om, h0])`. Establish `e' : xiOneS ψ ν μ Φ J bas = 0` using `Subtype.ext (funext fun x => by`. Simplify using `[xiOneS, xi, flat, opE, om, h0])`. Rewrite using `[e', show integrand ψ ν μ Φ σ b θ φ v = fun _ => 0 from funext fun h => by simp [integrand, e]]`. Simplify using `using isQuotInt_zero_iff H z`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Use `t2Space k` as an intermediate fact. Establish `hvs : v ∈ PRep.smoothPart σ`. Use `SmGL.mem_smoothPart_of_nhds (Filter.mem_of_superset ((hJ.inter ((isOpen_stabilizer_om hμ Φ.2).preimage (Continuous.prodMk_right (1 : GL (n' ⊕ Fin (c + 1)) k)))).mem_nhds ⟨one_mem J, om_one μ _⟩) ?_)` and prove the remaining obligations. Introduce and unpack `g ⟨hg, hg'⟩`. Establish `h1 : (((lam ⟨g, hg⟩)⁻¹ : ℂˣ) : ℂ) • Φ.1 = (1 : ℂ) • Φ.1` using `by rw [← hΦ ⟨g, hg⟩, one_smul]; exact hg'`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `h2` using `smul_left_injective ℂ (fun h => h0 (Subtype.ext h)) h1`. Establish `h3 : lam ⟨g, hg⟩ = 1` using `inv_eq_one.1 (Units.ext h2)`. Use `show σ g v = v`. Simplify `hv ⟨g, hg⟩` using `[h3]`. Set `ρ' : Representation ℂ (GL n' k) (SB (Matrix n n' k))` to `(omRep μ).comp (MonoidHom.inl _ _)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `πS : Representation ℂ (GL n k) (SB (Matrix n n' k))` to `(omRep μ).comp (MonoidHom.inr _ _)`. Establish `hρ' : IsSmoothRep ρ'` using `fun Ψ => (omRep_smooth hμ Ψ).preimage (Continuous.prodMk_left 1)`. Establish `hπS : IsSmoothRep πS` using `fun Ψ => (omRep_smooth hμ Ψ).preimage (Continuous.prodMk_right 1)`. Establish `hcomm : ∀ g h Ψ, πS h (ρ' g Ψ) = ρ' g (πS h Ψ)` using `fun g h Ψ => Subtype.ext (by`. Express the relevant statement in the definitionally equal form `om μ 1 h (om μ g 1 Ψ.1) = om μ g 1 (om μ 1 h Ψ.1)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← om_mul, ← om_mul]`. Use the proof step `simp)`. Set `K₀ : Subgroup (GL n' k)` to `{ carrier := {g | om μ (embX (c + 1) g) 1 Φ.1 = Φ.1} one_mem' := by simp [om_one] mul_mem' := fun {x y} hx hy => by`. Use `om_mul μ (embX (c + 1) x) (embX (c + 1) y) 1 1 Φ.1` as an intermediate fact. Rewrite `this` using `[hy, hx, mul_one, ← map_mul]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this`. Use the proof step `inv_mem' := fun {x} hx => by`. Use `om_mul μ (embX (c + 1) x⁻¹) (embX (c + 1) x) 1 1 Φ.1` as an intermediate fact. Rewrite `this` using `[hx, mul_one, ← map_mul, inv_mul_cancel, map_one, om_one]`. Conclude with `this.symm }`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hK₀ : IsOpen (K₀ : Set (GL n' k))` using `(isOpen_stabilizer_om hμ Φ.2).preimage ((Continuous.prodMk_left 1).comp QuotStep.continuous_embX)`. Establish `hKo : IsOpen ((KO k n' ⊓ K₀ : Subgroup _) : Set (GL n' k))` using `SplitFlip.isOpen_KO.inter hK₀`. Establish `hKc : IsCompact ((KO k n' ⊓ K₀ : Subgroup _) : Set (GL n' k))` using `SplitFlip.isCompact_KO.inter_right (K₀.isClosed_of_isOpen hK₀)`. Take `⟨P', _, _, π', θ', e, hπ', he1, he2⟩` from `exists_equivariant ρ' hρ' πS hcomm _ hKo hKc`. Establish `hfl : ∀ h, θ' e (flatS ψ ν μ Φ h) = flatS ψ ν μ Φ h` using `fun h => he2 _ fun g hg => Subtype.ext (by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1` using `(opE_om_embX k n n' c 1 le_rfl hc ψ ν μ (om μ 1 h Φ.1)).2 g`. Establish `h2 : om μ (embX (c + 1) g) 1 (om μ 1 h Φ.1) = om μ 1 h (om μ (embX (c + 1) g) 1 Φ.1)`. Rewrite using `[← om_mul, ← om_mul]`. Simplify using the standard rewrite rules. Rewrite `h1` using `[nabs_eq_one_of_valuation_eq_one (valuation_det_of_mem_KO hg.1), Real.one_rpow, Complex.ofReal_one, one_smul, h2, show om μ _ 1 Φ.1 = Φ.1 from hg.2]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h1.symm)`. Establish `hxi : θ' e (xiOneS ψ ν μ Φ J bas) = xiOneS ψ ν μ Φ J bas`. Rewrite using `[show xiOneS ψ ν μ Φ J bas = (((volNat ν bas (Cgrp J 1))⁻¹ : ℝ) : ℂ) • flatS ψ ν μ Φ 1 from rfl, map_smul, hfl]`. Establish `key` using `H P' _ _ π' πS (PRep.smoothRep σ) hπ' hπS (SmGL.isSmooth_smoothRep _) ((b ∘ₗ θ φ).compl₂ (PRep.smoothPart σ).subtype) ⟨fun Ψ g hg a => hb.1 (θ φ Ψ) g hg a, fun g Ψ a => by`. Use `hb.2 g (θ φ Ψ) a` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite `this` using `[← hθ g φ Ψ (πS g Ψ) rfl]`. Conclude with `this⟩`. Use the proof step `θ' (fun g h T Ψ => by`. Use `Eq.trans (congrArg (θ' (π' g T)) (Subtype.ext ?_)) (he1 g h T Ψ)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `om μ g h Ψ.1 = om μ g 1 (om μ 1 h Ψ.1)`.
-
-Rewrite using `[← om_mul]`. Use the proof step `simp)`. Use `e ⟨v, hvs⟩ (fun j => Subtype.ext (hv j)) z`. Rewrite using `[hxi, show integrand ψ ν μ Φ _ _ θ' e _ = integrand ψ ν μ Φ σ b θ φ v from funext fun h => by`. Express the relevant statement in the definitionally equal form `b (θ φ (θ' e _)) (σ h v) = b (θ φ _) (σ h v)`.
-
-Rewrite `key` using `[hfl]]`. Conclude with `key`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem core_of_collapsesWith (hc : 1 ≤ c) [ν.IsAddHaarMeasure] (hμ : IsOpen (μ.ker : Set kˣ))
     (hJ : IsOpen (J : Set (GL (n ⊕ Fin c) k))) {Φ : SB (Matrix (n ⊕ Fin c) (n' ⊕ Fin (c + 1)) k)}
@@ -262,7 +258,7 @@ theorem core_of_collapsesWith (hc : 1 ≤ c) [ν.IsAddHaarMeasure] (hμ : IsOpen
 
 omit [BorelSpace k] in
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Rewrite using `[Pi.smul_apply, smul_eq_mul, flat, flat, ← OpELevi.opE_const_mul]`. Use `congr 1`. Use function extensionality and compare the values at `y`. Simplify using `only [om, map_one, MonoidHom.one_apply, inv_one, Units.val_one]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -277,7 +273,7 @@ theorem flat_eq_smul (μ : kˣ →* ℂˣ) (Φ : Matrix (n ⊕ Fin c) (n' ⊕ Fi
 
 omit [MeasurableSpace k] [BorelSpace k] in
 /- English proof (translation)
-Use function extensionality and compare the values at `y`. Simplify using `only [om, map_one, MonoidHom.one_apply, inv_one, Units.val_one, Pi.smul_apply, smul_eq_mul, Units.val_inv_eq_inv_val]`. Clear the denominators using the available nonvanishing facts.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts.
 -/
 theorem om_eq_smul {a b : Type} [Fintype a] [DecidableEq a] [Fintype b] [DecidableEq b] (μ : kˣ →* ℂˣ)
     (Φ : Matrix b a k → ℂ) (h : GL b k) :
@@ -292,7 +288,7 @@ def untwist (μ : kˣ →* ℂˣ) (lam : J →* ℂˣ) : J →* ℂˣ :=
 
 omit [MeasurableSpace k] [BorelSpace k] in
 /- English proof (translation)
-Introduce `j` and use `by rw [om_eq_smul μ, hΦ j, smul_smul] simp [untwist]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem hasTargetType_untwist {Φ : Matrix (n ⊕ Fin c) (n' ⊕ Fin (c + 1)) k → ℂ} (hΦ : HasTargetType μ J lam Φ) :
     HasTargetType 1 J (untwist μ lam) Φ := fun j => by
@@ -301,7 +297,7 @@ theorem hasTargetType_untwist {Φ : Matrix (n ⊕ Fin c) (n' ⊕ Fin (c + 1)) k 
 
 omit [BorelSpace k] in
 /- English proof (translation)
-Rewrite `hΦ`, the goal using `[oneCoset_iff]`. Use `fun h hh => hΦ h ?_` and prove the remaining obligations. Rewrite using `[flat_eq_smul]`. Conclude with `smul_ne_zero (Units.ne_zero _) hh`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem oneCoset_untwist {Φ : Matrix (n ⊕ Fin c) (n' ⊕ Fin (c + 1)) k → ℂ} (hΦ : OneCoset ψ ν μ Φ J) :
     OneCoset ψ ν 1 Φ J := by
@@ -313,13 +309,13 @@ theorem oneCoset_untwist {Φ : Matrix (n ⊕ Fin c) (n' ⊕ Fin (c + 1)) k → �
 omit [BorelSpace k] in
 
 /- English proof (translation)
-Introduce `V' V A _ _ _ _ _ _ π σ θ b hθ hb φ v hv f hf Ξ hΞ z`. Use `H V' V A (SmGL.twist π (μ.comp Matrix.GeneralLinearGroup.det)) (SmGL.twist σ (μ.comp Matrix.GeneralLinearGroup.det)⁻¹) θ b (fun γ φ Ψ Ψ' e => ?_) ⟨fun φ g hg a => ?_, fun g φ a => ?_⟩ φ v (fun j => ?_) f (fun h Ψ e => ?_) Ξ ?_ z` and prove the remaining obligations. Rewrite using `[SmGL.twist_apply, ← hθ γ φ Ψ (omS μ 1 γ Ψ) rfl, ← map_smul]`. Conclude with `congrArg _ (Subtype.ext (e.trans (om_eq_smul μ _ _)))`. Establish `: Matrix.GeneralLinearGroup.det g = 1` using `Units.ext (VolN.det_unitri (lev 1) _ (RootEx.Model.mem_N_iff.1 hg))`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `hb.1 φ g hg a` using `[this]`. Establish `: Matrix.GeneralLinearGroup.det (embX c g) = Matrix.GeneralLinearGroup.det g` using `Units.ext (by simp [VolN.val_embX, Matrix.GeneralLinearGroup.val_det_apply])`. Simplify using `only [SmGL.twist_apply, map_smul, LinearMap.smul_apply, hb.2 g φ a, smul_eq_mul, MonoidHom.inv_apply, MonoidHom.comp_apply, this, Units.val_inv_eq_inv_val]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[SmGL.twist_apply, hv j, smul_smul]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[untwist, mul_comm]`. Rewrite using `[hf h ((((μ (Matrix.GeneralLinearGroup.det h))⁻¹ : ℂˣ) : ℂ) • Ψ) (by rw [flat_eq_smul, ← e]; rfl)]`. Simplify using the standard rewrite rules. Rewrite using `[hΞ]`. Use function extensionality and compare the values at `x`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using `only [xi]`. Rewrite using `[flat_eq_smul μ]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem core_of_untwist {Φ : Matrix (n ⊕ Fin c) (n' ⊕ Fin (c + 1)) k → ℂ}
     (H : Core ν μX μG J bas ψ 1 (untwist μ lam) Φ κ) : Core ν μX μG J bas ψ μ lam Φ κ := by
@@ -375,14 +371,14 @@ structure Adapted (t : GL (n ⊕ Fin c) k) : Prop where
 
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
 /- English proof (translation)
-The claim follows from `(Subgroup.mem_normalizer_iff.1 ht.norm u).symm`.
+A detailed English derivation is pending.
 -/
 theorem Adapted.mem_N {t : GL (n ⊕ Fin c) k} (ht : Adapted t) {u : GL (n ⊕ Fin c) k} :
     t * u * t⁻¹ ∈ N k n c 1 ↔ u ∈ N k n c 1 := (Subgroup.mem_normalizer_iff.1 ht.norm u).symm
 
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨inv_mem ht.norm, fun g => by conv_lhs => rw [← ht.comm g] group⟩`.
+Supply the required witnesses or components.
 -/
 theorem Adapted.inv {t : GL (n ⊕ Fin c) k} (ht : Adapted t) : Adapted t⁻¹ :=
   ⟨inv_mem ht.norm, fun g => by conv_lhs => rw [← ht.comm g]
@@ -390,7 +386,7 @@ theorem Adapted.inv {t : GL (n ⊕ Fin c) k} (ht : Adapted t) : Adapted t⁻¹ :
 
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
 /- English proof (translation)
-Take `⟨x, w, hw, rfl⟩` from `VolN.exists_of_mem_R hu`. Rewrite using `[show t * (embX c x * w) * t⁻¹ = (t * embX c x * t⁻¹) * (t * w * t⁻¹) by group, ht.comm]`. Conclude with `mul_mem (Subgroup.mem_sup_left ⟨x, rfl⟩) (Subgroup.mem_sup_right (ht.mem_N.2 hw))`.
+Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Adapted.conj_mem_R {t : GL (n ⊕ Fin c) k} (ht : Adapted t) {u : GL (n ⊕ Fin c) k} (hu : u ∈ R k n c 1) :
     t * u * t⁻¹ ∈ R k n c 1 := by
@@ -400,11 +396,11 @@ theorem Adapted.conj_mem_R {t : GL (n ⊕ Fin c) k} (ht : Adapted t) {u : GL (n 
 
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
 /- English proof (translation)
-Establish `hR : ∀ u ∈ N k n c 1, ∀ g : GL n k, u * embX c g ∈ R k n c 1` using `fun u hu g => mul_mem (Subgroup.mem_sup_right hu) (Subgroup.mem_sup_left ⟨g, rfl⟩)`. Establish `e : ∀ u (g : GL n k), t * (u * embX c g) * t⁻¹ = t * u * t⁻¹ * embX c g` using `fun u g => by conv_rhs => rw [← ht.comm g] group`. Use extensionality with `g`. Simplify using `only [mem_prX, mem_Cgrp, inv_one, one_mul, mul_one]`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨u, hu, -, h⟩`. Conclude with `⟨_, ht.mem_N.2 hu, hR _ (ht.mem_N.2 hu) g, e u g ▸ h⟩`. Introduce and unpack `⟨u, hu, -, h⟩`. Use `⟨_, ht.inv.mem_N.2 hu, hR _ (ht.inv.mem_N.2 hu) g, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `t * _ * t⁻¹ ∈ J`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[e]`. Simplify `h` using `[mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem Adapted.prX_cjJ {t : GL (n ⊕ Fin c) k} (ht : Adapted t) (J : Subgroup (GL (n ⊕ Fin c) k)) :
     prX (Cgrp (cjJ t J) 1) = prX (Cgrp J 1) := by
@@ -427,13 +423,11 @@ theorem Adapted.prX_cjJ {t : GL (n ⊕ Fin c) k} (ht : Adapted t) (J : Subgroup 
 variable [MeasurableSpace k] [BorelSpace k]
 
 /- English proof (translation)
-Use `haveI := secondCountable k`. Use `haveI := t2Space k`. Use `haveI : LocallyCompactSpace (N k n c 1) := (VolN.isClosed_N 1).locallyCompactSpace`. Use `haveI := VolN.isHaarMeasure_volN (n := n) (c := c) ν 1`. Use `haveI := VolN.isHaarMeasure_volN (n := n) (c := c) ν₀ 1`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `haveI : SecondCountableTopology (N k n c 1) := TopologicalSpace.Subtype.secondCountableTopology _`. Set `e` to `ConjVol.cj (N k n c 1) ⟨t, ht.norm⟩`. Use `haveI := e.isHaarMeasure_map (volN ν₀ n c 1)`. Establish `h` using `Measure.isMulLeftInvariant_eq_smul ((volN ν₀ n c 1).map e) (volN ν n c 1)`. Use `⟨_, (Measure.haarScalarFactor_pos_of_isHaarMeasure ((volN ν₀ n c 1).map e) (volN ν n c 1)).ne', fun F => ?_, fun S S₀ hS => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Establish `h3` using `integral_map_equiv (μ := volN ν₀ n c 1) e.toHomeomorph.toMeasurableEquiv (fun u : N k n c 1 => F u)`. Rewrite `h3` using `[show ⇑e.toHomeomorph.toMeasurableEquiv = ⇑e from rfl, h, integral_smul_nnreal_measure]`. Conclude with `h3.symm`. Establish `h3` using `e.toHomeomorph.toMeasurableEquiv.map_apply (μ := volN ν₀ n c 1) (S.subgroupOf (N k n c 1))`. Rewrite `h3` using `[show ⇑e.toHomeomorph.toMeasurableEquiv = ⇑e from rfl, h]`.
-
-Use `Eq.trans ?_ (h3.symm.trans rfl)` and prove the remaining obligations. Use `congr 1`. Use extensionality with `u`. Conclude with `hS u u.2`.
+A detailed English derivation is pending.
 -/
 theorem Adapted.exists_map_volN {t : GL (n ⊕ Fin c) k} (ht : Adapted t) (ν ν₀ : Measure k) [ν.IsAddHaarMeasure]
     [ν₀.IsAddHaarMeasure] :
@@ -463,7 +457,7 @@ theorem Adapted.exists_map_volN {t : GL (n ⊕ Fin c) k} (ht : Adapted t) (ν ν
     exact hS u u.2
 
 /- English proof (translation)
-Use `haveI := secondCountable k`. Use `haveI := t2Space k`. Conclude with `(cjG t).symm.isHaarMeasure_map μG`.
+A detailed English derivation is pending.
 -/
 theorem isHaarMeasure_cj (t : GL (n ⊕ Fin c) k) (μG : Measure (GL (n ⊕ Fin c) k)) [μG.IsHaarMeasure] :
     (μG.map (cjG t).symm).IsHaarMeasure := by
@@ -472,9 +466,9 @@ theorem isHaarMeasure_cj (t : GL (n ⊕ Fin c) k) (μG : Measure (GL (n ⊕ Fin 
   exact (cjG t).symm.isHaarMeasure_map μG
 
 /- English proof (translation)
-Use `haveI := secondCountable k`. Use `haveI := t2Space k`. Use `((cjG t).symm.toHomeomorph.toMeasurableEquiv.map_apply _).trans ?_` and prove the remaining obligations. Use `congr 1`. Use extensionality with `g`.
+Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 
-Express the relevant statement in the definitionally equal form `cjG t ((cjG t).symm g) ∈ J ↔ _`. Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem map_cjJ (t : GL (n ⊕ Fin c) k) (μG : Measure (GL (n ⊕ Fin c) k)) (J : Subgroup (GL (n ⊕ Fin c) k)) :
     μG.map (cjG t).symm (cjJ t J) = μG J := by
@@ -487,15 +481,13 @@ theorem map_cjJ (t : GL (n ⊕ Fin c) k) (μG : Measure (GL (n ⊕ Fin c) k)) (J
   simp
 
 /- English proof (translation)
-Use `haveI := secondCountable k`. Use `haveI := t2Space k`. Establish `h1 : ∀ (F : GL (n ⊕ Fin c) k → ℂ) h, ∫ g, (∫ u : N k n c 1, F (cjG t (embX c g * (u : GL (n ⊕ Fin c) k) * h)) ∂(volN ν₀ n c 1)) ∂(r⁻¹ • μX) = ∫ g, (∫ u : N k n c 1, F (embX c g * (u : GL (n ⊕ Fin c) k) * cjG t h) ∂(volN ν n c 1)) ∂μX` using `fun F h => by`. Establish `: ∀ g, ∫ u : N k n c 1, F (cjG t (embX c g * (u : GL (n ⊕ Fin c) k) * h)) ∂(volN ν₀ n c 1) = (r : ℝ) • ∫ u : N k n c 1, F (embX c g * (u : GL (n ⊕ Fin c) k) * cjG t h) ∂(volN ν n c 1)` using `fun g => by`. Rewrite using `[← H fun x => F (embX c g * x * cjG t h)]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_mul, cjG_apply, ht.comm]`. Simplify using `only [this]`. Rewrite using `[integral_smul_nnreal_measure, integral_smul, NNReal.smul_def, smul_smul]`. Simplify using `[hr]`. Establish `h2 : ∀ F : GL (n ⊕ Fin c) k → ℂ, ∫ h, F (cjG t h) ∂(μG.map (cjG t).symm) = ∫ h, F h ∂μG` using `fun F => by`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments.
 
-Use `(integral_map_equiv (cjG t).symm.toHomeomorph.toMeasurableEquiv _).trans ?_` and prove the remaining obligations. Use `congr 1`. Use function extensionality and compare the values at `h`. Conclude with `congrArg F ((cjG t).apply_symm_apply h)`. Establish `h3 : ∀ (e : GL (n ⊕ Fin c) k ≃ₜ* GL (n ⊕ Fin c) k), ∀ F ∈ SB (GL (n ⊕ Fin c) k), (fun h => F (e h)) ∈ SB (GL (n ⊕ Fin c) k)` using `fun e F hF => ⟨hF.1.comp_continuous e.continuous, hF.2.comp_homeomorph e.toHomeomorph⟩`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨F₀, hF, ha, hb⟩`. Take `⟨F, rfl⟩ : ∃ F : GL (n ⊕ Fin c) k → ℂ, F₀ = fun h => F (cjG t h)` from `⟨fun h => F₀ ((cjG t).symm h), by simp⟩`. Use `⟨F, by simpa using h3 (cjG t).symm _ hF, fun h => ?_, hb.trans (h2 F)⟩` and prove the remaining obligations. Take `⟨h, rfl⟩` from `(cjG t).surjective h`.
-
-Conclude with `(ha h).trans (h1 F h)`. Introduce and unpack `⟨F, hF, ha, hb⟩`. Conclude with `⟨_, h3 (cjG t) F hF, fun h => (ha _).trans (h1 F h).symm, hb.trans (h2 F).symm⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem Adapted.isQuotInt_iff {t : GL (n ⊕ Fin c) k} (ht : Adapted t) {ν ν₀ : Measure k} {r : ℝ≥0} (hr : r ≠ 0)
     (H : ∀ F : GL (n ⊕ Fin c) k → ℂ,
@@ -541,7 +533,7 @@ open GlobalTheory.IndefiniteRowSideFullHecke.HalfPowerSpherical (frame)
 
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
 /- English proof (translation)
-Simplify using `using IdealChain.smul_frame_mul_frame_inv_apply (1 : k) b b u.val r s`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem frame_conj_apply (b : ℕ → kˣ) (u : GL (n ⊕ Fin c) k) (r s : n ⊕ Fin c) :
     (frame n c b * u * (frame n c b)⁻¹).val r s =
@@ -551,9 +543,9 @@ theorem frame_conj_apply (b : ℕ → kˣ) (u : GL (n ⊕ Fin c) k) (r s : n ⊕
 
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
 /- English proof (translation)
-Use `⟨ConjVol.mem_normalizer_of_tri ?_ ?_, fun g => Units.ext ?_⟩` and prove the remaining obligations. Rewrite using `[show (frame n c b).val = Matrix.diagonal (Sum.elim (fun _ : n => (1 : k)) (fun i : Fin c => (b (i.val + 1) : k))) from by rw [← Matrix.fromBlocks_diagonal]; rfl]`. Conclude with `blockTriangular_diagonal _`. Rewrite using `[show ((frame n c b)⁻¹).val = Matrix.diagonal (Sum.elim (fun _ : n => (1 : k)) (fun i : Fin c => (((b (i.val + 1))⁻¹ : kˣ) : k))) from by rw [← Matrix.fromBlocks_diagonal]; rfl]`. Conclude with `blockTriangular_diagonal _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `r s`. Rewrite using `[frame_conj_apply]`. Apply the tactic sequence `rcases r with r | r <;> rcases s with s | s <;> simp [VolN.val_embX]`. Apply the tactic sequence `by_cases h : r = s <;> simp [h]`.
+Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem adapted_frame (b : ℕ → kˣ) : Adapted (frame n c b) := by
   refine ⟨ConjVol.mem_normalizer_of_tri ?_ ?_, fun g => Units.ext ?_⟩
@@ -570,9 +562,9 @@ theorem adapted_frame (b : ℕ → kˣ) : Adapted (frame n c b) := by
 
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
 /- English proof (translation)
-Unfold `simpleSum`. Simplify using `only [Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Use `split_ifs with h`. Rewrite using `[frame_conj_apply]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Sum.elim_inr, h]`. Simplify using `[pow_succ]`. Clear the denominators using the available nonvanishing facts. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem simpleSum_frame (β : kˣ) (u : GL (n ⊕ Fin c) k) :
     simpleSum (frame n c (fun i => 1⁻¹ * β⁻¹ ^ i) * u * (frame n c fun i => 1⁻¹ * β⁻¹ ^ i)⁻¹) = β * simpleSum u := by
@@ -588,9 +580,9 @@ theorem simpleSum_frame (β : kˣ) (u : GL (n ⊕ Fin c) k) :
   · simp
 
 /- English proof (translation)
-Establish `hβ : 0 < valuation k (β : k)` using `by simp [zero_lt_iff]`. Introduce `x`. Establish `h1` using `h (β * x)`. Rewrite `h1` using `[map_mul, mul_le_iff_le_one_right hβ]`. Rewrite using `[Units.val_one, map_one, ← h1]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [AddChar.mulShift_apply]`. Use `⟨fun H y hy => ?_, fun H y hy => H _ (by rw [map_mul]; exact mul_le_mul_right hy _)⟩` and prove the remaining obligations. Use `H ((β⁻¹ : kˣ) * y) (by rwa [map_mul, Units.val_inv_eq_inv_val, map_inv₀, inv_mul_le_iff₀ hβ])` as an intermediate fact. Simplify using `using this`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem hasConductor_mulShift {ψ : AddChar k Circle} {β : kˣ} (h : HasConductor ψ β) :
     HasConductor (ψ.mulShift (β : k)) 1 := by
@@ -607,13 +599,13 @@ theorem hasConductor_mulShift {ψ : AddChar k Circle} {β : kˣ} (h : HasConduct
 variable [MeasurableSpace k] [BorelSpace k]
 
 /- English proof (translation)
-Take `⟨C, -, hC⟩` from `IdealChain.opE_rescale_frame k n n' c 1 1 β (fun i => β⁻¹ ^ i) ν ν₀ (fun i _ _ => by simp [pow_succ]) inferInstance inferInstance`. Rewrite `hC` using `[← ht]`. Use `set t' := frame n' (c + 1) fun i => β⁻¹ ^ i`. Simplify using `only [Units.val_one, one_smul, inv_one] at hC`. Establish `key : ∀ μ h, om μ 1 h (fun y : Matrix (n ⊕ Fin c) (n' ⊕ Fin (c + 1)) k => (C : ℂ) * Φ (t.val * y * (t'⁻¹).val)) = fun y : Matrix (n ⊕ Fin c) (n' ⊕ Fin (c + 1)) k => (C : ℂ) * om μ 1 (t * h * t⁻¹) Φ (t.val * y * (t'⁻¹).val)` using `fun μ h => by`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `y`. Establish `e1 : Matrix.GeneralLinearGroup.det (t * h * t⁻¹) = Matrix.GeneralLinearGroup.det h`. Rewrite using `[map_mul, map_mul, map_inv, mul_inv_cancel_comm]`. Establish `e2 : ((t * h * t⁻¹)⁻¹).val * (t.val * y * (t'⁻¹).val) = t.val * ((h⁻¹).val * y) * (t'⁻¹).val`. Rewrite using `[show (t * h * t⁻¹)⁻¹ = t * h⁻¹ * t⁻¹ by group]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Units.val_mul, Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc (t⁻¹).val, Units.inv_mul, Matrix.one_mul]`. Simplify using `only [om, e1, Units.val_one, Matrix.mul_one, e2]`. Expand and normalize the polynomial expressions, which then agree. Use `⟨fun y : Matrix (n ⊕ Fin c) (n' ⊕ Fin (c + 1)) k => (C : ℂ) * Φ (t.val * y * (t'⁻¹).val), (SB _).smul_mem (C : ℂ) (x := fun y => Φ (sideMul t'⁻¹ t⁻¹ y)) ⟨hΦ.1.comp_continuous (sideMul t'⁻¹ t⁻¹).continuous, hΦ.2.comp_homeomorph (sideMul t'⁻¹ t⁻¹)⟩, fun ψ μ h => funext fun x => ?_, …` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[flat, flat, hC, key, OpELevi.opE_const_mul]`. Rewrite using `[key, hz]`. Use function extensionality and compare the values at `y`. Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem exists_rescaled (β : kˣ) (ν ν₀ : Measure k) [ν.IsAddHaarMeasure] [ν₀.IsAddHaarMeasure]
     {t : GL (n ⊕ Fin c) k} (ht : t = frame n c fun i => 1⁻¹ * β⁻¹ ^ i)
@@ -648,19 +640,17 @@ theorem exists_rescaled (β : kˣ) (ν ν₀ : Measure k) [ν.IsAddHaarMeasure] 
     ring
 
 /- English proof (translation)
-Use `set t : GL (n ⊕ Fin c) k := frame n c fun i => 1⁻¹ * β⁻¹ ^ i with hdef`. Establish `ht : Adapted t` using `adapted_frame _`. Take `⟨r, hr, hI, hV⟩` from `ht.exists_map_volN ν ν₀`. Take `⟨Φ₀, hΦ₀, hfl, hom⟩` from `exists_rescaled β ν ν₀ hdef hΦ`. Establish `v1` using `hV (stabLat bas) (stabLat (t⁻¹ * bas)) fun u _ => by simp [mem_stabLat, mul_assoc]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `v2` using `hV (Cgrp J 1) (Cgrp (cjJ t J) 1) fun u hu => by`. Simplify using `only [mem_Cgrp, inv_one, one_mul, mul_one]`. Conclude with `⟨fun h => ⟨ht.conj_mem_R h.1, h.2⟩, fun h => ⟨Subgroup.mem_sup_right hu, h.2⟩⟩`. Use `⟨t, r, Φ₀, hΦ₀, ht, hr, fun j => hom μ j _ (h1 ⟨_, j.2⟩), ?_, fun m => ?_, fun μX μG κ H => ?_⟩` and prove the remaining obligations. Rewrite `h2`, the goal using `[oneCoset_iff]`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h hh`. Rewrite `hh` using `[hfl]`. Take `⟨x, hx, j, hj, e⟩` from `h2 _ hh`. Use `⟨_, ht.inv.conj_mem_R hx, t⁻¹ * j * t, ?_, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `t * _ * t⁻¹ ∈ J`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `hj` using `[mul_assoc]`. Rewrite using `[show t⁻¹ * x * t⁻¹⁻¹ * (t⁻¹ * j * t) = t⁻¹ * (x * j) * t by group, ← e]; group`. Rewrite using `[IndefiniteRowSideFullHecke.FramePositiveSum.rescale, IndefiniteRowSideFullHecke.FramePositiveSum.rescale, v1, ENNReal.smul_def, smul_smul, ENNReal.coe_inv hr, ENNReal.mul_inv (Or.inl (by simpa using hr)) (Or.inl ENNReal.coe_ne_top)]`. Introduce `V' V A _ _ _ _ _ _ π σ θ b hθ hb φ v hv f hf Ξ hΞ z`. Rewrite using `[← ht.isQuotInt_iff hr hI]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `H V' V A π (σ.comp (MulAut.conj t).toMonoidHom) θ b hθ ⟨fun φ g hg a => ?_, fun g φ a => ?_⟩ φ v (fun j => hv ⟨_, j.2⟩) _ (fun h Ψ e => hf _ Ψ (e.trans (hfl ψ μ h))) Ξ ?_ z` and prove the remaining obligations. Use `hb.1 φ _ (ht.mem_N.2 hg) a` as an intermediate fact. Rewrite `this` using `[simpleSum_frame]`. Conclude with `this`. Use `hb.2 g φ a` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `this` using `[← ht.comm g]`. Conclude with `this`. Rewrite using `[hΞ]`. Use function extensionality and compare the values at `x`. Establish `hr' : ((r : ℝ≥0∞)).toReal ≠ 0` using `by simpa using hr`.
-
-Simplify using `only [xi, hfl, volNat, v1, v2, ENNReal.toReal_mul, mul_div_mul_left _ _ hr', mul_one, mul_inv_cancel]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_reduction (β : kˣ) (ν ν₀ : Measure k) [ν.IsAddHaarMeasure] [ν₀.IsAddHaarMeasure]
     (ψ : AddChar k Circle) (μ : kˣ →* ℂˣ) (J : Subgroup (GL (n ⊕ Fin c) k)) (lam : J →* ℂˣ)
@@ -711,7 +701,7 @@ end Normalise
 section Main
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨Core.collapsesWith, core_of_collapsesWith hc hμ hJ hΦ⟩`.
+Supply the required witnesses or components.
 -/
 theorem core_iff_collapsesWith {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] [MeasurableSpace k] [BorelSpace k] {n n' : Type} [Fintype n] [DecidableEq n]
@@ -723,7 +713,7 @@ theorem core_iff_collapsesWith {k : Type} [Field k] [ValuativeRel k] [Topologica
   ⟨Core.collapsesWith, core_of_collapsesWith hc hμ hJ hΦ⟩
 
 /- English proof (translation)
-Introduce `k _ _ _ _ _ _ ψ ν hψ hν n n' _ _ _ _ c hc μ P Φ hΦ hJ h1 h2 bas m hm μG hG`. Use `hν.1` as an intermediate fact. Take `⟨κ, hκ, H'⟩` from `H k n c hc ν m μG hν.1 hm hG P.J hJ.1 hJ.2 bas n' ψ hψ.continuous hψ.ne_one 1 (untwist μ P.lam) ⟨Φ, hΦ⟩ (hasTargetType_untwist h1) (oneCoset_untwist h2)`. Conclude with `⟨κ, hκ, core_of_untwist (core_of_collapsesWith (Φ := ⟨Φ, hΦ⟩) hc (by simp) hJ.1 (hasTargetType_untwist h1) H')⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem collapse_of_weak (H : CollapseWeak) : SymChain.Collapse := by
   intro k _ _ _ _ _ _ ψ ν hψ hν n n' _ _ _ _ c hc μ P Φ hΦ hJ h1 h2 bas m hm μG hG
@@ -733,7 +723,7 @@ theorem collapse_of_weak (H : CollapseWeak) : SymChain.Collapse := by
   exact ⟨κ, hκ, core_of_untwist (core_of_collapsesWith (Φ := ⟨Φ, hΦ⟩) hc (by simp) hJ.1 (hasTargetType_untwist h1) H')⟩
 
 /- English proof (translation)
-The claim follows from `isOpen_isCompact_conj t⁻¹ ho hc`.
+A detailed English derivation is pending.
 -/
 theorem isCO_cjJ {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     {n : Type} [Fintype n] [DecidableEq n] {c : ℕ} (t : GL (n ⊕ Fin c) k) {J : Subgroup (GL (n ⊕ Fin c) k)}
@@ -741,9 +731,9 @@ theorem isCO_cjJ {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsN
     IndefiniteRowSideFullHecke.FramePositiveSum.IsCO (cjJ t J) := isOpen_isCompact_conj t⁻¹ ho hc
 
 /- English proof (translation)
-Introduce `k _ _ _ _ _ _ n _ _ c hc ν μX μG hν hX hG J ho hcp bas n' _ _ ψ hψ hψ1 μ lam Φ h1 h2`. Take `⟨β, hβ⟩` from `exists_hasConductor_of_continuous ψ hψ hψ1`. Take `⟨ν₀, hν₀⟩` from `exists_isUnitVol k`. Use `hν₀.1` as an intermediate fact. Take `⟨t, r, Φ₀, hΦ₀, -, hr, a1, a2, -, a3⟩` from `exists_reduction β ν ν₀ ψ μ J lam bas Φ.2 h1 h2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨κ, hκ, H'⟩` from `H k _ ν₀ (hasConductor_mulShift hβ) hν₀ n n' c hc μ ⟨cjJ t J, cjLam t lam⟩ Φ₀ hΦ₀ (isCO_cjJ t ho hcp) a1 a2 (t⁻¹ * bas) (r⁻¹ • μX) (Measure.IsHaarMeasure.nnreal_smul _ (inv_ne_zero hr)) _ (isHaarMeasure_cj t μG)`. Conclude with `⟨κ, hκ, (a3 μX μG κ H').collapsesWith⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem weak_of_collapse (H : SymChain.Collapse) : CollapseWeak := by
   intro k _ _ _ _ _ _ n _ _ c hc ν μX μG hν hX hG J ho hcp bas n' _ _ ψ hψ hψ1 μ lam Φ h1 h2
@@ -757,13 +747,11 @@ theorem weak_of_collapse (H : SymChain.Collapse) : CollapseWeak := by
   exact ⟨κ, hκ, (a3 μX μG κ H').collapsesWith⟩
 
 /- English proof (translation)
-Introduce `k _ _ _ _ _ _ n _ _ c hc ν μX μG hν hX hG J ho hcp bas`. Establish `hv` using `(ENNReal.toReal_pos_iff.1 (volN_stabLat ν bas))`. Use `set m : Measure (GL n k) := volN ν n c 1 ((stabLat bas).subgroupOf (N k n c 1)) • μX with hmdef`. Establish `hm : m.IsHaarMeasure` using `Measure.IsHaarMeasure.smul _ hv.1.ne' hv.2.ne`. Establish `hres : IndefiniteRowSideFullHecke.FramePositiveSum.rescale ν bas m = μX`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[IndefiniteRowSideFullHecke.FramePositiveSum.rescale, hmdef, smul_smul, ENNReal.inv_mul_cancel hv.1.ne' hv.2.ne, one_smul]`. Take `⟨ν₀, hν₀⟩` from `exists_isUnitVol k`. Use `hν₀.1` as an intermediate fact. Take `⟨ψ₁, hψ₁⟩` from `exists_hasConductor_one k`. Take `⟨p1, p2, -⟩` from `H k ψ₁ ν₀ hψ₁ hν₀ n n c hc 1 ⟨J, 1⟩ 0 (zero_mem _) ⟨ho, hcp⟩ (fun h => funext fun x => by simp [om]) (fun β ⟨h, _, hh⟩ => absurd (funext fun x => by simp [flat, opE, om]) hh) bas m hm μG hG`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨_, div_pos p1 p2, fun n' _ _ ψ hψ hψ1 μ lam Φ h1 h2 => ?_⟩` and prove the remaining obligations. Take `⟨β, hβ⟩` from `exists_hasConductor_of_continuous ψ hψ hψ1`. Take `⟨t, r, Φ₀, hΦ₀, ht, hr, a1, a2, a4, a3⟩` from `exists_reduction β ν ν₀ ψ μ J lam bas Φ.2 h1 h2`. Take `⟨-, -, H'⟩` from `H k _ ν₀ (hasConductor_mulShift hβ) hν₀ n n' c hc μ ⟨cjJ t J, cjLam t lam⟩ Φ₀ hΦ₀ (isCO_cjJ t ho hcp) a1 a2 (t⁻¹ * bas) m hm _ (isHaarMeasure_cj t μG)`. Rewrite `H'` using `[a4, hres, map_cjJ, ht.prX_cjJ]`.
-
-Conclude with `(a3 μX μG _ H').collapsesWith`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem collapse_of_exact (H : SymChain.CollapseExact) : IndefiniteRowSideFullHecke.FlatOmegaSeries.Collapse := by
   intro k _ _ _ _ _ _ n _ _ c hc ν μX μG hν hX hG J ho hcp bas
@@ -800,9 +788,7 @@ def CollapseUniform : Prop :=
         HasTargetType μ J lam Φ.1 → OneCoset ψ ν μ Φ.1 J → Core ν μX μG J bas ψ μ lam Φ.1 κ
 
 /- English proof (translation)
-Apply the tactic sequence `refine ⟨fun H => ?_, fun H => ?_⟩ <;>`. Apply the tactic sequence `intro k _ _ _ _ _ _ n _ _ c hc ν μX μG hν hX hG J ho hcp bas <;>`. Apply the tactic sequence `obtain ⟨κ, hκ, H'⟩ := H k n c hc ν μX μG hν hX hG J ho hcp bas <;>`. Use `⟨κ, hκ, fun n' _ _ ψ hψ hψ1 μ lam Φ h1 h2 => ?_⟩` and prove the remaining obligations. Conclude with `(H' n' ψ hψ hψ1 μ lam Φ h1 h2).collapsesWith`.
-
-Conclude with `core_of_untwist (core_of_collapsesWith hc (by simp) ho (hasTargetType_untwist h1) (H' n' ψ hψ hψ1 1 _ Φ (hasTargetType_untwist h1) (oneCoset_untwist h2)))`.
+Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem uniform_iff : CollapseUniform ↔ IndefiniteRowSideFullHecke.FlatOmegaSeries.Collapse := by
   refine ⟨fun H => ?_, fun H => ?_⟩ <;>
@@ -814,7 +800,7 @@ theorem uniform_iff : CollapseUniform ↔ IndefiniteRowSideFullHecke.FlatOmegaSe
       (H' n' ψ hψ hψ1 1 _ Φ (hasTargetType_untwist h1) (oneCoset_untwist h2)))
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨⟨weak_of_collapse, collapse_of_weak⟩, uniform_iff, fun H => collapse_of_weak H.weak, collapse_of_exact⟩`.
+Supply the required witnesses or components.
 -/
 theorem collapse_compare :
     (SymChain.Collapse ↔ CollapseWeak) ∧ (CollapseUniform ↔ IndefiniteRowSideFullHecke.FlatOmegaSeries.Collapse) ∧

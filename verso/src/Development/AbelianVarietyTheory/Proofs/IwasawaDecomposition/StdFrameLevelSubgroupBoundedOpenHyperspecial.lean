@@ -14,9 +14,9 @@ open Classical
 variable {D : D7} {n : ℕ}
 
 /- English proof (translation)
-Take `⟨w, hw, e⟩` from `hκ.2 i j`. Use `⟨w, (GlobalTheory.StdFrameExist.mem_ALint_iff w).1 hw, ?_⟩` and prove the remaining obligations. Establish `h1 : (1 : Matrix (Fin n) (Fin n) (EAf D)) i j = (1 : Matrix (Fin n) (Fin n) (ReciprocityTheory.Aut.AL D.host.E)) i j`. Apply the tactic sequence `by_cases h : i = j <;> simp [h, Matrix.one_apply]`. Establish `h2 : (N : EAf D) = (N : ReciprocityTheory.Aut.AL D.host.E)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Proceed by induction on `N with`. Consider the case `zero => simp`. Consider the case `succ k ih => simp`. Rewrite using `[h1, h2]`. Conclude with `e`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cong_entry {N : ℕ} {κ : Formalism.AUTREP.GAf D.host.E n} (hκ : NG.Cong D.host.E n N κ) (i j : Fin n) :
     ∃ w ∈ GlobalTheory.StdFrameExist.SI D, (km D n κ).val i j - (1 : Matrix (Fin n) (Fin n) (EAf D)) i j = (N : EAf D) * w := by
@@ -33,17 +33,15 @@ theorem cong_entry {N : ℕ} {κ : Formalism.AUTREP.GAf D.host.E n} (hκ : NG.Co
 
 set_option maxHeartbeats 2000000 in
 /- English proof (translation)
-Take `⟨y, hy⟩` from `((GlobalTheory.T.stdMaximalCompact_reduction_properties D n).2.1 κ).2 hκ.1`. Rewrite using `[← hy, redFn_frGL]`. Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Establish `hyij : ((y.val i j : Herm.intAf D.host.F D.host.E) : EAf D) = (km D n κ).val i j`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Rewrite using `[← hy]`. Simplify using `[frGL, intGL, Formalism.UG.bc]`. Apply the tactic sequence `obtain ⟨w, hw', e⟩ := cong_entry hκ i j`. Establish `h1 : (((1 : Matrix (Fin n) (Fin n) (Herm.intAf D.host.F D.host.E)) i j : Herm.intAf D.host.F D.host.E) : EAf D) = (1 : Matrix (Fin n) (Fin n) (EAf D)) i j`. Apply the tactic sequence `by_cases h : i = j <;> simp [h, Matrix.one_apply]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `key : y.val i j - (1 : Matrix (Fin n) (Fin n) (Herm.intAf D.host.F D.host.E)) i j = (N : Herm.intAf D.host.F D.host.E) * ⟨w, hw'⟩`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [AddSubgroupClass.coe_sub, MulMemClass.coe_mul, SubringClass.coe_natCast]`. Rewrite using `[hyij, h1]`. Conclude with `e`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hN' : (N : kP PP) = 0`. Use `(Ideal.Quotient.eq_zero_iff_mem (I := PP.asIdeal)).2 hN` as an intermediate fact. Simplify using `using this`. Establish `k2` using `congrArg (resS D.host.F PP) key`. Rewrite `k2` using `[map_sub, map_mul, map_natCast, hN', zero_mul, sub_eq_zero]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h3 : resS D.host.F PP ((1 : Matrix (Fin n) (Fin n) (Herm.intAf D.host.F D.host.E)) i j) = (1 : Matrix (Fin n) (Fin n) (kP PP)) i j`. Apply the tactic sequence `by_cases h : i = j <;> simp [h, Matrix.one_apply]`. Simplify using `only [Formalism.UG.bc]`. Use `show resS D.host.F PP (y.val i j) = _`. Rewrite using `[k2, h3]`.
-
-Both sides reduce to the same expression.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem redFn_eq_one_of_cong {N : ℕ} {PP : Pl D.host.E} (hN : ((N : ℕ) : 𝓞 D.host.E) ∈ PP.asIdeal)
     {κ : Formalism.AUTREP.GAf D.host.E n} (hκ : NG.Cong D.host.E n N κ) :
@@ -79,7 +77,7 @@ theorem redFn_eq_one_of_cong {N : ℕ} {PP : Pl D.host.E} (hN : ((N : ℕ) : �
   rfl
 
 /- English proof (translation)
-Use `show km D n κ ∈ Formalism.L2.DIV.lev D.sp.cm (1 : Matrix (Fin n) (Fin n) D.host.E) 1 Ld`. Use `Kg_le_lev (T := Ld.Pg ∪ Ld.Q) Finset.subset_union_left Finset.subset_union_right ?_` and prove the remaining obligations. Conclude with `⟨⟨hU, hS⟩, Subgroup.mem_iInf.2 fun PP => Subgroup.mem_iInf.2 fun hP => mem_princAt.2 ⟨hS, hr PP hP⟩⟩`.
+Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem mem_stdJ_of {Ld : Formalism.L2.DIV.LevDat D.host.E ℂ n} {κ : Formalism.AUTREP.GAf D.host.E n}
     (hU : km D n κ ∈ UA D.sp.cm (1 : Matrix (Fin n) (Fin n) D.host.E))
@@ -90,11 +88,11 @@ theorem mem_stdJ_of {Ld : Formalism.L2.DIV.LevDat D.host.E ℂ n} {κ : Formalis
   exact ⟨⟨hU, hS⟩, Subgroup.mem_iInf.2 fun PP => Subgroup.mem_iInf.2 fun hP => mem_princAt.2 ⟨hS, hr PP hP⟩⟩
 
 /- English proof (translation)
-Use `show levFn (1 : GL (Fin n) (EAf D)) Ld (km D n κ) = 1`. Establish `hT : rTup (1 : GL (Fin n) (EAf D)) Ld (km D n κ) = 1`. Use function extensionality and compare the values at `PP`. Use `show upperLeftBlock Ld.hr (redFn (1 : GL (Fin n) (EAf D)) PP.1 (km D n κ)) = 1`. Rewrite using `[hr PP.1 (Finset.mem_union_left _ PP.2)]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Conclude with `blockDiagonalExtendByOnePrimeField_one _ _`. Unfold `levFn`. Rewrite using `[hT, blockDiagonalExtendByOnePrimeField_one, one_mul, Finset.prod_eq_one, Finset.prod_eq_one, one_mul]`. Introduce `PP hP`. Rewrite using `[hr PP (Finset.mem_union_right _ hP), dBlk, blockDiagonalExtendByOnePrimeField_one, map_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `PP hP`. Use `Finset.prod_eq_one fun c _ => ?_` and prove the remaining obligations. Rewrite using `[hr PP (Finset.mem_union_left _ hP), dBlk, blockDiagonalExtendByOnePrimeField_one, map_one]`.
+A detailed English derivation is pending.
 -/
 theorem stdX_eq_one_of {Ld : Formalism.L2.DIV.LevDat D.host.E ℂ n} {κ : Formalism.AUTREP.GAf D.host.E n} (h : κ ∈ stdJ Ld)
     (hr : ∀ PP ∈ Ld.Pg ∪ Ld.Q, redFn (1 : GL (Fin n) (EAf D)) PP (km D n κ) = 1) : stdX Ld ⟨κ, h⟩ = 1 := by
@@ -113,7 +111,7 @@ theorem stdX_eq_one_of {Ld : Formalism.L2.DIV.LevDat D.host.E ℂ n} {κ : Forma
     rw [hr PP (Finset.mem_union_left _ hP), dBlk, blockDiagonalExtendByOnePrimeField_one, map_one]
 
 /- English proof (translation)
-Use `⟨∏ PP ∈ T, Ideal.absNorm PP.asIdeal, Finset.prod_pos fun PP _ => Nat.pos_of_ne_zero fun h0 => PP.ne_bot (Ideal.absNorm_eq_zero_iff.1 h0), fun PP hP => ?_⟩` and prove the remaining obligations. Take `⟨k, hk⟩` from `Finset.dvd_prod_of_mem (fun PP : Pl D.host.E => Ideal.absNorm PP.asIdeal) hP`. Rewrite using `[hk, Nat.cast_mul]`. Conclude with `Ideal.mul_mem_right _ _ (Ideal.absNorm_mem PP.asIdeal)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_nat_mem (T : Finset (Pl D.host.E)) :
     ∃ N : ℕ, 0 < N ∧ ∀ PP ∈ T, ((N : ℕ) : 𝓞 D.host.E) ∈ PP.asIdeal := by
@@ -124,13 +122,13 @@ theorem exists_nat_mem (T : Finset (Pl D.host.E)) :
   exact Ideal.mul_mem_right _ _ (Ideal.absNorm_mem PP.asIdeal)
 
 /- English proof (translation)
-Introduce `D n Ld`. Establish `R` using `GlobalTheory.T.stdMaximalCompact_reduction_properties D n`. Establish `hle : stdJ Ld ≤ ReciprocityTheory.Aut.Umax D.host.E n` using `fun κ hκ => (R.2.1 κ).1 (parLev_St (lev_le_parLev (show km D n κ ∈ Formalism.L2.DIV.lev D.sp.cm (1 : Matrix (Fin n) (Fin n) D.host.E) 1 Ld from hκ)))`. Use `⟨hle, ?_, ?_⟩` and prove the remaining obligations. Take `⟨N, hN, hmem⟩` from `exists_nat_mem (D := D) (Ld.Pg ∪ Ld.Q)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨N, hN, fun κ hκ => ?_⟩` and prove the remaining obligations. Establish `hr : ∀ PP ∈ Ld.Pg ∪ Ld.Q, redFn (1 : GL (Fin n) (EAf D)) PP (km D n κ) = 1` using `fun PP hP => redFn_eq_one_of_cong (hmem PP hP) hκ`. Establish `h` using `mem_stdJ_of (R.1 κ) ((R.2.1 κ).2 hκ.1) hr`. Conclude with `⟨h, stdX_eq_one_of h hr⟩`. Introduce `B hB κ hκ`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hr : κ ∈ ReciprocityTheory.Aut.Umax D.host.E n → ∀ PP ∈ Ld.Pg ∪ Ld.Q, redFn (1 : GL (Fin n) (EAf D)) PP (km D n κ) = 1`. Introduce `hU PP hP`. Establish `hov : NG.OverPl PP (PP.under (𝓞 (maximalRealSubfield D.host.E)))`. Simplify using `[NG.OverPl, HeightOneSpectrum.under_asIdeal, Ideal.under_def]`. Use `R.2.2.1 κ hU Bᶜ _ PP hκ hov ?_` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `fun hc => hc <| hB PP (Finset.mem_union.1 hP) _ hov`. Conclude with `⟨⟨fun h => hle h, fun hU => mem_stdJ_of (R.1 κ) ((R.2.1 κ).2 hU) (hr hU)⟩, fun h => stdX_eq_one_of h (hr (hle h))⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Supply the required witnesses or components.
 -/
 theorem stdJ_open : ∀ (D : D7) (n : ℕ) (Ld : Formalism.L2.DIV.LevDat D.host.E ℂ n), stdJ Ld ≤ ReciprocityTheory.Aut.Umax D.host.E n ∧
     (∃ N : ℕ, 0 < N ∧ ∀ κ, NG.Cong D.host.E n N κ → ∃ h : κ ∈ stdJ Ld, stdX Ld ⟨κ, h⟩ = 1) ∧

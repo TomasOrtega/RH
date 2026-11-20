@@ -44,11 +44,11 @@ variable {Γ : Type} [Group Γ] [Fintype Γ] {Pl0 I0 T : Type} {A3 : FamIn3 D.wh
   {cG : G0 R.Pg D.R.r ≃* G0g D.nd}
 end Rows
 /- English proof (translation)
-Introduce `_ hL`. Use `StepW.of_all ?_` and prove the remaining obligations. Introduce `K B f T w _ _ _ P x l v i b ψ hA j hv _ hT`. Establish `hon : (Dof x).what₂.muTw v = (Dof x).what₂.muAt v` using `(P.q.mu.on v (GlobalTheory.HeightCounting.Up.Model.mem_of_twisted x v hv)).symm`. Establish `hμ : Formalism.IndefR.RecTie.Used0 (Dof x) ((Dof x).what₂.muTw v)` using `Or.inr ⟨v, hon⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `joint_of (D := Dof x) l.mt.ad l.rat.rat l.b.Bs l.b.ser x.m.z.lev.is x.m.z.pins.keep l.Pq_over l.a.elem (fun t PP hPP => ?_) hμ j ?_ b hA hT` and prove the remaining obligations. Rewrite `hPP` using `[x.m.z.lev.Q]`. Rewrite using `[l.sel]`. Take `⟨u, -, e⟩` from `(Formalism.L2.Col.mem_QE _ _ _).1 hPP`. Conclude with `⟨u, e⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `e1` using `x.m.z.lev.xiH (x.r.Y.tupT ((Dof x).what₂.muTw v))`. Establish `e2` using `x.m.tup (x.r.Y.tupT ((Dof x).what₂.muTw v))`. Rewrite `e2` using `[← x.r.tup, x.r.Y.tupTie _ hμ]`. Rewrite using `[e1, ← e2, x.m.z.lev.C]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem joint_level_of_twOK_at_twisted : _root_.GlobalTheory.HeightCounting.Up.PublishedInputsThirdLayerAlt → ∀ hL : _root_.UpperTheory.Zero.LLC.RecTExists, AllSt fun _ B _ T w P x => ∀ (l : _root_.GlobalTheory.HeightCounting.Up.ThirdIntermediateLevel hL x) (v : B.places.Pl) (i : (Dof x).ntw.Tw) (b : Bool) (ψ : G (Dof x).host.E (Dof x).nd.Om →* ((Dof x).ntw.Ok i (T.k v))ˣ) (hA : NX.AdmTw (Dof x) i (T.k v) (QOf P v) ψ) (j : Fin (Dof x).R.m), TwistedAt (Dof x) v → (Dof x).ntw.l i = B.places.resChar v → IntegralHeckeForms.TwOK i (T.k v) (QOf P v) ψ → Joint (D := Dof x) (eta (D := Dof x) (cfOf x) w.I.xi v j) (mtAt (D := Dof x) l.mt.M v j) l.b.Bs.exp b hA j := by
   intro _ hL
@@ -82,7 +82,7 @@ open GlobalTheory.LevCmp
 open GlobalTheory.TwistChoice (Reading ReadsAt)
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.JointLevel.joint_level_of_twOK_at_twisted | exact _root_.GlobalTheory.JointLevel.joint_level_of_twOK_at_twisted | (intros; apply _root_.GlobalTheory.JointLevel.joint_level_of_twOK_at_twisted <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.joint_level_of_cm_datum_twOK : _root_.GlobalTheory.HeightCounting.Up.PublishedInputsThirdLayerAlt → ∀ hL : _root_.UpperTheory.Zero.LLC.RecTExists, AllSt fun _ B _ T w P x => ∀ (l : _root_.GlobalTheory.HeightCounting.Up.ThirdIntermediateLevel hL x) (v : B.places.Pl) (i : (Dof x).ntw.Tw) (b : Bool) (ψ : G (Dof x).host.E (Dof x).nd.Om →* ((Dof x).ntw.Ok i (T.k v))ˣ) (hA : NX.AdmTw (Dof x) i (T.k v) (QOf P v) ψ) (j : Fin (Dof x).R.m), TwistedAt (Dof x) v → (Dof x).ntw.l i = B.places.resChar v → IntegralHeckeForms.TwOK i (T.k v) (QOf P v) ψ → Joint (D := Dof x) (eta (D := Dof x) (cfOf x) w.I.xi v j) (mtAt (D := Dof x) l.mt.M v j) l.b.Bs.exp b hA j := by
   first | exact @_root_.GlobalTheory.JointLevel.joint_level_of_twOK_at_twisted | exact _root_.GlobalTheory.JointLevel.joint_level_of_twOK_at_twisted | (intros; apply _root_.GlobalTheory.JointLevel.joint_level_of_twOK_at_twisted <;> assumption)

@@ -10,11 +10,11 @@ open scoped Matrix
 namespace GlobalTheory.CoefTorusWeight
 
 /- English proof (translation)
-Proceed by induction on `F using MvPolynomial.induction_on' with`. Consider the case `monomial u a`. Establish `h : aeval (fun v => (C (c v) * X v : MvPolynomial σ K)) (monomial u a) = monomial u ((∏ v, c v ^ u v) * a)`. Rewrite using `[aeval_monomial, Finsupp.prod_fintype _ _ (by simp), monomial_eq, Finsupp.prod_fintype _ _ (by simp)]`. Simplify using `only [mul_pow, Finset.prod_mul_distrib, ← C_pow, ← map_prod, algebraMap_eq, C_mul]`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h, coeff_monomial, coeff_monomial]`. Use `split_ifs with hu`. Rewrite using `[hu]`. Simplify using the standard rewrite rules.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately.
 
-Consider the case `add p q hp hq => rw [map_add, coeff_add, coeff_add, hp, hq, mul_add]`.
+A detailed English derivation is pending.
 -/
 theorem coeff_aeval_scale {K σ : Type} [Field K] [Fintype σ] (c : σ → K) (F : MvPolynomial σ K)
     (m : σ →₀ ℕ) :
@@ -35,9 +35,9 @@ theorem coeff_aeval_scale {K σ : Type} [Field K] [Fintype σ] (c : σ → K) (F
   | add p q hp hq => rw [map_add, coeff_add, coeff_add, hp, hq, mul_add]
 
 /- English proof (translation)
-Establish `h : trAct (fun τ => diagGL K n (t τ)) = aeval (fun v : ι × Fin n × Fin n => (C (t v.1 v.2.1 : K) * X v : Pol K ι n))`. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `v`. Simplify using `only [trAct, Formalism.GradedWeylDivisibility.blockAct, aeval_X, diagGL, Matrix.diagonal_transpose]`. Rewrite using `[Finset.sum_eq_single v.2.1]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Introduce `b _ hb`. Simplify using `[Matrix.diagonal_apply_ne _ (Ne.symm hb)]`. Simplify using the standard rewrite rules. Rewrite using `[actP, LinearMap.smul_apply, AlgHom.toLinearMap_apply, coeff_smul, smul_eq_mul, h, coeff_aeval_scale]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem coeff_actP_diag {K ι : Type} [Field K] [Fintype ι] {n : ℕ} (lam : ι → DomWeight n)
     (t : ι → Fin n → Kˣ) (F : Pol K ι n) (m : (ι × Fin n × Fin n) →₀ ℕ) :
@@ -59,26 +59,26 @@ theorem coeff_actP_diag {K ι : Type} [Field K] [Fintype ι] {n : ℕ} (lam : ι
     coeff_aeval_scale]
 
 /- English proof (translation)
-The claim follows from `Finset.prod_ne_zero_iff.mpr fun _ _ => Units.ne_zero _`.
+A detailed English derivation is pending.
 -/
 theorem detTwK_ne_zero {K ι : Type} [Field K] [Fintype ι] {n : ℕ} (lam : ι → DomWeight n)
     (h : ι → GL (Fin n) K) : detTwK lam h ≠ 0 :=
   Finset.prod_ne_zero_iff.mpr fun _ _ => Units.ne_zero _
 
 /- English proof (translation)
-Introduce `m hm τ0 a0`. Set `u : Kˣ` to `Units.mk0 (2 : K) two_ne_zero`. Set `t : ι → Fin n → Kˣ` to `fun τ a => if τ = τ0 ∧ a = a0 then u else 1`. Establish `hprod : ∀ m : (ι × Fin n × Fin n) →₀ ℕ, (∏ v : ι × Fin n × Fin n, (t v.1 v.2.1 : K) ^ m v) = 2 ^ (∑ s : Fin n, m (τ0, a0, s))`. Introduce `m`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Fintype.prod_prod_type, Finset.prod_eq_single τ0, Fintype.prod_prod_type, Finset.prod_eq_single a0, ← Finset.prod_pow_eq_pow_sum]`. Simplify using `[t, u]`. Introduce `b _ hb`. Simplify using `[t, hb]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Introduce `b _ hb`. Simplify using `[t, hb]`. Simplify using the standard rewrite rules. Use `set h : ι → GL (Fin n) K := fun τ => diagGL K n (t τ) with hh`. Establish `hco : ∀ (w : VV K lam) (m : (ι × Fin n × Fin n) →₀ ℕ), coeff m ((rhoK lam h w : VV K lam) : Pol K ι n) = detTwK lam h * (2 ^ (∑ s : Fin n, m (τ0, a0, s)) * coeff m (w : Pol K ι n))`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `w m`. Rewrite using `[← hprod]`. Conclude with `coeff_actP_diag lam t w m`. Establish `h1 : rhoK lam h v = (detTwK lam h * 2 ^ (lam τ0).natW a0) • v`. Apply `Subtype.ext` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `m'`. Rewrite using `[hco, Submodule.coe_smul, coeff_smul, smul_eq_mul, mul_assoc]`. Distinguish the cases in `hm' : m' ∈ (v : Pol K ι n).support`. Rewrite using `[hv m' hm']`. Rewrite using `[notMem_support_iff.mp hm']`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Establish `h2` using `hg h v`. Rewrite `h2` using `[h1, map_smul]`. Establish `h3` using `congrArg (fun w : VV K lam => coeff m (w : Pol K ι n)) h2`. Simplify using `only [hco, Submodule.coe_smul, coeff_smul, smul_eq_mul, mul_assoc] at h3`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h4` using `mul_right_cancel₀ (mem_support_iff.mp hm) (mul_left_cancel₀ (detTwK_ne_zero lam h) h3)`. Establish `h5 : (2 : ℕ) ^ (lam τ0).natW a0 = 2 ^ (∑ s : Fin n, m (τ0, a0, s))`. Conclude with `h4` after adjusting the coercions. Conclude with `(Nat.pow_right_injective le_rfl h5).symm`.
+A detailed English derivation is pending.
 -/
 theorem weight_preserved (K : Type) [Field K] [CharZero K] {ι : Type} [Fintype ι] {n : ℕ}
     (lam : ι → DomWeight n) (g : Module.End K (VV K lam))

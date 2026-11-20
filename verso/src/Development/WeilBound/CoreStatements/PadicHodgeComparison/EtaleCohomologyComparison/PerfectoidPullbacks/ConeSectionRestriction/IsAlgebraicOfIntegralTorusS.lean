@@ -22,7 +22,7 @@ variable {K : Type} [Field K] {X : Scheme.{0}} {N d e : ℕ} (i : X ⟶ PSpace K
   (hV : V ≤ ⨅ k, i ⁻¹ᵁ Proj.basicOpen (grK K N) (y k))
 
 /- English proof (translation)
-Use `first`. Consider the case `exact GlobalTheory.T.torus_coordinate_isUnit ..`. Consider the case `(intros; apply GlobalTheory.T.torus_coordinate_isUnit <;> assumption)`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem tV_isUnit (k : Fin d) : IsUnit (tV i y hy V hV k) := by
   first
@@ -30,7 +30,7 @@ theorem tV_isUnit (k : Fin d) : IsUnit (tV i y hy V hV k) := by
     | (intros; apply GlobalTheory.T.torus_coordinate_isUnit <;> assumption)
 
 /- English proof (translation)
-Use `first`. Consider the case `exact GlobalTheory.T.torus_monomial_mem_range ..`. Consider the case `(intros; apply GlobalTheory.T.torus_monomial_mem_range <;> assumption)`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem tpow_mem_range (he : 0 < e) (S : Finset (Fin (d + 1)))
     (hS : V ≤ i ⁻¹ᵁ Proj.basicOpen (grK K N) (yS y S)) (ht : ∀ k, IsUnit (tV i y hy V hV k)) :
@@ -40,7 +40,7 @@ theorem tpow_mem_range (he : 0 < e) (S : Finset (Fin (d + 1)))
     | (intros; apply GlobalTheory.T.torus_monomial_mem_range <;> assumption)
 
 /- English proof (translation)
-Use `first`. Consider the case `exact GlobalTheory.T.noether_normalization_finite ..`. Consider the case `(intros; apply GlobalTheory.T.noether_normalization_finite <;> assumption)`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem isIntegral_torusS (he : 0 < e) (q : X ⟶ Spec (CommRingCat.of K)) (hiq : i ≫ PSpace.str K N = q)
     (hfin : Module.Finite (Algebra.adjoin K (Set.range fun k => Ideal.Quotient.mk (homIdeal i) (y k)))
@@ -54,7 +54,7 @@ theorem isIntegral_torusS (he : 0 < e) (q : X ⟶ Spec (CommRingCat.of K)) (hiq 
     | (intros; apply GlobalTheory.T.noether_normalization_finite <;> assumption)
 
 /- English proof (translation)
-Use `first`. Consider the case `exact GlobalTheory.T.algebraically_independent_coords ..`. Consider the case `(intros; apply GlobalTheory.T.algebraically_independent_coords <;> assumption)`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem algebraicIndependent_tV [IsIntegral X] (he : 0 < e) (q : X ⟶ Spec (CommRingCat.of K))
     (hiq : i ≫ PSpace.str K N = q)
@@ -66,7 +66,7 @@ theorem algebraicIndependent_tV [IsIntegral X] (he : 0 < e) (q : X ⟶ Spec (Com
     | (intros; apply GlobalTheory.T.algebraically_independent_coords <;> assumption)
 
 /- English proof (translation)
-Use `first`. Consider the case `exact GlobalTheory.T.algebraic_over_torus_of_integral ..`. Consider the case `(intros; apply GlobalTheory.T.algebraic_over_torus_of_integral <;> assumption)`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem isAlgebraic_of_integral_torusS {R : Type} [CommRing R] [IsDomain R] [Algebra K R] {d : ℕ} (t : Fin d → Rˣ)
     (h : ∀ r : R, IsIntegral (torusS K t Finset.univ) r) :

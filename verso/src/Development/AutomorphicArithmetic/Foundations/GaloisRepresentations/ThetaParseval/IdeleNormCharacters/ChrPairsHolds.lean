@@ -13,12 +13,12 @@ import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.Theta
 namespace UpperTheory.Gal.TP.Chr
 
 /- English proof (translation)
-The claim follows from `chrEx muEmb readEx readLoc readRes readExp absFacts (typProd typVal) expInj`.
+A detailed English derivation is pending.
 -/
 theorem chrEx_holds : ChrEx := chrEx muEmb readEx readLoc readRes readExp absFacts (typProd typVal) expInj
 
 /- English proof (translation)
-The claim follows from `chrPairs chrEx_holds typVal`.
+A detailed English derivation is pending.
 -/
 theorem chrPairs_holds : UpperTheory.Gal.TP.Sub.ChrPairs := chrPairs chrEx_holds typVal
 

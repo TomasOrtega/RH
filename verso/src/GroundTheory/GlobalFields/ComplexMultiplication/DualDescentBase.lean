@@ -16,7 +16,7 @@ variable {F Ω : Type u} [Field F] [Field Ω] [Algebra F Ω]
   {E E' E'' : WeierstrassCurve F} [E.IsElliptic] [E'.IsElliptic] [E''.IsElliptic]
 
 /- English proof (translation)
-Take `⟨⟨x, y, h, he, -⟩, -⟩` from `φ.2`. Simplify using `only [Isogeny.x, isogBaseChange_val, he]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem x_isogBaseChange (φ : Isogeny E E') :
     (isogBaseChange (F' := Ω) φ).x = bcEmb (F' := Ω) E φ.x := by
@@ -25,7 +25,7 @@ theorem x_isogBaseChange (φ : Isogeny E E') :
   rfl
 
 /- English proof (translation)
-Take `⟨⟨x, y, h, he, -⟩, -⟩` from `φ.2`. Simplify using `only [Isogeny.y, isogBaseChange_val, he]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem y_isogBaseChange (φ : Isogeny E E') :
     (isogBaseChange (F' := Ω) φ).y = bcEmb (F' := Ω) E φ.y := by
@@ -34,9 +34,9 @@ theorem y_isogBaseChange (φ : Isogeny E E') :
   rfl
 
 /- English proof (translation)
-Introduce `φ ψ h`. Apply `Isogeny.ext_xy` to reduce the goal to its premises. Establish `e` using `congrArg Isogeny.x h`. Rewrite `e` using `[x_isogBaseChange, x_isogBaseChange]`. Conclude with `(bcEmb (F' := Ω) E).injective e`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `e` using `congrArg Isogeny.y h`. Rewrite `e` using `[y_isogBaseChange, y_isogBaseChange]`. Conclude with `(bcEmb (F' := Ω) E).injective e`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isogBaseChange_injective :
     Function.Injective (isogBaseChange (F' := Ω) : Isogeny E E' → _) := by
@@ -50,7 +50,7 @@ theorem isogBaseChange_injective :
     exact (bcEmb (F' := Ω) E).injective e
 
 /- English proof (translation)
-Apply `Isogeny.ext_xy` to reduce the goal to its premises. Rewrite using `[x_isogBaseChange, Isogeny.comp_alt, Isogeny.comp_alt, x_isogBaseChange, comap_isogBaseChange_bcEmb]`. Rewrite using `[y_isogBaseChange, Isogeny.comp_y, Isogeny.comp_y, y_isogBaseChange, comap_isogBaseChange_bcEmb]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem isogBaseChange_comp (ψ : Isogeny E' E'') (φ : Isogeny E E') :
     isogBaseChange (F' := Ω) (ψ.comp φ) =
@@ -62,7 +62,7 @@ theorem isogBaseChange_comp (ψ : Isogeny E' E'') (φ : Isogeny E E') :
       comap_isogBaseChange_bcEmb]
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Use `show Point.map (W' := E) (bcEmb (F' := Ω) E) (n • genericPoint E) = n • genericPoint (E.baseChange Ω)`. Rewrite using `[map_zsmul, map_bcEmb_genericPoint]`. Both sides reduce to the same expression.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem isogBaseChange_mulIsogeny (n : ℤ) (hn : n ≠ 0) :
     isogBaseChange (F' := Ω) (mulIsogeny E n hn) = mulIsogeny (E.baseChange Ω) n hn := by
@@ -74,11 +74,11 @@ theorem isogBaseChange_mulIsogeny (n : ℤ) (hn : n ≠ 0) :
   rfl
 
 /- English proof (translation)
-Take `⟨r, hr⟩` from `φ.exists_ratEmb_eq_x`. Establish `hcop : IsCoprime (r.num.map (algebraMap F Ω)) (r.denom.map (algebraMap F Ω))`. Simplify using `using r.isCoprime_num_denom.map (mapRingHom (algebraMap F Ω))`. Take `⟨h1, h2⟩` from `num_denom_div_of_isCoprime (r.monic_denom.map (algebraMap F Ω)) hcop`. Establish `hb : ∀ p : F[X], bcEmb (F'` using `Ω) E (aeval (genX E) p) = aeval (genX (E.baseChange Ω)) (p.map (algebraMap F Ω)) := by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `p`. Rewrite using `[← aeval_algHom_apply, bcEmb_genX, aeval_map_algebraMap]`. Establish `hx : ratEmb (E.baseChange Ω) (algebraMap _ _ (r.num.map (algebraMap F Ω)) / algebraMap _ _ (r.denom.map (algebraMap F Ω))) = (isogBaseChange (F'` using `Ω) φ).x := by`. Rewrite using `[x_isogBaseChange, ← hr, ratEmb_div]`. Use `conv_rhs => rw [← RatFunc.num_div_denom r]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ratEmb_div, map_div₀, hb, hb]`. Rewrite using `[φ.degree_eq_max_natDegree hr, (isogBaseChange (F' := Ω) φ).degree_eq_max_natDegree hx, h1, h2, natDegree_map_eq_of_injective (algebraMap F Ω).injective, natDegree_map_eq_of_injective (algebraMap F Ω).injective]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem degree_isogBaseChange (φ : Isogeny E E') :
     (isogBaseChange (F' := Ω) φ).degree = φ.degree := by
@@ -107,7 +107,7 @@ variable {F : Type u} [Field F] {E E' E'' : WeierstrassCurve F} [E.IsElliptic] [
   [E''.IsElliptic]
 
 /- English proof (translation)
-Rewrite using `[← degree_isogBaseChange (Ω := AlgebraicClosure F)]`. Conclude with `Isogeny.degree_pos _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isogeny_degree_pos (φ : Isogeny E E') : 0 < φ.degree := by
   classical
@@ -115,13 +115,13 @@ theorem isogeny_degree_pos (φ : Isogeny E E') : 0 < φ.degree := by
   exact Isogeny.degree_pos _
 
 /- English proof (translation)
-The claim follows from `Nat.cast_ne_zero.mpr (isogeny_degree_pos φ).ne'`.
+A detailed English derivation is pending.
 -/
 theorem isogeny_degree_ne_zero (φ : Isogeny E E') : (φ.degree : ℤ) ≠ 0 :=
   Nat.cast_ne_zero.mpr (isogeny_degree_pos φ).ne'
 
 /- English proof (translation)
-Rewrite using `[Isogeny.dual_comp]`. Conclude with `mulIsogeny_congr (by rw [degree_isogBaseChange]) _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mulIsogeny_eq_dual_comp_isogBaseChange [DecidableEq (AlgebraicClosure F)] (φ : Isogeny E E') :
     mulIsogeny (E.baseChange (AlgebraicClosure F)) φ.degree (isogeny_degree_ne_zero φ) =
@@ -130,7 +130,7 @@ theorem mulIsogeny_eq_dual_comp_isogBaseChange [DecidableEq (AlgebraicClosure F)
   exact mulIsogeny_congr (by rw [degree_isogBaseChange]) _ _
 
 /- English proof (translation)
-Apply `mem_fieldRange_comap_of_bcEmb (Ω := AlgebraicClosure F) φ` to reduce the goal to its premises. Rewrite using `[← comap_isogBaseChange_bcEmb, isogBaseChange_mulIsogeny, mulIsogeny_eq_dual_comp_isogBaseChange, Isogeny.comap_comp, AlgHom.comp_apply]`. Conclude with `⟨_, rfl⟩`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem mulIsogeny_comap_mem_fieldRange (φ : Isogeny E E') (f : E.toAffine.FunctionField) :
     (mulIsogeny E φ.degree (isogeny_degree_ne_zero φ)).comap f ∈ φ.comap.fieldRange := by
@@ -147,7 +147,7 @@ noncomputable def dualComapOver (φ : Isogeny E E') :
       φ.comap.fieldRange.toSubalgebra (mulIsogeny_comap_mem_fieldRange φ))
 
 /- English proof (translation)
-Use `φ.comap.equivFieldRange.apply_symm_apply ((mulIsogeny E φ.degree (isogeny_degree_ne_zero φ)).comap.codRestrict φ.comap.fieldRange.toSubalgebra (mulIsogeny_comap_mem_fieldRange φ) f)` as an intermediate fact. Conclude with `congrArg Subtype.val this`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem comap_dualComapOver (φ : Isogeny E E') (f : E.toAffine.FunctionField) :
     φ.comap (dualComapOver φ f) = (mulIsogeny E φ.degree (isogeny_degree_ne_zero φ)).comap f := by
@@ -160,15 +160,15 @@ noncomputable def dualPtOver (φ : Isogeny E E') : (E.baseChange E'.toAffine.Fun
   Point.map (dualComapOver φ) (genericPoint E)
 
 /- English proof (translation)
-The claim follows from `isGenPt_map_genericPoint E _`.
+A detailed English derivation is pending.
 -/
 theorem isGenPt_dualPtOver (φ : Isogeny E E') : IsGenPt E (dualPtOver φ) :=
   isGenPt_map_genericPoint E _
 
 /- English proof (translation)
-Establish `hD : (bcEmb (F'` using `AlgebraicClosure F) E').comp (dualComapOver φ) = ((isogBaseChange (F' := AlgebraicClosure F) φ).dual.comap.restrictScalars F).comp (bcEmb (F' := AlgebraicClosure F) E) := by`. Apply `AlgHom.ext` to reduce the goal to its premises. Introduce `f`. Establish `key : (isogBaseChange (F'` using `AlgebraicClosure F) φ).comap (bcEmb (F' := AlgebraicClosure F) E' (dualComapOver φ f)) = (isogBaseChange (F' := AlgebraicClosure F) φ).comap ((isogBaseChange (F' := AlgebraicClosure F) φ).dual.comap (bcEmb (F' := AlgebraicClosure F) E f)) := by`. Rewrite using `[comap_isogBaseChange_bcEmb, comap_dualComapOver, ← comap_isogBaseChange_bcEmb, isogBaseChange_mulIsogeny, mulIsogeny_eq_dual_comp_isogBaseChange, Isogeny.comap_comp, AlgHom.comp_apply]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(isogBaseChange (F' := AlgebraicClosure F) φ).comap.injective key`. Establish `hcast : ∀ X : (E.baseChange (E.baseChange (AlgebraicClosure F)).toAffine.FunctionField).toAffine.Point, Point.map (W'` using `E) ((isogBaseChange (F' := AlgebraicClosure F) φ).dual.comap.restrictScalars F) X = Point.map (W' := E.baseChange (AlgebraicClosure F)) (isogBaseChange (F' := AlgebraicClosure F) φ).dual.comap X := by`. Introduce `X`. Apply the tactic sequence `cases X <;> rfl`. Rewrite using `[dualPtOver, Point.map_map, hD, ← Point.map_map, hcast, map_bcEmb_genericPoint, Isogeny.map_comap_genericPoint]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_bcEmb_dualPtOver [DecidableEq (AlgebraicClosure F)] (φ : Isogeny E E') :
     (Point.map (W' := E) (bcEmb (F' := AlgebraicClosure F) E') (dualPtOver φ) :

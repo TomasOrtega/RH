@@ -14,7 +14,7 @@ open Matrix GlobalTheory.KZ
 namespace GlobalTheory.KZ.GammaZeroComm
 
 /- English proof (translation)
-Proceed by induction on `hb using Submodule.span_induction with`. Consider the case `mem x hx => exact hx.2 h hh`. Consider the case `zero => exact map_zero _`. Consider the case `add x y _ _ hx hy => rw [map_add, hx, hy]`. Consider the case `smul c x _ hx => rw [map_smul, hx]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem act_eq_self_of_mem_B {Ω : Type} [Field Ω] [Algebra ℚ Ω] {ε : Ω →+* ℂ} (X : Tower Ω ε) (N l w : ℕ)
     [Fact l.Prime] {b : X.Fn l} (hb : b ∈ X.B N l w) {h : SL(2, ℤ)} (hh : h ∈ Gam N l) :
@@ -26,9 +26,9 @@ theorem act_eq_self_of_mem_B {Ω : Type} [Field Ω] [Algebra ℚ Ω] {ε : Ω �
   | smul c x _ hx => rw [map_smul, hx]
 
 /- English proof (translation)
-Rewrite using `[← sub_eq_zero, ← map_sub, ← map_sub]`. Use `Submodule.smul_induction_on h (fun r hr m _ => ?_) (fun a b ha hb => ?_)` and prove the remaining obligations. Rewrite using `[map_smul, map_smul]`. Take `⟨z, hz⟩` from `Submodule.Quotient.mk_surjective _ (AdicCompletion.eval (idl l) (X.Kl l) n (X.kmap l φ m))`. Rewrite using `[← hz, ← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.smul_mem_smul hr Submodule.mem_top`. Rewrite using `[map_add, map_add, ha, hb, add_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eval_kmap_congr {Ω : Type} [Field Ω] [Algebra ℚ Ω] {ε : Ω →+* ℂ} (X : Tower Ω ε) (l : ℕ) [Fact l.Prime]
     (φ : X.K ≃+* X.K) (n : ℕ) {x y : X.Khat l} (h : x - y ∈ (idl l) ^ n • (⊤ : Submodule ℤ_[l] (X.Khat l))) :
@@ -42,13 +42,13 @@ theorem eval_kmap_congr {Ω : Type} [Field Ω] [Algebra ℚ Ω] {ε : Ω →+* �
   · rw [map_add, map_add, ha, hb, add_zero]
 
 /- English proof (translation)
-Establish `hdet : (en γ 0 0 : ZMod M) * en γ 1 1 - en γ 0 1 * en γ 1 0 = 1`. Use `γ.det_coe` as an intermediate fact. Rewrite `this` using `[Matrix.det_fin_two]`. Establish `h2` using `congrArg (Int.cast : ℤ → ZMod M) this`. Move the coercions through the operations in `at h2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Conclude with `h2`. Take `⟨γ₁, hγ₁⟩` from `GlobalTheory.specialLinearGroup_map_intCast_zmod_surjective M ⟨!![(en γ 0 0 : ZMod M), e' * en γ 0 1; e * en γ 1 0, en γ 1 1], by`. Rewrite using `[Matrix.det_fin_two_of]`. Take the linear combination `hdet - (en γ 0 1 : ZMod M) * en γ 1 0 * he⟩`. Establish `hent : ∀ i j, (en γ₁ i j : ZMod M) = (!![(en γ 0 0 : ZMod M), e' * en γ 0 1; e * en γ 1 0, en γ 1 1] : Matrix (Fin 2) (Fin 2) (ZMod M)) i j` using `fun i j => congrArg (fun g : Matrix.SpecialLinearGroup (Fin 2) (ZMod M) => g.1 i j) hγ₁`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨γ₁, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hent]`. Both sides reduce to the same expression. Rewrite using `[hent] show _ = (e : ZMod M) * (e' * en γ 0 1)`. Rewrite using `[← mul_assoc, he, one_mul]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hent]`. Both sides reduce to the same expression. Rewrite using `[hent]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_twist (M : ℕ) (e e' : ℤ) (he : (e : ZMod M) * e' = 1) (γ : SL(2, ℤ)) :
     ∃ γ₁ : SL(2, ℤ), (en γ 0 0 : ZMod M) = en γ₁ 0 0 ∧ (en γ 0 1 : ZMod M) = e * en γ₁ 0 1 ∧
@@ -74,9 +74,9 @@ theorem exists_twist (M : ℕ) (e e' : ℤ) (he : (e : ZMod M) * e' = 1) (γ : S
   · rw [hent]; rfl
 
 /- English proof (translation)
-Take `⟨h00, h01, h10, h11⟩` from `h`. Establish `e00` using `congrArg (ZMod.castHom hK (ZMod K)) h00`. Establish `e01` using `congrArg (ZMod.castHom hK (ZMod K)) h01`. Establish `e10` using `congrArg (ZMod.castHom hK (ZMod K)) h10`. Establish `e11` using `congrArg (ZMod.castHom hK (ZMod K)) h11`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [map_mul, map_intCast] at e00 e01 e10 e11`. Conclude with `⟨e00, e01, e10, e11⟩`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 theorem cong_of_dvd {M K : ℕ} (hK : K ∣ M) {e : ℤ} {γ γ₁ : SL(2, ℤ)}
     (h : (en γ 0 0 : ZMod M) = en γ₁ 0 0 ∧ (en γ 0 1 : ZMod M) = e * en γ₁ 0 1 ∧
@@ -92,21 +92,21 @@ theorem cong_of_dvd {M K : ℕ} (hK : K ∣ M) {e : ℤ} {γ γ₁ : SL(2, ℤ)}
   exact ⟨e00, e01, e10, e11⟩
 
 /- English proof (translation)
-Take `⟨a00, -, a10, a11⟩` from `cong_of_dvd hN h`. Take `⟨-, -, b10, -⟩` from `cong_of_dvd hl h`. Establish `cN : (en γ 1 0 : ZMod N) = 0` using `CongruenceSubgroup.Gamma0_mem.1 hγ.1`. Establish `cl : (en γ 1 0 : ZMod l) = 0` using `CongruenceSubgroup.Gamma0_mem.1 hγ.2`. Establish `hdet : (en γ 0 0 : ZMod N) * en γ 1 1 - en γ 0 1 * en γ 1 0 = 1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `γ.det_coe` as an intermediate fact. Rewrite `this` using `[Matrix.det_fin_two]`. Establish `h2` using `congrArg (Int.cast : ℤ → ZMod N) this`. Move the coercions through the operations in `at h2`. Conclude with `h2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Establish an intermediate fact.
 
-Establish `m00 : (γ₁ * γ⁻¹ : SL(2, ℤ)).1 0 0 = en γ₁ 0 0 * en γ 1 1 - en γ₁ 0 1 * en γ 1 0`. Simplify using `[en, Matrix.mul_apply, Fin.sum_univ_two, Matrix.adjugate_fin_two]`. Expand and normalize the polynomial expressions, which then agree. Establish `m10 : (γ₁ * γ⁻¹ : SL(2, ℤ)).1 1 0 = en γ₁ 1 0 * en γ 1 1 - en γ₁ 1 1 * en γ 1 0`. Simplify using `[en, Matrix.mul_apply, Fin.sum_univ_two, Matrix.adjugate_fin_two]`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `m11 : (γ₁ * γ⁻¹ : SL(2, ℤ)).1 1 1 = en γ₁ 1 1 * en γ 0 0 - en γ₁ 1 0 * en γ 0 1`. Simplify using `[en, Matrix.mul_apply, Fin.sum_univ_two, Matrix.adjugate_fin_two]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `a10`, `hdet` using `[cN]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `b10` using `[cl]`. Use `⟨(CongruenceSubgroup.Gamma1_mem N _).2 ⟨?_, ?_, ?_⟩, CongruenceSubgroup.Gamma0_mem.2 ?_⟩` and prove the remaining obligations. Rewrite using `[m00]`. Use `push_cast`. Rewrite using `[← a00, cN]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `hdet`. Rewrite using `[m11]`. Use `push_cast`. Rewrite using `[← a11, ← a10]`. Take the linear combination `hdet`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[m10]`. Use `push_cast`. Rewrite using `[← a10, cN]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[m10]`.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Rewrite using `[← b10, cl]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem twist_mul_inv_mem {N l M : ℕ} (hN : N ∣ M) (hl : l ∣ M) {e : ℤ} {γ γ₁ : SL(2, ℤ)}
     (hγ : γ ∈ CongruenceSubgroup.Gamma0 N ⊓ CongruenceSubgroup.Gamma0 l)
@@ -138,9 +138,9 @@ theorem twist_mul_inv_mem {N l M : ℕ} (hN : N ∣ M) (hl : l ∣ M) {e : ℤ} 
   · rw [m10]; push_cast; rw [← b10, cl]; ring
 
 /- English proof (translation)
-Take `⟨e00, e01, e10, e11⟩` from `cong_of_dvd hM h`. Rewrite `hχ`, the goal using `[Ideal.span_singleton_pow, ← PadicInt.ker_toZModPow, RingHom.mem_ker, map_sub, sub_eq_zero]`. Rewrite `hχ` using `[map_intCast]`. Simplify using `only [en] at e00 e01 e10 e11`. Rewrite `e01`, `e10` using `[hχ]`.
+Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Apply the tactic sequence `fin_cases i <;>`. Simplify using `[Matrix.mulVec, dotProduct, Fin.sum_univ_two, mZl, Matrix.map_apply, map_add, map_mul, map_intCast]`. Rewrite using `[← e00, e01]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[← e10, ← e11]`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -161,19 +161,15 @@ theorem twist_vec {l n M : ℕ} [Fact l.Prime] (hM : l ^ n ∣ M) {e : ℤ} {χ 
   · rw [← e10, ← e11]; ring
 
 /- English proof (translation)
-Introduce `Ω _ _ _ ε X _ _ N l w _ _ hN _ _ γ hγ s b hb`. Use `haveI : IsAlgClosed Ω := IsAlgClosure.isAlgClosed ℚ`. Use `haveI : CharZero Ω := algebraRat.charZero Ω`. Establish `hl : l.Prime` using `Fact.out`. Use function extensionality and compare the values at `u`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `AdicCompletion.ext` to reduce the goal to its premises. Introduce `n`. Use `set χ : ℤ_[l] := (cyclotomicCharacter Ω l s.toRingEquiv : ℤ_[l]) with hχ`. Take `⟨M0, hM0, hlev⟩` from `X.eval_kmap_levelRed l (b ![(mZl l (γ : Matrix (Fin 2) (Fin 2) ℤ) *ᵥ u) 0, χ * (mZl l (γ : Matrix (Fin 2) (Fin 2) ℤ) *ᵥ u) 1]) n`. Take `⟨M, hM, hNM, hlM, hlnM, hM0M⟩ : ∃ M : ℕ, 0 < M ∧ N ∣ M ∧ l ∣ M ∧ l ^ n ∣ M ∧ M0 ∣ M` from `⟨N * l * l ^ n * M0, Nat.mul_pos (Nat.mul_pos (Nat.mul_pos (by omega) hl.pos) (pow_pos hl.pos n)) hM0, ⟨l * l ^ n * M0, by ring⟩, ⟨N * l ^ n * M0, by ring⟩, ⟨N * l * M0, by ring⟩, ⟨N * l * l ^ n, by ring⟩⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `haveI : NeZero M := ⟨hM.ne'⟩`. Take `⟨ζ, hζ⟩` from `HasEnoughRootsOfUnity.exists_primitiveRoot Ω M`. Take `⟨e, he, heχ⟩` from `exists_int_exponent_cyclotomic l s n M hM hlnM`. Take `⟨e', he', -⟩` from `exists_int_exponent_cyclotomic l s.symm n M hM hlnM`. Establish `hee : (e : ZMod M) * e' = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : ζ ^ (e * e') = ζ`. Rewrite using `[_root_.zpow_mul, ← he ζ hζ, ← map_zpow₀, ← he' ζ hζ, AlgEquiv.apply_symm_apply]`. Establish `h0 : ζ ≠ 0` using `hζ.ne_zero hM.ne'`. Establish `h2 : ζ ^ (e * e' - 1) = 1` using `by rw [zpow_sub_one₀ h0, h1, mul_inv_cancel₀ h0]`. Establish `h3` using `(ZMod.intCast_eq_intCast_iff_dvd_sub 1 (e * e') M).2 ((hζ.zpow_eq_one_iff_dvd _).1 h2)`.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Move the coercions through the operations in `at h3`. Conclude with `h3.symm`. Take `⟨γ₁, hc⟩` from `exists_twist M e e' hee γ`. Establish `hpos : ∀ g : SL(2, ℤ), 0 < (g : Matrix (Fin 2) (Fin 2) ℤ).det` using `fun g => by rw [g.det_coe]; exact one_pos`. Establish `hact : X.act l (γ : Matrix (Fin 2) (Fin 2) ℤ) b = X.act l (γ₁ : Matrix (Fin 2) (Fin 2) ℤ) b` using `by conv_lhs => rw [← act_eq_self_of_mem_B X N l w hb (twist_mul_inv_mem hNM hlM hγ hc)]`.
-
-Rewrite using `[Tower.act_act Ω ε X l _ _ (hpos _) (hpos _), ← Matrix.SpecialLinearGroup.coe_mul, inv_mul_cancel_right]`. Rewrite using `[hact]`. Use `show AdicCompletion.eval (idl l) (X.Kl l) n (X.kmap l (X.gal s) (X.kmap l (X.sl (toGQ (γ₁ : Matrix (Fin 2) (Fin 2) ℤ))).toRingEquiv (b (mZl l (γ₁ : Matrix (Fin 2) (Fin 2) ℤ) *ᵥ ![u 0, χ * u 1])))) = AdicCompletion.eval (idl l) (X.Kl l) n (X.kmap l (X.sl (toGQ (γ : Matrix (Fin 2) …`. Rewrite using `[Tower.kmap_kmap, Tower.kmap_kmap, Betti.toGQ_sl, Betti.toGQ_sl, ← eval_kmap_congr X l _ n (X.B_sub_mem N l w b hb n _ _ (twist_vec hlnM heχ hc u))]`. Use `hlev _ _ fun f hf => ?_` and prove the remaining obligations.
-
-Conclude with `X.recip M f hM (fun g hg => hf g (LevelRed.gamma_le_of_dvd hM0M hg)) ζ hζ s e (he ζ hζ) γ₁ γ hc`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem galB_act_comm : ∀ {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (ε : Ω →+* ℂ) (X : Tower Ω ε), Function.Injective ε → (∃ φ : ℂ → ℂ, DifferentiableOn ℂ φ Hs ∧ X.an X.jK = (φ : Mero)) → ∀ (N l w : ℕ) [Fact l.Prime], l ≠ 2 → 5 ≤ N → Nat.Coprime N l → Odd w → ∀ (γ : SL(2, ℤ)), γ ∈ CongruenceSubgroup.Gamma0 N ⊓ CongruenceSubgroup.Gamma0 l → ∀ (s : Ω ≃ₐ[ℚ] Ω), ∀ b ∈ X.B N l w, X.galB l s (X.act l (γ : Matrix (Fin 2) (Fin 2) ℤ) b) = X.act l (γ : Matrix (Fin 2) (Fin 2) ℤ) (X.galB l s b) := by
   intro Ω _ _ _ ε X _ _ N l w _ _ hN _ _ γ hγ s b hb

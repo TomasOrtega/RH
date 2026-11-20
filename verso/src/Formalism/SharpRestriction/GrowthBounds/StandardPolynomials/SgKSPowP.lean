@@ -9,9 +9,9 @@ namespace Formalism.MainNotions.ColumnSystems.Pf
 open Formalism.MainNotions.G MvPolynomial
 
 /- English proof (translation)
-Establish `hmem : (segDists X.TT j).get i ∈ segDists X.TT j` using `List.get_mem _ _`. Establish `hlt : (segDists X.TT j).get i < segG X.TT j`. Generalize the expression as in `(segDists X.TT j).get i = x at hmem ⊢`. Unfold `segDists at hmem`. Rewrite `hmem` using `[Finset.mem_sort, Finset.mem_image]`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨s, hs, rfl⟩` from `hmem`. Conclude with `(Finset.mem_filter.mp hs).2.2.2`. Simplify using `only [Formalism.MainNotions.ColumnSystems.Loc.seg, SegData.P, segData]`. Rewrite using `[← pow_add, Nat.add_sub_cancel' hlt.le]`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pd_mul_P (X : Loc) (C0 CE1 CE2 : ℝ) (j : Fin (numSeg X.TT)) (i : Fin (segS X.TT j)) :
     X.p ^ (segDists X.TT j).get i * (X.seg C0 CE1 CE2 j).P X.p i = X.p ^ segG X.TT j := by
@@ -26,7 +26,7 @@ theorem pd_mul_P (X : Loc) (C0 CE1 CE2 : ℝ) (j : Fin (numSeg X.TT)) (i : Fin (
   rw [← pow_add, Nat.add_sub_cancel' hlt.le]
 
 /- English proof (translation)
-Unfold `sgKS`. Rewrite using `[mul_pow, ← pow_mul, pd_mul_P X C0 CE1 CE2 j i]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem sgKS_powP {X : Loc} {O : Type} [CommRing O] [IsDomain O] (C0 CE1 CE2 : ℝ) (j : Fin (numSeg X.TT))
     (i : Fin (segS X.TT j)) :

@@ -24,27 +24,25 @@ open GlobalTheory.SquareComm GlobalTheory.SquareAgree
 namespace GlobalTheory.SquareAgree.KerCptW
 
 /- English proof (translation)
-Introduce `hP D ψ θ W W₁ X A A₁ B α β ν 𝓕 ν₁ 𝓕₁ ωA ωB e Bs Γ Xc om om' cA cB hθ _ hO hTr Pi rf rl p p' hm k hk ΦD hΦD Φ Φ₁ hD hD1 hp`. Establish `hψ` using `hO.psi`. Substitute `hψ` using the available equality. Establish `hstd : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.IsStd Bs.ψ` using `hTr.base.std`. Set `Fn : ((Fin W.rank × Fin (W.rank + W₁.rank) → AF D.host.F) → ℂ) → WO W X → ℂ` to `fun Ψ z => GlobalTheory.WeilM.thetaSum D.host.F (Γ.M.co.rho Bs.ψ (cA.symm z) Ψ)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hFn : ∀ Ψ f, IsDatum Γ.M Bs.ψ cA Ψ f → f = Fn Ψ`. Introduce `Ψ f h`. Use function extensionality and compare the values at `z`. Establish `h1` using `h.2 (cA.symm z)`. Rewrite `h1` using `[AddEquiv.apply_symm_apply]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h1.symm`. Establish `hex : ∀ Ψ ∈ algD Γ.M Bs.ψ Bs.emb, IsDatum Γ.M Bs.ψ cA Ψ (Fn Ψ) ∧ Fn Ψ ∈ algF Bs.ψ θ true A B`. Introduce `Ψ hΨ`. Take `⟨f, hf, hd⟩` from `hO.algA' Ψ hΨ`. Take `rfl` from `hFn _ _ hd`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨hd, hf⟩`. Set `q₀ : (algD Γ.M Bs.ψ Bs.emb) →ₗ[ℂ] Pi` to `{ toFun := fun Ψ => p (Fn Ψ.1) map_add' := fun Ψ₁ Ψ₂ => by`. Establish `h` using `CoinvPass.isDatum_add hstd (hex _ Ψ₁.2).1 (hex _ Ψ₂.2).1`. Use `show p (Fn (Ψ₁.1 + Ψ₂.1)) = _`. Rewrite using `[← hFn _ _ h, map_add]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `map_smul' := fun c Ψ => by`. Establish `h` using `CoinvPass.isDatum_smul c (hex _ Ψ.2).1`. Use `show p (Fn (c • Ψ.1)) = _`. Rewrite using `[← hFn _ _ h, map_smul]`. Use `rfl }`.
+Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨Q, hQ⟩` from `q₀.exists_extend`. Establish `hQv : ∀ Ψ (h : Ψ ∈ algD Γ.M Bs.ψ Bs.emb), Q Ψ = p (Fn Ψ)` using `fun Ψ h => LinearMap.congr_fun hQ ⟨Ψ, h⟩`. Establish `key` using `GlobalTheory.T.hermitian_skew_model_good hP Bs Γ.M Xc.β (Xc.β / Xc.α) om hTr.base hTr.geo.hV hTr.geo.hW hTr.geo.hM hTr.weil Q ⊥ ?hyp k hk ΦD hΦD`. Take `⟨hmem, hker⟩` from `key`. Establish `h0 : Q ΦD ∈ (⊥ : Submodule ℂ Pi)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Treat this case separately.
 
-Rewrite using `[Submodule.mem_bot, hQv _ hΦD, ← hFn _ _ hD, hp]`. Establish `h2` using `hker h0`. Rewrite `h2` using `[Submodule.mem_bot, hQv _ hmem, ← hFn _ _ hD1]`. Conclude with `h2`. Use `case hyp =>`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Introduce `w Z γ hγ hw hw' m f f₁ φ hφ hf hact hN`. Establish `hmemS : ∀ g : Fin m → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.SInf D.host.F _, (∀ i, g i ∈ Γ.M.Pol Bs.ψ Bs.emb) → ∑ i, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure (g i) (φ i) ∈ algD Γ.M Bs.ψ Bs.emb` using `fun g hg => Submodule.sum_mem _ fun i _ => Submodule.subset_span ⟨g i, φ i, hg i, (hφ i).1, (hφ i).2, rfl⟩`. Establish `hΨ` using `hmemS f fun i => (hf i).1`. Establish `hΨ'` using `hmemS f₁ fun i => (hf i).2`. Take `⟨τ, Y, hY, hγY⟩` from `GlobalTheory.T.exists_lieGenerator_of_oneParameterSubgroup_realPlace D θ X hθ e Γ.W hO.JX Bs.emb w Z γ hγ hw hw'`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hder : IsDer θ X (fun h => ωA (1, h)) τ Y (Fn (∑ i, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure (f i) (φ i))) (Fn (∑ i, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure (f₁ i) (φ i)))`. Introduce `z`. Establish `hd` using `GlobalTheory.T.weil_model_standard_character hP Γ.M Bs.ψ _ _ om hTr.base.cm hstd hTr.geo.hM hTr.weil γ hγ m f f₁ φ hφ hact (cA.symm z)`. Use `hd.congr_of_eventuallyEq (Filter.Eventually.of_forall fun t => ?_)` and prove the remaining obligations. Establish `hw1` using `hO.weilA _ _ (hex _ hΨ).1 1 (oneP θ X τ Y t)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite `hw1` using `[GlobalTheory.LocWeilAct.conjU_one' W 1 hO.JW, ← hγY t]`. Use `hFn _ _ hw1` as an intermediate fact. Use `show ωA (1, oneP θ X τ Y t) (Fn _) z = _`. Rewrite using `[this]`. Establish `hpe` using `hm.mapA.eql τ Y hY _ (hex _ hΨ).2 _ (hex _ hΨ').2 hder`.
-
-Rewrite `hN`, the goal using `[Submodule.mem_bot]`. Rewrite the goal using `[hQv _ hΨ']`. Rewrite `hN` using `[hQv _ hΨ]`. Rewrite using `[hpe, hN, map_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kernel_maximalCompact_stable : GlobalTheory.FunPr.Hypotheses₂ → ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (W W₁ X : HSp D) (A : Fr W) (A₁ : Fr W₁)
     (B : Fr X) (α β : (AE D)ˣ →* Circle) (ν : Measure (GA D W)) (𝓕 : Set (GA D W)) (ν₁ : Measure (GA D W₁))

@@ -28,7 +28,7 @@ Both sides reduce to the same expression.
 theorem imL_apply (V : Mn n) : imL V = imaginary V := rfl
 
 /- English proof (translation)
-Establish `h1 : ContDiff ℝ ⊤ (fun V : Mn n => (1 : Mn n) + imaginary V)` using `contDiff_const.add imL.contDiff`. Unfold `fM`. Use `reL.contDiff.add (ContDiff.const_smul _ ?_)` and prove the remaining obligations. Conclude with `contDiff_mul' (contDiff_mul' (contDiff_mul' contDiff_const h1) h1) contDiff_const`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem contDiff_fM (a0 : Mn n) : ContDiff ℝ ⊤ (fM a0) := by
   have h1 : ContDiff ℝ ⊤ (fun V : Mn n => (1 : Mn n) + imaginary V) := contDiff_const.add imL.contDiff
@@ -37,9 +37,9 @@ theorem contDiff_fM (a0 : Mn n) : ContDiff ℝ ⊤ (fM a0) := by
   exact contDiff_mul' (contDiff_mul' (contDiff_mul' contDiff_const h1) h1) contDiff_const
 
 /- English proof (translation)
-Establish `hr : reP (V0 + t • dV) = V0 + t • reP dV`. Rewrite using `[← reL_apply, map_add, map_smul, reL_apply, reL_apply, reP_of_herm h0]`. Establish `hi : imaginary (V0 + t • dV) = t • imaginary dV`. Rewrite using `[← imL_apply, map_add, map_smul, imL_apply, imL_apply, imaginaryPart_of_isHermitian h0, zero_add]`. Unfold `fM`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[hr, hi]`. Simplify using `only [Matrix.mul_add, Matrix.add_mul, Matrix.mul_one, Matrix.mul_smul, Matrix.smul_mul, smul_add, smul_smul]`. Use `module`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem fM_line (a0 V0 dV : Mn n) (h0 : V0ᴴ = V0) (t : ℝ) :
     fM a0 (V0 + t • dV) = (V0 + Complex.I • (a0 * a0ᴴ)) +
@@ -56,13 +56,11 @@ theorem fM_line (a0 V0 dV : Mn n) (h0 : V0ᴴ = V0) (t : ℝ) :
   module
 
 /- English proof (translation)
-Establish `hd : DifferentiableAt ℝ (fM a0) V0` using `((contDiff_fM a0).differentiable (by simp)).differentiableAt`. Establish `hl` using `((hasDerivAt_id' (𝕜 := ℝ) (x := (0 : ℝ))).smul_const dV).const_add V0`. Rewrite `hl` using `[one_smul]`. Establish `hd' : HasFDerivAt (fM a0) (fderiv ℝ (fM a0) V0) (V0 + (0 : ℝ) • dV)`. Rewrite using `[zero_smul, add_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hd.hasFDerivAt`. Establish `hc` using `hd'.comp_hasDerivAt (0 : ℝ) hl`. Establish `h1` using `(hasDerivAt_id' (𝕜 := ℝ) (x := (0 : ℝ))).smul_const (reP dV + Complex.I • (a0 * ((2 : ℂ) • imaginary dV) * a0ᴴ))`. Establish `h2` using `((hasDerivAt_id' (𝕜 := ℝ) (x := (0 : ℝ))).pow 2).smul_const (Complex.I • (a0 * imaginary dV * imaginary dV * a0ᴴ))`. Establish `h3` using `((hasDerivAt_const (0 : ℝ) (V0 + Complex.I • (a0 * a0ᴴ))).add h1).add h2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [one_smul, zero_add] at h3`. Establish `h4 : HasDerivAt (fun t : ℝ => fM a0 (V0 + t • dV)) (reP dV + Complex.I • (a0 * ((2 : ℂ) • imaginary dV) * a0ᴴ)) 0`. Use `(h3.congr_of_eventuallyEq (Filter.Eventually.of_forall fun t => ?_)).congr_deriv ?_` and prove the remaining obligations. Simplify using `only [fM_line a0 V0 dV h0 t, Pi.add_apply, Pi.pow_apply]`. Evaluate the numerical expressions.
-
-Conclude with `hc.unique h4`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Evaluate the numerical expressions. A detailed English derivation is pending.
 -/
 theorem fderiv_fM (a0 V0 dV : Mn n) (h0 : V0ᴴ = V0) :
     fderiv ℝ (fM a0) V0 dV = reP dV + Complex.I • (a0 * ((2 : ℂ) • imaginary dV) * a0ᴴ) := by
@@ -84,11 +82,11 @@ theorem fderiv_fM (a0 V0 dV : Mn n) (h0 : V0ᴴ = V0) :
   exact hc.unique h4
 
 /- English proof (translation)
-Establish `hc : H1 - Complex.I • H2 = 0`. Use `congrArg conjTranspose h` as an intermediate fact. Rewrite `this` using `[conjTranspose_add, conjTranspose_smul, h1, h2, conjTranspose_zero]`. Rewrite using `[sub_eq_add_neg, ← neg_smul]`. Simplify using `using this`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h2H1 : H1 + H1 = 0`. Combine the equalities or inequalities in the displayed calculation. Establish `hH1 : H1 = 0`. Establish `: (2 : ℂ) • H1 = 0` using `by rw [two_smul]; exact h2H1`. Conclude with `(smul_eq_zero.mp this).resolve_left two_ne_zero`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨hH1, ?_⟩` and prove the remaining obligations. Rewrite `h` using `[hH1, zero_add]`. Conclude with `(smul_eq_zero.mp h).resolve_left Complex.I_ne_zero`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem herm_zero_of (H1 H2 : Mn n) (h1 : H1ᴴ = H1) (h2 : H2ᴴ = H2) (h : H1 + Complex.I • H2 = 0) :
     H1 = 0 ∧ H2 = 0 := by
@@ -108,11 +106,11 @@ theorem herm_zero_of (H1 H2 : Mn n) (h1 : H1ᴴ = H1) (h2 : H2ᴴ = H2) (h : H1 
   exact (smul_eq_zero.mp h).resolve_left Complex.I_ne_zero
 
 /- English proof (translation)
-Use `(injective_iff_map_eq_zero (fderiv ℝ (fM a0) V0)).2 fun dV hdV => ?_` and prove the remaining obligations. Rewrite `hdV` using `[fderiv_fM a0 V0 dV h0]`. Establish `hH2 : (a0 * ((2 : ℂ) • imaginary dV) * a0ᴴ)ᴴ = a0 * ((2 : ℂ) • imaginary dV) * a0ᴴ`. Rewrite using `[conjTranspose_mul, conjTranspose_mul, conjTranspose_conjTranspose, conjTranspose_smul, imaginaryPart_isHermitian, Matrix.mul_assoc]`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Take `⟨hr, hi⟩` from `herm_zero_of _ _ (reP_herm dV) hH2 hdV`. Establish `hu : IsUnit a0.det` using `isUnit_iff_ne_zero.mpr ha`. Establish `huH : IsUnit a0ᴴ.det` using `by rw [det_conjTranspose]; exact (isUnit_iff_ne_zero.mpr ha).star`. Establish `hB : (2 : ℂ) • imaginary dV = 0`. Use `congrArg (fun M => a0⁻¹ * M * (a0ᴴ)⁻¹) hi` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Matrix.mul_zero, Matrix.zero_mul] at this`. Rewrite using `[← this, Matrix.mul_assoc, Matrix.mul_assoc, Matrix.mul_nonsing_inv _ huH, Matrix.mul_one, ← Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hu, Matrix.one_mul]`. Establish `hB' : imaginary dV = 0` using `(smul_eq_zero.mp hB).resolve_left two_ne_zero`. Rewrite using `[← reP_add_imP dV, hr, hB', smul_zero, add_zero]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem fderiv_fM_inj (a0 V0 : Mn n) (h0 : V0ᴴ = V0) (ha : a0.det ≠ 0) :
     Function.Injective (fderiv ℝ (fM a0) V0) := by

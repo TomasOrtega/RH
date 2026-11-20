@@ -28,7 +28,7 @@ def indefiniteDataAtBaseLevel (hR : ComplexDataConditionsBaseLevel A3 P0 ψ0 P1 
       hR.partsW hR.dimParts)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hR.stable, hR.inBlock⟩`.
+Supply the required witnesses or components.
 -/
 theorem subspaces_stable_in_block (hR : ComplexDataConditionsBaseLevel A3 P0 ψ0 P1 ψ1 Dc Sp Zsc X s C0 hE hW gE gW) : X.zs.Stable ∧ X.zs.InBlock :=
   ⟨hR.stable, hR.inBlock⟩

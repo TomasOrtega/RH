@@ -17,55 +17,49 @@ namespace GlobalTheory.Core.Rk.HaarStep
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `D A L hL m hm Sf v hv μ hμ hK S' hS' F hF`. Use `haveI : Submodule.IsLattice D.host.E L := hL.1`. Establish `hne : ∀ u, u ∉ S' → u ≠ v` using `fun u hu h => hu ((hS' u).2 (Or.inl h))`. Establish `memU : ∀ x, x ∈ openOff A L Sf ↔ x ∈ openOff A L S' ∧ proj D.sp.cm.sig A.gram v x ∈ stabLoc D.sp.cm.sig A.gram L v`. Introduce `x`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `⟨fun u hu => h u (fun hu' => hu ((hS' u).2 (Or.inr hu'))), h v hv⟩`. Introduce and unpack `⟨h1, h2⟩ u hu`. Distinguish the cases in `e : u = v`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Substitute `e` using the available equality. Conclude with `h2`. Conclude with `h1 u (fun h => by rcases (hS' u).1 h with h | h; exact e h; exact hu h)`. Establish `memV : ∀ (y : Gv A v) (x : GA D A), emb D.sp.cm.sig A.gram v y * x ∈ openOff A L S' ↔ x ∈ openOff A L S'`. Introduce `y x`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `forall_congr' fun u => imp_congr_right fun hu => ?_` and prove the remaining obligations. Rewrite using `[map_mul, proj_emb_ne _ _ (hne u hu), one_mul]`. Establish `isOpen_off : ∀ S : Finset (FinPl D), IsOpen (openOff A L S)`. Introduce `S`. Set `H : Subgroup (GA D A)` to `⨅ u, ⨅ (_ : u ∉ S), (stabLoc D.sp.cm.sig A.gram L u).comap (proj D.sp.cm.sig A.gram u)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Establish `eH : (H : Set (GA D A)) = openOff A L S`. Use extensionality with `g`. Simplify using `[H, openOff, Subgroup.mem_iInf]`. Rewrite using `[← eH]`. Use `Subgroup.isOpen_mono (H₁ := levelOpen D.sp.cm.sig A.gram L) ?_ (isOpen_levelOpen _ _ L)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `g hg`. Simplify using `only [H, Subgroup.mem_iInf, Subgroup.mem_comap]`. Introduce `u _`. Conclude with `(mem_levelOpen.1 hg) u`. Establish `hUm : MeasurableSet (openOff A L Sf)` using `(isOpen_off Sf).measurableSet`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hVm : MeasurableSet (openOff A L S')` using `(isOpen_off S').measurableSet`. Establish `hKo : IsOpen (stabLoc D.sp.cm.sig A.gram L v : Set (Gv A v))` using `isOpen_stabLoc _ _ L v`. Establish `hright : ∀ k ∈ stabLoc D.sp.cm.sig A.gram L v, μ.map (fun y => y * k) = μ`. Introduce `k hk`. Rewrite using `[GlobalTheory.AdelicUnimod.map_mul_right_eq, GlobalTheory.AdelicUnimod.modular_compact _ hKo (isCompact_stabLoc _ _ L v) hk, one_smul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `step1 : ∀ x ∈ openOff A L Sf, ∫ y, F (x * (emb D.sp.cm.sig A.gram v (proj D.sp.cm.sig A.gram v x))⁻¹ * emb D.sp.cm.sig A.gram v y) ∂μ = ∫ y, F (emb D.sp.cm.sig A.gram v y * x) ∂μ`. Introduce `x hx`. Establish `hkK : proj D.sp.cm.sig A.gram v x ∈ stabLoc D.sp.cm.sig A.gram L v` using `hx v hv`. Use `set k := proj D.sp.cm.sig A.gram v x with hk`. Use `set x' := x * (emb D.sp.cm.sig A.gram v k)⁻¹ with hx'`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hx'1 : proj D.sp.cm.sig A.gram v x' = 1`. Rewrite using `[hx', map_mul, map_inv, proj_emb_self, mul_inv_cancel]`. Establish `hxx : x = x' * emb D.sp.cm.sig A.gram v k` using `by rw [hx', inv_mul_cancel_right]`. Establish `e : ∀ y, emb D.sp.cm.sig A.gram v y * x = x' * emb D.sp.cm.sig A.gram v (y * k)`. Introduce `y`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc` using `(commute_emb D.sp.cm.sig A.gram y hx'1).eq`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_assoc, ← hxx]`. Use `_ = x' * emb D.sp.cm.sig A.gram v y * emb D.sp.cm.sig A.gram v k := by rw [hc]`. Use `_ = x' * emb D.sp.cm.sig A.gram v (y * k) := by rw [map_mul, mul_assoc]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Repeatedly rewrite using `[e]`. Establish `h` using `integral_map_equiv (μ := μ) (MeasurableEquiv.mulRight k) (fun y => F (x' * emb D.sp.cm.sig A.gram v y))`. Establish `hm' : Measure.map (MeasurableEquiv.mulRight k) μ = μ` using `hright k hkK`. Rewrite `h` using `[hm']`. Conclude with `h`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[setIntegral_congr_fun hUm step1]`. Establish `hec : Continuous (emb D.sp.cm.sig A.gram v)` using `continuous_emb _ _ v`. Establish `hpc : Continuous (proj D.sp.cm.sig A.gram v)` using `continuous_proj _ _ v`. Set `Q : Set (GA D A × Gv A v)` to `{q | (proj D.sp.cm.sig A.gram v q.1)⁻¹ * q.2 ∈ stabLoc D.sp.cm.sig A.gram L v}`. Establish `hQo : IsOpen Q` using `hKo.preimage (((hpc.comp continuous_fst).inv).mul continuous_snd)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Set `f₂ : GA D A × Gv A v → ℂ` to `Q.indicator (fun q => (openOff A L S').indicator F q.1)`. Set `T : GA D A × Gv A v → GA D A × Gv A v` to `fun p => (emb D.sp.cm.sig A.gram v p.2 * p.1, p.2)`. Establish `hT : MeasurePreserving T (m.prod μ) (m.prod μ)`. Establish `h1 : MeasurePreserving (fun p : Gv A v × GA D A => (p.1, emb D.sp.cm.sig A.gram v p.1 * p.2)) (μ.prod m) (μ.prod m)` using `MeasurePreserving.skew_product (MeasurePreserving.id μ) ((hec.comp continuous_fst).mul continuous_snd).measurable (Filter.Eventually.of_forall fun y => map_mul_left_eq_self m (emb D.sp.cm.sig A.gram v y))`. Establish `h2 : MeasurePreserving (Prod.swap : GA D A × Gv A v → Gv A v × GA D A) (m.prod μ) (μ.prod m)` using `Measure.measurePreserving_swap`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h3 : MeasurePreserving (Prod.swap : Gv A v × GA D A → GA D A × Gv A v) (μ.prod m) (m.prod μ)` using `Measure.measurePreserving_swap`. Establish `h4` using `(h3.comp h1).comp h2`. Establish `e : T = (Prod.swap ∘ (fun p : Gv A v × GA D A => (p.1, emb D.sp.cm.sig A.gram v p.1 * p.2))) ∘ Prod.swap`. Use function extensionality and compare the values at `p`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression.
 
-Rewrite using `[e]`. Conclude with `h4`. Establish `hCm : ∀ a : Gv A v, MeasurableSet {y : Gv A v | a⁻¹ * y ∈ stabLoc D.sp.cm.sig A.gram L v}` using `fun a => (hKo.preimage (continuous_const.mul continuous_id)).measurableSet`. Establish `hμC : ∀ a : Gv A v, μ {y : Gv A v | a⁻¹ * y ∈ stabLoc D.sp.cm.sig A.gram L v} = 1`. Introduce `a`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hK]`. Conclude with `measure_preimage_mul μ a⁻¹ _`. Establish `slice : ∀ w, (fun y => f₂ (w, y)) = {y : Gv A v | (proj D.sp.cm.sig A.gram v w)⁻¹ * y ∈ stabLoc D.sp.cm.sig A.gram L v}.indicator (fun _ => (openOff A L S').indicator F w)`. Introduce `w`. Use function extensionality and compare the values at `y`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Both sides reduce to the same expression. Establish `hFV : Integrable ((openOff A L S').indicator F) m` using `(integrable_indicator_iff hVm).2 hF`. Establish `hf₂m : AEStronglyMeasurable f₂ (m.prod μ)` using `(hFV.aestronglyMeasurable.comp_fst).indicator hQo.measurableSet`. Establish `inner : ∀ w, ∫ y, f₂ (w, y) ∂μ = (openOff A L S').indicator F w`. Introduce `w`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[slice w, integral_indicator_const _ (hCm _), Measure.real, hμC, ENNReal.toReal_one, one_smul]`. Establish `innerN : ∀ w, ∫ y, ‖f₂ (w, y)‖ ∂μ = ‖(openOff A L S').indicator F w‖`. Introduce `w`. Establish `: (fun y => ‖f₂ (w, y)‖) = {y : Gv A v | (proj D.sp.cm.sig A.gram v w)⁻¹ * y ∈ stabLoc D.sp.cm.sig A.gram L v}.indicator (fun _ => ‖(openOff A L S').indicator F w‖)`. Rewrite using `[show (fun y => ‖f₂ (w, y)‖) = fun y => ‖(fun y => f₂ (w, y)) y‖ from rfl, slice w]`.
+Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `y`. Conclude with `norm_indicator_eq_indicator_norm _ y`. Rewrite using `[this, integral_indicator_const _ (hCm _), Measure.real, hμC, ENNReal.toReal_one, one_smul]`. Establish `hf₂ : Integrable f₂ (m.prod μ)`. Use `(integrable_prod_iff hf₂m).2 ⟨Filter.Eventually.of_forall fun w => ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[slice w]`. Use `(integrable_indicator_iff (hCm _)).2 ?_` and prove the remaining obligations. Use `haveI : IsFiniteMeasure (μ.restrict {y : Gv A v | (proj D.sp.cm.sig A.gram v w)⁻¹ * y ∈ stabLoc D.sp.cm.sig A.gram L v}) := isFiniteMeasure_restrict.2 (by rw [hμC]; exact ENNReal.one_ne_top)`. Conclude with `integrable_const _`. Repeatedly rewrite using `[innerN]`.
+Consider separately whether the proposition holds or fails. Rewrite the hypotheses and the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hFV.norm`. Establish `hf₁ : Integrable (f₂ ∘ T) (m.prod μ)` using `(hT.integrable_comp hf₂m).2 hf₂`. Establish `hI : ∫ p, f₂ (T p) ∂(m.prod μ) = ∫ p, f₂ p ∂(m.prod μ)`. Rewrite using `[← integral_map hT.measurable.aemeasurable (by rw [hT.map_eq]; exact hf₂m), hT.map_eq]`. Establish `hT1 : ∀ x y, f₂ (T (x, y)) = (openOff A L Sf).indicator (fun x => F (emb D.sp.cm.sig A.gram v y * x)) x`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion repeatedly using the stated equalities.
 
-Introduce `x y`. Establish `hp : (proj D.sp.cm.sig A.gram v (emb D.sp.cm.sig A.gram v y * x))⁻¹ * y = (proj D.sp.cm.sig A.gram v x)⁻¹`. Rewrite using `[map_mul, proj_emb_self, mul_inv_rev, mul_assoc, inv_mul_cancel, mul_one]`. Establish `hmem : T (x, y) ∈ Q ↔ proj D.sp.cm.sig A.gram v x ∈ stabLoc D.sp.cm.sig A.gram L v` using `by show (proj D.sp.cm.sig A.gram v (emb D.sp.cm.sig A.gram v y * x))⁻¹ * y ∈ stabLoc D.sp.cm.sig A.gram L v ↔ _`. Rewrite using `[hp, inv_mem_iff]`.
-
-Distinguish the cases in `h2 : proj D.sp.cm.sig A.gram v x ∈ stabLoc D.sp.cm.sig A.gram L v`. Rewrite using `[show f₂ (T (x, y)) = (openOff A L S').indicator F (emb D.sp.cm.sig A.gram v y * x) from Set.indicator_of_mem (hmem.2 h2) _]`. Distinguish the cases in `h1 : x ∈ openOff A L S'`. Rewrite using `[Set.indicator_of_mem ((memV y x).2 h1), Set.indicator_of_mem ((memU x).2 ⟨h1, h2⟩)]`. Rewrite using `[Set.indicator_of_notMem (mt (memV y x).1 h1), Set.indicator_of_notMem (fun h => h1 ((memU x).1 h).1)]`.
-
-Rewrite using `[show f₂ (T (x, y)) = 0 from Set.indicator_of_notMem (mt hmem.1 h2) _, Set.indicator_of_notMem (fun h => h2 ((memU x).1 h).2)]`. Combine the equalities or inequalities in the displayed calculation. Use `congr 1`. Use function extensionality and compare the values at `x`. Repeatedly rewrite using `[hT1]`.
-
-Apply the tactic sequence `by_cases h : x ∈ openOff A L Sf <;> simp [h]`. Use `_ = ∫ x in openOff A L Sf, ∫ y, F (emb D.sp.cm.sig A.gram v y * x) ∂μ ∂m := integral_indicator hUm`.
+Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem integral_openOff_insert : ∀ (D : D7) (A : HSp D) (L : Lat A), IsSelfDualC A L → ∀ (m : Measure (GA D A)), m.IsHaarMeasure → ∀ (Sf : Finset (FinPl D)) (v : FinPl D), v ∉ Sf → ∀ μ : Measure (Gv A v), μ.IsHaarMeasure → μ (stabLoc D.sp.cm.sig A.gram L v) = 1 → ∀ (S' : Finset (FinPl D)), (∀ u, u ∈ S' ↔ u = v ∨ u ∈ Sf) → ∀ F : GA D A → ℂ, IntegrableOn F (openOff A L S') m → ∫ g in openOff A L S', F g ∂m = ∫ x in openOff A L Sf, (∫ y, F (x * (emb D.sp.cm.sig A.gram v (proj D.sp.cm.sig A.gram v x))⁻¹ * emb D.sp.cm.sig A.gram v y) ∂μ) ∂m := by
   intro D A L hL m hm Sf v hv μ hμ hK S' hS' F hF

@@ -12,15 +12,15 @@ noncomputable def form (P : Finset α) (k : α → α → ℂ) (U V : α → H) 
   ∑ p ∈ P, ∑ p' ∈ P, k p p' * ⟪U p, V p'⟫_ℂ
 
 /- English proof (translation)
-Set `S : Submodule ℂ H` to `Submodule.span ℂ (V '' (P : Set α))`. Establish `: FiniteDimensional ℂ S` using `FiniteDimensional.span_of_finite ℂ (P.finite_toSet.image V)`. Set `b` to `stdOrthonormalBasis ℂ S`. Establish `hmem : ∀ p ∈ P, V p ∈ S` using `fun p hp => Submodule.subset_span ⟨p, hp, rfl⟩`. Set `a : Fin (Module.finrank ℂ S) → α → ℂ` to `fun i p => ⟪((b i : S) : H), V p⟫_ℂ`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hin : ∀ p ∈ P, ∀ p' ∈ P, ⟪V p, V p'⟫_ℂ = ∑ i, conj (a i p) * a i p'`. Introduce `p hp p' hp'`. Establish `h` using `b.sum_inner_mul_inner ⟨V p, hmem p hp⟩ ⟨V p', hmem p' hp'⟩`. Simplify using `only [Submodule.coe_inner] at h`. Rewrite using `[← h]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [a, inner_conj_symm]`. Establish `e : form P k V V = ∑ i, ∑ p ∈ P, ∑ p' ∈ P, conj (a i p) * k p p' * a i p'`. Unfold `form`. Use `symm`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Replace the relevant objects with their definitions. Use symmetry to reverse the relation.
 
-Rewrite using `[Finset.sum_comm]`. Use `sum_congr rfl fun p hp => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`. Use `sum_congr rfl fun p' hp' => ?_` and prove the remaining obligations. Rewrite using `[hin p hp p' hp', mul_sum]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `sum_congr rfl fun i _ => by ring`. Rewrite using `[e, Complex.re_sum]`. Conclude with `sum_nonneg fun i _ => hk.2 (a i)`. Use the proof step `@[instance_reducible]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma form_self_nonneg (P : Finset α) (k : α → α → ℂ) (hk : PSDOn P k) (V : α → H) :
     0 ≤ (form P k V V).re := by
@@ -67,7 +67,7 @@ noncomputable def core (P : Finset α) (k : α → α → ℂ) (hk : PSDOn P k) 
     exact sum_congr rfl fun p _ => sum_congr rfl fun p' _ => by ring
 
 /- English proof (translation)
-Set `c : PreInnerProductSpace.Core ℂ (α → H)` to `core P k hk`. Set `_ : SeminormedAddCommGroup (α → H)` to `@InnerProductSpace.Core.toSeminormedAddCommGroup ℂ (α → H) _ _ _ c`. Conclude with `norm_sum_le T U`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 lemma sqrt_form_sum_le (P : Finset α) (k : α → α → ℂ) (hk : PSDOn P k) {ι : Type} (T : Finset ι)
     (U : ι → α → H) :
@@ -86,15 +86,15 @@ def ls (p : Pt E) : ℕ := (p.getLast?.map Prod.fst).getD 0
 
 omit [DecidableEq E] in
 /- English proof (translation)
-Simplify using `[ls, Formalism.FourierDecayAlt.TA.ext]`.
+Simplify using the standard rewrite rules.
 -/
 lemma ls_ext (h : Pt E) (s : ℕ) (t : E) : ls (Formalism.FourierDecayAlt.TA.ext h s t) = s := by
   simp [ls, Formalism.FourierDecayAlt.TA.ext]
 
 /- English proof (translation)
-Rewrite using `[PT]`. Simplify using `only [mem_biUnion, mem_attach, true_and, mem_image, Subtype.exists, mem_range]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨m, hm, h, hh, t, ht, rfl⟩`. Conclude with `⟨m, hm, h, hh, t, ht, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `⟨m, hm, h, hh, t, ht, rfl⟩`. Conclude with `⟨m, hm, h, hh, t, ht, rfl⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 lemma mem_PT_succ (Sg : ℕ → ℕ → Finset E) (n : ℕ) (p : Pt E) :
     p ∈ PT Sg (n + 1) ↔ ∃ m, m < n + 1 ∧ ∃ h ∈ PT Sg m, ∃ t ∈ Sg (n + 1) (n + 1 - m),
@@ -106,7 +106,7 @@ lemma mem_PT_succ (Sg : ℕ → ℕ → Finset E) (n : ℕ) (p : Pt E) :
   · rintro ⟨m, hm, h, hh, t, ht, rfl⟩; exact ⟨m, hm, h, hh, t, ht, rfl⟩
 
 /- English proof (translation)
-Take `⟨n, rfl⟩ : ∃ n, i = n + 1` from `⟨i - 1, by omega⟩`. Take `⟨m, hm, h, _, t, _, rfl⟩` from `(mem_PT_succ Sg n p).1 hp`. Rewrite using `[ls_ext, mem_Icc]`. Use linear arithmetic over natural numbers and integers.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 lemma ls_mem_Icc (Sg : ℕ → ℕ → Finset E) (i : ℕ) (hi : 1 ≤ i) (p : Pt E) (hp : p ∈ PT Sg i) :
     ls p ∈ Icc 1 i := by
@@ -115,11 +115,11 @@ lemma ls_mem_Icc (Sg : ℕ → ℕ → Finset E) (i : ℕ) (hi : 1 ≤ i) (p : P
   rw [ls_ext, mem_Icc]; omega
 
 /- English proof (translation)
-Take `⟨n, rfl⟩ : ∃ n, i = n + 1` from `⟨i - 1, by omega⟩`. Use extensionality with `p`. Simplify using `only [mem_filter, mem_PT_succ, mem_image, mem_product, Prod.exists]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨m, hm, h, hh, t, ht, rfl⟩, hls⟩`.
+Extract witnesses or component facts from the available result. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Rewrite `hls` using `[ls_ext]`. Substitute `hls` using the available equality. Establish `e : n + 1 - (n + 1 - m) = m` using `by omega`. Conclude with `⟨h, t, ⟨by rwa [e], ht⟩, rfl⟩`. Introduce and unpack `⟨h, t, ⟨hh, ht⟩, rfl⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Establish an intermediate fact. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Establish `e : n + 1 - (n + 1 - s) = s` using `by omega`. Conclude with `⟨⟨n + 1 - s, by omega, h, hh, t, by rwa [e], by rw [e]⟩, ls_ext _ _ _⟩`.
+Establish an intermediate fact. Supply the required witnesses or components.
 -/
 lemma filter_PT (Sg : ℕ → ℕ → Finset E) (i s : ℕ) (hs : 1 ≤ s) (hsi : s ≤ i) :
     (PT Sg i).filter (fun p => ls p = s) =
@@ -138,9 +138,9 @@ lemma filter_PT (Sg : ℕ → ℕ → Finset E) (i s : ℕ) (hs : 1 ≤ s) (hsi 
     exact ⟨⟨n + 1 - s, by omega, h, hh, t, by rwa [e], by rw [e]⟩, ls_ext _ _ _⟩
 
 /- English proof (translation)
-Rewrite using `[← sum_filter, filter_PT Sg i s hs hsi, sum_image, sum_product_right]`. Introduce and unpack `⟨h, t⟩ _ ⟨h', t'⟩ _ hxy`. Simplify using `only [Formalism.FourierDecayAlt.TA.ext] at hxy`. Use `List.append_inj' hxy rfl` as an intermediate fact. Simplify using `only [List.cons.injEq, Prod.mk.injEq, true_and, and_true] at this`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `Prod.ext this.1 this.2`.
+A detailed English derivation is pending.
 -/
 lemma sum_PT_ls {M : Type} [AddCommMonoid M] (Sg : ℕ → ℕ → Finset E) (i s : ℕ) (hs : 1 ≤ s)
     (hsi : s ≤ i) (F : Pt E → M) :
@@ -156,13 +156,13 @@ lemma sum_PT_ls {M : Type} [AddCommMonoid M] (Sg : ℕ → ℕ → Finset E) (i 
 end points
 
 /- English proof (translation)
-Introduce `n`. Proceed by induction on `n using Nat.strong_induction_on with`. Consider the case `_ n ih`. Introduce `p hp`. Consider the cases of `n with`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data.
 
-Consider the case `zero`. Simplify using `[PT] at hp; subst hp; exact ⟨by simp [lvl], by simp⟩`. Consider the case `succ n`. Take `⟨m, hm, h, hh, t, ht, rfl⟩` from `(mem_PT_succ Sg n p).1 hp`. Establish `h0` using `ih m (by omega) h hh`.
+Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `h0.1` as an intermediate fact. Simplify using `only [lvl] at this`. Simplify using `[lvl, Formalism.FourierDecayAlt.TA.ext, this]`. Use linear arithmetic over natural numbers and integers.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Introduce `b hb`. Simplify using `only [Formalism.FourierDecayAlt.TA.ext, List.mem_append, List.mem_singleton] at hb`. Break down `hb with hb | rfl` into its components or cases. Conclude with `h0.2 b hb`. Conclude with `⟨by simp; omega, hNZ _ _ t ht⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isPt_PT {E : Type} [Field E] [DecidableEq E] (Sg : ℕ → ℕ → Finset E) (hNZ : NZSg Sg) :
     ∀ n p, p ∈ PT Sg n → IsPt n p := by
@@ -194,21 +194,21 @@ open Formalism.FourierDecayAlt.TA Finset Filter Topology TA1
 open scoped InnerProductSpace ComplexConjugate
 
 /- English proof (translation)
-Introduce `E _ _ H _ _ W D Sg Φ w i _ hi hK`. Set `U : ℕ → Pt E → H` to `fun s p => if ls p = s then Φ w p else 0`. Establish `h1 : Slev D Sg Φ w i = (form (PT Sg i) (D.K i) (∑ s ∈ Icc 1 i, U s) (∑ s ∈ Icc 1 i, U s)).re`. Establish `hU : ∀ p ∈ PT Sg i, (∑ s ∈ Icc 1 i, U s) p = Φ w p`. Introduce `p hp`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Finset.sum_apply]`. Simplify using `only [U]`. Rewrite using `[sum_ite_eq, if_pos (ls_mem_Icc Sg i hi p hp)]`. Unfold `Slev gram form`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments.
 
-Use `sum_congr rfl fun p hp => sum_congr rfl fun p' hp' => ?_` and prove the remaining obligations. Rewrite using `[hU p hp, hU p' hp']`. Establish `h2 : ∀ s ∈ Icc 1 i, Ssplit D Sg Φ w i s = (form (PT Sg i) (D.K i) (U s) (U s)).re`. Introduce `s hs`. Take `⟨hs1, hsi⟩` from `mem_Icc.1 hs`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `e : form (PT Sg i) (D.K i) (U s) (U s) = ∑ p ∈ PT Sg i, if ls p = s then (∑ p' ∈ PT Sg i, if ls p' = s then D.K i p p' * ⟪Φ w p, Φ w p'⟫_ℂ else 0) else 0`. Unfold `form`. Use `sum_congr rfl fun p _ => ?_` and prove the remaining obligations. Distinguish the cases in `hp : ls p = s`. Rewrite using `[if_pos hp]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Use `sum_congr rfl fun p' _ => ?_` and prove the remaining obligations. Distinguish the cases in `hp' : ls p' = s`. Simplify using `only [U, if_pos hp, if_pos hp']`. Simplify using `only [U, if_neg hp', inner_zero_right, mul_zero]`. Rewrite using `[if_neg hp]`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `sum_eq_zero fun p' _ => ?_` and prove the remaining obligations. Simplify using `only [U, if_neg hp, inner_zero_left, mul_zero]`. Rewrite using `[e, sum_PT_ls Sg i s hs1 hsi]`. Unfold `Ssplit Nst offK`. Use `congr 1`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments.
 
-Use `sum_congr rfl fun t _ => ?_` and prove the remaining obligations. Rewrite using `[sum_comm]`. Use `sum_congr rfl fun h _ => ?_` and prove the remaining obligations. Rewrite using `[sum_PT_ls Sg i s hs1 hsi]`. Rewrite using `[h1]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `(sqrt_form_sum_le (PT Sg i) (D.K i) hK (Icc 1 i) U).trans (le_of_eq ?_)` and prove the remaining obligations. Conclude with `sum_congr rfl fun s hs => by rw [h2 s hs]`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem split_last_block : Formalism.FourierDecayAlt.TA.SplitLast := by
   intro E _ _ H _ _ W D Sg Φ w i _ hi hK
@@ -253,11 +253,11 @@ theorem split_last_block : Formalism.FourierDecayAlt.TA.SplitLast := by
   exact sum_congr rfl fun s hs => by rw [h2 s hs]
 
 /- English proof (translation)
-Introduce `E _ _ H _ _ W D Sg Φ w hNZ hA2`. Unfold `Ssplit Diag`. Rewrite using `[Complex.re_sum]`. Use `Finset.sum_congr rfl fun t ht => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_eq_single t]`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `t' ht' hne`. Unfold `Nst`. Use `Finset.sum_eq_zero fun h hh => Finset.sum_eq_zero fun h' hh' => ?_` and prove the remaining obligations. Use `hA2 (D.r + 1) 1 le_rfl (by omega) le_rfl h h' t t' (isPt_PT Sg hNZ _ h hh) (isPt_PT Sg hNZ _ h' hh') (hNZ _ _ t ht) (hNZ _ _ t' ht') (Or.inr ⟨rfl, rfl, fun e => hne e.symm⟩)` as an intermediate fact. Simplify using `[offK, this]`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Introduce `h`. Conclude with `absurd ht h`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem diagonal_top_block : Formalism.FourierDecayAlt.TA.DiagTop := by
   intro E _ _ H _ _ W D Sg Φ w hNZ hA2
@@ -275,19 +275,19 @@ theorem diagonal_top_block : Formalism.FourierDecayAlt.TA.DiagTop := by
   · intro h; exact absurd ht h
 
 /- English proof (translation)
-Introduce `E _ _ H _ _ W D Sg Φ w i s R hNZ hs hsi hi hA hcov huniq`. Take `⟨_, hper, hdom, _⟩` from `hA i s hs hsi hi`. Establish `hHd : ∀ h ∈ PT Sg (i - s), IsPt (i - s) h` using `isPt_PT Sg hNZ (i - s)`. Establish `key : ∀ t ∈ Sg i s, ∀ t0, t - t0 ∈ D.La i s → (Nst (Φ w) (PT Sg (i - s)) (offK (D.K i) s t t) s t t).re ≤ (Nst (Φ w) (PT Sg (i - s)) (D.Th i s t0) s t t).re`. Introduce `t ht t0 h0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e : D.Th i s t = D.Th i s t0`. Use `hper t0 (t - t0) h0` as an intermediate fact. Rewrite `this` using `[add_sub_cancel]`. Then use the resulting hypothesis. Establish `h` using `form_self_nonneg (PT Sg (i - s)) _ (hdom t (PT Sg (i - s)) (hNZ _ _ t ht) hHd) (fun h => Φ w (Formalism.FourierDecayAlt.TA.ext h s t))`. Establish `e2 : form (PT Sg (i - s)) (fun h h' => D.Th i s t h h' - D.K i (Formalism.FourierDecayAlt.TA.ext h s t) (Formalism.FourierDecayAlt.TA.ext h' s t)) (fun h => Φ w (Formalism.FourierDecayAlt.TA.ext h s t)) (fun h => Φ w (Formalism.FourierDecayAlt.TA.ext h s t)) = Nst (Φ w) (PT Sg (i …`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [form, Nst, offK, sub_mul, sum_sub_distrib]`. Rewrite `h` using `[e2, e, Complex.sub_re]`. Combine the linear equalities and inequalities to obtain the conclusion. Unfold `Diag Cosets`. Use `le_trans ?_ (le_of_eq (sum_comm' (s := Sg i s) (t := fun t => R.filter (fun t0 => t - t0 ∈ D.La i s)) ?_))` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Use `sum_le_sum fun t ht => ?_` and prove the remaining obligations. Take `⟨t0, ht0, h0⟩` from `hcov t ht`. Establish `hf : R.filter (fun x => t - x ∈ D.La i s) = {t0}`. Use extensionality with `x`. Simplify using `only [mem_filter, mem_singleton]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hx, hxl⟩`. Use `huniq x hx t0 ht0 ?_` and prove the remaining obligations. Use `(D.La i s).sub_mem h0 hxl` as an intermediate fact. Simplify using `using this`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce and unpack `rfl`. Conclude with `⟨ht0, h0⟩`. Rewrite using `[hf, sum_singleton]`. Conclude with `key t ht t0 h0`. Introduce `t t0`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [mem_filter]`. The claim follows by propositional logic.
+The claim follows by propositional logic. A detailed English derivation is pending.
 -/
 theorem diagonal_cosets : Formalism.FourierDecayAlt.TA.DiagCosets := by
   classical
@@ -332,13 +332,11 @@ theorem diagonal_cosets : Formalism.FourierDecayAlt.TA.DiagCosets := by
     tauto
 
 /- English proof (translation)
-Introduce `E H _ _ W _ len k P Φ V w0 B0 Bc jn hw0 hb hE hV`. Establish `h1 : ∀ᶠ eps in 𝓝[>] (0 : ℝ), (gram k V P).re ≤ Bc * wsup len B0 (fun w => ‖Φ eps w []‖ ^ 2)`. Establish `hall : ∀ᶠ eps in 𝓝[>] (0 : ℝ), ∀ p ∈ P, Φ eps w0 p = V p` using `(Filter.eventually_all_finset P).2 hV`. Use `filter_upwards [hall, self_mem_nhdsWithin] with eps h1 h2`. Establish `h3` using `hb eps h2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : gram k (Φ eps w0) P = gram k V P`. Unfold `gram`. Use `Finset.sum_congr rfl fun p hp => Finset.sum_congr rfl fun p' hp' => ?_` and prove the remaining obligations. Rewrite using `[h1 p hp, h1 p' hp']`. Rewrite `h3` using `[e]`. Then use the resulting hypothesis.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `h2 : Tendsto (fun eps => wsup len B0 (fun w => ‖Φ eps w []‖ ^ 2)) (𝓝[>] (0 : ℝ)) (𝓝 jn)`. Use `tendsto_order.2 ⟨fun a ha => ?_, fun a ha => ?_⟩` and prove the remaining obligations. Use `filter_upwards [(tendsto_order.1 (hE w0 hw0)).1 a ha] with eps h`. Conclude with `lt_of_lt_of_le h (le_ciSup (f := fun w : {w // len w ≤ B0} => ‖Φ eps w.1 []‖ ^ 2) (Set.finite_range _).bddAbove ⟨w0, hw0⟩)`. Establish `: ∀ᶠ eps in 𝓝[>] (0 : ℝ), ∀ w : {w // len w ≤ B0}, ‖Φ eps w.1 []‖ ^ 2 < (a + jn) / 2` using `eventually_all.2 (fun w => (tendsto_order.1 (hE w.1 w.2)).2 _ (by linarith)) filter_upwards [this] with eps h`.
-
-Establish `: Nonempty {w // len w ≤ B0}` using `⟨⟨w0, hw0⟩⟩`. Conclude with `lt_of_le_of_lt (ciSup_le fun w => (h w).le) (by linarith)`. Conclude with `ge_of_tendsto (h2.const_mul Bc) h1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem epsilon_limit : Formalism.FourierDecayAlt.TA.EpsLimit := by
   intro E H _ _ W _ len k P Φ V w0 B0 Bc jn hw0 hb hE hV

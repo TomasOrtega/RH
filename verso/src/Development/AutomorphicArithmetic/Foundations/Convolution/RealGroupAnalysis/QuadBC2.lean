@@ -16,13 +16,13 @@ open NumberField IsDedekindDomain MeasureTheory
 open Neutral.B1 Formalism.L2.Host GlobalTheory.CuspRep UpperTheory.V UpperTheory.V.Published UpperTheory.ConvolutionTheory.R2
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ _ _ h2 π hreg`. Take `⟨D⟩` from `datEx F E h2`. Take `⟨W⟩` from `weilEx F E D`. Take `⟨M⟩` from `measEx F`. Distinguish the cases in `h0 : ThetaLiftTrivialOrbitTermsVanish W M π`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails.
 
-Use `right`. Establish `hne : span W M π ≠ ⊥`. Take `⟨f, hf, φ, hφ, h, hW⟩` from `ne F E D W M π`. Take `⟨Φ, hΦ⟩` from `smooth F E D W M π f hf φ hφ`. Introduce `hb`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hm : Φ ∈ span W M π` using `Submodule.subset_span ⟨f, hf, φ, hφ, hΦ⟩`. Rewrite `hm` using `[hb, Submodule.mem_bot]`. Apply `hW` to reduce the goal to its premises. Rewrite using `[← exp F E D W M π f hf φ hφ h, ← hΦ, hm]`. Simplify using `[WE]`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Take `⟨P, hP⟩` from `irr F E D W M π hreg h0 hne`. Conclude with `⟨P, fun τ m hm => ⟨hm.1, fun u Φ hΦ => cap F E D W M π τ m hm u Φ (hP hΦ)⟩, split F E D W M π h0 P hP, unr F E D W M π h0 P hP⟩`. Conclude with `Or.inl ⟨W.η, W.quad, dih F E D W M π hreg h0⟩`.
+Supply the required witnesses or components. Prove the first alternative. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.R2.quadBC2 : UpperTheory.V.Z.Bc.QuadBC2 := by
   intro F E _ _ _ _ _ _ _ h2 π hreg

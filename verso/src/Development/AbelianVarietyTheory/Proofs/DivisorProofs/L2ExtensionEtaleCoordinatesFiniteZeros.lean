@@ -16,7 +16,7 @@ open scoped ENNReal ContDiff
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `h1 : ‖u - v‖ ≤ ‖u‖ + ‖v‖` using `norm_sub_le u v`. Establish `h0 : 0 ≤ ‖u - v‖` using `norm_nonneg _`. Establish `hu` using `norm_nonneg u`. Establish `hv` using `norm_nonneg v`. Use polynomial arithmetic with `[sq_nonneg (‖v‖ - 31 * ‖u‖)]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem norm_sub_sq_le_of_split (u v : ℂ) : ‖u - v‖ ^ 2 ≤ 32 / 31 * ‖v‖ ^ 2 + 32 * ‖u‖ ^ 2 := by
   have h1 : ‖u - v‖ ≤ ‖u‖ + ‖v‖ := norm_sub_le u v
@@ -26,9 +26,9 @@ theorem norm_sub_sq_le_of_split (u v : ℂ) : ‖u - v‖ ^ 2 ≤ 32 / 31 * ‖v
   nlinarith [sq_nonneg (‖v‖ - 31 * ‖u‖)]
 
 /- English proof (translation)
-Establish `hc1 : min 1 (1 / (2 * δ ^ 2)) ≤ 1` using `min_le_left _ _`. Establish `hc2 : min 1 (1 / (2 * δ ^ 2)) ≤ 1 / (2 * δ ^ 2)` using `min_le_right _ _`. Establish `hcd : min 1 (1 / (2 * δ ^ 2)) * δ ^ 2 ≤ 1 / 2`. Combine the equalities or inequalities in the displayed calculation. Establish `hexp : 1 + (-t) + (-t) ^ 2 / 2 ≤ Real.exp (-t)` using `Real.quadratic_le_exp_of_nonneg (by linarith)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `hpos : 0 < 1 + (δ * t) ^ 2` using `by positivity`. Rewrite using `[div_mul_eq_mul_div, one_mul, le_div_iff₀ hpos]`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_right hcd (sq_nonneg t)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem weight_ge_of_nonpos (δ t : ℝ) (hδ : 0 < δ) (ht : t ≤ 0) :
     min 1 (1 / (2 * δ ^ 2)) ≤ 1 / (1 + (δ * t) ^ 2) * Real.exp (-t) := by
@@ -44,13 +44,13 @@ theorem weight_ge_of_nonpos (δ t : ℝ) (hδ : 0 < δ) (ht : t ≤ 0) :
   nlinarith [mul_le_mul_of_nonneg_right hcd (sq_nonneg t)]
 
 /- English proof (translation)
-Establish `hnorm` using `norm_sub_sq_le_of_split ((tv : ℂ) * hp) ((tv : ℂ) * hp - Fp)`. Rewrite `hnorm` using `[sub_sub_cancel]`. Establish `hu : ‖(tv : ℂ) * hp‖ ^ 2 = tv ^ 2 * ‖hp‖ ^ 2`. Rewrite using `[norm_mul, Complex.norm_real, Real.norm_eq_abs, mul_pow, sq_abs]`. Rewrite `hnorm` using `[hu]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hγ0 : 0 ≤ 1 / (1 + x ^ 2)` using `by positivity`. Establish `hmin : 0 < 1 + min (x ^ 2) ((T + 1) ^ 2)` using `lt_of_lt_of_le one_pos (le_add_of_nonneg_right (le_min (sq_nonneg _) (sq_nonneg _)))`. Establish `hγw : 1 / (1 + x ^ 2) ≤ wT T x`. Unfold `wT`. Conclude with `one_div_le_one_div_of_le hmin (by linarith [min_le_left (x ^ 2) ((T + 1) ^ 2)])`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Establish `hv0 : 0 ≤ ‖(tv : ℂ) * hp - Fp‖ ^ 2` using `sq_nonneg _`. Apply `mul_le_mul_of_nonneg_left _ (pow_nonneg (by norm_num : (0:ℝ) ≤ 2) n)` to reduce the goal to its premises. Establish `h1 : 1 / (1 + x ^ 2) * (‖Fp‖ ^ 2 * ep) * e ≤ 1 / (1 + x ^ 2) * e * ep * (32 / 31 * ‖(tv : ℂ) * hp - Fp‖ ^ 2 + 32 * (tv ^ 2 * ‖hp‖ ^ 2))`. Combine the equalities or inequalities in the displayed calculation. Establish `h2 : 1 / (1 + x ^ 2) * (32 / 31 * ‖(tv : ℂ) * hp - Fp‖ ^ 2 * ep * e) ≤ wT T x * (32 / 31 * ‖(tv : ℂ) * hp - Fp‖ ^ 2 * ep * e)` using `mul_le_mul_of_nonneg_right hγw (by positivity)`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Use polynomial arithmetic with `[h1, h2]`.
+A detailed English derivation is pending.
 -/
 theorem final_pointwise_le (n : ℕ) (x T tv ep e : ℝ) (Fp hp : ℂ) (hep : 0 ≤ ep) (he : 0 ≤ e) :
     2 ^ n * (1 / (1 + x ^ 2) * (‖Fp‖ ^ 2 * ep) * e) ≤
@@ -83,65 +83,59 @@ end GlobalTheory
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `n Y _ _ _ _ _ _ ι La _ A hn E L s hs hS hjac hsq δ hδ hlevi Λ τ z β hΛ f`. Take `⟨hτ, hpos, het, hfr, hdense, C, hC, hCb⟩` from `hΛ`. Establish `hres_nn : ∀ P, 0 ≤ resSq A E L s P (f P)` using `fun P => by`. Unfold `resSq`. Check the signs of the components of the expression.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Check the signs of the components of the expression.
 
-Establish `hSg_nn : 0 ≤ ∑ P ∈ hS.toFinset, resSq A E L s P (f P)` using `Finset.sum_nonneg fun P _ => hres_nn P`. Break down `hSg_nn.eq_or_lt with h0 | hSpos` into its components or cases. Use `⟨fun _ _ => 0, ?_, ?_, ?_⟩` and prove the remaining obligations. Unfold `WeightedAtlas.IsSec WeightedAtlas.IsSecOn`. Conclude with `⟨fun i => differentiableOn_const 0, fun i j y _ _ _ => by simp⟩`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Supply the required witnesses or components.
 
-Introduce `P hP`. Establish `hz` using `(Finset.sum_eq_zero_iff_of_nonneg (fun P _ => hres_nn P)).1 h0.symm P (hS.mem_toFinset.2 hP)`. Unfold `resSq at hz`. Establish `hexp` using `Real.exp_pos (-A.ph E (A.pick P) P + (n : ℝ) * A.ph L (A.pick P) P)`. Establish `h1 : ‖f P / jacAt A s P‖ ^ 2 = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact.
 
-Break down `mul_eq_zero.1 hz with h | h` into its components or cases. Conclude with `h`. Conclude with `absurd h hexp.ne'`. Establish `h2 : f P / jacAt A s P = 0` using `by simpa using h1`. Break down `div_eq_zero_iff.1 h2 with h | h` into its components or cases.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[h]`. Conclude with `absurd h (hjac P hP)`. Simplify using `[WeightedAtlas.nsq]`. Establish `hn0 : (0:ℝ) < n` using `by exact_mod_cast hn`. Take `⟨Ω, h, m, ⟨hΩo, hhsec, hh0⟩, hm, hmΩ, hval, hshell, hfin⟩` from `GlobalTheory.T.exists_local_holomorphic_extension_near_zeros n Y ι La A hn E L s hs hS hjac f δ hδ`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨hNm, hψm⟩` from `GlobalTheory.T.measurable_nsq_and_psi_of_isSecOn n Y ι La A (A.kap + E) Ω h hΩo hhsec hh0`. Establish `hψm'` using `hψm L s hs`. Establish `hN_nn : ∀ (la : La) (F : ι → Y → ℂ) y, 0 ≤ A.nsq la F y` using `fun la F y => by`. Unfold `WeightedAtlas.nsq`. Check the signs of the components of the expression.
+Replace the relevant objects with their definitions. Check the signs of the components of the expression. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `hsqn_nn : ∀ y, 0 ≤ A.sqn L s y` using `fun y => Finset.sum_nonneg fun k _ => hN_nn L (s k) y`. Establish `hψle : ∀ y, psi A L s y ≤ 0` using `fun y => by`. Unfold `psi`. Conclude with `mul_nonpos_of_nonneg_of_nonpos hn0.le (Real.log_nonpos (hsqn_nn y) (hsq y))`. Establish `hc0 : 0 < min 1 (1 / (2 * δ ^ 2))` using `lt_min one_pos (by positivity)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hL2 : ∫⁻ y, ENNReal.ofReal (A.nsq (A.kap + E) h y) ∂A.mu < ⊤`. Establish `hle : ∀ y, ENNReal.ofReal (A.nsq (A.kap + E) h y) ≤ ENNReal.ofReal (1 / min 1 (1 / (2 * δ ^ 2))) * ENNReal.ofReal (1 / (1 + (δ * psi A L s y) ^ 2) * A.nsq (A.kap + E) h y * Real.exp (-psi A L s y))`. Introduce `y`. Rewrite using `[← ENNReal.ofReal_mul (by positivity)]`. Apply `ENNReal.ofReal_le_ofReal` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Establish `hw` using `weight_ge_of_nonpos δ (psi A L s y) hδ (hψle y)`. Establish `hN` using `hN_nn (A.kap + E) h y`. Establish `key : min 1 (1 / (2 * δ ^ 2)) * A.nsq (A.kap + E) h y ≤ 1 / (1 + (δ * psi A L s y) ^ 2) * A.nsq (A.kap + E) h y * Real.exp (-psi A L s y)`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_right hw hN]`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. Clear the denominators using the available nonvanishing facts. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact.
 
-Clear the denominators using the available nonvanishing facts. Use `_ ≤ _ := mul_le_mul_of_nonneg_left key (by positivity)`. Combine the equalities or inequalities in the displayed calculation. Use `set K : ℝ := Real.pi ^ n / ((n - 1).factorial : ℝ) / δ * ∑ P ∈ hS.toFinset, resSq A E L s P (f P) with hK`. Establish `hKpos : 0 < K`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `Real.pi_pos` as an intermediate fact. Establish `: (0:ℝ) < ((n - 1).factorial : ℝ)` using `by positivity`. Conclude with `mul_pos (by positivity) hSpos`. Establish `hggm : Measurable (fun y => ENNReal.ofReal (1 / (1 + (δ * psi A L s y) ^ 2) * A.nsq (A.kap + E) h y * Real.exp (-psi A L s y)))`. Use `Measurable.ennreal_ofReal ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `((measurable_const.div (measurable_const.add ((hψm'.const_mul δ).pow_const 2))).mul hNm).mul hψm'.neg.exp`. Take `⟨T0, hT0⟩` from `GlobalTheory.T.lintegral_sublevel_tail_le_of_finite Y A.mu (fun y => ENNReal.ofReal (1 / (1 + (δ * psi A L s y) ^ 2) * A.nsq (A.kap + E) h y * Real.exp (-psi A L s y))) (fun y => δ * psi A L s y) (hψm'.const_mul δ) hfin hggm (ENNReal.ofReal (K / 8)) (ENNReal.ofReal_pos.2 (by posi …`. Use `set T : ℝ := max 300 (max T0 (2 - δ * n * Real.log m)) with hT`. Establish `hT300 : 300 ≤ T` using `le_max_left _ _`. Establish `hTT0 : T0 ≤ T` using `le_trans (le_max_left _ _) (le_max_right _ _)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `hT1 : 2 - δ * n * Real.log m ≤ T` using `le_trans (le_max_right _ _) (le_max_right _ _)`. Establish `hdeep : ∀ y, δ * psi A L s y ≤ -T + 1 → A.sqn L s y < m`. Introduce `y hy`. Break down `(hsqn_nn y).eq_or_lt with h0 | hp` into its components or cases. Rewrite using `[← h0]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `hm`. Establish `hdn : 0 < δ * n` using `mul_pos hδ hn0`. Establish `h1 : δ * n * Real.log (A.sqn L s y) < δ * n * Real.log m`. Establish `: δ * psi A L s y = δ * n * Real.log (A.sqn L s y)` using `by unfold psi; ring`. Combine the linear equalities and inequalities to obtain the conclusion.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h2` using `lt_of_mul_lt_mul_left h1 hdn.le`. Conclude with `(Real.log_lt_log_iff hp hm).1 h2`. Establish `hsubΩ : ∀ y, y ∉ A.zeroSet s → δ * psi A L s y ≤ -T + 1 → y ∈ Ω` using `fun y _ hy => hmΩ y (hdeep y hy)`. Establish `hzΩ : A.zeroSet s ⊆ Ω`. Introduce `y hy`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hy' : ∀ k, s k (A.pick y) y = 0` using `hy`. Apply `hmΩ` to reduce the goal to its premises. Establish `: A.sqn L s y = 0`. Unfold `WeightedAtlas.sqn`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Introduce `k _`. Unfold `WeightedAtlas.nsq`. Rewrite using `[hy' k]`. Simplify using the standard rewrite rules. Rewrite using `[this]`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hm`. Take `⟨θ, hθ⟩` from `GlobalTheory.T.exists_smoothCutoff_slope_three_quarters T`. Take `⟨F, hFsec, hFbd⟩` from `GlobalTheory.T.twistedEstimate_etalePart_manifold n Y ι La A E L s hs hsq δ hδ hlevi Λ τ z β ⟨hτ, hpos, het, hfr, hdense, C, hC, hCb⟩ Ω h T θ ⟨hΩo, hhsec, hh0⟩ hT300 hθ hsubΩ hL2`. Establish `hshellT` using `hshell T (by linarith)`. Establish `hFbd' : (∫⁻ y in nz A τ, ENNReal.ofReal (A.nsq (A.kap + E) (fun i x => (θ (δ * psi A L s x) : ℂ) * h i x - F i x) y * (wT T (δ * psi A L s y) * Real.exp (-psi A L s y))) ∂A.mu) ≤ ENNReal.ofReal (62 * K)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[show (30 : ℝ≥0∞) = ENNReal.ofReal 30 by simp, ← ENNReal.ofReal_mul (by norm_num)]`. Use `congr 1`. Rewrite using `[hK]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨G, hGsec, hGF, hGP⟩` from `GlobalTheory.T.extension_across_hypersurface_values_at_zeros n Y ι La A hn E L s hs hS hjac hsq δ hδ Λ τ hτ hdense Ω h T θ ⟨hΩo, hhsec, hh0⟩ hzΩ hθ hL2 F hFsec (lt_of_le_of_lt hFbd' ENNReal.ofReal_lt_top)`. Use `⟨G, hGsec, fun P hP => (hGP P hP).trans (hval P hP), ?_⟩` and prove the remaining obligations. Establish `hnull : A.mu (nz A τ)ᶜ = 0` using `GlobalTheory.T.measure_compl_nonvanishingSet_eq_zero_of_dense n Y ι La A Λ τ hτ hdense`. Establish `hnzm : MeasurableSet (nz A τ)` using `het.isOpen.measurableSet`. Establish `hSm : MeasurableSet {y | δ * psi A L s y ≤ -T + 1}` using `measurableSet_le (hψm'.const_mul δ) measurable_const`.
+Consider separately whether the proposition holds or fails. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hae : ∀ᵐ y ∂A.mu, y ∈ nz A τ`. Rewrite using `[ae_iff]`. Conclude with `hnull`. Establish `hpt : ∀ᵐ y ∂A.mu, ENNReal.ofReal (2 ^ n * (1 / (1 + (δ * psi A L s y) ^ 2) * A.nsq (A.kap + E) G y * Real.exp (-psi A L s y))) ≤ ENNReal.ofReal (2 ^ n) * (ENNReal.ofReal (32 / 31) * (nz A τ).indicator (fun y => ENNReal.ofReal (A.nsq (A.kap + E) (fun i x => (θ (δ * psi A L s x) : …` using `by filter_upwards [hae] with y hy`. Rewrite using `[Set.indicator_of_mem hy]`.
+Check the signs of the components of the expression. Reduce the claim to the hypotheses of an applicable result. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hGy : G (A.pick y) y = F (A.pick y) y` using `hGF (A.pick y) y hy (A.mem_pick y)`. Establish `hθ01` using `hθ.2.2.2.1 (δ * psi A L s y)`. Establish `hind : ENNReal.ofReal (θ (δ * psi A L s y) ^ 2 * (1 / (1 + (δ * psi A L s y) ^ 2) * A.nsq (A.kap + E) h y * Real.exp (-psi A L s y))) ≤ {y | δ * psi A L s y ≤ -T + 1}.indicator (fun y => ENNReal.ofReal (1 / (1 + (δ * psi A L s y) ^ 2) * A.nsq (A.kap + E) h y * Real.exp (-psi A L …`. Distinguish the cases in `hyS : δ * psi A L s y ≤ -T + 1`. Rewrite using `[Set.indicator_of_mem (show y ∈ {y | δ * psi A L s y ≤ -T + 1} from hyS)]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Apply `ENNReal.ofReal_le_ofReal` to reduce the goal to its premises. Establish `hX : 0 ≤ 1 / (1 + (δ * psi A L s y) ^ 2) * A.nsq (A.kap + E) h y * Real.exp (-psi A L s y)`. Use `hN_nn (A.kap + E) h y` as an intermediate fact. Check the signs of the components of the expression. Apply `mul_le_of_le_one_left hX` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Check the signs of the components of the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use polynomial arithmetic with `[hθ01.1, hθ01.2]`. Establish `h0 : θ (δ * psi A L s y) = 0` using `hθ.2.2.1 _ (le_of_lt (not_le.1 hyS))`. Rewrite using `[h0]`. Simplify using the standard rewrite rules. Establish `hreal` using `final_pointwise_le n (δ * psi A L s y) T (θ (δ * psi A L s y)) (Real.exp (-A.ph (A.kap + E) (A.pick y) y)) (Real.exp (-psi A L s y)) (F (A.pick y) y) (h (A.pick y) y) (Real.exp_pos _).le (Real.exp_pos _).le`.
+Check the signs of the components of the expression. Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hnG : A.nsq (A.kap + E) G y = ‖F (A.pick y) y‖ ^ 2 * Real.exp (-A.ph (A.kap + E) (A.pick y) y)`. Simplify using `only [WeightedAtlas.nsq, hGy]`. Establish `ha0 : 0 ≤ A.nsq (A.kap + E) (fun i x => (θ (δ * psi A L s x) : ℂ) * h i x - F i x) y * (wT T (δ * psi A L s y) * Real.exp (-psi A L s y))`. Use `hN_nn (A.kap + E) (fun i x => (θ (δ * psi A L s x) : ℂ) * h i x - F i x) y` as an intermediate fact. Establish `hw : 0 ≤ wT T (δ * psi A L s y)` using `by unfold wT; positivity`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Check the signs of the components of the expression. Establish `hb0 : 0 ≤ θ (δ * psi A L s y) ^ 2 * (1 / (1 + (δ * psi A L s y) ^ 2) * A.nsq (A.kap + E) h y * Real.exp (-psi A L s y))`. Use `hN_nn (A.kap + E) h y` as an intermediate fact. Check the signs of the components of the expression. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Apply `ENNReal.ofReal_le_ofReal` to reduce the goal to its premises. Rewrite using `[hnG]`. Conclude with `hreal`. Use `_ = ENNReal.ofReal (2 ^ n) * (ENNReal.ofReal (32 / 31) * ENNReal.ofReal (A.nsq (A.kap + E) (fun i x => (θ (δ * psi A L s x) : ℂ) * h i x - F i x) y * (wT T (δ * psi A L s y) * Real.exp (-psi A L s y))) + ENNReal.ofReal 32 * ENNReal.ofReal (θ (δ * psi A L s y) ^ 2 * (1 / (1 + (δ * …`. Establish `h2n : (0:ℝ) ≤ 2 ^ n` using `by positivity`.
-
-Establish `h3 : (0:ℝ) ≤ 32 / 31` using `by norm_num`. Establish `h4 : (0:ℝ) ≤ 32` using `by norm_num`. Rewrite using `[ENNReal.ofReal_mul h2n, ENNReal.ofReal_add (mul_nonneg h3 ha0) (mul_nonneg h4 hb0), ENNReal.ofReal_mul h3, ENNReal.ofReal_mul h4]`. Use `_ ≤ _ := by gcongr`. Establish `hfac : ((n - 1).factorial : ℝ) ≠ 0` using `by positivity`.
-
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[lintegral_const_mul' _ _ ENNReal.ofReal_ne_top, lintegral_add_right _ ((hggm.indicator hSm).const_mul _), lintegral_const_mul' _ _ ENNReal.ofReal_ne_top, lintegral_const_mul' _ _ ENNReal.ofReal_ne_top, lintegral_indicator hnzm, lintegral_indicator hSm]`. Apply the tactic sequence `_ ≤ ENNReal.ofReal (2 ^ n) * (ENNReal.ofReal (32 / 31) * ENNReal.ofReal (62 * K) + ENNReal.ofReal 32 * ENNReal.ofReal (K / 8)) := by gcongr all_goals first | exact hFbd' | exact hT0 T hTT0`. Use `_ = ENNReal.ofReal (34 / δ * (resConst n * ∑ P ∈ hS.toFinset, resSq A E L s P (f P))) := by`. Rewrite using `[← ENNReal.ofReal_mul (by norm_num), ← ENNReal.ofReal_mul (by norm_num), ← ENNReal.ofReal_add (by positivity) (by positivity), ← ENNReal.ofReal_mul (by positivity)]`.
-
-Use `congr 1`. Rewrite using `[hK, resConst]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem l2_extension_of_etale_coordinates : ∀ (n : ℕ) (Y : Type) [TopologicalSpace Y] [T2Space Y] [SecondCountableTopology Y] [MeasurableSpace Y] [BorelSpace Y] [CompactSpace Y] (ι La : Type) [AddCommGroup La] (A : WeightedAtlas n Y ι La), 1 ≤ n → ∀ (E L : La) (s : Fin n → ι → Y → ℂ), (∀ k, A.IsSec L (s k)) → ∀ hS : (A.zeroSet s).Finite, (∀ P ∈ A.zeroSet s, jacAt A s P ≠ 0) → (∀ y, A.sqn L s y ≤ 1) → ∀ δ : ℝ, 0 < δ → (∀ α ∈ Set.Icc (1 : ℝ) (1 + δ), ∀ i y, y ∈ (A.chart i).source → y ∉ A.zeroSet s → ∀ ξ : Fin n → ℂ, 0 ≤ A.leviAt i (fun x => A.ph E i x + α * psi A L s x) y ξ) → ∀ (Λ : La) (τ : ι → Y → ℂ) (z : Y → V n) (β : ι → Y → ℂ), (A.IsSec Λ τ ∧ A.Pos Λ (fun _ => 0) ∧ Etale A (nz A τ) z ∧ A.IsFrameOn (A.kap + E) (nz A τ) β ∧ Dense (nz A τ) ∧ ∃ C : ℝ, 0 < C ∧ ∀ y, A.nsq Λ τ y ≤ C * A.sqn L s y) → ∀ f : Y → ℂ, ∃ F : ι → Y → ℂ, A.IsSec (A.kap + E) F ∧ (∀ P ∈ A.zeroSet s, F (A.pick P) P = f P) ∧ ∫⁻ y, ENNReal.ofReal (2 ^ n * (1 / (1 + (δ * psi A L s y) ^ 2) * A.nsq (A.kap + E) F y * Real.exp (-psi A L s y))) ∂A.mu ≤ ENNReal.ofReal (34 / δ * (resConst n * ∑ P ∈ hS.toFinset, resSq A E L s P (f P))) := by
   intro n Y _ _ _ _ _ _ ι La _ A hn E L s hs hS hjac hsq δ hδ hlevi Λ τ z β hΛ f

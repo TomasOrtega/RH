@@ -16,7 +16,7 @@ variable {k : Type} [Field k] {A₀ : Over (Sp k)} [GrpObj A₀] {A' : Over (Sp 
   {i : A₀.left ⟶ A'.left} {h : IsGrpPullback A₀ A' (spMap (TrivSqZeroExt.fstHom k k k).toRingHom) i}
 
 /- English proof (translation)
-Take `⟨d, hd, e⟩` from `e`. Take `⟨d', hd', e'⟩` from `e'`. Use `⟨d + d', add_mem hd hd', fun c ↦ ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.add_apply, e, e']`. Apply the tactic sequence `ext <;> simp`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem isFilLift_add {x y x' y' : HdR A₀} (e : IsFilLift h x y) (e' : IsFilLift h x' y') :
     IsFilLift h (x + x') (y + y') := by
@@ -27,7 +27,7 @@ theorem isFilLift_add {x y x' y' : HdR A₀} (e : IsFilLift h x y) (e' : IsFilLi
   ext <;> simp
 
 /- English proof (translation)
-Take `⟨d, hd, e⟩` from `e`. Use `⟨algebraMap k (DualNumber k) r • d, Submodule.smul_mem _ _ hd, fun c ↦ ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.smul_apply, e]`. Apply the tactic sequence `ext <;> simp [TrivSqZeroExt.algebraMap_eq_inl]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem isFilLift_smul {x y : HdR A₀} (e : IsFilLift h x y) (r : k) :
     IsFilLift h (r • x) (r • y) := by
@@ -37,16 +37,16 @@ theorem isFilLift_smul {x y : HdR A₀} (e : IsFilLift h x y) (r : k) :
   ext <;> simp [TrivSqZeroExt.algebraMap_eq_inl]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨0, zero_mem _, fun c ↦ by simp only [LinearMap.zero_apply, TrivSqZeroExt.inl_zero, TrivSqZeroExt.inr_zero, add_zero]⟩`.
+Supply the required witnesses or components.
 -/
 theorem isFilLift_zero : IsFilLift h (0 : HdR A₀) 0 :=
   ⟨0, zero_mem _, fun c ↦ by
     simp only [LinearMap.zero_apply, TrivSqZeroExt.inl_zero, TrivSqZeroExt.inr_zero, add_zero]⟩
 
 /- English proof (translation)
-Take `⟨d, hd, e'⟩` from `hxy`. Establish `hmem` using `push_mem_liftFil (epsDP k) h h f₀ f e hd`. Use `⟨_, hmem, fun c ↦ ?_⟩` and prove the remaining obligations. Establish `k1` using `(homMor (dp0 k) (𝟙 _) f₀).comp (constMor A₀)`. Establish `e1` using `GrpMor.pull_pull (constMor A₀) (homMor (epsDP k) _ f₀) k1 (fun _ ↦ rfl) (by simp) c`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2` using `GrpMor.pull_pull (homMor (dp0 k) (𝟙 _) f₀) (constMor A₀) k1 (fun _ ↦ rfl) rfl c`. Rewrite using `[push_apply]`. Use `show d (primPull _ _ f₀ _) = _`. Use `erw [primPull, e1, ← e2, e']`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem isFilLift_push (f₀ : A₀ ⟶ A₀) (f : A' ⟶ A') [IsMonHom f₀] [IsMonHom f] (e : i ≫ f.left = f₀.left ≫ i)
     {x y : HdR A₀} (hxy : IsFilLift h x y) :
@@ -63,7 +63,7 @@ theorem isFilLift_push (f₀ : A₀ ⟶ A₀) (f : A' ⟶ A') [IsMonHom f₀] [I
   rfl
 
 /- English proof (translation)
-Take `⟨g, hg⟩` from `GlobalTheory.KSGraph.exists_dim A' hA'`. Take `⟨v, ⟨y, hy, -⟩, -⟩` from `GlobalTheory.DeRham.ksRegular_of_isAbelianScheme GlobalTheory.T.abelianScheme_firstDeRham_structure h hA' hg x hx`. Conclude with `⟨y, hy⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_isFilLift (hA' : IsAbelianScheme A') {x : HdR A₀} (hx : x ∈ Fil A₀) : ∃ y, IsFilLift h x y := by
   obtain ⟨g, hg⟩ := GlobalTheory.KSGraph.exists_dim A' hA'
@@ -71,19 +71,17 @@ theorem exists_isFilLift (hA' : IsAbelianScheme A') {x : HdR A₀} (hx : x ∈ F
   exact ⟨y, hy⟩
 
 /- English proof (translation)
-Introduce `p _ D R _ b N _ _ k _ _ t o₀ β hβ φ hφ o' m'`. Establish `hab₀` using `o₀.ab`. Establish `hab'` using `o'.ab`. Establish `hL1 : ∀ x ∈ Fil o₀.A, ∃ y, IsFilLift m'.cart x y` using `fun x hx ↦ exists_isFilLift hab' hx`. Establish `hG` using `GlobalTheory.KSGraph.isFilLift_iff_sub_mem k o₀.A o'.A m'.φ m'.cart hab'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨C, hC⟩` from `Submodule.exists_isCompl (Fil o₀.A)`. Set `bs` to `Module.Basis.ofVectorSpace k (Fil o₀.A)`. Set `f : Fil o₀.A →ₗ[k] HdR o₀.A` to `bs.constr k fun j ↦ (hL1 _ (bs j).2).choose`. Establish `hf : ∀ x : Fil o₀.A, IsFilLift m'.cart x.1 (f x)`. Introduce `x`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hx : x ∈ Submodule.span k (Set.range bs)` using `by rw [bs.span_eq]; trivial`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨j, rfl⟩` from `hx`. Rewrite using `[Module.Basis.constr_basis]`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(hL1 _ (bs j).2).choose_spec`. Consider the case `zero => simpa using isFilLift_zero`. Consider the case `add x y _ _ hx hy => simpa using isFilLift_add hx hy`. Consider the case `smul r x _ hx => simpa using isFilLift_smul hx r`. Set `g : HdR o₀.A →ₗ[k] HdR o₀.A` to `f ∘ₗ Submodule.linearProjOfIsCompl _ _ hC`.
+Treat this case separately. Treat this case separately. Treat this case separately. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hg : ∀ x ∈ Fil o₀.A, IsFilLift m'.cart x (g x)` using `fun x hx ↦ by`. Establish `: Submodule.linearProjOfIsCompl _ _ hC x = ⟨x, hx⟩` using `Submodule.linearProjOfIsCompl_apply_left hC ⟨x, hx⟩`. Simplify `hf ⟨x, hx⟩` using `[g, this]`. Use `⟨g, ⟨fun a x hx ↦ ?_, fun z hz ↦ ?_, fun x hx y hy ↦ ?_⟩, hg⟩` and prove the remaining obligations. Use `haveI := o₀.act.hom a haveI := o'.act.hom a`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hax : GlobalTheory.HTCount.crysAct o₀ a x ∈ Fil o₀.A`. Rewrite using `[GlobalTheory.HTCount.crysAct_apply]`. Conclude with `push_mem_Fil _ hx`. Establish `e1 : IsFilLift m'.cart (GlobalTheory.HTCount.crysAct o₀ a x) (GlobalTheory.HTCount.crysAct o₀ a (g x))`. Rewrite using `[GlobalTheory.HTCount.crysAct_apply]`.
-
-Conclude with `isFilLift_push (o₀.act.act a) (o'.act.act a) (m'.act a).symm (hg x hx)`. Conclude with `(hG _ hax _ _ e1).1 (hg _ hax)`. Take `⟨hz₀, hz⟩` from `GlobalTheory.T.lieConditionHodgeSubspace_constant_lift_mem_fil p D R b N k t o₀ β hβ o' m' z hz`. Simplify using `using (hG _ hz₀ _ _ hz).1 (hg _ hz₀)`. Conclude with `GlobalTheory.T.harrisTaylor_firstOrder_deformation_skew p D R b N k t o₀ φ hφ o' m' x hx y hy _ _ (hg x hx) (hg y hy)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem main : ∀ (p : ℕ) [Fact p.Prime] (D : GlobalTheory.UPel.HT.Datum p) (R : Type) [CommRing R] (b : GlobalTheory.UPel.HT.Base D R) (N : ℕ), 3 ≤ N → N.Coprime p → ∀ (k : Type) [Field k] [IsAlgClosed k] (t : Sp k ⟶ Sp R) (o₀ : GlobalTheory.UPel.HT.Obj b N t) (β : R →+* k), t = spMap β → ∀ φ : LinearMap.BilinForm k (HdR o₀.A), GlobalTheory.AbDual.IsCorrForm (dp0 k) (𝟙 _) o₀.A o₀.A o₀.P φ → ∀ (o' : GlobalTheory.UPel.HT.Obj b N (spMap (algebraMap k (DualNumber k)) ≫ t)) (m' : GlobalTheory.UPel.HT.ObjMap o₀ o' (spMap (TrivSqZeroExt.fstHom k k k).toRingHom)), ∃ g : HdR o₀.A →ₗ[k] HdR o₀.A, IsKS (GlobalTheory.HTCount.crysAct o₀) φ (Fil o₀.A) (GlobalTheory.HTCount.lieZ o₀ β) g ∧ ∀ x ∈ Fil o₀.A, IsFilLift m'.cart x (g x) := by
   intro p _ D R _ b N _ _ k _ _ t o₀ β hβ φ hφ o' m'

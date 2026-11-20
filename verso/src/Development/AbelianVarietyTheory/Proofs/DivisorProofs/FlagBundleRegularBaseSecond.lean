@@ -27,7 +27,7 @@ open scoped Classical
 namespace GlobalTheory.LineGysin
 
 /- English proof (translation)
-Proceed by induction on `m with`. Consider the case `zero => simpa using (GlobalTheory.T.smoothForms_calculus_holomorphicAtlas M n A).1`. Consider the case `succ m ih`. Rewrite using `[pow_succ]`. Conclude with `((GlobalTheory.T.smoothForms_calculus_holomorphicAtlas M n A).2.1 1 _ _ ih hα).2.1`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isForm_pow {M : Type} [TopologicalSpace M] {n : ℕ} (A : HolAtlas M n) {α : A.Fld} (hα : A.IsForm α) (m : ℕ) :
     A.IsForm (α ^ m) := by
@@ -42,9 +42,9 @@ variable {k : Type} [CommRing k] {B Y : Scheme.{0}} [IsIntegral B] [IsIntegral Y
 omit [IsIntegral B] [IsIntegral Y] in
 
 /- English proof (translation)
-Establish `hπ` using `GlobalTheory.T.flag_bundle_smooth_relative_dimension B Y π Unit (fun _ => E) (fun _ => 2) (fun _ => fl) (fun _ => hE) hfl`. Establish `: Smooth π` using `@SmoothOfRelativeDimension.smooth _ _ _ π hπ`. Use `hB.toIsArithVar.isLocallyNoetherian` as an intermediate fact. Use `⟨hp, fun y => ?_⟩` and prove the remaining obligations. Use `GlobalTheory.ThetaExtend.isRegularRing_stalk hB.regular π y` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `.of_isRegularRing_of_isLocalRing _`.
+A detailed English derivation is pending.
 -/
 theorem isRegVar_lines (hB : IsRegVar q d) (hp : IsArithVar p (d + 1)) {π : Y ⟶ B} {E : B.Modules} (hE : IsVB E 2)
     {fl : Vert.Flag ((Scheme.Modules.pullback π).obj E) 2}
@@ -57,15 +57,15 @@ theorem isRegVar_lines (hB : IsRegVar q d) (hp : IsArithVar p (d + 1)) {π : Y �
   exact .of_isRegularRing_of_isLocalRing _
 
 /- English proof (translation)
-Establish `: CompactSpace (CxPts p σ)` using `CxPts.compactSpace σ hY.isProjOver`. Establish `: T2Space (CxPts p σ)` using `CxPts.t2Space_cxPts_of_isProjOver σ hY.isProjOver`. Establish `: SecondCountableTopology (CxPts p σ)` using `CxPts.secondCountableTopology_of_isProjOver σ hY.isProjOver`. Take `⟨hLB, -, hP⟩` from `GlobalTheory.T.firstChern_form_properties k B q d hB σ`. Take `⟨hLY, hEY, -⟩` from `GlobalTheory.T.firstChern_form_properties k Y p (d + 1) hY σ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hφ` using `isForm_pow (hB.atlas σ) (hLB A A).1.1 d`. Establish `hpull : pullF hB hY σ π w (fld _ (c1F hB σ A) ^ d) = fld _ (c1F hY σ (A.pull π w)) ^ d`. Rewrite using `[(hP Y p (d + 1) hY π w).2.1 A]`. Use function extensionality and compare the values at `x`. Conclude with `map_pow (pull _) _ d`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Establish `h0` using `(GlobalTheory.T.flag_bundle_chern_integral_pull_third k B Y q p d hB hY π w E h H flB fl hfl A σ _ hφ 0).2`. Establish `h1` using `(GlobalTheory.T.flag_bundle_chern_integral_pull_third k B Y q p d hB hY π w E h H flB fl hfl A σ _ hφ 1).1`. Establish `e1 : evalF (hB.atlas σ) (fam4 hB σ H flB A) (aeval ![X 1 + X 2, X 3] (hs 0)) = 1`. Use function extensionality and compare the values at `x`. Simplify using `[evalF, fld, hs]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h0` using `[e1, hpull, pow_zero, mul_one, one_mul]`. Rewrite `h1` using `[hpull, pow_one]`. Establish `hω` using `(hEY _ (h.pull π w) (H.pull π w) fl fl).1.1`. Establish `hS` using `(hLY (fam5 π w H flB fl A 0) (A.pull π w)).1.1`. Establish `hA` using `isForm_pow (hY.atlas σ) (hLY (A.pull π w) (A.pull π w)).1.1 d`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `C` using `(GlobalTheory.T.smoothForms_calculus_holomorphicAtlas _ _ (hY.atlas σ)).2.1 1`. Establish `e` using `GlobalTheory.T.integral_sub_of_isForm' (hY.atlas σ) _ _ (C _ _ hω hA).2.1 (C _ _ (C _ _ hS hω).1 hA).2.1`. Rewrite `e` using `[h0, h1, ← sub_mul, sub_add_cancel_right]`. Simplify `e` using `[fam5]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem integral_neg_taut_mul (hB : IsRegVar q d) (hY : IsRegVar p (d + 1)) (π : Y ⟶ B) (w : π ≫ q = p) {E : B.Modules}
     {h : VMetric q E 2} (H : h.IsCInf) (flB : Vert.Flag E 2) {fl : Vert.Flag ((Scheme.Modules.pullback π).obj E) 2}
@@ -98,13 +98,13 @@ theorem integral_neg_taut_mul (hB : IsRegVar q d) (hY : IsRegVar p (d + 1)) (π 
   simpa [fam5] using e
 
 /- English proof (translation)
-Introduce `hC k _ B Y _ _ q p d hq hp hr π w E h H ⟨flB⟩ fl hfl A Ψ hΨ`. Establish `hB : IsRegVar q d` using `⟨hq, hr⟩`. Establish `hY : IsRegVar p (d + 1)` using `isRegVar_lines hB hp h.isVB hfl`. Take `⟨ΨB, hΨB⟩` from `((hC.arExists k B q d hq).2 Unit fun _ => A).2`. Establish `hom : (-X 0 * X 1 ^ d : MvPolynomial (Fin 2) ℝ).IsHomogeneous (d + 1)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `(isHomogeneous_X ℝ (0 : Fin 2)).neg.mul ((isHomogeneous_X ℝ (1 : Fin 2)).pow d)` as an intermediate fact. Rewrite `this` using `[one_mul, add_comm]`. Then use the resulting hypothesis. Establish `homB : (X () ^ d : MvPolynomial Unit ℝ).IsHomogeneous d`. Simplify using `using (isHomogeneous_X ℝ ()).pow d`. Establish `eB : gdeg A d = ΨB (X () ^ d)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Rewrite using `[← lin_single (), hΨB.1, (isometric_comb_single (fun _ : Unit => A) ()).gdeg_eq]`. Rewrite using `[eB, GlobalTheory.T.geometric_functional_chern_integral k Y p (d + 1) hY _ _ Ψ hΨ _ hom, GlobalTheory.T.geometric_functional_chern_integral k B q d hB _ _ ΨB hΨB _ homB]`. Use `finsum_congr fun σ => ?_` and prove the remaining obligations. Establish `e` using `integral_neg_taut_mul hB hY π w H flB hfl A σ`. Use `e using 2` and compare the differences between its conclusion and the goal.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use function extensionality and compare the values at `x`. Simplify using `[evalF, fld]`. Use function extensionality and compare the values at `x`. Simplify using `[evalF, fld]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem geoFun_neg_taut_mul_pow : ArCalc → ∀ (k : Type) [CommRing k] (B Y : Scheme.{0}) [IsIntegral B] [IsIntegral Y]
     (q : B ⟶ Sp k) (p : Y ⟶ Sp k) (d : ℕ),

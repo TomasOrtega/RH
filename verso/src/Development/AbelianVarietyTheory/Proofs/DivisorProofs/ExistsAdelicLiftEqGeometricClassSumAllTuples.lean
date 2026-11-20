@@ -40,21 +40,19 @@ def serConst (D : D7) (ka : ℂ) (δ : ℤˣ) (d : ℕ) : ℂ :=
 set_option maxHeartbeats 2000000 in
 
 /- English proof (translation)
-Set `u : ∀ ρ, lowT (R.MW i (sg0 D A)) ρ` to `fun ρ => ⟨v₀ i (sg0 D A) ρ, (hP.lift.v0.1 ρ).2.1⟩`. Establish `hun` using `GlobalTheory.T.thetaLift_eq_classSum_thetaKernels_lowestKType D G Pl0 T0 A _ R F hC i (tup t) _ (inC O.c') O.c0' _ h _ J' _ _ _ hP.lift.std hR y xs hpl u g'`. Use `hun.trans ?_` and prove the remaining obligations. Rewrite using `[clsSum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨vr, hvr⟩` from `exists_isVarOf (Vc D i) (Wc D i) (rank_Wc i) X hX _ Dc.hr`. Establish `hlt` using `letters_eq_fockVars_core D G Pl0 T0 A T R F κ v₀ hC hT i Tp tup O hP X g Dc vr hX hp hvr`. Establish `hω` using `hC.thP.ωP i (tup t)`. Establish `hmove : ∀ f, IsThetaFunO R.ψ (Vc D i) (Wc D i) f → thetaKO (R.ωP i (tup t)) (h j) g' f = thetaKO (R.ωP i (tup t)) (h j) (γ * g') f` using `fun f hf => by`. Establish `e1 : ((h j, γ * g') : GA D (Vc D i) × GA D (Wc D i)) = (1, γ) * (h j, g')` using `by simp`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[thetaKO, thetaKO, e1, map_mul]`. Conclude with `(hω.om_aut 1 (one_mem _) γ hγ _ (hω.om_pres _ f hf)).symm`. Rewrite using `[hmove _ (hC.thP.pt_theta i (tup t) _), hka (fun ℓ => vr (Dc.eL ℓ)) hlt u (fun _ => rfl) (tup t) (xs j)]`. Take `⟨⟨hfin, e, Ps, he, hPs, hsupp⟩, hLh, -⟩` from `hR.2.2.2.2.2.2 j`. Take `⟨yd, hyd⟩` from `exists_isDetAt he (Vc D i) (h j)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨hlev, -, -⟩` from `hP.cov t`. Take `⟨-, cga, hio⟩` from `hP.io`. Establish `hH` using `mem_HHa_of_span _ _ _ _ _ _ (hio.2.2.1 ▸ LinearMap.mem_range_self O.io (xs j))`. Establish `hhom : (MvPolynomial.rename Dc.eL (MvPolynomial.map (inC O.c') (O.io (xs j)))).IsHomogeneous (degW (T.Q.Dw ((i : ℕ) + 1)) (wtA (κ i)))` using `((isHomogeneous_of_rowDeg _ _ _ _ hH.2.2).map _).rename_isHomogeneous`. Establish `hhalf : ∀ PP, PP ∈ R.Pg ∨ PP ∈ R.Q (tup t) → (O.dδ t).l₂.Mb ≤ PP.asIdeal ∧ ((D.host.QS * D.host.q * Ideal.absNorm D.host.ccK : ℕ) : 𝓞 D.host.E) ∉ PP.asIdeal` using `fun PP hPP => by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨k1, k2, k3⟩` from `(hP.tuple t).half`. Use `⟨?_, k3 PP hPP⟩` and prove the remaining obligations. Rewrite using `[hlev.2.2.2.1]`. Break down `hPP with hPP | hPP` into its components or cases. Conclude with `Ideal.mul_le_left.trans (k1.le.trans (Ideal.prod_le_inf.trans (Finset.inf_le hPP)))`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Ideal.mul_le_right.trans (k2 PP hPP)`. Establish `hla : ∀ w, w ∈ (O.La t j).La ↔ (fun b => star (w b)) ∈ Bridge.hLat (Vc D i) (fin (Vc D i) (h j))` using `fun w => by`. Rewrite using `[← hLh]`. Conclude with `(hP.reps t).2 j w`. Establish `hcl` using `hδ (tup t) (O.dδ t).l₂ (fun x => inC O.c' (O.φ t x)) (hP.tuple t).phi hhalf hrt g _ X Dc.hr Dc.bas Dc.idx x₀ vr hX Dc.sympl hon hinv hbas hvr (O.bad t) (O.Nc t j) (h j) (γ * g') (O.La t j) mk₂ e Ps yd hR.2.1 he hPs hfin hsupp hyd hla ((hP.reps t).1 j).2.2.1 ((hP.reps t).1 j).2.2. …`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hep` using `GlobalTheory.ClassScalarValueCore.class_scalar_value_core D G Pl0 T0 A T R F κ v₀ hC hT i Tp tup O hP t j (h j) e Ps yd he hPs hsupp hyd hLh hR.2.1`. Establish `hw : hatC (O.dδ t).l₂ (fun x => inC O.c' (O.φ t x)) = fun q => inC O.c' (O.w t j q)` using `funext fun q => (PairModel.hatC_phiHat (O.dδ t).c₂ (fun x => (O.dδ t).eF (O.φ t x)) q).symm.trans (congrArg (inC (O.dδ t).c₂) (hP.w t j q).symm)`. Rewrite `hcl` using `[← hep, hw, hΛ, MvPolynomial.rename_rename]`. Establish `hsm : ∀ f, thetaKO (R.ωP i (tup t)) (h j) (γ * g') (ka • f) = ka * thetaKO (R.ωP i (tup t)) (h j) (γ * g') f` using `fun f => by rw [thetaKO, thetaKO, map_smul]; rfl`. Rewrite using `[hsm]`.
-
-Use `(congrArg (fun z => inC O.c' (O.vol t * ((O.gam t j : O.c'.F))⁻¹) * (ka * z)) hcl).trans ?_` and prove the remaining obligations. Simplify using `only [serConst, map_mul, map_inv₀, map_natCast]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem ad_value_core (hC : GlobalTheory.Hk3.Core R F) (hT : TieIn T R κ v₀) (O : OMDat T.toCore R i Tp tup)
     (hP : O.Pins (κ i) (v₀ i (sg0 D A)) (iotaW T i) (T.x₀ ((i : ℕ) + 1) O.s0)) {ka : ℂ} (hka : IoAt O (v₀ i (sg0 D A)) ka)
@@ -129,17 +127,17 @@ theorem ad_value_core (hC : GlobalTheory.Hk3.Core R F) (hT : TieIn T R κ v₀) 
 set_option maxHeartbeats 2000000 in
 
 /- English proof (translation)
-Establish `hs : O.s0 = T.toCore.σ₀` using `sOv_eq _ _ _`. Establish `hσ : GoodEmb T.Q.c O.s0` using `hs ▸ T.toCore.good_σ₀`. Establish `hmod` using `models_at_record_core D G Pl0 T0 A T R F κ v₀ hC hT i O.s0 hs`. Take `⟨hemb, -, hroot, hmk⟩` from `dict_cast T hT.laws _ (inR i) O.s0 hσ (Wc D i) O.hV (rank_Wc i)`. Take `⟨hX, hon, hinv, hp, hrk, hpq, h1, hrt, -, hbas, hD, -⟩` from `hmod (O.dict g').1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hU : IsUnf (unfO O)` using `GlobalTheory.OneMapAll.isUnf_unfExt O.hle (inC O.c') (fun _ => rfl) (hT.laws.unf _ (inR i) O.s0 hσ)`. Take `⟨hx, g, Dc, γ, mk, v, ϑ, κ', B, hat, hsd, hm, hBm, hma, hϑ, hv, hκ, hrd⟩` from `exists_point (unfO O) hσ hU h1 hT.laws.pins.2.1.2 R.θ (Vc D i) (Wc D i) (rank_Wc i) O.dict (iotaW T i) (T.x₀ ((i : ℕ) + 1) O.s0) (fun Wt k => hmk R.θ hC.models.inf (fun k => (hmod k).1) h1 ⟨Wt.g, Wt.e, Wt.F, Wt.ik, Wt.φ, Wt.isom, Wt.pt⟩ k) (wtA (κ i)) hD O.mu (R.ωP i A.μ0) (R.vac …`. Take `⟨hγ, hΛ, hfr⟩` from `hat`. Take `⟨xk, hxk⟩` from `hroot (γ * g')`. Establish `hlev` using `(hP.cov t).1`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨mk₂, hm₂, ha₂, hov⟩` from `GlobalTheory.AdMark.exists_marking D _ _ T.Q.l (O.dδ t).l₂ (Wc D i) _ (rank_Wc i) (iotaW T i) hemb (hlev.2.1 ▸ dvd_mul_right _ _) (hlev.2.2.2.1 ▸ Ideal.mul_le_left) (γ * g')`. Rewrite `hm₂`, `hov` using `[hΛ]`. Establish `hM : 0 < (O.dδ t).l₂.M` using `lt_of_lt_of_le (by norm_num) (O.dδ t).l₂.three_le`. Use `choose Y hY using fun j : O.Cl' t => (DualMark.dual_marking _ _ _ (O.dδ t).l₂ _ _ _ mk₂ _ hsd hm₂ (Complex.isPrimitiveRoot_exp _ hM.ne')).2.2.2.2 (Vc D i).rank (O.Nc t j) ((hP.reps t).1 j).2.2.2.1.1.pos`. Establish `hgeo` using `geo_value hT O hP hc t _ g Dc (γ * g') xk hxk hX hp hpq hrk hD.2 hΛ hsd _ hx hfr mk mk₂ hm hm₂ ha₂ (hov mk hm.mem hma) v ϑ κ' hv hκ Y hY xs f hf _ B hBm hϑ`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `htw` using `GlobalTheory.AdThCore.weil_twist_base D G Pl0 T0 A _ R F hC i (tup t) (γ * g') xk hxk (R.vacP i) (hC.thP.vP i (tup t)).1.2.theta`. Establish `hrd' : Reads R.θ (Vc D i) (Wc D i) (rank_Wc i) ((unfO O).X (O.dict g').1) Dc.bas Dc.idx (R.ωP i (tup t) (1, γ * g') (R.vacP i)) ((((R.xi (tup t) xk : Circle) : ℂ) * (cst (O.dict g').1 * O.mu g' * κ')) • v) (O.dict g').2`. Take `⟨s1, s2⟩` from `((thA_heis_entire_linear_injective _ _ g _ _ Dc.bas Dc.idx Dc.sympl hD.2 _ hx _ hrd.1).2.2 v hv.1).1 ((R.xi (tup t) xk : Circle) : ℂ) 0`. Rewrite `s1`, `s2` using `[zero_smul, add_zero, smul_smul]`. Rewrite `s2` using `[zero_smul, add_zero]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨s1, fun w hw => ?_⟩` and prove the remaining obligations. Rewrite using `[htw, s2, Pi.smul_apply, Pi.smul_apply, hrd.2 w hw, smul_eq_mul, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `had` using `ad_value_core hC hT O hP hka hδ t h J' hR y xs hpl g' γ hγ _ g Dc hX hp hrt _ hon hinv (hbas _) hΛ mk₂ ha₂ v _ hv (hfr ▸ hrd') Y hY`. Establish `hrdU : rdU (unfO O) f (O.dict g').1 (O.dict g').2 = _` using `(dif_pos hx).trans hgeo`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1` using `congrArg (clsSum (inC O.c') ((unfO O).X (O.dict g').1) Dc.hr Dc.bas Dc.idx Dc.eL (O.w t) (O.La t) (O.Nc t) (O.gam t) (O.vol t) (O.ep t) (fun j => O.io (xs j)) ((unfO O).X (O.dict g').1).Λ v Y) hfr`. Rewrite using `[had.trans (congrArg (fun z => _ * z) e1.symm), hrdU]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the hypotheses and the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem exact_identity_core (hC : GlobalTheory.Hk3.Core R F) (hT : TieIn T R κ v₀) (O : OMDat T.toCore R i Tp tup)
     (hP : O.Pins (κ i) (v₀ i (sg0 D A)) (iotaW T i) (T.x₀ ((i : ℕ) + 1) O.s0)) {ka : ℂ} (hka : IoAt O (v₀ i (sg0 D A)) ka)
@@ -196,9 +194,9 @@ theorem exact_identity_core (hC : GlobalTheory.Hk3.Core R F) (hT : TieIn T R κ 
 end
 
 /- English proof (translation)
-Establish `h : 0 < 2 * Real.pi * x` using `by positivity`. Establish `e : (Real.sqrt (2 * Real.pi * x))⁻¹ = Real.exp (-(Real.log (2 * Real.pi * x) / 2))`. Rewrite using `[Real.exp_neg, ← Real.log_sqrt h.le, Real.exp_log (Real.sqrt_pos.2 h)]`. Rewrite using `[e, ← Real.exp_nat_mul, lieFac, GlobalTheory.PtId.degW]`. Use `congr 1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem lieFac_eq_sqrt_pow {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Geo.Tor.Host E} (Dw : Datum H) {x : ℝ} (hx : 0 < x)
     (a : (E →+* ℂ) × ℕ → ℕ) : lieFac Dw x a = (Real.sqrt (2 * Real.pi * x))⁻¹ ^ GlobalTheory.PtId.degW Dw a := by
@@ -213,15 +211,15 @@ theorem lieFac_eq_sqrt_pow {E : Type} [Field E] [NumberField E] [IsCMField E] {H
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `_ D G _ _ Pl0 T0 A T _ R F κ v₀ hR hT hI i Tp tup O hP cc hcc`. Establish `hs : O.s0 = T.toCore.σ₀` using `sOv_eq _ _ _`. Take `⟨h1, h2, -⟩` from `GlobalTheory.PtId.dict_cast T hT.laws _ (inR i) O.s0 (hs ▸ T.toCore.good_σ₀) (Wc D i) O.hV (rank_Wc i)`. Take `⟨δ, hδ⟩` from `GlobalTheory.T.thetaKernel_oneClass_eq_classicalShortSeries D G Pl0 T0 A _ R F hR i hP.lift.std _ _ (iotaW T i) h1 h2`. Take `⟨ka, hka, hio⟩` from `GlobalTheory.T.fockCoefficientMap_extremal_eq_phase_smul_letters D G Pl0 T0 A T R F κ v₀ hR hT hI i Tp tup O hP`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨c0, hc0, hcov⟩` from `GlobalTheory.AdTh.CoverVal.cover_value_core D G Pl0 T0 A T R F κ v₀ hR hT i Tp tup O hP`. Establish `hd : ‖((δ : ℤ) : ℂ)‖ = 1`. Apply the tactic sequence `rcases Int.units_eq_one_or δ with rfl | rfl <;> simp`. Establish `hu : ‖ka * (-((δ : ℤ) : ℂ)) ^ GlobalTheory.PtId.degW (T.Q.Dw ((i : ℕ) + 1)) (wtA (κ i)) * c0⁻¹‖ = 1`. Rewrite using `[norm_mul, norm_mul, norm_pow, norm_neg, norm_inv, hka, hc0, hd]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Use `⟨_, hu, fun k => ?_, norm_one, fun t h J' hrep y x hpl f _ hf g => ?_⟩` and prove the remaining obligations. Rewrite using `[Pi.smul_apply, smul_eq_mul, norm_mul, hu, hcc.1 k, one_mul]`. Establish `hne : c0 ≠ 0` using `norm_ne_zero_iff.1 (hc0 ▸ one_ne_zero)`. Establish `hx : 0 < xiR D` using `norm_pos_iff.2 ((_root_.map_ne_zero _).2 (GlobalTheory.DualPairCompare.embedding_xi_zero_ne_zero D))`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key` using `exact_identity_core hR hT O hP hio hδ hcov hcc t h J' hrep y x hpl f hf g`. Use `mul_left_cancel₀ hne ?_` and prove the remaining obligations. Rewrite using `[one_mul, key, lieFac_eq_sqrt_pow _ hx, serConst, Pi.smul_apply, smul_eq_mul, neg_pow]`. Establish `hre : rdU (GlobalTheory.PtId.unfO O) f (O.dict g).1 (O.dict g).2 = rdU (unfBC O.hle (T.U ((i : ℕ) + 1)) (inC O.c')) f (O.dict g).1 (O.dict g).2` using `rfl`. Rewrite using `[hre]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Generalize the expression as in `rdU (unfBC O.hle (T.U ((i : ℕ) + 1)) (inC O.c')) f (O.dict g).1 (O.dict g).2 = z`. Rewrite using `[Complex.ofReal_pow, Complex.ofReal_inv]`. Generalize the expression as in `((Real.sqrt (2 * Real.pi * xiR D) : ℝ) : ℂ)⁻¹ ^ GlobalTheory.PtId.degW (T.Q.Dw ((i : ℕ) + 1)) (wtA (κ i)) = s`. Establish `e : c0 * c0⁻¹ = 1` using `mul_inv_cancel₀ hne`. Take the linear combination `(-(ka * ((-1) ^ GlobalTheory.PtId.degW (T.Q.Dw ((i : ℕ) + 1)) (wtA (κ i)) * ((δ : ℤ) : ℂ) ^ GlobalTheory.PtId.degW (T.Q.Dw ((i : ℕ) + 1)) (wtA (κ i))) * cc (O.dict g).1 * s * O.mu g * z)) * e`.
+Replace the chosen expression with an arbitrary variable. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem exists_serOf_core : Formalism.MainNotions.ModuliIntegralCharts.H1.ChartIndepSt2 → ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T0 : Type) (A : Formalism.L2.DIV.FamIn D.what₂.LL G Pl0 T0 D.R.m) (T : CoreJ D) [Algebra T.Q.c.F D.what₂.LL] (R : RealDat D A T.Q.c.F) (F : Face D A) (κ : ∀ i : Fin D.R.m, WeightFamilies.Wt D ((i : ℕ) + 1)) (v₀ : ∀ (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ), (R.MW i σ).Vec), GlobalTheory.Hk3.Core R F → TieIn T R κ v₀ → IoExt R → ∀ (i : Fin D.R.m) (Tp : Type) (tup : Tp → T0) (O : OMDat T.toCore R i Tp tup), O.Pins (κ i) (v₀ i (sg0 D A)) (iotaW T i) (T.x₀ ((i : ℕ) + 1) O.s0) → ∀ cc, CcIs R.θ (Vc D i) (Wc D i) (rank_Wc i) (T.U ((i : ℕ) + 1) O.s0) O.dict O.mu (T.x₀ ((i : ℕ) + 1) O.s0) (R.ωP i A.μ0) (R.vacP i) cc → ∃ u : ℂ, ‖u‖ = 1 ∧ SerOf O (κ i) (v₀ i (sg0 D A)) (u • cc) 1 := by
   intro _ D G _ _ Pl0 T0 A T _ R F κ v₀ hR hT hI i Tp tup O hP cc hcc

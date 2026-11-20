@@ -17,7 +17,7 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 attribute [local instance] AdeleBaseChange.algebraAdeleRing
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `!![(a : A K), 0; 0, 1] * !![1, b; 0, 1] = !![1, (a : A K) * b; 0, 1] * !![(a : A K), 0; 0, 1]`. Simplify using `[Matrix.mul_fin_two]`.
+Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 -/
 private theorem aE_mul_nU {K : Type} [Field K] [NumberField K] (a : (A K)ˣ) (b : A K) :
     aE a * gl (nU b) = gl (nU ((a : A K) * b)) * aE a := by
@@ -26,7 +26,7 @@ private theorem aE_mul_nU {K : Type} [Field K] [NumberField K] (a : (A K)ˣ) (b 
   simp [Matrix.mul_fin_two]
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `!![1, b + c; 0, 1] = !![1, b; 0, 1] * !![1, c; 0, 1]`. Simplify using `[Matrix.mul_fin_two, add_comm]`.
+Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 -/
 private theorem nU_add {K : Type} [Field K] [NumberField K] (b c : A K) :
     nU (b + c) = nU b * nU c := by
@@ -35,7 +35,7 @@ private theorem nU_add {K : Type} [Field K] [NumberField K] (b c : A K) :
   simp [Matrix.mul_fin_two, add_comm]
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `!![1, 1; 0, 1] * !![0, 1; -1, 0] * !![1, 1; 0, 1] = !![0, 1; -1, 0] * !![1, -1; 0, 1] * !![0, 1; -1, 0]`. Simplify using `[Matrix.mul_fin_two]`.
+Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 -/
 private theorem w_rel (K : Type) [Field K] [NumberField K] :
     nU 1 * wW K * nU 1 = wW K * nU (-1) * wW K := by
@@ -47,19 +47,19 @@ private def twoU (K : Type) [Field K] [NumberField K] : (A K)ˣ :=
   Units.map (algebraMap K (A K) : K →* A K) (Units.mk0 2 two_ne_zero)
 
 /- English proof (translation)
-Simplify using `[twoU, map_ofNat]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem coe_twoU (K : Type) [Field K] [NumberField K] : ((twoU K : (A K)ˣ) : A K) = 2 := by
   simp [twoU, map_ofNat]
 
 /- English proof (translation)
-The claim follows from `map_mul _ _ _`.
+A detailed English derivation is pending.
 -/
 private theorem gl_mul {K : Type} [Field K] [NumberField K] (x y : G1 K) : gl (x * y) = gl x * gl y :=
   map_mul _ _ _
 
 /- English proof (translation)
-Establish `h1` using `congrArg f (aE_mul_nU (twoU K) b)`. Rewrite `h1` using `[map_mul, map_mul, mul_comm, coe_twoU, two_mul, nU_add, gl_mul, map_mul]`. Establish `h2` using `mul_right_cancel h1`. Conclude with `(mul_eq_left.mp h2.symm)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem hom_nU {K G : Type} [Field K] [NumberField K] [CommGroup G] (f : GL (Fin 2) (A K) →* G) (b : A K) :
     f (gl (nU b)) = 1 := by
@@ -69,7 +69,7 @@ private theorem hom_nU {K G : Type} [Field K] [NumberField K] [CommGroup G] (f :
   exact (mul_eq_left.mp h2.symm)
 
 /- English proof (translation)
-Establish `h1` using `congrArg (fun g => f (gl g)) (w_rel K)`. Simplify using `only [gl_mul, map_mul, hom_nU, mul_one, one_mul] at h1`. Conclude with `(mul_eq_left.mp h1.symm)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem hom_w {K G : Type} [Field K] [NumberField K] [CommGroup G] (f : GL (Fin 2) (A K) →* G) :
     f (gl (wW K)) = 1 := by
@@ -80,13 +80,13 @@ private theorem hom_w {K G : Type} [Field K] [NumberField K] [CommGroup G] (f : 
 variable (D : Dat F E)
 
 /- English proof (translation)
-Simplify using `[Dat.co]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem co_add (z w : A E) (i : Fin 2) : D.co (z + w) i = D.co z i + D.co w i := by
   simp [Dat.co]
 
 /- English proof (translation)
-Establish `h : AdeleBaseChange.adeleMap F E u * w = u • w`. Rewrite using `[Algebra.smul_def, AdeleBaseChange.algebraMap_adeleRing]`. Rewrite using `[h]`. Simplify using `[Dat.co]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem co_mul (u : A F) (w : A E) (i : Fin 2) :
     D.co (AdeleBaseChange.adeleMap F E u * w) i = u * D.co w i := by
@@ -96,49 +96,49 @@ private theorem co_mul (u : A F) (w : A E) (i : Fin 2) :
   simp [Dat.co]
 
 /- English proof (translation)
-Rewrite using `[AdeleBaseChange.adeleBasis_apply, D.b0, map_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem one_eq : (1 : A E) = AdeleBaseChange.adeleBasis D.b 0 := by
   rw [AdeleBaseChange.adeleBasis_apply, D.b0, map_one]
 
 /- English proof (translation)
-Rewrite using `[AdeleBaseChange.adeleBasis_apply, D.b1]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem theta_eq : rt D.θ = AdeleBaseChange.adeleBasis D.b 1 := by
   rw [AdeleBaseChange.adeleBasis_apply, D.b1]
 
 /- English proof (translation)
-Simplify using `[Dat.co, one_eq D]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem coordinate_one_zero : D.co 1 0 = 1 := by
   simp [Dat.co, one_eq D]
 
 /- English proof (translation)
-Simplify using `[Dat.co, one_eq D]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem coordinate_one_one : D.co 1 1 = 0 := by
   simp [Dat.co, one_eq D]
 
 /- English proof (translation)
-Simplify using `[Dat.co, theta_eq D]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem coordinate_squareRoot_zero : D.co (rt D.θ) 0 = 0 := by
   simp [Dat.co, theta_eq D]
 
 /- English proof (translation)
-Simplify using `[Dat.co, theta_eq D]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem coordinate_squareRoot_one : D.co (rt D.θ) 1 = 1 := by
   simp [Dat.co, theta_eq D]
 
 /- English proof (translation)
-Establish `h1 : (aE α).val = !![(α : A E), 0; 0, 1]` using `rfl`. Establish `h2 : ((aE α).val.map D.bar)ᵀ = !![D.bar α, 0; 0, 1]`. Apply the tactic sequence `rw [h1]; ext i j; fin_cases i <;> fin_cases j <;> simp`. Establish `hm : (aE α).val * D.herm v * ((aE α).val.map D.bar)ᵀ = !![AdeleBaseChange.adeleMap F E (v 1) * ((α : A E) * D.bar α), AdeleBaseChange.adeleMap F E (v 2) * (α : A E) + AdeleBaseChange.adeleMap F E (v 3) * ((α : A E) * rt D.θ); D.mkE (v 2) (-v 3) * D.bar α, AdeleBaseChange.adeleMap …`. Rewrite using `[h2, h1, Dat.herm]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Matrix.mul_fin_two, Dat.mkE]`. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Expand and normalize the polynomial expressions, which then agree. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Expand and normalize the polynomial expressions, which then agree. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `e0 : D.co (AdeleBaseChange.adeleMap F E (v 0)) 0 = v 0`. Use `co_mul D (v 0) 1 0` as an intermediate fact. Rewrite `this` using `[mul_one, coordinate_one_zero, mul_one]`. Then use the resulting hypothesis. Rewrite using `[Dat.act, hm]`. Use extensionality with `i`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Use `fin_cases i`. Simplify using `[Dat.unherm, e0]`. Simplify using `[Dat.unherm, co_mul]`. Simplify using `[Dat.unherm, co_mul, co_add]`. Simplify using `[Dat.unherm, co_mul, co_add]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem act_aE (α : (A E)ˣ) (v : V4 F) :
     D.act (aE α) v = ![v 0, v 1 * D.co ((α : A E) * D.bar α) 0,
@@ -169,7 +169,7 @@ private theorem act_aE (α : (A E)ˣ) (v : V4 F) :
   · simp [Dat.unherm, co_mul, co_add]
 
 /- English proof (translation)
-Apply `Matrix.mulVec_injective` to reduce the goal to its premises. Use function extensionality and compare the values at `v`. Rewrite using `[← hρ, act_aE]`. Use extensionality with `i`. Apply the tactic sequence `fin_cases i <;> simp [Matrix.mulVec, dotProduct, Fin.sum_univ_four, mul_comm]`.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem rho_aE (ρ : GL (Fin 2) (A E) →* GL (Fin 4) (A F)) (hρ : ∀ h v, D.act h v = (ρ h).val *ᵥ v) (α : (A E)ˣ) :
     (ρ (aE α)).val = !![1, 0, 0, 0; 0, D.co ((α : A E) * D.bar α) 0, 0, 0;
@@ -182,7 +182,7 @@ private theorem rho_aE (ρ : GL (Fin 2) (A E) →* GL (Fin 4) (A F)) (hρ : ∀ 
   fin_cases i <;> simp [Matrix.mulVec, dotProduct, Fin.sum_univ_four, mul_comm]
 
 /- English proof (translation)
-Rewrite using `[Algebra.norm_eq_matrix_det (AdeleBaseChange.adeleBasis D.b), Matrix.det_fin_two]`. Simplify using `only [Algebra.leftMulMatrix_eq_repr_mul, ← one_eq D, ← theta_eq D, mul_one]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 private theorem norm_eq (α : A E) : Algebra.norm (A F) α =
     D.co α 0 * D.co (α * rt D.θ) 1 - D.co (α * rt D.θ) 0 * D.co α 1 := by
@@ -191,7 +191,7 @@ private theorem norm_eq (α : A E) : Algebra.norm (A F) α =
   rfl
 
 /- English proof (translation)
-Establish `: Matrix.GeneralLinearGroup.det (aE α) = α`. Apply `Units.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `Matrix.det !![(α : A E), 0; 0, 1] = α`. Simplify using `[Matrix.det_fin_two]`. Rewrite using `[nu, this]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 private theorem nu_aE (α : (A E)ˣ) : nu F (aE α) = ideleNorm F E α := by
   have : Matrix.GeneralLinearGroup.det (aE α) = α := by
@@ -201,7 +201,7 @@ private theorem nu_aE (α : (A E)ˣ) : nu F (aE α) = ideleNorm F E α := by
   rw [nu, this]
 
 /- English proof (translation)
-Establish `h` using `hq (aE α) ![1, 1, 0, 0]`. Rewrite `h` using `[act_aE, nu_aE]`. Simplify `h` using `[q4]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem c_eq (ρ : GL (Fin 2) (A E) →* GL (Fin 4) (A F))
     (hq : ∀ h v, q4 D.δ (D.act h v) = (nu F h : A F) * q4 D.δ v) (α : (A E)ˣ) :
@@ -211,7 +211,7 @@ private theorem c_eq (ρ : GL (Fin 2) (A E) →* GL (Fin 4) (A F))
   simpa [q4] using h
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Establish `h1 : ((Matrix.GeneralLinearGroup.det (ρ (aE α)) : (A F)ˣ) : A F) = (ρ (aE α)).val.det` using `rfl`. Rewrite using `[h1, rho_aE D ρ hρ, c_eq D ρ hq, Units.val_pow_eq_pow_val, coe_ideleNorm, norm_eq D]`. Simplify using `[Matrix.det_succ_row_zero, Fin.sum_univ_succ, Matrix.det_fin_three]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem det_aE (ρ : GL (Fin 2) (A E) →* GL (Fin 4) (A F)) (hρ : ∀ h v, D.act h v = (ρ h).val *ᵥ v)
     (hq : ∀ h v, q4 D.δ (D.act h v) = (nu F h : A F) * q4 D.δ v) (α : (A E)ˣ) :
@@ -223,9 +223,9 @@ private theorem det_aE (ρ : GL (Fin 2) (A E) →* GL (Fin 4) (A F)) (hρ : ∀ 
   ring
 
 /- English proof (translation)
-Set `f₁ : GL (Fin 2) (A E) →* {r : ℝ // 0 < r}` to `(IdeleGroup.ideleModule F).comp ((Matrix.GeneralLinearGroup.det (n := Fin 4) (R := A F)).comp ρ)`. Set `f₂ : GL (Fin 2) (A E) →* {r : ℝ // 0 < r}` to `((IdeleGroup.ideleModule F).comp ((ideleNorm F E).comp (Matrix.GeneralLinearGroup.det (n := Fin 2) (R := A E)))) ^ 2`. Establish `hf : f₁ = f₂`. Apply `MonoidHom.eq_of_eqOn_dense (UpperTheory.ConvolutionTheory.R2.D.genE E)` to reduce the goal to its premises. Introduce and unpack `g ((⟨b, rfl⟩ | rfl) | ⟨α, rfl⟩)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components.
 
-Simplify using `only [hom_nU]`. Simplify using `only [hom_w]`. Express the relevant statement in the definitionally equal form `IdeleGroup.ideleModule F (Matrix.GeneralLinearGroup.det (ρ (aE α))) = IdeleGroup.ideleModule F (nu F (aE α)) ^ 2`. Rewrite using `[det_aE D ρ hρ hq, nu_aE, map_pow]`. Conclude with `DFunLike.congr_fun hf h`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem key (ρ : GL (Fin 2) (A E) →* GL (Fin 4) (A F)) (hρ : ∀ h v, D.act h v = (ρ h).val *ᵥ v)
     (hq : ∀ h v, q4 D.δ (D.act h v) = (nu F h : A F) * q4 D.δ v) (h : GL (Fin 2) (A E)) :
@@ -246,11 +246,11 @@ private theorem key (ρ : GL (Fin 2) (A E) →* GL (Fin 4) (A F)) (hρ : ∀ h v
 end UpperTheory.ConvolutionTheory.R2.D.MeasureActionUnipotent
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ D h`. Take `⟨ρ, hρ, hq, -⟩` from `UpperTheory.ConvolutionTheory.R2.D.actMat F E D`. Set `g : GL (Fin 4) (A F)` to `⟨(ρ h).valᵀ, ((ρ h)⁻¹).valᵀ, by rw [← Matrix.transpose_mul, Units.inv_mul, Matrix.transpose_one], by rw [← Matrix.transpose_mul, Units.mul_inv, Matrix.transpose_one]⟩`. Establish `hfun : D.act h = fun x => x ᵥ* (g : Matrix (Fin 4) (Fin 4) (A F))`. Use function extensionality and compare the values at `v`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[hρ]`. Conclude with `(Matrix.vecMul_transpose _ _).symm`. Establish `hdet : Matrix.GeneralLinearGroup.det g = Matrix.GeneralLinearGroup.det (ρ h)`. Apply `Units.ext` to reduce the goal to its premises. Conclude with `Matrix.det_transpose _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[hfun, GroundTheory.Automorphic.GJGlobal.Modulus.map_vecMul_adeleMeasurePi, hdet, UpperTheory.ConvolutionTheory.R2.D.MeasureActionUnipotent.key D ρ hρ hq h]`. Use `congr 1`. Use `congr 1`. Simplify using `[ab, inv_pow]`.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.R2.D.measAct :
     ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (D : Dat F E) (h : GL (Fin 2) (A E)),

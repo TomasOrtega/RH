@@ -10,7 +10,7 @@ open scoped TensorProduct
 open scoped TensorProduct
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | (exact @GlobalTheory.AfPZero.main) | (exact GlobalTheory.AfPZero.main) | (intros; apply GlobalTheory.AfPZero.main <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.finiteAdeleAwayFromP_eq_zero_of_divisible_coprime : ∀ (p : ℕ) [Fact p.Prime] (α : AfP p), (∀ n : ℕ, 0 < n → n.Coprime p → ∃ β : AfP p, IsIntAf β ∧ α = n • β) → α = 0 := by
   first | (exact @GlobalTheory.AfPZero.main) | (exact GlobalTheory.AfPZero.main) | (intros; apply GlobalTheory.AfPZero.main <;> assumption)

@@ -10,7 +10,7 @@ open Formalism.IndefR Formalism.IndefR.Links Formalism.IndefR.Lev Formalism.Inde
 namespace GlobalTheory.IndefiniteRowSideFullHecke.DownUpLambdaOperators
 
 /- English proof (translation)
-Rewrite using `[Ne, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot, Nat.cast_eq_zero]`. Conclude with `mul_ne_zero (D.host.g_prime 0).ne_zero (D.host.g_prime 1).ne_zero`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem typeIdeal_ne (D : D7) :
     Ideal.span {((D.host.g 0 * D.host.g 1 : ℕ) : 𝓞 D.host.F)} ≠ 0 := by
@@ -21,7 +21,7 @@ def typePlaces (D : D7) : Finset (HeightOneSpectrum (𝓞 D.host.F)) :=
   (Ideal.finite_factors (typeIdeal_ne D)).toFinset
 
 /- English proof (translation)
-Rewrite using `[typePlaces, Set.Finite.mem_toFinset, Set.mem_setOf_eq, Ideal.dvd_span_singleton]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mem_typePlaces (D : D7) (v : HeightOneSpectrum (𝓞 D.host.F)) :
     v ∈ typePlaces D ↔ ((D.host.g 0 * D.host.g 1 : ℕ) : 𝓞 D.host.F) ∈ v.asIdeal := by
@@ -73,7 +73,7 @@ def ThmBAt (R : RealDat D A Ks) (F : Face D A) : Prop :=
     R.IsGrp F → R.IsFam → R.IsModels → R.IsChain → R.IsThP → Concl R
 
 /- English proof (translation)
-Take `⟨lam, hpos, -, κ, hκ, hK⟩` from `h`. Conclude with `⟨_, mul_pos hκ (Finset.prod_pos fun j _ => hpos t j c), hK t c⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem Concl.scalar_pos {R : RealDat D A Ks} (h : Concl R) (t : T) (c : Eig D) :
     ∃ l : ℝ, 0 < l ∧ ∀ x ∈ partE R c, dnUp R t x = (l : ℂ) • x := by
@@ -81,11 +81,11 @@ theorem Concl.scalar_pos {R : RealDat D A Ks} (h : Concl R) (t : T) (c : Eig D) 
   exact ⟨_, mul_pos hκ (Finset.prod_pos fun j _ => hpos t j c), hK t c⟩
 
 /- English proof (translation)
-Take `⟨lam, -, hl, κ, hκ, hK⟩` from `h`. Use `⟨κ, hκ, fun lam' hl' t c x hx => ?_⟩` and prove the remaining obligations. Distinguish the cases in `h0 : partE R c = ⊥`. Rewrite `hx` using `[h0, Submodule.mem_bot]`. Rewrite using `[hx, map_zero, smul_zero]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hK t c x hx]`. Use `congr 3`. Use `Finset.prod_congr rfl fun j hj => ?_` and prove the remaining obligations. Rewrite `hj` using `[Finset.mem_Icc]`. Use `Lift.IsLamP.unique (hl ⟨j - 1, by omega⟩ t) (hl' ⟨j - 1, by omega⟩ t) (hm c h0 _)` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `this` using `[show j - 1 + 1 = j by omega]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem Concl.of_match {R : RealDat D A Ks} (h : Concl R) (hm : ∀ c, partE R c ≠ ⊥ → ∀ i, partW R i c ≠ ⊥) :
     ∃ κ : ℝ, 0 < κ ∧ ∀ lam, IsLam R lam → Lift.IsKap D.R.m (dnUp R) (partE R) lam κ := by

@@ -9,9 +9,9 @@ noncomputable def wg (x : ℕ → ℝ) (i j : ℕ) : ℝ :=
   if i < j then (x i - x j) / ((j : ℝ) - (i : ℝ)) else 1
 
 /- English proof (translation)
-Establish `h1 : ∀ i ∈ range n, ∏ j ∈ Ico (i + 1) n, ((j : ℝ) - (i : ℝ)) = (((n - 1 - i).factorial : ℕ) : ℝ)`. Introduce `i hi`. Rewrite `hi` using `[mem_range]`. Rewrite using `[Finset.prod_Ico_eq_prod_range]`. Establish `e : n - (i + 1) = n - 1 - i` using `by omega`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[e, ← Finset.prod_range_add_one_eq_factorial]`. Use `push_cast`. Conclude with `Finset.prod_congr rfl (fun t _ => by ring)`. Rewrite using `[Finset.prod_congr rfl h1]`. Conclude with `Finset.prod_range_reflect (fun i => ((i.factorial : ℕ) : ℝ)) n`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem denom_eq (n : ℕ) :
     ∏ i ∈ range n, ∏ j ∈ Ico (i + 1) n, ((j : ℝ) - (i : ℝ)) =
@@ -28,11 +28,11 @@ theorem denom_eq (n : ℕ) :
   exact Finset.prod_range_reflect (fun i => ((i.factorial : ℕ) : ℝ)) n
 
 /- English proof (translation)
-Rewrite using `[← Finset.prod_div_distrib]`. Distinguish the cases in `hin : i + 1 ≤ n`. Rewrite using `[← Finset.prod_range_mul_prod_Ico _ hin]`. Establish `h1 : ∏ j ∈ range (i + 1), wg x i j = 1` using `Finset.prod_eq_one (fun j hj => by`. Rewrite `hj` using `[mem_range]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `[wg, show ¬ i < j by omega])`. Rewrite using `[h1, one_mul]`. Conclude with `Finset.prod_congr rfl (fun j hj => by`. Rewrite `hj` using `[mem_Ico]`. Simplify using `[wg, show i < j by omega])`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `push_neg at hin`. Rewrite using `[Finset.Ico_eq_empty_of_le (by omega), Finset.prod_empty]`. Conclude with `Finset.prod_eq_one (fun j hj => by`. Rewrite `hj` using `[mem_range]`. Simplify using `[wg, show ¬ i < j by omega])`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem row_eq (x : ℕ → ℝ) (n i : ℕ) :
     ∏ j ∈ range n, wg x i j =
@@ -54,15 +54,15 @@ theorem row_eq (x : ℕ → ℝ) (n i : ℕ) :
       simp [wg, show ¬ i < j by omega])
 
 /- English proof (translation)
-Introduce `n μ w c hμ`. Establish `hterm : ∀ i j : Fin n, (((if i < j then (((μ i : ℤ) : ℚ) - ((μ j : ℤ) : ℚ) + ((j : ℕ) : ℚ) - ((i : ℕ) : ℚ)) / (((j : ℕ) : ℚ) - ((i : ℕ) : ℚ)) else 1 : ℚ)) : ℝ) = wg (shiftSeq w) i j`. Introduce `i j`. Unfold `wg`. Distinguish the cases in `h : i < j`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails.
 
-Establish `h' : (i : ℕ) < (j : ℕ)` using `h`. Rewrite using `[if_pos h, if_pos h']`. Establish `hi : shiftSeq w (i : ℕ) = ((w i : ℤ) : ℝ) - ((i : ℕ) : ℝ)`. Simplify using `[shiftSeq]`. Establish `hj : shiftSeq w (j : ℕ) = ((w j : ℤ) : ℝ) - ((j : ℕ) : ℝ)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[shiftSeq]`. Rewrite using `[hi, hj, hμ i, hμ j]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `h' : ¬ (i : ℕ) < (j : ℕ)` using `h`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Rewrite using `[if_neg h, if_neg h', Rat.cast_one]`. Rewrite using `[Rat.cast_prod]`. Simplify using `only [Rat.cast_prod]`. Rewrite using `[Finset.prod_congr rfl (fun i _ => Finset.prod_congr rfl (fun j _ => hterm i j))]`. Establish `e1 : ∀ i : ℕ, ∏ j : Fin n, wg (shiftSeq w) i (j : ℕ) = ∏ j ∈ range n, wg (shiftSeq w) i j` using `fun i => Fin.prod_univ_eq_prod_range (wg (shiftSeq w) i) n`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [e1]`. Rewrite using `[Fin.prod_univ_eq_prod_range (fun i => ∏ j ∈ range n, wg (shiftSeq w) i j) n]`. Simplify using `only [row_eq]`. Rewrite using `[Finset.prod_div_distrib, denom_eq]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem weylProd : PI.WeylProd := by
   intro n μ w c hμ

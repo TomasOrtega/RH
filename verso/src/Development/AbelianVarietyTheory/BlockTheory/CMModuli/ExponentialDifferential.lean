@@ -71,14 +71,14 @@ def hom : Multiplicative (Fin g → ℂ) →* Pt A :=
   MonoidHom.mk' (fun z => E.exp z.toAdd) (fun _ _ => E.exp_add _ _)
 
 /- English proof (translation)
-The claim follows from `E.hom.map_one`.
+A detailed English derivation is pending.
 -/
 theorem exp_zero : E.exp 0 = 1 := E.hom.map_one
 
 def lat : Submodule ℤ (Fin g → ℂ) := AddSubgroup.toIntSubmodule (Subgroup.toAddSubgroup' E.hom.ker)
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_lat (z : Fin g → ℂ) : z ∈ E.lat ↔ E.exp z = 1 := Iff.rfl
 
@@ -87,7 +87,7 @@ instance : DiscreteTopology E.lat := E.discrete
 instance : IsZLattice ℝ E.lat := ⟨E.span⟩
 
 /- English proof (translation)
-Rewrite using `[E.exp_add, (E.mem_lat la).1 la.2, _root_.mul_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem exp_add_lat (z : Fin g → ℂ) (la : E.lat) : E.exp (z + la) = E.exp z := by
   rw [E.exp_add, (E.mem_lat la).1 la.2, _root_.mul_one]
@@ -173,9 +173,9 @@ def HasFactor (a : F.toExp.lat → (Fin g → ℂ) → ℂ) : Prop :=
 def IsAH (D : AHDatum F.toExp.lat) : Prop := F.HasFactor D.factor
 
 /- English proof (translation)
-Establish `hx : (F.exp z).mor.base (default : PrimeSpectrum ℂ) ∈ (⨆ i, L.U i)`. Rewrite using `[F.isLB.cover]`. Discharge the goal by the elementary cases of `trivial`. Take `⟨i, hi⟩` from `TopologicalSpace.Opens.mem_iSup.1 hx`. Use `⟨i, fun p _ => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hp : p = (default : PrimeSpectrum ℂ)` using `Subsingleton.elim (α := PrimeSpectrum ℂ) _ _`. Substitute `hp` using the available equality. Conclude with `hi`.
+Establish an intermediate fact. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem exists_chart (z : Fin g → ℂ) : ∃ i, z ∈ pre F.exp (L.U i) := by
   have hx : (F.exp z).mor.base (default : PrimeSpectrum ℂ) ∈ (⨆ i, L.U i) := by
@@ -187,13 +187,13 @@ theorem exists_chart (z : Fin g → ℂ) : ∃ i, z ∈ pre F.exp (L.U i) := by
   exact hi
 
 /- English proof (translation)
-Take `⟨i, h⟩` from `F.exists_chart z`. Establish `e : F.exp (z + la) = F.exp z` using `F.toExp.exp_add_lat z la`. Establish `h' : z + la ∈ pre F.exp (L.U i)`. Express the relevant statement in the definitionally equal form `In (F.exp (z + la)).mor _`. Rewrite using `[e]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h`. Establish `hv : ∀ (x y : Pt A) (_ : x = y) (hx : In x.mor (L.U i)) (hy : In y.mor (L.U i)), val x.mor hx (s.f i) = val y.mor hy (s.f i)`. Introduce `x y hxy hx hy`. Substitute `hxy` using the available equality. Both sides reduce to the same expression.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `h1` using `hs i z h`. Establish `h2` using `hs i (z + la) h'`. Rewrite `h2` using `[hv _ _ e h' h, h1, ha la z i h h']`. Apply `mul_right_cancel₀ (F.fr_ne i _ h')` to reduce the goal to its premises. Rewrite using `[← h2]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem IsSec.add_lat {F : Unif A L g} {a : F.toExp.lat → (Fin g → ℂ) → ℂ} (ha : F.HasFactor a) {s : L.Sec}
     {θ : (Fin g → ℂ) → ℂ} (hs : F.IsSec s θ) (la : F.toExp.lat) (z : Fin g → ℂ) :
@@ -231,11 +231,11 @@ def theta {g : ℕ} (a b : Fin g → ℝ) (z : Fin g → ℂ) (τ : Siegel g) : 
   ∑' l : Fin g → ℤ, thetaTerm a b z τ.1 l
 
 /- English proof (translation)
-Unfold `theta`. Rewrite using `[← (Equiv.neg (Fin g → ℤ)).tsum_eq]`. Use `tsum_congr fun l => ?_` and prove the remaining obligations. Unfold `thetaTerm`. Use `congr 2`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Simplify using `only [Equiv.neg_apply, Pi.neg_apply]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [Equiv.neg_apply, Pi.neg_apply]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 example {g : ℕ} (a b : Fin g → ℝ) (z : Fin g → ℂ) (τ : Siegel g) :
     theta (-a) (-b) (-z) τ = theta a b z τ := by
@@ -251,7 +251,7 @@ example {g : ℕ} (a b : Fin g → ℝ) (z : Fin g → ℂ) (τ : Siegel g) :
     simp only [Equiv.neg_apply, Pi.neg_apply]; push_cast; ring
 
 /- English proof (translation)
-Unfold `theta jacobiTheta₂`. Rewrite using `[← (Equiv.funUnique (Fin 1) ℤ).symm.tsum_eq]`. Use `tsum_congr fun n => ?_` and prove the remaining obligations. Simplify using `only [thetaTerm, e, jacobiTheta₂_term, Fin.sum_univ_one]`. Use `congr 1`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
 Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/

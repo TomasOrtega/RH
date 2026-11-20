@@ -14,7 +14,7 @@ abbrev Tau (R : Ranks) : Type := R.Psi
 instance tauFintype (R : Ranks) : Fintype (Tau R) := Fintype.ofFinite _
 
 /- English proof (translation)
-Rewrite using `[← Nat.card_eq_fintype_card]`. Conclude with `(factCardPsi R H).1`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_Tau {R : Ranks} (H : Host R) : Fintype.card (Tau R) = R.f := by
   rw [← Nat.card_eq_fintype_card]
@@ -25,25 +25,25 @@ section Cond
 variable {R : Ranks} (H : Host R) {p : ℕ}
 
 /- English proof (translation)
-Rewrite using `[← Nat.mod_mod_of_dvd p hdv, h, Nat.mod_eq_of_lt hm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mod_eq_one_of_cond (h : p % (H.QS * H.q * H.d) = 1) {m : ℕ} (hm : 1 < m)
     (hdv : m ∣ H.QS * H.q * H.d) : p % m = 1 := by
   rw [← Nat.mod_mod_of_dvd p hdv, h, Nat.mod_eq_of_lt hm]
 
 /- English proof (translation)
-The claim follows from `(pow_dvd_pow 2 (Nat.le_add_left 2 R.e)).trans H.tower_dvd`.
+A detailed English derivation is pending.
 -/
 theorem four_dvd_QS : 4 ∣ H.QS := (pow_dvd_pow 2 (Nat.le_add_left 2 R.e)).trans H.tower_dvd
 
 /- English proof (translation)
-Establish `hq1` using `H.hyp.1.one_lt`. Establish `hd1` using `H.hyp.2.1.one_lt`. Establish `hd16 : H.d % 16 = 7` using `H.hyp.2.2.2.1`. Establish `h4 : p % 4 = 1` using `mod_eq_one_of_cond H h (by norm_num) (((four_dvd_QS H).mul_right _).mul_right _)`. Establish `hq : p % H.q = 1` using `mod_eq_one_of_cond H h hq1 ⟨H.QS * H.d, by ring⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hd : p % H.d = 1` using `mod_eq_one_of_cond H h hd1 ⟨H.QS * H.q, by ring⟩`. Establish `h2 : p ∉ H.small`. Introduce `hp`. Establish `hp' : p ∈ H.QS.primeFactors` using `hp`. Use `mod_eq_one_of_cond H h (Nat.prime_of_mem_primeFactors hp').one_lt (((Nat.dvd_of_mem_primeFactors hp').mul_right _).mul_right _)` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `at this`. Establish `hq' : p ≠ H.q` using `by rintro rfl; simp at hq`. Establish `hd' : p ≠ H.d` using `by rintro rfl; simp at hd`. Establish `hj : jacobiSym (-(H.d : ℤ)) p = 1`. Rewrite using `[jacobiSym.neg _ (Nat.odd_iff.2 (by omega)), ZMod.χ₄_nat_one_mod_four h4, one_mul, jacobiSym.quadratic_reciprocity_one_mod_four' (Nat.odd_iff.2 (by omega)) h4, jacobiSym.mod_left, ← Int.natCast_mod, hd, Nat.cast_one, jacobiSym.one_left]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(primeClass_eq_splitK_iff H.toHostRaw).2 ⟨h2, hq', hd', hj⟩`.
+A detailed English derivation is pending.
 -/
 theorem cls_eq_splitK_of_cond (h : p % (H.QS * H.q * H.d) = 1) : H.cls p = .splitK := by
   have hq1 := H.hyp.1.one_lt
@@ -78,9 +78,9 @@ def HasHyperbolicAuxiliaryFrame {R : Ranks} {F E : Type} [Field F] [NumberField 
       ∀ i, (S.Y j).hT z (e i) = 0 ∧ (S.Y j).hT z (f i) = 0)
 
 /- English proof (translation)
-Establish `h : (R.m - 1 - 0) / 2 = R.rS`. Take `⟨a, ha⟩` from `R.m_even`. Unfold `Ranks.rS`. Use linear arithmetic over natural numbers and integers. Use `⟨fun i => S.hypE (i.cast h), fun i => S.hypF (i.cast h), fun _ _ => S.hyp_ee _ _, fun _ _ => S.hyp_ff _ _, fun i i' => ?_, fun _ x => S.hyp_orthX _ x, fun _ => ⟨S.zm, S.zm_norm, S.zm_orth, fun _ => S.hyp_orthz _⟩⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[S.hyp_ef]`. Simplify using `[Fin.ext_iff]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem auxiliary_frame_zero {R : Ranks} {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [StarRing E]
     [Algebra F E] (S : Spaces R F E) : HasHyperbolicAuxiliaryFrame S 0 := by
@@ -164,49 +164,49 @@ namespace Pre
 variable (B : Pre)
 
 /- English proof (translation)
-Introduce `p hp` and use `(B.level_cond p hp).1`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem level_prime : ∀ p ∈ B.host.levelPrimes, p.Prime := fun p hp => (B.level_cond p hp).1
 
 /- English proof (translation)
-Introduce `p hp` and use `cls_eq_splitK_of_cond B.host (B.level_cond p hp).2`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem level_split : ∀ p ∈ B.host.levelPrimes, B.host.cls p = .splitK :=
   fun p hp => cls_eq_splitK_of_cond B.host (B.level_cond p hp).2
 
 /- English proof (translation)
-Introduce `p hp` and use `mod_eq_one_of_cond B.host (B.level_cond p hp).2 (by norm_num) (((four_dvd_QS B.host).mul_right _).mul_right _)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem level_mod_four : ∀ p ∈ B.host.levelPrimes, p % 4 = 1 := fun p hp =>
   mod_eq_one_of_cond B.host (B.level_cond p hp).2 (by norm_num)
     (((four_dvd_QS B.host).mul_right _).mul_right _)
 
 /- English proof (translation)
-Introduce `k` and use `(B.level_cond _ (B.host.g_level k)).2`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem g_cond : ∀ k, B.host.g k % (B.host.QS * B.host.q * B.host.d) = 1 :=
   fun k => (B.level_cond _ (B.host.g_level k)).2
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(B.level_cond _ B.host.pde_level.1).2, (B.level_cond _ B.host.pde_level.2).2⟩`.
+Supply the required witnesses or components.
 -/
 theorem pde_cond : B.host.pde % (B.host.QS * B.host.q * B.host.d) = 1 ∧
     B.host.pde' % (B.host.QS * B.host.q * B.host.d) = 1 :=
   ⟨(B.level_cond _ B.host.pde_level.1).2, (B.level_cond _ B.host.pde_level.2).2⟩
 
 /- English proof (translation)
-Introduce `u` and use `B.level_prime _ (B.T_level u)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem T_prime : ∀ u, (B.T u).Prime := fun u => B.level_prime _ (B.T_level u)
 
 /- English proof (translation)
-Introduce `u` and use `(B.level_cond _ (B.T_level u)).2`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem T_cond : ∀ u, B.T u % (B.host.QS * B.host.q * B.host.d) = 1 :=
   fun u => (B.level_cond _ (B.T_level u)).2
 
 /- English proof (translation)
-Use `letI := B.host.cmStar`. Introduce `j hj`. Break down `Nat.eq_zero_or_pos j with rfl | h` into its components or cases. Conclude with `auxiliary_frame_zero _`. Conclude with `B.auxiliaryFrame j h hj`.
+Equip the data with the indicated structure. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem auxiliary_frame_exists : letI := B.host.cmStar; ∀ j, j < B.R.m → HasHyperbolicAuxiliaryFrame B.sp j := by
   letI := B.host.cmStar
@@ -216,7 +216,7 @@ theorem auxiliary_frame_exists : letI := B.host.cmStar; ∀ j, j < B.R.m → Has
   · exact B.auxiliaryFrame j h hj
 
 /- English proof (translation)
-Use `letI := B.host.cmStar`. Introduce `j h1 h2 τ`. Rewrite using `[factVSig B.R B.host.F B.sp j h1 h2 τ, B.V_pos j h1 h2, B.sp.V_rank j h1 h2]`. Both sides reduce to the same expression.
+Equip the data with the indicated structure. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem V_posDef : letI := B.host.cmStar; ∀ j, 1 ≤ j → j ≤ B.R.m → (B.sp.V j).IsPosDef := by
   letI := B.host.cmStar
@@ -225,19 +225,17 @@ theorem V_posDef : letI := B.host.cmStar; ∀ j, 1 ≤ j → j ≤ B.R.m → (B.
   rfl
 
 /- English proof (translation)
-Use `letI := B.host.cmStar`. Introduce `j hj τ`. Establish `hτ : ∀ a, τ (star a) = starRingEnd ℂ (τ a)` using `B.sp.cm.cmUnram.2.1 τ`. Establish `hk` using `B.R.m_add_three_le_k`. Break down `B.sp.X_def j hj τ with h | h` into its components or cases.
+Equip the data with the indicated structure. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `h`. It suffices to derive a contradiction. Establish `hsX` using `B.sp.X_sig j τ`. Rewrite `hsX` using `[h]`. Break down `hj.lt_or_eq with hlt | rfl` into its components or cases.
+It suffices to derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Establish `hw : (Matrix.of fun a b => (B.sp.Y j).hT (B.sp.iXY j ((B.sp.X j).frame a)) (B.sp.iXY j ((B.sp.X j).frame b))) = (B.sp.X j).gram`. Use `Matrix.ext fun a b => ?_` and prove the remaining obligations. Conclude with `B.sp.iXY_isom j hlt _ _`. Rewrite `hsX` using `[← hw]`. Establish `hsY` using `B.sp.Y_sig j τ`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hsum` using `sig_sum _ (B.sp.Y_sig j) τ`. Rewrite `hsY`, `hsum` using `[B.Y_sigval j hj τ]`. Establish `key` using `(sig_family (B.sp.Y j) τ hτ _ hsX hsY).2`. Rewrite `key` using `[B.sp.X_rank j hj]`. Simplify using `only [sigYD, Ranks.N] at key hsum`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Establish `hsY` using `B.sp.Y_sig B.R.m τ`. Rewrite `hsY` using `[B.Y_sigval _ hj τ]`. Establish `hw : (Matrix.of fun a b => (B.sp.X B.R.m).hT (B.sp.iX' (B.sp.eYm.symm ((B.sp.Y B.R.m).frame a))) (B.sp.iX' (B.sp.eYm.symm ((B.sp.Y B.R.m).frame b)))) = (B.sp.Y B.R.m).gram`. Use `Matrix.ext fun a b => ?_` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Matrix.of_apply, B.sp.iX'_isom, ← B.sp.eYm_isom]`. Simplify using `[HSpace.gram]`. Rewrite `hsY` using `[← hw]`. Establish `key` using `(sig_family (B.sp.X B.R.m) τ hτ _ hsY hsX).1`. Simplify using `only [sigYD, Ranks.rankY, Ranks.r] at key`.
-
-Use linear arithmetic over natural numbers and integers.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem X_posDef : letI := B.host.cmStar; ∀ j, j ≤ B.R.m → (B.sp.X j).IsPosDef := by
   letI := B.host.cmStar
@@ -277,7 +275,7 @@ theorem X_posDef : letI := B.host.cmStar; ∀ j, j ≤ B.R.m → (B.sp.X j).IsPo
 def conjF : B.host.E →ₐ[B.host.F] B.host.E := letI := B.host.cmStar; B.sp.cm.sig
 
 /- English proof (translation)
-The claim follows from `bridge_star_holds B.R B.host x`.
+A detailed English derivation is pending.
 -/
 theorem conjF_eq (x : B.host.E) : B.conjF x = B.host.conj x := bridge_star_holds B.R B.host x
 
@@ -285,9 +283,9 @@ def zOf (u : B.Word) : letI := B.host.cmStar; (B.sp.X B.R.m).V :=
   letI := B.host.cmStar; (B.cOf u)⁻¹ • B.sp.z
 
 /- English proof (translation)
-Use `letI := B.host.cmStar`. Establish `hs : ∀ x : B.host.E, star x = B.host.conj x` using `bridge_star_holds B.R B.host`. Establish `h0` using `B.cOf_ne u`. Establish `h1 : B.host.conj (B.cOf u) ≠ 0` using `by simpa using h0`. Unfold `zOf`.
+Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[map_smulₛₗ, map_smulₛₗ, LinearMap.smul_apply, B.z_norm, B.sp_T, ← B.cOf_eq u, starRingEnd_apply, star_inv₀, hs, RingHom.id_apply, smul_eq_mul, smul_eq_mul]`. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 -/
 theorem zOf_norm (u : B.Word) :
     letI := B.host.cmStar; (B.sp.X B.R.m).hT (B.zOf u) (B.zOf u) = (B.T u : B.host.E) := by
@@ -303,7 +301,7 @@ theorem zOf_norm (u : B.Word) :
 def restRowsFiniteGroupCard : ℕ := ∏ k : Fin 2, (Nat.card (GL (Fin B.R.r) (ZMod (B.host.g k)))) ^ B.R.f
 
 /- English proof (translation)
-Use `Finset.prod_pos fun k _ => pow_pos ?_ _` and prove the remaining obligations. Establish `: NeZero (B.host.g k)` using `⟨(B.host.g_prime k).ne_zero⟩`. Conclude with `Nat.card_pos`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem restRowsFiniteGroupCard_pos : 0 < B.restRowsFiniteGroupCard := by
   refine Finset.prod_pos fun k _ => pow_pos ?_ _
@@ -313,7 +311,7 @@ theorem restRowsFiniteGroupCard_pos : 0 < B.restRowsFiniteGroupCard := by
 def ramOrder : ℕ := 8 * (∏ l ∈ B.host.small, l) * B.host.q
 
 /- English proof (translation)
-Unfold `ramOrder`. Use `Nat.mul_pos (Nat.mul_pos (by norm_num) (Finset.prod_pos fun l hl => ?_)) B.host.hyp.1.pos` and prove the remaining obligations. Conclude with `(Nat.prime_of_mem_primeFactors hl).pos`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem ramOrder_pos : 0 < B.ramOrder := by
   unfold ramOrder
@@ -321,26 +319,26 @@ theorem ramOrder_pos : 0 < B.ramOrder := by
   exact (Nat.prime_of_mem_primeFactors hl).pos
 
 /- English proof (translation)
-The claim follows from `Nat.mul_dvd_mul (Dvd.intro _ rfl) dvd_rfl`.
+A detailed English derivation is pending.
 -/
 theorem eight_mul_q_dvd_ramOrder : 8 * B.host.q ∣ B.ramOrder :=
   Nat.mul_dvd_mul (Dvd.intro _ rfl) dvd_rfl
 
 /- English proof (translation)
-The claim follows from `(Nat.mul_dvd_mul_left 8 (Finset.dvd_prod_of_mem (fun l => l) hl)).mul_right _`.
+A detailed English derivation is pending.
 -/
 theorem eight_mul_dvd_ramOrder {l : ℕ} (hl : l ∈ B.host.small) : 8 * l ∣ B.ramOrder :=
   (Nat.mul_dvd_mul_left 8 (Finset.dvd_prod_of_mem (fun l => l) hl)).mul_right _
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h => Nat.not_prime_zero (B.level_prime _ h), fun h => Nat.not_prime_one (B.level_prime _ h), fun h => by simpa using B.level_mod_four _ h, fun h => by simpa using B.level_mod_four _ h⟩`.
+Supply the required witnesses or components.
 -/
 example : 0 ∉ B.host.levelPrimes ∧ 1 ∉ B.host.levelPrimes ∧ 2 ∉ B.host.levelPrimes ∧ 4 ∉ B.host.levelPrimes :=
   ⟨fun h => Nat.not_prime_zero (B.level_prime _ h), fun h => Nat.not_prime_one (B.level_prime _ h),
     fun h => by simpa using B.level_mod_four _ h, fun h => by simpa using B.level_mod_four _ h⟩
 
 /- English proof (translation)
-Use `letI := B.host.cmStar`. Rewrite using `[B.z_norm, B.sp.zm_norm, add_neg_cancel]`.
+Equip the data with the indicated structure. Rewrite the conclusion using the stated equalities.
 -/
 example : letI := B.host.cmStar;
     (B.sp.X B.R.m).hT B.sp.z B.sp.z + (B.sp.Y 0).hT B.sp.zm B.sp.zm = 0 := by
@@ -410,36 +408,36 @@ abbrev O : Type := 𝓞 B.Ks
 def OtoLL : B.O →+* B.LL := (B.Ks.val : B.Ks →+* B.LL).comp (algebraMap (𝓞 B.Ks) B.Ks)
 
 /- English proof (translation)
-The claim follows from `Subtype.val_injective.comp (RingOfIntegers.coe_injective (K := B.Ks))`.
+A detailed English derivation is pending.
 -/
 theorem OtoLL_injective : Function.Injective B.OtoLL :=
   Subtype.val_injective.comp (RingOfIntegers.coe_injective (K := B.Ks))
 
 /- English proof (translation)
-The claim follows from `(RingOfIntegers.isIntegral_coe y).map (B.Ks.val : B.Ks →+* B.LL).toIntAlgHom`.
+A detailed English derivation is pending.
 -/
 theorem O_int (y : B.O) : IsIntegral ℤ (B.OtoLL y) :=
   (RingOfIntegers.isIntegral_coe y).map (B.Ks.val : B.Ks →+* B.LL).toIntAlgHom
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨⟨⟨x, hx⟩, (isIntegral_algHom_iff (B.Ks.val : B.Ks →+* B.LL).toIntAlgHom Subtype.val_injective).1 hi⟩, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem O_full (x : B.LL) (hx : x ∈ B.Ks) (hi : IsIntegral ℤ x) : ∃ y : B.O, B.OtoLL y = x :=
   ⟨⟨⟨x, hx⟩, (isIntegral_algHom_iff (B.Ks.val : B.Ks →+* B.LL).toIntAlgHom Subtype.val_injective).1 hi⟩, rfl⟩
 
 /- English proof (translation)
-The claim follows from `B.O_full _ (B.E_le_Ks _) ((RingOfIntegers.isIntegral_coe x).map B.embE.toIntAlgHom)`.
+A detailed English derivation is pending.
 -/
 theorem O_contains (x : 𝓞 B.host.E) : ∃ y : B.O, B.OtoLL y = B.embE (x : B.host.E) :=
   B.O_full _ (B.E_le_Ks _) ((RingOfIntegers.isIntegral_coe x).map B.embE.toIntAlgHom)
 
 /- English proof (translation)
-The claim follows from `B.Ks_le (B.E_le_Ks x)`.
+A detailed English derivation is pending.
 -/
 theorem hostField_le_fixedField (x : B.host.E) : B.embE x ∈ B.LL0 := B.Ks_le (B.E_le_Ks x)
 
 /- English proof (translation)
-Apply `B.embLL.injective` to reduce the goal to its premises. Rewrite using `[B.starLL_cx]`. Establish `h : ∀ y, B.embLL (B.embE y) = B.host.φ₀ y` using `fun y => RingHom.congr_fun B.embE_φ₀ y`. Rewrite using `[h, h]`. Conclude with `B.host.conjE_apply _ _`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem embE_conj (x : B.host.E) : B.embE (B.host.conj x) = star (B.embE x) := by
   apply B.embLL.injective
@@ -449,9 +447,9 @@ theorem embE_conj (x : B.host.E) : B.embE (B.host.conj x) = star (B.embE x) := b
   exact B.host.conjE_apply _ _
 
 /- English proof (translation)
-Take `⟨z, hz, h⟩` from `B.rootOfUnity_eightQ_mem_coeffGaloisSubfield`. Take `⟨k, hk⟩` from `hN`. Establish `h0` using `B.ramOrder_pos`. Rewrite `h0`, `h` using `[hk]`. Establish `hN0 : (N : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 (by rintro rfl; simp at h0)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hk0 : (k : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 (by rintro rfl; simp at h0)`. Use `⟨z ^ k, pow_mem hz k, ?_⟩` and prove the remaining obligations. Rewrite using `[map_pow, h, ← Complex.exp_nat_mul]`. Use `congr 1`. Use `push_cast`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations.
 
 Clear the denominators using the available nonvanishing facts.
 -/
@@ -479,11 +477,11 @@ Both sides reduce to the same expression.
 theorem OtoLL_intE (x : 𝓞 B.host.E) : B.OtoLL (B.intE x) = B.embE (x : B.host.E) := rfl
 
 /- English proof (translation)
-Take `⟨β, hβ⟩` from `B.capit 𝔞`. Establish `hinj : Function.Injective (Algebra.linearMap (𝓞 B.Ks) B.Ks)` using `RingOfIntegers.coe_injective`. Establish `hmap : Submodule.map (Algebra.linearMap (𝓞 B.Ks) B.Ks) (𝔞.map B.intE) = Submodule.span (𝓞 B.Ks) {β}`. Rewrite using `[hβ, Ideal.map, Ideal.span, Submodule.map_span]`. Use `congr 1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨_, ⟨a, ha, rfl⟩, rfl⟩`. Conclude with `⟨a, ha, rfl⟩`. Introduce and unpack `⟨a, ha, hx⟩`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨_, ⟨a, ha, rfl⟩, Subtype.ext hx.symm⟩`. Take `⟨b, -, hb⟩ : β ∈ Submodule.map (Algebra.linearMap (𝓞 B.Ks) B.Ks) (𝔞.map B.intE)` from `hmap ▸ Submodule.mem_span_singleton_self β`. Use `⟨b, Submodule.map_injective_of_injective hinj ?_⟩` and prove the remaining obligations. Rewrite using `[hmap, Submodule.map_span, Set.image_singleton, hb]`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem isPrincipal_map_intE (𝔞 : Ideal (𝓞 B.host.E)) : (𝔞.map B.intE).IsPrincipal := by
   obtain ⟨β, hβ⟩ := B.capit 𝔞
@@ -503,7 +501,7 @@ theorem isPrincipal_map_intE (𝔞 : Ideal (𝓞 B.host.E)) : (𝔞.map B.intE).
   rw [hmap, Submodule.map_span, Set.image_singleton, hb]
 
 /- English proof (translation)
-Take `⟨z, hz, h⟩` from `B.roots_Ks (3 ^ 4) (by simp)`. Establish `h1 : IsPrimitiveRoot (B.embLL z) (3 ^ 4)` using `h ▸ Complex.isPrimitiveRoot_exp _ (by norm_num)`. Conclude with `⟨z ^ 27, pow_mem hz _, (h1.of_map_of_injective B.embLL.injective).pow (by norm_num) (by norm_num)⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 example : ∃ z ∈ B.Ks, IsPrimitiveRoot z 3 := by
   obtain ⟨z, hz, h⟩ := B.roots_Ks (3 ^ 4) (by simp)

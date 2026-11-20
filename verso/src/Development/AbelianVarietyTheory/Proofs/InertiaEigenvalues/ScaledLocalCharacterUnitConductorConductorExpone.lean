@@ -10,17 +10,15 @@ open NumberField IsDedekindDomain Matrix GlobalTheory.CuspRep Formalism.UG Globa
 namespace GlobalTheory.RamShift
 
 /- English proof (translation)
-Introduce `E _ _ ϖ w hϖ`. Take `⟨ψ, hψ, hlc, hne⟩` from `GlobalTheory.JSW.psiLoc_addChar_locallyConstant_ne_one E w`. Establish `hcont : Continuous ψ` using `hlc.continuous`. Establish `hnorm : ∀ t, ‖ψ t‖ = 1` using `fun t => by`. Rewrite using `[hψ]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Circle.norm_coe _`. Establish `hne' : ∃ t, ψ t ≠ 1`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Conclude with `hne (AddChar.ext _ _ fun x => by rw [h x, AddChar.one_apply])`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨n, hn⟩` from `GlobalTheory.CharConductor.exists_conductor_exponent E w ψ hcont hnorm hne'`. Establish `hval : Valued.v (((ϖ w ^ (-n) : (w.adicCompletion E)ˣ)) : w.adicCompletion E) = WithZero.exp n`. Rewrite using `[Units.val_zpow_eq_zpow_val, map_zpow₀, hϖ]`. Rewrite using `[← WithZero.exp, ← WithZero.exp_zsmul]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `key : CondOne w (((ϖ w ^ (-n) : (w.adicCompletion E)ˣ)) : w.adicCompletion E)`. Introduce `x`. Establish `h1` using `hn ((((ϖ w ^ (-n) : (w.adicCompletion E)ˣ)) : w.adicCompletion E) * x)`. Simplify using `only [hψ] at h1`. Rewrite `h1` using `[map_mul, hval]`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions.
 
-Establish `h2 : WithZero.exp n * Valued.v x ≤ WithZero.exp n ↔ Valued.v x ≤ 1` using `by conv_lhs => rhs; rw [← mul_one (WithZero.exp n)]`. Conclude with `mul_le_mul_iff_right₀ (zero_lt_iff.mpr WithZero.exp_ne_zero)`. Rewrite `h1` using `[h2]`. Conclude with `h1`. Unfold `condExp`.
-
-Use `split_ifs with h1 h2`. Simplify using `using h1`. Conclude with `h2.choose_spec`. Conclude with `absurd ⟨-n, key⟩ h2`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem condOne_condExp : ∀ (E : Type) [Field E] [NumberField E] (ϖ : ∀ w : HeightOneSpectrum (𝓞 E), (w.adicCompletion E)ˣ) (w : HeightOneSpectrum (𝓞 E)), IsUnifV E w (ϖ w : w.adicCompletion E) → GlobalTheory.RamShift.CondOne w ((ϖ w ^ GlobalTheory.RamShift.condExp ϖ w : (w.adicCompletion E)ˣ) : w.adicCompletion E) := by
   intro E _ _ ϖ w hϖ

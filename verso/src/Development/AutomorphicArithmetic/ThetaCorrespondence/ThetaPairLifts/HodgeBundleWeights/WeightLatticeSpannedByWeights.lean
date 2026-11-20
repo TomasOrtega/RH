@@ -23,11 +23,11 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   {Z : Comp Xo c}
 end General
 /- English proof (translation)
-Introduce `_ D T hT j hp _ _ hj Y e o hG la _ _ hgood m`. Establish `hg0 : ∀ p : ℕ, p.Prime → T.Q.l.GoodAt p` using `Formalism.L2.Pj.goodAt_of_two_primes hT.pins.2.1.1 (D.host.g_prime 0) (D.host.g_prime 1) D.host.g_ne`. Establish `hg : ∀ p : ℕ, p.Prime → Y.d.l₂.GoodAt p` using `GlobalTheory.LawsDeep.goodAt_of_mul _ _ _ hG.lev.1.2.1 hg0`. Establish `hs : ∀ Z : Comp Y.d.Xo₂ Y.d.c₂, Nonempty (TwSec Y.U (xiR D) Z (wtOf (T.Q.Dw j) 0 (m : ℤ)))` using `fun Z => by`. Take `⟨s⟩` from `GlobalTheory.KeyTwDeep.twSec_keyRoot _ _ _ _ _ _ _ _ _ hG.unf hG.xiAbs hG.geo (le_add_right hp) hg Z`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `exists_twPow s m`. Establish `h0` using `(hgood 0).2.2`. Rewrite `h0` using `[zero_add, one_smul]`. Establish `key` using `span_latW_add hG.unf (wtOf (T.Q.Dw j) la 0) (wtOf (T.Q.Dw j) 0 (m : ℤ)) (even_wtOf _ _) hs h0`. Establish `hGG : wtOf (T.Q.Dw j) la 0 + wtOf (T.Q.Dw j) 0 (m : ℤ) = wtOf (T.Q.Dw j) la (m : ℤ)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← wtOf_add, add_zero, zero_add]`. Rewrite `key` using `[hGG]`. Conclude with `key`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem span_weight_lattice_of_weights : _root_.GlobalTheory.CovTop.PublishedHodgeBundleTheorems → ∀ (D : D7) (T : CoreJ D), LawsJ T → ∀ j : ℕ, 1 ≤ (T.Q.Dw j).p → 1 ≤ (T.Q.Dw j).q → 2 < Module.finrank ℚ D.host.E / 2 → InR D j → ∀ (Y : Deep T.toCore j) (e : ℕ) (o : ℝ), Y.Good e o → ∀ (la : GlobalTheory.AllWt.Weight (T.Q.Dw j)), (∀ τ, Antitone (la τ)) → (∀ τ, 1 ≤ gap (la τ) ((T.Q.Dw j).p - 1)) → (∀ k : ℕ, Y.GoodAt (wtOf _ ((k + 1) • la) 0)) → ∀ m : ℕ, Submodule.span Y.d.c₂.F (GlobalTheory.AllWt.latW Y.U (wtOf _ la m) : Set (Y.V (wtOf _ la m))) = ⊤ := by
   intro _ D T hT j hp _ _ hj Y e o hG la _ _ hgood m
@@ -60,7 +60,7 @@ open GlobalTheory.BadCount
 open scoped TensorProduct
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.GenShift.span_weight_lattice_of_weights | exact _root_.GlobalTheory.GenShift.span_weight_lattice_of_weights | (intros; apply _root_.GlobalTheory.GenShift.span_weight_lattice_of_weights <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.weight_lattice_spanned_by_weights : _root_.GlobalTheory.CovTop.PublishedHodgeBundleTheorems → ∀ (D : D7) (T : CoreJ D), LawsJ T → ∀ j : ℕ, 1 ≤ (T.Q.Dw j).p → 1 ≤ (T.Q.Dw j).q → 2 < Module.finrank ℚ D.host.E / 2 → InR D j → ∀ (Y : Deep T.toCore j) (e : ℕ) (o : ℝ), Y.Good e o → ∀ (la : GlobalTheory.AllWt.Weight (T.Q.Dw j)), (∀ τ, Antitone (la τ)) → (∀ τ, 1 ≤ gap (la τ) ((T.Q.Dw j).p - 1)) → (∀ k : ℕ, Y.GoodAt (wtOf _ ((k + 1) • la) 0)) → ∀ m : ℕ, Submodule.span Y.d.c₂.F (GlobalTheory.AllWt.latW Y.U (wtOf _ la m) : Set (Y.V (wtOf _ la m))) = ⊤ := by
   first | exact @_root_.GlobalTheory.GenShift.span_weight_lattice_of_weights | exact _root_.GlobalTheory.GenShift.span_weight_lattice_of_weights | (intros; apply _root_.GlobalTheory.GenShift.span_weight_lattice_of_weights <;> assumption)

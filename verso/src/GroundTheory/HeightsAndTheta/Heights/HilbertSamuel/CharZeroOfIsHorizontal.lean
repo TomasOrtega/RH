@@ -10,9 +10,9 @@ open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.Cha
 noncomputable section
 
 /- English proof (translation)
-Use `charZero_of_inj_zero fun n hn => ?_` and prove the remaining obligations. Establish `hmem : (MvPolynomial.C (n : ℤ) : MRing ι) ∈ mCoordIdeal y` using `by show mConeMap y (MvPolynomial.C (n : ℤ)) = 0`. Rewrite using `[mConeMap, MvPolynomial.aeval_C, eq_intCast, Int.cast_natCast, ← map_natCast (MvPolynomial.C : Ω →+* MvPolynomial K Ω), hn, map_zero]`. Establish `h' : (n : ℤ) ∈ (mCoordIdeal y).comap (MvPolynomial.C : ℤ →+* MRing ι)` using `hmem`. Rewrite `h'` using `[h]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(Submodule.mem_bot _).mp h'` after adjusting the coercions.
+A detailed English derivation is pending.
 -/
 theorem charZero_of_isHorizontal {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {Ω : Type} [Field Ω]
     (y : (Σ k, ι k) → Ω) (h : IsHorizontal (mCoordIdeal y)) : CharZero Ω := by
@@ -26,7 +26,7 @@ theorem charZero_of_isHorizontal {K : Type} [Fintype K] {ι : K → Type} [∀ k
   exact_mod_cast (Submodule.mem_bot _).mp h'
 
 /- English proof (translation)
-Introduce `K _ ι _ Ω _ y D A P0 II hD hII har hb hP0 hs hnef hc`. Distinguish the cases in `hbig : 0 < genDeg (mCoordIdeal y) D A.a`. Establish `: CharZero Ω` using `charZero_of_isHorizontal y har.2.2.1`. Conclude with `hB K ι Ω y D A P0 II hD hII har hb ⟨hP0, hs, hc, hnef, hbig⟩`. Conclude with `hZ K ι Ω y D A P0 II hD hII har hb hP0 hs hnef hc (not_lt.mp hbig)`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem ArithmeticVolumeBig.proof (hB : G6.StatementB) (hZ : ArithmeticVolumeDegreeZero.Statement) : ArithmeticVolumeBig.Statement := by
   intro K _ ι _ Ω _ y D A P0 II hD hII har hb hP0 hs hnef hc

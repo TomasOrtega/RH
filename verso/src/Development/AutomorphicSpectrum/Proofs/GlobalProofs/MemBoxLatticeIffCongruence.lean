@@ -8,23 +8,23 @@ open scoped ComplexConjugate ValuativeRel
 namespace GlobalTheory.CompanionTheory.QL.QIndex.OnePlus
 
 /- English proof (translation)
-Take `⟨-, hϖ, hle, hlt, -, -, -⟩` from `GlobalTheory.CompanionTheory.QL.NormalisedValue.main hLF`. Use `choose f hf hf' using hx`. Set `ϖ' : O` to `⟨ϖ, hϖ⟩`. Set `y : Matrix (Fin n) (Fin n) O` to `fun a b => ⟨f a b, hf a b⟩`. Set `M : Matrix (Fin n) (Fin n) O` to `1 + ϖ' • y`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hM : O.subtype.mapMatrix M = 1 + x`. Use extensionality with `a b`. Distinguish the cases in `hab : a = b`. Simplify using `[M, y, ϖ', hf', hab]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Simplify using the standard rewrite rules.
 
-Simplify using `[M, y, ϖ', hf', hab, Matrix.one_apply]`. Both sides reduce to the same expression. Set `π` to `Ideal.Quotient.mk (Ideal.span {ϖ'})`. Establish `hπ : π ϖ' = 0` using `Ideal.Quotient.eq_zero_iff_mem.2 (Ideal.subset_span rfl)`. Establish `hred : π.mapMatrix M = 1`.
+Both sides reduce to the same expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [M, map_add, map_one]`. Establish `: π.mapMatrix (ϖ' • y) = 0`. Use extensionality with `a b`. Simplify using `[hπ]`. Rewrite using `[this, add_zero]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hdet : π M.det = 1`. Rewrite using `[RingHom.map_det, hred, Matrix.det_one]`. Establish `hmem : M.det - 1 ∈ Ideal.span {ϖ'}`. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, map_sub, map_one]`. Conclude with `sub_eq_zero.2 hdet`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨a, ha⟩` from `Ideal.mem_span_singleton'.1 hmem`. Establish `hcoe : (1 + x).det = (M.det : F)`. Rewrite using `[← hM, ← RingHom.map_det]`. Both sides reduce to the same expression. Establish `hEq : (1 + x).det = 1 + (a : F) * ϖ`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `congrArg (Subtype.val) ha`. Establish `h3 : (a : F) * ϖ = (M.det : F) - 1` using `by simpa [ϖ'] using h2`. Rewrite using `[hcoe, h3]`. Expand and normalize the polynomial expressions, which then agree. Establish `hin : (1 + x).det ∈ O`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hcoe]`. Conclude with `M.det.2`. Use `le_antisymm ((hle _).2 hin) (not_lt.1 fun hl => ?_)` and prove the remaining obligations. Take `⟨o, ho, e⟩` from `(hlt _).1 hl`. Establish `h1 : (1 : F) = ϖ * (o - a)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Establish `: (1 : F) + (a : F) * ϖ = ϖ * o` using `by rw [← hEq, e]`. Take the linear combination `this`. Establish `h2 : nrm (1 : F) < 1` using `(hlt 1).2 ⟨o - a, O.sub_mem ho a.2, h1⟩`. Simplify using `at h2`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem nrm_det_one_add {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
     [IsNonarchimedeanLocalField F] {O : Subring F} {ϖ : F} {nrm : AbsoluteValue F ℝ} {q : ℕ}
@@ -76,27 +76,25 @@ theorem nrm_det_one_add {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace 
   simp at h2
 
 /- English proof (translation)
-Introduce `F _ _ _ _ O ϖ nrm q hLF n β Q hQ T hT x`. Take `⟨-, hϖ, -, -, -, -, -⟩` from `GlobalTheory.CompanionTheory.QL.NormalisedValue.main hLF`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hbt, hent⟩`. Establish `hx' : ∀ a b, ∃ o ∈ O, x a b = ϖ * o` using `fun a b => by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Take `⟨o, ho, e⟩` from `hent a b`. Establish `e' : x a b = ϖ ^ T * o` using `e`. Establish `hTT : ϖ ^ T = ϖ * ϖ ^ (T - 1)`. Rewrite using `[← pow_succ', Nat.sub_add_cancel hT]`. Use `⟨ϖ ^ (T - 1) * o, O.mul_mem (O.pow_mem hϖ _) ho, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[e', hTT, mul_assoc]`. Establish `hdet` using `nrm_det_one_add hLF hx'`. Establish `hne : (1 + x).det ≠ 0` using `fun e => by`. Rewrite `hdet` using `[e]`. Simplify using `at hdet`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Set `g : GL (Fin n) F` to `Matrix.GeneralLinearGroup.mkOfDetNeZero (1 + x) hne`. Establish `hg : (g : Matrix (Fin n) (Fin n) F) = 1 + x` using `rfl`. Establish `hint : IsInt O (g : Matrix (Fin n) (Fin n) F)` using `fun a b => by`. Rewrite using `[hg, Matrix.add_apply]`. Take `⟨o, ho, e⟩` from `hx' a b`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `O.add_mem ?_ (e ▸ O.mul_mem hϖ ho)` and prove the remaining obligations. Distinguish the cases in `hab : a = b`. Rewrite using `[hab, Matrix.one_apply_eq]`. Conclude with `O.one_mem`. Rewrite using `[Matrix.one_apply_ne hab]`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `O.zero_mem`. Establish `hgQ : g ∈ Q`. Rewrite using `[hQ, hg]`. Introduce `i j hij`. Establish `hne' : i ≠ j` using `fun e => by`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Substitute `e` using the available equality. Conclude with `lt_irrefl _ hij`. Simplify using `[hbt hij, hne']`. Use `⟨⟨g, hgQ⟩, ?_, rfl⟩` and prove the remaining obligations. Rewrite using `[Subgroup.mem_subgroupOf]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨(GlobalTheory.CompanionTheory.QLDet.mem_GLint_iff hLF n g).2 ⟨hint, hdet⟩, fun a b => ?_⟩` and prove the remaining obligations. Take `⟨o, ho, e⟩` from `hent a b`. Use `⟨o, ho, ?_⟩` and prove the remaining obligations. Simplify `e` using `[hg]`. Introduce and unpack `⟨p, hp, e⟩`.
+Simplify to obtain the desired conclusion from the available facts. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `hp` using `[Subgroup.mem_subgroupOf]`. Take `⟨-, hl⟩` from `hp`. Establish `hx : x = ((p : GL (Fin n) F) : Matrix (Fin n) (Fin n) F) - 1`. Rewrite using `[e]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨fun i j hij => ?_, fun a b => ?_⟩` and prove the remaining obligations. Establish `h0` using `(hQ _).1 p.2 hij`. Establish `hne' : i ≠ j` using `fun e => by`. Substitute `e` using the available equality. Conclude with `lt_irrefl _ hij`.
-
-Simplify using `[hx, h0, hne']`. Rewrite using `[hx]`. Conclude with `hl a b`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem main : ∀ {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] {O : Subring F} {ϖ : F} {nrm : AbsoluteValue F ℝ} {q : ℕ}, LF O ϖ nrm q → ∀ (n : ℕ) (β : Fin n → ℕ) (Q : Subgroup (GL (Fin n) F)), (∀ g, g ∈ Q ↔ (g : Matrix (Fin n) (Fin n) F).BlockTriangular β) → ∀ T : ℕ, 1 ≤ T → ∀ x : Matrix (Fin n) (Fin n) F, x ∈ boxAdd O β (fun _ _ => ϖ ^ T) ↔ ∃ p ∈ (congGL O (ϖ ^ T) n).subgroupOf Q, ((p : GL (Fin n) F) : Matrix (Fin n) (Fin n) F) = 1 + x := by
   intro F _ _ _ _ O ϖ nrm q hLF n β Q hQ T hT x

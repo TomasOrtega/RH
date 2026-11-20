@@ -12,14 +12,14 @@ open Formalism.BasicNotions Formalism.HermitianLatticesTheory Formalism.L2.DIV F
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-The claim follows from `MonoidHom.ext fun x => Formalism.L2.Forms.reGL_rfl R x`.
+A detailed English derivation is pending.
 -/
 theorem th_reGL_id {n : ℕ} (R : Type) [CommRing R] :
     (Formalism.L2.Forms.reGL (rfl : n = n) R).toMonoidHom = MonoidHom.id (GL (Fin n) R) :=
   MonoidHom.ext fun x => Formalism.L2.Forms.reGL_rfl R x
 
 /- English proof (translation)
-The claim follows from `(Formalism.L2.Forms.reL_rfl Lb).symm Uloc_eq := fun v => by rw [th_reGL_id, Subgroup.map_id] U_eq := by rw [th_reGL_id, Subgroup.map_id] y_eq := fun c => (Formalism.L2.Forms.reGL_rfl _ (y c)).symm st_eq := fun c s => (Formalism.L2.Forms.reGL_rfl _ (st c s)).symm`.
+A detailed English derivation is pending.
 -/
 theorem th_sameCar_refl {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {n : ℕ}
     {cls : Type} {stab : cls → Type} (Lb : Submodule (𝓞 E) (Fin n → E))
@@ -40,7 +40,7 @@ variable {X : Fields} {Pr : Primes X} (hc : CMData X.F X.E) (hX : X.Ok) (hPr : P
   (c₀ : DiaG X.E (Pr.vT u)) (s : DecoCl n (Pr.vT u) Pr.vGs Λ.grp → DecoSet X.E n (Pr.vT u) Pr.vGs)
 
 /- English proof (translation)
-Take `⟨J, f, bad, emb, lat, l0, rfl, rfl, rfl, rfl, rfl, rfl⟩` from `Q`. Take `⟨n', hn, J, rfl, f, rfl, bad, rfl, lat, hlat⟩` from `H`. Substitute `hn` using the available equality. Take `rfl : lat = fun c => (s c).1.L` from `funext fun c => (hlat c).trans (Formalism.L2.Forms.reL_rfl _)`. Conclude with `th_sameCar_refl _ _ _ _ _`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Substitute using the available equality. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem levPack_sameCar (hS : DecoPtSurj hc n (Pr.vT u) Pr.vGs) (hs : ∀ c, decoCls n (Pr.vT u) Pr.vGs Λ.grp (s c) = c)
     (hK : LocalLevelIsKOneAtT hc u Λ) (H : HCrd Pr n fun c => (s c).1.L) (Q : StepCrd Pr σ₀ n fun c => (s c).1.L) :
@@ -64,7 +64,7 @@ variable {d : ColDat} (a : ColArgs d) (hS : SpStd d.toColBase) (hH : HostHyp d) 
   (S : GSplit (Pr := d.Pr) d.sp.cm) (hI : IwAll d S)
 
 /- English proof (translation)
-The claim follows from `levPack_sameCar d.sp.cm d.hX d.hPr d.σ₀ u (d.lev 0) _ _ _ _ (hK u 0) (hCrd0 hS u) (stepCrd a hS hH u 0 (Nat.zero_le _))`.
+A detailed English derivation is pending.
 -/
 theorem characters_level_zero_agree (u : d.what₂.Word) :
     Formalism.L2.Forms.SameCar (Formalism.L2.Forms.rank_eq_first_level d.R) ((hermCols a hS hP hK S hI).lev0 u).Lb (classAgreement a hS hH hP u 0 (Nat.zero_le _)).lev.Lb
@@ -76,7 +76,7 @@ theorem characters_level_zero_agree (u : d.what₂.Word) :
   levPack_sameCar d.sp.cm d.hX d.hPr d.σ₀ u (d.lev 0) _ _ _ _ (hK u 0) (hCrd0 hS u) (stepCrd a hS hH u 0 (Nat.zero_le _))
 
 /- English proof (translation)
-The claim follows from `levPack_sameCar d.sp.cm d.hX d.hPr d.σ₀ u (d.lev i) _ _ _ _ (hK u i) (hCrd hS u i hm) (stepCrd a hS hH u i hm)`.
+A detailed English derivation is pending.
 -/
 theorem th_carI (u : d.what₂.Word) (i : ℕ) (h1 : 1 ≤ i) (hm : i ≤ d.R.m) :
     Formalism.L2.Forms.SameCar (CF.rankN (d.colRec a) i hm) ((hermCols a hS hP hK S hI).lev u i h1 hm).Lb (classAgreement a hS hH hP u i hm).lev.Lb
@@ -94,7 +94,7 @@ section Pr
 variable {D : ColRec} {u : D.what₂.Word} (A : CF.AtTTied u) (P : ∀ i hi, CF.LvTied u A i hi)
 
 /- English proof (translation)
-Rewrite using `[hxPr_eq A P i hi]`. Use `congr 1`. Conclude with `Subtype.ext h`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem th_pr (i : ℕ) (hi : i ≤ D.R.m) (v : (D.mem u).A.vT) (c : (D.mem u).C.cls i) (z : ↥(CH.Ld D u i c)) (z' : ↥(CF.Ld D u i hi c))
     (h : z'.1 = CF.crdN D i hi z.1) : (P i hi).pr v c z' = hxPr A P i v c z := by
@@ -103,7 +103,7 @@ theorem th_pr (i : ℕ) (hi : i ≤ D.R.m) (v : (D.mem u).A.vT) (c : (D.mem u).C
   exact Subtype.ext h
 
 /- English proof (translation)
-Rewrite using `[hxPrk_eq A P i hi]`. Use `congr 1`. Conclude with `Subtype.ext h`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem th_prk (i : ℕ) (hi : i ≤ D.R.m) (v : (D.mem u).A.vT) (c : (D.mem u).C.cls i) (z : ↥(CH.Lk D u (A.Pv v) i c))
     (z' : ↥(CF.Lk A i hi v c)) (h : z'.1 = CF.crdN D i hi z.1) : (P i hi).prk v c z' = hxPrk A P i v c z := by

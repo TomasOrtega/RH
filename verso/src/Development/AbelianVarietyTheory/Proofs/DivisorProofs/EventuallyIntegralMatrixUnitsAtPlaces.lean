@@ -13,9 +13,9 @@ noncomputable section
 namespace GlobalTheory.OrbFinAf.MatrixUnits₂
 
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.MultiplierOrders.exists_order`. Consider the case `exact _root_.GlobalTheory.MultiplierOrders.exists_order`. Consider the case `(apply _root_.GlobalTheory.MultiplierOrders.exists_order <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.MultiplierOrders.exists_order <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.MultiplierOrders.exists_order <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.MultiplierOrders.exists_order ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem exists_order (C : Type) [Ring C] [Algebra ℚ C] [FiniteDimensional ℚ C] :
     ∃ OB : Subring C, Module.Finite ℤ OB ∧ ∀ b : C, ∃ m : ℕ, 0 < m ∧ (m : C) * b ∈ OB := by
@@ -28,11 +28,11 @@ theorem exists_order (C : Type) [Ring C] [Algebra ℚ C] [FiniteDimensional ℚ 
   | (intros; exact _root_.GlobalTheory.MultiplierOrders.exists_order ..)
 
 /- English proof (translation)
-Take `⟨k, g, hg⟩` from `Module.Finite.exists_fin (R := ℤ) (M := OB)`. Establish `H` using `Filter.eventually_all.2 fun i : Fin k => Filter.eventually_all.2 fun m => ratCast_mem_intV_eventually p ((Module.finBasis ℚ G.C).repr (g i : G.C) m)`. Use `H.mono fun v hv x hx => ?_` and prove the remaining obligations. Establish `hx' : (⟨x, hx⟩ : OB) ∈ Submodule.span ℤ (Set.range g)` using `by rw [hg]; exact Submodule.mem_top`. Take `⟨c, hc⟩` from `(Submodule.mem_span_range_iff_exists_fun ℤ).1 hx'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `e : (1 : Qv v) ⊗ₜ[ℚ] x = ∑ i, ((c i : ℤ) : Qv v) ⊗ₜ[ℚ] (g i : G.C)`. Establish `hx2 : x = ∑ i, (c i : ℤ) • (g i : G.C)`. Use `congrArg Subtype.val hc` as an intermediate fact. Simplify using `using this.symm`. Rewrite using `[hx2, TensorProduct.tmul_sum]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← Int.cast_smul_eq_zsmul ℚ, ← TensorProduct.smul_tmul, Algebra.smul_def, mul_one]`. Simplify using the standard rewrite rules. Rewrite using `[e]`. Conclude with `isIntV_of_eq_sum G v _ _ _ (fun i _ => intCast_mem _ _) (fun i _ m => hv i m)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isIntV_order_eventually (p : ℕ) [Fact p.Prime] (G : HTGroup p) (OB : Subring G.C)
     (hfin : Module.Finite ℤ OB) :
@@ -72,7 +72,7 @@ theorem theta_tmul (p : ℕ) [Fact p.Prime] (G : HTGroup p) (v : AwayP p) [Fact 
     theta p G v (r ⊗ₜ c) = (adicCompletion.padicEquiv v.1).symm r ⊗ₜ c := rfl
 
 /- English proof (translation)
-Take `⟨x, hx, hxr⟩` from `(adicCompletion.padicEquiv_bijOn v.1).surjOn (show (r : ℚ_[(primesEquiv v.1 : ℕ)]) ∈ PadicInt.subring _ from r.2)`. Rewrite using `[← hxr, ContinuousAlgEquiv.symm_apply_apply]`. Conclude with `hx`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem padicEquiv_symm_coe_mem (p : ℕ) [Fact p.Prime] (G : HTGroup p) (v : AwayP p) [Fact (primesEquiv v.1 : ℕ).Prime]
     (r : ℤ_[(primesEquiv v.1 : ℕ)]) :
@@ -89,13 +89,11 @@ namespace GlobalTheory.OrbFinAf.MatrixUnits₂
 open Rat.HeightOneSpectrum GlobalTheory.LKInvGood
 
 /- English proof (translation)
-Proceed by induction on `hy using Algebra.adjoin_induction with`. Consider the case `mem x hx`. Take `⟨c, hc, rfl⟩` from `hx`. Rewrite using `[theta_tmul, map_one]`. Conclude with `hO c hc`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `algebraMap r`. Rewrite using `[Algebra.TensorProduct.algebraMap_apply, theta_tmul]`. Introduce `k`. Rewrite using `[basV_repr_tmul]`. Establish `h1k` using `h1 k`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1k` using `[Algebra.TensorProduct.one_def, basV_repr_tmul, one_mul]`. Conclude with `mul_mem (padicEquiv_symm_coe_mem p G v r) h1k`. Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `isIntV_add' G v hx hy`. Consider the case `mul x y _ _ hx hy => rw [map_mul]`.
-
-Conclude with `hmul _ _ hx hy`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem isIntV_theta_locOrder (p : ℕ) [Fact p.Prime] (G : HTGroup p) (v : AwayP p)
     [Fact (primesEquiv v.1 : ℕ).Prime] (OB : Subring G.C)
@@ -119,9 +117,9 @@ theorem isIntV_theta_locOrder (p : ℕ) [Fact p.Prime] (G : HTGroup p) (v : Away
   | mul x y _ _ hx hy => rw [map_mul]; exact hmul _ _ hx hy
 
 /- English proof (translation)
-Establish `hfin : {v : AwayP p | (primesEquiv v.1 : ℕ) ∣ N}.Finite`. Establish `hinj : Function.Injective fun v : AwayP p => (primesEquiv v.1 : ℕ)` using `fun a b h => Subtype.ext (primesEquiv.injective (Subtype.ext h))`. Use `Set.Finite.of_finite_image ?_ hinj.injOn` and prove the remaining obligations. Use `(Set.finite_le_nat N).subset ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨v, hv, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Conclude with `Nat.le_of_dvd hN hv`. Conclude with `hfin.eventually_cofinite_notMem`.
+A detailed English derivation is pending.
 -/
 theorem finite_dvd (p : ℕ) (N : ℕ) (hN : 0 < N) :
     ∀ᶠ v in (Filter.cofinite : Filter (AwayP p)), ¬ (primesEquiv v.1 : ℕ) ∣ N := by
@@ -135,17 +133,15 @@ theorem finite_dvd (p : ℕ) (N : ℕ) (hN : 0 < N) :
   exact hfin.eventually_cofinite_notMem
 
 /- English proof (translation)
-Introduce `p _ G`. Take `⟨OB, hfin, hspan⟩` from `exists_order G.C`. Take `⟨N, hN, hmat⟩` from `GlobalTheory.T.adjoinLocalOrderTensorPadic_matrix_almost_all G.F G.C G.n G.rankC OB hfin hspan`. Use `filter_upwards [finite_dvd p N hN, isIntV_order_eventually p G OB hfin, intV_order_eventually p G] with v hv hO hord`. Use `haveI : Fact (primesEquiv v.1 : ℕ).Prime := ⟨(primesEquiv v.1).2⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Take `⟨ψ, -⟩` from `hmat (primesEquiv v.1 : ℕ) hv`. Set `E : Fin G.n → Fin G.n → Qv v ⊗[ℚ] G.C` to `fun i j => theta p G v ((ψ.symm (Matrix.single i j 1) : locOrder (primesEquiv v.1 : ℕ) OB) : ℚ_[(primesEquiv v.1 : ℕ)] ⊗[ℚ] G.C)`. Use `⟨E, fun i j k l => ?_, ?_, fun i j => isIntV_theta_locOrder p G v OB hO hord.1 hord.2.1 _ (ψ.symm _).2⟩` and prove the remaining obligations. Simplify using `only [E]`. Rewrite using `[← map_mul, ← Subalgebra.coe_mul, ← map_mul]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Use `split_ifs with hjk`. Substitute `hjk` using the available equality. Rewrite using `[Matrix.single_mul_single_same, mul_one]`. Rewrite using `[Matrix.single_mul_single_of_ne (h := hjk), map_zero, ZeroMemClass.coe_zero, map_zero]`. Establish `hs : ∑ i, (Matrix.single i i (1 : cenOrder (primesEquiv v.1 : ℕ) G.F) : Matrix (Fin G.n) (Fin G.n) (cenOrder (primesEquiv v.1 : ℕ) G.F)) = 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Use extensionality with `a b`. Rewrite using `[Matrix.sum_apply, Matrix.one_apply, Finset.sum_eq_single a]`. Distinguish the cases in `h : a = b`. Substitute `h` using the available equality. Simplify using `[Matrix.single_apply]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `[Matrix.single_apply, h]`. Introduce `c _ hc`. Simplify using `[Matrix.single_apply, hc]`. Simplify using the standard rewrite rules. Simplify using `only [E]`.
-
-Rewrite using `[← map_sum (theta p G v), ← AddSubmonoidClass.coe_finset_sum, ← map_sum ψ.symm, hs, map_one, OneMemClass.coe_one, map_one]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem matrixUnits_eventually : ∀ (p : ℕ) [Fact p.Prime] (G : HTGroup p),
     ∀ᶠ v in (Filter.cofinite : Filter (AwayP p)), ∃ E : Fin G.n → Fin G.n → Qv v ⊗[ℚ] G.C,

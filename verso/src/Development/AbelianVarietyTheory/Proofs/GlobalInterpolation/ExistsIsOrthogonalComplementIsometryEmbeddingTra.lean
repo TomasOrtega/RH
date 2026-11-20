@@ -14,31 +14,31 @@ open scoped ENNReal NNReal
 variable {P Q P' Q' : ℕ}
 
 /- English proof (translation)
-Unfold `act`. Rewrite using `[Matrix.mulVec_mulVec]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem act_mul (g h : UpqT P Q) (x : Sp P Q) : act (g * h) x = act g (act h x) := by
   unfold act
   rw [Matrix.mulVec_mulVec]; rfl
 
 /- English proof (translation)
-The claim follows from `Matrix.one_mulVec x`.
+A detailed English derivation is pending.
 -/
 theorem act_one (x : Sp P Q) : act (1 : UpqT P Q) x = x := Matrix.one_mulVec x
 
 /- English proof (translation)
-Rewrite using `[← act_mul, inv_mul_cancel, act_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem act_inv_act (g : UpqT P Q) (x : Sp P Q) : act g⁻¹ (act g x) = x := by
   rw [← act_mul, inv_mul_cancel, act_one]
 
 /- English proof (translation)
-Rewrite using `[← act_mul, mul_inv_cancel, act_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem act_act_inv (g : UpqT P Q) (x : Sp P Q) : act g (act g⁻¹ x) = x := by
   rw [← act_mul, mul_inv_cancel, act_one]
 
 /- English proof (translation)
-Rewrite using `[herm_eq_hform]`. Simplify using `only [Formalism.UG.hform, dotProduct, Matrix.mulVec, Finset.mul_sum, mul_assoc, Pi.star_apply]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem herm_eq_dot (x y : Sp P Q) : herm x y = star y ⬝ᵥ (Formalism.UG.Jpq P Q *ᵥ x) := by
   rw [herm_eq_hform]
@@ -46,7 +46,7 @@ theorem herm_eq_dot (x y : Sp P Q) : herm x y = star y ⬝ᵥ (Formalism.UG.Jpq 
   rfl
 
 /- English proof (translation)
-Establish `hu : (UpqT.mat g)ᴴ * Formalism.UG.Jpq P Q * UpqT.mat g = Formalism.UG.Jpq P Q` using `g.2`. Rewrite using `[herm_eq_dot, herm_eq_dot, act, act, Matrix.star_mulVec, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, hu]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem herm_act (g : UpqT P Q) (x y : Sp P Q) : herm (act g x) (act g y) = herm x y := by
   have hu : (UpqT.mat g)ᴴ * Formalism.UG.Jpq P Q * UpqT.mat g = Formalism.UG.Jpq P Q := g.2
@@ -54,7 +54,7 @@ theorem herm_act (g : UpqT P Q) (x y : Sp P Q) : herm (act g x) (act g y) = herm
     Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, hu]
 
 /- English proof (translation)
-Simplify using `[herm, sg, Fintype.sum_sum_type, sub_eq_add_neg]`.
+Simplify using the standard rewrite rules.
 -/
 theorem herm_eq_sum (x y : Sp P Q) : herm x y = ∑ i, (sg i : ℂ) * (x i * star (y i)) := by
   simp [herm, sg, Fintype.sum_sum_type, sub_eq_add_neg]
@@ -64,21 +64,21 @@ def incl (e : Option (Fin P' ⊕ Fin Q') ≃ (Fin P ⊕ Fin Q)) :
   Matrix.of fun i b => if i = e (some b) then 1 else 0
 
 /- English proof (translation)
-Simplify using `[incl, Matrix.mulVec, dotProduct]`.
+Simplify using the standard rewrite rules.
 -/
 theorem incl_none (e : Option (Fin P' ⊕ Fin Q') ≃ (Fin P ⊕ Fin Q)) (u : Sp P' Q') :
     (incl e *ᵥ u) (e none) = 0 := by
   simp [incl, Matrix.mulVec, dotProduct]
 
 /- English proof (translation)
-Simplify using `[incl, Matrix.mulVec, dotProduct]`.
+Simplify using the standard rewrite rules.
 -/
 theorem incl_some (e : Option (Fin P' ⊕ Fin Q') ≃ (Fin P ⊕ Fin Q)) (u : Sp P' Q')
     (b : Fin P' ⊕ Fin Q') : (incl e *ᵥ u) (e (some b)) = u b := by
   simp [incl, Matrix.mulVec, dotProduct]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Take `⟨i, rfl⟩` from `e.surjective i`. Break down `i with _ | b` into its components or cases. Conclude with `h0`. Conclude with `h1 b`.
+Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem ext_coord (e : Option (Fin P' ⊕ Fin Q') ≃ (Fin P ⊕ Fin Q)) {x y : Sp P Q}
     (h0 : x (e none) = y (e none)) (h1 : ∀ b, x (e (some b)) = y (e (some b))) : x = y := by
@@ -89,17 +89,17 @@ theorem ext_coord (e : Option (Fin P' ⊕ Fin Q') ≃ (Fin P ⊕ Fin Q)) {x y : 
   · exact h1 b
 
 /- English proof (translation)
-Use `⟨fun u v => ?_, fun y => ?_, fun g => ⟨?_, fun u => ?_⟩⟩` and prove the remaining obligations. Rewrite using `[herm_eq_sum, herm_eq_sum, ← e.sum_comp, Fintype.sum_option]`. Simplify using `only [incl_none, incl_some, he _, zero_mul, mul_zero, zero_add]`. Establish `h1 : herm y (baseVec e) = (sg (e none) : ℂ) * y (e none)`. Rewrite using `[herm_eq_sum, ← e.sum_comp, Fintype.sum_option]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[baseVec]`. Establish `h2 : (sg (e none) : ℂ) ≠ 0` using `by exact_mod_cast sg_ne_zero _`. Rewrite using `[h1, mul_eq_zero, or_iff_right h2]`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `⟨fun b => y (e (some b)), ext_coord e (by rw [incl_none, h]) fun b => incl_some e _ b⟩`. Introduce and unpack `⟨u, rfl⟩`. Conclude with `incl_none e u`. Take `⟨h1, -, h3, -⟩` from `hj g`. Use `ext_coord e ?_ fun b => ?_` and prove the remaining obligations.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `[act, baseVec, h1]`. Simplify using `[act, baseVec, h3]`. Take `⟨-, h2, -, h4⟩` from `hj g`. Establish `key : ∀ i, act (j₀ g) (incl e *ᵥ u) i = ∑ b, UpqT.mat (j₀ g) i (e (some b)) * u b` using `fun i => by`. Express the relevant statement in the definitionally equal form `∑ k, UpqT.mat (j₀ g) i k * (incl e *ᵥ u) k = _`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← e.sum_comp, Fintype.sum_option]`. Simplify using `only [incl_none, incl_some, mul_zero, zero_add]`. Use `ext_coord e ?_ fun b => ?_` and prove the remaining obligations. Rewrite using `[key, incl_none]`. Simplify using `[h2]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[key, incl_some]`. Simplify using `only [h4]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem isPerpEmb_base (e : Option (Fin P' ⊕ Fin Q') ≃ (Fin P ⊕ Fin Q)) (he : SignCompat e)
     (j₀ : UpqT P' Q' → UpqT P Q) (hj : IsBlockEmb e j₀) :
@@ -132,11 +132,11 @@ theorem isPerpEmb_base (e : Option (Fin P' ⊕ Fin Q') ≃ (Fin P ⊕ Fin Q)) (h
     · rw [key, incl_some]; simp only [h4]; rfl
 
 /- English proof (translation)
-Establish `hA : ∀ u, (UpqT.mat g₀ * A) *ᵥ u = act g₀ (A *ᵥ u)` using `fun u => by`. Rewrite using `[act, Matrix.mulVec_mulVec]`. Use `⟨fun u v => ?_, fun y => ?_, fun g => ⟨?_, fun u => ?_⟩⟩` and prove the remaining obligations. Rewrite using `[hA, hA, herm_act, h.1]`. Rewrite using `[← act_act_inv g₀ y, herm_act, h.2.1]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `exists_congr fun u => ?_` and prove the remaining obligations. Rewrite using `[hA]`. Prove the components needed by the constructor for the conclusion. Introduce `hu`. Rewrite using `[hu]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `hu`. Rewrite using `[← act_inv_act g₀ (A *ᵥ u), hu, act_inv_act]`. Simplify using `only [act_mul, act_inv_act, (h.2.2 g).1]`. Simplify using `only [hA, act_mul, act_inv_act, (h.2.2 g).2]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem isPerpEmb_translate {x₀ : Sp P Q} {A : Matrix (Fin P ⊕ Fin Q) (Fin P' ⊕ Fin Q') ℂ}
     {j : UpqT P' Q' → UpqT P Q} (h : IsPerpEmb x₀ A j) (g₀ : UpqT P Q) :
@@ -155,7 +155,7 @@ theorem isPerpEmb_translate {x₀ : Sp P Q} {A : Matrix (Fin P ⊕ Fin Q) (Fin P
   · simp only [hA, act_mul, act_inv_act, (h.2.2 g).2]
 
 /- English proof (translation)
-Introduce `_ _ _ _ e he j₀ hj g₀` and use `⟨_, isPerpEmb_translate (isPerpEmb_base e he j₀ hj) g₀⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem exists_isPerpEmb : ∀ (P Q P' Q' : ℕ) (e : Option (Fin P' ⊕ Fin Q') ≃ (Fin P ⊕ Fin Q)),
     SignCompat e → ∀ j₀ : UpqT P' Q' → UpqT P Q, IsBlockEmb e j₀ → ∀ g₀ : UpqT P Q,

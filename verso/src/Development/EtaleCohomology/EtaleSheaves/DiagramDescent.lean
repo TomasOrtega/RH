@@ -13,7 +13,7 @@ open CategoryTheory Limits AlgebraicGeometry Opposite LateralTheory.E.E4 Lateral
 namespace LateralTheory.E.DiagramDescent
 
 /- English proof (translation)
-Establish `hO : LeafObjFP` using `LateralTheory.E.LeafObjFPPf.objectDescent_of_affineDescent hA (LateralTheory.E.LeafObjGluePf.LeafObjGlue_of (LateralTheory.E.LeafInclDescendPf.LeafInclDescend_of hI) hG) hQ`. Conclude with `diagramDescent_of_objects_pairs_triples hO (LateralTheory.E.LeafPairFPPf.pairDescent_of_objects_morphisms hO (LateralTheory.E.LeafMapFPPf2.morphismDescent_of_isLimit hL)) (LateralTheory.E.LeafTripleFPPf.tripleDescent_of_pairRelation (LateralTheory.E.LeafPairRelPf.LeafPairRel_of h …`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem descendFP_of (hA : LateralTheory.E.LeafObjFPPf.LeafObjAff) (hG : LateralTheory.E.LeafObjGluePf.LeafGlueTwo)
     (hQ : LateralTheory.E.LeafObjFPPf.LeafQCQSInduct) (hI : LateralTheory.E.LeafInclDescendPf.LeafInclPiece)
@@ -24,14 +24,14 @@ theorem descendFP_of (hA : LateralTheory.E.LeafObjFPPf.LeafObjAff) (hG : Lateral
     (LateralTheory.E.LeafTripleFPPf.tripleDescent_of_pairRelation (LateralTheory.E.LeafPairRelPf.LeafPairRel_of hO hF))
 
 /- English proof (translation)
-Take `⟨h1, h2, h3⟩` from `hf`. Conclude with `⟨inferInstance, inferInstance, inferInstance⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem fp_snd {X Y Z : Scheme.{0}} (f : X ⟶ Z) (g : Y ⟶ Z) (hf : FP f) : FP (pullback.snd f g) := by
   obtain ⟨h1, h2, h3⟩ := hf
   exact ⟨inferInstance, inferInstance, inferInstance⟩
 
 /- English proof (translation)
-Rewrite using `[Category.assoc, LateralTheory.E.LeafDescendMapPf.toR_incl]`. Conclude with `h.w`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cond {k Ω : Type} [Field k] [Field Ω] [Algebra k Ω] {R R' : Subalgebra k Ω} (hR : R ≤ R')
     {C D : Scheme.{0}} {g : D ⟶ Sp R} {v : C ⟶ D} {c : C ⟶ Sp Ω} (h : IsPullback v c g (toR R)) :
@@ -39,7 +39,7 @@ theorem cond {k Ω : Type} [Field k] [Field Ω] [Algebra k Ω] {R R' : Subalgebr
   rw [Category.assoc, LateralTheory.E.LeafDescendMapPf.toR_incl]; exact h.w
 
 /- English proof (translation)
-Use `IsPullback.of_right ?_ (pullback.lift_snd _ _ _) (IsPullback.of_hasPullback g (incl hR))` and prove the remaining obligations. Rewrite using `[pullback.lift_fst, LateralTheory.E.LeafDescendMapPf.toR_incl]`. Conclude with `h`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sq {k Ω : Type} [Field k] [Field Ω] [Algebra k Ω] {R R' : Subalgebra k Ω} (hR : R ≤ R')
     {C D : Scheme.{0}} {g : D ⟶ Sp R} {v : C ⟶ D} {c : C ⟶ Sp Ω} (h : IsPullback v c g (toR R)) :
@@ -48,19 +48,17 @@ theorem sq {k Ω : Type} [Field k] [Field Ω] [Algebra k Ω] {R R' : Subalgebra 
   rw [pullback.lift_fst, LateralTheory.E.LeafDescendMapPf.toR_incl]; exact h
 
 /- English proof (translation)
-Introduce `k _ X p _ Ω _ _ C0 c0 e hc0 he C1 C2 γ1 γ2 h1 h2`. Take `⟨R, hRfg, D0, D1, D2, q, d1, d2, v0, v1, v2, hpre⟩` from `descendFP_of hA hG hQ hI hL hF k Ω c0 hc0 C1 C2 γ1 γ2 h1 h2`. Take `⟨hq0, hq1, hq2, p0, p1, p2, m1, m2⟩` from `hpre`. Establish `: LocallyOfFinitePresentation p` using `LateralTheory.E.LeafDescendMapPf.lfp p`. Set `bk` to `Spec.map (CommRingCat.ofHom (algebraMap k R))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hlfp : LocallyOfFinitePresentation (pullback.snd p bk)` using `inferInstance`. Establish `ha : e ≫ p = (c0 ≫ toR R) ≫ bk`. Rewrite using `[he, Category.assoc, LateralTheory.E.LeafDescendMapPf.toR_base]`. Take `⟨R', h, hR'fg, g, hg1, hg2⟩` from `hF k Ω R hRfg c0 q v0 hq0 p0 (pullback.snd p bk) hlfp (pullback.lift e (c0 ≫ toR R) ha) (pullback.lift_snd _ _ _)`. Set `e1 : pullback (d1 ≫ q) (incl h) ⟶ pullback q (incl h)` to `pullback.map _ _ _ _ d1 (𝟙 _) (𝟙 _) (by simp) (by simp)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Set `e2 : pullback (d2 ≫ d1 ≫ q) (incl h) ⟶ pullback (d1 ≫ q) (incl h)` to `pullback.map _ _ _ _ d2 (𝟙 _) (𝟙 _) (by simp) (by simp)`. Establish `E1 : e1 ≫ pullback.snd q (incl h) = pullback.snd (d1 ≫ q) (incl h)`. Simplify using `only [e1, pullback.map, pullback.lift_snd, Category.comp_id]`. Establish `E2 : e2 ≫ e1 ≫ pullback.snd q (incl h) = pullback.snd (d2 ≫ d1 ≫ q) (incl h)`. Rewrite using `[E1]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [e2, pullback.map, pullback.lift_snd, Category.comp_id]`. Use `⟨R', hR'fg, _, _, _, pullback.snd q (incl h), e1, e2, g ≫ pullback.fst p bk, pullback.lift v0 (c0 ≫ toR R') (cond h p0), pullback.lift v1 ((γ1 ≫ c0) ≫ toR R') (cond h p1), pullback.lift v2 ((γ2 ≫ γ1 ≫ c0) ≫ toR R') (cond h p2), ?_, ⟨fp_snd _ _ hq0, ?_, ?_, sq h p0, ?_, ?_, ?_, ?_ …` and prove the remaining obligations. Rewrite using `[Category.assoc, pullback.condition, ← Category.assoc, hg1, Category.assoc, LateralTheory.E.LeafDescendMapPf.incl_base]`. Rewrite using `[E1]`. Conclude with `fp_snd _ _ hq1`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[E2]`. Conclude with `fp_snd _ _ hq2`. Rewrite using `[E1]`. Conclude with `sq h p1`. Rewrite using `[E2]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Conclude with `sq h p2`. Apply `pullback.hom_ext` to reduce the goal to its premises. Simplify using `only [e1, pullback.map, Category.assoc, pullback.lift_fst, pullback.lift_fst_assoc]`. Conclude with `m1`. Simplify using `only [e1, pullback.map, Category.assoc, pullback.lift_snd, pullback.lift_snd_assoc, Category.comp_id]`.
-
-Apply `pullback.hom_ext` to reduce the goal to its premises. Simplify using `only [e2, pullback.map, Category.assoc, pullback.lift_fst, pullback.lift_fst_assoc]`. Conclude with `m2`. Simplify using `only [e2, pullback.map, Category.assoc, pullback.lift_snd, pullback.lift_snd_assoc, Category.comp_id]`. Rewrite using `[← Category.assoc, hg2, pullback.lift_fst]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem LeafDescendPreMap_of (hA : LateralTheory.E.LeafObjFPPf.LeafObjAff) (hG : LateralTheory.E.LeafObjGluePf.LeafGlueTwo)
     (hQ : LateralTheory.E.LeafObjFPPf.LeafQCQSInduct) (hI : LateralTheory.E.LeafInclDescendPf.LeafInclPiece)

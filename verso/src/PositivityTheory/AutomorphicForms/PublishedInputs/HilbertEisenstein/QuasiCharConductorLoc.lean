@@ -16,9 +16,9 @@ variable {K : Type*} [Field K] [ValuativeRel K] [TopologicalSpace K] [IsNonarchi
   [MeasurableSpace K] [BorelSpace K]
 
 /- English proof (translation)
-Use `setIntegral_ordShell_eq_zero _ hv0 (a := ((χ v : ℂˣ) : ℂ)) (fun h => hv1 (Units.val_eq_one.mp h)) k fun u hu => ?_` and prove the remaining obligations. Establish `hmem : ((v : K) - 1) * (u : K) ∈ valBall K n`. Establish `h` using `mul_mem_valBall hvj ((mem_valBall_iff_le_ord u.ne_zero).mpr (le_of_eq (mem_ordShell.mp hu).symm))`. Conclude with `valBall_antitone hjk h`. Establish `hψ' : (ψ ((v * u : Kˣ) : K) : ℂ) = (ψ (u : K) : ℂ)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[show ((v * u : Kˣ) : K) = (u : K) + ((v : K) - 1) * (u : K) by push_cast; ring, AddChar.map_add_eq_mul, hψ _ hmem, mul_one]`. Rewrite using `[hψ', map_mul, Units.val_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem shell_vanish (χ : Kˣ →* ℂˣ) (ψ : AddChar K Circle) {n j k : ℤ} (hψ : IsTrivialOn ψ n) {v : Kˣ}
     (hv0 : ord (v : K) = 0) (hv1 : χ v ≠ 1) (hvj : (v : K) - 1 ∈ valBall K j) (hjk : n ≤ j + k) :
@@ -35,13 +35,13 @@ theorem shell_vanish (χ : Kˣ →* ℂˣ) (ψ : AddChar K Circle) {n j k : ℤ}
   ring
 
 /- English proof (translation)
-Establish `hχ' : Continuous (χ⁻¹ : Kˣ →* ℂˣ)` using `continuous_quasiChar_inv hχ`. Establish `hr' : ¬ IsUnramifiedChar χ⁻¹` using `by rwa [isUnramifiedChar_inv_iff]`. Take `⟨a, ha, k, hk⟩` from `exists_localEpsilon_eq_monomial (χ := χ⁻¹) hψ hψ1 hχ'`. Establish `h0` using `hk 0`. Rewrite `h0` using `[localEpsilon_of_not_isUnramified_eq hr', quasiCharConductor_inv, inv_inv]`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `set m : ℤ := addCharConductor ψ - quasiCharConductor χ`. Establish `hadd : ∫ x in (valBall K m : Set K) \ valBall K (m + 1), quasiCharExt χ x * (ψ x : ℂ) ∂haarIntegers K ≠ 0`. Introduce `hz`. Rewrite `h0` using `[hz, mul_zero]`. Simplify using `only [neg_zero, Complex.cpow_zero, one_zpow, mul_one] at h0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `ha h0.symm`. Establish `hsh` using `setIntegral_ordShell_eq_haarIntegers (fun x => quasiCharExt χ x * (ψ x : ℂ)) m`. Simplify using `only [quasiCharExt_units] at hsh`. Rewrite using `[hsh]`. Use `mul_ne_zero ?_ hadd` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : (multHaarConst K).toReal ≠ 0` using `ENNReal.toReal_ne_zero.mpr ⟨multHaarConst_ne_zero, multHaarConst_ne_top⟩`. Establish `h2 : (residueCard K : ℝ) ^ m ≠ 0` using `zpow_ne_zero _ residueCard_pos_real.ne'`. Conclude with `mul_ne_zero h1 h2` after adjusting the coercions.
+A detailed English derivation is pending.
 -/
 theorem shell_ne_zero (χ : Kˣ →* ℂˣ) (ψ : AddChar K Circle) (hψ : Continuous ψ) (hψ1 : ψ ≠ 1)
     (hχ : Continuous χ) (hr : ¬ IsUnramifiedChar χ) :
@@ -74,7 +74,7 @@ section Bridge
 variable {F : Type} [Field F] [NumberField F]
 
 /- English proof (translation)
-Unfold `dd differentExp ordI`. Rewrite using `[FractionalIdeal.count_coe]`. Conclude with `_root_.differentIdeal_ne_bot`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dd_eq (w : HeightOneSpectrum (𝓞 F)) : dd w = differentExp w := by
   unfold dd differentExp ordI
@@ -82,21 +82,19 @@ theorem dd_eq (w : HeightOneSpectrum (𝓞 F)) : dd w = differentExp w := by
   exact _root_.differentIdeal_ne_bot
 
 /- English proof (translation)
-The claim follows from `ω.2.1.comp (GlobalTheory.Mem.Chr.Determ.continuous_localIdele w)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_loc (ω : HChar F) (w : HeightOneSpectrum (𝓞 F)) : Continuous (ω.loc w) :=
   ω.2.1.comp (GlobalTheory.Mem.Chr.Determ.continuous_localIdele w)
 
 /- English proof (translation)
-Establish `h0 : x ∈ unitFiltrationUnits (w.adicCompletion F) 0 ↔ IsUnitAt w x`. Rewrite using `[mem_unitFiltrationUnits_zero_iff_ord, IsUnitAt, valued_eq_one_iff_ord x.ne_zero]`. Break down `Nat.eq_zero_or_pos n with rfl | hn` into its components or cases. Rewrite using `[h0]`. Use `⟨fun h => ⟨h, ?_⟩, fun h => h.1⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hx : (x : w.adicCompletion F) ∈ valBall (w.adicCompletion F) 0`. Rewrite using `[mem_valBall_iff_le_ord x.ne_zero]`. Conclude with `le_of_eq ((valued_eq_one_iff_ord x.ne_zero).mp h).symm`. Establish `h1 : (1 : w.adicCompletion F) ∈ valBall (w.adicCompletion F) 0`. Rewrite using `[mem_valBall_iff_le_ord one_ne_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `(valued_eq_one_iff_ord (one_ne_zero (α := w.adicCompletion F))).mp (map_one _)` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Use `(mem_valBall_iff_valued).mp (sub_mem hx h1)` as an intermediate fact. Simplify using `using this`. Rewrite using `[mem_unitFiltrationUnits_iff_valBall hn, mem_valBall_iff_valued]`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `⟨?_, h⟩` and prove the remaining obligations. Establish `hU` using `unitFiltrationUnits_antitone (Nat.zero_le n) ((mem_unitFiltrationUnits_iff_valBall hn).mpr ((mem_valBall_iff_valued).mpr h))`. Conclude with `h0.mp hU`.
-
-Conclude with `fun h => h.2`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
 -/
 theorem mem_U_iff (w : HeightOneSpectrum (𝓞 F)) (n : ℕ) (x : (w.adicCompletion F)ˣ) :
     x ∈ unitFiltrationUnits (w.adicCompletion F) n ↔
@@ -125,11 +123,9 @@ theorem mem_U_iff (w : HeightOneSpectrum (𝓞 F)) (n : ℕ) (x : (w.adicComplet
     · exact fun h => h.2
 
 /- English proof (translation)
-Establish `hset : {n : ℕ | unitFiltrationUnits (w.adicCompletion F) n ≤ (ω.loc w).ker} = {n : ℕ | ∀ x : (w.adicCompletion F)ˣ, IsUnitAt w x → Valued.v ((x : w.adicCompletion F) - 1) ≤ WithZero.exp (-(n : ℤ)) → ω.loc w x = 1}`. Use extensionality with `n`. Simplify using `only [Set.mem_ofPred_eq]`. Prove the components needed by the constructor for the conclusion. Introduce `hle x hx hv`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `MonoidHom.mem_ker.mp (hle ((mem_U_iff w n x).mpr ⟨hx, hv⟩))`. Introduce `hP x hx`. Take `⟨h1, h2⟩` from `(mem_U_iff w n x).mp hx`. Conclude with `MonoidHom.mem_ker.mpr (hP x h1 h2)`. Unfold `quasiCharConductor`.
-
-Rewrite using `[hset]`. Conclude with `h.csInf_eq`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem quasiCharConductor_loc {ω : HChar F} {c : ℕ} {w : HeightOneSpectrum (𝓞 F)} (h : IsCondAt w ω c) :
     quasiCharConductor (ω.loc w) = c := by
@@ -157,19 +153,15 @@ namespace UpperTheory.HilbertEisensteinWeightOne.FourierExpansionEisenstein
 open LocalShellIntegral
 
 /- English proof (translation)
-Introduce `F _ _ _ ω c H w hcw`. Use `set χ := ω.loc w`. Use `set ψ := localAdelicChar F w`. Establish `hcond : quasiCharConductor χ = c w` using `quasiCharConductor_loc (H.cond w)`. Establish `hn : addCharConductor ψ = -dd w` using `by rw [addCharConductor_localAdelicChar, dd_eq]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hχ : Continuous χ` using `continuous_loc ω w`. Establish `hr : ¬ IsUnramifiedChar χ`. Rewrite using `[← quasiCharConductor_eq_zero_iff, hcond]`. Apply the tactic sequence `all_goals first | exact hcw | exact hχ`. Use `⟨fun k hk => ?_, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Use `set j : ℕ := (-dd w - k).toNat with hj`. Establish `hjc : j < c w`. Establish `: (j : ℤ) < c w`. Break down `le_or_gt (-dd w - k) 0 with h | h` into its components or cases. Rewrite using `[hj, Int.toNat_of_nonpos h]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `Nat.pos_of_ne_zero hcw` after adjusting the coercions. Rewrite using `[hj, Int.toNat_of_nonneg h.le]`. Use linear arithmetic over natural numbers and integers. Conclude with `this` after adjusting the coercions. Establish `hnot : j ∉ {n : ℕ | ∀ x : (w.adicCompletion F)ˣ, IsUnitAt w x → Valued.v ((x : w.adicCompletion F) - 1) ≤ WithZero.exp (-(n : ℤ)) → ω.loc w x = 1}` using `fun hm => absurd ((H.cond w).2 hm) (not_le.mpr hjc)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Simplify using `only [Set.mem_ofPred_eq, not_forall] at hnot`. Take `⟨x, hx1, hx2, hx3⟩` from `hnot`. Establish `hψt : IsTrivialOn ψ (-dd w)` using `(isTrivialOn_localAdelicChar_iff w _).2 (by rw [dd_eq])`. Use `shell_vanish χ ψ (n := -dd w) (j := j) hψt ((valued_eq_one_iff_ord x.ne_zero).mp hx1) hx3 ((mem_valBall_iff_valued).mpr hx2) ?_` and prove the remaining obligations. Establish `: (-dd w - k) ≤ (j : ℤ)` using `by rw [hj]; exact Int.self_le_toNat _`.
-
-Use linear arithmetic over natural numbers and integers. Establish `h` using `shell_ne_zero χ ψ (continuous_localAdelicChar w) (localAdelicChar_ne_one w) hχ hr`. Rewrite `h` using `[hn, hcond]`. Establish `e : -((c w : ℤ) + dd w) = -dd w - (c w : ℤ)` using `by ring`. Rewrite using `[e]`.
-
-Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem local_ramified_holds : LocRam := by
   intro F _ _ _ ω c H w hcw

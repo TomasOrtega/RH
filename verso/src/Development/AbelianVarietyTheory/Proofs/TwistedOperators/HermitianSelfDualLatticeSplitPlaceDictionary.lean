@@ -20,7 +20,7 @@ open GlobalTheory.EmbChart
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, smul_add, hx, hy]`. Consider the case `tmul a x => show atPlace v (evFin F v a) ⊗ₜ[F] x = atPlace v 1 • (a ⊗ₜ[F] x)`. Rewrite using `[TensorProduct.smul_tmul', smul_eq_mul, atPlace_mul_right, one_mul]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem tensAt_compFin (v : Pl F) (z : AE F E) : tensAt E v (compFin F E v z) = atPlace v 1 • z := by
   induction z using TensorProduct.induction_on with
@@ -31,13 +31,13 @@ theorem tensAt_compFin (v : Pl F) (z : AE F E) : tensAt E v (compFin F E v z) = 
     rw [TensorProduct.smul_tmul', smul_eq_mul, atPlace_mul_right, one_mul]
 
 /- English proof (translation)
-Introduce `u hu` and use `by rw [smul_eq_mul, mul_comm, atPlace_mul_right, hu, mul_zero, map_zero]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem at_atPlace (v : Pl F) (c : Fv F v) : At (evFin F v) (atPlace v c) := fun u hu => by
   rw [smul_eq_mul, mul_comm, atPlace_mul_right, hu, mul_zero, map_zero]
 
 /- English proof (translation)
-Introduce `u hu` and use `by induction y using TensorProduct.induction_on with | zero => simp | add x y hx hy => rw [map_add, smul_add, hx, hy, add_zero] | tmul a x => rw [tensAt_tmul, TensorProduct.smul_tmul', at_atPlace v a u hu, TensorProduct.zero_tmul]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem at_tensAt (v : Pl F) (y : Fv F v ⊗[F] E) : At (evFin F v) (tensAt E v y) := fun u hu => by
   induction y using TensorProduct.induction_on with
@@ -47,7 +47,7 @@ theorem at_tensAt (v : Pl F) (y : Fv F v ⊗[F] E) : At (evFin F v) (tensAt E v 
     rw [tensAt_tmul, TensorProduct.smul_tmul', at_atPlace v a u hu, TensorProduct.zero_tmul]
 
 /- English proof (translation)
-Rewrite using `[tensAt_compFin]`. Establish `h1 : (1 - atPlace v 1) • z = 0` using `hz _ (by rw [map_sub, map_one, evFin_atPlace, sub_self])`. Rewrite `h1` using `[sub_smul, one_smul, sub_eq_zero]`. Conclude with `h1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_tensAt_of_at {v : Pl F} {z : AE F E} (hz : At (evFin F v) z) : z = tensAt E v (compFin F E v z) := by
   rw [tensAt_compFin]
@@ -56,7 +56,7 @@ theorem eq_tensAt_of_at {v : Pl F} {z : AE F E} (hz : At (evFin F v) z) : z = te
   exact h1
 
 /- English proof (translation)
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Consider the case `tmul a x => rfl`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem compFin_cA (σ : E →ₐ[F] E) (v : Pl F) (z : AE F E) :
     compFin F E v (cA σ z) = sigR (Fv F v) σ (compFin F E v z) := by
@@ -71,14 +71,14 @@ Both sides reduce to the same expression.
 theorem piW_apply {v : Pl F} (τ : E →ₐ[F] Fv F v) (z : AE F E) : piW τ z = splitProj τ (compFin F E v z) := rfl
 
 /- English proof (translation)
-Use `show splitProj τ (evFin F v 1 ⊗ₜ[F] x) = τ x`. Rewrite using `[map_one, splitProj_tmul, one_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem piW_inclR {v : Pl F} (τ : E →ₐ[F] Fv F v) (x : E) : piW τ (inclR (AF F) x) = τ x := by
   show splitProj τ (evFin F v 1 ⊗ₜ[F] x) = τ x
   rw [map_one, splitProj_tmul, one_mul]
 
 /- English proof (translation)
-Use `show splitProj τ (evFin F v a ⊗ₜ[F] 1) = evFin F v a`. Rewrite using `[splitProj_tmul, map_one, mul_one]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem piW_algebraMap {v : Pl F} (τ : E →ₐ[F] Fv F v) (a : AF F) :
     piW τ (algebraMap (AF F) (AE F E) a) = evFin F v a := by
@@ -86,7 +86,7 @@ theorem piW_algebraMap {v : Pl F} (τ : E →ₐ[F] Fv F v) (a : AF F) :
   rw [splitProj_tmul, map_one, mul_one]
 
 /- English proof (translation)
-Use `show compFin F E v (a • ((1 : AF F) ⊗ₜ[F] x)) = _`. Rewrite using `[TensorProduct.smul_tmul', smul_eq_mul, mul_one]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem compFin_smul_inclR (v : Pl F) (a : AF F) (x : E) :
     compFin F E v (a • inclR (AF F) x) = evFin F v a ⊗ₜ[F] x := by
@@ -95,21 +95,21 @@ theorem compFin_smul_inclR (v : Pl F) (a : AF F) (x : E) :
   rfl
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hz`. Proceed by induction on `hz using AddSubgroup.closure_induction with`. Consider the case `mem z hz`. Take `⟨a, ha, hav, y, hy, rfl⟩` from `hz`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Use `⟨fun u hu => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_smul, ← smul_eq_mul, ha u hu, zero_smul]`. Use `tmul_mem_latLoc hav hy using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `j`. Conclude with `compFin_smul_inclR v a (y j)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Treat this case separately.
 
-Consider the case `zero => exact ⟨fun u _ => smul_zero u, by convert zero_mem (latLoc F W.L v) using 1; funext j; simp⟩`. Consider the case `add x y _ _ hx hy`. Use `⟨fun u hu => by rw [smul_add, hx.1 u hu, hy.1 u hu, add_zero], ?_⟩` and prove the remaining obligations. Use `add_mem hx.2 hy.2 using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `j`.
+Treat this case separately. Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Consider the case `neg x _ hx`. Use `⟨fun u hu => by rw [smul_neg, hx.1 u hu, neg_zero], ?_⟩` and prove the remaining obligations. Use `neg_mem hx.2 using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `j`.
+Treat this case separately. Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Introduce and unpack `⟨hz, hl⟩`. Establish `e : z = fun j => tensAt E v (compFin F E v (z j))` using `funext fun j => eq_tensAt_of_at (fun u hu => by`. Use `congrFun (hz u hu) j` as an intermediate fact. Simplify using `using this)`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Use `latLoc_induction (p := fun Y => (fun j => tensAt E v (Y j)) ∈ GlobalTheory.InertSph.latAt W v) (fun c hc x hx => ?_) (by convert zero_mem (GlobalTheory.InertSph.latAt W v) using 1; funext j; simp) (fun Y Y' hY hY' => ?_) (fun Y hY => ?_) hl` and prove the remaining obligations. Use `AddSubgroup.subset_closure ⟨atPlace v c, at_atPlace v c, by rwa [evFin_atPlace], x, hx, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `j`. Rewrite using `[tensAt_tmul]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `show _ = atPlace v c • ((1 : AF F) ⊗ₜ[F] x j)`. Rewrite using `[TensorProduct.smul_tmul', smul_eq_mul, mul_one]`. Use `add_mem hY hY' using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `j`. Simplify using the standard rewrite rules.
+Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `neg_mem hY using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `j`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mem_latAt_iff {d : ℕ} (W : Spc F E d) (v : Pl F) (z : Fin d → AE F E) :
     z ∈ GlobalTheory.InertSph.latAt W v ↔ At (evFin F v) z ∧ (fun j => compFin F E v (z j)) ∈ latLoc F W.L v := by
@@ -151,7 +151,7 @@ theorem mem_latAt_iff {d : ℕ} (W : Spc F E d) (v : Pl F) (z : Fin d → AE F E
       funext j; simp
 
 /- English proof (translation)
-Establish `key : ∀ {ρ : E →ₐ[F] Fv F v} {b : GL (Fin d) (Fv F v)}, IsSplitBasis ρ W.L b → ∀ u : Fin d → Fv F v, (∀ i, (((b⁻¹ : GL (Fin d) (Fv F v)) : Matrix (Fin d) (Fin d) (Fv F v)) *ᵥ u) i ∈ v.adicCompletionIntegers F) ↔ u ∈ splitLat ρ W.L`. Introduce `ρ b hb u`. Rewrite using `[hb, Matrix.mulVec_mulVec, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.one_mulVec]`. Rewrite using `[mem_latAt_iff, mem_latLoc_iff_split τ h, key hb₁, key hb₂]`. Conclude with `Iff.rfl`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_latAt_iff_bases {σ : E →ₐ[F] E} (h : IsCMExt F E σ) {d : ℕ} (W : Spc F E d) {v : Pl F}
     (τ : E →ₐ[F] Fv F v) {b₁ b₂ : GL (Fin d) (Fv F v)} (hb₁ : IsSplitBasis τ W.L b₁)
@@ -170,7 +170,7 @@ theorem mem_latAt_iff_bases {σ : E →ₐ[F] E} (h : IsCMExt F E σ) {d : ℕ} 
   exact Iff.rfl
 
 /- English proof (translation)
-Simplify using `only [hE, Formalism.UG.hform, form, dotProduct, Matrix.mulVec, Finset.mul_sum, Matrix.transpose_apply]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => (by intro a b c; ring : ∀ a b c : E, a * b * c = c * (b * a)) _ _ _`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hE_transpose (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (x y : Fin n → E) :
     hE σ Jᵀ x y = form σ J y x := by
@@ -180,23 +180,21 @@ theorem hE_transpose (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) 
     (by intro a b c; ring : ∀ a b c : E, a * b * c = c * (b * a)) _ _ _
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B d V r s hB hV v hv _`. Establish `h` using `hB.cm`. Take `⟨P, Q, hPQ, hP, hQ⟩` from `hv`. Take `⟨τ, -⟩` from `(existsUnique_splitPrime_eq h hPQ (HeightOneSpectrum.ext hP) (HeightOneSpectrum.ext hQ)).exists`. Use `haveI := hV.lat`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨b₁, hb₁⟩` from `exists_isSplitBasis τ V.L h`. Establish `hdet : V.J.det ≠ 0`. Introduce `h0`. Take `⟨u⟩ : Nonempty (InfinitePlace F)` from `inferInstance`. Apply `GlobalTheory.SigDet.det_ne_zero_of_hasSig _ _ _ _ (hV.sig u)` to reduce the goal to its premises.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← RingHom.mapMatrix_apply, ← RingHom.map_det, h0, map_zero]`. Establish `hdetT : V.Jᵀ.det ≠ 0` using `by rwa [Matrix.det_transpose]`. Establish `hJ : IsHermND σ V.Jᵀ` using `⟨fun i j => hV.herm j i, hdetT⟩`. Establish `hL : IsSelfDualAt σ V.Jᵀ V.L v`. Use `(SelfDual.forall_isSelfDualAt_iff hdetT hV.lat).2 (fun y => ?_) v` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hV.dual y]`. Use `forall₂_congr fun x _ => ?_` and prove the remaining obligations. Rewrite using `[hE_transpose]`. Conclude with `⟨fun hi => ⟨⟨_, hi⟩, rfl⟩, fun ⟨c, hc⟩ => hc ▸ RingOfIntegers.isIntegral_coe c⟩`. Establish `hb₂` using `IsSplitBasis.dual h hJ hL hb₁`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨piW τ, piW (τ.comp σ), b₁, dualConj 1 (splitGram hJ τ * b₁), ⟨?_, ?_, ?_, ?_, ?_, ?_, ?_⟩, 1, by simp, ?_⟩` and prove the remaining obligations. Introduce `z`. Rewrite using `[piW_apply, piW_apply, compFin_cA, splitProj_comp]`. Introduce `z`. Rewrite using `[piW_apply, piW_apply, compFin_cA, splitProj_comp_sigR h]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `piW_algebraMap τ`. Conclude with `piW_algebraMap _`. Introduce `z hz h1 h2`. Establish `e : compFin F E v z = 0` using `split_ext h τ (by rw [map_zero]; exact h1) (by rw [map_zero]; exact h2)`. Rewrite using `[eq_tensAt_of_at hz, e, map_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `x₁ x₂`. Use `⟨tensAt E v ((splitAlgEquiv h τ).symm (x₁, x₂)), at_tensAt v _, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[piW_apply, compFin_tensAt, splitProj_symm]`. Rewrite using `[piW_apply, compFin_tensAt, splitProj_comp_symm]`. Conclude with `mem_latAt_iff_bases h V τ hb₁ hb₂`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `eJ : (incM F V.J).map (piW τ) = V.J.map τ`. Conclude with `Matrix.ext fun i j => piW_inclR τ (V.J i j)`. Establish `eT : V.J.map τ = ((splitGram hJ τ : GL (Fin d) (Fv F v)) : Matrix (Fin d) (Fin d) (Fv F v))ᵀ`. Conclude with `Matrix.ext fun i j => rfl`. Establish `eG : V.J.map τ * (((splitGram hJ τ)⁻¹ : GL (Fin d) (Fv F v)) : Matrix (Fin d) (Fin d) (Fv F v))ᵀ = 1`.
-
-Rewrite using `[eT, ← Matrix.transpose_mul, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.transpose_one]`. Rewrite using `[Matrix.map_one _ (by simp) (by simp), eJ, dualConj_one_val, mul_inv_rev, Units.val_mul, Matrix.transpose_mul, ← Matrix.mul_assoc, Matrix.mul_assoc _ (V.J.map τ), eG, Matrix.mul_one, ← Matrix.transpose_mul, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.transpose_one]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem split_dict_herm : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     {d : ℕ} (V : Spc F E d) (r s : ℕ), B.IsGood σ → V.IsHerm σ B r s →

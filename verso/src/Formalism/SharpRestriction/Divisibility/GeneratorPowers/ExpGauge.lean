@@ -17,9 +17,9 @@ open AlgebraicGeometry CategoryTheory Limits NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Geo.Tor Formalism.L2.Pj
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c _ hs S _ _ _ y C htr φ hφ hx`. Establish `hact : ∀ (a : 𝓞 E) (j : Fin C.d), MvPowerSeries.subst (fun p : Fin 1 × Fin C.d => φ p.2) (C.B.A.act a j) = MvPowerSeries.subst (ExpGU.actPS (Dw` using `Dw) c a) (φ j) := hA E H Dw l Xo c S y C φ hφ`. Take `⟨τ, u, _, hτc, hu, hgen, hof⟩` from `ExpGA.exists_eG C φ hφ.const`. Use `⟨ExpGA.eG C φ τ u, ⟨hgen, fun m => ExpGB.trunc_eG C htr φ τ u hτc hu m, ExpGB.rig_eG C φ hφ.const τ u hτc hu, fun a => ?_⟩, hof⟩` and prove the remaining obligations. Establish `hbb : H.bar (H.bar a) = a` using `by rw [← hs, ← hs, star_star]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take `⟨wLa, hwa, hra⟩` from `ExpGD.exists_adRel C a`. Take `⟨wLb, hwb, hrb⟩` from `ExpGD.exists_adRel C (H.bar a)`. Take `⟨β, hβ, hβ0, hβv⟩` from `ExpGE.exists_beta C.wP C.prim a hbb wLa hwa wLb hwb`. Conclude with `⟨β, hβ, hβ0, fun m => ExpGL.coc_chart ExpGJPh1.phOneVal_holds ExpGJ.phTwoVal_holds ExpGJ.adVal ExpGU.unitId ExpGO.bqOrigin hs C φ hφ hx hact τ u hτc hu a wLa hra wLb hrb β hβv m⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem expGaugeOf_of (hA : ExpActOfSt) : ExpGaugeOfSt := by
   intro E _ _ _ H Dw l Xo c _ hs S _ _ _ y C htr φ hφ hx
@@ -36,7 +36,7 @@ theorem expGaugeOf_of (hA : ExpActOfSt) : ExpGaugeOfSt := by
     ExpGU.unitId ExpGO.bqOrigin hs C φ hφ hx hact τ u hτc hu a wLa hra wLb hrb β hβv m⟩
 
 /- English proof (translation)
-The claim follows from `expGaugeOf_of (expActOf_of hE)`.
+A detailed English derivation is pending.
 -/
 theorem expGaugeOf_holds (hE : LinEigSt) : ExpGaugeOfSt := expGaugeOf_of (expActOf_of hE)
 

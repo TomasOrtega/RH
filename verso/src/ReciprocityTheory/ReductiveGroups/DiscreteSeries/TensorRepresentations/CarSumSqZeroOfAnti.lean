@@ -36,9 +36,9 @@ def dOp' (ε : Fin n → Bool) (E cm : Fin n → Fin n → Module.End ℂ W) : M
 def rhoHol (ε : Fin n → Bool) : Fin n → ℝ := fun a => if ε a then (qOf ε : ℝ) / 2 else -(pOf ε : ℝ) / 2
 
 /- English proof (translation)
-Establish `e1 : m1 * p2 = δ - p2 * m1` using `eq_sub_of_add_eq h1`. Establish `e2 : m2 * p1 = δ' - p1 * m2` using `eq_sub_of_add_eq h2`. Establish `e3 : p2 * p1 = -(p1 * p2)` using `eq_neg_iff_add_eq_zero.mpr (by rw [add_comm]; exact hp)`. Establish `e4 : m2 * m1 = -(m1 * m2)` using `eq_neg_iff_add_eq_zero.mpr (by rw [add_comm]; exact hm)`. Establish `e5 : p2 * (p1 * m2) * m1 = p1 * (p2 * m1) * m2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [mul_sub, sub_mul]`. Normalize the expressions using the abelian group laws. Use `_ = p1 * δ * m2 - p2 * δ' * m1 := by rw [e5, sub_self, sub_zero]`.
+Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem car_bil_abs {R : Type*} [Ring R] (p1 m1 p2 m2 δ δ' : R) (h1 : m1 * p2 + p2 * m1 = δ)
     (h2 : m2 * p1 + p1 * m2 = δ') (hp : p1 * p2 + p2 * p1 = 0) (hm : m1 * m2 + m2 * m1 = 0) :
@@ -59,7 +59,7 @@ theorem car_bil_abs {R : Type*} [Ring R] (p1 m1 p2 m2 δ δ' : R) (h1 : m1 * p2 
     _ = p1 * δ * m2 - p2 * δ' * m1 := by rw [e5, sub_self, sub_zero]
 
 /- English proof (translation)
-Rewrite using `[car_bil_abs _ _ _ _ _ _ (hC j b k c).2.2 (hC l d i a).2.2 (hC i a k c).1 (hC j b l d).2.1]`. Apply the tactic sequence `split_ifs <;> simp`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem car_bil {cp cm : Fin n → Fin n → Module.End ℂ W} (hC : IsCAR cp cm) (i a j b k c l d : Fin n) :
     cp i a * cm j b * (cp k c * cm l d) - cp k c * cm l d * (cp i a * cm j b) =
@@ -69,9 +69,9 @@ theorem car_bil {cp cm : Fin n → Fin n → Module.End ℂ W} (hC : IsCAR cp cm
   split_ifs <;> simp
 
 /- English proof (translation)
-Establish `h1 : (∑ x ∈ s, A x) * (∑ y ∈ t, B y) = ∑ x ∈ s, ∑ y ∈ t, A x * B y`. Rewrite using `[Finset.sum_mul]`. Simplify using `only [Finset.mul_sum]`. Establish `h2 : (∑ y ∈ t, B y) * (∑ x ∈ s, A x) = ∑ x ∈ s, ∑ y ∈ t, B y * A x`. Rewrite using `[Finset.sum_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Finset.mul_sum]`. Conclude with `Finset.sum_comm`. Rewrite using `[h1, h2, ← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_sub_distrib]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem car_comm_sum {R ι κ : Type*} [Ring R] (s : Finset ι) (t : Finset κ) (A : ι → R) (B : κ → R) :
     (∑ x ∈ s, A x) * (∑ y ∈ t, B y) - (∑ y ∈ t, B y) * (∑ x ∈ s, A x) =
@@ -85,7 +85,7 @@ theorem car_comm_sum {R ι κ : Type*} [Ring R] (s : Finset ι) (t : Finset κ) 
   rw [Finset.sum_sub_distrib]
 
 /- English proof (translation)
-Establish `h3 : (2 : ℂ) • v = 0`. Rewrite using `[two_smul]`. Conclude with `eq_neg_iff_add_eq_zero.mp h`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 private theorem eq_zero_of_eq_neg_of_module_complex {M : Type*} [AddCommGroup M] [Module ℂ M] {v : M}
     (h : v = -v) : v = 0 := by
@@ -95,9 +95,9 @@ private theorem eq_zero_of_eq_neg_of_module_complex {M : Type*} [AddCommGroup M]
     _ = 0 := by rw [h3, smul_zero]
 
 /- English proof (translation)
-Establish `e : (∑ x ∈ s, F x) * (∑ y ∈ s, F y) = ∑ x ∈ s, ∑ y ∈ s, F x * F y`. Rewrite using `[Finset.sum_mul]`. Simplify using `only [Finset.mul_sum]`. Establish `e2 : ∑ x ∈ s, ∑ y ∈ s, F x * F y = -∑ x ∈ s, ∑ y ∈ s, F x * F y`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[e]`. Conclude with `eq_zero_of_eq_neg_of_module_complex e2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem car_sum_sq_zero_of_anti {R ι : Type*} [Ring R] [Module ℂ R] (s : Finset ι) (F : ι → R)
     (h : ∀ x ∈ s, ∀ y ∈ s, F x * F y = -(F y * F x)) : (∑ x ∈ s, F x) * (∑ y ∈ s, F y) = 0 := by
@@ -112,7 +112,7 @@ theorem car_sum_sq_zero_of_anti {R ι : Type*} [Ring R] [Module ℂ R] (s : Fins
   exact eq_zero_of_eq_neg_of_module_complex e2
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem car_anti_abs {R : Type*} [Ring R] (A B c e : R) (hcB : c * B = B * c) (heA : e * A = A * e)
     (hAB : A * B = B * A) (hce : c * e = -(e * c)) : A * c * (B * e) = -(B * e * (A * c)) := by
@@ -125,21 +125,21 @@ theorem car_anti_abs {R : Type*} [Ring R] (A B c e : R) (hcB : c * B = B * c) (h
     _ = -(B * e * (A * c)) := by simp only [mul_assoc]
 
 /- English proof (translation)
-Simplify using `[plusIdx]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem mem_plusIdx_iff_eq_true {ε : Fin n → Bool} {a : Fin n} :
     a ∈ plusIdx ε ↔ ε a = true := by
   simp [plusIdx]
 
 /- English proof (translation)
-Simplify using `[minusIdx]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem mem_minusIdx_iff_eq_false {ε : Fin n → Bool} {a : Fin n} :
     a ∈ minusIdx ε ↔ ε a = false := by
   simp [minusIdx]
 
 /- English proof (translation)
-The claim follows from `Finset.sum_congr rfl fun x hx => Finset.sum_eq_single x (fun y hy hyx => hF x hx y hy (Ne.symm hyx)) (fun h => absurd hx h)`.
+A detailed English derivation is pending.
 -/
 private theorem sum_sum_eq_sum_diag_of_offdiag_eq_zero {M ι : Type*} [AddCommMonoid M] (s : Finset ι) (F : ι → ι → M)
     (hF : ∀ x ∈ s, ∀ y ∈ s, x ≠ y → F x y = 0) : ∑ x ∈ s, ∑ y ∈ s, F x y = ∑ x ∈ s, F x x :=
@@ -147,7 +147,7 @@ private theorem sum_sum_eq_sum_diag_of_offdiag_eq_zero {M ι : Type*} [AddCommMo
     Finset.sum_eq_single x (fun y hy hyx => hF x hx y hy (Ne.symm hyx)) (fun h => absurd hx h)
 
 /- English proof (translation)
-Rewrite using `[Finset.sum_eq_single x0]`. Conclude with `Finset.sum_eq_single y0 (fun y hy hne => hF x0 hx0 y hy (Or.inr hne)) (fun h => absurd hy0 h)`. Conclude with `fun x hx hne => Finset.sum_eq_zero fun y hy => hF x hx y hy (Or.inl hne)`. Conclude with `fun h => absurd hx0 h`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
 -/
 private theorem sum_sum_eq_apply_of_eq_zero_off_point {M ι κ : Type*} [AddCommMonoid M] (s : Finset ι) (t : Finset κ)
     (x0 : ι) (y0 : κ) (hx0 : x0 ∈ s) (hy0 : y0 ∈ t) (F : ι → κ → M)
@@ -159,7 +159,7 @@ private theorem sum_sum_eq_apply_of_eq_zero_off_point {M ι κ : Type*} [AddComm
   · exact fun h => absurd hx0 h
 
 /- English proof (translation)
-Unfold `sgE`. Rewrite using `[if_pos (And.intro ha hb)]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 private theorem sgE_eq_sum_minusIdx_of_true (ε : Fin n → Bool) (cp cm : Fin n → Fin n → Module.End ℂ W)
     {a b : Fin n} (ha : ε a = true) (hb : ε b = true) :
@@ -168,7 +168,7 @@ private theorem sgE_eq_sum_minusIdx_of_true (ε : Fin n → Bool) (cp cm : Fin n
   rw [if_pos (And.intro ha hb)]
 
 /- English proof (translation)
-Unfold `sgE`. Establish `h1 : ¬(ε a = true ∧ ε b = true)` using `by simp [ha]`. Rewrite using `[if_neg h1, if_pos (And.intro ha hb)]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 private theorem sgE_eq_neg_sum_plusIdx_of_false (ε : Fin n → Bool) (cp cm : Fin n → Fin n → Module.End ℂ W)
     {a b : Fin n} (ha : ε a = false) (hb : ε b = false) :
@@ -178,39 +178,39 @@ private theorem sgE_eq_neg_sum_plusIdx_of_false (ε : Fin n → Bool) (cp cm : F
   rw [if_neg h1, if_pos (And.intro ha hb)]
 
 /- English proof (translation)
-Apply the tactic sequence `by_cases ha : ε a = true <;> by_cases hc : ε c = true`. Establish `hb : ε b = true` using `by rw [← hab]; exact ha`. Establish `hd : ε d = true` using `by rw [← hcd]; exact hc`. Rewrite using `[sgE_eq_sum_minusIdx_of_true ε cp cm ha hb, sgE_eq_sum_minusIdx_of_true ε cp cm hc hd, sgE_eq_sum_minusIdx_of_true ε cp cm ha hd, sgE_eq_sum_minusIdx_of_true ε cp cm hc hb]`. Simplify using `only [car_comm_sum, car_bil hC]`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `(sum_sum_eq_sum_diag_of_offdiag_eq_zero _ _ ?_).trans ?_` and prove the remaining obligations. Introduce `x _ y _ hxy`. Simplify using `[hxy, Ne.symm hxy]`. Apply the tactic sequence `rcases eq_or_ne b c with h1 | h1 <;> rcases eq_or_ne d a with h2 | h2`. Substitute `h1` using the available equality.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Substitute using the available equality.
 
-Substitute `h2` using the available equality. Simplify using `[Finset.sum_sub_distrib]`. Substitute `h1` using the available equality. Simplify using `[h2]`. Substitute `h2` using the available equality.
+Substitute using the available equality. Simplify using the standard rewrite rules. Substitute using the available equality. Simplify using the standard rewrite rules. Substitute using the available equality.
 
-Simplify using `[h1]`. Simplify using `[h1, h2]`. Establish `hc' : ε c = false` using `by simpa using hc`. Establish `hb : ε b = true` using `by rw [← hab]; exact ha`. Establish `hd : ε d = false` using `by rw [← hcd]; exact hc'`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hbc : b ≠ c` using `fun h => by simp [h, hc'] at hb`. Establish `hda : d ≠ a` using `fun h => by simp [h, ha] at hd`. Rewrite using `[if_neg hbc, if_neg hda, sub_zero, sgE_eq_sum_minusIdx_of_true ε cp cm ha hb, sgE_eq_neg_sum_plusIdx_of_false ε cp cm hc' hd]`. Establish `e1 : ∑ x ∈ minusIdx ε, ∑ i ∈ plusIdx ε, (if b = i ∧ x = d then cp a x * cm i c else 0) = cp a d * cm b c`. Use `(sum_sum_eq_apply_of_eq_zero_off_point _ _ d b (mem_minusIdx_iff_eq_false.mpr hd) (mem_plusIdx_iff_eq_true.mpr hb) _ ?_).trans ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `x _ i _ hne`. Rewrite using `[if_neg]`. Introduce and unpack `⟨rfl, rfl⟩`. Simplify using `at hne`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Establish `e2 : ∑ x ∈ minusIdx ε, ∑ i ∈ plusIdx ε, (if i = a ∧ c = x then cp i d * cm b x else 0) = cp a d * cm b c`. Use `(sum_sum_eq_apply_of_eq_zero_off_point _ _ c a (mem_minusIdx_iff_eq_false.mpr hc') (mem_plusIdx_iff_eq_true.mpr ha) _ ?_).trans ?_` and prove the remaining obligations. Introduce `x _ i _ hne`. Rewrite using `[if_neg]`. Introduce and unpack `⟨rfl, rfl⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Simplify using `at hne`. Simplify using the standard rewrite rules. Establish `key : (∑ x ∈ minusIdx ε, cp a x * cm b x) * (∑ i ∈ plusIdx ε, cp i d * cm i c) - (∑ i ∈ plusIdx ε, cp i d * cm i c) * (∑ x ∈ minusIdx ε, cp a x * cm b x) = 0`. Simplify using `only [car_comm_sum, car_bil hC, Finset.sum_sub_distrib, e1, e2, sub_self]`. Rewrite using `[mul_neg, neg_mul, neg_sub_neg, ← neg_sub, key, neg_zero]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `ha' : ε a = false` using `by simpa using ha`. Establish `hb : ε b = false` using `by rw [← hab]; exact ha'`. Establish `hd : ε d = true` using `by rw [← hcd]; exact hc`. Establish `hbc : b ≠ c` using `fun h => by simp [h, hc] at hb`. Establish `hda : d ≠ a` using `fun h => by simp [h, ha'] at hd`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[if_neg hbc, if_neg hda, sub_zero, sgE_eq_neg_sum_plusIdx_of_false ε cp cm ha' hb, sgE_eq_sum_minusIdx_of_true ε cp cm hc hd]`. Establish `e1 : ∑ i ∈ plusIdx ε, ∑ y ∈ minusIdx ε, (if i = c ∧ a = y then cp i b * cm d y else 0) = cp c b * cm d a`. Use `(sum_sum_eq_apply_of_eq_zero_off_point _ _ c a (mem_plusIdx_iff_eq_true.mpr hc) (mem_minusIdx_iff_eq_false.mpr ha') _ ?_).trans ?_` and prove the remaining obligations. Introduce `i _ y _ hne`. Rewrite using `[if_neg]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `⟨rfl, rfl⟩`. Simplify using `at hne`. Simplify using the standard rewrite rules. Establish `e2 : ∑ i ∈ plusIdx ε, ∑ y ∈ minusIdx ε, (if d = i ∧ y = b then cp c y * cm i a else 0) = cp c b * cm d a`. Use `(sum_sum_eq_apply_of_eq_zero_off_point _ _ d b (mem_plusIdx_iff_eq_true.mpr hd) (mem_minusIdx_iff_eq_false.mpr hb) _ ?_).trans ?_` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `i _ y _ hne`. Rewrite using `[if_neg]`. Introduce and unpack `⟨rfl, rfl⟩`. Simplify using `at hne`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Establish `key : (∑ i ∈ plusIdx ε, cp i b * cm i a) * (∑ y ∈ minusIdx ε, cp c y * cm d y) - (∑ y ∈ minusIdx ε, cp c y * cm d y) * (∑ i ∈ plusIdx ε, cp i b * cm i a) = 0`. Simplify using `only [car_comm_sum, car_bil hC, Finset.sum_sub_distrib, e1, e2, sub_self]`. Rewrite using `[neg_mul, mul_neg, neg_sub_neg, ← neg_sub, key, neg_zero]`. Establish `ha' : ε a = false` using `by simpa using ha`. Establish `hc' : ε c = false` using `by simpa using hc`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb : ε b = false` using `by rw [← hab]; exact ha'`. Establish `hd : ε d = false` using `by rw [← hcd]; exact hc'`. Rewrite using `[sgE_eq_neg_sum_plusIdx_of_false ε cp cm ha' hb, sgE_eq_neg_sum_plusIdx_of_false ε cp cm hc' hd, sgE_eq_neg_sum_plusIdx_of_false ε cp cm ha' hd, sgE_eq_neg_sum_plusIdx_of_false ε cp cm hc' hb, neg_mul_neg, neg_mul_neg]`. Simplify using `only [car_comm_sum, car_bil hC]`. Use `(sum_sum_eq_sum_diag_of_offdiag_eq_zero _ _ ?_).trans ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `x _ y _ hxy`. Simplify using `[hxy, Ne.symm hxy]`. Apply the tactic sequence `rcases eq_or_ne b c with h1 | h1 <;> rcases eq_or_ne d a with h2 | h2`. Substitute `h1` using the available equality. Substitute `h2` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Substitute using the available equality. Substitute using the available equality.
 
-Simplify using `[Finset.sum_sub_distrib]`. Apply the tactic sequence `try abel`. Substitute `h1` using the available equality. Simplify using `[h2, Ne.symm h2]`. Apply the tactic sequence `try abel`.
+Simplify using the standard rewrite rules. Substitute using the available equality. Simplify using the standard rewrite rules. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Substitute `h2` using the available equality. Simplify using `[h1, Ne.symm h1]`. Apply the tactic sequence `try abel`. Simplify using `[h1, Ne.symm h1, h2, Ne.symm h2]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sgE_comm {cp cm : Fin n → Fin n → Module.End ℂ W} (hC : IsCAR cp cm) (ε : Fin n → Bool)
     (a b c d : Fin n) (hab : ε a = ε b) (hcd : ε c = ε d) :
@@ -301,11 +301,11 @@ theorem sgE_comm {cp cm : Fin n → Fin n → Module.End ℂ W} (hC : IsCAR cp c
       · simp [h1, Ne.symm h1, h2, Ne.symm h2]
 
 /- English proof (translation)
-Establish `hsum : dOp ε E cp = ∑ p ∈ plusIdx ε ×ˢ minusIdx ε, E p.2 p.1 * cp p.1 p.2`. Simplify using `only [dOp, Finset.sum_product]`. Rewrite using `[hsum]`. Apply `car_sum_sq_zero_of_anti` to reduce the goal to its premises. Introduce `x hx y hy`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [Finset.mem_product, mem_plusIdx_iff_eq_true, mem_minusIdx_iff_eq_false] at hx hy`. Take `⟨hx1, hx2⟩` from `hx`. Take `⟨hy1, hy2⟩` from `hy`. Establish `n1 : x.1 ≠ y.2` using `fun h => by simp [h, hy2] at hx1`. Establish `n2 : y.1 ≠ x.2` using `fun h => by simp [h, hx2] at hy1`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hAB : E x.2 x.1 * E y.2 y.1 = E y.2 y.1 * E x.2 x.1`. Establish `h` using `hE x.2 x.1 y.2 y.1`. Rewrite `h` using `[if_neg n1, if_neg n2, sub_zero]`. Conclude with `sub_eq_zero.mp h`. Conclude with `car_anti_abs _ _ _ _ ((hEC y.2 y.1 x.1 x.2).1).symm ((hEC x.2 x.1 y.1 y.2).1).symm hAB (eq_neg_iff_add_eq_zero.mpr (hC x.1 x.2 y.1 y.2).1)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dOp_sq {E cp cm : Fin n → Fin n → Module.End ℂ W} (hE : IsGlRep E) (hC : IsCAR cp cm)
     (hEC : CommutesCAR E cp cm) (ε : Fin n → Bool) : dOp ε E cp * dOp ε E cp = 0 := by
@@ -328,11 +328,11 @@ theorem dOp_sq {E cp cm : Fin n → Fin n → Module.End ℂ W} (hE : IsGlRep E)
     (eq_neg_iff_add_eq_zero.mpr (hC x.1 x.2 y.1 y.2).1)
 
 /- English proof (translation)
-Establish `hsum : dOp' ε E cm = -∑ p ∈ plusIdx ε ×ˢ minusIdx ε, E p.1 p.2 * cm p.1 p.2`. Simplify using `only [dOp', Finset.sum_product]`. Rewrite using `[hsum, neg_mul_neg]`. Apply `car_sum_sq_zero_of_anti` to reduce the goal to its premises. Introduce `x hx y hy`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [Finset.mem_product, mem_plusIdx_iff_eq_true, mem_minusIdx_iff_eq_false] at hx hy`. Take `⟨hx1, hx2⟩` from `hx`. Take `⟨hy1, hy2⟩` from `hy`. Establish `n1 : x.2 ≠ y.1` using `fun h => by simp [h, hy1] at hx2`. Establish `n2 : y.2 ≠ x.1` using `fun h => by simp [h, hx1] at hy2`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hAB : E x.1 x.2 * E y.1 y.2 = E y.1 y.2 * E x.1 x.2`. Establish `h` using `hE x.1 x.2 y.1 y.2`. Rewrite `h` using `[if_neg n1, if_neg n2, sub_zero]`. Conclude with `sub_eq_zero.mp h`. Conclude with `car_anti_abs _ _ _ _ ((hEC y.1 y.2 x.1 x.2).2).symm ((hEC x.1 x.2 y.1 y.2).2).symm hAB (eq_neg_iff_add_eq_zero.mpr (hC x.1 x.2 y.1 y.2).2.1)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dOp'_sq {E cp cm : Fin n → Fin n → Module.End ℂ W} (hE : IsGlRep E) (hC : IsCAR cp cm)
     (hEC : CommutesCAR E cp cm) (ε : Fin n → Bool) : dOp' ε E cm * dOp' ε E cm = 0 := by

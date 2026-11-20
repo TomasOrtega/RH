@@ -14,7 +14,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.CompanionTheory.SWCoef
 
 /- English proof (translation)
-Introduce `D n`. Establish `h : ∀ b : PositivityTheory.GramSchwartzFunctions.BC.hermA D n, ∃ g : GlobalTheory.StdUnn.G D n, GlobalTheory.StdUnn.mat g = GlobalTheory.StdUnn.blk4 1 b.1 0 1` using `fun b => (GlobalTheory.StdUnn.Model.exists_unip _).2 b.2`. Use `choose nb hnb using h`. Take `⟨lam, 𝓖, hl⟩` from `GlobalTheory.CompanionTheory.HermVol.exists_isCovolOneH D n`. Conclude with `⟨nb, lam, 𝓖, hnb, hl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem coefDataExists : PositivityTheory.PfSWUS.CoefDataExists := by
   intro D n

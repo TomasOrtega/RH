@@ -13,7 +13,7 @@ variable {E : Type} [Field E] {M c : ℕ}
 def lv (M u : ℕ) : ℕ := if u < M then 1 else u - M + 1
 
 /- English proof (translation)
-Apply the tactic sequence `unfold lv; split_ifs <;> omega`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem one_le_lv (M u : ℕ) : 1 ≤ lv M u := by unfold lv; split_ifs <;> omega
 
@@ -21,9 +21,9 @@ def Unip (x : (Fin (M + c) → E) ≃ₗ[E] (Fin (M + c) → E)) : Prop :=
   ∀ u v : Fin (M + c), lv M v.1 ≤ lv M u.1 → x (Pi.single v 1) u = if u = v then 1 else 0
 
 /- English proof (translation)
-Establish `hw : w = ∑ v, Pi.single v (w v)` using `(Finset.univ_sum_single w).symm`. Use `conv_lhs => rw [hw]`. Rewrite using `[map_sum, Finset.sum_apply]`. Use `Finset.sum_congr rfl fun v _ => ?_` and prove the remaining obligations. Establish `h : (Pi.single v (w v) : Fin (M + c) → E) = w v • (Pi.single v (1 : E) : Fin (M + c) → E)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `j`. Simplify using `[Pi.single_apply]`. Rewrite using `[h, map_smul]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem apply_eq_sum (x : (Fin (M + c) → E) ≃ₗ[E] (Fin (M + c) → E)) (w : Fin (M + c) → E) (l : Fin (M + c)) :
     x w l = ∑ v, w v * x (Pi.single v 1) l := by
@@ -37,19 +37,19 @@ theorem apply_eq_sum (x : (Fin (M + c) → E) ≃ₗ[E] (Fin (M + c) → E)) (w 
   simp
 
 /- English proof (translation)
-Use extensionality with `l`. Simplify using `[Loc.eN, Pi.single_apply, Fin.ext_iff]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem eN_val (v : Fin (M + c)) : Loc.eN E (M + c) v.1 = Pi.single v 1 := by
   ext l; simp [Loc.eN, Pi.single_apply, Fin.ext_iff]
 
 /- English proof (translation)
-Use extensionality with `l`. Simplify using `only [Loc.eN, Pi.zero_apply]`. Rewrite using `[if_neg]`. Use linear arithmetic over natural numbers and integers.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem eN_out {j : ℕ} (h : ¬ j < M + c) : Loc.eN E (M + c) j = 0 := by
   ext l; simp only [Loc.eN, Pi.zero_apply]; rw [if_neg]; omega
 
 /- English proof (translation)
-Simplify using `only [Loc.inX, LinearMap.pi_apply]`. Apply the tactic sequence `split_ifs <;> rfl`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem inX_apply (y : Fin M → E) (l : Fin (M + c)) :
     Loc.inX E M c y l = if h : l.1 < M then y ⟨l.1, h⟩ else 0 := by
@@ -57,9 +57,9 @@ theorem inX_apply (y : Fin M → E) (l : Fin (M + c)) :
   split_ifs <;> rfl
 
 /- English proof (translation)
-Distinguish the cases in `h : j < M + c`. Use `eN_val (E := E) (⟨j, h⟩ : Fin (M + c))` as an intermediate fact. Simplify using `only at this`. Rewrite using `[this, hU l ⟨j, h⟩ hle]`. Simplify using `[Pi.single_apply]`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[eN_out h, map_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem col {x : (Fin (M + c) → E) ≃ₗ[E] (Fin (M + c) → E)} (hU : Unip x) (j : ℕ) (l : Fin (M + c))
     (hle : lv M j ≤ lv M l.1) : x (Loc.eN E (M + c) j) l = Loc.eN E (M + c) j l := by
@@ -71,11 +71,11 @@ theorem col {x : (Fin (M + c) → E) ≃ₗ[E] (Fin (M + c) → E)} (hU : Unip x
   · rw [eN_out h, map_zero]
 
 /- English proof (translation)
-Use `⟨fun i w hw l hl => ?_, ?_, fun i l hl => ?_⟩` and prove the remaining obligations. Rewrite using `[apply_eq_sum]`. Use `Finset.sum_eq_zero fun v _ => ?_` and prove the remaining obligations. Distinguish the cases in `hv : v.1 < M + i`. Establish `hl' : ¬ l.1 < M + i` using `hl`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Apply the tactic sequence `rw [hU l v (by unfold lv; split_ifs <;> omega), if_neg (by intro h; subst h; exact hl' hv), mul_zero]`. Rewrite using `[hw v hv, zero_mul]`. Use extensionality with `l`. Conclude with `col hU M l (by have := one_le_lv M l.1; unfold lv at this ⊢; simp; omega)`. Establish `hl' : ¬ l.1 < M + i` using `hl show x _ l - _ = 0`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `rw [col hU (M + i) l (by unfold lv; split_ifs <;> omega), sub_self]`.
+A detailed English derivation is pending.
 -/
 theorem r1cond_of_unip {x : (Fin (M + c) → E) ≃ₗ[E] (Fin (M + c) → E)} (hU : Unip x) : Loc.R1cond E M c x := by
   refine ⟨fun i w hw l hl => ?_, ?_, fun i l hl => ?_⟩
@@ -92,11 +92,11 @@ theorem r1cond_of_unip {x : (Fin (M + c) → E) ≃ₗ[E] (Fin (M + c) → E)} (
     rw [col hU (M + i) l (by unfold lv; split_ifs <;> omega), sub_self]
 
 /- English proof (translation)
-Introduce `y`. Use extensionality with `l`. Rewrite using `[apply_eq_sum, Finset.sum_eq_single l]`. Distinguish the cases in `hl : l.1 < M`. Rewrite using `[hU l l (le_refl _), if_pos rfl, mul_one]`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[inX_apply, hl]`. Introduce `v _ hvl`. Distinguish the cases in `hv : v.1 < M`. Rewrite using `[hU l v (by have := one_le_lv M l.1; unfold lv; rw [if_pos hv]; exact this), if_neg (Ne.symm hvl), mul_zero]`. Rewrite using `[inX_apply, dif_neg hv, zero_mul]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `h`. Conclude with `absurd (Finset.mem_univ l) h`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem fixX_of_unip {x : (Fin (M + c) → E) ≃ₗ[E] (Fin (M + c) → E)} (hU : Unip x) : x ∈ Loc.fixX E M c := by
   intro y
@@ -112,17 +112,17 @@ theorem fixX_of_unip {x : (Fin (M + c) → E) ≃ₗ[E] (Fin (M + c) → E)} (hU
   · intro h; exact absurd (Finset.mem_univ l) h
 
 /- English proof (translation)
-Introduce `u v hle`. Distinguish the cases in `hv : v.1 < M`. Establish `hs : (Pi.single v 1 : Fin (M + c) → E) = Loc.inX E M c (Pi.single ⟨v.1, hv⟩ 1)`. Use extensionality with `l`. Rewrite using `[inX_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Use `split_ifs with h`. Simplify using `[Pi.single_apply, Fin.ext_iff]`. Simplify using `[Pi.single_apply, Fin.ext_iff]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[hs, hX, ← hs]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[Pi.single_apply]`. Establish `hj : M + (v.1 - M) = v.1` using `by omega`. Distinguish the cases in `hu : u.1 < M + (v.1 - M)`. Establish `hvM : v.1 = M`. Apply the tactic sequence `unfold lv at hle; split_ifs at hle <;> omega`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Establish `h2` using `congrFun hR.2.1 u`. Establish `h4` using `eN_val (E := E) v`. Rewrite `h4` using `[hvM]`. Rewrite `h2` using `[h4]`. Rewrite using `[h2]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[Pi.single_apply]`. Establish `h3` using `hR.2.2 (v.1 - M) u hu`. Rewrite `h3` using `[hj, eN_val]`. Establish `h3' : x (Pi.single v 1) u - (Pi.single v 1 : Fin (M + c) → E) u = 0` using `h3`. Rewrite `h3'` using `[sub_eq_zero]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h3']`. Simplify using `[Pi.single_apply]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem unip_of {x : (Fin (M + c) → E) ≃ₗ[E] (Fin (M + c) → E)} (hR : Loc.R1cond E M c x)
     (hX : x ∈ Loc.fixX E M c) : Unip x := by
@@ -155,7 +155,7 @@ variable {k : Type} [Field k] (ι : E →+* k) {A : Type} [Fintype A] [Decidable
 
 include he in
 /- English proof (translation)
-Break down `s with a | i` into its components or cases. Use `eX_lt e rfl he a` as an intermediate fact. Simplify using `[lev, lv, this]`. Apply the tactic sequence `simp only [lev, Sum.elim_inr, lv, he i] split_ifs <;> omega`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem lev_eq (s : A ⊕ Fin c) : lev 1 s = lv M (e s).1 := by
   rcases s with a | i
@@ -167,13 +167,13 @@ theorem lev_eq (s : A ⊕ Fin c) : lev 1 s = lv M (e s).1 := by
 include he in
 
 /- English proof (translation)
-Establish `hval : ∀ r s, (locHom ι e x).val r s = ι (x (Pi.single (e s) 1) (e r))` using `fun r s => rfl`. Establish `hent : ∀ (a : E) (r s : A ⊕ Fin c), ι a = (1 : Matrix (A ⊕ Fin c) (A ⊕ Fin c) k) r s ↔ a = if e r = e s then 1 else 0`. Introduce `a r s`. Rewrite using `[Matrix.one_apply]`. Distinguish the cases in `h : r = s`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Simplify using `[h, map_eq_one_iff ι ι.injective]`. Simplify using `[h, e.injective.eq_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `h u v hle`. Use `h (e.symm u) (e.symm v) (by rw [lev_eq e he, lev_eq e he]; simpa using hle)` as an intermediate fact.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `this` using `[hval, hent]`. Simplify using `using this`. Introduce `h r s hle`. Rewrite using `[hval, hent]`. Rewrite `hle` using `[lev_eq e he, lev_eq e he]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h (e r) (e s) hle`.
+A detailed English derivation is pending.
 -/
 theorem inN_iff (x : (Fin (M + c) → E) ≃ₗ[E] (Fin (M + c) → E)) : InN 1 (locHom ι e x) ↔ Unip x := by
   have hval : ∀ r s, (locHom ι e x).val r s = ι (x (Pi.single (e s) 1) (e r)) := fun r s => rfl
@@ -197,11 +197,11 @@ theorem inN_iff (x : (Fin (M + c) → E) ≃ₗ[E] (Fin (M + c) → E)) : InN 1 
 end Read
 
 /- English proof (translation)
-Introduce `E k _ _ ι A _ _ M c c' e hcc he x`. Substitute `hcc` using the available equality. Rewrite using `[Model.mem_N_iff, inN_iff ι e he]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨h1, _⟩, h2⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Conclude with `unip_of h1 h2`. Introduce `h`. Establish `hN : locHom ι e x ∈ N k A c' 1` using `Model.mem_N_iff.2 ((inN_iff ι e he x).2 h)`. Establish `hinv : Unip x⁻¹`. Rewrite using `[← inN_iff ι e he, map_inv]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `Model.mem_N_iff.1 (inv_mem hN)`. Conclude with `⟨⟨r1cond_of_unip h, r1cond_of_unip hinv⟩, fixX_of_unip h⟩`.
+A detailed English derivation is pending.
 -/
 theorem mem_N1_iff_local_hom : ∀ {E k : Type} [Field E] [Field k] (ι : E →+* k) {A : Type} [Fintype A] [DecidableEq A] {M c c' : ℕ}
     (e : A ⊕ Fin c ≃ Fin (M + c')), c' = c → (∀ i : Fin c, (e (Sum.inr i)).val = M + i.val) →

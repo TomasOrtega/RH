@@ -17,15 +17,13 @@ variable {A B : Type} [Group A] [TopologicalSpace A] [IsTopologicalGroup A] [Mea
   [BorelSpace B] [LocallyCompactSpace B] [SecondCountableTopology B]
 
 /- English proof (translation)
-Establish `hemb : MeasurableEmbedding (Subtype.val : R → B)` using `MeasurableEmbedding.subtype_coe ho.measurableSet`. Establish `hop : IsOpenMap (Subtype.val : R → B)` using `ho.isOpenMap_subtype_val`. Conclude with `{ lt_top_of_isCompact := fun {K} hK => by`. Rewrite using `[hemb.comap_apply]`. Conclude with `(hK.image continuous_subtype_val).measure_lt_top`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `map_mul_left_eq_self := fun g => by`. Use `Measure.ext fun s hs => ?_` and prove the remaining obligations. Rewrite using `[Measure.map_apply (measurable_const_mul g) hs, hemb.comap_apply, hemb.comap_apply]`. Establish `e : (Subtype.val : R → B) '' ((fun x => g * x) ⁻¹' s) = (fun x => (g : B) * x) ⁻¹' ((Subtype.val : R → B) '' s)`. Use extensionality with `x`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩`. Conclude with `⟨g * y, hy, rfl⟩`. Introduce and unpack `⟨z, hz, hzx⟩`. Use `⟨g⁻¹ * z, ?_, ?_⟩` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `using hz`. Simplify using `[hzx]`. Rewrite using `[e]`. Conclude with `measure_preimage_mul ν (g : B) _`. Use `open_pos := fun U hU hne => by`.
-
-Rewrite using `[hemb.comap_apply]`. Conclude with `(hop U hU).measure_ne_zero ν (hne.image _) }`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isHaarMeasure_comap_subtype {R : Subgroup B} (ho : IsOpen (R : Set B)) (ν : Measure B)
     [ν.IsHaarMeasure] : (Measure.comap (Subtype.val : R → B) ν).IsHaarMeasure := by
@@ -56,13 +54,11 @@ theorem isHaarMeasure_comap_subtype {R : Subgroup B} (ho : IsOpen (R : Set B)) (
         exact (hop U hU).measure_ne_zero ν (hne.image _) }
 
 /- English proof (translation)
-Establish `hemb : MeasurableEmbedding (Subtype.val : N.range → B)` using `MeasurableEmbedding.subtype_coe ho.measurableSet`. Use `haveI : LocallyCompactSpace N.range := ho.locallyCompactSpace`. Use `haveI : SecondCountableTopology N.range := TopologicalSpace.Subtype.secondCountableTopology (N.range : Set B)`. Establish `hc : Continuous N.rangeRestrict` using `hp.continuous.subtype_mk _`. Establish `ht : Filter.Tendsto N.rangeRestrict (Filter.cocompact A) (Filter.cocompact N.range)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `(Filter.hasBasis_cocompact.tendsto_iff Filter.hasBasis_cocompact).2 fun K hK => ?_` and prove the remaining obligations. Use `⟨N ⁻¹' (Subtype.val '' K), hp.isCompact_preimage (hK.image continuous_subtype_val), ?_⟩` and prove the remaining obligations. Introduce `x hx hxK`. Conclude with `hx ⟨_, hxK, rfl⟩`. Use `haveI : (Measure.map N.rangeRestrict μ).IsHaarMeasure := Measure.isHaarMeasure_map μ N.rangeRestrict hc N.rangeRestrict_surjective ht`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `haveI : (Measure.comap (Subtype.val : N.range → B) ν).IsHaarMeasure := isHaarMeasure_comap_subtype ho ν`. Use `⟨Measure.haarScalarFactor (Measure.map N.rangeRestrict μ) (Measure.comap (Subtype.val : N.range → B) ν), Measure.haarScalarFactor_pos_of_isHaarMeasure _ _, ?_⟩` and prove the remaining obligations. Establish `h` using `Measure.isMulLeftInvariant_eq_smul (Measure.map N.rangeRestrict μ) (Measure.comap (Subtype.val : N.range → B) ν)`. Establish `e : Measure.map N μ = Measure.map Subtype.val (Measure.map N.rangeRestrict μ)`. Rewrite using `[Measure.map_map measurable_subtype_coe hc.measurable]`.
-
-Both sides reduce to the same expression. Rewrite using `[e]`. Use `conv_lhs => rw [h]`. Rewrite using `[Measure.map_smul, hemb.map_comap, Subtype.range_coe]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_map_eq_smul_restrict (N : A →* B) (hp : IsProperMap N)
     (ho : IsOpen (N.range : Set B)) (μ : Measure A) [μ.IsHaarMeasure] (ν : Measure B)
@@ -109,9 +105,9 @@ omit [MeasurableSpace F] [BorelSpace F] [MeasurableSpace E] [BorelSpace E] [Valu
   [IsNonarchimedeanLocalField E] in
 
 /- English proof (translation)
-Establish `h : ∃ t : Eˣ, Algebra.norm F (t : E) = (normUnits F E x : Fˣ)` using `⟨x, rfl⟩`. Rewrite using `[nfib, dif_pos h]`. Establish `hs : normUnits F E h.choose = normUnits F E x` using `Units.ext h.choose_spec`. Establish `hu : Algebra.norm F (((h.choose⁻¹ * x : Eˣ)) : E) = 1`. Establish `h1 : normUnits F E (h.choose⁻¹ * x) = 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[map_mul, map_inv, hs, inv_mul_cancel]`. Conclude with `congrArg Units.val h1`. Use `hinv (h.choose : E) (h.choose⁻¹ * x) hu` as an intermediate fact. Rewrite using `[← this, Units.val_mul, Units.mul_inv_cancel_left]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nfib_normUnits {f : E → ℂ}
     (hinv : ∀ (x : E) (u : Eˣ), Algebra.norm F (u : E) = 1 → f (x * u) = f x) (x : Eˣ) :
@@ -131,7 +127,7 @@ omit [MeasurableSpace F] [BorelSpace F] [MeasurableSpace E] [BorelSpace E] [Valu
   [IsNonarchimedeanLocalField E] in
 
 /- English proof (translation)
-Use `dif_neg ?_` and prove the remaining obligations. Introduce and unpack `⟨t, ht⟩`. Conclude with `ha ⟨t, Units.ext ht⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem nfib_eq_zero {f : E → ℂ} {a : Fˣ} (ha : a ∉ (normUnits F E).range) : nfib E f a = 0 := by
   refine dif_neg ?_
@@ -141,13 +137,13 @@ theorem nfib_eq_zero {f : E → ℂ} {a : Fˣ} (ha : a ∉ (normUnits F E).range
 omit [MeasurableSpace F] [BorelSpace F] [MeasurableSpace E] [BorelSpace E] in
 
 /- English proof (translation)
-Establish `hopen : IsOpenMap (normUnits F E)` using `GlobalTheory.CompanionTheory.NormLocal.isOpenMap_normUnits_of_isOpen_range hO`. Establish `hC : IsClosed ((normUnits F E).range : Set Fˣ)` using `Subgroup.isClosed_of_isOpen _ hO`. Use `continuous_def.2 fun S hS => isOpen_iff_mem_nhds.2 fun a ha => ?_` and prove the remaining obligations. Distinguish the cases in `hr : a ∈ (normUnits F E).range`. Take `⟨x, rfl⟩` from `hr`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Establish `hV : IsOpen (normUnits F E '' ((fun x : Eˣ => f x) ⁻¹' S))` using `hopen _ (hS.preimage hf)`. Use `Filter.mem_of_superset (hV.mem_nhds ⟨x, ?_, rfl⟩) ?_` and prove the remaining obligations. Establish `: nfib E f (normUnits F E x) ∈ S` using `ha`. Rewrite `this` using `[nfib_normUnits hinv]`. Then use the resulting hypothesis. Introduce and unpack `_ ⟨y, hy, rfl⟩ show nfib E f (normUnits F E y) ∈ S`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Assume the hypotheses and unpack their components.
 
-Rewrite using `[nfib_normUnits hinv]` and apply the resulting hypothesis. Use `Filter.mem_of_superset (hC.isOpen_compl.mem_nhds hr) fun b hb => ?_` and prove the remaining obligations. Establish `h0 : (0 : ℂ) ∈ S`. Establish `: nfib E f a ∈ S` using `ha`. Rewrite `this` using `[nfib_eq_zero hr]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `show nfib E f b ∈ S`. Rewrite using `[nfib_eq_zero hb]` and apply the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem continuous_nfib [ValuativeExtension F E] [FiniteDimensional F E]
     (hO : IsOpen ((normUnits F E).range : Set Fˣ)) {f : E → ℂ}
@@ -174,13 +170,11 @@ theorem continuous_nfib [ValuativeExtension F E] [FiniteDimensional F E]
     rwa [nfib_eq_zero hb]
 
 /- English proof (translation)
-Introduce `f hf hinv`. Establish `hφ` using `continuous_nfib hO hf hinv`. Establish `hm : Measurable (normUnits F E)` using `(continuous_normUnits F E).measurable`. Establish `hcomp : (fun x : Eˣ => f x) = nfib E f ∘ normUnits F E`. Use function extensionality and compare the values at `fun x => (nfib_normUnits hinv x).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hsupp : Function.support (nfib E f : Fˣ → ℂ) ⊆ ((normUnits F E).range : Set Fˣ)`. Introduce `a ha`. Assume the negation of the conclusion as `hr`. Conclude with `ha (nfib_eq_zero hr)`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hcomp, ← integrable_map_measure hφ.aestronglyMeasurable hm.aemeasurable, hmap]`. Establish `e : c • (multHaar F).restrict ((normUnits F E).range : Set Fˣ) = (c : ℝ≥0∞) • (multHaar F).restrict ((normUnits F E).range : Set Fˣ)` using `rfl`. Rewrite using `[e, integrable_smul_measure (by exact_mod_cast hc.ne') ENNReal.coe_ne_top]`. Conclude with `integrableOn_iff_integrable_of_support_subset hsupp`. Establish `e : ∫ x : Eˣ, f x ∂multHaar E = ∫ x : Eˣ, nfib E f (normUnits F E x) ∂multHaar E` using `integral_congr_ae (Filter.Eventually.of_forall fun x => congrFun hcomp x)`.
-
-Rewrite using `[e, ← integral_map hm.aemeasurable hφ.aestronglyMeasurable, hmap, integral_smul_nnreal_measure, setIntegral_eq_integral_of_forall_compl_eq_zero fun a ha => nfib_eq_zero ha, NNReal.smul_def, Complex.real_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fibProp_of_map [ValuativeExtension F E] [FiniteDimensional F E]
     (hO : IsOpen ((normUnits F E).range : Set Fˣ)) {c : ℝ≥0} (hc : 0 < c)
@@ -212,9 +206,7 @@ theorem fibProp_of_map [ValuativeExtension F E] [FiniteDimensional F E]
 end Fib
 
 /- English proof (translation)
-Introduce `F _ _ _ _ _ _ _ χ _ _ E _ _ _ _ _ _ _ hd hc σ _ η _`. Use `haveI : ValuativeExtension F E := GlobalTheory.CompanionTheory.NormModulus.valuativeExtension_of_continuous hc`. Use `haveI : FiniteDimensional F E := Module.finite_of_finrank_eq_succ hd`. Use `haveI : Fact (Module.finrank F E = 2) := ⟨hd⟩`. Use `haveI : Algebra.IsSeparable F E := inferInstance`.
-
-Establish `hO : IsOpen ((normUnits F E).range : Set Fˣ)` using `GroundTheory.LocalField.FiltrationCocycleLiftCriterion.WeilRep.isOpen_range_normUnits (K := F) (E := E)`. Take `⟨c, hc0, hmap⟩` from `exists_map_eq_smul_restrict (normUnits F E) (isProperMap_normUnits F E) hO (multHaar E) (multHaar F)`. Conclude with `⟨c, by exact_mod_cast hc0, fibProp_of_map hO hc0 hmap⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem wFib : Ad3.K.GL2LocalData.WFib := by
   intro F _ _ _ _ _ _ _ χ _ _ E _ _ _ _ _ _ _ hd hc σ _ η _

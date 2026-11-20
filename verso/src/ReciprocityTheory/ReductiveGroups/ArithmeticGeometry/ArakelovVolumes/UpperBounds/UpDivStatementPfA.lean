@@ -10,9 +10,9 @@ open scoped ContDiff ENNReal
 variable {n : ℕ} {U : Set (V n)}
 
 /- English proof (translation)
-Introduce `e he`. Establish `hsub : e.target ⊆ U`. Introduce `y hy`. Rewrite using `[← chart_z_symm n Subtype.val e he y hy]`. Conclude with `(e.symm y).2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `(hf.mono hsub).congr (fun y hy => ?_)` and prove the remaining obligations. Use `show f (e.symm y).1 = f y`. Rewrite using `[chart_z_symm n Subtype.val e he y hy]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem holo_val {f : V n → ℂ} (hf : DifferentiableOn ℂ f U) :
     Holo n (Subtype.val : U → V n) (fun x => f x.1) := by
@@ -26,33 +26,27 @@ theorem holo_val {f : V n → ℂ} (hf : DifferentiableOn ℂ f U) :
   rw [chart_z_symm n Subtype.val e he y hy]
 
 /- English proof (translation)
-Establish `hzl : IsLocalHomeomorph (Subtype.val : U → V n)` using `hz ▸ S.isLocalHomeomorph`. Establish `hemb : MeasurableEmbedding (Subtype.val : U → V n)` using `MeasurableEmbedding.subtype_coe hU.measurableSet`. Establish `hvol : vol n (Subtype.val : U → V n) = (volume : Measure (V n)).comap Subtype.val`. Use extensionality with `A hA`. Rewrite using `[vol_image n Subtype.val hzl Set.univ isOpen_univ Subtype.val_injective.injOn A hA (Set.subset_univ _), hemb.comap_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Establish `htgt : ∀ (e : OpenPartialHomeomorph U (V n)), IsChart n Subtype.val e → e.target ⊆ U`. Introduce `e he y hy`. Rewrite using `[← chart_z_symm n Subtype.val e he y hy]`. Conclude with `(e.symm y).2`. Establish `hleviC : ∀ (g₁ g₂ : V n → ℂ) (y : V n), g₁ =ᶠ[𝓝 y] g₂ → ∀ ξ, leviV n g₁ y ξ = leviV n g₂ y ξ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `g₁ g₂ y h ξ`. Unfold `leviV`. Use `Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[wd_congr (h := h.eventually_nhds.mono fun y' h' => wdb_congr (h := h'))]`. Establish `hsm : SmoothR n S.z (fun x : U => ph0 x.1)`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hz]`. Introduce `e he`. Establish `hc : ContDiffOn ℝ ∞ (fun y => ((ph0 y : ℝ) : ℂ)) U` using `Complex.ofRealCLM.contDiff.comp_contDiffOn hph`. Use `(hc.mono (htgt e he)).congr (fun y hy => ?_)` and prove the remaining obligations. Use `show ((ph0 (e.symm y).1 : ℝ) : ℂ) = ((ph0 y : ℝ) : ℂ)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[chart_z_symm n Subtype.val e he y hy]`. Establish `hlev : LeviNonneg n S.z (fun x : U => ph0 x.1)`. Rewrite using `[hz]`. Introduce `x ξ`. Take `⟨e, he, hxe⟩` from `exists_chart n Subtype.val hzl x`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[levi_eq_leviV n Subtype.val e he _ x hxe ξ]`. Establish `heq : (fun y => ((ph0 (e.symm y).1 : ℝ) : ℂ)) =ᶠ[𝓝 x.1] fun y => ((ph0 y : ℝ) : ℂ)`. Establish `hxt : x.1 ∈ e.target`. Rewrite using `[he hxe]`. Conclude with `e.map_source hxe`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `filter_upwards [e.open_target.mem_nhds hxt] with y hy`. Rewrite using `[chart_z_symm n Subtype.val e he y hy]`. Rewrite using `[hleviC _ _ _ heq ξ]`. Conclude with `hl x.1 x.2 ξ`. Establish `hI' : ∫⁻ x, ENNReal.ofReal (‖f x.1‖ ^ 2 * (∑ i, ‖g i x.1‖ ^ 2) ^ (-(t + 1)) * Real.exp (-ph0 x.1)) ∂vol n S.z < ⊤`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[hz, hvol, lintegral_subtype_comap hU.measurableSet (fun y => ENNReal.ofReal (‖f y‖ ^ 2 * (∑ i, ‖g i y‖ ^ 2) ^ (-(t + 1)) * Real.exp (-ph0 y)))]`. Conclude with `hI`. Take `⟨hh, hhH, hhf, hhI⟩` from `skoda n U S p (fun i x => g i x.1) (fun x => ph0 x.1) t (fun x => f x.1) hp (fun i => by rw [hz]; exact holo_val (hg i)) (fun x => hnz x.1 x.2) hsm hlev ht (by rw [hz]; exact holo_val hf) hI'`. Use `⟨fun i y => if h : y ∈ U then hh i ⟨y, h⟩ else 0, fun i y hy => ?_, fun y hy => ?_, ?_⟩` and prove the remaining obligations. Take `⟨e, he, hxe⟩` from `exists_chart n Subtype.val hzl ⟨y, hy⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hH : DifferentiableOn ℂ (hh i ∘ e.symm) e.target`. Use `hhH i` as an intermediate fact. Rewrite `this` using `[hz]`. Conclude with `this e he`. Establish `hyt : y ∈ e.target`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `h1 : e ⟨y, hy⟩ = y` using `(he hxe).symm`. Rewrite using `[← h1]`. Conclude with `e.map_source hxe`. Establish `hD` using `(hH y hyt).differentiableAt (e.open_target.mem_nhds hyt)`. Use `(hD.congr_of_eventuallyEq ?_).differentiableWithinAt` and prove the remaining obligations.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `filter_upwards [e.open_target.mem_nhds hyt] with w hw`. Establish `hwU : w ∈ U` using `htgt e he hw`. Rewrite using `[dif_pos hwU]`. Use `show hh i ⟨w, hwU⟩ = hh i (e.symm w)`. Use `congr 1`.
-
-Conclude with `Subtype.ext (chart_z_symm n Subtype.val e he w hw).symm`. Use `hhf ⟨y, hy⟩` as an intermediate fact. Simplify `this` using `[hy]`. Establish `hL : ∫⁻ y in U, ENNReal.ofReal ((∑ i, ‖(if h : y ∈ U then hh i ⟨y, h⟩ else 0)‖ ^ 2) * (∑ i, ‖g i y‖ ^ 2) ^ (-t) * Real.exp (-ph0 y)) = ∫⁻ x, ENNReal.ofReal ((∑ i, ‖hh i x‖ ^ 2) * (∑ i, ‖g i x.1‖ ^ 2) ^ (-t) * Real.exp (-ph0 x.1)) ∂vol n S.z`. Rewrite using `[hz, hvol, ← lintegral_subtype_comap hU.measurableSet]`.
-
-Use `lintegral_congr fun x => ?_` and prove the remaining obligations. Simplify using `[x.2]`. Establish `hR : ∫⁻ y in U, ENNReal.ofReal (‖f y‖ ^ 2 * (∑ i, ‖g i y‖ ^ 2) ^ (-(t + 1)) * Real.exp (-ph0 y)) = ∫⁻ x, ENNReal.ofReal (‖f x.1‖ ^ 2 * (∑ i, ‖g i x.1‖ ^ 2) ^ (-(t + 1)) * Real.exp (-ph0 x.1)) ∂vol n S.z`. Rewrite using `[hz, hvol, lintegral_subtype_comap hU.measurableSet (fun y => ENNReal.ofReal (‖f y‖ ^ 2 * (∑ i, ‖g i y‖ ^ 2) ^ (-(t + 1)) * Real.exp (-ph0 y)))]`. Rewrite using `[hL, hR]`.
-
-Conclude with `hhI`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem skoda_open (hU : IsOpen U) (S : EtaleStein n U) (hz : S.z = Subtype.val) {p : ℕ}
     (g : Fin p → V n → ℂ) (ph0 : V n → ℝ) (t : ℝ) (f : V n → ℂ) (hp : 2 ≤ p)

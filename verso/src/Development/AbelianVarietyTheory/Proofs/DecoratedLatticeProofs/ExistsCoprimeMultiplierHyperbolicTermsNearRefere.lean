@@ -20,14 +20,14 @@ namespace GlobalTheory.ScalW.EfNear
 variable {D : D7} (X : HidaSetting D)
 
 /- English proof (translation)
-Rewrite using `[Nat.cast_smul_eq_nsmul]`. Conclude with `nsmul_mem hx k`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nat_smul_mL (k : ℕ) {x : VA X.B.I} (hx : x ∈ mL X.B.I X.B.g) :
     (k : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) • x ∈ mL X.B.I X.B.g := by
   rw [Nat.cast_smul_eq_nsmul]; exact nsmul_mem hx k
 
 /- English proof (translation)
-Take `⟨k, rfl⟩` from `hd`. Rewrite using `[Nat.cast_mul, mul_comm (d : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) (k : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F), mul_smul]`. Conclude with `nat_smul_mL X k hx`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dvd_smul_mL {d M : ℕ} (hd : d ∣ M) {x : VA X.B.I}
     (hx : (d : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) • x ∈ mL X.B.I X.B.g) :
@@ -37,13 +37,13 @@ theorem dvd_smul_mL {d M : ℕ} (hd : d ∣ M) {x : VA X.B.I}
   exact nat_smul_mL X k hx
 
 /- English proof (translation)
-Establish `e : hA X.B.I w y • v - hA X.B.I w0 y • v0 = -(hA X.B.I w0 y • (v0 - v)) - hA X.B.I (w0 - w) y • v`. Rewrite using `[GlobalTheory.St.G.FrameClose.hA_sub_left, smul_sub, sub_smul]`. Normalize the expressions using the abelian group laws. Rewrite using `[e, smul_sub]`. Use `sub_mem ?_ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `dvd_smul_mL X (dvd_mul_of_dvd_left (dvd_mul_right c1 c2) c3) ?_` and prove the remaining obligations. Rewrite using `[smul_neg, smul_comm]`. Use `neg_mem ?_` and prove the remaining obligations. Use `(mL X.B.I X.B.g).smul_mem (⟨_, GlobalTheory.St.G.FrameClose.hA_int hw0 hy⟩ : IntAf X.B.I.F X.B.I.E) h1` as an intermediate fact. Rewrite `this` using `[Subring.smul_def]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `dvd_smul_mL X (d := c2 * c3) ⟨c1, by ring⟩ ?_` and prove the remaining obligations. Establish `e2 : ((c2 * c3 : ℕ) : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) • (hA X.B.I (w0 - w) y • v) = hA X.B.I ((c2 : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) • (w0 - w)) y • ((c3 : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) • v)`. Rewrite using `[GlobalTheory.St.G.FrameClose.hA_nat_left, smul_smul, smul_smul, Nat.cast_mul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[e2]`. Conclude with `Formalism.L2.SG.PoincareInHH.Cut.GU.smul_mL X (GlobalTheory.St.G.FrameClose.zmod_of_mL h2 hy) h3`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem term_near {v0 w0 v w y : VA X.B.I} (hw0 : w0 ∈ X.B.I.Lf) (hy : y ∈ X.B.I.Lf) {c1 c2 c3 : ℕ}
     (h1 : (c1 : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) • (v0 - v) ∈ mL X.B.I X.B.g)
@@ -77,11 +77,9 @@ namespace GlobalTheory.ScalW
 open GlobalTheory.ScalW.EfNear in
 
 /- English proof (translation)
-Introduce `D X`. Use `choose c1 hc1 h1 using fun a => (X.basisApprox a).1`. Use `choose c2 hc2 h2 using fun a => (X.basisApprox a).2`. Use `choose c3 hc3 h3 using fun a => GlobalTheory.St.G.FrameClose.den_of_inAt (X.vectorsInLattice.1 a).1 (X.basisApprox a).1`. Use `choose c4 hc4 h4 using fun a => GlobalTheory.St.G.FrameClose.den_of_inAt (X.vectorsInLattice.1 a).2 (X.basisApprox a).2`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Use `⟨∏ a, c1 a * c2 a * c3 a * c4 a, Nat.Coprime.prod_left fun a _ => (((hc1 a).mul (hc2 a)).mul (hc3 a)).mul (hc4 a), ?_⟩` and prove the remaining obligations. Introduce `y hy a`. Establish `hdvd : c1 a * c2 a * c3 a * c4 a ∣ ∏ b, c1 b * c2 b * c3 b * c4 b` using `Finset.dvd_prod_of_mem (fun b => c1 b * c2 b * c3 b * c4 b) (Finset.mem_univ a)`. Prove the components needed by the constructor for the conclusion. Use `dvd_smul_mL X (d := c1 a * c2 a * c3 a) (dvd_trans ⟨c4 a, rfl⟩ hdvd) ?_` and prove the remaining obligations.
-
-Conclude with `term_near X (v0 := X.e0 a) (w0 := X.f0 a) (v := eV X a) (w := fV X a) (X.vectorsInLattice.1 a).2 hy (h1 a) (h2 a) (h3 a)`. Use `dvd_smul_mL X (d := c2 a * c1 a * c4 a) (dvd_trans ⟨c3 a, by ring⟩ hdvd) ?_` and prove the remaining obligations. Conclude with `term_near X (v0 := X.f0 a) (w0 := X.e0 a) (v := fV X a) (w := eV X a) (X.vectorsInLattice.1 a).1 hy (h2 a) (h1 a) (h4 a)`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem ef_near_ref : ∀ (D : D7) (X : HidaSetting D), ∃ M : ℕ, Nat.Coprime M X.B.g ∧ ∀ y ∈ X.B.I.Lf, ∀ a, (M : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) • (hA X.B.I (GlobalTheory.ScalW.fV X a) y • GlobalTheory.ScalW.eV X a - hA X.B.I (X.f0 a) y • X.e0 a) ∈ mL X.B.I X.B.g ∧ (M : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) • (hA X.B.I (GlobalTheory.ScalW.eV X a) y • GlobalTheory.ScalW.fV X a - hA X.B.I (X.e0 a) y • X.f0 a) ∈ mL X.B.I X.B.g := by
   intro D X

@@ -31,9 +31,9 @@ def IsGerm (g : S ⟶ X) (x : X) : Prop :=
     ∀ c : Γ(S, ⊤), ∃ (W : X.Opens) (_ : x ∈ W) (h : ⊤ ≤ g ⁻¹ᵁ W) (a : Γ(X, W)), g.appLE W ⊤ h a = c
 
 /- English proof (translation)
-Establish `h0 (U : X.Opens) (hx : x ∈ U) : ⊤ ≤ X.fromSpecStalk x ⁻¹ᵁ U` using `fun q _ => (show X.fromSpecStalk x q ⤳ x from (Scheme.range_fromSpecStalk (X := X) (x := x)).le ⟨q, rfl⟩).mem_open U.isOpen hx`. Use `⟨h0, fun c => ?_⟩` and prove the remaining obligations. Take `⟨U, hx, a, ha⟩` from `X.presheaf.exists_germ_eq ((Scheme.ΓSpecIso (X.presheaf.stalk x)).hom c)`. Establish `e1 : (X.fromSpecStalk x).appLE U ⊤ (h0 U hx) = X.presheaf.germ U x hx ≫ (Scheme.ΓSpecIso (X.presheaf.stalk x)).inv`. Rewrite using `[Scheme.Hom.appLE, Scheme.fromSpecStalk_app hx, Category.assoc, Category.assoc, ← Functor.map_comp]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `congrArg (_ ≫ ·) ((congrArg _ ((Spec (X.presheaf.stalk x)).presheaf.map_id _)).trans (Category.comp_id _))`. Use `⟨U, hx, h0 U hx, a, ?_⟩` and prove the remaining obligations. Rewrite using `[e1, CommRingCat.comp_apply, ha, ← CommRingCat.comp_apply, Iso.hom_inv_id]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem isGerm_fromSpecStalk (x : X) : IsGerm (X.fromSpecStalk x) x := by
   have h0 (U : X.Opens) (hx : x ∈ U) : ⊤ ≤ X.fromSpecStalk x ⁻¹ᵁ U := fun q _ =>
@@ -49,9 +49,9 @@ theorem isGerm_fromSpecStalk (x : X) : IsGerm (X.fromSpecStalk x) x := by
   rfl
 
 /- English proof (translation)
-Establish `h0 (W : T.Opens) (hy : y ∈ W) : ⊤ ≤ g ⁻¹ᵁ W`. Use `h.1 (j ''ᵁ W) ⟨y, hy, rfl⟩` as an intermediate fact. Rewrite `this` using `[Scheme.Hom.comp_preimage, Scheme.Hom.preimage_image_eq]`. Then use the resulting hypothesis. Use `⟨h0, fun c => ?_⟩` and prove the remaining obligations. Take `⟨W, hy, hW, a, rfl⟩` from `h.2 c`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨j ⁻¹ᵁ W, hy, h0 _ hy, j.appLE W _ le_rfl a, ?_⟩` and prove the remaining obligations. Rewrite using `[← CommRingCat.comp_apply, Scheme.Hom.appLE_comp_appLE]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem IsGerm.of_comp {T : Scheme.{0}} {g : S ⟶ T} {j : T ⟶ X} [IsOpenImmersion j] {y : T}
     (h : IsGerm (g ≫ j) (j y)) : IsGerm g y := by
@@ -66,11 +66,11 @@ theorem IsGerm.of_comp {T : Scheme.{0}} {g : S ⟶ T} {j : T ⟶ X} [IsOpenImmer
 variable {g : S ⟶ X} {F : X.Modules} {r : ℕ}
 
 /- English proof (translation)
-Use `hF.isQuasicoherent` as an intermediate fact. Take `⟨U, e, hx, he⟩` from `hF x`. Take `⟨c, rfl⟩` from `(he.pullback g ⊤ (h.1 U hx)).2 t`. Use `choose W hW hW' a ha using fun i => h.2 (c i)`. Set `V : X.Opens` to `U ⊓ Finset.univ.inf W`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hxV : x ∈ V` using `⟨hx, by rw [Opens.coe_finset_inf]; simpa using hW⟩`. Establish `hV (i) : V ≤ W i` using `inf_le_right.trans (Finset.inf_le (Finset.mem_univ i))`. Use `⟨V, hxV, ∑ i, resG X (hV i) (a i) • resM F inf_le_left (e i), ?_⟩` and prove the remaining obligations. Rewrite using `[map_sum, Fintype.linearCombination_apply]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[pullbackSections_smul, ← ha]`. Use `congr 1`. Conclude with `congr($(g.map_appLE (h.1 V hxV) (homOfLE (hV i)).op) (a i))`. Conclude with `(pullbackSections_res g F _ _ _).trans (res_pullbackSections g F _ _ _).symm`.
+Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem IsGerm.exists_sec {x : X} (h : IsGerm g x) (hF : IsVB F r) (t : Γ((pb g).obj F, ⊤)) :
     ∃ (W : X.Opens) (hx : x ∈ W) (s : Γ(F, W)), pullbackSections g F (h.1 W hx) s = t := by
@@ -92,18 +92,16 @@ theorem IsGerm.exists_sec {x : X} (h : IsGerm g x) (hF : IsVB F r) (t : Γ((pb g
 variable [IsIntegral X]
 
 /- English proof (translation)
-The claim follows from `hF.isTorsionFree W (h hη) s (by rw [← germ_resM h hη, hs, map_zero])`.
+A detailed English derivation is pending.
 -/
 theorem eq_zero_of_res (hF : IsVB F r) {W W' : X.Opens} (h : W' ≤ W) (hη : genericPoint X ∈ W') {s : Γ(F, W)}
     (hs : resM F h s = 0) : s = 0 :=
   hF.isTorsionFree W (h hη) s (by rw [← germ_resM h hη, hs, map_zero])
 
 /- English proof (translation)
-Use `hF.isQuasicoherent` as an intermediate fact. Take `⟨U, e, -, hx, hle, he⟩` from `hF.exists_affine hη`. Use `eq_zero_of_res hF hle hx ((he.basis le_rfl).repr.map_eq_zero_iff.1 (Finsupp.ext fun i => ?_))` and prove the remaining obligations. Establish `h1` using `he.pullback_basis_repr g le_rfl (h.1 U hx) (resM F hle s) i`. Rewrite `h1` using `[pullbackSections_res, hs, map_zero]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Assume the negation of the conclusion as `hne`. Use `set a := (he.basis le_rfl).repr (resM F hle s) i`. Take `⟨y, hy⟩` from `(Opens.ne_bot_iff_nonempty _).1 (mt (basicOpen_eq_bot_iff a).1 hne)`. Establish `hu` using `(RingedSpace.isUnit_res_basicOpen X.toLocallyRingedSpace.toRingedSpace a).map (g.appLE (X.basicOpen a) ⊤ (h.1 _ (genericPoint_mem hy))).hom`. Establish `e2` using `congr($(g.map_appLE (h.1 _ (genericPoint_mem hy)) (homOfLE (X.basicOpen_le a)).op) a)`.
-
-Conclude with `not_isUnit_zero ((e2.trans h1.symm) ▸ hu)`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem IsGerm.eq_zero [Nontrivial Γ(S, ⊤)] (h : IsGerm g (genericPoint X)) (hF : IsVB F r) {W : X.Opens}
     (hη : genericPoint X ∈ W) {s : Γ(F, W)} (hs : pullbackSections g F (h.1 W hη) s = 0) : s = 0 := by
@@ -127,11 +125,11 @@ section Open
 variable {X Y : Scheme.{0}} (a : Y ⟶ X) [IsOpenImmersion a]
 
 /- English proof (translation)
-Use `⟨fun {H} u v e => Scheme.Modules.hom_ext _ _ fun W => ?_⟩` and prove the remaining obligations. Use extensionality with `t`. Express the relevant statement in the definitionally equal form `u.app W t = v.app W t`. Establish `hW` using `(a.preimage_image_eq W).symm`. Take `⟨t, rfl⟩` from `(bijective_pullbackSections a G (a.image_le_opensRange W) hW).2 t`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `choose W' hle hy s hs using fun y : W => h _ (a.image_le_opensRange W) t (a y) ⟨y, y.2, rfl⟩`. Establish `hle' (y : W) : a ⁻¹ᵁ W' y ≤ W` using `(a.preimage_mono (hle y)).trans hW.ge`. Use `Twist.sec_ext_of_cover (fun y => a ⁻¹ᵁ W' y) hle' (fun y h => Opens.mem_iSup.2 ⟨⟨y, h⟩, hy _⟩) fun y => ?_` and prove the remaining obligations. Establish `: resM _ (hle' y) (pullbackSections a G hW.le t) = ((pb a).map φ).app _ (pullbackSections a F le_rfl (s y))`. Rewrite using `[pullback_map_app_pullbackSections, hs]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(res_pullbackSections a G _ _ _).trans (pullbackSections_res a G _ _ _).symm`. Rewrite using `[← app_resM, ← app_resM, this, app_app, app_app, e]`.
+A detailed English derivation is pending.
 -/
 theorem epi_pullback {F G : X.Modules} (φ : F ⟶ G)
     (h : ∀ W ≤ a.opensRange, ∀ t : Γ(G, W), ∀ y ∈ W, ∃ (W' : X.Opens) (h' : W' ≤ W), y ∈ W' ∧
@@ -151,7 +149,7 @@ theorem epi_pullback {F G : X.Modules} (φ : F ⟶ G)
   rw [← app_resM, ← app_resM, this, app_app, app_app, e]
 
 /- English proof (translation)
-The claim follows from `haveI : (pb a).PreservesMonomorphisms := ⟨fun f _ => mono_pullback_of_isOpenImmersion a f⟩ haveI := Functor.preservesHomology_of_preservesMonos_and_cokernels (pb a) h.map _`.
+A detailed English derivation is pending.
 -/
 theorem exact_pullback {K : ShortComplex X.Modules} (h : K.Exact) : (K.map (pb a)).Exact :=
   haveI : (pb a).PreservesMonomorphisms := ⟨fun f _ => mono_pullback_of_isOpenImmersion a f⟩
@@ -167,7 +165,7 @@ variable {X T : Scheme.{0}} {R K : Type} [CommRing R] [Field K] [Algebra R K] {f
 
 include w hf in
 /- English proof (translation)
-Rewrite using `[← Scheme.Hom.comp_preimage, ← w, Scheme.Hom.comp_preimage]`. Conclude with `fun q _ => hf.1 W hx trivial`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem top_le {W : X.Opens} (hx : x ∈ W) : ⊤ ≤ ξ ⁻¹ᵁ j ⁻¹ᵁ W := by
   rw [← Scheme.Hom.comp_preimage, ← w, Scheme.Hom.comp_preimage]
@@ -181,16 +179,16 @@ def gen (M : T.Modules) {W : X.Opens} (hx : x ∈ W) : Γ((pf j).obj M, W) →+ 
 variable {M M' : T.Modules} {W W' : X.Opens}
 
 /- English proof (translation)
-The claim follows from `pullbackSections_res ξ M (top_le w hf hx) (j.preimage_mono h) s`.
+A detailed English derivation is pending.
 -/
 theorem gen_res (h : W' ≤ W) (hx : x ∈ W') (s : Γ((pf j).obj M, W)) :
     gen w hf M hx (resM _ h s) = gen w hf M (h hx) s :=
   pullbackSections_res ξ M (top_le w hf hx) (j.preimage_mono h) s
 
 /- English proof (translation)
-Use `(pullbackSections_smul ξ M (top_le w hf hx) (j.app W a) s).trans ?_` and prove the remaining obligations. Use `congr 1`. Establish `e : j.app W ≫ ξ.appLE _ ⊤ (top_le w hf hx) = f.appLE W ⊤ (hf.1 W hx) ≫ (spMap (algebraMap R K)).appTop`. Rewrite using `[Scheme.Hom.app_eq_appLE, Scheme.Hom.appLE_comp_appLE, Scheme.Hom.appTop, Scheme.Hom.app_eq_appLE]`. Use `erw [Scheme.Hom.appLE_comp_appLE]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Conclude with `w.symm`. Conclude with `congr($e a)`.
+A detailed English derivation is pending.
 -/
 theorem gen_smul (hx : x ∈ W) (a : Γ(X, W)) (s : Γ((pf j).obj M, W)) :
     gen w hf M hx (a • s) = (spMap (algebraMap R K)).appTop (f.appLE W ⊤ (hf.1 W hx) a) • gen w hf M hx s := by
@@ -204,14 +202,14 @@ theorem gen_smul (hx : x ∈ W) (a : Γ(X, W)) (s : Γ((pf j).obj M, W)) :
   exact congr($e a)
 
 /- English proof (translation)
-The claim follows from `(pullback_map_app_pullbackSections ξ φ _ s).symm`.
+A detailed English derivation is pending.
 -/
 theorem gen_map (φ : M ⟶ M') (hx : x ∈ W) (s : Γ((pf j).obj M, W)) :
     gen w hf M' hx (((pf j).map φ).app W s) = ((pb ξ).map φ).app ⊤ (gen w hf M hx s) :=
   (pullback_map_app_pullbackSections ξ φ _ s).symm
 
 /- English proof (translation)
-Rewrite using `[tr_app]`. Conclude with `(Vert.DivPull.pullbackSquare_app w F (hf.1 W hx) le_top le_rfl (top_le w hf hx) s).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gen_unit (F : X.Modules) (hx : x ∈ W) (s : Γ(F, W)) :
     gen w hf _ hx ((tr (𝟙 ((pb j).obj F))).app W s) = resSec w F (pullbackSections f F (hf.1 W hx) s) := by
@@ -224,9 +222,9 @@ def IsLat {N : (Sp K).Modules} (L : Γ(N, ⊤) → Prop) : Prop :=
   L 0 ∧ (∀ s t, L s → L t → L (s + t)) ∧ ∀ (c : Γ(Sp R, ⊤)) s, L s → L ((spMap (algebraMap R K)).appTop c • s)
 
 /- English proof (translation)
-Establish `hm (a b : K) : toFn (a * b) = toFn a * toFn b` using `map_mul _ _ _`. Establish `ha (a b : K) : toFn (a + b) = toFn a + toFn b` using `map_add _ _ _`. Establish `h0 : toFn (0 : K) = 0` using `map_zero _`. Use `⟨⟨0, by simp [h0]⟩, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ _ ⟨r, rfl⟩ ⟨r', rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨r + r', by simp [ha, add_smul, Finset.sum_add_distrib]⟩`. Introduce and unpack `c _ ⟨r, rfl⟩`. Take `⟨c, rfl⟩` from `(ConcreteCategory.bijective_of_isIso (Scheme.ΓSpecIso (CommRingCat.of R)).inv).2 c`. Establish `e : (spMap (algebraMap R K)).appTop ((Scheme.ΓSpecIso (CommRingCat.of R)).inv c) = toFn (algebraMap R K c)` using `congr($((Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom (algebraMap R K))).symm) c)`. Conclude with `⟨fun i => c * r i, by simp [e, hm, Finset.smul_sum, mul_smul]⟩`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem isLat_inLat {N : (Sp K).Modules} {n : ℕ} (e : Fin n → Γ(N, ⊤)) : IsLat R (InLat R e) := by
   have hm (a b : K) : toFn (a * b) = toFn a * toFn b := map_mul _ _ _
@@ -242,9 +240,9 @@ theorem isLat_inLat {N : (Sp K).Modules} {n : ℕ} (e : Fin n → Γ(N, ⊤)) : 
     exact ⟨fun i => c * r i, by simp [e, hm, Finset.smul_sum, mul_smul]⟩
 
 /- English proof (translation)
-Use `⟨⟨0, by rw [resSec, map_zero, map_zero]⟩, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ _ ⟨t, rfl⟩ ⟨t', rfl⟩`. Conclude with `⟨t + t', by rw [resSec, resSec, resSec, map_add, map_add]⟩`. Introduce and unpack `c _ ⟨t, rfl⟩`. Use `⟨c • t, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[resSec, resSec, pullbackSections_smul, Scheme.Modules.Hom.app_smul, Scheme.Hom.appTop, Scheme.Hom.app_eq_appLE]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem isLat_resSec (F : X.Modules) : IsLat R fun s => ∃ t, s = resSec w F t := by
   refine ⟨⟨0, by rw [resSec, map_zero, map_zero]⟩, ?_, ?_⟩
@@ -294,14 +292,14 @@ variable [IsIntegral T] (hξ : IsGerm ξ (genericPoint T)) {r : ℕ}
 
 include w hf in
 /- English proof (translation)
-The claim follows from `genericPoint_mem (x := ξ (IsLocalRing.closedPoint K)) (top_le w hf hx trivial)`.
+A detailed English derivation is pending.
 -/
 theorem gen_mem (hx : x ∈ W) : genericPoint T ∈ j ⁻¹ᵁ W :=
   genericPoint_mem (x := ξ (IsLocalRing.closedPoint K)) (top_le w hf hx trivial)
 
 include hξ in
 /- English proof (translation)
-The claim follows from `(injective_iff_map_eq_zero _).2 fun _ hs => hξ.eq_zero hM (gen_mem w hf hx) hs`.
+A detailed English derivation is pending.
 -/
 theorem gen_injective (hM : IsVB M r) (hx : x ∈ W) : Function.Injective (gen w hf M hx) :=
   (injective_iff_map_eq_zero _).2 fun _ hs => hξ.eq_zero hM (gen_mem w hf hx) hs
@@ -310,7 +308,7 @@ variable (hT : ∀ W₀ : T.Opens, genericPoint T ∈ W₀ → ∃ W : X.Opens, 
 
 include hξ hT in
 /- English proof (translation)
-Take `⟨W₀, h₀, s, rfl⟩` from `hξ.exists_sec hM t`. Take `⟨W', hx', hle⟩` from `hT W₀ h₀`. Conclude with `⟨W ⊓ W', inf_le_left, ⟨hx, hx'⟩, resM M ((j.preimage_mono inf_le_right).trans hle) s, pullbackSections_res ξ M _ _ s⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_gen_eq (hM : IsVB M r) (hx : x ∈ W) (t : Γ((pb ξ).obj M, ⊤)) :
     ∃ (W' : X.Opens) (_ : W' ≤ W) (hx' : x ∈ W') (s : Γ((pf j).obj M, W')), gen w hf M hx' s = t := by
@@ -321,7 +319,7 @@ theorem exists_gen_eq (hM : IsVB M r) (hx : x ∈ W) (t : Γ((pb ξ).obj M, ⊤)
 
 include w hf hξ hT in
 /- English proof (translation)
-Use `(injective_iff_map_eq_zero _).2 fun t ht => ?_` and prove the remaining obligations. Take `⟨W, -, hx, s, rfl⟩` from `exists_gen_eq w hf hξ hT hM (W := ⊤) trivial t`. Rewrite `ht` using `[← gen_map, ← map_zero (gen w hf M' hx)]`. Establish `: s = 0` using `QCoh.injective_app_of_mono φ (j ⁻¹ᵁ W) ((gen_injective w hf hξ hM' hx ht).trans (map_zero _).symm)`. Rewrite using `[this, map_zero]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem injective_fibre {r' : ℕ} (hM : IsVB M r) (hM' : IsVB M' r') (φ : M ⟶ M') [Mono φ] :
     Function.Injective (((pb ξ).map φ).app ⊤) := by
@@ -334,7 +332,7 @@ theorem injective_fibre {r' : ℕ} (hM : IsVB M r) (hM' : IsVB M' r') (φ : M �
 variable [IsOpenImmersion j] [IsIntegral X] {V : X.Opens} (hV : ∀ y ∈ V, y ≠ x → y ∈ j.opensRange)
 
 /- English proof (translation)
-Use `QCoh.mono_of_locally_app_injective _ fun W y hy => ⟨W, hy, le_rfl, (injective_iff_map_eq_zero _).2 fun s hs => ?_⟩` and prove the remaining obligations. Use `eq_zero_of_res hF (W' := W ⊓ j.opensRange) inf_le_left ⟨genericPoint_mem hy, genericPoint_mem (x := j (genericPoint T)) ⟨_, rfl⟩⟩ ?_` and prove the remaining obligations. Use `(bijective_tr (𝟙 ((pb j).obj F)) inf_le_right).1 ?_` and prove the remaining obligations. Rewrite using `[app_resM, hs, map_zero, map_zero]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem mono_unit {F : X.Modules} (hF : IsVB F r) : Mono (tr (𝟙 ((pb j).obj F))) := by
   refine QCoh.mono_of_locally_app_injective _ fun W y hy => ⟨W, hy, le_rfl, (injective_iff_map_eq_zero _).2 fun s hs => ?_⟩
@@ -346,11 +344,11 @@ theorem mono_unit {F : X.Modules} (hF : IsVB F r) : Mono (tr (𝟙 ((pb j).obj F
 include hξ hV in
 
 /- English proof (translation)
-Use `haveI := mono_unit (j := j) hF`. Use `haveI : Mono (latUnit w hf F) := mono_of_mono_fac (latUnit_incl w hf F)`. Use `haveI := mono_pullback_of_isOpenImmersion V.ι (latUnit w hf F)`. Use `haveI : Epi ((pb V.ι).map (latUnit w hf F)) := epi_pullback _ _ fun W hW t y hy => by`. Rewrite `hW` using `[Scheme.Opens.opensRange_ι]`.
+Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Distinguish the cases in `e : y = x`. Substitute `e` using the available equality. Take `⟨u, hu⟩` from `Sub.incl_app_mem _ t hy`. Take `⟨W', hx, s, rfl⟩` from `hf.exists_sec hF u`. Establish `hyW : y ∈ W ⊓ W'` using `⟨hy, hx⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use `⟨W ⊓ W', inf_le_left, hyW, resM F inf_le_right s, Sub.incl_app_injective _ _ (gen_injective w hf hξ (hF.pullback j) hyW ?_)⟩` and prove the remaining obligations. Rewrite using `[app_app, latUnit_incl, gen_unit, app_resM, gen_res, hu, pullbackSections_res]`. Take `⟨s, hs⟩` from `(bijective_tr (𝟙 ((pb j).obj F)) (inf_le_right : W ⊓ j.opensRange ≤ _)).2 ((Sub.incl _).app _ (resM _ inf_le_left t))`. Conclude with `⟨W ⊓ j.opensRange, inf_le_left, ⟨hy, hV y (hW hy) e⟩, s, Sub.incl_app_injective _ _ hs⟩`. Conclude with `isIso_of_mono_of_epi _`.
+A detailed English derivation is pending.
 -/
 theorem isIso_latUnit {F : X.Modules} (hF : IsVB F r) : IsIso ((pb V.ι).map (latUnit w hf F)) := by
   haveI := mono_unit (j := j) hF
@@ -374,23 +372,21 @@ theorem isIso_latUnit {F : X.Modules} (hF : IsVB F r) : IsIso ((pb V.ι).map (la
 include hξ hT hV in
 
 /- English proof (translation)
-Use `haveI : Mono a₀ := h₀.mono_f`. Use `haveI : Epi b₀ := h₀.epi_g`. Set `a'` to `latMap w hf (isLat_resSec w A) hL a₀ (by rintro _ ⟨t, rfl⟩; exact ((h.1 _).2 ⟨t, rfl⟩).1)`. Set `b'` to `latMap w hf hL (isLat_resSec w B) b₀ fun s hs => (h.2 _).1 ⟨s, hs, rfl⟩`. Establish `ha' : a' ≫ Sub.incl _ = Sub.incl _ ≫ (pf j).map a₀` using `rfl`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb' : b' ≫ Sub.incl _ = Sub.incl _ ≫ (pf j).map b₀` using `rfl`. Establish `w' : a' ≫ b' = 0`. Rewrite using `[← cancel_mono (Sub.incl _), Category.assoc, hb', reassoc_of% ha', ← Functor.map_comp, w₀, Functor.map_zero, comp_zero, zero_comp]`. Use `haveI : Mono a' := mono_of_mono_fac ha'`. Establish `hex : (ShortComplex.mk a' b' w').Exact` using `DualExact.exact_of_locally _ fun W y hy => ⟨W, le_rfl, hy, fun t ht => by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `h1 : ((pf j).map b₀).app W ((Sub.incl _).app W t) = 0`. Rewrite using `[app_app, ← hb', ← app_app]`. Conclude with `(congrArg _ ht).trans (map_zero _)`. Take `⟨u, hu⟩` from `(QCoh.exact_app_of_exact_of_mono h₀.exact (j ⁻¹ᵁ W) _).1 h1`. Use `⟨Sub.mkSec _ u fun hx => ?_, Sub.incl_app_injective _ _ hu⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨t', ht'⟩` from `(h.1 _).1 ⟨Sub.incl_app_mem _ t hx, by rw [← gen_map, h1, map_zero]⟩`. Use `⟨t', injective_fibre w hf hξ hT (hA.pullback j) hM a₀ ?_⟩` and prove the remaining obligations. Rewrite using `[← ht', ← gen_map]`. Conclude with `congrArg _ hu⟩`. Establish `hepi : Epi ((pb V.ι).map b')` using `epi_pullback _ _ fun W hW t y hy => by`.
+Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite `hW` using `[Scheme.Opens.opensRange_ι]`. Distinguish the cases in `e : y = x`. Substitute `e` using the available equality. Take `⟨s, hs, hs'⟩` from `(h.2 _).2 (Sub.incl_app_mem _ t hy)`. Take `⟨W', hle, hx', s, rfl⟩` from `exists_gen_eq w hf hξ hT hM hy s`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨W', hle, hx', Sub.mkSec _ s fun _ => hs, Sub.incl_app_injective _ _ (gen_injective w hf hξ (hB.pullback j) hx' ?_)⟩` and prove the remaining obligations. Rewrite using `[app_app, hb', ← app_app, gen_map, app_resM, gen_res, ← hs']`. Both sides reduce to the same expression. Take `⟨y, rfl⟩` from `hV y (hW hy) e`. Take `⟨W₀, hle, hy', s, hs⟩` from `exists_app_eq_of_epi b₀ (V := j ⁻¹ᵁ W) ((Sub.incl _).app W t) hy`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : j ''ᵁ W₀ ≤ W` using `(j.image_mono hle).trans (j.image_preimage_le W)`. Use `⟨j ''ᵁ W₀, h2, ⟨y, hy', rfl⟩, Sub.mkSec _ (resM M (j.preimage_image_eq W₀).le s) fun h => absurd (j.image_le_opensRange _ h) hx, Sub.incl_app_injective _ _ ?_⟩` and prove the remaining obligations. Rewrite using `[app_resM]`. Use `(app_resM b₀ (j.preimage_image_eq W₀).le s).trans ?_` and prove the remaining obligations. Rewrite using `[hs, resM_resM]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `hS : ((ShortComplex.mk a' b' w').map (pb V.ι)).ShortExact` using `ShortComplex.ShortExact.mk' (exact_pullback _ hex) (mono_pullback_of_isOpenImmersion V.ι a') hepi`. Use `haveI := isIso_latUnit w hf hξ hV hA`. Use `haveI := isIso_latUnit w hf hξ hV hB`. Use `⟨latUnit w hf A ≫ a', (pb V.ι).map b' ≫ inv ((pb V.ι).map (latUnit w hf B)), ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[← Functor.map_comp_assoc, Category.assoc, w', comp_zero, Functor.map_zero, zero_comp]`. Rewrite using `[Category.assoc, ha', latUnit_incl_assoc, ← tr_comp, Category.id_comp]`. Rewrite using `[← latUnit_incl w hf B, Functor.map_comp, Category.assoc, IsIso.inv_hom_id_assoc, ← Functor.map_comp, hb']`. Conclude with `ShortComplex.shortExact_of_iso (ShortComplex.isoMk (S₁ := (ShortComplex.mk a' b' w').map (pb V.ι)) (asIso ((pb V.ι).map (latUnit w hf A))).symm (Iso.refl _) (asIso ((pb V.ι).map (latUnit w hf B))).symm (by simp) (by simp)) hS`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_seq (hx : x ∉ j.opensRange) {A B : X.Modules} {m n : ℕ} (hA : IsVB A m) (hB : IsVB B n) (hM : IsVB M r)
     {a₀ : (pb j).obj A ⟶ M} {b₀ : M ⟶ (pb j).obj B} {w₀ : a₀ ≫ b₀ = 0} (h₀ : (ShortComplex.mk a₀ b₀ w₀).ShortExact)
@@ -453,23 +449,21 @@ theorem exists_seq (hx : x ∉ j.opensRange) {A B : X.Modules} {m n : ℕ} (hA :
 include hf hξ hT hV in
 
 /- English proof (translation)
-Take `⟨_, l, hρ, h₁, h₂⟩` from `h`. Establish `hL` using `isLat_inLat (R := R) l`. Take `⟨a, b, w₁, ha, hb, e₁⟩` from `exists_seq w hf hξ hT hV hx hA hB d₀.isVB d₀.exact₁ hL h₁`. Take `⟨u, v, w₂, hu, hv, e₂⟩` from `exists_seq w hf hξ hT hV hx hA' hB' d₀.isVB d₀.exact₂ hL h₂`. Set `N` to `latSub w hf hL`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Set `ρ : O → (N.toMod ⟶ N.toMod)` to `fun c => latMap w hf hL hL (act d₀.ρ c) (hρ c)`. Establish `hρ' (c : O) : ρ c ≫ N.incl = N.incl ≫ (pf j).map (act d₀.ρ c)` using `rfl`. Set `ρ₀ : O →+* End N.toMod` to `{ toFun := ρ map_one' := show ρ 1 = 𝟙 _ by`. Rewrite using `[← cancel_mono N.incl, hρ', show act d₀.ρ 1 = 𝟙 _ from map_one d₀.ρ]`. Simplify using the standard rewrite rules.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use the proof step `map_mul' := fun c c' => show ρ (c * c') = ρ c' ≫ ρ c by`. Rewrite using `[← cancel_mono N.incl, hρ', show act d₀.ρ (c * c') = act d₀.ρ c' ≫ act d₀.ρ c from map_mul d₀.ρ c c', Category.assoc, hρ', reassoc_of% hρ' c', Functor.map_comp]`. Use the proof step `map_zero' := show ρ 0 = (0 : N.toMod ⟶ N.toMod) by`. Rewrite using `[← cancel_mono N.incl, hρ', show act d₀.ρ 0 = 0 from map_zero d₀.ρ]`. Simplify using the standard rewrite rules.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use the proof step `map_add' := fun c c' => show ρ (c + c') = (ρ c + ρ c' : N.toMod ⟶ N.toMod) by`. Rewrite using `[← cancel_mono N.incl, hρ', show act d₀.ρ (c + c') = act d₀.ρ c + act d₀.ρ c' from map_add d₀.ρ c c', Preadditive.add_comp, hρ', hρ', Functor.map_add, Preadditive.comp_add] }`. Take `⟨e, he⟩` from `tr_surjective N.incl`. Use `haveI : IsIso e := isIso_of_tr e fun W hW => he ▸ ⟨N.incl_app_injective W, fun s => ⟨N.mkSec s fun h => absurd (hW h) hx, rfl⟩⟩`. Establish `ein {F : X.Modules} {σ : O →+* End F} {g : F ⟶ N.toMod} {g₀ : (pb j).obj F ⟶ d₀.D} (hg : g ≫ N.incl = tr g₀) (h : IsEquivariant (pullAct σ j) d₀.ρ g₀) : IsEquivariant (pullAct σ V.ι) (pullAct ρ₀ V.ι) ((pb V.ι).map g)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `IsEquivariant.pullback (fun c => show act σ c ≫ g = g ≫ ρ c from ?_) _` and prove the remaining obligations. Rewrite using `[← cancel_mono N.incl, Category.assoc, Category.assoc, hρ', hg, reassoc_of% hg, comp_tr, ← tr_comp, ← h c, act_pullAct]`. Establish `eout {F : X.Modules} {s : ℕ} (hF : IsVB F s) {σ : O →+* End F} {g : (pb V.ι).obj N.toMod ⟶ (pb V.ι).obj F} {g₀ : d₀.D ⟶ (pb j).obj F} (hg : g ≫ (pb V.ι).map (tr (𝟙 _)) = (pb V.ι).map (N.incl ≫ (pf j).map g₀)) (h : IsEquivariant d₀.ρ (pullAct σ j) g₀) : IsEquivariant (pullAct ρ₀ V …` using `fun c => by haveI := mono_unit (j := j) hF haveI := mono_pullback_of_isOpenImmersion V.ι (tr (𝟙 ((pb j).obj F)))`. Establish `h1 : act σ c ≫ tr (𝟙 _) = tr (𝟙 _) ≫ (pf j).map (act (pullAct σ j) c)`. Rewrite using `[comp_tr, ← tr_comp, Category.comp_id, Category.id_comp, act_pullAct]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← cancel_mono ((pb V.ι).map (tr (𝟙 ((pb j).obj F)))), Category.assoc, Category.assoc, hg, act_pullAct, act_pullAct, ← Functor.map_comp, ← Functor.map_comp, h1, Functor.map_comp _ (tr _), reassoc_of% hg, ← Functor.map_comp, Category.assoc, ← Functor.map_comp, ← h c, Functor.map_c …`. Both sides reduce to the same expression. Establish `ain {F : X.Modules} {g : F ⟶ N.toMod} {g₀ : (pb j).obj F ⟶ d₀.D} (hg : g ≫ N.incl = tr g₀) : (pb p).map ((pb V.ι).map g) ≫ (sqIso z).hom.app _ ≫ (pb q).map e = (sqIso z).hom.app F ≫ (pb q).map g₀`. Establish `h1 : (pb j).map g ≫ e = g₀` using `tr_injective (by rw [← comp_tr, he, hg])`. Rewrite using `[← h1, Functor.map_comp]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(sqIso z).hom.naturality_assoc g _`. Establish `aout {F : X.Modules} {g : (pb V.ι).obj N.toMod ⟶ (pb V.ι).obj F} {g₀ : d₀.D ⟶ (pb j).obj F} (hg : g ≫ (pb V.ι).map (tr (𝟙 _)) = (pb V.ι).map (N.incl ≫ (pf j).map g₀)) : ((sqIso z).hom.app _ ≫ (pb q).map e) ≫ (pb q).map g₀ = (pb p).map g ≫ (sqIso z).hom.app F`. Take `⟨ε, hε⟩` from `tr_surjective (𝟙 ((pf j).obj ((pb j).obj F)))`. Establish `h1 : (pb j).map (tr (𝟙 _)) ≫ ε = 𝟙 _` using `tr_injective (by rw [← comp_tr, hε, Category.comp_id])`. Establish `h2 : (pb j).map (N.incl ≫ (pf j).map g₀) ≫ ε = e ≫ g₀` using `tr_injective (by rw [← comp_tr, hε, Category.comp_id, tr_comp, he])`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h3` using `(sqIso z).hom.naturality (tr (𝟙 ((pb j).obj F)))`. Establish `h4` using `(sqIso z).hom.naturality (N.incl ≫ (pf j).map g₀)`. Rewrite `h3`, `h4` using `[Functor.comp_map, Functor.comp_map]`. Rewrite using `[Category.assoc, ← Functor.map_comp, ← h2, Functor.map_comp, ← reassoc_of% h4, ← hg, Functor.map_comp, Category.assoc, reassoc_of% h3, ← Functor.map_comp, h1, CategoryTheory.Functor.map_id, Category.comp_id]`. Establish `hr : r = m + n` using `d₀.isVB.rank_unique (VBExt.isVB_X₂_of_shortExact _ _ m n d₀.exact₁ (hA.pullback j) (hB.pullback j))`.
-
-Use `⟨{ D := (pb V.ι).obj N.toMod, ρ := pullAct ρ₀ V.ι, a := (pb V.ι).map a, b := b, u := (pb V.ι).map u, v := v w₁ := w₁, w₂ := w₂ isVB := hr ▸ VBExt.isVB_X₂_of_shortExact _ _ m n e₁ (hA.pullback _) (hB.pullback _) exact₁ := e₁, exact₂ := e₂ equiv_a := ein ha d₀.equiv_a equiv_b := eo …` and prove the remaining obligations. Use `(ain (g := ρ c) (g₀ := e ≫ act d₀.ρ c) (by rw [tr_comp, he, hρ'])).trans ?_` and prove the remaining obligations. Rewrite using `[Functor.map_comp, ← Category.assoc]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_datum (hx : x ∉ j.opensRange) {O : Type} [CommRing O] {A B A' B' : X.Modules} {α : O →+* End A}
     {β : O →+* End B} {α' : O →+* End A'} {β' : O →+* End B'} {m n m' n' : ℕ} (hA : IsVB A m) (hB : IsVB B n)
@@ -548,7 +542,7 @@ theorem exists_datum (hx : x ∉ j.opensRange) {O : Type} [CommRing O] {A B A' B
 end Lattice
 
 /- English proof (translation)
-Establish `h : ((U : Set X)ᶜ \ {x}).Finite` using `(ProperCurve.finite_of_isClosed hd U.isOpen.isClosed_compl (not_not.2 hU)).subset Set.diff_subset`. Establish `hc : IsClosed ((U : Set X)ᶜ \ {x})`. Rewrite using `[← Set.biUnion_of_singleton ((U : Set X)ᶜ \ {x})]`. Conclude with `h.isClosed_biUnion fun y hy => ProperCurve.isClosed_singleton hd (by rintro rfl; exact hy.1 hU)`. Conclude with `⟨⟨_, hc.isOpen_compl⟩, fun h => h.2 rfl, fun y hy e => not_not.1 fun h => hy ⟨h, e⟩⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_punctured {X : Scheme.{0}} [IsIntegral X] [NoetherianSpace X] (hd : topologicalKrullDim X = 1)
     {U : X.Opens} (hU : genericPoint X ∈ U) (x : X) : ∃ V : X.Opens, x ∈ V ∧ ∀ y ∈ V, y ≠ x → y ∈ U := by
@@ -560,17 +554,13 @@ theorem exists_punctured {X : Scheme.{0}} [IsIntegral X] [NoetherianSpace X] (hd
   exact ⟨⟨_, hc.isOpen_compl⟩, fun h => h.2 rfl, fun y hy e => not_not.1 fun h => hy ⟨h, e⟩⟩
 
 /- English proof (translation)
-Use `haveI := hX.toIsProjCurve.isNoetherian`. Use `haveI := hX.smooth`. Use `haveI : Nonempty U := ⟨⟨_, hU⟩⟩`. Establish `hne : x ≠ genericPoint X` using `by rintro rfl; exact hx hU`. Take `⟨V, hxV, hV⟩` from `exists_punctured hX.dim_eq hU x`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨V, hxV, hV, ?_⟩` and prove the remaining obligations. Establish `hη : U.ι (genericPoint U) = genericPoint X` using `genericPoint_eq_of_isOpenImmersion U.ι`. Establish `hg` using `isGerm_fromSpecStalk (genericPoint X)`. Set `ξ : Sp X.functionField ⟶ U` to `IsOpenImmersion.lift U.ι (X.fromSpecStalk (genericPoint X)) (by`. Introduce and unpack `_ ⟨q, rfl⟩`.
+Introduce a local definition for the expression. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Scheme.Opens.range_ι]`. Conclude with `hg.1 U hU trivial)`. Establish `hξ : ξ ≫ U.ι = X.fromSpecStalk (genericPoint X)` using `IsOpenImmersion.lift_fac _ _ _`. Establish `w : spMap (algebraMap (X.presheaf.stalk x) X.functionField) ≫ X.fromSpecStalk x = ξ ≫ U.ι` using `(Scheme.SpecMap_stalkSpecializes_fromSpecStalk (genericPoint_specializes x)).trans hξ.symm`. Use `haveI := hX.isPrincipalIdealRing_stalk x`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `haveI : IsDiscreteValuationRing (X.presheaf.stalk x) := ⟨fun h0 => by`. Use `ringKrullDim_eq_zero_of_isField (IsLocalRing.isField_iff_maximalIdeal_eq.2 h0)` as an intermediate fact. Rewrite `this` using `[ringKrullDim_stalk_eq_coheight]`. Establish `h2 : IsMax x` using `Order.coheight_eq_zero.1 (by exact_mod_cast this)`. Establish `h1 : x ⤳ genericPoint X` using `h2 (show x ≤ genericPoint X from genericPoint_specializes x)`.
-
-Conclude with `hne (h1.antisymm (genericPoint_specializes x)).eq⟩`. Use `haveI : IsAlgClosed (IsLocalRing.ResidueField (X.presheaf.stalk x)) := IsAlgClosed.of_ringEquiv k _ (residueFieldIsoBase (strHom k X) x (ProperCurve.isClosed_singleton hX.dim_eq hne)).commRingCatIsoToRingEquiv.symm`. Use `exists_datum w (isGerm_fromSpecStalk x) (IsGerm.of_comp (by rw [hξ, hη]; exact hg)) (fun W₀ h₀ => ?_) (by rwa [Scheme.Opens.opensRange_ι]) (by rwa [Scheme.Opens.opensRange_ι]) hA hB hA' hB' d₀ (h _ _ _ _ w) _` and prove the remaining obligations. Take `⟨W, hxW, hW⟩` from `exists_punctured hX.dim_eq (U := U.ι ''ᵁ W₀) ⟨_, h₀, hη⟩ x`. Use `⟨W, hxW, fun y hy => ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[← U.ι.preimage_image_eq W₀]`. Conclude with `hW _ hy fun e => hx (e ▸ y.2)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_extension (k : Type) [Field k] [IsAlgClosed k] (X : Scheme.{0}) [Algebra k Γ(X, ⊤)] [IsIntegral X]
     (hX : IsSmoothProjCurve k X) (O : Type) [CommRing O] (A B A' B' : X.Modules) (α : O →+* End A) (β : O →+* End B)

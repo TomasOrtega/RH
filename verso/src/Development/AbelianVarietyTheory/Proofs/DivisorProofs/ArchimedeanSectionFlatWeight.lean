@@ -47,19 +47,17 @@ variable {l l' : Level H} {Xo : Moduli Dw l} {Xo' : Moduli Dw l'} {c : Coeff l} 
   {la : HeightOneSpectrum (𝓞 c.F)} {p : ℕ} [Fact p.Prime] {Xw : Y.X.Opens}
 
 /- English proof (translation)
-Use `set q : R := (p : R) * (pairDet a₁ (U₁ ∘ K₁) * pairDet a₂ (U₂ ∘ K₂)) with hq`. Establish `hu : IsUnit (algebraMap R (Localization.Away q) q)` using `IsLocalization.Away.algebraMap_isUnit q`. Distinguish the cases in `h0 : q = 0`. Use `⟨1, fun k _ _ ψ _ _ => ?_⟩` and prove the remaining obligations. Use `hu.map ψ` as an intermediate fact.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[show algebraMap R (Localization.Away q) q = 0 from (congrArg _ h0).trans (map_zero _), map_zero]`. Conclude with `absurd this not_isUnit_zero`. Establish `hle' : Submonoid.powers q ≤ nonZeroDivisors R` using `powers_le_nonZeroDivisors_of_noZeroDivisors h0`. Use `haveI : IsDomain (Localization.Away q) := IsLocalization.isDomain_localization hle'`. Use `haveI : IsIntegrallyClosed (Localization.Away q) := isIntegrallyClosed_of_isLocalization _ _ hle'`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hinj : Function.Injective (algebraMap R (Localization.Away q))` using `IsLocalization.injective _ hle'`. Set `ρ` to `algebraMap R (Localization.Away q)`. Establish `hu' : IsUnit ((p : Localization.Away q) * (ρ (pairDet a₁ (U₁ ∘ K₁)) * ρ (pairDet a₂ (U₂ ∘ K₂))))`. Rewrite using `[← map_natCast ρ, ← map_mul, ← map_mul]`. Conclude with `hu`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `u₁` using `isUnit_of_mul_isUnit_left (isUnit_of_mul_isUnit_right hu')`. Establish `u₂` using `isUnit_of_mul_isUnit_right (isUnit_of_mul_isUnit_right hu')`. Establish `mp : ∀ {m : ℕ} (a V : Fin m → Fin g → R), ρ (pairDet a V) = pairDet (fun i b => ρ (a i b)) fun i b => ρ (V i b)` using `fun a V => by`. Rewrite using `[pairDet, pairDet, RingHom.map_det]`. Use `congr 1`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Use extensionality with `i j`. Simplify using `[map_sum]`. Use `haveI : IsOpenImmersion (spMap ρ) := IsOpenImmersion.of_isLocalization q`. Take `⟨f, hf⟩` from `hG E H Dw l l' Xo Xo' c c' W Y r ν hle r₀ U x hL Z τ s la p Xw Fact.out hc (Localization.Away q) (spMap ρ ≫ ξ) (ρ.comp β) inferInstance (by rw [Category.assoc, hβ, spMap_spMap]) (isUnit_of_mul_isUnit_left hu') (by rw [bot_map hinj]; exact hξ) g (bcV Y.t ρ e) (fun i b => ρ (U₁ (K₁ …`. Rewrite using `[sp_sp, bcV_bcV]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Conclude with `⟨fun i => (h₁ S (φ.comp ρ)).1 (K₁ i), fun i => (h₂ S (φ.comp ρ)).1 (K₂ i)⟩)`. Use the proof step `(mp a₁ _ ▸ u₁) (mp a₂ _ ▸ u₂)`. Use `⟨f * Units.map (Int.castRingHom _).toMonoidHom ε * u₁.unit * u₂.unit⁻¹, fun k _ _ ψ yy hy => ⟨ψ f, ?_, ?_⟩⟩` and prove the remaining obligations. Use `hf k ψ yy (by rw [sp_sp]; exact hy)` as an intermediate fact. Rewrite `this` using `[bcV_bcV]`. Then use the resulting hypothesis.
-
-Rewrite using `[eq_div_iff (u₂.map ψ).ne_zero, ← map_mul]`. Express the relevant statement in the definitionally equal form `ψ (_ * (u₂.unit : Localization.Away q)) = _`. Rewrite using `[← Units.val_mul, inv_mul_cancel_right]`. Simplify using `[ρ]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_unit (hG : GenSt) (hL : Laws U x) (s : ArchSec U x Z (flatWt Dw τ)) (hc : IsCover Y r hle Z la p Xw)
     {R : Type} [CommRing R] [IsDomain R] [IsIntegrallyClosed R] {ξ : Sp R ⟶ Y.X} [IsOpenImmersion ξ] {β : c'.V W →+* R}
@@ -130,27 +128,23 @@ def kapSet (τ : E →+* ℂ) (f : Rul Xo c) (n : ℕ) {N : ℕ} (a : Fin N → 
     (ψ : P.A.A.left ⟶ Y.oF.t.G.left), PtOn Y yb yy P π ψ ∧ KapSpec Y r ν τ f n a T S yb yy P π ψ κ}
 
 /- English proof (translation)
-Take `⟨R₀, _, _, _, ξ₀, g, e₀, hξ₀, ⟨z₀, rfl⟩, he₀⟩` from `hC E H Dw l' Xo' c' W Y p Fact.out hc.2.2.1 z`. Take `⟨_, ⟨z₁, rfl⟩, hz₁⟩` from `mem_closure_iff.1 hz _ ξ₀.isOpenEmbedding.isOpen_range ⟨z₀, rfl⟩`. Establish `hb₀` using `bot_mem ξ₀ hz₁`. Set `β₀ : c'.V W →+* R₀` to `(Spec.preimage (ξ₀ ≫ Y.s)).hom`. Establish `hβ₀ : ξ₀ ≫ Y.s = spMap β₀` using `(Spec.map_preimage _).symm`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Take `⟨V₁, hV₁⟩` from `hP E H l' c' W Y.X Y.t R₀ ξ₀ β₀ g e₀ he₀ τ.1`. Take `⟨V₂, hV₂⟩` from `hP E H l' c' W Y.X Y.t R₀ ξ₀ β₀ g e₀ he₀ (conjEmb τ.1)`. Take `⟨f, h, hf, hh⟩` from `hT E H Dw l' Xo' c' W Y p n hs hc.2.2.1 hn R₀ ξ₀ (hc.2.2.2.2.1 hb₀) g e₀ he₀ N a (PrimeSpectrum.asIdeal z₀) (PrimeSpectrum.isPrime z₀)`. Establish `h0 : f ≠ 0` using `by rintro rfl; exact hf (Ideal.zero_mem _)`. Establish `hle' : Submonoid.powers f ≤ nonZeroDivisors R₀` using `powers_le_nonZeroDivisors_of_noZeroDivisors h0`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : IsDomain (Localization.Away f) := IsLocalization.isDomain_localization hle'`. Use `haveI : IsIntegrallyClosed (Localization.Away f) := isIntegrallyClosed_of_isLocalization _ _ hle'`. Establish `hinj : Function.Injective (algebraMap R₀ (Localization.Away f))` using `IsLocalization.injective _ hle'`. Set `ρ` to `algebraMap R₀ (Localization.Away f)`. Use `haveI : IsOpenImmersion (spMap ρ) := IsOpenImmersion.of_isLocalization f`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `U₁ : Fin g → Fin g → Localization.Away f` to `fun k b => ρ (V₁ k b)`. Set `U₂ : Fin g → Fin g → Localization.Away f` to `fun k b => ρ (V₂ k b)`. Establish `hU₁ : EigFam Y.t (spMap ρ ≫ ξ₀) ((ρ.comp β₀).comp (embV c' W τ.1)) (bcV Y.t ρ e₀) U₁` using `fun S _ φ => by`. Rewrite using `[sp_sp, bcV_bcV]`. Conclude with `hV₁ S (φ.comp ρ)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hU₂ : EigFam Y.t (spMap ρ ≫ ξ₀) ((ρ.comp β₀).comp (embV c' W (conjEmb τ.1))) (bcV Y.t ρ e₀) U₂` using `fun S _ φ => by`. Rewrite using `[sp_sp, bcV_bcV]`. Conclude with `hV₂ S (φ.comp ρ)`. Establish `hβ : (spMap ρ ≫ ξ₀) ≫ Y.s = spMap (ρ.comp β₀)` using `by rw [Category.assoc, hβ₀, spMap_spMap]`. Establish `he` using `isTanBasis_bc he₀ ρ`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Set `J : Type` to `Equiv.Perm (Ind Dw τ.1) × (Fin (Dw.mult τ.1) → Fin g) × (Fin (Dw.mult (conjEmb τ.1)) → Fin g)`. Use `choose u hu using fun j : J => exists_unit (ν := ν) hG hL s hc hβ (by rw [bot_map hinj]; exact hb₀) he hU₁ hU₂ j.2.1 j.2.2 (covec (ρ.comp β₀) T h (j.1 ∘ Sum.inl)) (covec (ρ.comp β₀) S h (j.1 ∘ Sum.inr)) (Equiv.Perm.sign j.1)`. Use `⟨Localization.Away f, inferInstance, spMap ρ ≫ ξ₀, J, inferInstance, _, u, inferInstance, ?_, fun φ ht => ?_⟩` and prove the remaining obligations. Choose the witnesses or unpack the hypotheses as in `⟨z', hz'⟩ : z₀ ∈ Set.range (PrimeSpectrum.comap ρ) := by`. Rewrite using `[PrimeSpectrum.localization_away_comap_range (Localization.Away f) f]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Extract witnesses or component facts from the available result.
 
-Conclude with `hf`. Conclude with `⟨z', (Scheme.Hom.comp_apply _ _ _).trans (congrArg ξ₀ hz')⟩`. Establish `hA : ∀ {yy P π ψ}, PtOn Y (spMap φ ≫ spMap ρ ≫ ξ₀) yy P π ψ → HTApprox Y n yy P π ψ a (bcV Y.t φ (bcV Y.t ρ e₀)) fun m k => φ (h m k)` using `fun {yy P π ψ} hPt => by`. Rewrite using `[bcV_bcV]`. Conclude with `hh φ yy P π ψ (by rw [← sp_sp]; exact hPt)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Establish `hφ : (spMap φ ≫ spMap ρ ≫ ξ₀) ≫ Y.s = spMap (φ.comp (ρ.comp β₀))` using `by rw [Category.assoc, hβ, spMap_spMap]`. Prove the components needed by the constructor for the conclusion. Take `⟨κ, alg, yy, P, π, ψ, hPt, hκ⟩` from `hK _ ht`. Take `⟨⟨σ, K₁, K₂, hj⟩, -⟩` from `hκ _ hφ g _ _ _ _ (isTanBasis_bc he φ) (hU₁ _ φ) (hU₂ _ φ) (hA hPt)`. Use `⟨(σ, K₁, K₂), ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[map_mul, map_pairDet_covec, map_pairDet_covec]`. Conclude with `hj`. Introduce and unpack `⟨σ, K₁, K₂⟩ hj ψ hψ κ ⟨alg, yy, P, π, ψ', hPt, hκ⟩`. Take `⟨-, hv⟩` from `hκ _ hφ g _ _ _ _ (isTanBasis_bc he φ) (hU₁ _ φ) (hU₂ _ φ) (hA hPt)`. Rewrite `hj` using `[map_mul, map_pairDet_covec, map_pairDet_covec]`.
-
-Take `⟨fv, hfv, hu'⟩` from `hu (σ, K₁, K₂) ℂ_[p] ψ yy (by rw [hψ, ← hPt.1, sp_sp])`. Establish `hψ' : ∀ b, ψ (algebraMap _ _ b) = (φ b : ℂ_[p])` using `fun b => RingHom.congr_fun hψ b`. Simplify using `only [hψ'] at hfv hu'`. Rewrite `hfv` using `[hψ, ← bcV_bcV]`. Rewrite using `[hu', map_pairDet_covec, map_pairDet_covec]`.
-
-Conclude with `hv σ K₁ K₂ hj fv hfv`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chartAt (hC : ChartSt) (hP : ProjSt) (hT : HTLocSt) (hG : GenSt) (hs : ∀ a : 𝓞 E, star a = H.bar a)
     (hL : Laws U x) (s : ArchSec U x Z (flatWt Dw τ)) (hc : IsCover Y r hle Z la p Xw) {n : ℕ} (hn : l'.A = p ^ n)
@@ -219,9 +213,9 @@ variable {l l' : Level H} {Xo : Moduli Dw l} {Xo' : Moduli Dw l'} {c : Coeff l} 
   {la : HeightOneSpectrum (𝓞 c.F)} {p : ℕ} [Fact p.Prime] {Xw : Y.X.Opens}
 
 /- English proof (translation)
-Establish `hZ : LiesOn Z y` using `fun z => by`. Rewrite using `[h.2.2.1, Scheme.Hom.comp_apply]`. Use `hc.2.2.2.2.2.2.1 _ (ht.2 ⟨z, ?_⟩)` and prove the remaining obligations. Rewrite using `[h.1.1, Scheme.Hom.comp_apply]`. Establish `h1 : evR Xo c s.sig y * evR Xo c s.inv y = 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← CompSplitPfB.cspB_evR_mul, s.mul_inv, evR_idem hZ h.2.1]`. Conclude with `left_ne_zero_of_mul_eq_one h1`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem evR_ne_zero [StarRing (𝓞 E)] [Algebra c.F ℂ_[p]] (s : ArchSec U x Z (flatWt Dw τ)) (hc : IsCover Y r hle Z la p Xw)
     {yb yy} {P : PtP E p} {π ψ y} (ht : IsTest p Xw yb) (h : HTAt Y r ν yb yy P π ψ y) : evR Xo c s.sig y ≠ 0 := by
@@ -234,13 +228,13 @@ theorem evR_ne_zero [StarRing (𝓞 E)] [Algebra c.F ℂ_[p]] (s : ArchSec U x Z
   exact left_ne_zero_of_mul_eq_one h1
 
 /- English proof (translation)
-Use `letI := H.starRing`. Establish `hs : ∀ a : 𝓞 E, star a = H.bar a` using `fun _ => rfl`. Take `⟨n, hn⟩` from `hPt E H Dw τ p hs`. Take `⟨l', Xo', c', W, Y, r, ν, hle, Xw, hA, hc⟩` from `hCov E H Dw l Xo c hL.pos hL.lev hL.good hL.geo Z la p n Fact.out hp`. Take `⟨N, a, T, S, hTS⟩` from `hLat E H Dw l' c' W p Fact.out hc.2.2.1 τ`.
+Equip the data with the indicated structure. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hk : ∀ [Algebra c.F ℂ_[p]] {yb yy} {P : PtP E p} {π ψ y}, IsTest p Xw yb → HTAt Y r ν yb yy P π ψ y → ∃ κ ∈ kapSet Y r ν τ.1 s.sig n a T S yb, ‖κ‖ = ‖evR Xo c s.sig y‖` using `fun {alg yb yy P π ψ y} ht h => by`. Take `⟨κ, h1, h2⟩` from `hn l l' Xo Xo' c c' W Y r ν hle hc.1 hA N a T S hTS s.sig yb yy P π ψ y h (evR_ne_zero s hc ht h)`. Conclude with `⟨κ, ⟨alg, yy, P, π, ψ, h.1, h2⟩, h1⟩`. Establish `hK : ∀ yb, IsTest p Xw yb → (kapSet Y r ν τ.1 s.sig n a T S yb).Nonempty` using `fun yb ht => by`. Take `⟨alg, yy, y, P, π, ψ, h⟩` from `hEx E H Dw l l' Xo Xo' c c' W Y r ν hle hL.pos hL.lev hL.good Z la p Xw hc yb ht`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨κ, hκ, -⟩` from `hk ht h`. Conclude with `⟨κ, hκ⟩`. Take `⟨ρ, hρ⟩` from `hGl c'.F (c'.V W) p hc.2.2.2.1 Y.X Y.s Xw Y.normal Y.proj Y.flat hc.2.2.2.2.2.1 hc.2.2.2.2.2.2.2.1 n _ hK fun z hz => chartAt hC hP hT hG hs hL s hc hA a T S hK hz`. Use `⟨ρ, fun T₀ io e y₀ ho hZ k y hy => ?_⟩` and prove the remaining obligations. Take `⟨yb, yy, ht, P, π, ψ, h⟩` from `hLift E H Dw l l' Xo Xo' c c' W Y r ν hle Z la p Xw hc T₀ io e y₀ ho hZ k y hy`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨κ, hκ, h1⟩` from `hk ht h`. Conclude with `⟨evR_ne_zero s hc ht h, h1 ▸ hρ yb ht κ hκ⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_norm (hCov : CoverSt) (hC : ChartSt) (hP : ProjSt) (hLat : LatSt) (hT : HTLocSt) (hG : GenSt) (hEx : ExSt)
     (hLift : LiftSt) (hPt : PtSt) (hGl : GlueSt) (hL : Laws U x) (s : ArchSec U x Z (flatWt Dw τ))
@@ -271,9 +265,7 @@ theorem exists_norm (hCov : CoverSt) (hC : ChartSt) (hP : ProjSt) (hLat : LatSt)
 end Top
 
 /- English proof (translation)
-Use `haveI := la.isPrime`. Use `haveI : Finite (𝓞 K ⧸ la.asIdeal) := Ideal.finiteQuotientOfFreeOfNeBot _ la.ne_bot`. Use `haveI : Nontrivial (𝓞 K ⧸ la.asIdeal) := Ideal.Quotient.nontrivial_iff.2 la.isPrime.ne_top`. Establish `hp : (ringChar (𝓞 K ⧸ la.asIdeal)).Prime` using `CharP.char_prime_of_ne_zero (𝓞 K ⧸ la.asIdeal) (CharP.ringChar_ne_zero_of_finite _)`. Use `⟨_, hp, Ideal.Quotient.eq_zero_iff_mem.1 (by rw [map_natCast]; exact ringChar.Nat.cast_ringChar), fun q hq h => ?_⟩` and prove the remaining obligations.
-
-Use `Ideal.Quotient.eq_zero_iff_mem.2 h` as an intermediate fact. Rewrite `this` using `[map_natCast, ringChar.spec]`. Conclude with `((Nat.prime_dvd_prime_iff_eq hp hq).1 this).symm`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_prime_mem {K : Type} [Field K] [NumberField K] (la : HeightOneSpectrum (𝓞 K)) :
     ∃ p : ℕ, p.Prime ∧ (p : 𝓞 K) ∈ la.asIdeal ∧ ∀ q : ℕ, q.Prime → (q : 𝓞 K) ∈ la.asIdeal → q = p := by
@@ -289,13 +281,13 @@ theorem exists_prime_mem {K : Type} [Field K] [NumberField K] (la : HeightOneSpe
 open Module Formalism.BasicNotions GlobalTheory.IndefiniteRowSideFullHecke.SpecialFibreUnits in
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c r U x hL Z τ s la`. Take `⟨p, hp, hm, huniq⟩` from `exists_prime_mem la`. Use `haveI := Fact.mk hp`. Take `⟨ρ, hρ⟩` from `exists_norm hCov hC hP hLat hT hG hEx hLift hPt hGl hL s hm`. Establish `hw : ∀ w ∈ htValOn Z la, ∃ z : ℂ_[p], z ≠ 0 ∧ ‖z‖ = ρ ∧ w s.sig = val_vw la p (Valued.v : Valuation ℂ_[p] NNReal) z`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `w ⟨T, io, e, y₀, ho, hZ, q, hq, alg, k, y, hy, rfl⟩`. Take `rfl` from `huniq q hq.out (hy.mem ho)`. Conclude with `⟨_, (hρ T io e y₀ ho hZ k y hy).1, (hρ T io e y₀ ho hZ k y hy).2, rfl⟩`. Choose the witnesses or unpack the hypotheses as in `⟨z₀, hz₀, h₀⟩ : ∃ z₀ : ℂ_[p], z₀ ≠ 0 ∧ ∀ w ∈ htValOn Z la, ‖z₀‖ = ρ := by`. Distinguish the cases in `h : (htValOn Z la).Nonempty`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Take `⟨z, h1, h2, -⟩` from `hw _ h.choose_spec`. Conclude with `⟨z, h1, fun _ _ => h2⟩`. Conclude with `⟨1, one_ne_zero, fun w hw => absurd ⟨w, hw⟩ h⟩`. Take `⟨O, i1, i2, i3, i4, ϖ, hϖ, Zs, f, D, a1, a2, a3, a4, a5, a6, sig, hsig, φ, hφ, hloc, ybar, y, e, cc, b1, b2, b3, b4, b5⟩` from `hPk p z₀ hz₀`. Establish `hne : algebraMap 𝓞_ℂ_[p] ℂ_[p] (φ ϖ) ≠ 0` using `fun h => hϖ.ne_zero (hφ (by rw [map_zero]; exact Subtype.ext h))`.
+Supply the required witnesses or components. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨O, i1, i2, i3, i4, ϖ, hϖ, Zs, f, D, a1, a2, a3, a4, a5, a6, sig, _, hsig, fun w hw' => ⟨p, inferInstance, 𝓞_ℂ_[p], inferInstance, inferInstance, φ, PadicComplexInt.integers p, hφ, hloc, ybar, y, e, cc, b1, b2, b3, b4, ?_, val_vw_of_ne la p _ hne⟩⟩` and prove the remaining obligations. Take `⟨z, h1, h2, h3⟩` from `hw w hw'`. Rewrite using `[h3, val_vw_of_ne la p _ h1, val_vw_of_ne la p _ cc.ne_zero, coe_valued p z, coe_valued p cc, b5, h₀ w hw', h2]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem model_of_steps (hCov : CoverSt) (hC : ChartSt) (hP : ProjSt) (hLat : LatSt) (hT : HTLocSt) (hG : GenSt) (hEx : ExSt)
     (hLift : LiftSt) (hPt : PtSt) (hGl : GlueSt) (hPk : PackSt) :
@@ -344,7 +336,7 @@ theorem model_of_steps (hCov : CoverSt) (hC : ChartSt) (hP : ProjSt) (hLat : Lat
 open Module Formalism.BasicNotions GlobalTheory.IndefiniteRowSideFullHecke.SpecialFibreUnits in
 
 /- English proof (translation)
-Introduce `hP h₂ h₃ _` and use `model_of_steps GlobalTheory.T.cover_statement_holds GlobalTheory.T.chart_statement_holds GlobalTheory.T.projection_statement_holds GlobalTheory.T.lattice_statement_holds (GlobalTheory.T.hodge_tate_local_of_kernel_at_point (GlobalTheory.T.hodge_tate_kernel_at_point hP)) (GlobalThe …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem exists_model : GlobalTheory.CovTop.Hypotheses2 → GlobalTheory.Published.CanonicalExtensionRankOne → GlobalTheory.Published.DeRhamCanonicalExtension →
   GlobalTheory.Published.PrismaticDieudonneHodge →

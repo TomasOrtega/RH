@@ -10,33 +10,31 @@ namespace PI.VolStabSW
 open MeasureTheory Topology Set
 
 /- English proof (translation)
-Establish `hHa : Antitone H`. Introduce `a b hab`. Rewrite using `[← hD a, ← hD b]`. Conclude with `AddSubgroup.map_mono (hΛa hab)`. Establish `hΦ : Continuous (fun Z : V => G (y + Z))` using `hG.comp (continuous_const.add continuous_id)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hΦm : Measurable (fun Z : V => G (y + Z))` using `hΦ.measurable`. Establish `hΛ0m : MeasurableSet (Λ 0 : Set V)` using `(hΛo 0).measurableSet`. Use `set m : Measure X := (μ.restrict (Λ 0 : Set V)).map (fun Z : V => G (y + Z)) with hm`. Use `haveI : IsFiniteMeasure (μ.restrict (Λ 0 : Set V)) := isFiniteMeasure_restrict.mpr (hΛc 0).measure_lt_top.ne`. Use `haveI : IsFiniteMeasure m := by rw [hm]; infer_instance`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `hmT : ∀ T : Set X, MeasurableSet T → m T = μ {Z | Z ∈ Λ 0 ∧ G (y + Z) ∈ T}`. Introduce `T hT`. Rewrite using `[hm, Measure.map_apply hΦm hT, Measure.restrict_apply' hΛ0m]`. Use `congr 1`. Use extensionality with `Z`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `[and_comm]`. Establish `hopen : ∀ (h : X) (k : ℕ), IsOpen {z : X | z - h ∈ H k}` using `fun h k => (hHo k).preimage (continuous_sub_right h)`. Establish `hν0 : ν (H 0 : Set X) ≠ 0` using `((hHo 0).measure_pos ν ⟨0, (H 0).zero_mem⟩).ne'`. Establish `hνt : ν (H 0 : Set X) ≠ ⊤` using `(hHc 0).measure_lt_top.ne`. Establish `htrans : ∀ (h : X) (k : ℕ), ν {z : X | z - h ∈ H k} = ν (H k : Set X)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Introduce `h k`. Establish `he : {z : X | z - h ∈ H k} = (fun z => -h + z) ⁻¹' (H k : Set X)`. Use extensionality with `z`. Simplify using `[sub_eq_neg_add]`. Rewrite using `[he, measure_preimage_add]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `set κ : ENNReal := μ (Λ 0 : Set V) / ν (H 0 : Set X) with hκ`. Establish `hdens : ∀ k (h : X), h - G y ∈ H 0 → m {z | z - h ∈ H k} = κ * ν {z | z - h ∈ H k}`. Introduce `k h hh`. Establish `hH` using `hP1 V X μ ν inferInstance inferInstance Λ H hΛo hΛc hΛa hHo hHc D hD G y hyp k h hh`. Rewrite using `[hmT _ (hopen h k).measurableSet, htrans, hκ, div_eq_mul_inv, mul_right_comm, ← div_eq_mul_inv, ENNReal.eq_div_iff hν0 hνt, mul_comm]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Conclude with `hH`. Establish `hcompl : m {z | z - G y ∈ H 0}ᶜ = 0`. Rewrite using `[hmT _ (hopen (G y) 0).measurableSet.compl]`. Use `measure_empty (μ := μ)` and compare the differences between its conclusion and the goal. Use extensionality with `Z`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hZ, hZ'⟩`. Establish `h1` using `hyp 0 0 (Λ 0).zero_mem Z hZ`. Simplify using `only [add_zero, zero_add] at h1`. Establish `h2 : D Z ∈ H 0`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. The hypotheses yield a contradiction, which proves the conclusion. Establish an intermediate fact.
 
-Rewrite using `[← hD 0]`. Conclude with `AddSubgroup.mem_map_of_mem D hZ`. Establish `hmem : G (y + Z) - G y ∈ H 0`. Simplify using `using (H 0).add_mem (hHa (Nat.zero_le 1) h1) h2`. Conclude with `hZ' hmem`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hZ`. Conclude with `False.elim hZ`. Establish `hcos` using `hP2 X ν m inferInstance H hHo hHc hHa hHb (G y) κ hcompl hdens`. Use `set C : Set X := {z | z - G y ∈ H 0} with hC`. Establish `hCo : IsOpen C` using `hopen (G y) 0`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hCc : IsClosed C` using `(hHc 0).isClosed.preimage (continuous_sub_right (G y))`. Use `⟨C.indicator (fun _ => κ.toReal), ?_, ?_⟩` and prove the remaining obligations. Use `continuous_indicator ?_ continuousOn_const` and prove the remaining obligations. Introduce `a ha`. Rewrite `ha` using `[hCc.frontier_eq, hCo.interior_eq, Set.diff_self]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `at ha`. Introduce `S hS`. Establish `hSm : MeasurableSet S` using `hS.isClosed.measurableSet`. Establish `hpre : f ⁻¹' (ι '' S) = G ⁻¹' S`. Use extensionality with `v`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[hfG, hι.mem_set_image]`. Establish `hCV : MeasurableSet {z : V | z - y ∈ Λ 0}` using `((hΛo 0).preimage (continuous_sub_right y)).measurableSet`. Establish `key : m S = μ ({z : V | z - y ∈ Λ 0} ∩ G ⁻¹' S)`. Rewrite using `[hmT S hSm, ← measure_preimage_add μ y ({z : V | z - y ∈ Λ 0} ∩ G ⁻¹' S)]`. Use `congr 1`.
-
-Use extensionality with `Z`. Simplify using the standard rewrite rules. Rewrite using `[hpre, integral_indicator_const _ hCV, integral_indicator_const _ hCo.measurableSet]`. Simplify using `only [Measure.real, smul_eq_mul, mul_one]`. Rewrite using `[Measure.restrict_apply hCV, Measure.restrict_apply hCo.measurableSet, ← key, hcos S hS, ENNReal.toReal_mul, Set.inter_comm, mul_comm]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem densCos_of_filt (hP1 : HenselCount) (hP2 : CosDens) {V X Y : Type} [AddCommGroup V]
     [TopologicalSpace V] [IsTopologicalAddGroup V] [MeasurableSpace V] [BorelSpace V]

@@ -15,35 +15,35 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 variable {D : D7} (S T : HSp D)
 
 /- English proof (translation)
-Unfold `hO`. Simplify using `only [Matrix.add_apply, mul_add, Finset.sum_add_distrib]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem hO_add_left (x x' y : WO S T) : hO S T (x + x') y = hO S T x y + hO S T x' y := by
   unfold hO
   simp only [Matrix.add_apply, mul_add, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Unfold `hO`. Simplify using `only [Matrix.add_apply, map_add, mul_add, add_mul, Finset.sum_add_distrib]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem hO_add_right (x y y' : WO S T) : hO S T x (y + y') = hO S T x y + hO S T x y' := by
   unfold hO
   simp only [Matrix.add_apply, map_add, mul_add, add_mul, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Unfold `symplO`. Rewrite using `[hO_add_left, mul_add, map_add]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem symplO_add_left (x x' y : WO S T) : symplO S T (x + x') y = symplO S T x y + symplO S T x' y := by
   unfold symplO
   rw [hO_add_left, mul_add, map_add]
 
 /- English proof (translation)
-Unfold `symplO`. Rewrite using `[hO_add_right, mul_add, map_add]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem symplO_add_right (x y y' : WO S T) : symplO S T x (y + y') = symplO S T x y + symplO S T x y' := by
   unfold symplO
   rw [hO_add_right, mul_add, map_add]
 
 /- English proof (translation)
-Establish `h` using `symplO_add_left S T 0 0 y`. Rewrite `h` using `[add_zero]`. Take the linear combination `-1 * h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem symplO_zero_left (y : WO S T) : symplO S T 0 y = 0 := by
   have h := symplO_add_left S T 0 0 y
@@ -51,7 +51,7 @@ theorem symplO_zero_left (y : WO S T) : symplO S T 0 y = 0 := by
   linear_combination -1 * h
 
 /- English proof (translation)
-Establish `h` using `symplO_add_right S T x 0 0`. Rewrite `h` using `[add_zero]`. Take the linear combination `-1 * h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem symplO_zero_right (x : WO S T) : symplO S T x 0 = 0 := by
   have h := symplO_add_right S T x 0 0
@@ -59,7 +59,7 @@ theorem symplO_zero_right (x : WO S T) : symplO S T x 0 = 0 := by
   linear_combination -1 * h
 
 /- English proof (translation)
-Establish `h` using `symplO_add_left S T x (-x) y`. Establish `h0 : x + -x = 0` using `by simp`. Rewrite `h` using `[h0, symplO_zero_left]`. Take the linear combination `-1 * h`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem symplO_neg_left (x y : WO S T) : symplO S T (-x) y = -symplO S T x y := by
   have h := symplO_add_left S T x (-x) y
@@ -68,7 +68,7 @@ theorem symplO_neg_left (x y : WO S T) : symplO S T (-x) y = -symplO S T x y := 
   linear_combination -1 * h
 
 /- English proof (translation)
-Establish `h` using `symplO_add_right S T x y (-y)`. Establish `h0 : y + -y = 0` using `by simp`. Rewrite `h` using `[h0, symplO_zero_right]`. Take the linear combination `-1 * h`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem symplO_neg_right (x y : WO S T) : symplO S T x (-y) = -symplO S T x y := by
   have h := symplO_add_right S T x y (-y)
@@ -82,9 +82,9 @@ def hOM (x y : MO S T) : Matrix (Fin S.rank) (Fin S.rank) (AE D) :=
   HMul.hMul (HMul.hMul (HMul.hMul (Brg.GI S) (y.map (cA D))ᵀ) (Brg.GG T)) x
 
 /- English proof (translation)
-Unfold `hO hOM`. Simplify using `only [Brg.GI, Brg.GG, Matrix.trace, Matrix.diag, Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Use `conv_lhs => arg 2`. Use extensionality with `b`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_comm]`. Rewrite using `[Finset.sum_comm]`. Use `conv_lhs => arg 2`. Use extensionality with `d`. Rewrite using `[Finset.sum_comm]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hO_eq_trace (x y : MO S T) : hO S T x y = (hOM S T x y).trace := by
   unfold hO hOM
@@ -96,16 +96,16 @@ theorem hO_eq_trace (x y : MO S T) : hO S T x y = (hOM S T x y).trace := by
   conv_lhs => arg 2; ext d; rw [Finset.sum_comm]
 
 /- English proof (translation)
-Rewrite using `[Matrix.trace_transpose]`. Simplify using `only [Matrix.trace, Matrix.diag, Matrix.map_apply, map_sum]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem cA_trace {k : ℕ} (M : Matrix (Fin k) (Fin k) (AE D)) : cA D M.trace = ((M.map (cA D))ᵀ).trace := by
   rw [Matrix.trace_transpose]
   simp only [Matrix.trace, Matrix.diag, Matrix.map_apply, map_sum]
 
 /- English proof (translation)
-Establish `e0 : (y.map (cA D)).map (cA D) = y` using `by ext i j; simp [cA_cA]`. Establish `e2 : ((hOM S T x y).map (cA D))ᵀ = HMul.hMul (HMul.hMul (HMul.hMul (x.map (cA D))ᵀ (Brg.GG T)) y) (Brg.GI S)`. Unfold `hOM`. Rewrite using `[Matrix.map_mul, Matrix.map_mul, Matrix.map_mul, Matrix.transpose_mul, Matrix.transpose_mul, Matrix.transpose_mul, Brg.GI_herm, Brg.GG_herm, Matrix.transpose_map, e0, Matrix.transpose_transpose]`. Simplify using `only [Matrix.mul_assoc]`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hO_eq_trace, hO_eq_trace, cA_trace, e2, Matrix.trace_mul_comm]`. Unfold `hOM`. Simplify using `only [Matrix.mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem hO_swap (x y : MO S T) : hO S T y x = cA D (hO S T x y) := by
   have e0 : (y.map (cA D)).map (cA D) = y := by ext i j; simp [cA_cA]
@@ -120,7 +120,7 @@ theorem hO_swap (x y : MO S T) : hO S T y x = cA D (hO S T x y) := by
   simp only [Matrix.mul_assoc]
 
 /- English proof (translation)
-Unfold `symplO`. Rewrite using `[hO_swap S T x y]`. Establish `e : incA D D.host.xi0 * cA D (hO S T x y) = cA D (cA D (incA D D.host.xi0) * hO S T x y)`. Rewrite using `[map_mul, cA_cA]`. Rewrite using `[e, Brg.trace_cA, Brg.cA_inc, Brg.star_purely_imaginary_eq_neg, map_neg, neg_mul, map_neg]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem symplO_swap (x y : WO S T) : symplO S T y x = -symplO S T x y := by
   unfold symplO
@@ -130,7 +130,7 @@ theorem symplO_swap (x y : WO S T) : symplO S T y x = -symplO S T x y := by
   rw [e, Brg.trace_cA, Brg.cA_inc, Brg.star_purely_imaginary_eq_neg, map_neg, neg_mul, map_neg]
 
 /- English proof (translation)
-Unfold `symplOH`. Rewrite using `[symplO_add_left, mul_add]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem symplOH_add_left (x x' y : WO S T) :
     symplOH S T (x + x') y = symplOH S T x y + symplOH S T x' y := by
@@ -138,7 +138,7 @@ theorem symplOH_add_left (x x' y : WO S T) :
   rw [symplO_add_left, mul_add]
 
 /- English proof (translation)
-Unfold `symplOH`. Rewrite using `[symplO_add_right, mul_add]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem symplOH_add_right (x y y' : WO S T) :
     symplOH S T x (y + y') = symplOH S T x y + symplOH S T x y' := by
@@ -146,14 +146,14 @@ theorem symplOH_add_right (x y y' : WO S T) :
   rw [symplO_add_right, mul_add]
 
 /- English proof (translation)
-Unfold `symplOH`. Rewrite using `[symplO_swap, mul_neg]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem symplOH_swap (x y : WO S T) : symplOH S T y x = -symplOH S T x y := by
   unfold symplOH
   rw [symplO_swap, mul_neg]
 
 /- English proof (translation)
-Unfold `symplOH`. Rewrite using `[← add_mul, ← map_add]`. Evaluate the numerical expressions.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 -/
 theorem symplOH_two (x y : WO S T) : symplOH S T x y + symplOH S T x y = symplO S T x y := by
   unfold symplOH
@@ -161,26 +161,26 @@ theorem symplOH_two (x y : WO S T) : symplOH S T x y + symplOH S T x y = symplO 
   norm_num
 
 /- English proof (translation)
-Conclude with `Matrix.map_add _ (map_add (incA D)) a b`.
+A detailed English derivation is pending.
 -/
 theorem ratW_add (a b : Matrix (Fin T.rank) (Fin S.rank) D.host.E) :
     ratW T S (a + b) = ratW T S a + ratW T S b := by
   exact Matrix.map_add _ (map_add (incA D)) a b
 
 /- English proof (translation)
-Conclude with `Matrix.map_neg _ (map_neg (incA D)) a`.
+A detailed English derivation is pending.
 -/
 theorem ratW_neg (a : Matrix (Fin T.rank) (Fin S.rank) D.host.E) : ratW T S (-a) = -ratW T S a := by
   exact Matrix.map_neg _ (map_neg (incA D)) a
 
 /- English proof (translation)
-Conclude with `Matrix.map_zero _ (map_zero (incA D))`.
+A detailed English derivation is pending.
 -/
 theorem ratW_zero : ratW T S (0 : Matrix (Fin T.rank) (Fin S.rank) D.host.E) = 0 := by
   exact Matrix.map_zero _ (map_zero (incA D))
 
 /- English proof (translation)
-Unfold `ratL`. Simplify using `only [AddMonoidHom.mem_range]`. Conclude with `Iff.rfl`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_ratL_iff (x : WO S T) : x ∈ ratL T S ↔ ∃ a, ratW T S a = x := by
   unfold ratL
@@ -193,7 +193,7 @@ Both sides reduce to the same expression.
 theorem incA_eq_tmul (e : D.host.E) : incA D e = (1 : AF D.host.F) ⊗ₜ[D.host.F] e := rfl
 
 /- English proof (translation)
-Rewrite using `[incA_eq_tmul]`. Conclude with `Formalism.IndefR.PHeisTh.trace_tmul _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem trace_incA (e : D.host.E) :
     Algebra.trace (AF D.host.F) (AE D) (incA D e) = algebraMap D.host.F (AF D.host.F) (Algebra.trace D.host.F D.host.E e) := by
@@ -201,7 +201,7 @@ theorem trace_incA (e : D.host.E) :
   exact Formalism.IndefR.PHeisTh.trace_tmul _
 
 /- English proof (translation)
-Use `⟨∑ i, ∑ j, ∑ k, ∑ l, (HSpace.gram S)⁻¹ i j * D.sp.cm.sig (b k j) * HSpace.gram T k l * a l i, ?_⟩` and prove the remaining obligations. Unfold `hO ratW`. Simplify using `only [Matrix.map_apply, Formalism.IndefR.PHeisTh.cA_incA, map_sum, map_mul]`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem hO_rat (a b : Matrix (Fin T.rank) (Fin S.rank) D.host.E) :
     ∃ e : D.host.E, hO S T (ratW T S a) (ratW T S b) = incA D e := by
@@ -210,7 +210,7 @@ theorem hO_rat (a b : Matrix (Fin T.rank) (Fin S.rank) D.host.E) :
   simp only [Matrix.map_apply, Formalism.IndefR.PHeisTh.cA_incA, map_sum, map_mul]
 
 /- English proof (translation)
-Take `⟨e, he⟩` from `hO_rat S T a b`. Use `⟨Algebra.trace D.host.F D.host.E (D.host.xi0 * e), ?_⟩` and prove the remaining obligations. Unfold `symplO`. Rewrite using `[he, ← map_mul, trace_incA]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem symplO_rat (a b : Matrix (Fin T.rank) (Fin S.rank) D.host.E) :
     ∃ q : D.host.F, symplO S T (ratW T S a) (ratW T S b) = algebraMap D.host.F (AF D.host.F) q := by

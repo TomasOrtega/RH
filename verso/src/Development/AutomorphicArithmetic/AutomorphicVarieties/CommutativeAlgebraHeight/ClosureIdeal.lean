@@ -10,23 +10,21 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.CommutativeAlgebra
 open TensorProduct IsLocalRing Polynomial UpperTheory.V.W UpperTheory.V.Alg UpperTheory.V.CA
 
 /- English proof (translation)
-The claim follows from `(Module.forall_dual_apply_eq_zero_iff F x).1 h`.
+A detailed English derivation is pending.
 -/
 private theorem dual_zero (F M : Type) [Field F] [AddCommGroup M] [Module F M] (x : M)
     (h : ∀ f : Module.Dual F M, f x = 0) : x = 0 := (Module.forall_dual_apply_eq_zero_iff F x).1 h
 
 /- English proof (translation)
-Use `haveI := hP H hH`. Set `W : Set H` to `⋂ φ : {φ : H →* Multiplicative (ZMod l) // IsOpen (φ.ker : Set H)}, (φ.1.ker : Set H)`. Establish `hW : IsOpen W` using `isOpen_iInter_of_finite fun φ => φ.2`. Establish `hW' : IsOpen (Subtype.val '' W : Set G)` using `hH.isOpenMap_subtype_val W hW`. Establish `h1 : (1 : G) ∈ (Subtype.val '' W : Set G)` using `⟨1, Set.mem_iInter.2 fun φ => φ.1.ker.one_mem, rfl⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨U, hU⟩` from `ProfiniteGrp.exist_openNormalSubgroup_sub_open_nhds_of_one hW' h1`. Use `⟨U, fun u hu => ?_⟩` and prove the remaining obligations. Take `⟨v, hvW, rfl⟩` from `hU hu`. Use `⟨v.2, fun M _ hM ψ hψ => ?_⟩` and prove the remaining obligations. Use `haveI : Module (ZMod l) M := AddCommGroup.zmodModule hM`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hne`. Establish `hne' : Multiplicative.toAdd (ψ v) ≠ 0` using `fun h0 => hne (by simpa using congrArg Multiplicative.ofAdd h0)`. Establish `hf : ∃ f : M →ₗ[ZMod l] ZMod l, f (Multiplicative.toAdd (ψ v)) ≠ 0`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `hne' (dual_zero (ZMod l) M _ hc)`. Take `⟨f, hf⟩` from `hf`. Set `φ : H →* Multiplicative (ZMod l)` to `(AddMonoidHom.toMultiplicative f.toAddMonoidHom).comp ψ`. Establish `hle : ψ.ker ≤ φ.ker`. Introduce `x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hx`, the goal using `[MonoidHom.mem_ker]`. Simplify using `[φ, hx]`. Establish `hφ : IsOpen (φ.ker : Set H)` using `Subgroup.isOpen_mono hle hψ`. Establish `hv` using `Set.mem_iInter.1 hvW ⟨φ, hφ⟩`. Apply `hf` to reduce the goal to its premises.
-
-Simplify `hv` using `[φ]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 private theorem frat (l : ℕ) [Fact l.Prime] {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
     [CompactSpace G] [TotallyDisconnectedSpace G] (hP : PhiCond G l) (H : Subgroup G) (hH : IsOpen (H : Set G)) :
@@ -65,14 +63,14 @@ private noncomputable def lev {A : Type} (G : Type) [CommRing A] [Group G] (J : 
   (((J.ringCon.mk' : MonoidAlgebra A G →+* J.ringCon.Quotient).toMonoidHom).comp (MonoidAlgebra.of A G)).ker
 
 /- English proof (translation)
-Rewrite using `[TwoSidedIdeal.mem_iff, ← RingCon.eq]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem mk_eq {R : Type} [Ring R] (J : TwoSidedIdeal R) (x : R) : J.ringCon.mk' x = 0 ↔ x ∈ J := by
   rw [TwoSidedIdeal.mem_iff, ← RingCon.eq]
   rfl
 
 /- English proof (translation)
-Rewrite using `[lev, MonoidHom.mem_ker, MonoidHom.comp_apply, MonoidAlgebra.of_apply, ← mk_eq, map_sub, map_one, sub_eq_zero]`. Conclude with `Iff.rfl`.
+Rewrite the conclusion using the stated equalities. Unfold both sides to obtain the same proposition, which implies itself.
 -/
 private theorem mem_lev {A G : Type} [CommRing A] [Group G] (J : TwoSidedIdeal (MonoidAlgebra A G)) (g : G) :
     g ∈ lev G J ↔ MonoidAlgebra.single g 1 - 1 ∈ J := by
@@ -80,19 +78,17 @@ private theorem mem_lev {A G : Type} [CommRing A] [Group G] (J : TwoSidedIdeal (
   exact Iff.rfl
 
 /- English proof (translation)
-Establish `key : ∀ q : (closureIdeal I S).ringCon.Quotient, q ≠ 0 → ∃ p : ℕ × OpenNormalSubgroup G, ∀ x, (closureIdeal I S).ringCon.mk' x = q → x ∉ TwoSidedIdeal.span (S ∪ {z | ∃ a ∈ I ^ p.1, z = MonoidAlgebra.single 1 a} ∪ {z | ∃ h ∈ p.2, z = MonoidAlgebra.single h 1 - 1})`. Introduce `q hq`. Take `⟨x0, rfl⟩` from `(closureIdeal I S).ringCon.mk'_surjective q`. Establish `hx0 : x0 ∉ closureIdeal I S` using `fun h => hq ((mk_eq _ x0).2 h)`. Establish `hx1 : ¬ ∀ N : ℕ, ∀ H : OpenNormalSubgroup G, x0 ∈ TwoSidedIdeal.span (S ∪ {z | ∃ a ∈ I ^ N, z = MonoidAlgebra.single 1 a} ∪ {z | ∃ h ∈ H, z = MonoidAlgebra.single h 1 - 1})`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `hall`. Apply `hx0` to reduce the goal to its premises. Rewrite using `[closureIdeal, TwoSidedIdeal.mem_iInf]`. Introduce `N`. Rewrite using `[TwoSidedIdeal.mem_iInf]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hall N`. Use `push_neg at hx1`. Take `⟨N, H, hN⟩` from `hx1`. Use `⟨(N, H), fun x hx hxmem => hN ?_⟩` and prove the remaining obligations. Establish `hd : x - x0 ∈ closureIdeal I S` using `(mk_eq _ _).1 (by rw [map_sub, hx, sub_self])`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hd` using `[closureIdeal, TwoSidedIdeal.mem_iInf]`. Establish `hd'` using `(TwoSidedIdeal.mem_iInf _).1 (hd N) H`. Use `TwoSidedIdeal.sub_mem _ hxmem hd'` as an intermediate fact. Simplify using `using this`. Use `choose p hp using key`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hsub : (⨅ q, ⨅ hq : q ≠ 0, (p q hq).2.toSubgroup) ≤ lev G (closureIdeal I S)`. Introduce `h hh`. Rewrite using `[mem_lev]`. Assume the negation of the conclusion as `hc`. Establish `hq : (closureIdeal I S).ringCon.mk' (MonoidAlgebra.single h 1 - 1) ≠ 0` using `fun h0 => hc ((mk_eq _ _).1 h0)`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Supply the required witnesses or components.
 
-Apply `hp _ hq _ rfl` to reduce the goal to its premises. Apply `TwoSidedIdeal.subset_span` to reduce the goal to its premises. Use `right`. Conclude with `⟨h, Subgroup.mem_iInf.1 (Subgroup.mem_iInf.1 hh _) hq, rfl⟩`. Apply `Subgroup.isOpen_mono hsub` to reduce the goal to its premises.
-
-Rewrite using `[Subgroup.coe_iInf]`. Use `isOpen_iInter_of_finite fun q => ?_` and prove the remaining obligations. Rewrite using `[Subgroup.coe_iInf]`. Conclude with `isOpen_iInter_of_finite fun hq => (p q hq).2.isOpen'`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem lev_open {k G : Type} [CommRing k] [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
     (I : Ideal k) (S : Set (MonoidAlgebra k G)) [Finite (closureIdeal I S).ringCon.Quotient] :
@@ -137,13 +133,11 @@ private theorem lev_open {k G : Type} [CommRing k] [Group G] [TopologicalSpace G
   exact isOpen_iInter_of_finite fun hq => (p q hq).2.isOpen'
 
 /- English proof (translation)
-Set `T : TwoSidedIdeal R'` to `TwoSidedIdeal.mk' {z | ∃ x ∈ K, f x = z} ⟨0, K.zero_mem, map_zero f⟩ (by`. Introduce and unpack `_ _ ⟨a, ha, rfl⟩ ⟨b, hb, rfl⟩`. Conclude with `⟨a + b, K.add_mem ha hb, map_add f a b⟩)`. Use the proof step `(by`. Introduce and unpack `_ ⟨a, ha, rfl⟩`.
+Introduce a local definition for the expression. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Conclude with `⟨-a, K.neg_mem ha, map_neg f a⟩)`. Use the proof step `(by`. Introduce and unpack `r _ ⟨a, ha, rfl⟩`. Take `⟨r', rfl⟩` from `hf r`. Conclude with `⟨r' * a, K.mul_mem_left r' a ha, map_mul f r' a⟩)`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Use the proof step `(by`. Introduce and unpack `_ r ⟨a, ha, rfl⟩`. Take `⟨r', rfl⟩` from `hf r`. Conclude with `⟨a * r', K.mul_mem_right a r' ha, map_mul f a r'⟩)`. Establish `hle : TwoSidedIdeal.span S ≤ T` using `TwoSidedIdeal.span_le.2 (fun w hw => by simpa [T] using hS w hw)`.
-
-Establish `h'` using `hle hz`. Simplify `h'` using `[T]`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 private theorem lift_span {R R' : Type} [Ring R] [Ring R'] (f : R →+* R') (hf : Function.Surjective f)
     (K : TwoSidedIdeal R) (S : Set R') (hS : ∀ z ∈ S, ∃ x ∈ K, f x = z) (z : R') (hz : z ∈ TwoSidedIdeal.span S) :
@@ -169,11 +163,11 @@ private theorem lift_span {R R' : Type} [Ring R] [Ring R'] (f : R →+* R') (hf 
   simpa [T] using h'
 
 /- English proof (translation)
-Establish `hx' : ∀ a, (x.coeff a).fst = 0` using `fun a => by`. Use `congrArg (fun z => z.coeff a) hx` as an intermediate fact. Simplify `this` using `[MonoidAlgebra.coeff_mapRingHom]`. Establish `hy' : ∀ a, (y.coeff a).fst = 0` using `fun a => by`. Use `congrArg (fun z => z.coeff a) hy` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify `this` using `[MonoidAlgebra.coeff_mapRingHom]`. Establish `hz : ∀ a b, x.coeff a * y.coeff b = 0` using `fun a b => by`. Use `ext`. Simplify using `[hx' a, hy' b]`. Simplify using `[hx' a, hy' b]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Apply `MonoidAlgebra.ext` to reduce the goal to its premises. Use `Finsupp.ext fun g => ?_` and prove the remaining obligations. Rewrite using `[MonoidAlgebra.mul_apply]`. Simplify using `[Finsupp.sum, hz]`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem ker_sq {k G : Type} [Field k] [Group G] (x y : MonoidAlgebra (DualNumber k) G)
     (hx : MonoidAlgebra.mapRingHom G (TrivSqZeroExt.fstHom k k k : DualNumber k →+* k) x = 0)
@@ -195,9 +189,9 @@ private theorem ker_sq {k G : Type} [Field k] [Group G] (x y : MonoidAlgebra (Du
   simp [Finsupp.sum, hz]
 
 /- English proof (translation)
-Introduce `y`. Use `⟨MonoidAlgebra.mapRingHom G (TrivSqZeroExt.inlHom k k) y, ?_⟩` and prove the remaining obligations. Rewrite using `[← RingHom.comp_apply, ← MonoidAlgebra.mapRingHom_comp]`. Establish `hc : (TrivSqZeroExt.fstHom k k k : DualNumber k →+* k).comp (TrivSqZeroExt.inlHom k k) = RingHom.id k`. Use extensionality with `r`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using the standard rewrite rules. Rewrite using `[hc, MonoidAlgebra.mapRingHom_id, RingHom.id_apply]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 private theorem fst_surj {k G : Type} [Field k] [Group G] :
     Function.Surjective (MonoidAlgebra.mapRingHom G (TrivSqZeroExt.fstHom k k k : DualNumber k →+* k)) := by
@@ -210,11 +204,11 @@ private theorem fst_surj {k G : Type} [Field k] [Group G] :
   rw [hc, MonoidAlgebra.mapRingHom_id, RingHom.id_apply]
 
 /- English proof (translation)
-Substitute `hI` using the available equality. Introduce `B _ _ x`. Set `φ : A ⧸ (⊥ : Ideal A) →+* B` to `Ideal.Quotient.lift ⊥ (algebraMap A B) (fun a ha => by rw [Ideal.mem_bot.1 ha, map_zero])`. Use `letI : Algebra (A ⧸ (⊥ : Ideal A)) B := φ.toAlgebra`. Establish `e : ((φ.comp (Ideal.Quotient.mk ⊥)).toAlgebra : Algebra A B) = ‹Algebra A B›` using `Algebra.algebra_ext _ _ (fun r => by simp [φ, RingHom.algebraMap_toAlgebra])`.
+Substitute using the available equality. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Establish `h1` using `h B x`. Rewrite `h1` using `[show (MonoidAlgebra.mapRingHom G (algebraMap (A ⧸ (⊥ : Ideal A)) B)) (MonoidAlgebra.single g 1 - 1) = MonoidAlgebra.single g 1 - 1 by simp]`. Rewrite using `[show (MonoidAlgebra.mapRingHom G (algebraMap A B)) (MonoidAlgebra.single g 1 - 1) = MonoidAlgebra.single g 1 - 1 by simp]`. Express the relevant statement in the definitionally equal form `(@GDet.D n A G _ _ D B _ ((φ.comp (Ideal.Quotient.mk ⊥)).toAlgebra)) (1 + x * (MonoidAlgebra.single g 1 - 1)) = 1 at h1`. Rewrite `h1` using `[e]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h1`.
+A detailed English derivation is pending.
 -/
 private theorem kills_of_bot {n : ℕ} {A G : Type} [CommRing A] [Group G] (D : GDet n A G) (I : Ideal A)
     (hI : I = ⊥) (g : G) (h : (D.map (Ideal.Quotient.mk I)).Kills (MonoidAlgebra.single g 1 - 1)) :
@@ -236,39 +230,35 @@ private theorem kills_of_bot {n : ℕ} {A G : Type} [CommRing A] [Group G] (D : 
   exact h1
 
 /- English proof (translation)
-Introduce `l _ n k G _ _ _ _ _ _ _ _ Dbar hP _ hfin`. Use `haveI hQ : Finite (closureIdeal (maximalIdeal k) (Dbar.CH ∪ ∅)).ringCon.Quotient := Module.finite_of_finite k (M := Dbar.CHQuot ∅)`. Establish `hHo : IsOpen (lev G (closureIdeal (maximalIdeal k) (Dbar.CH ∪ ∅)) : Set G)` using `lev_open _ _`. Use `set J := closureIdeal (maximalIdeal k) (Dbar.CH ∪ ∅) with hJ`. Take `⟨U, hU⟩` from `frat l hP (lev G J) hHo`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨U, fun D hDc hDmap u hu => ?_⟩` and prove the remaining obligations. Take `⟨hu1, hu2⟩` from `hU u hu`. Take `⟨HD, hHD⟩` from `exists_openNormalSubgroup_kills_of_groupDetLaw_isCont D (maximalIdeal (DualNumber k)) hDc 2`. Establish `hsq : (maximalIdeal (DualNumber k)) ^ 2 = ⊥`. Rewrite using `[pow_two, eq_bot_iff]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `Ideal.mul_le.2 fun r hr s hs => ?_` and prove the remaining obligations. Rewrite `hr`, `hs` using `[mem_maximalIdeal, mem_nonunits_iff, TrivSqZeroExt.isUnit_iff_isUnit_fst, isUnit_iff_ne_zero, not_not]`. Rewrite using `[Ideal.mem_bot]`. Apply the tactic sequence `ext <;> simp [hr, hs]`. Establish `hkD : ∀ h ∈ HD, D.Kills (MonoidAlgebra.single h 1 - 1)` using `fun h hh => kills_of_bot D _ hsq h (hHD h hh)`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hK : ∀ x, x ∈ D.toDet.ker ↔ D.Kills x` using `fun x => ((d_ker D.toDet x).1).trans (d_toDet D x).2.2.2`. Set `π` to `MonoidAlgebra.mapRingHom G (TrivSqZeroExt.fstHom k k k : DualNumber k →+* k)`. Establish `hlift : ∀ z ∈ J, ∃ x ∈ D.toDet.ker, π x = z`. Introduce `z hz`. Rewrite `hz` using `[hJ, closureIdeal, TwoSidedIdeal.mem_iInf]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hz1` using `(TwoSidedIdeal.mem_iInf _).1 (hz 1) HD`. Use `lift_span π fst_surj D.toDet.ker _ ?_ z hz1` and prove the remaining obligations. Introduce and unpack `w (((hw | hw) | ⟨a, ha, rfl⟩) | ⟨h, hh, rfl⟩)`. Rewrite `hw` using `[← hDmap]`. Establish `hw' : w ∈ TwoSidedIdeal.span ((MonoidAlgebra.mapRingHom G (TrivSqZeroExt.fstHom k k k : DualNumber k →+* k)) '' D.CH)`.
+Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← g_chmap]`. Conclude with `TwoSidedIdeal.subset_span hw`. Use `lift_span π fst_surj D.toDet.ker _ ?_ w hw'` and prove the remaining obligations. Introduce and unpack `_ ⟨v, hv, rfl⟩`. Use `⟨v, ?_, rfl⟩` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Apply `d_ch_ker` to reduce the goal to its premises. Rewrite using `[d_toDet_CH]`. Conclude with `TwoSidedIdeal.subset_span hv`. Conclude with `hw.elim`. Use `⟨0, D.toDet.ker.zero_mem, ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Supply the required witnesses or components. Establish an intermediate fact.
 
-Rewrite `ha` using `[pow_one, mem_maximalIdeal, mem_nonunits_iff, isUnit_iff_ne_zero, not_not]`. Rewrite using `[ha]`. Simplify using the standard rewrite rules. Conclude with `⟨MonoidAlgebra.single h 1 - 1, (hK _).2 (hkD h hh), by simp [π]⟩`. Establish `hlev : ∀ h : lev G J, ∃ e : MonoidAlgebra (DualNumber k) G, π e = 0 ∧ (MonoidAlgebra.single (h : G) (1 : DualNumber k) - 1) - e ∈ D.toDet.ker`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `h`. Take `⟨x, hxK, hx⟩` from `hlift _ ((mem_lev J h).1 h.2)`. Use `⟨(MonoidAlgebra.single (h : G) 1 - 1) - x, ?_, by rw [sub_sub_cancel]; exact hxK⟩` and prove the remaining obligations. Rewrite using `[map_sub, hx]`. Simplify using `[π]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 
-Use `choose e he using hlev`. Establish `hmk : ∀ h : lev G J, D.toDet.ker.ringCon.mk' (MonoidAlgebra.single (h : G) (1 : DualNumber k) - 1) = D.toDet.ker.ringCon.mk' (e h)`. Introduce `h`. Rewrite using `[← sub_eq_zero, ← map_sub, mk_eq]`. Conclude with `(he h).2`.
+Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Set `ψ : lev G J →* Multiplicative D.toDet.ker.ringCon.Quotient` to `{ toFun := fun h => Multiplicative.ofAdd (D.toDet.ker.ringCon.mk' (MonoidAlgebra.single (h : G) 1 - 1)) map_one' := by`. Rewrite using `[OneMemClass.coe_one, ← MonoidAlgebra.one_def, sub_self, map_zero]`. Both sides reduce to the same expression. Use the proof step `map_mul' := by`. Introduce `a b`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `hs` using `MonoidAlgebra.single_mul_single (a : G) (b : G) (1 : DualNumber k) 1`. Rewrite `hs` using `[mul_one]`. Establish `hab : (MonoidAlgebra.single ((a * b : lev G J) : G) (1 : DualNumber k) - 1) = (MonoidAlgebra.single (a : G) 1 - 1) + (MonoidAlgebra.single (b : G) 1 - 1) + (MonoidAlgebra.single (a : G) 1 - 1) * (MonoidAlgebra.single (b : G) 1 - 1)`. Rewrite using `[Subgroup.coe_mul, ← hs]`. Use `noncomm_ring`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hee : D.toDet.ker.ringCon.mk' (e a * e b) = 0`. Rewrite using `[ker_sq _ _ (he a).1 (he b).1, map_zero]`. Use `show Multiplicative.ofAdd _ = Multiplicative.ofAdd _ * Multiplicative.ofAdd _`. Rewrite using `[← ofAdd_add]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hab, map_add, map_add, map_mul, hmk a, hmk b, ← map_mul, hee, add_zero] }`. Establish `hψker : IsOpen (ψ.ker : Set (lev G J))`. Establish `hle : HD.toSubgroup.comap (lev G J).subtype ≤ ψ.ker`. Introduce `h hh`. Rewrite using `[MonoidHom.mem_ker]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `show Multiplicative.ofAdd _ = Multiplicative.ofAdd 0`. Rewrite using `[(mk_eq _ _).2 ((hK _).2 (hkD h hh))]`. Conclude with `Subgroup.isOpen_mono hle (HD.isOpen'.preimage continuous_subtype_val)`. Establish `hl : ∀ x : D.toDet.ker.ringCon.Quotient, l • x = 0`. Introduce `x`.
-
-Take `⟨y, rfl⟩` from `D.toDet.ker.ringCon.mk'_surjective x`. Rewrite using `[← map_nsmul, nsmul_eq_mul]`. Establish `hl0 : (l : MonoidAlgebra (DualNumber k) G) = 0`. Rewrite using `[← map_natCast (algebraMap k (MonoidAlgebra (DualNumber k) G)) l, CharP.cast_eq_zero, map_zero]`. Rewrite using `[hl0, zero_mul, map_zero]`.
-
-Establish `hfin1` using `hu2 D.toDet.ker.ringCon.Quotient hl ψ hψker`. Rewrite using `[← hK, ← mk_eq]`. Conclude with `hfin1`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.CA.u_tan :
     ∀ (l : ℕ) [Fact l.Prime] {n : ℕ} {k G : Type} [Field k] [Finite k] [CharP k l] [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [CompactSpace G] [TotallyDisconnectedSpace G] (Dbar : GDet n k G), PhiCond G l → Dbar.IsCont (maximalIdeal k) → Module.Finite k (Dbar.CHQuot ∅) → ∃ U : OpenNormalSubgroup G, ∀ D : GDet n (DualNumber k) G, D.IsCont (maximalIdeal (DualNumber k)) → D.map (TrivSqZeroExt.fstHom k k k : DualNumber k →+* k) = Dbar → ∀ u ∈ U, D.Kills (MonoidAlgebra.single u 1 - 1) := by

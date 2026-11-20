@@ -9,7 +9,7 @@ private def upMat (R : Type) [CommRing R] (n : ℕ)
   fun i j => if h : i < j then f ⟨(i, j), h⟩ else if i = j then 1 else 0
 
 /- English proof (translation)
-Simplify using `[upMat, not_lt.2 h.le, h.ne']`.
+Simplify using the standard rewrite rules.
 -/
 private theorem upMat_lower (R : Type) [CommRing R] (n : ℕ)
     (f : {p : Fin n × Fin n // p.1 < p.2} → R) (i j : Fin n) (h : j < i) :
@@ -17,7 +17,7 @@ private theorem upMat_lower (R : Type) [CommRing R] (n : ℕ)
   simp [upMat, not_lt.2 h.le, h.ne']
 
 /- English proof (translation)
-Simplify using `[upMat]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem upMat_diag (R : Type) [CommRing R] (n : ℕ)
     (f : {p : Fin n × Fin n // p.1 < p.2} → R) (i : Fin n) :
@@ -25,7 +25,7 @@ private theorem upMat_diag (R : Type) [CommRing R] (n : ℕ)
   simp [upMat]
 
 /- English proof (translation)
-Rewrite using `[Matrix.det_of_upperTriangular (fun i j h => upMat_lower R n f i j h)]`. Simplify using `[upMat_diag]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem upMat_det (R : Type) [CommRing R] (n : ℕ)
     (f : {p : Fin n × Fin n // p.1 < p.2} → R) : (upMat R n f).det = 1 := by
@@ -73,7 +73,7 @@ private noncomputable def unipEquiv (R : Type) [CommRing R] (n : ℕ) :
 end UpperTheory.V.T.UnipCard
 
 /- English proof (translation)
-Introduce `R _ _ n`. Use `⟨Nat.card {p : Fin n × Fin n // p.1 < p.2}, ?_⟩` and prove the remaining obligations. Rewrite using `[Nat.card_congr (UpperTheory.V.T.UnipCard.unipEquiv R n), Nat.card_fun]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem UpperTheory.card_unipotent_upper_eq_pow :
     ∀ (R : Type) [CommRing R] [Finite R] (n : ℕ), ∃ j : ℕ, Nat.card (unipB R (Fin n)) = Nat.card R ^ j := by

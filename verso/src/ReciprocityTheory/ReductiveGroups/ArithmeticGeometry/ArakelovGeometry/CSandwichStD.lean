@@ -10,19 +10,17 @@ open scoped ComplexOrder Matrix
 variable {Ω : Type} [Field Ω] [CharZero Ω] {κ : Type} [Fintype κ] {D : ℕ}
 
 /- English proof (translation)
-Introduce `v w hvw`. Establish `hd : M.map (Int.cast : ℤ → ℚ) *ᵥ (v - w) = 0`. Rewrite using `[Matrix.mulVec_sub, hvw, sub_self]`. Take `⟨⟨c, hc⟩, hcu⟩` from `IsLocalization.exist_integer_multiples_of_finite (nonZeroDivisors ℤ) (v - w)`. Use `choose u hu using hcu`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hu2 : ∀ i, ((u i : ℤ) : ℚ) = (c : ℚ) * (v - w) i` using `fun i => by`. Use `hu i` as an intermediate fact. Simplify using `only [zsmul_eq_mul, algebraMap_int_eq, eq_intCast] at this`. Conclude with `this`. Establish `hMu : M *ᵥ u = 0`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `p`. Establish `h1` using `RingHom.map_mulVec (Int.castRingHom ℚ) M u p`. Establish `h2 : (Int.castRingHom ℚ) ∘ u = (c : ℚ) • (v - w)`. Use function extensionality and compare the values at `i`. Simplify using `[hu2 i]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite `h1` using `[h2, Matrix.mulVec_smul]`. Simplify using `only [Int.coe_castRingHom] at h1`. Rewrite `h1` using `[hd, smul_zero]`. Simplify using `only [Pi.zero_apply] at h1 ⊢`. Conclude with `h1` after adjusting the coercions.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hu0` using `key u hMu`. Establish `hc0 : c ≠ 0` using `mem_nonZeroDivisors_iff_ne_zero.mp hc`. Use function extensionality and compare the values at `i`. Use `hu2 i` as an intermediate fact. Rewrite `this` using `[hu0]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Simplify using `only [Pi.zero_apply, Int.cast_zero] at this`. Establish `h3 : (v - w) i = 0`. Break down `mul_eq_zero.mp this.symm with h | h` into its components or cases. Conclude with `absurd (by exact_mod_cast h) hc0`. Conclude with `h`.
-
-Simplify `h3` using `[sub_eq_zero]`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem injective_map_of_int_ker {R r : ℕ} (M : Matrix (Fin R) (Fin r) ℤ)
     (key : ∀ u : Fin r → ℤ, M *ᵥ u = 0 → u = 0) :
@@ -60,25 +58,21 @@ theorem injective_map_of_int_ker {R r : ℕ} (M : Matrix (Fin R) (Fin r) ℤ)
   simpa [sub_eq_zero] using h3
 
 /- English proof (translation)
-Use `set uq : ι → Fin r → ℚ := fun i p => (u i p : ℚ) with huq`. Establish `h1 : ∀ v : Fin r → ℤ, (fun p => (v p : ℚ)) ∈ Submodule.span ℚ (Set.range uq)`. Introduce `v`. Proceed by induction on `hspan v using Submodule.span_induction with`. Consider the case `mem x hx`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨i, rfl⟩` from `hx`. Conclude with `Submodule.subset_span ⟨i, rfl⟩`. Consider the case `zero`. Establish `h0 : (fun p => ((0 : Fin r → ℤ) p : ℚ)) = 0` using `by funext p; simp`. Rewrite using `[h0]`.
+Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact.
 
-Conclude with `Submodule.zero_mem _`. Consider the case `add x y _ _ hx hy`. Establish `: (fun p => ((x + y) p : ℚ)) = (fun p => (x p : ℚ)) + fun p => (y p : ℚ)`. Use function extensionality and compare the values at `p`. Simplify using the standard rewrite rules.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact.
 
-Rewrite using `[this]`. Conclude with `Submodule.add_mem _ hx hy`. Consider the case `smul a x _ hx`. Establish `: (fun p => ((a • x) p : ℚ)) = (a : ℚ) • fun p => (x p : ℚ)`. Use function extensionality and compare the values at `p`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using the standard rewrite rules. Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ _ hx`. Establish `htop : Submodule.span ℚ (Set.range uq) = ⊤`. Use `eq_top_iff.mpr fun v _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hv : v = ∑ p, v p • (fun q => ((Pi.single p (1 : ℤ) : Fin r → ℤ) q : ℚ))`. Use function extensionality and compare the values at `q`. Simplify using `[Finset.sum_apply, Pi.single_apply]`. Rewrite using `[hv]`. Conclude with `Submodule.sum_mem _ fun p _ => Submodule.smul_mem _ _ (h1 _)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨κ', a, ha, hsp, hli⟩` from `exists_linearIndependent' ℚ uq`. Establish `: Finite κ'` using `Finite.of_injective a ha`. Establish `: Fintype κ'` using `Fintype.ofFinite κ'`. Establish `hsp' : ⊤ ≤ Submodule.span ℚ (Set.range (uq ∘ a))` using `by rw [hsp, htop]`. Establish `hcard : Fintype.card κ' = r`.
+Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `Module.finrank_eq_card_basis (Basis.mk hli hsp')` as an intermediate fact. Simplify using `using this.symm`. Use `set eq := (Fintype.equivFinOfCardEq hcard).symm`. Use `⟨a ∘ eq, ?_⟩` and prove the remaining obligations. Establish `hli2 : LinearIndependent ℚ ((Matrix.of fun p q => u ((a ∘ eq) q) p).map (Int.cast : ℤ → ℚ)).col`.
-
-Establish `: ((Matrix.of fun p q => u ((a ∘ eq) q) p).map (Int.cast : ℤ → ℚ)).col = uq ∘ a ∘ eq`. Use function extensionality and compare the values at `q p`. Simplify using `[Matrix.col, huq]`. Rewrite using `[this]`. Conclude with `hli.comp eq eq.injective`.
-
-Rewrite `hli2` using `[Matrix.linearIndependent_cols_iff_isUnit, Matrix.isUnit_iff_isUnit_det, isUnit_iff_ne_zero, ← Int.cast_det]`. Conclude with `hli2` after adjusting the coercions.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_cols_det_ne_zero {r : ℕ} {ι : Type} [Finite ι] (u : ι → Fin r → ℤ)
     (hspan : ∀ v : Fin r → ℤ, v ∈ Submodule.span ℤ (Set.range u)) :
@@ -129,28 +123,28 @@ theorem exists_cols_det_ne_zero {r : ℕ} {ι : Type} [Finite ι] (u : ι → Fi
   exact_mod_cast hli2
 
 /- English proof (translation)
-Introduce `_ _ h` and use `(Finset.Nat.antidiagonalTuple (D + 1) N).equivFin.symm.injective (Subtype.ext h)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem adtEnum_injective (D N : ℕ) : Function.Injective (adtEnum D N) := fun _ _ h =>
   (Finset.Nat.antidiagonalTuple (D + 1) N).equivFin.symm.injective (Subtype.ext h)
 
 /- English proof (translation)
-The claim follows from `((Finset.Nat.antidiagonalTuple (D + 1) N).equivFin.symm i).2`.
+A detailed English derivation is pending.
 -/
 theorem adtEnum_mem (D N : ℕ) (i : Fin (Finset.Nat.antidiagonalTuple (D + 1) N).card) :
     adtEnum D N i ∈ Finset.Nat.antidiagonalTuple (D + 1) N :=
   ((Finset.Nat.antidiagonalTuple (D + 1) N).equivFin.symm i).2
 
 /- English proof (translation)
-Use `set p : MvPolynomial (Fin (D + 1)) ℤ := ∑ i, monomial (Finsupp.equivFunOnFinite.symm (adtEnum D N i)) (u i) with hp`. Establish `hph : p.IsHomogeneous N`. Use `IsHomogeneous.sum _ _ _ fun i _ => isHomogeneous_monomial _ ?_` and prove the remaining obligations. Rewrite using `[Finsupp.degree_eq_sum]`. Use `Finset.Nat.mem_antidiagonalTuple.mp (adtEnum_mem D N i)` as an intermediate fact.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using this`. Establish `hpa : aeval y p = 0`. Rewrite using `[hp, map_sum, ← h]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[aeval_monomial, Finsupp.prod_fintype _ _ (by simp)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[algebraMap_int_eq]`. Establish `hp0 : p = 0`. Use `mem_coordIdeal_of_isHomogeneous (o := ℤ) (x := y) hph hpa` as an intermediate fact. Rewrite `this` using `[hy, Ideal.mem_bot]`. Then use the resulting hypothesis. Use function extensionality and compare the values at `i`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Establish `hc` using `congrArg (coeff (Finsupp.equivFunOnFinite.symm (adtEnum D N i))) hp0`. Rewrite `hc` using `[hp, coeff_sum, coeff_zero]`. Rewrite `hc` using `[Finset.sum_eq_single i (fun j _ hji => ?_) (by simp)]`. Simplify using `using hc`. Rewrite using `[coeff_monomial, if_neg]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hE`. Conclude with `hji (adtEnum_injective D N (by simpa using hE))`.
+A detailed English derivation is pending.
 -/
 theorem eq_zero_of_sum_mono {y : Fin (D + 1) → Ω} (hy : coordIdeal ℤ y = ⊥) {N : ℕ}
     (u : Fin (Finset.Nat.antidiagonalTuple (D + 1) N).card → ℤ)
@@ -181,7 +175,7 @@ theorem eq_zero_of_sum_mono {y : Fin (D + 1) → Ω} (hy : coordIdeal ℤ y = �
     exact hji (adtEnum_injective D N (by simpa using hE))
 
 /- English proof (translation)
-Rewrite using `[monoC, norm_prod, ← Finset.prod_pow, ← Finset.prod_pow_eq_pow_sum]`. Use `Finset.prod_le_prod (fun i _ => by positivity) fun i _ => ?_` and prove the remaining obligations. Rewrite using `[norm_pow, ← pow_mul, mul_comm, pow_mul]`. Use `pow_le_pow_left₀ (by positivity) ?_ _` and prove the remaining obligations. Conclude with `Finset.single_le_sum (f := fun j => ‖w j‖ ^ 2) (fun j _ => by positivity) (Finset.mem_univ i)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem norm_monoC_sq_le {N : ℕ} (a : Fin N → ℕ) (w : Fin N → ℂ) :
     ‖monoC a w‖ ^ 2 ≤ sqN w ^ (∑ i, a i) := by
@@ -192,11 +186,11 @@ theorem norm_monoC_sq_le {N : ℕ} (a : Fin N → ℕ) (w : Fin N → ℂ) :
   exact Finset.single_le_sum (f := fun j => ‖w j‖ ^ 2) (fun j _ => by positivity) (Finset.mem_univ i)
 
 /- English proof (translation)
-Use `set c' : (Fin (D + 1) → ℕ) → ℂ := fun a => if h : a ∈ Finset.Nat.antidiagonalTuple (D + 1) N then c ((Finset.Nat.antidiagonalTuple (D + 1) N).equivFin ⟨a, h⟩) else 0 with hc'`. Establish `hci : ∀ i, c' (adtEnum D N i) = c i` using `fun i => by`. Simplify using `only [hc', dif_pos (adtEnum_mem D N i)]`. Simplify using `[adtEnum]`. Establish `e1 : ∑ i, c i * monoC (adtEnum D N i) w = ∑ a ∈ Finset.Nat.antidiagonalTuple (D + 1) N, c' a * monoC a w`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[← sum_adtEnum D N (fun a => c' a * monoC a w)]`. Simplify using `only [hci]`. Establish `e2 : ∑ i, ‖c i‖ ^ 2 * monoNormSq (adtEnum D N i) = ∑ a ∈ Finset.Nat.antidiagonalTuple (D + 1) N, ‖c' a‖ ^ 2 * monoNormSq a`. Rewrite using `[← sum_adtEnum D N (fun a => ‖c' a‖ ^ 2 * monoNormSq a)]`. Simplify using `only [hci]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e1, e2, ← integral_form_sq]`. Conclude with `form_sq_le D N c' w`.
+A detailed English derivation is pending.
 -/
 theorem form_enum_sq_le (D N : ℕ) (c : Fin (Finset.Nat.antidiagonalTuple (D + 1) N).card → ℂ)
     (w : Fin (D + 1) → ℂ) :
@@ -223,7 +217,7 @@ def monoZ {N : ℕ} (a : Fin N → ℕ) : MvPolynomial (Fin N) ℤ :=
   monomial (Finsupp.equivFunOnFinite.symm a) 1
 
 /- English proof (translation)
-Unfold `monoZ`. Apply `isHomogeneous_monomial` to reduce the goal to its premises. Rewrite using `[← ha, Finsupp.degree_eq_sum]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem monoZ_isHomogeneous {N d : ℕ} {a : Fin N → ℕ} (ha : ∑ i, a i = d) :
     (monoZ a).IsHomogeneous d := by
@@ -237,7 +231,7 @@ def prodForm (e : Fin (D + 1) → Ix κ) (a : Fin (D + 1) → ℕ) (h : MvPolyno
   rename e (monoZ a) * h
 
 /- English proof (translation)
-The claim follows from `(monoZ_isHomogeneous ha).rename_isHomogeneous.mul hh`.
+A detailed English derivation is pending.
 -/
 theorem prodForm_isHomogeneous (e : Fin (D + 1) → Ix κ) {a : Fin (D + 1) → ℕ} {N k : ℕ}
     (ha : ∑ i, a i = N) {h : MvPolynomial (Ix κ) ℤ} (hh : h.IsHomogeneous k) :
@@ -245,7 +239,7 @@ theorem prodForm_isHomogeneous (e : Fin (D + 1) → Ix κ) {a : Fin (D + 1) → 
   (monoZ_isHomogeneous ha).rename_isHomogeneous.mul hh
 
 /- English proof (translation)
-Rewrite using `[prodForm, map_mul, aeval_rename]`. Simplify using `[monoZ, aeval_monomial, Finsupp.prod_fintype]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem aeval_prodForm (x : Ix κ → Ω) (e : Fin (D + 1) → Ix κ) (a : Fin (D + 1) → ℕ)
     (h : MvPolynomial (Ix κ) ℤ) :
@@ -254,7 +248,7 @@ theorem aeval_prodForm (x : Ix κ → Ω) (e : Fin (D + 1) → Ix κ) (a : Fin (
   simp [monoZ, aeval_monomial, Finsupp.prod_fintype]
 
 /- English proof (translation)
-Rewrite using `[prodForm, map_mul, map_mul, map_rename, eval_rename]`. Simplify using `[monoZ, map_monomial, eval_monomial, monoC, Finsupp.prod_fintype]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem eval_prodForm (e : Fin (D + 1) → Ix κ) (a : Fin (D + 1) → ℕ) (h : MvPolynomial (Ix κ) ℤ)
     (z : Ix κ → ℂ) :
@@ -264,18 +258,18 @@ theorem eval_prodForm (e : Fin (D + 1) → Ix κ) (a : Fin (D + 1) → ℕ) (h :
   simp [monoZ, map_monomial, eval_monomial, monoC, Finsupp.prod_fintype]
 
 /- English proof (translation)
-The claim follows from `Finset.Nat.mem_antidiagonalTuple.mp (adtEnum_mem D N i)`.
+A detailed English derivation is pending.
 -/
 theorem adtEnum_sum (D N : ℕ) (i : Fin (Finset.Nat.antidiagonalTuple (D + 1) N).card) :
     ∑ t, adtEnum D N i t = N :=
   Finset.Nat.mem_antidiagonalTuple.mp (adtEnum_mem D N i)
 
 /- English proof (translation)
-Use `set bas := (Basis.span hb.2.1).map (LinearEquiv.ofEq _ _ hb.2.2) with hbas`. Establish `hbj : ∀ j, (bas j : Ω) = aeval x (b j)` using `fun j => by`. Simplify using `[hbas, Basis.span_apply]`. Use `⟨(Finsupp.linearEquivFunOnFinite ℤ ℤ (Fin r)).toLinearMap ∘ₗ bas.repr.toLinearMap, fun v => ?_, fun j h => ?_⟩` and prove the remaining obligations. Use `conv_rhs => rw [← bas.sum_repr v]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Submodule.coe_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Submodule.coe_smul, hbj, zsmul_eq_mul]`. Both sides reduce to the same expression. Establish `: (⟨aeval x (b j), h⟩ : sec ℤ x n) = bas j` using `Subtype.ext (hbj j).symm`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[this]`. Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem exists_crd {x : Ix κ → Ω} {n r : ℕ} {b : Fin r → MvPolynomial (Ix κ) ℚ}
     (hb : IsSecBasis x n b) :
@@ -298,17 +292,15 @@ theorem exists_crd {x : Ix κ → Ω} {n r : ℕ} {b : Fin r → MvPolynomial (I
     simp
 
 /- English proof (translation)
-Establish `hsub : Submodule.span ℤ (Set.range w) ≤ sec ℤ x n` using `Submodule.span_le.mpr (Set.range_subset_iff.mpr hw)`. Establish `key : ∀ y (hy : y ∈ Submodule.span ℤ (Set.range w)), crd ⟨y, hsub hy⟩ ∈ Submodule.span ℤ (Set.range fun s => crd ⟨w s, hw s⟩)`. Introduce `y hy`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem y hy`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Take `⟨s, rfl⟩` from `hy`. Conclude with `Submodule.subset_span ⟨s, rfl⟩`. Consider the case `zero`. Establish `: (⟨0, hsub (Submodule.zero_mem _)⟩ : sec ℤ x n) = 0` using `rfl`. Rewrite using `[this, map_zero]`.
+Extract witnesses or component facts from the available result. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Conclude with `Submodule.zero_mem _`. Consider the case `add y₁ y₂ h₁ h₂ ih₁ ih₂`. Establish `: (⟨y₁ + y₂, hsub (Submodule.add_mem _ h₁ h₂)⟩ : sec ℤ x n) = ⟨y₁, hsub h₁⟩ + ⟨y₂, hsub h₂⟩` using `rfl`. Rewrite using `[this, map_add]`. Conclude with `Submodule.add_mem _ ih₁ ih₂`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Consider the case `smul a y h ih`. Establish `: (⟨a • y, hsub (Submodule.smul_mem _ a h)⟩ : sec ℤ x n) = a • ⟨y, hsub h⟩` using `rfl`. Rewrite using `[this, map_smul]`. Conclude with `Submodule.smul_mem _ _ ih`. Establish `hbm : ∀ j, aeval x (b j) ∈ sec ℤ x n` using `fun j => hb.2.2 ▸ Submodule.subset_span ⟨j, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Establish `hv : v = ∑ j, v j • crd ⟨aeval x (b j), hbm j⟩`. Simplify using `only [hcrd]`. Use function extensionality and compare the values at `q`. Simplify using `[Finset.sum_apply, Pi.single_apply]`. Rewrite using `[hv]`.
-
-Conclude with `Submodule.sum_mem _ fun j _ => Submodule.smul_mem _ _ (key _ (hle (hbm j)))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem crd_span {x : Ix κ → Ω} {n r : ℕ} {b : Fin r → MvPolynomial (Ix κ) ℚ}
     {crd : sec ℤ x n →ₗ[ℤ] (Fin r → ℤ)}
@@ -344,7 +336,7 @@ theorem crd_span {x : Ix κ → Ω} {n r : ℕ} {b : Fin r → MvPolynomial (Ix 
   exact Submodule.sum_mem _ fun j _ => Submodule.smul_mem _ _ (key _ (hle (hbm j)))
 
 /- English proof (translation)
-Establish `hρ : 0 < m.ρ z ^ n` using `pow_pos (m.pos z hz) n`. Unfold `wgt`. Establish `e2 : m.ρ z ^ (2 * n) = (m.ρ z ^ n) ^ 2` using `by ring`. Rewrite using `[e2, mul_inv_le_iff₀ (by positivity)]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem sq_wgt_le_of_le {m : ConeMetric ℂ (Ix κ)} {n : ℕ} {z : Ix κ → ℂ} (hz : z ≠ 0) {a Y : ℝ}
     (ha : 0 ≤ a) (h : a ≤ Y * m.ρ z ^ n) : a ^ 2 * wgt m n z ≤ Y ^ 2 := by
@@ -356,7 +348,7 @@ theorem sq_wgt_le_of_le {m : ConeMetric ℂ (Ix κ)} {n : ℕ} {z : Ix κ → �
     _ = Y ^ 2 * (m.ρ z ^ n) ^ 2 := by ring
 
 /- English proof (translation)
-Rewrite using `[hFS z hz, Real.sq_sqrt (Finset.sum_nonneg fun k _ => by positivity)]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem sqN_comp_eq {x : Ix κ → Ω} {e : Fin (D + 1) → Ix κ} {m : ConeMetric ℂ (Ix κ)}
     (hFS : IsPullFS x e m) {z : Ix κ → ℂ} (hz : z ∈ pts (coordIdeal ℤ x)) :
@@ -365,7 +357,7 @@ theorem sqN_comp_eq {x : Ix κ → Ω} {e : Fin (D + 1) → Ix κ} {m : ConeMetr
   rfl
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem norm_le_sqrt_of_sq_le {a b t : ℝ} (ha : 0 ≤ a) (hb : 0 ≤ b) (ht : 0 ≤ t)
     (h : a ^ 2 ≤ b * t ^ 2) : a ≤ Real.sqrt b * t := by

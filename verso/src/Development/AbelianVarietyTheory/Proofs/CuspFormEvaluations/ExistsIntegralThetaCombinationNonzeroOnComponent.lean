@@ -23,15 +23,15 @@ namespace GlobalTheory.ThetaComb
 open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.WeightAlgebra Formalism.MainNotions.DIV.Cons Formalism.MainNotions.Gaps Formalism.L2.Pj GlobalTheory.RunIn ReciprocityTheory.ChartRestriction.G.Geo.Tor
 
 /- English proof (translation)
-Use `set S := Finset.univ.filter (fun n : Fin N → Fin (N + 1) => ∑ i, ((n i : ℕ) : ℂ) * v i c = 0) with hS`. Establish `hinj : Set.InjOn (fun p : (Fin N → Fin (N + 1)) × Fin (N + 1) => Function.update p.1 c p.2) ((S ×ˢ (Finset.univ : Finset (Fin (N + 1))) : Finset _) : Set _)`. Introduce and unpack `⟨n, k⟩ hn ⟨n', k'⟩ hn' heq`. Simplify using `only [Finset.coe_product, Set.mem_prod, Finset.mem_coe, hS, Finset.mem_filter, Finset.mem_univ, true_and, and_true] at hn hn'`. Simplify using `only at heq`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hk : k = k'` using `by simpa using congrFun heq c`. Substitute `hk` using the available equality. Establish `hoff : ∀ i, i ≠ c → n i = n' i`. Introduce `i hi`. Simplify `congrFun heq i` using `[Function.update_of_ne hi]`.
+Substitute using the available equality. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hrest : ∑ i ∈ Finset.univ.erase c, ((n i : ℕ) : ℂ) * v i c = ∑ i ∈ Finset.univ.erase c, ((n' i : ℕ) : ℂ) * v i c` using `Finset.sum_congr rfl (fun i hi => by rw [hoff i (Finset.ne_of_mem_erase hi)])`. Rewrite `hn`, `hn'` using `[← Finset.add_sum_erase _ _ (Finset.mem_univ c)]`. Establish `hmul : ((n c : ℕ) : ℂ) * v c c = ((n' c : ℕ) : ℂ) * v c c`. Take the linear combination `hn - hn' - hrest`. Establish `hc : n c = n' c` using `Fin.ext (by exact_mod_cast mul_right_cancel₀ (hv c) hmul)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `Prod.ext ?_ rfl` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Distinguish the cases in `hi : i = c`. Substitute `hi` using the available equality. Conclude with `hc`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Conclude with `hoff i hi`. Establish `hle` using `Finset.card_le_card_of_injOn _ (fun _ _ => Finset.mem_coe.2 (Finset.mem_univ _)) hinj`. Simplify `hle` using `[Finset.card_product]`.
+A detailed English derivation is pending.
 -/
 private lemma card_filter_sum_eq_zero_mul_le_pow (N : ℕ) (v : Fin N → Fin N → ℂ) (hv : ∀ c, v c c ≠ 0) (c : Fin N) :
     (Finset.univ.filter (fun n : Fin N → Fin (N + 1) => ∑ i, ((n i : ℕ) : ℂ) * v i c = 0)).card * (N + 1)
@@ -65,13 +65,11 @@ private lemma card_filter_sum_eq_zero_mul_le_pow (N : ℕ) (v : Fin N → Fin N 
   simpa [Finset.card_product] using hle
 
 /- English proof (translation)
-Set `bad : Fin N → Finset (Fin N → Fin (N + 1))` to `fun c => Finset.univ.filter (fun n => ∑ i, ((n i : ℕ) : ℂ) * v i c = 0)`. Establish `hcount : ∑ c, (bad c).card < (N + 1) ^ N`. Establish `h3 : (∑ c, (bad c).card) * (N + 1) ≤ N * (N + 1) ^ N`. Rewrite using `[Finset.sum_mul]`. Combine the equalities or inequalities in the displayed calculation.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Assume the negation of the conclusion as `hcon`. Establish `h4` using `Nat.mul_le_mul_right (N + 1) (not_lt.mp hcon)`. Establish `hp : 0 < (N + 1) ^ N` using `pow_pos (Nat.succ_pos N) N`. Use the polynomial consequences of the given equalities and inequalities. Establish `hlt : (Finset.univ.biUnion bad).card < (Finset.univ : Finset (Fin N → Fin (N + 1))).card`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Establish `hcard : (Finset.univ : Finset (Fin N → Fin (N + 1))).card = (N + 1) ^ N` using `by simp`. Rewrite using `[hcard]`. Conclude with `lt_of_le_of_lt Finset.card_biUnion_le hcount`. Take `⟨n, -, hn⟩` from `Finset.exists_mem_notMem_of_card_lt_card hlt`. Use `⟨fun i => (n i : ℕ), fun c => Nat.lt_succ_iff.mp (n c).isLt, fun c hc => hn ?_⟩` and prove the remaining obligations.
-
-Conclude with `Finset.mem_biUnion.2 ⟨c, Finset.mem_univ _, Finset.mem_filter.2 ⟨Finset.mem_univ _, hc⟩⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_box_comb_ne_zero (N : ℕ) (v : Fin N → Fin N → ℂ) (hv : ∀ c, v c c ≠ 0) :
     ∃ n : Fin N → ℕ, (∀ c, n c ≤ N) ∧ ∀ c, ∑ i, (n i : ℂ) * v i c ≠ 0 := by
@@ -97,17 +95,15 @@ theorem exists_box_comb_ne_zero (N : ℕ) (v : Fin N → Fin N → ℂ) (hv : �
   exact Finset.mem_biUnion.2 ⟨c, Finset.mem_univ _, Finset.mem_filter.2 ⟨Finset.mem_univ _, hc⟩⟩
 
 /- English proof (translation)
-Take `⟨n, hnN, hn⟩` from `exists_box_comb_ne_zero N (fun i c => ρ c (F i)) hne`. Take `⟨hs0, hslog⟩` from `sOf_ne_zero_and_log_bounds D B hinj EX j w`. Use `set s : 𝓞 B.KO := sOf B hinj EX w with hs`. Use `set G : B.Cusp j w := ∑ i, n i • F i with hG`. Establish `hGmem : G ∈ X.thAll w` using `Submodule.sum_mem _ (fun i _ => nsmul_mem (hF i) _)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsG : s • G = ((s : B.KO)) • G` using `(algebraMap_smul B.KO s G).symm`. Establish `hWW : s • G ∈ X.WWc s w` using `by show s • G ∈ (X.thAll w).map (s • (LinearMap.id : B.Cusp j w →ₗ[𝓞 B.KO] B.Cusp j w))`. Conclude with `Submodule.mem_map.2 ⟨G, hGmem, by simp⟩`. Establish `hρG : ∀ c, ρ c G = ∑ i, (n i : ℂ) * ρ c (F i)`. Introduce `c`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Set `φ : B.Cusp j w →+ ℂ` to `AddMonoidHom.mk' (ρ c) (hadd c)`. Establish `hφ : ∀ x, φ x = ρ c x` using `fun _ => rfl`. Rewrite using `[hG, ← hφ, map_sum]`. Use `Finset.sum_congr rfl (fun i _ => ?_)` and prove the remaining obligations. Rewrite using `[map_nsmul, hφ, nsmul_eq_mul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hsne : ((s : B.KO)) ≠ 0` using `fun h => hs0 (by exact_mod_cast h)`. Use `⟨s • G, hInt hWW, fun c => ?_, fun σ => ?_⟩` and prove the remaining obligations. Rewrite using `[hsG, hsmul, hρG]`. Conclude with `mul_ne_zero ((map_ne_zero σ₀).2 hsne) (hn c)`. Establish `hb1` using `(GlobalTheory.LogSupMultiple.log_supN_bounds D B j w).2.1 σ N n F b hb hnN (fun i => hFi σ i)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Nat.cast_smul_eq_nsmul] at hb1`. Take `⟨hl0, -, -, hlup⟩` from `hslog σ`. Establish `hlogN : 0 ≤ Real.log N` using `Real.log_natCast_nonneg N`. Establish `hbig` using `(GlobalTheory.LogSupMultiple.log_supN_bounds D B j w).1 σ (s : B.KO) G (lamStar D * w.size) (2 * Real.log N + b) (by linarith) hlup hb1 (by linarith) (by linarith)`. Rewrite using `[hsG]`.
-
-Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem exists_mem_Mlat_ne_zero {D : D7} {B : WeightFamilies.Prov D} {P : ModuliIntegralCharts.Prov D} {j : ℕ} (X : PJ D B P j)
     (hinj : Function.Injective D.what₂.OtoLL) (EX : ErrX D) (w : WeightFamilies.Wt D j) (hInt : ThInt X hinj EX w)
@@ -148,25 +144,23 @@ theorem exists_mem_Mlat_ne_zero {D : D7} {B : WeightFamilies.Prov D} {P : Moduli
     linarith
 
 /- English proof (translation)
-Introduce `hC D T h hG large₂ j hj w hpage hL hrw hlast hDF hinj EX hInt`. Establish `hLP : Formalism.L2.Pj.LastPos (T.Q.Dw j) (wtA w)` using `ReciprocityTheory.ChartRestriction.G.PullbackSections.Pf.lastPos_wtA h hj w hlast`. Establish `hα` using `GlobalTheory.RunIn.half_level_generator_norm D T h EX`. Establish `hnb` using `GlobalTheory.T.no_base_component_short_polynomial_generator hC D T h large₂ j hj w hpage hL hrw hLP hDF hα T.σ₀ T.good_σ₀`. Use `choose x P f hP hcoef hrule x' hx' hne using hnb`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfth : ∀ k, f k ∈ T.th j w` using `fun k => ⟨x k, P k, hP k, hrule k⟩`. Establish `hcut : ∀ k, f k ∈ T.C j w` using `fun k => h.thCusp j hj (wtA w) w.n (dom_wtA w) hLP (f k) (hfth k)`. Establish `hr0 : 0 < D.R.r`. Use `D.R.two_le_m` as an intermediate fact. Use `D.R.m_add_three_le_k` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Formalism.BasicNotions.Ranks.r]`. Use linear arithmetic over natural numbers and integers. Establish `hn0 : 0 < w.n` using `by omega`. Establish `hL0 : (0 : ℝ) ≤ large₂.sc.L` using `by linarith`. Establish `hsupb : ∀ (σ : T.Q.c.F →+* ℂ) k, Real.log (T.Ns j w σ (f k)) ≤ 400 * Zb D large₂ * w.size`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `σ k`. Establish `hA : (0 : ℝ) ≤ absA w` using `by unfold absA; positivity`. Establish `hℓ : (0 : ℝ) ≤ 140 * D.R.r * large₂.sc.L * absA w` using `mul_nonneg (mul_nonneg (by positivity) hL0) hA`. Establish `hl1 : l1At σ (P k) ≤ Real.exp (140 * D.R.r * large₂.sc.L * absA w)` using `GlobalTheory.LogSupMultiple.le_exp_of_log_le (hcoef k σ) (Finset.sum_nonneg (fun _ _ => norm_nonneg _))`. Establish `h1` using `GlobalTheory.T.log_supNorm_thetaGenerator_le hC D T h hG large₂ j hj w hpage hL hrw hLP (x k) (P k) (hP k) (f k) (hrule k) σ _ hℓ hl1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `(GlobalTheory.RunIn.sup_bounds_le_Gc D (recB h.toLawsCore) large₂ j w 0 hL hn0).1`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hb : (0 : ℝ) ≤ 400 * Zb D large₂ * w.size`. Establish `hZ : (0 : ℝ) ≤ Zb D large₂` using `by unfold Zb; exact mul_nonneg (by positivity) hL0`. Conclude with `mul_nonneg (mul_nonneg (by norm_num) hZ) (by linarith [w.one_le_size])`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hcutR : ∀ k, f k ∈ cutR T.C j w`. Introduce `k`. Simplify using `only [Formalism.L2.Pj.cutR]`. Conclude with `Submodule.mem_inf.2 ⟨hcut k, (Submodule.mem_iInf _).2 (fun hn => (hn hj).elim)⟩`. Set `e` to `Fintype.equivFin (T.U j T.σ₀).Comp`.
+Simplify using the standard rewrite rules. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `Fc : Fin (Fintype.card (T.U j T.σ₀).Comp) → (recB h.toLawsCore).Cusp j w` to `fun i => ⟨f (e.symm i), hcutR (e.symm i)⟩`. Establish `hmem : ∀ i, Fc i ∈ (recPJ h j hj).thAll w`. Introduce `i`. Express the relevant statement in the definitionally equal form `Fc i ∈ spanIn T.C j w (T.th j w)`. Simplify using `only [Formalism.L2.Pj.spanIn]`.
+Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Conclude with `Submodule.subset_span (hfth (e.symm i))`. Establish `hsupF : ∀ σ i, Real.log ((recB h.toLawsCore).supN j w σ (Fc i)) ≤ 400 * Zb D large₂ * w.size`. Introduce `σ i`. Simplify using `only [Formalism.L2.Pj.cutN, if_pos hj]`. Conclude with `hsupb σ (e.symm i)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Take `⟨th, hth, hρ, hsup⟩` from `exists_mem_Mlat_ne_zero (recPJ h j hj) hinj EX w hInt _ Fc hmem (400 * Zb D large₂ * w.size) hb hsupF T.σ₀ (fun c G => rdU (T.U j T.σ₀) (G : T.R j) (e.symm c) (x' (e.symm c))) (fun c G G' => by simp [map_add]) (fun c a G => by simp [map_smulₛₗ]) (fun c => hne (e.symm c))`. Use `⟨th, hth, ?_, fun σ => (hsup σ).trans (le_of_eq (by ring))⟩` and prove the remaining obligations. Use `ReciprocityTheory.ChartRestriction.G.PullbackSections.Pf.nonzero_divisor_of_connected D T h j hj w th T.σ₀ T.good_σ₀ (fun k => ⟨x' k, hx' k, ?_⟩)` and prove the remaining obligations. Establish `key : ∀ k', e.symm (e k) = k' → rdU (T.U j T.σ₀) (th : T.R j) k' (x' k') ≠ 0`. Introduce and unpack `k' rfl`.
-
-Conclude with `hρ (e k)`. Conclude with `key k (e.symm_apply_apply k)`.
+A detailed English derivation is pending.
 -/
 theorem exists_integral_theta_nonzero_on_components : Formalism.MainNotions.ModuliIntegralCharts.H1.ChartIndepSt2 → ∀ (D : D7) (T : Top D) (h : LawsP T), GamAt T.toCore → ∀ (large₂ : SizeData₂ D) (j : ℕ) (hj : InR D j) (w : WeightFamilies.Wt D j), ReciprocityTheory.ChartRestriction.G.PullbackSections.SupBoundPageRows D large₂ w → 2 ≤ large₂.sc.L → D.R.r ≤ w.n → w.LastPos → WeightAlgebra.DF w + 2 ≤ qq D → ∀ (hinj : Function.Injective D.what₂.OtoLL) (EX : ErrX D), ThInt (recPJ h j hj) hinj EX w → ∃ th ∈ (recB h.toLawsCore).Mlat j w, (recPJ h j hj).NonZeroComp w th ∧ ∀ σ, Real.log ((recB h.toLawsCore).supN j w σ th) ≤ 2 * Real.log (Fintype.card (T.U j T.σ₀).Comp) + (400 * Zb D large₂ + lamStar D) * w.size := by
   intro hC D T h hG large₂ j hj w hpage hL hrw hlast hDF hinj EX hInt

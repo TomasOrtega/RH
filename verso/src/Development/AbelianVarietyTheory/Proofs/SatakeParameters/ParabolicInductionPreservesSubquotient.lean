@@ -14,13 +14,13 @@ open GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.SplitWeil
 namespace GlobalTheory.ParIndSubquot
 
 /- English proof (translation)
-Introduce `k _ _ _ _ α n m _ _ _ _ _ _ e W W' _ _ _ _ ρ ρ' hρ' h`. Take `⟨S, f, hf⟩` from `h`. Take `⟨-, -, -, -, -, hcont, hP, -, hPK⟩` from `GlobalTheory.SmGL.LeviInt.levi_integral_facts k α n m e`. Take `⟨_, _⟩` from `SplitWeil.Model.secondCountable_and_t2_local_field (k := k)`. Set `ι : S.toRepresentation.IntertwiningMap ρ'` to `{ toLinearMap := S.toSubmodule.subtype, isIntertwining' := fun _ => rfl }`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `hι : Function.Injective ι` using `Subtype.val_injective`. Establish `hS : IsSmooth S.toRepresentation` using `(IsSubquotient.of_injective ι hι).isSmooth hρ'`. Establish `hinj : Function.Injective (parIndMap e ι)`. Introduce `φ ψ hφψ`. Use `Subtype.ext (Subtype.ext (funext fun g => hι ?_))` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `congrFun (congrArg (fun χ : IndSp e ρ' => χ.1.1) hφψ) g`. Set `σ₀ : Representation ℂ (parab k e) S.toSubmodule` to `(twist S.toRepresentation (deltaHalf k m)).comp (leviProj k e)`. Set `z : Representation.IntertwiningMap σ₀ σ₀` to `{ toLinearMap := 0, isIntertwining' := fun _ => by ext; simp }`. Establish `hsurj : Function.Surjective (parIndMap e f)`. Use `(GlobalTheory.SmGL.IndCoinv.smInd_coinvariants (GL n k) (parab k e) (KO k n) hP SplitFlip.isCompact_KO hPK (GlobalTheory.SmGL.exists_open_normalised_subgroup_subset k n) _ _ _ _ (isSmooth_comp (isSmooth_twist hS (isSmoothChar_deltaHalf k)) _ hcont) (compMap (twistMap f _) _) Unit …` and prove the remaining obligations.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x _`. Use `Submodule.subset_span ⟨(), -x, ?_⟩` and prove the remaining obligations. Use `show x = (0 : _) - -x`. Simplify using the standard rewrite rules. Conclude with `(IsSubquotient.of_surjective (parIndMap e f) hsurj).trans (IsSubquotient.of_injective (parIndMap e ι) hinj)`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem parInd_isSubquotient : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (α n : Type) (m : α → Type) [Fintype α] [LinearOrder α] [∀ a, Fintype (m a)] [∀ a, DecidableEq (m a)] [Fintype n] [DecidableEq n] (e : (Σ a, m a) ≃ n) (W W' : Type) [AddCommGroup W] [Module ℂ W] [AddCommGroup W'] [Module ℂ W'] (ρ : Representation ℂ (Levi k m) W) (ρ' : Representation ℂ (Levi k m) W'), IsSmooth ρ' → IsSubquotient ρ ρ' → IsSubquotient (parInd e ρ) (parInd e ρ') := by
   intro k _ _ _ _ α n m _ _ _ _ _ _ e W W' _ _ _ _ ρ ρ' hρ' h

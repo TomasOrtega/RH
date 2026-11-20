@@ -15,7 +15,7 @@ namespace LocalLimit
 variable {R : Type} [CommRing R] [IsLocalRing R]
 
 /- English proof (translation)
-Introduce `i x` and use `(GlobalTheory.T.pointedEtaleNbhd_transitionMap_directedSystem R).1 i x map_map := fun {k j i} hij hjk x => (GlobalTheory.T.pointedEtaleNbhd_transitionMap_directedSystem R).2 i j k hij hjk x`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem directedSystem_trans :
     DirectedSystem (fun i : EtNbhd R => i.B) (fun i j h => ⇑(EtNbhd.trans h : i.B →+* j.B)) where
@@ -23,12 +23,12 @@ theorem directedSystem_trans :
   map_map := fun {k j i} hij hjk x => (GlobalTheory.T.pointedEtaleNbhd_transitionMap_directedSystem R).2 i j k hij hjk x
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.pointedEtaleNeighbourhoodLocalRing_isDirected R`.
+A detailed English derivation is pending.
 -/
 theorem directed : IsDirected (EtNbhd R) (· ≤ ·) := GlobalTheory.T.pointedEtaleNeighbourhoodLocalRing_isDirected R
 
 /- English proof (translation)
-Use `haveI := directedSystem_trans (R := R)`. Use `haveI := directed (R := R)`. Conclude with `Ring.DirectLimit.of_injective (G := fun i : EtNbhd R => i.B) (fun i j h => EtNbhd.trans h) (fun i j h => (GlobalTheory.T.etaleNbhdLocalRingTransitionMap_isLocalHom_injective R i j h).2) i`.
+A detailed English derivation is pending.
 -/
 theorem of_injective (i : EtNbhd R) : Function.Injective (Hens.of i) := by
   haveI := directedSystem_trans (R := R)
@@ -37,21 +37,21 @@ theorem of_injective (i : EtNbhd R) : Function.Injective (Hens.of i) := by
     (fun i j h => EtNbhd.trans h) (fun i j h => (GlobalTheory.T.etaleNbhdLocalRingTransitionMap_isLocalHom_injective R i j h).2) i
 
 /- English proof (translation)
-Use `haveI := directed (R := R)`. Conclude with `Ring.DirectLimit.exists_of z`.
+A detailed English derivation is pending.
 -/
 theorem exists_of (z : Hens R) : ∃ (i : EtNbhd R) (x : i.B), Hens.of i x = z := by
   haveI := directed (R := R)
   exact Ring.DirectLimit.exists_of z
 
 /- English proof (translation)
-The claim follows from `Ring.DirectLimit.of_f (G := fun i : EtNbhd R => i.B) (f := fun _ _ h => ⇑(EtNbhd.trans h)) h x`.
+A detailed English derivation is pending.
 -/
 theorem of_trans {i j : EtNbhd R} (h : i ≤ j) (x : i.B) :
     Hens.of j (EtNbhd.trans h x) = Hens.of i x :=
   Ring.DirectLimit.of_f (G := fun i : EtNbhd R => i.B) (f := fun _ _ h => ⇑(EtNbhd.trans h)) h x
 
 /- English proof (translation)
-Use `nontrivial_of_ne (1 : Hens R) 0 ?_` and prove the remaining obligations. Introduce `h`. Rewrite `h` using `[← map_one (Hens.of (EtNbhd.base (R := R))), ← map_zero (Hens.of (EtNbhd.base (R := R)))]`. Conclude with `one_ne_zero (of_injective _ h)`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nontrivial : Nontrivial (Hens R) := by
   refine nontrivial_of_ne (1 : Hens R) 0 ?_
@@ -60,11 +60,9 @@ theorem nontrivial : Nontrivial (Hens R) := by
   exact one_ne_zero (of_injective _ h)
 
 /- English proof (translation)
-Take `⟨i, x, rfl⟩` from `exists_of a`. Take `⟨j, y, rfl⟩` from `exists_of b`. Use `haveI := directed (R := R)`. Take `⟨k, hik, hjk⟩` from `directed_of (· ≤ ·) i j`. Establish `h1 : EtNbhd.trans hik x + EtNbhd.trans hjk y = 1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `of_injective k` to reduce the goal to its premises. Rewrite using `[map_add, of_trans, of_trans, map_one, hab]`. Break down `IsLocalRing.isUnit_or_isUnit_of_add_one h1 with h | h` into its components or cases. Use `left`. Rewrite using `[← of_trans hik]`.
-
-Conclude with `h.map _`. Use `right`. Rewrite using `[← of_trans hjk]`. Conclude with `h.map _`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUnit_or_isUnit_of_add_one {a b : Hens R} (hab : a + b = 1) : IsUnit a ∨ IsUnit b := by
   obtain ⟨i, x, rfl⟩ := exists_of a
@@ -83,9 +81,9 @@ theorem isUnit_or_isUnit_of_add_one {a b : Hens R} (hab : a + b = 1) : IsUnit a 
     exact h.map _
 
 /- English proof (translation)
-Use `⟨fun x hx => ?_⟩` and prove the remaining obligations. Take `⟨u, hu⟩` from `hx`. Take `⟨j, y, hy⟩` from `exists_of (↑u⁻¹ : Hens R)`. Use `haveI := directed (R := R)`. Take `⟨k, hik, hjk⟩` from `directed_of (· ≤ ·) i j`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h1 : EtNbhd.trans hik x * EtNbhd.trans hjk y = 1`. Apply `of_injective k` to reduce the goal to its premises. Rewrite using `[map_mul, of_trans, of_trans, map_one, hy, ← hu, Units.mul_inv]`. Use `haveI := (GlobalTheory.T.etaleNbhdLocalRingTransitionMap_isLocalHom_injective R i k hik).1`. Conclude with `isUnit_of_map_unit (EtNbhd.trans hik) x (IsUnit.of_mul_eq_one _ h1)`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isLocalHom_of (i : EtNbhd R) : IsLocalHom (Hens.of i) := by
   refine ⟨fun x hx => ?_⟩
@@ -102,7 +100,7 @@ theorem isLocalHom_of (i : EtNbhd R) : IsLocalHom (Hens.of i) := by
 end LocalLimit
 
 /- English proof (translation)
-Introduce `R _ _`. Use `haveI := LocalLimit.nontrivial (R := R)`. Conclude with `⟨IsLocalRing.of_is_unit_or_is_unit_of_add_one LocalLimit.isUnit_or_isUnit_of_add_one, LocalLimit.isLocalHom_of⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem hens_isLocalRing_and_isLocalHom_of :
     ∀ (R : Type) [CommRing R] [IsLocalRing R], IsLocalRing (Hens R) ∧ ∀ i : EtNbhd R, IsLocalHom (Hens.of i) := by

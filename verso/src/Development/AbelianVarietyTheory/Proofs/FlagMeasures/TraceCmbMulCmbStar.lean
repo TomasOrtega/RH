@@ -9,33 +9,33 @@ namespace GlobalTheory.IwConst.Adapted
 variable {n a b c e : ℕ}
 
 /- English proof (translation)
-Simplify using `[cmb, Finset.sum_mul, Finset.mul_sum, Matrix.trace_sum, h]`.
+Simplify using the standard rewrite rules.
 -/
 theorem trace_cmb_mul_cmb {E : Fin a → Matrix (Fin n) (Fin n) ℂ} {F : Fin b → Matrix (Fin n) (Fin n) ℂ}
     (h : ∀ i k, (E i * F k).trace = 0) (x : Fin a → ℝ) (y : Fin b → ℝ) : (cmb E x * cmb F y).trace = 0 := by
   simp [cmb, Finset.sum_mul, Finset.mul_sum, Matrix.trace_sum, h]
 
 /- English proof (translation)
-Simplify using `[cmb, Matrix.conjTranspose_sum, Finset.sum_mul, Finset.mul_sum, Matrix.trace_sum, h]`.
+Simplify using the standard rewrite rules.
 -/
 theorem trace_cmb_mul_cmb_star {E : Fin a → Matrix (Fin n) (Fin n) ℂ} {F : Fin b → Matrix (Fin n) (Fin n) ℂ}
     (h : ∀ i k, (E i * (F k)ᴴ).trace = 0) (x : Fin a → ℝ) (y : Fin b → ℝ) : (cmb E x * (cmb F y)ᴴ).trace = 0 := by
   simp [cmb, Matrix.conjTranspose_sum, Finset.sum_mul, Finset.mul_sum, Matrix.trace_sum, h]
 
 /- English proof (translation)
-Rewrite using `[← Matrix.conjTranspose_mul, Matrix.trace_conjTranspose, Matrix.trace_mul_comm, h, star_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem trace_star_star (X Y : Matrix (Fin n) (Fin n) ℂ) (h : (X * Y).trace = 0) : (Xᴴ * Yᴴ).trace = 0 := by
   rw [← Matrix.conjTranspose_mul, Matrix.trace_conjTranspose, Matrix.trace_mul_comm, h, star_zero]
 
 /- English proof (translation)
-Rewrite using `[← nrm_sq, ← nrm_sq, nrm_neg, nrm_conjTranspose]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem hs_neg_star (X : Matrix (Fin n) (Fin n) ℂ) : Formalism.REAL.hs (-Xᴴ) = Formalism.REAL.hs X := by
   rw [← nrm_sq, ← nrm_sq, nrm_neg, nrm_conjTranspose]
 
 /- English proof (translation)
-Establish `e2 : (cmb EM y * cmb EN u).trace = 0`. Rewrite using `[Matrix.trace_mul_comm]`. Conclude with `trace_cmb_mul_cmb h2 u y`. Rewrite using `[hs_add, hs_add, hs_neg_star, hs_cmb hN, hs_cmb hM, hs_cmb hN, trace_cmb_mul_cmb_star h1]`. Simplify using `[Matrix.add_mul, trace_cmb_mul_cmb h3, e2]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hs_three {EN : Fin a → Matrix (Fin n) (Fin n) ℂ} {EM : Fin b → Matrix (Fin n) (Fin n) ℂ}
     (hN : IsON EN) (hM : IsON EM) (h1 : ∀ i k, (EN i * (EM k)ᴴ).trace = 0) (h2 : ∀ i k, (EN i * EM k).trace = 0)
@@ -66,14 +66,14 @@ def adp (EN : Fin a → Matrix (Fin n) (Fin n) ℂ) (EL : Fin e → Matrix (Fin 
       Matrix.conjTranspose_smul, star_trivial, RingHom.id_apply, smul_add, smul_sub]
 
 /- English proof (translation)
-The claim follows from `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (h i)`.
+A detailed English derivation is pending.
 -/
 theorem cmb_mem_of {E : Fin a → Matrix (Fin n) (Fin n) ℂ} {S : Submodule ℝ (Matrix (Fin n) (Fin n) ℂ)}
     (h : ∀ i, E i ∈ S) (x : Fin a → ℝ) : cmb E x ∈ S :=
   Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (h i)
 
 /- English proof (translation)
-Establish `: cmb E x - (cmb E x)ᴴ = cmb (fun i => E i - (E i)ᴴ) x`. Simplify using `[cmb, Matrix.conjTranspose_sum, smul_sub, Finset.sum_sub_distrib]`. Rewrite using `[this]`. Conclude with `cmb_mem_of h x`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cmb_sub_star_mem {E : Fin a → Matrix (Fin n) (Fin n) ℂ} {S : Submodule ℝ (Matrix (Fin n) (Fin n) ℂ)}
     (h : ∀ i, E i - (E i)ᴴ ∈ S) (x : Fin a → ℝ) : cmb E x - (cmb E x)ᴴ ∈ S := by
@@ -82,7 +82,7 @@ theorem cmb_sub_star_mem {E : Fin a → Matrix (Fin n) (Fin n) ℂ} {S : Submodu
   rw [this]; exact cmb_mem_of h x
 
 /- English proof (translation)
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Pi.smul_apply, smul_eq_mul, mul_pow, inv_pow, Real.sq_sqrt (by norm_num)]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem sum_sq_half (w : Fin a → ℝ) : ∑ i, ((Real.sqrt 2)⁻¹ • w) i ^ 2 = ∑ i, w i ^ 2 / 2 := by
   refine Finset.sum_congr rfl fun i _ => ?_
@@ -90,27 +90,27 @@ theorem sum_sq_half (w : Fin a → ℝ) : ∑ i, ((Real.sqrt 2)⁻¹ • w) i ^ 
   ring
 
 /- English proof (translation)
-Take `⟨h1, h2, h3, h4, h5, -, h7⟩` from `hR`. Establish `hι : ∀ t, cmb EM (crd EM (cmb EL t)) = cmb EL t` using `fun t => cmb_crd hM (cmb_mem_of h4 t)`. Establish `hmem : ∀ v, adp EN EL v ∈ Submodule.span ℝ (Set.range EK)` using `fun v => Submodule.add_mem _ (cmb_sub_star_mem h7 _) (cmb_mem_of h5 _)`. Establish `hsum : ∀ x y v, Formalism.REAL.hs (cmb EN x + cmb EM y + adp EN EL v) = ∑ i, (x i + v.1 i / Real.sqrt 2) ^ 2 + ∑ i, (y i + crd EM (cmb EL v.2) i) ^ 2 + ∑ i, v.1 i ^ 2 / 2`. Introduce `x y v`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e : cmb EN x + cmb EM y + adp EN EL v = cmb EN (x + (Real.sqrt 2)⁻¹ • v.1) + cmb EM (y + crd EM (cmb EL v.2)) + -(cmb EN ((Real.sqrt 2)⁻¹ • v.1))ᴴ`. Rewrite using `[cmb_add, cmb_add, hι]`. Simplify using `only [adp, LinearMap.coe_mk, AddHom.coe_mk]`. Normalize the expressions using the abelian group laws. Rewrite using `[e, hs_three hN hM h1 h2 h3, sum_sq_half]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Pi.add_apply, Pi.smul_apply, smul_eq_mul, div_eq_inv_mul]`. Establish `hhs : ∀ v, Formalism.REAL.hs (adp EN EL v) = ∑ i, v.1 i ^ 2 + ∑ i, v.2 i ^ 2`. Introduce `v`. Establish `e : adp EN EL v = cmb EN ((Real.sqrt 2)⁻¹ • v.1) + cmb EM (crd EM (cmb EL v.2)) + -(cmb EN ((Real.sqrt 2)⁻¹ • v.1))ᴴ`. Rewrite using `[hι]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [adp, LinearMap.coe_mk, AddHom.coe_mk]`. Normalize the expressions using the abelian group laws. Rewrite using `[e, hs_three hN hM h1 h2 h3, sum_sq_half, ← hs_cmb hM, hι, hs_cmb hL, ← Finset.sum_div]`. Expand and normalize the polynomial expressions, which then agree. Set `T : ((Fin dN → ℝ) × (Fin dL → ℝ)) →ₗ[ℝ] (Fin dK → ℝ)` to `(crdL EK).comp (adp EN EL)`.
+Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Introduce a local definition for the expression.
 
-Establish `hT : ∀ v, cmb EK (T v) = adp EN EL v` using `fun v => cmb_crd hK (hmem v)`. Establish `hinj : Function.Injective T`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `v hv`. Establish `h` using `hhs v`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `h` using `[← hT, hv, hs_cmb hK]`. Simplify using `only [Pi.zero_apply, ne_eq, OfNat.ofNat_ne_zero, not_false_eq_true, zero_pow, Finset.sum_const_zero] at h`. Establish `p1 : 0 ≤ ∑ i, v.1 i ^ 2` using `by positivity`. Establish `p2 : 0 ≤ ∑ i, v.2 i ^ 2` using `by positivity`. Establish `q1` using `(Finset.sum_eq_zero_iff_of_nonneg fun i _ => sq_nonneg (v.1 i)).1 (show ∑ i, v.1 i ^ 2 = 0 by linarith)`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `q2` using `(Finset.sum_eq_zero_iff_of_nonneg fun i _ => sq_nonneg (v.2 i)).1 (show ∑ i, v.2 i ^ 2 = 0 by linarith)`. Use extensionality with `i`. Conclude with `pow_eq_zero_iff two_ne_zero |>.1 (q1 i (Finset.mem_univ i))`. Conclude with `pow_eq_zero_iff two_ne_zero |>.1 (q2 i (Finset.mem_univ i))`. Establish `hdim : Module.finrank ℝ ((Fin dN → ℝ) × (Fin dL → ℝ)) = Module.finrank ℝ (Fin dK → ℝ)`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Simplify using `[hd]`. Set `U` to `LinearMap.linearEquivOfInjective T hinj hdim`. Establish `hU : ∀ z, cmb EK z = adp EN EL (U.symm z)`. Introduce `z`. Rewrite using `[← hT]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Use `congr 1`. Conclude with `(U.apply_symm_apply z).symm`. Use `⟨U.symm.toLinearMap, (crdL EM).comp (cmbL EL), fun z => ?_, fun x y z => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[← hs_cmb hK z, hU, hhs]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hU, hsum]`. Both sides reduce to the same expression. Rewrite using `[hU]`. Express the relevant statement in the definitionally equal form `crd EL (_ - _ + _) = (U.symm z).2`. Rewrite using `[crd_add, crd_cmb hL, add_eq_right]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `i`. Simplify using `only [crd, Pi.zero_apply]`. Rewrite using `[← cmb_crd hM (h4 i), Matrix.sub_mul, Matrix.trace_sub, trace_cmb_mul_cmb_star h1, trace_star_star _ _ (trace_cmb_mul_cmb h2 _ _)]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_adapted (n : ℕ) (dN dM dK dL : ℕ) (EN : Fin dN → Matrix (Fin n) (Fin n) ℂ)
     (EM : Fin dM → Matrix (Fin n) (Fin n) ℂ) (EK : Fin dK → Matrix (Fin n) (Fin n) ℂ)

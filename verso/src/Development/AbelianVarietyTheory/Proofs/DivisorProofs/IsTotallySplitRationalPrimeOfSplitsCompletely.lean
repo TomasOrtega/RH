@@ -6,13 +6,13 @@ open NumberField Module ReciprocityTheory.ChartRestriction.G.FD ReciprocityTheor
 namespace GlobalTheory.SplitLevelsBall
 
 /- English proof (translation)
-Use extensionality with `P`. Simplify using `only [Set.mem_setOf_eq, Ideal.primesOver, Set.mem_setOf_eq]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hP, hgP⟩`. Use `⟨hP, ⟨?_⟩⟩` and prove the remaining obligations.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hmax : (Ideal.span {(g : ℤ)}).IsMaximal` using `PrincipalIdealRing.isMaximal_of_irreducible (Nat.prime_iff_prime_int.mp hg).irreducible`. Establish `hle : Ideal.span {(g : ℤ)} ≤ P.under ℤ`. Rewrite using `[Ideal.span_le, Set.singleton_subset_iff]`. Use `show (g : ℤ) ∈ Ideal.comap (algebraMap ℤ (𝓞 E)) P`. Rewrite using `[Ideal.mem_comap, map_natCast]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hgP`. Establish `hne : P.under ℤ ≠ ⊤` using `(Ideal.IsPrime.comap (f := algebraMap ℤ (𝓞 E)) (hK := hP)).ne_top`. Conclude with `hmax.eq_of_le hne hle`. Introduce and unpack `⟨hP, hlo⟩`. Use `⟨hP, ?_⟩` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `: (g : ℤ) ∈ P.under ℤ`. Rewrite using `[← hlo.over]`. Conclude with `Ideal.mem_span_singleton_self _`. Simplify `this` using `[Ideal.under, Ideal.mem_comap]`.
+A detailed English derivation is pending.
 -/
 theorem setOf_prime_mem_eq_primesOver (E : Type) [Field E] [NumberField E] (g : ℕ) (hg : g.Prime) :
     {P : Ideal (𝓞 E) | P.IsPrime ∧ (g : 𝓞 E) ∈ P} = (Ideal.span {(g : ℤ)}).primesOver (𝓞 E) := by
@@ -37,7 +37,7 @@ theorem setOf_prime_mem_eq_primesOver (E : Type) [Field E] [NumberField E] (g : 
     simpa [Ideal.under, Ideal.mem_comap] using this
 
 /- English proof (translation)
-Introduce `E _ _ g ⟨hg, hc⟩`. Conclude with `⟨hg, by rw [← setOf_prime_mem_eq_primesOver E g hg]; exact hc⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem isTotallySplitPrime_of_splitsCompletely :
     ∀ (E : Type) [Field E] [NumberField E] (g : ℕ), SplitsCompletely E g → GlobalTheory.IndefiniteRowSideFullHecke.SmallUnipotentElements.IsTotallySplitPrime E g := by

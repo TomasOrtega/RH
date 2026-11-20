@@ -7,7 +7,7 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.Selm
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal IsLocalRing UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.Ws
 
 /- English proof (translation)
-Establish `h1` using `h ((n : ℕ) : 𝓞 F)`. Establish `e : algebraMap F Ω (((n : ℕ) : 𝓞 F) : F) = (n : Ω)` using `by simp`. Rewrite `h1` using `[e]`. Conclude with `h1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem val_nat {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω]
     {A : ValuationSubring Ω} {v : HeightOneSpectrum (𝓞 F)} (h : IsPlaceOver A v) (n : ℕ) :
@@ -18,11 +18,9 @@ private theorem val_nat {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Alge
   exact h1
 
 /- English proof (translation)
-Establish `h : {v : HeightOneSpectrum (𝓞 F) | ∃ p ∈ U, (p : 𝓞 F) ∈ v.asIdeal}.Finite`. Establish `h1 : ∀ p ∈ (U : Set ℕ), {v : HeightOneSpectrum (𝓞 F) | (p : 𝓞 F) ∈ v.asIdeal}.Finite`. Introduce `p hp`. Establish `h0 : Ideal.span {(p : 𝓞 F)} ≠ ⊥`. Rewrite using `[Ne, Ideal.span_singleton_eq_bot]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hU p hp` after adjusting the coercions. Use `(Ideal.finite_factors h0).subset fun v hv => ?_` and prove the remaining obligations. Conclude with `Ideal.dvd_span_singleton.2 hv`. Use `(Set.Finite.biUnion U.finite_toSet h1).subset fun v hv => ?_` and prove the remaining obligations. Take `⟨p, hp, hv⟩` from `hv`.
-
-Conclude with `Set.mem_biUnion hp hv`. Conclude with `⟨h.toFinset, fun v => h.mem_toFinset⟩`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem fin_over (F : Type) [Field F] [NumberField F] (U : Finset ℕ) (hU : ∀ p ∈ U, p ≠ 0) :
     ∃ S : Finset (HeightOneSpectrum (𝓞 F)), ∀ v, v ∈ S ↔ ∃ p ∈ U, (p : 𝓞 F) ∈ v.asIdeal := by
@@ -40,14 +38,14 @@ private theorem fin_over (F : Type) [Field F] [NumberField F] (U : Finset ℕ) (
   exact ⟨h.toFinset, fun v => h.mem_toFinset⟩
 
 /- English proof (translation)
-The claim follows from `(isOpen_discrete {(1 : (ZMod (l ^ 1))ˣ)}).preimage GlobalTheory.Published.PoitouTate.continuous_cycMod`.
+A detailed English derivation is pending.
 -/
 private theorem open_cyc (F Ω : Type) [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] (l : ℕ) [Fact l.Prime] :
     IsOpen ((cycMod F Ω l 1).ker : Set (G F Ω)) :=
   (isOpen_discrete {(1 : (ZMod (l ^ 1))ˣ)}).preimage GlobalTheory.Published.PoitouTate.continuous_cycMod
 
 /- English proof (translation)
-Establish `e : ((MonoidHom.ker ρ : Subgroup Γ) : Set Γ) = ⋂ m : M, (fun g => ρ g m) ⁻¹' {m}`. Use extensionality with `g`. Simplify using `[MonoidHom.mem_ker, LinearMap.ext_iff]`. Rewrite using `[e]`. Conclude with `isOpen_iInter_of_finite fun m => (isOpen_discrete _).preimage (Continuous.comp h (continuous_id.prodMk continuous_const))`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem open_ker {R Γ M : Type} [CommRing R] [Group Γ] [TopologicalSpace Γ] [AddCommGroup M] [Module R M] [Finite M]
     [TopologicalSpace M] [DiscreteTopology M] (ρ : Representation R Γ M) (h : ContAction ρ) :
@@ -60,23 +58,21 @@ private theorem open_ker {R Γ M : Type} [CommRing R] [Group Γ] [TopologicalSpa
     (isOpen_discrete _).preimage (Continuous.comp h (continuous_id.prodMk continuous_const))
 
 /- English proof (translation)
-Introduce `hP Ω _ _ _ l hl c D T hD W hW M _ _ _ _ _ ρ hρ hN m0 hm0`. Take `⟨S₀, hS₀⟩` from `fin_over T.F (D.S ∪ W) fun p hp => by`. Break down `Finset.mem_union.1 hp with h | h` into its components or cases. Conclude with `(hD.S_prime p h).ne_zero`. Conclude with `(hW p h).1.ne_zero`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hl₀ : ∀ v : HeightOneSpectrum (𝓞 T.F), (l : 𝓞 T.F) ∈ v.asIdeal → v ∈ S₀` using `fun v hv => (hS₀ v).2 ⟨l, Finset.mem_union_left _ hD.l_mem, hv⟩`. Establish `hunr : UnrOut ρ S₀`. Introduce `v hv A hA g hg`. Establish `haw : Raw.Away (D.S ∪ W) A` using `fun p hp h => hv ((hS₀ v).2 ⟨p, hp, (val_nat hA p).1 h⟩)`. Use `hN g ⟨A, fun p hp => haw p ?_, hg, UpperTheory.V.Ws.Gys.unrS D T hD A (fun p hp => haw p (Finset.mem_union_left _ hp)) g hg⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Break down `Finset.mem_insert.1 hp with rfl | h` into its components or cases. Conclude with `Finset.mem_union_left _ hD.l_mem`. Conclude with `Finset.mem_union_right _ h`. Establish `hQ` using `UpperTheory.V.Ws.Gys.placesQ D T hD (MonoidHom.ker ρ ⊓ (cycMod T.F Ω l 1).ker) ((open_ker ρ hρ).inter (open_cyc T.F Ω l))`. Take `⟨S, hS, z, hz, hloc, hg⟩` from `UpperTheory.V.Ws.Gys.gysCore hP T.F Ω l M hD.l_odd ρ S₀ _ hρ hl₀ hunr hQ (fun v hv A hA g hg => hv.2 A hA hg) m0 hm0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `hw : ∀ v ∈ S, v ∉ S₀ → ∃ w : ℕ, w.Prime ∧ T.Splits w ∧ (w : 𝓞 T.F) ∈ v.asIdeal` using `fun v hv hv' => ((hS v hv).resolve_left hv').1`. Use `choose! wf hwf using hw`. Establish `hnext : T.Next W (T.fr (W ∪ (S \ S₀).image wf)).N`. Use `⟨_, Finset.subset_union_left, fun w h => ?_, rfl⟩` and prove the remaining obligations. Break down `Finset.mem_union.1 h with h | h` into its components or cases.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `hW w h`. Take `⟨v, hv, rfl⟩` from `Finset.mem_image.1 h`. Use `hwf v (Finset.mem_sdiff.1 hv).1 (Finset.mem_sdiff.1 hv).2` as an intermediate fact. Conclude with `⟨this.1, this.2.1⟩`. Use `⟨_, hnext, z, hz.1, fun g hg => ?_, fun u => ?_, hg⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality.
 
-Establish `h1 : ρ g = 1` using `hN g (hnext.sub hg)`. Take `⟨A, hA, hg, -⟩` from `hg`. Take `⟨p1, p2, -⟩` from `UpperTheory.V.Base.places T.F Ω l A`. Distinguish the cases in `ht : A = ⊤`. Rewrite `hg` using `[(p2 ht).1, Subgroup.mem_bot]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails.
 
-Substitute `hg` using the available equality. Use `hz.1.2 1 1` as an intermediate fact. Simplify using `using this`. Take `⟨v, hv⟩` from `p1 ht`. Distinguish the cases in `hvS : v ∈ S`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Distinguish the cases in `hv0 : v ∈ S₀`. Take `⟨m, hm⟩` from `hloc v hv0 A hv`. Rewrite using `[hm g (Ine_le_Dec A hg), h1]`. Simplify using the standard rewrite rules. Use `absurd ((val_nat hv _).2 (hwf v hvS hv0).2.2) (hA _ ?_)` and prove the remaining obligations.
-
-Conclude with `Finset.mem_insert_of_mem (Finset.mem_union_right _ (Finset.mem_image_of_mem _ (Finset.mem_sdiff.2 ⟨hvS, hv0⟩)))`. Conclude with `hz.2 v hvS A hv g hg`. Take `⟨p1, p2, -⟩` from `UpperTheory.V.Base.places T.F Ω l (T.pl u)`. Take `⟨v, hv⟩` from `p1 fun ht => (p2 ht).2 (T.ovl u)`. Conclude with `hloc v (hl₀ v ((val_nat hv l).1 (T.ovl u))) _ hv`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Ws.Gys.gysT :
     CohomologyHyp → ∀ {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime] {c : Coef l} (D : Raw Ω c) (T : Tower D), D.Good → ∀ W : Finset ℕ, (∀ w ∈ W, w.Prime ∧ T.Splits w) → (T.fr W).Gys l (T.Next W) := by

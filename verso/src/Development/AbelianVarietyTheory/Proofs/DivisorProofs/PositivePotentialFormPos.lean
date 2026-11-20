@@ -8,21 +8,19 @@ open Filter Topology
 namespace GlobalTheory
 
 /- English proof (translation)
-Use `set x := ψ.symm z with hxdef`. Take `⟨j, hj⟩` from `A.cover x`. Use `set c := A.chart j with hc`. Use `set τ : (Fin e → ℂ) → (Fin e → ℂ) := c ∘ ψ.symm with hτdef`. Establish `hxψ : x ∈ ψ.source` using `ψ.map_target hz`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hτa : AnalyticAt ℂ τ z` using `(hψ j).2 z ⟨hz, hj⟩`. Establish `hnear : ∀ᶠ y in 𝓝 z, y ∈ ψ.target ∧ ψ.symm y ∈ c.source`. Establish `h1 : ψ.target ∈ 𝓝 z` using `ψ.open_target.mem_nhds hz`. Establish `h2 : ψ.symm ⁻¹' c.source ∈ 𝓝 z` using `(ψ.continuousAt_symm hz).preimage_mem_nhds (c.open_source.mem_nhds hj)`. Use `filter_upwards [h1, h2] with y hy1 hy2`.
+Establish an intermediate fact. Supply the required witnesses or components. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `⟨hy1, hy2⟩`. Establish `hgerm : (P.φ x ∘ ψ.symm) =ᶠ[𝓝 z] ((P.φ x ∘ c.symm) ∘ τ)` using `by filter_upwards [hnear] with y hy`. Simplify using `[hτdef, c.left_inv hy.2]`. Establish `hτz : τ z = c x` using `rfl`. Establish `hτt : τ z ∈ c.target` using `c.map_source hj`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsymm : c.symm (τ z) = x` using `c.left_inv hj`. Establish `hS : IsOpen (c.target ∩ c.symm ⁻¹' P.U x)` using `c.isOpen_inter_preimage_symm (P.isOpen_U x)`. Establish `hmemS : τ z ∈ c.target ∩ c.symm ⁻¹' P.U x` using `⟨hτt, by simp [hsymm, P.mem_U x]⟩`. Establish `hsm : ContDiffAt ℝ 2 (P.φ x ∘ c.symm) (τ z)` using `(((hP.1 x j).contDiffAt (hS.mem_nhds hmemS))).of_le (WithTop.coe_le_coe.2 le_top)`. Establish `hlevi : levi (P.φ x ∘ ψ.symm) z w = levi (P.φ x ∘ c.symm) (τ z) (fderiv ℂ τ z w)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[levi_congr hgerm w]`. Conclude with `levi_comp w hτa hsm`. Use `set σ : (Fin e → ℂ) → (Fin e → ℂ) := ψ ∘ c.symm with hσdef`. Establish `hσa : AnalyticAt ℂ σ (τ z)` using `(hψ j).1 (τ z) ⟨hτt, show c.symm (τ z) ∈ ψ.source by rw [hsymm]; exact hxψ⟩`. Establish `hid : (σ ∘ τ) =ᶠ[𝓝 z] id` using `by filter_upwards [hnear] with y hy`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `[hσdef, hτdef, c.left_inv hy.2, ψ.right_inv hy.1]`. Establish `hD : (fderiv ℂ σ (τ z)).comp (fderiv ℂ τ z) = ContinuousLinearMap.id ℂ _`. Rewrite using `[← fderiv_comp z hσa.differentiableAt hτa.differentiableAt, hid.fderiv_eq, fderiv_id]`. Establish `hne : fderiv ℂ τ z w ≠ 0`. Introduce `h0`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Apply `hw` to reduce the goal to its premises. Use `congrArg (fun L => L w) hD` as an intermediate fact. Simplify `this.symm` using `[h0]`. Establish `hlp : 0 < levi (P.φ x ∘ c.symm) (τ z) (fderiv ℂ τ z w)` using `hpos x j (τ z) hmemS _ hne`. Unfold `formAt`.
-
-Rewrite using `[← hxdef, hlevi]`. Use `Real.pi_pos` as an intermediate fact. Check the signs of the components of the expression.
+Establish an intermediate fact. Check the signs of the components of the expression. A detailed English derivation is pending.
 -/
 theorem formAt_pos_of_isPosPot {e : ℕ} {X : Type} [TopologicalSpace X] (A : FinHolAtlas e X)
     (P : LocPot X) (ψ : OpenPartialHomeomorph X (Fin e → ℂ)) (hP : IsPotential A P)

@@ -15,9 +15,9 @@ private theorem diagRep_val {G κ : Type} [Group G] [Field κ] {n : ℕ} (χ : F
     (diagRep χ g : Matrix (Fin n) (Fin n) κ) = diagonal fun i => ((χ i g : κˣ) : κ) := rfl
 
 /- English proof (translation)
-Use extensionality with `j`. Rewrite using `[diagRep_val, mulVec_diagonal, Pi.smul_apply, smul_eq_mul]`. Distinguish the cases in `h : j = i`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[Pi.single_apply, h]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem diagRep_single {G κ : Type} [Group G] [Field κ] {n : ℕ} (χ : Fin n → G →* κˣ) (g : G)
     (i : Fin n) : (diagRep χ g : Matrix (Fin n) (Fin n) κ) *ᵥ Pi.single i 1 =
@@ -30,9 +30,9 @@ private theorem diagRep_single {G κ : Type} [Group G] [Field κ] {n : ℕ} (χ 
   · simp [Pi.single_apply, h]
 
 /- English proof (translation)
-Introduce `g v hv`. Establish `hle : Submodule.span κ (Set.range fun i => (Pi.single (a i) 1 : Fin n → κ)) ≤ (Submodule.span κ (Set.range fun i => (Pi.single (a i) 1 : Fin n → κ))).comap (Matrix.mulVecLin (diagRep χ g : Matrix (Fin n) (Fin n) κ))`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Rewrite using `[SetLike.mem_coe, Submodule.mem_comap, Matrix.mulVecLin_apply, diagRep_single]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`. Conclude with `hle hv`.
+A detailed English derivation is pending.
 -/
 private theorem diagRep_span {G κ ι : Type} [Group G] [Field κ] {n : ℕ} (χ : Fin n → G →* κˣ) (a : ι → Fin n) :
     IsInv (diagRep χ) (Submodule.span κ (Set.range fun i => (Pi.single (a i) 1 : Fin n → κ))) := by
@@ -47,13 +47,13 @@ private theorem diagRep_span {G κ ι : Type} [Group G] [Field κ] {n : ℕ} (χ
   exact hle hv
 
 /- English proof (translation)
-Introduce `W hW`. Take `⟨I, hI, hmax⟩` from `Finset.exists_max_image ((Finset.univ : Finset (Finset (Fin n))).filter (fun I : Finset (Fin n) => Disjoint W (Submodule.span κ ((fun i => (Pi.single i 1 : Fin n → κ)) '' (I : Set (Fin n)))))) Finset.card ⟨∅, Finset.mem_filter.2 ⟨Finset.mem_univ _, by simp⟩⟩`. Rewrite `hI` using `[Finset.mem_filter]`. Use `⟨Submodule.span κ ((fun i => (Pi.single i 1 : Fin n → κ)) '' (I : Set (Fin n))), ?_, hI.2, ?_⟩` and prove the remaining obligations. Rewrite using `[Set.image_eq_range]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `diagRep_span χ (fun i : (I : Set (Fin n)) => (i : Fin n))`. Rewrite using `[codisjoint_iff, eq_top_iff, ← (Pi.basisFun κ (Fin n)).span_eq, Submodule.span_le]`. Introduce and unpack `_ ⟨j, rfl⟩`. Rewrite using `[Pi.basisFun_apply]`. Assume the negation of the conclusion as `hj`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `hne : (Pi.single j 1 : Fin n → κ) ≠ 0` using `by simp`. Establish `hjI : j ∉ I` using `fun h => hj (Submodule.mem_sup_right (Submodule.subset_span ⟨j, h, rfl⟩))`. Establish `hd : Disjoint W (Submodule.span κ ((fun i => (Pi.single i 1 : Fin n → κ)) '' ((insert j I : Finset (Fin n)) : Set (Fin n))))`. Rewrite using `[Finset.coe_insert, Set.image_insert_eq, Submodule.span_insert, sup_comm]`. Conclude with `hI.2.disjoint_sup_right_of_disjoint_sup_left ((Submodule.disjoint_span_singleton' hne).2 hj)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hc` using `hmax (insert j I) (Finset.mem_filter.2 ⟨Finset.mem_univ _, hd⟩)`. Rewrite `hc` using `[Finset.card_insert_of_notMem hjI]`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 private theorem diagRep_ss {G κ : Type} [Group G] [Field κ] {n : ℕ} (χ : Fin n → G →* κˣ) :
     IsSSRep (diagRep χ) := by
@@ -82,19 +82,17 @@ private theorem diagRep_ss {G κ : Type} [Group G] [Field κ] {n : ℕ} (χ : Fi
     omega
 
 /- English proof (translation)
-Introduce `G κ _ _ n hn r χ hch hirr`. Establish `ssr : IsSSRep r`. Introduce `W hW`. Break down `hirr W (fun g _ v hv => hW g v hv) with rfl | rfl` into its components or cases. Conclude with `⟨⊤, fun g v _ => Submodule.mem_top, isCompl_bot_top⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components.
 
-Use `⟨⊥, fun g v hv => ?_, isCompl_top_bot⟩` and prove the remaining obligations. Rewrite using `[(Submodule.mem_bot κ).1 hv, mulVec_zero]`. Conclude with `Submodule.zero_mem _`. Take `⟨P, hP⟩` from `Formalism.MainNotions.SumRepresentations.brauerNesbitt_matrix (diagRep χ) r (diagRep_ss χ) ssr (fun g => by rw [diagRep_val, charpoly_diagonal]; exact (hch g).symm)`. Establish `hn0 : 0 < n` using `by omega`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set e0 : Fin n → κ := Pi.single (⟨0, hn0⟩ : Fin n) 1 with he0`. Use `set v : Fin n → κ := ((P⁻¹ : GL (Fin n) κ) : Matrix (Fin n) (Fin n) κ) *ᵥ e0 with hv`. Establish `hvne : v ≠ 0`. Introduce `h0`. Establish `hPv : ((P : GL (Fin n) κ) : Matrix (Fin n) (Fin n) κ) *ᵥ v = e0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hv, mulVec_mulVec, ← Units.val_mul, mul_inv_cancel, Units.val_one, one_mulVec]`. Rewrite `hPv` using `[h0, mulVec_zero]`. Establish `h1` using `congrFun hPv ⟨0, hn0⟩`. Simplify using `[he0] at h1`. Establish `hinv : ∀ g ∈ (⊤ : Subgroup G), ∀ u ∈ κ ∙ v, UpperTheory.V.Pr.gm r g *ᵥ u ∈ κ ∙ v`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `g _ u hu`. Take `⟨c, rfl⟩` from `Submodule.mem_span_singleton.1 hu`. Establish `hrg : UpperTheory.V.Pr.gm r g = ((P⁻¹ : GL (Fin n) κ) : Matrix (Fin n) (Fin n) κ) * (diagRep χ g : Matrix (Fin n) (Fin n) κ) * ((P : GL (Fin n) κ) : Matrix (Fin n) (Fin n) κ)` using `by show ((r g : GL (Fin n) κ) : Matrix (Fin n) (Fin n) κ) = _`. Rewrite using `[hP g, Units.val_mul, Units.val_mul]`. Rewrite using `[mulVec_smul, hrg, hv, mulVec_mulVec, Matrix.mul_assoc, ← Units.val_mul P, mul_inv_cancel, Units.val_one, Matrix.mul_one, ← mulVec_mulVec, he0, diagRep_single, mulVec_smul, smul_smul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `Submodule.smul_mem _ _ (Submodule.mem_span_singleton_self _)`. Break down `hirr (κ ∙ v) hinv with h | h` into its components or cases. Conclude with `hvne ((Submodule.span_singleton_eq_bot).1 h)`. Establish `hr` using `finrank_span_singleton (K := κ) hvne`. Rewrite `hr` using `[h, finrank_top, Module.finrank_fin_fun]`.
-
-Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Pr.notIrrOfChar :
     UpperTheory.V.Pr.NotIrrOfChar := by

@@ -10,17 +10,15 @@ namespace GlobalTheory.ClosedValuedField
 open scoped NNReal
 
 /- English proof (translation)
-Set `w` to `expNegAbsoluteValue v₀`. Establish `hw : ∀ x, w x = (expNegTop (v₀ x) : ℝ)` using `fun _ => rfl`. Establish `hp1 : w a < 1`. Rewrite using `[hw, ← NNReal.coe_one, NNReal.coe_lt_coe, ← expNegTop_zero, ← not_le, expNegTop_le_iff]`. Conclude with `not_le.2 hv`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hp0 : 0 < w a` using `w.pos ha`. Use `letI : NontriviallyNormedField (WithAbs w) := { (inferInstance : NormedField (WithAbs w)) with non_trivial := ⟨(WithAbs.toAbs w a)⁻¹, by`. Rewrite using `[norm_inv]`. Express the relevant statement in the definitionally equal form `1 < (w a)⁻¹`. Conclude with `(one_lt_inv₀ hp0).2 hp1⟩ }`.
+Equip the data with the indicated structure. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Introduce a local definition for the expression. Equip the data with the indicated structure.
 
-Use `haveI : IsUltrametricDist (WithAbs w) := IsUltrametricDist.isUltrametricDist_of_forall_norm_add_le_max_norm fun x y => isNonarchimedean_expNegAbsoluteValue v₀ x.ofAbs y.ofAbs`. Use `haveI : IsAlgClosed (WithAbs w) := IsAlgClosed.of_ringEquiv F₀ _ (WithAbs.equiv w).symm`. Set `C` to `UniformSpace.Completion (WithAbs w)`. Use `letI : NontriviallyNormedField C := completionNontriviallyNormedField (WithAbs w)`. Use `haveI : IsUltrametricDist C := IsUltrametricDist.of_normedAlgebra (WithAbs w)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use `haveI : IsAlgClosed C := isAlgClosed_of_denseRange (K := WithAbs w) UniformSpace.Completion.denseRange_coe`. Set `e : F₀ →+* C` to `(algebraMap (WithAbs w) C).comp (WithAbs.equiv w).symm.toRingHom`. Establish `he : ∀ x, ‖e x‖₊ = expNegTop (v₀ x)` using `fun x => NNReal.coe_injective (UniformSpace.Completion.norm_coe (WithAbs.toAbs w x))`. Take `⟨v, hvC⟩` from `exists_addValuation_expNegTop_eq_nnnorm (C := C) fun x => by`. Take `⟨y, hy⟩` from `exists_norm_eq_of_completion x`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Conclude with `⟨v₀ y.ofAbs, NNReal.coe_injective hy.symm⟩`. Establish `hmem : ∀ x : C, NormedField.valuation x ≤ 1 ↔ 0 ≤ v x` using `fun x => by`. Rewrite using `[NormedField.valuation_apply, ← hvC, ← expNegTop_zero, expNegTop_le_iff]`. Establish `hO : (NormedField.valuation (K` using `C)).Integers (ReciprocityTheory.ChartRestriction.G.DVR.TWO.Ov v) := ⟨Subtype.val_injective, fun x => (hmem _).2 x.2, fun r hr => ⟨⟨r, (hmem r).1 hr⟩, rfl⟩⟩`. Use `⟨C, inferInstance, inferInstance, e, v, fun x => expNegTop_inj_of_eq (by rw [hvC, he]), fun b hb => NormIntegers.isAdicComplete_span_singleton hO ?_⟩` and prove the remaining obligations.
-
-Express the relevant statement in the definitionally equal form `‖(b : C)‖ < 1`. Rewrite using `[← coe_nnnorm, ← hvC, ← NNReal.coe_one, NNReal.coe_lt_coe, ← expNegTop_zero, ← not_le, expNegTop_le_iff]`. Conclude with `not_le.2 hb`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_isAlgClosed_forall_isAdicComplete (F₀ : Type) [Field F₀] [IsAlgClosed F₀]
     (v₀ : AddValuation F₀ (WithTop ℚ)) {a : F₀} (ha : a ≠ 0) (hv : 0 < v₀ a) :
@@ -81,13 +79,11 @@ open IsDedekindDomain
 namespace GlobalTheory.ClosedValuedField
 
 /- English proof (translation)
-Introduce `T ϖ hϖ _`. Take `⟨v₀, hv₀⟩` from `exists_valOver_of_isAlgebraic hϖ (AlgebraicClosure T.Fr)`. Establish `hinj : Function.Injective (TWO.algVF (V` using `T.V) (F := AlgebraicClosure T.Fr)) := (algebraMap T.Fr (AlgebraicClosure T.Fr)).injective.comp (IsFractionRing.injective T.V T.Fr)`. Take `⟨F, _, _, e, v, he, hc⟩` from `exists_isAlgClosed_forall_isAdicComplete (AlgebraicClosure T.Fr) v₀ ((map_ne_zero_iff _ hinj).2 hϖ.ne_zero) (lt_of_lt_of_le zero_lt_one ((TWO.v_of_V v₀ hϖ hv₀ ϖ).2 hϖ.not_isUnit hϖ.ne_zero))`. Use `letI : Algebra T.Fr F := (e.comp (algebraMap T.Fr (AlgebraicClosure T.Fr))).toAlgebra`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Equip the data with the indicated structure.
 
-Use `haveI : CharZero F := charZero_of_injective_ringHom (algebraMap T.Fr F).injective`. Use `letI : Algebra T.V F := (TWO.algVF (V := T.V) (F := F)).toAlgebra`. Use `haveI : IsScalarTower T.V T.Fr F := IsScalarTower.of_algebraMap_eq fun _ => rfl`. Establish `hv : ValOver ϖ F v` using `fun c n h => (he _).trans (hv₀ c n h)`. Use `letI : Algebra T.V (TWO.Ov v) := (TWO.fO v hϖ hv).toAlgebra`.
+Equip the data with the indicated structure. Establish an intermediate fact. Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Use `haveI : IsScalarTower T.V (TWO.Ov v) F := IsScalarTower.of_algebraMap_eq fun _ => rfl`. Use `⟨F, inferInstance, inferInstance, inferInstance, inferInstance, inferInstance, inferInstance, v, hv, TWO.Ov v, inferInstance, inferInstance, inferInstance, inferInstance, Subtype.val_injective, fun z => ⟨fun h => ⟨⟨z, h⟩, rfl⟩, ?_⟩, fun g hg hu => hc _ ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨y, rfl⟩`. Conclude with `y.2`. Establish `h` using `(TWO.v_of_V v hϖ hv (g : T.V)).2 hu (Nat.cast_ne_zero.2 hg)`.
-
-Rewrite `h` using `[map_natCast]`. Establish `e' : (((g : ℕ) : TWO.Ov v) : F) = (g : F)` using `map_natCast (algebraMap (TWO.Ov v) F) g`. Rewrite using `[e']`. Conclude with `lt_of_lt_of_le zero_lt_one h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_field_over_cdvr : ∀ (T : CDVR) (ϖ : T.V), Irreducible ϖ → CharZero T.Fr → ∃ (F : Type) (_ : Field F) (_ : IsAlgClosed F) (_ : CharZero F) (_ : Algebra T.Fr F) (_ : Algebra T.V F) (_ : IsScalarTower T.V T.Fr F) (v : AddValuation F (WithTop ℚ)), ValOver ϖ F v ∧ ∃ (O : Type) (_ : CommRing O) (_ : Algebra O F) (_ : Algebra T.V O) (_ : IsScalarTower T.V O F), Function.Injective (algebraMap O F) ∧ (∀ z : F, 0 ≤ v z ↔ z ∈ (algebraMap O F).range) ∧ ∀ g : ℕ, g ≠ 0 → ¬ IsUnit ((g : ℕ) : T.V) → IsAdicComplete (Ideal.span {((g : ℕ) : O)}) O := by
   intro T ϖ hϖ _

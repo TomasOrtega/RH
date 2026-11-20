@@ -17,13 +17,11 @@ set_option synthInstance.maxHeartbeats 200000
 attribute [local instance] borelG borelF borelA borelH
 
 /- English proof (translation)
-Introduce `E _ _ _ a b l₁ l₂ D`. Use `haveI : BorelSpace (G a) := ⟨rfl⟩`. Use `haveI : BorelSpace (G b) := ⟨rfl⟩`. Use `haveI : BorelSpace (Hf E a b) := ⟨rfl⟩`. Use `haveI : LocallyCompactSpace (G a) := lc_G a`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : LocallyCompactSpace (G b) := lc_G b`. Set `μa : Measure (G a)` to `Measure.haar`. Set `μb : Measure (G b)` to `Measure.haar`. Establish `ha : μa.IsHaarMeasure` using `inferInstance`. Establish `hb : μb.IsHaarMeasure` using `inferInstance`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result.
 
-Take `⟨ν, hν, hν', hcomp⟩` from `compatEx E a b D μa μb`. Take `⟨-, -, ca, hca0, hca⟩` from `GlobalTheory.CompanionTheory.Growth.size_facts E a`. Take `⟨-, -, cb, hcb0, hcb⟩` from `GlobalTheory.CompanionTheory.Growth.size_facts E b`. Apply the tactic sequence `obtain ⟨bump, T, hT, hbump, hone⟩ := PositivityTheory.Rg.BcB.F.F0.bump_one (InfinitePlace E ⊕ InfinitePlace E) (Sum.elim (fun v => cas (UpperTheory.Zero.ConvolutionTheory.EB.chi l₁ v)) fun v => cas (UpperTheory.Zero.ConvolutionTheory.EB.chi l₂ v)) (fun i => by cases i <;> exact P …`. Take `⟨_, hKa⟩` from `PositivityTheory.RgBcC.wave_existence_speed_multiplicity.2.2.1 a`.
-
-Take `⟨_, hKb⟩` from `PositivityTheory.RgBcC.wave_existence_speed_multiplicity.2.2.1 b`. Set `Ma` to `UpperTheory.Zero.ConvolutionTheory.EB.Ml l₁`. Set `Mb` to `UpperTheory.Zero.ConvolutionTheory.EB.Ml l₂`. Conclude with `⟨{ μa := μa μb := μb ν := ν ha := ha hb := hb hν := hν hν' := hν' compat := hcomp c := max ca cb c_nonneg := le_max_of_le_left hca0 ca := fun g h => (hca g h).trans (by gcongr; exact le_max_left _ _) cb := fun g h => (hcb g h).trans (by gcongr; exact le_max_right _ _) bump := bum …`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Zero.ConvolutionTheory.EB.arEx :
     UpperTheory.Zero.ConvolutionTheory.EB.ArEx := by

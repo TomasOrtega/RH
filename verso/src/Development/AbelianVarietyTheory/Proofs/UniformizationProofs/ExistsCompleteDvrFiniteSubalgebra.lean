@@ -13,9 +13,9 @@ namespace CompleteFiniteExtension
 open IsLocalRing
 
 /- English proof (translation)
-Use `first`. Consider the case `(rename_i h_1 h_7; revert A h_1 I J hJ e he h_7; exact @_root_.GlobalTheory.PrecompleteOfPowLe.isPrecomplete_of_le_of_pow_le)`. Consider the case `exact @_root_.GlobalTheory.PrecompleteOfPowLe.isPrecomplete_of_le_of_pow_le`. Consider the case `exact _root_.GlobalTheory.PrecompleteOfPowLe.isPrecomplete_of_le_of_pow_le`. Consider the case `(apply _root_.GlobalTheory.PrecompleteOfPowLe.isPrecomplete_of_le_of_pow_le <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply _root_.GlobalTheory.PrecompleteOfPowLe.isPrecomplete_of_le_of_pow_le <;> assumption)`. Consider the case `(intros; apply @_root_.GlobalTheory.PrecompleteOfPowLe.isPrecomplete_of_le_of_pow_le <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.PrecompleteOfPowLe.isPrecomplete_of_le_of_pow_le ..)`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem isPrecomplete_of_le_of_pow_le {A : Type*} [CommRing A] {I J : Ideal A} (hJ : J ≤ I)
     {e : ℕ} (he : I ^ e ≤ J) [IsPrecomplete J A] : IsPrecomplete I A := by
@@ -29,9 +29,9 @@ theorem isPrecomplete_of_le_of_pow_le {A : Type*} [CommRing A] {I J : Ideal A} (
   | (intros; exact _root_.GlobalTheory.PrecompleteOfPowLe.isPrecomplete_of_le_of_pow_le ..)
 
 /- English proof (translation)
-Use `IsNoetherianRing.of_finite R S` as an intermediate fact. Use `ReciprocityTheory.ChartRestriction.G.T0.FiniteAlgebraLocalCompletion.isAdicComplete_finite_algebra (R := R) S` as an intermediate fact. Choose the witnesses or unpack the hypotheses as in `⟨e, he⟩ : ∃ e, maximalIdeal S ^ e ≤ (maximalIdeal R).map (algebraMap R S) := by`. Use `Ideal.exists_pow_le_of_le_radical_of_fg (fun b hb => ?_) (IsNoetherian.noetherian _)` and prove the remaining obligations. Take `⟨N, -, hN⟩` from `ReciprocityTheory.ChartRestriction.G.T0.FiniteAlgebraLocalCompletion.exists_pow_mem_map_maximalIdeal (R := R) S b fun n hn => eq_maximalIdeal hn ▸ hb`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨N, hN⟩`. Use `isPrecomplete_of_le_of_pow_le (ReciprocityTheory.ChartRestriction.G.T0.FiniteAlgebraLocalCompletion.map_maximalIdeal_le_maximal (R := R) S _ inferInstance) he` as an intermediate fact. Conclude with `⟨⟩`.
+Supply the required witnesses or components. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem isAdicComplete_of_finite_local (R S : Type*) [CommRing R] [IsLocalRing R]
     [IsNoetherianRing R] [IsAdicComplete (maximalIdeal R) R] [CommRing S] [IsLocalRing S]
@@ -50,15 +50,15 @@ theorem isAdicComplete_of_finite_local (R S : Type*) [CommRing R] [IsLocalRing R
 end CompleteFiniteExtension
 
 /- English proof (translation)
-Introduce `V _ _ _ _ _ F _ _ _ _ s`. Set `K` to `FractionRing V`. Set `_ : Algebra K F` to `FractionRing.liftAlgebra V F`. Establish `: IsScalarTower V K F` using `FractionRing.isScalarTower_liftAlgebra V F`. Establish `: Algebra.IsAlgebraic K F` using `(IsFractionRing.comap_isAlgebraic_iff (A := V) (K := K) (C := F)).mp inferInstance`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `L : IntermediateField K F` to `IntermediateField.adjoin K (s : Set F)`. Establish `: FiniteDimensional K L` using `IntermediateField.finiteDimensional_adjoin fun x _ => Algebra.IsIntegral.isIntegral x`. Set `f : L →ₐ[V] F` to `L.val.restrictScalars V`. Establish `hf : Function.Injective f` using `Subtype.val_injective`. Set `W : Subalgebra V F` to `(integralClosure V L).map f`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `e : integralClosure V L ≃ₐ[V] W` to `Subalgebra.equivMapOfInjective _ f hf`. Establish `: CharZero K` using `IsFractionRing.charZero_of_isFractionRing V`. Establish `hB : Module.Finite V (integralClosure V L)` using `IsIntegralClosure.finite V K L _`. Establish `hBd : IsDiscreteValuationRing (integralClosure V L)` using `ReciprocityTheory.ChartRestriction.G.T0.FiniteAlgebraLocalCompletion.cl_dvr V K L`. Establish `hfin : Module.Finite V W` using `Module.Finite.equiv e.toLinearEquiv`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hd : IsDiscreteValuationRing W` using `IsDiscreteValuationRing.RingEquivClass.isDiscreteValuationRing e`. Establish `hmem : ∀ x ∈ L, IsIntegral V x → x ∈ W` using `fun x hx hi => ⟨⟨x, hx⟩, (isIntegral_algHom_iff f hf).1 hi, rfl⟩`. Establish `hsL : ∀ x ∈ s, x ∈ L` using `fun x hx => IntermediateField.subset_adjoin K _ hx`. Use `⟨W, hd, CompleteFiniteExtension.isAdicComplete_of_finite_local V W, ReciprocityTheory.ChartRestriction.G.T0.FiniteAlgebraLocalCompletion.isAdicComplete_finite_algebra W, hfin, inferInstance, inferInstance, fun x hx => ?_, fun x hx => hmem x (hsL x hx)⟩` and prove the remaining obligations. Take `⟨y, hy, h⟩` from `(Algebra.IsAlgebraic.isAlgebraic (R := V) x).exists_integral_multiple`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨y • x, hmem _ ?_ h, algebraMap V F y, W.algebraMap_mem y, (map_ne_zero_iff _ (FaithfulSMul.algebraMap_injective V F)).2 hy, ?_⟩` and prove the remaining obligations. Rewrite using `[← algebraMap_smul K y x]`. Conclude with `L.smul_mem (hsL x hx)`. Rewrite using `[Algebra.smul_def, mul_comm]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_complete_dvr_finite_subalgebra :
     ∀ (V : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V]

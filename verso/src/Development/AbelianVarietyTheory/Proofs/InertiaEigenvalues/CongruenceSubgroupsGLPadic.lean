@@ -5,9 +5,9 @@ import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.MatrixMulEntry
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `i j`. Establish `hXY : X * Y - 1 = (X - 1) + (Y - 1) + (X - 1) * (Y - 1)`. Simplify using `only [sub_mul, mul_sub, mul_one, one_mul]`. Normalize the expressions using the abelian group laws. Establish `hp` using `GlobalTheory.T.norm_mul_apply_le_of_ultrametric E n (X - 1) (Y - 1) t t h0 h0 hX hY i j`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Establish an intermediate fact.
 
-Establish `htt : t * t ≤ t` using `by nlinarith`. Rewrite using `[hXY, Matrix.add_apply, Matrix.add_apply]`. Use `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le ?_ (hp.trans htt))` and prove the remaining obligations. Conclude with `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le (hX i j) (hY i j))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem norm_mul_sub_one_le_of_norm_sub_one_le {E : Type} [NormedField E] [IsUltrametricDist E]
     {n : Type} [Fintype n] [DecidableEq n] (X Y : Matrix n n E) (t : ℝ) (h0 : 0 ≤ t) (h1 : t ≤ 1)
@@ -23,13 +23,11 @@ theorem norm_mul_sub_one_le_of_norm_sub_one_le {E : Type} [NormedField E] [IsUlt
   exact (IsUltrametricDist.norm_add_le_max _ _).trans (max_le (hX i j) (hY i j))
 
 /- English proof (translation)
-Introduce `l _ n _ _`. Establish `hl : (1 : ℝ) < l` using `by exact_mod_cast (Fact.out : l.Prime).one_lt`. Establish `ht : ∀ k : ℕ, 0 ≤ (l : ℝ) ^ (-((k : ℤ) + 2)) ∧ (l : ℝ) ^ (-((k : ℤ) + 2)) < 1`. Introduce `k`. Use `⟨zpow_nonneg (by linarith) _, zpow_lt_one_of_neg₀ hl (by omega)⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun k => { carrier := {X | ∀ i j, ‖((X : Matrix n n ℚ_[l]) - 1) i j‖ ≤ (l : ℝ) ^ (-((k : ℤ) + 2))} one_mem' := by` and prove the remaining obligations. Introduce `i j`. Simplify using `using (ht k).1`. Use the proof step `mul_mem' := by`. Introduce `X Y hX hY`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [Set.mem_setOf_eq, Units.val_mul] at *`. Conclude with `norm_mul_sub_one_le_of_norm_sub_one_le _ _ _ (ht k).1 (ht k).2.le hX hY`. Use the proof step `inv_mem' := by`. Introduce `X hX`. Simplify using `only [Set.mem_setOf_eq] at *`.
-
-Conclude with `GlobalTheory.T.ultrametric_matrix_inv_near_one ℚ_[l] n (X : Matrix n n ℚ_[l]) ((X⁻¹ : GL n ℚ_[l]) : Matrix n n ℚ_[l]) _ (ht k).1 (ht k).2 (Units.inv_mul X) hX }, fun k X => Iff.rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem congruenceSubgroups_GL_padic : ∀ (l : ℕ) [Fact l.Prime] (n : Type) [Fintype n] [DecidableEq n],
     ∃ Γ : ℕ → Subgroup (GL n ℚ_[l]), ∀ k X, X ∈ Γ k ↔

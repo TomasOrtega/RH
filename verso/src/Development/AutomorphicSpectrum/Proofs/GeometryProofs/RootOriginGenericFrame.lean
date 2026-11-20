@@ -55,13 +55,13 @@ Both sides reduce to the same expression.
 @[simp] theorem pushHom_left (v : tEpsG x₁ ⟶ t₁.G) : (pushHom m h v).left = v.left ≫ m.φ := rfl
 
 /- English proof (translation)
-Set `T : Over X₁` to `tEpsG x₁`. Set `a : (T ⟶ t₁.G) → (Over.mk (T.hom ≫ f) ⟶ t₂.G)` to `fun w => Over.homMk (w.left ≫ m.φ) (by`. Establish `e` using `Over.w w`. Establish `w'` using `m.cart.1.w`. Use `show (w.left ≫ m.φ) ≫ t₂.G.hom = T.hom ≫ f`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Category.assoc, w', ← Category.assoc, e])`. Set `e : tEpsG x₂ ⟶ Over.mk (T.hom ≫ f)` to `Over.homMk (𝟙 _) (by`. Substitute `h` using the available equality. Simplify using `[T])`. Establish `h1` using `m.cart.2 T u v (a u) (a v) rfl rfl`.
+Introduce a local definition for the expression. Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : ∀ w, pushHom m h w = e ≫ a w` using `fun w => by`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Simplify using `[e, a]`. Rewrite using `[h2, h2, h2, ← MonObj.comp_mul]`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Simplify using `only [Over.comp_left]`. Rewrite using `[h1]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem pushHom_mul (u v : tEpsG x₁ ⟶ t₁.G) : pushHom m h (u * v) = pushHom m h u * pushHom m h v := by
   let T : Over X₁ := tEpsG x₁
@@ -84,7 +84,7 @@ theorem pushHom_mul (u v : tEpsG x₁ ⟶ t₁.G) : pushHom m h (u * v) = pushHo
   rfl
 
 /- English proof (translation)
-Use `pushHom_mul m h (1 : tEpsG x₁ ⟶ t₁.G) 1` as an intermediate fact. Rewrite `this` using `[_root_.mul_one]`. Conclude with `mul_eq_left.1 this.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pushHom_one : pushHom m h (1 : tEpsG x₁ ⟶ t₁.G) = 1 := by
   have := pushHom_mul m h (1 : tEpsG x₁ ⟶ t₁.G) 1
@@ -92,7 +92,7 @@ theorem pushHom_one : pushHom m h (1 : tEpsG x₁ ⟶ t₁.G) = 1 := by
   exact mul_eq_left.1 this.symm
 
 /- English proof (translation)
-Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Use `show (spMap (epsMul a) ≫ v.left) ≫ m.φ = spMap (epsMul a) ≫ v.left ≫ m.φ`. Rewrite using `[Category.assoc]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pushHom_smT (a : R) (v : tEpsG x₁ ⟶ t₁.G) : pushHom m h (GlobalTheory.FrameTangent.smT x₁ a v) = GlobalTheory.FrameTangent.smT x₂ a (pushHom m h v) := by
   apply Over.OverMorphism.ext
@@ -100,7 +100,7 @@ theorem pushHom_smT (a : R) (v : tEpsG x₁ ⟶ t₁.G) : pushHom m h (GlobalThe
   rw [Category.assoc]
 
 /- English proof (translation)
-Introduce `u v e`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Use `m.cart.1.hom_ext ?_ ?_` and prove the remaining obligations. Conclude with `congrArg (fun w => w.left) e`. Rewrite using `[Over.w u, Over.w v]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pushHom_injective : Function.Injective (pushHom (x₁ := x₁) m h) := by
   intro u v e
@@ -120,15 +120,15 @@ Both sides reduce to the same expression.
 @[simp] theorem push_left (v : TanM x₁ t₁.G) : (tv (push m h v)).left = (tv v).left ≫ m.φ := rfl
 
 /- English proof (translation)
-Introduce `u v e` and use `tv_injective (pushHom_injective m h (congrArg tv e))`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem push_injective : Function.Injective (push (x₁ := x₁) m h) := fun u v e =>
   tv_injective (pushHom_injective m h (congrArg tv e))
 
 /- English proof (translation)
-Introduce `w`. Establish `hw : (tv w).left ≫ t₂.G.hom = (spMap (algebraMap R (DualNumber R)) ≫ x₁) ≫ f`. Rewrite using `[Over.w (tv w), Category.assoc, h]`. Both sides reduce to the same expression. Set `v : tEpsG x₁ ⟶ t₁.G` to `Over.homMk (m.cart.1.lift (tv w).left _ hw) (IsPullback.lift_snd _ _ _ _)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Introduce a local definition for the expression.
 
-Establish `hv : pushHom m h v = tv w` using `Over.OverMorphism.ext (IsPullback.lift_fst _ _ _ _)`. Use `⟨mkT v (pushHom_injective m h ?_), tv_injective hv⟩` and prove the remaining obligations. Rewrite using `[pushHom_smT, hv, tv_zero', pushHom_one]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem push_surjective : Function.Surjective (push (x₁ := x₁) m h) := by
   intro w
@@ -141,7 +141,7 @@ theorem push_surjective : Function.Surjective (push (x₁ := x₁) m h) := by
   rw [pushHom_smT, hv, tv_zero', pushHom_one]
 
 /- English proof (translation)
-Apply `tv_injective` to reduce the goal to its premises. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Use `show ((tv v ≫ t₁.act.act a).left ≫ m.φ) = ((tv v).left ≫ m.φ) ≫ (t₂.act.act a).left`. Rewrite using `[Over.comp_left, Category.assoc, Category.assoc, m.act]`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem push_act (a : 𝓞 E) (v : TanM x₁ t₁.G) :
     push m h (actL t₁.act a v) = actL t₂.act a (push m h v) := by
@@ -159,7 +159,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {X : Sc
   (M : GlobalTheory.CompanionTheory.Ar.LieModel t.G ξ Li)
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.FrameTangent.smT_zero_ovT (t := t) (v := (M.pt e).left) ⟨Over.w (M.pt e), M.tan e⟩`.
+A detailed English derivation is pending.
 -/
 theorem lie_smT (e : Li) : GlobalTheory.FrameTangent.smT ξ 0 (M.pt e) = 1 :=
   GlobalTheory.FrameTangent.smT_zero_ovT (t := t) (v := (M.pt e).left) ⟨Over.w (M.pt e), M.tan e⟩
@@ -175,12 +175,12 @@ Both sides reduce to the same expression.
 @[simp] theorem tv_lieT (e : Li) : tv (lieT M e) = M.pt e := rfl
 
 /- English proof (translation)
-Introduce `_ _ h` and use `M.inj (congrArg tv h)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem lieT_injective : Function.Injective (lieT M) := fun _ _ h => M.inj (congrArg tv h)
 
 /- English proof (translation)
-The claim follows from `tv_injective (hρ a e)`.
+A detailed English derivation is pending.
 -/
 theorem lieT_act {ρ : 𝓞 E →+* Module.End Ω Li} (hρ : M.IsActOf t.act.act ρ) (a : 𝓞 E) (e : Li) :
     lieT M (ρ a e) = actL t.act a (lieT M e) :=
@@ -196,13 +196,13 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Da
   {Xo : Moduli D l} {c : Coeff l} {Ω : Type} [Field Ω] [Algebra c.F Ω]
 
 /- English proof (translation)
-Establish `ht : ∀ i, Formalism.L2.Pj.IsTanAt y.x (tv (W i)).left` using `fun i => GlobalTheory.FrameTangent.isTanAtG_of (t := Xo.univ.t) _ (tv_zero' _)`. Establish `hg : ∀ i, IsEigAt c σ (tv (W i)).left` using `fun i a => congrArg (fun w => (tv w).left) (he i a)`. Use `choose a ha _ using fun i => y.basis σ _ (ht i) (hg i)`. Establish `hs : ∀ i, ∑ j, a i j • GlobalTheory.Reg.ReframeEx.toM (y.tan σ j) = W i` using `fun i => tv_injective (Over.OverMorphism.ext ((GlobalTheory.Reg.ReframeEx.comb_iff (y.tan σ) _ _).1 (ha i)))`. Use `⟨Matrix.of fun j i => a i j, ?_, ha⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Matrix.isUnit_iff_isUnit_det, ← Matrix.mulVec_injective_iff_isUnit]`. Establish `key : ∀ p : Fin (D.mult σ) → Ω, ∑ i, p i • W i = ∑ j, ((Matrix.of fun j i => a i j).mulVec p) j • GlobalTheory.Reg.ReframeEx.toM (y.tan σ j)`. Introduce `p`. Repeatedly rewrite using `[← hs, Finset.smul_sum, smul_smul, Matrix.mulVec, dotProduct, Finset.sum_smul]`. Rewrite using `[Finset.sum_comm]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `[_root_.mul_comm]`. Introduce `p q hpq`. Apply `linearIndependent_iff_injective_fintypeLinearCombination.1 hW` to reduce the goal to its premises. Simplify using `only [Fintype.linearCombination_apply]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[key, key, hpq]`.
+A detailed English derivation is pending.
 -/
 theorem frame_matrix (y : FrPt Xo c Ω) (σ : E →+* ℂ) (W : Fin (D.mult σ) → TanM y.x Xo.univ.t.G)
     (hW : LinearIndependent Ω W)
@@ -229,13 +229,13 @@ theorem frame_matrix (y : FrPt Xo c Ω) (σ : E →+* ℂ) (W : Fin (D.mult σ) 
   rw [key, key, hpq]
 
 /- English proof (translation)
-Set `sO : (E →+* ℂ) → CMType H ⊕ CMType H` to `(labelEquiv H).symm`. Establish `hs : ∀ σ, labelC (sO σ) = σ` using `(labelEquiv H).apply_symm_apply`. Establish `hc : ∀ σ, D.mult σ = labelRk D (sO σ)` using `fun σ => by`. Rewrite using `[← mult_labelC D (sO σ), hs]`. Set `W : ∀ σ, Fin (D.mult σ) → TanM y.x Xo.univ.t.G` to `fun σ i => Φ (b (sO σ) (Fin.cast (hc σ) i))`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Establish `hg : ∀ σ, ∃ g : Matrix (Fin (D.mult σ)) (Fin (D.mult σ)) Ω, IsUnit g.det ∧ ∀ i, IsCombAt y.x (y.u σ) (fun j => g j i) (tv (W σ i)).left` using `fun σ => frame_matrix y σ (W σ) (((hb _).comp _ (Fin.cast_injective _)).map' Φ (LinearMap.ker_eq_bot.2 hΦ)) (fun i a => by`. Establish `e : embK c σ = labelEmb c (sO σ)` using `by rw [← embK_labelC, hs]`. Rewrite using `[e]`. Conclude with `he _ _ a)`. Use `choose g hu hcomb using hg`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨y', hx, hy⟩` from `GlobalTheory.Reg.ReframeEx.exists_reframe y g hu`. Use `⟨y', hx, fun s k => ?_⟩` and prove the remaining obligations. Establish `h3` using `GlobalTheory.Reg.ReframeEx.comb_unique (y.tan _) (hy (labelC s) (labelFin D s k)) (hcomb (labelC s) (labelFin D s k))`. Rewrite using `[h3]`. Establish `e : sO (labelC s) = s` using `(labelEquiv H).symm_apply_apply s`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `h4 : ∀ (s' : CMType H ⊕ CMType H) (_ : s' = s) (h : D.mult (labelC s) = labelRk D s'), b s' (Fin.cast h (labelFin D s k)) = b s k`. Introduce and unpack `_ rfl h`. Both sides reduce to the same expression. Use `show (tv (Φ (b (sO (labelC s)) (Fin.cast _ _)))).left = _`. Rewrite using `[h4 _ e]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_reframed (y : FrPt Xo c Ω) {V : Type} [AddCommGroup V] [Module Ω V]
     (Φ : V →ₗ[Ω] TanM y.x Xo.univ.t.G) (hΦ : Function.Injective Φ)
@@ -278,15 +278,13 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Da
   {K : Type} [Fintype K] {J : K → Type} {y : (Σ k, J k) → Ω}
 
 /- English proof (translation)
-Use `haveI := c.fin`. Use `haveI : NumberField c.F := {}`. Establish `hfl : (Scheme.stalkClosedPointTo 𝔐.ξ₀).hom.Flat` using `RingHom.Flat.of_bijective 𝔐.gen₀.bij`. Take `⟨v, hv⟩` from `GlobalTheory.TorRef.DomFine.exists_generic_point (𝓞 c.F) c.F Y.X (Xo.XF c) Y.s Y.jQ Y.flat Y.proj Y.jQ_open Y.jQ_dense 𝔐.ξ₀ hfl`. Use `letI := 𝔐.fn.toAlgebra`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `qq : FractionRing 𝔐.Ω₀ →+* Ω` to `IsFractionRing.lift (g := 𝔐.fn) 𝔐.fn.injective`. Establish `hq : qq.comp (algebraMap 𝔐.Ω₀ (FractionRing 𝔐.Ω₀)) = 𝔐.fn` using `RingHom.ext fun a => IsFractionRing.lift_algebraMap 𝔐.fn.injective a`. Establish `hz : (spMap qq ≫ v) ≫ Y.j = 𝔐.ξ ≫ 𝔐.f`. Establish `e` using `𝔐.fn_over`. Establish `e' : 𝔐.ξ ≫ 𝔐.f = spMap 𝔐.fn ≫ 𝔐.ξ₀` using `e`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e', ← hq, Category.assoc, Model.j, hv]`. Use `show _ = Spec.map _ ≫ _`. Rewrite using `[CommRingCat.ofHom_comp, Spec.map_comp, Category.assoc]`. Use `⟨spMap qq ≫ v, hz, ?_⟩` and prove the remaining obligations. Establish `hb0 : IsPreimmersion (spMap (algebraMap (𝓞 c.F) c.F))` using `IsPreimmersion.of_isLocalization (R := CommRingCat.of (𝓞 c.F)) (S := c.F) (nonZeroDivisors (𝓞 c.F))`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← cancel_mono (spMap (algebraMap (𝓞 c.F) c.F))]`. Establish `h1` using `𝔐.cst_over`. Establish `h2 : spMap 𝔐.cst ≫ spMap (algebraMap (𝓞 c.F) c.F) = spMap (𝔐.cst.comp (algebraMap (𝓞 c.F) c.F))` using `by show Spec.map _ ≫ Spec.map _ = Spec.map _`. Rewrite using `[← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Rewrite using `[h2, ← h1, ← Category.assoc 𝔐.ξ, ← hz, Model.j]`.
-
-Simplify using `only [Category.assoc]`. Rewrite using `[pullback.condition, ← Category.assoc Y.jQ, Y.jQ_over]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_pt (𝔐 : GlobalTheory.CompanionTheory.Ar.HodgeCpt Y S y) :
     ∃ z : Sp Ω ⟶ Xo.XF c, z ≫ Y.j = 𝔐.ξ ≫ 𝔐.f ∧ z ≫ pullback.snd _ _ = spMap 𝔐.cst := by
@@ -332,9 +330,9 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Da
   {Ω : Type} [Field Ω] {K : Type} [Fintype K] {J : K → Type} {y : (Σ k, J k) → Ω}
 
 /- English proof (translation)
-Use `letI := 𝔐.fn.toAlgebra`. Take `⟨cc, u, h1, -, -, -, -, -, h7, -⟩` from `Fl.generic`. Establish `hc : ∀ l', Fl.j (cc s l') ∈ 𝔐.Vgen s` using `fun l' => (Fl.V₀_mem s _).1 ((h1 s).2 ▸ Submodule.subset_span ⟨l', rfl⟩)`. Establish `hk : Fl.b s k ∈ GlobalTheory.CompanionTheory.Ar.flagStep Ω (Fl.b s) (k + 1)` using `Submodule.subset_span ⟨k, by simp, rfl⟩`. Rewrite `hk` using `[h7 s]`.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `(Submodule.span_le.2 ?_) hk` and prove the remaining obligations. Introduce and unpack `_ ⟨k', -, rfl⟩`. Conclude with `Submodule.sum_mem _ fun l' _ => Submodule.smul_mem _ _ (hc l')`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem flag_mem (𝔐 : GlobalTheory.CompanionTheory.Ar.HodgeCpt Y S y) (Fl : 𝔐.Flag) (s : CMType H ⊕ CMType H) (k : Fin (labelRk D s)) :
     Fl.b s k ∈ 𝔐.Vgen s := by
@@ -350,7 +348,7 @@ theorem flag_mem (𝔐 : GlobalTheory.CompanionTheory.Ar.HodgeCpt Y S y) (Fl : �
   exact Submodule.sum_mem _ fun l' _ => Submodule.smul_mem _ _ (hc l')
 
 /- English proof (translation)
-Use `letI := 𝔐.fn.toAlgebra`. Take `⟨cc, u, -, -, -, h4, -⟩` from `Fl.generic`. Conclude with `h4 s`.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem flag_indep (𝔐 : GlobalTheory.CompanionTheory.Ar.HodgeCpt Y S y) (Fl : 𝔐.Flag) (s : CMType H ⊕ CMType H) :
     LinearIndependent Ω (Fl.b s) := by
@@ -364,11 +362,9 @@ def lieEquiv (y₀ : FrPt Xo c Ω) : TanM (ptF y₀) Y.oF.t.G ≃ₗ[Ω] TanM (p
   LinearEquiv.ofBijective (push Y.m (x₁ := ptF y₀) rfl) ⟨push_injective _ _, push_surjective _ _⟩
 
 /- English proof (translation)
-Set `P` to `lieEquiv (Y := Y) y₀`. Establish `hP : ∀ (a : 𝓞 E) u, P.symm (actL Y.t.act a u) = actL Y.oF.t.act a (P.symm u)` using `fun a u => by`. Rewrite using `[LinearEquiv.symm_apply_eq]`. Use `show _ = push Y.m rfl _`. Rewrite using `[push_act]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `congrArg _ (P.apply_symm_apply u).symm`. Use `⟨(push Y.m0.toSABMap (ptF_fst y₀)) ∘ₗ P.symm.toLinearMap ∘ₗ (push m hz) ∘ₗ lieT M, (push_injective _ _).comp (P.symm.injective.comp ((push_injective _ _).comp (lieT_injective _))), fun a e => ?_, fun e => ⟨P.symm (push m hz (lieT M e)), ?_, rfl⟩⟩` and prove the remaining obligations. Establish `h1 : push m hz (lieT M (ρ a e)) = actL Y.t.act a (push m hz (lieT M e))`. Rewrite using `[lieT_act M hρ, push_act]`. Establish `h3 : P.symm (push m hz (lieT M (ρ a e))) = actL Y.oF.t.act a (P.symm (push m hz (lieT M e)))` using `(congrArg P.symm h1).trans (hP a _)`.
-
-Conclude with `(congrArg (push Y.m0.toSABMap (ptF_fst y₀)) h3).trans (push_act _ _ _ _)`. Conclude with `congrArg (fun v => (tv v).left) (P.apply_symm_apply (push m hz (lieT M e)))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_Q (y₀ : FrPt Xo c Ω) {X' : Scheme.{0}} {t' : SAB H X'} {f : X' ⟶ Y.X} (m : SABMap t' Y.t f)
     {ξ : Sp Ω ⟶ X'} (hz : ξ ≫ f = ptF y₀ ≫ Y.j) {Li : Type} [AddCommGroup Li] [Module Ω Li]
@@ -394,9 +390,9 @@ theorem exists_Q (y₀ : FrPt Xo c Ω) {X' : Scheme.{0}} {t' : SAB H X'} {f : X'
   · exact congrArg (fun v => (tv v).left) (P.apply_symm_apply (push m hz (lieT M e)))
 
 /- English proof (translation)
-Take `⟨Q, hQ, hact, hw⟩` from `exists_Q y₀ m hz.symm M ρ hρ`. Take `⟨y', hx', hu⟩` from `exists_reframed y₀ Q hQ b hb (fun s k a => by rw [← hact, he, map_smul])`. Establish `hF' : ptF y' = ptF y₀` using `pullback.hom_ext (by rw [ptF_fst, ptF_fst, hx']) (by rw [ptF_snd, ptF_snd])`. Use `⟨y', ?_, fun s i => ?_⟩` and prove the remaining obligations. Use `show ptF y' ≫ Y.j = _`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hF', hz]`. Take `⟨w, h1, h2⟩` from `hw (b s i)`. Establish `h3 : tanF Y y' (labelC s) (labelFin D s i) = (tv w).left` using `(eq_tanF Y y' _ _ (tv w).left (h2.symm.trans (hu s i).symm) (by rw [hF']; exact Over.w (tv w))).symm`. Use `show tanF Y y' (labelC s) (labelFin D s i) ≫ Y.m.φ = _`. Rewrite using `[h3, h1]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_frame_at (y₀ : FrPt Xo c Ω) {X' : Scheme.{0}} {t' : SAB H X'} {f : X' ⟶ Y.X} (m : SABMap t' Y.t f)
     {ξ : Sp Ω ⟶ X'} (hz : ptF y₀ ≫ Y.j = ξ ≫ f) {Li : Type} [AddCommGroup Li] [Module Ω Li]
@@ -425,13 +421,13 @@ variable {Y₁ : Model Xo c (algebraMap (𝓞 c.F) c.F)}
 omit [Field Ω] [Algebra c.F Ω] in
 
 /- English proof (translation)
-Use `letI := cstAlg Or`. Take `⟨z, hz, hzs⟩` from `exists_pt Or.𝔐`. Establish `hx : (z ≫ pullback.fst _ _) ≫ Xo.s = sOf c RM.Ω`. Rewrite using `[Category.assoc, pullback.condition, ← Category.assoc, hzs]`. Use `show Spec.map _ ≫ Spec.map _ = Spec.map _`.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Take `⟨y₀, h₀⟩` from `GlobalTheory.NonIntegralFrameExample.exists_framed _ hx`. Establish `hF : ptF y₀ = z`. Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[ptF_fst, h₀]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ptF_snd, hzs]`. Substitute `hF` using the available equality. Establish `he : ∀ s k (a : 𝓞 E), Or.𝔐.ρ a (Or.Fl.b s k) = algebraMap c.F RM.Ω (labelEmb c s a) • Or.Fl.b s k` using `fun s k a => by`. Establish `h1` using `(Submodule.mem_iInf _).1 (flag_mem Or.𝔐 Or.Fl s k) a`. Use `LinearMap.mem_ker.1 h1` as an intermediate fact.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `sub_eq_zero.1 this`. Take `⟨y', h1, h2⟩` from `exists_frame_at y₀ Or.𝔐.m hz Or.𝔐.M Or.𝔐.ρ Or.𝔐.act Or.Fl.b (flag_indep Or.𝔐 Or.Fl) he`. Conclude with `⟨⟨y', h1, h2, GlobalTheory.NonIntegralFrameExample.spread_holds Xo c _ y'⟩⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_genFrame (Or : RootOrigin Y₁ S RM Fx) : Nonempty (GenFrame Or) := by
   letI := cstAlg Or
@@ -466,7 +462,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.CompanionTheory.Ar.GenEx
 
 /- English proof (translation)
-Introduce `_ _ _ _ _ _ _ _ _ _ _ _ _ _ Or` and use `exists_genFrame Or`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem genFrame_exists : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (Y : Model Xo c (algebraMap (𝓞 c.F) c.F)) (SS : Finset ℕ) (RM : Top.RootModel (CMType H) (Dw.p + Dw.q)) (Sys : PB.AnSys (Top.dimFl (CMType H) (Dw.p + Dw.q)) (Option (RootIx Dw))) (Fx : FixedData Y Sys) (Or : RootOrigin Y SS RM Fx), Nonempty (Small.GenFrame Or) :=
   fun _ _ _ _ _ _ _ _ _ _ _ _ _ _ Or => exists_genFrame Or

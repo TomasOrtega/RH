@@ -15,9 +15,9 @@ variable {p : ℕ} [hp : Fact p.Prime] {L : Type*} [NontriviallyNormedField L] [
   [CharP L p] [PerfectRing L p] {Γ : Type*} [CommRing Γ] (T : TeichLift p L Γ)
 
 /- English proof (translation)
-Take `⟨w, hw⟩` from `T.mem_span_pow.1 (T.sub_partialSum_mem (T.num b) (T.den b))`. Use `⟨w, ?_⟩` and prove the remaining obligations. Rewrite using `[upperPart, hw, map_mul, map_pow]`. Combine the equalities or inequalities in the displayed calculation. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Expand and normalize the polynomial expressions, which then agree.
 
-Use `_ = algebraMap Γ T.B w := by rw [IsLocalization.Away.mul_invSelf, one_pow, mul_one]`.
+A detailed English derivation is pending.
 -/
 theorem upperPart_eq_algebraMap (b : T.B) : ∃ w : Γ, T.upperPart b = algebraMap Γ T.B w := by
   obtain ⟨w, hw⟩ := T.mem_span_pow.1 (T.sub_partialSum_mem (T.num b) (T.den b))
@@ -31,11 +31,11 @@ theorem upperPart_eq_algebraMap (b : T.B) : ∃ w : Γ, T.upperPart b = algebraM
 variable {T}
 
 /- English proof (translation)
-Establish `hr0 : 0 < r` using `h0.trans_le hle`. Use `gaussNorm_le fun n => ?_` and prove the remaining obligations. Rewrite using `[coeffB_lowerPart]`. Use `split_ifs with hn`. Establish `hq : 1 ≤ r / r'` using `(one_le_div h0).2 hle`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpow : (r / r') ^ n ≤ (r / r') ^ (-1 : ℤ)` using `zpow_le_zpow_right₀ hq (by omega)`. Rewrite `hpow` using `[zpow_neg_one, inv_div]`. Establish `h3 : r ^ n ≤ (r' / r) * r' ^ n`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[div_zpow, div_mul_cancel₀ _ (zpow_pos h0 n).ne']`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Use `_ ≤ (r' / r) * r' ^ n := mul_le_mul_of_nonneg_right hpow (zpow_pos h0 n).le`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[norm_zero, zero_mul]; exact mul_nonneg (by positivity) (gaussNorm_nonneg h0)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gaussNorm_lowerPart_le_mul {b : T.B} (hb : T.ConvAll b) {r r' : ℝ} (h0 : 0 < r')
     (hle : r' ≤ r) (h1 : r' < 1) :
@@ -59,9 +59,9 @@ theorem gaussNorm_lowerPart_le_mul {b : T.B} (hb : T.ConvAll b) {r r' : ℝ} (h0
   · rw [norm_zero, zero_mul]; exact mul_nonneg (by positivity) (gaussNorm_nonneg h0)
 
 /- English proof (translation)
-Use `set a : ℝ := η / (C + 1) with ha`. Establish `ha0 : 0 < a` using `by positivity`. Use `⟨min σ (a ^ γ⁻¹), lt_min hσ (Real.rpow_pos_of_pos ha0 _), min_le_left _ _, ?_⟩` and prove the remaining obligations. Establish `ht0 : 0 ≤ min σ (a ^ γ⁻¹)` using `(lt_min hσ (Real.rpow_pos_of_pos ha0 _)).le`. Establish `h1 : (min σ (a ^ γ⁻¹)) ^ γ ≤ a`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem exists_rpow_small {σ γ C η : ℝ} (hσ : 0 < σ) (hγ : 0 < γ) (hC : 0 ≤ C) (hη : 0 < η) :
     ∃ t, 0 < t ∧ t ≤ σ ∧ C * t ^ γ ≤ η := by
@@ -78,55 +78,47 @@ theorem exists_rpow_small {σ γ C η : ℝ} (hσ : 0 < σ) (hγ : 0 < γ) (hC :
     _ = η := by rw [ha]; field_simp
 
 /- English proof (translation)
-Establish `hσ0 : (0 : ℝ) < σ` using `σ.2.1`. Establish `hσ1 : (σ : ℝ) < 1` using `σ.2.2`. Use `set C' : ℝ := max C 0 with hC'`. Establish `hC'0 : 0 ≤ C'` using `le_max_right _ _`. Use `set y := T.ofAll _ (convAll_π_pow b) σ * x with hydef`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hy : ∀ s : Set.Ioc (0 : ℝ) σ, T.extNorm σ s y ≤ C' * (s : ℝ) ^ ((b : ℝ) - β)`. Introduce `s`. Establish `hs0 : (0 : ℝ) < s` using `s.2.1`. Rewrite using `[hydef, extNorm_mul, extNorm_ofAll, (gaussNorm_π_pow b hs0).2]`. Establish `hxs : T.extNorm σ s x ≤ C' * (s : ℝ) ^ (-β)` using `(hx s).trans (mul_le_mul_of_nonneg_right (le_max_left _ _) (Real.rpow_nonneg hs0.le _))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Introduce a local definition for the expression.
 
-Combine the equalities or inequalities in the displayed calculation. Set `r : ℕ → Set.Ioc (0 : ℝ) σ` to `fun j => ⟨σ / (j + 1), by positivity, div_le_self hσ0.le (by linarith [(Nat.cast_nonneg j : (0 : ℝ) ≤ j)])⟩`. Set `ε : ℕ → ℝ` to `fun j => 1 / (j + 1)`. Establish `hε0 : ∀ j, 0 < ε j` using `fun j => by positivity`. Use `choose d hd hdx using fun j : ℕ => exists_approx_convAll y (r j) (hε0 j)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `choose w hw using fun j => T.upperPart_eq_algebraMap (d j)`. Establish `hr_anti : ∀ {j k : ℕ}, j ≤ k → ((r k : ℝ)) ≤ r j` using `fun {j k} hjk => by show σ / ((k : ℝ) + 1) ≤ σ / ((j : ℝ) + 1)`. Conclude with `div_le_div_of_nonneg_left hσ0.le (by positivity) (by exact_mod_cast Nat.add_le_add_right hjk 1)`. Establish `hε_anti : ∀ {j k : ℕ}, j ≤ k → ε k ≤ ε j` using `fun {j k} hjk => by show 1 / ((k : ℝ) + 1) ≤ 1 / ((j : ℝ) + 1)`. Conclude with `div_le_div_of_nonneg_left zero_le_one (by positivity) (by exact_mod_cast Nat.add_le_add_right hjk 1)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hsmall : ∀ η > (0 : ℝ), ∀ t > (0 : ℝ), ∃ J, ∀ j ≥ J, (r j : ℝ) ≤ t ∧ ε j ≤ η`. Introduce `η hη t ht`. Take `⟨J, hJ⟩` from `exists_nat_gt (max (σ / t) (1 / η))`. Use `⟨J, fun j hj => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Use `(hr_anti hj).trans ?_ show σ / ((J : ℝ) + 1) ≤ t` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[div_le_iff₀ (by positivity)]`. Establish `: σ / t < J` using `lt_of_le_of_lt (le_max_left _ _) hJ`. Rewrite `this` using `[div_lt_iff₀ ht]`. Use the polynomial consequences of the given equalities and inequalities. Use `(hε_anti hj).trans ?_ show 1 / ((J : ℝ) + 1) ≤ η` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[div_le_iff₀ (by positivity)]`. Establish `: 1 / η < J` using `lt_of_le_of_lt (le_max_right _ _) hJ`. Rewrite `this` using `[div_lt_iff₀ hη]`. Use the polynomial consequences of the given equalities and inequalities. Establish `hdt : ∀ j (t : Set.Ioc (0 : ℝ) σ), (r j : ℝ) ≤ t → gaussNorm (T.coeffB (d j)) t ≤ max (C' * (t : ℝ) ^ ((b : ℝ) - β)) (ε j)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `j t ht`. Rewrite using `[← extNorm_ofAll (hd j) t]`. Establish `e : T.ofAll (d j) (hd j) σ = y + -(y - T.ofAll (d j) (hd j) σ)` using `by ring`. Rewrite using `[e]`. Use `(T.extNorm_add_le t _ _).trans (max_le_max (hy t) ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[extNorm_neg]`. Conclude with `hdx j t ht`. Establish `hA : ∀ η > (0 : ℝ), ∃ J, ∀ j ≥ J, gaussNorm (T.coeffB (T.lowerPart (d j))) σ ≤ η`. Introduce `η hη`. Establish `hγ : 0 < (b : ℝ) - β + 1` using `by linarith`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨t, ht0, htσ, htC⟩` from `exists_rpow_small hσ0 hγ (div_nonneg hC'0 hσ0.le) hη`. Take `⟨J, hJ⟩` from `hsmall η hη t ht0`. Use `⟨J, fun j hj => ?_⟩` and prove the remaining obligations. Take `⟨hrj, hεj⟩` from `hJ j hj`. Establish `h1` using `gaussNorm_lowerPart_le_mul (hd j) ht0 htσ (htσ.trans_lt hσ1)`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `h2` using `hdt j ⟨t, ht0, htσ⟩ hrj`. Use `h1.trans ?_` and prove the remaining obligations. Establish `htσ' : t / σ ≤ 1` using `(div_le_one hσ0).2 htσ`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_max_of_nonneg _ _ (by positivity)]`.
+Clear the denominators using the available nonvanishing facts. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `max_le_max (le_of_eq ?_) ?_` and prove the remaining obligations. Rewrite using `[Real.rpow_add ht0, Real.rpow_one]`. Clear the denominators using the available nonvanishing facts. Combine the equalities or inequalities in the displayed calculation. Use `_ ≤ η := max_le htC hεj`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hup : ∀ j, T.ConvAll (algebraMap Γ T.B (w j))` using `fun j => by`. Rewrite using `[← hw j]`. Conclude with `(hd j).upperPart`. Establish `hconv : ∀ j, ConvergesAt (T.zcoeff (w j)) σ` using `fun j => by`. Use `hup j σ hσ0 hσ1` as an intermediate fact.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite `this` using `[coeffB_algebraMap]`. Then use the resulting hypothesis. Establish `hsplit : ∀ j, T.ofAll (d j) (hd j) σ = T.ofAll _ (hd j).lowerPart σ + T.ofAll _ (hup j) σ`. Introduce `j`. Rewrite using `[← ofAll_add]`. Conclude with `ofAll_congr _ _ (by rw [← hw j, lowerPart_add_upperPart]) σ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hwsub : ∀ j k, gaussNorm (T.zcoeff (w j - w k)) σ = T.extNorm σ (topRad σ) (T.ofAll _ (hup j) σ - T.ofAll _ (hup k) σ)`. Introduce `j k`. Rewrite using `[← gaussNorm_ofAll_sub (hup j) (hup k), ← map_sub, coeffB_algebraMap]`. Both sides reduce to the same expression. Establish `hB : ∀ η > (0 : ℝ), ∃ N, ∀ j ≥ N, ∀ k ≥ N, gaussNorm (T.zcoeff (w j - w k)) σ ≤ η`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `η hη`. Take `⟨J1, hJ1⟩` from `hA η hη`. Take `⟨J2, hJ2⟩` from `hsmall η hη σ hσ0`. Use `⟨max J1 J2, fun j hj k hk => ?_⟩` and prove the remaining obligations. Rewrite using `[hwsub]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `e : T.ofAll _ (hup j) σ - T.ofAll _ (hup k) σ = -(y - T.ofAll (d j) (hd j) σ) + (y - T.ofAll (d k) (hd k) σ) + (T.ofAll _ (hd k).lowerPart σ - T.ofAll _ (hd j).lowerPart σ)`. Rewrite using `[hsplit j, hsplit k]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Establish `hlow : ∀ i ≥ J1, T.extNorm σ (topRad σ) (T.ofAll _ (hd i).lowerPart σ) ≤ η` using `fun i hi => by`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[extNorm_ofAll]`. Conclude with `hJ1 i hi`. Establish `happ : ∀ i ≥ J2, T.extNorm σ (topRad σ) (y - T.ofAll (d i) (hd i) σ) ≤ η` using `fun i hi => (hdx i (topRad σ) (hJ2 i hi).1).trans (hJ2 i hi).2`. Use `(extNorm_add_add_le_max _ _ _ _).trans (max_le ?_ (max_le ?_ ?_))` and prove the remaining obligations. Rewrite using `[extNorm_neg]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `happ j (le_of_max_le_right hj)`. Conclude with `happ k (le_of_max_le_right hk)`. Rewrite using `[sub_eq_add_neg]`. Use `(T.extNorm_add_le _ _ _).trans (max_le (hlow k (le_of_max_le_left hk)) ?_)` and prove the remaining obligations. Rewrite using `[extNorm_neg]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Conclude with `hlow j (le_of_max_le_left hj)`. Take `⟨-, hWc, hWlim⟩` from `T.exists_limit_gaussNorm hσ0 hσ1 hconv hB`. Use `set W := T.coeffLim w with hWdef`. Establish `hWE : algebraMap Γ T.B W ∈ T.Econ σ`. Rewrite using `[mem_Econ, coeffB_algebraMap]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hWc`. Use `⟨W, hWE, ?_⟩` and prove the remaining obligations. Rewrite using `[← sub_eq_zero, ← T.extNorm_eq_zero_iff (topRad σ)]`. Use `le_antisymm (le_of_forall_pos_le_add fun η hη => ?_) (T.extNorm_nonneg _ _)` and prove the remaining obligations. Rewrite using `[zero_add]`.
-
-Take `⟨J1, hJ1⟩` from `hA η hη`. Take `⟨J2, hJ2⟩` from `hsmall η hη σ hσ0`. Take `⟨J3, hJ3⟩` from `hWlim η hη`. Use `set j := max J1 (max J2 J3)`. Establish `e : y - ((⟨algebraMap Γ T.B W, hWE⟩ : T.Econ σ) : T.RobbaExt σ) = (y - T.ofAll (d j) (hd j) σ) + T.ofAll _ (hd j).lowerPart σ + (T.ofAll _ (hup j) σ - ((⟨algebraMap Γ T.B W, hWE⟩ : T.Econ σ) : T.RobbaExt σ))`.
-
-Rewrite using `[hsplit j]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Use `(extNorm_add_add_le_max _ _ _ _).trans (max_le ?_ (max_le ?_ ?_))` and prove the remaining obligations. Conclude with `(hdx j (topRad σ) (hJ2 j (le_max_of_le_right (le_max_left _ _))).1).trans (hJ2 j (le_max_of_le_right (le_max_left _ _))).2`.
-
-Rewrite using `[extNorm_ofAll]`. Conclude with `hJ1 j (le_max_left _ _)`. Rewrite using `[ofAll, ← Completion.coe_sub, extNorm_coe]`. Use `hJ3 j (le_max_of_le_right (le_max_right _ _))` as an intermediate fact. Rewrite `this` using `[← coeffB_algebraMap, map_sub]`.
-
-Conclude with `this`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_gamma_of_extNorm_le [CompleteSpace L] {σ : Set.Ioo (0 : ℝ) 1} (x : T.RobbaExt σ) {C β : ℝ} (b : ℕ)
     (hb : β - 1 < b) (hx : ∀ s : Set.Ioc (0 : ℝ) σ, T.extNorm σ s x ≤ C * (s : ℝ) ^ (-β)) :

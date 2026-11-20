@@ -12,11 +12,11 @@ open ReciprocityTheory.ChartRestriction.G.Geo (MRing IsMultiProjPrime)
 open GroundTheory.Heights₂.Heights (segreChartComponents mem_segreChartComponents)
 
 /- English proof (translation)
-Introduce `K _ _ ι _ W m σ i hW W' hW'`. Establish `hmin` using `mem_segreChartComponents.1 hW'`. Establish `: W'.IsPrime` using `hmin.1.1`. Set `φ : MvPolynomial (Σ k, ι k) ℂ →+* MvPolynomial (Fin m) ℂ` to `chartSubst σ i`. Establish `: (W'.comap φ).IsPrime` using `Ideal.comap_isPrime φ W'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hle : W.map (MvPolynomial.map (Int.castRingHom ℂ)) ≤ W'.comap φ`. Rewrite using `[Ideal.map_le_iff_le_comap]`. Introduce `f hf`. Use `show φ (MvPolynomial.map (Int.castRingHom ℂ) f) ∈ W'`. Establish `h` using `ChartDivisorComponents.chartSection_mem hW.2.1 σ i hf`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[chartSection_eq_chartSubst]`. Conclude with `hmin.1.2 h`. Take `⟨W'', hW'', hW''le⟩` from `Ideal.exists_minimalPrimes_le hle`. Conclude with `⟨W'', hW'', Ideal.map_le_iff_le_comap.2 hW''le⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem ChartConeComponent.proof : ChartConeComponent.Statement := by
   intro K _ _ ι _ W m σ i hW W' hW'

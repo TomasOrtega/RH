@@ -15,7 +15,7 @@ section Mat
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
 
 /- English proof (translation)
-Unfold `perFr`. Rewrite using `[dif_pos ρ.2, dif_pos hi]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem perFr_pos (X : ReciprocityTheory.ChartRestriction.G.FD.Data E r) (x : Frame X.Ψ r) (v : Fin r → E) (ρ : X.Ψ) (i : ℕ)
     (hi : X.p0 + i < r) :
@@ -24,7 +24,7 @@ theorem perFr_pos (X : ReciprocityTheory.ChartRestriction.G.FD.Data E r) (x : Fr
   rw [dif_pos ρ.2, dif_pos hi]
 
 /- English proof (translation)
-Take `⟨ρ1, hρ1⟩` from `ρ`. Simplify using `only at hρ`. Substitute `hρ` using the available equality. Unfold `perFr`. Rewrite using `[dif_neg hτ, dif_pos hρ1, dif_pos hi]`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Substitute using the available equality. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem perFr_neg (X : ReciprocityTheory.ChartRestriction.G.FD.Data E r) (x : Frame X.Ψ r) (v : Fin r → E) (τ : E →+* ℂ)
     (hτ : τ ∉ X.Ψ) (ρ : X.Ψ) (hρ : ρ.1 = conjEmb τ) (i : ℕ) (hi : X.p0 - 1 - i < r) :
@@ -36,7 +36,7 @@ theorem perFr_neg (X : ReciprocityTheory.ChartRestriction.G.FD.Data E r) (x : Fr
   rw [dif_neg hτ, dif_pos hρ1, dif_pos hi]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `a`. Simplify using `only [ReciprocityTheory.ChartRestriction.G.FD.Data.emb, Pi.smul_apply, Pi.single_apply, smul_eq_mul]`. Apply the tactic sequence `split_ifs <;> simp [Algebra.smul_def]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem emb_smul_single (τ : E →+* ℂ) (t : 𝓞 E) (c : Fin r) :
     ReciprocityTheory.ChartRestriction.G.FD.Data.emb τ (t • (Pi.single c 1 : Fin r → E)) = τ (t : E) • (Pi.single c 1 : Fin r → ℂ) := by
@@ -45,9 +45,9 @@ theorem emb_smul_single (τ : E →+* ℂ) (t : 𝓞 E) (c : Fin r) :
   split_ifs <;> simp [Algebra.smul_def]
 
 /- English proof (translation)
-Rewrite using `[emb_smul_single]`. Unfold `ReciprocityTheory.ChartRestriction.G.FD.hermC`. Rewrite using `[Finset.sum_mul]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_eq_single b]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Pi.smul_apply, Pi.single_eq_same, smul_eq_mul, mul_one]`. Introduce `b' _ hb'`. Simplify using `[Pi.single_apply, hb']`. Introduce `h`. Conclude with `absurd (Finset.mem_univ b) h`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem hermC_single (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E) (u : Fin r → ℂ) (t : 𝓞 E) (b : Fin r) :
     hermC τ G u (ReciprocityTheory.ChartRestriction.G.FD.Data.emb τ (t • (Pi.single b 1 : Fin r → E))) =
@@ -64,21 +64,21 @@ theorem hermC_single (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E) (u : Fin 
     exact absurd (Finset.mem_univ b) h
 
 /- English proof (translation)
-Simplify using `[Matrix.mulVec, dotProduct, Pi.single_apply, mul_comm]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mulVec_smul_single (A : Matrix (Fin r) (Fin r) ℂ) (s : ℂ) (b a : Fin r) :
     (A *ᵥ (s • (Pi.single b 1 : Fin r → ℂ))) a = s * A a b := by
   simp [Matrix.mulVec, dotProduct, Pi.single_apply, mul_comm]
 
 /- English proof (translation)
-Use extensionality with `x`. Simplify using `[ReciprocityTheory.ChartRestriction.G.Geo.Tor.conjEmb]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem conjEmb_conjEmb (τ : E →+* ℂ) : conjEmb (conjEmb τ) = τ := by
   ext x
   simp [ReciprocityTheory.ChartRestriction.G.Geo.Tor.conjEmb]
 
 /- English proof (translation)
-Use extensionality with `x`. Simplify using `[ReciprocityTheory.ChartRestriction.G.Geo.Tor.conjEmb, NumberField.ComplexEmbedding.conjugate_coe_eq]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem conjEmb_eq (τ : E →+* ℂ) : conjEmb τ = ComplexEmbedding.conjugate τ := by
   ext x

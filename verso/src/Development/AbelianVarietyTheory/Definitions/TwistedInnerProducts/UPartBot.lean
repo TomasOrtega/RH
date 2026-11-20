@@ -54,12 +54,12 @@ def slPart (W : Flag n a) : Subgroup (UJ ε) where
 variable {ε}
 
 /- English proof (translation)
-Introduce `_ h` and use `h.1`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem glPart_le (W : Flag n a) : glPart ε W ≤ leviOne ε W := fun _ h => h.1
 
 /- English proof (translation)
-The claim follows from `eq_top_iff.2 fun g _ y hy => by rw [(Submodule.mem_bot ℂ).1 hy]; simp`.
+A detailed English derivation is pending.
 -/
 theorem uPart_bot : uPart ε (⊥ : Submodule ℂ (Fin n → ℂ)) = ⊤ :=
   eq_top_iff.2 fun g _ y hy => by rw [(Submodule.mem_bot ℂ).1 hy]; simp

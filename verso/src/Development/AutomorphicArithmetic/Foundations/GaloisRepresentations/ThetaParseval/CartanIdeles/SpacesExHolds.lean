@@ -15,22 +15,22 @@ import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.Theta
 namespace UpperTheory.Gal.TP.Skew
 
 /- English proof (translation)
-The claim follows from `lineEx ordAut (ordLine conjAut (ideleStep conjAut) ordEmb invFun ordAut) memOrd memDual`.
+A detailed English derivation is pending.
 -/
 theorem lineEx_holds : LineEx := lineEx ordAut (ordLine conjAut (ideleStep conjAut) ordEmb invFun ordAut) memOrd memDual
 
 /- English proof (translation)
-The claim follows from `spacesEx_of lineEx_holds posEx stdHerm lineSkew`.
+A detailed English derivation is pending.
 -/
 theorem spacesEx_holds : SpacesEx := spacesEx_of lineEx_holds posEx stdHerm lineSkew
 
 /- English proof (translation)
-The claim follows from `baseEx`.
+A detailed English derivation is pending.
 -/
 theorem baseEx_holds : BaseEx := baseEx
 
 /- English proof (translation)
-The claim follows from `skewLine_of spacesEx_holds baseEx_holds`.
+A detailed English derivation is pending.
 -/
 theorem skewLine_holds : SkewLine := skewLine_of spacesEx_holds baseEx_holds
 

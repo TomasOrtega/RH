@@ -11,7 +11,7 @@ namespace Formalism.FourierDecayAlt.P.PTieUL
 open Formalism.REAL Formalism.QuantumDeterminants Formalism.FourierDecayAlt Formalism.FourierDecayAlt.Q Formalism.FourierDecayAlt.P.PBH Formalism.FourierDecayAlt.P.PTieB Formalism.FourierDecayAlt.P.PTieL
 
 /- English proof (translation)
-The claim follows from `| 0, _ => by obtain ⟨μ0, hμ0⟩ := Formalism.FourierDecayAlt.P.exists_zeta_normalized_haar P.k (P.r - 0) Wp Wq (T.bs 0) have h1 : B.IsHaarOn (Glev P.k P.r (Fin.last P.r)) μ := hD.2.1 obtain ⟨a, ha⟩ : ∃ a : ℝ≥0, μ = a • μ0 := by have hU := Formalism.FourierDecayAlt.P.opposite_weyl_s …`.
+A detailed English derivation is pending.
 -/
 theorem lev_indU {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
     [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq] (P : M.Par)
@@ -94,13 +94,13 @@ theorem lev_indU {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ W
       exact mrel_comp a b
 
 /- English proof (translation)
-Introduce `Wp Wq _ _ _ _ _ _ P z z' π π' X μ L st l0 Bs hD hz hz' hπ hπ' i`. Take `⟨T, h1, h2, h3, h4, hN⟩` from `Formalism.FourierDecayAlt.P.exists_normalized_tower P.k P.r Wp Wq Bs`. Establish `e1 : T.base.z = z` using `h1.trans hz`. Establish `e2 : T.base.z' = z'` using `h2.trans hz'`. Establish `e3 : T.base.π = π` using `h3.trans hπ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e4 : T.base.π' = π'` using `h4.trans hπ'`. Substitute `e1 e2 e3 e4` using the available equality. Take `⟨Xi, μi, Li, sti, κ, hκ, hDi, -, hall⟩` from `lev_indU P T hD.1 X μ L st l0 hD i.val (by omega)`. Use `⟨T, hN, rfl, rfl, rfl, rfl, T.bs i, Xi, μi, Li, sti, κ, rfl, hκ, hDi, fun c hc => ?_⟩` and prove the remaining obligations. Take `⟨Ti, hform, hpair, hsite, hqq⟩` from `hall c hc`.
+Establish an intermediate fact. Substitute using the available equality. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨Ti, ⟨hform, ⟨κ, hκ, hpair⟩, fun n hn Y => hqq n hn Y, fun S _ _ w => ⟨fun l => ?_, fun n hn => ?_, fun hw => ?_⟩⟩, hpair⟩` and prove the remaining obligations. Take `⟨a1, a2, a3⟩` from `hsite l`. Conclude with `arel_bT (σ := P5.site L ⟨l.val + i, by omega⟩) (σ' := P5.site Li l) a1 a2 a3 w`. Conclude with `arel_RRw (fun Y => hqq n hn Y) w`. Take `⟨⟨hA1, hA2, hA3, hA4⟩, hw2, hw3⟩` from `hw`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hq : sti.q = st.q` using `hDi.2.2.2.2.1.trans hD.2.2.2.2.1.symm`. Establish `hinv : sti.inv = st.inv` using `hDi.2.2.2.2.2.1.trans hD.2.2.2.2.2.1.symm`. Use `⟨⟨hA1, hA2, fun l hl => ?_, hA4⟩, hw2, hw3⟩` and prove the remaining obligations. Rewrite using `[hq, hinv]`. Conclude with `hA3 l hl`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem levTransportU : Formalism.FourierDecayAlt.P.PTie.LevTransportU := by
   intro Wp Wq _ _ _ _ _ _ P z z' π π' X μ L st l0 Bs hD hz hz' hπ hπ' i
@@ -130,7 +130,7 @@ end Formalism.FourierDecayAlt.P.PTieUL
 namespace Formalism.FourierDecayAlt.P
 
 /- English proof (translation)
-The claim follows from `PTieUL.levTransportU`.
+A detailed English derivation is pending.
 -/
 theorem level_transport_unitary : Formalism.FourierDecayAlt.P.PTie.LevTransportU := PTieUL.levTransportU
 

@@ -14,11 +14,11 @@ private def sandL (Z : HV E a) (x : Lie E a) : HV E a :=
   ⟨toL (Matrix.of x * Matrix.of Z.1 * star (Matrix.of x)), IsSelfAdjoint.conjugate Z.2 (Matrix.of x)⟩
 
 /- English proof (translation)
-Take `⟨π, hπ⟩` from `(HV E a).subtype.exists_leftInverse_of_injective (HV E a).ker_subtype`. Establish `h1 : ContDiff ℝ ∞ fun x : Lie E a => (sandL Z x).1`. Use `contDiff_pi.2 fun i => contDiff_pi.2 fun j => ?_` and prove the remaining obligations. Establish `e : (fun x : Lie E a => (sandL Z x).1 i j) = fun x : Lie E a => ∑ k, (∑ l, x i l * Z.1 l k) * star (x j k)`. Use function extensionality and compare the values at `x`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [sandL, Matrix.of_symm_apply, Matrix.mul_apply, Matrix.star_apply, Matrix.of_apply]`. Rewrite using `[e]`. Establish `hs : ContDiff ℝ ∞ fun z : Cinf E => star z` using `(starL' ℝ (A := Cinf E)).contDiff`. Use `ContDiff.sum fun k _ => ContDiff.mul (ContDiff.sum fun l _ => ContDiff.mul ?_ contDiff_const) (hs.comp ?_)` and prove the remaining obligations. Apply the tactic sequence `all_goals fun_prop`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e : sandL Z = fun x => LinearMap.toContinuousLinearMap π (sandL Z x).1`. Use function extensionality and compare the values at `fun x => (LinearMap.congr_fun hπ _).symm`. Rewrite using `[e]`. Conclude with `(LinearMap.toContinuousLinearMap π).contDiff.comp h1`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem contDiff_sandL (Z : HV E a) : ContDiff ℝ ∞ (sandL Z) := by
   obtain ⟨π, hπ⟩ := (HV E a).subtype.exists_leftInverse_of_injective (HV E a).ker_subtype
@@ -42,17 +42,15 @@ end UpperTheory.V.Lit.Dr
 open UpperTheory.V.Lit.Dr
 
 /- English proof (translation)
-Introduce `E _ _ _ a ho U Ξ q w X j g x hx`. Set `y` to `GeneralLinearGroup.map (pInf E) g`. Set `s : GL (Fin a) (Af E) ⧸ U` to `QuotientGroup.mk (GeneralLinearGroup.map (pFin E) g)`. Set `L : Lie E a →L[ℝ] Lie E a` to `LinearMap.toContinuousLinearMap (LinearMap.mulLeft ℝ y.val : Matrix (Fin a) (Fin a) (Cinf E) →ₗ[ℝ] Matrix (Fin a) (Fin a) (Cinf E))`. Establish `hL : ∀ u : GL (Fin a) (Cinf E), L (toL u.val) = toL (y * u).val` using `fun _ => rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hS : ∀ (Z : HV E a) (u : GL (Fin a) (Cinf E)), sandL Z (toL u.val) = sand u Z` using `fun _ _ => rfl`. Take `⟨u, hu⟩` from `hx`. Take `rfl : x = toL u.val` from `hu.symm`. Establish `hSL : ∀ Z : HV E a, ContDiffAt ℝ ∞ (fun z => sandL Z (L z)) (toL u.val)` using `fun Z => ((contDiff_sandL Z).comp L.contDiff).contDiffAt`. Establish `hw : ContDiffAt ℝ ∞ (fun z => w.1 s (sandL (hOne E a) (L z))) (toL u.val)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `ContDiffAt.comp (g := w.1 s) _ (Geo.contDiffAt_Om w s ?_) (hSL _)` and prove the remaining obligations. Rewrite using `[hL, hS]`. Conclude with `sand_mem_cone _ hOne_mem_cone`. Establish `hv'` using `applySmooth _ _ _ q _ (fun i z => (2 : ℝ) • sandL (hv (X i)) (L z)) _ hw fun i => (hSL _).const_smul _`. Establish `hm : ∀ k, ContDiffAt ℝ ∞ (fun z => extGL (fun t => Ξ.mat t⁻¹ j k) (L z)) (toL u.val)` using `fun k => by`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `ContDiffAt.comp (g := extGL fun t => Ξ.mat t⁻¹ j k) _ ?_ L.contDiff.contDiffAt` and prove the remaining obligations. Rewrite using `[hL]`. Conclude with `(matSmooth E a Ξ j k).2.contDiffAt (isOpen_invSet.mem_nhds (val_mem_invSet _))`. Establish `hall` using `ContDiffAt.sum (s := Finset.univ) fun k _ => (hm k).mul (contDiffAt_pi.1 hv' k)`. Use `(hall.congr_of_eventuallyEq ?_).contDiffWithinAt` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `filter_upwards [isOpen_invSet.mem_nhds (val_mem_invSet u)] with z hz`. Take `⟨v, hv⟩` from `hz`. Take `rfl : z = toL v.val` from `hv.symm`. Rewrite using `[chart_val]`. Simplify using `only [map_mul, pInf_infGL, pFin_infGL, mul_one, hL, hS, extGL_val]`.
-
-Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Lit.Dr.bwdSmooth :
     BwdSmooth := by

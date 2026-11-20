@@ -8,16 +8,16 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.CompanionTheory.Ar.Coc
 
 /- English proof (translation)
-The claim follows from `IsPullback.of_hasPullback A.hom B.hom`.
+A detailed English derivation is pending.
 -/
 theorem tensor_isPullback {X0 : Scheme.{0}} (A B : Over X0) :
     IsPullback (fst A B).left (snd A B).left A.hom B.hom :=
   IsPullback.of_hasPullback A.hom B.hom
 
 /- English proof (translation)
-Establish `hR` using `(tensor_isPullback (Tm x m) G).flip`. Establish `hO : IsPullback (secZ G x m ≫ (snd (Tm x m) G).left) (pullback.snd G.hom x) G.hom (spMap ((jetAug : Jet k Unit m →ₐ[k] k) : Jet k Unit m →+* k) ≫ (Tm x m).hom)`. Rewrite using `[secZ_snd]`. Establish `e : spMap ((jetAug : Jet k Unit m →ₐ[k] k) : Jet k Unit m →+* k) ≫ (Tm x m).hom = x` using `by dsimp`. Rewrite using `[← Category.assoc, spMap_comp_alg]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify by unfolding definitions.
 
-Simplify using `[spMap]`. Rewrite using `[e]`. Conclude with `IsPullback.of_hasPullback G.hom x`. Conclude with `IsPullback.of_right hO (secZ_fst G x m) hR`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem secZ_isPullback {X0 : Scheme.{0}} (G : Over X0) {k : Type} [Field k] (x : Sp k ⟶ X0) (m : ℕ) :
     IsPullback (secZ G x m) (pullback.snd G.hom x) (fst (Tm x m) G).left
@@ -35,7 +35,7 @@ theorem secZ_isPullback {X0 : Scheme.{0}} (G : Over X0) {k : Type} [Field k] (x 
   exact IsPullback.of_right hO (secZ_fst G x m) hR
 
 /- English proof (translation)
-Establish `hs : Surjective (spMap ((jetAug : Jet k Unit m →ₐ[k] k) : Jet k Unit m →+* k))` using `⟨fun q => ⟨IsLocalRing.closedPoint k, jet_pt m q _⟩⟩`. Use `MorphismProperty.of_isPullback (P := @Surjective) (secZ_isPullback G x m).flip hs` as an intermediate fact. Conclude with `this.surj`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem secZ_surj (X0 : Scheme.{0}) (G : Over X0) (k : Type) [Field k] (x : Sp k ⟶ X0) (m : ℕ) :
     Function.Surjective (secZ G x m).base := by

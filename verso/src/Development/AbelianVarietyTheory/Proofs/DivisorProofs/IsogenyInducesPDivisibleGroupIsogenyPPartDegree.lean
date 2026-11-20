@@ -22,27 +22,25 @@ namespace GlobalTheory.Dieu
 open GlobalTheory.AV.KerPart in
 
 /- English proof (translation)
-Introduce `p _ k _ A B G H t t' f hf`. Establish `hp : p.Prime` using `Fact.out`. Take `⟨N, g, hN, -, hfg, hgf⟩` from `GlobalTheory.AV.AbVar.exists_quasiInverse_isogeny k A B f hf`. Take `⟨a, m, hm, rfl⟩` from `Nat.exists_eq_pow_mul_and_not_dvd hN.ne' p hp.ne_one`. Establish `hm0 : 0 < m` using `Nat.pos_of_ne_zero fun h0 => hm (h0 ▸ dvd_zero p)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `kill : ∀ {T : Over (Sp k)} (x : T ⟶ A.X), x ≫ f.hom = 1 → x ^ (p ^ a * m) = 1` using `fun x hx => pow_eq_one_of_comp hfg x hx`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `hu : IsUnit (m : ℤ_[p])`. Assume the negation of the conclusion as `h`. Establish `h1 : (m : ℤ_[p]) ∈ nonunits ℤ_[p]` using `h`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Rewrite `h1` using `[PadicInt.mem_nonunits, PadicInt.norm_lt_one_iff_dvd]`. Take `⟨c, hc⟩` from `h1`. Establish `h2` using `congrArg PadicInt.toZMod hc`. Rewrite `h2` using `[map_natCast, map_mul, map_natCast, ZMod.natCast_self, zero_mul, ZMod.natCast_eq_zero_iff]`. Conclude with `hm h2`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨u, hu⟩` from `hu`. Establish `hs : (↑u⁻¹ : ℤ_[p]) * ((p ^ a * m : ℕ) : ℤ_[p]) = (p : ℤ_[p]) ^ a`. Use `push_cast`. Rewrite using `[← hu, mul_left_comm, Units.inv_mul, mul_one]`. Establish `eA : ((p ^ a * m) • 𝟙 A : A ⟶ A).hom = 𝟙 A.X ^ (p ^ a * m)` using `by simp`.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `eB : ((p ^ a * m) • 𝟙 B : B ⟶ B).hom = 𝟙 B.X ^ (p ^ a * m)` using `by simp`. Use `haveI : IsMonHom (𝟙 A.X ^ (p ^ a * m)) := eA ▸ inferInstance`. Use `haveI : IsMonHom (𝟙 B.X ^ (p ^ a * m)) := eB ▸ inferInstance`. Establish `h1 : t.map t' f.hom ≫ t'.map t g.hom = ((p ^ a * m : ℕ) : ℤ_[p]) • 𝟙 G`. Rewrite using `[← TorsionTower.map_comp, ← t.map_pow_id]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `t.map_congr t (by rw [← comp_hom, hfg, eA])`. Establish `h2 : t'.map t g.hom ≫ t.map t' f.hom = ((p ^ a * m : ℕ) : ℤ_[p]) • 𝟙 H`. Rewrite using `[← TorsionTower.map_comp, ← t'.map_pow_id]`. Conclude with `t'.map_congr t' (by rw [← comp_hom, hgf, eB])`. Use `⟨a, (↑u⁻¹ : ℤ_[p]) • t'.map t g.hom, ?_, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[Linear.comp_smul, h1, smul_smul, hs]`. Rewrite using `[Linear.smul_comp, h2, smul_smul, hs]`. Take `⟨H₀, _, _, i₀, hK₀, hdeg⟩` from `GlobalTheory.T.exists_isogeny_kernel_finite_algebra_finrank_eq_degree k A B f hf`. Take `⟨Hm, _, _, im, hKm, hpm⟩` from `GlobalTheory.T.exists_kernelPart_order_prime_to_p p k A B f m hm0 hm`. Establish `hcop : (p ^ a).Coprime m` using `(Nat.Coprime.pow_left a ((Nat.coprime_comm.1 ((Nat.Prime.coprime_iff_not_dvd hp).2 hm)).symm))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨H₁, _, _, i₁, hK₁, hrank⟩` from `GlobalTheory.T.kernelPart_mul_of_coprime_abelianVariety k A B f (p ^ a) m hcop _ _ _ _ (kerPow_kerPt t t' f a) hKm`. Establish `h01 : Module.finrank k H₁ = deg f` using `(finrank_eq_of_kerPow hK₁ hK₀ fun R _ _ x hx => iff_of_true (kill x hx) (pow_zero x)).trans hdeg`. Take `⟨j, -, hj⟩` from `(Nat.dvd_prime_pow hp).1 (finrank_quot_kerIdeal_dvd (t.map t' f.hom) a)`. Establish `hv : padicValNat p (deg f) = j`. Rewrite using `[← h01, hrank, hj, padicValNat.mul (pow_ne_zero _ hp.ne_zero) (fun h0 => hpm (by rw [h0]; exact dvd_zero p)), padicValNat.prime_pow, padicValNat.eq_zero_of_not_dvd hpm, add_zero]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨a, fun n hn => ?_⟩` and prove the remaining obligations. Rewrite using `[hv, ← hj]`. Use `finrank_eq_of_kerPow (kerPow_kerPt t t' f n) (kerPow_kerPt t t' f a) fun R _ _ x hx => ?_` and prove the remaining obligations. Use `⟨fun h => ?_, fun h => ?_⟩` and prove the remaining obligations. Establish `h2` using `pow_gcd_eq_one.2 ⟨h, kill x hx⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result.
 
-Establish `h3 : (p ^ n).gcd (p ^ a * m) = p ^ a`. Take `⟨c, rfl⟩` from `Nat.exists_eq_add_of_le hn`. Rewrite using `[pow_add, Nat.gcd_mul_left, (Nat.Coprime.pow_left c ((Nat.Prime.coprime_iff_not_dvd hp).2 hm)), mul_one]`. Rewrite `h2` using `[h3]`. Then use the resulting hypothesis. Take `⟨c, rfl⟩` from `Nat.exists_eq_add_of_le hn`.
-
-Rewrite using `[pow_add, pow_mul, h, one_pow]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isIsog_hasLogDeg_map : ∀ (p : ℕ) [Fact p.Prime] (k : Type) [Field k] (A B : AbVar k) (G H : PDivGroup p k) (t : G.TorsionTower A.X) (t' : H.TorsionTower B.X) (f : A ⟶ B), IsIsogeny f → IsIsog (t.map t' f.hom) ∧ HasLogDeg (t.map t' f.hom) (padicValNat p (deg f)) := by
   intro p _ k _ A B G H t t' f hf

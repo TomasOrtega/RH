@@ -13,11 +13,11 @@ variable {F E R : Type} [Field F] [Field E] [Algebra F E] [Field R] [Algebra F R
   (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (θ : R ⊗[F] E ≃ₐ[R] R × R)
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `rfl`. Conclude with `⟨rfl, rfl⟩`. Introduce and unpack `⟨h1, h2⟩`. Use function extensionality and compare the values at `i`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Apply function extensionality and compare values at an arbitrary argument.
 
-Apply `θ.injective` to reduce the goal to its premises. Establish `e1` using `congrFun h1 i`. Establish `e2` using `congrFun h2 i`. Rewrite `e1` using `[fst_apply_alt, fst_apply_alt]`. Rewrite `e2` using `[snd_apply_alt, snd_apply_alt]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `Prod.ext e1 e2`.
+A detailed English derivation is pending.
 -/
 theorem pr_eq_iff {m : Type} (v w : m → R ⊗[F] E) : v = w ↔ pr1 θ v = pr1 θ w ∧ pr2 θ v = pr2 θ w := by
   constructor
@@ -33,7 +33,7 @@ theorem pr_eq_iff {m : Type} (v w : m → R ⊗[F] E) : v = w ↔ pr1 θ v = pr1
     exact Prod.ext e1 e2
 
 /- English proof (translation)
-Rewrite using `[show (g ∈ Hsub R σ J P) ↔ g ∈ stabT R σ J (tupH P) from Iff.rfl, mem_stabT]`. Use `forall_congr' fun b => ?_` and prove the remaining obligations. Rewrite using `[pr_eq_iff θ]`. Simplify using `only [lin, Matrix.mulVecLin_apply, firstProj_split_mulVec, secondProj_split_mulVec]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem mem_Hsub_iff {r : ℕ} (P : Frame E n r) (g : HA R σ J) :
     g ∈ Hsub R σ J P ↔ ∀ b : Fin (r + 1 + r),

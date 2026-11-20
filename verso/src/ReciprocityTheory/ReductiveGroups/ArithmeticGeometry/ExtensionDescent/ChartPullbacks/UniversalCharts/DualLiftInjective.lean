@@ -15,7 +15,7 @@ variable {R : Type} [CommRing R]
 abbrev fstD (R : Type) [CommRing R] : DualNumber R →ₐ[R] R := TrivSqZeroExt.fstHom R R R
 
 /- English proof (translation)
-Rewrite using `[← le_bot_iff, pow_two, Ideal.mul_le]`. Introduce `a ha b hb`. Establish `ha0 : a.fst = 0` using `ha`. Establish `hb0 : b.fst = 0` using `hb`. Rewrite using `[Ideal.mem_bot, show a = TrivSqZeroExt.inr a.snd from TrivSqZeroExt.ext ha0 rfl, show b = TrivSqZeroExt.inr b.snd from TrivSqZeroExt.ext hb0 rfl, TrivSqZeroExt.inr_mul_inr]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem kerD_sq : (RingHom.ker (fstD R)) ^ (1 + 1) = ⊥ := by
   rw [← le_bot_iff, pow_two, Ideal.mul_le]
@@ -26,7 +26,7 @@ theorem kerD_sq : (RingHom.ker (fstD R)) ^ (1 + 1) = ⊥ := by
     show b = TrivSqZeroExt.inr b.snd from TrivSqZeroExt.ext hb0 rfl, TrivSqZeroExt.inr_mul_inr]
 
 /- English proof (translation)
-The claim follows from `TrivSqZeroExt.fst_inr R t`.
+A detailed English derivation is pending.
 -/
 theorem inr_mem_kerD (t : R) : (TrivSqZeroExt.inr t : DualNumber R) ∈ RingHom.ker (fstD R) :=
   TrivSqZeroExt.fst_inr R t
@@ -35,19 +35,19 @@ def dualLift {n : ℕ} (c : Fin n → R) : JetR R (Fin n) 1 →ₐ[R] DualNumber
   jetLift R (RingHom.ker (fstD R)) kerD_sq (fun j => TrivSqZeroExt.inr (c j)) (fun j => inr_mem_kerD _)
 
 /- English proof (translation)
-The claim follows from `jetLift_zR _ _ _ _ j`.
+A detailed English derivation is pending.
 -/
 theorem dualLift_zR {n : ℕ} (c : Fin n → R) (j : Fin n) : dualLift c (zR 1 j) = TrivSqZeroExt.inr (c j) :=
   jetLift_zR _ _ _ _ j
 
 /- English proof (translation)
-The claim follows from `jet_ext fun j => by rw [AlgHom.comp_apply, dualLift_zR, jetAug_zR]; exact inr_mem_kerD (c j)`.
+A detailed English derivation is pending.
 -/
 theorem fstD_comp_dualLift {n : ℕ} (c : Fin n → R) : (fstD R).comp (dualLift c) = jetAug R (Fin n) 1 :=
   jet_ext fun j => by rw [AlgHom.comp_apply, dualLift_zR, jetAug_zR]; exact inr_mem_kerD (c j)
 
 /- English proof (translation)
-The claim follows from `jet_ext fun j => by rw [dualLift_zR] apply TrivSqZeroExt.ext · rw [TrivSqZeroExt.fst_inr] have := AlgHom.congr_fun h (zR 1 j) rw [AlgHom.comp_apply, jetAug_zR] at this exact this · rfl`.
+A detailed English derivation is pending.
 -/
 theorem eq_dualLift {n : ℕ} (ψ : JetR R (Fin n) 1 →ₐ[R] DualNumber R) (h : (fstD R).comp ψ = jetAug R (Fin n) 1) :
     ψ = dualLift (fun j => (ψ (zR 1 j)).snd) :=
@@ -61,7 +61,7 @@ theorem eq_dualLift {n : ℕ} (ψ : JetR R (Fin n) 1 →ₐ[R] DualNumber R) (h 
     · rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `j`. Use `congrArg TrivSqZeroExt.snd (AlgHom.congr_fun h (zR 1 j))` as an intermediate fact. Rewrite `this` using `[dualLift_zR, dualLift_zR, TrivSqZeroExt.snd_inr, TrivSqZeroExt.snd_inr]`. Then use the resulting hypothesis.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem dualLift_injective {n : ℕ} {c c' : Fin n → R} (h : dualLift (R := R) c = dualLift c') : c = c' := by
   funext j
@@ -71,13 +71,13 @@ theorem dualLift_injective {n : ℕ} {c c' : Fin n → R} (h : dualLift (R := R)
 variable {G : Over (Spec (CommRingCat.of R))} [GrpObj G]
 
 /- English proof (translation)
-Rewrite using `[Hom.one_def, Hom.one_def, ← Category.assoc, toUnit_unique (f ≫ toUnit T) (toUnit T')]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem comp_one' {T T' : Over (Spec (CommRingCat.of R))} (f : T' ⟶ T) : f ≫ (1 : T ⟶ G) = 1 := by
   rw [Hom.one_def, Hom.one_def, ← Category.assoc, toUnit_unique (f ≫ toUnit T) (toUnit T')]
 
 /- English proof (translation)
-Establish `e : jetAug R (Fin n) m = (jetAug R (Fin n) 0).comp (jetZeroR R (Fin n) m)` using `(jet_ext fun j => by rw [AlgHom.comp_apply, jetAug_zR]; exact (jetAug_zR (R := R) 0 j).symm)`. Rewrite using `[e, ← spMap_comp, Category.assoc, hx.2.1 m, comp_one']`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem spMap_jetAug_alt {n : ℕ} {x : ∀ m : ℕ, sp (R₀ := R) (JetR R (Fin n) m) ⟶ G} (hx : IsUnivChart G n x)
     (m : ℕ) : spMap (jetAug R (Fin n) m) ≫ x m = 1 := by
@@ -91,7 +91,7 @@ variable {n : ℕ} {x : ∀ m : ℕ, sp (R₀ := R) (JetR R (Fin n) m) ⟶ G} (h
 
 include hx in
 /- English proof (translation)
-Rewrite using `[IsTan, ← Category.assoc, spMap_comp, fstD_comp_dualLift]`. Conclude with `spMap_jetAug_alt hx 1`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isTan_dualLift (c : Fin n → R) : IsTan (spMap (dualLift c) ≫ x 1) := by
   rw [IsTan, ← Category.assoc, spMap_comp, fstD_comp_dualLift]
@@ -99,9 +99,9 @@ theorem isTan_dualLift (c : Fin n → R) : IsTan (spMap (dualLift c) ≫ x 1) :=
 
 include hx in
 /- English proof (translation)
-Take `⟨ψ, ⟨h1, h2⟩, hu⟩` from `hx.2.2 (DualNumber R) (fstD R) 1 kerD_sq w hw`. Use `⟨fun j => (ψ (zR 1 j)).snd, ?_, ?_⟩` and prove the remaining obligations. Use `show w = spMap (dualLift (fun j => (ψ (zR 1 j)).snd)) ≫ x 1`. Rewrite using `[← eq_dualLift ψ h1]`. Conclude with `h2`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `c hc`. Use `hu (dualLift c) ⟨fstD_comp_dualLift c, hc⟩` as an intermediate fact. Rewrite using `[← this]`. Use function extensionality and compare the values at `j`. Rewrite using `[dualLift_zR, TrivSqZeroExt.snd_inr]`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_coord (w : sp (R₀ := R) (DualNumber R) ⟶ G) (hw : IsTan w) :
     ∃! c : Fin n → R, w = spMap (dualLift c) ≫ x 1 := by
@@ -120,14 +120,14 @@ def tcoord (w : sp (R₀ := R) (DualNumber R) ⟶ G) (hw : IsTan w) : Fin n → 
   (exists_coord hx w hw).exists.choose
 
 /- English proof (translation)
-The claim follows from `(exists_coord hx w hw).exists.choose_spec`.
+A detailed English derivation is pending.
 -/
 theorem tcoord_spec (w : sp (R₀ := R) (DualNumber R) ⟶ G) (hw : IsTan w) :
     w = spMap (dualLift (tcoord hx w hw)) ≫ x 1 :=
   (exists_coord hx w hw).exists.choose_spec
 
 /- English proof (translation)
-The claim follows from `(exists_coord hx w hw).unique (tcoord_spec hx w hw) hc`.
+A detailed English derivation is pending.
 -/
 theorem tcoord_eq (w : sp (R₀ := R) (DualNumber R) ⟶ G) (hw : IsTan w) (c : Fin n → R)
     (hc : w = spMap (dualLift c) ≫ x 1) : tcoord hx w hw = c :=

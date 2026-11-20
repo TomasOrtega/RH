@@ -5,15 +5,15 @@ open Polynomial Matrix
 namespace GlobalTheory.SimAlg
 
 /- English proof (translation)
-Establish `h0 : Q 0 = 0` using `by have := h 0 0; simp at this; omega`. Establish `h3 : ∀ x y z, Q (x + y + z) = Q (x + y) + Q (x + z) + Q (y + z) - Q x - Q y - Q z`. Introduce `x y z`. Establish `a1` using `h (x + y) z`. Establish `a2` using `h (x + z) y`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a3` using `h x (y - z)`. Establish `a4` using `h y z`. Rewrite `a2` using `[show x + z + y = x + y + z by abel]`. Rewrite `a3` using `[show x + (y - z) = x + y - z by abel, show x - (y - z) = x + z - y by abel]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Set `b0 : Λ →+ Λ →+ ℤ` to `AddMonoidHom.mk' (fun x => AddMonoidHom.mk' (fun y => Q (x + y) - Q x - Q y) (by intro y z; rw [← add_assoc, h3]; ring)) (by`. Introduce `x y`. Use extensionality with `z`. Simplify using `only [AddMonoidHom.mk'_apply, AddMonoidHom.add_apply]`. Rewrite using `[h3]`.
+Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `ring)`. Use `⟨LinearMap.mk₂ ℤ (fun x y => b0 x y) (by intros; simp) (by intros; simp) (by intros; simp) (by intros; simp), fun x y => rfl, fun x => ?_⟩` and prove the remaining obligations. Use `h x x` as an intermediate fact. Rewrite `this` using `[sub_self, h0]`. Express the relevant statement in the definitionally equal form `Q (x + x) - Q x - Q x = _`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers.
+A detailed English derivation is pending.
 -/
 theorem exists_polar {Λ : Type} [AddCommGroup Λ] (Q : Λ → ℤ)
     (h : ∀ x y, Q (x + y) + Q (x - y) = 2 * Q x + 2 * Q y) :
@@ -41,7 +41,7 @@ theorem exists_polar {Λ : Type} [AddCommGroup Λ] (Q : Λ → ℤ)
   omega
 
 /- English proof (translation)
-Introduce `h`. Take `⟨v, hv, hv'⟩` from `Matrix.exists_mulVec_eq_zero_iff.2 h`. Use `hG v hv` as an intermediate fact. Rewrite `this` using `[hv']`. Simplify using `at this`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem det_ne_zero {d : ℕ} (G : Matrix (Fin d) (Fin d) ℤ)
     (hG : ∀ c : Fin d → ℤ, c ≠ 0 → 0 < c ⬝ᵥ G *ᵥ c) : G.det ≠ 0 := by
@@ -52,17 +52,15 @@ theorem det_ne_zero {d : ℕ} (G : Matrix (Fin d) (Fin d) ℤ)
   simp at this
 
 /- English proof (translation)
-Establish `hZ : ∀ c : Fin d → ℤ, 0 ≤ ∑ i, ∑ j, c i * c j * G i j`. Introduce `c`. Distinguish the cases in `hc : c = 0`. Simplify using `[hc]`. Use `(hG c hc).le` as an intermediate fact.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [dotProduct, mulVec, Finset.mul_sum] at this`. Use `this.trans_eq ?_` and prove the remaining obligations. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring` and prove the remaining obligations. Establish `hQ : ∀ c : Fin d → ℚ, 0 ≤ ∑ i, ∑ j, (c i : ℝ) * (c j : ℝ) * (G i j : ℝ)`. Introduce `c`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨m, hm⟩` from `IsLocalization.exist_integer_multiples_of_finite (nonZeroDivisors ℤ) c`. Use `choose a ha using hm`. Establish `hm0 : ((m : ℤ) : ℝ) ≠ 0` using `by exact_mod_cast nonZeroDivisors.coe_ne_zero m`. Establish `ha' : ∀ i, (a i : ℝ) = ((m : ℤ) : ℝ) * (c i : ℝ)`. Introduce `i`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `ha i` as an intermediate fact. Simplify using `only [eq_intCast, zsmul_eq_mul, Submonoid.smul_def] at this`. Conclude with `this` after adjusting the coercions. Establish `h1 : (0 : ℝ) ≤ ∑ i, ∑ j, (a i : ℝ) * (a j : ℝ) * (G i j : ℝ)`. Conclude with `hZ a` after adjusting the coercions.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h2 : ∑ i, ∑ j, (a i : ℝ) * (a j : ℝ) * (G i j : ℝ) = ((m : ℤ) : ℝ) ^ 2 * ∑ i, ∑ j, (c i : ℝ) * (c j : ℝ) * (G i j : ℝ)`. Simplify using `only [Finset.mul_sum, ha']`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring` and prove the remaining obligations. Rewrite `h1` using `[h2]`. Conclude with `(mul_nonneg_iff_of_pos_left (by positivity)).1 h1`.
-
-Establish `hd : DenseRange (Pi.map fun (_ : Fin d) => ((↑) : ℚ → ℝ))` using `DenseRange.piMap fun _ => Rat.denseRange_cast`. Use `hd.induction_on (p := fun x : Fin d → ℝ => 0 ≤ ∑ i, ∑ j, x i * x j * (G i j : ℝ)) x ?_ hQ` and prove the remaining obligations. Conclude with `isClosed_le continuous_const (by fun_prop)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem real_nonneg {d : ℕ} (G : Matrix (Fin d) (Fin d) ℤ)
     (hG : ∀ c : Fin d → ℤ, c ≠ 0 → 0 < c ⬝ᵥ G *ᵥ c) (x : Fin d → ℝ) :
@@ -99,13 +97,13 @@ theorem real_nonneg {d : ℕ} (G : Matrix (Fin d) (Fin d) ℤ)
   exact isClosed_le continuous_const (by fun_prop)
 
 /- English proof (translation)
-Use `set M : Matrix (Fin d) (Fin d) ℝ := G.map (Int.castRingHom ℝ) with hM`. Establish `key : ∀ y : Fin d → ℝ, star y ⬝ᵥ M *ᵥ y = ∑ i, ∑ j, y i * y j * (G i j : ℝ)`. Introduce `y`. Simplify using `only [dotProduct, mulVec, Finset.mul_sum, hM]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish `hp : M.PosSemidef`. Use `Matrix.PosSemidef.of_dotProduct_mulVec_nonneg ?_ fun y => ?_` and prove the remaining obligations. Use extensionality with `i j`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `[hM, hs i j]`. Rewrite using `[key]`. Conclude with `real_nonneg G hG y`. Establish `h0 : M *ᵥ x = 0` using `(hp.dotProduct_mulVec_zero_iff x).1 (by rw [key, hx])`. Assume the negation of the conclusion as `hne`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `: M.det = 0` using `Matrix.exists_mulVec_eq_zero_iff.1 ⟨x, hne, h0⟩`. Rewrite `this` using `[hM, ← RingHom.mapMatrix_apply, ← RingHom.map_det]`. Conclude with `det_ne_zero G hG (by simpa using this)`.
+A detailed English derivation is pending.
 -/
 theorem real_pos {d : ℕ} (G : Matrix (Fin d) (Fin d) ℤ) (hs : ∀ i j, G i j = G j i)
     (hG : ∀ c : Fin d → ℤ, c ≠ 0 → 0 < c ⬝ᵥ G *ᵥ c) (x : Fin d → ℝ)
@@ -127,11 +125,11 @@ theorem real_pos {d : ℕ} (G : Matrix (Fin d) (Fin d) ℤ) (hs : ∀ i j, G i j
   exact det_ne_zero G hG (by simpa using this)
 
 /- English proof (translation)
-Establish `h` using `congrArg Complex.re hx`. Establish `h1` using `real_nonneg G hG fun i => (x i).re`. Establish `h2` using `real_nonneg G hG fun i => (x i).im`. Establish `h3 : (∑ i, ∑ j, x i * (starRingEnd ℂ) (x j) * (G i j : ℂ)).re = ∑ i, ∑ j, (x i).re * (x j).re * (G i j : ℝ) + ∑ i, ∑ j, (x i).im * (x j).im * (G i j : ℝ)`. Simplify using `only [Complex.re_sum, ← Finset.sum_add_distrib]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite `h` using `[h3, Complex.zero_re]`. Establish `e1` using `real_pos G hs hG (fun i => (x i).re) (by linarith)`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `e2` using `real_pos G hs hG (fun i => (x i).im) (by linarith)`. Use extensionality with `i`. Conclude with `Complex.ext (congrFun e1 i) (congrFun e2 i)`.
+Establish an intermediate fact. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem complex_pos {d : ℕ} (G : Matrix (Fin d) (Fin d) ℤ) (hs : ∀ i j, G i j = G j i)
     (hG : ∀ c : Fin d → ℤ, c ≠ 0 → 0 < c ⬝ᵥ G *ᵥ c) (x : Fin d → ℂ)
@@ -151,11 +149,11 @@ theorem complex_pos {d : ℕ} (G : Matrix (Fin d) (Fin d) ℤ) (hs : ∀ i j, G 
   exact Complex.ext (congrFun e1 i) (congrFun e2 i)
 
 /- English proof (translation)
-Establish `h1 : aeval φ (∑ i : Fin d, C (c i) * X ^ (i : ℕ)) e = ∑ i : Fin d, c i • (φ ^ (i : ℕ)) e`. Simplify using `[map_sum, LinearMap.sum_apply, Module.End.intCast_apply]`. Establish `h2 : (∑ i : Fin d, C (c i) * X ^ (i : ℕ) : ℤ[X]) ≠ 0`. Introduce `h`. Apply `hc` to reduce the goal to its premises.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Use extensionality with `k`. Use `congrArg (fun p : ℤ[X] => p.coeff k) h` as an intermediate fact. Simplify using `only [finset_sum_coeff, coeff_C_mul_X_pow, coeff_zero, Fin.val_inj] at this`. Simplify using `using this`. Establish `h3` using `hb _ (hd _ h2 (degree_sum_fin_lt c))`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Rewrite `h3` using `[h1]`. Use `h3.trans_eq ?_` and prove the remaining obligations. Simplify using `only [map_sum, LinearMap.sum_apply, map_smul, LinearMap.smul_apply, dotProduct, mulVec, Finset.mul_sum, Matrix.of_apply, smul_eq_mul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem gram_pos {Λ : Type} [AddCommGroup Λ] (b : Λ →ₗ[ℤ] Λ →ₗ[ℤ] ℤ)
     (hb : ∀ x, x ≠ 0 → 0 < b x x) (φ : Module.End ℤ Λ) (e : Λ) (d : ℕ)
@@ -179,15 +177,15 @@ theorem gram_pos {Λ : Type} [AddCommGroup Λ] (b : Λ →ₗ[ℤ] Λ →ₗ[ℤ
   refine Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Use `push Not at hne`. Use `set G : Matrix (Fin (r + 1)) (Fin (r + 1)) ℤ := Matrix.of fun i j => b ((φ ^ (i : ℕ)) e) ((φ ^ (j : ℕ)) e) with hG`. Establish `hD : G.det ≠ 0` using `det_ne_zero G (gram_pos b hb φ e (r + 1) fun P hP _ => hne P hP)`. Take `⟨χ, y, hm, hr, hy⟩` from `h G.det.natAbs`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `set n := G.det.natAbs with hn`. Establish `h1 : aeval φ χ e = ∑ i : Fin (r + 1), χ.coeff i • (φ ^ (i : ℕ)) e`. Rewrite using `[aeval_eq_sum_range, hr, Finset.sum_range]`. Simplify using `[LinearMap.sum_apply]`. Establish `h2 : G *ᵥ (fun i => χ.coeff i) = ((l : ℤ) ^ n) • fun i : Fin (r + 1) => b ((φ ^ (i : ℕ)) e) y`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `i`. Establish `: b ((φ ^ (i : ℕ)) e) (aeval φ χ e) = (l : ℤ) ^ n * b ((φ ^ (i : ℕ)) e) y`. Rewrite using `[hy, map_nsmul]`. Simplify using the standard rewrite rules. Rewrite using `[Pi.smul_apply, smul_eq_mul, ← this, h1]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[mulVec, dotProduct, hG, mul_comm]`. Establish `h3` using `congrArg (fun v => (G.adjugate *ᵥ v) (Fin.last r)) h2`. Simplify using `only [mulVec_mulVec, adjugate_mul, smul_mulVec, one_mulVec, mulVec_smul, Pi.smul_apply, smul_eq_mul, Fin.val_last] at h3`. Establish `hc : χ.coeff r = 1` using `by rw [← hr]; exact hm`. Rewrite `h3` using `[hc, mul_one]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h4 : l ^ n ∣ n`. Establish `: ((l ^ n : ℕ) : ℤ) ∣ G.det` using `⟨_, by push_cast; exact h3⟩`. Conclude with `Int.natCast_dvd.1 this`. Establish `h5` using `Nat.le_of_dvd (Int.natAbs_pos.2 hD) h4`. Conclude with `absurd (Nat.lt_pow_self (n := n) (by omega : 1 < l)) (not_lt.2 h5)`.
+A detailed English derivation is pending.
 -/
 theorem exists_ann {Λ : Type} [AddCommGroup Λ] (b : Λ →ₗ[ℤ] Λ →ₗ[ℤ] ℤ)
     (hb : ∀ x, x ≠ 0 → 0 < b x x) (φ : Module.End ℤ Λ) (e : Λ) (l r : ℕ) (hl : 2 ≤ l)
@@ -224,7 +222,7 @@ noncomputable def form (g : ℕ → ℕ → ℤ) : ℂ[X] →ₗ[ℂ] ℂ[X] →
   (basisMonomials ℂ).constr ℂ fun i => (basisMonomials ℂ).constr ℂ fun j => (g i j : ℂ)
 
 /- English proof (translation)
-Establish `h : ∀ k, (X ^ k : ℂ[X]) = basisMonomials ℂ k` using `fun k => by`. Simplify using `[monomial_one_right_eq_X_pow]`. Rewrite using `[form, h, h, Module.Basis.constr_basis, Module.Basis.constr_basis]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem form_pow (g : ℕ → ℕ → ℤ) (i j : ℕ) : form g (X ^ i) (X ^ j) = g i j := by
   have h : ∀ k, (X ^ k : ℂ[X]) = basisMonomials ℂ k := fun k => by
@@ -232,7 +230,7 @@ theorem form_pow (g : ℕ → ℕ → ℤ) (i j : ℕ) : form g (X ^ i) (X ^ j) 
   rw [form, h, h, Module.Basis.constr_basis, Module.Basis.constr_basis]
 
 /- English proof (translation)
-Use `conv_lhs => rw [f.as_sum_range' d hf, h.as_sum_range' d hh]`. Simplify using `only [Finset.sum_range, ← smul_X_eq_monomial, map_sum, LinearMap.sum_apply, map_smul, LinearMap.smul_apply, form_pow, smul_eq_mul, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem form_sum (g : ℕ → ℕ → ℤ) (d : ℕ) (f h : ℂ[X]) (hf : f.natDegree < d) (hh : h.natDegree < d) :
     form g f h = ∑ i : Fin d, ∑ j : Fin d, f.coeff i * h.coeff j * (g i j : ℂ) := by
@@ -243,9 +241,9 @@ theorem form_sum (g : ℕ → ℕ → ℤ) (d : ℕ) (f h : ℂ[X]) (hf : f.natD
   refine Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring
 
 /- English proof (translation)
-Proceed by induction on `f using Polynomial.induction_on' with`. Consider the case `add p q hp hq => simp [mul_add, hp, hq]`. Consider the case `monomial i a`. Proceed by induction on `h using Polynomial.induction_on' with`. Consider the case `add p q hp hq => simp only [mul_add, map_add, hp, hq]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Proceed by induction. Treat this case separately.
 
-Consider the case `monomial j c`. Simplify using `only [← smul_X_eq_monomial, mul_smul_comm, ← pow_succ', map_smul, LinearMap.smul_apply, form_pow, hg, smul_eq_mul]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Treat this case separately. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem form_shift (g : ℕ → ℕ → ℤ) (q : ℤ) (hg : ∀ i j, g (i + 1) (j + 1) = q * g i j)
     (f h : ℂ[X]) : form g (X * f) (X * h) = q * form g f h := by
@@ -260,7 +258,7 @@ theorem form_shift (g : ℕ → ℕ → ℤ) (q : ℤ) (hg : ∀ i j, g (i + 1) 
       push_cast; ring
 
 /- English proof (translation)
-Use `set d := max f.natDegree h.natDegree + 1`. Rewrite using `[form_sum g d f h (by omega) (by omega), form_sum g d h f (by omega) (by omega), Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by rw [hg]; ring` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem form_symm (g : ℕ → ℕ → ℤ) (hg : ∀ i j, g i j = g j i)
     (f h : ℂ[X]) : form g f h = form g h f := by
@@ -270,11 +268,11 @@ theorem form_symm (g : ℕ → ℕ → ℤ) (hg : ∀ i j, g i j = g j i)
   refine Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by rw [hg]; ring
 
 /- English proof (translation)
-Establish `key : ∀ (P : ℤ[X]) (j : ℕ), form (fun i j => b ((φ ^ i) e) ((φ ^ j) e)) (P.map (Int.castRingHom ℂ)) (X ^ j) = (b (aeval φ P e) ((φ ^ j) e) : ℤ)`. Introduce `P j`. Proceed by induction on `P using Polynomial.induction_on' with`. Consider the case `add p q hp hq => simp [hp, hq]`. Consider the case `monomial i a`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Rewrite using `[Polynomial.map_monomial, ← smul_X_eq_monomial, ← smul_X_eq_monomial]`. Simplify using `only [map_smul, LinearMap.smul_apply, form_pow, map_pow, aeval_X, smul_eq_mul]`. Simplify using the standard rewrite rules. Proceed by induction on `h using Polynomial.induction_on' with`. Consider the case `add p q hp hq => simp [hp, hq]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Proceed by induction. Treat this case separately.
 
-Consider the case `monomial j c => rw [← smul_X_eq_monomial, map_smul, key, hP]`. Simplify using the standard rewrite rules.
+Treat this case separately. Simplify using the standard rewrite rules.
 -/
 theorem form_ann {Λ : Type} [AddCommGroup Λ] (b : Λ →ₗ[ℤ] Λ →ₗ[ℤ] ℤ)
     (φ : Module.End ℤ Λ) (e : Λ) (P : ℤ[X]) (hP : aeval φ P e = 0) (h : ℂ[X]) :
@@ -293,31 +291,29 @@ theorem form_ann {Λ : Type} [AddCommGroup Λ] (b : Λ →ₗ[ℤ] Λ →ₗ[ℤ
   | monomial j c => rw [← smul_X_eq_monomial, map_smul, key, hP]; simp
 
 /- English proof (translation)
-Introduce `Λ _ Q φ e q l r hl hpar h0 hdef hφ hχ`. Take `⟨b, hb, hbb⟩` from `exists_polar Q hpar`. Establish `hpos : ∀ x, x ≠ 0 → 0 < b x x`. Introduce `x hx`. Use `h0 x` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h' : Q x ≠ 0` using `fun h => hx (hdef x h)`. Rewrite using `[hbb]`. Use linear arithmetic over natural numbers and integers. Take `⟨P₀, hP₀, hP₀'⟩` from `exists_ann b hpos φ e l r hl hχ`. Establish `hex : ∃ d : ℕ, ∃ P : ℤ[X], P ≠ 0 ∧ aeval φ P e = 0 ∧ P.natDegree = d` using `⟨_, P₀, hP₀, hP₀', rfl⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨P, hP, hPe, hPd⟩` from `Nat.find_spec hex`. Use `set d := Nat.find hex with hd`. Establish `hmin : ∀ R : ℤ[X], R ≠ 0 → R.degree < d → aeval φ R e ≠ 0`. Introduce `R hR hRd hRe`. Conclude with `Nat.find_min hex ((natDegree_lt_iff_degree_lt hR).2 hRd) ⟨R, hR, hRe, rfl⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨P, hP, hPe, fun β hβ => ?_⟩` and prove the remaining obligations. Use `set g : ℕ → ℕ → ℤ := fun i j => b ((φ ^ i) e) ((φ ^ j) e) with hg`. Establish `hsymm : ∀ i j, g i j = g j i`. Introduce `i j`. Simplify using `only [hg, hb]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Rewrite using `[add_comm]`. Expand and normalize the polynomial expressions, which then agree. Establish `hshift : ∀ i j, g (i + 1) (j + 1) = (q : ℤ) * g i j`. Introduce `i j`. Simplify using `only [hg, hb, pow_succ', Module.End.mul_apply, ← map_add, hφ]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Use `set Pc := P.map (Int.castRingHom ℂ) with hPc`. Establish `hinj : Function.Injective (Int.castRingHom ℂ)` using `Int.cast_injective`. Establish `hPc0 : Pc ≠ 0` using `(Polynomial.map_ne_zero_iff hinj).2 hP`. Establish `hPcd : Pc.natDegree = d` using `by rw [hPc, natDegree_map_eq_of_injective hinj, hPd]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hroot : Pc.IsRoot β`. Rewrite using `[IsRoot, hPc, eval_map]`. Conclude with `hβ`. Take `⟨f, hf⟩` from `dvd_iff_isRoot.2 hroot`. Establish `hf0 : f ≠ 0` using `by rintro rfl; simp [hf] at hPc0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfd : f.natDegree < d`. Rewrite using `[← hPcd, hf, natDegree_mul (X_sub_C_ne_zero β) hf0, natDegree_X_sub_C]`. Use linear arithmetic over natural numbers and integers. Use `set f' := f.map (starRingEnd ℂ) with hf'`. Establish `hf'd : f'.natDegree < d` using `lt_of_le_of_lt natDegree_map_le hfd`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hconj : Pc = (X - C ((starRingEnd ℂ) β)) * f'`. Establish `: Pc.map (starRingEnd ℂ) = Pc`. Rewrite using `[hPc, Polynomial.map_map]`. Use `congr 1`. Conclude with `RingHom.ext_int _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← this, hf]`. Simplify using `[hf']`. Establish `e1 : X * f = β • f + Pc` using `by rw [hf, smul_eq_C_mul]; ring`. Establish `e2 : X * f' = (starRingEnd ℂ) β • f' + Pc` using `by rw [hconj, smul_eq_C_mul]; ring`. Establish `a1 : ∀ h, form g Pc h = 0` using `form_ann b φ e P hPe`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `a2 : ∀ h, form g h Pc = 0` using `fun h => by rw [form_symm g hsymm, a1]`. Establish `main` using `form_shift g q hshift f f'`. Rewrite `main` using `[e1, e2]`. Simplify using `only [map_add, map_smul, LinearMap.add_apply, LinearMap.smul_apply, a1, a2, add_zero, smul_eq_mul, mul_zero] at main`. Establish `hne : form g f f' ≠ 0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Move the embeddings inside the algebraic operations.
 
-Introduce `hz`. Rewrite `hz` using `[form_sum g d f f' hfd hf'd]`. Use `complex_pos (Matrix.of fun i j : Fin d => g i j) (fun i j => hsymm i j) (gram_pos b hpos φ e d hmin) (fun i => f.coeff i) (by simpa [hf'] using hz)` as an intermediate fact. Conclude with `hf0 (leadingCoeff_eq_zero.1 (congrFun this ⟨f.natDegree, hfd⟩))`. Establish `: ((Complex.normSq β : ℝ) : ℂ) = (q : ℂ)`.
-
-Rewrite using `[Complex.normSq_eq_conj_mul_self]`. Apply `mul_right_cancel₀ hne` to reduce the goal to its premises. Move the coercions through the operations in `at main`. Take the linear combination `main`. Conclude with `this` after adjusting the coercions.
+Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem similitude_algebraic : ∀ (Λ : Type) [AddCommGroup Λ] (Q : Λ → ℤ) (φ : Module.End ℤ Λ) (e : Λ) (q l r : ℕ), 2 ≤ l → (∀ x y, Q (x + y) + Q (x - y) = 2 * Q x + 2 * Q y) → (∀ x, 0 ≤ Q x) → (∀ x, Q x = 0 → x = 0) → (∀ x, Q (φ x) = q * Q x) → (∀ n : ℕ, ∃ (χ : Polynomial ℤ) (y : Λ), χ.Monic ∧ χ.natDegree = r ∧ Polynomial.aeval φ χ e = l ^ n • y) → ∃ P : Polynomial ℤ, P ≠ 0 ∧ Polynomial.aeval φ P e = 0 ∧ ∀ β : ℂ, Polynomial.aeval β P = 0 → Complex.normSq β = q := by
   classical

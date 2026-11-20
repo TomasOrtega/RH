@@ -17,7 +17,7 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.StalkVan
 
 /- English proof (translation)
-Use `Ideal.map_comap_of_equiv (I := I) e.commRingCatIsoToRingEquiv` as an intermediate fact. Conclude with `this.symm`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem comap_inv_eq_map {A B : CommRingCat.{0}} (e : A ≅ B) (I : Ideal A) :
     I.comap e.inv.hom = I.map e.hom.hom := by
@@ -25,7 +25,7 @@ theorem comap_inv_eq_map {A B : CommRingCat.{0}} (e : A ≅ B) (I : Ideal A) :
   exact this.symm
 
 /- English proof (translation)
-Rewrite using `[Scheme.IdealSheafData.ideal_comap_of_isOpenImmersion, comap_inv_eq_map, Scheme.Hom.appIso_hom']`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem ideal_comap_eq_map {X X' : Scheme.{0}} (f : X' ⟶ X) [IsIso f] (I : X.IdealSheafData)
     (V : X'.affineOpens) :
@@ -34,7 +34,7 @@ theorem ideal_comap_eq_map {X X' : Scheme.{0}} (f : X' ⟶ X) [IsIso f] (I : X.I
   rw [Scheme.IdealSheafData.ideal_comap_of_isOpenImmersion, comap_inv_eq_map, Scheme.Hom.appIso_hom']
 
 /- English proof (translation)
-Introduce and unpack `W U rfl hW hU`. Both sides reduce to the same expression.
+Assume the hypotheses and unpack their components. Both sides reduce to the same expression.
 -/
 theorem map_germ_app_congr {X X' : Scheme.{0}} (f : X' ⟶ X) (I : X.IdealSheafData) (x : X') :
     ∀ (W U : X.affineOpens), W = U → ∀ (hW : x ∈ f ⁻¹ᵁ W.1) (hU : x ∈ f ⁻¹ᵁ U.1),
@@ -44,13 +44,13 @@ theorem map_germ_app_congr {X X' : Scheme.{0}} (f : X' ⟶ X) (I : X.IdealSheafD
   rfl
 
 /- English proof (translation)
-Introduce `X X' f _ Z Z' hZ U x hx`. Establish `hc : (Scheme.IdealSheafData.vanishingIdeal Z).comap f = Scheme.IdealSheafData.vanishingIdeal Z'` using `GlobalTheory.vanishingIdeal_comap_of_isOpenImmersion X' X f Z Z' fun y => by`. Rewrite using `[← SetLike.mem_coe, hZ]`. Both sides reduce to the same expression. Set `V : X'.affineOpens` to `⟨f ⁻¹ᵁ U.1, U.2.preimage f⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Introduce a local definition for the expression.
 
-Establish `hxV : x ∈ V.1` using `hx`. Rewrite using `[ReciprocityTheory.AnForm.R.WMult.stalkId_eq_map_germ _ x V hxV, ← hc, ideal_comap_eq_map, Ideal.map_map]`. Establish `hWU : (⟨f ''ᵁ V.1, V.2.image_of_isOpenImmersion f⟩ : X.affineOpens) = U`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show f ''ᵁ (f ⁻¹ᵁ U.1) = U.1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Scheme.Hom.image_preimage_eq_opensRange_inf]`. Use `inf_eq_right.2 fun y _ => ?_` and prove the remaining obligations. Conclude with `⟨(inv f) y, by rw [← Scheme.Hom.comp_apply, IsIso.inv_hom_id]; rfl⟩`. Establish `hxW : x ∈ f ⁻¹ᵁ (f ''ᵁ V.1)` using `(f.preimage_image_eq V.1).ge hxV`. Rewrite using `[← map_germ_app_congr f _ x _ U hWU hxW hx]`.
+Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Rewrite using `[Scheme.Hom.appLE, CommRingCat.hom_comp, ← RingHom.comp_assoc, ← CommRingCat.hom_comp, TopCat.Presheaf.germ_res]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem stalkId_vanishingIdeal_preimage : ∀ (X X' : Scheme.{0}) (f : X' ⟶ X) [IsIso f]
     (Z : TopologicalSpace.Closeds X) (Z' : TopologicalSpace.Closeds X'),

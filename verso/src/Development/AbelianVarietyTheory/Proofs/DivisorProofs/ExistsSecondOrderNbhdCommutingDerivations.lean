@@ -18,21 +18,21 @@ noncomputable def deform {O R : Type} [CommRing O] [Algebra ℂ O] [CommRing R]
   map_add' x y := by ext <;> simp
 
 /- English proof (translation)
-Simplify using `[deform]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] lemma deform_fst {O R : Type} [CommRing O] [Algebra ℂ O] [CommRing R]
     (D : Derivation ℂ O O) (f : O →+* R) (x : O) : (deform D f x).fst = f x := by
   simp [deform]
 
 /- English proof (translation)
-Simplify using `[deform]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] lemma deform_snd {O R : Type} [CommRing O] [Algebra ℂ O] [CommRing R]
     (D : Derivation ℂ O O) (f : O →+* R) (x : O) : (deform D f x).snd = f (D x) := by
   simp [deform]
 
 /- English proof (translation)
-Use `⟨2, ?_⟩` and prove the remaining obligations. Rewrite using `[Ideal.span_singleton_pow, pow_two, h]`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma isNilpotent_span_of_sq {C : Type} [CommRing C] {e : C} (h : e * e = 0) :
     IsNilpotent (Ideal.span {e}) := by
@@ -41,15 +41,13 @@ lemma isNilpotent_span_of_sq {C : Type} [CommRing C] {e : C} (h : e * e = 0) :
   simp
 
 /- English proof (translation)
-Introduce `O _ _ D₁ D₂ h`. Set `i : O →+* DualNumber O` to `(inlHom O O)`. Set `j : DualNumber O →+* DualNumber (DualNumber O)` to `inlHom _ _`. Set `e₁ : DualNumber (DualNumber O)` to `inl DualNumber.eps`. Set `e₂ : DualNumber (DualNumber O)` to `DualNumber.eps`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `h1 : e₁ * e₁ = 0`. Simplify using `only [e₁]`. Rewrite using `[inl_mul_inl, DualNumber.eps_mul_eps]`. Simplify using the standard rewrite rules. Establish `h2 : e₂ * e₂ = 0` using `DualNumber.eps_mul_eps`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `⟨DualNumber (DualNumber O), inferInstance, Ideal.span {e₁} + Ideal.span {e₂}, j.comp i, j.comp (deform D₁ (RingHom.id O)), deform D₂ i, deform D₂ (deform D₁ (RingHom.id O)), e₁, e₂, ?_, ?_, ?_, h1, h2, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `(Commute.all _ _).isNilpotent_add (isNilpotent_span_of_sq h1) (isNilpotent_span_of_sq h2)`. Conclude with `Ideal.mem_sup_left (Ideal.mem_span_singleton_self _)`. Conclude with `Ideal.mem_sup_right (Ideal.mem_span_singleton_self _)`. Apply the tactic sequence `intro x; ext <;> simp [i, j, e₁]`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `intro x; ext <;> simp [i, j, e₂]`. Apply the tactic sequence `intro x; ext <;> simp [i, j, e₂]`. Apply the tactic sequence `intro x; ext <;> simp [i, j, e₁, h]`. Introduce `x hx`. Use `congrArg (fun z : DualNumber (DualNumber O) => z.snd.snd) hx` as an intermediate fact.
-
-Simplify `this` using `[i, j, e₁, e₂]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem exists_second_order_nbhd : ∀ (O : Type) [CommRing O] [Algebra ℂ O] (D₁ D₂ : Derivation ℂ O O), (∀ x, D₁ (D₂ x) = D₂ (D₁ x)) → ∃ (C : Type) (_ : CommRing C) (J : Ideal C) (φ₀ φ₁ φ₂ φ₃ : O →+* C) (e₁ e₂ : C), IsNilpotent J ∧ e₁ ∈ J ∧ e₂ ∈ J ∧ e₁ * e₁ = 0 ∧ e₂ * e₂ = 0 ∧ (∀ x, φ₁ x = φ₀ x + φ₀ (D₁ x) * e₁) ∧ (∀ x, φ₂ x = φ₀ x + φ₀ (D₂ x) * e₂) ∧ (∀ x, φ₃ x = φ₁ x + φ₁ (D₂ x) * e₂) ∧ (∀ x, φ₃ x = φ₂ x + φ₂ (D₁ x) * e₁) ∧ ∀ x, φ₀ x * e₁ * e₂ = 0 → x = 0 := by
   intro O _ _ D₁ D₂ h

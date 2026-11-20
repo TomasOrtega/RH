@@ -11,9 +11,9 @@ open Formalism.WeaklyAdmissibleFiltrations Formalism.BasicNotions Formalism.Basi
 namespace GlobalTheory.ExpStep
 
 /- English proof (translation)
-Take `⟨v, hv⟩` from `hD.exists_left_inv`. Establish `e : i N = i N * v * i D` using `by rw [mul_assoc, hv, mul_one]`. Use `⟨i N * v, ?_, e⟩` and prove the remaining obligations. Apply `(hD.map Φ).mul_right_cancel` to reduce the goal to its premises. Rewrite using `[← map_mul, ← e, h, h, hN, hD', map_mul, map_mul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Take the linear combination `(i c) * e`.
+Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem exists_fixed {A W : Type} [CommRing A] [CommRing W] (i : A →+* W) (φ : A →+* A)
     (Φ : W →+* W) (h : ∀ a, Φ (i a) = i (φ a)) {N D c : A} (hD : IsUnit (i D))
@@ -28,7 +28,7 @@ theorem exists_fixed {A W : Type} [CommRing A] [CommRing W] (i : A →+* W) (φ 
 variable {l : ℕ} [Fact l.Prime] {P : LocPrime l} (AI : LocAinf l P)
 
 /- English proof (translation)
-Apply `WittVector.isUnit_of_coeff_zero_ne_zero` to reduce the goal to its premises. Rewrite using `[inclW, WittVector.map_coeff]`. Conclude with `fun hz => ha (IsFractionRing.injective (OCb l) (Cb l) (by rw [hz, map_zero]))`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isUnit_inclW {a : Ainf l} (ha : a.coeff 0 ≠ 0) : IsUnit (inclW l a) := by
   apply WittVector.isUnit_of_coeff_zero_ne_zero
@@ -36,9 +36,9 @@ theorem isUnit_inclW {a : Ainf l} (ha : a.coeff 0 ≠ 0) : IsUnit (inclW l a) :=
   exact fun hz => ha (IsFractionRing.injective (OCb l) (Cb l) (by rw [hz, map_zero]))
 
 /- English proof (translation)
-Establish `h0 : AI.π₁.coeff 0 = AI.ε1 - 1`. Express the relevant statement in the definitionally equal form `WittVector.constantCoeff (WittVector.teichmuller l AI.ε1 - 1) = _`. Rewrite using `[map_sub, map_one, WittVector.constantCoeff_apply, WittVector.teichmuller_coeff_zero]`. Rewrite using `[h0]`. Introduce `hz`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `AI.ε_ne_one` to reduce the goal to its premises. Rewrite using `[← frobeniusEquiv_symm_pow_p (OCb l) l AI.ε]`. Express the relevant statement in the definitionally equal form `AI.ε1 ^ l = 1`. Rewrite using `[sub_eq_zero.mp hz, one_pow]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem π₁_coeff : AI.π₁.coeff 0 ≠ 0 := by
   have h0 : AI.π₁.coeff 0 = AI.ε1 - 1 := by
@@ -52,7 +52,7 @@ theorem π₁_coeff : AI.π₁.coeff 0 ≠ 0 := by
   rw [sub_eq_zero.mp hz, one_pow]
 
 /- English proof (translation)
-Rewrite using `[LocAinf.actW, WittVector.map_coeff]`. Introduce `hz`. Conclude with `π₁_coeff AI ((AI.actT g).injective (by rw [map_zero]; exact hz))`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem act_π₁_coeff (g : GQ l) : (AI.actW g AI.π₁).coeff 0 ≠ 0 := by
   rw [LocAinf.actW, WittVector.map_coeff]
@@ -60,14 +60,14 @@ theorem act_π₁_coeff (g : GQ l) : (AI.actW g AI.π₁).coeff 0 ≠ 0 := by
   exact π₁_coeff AI ((AI.actT g).injective (by rw [map_zero]; exact hz))
 
 /- English proof (translation)
-Rewrite using `[LocAinf.π₁, LocAinf.μ, map_sub, map_one, WittVector.frobenius_eq_map_frobenius, WittVector.map_teichmuller, LocAinf.ε1, frobenius_apply_frobeniusEquiv_symm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem frob_π₁ : WittVector.frobenius AI.π₁ = AI.μ := by
   rw [LocAinf.π₁, LocAinf.μ, map_sub, map_one, WittVector.frobenius_eq_map_frobenius,
     WittVector.map_teichmuller, LocAinf.ε1, frobenius_apply_frobeniusEquiv_symm]
 
 /- English proof (translation)
-Use extensionality with `n`. Simplify using `only [LocAinf.actW, WittVector.coeff_frobenius_charP, WittVector.map_coeff, map_pow]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem frob_act (g : GQ l) (a : Ainf l) :
     WittVector.frobenius (AI.actW g a) = AI.actW g (WittVector.frobenius a) := by
@@ -75,7 +75,7 @@ theorem frob_act (g : GQ l) (a : Ainf l) :
   simp only [LocAinf.actW, WittVector.coeff_frobenius_charP, WittVector.map_coeff, map_pow]
 
 /- English proof (translation)
-Rewrite using `[WittVector.frobenius_eq_map_frobenius]`. Conclude with `map_zlW l _ z`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem frob_zl (z : ℤ_[l]) :
     WittVector.frobenius (algebraMap ℤ_[l] (Ainf l) z) = algebraMap ℤ_[l] (Ainf l) z := by
@@ -83,7 +83,7 @@ theorem frob_zl (z : ℤ_[l]) :
   exact map_zlW l _ z
 
 /- English proof (translation)
-Use extensionality with `n`. Express the relevant statement in the definitionally equal form `(WittVector.map (frobenius (Cb l) l) (inclW l a)).coeff n = _`. Simplify using `only [inclW, WittVector.coeff_frobenius_charP, WittVector.map_coeff, map_pow, frobenius_def]`.
+By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 -/
 theorem frobW_inclW (a : Ainf l) : frobW l (inclW l a) = inclW l (WittVector.frobenius a) := by
   ext n
@@ -91,13 +91,13 @@ theorem frobW_inclW (a : Ainf l) : frobW l (inclW l a) = inclW l (WittVector.fro
   simp only [inclW, WittVector.coeff_frobenius_charP, WittVector.map_coeff, map_pow, frobenius_def]
 
 /- English proof (translation)
-Introduce `l _ P AI g U k β η h`. Establish `hu : IsUnit (inclW l (AI.π₁ ^ k * AI.actW g AI.π₁ ^ k))`. Rewrite using `[map_mul, map_pow, map_pow]`. Conclude with `((isUnit_inclW (π₁_coeff AI)).pow k).mul ((isUnit_inclW (act_π₁_coeff AI g)).pow k)`. Take `⟨w, hw, e⟩` from `exists_fixed (inclW l) WittVector.frobenius (frobW l : WCb l →+* WCb l) frobW_inclW (N := algebraMap ℤ_[l] (Ainf l) U * AI.actW g β * AI.π₁ ^ k - AI.actW g AI.π₁ ^ k * β - AI.actW g AI.π₁ ^ k * η) (c := AI.ξ ^ k * AI.actW g AI.ξ ^ k) hu (by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions.
 
-Unfold `Step at h`. Simplify using `only [map_sub, map_mul, map_pow, frob_act, frob_zl, frob_π₁, AI.μ_eq, mul_pow] at h ⊢`. Take the linear combination `h) (by`. Simplify using `only [map_mul, map_pow, frob_act, frob_π₁, AI.μ_eq, mul_pow]`. Use the proof step `ring)`.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨z, rfl⟩` from `(GlobalTheory.ArtinSchreierWitt.main l).2.1 w hw`. Use `⟨z, ?_⟩` and prove the remaining obligations. Rewrite `e` using `[← (inclWA l).commutes z]`. Express the relevant statement in the definitionally equal form `_ = inclW l _ * _ at e`. Rewrite `e` using `[← map_mul]`.
+Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `e'` using `WittVector.map_injective _ (IsFractionRing.injective (OCb l) (Cb l)) e`. Unfold `Step`. Take the linear combination `e'`.
+Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem main : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P) (g : GQ l) (U : ℤ_[l]) (k : ℕ) (β η : Ainf l), Step AI g U AI.μ k (WittVector.frobenius β - AI.ξ ^ k * β) (WittVector.frobenius η - AI.ξ ^ k * η) → ∃ z : ℤ_[l], Step AI g U AI.π₁ k β (η + algebraMap ℤ_[l] (Ainf l) z * AI.π₁ ^ k) := by
   intro l _ P AI g U k β η h

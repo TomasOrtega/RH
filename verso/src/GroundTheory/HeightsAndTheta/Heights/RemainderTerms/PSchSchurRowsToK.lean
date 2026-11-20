@@ -9,13 +9,13 @@ namespace GroundTheory.Heights₂.Heights.RestTerms
 open MvPolynomial Finset
 
 /- English proof (translation)
-Introduce `σ _ _ r k nu hanti hsum`. Distinguish the cases in `hrk : r ≤ k`. Conclude with `(Schur.schur_padPartition σ nu k hrk).symm`. Use `replace hrk : k < r := Nat.lt_of_not_le hrk`. Establish `hzero : ∀ i : Fin r, k ≤ (i : ℕ) → nu i = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Introduce `i hi`. Assume the negation of the conclusion as `hne`. Establish `hpos : 1 ≤ nu i` using `Nat.one_le_iff_ne_zero.mpr hne`. Establish `h1 : ∑ j ∈ Finset.Iic i, 1 ≤ ∑ j ∈ Finset.Iic i, nu j` using `Finset.sum_le_sum fun j hj => le_trans hpos (hanti (Finset.mem_Iic.mp hj))`. Establish `h2 : ∑ j ∈ Finset.Iic i, nu j ≤ ∑ j, nu j` using `Finset.sum_le_sum_of_subset_of_nonneg (Finset.subset_univ _) (fun _ _ _ => Nat.zero_le _)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Simplify using `only [Finset.sum_const, smul_eq_mul, mul_one, Fin.card_Iic] at h1`. Use linear arithmetic over natural numbers and integers. Establish `heq : nu = Schur.padPartition r (fun i : Fin k => if h : (i : ℕ) < r then nu ⟨i, h⟩ else 0)`. Use function extensionality and compare the values at `i`. Simplify using `only [Schur.padPartition]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `hik : (i : ℕ) < k`. Simplify using `[hik, i.isLt]`. Simplify using `only [hik, dite_false]`. Conclude with `hzero i (by omega)`. Combine the equalities or inequalities in the displayed calculation.
+Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem SchSchurRowsToK.proof : SchSchurRowsToK.Statement := by
   intro σ _ _ r k nu hanti hsum

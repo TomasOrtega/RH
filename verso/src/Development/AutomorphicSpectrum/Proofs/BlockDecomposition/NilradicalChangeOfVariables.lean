@@ -7,19 +7,17 @@ open Matrix MeasureTheory PositivityTheory.Rg.BcB PositivityTheory.Rg.Tf.Loc Glo
 namespace GlobalTheory.CompanionTheory.LocVan
 
 /- English proof (translation)
-Introduce `n d W₁ W₂ hreg _ hle h1 h2`. Set `L : nilrad W₁ W₂ ≃ₗ[ℝ] nilrad W₁ W₂` to `LinearEquiv.ofInjectiveEndo (slinN d h1 h2 - LinearMap.id) (slinN_injective d h1 h2 hreg)`. Establish `hLval : ∀ X, (L X).1 = slin d X.1 - X.1` using `fun X => by`. Simplify using `[L, slinN]`. Establish `hLc : Continuous L`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `Continuous.subtype_mk (f := fun X : nilrad W₁ W₂ => (L X).1) ?_ _ |>.congr fun X => rfl` and prove the remaining obligations. Establish `e : (fun X : nilrad W₁ W₂ => (L X).1) = fun X => slin d X.1 - X.1` using `funext hLval`. Rewrite using `[e]`. Conclude with `((continuous_slin d).comp continuous_subtype_val).sub continuous_subtype_val`. Set `Q : nilrad W₁ W₂ → nilrad W₁ W₂` to `fun X => ⟨quad d X.1, two_mem hle (quadratic_term_nilradical_mem d h1 h2 X.2).1 (quadratic_term_nilradical_mem d h1 h2 X.2).2⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hQc : Continuous Q` using `Continuous.subtype_mk ((continuous_quad d).comp continuous_subtype_val) _`. Establish `hLF : ∀ y ∈ nilrad2 W₁ W₂, L y ∈ nilrad2 W₁ W₂` using `fun y hy => by`. Take `⟨hT, hT'⟩` from `semilinear_term_nilradical_mem d h1 h2 hy.1 hy.2`. Use `⟨fun z => ?_, fun z hz => ?_⟩` and prove the remaining obligations. Rewrite using `[hLval, Matrix.sub_mulVec]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `W₁.sub_mem (hT z) (hy.1 z)`. Rewrite using `[hLval, Matrix.sub_mulVec, hT' z hz, hy.2 z hz, sub_zero]`. Establish `hQF : ∀ X, Q X ∈ nilrad2 W₁ W₂` using `fun X => quadratic_term_nilradical_mem d h1 h2 X.2`. Establish `hQinv : ∀ X, ∀ Y ∈ nilrad2 W₁ W₂, Q (X + Y) = Q X` using `fun X Y hY => Subtype.ext (quad_add d h1 h2 X.2 hle hY.1 hY.2)`. Use `⟨fun X => L X + Q X, hLc.add hQc, fun X => ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[eq_inv_mul_iff_mul_eq]`. Use `Units.ext ?_` and prove the remaining obligations. Establish `e : (uOf (L X + Q X)).val = 1 + (slin d X.1 - X.1 + quad d X.1)`. Rewrite using `[uOf_val, Submodule.coe_add, hLval]`. Rewrite using `[Units.val_mul, e]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `twist_val d h1 h2 (uOf X) X.1 X.2 rfl`. Introduce `_ _ ν _`. Take `⟨Φ, c, _, hΦ, hmap⟩` from `exists_homeo_map_eq_smul ν (nilrad2 W₁ W₂) L hLF Q hQc hQF hQinv`. Use `⟨c, ?_⟩` and prove the remaining obligations. Establish `e : (fun X => L X + Q X) = Φ` using `funext fun X => (hΦ X).symm`.
-
-Rewrite using `[e]`. Conclude with `hmap`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nilChange_of_flag : NilChange := by
   intro n d W₁ W₂ hreg _ hle h1 h2

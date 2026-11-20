@@ -18,9 +18,9 @@ section Translation
 
 open Complex in
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih`. Rewrite using `[iteratedDeriv_succ, ih]`. Use function extensionality and compare the values at `t`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `h` using `(((hasDerivAt_id t).ofReal_comp.const_mul I).cexp).const_mul (I ^ n)`. Simplify using `only [id] at h`. Rewrite using `[h.deriv]`. Simplify using `only [Complex.ofReal_one, mul_one]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem iteratedDeriv_cexp_I_mul (n : ℕ) :
     iteratedDeriv n (fun t : ℝ ↦ exp (I * t)) = fun t : ℝ ↦ I ^ n * exp (I * t) := by
@@ -37,7 +37,7 @@ theorem iteratedDeriv_cexp_I_mul (n : ℕ) :
 
 open Complex in
 /- English proof (translation)
-Use `⟨Complex.contDiff_exp.comp (contDiff_const.mul Complex.ofRealCLM.contDiff), fun n ↦ ⟨0, 1, fun t ↦ ?_⟩⟩` and prove the remaining obligations. Rewrite using `[norm_iteratedFDeriv_eq_norm_iteratedDeriv, iteratedDeriv_cexp_I_mul, norm_mul, norm_pow, Complex.norm_I, one_pow, one_mul, Complex.norm_exp_I_mul_ofReal]`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem hasTemperateGrowth_cexp_I_mul : (fun t : ℝ ↦ exp (I * t)).HasTemperateGrowth := by
   refine ⟨Complex.contDiff_exp.comp (contDiff_const.mul Complex.ofRealCLM.contDiff),
@@ -49,9 +49,9 @@ theorem hasTemperateGrowth_cexp_I_mul : (fun t : ℝ ↦ exp (I * t)).HasTempera
 def expChar (a : E) (ξ : E) : ℂ := Complex.exp (Complex.I * ((2 * Real.pi * inner ℝ ξ a : ℝ) : ℂ))
 
 /- English proof (translation)
-Establish `hL : (fun ξ : E ↦ 2 * Real.pi * inner ℝ ξ a).HasTemperateGrowth`. Establish `: (fun ξ : E ↦ 2 * Real.pi * inner ℝ ξ a) = ⇑((2 * Real.pi) • innerSL ℝ a)`. Use function extensionality and compare the values at `ξ`. Simplify using `[real_inner_comm]`. Rewrite using `[this]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `ContinuousLinearMap.hasTemperateGrowth _`. Conclude with `hasTemperateGrowth_cexp_I_mul.comp hL`.
+A detailed English derivation is pending.
 -/
 theorem expChar_hasTemperateGrowth (a : E) : (expChar a : E → ℂ).HasTemperateGrowth := by
   have hL : (fun ξ : E ↦ 2 * Real.pi * inner ℝ ξ a).HasTemperateGrowth := by
@@ -61,12 +61,12 @@ theorem expChar_hasTemperateGrowth (a : E) : (expChar a : E → ℂ).HasTemperat
   exact hasTemperateGrowth_cexp_I_mul.comp hL
 
 /- English proof (translation)
-The claim follows from `Complex.norm_exp_I_mul_ofReal _`.
+A detailed English derivation is pending.
 -/
 theorem norm_expChar (a ξ : E) : ‖expChar a ξ‖ = 1 := Complex.norm_exp_I_mul_ofReal _
 
 /- English proof (translation)
-Rewrite using `[expChar, Real.fourierChar_apply, mul_comm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem expChar_eq_fourierChar (a ξ : E) : expChar a ξ = (𝐞 (inner ℝ ξ a) : ℂ) := by
   rw [expChar, Real.fourierChar_apply, mul_comm]
@@ -83,9 +83,9 @@ theorem translate_apply_apply (h : E) (u : 𝓢'(E, F)) (φ : 𝓢(E, ℂ)) :
     translate F h u φ = u (SchwartzMap.compSubConstCLM ℂ (-h) φ) := rfl
 
 /- English proof (translation)
-Apply `SchwartzMap.ext` to reduce the goal to its premises. Introduce `x`. Rewrite using `[SchwartzMap.compSubConstCLM_apply, sub_neg_eq_add, SchwartzMap.fourier_coe, Real.fourier_eq]`. Establish `key : ∀ ξ : E, 𝐞 (-inner ℝ ξ x) • SchwartzMap.smulLeftCLM ℂ (expChar (-h)) (𝓕⁻ φ) ξ = 𝐞 (-inner ℝ ξ (x + h)) • (𝓕⁻ φ : 𝓢(E, ℂ)) ξ`. Introduce `ξ`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[SchwartzMap.smulLeftCLM_apply_apply (expChar_hasTemperateGrowth _), expChar_eq_fourierChar, Circle.smul_def, Circle.smul_def, smul_eq_mul, smul_eq_mul, smul_eq_mul, ← mul_assoc, ← Circle.coe_mul, ← AddChar.map_add_eq_mul, inner_add_right, inner_neg_right]`. Use `congr 3`. Expand and normalize the polynomial expressions, which then agree. Repeatedly rewrite using `[key]`. Rewrite using `[← Real.fourier_eq, ← SchwartzMap.fourier_coe, FourierTransform.fourier_fourierInv_eq]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem fourier_expChar_smul_fourierInv (h : E) (φ : 𝓢(E, ℂ)) :
     𝓕 (SchwartzMap.smulLeftCLM ℂ (expChar (-h)) (𝓕⁻ φ)) = SchwartzMap.compSubConstCLM ℂ (-h) φ := by
@@ -102,7 +102,7 @@ theorem fourier_expChar_smul_fourierInv (h : E) (φ : 𝓢(E, ℂ)) :
   rw [← Real.fourier_eq, ← SchwartzMap.fourier_coe, FourierTransform.fourier_fourierInv_eq]
 
 /- English proof (translation)
-Use extensionality with `φ`. Rewrite using `[translate_apply_apply, fourierMultiplierCLM_apply_apply, fourier_expChar_smul_fourierInv]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 -/
 theorem translate_eq_fourierMultiplierCLM (h : E) (u : 𝓢'(E, F)) :
     translate F h u = fourierMultiplierCLM F (expChar (-h)) u := by
@@ -110,9 +110,9 @@ theorem translate_eq_fourierMultiplierCLM (h : E) (u : 𝓢'(E, F)) :
   rw [translate_apply_apply, fourierMultiplierCLM_apply_apply, fourier_expChar_smul_fourierInv]
 
 /- English proof (translation)
-Rewrite using `[translate_apply_apply, Lp.toTemperedDistribution_apply]`. Use `(measurePreserving_add_right (volume : Measure E) h).integral_comp (measurableEmbedding_addRight h) (fun x ↦ φ x • f (x - h))` as an intermediate fact. Simplify using `only [SchwartzMap.compSubConstCLM_apply, sub_neg_eq_add] at this ⊢`. Rewrite using `[← this]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use extensionality with `x`. Rewrite using `[add_sub_cancel_right]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 -/
 theorem translate_toTemperedDistribution (h : E) (f : Lp F 2 (volume : Measure E)) (φ : 𝓢(E, ℂ)) :
     translate F h (f : 𝓢'(E, F)) φ = ∫ x, φ x • f (x - h) := by
@@ -127,7 +127,7 @@ theorem translate_toTemperedDistribution (h : E) (f : Lp F 2 (volume : Measure E
 end Translation
 
 /- English proof (translation)
-Establish `hc : Continuous (fun ξ : E ↦ (1 + ‖ξ‖ ^ 2) ^ s)` using `(continuous_const.add (continuous_norm.pow 2)).rpow_const fun ξ ↦ Or.inl (by positivity : (0 : ℝ) < 1 + ‖ξ‖ ^ 2).ne'`. Conclude with `((hc.mul hg).aestronglyMeasurable).mul ((fourierFun_aestronglyMeasurable u).norm.pow 2)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem aestronglyMeasurable_weight_mul_sq {s : ℝ} (u : SobolevSpace E F s) (g : E → ℝ)
     (hg : Continuous g) :
@@ -139,17 +139,17 @@ theorem aestronglyMeasurable_weight_mul_sq {s : ℝ} (u : SobolevSpace E F s) (g
   exact ((hc.mul hg).aestronglyMeasurable).mul ((fourierFun_aestronglyMeasurable u).norm.pow 2)
 
 /- English proof (translation)
-Rewrite using `[memSobolev_iff_fourier]`. Use `⟨fourierFun u, ?_, fourier_apply_eq_integral u⟩` and prove the remaining obligations. Use `set b := stdOrthonormalBasis ℝ E`. Establish `hmeas : AEStronglyMeasurable (fun ξ ↦ weight (s + 1) ξ • fourierFun u ξ) (volume : Measure E)` using `(weight_hasTemperateGrowth (s + 1)).1.continuous.aestronglyMeasurable.smul (fourierFun_aestronglyMeasurable u)`. Rewrite using `[memLp_two_iff_integrable_sq_norm hmeas]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨hmeas.norm.pow 2, ?_⟩` and prove the remaining obligations. Rewrite using `[hasFiniteIntegral_iff_ofReal (ae_of_all _ fun _ ↦ by positivity)]`. Establish `hpt : ∀ ξ, ENNReal.ofReal (‖weight (s + 1) ξ • fourierFun u ξ‖ ^ 2) = ENNReal.ofReal ((1 + ‖ξ‖ ^ 2) ^ s * 1 * ‖fourierFun u ξ‖ ^ 2) + ∑ i, ENNReal.ofReal ((1 + ‖ξ‖ ^ 2) ^ s * inner ℝ ξ (b i) ^ 2 * ‖fourierFun u ξ‖ ^ 2)`. Introduce `ξ`. Establish `h0 : (0 : ℝ) < 1 + ‖ξ‖ ^ 2` using `by positivity`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← ENNReal.ofReal_sum_of_nonneg (fun i _ ↦ by positivity), ← ENNReal.ofReal_add (by positivity) (Finset.sum_nonneg fun i _ ↦ by positivity)]`. Use `congr 1`. Establish `hsum : ∑ i, (1 + ‖ξ‖ ^ 2) ^ s * inner ℝ ξ (b i) ^ 2 * ‖fourierFun u ξ‖ ^ 2 = (1 + ‖ξ‖ ^ 2) ^ s * ‖ξ‖ ^ 2 * ‖fourierFun u ξ‖ ^ 2`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.mul_sum, Finset.sum_mul]`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `_ = _ := by rw [b.sum_sq_inner_left ξ]`. Establish `hw : ((1 + ‖ξ‖ ^ 2) ^ ((s + 1) / 2)) ^ 2 = (1 + ‖ξ‖ ^ 2) ^ s * (1 + ‖ξ‖ ^ 2)`. Rewrite using `[← Real.rpow_natCast, ← Real.rpow_mul h0.le, ← Real.rpow_add_one h0.ne']`. Use `congr 1`. Use `push_cast`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hsum, norm_smul, norm_weight, mul_pow, hw]`. Expand and normalize the polynomial expressions, which then agree. Repeatedly rewrite using `[hpt]`. Establish `hm : ∀ g : E → ℝ, Continuous g → AEMeasurable (fun ξ ↦ ENNReal.ofReal ((1 + ‖ξ‖ ^ 2) ^ s * g ξ * ‖fourierFun u ξ‖ ^ 2)) (volume : Measure E)` using `fun g hg ↦ (aestronglyMeasurable_weight_mul_sq u g hg).aemeasurable.ennreal_ofReal`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[lintegral_add_left' (hm _ continuous_const), lintegral_finsetSum' _ fun i _ ↦ hm (fun ξ ↦ inner ℝ ξ (b i) ^ 2) (by fun_prop)]`. Use `ENNReal.add_lt_top.2 ⟨?_, ENNReal.sum_lt_top.2 fun i _ ↦ h (b i)⟩` and prove the remaining obligations. Use `(integrable_weight_mul_norm_sq_fourierFun u).lintegral_lt_top` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem memSobolev_add_one_of_lintegral {s : ℝ} (u : SobolevSpace E F s)
     (h : ∀ v : E, ∫⁻ ξ, ENNReal.ofReal ((1 + ‖ξ‖ ^ 2) ^ s * inner ℝ ξ v ^ 2 *
@@ -195,7 +195,7 @@ theorem memSobolev_add_one_of_lintegral {s : ℝ} (u : SobolevSpace E F s)
   simpa using this
 
 /- English proof (translation)
-Establish `hG` using `(Lp.memLp (𝓕 (SobolevSpace.bessel s u) : Lp F 2 (volume : Measure E))).locallyIntegrable (by norm_num)`. Use `hG.continuous_smul (weight_hasTemperateGrowth (-s)).1.continuous` as an intermediate fact. Conclude with `this`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem locallyIntegrable_fourierFun {s : ℝ} (u : SobolevSpace E F s) :
     LocallyIntegrable (fourierFun u) (volume : Measure E) := by
@@ -207,17 +207,15 @@ theorem locallyIntegrable_fourierFun {s : ℝ} (u : SobolevSpace E F s) :
 open LineDeriv in
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hu v`. Use `SobolevSpace.memSobolev_toDistribution (SobolevSpace.lineDerivCLM v (SobolevSpace.mk (s := s + 1) _ hu))` as an intermediate fact. Rewrite `this` using `[SobolevSpace.toDistribution_lineDerivCLM, SobolevSpace.toDistribution_mk, add_sub_cancel_right]`. Then use the resulting hypothesis. Introduce `hv`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `memSobolev_add_one_of_lintegral` to reduce the goal to its premises. Introduce `v`. Use `set w : SobolevSpace E F s := SobolevSpace.mk _ (hv v)`. Use `set d := SobolevSpace.lineDerivCLM (s := s) v u`. Establish `hd` using `(fourierFun_multiplier (m := fun ξ ↦ (2 * Real.pi * Complex.I) * ((inner ℝ ξ v : ℝ) : ℂ)) (by fun_prop) (SobolevSpace.lineDeriv_bound v) u).1`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hwd : fourierFun w =ᵐ[volume] fourierFun d`. Apply `ae_eq_of_integral_schwartz_smul_eq (locallyIntegrable_fourierFun w) (locallyIntegrable_fourierFun d)` to reduce the goal to its premises. Introduce `φ _`. Rewrite using `[← fourier_apply_eq_integral, ← fourier_apply_eq_integral]`. Simplify using `[w, d]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hint` using `(integrable_weight_mul_norm_sq_fourierFun w).lintegral_lt_top`. Establish `hc : (0 : ℝ) < (2 * Real.pi) ^ 2` using `by positivity`. Establish `hpt : ∀ᵐ ξ ∂(volume : Measure E), ENNReal.ofReal ((1 + ‖ξ‖ ^ 2) ^ s * inner ℝ ξ v ^ 2 * ‖fourierFun u ξ‖ ^ 2) = ENNReal.ofReal (((2 * Real.pi) ^ 2)⁻¹) * ENNReal.ofReal ((1 + ‖ξ‖ ^ 2) ^ s * ‖fourierFun w ξ‖ ^ 2)` using `by filter_upwards [hwd, hd] with ξ h1 h2`. Rewrite using `[← ENNReal.ofReal_mul (by positivity), h1]`. Use `congr 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `_ = _ * ((1 + ‖ξ‖ ^ 2) ^ s * ‖fourierFun (SobolevSpace.multiplier _ _ u) ξ‖ ^ 2)`. Establish `h2pi : ‖(2 : ℂ) * (Real.pi : ℂ)‖ = 2 * Real.pi`. Rewrite using `[norm_mul, Complex.norm_two, Complex.norm_real, Real.norm_eq_abs, abs_of_pos Real.pi_pos]`. Rewrite using `[h2, norm_smul, norm_mul, norm_mul, Complex.norm_I, Complex.norm_real, h2pi, Real.norm_eq_abs, mul_one, mul_pow, mul_pow, mul_pow, sq_abs]`. Clear the denominators using the available nonvanishing facts.
-
-Rewrite using `[lintegral_congr_ae hpt, lintegral_const_mul' _ _ ENNReal.ofReal_ne_top]`. Conclude with `ENNReal.mul_lt_top ENNReal.ofReal_lt_top hint`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem memSobolev_add_one_iff_lineDeriv {s : ℝ} (u : SobolevSpace E F s) :
     MemSobolev (s + 1) 2 (SobolevSpace.toDistribution u) ↔
@@ -262,14 +260,14 @@ theorem memSobolev_add_one_iff_lineDeriv {s : ℝ} (u : SobolevSpace E F s) :
 def dqSymbol (v : E) (t : ℝ) (ξ : E) : ℂ := ((t⁻¹ : ℝ) : ℂ) * (expChar (t • v) ξ - 1)
 
 /- English proof (translation)
-The claim follows from `(Function.HasTemperateGrowth.const _).mul ((expChar_hasTemperateGrowth _).sub (Function.HasTemperateGrowth.const 1))`.
+A detailed English derivation is pending.
 -/
 theorem dqSymbol_hasTemperateGrowth (v : E) (t : ℝ) : (dqSymbol v t : E → ℂ).HasTemperateGrowth :=
   (Function.HasTemperateGrowth.const _).mul
     ((expChar_hasTemperateGrowth _).sub (Function.HasTemperateGrowth.const 1))
 
 /- English proof (translation)
-Rewrite using `[expChar]`. Use `Real.norm_exp_I_mul_ofReal_sub_one_le.trans (le_of_eq ?_)` and prove the remaining obligations. Rewrite using `[Real.norm_eq_abs, abs_mul, abs_of_pos (by positivity : (0 : ℝ) < 2 * Real.pi)]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem norm_expChar_sub_one_le (a ξ : E) :
     ‖expChar a ξ - 1‖ ≤ 2 * Real.pi * |inner ℝ ξ a| := by
@@ -278,9 +276,9 @@ theorem norm_expChar_sub_one_le (a ξ : E) :
   rw [Real.norm_eq_abs, abs_mul, abs_of_pos (by positivity : (0 : ℝ) < 2 * Real.pi)]
 
 /- English proof (translation)
-Rewrite using `[dqSymbol, norm_mul, Complex.norm_real, Real.norm_eq_abs]`. Break down `eq_or_ne t 0 with rfl | ht` into its components or cases. Simplify using the standard rewrite rules. Check the signs of the components of the expression. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Check the signs of the components of the expression. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[inner_smul_right, abs_mul, abs_inv]`. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 -/
 theorem norm_dqSymbol_le (v : E) (t : ℝ) (ξ : E) : ‖dqSymbol v t ξ‖ ≤ 2 * Real.pi * |inner ℝ ξ v| := by
   rw [dqSymbol, norm_mul, Complex.norm_real, Real.norm_eq_abs]
@@ -293,7 +291,7 @@ theorem norm_dqSymbol_le (v : E) (t : ℝ) (ξ : E) : ‖dqSymbol v t ξ‖ ≤ 
         field_simp
 
 /- English proof (translation)
-Rewrite using `[dqSymbol, norm_mul, Complex.norm_real, Real.norm_eq_abs, abs_inv, mul_comm]`. Use `gcongr`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem norm_dqSymbol_le' (v : E) (t : ℝ) (ξ : E) : ‖dqSymbol v t ξ‖ ≤ 2 * |t|⁻¹ := by
   rw [dqSymbol, norm_mul, Complex.norm_real, Real.norm_eq_abs, abs_inv, mul_comm]
@@ -302,9 +300,9 @@ theorem norm_dqSymbol_le' (v : E) (t : ℝ) (ξ : E) : ‖dqSymbol v t ξ‖ ≤
     _ = 2 := by rw [norm_expChar, norm_one]; norm_num
 
 /- English proof (translation)
-Use `(norm_dqSymbol_le v t ξ).trans ?_` and prove the remaining obligations. Rewrite using `[show (s + 1 - s) / 2 = 1 / 2 by ring, ← Real.sqrt_eq_rpow]`. Establish `h : |inner ℝ ξ v| ≤ ‖v‖ * √(1 + ‖ξ‖ ^ 2)`. Combine the equalities or inequalities in the displayed calculation. Conclude with `Real.le_sqrt_of_sq_le (by linarith)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem dqSymbol_bound {s : ℝ} (v : E) (t : ℝ) (ξ : E) :
     ‖dqSymbol v t ξ‖ ≤ (2 * Real.pi * ‖v‖) * (1 + ‖ξ‖ ^ 2) ^ ((s + 1 - s) / 2) := by
@@ -321,13 +319,13 @@ theorem dqSymbol_bound {s : ℝ} (v : E) (t : ℝ) (ξ : E) :
 
 open Filter Topology in
 /- English proof (translation)
-Use `set a : ℝ := 2 * Real.pi * inner ℝ ξ v`. Establish `hf : HasDerivAt (fun t : ℝ ↦ Complex.exp (Complex.I * ((t * a : ℝ) : ℂ))) (Complex.I * a) 0`. Use `(((hasDerivAt_id (0 : ℝ)).mul_const a).ofReal_comp.const_mul Complex.I).cexp` as an intermediate fact. Simplify using `using this`. Establish `h` using `hasDerivAt_iff_tendsto_slope_zero.1 hf`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : ∀ t : ℝ, t⁻¹ • (Complex.exp (Complex.I * (((0 + t) * a : ℝ) : ℂ)) - Complex.exp (Complex.I * (((0 : ℝ) * a : ℝ) : ℂ))) = dqSymbol v t ξ`. Introduce `t`. Rewrite using `[dqSymbol, expChar, inner_smul_right, Complex.real_smul, zero_add, zero_mul, Complex.ofReal_zero, mul_zero, Complex.exp_zero]`. Simplify using `only [a]`. Use `congr 3`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite `h` using `[e]`. Use `h using 2` and compare the differences between its conclusion and the goal. Simplify using `only [a]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses repeatedly using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem tendsto_dqSymbol (v ξ : E) :
     Tendsto (fun t ↦ dqSymbol v t ξ) (𝓝[≠] 0)
@@ -359,9 +357,9 @@ def diffQuot (v : E) (t : ℝ) : SobolevSpace E F s →L[ℂ] SobolevSpace E F s
   multiplier (dqSymbol_hasTemperateGrowth v t) (bound_of_le (norm_dqSymbol_le' v t))
 
 /- English proof (translation)
-Rewrite using `[diffQuot, toDistribution_multiplier, translate_eq_fourierMultiplierCLM, neg_neg]`. Establish `hsub : (dqSymbol v t : E → ℂ) = ((t⁻¹ : ℝ) : ℂ) • (expChar (t • v) - fun _ ↦ (1 : ℂ))`. Use function extensionality and compare the values at `ξ`. Simplify using `[dqSymbol]`. Rewrite using `[hsub, fourierMultiplierCLM_smul ((expChar_hasTemperateGrowth _).sub (Function.HasTemperateGrowth.const 1)), smul_apply]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Rewrite using `[fourierMultiplierCLM_apply, fourierMultiplierCLM_apply, smulLeftCLM_sub (expChar_hasTemperateGrowth _) (Function.HasTemperateGrowth.const 1), sub_apply, smulLeftCLM_const, one_smul, ← fourierInvCLM_apply (R := ℂ), map_sub, fourierInvCLM_apply, fourierInvCLM_apply, FourierTransfo …`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 -/
 theorem toDistribution_diffQuot (v : E) (t : ℝ) (u : SobolevSpace E F s) :
     toDistribution (diffQuot v t u) =
@@ -378,7 +376,7 @@ theorem toDistribution_diffQuot (v : E) (t : ℝ) (u : SobolevSpace E F s) :
     fourierInvCLM_apply, fourierInvCLM_apply, FourierTransform.fourierInv_fourier_eq]
 
 /- English proof (translation)
-Establish `h : diffQuot v t (inclusion (le_add_of_nonneg_right zero_le_one) u) = multiplier (dqSymbol_hasTemperateGrowth v t) (dqSymbol_bound (s` using `s) v t) u := by`. Apply `toDistribution_injective` to reduce the goal to its premises. Simplify using `[diffQuot]`. Rewrite using `[h]`. Conclude with `norm_multiplier_apply_le _ _ u`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_diffQuot_le (v : E) (t : ℝ) (u : SobolevSpace E F (s + 1)) :
     ‖diffQuot v t (inclusion (le_add_of_nonneg_right zero_le_one) u)‖ ≤ 2 * Real.pi * ‖v‖ * ‖u‖ := by
@@ -394,25 +392,23 @@ end SobolevSpace
 open Filter Topology in
 
 /- English proof (translation)
-Apply `memSobolev_add_one_of_lintegral` to reduce the goal to its premises. Introduce `v`. Take `⟨C, hC⟩` from `h v`. Use `set f : ℝ → E → ℝ≥0∞ := fun t ξ ↦ ENNReal.ofReal ((1 + ‖ξ‖ ^ 2) ^ s * ‖dqSymbol v t ξ • fourierFun u ξ‖ ^ 2)`. Establish `hc : Continuous (fun ξ : E ↦ (1 + ‖ξ‖ ^ 2) ^ s)` using `(continuous_const.add (continuous_norm.pow 2)).rpow_const fun ξ ↦ Or.inl (by positivity : (0 : ℝ) < 1 + ‖ξ‖ ^ 2).ne'`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfm : ∀ t, AEMeasurable (f t) (volume : Measure E)` using `fun t ↦ (hc.aestronglyMeasurable.mul (((dqSymbol_hasTemperateGrowth v t).1.continuous.aestronglyMeasurable.smul (fourierFun_aestronglyMeasurable u)).norm.pow 2)).aemeasurable.ennreal_ofReal`. Establish `hnorm : ∀ t, ∫⁻ ξ, f t ξ = ENNReal.ofReal (‖SobolevSpace.diffQuot v t u‖ ^ 2)`. Introduce `t`. Establish `hm` using `fourierFun_multiplier (dqSymbol_hasTemperateGrowth v t) (bound_of_le (s := s) (norm_dqSymbol_le' v t)) u`. Express the relevant statement in the definitionally equal form `_ = ENNReal.ofReal (‖SobolevSpace.multiplier _ _ u‖ ^ 2)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hm.2, ofReal_integral_eq_lintegral_ofReal]`. Establish `hi` using `integrable_weight_mul_norm_sq_fourierFun (SobolevSpace.multiplier (dqSymbol_hasTemperateGrowth v t) (bound_of_le (s := s) (norm_dqSymbol_le' v t)) u)`. Use `hi.congr ?_` and prove the remaining obligations. Use `filter_upwards [hm.1] with ξ hξ`. Rewrite using `[hξ]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `ae_of_all _ fun ξ ↦ by positivity`. Establish `hlim : ∀ ξ, Tendsto (fun t ↦ f t ξ) (𝓝[≠] 0) (𝓝 (ENNReal.ofReal ((1 + ‖ξ‖ ^ 2) ^ s * ‖((2 * Real.pi * Complex.I) * ((inner ℝ ξ v : ℝ) : ℂ)) • fourierFun u ξ‖ ^ 2)))`. Introduce `ξ`. Apply `ENNReal.tendsto_ofReal` to reduce the goal to its premises. Apply `Tendsto.const_mul` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Apply `Tendsto.pow` to reduce the goal to its premises. Apply `Tendsto.norm` to reduce the goal to its premises. Conclude with `(tendsto_dqSymbol v ξ).smul_const _`. Establish `hfatou` using `lintegral_liminf_le' (μ := (volume : Measure E)) (u := 𝓝[≠] (0 : ℝ)) hfm`. Establish `hleft : ∫⁻ ξ, liminf (fun t ↦ f t ξ) (𝓝[≠] 0) = ∫⁻ ξ, ENNReal.ofReal ((1 + ‖ξ‖ ^ 2) ^ s * ‖((2 * Real.pi * Complex.I) * ((inner ℝ ξ v : ℝ) : ℂ)) • fourierFun u ξ‖ ^ 2)`.
+Establish an intermediate fact. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities.
 
-Use `congr 1`. Use extensionality with `ξ`. Conclude with `(hlim ξ).liminf_eq`. Establish `hright : liminf (fun t ↦ ∫⁻ ξ, f t ξ) (𝓝[≠] 0) ≤ ENNReal.ofReal (C ^ 2)`. Repeatedly rewrite using `[hnorm]`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `liminf_le_of_frequently_le'` to reduce the goal to its premises. Apply `Eventually.frequently` to reduce the goal to its premises. Use `filter_upwards [hC] with t ht`. Apply `ENNReal.ofReal_le_ofReal` to reduce the goal to its premises. Conclude with `pow_le_pow_left₀ (norm_nonneg _) ht 2`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Establish `hbound` using `(hleft ▸ hfatou).trans hright`. Establish `hc2 : (0 : ℝ) < (2 * Real.pi) ^ 2` using `by positivity`. Establish `hpt : ∀ ξ : E, ENNReal.ofReal ((1 + ‖ξ‖ ^ 2) ^ s * inner ℝ ξ v ^ 2 * ‖fourierFun u ξ‖ ^ 2) = ENNReal.ofReal (((2 * Real.pi) ^ 2)⁻¹) * ENNReal.ofReal ((1 + ‖ξ‖ ^ 2) ^ s * ‖((2 * Real.pi * Complex.I) * ((inner ℝ ξ v : ℝ) : ℂ)) • fourierFun u ξ‖ ^ 2)`. Introduce `ξ`. Rewrite using `[← ENNReal.ofReal_mul (by positivity)]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Establish `h2pi : ‖(2 : ℂ) * (Real.pi : ℂ)‖ = 2 * Real.pi`. Rewrite using `[norm_mul, Complex.norm_two, Complex.norm_real, Real.norm_eq_abs, abs_of_pos Real.pi_pos]`. Rewrite using `[norm_smul, norm_mul, norm_mul, Complex.norm_I, Complex.norm_real, h2pi, Real.norm_eq_abs, mul_one, mul_pow, mul_pow, mul_pow, sq_abs]`. Clear the denominators using the available nonvanishing facts.
-
-Repeatedly rewrite using `[hpt]`. Rewrite using `[lintegral_const_mul' _ _ ENNReal.ofReal_ne_top]`. Conclude with `ENNReal.mul_lt_top ENNReal.ofReal_lt_top (hbound.trans_lt ENNReal.ofReal_lt_top)`.
+A detailed English derivation is pending.
 -/
 theorem memSobolev_add_one_of_diffQuot {s : ℝ} (u : SobolevSpace E F s)
     (h : ∀ v : E, ∃ C, ∀ᶠ t in 𝓝[≠] (0 : ℝ), ‖SobolevSpace.diffQuot v t u‖ ≤ C) :
@@ -479,7 +475,7 @@ theorem memSobolev_add_one_of_diffQuot {s : ℝ} (u : SobolevSpace E F s)
   exact ENNReal.mul_lt_top ENNReal.ofReal_lt_top (hbound.trans_lt ENNReal.ofReal_lt_top)
 
 /- English proof (translation)
-Apply `SobolevSpace.toDistribution_injective` to reduce the goal to its premises. Rewrite using `[SobolevSpace.toDistribution_inclusion, SobolevSpace.toDistribution_mk]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem inclusion_mk_eq {s : ℝ} (u : SobolevSpace E F s)
     (hu : MemSobolev (s + 1) 2 (SobolevSpace.toDistribution u)) :
@@ -490,7 +486,7 @@ theorem inclusion_mk_eq {s : ℝ} (u : SobolevSpace E F s)
 open Filter Topology in
 
 /- English proof (translation)
-Use `⟨fun hu v ↦ ⟨2 * Real.pi * ‖v‖ * ‖SobolevSpace.mk (s := s + 1) _ hu‖, Eventually.of_forall fun t ↦ ?_⟩, memSobolev_add_one_of_diffQuot u⟩` and prove the remaining obligations. Establish `h` using `SobolevSpace.norm_diffQuot_le v t (SobolevSpace.mk (s := s + 1) _ hu)`. Rewrite `h` using `[inclusion_mk_eq u hu]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem memSobolev_add_one_iff_diffQuot {s : ℝ} (u : SobolevSpace E F s) :
     MemSobolev (s + 1) 2 (SobolevSpace.toDistribution u) ↔

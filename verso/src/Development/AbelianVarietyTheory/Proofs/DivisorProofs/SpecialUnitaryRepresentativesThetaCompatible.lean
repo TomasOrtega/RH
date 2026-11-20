@@ -15,7 +15,7 @@ open Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes IsDedekindDomain
 open scoped Matrix
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.frameStabiliser_mapsTo_completedLattice β Λ hβ x hx v hv`.
+A detailed English derivation is pending.
 -/
 theorem mulVec_mem_hatL {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {n : ℕ}
     (β : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) (Λ : Submodule (𝓞 E) (Fin n → E)) (hβ : Formalism.L2.DIV.IsFrame β Λ)
@@ -25,7 +25,7 @@ theorem mulVec_mem_hatL {F E : Type} [Field F] [NumberField F] [Field E] [Number
   GlobalTheory.T.frameStabiliser_mapsTo_completedLattice β Λ hβ x hx v hv
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.special_unitary_kottwitz_equivalence G L s s' M γ hs hs' hM he hγ`.
+A detailed English derivation is pending.
 -/
 theorem sEquiv_of_mul_eq {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
     (G : Matrix (Fin r) (Fin r) E) (L : Set (Fin r → E))
@@ -36,9 +36,9 @@ theorem sEquiv_of_mul_eq {E : Type} [Field E] [NumberField E] [IsCMField E] {r :
   GlobalTheory.T.special_unitary_kottwitz_equivalence G L s s' M γ hs hs' hM he hγ
 
 /- English proof (translation)
-Establish `e : ∀ x y, GlobalTheory.AdLat.hermA c (-G) x y = -GlobalTheory.AdLat.hermA c G x y`. Introduce `x y`. Simplify using `only [GlobalTheory.AdLat.hermA, Matrix.neg_apply, TensorProduct.tmul_neg, mul_neg, neg_mul, Finset.sum_neg_distrib]`. Use `⟨h.1, fun x y => ?_⟩` and prove the remaining obligations. Use `h.2 x y` as an intermediate fact.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `this` using `[e, e]`. Conclude with `neg_injective this`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUA_of_neg {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E] {n : ℕ}
     (c : E ≃ₐ[F] E) (G : Matrix (Fin n) (Fin n) E) (k : Matrix (Fin n) (Fin n) (GlobalTheory.AdLat.RA F E))
@@ -52,9 +52,9 @@ theorem isUA_of_neg {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F 
   exact neg_injective this
 
 /- English proof (translation)
-Establish `h1` using `GlobalTheory.PrincInLevel.swap_mem_hatL Λ x hx`. Establish `h2` using `mulVec_mem_hatL β Λ hβ _ hk _ h1`. Establish `h3` using `GlobalTheory.PrincInLevel.swap_symm_mem_hat Λ _ h2`. Use `h3 using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `a`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [Matrix.mulVec, dotProduct, Formalism.UG.bc, Formalism.IndefR.Lev.swapAE, Units.coe_map, MonoidHom.coe_coe, RingHom.mapMatrix_apply, Matrix.map_apply, map_sum, map_mul]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem mulVec_mem_hat (D : D7) {n : ℕ} (β : GL (Fin n) (Formalism.IndefR.Lev.EAf D))
     (Λ : Submodule (𝓞 D.host.E) (Fin n → D.host.E)) (hβ : Formalism.L2.DIV.IsFrame β Λ)
@@ -79,11 +79,11 @@ open Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes IsDedekindDomain
 open scoped Matrix
 
 /- English proof (translation)
-Substitute `h` using the available equality. Establish `eΛ : Λ.comap (LinearMap.funLeft (𝓞 E) E (Fin.cast rfl)) = Λ`. Use extensionality with `x`. Both sides reduce to the same expression. Establish `eJ : Matrix.transpose (J.submatrix (Fin.cast (rfl : n = n).symm) (Fin.cast (rfl : n = n).symm)) = Jᵀ`.
+Substitute using the available equality. Establish an intermediate fact. By extensionality, compare the relevant components. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Use extensionality with `a b`. Both sides reduce to the same expression. Establish `es : ∀ t : Matrix (Fin n) (Fin n) (GlobalTheory.AdLat.RA (maximalRealSubfield E) E), t.submatrix (Fin.cast rfl) (Fin.cast rfl) = t` using `fun t => by ext a b; rfl`. Rewrite using `[eΛ, eJ]`. Rewrite `hs`, `hs'` using `[eJ]`.
+By extensionality, compare the relevant components. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `he` using `[es, es]`. Use `sEquiv_of_mul_eq _ _ s s' k γ hs hs' ⟨isUA_of_neg _ _ _ hkU, fun x hx => ⟨k *ᵥ x - x, sub_mem (hk1 x hx) hx, by simp⟩, hk2⟩ he hγ` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem sEquiv_cast {E : Type} [Field E] [NumberField E] [IsCMField E] {n r : ℕ} (h : n = r)
     (J : Matrix (Fin n) (Fin n) E) (Λ : Submodule (𝓞 E) (Fin n → E))
@@ -121,7 +121,7 @@ open Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes IsDedekindDomain
 open scoped Matrix
 
 /- English proof (translation)
-Establish `: Theta.finHom V g = Formalism.UG.bc (Algebra.TensorProduct.map (sndA D.host.F) (AlgHom.id D.host.F D.host.E)).toRingHom (Theta.matHom V g)` using `rfl`. Rewrite using `[this, hg]`. Use extensionality with `a b`. Simplify using `[Formalism.UG.bc, GlobalTheoryTheory.GenusMassVolumes.inclR]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem finHom_rat (D : D7) (V : Formalism.BasicNotions.TH.HSp D) (g : Theta.GA D V) (γ : GL (Fin V.rank) D.host.E)
     (hg : Theta.matHom V g = Formalism.UG.bc (GlobalTheoryTheory.GenusMassVolumes.inclR (GlobalTheoryTheory.GenusMassVolumes.AF D.host.F)) γ) :
@@ -134,9 +134,9 @@ theorem finHom_rat (D : D7) (V : Formalism.BasicNotions.TH.HSp D) (g : Theta.GA 
   simp [Formalism.UG.bc, GlobalTheoryTheory.GenusMassVolumes.inclR]
 
 /- English proof (translation)
-Take `⟨y, rfl⟩` from `hx`. Establish `e : (Formalism.L2.DIV.frGL β y).1.det = (Formalism.L2.DIV.intGL F E n y).1.det` using `by show (β * Formalism.L2.DIV.intGL F E n y * β⁻¹).1.det = _`. Rewrite using `[Units.val_mul, Units.val_mul, Matrix.det_mul, Matrix.det_mul, mul_comm, ← mul_assoc, ← Matrix.det_mul, Units.inv_mul, Matrix.det_one, one_mul]`. Rewrite using `[e]`. Establish `e2 : (Formalism.L2.DIV.intGL F E n y).1 = (Formalism.L2.Herm.intAf F E).subtype.mapMatrix y.1` using `rfl`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[e2, ← RingHom.map_det]`. Conclude with `(y.1.det).2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem det_mem_intAf {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {n : ℕ}
     (β : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) (x : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F))
@@ -154,23 +154,21 @@ theorem det_mem_intAf {F E : Type} [Field F] [NumberField F] [Field E] [NumberFi
 set_option maxHeartbeats 2000000 in
 
 /- English proof (translation)
-Introduce `D Tu Cl t0 hCl i`. Use `letI : IsCMField D.host.E := D.host.isCMField_hostE`. Introduce `J s hS j j' g γ _ hgm hk`. Take `⟨-, hl⟩` from `GlobalTheory.MassLift.lift_spec D i (s j) (hS.1 j)`. Take `⟨-, hl'⟩` from `GlobalTheory.MassLift.lift_spec D i (s j') (hS.1 j')`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hfg` using `finHom_rat D (Wc D i) g γ hgm`. Use `set k := Theta.finHom (Wc D i) ((GlobalTheory.MassLink.lift D i (s j'))⁻¹ * g * GlobalTheory.MassLink.lift D i (s j)) with hkdef`. Establish `hkeq : (Theta.finHom (Wc D i) (GlobalTheory.MassLink.lift D i (s j'))).1 * k.1 = (Theta.finHom (Wc D i) g).1 * (Theta.finHom (Wc D i) (GlobalTheory.MassLink.lift D i (s j))).1`. Rewrite using `[← Units.val_mul, ← Units.val_mul, hkdef, ← map_mul, ← map_mul]`. Use `congr 2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `group`. Rewrite `hkeq` using `[hl, hl', hfg]`. Establish `hSt : Formalism.UG.bc (Formalism.IndefR.Lev.swapAE D) k ∈ Formalism.L2.DIV.St (Cl.βW i)` using `Formalism.L2.DIV.parLev_St hk.1`. Establish `hfr : Formalism.L2.DIV.IsFrame (Cl.βW i) (Cl.ΛW i)` using `by obtain ⟨c, h, -⟩ := hCl.βW i; exact h`. Establish `hdet1 : ∀ t : Matrix (Fin D.R.r) (Fin D.R.r) (GlobalTheory.AdLat.RA (maximalRealSubfield D.host.E) D.host.E), GlobalTheory.SUVol.IsSA (GlobalTheory.MassLink.gm D i) t → (t.submatrix (Fin.cast (rank_Wc i)) (Fin.cast (rank_Wc i))).det = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `t ht`. Conclude with `(Matrix.det_submatrix_equiv_self (finCongr (rank_Wc i)) t).trans ht.2`. Establish `hdk : k.1.det = (1 : Af D.host.F) ⊗ₜ[D.host.F] γ.1.det`. Use `congrArg Matrix.det hkeq` as an intermediate fact. Rewrite `this` using `[Matrix.det_mul, Matrix.det_mul, hdet1 _ (hS.1 j), hdet1 _ (hS.1 j'), one_mul, mul_one]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[this]`. Conclude with `(RingHom.map_det (Algebra.TensorProduct.includeRight : D.host.E →ₐ[D.host.F] Af D.host.F ⊗[D.host.F] D.host.E).toRingHom _).symm`. Use `⟨?_, fun hγ => ?_⟩` and prove the remaining obligations. Establish `hm` using `det_mem_intAf _ _ hSt`. Establish `e : (Formalism.UG.bc (Formalism.IndefR.Lev.swapAE D) k).1.det = Formalism.L2.Col.iA D.host.F D.host.E γ.1.det` using `by show ((Formalism.IndefR.Lev.swapAE D).mapMatrix k.1).det = _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← RingHom.map_det, hdk]`. Both sides reduce to the same expression. Rewrite `hm` using `[e]`. Take `⟨c, hc⟩` from `GlobalTheory.RatInt.mem_range_of_iA_mem _ hm`. Rewrite using `[← hc]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `RingOfIntegers.isIntegral_coe c`. Establish `hU : GlobalTheory.UCls.IsUA (IsCMField.complexConj D.host.E) (-((Wc D i).gram)ᵀ) (k.1 : Matrix (Fin (Wc D i).rank) (Fin (Wc D i).rank) (GlobalTheory.AdLat.RA (maximalRealSubfield D.host.E) D.host.E))` using `GlobalTheory.FinUA.isUA_finHom D (Wc D i) _`. Establish `h1 : ∀ x ∈ GlobalTheory.AdLat.hat (maximalRealSubfield D.host.E) (Cl.ΛW i : Set (Fin (Wc D i).rank → D.host.E)), (k.1 : Matrix (Fin (Wc D i).rank) (Fin (Wc D i).rank) (GlobalTheory.AdLat.RA (maximalRealSubfield D.host.E) D.host.E)) *ᵥ x ∈ GlobalTheory.AdLat.hat (maximalRealSubfie …` using `fun x hx => mulVec_mem_hat D (Cl.βW i) (Cl.ΛW i) hfr k hSt x hx`. Establish `hSt' : Formalism.UG.bc (Formalism.IndefR.Lev.swapAE D) k⁻¹ ∈ Formalism.L2.DIV.St (Cl.βW i)`. Rewrite using `[map_inv]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `inv_mem hSt`. Establish `h2 : ∀ x ∈ GlobalTheory.AdLat.hat (maximalRealSubfield D.host.E) (Cl.ΛW i : Set (Fin (Wc D i).rank → D.host.E)), ∃ y ∈ GlobalTheory.AdLat.hat (maximalRealSubfield D.host.E) (Cl.ΛW i : Set (Fin (Wc D i).rank → D.host.E)), (k.1 : Matrix (Fin (Wc D i).rank) (Fin (Wc D i).rank) (Glob …`. Introduce `x hx`. Use `⟨(k⁻¹).1 *ᵥ x, mulVec_mem_hat D (Cl.βW i) (Cl.ΛW i) hfr k⁻¹ hSt' x hx, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mulVec_mulVec, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.one_mulVec]`.
-
-Establish `he : (s j').submatrix (Fin.cast (rank_Wc i)) (Fin.cast (rank_Wc i)) * (k.1 : Matrix (Fin (Wc D i).rank) (Fin (Wc D i).rank) (GlobalTheory.AdLat.RA (maximalRealSubfield D.host.E) D.host.E)) = GlobalTheory.UCls.ratM (maximalRealSubfield D.host.E) γ.1 * (s j).submatrix (Fin.cast (ra …` using `hkeq`. Establish `hE` using `sEquiv_cast (rank_Wc i) (Wc D i).gram (Cl.ΛW i) (s j) (s j') k.1 γ.1 (hS.1 j) (hS.1 j') hU h1 h2 he hγ`. Conclude with `(hS.2.1 j' j hE).symm`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem main : ∀ (D : D7) (Tu : Type) (Cl : LevCh D Tu) (t0 : Tu), Cl.Is t0 → ∀ (i : Fin D.R.m), letI : IsCMField D.host.E := D.host.isCMField_hostE; ∀ (J : Type) (s : J → Matrix (Fin D.R.r) (Fin D.R.r) (GlobalTheory.AdLat.RA (maximalRealSubfield D.host.E) D.host.E)), GlobalTheory.SUVol.IsSReps (GlobalTheory.MassLink.gm D i) (GlobalTheory.MassLink.lat Cl i : Set (Fin D.R.r → D.host.E)) 1 s → ∀ (j j' : J) (g : Theta.GA D (Wc D i)) (γ : GL (Fin (Wc D i).rank) D.host.E), g ∈ Theta.GQ (Wc D i) → Theta.matHom (Wc D i) g = Formalism.UG.bc (GlobalTheoryTheory.GenusMassVolumes.inclR (GlobalTheoryTheory.GenusMassVolumes.AF D.host.F)) γ → Formalism.IndefR.Lev.finE (Wc D i) ((GlobalTheory.MassLink.lift D i (s j'))⁻¹ * g * GlobalTheory.MassLink.lift D i (s j)) ∈ GlobalTheory.IndefiniteRowSideFullHecke.OneMeasureSizes.levW Cl i (LevelP.full Cl.Pg D.R.r ℂ) → IsIntegral ℤ (γ : Matrix (Fin (Wc D i).rank) (Fin (Wc D i).rank) D.host.E).det ∧ ((γ : Matrix (Fin (Wc D i).rank) (Fin (Wc D i).rank) D.host.E).det = 1 → j = j') := by
   intro D Tu Cl t0 hCl i

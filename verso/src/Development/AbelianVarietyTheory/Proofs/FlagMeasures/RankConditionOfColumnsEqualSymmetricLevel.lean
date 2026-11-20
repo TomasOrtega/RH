@@ -7,7 +7,7 @@ open Formalism.BasicNotions Formalism.MainNotions
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `_ C u` and use `Formalism.MainNotions.Ext.Lw.mu0Tie_of_sym C u`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem mu0Tie_of_colsTiedSym : ∀ (D : D7), Formalism.L2.Forms.ColsTiedSym D → ∀ u : D.what₂.Word, StandardLattice.Mu0Tie D u :=
   fun _ C u => Formalism.MainNotions.Ext.Lw.mu0Tie_of_sym C u

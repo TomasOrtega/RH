@@ -16,11 +16,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 variable {D : Formalism.BasicNotions.D7} (Zd : LocDat D) (p : PlF D)
 
 /- English proof (translation)
-Take `⟨sg, hsg, hq, -⟩` from `typed_data Zd p g hs`. Use `⟨(D.s.atP p).ιE ((Formalism.MainNotions.BridgeLemma.oth p : ℕ) : D.host.E), ?_, (D.s.atP p).ιE (uP p : D.host.E), Formalism.L2.SG.Pf.LocFacts.unitPart_mem₂ p, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_natCast]`. Conclude with `natCast_mem _ _`. Rewrite using `[hq, sg.q_eq, ← Formalism.MainNotions.BridgeLemma.gpart_mul_oth p, Formalism.MainNotions.BridgeLemma.gpart_some p sg hsg]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Nat.cast_mul, map_mul, map_natCast]`. Rewrite using `[← map_mul, Formalism.MainNotions.BridgeLemma.unitAt_eq p]`. Establish `h0 : ((Formalism.MainNotions.BridgeLemma.oth p : ℕ) : D.host.E) ≠ 0`. Conclude with `Formalism.MainNotions.BridgeLemma.oth_ne_zero p` after adjusting the coercions. Use `push_cast`.
-
-Rewrite using `[mul_inv_cancel₀ h0, map_one]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gS_typed (g : Loc.SplitG (Zd.M p).L) (hs : (Zd.M p).split = some g) :
     ∃ w ∈ (D.s.atP p).O, ∃ w' ∈ (D.s.atP p).O,
@@ -39,25 +37,25 @@ theorem gS_typed (g : Loc.SplitG (Zd.M p).L) (hs : (Zd.M p).split = some g) :
     rw [mul_inv_cancel₀ h0, map_one]
 
 /- English proof (translation)
-The claim follows from `Submodule.span_mono (Set.image_mono h)`.
+A detailed English derivation is pending.
 -/
 theorem localLattice_mono {A B : Submodule (𝓞 D.host.E) (VS D).V} (h : A ≤ B) : lattice₂ D Zd.M p A ≤ lattice₂ D Zd.M p B :=
   Submodule.span_mono (Set.image_mono h)
 
 /- English proof (translation)
-Rewrite using `[Formalism.L2.SG.Pf.LocalDenominators.hO Zd p]`. Conclude with `ha`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_O_M {a : (D.s.atP p).Ep} (ha : a ∈ (D.s.atP p).O) : a ∈ (Zd.M p).L.O := by
   rw [Formalism.L2.SG.Pf.LocalDenominators.hO Zd p]; exact ha
 
 /- English proof (translation)
-Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem v hv`. Take `⟨y, hy, rfl⟩` from `hv`. Rewrite using `[← Formalism.L2.SG.Pf.LocalDenominators.baseChange_smul₂]`. Use `Submodule.subset_span ⟨_, ?_, rfl⟩` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1 : ((gS D : ℕ) : D.host.E) • y = ((gS D : ℕ) : 𝓞 D.host.E) • y`. Rewrite using `[← algebraMap_smul D.host.E ((gS D : ℕ) : 𝓞 D.host.E) y, map_natCast]`. Rewrite using `[SetLike.mem_coe, h1]`. Use `Submodule.mem_sup_left (Submodule.mem_sup_left ?_)` and prove the remaining obligations. Conclude with `Submodule.smul_mem_smul (Ideal.mem_span_singleton_self _) hy`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Treat this case separately.
 
-Consider the case `zero => rw [smul_zero]`. Conclude with `zero_mem _`. Consider the case `add a b _ _ ha hb => rw [smul_add]`. Conclude with `add_mem ha hb`. Consider the case `smul o v _ hv`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `e : (D.s.atP p).ιE ((gS D : ℕ) : D.host.E) • (o • v) = o • ((D.s.atP p).ιE ((gS D : ℕ) : D.host.E) • v)` using `by show _ • ((o : (D.s.atP p).Ep) • v) = (o : (D.s.atP p).Ep) • _`. Rewrite using `[smul_smul, smul_smul, mul_comm]`. Rewrite using `[e]`. Conclude with `Submodule.smul_mem _ _ hv`.
+A detailed English derivation is pending.
 -/
 theorem smul_gS_mem {Λ : Submodule (𝓞 D.host.E) (VS D).V} {T T' : D.host.E} (F : LFlag (VS D) D.R.rS T)
     (F' : LFlag (VS D) D.R.rS T') {v : Vp D p} (hv : v ∈ lattice₂ D Zd.M p Λ) :
@@ -81,7 +79,7 @@ theorem smul_gS_mem {Λ : Submodule (𝓞 D.host.E) (VS D).V} {T T' : D.host.E} 
     rw [e]; exact Submodule.smul_mem _ _ hv
 
 /- English proof (translation)
-Establish `e` using `Formalism.L2.SG.Pf.StabIntSh.gS_mul_uP Zd.δ Zd.M Zd.agree p hs`. Establish `hv' : v = (D.s.atP p).ιE (uP p : D.host.E) • ((D.s.atP p).ιE ((gS D : ℕ) : D.host.E) • v)`. Rewrite using `[smul_smul, mul_comm, e, one_smul]`. Rewrite using `[hv']`. Conclude with `Formalism.L2.SG.Pf.LocalDenominators.smul_mem_localLattice Zd p (Formalism.L2.SG.Pf.LocFacts.unitPart_mem₂ p) (smul_gS_mem Zd p F F' hv)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem untyped_mem (hs : (Zd.M p).split = none) {Λ : Submodule (𝓞 D.host.E) (VS D).V} {T T' : D.host.E}
     (F : LFlag (VS D) D.R.rS T) (F' : LFlag (VS D) D.R.rS T') {v : Vp D p} (hv : v ∈ lattice₂ D Zd.M p Λ) :
@@ -93,7 +91,7 @@ theorem untyped_mem (hs : (Zd.M p).split = none) {Λ : Submodule (𝓞 D.host.E)
   exact Formalism.L2.SG.Pf.LocalDenominators.smul_mem_localLattice Zd p (Formalism.L2.SG.Pf.LocFacts.unitPart_mem₂ p) (smul_gS_mem Zd p F F' hv)
 
 /- English proof (translation)
-Take `⟨w, -, w', hw', he, hww⟩` from `gS_typed Zd p g hs`. Establish `e : algebraMap (D.s.atP p).Fp (D.s.atP p).Ep (g.q : (D.s.atP p).Fp) • v = (D.s.atP p).ιE ((gS D : ℕ) : D.host.E) • (w' • v)`. Rewrite using `[he, smul_smul, mul_assoc, hww, mul_one]`. Rewrite using `[e]`. Conclude with `smul_gS_mem Zd p F F' (Formalism.L2.SG.Pf.LocalDenominators.smul_mem_localLattice Zd p hw' hv)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem typed_q_mem (g : Loc.SplitG (Zd.M p).L) (hs : (Zd.M p).split = some g) {Λ : Submodule (𝓞 D.host.E) (VS D).V}
     {T T' : D.host.E} (F : LFlag (VS D) D.R.rS T) (F' : LFlag (VS D) D.R.rS T') {v : Vp D p}
@@ -107,15 +105,15 @@ theorem typed_q_mem (g : Loc.SplitG (Zd.M p).L) (hs : (Zd.M p).split = some g) {
   exact smul_gS_mem Zd p F F' (Formalism.L2.SG.Pf.LocalDenominators.smul_mem_localLattice Zd p hw' hv)
 
 /- English proof (translation)
-Establish `hvE : v ∈ Submodule.span (D.s.atP p).Ep (Set.range f)` using `Submodule.span_mono (Set.range_comp_subset_range _ _) hvX`. Establish `hvO` using `hprim.2.2 v hv hvE`. Take `⟨c, hc⟩` from `(Submodule.mem_span_range_iff_exists_fun (Zd.M p).L.O).1 hvO`. Take `⟨e, he⟩` from `(Submodule.mem_span_range_iff_exists_fun (D.s.atP p).Ep).1 hvX`. Establish `key : (c (Fin.last D.R.rS) : (D.s.atP p).Ep) = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h0 : ∑ a, ((c a : (D.s.atP p).Ep) - Fin.snoc (α` using `fun _ => (D.s.atP p).Ep) e 0 a) • f a = 0 := by`. Repeatedly rewrite using `[sub_smul]`. Rewrite using `[Finset.sum_sub_distrib, Fin.sum_univ_castSucc (f := fun a => Fin.snoc (α := fun _ => (D.s.atP p).Ep) e 0 a • f a)]`. Simplify using `only [Fin.snoc_castSucc, Fin.snoc_last, zero_smul, add_zero]`. Rewrite using `[he, ← hc, sub_eq_zero]`.
+Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Use `Fintype.linearIndependent_iff.1 hprim.2.1 _ h0 (Fin.last D.R.rS)` as an intermediate fact. Simplify using `using this`. Rewrite using `[← hc, Fin.sum_univ_castSucc]`. Use `add_mem (Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ ?_) ?_` and prove the remaining obligations.
+Both sides reduce to the same expression. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hf, hXS, Formalism.L2.SG.Pf.BBTie.bt_latP_XS Zd p (Formalism.L2.SG.Pf.locDiffC_holds D Zd) G.fl, mul_smul]`. Establish `hm : frFac Zd.δ p i.castSucc • baseChange₂ D p (G.fl.e i) ∈ Submodule.span (Zd.M p).L.O (Set.range fun a : Fin D.R.rS => frFac Zd.δ p a.castSucc • baseChange₂ D p (G.fl.e a))` using `Submodule.subset_span ⟨i, rfl⟩`. Conclude with `Submodule.smul_mem _ (⟨s i.castSucc, mem_O_M Zd p (hs _)⟩ : (Zd.M p).L.O) hm`. Establish `: c (Fin.last D.R.rS) • f (Fin.last D.R.rS) = 0`. Rewrite using `[Subring.smul_def, key, zero_smul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Conclude with `zero_mem _`.
+A detailed English derivation is pending.
 -/
 theorem l1 {Λ : Submodule (𝓞 D.host.E) (VS D).V} {T' : D.host.E} (G : LFlag (VS D) D.R.rS T')
     (f : Fin (D.R.rS + 1) → Vp D p) (s : Fin (D.R.rS + 1) → (D.s.atP p).Ep) (hs : ∀ a, s a ∈ (D.s.atP p).O)

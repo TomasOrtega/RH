@@ -5,19 +5,17 @@ open NumberField IsDedekindDomain Matrix GlobalTheory.CuspRep GlobalTheory.Unita
 open scoped Classical
 
 /- English proof (translation)
-Introduce `_ hB E _ _ _ n`. Take `⟨-, hsurj⟩` from `hB E n`. Use `⟨fun w hw y => ?_, fun hn x w z hz => ?_⟩` and prove the remaining obligations. Establish `hs : sim (th (loc hw y)) = 1`. Rewrite using `[sim_th, sim_loc, inv_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨u, hu⟩` from `hsurj _ hs`. Establish `hmem : u.1 ∈ locU n w`. Use `Subgroup.mem_inf.2 ⟨u.2, Subgroup.mem_iInf.2 fun u' => Subgroup.mem_iInf.2 fun h => MonoidHom.mem_ker.2 ?_⟩` and prove the remaining obligations. Establish `h1 : comp u' (ofU u) = 1`. Rewrite using `[hu, comp_th, comp_loc_of_apart hw h, map_one]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h1`. Establish `hw' : cLoc w u.1 = invT n _ y`. Establish `h1 : comp w (ofU u) = invT n _ y`. Rewrite using `[hu, comp_th, comp_loc]`. Conclude with `h1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hu' : u = locF hw (invT n _ y)`. Establish `h2 : (⟨u.1, hmem⟩ : locU n w) = (locE hw).symm (invT n _ y)`. Apply `(locE hw).injective` to reduce the goal to its premises. Rewrite using `[locE_apply, (locE hw).apply_symm_apply]`. Conclude with `hw'`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `Subtype.ext (congrArg (fun t : locU n w => t.1) h2)`. Use `show _ = ofU (locF hw _)`. Rewrite using `[← hu, hu']`. Use `guf_ext (by rw [sim_th, map_inv]) fun u => ?_` and prove the remaining obligations. Establish `hsym : (comp u z).valᵀ = (comp u z).val`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Distinguish the cases in `h : SameK x (cj u) w`. Rewrite using `[((hz u).1 h), transpose_smul, transpose_one]`. Rewrite using `[((hz u).2 h), Units.val_one, transpose_one]`. Rewrite using `[comp_th, map_inv]`. Apply `Units.ext` to reduce the goal to its premises.
-
-Rewrite using `[invT_val, Matrix.coe_units_inv, Matrix.transpose_nonsing_inv, hsym]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.CertificateRingHomMap.pThLoc_of :
     UpperTheory.Gal.CertificateRingHomMap.LocComm → UpperTheory.Gal.CertificateRingHomMap.OfUBij → UpperTheory.Gal.CertificateRingHomMap.ThLoc := by

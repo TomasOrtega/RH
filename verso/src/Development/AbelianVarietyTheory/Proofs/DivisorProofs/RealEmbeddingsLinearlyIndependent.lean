@@ -9,15 +9,15 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `h`. Establish `hall : ∀ x : F, ∑ τ, a τ * τ x = 0`. Introduce `x`. Establish `halg : IsAlgebraic ℤ x` using `by first`. Consider the case `exact Algebra.IsAlgebraic.isAlgebraic (R := ℤ) x`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Treat this case separately.
 
-Consider the case `(haveI : Algebra.IsAlgebraic ℤ ℚ := IsLocalization.isAlgebraic ℚ (nonZeroDivisors ℤ)`. Conclude with `(Algebra.IsIntegral.isIntegral (R := ℚ) x).isAlgebraic.restrictScalars ℤ)`. Take `⟨y, hy, hint⟩` from `halg.exists_integral_multiple`. Establish `h1 : ∑ τ : F →+* ℝ, a τ * τ (y • x) = 0` using `h ⟨y • x, hint⟩`. Rewrite `h1` using `[zsmul_eq_mul]`.
+Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : ∑ τ : F →+* ℝ, a τ * τ ((y : F) * x) = (y : ℝ) * ∑ τ, a τ * τ x`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_intCast]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[h2]`. Break down `mul_eq_zero.mp h1 with h4 | h4` into its components or cases. Conclude with `absurd (by exact_mod_cast h4) hy`. Conclude with `h4`. Establish `hli : LinearIndependent ℝ (fun τ : F →+* ℝ => ((τ : F →* ℝ) : F → ℝ))` using `(linearIndependent_monoidHom F ℝ).comp (fun τ : F →+* ℝ => (τ : F →* ℝ)) (fun τ σ hτσ => RingHom.ext fun x => DFunLike.congr_fun hτσ x)`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `τ`. Use `Fintype.linearIndependent_iff.mp hli a ?_ τ` and prove the remaining obligations. Use function extensionality and compare the values at `x`. Simplify `hall x` using `[Finset.sum_apply, smul_eq_mul]`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem realEmb_linearIndependent_on_integers (F : Type) [Field F] [NumberField F] (a : (F →+* ℝ) → ℝ) :
     (∀ x : 𝓞 F, ∑ τ, a τ * τ (x : F) = 0) → a = 0 := by
@@ -49,7 +49,7 @@ theorem realEmb_linearIndependent_on_integers (F : Type) [Field F] [NumberField 
   simpa [Finset.sum_apply, smul_eq_mul] using hall x
 
 /- English proof (translation)
-Introduce `F _ _ a h` and use `GlobalTheory.realEmb_linearIndependent_on_integers F a h`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 example : ∀ (F : Type) [Field F] [NumberField F] (a : (F →+* ℝ) → ℝ),
     (∀ x : 𝓞 F, ∑ τ, a τ * τ (x : F) = 0) → a = 0 := fun F _ _ a h => GlobalTheory.realEmb_linearIndependent_on_integers F a h

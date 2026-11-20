@@ -16,15 +16,15 @@ open GlobalTheory GlobalTheory.UU GlobalTheory.CubTrivTorus
 variable {S : Scheme.{0}} {X : Type} [AddCommGroup X]
 
 /- English proof (translation)
-Use `connectedSpace_torus (S := S) (X := X)` as an intermediate fact. Set `pb : ∀ {W : Over S}, (W ⟶ splitTorus S X) → Γ(W.left, ⊤)ˣ` to `fun p => Units.map p.left.appTop.hom.toMonoidHom u`. Establish `hpb : ∀ {W Z : Over S} (p : W ⟶ splitTorus S X) (r : Z ⟶ W) (z : Z.left), gm r.left z ⊤ (pb p) = gm (r ≫ p).left z ⊤ u` using `fun p r z => gm_pull r.left p.left z ⊤ trivial u`. Establish `hmul : ∀ (Z : Over S) (x y : Z ⟶ splitTorus S X) (z : Z.left), gm (x * y).left z ⊤ u = gm x.left z ⊤ u * gm y.left z ⊤ u`. Introduce `Z x y z`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `d : Γ((splitTorus S X ⊗ splitTorus S X).left, ⊤)ˣ` to `pb (fst _ _ * snd _ _) * (pb (fst _ _))⁻¹ * (pb (snd _ _))⁻¹`. Establish `hd : ∀ (Z : Over S) (x y : Z ⟶ splitTorus S X) (z : Z.left), gm (lift x y).left z ⊤ d = gm (x * y).left z ⊤ u * (gm x.left z ⊤ u)⁻¹ * (gm y.left z ⊤ u)⁻¹` using `fun Z x y z => by`. Simplify using `only [d, map_mul, map_inv, hpb, MonObj.comp_mul, lift_fst, lift_snd]`. Establish `e` using `eq_one_of_mul d (fun Z t t' y z => by`. Establish `e'` using `congrArg Additive.ofMul (h₃ Z t t' y z)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hd, hd, hd]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv] at e' ⊢`. Take the linear combination `(norm := abel) e') (fun Z t z => by`. Rewrite using `[hd, _root_.mul_one, h₁, mul_inv_cancel, inv_one, _root_.one_mul]) Z x y z`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 
-Rewrite `e` using `[hd, _root_.mul_assoc, ← mul_inv, mul_inv_eq_one]`. Conclude with `e`. Establish `: ConnectedSpace (𝟙_ (Over S)).left` using `‹ConnectedSpace S›`. Set `ρ : Γ((splitTorus S X ⊗ 𝟙_ (Over S)).left, ⊤)ˣ` to `pb (fst _ _)`. Establish `hρ : ∀ (Z : Over S) (t : Z ⟶ splitTorus S X) (y : Z ⟶ 𝟙_ (Over S)) (z : Z.left), gm (lift t y).left z ⊤ ρ = gm t.left z ⊤ u` using `fun Z t y z => by rw [hpb, lift_fst]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨χ, hχ, -⟩` from `existsUnique_char ρ fun Z t t' y z => by rw [hρ, hρ, hρ, hmul]`. Conclude with `⟨χ, fun Z t z => (hρ Z t (toUnit _) z).symm.trans (hχ Z t _ z)⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_char_of_cub [ConnectedSpace S] [Module.Free ℤ X] (u : Γ((splitTorus S X).left, ⊤)ˣ)
     (h₃ : ∀ (Z : Over S) (x y w : Z ⟶ splitTorus S X) (z : Z.left),
@@ -67,9 +67,9 @@ namespace GlobalTheory.TwistCompare
 open GlobalTheory GlobalTheory.UU GlobalTheory.CubTrivTorus GlobalTheory.CubeLift
 
 /- English proof (translation)
-Substitute `r₁ r₂ r₃ r₄ r₅ r₆ r₇` using the available equality. Establish `a` using `congrArg Additive.ofMul h`. Establish `b` using `congrArg Additive.ofMul hc`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv] at a b ⊢`.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Take the linear combination `(norm := abel) a + b`.
+Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem cub_down_alg {U : Type} [CommGroup U] {a₁ a₂ a₃ a₄ a₅ a₆ a₇ w₁ w₂ w₃ w₄ w₅ w₆ w₇ w₀ c c₀ v₁ v₂ v₃ v₄ v₅ v₆ v₇ : U}
     (h : v₁ * v₂ * v₃ * v₄ = c * v₅ * v₆ * v₇) (hc : c * w₅ * w₆ * w₇ * w₀ = w₁ * w₂ * w₃ * w₄ * c₀)
@@ -84,9 +84,9 @@ theorem cub_down_alg {U : Type} [CommGroup U] {a₁ a₂ a₃ a₄ a₅ a₆ a�
   linear_combination (norm := abel) a + b
 
 /- English proof (translation)
-Substitute `r₁ r₂ r₃ r₄ r₅ r₆ r₇` using the available equality. Establish `a` using `congrArg Additive.ofMul ha`. Establish `b` using `congrArg Additive.ofMul hs`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul] at a b ⊢`.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Take the linear combination `(norm := abel) b - a`.
+Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem ratio_alg {U : Type} [CommGroup U] {a₁ a₂ a₃ a₄ a₅ a₆ a₇ s₁ s₂ s₃ s₄ s₅ s₆ s₇ g₁ g₂ g₃ g₄ g₅ g₆ g₇ c : U}
     (ha : a₁ * a₂ * a₃ * a₄ = c * a₅ * a₆ * a₇) (hs : s₁ * s₂ * s₃ * s₄ = c * s₅ * s₆ * s₇)
@@ -101,9 +101,9 @@ theorem ratio_alg {U : Type} [CommGroup U] {a₁ a₂ a₃ a₄ a₅ a₆ a₇ s
   linear_combination (norm := abel) b - a
 
 /- English proof (translation)
-Establish `a` using `congrArg Additive.ofMul e₁`. Establish `b` using `congrArg Additive.ofMul e₂`. Establish `d` using `congrArg Additive.ofMul e₃`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv] at a b d ⊢`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Take the linear combination `(norm := abel) d - a - b`.
+Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem even_alg {U : Type} [CommGroup U] {A₁ A Wi Wx W₀ E s s' g : U}
     (e₁ : Wi * W₀⁻¹ * A₁ = E * (s * (Wx * W₀⁻¹ * A))) (e₂ : s * Wx = Wi * s')
@@ -121,13 +121,13 @@ namespace GlobalTheory.TwistCompare
 open GlobalTheory GlobalTheory.UU GlobalTheory.CubTrivTorus GlobalTheory.CubeLift
 
 /- English proof (translation)
-Take `⟨E, hE⟩` from `exists_odd P σ.s σ.gen`. Take `⟨κ, hκ⟩` from `exists_char_of_cub E (fun T x y u z => by`. Take `⟨C, hC⟩` from `exists_good_pt P.L.isLB z`. Establish `a` using `σ.cub T x⁻¹ y⁻¹ u⁻¹ z C hC`. Establish `b` using `P.sym_cub T (x ≫ i) (y ≫ i) (u ≫ i) z C hC`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [← MonObj.mul_comp, ← GrpObj.inv_comp] at b`. Establish `o` using `odd_alg (σ := fun a : T ⟶ splitTorus S X => val σ.s a.left z C) (s := fun a => val P.sym (a ≫ i).left z C) (E := fun a => gm a.left z ⊤ E) (fun a => hE T a z C hC) (σ.cub T x y u z C hC) a b`. Establish `o'` using `congrArg Additive.ofMul o`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_div, ofMul_one] at o' ⊢`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Take the linear combination `(norm := abel) o')`. Use the proof step `(fun T z => by`. Take `⟨C, hC⟩` from `exists_good_pt P.L.isLB z`. Establish `e` using `hE T 1 z C hC`. Rewrite `e` using `[inv_one, σ.val_one hC, MonObj.one_comp, P.val_sym_one hC, _root_.mul_one, _root_.mul_one]`.
+Take a linear combination of the given relations to obtain the conclusion. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `e.symm)`. Conclude with `⟨κ, fun T x z J hJ => (hE T x z J hJ).trans (by rw [hκ])⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_char_odd {S : Scheme.{0}} [ConnectedSpace S] {X : Type} [AddCommGroup X] [Module.Free ℤ X]
     {G : Over S} [GrpObj G] [IsCommMonObj G] {i : splitTorus S X ⟶ G} [IsMonHom i] (P : CP G) (σ : CubTriv P.c i) :
@@ -159,31 +159,27 @@ namespace GlobalTheory.TwistCompare
 open GlobalTheory GlobalTheory.UU GlobalTheory.CubTrivTorus GlobalTheory.CubeLift
 
 /- English proof (translation)
-Introduce `k k' _ _ hk hk' ρ G₀ _ _ G'₀ _ _ β₀ hβ₀ P₀ P'₀ w₀ hm X _ _ _ i i₁ hi hi₁ hc σ σ₁ hσ₁`. Use `haveI := hi`. Use `haveI := hi₁`. Use `haveI : ConnectedSpace (Sp k) := by letI := hk.toField; infer_instance`. Use `haveI : ConnectedSpace (Sp k') := by letI := hk'.toField; infer_instance`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Take `⟨κ, hκ⟩` from `exists_char_odd P₀ σ`. Set `f` to `spMap ρ`. Set `hw : β₀ ≫ G₀.hom = G'₀.hom ≫ f` to `hβ₀.1.w`. Establish `hi' : SplitTorus.bcMap f X ≫ i.left = i₁.left ≫ β₀` using `torusCompat_iff.1 hc`. Establish `hcc : ∀ n : Fin 2, ![i₁.left, (1 : splitTorus (Sp k') X ⟶ G'₀).left] n ≫ β₀ = SplitTorus.bcMap f X ≫ ![i.left, (1 : splitTorus (Sp k) X ⟶ G₀).left] n` using `fun n => by fin_cases n`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Conclude with `hi'.symm`. Use `(one_left_comp hm.mul _).trans (Eq.trans ?_ (congrArg (SplitTorus.bcMap f X ≫ ·) (one_left G₀ _)).symm)` and prove the remaining obligations. Rewrite using `[← SplitTorus.bcMap_hom, Category.assoc]`. Take `⟨a, ha, H⟩` from `CubTransport.exists_pmaps ((isGen_iff w₀).1 hm.gen) P₀.L.isLB P'₀.L.isLB (SplitTorus.bcMap f X) hcc σ.s σ.gen`. Set `up : ∀ T : Over (Sp k'), (T ⟶ splitTorus (Sp k') X) →* (Over.mk (T.hom ≫ f) ⟶ splitTorus (Sp k) X)` to `fun T => toBaseHom (hw := SplitTorus.bcMap_hom f X) (fun T x y => Over.OverMorphism.ext (SplitTorus.mul_left_bcMap f X T x y _ _ rfl rfl).symm) T`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `up_left : ∀ {T : Over (Sp k')} (x : T ⟶ splitTorus (Sp k') X), (up T x).left = x.left ≫ SplitTorus.bcMap f X` using `fun _ => rfl`. Establish `up_comp : ∀ {T : Over (Sp k')} (x : T ⟶ splitTorus (Sp k') X), (up T x ≫ i).left = (x ≫ i₁).left ≫ β₀` using `fun x => by rw [Over.comp_left, up_left, Category.assoc, hi', Over.comp_left, Category.assoc]`. Establish `vrel : ∀ (T : Over (Sp k')) (z : T.left) (C₀ C), Good P'₀.L.L z C₀ → Good P₀.L.L z C → ∀ x : T ⟶ splitTorus (Sp k') X, val σ.s (up T x).left z C = gw w₀ (x ≫ i₁).left z (C ((x ≫ i₁).left ≫ β₀)) (C₀ (x ≫ i₁).left) * (gw w₀ (1 : T ⟶ G'₀).left z (C ((1 : T ⟶ G'₀).left ≫ β₀)) (C₀ (1 …` using `fun T z C₀ C hC₀ hC x => (CubTransport.val_pmaps hcc H x.left hC hC₀).trans (congrArg₂ (· * ·) (prod_triv (i := i₁) x (fun q => gw w₀ q z (C (q ≫ β₀)) (C₀ q))) rfl)`. Take `⟨r, hr⟩` from `TorusCoord.exists_ratio P'₀.L.isLB (fun _ _ _ => rfl) σ₁.s σ₁.gen a ha`. Establish `a_one : ∀ (T : Over (Sp k')) (z : T.left) (C₀), Good P'₀.L.L z C₀ → val a (1 : T ⟶ splitTorus (Sp k') X).left z C₀ = 1` using `fun T z C₀ hC₀ => by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨C, hC⟩` from `exists_good_pt P₀.L.isLB z`. Establish `e` using `vrel T z C₀ C hC₀ hC 1`. Rewrite `e` using `[map_one, σ.val_one hC, MonObj.one_comp, mul_inv_cancel, _root_.one_mul]`. Conclude with `e.symm`. Establish `a_cub : ∀ (T : Over (Sp k')) (x y u : T ⟶ splitTorus (Sp k') X) (z : T.left) (C₀), Good P'₀.L.L z C₀ → val a (x * y * u).left z C₀ * val a x.left z C₀ * val a y.left z C₀ * val a u.left z C₀ = cubV P'₀.c z C₀ (x ≫ i₁) (y ≫ i₁) (u ≫ i₁) * val a (x * y).left z C₀ * val a (x * u).le …` using `fun T x y u z C₀ hC₀ => by`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Take `⟨C, hC⟩` from `exists_good_pt P₀.L.isLB z`. Establish `h₀` using `σ.cub (Over.mk (T.hom ≫ f)) (up T x) (up T y) (up T u) z C hC`. Establish `hup : ∀ q : T ⟶ splitTorus (Sp k') X, up T q ≫ i = toBase hw (q ≫ i₁)` using `fun q => Over.OverMorphism.ext (up_comp q)`. Simplify using `only [← map_mul, hup] at h₀`. Establish `c` using `(hm.vals T z C₀ C hC₀ hC _ (fun _ => rfl)).2.2 (x ≫ i₁) (y ≫ i₁) (u ≫ i₁)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [← MonObj.mul_comp] at c`. Conclude with `cub_down_alg h₀ c (vrel T z C₀ C hC₀ hC _) (vrel T z C₀ C hC₀ hC _) (vrel T z C₀ C hC₀ hC _) (vrel T z C₀ C hC₀ hC _) (vrel T z C₀ C hC₀ hC _) (vrel T z C₀ C hC₀ hC _) (vrel T z C₀ C hC₀ hC _)`. Take `⟨ψ, hψ⟩` from `exists_char_of_cub r (fun T x y u z => by`. Take `⟨C₀, hC₀⟩` from `exists_good_pt P'₀.L.isLB z`. Conclude with `ratio_alg (a_cub T x y u z C₀ hC₀) (σ₁.cub T x y u z C₀ hC₀) (hr _ _ z C₀ hC₀) (hr _ _ z C₀ hC₀) (hr _ _ z C₀ hC₀) (hr _ _ z C₀ hC₀) (hr _ _ z C₀ hC₀) (hr _ _ z C₀ hC₀) (hr _ _ z C₀ hC₀))`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `(fun T z => by`. Take `⟨C₀, hC₀⟩` from `exists_good_pt P'₀.L.isLB z`. Establish `e` using `hr _ (1 : T ⟶ splitTorus (Sp k') X).left z C₀ hC₀`. Rewrite `e` using `[σ₁.val_one hC₀, a_one T z C₀ hC₀, _root_.mul_one]`. Conclude with `e.symm)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `key : ∀ (T : Over (Sp k')) (x : T ⟶ splitTorus (Sp k') X) (z : T.left), gm (𝟙 T.left) z ⊤ (chV x κ) = gm (𝟙 T.left) z ⊤ (chV x (ψ + ψ))` using `fun T x z => by`. Take `⟨C₀, hC₀⟩` from `exists_good_pt P'₀.L.isLB z`. Take `⟨C, hC⟩` from `exists_good_pt P₀.L.isLB z`. Establish `hchv : chV (up T x) κ = chV x κ` using `Units.ext (by`. Rewrite using `[chV_val, chV_val, up_left, Scheme.Hom.comp_appTop, CommRingCat.hom_comp, RingHom.comp_apply, bcMap_charUnit])`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e₁` using `hκ (Over.mk (T.hom ≫ f)) (up T x) z C hC`. Rewrite `e₁` using `[← map_inv, up_comp, vrel T z C₀ C hC₀ hC, vrel T z C₀ C hC₀ hC, hchv]`. Establish `s₁` using `(hm.vals T z C₀ C hC₀ hC _ (fun _ => rfl)).2.1 (x ≫ i₁)`. Rewrite `s₁` using `[← GrpObj.inv_comp]`. Establish `ev` using `hσ₁ T x z C₀ hC₀`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Rewrite `ev` using `[hr _ _ z C₀ hC₀, hr _ _ z C₀ hC₀, hψ, hψ, chV_inv, map_inv]`. Conclude with `(even_alg e₁ s₁ ev).trans (by rw [chV_add, map_mul])`. Establish `hκψ : κ = ψ + ψ`. Apply `SplitTorusHom.charUnit_injective (S := Sp k')` to reduce the goal to its premises. Establish `e : chV (𝟙 (splitTorus (Sp k') X)) κ = chV (𝟙 (splitTorus (Sp k') X)) (ψ + ψ)` using `unit_ext fun z _ => key _ _ z`.
-
-Establish `e'` using `congrArg Units.val e`. Rewrite `e'` using `[chV_val, chV_val, Over.id_left, Scheme.Hom.id_appTop, CommRingCat.hom_id, RingHom.id_apply, RingHom.id_apply]`. Then use the resulting hypothesis. Use `⟨ψ, fun T t z J hJ => ?_⟩` and prove the remaining obligations. Rewrite using `[σ.val_twist ψ _ hJ, σ.val_twist ψ _ hJ, hκ T t z J hJ, hκψ, chV_inv, chV_add, map_inv, map_mul]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises.
-
-Simplify using `only [ofMul_mul, ofMul_inv]`. Normalize the expressions using the abelian group laws.
+Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem exists_twist_even : ∀ (k k' : Type) [CommRing k] [CommRing k'], IsField k → IsField k' → ∀ (ρ : k →+* k') (G₀ : Over (Sp k)) [GrpObj G₀] [IsCommMonObj G₀] (G'₀ : Over (Sp k')) [GrpObj G'₀] [IsCommMonObj G'₀] (β₀ : G'₀.left ⟶ G₀.left) (hβ₀ : IsGrpPullback G'₀ G₀ (spMap ρ) β₀) (P₀ : GlobalTheory.UU.CP G₀) (P'₀ : GlobalTheory.UU.CP G'₀) (w₀ : LB.Iso P'₀.L.L (P₀.L.L.pull β₀)), GlobalTheory.UU.IsCPMap P'₀ P₀ (spMap ρ) β₀ hβ₀.1.w w₀ → ∀ (X : Type) [AddCommGroup X] [Module.Free ℤ X] [Module.Finite ℤ X] (i : splitTorus (Sp k) X ⟶ G₀) (i₁ : splitTorus (Sp k') X ⟶ G'₀), IsMonHom i → IsMonHom i₁ → GlobalTheory.UU.TorusCompat (spMap ρ) β₀ i₁ i → ∀ (σ : GlobalTheory.UU.CubTriv P₀.c i) (σ₁ : GlobalTheory.UU.CubTriv P'₀.c i₁), GlobalTheory.UU.CubTriv.Even (P := P'₀) σ₁ → ∃ χ : X, GlobalTheory.UU.CubTriv.Even (P := P₀) (σ.twist χ) := by
   intro k k' _ _ hk hk' ρ G₀ _ _ G'₀ _ _ β₀ hβ₀ P₀ P'₀ w₀ hm X _ _ _ i i₁ hi hi₁ hc σ σ₁ hσ₁

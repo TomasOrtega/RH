@@ -13,7 +13,7 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.G
 namespace GlobalTheory.RowAtSelf
 
 /- English proof (translation)
-Introduce `C _ _ V O _ _ dd Y d _ I0 _ p h Hc` and use `GlobalTheory.T.rawChart_tangent_maximalIdeal_of_nonDegenerate C V d _ _ (Y.rawSelf p) (GlobalTheory.RowLawSquare.rlaw_rawSelf C V O dd Y d I0 p) (GlobalTheory.T.hasGaugeAdjointLieProjectors_selfConjugatePlace C V O dd Y d I0 p) (GlobalTheory.T.nonDegenerate_formalBiextension_squa …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem rowCondition_two_selfConjugate_of_nonDegenerate : ∀ (C : Type) [Field C] [CharZero C] (V : VF C) (O : Type) [CommRing O] [StarRing O] (dd : ℕ) (Y : FBChart C V O dd) (d : ℕ) [NeZero d] (I0 : Type) [Fintype I0] (p : SelfData Y d I0), NDG Y → ∀ Hc : ∀ g, (Y.rawSelf p).CartHyp V g, RawChart.RankMaximalCondition Hc :=
   fun C _ _ V O _ _ dd Y d _ I0 _ p h Hc =>

@@ -8,19 +8,15 @@ import Development.AutomorphicArithmetic.CyclotomicBounds.RootsOfUnity.AutApprox
 open NumberField Formalism.HC KStar.Tree
 
 /- English proof (translation)
-Introduce `φ H l _ Ω _ _ _ v hv u hu k`. Use `haveI : CharZero Ω := charZero_of_injective_algebraMap (algebraMap H.E Ω).injective`. Use `haveI : IsScalarTower ℚ H.E Ω := IsScalarTower.of_algebraMap_eq' (Subsingleton.elim _ _)`. Use `haveI : IsAlgClosed Ω := IsAlgClosure.isAlgClosed H.E`. Use `haveI : Algebra.IsAlgebraic H.E Ω := IsAlgClosure.isAlgebraic`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Introduce a local definition for the expression.
 
-Use `haveI : Algebra.IsAlgebraic ℚ Ω := Algebra.IsAlgebraic.trans ℚ H.E Ω`. Use `haveI : IsAlgClosure ℚ Ω := ⟨inferInstance, inferInstance⟩`. Establish `hN : H.condN ≠ 0`. Take `⟨hq, hd, -⟩` from `H.hyp`. Conclude with `Nat.mul_ne_zero (Nat.mul_ne_zero H.QS_pos.ne' hq.ne_zero) hd.ne_zero`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Equip the data with the indicated structure.
 
-Use `haveI : NeZero (H.QS * H.q * H.d) := ⟨hN⟩`. Use `haveI : NeZero (((H.QS * H.q * H.d : ℕ)) : ℚ) := ⟨by exact_mod_cast hN⟩`. Use `haveI : IsGalois ℚ (CyclotomicField (H.QS * H.q * H.d) ℚ) := @IsCyclotomicExtension.isGalois {H.QS * H.q * H.d} ℚ (CyclotomicField (H.QS * H.q * H.d) ℚ) _ _ _ (CyclotomicField.isCyclotomicExtension (H.QS * H.q * H.d) ℚ)`. Use `letI : Algebra H.E (CyclotomicField (H.QS * H.q * H.d) ℚ) := H.cycEmb.toRingHom.toAlgebra`. Use `haveI : IsScalarTower ℚ H.E (CyclotomicField (H.QS * H.q * H.d) ℚ) := IsScalarTower.of_algebraMap_eq' (Subsingleton.elim _ _)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `haveI : Algebra.IsAlgebraic H.E (CyclotomicField (H.QS * H.q * H.d) ℚ) := Algebra.IsAlgebraic.tower_top (K := ℚ) H.E`. Set `ι : CyclotomicField (H.QS * H.q * H.d) ℚ →ₐ[H.E] Ω` to `IsAlgClosed.lift`. Set `ιQ : CyclotomicField (H.QS * H.q * H.d) ℚ →ₐ[ℚ] Ω` to `ι.restrictScalars ℚ`. Establish `hι : ∀ x : H.E, ιQ (H.cycEmb x) = algebraMap H.E Ω x` using `fun x => ι.commutes x`. Establish `hζ : IsPrimitiveRoot (ιQ H.cycZeta) H.condN` using `H.cycZeta_prim.map_of_injective ιQ.injective`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Take `⟨σ, hσζ, hσu⟩` from `UpperTheory.Mu.autApprox l Ω H.condN hN (ιQ H.cycZeta) hζ v u hu k`. Use `letI : Algebra (CyclotomicField (H.QS * H.q * H.d) ℚ) Ω := ιQ.toRingHom.toAlgebra`. Use `haveI : IsScalarTower ℚ (CyclotomicField (H.QS * H.q * H.d) ℚ) Ω := IsScalarTower.of_algebraMap_eq' (Subsingleton.elim _ _)`. Set `τ` to `σ.restrictNormal (CyclotomicField (H.QS * H.q * H.d) ℚ)`. Establish `hτ : ∀ y, ιQ (τ y) = σ (ιQ y)` using `fun y => AlgEquiv.restrictNormal_commutes σ _ y`.
-
-Establish `hτζ : τ H.cycZeta = H.cycZeta ^ ((v : ZMod H.condN).val)`. Establish `e : ιQ (τ H.cycZeta) = ιQ (H.cycZeta ^ ((v : ZMod H.condN).val))`. Rewrite using `[hτ, hσζ, map_pow]`. Conclude with `ιQ.injective e`. Establish `hfix : ∀ x : H.E, σ (algebraMap H.E Ω x) = algebraMap H.E Ω x`.
-
-Introduce `x`. Establish `h` using `H.art_spec v τ hτζ x`. Rewrite `h` using `[show H.art v = 1 from hv, map_one, AlgEquiv.one_apply]`. Rewrite using `[← hι, ← hτ, ← h]`. Conclude with `⟨{ σ with commutes' := hfix }, hσu⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Mu.hostApprox :
     ∀ (φ : Frame) (H : HostRaw φ) (l : ℕ) [Fact l.Prime] (Ω : Type) [Field Ω] [Algebra H.E Ω] [IsAlgClosure H.E Ω] (v : (ZMod H.condN)ˣ), H.art v = 1 → ∀ u : ℤ_[l]ˣ, (l : ℤ_[l]) ^ H.condN.factorization l ∣ (u : ℤ_[l]) - (((v : ZMod H.condN).val : ℕ) : ℤ_[l]) → ∀ k : ℕ, ∃ g : Ω ≃ₐ[H.E] Ω, (l : ℤ_[l]) ^ k ∣ ((cyc l H.E Ω g : ℤ_[l]ˣ) : ℤ_[l]) - u := by

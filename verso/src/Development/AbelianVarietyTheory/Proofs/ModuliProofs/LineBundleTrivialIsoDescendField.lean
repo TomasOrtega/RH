@@ -23,7 +23,7 @@ namespace FieldDescentGen
 variable {X₀ X : Scheme.{0}}
 
 /- English proof (translation)
-Introduce `_ hy` and use `mem_pull.1 hy`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem pull_le (M : LB X₀) (φ : X ⟶ X₀) (j : PUnit → M.ι) : (M.pull φ).U j ≤ φ ⁻¹ᵁ M.U (j PUnit.unit) :=
   fun _ hy => mem_pull.1 hy
@@ -45,9 +45,9 @@ def secPull (M : LB X₀) (φ : X ⟶ X₀) (s : M.Sec) : (M.pull φ).Sec where
     exact e
 
 /- English proof (translation)
-Take `⟨u, hu⟩` from `Out.TLinPf.glue L.U hL.cover (fun j => s.f j * ((t.s j)⁻¹).val) (fun i j => by`. Establish `e : res (inf_le_right : L.U i ⊓ L.U j ≤ L.U j) (t.s j)⁻¹ = L.g i j * res (inf_le_left : L.U i ⊓ L.U j ≤ L.U i) (t.s i)⁻¹`. Rewrite using `[map_inv, map_inv, ht i j, mul_inv, mul_inv_cancel_left]`. Establish `e' : (X.presheaf.map (homOfLE (inf_le_right : L.U i ⊓ L.U j ≤ L.U j)).op).hom ((t.s j)⁻¹).val = (L.g i j).val * (X.presheaf.map (homOfLE (inf_le_left : L.U i ⊓ L.U j ≤ L.U i)).op).hom ((t.s i)⁻¹).val` using `congrArg Units.val e`. Rewrite using `[map_mul, map_mul, s.compat i j, e']`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `ring)`. Conclude with `⟨u, fun j => by rw [hu j, _root_.mul_assoc, Units.inv_mul, _root_.mul_one]⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_ratio {L : LB X} (hL : L.IsLB) (t : L.Gen) (ht : t.IsGen) (s : L.Sec) :
     ∃ u : Γ(X, ⊤), ∀ j, s.f j =
@@ -64,9 +64,9 @@ theorem exists_ratio {L : LB X} (hL : L.IsLB) (t : L.Gen) (ht : t.IsGen) (s : L.
   exact ⟨u, fun j => by rw [hu j, _root_.mul_assoc, Units.inv_mul, _root_.mul_one]⟩
 
 /- English proof (translation)
-Use `RingedSpace.isUnit_of_isUnit_germ X₀.toLocallyRingedSpace.toRingedSpace U a fun x hx => ?_` and prove the remaining obligations. Take `⟨y, rfl⟩` from `φ.surjective x`. Establish `hy : y ∈ X.basicOpen ((φ.appLE U V h).hom a)`. Rewrite using `[X.basicOpen_of_isUnit ha]`. Conclude with `h' hx`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hy` using `[Scheme.basicOpen_appLE]`. Conclude with `(X₀.mem_basicOpen a _ hx).1 hy.2`.
+A detailed English derivation is pending.
 -/
 theorem isUnit_of_surjective (φ : X ⟶ X₀) [Surjective φ] {U : X₀.Opens} {V : X.Opens} (h : V ≤ φ ⁻¹ᵁ U)
     (h' : φ ⁻¹ᵁ U ≤ V) (a : Γ(X₀, U)) (ha : IsUnit ((φ.appLE U V h).hom a)) : IsUnit a := by
@@ -94,15 +94,15 @@ def chartDiv (M N : LB X₀) (φ : X ⟶ X₀) :
       (gm_pull_g M φ (𝟙 X) y _ _ (mem_pull.2 a.2) (mem_pull.2 a'.2))
 
 /- English proof (translation)
-Establish `hb : Function.Bijective p.appTop.hom` using `GlobalTheory.bijective_appTop_of_smooth_of_isProper_of_geometricallyConnected K X p (MorphismProperty.of_isPullback (P := @Smooth) H inferInstance) (MorphismProperty.of_isPullback (P := @IsProper) H inferInstance) (MorphismProperty.of_isPullback (P := @GeometricallyConnected) H i …`. Establish `hF : IsField Γ(X, ⊤)` using `((Scheme.ΓSpecIso (CommRingCat.of K)).symm.commRingCatIsoToRingEquiv.trans (RingEquiv.ofBijective p.appTop.hom hb)).symm.toMulEquiv.isField (Field.toIsField K)`. Establish `: Surjective φ` using `((GlobalTheory.FieldBaseChange.epi_and_isMonHom_iff K₀ K i).1 X₀ X p₀ p φ H).2.2.1`. Establish `hP` using `pull_isLB hM φ`. Set `ts : (M.pull φ).Sec` to `⟨fun j => (t.s j).val, fun a b => congrArg Units.val (ht a b)⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Take `⟨n, c, s, hs⟩` from `GlobalTheory.SectionsDescent.main K₀ K i X₀ X p₀ p φ M hM H ts`. Use `choose u hu using fun a => exists_ratio hP t ht (secPull M φ (s a))`. Establish `hne : ∃ a, u a ≠ 0`. Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `hF.nontrivial` as an intermediate fact. Use `one_ne_zero (Out.TLinPf.eq_local (M.pull φ).U hP.cover 1 0 fun j => ?_)` and prove the remaining obligations. Establish `h0 : (t.s j).val = 0`. Use `(hs j (pull_le M φ j)).trans (Finset.sum_eq_zero fun a _ => ?_)` and prove the remaining obligations. Establish `e : (φ.appLE _ _ (pull_le M φ j)).hom ((s a).f (j PUnit.unit)) = _` using `hu a j`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, hcon a, map_zero, zero_mul, mul_zero]`. Rewrite using `[map_one, map_zero, ← (t.s j).mul_inv, h0, zero_mul]`. Take `⟨a, ha⟩` from `hne`. Take `⟨v, hv⟩` from `hF.mul_inv_cancel ha`. Establish `hua : IsUnit (u a)` using `IsUnit.of_mul_eq_one v hv`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hunit : ∀ k, IsUnit ((s a).f k)` using `fun k => isUnit_of_surjective φ (pull_le M φ fun _ => k) (fun _ hy => mem_pull.2 hy) _ (by`. Establish `e : (φ.appLE _ _ (pull_le M φ fun _ => k)).hom ((s a).f k) = _` using `hu a fun _ => k`. Rewrite using `[e]`. Conclude with `(hua.map _).mul (Units.isUnit _))`. Conclude with `⟨⟨fun k => (hunit k).unit⟩, fun k l => Units.ext ((s a).compat k l)⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_gen {K₀ K : Type} [Field K₀] [Field K] (i : K₀ →+* K) (p₀ : X₀ ⟶ Sp K₀) (p : X ⟶ Sp K)
     (φ : X ⟶ X₀) [Smooth p₀] [IsProper p₀] [GeometricallyConnected p₀] (H : IsPullback φ p p₀ (spMap i))
@@ -144,7 +144,7 @@ end FieldDescentGen
 open FieldDescentGen in
 
 /- English proof (translation)
-Introduce `K₀ K _ _ i X₀ X p₀ p φ h₁ h₂ h₃ H`. Use `⟨fun M hM ⟨t, ht⟩ => exists_gen i p₀ p φ H M hM t ht, fun M N hM hN ⟨w, hw⟩ => ?_⟩` and prove the remaining obligations. Conclude with `exists_gen i p₀ p φ H (LB.div N M) (LB.isLB_div hN hM) _ (GtBaseChange.genPull_isGen (chartDiv M N φ) hw)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem lb_gen_iso_descend_field : ∀ (K₀ K : Type) [Field K₀] [Field K] (i : K₀ →+* K) (X₀ X : Scheme.{0}) (p₀ : X₀ ⟶ Sp K₀) (p : X ⟶ Sp K) (φ : X ⟶ X₀), Smooth p₀ → IsProper p₀ → GeometricallyConnected p₀ → IsPullback φ p p₀ (spMap i) → (∀ M : LB X₀, M.IsLB → (∃ t : (M.pull φ).Gen, t.IsGen) → ∃ t : M.Gen, t.IsGen) ∧ ∀ M N : LB X₀, M.IsLB → N.IsLB → LBIso (M.pull φ) (N.pull φ) → LBIso M N := by
   intro K₀ K _ _ i X₀ X p₀ p φ h₁ h₂ h₃ H

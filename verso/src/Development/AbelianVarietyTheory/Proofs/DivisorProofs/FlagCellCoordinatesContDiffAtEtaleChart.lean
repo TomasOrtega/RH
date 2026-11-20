@@ -16,9 +16,9 @@ namespace GlobalTheory.FlagCell2
 open GlobalTheory.Points GlobalTheory.ChartGlue
 
 /- English proof (translation)
-Establish `hO` using `isOpen_over c'.e (hS.inter (isOpen_ptsIn (p := Y.str) (σ := σ) W))`. Establish `hm` using `mem_over c'.e (S := S ∩ ptsIn Y.str σ W) hy ⟨hyS, hyW⟩`. Establish `hd : DifferentiableOn ℂ (ev Y.str σ W a ∘ c'.e.symm) (c'.e.target ∩ c'.e.symm ⁻¹' (S ∩ ptsIn Y.str σ W))` using `(c'.holo W a).mono fun v hv => ⟨hv.1, hv.2.2⟩`. Establish `h1 : ContDiffAt ℂ 2 (ev Y.str σ W a ∘ c'.e.symm) (c'.e y)` using `((ReciprocityTheory.L2DbarEstimates.contDiffOn_of_differentiableOn D _ _ hO hd).contDiffAt (hO.mem_nhds hm)).of_le (by norm_cast)`. Use `h1.congr_of_eventuallyEq ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `filter_upwards [hO.mem_nhds hm] with v hv`. Conclude with `hg _ hv.2.1`.
+A detailed English derivation is pending.
 -/
 theorem contDiffAt_chart_of_eqOn_ev {F : Type} [Field F] {Y : Var F} {σ : F →+* ℂ} {D : ℕ} (c' : AlgChart Y.str σ D)
     {g : CxPts Y.str σ → ℂ} {S : Set (CxPts Y.str σ)} (hS : IsOpen S) {W : Y.X.Opens} (a : Γ(Y.X, W))
@@ -35,13 +35,13 @@ theorem contDiffAt_chart_of_eqOn_ev {F : Type} [Field F] {Y : Var F} {σ : F →
   exact hg _ hv.2.1
 
 /- English proof (translation)
-Introduce `F _ σ X Y ι _ m E E' φ f hf hR c A u n ε x hx`. Take `⟨hcell, hsrc⟩` from `hx`. Establish `hreg` using `(isOpen_inCell_and_regAt F X Y ι m E E' φ f hR A u).2 _ hcell`. Use `set c' : AlgChart Y.str σ Y.dim := x.1.1`. Establish `hy : x.pt ∈ c'.e.source` using `x.2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `ContDiffAt ℂ 2 (cellMap ε f hf c u ∘ c'.e.symm) (c'.e x.pt)`. Use `contDiffAt_euclidean.2 fun a => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `ContDiffAt ℂ 2 ((fun z => cellMap ε f hf c u z a) ∘ c'.e.symm) (c'.e x.pt)`. Break down `hε : ε a with b | j` into its components or cases. Establish `hS : IsOpen (ptMap σ f hf ⁻¹' c.e.source)` using `c.e.open_source.preimage (PtsOver.continuous_map f hf _)`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `contDiffAt_chart_of_eqOn_ev c' hS (f.app c.U (c.x b)) (fun z hz => ?_) hy hsrc ?_` and prove the remaining obligations. Simplify using `only [cellMap, pt, hε, Sum.elim_inl]`. Rewrite using `[c.apply_eq _ hz b, ev_app f hf]`. Both sides reduce to the same expression. Rewrite using `[mem_ptsIn]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `mem_ptsIn.1 (c.source_subset hsrc)`. Take `⟨U, hU, w, hw⟩` from `(hreg j).exists_fnOf`. Use `contDiffAt_chart_of_eqOn_ev c' (isOpen_ptsIn U) w (fun z hz => ?_) hy (mem_ptsIn.2 hU) (mem_ptsIn.2 hU)` and prove the remaining obligations. Simplify using `only [cellMap, pt, hε, Sum.elim_inr]`. Rewrite using `[← hw, ratVal_fnOf hz]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cellMap_contDiffAt : ∀ (F : Type) [Field F] (σ : F →+* ℂ) (X Y : Var F) (ι : Type) [Fintype ι] (m : ι → ℕ) (E : Fr (ratOf X) m 0) (E' : Fr (ratOf Y) m m) (φ : X.Fn →ₐ[F] Y.Fn) (f : Y.X ⟶ X.X) (hf : f ≫ X.str = Y.str), Refines E E' φ f → ∀ (c : AlgChart X.str σ X.dim) (A : Mat m X.Fn) (u : Cell m → Y.Fn), ∀ (n : ℕ) (ε : Fin n ≃ Fin X.dim ⊕ Cell m) (x : (atlas Y σ).Pt), x.pt ∈ cellSet E E' φ f hf c A u → ContDiffAt ℂ 2 (cellMap ε f hf c u ∘ x.ch.symm) x.crd := by
   intro F _ σ X Y ι _ m E E' φ f hf hR c A u n ε x hx

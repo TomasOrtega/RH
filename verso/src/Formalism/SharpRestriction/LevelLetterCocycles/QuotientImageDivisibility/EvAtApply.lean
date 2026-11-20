@@ -23,7 +23,7 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     (F : Type) [Field F] [Algebra O F]
 
 /- English proof (translation)
-The claim follows from `root_Zp PD.p (s + 1) (by rw [add_sub_cancel]; exact rs_pow_N F PD.p s ζ)`.
+A detailed English derivation is pending.
 -/
 theorem rs_root (s : ℕ) (ζ : Rs F PD.p s) :
     Polynomial.aeval ((ζ : F) - 1) (Zp (O := O) PD.p (s + 1)) = 0 :=
@@ -40,21 +40,21 @@ theorem evAt_apply (a : ZMod n) (s : ℕ) (ζ : Rs F PD.p s) (x : LetA O n) :
     evAt hlm F a s ζ x = evR PD.p (s + 1) hlm (rs_root F s ζ) (x a) := rfl
 
 /- English proof (translation)
-Take `⟨w, hw⟩` from `hR.2.2.2.2.1`. Rewrite `hw` using `[Formalism.MainNotions.N.Pv.LocalLengthBound.eat_qp]`. Establish `hq0 : W.q₀ = (w : LetA O n) 0 * (W.π₀₁ + ((PD.p : ℕ) : PowerSeries O))`. Use `congrFun hw 0` as an intermediate fact. Simplify `this` using `[LocWach.q, Formalism.MainNotions.LiftingTheory.qp, LocWach.π₀]`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hwu : evR PD.p (s + 1) hlm hy ((w : LetA O n) 0) ≠ 0`. Establish `hu : IsUnit ((w : LetA O n) 0)` using `(w.isUnit.map (Pi.evalMonoidHom (fun _ => PowerSeries O) 0))`. Conclude with `(hu.map (evR PD.p (s + 1) hlm hy)).ne_zero`. Establish `hXq : PowerSeries.X * W.q₀ = (1 + PowerSeries.X) ^ PD.p - 1`. Rewrite using `[← W.φ₀_X, Formalism.MainNotions.UnusedSlot80.LG.φ₀_X_eq W]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hev : y * evR PD.p (s + 1) hlm hy W.q₀ = (1 + y) ^ PD.p - 1`. Use `congrArg (evR PD.p (s + 1) hlm hy) hXq` as an intermediate fact. Rewrite `this` using `[map_mul, evR_X, map_sub, evR_onePow, map_one]`. Then use the resulting hypothesis. Establish `hsplit : evR PD.p (s + 1) hlm hy W.q₀ = evR PD.p (s + 1) hlm hy ((w : LetA O n) 0) * evR PD.p (s + 1) hlm hy (W.π₀₁ + ((PD.p : ℕ) : PowerSeries O))`. Rewrite using `[hq0, map_mul]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h0`. Establish `hq : evR PD.p (s + 1) hlm hy W.q₀ = 0` using `by rw [hsplit, h0, mul_zero]`. Use `⟨fun hy0 => ?_, ?_⟩` and prove the remaining obligations. Establish `hcc` using `evR_eq_cc PD.p (s + 1) hlm hy hy0 W.q₀`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc : PowerSeries.constantCoeff W.q₀ = ((PD.p : ℕ) : O)`. Use `congrArg (PowerSeries.coeff 1) hXq` as an intermediate fact. Rewrite `this` using `[PowerSeries.coeff_succ_X_mul, PowerSeries.coeff_zero_eq_constantCoeff_apply]`. Rewrite using `[this]`. Establish `e : ((1 + PowerSeries.X) ^ PD.p - 1 : PowerSeries O) = (((1 + Polynomial.X) ^ PD.p - 1 : Polynomial O) : PowerSeries O)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[Polynomial.coe_pow]`. Rewrite using `[e, Polynomial.coeff_coe, Polynomial.coeff_sub, Polynomial.coeff_one, add_comm, Polynomial.coeff_X_add_one_pow]`. Simplify using the standard rewrite rules. Rewrite `hcc` using `[hq, hc, map_natCast]`. Conclude with `(Nat.cast_ne_zero.2 (hpF.out.ne_zero)) hcc.symm`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `hev` as an intermediate fact. Rewrite `this` using `[hq, mul_zero]`. Conclude with `(sub_eq_zero.1 this.symm)`. Introduce and unpack `⟨hy0, hyp⟩`. Establish `hq : evR PD.p (s + 1) hlm hy W.q₀ = 0`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `hev` as an intermediate fact. Rewrite `this` using `[hyp, sub_self]`. Conclude with `(mul_eq_zero.1 this).resolve_left hy0`. Rewrite `hq` using `[hsplit]`. Conclude with `(mul_eq_zero.1 hq).resolve_left hwu`.
+A detailed English derivation is pending.
 -/
 theorem ev_qp (hR : Formalism.MainNotions.UnusedSlot80.ToolsR.RingP W) [CharZero F] (s : ℕ) {y : F}
     (hy : Polynomial.aeval y (Zp (O := O) PD.p (s + 1)) = 0) :

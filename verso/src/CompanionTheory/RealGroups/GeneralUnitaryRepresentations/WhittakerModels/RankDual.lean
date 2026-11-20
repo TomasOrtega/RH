@@ -9,9 +9,9 @@ open GlobalTheory.PRep Module
 namespace CompanionTheory.rg.gu.whit
 
 /- English proof (translation)
-Distinguish the cases in `hf : Module.Finite ℂ W`. Rewrite using `[Module.dual_rank_eq, Cardinal.lift_id]`. Establish `h0 : Cardinal.aleph0 ≤ Module.rank ℂ W` using `not_lt.1 (fun h => hf (rank_lt_aleph0_iff.1 h))`. Establish `h1` using `rank_lt_rank_dual h0`. Prove the components needed by the constructor for the conclusion.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Introduce `h`. Conclude with `absurd (h0.trans h) (not_le.2 Cardinal.one_lt_aleph0)`. Introduce `h`. Conclude with `absurd ((h0.trans h1.le).trans h) (not_le.2 Cardinal.one_lt_aleph0)`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem rank_le_one_iff_dual (W : Type) [AddCommGroup W] [Module ℂ W] :
     Module.rank ℂ W ≤ 1 ↔ Module.rank ℂ (Module.Dual ℂ W) ≤ 1 := by
@@ -26,13 +26,13 @@ theorem rank_le_one_iff_dual (W : Type) [AddCommGroup W] [Module ℂ W] :
       exact absurd ((h0.trans h1.le).trans h) (not_le.2 Cardinal.one_lt_aleph0)
 
 /- English proof (translation)
-Establish `hE : GroundTheory.Automorphic.Whittaker.equivariantFunctionals ρ (fun u : N => ((θ u : ℂˣ) : ℂ)) = (twKer ρ N θ).dualAnnihilator`. Use extensionality with `ℓ`. Rewrite using `[Submodule.mem_dualAnnihilator]`. Prove the components needed by the constructor for the conclusion. Introduce `h w hw`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `hw using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨n, v, rfl⟩` from `hx`. Rewrite using `[map_sub, map_smul, h n v, smul_eq_mul, sub_self]`. Consider the case `zero => simp`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `add x y _ _ hx hy => rw [map_add, hx, hy, add_zero]`. Consider the case `smul a x _ hx => rw [map_smul, hx, smul_zero]`. Introduce `h n v`. Use `h _ (Submodule.subset_span ⟨n, v, rfl⟩)` as an intermediate fact. Rewrite `this` using `[map_sub, map_smul, smul_eq_mul, sub_eq_zero]`.
+Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this`. Rewrite using `[rank_le_one_iff_dual, hE, ← (Submodule.dualQuotEquivDualAnnihilator _).rank_eq]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rank_twJacquet_le_one_iff {G V : Type} [Group G] [AddCommGroup V] [Module ℂ V]
     (ρ : Representation ℂ G V) (N : Subgroup G) (θ : N →* ℂˣ) :

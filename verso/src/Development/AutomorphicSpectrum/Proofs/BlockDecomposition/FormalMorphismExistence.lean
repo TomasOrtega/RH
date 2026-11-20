@@ -11,7 +11,7 @@ open CategoryTheory CategoryTheory.Limits AlgebraicGeometry ReciprocityTheory.Ch
 namespace GlobalTheory.CompanionTheory.MorphismAlgebraisation
 
 /- English proof (translation)
-The claim follows from `IsPullback.of_bot (by rw [hA, hB]; exact IsPullback.id_vert q) hc.symm h`.
+A detailed English derivation is pending.
 -/
 lemma isPullback_of_sections {C : Type*} [Category C] {A A' B B' : C} {p : A ⟶ B} {q : A' ⟶ B'}
     {rA : A ⟶ A'} {rB : B ⟶ B'} {sA : A' ⟶ A} {sB : B' ⟶ B} (h : IsPullback p rA rB q)
@@ -28,19 +28,19 @@ def retr (h : IsPullback b y hX t) : pullback (pullback.fst hX hZ ≫ hX) t ⟶ 
     (by simp only [Category.assoc]; exact pullback.condition)
 
 /- English proof (translation)
-The claim follows from `h.lift_fst _ _ _`.
+A detailed English derivation is pending.
 -/
 lemma retr_fst (h : IsPullback b y hX t) :
     retr hX hZ t h ≫ b = pullback.fst _ t ≫ pullback.fst hX hZ := h.lift_fst _ _ _
 
 /- English proof (translation)
-The claim follows from `h.lift_snd _ _ _`.
+A detailed English derivation is pending.
 -/
 lemma retr_snd (h : IsPullback b y hX t) : retr hX hZ t h ≫ y = pullback.snd _ t :=
   h.lift_snd _ _ _
 
 /- English proof (translation)
-The claim follows from `IsPullback.of_bot (by rw [retr_snd]; exact IsPullback.of_hasPullback _ _) (retr_fst hX hZ t h).symm h`.
+A detailed English derivation is pending.
 -/
 lemma isPullback_retr (h : IsPullback b y hX t) :
     IsPullback (pullback.fst (pullback.fst hX hZ ≫ hX) t) (retr hX hZ t h)
@@ -54,7 +54,7 @@ def graph (h : IsPullback b y hX t) (f : Y ⟶ Z) (hf : f ≫ hZ = y ≫ t) :
 
 @[reassoc (attr := simp)]
 /- English proof (translation)
-Rewrite using `[graph, pullback.lift_fst_assoc, pullback.lift_fst]`. Use the proof step `@[reassoc (attr := simp)]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma graph_fst_fst (h : IsPullback b y hX t) (f : Y ⟶ Z) (hf : f ≫ hZ = y ≫ t) :
     graph hX hZ t h f hf ≫ pullback.fst _ t ≫ pullback.fst hX hZ = b := by
@@ -62,7 +62,7 @@ lemma graph_fst_fst (h : IsPullback b y hX t) (f : Y ⟶ Z) (hf : f ≫ hZ = y �
 
 @[reassoc (attr := simp)]
 /- English proof (translation)
-Rewrite using `[graph, pullback.lift_fst_assoc, pullback.lift_snd]`. Use the proof step `@[reassoc (attr := simp)]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma graph_fst_snd (h : IsPullback b y hX t) (f : Y ⟶ Z) (hf : f ≫ hZ = y ≫ t) :
     graph hX hZ t h f hf ≫ pullback.fst _ t ≫ pullback.snd hX hZ = f := by
@@ -70,14 +70,14 @@ lemma graph_fst_snd (h : IsPullback b y hX t) (f : Y ⟶ Z) (hf : f ≫ hZ = y �
 
 @[reassoc (attr := simp)]
 /- English proof (translation)
-Rewrite using `[graph, pullback.lift_snd]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma graph_snd (h : IsPullback b y hX t) (f : Y ⟶ Z) (hf : f ≫ hZ = y ≫ t) :
     graph hX hZ t h f hf ≫ pullback.snd _ t = y := by
   rw [graph, pullback.lift_snd]
 
 /- English proof (translation)
-Apply `h.hom_ext` to reduce the goal to its premises. Simplify using `[retr_fst]`. Simplify using `[retr_snd]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 lemma graph_retr (h : IsPullback b y hX t) (f : Y ⟶ Z) (hf : f ≫ hZ = y ≫ t) :
     graph hX hZ t h f hf ≫ retr hX hZ t h = 𝟙 Y := by
@@ -86,7 +86,7 @@ lemma graph_retr (h : IsPullback b y hX t) (f : Y ⟶ Z) (hf : f ≫ hZ = y ≫ 
   · simp [retr_snd]
 
 /- English proof (translation)
-Establish `: IsSeparated (retr hX hZ t h)` using `MorphismProperty.of_isPullback (P := @IsSeparated) (isPullback_retr hX hZ t h) inferInstance`. Establish `: IsClosedImmersion (graph hX hZ t h f hf ≫ retr hX hZ t h)`. Rewrite using `[graph_retr]`. Use `infer_instance`. Conclude with `IsClosedImmersion.of_comp _ (retr hX hZ t h)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma isClosedImmersion_graph [IsSeparated hZ] (h : IsPullback b y hX t) (f : Y ⟶ Z)
     (hf : f ≫ hZ = y ≫ t) : IsClosedImmersion (graph hX hZ t h f hf) := by
@@ -97,13 +97,13 @@ lemma isClosedImmersion_graph [IsSeparated hZ] (h : IsPullback b y hX t) (f : Y 
   exact IsClosedImmersion.of_comp _ (retr hX hZ t h)
 
 /- English proof (translation)
-Use `set m := pullback.map (pullback.fst hX hZ ≫ hX) t (pullback.fst hX hZ ≫ hX) t' (𝟙 _) τ (𝟙 _) (by simp) (by simp [hτ]) with hm`. Establish `m_fst : m ≫ pullback.fst _ t' = pullback.fst _ t`. Rewrite using `[hm, pullback.map, pullback.lift_fst, Category.comp_id]`. Establish `m_snd : m ≫ pullback.snd _ t' = pullback.snd _ t ≫ τ`. Rewrite using `[hm, pullback.map, pullback.lift_snd]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `sq : m ≫ retr hX hZ t' h' = retr hX hZ t h ≫ β`. Apply `h'.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, Category.assoc, hβ, retr_fst, retr_fst, reassoc_of% m_fst]`. Rewrite using `[Category.assoc, Category.assoc, hy, retr_snd, m_snd, reassoc_of% (retr_snd hX hZ t h)]`. Establish `h0 : IsPullback m (retr hX hZ t h) (retr hX hZ t' h') β` using `IsPullback.of_right (h₁₂ := pullback.fst _ t') (h₂₂ := b') (v₁₃ := pullback.fst hX hZ) (by rw [m_fst, hβ]; exact isPullback_retr hX hZ t h) sq (isPullback_retr hX hZ t' h')`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `isPullback_of_sections h0 (graph_retr hX hZ t h f hf) (graph_retr hX hZ t' h' f' hf') ?_` and prove the remaining obligations. Apply `pullback.hom_ext` to reduce the goal to its premises. Apply `pullback.hom_ext` to reduce the goal to its premises. Simplify using `only [Category.assoc, m_fst, graph_fst_fst, graph_fst_fst_assoc, hβ]`. Simplify using `only [Category.assoc, m_fst, graph_fst_snd, graph_fst_snd_assoc, hff]`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [Category.assoc, m_snd, graph_snd, graph_snd_assoc, hy]`.
+A detailed English derivation is pending.
 -/
 lemma isPullback_graph [IsSeparated hZ] {Se' Y' : Scheme.{0}} (t' : Se' ⟶ S) {b' : Y' ⟶ X} {y' : Y' ⟶ Se'}
     (τ : Se ⟶ Se') (hτ : τ ≫ t' = t) (h : IsPullback b y hX t) (h' : IsPullback b' y' hX t')
@@ -135,29 +135,25 @@ lemma isPullback_graph [IsSeparated hZ] {Se' Y' : Scheme.{0}} (t' : Se' ⟶ S) {
 end Graph
 
 /- English proof (translation)
-Introduce `hGE hIso R _ _ I hI X Z hXp hZs hZf hZq Y β b hb hβ f hf hfβ`. Set `P : Over (Spec (CommRingCat.of R))` to `Over.mk (pullback.fst X.hom Z.hom ≫ X.hom)`. Establish `hPs : IsSeparated P.hom` using `by dsimp only [P, Over.mk_hom]; infer_instance`. Establish `hPf : LocallyOfFiniteType P.hom` using `by dsimp only [P, Over.mk_hom]; infer_instance`. Establish `hPq : QuasiCompact P.hom` using `by dsimp only [P, Over.mk_hom]; infer_instance`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hth : ∀ e, IsClosedImmersion (thick R I e)` using `fun e => IsClosedImmersion.spec_of_surjective _ Ideal.Quotient.mk_surjective`. Establish `hy : ∀ e, β e ≫ (Y (e + 1)).hom = (Y e).hom ≫ thickTrans R I e` using `fun e => by`. Rewrite using `[← cancel_mono (thick R I (e + 1)), Category.assoc, Category.assoc, thickTrans_comp, ← (hb (e + 1)).w, ← (hb e).w, ← Category.assoc, hβ]`. Set `i : ∀ e, (Y e).left ⟶ (thickObj R I e P).left` to `fun e => graph X.hom Z.hom (thick R I e) (hb e) (f e) (hf e)`. Establish `hi : ∀ e, IsClosedImmersion (i e)` using `fun e => isClosedImmersion_graph X.hom Z.hom (thick R I e) (hb e) (f e) (hf e)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hiβ : ∀ e, IsPullback (β e) (i e) (i (e + 1)) (thickMap R I e P)` using `fun e => isPullback_graph X.hom Z.hom (thick R I e) (thick R I (e + 1)) (thickTrans R I e) (thickTrans_comp R I e) (hb e) (hb (e + 1)) (β e) (hβ e) (hy e) (f e) (f (e + 1)) (hf e) (hf (e + 1)) (hfβ e)`. Establish `hisnd : ∀ e, i e ≫ pullback.snd P.hom (thick R I e) = (Y e).hom` using `fun e => graph_snd X.hom Z.hom (thick R I e) (hb e) (f e) (hf e)`. Establish `hi0 : IsProper (i 0 ≫ (thickObj R I 0 P).hom)`. Establish `h1 : i 0 ≫ (thickObj R I 0 P).hom = (Y 0).hom` using `hisnd 0`. Rewrite using `[h1]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `MorphismProperty.of_isPullback (P := @IsProper) (hb 0) hXp`. Take `⟨C', j, b', hj, hjp, hpb, hb'⟩` from `hGE R I hI P hPs hPf hPq (fun e => (Y e).left) i β hi hiβ hi0`. Set `Co : Over (Spec (CommRingCat.of R))` to `Over.mk (j ≫ P.hom)`. Set `p : Co ⟶ X` to `Over.homMk (j ≫ pullback.fst X.hom Z.hom) (by simp [Co, P])`. Establish `hpl : p.left = j ≫ pullback.fst X.hom Z.hom` using `rfl`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpp : IsProper p.left`. Establish `h1 : IsProper (p.left ≫ X.hom)`. Establish `h2 : p.left ≫ X.hom = j ≫ P.hom` using `by simp [hpl, P]`. Rewrite using `[h2]`. Conclude with `hjp`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `IsProper.of_comp _ X.hom`. Establish `hC : ∀ e, IsPullback (b' e) (Y e).hom Co.hom (thick R I e)` using `fun e => by`. Establish `h1` using `(hpb e).paste_vert (IsPullback.of_hasPullback P.hom (thick R I e))`. Rewrite `h1` using `[hisnd e]`. Conclude with `h1`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hbe : ∀ e, b' e ≫ p.left = b e` using `fun e => by`. Establish `h1` using `(hpb e).w`. Rewrite using `[hpl, reassoc_of% h1]`. Conclude with `graph_fst_fst X.hom Z.hom (thick R I e) (hb e) (f e) (hf e)`. Establish `hiso : ∀ e, IsIso ((Over.pullback (thick R I e)).map p).left` using `fun e => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `key : (hC e).isoPullback.hom ≫ ((Over.pullback (thick R I e)).map p).left = (hb e).isoPullback.hom`. Establish `m1 : ((Over.pullback (thick R I e)).map p).left ≫ pullback.fst X.hom (thick R I e) = pullback.fst Co.hom (thick R I e) ≫ p.left` using `pullback.lift_fst _ _ _`. Establish `m2 : ((Over.pullback (thick R I e)).map p).left ≫ pullback.snd X.hom (thick R I e) = pullback.snd Co.hom (thick R I e)` using `pullback.lift_snd _ _ _`. Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, m1, IsPullback.isoPullback_hom_fst_assoc, hbe, IsPullback.isoPullback_hom_fst]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Category.assoc, m2, IsPullback.isoPullback_hom_snd, IsPullback.isoPullback_hom_snd]`. Establish `h1 : IsIso ((hC e).isoPullback.hom ≫ ((Over.pullback (thick R I e)).map p).left)`. Rewrite using `[key]`. Use `infer_instance`. Conclude with `IsIso.of_isIso_comp_left (hC e).isoPullback.hom _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hp : IsIso p` using `hIso R I hI X Co p hXp hpp hiso`. Establish `hl : IsIso p.left` using `inferInstanceAs (IsIso ((Over.forget _).map p))`. Establish `hz : j ≫ pullback.snd X.hom Z.hom ≫ Z.hom = p.left ≫ X.hom`. Rewrite using `[hpl, Category.assoc, pullback.condition]`. Use `⟨Over.homMk (inv p.left ≫ j ≫ pullback.snd X.hom Z.hom) ?_, fun e => ?_⟩` and prove the remaining obligations.
-
-Simplify using `[hz]`. Establish `h1` using `(hpb e).w`. Establish `h2 : b' e ≫ j ≫ pullback.snd X.hom Z.hom = f e`. Rewrite using `[reassoc_of% h1]`. Conclude with `graph_fst_snd X.hom Z.hom (thick R I e) (hb e) (f e) (hf e)`.
-
-Simplify using `only [Over.homMk_left]`. Rewrite using `[← hbe e, Category.assoc, IsIso.hom_inv_id_assoc, h2]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_hom_of_thickenings : GEClosed → IsoOfThick →
   ∀ (R : Type) [CommRing R] [IsNoetherianRing R] (I : Ideal R), IsAdicComplete I R →

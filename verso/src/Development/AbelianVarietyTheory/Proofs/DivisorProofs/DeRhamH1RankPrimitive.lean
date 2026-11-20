@@ -23,11 +23,11 @@ noncomputable section
 namespace GlobalTheory.AbCoh
 
 /- English proof (translation)
-Establish `hcl` using `GlobalTheory.T.abelianScheme_globalOneForms_closed R A g hA hs`. Establish `h0` using `(GlobalTheory.T.abelianScheme_oneFormFrame_and_square R A g hA hs).2.1`. Establish `hinj : Function.Injective (clAll (OAff A.hom) hcl)`. Unfold `clAll`. Conclude with `(ofForm_injective_of_H0Const R _ _ h0).comp (LinearEquiv.ofTop _ hcl).symm.injective`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Establish `hex : Function.Exact (clAll (OAff A.hom) hcl) (toHO1 A.hom)`. Rewrite using `[LinearMap.exact_iff]`. Express the relevant statement in the definitionally equal form `Fil1 (OAff A.hom) = _`. Rewrite using `[Fil1_eq_range]`. Unfold `clAll`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[LinearMap.range_comp, LinearEquiv.range, Submodule.map_top]`. Use `(GlobalTheory.T.fgProjectiveConstantRank_extension_and_prod).1 R _ _ _ g g _ _ hinj (GlobalTheory.T.de_rham_to_structure_h1_surjective R A g hA hs) hex (GlobalTheory.T.abelianScheme_global_oneForms_projective_rank R A g hA hs) (GlobalTheory.T.abelian_structure_cohomology_statemen …` as an intermediate fact. Rewrite using `[two_mul]` and apply the resulting hypothesis.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem fp_HH1 (R : Type) [CommRing R] (A : Over (Sp R)) [GrpObj A] (g : ℕ) (hA : IsAbelianScheme A)
     (hs : SmoothOfRelativeDimension g A.hom) : FP R (HH1 A.hom) (2 * g) := by
@@ -47,15 +47,13 @@ theorem fp_HH1 (R : Type) [CommRing R] (A : Over (Sp R)) [GrpObj A] (g : ℕ) (h
   rwa [two_mul]
 
 /- English proof (translation)
-Introduce `R _ A _ g hA hs`. Use `⟨fp_HH1 R A g hA hs, fun x ↦ ?_⟩` and prove the remaining obligations. Take `⟨-, -, hAA, hsAA⟩` from `GlobalTheory.T.abelianScheme_oneFormFrame_and_square R A g hA hs`. Establish `ax` using `(GlobalTheory.T.grpObj_pullback_axes_cohomology_projections R A).2.2`. Use `set i₁ : A ⟶ A ⊗ A := lift (𝟙 A) (toUnit A ≫ η[A])`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Use `set i₂ : A ⟶ A ⊗ A := lift (toUnit A ≫ η[A]) (𝟙 A)`. Set `f : HH1 A.hom × HH1 A.hom →ₗ[R] HH1 (A ⊗ A).hom` to `(deRhamH1Pullback (fst A A)).coprod (deRhamH1Pullback (snd A A))`. Set `r : HH1 (A ⊗ A).hom →ₗ[R] HH1 A.hom × HH1 A.hom` to `(deRhamH1Pullback i₁).prod (deRhamH1Pullback i₂)`. Establish `hrf : ∀ p, r (f p) = p`. Introduce and unpack `⟨a, b⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `show (deRhamH1Pullback i₁ (deRhamH1Pullback (fst A A) a + deRhamH1Pullback (snd A A) b), deRhamH1Pullback i₂ (deRhamH1Pullback (fst A A) a + deRhamH1Pullback (snd A A) b)) = (a, b)`. Rewrite using `[map_add, map_add, (ax a).1, (ax b).2.1, (ax a).2.2.2.1, (ax b).2.2.2.2.1, add_zero, zero_add]`. Establish `hM : FP R (HH1 A.hom × HH1 A.hom) (2 * (g + g))`. Use `(GlobalTheory.T.fgProjectiveConstantRank_extension_and_prod).2 R _ _ _ _ (fp_HH1 R A g hA hs) (fp_HH1 R A g hA hs)` as an intermediate fact. Rewrite `this` using `[← mul_add]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hbij` using `GlobalTheory.T.bijective_of_split_injective_fgProjectiveConstantRank R _ _ _ hM (fp_HH1 R (A ⊗ A) (g + g) hAA hsAA) f r hrf`. Take `⟨p, hp⟩` from `hbij.2 (deRhamH1Pullback μ[A] x - deRhamH1Pullback (fst A A) x - deRhamH1Pullback (snd A A) x)`. Establish `hry : r (deRhamH1Pullback μ[A] x - deRhamH1Pullback (fst A A) x - deRhamH1Pullback (snd A A) x) = 0` using `by show (deRhamH1Pullback i₁ (deRhamH1Pullback μ[A] x - deRhamH1Pullback (fst A A) x - deRhamH1Pullback (snd A A) x), deRhamH1Pullback i₂ (deRhamH1Pullback μ[A] x - deRhamH1Pullback (fst A A) x - deRhamH1Pullback (snd A A) x)) = (0, 0)`. Rewrite using `[map_sub, map_sub, map_sub, map_sub, (ax x).1, (ax x).2.1, (ax x).2.2.1, (ax x).2.2.2.1, (ax x).2.2.2.2.1, (ax x).2.2.2.2.2, sub_self, sub_zero, sub_zero, sub_self]`. Establish `hp0 : p = 0` using `by rw [← hrf p, hp, hry]`.
-
-Establish `h0 : deRhamH1Pullback μ[A] x - deRhamH1Pullback (fst A A) x - deRhamH1Pullback (snd A A) x = 0` using `by rw [← hp, hp0, map_zero]`. Rewrite `h0` using `[sub_sub, sub_eq_zero]`. Conclude with `h0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rank_prim_HH1 : ∀ (R : Type) [CommRing R] (A : Over (Sp R)) [GrpObj A] (g : ℕ), IsAbelianScheme A →
     SmoothOfRelativeDimension g A.hom → FP R (HH1 A.hom) (2 * g) ∧ DeRhamH1Primitive A := by

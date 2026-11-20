@@ -9,19 +9,17 @@ namespace GlobalTheory
 namespace SplitLevel
 
 /- English proof (translation)
-Use `Fact.mk hp` as an intermediate fact. Take `⟨r, hr⟩` from `ZMod.isSquare_of_jacobiSym_eq_one hj`. Establish `h2 : (2 : ZMod p) ≠ 0`. Introduce `h`. Establish `h' : ((2 : ℕ) : ZMod p) = 0` using `by exact_mod_cast h`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `h'` using `[ZMod.natCast_eq_zero_iff]`. Conclude with `hp2 ((Nat.prime_dvd_prime_iff_eq hp Nat.prime_two).1 h')`. Use `set h := (2 : ZMod p)⁻¹`. Establish `hh : 2 * h = 1` using `mul_inv_cancel₀ h2`. Establish `e4 : (4 : ZMod p) * (m : ZMod p) = (d : ZMod p) + 1`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Extract witnesses or component facts from the available result.
 
-Conclude with `congrArg (Nat.cast : ℕ → ZMod p) hm` after adjusting the coercions. Move the coercions through the operations in `at hr`. Take `⟨c, hc⟩` from `ZMod.intCast_surjective ((1 + r) * h)`. Establish `hdv : (p : ℤ) ∣ c ^ 2 - c + m`. Use `(ZMod.intCast_zmod_eq_zero_iff_dvd _ p).1 ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. Reduce the conclusion to the remaining proof obligations.
 
-Move the coercions through the operations in `[hc]`. Take the linear combination `(-h ^ 2) * hr + h ^ 2 * e4 + ((1 + r) * h - (m : ZMod p) * (2 * h + 1)) * hh`. Use `⟨c, hdv, ?_⟩` and prove the remaining obligations. Apply `IsCoprime.symm` to reduce the goal to its premises. Rewrite using `[Prime.coprime_iff_not_dvd (Nat.prime_iff_prime_int.mp hp)]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `hdiv`. Establish `e : (4 : ℤ) * (m : ℤ) = (d : ℤ) + 1` using `by exact_mod_cast hm`. Establish `hd : -(d : ℤ) = (1 - 2 * c) ^ 2 - 4 * (c ^ 2 - c + m)`. Take the linear combination `e`. Establish `hpd : (p : ℤ) ∣ -(d : ℤ)`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hd]`. Conclude with `dvd_sub (dvd_pow hdiv two_ne_zero) (Dvd.dvd.mul_left hdv 4)`. Establish `h0 : jacobiSym (-(d : ℤ)) p = 0`. Rewrite using `[← jacobiSym.legendreSym.to_jacobiSym, legendreSym.eq_zero_iff]`. Conclude with `(ZMod.intCast_zmod_eq_zero_iff_dvd _ p).2 hpd`.
-
-Rewrite `hj` using `[h0]`. Conclude with `absurd hj (by decide)`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_root {p d m : ℕ} (hp : p.Prime) (hp2 : p ≠ 2) (hm : 4 * m = d + 1)
     (hj : jacobiSym (-(d : ℤ)) p = 1) :
@@ -62,7 +60,7 @@ end SplitLevel
 
 open NumberField Pointwise in
 /- English proof (translation)
-Rewrite `h`, the goal using `[Ideal.isCoprime_iff_sup_eq]`. Conclude with `top_le_iff.1 (by rw [← h]; exact sup_le_sup hac hbd)`.
+Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem isCoprime_of_le_of_le {R : Type*} [CommRing R] {a b c d : Ideal R}
     (h : IsCoprime a b) (hac : a ≤ c) (hbd : b ≤ d) : IsCoprime c d := by
@@ -71,7 +69,7 @@ private theorem isCoprime_of_le_of_le {R : Type*} [CommRing R] {a b c d : Ideal 
 
 open NumberField Pointwise in
 /- English proof (translation)
-The claim follows from `le_antisymm (Ideal.span_mono fun a ha => ⟨Ideal.subset_span ha, hS ha⟩) (Ideal.span_le.2 fun _ ha => ha.1)`.
+A detailed English derivation is pending.
 -/
 private theorem span_eq_span_inter_subalgebra {R : Type*} [CommRing R] (A : Subalgebra ℤ R)
     (S : Set R) (hS : S ⊆ A) :
@@ -81,9 +79,9 @@ private theorem span_eq_span_inter_subalgebra {R : Type*} [CommRing R] (A : Suba
 
 open NumberField Pointwise in
 /- English proof (translation)
-Establish `hsub : ({a | a ∈ I ∧ a ∈ A} * {a | a ∈ J ∧ a ∈ A} : Set R) ⊆ A`. Introduce and unpack `_ ⟨x, hx, y, hy, rfl⟩`. Conclude with `A.mul_mem hx.2 hy.2`. Establish `hIJ : I * J = Ideal.span ({a | a ∈ I ∧ a ∈ A} * {a | a ∈ J ∧ a ∈ A})`. Rewrite using `[← Ideal.span_mul_span']`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `congrArg₂ (· * ·) hI hJ`. Rewrite using `[hIJ]`. Conclude with `span_eq_span_inter_subalgebra A _ hsub`.
+A detailed English derivation is pending.
 -/
 private theorem mul_eq_span_inter_subalgebra {R : Type*} [CommRing R] (A : Subalgebra ℤ R)
     (I J : Ideal R) (hI : I = Ideal.span {a | a ∈ I ∧ a ∈ A})
@@ -100,7 +98,7 @@ private theorem mul_eq_span_inter_subalgebra {R : Type*} [CommRing R] (A : Subal
 
 open NumberField Pointwise in
 /- English proof (translation)
-Establish `hc' : (H.d : 𝓞 E) + 1 = 4 * c` using `by exact_mod_cast hc`. Establish `h4 : (4 : 𝓞 E) * (H.w0 ^ 2 - H.w0 + c) = 0`. Take the linear combination `(2 * H.w0 + H.rt - 1) * H.two_weight_eq_one_add_root + H.rt_sq - hc'`. Conclude with `(mul_eq_zero.1 h4).resolve_left (by norm_num)`.
+Establish an intermediate fact. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 private theorem w0_sq_sub_w0_add_eq_zero {E : Type} [Field E] [NumberField E] [IsCMField E] (H : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E)
     (c : ℕ) (hc : H.d + 1 = 4 * c) : H.w0 ^ 2 - H.w0 + (c : 𝓞 E) = 0 := by
@@ -111,13 +109,13 @@ private theorem w0_sq_sub_w0_add_eq_zero {E : Type} [Field E] [NumberField E] [I
 
 open NumberField Pointwise in
 /- English proof (translation)
-Establish `hsq : (H.bar H.rt - H.rt) * (H.bar H.rt + H.rt) = 0`. Establish `h1 : H.bar H.rt ^ 2 = -(H.d : 𝓞 E)`. Rewrite using `[← map_pow, H.rt_sq, map_neg, map_natCast]`. Take the linear combination `h1 - H.rt_sq`. Break down `mul_eq_zero.1 hsq with h | h` into its components or cases.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Separate the alternatives or extract the components of the hypothesis.
 
-It suffices to derive a contradiction. Establish `hfix : H.bar H.rt = H.rt` using `sub_eq_zero.1 h`. Take `⟨φ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Establish `hreal : starRingEnd ℂ (φ (H.rt : E)) = φ (H.rt : E)`. Rewrite using `[← IsCMField.complexEmbedding_complexConj, ← H.bar_eq, hfix]`.
+It suffices to derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨t, ht⟩` from `Complex.conj_eq_iff_real.1 hreal`. Establish `hE : ((H.rt : E)) ^ 2 = -(H.d : E)`. Use `congrArg (fun x : 𝓞 E => (x : E)) H.rt_sq` as an intermediate fact. Simplify using `using this`. Establish `hC : (t : ℂ) ^ 2 = -(H.d : ℂ)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Rewrite using `[← ht, ← map_pow, hE, map_neg, map_natCast]`. Establish `hR : t ^ 2 = -(H.d : ℝ)` using `by exact_mod_cast hC`. Establish `hd : (0 : ℝ) < H.d` using `by exact_mod_cast H.d_prime.pos`. Use polynomial arithmetic with `[sq_nonneg t]`. Conclude with `eq_neg_of_add_eq_zero_left h`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 private theorem host_bar_rt_of_isCMField {E : Type} [Field E] [NumberField E] [IsCMField E] (H : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) :
     H.bar H.rt = -H.rt := by
@@ -144,7 +142,7 @@ private theorem host_bar_rt_of_isCMField {E : Type} [Field E] [NumberField E] [I
 
 open NumberField Pointwise in
 /- English proof (translation)
-Establish `h` using `congrArg H.bar H.two_weight_eq_one_add_root`. Simplify using `only [map_mul, map_add, map_one, map_ofNat, host_bar_rt_of_isCMField] at h`. Establish `h2 : (2 : 𝓞 E) * H.bar H.w0 = 2 * (1 - H.w0)`. Take the linear combination `h + H.two_weight_eq_one_add_root`. Conclude with `mul_left_cancel₀ two_ne_zero h2`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 private theorem host_bar_w0_of_isCMField {E : Type} [Field E] [NumberField E] [IsCMField E] (H : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) :
     H.bar H.w0 = 1 - H.w0 := by
@@ -157,53 +155,45 @@ private theorem host_bar_w0_of_isCMField {E : Type} [Field E] [NumberField E] [I
 open NumberField Pointwise in
 
 /- English proof (translation)
-Introduce `E _ _ _ H l`. Use `⟨fun pd I hodd hcop hI hprod hsup => ?_, fun pd hp hp2 hJ => ?_⟩` and prove the remaining obligations. Establish `hMp : IsCoprime (Ideal.span {((l.M : ℕ) : 𝓞 E)}) (Ideal.span {((pd : ℕ) : 𝓞 E)})`. Rewrite using `[Ideal.isCoprime_span_singleton_iff]`. Establish `h` using `(Nat.isCoprime_iff_coprime.2 hcop.symm).map (Int.castRingHom (𝓞 E))`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `using h`. Establish `hM1 : Ideal.span {((l.M : ℕ) : 𝓞 E)} ≤ l.Mb`. Rewrite using `[← l.prod]`. Conclude with `Ideal.mul_le_left`. Establish `hM2 : Ideal.span {((l.M : ℕ) : 𝓞 E)} ≤ l.Mb.map (H.bar : 𝓞 E →+* 𝓞 E)`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← l.prod]`. Conclude with `Ideal.mul_le_right`. Establish `hp1 : Ideal.span {((pd : ℕ) : 𝓞 E)} ≤ I`. Rewrite using `[← hprod]`. Conclude with `Ideal.mul_le_left`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hp2 : Ideal.span {((pd : ℕ) : 𝓞 E)} ≤ I.map (H.bar : 𝓞 E →+* 𝓞 E)`. Rewrite using `[← hprod]`. Conclude with `Ideal.mul_le_right`. Establish `hA : IsCoprime l.Mb (l.Mb.map (H.bar : 𝓞 E →+* 𝓞 E))` using `Ideal.isCoprime_iff_sup_eq.2 l.coprime`. Establish `hB : IsCoprime I (I.map (H.bar : 𝓞 E →+* 𝓞 E))` using `Ideal.isCoprime_iff_sup_eq.2 hsup`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hC : IsCoprime l.Mb (I.map (H.bar : 𝓞 E →+* 𝓞 E))` using `isCoprime_of_le_of_le hMp hM1 hp2`. Establish `hD : IsCoprime I (l.Mb.map (H.bar : 𝓞 E →+* 𝓞 E))` using `(isCoprime_of_le_of_le hMp hM2 hp1).symm`. Establish `hE : IsCoprime (l.Mb * I) ((l.Mb * I).map (H.bar : 𝓞 E →+* 𝓞 E))`. Rewrite using `[Ideal.map_mul]`. Conclude with `IsCoprime.mul_left (hA.mul_right hC) (hD.mul_right hB)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Use `⟨⟨l.M * pd, le_trans l.three_le (Nat.le_mul_of_pos_right _ hodd.pos), l.odd.mul hodd, l.Mb * I, mul_eq_span_inter_subalgebra _ _ _ l.fromK hI, ?_, Ideal.isCoprime_iff_sup_eq.1 hE, l.A, l.A_pos⟩, ?_, rfl, rfl, rfl⟩` and prove the remaining obligations. Rewrite using `[Ideal.map_mul, mul_mul_mul_comm, l.prod, hprod, Ideal.span_singleton_mul_span_singleton, Nat.cast_mul]`. Unfold `_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level.Dvd`. Conclude with `⟨dvd_mul_right _ _, Ideal.mul_le_left, dvd_rfl⟩`. Use `haveI := Fact.mk hp`.
+Move the embeddings inside the algebraic operations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Take `⟨y, hy⟩` from `ZMod.isSquare_of_jacobiSym_eq_one hJ`. Move the coercions through the operations in `at hy`. Choose the witnesses or unpack the hypotheses as in `⟨m, hm⟩ : ∃ m : ℕ, 2 * m = pd + 1 := by`. Take `⟨t, ht⟩` from `hp.odd_of_ne_two hp2`. Conclude with `⟨t + 1, by omega⟩`.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hm' : (2 : ZMod pd) * (m : ZMod pd) = 1`. Use `congrArg (Nat.cast : ℕ → ZMod pd) hm` as an intermediate fact. Move the coercions through the operations in `at this`. Rewrite using `[this, ZMod.natCast_self, zero_add]`. Use `set z : ZMod pd := (1 + y) * m with hz_def`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Establish `hz : 2 * z = 1 + y`. Rewrite using `[hz_def]`. Take the linear combination `(1 + y) * hm'`. Use `set r : ℤ := ((z.val : ℕ) : ℤ) with hr_def`. Establish `hrz : ((r : ℤ) : ZMod pd) = z` using `by simp [hr_def]`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdvd : (pd : ℤ) ∣ (2 * r - 1) ^ 2 + H.d`. Rewrite using `[← ZMod.intCast_zmod_eq_zero_iff_dvd]`. Use `push_cast`. Rewrite using `[hrz]`. Take the linear combination `(2 * z - 1 + y) * hz - hy`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Take `⟨c, hc⟩ : ∃ c : ℕ, H.d + 1 = 4 * c` from `⟨(H.d + 1) / 4, by have := H.d_mod; omega⟩`. Establish `hcZ : (H.d : ℤ) + 1 = 4 * c` using `by exact_mod_cast hc`. Establish `hpZ : Prime (pd : ℤ)` using `Nat.prime_iff_prime_int.1 hp`. Establish `hkd : (pd : ℤ) ∣ r ^ 2 - r + c`. Establish `h4 : (pd : ℤ) ∣ 4 * (r ^ 2 - r + c)`.
+It suffices to derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `: 4 * (r ^ 2 - r + c) = (2 * r - 1) ^ 2 + H.d` using `by linear_combination (-1 : ℤ) * hcZ`. Rewrite using `[this]`. Conclude with `hdvd`. Break down `hpZ.dvd_or_dvd h4 with h | h` into its components or cases. It suffices to derive a contradiction.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h' : pd ∣ 4` using `by exact_mod_cast h`. Conclude with `hp2 ((Nat.prime_dvd_prime_iff_eq hp Nat.prime_two).1 (hp.dvd_of_dvd_pow (n := 2) (show pd ∣ 2 ^ 2 by simpa using h')))`. Conclude with `h`. Take `⟨k, hk⟩` from `hkd`. Establish `hndvd : ¬ (pd : ℤ) ∣ 2 * r - 1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `h`. Establish `hd : (pd : ℤ) ∣ (H.d : ℤ)`. Use `dvd_sub hdvd (dvd_pow h two_ne_zero)` as an intermediate fact. Simplify using `using this`. Establish `h0 : (((-(H.d : ℤ)) : ℤ) : ZMod pd) = 0`.
+Move the embeddings inside the algebraic operations. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Establish an intermediate fact.
 
-Rewrite using `[ZMod.intCast_zmod_eq_zero_iff_dvd]`. Conclude with `(dvd_neg).2 hd`. Use `(legendreSym.eq_zero_iff pd (-(H.d : ℤ))).2 h0` as an intermediate fact. Rewrite `this` using `[jacobiSym.legendreSym.to_jacobiSym, hJ]`. Conclude with `one_ne_zero this`.
+Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Take `⟨u, v, huv⟩` from `(hpZ.coprime_iff_not_dvd).2 hndvd`. Establish `huv' : (u : 𝓞 E) * pd + v * (2 * r - 1) = 1`. Use `congrArg (fun t : ℤ => (t : 𝓞 E)) huv` as an intermediate fact. Move the coercions through the operations in `at this`. Conclude with `this`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `hk' : (r : 𝓞 E) ^ 2 - r + c = pd * k`. Use `congrArg (fun t : ℤ => (t : 𝓞 E)) hk` as an intermediate fact. Move the coercions through the operations in `at this`. Conclude with `this`. Establish `hw` using `w0_sq_sub_w0_add_eq_zero H c hc`.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Supply the required witnesses or components.
 
-Establish `hprodk : (H.w0 - r) * (1 - H.w0 - r) = (pd : 𝓞 E) * k`. Take the linear combination `(-1 : 𝓞 E) * hw + hk'`. Establish `hmap : (Ideal.span {(pd : 𝓞 E), H.w0 - (r : 𝓞 E)}).map (H.bar : 𝓞 E →+* 𝓞 E) = Ideal.span {(pd : 𝓞 E), 1 - H.w0 - (r : 𝓞 E)}`. Rewrite using `[Ideal.map_span, Set.image_pair]`. Simplify using `[host_bar_w0_of_isCMField]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨Ideal.span {(pd : 𝓞 E), H.w0 - (r : 𝓞 E)}, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `span_eq_span_inter_subalgebra _ _ (Set.insert_subset_iff.2 ⟨Subalgebra.natCast_mem _ _, Set.singleton_subset_iff.2 (Subalgebra.sub_mem _ (Algebra.subset_adjoin (Set.mem_singleton _)) (Subalgebra.intCast_mem _ _))⟩)` and prove the remaining obligations. Rewrite using `[hmap]`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Ideal.span_mul_span', Ideal.span_le]`.
+Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `_ ⟨x, hx, w, hw', rfl⟩`. Simplify using `only [Set.mem_insert_iff, Set.mem_singleton_iff] at hx hw'`. Rewrite using `[SetLike.mem_coe, Ideal.mem_span_singleton]`. Apply the tactic sequence `rcases hx with rfl | rfl <;> rcases hw' with rfl | rfl`. Conclude with `dvd_mul_right _ _`.
-
-Conclude with `dvd_mul_right _ _`. Conclude with `dvd_mul_left _ _`. Conclude with `⟨k, hprodk⟩`. Rewrite using `[Ideal.span_singleton_le_iff_mem]`. Establish `hp_mem : (pd : 𝓞 E) ∈ Ideal.span {(pd : 𝓞 E), H.w0 - (r : 𝓞 E)}` using `Ideal.subset_span (Set.mem_insert _ _)`.
-
-Establish `hq_mem : H.w0 - (r : 𝓞 E) ∈ Ideal.span {(pd : 𝓞 E), H.w0 - (r : 𝓞 E)}` using `Ideal.subset_span (Set.mem_insert_of_mem _ rfl)`. Establish `hp_mem' : (pd : 𝓞 E) ∈ Ideal.span {(pd : 𝓞 E), 1 - H.w0 - (r : 𝓞 E)}` using `Ideal.subset_span (Set.mem_insert _ _)`. Establish `hq_mem' : 1 - H.w0 - (r : 𝓞 E) ∈ Ideal.span {(pd : 𝓞 E), 1 - H.w0 - (r : 𝓞 E)}` using `Ideal.subset_span (Set.mem_insert_of_mem _ rfl)`. Establish `heq : (pd : 𝓞 E) = u * (pd * pd) - v * (pd * (1 - H.w0 - r)) - v * ((H.w0 - r) * pd)`. Take the linear combination `(-(pd : 𝓞 E)) * huv'`.
-
-Establish `key` using `Ideal.sub_mem _ (Ideal.sub_mem _ (Ideal.mul_mem_left _ (u : 𝓞 E) (Ideal.mul_mem_mul hp_mem hp_mem')) (Ideal.mul_mem_left _ (v : 𝓞 E) (Ideal.mul_mem_mul hp_mem hq_mem'))) (Ideal.mul_mem_left _ (v : 𝓞 E) (Ideal.mul_mem_mul hq_mem hp_mem'))`. Rewrite `key` using `[← heq]`. Conclude with `key`. Rewrite using `[hmap, Ideal.eq_top_iff_one]`. Establish `heq : (1 : 𝓞 E) = u * pd - v * (H.w0 - r) - v * (1 - H.w0 - r)`.
-
-Take the linear combination `(-1 : 𝓞 E) * huv'`. Establish `key : (u : 𝓞 E) * pd - v * (H.w0 - r) - v * (1 - H.w0 - r) ∈ Ideal.span {(pd : 𝓞 E), H.w0 - (r : 𝓞 E)} ⊔ Ideal.span {(pd : 𝓞 E), 1 - H.w0 - (r : 𝓞 E)}` using `Ideal.sub_mem _ (Ideal.sub_mem _ (Ideal.mul_mem_left _ _ (Ideal.mem_sup_left (Ideal.subset_span (Set.mem_insert _ _)))) (Ideal.mul_mem_left _ _ (Ideal.mem_sup_left (Ideal.subset_span (Set.mem_insert_of_mem _ rfl))))) (Ideal.mul_mem_left _ _ (Ideal.mem_sup_right (Ideal.subset_span …`. Rewrite `key` using `[← heq]`. Conclude with `key`.
+Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.exists_level_mul_split : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (l : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level H), (∀ (pd : ℕ) (I : Ideal (𝓞 E)), Odd pd → pd.Coprime l.M → I = Ideal.span {a | a ∈ I ∧ a ∈ Algebra.adjoin ℤ {H.w0}} → I * I.map (H.bar : 𝓞 E →+* 𝓞 E) = Ideal.span {(pd : 𝓞 E)} → I ⊔ I.map (H.bar : 𝓞 E →+* 𝓞 E) = ⊤ → ∃ l₂ : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level H, l.Dvd l₂ ∧ l₂.M = l.M * pd ∧ l₂.Mb = l.Mb * I ∧ l₂.A = l.A) ∧ ∀ pd : ℕ, pd.Prime → pd ≠ 2 → jacobiSym (-(H.d : ℤ)) pd = 1 → ∃ I : Ideal (𝓞 E), I = Ideal.span {a | a ∈ I ∧ a ∈ Algebra.adjoin ℤ {H.w0}} ∧ I * I.map (H.bar : 𝓞 E →+* 𝓞 E) = Ideal.span {(pd : 𝓞 E)} ∧ I ⊔ I.map (H.bar : 𝓞 E →+* 𝓞 E) = ⊤ := by
   intro E _ _ _ H l

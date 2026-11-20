@@ -50,20 +50,20 @@ def IsSecAdd (n : ℕ) (S : SecFam A) (g : Fn2 A) : Prop :=
     ψ (g D x y) = S D (x * y) E ψ (z * w) - S D x E ψ z - S D y E ψ w
 
 /- English proof (translation)
-The claim follows from `fun D _ _ x ↦ ⟨D, inferInstance, inferInstance, AlgHom.id R D, x, RingHom.FaithfullyFlat.of_bijective Function.bijective_id, by rw [pow_one, spOver_id, Category.id_comp]⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem hasRoots_one : HasRoots A 1 := fun D _ _ x ↦
   ⟨D, inferInstance, inferInstance, AlgHom.id R D, x, RingHom.FaithfullyFlat.of_bijective Function.bijective_id, by
     rw [pow_one, spOver_id, Category.id_comp]⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun _ _ _ _ _ _ φ _ _ ↦ (map_zero φ).symm, fun _ _ _ _ _ _ _ ↦ (add_zero _).symm⟩`.
+Supply the required witnesses or components.
 -/
 theorem isTorsChar_zero (n : ℕ) : IsTorsChar (A := A) n fun _ _ _ _ ↦ 0 :=
   ⟨fun _ _ _ _ _ _ φ _ _ ↦ (map_zero φ).symm, fun _ _ _ _ _ _ _ ↦ (add_zero _).symm⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun _ _ _ _ _ _ _ ψ _ _ ↦ (map_zero ψ).symm, fun _ _ _ _ _ _ _ _ ↦ (add_zero _).symm⟩`.
+Supply the required witnesses or components.
 -/
 theorem isSec_zero (n : ℕ) {D : Type} [CommRing D] [Algebra R D] (x : Pt A D) :
     IsSec n (fun _ _ _ _ ↦ 0) x fun _ _ _ _ _ ↦ 0 :=
@@ -76,7 +76,7 @@ def diagSum (D : Type) [CommRing D] [Bialgebra R D] [Coalgebra.IsCocomm R D] (m 
     fun _ _ ↦ Commute.all _ _).toLinearMap
 
 /- English proof (translation)
-Simplify using `[diagSum, LinearMap.sum_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem diagSum_tmul (D : Type) [CommRing D] [Bialgebra R D] [Coalgebra.IsCocomm R D] (m : ℕ) (a b : D) :
     diagSum R D m (a ⊗ₜ b) = ∑ i ∈ Finset.range m, mulBy R D i a * b := by

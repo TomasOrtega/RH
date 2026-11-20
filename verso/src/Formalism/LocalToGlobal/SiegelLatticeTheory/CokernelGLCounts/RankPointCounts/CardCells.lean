@@ -34,7 +34,7 @@ def cellEquiv (hD : Data W S N' K π) :
       exact ⟨⟦k⟧, rfl⟩
 
 /- English proof (translation)
-Rewrite using `[← Nat.card_congr (cellEquiv W S N' K π g hD)]`. Conclude with `Formalism.L2.SG.Pf.ProdEP2Core.card_dc (Ak S K) (πk W S N' K π hD) (Hk W K g) (πk_id W S N' K π hD)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_cells (hD : Data W S N' K π) :
     Nat.card (Quotient (cellRel W N' K g)) = ((Hk W K g).map (πk W S N' K π hD)).index := by

@@ -14,13 +14,13 @@ namespace GlobalTheory.NearRoot
 variable {l : ℕ} [hl : Fact l.Prime]
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (by show g 1 / 1 = 1; simp)`.
+A detailed English derivation is pending.
 -/
 theorem ratio_one (g : GQ l) : GlobalTheory.TameInertiaCyclic.ratio g 1 = 1 :=
   Subtype.ext (by show g 1 / 1 = 1; simp)
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simpa using ratio_one g`. Consider the case `succ n ih => rw [pow_succ, GlobalTheory.TameInertiaCyclic.ratio_mul, ih, pow_succ]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem ratio_pow (g : GQ l) (x : Om l) (n : ℕ) :
     GlobalTheory.TameInertiaCyclic.ratio g (x ^ n) = GlobalTheory.TameInertiaCyclic.ratio g x ^ n := by
@@ -29,7 +29,7 @@ theorem ratio_pow (g : GQ l) (x : Om l) (n : ℕ) :
   | succ n ih => rw [pow_succ, GlobalTheory.TameInertiaCyclic.ratio_mul, ih, pow_succ]
 
 /- English proof (translation)
-Establish `h : ‖((l : ℚ_[l]) : Om l)‖ < 1`. Rewrite using `[PadicAlgCl.norm_extends]`. Conclude with `Padic.norm_p_lt_one`. Simplify using `using h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem norm_natCast_lt_one : ‖(l : Om l)‖ < 1 := by
   have h : ‖((l : ℚ_[l]) : Om l)‖ < 1 := by
@@ -37,7 +37,7 @@ theorem norm_natCast_lt_one : ‖(l : Om l)‖ < 1 := by
   simpa using h
 
 /- English proof (translation)
-Establish `h : ((l : ℚ_[l]) : Om l) ≠ 0`. Rewrite using `[Ne, map_eq_zero_iff _ (algebraMap ℚ_[l] (Om l)).injective]`. Conclude with `hl.out.ne_zero` after adjusting the coercions. Simplify using `using h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem natCast_ne_zero : (l : Om l) ≠ 0 := by
   have h : ((l : ℚ_[l]) : Om l) ≠ 0 := by
@@ -46,11 +46,11 @@ theorem natCast_ne_zero : (l : Om l) ≠ 0 := by
   simpa using h
 
 /- English proof (translation)
-Take `⟨π, hπ, hπ0, hgen⟩` from `GlobalTheory.TameInertiaCyclic.exists_gen F`. Establish `hlF : (l : Om l) ∈ F.1` using `natCast_mem _ l`. Take `⟨k0, hk0⟩` from `hgen _ hlF natCast_ne_zero`. Establish `hk0' : k0 ≠ 0`. Introduce and unpack `rfl`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Use `norm_natCast_lt_one (l := l)` as an intermediate fact. Rewrite `this` using `[hk0]`. Simplify using `at this`. Break down `lt_or_gt_of_ne hk0' with hneg | hpos` into its components or cases. Use `⟨π⁻¹, inv_mem hπ, inv_ne_zero hπ0, fun x hx hx0 => ?_, (-k0).toNat, by omega, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨k, hk⟩` from `hgen x hx hx0`. Conclude with `⟨-k, by rw [hk, _root_.inv_zpow', neg_neg]⟩`. Rewrite using `[hk0, ← norm_pow, ← zpow_natCast, Int.toNat_of_nonneg (by omega), _root_.inv_zpow', neg_neg]`. Use `⟨π, hπ, hπ0, hgen, k0.toNat, by omega, ?_⟩` and prove the remaining obligations. Rewrite using `[hk0, ← norm_pow, ← zpow_natCast, Int.toNat_of_nonneg (by omega)]`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_unif (F : FinExt l) :
     ∃ ϖ ∈ F.1, ϖ ≠ 0 ∧ (∀ x ∈ F.1, x ≠ 0 → ∃ k : ℤ, ‖x‖ = ‖ϖ ^ k‖) ∧
@@ -72,19 +72,17 @@ theorem exists_unif (F : FinExt l) :
     rw [hk0, ← norm_pow, ← zpow_natCast, Int.toNat_of_nonneg (by omega)]
 
 /- English proof (translation)
-Introduce `l _ F`. Take `⟨ϖ, hϖ, hϖ0, hgen, E, hE, hEn⟩` from `exists_unif F`. Take `⟨s, M, hlM, rfl⟩` from `Nat.exists_eq_pow_mul_and_not_dvd hE.ne' l (Fact.out : l.Prime).ne_one`. Establish `hM : 0 < M` using `Nat.pos_of_ne_zero (by rintro rfl; simp at hlM)`. Use `⟨M, hM, hlM, fun ρ hρ g hg hgρ x hx hx0 => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hρ0 : ρ ≠ 0`. Introduce and unpack `rfl`. Rewrite `hρ` using `[zero_pow hM.ne', eq_comm, neg_eq_zero]`. Conclude with `natCast_ne_zero hρ`. Establish `hq0 : ϖ ^ (l ^ s) ≠ 0` using `pow_ne_zero _ hϖ0`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hnq : ‖ϖ ^ (l ^ s)‖ = ‖ρ‖`. Use `(pow_left_inj₀ (norm_nonneg _) (norm_nonneg _) hM.ne').1 ?_` and prove the remaining obligations. Rewrite using `[← norm_pow, ← pow_mul, norm_pow, hEn, ← norm_pow, hρ, norm_neg]`. Use `set u := ϖ ^ (l ^ s) / ρ with hu`. Establish `hu0 : u ≠ 0` using `div_ne_zero hq0 hρ0`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hnu : ‖u‖ = 1` using `by rw [hu, norm_div, hnq, div_self (norm_ne_zero_iff.2 hρ0)]`. Establish `h1 : res (GlobalTheory.TameInertiaCyclic.ratio g u) = 1`. Rewrite using `[GlobalTheory.TameInertiaCyclic.res_ratio_iff g hu0, hnu]`. Conclude with `hg u hnu.le`. Establish `h2 : res (GlobalTheory.TameInertiaCyclic.ratio g ρ) = 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[GlobalTheory.TameInertiaCyclic.res_ratio_iff g hρ0, hgρ, sub_self, norm_zero]`. Conclude with `norm_pos_iff.2 hρ0`. Establish `h3 : res (GlobalTheory.TameInertiaCyclic.ratio g ϖ) ^ (l ^ s) = 1`. Rewrite using `[← map_pow, ← ratio_pow, ← div_mul_cancel₀ (ϖ ^ (l ^ s)) hρ0, ← hu, GlobalTheory.TameInertiaCyclic.ratio_mul, map_mul, h1, h2, one_mul]`. Establish `h4 : res (GlobalTheory.TameInertiaCyclic.ratio g ϖ) = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h5 : (res (GlobalTheory.TameInertiaCyclic.ratio g ϖ) - 1) ^ (l ^ s) = 0`. Rewrite using `[sub_pow_char_pow, h3, one_pow, sub_self]`. Conclude with `sub_eq_zero.1 (pow_eq_zero_iff (pow_ne_zero _ (Fact.out : l.Prime).ne_zero) |>.1 h5)`. Take `⟨k, hk⟩` from `hgen x hx hx0`. Establish `hp : ϖ ^ k ≠ 0` using `zpow_ne_zero k hϖ0`.
-
-Establish `hv : ‖x / ϖ ^ k‖ = 1` using `by rw [norm_div, hk, div_self (norm_ne_zero_iff.2 hp)]`. Establish `h6 : res (GlobalTheory.TameInertiaCyclic.ratio g (x / ϖ ^ k)) = 1`. Rewrite using `[GlobalTheory.TameInertiaCyclic.res_ratio_iff _ (div_ne_zero hx0 hp), hv]`. Conclude with `hg _ hv.le`. Rewrite using `[← GlobalTheory.TameInertiaCyclic.res_ratio_iff _ hx0, ← div_mul_cancel₀ x hp, GlobalTheory.TameInertiaCyclic.ratio_mul, map_mul, h6, GlobalTheory.TameInertiaCyclic.res_ratio_zpow _ hϖ0 h4, one_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem near_root : ∀ (l : ℕ) [Fact l.Prime] (F : FinExt l), ∃ M : ℕ, 0 < M ∧ ¬ l ∣ M ∧ ∀ ρ : Om l, ρ ^ M = -(l : Om l) → ∀ g : GQ l, (∀ y : Om l, ‖y‖ ≤ 1 → ‖g y - y‖ < 1) → g ρ = ρ → ∀ x ∈ F.1, x ≠ 0 → ‖g x - x‖ < ‖x‖ := by
   intro l _ F

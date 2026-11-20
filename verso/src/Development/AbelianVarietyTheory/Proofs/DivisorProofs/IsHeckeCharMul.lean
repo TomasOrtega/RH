@@ -23,28 +23,28 @@ namespace GlobalTheory.SquareChars
 variable {D : D7} {T : Type} {L : LevCh D T} {sc : Consts}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h.1.mul h'.1, fun x => by rw [MonoidHom.mul_apply, h.2 x, h'.2 x, mul_one]⟩`.
+Supply the required witnesses or components.
 -/
 theorem isHeckeChar_mul' {c c' : (AE D)ˣ →* Circle} (h : IsHeckeChar D c) (h' : IsHeckeChar D c') :
     IsHeckeChar D (c * c') :=
   ⟨h.1.mul h'.1, fun x => by rw [MonoidHom.mul_apply, h.2 x, h'.2 x, mul_one]⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h.1.pow n, fun x => by rw [MonoidHom.pow_apply, h.2 x, one_pow]⟩`.
+Supply the required witnesses or components.
 -/
 theorem isHeckeChar_pow' {c : (AE D)ˣ →* Circle} (h : IsHeckeChar D c) (n : ℕ) : IsHeckeChar D (c ^ n) :=
   ⟨h.1.pow n, fun x => by rw [MonoidHom.pow_apply, h.2 x, one_pow]⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h.1, fun e he a => by rw [MonoidHom.pow_apply, h.2 e he a, pow_one]⟩`.
+Supply the required witnesses or components.
 -/
 theorem resEta_pow' {c : (AE D)ˣ →* Circle} (h : ResEta D c 1) (n : ℕ) : ResEta D (c ^ n) n :=
   ⟨h.1, fun e he a => by rw [MonoidHom.pow_apply, h.2 e he a, pow_one]⟩
 
 /- English proof (translation)
-Establish `h1 : 1 ≤ D.R.m - (i : ℕ)` using `by omega`. Establish `h2 : D.R.m - (i : ℕ) ≤ D.R.m` using `Nat.sub_le _ _`. Establish `hc` using `G.ch.chi_eq _ h1 h2`. Use `⟨⟨hc.1.1, hc.1.2⟩, ?_⟩` and prove the remaining obligations. Establish `hres` using `GlobalTheory.Mem.EtaTilde.isEta_res D L.eta L.C.eta hL.eta L.C.isEta`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨⟨_, hres⟩, fun η _ a => ?_⟩` and prove the remaining obligations. Rewrite using `[pow_zero, GlobalTheory.GridWeil.triv_base hc (G.ch.triv _ h1 h2) a]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem chi_hecke_res (G : GridData L sc) {μ₀ : T} (hL : L.Is μ₀) (i : Fin D.R.m) :
     IsHeckeChar D (G.ch.chi (D.R.m - i)) ∧ ResEta D (G.ch.chi (D.R.m - i)) 0 := by
@@ -57,11 +57,11 @@ theorem chi_hecke_res (G : GridData L sc) {μ₀ : T} (hL : L.Is μ₀) (i : Fin
   rw [pow_zero, GlobalTheory.GridWeil.triv_base hc (G.ch.triv _ h1 h2) a]
 
 /- English proof (translation)
-Establish `r : ∀ a b, a ≤ D.R.m → b ≤ D.R.m → (G.V (.grid a b)).rank = rankV D a b` using `fun a b ha hb => (node_isV G hL (X := .grid a b) ⟨ha, hb⟩).rank`. Establish `hi` using `i.2`. Establish `hj` using `j.2`. Establish `e1 : (spW G i j).rank = rankV D (i + 1) (j + 1)` using `r _ _ (by omega) (by omega)`. Establish `e2 : (spW₁ G i j).rank = rankV D i j` using `r _ _ (by omega) (by omega)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.eps`. Rewrite using `[e1, e2]`. Take `⟨a, ha⟩` from `D.R.t_odd`. Take `⟨b, hb⟩` from `odd_sLen D`. Simplify using `only [rankV, ha, hb]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Prove the components needed by the constructor for the conclusion. Rewrite using `[Nat.mod_mod]`. Put the polynomial expressions in normal form. Use linear arithmetic over natural numbers and integers. Rewrite using `[Nat.mod_mod]`.
+Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Put the polynomial expressions in normal form. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
 -/
 theorem rank_parity (G : GridData L sc) {μ₀ : T} (hL : L.Is μ₀) (i j : Fin D.R.m) :
     (GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.eps G i j) % 2 = (spW G i j).rank % 2 ∧
@@ -86,11 +86,11 @@ end GlobalTheory.SquareChars
 namespace GlobalTheory.SquareChars
 
 /- English proof (translation)
-Introduce `D T L sc G μ₀ hL t i j _`. Take `⟨hχ, hχ0⟩` from `chi_hecke_res G hL i`. Establish `hμ` using `GlobalTheory.HeckeCharacterRestriction.isHecke_mu hL t j`. Establish `hμ0` using `GlobalTheory.HeckeCharacterRestriction.resEta_mu hL t j`. Establish `hη` using `isHeckeChar_pow' hL.eta.1 (GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.eps G i j)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hη1` using `resEta_pow' (GlobalTheory.HeckeCharacterRestriction.resEta_eta hL) (GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.eps G i j)`. Take `⟨p1, p2⟩` from `rank_parity G hL i j`. Establish `hβ : ResEta D (beta G i j) (spW G i j).rank` using `resEta_parity (resEta_mul hχ0 hη1) (by rw [zero_add]; exact p1)`. Establish `hα : ResEta D (alpha G t i j) (spW₁ G i j).rank` using `resEta_parity (resEta_mul hμ0 hη1) (by rw [zero_add]; exact p2)`. Establish `h2 : Module.finrank D.host.F D.host.E = 2` using `D.sp.cm.deg2`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `⟨isHeckeChar_mul' hχ hη, isHeckeChar_mul' hμ hη, GlobalTheory.T.restrictsToQuadraticSignPow_of_restrictsToQuadraticCharPow D.host.F D.host.E h2 _ _ hβ, GlobalTheory.T.restrictsToQuadraticSignPow_of_restrictsToQuadraticCharPow D.host.F D.host.E h2 _ _ hα⟩`.
+Supply the required witnesses or components.
 -/
 theorem square_chars : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} {μ₀ : T} (_hL : L.Is μ₀) (t : T)
     (i j : Fin D.R.m), SquareStanding G t →

@@ -16,25 +16,23 @@ open scoped Matrix ENNReal
 namespace GlobalTheory.ModelTr
 
 /- English proof (translation)
-Take `⟨Q, hQ⟩` from `Submodule.exists_isCompl S`. Set `f : V →ₗ[ℂ] V` to `LinearMap.ofIsCompl hQ (e ∘ₗ S.subtype) Q.subtype`. Establish `dec : ∀ x : V, ∃ s ∈ S, ∃ q ∈ Q, x = s + q` using `fun x => by`. Establish `: x ∈ S ⊔ Q` using `by rw [hQ.sup_eq_top]; exact Submodule.mem_top`. Take `⟨s, hs, q, hq, rfl⟩` from `Submodule.mem_sup.1 this`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨s, hs, q, hq, rfl⟩`. Establish `hf : ∀ s ∈ S, ∀ q ∈ Q, f (s + q) = e s + q` using `fun s hs q hq => by`. Rewrite using `[map_add, LinearMap.ofIsCompl_apply_left hQ (⟨s, hs⟩ : S), LinearMap.ofIsCompl_apply_right hQ (⟨q, hq⟩ : Q)]`. Both sides reduce to the same expression. Establish `hdisj : ∀ y ∈ S, y ∈ Q → y = 0` using `fun y h1 h2 => by`.
+Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Use `hQ.inf_eq_bot` as an intermediate fact. Conclude with `(Submodule.mem_bot ℂ).1 (this ▸ Submodule.mem_inf.2 ⟨h1, h2⟩)`. Establish `hmem : ∀ x, x ∈ S ↔ f x ∈ S`. Introduce `x`. Take `⟨s, hs, q, hq, rfl⟩` from `dec x`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hf s hs q hq]`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Establish `hq0 : q = 0` using `hdisj q (by simpa using S.sub_mem hx hs) hq`. Substitute `hq0` using the available equality.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using h.mapsTo hs`. Introduce `hx`. Establish `hq0 : q = 0` using `hdisj q (by simpa using S.sub_mem hx (h.mapsTo hs)) hq`. Substitute `hq0` using the available equality. Simplify using `using hs`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hinj : Function.Injective f`. Rewrite using `[← LinearMap.ker_eq_bot, Submodule.eq_bot_iff]`. Introduce `x hx`. Rewrite `hx` using `[LinearMap.mem_ker]`. Establish `hxS : x ∈ S` using `(hmem x).2 (hx ▸ S.zero_mem)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨s, hs, q, hq, rfl⟩` from `dec x`. Establish `hq0 : q = 0` using `hdisj q (by simpa using S.sub_mem hxS hs) hq`. Substitute `hq0` using the available equality. Rewrite `hx`, the goal using `[add_zero]`. Establish `h0` using `hf s hs 0 Q.zero_mem`.
+Establish an intermediate fact. Substitute using the available equality. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h0` using `[add_zero, add_zero]`. Rewrite `hx` using `[h0]`. Conclude with `h.injOn hs S.zero_mem (by rw [hx, map_zero])`. Establish `hsurj : Function.Surjective f`. Introduce `y`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨s', hs', q, hq, rfl⟩` from `dec y`. Take `⟨s, hs, rfl⟩` from `h.surjOn hs'`. Conclude with `⟨s + q, hf s hs q hq⟩`. Use `⟨LinearEquiv.ofBijective f ⟨hinj, hsurj⟩, fun x hx => ?_, hmem⟩` and prove the remaining obligations. Use `show f x = e x`.
-
-Use `hf x hx 0 Q.zero_mem` as an intermediate fact. Rewrite `this` using `[add_zero, add_zero]`. Then use the resulting hypothesis.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem extEquiv {V : Type} [AddCommGroup V] [Module ℂ V] (S : Submodule ℂ V) (e : V →ₗ[ℂ] V) (h : Set.BijOn e S S) :
     ∃ T : V ≃ₗ[ℂ] V, (∀ x ∈ S, T x = e x) ∧ ∀ x, x ∈ S ↔ T x ∈ S := by
@@ -87,7 +85,7 @@ theorem extEquiv {V : Type} [AddCommGroup V] [Module ℂ V] (S : Submodule ℂ V
   rwa [add_zero, add_zero] at this
 
 /- English proof (translation)
-Establish `key : ∀ {l l' : ((κ → AF F) → ℂ) →ₗ[ℂ] ℂ}, (∀ Φ ∈ schA F κ, l Φ = l' Φ) → l ∈ (adeleClass F).adm κ → l' ∈ (adeleClass F).adm κ`. Introduce `l l' h hl g hg`. Take `⟨T, hT⟩` from `hl g hg`. Conclude with `⟨T, fun f => (h _ (Submodule.subset_span ⟨f, g, hg, rfl⟩)).symm.trans (hT f)⟩`. Conclude with `⟨key h, key fun Φ hΦ => (h Φ hΦ).symm⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components.
 -/
 theorem adm_congr {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ] {l l' : ((κ → AF F) → ℂ) →ₗ[ℂ] ℂ}
     (h : ∀ Φ ∈ schA F κ, l Φ = l' Φ) : l ∈ (adeleClass F).adm κ ↔ l' ∈ (adeleClass F).adm κ := by
@@ -99,13 +97,13 @@ theorem adm_congr {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ] 
   exact ⟨key h, key fun Φ hΦ => (h Φ hΦ).symm⟩
 
 /- English proof (translation)
-Introduce `hP F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hpair M₁ hM₁ e hev hbij`. Take `⟨T, hTe, hTs⟩` from `extEquiv (schA F (Fin n × Fin d)) e hbij`. Establish `h1 : incM F (1 : Matrix (Fin n) (Fin n) E) = 1` using `Matrix.map_one _ (map_zero _) (map_one _)`. Establish `h1' : incM F (1 : Matrix (Fin d) (Fin d) E) = 1` using `Matrix.map_one _ (map_zero _) (map_one _)`. Establish `hgood : IsGoodInt (adeleClass F) B.ψ M.co M₁.co T`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨hTs, fun w Φ hΦ => ?_, fun l => ?_, fun μ hμ => ?_⟩` and prove the remaining obligations. Establish `hm : M.co.rho B.ψ w Φ ∈ schA F (Fin n × Fin d)` using `GlobalTheory.T.schroedinger_preserves_adelic_schwartz F B.ψ hpair.base.std _ (M.co.e w) Φ hΦ`. Use `hev.Heisenberg₂ w Φ hΦ` as an intermediate fact. Rewrite `this` using `[h1, h1', Matrix.one_mul, Matrix.transpose_one, Matrix.mul_one]`. Rewrite using `[hTe _ hm, hTe _ hΦ, this]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `(GlobalTheory.T.model_evaluation_bijective_schwartz hP F E σ B n d X W M χX χW om r s r' s' hpair M₁ hM₁ e hev hbij l).trans (adm_congr ?_)` and prove the remaining obligations. Introduce `Φ hΦ`. Simplify using `[hTe Φ hΦ]`. Take `⟨c, hc⟩` from `GlobalTheory.T.model_evaluation_preserves_admissible hP F E σ B n d X W M χX χW om r s r' s' hpair M₁ hM₁ e hev hbij μ hμ`. Conclude with `⟨c, fun Φ hΦ => by rw [hTe Φ hΦ]; exact hc Φ hΦ⟩`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use `⟨trRep T om, isUWeilPair_trRep hgood (GlobalTheory.T.model_evaluation_preserves_schwartz hP F E σ B n d X W M χX χW om r s r' s' hpair M₁ hM₁ e hev hbij T hTe) (GlobalTheory.T.model_evaluation_intertwines hP F E σ B n d X W M χX χW om r s r' s' hpair M₁ hM₁ e hev hbij T hTe) hpai …` and prove the remaining obligations. Establish `hpres : om x Φ ∈ schA F (Fin n × Fin d)` using `hpair.weil.isUSplitting.pres x Φ hΦ`. Rewrite using `[trRep_apply, ← hTe Φ hΦ, LinearEquiv.symm_apply_apply, hTe _ hpres]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_isWeil_trans : GlobalTheory.FunPr.Hypotheses₂ → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (n d : ℕ) (X : Spc F E n) (W : Spc F E d) (M : Model σ X W) (χX χW : Chr F E) (om : Rep σ X W) (r s r' s' : ℕ), IsPair B M χX χW om r s r' s' → ∀ M₁ : Model σ X W, M₁.IsGood B.ψ → ∀ e : Fn F n d →ₗ[ℂ] Fn F n d, IsEv B M M₁ 1 1 ∅ e → Set.BijOn e (schA F (Fin n × Fin d) : Set _) (schA F (Fin n × Fin d) : Set _) → ∃ om₁ : Rep σ X W, M₁.IsWeil B.ψ χX χW om₁ ∧ ∀ x, ∀ Φ ∈ schA F (Fin n × Fin d), e (om x Φ) = om₁ x (e Φ) := by
   intro hP F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hpair M₁ hM₁ e hev hbij

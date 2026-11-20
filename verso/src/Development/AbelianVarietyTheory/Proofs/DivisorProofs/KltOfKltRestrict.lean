@@ -15,23 +15,21 @@ open GlobalTheory GlobalTheory.Cartier GlobalTheory.TopForm GlobalTheory.Discrep
 open scoped TensorProduct
 
 /- English proof (translation)
-Introduce `hP L K _ _ cL cK n T hT ψ f w θ hic hconst hker hf0 hRng hTr hsupp hEff hKlt`. Take `⟨S, hS, ψS, hsurj, hcK, hcomp, hirr⟩` from `GlobalTheory.T.exists_dvrPlace_of_prime_element_of_normal_localModel cL cK n T hT ψ f hic hconst hker hf0 hRng`. Set `ι : T → S.ring` to `fun t => ⟨t, hS.1 t t.2⟩`. Establish `hw : (fun i => ψS (ι (w i))) = fun i => ψ (w i)` using `funext fun i => hcomp (w i)`. Establish `hTr' : TrBasis cK (fun i => ψS (ι (w i)))` using `by rw [hw]; exact hTr`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨hTrL, hform, hord, hord0⟩` from `GlobalTheory.T.transcendenceBasis_uniformiser_cons_residual_lifts cL cK n S ψS (ι f) (fun i => ι (w i)) hsurj hcK hirr hTr'`. Establish `hmapS : Finsupp.mapDomain ψS (Finsupp.mapDomain ι θ) = Finsupp.mapDomain ψ θ`. Rewrite using `[← Finsupp.mapDomain_comp]`. Use `congr 1`. Use function extensionality and compare the values at `t`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `hcomp t`. Establish `hmapL : Finsupp.mapDomain (fun g : S.ring => (g : L)) (Finsupp.mapDomain ι θ) = Finsupp.mapDomain (fun g : T => (g : L)) θ`. Rewrite using `[← Finsupp.mapDomain_comp]`. Both sides reduce to the same expression. Establish `hsuppS : ∀ g ∈ (Finsupp.mapDomain ι θ).support, ψS g ≠ 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `g hg`. Take `⟨t, ht, rfl⟩` from `Finset.mem_image.mp (Finsupp.mapDomain_support hg)`. Introduce `h`. Conclude with `hsupp t ht ((hcomp t).symm.trans h)`. Establish `hrange : ∀ a ∈ ψ.range, ∃ t : T, ψS ⟨t, hS.1 t t.2⟩ = a`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `a ⟨t, rfl⟩`. Conclude with `⟨t, hcomp t⟩`. Establish `hKlt' : Klt cK n ψ.range (dForm cK (fun i => ψS (ι (w i)))) (Finsupp.mapDomain ψS (Finsupp.mapDomain ι θ))`. Rewrite using `[hw, hmapS]`. Conclude with `hKlt`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hadj` using `GlobalTheory.T.adjunctionKlt_of_klt_along_residue_subring cL cK n T S hS.1 ψS (ι f) (fun i => ι (w i)) (Finsupp.mapDomain ι θ) ψ.range hsurj hcK hirr hTr' hsuppS hrange hKlt'`. Establish `hadj' : AdjKlt cL (n + 1) T S (dForm cL (Fin.cons (f : L) (fun i => (w i : L)) : Fin (n + 1) → L)) (Finsupp.mapDomain (fun g : T => (g : L)) θ + Finsupp.single (f : L) 1)`. Rewrite using `[← hmapL]`. Conclude with `hadj`. Establish `hTrL' : TrBasis cL (Fin.cons (f : L) (fun i => (w i : L)) : Fin (n + 1) → L)` using `hTrL`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hform' : S.formOrd (dForm cL (Fin.cons (f : L) (fun i => (w i : L)) : Fin (n + 1) → L)) = 0` using `hform`. Establish `hord' : S.ord (f : L) = 1` using `hord`. Establish `hfL : (f : L) ≠ 0` using `fun h => hf0 (Subtype.ext h)`. Establish `hq : S.ordQ (Finsupp.mapDomain (fun g : T => (g : L)) θ) = 0`. Rewrite using `[Place.ordQ, Finsupp.linearCombination_mapDomain, Finsupp.linearCombination_apply]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Unfold `Finsupp.sum`. Use `Finset.sum_eq_zero fun t ht => ?_` and prove the remaining obligations. Establish `h0 : S.ord (t : L) = 0` using `hord0 (ι t) (fun h => hsupp t ht ((hcomp t).symm.trans h))`. Simplify using `[Function.comp, h0]`. Establish `hdisc : S.disc (dForm cL (Fin.cons (f : L) (fun i => (w i : L)) : Fin (n + 1) → L)) (Finsupp.mapDomain (fun g : T => (g : L)) θ) = 0`.
-
-Rewrite using `[Place.disc, hform', hq]`. Simplify using the standard rewrite rules. Conclude with `GlobalTheory.T.klt_of_adjunctionKlt_localModel hP cL (n + 1) T _ _ (f : L) S hT hic hTrL' f.2 hfL hS hord' hdisc hEff hadj'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.FieldPair.klt_of_klt_restrict : GlobalTheory.Published.Principalisation →
   ∀ {L K : Type} [Field L] [Field K] (cL : ℂ →+* L) (cK : ℂ →+* K) (n : ℕ) (T : Subring L) (hT : IsLocModel cL T)

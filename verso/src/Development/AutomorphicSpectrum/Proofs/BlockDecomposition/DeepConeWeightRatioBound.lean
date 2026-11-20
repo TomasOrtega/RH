@@ -13,12 +13,12 @@ namespace GlobalTheory.CompanionTheory.CFin.Ratio
 def ext {r : ℕ} (t : Fin r → ℝ) (n : ℕ) : ℝ := if h : n < r then t ⟨n, h⟩ else 1
 
 /- English proof (translation)
-The claim follows from `dif_pos h`.
+A detailed English derivation is pending.
 -/
 theorem ext_of_lt {r : ℕ} (t : Fin r → ℝ) {n : ℕ} (h : n < r) : ext t n = t ⟨n, h⟩ := dif_pos h
 
 /- English proof (translation)
-The claim follows from `dif_neg (not_lt.mpr h)`.
+A detailed English derivation is pending.
 -/
 theorem ext_of_ge {r : ℕ} (t : Fin r → ℝ) {n : ℕ} (h : r ≤ n) : ext t n = 1 := dif_neg (not_lt.mpr h)
 
@@ -27,7 +27,7 @@ def bnd (r : ℕ) (c t₁ : ℝ) : ℝ := max ((t₁ / (min c 1) ^ r) ^ r) (((mi
 variable {r : ℕ} {c t₁ : ℝ} {t : Fin r → ℝ}
 
 /- English proof (translation)
-Unfold `ext`. Use `split_ifs with h`. Conclude with `ht.1 _`. Conclude with `one_pos`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem ext_pos (ht : t ∈ cone r c) (n : ℕ) : 0 < ext t n := by
   unfold ext; split_ifs with h
@@ -35,9 +35,7 @@ theorem ext_pos (ht : t ∈ cone r c) (n : ℕ) : 0 < ext t n := by
   · exact one_pos
 
 /- English proof (translation)
-Rewrite using `[ext_of_lt t hj]`. Distinguish the cases in `h : j + 1 < r`. Rewrite using `[ext_of_lt t h]`. Conclude with `ht.2.1 ⟨j, hj⟩ ⟨j + 1, h⟩ rfl`. Rewrite using `[ext_of_ge t (by omega), mul_one]`.
-
-Conclude with `ht.2.2 ⟨j, hj⟩ (by show j + 1 = r; omega)`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ext_step (ht : t ∈ cone r c) {j : ℕ} (hj : j < r) : c * ext t (j + 1) ≤ ext t j := by
   rw [ext_of_lt t hj]
@@ -48,11 +46,11 @@ theorem ext_step (ht : t ∈ cone r c) {j : ℕ} (hj : j < r) : c * ext t (j + 1
     exact ht.2.2 ⟨j, hj⟩ (by show j + 1 = r; omega)
 
 /- English proof (translation)
-Establish `hc' : 0 < min c 1` using `lt_min hc one_pos`. Establish `hc1 : min c 1 ≤ 1` using `min_le_right _ _`. Establish `key : ∀ k n, n + k = r → (min c 1) ^ k ≤ ext t n`. Introduce `k`. Proceed by induction on `k with`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `zero => intro n hn; rw [pow_zero, ext_of_ge t (by omega)]`. Consider the case `succ k ih`. Introduce `n hn`. Establish `h1` using `ih (n + 1) (by omega)`. Establish `h2` using `ext_step ht (j := n) (by omega)`.
+Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : min c 1 * ext t (n + 1) ≤ c * ext t (n + 1)` using `mul_le_mul_of_nonneg_right (min_le_left _ _) (ext_pos ht _).le`. Combine the equalities or inequalities in the displayed calculation. Distinguish the cases in `hn : n ≤ r`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[ext_of_ge t (by omega)]; exact pow_le_one₀ hc'.le hc1`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Consider separately whether the proposition holds or fails. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 -/
 theorem ext_lower (hc : 0 < c) (ht : t ∈ cone r c) (n : ℕ) : (min c 1) ^ r ≤ ext t n := by
   have hc' : 0 < min c 1 := lt_min hc one_pos
@@ -76,7 +74,7 @@ theorem ext_lower (hc : 0 < c) (ht : t ∈ cone r c) (n : ℕ) : (min c 1) ^ r �
   · rw [ext_of_ge t (by omega)]; exact pow_le_one₀ hc'.le hc1
 
 /- English proof (translation)
-Establish `hc' : 0 < min c 1` using `lt_min hc one_pos`. Rewrite using `[le_inv_mul_iff₀ hc']`. Conclude with `(mul_le_mul_of_nonneg_right (min_le_left _ _) (ext_pos ht _).le).trans (ext_step ht hj)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ext_up (hc : 0 < c) (ht : t ∈ cone r c) {j : ℕ} (hj : j < r) :
     ext t (j + 1) ≤ (min c 1)⁻¹ * ext t j := by
@@ -85,13 +83,13 @@ theorem ext_up (hc : 0 < c) (ht : t ∈ cone r c) {j : ℕ} (hj : j < r) :
   exact (mul_le_mul_of_nonneg_right (min_le_left _ _) (ext_pos ht _).le).trans (ext_step ht hj)
 
 /- English proof (translation)
-Establish `hc' : 0 < min c 1` using `lt_min hc one_pos`. Establish `hp : 0 < (min c 1) ^ r` using `pow_pos hc' r`. Establish `hp1 : (min c 1) ^ r ≤ 1` using `pow_le_one₀ hc'.le (min_le_right _ _)`. Establish `hlow` using `ext_lower hc ht (j + 1)`. Establish `hR : t₁ ≤ t₁ / (min c 1) ^ r` using `by rw [le_div_iff₀ hp]; nlinarith`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [deep, Finset.mem_filter, Finset.mem_univ, true_and, not_and, not_forall, not_lt] at hS`. Rewrite using `[ext_of_lt t hj]`. Distinguish the cases in `h : t₁ < t ⟨j, hj⟩`. Take `⟨j', hj', hle⟩` from `hS h`. Establish `e : ext t (j + 1) = t j'`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[ext_of_lt t (show j + 1 < r by rw [← hj']; exact j'.isLt)]`. Use `congr 1`. Use `ext`. Conclude with `hj'.symm`. Rewrite using `[e]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Use `push_neg at h`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem ext_nondeep (hc : 0 < c) (ht1 : 1 ≤ t₁) (ht : t ∈ cone r c) {j : ℕ} (hj : j < r)
     (hS : (⟨j, hj⟩ : Fin r) ∉ deep t₁ t) : ext t j ≤ t₁ / (min c 1) ^ r * ext t (j + 1) := by
@@ -116,13 +114,13 @@ theorem ext_nondeep (hc : 0 < c) (ht1 : 1 ≤ t₁) (ht : t ∈ cone r c) {j : �
       _ ≤ _ := mul_le_mul_of_nonneg_left hlow (div_nonneg (by linarith) hp.le)
 
 /- English proof (translation)
-Establish `hc' : 0 < min c 1` using `lt_min hc one_pos`. Establish `hR0 : 0 ≤ t₁ / (min c 1) ^ r` using `div_nonneg (by linarith) (pow_pos hc' r).le`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => intro _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Simplify using the standard rewrite rules. Consider the case `succ k ih`. Introduce `hk hS`. Take `⟨h1, h2⟩` from `ih (by omega) (fun j hj a b => hS j hj a (by omega))`. Establish `s1` using `ext_nondeep hc ht1 ht (j := i + k) (by omega) (hS (i + k) (by omega) (by omega) (by omega))`.
+Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `s2` using `ext_up hc ht (j := i + k) (by omega)`. Use `show ext t i ≤ (t₁ / (min c 1) ^ r) ^ (k + 1) * ext t (i + k + 1) ∧`. Use extensionality with `t (i + k + 1) ≤ ((min c 1)⁻¹) ^ (k + 1) * ext t i`. Prove the components needed by the constructor for the conclusion. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem ext_chain (hc : 0 < c) (ht1 : 1 ≤ t₁) (ht : t ∈ cone r c) (i : ℕ) :
     ∀ k, i + k ≤ r → (∀ j (hj : j < r), i ≤ j → j < i + k → (⟨j, hj⟩ : Fin r) ∉ deep t₁ t) →
@@ -151,7 +149,7 @@ theorem ext_chain (hc : 0 < c) (ht1 : 1 ≤ t₁) (ht : t ∈ cone r c) (i : ℕ
         _ = _ := by ring
 
 /- English proof (translation)
-Establish `hc' : 0 < min c 1` using `lt_min hc one_pos`. Establish `hi : 1 ≤ (min c 1)⁻¹` using `one_le_inv₀ hc' |>.mpr (min_le_right _ _)`. Conclude with `le_max_of_le_right (one_le_pow₀ hi)`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem one_le_bnd (hc : 0 < c) (ht1 : 1 ≤ t₁) : 1 ≤ bnd r c t₁ := by
   have hc' : 0 < min c 1 := lt_min hc one_pos
@@ -159,11 +157,11 @@ theorem one_le_bnd (hc : 0 < c) (ht1 : 1 ≤ t₁) : 1 ≤ bnd r c t₁ := by
   exact le_max_of_le_right (one_le_pow₀ hi)
 
 /- English proof (translation)
-Establish `hc' : 0 < min c 1` using `lt_min hc one_pos`. Establish `hp : 0 < (min c 1) ^ r` using `pow_pos hc' r`. Establish `hp1 : (min c 1) ^ r ≤ 1` using `pow_le_one₀ hc'.le (min_le_right _ _)`. Establish `hR1 : 1 ≤ t₁ / (min c 1) ^ r` using `by rw [le_div_iff₀ hp]; nlinarith`. Establish `hi : 1 ≤ (min c 1)⁻¹` using `one_le_inv₀ hc' |>.mpr (min_le_right _ _)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨h1, h2⟩` from `ext_chain hc ht1 ht i (l - i) (by omega) (fun j hj a b => hS j hj a (by omega))`. Rewrite `h1`, `h2` using `[show i + (l - i) = l by omega]`. Prove the components needed by the constructor for the conclusion. Use `h1.trans (mul_le_mul_of_nonneg_right ?_ (ext_pos ht _).le)` and prove the remaining obligations. Conclude with `(pow_le_pow_right₀ hR1 (by omega)).trans (le_max_left _ _)`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Prove the components needed by the constructor for the conclusion. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `h2.trans (mul_le_mul_of_nonneg_right ?_ (ext_pos ht _).le)` and prove the remaining obligations. Conclude with `(pow_le_pow_right₀ hi (by omega)).trans (le_max_right _ _)`.
+A detailed English derivation is pending.
 -/
 theorem ext_bnd (hc : 0 < c) (ht1 : 1 ≤ t₁) (ht : t ∈ cone r c) {i l : ℕ} (hil : i ≤ l) (hl : l ≤ r)
     (hS : ∀ j (hj : j < r), i ≤ j → j < l → (⟨j, hj⟩ : Fin r) ∉ deep t₁ t) :
@@ -182,9 +180,9 @@ theorem ext_bnd (hc : 0 < c) (ht1 : 1 ≤ t₁) (ht : t ∈ cone r c) {i l : ℕ
     exact (pow_le_pow_right₀ hi (by omega)).trans (le_max_right _ _)
 
 /- English proof (translation)
-Introduce `hj`. Unfold `cnt at h`. Establish `hsub : S.filter (· < i) ⊂ S.filter (· < l)`. Rewrite using `[Finset.ssubset_iff_of_subset]`. Conclude with `⟨j, by simp [hj, h2], by simp [hj, h1]⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Introduce `x`. Simplify using `only [Finset.mem_filter]`. Conclude with `fun ⟨a, b⟩ => ⟨a, lt_of_lt_of_le b hil⟩`. Use `Finset.card_lt_card hsub` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem no_deep_of_cnt_eq {S : Finset (Fin r)} {i l : Fin r} (hil : i ≤ l) (h : cnt S i = cnt S l)
     (j : Fin r) (h1 : i ≤ j) (h2 : j < l) : j ∉ S := by
@@ -198,9 +196,9 @@ theorem no_deep_of_cnt_eq {S : Finset (Fin r)} {i l : Fin r} (hil : i ≤ l) (h 
   omega
 
 /- English proof (translation)
-Introduce `hj`. Unfold `cnt at h`. Establish `hsub : S.filter (· < i) ⊂ S`. Rewrite using `[Finset.ssubset_iff_of_subset (Finset.filter_subset _ _)]`. Conclude with `⟨j, hj, by simp [hj, h1]⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Use `Finset.card_lt_card hsub` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem no_deep_of_cnt_card {S : Finset (Fin r)} {i : Fin r} (h : cnt S i = S.card) (j : Fin r)
     (h1 : i ≤ j) : j ∉ S := by
@@ -213,7 +211,7 @@ theorem no_deep_of_cnt_card {S : Finset (Fin r)} {i : Fin r} (h : cnt S i = S.ca
   omega
 
 /- English proof (translation)
-Unfold `cnt`. Conclude with `Finset.card_le_card (Finset.filter_subset _ _)` after adjusting the coercions.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem cnt_le_card (S : Finset (Fin r)) (i : Fin r) : cnt S i ≤ S.card := by
   unfold cnt
@@ -226,9 +224,9 @@ namespace GlobalTheory.CompanionTheory.CFin.Ratio
 variable {r : ℕ} {c t₁ : ℝ} {t : Fin r → ℝ}
 
 /- English proof (translation)
-Break down `le_total i l with hil | hli` into its components or cases. Use `ext_bnd hc ht1 ht (i := i.val) (l := l.val) hil l.isLt.le (fun j hj a b => no_deep_of_cnt_eq hil h ⟨j, hj⟩ (show i ≤ (⟨j, hj⟩ : Fin r) from a) b)` as an intermediate fact. Rewrite `this` using `[ext_of_lt t i.isLt, ext_of_lt t l.isLt]`. Conclude with `this`. Use `ext_bnd hc ht1 ht (i := l.val) (l := i.val) hli i.isLt.le (fun j hj a b => no_deep_of_cnt_eq hli h.symm ⟨j, hj⟩ (show l ≤ (⟨j, hj⟩ : Fin r) from a) b)` as an intermediate fact.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[ext_of_lt t i.isLt, ext_of_lt t l.isLt]`. Conclude with `⟨this.2, this.1⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem t_pair (hc : 0 < c) (ht1 : 1 ≤ t₁) (ht : t ∈ cone r c) {i l : Fin r}
     (h : cnt (deep t₁ t) i = cnt (deep t₁ t) l) :
@@ -244,7 +242,7 @@ theorem t_pair (hc : 0 < c) (ht1 : 1 ≤ t₁) (ht : t ∈ cone r c) {i l : Fin 
     exact ⟨this.2, this.1⟩
 
 /- English proof (translation)
-Use `ext_bnd hc ht1 ht (i := i.val) (l := r) i.isLt.le le_rfl (fun j hj a _ => no_deep_of_cnt_card h ⟨j, hj⟩ (show i ≤ (⟨j, hj⟩ : Fin r) from a))` as an intermediate fact. Rewrite `this` using `[ext_of_lt t i.isLt, ext_of_ge t le_rfl, mul_one]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem t_zero (hc : 0 < c) (ht1 : 1 ≤ t₁) (ht : t ∈ cone r c) {i : Fin r}
     (h : cnt (deep t₁ t) i = (deep t₁ t).card) :
@@ -255,7 +253,7 @@ theorem t_zero (hc : 0 < c) (ht1 : 1 ≤ t₁) (ht : t ∈ cone r c) {i : Fin r}
   exact this
 
 /- English proof (translation)
-Break down `u with i | k | i` into its components or cases. Conclude with `ht.1 i`. Conclude with `one_pos`. Conclude with `inv_pos.mpr (ht.1 i)`.
+Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem wt_pos (ht : t ∈ cone r c) (m : ℕ) (u : Idx r m) : 0 < wt m t u := by
   rcases u with i | k | i
@@ -264,13 +262,11 @@ theorem wt_pos (ht : t ∈ cone r c) (m : ℕ) (u : Idx r m) : 0 < wt m t u := b
   · exact inv_pos.mpr (ht.1 i)
 
 /- English proof (translation)
-Establish `hB` using `one_le_bnd (r := r) hc ht1`. Establish `hB0 : 0 < bnd r c t₁` using `lt_of_lt_of_le one_pos hB`. Break down `u with i | k | i` into its components or cases. Simplify using `only [lev] at hu`. Take `⟨h1, h2⟩` from `t_zero hc ht1 ht (i := i) (by linarith)`.
+Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Use `show (bnd r c t₁)⁻¹ ≤ t i ∧ t i ≤ bnd r c t₁`. Use `⟨?_, h1⟩` and prove the remaining obligations. Rewrite using `[inv_le_iff_one_le_mul₀' hB0]`. Conclude with `h2`. Use `show (bnd r c t₁)⁻¹ ≤ 1 ∧ 1 ≤ bnd r c t₁`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨inv_le_one_of_one_le₀ hB, hB⟩`. Simplify using `only [lev] at hu`. Take `⟨h1, h2⟩` from `t_zero hc ht1 ht (i := i) (by linarith)`. Establish `hti` using `ht.1 i`. Use `show (bnd r c t₁)⁻¹ ≤ (t i)⁻¹ ∧ (t i)⁻¹ ≤ bnd r c t₁`.
-
-Prove the components needed by the constructor for the conclusion. Conclude with `inv_anti₀ hti h1`. Rewrite using `[inv_le_iff_one_le_mul₀' hti, mul_comm]`. Conclude with `h2`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem wt_zero (hc : 0 < c) (ht1 : 1 ≤ t₁) (ht : t ∈ cone r c) (m : ℕ) (u : Idx r m)
     (hu : lev m (deep t₁ t) u = 0) :
@@ -298,17 +294,15 @@ end GlobalTheory.CompanionTheory.CFin.Ratio
 namespace GlobalTheory.CompanionTheory.CFin.Ratio
 
 /- English proof (translation)
-Introduce `r m c t₁ hc ht1`. Establish `hB` using `one_le_bnd (r := r) hc ht1`. Establish `hB0 : 0 < bnd r c t₁` using `lt_of_lt_of_le one_pos hB`. Establish `hBB : bnd r c t₁ ≤ bnd r c t₁ ^ 2` using `by nlinarith`. Use `⟨bnd r c t₁ ^ 2, by positivity, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `t ht u v huv`. Establish `zero_case : ∀ u v : Idx r m, lev m (deep t₁ t) u = 0 → lev m (deep t₁ t) v = 0 → wt m t u ≤ bnd r c t₁ ^ 2 * wt m t v`. Introduce `u v hu hv`. Establish `a` using `(wt_zero hc ht1 ht m u hu).2`. Establish `b` using `(wt_zero hc ht1 ht m v hv).1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hcl` using `cnt_le_card (deep t₁ t)`. Apply the tactic sequence `rcases u with i | k | i <;> rcases v with l | k' | l`. Simplify using `only [lev] at huv`. Establish `h` using `(t_pair hc ht1 ht (i := i) (l := l) (by linarith)).1`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `show t i ≤ bnd r c t₁ ^ 2 * t l`. Conclude with `h.trans (mul_le_mul_of_nonneg_right hBB (ht.1 l).le)`. Conclude with `zero_case _ _ (by simp only [lev] at huv ⊢; linarith) (by simp only [lev])`. Conclude with `zero_case _ _ (by simp only [lev] at huv ⊢; linarith [hcl i, hcl l]) (by simp only [lev] at huv ⊢; linarith [hcl i, hcl l])`. Conclude with `zero_case _ _ (by simp only [lev]) (by simp only [lev] at huv ⊢; linarith)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Conclude with `zero_case _ _ (by simp only [lev]) (by simp only [lev])`. Conclude with `zero_case _ _ (by simp only [lev]) (by simp only [lev] at huv ⊢; linarith)`. Conclude with `zero_case _ _ (by simp only [lev] at huv ⊢; linarith [hcl i, hcl l]) (by simp only [lev] at huv ⊢; linarith [hcl i, hcl l])`. Conclude with `zero_case _ _ (by simp only [lev] at huv ⊢; linarith) (by simp only [lev])`. Simplify using `only [lev] at huv`.
-
-Establish `h` using `(t_pair hc ht1 ht (i := i) (l := l) (by linarith)).2`. Establish `hti` using `ht.1 i`. Establish `htl` using `ht.1 l`. Use `show (t i)⁻¹ ≤ bnd r c t₁ ^ 2 * (t l)⁻¹`. Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem ratio_bounded : ∀ (r m : ℕ) (c t₁ : ℝ), 0 < c → 1 ≤ t₁ → ∃ R : ℝ, 0 ≤ R ∧ ∀ t ∈ cone r c,
     ∀ u v : Idx r m, lev m (deep t₁ t) u = lev m (deep t₁ t) v → wt m t u ≤ R * wt m t v := by

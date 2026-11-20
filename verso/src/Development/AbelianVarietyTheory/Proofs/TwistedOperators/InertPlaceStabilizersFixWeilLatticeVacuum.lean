@@ -15,11 +15,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.PlaceTensor
 
 /- English proof (translation)
-Introduce `i j`. Set `t₁` to `GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.tensNU (E := D.host.E) (R' := AF D.host.F) (LinearMap.inr D.host.F (Ainf D.host.F) (Af D.host.F)) (fun _ _ => Prod.ext (mul_zero _).symm rfl)`. Set `t₂` to `GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.tensNU (E := D.host.E) (GlobalTheory.AdelicU.singleFin v) (GlobalTheory.AdelicU.singleFin_mul v)`. Establish `key : ∀ x, t₁ (t₂ 1) * t₁ (t₂ x) = t₁ (t₂ x)` using `fun x => by rw [← map_mul, ← map_mul, one_mul]`. Express the relevant statement in the definitionally equal form `t₁ (t₂ 1) * (((1 - t₁ 1) * (1 : Matrix (Fin V.rank) (Fin V.rank) (AE D)) i j + t₁ ((1 - t₂ 1) * (1 : Matrix (Fin V.rank) (Fin V.rank) _) i j + t₂ ((HA.mat _ _ _ k).1 i j))) - (1 : Matrix (Fin V.rank) (Fin V.rank) (AE D)) i j) = ((1 - t₁ 1) * (1 : Matrix (Fin V.rank) (Fin V.rank) …`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Distinguish the cases in `e : i = j`. Substitute `e` using the available equality. Simplify using `only [Matrix.one_apply_eq, mul_one, map_add, map_sub]`. Take the linear combination `key ((HA.mat _ _ _ k).1 i i) - key 1`. Simplify using `only [Matrix.one_apply_ne e, mul_zero, zero_add, sub_zero]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Simplify using the standard rewrite rules.
 
-Conclude with `key _`.
+A detailed English derivation is pending.
 -/
 theorem suppPl_emb {D : D7} (V : HSp D) (v : FinPl D) (k : GlobalTheory.AdelicU.GLoc D.sp.cm.sig V.gram v) :
     GlobalTheory.WeilParts.SuppPl (pairA D.host.F 0 (singleV D.host.F v 1)) V (GlobalTheory.AdelicU.emb D.sp.cm.sig V.gram v k) := by
@@ -42,7 +42,7 @@ theorem suppPl_emb {D : D7} (V : HSp D) (v : FinPl D) (k : GlobalTheory.AdelicU.
     exact key _
 
 /- English proof (translation)
-Establish `h` using `GlobalTheory.AdelicU.emb_mem_levelOff (Finset.notMem_empty v) hk`. Rewrite `h` using `[GlobalTheory.AdelicU.levelOff_eq]`. Conclude with `(GlobalTheory.AdelicU.mem_levelOpen_iff_latHat _ _ hL _).1 h.2 y`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem emb_keeps_latHat {D : D7} (V : HSp D) {L : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E)} (hL : L.FG)
     (v : FinPl D) {k : GlobalTheory.AdelicU.GLoc D.sp.cm.sig V.gram v} (hk : k ∈ GlobalTheory.AdelicU.stabLoc D.sp.cm.sig V.gram L v) (y) :
@@ -54,9 +54,9 @@ theorem emb_keeps_latHat {D : D7} (V : HSp D) {L : Submodule (𝓞 D.host.E) (Fi
   exact (GlobalTheory.AdelicU.mem_levelOpen_iff_latHat _ _ hL _).1 h.2 y
 
 /- English proof (translation)
-Introduce `D ψ S T χS χT om ΛS ΛT hW hS hT v hv uS uT f hf hvac k hk k' hk'`. Establish `hε : IsPlaceIdem D v (pairA D.host.F 0 (singleV D.host.F v 1))` using `⟨_, rfl, GlobalTheory.SplitIdem.evalV_singleV_same _ _ _, fun _ hw => GlobalTheory.SplitIdem.evalV_singleV_ne _ _ _ hw⟩`. Establish `hns : GlobalTheory.WeilParts.NonSplitAt D v (pairA D.host.F 0 (singleV D.host.F v 1))` using `⟨hε, hv⟩`. Use `GlobalTheory.T.weilDatum_fixes_vacuum_nonSplitPlace_unramified D ψ hW.std S T ΛS ΛT hS hT χS χT om ((GlobalTheory.Mem.EtaTilde.exists_etaTilde D).imp fun _ h => ⟨h.1, h.2.2.2, h.2.2.1, h.2.1⟩) hW v _ hns uS uT _ _ (suppPl_emb S v k) (suppPl_emb T v k') (GlobalTheory.LocalLatStab. …` and prove the remaining obligations. Take `⟨a, ha, ha2⟩` from `GlobalTheory.FinWeilO.exists_half_of_nonSplit hns`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `h1 : 2 • (a • u) = u`. Rewrite using `[two_nsmul, ← add_smul, ← two_mul, ha2, GlobalTheory.VecInvInert.idem_smul_eq hε hu]`. Establish `h2` using `hvac.1 (a • u) (GlobalTheory.LatticeStable.smul_mem_latO D S T _ _ _ a ha u hu)`. Rewrite `h2` using `[h1]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem inertVacuumFixed : ∀ D : D7, InertVacuumFixed D := by
   intro D ψ S T χS χT om ΛS ΛT hW hS hT v hv uS uT f hf hvac k hk k' hk'

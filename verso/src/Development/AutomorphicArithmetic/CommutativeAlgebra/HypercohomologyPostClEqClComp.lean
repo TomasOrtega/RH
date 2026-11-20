@@ -4,9 +4,9 @@ open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComp
 
 set_option backward.isDefEq.respectTransparency false in
 /- English proof (translation)
-Introduce `M F G f g`. Establish `hg : resAug F ≫ resMap ℤ g = (CochainComplex.singleFunctor (Shv ℤ) 0).map g ≫ resAug G` using `((GlobalTheory.T.chosenInjectiveResolution_etaleSheaf_properties ℤ F).2.2.2.2.2.2.2 G g).1`. Establish `key : ((CochainComplex.singleFunctor (Shv ℤ) 0).map f ≫ resAug F) ≫ resMap ℤ g = (CochainComplex.singleFunctor (Shv ℤ) 0).map (f ≫ g) ≫ resAug G`. Rewrite using `[Category.assoc, hg, Functor.map_comp, Category.assoc]`. Express the relevant statement in the definitionally equal form `CohomologyClass.mk (zcomp (Cocycle.ofHom ((CochainComplex.singleFunctor (Shv ℤ) 0).map f ≫ resAug F)) (Cocycle.ofHom (resMap ℤ g)) (add_zero 0)) = CohomologyClass.mk (Cocycle.ofHom ((CochainComplex.singleFunctor (Shv ℤ) 0).map (f ≫ g) ≫ resAug G))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Use `congrArg CohomologyClass.mk (Cocycle.ext ?_)` and prove the remaining obligations. Rewrite using `[← key]`. Simplify using `[zcomp, Cochain.ofHom_comp]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem UpperTheory.hypercohomology_post_cl_eq_cl_comp :
     ∀ {M F G : Shv ℤ} (f : M ⟶ F) (g : F ⟶ G), HK.post ℤ (sgl M) g 0 (cl f) = cl (f ≫ g) := by

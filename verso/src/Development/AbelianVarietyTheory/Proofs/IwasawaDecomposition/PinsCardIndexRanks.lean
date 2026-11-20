@@ -12,23 +12,21 @@ section Count
 variable {κ : Type} [CommRing κ] {r : ℕ}
 
 /- English proof (translation)
-Set `mk : ({p : Fin r × Fin r // Fr p.1 p.2} → κ) → Matrix (Fin r) (Fin r) κ` to `fun f i j => if i = j then 1 else if h : Fr i j then f ⟨(i, j), h⟩ else 0`. Establish `hlow : ∀ f i j, j < i → mk f i j = 0`. Introduce `f i j hij`. Establish `hne : i ≠ j` using `(ne_of_lt hij).symm`. Simplify using `only [mk, if_neg hne]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[dif_neg]`. Introduce `h`. Conclude with `absurd (hFr i j h) (not_lt.2 hij.le)`. Establish `hdet : ∀ f, (mk f).det = 1`. Introduce `f`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.det_of_upperTriangular (fun i j hij => hlow f i j hij)]`. Simplify using `[mk]`. Set `toG : ({p : Fin r × Fin r // Fr p.1 p.2} → κ) → GL (Fin r) κ` to `fun f => Matrix.nonsingInvUnit (mk f) (by rw [hdet]; exact isUnit_one)`. Establish `htoG : ∀ f, ((toG f : GL (Fin r) κ) : Matrix (Fin r) (Fin r) κ) = mk f` using `fun f => rfl`. Set `e : H ≃ ({p : Fin r × Fin r // Fr p.1 p.2} → κ)` to `{ toFun := fun g p => (g.1 : Matrix (Fin r) (Fin r) κ) p.1.1 p.1.2 invFun := fun f => ⟨toG f, (hH _).2 ⟨fun i j hij => by rw [htoG]; exact hlow f i j hij, fun i => by rw [htoG]; simp [mk], fun i j hij hn => by`.
+Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[htoG]`. Simplify using `only [mk, if_neg (ne_of_lt hij), dif_neg hn]⟩⟩`. Use `left_inv := by`. Introduce `g`. Take `⟨h0, h1, h2⟩` from `(hH g.1).1 g.2`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Express the relevant statement in the definitionally equal form `mk (fun p => (g.1 : Matrix (Fin r) (Fin r) κ) p.1.1 p.1.2) i j = (g.1 : Matrix (Fin r) (Fin r) κ) i j`. Simplify using `only [mk]`.
+By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Rewrite using `[if_pos rfl, h1]`. Rewrite using `[if_neg hij]`. Distinguish the cases in `hf : Fr i j`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[dif_pos hf]`. Rewrite using `[dif_neg hf]`. Break down `lt_or_gt_of_ne hij with hl | hl` into its components or cases. Conclude with `(h2 i j hl hf).symm`. Conclude with `(h0 i j hl).symm`.
+Separate the alternatives or extract the components of the hypothesis. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `right_inv := by`. Introduce `f`. Use function extensionality and compare the values at `p`. Use `show mk f p.1.1 p.1.2 = f p`. Simplify using `only [mk, if_neg (ne_of_lt (hFr _ _ p.2)), dif_pos p.2] }`.
-
-Rewrite using `[Nat.card_congr e, Nat.card_fun]`.
+A detailed English derivation is pending.
 -/
 theorem card_unitri (Fr : Fin r → Fin r → Prop) (hFr : ∀ i j, Fr i j → i < j) (H : Subgroup (GL (Fin r) κ))
     (hH : ∀ g : GL (Fin r) κ, g ∈ H ↔ (∀ i j, j < i → (g : Matrix (Fin r) (Fin r) κ) i j = 0) ∧
@@ -84,9 +82,9 @@ theorem card_unitri (Fr : Fin r → Fin r → Prop) (hFr : ∀ i j, Fr i j → i
   rw [Nat.card_congr e, Nat.card_fun]
 
 /- English proof (translation)
-Use `card_unitri (fun i j => i < j) (fun _ _ h => h) _ fun g => ?_` and prove the remaining obligations. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h0, h1⟩`. Conclude with `⟨fun i j hij => h0 hij, h1, fun i j hij hn => absurd hij hn⟩`. Introduce and unpack `⟨h0, h1, -⟩`.
+Reduce the conclusion to the remaining proof obligations. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨fun i j hij => h0 i j hij, h1⟩`.
+Supply the required witnesses or components.
 -/
 theorem card_unip : Nat.card (unip κ r) = Nat.card κ ^ Nat.card {p : Fin r × Fin r // p.1 < p.2} := by
   refine card_unitri (fun i j => i < j) (fun _ _ h => h) _ fun g => ?_
@@ -97,11 +95,11 @@ theorem card_unip : Nat.card (unip κ r) = Nat.card κ ^ Nat.card {p : Fin r × 
     exact ⟨fun i j hij => h0 i j hij, h1⟩
 
 /- English proof (translation)
-Use `card_unitri (fun i j => i < j ∧ ¬ (a ≤ i.val ∧ i.val < c ∧ j.val = c)) (fun _ _ h => h.1) _ fun g => ?_` and prove the remaining obligations. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨h0, h1⟩, h2⟩`. Use `⟨fun i j hij => h0 hij, h1, fun i j hij hn => ?_⟩` and prove the remaining obligations. Establish `: a ≤ i.val ∧ i.val < c ∧ j.val = c`.
+Reduce the conclusion to the remaining proof obligations. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hc`. Conclude with `hn ⟨hij, hc⟩`. Conclude with `h2 i j this.1 this.2.1 this.2.2`. Introduce and unpack `⟨h0, h1, h2⟩`. Use `⟨⟨fun i j hij => h0 i j hij, h1⟩, fun i j ha hc hj => h2 i j ?_ ?_⟩` and prove the remaining obligations.
+Assume the negation of the conclusion and derive a contradiction. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Use linear arithmetic over natural numbers and integers. Assume the hypotheses and unpack their components.
 
-Use `show i.val < j.val`. Use linear arithmetic over natural numbers and integers. Introduce and unpack `⟨-, hn⟩`. Conclude with `hn ⟨ha, hc, hj⟩`.
+A detailed English derivation is pending.
 -/
 theorem card_unipCol (a c : ℕ) : Nat.card (unipCol κ r a c) =
     Nat.card κ ^ Nat.card {p : Fin r × Fin r // p.1 < p.2 ∧ ¬ (a ≤ p.1.val ∧ p.1.val < c ∧ p.2.val = c)} := by
@@ -119,17 +117,15 @@ theorem card_unipCol (a c : ℕ) : Nat.card (unipCol κ r a c) =
     · rintro ⟨-, hn⟩; exact hn ⟨ha, hc, hj⟩
 
 /- English proof (translation)
-Establish `hQ : Nat.card {p : Fin r × Fin r // p.1 < p.2 ∧ (a ≤ p.1.val ∧ p.1.val < c ∧ p.2.val = c)} = c - a`. Rewrite using `[← Nat.card_fin (c - a)]`. Use `Nat.card_congr { toFun := fun p => ⟨p.1.1.val - a, by have := p.2.2; omega⟩ invFun := fun i => ⟨(⟨a + i.val, by have := i.2; omega⟩, ⟨c, hc⟩), by` and prove the remaining obligations. Use `⟨?_, ?_, ?_, rfl⟩` and prove the remaining obligations. Use `show a + i.val < c`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `i.2` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Use `show a ≤ a + i.val`. Use linear arithmetic over natural numbers and integers. Use `show a + i.val < c`.
+Use linear arithmetic over natural numbers and integers. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Use `i.2` as an intermediate fact. Use the proof step `omega⟩`. Use `left_inv := by`. Introduce and unpack `⟨⟨i, j⟩, h1, h2, h3, h4⟩`. Establish `h2' : a ≤ i.val` using `h2`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Use linear arithmetic over natural numbers and integers. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Apply `Prod.ext` to reduce the goal to its premises. Apply `Fin.ext` to reduce the goal to its premises. Use `show a + (i.val - a) = i.val`. Use linear arithmetic over natural numbers and integers.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Apply `Fin.ext` to reduce the goal to its premises. Conclude with `h4.symm`. Use `right_inv := by`. Introduce `i`. Apply `Fin.ext` to reduce the goal to its premises.
-
-Use `show a + i.val - a = i.val`. Use `omega }`. Rewrite using `[← hQ]`. Simplify using `only [Nat.card_eq_fintype_card, Fintype.card_subtype]`. Rewrite using `[← Finset.card_filter_add_card_filter_not (s := Finset.univ.filter (fun p : Fin r × Fin r => p.1 < p.2)) (fun p : Fin r × Fin r => a ≤ p.1.val ∧ p.1.val < c ∧ p.2.val = c), Finset.filter_filter, Finset.filter_filter, add_comm]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_pairs_split {a c : ℕ} (hac : a ≤ c) (hc : c < r) :
     Nat.card {p : Fin r × Fin r // p.1 < p.2} =
@@ -164,7 +160,7 @@ theorem card_pairs_split {a c : ℕ} (hac : a ≤ c) (hc : c < r) :
     add_comm]
 
 /- English proof (translation)
-Rewrite using `[← Nat.card_pi]`. Conclude with `Nat.card_congr ((Equiv.subtypeEquivRight fun x => by simp [Subgroup.mem_pi]).trans (Equiv.subtypePiEquivPi (p := fun i y => y ∈ H i)))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_pi {ι : Type} [Fintype ι] {M : ι → Type} [∀ i, Group (M i)] (H : ∀ i, Subgroup (M i)) :
     Nat.card (Subgroup.pi Set.univ H) = ∏ i, Nat.card (H i) := by
@@ -179,9 +175,9 @@ end GlobalTheory.Mem.GrpCount
 namespace GlobalTheory.Mem.GrpCount
 
 /- English proof (translation)
-Introduce `i j hij`. Establish `hv` using `congrArg Fin.val hij`. Simplify using `only [symPos] at hv`. Establish `hi` using `i.2`. Establish `hj` using `j.2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `Fin.ext` to reduce the goal to its premises. Apply the tactic sequence `split_ifs at hv <;> rw [Nat.mod_eq_of_lt (by omega), Nat.mod_eq_of_lt (by omega)] at hv <;> omega`.
+Reduce the claim to the hypotheses of an applicable result. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem symPos_injective {r ρ k : ℕ} (h : ρ + k ≤ r) : Function.Injective (symPos r ρ k) := by
   intro i j hij
@@ -193,23 +189,21 @@ theorem symPos_injective {r ρ k : ℕ} (h : ρ + k ≤ r) : Function.Injective 
   split_ifs at hv <;> rw [Nat.mod_eq_of_lt (by omega), Nat.mod_eq_of_lt (by omega)] at hv <;> omega
 
 /- English proof (translation)
-Establish `hrk : D.R.rS + D.R.k < D.R.r`. Use `D.R.two_le_m` as an intermediate fact. Simplify using `only [Ranks.rS, Ranks.r]`. Use linear arithmetic over natural numbers and integers. Set `σ : Fin D.R.r ≃ Fin D.R.r` to `Equiv.ofBijective _ (Finite.injective_iff_bijective.1 (symPos_injective hrk.le))`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Introduce a local definition for the expression.
 
-Establish `h0 : Nat.card Q0 = Nat.card (_root_.Formalism.L2.DIV.P0 Pg D.R.r ψ).H` using `Nat.card_congr (eC.toEquiv.subtypeEquiv fun g => h.p0 g)`. Set `φ : G0 Pg D.R.r ≃ G0 Pg D.R.r` to `Equiv.piCongrRight fun PP => (Units.mapEquiv (Matrix.reindexAlgEquiv (kP PP.1) (kP PP.1) σ.symm).toMulEquiv).toEquiv`. Establish `hφ : ∀ (x : G0 Pg D.R.r) (PP : ↥Pg) (i j : Fin D.R.r), ((φ x PP : GL (Fin D.R.r) (kP PP.1)) : Matrix (Fin D.R.r) (Fin D.R.r) (kP PP.1)) i j = ((x PP : GL (Fin D.R.r) (kP PP.1)) : Matrix (Fin D.R.r) (Fin D.R.r) (kP PP.1)) (symPos D.R.r D.R.rS D.R.k i) (symPos D.R.r D.R.rS D.R.k j)`. Introduce `x PP i j`. Simplify using `[φ, σ, Matrix.reindexAlgEquiv_apply, Matrix.reindex_apply]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `hs : Nat.card Qs = Nat.card (PsharpSym Pg D.R.r D.R.rS D.R.k ψ).H`. Use `Nat.card_congr ((eC.toEquiv.trans φ).subtypeEquiv fun g => ?_)` and prove the remaining obligations. Rewrite using `[h.ps g]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, hE⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Establish `hy' : φ (eC g) = y`. Use function extensionality and compare the values at `PP`. Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Rewrite using `[hφ]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hE PP i j`. Use `show φ (eC g) ∈ _`. Rewrite using `[hy']`. Conclude with `hy`. Introduce `hm`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `⟨_, hm, fun PP i j => (hφ _ PP i j).symm⟩`. Establish `hsplit` using `card_pairs_split (r := D.R.r) (a := D.R.rS) (c := D.R.rS + D.R.k) (by omega) hrk`. Rewrite `hsplit` using `[Nat.add_sub_cancel_left]`. Establish `hP0 : Nat.card (_root_.Formalism.L2.DIV.P0 Pg D.R.r ψ).H = ∏ PP : ↥Pg, Nat.card (kP PP.1) ^ Nat.card {p : Fin D.R.r × Fin D.R.r // p.1 < p.2}` using `by show Nat.card (Subgroup.pi Set.univ fun PP : ↥Pg => unip (kP PP.1) D.R.r) = _`. Rewrite using `[card_pi]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Finset.prod_congr rfl fun PP _ => card_unip`. Establish `hPs : Nat.card (PsharpSym Pg D.R.r D.R.rS D.R.k ψ).H = ∏ PP : ↥Pg, Nat.card (kP PP.1) ^ Nat.card {p : Fin D.R.r × Fin D.R.r // p.1 < p.2 ∧ ¬ (D.R.rS ≤ p.1.val ∧ p.1.val < D.R.rS + D.R.k ∧ p.2.val = D.R.rS + D.R.k)}` using `by show Nat.card (Subgroup.pi Set.univ fun PP : ↥Pg => unipCol (kP PP.1) D.R.r D.R.rS (D.R.rS + D.R.k)) = _`. Rewrite using `[card_pi]`. Conclude with `Finset.prod_congr rfl fun PP _ => card_unipCol _ _`. Establish `hk : ∏ PP : ↥Pg, Nat.card (kP PP.1) ^ D.R.k = (D.host.g 0 * D.host.g 1) ^ (D.R.k * D.R.f)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Equiv.prod_comp pl (fun PP : ↥Pg => Nat.card (kP PP.1) ^ D.R.k)]`. Establish `hq : ∀ kv : (Σ k : Fin 2, D.nd.PlG k), Nat.card (kP (pl kv).1) = D.host.g kv.1` using `fun kv => by`. Rewrite using `[Nat.card_congr (res kv).toEquiv, Nat.card_zmod]`. Simplify using `only [hq]`. Rewrite using `[Fintype.prod_sigma]`.
-
-Simplify using `only [Finset.prod_const, Finset.card_univ, D.nd.card_PlG, Fin.prod_univ_two]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h0, hs, hP0, hPs, ← hk, hsplit, ← Finset.prod_mul_distrib]`. Conclude with `Finset.prod_congr rfl fun PP _ => pow_add _ _ _`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem index_of_lvlTie {D : D7} {G : Type} [Group G] {Q0 : Subgroup G} {ψ0 : Q0 →* D.what₂.LLˣ} {Qs : Subgroup G}
     {ψs : Qs →* D.what₂.LLˣ} {eG : G ≃* G0g D.nd} {Pg : Finset (Pl D.host.E)} {pl : (Σ k : Fin 2, D.nd.PlG k) ≃ ↥Pg}
@@ -278,9 +272,9 @@ end GlobalTheory.Mem.GrpCount
 namespace GlobalTheory.Mem.R3
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 I0 T A3 Ks _ _ _ R F cG h`. Take `⟨gramR, c0R, c0L, hT⟩` from `h.char.base.fam.tie`. Use `⟨?_, ?_, hT.ranks.2.1, hT.ranks.2.2, hT.v0⟩` and prove the remaining obligations. Rewrite using `[← Nat.card_eq_fintype_card, Nat.card_congr (R.eG.trans cG).toEquiv, D.nd.restN_card_levelGroup_eq, Nat.card_pi, Fintype.prod_sigma]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Express the relevant statement in the definitionally equal form `∏ _y : D.nd.PlG k, Nat.card (GL (Fin D.R.r) (ZMod (D.host.g k))) = _`. Rewrite using `[Finset.prod_const, Finset.card_univ, D.nd.card_PlG k]`. Take `⟨Pg, pl, res, ψ, eC, hL, -⟩` from `h.keep.psi`. Conclude with `GlobalTheory.Mem.GrpCount.index_of_lvlTie hL`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem pins_card_index_ranks : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 I0 T : Type)
     (A3 : FamIn3 D.what₂.LL G Pl0 I0 (List ℕ) T D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL]

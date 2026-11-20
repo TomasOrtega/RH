@@ -128,12 +128,12 @@ namespace TwDat.Is
 variable {A : TwDat I l Z u a Ch}
 
 /- English proof (translation)
-The claim follows from `(hA.reads i hi).onto`.
+A detailed English derivation is pending.
 -/
 theorem chOf_onto (hA : A.Is) (i : ℕ) (hi : i ≤ B.R.m) : Function.Surjective (A.chOf i) := (hA.reads i hi).onto
 
 /- English proof (translation)
-Take `⟨c, rfl⟩` from `hA.chOf_onto i hi α`. Take `⟨c', rfl⟩` from `hA.chOf_onto i hi β`. Take `⟨h1, h2⟩` from `hA.rep i hi c`. Take `⟨h3, h4⟩` from `hA.rep i hi c'`. Conclude with `((hA.reads i hi).key c c').2 ⟨by rw [h1, h3, hb], by rw [h2, h4, hc]⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem chart_ext (hA : A.Is) (i : ℕ) (hi : i ≤ B.R.m) (α β : Ch i) (hb : A.b0 i α = A.b0 i β)
     (hc : cosetIn (A.p0 i α) = cosetIn (A.p0 i β)) : α = β := by
@@ -144,7 +144,7 @@ theorem chart_ext (hA : A.Is) (i : ℕ) (hi : i ≤ B.R.m) (α β : Ch i) (hb : 
   exact ((hA.reads i hi).key c c').2 ⟨by rw [h1, h3, hb], by rw [h2, h4, hc]⟩
 
 /- English proof (translation)
-Take `⟨n, hn, h⟩` from `hA.fin i hi β`. Use `⟨n, hn, fun g => ?_⟩` and prove the remaining obligations. Take `⟨κ, hκ⟩` from `((hA.U i hi β g.1).1 g.2).2`. Rewrite using `[hA.chi i hi β g κ hκ]`. Conclude with `h κ`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chi_pow (hA : A.Is) (i : ℕ) (hi : i ≤ B.R.m) (β : Ch i) : ∃ n : ℕ, 0 < n ∧ ∀ g, A.chi i β g ^ n = 1 := by
   obtain ⟨n, hn, h⟩ := hA.fin i hi β
@@ -154,7 +154,7 @@ theorem chi_pow (hA : A.Is) (i : ℕ) (hi : i ≤ B.R.m) (β : Ch i) : ∃ n : �
   exact h κ
 
 /- English proof (translation)
-Take `⟨n, hn, h⟩` from `hA.chi_pow i hi β`. Establish `e : ((A.chi i β g : ℂˣ) : ℂ) ^ n = 1` using `by rw [← Units.val_pow_eq_pow_val, h g, Units.val_one]`. Conclude with `Complex.norm_eq_one_of_pow_eq_one e hn.ne'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem norm_chi (hA : A.Is) (i : ℕ) (hi : i ≤ B.R.m) (β : Ch i) (g : A.U i β) : ‖((A.chi i β g : ℂˣ) : ℂ)‖ = 1 := by
   obtain ⟨n, hn, h⟩ := hA.chi_pow i hi β
@@ -162,7 +162,7 @@ theorem norm_chi (hA : A.Is) (i : ℕ) (hi : i ≤ B.R.m) (β : Ch i) (g : A.U i
   exact Complex.norm_eq_one_of_pow_eq_one e hn.ne'
 
 /- English proof (translation)
-The claim follows from `(A.K i hi β).lev.chi_triv κ fun v hv => h v (hA.bad_le i hi v hv)`.
+A detailed English derivation is pending.
 -/
 theorem lev_chi_eq_one (hA : A.Is) (i : ℕ) (hi : i ≤ B.R.m) (β : Ch i) (κ : (A.K i hi β).lev.U)
     (h : ∀ v, v ∈ Formalism.L2.Forms.badG (I.rec7 l Z) ∨ I.UnderQ a v →
@@ -180,7 +180,7 @@ variable {A : TwDat I l Z u a Ch} {ψ : AddChar (AF (I.rec7 l Z).host.F) ℂ} {�
     {rd : ∀ j, Ch j → ColT I l u a j → (I.chain l u a).Y j → GA (I.rec7 l Z) ((I.rec7 l Z).sp.X j) → ℂ} {cK : ℕ → ℂ}
 
 /- English proof (translation)
-Establish `hc` using `h.ne j hj`. Rewrite `hc` using `[h.cst j hj α γ]`. Apply the tactic sequence `refine ⟨fun h0 => hc ?_, fun h0 => hc ?_, fun h0 => hc ?_⟩ <;> simp [h0]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem PinColN.w_ne (h : PinColN A ψ θ x vac c₀ kom dd w Ram rd cK) (j : ℕ) (hj : j < B.R.m) (α : Ch j) (γ : Ch (j + 1)) :
     w j α γ ≠ 0 ∧ volLev (x j).vol (A.U j α) ≠ 0 ∧ c₀ j ≠ 0 := by
@@ -189,7 +189,7 @@ theorem PinColN.w_ne (h : PinColN A ψ θ x vac c₀ kom dd w Ram rd cK) (j : �
   refine ⟨fun h0 => hc ?_, fun h0 => hc ?_, fun h0 => hc ?_⟩ <;> simp [h0]
 
 /- English proof (translation)
-The claim follows from `(hX.mv j hj).2 a _ _ (h.is.chr ⟨j, hj⟩) (h.om j hj)`.
+A detailed English derivation is pending.
 -/
 theorem PinColT.vacT (hX : PinX I l Z ψ θ x vac c₀) (h : PinColT A ψ θ x vac c₀ kom dd w Ram rd cK) (j : ℕ) (hj : j + 1 ≤ B.R.m) :
     VacT I l Z θ j hj (c₀ j) (A.chr (j + 1)) (kom j) (vac j) :=

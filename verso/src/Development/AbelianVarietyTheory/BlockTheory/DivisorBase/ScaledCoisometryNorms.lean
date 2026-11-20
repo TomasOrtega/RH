@@ -14,7 +14,7 @@ def sumGram {K : Type} [Zero K] (N : ℕ) {n : ℕ} (G' : Matrix (Fin n) (Fin n)
     if ha : a.1 < n then (if hb : b.1 < n then G' ⟨a.1, ha⟩ ⟨b.1, hb⟩ else 0) else (if b.1 < n then 0 else g)
 
 /- English proof (translation)
-Apply the tactic sequence `refine ⟨fun a b => ?_, fun a => ⟨?_, ?_⟩, ?_⟩ <;> simp [sumGram, iC, iL]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem sumGram_entries {K : Type} [Zero K] {N n : ℕ} (hN : N = n + 1) (G' : Matrix (Fin n) (Fin n) K) (g : K) :
     (∀ a b : Fin n, sumGram N G' g (iC hN a) (iC hN b) = G' a b) ∧
@@ -64,9 +64,9 @@ def BrNormUnitFrame : Prop :=
     NormConcl s hN lam sg (fun τ => sumGram N (G' τ) 1) G' t T
 
 /- English proof (translation)
-Unfold `brSq orthSq`. Rewrite using `[Finset.prod_mul_distrib]`. Use `congr 1`. Rewrite using `[← Finset.sum_neg_distrib]`. Proceed by induction on `(Finset.univ : Finset ι) using Finset.cons_induction with`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Proceed by induction.
 
-Consider the case `empty => simp`. Consider the case `cons a S ha ih => rw [Finset.prod_cons, Finset.sum_cons, zpow_add₀ hT.ne', ih]`.
+Treat this case separately. Treat this case separately.
 -/
 theorem brSq_eq {ι : Type} [Fintype ι] {N n : ℕ} (hN : N = n + 1) (lam : ι → DomWeight N) (sg : ι → DomWeight n) {T : ℝ}
     (hT : 0 < T) : brSq hN lam sg T = T ^ (-∑ τ, nBr (lam τ) (sg τ)) * orthSq hN lam sg := by
@@ -96,9 +96,9 @@ def wtOneZero : DomWeight 2 := ⟨![1, 0], by
 def wtZero : DomWeight 1 := ⟨fun _ => 0, fun _ _ _ => le_rfl⟩
 
 /- English proof (translation)
-Use `⟨?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `i fin_cases i`. Simplify using `[aBr, bBr, wtOneZero, wtZero, iS, iC]`. Simplify using `[SameShift, DomWeight.detShift, wtOneZero, wtZero]`. Simplify using `[nBr, wtOneZero, wtZero]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `using (Matrix.PosDef.one : (1 : Matrix (Fin 1) (Fin 1) ℂ).PosDef)`. Simplify using the standard rewrite rules. Evaluate the numerical expressions.
+Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Evaluate the numerical expressions.
 -/
 example : Interlace (N := 2) (n := 1) rfl wtOneZero wtZero ∧ SameShift wtOneZero wtZero ∧ nBr wtOneZero wtZero = 1 ∧
     ((1 : Matrix (Fin 1) (Fin 1) ℂ).map (RingHom.id ℂ)).PosDef ∧

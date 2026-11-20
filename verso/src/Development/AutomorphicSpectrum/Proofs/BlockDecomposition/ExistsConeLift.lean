@@ -7,9 +7,9 @@ open CategoryTheory Limits AlgebraicGeometry GlobalTheory.LogCris DividedPowers 
 namespace GlobalTheory.CompanionTheory.ConeLiftEx
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `Ideal.Quotient.mk_surjective (u : B ⧸ J)`. Take `⟨b, hb⟩` from `Ideal.Quotient.mk_surjective ((u⁻¹ : (B ⧸ J)ˣ) : B ⧸ J)`. Establish `hmem : a * b - 1 ∈ J`. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, map_sub, map_mul, ha, hb, Units.mul_inv, map_one, sub_self]`. Establish `hu : IsUnit (a * b)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `(hJ _ hmem).isUnit_one_add` as an intermediate fact. Simplify using `using this`. Conclude with `⟨(isUnit_of_mul_isUnit_left hu).unit, by simpa using ha⟩`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Supply the required witnesses or components.
 -/
 theorem exists_unit_lift {B : Type} [CommRing B] (J : Ideal B) (hJ : ∀ x ∈ J, IsNilpotent x) (u : (B ⧸ J)ˣ) :
     ∃ w : Bˣ, Ideal.Quotient.mk J (w : B) = (u : B ⧸ J) := by
@@ -23,13 +23,13 @@ theorem exists_unit_lift {B : Type} [CommRing B] (J : Ideal B) (hJ : ∀ x ∈ J
   exact ⟨(isUnit_of_mul_isUnit_left hu).unit, by simpa using ha⟩
 
 /- English proof (translation)
-Introduce `K _ X q D s`. Establish `hp : ∀ c : (KS q s (𝒱D D)).FullSubcategory, ∃ p : Spec (CommRingCat.of (c.obj.B ⧸ c.obj.J)) ⟶ D.Y, p ≫ D.f = pt c.obj`. Introduce `c`. Take `⟨V, ⟨σ, hσ⟩, hV⟩` from `c.property.2`. Establish `hr : Set.range (pt c.obj) ⊆ Set.range V.ι`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[Scheme.Opens.range_ι]`. Introduce and unpack `_ ⟨x, rfl⟩`. Conclude with `hV (show x ∈ (⊤ : Scheme.Opens _) from trivial)`. Use `⟨IsOpenImmersion.lift V.ι (pt c.obj) hr ≫ σ, ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, hσ, IsOpenImmersion.lift_fac]`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `choose p hp using hp`. Establish `hw : ∀ {c c' : (KS q s (𝒱D D)).FullSubcategory} (φ : c ⟶ c'), ∃ w : (((KS q s (𝒱D D)).ι).obj c').Bˣ, ∀ (h : (Spec.map (CommRingCat.ofHom (Ideal.quotientMap (((KS q s (𝒱D D)).ι).obj c').J (((KS q s (𝒱D D)).ι).map φ).φ (((KS q s (𝒱D D)).ι).map φ).hle)) ≫ p c) ≫ D.f = p c' ≫ D.f), I …`. Introduce `c c' φ`. Distinguish the cases in `h : (Spec.map (CommRingCat.ofHom (Ideal.quotientMap (((KS q s (𝒱D D)).ι).obj c').J (((KS q s (𝒱D D)).ι).map φ).φ (((KS q s (𝒱D D)).ι).map φ).hle)) ≫ p c) ≫ D.f = p c' ≫ D.f`. Take `⟨w, hw⟩` from `exists_unit_lift (((KS q s (𝒱D D)).ι).obj c').J (fun x hx => GlobalTheory.CompanionTheory.SiteNil.thick_J_isNilpotent _ x hx) (Units.map (Scheme.ΓSpecIso (CommRingCat.of ((((KS q s (𝒱D D)).ι).obj c').B ⧸ (((KS q s (𝒱D D)).ι).obj c').J))).hom.hom.toMonoidHom (D.u _ _ h))`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Conclude with `⟨w, fun _ => hw⟩`. Conclude with `⟨1, fun h' => absurd h' h⟩`. Use `choose w hw using @hw`. Conclude with `⟨{ p := p, hp := hp, w := fun φ => w φ, hw := fun φ h => hw φ h }⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem nonempty_cLiftK : ∀ {K : Type} [CommRing K] {X : Scheme.{0}} (q : X ⟶ Spec (CommRingCat.of K)) (D : E.LineData X) (s : ℕ), Nonempty (CLiftK (KS q s (𝒱D D)).ι D) := by
   intro K _ X q D s

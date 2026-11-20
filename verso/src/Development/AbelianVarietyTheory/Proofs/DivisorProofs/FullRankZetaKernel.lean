@@ -21,9 +21,9 @@ open scoped Matrix
 namespace GlobalTheory.FullRankCoinv
 
 /- English proof (translation)
-Introduce `k _ _ _ _ _ _ n d ν hnd hν Ψ hΨ hT`. Establish `hT' : ∀ Y : Matrix (Fin n) (Fin d) k, Y.rank = n → smallF (haarVol (GlobalTheory.SplitWeil.KO k (Fin n))) ν Ψ Y = 0` using `fun Y hY => by`. Take `⟨h, rfl⟩` from `GlobalTheory.T.full_rank_normal_form_orbit k n d hnd Y hY`. Conclude with `hT h`. Take `⟨s, hs⟩` from `GlobalTheory.T.open_cover_finite_translates_support k n d _ (GlobalTheory.T.isClopen_unit_minor_set k n d).isOpen (GlobalTheory.T.exists_unit_minor_translate k n d) Ψ hΨ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨Φ, hΦ, hS, hdiff, hF⟩` from `GlobalTheory.T.clopen_integrability_full_rank_orbit k n d ν _ (GlobalTheory.T.isClopen_unit_minor_set k n d) (fun Φ hΦ Y => GlobalTheory.T.integrable_full_rank_zeta k n d ν hν Φ hΦ Y) s Ψ hΨ hs`. Establish `hA` using `GlobalTheory.T.smooth_character_orbital_integral_stable k n d ν hν _ (GlobalTheory.T.integral_group_of_unit_minor_stable k n d) (fun E hE Y hY => GlobalTheory.T.unit_minor_stable_integral_group k n d E Y hE hY) Φ hΦ hS (fun Y hY => by rw [hF]; exact hT' Y (GlobalTheory.T.rank_eq_ …`. Establish `e : Ψ = (Ψ - Φ) + Φ` using `by abel`. Rewrite using `[e]`. Conclude with `add_mem hdiff hA`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_augRk_of_fibre_eq_zero : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     [MeasurableSpace k] [BorelSpace k] (n d : ℕ) (ν : kˣ →* ℂˣ), n ≤ d → GlobalTheory.SmGL.IsSmoothChar ν →

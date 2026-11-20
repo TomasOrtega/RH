@@ -11,17 +11,15 @@ open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.Cha
 namespace GlobalTheory.CompanionTheory.ChartSections
 
 /- English proof (translation)
-Introduce `K _ ι _ Ω _ _ y b b' hy hb hfd`. Use `choose j hj using hy`. Take `⟨n, hn⟩ : ∃ n : K → ℕ, ∀ k, (n k : ℤ) = b' k - b k` from `⟨fun k => (b' k - b k).toNat, fun k => Int.toNat_of_nonneg (sub_nonneg.2 (hb k))⟩`. Establish `hu0 : (∏ k, y ⟨k, j k⟩ ^ n k) ≠ 0` using `Finset.prod_ne_zero_iff.2 fun k _ => pow_ne_zero _ (hj k)`. Establish `hmem : ∀ s ∈ chartLatQ y b 1, s * ∏ k, y ⟨k, j k⟩ ^ n k ∈ chartLatQ y b' 1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `s hs c hc`. Establish `h1 : s * ∏ k, y ⟨k, c k⟩ ^ (-(((1 : ℕ) : ℤ) * b k)) ∈ chartRingQ y c` using `hs c hc`. Establish `hq : ∀ k, y ⟨k, j k⟩ / y ⟨k, c k⟩ ∈ chartRingQ y c` using `fun k => Algebra.subset_adjoin ⟨⟨k, j k⟩, rfl⟩`. Establish `h2 : ∏ k, (y ⟨k, j k⟩ / y ⟨k, c k⟩) ^ n k ∈ chartRingQ y c` using `prod_mem fun k _ => pow_mem (hq k) _`. Establish `heq : s * (∏ k, y ⟨k, j k⟩ ^ n k) * ∏ k, y ⟨k, c k⟩ ^ (-(((1 : ℕ) : ℤ) * b' k)) = (s * ∏ k, y ⟨k, c k⟩ ^ (-(((1 : ℕ) : ℤ) * b k))) * ∏ k, (y ⟨k, j k⟩ / y ⟨k, c k⟩) ^ n k`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_assoc, mul_assoc, ← Finset.prod_mul_distrib, ← Finset.prod_mul_distrib]`. Use `congr 1`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Establish `hck` using `hc k`. Establish `hnk` using `hn k`.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hz : y ⟨k, c k⟩ ^ (-(((1 : ℕ) : ℤ) * b' k)) = y ⟨k, c k⟩ ^ (-(((1 : ℕ) : ℤ) * b k)) * (y ⟨k, c k⟩ ^ n k)⁻¹`. Rewrite using `[← zpow_natCast, ← zpow_neg, ← zpow_add₀ hck]`. Use `congr 1`. Simplify using `only [Nat.cast_one, one_mul]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hz, div_pow, div_eq_mul_inv]`. Expand and normalize the polynomial expressions, which then agree. Use `show s * (∏ k, y ⟨k, j k⟩ ^ n k) * ∏ k, y ⟨k, c k⟩ ^ (-(((1 : ℕ) : ℤ) * b' k)) ∈ chartRingQ y c`. Rewrite using `[heq]`. Conclude with `mul_mem h1 h2`.
-
-Set `f : chartLatQ y b 1 →ₗ[ℚ] chartLatQ y b' 1` to `{ toFun := fun s => ⟨s.1 * ∏ k, y ⟨k, j k⟩ ^ n k, hmem s.1 s.2⟩ map_add' := fun s t => Subtype.ext (add_mul _ _ _) map_smul' := fun r s => Subtype.ext (smul_mul_assoc _ _ _) }`. Use `LinearMap.finrank_le_finrank_of_injective (f := f) fun s t hst => ?_` and prove the remaining obligations. Conclude with `Subtype.ext (mul_right_cancel₀ hu0 (congrArg Subtype.val hst))`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem finrank_chartLatQ_mono : ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] (Ω : Type) [Field Ω]
     [CharZero Ω] (y : (Σ k, ι k) → Ω) (b b' : K → ℤ), (∀ k, ∃ i, y ⟨k, i⟩ ≠ 0) → b ≤ b' →

@@ -4,7 +4,7 @@ import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsSiegelZero
 open Matrix GlobalTheory.RedTh NumberField GlobalTheory.PolFan ReciprocityTheory.ChartRestriction.G.Geo.Tor
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SiegelCone.gram_mem_cone | exact GlobalTheory.SiegelCone.gram_mem_cone | (intros; apply GlobalTheory.SiegelCone.gram_mem_cone <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.siegelGram_mem_cone_integer_squares : ∀ n : ℕ, ∃ S : Finset (Fin n → ℤ), ∀ (d : Fin n → ℝ) (u : Matrix (Fin n) (Fin n) ℝ), IsSiegel d u → ∃ c : (Fin n → ℤ) → ℝ, (∀ l, 0 ≤ c l) ∧ gram d u = ∑ l ∈ S, c l • vecMulVec (fun i => (l i : ℝ)) (fun i => (l i : ℝ)) := by
   first | exact @GlobalTheory.SiegelCone.gram_mem_cone | exact GlobalTheory.SiegelCone.gram_mem_cone | (intros; apply GlobalTheory.SiegelCone.gram_mem_cone <;> assumption)

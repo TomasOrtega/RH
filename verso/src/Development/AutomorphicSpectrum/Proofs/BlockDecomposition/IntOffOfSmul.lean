@@ -25,7 +25,7 @@ namespace GlobalTheory.CompanionTheory.AlgRich
 variable {D : D7}
 
 /- English proof (translation)
-Establish `hK : IsCompact (L ⁻¹' (tsupport g₁ ×ˢ tsupport g₂))` using `L.isCompact_preimage.2 (h₁.isCompact.prod h₂.isCompact)`. Establish `hC : IsClosed (L ⁻¹' (tsupport g₁ ×ˢ tsupport g₂))` using `((isClosed_tsupport _).prod (isClosed_tsupport _)).preimage L.continuous`. Use `hK.of_isClosed_subset (isClosed_tsupport _) (closure_minimal (fun x hx => ?_) hC)` and prove the remaining obligations. Establish `hx' : g₁ (L x).1 * g₂ (L x).2 ≠ 0` using `hx`. Conclude with `⟨subset_tsupport _ (left_ne_zero_of_mul hx'), subset_tsupport _ (right_ne_zero_of_mul hx')⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem hcs_mul_sep {X A B : Type} [TopologicalSpace X] [TopologicalSpace A] [TopologicalSpace B]
     (L : X ≃ₜ A × B) {g₁ : A → ℂ} {g₂ : B → ℂ} (h₁ : HasCompactSupport g₁) (h₂ : HasCompactSupport g₂) :
@@ -60,7 +60,7 @@ def rowHomeo (Y : Type) [TopologicalSpace Y] (a : ℕ) : (Fin (a + 1) → Y) ≃
     · simpa [Function.comp_def] using (continuous_apply i).comp (continuous_fst (X := Fin a → Y) (Y := Fin 1 → Y))
 
 /- English proof (translation)
-The claim follows from `hcs_mul_sep (rowHomeo (Fin n → R) a) h₁ h₂`.
+A detailed English derivation is pending.
 -/
 theorem hcs_rows {R : Type} [TopologicalSpace R] {a n : ℕ} {g₁ : Matrix (Fin a) (Fin n) R → ℂ}
     {g₂ : Matrix (Fin 1) (Fin n) R → ℂ} (h₁ : HasCompactSupport g₁) (h₂ : HasCompactSupport g₂) :
@@ -89,13 +89,13 @@ def rowCLE (T : Type) [Fintype T] (a n : ℕ) :
 variable {a n : ℕ}
 
 /- English proof (translation)
-Proceed by induction on `hφ using Submodule.span_induction with`. Consider the case `mem Φ hm`. Take `⟨f, g, hg, rfl⟩` from `hm`. Use `Submodule.subset_span ⟨f, fun y => h y * g y, ⟨hh.mul hg.1, hg.2.mul_left⟩, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `x`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Expand and normalize the polynomial expressions, which then agree. Consider the case `zero`. Use `(schwartzA θ a n).zero_mem using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `x`. Simplify using the standard rewrite rules.
+Expand and normalize the polynomial expressions, which then agree. Treat this case separately. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Consider the case `add Φ₁ Φ₂ _ _ h₁ h₂`. Use `(schwartzA θ a n).add_mem h₁ h₂ using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `x`. Simplify using `[mul_add]`. Consider the case `smul c Φ _ h₁`.
+Treat this case separately. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Treat this case separately.
 
-Use `(schwartzA θ a n).smul_mem c h₁ using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `x`. Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem fin_mul_mem (θ : InfFam D) {h : (Fin a → Fin n → Af D.host.F ⊗[D.host.F] D.host.E) → ℂ}
     (hh : IsLocallyConstant h) {φ : Mx D a n → ℂ} (hφ : φ ∈ schwartzA θ a n) :
@@ -121,13 +121,13 @@ theorem fin_mul_mem (θ : InfFam D) {h : (Fin a → Fin n → Af D.host.F ⊗[D.
     ring
 
 /- English proof (translation)
-Proceed by induction on `hΦ using Submodule.span_induction with`. Consider the case `mem Φ hm`. Take `⟨f, g, hg, rfl⟩` from `hm`. Use `GlobalTheory.CompanionTheory.WSum.mul_mem_schwartzA D θ a n f f.hasTemperateGrowth _ (fin_mul_mem θ hg.1 hΦ')` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use function extensionality and compare the values at `x`. Expand and normalize the polynomial expressions, which then agree. Consider the case `zero`. Use `(schwartzA θ a n).zero_mem using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `x`.
+Apply function extensionality and compare values at an arbitrary argument. Expand and normalize the polynomial expressions, which then agree. Treat this case separately. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using the standard rewrite rules. Consider the case `add Φ₁ Φ₂ _ _ h₁ h₂`. Use `(schwartzA θ a n).add_mem h₁ h₂ using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `x`. Simplify using `[add_mul]`.
+Simplify using the standard rewrite rules. Treat this case separately. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Consider the case `smul c Φ _ h₁`. Use `(schwartzA θ a n).smul_mem c h₁ using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `x`. Simplify using `[mul_assoc]`.
+Treat this case separately. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem mul_mem (θ : InfFam D) {Φ Φ' : Mx D a n → ℂ} (hΦ : Φ ∈ schwartzA θ a n) (hΦ' : Φ' ∈ schwartzA θ a n) :
     (fun x => Φ x * Φ' x) ∈ schwartzA θ a n := by
@@ -152,13 +152,13 @@ theorem mul_mem (θ : InfFam D) {Φ Φ' : Mx D a n → ℂ} (hΦ : Φ ∈ schwar
     simp [mul_assoc]
 
 /- English proof (translation)
-Proceed by induction on `hΦ using Submodule.span_induction with`. Consider the case `mem Φ hm`. Take `⟨f, g, hg, rfl⟩` from `hm`. Use `Submodule.subset_span ⟨SchwartzMap.postcompCLM (Complex.conjCLE : ℂ →L[ℝ] ℂ) f, fun y => conj (g y), ⟨hg.1.comp _, hg.2.comp_left (map_zero _)⟩, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `x`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using the standard rewrite rules. Consider the case `zero`. Use `(schwartzA θ a n).zero_mem using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `x`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Treat this case separately. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Consider the case `add Φ₁ Φ₂ _ _ h₁ h₂`. Use `(schwartzA θ a n).add_mem h₁ h₂ using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `x`. Simplify using the standard rewrite rules. Consider the case `smul c Φ _ h₁`.
+Treat this case separately. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Treat this case separately.
 
-Use `(schwartzA θ a n).smul_mem (conj c) h₁ using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `x`. Simplify using the standard rewrite rules.
+Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem conj_mem (θ : InfFam D) {Φ : Mx D a n → ℂ} (hΦ : Φ ∈ schwartzA θ a n) :
     (fun x => conj (Φ x)) ∈ schwartzA θ a n := by
@@ -183,23 +183,23 @@ theorem conj_mem (θ : InfFam D) {Φ : Mx D a n → ℂ} (hΦ : Φ ∈ schwartzA
     simp
 
 /- English proof (translation)
-Proceed by induction on `hΦ using Submodule.span_induction with`. Consider the case `mem Φ hm`. Proceed by induction on `hφ using Submodule.span_induction with`. Consider the case `mem φ hm'`. Take `⟨f₁, g₁, hg₁, rfl⟩` from `hm`.
+Proceed by induction. Treat this case separately. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨f₂, g₂, hg₂, rfl⟩` from `hm'`. Take `⟨F, hF⟩` from `GlobalTheory.SchwartzHadamard.exists_schwartz_prod f₁ f₂`. Establish `hL` using `hcs_mul_sep (rowHomeo (Fin n → Af D.host.F ⊗[D.host.F] D.host.E) a) hg₁.2 hg₂.2`. Use `Submodule.subset_span ⟨SchwartzMap.compCLMOfContinuousLinearEquiv ℝ (rowCLE D.what₂.Tau a n) F, fun y => g₁ (rowHomeo _ a y).1 * g₂ (rowHomeo _ a y).2, ⟨?_, hL⟩, ?_⟩` and prove the remaining obligations. Conclude with `(hg₁.1.comp_continuous (continuous_fst.comp (rowHomeo _ a).continuous)).mul (hg₂.1.comp_continuous (continuous_snd.comp (rowHomeo _ a).continuous))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `x`. Simplify using `only [SchwartzMap.compCLMOfContinuousLinearEquiv_apply, Function.comp_apply, hF]`. Establish `e1 : (rowCLE D.what₂.Tau a n (fun τ i j => compAt θ τ x i j)).1 = fun τ i j => compAt θ τ (x.submatrix Fin.castSucc id) i j` using `rfl`. Establish `e2 : (rowCLE D.what₂.Tau a n (fun τ i j => compAt θ τ x i j)).2 = fun τ i j => compAt θ τ (x.submatrix (fun _ => Fin.last a) id) i j` using `rfl`. Rewrite using `[e1, e2]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e3 : (rowHomeo (Fin n → Af D.host.F ⊗[D.host.F] D.host.E) a fun i j => finPart D (x i j)).1 = fun i j => finPart D (x.submatrix Fin.castSucc id i j)` using `rfl`. Establish `e4 : (rowHomeo (Fin n → Af D.host.F ⊗[D.host.F] D.host.E) a fun i j => finPart D (x i j)).2 = fun i j => finPart D (x.submatrix (fun _ => Fin.last a) id i j)` using `rfl`. Rewrite using `[e3, e4]`. Expand and normalize the polynomial expressions, which then agree. Consider the case `zero`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Treat this case separately. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use `(schwartzA θ (a + 1) n).zero_mem using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `x`. Simplify using the standard rewrite rules. Consider the case `add Φ₁ Φ₂ _ _ h₁ h₂`. Use `(schwartzA θ (a + 1) n).add_mem h₁ h₂ using 1` and compare the differences between its conclusion and the goal.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Treat this case separately. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `x`. Simplify using `[mul_add]`. Consider the case `smul c Φ _ h₁`. Use `(schwartzA θ (a + 1) n).smul_mem c h₁ using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `x`.
+Simplify using the standard rewrite rules. Treat this case separately. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Consider the case `zero`. Use `(schwartzA θ (a + 1) n).zero_mem using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `x`.
+Expand and normalize the polynomial expressions, which then agree. Treat this case separately. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Consider the case `add Φ₁ Φ₂ _ _ h₁ h₂`. Use `(schwartzA θ (a + 1) n).add_mem h₁ h₂ using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `x`. Simplify using `[add_mul]`.
+Treat this case separately. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Treat this case separately.
 
-Consider the case `smul c Φ _ h₁`. Use `(schwartzA θ (a + 1) n).smul_mem c h₁ using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `x`. Simplify using `[mul_assoc]`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem row_mem (θ : InfFam D) {Φ : Mx D a n → ℂ} {φ : Mx D 1 n → ℂ} (hΦ : Φ ∈ schwartzA θ a n)
     (hφ : φ ∈ schwartzA θ 1 n) :
@@ -261,12 +261,12 @@ section GoodSec
 variable {S : Finset (Pl D)} {e : AE D}
 
 /- English proof (translation)
-Introduce `x` and use `by simp`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem good_zero : Good S e (fun _ : Mx D a n => (0 : ℂ)) := fun x => by simp
 
 /- English proof (translation)
-Introduce `x` and use `by by_cases h : IntOff S x · simp only [if_pos h] rw [h₁ x, h₂ x, if_pos h, if_pos h] · simp only [if_neg h] rw [h₁ x, h₂ x, if_neg h, if_neg h, add_zero]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem good_add {Φ Ψ : Mx D a n → ℂ} (h₁ : Good S e Φ) (h₂ : Good S e Ψ) : Good S e (fun x => Φ x + Ψ x) := fun x => by
   by_cases h : IntOff S x
@@ -276,7 +276,7 @@ theorem good_add {Φ Ψ : Mx D a n → ℂ} (h₁ : Good S e Φ) (h₂ : Good S 
     rw [h₁ x, h₂ x, if_neg h, if_neg h, add_zero]
 
 /- English proof (translation)
-Introduce `x` and use `by by_cases h : IntOff S x · simp only [if_pos h] rw [h₁ x, if_pos h] · simp only [if_neg h] rw [h₁ x, if_neg h, mul_zero]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem good_smul {Φ : Mx D a n → ℂ} (c : ℂ) (h₁ : Good S e Φ) : Good S e (fun x => c * Φ x) := fun x => by
   by_cases h : IntOff S x
@@ -286,7 +286,7 @@ theorem good_smul {Φ : Mx D a n → ℂ} (c : ℂ) (h₁ : Good S e Φ) : Good 
     rw [h₁ x, if_neg h, mul_zero]
 
 /- English proof (translation)
-Introduce `x` and use `by by_cases h : IntOff S x · simp only [if_pos h] rw [h₁ x, if_pos h, hM] · simp only [if_neg h] rw [h₁ x, if_neg h, mul_zero]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem good_factor {M B : Mx D a n → ℂ} (hM : ∀ x, M (e • x) = M x) (h₁ : Good S e B) :
     Good S e (fun x => M x * B x) := fun x => by
@@ -297,7 +297,7 @@ theorem good_factor {M B : Mx D a n → ℂ} (hM : ∀ x, M (e • x) = M x) (h�
     rw [h₁ x, if_neg h, mul_zero]
 
 /- English proof (translation)
-Introduce `x` and use `by by_cases h : IntOff S x · simp only [if_pos h] rw [h₁ x, h₂ x, if_pos h, if_pos h] · simp only [if_neg h] rw [h₁ x, if_neg h, zero_mul]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem good_mul {Φ Ψ : Mx D a n → ℂ} (h₁ : Good S e Φ) (h₂ : Good S e Ψ) : Good S e (fun x => Φ x * Ψ x) := fun x => by
   by_cases h : IntOff S x
@@ -307,7 +307,7 @@ theorem good_mul {Φ Ψ : Mx D a n → ℂ} (h₁ : Good S e Φ) (h₂ : Good S 
     rw [h₁ x, if_neg h, zero_mul]
 
 /- English proof (translation)
-Introduce `x` and use `by by_cases h : IntOff S x · simp only [if_pos h] rw [h₁ x, if_pos h] · simp only [if_neg h] rw [h₁ x, if_neg h, map_zero]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem good_conj {Φ : Mx D a n → ℂ} (h₁ : Good S e Φ) : Good S e (fun x => conj (Φ x)) := fun x => by
   by_cases h : IntOff S x
@@ -317,9 +317,9 @@ theorem good_conj {Φ : Mx D a n → ℂ} (h₁ : Good S e Φ) : Good S e (fun x
     rw [h₁ x, if_neg h, map_zero]
 
 /- English proof (translation)
-Introduce `v hv i j`. Establish `h0 : cv D v e = 0` using `by rw [hid.2 v, if_neg hv]`. Establish `: x i j = e * x i j` using `by conv_lhs => rw [← hx]`. Both sides reduce to the same expression. Rewrite using `[this, map_mul, h0, zero_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Conclude with `zero_mem _`.
+A detailed English derivation is pending.
 -/
 theorem intOff_of_smul (hid : IsIdem S e) {x : Mx D a n} (hx : e • x = x) : IntOff S x := by
   intro v hv i j
@@ -331,7 +331,7 @@ theorem intOff_of_smul (hid : IsIdem S e) {x : Mx D a n} (hx : e • x = x) : In
   exact zero_mem _
 
 /- English proof (translation)
-Introduce `x` and use `by by_cases h : IntOff S x · have a1 : IntOff S (x.submatrix Fin.castSucc id) := fun v hv i j => h v hv _ _ have a2 : IntOff S (x.submatrix (fun _ : Fin 1 => Fin.last a) id) := fun v hv i j => h v hv _ _ have b1 := h₁ (x.submatrix Fin.castSucc id) have b2 := h₂ (x.submatrix (fun …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem good_row {Φ : Mx D a n → ℂ} {φ : Mx D 1 n → ℂ} (h₁ : Good S e Φ) (h₂ : Good S e φ) :
     Good S e (fun x : Mx D (a + 1) n =>
@@ -361,17 +361,15 @@ theorem good_row {Φ : Mx D a n → ℂ} {φ : Mx D 1 n → ℂ} (h₁ : Good S 
       rw [b1, zero_mul]
 
 /- English proof (translation)
-Introduce `a`. Proceed by induction on `a with`. Consider the case `zero`. Introduce `η _`. Establish `e1 : (fun x : Mx D 0 n => ∏ i, η i (x.submatrix (fun _ => i) id)) = fun _ => 1`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `x`. Simplify using the standard rewrite rules. Rewrite using `[e1]`. Use `⟨GlobalTheory.CompanionTheory.ThTot.one_mem_schwartzA_zero θ, fun x => ?_, ?_⟩` and prove the remaining obligations. Establish `: IntOff S x` using `fun v _ i => i.elim0`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[if_pos this]`. Use `haveI : Subsingleton (Mx D 0 n) := GlobalTheory.CompanionTheory.ThTot.mx_zero_subsingleton`. Conclude with `(Set.subsingleton_of_subsingleton).isCompact`. Consider the case `succ a ih`. Introduce `η hη`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨h1, h2, h3⟩` from `ih (fun i => η i.castSucc) fun i => hη _`. Take `⟨l1, l3, l2⟩` from `hη (Fin.last a)`. Establish `e1 : (fun x : Mx D (a + 1) n => ∏ i, η i (x.submatrix (fun _ => i) id)) = fun x => (∏ i : Fin a, η i.castSucc ((x.submatrix Fin.castSucc id).submatrix (fun _ => i) id)) * η (Fin.last a) (x.submatrix (fun _ => Fin.last a) id)`. Use function extensionality and compare the values at `x`. Rewrite using `[Fin.prod_univ_castSucc]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[e1]`. Use `⟨row_mem θ h1 l1, fun x => ?_, ?_⟩` and prove the remaining obligations. Conclude with `good_row h2 l2 x`. Establish `key` using `hcs_rows (R := AE D) h3 l3`.
-
-Conclude with `key`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem row_prod {θ : InfFam D} : ∀ (a : ℕ) (η : Fin a → Mx D 1 n → ℂ),
     (∀ i, η i ∈ schwartzA θ 1 n ∧ HasCompactSupport (η i) ∧ Good S e (η i)) →

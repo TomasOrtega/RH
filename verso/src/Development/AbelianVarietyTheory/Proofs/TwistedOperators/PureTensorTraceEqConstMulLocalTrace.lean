@@ -19,9 +19,9 @@ open scoped Classical
 namespace GlobalTheory.PureTensorTrace
 
 /- English proof (translation)
-Introduce `v l`. Establish `hi` using `hρ.smoothOp_integrand hf hc v`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `integrable_map (μ := μ) hi.1 hi.2 l l.map_zero` as an intermediate fact. Simplify `this` using `only [map_smul, smul_eq_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[hρ.map_smoothOp (μ := μ) hf hc l v]`. Simplify using `only [smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem isIntegralOp_smoothOp {G X : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
     [MeasurableSpace G] [BorelSpace G] {μ : Measure G} [IsFiniteMeasureOnCompacts μ]
@@ -37,15 +37,13 @@ theorem isIntegralOp_smoothOp {G X : Type} [Group G] [TopologicalSpace G] [IsTop
     simp only [smul_eq_mul]
 
 /- English proof (translation)
-Introduce `D V u μf hμ hK1 ν hν W _ _ σ hσ N _ _ π hπi hπa hloc ff hff`. Use `haveI : (μf u).IsHaarMeasure := hμ u`. Take `⟨H, K, hKo, hHc, hHf, hHop⟩` from `GlobalTheory.T.pureTensorOperator_eq_offPlace_mul_atPlace D V u μf hμ hK1 ν hν W σ hσ.1 ff hff`. Establish `hcont : Continuous (locFin V u)` using `(continuous_emb _ _ u).subtype_mk _`. Establish `hρ : GlobalTheory.PRep.IsSmooth (σ.comp (locFin V u))` using `fun x => (hσ.1 x).preimage hcont`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨s, hs⟩` from `GlobalTheory.T.exists_finset_localComponent_copies_fixed_away D V u W σ hσ N π hπi hπa hloc K hKo`. Establish `hrange : ∃ s : Finset (π.IntertwiningMap (σ.comp (locFin V u))), LinearMap.range H ≤ ⨆ φ ∈ s, LinearMap.range φ.toLinearMap`. Use `⟨s, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨x, rfl⟩`. Conclude with `hs _ fun k hk hk1 => hHf x k hk hk1`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hschur : ∀ φ : π.IntertwiningMap π, ∃ c : ℂ, φ.toLinearMap = c • LinearMap.id` using `fun φ => GlobalTheory.T.schur_admissible_alt (Gv V u) (Kv V u) (isOpen_stabLoc _ _ _ u) (isCompact_stabLoc _ _ _ u) N π hπi hπa φ.toLinearMap fun g x => Representation.IntertwiningMap.isIntertwining _ _ φ g x`. Take `⟨c, hc⟩` from `GlobalTheory.T.trace_mul_endomorphism_isotypicRep (Gv V u) N W π (σ.comp (locFin V u)) hπi hschur hloc H (fun g x => hHc g x) hrange`. Use `⟨c, fun f hf => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Establish `hfd` using `hπa.finiteDimensional_range_smoothOp (μ := μf u) hf.1 hf.2 (isOpen_stabLoc _ _ _ u) (isCompact_stabLoc _ _ _ u) (K := Kv V u)`. Conclude with `⟨_, _, isIntegralOp_smoothOp hπa.1 hf.1 hf.2, hfd, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Introduce and unpack `b ⟨A, hA, hAb⟩`. Take `rfl` from `hA.unique (isIntegralOp_smoothOp hπa.1 hf.1 hf.2)`. Establish `hB` using `isIntegralOp_smoothOp (μ := μf u) hρ hf.1 hf.2`. Use `⟨_, hHop f hf _ hB, hc _ _ (fun φ => ?_) b hAb⟩` and prove the remaining obligations. Use extensionality with `x`.
-
-Conclude with `(hπa.1.map_smoothOp_of_intertwining hρ hf.1 hf.2 φ.toLinearMap (fun g v => Representation.IntertwiningMap.isIntertwining _ _ φ g v) x).symm`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem hasTrace_update_eq_const_mul : ∀ (D : D7) (V : HSp D) (u : HeightOneSpectrum (𝓞 D.host.F)) (μf : ∀ v, Measure (GLoc D.sp.cm.sig V.gram v)), (∀ v, (μf v).IsHaarMeasure) → (∀ᶠ v in cofinite, μf v (Kv V v) = 1) → ∀ ν, IsFinMeas V μf ν → ∀ (W : Type) [AddCommGroup W] [Module ℂ W] (σ : Representation ℂ (GfC V) W), IsAdmissible σ → ∀ (N : Type) [AddCommGroup N] [Module ℂ N] (π : Representation ℂ (Gv V u) N), π.IsIrreducible → IsAdmissible π → FinHasLocComp V u π σ → ∀ ff, IsFinFamily D.sp.cm.sig V.gram (frameLat V) ff → ∃ c : ℂ, ∀ f ∈ CcLoc D.sp.cm.sig V.gram u, (∃ b, GlobalTheory.IndefiniteRowSideFullHecke.IwahoriDoubleCosets.HasTrace (μf u) π f b) ∧ ∀ b, GlobalTheory.IndefiniteRowSideFullHecke.IwahoriDoubleCosets.HasTrace (μf u) π f b → GlobalTheory.IndefiniteRowSideFullHecke.IwahoriDoubleCosets.HasTrace ν σ (finFn V (Function.update ff u f)) (c * b) := by
   intro D V u μf hμ hK1 ν hν W _ _ σ hσ N _ _ π hπi hπa hloc ff hff

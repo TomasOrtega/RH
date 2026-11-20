@@ -27,14 +27,14 @@ def fib (hA : IsVB A a) (hB : IsVB B b) (φ : A ⟶ B) (y : CxPts p σ) : Matrix
 def bil (h : Met p σ A a) (y : CxPts p σ) (v w : Fin a → ℂ) : ℂ := form (h.G (h.isVB.pick y) y) v w
 
 /- English proof (translation)
-The claim follows from `(Chart.crd_app _ _ φ s hy (hA.mem_pick y)).symm`.
+A detailed English derivation is pending.
 -/
 theorem fib_crd (hA : IsVB A a) (hB : IsVB B b) (φ : A ⟶ B) {V : X.Opens} (s : Γ(A, V)) (hy : y ∈ ptsIn p σ V) :
     fib hA hB φ y *ᵥ (hA.pick y).crd p σ s y = (hB.pick y).crd p σ (φ.app V s) y :=
   (Chart.crd_app _ _ φ s hy (hA.mem_pick y)).symm
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `using congrFun (h j) i`.
+By extensionality, compare the relevant components. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem mulVec_ext {m n : Type} [Fintype n] [DecidableEq n] {M N : Matrix m n ℂ}
     (h : ∀ j, M *ᵥ Pi.single j 1 = N *ᵥ Pi.single j 1) : M = N := by
@@ -42,7 +42,7 @@ theorem mulVec_ext {m n : Type} [Fintype n] [DecidableEq n] {M N : Matrix m n �
   simpa using congrFun (h j) i
 
 /- English proof (translation)
-Rewrite using `[mulVec_mulVec]`. Use `congrArg (· *ᵥ v) (mulVec_ext fun j => ?_)` and prove the remaining obligations. Establish `hy` using `hA.mem_pick y`. Rewrite using `[← mulVec_mulVec, ← (hA.pick y).crd_frame hy j, fib_crd _ _ _ _ hy, fib_crd _ _ _ _ hy, fib_crd _ _ _ _ hy]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem fib_comp (hA : IsVB A a) (hB : IsVB B b) (hC : IsVB C c) (φ : A ⟶ B) (ψ : B ⟶ C) (v : Fin a → ℂ) :
     fib hB hC ψ y *ᵥ (fib hA hB φ y *ᵥ v) = fib hA hC (φ ≫ ψ) y *ᵥ v := by
@@ -53,7 +53,7 @@ theorem fib_comp (hA : IsVB A a) (hB : IsVB B b) (hC : IsVB C c) (φ : A ⟶ B) 
   rfl
 
 /- English proof (translation)
-Rewrite using `[show fib hA hB 0 y = 0 from ?_, zero_mulVec]`. Use extensionality with `i j`. Conclude with `congrFun ((hB.pick y).crd_zero y) i`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem fib_zero (hA : IsVB A a) (hB : IsVB B b) (v : Fin a → ℂ) : fib hA hB 0 y *ᵥ v = 0 := by
   rw [show fib hA hB 0 y = 0 from ?_, zero_mulVec]
@@ -61,15 +61,15 @@ theorem fib_zero (hA : IsVB A a) (hB : IsVB B b) (v : Fin a → ℂ) : fib hA hB
   exact congrFun ((hB.pick y).crd_zero y) i
 
 /- English proof (translation)
-Rewrite using `[show fib hA hA (𝟙 A) y = 1 from (hA.pick y).tr_self (hA.mem_pick y), one_mulVec]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem fib_id (hA : IsVB A a) (v : Fin a → ℂ) : fib hA hA (𝟙 A) y *ᵥ v = v := by
   rw [show fib hA hA (𝟙 A) y = 1 from (hA.pick y).tr_self (hA.mem_pick y), one_mulVec]
 
 /- English proof (translation)
-Establish `key {F : X.Modules} {n : ℕ} (m : Met p σ F n) (f : A ⟶ F) (g : B ⟶ F) (i : Fin a) (j : Fin b) : ((fib hA m.isVB f y)ᵀ * m.G (m.isVB.pick y) y * (fib hB m.isVB g y)ᴴᵀ) i j = m.form (f.app _ (resM A (inf_le_left : (hA.pick y).U ⊓ (hB.pick y).U ≤ _) ((hA.pick y).e i))) (g.app _ (res …`. Establish `hy` using `mem_ptsIn_inf.2 ⟨hA.mem_pick y, hB.mem_pick y⟩`. Rewrite using `[Met.form, ← fib_crd hA _ _ _ hy, ← fib_crd hB _ _ _ hy, Chart.crd_resM _ _ _ hy, Chart.crd_resM _ _ _ hy, Chart.crd_frame _ (hA.mem_pick y), Chart.crd_frame _ (hB.mem_pick y), form_mulVec]`. Simplify using `[form]`. Rewrite using `[bil, bil, form_mulVec, form_mulVec]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `congr 2`. Use extensionality with `i j`. Rewrite using `[key, key, H _ _ _ (mem_ptsIn_inf.2 ⟨hA.mem_pick y, hB.mem_pick y⟩)]`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 -/
 theorem bil_eq (hA : IsVB A a) (hB : IsVB B b) {h : Met p σ C c} {h' : Met p σ D d} {φ : A ⟶ C} {ψ : B ⟶ C}
     {φ' : A ⟶ D} {ψ' : B ⟶ D} (H : ∀ (V : X.Opens) (s : Γ(A, V)) (t : Γ(B, V)), y ∈ ptsIn p σ V →
@@ -90,21 +90,21 @@ theorem bil_eq (hA : IsVB A a) (hB : IsVB B b) {h : Met p σ C c} {h' : Met p σ
   rw [key, key, H _ _ _ (mem_ptsIn_inf.2 ⟨hA.mem_pick y, hB.mem_pick y⟩)]
 
 /- English proof (translation)
-The claim follows from `conj_form (h.posDef _ y (h.isVB.mem_pick y)).isHermitian _ _`.
+A detailed English derivation is pending.
 -/
 theorem conj_bil (h : Met p σ A a) (v w : Fin a → ℂ) : starRingEnd ℂ (bil h y v w) = bil h y w v :=
   conj_form (h.posDef _ y (h.isVB.mem_pick y)).isHermitian _ _
 
 /- English proof (translation)
-The claim follows from `form_add_right _ _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem bil_add_right (h : Met p σ A a) (v w w' : Fin a → ℂ) : bil h y v (w + w') = bil h y v w + bil h y v w' :=
   form_add_right _ _ _ _
 
 /- English proof (translation)
-Use `mulVec_surjective_iff_isUnit.2 (mulVec_injective_iff_isUnit.1 ?_) w` and prove the remaining obligations. Use `(injective_iff_map_eq_zero M.mulVecLin).2 fun v (hv : M *ᵥ v = 0) => by_contra fun h0 => ?_` and prove the remaining obligations. Use `(posDef_iff.1 (h.posDef _ y (h.isVB.mem_pick y))).2 v h0` as an intermediate fact. Establish `e` using `H v v`. Rewrite `e` using `[hv]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `_ = form _ v v at e`. Rewrite `this` using `[← e]`. Simplify using `[bil, form] at this`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem surj_of_isometry {h : Met p σ A a} {h' : Met p σ B a} {M : Matrix (Fin a) (Fin a) ℂ}
     (H : ∀ v w, bil h' y (M *ᵥ v) (M *ᵥ w) = bil h y v w) (w : Fin a → ℂ) : ∃ v, M *ᵥ v = w := by
@@ -123,13 +123,13 @@ def Coiso (h : Met p σ A a) (h' : Met p σ B b) (y : CxPts p σ) (M : Matrix (F
 variable {S : ShortComplex X.Modules}
 
 /- English proof (translation)
-Introduce `M`. Use `⟨fun v => ?_, fun x => ?_, fun x => ?_⟩` and prove the remaining obligations. Take `⟨x, rfl⟩` from `mulVec_surjective_iff_isUnit.2 ((h₂.pick y).isUnit_tr (ch.mid hS) (h₂.mem_pick y) hy) v`. Use `⟨x ∘ finSumFinEquiv, ?_⟩` and prove the remaining obligations. Establish `: M = ((h₂.pick y).tr p σ (ch.mid hS) y).submatrix id finSumFinEquiv`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use extensionality with `i j`. Simplify using `[M, Chart.tr, AdaptedChart.mid]`. Rewrite using `[this, submatrix_mulVec_equiv]`. Simplify using `[Function.comp_assoc]`. Rewrite using `[mulVec_mulVec, mulVec_mulVec]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `congrArg (· *ᵥ x) (Matrix.ext fun i j => ?_)` and prove the remaining obligations. Use `Eq.trans ?_ (congrFun (fib_crd h₁ h₂ S.f (ch.e j) hy) i).symm` and prove the remaining obligations. Simplify using `[M, incl, mul_apply, AdaptedChart.frame, one_apply]`. Rewrite using `[mulVec_mulVec, mulVec_mulVec]`. Use `congrArg (· *ᵥ x) (Matrix.ext fun i j => ?_)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `(congrFun (fib_crd h₂ h₃ S.g (ch.frame j) hy) i).trans ?_` and prove the remaining obligations. Break down `j with j | j` into its components or cases. Rewrite using `[show S.g.app ch.U (ch.frame (.inl j)) = 0 from congr(($(S.zero)).app ch.U (ch.e j)), Chart.crd_zero]`. Simplify using `[quotMap, mul_apply]`. Simplify using `[quotMap, mul_apply, one_apply, Chart.tr, AdaptedChart.quot, AdaptedChart.frame]`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem exists_frame (hS : S.ShortExact) (h₁ : IsVB S.X₁ a) (h₂ : IsVB S.X₂ (a + b)) (h₃ : IsVB S.X₃ b)
     (ch : AdaptedChart S a b) (hy : y ∈ ptsIn p σ ch.U) :
@@ -158,9 +158,9 @@ theorem exists_frame (hS : S.ShortExact) (h₁ : IsVB S.X₁ a) (h₂ : IsVB S.X
     · simp [quotMap, mul_apply, one_apply, Chart.tr, AdaptedChart.quot, AdaptedChart.frame]
 
 /- English proof (translation)
-Establish `: Nonempty X` using `⟨y.1 (IsLocalRing.closedPoint ℂ)⟩`. Take `rfl` from `(VBExt.isVB_and_cls_det_of_shortExact X _ a b hS h₁ h₃).1.rank_unique h₂`. Take `⟨ch, hy⟩` from `Met.exists_adapted hS h₁ h₃ y`. Take `⟨e₁, e₂, e₃⟩` from `exists_frame hS h₁ h₂ h₃ ch hy`. Take `⟨x, rfl⟩` from `e₁ v`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite `hv` using `[e₃]`. Establish `hx` using `mulVec_injective_iff_isUnit.2 ((h₃.pick y).isUnit_tr ch.quot (h₃.mem_pick y) hy) (hv.trans (mulVec_zero _).symm)`. Use `⟨_, (e₂ (orthProj 0 *ᵥ x)).symm.trans (congrArg _ ?_)⟩` and prove the remaining obligations. Use `conv_rhs => rw [← one_mulVec x, ← incl_mul_orthProj_add 0, add_mulVec, ← mulVec_mulVec, ← mulVec_mulVec, hx, mulVec_zero, add_zero]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem fib_exact (hS : S.ShortExact) (h₁ : IsVB S.X₁ a) (h₂ : IsVB S.X₂ c) (h₃ : IsVB S.X₃ b) {v : Fin c → ℂ}
     (hv : fib h₂ h₃ S.g y *ᵥ v = 0) : ∃ x, fib h₁ h₂ S.f y *ᵥ x = v := by
@@ -177,7 +177,7 @@ theorem fib_exact (hS : S.ShortExact) (h₁ : IsVB S.X₁ a) (h₂ : IsVB S.X₂
     mulVec_zero, add_zero]
 
 /- English proof (translation)
-Introduce `ξ` and use `by obtain ⟨ch, hy⟩ := Met.exists_adapted hS h₁ h₃ y obtain ⟨e₁, -, e₃⟩ := exists_frame hS h₁ h.isVB h₃ ch hy obtain ⟨q, rfl⟩ := mulVec_surjective_iff_isUnit.2 ((h₃.pick y).isUnit_tr ch.quot (h₃.mem_pick y) hy) ξ have hu := (posDef_subGram (h.posDef_gram_frame hS ch hy)).det_pos.n …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem coiso_quot (hS : S.ShortExact) (h₁ : IsVB S.X₁ a) (h : Met p σ S.X₂ (a + b)) (h₃ : IsVB S.X₃ b) :
     Coiso h (h.quot hS h₁ h₃) y (fib h.isVB h₃ S.g y) := fun ξ => by
@@ -194,7 +194,7 @@ theorem coiso_quot (hS : S.ShortExact) (h₁ : IsVB S.X₁ a) (h : Met p σ S.X�
       ← mulVec_mulVec, form_add_right, form_orthLift_incl hu, zero_add]
 
 /- English proof (translation)
-Introduce `ξ` and use `by obtain ⟨v, rfl, hv⟩ := H' ξ obtain ⟨v', rfl, hv'⟩ := H v exact ⟨v', (fib_comp _ _ _ _ _ _).symm, fun w => by rw [hv', hv, fib_comp _ _ _ _ _ w, fib_comp]⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Coiso.comp {h : Met p σ A a} {h' : Met p σ B b} {h'' : Met p σ C c} {φ : A ⟶ B} {ψ : B ⟶ C}
     (H : Coiso h h' y (fib h.isVB h'.isVB φ y)) (H' : Coiso h' h'' y (fib h'.isVB h''.isVB ψ y)) :
@@ -204,9 +204,9 @@ theorem Coiso.comp {h : Met p σ A a} {h' : Met p σ B b} {h'' : Met p σ C c} {
   exact ⟨v', (fib_comp _ _ _ _ _ _).symm, fun w => by rw [hv', hv, fib_comp _ _ _ _ _ w, fib_comp]⟩
 
 /- English proof (translation)
-Rewrite using `[Met.form, Met.form, ← fib_crd h'.isVB _ _ _ hy, ← fib_crd h'.isVB _ _ _ hy]`. Generalize the expression as in `(h'.isVB.pick y).crd p σ s y = ξ, (h'.isVB.pick y).crd p σ t y = η`. Take `⟨v, rfl, hv⟩` from `H ξ`. Take `⟨w, e, hw⟩` from `H' (fib h'.isVB h''.isVB ψ.hom y *ᵥ η)`. Establish `e'` using `congrArg (fib h''.isVB h'.isVB ψ.inv y *ᵥ ·) e`.
+Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Simplify using `only [fib_comp, Category.assoc, Iso.hom_inv_id, Category.comp_id, fib_id] at e'`. Express the relevant statement in the definitionally equal form `bil _ _ _ _ = bil _ _ _ _`. Rewrite using `[← conj_bil, fib_comp, ← hw, conj_bil, hv, e']`.
+Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem form_eq_of_coiso {h : Met p σ A a} {h' : Met p σ B b} {h'' : Met p σ C c} {φ : A ⟶ B} {ψ : B ≅ C}
     (H : Coiso h h' y (fib h.isVB h'.isVB φ y)) (H' : Coiso h h'' y (fib h.isVB h''.isVB (φ ≫ ψ.hom) y))
@@ -222,7 +222,7 @@ theorem form_eq_of_coiso {h : Met p σ A a} {h' : Met p σ B b} {h'' : Met p σ 
   rw [← conj_bil, fib_comp, ← hw, conj_bil, hv, e']
 
 /- English proof (translation)
-Take `⟨x, hx⟩` from `hs (fib h₂ h₃ S.g y *ᵥ w)`. Take `⟨z, hz⟩` from `fib_exact hS h₁ h₂ h₃ (v := w - fib hD h₂ τ y *ᵥ x) (by rw [mulVec_sub, fib_comp, hx, sub_self])`. Conclude with `⟨x, z, by rw [hz, add_sub_cancel]⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_add (hS : S.ShortExact) (h₁ : IsVB S.X₁ a) (h₂ : IsVB S.X₂ c) (h₃ : IsVB S.X₃ b) (hD : IsVB D d)
     {τ : D ⟶ S.X₂} (hs : ∀ ξ, ∃ x, fib hD h₃ (τ ≫ S.g) y *ᵥ x = ξ) (w : Fin c → ℂ) :
@@ -232,7 +232,7 @@ theorem exists_add (hS : S.ShortExact) (h₁ : IsVB S.X₁ a) (h₂ : IsVB S.X�
   exact ⟨x, z, by rw [hz, add_sub_cancel]⟩
 
 /- English proof (translation)
-Introduce `ξ` and use `by obtain ⟨v, rfl⟩ := surj_of_isometry i₃ ξ refine ⟨_, fib_comp _ _ _ _ _ v, fun w => ?_⟩ obtain ⟨x, z, rfl⟩ := exists_add hS h₁ h₂.isVB h₃.isVB hD.isVB (surj_of_isometry i₃) w rw [bil_add_right, i₂, o, mulVec_add, fib_comp, fib_comp, S.zero, fib_zero, add_zero, add_zero, i₃]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem coiso_of_split (hS : S.ShortExact) (h₁ : IsVB S.X₁ a) (h₂ : Met p σ S.X₂ c) (h₃ : Met p σ S.X₃ b)
     (hD : Met p σ D b) {τ : D ⟶ S.X₂}
@@ -246,7 +246,7 @@ theorem coiso_of_split (hS : S.ShortExact) (h₁ : IsVB S.X₁ a) (h₂ : Met p 
   rw [bil_add_right, i₂, o, mulVec_add, fib_comp, fib_comp, S.zero, fib_zero, add_zero, add_zero, i₃]
 
 /- English proof (translation)
-Rewrite using `[← bil_eq hA hA (h := h.restrict hi hA) (φ := 𝟙 A) (ψ := 𝟙 A) fun V s t hy => h.form_restrict hi hA s t hy, fib_id, fib_id]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem bil_restrict (h : Met p σ B b) {i : A ⟶ B} (hi : IsSubbundle i) (hA : IsVB A a) (v w : Fin a → ℂ) :
     bil (h.restrict hi hA) y v w = bil h y (fib hA h.isVB i y *ᵥ v) (fib hA h.isVB i y *ᵥ w) := by
@@ -260,7 +260,7 @@ section Squares
 variable {𝒞 : Type*} [Category 𝒞] [Abelian 𝒞] {W G Q' Q : 𝒞} {f : W ⟶ G} {α : W ⟶ Q'} {κ : G ⟶ Q} {ι : Q' ⟶ Q}
 
 /- English proof (translation)
-Use `Abelian.mono_cokernel_map_of_isPullback sq` as an intermediate fact. Establish `: Epi (cokernel.map f ι α κ sq.w)` using `epi_of_epi_fac (f := cokernel.π f) (h := κ ≫ cokernel.π ι) (cokernel.π_desc _ _ _)`. Conclude with `isIso_of_mono_of_epi _`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isIso_cokernel_map (sq : IsPullback f α κ ι) [Epi κ] : IsIso (cokernel.map f ι α κ sq.w) := by
   have := Abelian.mono_cokernel_map_of_isPullback sq
@@ -269,11 +269,9 @@ theorem isIso_cokernel_map (sq : IsPullback f α κ ι) [Epi κ] : IsIso (cokern
   exact isIso_of_mono_of_epi _
 
 /- English proof (translation)
-Use `hS.mono_f` as an intermediate fact. Use `hS.epi_g` as an intermediate fact. Establish `hm : Mono (sq.lift s 0 (by rw [z, zero_comp]))` using `mono_of_mono_fac (sq.lift_fst _ _ _)`. Establish `he : Epi α` using `(MorphismProperty.epimorphisms 𝒞).of_isPullback sq hS.epi_g`. Use `{ exact := ShortComplex.exact_of_f_is_kernel _ (KernelFork.IsLimit.ofι' _ _ fun {T} x hx => ?_) }` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hx' : (x ≫ f) ≫ κ = 0` using `by rw [Category.assoc, sq.w, reassoc_of% hx, zero_comp]`. Use `⟨hS.exact.lift (x ≫ f) hx', sq.hom_ext ?_ ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, sq.lift_fst]`. Conclude with `hS.exact.lift_f _ _`. Rewrite using `[Category.assoc, sq.lift_snd, comp_zero]`.
-
-Conclude with `hx.symm`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem shortExact_pullback (sq : IsPullback f α κ ι) {K : 𝒞} {s : K ⟶ G} {z : s ≫ κ = 0}
     (hS : (ShortComplex.mk s κ z).ShortExact) :
@@ -297,11 +295,11 @@ section Flags
 variable {X : Scheme.{0}} {A B L : X.Modules} {g : ℕ}
 
 /- English proof (translation)
-Take `⟨t, rfl⟩` from `h`. Use `hv.mono` as an intermediate fact. Use `hu.mono` as an intermediate fact. Establish `: Mono t` using `mono_of_mono t v`. Take `⟨s, e, hs⟩` from `isVB_cokernel hu hA hL`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨s', e', hs'⟩` from `isVB_cokernel hv hB hL`. Take `rfl : s = 0 + s'` from `by omega`. Establish `h0` using `isVB_zero_iff.1 (VB.isVB_X₁_of_shortExact X _ 0 _ (Vert.shortExact_cokernel_comp t v) hs hs')`. Establish `: Epi t` using `Preadditive.epi_of_isZero_cokernel t h0`. Use `isIso_of_mono_of_epi t` as an intermediate fact.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `⟨inv t, IsIso.inv_hom_id_assoc _ _⟩`.
+Supply the required witnesses or components.
 -/
 theorem le_of_rank_eq [Nonempty X] {u : A ⟶ L} {v : B ⟶ L} {n : ℕ} (hu : IsSubbundle u) (hv : IsSubbundle v)
     (hA : IsVB A n) (hB : IsVB B n) (hL : IsVB L g) (h : Le u v) : Le v u := by
@@ -318,15 +316,13 @@ theorem le_of_rank_eq [Nonempty X] {u : A ⟶ L} {v : B ⟶ L} {n : ℕ} (hu : I
   exact ⟨inv t, IsIso.inv_hom_id_assoc _ _⟩
 
 /- English proof (translation)
-Establish `key (x : Fin (g + 1)) : ∃ (A : X.Modules) (i : A ⟶ L), IsSubbundle i ∧ IsVB A x ∧ ∀ a, (n a ≤ x → Le (j a) i) ∧ (x ≤ n a → Le i (j a))`. Proceed by induction on `x using Fin.cases with`. Consider the case `zero`. Establish `hz : IsZero (kernel (𝟙 L))` using `isZero_kernel_of_mono _`. Use `⟨_, 0, ⟨hz.mono _, g, hL.of_iso cokernelZeroIsoTarget.symm⟩, isVB_zero_iff.2 hz, fun a => ⟨fun h => ⟨0, ?_⟩, fun _ => ⟨0, hz.eq_of_src _ _⟩⟩⟩` and prove the remaining obligations.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h0` using `hP a`. Rewrite `h0` using `[Nat.le_zero.1 h]`. Conclude with `(isVB_zero_iff.1 h0).eq_of_src _ _`. Consider the case `succ x`. Take `⟨b, hb⟩` from `hs x`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨_, j b, hj b, by rw [Fin.val_succ, ← hb]; exact hP b, fun a => ⟨fun h => hle _ _ (hb ▸ h), fun h => hle _ _ (hb ▸ h)⟩⟩`. Use `choose F i h₁ h₂ h₃ using key`. Establish `hst (x : Fin g) : Le (i x.castSucc) (i x.succ)`. Take `⟨b, hb⟩` from `hs x`. Conclude with `((h₃ _ b).2 (by simp [hb])).trans ((h₃ _ b).1 hb.le)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `choose st hst using hst`. Establish `hl : IsIso (i (Fin.last g))`. Take `⟨t, ht⟩` from `le_of_rank_eq (h₁ _) (isSubbundle_of_isIso (𝟙 L)) (h₂ (Fin.last g)) hL hL ⟨_, Category.comp_id _⟩`. Use `(h₁ (Fin.last g)).mono` as an intermediate fact. Use `epi_of_epi_fac ht` as an intermediate fact.
-
-Conclude with `isIso_of_mono_of_epi _`. Conclude with `⟨⟨F, i, h₁, h₂, st, hst, hl⟩, fun a x h => ⟨(h₃ x a).1 h.le, (h₃ x a).2 h.ge⟩⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_flag [Nonempty X] (hL : IsVB L g) {J : Type} {P : J → X.Modules} (j : ∀ a, P a ⟶ L) (n : J → ℕ)
     (hj : ∀ a, IsSubbundle (j a)) (hP : ∀ a, IsVB (P a) (n a)) (hle : ∀ a b, n a ≤ n b → Le (j a) (j b))
@@ -359,9 +355,9 @@ theorem exists_flag [Nonempty X] (hL : IsVB L g) {J : Type} {P : J → X.Modules
   exact ⟨⟨F, i, h₁, h₂, st, hst, hl⟩, fun a x h => ⟨(h₃ x a).1 h.le, (h₃ x a).2 h.ge⟩⟩
 
 /- English proof (translation)
-Proceed by induction on `x' using Fin.induction with`. Consider the case `zero => rw [Fin.le_zero_iff.1 h]`. Conclude with `⟨𝟙 _, Category.id_comp _⟩`. Consider the case `succ i ih`. Break down `h.eq_or_lt with rfl | h` into its components or cases.
+Proceed by induction. Treat this case separately. Supply the required witnesses or components. Treat this case separately. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `⟨𝟙 _, Category.id_comp _⟩`. Conclude with `(ih (Fin.le_castSucc_iff.2 h)).trans ⟨_, w.step_ι i⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem flag_le (w : Vert.Flag L g) {x x' : Fin (g + 1)} (h : x ≤ x') : Le (w.ι x) (w.ι x') := by
   induction x' using Fin.induction with
@@ -374,9 +370,9 @@ theorem flag_le (w : Vert.Flag L g) {x x' : Fin (g + 1)} (h : x ≤ x') : Le (w.
 end Flags
 
 /- English proof (translation)
-Take `⟨r', rfl⟩ : ∃ r' : Fin m → ℕ, r = fun a => r' (o a)` from `⟨fun i => r (o.symm i), by simp⟩`. Establish `key (i : Fin (m + 1)) : n i = ∑ b : Fin i, r' (Fin.castLE (Nat.lt_succ_iff.1 i.2) b)`. Proceed by induction on `i using Fin.induction with`. Consider the case `zero => exact h₀.trans (Finset.sum_of_isEmpty (ι := Fin 0) _).symm`. Consider the case `succ i ih`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Take `⟨a, rfl⟩` from `o.surjective i`. Rewrite using `[hn, ih]`. Conclude with `(Fin.sum_univ_castSucc fun b : Fin ((o a : ℕ) + 1) => r' (Fin.castLE (o a).2 b)).symm`. Use `⟨((Equiv.sigmaCongrLeft (β := fun i => Fin (r' i)) o).trans finSigmaFinEquiv).trans (finCongr (key (Fin.last m)).symm), fun z => ?_⟩` and prove the remaining obligations. Conclude with `(finSigmaFinEquiv_apply _).trans (congrArg (· + _) (key (o z.1).castSucc).symm)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_numbering {ι : Type} {m : ℕ} (o : ι ≃ Fin m) (r : ι → ℕ) (n : Fin (m + 1) → ℕ) (h₀ : n 0 = 0)
     (hn : ∀ a, n (o a).succ = n (o a).castSucc + r a) :
@@ -398,19 +394,19 @@ section Step
 variable {k : Type} [CommRing k] {X : Scheme.{0}} {p : X ⟶ Sp k} {L K G E Q : X.Modules} {g n r : ℕ}
 
 /- English proof (translation)
-Establish `hS₁` using `shortExact_pullback sq₁ hS`. Establish `: Epi α₁` using `hS₁.epi_g`. Establish `a₁ : w.step x ≫ f₁ = f₀` using `by rw [← cancel_mono j, Category.assoc, e₁, e₀, w.step_ι]`. Establish `a₂ : w.step x ≫ α₁ = α₀ ≫ fl'.step i`. Rewrite using `[← cancel_mono (fl'.ι i.succ), Category.assoc, Category.assoc, ← sq₁.w, fl'.step_ι, ← sq₀.w, reassoc_of% a₁]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `sq : IsPullback (w.step x) α₀ α₁ (fl'.step i)` using `IsPullback.of_right (by rw [a₁, fl'.step_ι]; exact sq₀) a₂ sq₁`. Set `φ : w.gr x ≅ fl'.gr i` to `@asIso _ _ _ _ _ (isIso_cokernel_map sq)`. Establish `hφ : w.π x ≫ φ.hom = α₁ ≫ fl'.π i` using `cokernel.π_desc _ _ _`. Take `⟨c, hc⟩` from `hc i.succ`. Set `τ : fl.F i.succ ⟶ w.F x.succ` to `sq₁.lift (fl.ι _ ≫ t) c (by rw [hc, Category.assoc])`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `b₁ : τ ≫ w.ι _ = fl.ι _ ≫ t ≫ j` using `by rw [← e₁, sq₁.lift_fst_assoc, Category.assoc]`. Establish `b₂ : (τ ≫ α₁) ≫ fl'.ι _ = fl.ι _ ≫ t ≫ κ` using `by rw [sq₁.lift_snd, hc]`. Apply the tactic sequence `refine VMetric.isometric_det_of_isIsometry k X p _ _ 1 _ _ φ _ _ fun σ V s₁ s₂ y hy => ?_`. Use `form_eq_of_coiso (h := (hL.stepMet w x).met σ) (φ := w.π x) (coiso_quot (VMetric.stepSeq_shortExact w x) (w.isVB x.castSucc) _ (w.isVB_gr x)) ?_ s₁ s₂ hy` and prove the remaining obligations. Rewrite using `[hφ]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Coiso.comp (h' := (h'.stepMet fl' i).met σ) ?_ (coiso_quot (VMetric.stepSeq_shortExact fl' i) (fl'.isVB i.castSucc) _ (fl'.isVB_gr i))` and prove the remaining obligations. Use `coiso_of_split hS₁ hK _ _ ((h.stepMet fl i).met σ) (τ := τ) (fun v v' => ?_) (fun v v' => ?_) fun v v' => ?_` and prove the remaining obligations. Use `(bil_restrict (hL.met σ) (w.isSubbundle _) (w.isVB _) _ _).trans (Eq.trans ?_ (bil_restrict (h.met σ) (fl.isSubbundle _) (fl.isVB _) _ _).symm)` and prove the remaining obligations. Rewrite using `[← hT]`. Apply the tactic sequence `congr 1 <;> exact (fib_comp _ _ _ _ _ _).trans (b₁ ▸ (fib_comp _ _ _ _ _ _).symm)`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Use `(bil_restrict (h'.met σ) (fl'.isSubbundle _) (fl'.isVB _) _ _).trans (Eq.trans ?_ (bil_restrict (h.met σ) (fl.isSubbundle _) (fl.isVB _) _ _).symm)` and prove the remaining obligations. Use `bil_eq h.isVB h.isVB (h := h'.met σ) (h' := h.met σ) (φ' := 𝟙 E) (ψ' := 𝟙 E) (y := y) fun V s t hy => hu σ V s t y hy` as an intermediate fact. Simplify using `only [fib_id] at this`. Rewrite using `[← this]`. Apply the tactic sequence `congr 1 <;> exact (fib_comp _ _ _ _ _ _).trans (b₂ ▸ (fib_comp _ _ _ _ _ _).symm)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Use `(bil_restrict (hL.met σ) (w.isSubbundle _) (w.isVB _) _ _).trans ?_` and prove the remaining obligations. Rewrite using `[← ho σ y (fib (fl.isVB i.succ) h.isVB (fl.ι _) y *ᵥ v) v']`. Use `congr 1`. Conclude with `(fib_comp _ _ _ _ _ _).trans (b₁ ▸ (fib_comp _ _ _ _ _ _).symm)`. Use `(fib_comp _ _ _ _ _ _).trans ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← e₁, sq₁.lift_fst_assoc]`.
+A detailed English derivation is pending.
 -/
 theorem isometric_step {hL : VMetric p L g} (HL : hL.IsCInf) (w : Vert.Flag L g) (x : Fin g) {h : VMetric p E r}
     {h' : VMetric p Q r} (H' : h'.IsCInf) {fl : Vert.Flag E r} {fl' : Vert.Flag Q r} (i : Fin r) {s : K ⟶ G} {κ : G ⟶ Q}
@@ -464,39 +460,37 @@ theorem isometric_step {hL : VMetric p L g} (HL : hL.IsCInf) (w : Vert.Flag L g)
 end Step
 
 /- English proof (translation)
-Introduce `k _ X _ p ι _ L g hL HL E E' r h h' H' u m o hu ⟨F, j, s, κ, t, z, hF, h0, hl, hs, hS, ht, hT⟩ fl fl' hc`. Take `rfl : u = fun a => t a ≫ κ a` from `funext fun a => (ht a).symm`. Use `choose hj n hn using hF`. Establish `hm (i) : Mono (j i)` using `(hj i).mono`. Establish `he (a) : Epi (κ a)` using `(hS a).epi_g`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `n₀ : n 0 = 0` using `(hn 0).rank_unique (isVB_zero_iff.2 h0)`. Establish `n₁ (a) : n (o a).succ = n (o a).castSucc + r a` using `(hn _).rank_unique (VBExt.isVB_and_cls_det_of_shortExact X _ _ _ (hS a) (hn _) (h' a).isVB).1`. Take `rfl : n (Fin.last m) = g` from `((hn _).of_iso (asIso (j _))).rank_unique hL.isVB`. Take `⟨e, hen⟩` from `exists_numbering o r n n₀ n₁`. Establish `nm : Monotone n` using `Fin.monotone_iff_le_succ.2 fun i => by`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨a, rfl⟩` from `o.surjective i`. Rewrite using `[n₁]`. Use linear arithmetic over natural numbers and integers. Establish `jm {x x' : Fin (m + 1)} (h : x ≤ x') : Le (j x) (j x')`. Proceed by induction on `x' using Fin.induction with`.
+Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Proceed by induction. Treat this case separately.
 
-Consider the case `zero => rw [Fin.le_zero_iff.1 h]`. Conclude with `⟨𝟙 _, Category.id_comp _⟩`. Consider the case `succ i ih`. Break down `h.eq_or_lt with rfl | h` into its components or cases. Conclude with `⟨𝟙 _, Category.id_comp _⟩`.
+Supply the required witnesses or components. Treat this case separately. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Introduce a local definition for the expression.
 
-Conclude with `(ih (Fin.le_castSucc_iff.2 h)).trans ⟨_, hs i⟩`. Set `J` to `Σ a, Fin (r a + 1)`. Set `P : J → X.Modules` to `fun c => pullback (κ c.1) ((fl' c.1).ι c.2)`. Set `jP : ∀ c : J, P c ⟶ L` to `fun c => pullback.fst _ _ ≫ j _`. Set `nP : J → ℕ` to `fun c => n (o c.1).castSucc + c.2`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `sq (c : J)` using `IsPullback.of_hasPullback (κ c.1) ((fl' c.1).ι c.2)`. Establish `hjP (c : J) : IsSubbundle (jP c)`. Use `isIso_cokernel_map (sq c)` as an intermediate fact. Conclude with `isSubbundle_comp ⟨inferInstance, _, ((fl' c.1).isVB_cokernel c.2).of_iso (asIso (cokernel.map _ _ _ _ (sq c).w)).symm⟩ (hj _)`. Establish `hP (c : J) : IsVB (P c) (nP c)` using `(VBExt.isVB_and_cls_det_of_shortExact X _ _ _ (shortExact_pullback (sq c) (hS c.1)) (hn _) ((fl' c.1).isVB _)).1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `lt (c c' : J) (h : o c.1 < o c'.1) : Le (jP c) (jP c')` using `(Le.trans ⟨_, rfl⟩ (jm (Fin.succ_le_castSucc_iff.2 h))).trans ⟨(sq c').lift (s _) 0 (by rw [z, zero_comp]), ((sq c').lift_fst_assoc _ _ _ _).trans (hs _)⟩`. Establish `hle (c c' : J) (h : nP c ≤ nP c') : Le (jP c) (jP c')`. Break down `lt_trichotomy (o c.1) (o c'.1) with h₁ | h₁ | h₁` into its components or cases. Conclude with `lt _ _ h₁`. Take `⟨a, i⟩` from `c`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨b, i'⟩` from `c'`. Take `rfl : a = b` from `o.injective h₁`. Take `⟨v, hv⟩` from `flag_le (fl' a) (show i ≤ i' from Nat.le_of_add_le_add_left h)`. Conclude with `⟨(sq ⟨a, i'⟩).lift (pullback.fst _ _) (pullback.snd _ _ ≫ v) (by`. Rewrite using `[Category.assoc, hv]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(sq ⟨a, i⟩).w), (sq ⟨a, i'⟩).lift_fst_assoc _ _ _ _⟩`. Establish `h₂` using `nm (Fin.succ_le_castSucc_iff.2 h₁)`. Establish `h₃` using `c'.2.2`. Rewrite `h₂` using `[n₁]`. Establish `h₄ : nP c' = nP c` using `by simp only [nP] at h ⊢; omega`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `le_of_rank_eq (hjP c') (hjP c) (h₄ ▸ hP c') (hP c) hL.isVB (lt _ _ h₁)`. Take `⟨w, hw⟩` from `exists_flag hL.isVB jP nP hjP hP hle fun x => by`. Take `⟨c, rfl⟩` from `e.surjective x`. Conclude with `⟨⟨c.1, c.2.succ⟩, by rw [hen]; rfl⟩`. Establish `hsq (c : J) (x) (hx : nP c = x.val) : ∃ f α, IsPullback f α (κ c.1) ((fl' c.1).ι c.2) ∧ f ≫ j _ = w.ι x`.
+Establish an intermediate fact. Introduce a local definition for the expression. Supply the required witnesses or components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Take `⟨⟨v, hv⟩, v', hv'⟩` from `hw c x hx`. Use `(hjP c).mono` as an intermediate fact. Set `φ : w.F x ≅ P c` to `⟨v', v, by rw [← cancel_mono (w.ι x), Category.assoc, hv, hv', Category.id_comp], by rw [← cancel_mono (jP c), Category.assoc, hv', hv, Category.id_comp]⟩`. Conclude with `⟨_, _, IsPullback.of_iso_pullback ⟨by rw [Category.assoc, Category.assoc, (sq c).w]⟩ φ rfl rfl, (Category.assoc _ _ _).trans hv'⟩`. Establish `hu' (a σ y v v') : bil ((h' a).met σ) y (fib (h a).isVB (h' a).isVB (t a ≫ κ a) y *ᵥ v) (fib (h a).isVB (h' a).isVB (t a ≫ κ a) y *ᵥ v') = bil ((h a).met σ) y v v'`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 
-Simplify `bil_eq (h a).isVB (h a).isVB (h := (h' a).met σ) (h' := (h a).met σ) (φ' := 𝟙 _) (ψ' := 𝟙 _) (y := y) (fun V s t hy => hu a σ V s t y hy) v v'` using `only [fib_id]`. Establish `ho (a σ y v) (i : Fin (m + 1)) (hi : i ≤ (o a).castSucc) (v') : bil (hL.met σ) y (fib (h a).isVB hL.isVB (t a ≫ j _) y *ᵥ v) (fib (hn i) hL.isVB (j i) y *ᵥ v') = 0`. Proceed by induction on `i using Fin.induction with`. Consider the case `zero => rw [h0.eq_of_src (j 0) 0, fib_zero]`. Simplify using `[bil, form]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Consider the case `succ i ih`. Take `⟨b, rfl⟩` from `o.surjective i`. Establish `hab : a ≠ b` using `fun e => by`. Substitute `e` using the available equality. Conclude with `absurd hi (not_le.2 Fin.castSucc_lt_succ)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Apply the tactic sequence `obtain ⟨x, x', rfl⟩ := exists_add (hS b) (hn _) (hn _) (h' b).isVB (h b).isVB (surj_of_isometry (hu' b σ y)) v'`. Rewrite using `[mulVec_add, bil_add_right, fib_comp, fib_comp, hs, ih (Fin.castSucc_le_succ _ |>.trans hi), add_zero]`. Rewrite using `[bil_eq (h a).isVB (h b).isVB (h := hL.met σ) (h' := hL.met σ) (φ' := 0) (ψ' := 0) fun V s t hy => (hT.2 a b hab σ V s t y hy).trans ?_, fib_zero, fib_zero]`. Simplify using `[bil, form]`. Express the relevant statement in the definitionally equal form `_ = (hL.met σ).form 0 0 y`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[Met.form, Chart.crd_zero, form]`. Use `⟨_, w, e, hT, ⟨fun a i i' hi => ?_, fun c => ?_⟩, fun c => ?_⟩` and prove the remaining obligations. Rewrite using `[Fin.lt_def, hen, hen]`. Conclude with `Nat.add_lt_add_left hi _`. Take `⟨f, α, q, hf⟩` from `hsq ⟨c.1, c.2.succ⟩ (e c).succ (by rw [Fin.val_succ, hen]; rfl)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Take `⟨v, hv⟩` from `hc c.1 c.2.succ`. Conclude with `⟨q.lift ((fl c.1).ι _ ≫ t _) v (by rw [hv, Category.assoc]), by`. Rewrite using `[← hf, q.lift_fst_assoc, Category.assoc]⟩`. Take `⟨f₀, α₀, q₀, hf₀⟩` from `hsq ⟨c.1, c.2.castSucc⟩ (e c).castSucc (hen c).symm`. Take `⟨f₁, α₁, q₁, hf₁⟩` from `hsq ⟨c.1, c.2.succ⟩ (e c).succ (by rw [Fin.val_succ, hen]; rfl)`.
-
-Use `isometric_step HL w (e c) (H' c.1) c.2 (hS c.1) (hn _) (hu c.1) (hc c.1) (fun σ y v v' => ?_) (fun σ y v v' => ?_) q₀ hf₀ q₁ hf₁` and prove the remaining obligations. Simplify `bil_eq (h c.1).isVB (h c.1).isVB (h := hL.met σ) (h' := (h c.1).met σ) (φ' := 𝟙 _) (ψ' := 𝟙 _) (y := y) (fun V s t hy => hT.1 c.1 σ V s t y hy) v v'` using `only [fib_id]`. Rewrite using `[hs]`. Conclude with `ho _ σ y v _ le_rfl v'`.
+A detailed English derivation is pending.
 -/
 theorem exists_adapted_flag : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp k) (ι : Type) [Fintype ι] (L : X.Modules) (g : ℕ) (hL : VMetric p L g) (HL : hL.IsCInf) (E E' : ι → X.Modules) (r : ι → ℕ) (h : ∀ a, VMetric p (E a) (r a)) (h' : ∀ a, VMetric p (E' a) (r a)) (H' : ∀ a, (h' a).IsCInf) (u : ∀ a, E a ⟶ E' a) (m : ℕ) (o : ι ≃ Fin m), (∀ a, IsoHom (h a) (h' a) (u a)) → IsGraded hL o h u → ∀ (fl : ∀ a, Vert.Flag (E a) (r a)) (fl' : ∀ a, Vert.Flag (E' a) (r a)), (∀ a, Compat (u a) (fl a) (fl' a)) → ∃ (T : ∀ a, E a ⟶ L) (w : Vert.Flag L g) (e : (Σ a, Fin (r a)) ≃ Fin g), OrthEmb hL h T ∧ Adapted T fl w e ∧ ∀ z, (VMetric.grLB w (e z) HL).Isometric (VMetric.grLB (fl' z.1) z.2 (H' z.1)) := by
   intro k _ X _ p ι _ L g hL HL E E' r h h' H' u m o hu ⟨F, j, s, κ, t, z, hF, h0, hl, hs, hS, ht, hT⟩ fl fl' hc

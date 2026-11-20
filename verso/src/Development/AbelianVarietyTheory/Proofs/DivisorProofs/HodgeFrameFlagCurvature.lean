@@ -8,7 +8,7 @@ open scoped ComplexOrder ContDiff
 namespace GlobalTheory.HodgeHoriz
 
 /- English proof (translation)
-Use extensionality with `k l`. Rewrite using `[one_apply, ← h k l, form_eq_sum]`. Simplify using `only [mul_apply, Finset.sum_mul, transpose_apply, conjTranspose_apply, star_def]`. Rewrite using `[Finset.sum_comm]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem gram_eq_one {n : ℕ} {H e : Matrix (Fin n) (Fin n) ℂ}
     (h : ∀ k l, form H (fun a => e a k) (fun a => e a l) = if k = l then 1 else 0) :
@@ -19,11 +19,11 @@ theorem gram_eq_one {n : ℕ} {H e : Matrix (Fin n) (Fin n) ℂ}
   rw [Finset.sum_comm]
 
 /- English proof (translation)
-Establish `h1 : H * eᴴᵀ * eᵀ = 1`. Use `gram_eq_one h` as an intermediate fact. Rewrite `this` using `[Matrix.mul_assoc]`. Conclude with `mul_eq_one_comm.1 this`. Establish `h2 : ∀ i, form H (M *ᵥ fun a => e a i) (fun a => e a i) = ((M * e)ᵀ * H * eᴴᵀ) i i`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i`. Rewrite using `[form_eq_sum]`. Simplify using `only [mul_apply, Finset.sum_mul, transpose_apply, conjTranspose_apply, star_def, mulVec, dotProduct]`. Rewrite using `[Finset.sum_comm]`. Simplify using `only [h2]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `((M * e)ᵀ * H * eᴴᵀ).trace = _`. Rewrite using `[transpose_mul, Matrix.mul_assoc, Matrix.mul_assoc, trace_mul_comm, Matrix.mul_assoc, h1, Matrix.mul_one, trace_transpose]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_form_eq_trace {n : ℕ} {H e : Matrix (Fin n) (Fin n) ℂ}
     (h : ∀ k l, form H (fun a => e a k) (fun a => e a l) = if k = l then 1 else 0)
@@ -45,9 +45,9 @@ theorem sum_form_eq_trace {n : ℕ} {H e : Matrix (Fin n) (Fin n) ℂ}
     h1, Matrix.mul_one, trace_transpose]
 
 /- English proof (translation)
-Establish `h0 : B * e = 0`. Use extensionality with `a i`. Conclude with `congrFun (hB i) a`. Establish `h1 : e * (H * eᴴᵀ)ᵀ = 1`. Use `gram_eq_one h` as an intermediate fact.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[Matrix.mul_assoc]`. Use `congrArg transpose (mul_eq_one_comm.1 this)` as an intermediate fact. Rewrite `this` using `[transpose_mul, transpose_transpose, transpose_one]`. Then use the resulting hypothesis. Rewrite using `[← Matrix.mul_one B, ← h1, ← Matrix.mul_assoc, h0, Matrix.zero_mul]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_cols {n m : ℕ} {H e : Matrix (Fin n) (Fin n) ℂ}
     (h : ∀ k l, form H (fun a => e a k) (fun a => e a l) = if k = l then 1 else 0)
@@ -63,17 +63,15 @@ theorem eq_zero_of_cols {n m : ℕ} {H e : Matrix (Fin n) (Fin n) ℂ}
   rw [← Matrix.mul_one B, ← h1, ← Matrix.mul_assoc, h0, Matrix.zero_mul]
 
 /- English proof (translation)
-Establish `key : (∑ j, y j) * (∑ i, l i * x i - ∑ j, m j * y j) = ∑ i, ∑ j, (l i - m j) * (x i * y j)`. Rewrite using `[mul_sub]`. Use `nth_rewrite 2 [← hs]`. Rewrite using `[mul_comm, Finset.sum_mul_sum, Finset.sum_mul_sum, ← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Finset.sum_sub_distrib]`. Conclude with `Finset.sum_congr rfl fun j _ => by ring`. Establish `hterm : ∀ i j, 0 ≤ (l i - m j) * (x i * y j)` using `fun i j => mul_nonneg (sub_nonneg.2 (hl i j)) (mul_nonneg (hx i) (hy j))`. Establish `hS : 0 ≤ ∑ j, y j` using `Finset.sum_nonneg fun j _ => hy j`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Break down `hS.eq_or_lt with h0 | h0` into its components or cases. Establish `hy0 : ∀ j, y j = 0` using `fun j => (Finset.sum_eq_zero_iff_of_nonneg fun j _ => hy j).1 h0.symm j (Finset.mem_univ _)`. Establish `hx0 : ∀ i, x i = 0` using `fun i => (Finset.sum_eq_zero_iff_of_nonneg fun j _ => hx j).1 (hs.trans h0.symm) i (Finset.mem_univ _)`. Simplify using `[hx0, hy0]`. Use `le_of_mul_le_mul_left ?_ h0` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Rewrite using `[mul_zero, key]`. Conclude with `Finset.sum_nonneg fun i _ => Finset.sum_nonneg fun j _ => hterm i j`. Introduce and unpack `hlt ⟨j, hj⟩`. Establish `hj' : 0 < y j` using `(hy j).lt_of_ne' hj`. Establish `h0 : 0 < ∑ j, y j` using `Finset.sum_pos' (fun j _ => hy j) ⟨j, Finset.mem_univ _, hj'⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨i, -, hi⟩` from `Finset.exists_ne_zero_of_sum_ne_zero (hs.trans_gt h0).ne'`. Establish `hi' : 0 < x i` using `(hx i).lt_of_ne' hi`. Use `(mul_pos_iff_of_pos_left h0).1 ?_` and prove the remaining obligations. Rewrite using `[key]`. Use `Finset.sum_pos' (fun i _ => Finset.sum_nonneg fun j _ => hterm i j) ⟨i, Finset.mem_univ _, Finset.sum_pos' (fun j _ => hterm i j) ⟨j, Finset.mem_univ _, ?_⟩⟩` and prove the remaining obligations.
-
-Conclude with `mul_pos (sub_pos.2 (hlt i j)) (mul_pos hi' hj')`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem weighted_sub {p q : ℕ} (x l : Fin p → ℝ) (y m : Fin q → ℝ) (hx : ∀ i, 0 ≤ x i)
     (hy : ∀ j, 0 ≤ y j) (hs : ∑ i, x i = ∑ j, y j) (hl : ∀ i j, m j ≤ l i) :
@@ -113,7 +111,7 @@ theorem weighted_sub {p q : ℕ} (x l : Fin p → ℝ) (y m : Fin q → ℝ) (hx
     exact mul_pos (sub_pos.2 (hlt i j)) (mul_pos hi' hj')
 
 /- English proof (translation)
-Establish `: -I * horizForm H π e lam y ξ ξ = ((-((2 * Real.pi)⁻¹ * ∑ i, lam i * x i) : ℝ) : ℂ)`. Simplify using `only [horizForm, hx, kappa]`. Use `push_cast`. Take the linear combination `((2 * (Real.pi : ℂ))⁻¹ * ∑ i, (lam i : ℂ) * x i) * I_mul_I`. Rewrite using `[diagVal, this, ofReal_re]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 -/
 theorem diagVal_horizForm {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] {ι : Type}
     [Fintype ι] {n : ℕ} (H : (ι → ℂ) → Matrix (Fin n) (Fin n) ℂ) (π : E → ι → ℂ)
@@ -128,35 +126,31 @@ theorem diagVal_horizForm {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] 
   rw [diagVal, this, ofReal_re]
 
 /- English proof (translation)
-Introduce `hSQ E _ _ _ _ _ ι _ p q U ψ a b Y π AW eW Aω eω hψ ha hb hF _ hW hω y hy lam hlam ξ`. Establish `hz : π y ∈ U` using `hF.mapsTo hy`. Establish `hu : ∀ z ∈ U, IsUnit (subGram (ψ z)).det` using `fun z hz => by`. Use `(isUnit_iff_isUnit_det _).1 (hψ.neg_sub z hz).isUnit` as an intermediate fact. Rewrite `this` using `[det_neg]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `isUnit_of_mul_isUnit_right this`. Take `⟨hS, hQ, hat⟩` from `(hSQ (ι → ℂ) (Fin q) (Fin p) U ψ).1 hψ.isHermFrame hu`. Take `⟨-, -, hadj, -, hcS, hcQ⟩` from `hat _ hz`. Use `set v := fderiv ℂ π y ξ with hv`. Use `set B := secondForm ψ (π y) v with hB`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set B' := secondFormAdj ψ (π y) v with hB'`. Establish `hh` using `hψ.isHermFrame.herm _ hz`. Establish `cW : curv (fun x => (a : ℂ) • quotGram (ψ x)) (π y) v v = B * B'`. Use `curv_smul (f := fun _ => a) contDiffAt_const ha.ne' (hQ.two hz) (hQ.isUnit _ hz) v v` as an intermediate fact. Rewrite `this` using `[hcQ, hψ.flat _ hz]`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `this.trans ?_` and prove the remaining obligations. Simplify using `[blockQQ, GlobalTheory.IndefiniteRowSideFullHecke.HermitianCurvatureForms.wedgeHolAnti, hB, hB']`. Establish `cω : curv (fun x => (b : ℂ) • -subGram (ψ x)) (π y) v v = -(B' * B)`. Use `curv_smul (f := fun _ => -b) contDiffAt_const (neg_ne_zero.2 hb.ne') (hS.two hz) (hS.isUnit _ hz) v v` as an intermediate fact. Rewrite `this` using `[hcS, hψ.flat _ hz]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `e : (fun x => (b : ℂ) • -subGram (ψ x)) = fun x => ((-b : ℝ) : ℂ) • GlobalTheory.IndefiniteRowSideFullHecke.HermitianCurvatureForms.gramS ψ x`. Use function extensionality and compare the values at `x`. Simplify using `[GlobalTheory.IndefiniteRowSideFullHecke.HermitianCurvatureForms.gramS]`. Rewrite using `[e]`. Use `this.trans ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `[blockSS, GlobalTheory.IndefiniteRowSideFullHecke.HermitianCurvatureForms.wedgeAntiHol, hB, hB']`. Establish `pS` using `hψ.neg_sub _ hz`. Establish `pQ` using `hψ.pos_quot _ hz`. Establish `fneg : ∀ s t, form (-subGram (ψ (π y))) s t = -form (subGram (ψ (π y))) s t` using `fun s t => by`. Simplify using `[form, neg_mulVec]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Use `set x : Fin p → ℝ := fun i => a * gnorm (-subGram (ψ (π y))) (B' *ᵥ fun c => eW y c i) ^ 2 with hxd`. Use `set w : Fin q → ℝ := fun j => b * gnorm (quotGram (ψ (π y))) (B *ᵥ fun c => eω y c j) ^ 2 with hwd`. Establish `hX : ∀ i, curvDiag (fun x => (a : ℂ) • quotGram (ψ x)) π eW i y ξ ξ = ((-x i : ℝ) : ℂ)`. Introduce `i`. Rewrite using `[curvDiag, ← hv, cW, form_smul, ← mulVec_mulVec, hB, form_secondForm hh (hu _ hz), ← hB', hxd, ofReal_neg, ofReal_mul, ← form_self pS.posSemidef, fneg]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hY : ∀ j, curvDiag (fun x => (b : ℂ) • -subGram (ψ x)) π eω j y ξ ξ = (w j : ℂ)`. Introduce `j`. Rewrite using `[curvDiag, ← hv, cω, form_smul, fneg, hB, hB', form_secondFormAdj_mul hh (hu _ hz), ← hB, hwd, ofReal_mul, ← form_self pQ.posSemidef, neg_neg]`. Establish `hsum : ∑ i, x i = ∑ j, w j`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1` using `sum_form_eq_trace (hW.unitary y hy) (B * B')`. Establish `h2` using `sum_form_eq_trace (hω.unitary y hy) (-(B' * B))`. Rewrite `h1` using `[← cW]`. Rewrite `h2` using `[← cω]`. Establish `h1' : ∑ i, ((-x i : ℝ) : ℂ) = (B * B').trace`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[← cW, ← h1]`. Conclude with `Finset.sum_congr rfl fun i _ => (hX i).symm`. Establish `h2' : ∑ j, (w j : ℂ) = (-(B' * B)).trace`. Rewrite using `[← cω, ← h2]`. Conclude with `Finset.sum_congr rfl fun i _ => (hY i).symm`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Rewrite `h2'` using `[trace_neg, trace_mul_comm, ← h1']`. Establish `: ((∑ j, w j : ℝ) : ℂ) = ((∑ i, x i : ℝ) : ℂ)`. Move the coercions through the operations in `at h2' ⊢`. Rewrite using `[h2', Finset.sum_neg_distrib, neg_neg]`. Conclude with `(ofReal_injective this).symm`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hlt : ∀ (i : Fin p) (j : Fin q), Fin.castAdd q i < Fin.natAdd p j` using `fun i j => by`. Rewrite using `[Fin.lt_def]`. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Take `⟨r1, r2⟩` from `weighted_sub x (fun i => lam (Fin.castAdd q i)) w (fun j => lam (Fin.natAdd p j)) (fun i => by positivity) (fun j => by positivity) hsum fun i j => hlam (hlt i j).le`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hval : diagVal (horizForm (fun x => (a : ℂ) • quotGram (ψ x)) π eW (fun i => lam (Fin.castAdd q i)) y) ξ + diagVal (horizForm (fun x => (b : ℂ) • -subGram (ψ x)) π eω (fun i => lam (Fin.natAdd p i)) y) ξ = (2 * Real.pi)⁻¹ * (∑ i, lam (Fin.castAdd q i) * x i - ∑ j, lam (Fin.natAdd …`. Rewrite using `[diagVal_horizForm _ _ _ _ _ _ _ hX, diagVal_horizForm _ _ _ _ _ _ _ hY]`. Simplify using `only [mul_neg, Finset.sum_neg_distrib]`. Expand and normalize the polynomial expressions, which then agree. Establish `hπ : 0 < (2 * Real.pi)⁻¹` using `by positivity`.
-
-Rewrite using `[hval]`. Use `⟨mul_nonneg hπ.le r1, fun hst hB0 => mul_pos hπ (r2 (fun i j => hst (hlt i j)) ?_)⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hc`. Use `push Not at hc`. Use `hB0 (eq_zero_of_cols (hω.unitary y hy) fun j => ?_)` and prove the remaining obligations.
-
-Assume the negation of the conclusion as `hne`. Use `gnorm_pos pQ hne` as an intermediate fact. Establish `h3 : 0 < w j` using `by positivity`. Conclude with `h3.ne' (hc j)`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem hodge_horiz : GlobalTheory.IndefiniteRowSideFullHecke.HermitianCurvatureForms.SubQuotCurvature →
   ∀ (E : Type) [NormedAddCommGroup E] [NormedSpace ℂ E] [NormedSpace ℝ E] [IsScalarTower ℝ ℂ E]
